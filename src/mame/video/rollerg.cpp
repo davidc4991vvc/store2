@@ -13,17 +13,10 @@ K05324X_CB_MEMBER(rollerg_state::sprite_callback)
 {
 	enum { sprite_colorbase = 256 / 16 };
 #if 0
-<<<<<<< HEAD
-	if (machine().input().code_pressed(KEYCODE_Q) && (*color & 0x80)) *color = rand();
-	if (machine().input().code_pressed(KEYCODE_W) && (*color & 0x40)) *color = rand();
-	if (machine().input().code_pressed(KEYCODE_E) && (*color & 0x20)) *color = rand();
-	if (machine().input().code_pressed(KEYCODE_R) && (*color & 0x10)) *color = rand();
-=======
 	if (machine().input().code_pressed(KEYCODE_Q) && (*color & 0x80)) *color = machine().rand();
 	if (machine().input().code_pressed(KEYCODE_W) && (*color & 0x40)) *color = machine().rand();
 	if (machine().input().code_pressed(KEYCODE_E) && (*color & 0x20)) *color = machine().rand();
 	if (machine().input().code_pressed(KEYCODE_R) && (*color & 0x10)) *color = machine().rand();
->>>>>>> upstream/master
 #endif
 	*priority = (*color & 0x10) ? 0 : 0x02;
 	*color = sprite_colorbase + (*color & 0x0f);
@@ -50,11 +43,7 @@ K051316_CB_MEMBER(rollerg_state::zoom_callback)
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-UINT32 rollerg_state::screen_update_rollerg(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t rollerg_state::screen_update_rollerg(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int bg_colorbase = 16;
 

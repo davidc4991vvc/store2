@@ -13,21 +13,10 @@
 
 **********************************************************************/
 
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __6522VIA_H__
-#define __6522VIA_H__
-
-#include "emu.h"
-
-
-=======
 #ifndef MAME_MACHINE_6522VIA_H
 #define MAME_MACHINE_6522VIA_H
 
 #pragma once
->>>>>>> upstream/master
 
 //**************************************************************************
 //  INTERFACE CONFIGURATION MACROS
@@ -67,26 +56,6 @@
 
 // ======================> via6522_device
 
-<<<<<<< HEAD
-class via6522_device :  public device_t
-{
-public:
-	// construction/destruction
-	via6522_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// TODO: REMOVE THESE
-	template<class _Object> static devcb_base &set_readpa_handler(device_t &device, _Object object) { return downcast<via6522_device &>(device).m_in_a_handler.set_callback(object); }
-	template<class _Object> static devcb_base &set_readpb_handler(device_t &device, _Object object) { return downcast<via6522_device &>(device).m_in_b_handler.set_callback(object); }
-
-	// TODO: CONVERT THESE TO WRITE LINE
-	template<class _Object> static devcb_base &set_writepa_handler(device_t &device, _Object object) { return downcast<via6522_device &>(device).m_out_a_handler.set_callback(object); }
-	template<class _Object> static devcb_base &set_writepb_handler(device_t &device, _Object object) { return downcast<via6522_device &>(device).m_out_b_handler.set_callback(object); }
-
-	template<class _Object> static devcb_base &set_ca2_handler(device_t &device, _Object object) { return downcast<via6522_device &>(device).m_ca2_handler.set_callback(object); }
-	template<class _Object> static devcb_base &set_cb1_handler(device_t &device, _Object object) { return downcast<via6522_device &>(device).m_cb1_handler.set_callback(object); }
-	template<class _Object> static devcb_base &set_cb2_handler(device_t &device, _Object object) { return downcast<via6522_device &>(device).m_cb2_handler.set_callback(object); }
-	template<class _Object> static devcb_base &set_irq_handler(device_t &device, _Object object) { return downcast<via6522_device &>(device).m_irq_handler.set_callback(object); }
-=======
 class via6522_device : public device_t
 {
 public:
@@ -125,7 +94,6 @@ public:
 	template <class Object> static devcb_base &set_cb1_handler(device_t &device, Object &&cb) { return downcast<via6522_device &>(device).m_cb1_handler.set_callback(std::forward<Object>(cb)); }
 	template <class Object> static devcb_base &set_cb2_handler(device_t &device, Object &&cb) { return downcast<via6522_device &>(device).m_cb2_handler.set_callback(std::forward<Object>(cb)); }
 	template <class Object> static devcb_base &set_irq_handler(device_t &device, Object &&cb) { return downcast<via6522_device &>(device).m_irq_handler.set_callback(std::forward<Object>(cb)); }
->>>>>>> upstream/master
 
 	virtual DECLARE_ADDRESS_MAP(map, 8);
 
@@ -156,41 +124,6 @@ public:
 	DECLARE_WRITE_LINE_MEMBER( write_cb1 );
 	DECLARE_WRITE_LINE_MEMBER( write_cb2 );
 
-<<<<<<< HEAD
-	enum
-	{
-		VIA_PB = 0,
-		VIA_PA = 1,
-		VIA_DDRB = 2,
-		VIA_DDRA = 3,
-		VIA_T1CL = 4,
-		VIA_T1CH = 5,
-		VIA_T1LL = 6,
-		VIA_T1LH = 7,
-		VIA_T2CL = 8,
-		VIA_T2CH = 9,
-		VIA_SR = 10,
-		VIA_ACR = 11,
-		VIA_PCR = 12,
-		VIA_IFR = 13,
-		VIA_IER = 14,
-		VIA_PANH = 15
-	};
-
-protected:
-	// device-level overrides
-	virtual void device_start();
-	virtual void device_reset();
-	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
-
-private:
-	static const device_timer_id TIMER_SHIFT = 0;
-	static const device_timer_id TIMER_T1 = 1;
-	static const device_timer_id TIMER_T2 = 2;
-	static const device_timer_id TIMER_CA2 = 3;
-
-	UINT16 get_counter1_value();
-=======
 protected:
 	// device-level overrides
 	virtual void device_start() override;
@@ -205,7 +138,6 @@ private:
 	static constexpr device_timer_id TIMER_SHIFT_IRQ = 4;
 
 	uint16_t get_counter1_value();
->>>>>>> upstream/master
 
 	void set_int(int data);
 	void clear_int(int data);
@@ -214,15 +146,9 @@ private:
 	void write_pa(int line, int state);
 	void write_pb(int line, int state);
 
-<<<<<<< HEAD
-	UINT8 input_pa();
-	void output_pa();
-	UINT8 input_pb();
-=======
 	uint8_t input_pa();
 	void output_pa();
 	uint8_t input_pb();
->>>>>>> upstream/master
 	void output_pb();
 	void output_irq();
 
@@ -239,51 +165,6 @@ private:
 	devcb_write_line m_cb2_handler;
 	devcb_write_line m_irq_handler;
 
-<<<<<<< HEAD
-	UINT8 m_in_a;
-	int m_in_ca1;
-	int m_in_ca2;
-	UINT8 m_out_a;
-	int m_out_ca2;
-	UINT8 m_ddr_a;
-	UINT8 m_latch_a;
-
-	UINT8 m_in_b;
-	int m_in_cb1;
-	int m_in_cb2;
-	UINT8 m_out_b;
-	int m_out_cb1;
-	int m_out_cb2;
-	UINT8 m_ddr_b;
-	UINT8 m_latch_b;
-
-	UINT8 m_t1cl;
-	UINT8 m_t1ch;
-	UINT8 m_t1ll;
-	UINT8 m_t1lh;
-	UINT8 m_t2cl;
-	UINT8 m_t2ch;
-	UINT8 m_t2ll;
-	UINT8 m_t2lh;
-
-	UINT8 m_sr;
-	UINT8 m_pcr;
-	UINT8 m_acr;
-	UINT8 m_ier;
-	UINT8 m_ifr;
-
-	emu_timer *m_t1;
-	attotime m_time1;
-	UINT8 m_t1_active;
-	int m_t1_pb7;
-	emu_timer *m_t2;
-	attotime m_time2;
-	UINT8 m_t2_active;
-	emu_timer *m_ca2_timer;
-
-	emu_timer *m_shift_timer;
-	UINT8 m_shift_counter;
-=======
 	uint8_t m_in_a;
 	int m_in_ca1;
 	int m_in_ca2;
@@ -328,19 +209,11 @@ private:
 	emu_timer *m_shift_timer;
 	emu_timer *m_shift_irq_timer;
 	uint8_t m_shift_counter;
->>>>>>> upstream/master
 };
 
 
 // device type definition
-<<<<<<< HEAD
-extern const device_type VIA6522;
-
-
-#endif /* __6522VIA_H__ */
-=======
 DECLARE_DEVICE_TYPE(VIA6522, via6522_device)
 
 
 #endif // MAME_MACHINE_6522VIA_H
->>>>>>> upstream/master

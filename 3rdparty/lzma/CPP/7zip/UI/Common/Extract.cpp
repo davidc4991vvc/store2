@@ -2,13 +2,6 @@
 
 #include "StdAfx.h"
 
-<<<<<<< HEAD
-#include <stdio.h>
-
-#include "Windows/FileDir.h"
-#include "Windows/PropVariant.h"
-#include "Windows/PropVariantConversions.h"
-=======
 #include "../../../../C/Sort.h"
 
 #include "../../../Common/StringConvert.h"
@@ -16,7 +9,6 @@
 #include "../../../Windows/FileDir.h"
 #include "../../../Windows/PropVariant.h"
 #include "../../../Windows/PropVariantConv.h"
->>>>>>> upstream/master
 
 #include "../Common/ExtractingFilePath.h"
 
@@ -24,22 +16,6 @@
 #include "SetProperties.h"
 
 using namespace NWindows;
-<<<<<<< HEAD
-
-static HRESULT DecompressArchive(
-    const CArc &arc,
-    UInt64 packSize,
-    const NWildcard::CCensorNode &wildcardCensor,
-    const CExtractOptions &options,
-    IExtractCallbackUI *callback,
-    CArchiveExtractCallback *extractCallbackSpec,
-    UString &errorMessage,
-    UInt64 &stdInProcessed)
-{
-  stdInProcessed = 0;
-  IInArchive *archive = arc.Archive;
-  CRecordVector<UInt32> realIndices;
-=======
 using namespace NFile;
 using namespace NDir;
 
@@ -99,35 +75,11 @@ static HRESULT DecompressArchive(
 
   bool allFilesAreAllowed = wildcardCensor.AreAllAllowed();
 
->>>>>>> upstream/master
   if (!options.StdInMode)
   {
     UInt32 numItems;
     RINOK(archive->GetNumberOfItems(&numItems));
     
-<<<<<<< HEAD
-    for (UInt32 i = 0; i < numItems; i++)
-    {
-      UString filePath;
-      RINOK(arc.GetItemPath(i, filePath));
-      bool isFolder;
-      RINOK(IsArchiveItemFolder(archive, i, isFolder));
-      if (!wildcardCensor.CheckPath(filePath, !isFolder))
-        continue;
-      realIndices.Add(i);
-    }
-    if (realIndices.Size() == 0)
-    {
-      callback->ThereAreNoFiles();
-      return S_OK;
-    }
-  }
-
-  UStringVector removePathParts;
-
-  FString outDir = options.OutputDir;
-  outDir.Replace(FSTRING_ANY_MASK, us2fs(GetCorrectFsPath(arc.DefaultName)));
-=======
     CReadArcItem item;
 
     for (UInt32 i = 0; i < numItems; i++)
@@ -197,56 +149,12 @@ static HRESULT DecompressArchive(
     // outDir = outDirReduced;
   }
 
->>>>>>> upstream/master
   #ifdef _WIN32
   // GetCorrectFullFsPath doesn't like "..".
   // outDir.TrimRight();
   // outDir = GetCorrectFullFsPath(outDir);
   #endif
 
-<<<<<<< HEAD
-  if (!outDir.IsEmpty())
-    if (!NFile::NDirectory::CreateComplexDirectory(outDir))
-    {
-      HRESULT res = ::GetLastError();
-      if (res == S_OK)
-        res = E_FAIL;
-      errorMessage = ((UString)L"Can not create output directory ") + fs2us(outDir);
-      return res;
-    }
-
-  extractCallbackSpec->Init(
-      options.StdInMode ? &wildcardCensor : NULL,
-      &arc,
-      callback,
-      options.StdOutMode, options.TestMode, options.CalcCrc,
-      outDir,
-      removePathParts,
-      packSize);
-
-  #if !defined(_7ZIP_ST) && !defined(_SFX)
-  RINOK(SetProperties(archive, options.Properties));
-  #endif
-
-  HRESULT result;
-  Int32 testMode = (options.TestMode && !options.CalcCrc) ? 1: 0;
-  if (options.StdInMode)
-  {
-    result = archive->Extract(NULL, (UInt32)(Int32)-1, testMode, extractCallbackSpec);
-    NCOM::CPropVariant prop;
-    if (archive->GetArchiveProperty(kpidPhySize, &prop) == S_OK)
-      if (prop.vt == VT_UI8 || prop.vt == VT_UI4)
-        stdInProcessed = ConvertPropVariantToUInt64(prop);
-  }
-  else
-    result = archive->Extract(&realIndices.Front(), realIndices.Size(), testMode, extractCallbackSpec);
-
-  return callback->ExtractResult(result);
-}
-
-HRESULT DecompressArchives(
-    CCodecs *codecs, const CIntVector &formatIndices,
-=======
   if (outDir.IsEmpty())
     outDir = FTEXT(".") FSTRING_PATH_SEPARATOR;
   /*
@@ -329,27 +237,11 @@ HRESULT Extract(
     CCodecs *codecs,
     const CObjectVector<COpenType> &types,
     const CIntVector &excludedFormats,
->>>>>>> upstream/master
     UStringVector &arcPaths, UStringVector &arcPathsFull,
     const NWildcard::CCensorNode &wildcardCensor,
     const CExtractOptions &options,
     IOpenCallbackUI *openCallback,
     IExtractCallbackUI *extractCallback,
-<<<<<<< HEAD
-    UString &errorMessage,
-    CDecompressStat &stat)
-{
-  stat.Clear();
-  int i;
-  UInt64 totalPackSize = 0;
-  CRecordVector<UInt64> archiveSizes;
-
-  int numArcs = options.StdInMode ? 1 : arcPaths.Size();
-
-  for (i = 0; i < numArcs; i++)
-  {
-    NFile::NFind::CFileInfo fi;
-=======
     #ifndef _SFX
     IHashCalc *hash,
     #endif
@@ -367,7 +259,6 @@ HRESULT Extract(
   for (i = 0; i < numArcs; i++)
   {
     NFind::CFileInfo fi;
->>>>>>> upstream/master
     fi.Size = 0;
     if (!options.StdInMode)
     {
@@ -377,15 +268,6 @@ HRESULT Extract(
       if (fi.IsDir())
         throw "can't decompress folder";
     }
-<<<<<<< HEAD
-    archiveSizes.Add(fi.Size);
-    totalPackSize += fi.Size;
-  }
-  CArchiveExtractCallback *extractCallbackSpec = new CArchiveExtractCallback;
-  CMyComPtr<IArchiveExtractCallback> ec(extractCallbackSpec);
-  bool multi = (numArcs > 1);
-  extractCallbackSpec->InitForMulti(multi, options.PathMode, options.OverwriteMode);
-=======
     arcSizes.Add(fi.Size);
     totalPackSize += fi.Size;
   }
@@ -402,17 +284,10 @@ HRESULT Extract(
   ecs->SetHashMethods(hash);
   #endif
 
->>>>>>> upstream/master
   if (multi)
   {
     RINOK(extractCallback->SetTotal(totalPackSize));
   }
-<<<<<<< HEAD
-  for (i = 0; i < numArcs; i++)
-  {
-    const UString &arcPath = arcPaths[i];
-    NFile::NFind::CFileInfo fi;
-=======
 
   UInt64 totalPackProcessed = 0;
   bool thereAreNotOpenArcs = false;
@@ -424,7 +299,6 @@ HRESULT Extract(
 
     const UString &arcPath = arcPaths[i];
     NFind::CFileInfo fi;
->>>>>>> upstream/master
     if (options.StdInMode)
     {
       fi.Size = 0;
@@ -436,18 +310,6 @@ HRESULT Extract(
         throw "there is no such archive";
     }
 
-<<<<<<< HEAD
-    #ifndef _NO_CRYPTO
-    openCallback->Open_ClearPasswordWasAskedFlag();
-    #endif
-
-    RINOK(extractCallback->BeforeOpen(arcPath));
-    CArchiveLink archiveLink;
-
-    CIntVector formatIndices2 = formatIndices;
-    #ifndef _SFX
-    if (formatIndices.IsEmpty())
-=======
     /*
     #ifndef _NO_CRYPTO
     openCallback->Open_Clear_PasswordWasAsked_Flag();
@@ -461,16 +323,11 @@ HRESULT Extract(
     /*
     #ifndef _SFX
     if (types.IsEmpty())
->>>>>>> upstream/master
     {
       int pos = arcPath.ReverseFind(L'.');
       if (pos >= 0)
       {
-<<<<<<< HEAD
-        UString s = arcPath.Mid(pos + 1);
-=======
         UString s = arcPath.Ptr(pos + 1);
->>>>>>> upstream/master
         int index = codecs->FindFormatForExtension(s);
         if (index >= 0 && s == L"001")
         {
@@ -478,63 +335,17 @@ HRESULT Extract(
           pos = s.ReverseFind(L'.');
           if (pos >= 0)
           {
-<<<<<<< HEAD
-            int index2 = codecs->FindFormatForExtension(s.Mid(pos + 1));
-            if (index2 >= 0 && s.CompareNoCase(L"rar") != 0)
-            {
-              formatIndices2.Add(index2);
-              formatIndices2.Add(index);
-=======
             int index2 = codecs->FindFormatForExtension(s.Ptr(pos + 1));
             if (index2 >= 0) // && s.CompareNoCase(L"rar") != 0
             {
               types2.Add(index2);
               types2.Add(index);
->>>>>>> upstream/master
             }
           }
         }
       }
     }
     #endif
-<<<<<<< HEAD
-    HRESULT result = archiveLink.Open2(codecs, formatIndices2, options.StdInMode, NULL, arcPath, openCallback);
-    if (result == E_ABORT)
-      return result;
-
-    bool crypted = false;
-    #ifndef _NO_CRYPTO
-    crypted = openCallback->Open_WasPasswordAsked();
-    #endif
-
-    RINOK(extractCallback->OpenResult(arcPath, result, crypted));
-    if (result != S_OK)
-      continue;
-
-    if (!options.StdInMode)
-    for (int v = 0; v < archiveLink.VolumePaths.Size(); v++)
-    {
-      int index = arcPathsFull.FindInSorted(archiveLink.VolumePaths[v]);
-      if (index >= 0 && index > i)
-      {
-        arcPaths.Delete(index);
-        arcPathsFull.Delete(index);
-        totalPackSize -= archiveSizes[index];
-        archiveSizes.Delete(index);
-        numArcs = arcPaths.Size();
-      }
-    }
-    if (archiveLink.VolumePaths.Size() != 0)
-    {
-      totalPackSize += archiveLink.VolumesSize;
-      RINOK(extractCallback->SetTotal(totalPackSize));
-    }
-
-    #ifndef _NO_CRYPTO
-    UString password;
-    RINOK(openCallback->Open_GetPasswordIfAny(password));
-    if (!password.IsEmpty())
-=======
     */
 
     COpenOptions op;
@@ -610,51 +421,17 @@ HRESULT Extract(
     UString password;
     RINOK(openCallback->Open_GetPasswordIfAny(passwordIsDefined, password));
     if (passwordIsDefined)
->>>>>>> upstream/master
     {
       RINOK(extractCallback->SetPassword(password));
     }
     #endif
-<<<<<<< HEAD
-
-    for (int v = 0; v < archiveLink.Arcs.Size(); v++)
-    {
-      const UString &s = archiveLink.Arcs[v].ErrorMessage;
-      if (!s.IsEmpty())
-      {
-        RINOK(extractCallback->MessageError(s));
-      }
-    }
-
-    CArc &arc = archiveLink.Arcs.Back();
-=======
     */
 
     CArc &arc = arcLink.Arcs.Back();
->>>>>>> upstream/master
     arc.MTimeDefined = (!options.StdInMode && !fi.IsDevice);
     arc.MTime = fi.MTime;
 
     UInt64 packProcessed;
-<<<<<<< HEAD
-    RINOK(DecompressArchive(arc,
-        fi.Size + archiveLink.VolumesSize,
-        wildcardCensor, options, extractCallback, extractCallbackSpec, errorMessage, packProcessed));
-    if (!options.StdInMode)
-      packProcessed = fi.Size + archiveLink.VolumesSize;
-    extractCallbackSpec->LocalProgressSpec->InSize += packProcessed;
-    extractCallbackSpec->LocalProgressSpec->OutSize = extractCallbackSpec->UnpackSize;
-    if (!errorMessage.IsEmpty())
-      return E_FAIL;
-  }
-  stat.NumFolders = extractCallbackSpec->NumFolders;
-  stat.NumFiles = extractCallbackSpec->NumFiles;
-  stat.UnpackSize = extractCallbackSpec->UnpackSize;
-  stat.CrcSum = extractCallbackSpec->CrcSum;
-
-  stat.NumArchives = arcPaths.Size();
-  stat.PackSize = extractCallbackSpec->LocalProgressSpec->InSize;
-=======
     bool calcCrc =
         #ifndef _SFX
           (hash != NULL);
@@ -693,6 +470,5 @@ HRESULT Extract(
   st.AltStreams_UnpackSize = ecs->AltStreams_UnpackSize;
   st.NumArchives = arcPaths.Size();
   st.PackSize = ecs->LocalProgressSpec->InSize;
->>>>>>> upstream/master
   return S_OK;
 }

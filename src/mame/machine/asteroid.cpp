@@ -100,23 +100,6 @@ WRITE8_MEMBER(asteroid_state::asteroid_bank_switch_w)
 	m_ram1->set_entry(bank);
 	m_ram2->set_entry(bank);
 
-<<<<<<< HEAD
-	set_led_status (machine(), 0, ~data & 0x02);
-	set_led_status (machine(), 1, ~data & 0x01);
-}
-
-
-WRITE8_MEMBER(asteroid_state::astdelux_bank_switch_w)
-{
-	int bank = BIT(data, 7);
-	m_ram1->set_entry(bank);
-	m_ram2->set_entry(bank);
-}
-
-WRITE8_MEMBER(asteroid_state::astdelux_led_w)
-{
-	set_led_status(machine(), offset, (data & 0x80) ? 0 : 1);
-=======
 	output().set_led_value(0, ~data & 0x02);
 	output().set_led_value(1, ~data & 0x01);
 }
@@ -130,23 +113,15 @@ WRITE_LINE_MEMBER(asteroid_state::start1_led_w)
 WRITE_LINE_MEMBER(asteroid_state::start2_led_w)
 {
 	output().set_led_value(1, state ? 0 : 1);
->>>>>>> upstream/master
 }
 
 void asteroid_state::machine_start()
 {
 	/* configure RAM banks if present (not on llander) */
-<<<<<<< HEAD
-	if (m_ram1.target() != NULL)
-	{
-		UINT8 *ram1 = reinterpret_cast<UINT8 *>(memshare("ram1")->ptr());
-		UINT8 *ram2 = reinterpret_cast<UINT8 *>(memshare("ram2")->ptr());
-=======
 	if (m_ram1.target() != nullptr)
 	{
 		uint8_t *ram1 = reinterpret_cast<uint8_t *>(memshare("ram1")->ptr());
 		uint8_t *ram2 = reinterpret_cast<uint8_t *>(memshare("ram2")->ptr());
->>>>>>> upstream/master
 
 		/* swapped */
 		m_ram1->configure_entry(1, ram2);
@@ -162,11 +137,7 @@ void asteroid_state::machine_reset()
 	m_dvg->reset_w(m_maincpu->space(AS_PROGRAM), 0, 0);
 
 	/* reset RAM banks if present */
-<<<<<<< HEAD
-	if (m_ram1.target() != NULL)
-=======
 	if (m_ram1.target() != nullptr)
->>>>>>> upstream/master
 	{
 		m_ram1->set_entry(0);
 		m_ram2->set_entry(0);

@@ -77,14 +77,11 @@ Notes:
 #include "cpu/e132xs/e132xs.h"
 #include "machine/eepromser.h"
 #include "sound/okim6295.h"
-<<<<<<< HEAD
-=======
 #include "screen.h"
 #include "speaker.h"
 
 #include "pasha2.lh"
 
->>>>>>> upstream/master
 
 class pasha2_state : public driver_device
 {
@@ -99,18 +96,6 @@ public:
 		m_palette(*this, "palette")  { }
 
 	/* memory pointers */
-<<<<<<< HEAD
-	required_shared_ptr<UINT16> m_wram;
-	required_shared_ptr<UINT16> m_paletteram;
-
-	/* video-related */
-	int m_vbuffer;
-	int m_old_bank;
-
-	/* memory */
-	UINT16       m_bitmap0[0x40000/2];
-	UINT16       m_bitmap1[0x40000/2];
-=======
 	required_shared_ptr<uint16_t> m_wram;
 	required_shared_ptr<uint16_t> m_paletteram;
 
@@ -120,7 +105,6 @@ public:
 	/* memory */
 	uint16_t       m_bitmap0[0x40000/2];
 	uint16_t       m_bitmap1[0x40000/2];
->>>>>>> upstream/master
 	DECLARE_WRITE16_MEMBER(pasha2_misc_w);
 	DECLARE_WRITE16_MEMBER(pasha2_palette_w);
 	DECLARE_WRITE16_MEMBER(vbuffer_set_w);
@@ -132,17 +116,10 @@ public:
 	DECLARE_WRITE16_MEMBER(oki1_bank_w);
 	DECLARE_WRITE16_MEMBER(oki2_bank_w);
 	DECLARE_DRIVER_INIT(pasha2);
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void machine_reset();
-	virtual void video_start();
-	UINT32 screen_update_pasha2(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
 	virtual void video_start() override;
 	uint32_t screen_update_pasha2(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	required_device<cpu_device> m_maincpu;
 	required_device<okim6295_device> m_oki1;
 	required_device<okim6295_device> m_oki2;
@@ -158,22 +135,6 @@ WRITE16_MEMBER(pasha2_state::pasha2_misc_w)
 		{
 			int bank = data & 0xf000;
 
-<<<<<<< HEAD
-			if (bank != m_old_bank)
-			{
-				m_old_bank = bank;
-
-				switch (bank)
-				{
-					case 0x8000:
-					case 0x9000:
-					case 0xa000:
-					case 0xb000:
-					case 0xc000:
-					case 0xd000:
-						membank("bank1")->set_base(memregion("user2")->base() + 0x400 * (bank - 0x8000)); break;
-				}
-=======
 			switch (bank)
 			{
 				case 0x8000:
@@ -183,7 +144,6 @@ WRITE16_MEMBER(pasha2_state::pasha2_misc_w)
 				case 0xc000:
 				case 0xd000:
 					membank("bank1")->set_entry((bank - 0x8000)>>12); break;
->>>>>>> upstream/master
 			}
 		}
 	}
@@ -246,38 +206,17 @@ WRITE16_MEMBER(pasha2_state::bitmap_1_w)
 WRITE16_MEMBER(pasha2_state::oki1_bank_w)
 {
 	if (offset)
-<<<<<<< HEAD
-		m_oki1->set_bank_base((data & 1) * 0x40000);
-=======
 		m_oki1->set_rom_bank(data & 1);
->>>>>>> upstream/master
 }
 
 WRITE16_MEMBER(pasha2_state::oki2_bank_w)
 {
 	if (offset)
-<<<<<<< HEAD
-		m_oki2->set_bank_base((data & 1) * 0x40000);
-=======
 		m_oki2->set_rom_bank(data & 1);
->>>>>>> upstream/master
 }
 
 WRITE16_MEMBER(pasha2_state::pasha2_lamps_w)
 {
-<<<<<<< HEAD
-	if (data)
-		popmessage("1P: %c%c%c 2P: %c%c%c 3P: %c%c%c",
-				(data & 0x001) ? 'R' : '-',
-				(data & 0x002) ? 'G' : '-',
-				(data & 0x004) ? 'B' : '-',
-				(data & 0x010) ? 'R' : '-',
-				(data & 0x020) ? 'G' : '-',
-				(data & 0x040) ? 'B' : '-',
-				(data & 0x100) ? 'R' : '-',
-				(data & 0x200) ? 'G' : '-',
-				(data & 0x400) ? 'B' : '-');
-=======
 	machine().output().set_value("lamp_p1_r", BIT(data,  0));
 	machine().output().set_value("lamp_p1_g", BIT(data,  1));
 	machine().output().set_value("lamp_p1_b", BIT(data,  2));
@@ -289,7 +228,6 @@ WRITE16_MEMBER(pasha2_state::pasha2_lamps_w)
 	machine().output().set_value("lamp_p3_r", BIT(data,  8));
 	machine().output().set_value("lamp_p3_g", BIT(data,  9));
 	machine().output().set_value("lamp_p3_b", BIT(data, 10));
->>>>>>> upstream/master
 }
 
 static ADDRESS_MAP_START( pasha2_map, AS_PROGRAM, 16, pasha2_state )
@@ -416,11 +354,7 @@ void pasha2_state::video_start()
 	save_item(NAME(m_bitmap1));
 }
 
-<<<<<<< HEAD
-UINT32 pasha2_state::screen_update_pasha2(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t pasha2_state::screen_update_pasha2(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int x, y, count;
 	int color;
@@ -470,27 +404,15 @@ uint32_t pasha2_state::screen_update_pasha2(screen_device &screen, bitmap_ind16 
 
 void pasha2_state::machine_start()
 {
-<<<<<<< HEAD
-	save_item(NAME(m_old_bank));
-=======
->>>>>>> upstream/master
 	save_item(NAME(m_vbuffer));
 }
 
 void pasha2_state::machine_reset()
 {
-<<<<<<< HEAD
-	m_old_bank = -1;
-	m_vbuffer = 0;
-}
-
-static MACHINE_CONFIG_START( pasha2, pasha2_state )
-=======
 	m_vbuffer = 0;
 }
 
 static MACHINE_CONFIG_START( pasha2 )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", E116XT, 20000000*4)     /* 4x internal multiplier */
@@ -515,17 +437,10 @@ static MACHINE_CONFIG_START( pasha2 )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki1", 1000000, OKIM6295_PIN7_HIGH)
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
-
-	MCFG_OKIM6295_ADD("oki2", 1000000, OKIM6295_PIN7_HIGH)
-=======
 	MCFG_OKIM6295_ADD("oki1", 1000000, PIN7_HIGH)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 
 	MCFG_OKIM6295_ADD("oki2", 1000000, PIN7_HIGH)
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 
 	//and ATMEL DREAM SAM9773
@@ -568,15 +483,8 @@ DRIVER_INIT_MEMBER(pasha2_state,pasha2)
 {
 	m_maincpu->space(AS_PROGRAM).install_read_handler(0x95744, 0x95747, read16_delegate(FUNC(pasha2_state::pasha2_speedup_r), this));
 
-<<<<<<< HEAD
-	membank("bank1")->set_base(memregion("user2")->base());
-}
-
-GAME( 1998, pasha2, 0, pasha2, pasha2, pasha2_state, pasha2, ROT0, "Dong Sung", "Pasha Pasha 2", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-=======
 	membank("bank1")->configure_entries(0, 6, memregion("user2")->base(), 0x400000);
 	membank("bank1")->set_entry(0);
 }
 
 GAMEL( 1998, pasha2, 0, pasha2, pasha2, pasha2_state, pasha2, ROT0, "Dong Sung", "Pasha Pasha 2", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE, layout_pasha2 )
->>>>>>> upstream/master

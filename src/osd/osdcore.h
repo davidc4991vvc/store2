@@ -16,13 +16,6 @@
 
 #pragma once
 
-<<<<<<< HEAD
-#ifndef __OSDCORE_H__
-#define __OSDCORE_H__
-
-#include "osdcomm.h"
-#include <stdarg.h>
-=======
 #ifndef MAME_OSD_OSDCORE_H
 #define MAME_OSD_OSDCORE_H
 
@@ -34,7 +27,6 @@
 #include <memory>
 #include <string>
 
->>>>>>> upstream/master
 
 /***************************************************************************
     FILE I/O INTERFACES
@@ -42,11 +34,7 @@
 
 /* Make sure we have a path separator (default to /) */
 #ifndef PATH_SEPARATOR
-<<<<<<< HEAD
-#if defined(_WIN32) || defined (__OS2__)
-=======
 #if defined(_WIN32)
->>>>>>> upstream/master
 #define PATH_SEPARATOR          "\\"
 #else
 #define PATH_SEPARATOR          "/"
@@ -60,181 +48,6 @@
 #define OPEN_FLAG_CREATE_PATHS  0x0008      /* create paths as necessary */
 #define OPEN_FLAG_NO_PRELOAD    0x0010      /* do not decompress on open */
 
-<<<<<<< HEAD
-/* error codes returned by routines below */
-enum file_error
-{
-	FILERR_NONE,
-	FILERR_FAILURE,
-	FILERR_OUT_OF_MEMORY,
-	FILERR_NOT_FOUND,
-	FILERR_ACCESS_DENIED,
-	FILERR_ALREADY_OPEN,
-	FILERR_TOO_MANY_FILES,
-	FILERR_INVALID_DATA,
-	FILERR_INVALID_ACCESS
-};
-
-/* osd_file is an opaque type which represents an open file */
-struct osd_file;
-
-/*-----------------------------------------------------------------------------
-    osd_open: open a new file.
-
-    Parameters:
-
-        path - path to the file to open
-
-        openflags - some combination of:
-
-            OPEN_FLAG_READ - open the file for read access
-            OPEN_FLAG_WRITE - open the file for write access
-            OPEN_FLAG_CREATE - create/truncate the file when opening
-            OPEN_FLAG_CREATE_PATHS - specifies that non-existant paths
-                    should be created if necessary
-
-        file - pointer to an osd_file * to receive the newly-opened file
-            handle; this is only valid if the function returns FILERR_NONE
-
-        filesize - pointer to a UINT64 to receive the size of the opened
-            file; this is only valid if the function returns FILERR_NONE
-
-    Return value:
-
-        a file_error describing any error that occurred while opening
-        the file, or FILERR_NONE if no error occurred
-
-    Notes:
-
-        This function is called by core_fopen and several other places in
-        the core to access files. These functions will construct paths by
-        concatenating various search paths held in the options.c options
-        database with partial paths specified by the core. The core assumes
-        that the path separator is the first character of the string
-        PATH_SEPARATOR, but does not interpret any path separators in the
-        search paths, so if you use a different path separator in a search
-        path, you may get a mixture of PATH_SEPARATORs (from the core) and
-        alternate path separators (specified by users and placed into the
-        options database).
------------------------------------------------------------------------------*/
-file_error osd_open(const char *path, UINT32 openflags, osd_file **file, UINT64 *filesize);
-
-
-/*-----------------------------------------------------------------------------
-    osd_close: close an open file
-
-    Parameters:
-
-        file - handle to a file previously opened via osd_open
-
-    Return value:
-
-        a file_error describing any error that occurred while closing
-        the file, or FILERR_NONE if no error occurred
------------------------------------------------------------------------------*/
-file_error osd_close(osd_file *file);
-
-
-/*-----------------------------------------------------------------------------
-    osd_read: read from an open file
-
-    Parameters:
-
-        file - handle to a file previously opened via osd_open
-
-        buffer - pointer to memory that will receive the data read
-
-        offset - offset within the file to read from
-
-        length - number of bytes to read from the file
-
-        actual - pointer to a UINT32 to receive the number of bytes actually
-            read during the operation; valid only if the function returns
-            FILERR_NONE
-
-    Return value:
-
-        a file_error describing any error that occurred while reading
-        from the file, or FILERR_NONE if no error occurred
------------------------------------------------------------------------------*/
-file_error osd_read(osd_file *file, void *buffer, UINT64 offset, UINT32 length, UINT32 *actual);
-
-
-/*-----------------------------------------------------------------------------
-    osd_write: write to an open file
-
-    Parameters:
-
-        file - handle to a file previously opened via osd_open
-
-        buffer - pointer to memory that contains the data to write
-
-        offset - offset within the file to write to
-
-        length - number of bytes to write to the file
-
-        actual - pointer to a UINT32 to receive the number of bytes actually
-            written during the operation; valid only if the function returns
-            FILERR_NONE
-
-    Return value:
-
-        a file_error describing any error that occurred while writing to
-        the file, or FILERR_NONE if no error occurred
------------------------------------------------------------------------------*/
-file_error osd_write(osd_file *file, const void *buffer, UINT64 offset, UINT32 length, UINT32 *actual);
-
-/*-----------------------------------------------------------------------------
-    osd_openpty: create a new PTY pair
-
-    Parameters:
-
-        file - pointer to an osd_file * to receive the handle of the master
-            side of the newly-created PTY; this is only valid if the function
-            returns FILERR_NONE
-
-        name - pointer to memory where slave filename will be stored
-
-        name_len - space allocated for name
-
-    Return value:
-
-        a file_error describing any error that occurred while creating the
-        PTY, or FILERR_NONE if no error occurred
------------------------------------------------------------------------------*/
-file_error osd_openpty(osd_file **file, char *name, size_t name_len);
-
-/*-----------------------------------------------------------------------------
-    osd_truncate: change the size of an open file
-
-    Parameters:
-
-        file - handle to a file previously opened via osd_open
-
-        offset - future size of the file
-
-    Return value:
-
-        a file_error describing any error that occurred while writing to
-        the file, or FILERR_NONE if no error occurred
------------------------------------------------------------------------------*/
-file_error osd_truncate(osd_file *file, UINT64 offset);
-
-
-/*-----------------------------------------------------------------------------
-    osd_rmfile: deletes a file
-
-    Parameters:
-
-        filename - path to file to delete
-
-    Return value:
-
-        a file_error describing any error that occurred while deleting
-        the file, or FILERR_NONE if no error occurred
------------------------------------------------------------------------------*/
-file_error osd_rmfile(const char *filename);
-=======
 // osd_file is an interface which represents an open file/PTY/socket
 class osd_file
 {
@@ -414,7 +227,6 @@ public:
 	static error remove(std::string const &filename);
 };
 
->>>>>>> upstream/master
 
 
 /*-----------------------------------------------------------------------------
@@ -439,18 +251,6 @@ const char *osd_getenv(const char *name);
 
         filename - pointer to a path which might describe a physical drive
 
-<<<<<<< HEAD
-        cylinders - pointer to a UINT32 to receive the number of cylinders
-            of the physical drive
-
-        heads - pointer to a UINT32 to receive the number of heads per
-            cylinder of the physical drive
-
-        sectors - pointer to a UINT32 to receive the number of sectors per
-            cylinder of the physical drive
-
-        bps - pointer to a UINT32 to receive the number of bytes per sector
-=======
         cylinders - pointer to a uint32_t to receive the number of cylinders
             of the physical drive
 
@@ -461,24 +261,15 @@ const char *osd_getenv(const char *name);
             cylinder of the physical drive
 
         bps - pointer to a uint32_t to receive the number of bytes per sector
->>>>>>> upstream/master
             of the physical drive
 
     Return value:
 
-<<<<<<< HEAD
-        TRUE if the filename points to a physical drive and if the values
-        pointed to by cylinders, heads, sectors, and bps are valid; FALSE in
-        any other case
------------------------------------------------------------------------------*/
-int osd_get_physical_drive_geometry(const char *filename, UINT32 *cylinders, UINT32 *heads, UINT32 *sectors, UINT32 *bps);
-=======
         true if the filename points to a physical drive and if the values
         pointed to by cylinders, heads, sectors, and bps are valid; false in
         any other case
 -----------------------------------------------------------------------------*/
 bool osd_get_physical_drive_geometry(const char *filename, uint32_t *cylinders, uint32_t *heads, uint32_t *sectors, uint32_t *bps);
->>>>>>> upstream/master
 
 
 /*-----------------------------------------------------------------------------
@@ -487,11 +278,7 @@ bool osd_get_physical_drive_geometry(const char *filename, uint32_t *cylinders, 
 
     Parameters:
 
-<<<<<<< HEAD
-        uchar - pointer to a UINT32 to receive the resulting unicode
-=======
         uchar - pointer to a uint32_t to receive the resulting unicode
->>>>>>> upstream/master
             character
 
         osdchar - pointer to one or more chars that are in the OS-default
@@ -503,85 +290,6 @@ bool osd_get_physical_drive_geometry(const char *filename, uint32_t *cylinders, 
 
         The number of characters required to form a Unicode character.
 -----------------------------------------------------------------------------*/
-<<<<<<< HEAD
-int osd_uchar_from_osdchar(UINT32 /* unicode_char */ *uchar, const char *osdchar, size_t count);
-
-
-
-/***************************************************************************
-    DIRECTORY INTERFACES
-***************************************************************************/
-
-/* types of directory entries that can be returned */
-enum osd_dir_entry_type
-{
-	ENTTYPE_NONE,
-	ENTTYPE_FILE,
-	ENTTYPE_DIR,
-	ENTTYPE_OTHER
-};
-
-/* osd_directory is an opaque type which represents an open directory */
-struct osd_directory;
-
-/* osd_directory_entry contains basic information about a file when iterating through */
-/* a directory */
-struct osd_directory_entry
-{
-	const char *        name;           /* name of the entry */
-	osd_dir_entry_type  type;           /* type of the entry */
-	UINT64              size;           /* size of the entry */
-};
-
-
-/*-----------------------------------------------------------------------------
-    osd_opendir: open a directory for iteration
-
-    Parameters:
-
-        dirname - path to the directory in question
-
-    Return value:
-
-        upon success, this function should return an osd_directory pointer
-        which contains opaque data necessary to traverse the directory; on
-        failure, this function should return NULL
------------------------------------------------------------------------------*/
-osd_directory *osd_opendir(const char *dirname);
-
-
-/*-----------------------------------------------------------------------------
-    osd_readdir: return information about the next entry in the directory
-
-    Parameters:
-
-        dir - pointer to an osd_directory that was returned from a prior
-            call to osd_opendir
-
-    Return value:
-
-        a constant pointer to an osd_directory_entry representing the current item
-        in the directory, or NULL, indicating that no more entries are
-        present
------------------------------------------------------------------------------*/
-const osd_directory_entry *osd_readdir(osd_directory *dir);
-
-
-/*-----------------------------------------------------------------------------
-    osd_closedir: close an open directory for iteration
-
-    Parameters:
-
-        dir - pointer to an osd_directory that was returned from a prior
-            call to osd_opendir
-
-    Return value:
-
-        frees any allocated memory and resources associated with the open
-        directory
------------------------------------------------------------------------------*/
-void osd_closedir(osd_directory *dir);
-=======
 int osd_uchar_from_osdchar(char32_t *uchar, const char *osdchar, size_t count);
 
 
@@ -678,7 +386,6 @@ namespace osd
 		virtual const entry *read() = 0;
 	};
 };
->>>>>>> upstream/master
 
 
 /*-----------------------------------------------------------------------------
@@ -692,11 +399,7 @@ namespace osd
 
         non-zero if the path is absolute, zero otherwise
 -----------------------------------------------------------------------------*/
-<<<<<<< HEAD
-int osd_is_absolute_path(const char *path);
-=======
 bool osd_is_absolute_path(const std::string &path);
->>>>>>> upstream/master
 
 
 
@@ -705,11 +408,7 @@ bool osd_is_absolute_path(const std::string &path);
 ***************************************************************************/
 
 /* a osd_ticks_t is a 64-bit unsigned integer that is used as a core type in timing interfaces */
-<<<<<<< HEAD
-typedef UINT64 osd_ticks_t;
-=======
 typedef uint64_t osd_ticks_t;
->>>>>>> upstream/master
 
 
 /*-----------------------------------------------------------------------------
@@ -772,96 +471,6 @@ osd_ticks_t osd_ticks_per_second(void);
 -----------------------------------------------------------------------------*/
 void osd_sleep(osd_ticks_t duration);
 
-<<<<<<< HEAD
-
-
-/***************************************************************************
-    SYNCHRONIZATION INTERFACES
-***************************************************************************/
-
-/* osd_lock is an opaque type which represents a recursive lock/mutex */
-struct osd_lock;
-
-
-/*-----------------------------------------------------------------------------
-    osd_lock_alloc: allocate a new lock
-
-    Parameters:
-
-        None.
-
-    Return value:
-
-        A pointer to the allocated lock.
------------------------------------------------------------------------------*/
-osd_lock *osd_lock_alloc(void);
-
-
-/*-----------------------------------------------------------------------------
-    osd_lock_acquire: acquire a lock, blocking until it can be acquired
-
-    Parameters:
-
-        lock - a pointer to a previously allocated osd_lock.
-
-    Return value:
-
-        None.
-
-    Notes:
-
-        osd_locks are defined to be recursive. If the current thread already
-        owns the lock, this function should return immediately.
------------------------------------------------------------------------------*/
-void osd_lock_acquire(osd_lock *lock);
-
-
-/*-----------------------------------------------------------------------------
-    osd_lock_try: attempt to acquire a lock
-
-    Parameters:
-
-        lock - a pointer to a previously allocated osd_lock.
-
-    Return value:
-
-        TRUE if the lock was available and was acquired successfully.
-        FALSE if the lock was already in used by another thread.
------------------------------------------------------------------------------*/
-int osd_lock_try(osd_lock *lock);
-
-
-/*-----------------------------------------------------------------------------
-    osd_lock_release: release control of a lock that has been acquired
-
-    Parameters:
-
-        lock - a pointer to a previously allocated osd_lock.
-
-    Return value:
-
-        None.
------------------------------------------------------------------------------*/
-void osd_lock_release(osd_lock *lock);
-
-
-/*-----------------------------------------------------------------------------
-    osd_lock_free: free the memory and resources associated with an osd_lock
-
-    Parameters:
-
-        lock - a pointer to a previously allocated osd_lock.
-
-    Return value:
-
-        None.
------------------------------------------------------------------------------*/
-void osd_lock_free(osd_lock *lock);
-
-
-
-=======
->>>>>>> upstream/master
 /***************************************************************************
     WORK ITEM INTERFACES
 ***************************************************************************/
@@ -951,17 +560,10 @@ int osd_work_queue_items(osd_work_queue *queue);
 
     Return value:
 
-<<<<<<< HEAD
-        TRUE if the queue is empty; FALSE if the wait timed out before the
-        queue was emptied.
------------------------------------------------------------------------------*/
-int osd_work_queue_wait(osd_work_queue *queue, osd_ticks_t timeout);
-=======
         true if the queue is empty; false if the wait timed out before the
         queue was emptied.
 -----------------------------------------------------------------------------*/
 bool osd_work_queue_wait(osd_work_queue *queue, osd_ticks_t timeout);
->>>>>>> upstream/master
 
 
 /*-----------------------------------------------------------------------------
@@ -1013,19 +615,11 @@ void osd_work_queue_free(osd_work_queue *queue);
         On single-threaded systems, this function may actually execute the
         work item immediately before returning.
 -----------------------------------------------------------------------------*/
-<<<<<<< HEAD
-osd_work_item *osd_work_item_queue_multiple(osd_work_queue *queue, osd_work_callback callback, INT32 numitems, void *parambase, INT32 paramstep, UINT32 flags);
-
-
-/* inline helper to queue a single work item using the same interface */
-INLINE osd_work_item *osd_work_item_queue(osd_work_queue *queue, osd_work_callback callback, void *param, UINT32 flags)
-=======
 osd_work_item *osd_work_item_queue_multiple(osd_work_queue *queue, osd_work_callback callback, int32_t numitems, void *parambase, int32_t paramstep, uint32_t flags);
 
 
 /* inline helper to queue a single work item using the same interface */
 static inline osd_work_item *osd_work_item_queue(osd_work_queue *queue, osd_work_callback callback, void *param, uint32_t flags)
->>>>>>> upstream/master
 {
 	return osd_work_item_queue_multiple(queue, callback, 1, param, 0, flags);
 }
@@ -1043,17 +637,10 @@ static inline osd_work_item *osd_work_item_queue(osd_work_queue *queue, osd_work
 
     Return value:
 
-<<<<<<< HEAD
-        TRUE if the item completed; FALSE if the wait timed out before the
-        item completed.
------------------------------------------------------------------------------*/
-int osd_work_item_wait(osd_work_item *item, osd_ticks_t timeout);
-=======
         true if the item completed; false if the wait timed out before the
         item completed.
 -----------------------------------------------------------------------------*/
 bool osd_work_item_wait(osd_work_item *item, osd_ticks_t timeout);
->>>>>>> upstream/master
 
 
 /*-----------------------------------------------------------------------------
@@ -1098,62 +685,6 @@ void osd_work_item_release(osd_work_item *item);
 ***************************************************************************/
 
 /*-----------------------------------------------------------------------------
-<<<<<<< HEAD
-    osd_malloc: allocate memory
-
-    Parameters:
-
-        size - the number of bytes to allocate
-
-    Return value:
-
-        a pointer to the allocated memory
-
-    Notes:
-
-        This is just a hook to do OS-specific allocation trickery.
-        It can be safely written as a wrapper to malloc().
------------------------------------------------------------------------------*/
-void *osd_malloc(size_t size);
-
-
-/*-----------------------------------------------------------------------------
-    osd_malloc_array: allocate memory, hinting tha this memory contains an
-    array
-
-    Parameters:
-
-        size - the number of bytes to allocate
-
-    Return value:
-
-        a pointer to the allocated memory
-
-    Notes:
-
-        This is just a hook to do OS-specific allocation trickery.
-        It can be safely written as a wrapper to malloc().
------------------------------------------------------------------------------*/
-void *osd_malloc_array(size_t size);
-
-
-/*-----------------------------------------------------------------------------
-    osd_free: free memory allocated by osd_malloc
-
-    Parameters:
-
-        ptr - the pointer returned from osd_mallo
-
-    Return value:
-
-        None
------------------------------------------------------------------------------*/
-void osd_free(void *ptr);
-
-
-/*-----------------------------------------------------------------------------
-=======
->>>>>>> upstream/master
     osd_alloc_executable: allocate memory that can contain executable code
 
     Parameters:
@@ -1210,19 +741,6 @@ void osd_free_executable(void *ptr, size_t size);
 -----------------------------------------------------------------------------*/
 void osd_break_into_debugger(const char *message);
 
-<<<<<<< HEAD
-
-int osd_get_default_codepage(void);
-
-void set_osdcore_acp(int cp);
-int get_osdcore_acp(void);
-
-/*-----------------------------------------------------------------------------
-  MESS specific code below
------------------------------------------------------------------------------*/
-
-=======
->>>>>>> upstream/master
 /*-----------------------------------------------------------------------------
     osd_get_clipboard_text: retrieves text from the clipboard
 
@@ -1247,20 +765,11 @@ char *osd_get_clipboard_text(void);
 
     Return value:
 
-<<<<<<< HEAD
-        an allocated pointer to an osd_directory_entry representing
-        info on the path; even if the file does not exist.
-        free with osd_free()
-
------------------------------------------------------------------------------*/
-osd_directory_entry *osd_stat(const char *path);
-=======
         an allocated pointer to an osd::directory::entry representing
         info on the path; even if the file does not exist.
 
 -----------------------------------------------------------------------------*/
 std::unique_ptr<osd::directory::entry> osd_stat(std::string const &path);
->>>>>>> upstream/master
 
 /***************************************************************************
     PATH INTERFACES
@@ -1272,22 +781,14 @@ std::unique_ptr<osd::directory::entry> osd_stat(std::string const &path);
     Parameters:
 
         path - the path in question
-<<<<<<< HEAD
-        dst - pointer to receive new path; the returned string needs to be osd_free()-ed!
-=======
         dst - reference to receive new path
->>>>>>> upstream/master
 
     Return value:
 
         file error
 
 -----------------------------------------------------------------------------*/
-<<<<<<< HEAD
-file_error osd_get_full_path(char **dst, const char *path);
-=======
 osd_file::error osd_get_full_path(std::string &dst, std::string const &path);
->>>>>>> upstream/master
 
 
 /***************************************************************************
@@ -1304,13 +805,8 @@ public:
 	virtual bool open_output(const char *devname) = 0;
 	virtual void close() = 0;
 	virtual bool poll() = 0;
-<<<<<<< HEAD
-	virtual int read(UINT8 *pOut) = 0;
-	virtual void write(UINT8 data) = 0;
-=======
 	virtual int read(uint8_t *pOut) = 0;
 	virtual void write(uint8_t data) = 0;
->>>>>>> upstream/master
 };
 
 //FIXME: really needed here?
@@ -1334,8 +830,6 @@ void osd_list_network_adapters(void);
 -----------------------------------------------------------------------------*/
 const char *osd_get_volume_name(int idx);
 
-<<<<<<< HEAD
-=======
 /*-----------------------------------------------------------------------------
     osd_subst_env: substitute environment variables with values
 
@@ -1347,7 +841,6 @@ const char *osd_get_volume_name(int idx);
 -----------------------------------------------------------------------------*/
 void osd_subst_env(std::string &dst,std::string const &src);
 
->>>>>>> upstream/master
 /* ----- output management ----- */
 
 // output channels
@@ -1365,11 +858,7 @@ enum osd_output_channel
 class osd_output
 {
 public:
-<<<<<<< HEAD
-	osd_output() : m_chain(NULL) { }
-=======
 	osd_output() : m_chain(nullptr) { }
->>>>>>> upstream/master
 	virtual ~osd_output() { }
 
 	virtual void output_callback(osd_output_channel channel, const char *msg, va_list args) = 0;
@@ -1378,15 +867,9 @@ public:
 	static void pop(osd_output *delegate);
 protected:
 
-<<<<<<< HEAD
-	void chain_output(osd_output_channel channel, const char *msg, va_list args)
-	{
-		if (m_chain != NULL)
-=======
 	void chain_output(osd_output_channel channel, const char *msg, va_list args) const
 	{
 		if (m_chain != nullptr)
->>>>>>> upstream/master
 			m_chain->output_callback(channel, msg, args);
 	}
 private:
@@ -1407,8 +890,4 @@ void CLIB_DECL osd_printf_debug(const char *format, ...) ATTR_PRINTF(1,2);
 #define printf !MUST_USE_osd_printf_*_CALLS_WITHIN_THE_CORE!
 */
 
-<<<<<<< HEAD
-#endif  /* __OSDEPEND_H__ */
-=======
 #endif // MAME_OSD_OSDCORE_H
->>>>>>> upstream/master

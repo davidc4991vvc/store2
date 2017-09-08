@@ -22,20 +22,6 @@ TODO:
 *******************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/m68000/m68000.h"
-#include "cdrom.h"
-#include "machine/cdicdic.h"
-#include "includes/cdi.h"
-#include "sound/cdda.h"
-#include "imagedev/chd_cd.h"
-
-// device type definition
-const device_type MACHINE_CDICDIC = &device_creator<cdicdic_device>;
-
-#if ENABLE_VERBOSE_LOG
-INLINE void ATTR_PRINTF(3,4) verboselog(running_machine &machine, int n_level, const char *s_fmt, ...)
-=======
 #include "machine/cdicdic.h"
 #include "includes/cdi.h"
 
@@ -50,7 +36,6 @@ DEFINE_DEVICE_TYPE(MACHINE_CDICDIC, cdicdic_device, "cdicdic", "CDICDIC")
 
 #if ENABLE_VERBOSE_LOG
 static inline void ATTR_PRINTF(3,4) verboselog(device_t& device, int n_level, const char *s_fmt, ...)
->>>>>>> upstream/master
 {
 	if( VERBOSE_LEVEL >= n_level )
 	{
@@ -59,11 +44,7 @@ static inline void ATTR_PRINTF(3,4) verboselog(device_t& device, int n_level, co
 		va_start( v, s_fmt );
 		vsprintf( buf, s_fmt, v );
 		va_end( v );
-<<<<<<< HEAD
-		logerror( "%08x: %s", machine.device("maincpu")->safe_pc(), buf );
-=======
 		device.logerror("%s: %s", device.machine().describe_context(), buf );
->>>>>>> upstream/master
 	}
 }
 #else
@@ -107,11 +88,7 @@ static inline void ATTR_PRINTF(3,4) verboselog(device_t& device, int n_level, co
 //  GLOBAL VARIABLES
 //**************************************************************************
 
-<<<<<<< HEAD
-const INT32 cdicdic_device::s_cdic_adpcm_filter_coef[5][2] =
-=======
 const int32_t cdicdic_device::s_cdic_adpcm_filter_coef[5][2] =
->>>>>>> upstream/master
 {
 	{ 0,0 },
 	{ 60,0 },
@@ -124,15 +101,9 @@ const int32_t cdicdic_device::s_cdic_adpcm_filter_coef[5][2] =
 //  INLINES
 //**************************************************************************
 
-<<<<<<< HEAD
-INLINE int CDIC_IS_VALID_SAMPLE_BUF(UINT16 *cdram, UINT16 addr)
-{
-	UINT8 *cdram8 = ((UINT8*)cdram) + addr + 8;
-=======
 static inline int CDIC_IS_VALID_SAMPLE_BUF(uint16_t *cdram, uint16_t addr)
 {
 	uint8_t *cdram8 = ((uint8_t*)cdram) + addr + 8;
->>>>>>> upstream/master
 	if(cdram8[2] != 0xff)
 	{
 		return 1;
@@ -140,15 +111,9 @@ static inline int CDIC_IS_VALID_SAMPLE_BUF(uint16_t *cdram, uint16_t addr)
 	return 0;
 }
 
-<<<<<<< HEAD
-INLINE double CDIC_SAMPLE_BUF_FREQ(UINT16 *cdram, UINT16 addr)
-{
-	UINT8 *cdram8 = ((UINT8*)cdram) + addr + 8;
-=======
 static inline double CDIC_SAMPLE_BUF_FREQ(uint16_t *cdram, uint16_t addr)
 {
 	uint8_t *cdram8 = ((uint8_t*)cdram) + addr + 8;
->>>>>>> upstream/master
 	switch(cdram8[2] & 0x3f)
 	{
 		case 0:
@@ -166,15 +131,9 @@ static inline double CDIC_SAMPLE_BUF_FREQ(uint16_t *cdram, uint16_t addr)
 	}
 }
 
-<<<<<<< HEAD
-INLINE int CDIC_SAMPLE_BUF_SIZE(UINT16 *cdram, UINT16 addr)
-{
-	UINT8 *cdram8 = ((UINT8*)cdram) + addr + 8;
-=======
 static inline int CDIC_SAMPLE_BUF_SIZE(uint16_t *cdram, uint16_t addr)
 {
 	uint8_t *cdram8 = ((uint8_t*)cdram) + addr + 8;
->>>>>>> upstream/master
 	switch(cdram8[2] & 0x3f)
 	{
 		case 0:
@@ -194,11 +153,7 @@ static inline int CDIC_SAMPLE_BUF_SIZE(uint16_t *cdram, uint16_t addr)
 	}
 }
 
-<<<<<<< HEAD
-INLINE INT16 clamp(INT16 in)
-=======
 static inline int16_t clamp(int16_t in)
->>>>>>> upstream/master
 {
 	return in;
 }
@@ -207,18 +162,6 @@ static inline int16_t clamp(int16_t in)
 //  MEMBER FUNCTIONS
 //**************************************************************************
 
-<<<<<<< HEAD
-UINT32 cdicdic_device::increment_cdda_frame_bcd(UINT32 bcd)
-{
-	UINT8 nybbles[6] =
-	{
-			bcd & 0x0000000f,
-		(bcd & 0x000000f0) >> 4,
-		(bcd & 0x00000f00) >> 8,
-		(bcd & 0x0000f000) >> 12,
-		(bcd & 0x000f0000) >> 16,
-		(bcd & 0x00f00000) >> 20
-=======
 uint32_t cdicdic_device::increment_cdda_frame_bcd(uint32_t bcd)
 {
 	uint8_t nybbles[6] =
@@ -229,7 +172,6 @@ uint32_t cdicdic_device::increment_cdda_frame_bcd(uint32_t bcd)
 		static_cast<uint8_t>((bcd & 0x0000f000) >> 12),
 		static_cast<uint8_t>((bcd & 0x000f0000) >> 16),
 		static_cast<uint8_t>((bcd & 0x00f00000) >> 20)
->>>>>>> upstream/master
 	};
 	nybbles[0]++;
 	if(nybbles[0] == 5 && nybbles[1] == 7)
@@ -260,18 +202,6 @@ uint32_t cdicdic_device::increment_cdda_frame_bcd(uint32_t bcd)
 	return (nybbles[5] << 20) | (nybbles[4] << 16) | (nybbles[3] << 12) | (nybbles[2] << 8) | (nybbles[1] << 4) | nybbles[0];
 }
 
-<<<<<<< HEAD
-UINT32 cdicdic_device::increment_cdda_sector_bcd(UINT32 bcd)
-{
-	UINT8 nybbles[6] =
-	{
-			bcd & 0x0000000f,
-		(bcd & 0x000000f0) >> 4,
-		(bcd & 0x00000f00) >> 8,
-		(bcd & 0x0000f000) >> 12,
-		(bcd & 0x000f0000) >> 16,
-		(bcd & 0x00f00000) >> 20
-=======
 uint32_t cdicdic_device::increment_cdda_sector_bcd(uint32_t bcd)
 {
 	uint8_t nybbles[6] =
@@ -282,7 +212,6 @@ uint32_t cdicdic_device::increment_cdda_sector_bcd(uint32_t bcd)
 		static_cast<uint8_t>((bcd & 0x0000f000) >> 12),
 		static_cast<uint8_t>((bcd & 0x000f0000) >> 16),
 		static_cast<uint8_t>((bcd & 0x00f00000) >> 20)
->>>>>>> upstream/master
 	};
 	nybbles[2]++;
 	if(nybbles[2] == 10)
@@ -303,26 +232,6 @@ uint32_t cdicdic_device::increment_cdda_sector_bcd(uint32_t bcd)
 	return (nybbles[5] << 20) | (nybbles[4] << 16) | (nybbles[3] << 12) | (nybbles[2] << 8) | (nybbles[1] << 4) | nybbles[0];
 }
 
-<<<<<<< HEAD
-void cdicdic_device::decode_xa_mono(INT32 *cdic_xa_last, const UINT8 *xa, INT16 *dp)
-{
-	INT32 l0 = cdic_xa_last[0];
-	INT32 l1 = cdic_xa_last[1];
-
-	for(INT32 b = 0; b < 18; b++)
-	{
-		for(INT32 s = 0; s < 4; s++)
-		{
-			UINT8 flags = xa[(4 + (s << 1)) ^ 1];
-			UINT8 shift = flags & 0xf;
-			UINT8 filter = flags >> 4;
-			INT32 f0 = s_cdic_adpcm_filter_coef[filter][0];
-			INT32 f1 = s_cdic_adpcm_filter_coef[filter][1];
-
-			for(INT32 i = 0; i < 28; i++)
-			{
-				INT16 d = (xa[(16 + (i << 2) + s) ^ 1] & 0xf) << 12;
-=======
 void cdicdic_device::decode_xa_mono(int32_t *cdic_xa_last, const uint8_t *xa, int16_t *dp)
 {
 	int32_t l0 = cdic_xa_last[0];
@@ -341,7 +250,6 @@ void cdicdic_device::decode_xa_mono(int32_t *cdic_xa_last, const uint8_t *xa, in
 			for(int32_t i = 0; i < 28; i++)
 			{
 				int16_t d = (xa[(16 + (i << 2) + s) ^ 1] & 0xf) << 12;
->>>>>>> upstream/master
 				d = clamp((d >> shift) + (((l0 * f0) + (l1 * f1) + 32) >> 6));
 				*dp = d;
 				dp++;
@@ -355,15 +263,9 @@ void cdicdic_device::decode_xa_mono(int32_t *cdic_xa_last, const uint8_t *xa, in
 			f0 = s_cdic_adpcm_filter_coef[filter][0];
 			f1 = s_cdic_adpcm_filter_coef[filter][1];
 
-<<<<<<< HEAD
-			for(INT32 i = 0; i < 28; i++)
-			{
-				INT16 d = (xa[(16 + (i << 2) + s) ^ 1] >> 4) << 12;
-=======
 			for(int32_t i = 0; i < 28; i++)
 			{
 				int16_t d = (xa[(16 + (i << 2) + s) ^ 1] >> 4) << 12;
->>>>>>> upstream/master
 				d = clamp((d >> shift) + (((l0 * f0) + (l1 * f1) + 32) >> 6));
 				*dp = d;
 				dp++;
@@ -381,24 +283,6 @@ void cdicdic_device::decode_xa_mono(int32_t *cdic_xa_last, const uint8_t *xa, in
 
 void cdicdic_device::decode_xa_mono8(int *cdic_xa_last, const unsigned char *xa, signed short *dp)
 {
-<<<<<<< HEAD
-	INT32 l0 = cdic_xa_last[0];
-	INT32 l1 = cdic_xa_last[1];
-
-	for(INT32 b = 0; b < 18; b++)
-	{
-		for(INT32 s = 0; s < 4; s++)
-		{
-			UINT8 flags = xa[(4 + s) ^ 1];
-			UINT8 shift = flags & 0xf;
-			UINT8 filter = flags >> 4;
-			INT32 f0 = s_cdic_adpcm_filter_coef[filter][0];
-			INT32 f1 = s_cdic_adpcm_filter_coef[filter][1];
-
-			for(INT32 i = 0; i < 28; i++)
-			{
-				INT16 d = (xa[(16 + (i << 2) + s) ^ 1] << 8);
-=======
 	int32_t l0 = cdic_xa_last[0];
 	int32_t l1 = cdic_xa_last[1];
 
@@ -415,7 +299,6 @@ void cdicdic_device::decode_xa_mono8(int *cdic_xa_last, const unsigned char *xa,
 			for(int32_t i = 0; i < 28; i++)
 			{
 				int16_t d = (xa[(16 + (i << 2) + s) ^ 1] << 8);
->>>>>>> upstream/master
 				d = clamp((d >> shift) + (((l0 * f0) + (l1 * f1) + 32) >> 6));
 				*dp = d;
 				dp++;
@@ -431,36 +314,6 @@ void cdicdic_device::decode_xa_mono8(int *cdic_xa_last, const unsigned char *xa,
 	cdic_xa_last[1] = l1;
 }
 
-<<<<<<< HEAD
-void cdicdic_device::decode_xa_stereo(INT32 *cdic_xa_last, const UINT8 *xa, INT16 *dp)
-{
-	INT32 l0=cdic_xa_last[0];
-	INT32 l1=cdic_xa_last[1];
-	INT32 l2=cdic_xa_last[2];
-	INT32 l3=cdic_xa_last[3];
-
-	for(INT32 b = 0; b < 18; b++)
-	{
-		for(INT32 s = 0; s < 4; s++)
-		{
-			UINT8 flags0 = xa[(4 + (s << 1)) ^ 1];
-			UINT8 shift0 = flags0 & 0xf;
-			UINT8 filter0 = flags0 >> 4;
-			UINT8 flags1 = xa[(5 + (s << 1)) ^ 1];
-			UINT8 shift1 = flags1 & 0xf;
-			UINT8 filter1 = flags1 >> 4;
-
-			INT32 f0 = s_cdic_adpcm_filter_coef[filter0][0];
-			INT32 f1 = s_cdic_adpcm_filter_coef[filter0][1];
-			INT32 f2 = s_cdic_adpcm_filter_coef[filter1][0];
-			INT32 f3 = s_cdic_adpcm_filter_coef[filter1][1];
-
-			for(INT32 i = 0; i < 28; i++)
-			{
-				INT16 d=xa[(16 + (i << 2) + s) ^ 1];
-				INT16 d0 = (d & 0xf) << 12;
-				INT16 d1 = (d >> 4) << 12;
-=======
 void cdicdic_device::decode_xa_stereo(int32_t *cdic_xa_last, const uint8_t *xa, int16_t *dp)
 {
 	int32_t l0=cdic_xa_last[0];
@@ -489,7 +342,6 @@ void cdicdic_device::decode_xa_stereo(int32_t *cdic_xa_last, const uint8_t *xa, 
 				int16_t d=xa[(16 + (i << 2) + s) ^ 1];
 				int16_t d0 = (d & 0xf) << 12;
 				int16_t d1 = (d >> 4) << 12;
->>>>>>> upstream/master
 				d0 = clamp((d0 >> shift0) + (((l0 * f0) + (l1 * f1) + 32) >> 6));
 				*dp = d0;
 				dp++;
@@ -513,34 +365,6 @@ void cdicdic_device::decode_xa_stereo(int32_t *cdic_xa_last, const uint8_t *xa, 
 	cdic_xa_last[3] = l3;
 }
 
-<<<<<<< HEAD
-void cdicdic_device::decode_xa_stereo8(INT32 *cdic_xa_last, const UINT8 *xa, INT16 *dp)
-{
-	INT32 l0 = cdic_xa_last[0];
-	INT32 l1 = cdic_xa_last[1];
-	INT32 l2 = cdic_xa_last[2];
-	INT32 l3 = cdic_xa_last[3];
-
-	for(INT32 b = 0; b < 18; b++)
-	{
-		for(INT32 s = 0; s < 4; s += 2)
-		{
-			UINT8 flags0 = xa[(4 + s) ^ 1];
-			UINT8 shift0 = flags0 & 0xf;
-			UINT8 filter0 = flags0 >> 4;
-			UINT8 flags1 = xa[(5 + s) ^ 1];
-			UINT8 shift1 = flags1 & 0xf;
-			UINT8 filter1 = flags1 >> 4;
-			INT32 f0 = s_cdic_adpcm_filter_coef[filter0][0];
-			INT32 f1 = s_cdic_adpcm_filter_coef[filter0][1];
-			INT32 f2 = s_cdic_adpcm_filter_coef[filter1][0];
-			INT32 f3 = s_cdic_adpcm_filter_coef[filter1][1];
-
-			for(INT32 i = 0; i < 28; i++)
-			{
-				INT16 d0 = (xa[(16 + (i << 2) + s + 0) ^ 1] << 8);
-				INT16 d1 = (xa[(16 + (i << 2) + s + 1) ^ 1] << 8);
-=======
 void cdicdic_device::decode_xa_stereo8(int32_t *cdic_xa_last, const uint8_t *xa, int16_t *dp)
 {
 	int32_t l0 = cdic_xa_last[0];
@@ -567,7 +391,6 @@ void cdicdic_device::decode_xa_stereo8(int32_t *cdic_xa_last, const uint8_t *xa,
 			{
 				int16_t d0 = (xa[(16 + (i << 2) + s + 0) ^ 1] << 8);
 				int16_t d1 = (xa[(16 + (i << 2) + s + 1) ^ 1] << 8);
->>>>>>> upstream/master
 
 				d0 = clamp((d0 >> shift0) + (((l0 * f0) + (l1 * f1) + 32) >> 6));
 				*dp = d0;
@@ -592,39 +415,23 @@ void cdicdic_device::decode_xa_stereo8(int32_t *cdic_xa_last, const uint8_t *xa,
 	cdic_xa_last[3] = l3;
 }
 
-<<<<<<< HEAD
-void cdicdic_device::decode_audio_sector(const UINT8 *xa, INT32 triggered)
-=======
 void cdicdic_device::decode_audio_sector(const uint8_t *xa, int32_t triggered)
->>>>>>> upstream/master
 {
 	// Get XA format from sector header
 
 	cdi_state *state = machine().driver_data<cdi_state>();
-<<<<<<< HEAD
-	const UINT8 *hdr = xa + 4;
-	INT32 channels;
-	INT32 bits = 4;
-	INT32 index = 0;
-	INT16 samples[18*28*16+16];
-=======
 	const uint8_t *hdr = xa + 4;
 	int32_t channels;
 	int32_t bits = 4;
 	int32_t index = 0;
 	int16_t samples[18*28*16+16];
->>>>>>> upstream/master
 
 	if(hdr[2] == 0xff && triggered == 1)
 	{
 		return;
 	}
 
-<<<<<<< HEAD
-	verboselog(machine(), 0, "decode_audio_sector, got header type %02x\n", hdr[2] );
-=======
 	verboselog(*this, 0, "decode_audio_sector, got header type %02x\n", hdr[2] );
->>>>>>> upstream/master
 
 	switch(hdr[2] & 0x3f)   // ignore emphasis and reserved bits
 	{
@@ -737,11 +544,7 @@ void cdicdic_device::sample_trigger()
 
 	if(m_decode_addr == 0xffff)
 	{
-<<<<<<< HEAD
-		verboselog(machine(), 0, "%s", "Decode stop requested, stopping playback\n" );
-=======
 		verboselog(*this, 0, "%s", "Decode stop requested, stopping playback\n" );
->>>>>>> upstream/master
 		m_audio_sample_timer->adjust(attotime::never);
 		return;
 	}
@@ -749,19 +552,11 @@ void cdicdic_device::sample_trigger()
 	if(!m_decode_delay)
 	{
 		// Indicate that data has been decoded
-<<<<<<< HEAD
-		verboselog(machine(), 0, "%s", "Flagging that audio data has been decoded\n" );
-		m_audio_buffer |= 0x8000;
-
-		// Set the CDIC interrupt line
-		verboselog(machine(), 0, "%s", "Setting CDIC interrupt line for soundmap decode\n" );
-=======
 		verboselog(*this, 0, "%s", "Flagging that audio data has been decoded\n" );
 		m_audio_buffer |= 0x8000;
 
 		// Set the CDIC interrupt line
 		verboselog(*this, 0, "%s", "Setting CDIC interrupt line for soundmap decode\n" );
->>>>>>> upstream/master
 		state->m_maincpu->set_input_line_vector(M68K_IRQ_4, 128);
 		state->m_maincpu->set_input_line(M68K_IRQ_4, ASSERT_LINE);
 	}
@@ -770,38 +565,21 @@ void cdicdic_device::sample_trigger()
 		m_decode_delay = 0;
 	}
 
-<<<<<<< HEAD
-	if(CDIC_IS_VALID_SAMPLE_BUF(m_ram, m_decode_addr & 0x3ffe))
-	{
-		verboselog(machine(), 0, "Hit audio_sample_trigger, with m_decode_addr == %04x, calling decode_audio_sector\n", m_decode_addr );
-
-		// Decode the data at Z+4, the same offset as a normal CD sector.
-		decode_audio_sector(((UINT8*)m_ram) + (m_decode_addr & 0x3ffe) + 4, 1);
-=======
 	if(CDIC_IS_VALID_SAMPLE_BUF(m_ram.get(), m_decode_addr & 0x3ffe))
 	{
 		verboselog(*this, 0, "Hit audio_sample_trigger, with m_decode_addr == %04x, calling decode_audio_sector\n", m_decode_addr );
 
 		// Decode the data at Z+4, the same offset as a normal CD sector.
 		decode_audio_sector(((uint8_t*)m_ram.get()) + (m_decode_addr & 0x3ffe) + 4, 1);
->>>>>>> upstream/master
 
 		// Swap buffer positions to indicate our new buffer position at the next read
 		m_decode_addr ^= 0x1a00;
 
-<<<<<<< HEAD
-		verboselog(machine(), 0, "Updated m_decode_addr, new value is %04x\n", m_decode_addr );
-
-		//// Delay for Frequency * (18*28*2*size in bytes) before requesting more data
-		verboselog(machine(), 0, "%s", "Data is valid, setting up a new callback\n" );
-		m_decode_period = attotime::from_hz(CDIC_SAMPLE_BUF_FREQ(m_ram, m_decode_addr & 0x3ffe)) * (18*28*2*CDIC_SAMPLE_BUF_SIZE(m_ram, m_decode_addr & 0x3ffe));
-=======
 		verboselog(*this, 0, "Updated m_decode_addr, new value is %04x\n", m_decode_addr );
 
 		//// Delay for Frequency * (18*28*2*size in bytes) before requesting more data
 		verboselog(*this, 0, "%s", "Data is valid, setting up a new callback\n" );
 		m_decode_period = attotime::from_hz(CDIC_SAMPLE_BUF_FREQ(m_ram.get(), m_decode_addr & 0x3ffe)) * (18*28*2*CDIC_SAMPLE_BUF_SIZE(m_ram.get(), m_decode_addr & 0x3ffe));
->>>>>>> upstream/master
 		m_audio_sample_timer->adjust(m_decode_period);
 		//dmadac_enable(&dmadac[0], 2, 0);
 	}
@@ -810,11 +588,7 @@ void cdicdic_device::sample_trigger()
 		// Swap buffer positions to indicate our new buffer position at the next read
 		m_decode_addr ^= 0x1a00;
 
-<<<<<<< HEAD
-		verboselog(machine(), 0, "%s", "Data is not valid, indicating to shut down on the next audio sample\n" );
-=======
 		verboselog(*this, 0, "%s", "Data is not valid, indicating to shut down on the next audio sample\n" );
->>>>>>> upstream/master
 		m_decode_addr = 0xffff;
 		m_audio_sample_timer->adjust(m_decode_period);
 	}
@@ -837,20 +611,6 @@ void cdicdic_device::process_delayed_command()
 		case 0x2a: // Read Mode 2
 		//case 0x2c: // Seek
 		{
-<<<<<<< HEAD
-			UINT8 buffer[2560] = { 0 };
-			UINT32 msf = m_time >> 8;
-			UINT32 lba = 0;
-			int index = 0;
-			UINT8 nybbles[6] =
-			{
-					msf & 0x0000000f,
-				(msf & 0x000000f0) >> 4,
-				(msf & 0x00000f00) >> 8,
-				(msf & 0x0000f000) >> 12,
-				(msf & 0x000f0000) >> 16,
-				(msf & 0x00f00000) >> 20
-=======
 			uint8_t buffer[2560] = { 0 };
 			uint32_t msf = m_time >> 8;
 			uint32_t lba = 0;
@@ -863,7 +623,6 @@ void cdicdic_device::process_delayed_command()
 				static_cast<uint8_t>((msf & 0x0000f000) >> 12),
 				static_cast<uint8_t>((msf & 0x000f0000) >> 16),
 				static_cast<uint8_t>((msf & 0x00f00000) >> 20)
->>>>>>> upstream/master
 			};
 			if(msf & 0x000080)
 			{
@@ -899,11 +658,7 @@ void cdicdic_device::process_delayed_command()
 			lba = nybbles[0] + nybbles[1]*10 + ((nybbles[2] + nybbles[3]*10)*75) + ((nybbles[4] + nybbles[5]*10)*75*60);
 
 			//printf( "Reading Mode %d sector from MSF location %06x\n", m_command - 0x28, m_time | 2 );
-<<<<<<< HEAD
-			verboselog(machine(), 0, "Reading Mode %d sector from MSF location %06x\n", m_command - 0x28, m_time | 2 );
-=======
 			verboselog(*this, 0, "Reading Mode %d sector from MSF location %06x\n", m_command - 0x28, m_time | 2 );
->>>>>>> upstream/master
 
 			cdrom_read_data(m_cd, lba, buffer, CD_TRACK_RAW_DONTCARE);
 
@@ -942,11 +697,7 @@ void cdicdic_device::process_delayed_command()
 				if(((buffer[CDIC_SECTOR_SUBMODE2] & (CDIC_SUBMODE_FORM | CDIC_SUBMODE_DATA | CDIC_SUBMODE_AUDIO | CDIC_SUBMODE_VIDEO)) == (CDIC_SUBMODE_FORM | CDIC_SUBMODE_AUDIO)) &&
 					(m_channel & m_audio_channel & (1 << buffer[CDIC_SECTOR_CHAN2])))
 				{
-<<<<<<< HEAD
-					verboselog(machine(), 0, "%s", "Audio sector\n" );
-=======
 					verboselog(*this, 0, "%s", "Audio sector\n" );
->>>>>>> upstream/master
 
 					m_x_buffer |= 0x8000;
 					//m_data_buffer |= 0x4000;
@@ -957,17 +708,10 @@ void cdicdic_device::process_delayed_command()
 						m_ram[(m_data_buffer & 5) * (0xa00/2) + (index - 6)] = (buffer[index*2] << 8) | buffer[index*2 + 1];
 					}
 
-<<<<<<< HEAD
-					decode_audio_sector(((UINT8*)m_ram) + ((m_data_buffer & 5) * 0xa00 + 4), 0);
-
-					//printf( "Setting CDIC interrupt line\n" );
-					verboselog(machine(), 0, "%s", "Setting CDIC interrupt line for audio sector\n" );
-=======
 					decode_audio_sector(((uint8_t*)m_ram.get()) + ((m_data_buffer & 5) * 0xa00 + 4), 0);
 
 					//printf( "Setting CDIC interrupt line\n" );
 					verboselog(*this, 0, "%s", "Setting CDIC interrupt line for audio sector\n" );
->>>>>>> upstream/master
 					state->m_maincpu->set_input_line_vector(M68K_IRQ_4, 128);
 					state->m_maincpu->set_input_line(M68K_IRQ_4, ASSERT_LINE);
 				}
@@ -986,21 +730,13 @@ void cdicdic_device::process_delayed_command()
 						(buffer[CDIC_SECTOR_SUBMODE2] & CDIC_SUBMODE_EOF) == CDIC_SUBMODE_EOF)
 					{
 						//printf( "Setting CDIC interrupt line\n" );
-<<<<<<< HEAD
-						verboselog(machine(), 0, "%s", "Setting CDIC interrupt line for message sector\n" );
-=======
 						verboselog(*this, 0, "%s", "Setting CDIC interrupt line for message sector\n" );
->>>>>>> upstream/master
 						state->m_maincpu->set_input_line_vector(M68K_IRQ_4, 128);
 						state->m_maincpu->set_input_line(M68K_IRQ_4, ASSERT_LINE);
 					}
 					else
 					{
-<<<<<<< HEAD
-						verboselog(machine(), 0, "%s", "Message sector, ignored\n" );
-=======
 						verboselog(*this, 0, "%s", "Message sector, ignored\n" );
->>>>>>> upstream/master
 					}
 				}
 				else
@@ -1014,11 +750,7 @@ void cdicdic_device::process_delayed_command()
 					}
 
 					//printf( "Setting CDIC interrupt line\n" );
-<<<<<<< HEAD
-					verboselog(machine(), 0, "%s", "Setting CDIC interrupt line for data sector\n" );
-=======
 					verboselog(*this, 0, "%s", "Setting CDIC interrupt line for data sector\n" );
->>>>>>> upstream/master
 					state->m_maincpu->set_input_line_vector(M68K_IRQ_4, 128);
 					state->m_maincpu->set_input_line(M68K_IRQ_4, ASSERT_LINE);
 				}
@@ -1046,25 +778,6 @@ void cdicdic_device::process_delayed_command()
 
 		case 0x28: // Play CDDA audio
 		{
-<<<<<<< HEAD
-			UINT8 buffer[2560] = { 0 };
-			int index = 0;
-			UINT32 msf = (m_time & 0xffff7f00) >> 8;
-			UINT32 next_msf = increment_cdda_frame_bcd((m_time & 0xffff7f00) >> 8);
-			UINT32 rounded_next_msf = increment_cdda_sector_bcd((m_time & 0xffff0000) >> 8);
-			UINT32 lba = 0;
-//          UINT32 next_lba = 0;
-			UINT8 nybbles[6] =
-			{
-					msf & 0x0000000f,
-				(msf & 0x000000f0) >> 4,
-				(msf & 0x00000f00) >> 8,
-				(msf & 0x0000f000) >> 12,
-				(msf & 0x000f0000) >> 16,
-				(msf & 0x00f00000) >> 20
-			};
-/*          UINT8 next_nybbles[6] =
-=======
 			uint8_t buffer[2560] = { 0 };
 			int index = 0;
 			uint32_t msf = (m_time & 0xffff7f00) >> 8;
@@ -1082,7 +795,6 @@ void cdicdic_device::process_delayed_command()
 				static_cast<uint8_t>((msf & 0x00f00000) >> 20)
 			};
 /*          uint8_t next_nybbles[6] =
->>>>>>> upstream/master
             {
                  rounded_next_msf & 0x0000000f,
                 (rounded_next_msf & 0x000000f0) >> 4,
@@ -1102,11 +814,7 @@ void cdicdic_device::process_delayed_command()
 			if(!(msf & 0x0000ff))
 			{
 //              next_lba = next_nybbles[0] + next_nybbles[1]*10 + ((next_nybbles[2] + next_nybbles[3]*10)*75) + ((next_nybbles[4] + next_nybbles[5]*10)*75*60);
-<<<<<<< HEAD
-				verboselog(machine(), 0, "Playing CDDA sector from MSF location %06x\n", m_time | 2 );
-=======
 				verboselog(*this, 0, "Playing CDDA sector from MSF location %06x\n", m_time | 2 );
->>>>>>> upstream/master
 
 				state->m_cdda->start_audio(lba, rounded_next_msf);
 			}
@@ -1137,32 +845,13 @@ void cdicdic_device::process_delayed_command()
 				m_ram[(m_data_buffer & 5) * (0xa00/2) + (index - 6)] = (buffer[index*2] << 8) | buffer[index*2 + 1];
 			}
 
-<<<<<<< HEAD
-			verboselog(machine(), 0, "%s", "Setting CDIC interrupt line for CDDA sector\n" );
-=======
 			verboselog(*this, 0, "%s", "Setting CDIC interrupt line for CDDA sector\n" );
->>>>>>> upstream/master
 			state->m_maincpu->set_input_line_vector(M68K_IRQ_4, 128);
 			state->m_maincpu->set_input_line(M68K_IRQ_4, ASSERT_LINE);
 			break;
 		}
 		case 0x2c: // Seek
 		{
-<<<<<<< HEAD
-			UINT8 buffer[2560] = { 0 };
-			int index = 0;
-			UINT32 msf = (m_time & 0xffff7f00) >> 8;
-			UINT32 next_msf = increment_cdda_frame_bcd((m_time & 0xffff7f00) >> 8);
-			UINT32 lba = 0;
-			UINT8 nybbles[6] =
-			{
-					msf & 0x0000000f,
-				(msf & 0x000000f0) >> 4,
-				(msf & 0x00000f00) >> 8,
-				(msf & 0x0000f000) >> 12,
-				(msf & 0x000f0000) >> 16,
-				(msf & 0x00f00000) >> 20
-=======
 			uint8_t buffer[2560] = { 0 };
 			int index = 0;
 			uint32_t msf = (m_time & 0xffff7f00) >> 8;
@@ -1176,7 +865,6 @@ void cdicdic_device::process_delayed_command()
 				static_cast<uint8_t>((msf & 0x0000f000) >> 12),
 				static_cast<uint8_t>((msf & 0x000f0000) >> 16),
 				static_cast<uint8_t>((msf & 0x00f00000) >> 20)
->>>>>>> upstream/master
 			};
 			lba = nybbles[0] + nybbles[1]*10 + ((nybbles[2] + nybbles[3]*10)*75) + ((nybbles[4] + nybbles[5]*10)*75*60);
 
@@ -1208,11 +896,7 @@ void cdicdic_device::process_delayed_command()
 
 			m_time = next_msf << 8;
 
-<<<<<<< HEAD
-			verboselog(machine(), 0, "%s", "Setting CDIC interrupt line for Seek sector\n" );
-=======
 			verboselog(*this, 0, "%s", "Setting CDIC interrupt line for Seek sector\n" );
->>>>>>> upstream/master
 			state->m_maincpu->set_input_line_vector(M68K_IRQ_4, 128);
 			state->m_maincpu->set_input_line(M68K_IRQ_4, ASSERT_LINE);
 			break;
@@ -1223,42 +907,11 @@ void cdicdic_device::process_delayed_command()
 READ16_MEMBER( cdicdic_device::regs_r )
 {
 	cdi_state *state = machine().driver_data<cdi_state>();
-<<<<<<< HEAD
-	UINT32 addr = offset + 0x3c00/2;
-=======
 	uint32_t addr = offset + 0x3c00/2;
->>>>>>> upstream/master
 
 	switch(addr)
 	{
 		case 0x3c00/2: // Command register
-<<<<<<< HEAD
-			verboselog(machine(), 0, "cdic_r: Command Register = %04x & %04x\n", m_command, mem_mask);
-			return m_command;
-
-		case 0x3c02/2: // Time register (MSW)
-			verboselog(machine(), 0, "cdic_r: Time Register (MSW) = %04x & %04x\n", m_time >> 16, mem_mask);
-			return m_time >> 16;
-
-		case 0x3c04/2: // Time register (LSW)
-			verboselog(machine(), 0, "cdic_r: Time Register (LSW) = %04x & %04x\n", (UINT16)(m_time & 0x0000ffff), mem_mask);
-			return m_time & 0x0000ffff;
-
-		case 0x3c06/2: // File register
-			verboselog(machine(), 0, "cdic_r: File Register = %04x & %04x\n", m_file, mem_mask);
-			return m_file;
-
-		case 0x3c08/2: // Channel register (MSW)
-			verboselog(machine(), 0, "cdic_r: Channel Register (MSW) = %04x & %04x\n", m_channel >> 16, mem_mask);
-			return m_channel >> 16;
-
-		case 0x3c0a/2: // Channel register (LSW)
-			verboselog(machine(), 0, "cdic_r: Channel Register (LSW) = %04x & %04x\n", m_channel & 0x0000ffff, mem_mask);
-			return m_channel & 0x0000ffff;
-
-		case 0x3c0c/2: // Audio Channel register
-			verboselog(machine(), 0, "cdic_r: Audio Channel Register = %04x & %04x\n", m_audio_channel, mem_mask);
-=======
 			verboselog(*this, 0, "cdic_r: Command Register = %04x & %04x\n", m_command, mem_mask);
 			return m_command;
 
@@ -1284,56 +937,33 @@ READ16_MEMBER( cdicdic_device::regs_r )
 
 		case 0x3c0c/2: // Audio Channel register
 			verboselog(*this, 0, "cdic_r: Audio Channel Register = %04x & %04x\n", m_audio_channel, mem_mask);
->>>>>>> upstream/master
 			return m_audio_channel;
 
 		case 0x3ff4/2: // ABUF
 		{
-<<<<<<< HEAD
-			UINT16 temp = m_audio_buffer;
-=======
 			uint16_t temp = m_audio_buffer;
->>>>>>> upstream/master
 			m_audio_buffer &= 0x7fff;
 			if(!((m_audio_buffer | m_x_buffer) & 0x8000))
 			{
 				state->m_maincpu->set_input_line(M68K_IRQ_4, CLEAR_LINE);
-<<<<<<< HEAD
-				verboselog(machine(), 0, "%s", "Clearing CDIC interrupt line\n" );
-				////printf("Clearing CDIC interrupt line\n" );
-			}
-			verboselog(machine(), 0, "cdic_r: Audio Buffer Register = %04x & %04x\n", temp, mem_mask);
-=======
 				verboselog(*this, 0, "%s", "Clearing CDIC interrupt line\n" );
 				////printf("Clearing CDIC interrupt line\n" );
 			}
 			verboselog(*this, 0, "cdic_r: Audio Buffer Register = %04x & %04x\n", temp, mem_mask);
->>>>>>> upstream/master
 			return temp;
 		}
 
 		case 0x3ff6/2: // XBUF
 		{
-<<<<<<< HEAD
-			UINT16 temp = m_x_buffer;
-=======
 			uint16_t temp = m_x_buffer;
->>>>>>> upstream/master
 			m_x_buffer &= 0x7fff;
 			if(!((m_audio_buffer | m_x_buffer) & 0x8000))
 			{
 				state->m_maincpu->set_input_line(M68K_IRQ_4, CLEAR_LINE);
-<<<<<<< HEAD
-				verboselog(machine(), 0, "%s", "Clearing CDIC interrupt line\n" );
-				////printf("Clearing CDIC interrupt line\n" );
-			}
-			verboselog(machine(), 0, "cdic_r: X-Buffer Register = %04x & %04x\n", temp, mem_mask);
-=======
 				verboselog(*this, 0, "%s", "Clearing CDIC interrupt line\n" );
 				////printf("Clearing CDIC interrupt line\n" );
 			}
 			verboselog(*this, 0, "cdic_r: X-Buffer Register = %04x & %04x\n", temp, mem_mask);
->>>>>>> upstream/master
 			return temp;
 		}
 
@@ -1343,29 +973,17 @@ READ16_MEMBER( cdicdic_device::regs_r )
 			{
 				m_z_buffer ^= 0x0001;
 			}
-<<<<<<< HEAD
-			verboselog(machine(), 0, "cdic_r: Z-Buffer Register = %04x & %04x\n", m_z_buffer, mem_mask);
-=======
 			verboselog(*this, 0, "cdic_r: Z-Buffer Register = %04x & %04x\n", m_z_buffer, mem_mask);
->>>>>>> upstream/master
 			return m_z_buffer;
 		}
 
 		case 0x3ffe/2:
 		{
-<<<<<<< HEAD
-			verboselog(machine(), 0, "cdic_r: Data buffer Register = %04x & %04x\n", m_data_buffer, mem_mask);
-			return m_data_buffer;
-		}
-		default:
-			verboselog(machine(), 0, "cdic_r: UNIMPLEMENTED: Unknown address: %04x & %04x\n", addr*2, mem_mask);
-=======
 			verboselog(*this, 0, "cdic_r: Data buffer Register = %04x & %04x\n", m_data_buffer, mem_mask);
 			return m_data_buffer;
 		}
 		default:
 			verboselog(*this, 0, "cdic_r: UNIMPLEMENTED: Unknown address: %04x & %04x\n", addr*2, mem_mask);
->>>>>>> upstream/master
 			return 0;
 	}
 }
@@ -1374,111 +992,61 @@ WRITE16_MEMBER( cdicdic_device::regs_w )
 {
 	cdi_state *state = machine().driver_data<cdi_state>();
 
-<<<<<<< HEAD
-	UINT32 addr = offset + 0x3c00/2;
-=======
 	uint32_t addr = offset + 0x3c00/2;
->>>>>>> upstream/master
 
 	switch(addr)
 	{
 		case 0x3c00/2: // Command register
-<<<<<<< HEAD
-			verboselog(machine(), 0, "cdic_w: Command Register = %04x & %04x\n", data, mem_mask);
-=======
 			verboselog(*this, 0, "cdic_w: Command Register = %04x & %04x\n", data, mem_mask);
->>>>>>> upstream/master
 			COMBINE_DATA(&m_command);
 			break;
 
 		case 0x3c02/2: // Time register (MSW)
 			m_time &= ~(mem_mask << 16);
 			m_time |= (data & mem_mask) << 16;
-<<<<<<< HEAD
-			verboselog(machine(), 0, "cdic_w: Time Register (MSW) = %04x & %04x\n", data, mem_mask);
-=======
 			verboselog(*this, 0, "cdic_w: Time Register (MSW) = %04x & %04x\n", data, mem_mask);
->>>>>>> upstream/master
 			break;
 
 		case 0x3c04/2: // Time register (LSW)
 			m_time &= ~mem_mask;
 			m_time |= data & mem_mask;
-<<<<<<< HEAD
-			verboselog(machine(), 0, "cdic_w: Time Register (LSW) = %04x & %04x\n", data, mem_mask);
-			break;
-
-		case 0x3c06/2: // File register
-			verboselog(machine(), 0, "cdic_w: File Register = %04x & %04x\n", data, mem_mask);
-=======
 			verboselog(*this, 0, "cdic_w: Time Register (LSW) = %04x & %04x\n", data, mem_mask);
 			break;
 
 		case 0x3c06/2: // File register
 			verboselog(*this, 0, "cdic_w: File Register = %04x & %04x\n", data, mem_mask);
->>>>>>> upstream/master
 			COMBINE_DATA(&m_file);
 			break;
 
 		case 0x3c08/2: // Channel register (MSW)
 			m_channel &= ~(mem_mask << 16);
 			m_channel |= (data & mem_mask) << 16;
-<<<<<<< HEAD
-			verboselog(machine(), 0, "cdic_w: Channel Register (MSW) = %04x & %04x\n", data, mem_mask);
-=======
 			verboselog(*this, 0, "cdic_w: Channel Register (MSW) = %04x & %04x\n", data, mem_mask);
->>>>>>> upstream/master
 			break;
 
 		case 0x3c0a/2: // Channel register (LSW)
 			m_channel &= ~mem_mask;
 			m_channel |= data & mem_mask;
-<<<<<<< HEAD
-			verboselog(machine(), 0, "cdic_w: Channel Register (LSW) = %04x & %04x\n", data, mem_mask);
-			break;
-
-		case 0x3c0c/2: // Audio Channel register
-			verboselog(machine(), 0, "cdic_w: Audio Channel Register = %04x & %04x\n", data, mem_mask);
-=======
 			verboselog(*this, 0, "cdic_w: Channel Register (LSW) = %04x & %04x\n", data, mem_mask);
 			break;
 
 		case 0x3c0c/2: // Audio Channel register
 			verboselog(*this, 0, "cdic_w: Audio Channel Register = %04x & %04x\n", data, mem_mask);
->>>>>>> upstream/master
 			COMBINE_DATA(&m_audio_channel);
 			break;
 
 		case 0x3ff4/2:
-<<<<<<< HEAD
-			verboselog(machine(), 0, "cdic_w: Audio Buffer Register = %04x & %04x\n", data, mem_mask);
-=======
 			verboselog(*this, 0, "cdic_w: Audio Buffer Register = %04x & %04x\n", data, mem_mask);
->>>>>>> upstream/master
 			COMBINE_DATA(&m_audio_buffer);
 			break;
 
 		case 0x3ff6/2:
-<<<<<<< HEAD
-			verboselog(machine(), 0, "cdic_w: X Buffer Register = %04x & %04x\n", data, mem_mask);
-=======
 			verboselog(*this, 0, "cdic_w: X Buffer Register = %04x & %04x\n", data, mem_mask);
->>>>>>> upstream/master
 			COMBINE_DATA(&m_x_buffer);
 			break;
 
 		case 0x3ff8/2:
 		{
-<<<<<<< HEAD
-			UINT32 start = state->m_scc->dma().channel[0].memory_address_counter;
-			UINT32 count = state->m_scc->dma().channel[0].transfer_counter;
-			UINT32 index = 0;
-			UINT32 device_index = (data & 0x3fff) >> 1;
-			UINT16 *memory = state->m_planea;
-			verboselog(machine(), 0, "memory address counter: %08x\n", scc68070->dma.channel[0].memory_address_counter);
-			verboselog(machine(), 0, "cdic_w: DMA Control Register = %04x & %04x\n", data, mem_mask);
-			verboselog(machine(), 0, "Doing copy, transferring %04x bytes\n", count * 2 );
-=======
 			uint32_t start = state->m_scc->dma().channel[0].memory_address_counter;
 			uint32_t count = state->m_scc->dma().channel[0].transfer_counter;
 			uint32_t index = 0;
@@ -1487,7 +1055,6 @@ WRITE16_MEMBER( cdicdic_device::regs_w )
 			verboselog(*this, 0, "memory address counter: %08x\n", state->m_scc->dma().channel[0].memory_address_counter);
 			verboselog(*this, 0, "cdic_w: DMA Control Register = %04x & %04x\n", data, mem_mask);
 			verboselog(*this, 0, "Doing copy, transferring %04x bytes\n", count * 2 );
->>>>>>> upstream/master
 			////printf("Doing copy, transferring %04x bytes\n", count * 2 );
 			if((start & 0x00f00000) == 0x00200000)
 			{
@@ -1511,11 +1078,7 @@ WRITE16_MEMBER( cdicdic_device::regs_w )
 
 		case 0x3ffa/2:
 		{
-<<<<<<< HEAD
-			verboselog(machine(), 0, "cdic_w: Z-Buffer Register = %04x & %04x\n", data, mem_mask);
-=======
 			verboselog(*this, 0, "cdic_w: Z-Buffer Register = %04x & %04x\n", data, mem_mask);
->>>>>>> upstream/master
 			COMBINE_DATA(&m_z_buffer);
 			if(m_z_buffer & 0x2000)
 			{
@@ -1535,20 +1098,12 @@ WRITE16_MEMBER( cdicdic_device::regs_w )
 			break;
 		}
 		case 0x3ffc/2:
-<<<<<<< HEAD
-			verboselog(machine(), 0, "cdic_w: Interrupt Vector Register = %04x & %04x\n", data, mem_mask);
-=======
 			verboselog(*this, 0, "cdic_w: Interrupt Vector Register = %04x & %04x\n", data, mem_mask);
->>>>>>> upstream/master
 			COMBINE_DATA(&m_interrupt_vector);
 			break;
 		case 0x3ffe/2:
 		{
-<<<<<<< HEAD
-			verboselog(machine(), 0, "cdic_w: Data Buffer Register = %04x & %04x\n", data, mem_mask);
-=======
 			verboselog(*this, 0, "cdic_w: Data Buffer Register = %04x & %04x\n", data, mem_mask);
->>>>>>> upstream/master
 			COMBINE_DATA(&m_data_buffer);
 			if(m_data_buffer & 0x8000)
 			{
@@ -1587,11 +1142,7 @@ WRITE16_MEMBER( cdicdic_device::regs_w )
 						break;
 					}
 					default:
-<<<<<<< HEAD
-						verboselog(machine(), 0, "Unknown CDIC command: %02x\n", m_command );
-=======
 						verboselog(*this, 0, "Unknown CDIC command: %02x\n", m_command );
->>>>>>> upstream/master
 						break;
 				}
 			}
@@ -1599,11 +1150,7 @@ WRITE16_MEMBER( cdicdic_device::regs_w )
 			break;
 		}
 		default:
-<<<<<<< HEAD
-			verboselog(machine(), 0, "cdic_w: UNIMPLEMENTED: Unknown address: %04x = %04x & %04x\n", addr*2, data, mem_mask);
-=======
 			verboselog(*this, 0, "cdic_w: UNIMPLEMENTED: Unknown address: %04x = %04x & %04x\n", addr*2, data, mem_mask);
->>>>>>> upstream/master
 			break;
 	}
 }
@@ -1616,13 +1163,8 @@ WRITE16_MEMBER( cdicdic_device::regs_w )
 //  cdicdic_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-cdicdic_device::cdicdic_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, MACHINE_CDICDIC, "CDICDIC", tag, owner, clock, "cdicdic", __FILE__)
-=======
 cdicdic_device::cdicdic_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, MACHINE_CDICDIC, tag, owner, clock)
->>>>>>> upstream/master
 {
 }
 
@@ -1653,11 +1195,7 @@ void cdicdic_device::device_start()
 	m_audio_sample_timer = machine().scheduler().timer_alloc(timer_expired_delegate(FUNC(cdicdic_device::audio_sample_trigger), this));
 	m_audio_sample_timer->adjust(attotime::never);
 
-<<<<<<< HEAD
-	m_ram = auto_alloc_array(machine(), UINT16, 0x3c00/2);
-=======
 	m_ram = std::make_unique<uint16_t[]>(0x3c00/2);
->>>>>>> upstream/master
 }
 
 //-------------------------------------------------
@@ -1696,11 +1234,7 @@ void cdicdic_device::device_reset()
 	else
 	{
 		// MAME case
-<<<<<<< HEAD
-		m_cd = cdrom_open(get_disk_handle(machine(), ":cdrom"));
-=======
 		m_cd = cdrom_open(machine().rom_load().get_disk_handle(":cdrom"));
->>>>>>> upstream/master
 		state->m_cdda->set_cdrom(m_cd);
 	}
 }

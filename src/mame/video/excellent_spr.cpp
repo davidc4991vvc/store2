@@ -17,15 +17,6 @@
 
 #include "emu.h"
 #include "excellent_spr.h"
-<<<<<<< HEAD
-
-
-const device_type EXCELLENT_SPRITE = &device_creator<excellent_spr_device>;
-
-excellent_spr_device::excellent_spr_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, EXCELLENT_SPRITE, "Excellent 8-bit Sprite", tag, owner, clock, "excellent_spr", __FILE__),
-		device_video_interface(mconfig, *this)
-=======
 #include "screen.h"
 
 
@@ -34,20 +25,14 @@ DEFINE_DEVICE_TYPE(EXCELLENT_SPRITE, excellent_spr_device, "excellent_spr", "Exc
 excellent_spr_device::excellent_spr_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, EXCELLENT_SPRITE, tag, owner, clock)
 	, device_video_interface(mconfig, *this)
->>>>>>> upstream/master
 {
 }
 
 
 void excellent_spr_device::device_start()
 {
-<<<<<<< HEAD
-	m_ram = auto_alloc_array_clear(this->machine(), UINT8, 0x1000);
-	save_pointer(NAME(m_ram), 0x1000);
-=======
 	m_ram = make_unique_clear<uint8_t[]>(0x1000);
 	save_pointer(NAME(m_ram.get()), 0x1000);
->>>>>>> upstream/master
 }
 
 
@@ -91,13 +76,8 @@ void excellent_spr_device::aquarium_draw_sprites( bitmap_ind16 &bitmap, const re
 {
 	int offs, chain_pos;
 	int x, y, curx, cury;
-<<<<<<< HEAD
-	UINT8 col, flipx, flipy, chain;
-	UINT16 code;
-=======
 	uint8_t col, flipx, flipy, chain;
 	uint16_t code;
->>>>>>> upstream/master
 
 	for (offs = 0; offs < 0x1000; offs += 8)
 	{
@@ -175,21 +155,12 @@ void excellent_spr_device::aquarium_draw_sprites( bitmap_ind16 &bitmap, const re
 
 void excellent_spr_device::gcpinbal_draw_sprites( screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, gfxdecode_device *gfxdecode, int y_offs, int priority )
 {
-<<<<<<< HEAD
-	UINT8 *spriteram = m_ram;
-	int offs, chain_pos;
-	int x, y, curx, cury;
-//  int priority = 0;
-	UINT8 col, flipx, flipy, chain;
-	UINT16 code;
-=======
 	uint8_t *spriteram = m_ram.get();
 	int offs, chain_pos;
 	int x, y, curx, cury;
 //  int priority = 0;
 	uint8_t col, flipx, flipy, chain;
 	uint16_t code;
->>>>>>> upstream/master
 
 
 	for (offs = 0x1000 - 8; offs >= 0; offs -= 8)

@@ -26,11 +26,6 @@ System80 is based on the SRU platform, but with more outputs and finally a separ
 #include "emu.h"
 #include "cpu/tms9900/tms9995.h"
 #include "sound/ay8910.h"
-<<<<<<< HEAD
-#include "machine/tms9902.h"
-#include "jpms80.lh"
-
-=======
 #include "machine/74259.h"
 #include "machine/tms9902.h"
 #include "speaker.h"
@@ -52,7 +47,6 @@ System80 is based on the SRU platform, but with more outputs and finally a separ
 #include "j80wsprt2.lh"
 
 
->>>>>>> upstream/master
 class jpms80_state : public driver_device
 {
 public:
@@ -60,16 +54,12 @@ public:
 		: driver_device(mconfig, type, tag),
 			m_maincpu(*this, "maincpu")
 	{ }
-<<<<<<< HEAD
-	virtual void machine_reset();
-=======
 	virtual void machine_reset() override;
 
 	DECLARE_WRITE_LINE_MEMBER(int1_enable_w);
 	DECLARE_WRITE_LINE_MEMBER(int2_enable_w);
 	DECLARE_WRITE_LINE_MEMBER(watchdog_w);
 	DECLARE_WRITE_LINE_MEMBER(io_enable_w);
->>>>>>> upstream/master
 
 protected:
 
@@ -79,8 +69,6 @@ public:
 	DECLARE_DRIVER_INIT(jpms80);
 };
 
-<<<<<<< HEAD
-=======
 WRITE_LINE_MEMBER(jpms80_state::int1_enable_w)
 {
 }
@@ -97,7 +85,6 @@ WRITE_LINE_MEMBER(jpms80_state::io_enable_w)
 {
 }
 
->>>>>>> upstream/master
 static ADDRESS_MAP_START( jpms80_map, AS_PROGRAM, 8, jpms80_state )
 	AM_RANGE(0x0000, 0x2fff) AM_ROM
 	AM_RANGE(0x3000, 0x3fff) AM_RAM
@@ -105,13 +92,6 @@ ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( jpms80_io_map, AS_IO, 8, jpms80_state )
 	ADDRESS_MAP_GLOBAL_MASK(0x1ff)
-<<<<<<< HEAD
-//  AM_RANGE(0x0000, 0x000f) // I/O & Optic (in) / Reels (out)
-//  AM_RANGE(0x0050, 0x0050) // INT1 enable (lv3)
-//  AM_RANGE(0x0051, 0x0051) // INT2 enable (lv4)
-//  AM_RANGE(0x0052, 0x0052) // Watchdog
-//  AM_RANGE(0x0053, 0x0053) // I/O Enable
-=======
 //  AM_RANGE(0x0000, 0x001f) // I/O & Optic (in)
 	AM_RANGE(0x0000, 0x0007) AM_DEVWRITE("outlatch0", ls259_device, write_d0)
 	AM_RANGE(0x0008, 0x000f) AM_DEVWRITE("outlatch1", ls259_device, write_d0)
@@ -124,7 +104,6 @@ static ADDRESS_MAP_START( jpms80_io_map, AS_IO, 8, jpms80_state )
 	AM_RANGE(0x0040, 0x0047) AM_DEVWRITE("outlatch8", ls259_device, write_d0)
 	AM_RANGE(0x0048, 0x004f) AM_DEVWRITE("outlatch9", ls259_device, write_d0)
 	AM_RANGE(0x0050, 0x0057) AM_DEVWRITE("outlatch10", ls259_device, write_d0)
->>>>>>> upstream/master
 //  AM_RANGE(0x0140, 0x015f) // AY
 	AM_RANGE(0x01e0, 0x01ff) AM_DEVREADWRITE("tms9902duart", tms9902_device, cruread, cruwrite)
 //  Lamps, Meters etc. can move around
@@ -142,23 +121,14 @@ INPUT_PORTS_END
 void jpms80_state::machine_reset()
 {
 	// Disable auto wait state generation by raising the READY line on reset
-<<<<<<< HEAD
-	static_cast<tms9995_device*>(machine().device("maincpu"))->set_ready(ASSERT_LINE);
-}
-
-static MACHINE_CONFIG_START( jpms80, jpms80_state )
-=======
 	static_cast<tms9995_device*>(machine().device("maincpu"))->ready_line(ASSERT_LINE);
 }
 
 static MACHINE_CONFIG_START( jpms80 )
->>>>>>> upstream/master
 	// CPU TMS9995, standard variant; no line connections
 	MCFG_TMS99xx_ADD("maincpu", TMS9995, MAIN_CLOCK, jpms80_map, jpms80_io_map)
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-=======
 	MCFG_DEVICE_ADD("outlatch0", LS259, 0) // I/O IC5
 	MCFG_DEVICE_ADD("outlatch1", LS259, 0) // I/O IC6
 	MCFG_DEVICE_ADD("outlatch2", LS259, 0) // I/O IC7
@@ -176,7 +146,6 @@ static MACHINE_CONFIG_START( jpms80 )
 	MCFG_ADDRESSABLE_LATCH_Q2_OUT_CB(WRITELINE(jpms80_state, watchdog_w)) // 52 - Watchdog
 	MCFG_ADDRESSABLE_LATCH_Q3_OUT_CB(WRITELINE(jpms80_state, io_enable_w)) // 53 - I/O Enable
 
->>>>>>> upstream/master
 	MCFG_DEVICE_ADD("tms9902duart", TMS9902, DUART_CLOCK)
 
 	MCFG_SOUND_ADD("aysnd", AY8910, 2000000)
@@ -380,34 +349,6 @@ ROM_END
 
 
 
-<<<<<<< HEAD
-GAME(198?, j80bac   ,0          ,jpms80,jpms80, jpms80_state,jpms80,ROT0,   "JPM","Bank A Coin (JPM) (SYSTEM80)",                       MACHINE_IS_SKELETON_MECHANICAL )
-GAME(198?, j80bounc ,0          ,jpms80,jpms80, jpms80_state,jpms80,ROT0,   "JPM","Bouncer (JPM) (SYSTEM80)",                       MACHINE_IS_SKELETON_MECHANICAL )
-GAME(198?, j80frogh ,0          ,jpms80,jpms80, jpms80_state,jpms80,ROT0,   "JPM","Frog Hop (JPM) (SYSTEM80)",                      MACHINE_IS_SKELETON_MECHANICAL )
-GAME(198?, j80fruit ,0          ,jpms80,jpms80, jpms80_state,jpms80,ROT0,   "JPM","Fruit Snappa (JPM) (SYSTEM80)",                      MACHINE_IS_SKELETON_MECHANICAL )
-GAME(198?, j80golds ,0          ,jpms80,jpms80, jpms80_state,jpms80,ROT0,   "JPM","Golden Steppa (JPM) (SYSTEM80)",                     MACHINE_IS_SKELETON_MECHANICAL )
-GAME(198?, j80hotln ,0          ,jpms80,jpms80, jpms80_state,jpms80,ROT0,   "JPM","Hot Lines (JPM) (SYSTEM80)",                     MACHINE_IS_SKELETON_MECHANICAL )
-GAME(198?, j80myspn ,0          ,jpms80,jpms80, jpms80_state,jpms80,ROT0,   "JPM","Mystery Spin (JPM) (SYSTEM80)",                      MACHINE_IS_SKELETON_MECHANICAL )
-GAME(198?, j80nudg2 ,0          ,jpms80,jpms80, jpms80_state,jpms80,ROT0,   "JPM","Nudge Double Up MkII (JPM) (SYSTEM80)",                      MACHINE_IS_SKELETON_MECHANICAL )
-GAME(198?, j80rr    ,0          ,jpms80,jpms80, jpms80_state,jpms80,ROT0,   "JPM","Road Runner (JPM) (SYSTEM80, set 1)",                        MACHINE_IS_SKELETON_MECHANICAL ) // was also in a set named 'Route 66' with identical roms, but text in ROM indicates name is Road Runner, maybe a reskin?
-GAME(198?, j80rra   ,j80rr      ,jpms80,jpms80, jpms80_state,jpms80,ROT0,   "JPM","Road Runner (JPM) (SYSTEM80, set 2)",                        MACHINE_IS_SKELETON_MECHANICAL )
-GAME(198?, j80supst ,0          ,jpms80,jpms80, jpms80_state,jpms80,ROT0,   "JPM","Supa Steppa (JPM) (SYSTEM80)",                       MACHINE_IS_SKELETON_MECHANICAL )
-GAME(198?, j80supbk ,0          ,jpms80,jpms80, jpms80_state,jpms80,ROT0,   "JPM","Superbank (JPM) (SYSTEM80)",                     MACHINE_IS_SKELETON_MECHANICAL )
-GAME(198?, j80topsp ,0          ,jpms80,jpms80, jpms80_state,jpms80,ROT0,   "JPM","Top Sprint (JPM) (SYSTEM80)",                        MACHINE_IS_SKELETON_MECHANICAL )
-GAME(198?, j80topup ,0          ,jpms80,jpms80, jpms80_state,jpms80,ROT0,   "JPM","Top Up (JPM) (SYSTEM80)",                        MACHINE_IS_SKELETON_MECHANICAL )
-GAME(198?, j80tumbl ,0          ,jpms80,jpms80, jpms80_state,jpms80,ROT0,   "JPM","Tumble (JPM) (SYSTEM80)",                        MACHINE_IS_SKELETON_MECHANICAL )
-GAME(198?, j80wsprt, 0          ,jpms80,jpms80, jpms80_state,jpms80,ROT0,   "JPM","Winsprint (JPM) (V4, 5x20p) (SYSTEM80)",                     MACHINE_IS_SKELETON_MECHANICAL )
-GAME(198?, j80wsprt3, j80wsprt  ,jpms80,jpms80, jpms80_state,jpms80,ROT0,   "JPM","Winsprint (JPM) (V3, 50p, 5 credits) (SYSTEM80)",                     MACHINE_IS_SKELETON_MECHANICAL )
-GAME(198?, j80wsprt2,j80wsprt   ,jpms80,jpms80, jpms80_state,jpms80,ROT0,   "JPM","Winsprint (JPM) (V2, 10x10p) (SYSTEM80)",                     MACHINE_IS_SKELETON_MECHANICAL )
-
-GAME(198?, j80blbnk ,0          ,jpms80,jpms80, jpms80_state,jpms80,ROT0,   "PCP","Blankity Bank (PCP) (SYSTEM80)",                     MACHINE_IS_SKELETON_MECHANICAL )
-
-// these look like they're probably SYSTEM80, not 100% sure tho
-GAME(198?, j80alad  ,0          ,jpms80,jpms80, jpms80_state,jpms80,ROT0,   "JPM","Aladdin's Cave (PCP)",                       MACHINE_IS_SKELETON_MECHANICAL )
-GAME(198?, j80fortr ,0          ,jpms80,jpms80, jpms80_state,jpms80,ROT0,   "JPM","Fortune Trail (JPM)",                        MACHINE_IS_SKELETON_MECHANICAL )
-GAME(198?, j80mster ,0          ,jpms80,jpms80, jpms80_state,jpms80,ROT0,   "JPM","Masterspy (Pcp)",                        MACHINE_IS_SKELETON_MECHANICAL )
-GAME(198?, j80plsnd ,0          ,jpms80,jpms80, jpms80_state,jpms80,ROT0,   "JPM","Plus Nudge (JPM)",                       MACHINE_IS_SKELETON_MECHANICAL )
-=======
 GAMEL(198?, j80bac   ,0          ,jpms80,jpms80, jpms80_state,jpms80,ROT0,   "JPM","Bank A Coin (JPM) (SYSTEM80)", MACHINE_IS_SKELETON_MECHANICAL, layout_j80bac )
 GAMEL(198?, j80bounc ,0          ,jpms80,jpms80, jpms80_state,jpms80,ROT0,   "JPM","Bouncer (JPM) (SYSTEM80)", MACHINE_IS_SKELETON_MECHANICAL, layout_j80bounc )
 GAMEL(198?, j80frogh ,0          ,jpms80,jpms80, jpms80_state,jpms80,ROT0,   "JPM","Frog Hop (JPM) (SYSTEM80)", MACHINE_IS_SKELETON_MECHANICAL, layout_j80frogh )
@@ -434,4 +375,3 @@ GAME (198?, j80alad  ,0          ,jpms80,jpms80, jpms80_state,jpms80,ROT0,   "JP
 GAME (198?, j80fortr ,0          ,jpms80,jpms80, jpms80_state,jpms80,ROT0,   "JPM","Fortune Trail (JPM)", MACHINE_IS_SKELETON_MECHANICAL )
 GAME (198?, j80mster ,0          ,jpms80,jpms80, jpms80_state,jpms80,ROT0,   "JPM","Masterspy (Pcp)", MACHINE_IS_SKELETON_MECHANICAL )
 GAME (198?, j80plsnd ,0          ,jpms80,jpms80, jpms80_state,jpms80,ROT0,   "JPM","Plus Nudge (JPM)", MACHINE_IS_SKELETON_MECHANICAL )
->>>>>>> upstream/master

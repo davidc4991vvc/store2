@@ -313,11 +313,7 @@ static const char *const TMS32025Formats[] = {
 	FMT("111111011mmmnnnnbbbbbbbbbbbbbbbb", "blkd %B,%M%N"),
 	FMT("111111101mmmnnnnbbbbbbbbbbbbbbbb", "call %B %M%N"),    /* FExx */
 	FMT("111111111mmmnnnnbbbbbbbbbbbbbbbb", "b    %B %M%N"),    /* FFxx */
-<<<<<<< HEAD
-	NULL
-=======
 	nullptr
->>>>>>> upstream/master
 };
 
 #define MAX_OPS ((ARRAY_LENGTH(TMS32025Formats) - 1) / PTRS_PER_FORMAT)
@@ -377,11 +373,7 @@ static void InitDasm32025(void)
 			fatalerror("not enough bits in encoding '%s %s' %d\n",
 				ops[0],ops[1],bit);
 		}
-<<<<<<< HEAD
-		while (isspace((UINT8)*p)) p++;
-=======
 		while (isspace((uint8_t)*p)) p++;
->>>>>>> upstream/master
 		if (*p) Op[i].extcode = *p;
 		Op[i].bits = bits;
 		Op[i].mask = mask;
@@ -395,15 +387,9 @@ static void InitDasm32025(void)
 	OpInizialized = 1;
 }
 
-<<<<<<< HEAD
-CPU_DISASSEMBLE( tms32025 )
-{
-	UINT32 flags = 0;
-=======
 CPU_DISASSEMBLE(tms32025)
 {
 	uint32_t flags = 0;
->>>>>>> upstream/master
 	int a, b, c, d, k, m, n, p, r, s, t, w; /* these can all be filled in by parsing an instruction */
 	int i;
 	int op;
@@ -431,11 +417,7 @@ CPU_DISASSEMBLE(tms32025)
 	}
 	if (op == -1)
 	{
-<<<<<<< HEAD
-		sprintf(buffer,"???? dw %04Xh",code);
-=======
 		util::stream_format(stream, "???? dw %04Xh",code);
->>>>>>> upstream/master
 		return cnt | DASMFLAG_SUPPORTED;
 	}
 	//buffertmp = buffer;
@@ -492,11 +474,7 @@ CPU_DISASSEMBLE(tms32025)
 	{
 		if (*cp == '%')
 		{
-<<<<<<< HEAD
-			char num[30], *q;
-=======
 			char num[30];
->>>>>>> upstream/master
 			cp++;
 			switch (*cp++)
 			{
@@ -516,21 +494,11 @@ CPU_DISASSEMBLE(tms32025)
 				default:
 					fatalerror("illegal escape character in format '%s'\n",Op[op].fmt);
 			}
-<<<<<<< HEAD
-			q = num; while (*q) *buffer++ = *q++;
-			*buffer = '\0';
-		}
-		else
-		{
-			*buffer++ = *cp++;
-			*buffer = '\0';
-=======
 			stream << num;
 		}
 		else
 		{
 			stream << *cp++;
->>>>>>> upstream/master
 		}
 	}
 	return cnt | flags | DASMFLAG_SUPPORTED;

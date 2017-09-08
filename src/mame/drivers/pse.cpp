@@ -55,27 +55,16 @@ public:
 	}
 
 	// devices
-<<<<<<< HEAD
-	required_device<netlist_mame_device_t> m_maincpu;
-=======
 	required_device<netlist_mame_device> m_maincpu;
->>>>>>> upstream/master
 	required_device<fixedfreq_device> m_video;
 
 protected:
 
 	// driver_device overrides
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void machine_reset();
-
-	virtual void video_start();
-=======
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
 
 	virtual void video_start() override;
->>>>>>> upstream/master
 
 private:
 
@@ -90,13 +79,8 @@ static NETLIST_START(pse)
 	// schematics
 	//...
 
-<<<<<<< HEAD
-//  NETDEV_ANALOG_CALLBACK(sound_cb, sound, psettl_state, sound_cb, "")
-//  NETDEV_ANALOG_CALLBACK(video_cb, videomix, fixedfreq_device, update_vid, "fixfreq")
-=======
 		//  NETDEV_ANALOG_CALLBACK(sound_cb, sound, psettl_state, sound_cb, "")
 		//  NETDEV_ANALOG_CALLBACK(video_cb, videomix, fixedfreq_device, update_vid, "fixfreq")
->>>>>>> upstream/master
 NETLIST_END()
 
 
@@ -114,11 +98,7 @@ void pse_state::video_start()
 {
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( pse, pse_state )
-=======
 static MACHINE_CONFIG_START( pse )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_DEVICE_ADD("maincpu", NETLIST_CPU, NETLIST_CLOCK)
@@ -144,26 +124,6 @@ ROM_START( bazooka )
 	ROM_REGION( 0x10000, "maincpu", ROMREGION_ERASE00 )
 
 	ROM_REGION( 0x0840, "roms", ROMREGION_ERASE00 )
-<<<<<<< HEAD
-	ROM_LOAD( "bd2.k1",      0x0000, 0x0200, CRC(c9e9ed15) SHA1(624bbc10942a386040aef161b96d64021a842c9f) ) // 6341-1 - gfx: tank, truck, jeep motorcycle
-	ROM_LOAD( "bd2.k4",      0x0200, 0x0200, CRC(c5a74df9) SHA1(2846a039e9bf372f3aa0b88ed89f9029eb7f797c) ) // 6341-1 - gfx: ambulance, stretcher, explosion
-	ROM_LOAD( "bd1.d2",      0x0400, 0x0200, CRC(4fc10886) SHA1(b1c6f890994ba2182a4e7fc17582d6797dbd6ce9) ) // 6341-1 or 82s115
-	ROM_LOAD( "bd1.e2",      0x0600, 0x0200, CRC(00179936) SHA1(e5417b8d3814dafe1278179b307a1b563a378cbe) ) // 6341-1 or 82s115
-	ROM_LOAD( "bd2.e6",      0x0800, 0x0020, CRC(14b84564) SHA1(69cdd14e23094678c4b280f60cec963609181b00) ) // 82123
-	ROM_LOAD( "bd2.e7",      0x0820, 0x0020, CRC(1bfb073f) SHA1(f6b26dcece71b2cf2ed4a537434edbe31cb10399) ) // 82123
-ROM_END
-
-ROM_START( bazookabr )
-	ROM_REGION( 0x10000, "maincpu", ROMREGION_ERASE00 )
-
-	ROM_REGION( 0x0840, "roms", ROMREGION_ERASE00 )
-	ROM_LOAD( "1",           0x0000, 0x0200, CRC(edc34cb0) SHA1(f76a81833b015784e55b33189e9058cd24922f9b) )
-	ROM_LOAD( "2",           0x0200, 0x0200, CRC(3e78e4c2) SHA1(814509eb773bfa87f1df933214f079e7dd2a8fa2) )
-	ROM_LOAD( "3",           0x0400, 0x0200, CRC(4fc10886) SHA1(b1c6f890994ba2182a4e7fc17582d6797dbd6ce9) )
-	ROM_LOAD( "4",           0x0600, 0x0200, CRC(00179936) SHA1(e5417b8d3814dafe1278179b307a1b563a378cbe) )
-	ROM_LOAD( "bd2.e6",      0x0800, 0x0020, BAD_DUMP CRC(14b84564) SHA1(69cdd14e23094678c4b280f60cec963609181b00) ) // not dumped, taken from PSE set
-	ROM_LOAD( "bd2.e7",      0x0820, 0x0020, BAD_DUMP CRC(1bfb073f) SHA1(f6b26dcece71b2cf2ed4a537434edbe31cb10399) ) // not dumped, taken from PSE set
-=======
 	ROM_LOAD( "bd2.k1",  0x0000, 0x0200, CRC(c9e9ed15) SHA1(624bbc10942a386040aef161b96d64021a842c9f) ) // 6341-1 - gfx: tank, truck, jeep motorcycle
 	ROM_LOAD( "bd2.k4",  0x0200, 0x0200, CRC(c5a74df9) SHA1(2846a039e9bf372f3aa0b88ed89f9029eb7f797c) ) // 6341-1 - gfx: ambulance, stretcher, explosion
 	ROM_LOAD( "bd1.d2",  0x0400, 0x0200, CRC(4fc10886) SHA1(b1c6f890994ba2182a4e7fc17582d6797dbd6ce9) ) // 6341-1 or 82s115
@@ -182,24 +142,11 @@ ROM_START( bazookabr )  // 4 identical PROMs were found on a Model Racing "CS 18
 	ROM_LOAD( "bk04.8h", 0x0600, 0x0200, CRC(00179936) SHA1(e5417b8d3814dafe1278179b307a1b563a378cbe) ) // 74S473
 	ROM_LOAD( "bk05.6c", 0x0800, 0x0020, CRC(4193d32e) SHA1(d9e3392a8681198e110cfcd68ef20ae3dc366527) ) // 82S123 or 6331-1J
 	ROM_LOAD( "bk06.6d", 0x0820, 0x0020, CRC(1bfb073f) SHA1(f6b26dcece71b2cf2ed4a537434edbe31cb10399) ) // 82S123 or 6331-1J
->>>>>>> upstream/master
 ROM_END
 
 ROM_START( dpatrol )
 	ROM_REGION( 0x10000, "maincpu", ROMREGION_ERASE00 )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x0800, "roms", ROMREGION_ERASE00 )
-	ROM_LOAD( "bd1.d2", 0x0000, 0x0400, CRC(e4c8e4ab) SHA1(0b989ca9369139f212dcea1d1461998f20057db8)) // computer program game code. 6341-1 or 82S181 according to Desert Patrol schematics
-	ROM_LOAD( "bd1.e2", 0x0000, 0x0400, CRC(256b3320) SHA1(712573e3d9625a84c54bbe2e3edafb8879a14b2e)) // computer program game code. 6341-1 or 82S181 according to Desert Patrol schematics
-
-	ROM_LOAD( "bd2.l4", 0x0000, 0x0200, CRC(bc87c648) SHA1(c4709d155aa50cc87146abd152a11de618cfd64c)) // prom 1 contains aircraft target images and explosion image. pcb has 82S141; schematics show 6341-1
-	ROM_LOAD( "bd2.l1", 0x0000, 0x0800, CRC(f1e8ba9e) SHA1(605db3fdbaff4ba13729371ad0c4fbab3889378e)) // prom 2 contains parachute and man, falling man. pcb has 82S141; schematics show 6341-1
-
-	ROM_LOAD( "bd2.h7", 0x0000, 0x0020, NO_DUMP) // contains prom address codes and image speeds. Each image has its own speed and address block in the image PROM. chip is 82S123
-
-	ROM_LOAD( "bd3.d1", 0x0000, 0x0020, NO_DUMP ) // data in prom is organized to produce the waveform of a human scream. Chip type is 8574 or MM6301-0J
-=======
 	ROM_REGION( 0x0CA0, "roms", ROMREGION_ERASE00 )
 	ROM_LOAD( "bd1.d2", 0x0000, 0x0400, CRC(e4c8e4ab) SHA1(0b989ca9369139f212dcea1d1461998f20057db8)) // Computer program game code. 6341-1 or 82S181 according to Desert Patrol schematics - sldh w/dpatrola
 	ROM_LOAD( "bd1.e2", 0x0400, 0x0400, CRC(256b3320) SHA1(712573e3d9625a84c54bbe2e3edafb8879a14b2e)) // Computer program game code. 6341-1 or 82S181 according to Desert Patrol schematics - sldh w/dpatrola
@@ -225,7 +172,6 @@ ROM_START( dpatrola )
 	ROM_LOAD( "bd2.h7", 0x0800, 0x0020, CRC(7e8f20a2) SHA1(1fd16e10b7913bc6d949c7fc117ee80a87371777)) // Contains PROM address codes and image speeds. Each image has its own speed and address block in the image PROM. PCB had SN74S288; schematics show 82S123
 
 	ROM_LOAD( "bd3.d1", 0x0820, 0x0080, NO_DUMP ) // Data in PROM is organized to produce the waveform of a human scream. Chip type is 8574 or MM6301-0J. Was not present on dumped PCB.
->>>>>>> upstream/master
 ROM_END
 
 /*
@@ -233,40 +179,6 @@ ROM_START( knightar )
     ROM_REGION( 0x10000, "maincpu", ROMREGION_ERASE00 )
 
     ROM_REGION( 0x0020, "roms", ROMREGION_ERASE00 )
-<<<<<<< HEAD
-    ROM_LOAD( "1.m1" ) // Man rom stores image characters of knights. 82S115P or 8205R according to KIA schematics
-    ROM_LOAD( "2.m2" ) // Horse rom stores image characters of horses. 82S115P or 8205R according to KIA schematics
-ROM_END
-*/
-
-/*
-ROM_START( gametree )
-    ROM_REGION( 0x10000, "maincpu", ROMREGION_ERASE00 )
-
-    ROM_REGION( 0x0020, "roms", ROMREGION_ERASE00 )
-    ROM_LOAD( "bd1.d2" ) // computer program game code. 6341-1 or 82S181 according to Game Tree schematics
-    ROM_LOAD( "bd1.e2" ) // computer program game code. 6341-1 or 82S181 according to Game Tree schematics
-
-    ROM_LOAD( "bd2.f12" ) // prom 1 contains squirrel and squirrel point value. 82S141 or 6341-1 according to Game Tree layout
-    ROM_LOAD( "bd2.f14" ) // prom 1 contains squirrel and squirrel point value. 82S141 or 6341-1 according to Game Tree layout
-
-
-    ROM_LOAD( "bd2.e12" ) // prom 2 contains other targets (rabbit and turkey) and point values
-    ROM_LOAD( "bd2.e14" ) // prom 2 82S141 or 6341-1 according to Game Tree layout.
-
-
-    ROM_LOAD( "bd2.a2" ) // contains prom address codes and image speeds. Each has its own speed and address block in the image prom.
-
-    ROM_LOAD( "bd2.a3" ) // contains prom address codes and image speeds. 82S123 or 6331-1 according to Game Tree layout.
-ROM_END
-*/
-
-GAME( 1976, bazooka,    0,       pse, 0, driver_device,  0, ROT0, "Project Support Engineering", "Bazooka [TTL]", MACHINE_IS_SKELETON )
-GAME( 1977, bazookabr,  bazooka, pse, 0, driver_device,  0, ROT0, "Taito do Brasil", "Bazooka (Brazil) [TTL]", MACHINE_IS_SKELETON )
-GAME( 1977, dpatrol,    0,       pse, 0, driver_device,  0, ROT0, "Project Support Engineering", "Desert Patrol [TTL]", MACHINE_IS_SKELETON )
-//GAME( 1976, knightar, 0,       pse, 0, driver_device,  0, ROT0, "Project Support Engineering", "Knights in Armor [TTL]", MACHINE_IS_SKELETON )
-//GAME( 1978, gametree, 0,       pse, 0, driver_device,  0, ROT0, "Project Support Engineering", "Game Tree [TTL]", MACHINE_IS_SKELETON )
-=======
     ROM_LOAD( "1.m1" ) // Man ROM stores image characters of knights. 82S115P or 8205R according to Knights in Armor schematics
     ROM_LOAD( "2.m2" ) // Horse ROM stores image characters of horses. 82S115P or 8205R according to Knights in Armor schematics
 ROM_END
@@ -298,4 +210,3 @@ GAME( 1977, dpatrol,    0,       pse, 0, pse_state,  0, ROT0, "Project Support E
 GAME( 1977, dpatrola,   dpatrol, pse, 0, pse_state,  0, ROT0, "Project Support Engineering (Telegames license)", "Desert Patrol (set 2) [TTL]", MACHINE_IS_SKELETON )
 GAME( 1978, gametree,   0,       pse, 0, pse_state,  0, ROT0, "Project Support Engineering", "Game Tree [TTL]", MACHINE_IS_SKELETON )
 //GAME( 1976, knightar, 0,       pse, 0, pse_state,  0, ROT0, "Project Support Engineering", "Knights in Armor [TTL]", MACHINE_IS_SKELETON )
->>>>>>> upstream/master

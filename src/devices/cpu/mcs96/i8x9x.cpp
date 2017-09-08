@@ -11,28 +11,13 @@
 #include "emu.h"
 #include "i8x9x.h"
 
-<<<<<<< HEAD
-i8x9x_device::i8x9x_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source) :
-	mcs96_device(mconfig, type, name, tag, owner, clock, 8, "i8x9x", __FILE__),
-=======
 i8x9x_device::i8x9x_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock) :
 	mcs96_device(mconfig, type, tag, owner, clock, 8),
->>>>>>> upstream/master
 	io_config("io", ENDIANNESS_LITTLE, 16, 16, -1), io(nullptr), base_timer2(0), ad_done(0), hso_command(0), ad_command(0), hso_time(0), ad_result(0),
 	ios0(0), ios1(0), ioc0(0), ioc1(0), sbuf(0), sp_stat(0), serial_send_buf(0), serial_send_timer(0)
 {
 }
 
-<<<<<<< HEAD
-offs_t i8x9x_device::disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options)
-{
-	return disasm_generic(buffer, pc, oprom, opram, options, disasm_entries);
-}
-
-const address_space_config *i8x9x_device::memory_space_config(address_spacenum spacenum) const
-{
-	return spacenum == AS_PROGRAM ? &program_config : spacenum == AS_IO ? &io_config : NULL;
-=======
 offs_t i8x9x_device::disasm_disassemble(std::ostream &stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, uint32_t options)
 {
 	return disasm_generic(stream, pc, oprom, opram, options, disasm_entries);
@@ -44,7 +29,6 @@ device_memory_interface::space_config_vector i8x9x_device::memory_space_config()
 		std::make_pair(AS_PROGRAM, &program_config),
 		std::make_pair(AS_IO,      &io_config)
 	};
->>>>>>> upstream/master
 }
 
 void i8x9x_device::device_start()
@@ -86,22 +70,14 @@ void i8x9x_device::commit_hso_cam()
 	hso_cam_hold.time = hso_time;
 }
 
-<<<<<<< HEAD
-void i8x9x_device::ad_start(UINT64 current_time)
-=======
 void i8x9x_device::ad_start(uint64_t current_time)
->>>>>>> upstream/master
 {
 	ad_result = (io->read_word(2*((ad_command & 7) + A0)) << 6) | 8 | (ad_command & 7);
 	ad_done = current_time + 88;
 	internal_update(current_time);
 }
 
-<<<<<<< HEAD
-void i8x9x_device::serial_send(UINT8 data)
-=======
 void i8x9x_device::serial_send(uint8_t data)
->>>>>>> upstream/master
 {
 	serial_send_buf = data;
 	serial_send_timer = total_cycles() + 9600;
@@ -116,11 +92,7 @@ void i8x9x_device::serial_send_done()
 	check_irq();
 }
 
-<<<<<<< HEAD
-void i8x9x_device::io_w8(UINT8 adr, UINT8 data)
-=======
 void i8x9x_device::io_w8(uint8_t adr, uint8_t data)
->>>>>>> upstream/master
 {
 	switch(adr) {
 	case 0x02:
@@ -185,11 +157,7 @@ void i8x9x_device::io_w8(uint8_t adr, uint8_t data)
 	return;
 }
 
-<<<<<<< HEAD
-void i8x9x_device::io_w16(UINT8 adr, UINT16 data)
-=======
 void i8x9x_device::io_w16(uint8_t adr, uint16_t data)
->>>>>>> upstream/master
 {
 	switch(adr) {
 	case 0:
@@ -206,11 +174,7 @@ void i8x9x_device::io_w16(uint8_t adr, uint16_t data)
 	return;
 }
 
-<<<<<<< HEAD
-UINT8 i8x9x_device::io_r8(UINT8 adr)
-=======
 uint8_t i8x9x_device::io_r8(uint8_t adr)
->>>>>>> upstream/master
 {
 	switch(adr) {
 	case 0x00:
@@ -263,11 +227,7 @@ uint8_t i8x9x_device::io_r8(uint8_t adr)
 	case 0x10:
 		return io->read_word(P2*2);
 	case 0x11: {
-<<<<<<< HEAD
-		UINT8 res = sp_stat;
-=======
 		uint8_t res = sp_stat;
->>>>>>> upstream/master
 		sp_stat &= 0x80;
 		logerror("%s: read sp stat %02x (%04x)\n", tag(), res, PPC);
 		return res;
@@ -276,11 +236,7 @@ uint8_t i8x9x_device::io_r8(uint8_t adr)
 		logerror("%s: read ios 0 %02x (%04x)\n", tag(), ios0, PPC);
 		return ios0;
 	case 0x16: {
-<<<<<<< HEAD
-		UINT8 res = ios1;
-=======
 		uint8_t res = ios1;
->>>>>>> upstream/master
 		ios1 = ios1 & 0xc0;
 		return res;
 	}
@@ -290,11 +246,7 @@ uint8_t i8x9x_device::io_r8(uint8_t adr)
 	}
 }
 
-<<<<<<< HEAD
-UINT16 i8x9x_device::io_r16(UINT8 adr)
-=======
 uint16_t i8x9x_device::io_r16(uint8_t adr)
->>>>>>> upstream/master
 {
 	switch(adr) {
 	case 0x00:
@@ -318,11 +270,7 @@ void i8x9x_device::do_exec_partial()
 {
 }
 
-<<<<<<< HEAD
-void i8x9x_device::serial_w(UINT8 val)
-=======
 void i8x9x_device::serial_w(uint8_t val)
->>>>>>> upstream/master
 {
 	sbuf = val;
 	sp_stat |= 0x40;
@@ -330,40 +278,24 @@ void i8x9x_device::serial_w(uint8_t val)
 	check_irq();
 }
 
-<<<<<<< HEAD
-UINT16 i8x9x_device::timer_value(int timer, UINT64 current_time) const
-=======
 uint16_t i8x9x_device::timer_value(int timer, uint64_t current_time) const
->>>>>>> upstream/master
 {
 	if(timer == 2)
 		current_time -= base_timer2;
 	return current_time >> 3;
 }
 
-<<<<<<< HEAD
-UINT64 i8x9x_device::timer_time_until(int timer, UINT64 current_time, UINT16 timer_value) const
-{
-	UINT64 timer_base = timer == 2 ? base_timer2 : 0;
-	UINT64 delta = (current_time - timer_base) >> 3;
-	UINT32 tdelta = UINT16(timer_value - delta);
-=======
 uint64_t i8x9x_device::timer_time_until(int timer, uint64_t current_time, uint16_t timer_value) const
 {
 	uint64_t timer_base = timer == 2 ? base_timer2 : 0;
 	uint64_t delta = (current_time - timer_base) >> 3;
 	uint32_t tdelta = uint16_t(timer_value - delta);
->>>>>>> upstream/master
 	if(!tdelta)
 		tdelta = 0x10000;
 	return timer_base + ((delta + tdelta) << 3);
 }
 
-<<<<<<< HEAD
-void i8x9x_device::trigger_cam(int id, UINT64 current_time)
-=======
 void i8x9x_device::trigger_cam(int id, uint64_t current_time)
->>>>>>> upstream/master
 {
 	hso_cam_entry &cam = hso_info[id];
 	cam.active = false;
@@ -380,17 +312,6 @@ void i8x9x_device::trigger_cam(int id, uint64_t current_time)
 	}
 }
 
-<<<<<<< HEAD
-void i8x9x_device::internal_update(UINT64 current_time)
-{
-	UINT16 current_timer1 = timer_value(1, current_time);
-	UINT16 current_timer2 = timer_value(2, current_time);
-
-	for(int i=0; i<8; i++)
-		if(hso_info[i].active) {
-			UINT8 cmd = hso_info[i].command;
-			UINT16 t = hso_info[i].time;
-=======
 void i8x9x_device::internal_update(uint64_t current_time)
 {
 	uint16_t current_timer1 = timer_value(1, current_time);
@@ -400,7 +321,6 @@ void i8x9x_device::internal_update(uint64_t current_time)
 		if(hso_info[i].active) {
 			uint8_t cmd = hso_info[i].command;
 			uint16_t t = hso_info[i].time;
->>>>>>> upstream/master
 			if(((cmd & 0x40) && t == current_timer2) ||
 				(!(cmd & 0x40) && t == current_timer1)) {
 				if(cmd != 0x18 && cmd != 0x19)
@@ -418,11 +338,7 @@ void i8x9x_device::internal_update(uint64_t current_time)
 	if(current_time == serial_send_timer)
 		serial_send_done();
 
-<<<<<<< HEAD
-	UINT64 event_time = 0;
-=======
 	uint64_t event_time = 0;
->>>>>>> upstream/master
 	for(int i=0; i<8; i++) {
 		if(!hso_info[i].active && hso_cam_hold.active) {
 			hso_info[i] = hso_cam_hold;
@@ -430,11 +346,7 @@ void i8x9x_device::internal_update(uint64_t current_time)
 			logerror("%s: hso cam %02x %04x in slot %d from hold\n", tag(), hso_cam_hold.command, hso_cam_hold.time, i);
 		}
 		if(hso_info[i].active) {
-<<<<<<< HEAD
-			UINT64 new_time = timer_time_until(hso_info[i].command & 0x40 ? 2 : 1, current_time, hso_info[i].time);
-=======
 			uint64_t new_time = timer_time_until(hso_info[i].command & 0x40 ? 2 : 1, current_time, hso_info[i].time);
->>>>>>> upstream/master
 			if(!event_time || new_time < event_time)
 				event_time = new_time;
 		}
@@ -449,22 +361,6 @@ void i8x9x_device::internal_update(uint64_t current_time)
 	recompute_bcount(event_time);
 }
 
-<<<<<<< HEAD
-c8095_device::c8095_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-	i8x9x_device(mconfig, C8095, "C8095", tag, owner, clock, "c8095", __FILE__)
-{
-}
-
-p8098_device::p8098_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-	i8x9x_device(mconfig, P8098, "P8098", tag, owner, clock, "p8098", __FILE__)
-{
-}
-
-const device_type C8095 = &device_creator<c8095_device>;
-const device_type P8098 = &device_creator<p8098_device>;
-
-#include "cpu/mcs96/i8x9x.inc"
-=======
 c8095_device::c8095_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	i8x9x_device(mconfig, C8095, tag, owner, clock)
 {
@@ -479,4 +375,3 @@ DEFINE_DEVICE_TYPE(C8095, c8095_device, "c8095", "C8095")
 DEFINE_DEVICE_TYPE(P8098, p8098_device, "p8098", "P8098")
 
 #include "cpu/mcs96/i8x9x.hxx"
->>>>>>> upstream/master

@@ -9,29 +9,6 @@
  *****************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "debugger.h"
-#include "scmp.h"
-
-#define VERBOSE 0
-
-#define LOG(x) do { if (VERBOSE) logerror x; } while (0)
-
-
-const device_type SCMP = &device_creator<scmp_device>;
-const device_type INS8060 = &device_creator<ins8060_device>;
-
-
-scmp_device::scmp_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: cpu_device(mconfig, SCMP, "INS 8050 SC/MP", tag, owner, clock, "ins8050", __FILE__)
-	, m_program_config("program", ENDIANNESS_LITTLE, 8, 16, 0), m_AC(0), m_ER(0), m_SR(0), m_program(nullptr), m_direct(nullptr), m_icount(0)
-		, m_flag_out_func(*this)
-	, m_sout_func(*this)
-	, m_sin_func(*this)
-	, m_sensea_func(*this)
-	, m_senseb_func(*this)
-	, m_halt_func(*this)
-=======
 #include "scmp.h"
 
 #include "debugger.h"
@@ -46,23 +23,15 @@ DEFINE_DEVICE_TYPE(INS8060, ins8060_device, "ins8060", "INS 8060 SC/MP II")
 
 scmp_device::scmp_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: scmp_device(mconfig, SCMP, tag, owner, clock)
->>>>>>> upstream/master
 {
 }
 
 
-<<<<<<< HEAD
-scmp_device::scmp_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source)
-	: cpu_device(mconfig, type, name, tag, owner, clock, shortname, source)
-	, m_program_config("program", ENDIANNESS_LITTLE, 8, 16, 0), m_AC(0), m_ER(0), m_SR(0), m_program(nullptr), m_direct(nullptr), m_icount(0)
-		, m_flag_out_func(*this)
-=======
 scmp_device::scmp_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock)
 	: cpu_device(mconfig, type, tag, owner, clock)
 	, m_program_config("program", ENDIANNESS_LITTLE, 8, 16, 0)
 	, m_AC(0), m_ER(0), m_SR(0), m_program(nullptr), m_direct(nullptr), m_icount(0)
 	, m_flag_out_func(*this)
->>>>>>> upstream/master
 	, m_sout_func(*this)
 	, m_sin_func(*this)
 	, m_sensea_func(*this)
@@ -71,11 +40,6 @@ scmp_device::scmp_device(const machine_config &mconfig, device_type type, const 
 {
 }
 
-<<<<<<< HEAD
-
-ins8060_device::ins8060_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: scmp_device(mconfig, INS8060, "INS 8060 SC/MP II", tag, owner, clock, "ins8060", __FILE__)
-=======
 device_memory_interface::space_config_vector scmp_device::memory_space_config() const
 {
 	return space_config_vector {
@@ -86,21 +50,10 @@ device_memory_interface::space_config_vector scmp_device::memory_space_config() 
 
 ins8060_device::ins8060_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: scmp_device(mconfig, INS8060, tag, owner, clock)
->>>>>>> upstream/master
 {
 }
 
 
-<<<<<<< HEAD
-offs_t scmp_device::disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options)
-{
-	extern CPU_DISASSEMBLE( scmp );
-	return CPU_DISASSEMBLE_NAME(scmp)(this, buffer, pc, oprom, opram, options);
-}
-
-
-UINT16 scmp_device::ADD12(UINT16 addr, INT8 val)
-=======
 offs_t scmp_device::disasm_disassemble(std::ostream &stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, uint32_t options)
 {
 	extern CPU_DISASSEMBLE( scmp );
@@ -109,87 +62,43 @@ offs_t scmp_device::disasm_disassemble(std::ostream &stream, offs_t pc, const ui
 
 
 uint16_t scmp_device::ADD12(uint16_t addr, int8_t val)
->>>>>>> upstream/master
 {
 	return ((addr + val) & 0x0fff) | (addr & 0xf000);
 }
 
-<<<<<<< HEAD
-UINT8 scmp_device::ROP()
-{
-	UINT16 pc = m_PC.w.l;
-=======
 uint8_t scmp_device::ROP()
 {
 	uint16_t pc = m_PC.w.l;
->>>>>>> upstream/master
 	m_PC.w.l = ADD12(m_PC.w.l,1);
 	return m_direct->read_byte( pc);
 }
 
-<<<<<<< HEAD
-UINT8 scmp_device::ARG()
-{
-	UINT16 pc = m_PC.w.l;
-=======
 uint8_t scmp_device::ARG()
 {
 	uint16_t pc = m_PC.w.l;
->>>>>>> upstream/master
 	m_PC.w.l = ADD12(m_PC.w.l,1);
 	return m_direct->read_byte(pc);
 }
 
-<<<<<<< HEAD
-UINT8 scmp_device::RM(UINT32 a)
-=======
 uint8_t scmp_device::RM(uint32_t a)
->>>>>>> upstream/master
 {
 	return m_program->read_byte(a);
 }
 
-<<<<<<< HEAD
-void scmp_device::WM(UINT32 a, UINT8 v)
-=======
 void scmp_device::WM(uint32_t a, uint8_t v)
->>>>>>> upstream/master
 {
 	m_program->write_byte(a, v);
 }
 
-<<<<<<< HEAD
-void scmp_device::illegal(UINT8 opcode)
-{
-#if VERBOSE
-	UINT16 pc = m_PC.w.l;
-	LOG(("SC/MP illegal instruction %04X $%02X\n", pc-1, opcode));
-#endif
-=======
 void scmp_device::illegal(uint8_t opcode)
 {
 	uint16_t const pc = m_PC.w.l;
 	LOG("SC/MP illegal instruction %04X $%02X\n", pc-1, opcode);
->>>>>>> upstream/master
 }
 
 PAIR *scmp_device::GET_PTR_REG(int num)
 {
 	switch(num) {
-<<<<<<< HEAD
-		case 1: return &m_P1;
-		case 2: return &m_P2;
-		case 3: return &m_P3;
-		default :
-				return &m_PC;
-	}
-}
-
-void scmp_device::BIN_ADD(UINT8 val)
-{
-	UINT16 tmp = m_AC + val + ((m_SR >> 7) & 1);
-	UINT8 ov = (((m_AC & 0x80)==(val & 0x80)) && ((m_AC & 0x80)!=(tmp & 0x80))) ? 0x40 : 0x00;
-=======
 	case 1: return &m_P1;
 	case 2: return &m_P2;
 	case 3: return &m_P3;
@@ -201,7 +110,6 @@ void scmp_device::BIN_ADD(uint8_t val)
 {
 	uint16_t tmp = m_AC + val + ((m_SR >> 7) & 1);
 	uint8_t ov = (((m_AC & 0x80)==(val & 0x80)) && ((m_AC & 0x80)!=(tmp & 0x80))) ? 0x40 : 0x00;
->>>>>>> upstream/master
 
 	m_AC = tmp & 0xff;
 	m_SR &= 0x3f; // clear CY/L and OV flag
@@ -209,31 +117,15 @@ void scmp_device::BIN_ADD(uint8_t val)
 	m_SR |= ov;
 }
 
-<<<<<<< HEAD
-void scmp_device::DEC_ADD(UINT8 val)
-{
-	UINT16 tmp = m_AC + val + ((m_SR >> 7) & 1);
-=======
 void scmp_device::DEC_ADD(uint8_t val)
 {
 	uint16_t tmp = m_AC + val + ((m_SR >> 7) & 1);
->>>>>>> upstream/master
 	if ((tmp & 0x0f) > 9) tmp +=6;
 	m_AC = tmp % 0xa0;
 	m_SR &= 0x7f; // clear CY/L flag
 	m_SR |= (tmp > 0x99) ? 0x80 : 0x00;
 }
 
-<<<<<<< HEAD
-UINT16 scmp_device::GET_ADDR(UINT8 code)
-{
-	UINT16 addr = 0;
-	INT8 offset = 0;
-	UINT16 retVal = 0;
-	UINT16 ptr = GET_PTR_REG(code & 0x03)->w.l;
-
-	UINT8 arg = ARG();
-=======
 uint16_t scmp_device::GET_ADDR(uint8_t code)
 {
 	uint16_t addr;
@@ -242,16 +134,11 @@ uint16_t scmp_device::GET_ADDR(uint8_t code)
 	uint16_t ptr = GET_PTR_REG(code & 0x03)->w.l;
 
 	uint8_t arg = ARG();
->>>>>>> upstream/master
 	if (arg == 0x80) {
 		offset = m_ER;
 	} else {
 		if (arg & 0x80) {
-<<<<<<< HEAD
-			offset = (INT8)arg;
-=======
 			offset = (int8_t)arg;
->>>>>>> upstream/master
 		} else {
 			offset = arg;
 		}
@@ -283,13 +170,8 @@ uint16_t scmp_device::GET_ADDR(uint8_t code)
 
 void scmp_device::execute_one(int opcode)
 {
-<<<<<<< HEAD
-	UINT8 tmp;
-	UINT8 ptr = opcode & 3;
-=======
 	uint8_t tmp;
 	uint8_t ptr = opcode & 3;
->>>>>>> upstream/master
 	if (BIT(opcode,7)) {
 		// two bytes instructions
 		switch (opcode)
@@ -347,11 +229,7 @@ void scmp_device::execute_one(int opcode)
 			case 0xa8 : case 0xa9 : case 0xaa : case 0xab :
 						// IDL
 						{
-<<<<<<< HEAD
-							UINT16 addr = GET_ADDR(opcode);
-=======
 							uint16_t addr = GET_ADDR(opcode);
->>>>>>> upstream/master
 							m_icount -= 22;
 							m_AC = RM(addr) + 1;
 							WM(addr,m_AC);
@@ -360,11 +238,7 @@ void scmp_device::execute_one(int opcode)
 			case 0xb8 : case 0xb9 : case 0xba : case 0xbb :
 						// DLD
 						{
-<<<<<<< HEAD
-							UINT16 addr = GET_ADDR(opcode);
-=======
 							uint16_t addr = GET_ADDR(opcode);
->>>>>>> upstream/master
 							m_icount -= 22;
 							m_AC = RM(addr) - 1;
 							WM(addr,m_AC);
@@ -402,22 +276,14 @@ void scmp_device::execute_one(int opcode)
 			// Transfer Instructions
 			case 0x90 : case 0x91 : case 0x92 : case 0x93 :// JMP
 						m_icount -= 11;
-<<<<<<< HEAD
-						m_PC.w.l = ADD12(GET_PTR_REG(ptr)->w.l,(INT8)ARG());
-=======
 						m_PC.w.l = ADD12(GET_PTR_REG(ptr)->w.l,(int8_t)ARG());
->>>>>>> upstream/master
 						break;
 			case 0x94 : case 0x95 : case 0x96 : case 0x97 :
 						// JP
 						m_icount -= 9;
 						tmp = ARG();
 						if (!(m_AC & 0x80)) {
-<<<<<<< HEAD
-							m_PC.w.l = ADD12(GET_PTR_REG(ptr)->w.l,(INT8)tmp);
-=======
 							m_PC.w.l = ADD12(GET_PTR_REG(ptr)->w.l,(int8_t)tmp);
->>>>>>> upstream/master
 							m_icount -= 2;
 						}
 						break;
@@ -426,11 +292,7 @@ void scmp_device::execute_one(int opcode)
 						m_icount -= 9;
 						tmp = ARG();
 						if (!m_AC) {
-<<<<<<< HEAD
-							m_PC.w.l = ADD12(GET_PTR_REG(ptr)->w.l,(INT8)tmp);
-=======
 							m_PC.w.l = ADD12(GET_PTR_REG(ptr)->w.l,(int8_t)tmp);
->>>>>>> upstream/master
 							m_icount -= 2;
 						}
 						break;
@@ -439,22 +301,14 @@ void scmp_device::execute_one(int opcode)
 						m_icount -= 9;
 						tmp = ARG();
 						if (m_AC) {
-<<<<<<< HEAD
-							m_PC.w.l = ADD12(GET_PTR_REG(ptr)->w.l,(INT8)tmp);
-=======
 							m_PC.w.l = ADD12(GET_PTR_REG(ptr)->w.l,(int8_t)tmp);
->>>>>>> upstream/master
 							m_icount -= 2;
 						}
 						break;
 			// Double-Byte Miscellaneous Instructions
 			case 0x8f:  // DLY
 						tmp = ARG();
-<<<<<<< HEAD
-						m_icount -= 13 + (m_AC * 2) + (((UINT32)tmp) << 1) + (((UINT32)tmp) << 9);
-=======
 						m_icount -= 13 + (m_AC * 2) + (((uint32_t)tmp) << 1) + (((uint32_t)tmp) << 9);
->>>>>>> upstream/master
 						m_AC = 0xff;
 						break;
 			// Others are illegal
@@ -518,11 +372,7 @@ void scmp_device::execute_one(int opcode)
 			case 0x3c:  case 0x3d :case 0x3e: case 0x3f:
 						// XPPC
 						{
-<<<<<<< HEAD
-							UINT16 tmp16 = ADD12(m_PC.w.l,-1); // Since PC is incremented we need to fix it
-=======
 							uint16_t tmp16 = ADD12(m_PC.w.l,-1); // Since PC is incremented we need to fix it
->>>>>>> upstream/master
 							m_icount -= 7;
 							m_PC.w.l = GET_PTR_REG(ptr)->w.l;
 							GET_PTR_REG(ptr)->w.l = tmp16;
@@ -607,11 +457,7 @@ void scmp_device::execute_one(int opcode)
 ***************************************************************************/
 void scmp_device::take_interrupt()
 {
-<<<<<<< HEAD
-	UINT16 tmp = ADD12(m_PC.w.l,-1); // We fix PC so at return it goes to current location
-=======
 	uint16_t tmp = ADD12(m_PC.w.l,-1); // We fix PC so at return it goes to current location
->>>>>>> upstream/master
 	m_SR &= 0xf7; // clear IE flag
 
 	m_icount -= 8; // assumption
@@ -645,10 +491,7 @@ void scmp_device::device_start()
 	{
 		state_add(SCMP_PC,     "PC",    m_PC.w.l);
 		state_add(STATE_GENPC, "GENPC", m_PC.w.l).noshow();
-<<<<<<< HEAD
-=======
 		state_add(STATE_GENPCBASE, "CURPC", m_PC.w.l).noshow();
->>>>>>> upstream/master
 		state_add(STATE_GENFLAGS, "GENFLAGS", m_SR).noshow().formatstr("%8s");
 		state_add(SCMP_P1,     "P1",    m_P1.w.l);
 		state_add(SCMP_P2,     "P2",    m_P2.w.l);
@@ -703,20 +546,12 @@ void scmp_device::device_reset()
     COMMON STATE IMPORT/EXPORT
 ***************************************************************************/
 
-<<<<<<< HEAD
-void scmp_device::state_string_export(const device_state_entry &entry, std::string &str)
-=======
 void scmp_device::state_string_export(const device_state_entry &entry, std::string &str) const
->>>>>>> upstream/master
 {
 	switch (entry.index())
 	{
 		case STATE_GENFLAGS:
-<<<<<<< HEAD
-			strprintf(str, "%c%c%c%c%c%c%c%c",
-=======
 			str = string_format("%c%c%c%c%c%c%c%c",
->>>>>>> upstream/master
 				(m_SR & 0x80) ? 'C' : '.',
 				(m_SR & 0x40) ? 'V' : '.',
 				(m_SR & 0x20) ? 'B' : '.',

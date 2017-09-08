@@ -1,9 +1,6 @@
 // license:BSD-3-Clause
 // copyright-holders:ElSemi, R. Belmont
-<<<<<<< HEAD
-=======
 // thanks-to: kingshriek
->>>>>>> upstream/master
 /*
     Sega/Yamaha YMF292-F (SCSP = Saturn Custom Sound Processor) emulation
     By ElSemi
@@ -34,26 +31,16 @@
 */
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "sound/cdda.h"
-#include "scsp.h"
-
-=======
 #include "scsp.h"
 
 #include "sound/cdda.h"
 
->>>>>>> upstream/master
 
 #define ICLIP16(x) (x<-32768)?-32768:((x>32767)?32767:x)
 
 #define SHIFT   12
 #define LFO_SHIFT   8
-<<<<<<< HEAD
-#define FIX(v)  ((UINT32) ((float) (1<<SHIFT)*(v)))
-=======
 #define FIX(v)  ((uint32_t) ((float) (1<<SHIFT)*(v)))
->>>>>>> upstream/master
 
 
 #define EG_SHIFT    16
@@ -125,21 +112,6 @@ static const double DRTimes[64]={100000/*infinity*/,100000/*infinity*/,118200.0,
 					28.0,25.0,22.0,18.0,14.0,12.0,11.0,8.5,7.1,6.1,5.4,4.3,3.6,3.1};
 
 #define MEM4B()     ((m_udata.data[0]>>0x0)&0x0200)
-<<<<<<< HEAD
-#define DAC18B()        ((m_udata.data[0]>>0x0)&0x0100)
-#define MVOL()      ((m_udata.data[0]>>0x0)&0x000F)
-#define RBL()       ((m_udata.data[1]>>0x7)&0x0003)
-#define RBP()       ((m_udata.data[1]>>0x0)&0x003F)
-#define MOFULL()        ((m_udata.data[2]>>0x0)&0x1000)
-#define MOEMPTY()       ((m_udata.data[2]>>0x0)&0x0800)
-#define MIOVF()     ((m_udata.data[2]>>0x0)&0x0400)
-#define MIFULL()        ((m_udata.data[2]>>0x0)&0x0200)
-#define MIEMPTY()       ((m_udata.data[2]>>0x0)&0x0100)
-
-#define SCILV0()        ((m_udata.data[0x24/2]>>0x0)&0xff)
-#define SCILV1()        ((m_udata.data[0x26/2]>>0x0)&0xff)
-#define SCILV2()        ((m_udata.data[0x28/2]>>0x0)&0xff)
-=======
 #define DAC18B()    ((m_udata.data[0]>>0x0)&0x0100)
 #define MVOL()      ((m_udata.data[0]>>0x0)&0x000F)
 #define RBL()       ((m_udata.data[1]>>0x7)&0x0003)
@@ -153,7 +125,6 @@ static const double DRTimes[64]={100000/*infinity*/,100000/*infinity*/,118200.0,
 #define SCILV0()    ((m_udata.data[0x24/2]>>0x0)&0xff)
 #define SCILV1()    ((m_udata.data[0x26/2]>>0x0)&0xff)
 #define SCILV2()    ((m_udata.data[0x28/2]>>0x0)&0xff)
->>>>>>> upstream/master
 
 #define SCIEX0  0
 #define SCIEX1  1
@@ -171,37 +142,21 @@ static const double DRTimes[64]={100000/*infinity*/,100000/*infinity*/,118200.0,
 
 static const float SDLT[8]={-1000000.0f,-36.0f,-30.0f,-24.0f,-18.0f,-12.0f,-6.0f,0.0f};
 
-<<<<<<< HEAD
-const device_type SCSP = &device_creator<scsp_device>;
-
-scsp_device::scsp_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, SCSP, "SCSP", tag, owner, clock, "scsp", __FILE__),
-=======
 DEFINE_DEVICE_TYPE(SCSP, scsp_device, "scsp", "YMF292-F SCSP")
 
 scsp_device::scsp_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, SCSP, tag, owner, clock),
->>>>>>> upstream/master
 		device_sound_interface(mconfig, *this),
 		m_roffset(0),
 		m_irq_cb(*this),
 		m_main_irq_cb(*this),
 		m_BUFPTR(0),
-<<<<<<< HEAD
-		m_SCSPRAM(NULL),
-		m_SCSPRAM_LENGTH(0),
-		m_Master(0),
-		m_stream(NULL),
-		m_buffertmpl(NULL),
-		m_buffertmpr(NULL),
-=======
 		m_SCSPRAM(nullptr),
 		m_SCSPRAM_LENGTH(0),
 		m_Master(0),
 		m_stream(nullptr),
 		m_buffertmpl(nullptr),
 		m_buffertmpr(nullptr),
->>>>>>> upstream/master
 		m_IrqTimA(0),
 		m_IrqTimBC(0),
 		m_IrqMidi(0),
@@ -209,17 +164,6 @@ scsp_device::scsp_device(const machine_config &mconfig, const char *tag, device_
 		m_MidiOutR(0),
 		m_MidiW(0),
 		m_MidiR(0),
-<<<<<<< HEAD
-		m_timerA(NULL),
-		m_timerB(NULL),
-		m_timerC(NULL),
-		m_mcieb(0),
-		m_mcipd(0),
-		m_bufferl(NULL),
-		m_bufferr(NULL),
-		m_length(0),
-		m_RBUFDST(NULL)
-=======
 		m_timerA(nullptr),
 		m_timerB(nullptr),
 		m_timerC(nullptr),
@@ -229,7 +173,6 @@ scsp_device::scsp_device(const machine_config &mconfig, const char *tag, device_
 		m_bufferr(nullptr),
 		m_length(0),
 		m_RBUFDST(nullptr)
->>>>>>> upstream/master
 {
 	memset(m_RINGBUF, 0, sizeof(m_RINGBUF));
 	memset(m_MidiStack, 0, sizeof(m_MidiStack));
@@ -299,13 +242,8 @@ unsigned char scsp_device::DecodeSCI(unsigned char irq)
 
 void scsp_device::CheckPendingIRQ()
 {
-<<<<<<< HEAD
-	UINT32 pend=m_udata.data[0x20/2];
-	UINT32 en=m_udata.data[0x1e/2];
-=======
 	uint32_t pend=m_udata.data[0x20/2];
 	uint32_t en=m_udata.data[0x1e/2];
->>>>>>> upstream/master
 	if(m_MidiW!=m_MidiR)
 	{
 		m_udata.data[0x20/2] |= 8;
@@ -342,11 +280,7 @@ void scsp_device::CheckPendingIRQ()
 	m_irq_cb((offs_t)0, CLEAR_LINE);
 }
 
-<<<<<<< HEAD
-void scsp_device::MainCheckPendingIRQ(UINT16 irq_type)
-=======
 void scsp_device::MainCheckPendingIRQ(uint16_t irq_type)
->>>>>>> upstream/master
 {
 	m_mcipd |= irq_type;
 
@@ -360,11 +294,7 @@ void scsp_device::MainCheckPendingIRQ(uint16_t irq_type)
 
 void scsp_device::ResetInterrupts()
 {
-<<<<<<< HEAD
-	UINT32 reset = m_udata.data[0x22/2];
-=======
 	uint32_t reset = m_udata.data[0x22/2];
->>>>>>> upstream/master
 
 	if (reset & 0x40)
 	{
@@ -505,17 +435,10 @@ int scsp_device::EG_Update(SCSP_SLOT *slot)
 	return (slot->EG.volume>>EG_SHIFT)<<(SHIFT-10);
 }
 
-<<<<<<< HEAD
-UINT32 scsp_device::Step(SCSP_SLOT *slot)
-{
-	int octave=(OCT(slot)^8)-8+SHIFT-10;
-	UINT32 Fn=FNS(slot)+(1 << 10);
-=======
 uint32_t scsp_device::Step(SCSP_SLOT *slot)
 {
 	int octave=(OCT(slot)^8)-8+SHIFT-10;
 	uint32_t Fn=FNS(slot)+(1 << 10);
->>>>>>> upstream/master
 	if (octave >= 0)
 	{
 		Fn<<=octave;
@@ -539,11 +462,7 @@ void scsp_device::Compute_LFO(SCSP_SLOT *slot)
 
 void scsp_device::StartSlot(SCSP_SLOT *slot)
 {
-<<<<<<< HEAD
-	UINT32 start_offset;
-=======
 	uint32_t start_offset;
->>>>>>> upstream/master
 
 	slot->active=1;
 	start_offset = PCM8B(slot) ? SA(slot) : SA(slot) & 0x7FFFE;
@@ -581,38 +500,15 @@ void scsp_device::init()
 {
 	int i;
 
-<<<<<<< HEAD
-	SCSPDSP_Init(&m_DSP);
-
-	m_IrqTimA = m_IrqTimBC = m_IrqMidi = 0;
-	m_MidiR=m_MidiW=0;
-	m_MidiOutR=m_MidiOutW=0;
-=======
 	m_DSP.Init();
 
 	m_IrqTimA = m_IrqTimBC = m_IrqMidi = 0;
 	m_MidiR=m_MidiW = 0;
 	m_MidiOutR = m_MidiOutW = 0;
->>>>>>> upstream/master
 
 	// get SCSP RAM
 	if (strcmp(tag(), ":scsp") == 0 || strcmp(tag(), ":scsp1") == 0)
 	{
-<<<<<<< HEAD
-		m_Master=1;
-	}
-	else
-	{
-		m_Master=0;
-	}
-
-	m_SCSPRAM = region()->base();
-	if (m_SCSPRAM)
-	{
-		m_SCSPRAM_LENGTH = region()->bytes();
-		m_DSP.SCSPRAM = (UINT16 *)m_SCSPRAM;
-		m_DSP.SCSPRAM_LENGTH = m_SCSPRAM_LENGTH/2;
-=======
 		m_Master = 1;
 	}
 	else
@@ -629,7 +525,6 @@ void scsp_device::init()
 		m_SCSPRAM_LENGTH = ram_region->bytes();
 		m_DSP.SCSPRAM = (uint16_t *)m_SCSPRAM;
 		m_DSP.SCSPRAM_LENGTH = m_SCSPRAM_LENGTH / 2;
->>>>>>> upstream/master
 		m_SCSPRAM += m_roffset;
 	}
 
@@ -641,11 +536,7 @@ void scsp_device::init()
 	{
 		float envDB=((float)(3*(i-0x3ff)))/32.0f;
 		float scale=(float)(1<<SHIFT);
-<<<<<<< HEAD
-		m_EG_TABLE[i]=(INT32)(powf(10.0f,envDB/20.0f)*scale);
-=======
 		m_EG_TABLE[i]=(int32_t)(powf(10.0f,envDB/20.0f)*scale);
->>>>>>> upstream/master
 	}
 
 	for(i=0;i<0x10000;++i)
@@ -653,17 +544,10 @@ void scsp_device::init()
 		int iTL =(i>>0x0)&0xff;
 		int iPAN=(i>>0x8)&0x1f;
 		int iSDL=(i>>0xD)&0x07;
-<<<<<<< HEAD
-		float TL=1.0f;
-		float SegaDB=0.0f;
-		float fSDL=1.0f;
-		float PAN=1.0f;
-=======
 		float TL;
 		float SegaDB=0.0f;
 		float fSDL;
 		float PAN;
->>>>>>> upstream/master
 		float LPAN,RPAN;
 
 		if(iTL&0x01) SegaDB-=0.4f;
@@ -732,22 +616,13 @@ void scsp_device::init()
 	{
 		m_Slots[i].slot=i;
 		m_Slots[i].active=0;
-<<<<<<< HEAD
-		m_Slots[i].base=NULL;
-=======
 		m_Slots[i].base=nullptr;
->>>>>>> upstream/master
 		m_Slots[i].EG.state=SCSP_RELEASE;
 	}
 
 	LFO_Init();
-<<<<<<< HEAD
-	m_buffertmpl=auto_alloc_array_clear(machine(), signed int, 44100);
-	m_buffertmpr=auto_alloc_array_clear(machine(), signed int, 44100);
-=======
 	m_buffertmpl=make_unique_clear<int32_t[]>(44100);
 	m_buffertmpr=make_unique_clear<int32_t[]>(44100);
->>>>>>> upstream/master
 
 	// no "pend"
 	m_udata.data[0x20/2] = 0;
@@ -852,11 +727,7 @@ void scsp_device::UpdateReg(address_space &space, int reg)
 		case 0x19:
 			if(m_Master)
 			{
-<<<<<<< HEAD
-				UINT32 time;
-=======
 				uint32_t time;
->>>>>>> upstream/master
 
 				m_TimPris[0]=1<<((m_udata.data[0x18/2]>>8)&0x7);
 				m_TimCnt[0]=(m_udata.data[0x18/2]&0xff)<<8;
@@ -875,11 +746,7 @@ void scsp_device::UpdateReg(address_space &space, int reg)
 		case 0x1b:
 			if(m_Master)
 			{
-<<<<<<< HEAD
-				UINT32 time;
-=======
 				uint32_t time;
->>>>>>> upstream/master
 
 				m_TimPris[1]=1<<((m_udata.data[0x1A/2]>>8)&0x7);
 				m_TimCnt[1]=(m_udata.data[0x1A/2]&0xff)<<8;
@@ -898,11 +765,7 @@ void scsp_device::UpdateReg(address_space &space, int reg)
 		case 0x1D:
 			if(m_Master)
 			{
-<<<<<<< HEAD
-				UINT32 time;
-=======
 				uint32_t time;
->>>>>>> upstream/master
 
 				m_TimPris[2]=1<<((m_udata.data[0x1C/2]>>8)&0x7);
 				m_TimCnt[2]=(m_udata.data[0x1C/2]&0xff)<<8;
@@ -1092,11 +955,7 @@ void scsp_device::w16(address_space &space,unsigned int addr,unsigned short val)
 
 			if(addr==0xBF0)
 			{
-<<<<<<< HEAD
-				SCSPDSP_Start(&m_DSP);
-=======
 				m_DSP.Start();
->>>>>>> upstream/master
 			}
 		}
 	}
@@ -1208,15 +1067,6 @@ unsigned short scsp_device::r16(address_space &space, unsigned int addr)
 
 #define REVSIGN(v) ((~v)+1)
 
-<<<<<<< HEAD
-inline INT32 scsp_device::UpdateSlot(SCSP_SLOT *slot)
-{
-	INT32 sample;
-	int step=slot->step;
-	UINT32 addr1,addr2,addr_select;                                   // current and next sample addresses
-	UINT32 *addr[2]      = {&addr1, &addr2};                          // used for linear interpolation
-	UINT32 *slot_addr[2] = {&(slot->cur_addr), &(slot->nxt_addr)};    //
-=======
 inline int32_t scsp_device::UpdateSlot(SCSP_SLOT *slot)
 {
 	int32_t sample;
@@ -1224,7 +1074,6 @@ inline int32_t scsp_device::UpdateSlot(SCSP_SLOT *slot)
 	uint32_t addr1,addr2,addr_select;                                   // current and next sample addresses
 	uint32_t *addr[2]      = {&addr1, &addr2};                          // used for linear interpolation
 	uint32_t *slot_addr[2] = {&(slot->cur_addr), &(slot->nxt_addr)};    //
->>>>>>> upstream/master
 
 	if(SSCTL(slot)!=0)  //no FM or noise yet
 		return 0;
@@ -1248,11 +1097,7 @@ inline int32_t scsp_device::UpdateSlot(SCSP_SLOT *slot)
 
 	if(MDL(slot)!=0 || MDXSL(slot)!=0 || MDYSL(slot)!=0)
 	{
-<<<<<<< HEAD
-		INT32 smp=(m_RINGBUF[(m_BUFPTR+MDXSL(slot))&63]+m_RINGBUF[(m_BUFPTR+MDYSL(slot))&63])/2;
-=======
 		int32_t smp=(m_RINGBUF[(m_BUFPTR+MDXSL(slot))&63]+m_RINGBUF[(m_BUFPTR+MDYSL(slot))&63])/2;
->>>>>>> upstream/master
 
 		smp<<=0xA; // associate cycle with 1024
 		smp>>=0x1A-MDL(slot); // ex. for MDL=0xF, sample range corresponds to +/- 64 pi (32=2^5 cycles) so shift by 11 (16-5 == 0x1A-0xF)
@@ -1263,35 +1108,20 @@ inline int32_t scsp_device::UpdateSlot(SCSP_SLOT *slot)
 
 	if(PCM8B(slot)) //8 bit signed
 	{
-<<<<<<< HEAD
-		INT8 *p1=(signed char *) (m_SCSPRAM+BYTE_XOR_BE(((SA(slot)+addr1))&0x7FFFF));
-		INT8 *p2=(signed char *) (m_SCSPRAM+BYTE_XOR_BE(((SA(slot)+addr2))&0x7FFFF));
-		//sample=(p[0])<<8;
-		INT32 s;
-		INT32 fpart=slot->cur_addr&((1<<SHIFT)-1);
-=======
 		int8_t *p1=(signed char *) (m_SCSPRAM+BYTE_XOR_BE(((SA(slot)+addr1))&0x7FFFF));
 		int8_t *p2=(signed char *) (m_SCSPRAM+BYTE_XOR_BE(((SA(slot)+addr2))&0x7FFFF));
 		//sample=(p[0])<<8;
 		int32_t s;
 		int32_t fpart=slot->cur_addr&((1<<SHIFT)-1);
->>>>>>> upstream/master
 		s=(int) (p1[0]<<8)*((1<<SHIFT)-fpart)+(int) (p2[0]<<8)*fpart;
 		sample=(s>>SHIFT);
 	}
 	else    //16 bit signed (endianness?)
 	{
-<<<<<<< HEAD
-		INT16 *p1=(signed short *) (m_SCSPRAM+((SA(slot)+addr1)&0x7FFFE));
-		INT16 *p2=(signed short *) (m_SCSPRAM+((SA(slot)+addr2)&0x7FFFE));
-		INT32 s;
-		INT32 fpart=slot->cur_addr&((1<<SHIFT)-1);
-=======
 		int16_t *p1=(signed short *) (m_SCSPRAM+((SA(slot)+addr1)&0x7FFFE));
 		int16_t *p2=(signed short *) (m_SCSPRAM+((SA(slot)+addr2)&0x7FFFE));
 		int32_t s;
 		int32_t fpart=slot->cur_addr&((1<<SHIFT)-1);
->>>>>>> upstream/master
 		s=(int)(p1[0])*((1<<SHIFT)-fpart)+(int)(p2[0])*fpart;
 		sample=(s>>SHIFT);
 	}
@@ -1299,11 +1129,7 @@ inline int32_t scsp_device::UpdateSlot(SCSP_SLOT *slot)
 	if(SBCTL(slot)&0x1)
 		sample ^= 0x7FFF;
 	if(SBCTL(slot)&0x2)
-<<<<<<< HEAD
-		sample = (INT16)(sample^0x8000);
-=======
 		sample = (int16_t)(sample^0x8000);
->>>>>>> upstream/master
 
 	if(slot->Backwards)
 		slot->cur_addr-=step;
@@ -1322,11 +1148,7 @@ inline int32_t scsp_device::UpdateSlot(SCSP_SLOT *slot)
 
 	for (addr_select=0;addr_select<2;addr_select++)
 	{
-<<<<<<< HEAD
-		INT32 rem_addr;
-=======
 		int32_t rem_addr;
->>>>>>> upstream/master
 		switch(LPCTL(slot))
 		{
 		case 0: //no loop
@@ -1414,21 +1236,13 @@ void scsp_device::DoMasterSamples(int nsamples)
 
 	for(s=0;s<nsamples;++s)
 	{
-<<<<<<< HEAD
-		INT32 smpl, smpr;
-=======
 		int32_t smpl, smpr;
->>>>>>> upstream/master
 
 		smpl = smpr = 0;
 
 		for(sl=0;sl<32;++sl)
 		{
-<<<<<<< HEAD
-#if FM_DELAY
-=======
 #if SCSP_FM_DELAY
->>>>>>> upstream/master
 			m_RBUFDST=m_DELAYBUF+m_DELAYPTR;
 #else
 			m_RBUFDST=m_RINGBUF+m_BUFPTR;
@@ -1442,11 +1256,7 @@ void scsp_device::DoMasterSamples(int nsamples)
 				sample=UpdateSlot(slot);
 
 				Enc=((TL(slot))<<0x0)|((IMXL(slot))<<0xd);
-<<<<<<< HEAD
-				SCSPDSP_SetSample(&m_DSP,(sample*m_LPANTABLE[Enc])>>(SHIFT-2),ISEL(slot),IMXL(slot));
-=======
 				m_DSP.SetSample((sample*m_LPANTABLE[Enc])>>(SHIFT-2),ISEL(slot),IMXL(slot));
->>>>>>> upstream/master
 				Enc=((TL(slot))<<0x0)|((DIPAN(slot))<<0x8)|((DISDL(slot))<<0xd);
 				{
 					smpl+=(sample*m_LPANTABLE[Enc])>>SHIFT;
@@ -1454,20 +1264,6 @@ void scsp_device::DoMasterSamples(int nsamples)
 				}
 			}
 
-<<<<<<< HEAD
-#if FM_DELAY
-			m_RINGBUF[(m_BUFPTR+64-(FM_DELAY-1))&63] = m_DELAYBUF[(m_DELAYPTR+FM_DELAY-(FM_DELAY-1))%FM_DELAY];
-#endif
-			++m_BUFPTR;
-			m_BUFPTR&=63;
-#if FM_DELAY
-			++m_DELAYPTR;
-			if(m_DELAYPTR>FM_DELAY-1) m_DELAYPTR=0;
-#endif
-		}
-
-		SCSPDSP_Step(&m_DSP);
-=======
 #if SCSP_FM_DELAY
 			m_RINGBUF[(m_BUFPTR+64-(SCSP_FM_DELAY-1))&63] = m_DELAYBUF[(m_DELAYPTR+SCSP_FM_DELAY-(SCSP_FM_DELAY-1))%SCSP_FM_DELAY];
 #endif
@@ -1480,7 +1276,6 @@ void scsp_device::DoMasterSamples(int nsamples)
 		}
 
 		m_DSP.Step();
->>>>>>> upstream/master
 
 		for(i=0;i<16;++i)
 		{
@@ -1501,11 +1296,7 @@ void scsp_device::DoMasterSamples(int nsamples)
 /* TODO: this needs to be timer-ized */
 void scsp_device::exec_dma(address_space &space)
 {
-<<<<<<< HEAD
-	static UINT16 tmp_dma[3];
-=======
 	static uint16_t tmp_dma[3];
->>>>>>> upstream/master
 	int i;
 
 	logerror("SCSP: DMA transfer START\n"
@@ -1538,11 +1329,7 @@ void scsp_device::exec_dma(address_space &space)
 		{
 			for(i=0;i < m_dma.dtlg;i+=2)
 			{
-<<<<<<< HEAD
-				UINT16 tmp;
-=======
 				uint16_t tmp;
->>>>>>> upstream/master
 				tmp = r16(space, m_dma.drga);
 				m_SCSPRAM[m_dma.dmea] = tmp & 0xff;
 				m_SCSPRAM[m_dma.dmea+1] = tmp>>8;
@@ -1566,11 +1353,7 @@ void scsp_device::exec_dma(address_space &space)
 		{
 			for(i=0;i < m_dma.dtlg;i+=2)
 			{
-<<<<<<< HEAD
-				UINT16 tmp;
-=======
 				uint16_t tmp;
->>>>>>> upstream/master
 				tmp = m_SCSPRAM[m_dma.dmea];
 				tmp|= m_SCSPRAM[m_dma.dmea+1]<<8;
 				w16(space, m_dma.drga, tmp);
@@ -1608,20 +1391,10 @@ int IRQCB(void *param)
 
 void scsp_device::set_ram_base(void *base)
 {
-<<<<<<< HEAD
-	if (this)
-	{
-		m_SCSPRAM = (unsigned char *)base;
-		m_DSP.SCSPRAM = (UINT16 *)base;
-		m_SCSPRAM_LENGTH = 0x80000;
-		m_DSP.SCSPRAM_LENGTH = 0x80000/2;
-	}
-=======
 	m_SCSPRAM = (unsigned char *)base;
 	m_DSP.SCSPRAM = (uint16_t *)base;
 	m_SCSPRAM_LENGTH = 0x80000;
 	m_DSP.SCSPRAM_LENGTH = 0x80000/2;
->>>>>>> upstream/master
 }
 
 
@@ -1633,11 +1406,7 @@ READ16_MEMBER( scsp_device::read )
 
 WRITE16_MEMBER( scsp_device::write )
 {
-<<<<<<< HEAD
-	UINT16 tmp;
-=======
 	uint16_t tmp;
->>>>>>> upstream/master
 
 	m_stream->update();
 
@@ -1778,11 +1547,7 @@ signed int scsp_device::ALFO_Step(SCSP_LFO_t *LFO)
 	return p<<(SHIFT-LFO_SHIFT);
 }
 
-<<<<<<< HEAD
-void scsp_device::LFO_ComputeStep(SCSP_LFO_t *LFO,UINT32 LFOF,UINT32 LFOWS,UINT32 LFOS,int ALFO)
-=======
 void scsp_device::LFO_ComputeStep(SCSP_LFO_t *LFO,uint32_t LFOF,uint32_t LFOWS,uint32_t LFOS,int ALFO)
->>>>>>> upstream/master
 {
 	float step=(float) LFOFreq[LFOF]*256.0f/(float)44100;
 	LFO->phase_step=(unsigned int) ((float) (1<<LFO_SHIFT)*step);

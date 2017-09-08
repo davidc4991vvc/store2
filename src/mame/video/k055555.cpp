@@ -64,21 +64,13 @@ Lots of byte-wise registers.  A partial map:
 
 
 #define VERBOSE 0
-<<<<<<< HEAD
-#define LOG(x) do { if (VERBOSE) logerror x; } while (0)
-=======
 #include "logmacro.h"
 
->>>>>>> upstream/master
 
 /* K055555 5-bit-per-pixel priority encoder */
 /* This device has 48 8-bit-wide registers */
 
-<<<<<<< HEAD
-void k055555_device::K055555_write_reg(UINT8 regnum, UINT8 regdat)
-=======
 void k055555_device::K055555_write_reg(uint8_t regnum, uint8_t regdat)
->>>>>>> upstream/master
 {
 	static const char *const rnames[46] =
 	{
@@ -92,11 +84,7 @@ void k055555_device::K055555_write_reg(uint8_t regnum, uint8_t regdat)
 
 	if (regdat != m_regs[regnum])
 	{
-<<<<<<< HEAD
-		LOG(("5^5: %x to reg %x (%s)\n", regdat, regnum, rnames[regnum]));
-=======
 		LOG("5^5: %x to reg %x (%s)\n", regdat, regnum, rnames[regnum]);
->>>>>>> upstream/master
 	}
 
 	m_regs[regnum] = regdat;
@@ -104,36 +92,13 @@ void k055555_device::K055555_write_reg(uint8_t regnum, uint8_t regdat)
 
 WRITE32_MEMBER( k055555_device::K055555_long_w )
 {
-<<<<<<< HEAD
-	UINT8 regnum, regdat;
-
-=======
 	uint8_t regnum, regdat;
 
 	// le2 accesses this area with a dword write ...
->>>>>>> upstream/master
 	if (ACCESSING_BITS_24_31)
 	{
 		regnum = offset<<1;
 		regdat = data>>24;
-<<<<<<< HEAD
-	}
-	else
-	{
-		if (ACCESSING_BITS_8_15)
-		{
-			regnum = (offset<<1)+1;
-			regdat = data>>8;
-		}
-		else
-		{
-//          logerror("5^5: unknown mem_mask %08x\n", mem_mask);
-			return;
-		}
-	}
-
-	K055555_write_reg(regnum, regdat);
-=======
 		K055555_write_reg(regnum, regdat);
 	}
 
@@ -144,7 +109,6 @@ WRITE32_MEMBER( k055555_device::K055555_long_w )
 		K055555_write_reg(regnum, regdat);
 	}
 
->>>>>>> upstream/master
 }
 
 WRITE16_MEMBER( k055555_device::K055555_word_w )
@@ -177,27 +141,10 @@ int k055555_device::K055555_get_palette_index(int idx)
 
 
 
-<<<<<<< HEAD
-const device_type K055555 = &device_creator<k055555_device>;
-
-k055555_device::k055555_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, K055555, "K055555 Priority Encoder", tag, owner, clock, "k055555", __FILE__)
-{
-}
-
-//-------------------------------------------------
-//  device_config_complete - perform any
-//  operations now that the configuration is
-//  complete
-//-------------------------------------------------
-
-void k055555_device::device_config_complete()
-=======
 DEFINE_DEVICE_TYPE(K055555, k055555_device, "k055555", "K055555 Priority Encoder")
 
 k055555_device::k055555_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, K055555, tag, owner, clock)
->>>>>>> upstream/master
 {
 }
 
@@ -217,9 +164,5 @@ void k055555_device::device_start()
 
 void k055555_device::device_reset()
 {
-<<<<<<< HEAD
-	memset(m_regs, 0, 64 * sizeof(UINT8));
-=======
 	std::fill(std::begin(m_regs), std::end(m_regs), 0);
->>>>>>> upstream/master
 }

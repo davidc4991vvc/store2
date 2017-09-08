@@ -6,15 +6,10 @@
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-#ifndef __PC_KEYBOARDS_H__
-#define __PC_KEYBOARDS_H__
-=======
 #ifndef MAME_BUS_PC_KBD_KEYBOARDS_H
 #define MAME_BUS_PC_KBD_KEYBOARDS_H
 
 #pragma once
->>>>>>> upstream/master
 
 
 // PC XT protocol keyboards
@@ -35,8 +30,4 @@ SLOT_INTERFACE_EXTERN(pc_xt_keyboards);
 
 SLOT_INTERFACE_EXTERN(pc_at_keyboards);
 
-<<<<<<< HEAD
-#endif  /* __KB_KEYBOARDS_H__ */
-=======
 #endif // MAME_BUS_PC_KBD_KEYBOARDS_H
->>>>>>> upstream/master

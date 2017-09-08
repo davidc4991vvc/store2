@@ -2,11 +2,7 @@
 // copyright-holders:Nicola Salmoria
 /***************************************************************************
 
-<<<<<<< HEAD
-  video.c
-=======
   bankp.cpp
->>>>>>> upstream/master
 
   Functions to emulate the video hardware of the machine.
 
@@ -41,11 +37,7 @@
 
 PALETTE_INIT_MEMBER(bankp_state, bankp)
 {
-<<<<<<< HEAD
-	const UINT8 *color_prom = memregion("proms")->base();
-=======
 	const uint8_t *color_prom = memregion("proms")->base();
->>>>>>> upstream/master
 	int i;
 
 	for (i = 0; i < 32; i++)
@@ -88,60 +80,36 @@ PALETTE_INIT_MEMBER(bankp_state, bankp)
 	/* the bottom half of the PROM seems to be not used */
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER(bankp_state::bankp_scroll_w)
-=======
 WRITE8_MEMBER(bankp_state::scroll_w)
->>>>>>> upstream/master
 {
 	m_scroll_x = data;
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER(bankp_state::bankp_videoram_w)
-=======
 WRITE8_MEMBER(bankp_state::videoram_w)
->>>>>>> upstream/master
 {
 	m_videoram[offset] = data;
 	m_fg_tilemap->mark_tile_dirty(offset);
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER(bankp_state::bankp_colorram_w)
-=======
 WRITE8_MEMBER(bankp_state::colorram_w)
->>>>>>> upstream/master
 {
 	m_colorram[offset] = data;
 	m_fg_tilemap->mark_tile_dirty(offset);
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER(bankp_state::bankp_videoram2_w)
-=======
 WRITE8_MEMBER(bankp_state::videoram2_w)
->>>>>>> upstream/master
 {
 	m_videoram2[offset] = data;
 	m_bg_tilemap->mark_tile_dirty(offset);
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER(bankp_state::bankp_colorram2_w)
-=======
 WRITE8_MEMBER(bankp_state::colorram2_w)
->>>>>>> upstream/master
 {
 	m_colorram2[offset] = data;
 	m_bg_tilemap->mark_tile_dirty(offset);
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER(bankp_state::bankp_out_w)
-=======
 WRITE8_MEMBER(bankp_state::out_w)
->>>>>>> upstream/master
 {
 	/* bits 0-1 are playfield priority */
 	/* TODO: understand how this works */
@@ -180,29 +148,14 @@ TILE_GET_INFO_MEMBER(bankp_state::get_fg_tile_info)
 
 void bankp_state::video_start()
 {
-<<<<<<< HEAD
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(bankp_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
-	m_fg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(bankp_state::get_fg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
-=======
 	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(bankp_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
 	m_fg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(bankp_state::get_fg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
->>>>>>> upstream/master
 
 	m_bg_tilemap->configure_groups(*m_gfxdecode->gfx(1), 0);
 	m_fg_tilemap->configure_groups(*m_gfxdecode->gfx(0), 0);
 
 	save_item(NAME(m_scroll_x));
 	save_item(NAME(m_priority));
-<<<<<<< HEAD
-}
-
-UINT32 bankp_state::screen_update_bankp(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-{
-	if (flip_screen())
-	{
-		m_fg_tilemap->set_scrollx(0, -m_scroll_x);
-		m_bg_tilemap->set_scrollx(0, 0);
-=======
 	save_item(NAME(m_nmi_mask));
 }
 
@@ -212,7 +165,6 @@ uint32_t bankp_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap,
 	{
 		m_fg_tilemap->set_scrollx(0, 240-m_scroll_x);
 		m_bg_tilemap->set_scrollx(0, 240);
->>>>>>> upstream/master
 	}
 	else
 	{

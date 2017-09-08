@@ -56,11 +56,7 @@
 //  ppc_frontend - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-ppc_frontend::ppc_frontend(ppc_device *ppc, UINT32 window_start, UINT32 window_end, UINT32 max_sequence)
-=======
 ppc_frontend::ppc_frontend(ppc_device *ppc, uint32_t window_start, uint32_t window_end, uint32_t max_sequence)
->>>>>>> upstream/master
 	: drc_frontend(*ppc, window_start, window_end, max_sequence),
 	m_ppc(ppc)
 {
@@ -74,11 +70,7 @@ ppc_frontend::ppc_frontend(ppc_device *ppc, uint32_t window_start, uint32_t wind
 
 bool ppc_frontend::describe(opcode_desc &desc, const opcode_desc *prev)
 {
-<<<<<<< HEAD
-	UINT32 op, opswitch;
-=======
 	uint32_t op, opswitch;
->>>>>>> upstream/master
 	int regnum;
 
 	// compute the physical PC
@@ -160,11 +152,7 @@ bool ppc_frontend::describe(opcode_desc &desc, const opcode_desc *prev)
 			{
 				CR_BIT_USED(desc, G_BI(op));
 				// branch folding
-<<<<<<< HEAD
-				if (prev == NULL || prev->regout[2] == 0)
-=======
 				if (prev == nullptr || prev->regout[2] == 0)
->>>>>>> upstream/master
 					desc.cycles = 0;
 			}
 			if (!(G_BO(op) & 0x04))
@@ -178,11 +166,7 @@ bool ppc_frontend::describe(opcode_desc &desc, const opcode_desc *prev)
 				desc.flags |= OPFLAG_IS_UNCONDITIONAL_BRANCH | OPFLAG_END_SEQUENCE;
 			else
 				desc.flags |= OPFLAG_IS_CONDITIONAL_BRANCH;
-<<<<<<< HEAD
-			desc.targetpc = (INT16)(G_BD(op) << 2) + ((op & M_AA) ? 0 : desc.pc);
-=======
 			desc.targetpc = (int16_t)(G_BD(op) << 2) + ((op & M_AA) ? 0 : desc.pc);
->>>>>>> upstream/master
 			if (desc.targetpc == desc.pc && desc.cycles == 0)
 				desc.cycles = 1;
 			return true;
@@ -203,11 +187,7 @@ bool ppc_frontend::describe(opcode_desc &desc, const opcode_desc *prev)
 			if (op & M_LK)
 				LR_MODIFIED(desc);
 			desc.flags |= OPFLAG_IS_UNCONDITIONAL_BRANCH | OPFLAG_END_SEQUENCE;
-<<<<<<< HEAD
-			desc.targetpc = ((INT32)(G_LI(op) << 8) >> 6) + ((op & M_AA) ? 0 : desc.pc);
-=======
 			desc.targetpc = ((int32_t)(G_LI(op) << 8) >> 6) + ((op & M_AA) ? 0 : desc.pc);
->>>>>>> upstream/master
 			// branch folding
 			if (desc.targetpc != desc.pc)
 				desc.cycles = 0;
@@ -382,15 +362,9 @@ bool ppc_frontend::describe(opcode_desc &desc, const opcode_desc *prev)
     0x13 group
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-bool ppc_frontend::describe_13(UINT32 op, opcode_desc &desc, const opcode_desc *prev)
-{
-	UINT32 opswitch = (op >> 1) & 0x3ff;
-=======
 bool ppc_frontend::describe_13(uint32_t op, opcode_desc &desc, const opcode_desc *prev)
 {
 	uint32_t opswitch = (op >> 1) & 0x3ff;
->>>>>>> upstream/master
 
 	switch (opswitch)
 	{
@@ -398,11 +372,7 @@ bool ppc_frontend::describe_13(uint32_t op, opcode_desc &desc, const opcode_desc
 			CR_USED(desc, G_CRFS(op));
 			CR_MODIFIED(desc, G_CRFD(op));
 			// CR logical folding
-<<<<<<< HEAD
-			if (prev == NULL || prev->regout[2] == 0)
-=======
 			if (prev == nullptr || prev->regout[2] == 0)
->>>>>>> upstream/master
 				desc.cycles = 0;
 			return true;
 
@@ -436,11 +406,7 @@ bool ppc_frontend::describe_13(uint32_t op, opcode_desc &desc, const opcode_desc
 			CR_BIT_USED(desc, G_CRBB(op));
 			CR_BIT_MODIFIED(desc, G_CRBD(op));
 			// CR logical folding
-<<<<<<< HEAD
-			if (prev == NULL || prev->regout[2] == 0)
-=======
 			if (prev == nullptr || prev->regout[2] == 0)
->>>>>>> upstream/master
 				desc.cycles = 0;
 			return true;
 
@@ -497,15 +463,9 @@ bool ppc_frontend::describe_13(uint32_t op, opcode_desc &desc, const opcode_desc
     0x1f group
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-bool ppc_frontend::describe_1f(UINT32 op, opcode_desc &desc, const opcode_desc *prev)
-{
-	UINT32 opswitch = (op >> 1) & 0x3ff;
-=======
 bool ppc_frontend::describe_1f(uint32_t op, opcode_desc &desc, const opcode_desc *prev)
 {
 	uint32_t opswitch = (op >> 1) & 0x3ff;
->>>>>>> upstream/master
 	int spr, regnum;
 
 	switch (opswitch)
@@ -1202,15 +1162,9 @@ bool ppc_frontend::describe_1f(uint32_t op, opcode_desc &desc, const opcode_desc
     0x3b group
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-bool ppc_frontend::describe_3b(UINT32 op, opcode_desc &desc, const opcode_desc *prev)
-{
-	UINT32 opswitch = (op >> 1) & 0x1f;
-=======
 bool ppc_frontend::describe_3b(uint32_t op, opcode_desc &desc, const opcode_desc *prev)
 {
 	uint32_t opswitch = (op >> 1) & 0x1f;
->>>>>>> upstream/master
 
 	if (!(m_ppc->m_cap & PPCCAP_FPU))
 		return false;
@@ -1284,15 +1238,9 @@ bool ppc_frontend::describe_3b(uint32_t op, opcode_desc &desc, const opcode_desc
     0x3f group
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-bool ppc_frontend::describe_3f(UINT32 op, opcode_desc &desc, const opcode_desc *prev)
-{
-	UINT32 opswitch = (op >> 1) & 0x3ff;
-=======
 bool ppc_frontend::describe_3f(uint32_t op, opcode_desc &desc, const opcode_desc *prev)
 {
 	uint32_t opswitch = (op >> 1) & 0x3ff;
->>>>>>> upstream/master
 
 	if (!(m_ppc->m_cap & PPCCAP_FPU))
 		return false;

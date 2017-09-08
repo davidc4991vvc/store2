@@ -1,9 +1,5 @@
 // license:BSD-3-Clause
-<<<<<<< HEAD
-// copyright-holders:Brad Oliver
-=======
 // copyright-holders:Brad Oliver,Stephane Humbert
->>>>>>> upstream/master
 /***************************************************************************
 
   machine.c
@@ -21,113 +17,17 @@
 #define ARKANOID_BOOTLEG_VERBOSE 1
 
 
-<<<<<<< HEAD
-READ8_MEMBER(arkanoid_state::arkanoid_Z80_mcu_r)
-{
-	/* return the last value the 68705 wrote, and mark that we've read it */
-	m_m68705write = 0;
-	return m_toz80;
-}
-
-TIMER_CALLBACK_MEMBER(arkanoid_state::test)
-{
-	m_z80write = 1;
-	m_fromz80 = param;
-}
-
-WRITE8_MEMBER(arkanoid_state::arkanoid_Z80_mcu_w)
-{
-	machine().scheduler().synchronize(timer_expired_delegate(FUNC(arkanoid_state::test),this), data);
-	/* boost the interleave for a few usecs to make sure it is read successfully */
-	machine().scheduler().boost_interleave(attotime::zero, attotime::from_usec(10));
-}
-
-READ8_MEMBER(arkanoid_state::arkanoid_68705_port_a_r)
-{
-	return (m_port_a_out & m_ddr_a) | (m_port_a_in & ~m_ddr_a);
-}
-
-WRITE8_MEMBER(arkanoid_state::arkanoid_68705_port_a_w)
-{
-	m_port_a_out = data;
-}
-
-WRITE8_MEMBER(arkanoid_state::arkanoid_68705_ddr_a_w)
-{
-	m_ddr_a = data;
-}
-
-
-READ8_MEMBER(arkanoid_state::arkanoid_68705_port_c_r)
-{
-	int res = 0;
-
-	/* bit 0 is high on a write strobe; clear it once we've detected it */
-	if (m_z80write)
-		res |= 0x01;
-
-	/* bit 1 is high if the previous write has been read */
-	if (!m_m68705write)
-		res |= 0x02;
-
-	return (m_port_c_out & m_ddr_c) | (res & ~m_ddr_c);
-}
-
-WRITE8_MEMBER(arkanoid_state::arkanoid_68705_port_c_w)
-{
-	if ((m_ddr_c & 0x04) && (~data & 0x04) && (m_port_c_out & 0x04))
-	{
-		/* return the last value the Z80 wrote */
-		m_z80write = 0;
-		m_port_a_in = m_fromz80;
-	}
-	if ((m_ddr_c & 0x08) && (~data & 0x08) && (m_port_c_out & 0x08))
-	{
-		/* a write from the 68705 to the Z80; remember its value */
-		m_m68705write = 1;
-		m_toz80 = m_port_a_out;
-	}
-
-	m_port_c_out = data;
-}
-
-WRITE8_MEMBER(arkanoid_state::arkanoid_68705_ddr_c_w)
-{
-	m_ddr_c = data;
-}
-
-CUSTOM_INPUT_MEMBER(arkanoid_state::arkanoid_68705_input_r)
-{
-	int res = 0;
-
-	/* bit 0x40 of comes from the sticky bit */
-	if (!m_z80write)
-		res |= 0x01;
-
-	/* bit 0x80 comes from a write latch */
-	if (!m_m68705write)
-		res |= 0x02;
-
-	return res;
-=======
 CUSTOM_INPUT_MEMBER(arkanoid_state::arkanoid_semaphore_input_r)
 {
 	// bit 0 is host semaphore flag, bit 1 is MCU semaphore flag (both active low)
 	return
 			((CLEAR_LINE != m_mcuintf->host_semaphore_r()) ? 0x00 : 0x01) |
 			((CLEAR_LINE != m_mcuintf->mcu_semaphore_r()) ? 0x00 : 0x02);
->>>>>>> upstream/master
 }
 
 CUSTOM_INPUT_MEMBER(arkanoid_state::arkanoid_input_mux)
 {
-<<<<<<< HEAD
-	const char *tag1 = (const char *)param;
-	const char *tag2 = tag1 + strlen(tag1) + 1;
-	return ioport((m_paddle_select == 0) ? tag1 : tag2)->read();
-=======
 	return m_muxports[(0 == m_paddle_select) ? 0 : 1]->read();
->>>>>>> upstream/master
 }
 
 /*
@@ -193,11 +93,7 @@ TO DO (2006.09.12) :
 /* Kludge for some bootlegs that read this address */
 READ8_MEMBER(arkanoid_state::arkanoid_bootleg_f000_r)
 {
-<<<<<<< HEAD
-	UINT8 arkanoid_bootleg_val = 0x00;
-=======
 	uint8_t arkanoid_bootleg_val = 0x00;
->>>>>>> upstream/master
 
 	switch (m_bootleg_id)
 	{
@@ -239,11 +135,7 @@ READ8_MEMBER(arkanoid_state::arkanoid_bootleg_f000_r)
 /* Kludge for some bootlegs that read this address */
 READ8_MEMBER(arkanoid_state::arkanoid_bootleg_f002_r)
 {
-<<<<<<< HEAD
-	UINT8 arkanoid_bootleg_val = 0x00;
-=======
 	uint8_t arkanoid_bootleg_val = 0x00;
->>>>>>> upstream/master
 
 	switch (m_bootleg_id)
 	{
@@ -592,15 +484,9 @@ READ8_MEMBER(arkanoid_state::block2_bootleg_f000_r)
 /* Kludge for some bootlegs that read this address */
 READ8_MEMBER(arkanoid_state::arkanoid_bootleg_d008_r)
 {
-<<<<<<< HEAD
-	UINT8 arkanoid_bootleg_d008_bit[8];
-	UINT8 arkanoid_bootleg_d008_val;
-	UINT8 arkanoid_paddle_value = ioport("MUX")->read();
-=======
 	uint8_t arkanoid_bootleg_d008_bit[8];
 	uint8_t arkanoid_bootleg_d008_val;
 	uint8_t arkanoid_paddle_value = ioport("MUX")->read();
->>>>>>> upstream/master
 	int b;
 
 	arkanoid_bootleg_d008_bit[4] = arkanoid_bootleg_d008_bit[6] = arkanoid_bootleg_d008_bit[7] = 0;  /* untested bits */

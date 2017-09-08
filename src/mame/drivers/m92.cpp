@@ -201,47 +201,6 @@ psoldier dip locations still need verification.
 *****************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/nec/nec.h"
-#include "cpu/nec/v25.h"
-#include "includes/m92.h"
-#include "includes/iremipt.h"
-#include "machine/irem_cpu.h"
-#include "sound/2151intf.h"
-#include "sound/iremga20.h"
-#include "sound/okim6295.h"
-
-
-// I haven't managed to find a way to keep nbbatman happy when using the proper upd71059c device
-// so we just use an ugly hack and get the vector base from it for now until this is properly resolved.
-#define USE_HACKED_IRQS
-
-#ifdef USE_HACKED_IRQS
-
-#define M92_TRIGGER_IRQ0 m_maincpu->set_input_line_and_vector(0, HOLD_LINE, m_upd71059c->HACK_get_base_vector()+0 ); /* VBL interrupt */
-#define M92_TRIGGER_IRQ1 m_maincpu->set_input_line_and_vector(0, HOLD_LINE, m_upd71059c->HACK_get_base_vector()+1 ); /* Sprite buffer complete interrupt */
-#define M92_TRIGGER_IRQ2 m_maincpu->set_input_line_and_vector(0, HOLD_LINE, m_upd71059c->HACK_get_base_vector()+2 ); /* Raster interrupt */
-#define M92_TRIGGER_IRQ3 m_maincpu->set_input_line_and_vector(0, HOLD_LINE, m_upd71059c->HACK_get_base_vector()+3 ); /* Sound cpu->Main cpu interrupt */
-// not used due to HOLD LINE logic
-#define M92_CLEAR_IRQ0 ;
-#define M92_CLEAR_IRQ1 ;
-#define M92_CLEAR_IRQ2 ;
-#define M92_CLEAR_IRQ3 ;
-
-#else
-
-#define M92_TRIGGER_IRQ0 m_upd71059c->ir0_w(1);
-#define M92_TRIGGER_IRQ1 m_upd71059c->ir1_w(1);
-#define M92_TRIGGER_IRQ2 m_upd71059c->ir2_w(1);
-#define M92_TRIGGER_IRQ3 m_upd71059c->ir3_w(1);
-// not sure when these should happen, probably the source of our issues
-#define M92_CLEAR_IRQ0 m_upd71059c->ir0_w(0);
-#define M92_CLEAR_IRQ1 m_upd71059c->ir1_w(0);
-#define M92_CLEAR_IRQ2 m_upd71059c->ir2_w(0);
-#define M92_CLEAR_IRQ3 m_upd71059c->ir3_w(0);
-
-#endif
-=======
 #include "includes/m92.h"
 #include "includes/iremipt.h"
 
@@ -251,7 +210,6 @@ psoldier dip locations still need verification.
 #include "sound/ym2151.h"
 #include "sound/iremga20.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 /*****************************************************************************/
@@ -277,36 +235,19 @@ TIMER_DEVICE_CALLBACK_MEMBER(m92_state::m92_scanline_interrupt)
 	if (scanline == m_raster_irq_position)
 	{
 		m_screen->update_partial(scanline);
-<<<<<<< HEAD
-		M92_TRIGGER_IRQ2
-	}
-	else
-	{
-		M92_CLEAR_IRQ2
-
-=======
 		m_upd71059c->ir2_w(1);
 	}
 	else
 	{
->>>>>>> upstream/master
 		/* VBLANK interrupt */
 		if (scanline == m_screen->visible_area().max_y + 1)
 		{
 			m_screen->update_partial(scanline);
-<<<<<<< HEAD
-			M92_TRIGGER_IRQ0
-		}
-		else
-		{
-			M92_CLEAR_IRQ0
-=======
 			m_upd71059c->ir0_w(1);
 		}
 		else
 		{
 			m_upd71059c->ir0_w(0);
->>>>>>> upstream/master
 		}
 
 	}
@@ -318,22 +259,14 @@ TIMER_DEVICE_CALLBACK_MEMBER(m92_state::m92_scanline_interrupt)
 
 READ16_MEMBER(m92_state::m92_eeprom_r)
 {
-<<<<<<< HEAD
-	UINT8 *RAM = memregion("eeprom")->base();
-=======
 	uint8_t *RAM = memregion("eeprom")->base();
->>>>>>> upstream/master
 //  logerror("%05x: EEPROM RE %04x\n",space.device().safe_pc(),offset);
 	return RAM[offset] | 0xff00;
 }
 
 WRITE16_MEMBER(m92_state::m92_eeprom_w)
 {
-<<<<<<< HEAD
-	UINT8 *RAM = memregion("eeprom")->base();
-=======
 	uint8_t *RAM = memregion("eeprom")->base();
->>>>>>> upstream/master
 //  logerror("%05x: EEPROM WR %04x\n",space.device().safe_pc(),offset);
 	if (ACCESSING_BITS_0_7)
 		RAM[offset] = data;
@@ -343,13 +276,8 @@ WRITE16_MEMBER(m92_state::m92_coincounter_w)
 {
 	if (ACCESSING_BITS_0_7)
 	{
-<<<<<<< HEAD
-		coin_counter_w(machine(), 0, data & 0x01);
-		coin_counter_w(machine(), 1, data & 0x02);
-=======
 		machine().bookkeeping().coin_counter_w(0, data & 0x01);
 		machine().bookkeeping().coin_counter_w(1, data & 0x02);
->>>>>>> upstream/master
 		/* Bit 0x8 is Motor(?!), used in Hook, In The Hunt, UCops */
 		/* Bit 0x8 is Memcard related in RTypeLeo */
 		/* Bit 0x40 set in Blade Master test mode input check */
@@ -378,20 +306,13 @@ WRITE16_MEMBER(m92_state::m92_soundlatch_w)
 	if (m_soundcpu)
 		m_soundcpu->set_input_line(NEC_INPUT_LINE_INTP1, ASSERT_LINE);
 
-<<<<<<< HEAD
-	soundlatch_byte_w(space, 0, data & 0xff);
-=======
 	m_soundlatch->write(space, 0, data & 0xff);
->>>>>>> upstream/master
 }
 
 READ16_MEMBER(m92_state::m92_sound_status_r)
 {
 //logerror("%06x: read sound status\n",space.device().safe_pc());
-<<<<<<< HEAD
-=======
 	m_upd71059c->ir3_w(0);
->>>>>>> upstream/master
 	return m_sound_status;
 }
 
@@ -400,11 +321,7 @@ READ16_MEMBER(m92_state::m92_soundlatch_r)
 	if (m_soundcpu)
 		m_soundcpu->set_input_line(NEC_INPUT_LINE_INTP1, CLEAR_LINE);
 
-<<<<<<< HEAD
-	return soundlatch_byte_r(space, offset) | 0xff00;
-=======
 	return m_soundlatch->read(space, offset) | 0xff00;
->>>>>>> upstream/master
 }
 
 WRITE16_MEMBER(m92_state::m92_sound_irq_ack_w)
@@ -416,11 +333,7 @@ WRITE16_MEMBER(m92_state::m92_sound_irq_ack_w)
 WRITE16_MEMBER(m92_state::m92_sound_status_w)
 {
 	COMBINE_DATA(&m_sound_status);
-<<<<<<< HEAD
-	M92_TRIGGER_IRQ3
-=======
 	m_upd71059c->ir3_w(1);
->>>>>>> upstream/master
 
 }
 
@@ -475,11 +388,7 @@ ADDRESS_MAP_END
 
 WRITE16_MEMBER(m92_state::oki_bank_w)
 {
-<<<<<<< HEAD
-	m_oki->set_bank_base(0x40000 * ((data+1) & 0x3)); // +1?
-=======
 	m_oki->set_rom_bank((data+1) & 0x3); // +1?
->>>>>>> upstream/master
 }
 
 static ADDRESS_MAP_START( ppan_portmap, AS_IO, 16, m92_state )
@@ -525,11 +434,7 @@ static INPUT_PORTS_START( m92_2player )
 	PORT_BIT( 0x0010, IP_ACTIVE_LOW, IPT_SERVICE1 )
 	PORT_BIT( 0x0020, IP_ACTIVE_LOW, IPT_SERVICE )
 	PORT_BIT( 0x0040, IP_ACTIVE_LOW, IPT_UNUSED )
-<<<<<<< HEAD
-	PORT_BIT( 0x0080, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, m92_state,m92_sprite_busy_r, NULL)
-=======
 	PORT_BIT( 0x0080, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, m92_state,m92_sprite_busy_r, nullptr)
->>>>>>> upstream/master
 	/* DIP switch bank 3 */
 	PORT_DIPUNKNOWN_DIPLOC( 0x0100, 0x0100, "SW3:1" )
 	PORT_DIPUNKNOWN_DIPLOC( 0x0200, 0x0200, "SW3:2" )
@@ -677,8 +582,6 @@ static INPUT_PORTS_START( lethalth )
 INPUT_PORTS_END
 
 
-<<<<<<< HEAD
-=======
 static INPUT_PORTS_START( thndblst )
 	PORT_INCLUDE(lethalth)
 
@@ -690,7 +593,6 @@ static INPUT_PORTS_START( thndblst )
 INPUT_PORTS_END
 
 
->>>>>>> upstream/master
 static INPUT_PORTS_START( hook )
 	PORT_INCLUDE(m92_4player)
 
@@ -1025,17 +927,7 @@ GFXDECODE_END
 
 /***************************************************************************/
 
-<<<<<<< HEAD
-void m92_state::m92_sprite_interrupt()
-{
-	M92_TRIGGER_IRQ1
-}
-
-
-static MACHINE_CONFIG_START( m92, m92_state )
-=======
 static MACHINE_CONFIG_START( m92 )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu",V33,XTAL_18MHz/2)
@@ -1048,11 +940,7 @@ static MACHINE_CONFIG_START( m92 )
 	MCFG_CPU_ADD("soundcpu" ,V35, XTAL_14_31818MHz)
 	MCFG_CPU_PROGRAM_MAP(sound_map)
 
-<<<<<<< HEAD
-	MCFG_PIC8259_ADD( "upd71059c", INPUTLINE("maincpu", 0), VCC, NULL)
-=======
 	MCFG_PIC8259_ADD( "upd71059c", INPUTLINE("maincpu", 0), VCC, NOOP)
->>>>>>> upstream/master
 
 	MCFG_MACHINE_START_OVERRIDE(m92_state,m92)
 	MCFG_MACHINE_RESET_OVERRIDE(m92_state,m92)
@@ -1079,11 +967,8 @@ static MACHINE_CONFIG_START( m92 )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 
->>>>>>> upstream/master
 	MCFG_YM2151_ADD("ymsnd", XTAL_14_31818MHz/4)
 	MCFG_YM2151_IRQ_HANDLER(INPUTLINE("soundcpu", NEC_INPUT_LINE_INTP0))
 	MCFG_SOUND_ROUTE(0, "mono", 0.40)
@@ -1136,10 +1021,7 @@ static MACHINE_CONFIG_DERIVED( ppan, m92 )
 	MCFG_CPU_IO_MAP(ppan_portmap)
 
 	MCFG_DEVICE_REMOVE("soundcpu")
-<<<<<<< HEAD
-=======
 	MCFG_DEVICE_REMOVE("soundlatch")
->>>>>>> upstream/master
 	MCFG_DEVICE_REMOVE("ymsnd")
 	MCFG_DEVICE_REMOVE("irem")
 
@@ -1148,11 +1030,7 @@ static MACHINE_CONFIG_DERIVED( ppan, m92 )
 
 	MCFG_VIDEO_START_OVERRIDE(m92_state,ppan)
 
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki", 1000000, OKIM6295_PIN7_HIGH) // clock frequency & pin 7 not verified
-=======
 	MCFG_OKIM6295_ADD("oki", 1000000, PIN7_HIGH) // clock frequency & pin 7 not verified
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
 
@@ -1268,25 +1146,6 @@ ROM_START( skingame )
 	ROM_LOAD16_BYTE( "is-l1.5j",   0x80000, 0x40000, CRC(e4e00626) SHA1(e8c6c7ad6a367da4036915a155c8695ad90ae47b) )
 
 	ROM_REGION( 0x20000, "soundcpu", 0 )
-<<<<<<< HEAD
-	ROM_LOAD16_BYTE( "mt2sh0",  0x00001, 0x10000, CRC(1ecbea43) SHA1(8d66ef419f75569f2c83a89c3985742b8a47914f) )
-	ROM_LOAD16_BYTE( "mt2sl0",  0x00000, 0x10000, CRC(8fd5b531) SHA1(92cae3f6dac7f89b559063de3be2f38587536b65) )
-
-	ROM_REGION( 0x100000, "gfx1", 0 ) /* Tiles */
-	ROM_LOAD( "c0", 0x000000, 0x40000, CRC(7e61e4b5) SHA1(d0164862937bd506e701777c51dea1ddb3e2eda4) )
-	ROM_LOAD( "c1", 0x040000, 0x40000, CRC(0a667564) SHA1(d122e0619ae5cc0202f30270933784c954eb1e5d) )
-	ROM_LOAD( "c2", 0x080000, 0x40000, CRC(5eb44312) SHA1(75b584b63d4f4f2236a679235461f11004aa317f) )
-	ROM_LOAD( "c3", 0x0c0000, 0x40000, CRC(f2866294) SHA1(75e0071bf6282c93034dc7e73466af0f51046d01) )
-
-	ROM_REGION( 0x400000, "gfx2", 0 ) /* Sprites */
-	ROM_LOAD( "k30", 0x000000, 0x100000, CRC(8c9a2678) SHA1(e8ed119c16ddd59af9e83d243e7be25974f7cbf8) )
-	ROM_LOAD( "k31", 0x100000, 0x100000, CRC(5455df78) SHA1(9e49bde1d5a310ff611932c3429601fbddf3a7b1) )
-	ROM_LOAD( "k32", 0x200000, 0x100000, CRC(3a258c41) SHA1(1d93fcd01728929848b782870f80a8cd0af44796) )
-	ROM_LOAD( "k33", 0x300000, 0x100000, CRC(c1e91a14) SHA1(1f0dbd99d8c5067dc3f8795fc3f1bd4466f64156) )
-
-	ROM_REGION( 0x80000, "irem", 0 )
-	ROM_LOAD( "da", 0x000000, 0x80000, CRC(713b9e9f) SHA1(91384d67d4ba9c7d926fbecb077293c661b8ec83) )
-=======
 	ROM_LOAD16_BYTE( "mt2-sh0-.ic14",  0x00001, 0x10000, CRC(1ecbea43) SHA1(8d66ef419f75569f2c83a89c3985742b8a47914f) )
 	ROM_LOAD16_BYTE( "mt2-sl0-.ic17",  0x00000, 0x10000, CRC(8fd5b531) SHA1(92cae3f6dac7f89b559063de3be2f38587536b65) )
 
@@ -1304,7 +1163,6 @@ ROM_START( skingame )
 
 	ROM_REGION( 0x80000, "irem", 0 )
 	ROM_LOAD( "k0d.ic8", 0x000000, 0x80000, CRC(713b9e9f) SHA1(91384d67d4ba9c7d926fbecb077293c661b8ec83) )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x4000, "eeprom", 0 )   /* D28C64C-20 EEPROM */
 	ROM_LOAD( "mt2eep",  0x000000, 0x800, CRC(208af971) SHA1(69384cac24b7af35a031f9b60e035131a8b10cb2) )
@@ -1325,25 +1183,6 @@ ROM_START( majtitl2 )
 	ROM_LOAD16_BYTE( "is-l1.5j",    0x80000, 0x40000, CRC(e4e00626) SHA1(e8c6c7ad6a367da4036915a155c8695ad90ae47b) )
 
 	ROM_REGION( 0x20000, "soundcpu", 0 )
-<<<<<<< HEAD
-	ROM_LOAD16_BYTE( "mt2sh0",  0x00001, 0x10000, CRC(1ecbea43) SHA1(8d66ef419f75569f2c83a89c3985742b8a47914f) )
-	ROM_LOAD16_BYTE( "mt2sl0",  0x00000, 0x10000, CRC(8fd5b531) SHA1(92cae3f6dac7f89b559063de3be2f38587536b65) )
-
-	ROM_REGION( 0x100000, "gfx1", 0 ) /* Tiles */
-	ROM_LOAD( "c0", 0x000000, 0x40000, CRC(7e61e4b5) SHA1(d0164862937bd506e701777c51dea1ddb3e2eda4) )
-	ROM_LOAD( "c1", 0x040000, 0x40000, CRC(0a667564) SHA1(d122e0619ae5cc0202f30270933784c954eb1e5d) )
-	ROM_LOAD( "c2", 0x080000, 0x40000, CRC(5eb44312) SHA1(75b584b63d4f4f2236a679235461f11004aa317f) )
-	ROM_LOAD( "c3", 0x0c0000, 0x40000, CRC(f2866294) SHA1(75e0071bf6282c93034dc7e73466af0f51046d01) )
-
-	ROM_REGION( 0x400000, "gfx2", 0 ) /* Sprites */
-	ROM_LOAD( "k30", 0x000000, 0x100000, CRC(8c9a2678) SHA1(e8ed119c16ddd59af9e83d243e7be25974f7cbf8) )
-	ROM_LOAD( "k31", 0x100000, 0x100000, CRC(5455df78) SHA1(9e49bde1d5a310ff611932c3429601fbddf3a7b1) )
-	ROM_LOAD( "k32", 0x200000, 0x100000, CRC(3a258c41) SHA1(1d93fcd01728929848b782870f80a8cd0af44796) )
-	ROM_LOAD( "k33", 0x300000, 0x100000, CRC(c1e91a14) SHA1(1f0dbd99d8c5067dc3f8795fc3f1bd4466f64156) )
-
-	ROM_REGION( 0x80000, "irem", 0 )
-	ROM_LOAD( "da", 0x000000, 0x80000, CRC(713b9e9f) SHA1(91384d67d4ba9c7d926fbecb077293c661b8ec83) )
-=======
 	ROM_LOAD16_BYTE( "mt2-sh0-.ic14",  0x00001, 0x10000, CRC(1ecbea43) SHA1(8d66ef419f75569f2c83a89c3985742b8a47914f) )
 	ROM_LOAD16_BYTE( "mt2-sl0-.ic17",  0x00000, 0x10000, CRC(8fd5b531) SHA1(92cae3f6dac7f89b559063de3be2f38587536b65) )
 
@@ -1438,7 +1277,6 @@ ROM_START( majtitl2a )
 
 	ROM_REGION( 0x80000, "irem", 0 )
 	ROM_LOAD( "k0d.ic8", 0x000000, 0x80000, CRC(713b9e9f) SHA1(91384d67d4ba9c7d926fbecb077293c661b8ec83) )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x4000, "eeprom", 0 )   /* D28C64C-20 EEPROM */
 	ROM_LOAD( "mt2eep",  0x000000, 0x800, CRC(208af971) SHA1(69384cac24b7af35a031f9b60e035131a8b10cb2) )
@@ -1459,25 +1297,6 @@ ROM_START( majtitl2j )
 	ROM_LOAD16_BYTE( "is-l1.5j",    0x80000, 0x40000, CRC(e4e00626) SHA1(e8c6c7ad6a367da4036915a155c8695ad90ae47b) )
 
 	ROM_REGION( 0x20000, "soundcpu", 0 )
-<<<<<<< HEAD
-	ROM_LOAD16_BYTE( "mt2sh0",  0x00001, 0x10000, CRC(1ecbea43) SHA1(8d66ef419f75569f2c83a89c3985742b8a47914f) )
-	ROM_LOAD16_BYTE( "mt2sl0",  0x00000, 0x10000, CRC(8fd5b531) SHA1(92cae3f6dac7f89b559063de3be2f38587536b65) )
-
-	ROM_REGION( 0x100000, "gfx1", 0 ) /* Tiles */
-	ROM_LOAD( "c0", 0x000000, 0x40000, CRC(7e61e4b5) SHA1(d0164862937bd506e701777c51dea1ddb3e2eda4) )
-	ROM_LOAD( "c1", 0x040000, 0x40000, CRC(0a667564) SHA1(d122e0619ae5cc0202f30270933784c954eb1e5d) )
-	ROM_LOAD( "c2", 0x080000, 0x40000, CRC(5eb44312) SHA1(75b584b63d4f4f2236a679235461f11004aa317f) )
-	ROM_LOAD( "c3", 0x0c0000, 0x40000, CRC(f2866294) SHA1(75e0071bf6282c93034dc7e73466af0f51046d01) )
-
-	ROM_REGION( 0x400000, "gfx2", 0 ) /* Sprites */
-	ROM_LOAD( "k30", 0x000000, 0x100000, CRC(8c9a2678) SHA1(e8ed119c16ddd59af9e83d243e7be25974f7cbf8) )
-	ROM_LOAD( "k31", 0x100000, 0x100000, CRC(5455df78) SHA1(9e49bde1d5a310ff611932c3429601fbddf3a7b1) )
-	ROM_LOAD( "k32", 0x200000, 0x100000, CRC(3a258c41) SHA1(1d93fcd01728929848b782870f80a8cd0af44796) )
-	ROM_LOAD( "k33", 0x300000, 0x100000, CRC(c1e91a14) SHA1(1f0dbd99d8c5067dc3f8795fc3f1bd4466f64156) )
-
-	ROM_REGION( 0x80000, "irem", 0 )
-	ROM_LOAD( "da", 0x000000, 0x80000, CRC(713b9e9f) SHA1(91384d67d4ba9c7d926fbecb077293c661b8ec83) )
-=======
 	ROM_LOAD16_BYTE( "mt2-sh0-.ic14",  0x00001, 0x10000, CRC(1ecbea43) SHA1(8d66ef419f75569f2c83a89c3985742b8a47914f) )
 	ROM_LOAD16_BYTE( "mt2-sl0-.ic17",  0x00000, 0x10000, CRC(8fd5b531) SHA1(92cae3f6dac7f89b559063de3be2f38587536b65) )
 
@@ -1495,7 +1314,6 @@ ROM_START( majtitl2j )
 
 	ROM_REGION( 0x80000, "irem", 0 )
 	ROM_LOAD( "k0d.ic8", 0x000000, 0x80000, CRC(713b9e9f) SHA1(91384d67d4ba9c7d926fbecb077293c661b8ec83) )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x4000, "eeprom", 0 )   /* D28C64C-20 EEPROM */
 	ROM_LOAD( "mt2eep",  0x000000, 0x800, CRC(208af971) SHA1(69384cac24b7af35a031f9b60e035131a8b10cb2) )
@@ -1516,25 +1334,6 @@ ROM_START( skingame2 )
 	ROM_LOAD16_BYTE( "is-l1.5j",    0x80000, 0x40000, CRC(e4e00626) SHA1(e8c6c7ad6a367da4036915a155c8695ad90ae47b) )
 
 	ROM_REGION( 0x20000, "soundcpu", 0 )
-<<<<<<< HEAD
-	ROM_LOAD16_BYTE( "mt2sh0",  0x00001, 0x10000, CRC(1ecbea43) SHA1(8d66ef419f75569f2c83a89c3985742b8a47914f) )
-	ROM_LOAD16_BYTE( "mt2sl0",  0x00000, 0x10000, CRC(8fd5b531) SHA1(92cae3f6dac7f89b559063de3be2f38587536b65) )
-
-	ROM_REGION( 0x100000, "gfx1", 0 ) /* Tiles */
-	ROM_LOAD( "c0", 0x000000, 0x40000, CRC(7e61e4b5) SHA1(d0164862937bd506e701777c51dea1ddb3e2eda4) )
-	ROM_LOAD( "c1", 0x040000, 0x40000, CRC(0a667564) SHA1(d122e0619ae5cc0202f30270933784c954eb1e5d) )
-	ROM_LOAD( "c2", 0x080000, 0x40000, CRC(5eb44312) SHA1(75b584b63d4f4f2236a679235461f11004aa317f) )
-	ROM_LOAD( "c3", 0x0c0000, 0x40000, CRC(f2866294) SHA1(75e0071bf6282c93034dc7e73466af0f51046d01) )
-
-	ROM_REGION( 0x400000, "gfx2", 0 ) /* Sprites */
-	ROM_LOAD( "k30", 0x000000, 0x100000, CRC(8c9a2678) SHA1(e8ed119c16ddd59af9e83d243e7be25974f7cbf8) )
-	ROM_LOAD( "k31", 0x100000, 0x100000, CRC(5455df78) SHA1(9e49bde1d5a310ff611932c3429601fbddf3a7b1) )
-	ROM_LOAD( "k32", 0x200000, 0x100000, CRC(3a258c41) SHA1(1d93fcd01728929848b782870f80a8cd0af44796) )
-	ROM_LOAD( "k33", 0x300000, 0x100000, CRC(c1e91a14) SHA1(1f0dbd99d8c5067dc3f8795fc3f1bd4466f64156) )
-
-	ROM_REGION( 0x80000, "irem", 0 )
-	ROM_LOAD( "da", 0x000000, 0x80000, CRC(713b9e9f) SHA1(91384d67d4ba9c7d926fbecb077293c661b8ec83) )
-=======
 	ROM_LOAD16_BYTE( "mt2-sh0-.ic14",  0x00001, 0x10000, CRC(1ecbea43) SHA1(8d66ef419f75569f2c83a89c3985742b8a47914f) )
 	ROM_LOAD16_BYTE( "mt2-sl0-.ic17",  0x00000, 0x10000, CRC(8fd5b531) SHA1(92cae3f6dac7f89b559063de3be2f38587536b65) )
 
@@ -1552,7 +1351,6 @@ ROM_START( skingame2 )
 
 	ROM_REGION( 0x80000, "irem", 0 )
 	ROM_LOAD( "k0d.ic8", 0x000000, 0x80000, CRC(713b9e9f) SHA1(91384d67d4ba9c7d926fbecb077293c661b8ec83) )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x4000, "eeprom", 0 )   /* D28C64C-20 EEPROM */
 	ROM_LOAD( "mt2eep",  0x000000, 0x800, CRC(208af971) SHA1(69384cac24b7af35a031f9b60e035131a8b10cb2) )
@@ -2406,79 +2204,42 @@ ROM_END
 
 DRIVER_INIT_MEMBER(m92_state,m92)
 {
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("maincpu")->base();
-
-	membank("bank1")->set_base(&ROM[0xa0000]);
-
-	m_game_kludge = 0;
-=======
 	uint8_t *ROM = memregion("maincpu")->base();
 
 	membank("bank1")->set_base(&ROM[0xa0000]);
->>>>>>> upstream/master
 }
 
 /* different address map (no bank1) */
 DRIVER_INIT_MEMBER(m92_state,lethalth)
 {
-<<<<<<< HEAD
-	m_game_kludge = 0;
-=======
->>>>>>> upstream/master
 }
 
 /* has bankswitching */
 DRIVER_INIT_MEMBER(m92_state,m92_bank)
 {
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("maincpu")->base();
-
-	membank("bank1")->configure_entries(0, 4, &ROM[0x80000], 0x20000);
-	m_maincpu->space(AS_IO).install_write_handler(0x20, 0x21, write16_delegate(FUNC(m92_state::m92_bankswitch_w),this));
-
-	m_game_kludge = 0;
-=======
 	uint8_t *ROM = memregion("maincpu")->base();
 
 	membank("bank1")->configure_entries(0, 4, &ROM[0x80000], 0x20000);
 	m_maincpu->space(AS_IO).install_write_handler(0x20, 0x21, write16_delegate(FUNC(m92_state::m92_bankswitch_w),this));
->>>>>>> upstream/master
 }
 
 /* has bankswitching, has eeprom, needs sprite kludge */
 DRIVER_INIT_MEMBER(m92_state,majtitl2)
 {
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("maincpu")->base();
-=======
 	uint8_t *ROM = memregion("maincpu")->base();
->>>>>>> upstream/master
 
 	membank("bank1")->configure_entries(0, 4, &ROM[0x80000], 0x20000);
 	m_maincpu->space(AS_IO).install_write_handler(0x20, 0x21, write16_delegate(FUNC(m92_state::m92_bankswitch_w),this));
 
 	/* This game has an eeprom on the game board */
 	m_maincpu->space(AS_PROGRAM).install_readwrite_handler(0xf0000, 0xf3fff, read16_delegate(FUNC(m92_state::m92_eeprom_r),this), write16_delegate(FUNC(m92_state::m92_eeprom_w),this));
-<<<<<<< HEAD
-
-	m_game_kludge = 2;
-=======
->>>>>>> upstream/master
 }
 
 /* TODO: figure out actual address map and other differences from real Irem h/w */
 DRIVER_INIT_MEMBER(m92_state,ppan)
 {
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("maincpu")->base();
-	membank("bank1")->set_base(&ROM[0xa0000]);
-
-	m_game_kludge = 0;
-=======
 	uint8_t *ROM = memregion("maincpu")->base();
 	membank("bank1")->set_base(&ROM[0xa0000]);
->>>>>>> upstream/master
 }
 
 /***************************************************************************/
@@ -2491,11 +2252,7 @@ GAME( 1991, bmaster,  0,        bmaster,       bmaster, m92_state,  m92,      RO
 GAME( 1991, crossbld, bmaster,  bmaster,       bmaster, m92_state,  m92,      ROT0,   "Irem",         "Cross Blades! (Japan)", MACHINE_SUPPORTS_SAVE | MACHINE_NO_COCKTAIL)
 
 GAME( 1991, lethalth, 0,        lethalth,      lethalth, m92_state, lethalth, ROT270, "Irem",         "Lethal Thunder (World)", MACHINE_SUPPORTS_SAVE | MACHINE_NO_COCKTAIL )
-<<<<<<< HEAD
-GAME( 1991, thndblst, lethalth, lethalth,      lethalth, m92_state, lethalth, ROT270, "Irem",         "Thunder Blaster (Japan)", MACHINE_SUPPORTS_SAVE | MACHINE_NO_COCKTAIL )
-=======
 GAME( 1991, thndblst, lethalth, lethalth,      thndblst, m92_state, lethalth, ROT270, "Irem",         "Thunder Blaster (Japan)", MACHINE_SUPPORTS_SAVE | MACHINE_NO_COCKTAIL )
->>>>>>> upstream/master
 
 GAME( 1992, uccops,   0,        uccops,        uccops, m92_state,   m92,      ROT0,   "Irem",         "Undercover Cops (World)", MACHINE_SUPPORTS_SAVE | MACHINE_NO_COCKTAIL )
 GAME( 1992, uccopsu,  uccops,   uccops,        uccops, m92_state,   m92,      ROT0,   "Irem",         "Undercover Cops (US)", MACHINE_SUPPORTS_SAVE | MACHINE_NO_COCKTAIL )
@@ -2508,16 +2265,10 @@ GAME( 1992, gunhohki, mysticri, mysticri,      mysticri, m92_state, m92,      RO
 // main code is also significantly different to the supported original set, so it might just be a legitimate early revision on a cheap board
 GAME( 1992, mysticrib,mysticri, mysticri,      mysticri, m92_state, m92,      ROT0,   "Irem",         "Mystic Riders (bootleg?)", MACHINE_SUPPORTS_SAVE | MACHINE_NO_COCKTAIL )
 
-<<<<<<< HEAD
-GAME( 1992, majtitl2, 0,        majtitl2,      majtitl2, m92_state, majtitl2, ROT0,   "Irem",         "Major Title 2 (World)", MACHINE_SUPPORTS_SAVE | MACHINE_NO_COCKTAIL)
-GAME( 1992, majtitl2j,majtitl2, majtitl2,      majtitl2, m92_state, majtitl2, ROT0,   "Irem",         "Major Title 2 (Japan)", MACHINE_SUPPORTS_SAVE | MACHINE_NO_COCKTAIL)
-
-=======
 GAME( 1992, majtitl2, 0,        majtitl2,      majtitl2, m92_state, majtitl2, ROT0,   "Irem",         "Major Title 2 (World, set 1)", MACHINE_SUPPORTS_SAVE | MACHINE_NO_COCKTAIL) // Nanao 08J27291A7 017 9227NK700 sound CPU
 GAME( 1992, majtitl2a,majtitl2, mysticri,      majtitl2, m92_state, majtitl2, ROT0,   "Irem",         "Major Title 2 (World, set 1, alt sound CPU)", MACHINE_SUPPORTS_SAVE | MACHINE_NO_COCKTAIL) // same as set 1 but for the Nanao 08J27291A6 016 9217NK700 sound CPU
 GAME( 1992, majtitl2b,majtitl2, majtitl2,      majtitl2, m92_state, majtitl2, ROT0,   "Irem",         "Major Title 2 (World, set 2)", MACHINE_SUPPORTS_SAVE | MACHINE_NO_COCKTAIL)
 GAME( 1992, majtitl2j,majtitl2, majtitl2,      majtitl2, m92_state, majtitl2, ROT0,   "Irem",         "Major Title 2 (Japan)", MACHINE_SUPPORTS_SAVE | MACHINE_NO_COCKTAIL)
->>>>>>> upstream/master
 GAME( 1992, skingame, majtitl2, majtitl2,      majtitl2, m92_state, majtitl2, ROT0,   "Irem America", "The Irem Skins Game (US set 1)", MACHINE_SUPPORTS_SAVE | MACHINE_NO_COCKTAIL )
 GAME( 1992, skingame2,majtitl2, majtitl2,      majtitl2, m92_state, majtitl2, ROT0,   "Irem America", "The Irem Skins Game (US set 2)", MACHINE_SUPPORTS_SAVE | MACHINE_NO_COCKTAIL )
 

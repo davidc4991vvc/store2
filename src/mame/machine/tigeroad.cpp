@@ -113,11 +113,7 @@ void tigeroad_state::f1dream_protection_w(address_space &space)
 	else if ((prevpc == 0x27f8) || (prevpc == 0x511a) || (prevpc == 0x5142) || (prevpc == 0x516a))
 	{
 		/* The main CPU stuffs the byte for the soundlatch into 0xfffffd.*/
-<<<<<<< HEAD
-		soundlatch_byte_w(space,2,m_ram16[0x3ffc/2]);
-=======
 		m_soundlatch->write(space,2,m_ram16[0x3ffc/2]);
->>>>>>> upstream/master
 	}
 }
 
@@ -128,95 +124,6 @@ WRITE16_MEMBER(tigeroad_state::f1dream_control_w)
 }
 
 
-<<<<<<< HEAD
-READ16_MEMBER(tigeroad_state::pushman_68705_r)
-{
-	if (offset == 0)
-		return m_latch;
-
-	if (offset == 3 && m_new_latch)
-	{
-		m_new_latch = 0;
-		return 0;
-	}
-	if (offset == 3 && !m_new_latch)
-		return 0xff;
-
-	return (m_shared_ram[2 * offset + 1] << 8) + m_shared_ram[2 * offset];
-}
-
-WRITE16_MEMBER(tigeroad_state::pushman_68705_w)
-{
-	if (ACCESSING_BITS_8_15)
-		m_shared_ram[2 * offset] = data >> 8;
-	if (ACCESSING_BITS_0_7)
-		m_shared_ram[2 * offset + 1] = data & 0xff;
-
-	if (offset == 1)
-	{
-		m_mcu->set_input_line(M68705_IRQ_LINE, HOLD_LINE);
-		space.device().execute().spin();
-		m_new_latch = 0;
-	}
-}
-
-/* ElSemi - Bouncing balls protection. */
-READ16_MEMBER(tigeroad_state::bballs_68705_r)
-{
-	if (offset == 0)
-		return m_latch;
-	if (offset == 3 && m_new_latch)
-	{
-		m_new_latch = 0;
-		return 0;
-	}
-	if (offset == 3 && !m_new_latch)
-		return 0xff;
-
-	return (m_shared_ram[2 * offset + 1] << 8) + m_shared_ram[2 * offset];
-}
-
-WRITE16_MEMBER(tigeroad_state::bballs_68705_w)
-{
-	if (ACCESSING_BITS_8_15)
-		m_shared_ram[2 * offset] = data >> 8;
-	if (ACCESSING_BITS_0_7)
-		m_shared_ram[2 * offset + 1] = data & 0xff;
-
-	if (offset == 0)
-	{
-		m_latch = 0;
-		if (m_shared_ram[0] <= 0xf)
-		{
-			m_latch = m_shared_ram[0] << 2;
-			if (m_shared_ram[1])
-				m_latch |= 2;
-			m_new_latch = 1;
-		}
-		else if (m_shared_ram[0])
-		{
-			if (m_shared_ram[1])
-				m_latch |= 2;
-			m_new_latch = 1;
-		}
-	}
-}
-
-
-READ8_MEMBER(tigeroad_state::pushman_68000_r)
-{
-	return m_shared_ram[offset];
-}
-
-WRITE8_MEMBER(tigeroad_state::pushman_68000_w)
-{
-	if (offset == 2 && (m_shared_ram[2] & 2) == 0 && data & 2)
-	{
-		m_latch = (m_shared_ram[1] << 8) | m_shared_ram[0];
-		m_new_latch = 1;
-	}
-	m_shared_ram[offset] = data;
-=======
 READ16_MEMBER(pushman_state::mcu_comm_r)
 {
 	switch (offset & 0x03)
@@ -288,5 +195,4 @@ WRITE8_MEMBER(pushman_state::mcu_pc_w)
 	}
 
 	m_mcu_latch_ctl = data;
->>>>>>> upstream/master
 }

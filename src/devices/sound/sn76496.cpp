@@ -130,55 +130,6 @@
 #define MAX_OUTPUT 0x7fff
 
 
-<<<<<<< HEAD
-sn76496_base_device::sn76496_base_device(const machine_config &mconfig, device_type type,  const char *name,
-	const char *tag, int feedbackmask, int noisetap1, int noisetap2, bool negate, bool stereo, int clockdivider, int sega,
-	device_t *owner, UINT32 clock, const char *shortname, const char *source)
-
-	: device_t(mconfig, type, name, tag, owner, clock, shortname, source),
-	device_sound_interface(mconfig, *this),
-	m_ready_handler(*this),
-	m_feedback_mask(feedbackmask),
-	m_whitenoise_tap1(noisetap1),
-	m_whitenoise_tap2(noisetap2),
-	m_negate(negate),
-	m_stereo(stereo),
-	m_clock_divider(clockdivider),
-	m_sega_style_psg(sega)
-{
-}
-
-sn76496_device::sn76496_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	:  sn76496_base_device(mconfig, SN76496, "SN76496", tag, 0x10000, 0x04, 0x08, false, false, 8, true, owner, clock, "sn76496", __FILE__)
-	{ }
-u8106_device::u8106_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	:  sn76496_base_device(mconfig, U8106, "U8106", tag, 0x4000, 0x01, 0x02, true, false, 8, true, owner, clock, "u8106", __FILE__)
-	{ }
-y2404_device::y2404_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	:  sn76496_base_device(mconfig, Y2404, "Y2404", tag, 0x10000, 0x04, 0x08, false, false, 8, true, owner, clock, "y2404", __FILE__)
-	{ }
-sn76489_device::sn76489_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	:  sn76496_base_device(mconfig, SN76489, "SN76489", tag, 0x4000, 0x01, 0x02, true, false, 8, true, owner, clock, "sn76489", __FILE__)
-	{ }
-sn76489a_device::sn76489a_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	:  sn76496_base_device(mconfig, SN76489A, "SN76489A", tag, 0x10000, 0x04, 0x08, false, false, 8, true, owner, clock, "sn76489a", __FILE__)
-	{ }
-sn76494_device::sn76494_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	:  sn76496_base_device(mconfig, SN76494, "SN76494", tag, 0x10000, 0x04, 0x08, false, false, 1, true, owner, clock, "sn76494", __FILE__)
-	{ }
-sn94624_device::sn94624_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	:  sn76496_base_device(mconfig, SN94624, "SN94624", tag, 0x4000, 0x01, 0x02, true, false, 1, true, owner, clock, "sn94624", __FILE__)
-	{ }
-ncr7496_device::ncr7496_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	:  sn76496_base_device(mconfig, NCR7496, "NCR7496", tag, 0x8000, 0x02, 0x20, false, false, 8, true, owner, clock, "ncr7496", __FILE__)
-	{ }
-gamegear_device::gamegear_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	:  sn76496_base_device(mconfig, GAMEGEAR, "Game Gear PSG", tag, 0x8000, 0x01, 0x08, true, true, 8, false, owner, clock, "gamegear_psg", __FILE__)
-	{ }
-segapsg_device::segapsg_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	:  sn76496_base_device(mconfig, SEGAPSG, "SEGA VDP PSG", tag, 0x8000, 0x01, 0x08, true, false, 8, false, owner, clock, "segapsg", __FILE__)
-	{ }
-=======
 sn76496_base_device::sn76496_base_device(
 		const machine_config &mconfig,
 		device_type type,
@@ -254,7 +205,6 @@ segapsg_device::segapsg_device(const machine_config &mconfig, const char *tag, d
 	: sn76496_base_device(mconfig, SEGAPSG, tag, 0x8000, 0x01, 0x08, true, false, 8, false, owner, clock)
 {
 }
->>>>>>> upstream/master
 
 
 void sn76496_base_device::device_start()
@@ -324,11 +274,7 @@ WRITE8_MEMBER( sn76496_base_device::stereo_w )
 	else fatalerror("sn76496_base_device: Call to stereo write with mono chip!\n");
 }
 
-<<<<<<< HEAD
-void sn76496_base_device::write(UINT8 data)
-=======
 void sn76496_base_device::write(uint8_t data)
->>>>>>> upstream/master
 {
 	int n, r, c;
 
@@ -415,17 +361,10 @@ void sn76496_base_device::sound_stream_update(sound_stream &stream, stream_sampl
 {
 	int i;
 	stream_sample_t *lbuffer = outputs[0];
-<<<<<<< HEAD
-	stream_sample_t *rbuffer = (m_stereo)? outputs[1] : NULL;
-
-	INT16 out = 0;
-	INT16 out2 = 0;
-=======
 	stream_sample_t *rbuffer = (m_stereo)? outputs[1] : nullptr;
 
 	int16_t out;
 	int16_t out2 = 0;
->>>>>>> upstream/master
 
 	while (samples > 0)
 	{
@@ -523,18 +462,6 @@ void sn76496_base_device::register_for_save_states()
 //  save_item(NAME(m_sega_style_psg));
 }
 
-<<<<<<< HEAD
-const device_type SN76496 = &device_creator<sn76496_device>;
-const device_type U8106 = &device_creator<u8106_device>;
-const device_type Y2404 = &device_creator<y2404_device>;
-const device_type SN76489 = &device_creator<sn76489_device>;
-const device_type SN76489A = &device_creator<sn76489a_device>;
-const device_type SN76494 = &device_creator<sn76494_device>;
-const device_type SN94624 = &device_creator<sn94624_device>;
-const device_type NCR7496 = &device_creator<ncr7496_device>;
-const device_type GAMEGEAR = &device_creator<gamegear_device>;
-const device_type SEGAPSG = &device_creator<segapsg_device>;
-=======
 DEFINE_DEVICE_TYPE(SN76496,  sn76496_device,   "sn76496",      "SN76496")
 DEFINE_DEVICE_TYPE(U8106,    u8106_device,     "u8106",        "U8106")
 DEFINE_DEVICE_TYPE(Y2404,    y2404_device,     "y2404",        "Y2404")
@@ -545,4 +472,3 @@ DEFINE_DEVICE_TYPE(SN94624,  sn94624_device,   "sn94624",      "SN94624")
 DEFINE_DEVICE_TYPE(NCR7496,  ncr7496_device,   "ncr7496",      "NCR7496")
 DEFINE_DEVICE_TYPE(GAMEGEAR, gamegear_device,  "gamegear_psg", "Game Gear PSG")
 DEFINE_DEVICE_TYPE(SEGAPSG,  segapsg_device,   "segapsg",      "Sega VDP PSG")
->>>>>>> upstream/master

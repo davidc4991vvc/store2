@@ -4,10 +4,7 @@
 
 #include "emu.h"
 #include "cpu/m68000/m68000.h"
-<<<<<<< HEAD
-=======
 #include "screen.h"
->>>>>>> upstream/master
 
 
 class hotstuff_state : public driver_device
@@ -18,29 +15,17 @@ public:
 		m_bitmapram(*this, "bitmapram"),
 		m_maincpu(*this, "maincpu") { }
 
-<<<<<<< HEAD
-	required_shared_ptr<UINT16> m_bitmapram;
-	struct
-	{
-		UINT8 index;
-=======
 	required_shared_ptr<uint16_t> m_bitmapram;
 	struct
 	{
 		uint8_t index;
->>>>>>> upstream/master
 	}m_ioboard;
 	DECLARE_READ8_MEMBER(ioboard_status_r);
 	DECLARE_READ8_MEMBER(ioboard_unk_r);
 	DECLARE_WRITE8_MEMBER(ioboard_data_w);
 	DECLARE_WRITE8_MEMBER(ioboard_reg_w);
-<<<<<<< HEAD
-	virtual void video_start();
-	UINT32 screen_update_hotstuff(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
-=======
 	virtual void video_start() override;
 	uint32_t screen_update_hotstuff(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	required_device<cpu_device> m_maincpu;
 };
 
@@ -51,17 +36,10 @@ void hotstuff_state::video_start()
 
 /* the first 0x20 bytes in every 0x200 (each line) of video ram are the colour data, providing a palette of 16 RGB444 colours for that line */
 
-<<<<<<< HEAD
-UINT32 hotstuff_state::screen_update_hotstuff(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
-{
-	int count, y,yyy,x,xxx;
-	UINT16 row_palette_data[0x10];
-=======
 uint32_t hotstuff_state::screen_update_hotstuff(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
 {
 	int count, y,yyy,x,xxx;
 	uint16_t row_palette_data[0x10];
->>>>>>> upstream/master
 	rgb_t row_palette_data_as_rgb32_pen_data[0x10];
 
 	yyy=512;xxx=512*2;
@@ -102,11 +80,7 @@ uint32_t hotstuff_state::screen_update_hotstuff(screen_device &screen, bitmap_rg
 /* TODO: identify this ... */
 READ8_MEMBER(hotstuff_state::ioboard_status_r)
 {
-<<<<<<< HEAD
-	UINT8 res;
-=======
 	uint8_t res;
->>>>>>> upstream/master
 
 	printf("STATUS R\n");
 
@@ -152,11 +126,7 @@ ADDRESS_MAP_END
 static INPUT_PORTS_START( hotstuff )
 INPUT_PORTS_END
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( hotstuff, hotstuff_state )
-=======
 static MACHINE_CONFIG_START( hotstuff )
->>>>>>> upstream/master
 
 	MCFG_CPU_ADD("maincpu", M68000, 16000000)
 	MCFG_CPU_PROGRAM_MAP(hotstuff_map)
@@ -183,8 +153,4 @@ ROM_START( hotstuff )
 	ROM_LOAD16_WORD_SWAP( "hot stuff symbol u8 (68000).bin", 0x00000, 0x80000, CRC(f154a157) SHA1(92ae0fb977e2dcc0377487d768f95c6e447e990b) )
 ROM_END
 
-<<<<<<< HEAD
-GAME( ????, hotstuff,    0,        hotstuff,    hotstuff, driver_device,    0, ROT0,  "Olympic Video Gaming", "Olympic Hot Stuff (TAS 5 Reel System)", MACHINE_NOT_WORKING | MACHINE_NO_SOUND )
-=======
 GAME( ????, hotstuff,    0,        hotstuff,    hotstuff, hotstuff_state,    0, ROT0,  "Olympic Video Gaming", "Olympic Hot Stuff (TAS 5 Reel System)", MACHINE_NOT_WORKING | MACHINE_NO_SOUND )
->>>>>>> upstream/master

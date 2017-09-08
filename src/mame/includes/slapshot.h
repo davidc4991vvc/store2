@@ -51,19 +51,6 @@ public:
 	required_device<palette_device> m_palette;
 
 	/* memory pointers */
-<<<<<<< HEAD
-	required_shared_ptr<UINT16> m_spriteram;
-	required_shared_ptr<UINT16> m_spriteext;
-	UINT16 *    m_spriteram_buffered;
-	UINT16 *    m_spriteram_delayed;
-
-	/* video-related */
-	struct      slapshot_tempsprite *m_spritelist;
-	INT32       m_sprites_disabled;
-	INT32       m_sprites_active_area;
-	INT32       m_sprites_master_scrollx;
-	INT32       m_sprites_master_scrolly;
-=======
 	required_shared_ptr<uint16_t> m_spriteram;
 	required_shared_ptr<uint16_t> m_spriteext;
 	std::unique_ptr<uint16_t[]>    m_spriteram_buffered;
@@ -75,7 +62,6 @@ public:
 	int32_t       m_sprites_active_area;
 	int32_t       m_sprites_master_scrollx;
 	int32_t       m_sprites_master_scrolly;
->>>>>>> upstream/master
 	int         m_sprites_flipscreen;
 	int         m_prepare_sprites;
 	int         m_dislayer[5];
@@ -87,29 +73,18 @@ public:
 	DECLARE_WRITE8_MEMBER(sound_bankswitch_w);
 	DECLARE_WRITE16_MEMBER(msb_sound_w);
 	DECLARE_READ16_MEMBER(msb_sound_r);
-<<<<<<< HEAD
-=======
 	DECLARE_WRITE8_MEMBER(coin_control_w);
->>>>>>> upstream/master
 
 	// opwolf specific
 	DECLARE_READ16_MEMBER(opwolf3_adc_r);
 	DECLARE_WRITE16_MEMBER(opwolf3_adc_req_w);
 
 	DECLARE_DRIVER_INIT(slapshot);
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void video_start();
-
-	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	void screen_eof_taito_no_buffer(screen_device &screen, bool state);
-=======
 	virtual void machine_start() override;
 	virtual void video_start() override;
 
 	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	DECLARE_WRITE_LINE_MEMBER(screen_vblank_taito_no_buffer);
->>>>>>> upstream/master
 	void draw_sprites( screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int *primasks, int y_offset );
 	void taito_handle_sprite_buffering(  );
 	void taito_update_sprites_active_area(  );
@@ -117,9 +92,5 @@ public:
 	INTERRUPT_GEN_MEMBER(interrupt);
 
 protected:
-<<<<<<< HEAD
-	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
-=======
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
->>>>>>> upstream/master
 };

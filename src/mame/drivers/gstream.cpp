@@ -136,11 +136,8 @@ RAM4 is HMC HM6264LP-70
 #include "cpu/e132xs/e132xs.h"
 #include "sound/okim6295.h"
 #include "machine/nvram.h"
-<<<<<<< HEAD
-=======
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 class gstream_state : public driver_device
 {
@@ -164,19 +161,6 @@ public:
 	optional_device<okim6295_device> m_oki_2;
 
 	/* memory pointers */
-<<<<<<< HEAD
-	required_shared_ptr<UINT32> m_workram;
-	required_shared_ptr<UINT32> m_vram;
-//  UINT32 *  m_nvram;    // currently this uses generic nvram handling
-
-	/* video-related */
-	UINT32    m_tmap1_scrollx;
-	UINT32    m_tmap2_scrollx;
-	UINT32    m_tmap3_scrollx;
-	UINT32    m_tmap1_scrolly;
-	UINT32    m_tmap2_scrolly;
-	UINT32    m_tmap3_scrolly;
-=======
 	required_shared_ptr<uint32_t> m_workram;
 	required_shared_ptr<uint32_t> m_vram;
 //  uint32_t *  m_nvram;    // currently this uses generic nvram handling
@@ -188,7 +172,6 @@ public:
 	uint32_t    m_tmap1_scrolly;
 	uint32_t    m_tmap2_scrolly;
 	uint32_t    m_tmap3_scrolly;
->>>>>>> upstream/master
 
 	/* misc */
 	int       m_oki_bank_1;
@@ -214,16 +197,6 @@ public:
 	DECLARE_CUSTOM_INPUT_MEMBER(x2222_toggle_r);
 	DECLARE_DRIVER_INIT(gstream);
 	DECLARE_DRIVER_INIT(x2222);
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void machine_reset();
-	virtual void video_start();
-	UINT32 screen_update_gstream(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
-	void draw_bg_gstream(bitmap_rgb32 &bitmap, const rectangle &cliprect, int xscrl, int yscrl, int map, UINT32* ram, int palbase);
-
-	void rearrange_sprite_data(UINT8* ROM, UINT32* NEW, UINT32* NEW2);
-	void rearrange_tile_data(UINT8* ROM, UINT32* NEW, UINT32* NEW2);
-=======
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
 	virtual void video_start() override;
@@ -232,7 +205,6 @@ public:
 
 	void rearrange_sprite_data(uint8_t* ROM, uint32_t* NEW, uint32_t* NEW2);
 	void rearrange_tile_data(uint8_t* ROM, uint32_t* NEW, uint32_t* NEW2);
->>>>>>> upstream/master
 
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
@@ -381,13 +353,8 @@ WRITE32_MEMBER(gstream_state::gstream_oki_banking_w)
 
 	//popmessage("oki bank = %X\noki_1 = %X\noki_2 = %X\n",data, m_oki_bank_1, m_oki_bank_2);
 
-<<<<<<< HEAD
-	m_oki_1->set_bank_base(m_oki_bank_1 * 0x40000);
-	m_oki_2->set_bank_base(m_oki_bank_2 * 0x40000);
-=======
 	m_oki_1->set_rom_bank(m_oki_bank_1);
 	m_oki_2->set_rom_bank(m_oki_bank_2);
->>>>>>> upstream/master
 }
 
 // Some clocking?
@@ -472,17 +439,10 @@ static INPUT_PORTS_START( gstream )
 	PORT_BIT( 0x0400, IP_ACTIVE_LOW, IPT_START2 )
 	PORT_BIT( 0x0800, IP_ACTIVE_LOW, IPT_SERVICE2 )
 	PORT_BIT( 0x7000, IP_ACTIVE_LOW, IPT_UNUSED )
-<<<<<<< HEAD
-	PORT_BIT( 0x8000, IP_ACTIVE_LOW, IPT_SPECIAL )  PORT_CUSTOM_MEMBER(DEVICE_SELF, gstream_state,gstream_mirror_service_r, NULL)
-
-	PORT_START("IN2")
-	PORT_BIT( 0x004f, IP_ACTIVE_LOW, IPT_SPECIAL )  PORT_CUSTOM_MEMBER(DEVICE_SELF, gstream_state,gstream_mirror_r, NULL)
-=======
 	PORT_BIT( 0x8000, IP_ACTIVE_LOW, IPT_SPECIAL )  PORT_CUSTOM_MEMBER(DEVICE_SELF, gstream_state,gstream_mirror_service_r, nullptr)
 
 	PORT_START("IN2")
 	PORT_BIT( 0x004f, IP_ACTIVE_LOW, IPT_SPECIAL )  PORT_CUSTOM_MEMBER(DEVICE_SELF, gstream_state,gstream_mirror_r, nullptr)
->>>>>>> upstream/master
 	PORT_BIT( 0xffb0, IP_ACTIVE_LOW, IPT_UNUSED )
 INPUT_PORTS_END
 
@@ -574,11 +534,7 @@ static INPUT_PORTS_START( x2222 )
 	PORT_DIPNAME( 0x0040, 0x0040, DEF_STR( Unknown ) )
 	PORT_DIPSETTING(      0x0040, DEF_STR( Off ) )
 	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
-<<<<<<< HEAD
-	PORT_BIT( 0x0080, IP_ACTIVE_LOW, IPT_SPECIAL )  PORT_CUSTOM_MEMBER(DEVICE_SELF, gstream_state,x2222_toggle_r, NULL)
-=======
 	PORT_BIT( 0x0080, IP_ACTIVE_LOW, IPT_SPECIAL )  PORT_CUSTOM_MEMBER(DEVICE_SELF, gstream_state,x2222_toggle_r, nullptr)
->>>>>>> upstream/master
 INPUT_PORTS_END
 
 
@@ -640,13 +596,8 @@ void gstream_state::video_start()
 
 // custom drawgfx function for x2222 to draw RGB data instead of indexed data, needed because our regular drawgfx and tilemap code don't support that
 void drawgfx_transpen_x2222(bitmap_rgb32 &dest, const rectangle &cliprect, gfx_element *gfx,gfx_element *gfx2,
-<<<<<<< HEAD
-		UINT32 code, UINT32 color, int flipx, int flipy, INT32 destx, INT32 desty,
-		UINT32 transpen)
-=======
 		uint32_t code, uint32_t color, int flipx, int flipy, int32_t destx, int32_t desty,
 		uint32_t transpen)
->>>>>>> upstream/master
 {
 	// use pen usage to optimize
 	code %= gfx->elements();
@@ -656,16 +607,6 @@ void drawgfx_transpen_x2222(bitmap_rgb32 &dest, const rectangle &cliprect, gfx_e
 	do {
 		g_profiler.start(PROFILER_DRAWGFX);
 		do {
-<<<<<<< HEAD
-			const UINT8 *srcdata, *srcdata2;
-			INT32 destendx, destendy;
-			INT32 srcx, srcy;
-			INT32 curx, cury;
-			INT32 dy;
-
-			assert(dest.valid());
-			assert(gfx != NULL);
-=======
 			const uint8_t *srcdata, *srcdata2;
 			int32_t destendx, destendy;
 			int32_t srcx, srcy;
@@ -674,7 +615,6 @@ void drawgfx_transpen_x2222(bitmap_rgb32 &dest, const rectangle &cliprect, gfx_e
 
 			assert(dest.valid());
 			assert(gfx != nullptr);
->>>>>>> upstream/master
 			assert(dest.cliprect().contains(cliprect));
 			assert(code < gfx->elements());
 
@@ -733,11 +673,7 @@ void drawgfx_transpen_x2222(bitmap_rgb32 &dest, const rectangle &cliprect, gfx_e
 			srcdata2 = gfx2->get_data(code);
 
 			/* compute how many blocks of 4 pixels we have */
-<<<<<<< HEAD
-			UINT32 leftovers = (destendx + 1 - destx);
-=======
 			uint32_t leftovers = (destendx + 1 - destx);
->>>>>>> upstream/master
 
 			/* adjust srcdata to point to the first source pixel of the row */
 			srcdata += srcy * gfx->rowbytes() + srcx;
@@ -749,15 +685,9 @@ void drawgfx_transpen_x2222(bitmap_rgb32 &dest, const rectangle &cliprect, gfx_e
 				/* iterate over pixels in Y */
 				for (cury = desty; cury <= destendy; cury++)
 				{
-<<<<<<< HEAD
-					UINT32 *destptr = &dest.pixt<UINT32>(cury, destx);
-					const UINT8 *srcptr = srcdata;
-					const UINT8 *srcptr2 = srcdata2;
-=======
 					uint32_t *destptr = &dest.pixt<uint32_t>(cury, destx);
 					const uint8_t *srcptr = srcdata;
 					const uint8_t *srcptr2 = srcdata2;
->>>>>>> upstream/master
 					srcdata += dy;
 					srcdata2 += dy;
 
@@ -766,16 +696,6 @@ void drawgfx_transpen_x2222(bitmap_rgb32 &dest, const rectangle &cliprect, gfx_e
 					/* iterate over leftover pixels */
 					for (curx = 0; curx < leftovers; curx++)
 					{
-<<<<<<< HEAD
-						UINT32 srcdata = (srcptr[0]);
-						UINT32 srcdata2 = (srcptr2[0]);
-
-						UINT32 fullval = (srcdata | (srcdata2 << 8));
-						UINT32 r = ((fullval >> 0) & 0x1f) << 3;
-						UINT32 g = ((fullval >> 5) & 0x3f) << 2;
-						UINT32 b = ((fullval >> 11) & 0x1f) << 3;
-						UINT32 full = (r << 16) | (g << 8) | (b << 0);
-=======
 						uint32_t srcdata = (srcptr[0]);
 						uint32_t srcdata2 = (srcptr2[0]);
 
@@ -784,7 +704,6 @@ void drawgfx_transpen_x2222(bitmap_rgb32 &dest, const rectangle &cliprect, gfx_e
 						uint32_t g = ((fullval >> 5) & 0x3f) << 2;
 						uint32_t b = ((fullval >> 11) & 0x1f) << 3;
 						uint32_t full = (r << 16) | (g << 8) | (b << 0);
->>>>>>> upstream/master
 						if (full != 0)
 							destptr[0] = full;
 
@@ -801,15 +720,9 @@ void drawgfx_transpen_x2222(bitmap_rgb32 &dest, const rectangle &cliprect, gfx_e
 				/* iterate over pixels in Y */
 				for (cury = desty; cury <= destendy; cury++)
 				{
-<<<<<<< HEAD
-					UINT32 *destptr = &dest.pixt<UINT32>(cury, destx);
-					const UINT8 *srcptr = srcdata;
-					const UINT8 *srcptr2 = srcdata2;
-=======
 					uint32_t *destptr = &dest.pixt<uint32_t>(cury, destx);
 					const uint8_t *srcptr = srcdata;
 					const uint8_t *srcptr2 = srcdata2;
->>>>>>> upstream/master
 
 					srcdata += dy;
 					srcdata2 += dy;
@@ -817,16 +730,6 @@ void drawgfx_transpen_x2222(bitmap_rgb32 &dest, const rectangle &cliprect, gfx_e
 					/* iterate over leftover pixels */
 					for (curx = 0; curx < leftovers; curx++)
 					{
-<<<<<<< HEAD
-						UINT32 srcdata = (srcptr[0]);
-						UINT32 srcdata2 = (srcptr2[0]);
-
-						UINT32 fullval = (srcdata | (srcdata2 << 8));
-						UINT32 r = ((fullval >> 0) & 0x1f) << 3;
-						UINT32 g = ((fullval >> 5) & 0x3f) << 2;
-						UINT32 b = ((fullval >> 11) & 0x1f) << 3;
-						UINT32 full = (r << 16) | (g << 8) | (b << 0);
-=======
 						uint32_t srcdata = (srcptr[0]);
 						uint32_t srcdata2 = (srcptr2[0]);
 
@@ -835,7 +738,6 @@ void drawgfx_transpen_x2222(bitmap_rgb32 &dest, const rectangle &cliprect, gfx_e
 						uint32_t g = ((fullval >> 5) & 0x3f) << 2;
 						uint32_t b = ((fullval >> 11) & 0x1f) << 3;
 						uint32_t full = (r << 16) | (g << 8) | (b << 0);
->>>>>>> upstream/master
 						if (full != 0)
 							destptr[0] = full;
 
@@ -850,11 +752,7 @@ void drawgfx_transpen_x2222(bitmap_rgb32 &dest, const rectangle &cliprect, gfx_e
 	} while (0);
 }
 
-<<<<<<< HEAD
-void gstream_state::draw_bg_gstream(bitmap_rgb32 &bitmap, const rectangle &cliprect, int xscrl, int yscrl, int map, UINT32* ram, int palbase )
-=======
 void gstream_state::draw_bg_gstream(bitmap_rgb32 &bitmap, const rectangle &cliprect, int xscrl, int yscrl, int map, uint32_t* ram, int palbase )
->>>>>>> upstream/master
 {
 	int scrollx;
 	int scrolly;
@@ -862,17 +760,10 @@ void gstream_state::draw_bg_gstream(bitmap_rgb32 &bitmap, const rectangle &clipr
 	scrollx = xscrl&0x1ff;
 	scrolly = yscrl&0x1ff;
 
-<<<<<<< HEAD
-	UINT16 basey = scrolly>>5;
-	for (int y=0;y<13;y++)
-	{
-		UINT16 basex = scrollx>>5;
-=======
 	uint16_t basey = scrolly>>5;
 	for (int y=0;y<13;y++)
 	{
 		uint16_t basex = scrollx>>5;
->>>>>>> upstream/master
 		for (int x=0;x<16;x++)
 		{
 			int vram_data = (ram[(basex&0x0f)+((basey&0x0f)*0x10)]);
@@ -892,11 +783,7 @@ void gstream_state::draw_bg_gstream(bitmap_rgb32 &bitmap, const rectangle &clipr
 	}
 }
 
-<<<<<<< HEAD
-UINT32 gstream_state::screen_update_gstream(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
-=======
 uint32_t gstream_state::screen_update_gstream(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	/* The tilemaps and sprite are interleaved together.
 	   Even Words are tilemap tiles
@@ -979,11 +866,7 @@ void gstream_state::machine_reset()
 	m_oki_bank_2 = 0;
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( gstream, gstream_state )
-=======
 static MACHINE_CONFIG_START( gstream )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", E132XT, 16000000*4) /* 4x internal multiplier */
@@ -1011,16 +894,6 @@ static MACHINE_CONFIG_START( gstream )
 
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki1", 1000000, OKIM6295_PIN7_HIGH) /* 1 Mhz? */
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.00)
-
-	MCFG_OKIM6295_ADD("oki2", 1000000, OKIM6295_PIN7_HIGH) /* 1 Mhz? */
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.00)
-MACHINE_CONFIG_END
-
-static MACHINE_CONFIG_START( x2222, gstream_state )
-=======
 	MCFG_OKIM6295_ADD("oki1", 1000000, PIN7_HIGH) /* 1 Mhz? */
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.00)
 
@@ -1029,7 +902,6 @@ static MACHINE_CONFIG_START( x2222, gstream_state )
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_START( x2222 )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", E132XT, 16000000*4) /* 4x internal multiplier */
@@ -1055,11 +927,7 @@ static MACHINE_CONFIG_START( x2222 )
 
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki1", 1000000, OKIM6295_PIN7_HIGH) /* 1 Mhz? */
-=======
 	MCFG_OKIM6295_ADD("oki1", 1000000, PIN7_HIGH) /* 1 Mhz? */
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.00)
 MACHINE_CONFIG_END
 
@@ -1271,11 +1139,7 @@ DRIVER_INIT_MEMBER(gstream_state,gstream)
 }
 
 
-<<<<<<< HEAD
-void gstream_state::rearrange_tile_data(UINT8* ROM, UINT32* NEW, UINT32* NEW2)
-=======
 void gstream_state::rearrange_tile_data(uint8_t* ROM, uint32_t* NEW, uint32_t* NEW2)
->>>>>>> upstream/master
 {
 	int i;
 	for (i = 0; i < 0x80000; i++)
@@ -1285,11 +1149,7 @@ void gstream_state::rearrange_tile_data(uint8_t* ROM, uint32_t* NEW, uint32_t* N
 	}
 }
 
-<<<<<<< HEAD
-void gstream_state::rearrange_sprite_data(UINT8* ROM, UINT32* NEW, UINT32* NEW2)
-=======
 void gstream_state::rearrange_sprite_data(uint8_t* ROM, uint32_t* NEW, uint32_t* NEW2)
->>>>>>> upstream/master
 {
 	int i;
 	for (i = 0; i < 0x200000; i++)
@@ -1304,27 +1164,15 @@ DRIVER_INIT_MEMBER(gstream_state,x2222)
 	m_maincpu->space(AS_PROGRAM).install_read_handler(0x7ffac, 0x7ffaf, read32_delegate(FUNC(gstream_state::x2222_speedup_r), this)); // older
 	m_maincpu->space(AS_PROGRAM).install_read_handler(0x84e3c, 0x84e3f, read32_delegate(FUNC(gstream_state::x2222_speedup2_r), this)); // newer
 
-<<<<<<< HEAD
-	rearrange_sprite_data(memregion("sprites")->base(), (UINT32*)memregion("gfx1")->base(), (UINT32*)memregion("gfx1_lower")->base()  );
-	rearrange_tile_data(memregion("bg1")->base(), (UINT32*)memregion("gfx2")->base(), (UINT32*)memregion("gfx2_lower")->base());
-	rearrange_tile_data(memregion("bg2")->base(), (UINT32*)memregion("gfx3")->base(), (UINT32*)memregion("gfx3_lower")->base());
-	rearrange_tile_data(memregion("bg3")->base(), (UINT32*)memregion("gfx4")->base(), (UINT32*)memregion("gfx4_lower")->base());
-=======
 	rearrange_sprite_data(memregion("sprites")->base(), (uint32_t*)memregion("gfx1")->base(), (uint32_t*)memregion("gfx1_lower")->base()  );
 	rearrange_tile_data(memregion("bg1")->base(), (uint32_t*)memregion("gfx2")->base(), (uint32_t*)memregion("gfx2_lower")->base());
 	rearrange_tile_data(memregion("bg2")->base(), (uint32_t*)memregion("gfx3")->base(), (uint32_t*)memregion("gfx3_lower")->base());
 	rearrange_tile_data(memregion("bg3")->base(), (uint32_t*)memregion("gfx4")->base(), (uint32_t*)memregion("gfx4_lower")->base());
->>>>>>> upstream/master
 
 	m_xoffset = 0;
 }
 
 
-<<<<<<< HEAD
-GAME( 2002, gstream, 0, gstream, gstream, gstream_state, gstream, ROT270, "Oriental Soft Japan", "G-Stream G2020", MACHINE_SUPPORTS_SAVE )
-GAME( 2000, x2222,   0,     x2222,   x2222,   gstream_state, x2222,   ROT270, "Oriental Soft / Promat", "X2222 (final debug?)", MACHINE_SUPPORTS_SAVE | MACHINE_NO_SOUND )
-=======
 GAME( 2002, gstream, 0,     gstream, gstream, gstream_state, gstream, ROT270, "Oriental Soft Japan",    "G-Stream G2020",            MACHINE_SUPPORTS_SAVE )
 GAME( 2000, x2222,   0,     x2222,   x2222,   gstream_state, x2222,   ROT270, "Oriental Soft / Promat", "X2222 (final debug?)",      MACHINE_SUPPORTS_SAVE | MACHINE_NO_SOUND )
->>>>>>> upstream/master
 GAME( 2000, x2222o,  x2222, x2222,   x2222,   gstream_state, x2222,   ROT270, "Oriental Soft / Promat", "X2222 (5-level prototype)", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_GRAPHICS | MACHINE_NO_SOUND )

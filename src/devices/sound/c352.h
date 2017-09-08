@@ -1,31 +1,15 @@
 // license:BSD-3-Clause
-<<<<<<< HEAD
-// copyright-holders:R. Belmont
-#pragma once
-
-#ifndef __C352_H__
-#define __C352_H__
-=======
 // copyright-holders:R. Belmont, superctr
 #ifndef MAME_SOUND_C352_H
 #define MAME_SOUND_C352_H
 
 #pragma once
 
->>>>>>> upstream/master
 
 //**************************************************************************
 //  INTERFACE CONFIGURATION MACROS
 //**************************************************************************
 
-<<<<<<< HEAD
-#define MCFG_C352_ADD(_tag, _clock, _setting) \
-	MCFG_DEVICE_ADD(_tag, C352, _clock) \
-	MCFG_C352_DIVIDER(_setting)
-
-#define MCFG_C352_DIVIDER(_setting) \
-	c352_device::static_set_divider(*device, _setting);
-=======
 #define MCFG_C352_ADD(tag, clock, setting) \
 		MCFG_DEVICE_ADD((tag), C352, (clock)) \
 		MCFG_C352_DIVIDER(setting)
@@ -33,7 +17,6 @@
 #define MCFG_C352_DIVIDER(setting) \
 		c352_device::static_set_divider(*device, (setting));
 
->>>>>>> upstream/master
 
 //**************************************************************************
 //  TYPE DEFINITIONS
@@ -43,19 +26,11 @@
 
 class c352_device : public device_t,
 					public device_sound_interface,
-<<<<<<< HEAD
-					public device_memory_interface
-{
-public:
-	// construction/destruction
-	c352_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-=======
 					public device_rom_interface
 {
 public:
 	// construction/destruction
 	c352_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
->>>>>>> upstream/master
 
 	// inline configuration helpers
 	static void static_set_divider(device_t &device, int setting);
@@ -63,22 +38,6 @@ public:
 	DECLARE_READ16_MEMBER(read);
 	DECLARE_WRITE16_MEMBER(write);
 
-<<<<<<< HEAD
-	sound_stream *m_stream;
-
-protected:
-	// device-level overrides
-	virtual void device_start();
-	virtual void device_reset();
-
-	// device_sound_interface overrides
-	virtual void sound_stream_update(sound_stream &stream, stream_sample_t **inputs, stream_sample_t **outputs, int samples);
-
-	// device_memory_interface overrides
-	virtual const address_space_config *memory_space_config(address_spacenum spacenum = AS_0) const;
-
-	const address_space_config  m_space_config;
-=======
 protected:
 	// device-level overrides
 	virtual void device_start() override;
@@ -90,7 +49,6 @@ protected:
 
 	// device_rom_interface overrides
 	virtual void rom_bank_updated() override;
->>>>>>> upstream/master
 
 private:
 	enum {
@@ -113,48 +71,6 @@ private:
 		C352_FLG_REVERSE    = 0x0001    // play sample backwards
 	};
 
-<<<<<<< HEAD
-	struct c352_ch_t
-	{
-		UINT8   vol_l;
-		UINT8   vol_r;
-		UINT8   vol_l2;
-		UINT8   vol_r2;
-		UINT8   bank;
-		INT16   noise;
-		INT16   noisebuf;
-		UINT16  noisecnt;
-		UINT16  pitch;
-		UINT16  start_addr;
-		UINT16  end_addr;
-		UINT16  repeat_addr;
-		UINT32  flag;
-
-		UINT16  start;
-		UINT16  repeat;
-		UINT32  current_addr;
-		UINT32  pos;
-	};
-
-	c352_ch_t m_c352_ch[32];
-	int m_sample_rate_base;
-	int m_divider;
-
-	long m_channel_l[2048*2];
-	long m_channel_r[2048*2];
-	long m_channel_l2[2048*2];
-	long m_channel_r2[2048*2];
-
-	short m_mulaw_table[256];
-	unsigned int m_mseq_reg;
-	direct_read_data *m_direct;
-
-	// private functions
-	int get_mseq_bit(void);
-	void mix_one_channel(unsigned long ch, long sample_count);
-	unsigned short read_reg16(unsigned long address);
-	void write_reg16(unsigned long address, unsigned short val);
-=======
 	struct c352_voice_t {
 
 		uint32_t pos;
@@ -192,17 +108,10 @@ private:
 
 	uint16_t m_random;
 	uint16_t m_control; // control flags, purpose unknown.
->>>>>>> upstream/master
 };
 
 
 // device type definition
-<<<<<<< HEAD
-extern const device_type C352;
-
-#endif /* __C352_H__ */
-=======
 DECLARE_DEVICE_TYPE(C352, c352_device)
 
 #endif // MAME_SOUND_C352_H
->>>>>>> upstream/master

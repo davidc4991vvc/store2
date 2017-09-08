@@ -11,11 +11,7 @@ import sys
 
 def parse_args():
     def usage():
-<<<<<<< HEAD
-        sys.stderr.write('Usage: verinfo.py [-b mame|mess|ume|ldplayer] [-r|-p] [-o <outfile>] <srcfile>\n')
-=======
         sys.stderr.write('Usage: verinfo.py [-b mame|mess|ume] [-r|-p] [-o <outfile>] <srcfile>\n')
->>>>>>> upstream/master
         sys.exit(1)
 
     flags = True
@@ -100,27 +96,6 @@ if build == "mess":
     product_name = "MESS"
     bundle_identifier = "org.mamedev.mess"
 else:
-<<<<<<< HEAD
-#    # MAME
-#    author = "Nicola Salmoria and the MAME Team"
-#    comments = "Multiple Arcade Machine Emulator"
-#    company_name = "MAME Team"
-#    file_description = "Multiple Arcade Machine Emulator"
-#    internal_name = "MAME" if build == "mame" else build
-#    original_filename = "MAME" if build == "mame" else build
-#    product_name = "MAME" if build == "mame" else build
-#    bundle_identifier = "org.mamedev." + build
-
-    # MAMEPlus
-    author = "MAME and MAME Plus! Team"
-    comments = "Multiple Arcade Machine Emulator Plus!"
-    company_name = "MAME and MAME Plus! Team"
-    file_description = "Multiple Arcade Machine Emulator Plus!"
-    internal_name = "PLUS"
-    original_filename = "PLUS"
-    product_name = "PLUS"
-    bundle_identifier = "org.mamedev.mameplus"
-=======
     # MAME
     author = "Nicola Salmoria and the MAME Team"
     comments = "Multiple Arcade Machine Emulator"
@@ -130,7 +105,6 @@ else:
     original_filename = "MAME" if build == "mame" else build
     product_name = "MAME" if build == "mame" else build
     bundle_identifier = "org.mamedev." + build
->>>>>>> upstream/master
 
 legal_copyright = "Copyright Nicola Salmoria and the MAME team"
 

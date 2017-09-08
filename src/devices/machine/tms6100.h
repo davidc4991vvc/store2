@@ -1,13 +1,4 @@
 // license:BSD-3-Clause
-<<<<<<< HEAD
-// copyright-holders:Couriersud
-#pragma once
-
-#ifndef __TMS6100_H__
-#define __TMS6100_H__
-
-/* TMS 6100 memory controller */
-=======
 // copyright-holders:hap, Couriersud
 /**********************************************************************************************
 
@@ -100,46 +91,10 @@
 //**************************************************************************
 //  TYPE DEFINITIONS
 //**************************************************************************
->>>>>>> upstream/master
 
 class tms6100_device : public device_t
 {
 public:
-<<<<<<< HEAD
-	tms6100_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-	tms6100_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source);
-
-	DECLARE_WRITE_LINE_MEMBER( tms6100_m0_w );
-	DECLARE_WRITE_LINE_MEMBER( tms6100_m1_w );
-	DECLARE_WRITE_LINE_MEMBER( tms6100_romclock_w );
-	DECLARE_WRITE8_MEMBER( tms6100_addr_w );
-
-	DECLARE_READ_LINE_MEMBER( tms6100_data_r );
-
-protected:
-	// device-level overrides
-	virtual void device_config_complete();
-	virtual void device_start();
-	virtual void device_reset();
-	void set_variant(int variant);
-private:
-	// internal state
-	required_region_ptr<UINT8> m_rom;
-	UINT32 m_address;
-	UINT32 m_address_latch;
-	UINT8  m_loadptr;
-	UINT8  m_m0;
-	UINT8  m_m1;
-	UINT8  m_addr_bits;
-	UINT8  m_tms_clock;
-	UINT8  m_data;
-	UINT8  m_state;
-	UINT8  m_variant;
-
-};
-
-extern const device_type TMS6100;
-=======
 	tms6100_device(const machine_config &mconfig, const char *tag, device_t *owner, u32 clock);
 
 	static void enable_4bit_mode(device_t &device) { downcast<tms6100_device &>(device).m_4bit_mode = true; }
@@ -183,24 +138,10 @@ protected:
 	int m_rck;     // RCK pin (mask/gate to CLK?)
 };
 
->>>>>>> upstream/master
 
 class m58819_device : public tms6100_device
 {
 public:
-<<<<<<< HEAD
-	m58819_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-protected:
-	// device-level overrides
-	virtual void device_start();
-};
-
-extern const device_type M58819;
-
-
-#endif /* __TMS6100_H__ */
-=======
 	m58819_device(const machine_config &mconfig, const char *tag, device_t *owner, u32 clock);
 
 protected:
@@ -213,4 +154,3 @@ DECLARE_DEVICE_TYPE(TMS6100, tms6100_device)
 DECLARE_DEVICE_TYPE(M58819,  m58819_device)
 
 #endif // MAME_MACHINE_TMS6100_H
->>>>>>> upstream/master

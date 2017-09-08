@@ -274,14 +274,6 @@ Notes:
 */
 
 #include "emu.h"
-<<<<<<< HEAD
-
-#include "cpu/sh2/sh2.h"
-#include "machine/eepromser.h"
-#include "sound/ymf278b.h"
-
-#include "includes/psikyosh.h"
-=======
 #include "includes/psikyosh.h"
 
 #include "cpu/sh2/sh2.h"
@@ -290,7 +282,6 @@ Notes:
 #include "sound/ymf278b.h"
 #include "speaker.h"
 
->>>>>>> upstream/master
 
 static const gfx_layout layout_16x16x4 =
 {
@@ -425,13 +416,8 @@ P1KEY11  29|30  P2KEY11
     GND  55|56  GND
 */
 
-<<<<<<< HEAD
-	UINT32 controls = ioport("CONTROLLER")->read();
-	UINT32 value = ioport("INPUTS")->read();
-=======
 	uint32_t controls = ioport("CONTROLLER")->read();
 	uint32_t value = ioport("INPUTS")->read();
->>>>>>> upstream/master
 
 	if(controls) {
 		// Clearly has ghosting, game will only recognise one key depressed at once, and keyboard can only represent keys with distinct rows and columns
@@ -453,11 +439,7 @@ P1KEY11  29|30  P2KEY11
 			KEY11 = 0x0800  // JAMMA P1 Button 1
 		}; // Mahjong->JAMMA mapping specific to this game pcb
 
-<<<<<<< HEAD
-		UINT16 key_codes[] = { // treated as IP_ACTIVE_LOW, game inverts them upon reading
-=======
 		uint16_t key_codes[] = { // treated as IP_ACTIVE_LOW, game inverts them upon reading
->>>>>>> upstream/master
 //          ROW (distinct pins for P1 or P2) | COLUMN (shared for P1+P2)
 			KEY4 | KEY3,  // A
 			KEY4 | KEY2,  // B
@@ -480,13 +462,8 @@ P1KEY11  29|30  P2KEY11
 			KEY11 | KEY6, // Ron
 			KEY1 | KEY3   // Start
 		}; // generic Mahjong keyboard encoder, corresponds to ordering in input port
-<<<<<<< HEAD
-		UINT32 keys = ioport("MAHJONG")->read();
-		UINT32 which_key = 0x1;
-=======
 		uint32_t keys = ioport("MAHJONG")->read();
 		uint32_t which_key = 0x1;
->>>>>>> upstream/master
 		int count = 0;
 
 		// HACK: read IPT_START1 from "INPUTS" to avoid listing it twice or having two independent STARTs listed
@@ -497,11 +474,7 @@ P1KEY11  29|30  P2KEY11
 		do {
 			// since we can't handle multiple keys, just return the first one depressed
 			if((keys & which_key) && (count < ARRAY_LENGTH(key_codes))) {
-<<<<<<< HEAD
-				value &= ~((UINT32)(key_codes[count]) << 16); // mask in selected word as IP_ACTIVE_LOW
-=======
 				value &= ~((uint32_t)(key_codes[count]) << 16); // mask in selected word as IP_ACTIVE_LOW
->>>>>>> upstream/master
 				break;
 			}
 			which_key <<= 1;
@@ -523,11 +496,7 @@ static ADDRESS_MAP_START( ps3v1_map, AS_PROGRAM, 32, psikyosh_state )
 	AM_RANGE(0x03004000, 0x0300ffff) AM_RAM AM_SHARE("bgram") // video banks 7-0x1f (backgrounds and other effects)
 	AM_RANGE(0x03040000, 0x03044fff) AM_RAM_DEVWRITE("palette", palette_device, write) AM_SHARE("palette") // palette..
 	AM_RANGE(0x03050000, 0x030501ff) AM_RAM AM_SHARE("zoomram") // sprite zoom lookup table
-<<<<<<< HEAD
-	AM_RANGE(0x0305ffdc, 0x0305ffdf) AM_READNOP AM_WRITE(psikyosh_irqctrl_w) // also writes to this address - might be vblank reads?
-=======
 	AM_RANGE(0x0305ffdc, 0x0305ffdf) AM_DEVREAD("watchdog", watchdog_timer_device, reset32_r) AM_WRITE(psikyosh_irqctrl_w) // also writes to this address - might be vblank reads?
->>>>>>> upstream/master
 	AM_RANGE(0x0305ffe0, 0x0305ffff) AM_RAM_WRITE(psikyosh_vidregs_w) AM_SHARE("vidregs") //  video registers
 	AM_RANGE(0x03060000, 0x0307ffff) AM_ROMBANK("gfxbank") // data for rom tests (gfx), data is controlled by vidreg
 // rom mapping
@@ -630,8 +599,6 @@ static INPUT_PORTS_START( soldivid )
 	PORT_BIT( 0x10000000, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_READ_LINE_DEVICE_MEMBER("eeprom", eeprom_serial_93cxx_device, do_read)
 INPUT_PORTS_END
 
-<<<<<<< HEAD
-=======
 static INPUT_PORTS_START( soldividk )
 	PORT_INCLUDE( common )
 
@@ -642,7 +609,6 @@ static INPUT_PORTS_START( soldividk )
 	PORT_BIT( 0x10000000, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_READ_LINE_DEVICE_MEMBER("eeprom", eeprom_serial_93cxx_device, do_read)
 INPUT_PORTS_END
 
->>>>>>> upstream/master
 static INPUT_PORTS_START( daraku )
 	PORT_INCLUDE( common )
 
@@ -809,21 +775,14 @@ void psikyosh_state::machine_start()
 }
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( psikyo3v1, psikyosh_state )
-=======
 static MACHINE_CONFIG_START( psikyo3v1 )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", SH2, MASTER_CLOCK/2)
 	MCFG_CPU_PROGRAM_MAP(ps3v1_map)
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", psikyosh_state,  psikyosh_interrupt)
 
-<<<<<<< HEAD
-=======
 	MCFG_WATCHDOG_ADD("watchdog")
->>>>>>> upstream/master
 
 	MCFG_EEPROM_SERIAL_93C56_8BIT_ADD("eeprom")
 	MCFG_EEPROM_SERIAL_DEFAULT_VALUE(0)
@@ -836,11 +795,7 @@ static MACHINE_CONFIG_START( psikyo3v1 )
 	MCFG_SCREEN_SIZE(64*8, 32*8)
 	MCFG_SCREEN_VISIBLE_AREA(0, 40*8-1, 0, 28*8-1)
 	MCFG_SCREEN_UPDATE_DRIVER(psikyosh_state, screen_update_psikyosh)
-<<<<<<< HEAD
-	MCFG_SCREEN_VBLANK_DEVICE("spriteram", buffered_spriteram32_device, vblank_copy_rising)
-=======
 	MCFG_SCREEN_VBLANK_CALLBACK(DEVWRITELINE("spriteram", buffered_spriteram32_device, vblank_copy_rising))
->>>>>>> upstream/master
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", psikyosh)
 	MCFG_PALETTE_ADD("palette", 0x5000/4)
@@ -848,20 +803,11 @@ static MACHINE_CONFIG_START( psikyo3v1 )
 
 
 	/* sound hardware */
-<<<<<<< HEAD
-	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
-
-	MCFG_SOUND_ADD("ymf", YMF278B, MASTER_CLOCK/2)
-	MCFG_YMF278B_IRQ_HANDLER(INPUTLINE("maincpu", 12))
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 1.0)
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 1.0)
-=======
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
 	MCFG_SOUND_ADD("ymf", YMF278B, MASTER_CLOCK/2)
 	MCFG_YMF278B_IRQ_HANDLER(INPUTLINE("maincpu", 12))
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_DERIVED( psikyo5, psikyo3v1 )
@@ -906,8 +852,6 @@ ROM_START( soldivid )
 	ROM_LOAD( "sound.bin", 0x000000, 0x400000, CRC(e98f8d45) SHA1(7791c0f31d08f37c6ec65e7cecf8ef54ca73b1fd) )
 ROM_END
 
-<<<<<<< HEAD
-=======
 ROM_START( soldividk )
 	ROM_REGION( 0x200000, "maincpu", 0)
 	ROM_LOAD32_WORD_SWAP( "9-prog_lk.u18", 0x000002, 0x080000, CRC(b534029d) SHA1(a96ca55e6694c5537d489d40bc890c376bbce933) )
@@ -926,7 +870,6 @@ ROM_START( soldividk )
 	ROM_LOAD( "sound.bin", 0x000000, 0x400000, CRC(e98f8d45) SHA1(7791c0f31d08f37c6ec65e7cecf8ef54ca73b1fd) )
 ROM_END
 
->>>>>>> upstream/master
 ROM_START( s1945ii )
 	ROM_REGION( 0x200000, "maincpu", 0) /* Code */
 	ROM_LOAD32_WORD_SWAP( "2_prog_l.u18", 0x000002, 0x080000, CRC(20a911b8) SHA1(82ba7b93bd621fc45a4dc2722752077b59a0a233) )
@@ -1275,27 +1218,6 @@ DRIVER_INIT_MEMBER(psikyosh_state,mjgtaste)
 }
 
 
-<<<<<<< HEAD
-/*     YEAR  NAME      PARENT    MACHINE    INPUT     INIT      MONITOR COMPANY   FULLNAME FLAGS */
-
-/* ps3-v1 */
-GAME( 1997, soldivid, 0,        psikyo3v1,   soldivid, psikyosh_state, ps3, ROT0,   "Psikyo", "Sol Divide - The Sword Of Darkness", MACHINE_SUPPORTS_SAVE )
-GAME( 1997, s1945ii,  0,        psikyo3v1,   s1945ii,  psikyosh_state, ps3, ROT270, "Psikyo", "Strikers 1945 II", MACHINE_SUPPORTS_SAVE )
-GAME( 1998, daraku,   0,        psikyo3v1,   daraku,   psikyosh_state, ps3, ROT0,   "Psikyo", "Daraku Tenshi - The Fallen Angels", MACHINE_SUPPORTS_SAVE )
-GAME( 1998, sbomber,  0,        psikyo3v1,   sbomberb, psikyosh_state, ps3, ROT270, "Psikyo", "Space Bomber (ver. B)", MACHINE_SUPPORTS_SAVE )
-GAME( 1998, sbombera, sbomber,  psikyo3v1,   sbomberb, psikyosh_state, ps3, ROT270, "Psikyo", "Space Bomber", MACHINE_SUPPORTS_SAVE )
-
-/* ps5 */
-GAME( 1998, gunbird2, 0,        psikyo5,     gunbird2, psikyosh_state, ps5, ROT270, "Psikyo", "Gunbird 2", MACHINE_SUPPORTS_SAVE )
-GAME( 1999, s1945iii, 0,        psikyo5,     s1945iii, psikyosh_state, ps5, ROT270, "Psikyo", "Strikers 1945 III (World) / Strikers 1999 (Japan)", MACHINE_SUPPORTS_SAVE )
-
-/* ps5v2 */
-GAME( 2000, dragnblz, 0,        psikyo5,     dragnblz, psikyosh_state, ps5,      ROT270, "Psikyo", "Dragon Blaze", MACHINE_SUPPORTS_SAVE )
-GAME( 2000, tgm2,     0,        psikyo5_240, tgm2,     psikyosh_state, ps5,      ROT0,   "Arika",  "Tetris the Absolute The Grand Master 2", MACHINE_SUPPORTS_SAVE )
-GAME( 2000, tgm2p,    tgm2,     psikyo5_240, tgm2,     psikyosh_state, ps5,      ROT0,   "Arika",  "Tetris the Absolute The Grand Master 2 Plus", MACHINE_SUPPORTS_SAVE )
-GAME( 2001, gnbarich, 0,        psikyo5,     gnbarich, psikyosh_state, ps5,      ROT270, "Psikyo", "Gunbarich", MACHINE_SUPPORTS_SAVE )
-GAME( 2002, mjgtaste, 0,        psikyo5,     mjgtaste, psikyosh_state, mjgtaste, ROT0,   "Psikyo", "Mahjong G-Taste", MACHINE_SUPPORTS_SAVE )
-=======
 //    YEAR  NAME       PARENT    MACHINE      INPUT     STATE           INIT      MONITOR COMPANY   FULLNAME FLAGS */
 
 /* ps3-v1 */
@@ -1316,4 +1238,3 @@ GAME( 2000, tgm2,      0,        psikyo5_240, tgm2,     psikyosh_state, ps5,    
 GAME( 2000, tgm2p,     tgm2,     psikyo5_240, tgm2,     psikyosh_state, ps5,      ROT0,   "Arika",  "Tetris the Absolute The Grand Master 2 Plus", MACHINE_SUPPORTS_SAVE )
 GAME( 2001, gnbarich,  0,        psikyo5,     gnbarich, psikyosh_state, ps5,      ROT270, "Psikyo", "Gunbarich", MACHINE_SUPPORTS_SAVE )
 GAME( 2002, mjgtaste,  0,        psikyo5,     mjgtaste, psikyosh_state, mjgtaste, ROT0,   "Psikyo", "Mahjong G-Taste", MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-// license:???
-=======
 // license:GPL-2.0+
->>>>>>> upstream/master
 // copyright-holders:David Graves, Jarek Burczynski
 /*************************************************************************
 
@@ -54,27 +50,13 @@ public:
 		m_palette(*this, "palette") { }
 
 	/* memory pointers */
-<<<<<<< HEAD
-	required_shared_ptr<UINT16> m_spriteram;
-	required_shared_ptr<UINT16> m_fg_ram;
-=======
 	required_shared_ptr<uint16_t> m_spriteram;
 	required_shared_ptr<uint16_t> m_fg_ram;
->>>>>>> upstream/master
 
 	/* video-related */
 	tilemap_t  *m_fg_tilemap;
 
 	/* misc */
-<<<<<<< HEAD
-	UINT16     m_cpua_ctrl;
-	UINT16     m_coin_word;
-	UINT8      m_adpcm_command;
-	UINT8      m_nmi_enable;
-	UINT32     m_def_vol[0x10];
-	UINT8      m_vol[DARIUS_VOL_MAX];
-	UINT8      m_pan[DARIUS_PAN_MAX];
-=======
 	uint16_t     m_cpua_ctrl;
 	uint16_t     m_coin_word;
 	uint8_t      m_adpcm_command;
@@ -82,7 +64,6 @@ public:
 	uint32_t     m_def_vol[0x10];
 	uint8_t      m_vol[DARIUS_VOL_MAX];
 	uint8_t      m_pan[DARIUS_PAN_MAX];
->>>>>>> upstream/master
 
 	/* devices */
 	required_device<cpu_device> m_maincpu;
@@ -115,18 +96,10 @@ public:
 	required_device<palette_device> m_palette;
 
 	DECLARE_WRITE16_MEMBER(cpua_ctrl_w);
-<<<<<<< HEAD
-	DECLARE_WRITE16_MEMBER(darius_watchdog_w);
-=======
->>>>>>> upstream/master
 	DECLARE_READ16_MEMBER(darius_ioc_r);
 	DECLARE_WRITE16_MEMBER(darius_ioc_w);
 	DECLARE_WRITE8_MEMBER(sound_bankswitch_w);
 	DECLARE_WRITE8_MEMBER(adpcm_command_w);
-<<<<<<< HEAD
-	DECLARE_WRITE8_MEMBER(display_value);
-=======
->>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(darius_fm0_pan);
 	DECLARE_WRITE8_MEMBER(darius_fm1_pan);
 	DECLARE_WRITE8_MEMBER(darius_psg0_pan);
@@ -144,17 +117,6 @@ public:
 	DECLARE_WRITE8_MEMBER(darius_write_portB1);
 	DECLARE_WRITE8_MEMBER(adpcm_data_w);
 	TILE_GET_INFO_MEMBER(get_fg_tile_info);
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void machine_reset();
-	virtual void video_start();
-	UINT32 screen_update_darius_left(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	UINT32 screen_update_darius_middle(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	UINT32 screen_update_darius_right(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	void darius_postload();
-	void draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect, int primask, int x_offs, int y_offs );
-	UINT32 update_screen(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int xoffs);
-=======
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
 	virtual void video_start() override;
@@ -164,16 +126,11 @@ public:
 	void darius_postload();
 	void draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect, int primask, int x_offs, int y_offs );
 	uint32_t update_screen(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int xoffs);
->>>>>>> upstream/master
 	void parse_control(  )   /* assumes Z80 sandwiched between 68Ks */;
 	void update_fm0(  );
 	void update_fm1(  );
 	void update_psg0( int port );
 	void update_psg1( int port );
 	void update_da(  );
-<<<<<<< HEAD
-	DECLARE_WRITE_LINE_MEMBER(irqhandler);
-=======
->>>>>>> upstream/master
 	DECLARE_WRITE_LINE_MEMBER(darius_adpcm_int);
 };

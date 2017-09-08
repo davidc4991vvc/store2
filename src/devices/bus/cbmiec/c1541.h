@@ -6,20 +6,11 @@
 
 **********************************************************************/
 
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __C1541__
-#define __C1541__
-
-#include "emu.h"
-=======
 #ifndef MAME_BUS_CBMIEC_C1541_H
 #define MAME_BUS_CBMIEC_C1541_H
 
 #pragma once
 
->>>>>>> upstream/master
 #include "cbmiec.h"
 #include "bus/c64/bn1541.h"
 #include "cpu/m6502/m6502.h"
@@ -42,21 +33,6 @@
 //  TYPE DEFINITIONS
 //**************************************************************************
 
-<<<<<<< HEAD
-// ======================> c1541_base_t
-
-class c1541_base_t :  public device_t,
-						public device_cbm_iec_interface,
-						public device_c64_floppy_parallel_interface
-{
-public:
-	// construction/destruction
-	c1541_base_t(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source);
-
-	// optional information overrides
-	virtual machine_config_constructor device_mconfig_additions() const;
-	virtual ioport_constructor device_input_ports() const;
-=======
 // ======================> c1541_device_base
 
 class c1541_device_base :  public device_t,
@@ -93,7 +69,6 @@ private:
 	};
 
 	inline void set_iec_data();
->>>>>>> upstream/master
 
 	DECLARE_WRITE_LINE_MEMBER( via0_irq_w );
 	virtual DECLARE_READ8_MEMBER( via0_pa_r );
@@ -109,38 +84,10 @@ private:
 
 	DECLARE_FLOPPY_FORMATS( floppy_formats );
 
-<<<<<<< HEAD
-protected:
-	// device-level overrides
-	virtual void device_start();
-	virtual void device_reset();
-
-	// device_cbm_iec_interface overrides
-	virtual void cbm_iec_atn(int state);
-	virtual void cbm_iec_reset(int state);
-
-	// device_c64_floppy_parallel_interface overrides
-	virtual void parallel_data_w(UINT8 data);
-	virtual void parallel_strobe_w(int state);
-
-	enum
-	{
-		LED_POWER = 0,
-		LED_ACT
-	};
-
-	inline void set_iec_data();
-
-=======
->>>>>>> upstream/master
 	required_device<m6502_device> m_maincpu;
 	required_device<via6522_device> m_via0;
 	required_device<via6522_device> m_via1;
 	required_device<c64h156_device> m_ga;
-<<<<<<< HEAD
-	required_device<floppy_image_device> m_floppy;
-=======
->>>>>>> upstream/master
 	required_ioport m_address;
 
 	// IEC bus
@@ -152,158 +99,6 @@ protected:
 };
 
 
-<<<<<<< HEAD
-// ======================> c1540_t
-
-class c1540_t :  public c1541_base_t
-{
-public:
-	// construction/destruction
-	c1540_t(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// optional information overrides
-	virtual const rom_entry *device_rom_region() const;
-};
-
-
-// ======================> c1541_t
-
-class c1541_t :  public c1541_base_t
-{
-public:
-	// construction/destruction
-	c1541_t(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// optional information overrides
-	virtual const rom_entry *device_rom_region() const;
-};
-
-
-// ======================> c1541c_t
-
-class c1541c_t :  public c1541_base_t
-{
-public:
-	// construction/destruction
-	c1541c_t(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// optional information overrides
-	virtual const rom_entry *device_rom_region() const;
-	virtual machine_config_constructor device_mconfig_additions() const;
-
-	// not really public
-	virtual DECLARE_READ8_MEMBER( via0_pa_r );
-};
-
-
-// ======================> c1541ii_t
-
-class c1541ii_t :  public c1541_base_t
-{
-public:
-	// construction/destruction
-	c1541ii_t(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// optional information overrides
-	virtual const rom_entry *device_rom_region() const;
-};
-
-
-// ======================> sx1541_t
-
-class sx1541_t :  public c1541_base_t
-{
-public:
-	// construction/destruction
-	sx1541_t(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// optional information overrides
-	virtual const rom_entry *device_rom_region() const;
-};
-
-
-// ======================> fsd1_t
-
-class fsd1_t :  public c1541_base_t
-{
-public:
-	// construction/destruction
-	fsd1_t(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// optional information overrides
-	virtual const rom_entry *device_rom_region() const;
-};
-
-
-// ======================> fsd2_t
-
-class fsd2_t :  public c1541_base_t
-{
-public:
-	// construction/destruction
-	fsd2_t(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// optional information overrides
-	virtual const rom_entry *device_rom_region() const;
-
-	// device-level overrides
-	virtual void device_start();
-};
-
-
-// ======================> csd1_t
-
-class csd1_t :  public c1541_base_t
-{
-public:
-	// construction/destruction
-	csd1_t(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// optional information overrides
-	virtual const rom_entry *device_rom_region() const;
-};
-
-
-// ======================> c1541_dolphin_dos_t
-
-class c1541_dolphin_dos_t :  public c1541_base_t
-{
-public:
-	// construction/destruction
-	c1541_dolphin_dos_t(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// optional information overrides
-	virtual const rom_entry *device_rom_region() const;
-	virtual machine_config_constructor device_mconfig_additions() const;
-};
-
-
-// ======================> c1541_professional_dos_v1_t
-
-class c1541_professional_dos_v1_t :  public c1541_base_t
-{
-public:
-	// construction/destruction
-	c1541_professional_dos_v1_t(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// optional information overrides
-	virtual const rom_entry *device_rom_region() const;
-	virtual machine_config_constructor device_mconfig_additions() const;
-};
-
-
-// ======================> c1541_prologic_dos_classic_t
-
-class c1541_prologic_dos_classic_t :  public c1541_base_t
-{
-public:
-	// construction/destruction
-	c1541_prologic_dos_classic_t(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// optional information overrides
-	virtual const rom_entry *device_rom_region() const;
-	virtual machine_config_constructor device_mconfig_additions() const;
-=======
 // ======================> c1540_device
 
 class c1540_device :  public c1541_device_base
@@ -461,21 +256,11 @@ class c1541_prologic_dos_classic_device :  public c1541_device_base
 public:
 	// construction/destruction
 	c1541_prologic_dos_classic_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
->>>>>>> upstream/master
 
 	// not really public
 	DECLARE_READ8_MEMBER( read );
 	DECLARE_WRITE8_MEMBER( write );
 
-<<<<<<< HEAD
-	DECLARE_READ8_MEMBER( pia_r );
-	DECLARE_WRITE8_MEMBER( pia_w );
-
-	DECLARE_WRITE8_MEMBER( pia_pa_w );
-	DECLARE_READ8_MEMBER( pia_pb_r );
-	DECLARE_WRITE8_MEMBER( pia_pb_w );
-
-=======
 protected:
 	// optional information overrides
 	virtual const tiny_rom_entry *device_rom_region() const override;
@@ -484,26 +269,10 @@ protected:
 	DECLARE_READ8_MEMBER( pia_r );
 	DECLARE_WRITE8_MEMBER( pia_w );
 
->>>>>>> upstream/master
 protected:
 	required_device<pia6821_device> m_pia;
 	required_device<output_latch_device> m_cent_data_out;
 	required_memory_region m_mmu_rom;
-<<<<<<< HEAD
-};
-
-
-// ======================> indus_gt_t
-
-class indus_gt_t :  public c1541_base_t
-{
-public:
-	// construction/destruction
-	indus_gt_t(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// optional information overrides
-	virtual const rom_entry *device_rom_region() const;
-=======
 
 private:
 	DECLARE_WRITE8_MEMBER( pia_pa_w );
@@ -523,29 +292,10 @@ public:
 protected:
 	// optional information overrides
 	virtual const tiny_rom_entry *device_rom_region() const override;
->>>>>>> upstream/master
 };
 
 
 // device type definition
-<<<<<<< HEAD
-extern const device_type C1540;
-extern const device_type C1541;
-extern const device_type C1541C;
-extern const device_type C1541II;
-extern const device_type SX1541;
-extern const device_type FSD1;
-extern const device_type FSD2;
-extern const device_type CSD1;
-extern const device_type C1541_DOLPHIN_DOS;
-extern const device_type C1541_PROFESSIONAL_DOS_V1;
-extern const device_type C1541_PROLOGIC_DOS_CLASSIC;
-extern const device_type INDUS_GT;
-
-
-
-#endif
-=======
 DECLARE_DEVICE_TYPE(C1540,                      c1540_device)
 DECLARE_DEVICE_TYPE(C1541,                      c1541_device)
 DECLARE_DEVICE_TYPE(C1541C,                     c1541c_device)
@@ -562,4 +312,3 @@ DECLARE_DEVICE_TYPE(INDUS_GT,                   indus_gt_device)
 
 
 #endif // MAME_BUS_CBMIEC_C1541_H
->>>>>>> upstream/master

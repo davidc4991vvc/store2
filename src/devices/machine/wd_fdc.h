@@ -1,17 +1,10 @@
 // license:BSD-3-Clause
 // copyright-holders:Olivier Galibert
-<<<<<<< HEAD
-#ifndef WD_FDC_H
-#define WD_FDC_H
-
-#include "emu.h"
-=======
 #ifndef MAME_MACHINE_WD_FDC_H
 #define MAME_MACHINE_WD_FDC_H
 
 #pragma once
 
->>>>>>> upstream/master
 #include "imagedev/floppy.h"
 #include "fdc_pll.h"
 
@@ -122,34 +115,6 @@
 	MCFG_DEVICE_ADD(_tag, WD1773, _clock)
 
 #define MCFG_WD_FDC_FORCE_READY \
-<<<<<<< HEAD
-	downcast<wd_fdc_t *>(device)->set_force_ready(true);
-
-#define MCFG_WD_FDC_INTRQ_CALLBACK(_write) \
-	devcb = &wd_fdc_t::set_intrq_wr_callback(*device, DEVCB_##_write);
-
-#define MCFG_WD_FDC_DRQ_CALLBACK(_write) \
-	devcb = &wd_fdc_t::set_drq_wr_callback(*device, DEVCB_##_write);
-
-#define MCFG_WD_FDC_HLD_CALLBACK(_write) \
-	devcb = &wd_fdc_t::set_hld_wr_callback(*device, DEVCB_##_write);
-
-#define MCFG_WD_FDC_ENP_CALLBACK(_write) \
-	devcb = &wd_fdc_t::set_enp_wr_callback(*device, DEVCB_##_write);
-
-#define MCFG_WD_FDC_ENMF_CALLBACK(_read) \
-	devcb = &wd_fdc_t::set_enmf_rd_callback(*device, DEVCB_##_read);
-
-class wd_fdc_t : public device_t {
-public:
-	wd_fdc_t(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source);
-
-	template<class _Object> static devcb_base &set_intrq_wr_callback(device_t &device, _Object object) { return downcast<wd_fdc_t &>(device).intrq_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_drq_wr_callback(device_t &device, _Object object) { return downcast<wd_fdc_t &>(device).drq_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_hld_wr_callback(device_t &device, _Object object) { return downcast<wd_fdc_t &>(device).hld_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_enp_wr_callback(device_t &device, _Object object) { return downcast<wd_fdc_t &>(device).enp_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_enmf_rd_callback(device_t &device, _Object object) { return downcast<wd_fdc_t &>(device).enmf_cb.set_callback(object); }
-=======
 	downcast<wd_fdc_device_base *>(device)->set_force_ready(true);
 
 #define MCFG_WD_FDC_DISABLE_MOTOR_CONTROL \
@@ -177,39 +142,12 @@ public:
 	template <class Object> static devcb_base &set_hld_wr_callback(device_t &device, Object &&cb) { return downcast<wd_fdc_device_base &>(device).hld_cb.set_callback(std::forward<Object>(cb)); }
 	template <class Object> static devcb_base &set_enp_wr_callback(device_t &device, Object &&cb) { return downcast<wd_fdc_device_base &>(device).enp_cb.set_callback(std::forward<Object>(cb)); }
 	template <class Object> static devcb_base &set_enmf_rd_callback(device_t &device, Object &&cb) { return downcast<wd_fdc_device_base &>(device).enmf_cb.set_callback(std::forward<Object>(cb)); }
->>>>>>> upstream/master
 
 	void soft_reset();
 
 	void dden_w(bool dden);
 	void set_floppy(floppy_image_device *floppy);
 	void set_force_ready(bool force_ready);
-<<<<<<< HEAD
-
-	void cmd_w(UINT8 val);
-	UINT8 status_r();
-	DECLARE_READ8_MEMBER( status_r ) { return status_r(); }
-	DECLARE_WRITE8_MEMBER( cmd_w ) { cmd_w(data); }
-
-	void track_w(UINT8 val);
-	UINT8 track_r();
-	DECLARE_READ8_MEMBER( track_r ) { return track_r(); }
-	DECLARE_WRITE8_MEMBER( track_w ) { track_w(data); }
-
-	void sector_w(UINT8 val);
-	UINT8 sector_r();
-	DECLARE_READ8_MEMBER( sector_r ) { return sector_r(); }
-	DECLARE_WRITE8_MEMBER( sector_w ) { sector_w(data); }
-
-	void data_w(UINT8 val);
-	UINT8 data_r();
-	DECLARE_READ8_MEMBER( data_r ) { return data_r(); }
-	DECLARE_WRITE8_MEMBER( data_w ) { data_w(data); }
-
-	void gen_w(int reg, UINT8 val);
-	UINT8 gen_r(int reg);
-	DECLARE_READ8_MEMBER( read ) { return gen_r(offset);}
-=======
 	void set_disable_motor_control(bool _disable_motor_control);
 
 	void cmd_w(uint8_t val);
@@ -235,7 +173,6 @@ public:
 	void gen_w(int reg, uint8_t val);
 	uint8_t gen_r(int reg);
 	DECLARE_READ8_MEMBER( read ) { return gen_r(offset); }
->>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER( write ) { gen_w(offset,data); }
 
 	bool intrq_r();
@@ -249,11 +186,8 @@ public:
 	void index_callback(floppy_image_device *floppy, int state);
 
 protected:
-<<<<<<< HEAD
-=======
 	wd_fdc_device_base(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock);
 
->>>>>>> upstream/master
 	// Chip-specific configuration flags
 	bool disable_mfm;
 	bool enmf;
@@ -270,16 +204,6 @@ protected:
 	int delay_register_commit;
 	int delay_command_commit;
 
-<<<<<<< HEAD
-	static const int fd179x_step_times[4];
-	static const int fd176x_step_times[4];
-
-	virtual void device_start();
-	virtual void device_reset();
-	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
-
-	virtual int calc_sector_size(UINT8 size, UINT8 command) const;
-=======
 	static constexpr int fd179x_step_times[4] = {  6000, 12000, 20000, 30000 };
 	static constexpr int fd176x_step_times[4] = { 12000, 24000, 40000, 60000 };
 
@@ -288,7 +212,6 @@ protected:
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
 
 	virtual int calc_sector_size(uint8_t size, uint8_t command) const;
->>>>>>> upstream/master
 	virtual int settle_time() const;
 
 	virtual void pll_reset(bool fm, bool enmf, const attotime &when) = 0;
@@ -321,19 +244,11 @@ private:
 	//
 	//  In the first case, it must first switch to a waiting
 	//  sub-state, then return.  The waiting sub-state must just
-<<<<<<< HEAD
-	//  return immediatly when *_continue is called.  Eventually the
-	//  event handler function will advance the state machine to
-	//  another sub-state, and things will continue synchronously.
-	//
-	//  On command end it's also supposed to return immediatly.
-=======
 	//  return immediately when *_continue is called.  Eventually the
 	//  event handler function will advance the state machine to
 	//  another sub-state, and things will continue synchronously.
 	//
 	//  On command end it's also supposed to return immediately.
->>>>>>> upstream/master
 	//
 	//  The last option is to switch to the next sub-state, start a
 	//  live state with live_start() then return.  The next sub-state
@@ -365,11 +280,7 @@ private:
 		WRITE_TRACK,
 		WRITE_SECTOR,
 
-<<<<<<< HEAD
-		// Sub states
-=======
 		// Sub states, plus the reset-time restore request
->>>>>>> upstream/master
 
 		SPINUP,
 		SPINUP_WAIT,
@@ -398,11 +309,8 @@ private:
 		SECTOR_WRITE,
 		TRACK_DONE,
 
-<<<<<<< HEAD
-=======
 		INITIAL_RESTORE,
 
->>>>>>> upstream/master
 		// Live states
 
 		SEARCH_ADDRESS_MARK_HEADER,
@@ -429,21 +337,12 @@ private:
 
 		attotime tm;
 		int state, next_state;
-<<<<<<< HEAD
-		UINT16 shift_reg;
-		UINT16 crc;
-		int bit_counter, byte_counter, previous_type;
-		bool data_separator_phase, data_bit_context;
-		UINT8 data_reg;
-		UINT8 idbuf[6];
-=======
 		uint16_t shift_reg;
 		uint16_t crc;
 		int bit_counter, byte_counter, previous_type;
 		bool data_separator_phase, data_bit_context;
 		uint8_t data_reg;
 		uint8_t idbuf[6];
->>>>>>> upstream/master
 	};
 
 	enum {
@@ -475,15 +374,9 @@ private:
 
 	emu_timer *t_gen, *t_cmd, *t_track, *t_sector;
 
-<<<<<<< HEAD
-	bool dden, status_type_1, intrq, drq, hld, hlt, enp, force_ready;
-	int main_state, sub_state;
-	UINT8 command, track, sector, data, status, intrq_cond;
-=======
 	bool dden, status_type_1, intrq, drq, hld, hlt, enp, force_ready, disable_motor_control;
 	int main_state, sub_state;
 	uint8_t command, track, sector, data, status, intrq_cond;
->>>>>>> upstream/master
 	int last_dir;
 
 	int counter, motor_timeout, sector_size;
@@ -495,11 +388,7 @@ private:
 	devcb_write_line intrq_cb, drq_cb, hld_cb, enp_cb;
 	devcb_read_line enmf_cb;
 
-<<<<<<< HEAD
-	UINT8 format_last_byte;
-=======
 	uint8_t format_last_byte;
->>>>>>> upstream/master
 	int format_last_byte_count;
 	std::string format_description_string;
 
@@ -554,35 +443,14 @@ private:
 	bool read_one_bit(const attotime &limit);
 	bool write_one_bit(const attotime &limit);
 
-<<<<<<< HEAD
-	void live_write_raw(UINT16 raw);
-	void live_write_mfm(UINT8 mfm);
-	void live_write_fm(UINT8 fm);
-=======
 	void live_write_raw(uint16_t raw);
 	void live_write_mfm(uint8_t mfm);
 	void live_write_fm(uint8_t fm);
->>>>>>> upstream/master
 
 	void drop_drq();
 	void set_drq();
 };
 
-<<<<<<< HEAD
-class wd_fdc_analog_t : public wd_fdc_t {
-public:
-	wd_fdc_analog_t(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source);
-
-protected:
-	virtual void pll_reset(bool fm, bool enmf, const attotime &when);
-	virtual void pll_start_writing(const attotime &tm);
-	virtual void pll_commit(floppy_image_device *floppy, const attotime &tm);
-	virtual void pll_stop_writing(floppy_image_device *floppy, const attotime &tm);
-	virtual int pll_get_next_bit(attotime &tm, floppy_image_device *floppy, const attotime &limit);
-	virtual bool pll_write_next_bit(bool bit, attotime &tm, floppy_image_device *floppy, const attotime &limit);
-	virtual void pll_save_checkpoint();
-	virtual void pll_retrieve_checkpoint();
-=======
 class wd_fdc_analog_device_base : public wd_fdc_device_base {
 protected:
 	wd_fdc_analog_device_base(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock);
@@ -595,38 +463,11 @@ protected:
 	virtual bool pll_write_next_bit(bool bit, attotime &tm, floppy_image_device *floppy, const attotime &limit) override;
 	virtual void pll_save_checkpoint() override;
 	virtual void pll_retrieve_checkpoint() override;
->>>>>>> upstream/master
 
 private:
 	fdc_pll_t cur_pll, checkpoint_pll;
 };
 
-<<<<<<< HEAD
-class wd_fdc_digital_t : public wd_fdc_t {
-public:
-	wd_fdc_digital_t(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source);
-
-protected:
-	static const int wd_digital_step_times[4];
-
-	virtual void pll_reset(bool fm, bool enmf, const attotime &when);
-	virtual void pll_start_writing(const attotime &tm);
-	virtual void pll_commit(floppy_image_device *floppy, const attotime &tm);
-	virtual void pll_stop_writing(floppy_image_device *floppy, const attotime &tm);
-	virtual int pll_get_next_bit(attotime &tm, floppy_image_device *floppy, const attotime &limit);
-	virtual bool pll_write_next_bit(bool bit, attotime &tm, floppy_image_device *floppy, const attotime &limit);
-	virtual void pll_save_checkpoint();
-	virtual void pll_retrieve_checkpoint();
-
-private:
-	struct digital_pll_t {
-		UINT16 counter;
-		UINT16 increment;
-		UINT16 transition_time;
-		UINT8 history;
-		UINT8 slot;
-		UINT8 phase_add, phase_sub, freq_add, freq_sub;
-=======
 class wd_fdc_digital_device_base : public wd_fdc_device_base {
 protected:
 	wd_fdc_digital_device_base(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock);
@@ -650,7 +491,6 @@ private:
 		uint8_t history;
 		uint8_t slot;
 		uint8_t phase_add, phase_sub, freq_add, freq_sub;
->>>>>>> upstream/master
 		attotime ctime;
 
 		attotime delays[42];
@@ -671,183 +511,6 @@ private:
 	digital_pll_t cur_pll, checkpoint_pll;
 };
 
-<<<<<<< HEAD
-class fd1771_t : public wd_fdc_analog_t {
-public:
-	fd1771_t(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-protected:
-	virtual int calc_sector_size(UINT8 size, UINT8 command) const;
-};
-
-class fd1781_t : public wd_fdc_analog_t {
-public:
-	fd1781_t(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-protected:
-	virtual int calc_sector_size(UINT8 size, UINT8 command) const;
-};
-
-class fd1791_t : public wd_fdc_analog_t {
-public:
-	fd1791_t(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-};
-
-class fd1792_t : public wd_fdc_analog_t {
-public:
-	fd1792_t(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-};
-
-class fd1793_t : public wd_fdc_analog_t {
-public:
-	fd1793_t(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-};
-
-class kr1818vg93_t : public wd_fdc_analog_t {
-public:
-	kr1818vg93_t(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-};
-
-class fd1794_t : public wd_fdc_analog_t {
-public:
-	fd1794_t(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-};
-
-class fd1795_t : public wd_fdc_analog_t {
-public:
-	fd1795_t(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-protected:
-	virtual int calc_sector_size(UINT8 size, UINT8 command) const;
-};
-
-class fd1797_t : public wd_fdc_analog_t {
-public:
-	fd1797_t(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-protected:
-	virtual int calc_sector_size(UINT8 size, UINT8 command) const;
-};
-
-class mb8866_t : public wd_fdc_analog_t {
-public:
-	mb8866_t(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-};
-
-class mb8876_t : public wd_fdc_analog_t {
-public:
-	mb8876_t(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-};
-
-class mb8877_t : public wd_fdc_analog_t {
-public:
-	mb8877_t(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-};
-
-class fd1761_t : public wd_fdc_analog_t {
-public:
-	fd1761_t(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-};
-
-class fd1763_t : public wd_fdc_analog_t {
-public:
-	fd1763_t(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-};
-
-class fd1765_t : public wd_fdc_analog_t {
-public:
-	fd1765_t(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-protected:
-	virtual int calc_sector_size(UINT8 size, UINT8 command) const;
-};
-
-class fd1767_t : public wd_fdc_analog_t {
-public:
-	fd1767_t(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-protected:
-	virtual int calc_sector_size(UINT8 size, UINT8 command) const;
-};
-
-class wd2791_t : public wd_fdc_analog_t {
-public:
-	wd2791_t(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-	DECLARE_WRITE_LINE_MEMBER(enmf_w) { enmf = state ? false : true; }
-};
-
-class wd2793_t : public wd_fdc_analog_t {
-public:
-	wd2793_t(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-	DECLARE_WRITE_LINE_MEMBER(enmf_w) { enmf = state ? false : true; }
-};
-
-class wd2795_t : public wd_fdc_analog_t {
-public:
-	wd2795_t(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-protected:
-	virtual int calc_sector_size(UINT8 size, UINT8 command) const;
-};
-
-class wd2797_t : public wd_fdc_analog_t {
-public:
-	wd2797_t(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-protected:
-	virtual int calc_sector_size(UINT8 size, UINT8 command) const;
-};
-
-class wd1770_t : public wd_fdc_digital_t {
-public:
-	wd1770_t(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-};
-
-class wd1772_t : public wd_fdc_digital_t {
-public:
-	wd1772_t(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-protected:
-	virtual int settle_time() const;
-};
-
-class wd1773_t : public wd_fdc_digital_t {
-public:
-	wd1773_t(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-};
-
-extern const device_type FD1771;
-
-extern const device_type FD1781;
-
-extern const device_type FD1791;
-extern const device_type FD1792;
-extern const device_type FD1793;
-extern const device_type FD1794;
-extern const device_type KR1818VG93;
-extern const device_type FD1795;
-extern const device_type FD1797;
-
-extern const device_type MB8866;
-extern const device_type MB8876;
-extern const device_type MB8877;
-
-extern const device_type FD1761;
-extern const device_type FD1763;
-extern const device_type FD1765;
-extern const device_type FD1767;
-
-extern const device_type WD2791;
-extern const device_type WD2793;
-extern const device_type WD2795;
-extern const device_type WD2797;
-
-extern const device_type WD1770;
-extern const device_type WD1772;
-extern const device_type WD1773;
-
-#endif
-=======
 class fd1771_device : public wd_fdc_analog_device_base {
 public:
 	fd1771_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
@@ -1023,4 +686,3 @@ DECLARE_DEVICE_TYPE(WD1772,     wd1772_device)
 DECLARE_DEVICE_TYPE(WD1773,     wd1773_device)
 
 #endif // MAME_MACHINE_WD_FDC_H
->>>>>>> upstream/master

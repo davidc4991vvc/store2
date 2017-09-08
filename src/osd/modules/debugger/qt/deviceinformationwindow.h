@@ -3,11 +3,6 @@
 #ifndef __DEBUG_QT_DEVICE_INFORMATION_WINDOW_H__
 #define __DEBUG_QT_DEVICE_INFORMATION_WINDOW_H__
 
-<<<<<<< HEAD
-#include <QtGui/QtGui>
-
-=======
->>>>>>> upstream/master
 #include "windowqt.h"
 
 //============================================================
@@ -18,11 +13,7 @@ class DeviceInformationWindow : public WindowQt
 	Q_OBJECT
 
 public:
-<<<<<<< HEAD
-	DeviceInformationWindow(running_machine* machine, device_t* device = NULL, QWidget* parent=NULL);
-=======
 	DeviceInformationWindow(running_machine* machine, device_t* device = nullptr, QWidget* parent=nullptr);
->>>>>>> upstream/master
 	virtual ~DeviceInformationWindow();
 
 	void set_device(const char *tag);
@@ -54,13 +45,8 @@ public:
 
 	void buildFromQWidget(QWidget* widget);
 	void applyToQWidget(QWidget* widget);
-<<<<<<< HEAD
-	void addToXmlDataNode(xml_data_node* node) const;
-	void recoverFromXmlNode(xml_data_node* node);
-=======
 	void addToXmlDataNode(util::xml::data_node &node) const;
 	void recoverFromXmlNode(util::xml::data_node const &node);
->>>>>>> upstream/master
 };
 
 

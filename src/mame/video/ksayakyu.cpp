@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-// license:LGPL-2.1+
-=======
 // license:BSD-3-Clause
->>>>>>> upstream/master
 // copyright-holders:Tomasz Slanina
 #include "emu.h"
 #include "includes/ksayakyu.h"
@@ -38,11 +34,7 @@ WRITE8_MEMBER(ksayakyu_state::ksayakyu_videoctrl_w)
 
 PALETTE_INIT_MEMBER(ksayakyu_state, ksayakyu)
 {
-<<<<<<< HEAD
-	const UINT8 *prom = memregion("proms")->base();
-=======
 	const uint8_t *prom = memregion("proms")->base();
->>>>>>> upstream/master
 	int r, g, b, i;
 
 	for (i = 0; i < 0x100; i++)
@@ -64,12 +56,8 @@ TILE_GET_INFO_MEMBER(ksayakyu_state::get_ksayakyu_tile_info)
 }
 
 /*
-<<<<<<< HEAD
-xy-- ---- flip bits
-=======
 x--- ---- flip bits
 -y-- ---- unknown, used when runner slides (NOT flip Y!)
->>>>>>> upstream/master
 --cc cc-- color
 ---- --bb bank select
 */
@@ -77,11 +65,7 @@ TILE_GET_INFO_MEMBER(ksayakyu_state::get_text_tile_info)
 {
 	int code = m_videoram[tile_index * 2 + 1];
 	int attr = m_videoram[tile_index * 2];
-<<<<<<< HEAD
-	int flags = ((attr & 0x80) ? TILE_FLIPX : 0) | ((attr & 0x40) ? TILE_FLIPY : 0);
-=======
 	int flags = ((attr & 0x80) ? TILE_FLIPX : 0);// | ((attr & 0x40) ? TILE_FLIPY : 0);
->>>>>>> upstream/master
 	int color = (attr & 0x3c) >> 2;
 
 	code |= (attr & 3) << 8;
@@ -99,13 +83,8 @@ TILE_GET_INFO_MEMBER(ksayakyu_state::get_text_tile_info)
 
 void ksayakyu_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect )
 {
-<<<<<<< HEAD
-	const UINT8 *source = m_spriteram + m_spriteram.bytes() - 4;
-	const UINT8 *finish = m_spriteram;
-=======
 	const uint8_t *source = m_spriteram + m_spriteram.bytes() - 4;
 	const uint8_t *finish = m_spriteram;
->>>>>>> upstream/master
 
 	while (source>=finish) /* is order correct ? */
 	{
@@ -138,21 +117,12 @@ void ksayakyu_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &clipre
 
 void ksayakyu_state::video_start()
 {
-<<<<<<< HEAD
-	m_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(ksayakyu_state::get_ksayakyu_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32 * 8);
-	m_textmap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(ksayakyu_state::get_text_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
-	m_textmap->set_transparent_pen(0);
-}
-
-UINT32 ksayakyu_state::screen_update_ksayakyu(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 	m_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(ksayakyu_state::get_ksayakyu_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32 * 8);
 	m_textmap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(ksayakyu_state::get_text_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
 	m_textmap->set_transparent_pen(0);
 }
 
 uint32_t ksayakyu_state::screen_update_ksayakyu(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	bitmap.fill(0, cliprect);
 

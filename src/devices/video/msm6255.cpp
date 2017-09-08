@@ -6,28 +6,17 @@
 
 **********************************************************************/
 
-<<<<<<< HEAD
-#include "msm6255.h"
-
-=======
 #include "emu.h"
 #include "msm6255.h"
 
 //#define VERBOSE 1
 #include "logmacro.h"
->>>>>>> upstream/master
 
 
 //**************************************************************************
 //  MACROS / CONSTANTS
 //**************************************************************************
 
-<<<<<<< HEAD
-#define LOG 0
-
-
-=======
->>>>>>> upstream/master
 #define MOR_GRAPHICS        0x01
 #define MOR_4_BIT_PARALLEL  0x02
 #define MOR_2_BIT_PARALLEL  0x04
@@ -62,11 +51,7 @@
 //**************************************************************************
 
 // device type definition
-<<<<<<< HEAD
-const device_type MSM6255 = &device_creator<msm6255_device>;
-=======
 DEFINE_DEVICE_TYPE(MSM6255, msm6255_device, "msm6255", "Oki MSM6255 LCD Controller")
->>>>>>> upstream/master
 
 // I/O map
 DEVICE_ADDRESS_MAP_START( map, 8, msm6255_device )
@@ -75,11 +60,7 @@ DEVICE_ADDRESS_MAP_START( map, 8, msm6255_device )
 ADDRESS_MAP_END
 
 // default address map
-<<<<<<< HEAD
-static ADDRESS_MAP_START( msm6255, AS_0, 8, msm6255_device )
-=======
 static ADDRESS_MAP_START( msm6255, 0, 8, msm6255_device )
->>>>>>> upstream/master
 	AM_RANGE(0x00000, 0xfffff) AM_RAM
 ADDRESS_MAP_END
 
@@ -93,19 +74,11 @@ ADDRESS_MAP_END
 //  msm6255_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-msm6255_device::msm6255_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-	device_t(mconfig, MSM6255, "MSM6255", tag, owner, clock, "msm6255", __FILE__),
-	device_memory_interface(mconfig, *this),
-	device_video_interface(mconfig, *this),
-	m_space_config("videoram", ENDIANNESS_LITTLE, 8, 20, 0, NULL, *ADDRESS_MAP_NAME(msm6255)),
-=======
 msm6255_device::msm6255_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	device_t(mconfig, MSM6255, tag, owner, clock),
 	device_memory_interface(mconfig, *this),
 	device_video_interface(mconfig, *this),
 	m_space_config("videoram", ENDIANNESS_LITTLE, 8, 20, 0, nullptr, *ADDRESS_MAP_NAME(msm6255)),
->>>>>>> upstream/master
 	m_cursor(0)
 {
 }
@@ -148,17 +121,11 @@ void msm6255_device::device_reset()
 //  any address spaces owned by this device
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const address_space_config *msm6255_device::memory_space_config(address_spacenum spacenum) const
-{
-	return (spacenum == AS_0) ? &m_space_config : NULL;
-=======
 device_memory_interface::space_config_vector msm6255_device::memory_space_config() const
 {
 	return space_config_vector {
 		std::make_pair(0, &m_space_config)
 	};
->>>>>>> upstream/master
 }
 
 
@@ -188,11 +155,7 @@ WRITE8_MEMBER( msm6255_device::ir_w )
 
 READ8_MEMBER( msm6255_device::dr_r )
 {
-<<<<<<< HEAD
-	UINT8 data = 0;
-=======
 	uint8_t data = 0;
->>>>>>> upstream/master
 
 	switch (m_ir)
 	{
@@ -286,11 +249,7 @@ WRITE8_MEMBER( msm6255_device::dr_w )
 //  read_byte -
 //-------------------------------------------------
 
-<<<<<<< HEAD
-UINT8 msm6255_device::read_byte(UINT16 ma, UINT8 ra)
-=======
 uint8_t msm6255_device::read_byte(uint16_t ma, uint8_t ra)
->>>>>>> upstream/master
 {
 	offs_t offset;
 
@@ -358,15 +317,6 @@ void msm6255_device::update_cursor()
 //  draw_scanline -
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void msm6255_device::draw_scanline(bitmap_ind16 &bitmap, const rectangle &cliprect, int y, UINT16 ma, UINT8 ra)
-{
-	UINT8 hp = (m_pr & PR_HP_MASK) + 1;
-	UINT8 hn = (m_hnr & HNR_HN_MASK) + 1;
-	UINT8 cpu = m_cpr & CPR_CPU_MASK;
-	UINT8 cpd = m_cpr & CPR_CPD_MASK;
-	UINT16 car = (m_cur << 8) | m_clr;
-=======
 void msm6255_device::draw_scanline(bitmap_ind16 &bitmap, const rectangle &cliprect, int y, uint16_t ma, uint8_t ra)
 {
 	uint8_t hp = (m_pr & PR_HP_MASK) + 1;
@@ -374,17 +324,12 @@ void msm6255_device::draw_scanline(bitmap_ind16 &bitmap, const rectangle &clipre
 	uint8_t cpu = m_cpr & CPR_CPU_MASK;
 	uint8_t cpd = m_cpr & CPR_CPD_MASK;
 	uint16_t car = (m_cur << 8) | m_clr;
->>>>>>> upstream/master
 
 	int sx, x;
 
 	for (sx = 0; sx < hn; sx++)
 	{
-<<<<<<< HEAD
-		UINT8 data = read_byte(ma, ra);
-=======
 		uint8_t data = read_byte(ma, ra);
->>>>>>> upstream/master
 
 		if (m_cursor)
 		{
@@ -415,15 +360,9 @@ void msm6255_device::draw_scanline(bitmap_ind16 &bitmap, const rectangle &clipre
 
 void msm6255_device::update_graphics(bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
-<<<<<<< HEAD
-	UINT8 hn = (m_hnr & HNR_HN_MASK) + 1;
-	UINT8 nx = (m_dvr & DVR_DN_MASK) + 1;
-	UINT16 sar = (m_sur << 8) | m_slr;
-=======
 	uint8_t hn = (m_hnr & HNR_HN_MASK) + 1;
 	uint8_t nx = (m_dvr & DVR_DN_MASK) + 1;
 	uint16_t sar = (m_sur << 8) | m_slr;
->>>>>>> upstream/master
 
 	int y;
 
@@ -433,11 +372,7 @@ void msm6255_device::update_graphics(bitmap_ind16 &bitmap, const rectangle &clip
 	for (y = 0; y < nx; y++)
 	{
 		// draw upper half scanline
-<<<<<<< HEAD
-		UINT16 ma = sar + (y * hn);
-=======
 		uint16_t ma = sar + (y * hn);
->>>>>>> upstream/master
 		draw_scanline(bitmap, cliprect, y, ma);
 
 		// draw lower half scanline
@@ -453,17 +388,10 @@ void msm6255_device::update_graphics(bitmap_ind16 &bitmap, const rectangle &clip
 
 void msm6255_device::update_text(bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
-<<<<<<< HEAD
-	UINT8 hn = (m_hnr & HNR_HN_MASK) + 1;
-	UINT8 vp = (m_pr & PR_VP_MASK) + 1;
-	UINT8 nx = (m_dvr & DVR_DN_MASK) + 1;
-	UINT16 sar = (m_sur << 8) | m_slr;
-=======
 	uint8_t hn = (m_hnr & HNR_HN_MASK) + 1;
 	uint8_t vp = (m_pr & PR_VP_MASK) + 1;
 	uint8_t nx = (m_dvr & DVR_DN_MASK) + 1;
 	uint16_t sar = (m_sur << 8) | m_slr;
->>>>>>> upstream/master
 
 	int sy, y;
 
@@ -474,11 +402,7 @@ void msm6255_device::update_text(bitmap_ind16 &bitmap, const rectangle &cliprect
 		for (y = 0; y < vp; y++)
 		{
 			// draw upper half scanline
-<<<<<<< HEAD
-			UINT16 ma = sar + ((sy * vp) + y) * hn;
-=======
 			uint16_t ma = sar + ((sy * vp) + y) * hn;
->>>>>>> upstream/master
 			draw_scanline(bitmap, cliprect, (sy * vp) + y, ma, y);
 
 			// draw lower half scanline
@@ -493,11 +417,7 @@ void msm6255_device::update_text(bitmap_ind16 &bitmap, const rectangle &cliprect
 //  update_screen - update screen
 //-------------------------------------------------
 
-<<<<<<< HEAD
-UINT32 msm6255_device::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t msm6255_device::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	if (m_mor & MOR_DISPLAY_ON)
 	{

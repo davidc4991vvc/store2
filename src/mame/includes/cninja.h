@@ -13,11 +13,8 @@
 #include "video/decospr.h"
 #include "machine/deco146.h"
 #include "machine/deco104.h"
-<<<<<<< HEAD
-=======
 #include "machine/gen_latch.h"
 #include "screen.h"
->>>>>>> upstream/master
 
 class cninja_state : public driver_device
 {
@@ -33,8 +30,6 @@ public:
 		m_deco_tilegen2(*this, "tilegen2"),
 		m_raster_irq_timer(*this, "raster_timer"),
 		m_oki2(*this, "oki2"),
-<<<<<<< HEAD
-=======
 		m_sprgen(*this, "spritegen"),
 		m_sprgen1(*this, "spritegen1"),
 		m_sprgen2(*this, "spritegen2"),
@@ -42,7 +37,6 @@ public:
 		m_screen(*this, "screen"),
 		m_palette(*this, "palette"),
 		m_soundlatch(*this, "soundlatch"),
->>>>>>> upstream/master
 		m_spriteram(*this, "spriteram"),
 		m_spriteram2(*this, "spriteram2") ,
 		m_pf1_rowscroll(*this, "pf1_rowscroll"),
@@ -50,16 +44,7 @@ public:
 		m_pf3_rowscroll(*this, "pf3_rowscroll"),
 		m_pf4_rowscroll(*this, "pf4_rowscroll"),
 		m_ram(*this, "ram"),
-<<<<<<< HEAD
-		m_sprgen(*this, "spritegen"),
-		m_sprgen1(*this, "spritegen1"),
-		m_sprgen2(*this, "spritegen2"),
-		m_gfxdecode(*this, "gfxdecode"),
-		m_screen(*this, "screen"),
-		m_palette(*this, "palette")
-=======
 		m_okibank(*this, "okibank")
->>>>>>> upstream/master
 	{ }
 
 	/* devices */
@@ -72,25 +57,12 @@ public:
 	required_device<deco16ic_device> m_deco_tilegen2;
 	optional_device<timer_device> m_raster_irq_timer;
 	optional_device<okim6295_device> m_oki2;
-<<<<<<< HEAD
-	required_device<buffered_spriteram16_device> m_spriteram;
-	optional_device<buffered_spriteram16_device> m_spriteram2;
-	/* memory pointers */
-	required_shared_ptr<UINT16> m_pf1_rowscroll;
-	required_shared_ptr<UINT16> m_pf2_rowscroll;
-	required_shared_ptr<UINT16> m_pf3_rowscroll;
-	required_shared_ptr<UINT16> m_pf4_rowscroll;
-	optional_shared_ptr<UINT16> m_ram;
-=======
->>>>>>> upstream/master
 	optional_device<decospr_device> m_sprgen;
 	optional_device<decospr_device> m_sprgen1;
 	optional_device<decospr_device> m_sprgen2;
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<screen_device> m_screen;
 	required_device<palette_device> m_palette;
-<<<<<<< HEAD
-=======
 	required_device<generic_latch_8_device> m_soundlatch;
 	required_device<buffered_spriteram16_device> m_spriteram;
 	optional_device<buffered_spriteram16_device> m_spriteram2;
@@ -102,7 +74,6 @@ public:
 	required_shared_ptr<uint16_t> m_pf4_rowscroll;
 	optional_shared_ptr<uint16_t> m_ram;
 	optional_memory_bank m_okibank;
->>>>>>> upstream/master
 
 	/* misc */
 	int        m_scanline;
@@ -115,20 +86,6 @@ public:
 	DECLARE_WRITE16_MEMBER(cninja_pf12_control_w);
 	DECLARE_WRITE16_MEMBER(cninja_pf34_control_w);
 	DECLARE_WRITE8_MEMBER(sound_bankswitch_w);
-<<<<<<< HEAD
-	DECLARE_DRIVER_INIT(stoneage);
-	DECLARE_DRIVER_INIT(mutantf);
-	DECLARE_DRIVER_INIT(cninja);
-	virtual void machine_start();
-	virtual void machine_reset();
-	DECLARE_VIDEO_START(stoneage);
-	DECLARE_VIDEO_START(mutantf);
-	UINT32 screen_update_cninja(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	UINT32 screen_update_cninjabl(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	UINT32 screen_update_edrandy(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	UINT32 screen_update_robocop2(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	UINT32 screen_update_mutantf(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
-=======
 	DECLARE_WRITE8_MEMBER(cninjabl2_oki_bank_w);
 	DECLARE_DRIVER_INIT(stoneage);
 	DECLARE_DRIVER_INIT(mutantf);
@@ -144,7 +101,6 @@ public:
 	uint32_t screen_update_edrandy(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	uint32_t screen_update_robocop2(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	uint32_t screen_update_mutantf(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	TIMER_DEVICE_CALLBACK_MEMBER(interrupt_gen);
 	void cninjabl_draw_sprites( screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect );
 
@@ -165,8 +121,5 @@ public:
 	DECLARE_READ16_MEMBER( cninja_protection_region_0_104_r );
 	DECLARE_WRITE16_MEMBER( cninja_protection_region_0_104_w );
 
-<<<<<<< HEAD
-=======
 	DECLARE_READ16_MEMBER(cninjabl2_sprite_dma_r);
->>>>>>> upstream/master
 };

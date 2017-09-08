@@ -53,11 +53,7 @@ const abc800_format::format abc800_format::formats[] = {
 
 	{   //  80K 5 1/4 inch single density single sided
 		floppy_image::FF_525, floppy_image::SSSD, floppy_image::FM,
-<<<<<<< HEAD
-		4000, 16, 40, 1, 128, {}, 1, {}, 28, 11, 27
-=======
 		4000, 16, 40, 1, 128, {}, -1, { 1,2,11,12,5,6,15,16,9,10,3,4,13,14,7,8 }, 28, 11, 27
->>>>>>> upstream/master
 	},
 
 	// track description
@@ -81,11 +77,7 @@ const abc800_format::format abc800_format::formats[] = {
 
 	{   //  160K 5 1/4 inch double density single sided
 		floppy_image::FF_525, floppy_image::SSDD, floppy_image::MFM,
-<<<<<<< HEAD
-		2000, 16, 40, 1, 256, {}, 1, {}, 55, 22, 54
-=======
 		2000, 16, 40, 1, 256, {}, -1, { 1,8,15,6,13,4,11,2,9,16,7,14,5,12,3,10 }, 55, 22, 54
->>>>>>> upstream/master
 	},
 
 	// track description
@@ -143,19 +135,13 @@ const abc800_format::format abc800_format::formats[] = {
 
 	{   //  1M 8 inch double density
 		floppy_image::FF_8, floppy_image::DSDD, floppy_image::MFM,
-<<<<<<< HEAD
-		2000, 26, 77, 2, 256, {}, 1, {}, 55, 22, 54
-=======
 		1200, 26, 77, 2, 256, {}, 1, {}, 55, 22, 54
->>>>>>> upstream/master
 	},
 
 	{}
 };
 
 const floppy_format_type FLOPPY_ABC800_FORMAT = &floppy_image_format_creator<abc800_format>;
-<<<<<<< HEAD
-=======
 
 void abc800_format::build_sector_description(const format &f, uint8_t *sectdata, desc_s *sectors, int track, int head) const
 {
@@ -179,4 +165,3 @@ void abc800_format::build_sector_description(const format &f, uint8_t *sectdata,
 		}
 	}
 }
->>>>>>> upstream/master

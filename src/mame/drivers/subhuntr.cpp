@@ -21,11 +21,8 @@ QTY     Type    position
 #include "emu.h"
 #include "cpu/s2650/s2650.h"
 #include "machine/s2636.h"
-<<<<<<< HEAD
-=======
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 class subhuntr_state : public driver_device
@@ -41,19 +38,11 @@ public:
 
 	INTERRUPT_GEN_MEMBER(subhuntr_interrupt);
 
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void machine_reset();
-	virtual void video_start();
-	DECLARE_PALETTE_INIT(subhuntr);
-	UINT32 screen_update_subhuntr(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
 	virtual void video_start() override;
 	DECLARE_PALETTE_INIT(subhuntr);
 	uint32_t screen_update_subhuntr(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 };
 
 
@@ -67,11 +56,7 @@ PALETTE_INIT_MEMBER(subhuntr_state, subhuntr)
 {
 }
 
-<<<<<<< HEAD
-UINT32 subhuntr_state::screen_update_subhuntr(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t subhuntr_state::screen_update_subhuntr(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	return 0;
 }
@@ -92,19 +77,12 @@ static ADDRESS_MAP_START( subhuntr_map, AS_PROGRAM, 8, subhuntr_state )
 	AM_RANGE(0x1c00, 0x1fff) AM_RAM
 ADDRESS_MAP_END
 
-<<<<<<< HEAD
-static ADDRESS_MAP_START( subhuntr_io_map, AS_IO, 8, subhuntr_state )
-//  AM_RANGE(S2650_CTRL_PORT, S2650_CTRL_PORT) AM_READWRITE( ,  )
-//  AM_RANGE(S2650_DATA_PORT, S2650_DATA_PORT) AM_READWRITE( ,  )
-	AM_RANGE(S2650_SENSE_PORT, S2650_SENSE_PORT) AM_READ_PORT("SENSE")
-=======
 static ADDRESS_MAP_START( subhuntr_io_map, AS_PROGRAM, 8, subhuntr_state )
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( subhuntr_data_map, AS_DATA, 8, subhuntr_state )
 //  AM_RANGE(S2650_CTRL_PORT, S2650_CTRL_PORT) AM_READWRITE( ,  )
 //  AM_RANGE(S2650_DATA_PORT, S2650_DATA_PORT) AM_READWRITE( ,  )
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 /***************************************************************************
@@ -114,11 +92,6 @@ ADDRESS_MAP_END
 ***************************************************************************/
 
 static INPUT_PORTS_START( subhuntr )
-<<<<<<< HEAD
-	PORT_START("SENSE")
-	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_CUSTOM ) PORT_VBLANK("screen")
-=======
->>>>>>> upstream/master
 INPUT_PORTS_END
 
 
@@ -157,23 +130,15 @@ static GFXDECODE_START( subhuntr )
 GFXDECODE_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( subhuntr, subhuntr_state )
-=======
 static MACHINE_CONFIG_START( subhuntr )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", S2650, 14318180/4/2)
 	MCFG_CPU_PROGRAM_MAP(subhuntr_map)
 	MCFG_CPU_IO_MAP(subhuntr_io_map)
-<<<<<<< HEAD
-	MCFG_CPU_VBLANK_INT_DRIVER("screen", subhuntr_state, subhuntr_interrupt)
-=======
 	MCFG_CPU_DATA_MAP(subhuntr_data_map)
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", subhuntr_state, subhuntr_interrupt)
 	MCFG_S2650_SENSE_INPUT(DEVREADLINE("screen", screen_device, vblank))
->>>>>>> upstream/master
 
 //  MCFG_DEVICE_ADD("s2636", S2636, 0)
 //  MCFG_S2636_WORKRAM_SIZE(0x100)
@@ -216,8 +181,4 @@ ROM_START( subhuntr )
 	ROM_LOAD( "82S115.2B",   0x0000, 0x0200, CRC(6946c9de) SHA1(956b4bebe6960a73609deb75e1493c4127fd7f77) ) // ASCII, not much else
 ROM_END
 
-<<<<<<< HEAD
-GAME(1979, subhuntr,  0,        subhuntr, subhuntr, driver_device, 0, ROT0, "Model Racing", "Sub Hunter (Model Racing)", MACHINE_NOT_WORKING | MACHINE_NO_SOUND )
-=======
 GAME(1979, subhuntr,  0,        subhuntr, subhuntr, subhuntr_state, 0, ROT0, "Model Racing", "Sub Hunter (Model Racing)", MACHINE_NOT_WORKING | MACHINE_NO_SOUND )
->>>>>>> upstream/master

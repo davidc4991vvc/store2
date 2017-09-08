@@ -2,11 +2,7 @@
  * jdmarker.c
  *
  * Copyright (C) 1991-1998, Thomas G. Lane.
-<<<<<<< HEAD
- * Modified 2009 by Guido Vollbeding.
-=======
  * Modified 2009-2013 by Guido Vollbeding.
->>>>>>> upstream/master
  * This file is part of the Independent JPEG Group's software.
  * For conditions of distribution and use, see the accompanying README file.
  *
@@ -27,34 +23,15 @@ typedef enum {			/* JPEG marker codes */
   M_SOF1  = 0xc1,
   M_SOF2  = 0xc2,
   M_SOF3  = 0xc3,
-<<<<<<< HEAD
-  
-  M_SOF5  = 0xc5,
-  M_SOF6  = 0xc6,
-  M_SOF7  = 0xc7,
-  
-=======
 
   M_SOF5  = 0xc5,
   M_SOF6  = 0xc6,
   M_SOF7  = 0xc7,
 
->>>>>>> upstream/master
   M_JPG   = 0xc8,
   M_SOF9  = 0xc9,
   M_SOF10 = 0xca,
   M_SOF11 = 0xcb,
-<<<<<<< HEAD
-  
-  M_SOF13 = 0xcd,
-  M_SOF14 = 0xce,
-  M_SOF15 = 0xcf,
-  
-  M_DHT   = 0xc4,
-  
-  M_DAC   = 0xcc,
-  
-=======
 
   M_SOF13 = 0xcd,
   M_SOF14 = 0xce,
@@ -64,7 +41,6 @@ typedef enum {			/* JPEG marker codes */
 
   M_DAC   = 0xcc,
 
->>>>>>> upstream/master
   M_RST0  = 0xd0,
   M_RST1  = 0xd1,
   M_RST2  = 0xd2,
@@ -73,11 +49,7 @@ typedef enum {			/* JPEG marker codes */
   M_RST5  = 0xd5,
   M_RST6  = 0xd6,
   M_RST7  = 0xd7,
-<<<<<<< HEAD
-  
-=======
 
->>>>>>> upstream/master
   M_SOI   = 0xd8,
   M_EOI   = 0xd9,
   M_SOS   = 0xda,
@@ -86,11 +58,7 @@ typedef enum {			/* JPEG marker codes */
   M_DRI   = 0xdd,
   M_DHP   = 0xde,
   M_EXP   = 0xdf,
-<<<<<<< HEAD
-  
-=======
 
->>>>>>> upstream/master
   M_APP0  = 0xe0,
   M_APP1  = 0xe1,
   M_APP2  = 0xe2,
@@ -107,15 +75,6 @@ typedef enum {			/* JPEG marker codes */
   M_APP13 = 0xed,
   M_APP14 = 0xee,
   M_APP15 = 0xef,
-<<<<<<< HEAD
-  
-  M_JPG0  = 0xf0,
-  M_JPG13 = 0xfd,
-  M_COM   = 0xfe,
-  
-  M_TEM   = 0x01,
-  
-=======
 
   M_JPG0  = 0xf0,
   M_JPG8  = 0xf8,
@@ -124,7 +83,6 @@ typedef enum {			/* JPEG marker codes */
 
   M_TEM   = 0x01,
 
->>>>>>> upstream/master
   M_ERROR = 0x100
 } JPEG_MARKER;
 
@@ -260,10 +218,7 @@ get_soi (j_decompress_ptr cinfo)
   /* Set initial assumptions for colorspace etc */
 
   cinfo->jpeg_color_space = JCS_UNKNOWN;
-<<<<<<< HEAD
-=======
   cinfo->color_transform = JCT_NONE;
->>>>>>> upstream/master
   cinfo->CCIR601_sampling = FALSE; /* Assume non-CCIR sampling??? */
 
   cinfo->saw_JFIF_marker = FALSE;
@@ -287,11 +242,7 @@ get_sof (j_decompress_ptr cinfo, boolean is_baseline, boolean is_prog,
 /* Process a SOFn marker */
 {
   INT32 length;
-<<<<<<< HEAD
-  int c, ci;
-=======
   int c, ci, i;
->>>>>>> upstream/master
   jpeg_component_info * compptr;
   INPUT_VARS(cinfo);
 
@@ -318,13 +269,8 @@ get_sof (j_decompress_ptr cinfo, boolean is_baseline, boolean is_prog,
   /* We don't support files in which the image height is initially specified */
   /* as 0 and is later redefined by DNL.  As long as we have to check that,  */
   /* might as well have a general sanity check. */
-<<<<<<< HEAD
-  if (cinfo->image_height <= 0 || cinfo->image_width <= 0
-      || cinfo->num_components <= 0)
-=======
   if (cinfo->image_height <= 0 || cinfo->image_width <= 0 ||
       cinfo->num_components <= 0)
->>>>>>> upstream/master
     ERREXIT(cinfo, JERR_EMPTY_IMAGE);
 
   if (length != (cinfo->num_components * 3))
@@ -334,13 +280,6 @@ get_sof (j_decompress_ptr cinfo, boolean is_baseline, boolean is_prog,
     cinfo->comp_info = (jpeg_component_info *) (*cinfo->mem->alloc_small)
 			((j_common_ptr) cinfo, JPOOL_IMAGE,
 			 cinfo->num_components * SIZEOF(jpeg_component_info));
-<<<<<<< HEAD
-  
-  for (ci = 0, compptr = cinfo->comp_info; ci < cinfo->num_components;
-       ci++, compptr++) {
-    compptr->component_index = ci;
-    INPUT_BYTE(cinfo, compptr->component_id, return FALSE);
-=======
 
   for (ci = 0; ci < cinfo->num_components; ci++) {
     INPUT_BYTE(cinfo, c, return FALSE);
@@ -362,7 +301,6 @@ get_sof (j_decompress_ptr cinfo, boolean is_baseline, boolean is_prog,
     }
     compptr->component_id = c;
     compptr->component_index = ci;
->>>>>>> upstream/master
     INPUT_BYTE(cinfo, c, return FALSE);
     compptr->h_samp_factor = (c >> 4) & 15;
     compptr->v_samp_factor = (c     ) & 15;
@@ -385,20 +323,12 @@ get_sos (j_decompress_ptr cinfo)
 /* Process a SOS marker */
 {
   INT32 length;
-<<<<<<< HEAD
-  int i, ci, n, c, cc;
-=======
   int c, ci, i, n;
->>>>>>> upstream/master
   jpeg_component_info * compptr;
   INPUT_VARS(cinfo);
 
   if (! cinfo->marker->saw_SOF)
-<<<<<<< HEAD
-    ERREXIT(cinfo, JERR_SOS_NO_SOF);
-=======
     ERREXITS(cinfo, JERR_SOF_BEFORE, "SOS");
->>>>>>> upstream/master
 
   INPUT_2BYTES(cinfo, length, return FALSE);
 
@@ -416,18 +346,6 @@ get_sos (j_decompress_ptr cinfo)
   /* Collect the component-spec parameters */
 
   for (i = 0; i < n; i++) {
-<<<<<<< HEAD
-    INPUT_BYTE(cinfo, cc, return FALSE);
-    INPUT_BYTE(cinfo, c, return FALSE);
-    
-    for (ci = 0, compptr = cinfo->comp_info; ci < cinfo->num_components;
-	 ci++, compptr++) {
-      if (cc == compptr->component_id)
-	goto id_found;
-    }
-
-    ERREXIT1(cinfo, JERR_BAD_COMPONENT_ID, cc);
-=======
     INPUT_BYTE(cinfo, c, return FALSE);
 
     /* Detect the case where component id's are not unique, and, if so, */
@@ -454,23 +372,15 @@ get_sos (j_decompress_ptr cinfo)
     }
 
     ERREXIT1(cinfo, JERR_BAD_COMPONENT_ID, c);
->>>>>>> upstream/master
 
   id_found:
 
     cinfo->cur_comp_info[i] = compptr;
-<<<<<<< HEAD
-    compptr->dc_tbl_no = (c >> 4) & 15;
-    compptr->ac_tbl_no = (c     ) & 15;
-    
-    TRACEMS3(cinfo, 1, JTRC_SOS_COMPONENT, cc,
-=======
     INPUT_BYTE(cinfo, c, return FALSE);
     compptr->dc_tbl_no = (c >> 4) & 15;
     compptr->ac_tbl_no = (c     ) & 15;
 
     TRACEMS3(cinfo, 1, JTRC_SOS_COMPONENT, compptr->component_id,
->>>>>>> upstream/master
 	     compptr->dc_tbl_no, compptr->ac_tbl_no);
   }
 
@@ -586,11 +496,8 @@ get_dht (j_decompress_ptr cinfo)
     if (count > 256 || ((INT32) count) > length)
       ERREXIT(cinfo, JERR_BAD_HUFF_TABLE);
 
-<<<<<<< HEAD
-=======
     MEMZERO(huffval, SIZEOF(huffval)); /* pre-zero array for later copy */
 
->>>>>>> upstream/master
     for (i = 0; i < count; i++)
       INPUT_BYTE(cinfo, huffval[i], return FALSE);
 
@@ -735,8 +642,6 @@ get_dri (j_decompress_ptr cinfo)
 }
 
 
-<<<<<<< HEAD
-=======
 LOCAL(boolean)
 get_lse (j_decompress_ptr cinfo)
 /* Process an LSE marker */
@@ -799,7 +704,6 @@ get_lse (j_decompress_ptr cinfo)
 }
 
 
->>>>>>> upstream/master
 /*
  * Routines for processing APPn and COM markers.
  * These are either saved in memory or discarded, per application request.
@@ -836,21 +740,13 @@ examine_app0 (j_decompress_ptr cinfo, JOCTET FAR * data,
     cinfo->X_density = (GETJOCTET(data[8]) << 8) + GETJOCTET(data[9]);
     cinfo->Y_density = (GETJOCTET(data[10]) << 8) + GETJOCTET(data[11]);
     /* Check version.
-<<<<<<< HEAD
-     * Major version must be 1, anything else signals an incompatible change.
-=======
      * Major version must be 1 or 2, anything else signals an incompatible
      * change.
->>>>>>> upstream/master
      * (We used to treat this as an error, but now it's a nonfatal warning,
      * because some bozo at Hijaak couldn't read the spec.)
      * Minor version should be 0..2, but process anyway if newer.
      */
-<<<<<<< HEAD
-    if (cinfo->JFIF_major_version != 1)
-=======
     if (cinfo->JFIF_major_version != 1 && cinfo->JFIF_major_version != 2)
->>>>>>> upstream/master
       WARNMS2(cinfo, JWRN_JFIF_MAJOR,
 	      cinfo->JFIF_major_version, cinfo->JFIF_minor_version);
     /* Generate trace messages */
@@ -1263,61 +1159,37 @@ read_markers (j_decompress_ptr cinfo)
 	return JPEG_SUSPENDED;
       cinfo->unread_marker = 0;	/* processed the marker */
       return JPEG_REACHED_SOS;
-<<<<<<< HEAD
-    
-=======
 
->>>>>>> upstream/master
     case M_EOI:
       TRACEMS(cinfo, 1, JTRC_EOI);
       cinfo->unread_marker = 0;	/* processed the marker */
       return JPEG_REACHED_EOI;
-<<<<<<< HEAD
-      
-=======
 
->>>>>>> upstream/master
     case M_DAC:
       if (! get_dac(cinfo))
 	return JPEG_SUSPENDED;
       break;
-<<<<<<< HEAD
-      
-=======
 
->>>>>>> upstream/master
     case M_DHT:
       if (! get_dht(cinfo))
 	return JPEG_SUSPENDED;
       break;
-<<<<<<< HEAD
-      
-=======
 
->>>>>>> upstream/master
     case M_DQT:
       if (! get_dqt(cinfo))
 	return JPEG_SUSPENDED;
       break;
-<<<<<<< HEAD
-      
-=======
 
->>>>>>> upstream/master
     case M_DRI:
       if (! get_dri(cinfo))
 	return JPEG_SUSPENDED;
       break;
-<<<<<<< HEAD
-      
-=======
 
     case M_JPG8:
       if (! get_lse(cinfo))
 	return JPEG_SUSPENDED;
       break;
 
->>>>>>> upstream/master
     case M_APP0:
     case M_APP1:
     case M_APP2:
@@ -1338,11 +1210,7 @@ read_markers (j_decompress_ptr cinfo)
 		cinfo->unread_marker - (int) M_APP0]) (cinfo))
 	return JPEG_SUSPENDED;
       break;
-<<<<<<< HEAD
-      
-=======
 
->>>>>>> upstream/master
     case M_COM:
       if (! (*((my_marker_ptr) cinfo->marker)->process_COM) (cinfo))
 	return JPEG_SUSPENDED;
@@ -1551,11 +1419,7 @@ jinit_marker_reader (j_decompress_ptr cinfo)
   marker = (my_marker_ptr)
     (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_PERMANENT,
 				SIZEOF(my_marker_reader));
-<<<<<<< HEAD
-  cinfo->marker = (struct jpeg_marker_reader *) marker;
-=======
   cinfo->marker = &marker->pub;
->>>>>>> upstream/master
   /* Initialize public method pointers */
   marker->pub.reset_marker_reader = reset_marker_reader;
   marker->pub.read_markers = read_markers;

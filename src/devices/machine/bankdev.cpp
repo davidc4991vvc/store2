@@ -1,14 +1,5 @@
 // license:BSD-3-Clause
 // copyright-holders:smf
-<<<<<<< HEAD
-#include "bankdev.h"
-
-// device type definition
-const device_type ADDRESS_MAP_BANK = &device_creator<address_map_bank_device>;
-
-address_map_bank_device::address_map_bank_device( const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock )
-	: device_t(mconfig, ADDRESS_MAP_BANK, "Address Map Bank", tag, owner, clock, "address_map_bank", __FILE__),
-=======
 #include "emu.h"
 #include "bankdev.h"
 
@@ -17,23 +8,16 @@ DEFINE_DEVICE_TYPE(ADDRESS_MAP_BANK, address_map_bank_device, "address_map_bank"
 
 address_map_bank_device::address_map_bank_device( const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock )
 	: device_t(mconfig, ADDRESS_MAP_BANK, tag, owner, clock),
->>>>>>> upstream/master
 		device_memory_interface(mconfig, *this),
 		m_endianness(ENDIANNESS_NATIVE),
 		m_databus_width(0),
 		m_addrbus_width(32),
 		m_stride(1),
-<<<<<<< HEAD
-		m_program(NULL),
-=======
 		m_program(nullptr),
->>>>>>> upstream/master
 		m_offset(0)
 {
 }
 
-<<<<<<< HEAD
-=======
 device_memory_interface::space_config_vector address_map_bank_device::memory_space_config() const
 {
 	return space_config_vector {
@@ -41,7 +25,6 @@ device_memory_interface::space_config_vector address_map_bank_device::memory_spa
 	};
 }
 
->>>>>>> upstream/master
 DEVICE_ADDRESS_MAP_START(amap8, 8, address_map_bank_device)
 	AM_RANGE(0x00000000, 0xffffffff) AM_READWRITE(read8, write8)
 ADDRESS_MAP_END

@@ -43,12 +43,6 @@ Notes:
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/m68000/m68000.h"
-#include "cpu/z80/z80.h"
-#include "sound/3812intf.h"
-#include "includes/snk68.h"
-=======
 #include "includes/snk68.h"
 
 #include "cpu/m68000/m68000.h"
@@ -56,7 +50,6 @@ Notes:
 #include "sound/3812intf.h"
 #include "speaker.h"
 
->>>>>>> upstream/master
 
 /******************************************************************************/
 
@@ -103,20 +96,10 @@ WRITE16_MEMBER(snk68_state::protection_w)
 	}
 }
 
-<<<<<<< HEAD
-WRITE16_MEMBER(snk68_state::sound_w)
-{
-	if (ACCESSING_BITS_8_15)
-	{
-		soundlatch_byte_w(space, 0, data >> 8);
-		m_soundcpu->set_input_line(INPUT_LINE_NMI, PULSE_LINE);
-	}
-=======
 WRITE8_MEMBER(snk68_state::sound_w)
 {
 	m_soundlatch->write(space, 0, data);
 	m_soundcpu->set_input_line(INPUT_LINE_NMI, PULSE_LINE); // caused by 74123
->>>>>>> upstream/master
 }
 
 /*******************************************************************************/
@@ -125,11 +108,7 @@ static ADDRESS_MAP_START( pow_map, AS_PROGRAM, 16, snk68_state )
 	AM_RANGE(0x000000, 0x03ffff) AM_ROM
 	AM_RANGE(0x040000, 0x043fff) AM_RAM
 	AM_RANGE(0x080000, 0x080001) AM_READ(control_1_r)
-<<<<<<< HEAD
-	AM_RANGE(0x080000, 0x080001) AM_WRITE(sound_w)
-=======
 	AM_RANGE(0x080000, 0x080001) AM_WRITE8(sound_w, 0xff00)
->>>>>>> upstream/master
 	AM_RANGE(0x0c0000, 0x0c0001) AM_READ_PORT("SYSTEM")
 	AM_RANGE(0x0c0000, 0x0c0001) AM_WRITE(pow_flipscreen_w)   // + char bank
 	AM_RANGE(0x0e0000, 0x0e0001) AM_READNOP /* Watchdog or IRQ ack */
@@ -138,11 +117,7 @@ static ADDRESS_MAP_START( pow_map, AS_PROGRAM, 16, snk68_state )
 	AM_RANGE(0x0f0008, 0x0f0009) AM_READ_PORT("DSW2")
 //  AM_RANGE(0x0f0008, 0x0f0009) AM_WRITENOP    /* ?? */
 	AM_RANGE(0x100000, 0x100fff) AM_READWRITE(pow_fg_videoram_r, pow_fg_videoram_w) AM_MIRROR(0x1000) AM_SHARE("pow_fg_videoram")   // 8-bit
-<<<<<<< HEAD
-	AM_RANGE(0x200000, 0x207fff) AM_READWRITE(spriteram_r, spriteram_w) AM_SHARE("spriteram")   // only partially populated
-=======
 	AM_RANGE(0x200000, 0x207fff) AM_DEVREADWRITE("sprites", snk68_spr_device, spriteram_r, spriteram_w) AM_SHARE("spriteram")   // only partially populated
->>>>>>> upstream/master
 	AM_RANGE(0x400000, 0x400fff) AM_RAM_DEVWRITE("palette", palette_device, write) AM_SHARE("palette")
 ADDRESS_MAP_END
 
@@ -150,11 +125,7 @@ static ADDRESS_MAP_START( searchar_map, AS_PROGRAM, 16, snk68_state )
 	AM_RANGE(0x000000, 0x03ffff) AM_ROM
 	AM_RANGE(0x040000, 0x043fff) AM_RAM
 	AM_RANGE(0x080000, 0x080005) AM_READ(protcontrols_r) /* Player 1 & 2 */
-<<<<<<< HEAD
-	AM_RANGE(0x080000, 0x080001) AM_WRITE(sound_w)
-=======
 	AM_RANGE(0x080000, 0x080001) AM_WRITE8(sound_w, 0xff00)
->>>>>>> upstream/master
 	AM_RANGE(0x080006, 0x080007) AM_WRITE(protection_w) /* top byte unknown, bottom is protection in ikari3 and streetsm */
 	AM_RANGE(0x0c0000, 0x0c0001) AM_WRITE(searchar_flipscreen_w)
 	AM_RANGE(0x0c0000, 0x0c0001) AM_READ(rotary_1_r) /* Player 1 rotary */
@@ -165,13 +136,8 @@ static ADDRESS_MAP_START( searchar_map, AS_PROGRAM, 16, snk68_state )
 //  AM_RANGE(0x0f0000, 0x0f0001) AM_WRITENOP    /* ?? */
 	AM_RANGE(0x0f0000, 0x0f0001) AM_READ_PORT("DSW1")
 	AM_RANGE(0x0f0008, 0x0f0009) AM_READ_PORT("DSW2")
-<<<<<<< HEAD
-	AM_RANGE(0x0f8000, 0x0f8001) AM_READ8(soundlatch2_byte_r, 0xff00)
-	AM_RANGE(0x100000, 0x107fff) AM_READWRITE(spriteram_r, spriteram_w) AM_SHARE("spriteram")   // only partially populated
-=======
 	AM_RANGE(0x0f8000, 0x0f8001) AM_DEVREAD8("soundlatch2", generic_latch_8_device, read, 0xff00)
 	AM_RANGE(0x100000, 0x107fff) AM_DEVREADWRITE("sprites", snk68_spr_device, spriteram_r, spriteram_w) AM_SHARE("spriteram")   // only partially populated
->>>>>>> upstream/master
 	AM_RANGE(0x200000, 0x200fff) AM_RAM_WRITE(searchar_fg_videoram_w) AM_MIRROR(0x1000) AM_SHARE("pow_fg_videoram") /* Mirror is used by Ikari 3 */
 	AM_RANGE(0x300000, 0x33ffff) AM_ROM AM_REGION("user1", 0) /* Extra code bank */
 	AM_RANGE(0x400000, 0x400fff) AM_RAM_DEVWRITE("palette", palette_device, write) AM_SHARE("palette")
@@ -182,11 +148,7 @@ ADDRESS_MAP_END
 static ADDRESS_MAP_START( sound_map, AS_PROGRAM, 8, snk68_state )
 	AM_RANGE(0x0000, 0xefff) AM_ROM
 	AM_RANGE(0xf000, 0xf7ff) AM_RAM
-<<<<<<< HEAD
-	AM_RANGE(0xf800, 0xf800) AM_READ(soundlatch_byte_r) AM_WRITE(soundlatch2_byte_w)
-=======
 	AM_RANGE(0xf800, 0xf800) AM_DEVREAD("soundlatch", generic_latch_8_device, read) AM_DEVWRITE("soundlatch2", generic_latch_8_device, write)
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 WRITE8_MEMBER(snk68_state::D7759_write_port_0_w)
@@ -599,9 +561,6 @@ GFXDECODE_END
 
 /******************************************************************************/
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( pow, snk68_state )
-=======
 // pow has 0x4000 tiles and independent x/y flipping
 // the other games have > 0x4000 tiles and flipping in only one direction
 // (globally selected)
@@ -630,7 +589,6 @@ void snk68_state::tile_callback_notpow(int &tile, int& fx, int& fy, int& region)
 }
 
 static MACHINE_CONFIG_START( pow )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, XTAL_18MHz/2) /* verified on pcb */
@@ -654,11 +612,6 @@ static MACHINE_CONFIG_START( pow )
 	MCFG_PALETTE_ADD("palette", 0x800)
 	MCFG_PALETTE_FORMAT(xRGBRRRRGGGGBBBB_bit0)
 
-<<<<<<< HEAD
-	/* sound hardware */
-	MCFG_SPEAKER_STANDARD_MONO("mono")
-
-=======
 	MCFG_DEVICE_ADD("sprites", SNK68_SPR, 0)
 	MCFG_SNK68_SPR_GFXDECODE("gfxdecode")
 	MCFG_SNK68_SPR_SET_TILE_INDIRECT( snk68_state, tile_callback_pow )
@@ -669,7 +622,6 @@ static MACHINE_CONFIG_START( pow )
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch2")
 
->>>>>>> upstream/master
 	MCFG_SOUND_ADD("ymsnd", YM3812, XTAL_8MHz/2) /* verified on pcb  */
 	MCFG_YM3812_IRQ_HANDLER(INPUTLINE("soundcpu", 0))
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
@@ -678,17 +630,12 @@ static MACHINE_CONFIG_START( pow )
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-
-static MACHINE_CONFIG_DERIVED( searchar, pow )
-=======
 static MACHINE_CONFIG_DERIVED( streetsm, pow )
 	MCFG_DEVICE_MODIFY("sprites")
 	MCFG_SNK68_SPR_SET_TILE_INDIRECT( snk68_state, tile_callback_notpow )
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_DERIVED( searchar, streetsm )
->>>>>>> upstream/master
 
 	MCFG_CPU_MODIFY("maincpu")
 	MCFG_CPU_PROGRAM_MAP(searchar_map)
@@ -1154,21 +1101,6 @@ ROM_END
 
 /******************************************************************************/
 
-<<<<<<< HEAD
-GAME( 1988, pow,       0,        pow,      pow,      driver_device, 0, ROT0,  "SNK", "P.O.W. - Prisoners of War (US version 1)", MACHINE_SUPPORTS_SAVE )
-GAME( 1988, powj,      pow,      pow,      powj,     driver_device, 0, ROT0,  "SNK", "Datsugoku - Prisoners of War (Japan)", MACHINE_SUPPORTS_SAVE )
-GAME( 1989, streetsm,  0,        pow,      streetsm, driver_device, 0, ROT0,  "SNK", "Street Smart (US version 2)", MACHINE_SUPPORTS_SAVE )
-GAME( 1989, streetsm1, streetsm, searchar, streetsm, driver_device, 0, ROT0,  "SNK", "Street Smart (US version 1)", MACHINE_SUPPORTS_SAVE )
-GAME( 1989, streetsmw, streetsm, searchar, streetsj, driver_device, 0, ROT0,  "SNK", "Street Smart (World version 1)", MACHINE_SUPPORTS_SAVE )
-GAME( 1989, streetsmj, streetsm, searchar, streetsj, driver_device, 0, ROT0,  "SNK", "Street Smart (Japan version 1)", MACHINE_SUPPORTS_SAVE )
-GAME( 1989, ikari3,    0,        searchar, ikari3,   driver_device, 0, ROT0,  "SNK", "Ikari III - The Rescue (World, 8-Way Joystick)", MACHINE_SUPPORTS_SAVE )
-GAME( 1989, ikari3u,   ikari3,   searchar, ikari3,   driver_device, 0, ROT0,  "SNK", "Ikari III - The Rescue (US, Rotary Joystick)", MACHINE_SUPPORTS_SAVE )
-GAME( 1989, ikari3j,   ikari3,   searchar, ikari3,   driver_device, 0, ROT0,  "SNK", "Ikari Three (Japan, Rotary Joystick)", MACHINE_SUPPORTS_SAVE )
-GAME( 1989, ikari3k,   ikari3,   searchar, ikari3,   driver_device, 0, ROT0,  "SNK", "Ikari Three (Korea, 8-Way Joystick)", MACHINE_SUPPORTS_SAVE )
-GAME( 1989, searchar,  0,        searchar, searchar, driver_device, 0, ROT90, "SNK", "SAR - Search And Rescue (World)", MACHINE_SUPPORTS_SAVE )
-GAME( 1989, searcharu, searchar, searchar, searchar, driver_device, 0, ROT90, "SNK", "SAR - Search And Rescue (US)", MACHINE_SUPPORTS_SAVE )
-GAME( 1989, searcharj, searchar, searchar, searchar, driver_device, 0, ROT90, "SNK", "SAR - Search And Rescue (Japan)", MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1988, pow,       0,        pow,      pow,      snk68_state, 0, ROT0,  "SNK", "P.O.W. - Prisoners of War (US version 1)",       MACHINE_SUPPORTS_SAVE )
 GAME( 1988, powj,      pow,      pow,      powj,     snk68_state, 0, ROT0,  "SNK", "Datsugoku - Prisoners of War (Japan)",           MACHINE_SUPPORTS_SAVE )
 GAME( 1989, streetsm,  0,        streetsm, streetsm, snk68_state, 0, ROT0,  "SNK", "Street Smart (US version 2)",                    MACHINE_SUPPORTS_SAVE )
@@ -1182,4 +1114,3 @@ GAME( 1989, ikari3k,   ikari3,   searchar, ikari3,   snk68_state, 0, ROT0,  "SNK
 GAME( 1989, searchar,  0,        searchar, searchar, snk68_state, 0, ROT90, "SNK", "SAR - Search And Rescue (World)",                MACHINE_SUPPORTS_SAVE )
 GAME( 1989, searcharu, searchar, searchar, searchar, snk68_state, 0, ROT90, "SNK", "SAR - Search And Rescue (US)",                   MACHINE_SUPPORTS_SAVE )
 GAME( 1989, searcharj, searchar, searchar, searchar, snk68_state, 0, ROT90, "SNK", "SAR - Search And Rescue (Japan)",                MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

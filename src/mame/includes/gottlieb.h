@@ -6,19 +6,12 @@
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-#include "emu.h"
-=======
->>>>>>> upstream/master
 #include "audio/gottlieb.h"
 #include "cpu/i86/i86.h"
 #include "cpu/m6502/m6502.h"
 #include "sound/samples.h"
 #include "machine/ldpr8210.h"
-<<<<<<< HEAD
-=======
 #include "screen.h"
->>>>>>> upstream/master
 
 
 #define GOTTLIEB_VIDEO_HCOUNT   318
@@ -56,13 +49,9 @@ public:
 			m_gfxdecode(*this, "gfxdecode"),
 			m_screen(*this, "screen"),
 			m_palette(*this, "palette"),
-<<<<<<< HEAD
-			m_generic_paletteram_8(*this, "paletteram")
-=======
 			m_generic_paletteram_8(*this, "paletteram"),
 			m_track_x(*this, "TRACKX"),
 			m_track_y(*this, "TRACKY")
->>>>>>> upstream/master
 	{ }
 
 	// devices
@@ -72,48 +61,13 @@ public:
 	optional_device<gottlieb_sound_r2_device> m_r2_sound;
 	optional_device<samples_device> m_knocker_sample;
 
-<<<<<<< HEAD
-	required_shared_ptr<UINT8> m_videoram;
-	required_shared_ptr<UINT8> m_charram;
-	required_shared_ptr<UINT8> m_spriteram;
-=======
 	required_shared_ptr<uint8_t> m_videoram;
 	required_shared_ptr<uint8_t> m_charram;
 	required_shared_ptr<uint8_t> m_spriteram;
->>>>>>> upstream/master
 
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<screen_device> m_screen;
 	required_device<palette_device> m_palette;
-<<<<<<< HEAD
-	required_shared_ptr<UINT8> m_generic_paletteram_8;
-
-	UINT8 m_knocker_prev;
-	UINT8 m_joystick_select;
-	UINT8 m_track[2];
-	emu_timer *m_laserdisc_bit_timer;
-	emu_timer *m_laserdisc_philips_timer;
-	UINT8 m_laserdisc_select;
-	UINT8 m_laserdisc_status;
-	UINT16 m_laserdisc_philips_code;
-	UINT8 *m_laserdisc_audio_buffer;
-	UINT16 m_laserdisc_audio_address;
-	INT16 m_laserdisc_last_samples[2];
-	attotime m_laserdisc_last_time;
-	attotime m_laserdisc_last_clock;
-	UINT8 m_laserdisc_zero_seen;
-	UINT8 m_laserdisc_audio_bits;
-	UINT8 m_laserdisc_audio_bit_count;
-	UINT8 m_gfxcharlo;
-	UINT8 m_gfxcharhi;
-	UINT8 m_background_priority;
-	UINT8 m_spritebank;
-	UINT8 m_transparent0;
-	tilemap_t *m_bg_tilemap;
-	double m_weights[4];
-
-	void qbert_knocker(UINT8 knock);
-=======
 	required_shared_ptr<uint8_t> m_generic_paletteram_8;
 
 	optional_ioport m_track_x;
@@ -144,7 +98,6 @@ public:
 	double m_weights[4];
 
 	void qbert_knocker(uint8_t knock);
->>>>>>> upstream/master
 
 	DECLARE_WRITE8_MEMBER(gottlieb_analog_reset_w);
 	DECLARE_WRITE8_MEMBER(general_output_w);
@@ -172,19 +125,11 @@ public:
 	DECLARE_DRIVER_INIT(qbertqub);
 	TILE_GET_INFO_MEMBER(get_bg_tile_info);
 	TILE_GET_INFO_MEMBER(get_screwloo_bg_tile_info);
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void machine_reset();
-	virtual void video_start();
-	DECLARE_VIDEO_START(screwloo);
-	UINT32 screen_update_gottlieb(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
-=======
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
 	virtual void video_start() override;
 	DECLARE_VIDEO_START(screwloo);
 	uint32_t screen_update_gottlieb(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	INTERRUPT_GEN_MEMBER(gottlieb_interrupt);
 	TIMER_CALLBACK_MEMBER(laserdisc_philips_callback);
 	TIMER_CALLBACK_MEMBER(laserdisc_bit_off_callback);
@@ -192,19 +137,10 @@ public:
 	TIMER_CALLBACK_MEMBER(nmi_clear);
 	void draw_sprites(bitmap_rgb32 &bitmap, const rectangle &cliprect);
 	inline void audio_end_state();
-<<<<<<< HEAD
-	void audio_process_clock(int logit);
-	void audio_handle_zero_crossing(const attotime &zerotime, int logit);
-	void laserdisc_audio_process(laserdisc_device &device, int samplerate, int samples, const INT16 *ch0, const INT16 *ch1);
-
-protected:
-	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
-=======
 	void audio_process_clock(bool logit);
 	void audio_handle_zero_crossing(const attotime &zerotime, bool logit);
 	void laserdisc_audio_process(laserdisc_device &device, int samplerate, int samples, const int16_t *ch0, const int16_t *ch1);
 
 protected:
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
->>>>>>> upstream/master
 };

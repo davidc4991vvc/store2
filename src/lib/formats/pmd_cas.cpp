@@ -28,11 +28,7 @@
 // image size
 static int pmd85_image_size;
 
-<<<<<<< HEAD
-static int pmd85_emit_level(INT16 *buffer, int sample_pos, int count, int level)
-=======
 static int pmd85_emit_level(int16_t *buffer, int sample_pos, int count, int level)
->>>>>>> upstream/master
 {
 	if (buffer)
 	{
@@ -43,11 +39,7 @@ static int pmd85_emit_level(int16_t *buffer, int sample_pos, int count, int leve
 	return count;
 }
 
-<<<<<<< HEAD
-static int pmd85_output_bit(INT16 *buffer, int sample_pos, UINT8 bit)
-=======
 static int pmd85_output_bit(int16_t *buffer, int sample_pos, uint8_t bit)
->>>>>>> upstream/master
 {
 	int samples = 0;
 
@@ -65,11 +57,7 @@ static int pmd85_output_bit(int16_t *buffer, int sample_pos, uint8_t bit)
 	return samples;
 }
 
-<<<<<<< HEAD
-static int pmd85_output_byte(INT16 *buffer, int sample_pos, UINT8 byte)
-=======
 static int pmd85_output_byte(int16_t *buffer, int sample_pos, uint8_t byte)
->>>>>>> upstream/master
 {
 	int samples = 0;
 
@@ -87,11 +75,7 @@ static int pmd85_output_byte(int16_t *buffer, int sample_pos, uint8_t byte)
 	return samples;
 }
 
-<<<<<<< HEAD
-static bool pmd85_is_header_block(const UINT8 *bytes)
-=======
 static bool pmd85_is_header_block(const uint8_t *bytes)
->>>>>>> upstream/master
 {
 	for (int i=0; i<0x10; i++)
 	{
@@ -102,21 +86,12 @@ static bool pmd85_is_header_block(const uint8_t *bytes)
 	return true;
 }
 
-<<<<<<< HEAD
-static void pmd85_printf_image_info(const UINT8 *bytes, int sample_count)
-{
-#if 0
-	char track_name[9];
-	UINT32 sec = (UINT32)(sample_count/PMD85_WAV_FREQUENCY);
-	UINT16 addr = (bytes[0x33]<<8) | bytes[0x32];
-=======
 static void pmd85_printf_image_info(const uint8_t *bytes, int sample_count)
 {
 #if 0
 	char track_name[9];
 	uint32_t sec = (uint32_t)(sample_count/PMD85_WAV_FREQUENCY);
 	uint16_t addr = (bytes[0x33]<<8) | bytes[0x32];
->>>>>>> upstream/master
 	strncpy(track_name, (char*)&bytes[0x36], 8);
 	track_name[8] = '\0';
 
@@ -124,11 +99,7 @@ static void pmd85_printf_image_info(const uint8_t *bytes, int sample_count)
 #endif
 }
 
-<<<<<<< HEAD
-static int pmd85_handle_cassette(INT16 *buffer, const UINT8 *bytes)
-=======
 static int pmd85_handle_cassette(int16_t *buffer, const uint8_t *bytes)
->>>>>>> upstream/master
 {
 	int sample_count = 0;
 
@@ -166,11 +137,7 @@ static int pmd85_handle_cassette(int16_t *buffer, const uint8_t *bytes)
 		int data_pos = 0;
 		while (data_pos < pmd85_image_size)
 		{
-<<<<<<< HEAD
-			UINT16 block_size = (bytes[data_pos + 1]<<8) | bytes[data_pos];
-=======
 			uint16_t block_size = (bytes[data_pos + 1]<<8) | bytes[data_pos];
->>>>>>> upstream/master
 			int pause_len = PMD85_PAUSE_BITS;
 
 			data_pos += 2;
@@ -201,11 +168,7 @@ static int pmd85_handle_cassette(int16_t *buffer, const uint8_t *bytes)
    Generate samples for the tape image
 ********************************************************************/
 
-<<<<<<< HEAD
-static int pmd85_cassette_fill_wave(INT16 *buffer, int length, UINT8 *bytes)
-=======
 static int pmd85_cassette_fill_wave(int16_t *buffer, int length, uint8_t *bytes)
->>>>>>> upstream/master
 {
 	return pmd85_handle_cassette(buffer, bytes);
 }
@@ -214,19 +177,11 @@ static int pmd85_cassette_fill_wave(int16_t *buffer, int length, uint8_t *bytes)
    Calculate the number of samples needed for this tape image
 ********************************************************************/
 
-<<<<<<< HEAD
-static int pmd85_cassette_calculate_size_in_samples(const UINT8 *bytes, int length)
-{
-	pmd85_image_size = length;
-
-	return pmd85_handle_cassette(NULL, bytes);
-=======
 static int pmd85_cassette_calculate_size_in_samples(const uint8_t *bytes, int length)
 {
 	pmd85_image_size = length;
 
 	return pmd85_handle_cassette(nullptr, bytes);
->>>>>>> upstream/master
 }
 
 static const struct CassetteLegacyWaveFiller pmd85_legacy_fill_wave =
@@ -240,20 +195,12 @@ static const struct CassetteLegacyWaveFiller pmd85_legacy_fill_wave =
 	0                                           /* trailer_samples */
 };
 
-<<<<<<< HEAD
-static casserr_t pmd85_cassette_identify(cassette_image *cassette, struct CassetteOptions *opts)
-=======
 static cassette_image::error pmd85_cassette_identify(cassette_image *cassette, struct CassetteOptions *opts)
->>>>>>> upstream/master
 {
 	return cassette_legacy_identify(cassette, opts, &pmd85_legacy_fill_wave);
 }
 
-<<<<<<< HEAD
-static casserr_t pmd85_cassette_load(cassette_image *cassette)
-=======
 static cassette_image::error pmd85_cassette_load(cassette_image *cassette)
->>>>>>> upstream/master
 {
 	return cassette_legacy_construct(cassette, &pmd85_legacy_fill_wave);
 }
@@ -263,11 +210,7 @@ static const struct CassetteFormat pmd85_cassette_image_format =
 	"pmd,tap,ptp",
 	pmd85_cassette_identify,
 	pmd85_cassette_load,
-<<<<<<< HEAD
-	NULL
-=======
 	nullptr
->>>>>>> upstream/master
 };
 
 CASSETTE_FORMATLIST_START(pmd85_cassette_formats)

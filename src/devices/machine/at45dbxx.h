@@ -12,17 +12,10 @@
 
 */
 
-<<<<<<< HEAD
-#ifndef _AT45DBXX_H_
-#define _AT45DBXX_H_
-
-#include "emu.h"
-=======
 #ifndef MAME_MACHINE_AT45DBXX_H
 #define MAME_MACHINE_AT45DBXX_H
 
 #pragma once
->>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -48,57 +41,13 @@ class at45db041_device : public device_t,
 							public device_nvram_interface
 {
 public:
-<<<<<<< HEAD
-	at45db041_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-	at45db041_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source);
-=======
 	at45db041_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
->>>>>>> upstream/master
 
 	DECLARE_WRITE_LINE_MEMBER(cs_w);
 	DECLARE_WRITE_LINE_MEMBER(sck_w);
 	DECLARE_WRITE_LINE_MEMBER(si_w);
 	DECLARE_READ_LINE_MEMBER(so_r);
 
-<<<<<<< HEAD
-	UINT8 *get_ptr() {  return &m_data[0];  }
-
-	template<class _Object> static devcb_base &set_so_cb(device_t &device, _Object object) { return downcast<at45db041_device &>(device).write_so.set_callback(object); }
-	devcb_write_line write_so;
-
-protected:
-	// device-level overrides
-	virtual void device_start();
-	virtual void device_reset();
-
-	// device_nvram_interface overrides
-	virtual void nvram_default();
-	virtual void nvram_read(emu_file &file);
-	virtual void nvram_write(emu_file &file);
-
-protected:
-	virtual int num_pages() const { return 2048; }
-	virtual int page_size() const { return 264; }
-	virtual UINT8 device_id() const { return 0x18; }
-
-	UINT8 read_byte();
-	void flash_set_io(UINT8* data, UINT32 size, UINT32 pos);
-	virtual UINT32 flash_get_page_addr();
-	virtual UINT32 flash_get_byte_addr();
-	void write_byte(UINT8 data);
-
-	// internal state
-	dynamic_buffer m_data;
-	UINT32      m_size;
-	UINT8       m_mode;
-	UINT8       m_status;
-	dynamic_buffer m_buffer1;
-	//dynamic_buffer m_buffer2;
-	UINT8       m_si_byte;
-	UINT8       m_si_bits;
-	UINT8       m_so_byte;
-	UINT8       m_so_bits;
-=======
 	uint8_t *get_ptr() {  return &m_data[0];  }
 
 	template <class Object> static devcb_base &set_so_cb(device_t &device, Object &&cb) { return downcast<at45db041_device &>(device).write_so.set_callback(std::forward<Object>(cb)); }
@@ -138,7 +87,6 @@ protected:
 	uint8_t       m_si_bits;
 	uint8_t       m_so_byte;
 	uint8_t       m_so_bits;
->>>>>>> upstream/master
 
 	struct AT45DBXX_PINS
 	{
@@ -153,26 +101,15 @@ protected:
 
 	struct AT45DBXX_IO
 	{
-<<<<<<< HEAD
-		UINT8 *data;
-		UINT32 size;
-		UINT32 pos;
-=======
 		uint8_t *data;
 		uint32_t size;
 		uint32_t pos;
->>>>>>> upstream/master
 	} m_io;
 
 	struct AT45DBXX_CMD
 	{
-<<<<<<< HEAD
-		UINT8 data[8];
-		UINT8 size;
-=======
 		uint8_t data[8];
 		uint8_t size;
->>>>>>> upstream/master
 	} m_cmd;
 };
 
@@ -181,16 +118,6 @@ protected:
 class at45db081_device : public at45db041_device
 {
 public:
-<<<<<<< HEAD
-	at45db081_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-protected:
-	virtual int num_pages() const { return 4096; }
-	virtual int page_size() const { return 264;  }
-	virtual UINT8 device_id() const { return 0x20; }
-
-	virtual UINT32 flash_get_page_addr();
-=======
 	at45db081_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 protected:
@@ -199,7 +126,6 @@ protected:
 	virtual uint8_t device_id() const override { return 0x20; }
 
 	virtual uint32_t flash_get_page_addr() override;
->>>>>>> upstream/master
 };
 
 // ======================> at45db161_device
@@ -207,17 +133,6 @@ protected:
 class at45db161_device : public at45db041_device
 {
 public:
-<<<<<<< HEAD
-	at45db161_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-protected:
-	virtual int num_pages() const { return 4096; }
-	virtual int page_size() const { return 528;  }
-	virtual UINT8 device_id() const { return 0x28; }
-
-	virtual UINT32 flash_get_page_addr();
-	virtual UINT32 flash_get_byte_addr();
-=======
 	at45db161_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 protected:
@@ -227,21 +142,12 @@ protected:
 
 	virtual uint32_t flash_get_page_addr() override;
 	virtual uint32_t flash_get_byte_addr() override;
->>>>>>> upstream/master
 };
 
 
 // device type definition
-<<<<<<< HEAD
-extern const device_type AT45DB041;
-extern const device_type AT45DB081;
-extern const device_type AT45DB161;
-
-#endif
-=======
 DECLARE_DEVICE_TYPE(AT45DB041, at45db041_device)
 DECLARE_DEVICE_TYPE(AT45DB081, at45db081_device)
 DECLARE_DEVICE_TYPE(AT45DB161, at45db161_device)
 
 #endif // MAME_MACHINE_AT45DBXX_H
->>>>>>> upstream/master

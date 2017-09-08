@@ -25,11 +25,7 @@
 
 TILE_GET_INFO_MEMBER(rpunch_state::get_bg0_tile_info)
 {
-<<<<<<< HEAD
-	UINT16 *videoram = m_videoram;
-=======
 	uint16_t *videoram = m_videoram;
->>>>>>> upstream/master
 	int data = videoram[tile_index];
 	int code;
 	if (m_videoflags & 0x0400)  code = (data & 0x0fff) | 0x2000;
@@ -43,11 +39,7 @@ TILE_GET_INFO_MEMBER(rpunch_state::get_bg0_tile_info)
 
 TILE_GET_INFO_MEMBER(rpunch_state::get_bg1_tile_info)
 {
-<<<<<<< HEAD
-	UINT16 *videoram = m_videoram;
-=======
 	uint16_t *videoram = m_videoram;
->>>>>>> upstream/master
 	int data = videoram[0x2000 / 2 + tile_index];
 	int code;
 	if (m_videoflags & 0x0800)  code = (data & 0x0fff) | 0x2000;
@@ -79,13 +71,8 @@ VIDEO_START_MEMBER(rpunch_state,rpunch)
 	m_sprite_xoffs = 0;
 
 	/* allocate tilemaps for the backgrounds */
-<<<<<<< HEAD
-	m_background[0] = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(rpunch_state::get_bg0_tile_info),this),TILEMAP_SCAN_COLS,8,8,64,64);
-	m_background[1] = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(rpunch_state::get_bg1_tile_info),this),TILEMAP_SCAN_COLS,8,8,64,64);
-=======
 	m_background[0] = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(rpunch_state::get_bg0_tile_info),this),TILEMAP_SCAN_COLS,8,8,64,64);
 	m_background[1] = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(rpunch_state::get_bg1_tile_info),this),TILEMAP_SCAN_COLS,8,8,64,64);
->>>>>>> upstream/master
 
 	/* configure the tilemaps */
 	m_background[1]->set_transparent_pen(15);
@@ -117,11 +104,7 @@ VIDEO_START_MEMBER(rpunch_state,svolley)
 
 WRITE16_MEMBER(rpunch_state::rpunch_videoram_w)
 {
-<<<<<<< HEAD
-	UINT16 *videoram = m_videoram;
-=======
 	uint16_t *videoram = m_videoram;
->>>>>>> upstream/master
 	int tmap = offset >> 12;
 	int tile_index = offset & 0xfff;
 	COMBINE_DATA(&videoram[offset]);
@@ -169,32 +152,6 @@ WRITE16_MEMBER(rpunch_state::rpunch_scrollreg_w)
 }
 
 
-<<<<<<< HEAD
-WRITE16_MEMBER(rpunch_state::rpunch_crtc_data_w)
-{
-	if (ACCESSING_BITS_0_7)
-	{
-		data &= 0xff;
-		switch (m_crtc_register)
-		{
-			/* only register we know about.... */
-			case 0x0b:
-				m_crtc_timer->adjust(m_screen->time_until_vblank_start(), (data == 0xc0) ? 2 : 1);
-				break;
-
-			default:
-				logerror("CRTC register %02X = %02X\n", m_crtc_register, data & 0xff);
-				break;
-		}
-	}
-}
-
-
-WRITE16_MEMBER(rpunch_state::rpunch_crtc_register_w)
-{
-	if (ACCESSING_BITS_0_7)
-		m_crtc_register = data & 0xff;
-=======
 WRITE8_MEMBER(rpunch_state::rpunch_gga_w)
 {
 	m_gga->write(space, offset >> 4, data & 0xff);
@@ -214,7 +171,6 @@ WRITE8_MEMBER(rpunch_state::rpunch_gga_data_w)
 			logerror("CRTC register %02X = %02X\n", offset, data);
 			break;
 	}
->>>>>>> upstream/master
 }
 
 
@@ -244,11 +200,7 @@ WRITE16_MEMBER(rpunch_state::rpunch_ins_w)
 
 void rpunch_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect, int start, int stop)
 {
-<<<<<<< HEAD
-	UINT16 *spriteram16 = m_spriteram;
-=======
 	uint16_t *spriteram16 = m_spriteram;
->>>>>>> upstream/master
 	int offs;
 
 	start *= 4;
@@ -315,11 +267,7 @@ void rpunch_state::draw_bitmap(bitmap_ind16 &bitmap, const rectangle &cliprect)
  *
  *************************************/
 
-<<<<<<< HEAD
-UINT32 rpunch_state::screen_update_rpunch(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t rpunch_state::screen_update_rpunch(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int effbins;
 

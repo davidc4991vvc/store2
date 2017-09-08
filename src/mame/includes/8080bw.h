@@ -1,23 +1,11 @@
-<<<<<<< HEAD
-// license:???
-// copyright-holders:Michael Strutts,Nicola Salmoria,Tormod Tjaberg,Mirko Buffoni,Lee Taylor,Valerio Verrando,Marco Cassili,Zsolt Vasvari,Aaron Giles,Jonathan Gevaryahu,hap,Robbbert
-=======
 // license:BSD-3-Clause
 // copyright-holders:Nicola Salmoria, Tormod Tjaberg, Mirko Buffoni,Lee Taylor, Valerio Verrando, Zsolt Vasvari
 // thanks-to:Michael Strutts, Marco Cassili
->>>>>>> upstream/master
 /***************************************************************************
 
     8080-based black and white hardware
 
 ****************************************************************************/
-<<<<<<< HEAD
-
-#include "includes/mw8080bw.h"
-#include "sound/sn76477.h"
-#include "sound/speaker.h"
-#include "machine/eepromser.h"
-=======
 #ifndef MAME_INCLUDES_8080BW_H
 #define MAME_INCLUDES_8080BW_H
 
@@ -32,7 +20,6 @@
 #include "screen.h"
 
 
->>>>>>> upstream/master
 /* for games in 8080bw.c */
 #define CABINET_PORT_TAG                  "CAB"
 
@@ -49,13 +36,9 @@ public:
 		m_eeprom(*this, "eeprom"),
 		m_sn(*this, "snsnd"),
 		m_screen(*this, "screen"),
-<<<<<<< HEAD
-		m_palette(*this, "palette")
-=======
 		m_palette(*this, "palette"),
 		m_gunx(*this, "GUNX"),
 		m_guny(*this, "GUNY")
->>>>>>> upstream/master
 	{ }
 
 	/* devices/memory pointers */
@@ -69,25 +52,6 @@ public:
 	optional_device<palette_device> m_palette;
 
 	/* misc game specific */
-<<<<<<< HEAD
-	UINT8 m_color_map;
-	UINT8 m_screen_red;
-	UINT8 m_fleet_step;
-
-	attotime m_schaser_effect_555_time_remain;
-	INT32 m_schaser_effect_555_time_remain_savable;
-	int m_schaser_effect_555_is_low;
-	int m_schaser_explosion;
-	int m_schaser_last_effect;
-	UINT8 m_polaris_cloud_speed;
-	UINT8 m_polaris_cloud_pos;
-	UINT8 m_schaser_background_disable;
-	UINT8 m_schaser_background_select;
-	UINT16 m_claybust_gun_pos;
-
-	int m_invmulti_bank;
-
-=======
 	optional_ioport m_gunx;
 	optional_ioport m_guny;
 	uint8_t m_color_map;
@@ -104,7 +68,6 @@ public:
 	uint8_t m_schaser_background_disable;
 	uint8_t m_schaser_background_select;
 	uint16_t m_claybust_gun_pos;
->>>>>>> upstream/master
 
 	DECLARE_CUSTOM_INPUT_MEMBER(sflush_80_r);
 	DECLARE_INPUT_CHANGED_MEMBER(claybust_gun_trigger);
@@ -156,8 +119,6 @@ public:
 	DECLARE_WRITE8_MEMBER(invmulti_eeprom_w);
 	DECLARE_WRITE8_MEMBER(invmulti_bank_w);
 
-<<<<<<< HEAD
-=======
 	DECLARE_READ8_MEMBER(rollingc_scattered_colorram_r);
 	DECLARE_WRITE8_MEMBER(rollingc_scattered_colorram_w);
 	DECLARE_READ8_MEMBER(rollingc_scattered_colorram2_r);
@@ -165,29 +126,20 @@ public:
 	DECLARE_READ8_MEMBER(schaser_scattered_colorram_r);
 	DECLARE_WRITE8_MEMBER(schaser_scattered_colorram_w);
 
->>>>>>> upstream/master
 	DECLARE_DRIVER_INIT(invmulti);
 	DECLARE_DRIVER_INIT(spacecom);
 	DECLARE_DRIVER_INIT(vortex);
 	DECLARE_DRIVER_INIT(attackfc);
 
 	DECLARE_MACHINE_START(extra_8080bw);
-<<<<<<< HEAD
-	DECLARE_MACHINE_START(schaser);
-=======
 	DECLARE_MACHINE_START(rollingc);
 	DECLARE_MACHINE_START(sflush);
 	DECLARE_MACHINE_START(schaser);
 	DECLARE_MACHINE_START(schasercv);
->>>>>>> upstream/master
 	DECLARE_MACHINE_RESET(schaser);
 	DECLARE_MACHINE_START(polaris);
 	DECLARE_MACHINE_START(darthvdr);
 	DECLARE_MACHINE_RESET(darthvdr);
-<<<<<<< HEAD
-	DECLARE_MACHINE_RESET(invmulti);
-=======
->>>>>>> upstream/master
 	DECLARE_MACHINE_START(extra_8080bw_sh);
 	DECLARE_MACHINE_START(extra_8080bw_vh);
 	DECLARE_MACHINE_START(schaser_sh);
@@ -197,20 +149,6 @@ public:
 	DECLARE_PALETTE_INIT(rollingc);
 	DECLARE_PALETTE_INIT(sflush);
 
-<<<<<<< HEAD
-	UINT32 screen_update_invadpt2(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
-	UINT32 screen_update_cosmo(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
-	UINT32 screen_update_rollingc(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
-	UINT32 screen_update_schaser(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
-	UINT32 screen_update_schasercv(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
-	UINT32 screen_update_sflush(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
-	UINT32 screen_update_indianbt(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
-	UINT32 screen_update_lupin3(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
-	UINT32 screen_update_polaris(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
-	UINT32 screen_update_ballbomb(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
-	UINT32 screen_update_shuttlei(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
-	UINT32 screen_update_spacecom(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
-=======
 	uint32_t screen_update_invadpt2(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
 	uint32_t screen_update_cosmo(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
 	uint32_t screen_update_rollingc(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
@@ -223,7 +161,6 @@ public:
 	uint32_t screen_update_ballbomb(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
 	uint32_t screen_update_shuttlei(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
 	uint32_t screen_update_spacecom(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 
 	INTERRUPT_GEN_MEMBER(polaris_interrupt);
 	TIMER_DEVICE_CALLBACK_MEMBER(claybust_gun_callback);
@@ -234,16 +171,9 @@ public:
 	DECLARE_WRITE8_MEMBER(polaris_sh_port_3_w);
 
 	void schaser_reinit_555_time_remain();
-<<<<<<< HEAD
-	inline void set_pixel( bitmap_rgb32 &bitmap, UINT8 y, UINT8 x, int color );
-	inline void set_8_pixels( bitmap_rgb32 &bitmap, UINT8 y, UINT8 x, UINT8 data, int fore_color, int back_color );
-	void clear_extra_columns( bitmap_rgb32 &bitmap, int color );
-	void invmulti_bankswitch_restore();
-=======
 	inline void set_pixel( bitmap_rgb32 &bitmap, uint8_t y, uint8_t x, int color );
 	inline void set_8_pixels( bitmap_rgb32 &bitmap, uint8_t y, uint8_t x, uint8_t data, int fore_color, int back_color );
 	void clear_extra_columns( bitmap_rgb32 &bitmap, int color );
->>>>>>> upstream/master
 };
 
 
@@ -255,8 +185,5 @@ DISCRETE_SOUND_EXTERN( ballbomb );
 DISCRETE_SOUND_EXTERN( indianbt );
 DISCRETE_SOUND_EXTERN( polaris );
 DISCRETE_SOUND_EXTERN( schaser );
-<<<<<<< HEAD
-=======
 
 #endif // MAME_INCLUDES_8080BW_H
->>>>>>> upstream/master

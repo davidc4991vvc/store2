@@ -217,11 +217,7 @@ void ymf271_device::calculate_step(YMF271Slot *slot)
 
 		st /= (double)(524288/65536); // pre-multiply with 65536
 
-<<<<<<< HEAD
-		slot->step = (UINT32)st;
-=======
 		slot->step = (uint32_t)st;
->>>>>>> upstream/master
 	}
 	else
 	{
@@ -234,11 +230,7 @@ void ymf271_device::calculate_step(YMF271Slot *slot)
 
 		st /= (double)(536870912/65536); // pre-multiply with 65536
 
-<<<<<<< HEAD
-		slot->step = (UINT32)st;
-=======
 		slot->step = (uint32_t)st;
->>>>>>> upstream/master
 	}
 }
 
@@ -407,28 +399,16 @@ void ymf271_device::update_lfo(YMF271Slot *slot)
 	slot->lfo_phase += slot->lfo_step;
 
 	slot->lfo_amplitude = m_lut_alfo[slot->lfowave][(slot->lfo_phase >> LFO_SHIFT) & (LFO_LENGTH-1)];
-<<<<<<< HEAD
-	slot->lfo_phasemod = m_lut_plfo[slot->lfowave][slot->pms][(slot->lfo_phase >> LFO_SHIFT) & (LFO_LENGTH-1)];
-=======
 	slot->lfo_phasemod = m_lut_plfo[slot->lfowave][slot->pms].get()[(slot->lfo_phase >> LFO_SHIFT) & (LFO_LENGTH-1)];
->>>>>>> upstream/master
 
 	calculate_step(slot);
 }
 
-<<<<<<< HEAD
-INT64 ymf271_device::calculate_slot_volume(YMF271Slot *slot)
-{
-	INT64 volume;
-	INT64 env_volume;
-	INT64 lfo_volume = 65536;
-=======
 int64_t ymf271_device::calculate_slot_volume(YMF271Slot *slot)
 {
 	int64_t volume;
 	int64_t env_volume;
 	int64_t lfo_volume = 65536;
->>>>>>> upstream/master
 
 	switch (slot->ams)
 	{
@@ -445,21 +425,12 @@ int64_t ymf271_device::calculate_slot_volume(YMF271Slot *slot)
 	return volume;
 }
 
-<<<<<<< HEAD
-void ymf271_device::update_pcm(int slotnum, INT32 *mixp, int length)
-{
-	int i;
-	INT64 final_volume;
-	INT16 sample;
-	INT64 ch0_vol, ch1_vol; //, ch2_vol, ch3_vol;
-=======
 void ymf271_device::update_pcm(int slotnum, int32_t *mixp, int length)
 {
 	int i;
 	int64_t final_volume;
 	int16_t sample;
 	int64_t ch0_vol, ch1_vol; //, ch2_vol, ch3_vol;
->>>>>>> upstream/master
 
 	YMF271Slot *slot = &m_slots[slotnum];
 
@@ -478,29 +449,17 @@ void ymf271_device::update_pcm(int slotnum, int32_t *mixp, int length)
 		// loop
 		if ((slot->stepptr>>16) > slot->endaddr)
 		{
-<<<<<<< HEAD
-			slot->stepptr = slot->stepptr - ((UINT64)slot->endaddr<<16) + ((UINT64)slot->loopaddr<<16);
-=======
 			slot->stepptr = slot->stepptr - ((uint64_t)slot->endaddr<<16) + ((uint64_t)slot->loopaddr<<16);
->>>>>>> upstream/master
 			if ((slot->stepptr>>16) > slot->endaddr)
 			{
 				// overflow
 				slot->stepptr &= 0xffff;
-<<<<<<< HEAD
-				slot->stepptr |= ((UINT64)slot->loopaddr<<16);
-=======
 				slot->stepptr |= ((uint64_t)slot->loopaddr<<16);
->>>>>>> upstream/master
 				if ((slot->stepptr>>16) > slot->endaddr)
 				{
 					// still overflow? (triggers in rdft2, rarely)
 					slot->stepptr &= 0xffff;
-<<<<<<< HEAD
-					slot->stepptr |= ((UINT64)slot->endaddr<<16);
-=======
 					slot->stepptr |= ((uint64_t)slot->endaddr<<16);
->>>>>>> upstream/master
 				}
 			}
 		}
@@ -541,17 +500,10 @@ void ymf271_device::update_pcm(int slotnum, int32_t *mixp, int length)
 }
 
 // calculates the output of one FM operator
-<<<<<<< HEAD
-INT64 ymf271_device::calculate_op(int slotnum, INT64 inp)
-{
-	YMF271Slot *slot = &m_slots[slotnum];
-	INT64 env, slot_output, slot_input = 0;
-=======
 int64_t ymf271_device::calculate_op(int slotnum, int64_t inp)
 {
 	YMF271Slot *slot = &m_slots[slotnum];
 	int64_t env, slot_output, slot_input = 0;
->>>>>>> upstream/master
 
 	update_envelope(slot);
 	update_lfo(slot);
@@ -576,11 +528,7 @@ int64_t ymf271_device::calculate_op(int slotnum, int64_t inp)
 	return slot_output;
 }
 
-<<<<<<< HEAD
-void ymf271_device::set_feedback(int slotnum, INT64 inp)
-=======
 void ymf271_device::set_feedback(int slotnum, int64_t inp)
->>>>>>> upstream/master
 {
 	YMF271Slot *slot = &m_slots[slotnum];
 	slot->feedback_modulation1 = (((inp << (SIN_BITS-2)) * feedback_level[slot->feedback]) / 16);
@@ -594,24 +542,14 @@ void ymf271_device::sound_stream_update(sound_stream &stream, stream_sample_t **
 {
 	int i, j;
 	int op;
-<<<<<<< HEAD
-	INT32 *mixp;
-
-	memset(m_mix_buffer, 0, sizeof(m_mix_buffer[0])*samples*2);
-=======
 	int32_t *mixp;
 
 	memset(m_mix_buffer.get(), 0, sizeof(m_mix_buffer[0])*samples*2);
->>>>>>> upstream/master
 
 	for (j = 0; j < 12; j++)
 	{
 		YMF271Group *slot_group = &m_groups[j];
-<<<<<<< HEAD
-		mixp = m_mix_buffer;
-=======
 		mixp = m_mix_buffer.get();
->>>>>>> upstream/master
 
 		if (slot_group->pfm && slot_group->sync != 3)
 		{
@@ -629,23 +567,14 @@ void ymf271_device::sound_stream_update(sound_stream &stream, stream_sample_t **
 				int slot2 = j + (1*12);
 				int slot3 = j + (2*12);
 				int slot4 = j + (3*12);
-<<<<<<< HEAD
-				mixp = m_mix_buffer;
-=======
 				mixp = m_mix_buffer.get();
->>>>>>> upstream/master
 
 				if (m_slots[slot1].active)
 				{
 					for (i = 0; i < samples; i++)
 					{
-<<<<<<< HEAD
-						INT64 output1 = 0, output2 = 0, output3 = 0, output4 = 0;
-						INT64 phase_mod1 = 0, phase_mod2 = 0, phase_mod3 = 0;
-=======
 						int64_t output1 = 0, output2 = 0, output3 = 0, output4 = 0;
 						int64_t phase_mod1, phase_mod2, phase_mod3;
->>>>>>> upstream/master
 						switch (m_slots[slot1].algorithm)
 						{
 							// <--------|
@@ -865,22 +794,13 @@ void ymf271_device::sound_stream_update(sound_stream &stream, stream_sample_t **
 					int slot1 = j + ((op + 0) * 12);
 					int slot3 = j + ((op + 2) * 12);
 
-<<<<<<< HEAD
-					mixp = m_mix_buffer;
-=======
 					mixp = m_mix_buffer.get();
->>>>>>> upstream/master
 					if (m_slots[slot1].active)
 					{
 						for (i = 0; i < samples; i++)
 						{
-<<<<<<< HEAD
-							INT64 output1 = 0, output3 = 0;
-							INT64 phase_mod1, phase_mod3 = 0;
-=======
 							int64_t output1 = 0, output3 = 0;
 							int64_t phase_mod1, phase_mod3;
->>>>>>> upstream/master
 							switch (m_slots[slot1].algorithm & 3)
 							{
 								// <--------|
@@ -936,23 +856,14 @@ void ymf271_device::sound_stream_update(sound_stream &stream, stream_sample_t **
 				int slot1 = j + (0*12);
 				int slot2 = j + (1*12);
 				int slot3 = j + (2*12);
-<<<<<<< HEAD
-				mixp = m_mix_buffer;
-=======
 				mixp = m_mix_buffer.get();
->>>>>>> upstream/master
 
 				if (m_slots[slot1].active)
 				{
 					for (i = 0; i < samples; i++)
 					{
-<<<<<<< HEAD
-						INT64 output1 = 0, output2 = 0, output3 = 0;
-						INT64 phase_mod1 = 0, phase_mod3 = 0;
-=======
 						int64_t output1 = 0, output2 = 0, output3 = 0;
 						int64_t phase_mod1, phase_mod3;
->>>>>>> upstream/master
 						switch (m_slots[slot1].algorithm & 7)
 						{
 							// <--------|
@@ -1048,11 +959,7 @@ void ymf271_device::sound_stream_update(sound_stream &stream, stream_sample_t **
 					}
 				}
 
-<<<<<<< HEAD
-				mixp = m_mix_buffer;
-=======
 				mixp = m_mix_buffer.get();
->>>>>>> upstream/master
 				update_pcm(j + (3*12), mixp, samples);
 				break;
 			}
@@ -1069,11 +976,7 @@ void ymf271_device::sound_stream_update(sound_stream &stream, stream_sample_t **
 		}
 	}
 
-<<<<<<< HEAD
-	mixp = m_mix_buffer;
-=======
 	mixp = m_mix_buffer.get();
->>>>>>> upstream/master
 	for (i = 0; i < samples; i++)
 	{
 		outputs[0][i] = (*mixp++)>>2;
@@ -1081,11 +984,7 @@ void ymf271_device::sound_stream_update(sound_stream &stream, stream_sample_t **
 	}
 }
 
-<<<<<<< HEAD
-void ymf271_device::write_register(int slotnum, int reg, UINT8 data)
-=======
 void ymf271_device::write_register(int slotnum, int reg, uint8_t data)
->>>>>>> upstream/master
 {
 	YMF271Slot *slot = &m_slots[slotnum];
 
@@ -1190,11 +1089,7 @@ void ymf271_device::write_register(int slotnum, int reg, uint8_t data)
 	}
 }
 
-<<<<<<< HEAD
-void ymf271_device::ymf271_write_fm(int bank, UINT8 address, UINT8 data)
-=======
 void ymf271_device::ymf271_write_fm(int bank, uint8_t address, uint8_t data)
->>>>>>> upstream/master
 {
 	int groupnum = fm_tab[address & 0xf];
 	if (groupnum == -1)
@@ -1292,11 +1187,7 @@ void ymf271_device::ymf271_write_fm(int bank, uint8_t address, uint8_t data)
 	}
 }
 
-<<<<<<< HEAD
-void ymf271_device::ymf271_write_pcm(UINT8 address, UINT8 data)
-=======
 void ymf271_device::ymf271_write_pcm(uint8_t address, uint8_t data)
->>>>>>> upstream/master
 {
 	int slotnum = pcm_tab[address & 0xf];
 	if (slotnum == -1)
@@ -1385,11 +1276,7 @@ void ymf271_device::device_timer(emu_timer &timer, device_timer_id id, int param
 			}
 
 			// reload timer
-<<<<<<< HEAD
-			m_timA->adjust(attotime::from_hz(m_clock) * (384 * 4 * (256 - m_timerA)), 0);
-=======
 			m_timA->adjust(clocks_to_attotime(384 * 4 * (256 - m_timerA)), 0);
->>>>>>> upstream/master
 			break;
 
 		case 1:
@@ -1405,28 +1292,16 @@ void ymf271_device::device_timer(emu_timer &timer, device_timer_id id, int param
 			}
 
 			// reload timer
-<<<<<<< HEAD
-			m_timB->adjust(attotime::from_hz(m_clock) * (384 * 16 * (256 - m_timerB)), 0);
-			break;
-
-		default:
-			assert_always(FALSE, "Unknown id in ymf271_device::device_timer");
-=======
 			m_timB->adjust(clocks_to_attotime(384 * 16 * (256 - m_timerB)), 0);
 			break;
 
 		default:
 			assert_always(false, "Unknown id in ymf271_device::device_timer");
->>>>>>> upstream/master
 			break;
 	}
 }
 
-<<<<<<< HEAD
-UINT8 ymf271_device::ymf271_read_memory(UINT32 offset)
-=======
 uint8_t ymf271_device::ymf271_read_memory(uint32_t offset)
->>>>>>> upstream/master
 {
 	if (m_ext_read_handler.isnull())
 	{
@@ -1444,11 +1319,7 @@ uint8_t ymf271_device::ymf271_read_memory(uint32_t offset)
 		return m_ext_read_handler(offset);
 }
 
-<<<<<<< HEAD
-void ymf271_device::ymf271_write_timer(UINT8 address, UINT8 data)
-=======
 void ymf271_device::ymf271_write_timer(uint8_t address, uint8_t data)
->>>>>>> upstream/master
 {
 	if ((address & 0xf0) == 0)
 	{
@@ -1486,22 +1357,14 @@ void ymf271_device::ymf271_write_timer(uint8_t address, uint8_t data)
 				// timer A load
 				if (~m_enable & data & 1)
 				{
-<<<<<<< HEAD
-					attotime period = attotime::from_hz(m_clock) * (384 * 4 * (256 - m_timerA));
-=======
 					attotime period = clocks_to_attotime(384 * 4 * (256 - m_timerA));
->>>>>>> upstream/master
 					m_timA->adjust((data & 1) ? period : attotime::never, 0);
 				}
 
 				// timer B load
 				if (~m_enable & data & 2)
 				{
-<<<<<<< HEAD
-					attotime period = attotime::from_hz(m_clock) * (384 * 16 * (256 - m_timerB));
-=======
 					attotime period = clocks_to_attotime(384 * 16 * (256 - m_timerB));
->>>>>>> upstream/master
 					m_timB->adjust((data & 2) ? period : attotime::never, 0);
 				}
 
@@ -1624,11 +1487,7 @@ READ8_MEMBER( ymf271_device::read )
 			if (!m_ext_rw)
 				return 0xff;
 
-<<<<<<< HEAD
-			UINT8 ret = m_ext_readlatch;
-=======
 			uint8_t ret = m_ext_readlatch;
->>>>>>> upstream/master
 			m_ext_address = (m_ext_address + 1) & 0x7fffff;
 			m_ext_readlatch = ymf271_read_memory(m_ext_address);
 			return ret;
@@ -1646,15 +1505,6 @@ void ymf271_device::init_tables()
 	int i, j;
 
 	for (i = 0; i < 8; i++)
-<<<<<<< HEAD
-		m_lut_waves[i] = auto_alloc_array(machine(), INT16, SIN_LEN);
-
-	for (i = 0; i < 4*8; i++)
-		m_lut_plfo[i>>3][i&7] = auto_alloc_array(machine(), double, LFO_LENGTH);
-
-	for (i = 0; i < 4; i++)
-		m_lut_alfo[i] = auto_alloc_array(machine(), int, LFO_LENGTH);
-=======
 		m_lut_waves[i] = std::make_unique<int16_t[]>(SIN_LEN);
 
 	for (i = 0; i < 4*8; i++)
@@ -1662,7 +1512,6 @@ void ymf271_device::init_tables()
 
 	for (i = 0; i < 4; i++)
 		m_lut_alfo[i] = std::make_unique<int[]>(LFO_LENGTH);
->>>>>>> upstream/master
 
 	for (i = 0; i < SIN_LEN; i++)
 	{
@@ -1670,27 +1519,6 @@ void ymf271_device::init_tables()
 		double m2 = sin( ((i*4)+1) * M_PI / SIN_LEN );
 
 		// Waveform 0: sin(wt)    (0 <= wt <= 2PI)
-<<<<<<< HEAD
-		m_lut_waves[0][i] = (INT16)(m * MAXOUT);
-
-		// Waveform 1: sin?(wt)   (0 <= wt <= PI)     -sin?(wt)  (PI <= wt <= 2PI)
-		m_lut_waves[1][i] = (i < (SIN_LEN/2)) ? (INT16)((m * m) * MAXOUT) : (INT16)((m * m) * MINOUT);
-
-		// Waveform 2: sin(wt)    (0 <= wt <= PI)     -sin(wt)   (PI <= wt <= 2PI)
-		m_lut_waves[2][i] = (i < (SIN_LEN/2)) ? (INT16)(m * MAXOUT) : (INT16)(-m * MAXOUT);
-
-		// Waveform 3: sin(wt)    (0 <= wt <= PI)     0
-		m_lut_waves[3][i] = (i < (SIN_LEN/2)) ? (INT16)(m * MAXOUT) : 0;
-
-		// Waveform 4: sin(2wt)   (0 <= wt <= PI)     0
-		m_lut_waves[4][i] = (i < (SIN_LEN/2)) ? (INT16)(m2 * MAXOUT) : 0;
-
-		// Waveform 5: |sin(2wt)| (0 <= wt <= PI)     0
-		m_lut_waves[5][i] = (i < (SIN_LEN/2)) ? (INT16)(fabs(m2) * MAXOUT) : 0;
-
-		// Waveform 6:     1      (0 <= wt <= 2PI)
-		m_lut_waves[6][i] = (INT16)(1 * MAXOUT);
-=======
 		m_lut_waves[0][i] = (int16_t)(m * MAXOUT);
 
 		// Waveform 1: sin?(wt)   (0 <= wt <= PI)     -sin?(wt)  (PI <= wt <= 2PI)
@@ -1710,7 +1538,6 @@ void ymf271_device::init_tables()
 
 		// Waveform 6:     1      (0 <= wt <= 2PI)
 		m_lut_waves[6][i] = (int16_t)(1 * MAXOUT);
->>>>>>> upstream/master
 
 		m_lut_waves[7][i] = 0;
 	}
@@ -1741,16 +1568,6 @@ void ymf271_device::init_tables()
 
 		for (j = 0; j < 4; j++)
 		{
-<<<<<<< HEAD
-			m_lut_plfo[j][0][i] = pow(2.0, 0.0);
-			m_lut_plfo[j][1][i] = pow(2.0, (3.378 * plfo[j]) / 1200.0);
-			m_lut_plfo[j][2][i] = pow(2.0, (5.0646 * plfo[j]) / 1200.0);
-			m_lut_plfo[j][3][i] = pow(2.0, (6.7495 * plfo[j]) / 1200.0);
-			m_lut_plfo[j][4][i] = pow(2.0, (10.1143 * plfo[j]) / 1200.0);
-			m_lut_plfo[j][5][i] = pow(2.0, (20.1699 * plfo[j]) / 1200.0);
-			m_lut_plfo[j][6][i] = pow(2.0, (40.1076 * plfo[j]) / 1200.0);
-			m_lut_plfo[j][7][i] = pow(2.0, (79.307 * plfo[j]) / 1200.0);
-=======
 			m_lut_plfo[j][0].get()[i] = pow(2.0, 0.0);
 			m_lut_plfo[j][1].get()[i] = pow(2.0, (3.378 * plfo[j]) / 1200.0);
 			m_lut_plfo[j][2].get()[i] = pow(2.0, (5.0646 * plfo[j]) / 1200.0);
@@ -1759,7 +1576,6 @@ void ymf271_device::init_tables()
 			m_lut_plfo[j][5].get()[i] = pow(2.0, (20.1699 * plfo[j]) / 1200.0);
 			m_lut_plfo[j][6].get()[i] = pow(2.0, (40.1076 * plfo[j]) / 1200.0);
 			m_lut_plfo[j][7].get()[i] = pow(2.0, (79.307 * plfo[j]) / 1200.0);
->>>>>>> upstream/master
 		}
 
 		// LFO amplitude modulation
@@ -1787,12 +1603,6 @@ void ymf271_device::init_tables()
 		double db = 0.75 * (double)i;
 		m_lut_total_level[i] = (int)(65536.0 / pow(10.0, db / 20.0));
 	}
-<<<<<<< HEAD
-
-	// timing may use a non-standard XTAL
-	double clock_correction = (double)(STD_CLOCK) / (double)(m_clock);
-	for (i = 0; i < 256; i++)
-=======
 }
 
 void ymf271_device::calculate_clock_correction()
@@ -1800,25 +1610,16 @@ void ymf271_device::calculate_clock_correction()
 	// timing may use a non-standard XTAL
 	double clock_correction = (clock() != 0) ? (double)(STD_CLOCK) / (double)clock() : 0.0;
 	for (int i = 0; i < 256; i++)
->>>>>>> upstream/master
 	{
 		m_lut_lfo[i] = LFO_frequency_table[i] * clock_correction;
 	}
 
-<<<<<<< HEAD
-	for (i = 0; i < 64; i++)
-=======
 	for (int i = 0; i < 64; i++)
->>>>>>> upstream/master
 	{
 		// attack/release rate in number of samples
 		m_lut_ar[i] = (ARTime[i] * clock_correction * 44100.0) / 1000.0;
 	}
-<<<<<<< HEAD
-	for (i = 0; i < 64; i++)
-=======
 	for (int i = 0; i < 64; i++)
->>>>>>> upstream/master
 	{
 		// decay rate in number of samples
 		m_lut_dc[i] = (DCTime[i] * clock_correction * 44100.0) / 1000.0;
@@ -1903,21 +1704,11 @@ void ymf271_device::init_state()
 
 void ymf271_device::device_start()
 {
-<<<<<<< HEAD
-	m_clock = clock();
-
-	m_timA = timer_alloc(0);
-	m_timB = timer_alloc(1);
-
-	m_mem_base = region()->base();
-	m_mem_size = region()->bytes();
-=======
 	m_timA = timer_alloc(0);
 	m_timB = timer_alloc(1);
 
 	m_mem_size = m_mem_base.bytes();
 
->>>>>>> upstream/master
 	m_irq_handler.resolve();
 
 	m_ext_read_handler.resolve();
@@ -1927,11 +1718,7 @@ void ymf271_device::device_start()
 	init_state();
 
 	m_stream = machine().sound().stream_alloc(*this, 0, 2, clock()/384);
-<<<<<<< HEAD
-	m_mix_buffer = auto_alloc_array(machine(), INT32, 44100*2);
-=======
 	m_mix_buffer = std::make_unique<int32_t[]>(44100*2);
->>>>>>> upstream/master
 }
 
 //-------------------------------------------------
@@ -1940,17 +1727,10 @@ void ymf271_device::device_start()
 
 void ymf271_device::device_reset()
 {
-<<<<<<< HEAD
-	for (int i = 0; i < 48; i++)
-	{
-		m_slots[i].active = 0;
-		m_slots[i].volume = 0;
-=======
 	for (auto & elem : m_slots)
 	{
 		elem.active = 0;
 		elem.volume = 0;
->>>>>>> upstream/master
 	}
 
 	// reset timers and IRQ
@@ -1965,38 +1745,6 @@ void ymf271_device::device_reset()
 		m_irq_handler(0);
 }
 
-<<<<<<< HEAD
-const device_type YMF271 = &device_creator<ymf271_device>;
-
-ymf271_device::ymf271_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, YMF271, "YMF271", tag, owner, clock, "ymf271", __FILE__),
-		device_sound_interface(mconfig, *this),
-		m_timerA(0),
-		m_timerB(0),
-		m_irqstate(0),
-		m_status(0),
-		m_enable(0),
-		m_ext_address(0),
-		m_ext_rw(0),
-		m_ext_readlatch(0),
-		m_irq_handler(*this),
-		m_ext_read_handler(*this),
-		m_ext_write_handler(*this)
-{
-	memset(m_slots, 0, sizeof(m_slots));
-	memset(m_groups, 0, sizeof(m_groups));
-	memset(m_regs_main, 0, sizeof(m_regs_main));
-}
-
-//-------------------------------------------------
-//  device_config_complete - perform any
-//  operations now that the configuration is
-//  complete
-//-------------------------------------------------
-
-void ymf271_device::device_config_complete()
-{
-=======
 //-------------------------------------------------
 //  device_clock_changed - called whenever the
 //  clock is updated
@@ -2034,5 +1782,4 @@ ymf271_device::ymf271_device(const machine_config &mconfig, const char *tag, dev
 	memset(m_slots, 0, sizeof(m_slots));
 	memset(m_groups, 0, sizeof(m_groups));
 	memset(m_regs_main, 0, sizeof(m_regs_main));
->>>>>>> upstream/master
 }

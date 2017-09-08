@@ -1,18 +1,12 @@
 // license:LGPL-2.1+
 // copyright-holders:Olivier Galibert, Angelo Salese, David Haywood, Tomasz Slanina
 #include "audio/seibu.h"
-<<<<<<< HEAD
-#include "machine/raiden2cop.h"
-#include "video/seibu_crtc.h"
-
-=======
 #include "machine/seibucop/seibucop.h"
 #include "video/seibu_crtc.h"
 
 ADDRESS_MAP_EXTERN(raiden2_sound_map, 8);
 ADDRESS_MAP_EXTERN(zeroteam_sound_map, 8);
 
->>>>>>> upstream/master
 class raiden2_state : public driver_device
 {
 public:
@@ -48,15 +42,6 @@ public:
 			sprite_buffer(320, 256),
 			m_raiden2cop(*this, "raiden2cop")
 	{
-<<<<<<< HEAD
-		memset(scrollvals, 0, sizeof(UINT16)*6);
-		memset(sprite_prot_src_addr, 0, sizeof(UINT16)*2);
-
-	}
-
-	UINT16 *back_data, *fore_data, *mid_data, *text_data; // private buffers, allocated in init
-	required_shared_ptr<UINT16> sprites;
-=======
 		memset(scrollvals, 0, sizeof(uint16_t)*6);
 		memset(sprite_prot_src_addr, 0, sizeof(uint16_t)*2);
 
@@ -67,7 +52,6 @@ public:
 	std::unique_ptr<uint16_t[]> mid_data;
 	std::unique_ptr<uint16_t[]> text_data; // private buffers, allocated in init
 	required_shared_ptr<uint16_t> sprites;
->>>>>>> upstream/master
 	required_device<cpu_device> m_maincpu;
 	optional_device<seibu_sound_device> m_seibu_sound;
 	required_device<gfxdecode_device> m_gfxdecode;
@@ -99,22 +83,11 @@ public:
 	DECLARE_WRITE16_MEMBER( sprcpt_flags_1_w );
 	DECLARE_WRITE16_MEMBER( sprcpt_flags_2_w );
 
-<<<<<<< HEAD
-	DECLARE_READ16_MEMBER( raiden2_sound_comms_r );
-	DECLARE_WRITE16_MEMBER( raiden2_sound_comms_w );
-
-	void common_reset();
-
-	static UINT16 const raiden_blended_colors[];
-	static UINT16 const xsedae_blended_colors[];
-	static UINT16 const zeroteam_blended_colors[];
-=======
 	void common_reset();
 
 	static uint16_t const raiden_blended_colors[];
 	static uint16_t const xsedae_blended_colors[];
 	static uint16_t const zeroteam_blended_colors[];
->>>>>>> upstream/master
 
 	bool blend_active[0x800]; // cfg
 
@@ -122,19 +95,11 @@ public:
 
 
 	int bg_bank, fg_bank, mid_bank, tx_bank;
-<<<<<<< HEAD
-	UINT16 raiden2_tilemap_enable;
-	UINT8 prg_bank;
-	UINT16 cop_bank;
-
-	UINT16 scrollvals[6];
-=======
 	uint16_t raiden2_tilemap_enable;
 	uint8_t prg_bank;
 	uint16_t cop_bank;
 
 	uint16_t scrollvals[6];
->>>>>>> upstream/master
 
 
 
@@ -151,13 +116,8 @@ public:
 	DECLARE_WRITE16_MEMBER( sprite_prot_maxx_w );
 	DECLARE_WRITE16_MEMBER( sprite_prot_off_w );
 
-<<<<<<< HEAD
-	UINT16 sprite_prot_x,sprite_prot_y,dst1,cop_spr_maxx,cop_spr_off;
-	UINT16 sprite_prot_src_addr[2];
-=======
 	uint16_t sprite_prot_x,sprite_prot_y,dst1,cop_spr_maxx,cop_spr_off;
 	uint16_t sprite_prot_src_addr[2];
->>>>>>> upstream/master
 
 
 
@@ -180,40 +140,19 @@ public:
 	DECLARE_MACHINE_RESET(zeroteam);
 	DECLARE_MACHINE_RESET(xsedae);
 	DECLARE_MACHINE_RESET(raidendx);
-<<<<<<< HEAD
-	UINT32 screen_update_raiden2(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
-	INTERRUPT_GEN_MEMBER(raiden2_interrupt);
-	UINT16 rps();
-	UINT16 rpc();
-	void combine32(UINT32 *val, int offset, UINT16 data, UINT16 mem_mask);
-=======
 	uint32_t screen_update_raiden2(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
 	INTERRUPT_GEN_MEMBER(raiden2_interrupt);
 	void combine32(uint32_t *val, int offset, uint16_t data, uint16_t mem_mask);
->>>>>>> upstream/master
 	void sprcpt_init(void);
 
 	void blend_layer(bitmap_rgb32 &bitmap, const rectangle &cliprect, bitmap_ind16 &source, int layer);
 	void tilemap_draw_and_blend(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect, tilemap_t *tilemap);
 
-<<<<<<< HEAD
-	void init_blending(const UINT16 *table);
-=======
 	void init_blending(const uint16_t *table);
->>>>>>> upstream/master
 
 	bitmap_ind16 tile_buffer, sprite_buffer;
 	optional_device<raiden2cop_device> m_raiden2cop;
 
 protected:
-<<<<<<< HEAD
-	virtual void machine_start();
-};
-
-/*----------- defined in machine/r2crypt.c -----------*/
-void raiden2_decrypt_sprites(running_machine &machine);
-void zeroteam_decrypt_sprites(running_machine &machine);
-=======
 	virtual void machine_start() override;
 };
->>>>>>> upstream/master

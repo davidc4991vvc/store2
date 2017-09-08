@@ -4,10 +4,7 @@
  *   Xerox AltoII disassembler
  *
  **********************************************************/
-<<<<<<< HEAD
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #include "alto2cpu.h"
 
 #define loc_DASTART     0000420 // display list header
@@ -151,11 +148,7 @@ static const char* t_bus_alu[16] = {
 /**
  * @brief copy of the constant PROM, which this disassembler may not have access to
  */
-<<<<<<< HEAD
-static UINT16 const_prom[PROM_SIZE] = {
-=======
 static uint16_t const_prom[PROM_SIZE] = {
->>>>>>> upstream/master
 	/* 0000 */  0x0000, 0x0001, 0x0002, 0xfffe, 0xffff, 0xffff, 0x000f, 0xffff,
 	/* 0008 */  0x0003, 0x0004, 0x0005, 0x0006, 0x0007, 0x0008, 0xfff8, 0xfff8,
 	/* 0010 */  0x0010, 0x001f, 0x0020, 0x003f, 0x0040, 0x007f, 0x0080, 0x0007,
@@ -214,33 +207,6 @@ static const char *addrname(int a)
 	return dst;
 }
 
-<<<<<<< HEAD
-offs_t alto2_cpu_device::disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options)
-{
-	size_t len = 128;
-
-	UINT32 mir = (static_cast<UINT32>(oprom[0]) << 24) |
-			(static_cast<UINT32>(oprom[1]) << 16) |
-			(static_cast<UINT32>(oprom[2]) << 8) |
-			(static_cast<UINT32>(oprom[3]) << 0);
-	UINT8 rsel = static_cast<UINT8>((mir >> 27) & 31);
-	UINT8 aluf = static_cast<UINT8>((mir >> 23) & 15);
-	UINT8 bs = static_cast<UINT8>((mir >> 20) & 7);
-	UINT8 f1 = static_cast<UINT8>((mir >> 16) & 15);
-	UINT8 f2 = static_cast<UINT8>((mir >> 12) & 15);
-	UINT8 t = static_cast<UINT8>((mir >> 11) & 1);
-	UINT8 l = static_cast<UINT8>((mir >> 10) & 1);
-	offs_t next = static_cast<offs_t>(mir & 1023);
-	const UINT8* src = oprom - 4 * pc + 4 * next;
-	UINT32 next2 =  (static_cast<UINT32>(src[0]) << 24) |
-			(static_cast<UINT32>(src[1]) << 16) |
-			(static_cast<UINT32>(src[2]) << 8) |
-			(static_cast<UINT32>(src[3]) << 0);
-	UINT16 prefetch = next2 & 1023;
-	char *dst = buffer;
-	offs_t result = 1 | DASMFLAG_SUPPORTED;
-	UINT8 pa;
-=======
 offs_t alto2_cpu_device::disasm_disassemble(std::ostream &main_stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, uint32_t options)
 {
 	std::ostringstream stream;
@@ -265,68 +231,11 @@ offs_t alto2_cpu_device::disasm_disassemble(std::ostream &main_stream, offs_t pc
 	uint16_t prefetch = next2 & 1023;
 	offs_t result = 1 | DASMFLAG_SUPPORTED;
 	uint8_t pa;
->>>>>>> upstream/master
 
 	if (next != pc + 1)
 		result |= DASMFLAG_STEP_OUT;
 
 	if (t)
-<<<<<<< HEAD
-		dst += snprintf(dst, len - (size_t)(dst - buffer), "T<-%s ", t_bus_alu[aluf]);
-	if (l)
-		dst += snprintf(dst, len - (size_t)(dst - buffer), "L<- ");
-	if (bs == 1)
-		dst += snprintf(dst, len - (size_t)(dst - buffer), "%s<- ", regname[rsel]);
-	switch (aluf) {
-	case  0: // T?: BUS
-		// this is somehow redundant and just wasting space
-		dst += snprintf(dst, len - (size_t)(dst - buffer), "ALUF(BUS) ");
-		break;
-	case  1: //   : T
-		dst += snprintf(dst, len - (size_t)(dst - buffer), "ALUF(T) ");
-		break;
-	case  2: // T?: BUS OR T
-		dst += snprintf(dst, len - (size_t)(dst - buffer), "ALUF(BUS|T) ");
-		break;
-	case  3: //   : BUS AND T
-		dst += snprintf(dst, len - (size_t)(dst - buffer), "ALUF(BUS&T) ");
-		break;
-	case  4: //   : BUS XOR T
-		dst += snprintf(dst, len - (size_t)(dst - buffer), "ALUF(BUS^T) ");
-		break;
-	case  5: // T?: BUS + 1
-		dst += snprintf(dst, len - (size_t)(dst - buffer), "ALUF(BUS+1) ");
-		break;
-	case  6: // T?: BUS - 1
-		dst += snprintf(dst, len - (size_t)(dst - buffer), "ALUF(BUS-1) ");
-		break;
-	case  7: //   : BUS + T
-		dst += snprintf(dst, len - (size_t)(dst - buffer), "ALUF(BUS+T) ");
-		break;
-	case  8: //   : BUS - T
-		dst += snprintf(dst, len - (size_t)(dst - buffer), "ALUF(BUS-T) ");
-		break;
-	case  9: //   : BUS - T - 1
-		dst += snprintf(dst, len - (size_t)(dst - buffer), "ALUF(BUS-T-1) ");
-		break;
-	case 10: // T?: BUS + T + 1
-		dst += snprintf(dst, len - (size_t)(dst - buffer), "ALUF(BUS+T+1) ");
-		break;
-	case 11: // T?: BUS + SKIP
-		dst += snprintf(dst, len - (size_t)(dst - buffer), "ALUF(BUS+SKIP) ");
-		break;
-	case 12: // T?: BUS, T (AND)
-		dst += snprintf(dst, len - (size_t)(dst - buffer), "ALUF(BUS,T) ");
-		break;
-	case 13: //   : BUS AND NOT T
-		dst += snprintf(dst, len - (size_t)(dst - buffer), "ALUF(BUS&~T) ");
-		break;
-	case 14: //   : undefined
-		dst += snprintf(dst, len - (size_t)(dst - buffer), "*ALUF(BUS) ");
-		break;
-	case 15: //   : undefined
-		dst += snprintf(dst, len - (size_t)(dst - buffer), "*ALUF(BUS) ");
-=======
 		util::stream_format(stream, "T<-%s ", t_bus_alu[aluf]);
 	if (l)
 		util::stream_format(stream, "L<- ");
@@ -381,36 +290,11 @@ offs_t alto2_cpu_device::disasm_disassemble(std::ostream &main_stream, offs_t pc
 		break;
 	case 15: //   : undefined
 		util::stream_format(stream, "*BUS ");
->>>>>>> upstream/master
 		break;
 	}
 
 	switch (bs) {
 	case 0: // read R
-<<<<<<< HEAD
-		dst += snprintf(dst, len - (size_t)(dst - buffer), "BUS<-%s ", regname[rsel]);
-		break;
-	case 1: // load R from shifter output
-		// dst += snprintf(dst, len - (size_t)(dst - buffer), "; %s<-", regname[rsel]);
-		break;
-	case 2: // enables no source to the BUS, leaving it all ones
-		dst += snprintf(dst, len - (size_t)(dst - buffer), "BUS<-177777 ");
-		break;
-	case 3: // performs different functions in different tasks
-		dst += snprintf(dst, len - (size_t)(dst - buffer), "BUS<-BS3 ");
-		break;
-	case 4: // performs different functions in different tasks
-		dst += snprintf(dst, len - (size_t)(dst - buffer), "BUS<-BS4 ");
-		break;
-	case 5: // memory data
-		dst += snprintf(dst, len - (size_t)(dst - buffer), "BUS<-MD ");
-		break;
-	case 6: // BUS[3-0] <- MOUSE; BUS[15-4] <- -1
-		dst += snprintf(dst, len - (size_t)(dst - buffer), "BUS<-MOUSE ");
-		break;
-	case 7: // IR[7-0], possibly sign extended
-		dst += snprintf(dst, len - (size_t)(dst - buffer), "BUS<-DISP ");
-=======
 		util::stream_format(stream, "BUS<-%s ", regname[rsel]);
 		break;
 	case 1: // load R from shifter output
@@ -433,7 +317,6 @@ offs_t alto2_cpu_device::disasm_disassemble(std::ostream &main_stream, offs_t pc
 		break;
 	case 7: // IR[7-0], possibly sign extended
 		util::stream_format(stream, "BUS<-DISP ");
->>>>>>> upstream/master
 		break;
 	}
 
@@ -442,31 +325,6 @@ offs_t alto2_cpu_device::disasm_disassemble(std::ostream &main_stream, offs_t pc
 	case 0: // no operation
 		break;
 	case 1: // load MAR from ALU output; start main memory reference
-<<<<<<< HEAD
-		dst += snprintf(dst, len - (size_t)(dst - buffer), "MAR<-ALU ");
-		break;
-	case 2: // switch tasks if higher priority wakeup is pending
-		dst += snprintf(dst, len - (size_t)(dst - buffer), "TASK ");
-		break;
-	case 3: // disable the current task until re-enabled by a hardware-generated condition
-		dst += snprintf(dst, len - (size_t)(dst - buffer), "BLOCK ");
-		break;
-	case 4: // SHIFTER output will be L shifted left one place
-		dst += snprintf(dst, len - (size_t)(dst - buffer), "SHIFTER<-L(LSH1) ");
-		break;
-	case 5: // SHIFTER output will be L shifted right one place
-		dst += snprintf(dst, len - (size_t)(dst - buffer), "SHIFTER<-L(RSH1) ");
-		break;
-	case 6: // SHIFTER output will be L rotated left 8 places
-		dst += snprintf(dst, len - (size_t)(dst - buffer), "SHIFTER<-L(LCY8) ");
-		break;
-	case 7: // put the constant from PROM (RSELECT,BS) on the bus
-		pa = (rsel << 3) | bs;
-		dst += snprintf(dst, len - (size_t)(dst - buffer), "BUS<-%05o CONST[%03o]", const_prom[pa], pa);
-		break;
-	default:
-		dst += snprintf(dst, len - (size_t)(dst - buffer), "F1_%02o ", f1);
-=======
 		util::stream_format(stream, "MAR<-ALU ");
 		break;
 	case 2: // switch tasks if higher priority wakeup is pending
@@ -490,7 +348,6 @@ offs_t alto2_cpu_device::disasm_disassemble(std::ostream &main_stream, offs_t pc
 		break;
 	default:
 		util::stream_format(stream, "F1_%02o ", f1);
->>>>>>> upstream/master
 		break;
 	}
 
@@ -498,39 +355,6 @@ offs_t alto2_cpu_device::disasm_disassemble(std::ostream &main_stream, offs_t pc
 	case 0: // no operation
 		break;
 	case 1: // NEXT <- NEXT OR (BUS==0 ? 1 : 0)
-<<<<<<< HEAD
-		dst += snprintf(dst, len - (size_t)(dst - buffer), "[BUS==0 ? %s:%s] ",
-			addrname((prefetch | 1) & MCODE_MASK), addrname(prefetch & MCODE_MASK));
-		break;
-	case 2: // NEXT <- NEXT OR (SHIFTER==0 ? 1 : 0)
-		dst += snprintf(dst, len - (size_t)(dst - buffer), "[SH==0 ? %s:%s] ",
-			addrname((prefetch | 1) & MCODE_MASK), addrname(prefetch & MCODE_MASK));
-		break;
-	case 3: // NEXT <- NEXT OR (SHIFTER<0 ? 1 : 0)
-		dst += snprintf(dst, len - (size_t)(dst - buffer), "[SH<0 ? %s:%s] ",
-			addrname((prefetch | 1) & MCODE_MASK), addrname(prefetch & MCODE_MASK));
-		break;
-	case 4: // NEXT <- NEXT OR BUS
-		dst += snprintf(dst, len - (size_t)(dst - buffer), "NEXT<-BUS ");
-		break;
-	case 5: // NEXT <- NEXT OR ALUC0. ALUC0 is the carry produced by last L loading microinstruction.
-		dst += snprintf(dst, len - (size_t)(dst - buffer), "[ALUC0 ? %s:%s] ",
-			addrname((prefetch | 1) & MCODE_MASK), addrname(prefetch & MCODE_MASK));
-		break;
-	case 6: // deliver BUS data to memory
-		dst += snprintf(dst, len - (size_t)(dst - buffer), "MD<-BUS ");
-		break;
-	case 7: // put on the bus the constant from PROM (RSELECT,BS)
-		if (f1 != 7) {
-			pa = 8 * rsel + bs;
-			dst += snprintf(dst, len - (size_t)(dst - buffer), "BUS<-%05o CONST[%03o]", const_prom[pa], pa);
-		}
-		break;
-	default:
-		dst += snprintf(dst, len - (size_t)(dst - buffer), "BUS<-F2_%02o ", f2);
-		break;
-	}
-=======
 		util::stream_format(stream, "[BUS==0 ? %s:%s] ",
 			addrname((prefetch | 1) & MCODE_MASK), addrname(prefetch & MCODE_MASK));
 		break;
@@ -569,6 +393,5 @@ offs_t alto2_cpu_device::disasm_disassemble(std::ostream &main_stream, offs_t pc
 		output.resize(output.length() - 1);
 	main_stream << output;
 
->>>>>>> upstream/master
 	return result;
 }

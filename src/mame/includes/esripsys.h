@@ -14,10 +14,7 @@
 #include "cpu/esrip/esrip.h"
 #include "sound/dac.h"
 #include "sound/tms5220.h"
-<<<<<<< HEAD
-=======
 #include "screen.h"
->>>>>>> upstream/master
 
 /* TODO */
 #define ESRIPSYS_PIXEL_CLOCK    (XTAL_25MHz / 2)
@@ -29,15 +26,6 @@
 #define ESRIPSYS_VBLANK_END     (0)
 
 #define CMOS_RAM_SIZE           (2048)
-<<<<<<< HEAD
-#define FDT_RAM_SIZE            (2048 * sizeof(UINT16))
-
-struct line_buffer_t
-{
-	UINT8 *colour_buf;
-	UINT8 *intensity_buf;
-	UINT8 *priority_buf;
-=======
 #define FDT_RAM_SIZE            (2048 * sizeof(uint16_t))
 
 struct line_buffer_t
@@ -45,7 +33,6 @@ struct line_buffer_t
 	std::unique_ptr<uint8_t[]> colour_buf;
 	std::unique_ptr<uint8_t[]> intensity_buf;
 	std::unique_ptr<uint8_t[]> priority_buf;
->>>>>>> upstream/master
 };
 
 class esripsys_state : public driver_device
@@ -68,29 +55,6 @@ public:
 	required_device<cpu_device> m_soundcpu;
 	required_device<tms5220_device> m_tms;
 
-<<<<<<< HEAD
-	UINT8 m_g_iodata;
-	UINT8 m_g_ioaddr;
-	UINT8 m_coin_latch;
-	UINT8 m_keypad_status;
-	UINT8 m_g_status;
-	UINT8 m_f_status;
-	int m_io_firq_status;
-	UINT8 m_cmos_ram_a2_0;
-	UINT8 m_cmos_ram_a10_3;
-	UINT8 *m_cmos_ram;
-	UINT8 m_u56a;
-	UINT8 m_u56b;
-	UINT8 m_g_to_s_latch1;
-	UINT8 m_g_to_s_latch2;
-	UINT8 m_s_to_g_latch1;
-	UINT8 m_s_to_g_latch2;
-	UINT8 m_dac_msb;
-	UINT8 m_dac_vol;
-	UINT8 m_tms_data;
-	UINT8 *m_fdt_a;
-	UINT8 *m_fdt_b;
-=======
 	uint8_t m_g_iodata;
 	uint8_t m_g_ioaddr;
 	uint8_t m_coin_latch;
@@ -111,32 +75,20 @@ public:
 	uint8_t m_tms_data;
 	std::unique_ptr<uint8_t[]> m_fdt_a;
 	std::unique_ptr<uint8_t[]> m_fdt_b;
->>>>>>> upstream/master
 	struct line_buffer_t m_line_buffer[2];
 	int m_fasel;
 	int m_fbsel;
 	int m_hblank;
-<<<<<<< HEAD
-	required_shared_ptr<UINT8> m_pal_ram;
-=======
 	required_shared_ptr<uint8_t> m_pal_ram;
->>>>>>> upstream/master
 	int m_frame_vbl;
 	int m_12sel;
 	int m_video_firq_en;
 	emu_timer *m_hblank_end_timer;
 	emu_timer *m_hblank_start_timer;
-<<<<<<< HEAD
-	UINT8 *m_fig_scale_table;
-	UINT8 *m_scale_table;
-	int m_video_firq;
-	UINT8 m_bg_intensity;
-=======
 	std::unique_ptr<uint8_t[]> m_fig_scale_table;
 	std::unique_ptr<uint8_t[]> m_scale_table;
 	int m_video_firq;
 	uint8_t m_bg_intensity;
->>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(uart_w);
 	DECLARE_READ8_MEMBER(uart_r);
 	DECLARE_READ8_MEMBER(g_status_r);
@@ -159,32 +111,19 @@ public:
 	DECLARE_READ8_MEMBER(tms5220_r);
 	DECLARE_WRITE8_MEMBER(tms5220_w);
 	DECLARE_WRITE8_MEMBER(control_w);
-<<<<<<< HEAD
-	DECLARE_WRITE8_MEMBER(volume_dac_w);
-=======
->>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(esripsys_bg_intensity_w);
 	DECLARE_INPUT_CHANGED_MEMBER(keypad_interrupt);
 	DECLARE_INPUT_CHANGED_MEMBER(coin_interrupt);
 	DECLARE_WRITE_LINE_MEMBER(ptm_irq);
 	DECLARE_WRITE8_MEMBER(esripsys_dac_w);
 	DECLARE_DRIVER_INIT(esripsys);
-<<<<<<< HEAD
-	virtual void video_start();
-	UINT32 screen_update_esripsys(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
-=======
 	virtual void video_start() override;
 	uint32_t screen_update_esripsys(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	INTERRUPT_GEN_MEMBER(esripsys_vblank_irq);
 	TIMER_CALLBACK_MEMBER(delayed_bank_swap);
 	TIMER_CALLBACK_MEMBER(hblank_start_callback);
 	TIMER_CALLBACK_MEMBER(hblank_end_callback);
-<<<<<<< HEAD
-	required_device<dac_device> m_dac;
-=======
 	required_device<dac_word_interface> m_dac;
->>>>>>> upstream/master
 	required_device<screen_device> m_screen;
 	ESRIP_DRAW(esripsys_draw);
 };

@@ -1,9 +1,6 @@
 // license:BSD-3-Clause
 // copyright-holders:Nicola Salmoria
-<<<<<<< HEAD
-=======
 
->>>>>>> upstream/master
 /*************************************************************************
 
     Hot Pinball
@@ -11,13 +8,9 @@
 
 *************************************************************************/
 
-<<<<<<< HEAD
-#include "video/tecmo_spr.h"
-=======
 #include "machine/gen_latch.h"
 #include "video/tecmo_spr.h"
 #include "screen.h"
->>>>>>> upstream/master
 
 class galspnbl_state : public driver_device
 {
@@ -34,25 +27,6 @@ public:
 		m_gfxdecode(*this, "gfxdecode"),
 		m_palette(*this, "palette"),
 		m_sprgen(*this, "spritegen"),
-<<<<<<< HEAD
-		m_screen(*this, "screen")
-		{ }
-
-	/* memory pointers */
-	required_shared_ptr<UINT16> m_spriteram;
-	required_shared_ptr<UINT16> m_colorram;
-	required_shared_ptr<UINT16> m_videoram;
-	required_shared_ptr<UINT16> m_bgvideoram;
-	required_shared_ptr<UINT16> m_scroll;
-
-	/* devices */
-	required_device<cpu_device> m_audiocpu;
-	DECLARE_WRITE16_MEMBER(soundcommand_w);
-	virtual void machine_start();
-	DECLARE_PALETTE_INIT(galspnbl);
-	UINT32 screen_update_galspnbl(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	void draw_background( bitmap_ind16 &bitmap, const rectangle &cliprect );
-=======
 		m_screen(*this, "screen"),
 		m_soundlatch(*this, "soundlatch")
 		{ }
@@ -66,14 +40,11 @@ public:
 
 	/* devices */
 	required_device<cpu_device> m_audiocpu;
->>>>>>> upstream/master
 	required_device<cpu_device> m_maincpu;
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
 	required_device<tecmo_spr_device> m_sprgen;
 	required_device<screen_device> m_screen;
-<<<<<<< HEAD
-=======
 	required_device<generic_latch_8_device> m_soundlatch;
 
 	DECLARE_WRITE16_MEMBER(soundcommand_w);
@@ -81,7 +52,6 @@ public:
 	DECLARE_PALETTE_INIT(galspnbl);
 	uint32_t screen_update_galspnbl(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	void draw_background( bitmap_ind16 &bitmap, const rectangle &cliprect );
->>>>>>> upstream/master
 	bitmap_ind16 m_sprite_bitmap;
 	DECLARE_VIDEO_START(galspnbl);
 

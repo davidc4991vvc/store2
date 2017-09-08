@@ -2,11 +2,7 @@
 // copyright-holders:Aaron Giles
 /***************************************************************************
 
-<<<<<<< HEAD
-    bsmt2000.c
-=======
     bsmt2000.cpp
->>>>>>> upstream/master
 
     BSMT2000 device emulator.
 
@@ -22,11 +18,7 @@
 
 
 // device type definition
-<<<<<<< HEAD
-const device_type BSMT2000 = &device_creator<bsmt2000_device>;
-=======
 DEFINE_DEVICE_TYPE(BSMT2000, bsmt2000_device, "bsmt2000", "BSMT2000")
->>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -34,47 +26,19 @@ DEFINE_DEVICE_TYPE(BSMT2000, bsmt2000_device, "bsmt2000", "BSMT2000")
 //**************************************************************************
 
 // program map for the DSP (points to internal ROM)
-<<<<<<< HEAD
-static ADDRESS_MAP_START( tms_program_map, AS_PROGRAM, 16, bsmt2000_device)
-=======
 static ADDRESS_MAP_START(tms_program_map, AS_PROGRAM, 16, bsmt2000_device)
->>>>>>> upstream/master
 	ADDRESS_MAP_UNMAP_HIGH
 	AM_RANGE(0x000, 0xfff) AM_ROM
 ADDRESS_MAP_END
 
 
 // I/O map for the DSP
-<<<<<<< HEAD
-static ADDRESS_MAP_START( tms_io_map, AS_IO, 16, bsmt2000_device)
-=======
 static ADDRESS_MAP_START(tms_io_map, AS_IO, 16, bsmt2000_device)
->>>>>>> upstream/master
 	AM_RANGE(0, 0) AM_READWRITE(tms_register_r, tms_rom_addr_w)
 	AM_RANGE(1, 1) AM_READWRITE(tms_data_r, tms_rom_bank_w)
 	AM_RANGE(2, 2) AM_READ(tms_rom_r)
 	AM_RANGE(3, 3) AM_WRITE(tms_left_w)
 	AM_RANGE(7, 7) AM_WRITE(tms_right_w)
-<<<<<<< HEAD
-	AM_RANGE(TMS32010_BIO, TMS32010_BIO) AM_READ(tms_write_pending_r)
-ADDRESS_MAP_END
-
-
-// machine fragment
-static MACHINE_CONFIG_FRAGMENT( bsmt2000 )
-	MCFG_CPU_ADD("bsmt2000", TMS32015, DERIVED_CLOCK(1,1))
-	MCFG_CPU_PROGRAM_MAP(tms_program_map)
-	// data map is internal to the CPU
-	MCFG_CPU_IO_MAP(tms_io_map)
-MACHINE_CONFIG_END
-
-
-// default address map for the external memory interface
-// the BSMT can address a full 32 bits but typically only 24 are used
-static ADDRESS_MAP_START( bsmt2000, AS_0, 8, bsmt2000_device)
-	AM_RANGE(0x00000, 0xffffff) AM_ROM
-=======
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -95,26 +59,6 @@ ROM_END
 //  bsmt2000_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-bsmt2000_device::bsmt2000_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, BSMT2000, "BSMT2000", tag, owner, clock, "bsmt2000", __FILE__),
-		device_sound_interface(mconfig, *this),
-		device_memory_interface(mconfig, *this),
-		m_space_config("samples", ENDIANNESS_LITTLE, 8, 32, 0, NULL),
-		m_ready_callback(NULL),
-		m_stream(NULL),
-		m_direct(NULL),
-		m_cpu(NULL),
-		m_register_select(0),
-		m_write_data(0),
-		m_rom_address(0),
-		m_rom_bank(0),
-		m_left_data(0),
-		m_right_data(0),
-		m_write_pending(false)
-{
-	m_address_map[0] = *ADDRESS_MAP_NAME(bsmt2000);
-=======
 bsmt2000_device::bsmt2000_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, BSMT2000, tag, owner, clock)
 	, device_sound_interface(mconfig, *this)
@@ -130,7 +74,6 @@ bsmt2000_device::bsmt2000_device(const machine_config &mconfig, const char *tag,
 	, m_right_data(0)
 	, m_write_pending(false)
 {
->>>>>>> upstream/master
 }
 
 
@@ -139,17 +82,10 @@ bsmt2000_device::bsmt2000_device(const machine_config &mconfig, const char *tag,
 //  helper to set the ready callback
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void bsmt2000_device::static_set_ready_callback(device_t &device, ready_callback callback)
-{
-	bsmt2000_device &bsmt = downcast<bsmt2000_device &>(device);
-	bsmt.m_ready_callback = callback;
-=======
 void bsmt2000_device::static_set_ready_callback(device_t &device, ready_callback &&callback)
 {
 	bsmt2000_device &bsmt = downcast<bsmt2000_device &>(device);
 	bsmt.m_ready_callback = std::move(callback);
->>>>>>> upstream/master
 }
 
 
@@ -158,27 +94,13 @@ void bsmt2000_device::static_set_ready_callback(device_t &device, ready_callback
 //  internal ROM region
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const rom_entry *bsmt2000_device::device_rom_region() const
-=======
 const tiny_rom_entry *bsmt2000_device::device_rom_region() const
->>>>>>> upstream/master
 {
 	return ROM_NAME( bsmt2000 );
 }
 
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  machine_config_additions - return a pointer to
-//  the device's machine fragment
-//-------------------------------------------------
-
-machine_config_constructor bsmt2000_device::device_mconfig_additions() const
-{
-	return MACHINE_CONFIG_NAME( bsmt2000 );
-}
-=======
 //  device_add_mconfig - add device configuration
 //-------------------------------------------------
 
@@ -189,7 +111,6 @@ MACHINE_CONFIG_MEMBER( bsmt2000_device::device_add_mconfig )
 	MCFG_CPU_IO_MAP(tms_io_map)
 	MCFG_TMS32010_BIO_IN_CB(READLINE(bsmt2000_device, tms_write_pending_r))
 MACHINE_CONFIG_END
->>>>>>> upstream/master
 
 
 //-------------------------------------------------
@@ -198,15 +119,7 @@ MACHINE_CONFIG_END
 
 void bsmt2000_device::device_start()
 {
-<<<<<<< HEAD
-	// find our CPU
-	m_cpu = subdevice<tms32015_device>("bsmt2000");
-
-	// find our direct access
-	m_direct = &space().direct();
-=======
 	m_ready_callback.bind_relative_to(*owner());
->>>>>>> upstream/master
 
 	// create the stream; BSMT typically runs at 24MHz and writes to a DAC, so
 	// in theory we should generate a 24MHz stream, but that's certainly overkill
@@ -235,19 +148,6 @@ void bsmt2000_device::device_reset()
 }
 
 
-<<<<<<< HEAD
-//-------------------------------------------------
-//  memory_space_config - return a description of
-//  any address spaces owned by this device
-//-------------------------------------------------
-
-const address_space_config *bsmt2000_device::memory_space_config(address_spacenum spacenum) const
-{
-	return (spacenum == 0) ? &m_space_config : NULL;
-}
-
-=======
->>>>>>> upstream/master
 
 //-------------------------------------------------
 //  device_timer - handle deferred writes and
@@ -296,12 +196,6 @@ void bsmt2000_device::sound_stream_update(sound_stream &stream, stream_sample_t 
 
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  read_status - return the write pending status
-//-------------------------------------------------
-
-UINT16 bsmt2000_device::read_status()
-=======
 //  rom_bank_updated - the rom bank has changed
 //-------------------------------------------------
 
@@ -316,7 +210,6 @@ void bsmt2000_device::rom_bank_updated()
 //-------------------------------------------------
 
 uint16_t bsmt2000_device::read_status()
->>>>>>> upstream/master
 {
 	return m_write_pending ? 0 : 1;
 }
@@ -327,11 +220,7 @@ uint16_t bsmt2000_device::read_status()
 //  register select interface
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void bsmt2000_device::write_reg(UINT16 data)
-=======
 void bsmt2000_device::write_reg(uint16_t data)
->>>>>>> upstream/master
 {
 	synchronize(TIMER_ID_REG_WRITE, data);
 }
@@ -342,11 +231,7 @@ void bsmt2000_device::write_reg(uint16_t data)
 //  data port
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void bsmt2000_device::write_data(UINT16 data)
-=======
 void bsmt2000_device::write_data(uint16_t data)
->>>>>>> upstream/master
 {
 	synchronize(TIMER_ID_DATA_WRITE, data);
 
@@ -375,13 +260,8 @@ READ16_MEMBER( bsmt2000_device::tms_data_r )
 {
 	// also implicitly clear the write pending flag
 	m_write_pending = false;
-<<<<<<< HEAD
-	if (m_ready_callback != NULL)
-		(*m_ready_callback)(*this);
-=======
 	if (!m_ready_callback.isnull())
 		m_ready_callback();
->>>>>>> upstream/master
 	return m_write_data;
 }
 
@@ -394,11 +274,7 @@ READ16_MEMBER( bsmt2000_device::tms_data_r )
 READ16_MEMBER( bsmt2000_device::tms_rom_r )
 {
 	// underlying logic assumes this is a sign-extended value
-<<<<<<< HEAD
-	return (INT8)m_direct->read_byte((m_rom_bank << 16) + m_rom_address);
-=======
 	return (int8_t)read_byte((m_rom_bank << 16) + m_rom_address);
->>>>>>> upstream/master
 }
 
 
@@ -454,11 +330,7 @@ WRITE16_MEMBER( bsmt2000_device::tms_right_w )
 //  on the TMS32015
 //-------------------------------------------------
 
-<<<<<<< HEAD
-READ16_MEMBER( bsmt2000_device::tms_write_pending_r )
-=======
 READ_LINE_MEMBER( bsmt2000_device::tms_write_pending_r )
->>>>>>> upstream/master
 {
 	return m_write_pending ? 1 : 0;
 }

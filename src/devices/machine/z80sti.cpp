@@ -19,24 +19,6 @@
 #include "emu.h"
 #include "z80sti.h"
 #include "cpu/z80/z80.h"
-<<<<<<< HEAD
-#include "cpu/z80/z80daisy.h"
-
-
-
-// device type definition
-const device_type Z80STI = &device_creator<z80sti_device>;
-
-
-
-//**************************************************************************
-//  DEBUGGING
-//**************************************************************************
-
-#define VERBOSE 0
-
-#define LOG(x) do { if (VERBOSE) logerror x; } while (0)
-=======
 
 //#define VERBOSE 1
 #include "logmacro.h"
@@ -47,7 +29,6 @@ const device_type Z80STI = &device_creator<z80sti_device>;
 // device type definition
 DEFINE_DEVICE_TYPE(Z80STI, z80sti_device, "z80sti", "Mostek MK3801 STI")
 
->>>>>>> upstream/master
 
 
 
@@ -76,11 +57,7 @@ const int z80sti_device::INT_LEVEL_TIMER[] =
 };
 
 // interrupt vectors
-<<<<<<< HEAD
-const UINT8 z80sti_device::INT_VECTOR[] =
-=======
 const uint8_t z80sti_device::INT_VECTOR[] =
->>>>>>> upstream/master
 {
 	0x00, 0x02, 0x04, 0x06, 0x08, 0x0a, 0x0c, 0x0e,
 	0x10, 0x12, 0x14, 0x16, 0x18, 0x1a, 0x1c, 0x1e
@@ -99,32 +76,6 @@ const int z80sti_device::PRESCALER[] = { 0, 4, 10, 16, 50, 64, 100, 200 };
 //  z80sti_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-z80sti_device::z80sti_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, Z80STI, "Mostek MK3801", tag, owner, clock, "z80sti", __FILE__),
-		device_serial_interface(mconfig, *this),
-		device_z80daisy_interface(mconfig, *this),
-		m_out_int_cb(*this),
-		m_in_gpio_cb(*this),
-		m_out_gpio_cb(*this),
-		m_out_so_cb(*this),
-		m_out_tao_cb(*this),
-		m_out_tbo_cb(*this),
-		m_out_tco_cb(*this),
-		m_out_tdo_cb(*this),
-		m_rx_clock(0),
-		m_tx_clock(0),
-		m_gpip(0),
-		m_aer(0),
-		m_ier(0),
-		m_ipr(0),
-		m_isr(0),
-		m_imr(0)
-{
-	for (int i = 0; i < 16; i++)
-	{
-		m_int_state[i] = 0;
-=======
 z80sti_device::z80sti_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, Z80STI, tag, owner, clock)
 	, device_serial_interface(mconfig, *this)
@@ -149,7 +100,6 @@ z80sti_device::z80sti_device(const machine_config &mconfig, const char *tag, dev
 	for (auto & elem : m_int_state)
 	{
 		elem = 0;
->>>>>>> upstream/master
 	}
 }
 
@@ -293,11 +243,7 @@ int z80sti_device::z80daisy_irq_state()
 		}
 	}
 
-<<<<<<< HEAD
-	LOG(("Z80STI '%s' Interrupt State: %u\n", tag(), state));
-=======
 	LOG("Z80STI Interrupt State: %u\n", state);
->>>>>>> upstream/master
 
 	return state;
 }
@@ -317,11 +263,7 @@ int z80sti_device::z80daisy_irq_ack()
 		// find the first channel with an interrupt requested
 		if (m_int_state[i] & Z80_DAISY_INT)
 		{
-<<<<<<< HEAD
-			UINT8 vector = (m_pvr & 0xe0) | INT_VECTOR[i];
-=======
 			uint8_t vector = (m_pvr & 0xe0) | INT_VECTOR[i];
->>>>>>> upstream/master
 
 			// clear interrupt, switch to the IEO state, and update the IRQs
 			m_int_state[i] = Z80_DAISY_IEO;
@@ -334,11 +276,7 @@ int z80sti_device::z80daisy_irq_ack()
 
 			check_interrupts();
 
-<<<<<<< HEAD
-			LOG(("Z80STI '%s' Interrupt Acknowledge Vector: %02x\n", tag(), vector));
-=======
 			LOG("Z80STI Interrupt Acknowledge Vector: %02x\n", vector);
->>>>>>> upstream/master
 
 			return vector;
 		}
@@ -358,11 +296,7 @@ void z80sti_device::z80daisy_irq_reti()
 {
 	int i;
 
-<<<<<<< HEAD
-	LOG(("Z80STI '%s' Return from Interrupt\n", tag()));
-=======
 	LOG("Z80STI Return from Interrupt\n");
->>>>>>> upstream/master
 
 	// loop over all interrupt sources
 	for (i = 15; i >= 0; i--)
@@ -430,11 +364,7 @@ void z80sti_device::take_interrupt(int level)
 
 READ8_MEMBER( z80sti_device::read )
 {
-<<<<<<< HEAD
-	UINT8 data = 0;
-=======
 	uint8_t data = 0;
->>>>>>> upstream/master
 
 	switch (offset & 0x0f)
 	{
@@ -485,67 +415,39 @@ WRITE8_MEMBER( z80sti_device::write )
 		switch (m_pvr & 0x07)
 		{
 		case REGISTER_IR_SCR:
-<<<<<<< HEAD
-			LOG(("Z80STI '%s' Sync Character Register: %x\n", tag(), data));
-=======
 			LOG("Z80STI Sync Character Register: %x\n", data);
->>>>>>> upstream/master
 			m_scr = data;
 			break;
 
 		case REGISTER_IR_TDDR:
-<<<<<<< HEAD
-			LOG(("Z80STI '%s' Timer D Data Register: %x\n", tag(), data));
-=======
 			LOG("Z80STI Timer D Data Register: %x\n", data);
->>>>>>> upstream/master
 			m_tdr[TIMER_D] = data;
 			break;
 
 		case REGISTER_IR_TCDR:
-<<<<<<< HEAD
-			LOG(("Z80STI '%s' Timer C Data Register: %x\n", tag(), data));
-=======
 			LOG("Z80STI Timer C Data Register: %x\n", data);
->>>>>>> upstream/master
 			m_tdr[TIMER_C] = data;
 			break;
 
 		case REGISTER_IR_AER:
-<<<<<<< HEAD
-			LOG(("Z80STI '%s' Active Edge Register: %x\n", tag(), data));
-=======
 			LOG("Z80STI Active Edge Register: %x\n", data);
->>>>>>> upstream/master
 			m_aer = data;
 			break;
 
 		case REGISTER_IR_IERB:
-<<<<<<< HEAD
-			LOG(("Z80STI '%s' Interrupt Enable Register B: %x\n", tag(), data));
-=======
 			LOG("Z80STI Interrupt Enable Register B: %x\n", data);
->>>>>>> upstream/master
 			m_ier = (m_ier & 0xff00) | data;
 			check_interrupts();
 			break;
 
 		case REGISTER_IR_IERA:
-<<<<<<< HEAD
-			LOG(("Z80STI '%s' Interrupt Enable Register A: %x\n", tag(), data));
-=======
 			LOG("Z80STI Interrupt Enable Register A: %x\n", data);
->>>>>>> upstream/master
 			m_ier = (data << 8) | (m_ier & 0xff);
 			check_interrupts();
 			break;
 
 		case REGISTER_IR_DDR:
-<<<<<<< HEAD
-			LOG(("Z80STI '%s' Data Direction Register: %x\n", tag(), data));
-=======
 			LOG("Z80STI Data Direction Register: %x\n", data);
->>>>>>> upstream/master
 			m_ddr = data;
 			break;
 
@@ -556,13 +458,8 @@ WRITE8_MEMBER( z80sti_device::write )
 
 			m_tcdc = data;
 
-<<<<<<< HEAD
-			LOG(("Z80STI '%s' Timer C Prescaler: %u\n", tag(), tcc));
-			LOG(("Z80STI '%s' Timer D Prescaler: %u\n", tag(), tdc));
-=======
 			LOG("Z80STI Timer C Prescaler: %u\n", tcc);
 			LOG("Z80STI Timer D Prescaler: %u\n", tdc);
->>>>>>> upstream/master
 
 			if (tcc)
 				m_timer[TIMER_C]->adjust(attotime::from_hz(clock() / tcc), TIMER_C, attotime::from_hz(clock() / tcc));
@@ -576,11 +473,7 @@ WRITE8_MEMBER( z80sti_device::write )
 
 			if (BIT(data, 7))
 			{
-<<<<<<< HEAD
-				LOG(("Z80STI '%s' Timer A Reset\n", tag()));
-=======
 				LOG("Z80STI Timer A Reset\n");
->>>>>>> upstream/master
 				m_to[TIMER_A] = 0;
 
 				m_out_tao_cb(m_to[TIMER_A]);
@@ -588,11 +481,7 @@ WRITE8_MEMBER( z80sti_device::write )
 
 			if (BIT(data, 3))
 			{
-<<<<<<< HEAD
-				LOG(("Z80STI '%s' Timer B Reset\n", tag()));
-=======
 				LOG("Z80STI Timer B Reset\n");
->>>>>>> upstream/master
 				m_to[TIMER_B] = 0;
 
 				m_out_tbo_cb(m_to[TIMER_B]);
@@ -603,11 +492,7 @@ WRITE8_MEMBER( z80sti_device::write )
 		break;
 
 	case REGISTER_GPIP:
-<<<<<<< HEAD
-		LOG(("Z80STI '%s' General Purpose I/O Register: %x\n", tag(), data));
-=======
 		LOG("Z80STI General Purpose I/O Register: %x\n", data);
->>>>>>> upstream/master
 		m_gpip = data & m_ddr;
 		m_out_gpio_cb((offs_t)0, m_gpip);
 		break;
@@ -615,11 +500,7 @@ WRITE8_MEMBER( z80sti_device::write )
 	case REGISTER_IPRB:
 		{
 		int i;
-<<<<<<< HEAD
-		LOG(("Z80STI '%s' Interrupt Pending Register B: %x\n", tag(), data));
-=======
 		LOG("Z80STI Interrupt Pending Register B: %x\n", data);
->>>>>>> upstream/master
 		m_ipr &= (m_ipr & 0xff00) | data;
 
 		for (i = 0; i < 16; i++)
@@ -634,11 +515,7 @@ WRITE8_MEMBER( z80sti_device::write )
 	case REGISTER_IPRA:
 		{
 		int i;
-<<<<<<< HEAD
-		LOG(("Z80STI '%s' Interrupt Pending Register A: %x\n", tag(), data));
-=======
 		LOG("Z80STI Interrupt Pending Register A: %x\n", data);
->>>>>>> upstream/master
 		m_ipr &= (data << 8) | (m_ipr & 0xff);
 
 		for (i = 0; i < 16; i++)
@@ -651,53 +528,32 @@ WRITE8_MEMBER( z80sti_device::write )
 		break;
 
 	case REGISTER_ISRB:
-<<<<<<< HEAD
-		LOG(("Z80STI '%s' Interrupt In-Service Register B: %x\n", tag(), data));
-=======
 		LOG("Z80STI Interrupt In-Service Register B: %x\n", data);
->>>>>>> upstream/master
 		m_isr &= (m_isr & 0xff00) | data;
 		break;
 
 	case REGISTER_ISRA:
-<<<<<<< HEAD
-		LOG(("Z80STI '%s' Interrupt In-Service Register A: %x\n", tag(), data));
-=======
 		LOG("Z80STI Interrupt In-Service Register A: %x\n", data);
->>>>>>> upstream/master
 		m_isr &= (data << 8) | (m_isr & 0xff);
 		break;
 
 	case REGISTER_IMRB:
-<<<<<<< HEAD
-		LOG(("Z80STI '%s' Interrupt Mask Register B: %x\n", tag(), data));
-=======
 		LOG("Z80STI Interrupt Mask Register B: %x\n", data);
->>>>>>> upstream/master
 		m_imr = (m_imr & 0xff00) | data;
 		m_isr &= m_imr;
 		check_interrupts();
 		break;
 
 	case REGISTER_IMRA:
-<<<<<<< HEAD
-		LOG(("Z80STI '%s' Interrupt Mask Register A: %x\n", tag(), data));
-=======
 		LOG("Z80STI Interrupt Mask Register A: %x\n", data);
->>>>>>> upstream/master
 		m_imr = (data << 8) | (m_imr & 0xff);
 		m_isr &= m_imr;
 		check_interrupts();
 		break;
 
 	case REGISTER_PVR:
-<<<<<<< HEAD
-		LOG(("Z80STI '%s' Interrupt Vector: %02x\n", tag(), data & 0xe0));
-		LOG(("Z80STI '%s' IR Address: %01x\n", tag(), data & 0x07));
-=======
 		LOG("Z80STI Interrupt Vector: %02x\n", data & 0xe0);
 		LOG("Z80STI IR Address: %01x\n", data & 0x07);
->>>>>>> upstream/master
 		m_pvr = data;
 		break;
 
@@ -708,13 +564,8 @@ WRITE8_MEMBER( z80sti_device::write )
 
 		m_tabc = data;
 
-<<<<<<< HEAD
-		LOG(("Z80STI '%s' Timer A Prescaler: %u\n", tag(), tac));
-		LOG(("Z80STI '%s' Timer B Prescaler: %u\n", tag(), tbc));
-=======
 		LOG("Z80STI Timer A Prescaler: %u\n", tac);
 		LOG("Z80STI Timer B Prescaler: %u\n", tbc);
->>>>>>> upstream/master
 
 		if (tac)
 			m_timer[TIMER_A]->adjust(attotime::from_hz(clock() / tac), TIMER_A, attotime::from_hz(clock() / tac));
@@ -729,56 +580,32 @@ WRITE8_MEMBER( z80sti_device::write )
 		break;
 
 	case REGISTER_TBDR:
-<<<<<<< HEAD
-		LOG(("Z80STI '%s' Timer B Data Register: %x\n", tag(), data));
-=======
 		LOG("Z80STI Timer B Data Register: %x\n", tag(), data);
->>>>>>> upstream/master
 		m_tdr[TIMER_B] = data;
 		break;
 
 	case REGISTER_TADR:
-<<<<<<< HEAD
-		LOG(("Z80STI '%s' Timer A Data Register: %x\n", tag(), data));
-=======
 		LOG("Z80STI Timer A Data Register: %x\n", tag(), data);
->>>>>>> upstream/master
 		m_tdr[TIMER_A] = data;
 		break;
 
 	case REGISTER_UCR:
-<<<<<<< HEAD
-		LOG(("Z80STI '%s' USART Control Register: %x\n", tag(), data));
-=======
 		LOG("Z80STI USART Control Register: %x\n", tag(), data);
->>>>>>> upstream/master
 		m_ucr = data;
 		break;
 
 	case REGISTER_RSR:
-<<<<<<< HEAD
-		LOG(("Z80STI '%s' Receiver Status Register: %x\n", tag(), data));
-=======
 		LOG("Z80STI Receiver Status Register: %x\n", tag(), data);
->>>>>>> upstream/master
 		m_rsr = data;
 		break;
 
 	case REGISTER_TSR:
-<<<<<<< HEAD
-		LOG(("Z80STI '%s' Transmitter Status Register: %x\n", tag(), data));
-=======
 		LOG("Z80STI Transmitter Status Register: %x\n", tag(), data);
->>>>>>> upstream/master
 		m_tsr = data;
 		break;
 
 	case REGISTER_UDR:
-<<<<<<< HEAD
-		LOG(("Z80STI '%s' USART Data Register: %x\n", tag(), data));
-=======
 		LOG("Z80STI USART Data Register: %x\n", tag(), data);
->>>>>>> upstream/master
 		m_udr = data;
 		break;
 	}
@@ -793,11 +620,7 @@ void z80sti_device::timer_count(int index)
 {
 	if (m_tmc[index] == 0x01)
 	{
-<<<<<<< HEAD
-		//LOG(("Z80STI '%s' Timer %c Expired\n", tag(), 'A' + index));
-=======
 		//LOG("Z80STI Timer %c Expired\n", 'A' + index);
->>>>>>> upstream/master
 
 		// toggle timer output signal
 		m_to[index] = !m_to[index];
@@ -820,11 +643,7 @@ void z80sti_device::timer_count(int index)
 
 		if (m_ier & (1 << INT_LEVEL_TIMER[index]))
 		{
-<<<<<<< HEAD
-			LOG(("Z80STI '%s' Interrupt Pending for Timer %c\n", tag(), 'A' + index));
-=======
 			LOG("Z80STI for Timer %c\n", 'A' + index);
->>>>>>> upstream/master
 
 			// signal timer elapsed interrupt
 			take_interrupt(INT_LEVEL_TIMER[index]);
@@ -852,19 +671,11 @@ void z80sti_device::gpip_input(int bit, int state)
 
 	if ((old_state ^ aer) && !(state ^ aer))
 	{
-<<<<<<< HEAD
-		LOG(("Z80STI '%s' Edge Transition Detected on Bit: %u\n", tag(), bit));
-
-		if (m_ier & (1 << INT_LEVEL_GPIP[bit]))
-		{
-			LOG(("Z80STI '%s' Interrupt Pending for P%u\n", tag(), bit));
-=======
 		LOG("Z80STI Edge Transition Detected on Bit: %u\n", bit);
 
 		if (m_ier & (1 << INT_LEVEL_GPIP[bit]))
 		{
 			LOG("Z80STI Interrupt Pending for P%u\n", bit);
->>>>>>> upstream/master
 
 			take_interrupt(INT_LEVEL_GPIP[bit]);
 		}

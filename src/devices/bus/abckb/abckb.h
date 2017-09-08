@@ -6,20 +6,11 @@
 
 **********************************************************************/
 
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __ABC_KEYBOARD_PORT__
-#define __ABC_KEYBOARD_PORT__
-
-#include "emu.h"
-=======
 #ifndef MAME_BUS_ABCKB_ABCKB_H
 #define MAME_BUS_ABCKB_ABCKB_H
 
 #pragma once
 
->>>>>>> upstream/master
 
 
 
@@ -48,18 +39,6 @@
 
 class abc_keyboard_interface;
 
-<<<<<<< HEAD
-class abc_keyboard_port_device : public device_t,
-									public device_slot_interface
-{
-public:
-	// construction/destruction
-	abc_keyboard_port_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	template<class _Object> static devcb_base &set_out_rx_handler(device_t &device, _Object object) { return downcast<abc_keyboard_port_device &>(device).m_out_rx_handler.set_callback(object); }
-	template<class _Object> static devcb_base &set_out_trxc_handler(device_t &device, _Object object) { return downcast<abc_keyboard_port_device &>(device).m_out_trxc_handler.set_callback(object); }
-	template<class _Object> static devcb_base &set_out_keydown_handler(device_t &device, _Object object) { return downcast<abc_keyboard_port_device &>(device).m_out_keydown_handler.set_callback(object); }
-=======
 class abc_keyboard_port_device : public device_t, public device_slot_interface
 {
 public:
@@ -69,7 +48,6 @@ public:
 	template <class Object> static devcb_base &set_out_rx_handler(device_t &device, Object &&cb) { return downcast<abc_keyboard_port_device &>(device).m_out_rx_handler.set_callback(std::forward<Object>(cb)); }
 	template <class Object> static devcb_base &set_out_trxc_handler(device_t &device, Object &&cb) { return downcast<abc_keyboard_port_device &>(device).m_out_trxc_handler.set_callback(std::forward<Object>(cb)); }
 	template <class Object> static devcb_base &set_out_keydown_handler(device_t &device, Object &&cb) { return downcast<abc_keyboard_port_device &>(device).m_out_keydown_handler.set_callback(std::forward<Object>(cb)); }
->>>>>>> upstream/master
 
 	// computer interface
 	DECLARE_WRITE_LINE_MEMBER( txd_w );
@@ -81,13 +59,8 @@ public:
 
 protected:
 	// device-level overrides
-<<<<<<< HEAD
-	virtual void device_start();
-	virtual void device_reset();
-=======
 	virtual void device_start() override;
 	virtual void device_reset() override;
->>>>>>> upstream/master
 
 	devcb_write_line m_out_rx_handler;
 	devcb_write_line m_out_trxc_handler;
@@ -100,40 +73,21 @@ protected:
 class abc_keyboard_interface : public device_slot_card_interface
 {
 public:
-<<<<<<< HEAD
-	// construction/destruction
-	abc_keyboard_interface(const machine_config &mconfig, device_t &device);
-
-	virtual void txd_w(int state) { };
-
-protected:
-=======
 	virtual void txd_w(int state) { }
 
 protected:
 	// construction/destruction
 	abc_keyboard_interface(const machine_config &mconfig, device_t &device);
 
->>>>>>> upstream/master
 	abc_keyboard_port_device *m_slot;
 };
 
 
 // device type definition
-<<<<<<< HEAD
-extern const device_type ABC_KEYBOARD_PORT;
-=======
 DECLARE_DEVICE_TYPE(ABC_KEYBOARD_PORT, abc_keyboard_port_device)
->>>>>>> upstream/master
 
 
 // supported devices
 SLOT_INTERFACE_EXTERN( abc_keyboard_devices );
 
-<<<<<<< HEAD
-
-
-#endif
-=======
 #endif // MAME_BUS_ABCKB_ABCKB_H
->>>>>>> upstream/master

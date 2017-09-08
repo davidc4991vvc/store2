@@ -1,10 +1,6 @@
 /*
  * Copyright 2014 Kai Jourdan. All rights reserved.
-<<<<<<< HEAD
- * License: http://www.opensource.org/licenses/BSD-2-Clause
-=======
  * License: https://github.com/bkaradzic/bgfx#license-bsd-2-clause
->>>>>>> upstream/master
  *
  * Based on code from Brian Luczkiewicz
  * https://github.com/blucz/Vector
@@ -22,8 +18,6 @@
 #include <tinystl/vector.h>
 namespace stl = tinystl;
 
-<<<<<<< HEAD
-=======
 struct PosColorUvVertex
 {
 	float m_x;
@@ -37,7 +31,6 @@ struct PosColorUvVertex
 	static bgfx::VertexDecl ms_decl;
 };
 
->>>>>>> upstream/master
 class VectorDisplay
 {
 public:
@@ -47,11 +40,7 @@ public:
 	{
 	}
 
-<<<<<<< HEAD
-	void setup(uint16_t _width, uint16_t _height, int _view = 2);
-=======
 	void setup(uint16_t _width, uint16_t _height, uint8_t _view = 2);
->>>>>>> upstream/master
 	void resize(uint16_t _width, uint16_t _height);
 	void teardown();
 
@@ -127,28 +116,12 @@ public:
 protected:
 	void screenSpaceQuad(float _textureWidth, float _textureHeight, float _width = 1.0f, float _height = 1.0f);
 
-<<<<<<< HEAD
-	typedef struct             //has to match the spec submitted to the 3d-api!
-	{
-		float x, y, z;
-		float u, v;
-		uint32_t color;
-	} point_t;
-
-	typedef struct
-	{
-		float x, y;
-	} pending_point_t;
-
-	typedef struct
-=======
 	struct PendingPoint
 	{
 		float x, y;
 	};
 
 	struct Line
->>>>>>> upstream/master
 	{
 		float x0, y0, x1, y1;                     // nominal points
 		float a;                                  // angle
@@ -168,11 +141,7 @@ protected:
 		float s0, s1;                             // shorten line by this amount
 
 		float len;
-<<<<<<< HEAD
-	} line_t;
-=======
 	};
->>>>>>> upstream/master
 
 	float effectiveThickness();
 	void setupResDependent();
@@ -181,11 +150,7 @@ protected:
 	void appendTexpoint(float _x, float _y, float _u, float _v);
 
 	void drawFan(float _cx, float _cy, float _pa, float _a, float _t, float _s, float _e);
-<<<<<<< HEAD
-	void drawLines(line_t* _lines, int _numberLines);
-=======
 	void drawLines(Line* _lines, int _numberLines);
->>>>>>> upstream/master
 	void genLinetex();
 
 	bool m_originBottomLeft;
@@ -202,23 +167,13 @@ protected:
 	bgfx::FrameBufferHandle m_glow0FrameBuffer; // framebuffer for glow pass 0
 	bgfx::FrameBufferHandle m_glow1FrameBuffer; // framebuffer for glow pass 1
 
-<<<<<<< HEAD
-	int m_view;
-=======
 	uint8_t m_view;
->>>>>>> upstream/master
 
 	uint16_t m_screenWidth, m_screenHeight;
 	uint16_t m_glowWidth, m_glowHeight;
 
 	int m_numberDecaySteps;
 	float m_decayValue;
-<<<<<<< HEAD
-	uint8_t m_drawColorR, m_drawColorG, m_drawColorB, m_drawColorA;
-
-	stl::vector<point_t> m_points;
-	stl::vector<pending_point_t> m_pendingPoints;
-=======
 	uint8_t m_drawColorR;
 	uint8_t m_drawColorG;
 	uint8_t m_drawColorB;
@@ -226,7 +181,6 @@ protected:
 
 	stl::vector<PosColorUvVertex> m_points;
 	stl::vector<PendingPoint> m_pendingPoints;
->>>>>>> upstream/master
 
 	int m_currentDrawStep;
 	stl::vector<bgfx::DynamicVertexBufferHandle> m_vertexBuffers;

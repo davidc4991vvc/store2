@@ -202,11 +202,7 @@ No.  PCB Label  IC Markings               IC Package
 Notes:
        1. The game cart plugs into the main PCB on the TOP side into CONN9 & CONN10
        2. If the game cart is not plugged in, the hardware shows nothing on screen.
-<<<<<<< HEAD
-
-=======
        3. The IOCTR I/O MCU runs at 8 MHz.
->>>>>>> upstream/master
 
 
 Hyper Neo Geo game cartridges
@@ -439,14 +435,6 @@ or Fatal Fury for example).
 */
 
 
-<<<<<<< HEAD
-
-#include "emu.h"
-#include "cpu/z80/z80.h"
-#include "cpu/mips/mips3.h"
-#include "machine/nvram.h"
-#include "includes/hng64.h"
-=======
 #include "emu.h"
 #include "includes/hng64.h"
 
@@ -455,7 +443,6 @@ or Fatal Fury for example).
 #include "machine/nvram.h"
 #include "machine/hng64_net.h"
 
->>>>>>> upstream/master
 
 /* TODO: NOT measured! */
 #define PIXEL_CLOCK         ((HNG64_MASTER_CLOCK*2)/4) // x 2 is due of the interlaced screen ...
@@ -519,11 +506,7 @@ READ8_MEMBER(hng64_state::hng64_com_share_r)
 
 READ32_MEMBER(hng64_state::hng64_sysregs_r)
 {
-<<<<<<< HEAD
-	UINT16 rtc_addr;
-=======
 	uint16_t rtc_addr;
->>>>>>> upstream/master
 
 #if 0
 	if((offset*4) != 0x1084)
@@ -567,11 +550,7 @@ void hng64_state::do_dma(address_space &space)
 
 	while (m_dma_len >= 0)
 	{
-<<<<<<< HEAD
-		UINT32 dat;
-=======
 		uint32_t dat;
->>>>>>> upstream/master
 
 		dat = space.read_dword(m_dma_start);
 		space.write_dword(m_dma_dst, dat);
@@ -708,11 +687,7 @@ READ32_MEMBER(hng64_state::shoot_io_r)
 		}
 		case 0x018:
 		{
-<<<<<<< HEAD
-			UINT8 p1_x, p1_y, p2_x, p2_y;
-=======
 			uint8_t p1_x, p1_y, p2_x, p2_y;
->>>>>>> upstream/master
 			p1_x = ioport("LIGHT_P1_X")->read() & 0xff;
 			p1_y = ioport("LIGHT_P1_Y")->read() & 0xff;
 			p2_x = ioport("LIGHT_P2_X")->read() & 0xff;
@@ -722,11 +697,7 @@ READ32_MEMBER(hng64_state::shoot_io_r)
 		}
 		case 0x01c:
 		{
-<<<<<<< HEAD
-			UINT8 p3_x, p3_y;
-=======
 			uint8_t p3_x, p3_y;
->>>>>>> upstream/master
 			p3_x = ioport("LIGHT_P3_X")->read() & 0xff;
 			p3_y = ioport("LIGHT_P3_Y")->read() & 0xff;
 
@@ -758,11 +729,7 @@ READ32_MEMBER(hng64_state::racing_io_r)
 		case 0x014: return ioport("VIEW")->read();
 		case 0x018:
 		{
-<<<<<<< HEAD
-			UINT8 handle, acc, brake;
-=======
 			uint8_t handle, acc, brake;
->>>>>>> upstream/master
 			handle = ioport("HANDLE")->read() & 0xff;
 			acc = ioport("ACCELERATOR")->read() & 0xff;
 			brake = ioport("BRAKE")->read() & 0xff;
@@ -824,21 +791,13 @@ WRITE32_MEMBER(hng64_state::hng64_dualport_w)
 // Transition Control memory.
 WRITE32_MEMBER(hng64_state::tcram_w)
 {
-<<<<<<< HEAD
-	UINT32 *hng64_tcram = m_tcram;
-=======
 	uint32_t *hng64_tcram = m_tcram;
->>>>>>> upstream/master
 
 	COMBINE_DATA (&hng64_tcram[offset]);
 
 	if(offset == 0x02)
 	{
-<<<<<<< HEAD
-		UINT16 min_x, min_y, max_x, max_y;
-=======
 		uint16_t min_x, min_y, max_x, max_y;
->>>>>>> upstream/master
 		rectangle visarea = m_screen->visible_area();
 
 		min_x = (hng64_tcram[1] & 0xffff0000) >> 16;
@@ -890,11 +849,7 @@ READ32_MEMBER(hng64_state::unk_vreg_r)
 /* The following is guesswork, needs confirmation with a test on the real board. */
 WRITE32_MEMBER(hng64_state::hng64_sprite_clear_even_w)
 {
-<<<<<<< HEAD
-	UINT32 spr_offs;
-=======
 	uint32_t spr_offs;
->>>>>>> upstream/master
 
 	spr_offs = (offset) * 0x10 * 4;
 
@@ -916,11 +871,7 @@ WRITE32_MEMBER(hng64_state::hng64_sprite_clear_even_w)
 
 WRITE32_MEMBER(hng64_state::hng64_sprite_clear_odd_w)
 {
-<<<<<<< HEAD
-	UINT32 spr_offs;
-=======
 	uint32_t spr_offs;
->>>>>>> upstream/master
 
 	spr_offs = (offset) * 0x10 * 4;
 
@@ -1180,17 +1131,10 @@ static INPUT_PORTS_START( roadedge )
 	PORT_DIPSETTING(    0x80, DEF_STR( On ) )
 	PORT_BIT( 0x00000100, IP_ACTIVE_HIGH, IPT_BUTTON7 ) PORT_NAME("Shift Up")
 	PORT_BIT( 0x00000200, IP_ACTIVE_HIGH, IPT_BUTTON8 ) PORT_NAME("Shift Down")
-<<<<<<< HEAD
-	PORT_BIT( 0x00000400, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, hng64_state, left_handle_r, NULL)
-	PORT_BIT( 0x00000800, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, hng64_state, right_handle_r, NULL)
-	PORT_BIT( 0x00001000, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, hng64_state, acc_down_r, NULL)
-	PORT_BIT( 0x00002000, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, hng64_state, brake_down_r, NULL)
-=======
 	PORT_BIT( 0x00000400, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, hng64_state, left_handle_r, nullptr)
 	PORT_BIT( 0x00000800, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, hng64_state, right_handle_r, nullptr)
 	PORT_BIT( 0x00001000, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, hng64_state, acc_down_r, nullptr)
 	PORT_BIT( 0x00002000, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, hng64_state, brake_down_r, nullptr)
->>>>>>> upstream/master
 
 	PORT_DIPNAME( 0x4000, 0x0000, DEF_STR( Unknown ) )
 	PORT_DIPSETTING(    0x0000, DEF_STR( Off ) )
@@ -1396,13 +1340,8 @@ static const gfx_layout hng64_16x16x8_spritelayout =
 	32*64
 };
 
-<<<<<<< HEAD
-static const UINT32 texlayout_xoffset[1024] = { STEP1024(0,8) };
-static const UINT32 texlayout_yoffset[512] = { STEP512(0,8192) };
-=======
 static const uint32_t texlayout_xoffset[1024] = { STEP1024(0,8) };
 static const uint32_t texlayout_yoffset[512] = { STEP512(0,8192) };
->>>>>>> upstream/master
 static const gfx_layout hng64_texlayout =
 {
 	1024, 512,
@@ -1430,15 +1369,6 @@ static GFXDECODE_START( hng64 )
 	GFXDECODE_ENTRY( "textures", 0, hng64_texlayout,     0x0, 0x10 )  /* textures */
 GFXDECODE_END
 
-<<<<<<< HEAD
-static void hng64_reorder( UINT8* gfxregion, size_t gfxregionsize)
-{
-	// by default 2 4bpp tiles are stored in each 8bpp tile, this makes decoding in MAME harder than it needs to be
-	// reorder them
-	UINT8 tilesize = 4*8; // 4 bytes per line, 8 lines
-
-	dynamic_buffer buffer(gfxregionsize);
-=======
 static void hng64_reorder( uint8_t* gfxregion, size_t gfxregionsize)
 {
 	// by default 2 4bpp tiles are stored in each 8bpp tile, this makes decoding in MAME harder than it needs to be
@@ -1446,7 +1376,6 @@ static void hng64_reorder( uint8_t* gfxregion, size_t gfxregionsize)
 	uint8_t tilesize = 4*8; // 4 bytes per line, 8 lines
 
 	std::vector<uint8_t> buffer(gfxregionsize);
->>>>>>> upstream/master
 
 	for (int i = 0; i < gfxregionsize/2; i += tilesize)
 	{
@@ -1465,19 +1394,11 @@ DRIVER_INIT_MEMBER(hng64_state,hng64_reorder_gfx)
 DRIVER_INIT_MEMBER(hng64_state,hng64)
 {
 	/* 1 meg of virtual address space for the com cpu */
-<<<<<<< HEAD
-	m_com_virtual_mem = auto_alloc_array(machine(), UINT8, 0x100000);
-	m_com_op_base     = auto_alloc_array(machine(), UINT8, 0x10000);
-
-	m_soundram = auto_alloc_array(machine(), UINT16, 0x200000/2);
-	m_soundram2 = auto_alloc_array(machine(), UINT16, 0x200000/2);
-=======
 	m_com_virtual_mem = std::make_unique<uint8_t[]>(0x100000);
 	m_com_op_base     = std::make_unique<uint8_t[]>(0x10000);
 
 	m_soundram = std::make_unique<uint16_t[]>(0x200000/2);
 	m_soundram2 = std::make_unique<uint16_t[]>(0x200000/2);
->>>>>>> upstream/master
 
 	DRIVER_INIT_CALL(hng64_reorder_gfx);
 }
@@ -1521,11 +1442,7 @@ DRIVER_INIT_MEMBER(hng64_state,hng64_shoot)
 	DRIVER_INIT_CALL(hng64);
 }
 
-<<<<<<< HEAD
-void hng64_state::set_irq(UINT32 irq_vector)
-=======
 void hng64_state::set_irq(uint32_t irq_vector)
->>>>>>> upstream/master
 {
 	/*
 	    TODO:
@@ -1588,31 +1505,19 @@ void hng64_state::machine_start()
 	m_maincpu->mips3drc_set_options(MIPS3DRC_FASTEST_OPTIONS + MIPS3DRC_STRICT_VERIFY);
 
 	/* configure fast RAM regions */
-<<<<<<< HEAD
-	m_maincpu->add_fastram(0x00000000, 0x00ffffff, FALSE, m_mainram);
-	m_maincpu->add_fastram(0x04000000, 0x05ffffff, TRUE,  m_cart);
-	m_maincpu->add_fastram(0x1fc00000, 0x1fc7ffff, TRUE,  m_rombase);
-
-	m_comm_rom = memregion("user2")->base();
-	m_comm_ram = auto_alloc_array(machine(),UINT8,0x10000);
-=======
 	m_maincpu->add_fastram(0x00000000, 0x00ffffff, false, m_mainram);
 	m_maincpu->add_fastram(0x04000000, 0x05ffffff, true,  m_cart);
 	m_maincpu->add_fastram(0x1fc00000, 0x1fc7ffff, true,  m_rombase);
 
 	m_comm_rom = memregion("user2")->base();
 	m_comm_ram = std::make_unique<uint8_t[]>(0x10000);
->>>>>>> upstream/master
 
 	for (int i = 0; i < 0x38 / 4; i++)
 	{
 		m_videoregs[i] = 0xdeadbeef;
 	}
-<<<<<<< HEAD
-=======
 
 	m_3dfifo_timer = machine().scheduler().timer_alloc(timer_expired_delegate(FUNC(hng64_state::hng64_3dfifo_processed), this));
->>>>>>> upstream/master
 }
 
 void hng64_state::machine_reset()
@@ -1626,14 +1531,8 @@ void hng64_state::machine_reset()
 }
 
 MACHINE_CONFIG_EXTERN(hng64_audio);
-<<<<<<< HEAD
-MACHINE_CONFIG_EXTERN(hng64_network);
-
-static MACHINE_CONFIG_START(hng64, hng64_state)
-=======
 
 static MACHINE_CONFIG_START(hng64)
->>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", VR4300BE, HNG64_MASTER_CLOCK)     // actually R4300
 	MCFG_MIPS3_ICACHE_SIZE(16384)
@@ -1643,35 +1542,24 @@ static MACHINE_CONFIG_START(hng64)
 
 	MCFG_NVRAM_ADD_0FILL("nvram")
 
-<<<<<<< HEAD
-	MCFG_DEVICE_ADD("rtc", MSM6242, XTAL_32_768kHz)
-=======
 	MCFG_DEVICE_ADD("rtc", RTC62423, XTAL_32_768kHz)
->>>>>>> upstream/master
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", hng64)
 
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_RAW_PARAMS(PIXEL_CLOCK, HTOTAL, HBEND, HBSTART, VTOTAL, VBEND, VBSTART)
 	MCFG_SCREEN_UPDATE_DRIVER(hng64_state, screen_update_hng64)
-<<<<<<< HEAD
-	MCFG_SCREEN_VBLANK_DRIVER(hng64_state, screen_eof_hng64)
-=======
 	MCFG_SCREEN_VBLANK_CALLBACK(WRITELINE(hng64_state, screen_vblank_hng64))
->>>>>>> upstream/master
 
 	MCFG_PALETTE_ADD("palette", 0x1000)
 	MCFG_PALETTE_FORMAT(XRGB)
 
 	MCFG_FRAGMENT_ADD( hng64_audio )
 	MCFG_FRAGMENT_ADD( hng64_network )
-<<<<<<< HEAD
-=======
 
 	MCFG_CPU_ADD("iomcu", TMP87PH40AN, 8000000)
 	MCFG_DEVICE_DISABLE() // work in progress
 
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
@@ -1692,15 +1580,11 @@ MACHINE_CONFIG_END
 	ROM_REGION( 0x0100000, "user2", 0 ) /* KL5C80 BIOS */ \
 	ROM_LOAD ( "from1.bin", 0x000000, 0x080000,  CRC(6b933005) SHA1(e992747f46c48b66e5509fe0adf19c91250b00c7) ) \
 	ROM_REGION( 0x0100000, "fpga", 0 ) /* FPGA data  */ \
-<<<<<<< HEAD
-	ROM_LOAD ( "rom1.bin",  0x000000, 0x01ff32,  CRC(4a6832dc) SHA1(ae504f7733c2f40450157cd1d3b85bc83fac8569) )
-=======
 	ROM_LOAD ( "rom1.bin",  0x000000, 0x01ff32,  CRC(4a6832dc) SHA1(ae504f7733c2f40450157cd1d3b85bc83fac8569) ) \
 	ROM_REGION( 0x10000, "iomcu", 0 ) /* "64Bit I/O Controller Ver 1.0 1997.06.29(C)SNK" internal ID string */ \
 	/* this was dumped from a TMP87PH40AN type chip.  Some boards use a TMP87CH40N, in all cases they're stickered SNK-IOJ1.00A so likely the same content */ \
 	ROM_LOAD ( "tmp87ph40an.bin",  0x8000, 0x8000,  CRC(b70df21f) SHA1(5b742e8a0bbf4c0ae4f4398d34c7058fb24acc92) )
 
->>>>>>> upstream/master
 
 ROM_START( hng64 )
 	/* BIOS */

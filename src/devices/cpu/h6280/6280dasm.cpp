@@ -144,15 +144,9 @@ static const unsigned char op6280[512]=
 /*****************************************************************************
  *  Disassemble a single command and return the number of bytes it uses.
  *****************************************************************************/
-<<<<<<< HEAD
-CPU_DISASSEMBLE( h6280 )
-{
-	UINT32 flags = 0;
-=======
 CPU_DISASSEMBLE(h6280)
 {
 	uint32_t flags = 0;
->>>>>>> upstream/master
 	int PC, OP, opc, arg;
 
 	PC = pc;
@@ -171,87 +165,6 @@ CPU_DISASSEMBLE(h6280)
 	switch(arg)
 	{
 		case _acc:
-<<<<<<< HEAD
-			sprintf(buffer,"%-5sa", token[opc]);
-			break;
-		case _imp:
-			sprintf(buffer,"%s", token[opc]);
-			break;
-		case _rel:
-			sprintf(buffer,"%-5s$%04X", token[opc], (PC + 1 + (signed char)RDBYTE(PC)) & 0xffff);
-			PC+=1;
-			break;
-		case _imm:
-			sprintf(buffer,"%-5s#$%02X", token[opc], RDBYTE(PC));
-			PC+=1;
-			break;
-		case _zpg:
-			sprintf(buffer,"%-5s$%02X", token[opc], RDBYTE(PC));
-			PC+=1;
-			break;
-		case _zpx:
-			sprintf(buffer,"%-5s$%02X,x", token[opc], RDBYTE(PC));
-			PC+=1;
-			break;
-		case _zpy:
-			sprintf(buffer,"%-5s$%02X,y", token[opc], RDBYTE(PC));
-			PC+=1;
-			break;
-		case _idx:
-			sprintf(buffer,"%-5s($%02X,x)", token[opc], RDBYTE(PC));
-			PC+=1;
-			break;
-		case _idy:
-			sprintf(buffer,"%-5s($%02X),y", token[opc], RDBYTE(PC));
-			PC+=1;
-			break;
-		case _zpi:
-			sprintf(buffer,"%-5s($%02X)", token[opc], RDBYTE(PC));
-			PC+=1;
-			break;
-		case _abs:
-			sprintf(buffer,"%-5s$%04X", token[opc], RDWORD(PC));
-			PC+=2;
-			break;
-		case _abx:
-			sprintf(buffer,"%-5s$%04X,x", token[opc], RDWORD(PC));
-			PC+=2;
-			break;
-		case _aby:
-			sprintf(buffer,"%-5s$%04X,y", token[opc], RDWORD(PC));
-			PC+=2;
-			break;
-		case _ind:
-			sprintf(buffer,"%-5s($%04X)", token[opc], RDWORD(PC));
-			PC+=2;
-			break;
-		case _iax:
-			sprintf(buffer,"%-5s($%04X),X", token[opc], RDWORD(PC));
-			PC+=2;
-			break;
-		case _blk:
-			sprintf(buffer,"%-5s$%04X $%04X $%04X", token[opc], RDWORD(PC), RDWORD(PC+2), RDWORD(PC+4));
-			PC+=6;
-			break;
-		case _zrl:
-			sprintf(buffer,"%-5s$%02X $%04X", token[opc], RDBYTE(PC), (PC + 2 + (signed char)RDBYTE(PC+1)) & 0xffff);
-			PC+=2;
-			break;
-		case _imz:
-			sprintf(buffer,"%-5s#$%02X $%02X", token[opc], RDBYTE(PC), RDBYTE(PC+1));
-			PC+=2;
-			break;
-		case _izx:
-			sprintf(buffer,"%-5s#$%02X $%02X,x", token[opc], RDBYTE(PC), RDBYTE(PC+1));
-			PC+=2;
-			break;
-		case _ima:
-			sprintf(buffer,"%-5s#$%02X $%04X", token[opc], RDBYTE(PC), RDWORD(PC+1));
-			PC+=3;
-			break;
-		case _imx:
-			sprintf(buffer,"%-5s#$%02X $%04X,x", token[opc], RDBYTE(PC), RDWORD(PC+1));
-=======
 			util::stream_format(stream, "%-5sa", token[opc]);
 			break;
 		case _imp:
@@ -331,16 +244,11 @@ CPU_DISASSEMBLE(h6280)
 			break;
 		case _imx:
 			util::stream_format(stream, "%-5s#$%02X $%04X,x", token[opc], RDBYTE(PC), RDWORD(PC+1));
->>>>>>> upstream/master
 			PC+=3;
 			break;
 
 		default:
-<<<<<<< HEAD
-			sprintf(buffer,"%-5s$%02X", token[opc], OP >> 1);
-=======
 			util::stream_format(stream, "%-5s$%02X", token[opc], OP >> 1);
->>>>>>> upstream/master
 	}
 	return (PC - pc) | flags | DASMFLAG_SUPPORTED;
 }

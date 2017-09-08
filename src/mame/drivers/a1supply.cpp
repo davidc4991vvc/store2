@@ -46,27 +46,16 @@ public:
 	}
 
 	// devices
-<<<<<<< HEAD
-	required_device<netlist_mame_device_t> m_maincpu;
-=======
 	required_device<netlist_mame_device> m_maincpu;
->>>>>>> upstream/master
 	required_device<fixedfreq_device> m_video;
 
 protected:
 
 	// driver_device overrides
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void machine_reset();
-
-	virtual void video_start();
-=======
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
 
 	virtual void video_start() override;
->>>>>>> upstream/master
 
 private:
 
@@ -100,11 +89,7 @@ void a1supply_state::video_start()
 {
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( a1supply, a1supply_state )
-=======
 static MACHINE_CONFIG_START( a1supply )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_DEVICE_ADD("maincpu", NETLIST_CPU, NETLIST_CLOCK)
@@ -179,12 +164,6 @@ ROM_START( tvpoker )
 ROM_END
 
 
-<<<<<<< HEAD
-GAME( 197?, tv21,     0, a1supply, 0, driver_device,  0, ROT0, "A-1 Supply", "T.V. 21", MACHINE_IS_SKELETON )
-GAME( 197?, tv21_3,   0, a1supply, 0, driver_device,  0, ROT0, "A-1 Supply", "T.V. 21 III", MACHINE_IS_SKELETON )
-GAME( 197?, tvpoker,  0, a1supply, 0, driver_device,  0, ROT0, "A-1 Supply", "T.V. Poker", MACHINE_IS_SKELETON )
-=======
 GAME( 197?, tv21,     0, a1supply, 0, a1supply_state,  0, ROT0, "A-1 Supply", "T.V. 21",     MACHINE_IS_SKELETON )
 GAME( 197?, tv21_3,   0, a1supply, 0, a1supply_state,  0, ROT0, "A-1 Supply", "T.V. 21 III", MACHINE_IS_SKELETON )
 GAME( 197?, tvpoker,  0, a1supply, 0, a1supply_state,  0, ROT0, "A-1 Supply", "T.V. Poker",  MACHINE_IS_SKELETON )
->>>>>>> upstream/master

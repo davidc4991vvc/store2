@@ -1,54 +1,5 @@
 // license:GPL-2.0+
 // copyright-holders:Juergen Buchmueller
-<<<<<<< HEAD
-#include "sound/tms36xx.h"
-
-struct pl_t_state
-{
-		pl_t_state():
-		counter(0),
-		output(0),
-		max_freq(0) {}
-
-	int counter;
-	int output;
-	int max_freq;
-};
-
-struct pl_c_state
-{
-		pl_c_state():
-		counter(0),
-		level(0),
-		charge_time(0),
-		discharge_time(0) {}
-
-	int counter;
-	int level;
-	double charge_time;
-	double discharge_time;
-};
-
-struct pl_n_state
-{
-		pl_n_state():
-		counter(0),
-		polyoffs(0),
-		freq(0) {}
-
-	int counter;
-	int polyoffs;
-	int freq;
-};
-
-class pleiads_sound_device : public device_t,
-									public device_sound_interface
-{
-public:
-	pleiads_sound_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-	pleiads_sound_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source);
-	~pleiads_sound_device() {}
-=======
 #ifndef MAME_AUDIO_PLEIADS_H
 #define MAME_AUDIO_PLEIADS_H
 
@@ -60,21 +11,12 @@ class pleiads_sound_device : public device_t, public device_sound_interface
 {
 public:
 	pleiads_sound_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
->>>>>>> upstream/master
 
 	DECLARE_WRITE8_MEMBER( control_a_w );
 	DECLARE_WRITE8_MEMBER( control_b_w );
 	DECLARE_WRITE8_MEMBER( control_c_w );
 
 protected:
-<<<<<<< HEAD
-	// device-level overrides
-	virtual void device_config_complete();
-	virtual void device_start();
-
-	// sound stream update overrides
-	virtual void sound_stream_update(sound_stream &stream, stream_sample_t **inputs, stream_sample_t **outputs, int samples);
-=======
 	struct pl_t_state
 	{
 		pl_t_state() { }
@@ -110,7 +52,6 @@ protected:
 
 	// sound stream update overrides
 	virtual void sound_stream_update(sound_stream &stream, stream_sample_t **inputs, stream_sample_t **outputs, int samples) override;
->>>>>>> upstream/master
 
 	void common_start();
 	inline int tone1(int samplerate);
@@ -131,11 +72,7 @@ protected:
 	int m_sound_latch_b;
 	int m_sound_latch_c;    /* part of the videoreg_w latch */
 
-<<<<<<< HEAD
-	UINT32 *m_poly18;
-=======
 	std::unique_ptr<uint32_t[]> m_poly18;
->>>>>>> upstream/master
 	int m_polybit;
 
 	pl_t_state m_tone1;
@@ -157,30 +94,11 @@ protected:
 	int m_opamp_resistor;
 };
 
-<<<<<<< HEAD
-extern const device_type PLEIADS;
-=======
 DECLARE_DEVICE_TYPE(PLEIADS, pleiads_sound_device)
->>>>>>> upstream/master
 
 class naughtyb_sound_device : public pleiads_sound_device
 {
 public:
-<<<<<<< HEAD
-	naughtyb_sound_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-protected:
-	// device-level overrides
-	virtual void device_config_complete();
-	virtual void device_start();
-
-	// sound stream update overrides
-	virtual void sound_stream_update(sound_stream &stream, stream_sample_t **inputs, stream_sample_t **outputs, int samples);
-private:
-	// internal state
-};
-
-extern const device_type NAUGHTYB;
-=======
 	naughtyb_sound_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 protected:
@@ -192,26 +110,10 @@ protected:
 };
 
 DECLARE_DEVICE_TYPE(NAUGHTYB, naughtyb_sound_device)
->>>>>>> upstream/master
 
 class popflame_sound_device : public pleiads_sound_device
 {
 public:
-<<<<<<< HEAD
-	popflame_sound_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-protected:
-	// device-level overrides
-	virtual void device_config_complete();
-	virtual void device_start();
-
-	// sound stream update overrides
-	virtual void sound_stream_update(sound_stream &stream, stream_sample_t **inputs, stream_sample_t **outputs, int samples);
-private:
-	// internal state
-};
-
-extern const device_type POPFLAME;
-=======
 	popflame_sound_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 protected:
 	// device-level overrides
@@ -224,4 +126,3 @@ protected:
 DECLARE_DEVICE_TYPE(POPFLAME, popflame_sound_device)
 
 #endif // MAME_AUDIO_PLEIADS_H
->>>>>>> upstream/master

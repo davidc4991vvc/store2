@@ -3,13 +3,8 @@
 #ifndef __ZIP_REGISTRY_H
 #define __ZIP_REGISTRY_H
 
-<<<<<<< HEAD
-#include "Common/MyString.h"
-#include "Common/Types.h"
-=======
 #include "../../../Common/MyTypes.h"
 #include "../../../Common/MyString.h"
->>>>>>> upstream/master
 
 #include "ExtractMode.h"
 
@@ -19,9 +14,6 @@ namespace NExtract
   {
     NPathMode::EEnum PathMode;
     NOverwriteMode::EEnum OverwriteMode;
-<<<<<<< HEAD
-    bool ShowPassword;
-=======
     bool PathMode_Force;
     bool OverwriteMode_Force;
     
@@ -31,16 +23,12 @@ namespace NExtract
     CBoolPair NtSecurity;
     CBoolPair ShowPassword;
 
->>>>>>> upstream/master
     UStringVector Paths;
 
     void Save() const;
     void Load();
   };
-<<<<<<< HEAD
-=======
   
->>>>>>> upstream/master
   void Save_ShowPassword(bool showPassword);
   bool Read_ShowPassword();
 }
@@ -80,14 +68,11 @@ namespace NCompression
 
     CObjectVector<CFormatOptions> Formats;
 
-<<<<<<< HEAD
-=======
     CBoolPair NtSecurity;
     CBoolPair AltStreams;
     CBoolPair HardLinks;
     CBoolPair SymLinks;
 
->>>>>>> upstream/master
     void Save() const;
     void Load();
   };
@@ -126,15 +111,11 @@ namespace NWorkDir
 
 struct CContextMenuInfo
 {
-<<<<<<< HEAD
-  bool Cascaded;
-=======
   CBoolPair Cascaded;
   CBoolPair MenuIcons;
   CBoolPair ElimDup;
 
   bool Flags_Def;
->>>>>>> upstream/master
   UInt32 Flags;
 
   void Save() const;

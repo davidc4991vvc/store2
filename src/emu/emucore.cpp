@@ -15,11 +15,7 @@
 emu_fatalerror::emu_fatalerror(const char *format, ...)
 : code(0)
 {
-<<<<<<< HEAD
-	if (format == NULL)
-=======
 	if (format == nullptr)
->>>>>>> upstream/master
 	{
 		text[0] = '\0';
 	}
@@ -36,11 +32,7 @@ emu_fatalerror::emu_fatalerror(const char *format, ...)
 emu_fatalerror::emu_fatalerror(const char *format, va_list ap)
 : code(0)
 {
-<<<<<<< HEAD
-	if (format == NULL)
-=======
 	if (format == nullptr)
->>>>>>> upstream/master
 	{
 		text[0] = '\0';
 	}
@@ -54,11 +46,7 @@ emu_fatalerror::emu_fatalerror(const char *format, va_list ap)
 emu_fatalerror::emu_fatalerror(int _exitcode, const char *format, ...)
 : code(_exitcode)
 {
-<<<<<<< HEAD
-	if (format == NULL)
-=======
 	if (format == nullptr)
->>>>>>> upstream/master
 	{
 		text[0] = '\0';
 	}
@@ -74,11 +62,7 @@ emu_fatalerror::emu_fatalerror(int _exitcode, const char *format, ...)
 emu_fatalerror::emu_fatalerror(int _exitcode, const char *format, va_list ap)
 : code(_exitcode)
 {
-<<<<<<< HEAD
-	if (format == NULL)
-=======
 	if (format == nullptr)
->>>>>>> upstream/master
 	{
 		text[0] = '\0';
 	}

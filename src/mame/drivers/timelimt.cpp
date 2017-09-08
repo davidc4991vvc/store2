@@ -9,21 +9,12 @@ driver by Ernesto Corvi
 
 Notes:
 - Sprite colors are wrong (missing colortable?)
-<<<<<<< HEAD
-- driver should probably be merged with suprridr.c and thepit.c
-=======
 - driver should probably be merged with suprridr.cpp and thepit.cpp
 - unused color bank for tilemaps? (colors 0x10-0x1f & 0x30-0x3f)
->>>>>>> upstream/master
 
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/z80/z80.h"
-#include "sound/ay8910.h"
-#include "includes/timelimt.h"
-=======
 #include "includes/timelimt.h"
 
 #include "cpu/z80/z80.h"
@@ -34,7 +25,6 @@ Notes:
 #include "screen.h"
 #include "speaker.h"
 
->>>>>>> upstream/master
 
 /***************************************************************************/
 
@@ -44,22 +34,6 @@ void timelimt_state::machine_start()
 	save_item(NAME(m_nmi_enabled));
 }
 
-<<<<<<< HEAD
-void timelimt_state::machine_reset()
-{
-	m_nmi_enabled = 0;
-}
-
-WRITE8_MEMBER(timelimt_state::nmi_enable_w)
-{
-	m_nmi_enabled = data & 1;   /* bit 0 = nmi enable */
-}
-
-WRITE8_MEMBER(timelimt_state::sound_reset_w)
-{
-	if (data & 1)
-		m_audiocpu->set_input_line(INPUT_LINE_RESET, PULSE_LINE);
-=======
 WRITE_LINE_MEMBER(timelimt_state::nmi_enable_w)
 {
 	m_nmi_enabled = state;
@@ -70,7 +44,6 @@ WRITE_LINE_MEMBER(timelimt_state::nmi_enable_w)
 WRITE_LINE_MEMBER(timelimt_state::coin_lockout_w)
 {
 	machine().bookkeeping().coin_lockout_w(0, !state);
->>>>>>> upstream/master
 }
 
 /***************************************************************************/
@@ -84,14 +57,8 @@ static ADDRESS_MAP_START( main_map, AS_PROGRAM, 8, timelimt_state )
 	AM_RANGE(0xa000, 0xa000) AM_READ_PORT("INPUTS")
 	AM_RANGE(0xa800, 0xa800) AM_READ_PORT("SYSTEM")
 	AM_RANGE(0xb000, 0xb000) AM_READ_PORT("DSW")
-<<<<<<< HEAD
-	AM_RANGE(0xb000, 0xb000) AM_WRITE(nmi_enable_w) /* nmi enable */
-	AM_RANGE(0xb003, 0xb003) AM_WRITE(sound_reset_w)/* sound reset ? */
-	AM_RANGE(0xb800, 0xb800) AM_WRITE(soundlatch_byte_w) /* sound write */
-=======
 	AM_RANGE(0xb000, 0xb007) AM_DEVWRITE("mainlatch", ls259_device, write_d0)
 	AM_RANGE(0xb800, 0xb800) AM_DEVWRITE("soundlatch", generic_latch_8_device, write) /* sound write */
->>>>>>> upstream/master
 	AM_RANGE(0xb800, 0xb800) AM_READNOP     /* NMI ack? */
 	AM_RANGE(0xc800, 0xc800) AM_WRITE(scroll_x_lsb_w)
 	AM_RANGE(0xc801, 0xc801) AM_WRITE(scroll_x_msb_w)
@@ -102,11 +69,7 @@ ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( main_io_map, AS_IO, 8, timelimt_state )
 	ADDRESS_MAP_GLOBAL_MASK(0xff)
-<<<<<<< HEAD
-	AM_RANGE(0x00, 0x00) AM_READ(watchdog_reset_r)
-=======
 	AM_RANGE(0x00, 0x00) AM_DEVREAD("watchdog", watchdog_timer_device, reset_r)
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( sound_map, AS_PROGRAM, 8, timelimt_state )
@@ -116,11 +79,7 @@ ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( sound_io_map, AS_IO, 8, timelimt_state )
 	ADDRESS_MAP_GLOBAL_MASK(0xff)
-<<<<<<< HEAD
-	AM_RANGE(0x00, 0x00) AM_WRITE(soundlatch_clear_byte_w)
-=======
 	AM_RANGE(0x00, 0x00) AM_DEVWRITE("soundlatch", generic_latch_8_device, clear_w)
->>>>>>> upstream/master
 	AM_RANGE(0x8c, 0x8d) AM_DEVREADWRITE("ay1", ay8910_device, data_r, address_data_w)
 	AM_RANGE(0x8e, 0x8f) AM_DEVREADWRITE("ay2", ay8910_device, data_r, address_data_w)
 ADDRESS_MAP_END
@@ -140,11 +99,7 @@ static INPUT_PORTS_START( timelimt )
 
 	PORT_START("SYSTEM")
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_COIN1 )
-<<<<<<< HEAD
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_COIN2 )
-=======
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_SERVICE1 )
->>>>>>> upstream/master
 	PORT_BIT( 0x04, IP_ACTIVE_HIGH, IPT_START1 )
 	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_START2 )
 	PORT_BIT( 0x10, IP_ACTIVE_HIGH, IPT_UNKNOWN )   /* probably unused */
@@ -189,11 +144,7 @@ static INPUT_PORTS_START( progress )
 
 	PORT_START("SYSTEM")
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_COIN1 )
-<<<<<<< HEAD
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_COIN2 )
-=======
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_SERVICE1 )
->>>>>>> upstream/master
 	PORT_BIT( 0x04, IP_ACTIVE_HIGH, IPT_START1 )
 	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_START2 )
 	PORT_BIT( 0x10, IP_ACTIVE_HIGH, IPT_UNKNOWN )   /* probably unused */
@@ -261,22 +212,13 @@ GFXDECODE_END
 
 INTERRUPT_GEN_MEMBER(timelimt_state::irq)
 {
-<<<<<<< HEAD
-	if ( m_nmi_enabled )
-		device.execute().set_input_line(INPUT_LINE_NMI, PULSE_LINE);
-=======
 	if (m_nmi_enabled)
 		device.execute().set_input_line(INPUT_LINE_NMI, ASSERT_LINE);
->>>>>>> upstream/master
 }
 
 /***************************************************************************/
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( timelimt, timelimt_state )
-=======
 static MACHINE_CONFIG_START( timelimt )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, 5000000)   /* 5.000 MHz */
@@ -291,8 +233,6 @@ static MACHINE_CONFIG_START( timelimt )
 
 	MCFG_QUANTUM_TIME(attotime::from_hz(3000))
 
-<<<<<<< HEAD
-=======
 	MCFG_DEVICE_ADD("mainlatch", LS259, 0) // IC15
 	MCFG_ADDRESSABLE_LATCH_Q0_OUT_CB(WRITELINE(timelimt_state, nmi_enable_w))
 	MCFG_ADDRESSABLE_LATCH_Q2_OUT_CB(WRITELINE(timelimt_state, coin_lockout_w))
@@ -301,7 +241,6 @@ static MACHINE_CONFIG_START( timelimt )
 	MCFG_ADDRESSABLE_LATCH_Q7_OUT_CB(NOOP) // probably flip screen
 
 	MCFG_WATCHDOG_ADD("watchdog")
->>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
@@ -319,20 +258,13 @@ static MACHINE_CONFIG_START( timelimt )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 
->>>>>>> upstream/master
 	MCFG_SOUND_ADD("ay1", AY8910, 18432000/12)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.25)
 
 	MCFG_SOUND_ADD("ay2", AY8910, 18432000/12)
-<<<<<<< HEAD
-	MCFG_AY8910_PORT_A_READ_CB(READ8(driver_device, soundlatch_byte_r))
-=======
 	MCFG_AY8910_PORT_A_READ_CB(DEVREAD8("soundlatch", generic_latch_8_device, read))
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.25)
 MACHINE_CONFIG_END
 
@@ -362,16 +294,6 @@ ROM_START( timelimt )
 	ROM_LOAD( "tl12",   0x1000, 0x1000, CRC(ce960389) SHA1(57ee52cfa1b5a3832b362b38c8b7aa411dfc782b) )
 
 	ROM_REGION( 0x6000, "sprites", 0 )  /* sprites */
-<<<<<<< HEAD
-	ROM_LOAD( "tl3",    0x0000, 0x2000, CRC(01a9fd95) SHA1(cd1078700c97a3539c9d9447c55efbd27540a1b3) )
-	ROM_LOAD( "tl2",    0x2000, 0x2000, CRC(4693b849) SHA1(fbebedde53599fb1eaedc648bd704b321ab096b5) )
-	ROM_LOAD( "tl1",    0x4000, 0x2000, CRC(c4007caf) SHA1(ae05af3319545d5ca98a046bfc100138a5a3ed96) )
-
-	ROM_REGION( 0x0060, "proms", 0 )
-	ROM_LOAD( "clr.35", 0x0000, 0x0020, CRC(9c9e6073) SHA1(98496175bf19a8cdb0018705bc1a2193b8a782e1) )
-	ROM_LOAD( "clr.48", 0x0020, 0x0020, BAD_DUMP CRC(a0bcac59) SHA1(e5832831b21981363509b79d89766757bd9273b0) ) /* FIXED BITS (xxxxxx1x) */
-	ROM_LOAD( "clr.57", 0x0040, 0x0020, NO_DUMP )   /* missing sprite color prom? */
-=======
 	ROM_LOAD( "tl3",    0x4000, 0x2000, CRC(01a9fd95) SHA1(cd1078700c97a3539c9d9447c55efbd27540a1b3) )
 	ROM_LOAD( "tl2",    0x2000, 0x2000, CRC(4693b849) SHA1(fbebedde53599fb1eaedc648bd704b321ab096b5) )
 	ROM_LOAD( "tl1",    0x0000, 0x2000, CRC(c4007caf) SHA1(ae05af3319545d5ca98a046bfc100138a5a3ed96) )
@@ -380,7 +302,6 @@ ROM_START( timelimt )
 	ROM_LOAD( "clr.35", 0x0000, 0x0020, CRC(9c9e6073) SHA1(98496175bf19a8cdb0018705bc1a2193b8a782e1) )
 	ROM_LOAD( "clr.48", 0x0020, 0x0020, CRC(a0bcac59) SHA1(e5832831b21981363509b79d89766757bd9273b0) ) /* FIXED BITS (xxxxxx1x) */
 	ROM_LOAD( "clr.57", 0x0040, 0x0020, CRC(3a9f5394) SHA1(0b501f81ce1df722cf7ef982c03e0be337bfe9ee) )
->>>>>>> upstream/master
 ROM_END
 
 ROM_START( progress )
@@ -412,10 +333,5 @@ ROM_START( progress )
 	ROM_LOAD( "57.bin", 0x0040, 0x0020, CRC(18455a79) SHA1(e4d64368560e3116a922588129f5f91a4c520f7d) )
 ROM_END
 
-<<<<<<< HEAD
-GAME( 1983, timelimt, 0, timelimt, timelimt, driver_device, 0, ROT90, "Chuo Co. Ltd", "Time Limit", MACHINE_IMPERFECT_COLORS | MACHINE_SUPPORTS_SAVE )
-GAME( 1984, progress, 0, timelimt, progress, driver_device, 0, ROT90, "Chuo Co. Ltd", "Progress", MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1983, timelimt, 0, timelimt, timelimt, timelimt_state, 0, ROT90, "Chuo Co. Ltd", "Time Limit", MACHINE_SUPPORTS_SAVE )
 GAME( 1984, progress, 0, timelimt, progress, timelimt_state, 0, ROT90, "Chuo Co. Ltd", "Progress",   MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

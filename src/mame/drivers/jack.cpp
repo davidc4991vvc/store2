@@ -81,18 +81,12 @@ Stephh's Notes:
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/z80/z80.h"
-#include "sound/ay8910.h"
-#include "includes/jack.h"
-=======
 #include "includes/jack.h"
 
 #include "cpu/z80/z80.h"
 #include "sound/ay8910.h"
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 
@@ -109,17 +103,10 @@ READ8_MEMBER(jack_state::timer_r)
 	return m_audiocpu->total_cycles() / m_timer_rate;
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER(jack_state::jack_sh_command_w)
-{
-	soundlatch_byte_w(space, 0, data);
-	m_audiocpu->set_input_line(0, HOLD_LINE);
-=======
 IRQ_CALLBACK_MEMBER(jack_state::jack_sh_irq_ack)
 {
 	m_audiocpu->set_input_line(0, CLEAR_LINE);
 	return 0xff;
->>>>>>> upstream/master
 }
 
 
@@ -141,11 +128,7 @@ READ8_MEMBER(jack_state::striv_question_r)
 	// Read the actual byte from question roms
 	else
 	{
-<<<<<<< HEAD
-		UINT8 *ROM = memregion("user1")->base();
-=======
 		uint8_t *ROM = memregion("user1")->base();
->>>>>>> upstream/master
 		int real_address;
 
 		real_address = m_question_address | (offset & 0x3f0) | m_remap_address[offset & 0x0f];
@@ -198,11 +181,7 @@ static ADDRESS_MAP_START( jack_map, AS_PROGRAM, 8, jack_state )
 	AM_RANGE(0x0000, 0x3fff) AM_ROM
 	AM_RANGE(0x4000, 0x5fff) AM_RAM
 	AM_RANGE(0xb000, 0xb07f) AM_RAM AM_SHARE("spriteram")
-<<<<<<< HEAD
-	AM_RANGE(0xb400, 0xb400) AM_WRITE(jack_sh_command_w)
-=======
 	AM_RANGE(0xb400, 0xb400) AM_DEVWRITE("soundlatch", generic_latch_8_device, write)
->>>>>>> upstream/master
 	AM_RANGE(0xb500, 0xb500) AM_READ_PORT("DSW1")
 	AM_RANGE(0xb501, 0xb501) AM_READ_PORT("DSW2")
 	AM_RANGE(0xb502, 0xb502) AM_READ_PORT("IN0")
@@ -216,11 +195,7 @@ static ADDRESS_MAP_START( jack_map, AS_PROGRAM, 8, jack_state )
 	AM_RANGE(0xc000, 0xffff) AM_ROM
 ADDRESS_MAP_END
 
-<<<<<<< HEAD
-static ADDRESS_MAP_START( decrypted_opcodes_map, AS_DECRYPTED_OPCODES, 8, jack_state )
-=======
 static ADDRESS_MAP_START( decrypted_opcodes_map, AS_OPCODES, 8, jack_state )
->>>>>>> upstream/master
 	AM_RANGE(0x0000, 0x3fff) AM_ROM AM_SHARE("decrypted_opcodes")
 ADDRESS_MAP_END
 
@@ -236,11 +211,7 @@ static ADDRESS_MAP_START( joinem_map, AS_PROGRAM, 8, jack_state )
 	AM_RANGE(0x8000, 0x8fff) AM_RAM
 	AM_RANGE(0xb000, 0xb07f) AM_RAM AM_SHARE("spriteram")
 	AM_RANGE(0xb080, 0xb0ff) AM_RAM_WRITE(joinem_scroll_w) AM_SHARE("scrollram")
-<<<<<<< HEAD
-	AM_RANGE(0xb400, 0xb400) AM_WRITE(jack_sh_command_w)
-=======
 	AM_RANGE(0xb400, 0xb400) AM_DEVWRITE("soundlatch", generic_latch_8_device, write)
->>>>>>> upstream/master
 	AM_RANGE(0xb500, 0xb500) AM_READ_PORT("DSW1")
 	AM_RANGE(0xb501, 0xb501) AM_READ_PORT("DSW2")
 	AM_RANGE(0xb502, 0xb502) AM_READ_PORT("IN0")
@@ -895,10 +866,7 @@ void jack_state::machine_start()
 
 void jack_state::machine_reset()
 {
-<<<<<<< HEAD
-=======
 	m_audiocpu->set_input_line(0, CLEAR_LINE);
->>>>>>> upstream/master
 }
 
 
@@ -914,13 +882,8 @@ MACHINE_RESET_MEMBER(jack_state,striv)
 	m_question_address = 0;
 	m_question_rom = 0;
 
-<<<<<<< HEAD
-	for (int i = 0; i < 16; i++)
-		m_remap_address[i] = 0;
-=======
 	for (auto & elem : m_remap_address)
 		elem = 0;
->>>>>>> upstream/master
 }
 
 
@@ -940,11 +903,7 @@ MACHINE_RESET_MEMBER(jack_state,joinem)
 
 /***************************************************************/
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( jack, jack_state )
-=======
 static MACHINE_CONFIG_START( jack )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, XTAL_18MHz/6)
@@ -954,10 +913,7 @@ static MACHINE_CONFIG_START( jack )
 	MCFG_CPU_ADD("audiocpu", Z80, XTAL_18MHz/6)
 	MCFG_CPU_PROGRAM_MAP(sound_map)
 	MCFG_CPU_IO_MAP(sound_io_map)
-<<<<<<< HEAD
-=======
 	MCFG_CPU_IRQ_ACKNOWLEDGE_DRIVER(jack_state, jack_sh_irq_ack)
->>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
@@ -976,16 +932,11 @@ static MACHINE_CONFIG_START( jack )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-	MCFG_SOUND_ADD("aysnd", AY8910, XTAL_18MHz/12)
-	MCFG_AY8910_PORT_A_READ_CB(READ8(driver_device, soundlatch_byte_r))
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 	MCFG_GENERIC_LATCH_DATA_PENDING_CB(ASSERTLINE("audiocpu", 0))
 
 	MCFG_SOUND_ADD("aysnd", AY8910, XTAL_18MHz/12)
 	MCFG_AY8910_PORT_A_READ_CB(DEVREAD8("soundlatch", generic_latch_8_device,read))
->>>>>>> upstream/master
 	MCFG_AY8910_PORT_B_READ_CB(READ8(jack_state, timer_r))
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
@@ -1261,26 +1212,16 @@ ROM_START( sucasino )
 
 	ROM_REGION( 0x4000, "gfx1", 0 )
 	ROM_LOAD( "11",           0x0000, 0x1000, CRC(f92c4c5b) SHA1(a415c8f55d1792e79d05ece223ef423f8578f896) )
-<<<<<<< HEAD
-	ROM_FILL(                 0x1000, 0x1000, 0 )
-	ROM_LOAD( "10",           0x2000, 0x1000, CRC(3b0783ce) SHA1(880f258351a8b0d76abe433cc77d95b991ae1adc) )
-	ROM_FILL(                 0x3000, 0x1000, 0 )
-=======
 	ROM_FILL(                 0x1000, 0x1000, 0x00 )
 	ROM_LOAD( "10",           0x2000, 0x1000, CRC(3b0783ce) SHA1(880f258351a8b0d76abe433cc77d95b991ae1adc) )
 	ROM_FILL(                 0x3000, 0x1000, 0x00 )
->>>>>>> upstream/master
 ROM_END
 
 
 ROM_START( tripool )
 	ROM_REGION( 0x10000, "maincpu", 0 )
 	ROM_LOAD( "tri73a.bin",   0x0000, 0x1000, CRC(96893aa7) SHA1(ea1dc5824d89c1bb131850625a65d018a9127179) )
-<<<<<<< HEAD
-	ROM_FILL(                 0x1000, 0x1000, 0 )
-=======
 	ROM_FILL(                 0x1000, 0x1000, 0x00 )
->>>>>>> upstream/master
 	ROM_LOAD( "tri62a.bin",   0x2000, 0x1000, CRC(3299dc65) SHA1(8f93247e2f49be6b601006be62f4ad539ec899fe) )
 	ROM_LOAD( "tri52b.bin",   0x3000, 0x1000, CRC(27ef765e) SHA1(2a18a9b74fd4d9f3a724270cd3a98adbfdf22a5e) )
 	ROM_LOAD( "tri33c.bin",   0xc000, 0x1000, CRC(d7ef061d) SHA1(3ea3a136ecb3b5753a1dd929212b93ad8c7e9157) )
@@ -1293,26 +1234,16 @@ ROM_START( tripool )
 
 	ROM_REGION( 0x4000, "gfx1", 0 )
 	ROM_LOAD( "tri105a.bin",  0x0000, 0x1000, CRC(366a753c) SHA1(30fa8d80e42287e3e8677aefd15beab384265728) )
-<<<<<<< HEAD
-	ROM_FILL(                 0x1000, 0x1000, 0 )
-	ROM_LOAD( "tri93a.bin",   0x2000, 0x1000, CRC(35213782) SHA1(05d5a67ffa3d26377c54777917d3ba51677ebd28) )
-	ROM_FILL(                 0x3000, 0x1000, 0 )
-=======
 	ROM_FILL(                 0x1000, 0x1000, 0x00 )
 	ROM_LOAD( "tri93a.bin",   0x2000, 0x1000, CRC(35213782) SHA1(05d5a67ffa3d26377c54777917d3ba51677ebd28) )
 	ROM_FILL(                 0x3000, 0x1000, 0x00 )
->>>>>>> upstream/master
 ROM_END
 
 
 ROM_START( tripoola )
 	ROM_REGION( 0x10000, "maincpu", 0 )
 	ROM_LOAD( "tri73a.bin",   0x0000, 0x1000, CRC(96893aa7) SHA1(ea1dc5824d89c1bb131850625a65d018a9127179) )
-<<<<<<< HEAD
-	ROM_FILL(                 0x1000, 0x1000, 0 )
-=======
 	ROM_FILL(                 0x1000, 0x1000, 0x00 )
->>>>>>> upstream/master
 	ROM_LOAD( "tri62a.bin",   0x2000, 0x1000, CRC(3299dc65) SHA1(8f93247e2f49be6b601006be62f4ad539ec899fe) )
 	ROM_LOAD( "tri52b.bin",   0x3000, 0x1000, CRC(27ef765e) SHA1(2a18a9b74fd4d9f3a724270cd3a98adbfdf22a5e) )
 	ROM_LOAD( "tri33c.bin",   0xc000, 0x1000, CRC(d7ef061d) SHA1(3ea3a136ecb3b5753a1dd929212b93ad8c7e9157) )
@@ -1325,15 +1256,9 @@ ROM_START( tripoola )
 
 	ROM_REGION( 0x4000, "gfx1", 0 )
 	ROM_LOAD( "tri105a.bin",  0x0000, 0x1000, CRC(366a753c) SHA1(30fa8d80e42287e3e8677aefd15beab384265728) )
-<<<<<<< HEAD
-	ROM_FILL(                 0x1000, 0x1000, 0 )
-	ROM_LOAD( "tri93a.bin",   0x2000, 0x1000, CRC(35213782) SHA1(05d5a67ffa3d26377c54777917d3ba51677ebd28) )
-	ROM_FILL(                 0x3000, 0x1000, 0 )
-=======
 	ROM_FILL(                 0x1000, 0x1000, 0x00 )
 	ROM_LOAD( "tri93a.bin",   0x2000, 0x1000, CRC(35213782) SHA1(05d5a67ffa3d26377c54777917d3ba51677ebd28) )
 	ROM_FILL(                 0x3000, 0x1000, 0x00 )
->>>>>>> upstream/master
 ROM_END
 
 
@@ -1414,8 +1339,6 @@ ROM Daughterboard
 
 ROM_START( striv )
 	ROM_REGION( 0x10000, "maincpu", 0 )
-<<<<<<< HEAD
-=======
 	ROM_LOAD( "s.triv_p1.2f",       0x0000, 0x1000, CRC(dcf5da6e) SHA1(e88c8226ae4d4a0af717f0760e551e0ce4c79c5e) )
 	ROM_LOAD( "s.triv_p2.3f",       0x1000, 0x1000, CRC(921610ba) SHA1(7dea7a57543dd79325da34cebd7b9dd8a767bb2a) )
 	ROM_LOAD( "pr3.5f",             0x2000, 0x1000, BAD_DUMP CRC(c36f0e21) SHA1(d036a56798bbb42bee269450524172ec071dcf03) ) // wasn't in the romset, but the other 3 ROMs match the ones from strivf
@@ -1450,7 +1373,6 @@ ROM_END
 
 ROM_START( strivf )
 	ROM_REGION( 0x10000, "maincpu", 0 )
->>>>>>> upstream/master
 	ROM_LOAD( "pr1.f2",       0x0000, 0x1000, CRC(dcf5da6e) SHA1(e88c8226ae4d4a0af717f0760e551e0ce4c79c5e) )
 	ROM_LOAD( "pr2.4f",       0x1000, 0x1000, CRC(921610ba) SHA1(7dea7a57543dd79325da34cebd7b9dd8a767bb2a) )
 	ROM_LOAD( "pr3.5f",       0x2000, 0x1000, CRC(c36f0e21) SHA1(d036a56798bbb42bee269450524172ec071dcf03) )
@@ -1486,10 +1408,6 @@ ROM_START( strivf )
 	ROM_LOAD( "tbfd0.u21",    0x0000, 0x2000, CRC(15b83099) SHA1(79827590d74f20c9a95723e06b05af2b15c34f5f) )
 ROM_END
 
-<<<<<<< HEAD
-
-=======
->>>>>>> upstream/master
 ROM_START( joinem )
 	ROM_REGION( 0x10000, "maincpu", 0 ) /* main z80 cpu */
 	ROM_LOAD( "join1.r0", 0x0000, 0x2000, CRC(b5b2e2cc) SHA1(e939478d19ac27807ba4180835c512b5fcb8d0c5) )
@@ -1551,8 +1469,6 @@ ROM_START( loverboy )
 	ROM_LOAD_NIB_HIGH( "color.n12", 0x000, 0x200, CRC(4b11ac21) SHA1(d9e7cecfb7237335288ab6f94bb35696d8291bdf) )
 ROM_END
 
-<<<<<<< HEAD
-=======
 ROM_START( trikitri )
 	ROM_REGION( 0x10000, "maincpu", 0 ) /* main z80 cpu */
 	ROM_LOAD( "1.bin", 0x0000, 0x2000, CRC(248f2f12) SHA1(a1796e3e56a2b499997b0459ab875e7e50b797a2) )
@@ -1572,7 +1488,6 @@ ROM_START( trikitri )
 	ROM_LOAD_NIB_LOW(  "prom2.bin", 0x000, 0x0100, CRC(ed5cec15) SHA1(22001ecce44d7fd886fc3aa8a184993b6e341c00) )
 	ROM_LOAD_NIB_HIGH( "prom1.bin", 0x000, 0x0100, CRC(79632c67) SHA1(21480e44ab4941a1e943c10ea6a58c6177f77933) )
 ROM_END
->>>>>>> upstream/master
 
 
 /*************************************
@@ -1595,20 +1510,12 @@ DRIVER_INIT_MEMBER(jack_state,zzyzzyxx)
 
 void jack_state::treahunt_decode(  )
 {
-<<<<<<< HEAD
-	UINT8 *rom = memregion("maincpu")->base();
-=======
 	uint8_t *rom = memregion("maincpu")->base();
->>>>>>> upstream/master
 
 	/* Thanks to Mike Balfour for helping out with the decryption */
 	for (int A = 0; A < 0x4000; A++)
 	{
-<<<<<<< HEAD
-		UINT8 data = rom[A];
-=======
 		uint8_t data = rom[A];
->>>>>>> upstream/master
 
 		if (A & 0x1000)
 		{
@@ -1660,11 +1567,7 @@ DRIVER_INIT_MEMBER(jack_state,loverboy)
 	   code, the protection device is disabled or changes behaviour via
 	   writes at 0xf000 and 0xf008. -AS
 	*/
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("maincpu")->base();
-=======
 	uint8_t *ROM = memregion("maincpu")->base();
->>>>>>> upstream/master
 	ROM[0x13] = 0x01;
 	ROM[0x12] = 0x9d;
 
@@ -1674,13 +1577,8 @@ DRIVER_INIT_MEMBER(jack_state,loverboy)
 
 DRIVER_INIT_MEMBER(jack_state,striv)
 {
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("maincpu")->base();
-	UINT8 data;
-=======
 	uint8_t *ROM = memregion("maincpu")->base();
 	uint8_t data;
->>>>>>> upstream/master
 	int A;
 
 	/* decrypt program rom */
@@ -1727,16 +1625,9 @@ GAME( 1984, freeze,    0,        jack,     freeze,   jack_state, jack,     ROT90
 GAME( 1981, tripool,   0,        jack,     tripool,  jack_state, jack,     ROT90,  "Noma (Casino Tech license)", "Tri-Pool (Casino Tech)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
 GAME( 1981, tripoola,  tripool,  jack,     tripool,  jack_state, jack,     ROT90,  "Noma (Costal Games license)", "Tri-Pool (Costal Games)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
 GAME( 1984, sucasino,  0,        jack,     sucasino, jack_state, jack,     ROT90,  "Data Amusement", "Super Casino", MACHINE_SUPPORTS_SAVE )
-<<<<<<< HEAD
-GAME( 1985, striv,     0,        striv,    striv,    jack_state, striv,    ROT270, "Nova du Canada", "Super Triv", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE ) // Hara Industries PCB
-GAME( 1983, joinem,    0,        joinem,   joinem,   jack_state, zzyzzyxx, ROT90,  "Global Corporation", "Joinem", MACHINE_SUPPORTS_SAVE )
-GAME( 1983, unclepoo,  0,        unclepoo, unclepoo, jack_state, zzyzzyxx, ROT90,  "Diatec", "Uncle Poo", MACHINE_SUPPORTS_SAVE ) // based on Joinem?
-GAME( 1983, loverboy,  0,        joinem,   loverboy, jack_state, loverboy, ROT90,  "G.T Enterprise Inc.", "Lover Boy", MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1985, striv,     0,        striv,    striv,    jack_state, striv,    ROT270, "Nova du Canada", "Super Triv (English questions)", MACHINE_NOT_WORKING | MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE ) // resets after displaying the first question
 GAME( 1985, strivf,    striv,    striv,    striv,    jack_state, striv,    ROT270, "Nova du Canada", "Super Triv (French questions)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE ) // Hara Industries PCB
 GAME( 1983, joinem,    0,        joinem,   joinem,   jack_state, zzyzzyxx, ROT90,  "Global Corporation", "Joinem", MACHINE_SUPPORTS_SAVE )
 GAME( 1983, unclepoo,  0,        unclepoo, unclepoo, jack_state, zzyzzyxx, ROT90,  "Diatec", "Uncle Poo", MACHINE_SUPPORTS_SAVE ) // based on Joinem?
 GAME( 1983, loverboy,  0,        joinem,   loverboy, jack_state, loverboy, ROT90,  "G.T Enterprise Inc", "Lover Boy", MACHINE_SUPPORTS_SAVE )
 GAME( 1993, trikitri,  loverboy, joinem,   loverboy, jack_state, loverboy, ROT90,  "bootleg (DDT Enterprise Inc)", "Triki Triki (Lover Boy bootleg)", MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

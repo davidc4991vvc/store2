@@ -4,94 +4,11 @@
 
     eminline.h
 
-<<<<<<< HEAD
-    Definitions for inline functions that can be overriden by OSD-
-=======
     Definitions for inline functions that can be overridden by OSD-
->>>>>>> upstream/master
     specific code.
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-#ifndef __EMINLINE__
-#define __EMINLINE__
-
-#if !defined(MAME_NOASM)
-/* we come with implementations for GCC x86 and PPC */
-#if defined(__GNUC__)
-
-#if defined(__i386__) || defined(__x86_64__)
-
-
-INLINE void ATTR_FORCE_INLINE
-osd_yield_processor(void)
-{
-	__asm__ __volatile__ ( " rep ; nop ;" );
-}
-
-
-#if defined(__x86_64__)
-
-//============================================================
-//  osd_exchange64
-//============================================================
-
-INLINE INT64 ATTR_UNUSED ATTR_NONNULL(1) ATTR_FORCE_INLINE
-_osd_exchange64(INT64 volatile *ptr, INT64 exchange)
-{
-	register INT64 ret;
-	__asm__ __volatile__ (
-		" lock ; xchg %[exchange], %[ptr] ;"
-		: [ptr]      "+m" (*ptr)
-		, [ret]      "=r" (ret)
-		: [exchange] "1"  (exchange)
-	);
-	return ret;
-}
-#define osd_exchange64 _osd_exchange64
-
-#endif /* __x86_64__ */
-
-
-#elif defined(__ppc__) || defined (__PPC__) || defined(__ppc64__) || defined(__PPC64__)
-
-
-INLINE void ATTR_FORCE_INLINE
-osd_yield_processor(void)
-{
-	__asm__ __volatile__ ( " nop \n nop \n" );
-}
-
-
-
-#if defined(__ppc64__) || defined(__PPC64__)
-
-//============================================================
-//  osd_exchange64
-//============================================================
-
-INLINE INT64 ATTR_UNUSED ATTR_NONNULL(1) ATTR_FORCE_INLINE
-_osd_exchange64(INT64 volatile *ptr, INT64 exchange)
-{
-	register INT64 ret;
-	__asm__ __volatile__ (
-		"1: ldarx  %[ret], 0, %[ptr]      \n"
-		"   stdcx. %[exchange], 0, %[ptr] \n"
-		"   bne-   1b                     \n"
-		: [ret]      "=&r" (ret)
-		: [ptr]      "r"   (ptr)
-		, [exchange] "r"   (exchange)
-		: "cr0"
-	);
-	return ret;
-}
-#define osd_exchange64 _osd_exchange64
-
-#endif /* __ppc64__ || __PPC64__ */
-
-#endif
-=======
 #ifndef MAME_OSD_EMINLINE_H
 #define MAME_OSD_EMINLINE_H
 
@@ -103,7 +20,6 @@ _osd_exchange64(INT64 volatile *ptr, INT64 exchange)
 #if !defined(MAME_NOASM)
 
 #if defined(__GNUC__)
->>>>>>> upstream/master
 
 #if defined(__i386__) || defined(__x86_64__)
 #include "eigccx86.h"
@@ -113,13 +29,7 @@ _osd_exchange64(INT64 volatile *ptr, INT64 exchange)
 #error "no matching assembler implementations found - please compile with NOASM=1"
 #endif
 
-<<<<<<< HEAD
-#else
-
-#if defined(_MSC_VER)
-=======
 #elif defined(_MSC_VER)
->>>>>>> upstream/master
 
 #if (defined(_M_IX86) || defined(_M_X64))
 #include "eivcx86.h"
@@ -127,48 +37,13 @@ _osd_exchange64(INT64 volatile *ptr, INT64 exchange)
 
 #include "eivc.h"
 
-<<<<<<< HEAD
-INT32 win_compare_exchange32(INT32 volatile *ptr, INT32 compare, INT32 exchange);
-INT32 win_atomic_exchange32(INT32 volatile *ptr, INT32 exchange);
-INT32 win_atomic_add32(INT32 volatile *ptr, INT32 delta);
-
-#ifdef PTR64
-INT64 win_compare_exchange64(INT64 volatile *ptr, INT64 compare, INT64 exchange);
-#endif
-
-
-#ifndef compare_exchange32
-#define compare_exchange32 win_compare_exchange32
-#endif /* compare_exchange32 */
-
-#ifdef PTR64
-#ifndef compare_exchange64
-#define compare_exchange64 win_compare_exchange64
-#endif /* compare_exchange64 */
-#endif
-
-#ifndef atomic_exchange32
-#define atomic_exchange32 win_atomic_exchange32
-#endif /* atomic_exchange32 */
-
-
-#ifndef atomic_add32
-#define atomic_add32 win_atomic_add32
-#endif /* atomic_add32 */
-=======
->>>>>>> upstream/master
 #else
 
 #error "no matching assembler implementations found - please compile with NOASM=1"
 
 #endif
 
-<<<<<<< HEAD
-#endif
-#endif
-=======
 #endif // !defined(MAME_NOASM)
->>>>>>> upstream/master
 
 
 /***************************************************************************
@@ -181,15 +56,9 @@ INT64 win_compare_exchange64(INT64 volatile *ptr, INT64 compare, INT64 exchange)
 -------------------------------------------------*/
 
 #ifndef mul_32x32
-<<<<<<< HEAD
-INLINE INT64 mul_32x32(INT32 a, INT32 b)
-{
-	return (INT64)a * (INT64)b;
-=======
 inline int64_t mul_32x32(int32_t a, int32_t b)
 {
 	return int64_t(a) * int64_t(b);
->>>>>>> upstream/master
 }
 #endif
 
@@ -201,15 +70,9 @@ inline int64_t mul_32x32(int32_t a, int32_t b)
 -------------------------------------------------*/
 
 #ifndef mulu_32x32
-<<<<<<< HEAD
-INLINE UINT64 mulu_32x32(UINT32 a, UINT32 b)
-{
-	return (UINT64)a * (UINT64)b;
-=======
 inline uint64_t mulu_32x32(uint32_t a, uint32_t b)
 {
 	return uint64_t(a) * uint64_t(b);
->>>>>>> upstream/master
 }
 #endif
 
@@ -221,15 +84,9 @@ inline uint64_t mulu_32x32(uint32_t a, uint32_t b)
 -------------------------------------------------*/
 
 #ifndef mul_32x32_hi
-<<<<<<< HEAD
-INLINE INT32 mul_32x32_hi(INT32 a, INT32 b)
-{
-	return (UINT32)(((INT64)a * (INT64)b) >> 32);
-=======
 inline int32_t mul_32x32_hi(int32_t a, int32_t b)
 {
 	return uint32_t((int64_t(a) * int64_t(b)) >> 32);
->>>>>>> upstream/master
 }
 #endif
 
@@ -241,15 +98,9 @@ inline int32_t mul_32x32_hi(int32_t a, int32_t b)
 -------------------------------------------------*/
 
 #ifndef mulu_32x32_hi
-<<<<<<< HEAD
-INLINE UINT32 mulu_32x32_hi(UINT32 a, UINT32 b)
-{
-	return (UINT32)(((UINT64)a * (UINT64)b) >> 32);
-=======
 inline uint32_t mulu_32x32_hi(uint32_t a, uint32_t b)
 {
 	return uint32_t((uint64_t(a) * uint64_t(b)) >> 32);
->>>>>>> upstream/master
 }
 #endif
 
@@ -262,15 +113,9 @@ inline uint32_t mulu_32x32_hi(uint32_t a, uint32_t b)
 -------------------------------------------------*/
 
 #ifndef mul_32x32_shift
-<<<<<<< HEAD
-INLINE INT32 mul_32x32_shift(INT32 a, INT32 b, UINT8 shift)
-{
-	return (INT32)(((INT64)a * (INT64)b) >> shift);
-=======
 inline int32_t mul_32x32_shift(int32_t a, int32_t b, uint8_t shift)
 {
 	return int32_t((int64_t(a) * int64_t(b)) >> shift);
->>>>>>> upstream/master
 }
 #endif
 
@@ -283,15 +128,9 @@ inline int32_t mul_32x32_shift(int32_t a, int32_t b, uint8_t shift)
 -------------------------------------------------*/
 
 #ifndef mulu_32x32_shift
-<<<<<<< HEAD
-INLINE UINT32 mulu_32x32_shift(UINT32 a, UINT32 b, UINT8 shift)
-{
-	return (UINT32)(((UINT64)a * (UINT64)b) >> shift);
-=======
 inline uint32_t mulu_32x32_shift(uint32_t a, uint32_t b, uint8_t shift)
 {
 	return uint32_t((uint64_t(a) * uint64_t(b)) >> shift);
->>>>>>> upstream/master
 }
 #endif
 
@@ -302,15 +141,9 @@ inline uint32_t mulu_32x32_shift(uint32_t a, uint32_t b, uint8_t shift)
 -------------------------------------------------*/
 
 #ifndef div_64x32
-<<<<<<< HEAD
-INLINE INT32 div_64x32(INT64 a, INT32 b)
-{
-	return a / (INT64)b;
-=======
 inline int32_t div_64x32(int64_t a, int32_t b)
 {
 	return a / int64_t(b);
->>>>>>> upstream/master
 }
 #endif
 
@@ -321,15 +154,9 @@ inline int32_t div_64x32(int64_t a, int32_t b)
 -------------------------------------------------*/
 
 #ifndef divu_64x32
-<<<<<<< HEAD
-INLINE UINT32 divu_64x32(UINT64 a, UINT32 b)
-{
-	return a / (UINT64)b;
-=======
 inline uint32_t divu_64x32(uint64_t a, uint32_t b)
 {
 	return a / uint64_t(b);
->>>>>>> upstream/master
 }
 #endif
 
@@ -341,17 +168,10 @@ inline uint32_t divu_64x32(uint64_t a, uint32_t b)
 -------------------------------------------------*/
 
 #ifndef div_64x32_rem
-<<<<<<< HEAD
-INLINE INT32 div_64x32_rem(INT64 a, INT32 b, INT32 *remainder)
-{
-	INT32 res = div_64x32(a, b);
-	*remainder = a - ((INT64)b * res);
-=======
 inline int32_t div_64x32_rem(int64_t a, int32_t b, int32_t *remainder)
 {
 	int32_t const res = div_64x32(a, b);
 	*remainder = a - (int64_t(b) * res);
->>>>>>> upstream/master
 	return res;
 }
 #endif
@@ -364,17 +184,10 @@ inline int32_t div_64x32_rem(int64_t a, int32_t b, int32_t *remainder)
 -------------------------------------------------*/
 
 #ifndef divu_64x32_rem
-<<<<<<< HEAD
-INLINE UINT32 divu_64x32_rem(UINT64 a, UINT32 b, UINT32 *remainder)
-{
-	UINT32 res = divu_64x32(a, b);
-	*remainder = a - ((UINT64)b * res);
-=======
 inline uint32_t divu_64x32_rem(uint64_t a, uint32_t b, uint32_t *remainder)
 {
 	uint32_t const res = divu_64x32(a, b);
 	*remainder = a - (uint64_t(b) * res);
->>>>>>> upstream/master
 	return res;
 }
 #endif
@@ -387,15 +200,9 @@ inline uint32_t divu_64x32_rem(uint64_t a, uint32_t b, uint32_t *remainder)
 -------------------------------------------------*/
 
 #ifndef div_32x32_shift
-<<<<<<< HEAD
-INLINE INT32 div_32x32_shift(INT32 a, INT32 b, UINT8 shift)
-{
-	return ((INT64)a << shift) / (INT64)b;
-=======
 inline int32_t div_32x32_shift(int32_t a, int32_t b, uint8_t shift)
 {
 	return (int64_t(a) << shift) / int64_t(b);
->>>>>>> upstream/master
 }
 #endif
 
@@ -407,15 +214,9 @@ inline int32_t div_32x32_shift(int32_t a, int32_t b, uint8_t shift)
 -------------------------------------------------*/
 
 #ifndef divu_32x32_shift
-<<<<<<< HEAD
-INLINE UINT32 divu_32x32_shift(UINT32 a, UINT32 b, UINT8 shift)
-{
-	return ((UINT64)a << shift) / (UINT64)b;
-=======
 inline uint32_t divu_32x32_shift(uint32_t a, uint32_t b, uint8_t shift)
 {
 	return (uint64_t(a) << shift) / uint64_t(b);
->>>>>>> upstream/master
 }
 #endif
 
@@ -426,11 +227,7 @@ inline uint32_t divu_32x32_shift(uint32_t a, uint32_t b, uint8_t shift)
 -------------------------------------------------*/
 
 #ifndef mod_64x32
-<<<<<<< HEAD
-INLINE INT32 mod_64x32(INT64 a, INT32 b)
-=======
 inline int32_t mod_64x32(int64_t a, int32_t b)
->>>>>>> upstream/master
 {
 	return a - (b * div_64x32(a, b));
 }
@@ -443,11 +240,7 @@ inline int32_t mod_64x32(int64_t a, int32_t b)
 -------------------------------------------------*/
 
 #ifndef modu_64x32
-<<<<<<< HEAD
-INLINE UINT32 modu_64x32(UINT64 a, UINT32 b)
-=======
 inline uint32_t modu_64x32(uint64_t a, uint32_t b)
->>>>>>> upstream/master
 {
 	return a - (b * divu_64x32(a, b));
 }
@@ -460,11 +253,7 @@ inline uint32_t modu_64x32(uint64_t a, uint32_t b)
 -------------------------------------------------*/
 
 #ifndef recip_approx
-<<<<<<< HEAD
-INLINE float recip_approx(float value)
-=======
 inline float recip_approx(float value)
->>>>>>> upstream/master
 {
 	return 1.0f / value;
 }
@@ -482,17 +271,10 @@ inline float recip_approx(float value)
 -------------------------------------------------*/
 
 #ifndef count_leading_zeros
-<<<<<<< HEAD
-INLINE UINT8 count_leading_zeros(UINT32 val)
-{
-	UINT8 count;
-	for (count = 0; (INT32)val >= 0; count++) val <<= 1;
-=======
 inline uint8_t count_leading_zeros(uint32_t val)
 {
 	uint8_t count;
 	for (count = 0; int32_t(val) >= 0; count++) val <<= 1;
->>>>>>> upstream/master
 	return count;
 }
 #endif
@@ -504,179 +286,15 @@ inline uint8_t count_leading_zeros(uint32_t val)
 -------------------------------------------------*/
 
 #ifndef count_leading_ones
-<<<<<<< HEAD
-INLINE UINT8 count_leading_ones(UINT32 val)
-{
-	UINT8 count;
-	for (count = 0; (INT32)val < 0; count++) val <<= 1;
-=======
 inline uint8_t count_leading_ones(uint32_t val)
 {
 	uint8_t count;
 	for (count = 0; (int32_t)val < 0; count++) val <<= 1;
->>>>>>> upstream/master
 	return count;
 }
 #endif
 
 
-<<<<<<< HEAD
-
-/***************************************************************************
-    INLINE SYNCHRONIZATION FUNCTIONS
-***************************************************************************/
-
-/*-------------------------------------------------
-    compare_exchange32 - compare the 'compare'
-    value against the memory at 'ptr'; if equal,
-    swap in the 'exchange' value. Regardless,
-    return the previous value at 'ptr'.
-
-    Note that the default implementation does
-    no synchronization. You MUST override this
-    in osinline.h for it to be useful in a
-    multithreaded environment!
--------------------------------------------------*/
-
-#ifndef compare_exchange32
-INLINE INT32 compare_exchange32(INT32 volatile *ptr, INT32 compare, INT32 exchange)
-{
-	INT32 oldval = *ptr;
-	if (*ptr == compare)
-		*ptr = exchange;
-	return oldval;
-}
-#endif
-
-
-/*-------------------------------------------------
-    compare_exchange64 - compare the 'compare'
-    value against the memory at 'ptr'; if equal,
-    swap in the 'exchange' value. Regardless,
-    return the previous value at 'ptr'.
-
-    Note that the default implementation does
-    no synchronization. You MUST override this
-    in osinline.h for it to be useful in a
-    multithreaded environment!
--------------------------------------------------*/
-
-#ifdef PTR64
-#ifndef compare_exchange64
-INLINE INT64 compare_exchange64(INT64 volatile *ptr, INT64 compare, INT64 exchange)
-{
-	INT64 oldval = *ptr;
-	if (*ptr == compare)
-		*ptr = exchange;
-	return oldval;
-}
-#endif
-#endif
-
-
-/*-------------------------------------------------
-    compare_exchange_ptr - compare the 'compare'
-    value against the memory at 'ptr'; if equal,
-    swap in the 'exchange' value. Regardless,
-    return the previous value at 'ptr'.
--------------------------------------------------*/
-
-#ifndef compare_exchange_ptr
-INLINE void *compare_exchange_ptr(void * volatile *ptr, void *compare, void *exchange)
-{
-#ifdef PTR64
-	INT64 result;
-	result = compare_exchange64((INT64 volatile *)ptr, (INT64)compare, (INT64)exchange);
-#else
-	INT32 result;
-	result = compare_exchange32((INT32 volatile *)ptr, (INT32)compare, (INT32)exchange);
-#endif
-	return (void *)result;
-}
-#endif
-
-
-/*-------------------------------------------------
-    atomic_exchange32 - atomically exchange the
-    exchange value with the memory at 'ptr',
-    returning the original value.
-
-    Note that the default implementation does
-    no synchronization. You MUST override this
-    in osinline.h for it to be useful in a
-    multithreaded environment!
--------------------------------------------------*/
-
-#ifndef atomic_exchange32
-INLINE INT32 atomic_exchange32(INT32 volatile *ptr, INT32 exchange)
-{
-	INT32 oldval = *ptr;
-	*ptr = exchange;
-	return oldval;
-}
-#endif
-
-
-/*-------------------------------------------------
-    atomic_add32 - atomically add the delta value
-    to the memory at 'ptr', returning the final
-    result.
-
-    Note that the default implementation does
-    no synchronization. You MUST override this
-    in osinline.h for it to be useful in a
-    multithreaded environment!
--------------------------------------------------*/
-
-#ifndef atomic_add32
-INLINE INT32 atomic_add32(INT32 volatile *ptr, INT32 delta)
-{
-	return (*ptr += delta);
-}
-#endif
-
-
-/*-------------------------------------------------
-    atomic_increment32 - atomically increment the
-    32-bit value in memory at 'ptr', returning the
-    final result.
-
-    Note that the default implementation does
-    no synchronization. You MUST override this
-    in osinline.h for it to be useful in a
-    multithreaded environment!
--------------------------------------------------*/
-
-#ifndef atomic_increment32
-INLINE INT32 atomic_increment32(INT32 volatile *ptr)
-{
-	return atomic_add32(ptr, 1);
-}
-#endif
-
-
-/*-------------------------------------------------
-    atomic_decrement32 - atomically decrement the
-    32-bit value in memory at 'ptr', returning the
-    final result.
-
-    Note that the default implementation does
-    no synchronization. You MUST override this
-    in osinline.h for it to be useful in a
-    multithreaded environment!
--------------------------------------------------*/
-
-#ifndef atomic_decrement32
-INLINE INT32 atomic_decrement32(INT32 volatile *ptr)
-{
-	return atomic_add32(ptr, -1);
-}
-#endif
-
-
-
-=======
->>>>>>> upstream/master
 /***************************************************************************
     INLINE TIMING FUNCTIONS
 ***************************************************************************/
@@ -689,18 +307,10 @@ INLINE INT32 atomic_decrement32(INT32 volatile *ptr)
 -------------------------------------------------*/
 
 #ifndef get_profile_ticks
-<<<<<<< HEAD
-INLINE INT64 get_profile_ticks(void)
-=======
 inline int64_t get_profile_ticks()
->>>>>>> upstream/master
 {
 	return osd_ticks();
 }
 #endif
 
-<<<<<<< HEAD
-#endif /* __EMINLINE__ */
-=======
 #endif // MAME_OSD_EMINLINE_H
->>>>>>> upstream/master

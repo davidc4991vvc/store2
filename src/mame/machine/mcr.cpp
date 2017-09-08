@@ -20,17 +20,10 @@
  *
  *************************************/
 
-<<<<<<< HEAD
-UINT8 mcr_cocktail_flip;
-
-UINT32 mcr_cpu_board;
-UINT32 mcr_sprite_board;
-=======
 uint8_t mcr_cocktail_flip;
 
 uint32_t mcr_cpu_board;
 uint32_t mcr_sprite_board;
->>>>>>> upstream/master
 
 
 
@@ -85,11 +78,7 @@ const gfx_layout mcr_sprite_layout =
 const z80_daisy_config mcr_daisy_chain[] =
 {
 	{ "ctc" },
-<<<<<<< HEAD
-	{ NULL }
-=======
 	{ nullptr }
->>>>>>> upstream/master
 };
 
 
@@ -99,11 +88,7 @@ const z80_daisy_config mcr_ipu_daisy_chain[] =
 	{ "ipu_pio1" },
 	{ "ipu_sio" },
 	{ "ipu_pio0" },
-<<<<<<< HEAD
-	{ NULL }
-=======
 	{ nullptr }
->>>>>>> upstream/master
 };
 
 

@@ -14,26 +14,16 @@
 #error Dont include this file directly; include emu.h instead.
 #endif
 
-<<<<<<< HEAD
-#ifndef __SOUND_H__
-#define __SOUND_H__
-=======
 #ifndef MAME_EMU_SOUND_H
 #define MAME_EMU_SOUND_H
->>>>>>> upstream/master
 
 
 //**************************************************************************
 //  CONSTANTS
 //**************************************************************************
 
-<<<<<<< HEAD
-const int STREAM_SYNC       = -1;       // special rate value indicating a one-sample-at-a-time stream
-                                        // with actual rate defined by its input
-=======
 constexpr int STREAM_SYNC   = -1;       // special rate value indicating a one-sample-at-a-time stream
 										// with actual rate defined by its input
->>>>>>> upstream/master
 
 //**************************************************************************
 //  MACROS
@@ -45,12 +35,6 @@ typedef delegate<void (sound_stream &, stream_sample_t **inputs, stream_sample_t
 //  TYPE DEFINITIONS
 //**************************************************************************
 
-<<<<<<< HEAD
-// forward references
-struct wav_file;
-
-=======
->>>>>>> upstream/master
 
 // structure describing an indexed mixer
 struct mixer_input
@@ -65,10 +49,6 @@ struct mixer_input
 
 class sound_stream
 {
-<<<<<<< HEAD
-	friend class simple_list<sound_stream>;
-=======
->>>>>>> upstream/master
 	friend class sound_manager;
 
 	typedef void (*stream_update_func)(device_t *device, sound_stream *stream, void *param, stream_sample_t **inputs, stream_sample_t **outputs, int samples);
@@ -85,11 +65,7 @@ class sound_stream
 		sound_stream *      m_stream;               // owning stream
 		std::vector<stream_sample_t> m_buffer;    // output buffer
 		int                 m_dependents;           // number of dependents
-<<<<<<< HEAD
-		INT16               m_gain;                 // gain to apply to the output
-=======
 		s16                 m_gain;                 // gain to apply to the output
->>>>>>> upstream/master
 	};
 
 	// stream input class
@@ -104,22 +80,6 @@ class sound_stream
 		stream_output *     m_source;               // pointer to the sound_output for this source
 		std::vector<stream_sample_t> m_resample;  // buffer for resampling to the stream's sample rate
 		attoseconds_t       m_latency_attoseconds;  // latency between this stream and the input stream
-<<<<<<< HEAD
-		INT16               m_gain;                 // gain to apply to this input
-		INT16               m_user_gain;            // user-controlled gain to apply to this input
-	};
-
-	// constants
-	static const int OUTPUT_BUFFER_UPDATES      = 5;
-	static const UINT32 FRAC_BITS               = 22;
-	static const UINT32 FRAC_ONE                = 1 << FRAC_BITS;
-	static const UINT32 FRAC_MASK               = FRAC_ONE - 1;
-
-	// construction/destruction
-	sound_stream(device_t &device, int inputs, int outputs, int sample_rate, stream_update_delegate callback);
-
-public:
-=======
 		s16               m_gain;                 // gain to apply to this input
 		s16               m_user_gain;            // user-controlled gain to apply to this input
 	};
@@ -134,7 +94,6 @@ public:
 	// construction/destruction
 	sound_stream(device_t &device, int inputs, int outputs, int sample_rate, stream_update_delegate callback);
 
->>>>>>> upstream/master
 	// getters
 	sound_stream *next() const { return m_next; }
 	device_t &device() const { return m_device; }
@@ -143,11 +102,7 @@ public:
 	attotime sample_period() const { return attotime(0, m_attoseconds_per_sample); }
 	int input_count() const { return m_input.size(); }
 	int output_count() const { return m_output.size(); }
-<<<<<<< HEAD
-	const char *input_name(int inputnum, std::string &str) const;
-=======
 	std::string input_name(int inputnum) const;
->>>>>>> upstream/master
 	device_t *input_source_device(int inputnum) const;
 	int input_source_outputnum(int inputnum) const;
 	float user_gain(int inputnum) const;
@@ -176,35 +131,21 @@ private:
 	void allocate_output_buffers();
 	void postload();
 	void generate_samples(int samples);
-<<<<<<< HEAD
-	stream_sample_t *generate_resampled_data(stream_input &input, UINT32 numsamples);
-	void sync_update(void *, INT32);
-=======
 	stream_sample_t *generate_resampled_data(stream_input &input, u32 numsamples);
 	void sync_update(void *, s32);
->>>>>>> upstream/master
 
 	// linking information
 	device_t &          m_device;                     // owning device
 	sound_stream *      m_next;                       // next stream in the chain
 
 	// general information
-<<<<<<< HEAD
-	UINT32              m_sample_rate;                // sample rate of this stream
-	UINT32              m_new_sample_rate;            // newly-set sample rate for the stream
-=======
 	u32                 m_sample_rate;                // sample rate of this stream
 	u32                 m_new_sample_rate;            // newly-set sample rate for the stream
->>>>>>> upstream/master
 	bool                m_synchronous;                // synchronous stream that runs at the rate of its input
 
 	// timing information
 	attoseconds_t       m_attoseconds_per_sample;     // number of attoseconds per sample
-<<<<<<< HEAD
-	INT32               m_max_samples_per_update;     // maximum samples per update
-=======
 	s32                 m_max_samples_per_update;     // maximum samples per update
->>>>>>> upstream/master
 	emu_timer *         m_sync_timer;                 // update timer for synchronous streams
 
 	// input information
@@ -212,28 +153,17 @@ private:
 	std::vector<stream_sample_t *> m_input_array;   // array of inputs for passing to the callback
 
 	// resample buffer information
-<<<<<<< HEAD
-	UINT32              m_resample_bufalloc;          // allocated size of each resample buffer
-=======
 	u32                 m_resample_bufalloc;          // allocated size of each resample buffer
->>>>>>> upstream/master
 
 	// output information
 	std::vector<stream_output> m_output;            // list of streams which directly depend upon us
 	std::vector<stream_sample_t *> m_output_array;  // array of outputs for passing to the callback
 
 	// output buffer information
-<<<<<<< HEAD
-	UINT32              m_output_bufalloc;            // allocated size of each output buffer
-	INT32               m_output_sampindex;           // current position within each output buffer
-	INT32               m_output_update_sampindex;    // position at time of last global update
-	INT32               m_output_base_sampindex;      // sample at base of buffer, relative to the current emulated second
-=======
 	u32                 m_output_bufalloc;            // allocated size of each output buffer
 	s32                 m_output_sampindex;           // current position within each output buffer
 	s32                 m_output_update_sampindex;    // position at time of last global update
 	s32                 m_output_base_sampindex;      // sample at base of buffer, relative to the current emulated second
->>>>>>> upstream/master
 
 	// callback information
 	stream_update_delegate  m_callback;                   // callback function
@@ -247,27 +177,16 @@ class sound_manager
 	friend class sound_stream;
 
 	// reasons for muting
-<<<<<<< HEAD
-	static const UINT8 MUTE_REASON_PAUSE = 0x01;
-	static const UINT8 MUTE_REASON_UI = 0x02;
-	static const UINT8 MUTE_REASON_DEBUGGER = 0x04;
-	static const UINT8 MUTE_REASON_SYSTEM = 0x08;
-=======
 	static constexpr u8 MUTE_REASON_PAUSE = 0x01;
 	static constexpr u8 MUTE_REASON_UI = 0x02;
 	static constexpr u8 MUTE_REASON_DEBUGGER = 0x04;
 	static constexpr u8 MUTE_REASON_SYSTEM = 0x08;
->>>>>>> upstream/master
 
 	// stream updates
 	static const attotime STREAMS_UPDATE_ATTOTIME;
 
 public:
-<<<<<<< HEAD
-	static const int STREAMS_UPDATE_FREQUENCY = 50;
-=======
 	static constexpr int STREAMS_UPDATE_FREQUENCY = 50;
->>>>>>> upstream/master
 
 	// construction/destruction
 	sound_manager(running_machine &machine);
@@ -276,11 +195,7 @@ public:
 	// getters
 	running_machine &machine() const { return m_machine; }
 	int attenuation() const { return m_attenuation; }
-<<<<<<< HEAD
-	sound_stream *first_stream() const { return m_stream_list.first(); }
-=======
 	const std::vector<std::unique_ptr<sound_stream>> &streams() const { return m_stream_list; }
->>>>>>> upstream/master
 	attotime last_update() const { return m_last_update; }
 	attoseconds_t update_attoseconds() const { return m_update_attoseconds; }
 
@@ -288,11 +203,8 @@ public:
 	sound_stream *stream_alloc(device_t &device, int inputs, int outputs, int sample_rate, stream_update_delegate callback = stream_update_delegate());
 
 	// global controls
-<<<<<<< HEAD
-=======
 	void start_recording();
 	void stop_recording();
->>>>>>> upstream/master
 	void set_attenuation(int attenuation);
 	void ui_mute(bool turn_off = true) { mute(turn_off, MUTE_REASON_UI); }
 	void debugger_mute(bool turn_off = true) { mute(turn_off, MUTE_REASON_DEBUGGER); }
@@ -304,16 +216,6 @@ public:
 
 private:
 	// internal helpers
-<<<<<<< HEAD
-	void mute(bool mute, UINT8 reason);
-	void reset();
-	void pause();
-	void resume();
-	void config_load(int config_type, xml_data_node *parentnode);
-	void config_save(int config_type, xml_data_node *parentnode);
-
-	void update(void *ptr = NULL, INT32 param = 0);
-=======
 	void mute(bool mute, u8 reason);
 	void reset();
 	void pause();
@@ -322,45 +224,27 @@ private:
 	void config_save(config_type cfg_type, util::xml::data_node *parentnode);
 
 	void update(void *ptr = nullptr, s32 param = 0);
->>>>>>> upstream/master
 
 	// internal state
 	running_machine &   m_machine;              // reference to our machine
 	emu_timer *         m_update_timer;         // timer to drive periodic updates
 
-<<<<<<< HEAD
-	UINT32              m_finalmix_leftover;
-	std::vector<INT16>       m_finalmix;
-	std::vector<INT32>       m_leftmix;
-	std::vector<INT32>       m_rightmix;
-
-	UINT8               m_muted;
-=======
 	u32                 m_finalmix_leftover;
 	std::vector<s16>    m_finalmix;
 	std::vector<s32>    m_leftmix;
 	std::vector<s32>    m_rightmix;
 
 	u8                  m_muted;
->>>>>>> upstream/master
 	int                 m_attenuation;
 	int                 m_nosound_mode;
 
 	wav_file *          m_wavfile;
 
 	// streams data
-<<<<<<< HEAD
-	simple_list<sound_stream> m_stream_list;    // list of streams
-=======
 	std::vector<std::unique_ptr<sound_stream>> m_stream_list;    // list of streams
->>>>>>> upstream/master
 	attoseconds_t       m_update_attoseconds;   // attoseconds between global updates
 	attotime            m_last_update;          // last update time
 };
 
 
-<<<<<<< HEAD
-#endif  /* __SOUND_H__ */
-=======
 #endif // MAME_EMU_SOUND_H
->>>>>>> upstream/master

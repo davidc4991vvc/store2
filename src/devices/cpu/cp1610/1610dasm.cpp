@@ -4,19 +4,11 @@
 #include "debugger.h"
 #include "cp1610.h"
 
-<<<<<<< HEAD
-CPU_DISASSEMBLE( cp1610 )
-{
-	UINT16 oprom16[4]={ (oprom[0] << 8) | oprom[1], (oprom[2] << 8) | oprom[3], (oprom[4] << 8) | oprom[5], (oprom[6] << 8) | oprom[7] };
-	UINT16 op = oprom16[0]; UINT16 subop;
-	UINT16 ea, ea1, ea2;
-=======
 CPU_DISASSEMBLE(cp1610)
 {
 	uint16_t oprom16[4]={ static_cast<uint16_t>((oprom[0] << 8) | oprom[1]), static_cast<uint16_t>((oprom[2] << 8) | oprom[3]), static_cast<uint16_t>((oprom[4] << 8) | oprom[5]), static_cast<uint16_t>((oprom[6] << 8) | oprom[7]) };
 	uint16_t op = oprom16[0]; uint16_t subop;
 	uint16_t ea, ea1, ea2;
->>>>>>> upstream/master
 	unsigned size = 1;
 //  const char *sym, *sym2;
 
@@ -25,11 +17,7 @@ CPU_DISASSEMBLE(cp1610)
 	/* opcode  bitmask */
 	case 0x00: /* 0 000 000 000 */
 //      sym = set_ea_info( 0, 12, EA_UINT8, EA_ZPG_RD );
-<<<<<<< HEAD
-		sprintf(buffer, "HLT");
-=======
 		util::stream_format(stream, "HLT");
->>>>>>> upstream/master
 		break;
 	case 0x001: /* 0 000 000 001 */
 		subop = oprom16[1];
@@ -42,22 +30,14 @@ CPU_DISASSEMBLE(cp1610)
 			case 0x2a0: /* 1 010 100 xxx */
 			case 0x2a8: /* 1 010 101 xxx */
 			case 0x2b0: /* 1 010 110 xxx */
-<<<<<<< HEAD
-				sprintf(buffer,"MVI@ (R%01d), R%01d",(subop&0x38)>>3,subop&7);
-=======
 				util::stream_format(stream, "MVI@ (R%01d), R%01d",(subop&0x38)>>3,subop&7);
->>>>>>> upstream/master
 				size += 1;
 				break;
 			case 0x2b8: /* 1 010 111 xxx */
 				ea1 = oprom16[2];
 				ea2 = oprom16[3];
 				ea = ((ea2&0xff)<<8) | (ea1&0xff);
-<<<<<<< HEAD
-				sprintf(buffer,"MVII #%04X, R%01d",ea,subop&7);
-=======
 				util::stream_format(stream, "MVII #%04X, R%01d",ea,subop&7);
->>>>>>> upstream/master
 				size += 3;
 				break;
 			case 0x2c0: /* 1 011 000 xxx */
@@ -67,22 +47,14 @@ CPU_DISASSEMBLE(cp1610)
 			case 0x2e0: /* 1 011 100 xxx */
 			case 0x2e8: /* 1 011 101 xxx */
 			case 0x2f0: /* 1 011 110 xxx */
-<<<<<<< HEAD
-				sprintf(buffer,"ADD@ (R%01d), R%01d",(subop&0x38)>>3,subop&7);
-=======
 				util::stream_format(stream, "ADD@ (R%01d), R%01d",(subop&0x38)>>3,subop&7);
->>>>>>> upstream/master
 				size += 1;
 				break;
 			case 0x2f8: /* 1 011 111 xxx */
 				ea1 = oprom16[2];
 				ea2 = oprom16[3];
 				ea = ((ea2&0xff)<<8) | (ea1&0xff);
-<<<<<<< HEAD
-				sprintf(buffer,"ADDI #%04X, R%01d",ea,subop&7);
-=======
 				util::stream_format(stream, "ADDI #%04X, R%01d",ea,subop&7);
->>>>>>> upstream/master
 				size += 3;
 				break;
 			case 0x300: /* 1 100 000 xxx */
@@ -92,22 +64,14 @@ CPU_DISASSEMBLE(cp1610)
 			case 0x320: /* 1 100 100 xxx */
 			case 0x328: /* 1 100 101 xxx */
 			case 0x330: /* 1 100 110 xxx */
-<<<<<<< HEAD
-				sprintf(buffer,"SUB@ (R%01d), R%01d",(subop&0x38)>>3,subop&7);
-=======
 				util::stream_format(stream, "SUB@ (R%01d), R%01d",(subop&0x38)>>3,subop&7);
->>>>>>> upstream/master
 				size += 1;
 				break;
 			case 0x338: /* 1 100 111 xxx */
 				ea1 = oprom16[2];
 				ea2 = oprom16[3];
 				ea = ((ea2&0xff)<<8) | (ea1&0xff);
-<<<<<<< HEAD
-				sprintf(buffer,"SUBI #%04X, R%01d",ea,subop&7);
-=======
 				util::stream_format(stream, "SUBI #%04X, R%01d",ea,subop&7);
->>>>>>> upstream/master
 				size += 3;
 				break;
 			case 0x340: /* 1 101 000 xxx */
@@ -117,22 +81,14 @@ CPU_DISASSEMBLE(cp1610)
 			case 0x360: /* 1 101 100 xxx */
 			case 0x368: /* 1 101 101 xxx */
 			case 0x370: /* 1 101 110 xxx */
-<<<<<<< HEAD
-				sprintf(buffer,"CMP@ (R%01d), R%01d",(subop&0x38)>>3,subop&7);
-=======
 				util::stream_format(stream, "CMP@ (R%01d), R%01d",(subop&0x38)>>3,subop&7);
->>>>>>> upstream/master
 				size += 1;
 				break;
 			case 0x378: /* 1 101 111 xxx */
 				ea1 = oprom16[2];
 				ea2 = oprom16[3];
 				ea = ((ea2&0xff)<<8) | (ea1&0xff);
-<<<<<<< HEAD
-				sprintf(buffer,"CMPI #%04X, R%01d",ea,subop&7);
-=======
 				util::stream_format(stream, "CMPI #%04X, R%01d",ea,subop&7);
->>>>>>> upstream/master
 				size += 3;
 				break;
 			case 0x380: /* 1 110 000 xxx */
@@ -142,22 +98,14 @@ CPU_DISASSEMBLE(cp1610)
 			case 0x3a0: /* 1 110 100 xxx */
 			case 0x3a8: /* 1 110 101 xxx */
 			case 0x3b0: /* 1 110 110 xxx */
-<<<<<<< HEAD
-				sprintf(buffer,"AND@ (R%01d), R%01d",(subop&0x38)>>3,subop&7);
-=======
 				util::stream_format(stream, "AND@ (R%01d), R%01d",(subop&0x38)>>3,subop&7);
->>>>>>> upstream/master
 				size += 1;
 				break;
 			case 0x3b8: /* 1 110 111 xxx */
 				ea1 = oprom16[2];
 				ea2 = oprom16[3];
 				ea = ((ea2&0xff)<<8) | (ea1&0xff);
-<<<<<<< HEAD
-				sprintf(buffer,"ANDI #%04X, R%01d",ea,subop&7);
-=======
 				util::stream_format(stream, "ANDI #%04X, R%01d",ea,subop&7);
->>>>>>> upstream/master
 				size += 3;
 				break;
 			case 0x3c0: /* 1 111 000 xxx */
@@ -167,36 +115,18 @@ CPU_DISASSEMBLE(cp1610)
 			case 0x3e0: /* 1 111 100 xxx */
 			case 0x3e8: /* 1 111 101 xxx */
 			case 0x3f0: /* 1 111 110 xxx */
-<<<<<<< HEAD
-				sprintf(buffer,"XOR@ (R%01d), R%01d",(subop&0x38)>>3,subop&7);
-=======
 				util::stream_format(stream, "XOR@ (R%01d), R%01d",(subop&0x38)>>3,subop&7);
->>>>>>> upstream/master
 				size += 1;
 				break;
 			case 0x3f8: /* 1 111 111 xxx */
 				ea1 = oprom16[2];
 				ea2 = oprom16[3];
 				ea = ((ea2&0xff)<<8) | (ea1&0xff);
-<<<<<<< HEAD
-				sprintf(buffer,"XORI #%04X, R%01d",ea,subop&7);
-=======
 				util::stream_format(stream, "XORI #%04X, R%01d",ea,subop&7);
->>>>>>> upstream/master
 				size += 3;
 				break;
 			default:
 				size += 1;
-<<<<<<< HEAD
-				sprintf(buffer, "SDBD ????");
-		}
-		break;
-	case 0x002: /* 0 000 000 010 */
-		sprintf(buffer, "EIS");
-		break;
-	case 0x003: /* 0 000 000 011 */
-		sprintf(buffer, "DIS");
-=======
 				util::stream_format(stream, "SDBD ????");
 		}
 		break;
@@ -205,7 +135,6 @@ CPU_DISASSEMBLE(cp1610)
 		break;
 	case 0x003: /* 0 000 000 011 */
 		util::stream_format(stream, "DIS");
->>>>>>> upstream/master
 		break;
 	case 0x004: /* 0 000 000 100 */
 		size += 2;
@@ -218,18 +147,6 @@ CPU_DISASSEMBLE(cp1610)
 			switch(ea1 & 0x03)
 			{
 				case 0:
-<<<<<<< HEAD
-					sprintf(buffer, "J    %04X",ea);
-					break;
-				case 1:
-					sprintf(buffer, "JE   %04X",ea);
-					break;
-				case 2:
-					sprintf(buffer, "JD   %04X",ea);
-					break;
-				case 3:
-					sprintf(buffer, "????");
-=======
 					util::stream_format(stream, "J    %04X",ea);
 					break;
 				case 1:
@@ -240,7 +157,6 @@ CPU_DISASSEMBLE(cp1610)
 					break;
 				case 3:
 					util::stream_format(stream, "????");
->>>>>>> upstream/master
 					break;
 			}
 		}
@@ -250,18 +166,6 @@ CPU_DISASSEMBLE(cp1610)
 			switch(ea1 & 0x03)
 			{
 				case 0:
-<<<<<<< HEAD
-					sprintf(buffer, "JSR  R%01d,%04X",((ea1&0x300)>>8)+4,ea);
-					break;
-				case 1:
-					sprintf(buffer, "JSRE R%01d,%04X",((ea1&0x300)>>8)+4,ea);
-					break;
-				case 2:
-					sprintf(buffer, "JSRD R%01d,%04X",((ea1&0x300)>>8)+4,ea);
-					break;
-				case 3:
-					sprintf(buffer, "????");
-=======
 					util::stream_format(stream, "JSR  R%01d,%04X",((ea1&0x300)>>8)+4,ea);
 					break;
 				case 1:
@@ -272,21 +176,11 @@ CPU_DISASSEMBLE(cp1610)
 					break;
 				case 3:
 					util::stream_format(stream, "????");
->>>>>>> upstream/master
 					break;
 			}
 		}
 		break;
 	case 0x005: /* 0 000 000 101 */
-<<<<<<< HEAD
-		sprintf(buffer, "TCI");
-		break;
-	case 0x006: /* 0 000 000 110 */
-		sprintf(buffer, "CLRC");
-		break;
-	case 0x007: /* 0 000 000 111 */
-		sprintf(buffer, "SETC");
-=======
 		util::stream_format(stream, "TCI");
 		break;
 	case 0x006: /* 0 000 000 110 */
@@ -294,7 +188,6 @@ CPU_DISASSEMBLE(cp1610)
 		break;
 	case 0x007: /* 0 000 000 111 */
 		util::stream_format(stream, "SETC");
->>>>>>> upstream/master
 		break;
 	case 0x008: /* 0 000 001 000 */
 	case 0x009: /* 0 000 001 001 */
@@ -304,11 +197,7 @@ CPU_DISASSEMBLE(cp1610)
 	case 0x00d: /* 0 000 001 101 */
 	case 0x00e: /* 0 000 001 110 */
 	case 0x00f: /* 0 000 001 111 */
-<<<<<<< HEAD
-		sprintf(buffer, "INCR R%01d",op&0x7);
-=======
 		util::stream_format(stream, "INCR R%01d",op&0x7);
->>>>>>> upstream/master
 		break;
 	case 0x010: /* 0 000 010 000 */
 	case 0x011: /* 0 000 010 001 */
@@ -318,11 +207,7 @@ CPU_DISASSEMBLE(cp1610)
 	case 0x015: /* 0 000 010 101 */
 	case 0x016: /* 0 000 010 110 */
 	case 0x017: /* 0 000 010 111 */
-<<<<<<< HEAD
-		sprintf(buffer, "DECR R%01d",op&0x7);
-=======
 		util::stream_format(stream, "DECR R%01d",op&0x7);
->>>>>>> upstream/master
 		break;
 	case 0x018: /* 0 000 011 000 */
 	case 0x019: /* 0 000 011 001 */
@@ -332,11 +217,7 @@ CPU_DISASSEMBLE(cp1610)
 	case 0x01d: /* 0 000 011 101 */
 	case 0x01e: /* 0 000 011 110 */
 	case 0x01f: /* 0 000 011 111 */
-<<<<<<< HEAD
-		sprintf(buffer, "COMR R%01d",op&0x7);
-=======
 		util::stream_format(stream, "COMR R%01d",op&0x7);
->>>>>>> upstream/master
 		break;
 	case 0x020: /* 0 000 100 000 */
 	case 0x021: /* 0 000 100 001 */
@@ -346,11 +227,7 @@ CPU_DISASSEMBLE(cp1610)
 	case 0x025: /* 0 000 100 101 */
 	case 0x026: /* 0 000 100 110 */
 	case 0x027: /* 0 000 100 111 */
-<<<<<<< HEAD
-		sprintf(buffer, "NEGR R%01d",op&0x7);
-=======
 		util::stream_format(stream, "NEGR R%01d",op&0x7);
->>>>>>> upstream/master
 		break;
 	case 0x028: /* 0 000 101 000 */
 	case 0x029: /* 0 000 101 001 */
@@ -360,27 +237,12 @@ CPU_DISASSEMBLE(cp1610)
 	case 0x02d: /* 0 000 101 101 */
 	case 0x02e: /* 0 000 101 110 */
 	case 0x02f: /* 0 000 101 111 */
-<<<<<<< HEAD
-		sprintf(buffer, "ADCR R%01d",op&0x7);
-=======
 		util::stream_format(stream, "ADCR R%01d",op&0x7);
->>>>>>> upstream/master
 		break;
 	case 0x030: /* 0 000 110 000 */
 	case 0x031: /* 0 000 110 001 */
 	case 0x032: /* 0 000 110 010 */
 	case 0x033: /* 0 000 110 011 */
-<<<<<<< HEAD
-		sprintf(buffer, "GSWD R%01d",op&0x3);
-		break;
-	case 0x034: /* 0 000 110 100 */
-	case 0x035: /* 0 000 110 101 */
-		sprintf(buffer, "NOP (%01d)",op&0x1); //???
-		break;
-	case 0x036: /* 0 000 110 110 */
-	case 0x037: /* 0 000 110 111 */
-		sprintf(buffer, "SIN");
-=======
 		util::stream_format(stream, "GSWD R%01d",op&0x3);
 		break;
 	case 0x034: /* 0 000 110 100 */
@@ -390,7 +252,6 @@ CPU_DISASSEMBLE(cp1610)
 	case 0x036: /* 0 000 110 110 */
 	case 0x037: /* 0 000 110 111 */
 		util::stream_format(stream, "SIN");
->>>>>>> upstream/master
 		break;
 	case 0x038: /* 0 000 111 000 */
 	case 0x039: /* 0 000 111 001 */
@@ -400,171 +261,103 @@ CPU_DISASSEMBLE(cp1610)
 	case 0x03d: /* 0 000 111 101 */
 	case 0x03e: /* 0 000 111 110 */
 	case 0x03f: /* 0 000 111 111 */
-<<<<<<< HEAD
-		sprintf(buffer, "RSWD R%01d",op&0x7);
-=======
 		util::stream_format(stream, "RSWD R%01d",op&0x7);
->>>>>>> upstream/master
 		break;
 	case 0x040: /* 0 001 000 000 */
 	case 0x041: /* 0 001 000 001 */
 	case 0x042: /* 0 001 000 010 */
 	case 0x043: /* 0 001 000 011 */
-<<<<<<< HEAD
-		sprintf(buffer, "SWAP R%01d,1",op&0x3);
-=======
 		util::stream_format(stream, "SWAP R%01d,1",op&0x3);
->>>>>>> upstream/master
 		break;
 	case 0x044: /* 0 001 000 100 */
 	case 0x045: /* 0 001 000 101 */
 	case 0x046: /* 0 001 000 110 */
 	case 0x047: /* 0 001 000 111 */
-<<<<<<< HEAD
-		sprintf(buffer, "SWAP R%01d,2",op&0x3);
-=======
 		util::stream_format(stream, "SWAP R%01d,2",op&0x3);
->>>>>>> upstream/master
 		break;
 	case 0x048: /* 0 001 001 000 */
 	case 0x049: /* 0 001 001 001 */
 	case 0x04a: /* 0 001 001 010 */
 	case 0x04b: /* 0 001 001 011 */
-<<<<<<< HEAD
-		sprintf(buffer, "SLL  R%01d,1",op&0x3);
-=======
 		util::stream_format(stream, "SLL  R%01d,1",op&0x3);
->>>>>>> upstream/master
 		break;
 	case 0x04c: /* 0 001 001 100 */
 	case 0x04d: /* 0 001 001 101 */
 	case 0x04e: /* 0 001 001 110 */
 	case 0x04f: /* 0 001 001 111 */
-<<<<<<< HEAD
-		sprintf(buffer, "SLL  R%01d,2",op&0x3);
-=======
 		util::stream_format(stream, "SLL  R%01d,2",op&0x3);
->>>>>>> upstream/master
 		break;
 	case 0x050: /* 0 001 010 000 */
 	case 0x051: /* 0 001 010 001 */
 	case 0x052: /* 0 001 010 010 */
 	case 0x053: /* 0 001 010 011 */
-<<<<<<< HEAD
-		sprintf(buffer, "RLC  R%01d,1",op&0x3);
-=======
 		util::stream_format(stream, "RLC  R%01d,1",op&0x3);
->>>>>>> upstream/master
 		break;
 	case 0x054: /* 0 001 010 100 */
 	case 0x055: /* 0 001 010 101 */
 	case 0x056: /* 0 001 010 110 */
 	case 0x057: /* 0 001 010 111 */
-<<<<<<< HEAD
-		sprintf(buffer, "RLC  R%01d,2",op&0x3);
-=======
 		util::stream_format(stream, "RLC  R%01d,2",op&0x3);
->>>>>>> upstream/master
 		break;
 	case 0x058: /* 0 001 011 000 */
 	case 0x059: /* 0 001 011 001 */
 	case 0x05a: /* 0 001 011 010 */
 	case 0x05b: /* 0 001 011 011 */
-<<<<<<< HEAD
-		sprintf(buffer, "SLLC R%01d,1",op&0x3);
-=======
 		util::stream_format(stream, "SLLC R%01d,1",op&0x3);
->>>>>>> upstream/master
 		break;
 	case 0x05c: /* 0 001 011 100 */
 	case 0x05d: /* 0 001 011 101 */
 	case 0x05e: /* 0 001 011 110 */
 	case 0x05f: /* 0 001 011 111 */
-<<<<<<< HEAD
-		sprintf(buffer, "SLLC R%01d,2",op&0x3);
-=======
 		util::stream_format(stream, "SLLC R%01d,2",op&0x3);
->>>>>>> upstream/master
 		break;
 	case 0x060: /* 0 001 100 000 */
 	case 0x061: /* 0 001 100 001 */
 	case 0x062: /* 0 001 100 010 */
 	case 0x063: /* 0 001 100 011 */
-<<<<<<< HEAD
-		sprintf(buffer, "SLR  R%01d,1",op&0x3);
-=======
 		util::stream_format(stream, "SLR  R%01d,1",op&0x3);
->>>>>>> upstream/master
 		break;
 	case 0x064: /* 0 001 100 100 */
 	case 0x065: /* 0 001 100 101 */
 	case 0x066: /* 0 001 100 110 */
 	case 0x067: /* 0 001 100 111 */
-<<<<<<< HEAD
-		sprintf(buffer, "SLR  R%01d,2",op&0x3);
-=======
 		util::stream_format(stream, "SLR  R%01d,2",op&0x3);
->>>>>>> upstream/master
 		break;
 	case 0x068: /* 0 001 101 000 */
 	case 0x069: /* 0 001 101 001 */
 	case 0x06a: /* 0 001 101 010 */
 	case 0x06b: /* 0 001 101 011 */
-<<<<<<< HEAD
-		sprintf(buffer, "SAR  R%01d,1",op&0x3);
-=======
 		util::stream_format(stream, "SAR  R%01d,1",op&0x3);
->>>>>>> upstream/master
 		break;
 	case 0x06c: /* 0 001 101 100 */
 	case 0x06d: /* 0 001 101 101 */
 	case 0x06e: /* 0 001 101 110 */
 	case 0x06f: /* 0 001 101 111 */
-<<<<<<< HEAD
-		sprintf(buffer, "SAR  R%01d,2",op&0x3);
-=======
 		util::stream_format(stream, "SAR  R%01d,2",op&0x3);
->>>>>>> upstream/master
 		break;
 	case 0x070: /* 0 001 110 000 */
 	case 0x071: /* 0 001 110 001 */
 	case 0x072: /* 0 001 110 010 */
 	case 0x073: /* 0 001 110 011 */
-<<<<<<< HEAD
-		sprintf(buffer, "RRC  R%01d,1",op&0x3);
-=======
 		util::stream_format(stream, "RRC  R%01d,1",op&0x3);
->>>>>>> upstream/master
 		break;
 	case 0x074: /* 0 001 110 100 */
 	case 0x075: /* 0 001 110 101 */
 	case 0x076: /* 0 001 110 110 */
 	case 0x077: /* 0 001 110 111 */
-<<<<<<< HEAD
-		sprintf(buffer, "RRC  R%01d,2",op&0x3);
-=======
 		util::stream_format(stream, "RRC  R%01d,2",op&0x3);
->>>>>>> upstream/master
 		break;
 	case 0x078: /* 0 001 111 000 */
 	case 0x079: /* 0 001 111 001 */
 	case 0x07a: /* 0 001 111 010 */
 	case 0x07b: /* 0 001 111 011 */
-<<<<<<< HEAD
-		sprintf(buffer, "SARC R%01d,1",op&0x3);
-=======
 		util::stream_format(stream, "SARC R%01d,1",op&0x3);
->>>>>>> upstream/master
 		break;
 	case 0x07c: /* 0 001 111 100 */
 	case 0x07d: /* 0 001 111 101 */
 	case 0x07e: /* 0 001 111 110 */
 	case 0x07f: /* 0 001 111 111 */
-<<<<<<< HEAD
-		sprintf(buffer, "SARC R%01d,2",op&0x3);
-=======
 		util::stream_format(stream, "SARC R%01d,2",op&0x3);
->>>>>>> upstream/master
 		break;
 	case 0x080: /* 0 010 000 000 */
 	case 0x089: /* 0 010 001 001 */
@@ -574,11 +367,7 @@ CPU_DISASSEMBLE(cp1610)
 	case 0x0ad: /* 0 010 101 101 */
 	case 0x0b6: /* 0 010 110 110 */
 	case 0x0bf: /* 0 010 111 111 */
-<<<<<<< HEAD
-		sprintf(buffer, "TSTR R%01d",op&0x7);
-=======
 		util::stream_format(stream, "TSTR R%01d",op&0x7);
->>>>>>> upstream/master
 		break;
 	case 0x087: /* 0 010 000 111 */
 	case 0x08f: /* 0 010 001 111 */
@@ -587,11 +376,7 @@ CPU_DISASSEMBLE(cp1610)
 	case 0x0a7: /* 0 010 100 111 */
 	case 0x0af: /* 0 010 101 111 */
 	case 0x0b7: /* 0 010 110 111 */
-<<<<<<< HEAD
-		sprintf(buffer, "JR   R%01d",(op&0x38)>>3);
-=======
 		util::stream_format(stream, "JR   R%01d",(op&0x38)>>3);
->>>>>>> upstream/master
 		break;
 	case 0x081: /* 0 010 000 001 */
 	case 0x082: /* 0 010 000 010 */
@@ -642,11 +427,7 @@ CPU_DISASSEMBLE(cp1610)
 	case 0x0bc: /* 0 010 111 100 */
 	case 0x0bd: /* 0 010 111 101 */
 	case 0x0be: /* 0 010 111 110 */
-<<<<<<< HEAD
-		sprintf(buffer, "MOVR R%01d,R%01d",(op&0x38)>>3,op&0x7);
-=======
 		util::stream_format(stream, "MOVR R%01d,R%01d",(op&0x38)>>3,op&0x7);
->>>>>>> upstream/master
 		break;
 	case 0x0c0: /* 0 011 000 000 */
 	case 0x0c1: /* 0 011 000 001 */
@@ -712,11 +493,7 @@ CPU_DISASSEMBLE(cp1610)
 	case 0x0fd: /* 0 011 111 101 */
 	case 0x0fe: /* 0 011 111 110 */
 	case 0x0ff: /* 0 011 111 111 */
-<<<<<<< HEAD
-		sprintf(buffer, "ADDR R%01d,R%01d",(op&0x38)>>3,op&7);
-=======
 		util::stream_format(stream, "ADDR R%01d,R%01d",(op&0x38)>>3,op&7);
->>>>>>> upstream/master
 		break;
 	case 0x100: /* 0 100 000 000 */
 	case 0x101: /* 0 100 000 001 */
@@ -782,11 +559,7 @@ CPU_DISASSEMBLE(cp1610)
 	case 0x13d: /* 0 100 111 101 */
 	case 0x13e: /* 0 100 111 110 */
 	case 0x13f: /* 0 100 111 111 */
-<<<<<<< HEAD
-		sprintf(buffer, "SUBR R%01d,R%01d",(op&0x38)>>3,op&7);
-=======
 		util::stream_format(stream, "SUBR R%01d,R%01d",(op&0x38)>>3,op&7);
->>>>>>> upstream/master
 		break;
 	case 0x140: /* 0 101 000 000 */
 	case 0x141: /* 0 101 000 001 */
@@ -852,11 +625,7 @@ CPU_DISASSEMBLE(cp1610)
 	case 0x17d: /* 0 101 111 101 */
 	case 0x17e: /* 0 101 111 110 */
 	case 0x17f: /* 0 101 111 111 */
-<<<<<<< HEAD
-		sprintf(buffer, "CMPR R%01d,R%01d",(op&0x38)>>3,op&7);
-=======
 		util::stream_format(stream, "CMPR R%01d,R%01d",(op&0x38)>>3,op&7);
->>>>>>> upstream/master
 		break;
 	case 0x180: /* 0 110 000 000 */
 	case 0x181: /* 0 110 000 001 */
@@ -922,11 +691,7 @@ CPU_DISASSEMBLE(cp1610)
 	case 0x1bd: /* 0 110 111 101 */
 	case 0x1be: /* 0 110 111 110 */
 	case 0x1bf: /* 0 110 111 111 */
-<<<<<<< HEAD
-		sprintf(buffer, "ANDR R%01d,R%01d",(op&0x38)>>3,op&7);
-=======
 		util::stream_format(stream, "ANDR R%01d,R%01d",(op&0x38)>>3,op&7);
->>>>>>> upstream/master
 		break;
 	case 0x1c0: /* 0 111 000 000 */
 	case 0x1c9: /* 0 111 001 001 */
@@ -936,11 +701,7 @@ CPU_DISASSEMBLE(cp1610)
 	case 0x1ed: /* 0 111 101 101 */
 	case 0x1f6: /* 0 111 110 110 */
 	case 0x1ff: /* 0 111 111 111 */
-<<<<<<< HEAD
-		sprintf(buffer, "CLRR R%01d",op&7);
-=======
 		util::stream_format(stream, "CLRR R%01d",op&7);
->>>>>>> upstream/master
 		break;
 	case 0x1c1: /* 0 111 000 001 */
 	case 0x1c2: /* 0 111 000 010 */
@@ -998,155 +759,87 @@ CPU_DISASSEMBLE(cp1610)
 	case 0x1fc: /* 0 111 111 100 */
 	case 0x1fd: /* 0 111 111 101 */
 	case 0x1fe: /* 0 111 111 110 */
-<<<<<<< HEAD
-		sprintf(buffer, "XORR R%01d,R%01d",(op&0x38)>>3,op&7);
-=======
 		util::stream_format(stream, "XORR R%01d,R%01d",(op&0x38)>>3,op&7);
->>>>>>> upstream/master
 		break;
 	case 0x200: /* 1 000 000 000 */
 		size += 1;
 		ea = oprom16[1];
-<<<<<<< HEAD
-		sprintf(buffer, "B    %04X",pc+2+ea);
-=======
 		util::stream_format(stream, "B    %04X",pc+2+ea);
->>>>>>> upstream/master
 		break;
 	case 0x201: /* 1 000 000 001 */
 		size += 1;
 		ea = oprom16[1];
-<<<<<<< HEAD
-		sprintf(buffer, "BC   %04X",pc+2+ea);
-=======
 		util::stream_format(stream, "BC   %04X",pc+2+ea);
->>>>>>> upstream/master
 		break;
 	case 0x202: /* 1 000 000 010 */
 		size += 1;
 		ea = oprom16[1];
-<<<<<<< HEAD
-		sprintf(buffer, "BOV  %04X",pc+2+ea);
-=======
 		util::stream_format(stream, "BOV  %04X",pc+2+ea);
->>>>>>> upstream/master
 		break;
 	case 0x203: /* 1 000 000 011 */
 		size += 1;
 		ea = oprom16[1];
-<<<<<<< HEAD
-		sprintf(buffer, "BPL  %04X",pc+2+ea);
-=======
 		util::stream_format(stream, "BPL  %04X",pc+2+ea);
->>>>>>> upstream/master
 		break;
 	case 0x204: /* 1 000 000 100 */
 		size += 1;
 		ea = oprom16[1];
-<<<<<<< HEAD
-		sprintf(buffer, "BZE  %04X",pc+2+ea);
-=======
 		util::stream_format(stream, "BZE  %04X",pc+2+ea);
->>>>>>> upstream/master
 		break;
 	case 0x205: /* 1 000 000 101 */
 		size += 1;
 		ea = oprom16[1];
-<<<<<<< HEAD
-		sprintf(buffer, "BLT  %04X",pc+2+ea);
-=======
 		util::stream_format(stream, "BLT  %04X",pc+2+ea);
->>>>>>> upstream/master
 		break;
 	case 0x206: /* 1 000 000 110 */
 		size += 1;
 		ea = oprom16[1];
-<<<<<<< HEAD
-		sprintf(buffer, "BLE  %04X",pc+2+ea);
-=======
 		util::stream_format(stream, "BLE  %04X",pc+2+ea);
->>>>>>> upstream/master
 		break;
 	case 0x207: /* 1 000 000 111 */
 		size += 1;
 		ea = oprom16[1];
-<<<<<<< HEAD
-		sprintf(buffer, "BUSC %04X",pc+2+ea);
-=======
 		util::stream_format(stream, "BUSC %04X",pc+2+ea);
->>>>>>> upstream/master
 		break;
 	case 0x208: /* 1 000 001 000 */
 		size += 1;
 		ea = oprom16[1];
-<<<<<<< HEAD
-		sprintf(buffer, "NOPP %04X",pc+2+ea);
-=======
 		util::stream_format(stream, "NOPP %04X",pc+2+ea);
->>>>>>> upstream/master
 		break;
 	case 0x209: /* 1 000 001 001 */
 		size += 1;
 		ea = oprom16[1];
-<<<<<<< HEAD
-		sprintf(buffer, "BNC  %04X",pc+2+ea);
-=======
 		util::stream_format(stream, "BNC  %04X",pc+2+ea);
->>>>>>> upstream/master
 		break;
 	case 0x20a: /* 1 000 001 010 */
 		size += 1;
 		ea = oprom16[1];
-<<<<<<< HEAD
-		sprintf(buffer, "BNOV %04X",pc+2+ea);
-=======
 		util::stream_format(stream, "BNOV %04X",pc+2+ea);
->>>>>>> upstream/master
 		break;
 	case 0x20b: /* 1 000 001 011 */
 		size += 1;
 		ea = oprom16[1];
-<<<<<<< HEAD
-		sprintf(buffer, "BMI  %04X",pc+2+ea);
-=======
 		util::stream_format(stream, "BMI  %04X",pc+2+ea);
->>>>>>> upstream/master
 		break;
 	case 0x20c: /* 1 000 001 100 */
 		size += 1;
 		ea = oprom16[1];
-<<<<<<< HEAD
-		sprintf(buffer, "BNZE %04X",pc+2+ea);
-=======
 		util::stream_format(stream, "BNZE %04X",pc+2+ea);
->>>>>>> upstream/master
 		break;
 	case 0x20d: /* 1 000 001 101 */
 		size += 1;
 		ea = oprom16[1];
-<<<<<<< HEAD
-		sprintf(buffer, "BGE  %04X",pc+2+ea);
-=======
 		util::stream_format(stream, "BGE  %04X",pc+2+ea);
->>>>>>> upstream/master
 		break;
 	case 0x20e: /* 1 000 001 110 */
 		size += 1;
 		ea = oprom16[1];
-<<<<<<< HEAD
-		sprintf(buffer, "BGT  %04X",pc+2+ea);
-=======
 		util::stream_format(stream, "BGT  %04X",pc+2+ea);
->>>>>>> upstream/master
 		break;
 	case 0x20f: /* 1 000 001 111 */
 		size += 1;
 		ea = oprom16[1];
-<<<<<<< HEAD
-		sprintf(buffer, "BESC %04X",pc+2+ea);
-=======
 		util::stream_format(stream, "BESC %04X",pc+2+ea);
->>>>>>> upstream/master
 		break;
 	case 0x210: /* 1 000 010 000 */
 	case 0x211: /* 1 000 010 001 */
@@ -1166,155 +859,87 @@ CPU_DISASSEMBLE(cp1610)
 	case 0x21f: /* 1 000 011 111 */
 		size += 1;
 		ea = oprom16[1];
-<<<<<<< HEAD
-		sprintf(buffer, "BEXT %04X,%01X",pc+2+ea,op&0x0f);
-=======
 		util::stream_format(stream, "BEXT %04X,%01X",pc+2+ea,op&0x0f);
->>>>>>> upstream/master
 		break;
 	case 0x220: /* 1 000 100 000 */
 		size += 1;
 		ea = oprom16[1];
-<<<<<<< HEAD
-		sprintf(buffer, "B    %04X",pc+1-ea);
-=======
 		util::stream_format(stream, "B    %04X",pc+1-ea);
->>>>>>> upstream/master
 		break;
 	case 0x221: /* 1 000 100 001 */
 		size += 1;
 		ea = oprom16[1];
-<<<<<<< HEAD
-		sprintf(buffer, "BC   %04X",pc+1-ea);
-=======
 		util::stream_format(stream, "BC   %04X",pc+1-ea);
->>>>>>> upstream/master
 		break;
 	case 0x222: /* 1 000 100 010 */
 		size += 1;
 		ea = oprom16[1];
-<<<<<<< HEAD
-		sprintf(buffer, "BOV  %04X",pc+1-ea);
-=======
 		util::stream_format(stream, "BOV  %04X",pc+1-ea);
->>>>>>> upstream/master
 		break;
 	case 0x223: /* 1 000 100 011 */
 		size += 1;
 		ea = oprom16[1];
-<<<<<<< HEAD
-		sprintf(buffer, "BPL  %04X",pc+1-ea);
-=======
 		util::stream_format(stream, "BPL  %04X",pc+1-ea);
->>>>>>> upstream/master
 		break;
 	case 0x224: /* 1 000 100 100 */
 		size += 1;
 		ea = oprom16[1];
-<<<<<<< HEAD
-		sprintf(buffer, "BZE  %04X",pc+1-ea);
-=======
 		util::stream_format(stream, "BZE  %04X",pc+1-ea);
->>>>>>> upstream/master
 		break;
 	case 0x225: /* 1 000 100 101 */
 		size += 1;
 		ea = oprom16[1];
-<<<<<<< HEAD
-		sprintf(buffer, "BLT  %04X",pc+1-ea);
-=======
 		util::stream_format(stream, "BLT  %04X",pc+1-ea);
->>>>>>> upstream/master
 		break;
 	case 0x226: /* 1 000 100 110 */
 		size += 1;
 		ea = oprom16[1];
-<<<<<<< HEAD
-		sprintf(buffer, "BLE  %04X",pc+1-ea);
-=======
 		util::stream_format(stream, "BLE  %04X",pc+1-ea);
->>>>>>> upstream/master
 		break;
 	case 0x227: /* 1 000 100 111 */
 		size += 1;
 		ea = oprom16[1];
-<<<<<<< HEAD
-		sprintf(buffer, "BUSC %04X",pc+1-ea);
-=======
 		util::stream_format(stream, "BUSC %04X",pc+1-ea);
->>>>>>> upstream/master
 		break;
 	case 0x228: /* 1 000 101 000 */
 		size += 1;
 		ea = oprom16[1];
-<<<<<<< HEAD
-		sprintf(buffer, "NOPP %04X",pc+1-ea);
-=======
 		util::stream_format(stream, "NOPP %04X",pc+1-ea);
->>>>>>> upstream/master
 		break;
 	case 0x229: /* 1 000 101 001 */
 		size += 1;
 		ea = oprom16[1];
-<<<<<<< HEAD
-		sprintf(buffer, "BNC  %04X",pc+1-ea);
-=======
 		util::stream_format(stream, "BNC  %04X",pc+1-ea);
->>>>>>> upstream/master
 		break;
 	case 0x22a: /* 1 000 101 010 */
 		size += 1;
 		ea = oprom16[1];
-<<<<<<< HEAD
-		sprintf(buffer, "BNOV %04X",pc+1-ea);
-=======
 		util::stream_format(stream, "BNOV %04X",pc+1-ea);
->>>>>>> upstream/master
 		break;
 	case 0x22b: /* 1 000 101 011 */
 		size += 1;
 		ea = oprom16[1];
-<<<<<<< HEAD
-		sprintf(buffer, "BMI  %04X",pc+1-ea);
-=======
 		util::stream_format(stream, "BMI  %04X",pc+1-ea);
->>>>>>> upstream/master
 		break;
 	case 0x22c: /* 1 000 101 100 */
 		size += 1;
 		ea = oprom16[1];
-<<<<<<< HEAD
-		sprintf(buffer, "BNZE %04X",pc+1-ea);
-=======
 		util::stream_format(stream, "BNZE %04X",pc+1-ea);
->>>>>>> upstream/master
 		break;
 	case 0x22d: /* 1 000 101 101 */
 		size += 1;
 		ea = oprom16[1];
-<<<<<<< HEAD
-		sprintf(buffer, "BGE  %04X",pc+1-ea);
-=======
 		util::stream_format(stream, "BGE  %04X",pc+1-ea);
->>>>>>> upstream/master
 		break;
 	case 0x22e: /* 1 000 101 110 */
 		size += 1;
 		ea = oprom16[1];
-<<<<<<< HEAD
-		sprintf(buffer, "BGT  %04X",pc+1-ea);
-=======
 		util::stream_format(stream, "BGT  %04X",pc+1-ea);
->>>>>>> upstream/master
 		break;
 	case 0x22f: /* 1 000 101 111 */
 		size += 1;
 		ea = oprom16[1];
-<<<<<<< HEAD
-		sprintf(buffer, "BESC %04X",pc+1-ea);
-=======
 		util::stream_format(stream, "BESC %04X",pc+1-ea);
->>>>>>> upstream/master
 		break;
 	case 0x230: /* 1 000 110 000 */
 	case 0x231: /* 1 000 110 001 */
@@ -1334,11 +959,7 @@ CPU_DISASSEMBLE(cp1610)
 	case 0x23f: /* 1 000 111 111 */
 		size += 1;
 		ea = oprom16[1];
-<<<<<<< HEAD
-		sprintf(buffer, "BEXT %04X,%01X",pc+1-ea,op&0x0f);
-=======
 		util::stream_format(stream, "BEXT %04X,%01X",pc+1-ea,op&0x0f);
->>>>>>> upstream/master
 		break;
 	case 0x240: /* 1 001 000 000 */
 	case 0x241: /* 1 001 000 001 */
@@ -1350,11 +971,7 @@ CPU_DISASSEMBLE(cp1610)
 	case 0x247: /* 1 001 000 111 */
 		size += 1;
 		ea = oprom16[1];
-<<<<<<< HEAD
-		sprintf(buffer, "MVO  R%01d,(%04X)",op&0x7,ea);
-=======
 		util::stream_format(stream, "MVO  R%01d,(%04X)",op&0x7,ea);
->>>>>>> upstream/master
 		break;
 	case 0x248: /* 1 001 001 000 */
 	case 0x249: /* 1 001 001 001 */
@@ -1396,11 +1013,7 @@ CPU_DISASSEMBLE(cp1610)
 	case 0x26d: /* 1 001 101 101 */
 	case 0x26e: /* 1 001 101 110 */
 	case 0x26f: /* 1 001 101 111 */
-<<<<<<< HEAD
-		sprintf(buffer, "MVO@ R%01d,(R%01d)",op&0x7,(op&0x38)>>3);
-=======
 		util::stream_format(stream, "MVO@ R%01d,(R%01d)",op&0x7,(op&0x38)>>3);
->>>>>>> upstream/master
 		break;
 	case 0x270: /* 1 001 110 000 */
 	case 0x271: /* 1 001 110 001 */
@@ -1410,11 +1023,7 @@ CPU_DISASSEMBLE(cp1610)
 	case 0x275: /* 1 001 110 101 */
 	case 0x276: /* 1 001 110 110 */
 	case 0x277: /* 1 001 110 111 */
-<<<<<<< HEAD
-		sprintf(buffer, "PSHR R%01d",op&0x7);
-=======
 		util::stream_format(stream, "PSHR R%01d",op&0x7);
->>>>>>> upstream/master
 		break;
 	case 0x278: /* 1 001 111 000 */
 	case 0x279: /* 1 001 111 001 */
@@ -1425,11 +1034,7 @@ CPU_DISASSEMBLE(cp1610)
 	case 0x27e: /* 1 001 111 110 */
 	case 0x27f: /* 1 001 111 111 */
 		size += 1;
-<<<<<<< HEAD
-		sprintf(buffer, "MVOI R%01d,(%04X)",op&0x7,pc+1);
-=======
 		util::stream_format(stream, "MVOI R%01d,(%04X)",op&0x7,pc+1);
->>>>>>> upstream/master
 		break;
 	case 0x280: /* 1 010 000 000 */
 	case 0x281: /* 1 010 000 001 */
@@ -1441,11 +1046,7 @@ CPU_DISASSEMBLE(cp1610)
 	case 0x287: /* 1 010 000 111 */
 		size += 1;
 		ea = oprom16[1];
-<<<<<<< HEAD
-		sprintf(buffer, "MVI  (%04X),R%01d",ea,op&0x7);
-=======
 		util::stream_format(stream, "MVI  (%04X),R%01d",ea,op&0x7);
->>>>>>> upstream/master
 		break;
 	case 0x288: /* 1 010 001 000 */
 	case 0x289: /* 1 010 001 001 */
@@ -1487,11 +1088,7 @@ CPU_DISASSEMBLE(cp1610)
 	case 0x2ad: /* 1 010 101 101 */
 	case 0x2ae: /* 1 010 101 110 */
 	case 0x2af: /* 1 010 101 111 */
-<<<<<<< HEAD
-		sprintf(buffer, "MVI@ (R%01d),R%01d",(op&0x38)>>3,op&0x7);
-=======
 		util::stream_format(stream, "MVI@ (R%01d),R%01d",(op&0x38)>>3,op&0x7);
->>>>>>> upstream/master
 		break;
 	case 0x2b0: /* 1 010 110 000 */
 	case 0x2b1: /* 1 010 110 001 */
@@ -1501,11 +1098,7 @@ CPU_DISASSEMBLE(cp1610)
 	case 0x2b5: /* 1 010 110 101 */
 	case 0x2b6: /* 1 010 110 110 */
 	case 0x2b7: /* 1 010 110 111 */
-<<<<<<< HEAD
-		sprintf(buffer, "PULR R%01d",op&0x7);
-=======
 		util::stream_format(stream, "PULR R%01d",op&0x7);
->>>>>>> upstream/master
 		break;
 	case 0x2b8: /* 1 010 111 000 */
 	case 0x2b9: /* 1 010 111 001 */
@@ -1517,11 +1110,7 @@ CPU_DISASSEMBLE(cp1610)
 	case 0x2bf: /* 1 010 111 111 */
 		size += 1;
 		ea = oprom16[1];
-<<<<<<< HEAD
-		sprintf(buffer, "MVII #%04X,R%01d",ea,op&0x7);
-=======
 		util::stream_format(stream, "MVII #%04X,R%01d",ea,op&0x7);
->>>>>>> upstream/master
 		break;
 	case 0x2c0: /* 1 011 010 000 */
 	case 0x2c1: /* 1 011 010 001 */
@@ -1533,11 +1122,7 @@ CPU_DISASSEMBLE(cp1610)
 	case 0x2c7: /* 1 011 010 111 */
 		size += 1;
 		ea = oprom16[1];
-<<<<<<< HEAD
-		sprintf(buffer, "ADD  (%04X),R%01d",ea,op&0x7);
-=======
 		util::stream_format(stream, "ADD  (%04X),R%01d",ea,op&0x7);
->>>>>>> upstream/master
 		break;
 	case 0x2c8: /* 1 011 001 000 */
 	case 0x2c9: /* 1 011 001 001 */
@@ -1587,11 +1172,7 @@ CPU_DISASSEMBLE(cp1610)
 	case 0x2f5: /* 1 011 110 101 */
 	case 0x2f6: /* 1 011 110 110 */
 	case 0x2f7: /* 1 011 110 111 */
-<<<<<<< HEAD
-		sprintf(buffer, "ADD@ (R%01d),R%01d",(op&0x38)>>3,op&0x7);
-=======
 		util::stream_format(stream, "ADD@ (R%01d),R%01d",(op&0x38)>>3,op&0x7);
->>>>>>> upstream/master
 		break;
 	case 0x2f8: /* 1 011 111 000 */
 	case 0x2f9: /* 1 011 111 001 */
@@ -1603,11 +1184,7 @@ CPU_DISASSEMBLE(cp1610)
 	case 0x2ff: /* 1 011 111 111 */
 		size += 1;
 		ea = oprom16[1];
-<<<<<<< HEAD
-		sprintf(buffer, "ADDI #%04X,R%01d",ea,op&0x7);
-=======
 		util::stream_format(stream, "ADDI #%04X,R%01d",ea,op&0x7);
->>>>>>> upstream/master
 		break;
 	case 0x300: /* 1 100 000 000 */
 	case 0x301: /* 1 100 000 001 */
@@ -1619,11 +1196,7 @@ CPU_DISASSEMBLE(cp1610)
 	case 0x307: /* 1 100 000 111 */
 		size += 1;
 		ea = oprom16[1];
-<<<<<<< HEAD
-		sprintf(buffer, "SUB  (%04X),R%01d",ea,op&0x7);
-=======
 		util::stream_format(stream, "SUB  (%04X),R%01d",ea,op&0x7);
->>>>>>> upstream/master
 		break;
 	case 0x308: /* 1 100 001 000 */
 	case 0x309: /* 1 100 001 001 */
@@ -1673,11 +1246,7 @@ CPU_DISASSEMBLE(cp1610)
 	case 0x335: /* 1 100 110 101 */
 	case 0x336: /* 1 100 110 110 */
 	case 0x337: /* 1 100 110 111 */
-<<<<<<< HEAD
-		sprintf(buffer, "SUB@ (R%01d),R%01d",(op&0x38)>>3,op&0x7);
-=======
 		util::stream_format(stream, "SUB@ (R%01d),R%01d",(op&0x38)>>3,op&0x7);
->>>>>>> upstream/master
 		break;
 	case 0x338: /* 1 100 111 000 */
 	case 0x339: /* 1 100 111 001 */
@@ -1689,11 +1258,7 @@ CPU_DISASSEMBLE(cp1610)
 	case 0x33f: /* 1 100 111 111 */
 		size += 1;
 		ea = oprom16[1];
-<<<<<<< HEAD
-		sprintf(buffer, "SUBI #%04X,R%01d",ea,op&0x7);
-=======
 		util::stream_format(stream, "SUBI #%04X,R%01d",ea,op&0x7);
->>>>>>> upstream/master
 		break;
 	case 0x340: /* 1 101 000 000 */
 	case 0x341: /* 1 101 000 001 */
@@ -1705,11 +1270,7 @@ CPU_DISASSEMBLE(cp1610)
 	case 0x347: /* 1 101 000 111 */
 		size += 1;
 		ea = oprom16[1];
-<<<<<<< HEAD
-		sprintf(buffer, "CMP  (%04X),R%01d",ea,op&0x7);
-=======
 		util::stream_format(stream, "CMP  (%04X),R%01d",ea,op&0x7);
->>>>>>> upstream/master
 		break;
 	case 0x348: /* 1 101 001 000 */
 	case 0x349: /* 1 101 001 001 */
@@ -1759,11 +1320,7 @@ CPU_DISASSEMBLE(cp1610)
 	case 0x375: /* 1 101 110 101 */
 	case 0x376: /* 1 101 110 110 */
 	case 0x377: /* 1 101 110 111 */
-<<<<<<< HEAD
-		sprintf(buffer, "CMP@ (R%01d),R%01d",(op&0x38)>>3,op&0x7);
-=======
 		util::stream_format(stream, "CMP@ (R%01d),R%01d",(op&0x38)>>3,op&0x7);
->>>>>>> upstream/master
 		break;
 	case 0x378: /* 1 101 111 000 */
 	case 0x379: /* 1 101 111 001 */
@@ -1775,11 +1332,7 @@ CPU_DISASSEMBLE(cp1610)
 	case 0x37f: /* 1 101 111 111 */
 		size += 1;
 		ea = oprom16[1];
-<<<<<<< HEAD
-		sprintf(buffer, "CMPI #%04X,R%01d",ea,op&0x7);
-=======
 		util::stream_format(stream, "CMPI #%04X,R%01d",ea,op&0x7);
->>>>>>> upstream/master
 		break;
 	case 0x380: /* 1 110 000 000 */
 	case 0x381: /* 1 110 000 001 */
@@ -1791,11 +1344,7 @@ CPU_DISASSEMBLE(cp1610)
 	case 0x387: /* 1 110 000 111 */
 		size += 1;
 		ea = oprom16[1];
-<<<<<<< HEAD
-		sprintf(buffer, "AND  (%04X),R%01d",ea,op&0x7);
-=======
 		util::stream_format(stream, "AND  (%04X),R%01d",ea,op&0x7);
->>>>>>> upstream/master
 		break;
 	case 0x388: /* 1 110 001 000 */
 	case 0x389: /* 1 110 001 001 */
@@ -1845,11 +1394,7 @@ CPU_DISASSEMBLE(cp1610)
 	case 0x3b5: /* 1 110 110 101 */
 	case 0x3b6: /* 1 110 110 110 */
 	case 0x3b7: /* 1 110 110 111 */
-<<<<<<< HEAD
-		sprintf(buffer, "AND@ (R%01d),R%01d",(op&0x38)>>3,op&0x7);
-=======
 		util::stream_format(stream, "AND@ (R%01d),R%01d",(op&0x38)>>3,op&0x7);
->>>>>>> upstream/master
 		break;
 	case 0x3b8: /* 1 110 111 000 */
 	case 0x3b9: /* 1 110 111 001 */
@@ -1861,11 +1406,7 @@ CPU_DISASSEMBLE(cp1610)
 	case 0x3bf: /* 1 110 111 111 */
 		size += 1;
 		ea = oprom16[1];
-<<<<<<< HEAD
-		sprintf(buffer, "ANDI #%04X,R%01d",ea,op&0x7);
-=======
 		util::stream_format(stream, "ANDI #%04X,R%01d",ea,op&0x7);
->>>>>>> upstream/master
 		break;
 	case 0x3c0: /* 1 111 000 000 */
 	case 0x3c1: /* 1 111 000 001 */
@@ -1877,11 +1418,7 @@ CPU_DISASSEMBLE(cp1610)
 	case 0x3c7: /* 1 111 000 111 */
 		size += 1;
 		ea = oprom16[1];
-<<<<<<< HEAD
-		sprintf(buffer, "XOR  (%04X),R%01d",ea,op&0x7);
-=======
 		util::stream_format(stream, "XOR  (%04X),R%01d",ea,op&0x7);
->>>>>>> upstream/master
 		break;
 	case 0x3c8: /* 1 111 001 000 */
 	case 0x3c9: /* 1 111 001 001 */
@@ -1931,11 +1468,7 @@ CPU_DISASSEMBLE(cp1610)
 	case 0x3f5: /* 1 111 110 101 */
 	case 0x3f6: /* 1 111 110 110 */
 	case 0x3f7: /* 1 111 110 111 */
-<<<<<<< HEAD
-		sprintf(buffer, "XOR@ (R%01d),R%01d",(op&0x38)>>3,op&0x7);
-=======
 		util::stream_format(stream, "XOR@ (R%01d),R%01d",(op&0x38)>>3,op&0x7);
->>>>>>> upstream/master
 		break;
 	case 0x3f8: /* 1 111 111 000 */
 	case 0x3f9: /* 1 111 111 001 */
@@ -1947,17 +1480,10 @@ CPU_DISASSEMBLE(cp1610)
 	case 0x3ff: /* 1 111 111 111 */
 		size += 1;
 		ea = oprom16[1];
-<<<<<<< HEAD
-		sprintf(buffer, "XORI #%04X,R%01d",ea,op&0x7);
-		break;
-	default:
-		sprintf(buffer, "????");
-=======
 		util::stream_format(stream, "XORI #%04X,R%01d",ea,op&0x7);
 		break;
 	default:
 		util::stream_format(stream, "????");
->>>>>>> upstream/master
 	}
 
 	return size;

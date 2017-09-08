@@ -1,8 +1,5 @@
-<<<<<<< HEAD
-=======
 # license:BSD-3-Clause
 # copyright-holders:Olivier Galibert
->>>>>>> upstream/master
 # m65c02 opcodes
 
 adc_c_aba
@@ -106,11 +103,7 @@ adc_c_zpi
 adc_c_zpx
 	TMP = read_pc();
 	read(TMP);
-<<<<<<< HEAD
-	TMP = read(UINT8(TMP+X));
-=======
 	TMP = read(uint8_t(TMP+X));
->>>>>>> upstream/master
 	do_adc(TMP);
 	if(P & F_D) {
 		read_pc_noinc();
@@ -146,11 +139,7 @@ bbr_zpb
 	TMP = read_pc();
 	read_pc_noinc();
 	if(!(TMP2 & (1 << ((inst_state >> 4) & 7)))) {
-<<<<<<< HEAD
-		PC += INT8(TMP);
-=======
 		PC += int8_t(TMP);
->>>>>>> upstream/master
 	}
 	prefetch();
 
@@ -161,11 +150,7 @@ bbs_zpb
 	TMP = read_pc();
 	read_pc_noinc();
 	if(TMP2 & (1 << ((inst_state >> 4) & 7))) {
-<<<<<<< HEAD
-		PC += INT8(TMP);
-=======
 		PC += int8_t(TMP);
->>>>>>> upstream/master
 	}
 	prefetch();
 
@@ -190,28 +175,17 @@ bit_imm
 bit_zpx
 	TMP = read_pc();
 	read(TMP);
-<<<<<<< HEAD
-	TMP = read(UINT8(TMP+X));
-=======
 	TMP = read(uint8_t(TMP+X));
->>>>>>> upstream/master
 	do_bit(TMP);
 	prefetch();
 
 bra_rel
 	TMP = read_pc();
 	read_pc_noinc();
-<<<<<<< HEAD
-	if(page_changing(PC, INT8(TMP))) {
-		read_arg(set_l(PC, PC+INT8(TMP)));
-	}
-	PC += INT8(TMP);
-=======
 	if(page_changing(PC, int8_t(TMP))) {
 		read_arg(set_l(PC, PC+int8_t(TMP)));
 	}
 	PC += int8_t(TMP);
->>>>>>> upstream/master
 	prefetch();
 
 brk_c_imp
@@ -500,11 +474,7 @@ sbc_c_zpi
 sbc_c_zpx
 	TMP = read_pc();
 	read(TMP);
-<<<<<<< HEAD
-	TMP = read(UINT8(TMP+X));
-=======
 	TMP = read(uint8_t(TMP+X));
->>>>>>> upstream/master
 	do_sbc(TMP);
 	if(P & F_D) {
 		read_pc_noinc();
@@ -554,11 +524,7 @@ stz_zpg
 stz_zpx
 	TMP = read_pc();
 	read(TMP);
-<<<<<<< HEAD
-	write(UINT8(TMP+X), 0x00);
-=======
 	write(uint8_t(TMP+X), 0x00);
->>>>>>> upstream/master
 	prefetch();
 
 trb_aba

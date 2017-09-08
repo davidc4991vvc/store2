@@ -25,11 +25,7 @@
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-void kingofb_state::palette_init_common( palette_device &palette, const UINT8 *color_prom, void (kingofb_state::*get_rgb_data)(const UINT8 *, int, int *, int *, int *) )
-=======
 void kingofb_state::palette_init_common( palette_device &palette, const uint8_t *color_prom, void (kingofb_state::*get_rgb_data)(const uint8_t *, int, int *, int *, int *) )
->>>>>>> upstream/master
 {
 	static const int resistances[4] = { 1500, 750, 360, 180 };
 	static const int resistances_fg[1] = { 51 };
@@ -102,21 +98,13 @@ void kingofb_state::palette_init_common( palette_device &palette, const uint8_t 
 
 	for (i = 0x101; i < 0x110; i += 2)
 	{
-<<<<<<< HEAD
-		UINT16 ctabentry = ((i - 0x101) >> 1) | 0x100;
-=======
 		uint16_t ctabentry = ((i - 0x101) >> 1) | 0x100;
->>>>>>> upstream/master
 		palette.set_pen_indirect(i, ctabentry);
 	}
 }
 
 
-<<<<<<< HEAD
-void kingofb_state::kingofb_get_rgb_data( const UINT8 *color_prom, int i, int *r_data, int *g_data, int *b_data )
-=======
 void kingofb_state::kingofb_get_rgb_data( const uint8_t *color_prom, int i, int *r_data, int *g_data, int *b_data )
->>>>>>> upstream/master
 {
 	*r_data = color_prom[i + 0x000] & 0x0f;
 	*g_data = color_prom[i + 0x100] & 0x0f;
@@ -124,11 +112,7 @@ void kingofb_state::kingofb_get_rgb_data( const uint8_t *color_prom, int i, int 
 }
 
 
-<<<<<<< HEAD
-void kingofb_state::ringking_get_rgb_data( const UINT8 *color_prom, int i, int *r_data, int *g_data, int *b_data )
-=======
 void kingofb_state::ringking_get_rgb_data( const uint8_t *color_prom, int i, int *r_data, int *g_data, int *b_data )
->>>>>>> upstream/master
 {
 	*r_data = (color_prom[i + 0x000] >> 4) & 0x0f;
 	*g_data = (color_prom[i + 0x000] >> 0) & 0x0f;
@@ -138,21 +122,13 @@ void kingofb_state::ringking_get_rgb_data( const uint8_t *color_prom, int i, int
 
 PALETTE_INIT_MEMBER(kingofb_state,kingofb)
 {
-<<<<<<< HEAD
-	const UINT8 *color_prom = memregion("proms")->base();
-=======
 	const uint8_t *color_prom = memregion("proms")->base();
->>>>>>> upstream/master
 	palette_init_common(palette, color_prom, &kingofb_state::kingofb_get_rgb_data);
 }
 
 PALETTE_INIT_MEMBER(kingofb_state,ringking)
 {
-<<<<<<< HEAD
-	const UINT8 *color_prom = memregion("proms")->base();
-=======
 	const uint8_t *color_prom = memregion("proms")->base();
->>>>>>> upstream/master
 	palette_init_common(palette, color_prom, &kingofb_state::ringking_get_rgb_data);
 }
 
@@ -182,11 +158,7 @@ WRITE8_MEMBER(kingofb_state::kingofb_colorram2_w)
 
 WRITE8_MEMBER(kingofb_state::kingofb_f800_w)
 {
-<<<<<<< HEAD
-	m_nmi_enable = data & 0x20;
-=======
 	m_nmigate->in_w<1>(BIT(data, 5));
->>>>>>> upstream/master
 
 	if (m_palette_bank != ((data & 0x18) >> 3))
 	{
@@ -223,24 +195,15 @@ TILE_GET_INFO_MEMBER(kingofb_state::get_fg_tile_info)
 
 VIDEO_START_MEMBER(kingofb_state,kingofb)
 {
-<<<<<<< HEAD
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(kingofb_state::get_bg_tile_info),this), TILEMAP_SCAN_COLS_FLIP_Y, 16, 16, 16, 16);
-	m_fg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(kingofb_state::get_fg_tile_info),this), TILEMAP_SCAN_COLS_FLIP_Y,  8,  8, 32, 32);
-=======
 	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(kingofb_state::get_bg_tile_info),this), TILEMAP_SCAN_COLS_FLIP_Y, 16, 16, 16, 16);
 	m_fg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(kingofb_state::get_fg_tile_info),this), TILEMAP_SCAN_COLS_FLIP_Y,  8,  8, 32, 32);
->>>>>>> upstream/master
 
 	m_fg_tilemap->set_transparent_pen(0);
 }
 
 void kingofb_state::kingofb_draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
-<<<<<<< HEAD
-	UINT8 *spriteram = m_spriteram;
-=======
 	uint8_t *spriteram = m_spriteram;
->>>>>>> upstream/master
 	int offs;
 
 	for (offs = 0; offs < m_spriteram.bytes(); offs += 4)
@@ -275,11 +238,7 @@ void kingofb_state::kingofb_draw_sprites(bitmap_ind16 &bitmap, const rectangle &
 	}
 }
 
-<<<<<<< HEAD
-UINT32 kingofb_state::screen_update_kingofb(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t kingofb_state::screen_update_kingofb(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	m_bg_tilemap->set_scrolly(0, -(*m_scroll_y));
 	m_bg_tilemap->draw(screen, bitmap, cliprect, 0, 0);
@@ -300,24 +259,15 @@ TILE_GET_INFO_MEMBER(kingofb_state::ringking_get_bg_tile_info)
 
 VIDEO_START_MEMBER(kingofb_state,ringking)
 {
-<<<<<<< HEAD
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(kingofb_state::ringking_get_bg_tile_info),this), TILEMAP_SCAN_COLS_FLIP_Y, 16, 16, 16, 16);
-	m_fg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(kingofb_state::get_fg_tile_info),this), TILEMAP_SCAN_COLS_FLIP_Y, 8, 8, 32, 32);
-=======
 	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(kingofb_state::ringking_get_bg_tile_info),this), TILEMAP_SCAN_COLS_FLIP_Y, 16, 16, 16, 16);
 	m_fg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(kingofb_state::get_fg_tile_info),this), TILEMAP_SCAN_COLS_FLIP_Y, 8, 8, 32, 32);
->>>>>>> upstream/master
 
 	m_fg_tilemap->set_transparent_pen(0);
 }
 
 void kingofb_state::ringking_draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect )
 {
-<<<<<<< HEAD
-	UINT8 *spriteram = m_spriteram;
-=======
 	uint8_t *spriteram = m_spriteram;
->>>>>>> upstream/master
 	int offs;
 
 	for (offs = 0; offs < m_spriteram.bytes(); offs += 4)
@@ -345,11 +295,7 @@ void kingofb_state::ringking_draw_sprites( bitmap_ind16 &bitmap, const rectangle
 	}
 }
 
-<<<<<<< HEAD
-UINT32 kingofb_state::screen_update_ringking(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t kingofb_state::screen_update_ringking(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	m_bg_tilemap->set_scrolly(0, -(*m_scroll_y));
 	m_bg_tilemap->draw(screen, bitmap, cliprect, 0, 0);

@@ -27,21 +27,12 @@ public:
 		m_palette(*this, "palette") { }
 
 	/* memory pointers */
-<<<<<<< HEAD
-	required_shared_ptr<UINT8> m_spriteram2;
-	required_shared_ptr<UINT8> m_scroll;
-	required_shared_ptr<UINT8> m_spriteram;
-	required_shared_ptr<UINT8> m_scroll2;
-	required_shared_ptr<UINT8> m_videoram;
-	required_shared_ptr<UINT8> m_colorram;
-=======
 	required_shared_ptr<uint8_t> m_spriteram2;
 	required_shared_ptr<uint8_t> m_scroll;
 	required_shared_ptr<uint8_t> m_spriteram;
 	required_shared_ptr<uint8_t> m_scroll2;
 	required_shared_ptr<uint8_t> m_videoram;
 	required_shared_ptr<uint8_t> m_colorram;
->>>>>>> upstream/master
 
 	/* devices */
 	required_device<cpu_device> m_maincpu;
@@ -58,17 +49,6 @@ public:
 	int      m_old_gfx_bank;                    // needed by atlantol
 	int      m_sprites_gfx_banked;
 
-<<<<<<< HEAD
-	UINT8    m_irq_mask;
-	UINT8    m_yieartf_nmi_mask;
-	DECLARE_WRITE8_MEMBER(coin_w);
-	DECLARE_WRITE8_MEMBER(questions_bank_w);
-	DECLARE_WRITE8_MEMBER(irq_mask_w);
-	DECLARE_WRITE8_MEMBER(yieartf_nmi_mask_w);
-	DECLARE_WRITE8_MEMBER(trackfld_videoram_w);
-	DECLARE_WRITE8_MEMBER(trackfld_colorram_w);
-	DECLARE_WRITE8_MEMBER(trackfld_flipscreen_w);
-=======
 	bool     m_irq_mask;
 	bool     m_nmi_mask;
 
@@ -80,7 +60,6 @@ public:
 	DECLARE_WRITE8_MEMBER(trackfld_videoram_w);
 	DECLARE_WRITE8_MEMBER(trackfld_colorram_w);
 	DECLARE_WRITE_LINE_MEMBER(flipscreen_w);
->>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(atlantol_gfxbank_w);
 	DECLARE_READ8_MEMBER(trackfld_SN76496_r);
 	DECLARE_READ8_MEMBER(trackfld_speech_r);
@@ -92,11 +71,7 @@ public:
 	DECLARE_DRIVER_INIT(mastkin);
 	DECLARE_DRIVER_INIT(trackfldnz);
 
-<<<<<<< HEAD
-	UINT8 m_SN76496_latch;
-=======
 	uint8_t m_SN76496_latch;
->>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER( konami_SN76496_latch_w ) { m_SN76496_latch = data; };
 	DECLARE_WRITE8_MEMBER( konami_SN76496_w ) { m_sn->write(space, offset, m_SN76496_latch); };
 	TILE_GET_INFO_MEMBER(get_bg_tile_info);
@@ -105,11 +80,7 @@ public:
 	DECLARE_VIDEO_START(trackfld);
 	DECLARE_PALETTE_INIT(trackfld);
 	DECLARE_VIDEO_START(atlantol);
-<<<<<<< HEAD
-	UINT32 screen_update_trackfld(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	uint32_t screen_update_trackfld(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	INTERRUPT_GEN_MEMBER(vblank_irq);
 	INTERRUPT_GEN_MEMBER(vblank_nmi);
 	INTERRUPT_GEN_MEMBER(yieartf_timer_irq);

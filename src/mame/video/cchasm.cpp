@@ -27,11 +27,7 @@ void cchasm_state::device_timer(emu_timer &timer, device_timer_id id, int param,
 		m_maincpu->set_input_line(2, ASSERT_LINE);
 		break;
 	default:
-<<<<<<< HEAD
-		assert_always(FALSE, "Unknown id in cchasm_state::device_timer");
-=======
 		assert_always(false, "Unknown id in cchasm_state::device_timer");
->>>>>>> upstream/master
 	}
 }
 
@@ -69,11 +65,7 @@ void cchasm_state::refresh ()
 			logerror("JUMP to %x\n", data);
 			break;
 		case COLOR:
-<<<<<<< HEAD
-			color = VECTOR_COLOR444(data ^ 0xfff);
-=======
 			color = vector_device::color444(data ^ 0xfff);
->>>>>>> upstream/master
 			break;
 		case SCALEY:
 			scaley = data << 5;

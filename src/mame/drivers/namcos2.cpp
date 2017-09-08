@@ -43,10 +43,6 @@ known issues:
 
     Bubble Trouble (Golly Ghost II)
     - no artwork
-<<<<<<< HEAD
-    - MCU not dumped
-=======
->>>>>>> upstream/master
 
 The Namco System II board is a 5 ( only 4 are emulated ) CPU system. The
 complete system consists of two boards: CPU + GRAPHICS. It contains a large
@@ -450,16 +446,6 @@ $a00000 checks have been seen on the Final Lap boards.
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/m68000/m68000.h"
-#include "cpu/m6805/m6805.h"
-#include "includes/namcos2.h"
-#include "cpu/m6809/m6809.h"
-#include "includes/namcoic.h"
-#include "machine/nvram.h"
-#include "sound/2151intf.h"
-#include "sound/c140.h"
-=======
 #include "includes/namcos2.h"
 #include "machine/namcoic.h"
 
@@ -470,7 +456,6 @@ $a00000 checks have been seen on the Final Lap boards.
 #include "sound/ym2151.h"
 #include "sound/c140.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 #include "finallap.lh"
 
@@ -489,47 +474,6 @@ $a00000 checks have been seen on the Final Lap boards.
 /* 68000/6809/63705 Shared memory area - DUAL PORT Memory    */
 /*************************************************************/
 
-<<<<<<< HEAD
-static void GollyGhostUpdateLED_c4( int data )
-{
-	output_set_value("zip100", data >> 4);
-	output_set_value("zip10", data & 0x0f);
-}
-
-static void GollyGhostUpdateLED_c6( int data )
-{
-	output_set_value("zip1", data >> 4);
-	output_set_value("time10", data & 0x0f);
-}
-
-static void GollyGhostUpdateLED_c8( int data )
-{
-	output_set_value("time1", data >> 4);
-	output_set_value("zap100", data & 0x0f);
-}
-
-static void GollyGhostUpdateLED_ca( int data )
-{
-	output_set_value("zap10", data >> 4);
-	output_set_value("zap1", data & 0x0f);
-}
-
-static void GollyGhostUpdateDiorama_c0( int data )
-{
-	if (data & 0x80)
-	{
-		output_set_value("dollhouse", 1); /* diorama is lit up */
-
-		/* dollhouse controller; solenoids control physical components */
-		output_set_value("toybox",      (data >> 0) & 1);
-		output_set_value("bathroom",    (data >> 1) & 1);
-		output_set_value("bureau",      (data >> 2) & 1);
-		output_set_value("refrigerator",(data >> 3) & 1);
-		output_set_value("porch",       (data >> 4) & 1);
-		/* gun recoils */
-		output_set_value("Player1_Gun_Recoil",(data & 0x20)>>5);
-		output_set_value("Player2_Gun_Recoil",(data & 0x40)>>6);
-=======
 void namcos2_state::GollyGhostUpdateLED_c4( int data )
 {
 	output().set_value("zip100", data >> 4);
@@ -569,21 +513,10 @@ void namcos2_state::GollyGhostUpdateDiorama_c0( int data )
 		/* gun recoils */
 		output().set_value("Player1_Gun_Recoil",(data & 0x20)>>5);
 		output().set_value("Player2_Gun_Recoil",(data & 0x40)>>6);
->>>>>>> upstream/master
 
 	}
 	else
 	{
-<<<<<<< HEAD
-		output_set_value("dollhouse",0);
-		output_set_value("toybox", 0);
-		output_set_value("bathroom", 0);
-		output_set_value("bureau", 0);
-		output_set_value("refrigerator", 0);
-		output_set_value("porch", 0);
-		output_set_value("Player1_Gun_Recoil",0);
-		output_set_value("Player2_Gun_Recoil",0);
-=======
 		output().set_value("dollhouse",0);
 		output().set_value("toybox", 0);
 		output().set_value("bathroom", 0);
@@ -592,7 +525,6 @@ void namcos2_state::GollyGhostUpdateDiorama_c0( int data )
 		output().set_value("porch", 0);
 		output().set_value("Player1_Gun_Recoil",0);
 		output().set_value("Player2_Gun_Recoil",0);
->>>>>>> upstream/master
 	}
 }
 
@@ -667,16 +599,9 @@ static ADDRESS_MAP_START( namcos2_68k_default_cpu_board_am, AS_PROGRAM, 16, namc
 	AM_RANGE(0x400000, 0x41ffff) AM_READWRITE(c123_tilemap_videoram_r,c123_tilemap_videoram_w)
 	AM_RANGE(0x420000, 0x42003f) AM_READWRITE(c123_tilemap_control_r,c123_tilemap_control_w)
 	AM_RANGE(0x440000, 0x44ffff) AM_READWRITE(paletteram_word_r,paletteram_word_w) AM_SHARE("paletteram")
-<<<<<<< HEAD
-	AM_RANGE(0x460000, 0x460fff) AM_READWRITE(dpram_word_r,dpram_word_w)
-	AM_RANGE(0x468000, 0x468fff) AM_READWRITE(dpram_word_r,dpram_word_w) /* mirror */
-	AM_RANGE(0x480000, 0x483fff) AM_READWRITE(serial_comms_ram_r,serial_comms_ram_w) AM_SHARE("serialram")
-	AM_RANGE(0x4a0000, 0x4a000f) AM_READWRITE(serial_comms_ctrl_r,serial_comms_ctrl_w)
-=======
 	AM_RANGE(0x460000, 0x460fff) AM_MIRROR(0xf000) AM_READWRITE(dpram_word_r,dpram_word_w)
 	AM_RANGE(0x480000, 0x483fff) AM_DEVREADWRITE("sci", namco_c139_device, ram_r, ram_w)
 	AM_RANGE(0x4a0000, 0x4a000f) AM_DEVICE("sci", namco_c139_device, regs_map)
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 /*************************************************************/
@@ -694,22 +619,14 @@ static ADDRESS_MAP_START( master_default_am, AS_PROGRAM, 16, namcos2_state )
 	AM_RANGE(0x000000, 0x03ffff) AM_ROM
 	AM_RANGE(0x100000, 0x10ffff) AM_RAMBANK(NAMCOS2_68K_MASTER_RAM)
 	AM_RANGE(0x180000, 0x183fff) AM_READWRITE8(namcos2_68k_eeprom_r,namcos2_68k_eeprom_w,0x00ff)
-<<<<<<< HEAD
-	AM_RANGE(0x1c0000, 0x1fffff) AM_READWRITE(namcos2_68k_master_C148_r,namcos2_68k_master_C148_w)
-=======
 	AM_RANGE(0x1c0000, 0x1fffff) AM_DEVICE("master_intc", namco_c148_device, map)
->>>>>>> upstream/master
 	AM_IMPORT_FROM( common_default_am )
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( slave_default_am, AS_PROGRAM, 16, namcos2_state )
 	AM_RANGE(0x000000, 0x03ffff) AM_ROM
 	AM_RANGE(0x100000, 0x13ffff) AM_RAMBANK(NAMCOS2_68K_SLAVE_RAM)
-<<<<<<< HEAD
-	AM_RANGE(0x1c0000, 0x1fffff) AM_READWRITE(namcos2_68k_slave_C148_r,namcos2_68k_slave_C148_w)
-=======
 	AM_RANGE(0x1c0000, 0x1fffff) AM_DEVICE("slave_intc", namco_c148_device, map)
->>>>>>> upstream/master
 	AM_IMPORT_FROM( common_default_am )
 ADDRESS_MAP_END
 
@@ -729,22 +646,14 @@ static ADDRESS_MAP_START( master_finallap_am, AS_PROGRAM, 16, namcos2_state )
 	AM_RANGE(0x000000, 0x03ffff) AM_ROM
 	AM_RANGE(0x100000, 0x10ffff) AM_RAMBANK(NAMCOS2_68K_MASTER_RAM)
 	AM_RANGE(0x180000, 0x183fff) AM_READWRITE8(namcos2_68k_eeprom_r,namcos2_68k_eeprom_w,0x00ff)
-<<<<<<< HEAD
-	AM_RANGE(0x1c0000, 0x1fffff) AM_READWRITE(namcos2_68k_master_C148_r,namcos2_68k_master_C148_w)
-=======
 	AM_RANGE(0x1c0000, 0x1fffff) AM_DEVICE("master_intc", namco_c148_device, map)
->>>>>>> upstream/master
 	AM_IMPORT_FROM( common_finallap_am )
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( slave_finallap_am, AS_PROGRAM, 16, namcos2_state )
 	AM_RANGE(0x000000, 0x03ffff) AM_ROM
 	AM_RANGE(0x100000, 0x13ffff) AM_RAMBANK(NAMCOS2_68K_SLAVE_RAM)
-<<<<<<< HEAD
-	AM_RANGE(0x1c0000, 0x1fffff) AM_READWRITE(namcos2_68k_slave_C148_r,namcos2_68k_slave_C148_w)
-=======
 	AM_RANGE(0x1c0000, 0x1fffff) AM_DEVICE("slave_intc", namco_c148_device, map)
->>>>>>> upstream/master
 	AM_IMPORT_FROM( common_finallap_am )
 ADDRESS_MAP_END
 
@@ -761,22 +670,14 @@ static ADDRESS_MAP_START( master_sgunner_am, AS_PROGRAM, 16, namcos2_state )
 	AM_RANGE(0x000000, 0x03ffff) AM_ROM
 	AM_RANGE(0x100000, 0x10ffff) AM_RAMBANK(NAMCOS2_68K_MASTER_RAM)
 	AM_RANGE(0x180000, 0x183fff) AM_READWRITE8(namcos2_68k_eeprom_r,namcos2_68k_eeprom_w,0x00ff)
-<<<<<<< HEAD
-	AM_RANGE(0x1c0000, 0x1fffff) AM_READWRITE(namcos2_68k_master_C148_r,namcos2_68k_master_C148_w)
-=======
 	AM_RANGE(0x1c0000, 0x1fffff) AM_DEVICE("master_intc", namco_c148_device, map)
->>>>>>> upstream/master
 	AM_IMPORT_FROM( common_sgunner_am )
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( slave_sgunner_am, AS_PROGRAM, 16, namcos2_state )
 	AM_RANGE(0x000000, 0x03ffff) AM_ROM
 	AM_RANGE(0x100000, 0x13ffff) AM_RAMBANK(NAMCOS2_68K_SLAVE_RAM)
-<<<<<<< HEAD
-	AM_RANGE(0x1c0000, 0x1fffff) AM_READWRITE(namcos2_68k_slave_C148_r,namcos2_68k_slave_C148_w)
-=======
 	AM_RANGE(0x1c0000, 0x1fffff) AM_DEVICE("slave_intc", namco_c148_device, map)
->>>>>>> upstream/master
 	AM_IMPORT_FROM( common_sgunner_am )
 ADDRESS_MAP_END
 
@@ -794,22 +695,14 @@ static ADDRESS_MAP_START( master_metlhawk_am, AS_PROGRAM, 16, namcos2_state )
 	AM_RANGE(0x000000, 0x03ffff) AM_ROM
 	AM_RANGE(0x100000, 0x10ffff) AM_RAMBANK(NAMCOS2_68K_MASTER_RAM)
 	AM_RANGE(0x180000, 0x183fff) AM_READWRITE8(namcos2_68k_eeprom_r,namcos2_68k_eeprom_w,0x00ff)
-<<<<<<< HEAD
-	AM_RANGE(0x1c0000, 0x1fffff) AM_READWRITE(namcos2_68k_master_C148_r,namcos2_68k_master_C148_w)
-=======
 	AM_RANGE(0x1c0000, 0x1fffff) AM_DEVICE("master_intc", namco_c148_device, map)
->>>>>>> upstream/master
 	AM_IMPORT_FROM( common_metlhawk_am )
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( slave_metlhawk_am, AS_PROGRAM, 16, namcos2_state )
 	AM_RANGE(0x000000, 0x03ffff) AM_ROM
 	AM_RANGE(0x100000, 0x13ffff) AM_RAMBANK(NAMCOS2_68K_SLAVE_RAM)
-<<<<<<< HEAD
-	AM_RANGE(0x1c0000, 0x1fffff) AM_READWRITE(namcos2_68k_slave_C148_r,namcos2_68k_slave_C148_w)
-=======
 	AM_RANGE(0x1c0000, 0x1fffff) AM_DEVICE("slave_intc", namco_c148_device, map)
->>>>>>> upstream/master
 	AM_IMPORT_FROM( common_metlhawk_am )
 ADDRESS_MAP_END
 
@@ -832,22 +725,14 @@ static ADDRESS_MAP_START( master_luckywld_am, AS_PROGRAM, 16, namcos2_state )
 	AM_RANGE(0x000000, 0x03ffff) AM_ROM
 	AM_RANGE(0x100000, 0x10ffff) AM_RAMBANK(NAMCOS2_68K_MASTER_RAM)
 	AM_RANGE(0x180000, 0x183fff) AM_READWRITE8(namcos2_68k_eeprom_r,namcos2_68k_eeprom_w,0x00ff)
-<<<<<<< HEAD
-	AM_RANGE(0x1c0000, 0x1fffff) AM_READWRITE(namcos2_68k_master_C148_r,namcos2_68k_master_C148_w)
-=======
 	AM_RANGE(0x1c0000, 0x1fffff) AM_DEVICE("master_intc", namco_c148_device, map)
->>>>>>> upstream/master
 	AM_IMPORT_FROM( common_luckywld_am )
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( slave_luckywld_am, AS_PROGRAM, 16, namcos2_state )
 	AM_RANGE(0x000000, 0x03ffff) AM_ROM
 	AM_RANGE(0x100000, 0x13ffff) AM_RAMBANK(NAMCOS2_68K_SLAVE_RAM)
-<<<<<<< HEAD
-	AM_RANGE(0x1c0000, 0x1fffff) AM_READWRITE(namcos2_68k_slave_C148_r,namcos2_68k_slave_C148_w)
-=======
 	AM_RANGE(0x1c0000, 0x1fffff) AM_DEVICE("slave_intc", namco_c148_device, map)
->>>>>>> upstream/master
 	AM_IMPORT_FROM( common_luckywld_am )
 ADDRESS_MAP_END
 
@@ -1346,21 +1231,12 @@ INPUT_PORTS_END
 
 static INPUT_PORTS_START( assault )
 	PORT_START("MCUB")      /* 63B05Z0 - PORT B */
-<<<<<<< HEAD
-	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_JOYSTICKLEFT_LEFT ) PORT_PLAYER(2)
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_JOYSTICKLEFT_LEFT )
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_JOYSTICKLEFT_DOWN ) PORT_PLAYER(2)
-	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_JOYSTICKLEFT_DOWN )
-	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_JOYSTICKLEFT_UP ) PORT_PLAYER(2)
-	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_JOYSTICKLEFT_UP )
-=======
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_JOYSTICKLEFT_LEFT ) PORT_4WAY PORT_PLAYER(2)
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_JOYSTICKLEFT_LEFT ) PORT_4WAY PORT_PLAYER(1)
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_JOYSTICKLEFT_DOWN ) PORT_4WAY PORT_PLAYER(2)
 	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_JOYSTICKLEFT_DOWN ) PORT_4WAY PORT_PLAYER(1)
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_JOYSTICKLEFT_UP ) PORT_4WAY PORT_PLAYER(2)
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_JOYSTICKLEFT_UP ) PORT_4WAY PORT_PLAYER(1)
->>>>>>> upstream/master
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_START2 )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_START1 )
 
@@ -1368,16 +1244,6 @@ static INPUT_PORTS_START( assault )
 	NAMCOS2_MCU_ANALOG_PORT_DEFAULT
 
 	PORT_START("MCUH")      /* 63B05Z0 - PORT H */
-<<<<<<< HEAD
-	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_JOYSTICKRIGHT_DOWN ) PORT_PLAYER(2)
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_JOYSTICKRIGHT_DOWN )
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_JOYSTICKRIGHT_UP ) PORT_PLAYER(2)
-	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_JOYSTICKRIGHT_UP )
-	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_BUTTON1 ) PORT_PLAYER(2)
-	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_BUTTON1 )
-	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_JOYSTICKLEFT_RIGHT ) PORT_PLAYER(2)
-	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_JOYSTICKLEFT_RIGHT )
-=======
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_JOYSTICKRIGHT_DOWN ) PORT_4WAY PORT_PLAYER(2)
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_JOYSTICKRIGHT_DOWN ) PORT_4WAY PORT_PLAYER(1)
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_JOYSTICKRIGHT_UP ) PORT_4WAY PORT_PLAYER(2)
@@ -1386,23 +1252,15 @@ static INPUT_PORTS_START( assault )
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_BUTTON1 ) PORT_PLAYER(1)
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_JOYSTICKLEFT_RIGHT ) PORT_4WAY PORT_PLAYER(2)
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_JOYSTICKLEFT_RIGHT ) PORT_4WAY PORT_PLAYER(1)
->>>>>>> upstream/master
 
 	NAMCOS2_MCU_DIPSW_DEFAULT
 
 	/* These are tagged this way to make easier reads by tag */
 	PORT_START("MCUDI0")    /* 63B05Z0 - $3000 */
-<<<<<<< HEAD
-	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_JOYSTICKRIGHT_RIGHT ) PORT_PLAYER(2)
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_JOYSTICKRIGHT_RIGHT )
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_JOYSTICKRIGHT_LEFT ) PORT_PLAYER(2)
-	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_JOYSTICKRIGHT_LEFT )
-=======
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_JOYSTICKRIGHT_RIGHT ) PORT_4WAY PORT_PLAYER(2)
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_JOYSTICKRIGHT_RIGHT ) PORT_4WAY PORT_PLAYER(1)
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_JOYSTICKRIGHT_LEFT ) PORT_4WAY PORT_PLAYER(2)
 	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_JOYSTICKRIGHT_LEFT ) PORT_4WAY PORT_PLAYER(1)
->>>>>>> upstream/master
 	PORT_START("MCUDI1")    /* 63B05Z0 - $3001 */
 	PORT_BIT( 0xff, IP_ACTIVE_LOW, IPT_UNUSED )
 	PORT_START("MCUDI2")    /* 63B05Z0 - $3002 */
@@ -1607,13 +1465,8 @@ INPUT_PORTS_END
 
 static INPUT_PORTS_START( dirtfox )
 	PORT_START("MCUB")      /* 63B05Z0 - PORT B */
-<<<<<<< HEAD
-	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_JOYSTICK_UP ) PORT_NAME("Gear Shift Up")
-	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_JOYSTICK_DOWN )  PORT_NAME("Gear Shift Down")
-=======
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_BUTTON4 ) PORT_NAME("Gear Shift Down")
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_BUTTON3 )  PORT_NAME("Gear Shift Up")
->>>>>>> upstream/master
 
 	NAMCOS2_MCU_PORT_C_DEFAULT
 
@@ -1630,15 +1483,9 @@ static INPUT_PORTS_START( dirtfox )
 	PORT_START("AN5")       /* Steering Wheel */
 	PORT_BIT( 0xff,  0x80, IPT_PADDLE ) PORT_SENSITIVITY(70) PORT_KEYDELTA(50)
 	PORT_START("AN6")       /* Brake pedal */
-<<<<<<< HEAD
-	PORT_BIT( 0xff, 0x00, IPT_PEDAL2 ) PORT_MINMAX(0x00,0x7f) PORT_SENSITIVITY(100) PORT_KEYDELTA(30)
-	PORT_START("AN7")       /* Accelerator pedal */
-	PORT_BIT( 0xff, 0x00, IPT_PEDAL ) PORT_MINMAX(0x00,0x7f) PORT_SENSITIVITY(100) PORT_KEYDELTA(15)
-=======
 	PORT_BIT( 0xff, 0x00, IPT_PEDAL2 ) PORT_MINMAX(0x00,0x7f) PORT_SENSITIVITY(100) PORT_KEYDELTA(30) PORT_NAME("Brake")
 	PORT_START("AN7")       /* Accelerator pedal */
 	PORT_BIT( 0xff, 0x00, IPT_PEDAL ) PORT_MINMAX(0x00,0x7f) PORT_SENSITIVITY(100) PORT_KEYDELTA(15) PORT_NAME("Accelerator")
->>>>>>> upstream/master
 
 	PORT_START("MCUH")      /* 63B05Z0 - PORT H */
 	PORT_BIT( 0xff, IP_ACTIVE_LOW, IPT_UNUSED )
@@ -1834,16 +1681,6 @@ via software as INT1
 /*                                                           */
 /*************************************************************/
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( default, namcos2_state )
-	MCFG_CPU_ADD("maincpu", M68000, M68K_CPU_CLOCK) /* 12.288MHz (49.152MHz OSC/4) */
-	MCFG_CPU_PROGRAM_MAP(master_default_am)
-	MCFG_CPU_VBLANK_INT_DRIVER("screen", namcos2_shared_state,  namcos2_68k_master_vblank)
-
-	MCFG_CPU_ADD("slave", M68000, M68K_CPU_CLOCK) /*  12.288MHz (49.152MHz OSC/4) */
-	MCFG_CPU_PROGRAM_MAP(slave_default_am)
-	MCFG_CPU_VBLANK_INT_DRIVER("screen", namcos2_shared_state,  namcos2_68k_slave_vblank)
-=======
 static MACHINE_CONFIG_START( configure_c148_standard )
 	MCFG_NAMCO_C148_ADD("master_intc","maincpu",true)
 	namco_c148_device::link_c148_device(*device,"slave_intc");
@@ -1883,7 +1720,6 @@ static MACHINE_CONFIG_START( default )
 
 	MCFG_CPU_ADD("slave", M68000, M68K_CPU_CLOCK) /*  12.288MHz (49.152MHz OSC/4) */
 	MCFG_CPU_PROGRAM_MAP(slave_default_am)
->>>>>>> upstream/master
 
 	MCFG_CPU_ADD("audiocpu", M6809, M68B09_CPU_CLOCK) /* 2.048MHz (49.152MHz OSC/24) - Sound handling */
 	MCFG_CPU_PROGRAM_MAP(sound_default_am)
@@ -1900,12 +1736,9 @@ static MACHINE_CONFIG_START( default )
 	MCFG_MACHINE_RESET_OVERRIDE(namcos2_state,namcos2)
 	MCFG_NVRAM_ADD_1FILL("nvram")
 
-<<<<<<< HEAD
-=======
 	MCFG_FRAGMENT_ADD(configure_c148_standard)
 	MCFG_NAMCO_C139_ADD("sci")
 
->>>>>>> upstream/master
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE( (49152000.0 / 8) / (384 * 264) )
 	MCFG_SCREEN_SIZE(384, 264)
@@ -1921,11 +1754,7 @@ static MACHINE_CONFIG_START( default )
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
 	MCFG_C140_ADD("c140", C140_SOUND_CLOCK) /* 21.333kHz */
-<<<<<<< HEAD
-	MCFG_C140_BANK_TYPE(C140_TYPE_SYSTEM2)
-=======
 	MCFG_C140_BANK_TYPE(SYSTEM2)
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(0, "lspeaker", 0.75)
 	MCFG_SOUND_ROUTE(1, "rspeaker", 0.75)
 
@@ -1938,11 +1767,7 @@ MACHINE_CONFIG_END
 static MACHINE_CONFIG_DERIVED( default2, default )
 
 	MCFG_C140_REPLACE("c140", C140_SOUND_CLOCK) /* 21.333kHz */
-<<<<<<< HEAD
-	MCFG_C140_BANK_TYPE(C140_TYPE_SYSTEM2)
-=======
 	MCFG_C140_BANK_TYPE(SYSTEM2)
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(0, "lspeaker", 1.0)
 	MCFG_SOUND_ROUTE(1, "rspeaker", 1.0)
 MACHINE_CONFIG_END
@@ -1956,11 +1781,7 @@ MACHINE_CONFIG_END
 static MACHINE_CONFIG_DERIVED( default3, default )
 
 	MCFG_C140_REPLACE("c140", C140_SOUND_CLOCK) /* 21.333kHz */
-<<<<<<< HEAD
-	MCFG_C140_BANK_TYPE(C140_TYPE_SYSTEM2)
-=======
 	MCFG_C140_BANK_TYPE(SYSTEM2)
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(0, "lspeaker", 0.45)
 	MCFG_SOUND_ROUTE(1, "rspeaker", 0.45)
 
@@ -1969,16 +1790,6 @@ static MACHINE_CONFIG_DERIVED( default3, default )
 	MCFG_SOUND_ROUTE(1, "rspeaker", 1.0)
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( gollygho, namcos2_state )
-	MCFG_CPU_ADD("maincpu", M68000, M68K_CPU_CLOCK) /* 12.288MHz (49.152MHz OSC/4) */
-	MCFG_CPU_PROGRAM_MAP(master_default_am)
-	MCFG_CPU_VBLANK_INT_DRIVER("screen", namcos2_shared_state,  namcos2_68k_master_vblank)
-
-	MCFG_CPU_ADD("slave", M68000, M68K_CPU_CLOCK) /* 12.288MHz (49.152MHz OSC/4) */
-	MCFG_CPU_PROGRAM_MAP(slave_default_am)
-	MCFG_CPU_VBLANK_INT_DRIVER("screen", namcos2_shared_state,  namcos2_68k_slave_vblank)
-=======
 static MACHINE_CONFIG_START( gollygho )
 	MCFG_CPU_ADD("maincpu", M68000, M68K_CPU_CLOCK) /* 12.288MHz (49.152MHz OSC/4) */
 	MCFG_CPU_PROGRAM_MAP(master_default_am)
@@ -1986,7 +1797,6 @@ static MACHINE_CONFIG_START( gollygho )
 
 	MCFG_CPU_ADD("slave", M68000, M68K_CPU_CLOCK) /* 12.288MHz (49.152MHz OSC/4) */
 	MCFG_CPU_PROGRAM_MAP(slave_default_am)
->>>>>>> upstream/master
 
 	MCFG_CPU_ADD("audiocpu", M6809, M68B09_CPU_CLOCK) /* 2.048MHz (49.152MHz OSC/24) - Sound handling */
 	MCFG_CPU_PROGRAM_MAP(sound_default_am)
@@ -2003,12 +1813,9 @@ static MACHINE_CONFIG_START( gollygho )
 	MCFG_MACHINE_RESET_OVERRIDE(namcos2_state,namcos2)
 	MCFG_NVRAM_ADD_1FILL("nvram")
 
-<<<<<<< HEAD
-=======
 	MCFG_FRAGMENT_ADD(configure_c148_standard)
 	MCFG_NAMCO_C139_ADD("sci")
 
->>>>>>> upstream/master
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE( (49152000.0 / 8) / (384 * 264) )
 	MCFG_SCREEN_SIZE(384, 264)
@@ -2024,11 +1831,7 @@ static MACHINE_CONFIG_START( gollygho )
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
 	MCFG_C140_ADD("c140", C140_SOUND_CLOCK) /* 21.333kHz */
-<<<<<<< HEAD
-	MCFG_C140_BANK_TYPE(C140_TYPE_SYSTEM2)
-=======
 	MCFG_C140_BANK_TYPE(SYSTEM2)
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(0, "lspeaker", 0.75)
 	MCFG_SOUND_ROUTE(1, "rspeaker", 0.75)
 
@@ -2037,16 +1840,6 @@ static MACHINE_CONFIG_START( gollygho )
 	MCFG_SOUND_ROUTE(1, "rspeaker", 0.80)
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( finallap, namcos2_state )
-	MCFG_CPU_ADD("maincpu", M68000, M68K_CPU_CLOCK) /* 12.288MHz (49.152MHz OSC/4) */
-	MCFG_CPU_PROGRAM_MAP(master_finallap_am)
-	MCFG_CPU_VBLANK_INT_DRIVER("screen", namcos2_shared_state,  namcos2_68k_master_vblank)
-
-	MCFG_CPU_ADD("slave", M68000, M68K_CPU_CLOCK) /* 12.288MHz (49.152MHz OSC/4) */
-	MCFG_CPU_PROGRAM_MAP(slave_finallap_am)
-	MCFG_CPU_VBLANK_INT_DRIVER("screen", namcos2_shared_state,  namcos2_68k_slave_vblank)
-=======
 static MACHINE_CONFIG_START( finallap )
 	MCFG_CPU_ADD("maincpu", M68000, M68K_CPU_CLOCK) /* 12.288MHz (49.152MHz OSC/4) */
 	MCFG_CPU_PROGRAM_MAP(master_finallap_am)
@@ -2054,7 +1847,6 @@ static MACHINE_CONFIG_START( finallap )
 
 	MCFG_CPU_ADD("slave", M68000, M68K_CPU_CLOCK) /* 12.288MHz (49.152MHz OSC/4) */
 	MCFG_CPU_PROGRAM_MAP(slave_finallap_am)
->>>>>>> upstream/master
 
 	MCFG_CPU_ADD("audiocpu", M6809, M68B09_CPU_CLOCK) /* 2.048MHz (49.152MHz OSC/24) - Sound handling */
 	MCFG_CPU_PROGRAM_MAP(sound_default_am)
@@ -2071,12 +1863,9 @@ static MACHINE_CONFIG_START( finallap )
 	MCFG_MACHINE_RESET_OVERRIDE(namcos2_state,namcos2)
 	MCFG_NVRAM_ADD_1FILL("nvram")
 
-<<<<<<< HEAD
-=======
 	MCFG_FRAGMENT_ADD(configure_c148_standard)
 	MCFG_NAMCO_C139_ADD("sci")
 
->>>>>>> upstream/master
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE( (49152000.0 / 8) / (384 * 264) )
 	MCFG_SCREEN_SIZE(384, 264)
@@ -2097,11 +1886,7 @@ static MACHINE_CONFIG_START( finallap )
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
 	MCFG_C140_ADD("c140", C140_SOUND_CLOCK) /* 21.333kHz */
-<<<<<<< HEAD
-	MCFG_C140_BANK_TYPE(C140_TYPE_SYSTEM2)
-=======
 	MCFG_C140_BANK_TYPE(SYSTEM2)
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(0, "lspeaker", 0.75)
 	MCFG_SOUND_ROUTE(1, "rspeaker", 0.75)
 
@@ -2110,16 +1895,6 @@ static MACHINE_CONFIG_START( finallap )
 	MCFG_SOUND_ROUTE(1, "rspeaker", 0.80)
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( sgunner, namcos2_state )
-	MCFG_CPU_ADD("maincpu", M68000, M68K_CPU_CLOCK) /* 12.288MHz (49.152MHz OSC/4) */
-	MCFG_CPU_PROGRAM_MAP(master_sgunner_am)
-	MCFG_CPU_VBLANK_INT_DRIVER("screen", namcos2_shared_state,  namcos2_68k_master_vblank)
-
-	MCFG_CPU_ADD("slave", M68000, M68K_CPU_CLOCK) /* 12.288MHz (49.152MHz OSC/4) */
-	MCFG_CPU_PROGRAM_MAP(slave_sgunner_am)
-	MCFG_CPU_VBLANK_INT_DRIVER("screen", namcos2_shared_state,  namcos2_68k_slave_vblank)
-=======
 static MACHINE_CONFIG_START( sgunner )
 	MCFG_CPU_ADD("maincpu", M68000, M68K_CPU_CLOCK) /* 12.288MHz (49.152MHz OSC/4) */
 	MCFG_CPU_PROGRAM_MAP(master_sgunner_am)
@@ -2127,7 +1902,6 @@ static MACHINE_CONFIG_START( sgunner )
 
 	MCFG_CPU_ADD("slave", M68000, M68K_CPU_CLOCK) /* 12.288MHz (49.152MHz OSC/4) */
 	MCFG_CPU_PROGRAM_MAP(slave_sgunner_am)
->>>>>>> upstream/master
 
 	MCFG_CPU_ADD("audiocpu", M6809, M68B09_CPU_CLOCK) /* 2.048MHz (49.152MHz OSC/24) - Sound handling */
 	MCFG_CPU_PROGRAM_MAP(sound_default_am)
@@ -2144,12 +1918,9 @@ static MACHINE_CONFIG_START( sgunner )
 	MCFG_MACHINE_RESET_OVERRIDE(namcos2_state,namcos2)
 	MCFG_NVRAM_ADD_1FILL("nvram")
 
-<<<<<<< HEAD
-=======
 	MCFG_FRAGMENT_ADD(configure_c148_standard)
 	MCFG_NAMCO_C139_ADD("sci")
 
->>>>>>> upstream/master
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE( (49152000.0 / 8) / (384 * 264) )
 	MCFG_SCREEN_SIZE(384, 264)
@@ -2167,11 +1938,7 @@ static MACHINE_CONFIG_START( sgunner )
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
 	MCFG_C140_ADD("c140", C140_SOUND_CLOCK) /* 21.333kHz */
-<<<<<<< HEAD
-	MCFG_C140_BANK_TYPE(C140_TYPE_SYSTEM2)
-=======
 	MCFG_C140_BANK_TYPE(SYSTEM2)
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(0, "lspeaker", 0.75)
 	MCFG_SOUND_ROUTE(1, "rspeaker", 0.75)
 
@@ -2180,16 +1947,6 @@ static MACHINE_CONFIG_START( sgunner )
 	MCFG_SOUND_ROUTE(1, "rspeaker", 0.80)
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( sgunner2, namcos2_state )
-	MCFG_CPU_ADD("maincpu", M68000, M68K_CPU_CLOCK) /* 12.288MHz (49.152MHz OSC/4) */
-	MCFG_CPU_PROGRAM_MAP(master_sgunner_am)
-	MCFG_CPU_VBLANK_INT_DRIVER("screen", namcos2_shared_state,  namcos2_68k_master_vblank)
-
-	MCFG_CPU_ADD("slave", M68000, M68K_CPU_CLOCK) /* 12.288MHz (49.152MHz OSC/4) */
-	MCFG_CPU_PROGRAM_MAP(slave_sgunner_am)
-	MCFG_CPU_VBLANK_INT_DRIVER("screen", namcos2_shared_state,  namcos2_68k_slave_vblank)
-=======
 static MACHINE_CONFIG_START( sgunner2 )
 	MCFG_CPU_ADD("maincpu", M68000, M68K_CPU_CLOCK) /* 12.288MHz (49.152MHz OSC/4) */
 	MCFG_CPU_PROGRAM_MAP(master_sgunner_am)
@@ -2197,7 +1954,6 @@ static MACHINE_CONFIG_START( sgunner2 )
 
 	MCFG_CPU_ADD("slave", M68000, M68K_CPU_CLOCK) /* 12.288MHz (49.152MHz OSC/4) */
 	MCFG_CPU_PROGRAM_MAP(slave_sgunner_am)
->>>>>>> upstream/master
 
 	MCFG_CPU_ADD("audiocpu", M6809, M68B09_CPU_CLOCK) /* 2.048MHz (49.152MHz OSC/24) - Sound handling */
 	MCFG_CPU_PROGRAM_MAP(sound_default_am)
@@ -2208,13 +1964,8 @@ static MACHINE_CONFIG_START( sgunner2 )
 	MCFG_M3745X_ADC14_CALLBACKS(IOPORT("AN0"), IOPORT("AN1"), IOPORT("AN2"), IOPORT("AN3"))
 	MCFG_M3745X_ADC58_CALLBACKS(IOPORT("AN4"), IOPORT("AN5"), IOPORT("AN6"), IOPORT("AN7"))
 	MCFG_M3745X_PORT3_CALLBACKS(IOPORT("MCUH"), WRITE8(namcos2_state, c68_p3_w))    // coins/test/service
-<<<<<<< HEAD
-	MCFG_M3745X_PORT5_CALLBACKS(READ8(namcos2_state, c68_p5_r), NULL) // muxed player 1/2
-	MCFG_M3745X_PORT6_CALLBACKS(IOPORT("MCUC"), NULL) // unused in sgunner2
-=======
 	MCFG_M3745X_PORT5_CALLBACKS(READ8(namcos2_state, c68_p5_r), NOOP) // muxed player 1/2
 	MCFG_M3745X_PORT6_CALLBACKS(IOPORT("MCUC"), NOOP) // unused in sgunner2
->>>>>>> upstream/master
 	MCFG_CPU_PROGRAM_MAP(c68_default_am)
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", namcos2_shared_state, irq0_line_assert)    // 37450 maps INT1 to irq0 as it's the first external interrupt on that chip
 
@@ -2224,12 +1975,9 @@ static MACHINE_CONFIG_START( sgunner2 )
 	MCFG_MACHINE_RESET_OVERRIDE(namcos2_state,namcos2)
 	MCFG_NVRAM_ADD_1FILL("nvram")
 
-<<<<<<< HEAD
-=======
 	MCFG_FRAGMENT_ADD(configure_c148_standard)
 	MCFG_NAMCO_C139_ADD("sci")
 
->>>>>>> upstream/master
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE( (49152000.0 / 8) / (384 * 264) )
 	MCFG_SCREEN_SIZE(384, 264)
@@ -2247,11 +1995,7 @@ static MACHINE_CONFIG_START( sgunner2 )
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
 	MCFG_C140_ADD("c140", C140_SOUND_CLOCK) /* 21.333kHz */
-<<<<<<< HEAD
-	MCFG_C140_BANK_TYPE(C140_TYPE_SYSTEM2)
-=======
 	MCFG_C140_BANK_TYPE(SYSTEM2)
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(0, "lspeaker", 0.75)
 	MCFG_SOUND_ROUTE(1, "rspeaker", 0.75)
 
@@ -2260,16 +2004,6 @@ static MACHINE_CONFIG_START( sgunner2 )
 	MCFG_SOUND_ROUTE(1, "rspeaker", 0.80)
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( luckywld, namcos2_state )
-	MCFG_CPU_ADD("maincpu", M68000, M68K_CPU_CLOCK) /* 12.288MHz (49.152MHz OSC/4) */
-	MCFG_CPU_PROGRAM_MAP(master_luckywld_am)
-	MCFG_CPU_VBLANK_INT_DRIVER("screen", namcos2_shared_state,  namcos2_68k_master_vblank)
-
-	MCFG_CPU_ADD("slave", M68000, M68K_CPU_CLOCK) /* 12.288MHz (49.152MHz OSC/4) */
-	MCFG_CPU_PROGRAM_MAP(slave_luckywld_am)
-	MCFG_CPU_VBLANK_INT_DRIVER("screen", namcos2_shared_state,  namcos2_68k_slave_vblank)
-=======
 static MACHINE_CONFIG_START( luckywld )
 	MCFG_CPU_ADD("maincpu", M68000, M68K_CPU_CLOCK) /* 12.288MHz (49.152MHz OSC/4) */
 	MCFG_CPU_PROGRAM_MAP(master_luckywld_am)
@@ -2277,7 +2011,6 @@ static MACHINE_CONFIG_START( luckywld )
 
 	MCFG_CPU_ADD("slave", M68000, M68K_CPU_CLOCK) /* 12.288MHz (49.152MHz OSC/4) */
 	MCFG_CPU_PROGRAM_MAP(slave_luckywld_am)
->>>>>>> upstream/master
 
 	MCFG_CPU_ADD("audiocpu", M6809, M68B09_CPU_CLOCK) /* 2.048MHz (49.152MHz OSC/24) - Sound handling */
 	MCFG_CPU_PROGRAM_MAP(sound_default_am)
@@ -2294,12 +2027,9 @@ static MACHINE_CONFIG_START( luckywld )
 	MCFG_MACHINE_RESET_OVERRIDE(namcos2_state,namcos2)
 	MCFG_NVRAM_ADD_1FILL("nvram")
 
-<<<<<<< HEAD
-=======
 	MCFG_FRAGMENT_ADD(configure_c148_standard)
 	MCFG_NAMCO_C139_ADD("sci")
 
->>>>>>> upstream/master
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE( (49152000.0 / 8) / (384 * 264) )
 	MCFG_SCREEN_SIZE(384, 264)
@@ -2320,11 +2050,7 @@ static MACHINE_CONFIG_START( luckywld )
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
 	MCFG_C140_ADD("c140", C140_SOUND_CLOCK) /* 21.333kHz */
-<<<<<<< HEAD
-	MCFG_C140_BANK_TYPE(C140_TYPE_SYSTEM2)
-=======
 	MCFG_C140_BANK_TYPE(SYSTEM2)
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(0, "lspeaker", 0.75)
 	MCFG_SOUND_ROUTE(1, "rspeaker", 0.75)
 
@@ -2333,21 +2059,6 @@ static MACHINE_CONFIG_START( luckywld )
 	MCFG_SOUND_ROUTE(1, "rspeaker", 0.80)
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( metlhawk, namcos2_state )
-	MCFG_CPU_ADD("maincpu", M68000, M68K_CPU_CLOCK) /* 12.288MHz (49.152MHz OSC/4) */
-	MCFG_CPU_PROGRAM_MAP(master_metlhawk_am)
-	MCFG_CPU_VBLANK_INT_DRIVER("screen", namcos2_shared_state,  namcos2_68k_master_vblank)
-
-	MCFG_CPU_ADD("slave", M68000, M68K_CPU_CLOCK) /* 12.288MHz (49.152MHz OSC/4) */
-	MCFG_CPU_PROGRAM_MAP(slave_metlhawk_am)
-	MCFG_CPU_VBLANK_INT_DRIVER("screen", namcos2_shared_state,  namcos2_68k_slave_vblank)
-
-	MCFG_CPU_ADD("audiocpu", M6809, M68B09_CPU_CLOCK) /* 2.048MHz (49.152MHz OSC/24) - Sound handling */
-	MCFG_CPU_PROGRAM_MAP(sound_default_am)
-	MCFG_CPU_PERIODIC_INT_DRIVER(namcos2_shared_state, irq0_line_hold, 2*60)
-	MCFG_CPU_PERIODIC_INT_DRIVER(namcos2_shared_state, irq1_line_hold, 120)
-=======
 static MACHINE_CONFIG_START( metlhawk )
 	MCFG_CPU_ADD("maincpu", M68000, M68K_CPU_CLOCK) /* 12.288MHz (49.152MHz OSC/4) */
 	MCFG_CPU_PROGRAM_MAP(master_metlhawk_am)
@@ -2360,7 +2071,6 @@ static MACHINE_CONFIG_START( metlhawk )
 	MCFG_CPU_PROGRAM_MAP(sound_default_am)
 	//MCFG_CPU_PERIODIC_INT_DRIVER(namcos2_shared_state, irq0_line_hold, 2*60)
 	//MCFG_CPU_PERIODIC_INT_DRIVER(namcos2_shared_state, irq1_line_hold, 120)
->>>>>>> upstream/master
 
 	MCFG_CPU_ADD("mcu", HD63705, C65_CPU_CLOCK) /* 2.048MHz (49.152MHz OSC/24) - I/O handling */
 	MCFG_CPU_PROGRAM_MAP(mcu_default_am)
@@ -2372,12 +2082,9 @@ static MACHINE_CONFIG_START( metlhawk )
 	MCFG_MACHINE_RESET_OVERRIDE(namcos2_state,namcos2)
 	MCFG_NVRAM_ADD_1FILL("nvram")
 
-<<<<<<< HEAD
-=======
 	MCFG_FRAGMENT_ADD(configure_c148_standard)
 	MCFG_NAMCO_C139_ADD("sci")
 
->>>>>>> upstream/master
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE( (49152000.0 / 8) / (384 * 264) )
 	MCFG_SCREEN_SIZE(384, 264)
@@ -2395,19 +2102,12 @@ static MACHINE_CONFIG_START( metlhawk )
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
 	MCFG_C140_ADD("c140", C140_SOUND_CLOCK) /* 21.333kHz */
-<<<<<<< HEAD
-	MCFG_C140_BANK_TYPE(C140_TYPE_SYSTEM2)
-=======
 	MCFG_C140_BANK_TYPE(SYSTEM2)
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(0, "lspeaker", 1.0)
 	MCFG_SOUND_ROUTE(1, "rspeaker", 1.0)
 
 	MCFG_YM2151_ADD("ymsnd", YM2151_SOUND_CLOCK) /* 3.579545MHz */
-<<<<<<< HEAD
-=======
 	MCFG_YM2151_IRQ_HANDLER(INPUTLINE("audiocpu", 1))
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(0, "lspeaker", 0.80)
 	MCFG_SOUND_ROUTE(1, "rspeaker", 0.80)
 MACHINE_CONFIG_END
@@ -2868,8 +2568,6 @@ ROM_END
 /* DRAGON SABER */
 ROM_START( dsaber )
 	ROM_REGION( 0x040000, "maincpu", 0 ) /* Master CPU */
-<<<<<<< HEAD
-=======
 	ROM_LOAD16_BYTE( "do2 mpr0.mpr0",  0x000000, 0x020000, CRC(a4c9ff34) SHA1(bf9310f1ab2f45ec01d6fa19e7d2e1d2a802dd2a) )
 	ROM_LOAD16_BYTE( "do2 mpr1.mpr1",  0x000001, 0x020000, CRC(2a89e794) SHA1(d9548e14a915b7bfab87292f03bdfd884438b49b) )
 
@@ -2921,21 +2619,10 @@ ROM_END
 /* DRAGON SABER */
 ROM_START( dsabera )
 	ROM_REGION( 0x040000, "maincpu", 0 ) /* Master CPU */
->>>>>>> upstream/master
 	ROM_LOAD16_BYTE( "mpr0.bin",  0x000000, 0x020000, CRC(45309ddc) SHA1(53b63046b0e5178695c998a0956667f4cf4204f2) )
 	ROM_LOAD16_BYTE( "mpr1.bin",  0x000001, 0x020000, CRC(cbfc4cba) SHA1(2037119f28af2b6a4af9e2019506ad7fccfa3113) )
 
 	ROM_REGION( 0x040000, "slave", 0 ) /* Slave CPU */
-<<<<<<< HEAD
-	ROM_LOAD16_BYTE( "spr0.bin",  0x000000, 0x010000, CRC(013faf80) SHA1(2cb086e9bb6a551e9fc185c40b976989f758cc57) )
-	ROM_LOAD16_BYTE( "spr1.bin",  0x000001, 0x010000, CRC(c36242bb) SHA1(776f0ab4b2798bc7fc293e27a455675c01ff3132) )
-
-	ROM_REGION( 0x050000, "audiocpu", 0 ) /* Sound CPU (Banked) */
-	ROM_LOAD( "snd0.bin",  0x00c000, 0x004000, CRC(af5b1ff8) SHA1(fc2a104788f081e4d2ddd22c586e541d6c5b5d69) )
-	ROM_CONTINUE(          0x010000, 0x01c000 )
-	ROM_RELOAD(            0x010000, 0x020000 )
-	ROM_LOAD( "snd1.bin",  0x030000, 0x020000, CRC(c4ca6f3f) SHA1(829a053451be07b296fb4d97818d59eb1e68c807) )
-=======
 	ROM_LOAD16_BYTE( "do1 spr0.spr0",  0x000000, 0x010000, CRC(013faf80) SHA1(2cb086e9bb6a551e9fc185c40b976989f758cc57) )
 	ROM_LOAD16_BYTE( "do1 spr1.spr1",  0x000001, 0x010000, CRC(c36242bb) SHA1(776f0ab4b2798bc7fc293e27a455675c01ff3132) )
 
@@ -2944,23 +2631,12 @@ ROM_START( dsabera )
 	ROM_CONTINUE(          0x010000, 0x01c000 )
 	ROM_RELOAD(            0x010000, 0x020000 )
 	ROM_LOAD( "do1 snd1.snd1",  0x030000, 0x020000, CRC(c4ca6f3f) SHA1(829a053451be07b296fb4d97818d59eb1e68c807) )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x010000, "mcu", 0 ) /* I/O MCU */
 	ROM_LOAD( "sys2mcpu.bin",  0x000000, 0x002000, CRC(a342a97e) SHA1(2c420d34dba21e409bf78ddca710fc7de65a6642) )
 	ROM_LOAD( "sys2c65c.bin",  0x008000, 0x008000, CRC(a5b2a4ff) SHA1(068bdfcc71a5e83706e8b23330691973c1c214dc) )
 
 	ROM_REGION( 0x400000, "gfx1", 0 ) /* Sprites */
-<<<<<<< HEAD
-	ROM_LOAD( "obj0.bin",  0x000000, 0x80000, CRC(f08c6648) SHA1(ac5221ba159f2390060cbbb7d9cd8148c7bb4a02) )
-	ROM_LOAD( "obj1.bin",  0x080000, 0x80000, CRC(34e0810d) SHA1(679d9b82879cff5197a5098e5dc724c85373b9dc) )
-	ROM_LOAD( "obj2.bin",  0x100000, 0x80000, CRC(bccdabf3) SHA1(d079d89083ac6e71ac8926792d0d7cdcebc848a9) )
-	ROM_LOAD( "obj3.bin",  0x180000, 0x80000, CRC(2a60a4b8) SHA1(5923e08121ad27629bd917d890e037e888e6d356) )
-
-	ROM_REGION( 0x400000, "gfx2", 0 ) /* Tiles */
-	ROM_LOAD( "co1chr0.bin",  0x000000, 0x80000, CRC(c6058df6) SHA1(13bacad6d593aa5533161e410e22f351c77f29c4) )
-	ROM_LOAD( "co1chr1.bin",  0x080000, 0x80000, CRC(67aaab36) SHA1(3abb7e226badcfe016325d42c40f06ee020124e3) )
-=======
 	ROM_LOAD( "do obj-0a.obj0",  0x000000, 0x80000, CRC(f08c6648) SHA1(ac5221ba159f2390060cbbb7d9cd8148c7bb4a02) )
 	ROM_LOAD( "do obj-1a.obj1",  0x080000, 0x80000, CRC(34e0810d) SHA1(679d9b82879cff5197a5098e5dc724c85373b9dc) )
 	ROM_LOAD( "do obj-2a.obj2",  0x100000, 0x80000, CRC(bccdabf3) SHA1(d079d89083ac6e71ac8926792d0d7cdcebc848a9) )
@@ -2969,7 +2645,6 @@ ROM_START( dsabera )
 	ROM_REGION( 0x400000, "gfx2", 0 ) /* Tiles */
 	ROM_LOAD( "do chr-0a.chr0",  0x000000, 0x80000, CRC(c6058df6) SHA1(13bacad6d593aa5533161e410e22f351c77f29c4) )
 	ROM_LOAD( "do chr-1a.chr1",  0x080000, 0x80000, CRC(67aaab36) SHA1(3abb7e226badcfe016325d42c40f06ee020124e3) )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x400000, "gfx3", 0 ) /* ROZ Tiles */
 	ROM_LOAD( "roz0.bin",  0x000000, 0x80000, CRC(32aab758) SHA1(a3220c2a02b9d8bdd95004d36d2aa5ddf57adfbb) )
@@ -2978,21 +2653,12 @@ ROM_START( dsabera )
 	ROM_LOAD( "shape.bin",  0x000000, 0x80000, CRC(698e7a3e) SHA1(4d41bf0242626ca1448d1f650c84b5987a7f6597) )
 
 	ROM_REGION16_BE( 0x200000, "data_rom", 0 ) /* Shared data roms */
-<<<<<<< HEAD
-	NAMCOS2_DATA_LOAD_E_128K( "data0.bin",  0x000000, CRC(3e53331f) SHA1(3dd4c133f587361f30ab1b890f5b05749d5838e3) )
-	NAMCOS2_DATA_LOAD_O_128K( "data1.bin",  0x000000, CRC(d5427f11) SHA1(af8d8153dc60044616a6b0571831c53c09fefda1) )
-
-	ROM_REGION( 0x100000, "c140", 0 ) /* Sound voices */
-	ROM_LOAD( "voi1.bin",  0x000000, 0x080000, CRC(dadf6a57) SHA1(caba21fc6b62d140f6d8231411ce82ae0ad2837a) )
-	ROM_LOAD( "voi2.bin",  0x080000, 0x080000, CRC(81078e01) SHA1(adc70506b21b9a12eadd2f3fd1e920c2eb27c36e) )
-=======
 	NAMCOS2_DATA_LOAD_E_128K( "do1 dat0.data0",  0x000000, CRC(3e53331f) SHA1(3dd4c133f587361f30ab1b890f5b05749d5838e3) )
 	NAMCOS2_DATA_LOAD_O_128K( "do1 dat1.data1",  0x000000, CRC(d5427f11) SHA1(af8d8153dc60044616a6b0571831c53c09fefda1) )
 
 	ROM_REGION( 0x100000, "c140", 0 ) /* Sound voices */
 	ROM_LOAD( "do voi-1a.voice1",  0x000000, 0x080000, CRC(dadf6a57) SHA1(caba21fc6b62d140f6d8231411ce82ae0ad2837a) )
 	ROM_LOAD( "do voi-2a.voice2",  0x080000, 0x080000, CRC(81078e01) SHA1(adc70506b21b9a12eadd2f3fd1e920c2eb27c36e) )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x0500, "plds", 0 )
 	ROM_LOAD( "pal16l8a.4g", 0x0000, 0x0104, CRC(660e1655) SHA1(ffb43238c5ffa3fa831975bc3cde72334c4c2540) )
@@ -3003,20 +2669,6 @@ ROM_END
 /* DRAGON SABER (JAPAN) */
 ROM_START( dsaberj )
 	ROM_REGION( 0x040000, "maincpu", 0 ) /* Master CPU */
-<<<<<<< HEAD
-	ROM_LOAD16_BYTE( "do1mpr0b.bin",  0x000000, 0x020000, CRC(2898e791) SHA1(9f4fd4899897cfb7c8f918abc2070e1ac4169f5d) )
-	ROM_LOAD16_BYTE( "do1mpr1b.bin",  0x000001, 0x020000, CRC(5fa9778e) SHA1(3beeb73a42e6afdf866a88618aa03fe8934ec2aa) )
-
-	ROM_REGION( 0x040000, "slave", 0 ) /* Slave CPU */
-	ROM_LOAD16_BYTE( "spr0.bin",  0x000000, 0x010000, CRC(013faf80) SHA1(2cb086e9bb6a551e9fc185c40b976989f758cc57) )
-	ROM_LOAD16_BYTE( "spr1.bin",  0x000001, 0x010000, CRC(c36242bb) SHA1(776f0ab4b2798bc7fc293e27a455675c01ff3132) )
-
-	ROM_REGION( 0x050000, "audiocpu", 0 ) /* Sound CPU (Banked) */
-	ROM_LOAD( "snd0.bin",  0x00c000, 0x004000, CRC(af5b1ff8) SHA1(fc2a104788f081e4d2ddd22c586e541d6c5b5d69) )
-	ROM_CONTINUE(          0x010000, 0x01c000 )
-	ROM_RELOAD(            0x010000, 0x020000 )
-	ROM_LOAD( "snd1.bin",  0x030000, 0x020000, CRC(c4ca6f3f) SHA1(829a053451be07b296fb4d97818d59eb1e68c807) )
-=======
 	ROM_LOAD16_BYTE( "do1 mpr0b.mor0",  0x000000, 0x020000, CRC(2898e791) SHA1(9f4fd4899897cfb7c8f918abc2070e1ac4169f5d) )
 	ROM_LOAD16_BYTE( "do1 mpr1b.mpr1",  0x000001, 0x020000, CRC(5fa9778e) SHA1(3beeb73a42e6afdf866a88618aa03fe8934ec2aa) )
 
@@ -3029,23 +2681,12 @@ ROM_START( dsaberj )
 	ROM_CONTINUE(          0x010000, 0x01c000 )
 	ROM_RELOAD(            0x010000, 0x020000 )
 	ROM_LOAD( "do1 snd1.snd1",  0x030000, 0x020000, CRC(c4ca6f3f) SHA1(829a053451be07b296fb4d97818d59eb1e68c807) )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x010000, "mcu", 0 ) /* I/O MCU */
 	ROM_LOAD( "sys2mcpu.bin",  0x000000, 0x002000, CRC(a342a97e) SHA1(2c420d34dba21e409bf78ddca710fc7de65a6642) )
 	ROM_LOAD( "sys2c65c.bin",  0x008000, 0x008000, CRC(a5b2a4ff) SHA1(068bdfcc71a5e83706e8b23330691973c1c214dc) )
 
 	ROM_REGION( 0x400000, "gfx1", 0 ) /* Sprites */
-<<<<<<< HEAD
-	ROM_LOAD( "obj0.bin",  0x000000, 0x80000, CRC(f08c6648) SHA1(ac5221ba159f2390060cbbb7d9cd8148c7bb4a02) )
-	ROM_LOAD( "obj1.bin",  0x080000, 0x80000, CRC(34e0810d) SHA1(679d9b82879cff5197a5098e5dc724c85373b9dc) )
-	ROM_LOAD( "obj2.bin",  0x100000, 0x80000, CRC(bccdabf3) SHA1(d079d89083ac6e71ac8926792d0d7cdcebc848a9) )
-	ROM_LOAD( "obj3.bin",  0x180000, 0x80000, CRC(2a60a4b8) SHA1(5923e08121ad27629bd917d890e037e888e6d356) )
-
-	ROM_REGION( 0x400000, "gfx2", 0 ) /* Tiles */
-	ROM_LOAD( "co1chr0.bin",  0x000000, 0x80000, CRC(c6058df6) SHA1(13bacad6d593aa5533161e410e22f351c77f29c4) )
-	ROM_LOAD( "co1chr1.bin",  0x080000, 0x80000, CRC(67aaab36) SHA1(3abb7e226badcfe016325d42c40f06ee020124e3) )
-=======
 	ROM_LOAD( "do obj-0a.obj0",  0x000000, 0x80000, CRC(f08c6648) SHA1(ac5221ba159f2390060cbbb7d9cd8148c7bb4a02) )
 	ROM_LOAD( "do obj-1a.obj1",  0x080000, 0x80000, CRC(34e0810d) SHA1(679d9b82879cff5197a5098e5dc724c85373b9dc) )
 	ROM_LOAD( "do obj-2a.obj2",  0x100000, 0x80000, CRC(bccdabf3) SHA1(d079d89083ac6e71ac8926792d0d7cdcebc848a9) )
@@ -3054,7 +2695,6 @@ ROM_START( dsaberj )
 	ROM_REGION( 0x400000, "gfx2", 0 ) /* Tiles */
 	ROM_LOAD( "do chr-0a.chr0",  0x000000, 0x80000, CRC(c6058df6) SHA1(13bacad6d593aa5533161e410e22f351c77f29c4) )
 	ROM_LOAD( "do chr-1a.chr1",  0x080000, 0x80000, CRC(67aaab36) SHA1(3abb7e226badcfe016325d42c40f06ee020124e3) )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x400000, "gfx3", 0 ) /* ROZ Tiles */
 	ROM_LOAD( "roz0.bin",  0x000000, 0x80000, CRC(32aab758) SHA1(a3220c2a02b9d8bdd95004d36d2aa5ddf57adfbb) )
@@ -3063,14 +2703,6 @@ ROM_START( dsaberj )
 	ROM_LOAD( "shape.bin",  0x000000, 0x80000, CRC(698e7a3e) SHA1(4d41bf0242626ca1448d1f650c84b5987a7f6597) )
 
 	ROM_REGION16_BE( 0x200000, "data_rom", 0 ) /* Shared data roms */
-<<<<<<< HEAD
-	NAMCOS2_DATA_LOAD_E_128K( "data0.bin",  0x000000, CRC(3e53331f) SHA1(3dd4c133f587361f30ab1b890f5b05749d5838e3) )
-	NAMCOS2_DATA_LOAD_O_128K( "data1.bin",  0x000000, CRC(d5427f11) SHA1(af8d8153dc60044616a6b0571831c53c09fefda1) )
-
-	ROM_REGION( 0x100000, "c140", 0 ) /* Sound voices */
-	ROM_LOAD( "voi1.bin",  0x000000, 0x080000, CRC(dadf6a57) SHA1(caba21fc6b62d140f6d8231411ce82ae0ad2837a) )
-	ROM_LOAD( "voi2.bin",  0x080000, 0x080000, CRC(81078e01) SHA1(adc70506b21b9a12eadd2f3fd1e920c2eb27c36e) )
-=======
 	NAMCOS2_DATA_LOAD_E_128K( "do1 dat0.data0",  0x000000, CRC(3e53331f) SHA1(3dd4c133f587361f30ab1b890f5b05749d5838e3) )
 	NAMCOS2_DATA_LOAD_O_128K( "do1 dat1.data1",  0x000000, CRC(d5427f11) SHA1(af8d8153dc60044616a6b0571831c53c09fefda1) )
 
@@ -3082,7 +2714,6 @@ ROM_START( dsaberj )
 	ROM_LOAD( "pal16l8a.4g", 0x0000, 0x0104, CRC(660e1655) SHA1(ffb43238c5ffa3fa831975bc3cde72334c4c2540) )
 	ROM_LOAD( "pal16l8a.5f", 0x0200, 0x0104, CRC(18f43c22) SHA1(72849c5b842678bb9037541d26d4c99cdf879982) )
 	ROM_LOAD( "pal12l10.8d", 0x0400, 0x0040, CRC(e2379249) SHA1(ad4cdf2e0fd1304a135022eeafa2f61c5f5789cd) )
->>>>>>> upstream/master
 ROM_END
 
 /* FINAL LAP (REV E) */
@@ -3281,21 +2912,12 @@ ROM_START( finallapjc )
 	NAMCOS2_GFXROM_LOAD_128K( "fl1-c1",  0x080000, CRC(b0efec87) SHA1(6d042f35942c2bdbf5aeb31358d3837ee9c8e5fa) )
 	NAMCOS2_GFXROM_LOAD_128K( "fl1-c2",  0x100000, CRC(263b8e31) SHA1(e2665edd89f7bb8c699e61df6de6a2e8e0698092) )
 	NAMCOS2_GFXROM_LOAD_128K( "fl1-c3",  0x180000, CRC(c2c56743) SHA1(3f338599ffd2e13452cdc3dbf3697fd8aa04bcd2) )
-<<<<<<< HEAD
-	NAMCOS2_GFXROM_LOAD_128K( "fl2-c4",  0x200000, CRC(83c77a50) SHA1(a3c19de25819586bdecae46326836090e80a92ee) )
-	NAMCOS2_GFXROM_LOAD_128K( "fl1-c5",  0x280000, CRC(ab89da77) SHA1(5cbead4289269a832c0d44d0ded79b58fcc4cc17) )
-	NAMCOS2_GFXROM_LOAD_128K( "fl2-c6",  0x300000, CRC(239bd9a0) SHA1(729abe89bea31b4e21161c69579df775b1cba6fe) )
-
-	ROM_REGION( 0x080000, "gfx4", 0 ) /* Mask shape */
-	NAMCOS2_GFXROM_LOAD_128K( "fl2-sha",  0x000000, CRC(5fda0b6d) SHA1(92c0410e159977ea73a8e8c0cb1321c3056f6c2f) )
-=======
 	NAMCOS2_GFXROM_LOAD_128K( "fl1-c4",  0x200000, CRC(cdc1de2e) SHA1(701dcc4fc25e7b6118947a5accabd43c0475ebe9) ) // Japan specific (was labeled fl2 - seems like fl1 is correct, fl2 is the english version?)
 	NAMCOS2_GFXROM_LOAD_128K( "fl1-c5",  0x280000, CRC(ab89da77) SHA1(5cbead4289269a832c0d44d0ded79b58fcc4cc17) )
 	NAMCOS2_GFXROM_LOAD_128K( "fl1-c6",  0x300000, CRC(8e78a3c3) SHA1(d1cd7fad038d52430f933b3ee2440554d2aeade9) ) // Japan specific (was labeled fl2 - seems like fl1 is correct, fl2 is the english version?)
 
 	ROM_REGION( 0x080000, "gfx4", 0 ) /* Mask shape */
 	NAMCOS2_GFXROM_LOAD_128K( "fl1_sha.bin",  0x000000, CRC(b7e1c7a3) SHA1(b82f9b340d95b80a12286647adba8c139b4d081a) )
->>>>>>> upstream/master
 
 	ROM_REGION16_BE( 0x200000, "data_rom", ROMREGION_ERASEFF ) /* Shared data roms */
 	/* No DAT files present in ZIP archive */
@@ -3345,15 +2967,9 @@ ROM_START( finallapjb )
 	NAMCOS2_GFXROM_LOAD_128K( "fl1-c1",  0x080000, CRC(b0efec87) SHA1(6d042f35942c2bdbf5aeb31358d3837ee9c8e5fa) )
 	NAMCOS2_GFXROM_LOAD_128K( "fl1-c2",  0x100000, CRC(263b8e31) SHA1(e2665edd89f7bb8c699e61df6de6a2e8e0698092) )
 	NAMCOS2_GFXROM_LOAD_128K( "fl1-c3",  0x180000, CRC(c2c56743) SHA1(3f338599ffd2e13452cdc3dbf3697fd8aa04bcd2) )
-<<<<<<< HEAD
-	NAMCOS2_GFXROM_LOAD_128K( "fl2-c4",  0x200000, CRC(cdc1de2e) SHA1(701dcc4fc25e7b6118947a5accabd43c0475ebe9) )
-	NAMCOS2_GFXROM_LOAD_128K( "fl1-c5",  0x280000, CRC(ab89da77) SHA1(5cbead4289269a832c0d44d0ded79b58fcc4cc17) )
-	NAMCOS2_GFXROM_LOAD_128K( "fl2-c6",  0x300000, CRC(8e78a3c3) SHA1(d1cd7fad038d52430f933b3ee2440554d2aeade9) )
-=======
 	NAMCOS2_GFXROM_LOAD_128K( "fl1-c4",  0x200000, CRC(cdc1de2e) SHA1(701dcc4fc25e7b6118947a5accabd43c0475ebe9) ) // Japan specific (was labeled fl2 - seems like fl1 is correct, fl2 is the english version?)
 	NAMCOS2_GFXROM_LOAD_128K( "fl1-c5",  0x280000, CRC(ab89da77) SHA1(5cbead4289269a832c0d44d0ded79b58fcc4cc17) )
 	NAMCOS2_GFXROM_LOAD_128K( "fl1-c6",  0x300000, CRC(8e78a3c3) SHA1(d1cd7fad038d52430f933b3ee2440554d2aeade9) ) // Japan specific (was labeled fl2 - seems like fl1 is correct, fl2 is the english version?)
->>>>>>> upstream/master
 
 	ROM_REGION( 0x080000, "gfx4", 0 ) /* Mask shape */
 	NAMCOS2_GFXROM_LOAD_128K( "fl1_sha.bin",  0x000000, CRC(b7e1c7a3) SHA1(b82f9b340d95b80a12286647adba8c139b4d081a) )
@@ -3460,20 +3076,6 @@ ROM_START( finalap2j )
 	ROM_LOAD( "fl2obj5",  0x300000, 0x80000, CRC(d74ae0d3) SHA1(96c9798378da7bdc127ed7d02a4dd14dfd142550) )
 	ROM_LOAD( "fl2obj7",  0x380000, 0x80000, CRC(5ca68c93) SHA1(fa326992338843ccfa458a5b85ba58537da666d0) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x200000, "gfx2", 0 ) /* Tiles */
-	ROM_LOAD( "fls2chr0",  0x000000, 0x40000, CRC(7bbda499) SHA1(cf6ff072a40063cbe41eae1f60b29447a0020926) )
-	ROM_LOAD( "fls2chr1",  0x040000, 0x40000, CRC(ac8940e5) SHA1(449687d38cf830445df713ed4d675ed94ca5b375) )
-	ROM_LOAD( "fls2chr2",  0x080000, 0x40000, CRC(1756173d) SHA1(c912163979098387aea9a0580e9ca55c1f7275f3) )
-	ROM_LOAD( "fls2chr3",  0x0c0000, 0x40000, CRC(69032785) SHA1(cfcd12bea730f724444188c206adcdb5e755eb7d) )
-	ROM_LOAD( "fls2chr4",  0x100000, 0x40000, CRC(8216cf42) SHA1(79820435584d769b63649b554574486dbcd6f468) )
-	ROM_LOAD( "fls2chr5",  0x140000, 0x40000, CRC(dc3e8e1c) SHA1(a7968cfa0ca2639364507b42526f10cf1b2000f4) )
-	ROM_LOAD( "fls2chr6",  0x180000, 0x40000, CRC(1ef4bdde) SHA1(ceb36c021450efa4cb0fee278fa0b9d65f7d1f05) )
-	ROM_LOAD( "fls2chr7",  0x1c0000, 0x40000, CRC(53dafcde) SHA1(f9d9460349b34bda95b8c206af7ce2347c951214) )
-
-	ROM_REGION( 0x080000, "gfx4", 0 ) /* Mask shape */
-	NAMCOS2_GFXROM_LOAD_256K( "fls2sha",  0x000000, CRC(f7b40a85) SHA1(a458a1cc0dae757fe8a15cb5f5ae46d3c033df00) )
-=======
 	// The Japanese version should not be using the same ROMs as the World version here, causes corrupt text in attract mode should probably be fls1
 	ROM_REGION( 0x200000, "gfx2", 0 ) /* Tiles */
 	ROM_LOAD( "fls2chr0",  0x000000, 0x40000, BAD_DUMP CRC(7bbda499) SHA1(cf6ff072a40063cbe41eae1f60b29447a0020926) )
@@ -3487,7 +3089,6 @@ ROM_START( finalap2j )
 
 	ROM_REGION( 0x080000, "gfx4", 0 ) /* Mask shape */
 	NAMCOS2_GFXROM_LOAD_256K( "fls2sha",  0x000000, BAD_DUMP CRC(f7b40a85) SHA1(a458a1cc0dae757fe8a15cb5f5ae46d3c033df00) )
->>>>>>> upstream/master
 
 	ROM_REGION16_BE( 0x200000, "data_rom", 0 ) /* Shared data roms */
 	NAMCOS2_DATA_LOAD_E_256K( "fls2dat0",  0x000000, CRC(f1af432c) SHA1(c514261a49ceb5c3ba0246519ba5d02e9a20d950) )
@@ -4100,14 +3701,9 @@ ROM_START( marvland )
 	ROM_LOAD16_BYTE( "mv2_spr0",  0x000000, 0x010000, CRC(aa418f29) SHA1(413798d9c1d98cfcadb045a5436aaee61ce6718f) )
 	ROM_LOAD16_BYTE( "mv2_spr1",  0x000001, 0x010000, CRC(dbd94def) SHA1(56a8d7acd483bc4d12c8bc5b7e90ffdb132be670) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x030000, "audiocpu", 0 ) /* Sound CPU (Banked) */
-	ROM_LOAD( "mv2_snd0",  0x00c000, 0x004000, CRC(a5b99162) SHA1(cafe8d1dae1e981c7ff9b70076b3e1d52cd806f7) )
-=======
 	// This needs re-dumping, sound is very poor in this version and doesn't match Japanese version or any of the ports.  High res photos of PCB required too.
 	ROM_REGION( 0x030000, "audiocpu", 0 ) /* Sound CPU (Banked) */
 	ROM_LOAD( "mv2_snd0",  0x00c000, 0x004000, BAD_DUMP CRC(a5b99162) SHA1(cafe8d1dae1e981c7ff9b70076b3e1d52cd806f7) )
->>>>>>> upstream/master
 	ROM_CONTINUE(          0x010000, 0x01c000 )
 	ROM_RELOAD(            0x010000, 0x020000 )
 
@@ -4396,17 +3992,6 @@ ROM_END
 /* ORDYNE */
 ROM_START( ordyne )
 	ROM_REGION( 0x040000, "maincpu", 0 ) /* Master CPU */
-<<<<<<< HEAD
-	ROM_LOAD16_BYTE( "or1_mp0e.bin",  0x000000, 0x020000, CRC(5e2f9052) SHA1(0bd5c2f3a1834beeddce5561833a36da9439d30c) )
-	ROM_LOAD16_BYTE( "or1_mp1e.bin",  0x000001, 0x020000, CRC(367a8fcf) SHA1(af981338679939e99cd0733e7658a7d78c5e7ec3) )
-
-	ROM_REGION( 0x040000, "slave", 0 ) /* Slave CPU */
-	ROM_LOAD16_BYTE( "or1_sp0.bin",  0x000000, 0x010000, CRC(01ef6638) SHA1(403abd548014b671658aa7d40414b09c095c831d) )
-	ROM_LOAD16_BYTE( "or1_sp1.bin",  0x000001, 0x010000, CRC(b632adc3) SHA1(3d301d4ce9bf835c0f4c8ef883dba3fc4e3a5f12) )
-
-	ROM_REGION( 0x030000, "audiocpu", 0 ) /* Sound CPU (Banked) */
-	ROM_LOAD( "or1_sd0.bin",  0x00c000, 0x004000, CRC(c41e5d22) SHA1(7cb98d8068ddf92aadf0228b977df2ce1d866466) )
-=======
 	ROM_LOAD16_BYTE( "or2_mp0.mpr0",  0x000000, 0x020000, CRC(31a1742b) SHA1(6fbb6ca90829a8187dc256201e1e70bb583cb4fd) )
 	ROM_LOAD16_BYTE( "or2_mp1.mpr1",  0x000001, 0x020000, CRC(c80c6b73) SHA1(183f894efe19d03d18546736ec53d24d32d24edb) )
 
@@ -4416,51 +4001,11 @@ ROM_START( ordyne )
 
 	ROM_REGION( 0x030000, "audiocpu", 0 ) /* Sound CPU (Banked) */
 	ROM_LOAD( "or1_sd.snd0",  0x00c000, 0x004000, CRC(c41e5d22) SHA1(7cb98d8068ddf92aadf0228b977df2ce1d866466) )
->>>>>>> upstream/master
 	ROM_CONTINUE(             0x010000, 0x01c000 )
 	ROM_RELOAD(               0x010000, 0x020000 )
 
 	ROM_REGION( 0x010000, "mcu", 0 ) /* I/O MCU */
 	ROM_LOAD( "sys2mcpu.bin",  0x000000, 0x002000, CRC(a342a97e) SHA1(2c420d34dba21e409bf78ddca710fc7de65a6642) )
-<<<<<<< HEAD
-	ROM_LOAD( "sys2c65c.bin",  0x008000, 0x008000, CRC(a5b2a4ff) SHA1(068bdfcc71a5e83706e8b23330691973c1c214dc) )
-
-	ROM_REGION( 0x400000, "gfx1", 0 ) /* Sprites */
-	NAMCOS2_GFXROM_LOAD_128K( "or1_ob0.bin",  0x000000, CRC(67b2b9e4) SHA1(4e589c28ed23224e40d3c68055ada0136cbf94cb) )
-	NAMCOS2_GFXROM_LOAD_128K( "or1_ob1.bin",  0x080000, CRC(8a54fa5e) SHA1(8f71a79dc3bdf8ea4f11cfc31338836ab0c695a5) )
-	NAMCOS2_GFXROM_LOAD_128K( "or1_ob2.bin",  0x100000, CRC(a2c1cca0) SHA1(f2e8b1b09751695c18bbfbdbe1765e3802833850) )
-	NAMCOS2_GFXROM_LOAD_128K( "or1_ob3.bin",  0x180000, CRC(e0ad292c) SHA1(15c1198134e5aa1ea399ad628f478b3440dd6111) )
-	NAMCOS2_GFXROM_LOAD_128K( "or1_ob4.bin",  0x200000, CRC(7aefba59) SHA1(99b827fabcd32dc665653b8aeda3498f97d5cebb) )
-	NAMCOS2_GFXROM_LOAD_128K( "or1_ob5.bin",  0x280000, CRC(e4025be9) SHA1(64ac7f782d7143becffd0c6318008b2f764ae9a3) )
-	NAMCOS2_GFXROM_LOAD_128K( "or1_ob6.bin",  0x300000, CRC(e284c30c) SHA1(f77a3cd81ac1d0fb06317db51b576f1aaa9bbec7) )
-	NAMCOS2_GFXROM_LOAD_128K( "or1_ob7.bin",  0x380000, CRC(262b7112) SHA1(1f275eeb621d28a2efb3be9dad76606eeba78e8b) )
-
-	ROM_REGION( 0x400000, "gfx2", 0 ) /* Tiles */
-	NAMCOS2_GFXROM_LOAD_128K( "or1_ch0.bin",  0x000000, CRC(e7c47934) SHA1(c86791ea11a72cd2b59293dca74fa08ec86edc80) )
-	NAMCOS2_GFXROM_LOAD_128K( "or1_ch1.bin",  0x080000, CRC(874b332d) SHA1(307ce6ad8013dbd0528a8c5d736bff21a34c4318) )
-	NAMCOS2_GFXROM_LOAD_128K( "or1_ch3.bin",  0x180000, CRC(5471a834) SHA1(91bd76eb6e03d6fdf636381a5ce1123291bd49ba) )
-	NAMCOS2_GFXROM_LOAD_128K( "or1_ch5.bin",  0x280000, CRC(a7d3a296) SHA1(ad258825371548e719c7fa0fc5a4813bf34172d5) )
-	NAMCOS2_GFXROM_LOAD_128K( "or1_ch6.bin",  0x300000, CRC(3adc09c8) SHA1(5302796c7a7f3621e2a068b5a3932f0020785836) )
-	NAMCOS2_GFXROM_LOAD_128K( "or1_ch7e.bin", 0x380000, CRC(8c0d2ab7) SHA1(5e0e61623fcbaac261763fbb42079f32d1ac963c) )
-
-	ROM_REGION( 0x400000, "gfx3", 0 ) /* ROZ Tiles */
-	NAMCOS2_GFXROM_LOAD_128K( "or1_rz0.bin",  0x000000, CRC(c88a9e6b) SHA1(58d73615d6d3446407dd192b7ae36dcdc1dced24) )
-	NAMCOS2_GFXROM_LOAD_128K( "or1_rz1.bin",  0x080000, CRC(c20cc749) SHA1(93142454f428ec3386bc94f1b8f7300f8e0414bc) )
-	NAMCOS2_GFXROM_LOAD_128K( "or1_rz2.bin",  0x100000, CRC(148c9866) SHA1(e2cf7f76a6e0adc22e8b0c347cf5bb9d913b6b0c) )
-	NAMCOS2_GFXROM_LOAD_128K( "or1_rz3.bin",  0x180000, CRC(4e727b7e) SHA1(272ffb137bdfabef83d6180c8667ec7e08265ea6) )
-	NAMCOS2_GFXROM_LOAD_128K( "or1_rz4.bin",  0x200000, CRC(17b04396) SHA1(410dd04538f5d9d147dfefc658b0640a771e1032) )
-
-	ROM_REGION( 0x080000, "gfx4", 0 ) /* Mask shape */
-	NAMCOS2_GFXROM_LOAD_128K( "or1_sha.bin",  0x000000, CRC(7aec9dee) SHA1(2e774e4cff69173b4524d6b25a6a449ba5498a6a) )
-
-	ROM_REGION16_BE( 0x200000, "data_rom", 0 ) /* Shared data roms */
-	NAMCOS2_DATA_LOAD_E_128K( "or1_dt0.bin",  0x000000, CRC(de214f7a) SHA1(59883c7886b403306c30e51d7f49225483792650) )
-	NAMCOS2_DATA_LOAD_O_128K( "or1_dt1.bin",  0x000000, CRC(25e3e6c8) SHA1(ad093f15edaea71f6c7226c6e4f3c2130d418013) )
-
-	ROM_REGION( 0x100000, "c140", 0 ) /* Sound voices */
-	ROM_LOAD( "or1_vo1.bin",  0x000000, 0x080000, CRC(369e0bca) SHA1(2a921bb373dd043bd7b2a30e5e46ec3b8b3b5c8d) )
-	ROM_LOAD( "or1_vo2.bin",  0x080000, 0x080000, CRC(9f4cd7b5) SHA1(10941dd5ab3846c0cb2543655944eaec742f8f21) )
-=======
 	ROM_LOAD( "sys2_c65b.3f",  0x008000, 0x008000, CRC(e9f2922a) SHA1(5767d2f85e1eb3de19192e73b02221f28b1fbb83) )
 
 	ROM_REGION( 0x400000, "gfx1", 0 ) /* Sprites */
@@ -4560,23 +4105,11 @@ ROM_START( ordyneje )
 
 	ROM_REGION( 0x2000, "user2", 0 ) /* sprite zoom lookup table */
 	ROM_LOAD( "lh5762.6n",    0x00000,  0x002000, CRC(90db1bf6) SHA1(dbb9e50a8efc3b4012fcf587cc87da9ef42a1b80) )
->>>>>>> upstream/master
 ROM_END
 
 /* ORDYNE */
 ROM_START( ordynej )
 	ROM_REGION( 0x040000, "maincpu", 0 ) /* Master CPU */
-<<<<<<< HEAD
-	ROM_LOAD16_BYTE( "or1_mp0.bin",  0x000000, 0x020000, CRC(f5929ed3) SHA1(7926c736904646e2918a708e33c7f9b4aa75d929) )
-	ROM_LOAD16_BYTE( "or1_mp1.bin",  0x000001, 0x020000, CRC(c1c8c1e2) SHA1(153ebfdbc2bc73ea4f4628ebba4d90530b7ecd9d) )
-
-	ROM_REGION( 0x040000, "slave", 0 ) /* Slave CPU */
-	ROM_LOAD16_BYTE( "or1_sp0.bin",  0x000000, 0x010000, CRC(01ef6638) SHA1(403abd548014b671658aa7d40414b09c095c831d) )
-	ROM_LOAD16_BYTE( "or1_sp1.bin",  0x000001, 0x010000, CRC(b632adc3) SHA1(3d301d4ce9bf835c0f4c8ef883dba3fc4e3a5f12) )
-
-	ROM_REGION( 0x030000, "audiocpu", 0 ) /* Sound CPU (Banked) */
-	ROM_LOAD( "or1_sd0.bin",  0x00c000, 0x004000, CRC(c41e5d22) SHA1(7cb98d8068ddf92aadf0228b977df2ce1d866466) )
-=======
 	ROM_LOAD16_BYTE( "or1_mp0.mpr0",  0x000000, 0x020000, CRC(f5929ed3) SHA1(7926c736904646e2918a708e33c7f9b4aa75d929) )
 	ROM_LOAD16_BYTE( "or1_mp1.mpr1",  0x000001, 0x020000, CRC(c1c8c1e2) SHA1(153ebfdbc2bc73ea4f4628ebba4d90530b7ecd9d) )
 
@@ -4586,51 +4119,11 @@ ROM_START( ordynej )
 
 	ROM_REGION( 0x030000, "audiocpu", 0 ) /* Sound CPU (Banked) */
 	ROM_LOAD( "or1_sd.snd0",  0x00c000, 0x004000, CRC(c41e5d22) SHA1(7cb98d8068ddf92aadf0228b977df2ce1d866466) )
->>>>>>> upstream/master
 	ROM_CONTINUE(             0x010000, 0x01c000 )
 	ROM_RELOAD(               0x010000, 0x020000 )
 
 	ROM_REGION( 0x010000, "mcu", 0 ) /* I/O MCU */
 	ROM_LOAD( "sys2mcpu.bin",  0x000000, 0x002000, CRC(a342a97e) SHA1(2c420d34dba21e409bf78ddca710fc7de65a6642) )
-<<<<<<< HEAD
-	ROM_LOAD( "sys2c65c.bin",  0x008000, 0x008000, CRC(a5b2a4ff) SHA1(068bdfcc71a5e83706e8b23330691973c1c214dc) )
-
-	ROM_REGION( 0x400000, "gfx1", 0 ) /* Sprites */
-	NAMCOS2_GFXROM_LOAD_128K( "or1_ob0.bin",  0x000000, CRC(67b2b9e4) SHA1(4e589c28ed23224e40d3c68055ada0136cbf94cb) )
-	NAMCOS2_GFXROM_LOAD_128K( "or1_ob1.bin",  0x080000, CRC(8a54fa5e) SHA1(8f71a79dc3bdf8ea4f11cfc31338836ab0c695a5) )
-	NAMCOS2_GFXROM_LOAD_128K( "or1_ob2.bin",  0x100000, CRC(a2c1cca0) SHA1(f2e8b1b09751695c18bbfbdbe1765e3802833850) )
-	NAMCOS2_GFXROM_LOAD_128K( "or1_ob3.bin",  0x180000, CRC(e0ad292c) SHA1(15c1198134e5aa1ea399ad628f478b3440dd6111) )
-	NAMCOS2_GFXROM_LOAD_128K( "or1_ob4.bin",  0x200000, CRC(7aefba59) SHA1(99b827fabcd32dc665653b8aeda3498f97d5cebb) )
-	NAMCOS2_GFXROM_LOAD_128K( "or1_ob5.bin",  0x280000, CRC(e4025be9) SHA1(64ac7f782d7143becffd0c6318008b2f764ae9a3) )
-	NAMCOS2_GFXROM_LOAD_128K( "or1_ob6.bin",  0x300000, CRC(e284c30c) SHA1(f77a3cd81ac1d0fb06317db51b576f1aaa9bbec7) )
-	NAMCOS2_GFXROM_LOAD_128K( "or1_ob7.bin",  0x380000, CRC(262b7112) SHA1(1f275eeb621d28a2efb3be9dad76606eeba78e8b) )
-
-	ROM_REGION( 0x400000, "gfx2", 0 ) /* Tiles */
-	NAMCOS2_GFXROM_LOAD_128K( "or1_ch0.bin",  0x000000, CRC(e7c47934) SHA1(c86791ea11a72cd2b59293dca74fa08ec86edc80) )
-	NAMCOS2_GFXROM_LOAD_128K( "or1_ch1.bin",  0x080000, CRC(874b332d) SHA1(307ce6ad8013dbd0528a8c5d736bff21a34c4318) )
-	NAMCOS2_GFXROM_LOAD_128K( "or1_ch3.bin",  0x180000, CRC(5471a834) SHA1(91bd76eb6e03d6fdf636381a5ce1123291bd49ba) )
-	NAMCOS2_GFXROM_LOAD_128K( "or1_ch5.bin",  0x280000, CRC(a7d3a296) SHA1(ad258825371548e719c7fa0fc5a4813bf34172d5) )
-	NAMCOS2_GFXROM_LOAD_128K( "or1_ch6.bin",  0x300000, CRC(3adc09c8) SHA1(5302796c7a7f3621e2a068b5a3932f0020785836) )
-	NAMCOS2_GFXROM_LOAD_128K( "or1_ch7.bin",  0x380000, CRC(f050a152) SHA1(e8d868c15f6319a4d4434ba889f1dfd160056c23) )
-
-	ROM_REGION( 0x400000, "gfx3", 0 ) /* ROZ Tiles */
-	NAMCOS2_GFXROM_LOAD_128K( "or1_rz0.bin",  0x000000, CRC(c88a9e6b) SHA1(58d73615d6d3446407dd192b7ae36dcdc1dced24) )
-	NAMCOS2_GFXROM_LOAD_128K( "or1_rz1.bin",  0x080000, CRC(c20cc749) SHA1(93142454f428ec3386bc94f1b8f7300f8e0414bc) )
-	NAMCOS2_GFXROM_LOAD_128K( "or1_rz2.bin",  0x100000, CRC(148c9866) SHA1(e2cf7f76a6e0adc22e8b0c347cf5bb9d913b6b0c) )
-	NAMCOS2_GFXROM_LOAD_128K( "or1_rz3.bin",  0x180000, CRC(4e727b7e) SHA1(272ffb137bdfabef83d6180c8667ec7e08265ea6) )
-	NAMCOS2_GFXROM_LOAD_128K( "or1_rz4.bin",  0x200000, CRC(17b04396) SHA1(410dd04538f5d9d147dfefc658b0640a771e1032) )
-
-	ROM_REGION( 0x080000, "gfx4", 0 ) /* Mask shape */
-	NAMCOS2_GFXROM_LOAD_128K( "or1_sha.bin",  0x000000, CRC(7aec9dee) SHA1(2e774e4cff69173b4524d6b25a6a449ba5498a6a) )
-
-	ROM_REGION16_BE( 0x200000, "data_rom", 0 ) /* Shared data roms */
-	NAMCOS2_DATA_LOAD_E_128K( "or1_dt0.bin",  0x000000, CRC(de214f7a) SHA1(59883c7886b403306c30e51d7f49225483792650) )
-	NAMCOS2_DATA_LOAD_O_128K( "or1_dt1.bin",  0x000000, CRC(25e3e6c8) SHA1(ad093f15edaea71f6c7226c6e4f3c2130d418013) )
-
-	ROM_REGION( 0x100000, "c140", 0 ) /* Sound voices */
-	ROM_LOAD( "or1_vo1.bin",  0x000000, 0x080000, CRC(369e0bca) SHA1(2a921bb373dd043bd7b2a30e5e46ec3b8b3b5c8d) )
-	ROM_LOAD( "or1_vo2.bin",  0x080000, 0x080000, CRC(9f4cd7b5) SHA1(10941dd5ab3846c0cb2543655944eaec742f8f21) )
-=======
 	ROM_LOAD( "sys2_c65b.3f",  0x008000, 0x008000, CRC(e9f2922a) SHA1(5767d2f85e1eb3de19192e73b02221f28b1fbb83) )
 
 	ROM_REGION( 0x400000, "gfx1", 0 ) /* Sprites */
@@ -4671,7 +4164,6 @@ ROM_START( ordynej )
 
 	ROM_REGION( 0x2000, "user2", 0 ) /* sprite zoom lookup table */
 	ROM_LOAD( "lh5762.6n",    0x00000,  0x002000, CRC(90db1bf6) SHA1(dbb9e50a8efc3b4012fcf587cc87da9ef42a1b80) )
->>>>>>> upstream/master
 ROM_END
 
 /* PHELIOS */
@@ -5712,36 +5204,6 @@ ROM_START( gollygho )
 	ROM_LOAD( "gollygho.nv",  0x000000, 0x2000, CRC(b7e67b9d) SHA1(bb6e2d2cac1a2f3c26fa1327db0eb53b521005a3) )
 ROM_END
 
-<<<<<<< HEAD
-/* BUBBLE TROUBLE */
-ROM_START( bubbletr )
-	ROM_REGION( 0x040000, "maincpu", 0 ) /* Master CPU */
-	ROM_LOAD16_BYTE( "bt1-mpr0c.bin",   0x000000, 0x020000, CRC(64eb3496) SHA1(30cdc116e350270f0303e5d9dddf6c3c8bccbc04) )
-	ROM_LOAD16_BYTE( "bt1-mpr1c.bin",   0x000001, 0x020000, CRC(26785bce) SHA1(ce83a3f2a8adc1a9c3fd9e677565a649a8168801) )
-
-	ROM_REGION( 0x040000, "slave", 0 ) /* Slave CPU */
-	ROM_LOAD16_BYTE( "bt1-spr0.bin",    0x000000, 0x010000, CRC(b507b00a) SHA1(e7dcb36accf91e8b5b5321e65e6fd6bca7c6dce2) )
-	ROM_LOAD16_BYTE( "bt1-spr1.bin",    0x000001, 0x010000, CRC(4f35540f) SHA1(519510de81e566ed74b80987860778201f6ac785) )
-
-	ROM_REGION( 0x030000, "audiocpu", 0 ) /* Sound CPU (Banked) */
-	ROM_LOAD( "bt1-snd0.bin",  0x00c000, 0x004000, CRC(46a5c625) SHA1(ccc7098f76a0bc39c9fe578d575e6002eca172b5) )
-	ROM_CONTINUE(              0x010000, 0x01c000 )
-	ROM_RELOAD(                0x010000, 0x020000 )
-
-	ROM_REGION( 0x010000, "mcu", 0 ) /* I/O MCU */
-	/* note, these weren't present in this set, taken from golly ghost and may be wrong for bubble trouble */
-	ROM_LOAD( "sys2mcpu.bin", 0x0000, 0x2000, CRC(a342a97e) SHA1(2c420d34dba21e409bf78ddca710fc7de65a6642) )
-	ROM_LOAD( "gl1edr0c.ic7", 0x8000, 0x8000, BAD_DUMP CRC(db60886f) SHA1(a1183c058c0470a4ef8b0f69a3637b1640c5b5a4) )
-
-	ROM_REGION( 0x400000, "gfx1", 0 ) /* Sprites */
-	ROM_LOAD( "bt1-obj0.bin",  0x000000, 0x80000, CRC(16b5dc04) SHA1(57cc4b7907442f922102fbd61e470c149f0379ac) )
-	ROM_LOAD( "bt1-obj1.bin",  0x080000, 0x80000, CRC(ae37a969) SHA1(524a8ef68a62f9168d356e6cd37a72a888ced202) )
-	ROM_LOAD( "bt1-obj2.bin",  0x100000, 0x80000, CRC(75f74871) SHA1(75c47a2132e21a2d82000bca137929bffecc96ef) )
-	ROM_LOAD( "bt1-obj3.bin",  0x180000, 0x80000, CRC(7fb23c05) SHA1(da97c595a3338021c1bc46f9668e1ec6c7985cea) )
-
-	ROM_REGION( 0x200000, "gfx2", 0 ) /* Tiles */
-	ROM_LOAD( "bt1-chr0.bin",  0x00000, 0x80000,  CRC(11574c30) SHA1(6e85dd1448961b89a13e8cf905b24a69d182edd8) )
-=======
 /* BUBBLE TROUBLE (World) */
 ROM_START( bubbletr ) /* All labels were hand written and included the rom size, checksum & date. All roms had the rev "A" added */
 	ROM_REGION( 0x040000, "maincpu", 0 ) /* Master CPU */
@@ -5769,25 +5231,12 @@ ROM_START( bubbletr ) /* All labels were hand written and included the rom size,
 
 	ROM_REGION( 0x200000, "gfx2", 0 ) /* Tiles */
 	ROM_LOAD( "bt1-chr0.11n",  0x00000, 0x80000,  CRC(11574c30) SHA1(6e85dd1448961b89a13e8cf905b24a69d182edd8) ) /* dated 4/24 */
->>>>>>> upstream/master
 	/* no chr1, chr2 missing or just not needed? probably just not needed as I see no tile glitches */
 
 	ROM_REGION( 0x400000, "gfx3", ROMREGION_ERASEFF ) /* ROZ Tiles */
 	/* All ROZ ROM sockets unpopulated on PCB */
 
 	ROM_REGION( 0x080000, "gfx4", 0 ) /* Mask shape */
-<<<<<<< HEAD
-	ROM_LOAD( "bt1-sha0.bin",   0x000000, 0x80000, CRC(dc4664df) SHA1(59818b14e74ee9b15a66e850658e4697d78b28d9) )
-
-	ROM_REGION16_BE( 0x200000, "data_rom", ROMREGION_ERASEFF ) /* Shared data roms */
-	/* All DAT ROM sockets unpopulated on PCB */
-
-	ROM_REGION16_BE( 0x2000, "user2", 0 ) /* sprite zoom */
-	ROM_LOAD( "04544191.6n",  0x000000, 0x002000, CRC(90db1bf6) SHA1(dbb9e50a8efc3b4012fcf587cc87da9ef42a1b80) ) // not in this set..
-
-	ROM_REGION( 0x100000, "c140", 0 ) /* Sound voices */
-	ROM_LOAD( "bt1-voi1.bin",  0x000000, 0x080000,  CRC(08b3a089) SHA1(5023c2c0d0a94f0a2f98605d9b93d2d6ce626aa8) )
-=======
 	ROM_LOAD( "bt1-sha0.7n",   0x000000, 0x80000, CRC(dc4664df) SHA1(59818b14e74ee9b15a66e850658e4697d78b28d9) ) /* dated 4/24 */
 
 	ROM_REGION16_BE( 0x200000, "data_rom", ROMREGION_ERASEFF ) /* Shared data roms */
@@ -5848,7 +5297,6 @@ ROM_START( bubbletrj )
 
 	ROM_REGION( 0x100000, "c140", 0 ) /* Sound voices */
 	ROM_LOAD( "bt1-voi1.3m",  0x000000, 0x080000,  CRC(08b3a089) SHA1(5023c2c0d0a94f0a2f98605d9b93d2d6ce626aa8) )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x2000, "nvram", 0 ) /* default settings, including calibration */
 	ROM_LOAD( "bubbletr.nv",  0x000000, 0x2000, CRC(75ace624) SHA1(1acd2af0c825e50c542db975e1fbda8cbb009f1d) )
@@ -6192,22 +5640,14 @@ DRIVER_INIT_MEMBER(namcos2_state,marvland)
 DRIVER_INIT_MEMBER(namcos2_state,metlhawk)
 {
 	/* unscramble sprites */
-<<<<<<< HEAD
-	UINT8 *data = memregion("gfx1")->base();
-=======
 	uint8_t *data = memregion("gfx1")->base();
->>>>>>> upstream/master
 	for (int i=0; i<0x200000; i+=32*32)
 	{
 		for (int j=0; j<32*32; j+=32*4)
 		{
 			for (int k=0; k<32; k+=4)
 			{
-<<<<<<< HEAD
-				UINT8 v;
-=======
 				uint8_t v;
->>>>>>> upstream/master
 				int a;
 
 				a = i+j+k+32;
@@ -6336,11 +5776,7 @@ DRIVER_INIT_MEMBER(namcos2_state,bubbletr)
 
 DRIVER_INIT_MEMBER(namcos2_state,luckywld)
 {
-<<<<<<< HEAD
-	UINT8 *pData = (UINT8 *)memregion( "gfx5" )->base();
-=======
 	uint8_t *pData = (uint8_t *)memregion( "gfx5" )->base();
->>>>>>> upstream/master
 	int i;
 	for( i=0; i<32*0x4000; i++ )
 	{ /* unscramble gfx mask */
@@ -6364,19 +5800,11 @@ DRIVER_INIT_MEMBER(namcos2_state,luckywld)
 /* and metal hawk have the B version and dragon saber has the C version       */
 
 /*    YEAR, NAME,       PARENT,   MACHINE,  INPUT,    STATE,         INIT,     MONITOR, COMPANY, FULLNAME */
-<<<<<<< HEAD
-GAMEL(1987, finallap,   0,        finallap, finallap, namcos2_state, finallap, ROT0,   "Namco", "Final Lap (Rev E)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_SOUND, layout_finallap )
-GAMEL(1987, finallapd,  finallap, finallap, finallap, namcos2_state, finallap, ROT0,   "Namco", "Final Lap (Rev D)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_SOUND, layout_finallap )
-GAMEL(1987, finallapc,  finallap, finallap, finallap, namcos2_state, finallap, ROT0,   "Namco", "Final Lap (Rev C)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_SOUND, layout_finallap )
-GAMEL(1987, finallapjc, finallap, finallap, finallap, namcos2_state, finallap, ROT0,   "Namco", "Final Lap (Japan, Rev C)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_SOUND, layout_finallap )
-GAMEL(1987, finallapjb, finallap, finallap, finallap, namcos2_state, finallap, ROT0,   "Namco", "Final Lap (Japan, Rev B)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_SOUND, layout_finallap )
-=======
 GAMEL(1987, finallap,   0,        finallap, finallap, namcos2_state, finallap, ROT0,   "Namco", "Final Lap (Rev E)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_SOUND | MACHINE_NODEVICE_LAN, layout_finallap )
 GAMEL(1987, finallapd,  finallap, finallap, finallap, namcos2_state, finallap, ROT0,   "Namco", "Final Lap (Rev D)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_SOUND | MACHINE_NODEVICE_LAN, layout_finallap )
 GAMEL(1987, finallapc,  finallap, finallap, finallap, namcos2_state, finallap, ROT0,   "Namco", "Final Lap (Rev C)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_SOUND | MACHINE_NODEVICE_LAN, layout_finallap )
 GAMEL(1987, finallapjc, finallap, finallap, finallap, namcos2_state, finallap, ROT0,   "Namco", "Final Lap (Japan, Rev C)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_SOUND | MACHINE_NODEVICE_LAN, layout_finallap )
 GAMEL(1987, finallapjb, finallap, finallap, finallap, namcos2_state, finallap, ROT0,   "Namco", "Final Lap (Japan, Rev B)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_SOUND | MACHINE_NODEVICE_LAN, layout_finallap )
->>>>>>> upstream/master
 
 GAME( 1988, assault,    0,        default2, assault,  namcos2_state, assault,       ROT90, "Namco", "Assault (Rev B)", 0 )
 GAME( 1988, assaultj,   assault,  default2, assault,  namcos2_state, assaultj,      ROT90, "Namco", "Assault (Japan)", 0 )
@@ -6385,12 +5813,8 @@ GAME( 1988, assaultp,   assault,  assaultp, assault,  namcos2_state, assaultp_ha
 GAME( 1988, metlhawk,   0,        metlhawk, metlhawk, namcos2_state, metlhawk, ROT90,  "Namco", "Metal Hawk (Rev C)", 0)
 GAME( 1988, metlhawkj,  metlhawk, metlhawk, metlhawk, namcos2_state, metlhawk, ROT90,  "Namco", "Metal Hawk (Japan, Rev F)", 0)
 
-<<<<<<< HEAD
-GAME( 1988, ordyne,     0,        default,  default,  namcos2_state, ordyne,   ROT180, "Namco", "Ordyne (Japan, English Version)", 0 )
-=======
 GAME( 1988, ordyne,     0,        default,  default,  namcos2_state, ordyne,   ROT180, "Namco", "Ordyne (World)", 0 )
 GAME( 1988, ordyneje,   ordyne,   default,  default,  namcos2_state, ordyne,   ROT180, "Namco", "Ordyne (Japan, English Version)", 0 )
->>>>>>> upstream/master
 GAME( 1988, ordynej,    ordyne,   default,  default,  namcos2_state, ordyne,   ROT180, "Namco", "Ordyne (Japan)", 0 )
 
 GAME( 1988, mirninja,   0,        default,  default,  namcos2_state, mirninja, ROT0,   "Namco", "Mirai Ninja (Japan)", 0 )
@@ -6398,15 +5822,9 @@ GAME( 1988, mirninja,   0,        default,  default,  namcos2_state, mirninja, R
 GAME( 1988, phelios,    0,        default2, default,  namcos2_state, phelios,  ROT90,  "Namco", "Phelios", 0)
 GAME( 1988, pheliosj,   phelios,  default2, default,  namcos2_state, phelios,  ROT90,  "Namco", "Phelios (Japan)", 0)
 
-<<<<<<< HEAD
-GAME( 1989, dirtfoxj,   0,        default2, dirtfox,  namcos2_state, dirtfoxj, ROT90,  "Namco", "Dirt Fox (Japan)", 0 )
-
-GAMEL(1989, fourtrax,   0,        finallap, fourtrax, namcos2_state, fourtrax, ROT0,   "Namco", "Four Trax", MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_SOUND, layout_finallap )
-=======
 GAME( 1989, dirtfoxj,   0,        default2, dirtfox,  namcos2_state, dirtfoxj, ROT90,  "Namco", "Dirt Fox (Japan)", MACHINE_NODEVICE_LAN )
 
 GAMEL(1989, fourtrax,   0,        finallap, fourtrax, namcos2_state, fourtrax, ROT0,   "Namco", "Four Trax", MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_SOUND | MACHINE_NODEVICE_LAN, layout_finallap )
->>>>>>> upstream/master
 
 GAME( 1989, valkyrie,   0,        default3, default,  namcos2_state, valkyrie, ROT90,  "Namco", "Valkyrie No Densetsu (Japan)", 0 )
 
@@ -6415,30 +5833,18 @@ GAME( 1989, finehour,   0,        default2, default,  namcos2_state, finehour, R
 GAME( 1989, burnforc,   0,        default3, default,  namcos2_state, burnforc, ROT0,   "Namco", "Burning Force (Japan, new version (Rev C))", 0 )
 GAME( 1989, burnforco,  burnforc, default3, default,  namcos2_state, burnforc, ROT0,   "Namco", "Burning Force (Japan, old version)", 0 )
 
-<<<<<<< HEAD
-GAME( 1989, marvland,   0,        default,  default,  namcos2_state, marvland, ROT0,   "Namco", "Marvel Land (US)", 0 )
-=======
 GAME( 1989, marvland,   0,        default,  default,  namcos2_state, marvland, ROT0,   "Namco", "Marvel Land (US)", MACHINE_IMPERFECT_SOUND )
->>>>>>> upstream/master
 GAME( 1989, marvlandj,  marvland, default,  default,  namcos2_state, marvlanj, ROT0,   "Namco", "Marvel Land (Japan)", 0 )
 
 GAME( 1990, kyukaidk,   0,        default,  kyukaidk, namcos2_state, kyukaidk, ROT0,   "Namco", "Kyuukai Douchuuki (Japan, new version (Rev B))", 0 )
 GAME( 1990, kyukaidko,  kyukaidk, default,  kyukaidk, namcos2_state, kyukaidk, ROT0,   "Namco", "Kyuukai Douchuuki (Japan, old version)", 0 )
 
-<<<<<<< HEAD
-GAME( 1990, dsaber,     0,        default3, default,  namcos2_state, dsaber,   ROT90,  "Namco", "Dragon Saber", 0 )
-GAME( 1990, dsaberj,    dsaber,   default3, default,  namcos2_state, dsaberj,  ROT90,  "Namco", "Dragon Saber (Japan, Rev B)", 0 )
-
-GAMEL(1990, finalap2,   0,        finallap, finallap, namcos2_state, finalap2, ROT0,   "Namco", "Final Lap 2", MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_SOUND, layout_finallap )
-GAMEL(1990, finalap2j,  finalap2, finallap, finallap, namcos2_state, finalap2, ROT0,   "Namco", "Final Lap 2 (Japan)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_SOUND, layout_finallap )
-=======
 GAME( 1990, dsaber,     0,        default3, default,  namcos2_state, dsaber,   ROT90,  "Namco", "Dragon Saber (World, DO2)", 0 )
 GAME( 1990, dsabera,    dsaber,   default3, default,  namcos2_state, dsaber,   ROT90,  "Namco", "Dragon Saber (World, older?)", 0 )
 GAME( 1990, dsaberj,    dsaber,   default3, default,  namcos2_state, dsaberj,  ROT90,  "Namco", "Dragon Saber (Japan, Rev B)", 0 )
 
 GAMEL(1990, finalap2,   0,        finallap, finallap, namcos2_state, finalap2, ROT0,   "Namco", "Final Lap 2", MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_SOUND | MACHINE_NODEVICE_LAN, layout_finallap )
 GAMEL(1990, finalap2j,  finalap2, finallap, finallap, namcos2_state, finalap2, ROT0,   "Namco", "Final Lap 2 (Japan)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_SOUND | MACHINE_NODEVICE_LAN, layout_finallap )
->>>>>>> upstream/master
 
 GAME( 1990, gollygho,   0,        gollygho, gollygho, namcos2_state, gollygho, ROT180, "Namco", "Golly! Ghost!", MACHINE_REQUIRES_ARTWORK )
 
@@ -6454,15 +5860,6 @@ GAME( 1991, sgunner2j,  sgunner2, sgunner2, sgunner2, namcos2_state, sgunner2, R
 GAME( 1991, cosmogng,   0,        default,  default,  namcos2_state, cosmogng, ROT90,  "Namco", "Cosmo Gang the Video (US)", 0 )
 GAME( 1991, cosmogngj,  cosmogng, default,  default,  namcos2_state, cosmogng, ROT90,  "Namco", "Cosmo Gang the Video (Japan)", 0 )
 
-<<<<<<< HEAD
-GAME( 1992, bubbletr,   0,        gollygho, bubbletr, namcos2_state, bubbletr, ROT180, "Namco", "Bubble Trouble (Japan, Rev C)", MACHINE_REQUIRES_ARTWORK )
-
-GAMEL(1992, finalap3,   0,        finallap, finalap3, namcos2_state, finalap3, ROT0,   "Namco", "Final Lap 3 (World, set 1)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_SOUND, layout_finallap )
-GAMEL(1992, finalap3a,  finalap3, finallap, finalap3, namcos2_state, finalap3, ROT0,   "Namco", "Final Lap 3 (World, set 2)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_SOUND, layout_finallap )
-GAMEL(1992, finalap3j,  finalap3, finallap, finalap3, namcos2_state, finalap3, ROT0,   "Namco", "Final Lap 3 (Japan)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_SOUND, layout_finallap )
-GAMEL(1992, finalap3jc, finalap3, finallap, finalap3, namcos2_state, finalap3, ROT0,   "Namco", "Final Lap 3 (Japan - Rev C)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_SOUND, layout_finallap )
-GAMEL(1992, finalap3bl, finalap3, finallap, finalap3, namcos2_state, finalap3, ROT0,   "Namco", "Final Lap 3 (bootleg)", MACHINE_NOT_WORKING | MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_SOUND, layout_finallap )
-=======
 GAME( 1992, bubbletr,   0,        gollygho, bubbletr, namcos2_state, bubbletr, ROT180, "Namco", "Bubble Trouble (World, Rev B)", MACHINE_REQUIRES_ARTWORK )
 GAME( 1992, bubbletrj,  bubbletr, gollygho, bubbletr, namcos2_state, bubbletr, ROT180, "Namco", "Bubble Trouble (Japan, Rev C)", MACHINE_REQUIRES_ARTWORK )
 
@@ -6471,30 +5868,19 @@ GAMEL(1992, finalap3a,  finalap3, finallap, finalap3, namcos2_state, finalap3, R
 GAMEL(1992, finalap3j,  finalap3, finallap, finalap3, namcos2_state, finalap3, ROT0,   "Namco", "Final Lap 3 (Japan)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_SOUND | MACHINE_NODEVICE_LAN, layout_finallap )
 GAMEL(1992, finalap3jc, finalap3, finallap, finalap3, namcos2_state, finalap3, ROT0,   "Namco", "Final Lap 3 (Japan - Rev C)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_SOUND | MACHINE_NODEVICE_LAN, layout_finallap )
 GAMEL(1992, finalap3bl, finalap3, finallap, finalap3, namcos2_state, finalap3, ROT0,   "Namco", "Final Lap 3 (bootleg)", MACHINE_NOT_WORKING | MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_SOUND | MACHINE_NODEVICE_LAN, layout_finallap )
->>>>>>> upstream/master
 
 GAME( 1992, luckywld,   0,        luckywld, luckywld, namcos2_state, luckywld, ROT0,   "Namco", "Lucky & Wild", 0 )
 GAME( 1992, luckywldj,  luckywld, luckywld, luckywld, namcos2_state, luckywld, ROT0,   "Namco", "Lucky & Wild (Japan)", 0 )
 
-<<<<<<< HEAD
-GAME( 1992, suzuka8h,   0,        luckywld, suzuka,   namcos2_state, suzuka8h, ROT0,   "Namco", "Suzuka 8 Hours (World, Rev C)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_SOUND )
-GAME( 1992, suzuka8hj,  suzuka8h, luckywld, suzuka,   namcos2_state, suzuka8h, ROT0,   "Namco", "Suzuka 8 Hours (Japan, Rev B)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_SOUND )
-=======
 GAME( 1992, suzuka8h,   0,        luckywld, suzuka,   namcos2_state, suzuka8h, ROT0,   "Namco", "Suzuka 8 Hours (World, Rev C)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_SOUND | MACHINE_NODEVICE_LAN )
 GAME( 1992, suzuka8hj,  suzuka8h, luckywld, suzuka,   namcos2_state, suzuka8h, ROT0,   "Namco", "Suzuka 8 Hours (Japan, Rev B)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_SOUND | MACHINE_NODEVICE_LAN )
->>>>>>> upstream/master
 
 GAME( 1992, sws,        0,        default,  default,  namcos2_state, sws,      ROT0,   "Namco", "Super World Stadium (Japan)", 0 )
 
 GAME( 1992, sws92,      0,        default,  default,  namcos2_state, sws92,    ROT0,   "Namco", "Super World Stadium '92 (Japan)", 0 )
 GAME( 1992, sws92g,     sws92,    default,  default,  namcos2_state, sws92g,   ROT0,   "Namco", "Super World Stadium '92 Gekitouban (Japan)", 0 )
 
-<<<<<<< HEAD
-GAME( 1993, suzuk8h2,   0,        luckywld, suzuka,   namcos2_state, suzuk8h2, ROT0,   "Namco", "Suzuka 8 Hours 2 (World, Rev B)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_SOUND )
-GAME( 1993, suzuk8h2j,  suzuk8h2, luckywld, suzuka,   namcos2_state, suzuk8h2, ROT0,   "Namco", "Suzuka 8 Hours 2 (Japan, Rev B)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_SOUND )
-=======
 GAME( 1993, suzuk8h2,   0,        luckywld, suzuka,   namcos2_state, suzuk8h2, ROT0,   "Namco", "Suzuka 8 Hours 2 (World, Rev B)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_SOUND | MACHINE_NODEVICE_LAN )
 GAME( 1993, suzuk8h2j,  suzuk8h2, luckywld, suzuka,   namcos2_state, suzuk8h2, ROT0,   "Namco", "Suzuka 8 Hours 2 (Japan, Rev B)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_SOUND | MACHINE_NODEVICE_LAN )
->>>>>>> upstream/master
 
 GAME( 1993, sws93,      0,        default,  default,  namcos2_state, sws93,    ROT0,   "Namco", "Super World Stadium '93 (Japan)", 0 )

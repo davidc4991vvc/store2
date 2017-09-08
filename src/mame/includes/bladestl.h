@@ -5,11 +5,8 @@
     Blades of Steel
 
 *************************************************************************/
-<<<<<<< HEAD
-=======
 
 #include "machine/gen_latch.h"
->>>>>>> upstream/master
 #include "sound/flt_rc.h"
 #include "sound/upd7759.h"
 #include "video/k007342.h"
@@ -31,12 +28,8 @@ public:
 		m_filter2(*this, "filter2"),
 		m_filter3(*this, "filter3"),
 		m_gfxdecode(*this, "gfxdecode"),
-<<<<<<< HEAD
-		m_trackball(*this, "TRACKBALL"),
-=======
 		m_soundlatch(*this, "soundlatch"),
 		m_trackball(*this, "TRACKBALL.%u", 0),
->>>>>>> upstream/master
 		m_rombank(*this, "rombank") { }
 
 	required_device<cpu_device> m_maincpu;
@@ -48,10 +41,7 @@ public:
 	required_device<filter_rc_device> m_filter2;
 	required_device<filter_rc_device> m_filter3;
 	required_device<gfxdecode_device> m_gfxdecode;
-<<<<<<< HEAD
-=======
 	required_device<generic_latch_8_device> m_soundlatch;
->>>>>>> upstream/master
 	required_ioport_array<4> m_trackball;
 
 	/* memory pointers */
@@ -70,17 +60,10 @@ public:
 	DECLARE_WRITE8_MEMBER(bladestl_port_B_w);
 	DECLARE_READ8_MEMBER(bladestl_speech_busy_r);
 	DECLARE_WRITE8_MEMBER(bladestl_speech_ctrl_w);
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void machine_reset();
-	DECLARE_PALETTE_INIT(bladestl);
-	UINT32 screen_update_bladestl(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
 	DECLARE_PALETTE_INIT(bladestl);
 	uint32_t screen_update_bladestl(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	TIMER_DEVICE_CALLBACK_MEMBER(bladestl_scanline);
 	K007342_CALLBACK_MEMBER(bladestl_tile_callback);
 	K007420_CALLBACK_MEMBER(bladestl_sprite_callback);

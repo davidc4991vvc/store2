@@ -22,11 +22,7 @@
 
 TILE_GET_INFO_MEMBER(lemmings_state::get_tile_info)
 {
-<<<<<<< HEAD
-	UINT16 tile = m_vram_data[tile_index];
-=======
 	uint16_t tile = m_vram_data[tile_index];
->>>>>>> upstream/master
 
 	SET_TILE_INFO_MEMBER(2,
 			tile&0x7ff,
@@ -36,11 +32,7 @@ TILE_GET_INFO_MEMBER(lemmings_state::get_tile_info)
 
 void lemmings_state::video_start()
 {
-<<<<<<< HEAD
-	m_vram_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(lemmings_state::get_tile_info),this), TILEMAP_SCAN_COLS, 8, 8, 64, 32);
-=======
 	m_vram_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(lemmings_state::get_tile_info),this), TILEMAP_SCAN_COLS, 8, 8, 64, 32);
->>>>>>> upstream/master
 
 	m_vram_tilemap->set_transparent_pen(0);
 	m_bitmap0.fill(0x100);
@@ -56,11 +48,7 @@ void lemmings_state::video_start()
 	save_item(NAME(m_sprite_triple_buffer_1));
 }
 
-<<<<<<< HEAD
-void lemmings_state::screen_eof_lemmings(screen_device &screen, bool state)
-=======
 WRITE_LINE_MEMBER(lemmings_state::screen_vblank_lemmings)
->>>>>>> upstream/master
 {
 	// rising edge
 	if (state)
@@ -127,19 +115,11 @@ void lemmings_state::lemmings_copy_bitmap(bitmap_rgb32& bitmap, bitmap_ind16& sr
 
 	for (y=cliprect.min_y; y<cliprect.max_y;y++)
 	{
-<<<<<<< HEAD
-		UINT32* dst = &bitmap.pix32(y,0);
-
-		for (x=cliprect.min_x; x<cliprect.max_x;x++)
-		{
-			UINT16 src = srcbitmap.pix16((y-*yscroll)&0xff,(x-*xscroll)&0x7ff);
-=======
 		uint32_t* dst = &bitmap.pix32(y,0);
 
 		for (x=cliprect.min_x; x<cliprect.max_x;x++)
 		{
 			uint16_t src = srcbitmap.pix16((y-*yscroll)&0xff,(x-*xscroll)&0x7ff);
->>>>>>> upstream/master
 
 			if (src!=0x100)
 				dst[x] = paldata[src];
@@ -147,11 +127,7 @@ void lemmings_state::lemmings_copy_bitmap(bitmap_rgb32& bitmap, bitmap_ind16& sr
 	}
 }
 
-<<<<<<< HEAD
-UINT32 lemmings_state::screen_update_lemmings(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
-=======
 uint32_t lemmings_state::screen_update_lemmings(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int x1 = -m_control_data[0];
 	int x0 = -m_control_data[2];

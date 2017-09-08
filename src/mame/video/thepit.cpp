@@ -33,11 +33,7 @@
 
 PALETTE_INIT_MEMBER(thepit_state, thepit)
 {
-<<<<<<< HEAD
-	const UINT8 *color_prom = memregion("proms")->base();
-=======
 	const uint8_t *color_prom = memregion("proms")->base();
->>>>>>> upstream/master
 	int i;
 
 	for (i = 0; i < 32; i++)
@@ -78,24 +74,14 @@ PALETTE_INIT_MEMBER(thepit_state, thepit)
 
 PALETTE_INIT_MEMBER(thepit_state,suprmous)
 {
-<<<<<<< HEAD
-	const UINT8 *color_prom = memregion("proms")->base();
-=======
 	const uint8_t *color_prom = memregion("proms")->base();
->>>>>>> upstream/master
 	int i;
 
 	for (i = 0; i < 32; i++)
 	{
-<<<<<<< HEAD
-		UINT8 b = BITSWAP8(color_prom[i + 0x00], 0, 1, 2, 3, 4, 5, 6, 7);
-		UINT8 g = BITSWAP8(color_prom[i + 0x20], 0, 1, 2, 3, 4, 5, 6, 7);
-		UINT8 r = (b>>5&7)<<2 | (g>>6&3);
-=======
 		uint8_t b = BITSWAP8(color_prom[i + 0x00], 0, 1, 2, 3, 4, 5, 6, 7);
 		uint8_t g = BITSWAP8(color_prom[i + 0x20], 0, 1, 2, 3, 4, 5, 6, 7);
 		uint8_t r = (b>>5&7)<<2 | (g>>6&3);
->>>>>>> upstream/master
 
 		palette.set_pen_color(i, pal5bit(r), pal5bit(g), pal4bit(b));
 	}
@@ -116,15 +102,9 @@ PALETTE_INIT_MEMBER(thepit_state,suprmous)
 
 TILE_GET_INFO_MEMBER(thepit_state::solid_get_tile_info)
 {
-<<<<<<< HEAD
-	UINT8 back_color = (m_colorram[tile_index] & 0x70) >> 4;
-	int priority = (back_color != 0) && ((m_colorram[tile_index] & 0x80) == 0);
-	tileinfo.pen_data = m_dummy_tile;
-=======
 	uint8_t back_color = (m_colorram[tile_index] & 0x70) >> 4;
 	int priority = (back_color != 0) && ((m_colorram[tile_index] & 0x80) == 0);
 	tileinfo.pen_data = m_dummy_tile.get();
->>>>>>> upstream/master
 	tileinfo.palette_base = back_color + 32;
 	tileinfo.category = priority;
 }
@@ -132,13 +112,8 @@ TILE_GET_INFO_MEMBER(thepit_state::solid_get_tile_info)
 
 TILE_GET_INFO_MEMBER(thepit_state::get_tile_info)
 {
-<<<<<<< HEAD
-	UINT8 fore_color = m_colorram[tile_index] % m_gfxdecode->gfx(0)->colors();
-	UINT8 code = m_videoram[tile_index];
-=======
 	uint8_t fore_color = m_colorram[tile_index] % m_gfxdecode->gfx(0)->colors();
 	uint8_t code = m_videoram[tile_index];
->>>>>>> upstream/master
 	SET_TILE_INFO_MEMBER(2 * m_graphics_bank, code, fore_color, 0);
 }
 
@@ -152,25 +127,15 @@ TILE_GET_INFO_MEMBER(thepit_state::get_tile_info)
 
 void thepit_state::video_start()
 {
-<<<<<<< HEAD
-	m_solid_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(thepit_state::solid_get_tile_info),this),TILEMAP_SCAN_ROWS,8,8,32,32);
-
-	m_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(thepit_state::get_tile_info),this),TILEMAP_SCAN_ROWS,8,8,32,32);
-=======
 	m_solid_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(thepit_state::solid_get_tile_info),this),TILEMAP_SCAN_ROWS,8,8,32,32);
 
 	m_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(thepit_state::get_tile_info),this),TILEMAP_SCAN_ROWS,8,8,32,32);
->>>>>>> upstream/master
 	m_tilemap->set_transparent_pen(0);
 
 	m_solid_tilemap->set_scroll_cols(32);
 	m_tilemap->set_scroll_cols(32);
 
-<<<<<<< HEAD
-	m_dummy_tile = auto_alloc_array_clear(machine(), UINT8, 8*8);
-=======
 	m_dummy_tile = make_unique_clear<uint8_t[]>(8*8);
->>>>>>> upstream/master
 
 	m_graphics_bank = 0;    /* only used in intrepid */
 
@@ -202,21 +167,11 @@ WRITE8_MEMBER(thepit_state::colorram_w)
 }
 
 
-<<<<<<< HEAD
-WRITE8_MEMBER(thepit_state::flip_screen_x_w)
-{
-	int flip;
-
-	m_flip_x = data & 0x01;
-
-	flip = m_flip_x ? TILEMAP_FLIPX : 0;
-=======
 WRITE_LINE_MEMBER(thepit_state::flip_screen_x_w)
 {
 	m_flip_x = state;
 
 	int flip = m_flip_x ? TILEMAP_FLIPX : 0;
->>>>>>> upstream/master
 	if (m_flip_y)
 		flip |= TILEMAP_FLIPY ;
 
@@ -226,21 +181,11 @@ WRITE_LINE_MEMBER(thepit_state::flip_screen_x_w)
 }
 
 
-<<<<<<< HEAD
-WRITE8_MEMBER(thepit_state::flip_screen_y_w)
-{
-	int flip;
-
-	m_flip_y = data & 0x01;
-
-	flip = m_flip_x ? TILEMAP_FLIPX : 0;
-=======
 WRITE_LINE_MEMBER(thepit_state::flip_screen_y_w)
 {
 	m_flip_y = state;
 
 	int flip = m_flip_x ? TILEMAP_FLIPX : 0;
->>>>>>> upstream/master
 	if (m_flip_y)
 		flip |= TILEMAP_FLIPY ;
 
@@ -250,22 +195,11 @@ WRITE_LINE_MEMBER(thepit_state::flip_screen_y_w)
 }
 
 
-<<<<<<< HEAD
-WRITE8_MEMBER(thepit_state::intrepid_graphics_bank_w)
-{
-	if (m_graphics_bank != (data & 0x01))
-	{
-		m_graphics_bank = data & 0x01;
-
-		m_tilemap->mark_all_dirty();
-	}
-=======
 WRITE_LINE_MEMBER(thepit_state::intrepid_graphics_bank_w)
 {
 	m_graphics_bank = state;
 
 	m_tilemap->mark_all_dirty();
->>>>>>> upstream/master
 }
 
 
@@ -297,11 +231,7 @@ void thepit_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect,
 	{
 		if (((m_spriteram[offs + 2] & 0x08) >> 3) == priority_to_draw)
 		{
-<<<<<<< HEAD
-			UINT8 y, x, flipx, flipy;
-=======
 			uint8_t y, x, flipx, flipy;
->>>>>>> upstream/master
 
 			if ((m_spriteram[offs + 0] == 0) || (m_spriteram[offs + 3] == 0))
 			{
@@ -346,11 +276,7 @@ void thepit_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect,
 }
 
 
-<<<<<<< HEAD
-UINT32 thepit_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t thepit_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	const rectangle spritevisiblearea(2*8+1, 32*8-1, 2*8, 30*8-1);
 	const rectangle spritevisibleareaflipx(0*8, 30*8-2, 2*8, 30*8-1);
@@ -385,11 +311,7 @@ uint32_t thepit_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap
 	return 0;
 }
 
-<<<<<<< HEAD
-UINT32 thepit_state::screen_update_desertdan(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t thepit_state::screen_update_desertdan(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	offs_t offs;
 	const rectangle spritevisiblearea(0*8+1, 24*8-1, 2*8, 30*8-1);

@@ -2,18 +2,11 @@
 // copyright-holders:Bryan McPhail, David Graves
 #include "emu.h"
 #include "includes/superchs.h"
-<<<<<<< HEAD
-
-void superchs_state::video_start()
-{
-	m_spritelist = auto_alloc_array(machine(), struct schs_tempsprite, 0x4000);
-=======
 #include "screen.h"
 
 void superchs_state::video_start()
 {
 	m_spritelist = std::make_unique<schs_tempsprite[]>(0x4000);
->>>>>>> upstream/master
 }
 
 /************************************************************
@@ -64,13 +57,8 @@ Heavy use is made of sprite zooming.
 
 void superchs_state::draw_sprites(screen_device &screen, bitmap_ind16 &bitmap,const rectangle &cliprect,const int *primasks,int x_offs,int y_offs)
 {
-<<<<<<< HEAD
-	UINT32 *spriteram32 = m_spriteram;
-	UINT16 *spritemap = (UINT16 *)memregion("user1")->base();
-=======
 	uint32_t *spriteram32 = m_spriteram;
 	uint16_t *spritemap = (uint16_t *)memregion("user1")->base();
->>>>>>> upstream/master
 	int offs, data, tilenum, color, flipx, flipy;
 	int x, y, priority, dblsize, curx, cury;
 	int sprites_flipscreen = 0;
@@ -80,11 +68,7 @@ void superchs_state::draw_sprites(screen_device &screen, bitmap_ind16 &bitmap,co
 
 	/* pdrawgfx() needs us to draw sprites front to back, so we have to build a list
 	   while processing sprite ram and then draw them all at the end */
-<<<<<<< HEAD
-	struct schs_tempsprite *sprite_ptr = m_spritelist;
-=======
 	struct schs_tempsprite *sprite_ptr = m_spritelist.get();
->>>>>>> upstream/master
 
 	for (offs = (m_spriteram.bytes()/4-4);offs >= 0;offs -= 4)
 	{
@@ -195,13 +179,8 @@ void superchs_state::draw_sprites(screen_device &screen, bitmap_ind16 &bitmap,co
 logerror("Sprite number %04x had %02x invalid chunks\n",tilenum,bad_chunks);
 	}
 
-<<<<<<< HEAD
-	/* this happens only if primsks != NULL */
-	while (sprite_ptr != m_spritelist)
-=======
 	/* this happens only if primsks != nullptr */
 	while (sprite_ptr != m_spritelist.get())
->>>>>>> upstream/master
 	{
 		sprite_ptr--;
 
@@ -220,17 +199,10 @@ logerror("Sprite number %04x had %02x invalid chunks\n",tilenum,bad_chunks);
                 SCREEN REFRESH
 **************************************************************/
 
-<<<<<<< HEAD
-UINT32 superchs_state::screen_update_superchs(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-{
-	UINT8 layer[5];
-	UINT16 priority;
-=======
 uint32_t superchs_state::screen_update_superchs(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
 	uint8_t layer[5];
 	uint16_t priority;
->>>>>>> upstream/master
 	static const int primasks[4] = {0xfffc, 0xfff0, 0xff00, 0x0};
 
 	m_tc0480scp->tilemap_update();

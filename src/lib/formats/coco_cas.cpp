@@ -54,32 +54,19 @@ const struct CassetteModulation coco_cas_modulation =
 
 
 
-<<<<<<< HEAD
-static casserr_t coco_cas_identify(cassette_image *cassette, struct CassetteOptions *opts)
-=======
 static cassette_image::error coco_cas_identify(cassette_image *cassette, struct CassetteOptions *opts)
->>>>>>> upstream/master
 {
 	return cassette_modulation_identify(cassette, &coco_cas_modulation, opts);
 }
 
 
 
-<<<<<<< HEAD
-static int get_cas_block(cassette_image *cassette, UINT64 *offset, UINT8 *block, int *block_len)
-{
-	UINT8 block_length = 0;
-	UINT8 block_checksum = 0;
-	UINT64 current_offset;
-	UINT64 image_size;
-=======
 static bool get_cas_block(cassette_image *cassette, uint64_t *offset, uint8_t *block, int *block_len)
 {
 	uint8_t block_length = 0;
 	uint8_t block_checksum = 0;
 	uint64_t current_offset;
 	uint64_t image_size;
->>>>>>> upstream/master
 	PAIR p;
 	int i;
 	int state = 0;
@@ -143,21 +130,13 @@ static bool get_cas_block(cassette_image *cassette, uint64_t *offset, uint8_t *b
 						if (p.b.l != block_checksum)
 						{
 							/* checksum failure */
-<<<<<<< HEAD
-							return FALSE;
-=======
 							return false;
->>>>>>> upstream/master
 						}
 						else
 						{
 							/* checksum success */
 							*offset = current_offset;
-<<<<<<< HEAD
-							return TRUE;
-=======
 							return true;
->>>>>>> upstream/master
 						}
 					}
 				}
@@ -166,32 +145,11 @@ static bool get_cas_block(cassette_image *cassette, uint64_t *offset, uint8_t *b
 	}
 
 	/* no more blocks */
-<<<<<<< HEAD
-	return FALSE;
-=======
 	return false;
->>>>>>> upstream/master
 }
 
 
 
-<<<<<<< HEAD
-static casserr_t cas_load(cassette_image *cassette, UINT8 silence)
-{
-	casserr_t err;
-	UINT64 offset;
-	UINT64 image_size;
-	UINT8 block[258];   /* 255 bytes per block + 3 (type, length, checksum) */
-	int block_length = 0;
-	UINT8 last_blocktype;
-	double time_index = 0.0;
-	double time_displacement;
-	static const UINT8 magic_bytes[2] = { 0x55, 0x3C };
-
-#if 0
-	{
-		static const UINT8 dummy_bytes[] =
-=======
 static cassette_image::error cas_load(cassette_image *cassette, uint8_t silence)
 {
 	cassette_image::error err;
@@ -207,7 +165,6 @@ static cassette_image::error cas_load(cassette_image *cassette, uint8_t silence)
 #if 0
 	{
 		static const uint8_t dummy_bytes[] =
->>>>>>> upstream/master
 		{
 			0x55, 0x55, 0x55, 0x55, 0x55, 0x55, 0x55, 0x55, 0x55, 0x55, 0x55, 0x55,
 			0x55, 0x55, 0x55, 0x55, 0x55, 0x55, 0x55, 0x55, 0x55, 0x55, 0x55, 0x55,
@@ -238,11 +195,7 @@ static cassette_image::error cas_load(cassette_image *cassette, uint8_t silence)
 #endif
 
 	err = cassette_put_sample(cassette, 0, time_index, COCO_WAVESAMPLES_HEADER, 0);
-<<<<<<< HEAD
-	if (err)
-=======
 	if (err != cassette_image::error::SUCCESS)
->>>>>>> upstream/master
 		return err;
 	time_index += COCO_WAVESAMPLES_HEADER;
 
@@ -260,21 +213,13 @@ static cassette_image::error cas_load(cassette_image *cassette, uint8_t silence)
 		{
 			/* silence */
 			err = cassette_put_sample(cassette, 0, time_index, silence, 0);
-<<<<<<< HEAD
-			if (err)
-=======
 			if (err != cassette_image::error::SUCCESS)
->>>>>>> upstream/master
 				return err;
 			time_index += silence;
 
 			/* sync data */
 			err = cassette_put_modulated_filler(cassette, 0, time_index, 0x55, 128, &coco_cas_modulation, &time_displacement);
-<<<<<<< HEAD
-			if (err)
-=======
 			if (err != cassette_image::error::SUCCESS)
->>>>>>> upstream/master
 				return err;
 			time_index += time_displacement;
 		}
@@ -282,42 +227,26 @@ static cassette_image::error cas_load(cassette_image *cassette, uint8_t silence)
 		{               /* are passed through */
 			/* sync data */
 			err = cassette_put_modulated_filler(cassette, 0, time_index, 0x55, synccount, &coco_cas_modulation, &time_displacement);
-<<<<<<< HEAD
-			if (err)
-=======
 			if (err != cassette_image::error::SUCCESS)
->>>>>>> upstream/master
 				return err;
 			time_index += time_displacement;
 		}
 
 		/* now fill in the magic bytes */
 		err = cassette_put_modulated_data(cassette, 0, time_index, magic_bytes, sizeof(magic_bytes), &coco_cas_modulation, &time_displacement);
-<<<<<<< HEAD
-		if (err)
-=======
 		if (err != cassette_image::error::SUCCESS)
->>>>>>> upstream/master
 			return err;
 		time_index += time_displacement;
 
 		/* now fill in the block */
 		err = cassette_put_modulated_data(cassette, 0, time_index, block, block_length, &coco_cas_modulation, &time_displacement);
-<<<<<<< HEAD
-		if (err)
-=======
 		if (err != cassette_image::error::SUCCESS)
->>>>>>> upstream/master
 			return err;
 		time_index += time_displacement;
 
 		/* and the last magic byte */
 		err = cassette_put_modulated_filler(cassette, 0, time_index, 0x55, 1, &coco_cas_modulation, &time_displacement);
-<<<<<<< HEAD
-		if (err)
-=======
 		if (err != cassette_image::error::SUCCESS)
->>>>>>> upstream/master
 			return err;
 		time_index += time_displacement;
 
@@ -326,16 +255,6 @@ static cassette_image::error cas_load(cassette_image *cassette, uint8_t silence)
 
 	/* all futher data is undecipherable, so output it verbatim */
 	err = cassette_read_modulated_data(cassette, 0, time_index, offset, image_size - offset, &coco_cas_modulation, &time_displacement);
-<<<<<<< HEAD
-	if (err)
-		return err;
-	time_index += time_displacement;
-
-	return CASSETTE_ERROR_SUCCESS;
-}
-
-static casserr_t coco_cas_load(cassette_image *cassette)
-=======
 	if (err != cassette_image::error::SUCCESS)
 		return err;
 	time_index += time_displacement;
@@ -344,16 +263,11 @@ static casserr_t coco_cas_load(cassette_image *cassette)
 }
 
 static cassette_image::error coco_cas_load(cassette_image *cassette)
->>>>>>> upstream/master
 {
 	return cas_load(cassette, COCO_WAVESAMPLES_HEADER);
 }
 
-<<<<<<< HEAD
-static casserr_t alice32_cas_load(cassette_image *cassette)
-=======
 static cassette_image::error alice32_cas_load(cassette_image *cassette)
->>>>>>> upstream/master
 {
 	return cas_load(cassette, ALICE32_WAVESAMPLES_HEADER);
 }
@@ -363,11 +277,7 @@ const struct CassetteFormat coco_cas_format =
 	"cas",
 	coco_cas_identify,
 	coco_cas_load,
-<<<<<<< HEAD
-	NULL
-=======
 	nullptr
->>>>>>> upstream/master
 };
 
 const struct CassetteFormat alice32_cas_format =
@@ -375,11 +285,7 @@ const struct CassetteFormat alice32_cas_format =
 	"cas,c10,k7",
 	coco_cas_identify,
 	alice32_cas_load,
-<<<<<<< HEAD
-	NULL
-=======
 	nullptr
->>>>>>> upstream/master
 };
 
 

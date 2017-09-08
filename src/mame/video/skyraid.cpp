@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-// license:???
-=======
 // license:BSD-3-Clause
->>>>>>> upstream/master
 // copyright-holders:Stefan Jokisch
 /***************************************************************************
 
@@ -22,11 +18,7 @@ void skyraid_state::video_start()
 
 void skyraid_state::draw_text(bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
-<<<<<<< HEAD
-	const UINT8* p = m_alpha_num_ram;
-=======
 	const uint8_t* p = m_alpha_num_ram;
->>>>>>> upstream/master
 
 	int i;
 
@@ -45,11 +37,7 @@ void skyraid_state::draw_text(bitmap_ind16 &bitmap, const rectangle &cliprect)
 
 void skyraid_state::draw_terrain(bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
-<<<<<<< HEAD
-	const UINT8* p = memregion("user1")->base();
-=======
 	const uint8_t* p = memregion("user1")->base();
->>>>>>> upstream/master
 
 	int x;
 	int y;
@@ -62,11 +50,7 @@ void skyraid_state::draw_terrain(bitmap_ind16 &bitmap, const rectangle &cliprect
 
 		while (x < bitmap.width())
 		{
-<<<<<<< HEAD
-			UINT8 val = p[offset++];
-=======
 			uint8_t val = p[offset++];
->>>>>>> upstream/master
 
 			int color = val / 32;
 			int count = val % 32;
@@ -126,24 +110,15 @@ void skyraid_state::draw_missiles(bitmap_ind16 &bitmap, const rectangle &cliprec
 
 void skyraid_state::draw_trapezoid(bitmap_ind16& dst, bitmap_ind16& src)
 {
-<<<<<<< HEAD
-	const UINT8* p = memregion("user2")->base();
-=======
 	const uint8_t* p = memregion("user2")->base();
->>>>>>> upstream/master
 
 	int x;
 	int y;
 
 	for (y = 0; y < dst.height(); y++)
 	{
-<<<<<<< HEAD
-		UINT16* pSrc = &src.pix16(y);
-		UINT16* pDst = &dst.pix16(y);
-=======
 		uint16_t* pSrc = &src.pix16(y);
 		uint16_t* pDst = &dst.pix16(y);
->>>>>>> upstream/master
 
 		int x1 = 0x000 + p[(y & ~1) + 0];
 		int x2 = 0x100 + p[(y & ~1) + 1];
@@ -154,11 +129,7 @@ void skyraid_state::draw_trapezoid(bitmap_ind16& dst, bitmap_ind16& src)
 }
 
 
-<<<<<<< HEAD
-UINT32 skyraid_state::screen_update_skyraid(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t skyraid_state::screen_update_skyraid(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	bitmap.fill(0, cliprect);
 

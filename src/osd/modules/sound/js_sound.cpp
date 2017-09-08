@@ -6,11 +6,7 @@
 
     Shim for native JavaScript sound interface implementations (Emscripten only).
 
-<<<<<<< HEAD
-*******************************************************************c********/
-=======
 ****************************************************************************/
->>>>>>> upstream/master
 
 #include "sound_module.h"
 #include "modules/osdmodule.h"
@@ -34,30 +30,18 @@ public:
 
 	// sound_module
 
-<<<<<<< HEAD
-	virtual void update_audio_stream(bool is_throttled, const INT16 *buffer, int samples_this_frame)
-	{
-		EM_ASM_ARGS({
-		// Forward audio stream update on to JS backend implementation.
-		jsmess_update_audio_stream($0, $1);
-=======
 	virtual void update_audio_stream(bool is_throttled, const int16_t *buffer, int samples_this_frame)
 	{
 		EM_ASM_ARGS({
 		// Forward audio stream update on to JS backend implementation.
 		jsmame_update_audio_stream($0, $1);
->>>>>>> upstream/master
 		}, (unsigned int)buffer, samples_this_frame);
 	}
 	virtual void set_mastervolume(int attenuation)
 	{
 		EM_ASM_ARGS({
 		// Forward volume update on to JS backend implementation.
-<<<<<<< HEAD
-		jsmess_set_mastervolume($0);
-=======
 		jsmame_set_mastervolume($0);
->>>>>>> upstream/master
 		}, attenuation);
 	}
 

@@ -2,17 +2,6 @@
 
 #include "StdAfx.h"
 
-<<<<<<< HEAD
-#include "SetProperties.h"
-
-#include "Windows/PropVariant.h"
-#include "Common/MyString.h"
-#include "Common/StringToInt.h"
-#include "Common/MyCom.h"
-
-#include "../../Archive/IArchive.h"
-
-=======
 #include "../../../Common/MyCom.h"
 #include "../../../Common/MyString.h"
 #include "../../../Common/StringToInt.h"
@@ -23,25 +12,16 @@
 
 #include "SetProperties.h"
 
->>>>>>> upstream/master
 using namespace NWindows;
 using namespace NCOM;
 
 static void ParseNumberString(const UString &s, NCOM::CPropVariant &prop)
 {
-<<<<<<< HEAD
-  const wchar_t *endPtr;
-  UInt64 result = ConvertStringToUInt64(s, &endPtr);
-  if (endPtr - (const wchar_t *)s != s.Length())
-    prop = s;
-  else if (result <= 0xFFFFFFFF)
-=======
   const wchar_t *end;
   UInt64 result = ConvertStringToUInt64(s, &end);
   if (*end != 0 || s.IsEmpty())
     prop = s;
   else if (result <= (UInt32)0xFFFFFFFF)
->>>>>>> upstream/master
     prop = (UInt32)result;
   else
     prop = result;
@@ -60,13 +40,8 @@ HRESULT SetProperties(IUnknown *unknown, const CObjectVector<CProperty> &propert
   CPropVariant *values = new CPropVariant[properties.Size()];
   try
   {
-<<<<<<< HEAD
-    int i;
-    for(i = 0; i < properties.Size(); i++)
-=======
     unsigned i;
     for (i = 0; i < properties.Size(); i++)
->>>>>>> upstream/master
     {
       const CProperty &property = properties[i];
       NCOM::CPropVariant propVariant;
@@ -90,11 +65,7 @@ HRESULT SetProperties(IUnknown *unknown, const CObjectVector<CProperty> &propert
       values[i] = propVariant;
     }
     CRecordVector<const wchar_t *> names;
-<<<<<<< HEAD
-    for(i = 0; i < realNames.Size(); i++)
-=======
     for (i = 0; i < realNames.Size(); i++)
->>>>>>> upstream/master
       names.Add((const wchar_t *)realNames[i]);
     
     RINOK(setProperties->SetProperties(&names.Front(), values, names.Size()));

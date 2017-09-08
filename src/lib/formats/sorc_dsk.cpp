@@ -30,24 +30,14 @@ static int sorc_get_tracks_per_disk(floppy_image_legacy *floppy)
 	return 77;
 }
 
-<<<<<<< HEAD
-static UINT64 sorc_translate_offset(floppy_image_legacy *floppy, int track, int head, int sector)
-=======
 static uint64_t sorc_translate_offset(floppy_image_legacy *floppy, int track, int head, int sector)
->>>>>>> upstream/master
 {
 	return 270*(16*track+sector);
 }
 
-<<<<<<< HEAD
-static floperr_t get_offset(floppy_image_legacy *floppy, int head, int track, int sector, int sector_is_index, UINT64 *offset)
-{
-	UINT64 offs;
-=======
 static floperr_t get_offset(floppy_image_legacy *floppy, int head, int track, int sector, bool sector_is_index, uint64_t *offset)
 {
 	uint64_t offs;
->>>>>>> upstream/master
 	/* translate the sector to a raw sector */
 	if (!sector_is_index)
 	{
@@ -65,15 +55,9 @@ static floperr_t get_offset(floppy_image_legacy *floppy, int head, int track, in
 
 
 
-<<<<<<< HEAD
-static floperr_t internal_sorc_read_sector(floppy_image_legacy *floppy, int head, int track, int sector, int sector_is_index, void *buffer, size_t buflen)
-{
-	UINT64 offset;
-=======
 static floperr_t internal_sorc_read_sector(floppy_image_legacy *floppy, int head, int track, int sector, bool sector_is_index, void *buffer, size_t buflen)
 {
 	uint64_t offset;
->>>>>>> upstream/master
 	floperr_t err;
 	err = get_offset(floppy, head, track, sector, sector_is_index, &offset);
 	if (err)
@@ -85,15 +69,9 @@ static floperr_t internal_sorc_read_sector(floppy_image_legacy *floppy, int head
 
 
 
-<<<<<<< HEAD
-static floperr_t internal_sorc_write_sector(floppy_image_legacy *floppy, int head, int track, int sector, int sector_is_index, const void *buffer, size_t buflen, int ddam)
-{
-	UINT64 offset;
-=======
 static floperr_t internal_sorc_write_sector(floppy_image_legacy *floppy, int head, int track, int sector, bool sector_is_index, const void *buffer, size_t buflen, int ddam)
 {
 	uint64_t offset;
->>>>>>> upstream/master
 	floperr_t err;
 
 	err = get_offset(floppy, head, track, sector, sector_is_index, &offset);
@@ -108,42 +86,21 @@ static floperr_t internal_sorc_write_sector(floppy_image_legacy *floppy, int hea
 
 static floperr_t sorc_read_sector(floppy_image_legacy *floppy, int head, int track, int sector, void *buffer, size_t buflen)
 {
-<<<<<<< HEAD
-	return internal_sorc_read_sector(floppy, head, track, sector, FALSE, buffer, buflen);
-=======
 	return internal_sorc_read_sector(floppy, head, track, sector, false, buffer, buflen);
->>>>>>> upstream/master
 }
 
 static floperr_t sorc_write_sector(floppy_image_legacy *floppy, int head, int track, int sector, const void *buffer, size_t buflen, int ddam)
 {
-<<<<<<< HEAD
-	return internal_sorc_write_sector(floppy, head, track, sector, FALSE, buffer, buflen, ddam);
-=======
 	return internal_sorc_write_sector(floppy, head, track, sector, false, buffer, buflen, ddam);
->>>>>>> upstream/master
 }
 
 static floperr_t sorc_read_indexed_sector(floppy_image_legacy *floppy, int head, int track, int sector, void *buffer, size_t buflen)
 {
-<<<<<<< HEAD
-	return internal_sorc_read_sector(floppy, head, track, sector, TRUE, buffer, buflen);
-=======
 	return internal_sorc_read_sector(floppy, head, track, sector, true, buffer, buflen);
->>>>>>> upstream/master
 }
 
 static floperr_t sorc_write_indexed_sector(floppy_image_legacy *floppy, int head, int track, int sector, const void *buffer, size_t buflen, int ddam)
 {
-<<<<<<< HEAD
-	return internal_sorc_write_sector(floppy, head, track, sector, TRUE, buffer, buflen, ddam);
-}
-
-static floperr_t sorc_get_sector_length(floppy_image_legacy *floppy, int head, int track, int sector, UINT32 *sector_length)
-{
-	floperr_t err;
-	err = get_offset(floppy, head, track, sector, FALSE, NULL);
-=======
 	return internal_sorc_write_sector(floppy, head, track, sector, true, buffer, buflen, ddam);
 }
 
@@ -151,7 +108,6 @@ static floperr_t sorc_get_sector_length(floppy_image_legacy *floppy, int head, i
 {
 	floperr_t err;
 	err = get_offset(floppy, head, track, sector, false, nullptr);
->>>>>>> upstream/master
 	if (err)
 		return err;
 
@@ -163,11 +119,7 @@ static floperr_t sorc_get_sector_length(floppy_image_legacy *floppy, int head, i
 
 
 
-<<<<<<< HEAD
-static floperr_t sorc_get_indexed_sector_info(floppy_image_legacy *floppy, int head, int track, int sector_index, int *cylinder, int *side, int *sector, UINT32 *sector_length, unsigned long *flags)
-=======
 static floperr_t sorc_get_indexed_sector_info(floppy_image_legacy *floppy, int head, int track, int sector_index, int *cylinder, int *side, int *sector, uint32_t *sector_length, unsigned long *flags)
->>>>>>> upstream/master
 {
 	sector_index += 1;
 	if (cylinder)
@@ -204,9 +156,5 @@ static FLOPPY_CONSTRUCT(sorc_dsk_construct)
 /* ----------------------------------------------------------------------- */
 
 LEGACY_FLOPPY_OPTIONS_START( sorcerer )
-<<<<<<< HEAD
-	LEGACY_FLOPPY_OPTION( sorc_dsk, "dsk", "Exidy Sorcerer floppy disk image", sorc_dsk_identify, sorc_dsk_construct, NULL, NULL)
-=======
 	LEGACY_FLOPPY_OPTION( sorc_dsk, "dsk", "Exidy Sorcerer floppy disk image", sorc_dsk_identify, sorc_dsk_construct, nullptr, nullptr)
->>>>>>> upstream/master
 LEGACY_FLOPPY_OPTIONS_END

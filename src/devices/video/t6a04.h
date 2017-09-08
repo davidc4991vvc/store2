@@ -6,17 +6,10 @@
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __T6A04_H__
-#define __T6A04_H__
-=======
 #ifndef MAME_VIDEO_T6A04_H
 #define MAME_VIDEO_T6A04_H
 
 #pragma once
->>>>>>> upstream/master
 
 //**************************************************************************
 //  TYPE DEFINITIONS
@@ -28,11 +21,7 @@ class t6a04_device : public device_t
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	t6a04_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-=======
 	t6a04_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
->>>>>>> upstream/master
 
 	static void set_size(device_t &device, int w, int h)
 	{
@@ -47,37 +36,6 @@ public:
 	DECLARE_WRITE8_MEMBER(data_write);
 	DECLARE_READ8_MEMBER(data_read);
 
-<<<<<<< HEAD
-	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-
-protected:
-	// device-level overrides
-	virtual void device_start();
-	virtual void device_reset();
-	virtual void device_validity_check(validity_checker &valid) const;
-
-private:
-	UINT8 m_busy_flag;
-	UINT8 m_lcd_ram[960];   //7680 bit (64*120)
-	UINT8 m_display_on;
-	UINT8 m_contrast;
-	UINT8 m_xpos;
-	UINT8 m_ypos;
-	UINT8 m_zpos;
-	INT8  m_direction;
-	UINT8 m_active_counter;
-	UINT8 m_word_len;
-	UINT8 m_opa1;
-	UINT8 m_opa2;
-	UINT8 m_output_reg;
-
-	UINT8 m_height;           // number of lines
-	UINT8 m_width;            // pixels for line
-};
-
-// device type definition
-extern const device_type T6A04;
-=======
 	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 
 protected:
@@ -107,13 +65,8 @@ private:
 
 // device type definition
 DECLARE_DEVICE_TYPE(T6A04, t6a04_device)
->>>>>>> upstream/master
 
 #define MCFG_T6A04_SIZE(_width, _height) \
 	t6a04_device::set_size(*device, _width, _height);
 
-<<<<<<< HEAD
-#endif
-=======
 #endif // MAME_VIDEO_T6A04_H
->>>>>>> upstream/master

@@ -22,11 +22,8 @@
 #include "cpu/z80/z80.h"
 #include "sound/okim6295.h"
 #include "video/mc6845.h"
-<<<<<<< HEAD
-=======
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 #include "chance32.lh"
 
@@ -60,18 +57,6 @@ public:
 	tilemap_t *m_fg_tilemap;
 	tilemap_t *m_bg_tilemap;
 
-<<<<<<< HEAD
-	required_shared_ptr<UINT8> m_fgram;
-	required_shared_ptr<UINT8> m_bgram;
-
-	UINT8 mux_data;
-	TILE_GET_INFO_MEMBER(get_fg_tile_info);
-	TILE_GET_INFO_MEMBER(get_bg_tile_info);
-	virtual void machine_start();
-	virtual void machine_reset();
-	virtual void video_start();
-	UINT32 screen_update_chance32(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	required_shared_ptr<uint8_t> m_fgram;
 	required_shared_ptr<uint8_t> m_bgram;
 
@@ -82,7 +67,6 @@ public:
 	virtual void machine_reset() override;
 	virtual void video_start() override;
 	uint32_t screen_update_chance32(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	required_device<cpu_device> m_maincpu;
 	required_device<gfxdecode_device> m_gfxdecode;
 };
@@ -111,28 +95,17 @@ TILE_GET_INFO_MEMBER(chance32_state::get_bg_tile_info)
 
 void chance32_state::video_start()
 {
-<<<<<<< HEAD
-	m_fg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(chance32_state::get_fg_tile_info),this), TILEMAP_SCAN_ROWS, 16, 8, 35, 29);
-	m_fg_tilemap->set_transparent_pen(0);
-
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(chance32_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 16, 8, 35, 29);
-=======
 	m_fg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(chance32_state::get_fg_tile_info),this), TILEMAP_SCAN_ROWS, 16, 8, 35, 29);
 	m_fg_tilemap->set_transparent_pen(0);
 
 	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(chance32_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 16, 8, 35, 29);
->>>>>>> upstream/master
 
 	m_fg_tilemap->set_flip(TILE_FLIPX|TILE_FLIPY);
 	m_bg_tilemap->set_flip(TILE_FLIPX|TILE_FLIPY);
 }
 
 
-<<<<<<< HEAD
-UINT32 chance32_state::screen_update_chance32(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t chance32_state::screen_update_chance32(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	m_bg_tilemap->draw(screen, bitmap, cliprect, 0, 0);
 	m_fg_tilemap->draw(screen, bitmap, cliprect, 0, 0);
@@ -148,11 +121,7 @@ WRITE8_MEMBER(chance32_state::mux_w)
 
 READ8_MEMBER(chance32_state::mux_r)
 {
-<<<<<<< HEAD
-	UINT8 res,i;
-=======
 	uint8_t res,i;
->>>>>>> upstream/master
 	const char *const muxnames[4] = { "IN0", "IN1", "IN2", "IN3" };
 	res = 0;
 
@@ -201,15 +170,6 @@ WRITE8_MEMBER(chance32_state::muxout_w)
 	if (data & 1)   // bit 0 is the mux selector.
 
 	{
-<<<<<<< HEAD
-		output_set_lamp_value(0, (data >> 1) & 1);  /* Lamp 0 - Small / Big */
-		output_set_lamp_value(1, (data >> 2) & 1);  /* Lamp 1 - Big / Small */
-		output_set_lamp_value(2, (data >> 3) & 1);  /* Lamp 2 - Hold 5 */
-		output_set_lamp_value(3, (data >> 4) & 1);  /* Lamp 3 - Hold 4 */
-		output_set_lamp_value(4, (data >> 5) & 1);  /* Lamp 4 - Hold 3 */
-		output_set_lamp_value(5, (data >> 6) & 1);  /* Lamp 5 - Hold 2 */
-		output_set_lamp_value(6, (data >> 7) & 1);  /* Lamp 6 - Hold 1 */
-=======
 		output().set_lamp_value(0, (data >> 1) & 1);  /* Lamp 0 - Small / Big */
 		output().set_lamp_value(1, (data >> 2) & 1);  /* Lamp 1 - Big / Small */
 		output().set_lamp_value(2, (data >> 3) & 1);  /* Lamp 2 - Hold 5 */
@@ -217,7 +177,6 @@ WRITE8_MEMBER(chance32_state::muxout_w)
 		output().set_lamp_value(4, (data >> 5) & 1);  /* Lamp 4 - Hold 3 */
 		output().set_lamp_value(5, (data >> 6) & 1);  /* Lamp 5 - Hold 2 */
 		output().set_lamp_value(6, (data >> 7) & 1);  /* Lamp 6 - Hold 1 */
->>>>>>> upstream/master
 
 		logerror("Lamps A: %02x\n", data);
 	}
@@ -225,21 +184,12 @@ WRITE8_MEMBER(chance32_state::muxout_w)
 	else
 	{
 		// bit 1 is unknown...
-<<<<<<< HEAD
-		output_set_lamp_value(7, (data >> 2) & 1);  /* Lamp 7 - Fever! */
-		output_set_lamp_value(8, (data >> 3) & 1);  /* Lamp 8 - Cancel */
-		output_set_lamp_value(9, (data >> 4) & 1);  /* Lamp 9 - D-Up / Take */
-		output_set_lamp_value(10, (data >> 5) & 1); /* Lamp 10 - Take / D-Up */
-		output_set_lamp_value(11, (data >> 6) & 1); /* Lamp 11 - Deal */
-		output_set_lamp_value(12, (data >> 7) & 1); /* Lamp 12 - Bet */
-=======
 		output().set_lamp_value(7, (data >> 2) & 1);  /* Lamp 7 - Fever! */
 		output().set_lamp_value(8, (data >> 3) & 1);  /* Lamp 8 - Cancel */
 		output().set_lamp_value(9, (data >> 4) & 1);  /* Lamp 9 - D-Up / Take */
 		output().set_lamp_value(10, (data >> 5) & 1); /* Lamp 10 - Take / D-Up */
 		output().set_lamp_value(11, (data >> 6) & 1); /* Lamp 11 - Deal */
 		output().set_lamp_value(12, (data >> 7) & 1); /* Lamp 12 - Bet */
->>>>>>> upstream/master
 
 		logerror("Lamps B: %02x\n", data);
 	}
@@ -494,11 +444,7 @@ void chance32_state::machine_reset()
 }
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( chance32, chance32_state )
-=======
 static MACHINE_CONFIG_START( chance32 )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80,12000000/2)
@@ -528,11 +474,7 @@ static MACHINE_CONFIG_START( chance32 )
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
 	/* clock at 1050 kHz match the 8000 Hz samples stored inside the ROM */
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki", XTAL_1_056MHz, OKIM6295_PIN7_HIGH) // clock frequency & pin 7 not verified
-=======
 	MCFG_OKIM6295_ADD("oki", XTAL_1_056MHz, PIN7_HIGH) // clock frequency & pin 7 not verified
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
 
@@ -575,10 +517,5 @@ ROM_END
 *      Game Drivers      *
 *************************/
 
-<<<<<<< HEAD
-/*     YEAR  NAME      PARENT  MACHINE   INPUT     INIT  ROT    COMPANY                FULLNAME            FLAGS  LAYOUT */
-GAMEL( 19??, chance32, 0,      chance32, chance32, driver_device, 0,    ROT0, "PAL System Co, Ltd.", "Chance Thirty Two", 0,     layout_chance32 )
-=======
 /*     YEAR  NAME      PARENT  MACHINE   INPUT     STATE           INIT  ROT   COMPANY                FULLNAME             FLAGS  LAYOUT */
 GAMEL( 19??, chance32, 0,      chance32, chance32, chance32_state, 0,    ROT0, "PAL System Co, Ltd.", "Chance Thirty Two", 0,     layout_chance32 )
->>>>>>> upstream/master

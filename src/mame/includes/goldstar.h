@@ -1,12 +1,7 @@
 // license:BSD-3-Clause
 // copyright-holders:David Haywood, Roberto Fresca, Vas Crabb
-<<<<<<< HEAD
-#include "emu.h"
-
-=======
 
 #include "machine/ds2401.h"
->>>>>>> upstream/master
 #include "machine/ticket.h"
 
 
@@ -37,10 +32,6 @@ public:
 	DECLARE_WRITE8_MEMBER(p2_lamps_w);
 	DECLARE_WRITE8_MEMBER(ncb3_port81_w);
 	DECLARE_WRITE8_MEMBER(cm_coincount_w);
-<<<<<<< HEAD
-	DECLARE_WRITE8_MEMBER(ladylinr_outport_w);
-=======
->>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(goldstar_fg_vidram_w);
 	DECLARE_WRITE8_MEMBER(goldstar_fg_atrram_w);
 	DECLARE_WRITE8_MEMBER(goldstar_reel1_ram_w);
@@ -58,13 +49,8 @@ public:
 	DECLARE_VIDEO_START(cherrym);
 	DECLARE_PALETTE_INIT(cmast91);
 	DECLARE_PALETTE_INIT(lucky8);
-<<<<<<< HEAD
-	UINT32 screen_update_goldstar(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	UINT32 screen_update_cmast91(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	uint32_t screen_update_goldstar(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	uint32_t screen_update_cmast91(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 
 protected:
 	TILE_GET_INFO_MEMBER(get_goldstar_fg_tile_info);
@@ -75,21 +61,6 @@ protected:
 
 	int m_dataoffset;
 
-<<<<<<< HEAD
-	required_shared_ptr<UINT8> m_fg_vidram;
-	required_shared_ptr<UINT8> m_fg_atrram;
-
-	optional_shared_ptr<UINT8> m_bg_vidram;
-	optional_shared_ptr<UINT8> m_bg_atrram;
-
-	optional_shared_ptr<UINT8> m_reel1_ram;
-	optional_shared_ptr<UINT8> m_reel2_ram;
-	optional_shared_ptr<UINT8> m_reel3_ram;
-
-	optional_shared_ptr<UINT8> m_reel1_scroll;
-	optional_shared_ptr<UINT8> m_reel2_scroll;
-	optional_shared_ptr<UINT8> m_reel3_scroll;
-=======
 	required_shared_ptr<uint8_t> m_fg_vidram;
 	required_shared_ptr<uint8_t> m_fg_atrram;
 
@@ -103,7 +74,6 @@ protected:
 	optional_shared_ptr<uint8_t> m_reel1_scroll;
 	optional_shared_ptr<uint8_t> m_reel2_scroll;
 	optional_shared_ptr<uint8_t> m_reel3_scroll;
->>>>>>> upstream/master
 
 	tilemap_t *m_reel1_tilemap;
 	tilemap_t *m_reel2_tilemap;
@@ -112,17 +82,10 @@ protected:
 	int m_bgcolor;
 	tilemap_t *m_fg_tilemap;
 	tilemap_t *m_bg_tilemap;
-<<<<<<< HEAD
-	UINT8 m_cmaster_girl_num;
-	UINT8 m_cmaster_girl_pal;
-	UINT8 m_cm_enable_reg;
-	UINT8 m_cm_girl_scroll;
-=======
 	uint8_t m_cmaster_girl_num;
 	uint8_t m_cmaster_girl_pal;
 	uint8_t m_cm_enable_reg;
 	uint8_t m_cm_girl_scroll;
->>>>>>> upstream/master
 
 	required_device<cpu_device> m_maincpu;
 	required_device<gfxdecode_device> m_gfxdecode;
@@ -159,14 +122,9 @@ public:
 	DECLARE_DRIVER_INIT(rp35);
 	DECLARE_DRIVER_INIT(rp36);
 	DECLARE_DRIVER_INIT(rp36c3);
-<<<<<<< HEAD
-
-	UINT32 screen_update_amcoe1a(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	DECLARE_DRIVER_INIT(rp96sub);
 
 	uint32_t screen_update_amcoe1a(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 
 protected:
 	// installed by various driver init handlers to get stuff to work
@@ -196,44 +154,29 @@ class wingco_state : public goldstar_state
 {
 public:
 	wingco_state(const machine_config &mconfig, device_type type, const char *tag) :
-<<<<<<< HEAD
-		goldstar_state(mconfig, type, tag)
-=======
 		goldstar_state(mconfig, type, tag),
 		m_fl7w4_id(*this, "fl7w4_id")
->>>>>>> upstream/master
 	{
 	}
 
 	DECLARE_WRITE8_MEMBER(magodds_outb850_w);
 	DECLARE_WRITE8_MEMBER(magodds_outb860_w);
-<<<<<<< HEAD
-=======
 	DECLARE_WRITE8_MEMBER(fl7w4_outc802_w);
->>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(system_outputa_w);
 	DECLARE_WRITE8_MEMBER(system_outputb_w);
 	DECLARE_WRITE8_MEMBER(system_outputc_w);
 
 	DECLARE_DRIVER_INIT(lucky8a);
 	DECLARE_DRIVER_INIT(magoddsc);
-<<<<<<< HEAD
-=======
 	DECLARE_DRIVER_INIT(flaming7);
 	DECLARE_DRIVER_INIT(flam7_tw);
->>>>>>> upstream/master
 
 	DECLARE_VIDEO_START(bingowng);
 	DECLARE_VIDEO_START(magical);
 	DECLARE_PALETTE_INIT(magodds);
-<<<<<<< HEAD
-	UINT32 screen_update_bingowng(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	UINT32 screen_update_magical(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	uint32_t screen_update_bingowng(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	uint32_t screen_update_magical(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	uint32_t screen_update_mbstar(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 
 	INTERRUPT_GEN_MEMBER(masked_irq);
 
@@ -241,15 +184,10 @@ protected:
 	TILE_GET_INFO_MEMBER(get_magical_fg_tile_info);
 
 private:
-<<<<<<< HEAD
-	UINT8 m_nmi_enable;
-	UINT8 m_vidreg;
-=======
 	optional_device<ds2401_device> m_fl7w4_id;
 
 	uint8_t m_nmi_enable;
 	uint8_t m_vidreg;
->>>>>>> upstream/master
 
 	int m_tile_bank;
 };
@@ -270,19 +208,11 @@ public:
 	DECLARE_DRIVER_INIT(chry10);
 
 protected:
-<<<<<<< HEAD
-	void do_blockswaps(UINT8* ROM);
-	void dump_to_file(UINT8* ROM);
-
-	UINT8 cb3_decrypt(UINT8 cipherText, UINT16 address);
-	UINT8 chry10_decrypt(UINT8 cipherText);
-=======
 	void do_blockswaps(uint8_t* ROM);
 	void dump_to_file(uint8_t* ROM);
 
 	uint8_t cb3_decrypt(uint8_t cipherText, uint16_t address);
 	uint8_t chry10_decrypt(uint8_t cipherText);
->>>>>>> upstream/master
 };
 
 
@@ -309,11 +239,7 @@ public:
 	DECLARE_WRITE8_MEMBER(reel3_attrram_w);
 
 	DECLARE_VIDEO_START(sangho);
-<<<<<<< HEAD
-	UINT32 screen_update_sangho(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	uint32_t screen_update_sangho(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 
 protected:
 	TILE_GET_INFO_MEMBER(get_fg_tile_info);
@@ -323,19 +249,11 @@ protected:
 	TILE_GET_INFO_MEMBER(get_reel3_tile_info);
 
 private:
-<<<<<<< HEAD
-	required_shared_ptr<UINT8> m_reel1_attrram;
-	required_shared_ptr<UINT8> m_reel2_attrram;
-	required_shared_ptr<UINT8> m_reel3_attrram;
-
-	UINT8 m_enable_reg;
-=======
 	required_shared_ptr<uint8_t> m_reel1_attrram;
 	required_shared_ptr<uint8_t> m_reel2_attrram;
 	required_shared_ptr<uint8_t> m_reel3_attrram;
 
 	uint8_t m_enable_reg;
->>>>>>> upstream/master
 };
 
 
@@ -364,11 +282,7 @@ public:
 	DECLARE_DRIVER_INIT(unkch4);
 
 	DECLARE_VIDEO_START(unkch);
-<<<<<<< HEAD
-	UINT32 screen_update_unkch(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	uint32_t screen_update_unkch(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 
 	INTERRUPT_GEN_MEMBER(vblank_irq);
 
@@ -378,21 +292,12 @@ protected:
 	TILE_GET_INFO_MEMBER(get_reel3_tile_info);
 
 private:
-<<<<<<< HEAD
-	required_shared_ptr<UINT8> m_reel1_attrram;
-	required_shared_ptr<UINT8> m_reel2_attrram;
-	required_shared_ptr<UINT8> m_reel3_attrram;
-
-	UINT8 m_vblank_irq_enable;
-	UINT8 m_vidreg;
-=======
 	required_shared_ptr<uint8_t> m_reel1_attrram;
 	required_shared_ptr<uint8_t> m_reel2_attrram;
 	required_shared_ptr<uint8_t> m_reel3_attrram;
 
 	uint8_t m_vblank_irq_enable;
 	uint8_t m_vidreg;
->>>>>>> upstream/master
 
 	optional_device<ticket_dispenser_device> m_ticket_dispenser;
 };

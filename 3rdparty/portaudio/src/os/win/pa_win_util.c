@@ -1,9 +1,5 @@
 /*
-<<<<<<< HEAD
- * $Id: pa_win_util.c 1584 2011-02-02 18:58:17Z rossb $
-=======
  * $Id$
->>>>>>> upstream/master
  * Portable Audio I/O Library
  * Win32 platform-specific support functions
  *
@@ -48,16 +44,6 @@
 */
  
 #include <windows.h>
-<<<<<<< HEAD
-#include <mmsystem.h> /* for timeGetTime() */
-
-#include "pa_util.h"
-
-#if (defined(WIN32) && (defined(_MSC_VER) && (_MSC_VER >= 1200))) && !defined(_WIN32_WCE) /* MSC version 6 and above */
-#pragma comment( lib, "winmm.lib" )
-#endif
-
-=======
 
 #if defined(WINAPI_FAMILY) && (WINAPI_FAMILY == WINAPI_FAMILY_APP)
 	#include <sys/timeb.h> /* for _ftime_s() */
@@ -69,7 +55,6 @@
 #endif
 
 #include "pa_util.h"
->>>>>>> upstream/master
 
 /*
    Track memory allocations to avoid leaks.
@@ -162,17 +147,12 @@ double PaUtil_GetTime( void )
     }
     else
     {
-<<<<<<< HEAD
-#ifndef UNDER_CE    	
-        return timeGetTime() * .001;
-=======
 #ifndef UNDER_CE
 	#if defined(WINAPI_FAMILY) && (WINAPI_FAMILY == WINAPI_FAMILY_APP)
         return GetTickCount64() * .001;
 	#else
         return timeGetTime() * .001;
 	#endif
->>>>>>> upstream/master
 #else
         return GetTickCount() * .001;
 #endif                

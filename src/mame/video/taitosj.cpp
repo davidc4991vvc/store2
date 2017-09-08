@@ -141,11 +141,7 @@ void taitosj_state::set_pens()
 void taitosj_state::compute_draw_order()
 {
 	int i;
-<<<<<<< HEAD
-	UINT8 *color_prom = memregion("proms")->base();
-=======
 	uint8_t *color_prom = memregion("proms")->base();
->>>>>>> upstream/master
 
 	/* do a simple conversion of the PROM into layer priority order. Note that */
 	/* this is a simplification, which assumes the PROM encodes a sensible priority */
@@ -199,11 +195,7 @@ void taitosj_state::video_start()
 
 READ8_MEMBER(taitosj_state::taitosj_gfxrom_r)
 {
-<<<<<<< HEAD
-	UINT8 ret;
-=======
 	uint8_t ret;
->>>>>>> upstream/master
 
 	offs_t offs = m_gfxpointer[0] | (m_gfxpointer[1] << 8);
 
@@ -256,11 +248,7 @@ WRITE8_MEMBER(taitosj_state::taitosj_collision_reg_clear_w)
 }
 
 
-<<<<<<< HEAD
-inline int taitosj_state::get_sprite_xy(UINT8 which, UINT8* sx, UINT8* sy)
-=======
 inline int taitosj_state::get_sprite_xy(uint8_t which, uint8_t* sx, uint8_t* sy)
->>>>>>> upstream/master
 {
 	offs_t offs = which * 4;
 
@@ -271,11 +259,7 @@ inline int taitosj_state::get_sprite_xy(uint8_t which, uint8_t* sx, uint8_t* sy)
 }
 
 
-<<<<<<< HEAD
-inline gfx_element * taitosj_state::get_sprite_gfx_element(UINT8 which)
-=======
 inline gfx_element * taitosj_state::get_sprite_gfx_element(uint8_t which)
->>>>>>> upstream/master
 {
 	offs_t offs = which * 4;
 
@@ -354,11 +338,7 @@ void taitosj_state::check_sprite_sprite_collision()
 		for (which1 = 0; which1 < 0x20; which1++)
 		{
 			int which2;
-<<<<<<< HEAD
-			UINT8 sx1, sy1;
-=======
 			uint8_t sx1, sy1;
->>>>>>> upstream/master
 
 			if ((which1 >= 0x10) && (which1 <= 0x17)) continue; /* no sprites here */
 
@@ -366,24 +346,15 @@ void taitosj_state::check_sprite_sprite_collision()
 
 			for (which2 = which1 + 1; which2 < 0x20; which2++)
 			{
-<<<<<<< HEAD
-				UINT8 sx2, sy2;
-=======
 				uint8_t sx2, sy2;
->>>>>>> upstream/master
 
 				if ((which2 >= 0x10) && (which2 <= 0x17)) continue;   /* no sprites here */
 
 				if (!get_sprite_xy(which2, &sx2, &sy2)) continue;
 
 				/* quickly rule out any pairs that cannot be touching */
-<<<<<<< HEAD
-				if ((abs((INT8)sx1 - (INT8)sx2) < 16) &&
-					(abs((INT8)sy1 - (INT8)sy2) < 16))
-=======
 				if ((abs((int8_t)sx1 - (int8_t)sx2) < 16) &&
 					(abs((int8_t)sy1 - (int8_t)sy2) < 16))
->>>>>>> upstream/master
 				{
 					int reg;
 
@@ -424,11 +395,7 @@ void taitosj_state::calculate_sprite_areas(int *sprites_on, rectangle *sprite_ar
 
 	for (which = 0; which < 0x20; which++)
 	{
-<<<<<<< HEAD
-		UINT8 sx, sy;
-=======
 		uint8_t sx, sy;
->>>>>>> upstream/master
 
 		if ((which >= 0x10) && (which <= 0x17)) continue;   /* no sprites here */
 
@@ -587,11 +554,7 @@ void taitosj_state::draw_sprites(bitmap_ind16 &bitmap)
 		/* drawing order is a bit strange. The last sprite has to be moved at the start of the list. */
 		for (sprite = 0x1f; sprite >= 0; sprite--)
 		{
-<<<<<<< HEAD
-			UINT8 sx, sy;
-=======
 			uint8_t sx, sy;
->>>>>>> upstream/master
 
 			int which = (sprite - 1) & 0x1f;    /* move last sprite at the head of the list */
 			offs_t offs = which * 4;
@@ -758,21 +721,13 @@ int taitosj_state::video_update_common(bitmap_ind16 &bitmap, const rectangle &cl
 }
 
 
-<<<<<<< HEAD
-UINT32 taitosj_state::screen_update_taitosj(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t taitosj_state::screen_update_taitosj(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	return video_update_common(bitmap, cliprect, &taitosj_state::taitosj_copy_layer);
 }
 
 
-<<<<<<< HEAD
-UINT32 taitosj_state::screen_update_kikstart(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t taitosj_state::screen_update_kikstart(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	return video_update_common(bitmap, cliprect, &taitosj_state::kikstart_copy_layer);
 }

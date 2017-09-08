@@ -10,20 +10,11 @@
 
 **********************************************************************/
 
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __NES_CONTROL_PORT__
-#define __NES_CONTROL_PORT__
-
-#include "emu.h"
-=======
 #ifndef MAME_BUS_NES_CTRL_CTRL_H
 #define MAME_BUS_NES_CTRL_CTRL_H
 
 #pragma once
 
->>>>>>> upstream/master
 
 //**************************************************************************
 //  TYPE DEFINITIONS
@@ -37,17 +28,6 @@ class device_nes_control_port_interface : public device_slot_card_interface
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	device_nes_control_port_interface(const machine_config &mconfig, device_t &device);
-	virtual ~device_nes_control_port_interface();
-
-	virtual UINT8 read_bit0() { return 0; };
-	virtual UINT8 read_bit34() { return 0; };
-	virtual UINT8 read_exp(offs_t offset) { return 0; };
-	virtual void write(UINT8 data) { };
-
-protected:
-=======
 	virtual ~device_nes_control_port_interface();
 
 	virtual uint8_t read_bit0() { return 0; }
@@ -58,7 +38,6 @@ protected:
 protected:
 	device_nes_control_port_interface(const machine_config &mconfig, device_t &device);
 
->>>>>>> upstream/master
 	nes_control_port_device *m_port;
 };
 
@@ -74,46 +53,27 @@ class nes_control_port_device : public device_t,
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	nes_control_port_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-=======
 	nes_control_port_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
->>>>>>> upstream/master
 	virtual ~nes_control_port_device();
 
 	static void set_brightpixel_callback(device_t &device, nesctrl_brightpixel_delegate callback) { downcast<nes_control_port_device &>(device).m_brightpixel_cb = callback; }
 
-<<<<<<< HEAD
-	UINT8 read_bit0();
-	UINT8 read_bit34();
-	UINT8 read_exp(offs_t offset);
-	void write(UINT8 data);
-=======
 	uint8_t read_bit0();
 	uint8_t read_bit34();
 	uint8_t read_exp(offs_t offset);
 	void write(uint8_t data);
->>>>>>> upstream/master
 
 	nesctrl_brightpixel_delegate m_brightpixel_cb;
 
 protected:
 	// device-level overrides
-<<<<<<< HEAD
-	virtual void device_start();
-=======
 	virtual void device_start() override;
->>>>>>> upstream/master
 	device_nes_control_port_interface *m_device;
 };
 
 
 // device type definition
-<<<<<<< HEAD
-extern const device_type NES_CONTROL_PORT;
-=======
 DECLARE_DEVICE_TYPE(NES_CONTROL_PORT, nes_control_port_device)
->>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -140,8 +100,4 @@ SLOT_INTERFACE_EXTERN( fc_control_port2_devices );
 SLOT_INTERFACE_EXTERN( fc_expansion_devices );
 
 
-<<<<<<< HEAD
-#endif
-=======
 #endif // MAME_BUS_NES_CTRL_CTRL_H
->>>>>>> upstream/master

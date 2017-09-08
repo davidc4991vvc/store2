@@ -1,17 +1,8 @@
 /*
-<<<<<<< HEAD
- * Copyright 2011-2015 Branimir Karadzic. All rights reserved.
- * License: http://www.opensource.org/licenses/BSD-2-Clause
- */
-
-#include <string.h> // strlen
-
-=======
  * Copyright 2011-2017 Branimir Karadzic. All rights reserved.
  * License: https://github.com/bkaradzic/bgfx#license-bsd-2-clause
  */
 
->>>>>>> upstream/master
 #include "common.h"
 
 #include <tinystl/allocator.h>
@@ -21,10 +12,7 @@ namespace stl = tinystl;
 
 #include <bgfx/bgfx.h>
 #include <bx/commandline.h>
-<<<<<<< HEAD
-=======
 #include <bx/endian.h>
->>>>>>> upstream/master
 #include <bx/fpumath.h>
 #include <bx/readerwriter.h>
 #include <bx/string.h>
@@ -33,15 +21,9 @@ namespace stl = tinystl;
 
 #include "bgfx_utils.h"
 
-<<<<<<< HEAD
-void* load(bx::FileReaderI* _reader, bx::ReallocatorI* _allocator, const char* _filePath, uint32_t* _size)
-{
-	if (0 == bx::open(_reader, _filePath) )
-=======
 void* load(bx::FileReaderI* _reader, bx::AllocatorI* _allocator, const char* _filePath, uint32_t* _size)
 {
 	if (bx::open(_reader, _filePath) )
->>>>>>> upstream/master
 	{
 		uint32_t size = (uint32_t)bx::getSize(_reader);
 		void* data = BX_ALLOC(_allocator, size);
@@ -53,22 +35,16 @@ void* load(bx::FileReaderI* _reader, bx::AllocatorI* _allocator, const char* _fi
 		}
 		return data;
 	}
-<<<<<<< HEAD
-=======
 	else
 	{
 		DBG("Failed to open: %s.", _filePath);
 	}
->>>>>>> upstream/master
 
 	if (NULL != _size)
 	{
 		*_size = 0;
 	}
-<<<<<<< HEAD
-=======
 
->>>>>>> upstream/master
 	return NULL;
 }
 
@@ -84,11 +60,7 @@ void unload(void* _ptr)
 
 static const bgfx::Memory* loadMem(bx::FileReaderI* _reader, const char* _filePath)
 {
-<<<<<<< HEAD
-	if (0 == bx::open(_reader, _filePath) )
-=======
 	if (bx::open(_reader, _filePath) )
->>>>>>> upstream/master
 	{
 		uint32_t size = (uint32_t)bx::getSize(_reader);
 		const bgfx::Memory* mem = bgfx::alloc(size+1);
@@ -98,14 +70,6 @@ static const bgfx::Memory* loadMem(bx::FileReaderI* _reader, const char* _filePa
 		return mem;
 	}
 
-<<<<<<< HEAD
-	return NULL;
-}
-
-static void* loadMem(bx::FileReaderI* _reader, bx::ReallocatorI* _allocator, const char* _filePath, uint32_t* _size)
-{
-	if (0 == bx::open(_reader, _filePath) )
-=======
 	DBG("Failed to load %s.", _filePath);
 	return NULL;
 }
@@ -113,7 +77,6 @@ static void* loadMem(bx::FileReaderI* _reader, bx::ReallocatorI* _allocator, con
 static void* loadMem(bx::FileReaderI* _reader, bx::AllocatorI* _allocator, const char* _filePath, uint32_t* _size)
 {
 	if (bx::open(_reader, _filePath) )
->>>>>>> upstream/master
 	{
 		uint32_t size = (uint32_t)bx::getSize(_reader);
 		void* data = BX_ALLOC(_allocator, size);
@@ -127,10 +90,7 @@ static void* loadMem(bx::FileReaderI* _reader, bx::AllocatorI* _allocator, const
 		return data;
 	}
 
-<<<<<<< HEAD
-=======
 	DBG("Failed to load %s.", _filePath);
->>>>>>> upstream/master
 	return NULL;
 }
 
@@ -138,36 +98,6 @@ static bgfx::ShaderHandle loadShader(bx::FileReaderI* _reader, const char* _name
 {
 	char filePath[512];
 
-<<<<<<< HEAD
-	const char* shaderPath = "shaders/dx9/";
-
-	switch (bgfx::getRendererType() )
-	{
-	case bgfx::RendererType::Direct3D11:
-	case bgfx::RendererType::Direct3D12:
-		shaderPath = "shaders/dx11/";
-		break;
-
-	case bgfx::RendererType::OpenGL:
-		shaderPath = "shaders/glsl/";
-		break;
-
-	case bgfx::RendererType::Metal:
-		shaderPath = "shaders/metal/";
-		break;
-
-	case bgfx::RendererType::OpenGLES:
-		shaderPath = "shaders/gles/";
-		break;
-
-	default:
-		break;
-	}
-
-	strcpy(filePath, shaderPath);
-	strcat(filePath, _name);
-	strcat(filePath, ".bin");
-=======
 	const char* shaderPath = "???";
 
 	switch (bgfx::getRendererType() )
@@ -190,7 +120,6 @@ static bgfx::ShaderHandle loadShader(bx::FileReaderI* _reader, const char* _name
 	bx::strlncpy(filePath, BX_COUNTOF(filePath), shaderPath);
 	bx::strlncat(filePath, BX_COUNTOF(filePath), _name);
 	bx::strlncat(filePath, BX_COUNTOF(filePath), ".bin");
->>>>>>> upstream/master
 
 	return bgfx::createShader(loadMem(_reader, filePath) );
 }
@@ -217,71 +146,6 @@ bgfx::ProgramHandle loadProgram(const char* _vsName, const char* _fsName)
 	return loadProgram(entry::getFileReader(), _vsName, _fsName);
 }
 
-<<<<<<< HEAD
-typedef unsigned char stbi_uc;
-extern "C" stbi_uc *stbi_load_from_memory(stbi_uc const *buffer, int len, int *x, int *y, int *comp, int req_comp);
-
-bgfx::TextureHandle loadTexture(bx::FileReaderI* _reader, const char* _name, uint32_t _flags, uint8_t _skip, bgfx::TextureInfo* _info)
-{
-	char filePath[512] = { '\0' };
-	if (NULL == strchr(_name, '/') )
-	{
-		strcpy(filePath, "textures/");
-	}
-
-	strcat(filePath, _name);
-
-	if (NULL != bx::stristr(_name, ".dds")
-	||  NULL != bx::stristr(_name, ".pvr")
-	||  NULL != bx::stristr(_name, ".ktx") )
-	{
-		const bgfx::Memory* mem = loadMem(_reader, filePath);
-		if (NULL != mem)
-		{
-			return bgfx::createTexture(mem, _flags, _skip, _info);
-		}
-
-		bgfx::TextureHandle handle = BGFX_INVALID_HANDLE;
-		DBG("Failed to load %s.", filePath);
-		return handle;
-	}
-
-	bgfx::TextureHandle handle = BGFX_INVALID_HANDLE;
-	bx::ReallocatorI* allocator = entry::getAllocator();
-
-	uint32_t size = 0;
-	void* data = loadMem(_reader, allocator, filePath, &size);
-	if (NULL != data)
-	{
-		int width  = 0;
-		int height = 0;
-		int comp   = 0;
-
-		uint8_t* img = NULL;
-		img = stbi_load_from_memory( (uint8_t*)data, size, &width, &height, &comp, 4);
-
-		BX_FREE(allocator, data);
-
-		if (NULL != img)
-		{
-			handle = bgfx::createTexture2D(uint16_t(width), uint16_t(height), 1
-											, bgfx::TextureFormat::RGBA8
-											, _flags
-											, bgfx::copy(img, width*height*4)
-											);
-
-			free(img);
-
-			if (NULL != _info)
-			{
-				bgfx::calcTextureSize(*_info
-					, uint16_t(width)
-					, uint16_t(height)
-					, 0
-					, false
-					, 1
-					, bgfx::TextureFormat::RGBA8
-=======
 static void imageReleaseCb(void* _ptr, void* _userData)
 {
 	BX_UNUSED(_ptr);
@@ -345,18 +209,10 @@ bgfx::TextureHandle loadTexture(bx::FileReaderI* _reader, const char* _filePath,
 					, false
 					, 1
 					, imageContainer->m_format
->>>>>>> upstream/master
 					);
 			}
 		}
 	}
-<<<<<<< HEAD
-	else
-	{
-		DBG("Failed to load %s.", filePath);
-	}
-=======
->>>>>>> upstream/master
 
 	return handle;
 }
@@ -366,8 +222,6 @@ bgfx::TextureHandle loadTexture(const char* _name, uint32_t _flags, uint8_t _ski
 	return loadTexture(entry::getFileReader(), _name, _flags, _skip, _info);
 }
 
-<<<<<<< HEAD
-=======
 bgfx::ImageContainer* imageLoad(const char* _filePath, bgfx::TextureFormat::Enum _dstFormat)
 {
 	uint32_t size = 0;
@@ -376,7 +230,6 @@ bgfx::ImageContainer* imageLoad(const char* _filePath, bgfx::TextureFormat::Enum
 	return bgfx::imageParse(entry::getAllocator(), data, size, _dstFormat);
 }
 
->>>>>>> upstream/master
 void calcTangents(void* _vertices, uint16_t _numVertices, bgfx::VertexDecl _decl, const uint16_t* _indices, uint32_t _numIndices)
 {
 	struct PosTexcoord
@@ -392,11 +245,7 @@ void calcTangents(void* _vertices, uint16_t _numVertices, bgfx::VertexDecl _decl
 	};
 
 	float* tangents = new float[6*_numVertices];
-<<<<<<< HEAD
-	memset(tangents, 0, 6*_numVertices*sizeof(float) );
-=======
 	bx::memSet(tangents, 0, 6*_numVertices*sizeof(float) );
->>>>>>> upstream/master
 
 	PosTexcoord v0;
 	PosTexcoord v1;
@@ -537,11 +386,7 @@ struct Group
 
 namespace bgfx
 {
-<<<<<<< HEAD
-	int32_t read(bx::ReaderI* _reader, bgfx::VertexDecl& _decl);
-=======
 	int32_t read(bx::ReaderI* _reader, bgfx::VertexDecl& _decl, bx::Error* _err = NULL);
->>>>>>> upstream/master
 }
 
 struct Mesh
@@ -558,19 +403,12 @@ struct Mesh
 
 		Group group;
 
-<<<<<<< HEAD
-		bx::ReallocatorI* allocator = entry::getAllocator();
-
-		uint32_t chunk;
-		while (4 == bx::read(_reader, chunk) )
-=======
 		bx::AllocatorI* allocator = entry::getAllocator();
 
 		uint32_t chunk;
 		bx::Error err;
 		while (4 == bx::read(_reader, chunk, &err)
 		&&     err.isOk() )
->>>>>>> upstream/master
 		{
 			switch (chunk)
 			{
@@ -699,28 +537,16 @@ struct Mesh
 				;
 		}
 
-<<<<<<< HEAD
-		uint32_t cached = bgfx::setTransform(_mtx);
-=======
 		bgfx::setTransform(_mtx);
 		bgfx::setState(_state);
->>>>>>> upstream/master
 
 		for (GroupArray::const_iterator it = m_groups.begin(), itEnd = m_groups.end(); it != itEnd; ++it)
 		{
 			const Group& group = *it;
 
-<<<<<<< HEAD
-			bgfx::setTransform(cached);
-			bgfx::setIndexBuffer(group.m_ibh);
-			bgfx::setVertexBuffer(group.m_vbh);
-			bgfx::setState(_state);
-			bgfx::submit(_id, _program);
-=======
 			bgfx::setIndexBuffer(group.m_ibh);
 			bgfx::setVertexBuffer(group.m_vbh);
 			bgfx::submit(_id, _program, 0, it != itEnd-1);
->>>>>>> upstream/master
 		}
 	}
 
@@ -730,9 +556,6 @@ struct Mesh
 
 		for (uint32_t pass = 0; pass < _numPasses; ++pass)
 		{
-<<<<<<< HEAD
-			const MeshState& state = *_state[pass];
-=======
 			bgfx::setTransform(cached, _numMatrices);
 
 			const MeshState& state = *_state[pass];
@@ -747,32 +570,14 @@ struct Mesh
 						, texture.m_flags
 						);
 			}
->>>>>>> upstream/master
 
 			for (GroupArray::const_iterator it = m_groups.begin(), itEnd = m_groups.end(); it != itEnd; ++it)
 			{
 				const Group& group = *it;
 
-<<<<<<< HEAD
-				bgfx::setTransform(cached, _numMatrices);
-				for (uint8_t tex = 0; tex < state.m_numTextures; ++tex)
-				{
-					const MeshState::Texture& texture = state.m_textures[tex];
-					bgfx::setTexture(texture.m_stage
-							, texture.m_sampler
-							, texture.m_texture
-							, texture.m_flags
-							);
-				}
-				bgfx::setIndexBuffer(group.m_ibh);
-				bgfx::setVertexBuffer(group.m_vbh);
-				bgfx::setState(state.m_state);
-				bgfx::submit(state.m_viewId, state.m_program);
-=======
 				bgfx::setIndexBuffer(group.m_ibh);
 				bgfx::setVertexBuffer(group.m_vbh);
 				bgfx::submit(state.m_viewId, state.m_program, 0, it != itEnd-1);
->>>>>>> upstream/master
 			}
 		}
 	}
@@ -792,12 +597,6 @@ Mesh* meshLoad(bx::ReaderSeekerI* _reader)
 Mesh* meshLoad(const char* _filePath)
 {
 	bx::FileReaderI* reader = entry::getFileReader();
-<<<<<<< HEAD
-	bx::open(reader, _filePath);
-	Mesh* mesh = meshLoad(reader);
-	bx::close(reader);
-	return mesh;
-=======
 	if (bx::open(reader, _filePath) )
 	{
 		Mesh* mesh = meshLoad(reader);
@@ -806,7 +605,6 @@ Mesh* meshLoad(const char* _filePath)
 	}
 
 	return NULL;
->>>>>>> upstream/master
 }
 
 void meshUnload(Mesh* _mesh)
@@ -846,12 +644,6 @@ Args::Args(int _argc, char** _argv)
 	{
 		m_type = bgfx::RendererType::OpenGL;
 	}
-<<<<<<< HEAD
-	else if (cmdLine.hasArg("noop")
-		 ||  cmdLine.hasArg("vk") )
-	{
-		m_type = bgfx::RendererType::OpenGL;
-=======
 	else if (cmdLine.hasArg("vk") )
 	{
 		m_type = bgfx::RendererType::Vulkan;
@@ -859,7 +651,6 @@ Args::Args(int _argc, char** _argv)
 	else if (cmdLine.hasArg("noop") )
 	{
 		m_type = bgfx::RendererType::Noop;
->>>>>>> upstream/master
 	}
 	else if (BX_ENABLED(BX_PLATFORM_WINDOWS) )
 	{

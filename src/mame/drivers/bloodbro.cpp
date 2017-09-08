@@ -10,15 +10,8 @@ driver by Carlos A. Lozano Baides
 
 TODO:
 West Story:
-<<<<<<< HEAD
-- sound (program rom is close to the original)
-- some bad sprites (2 bad sprite roms, should the actual decoded data match?, can they be reconstructed from the original?)
-- tilemap scroll
-- runs too fast? (vblank flag somewhere?)
-=======
 - sound (still has IRQ problems)
 - some bad sprites (2 bad sprite roms, should the actual decoded data match?)
->>>>>>> upstream/master
 
 
 Blood Bros  (c) 1990 Nihon System [Seibu hardware]
@@ -30,15 +23,12 @@ The manual states:
 
 This works for all sets and the bootleg.
 
-<<<<<<< HEAD
-=======
 Fabtek licensed this game for the U.S. along with other games by Seibu and TAD.
 Though no Fabtek-licensed set has been dumped yet, and the program code does
 not appear to test a region byte, the TAD strings displayed on the title screen
 are both space-justified to the same length as the unused string "U.S. LICENSEE
 FABTEK, INC."
 
->>>>>>> upstream/master
 Sky Smasher  (c) 1990 Nihon System [Seibu hardware]
 -----------
 
@@ -53,15 +43,12 @@ is undoubtedly capable of flipscreen and layer priority flipping
 however.(which is why we have MACHINE_NO_COCKTAIL despite the games
 being upright)
 
-<<<<<<< HEAD
-=======
 If the word at 0x488 in the maincpu ROM is set to any value other than 1, the
 attract mode will include the "Winners Don't Use Drugs" screen. The only other
 change this effects is reducing the first "NIHON SYSTEM INC." on the title
 screen to the initials NSI. The string "US LICENSEE FABTEC INC" appears twice
 in the program ROM, but no code that might display it is known to exist.
 
->>>>>>> upstream/master
 Dumpers Notes
 =============
 
@@ -143,14 +130,6 @@ DIP locations verified for Blood Bros. & Sky Smasher via manual & DIP-SW setting
 **************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/m68000/m68000.h"
-#include "audio/seibu.h"
-#include "cpu/z80/z80.h"
-#include "sound/3812intf.h"
-#include "includes/bloodbro.h"
-#include "video/seibu_crtc.h"
-=======
 #include "includes/bloodbro.h"
 
 #include "cpu/m68000/m68000.h"
@@ -160,7 +139,6 @@ DIP locations verified for Blood Bros. & Sky Smasher via manual & DIP-SW setting
 #include "video/seibu_crtc.h"
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 /* Memory Maps */
@@ -176,11 +154,7 @@ static ADDRESS_MAP_START( common_map, AS_PROGRAM, 16, bloodbro_state )
 	AM_RANGE(0x08e000, 0x08e7ff) AM_RAM
 	AM_RANGE(0x08e800, 0x08f7ff) AM_RAM_DEVWRITE("palette", palette_device, write) AM_SHARE("palette")
 	AM_RANGE(0x08f800, 0x08ffff) AM_RAM
-<<<<<<< HEAD
-	AM_RANGE(0x0a0000, 0x0a000d) AM_DEVREADWRITE("seibu_sound", seibu_sound_device, main_word_r, main_word_w)
-=======
 	AM_RANGE(0x0a0000, 0x0a000d) AM_DEVREADWRITE8("seibu_sound", seibu_sound_device, main_r, main_w, 0x00ff)
->>>>>>> upstream/master
 //  AM_RANGE(0x0c0000, 0x0c007f) AM_RAM AM_SHARE("scroll")
 	AM_RANGE(0x0c0080, 0x0c0081) AM_WRITENOP // ??? IRQ Ack VBL?
 	AM_RANGE(0x0c00c0, 0x0c00c1) AM_WRITENOP // ??? watchdog?
@@ -200,24 +174,6 @@ static ADDRESS_MAP_START( skysmash_map, AS_PROGRAM, 16, bloodbro_state )
 	AM_RANGE(0xc0000, 0xc004f) AM_DEVREADWRITE("crtc", seibu_crtc_device, read_alt, write_alt)
 ADDRESS_MAP_END
 
-<<<<<<< HEAD
-static ADDRESS_MAP_START( weststry_map, AS_PROGRAM, 16, bloodbro_state )
-	AM_RANGE(0x000000, 0x07ffff) AM_ROM
-	AM_RANGE(0x080000, 0x08afff) AM_RAM
-	AM_RANGE(0x08b000, 0x08bfff) AM_RAM AM_SHARE("spriteram")
-	AM_RANGE(0x08c000, 0x08c3ff) AM_RAM_WRITE(bgvideoram_w) AM_SHARE("bgvideoram")
-	AM_RANGE(0x08c400, 0x08cfff) AM_RAM
-	AM_RANGE(0x08d000, 0x08d3ff) AM_RAM_WRITE(fgvideoram_w) AM_SHARE("fgvideoram")
-	AM_RANGE(0x08d400, 0x08d7ff) AM_RAM
-	AM_RANGE(0x08d800, 0x08dfff) AM_RAM_WRITE(txvideoram_w) AM_SHARE("txvideoram")
-	AM_RANGE(0x08e000, 0x08ffff) AM_RAM
-	AM_RANGE(0x0c1000, 0x0c1001) AM_READ_PORT("DSW")
-	AM_RANGE(0x0c1002, 0x0c1003) AM_READ_PORT("IN0")
-	AM_RANGE(0x0c1004, 0x0c1005) AM_READ_PORT("IN1")
-	AM_RANGE(0x0c1000, 0x0c17ff) AM_RAM
-	AM_RANGE(0x128000, 0x1287ff) AM_RAM_DEVWRITE("palette", palette_device, write) AM_SHARE("palette")
-	AM_RANGE(0x120000, 0x128fff) AM_RAM
-=======
 WRITE8_MEMBER(bloodbro_state::weststry_soundlatch_w)
 {
 	m_seibu_sound->main_w(space, offset, data, mem_mask);
@@ -246,7 +202,6 @@ static ADDRESS_MAP_START( weststry_map, AS_PROGRAM, 16, bloodbro_state )
 	AM_RANGE(0x124000, 0x124005) AM_RAM
 	AM_RANGE(0x124006, 0x1247fd) AM_RAM AM_SHARE("spriteram")
 	AM_RANGE(0x128000, 0x1287ff) AM_RAM_DEVWRITE("palette", palette_device, write) AM_SHARE("palette")
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 /* Input Ports */
@@ -365,12 +320,7 @@ INPUT_PORTS_END
 static INPUT_PORTS_START( weststry )
 	PORT_INCLUDE( bloodbro_base )
 
-<<<<<<< HEAD
-	PORT_START("COIN")  /* referenced by seibu sound board */
-	PORT_BIT( 0xff, IP_ACTIVE_LOW, IPT_UNKNOWN )
-=======
 	SEIBU_COIN_INPUTS   /* coin inputs read through sound cpu */
->>>>>>> upstream/master
 INPUT_PORTS_END
 
 
@@ -525,11 +475,6 @@ WRITE16_MEMBER( bloodbro_state::layer_scroll_w )
 	COMBINE_DATA(&m_scrollram[offset]);
 }
 
-<<<<<<< HEAD
-/* Machine Drivers */
-
-static MACHINE_CONFIG_START( bloodbro, bloodbro_state )
-=======
 WRITE16_MEMBER( bloodbro_state::weststry_layer_scroll_w )
 {
 	COMBINE_DATA(&m_scrollram[offset]);
@@ -538,18 +483,13 @@ WRITE16_MEMBER( bloodbro_state::weststry_layer_scroll_w )
 /* Machine Drivers */
 
 static MACHINE_CONFIG_START( bloodbro )
->>>>>>> upstream/master
 	// basic machine hardware
 	MCFG_CPU_ADD("maincpu", M68000, XTAL_20MHz/2) /* verified on pcb */
 	MCFG_CPU_PROGRAM_MAP(bloodbro_map)
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", bloodbro_state,  irq4_line_hold)
 
-<<<<<<< HEAD
-	SEIBU_SOUND_SYSTEM_CPU(XTAL_7_15909MHz/2) /* verified on pcb */
-=======
 	MCFG_CPU_ADD("audiocpu", Z80, XTAL_7_15909MHz/2) /* verified on pcb */
 	MCFG_CPU_PROGRAM_MAP(seibu_sound_map)
->>>>>>> upstream/master
 
 	// video hardware
 
@@ -571,9 +511,6 @@ static MACHINE_CONFIG_START( bloodbro )
 	MCFG_PALETTE_FORMAT(xxxxBBBBGGGGRRRR)
 
 	// sound hardware
-<<<<<<< HEAD
-	SEIBU_SOUND_SYSTEM_YM3812_RAIDEN_INTERFACE(XTAL_7_15909MHz/2, XTAL_12MHz/12)
-=======
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
 	MCFG_SOUND_ADD("ymsnd", YM3812, XTAL_7_15909MHz/2)
@@ -588,7 +525,6 @@ static MACHINE_CONFIG_START( bloodbro )
 	MCFG_SEIBU_SOUND_ROMBANK("seibu_bank1")
 	MCFG_SEIBU_SOUND_YM_READ_CB(DEVREAD8("ymsnd", ym3812_device, read))
 	MCFG_SEIBU_SOUND_YM_WRITE_CB(DEVWRITE8("ymsnd", ym3812_device, write))
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_DERIVED( weststry, bloodbro )
@@ -602,10 +538,6 @@ static MACHINE_CONFIG_DERIVED( weststry, bloodbro )
 	MCFG_PALETTE_ENTRIES(1024)
 	MCFG_PALETTE_FORMAT(xxxxBBBBGGGGRRRR)
 
-<<<<<<< HEAD
-	MCFG_SCREEN_MODIFY("screen")
-	MCFG_SCREEN_UPDATE_DRIVER(bloodbro_state, screen_update_weststry)
-=======
 	// Bootleg video hardware is non-Seibu
 	MCFG_SCREEN_MODIFY("screen")
 	MCFG_SCREEN_UPDATE_DRIVER(bloodbro_state, screen_update_weststry)
@@ -614,7 +546,6 @@ static MACHINE_CONFIG_DERIVED( weststry, bloodbro )
 	// Bootleg sound hardware is close copy of Seibu, but uses different interrupts
 	MCFG_SOUND_MODIFY("ymsnd")
 	MCFG_YM3812_IRQ_HANDLER(INPUTLINE("audiocpu", INPUT_LINE_NMI))
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_DERIVED( skysmash, bloodbro )
@@ -639,11 +570,7 @@ ROM_START( bloodbro )
 	ROM_REGION( 0x20000, "audiocpu", 0 )
 	ROM_LOAD( "bb_07.u1016.6a",   0x000000, 0x08000, CRC(411b94e8) SHA1(6968441f64212c0935afeca68f07deaadf86d614) )
 	ROM_CONTINUE(            0x010000, 0x08000 )
-<<<<<<< HEAD
-	ROM_COPY( "audiocpu", 0, 0x018000, 0x08000 )
-=======
 	ROM_COPY( "audiocpu", 0x000000, 0x018000, 0x08000 )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x20000, "gfx1", 0 )
 	ROM_LOAD( "bb_05.u061.6f", 0x00000, 0x10000, CRC(04ba6d19) SHA1(7333075c3323756d51917418b5234d785a9bee00) ) /* characters */
@@ -657,12 +584,9 @@ ROM_START( bloodbro )
 
 	ROM_REGION( 0x40000, "oki", 0 ) /* ADPCM samples */
 	ROM_LOAD( "bb_08.u095.5a",  0x00000, 0x20000, CRC(deb1b975) SHA1(08f2e9a0a23171201b71d381d091edcd3787c287) )
-<<<<<<< HEAD
-=======
 
 	ROM_REGION( 0x0100, "proms", 0 )
 	ROM_LOAD( "cb006.u083.6c", 0x0000, 0x0100, CRC(b2b89a74) SHA1(1878823801048d677aef9702feedd5bf775e62d0) ) // N82S135N
->>>>>>> upstream/master
 ROM_END
 
 ROM_START( bloodbroa )
@@ -675,11 +599,7 @@ ROM_START( bloodbroa )
 	ROM_REGION( 0x20000, "audiocpu", 0 )
 	ROM_LOAD( "bb_07.u1016.6a",   0x000000, 0x08000, CRC(411b94e8) SHA1(6968441f64212c0935afeca68f07deaadf86d614) )
 	ROM_CONTINUE(            0x010000, 0x08000 )
-<<<<<<< HEAD
-	ROM_COPY( "audiocpu", 0, 0x018000, 0x08000 )
-=======
 	ROM_COPY( "audiocpu", 0x000000, 0x018000, 0x08000 )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x20000, "gfx1", 0 )
 	ROM_LOAD( "bb_05.u061.6f", 0x00000, 0x10000, CRC(04ba6d19) SHA1(7333075c3323756d51917418b5234d785a9bee00) ) /* characters */
@@ -693,12 +613,9 @@ ROM_START( bloodbroa )
 
 	ROM_REGION( 0x40000, "oki", 0 ) /* ADPCM samples */
 	ROM_LOAD( "bb_08.u095.5a",  0x00000, 0x20000, CRC(deb1b975) SHA1(08f2e9a0a23171201b71d381d091edcd3787c287) )
-<<<<<<< HEAD
-=======
 
 	ROM_REGION( 0x0100, "proms", 0 )
 	ROM_LOAD( "cb006.u083.6c", 0x0000, 0x0100, CRC(b2b89a74) SHA1(1878823801048d677aef9702feedd5bf775e62d0) ) // N82S135N
->>>>>>> upstream/master
 ROM_END
 
 ROM_START( bloodbrob )
@@ -711,11 +628,7 @@ ROM_START( bloodbrob )
 	ROM_REGION( 0x20000, "audiocpu", 0 )
 	ROM_LOAD( "bb_07.u1016.6a",   0x000000, 0x08000, CRC(411b94e8) SHA1(6968441f64212c0935afeca68f07deaadf86d614) )
 	ROM_CONTINUE(            0x010000, 0x08000 )
-<<<<<<< HEAD
-	ROM_COPY( "audiocpu", 0, 0x018000, 0x08000 )
-=======
 	ROM_COPY( "audiocpu", 0x000000, 0x018000, 0x08000 )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x20000, "gfx1", 0 )
 	ROM_LOAD( "bb_05.u061.6f", 0x00000, 0x10000, CRC(04ba6d19) SHA1(7333075c3323756d51917418b5234d785a9bee00) ) /* characters */
@@ -729,37 +642,23 @@ ROM_START( bloodbrob )
 
 	ROM_REGION( 0x40000, "oki", 0 ) /* ADPCM samples */
 	ROM_LOAD( "bb_08.u095.5a",  0x00000, 0x20000, CRC(deb1b975) SHA1(08f2e9a0a23171201b71d381d091edcd3787c287) )
-<<<<<<< HEAD
-=======
 
 	ROM_REGION( 0x0100, "proms", 0 )
 	ROM_LOAD( "cb006.u083.6c", 0x0000, 0x0100, CRC(b2b89a74) SHA1(1878823801048d677aef9702feedd5bf775e62d0) ) // N82S135N
->>>>>>> upstream/master
 ROM_END
 
 
 ROM_START( weststry )
-<<<<<<< HEAD
-	ROM_REGION( 0x80000, "maincpu", 0 ) /* 64k for cpu code */
-=======
 	ROM_REGION( 0x80000, "maincpu", 0 ) /* 64k for cpu code; based on bloodbrob */
->>>>>>> upstream/master
 	ROM_LOAD16_BYTE( "ws13.bin",  0x00001, 0x20000, CRC(158e302a) SHA1(52cc1bf526424ff025a6b79f3fc7bba4b9bbfcbb) )
 	ROM_LOAD16_BYTE( "ws15.bin",  0x00000, 0x20000, CRC(672e9027) SHA1(71cb9fcef04edb972ba88de45d605dcff539ea2d) )
 	ROM_LOAD16_BYTE( "bb_04.bin", 0x40001, 0x20000, CRC(fd951c2c) SHA1(f4031bf303c67c82f2f78f7456f78382d8c1ac85) )
 	ROM_LOAD16_BYTE( "bb_03.bin", 0x40000, 0x20000, CRC(18d3c460) SHA1(93b86af1199f0fedeaf1fe64d27ffede4b819e42) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x20000, "audiocpu", 0 )    /* 64k for sound cpu code */
-	ROM_LOAD( "ws17.bin",    0x000000, 0x08000, CRC(e00a8f09) SHA1(e7247ce0ab99d0726f31dee5de5ba33f4ebd183e) )
-	ROM_CONTINUE(            0x010000, 0x08000 )
-	ROM_COPY( "audiocpu", 0, 0x018000, 0x08000 )
-=======
 	ROM_REGION( 0x20000, "audiocpu", 0 )    /* 64k for sound cpu code; based on different revision of original Seibu code */
 	ROM_LOAD( "ws17.bin",    0x000000, 0x08000, CRC(e00a8f09) SHA1(e7247ce0ab99d0726f31dee5de5ba33f4ebd183e) )
 	ROM_CONTINUE(            0x010000, 0x08000 )
 	ROM_COPY( "audiocpu", 0x000000, 0x018000, 0x08000 )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x20000, "gfx1", 0 ) // first half of these is blank
 	ROM_LOAD( "ws09.bin", 0x00000, 0x08000, CRC(f05b2b3e) SHA1(6570d795d68655ace9668f32dc0bf5c2d2372411) )  /* characters */
@@ -805,11 +704,7 @@ ROM_START( skysmash )
 	ROM_REGION( 0x20000, "audiocpu", 0 )
 	ROM_LOAD( "rom2",        0x000000, 0x08000, CRC(75b194cf) SHA1(6aaf36cdab06c0aa5328f5176557387a5d3f7d26) )
 	ROM_CONTINUE(            0x010000, 0x08000 )
-<<<<<<< HEAD
-	ROM_COPY( "audiocpu", 0, 0x018000, 0x08000 )
-=======
 	ROM_COPY( "audiocpu", 0x000000, 0x018000, 0x08000 )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x20000, "gfx1", 0 )
 	ROM_LOAD( "rom3", 0x00000, 0x10000, CRC(fbb241be) SHA1(cd94c328891538bbd8c062d90a47ddf3d7d05bb0) )  /* characters */
@@ -823,18 +718,6 @@ ROM_START( skysmash )
 
 	ROM_REGION( 0x40000, "oki", 0 ) /* ADPCM samples */
 	ROM_LOAD( "rom1", 0x00000, 0x20000, CRC(e69986f6) SHA1(de38bf2d5638cb40740882e1abccf7928e43a5a6) )
-<<<<<<< HEAD
-ROM_END
-
-
-/* Game Drivers */
-
-GAME( 1990, bloodbro, 0,        bloodbro, bloodbro, driver_device, 0, ROT0,   "TAD Corporation", "Blood Bros. (set 1)", MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
-GAME( 1990, bloodbroa,bloodbro, bloodbro, bloodbro, driver_device, 0, ROT0,   "TAD Corporation", "Blood Bros. (set 2)", MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
-GAME( 1990, bloodbrob,bloodbro, bloodbro, bloodbro, driver_device, 0, ROT0,   "TAD Corporation", "Blood Bros. (set 3)", MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
-GAME( 1990, weststry, bloodbro, weststry, weststry, driver_device, 0, ROT0,   "bootleg (Datsu)", "West Story (bootleg of Blood Bros.)", MACHINE_NO_COCKTAIL | MACHINE_NO_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 1990, skysmash, 0,        skysmash, skysmash, driver_device, 0, ROT270, "Nihon System",    "Sky Smasher", MACHINE_SUPPORTS_SAVE )
-=======
 
 	ROM_REGION( 0x0100, "proms", 0 )
 	ROM_LOAD( "ss006.u083.4j", 0x0000, 0x0100, NO_DUMP ) // N82S135N
@@ -857,4 +740,3 @@ GAME( 1990, bloodbroa,bloodbro, bloodbro, bloodbro, bloodbro_state, 0,        RO
 GAME( 1990, bloodbrob,bloodbro, bloodbro, bloodbro, bloodbro_state, 0,        ROT0,   "TAD Corporation", "Blood Bros. (set 3)",                 MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
 GAME( 1990, weststry, bloodbro, weststry, weststry, bloodbro_state, weststry, ROT0,   "bootleg (Datsu)", "West Story (bootleg of Blood Bros.)", MACHINE_NO_COCKTAIL | MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
 GAME( 1990, skysmash, 0,        skysmash, skysmash, bloodbro_state, 0,        ROT270, "Nihon System",    "Sky Smasher",                         MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

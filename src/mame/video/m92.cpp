@@ -52,18 +52,10 @@ void m92_state::device_timer(emu_timer &timer, device_timer_id id, int param, vo
 	{
 	case TIMER_SPRITEBUFFER:
 		m_sprite_buffer_busy = 1;
-<<<<<<< HEAD
-		if (m_game_kludge!=2) /* Major Title 2 doesn't like this interrupt!? */
-			m92_sprite_interrupt();
-		break;
-	default:
-		assert_always(FALSE, "Unknown id in m92_state::device_timer");
-=======
 		m_upd71059c->ir1_w(1);
 		break;
 	default:
 		assert_always(false, "Unknown id in m92_state::device_timer");
->>>>>>> upstream/master
 	}
 }
 
@@ -95,18 +87,11 @@ WRITE16_MEMBER(m92_state::m92_spritecontrol_w)
 		/* this implementation is not accurate: still some delayed sprites in gunforc2 (might be another issue?) */
 		m_spriteram->copy();
 		m_sprite_buffer_busy = 0;
-<<<<<<< HEAD
-
-		/* Pixel clock is 26.6666MHz (some boards 27MHz??), we have 0x800 bytes, or 0x400 words to copy from
-		spriteram to the buffer.  It seems safe to assume 1 word can be copied per clock. */
-		timer_set(attotime::from_hz(XTAL_26_66666MHz) * 0x400, TIMER_SPRITEBUFFER);
-=======
 		m_upd71059c->ir1_w(0);
 
 		/* Pixel clock is 26.6666MHz (some boards 27MHz??), we have 0x800 bytes, or 0x400 words to copy from
 		spriteram to the buffer.  It seems safe to assume 1 word can be copied per clock. */
 		m_spritebuffer_timer->adjust(attotime::from_hz(XTAL_26_66666MHz) * 0x400);
->>>>>>> upstream/master
 	}
 //  logerror("%04x: m92_spritecontrol_w %08x %08x\n",space.device().safe_pc(),offset,data);
 }
@@ -217,11 +202,7 @@ WRITE16_MEMBER(m92_state::m92_pf3_control_w)
 
 WRITE16_MEMBER(m92_state::m92_master_control_w)
 {
-<<<<<<< HEAD
-	UINT16 old = m_pf_master_control[offset];
-=======
 	uint16_t old = m_pf_master_control[offset];
->>>>>>> upstream/master
 	M92_pf_layer_info *layer;
 
 	COMBINE_DATA(&m_pf_master_control[offset]);
@@ -239,21 +220,13 @@ WRITE16_MEMBER(m92_state::m92_master_control_w)
 			/* update size (bit 2) */
 			if (m_pf_master_control[offset] & 0x04)
 			{
-<<<<<<< HEAD
-				layer->tmap->enable(FALSE);
-=======
 				layer->tmap->enable(false);
->>>>>>> upstream/master
 				layer->wide_tmap->enable((~m_pf_master_control[offset] >> 4) & 1);
 			}
 			else
 			{
 				layer->tmap->enable((~m_pf_master_control[offset] >> 4) & 1);
-<<<<<<< HEAD
-				layer->wide_tmap->enable(FALSE);
-=======
 				layer->wide_tmap->enable(false);
->>>>>>> upstream/master
 			}
 
 			/* mark everything dirty of the VRAM base or size changes */
@@ -266,10 +239,7 @@ WRITE16_MEMBER(m92_state::m92_master_control_w)
 
 		case 3:
 			m_raster_irq_position = m_pf_master_control[3] - 128;
-<<<<<<< HEAD
-=======
 			m_upd71059c->ir2_w(0);
->>>>>>> upstream/master
 			break;
 	}
 }
@@ -278,28 +248,16 @@ WRITE16_MEMBER(m92_state::m92_master_control_w)
 
 VIDEO_START_MEMBER(m92_state,m92)
 {
-<<<<<<< HEAD
-	int laynum;
-
-	memset(&m_pf_layer, 0, sizeof(m_pf_layer));
-	for (laynum = 0; laynum < 3; laynum++)
-=======
 	m_spritebuffer_timer = timer_alloc(TIMER_SPRITEBUFFER);
 
 	memset(&m_pf_layer, 0, sizeof(m_pf_layer));
 	for (int laynum = 0; laynum < 3; laynum++)
->>>>>>> upstream/master
 	{
 		M92_pf_layer_info *layer = &m_pf_layer[laynum];
 
 		/* allocate two tilemaps per layer, one normal, one wide */
-<<<<<<< HEAD
-		layer->tmap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(m92_state::get_pf_tile_info),this), TILEMAP_SCAN_ROWS,  8,8, 64,64);
-		layer->wide_tmap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(m92_state::get_pf_tile_info),this), TILEMAP_SCAN_ROWS,  8,8, 128,64);
-=======
 		layer->tmap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(m92_state::get_pf_tile_info),this), TILEMAP_SCAN_ROWS,  8,8, 64,64);
 		layer->wide_tmap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(m92_state::get_pf_tile_info),this), TILEMAP_SCAN_ROWS,  8,8, 128,64);
->>>>>>> upstream/master
 
 		/* set the user data for each one to point to the layer */
 		layer->tmap->set_user_data(&m_pf_layer[laynum]);
@@ -344,17 +302,9 @@ VIDEO_START_MEMBER(m92_state,m92)
 
 VIDEO_START_MEMBER(m92_state,ppan)
 {
-<<<<<<< HEAD
-	int laynum;
-
-	VIDEO_START_CALL_MEMBER(m92);
-
-	for (laynum = 0; laynum < 3; laynum++)
-=======
 	VIDEO_START_CALL_MEMBER(m92);
 
 	for (int laynum = 0; laynum < 3; laynum++)
->>>>>>> upstream/master
 	{
 		M92_pf_layer_info *layer = &m_pf_layer[laynum];
 
@@ -370,11 +320,7 @@ VIDEO_START_MEMBER(m92_state,ppan)
 
 void m92_state::draw_sprites(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
-<<<<<<< HEAD
-	UINT16 *source = m_spriteram->buffer();
-=======
 	uint16_t *source = m_spriteram->buffer();
->>>>>>> upstream/master
 	int offs, layer;
 
 	for (layer = 0; layer < 8; layer++)
@@ -447,11 +393,7 @@ void m92_state::draw_sprites(screen_device &screen, bitmap_ind16 &bitmap, const 
 // This needs a lot of work...
 void m92_state::ppan_draw_sprites(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
-<<<<<<< HEAD
-	UINT16 *source = m_spriteram->live(); // sprite buffer control is never triggered
-=======
 	uint16_t *source = m_spriteram->live(); // sprite buffer control is never triggered
->>>>>>> upstream/master
 	int offs, layer;
 
 	for (layer = 0; layer < 8; layer++)
@@ -546,11 +488,7 @@ void m92_state::m92_update_scroll_positions()
 
 		if (m_pf_master_control[laynum] & 0x40)
 		{
-<<<<<<< HEAD
-			const UINT16 *scrolldata = m_vram_data + (0xf400 + 0x400 * laynum) / 2;
-=======
 			const uint16_t *scrolldata = m_vram_data + (0xf400 + 0x400 * laynum) / 2;
->>>>>>> upstream/master
 
 			layer->tmap->set_scroll_rows(512);
 			layer->wide_tmap->set_scroll_rows(512);
@@ -597,11 +535,7 @@ void m92_state::m92_draw_tiles(screen_device &screen, bitmap_ind16 &bitmap,const
 }
 
 
-<<<<<<< HEAD
-UINT32 m92_state::screen_update_m92(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t m92_state::screen_update_m92(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	screen.priority().fill(0, cliprect);
 	bitmap.fill(0, cliprect);
@@ -618,11 +552,7 @@ uint32_t m92_state::screen_update_m92(screen_device &screen, bitmap_ind16 &bitma
 	return 0;
 }
 
-<<<<<<< HEAD
-UINT32 m92_state::screen_update_ppan(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t m92_state::screen_update_ppan(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	screen.priority().fill(0, cliprect);
 	bitmap.fill(0, cliprect);

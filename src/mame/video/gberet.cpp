@@ -25,11 +25,7 @@
 
 PALETTE_INIT_MEMBER(gberet_state,gberet)
 {
-<<<<<<< HEAD
-	const UINT8 *color_prom = memregion("proms")->base();
-=======
 	const uint8_t *color_prom = memregion("proms")->base();
->>>>>>> upstream/master
 	int i;
 
 	/* create a lookup table for the palette */
@@ -64,21 +60,13 @@ PALETTE_INIT_MEMBER(gberet_state,gberet)
 
 	for (i = 0; i < 0x100; i++)
 	{
-<<<<<<< HEAD
-		UINT8 ctabentry = (color_prom[i] & 0x0f) | 0x10;
-=======
 		uint8_t ctabentry = (color_prom[i] & 0x0f) | 0x10;
->>>>>>> upstream/master
 		palette.set_pen_indirect(i, ctabentry);
 	}
 
 	for (i = 0x100; i < 0x200; i++)
 	{
-<<<<<<< HEAD
-		UINT8 ctabentry;
-=======
 		uint8_t ctabentry;
->>>>>>> upstream/master
 
 		if (color_prom[i] & 0x0f)
 			ctabentry = color_prom[i] & 0x0f;
@@ -131,11 +119,7 @@ TILE_GET_INFO_MEMBER(gberet_state::get_bg_tile_info)
 
 VIDEO_START_MEMBER(gberet_state,gberet)
 {
-<<<<<<< HEAD
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(gberet_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 64, 32);
-=======
 	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(gberet_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 64, 32);
->>>>>>> upstream/master
 	m_bg_tilemap->configure_groups(*m_gfxdecode->gfx(0), 0x10);
 	m_bg_tilemap->set_scroll_rows(32);
 }
@@ -143,11 +127,7 @@ VIDEO_START_MEMBER(gberet_state,gberet)
 void gberet_state::gberet_draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect )
 {
 	int offs;
-<<<<<<< HEAD
-	UINT8 *sr;
-=======
 	uint8_t *sr;
->>>>>>> upstream/master
 
 	if (m_spritebank & 0x08)
 		sr = m_spriteram2;
@@ -180,11 +160,7 @@ void gberet_state::gberet_draw_sprites( bitmap_ind16 &bitmap, const rectangle &c
 	}
 }
 
-<<<<<<< HEAD
-UINT32 gberet_state::screen_update_gberet(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t gberet_state::screen_update_gberet(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	m_bg_tilemap->draw(screen, bitmap, cliprect, TILEMAP_DRAW_OPAQUE | TILEMAP_DRAW_ALL_CATEGORIES, 0);
 	gberet_draw_sprites(bitmap, cliprect);
@@ -207,11 +183,7 @@ WRITE8_MEMBER(gberet_state::gberetb_scroll_w)
 
 void gberet_state::gberetb_draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect )
 {
-<<<<<<< HEAD
-	UINT8 *spriteram = m_spriteram;
-=======
 	uint8_t *spriteram = m_spriteram;
->>>>>>> upstream/master
 	int offs;
 
 	for (offs = m_spriteram.bytes() - 4; offs >= 0; offs -= 4)
@@ -240,11 +212,7 @@ void gberet_state::gberetb_draw_sprites( bitmap_ind16 &bitmap, const rectangle &
 	}
 }
 
-<<<<<<< HEAD
-UINT32 gberet_state::screen_update_gberetb(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t gberet_state::screen_update_gberetb(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	m_bg_tilemap->draw(screen, bitmap, cliprect, TILEMAP_DRAW_OPAQUE | TILEMAP_DRAW_ALL_CATEGORIES, 0);
 	gberetb_draw_sprites(bitmap, cliprect);

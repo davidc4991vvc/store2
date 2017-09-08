@@ -4,20 +4,6 @@
  * pstream.h
  */
 
-<<<<<<< HEAD
-#ifndef _PSTREAM_H_
-#define _PSTREAM_H_
-
-#include <cstdarg>
-#include <cstddef>
-#include <stdexcept>
-
-#include "pconfig.h"
-#include "pstring.h"
-#include "palloc.h"
-#include "pfmtlog.h"
-
-=======
 #ifndef PSTREAM_H_
 #define PSTREAM_H_
 
@@ -29,30 +15,10 @@
 #include <vector>
 
 namespace plib {
->>>>>>> upstream/master
 // -----------------------------------------------------------------------------
 // pstream: things common to all streams
 // -----------------------------------------------------------------------------
 
-<<<<<<< HEAD
-class pstream
-{
-	P_PREVENT_COPYING(pstream)
-public:
-
-	typedef long unsigned pos_type;
-
-	static const pos_type SEEK_EOF = (pos_type) -1;
-
-	pstream(const unsigned flags) : m_flags(flags)
-	{
-	}
-	virtual ~pstream()
-	{
-	}
-
-	bool bad() const { return ((m_flags & FLAG_ERROR) != 0); }
-=======
 class pstream : nocopyassignmove
 {
 public:
@@ -61,15 +27,10 @@ public:
 
 	static constexpr pos_type SEEK_EOF = static_cast<pos_type>(-1);
 
->>>>>>> upstream/master
 	bool seekable() const { return ((m_flags & FLAG_SEEKABLE) != 0); }
 
 	void seek(const pos_type n)
 	{
-<<<<<<< HEAD
-		check_seekable();
-=======
->>>>>>> upstream/master
 		return vseek(n);
 	}
 
@@ -79,17 +40,6 @@ public:
 	}
 
 protected:
-<<<<<<< HEAD
-	virtual void vseek(const pos_type n) = 0;
-	virtual pos_type vtell() = 0;
-
-	static const unsigned FLAG_EOF = 0x01;
-	static const unsigned FLAG_ERROR = 0x02;
-	static const unsigned FLAG_SEEKABLE = 0x04;
-	static const unsigned FLAG_CLOSED = 0x08;    /* convenience flag */
-
-	bool closed() { return ((m_flags & FLAG_CLOSED) != 0); }
-=======
 	explicit pstream(const unsigned flags) : m_flags(flags)
 	{
 	}
@@ -100,7 +50,6 @@ protected:
 
 	static constexpr unsigned FLAG_EOF = 0x01;
 	static constexpr unsigned FLAG_SEEKABLE = 0x04;
->>>>>>> upstream/master
 
 	void set_flag(const unsigned flag)
 	{
@@ -110,22 +59,6 @@ protected:
 	{
 		m_flags &= ~flag;
 	}
-<<<<<<< HEAD
-
-	void check_not_eof() const
-	{
-		if (m_flags & FLAG_EOF)
-			throw pexception("unexpected eof");
-	}
-
-	void check_seekable() const
-	{
-		if (!(m_flags & FLAG_SEEKABLE))
-			throw pexception("stream is not seekable");
-	}
-
-=======
->>>>>>> upstream/master
 	unsigned flags() const { return m_flags; }
 private:
 
@@ -138,26 +71,6 @@ private:
 
 class pistream : public pstream
 {
-<<<<<<< HEAD
-	P_PREVENT_COPYING(pistream)
-public:
-
-	pistream(const unsigned flags) : pstream(flags) {}
-	virtual ~pistream() {}
-
-	bool eof() const { return ((flags() & FLAG_EOF) != 0) || bad(); }
-
-	/* this digests linux & dos/windows text files */
-
-	bool readline(pstring &line);
-
-	bool read(UINT8 &c)
-	{
-		return (read(&c, 1) == 1);
-	}
-
-	unsigned read(void *buf, const unsigned n)
-=======
 public:
 
 	virtual ~pistream();
@@ -165,23 +78,15 @@ public:
 	bool eof() const { return ((flags() & FLAG_EOF) != 0); }
 
 	pos_type read(void *buf, const pos_type n)
->>>>>>> upstream/master
 	{
 		return vread(buf, n);
 	}
 
 protected:
-<<<<<<< HEAD
-	/* read up to n bytes from stream */
-	virtual unsigned vread(void *buf, const unsigned n) = 0;
-
-private:
-=======
 	explicit pistream(const unsigned flags) : pstream(flags) {}
 	/* read up to n bytes from stream */
 	virtual pos_type vread(void *buf, const pos_type n) = 0;
 
->>>>>>> upstream/master
 };
 
 // -----------------------------------------------------------------------------
@@ -190,39 +95,11 @@ private:
 
 class postream : public pstream
 {
-<<<<<<< HEAD
-	P_PREVENT_COPYING(postream)
-public:
-
-	postream(unsigned flags) : pstream(flags) {}
-	virtual ~postream() {}
-
-	/* this digests linux & dos/windows text files */
-
-	void writeline(const pstring &line)
-	{
-		write(line);
-		write(10);
-	}
-
-	void write(const pstring &text)
-	{
-		write(text.cstr(), text.blen());
-	}
-
-	void write(const char c)
-	{
-		write(&c, 1);
-	}
-
-	void write(const void *buf, const unsigned n)
-=======
 public:
 
 	virtual ~postream();
 
 	void write(const void *buf, const pos_type n)
->>>>>>> upstream/master
 	{
 		vwrite(buf, n);
 	}
@@ -230,14 +107,9 @@ public:
 	void write(pistream &strm);
 
 protected:
-<<<<<<< HEAD
-	/* write n bytes to stream */
-	virtual void vwrite(const void *buf, const unsigned n) = 0;
-=======
 	explicit postream(unsigned flags) : pstream(flags) {}
 	/* write n bytes to stream */
 	virtual void vwrite(const void *buf, const pos_type n) = 0;
->>>>>>> upstream/master
 
 private:
 };
@@ -248,22 +120,6 @@ private:
 
 class pomemstream : public postream
 {
-<<<<<<< HEAD
-	P_PREVENT_COPYING(pomemstream)
-public:
-
-	pomemstream();
-	virtual ~pomemstream();
-
-	char *memory() const { return m_mem; }
-	unsigned size() const { return m_size; }
-
-protected:
-	/* write n bytes to stream */
-	virtual void vwrite(const void *buf, const unsigned n);
-	virtual void vseek(const pos_type n);
-	virtual pos_type vtell();
-=======
 public:
 
 	pomemstream();
@@ -277,7 +133,6 @@ protected:
 	virtual void vwrite(const void *buf, const pos_type) override;
 	virtual void vseek(const pos_type n) override;
 	virtual pos_type vtell() override;
->>>>>>> upstream/master
 
 private:
 	pos_type m_pos;
@@ -288,28 +143,6 @@ private:
 
 class postringstream : public postream
 {
-<<<<<<< HEAD
-	P_PREVENT_COPYING(postringstream )
-
-public:
-
-	postringstream() : postream(0) { }
-	virtual ~postringstream() { }
-
-	const pstringbuffer &str() { return m_buf; }
-
-protected:
-	/* write n bytes to stream */
-	virtual void vwrite(const void *buf, const unsigned n)
-	{
-		m_buf.cat(buf, n);
-	}
-	virtual void vseek(const pos_type n) { }
-	virtual pos_type vtell() { return m_buf.len(); }
-
-private:
-	pstringbuffer m_buf;
-=======
 public:
 
 	postringstream() : postream(0) { }
@@ -328,7 +161,6 @@ protected:
 
 private:
 	pstring m_buf;
->>>>>>> upstream/master
 };
 
 // -----------------------------------------------------------------------------
@@ -337,22 +169,6 @@ private:
 
 class pofilestream : public postream
 {
-<<<<<<< HEAD
-	P_PREVENT_COPYING(pofilestream)
-public:
-
-	pofilestream(const pstring &fname);
-	virtual ~pofilestream();
-
-	void close();
-
-protected:
-	pofilestream(void *file, const bool do_close);
-	/* write n bytes to stream */
-	virtual void vwrite(const void *buf, const unsigned n);
-	virtual void vseek(const pos_type n);
-	virtual pos_type vtell();
-=======
 public:
 
 	explicit pofilestream(const pstring &fname);
@@ -364,20 +180,14 @@ protected:
 	virtual void vwrite(const void *buf, const pos_type n) override;
 	virtual void vseek(const pos_type n) override;
 	virtual pos_type vtell() override;
->>>>>>> upstream/master
 
 private:
 	void *m_file;
 	pos_type m_pos;
 	bool m_actually_close;
-<<<<<<< HEAD
-
-	void init(void *file);
-=======
 	pstring m_filename;
 
 	void init();
->>>>>>> upstream/master
 };
 
 // -----------------------------------------------------------------------------
@@ -386,15 +196,9 @@ private:
 
 class pstderr : public pofilestream
 {
-<<<<<<< HEAD
-	P_PREVENT_COPYING(pstderr)
-public:
-	pstderr();
-=======
 public:
 	pstderr();
 	virtual ~pstderr();
->>>>>>> upstream/master
 };
 
 // -----------------------------------------------------------------------------
@@ -403,15 +207,9 @@ public:
 
 class pstdout : public pofilestream
 {
-<<<<<<< HEAD
-	P_PREVENT_COPYING(pstdout)
-public:
-	pstdout();
-=======
 public:
 	pstdout();
 	virtual ~pstdout();
->>>>>>> upstream/master
 };
 
 // -----------------------------------------------------------------------------
@@ -420,23 +218,6 @@ public:
 
 class pifilestream : public pistream
 {
-<<<<<<< HEAD
-	P_PREVENT_COPYING(pifilestream)
-public:
-
-	pifilestream(const pstring &fname);
-	virtual ~pifilestream();
-
-	void close();
-
-protected:
-	pifilestream(void *file, const bool do_close);
-
-	/* read up to n bytes from stream */
-	virtual unsigned vread(void *buf, const unsigned n);
-	virtual void vseek(const pos_type n);
-	virtual pos_type vtell();
-=======
 public:
 
 	explicit pifilestream(const pstring &fname);
@@ -449,20 +230,14 @@ protected:
 	virtual pos_type vread(void *buf, const pos_type n) override;
 	virtual void vseek(const pos_type n) override;
 	virtual pos_type vtell() override;
->>>>>>> upstream/master
 
 private:
 	void *m_file;
 	pos_type m_pos;
 	bool m_actually_close;
-<<<<<<< HEAD
-
-	void init(void *file);
-=======
 	pstring m_filename;
 
 	void init();
->>>>>>> upstream/master
 };
 
 // -----------------------------------------------------------------------------
@@ -471,17 +246,10 @@ private:
 
 class pstdin : public pifilestream
 {
-<<<<<<< HEAD
-	P_PREVENT_COPYING(pstdin)
-public:
-
-	pstdin();
-=======
 public:
 
 	pstdin();
 	virtual ~pstdin() override;
->>>>>>> upstream/master
 };
 
 // -----------------------------------------------------------------------------
@@ -490,20 +258,6 @@ public:
 
 class pimemstream : public pistream
 {
-<<<<<<< HEAD
-	P_PREVENT_COPYING(pimemstream)
-public:
-
-	pimemstream(const void *mem, const pos_type len);
-	pimemstream(const pomemstream &ostrm);
-	virtual ~pimemstream();
-
-protected:
-	/* read up to n bytes from stream */
-	virtual unsigned vread(void *buf, const unsigned n);
-	virtual void vseek(const pos_type n);
-	virtual pos_type vtell();
-=======
 public:
 
 	pimemstream(const void *mem, const pos_type len);
@@ -516,16 +270,11 @@ protected:
 	virtual pos_type vread(void *buf, const pos_type n) override;
 	virtual void vseek(const pos_type n) override;
 	virtual pos_type vtell() override;
->>>>>>> upstream/master
 
 private:
 	pos_type m_pos;
 	pos_type m_len;
-<<<<<<< HEAD
-	char *m_mem;
-=======
 	const char *m_mem;
->>>>>>> upstream/master
 };
 
 // -----------------------------------------------------------------------------
@@ -534,16 +283,9 @@ private:
 
 class pistringstream : public pimemstream
 {
-<<<<<<< HEAD
-	P_PREVENT_COPYING(pistringstream)
-public:
-
-	pistringstream(const pstring &str) : pimemstream(str.cstr(), str.len()), m_str(str) { }
-=======
 public:
 	explicit pistringstream(const pstring &str) : pimemstream(str.c_str(), str.mem_t_size()), m_str(str) { }
 	virtual ~pistringstream() override;
->>>>>>> upstream/master
 
 private:
 	/* only needed for a reference till destruction */
@@ -551,23 +293,6 @@ private:
 };
 
 // -----------------------------------------------------------------------------
-<<<<<<< HEAD
-// pstream_fmt_writer_t: writer on top of ostream
-// -----------------------------------------------------------------------------
-
-class pstream_fmt_writer_t : public pfmt_writer_t<>
-{
-	P_PREVENT_COPYING(pstream_fmt_writer_t)
-public:
-
-	pstream_fmt_writer_t(postream &strm) : m_strm(strm) {}
-	virtual ~pstream_fmt_writer_t() { }
-
-protected:
-	virtual void vdowrite(const pstring &ls) const
-	{
-		m_strm.write(ls);
-=======
 // putf8reader_t: reader on top of istream
 // -----------------------------------------------------------------------------
 
@@ -629,16 +354,12 @@ public:
 	void write(const pstring::code_t c) const
 	{
 		write(pstring(c));
->>>>>>> upstream/master
 	}
 
 private:
 	postream &m_strm;
 };
 
-<<<<<<< HEAD
-#endif /* _PSTREAM_H_ */
-=======
 class putf8_fmt_writer : public pfmt_writer_t<putf8_fmt_writer>, public putf8_writer
 {
 public:
@@ -725,4 +446,3 @@ private:
 }
 
 #endif /* PSTREAM_H_ */
->>>>>>> upstream/master

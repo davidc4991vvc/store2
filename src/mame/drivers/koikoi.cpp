@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-// license:LGPL-2.1+
-=======
 // license:BSD-3-Clause
->>>>>>> upstream/master
 // copyright-holders:Tomasz Slanina, David Haywood
 /***************************************************************************
 
@@ -46,11 +42,8 @@ to prevent disabling inputs.
 #include "emu.h"
 #include "cpu/z80/z80.h"
 #include "sound/ay8910.h"
-<<<<<<< HEAD
-=======
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 #define KOIKOI_CRYSTAL 15468000
 
@@ -66,11 +59,7 @@ public:
 		m_gfxdecode(*this, "gfxdecode") { }
 
 	/* memory pointers */
-<<<<<<< HEAD
-	required_shared_ptr<UINT8> m_videoram;
-=======
 	required_shared_ptr<uint8_t> m_videoram;
->>>>>>> upstream/master
 
 	/* video-related */
 	tilemap_t  *m_tmap;
@@ -86,19 +75,11 @@ public:
 	DECLARE_READ8_MEMBER(input_r);
 	DECLARE_WRITE8_MEMBER(unknown_w);
 	TILE_GET_INFO_MEMBER(get_tile_info);
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void machine_reset();
-	virtual void video_start();
-	DECLARE_PALETTE_INIT(koikoi);
-	UINT32 screen_update_koikoi(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
 	virtual void video_start() override;
 	DECLARE_PALETTE_INIT(koikoi);
 	uint32_t screen_update_koikoi(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	required_device<cpu_device> m_maincpu;
 	required_device<gfxdecode_device> m_gfxdecode;
 };
@@ -121,11 +102,7 @@ TILE_GET_INFO_MEMBER(koikoi_state::get_tile_info)
 
 PALETTE_INIT_MEMBER(koikoi_state, koikoi)
 {
-<<<<<<< HEAD
-	const UINT8 *color_prom = memregion("proms")->base();
-=======
 	const uint8_t *color_prom = memregion("proms")->base();
->>>>>>> upstream/master
 	int i;
 
 	/* create a lookup table for the palette */
@@ -161,28 +138,17 @@ PALETTE_INIT_MEMBER(koikoi_state, koikoi)
 	/* characters/sprites */
 	for (i = 0; i < 0x100; i++)
 	{
-<<<<<<< HEAD
-		UINT8 ctabentry = color_prom[i] & 0x0f;
-=======
 		uint8_t ctabentry = color_prom[i] & 0x0f;
->>>>>>> upstream/master
 		palette.set_pen_indirect(i, ctabentry);
 	}
 }
 
 void koikoi_state::video_start()
 {
-<<<<<<< HEAD
-	m_tmap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(koikoi_state::get_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
-}
-
-UINT32 koikoi_state::screen_update_koikoi(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 	m_tmap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(koikoi_state::get_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
 }
 
 uint32_t koikoi_state::screen_update_koikoi(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	m_tmap->draw(screen, bitmap, cliprect, 0, 0);
 	return 0;
@@ -381,11 +347,7 @@ void koikoi_state::machine_reset()
 		m_ioram[i] = 0;
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( koikoi, koikoi_state )
-=======
 static MACHINE_CONFIG_START( koikoi )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80,KOIKOI_CRYSTAL/4)   /* ?? */
@@ -470,8 +432,4 @@ ROM_END
  *
  *************************************/
 
-<<<<<<< HEAD
-GAME( 1982, koikoi,   0,      koikoi, koikoi, driver_device, 0, ROT270, "Kiwako", "Koi Koi Part 2", MACHINE_WRONG_COLORS | MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1982, koikoi,   0,      koikoi, koikoi, koikoi_state, 0, ROT270, "Kiwako", "Koi Koi Part 2", MACHINE_WRONG_COLORS | MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

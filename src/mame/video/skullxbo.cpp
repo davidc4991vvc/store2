@@ -19,11 +19,7 @@
 
 TILE_GET_INFO_MEMBER(skullxbo_state::get_alpha_tile_info)
 {
-<<<<<<< HEAD
-	UINT16 data = tilemap.basemem_read(tile_index);
-=======
 	uint16_t data = m_alpha_tilemap->basemem_read(tile_index);
->>>>>>> upstream/master
 	int code = (data ^ 0x400) & 0x7ff;
 	int color = (data >> 11) & 0x0f;
 	int opaque = data & 0x8000;
@@ -33,13 +29,8 @@ TILE_GET_INFO_MEMBER(skullxbo_state::get_alpha_tile_info)
 
 TILE_GET_INFO_MEMBER(skullxbo_state::get_playfield_tile_info)
 {
-<<<<<<< HEAD
-	UINT16 data1 = tilemap.basemem_read(tile_index);
-	UINT16 data2 = tilemap.extmem_read(tile_index) & 0xff;
-=======
 	uint16_t data1 = m_playfield_tilemap->basemem_read(tile_index);
 	uint16_t data2 = m_playfield_tilemap->extmem_read(tile_index) & 0xff;
->>>>>>> upstream/master
 	int code = data1 & 0x7fff;
 	int color = data2 & 0x0f;
 	SET_TILE_INFO_MEMBER(1, code, color, (data1 >> 15) & 1);
@@ -102,13 +93,8 @@ VIDEO_START_MEMBER(skullxbo_state,skullxbo)
 WRITE16_MEMBER( skullxbo_state::skullxbo_xscroll_w )
 {
 	/* combine data */
-<<<<<<< HEAD
-	UINT16 oldscroll = *m_xscroll;
-	UINT16 newscroll = oldscroll;
-=======
 	uint16_t oldscroll = *m_xscroll;
 	uint16_t newscroll = oldscroll;
->>>>>>> upstream/master
 	COMBINE_DATA(&newscroll);
 
 	/* if something changed, force an update */
@@ -128,15 +114,9 @@ WRITE16_MEMBER( skullxbo_state::skullxbo_yscroll_w )
 {
 	/* combine data */
 	int scanline = m_screen->vpos();
-<<<<<<< HEAD
-	UINT16 oldscroll = *m_yscroll;
-	UINT16 newscroll = oldscroll;
-	UINT16 effscroll;
-=======
 	uint16_t oldscroll = *m_yscroll;
 	uint16_t newscroll = oldscroll;
 	uint16_t effscroll;
->>>>>>> upstream/master
 	COMBINE_DATA(&newscroll);
 
 	/* if something changed, force an update */
@@ -188,13 +168,8 @@ WRITE16_MEMBER(skullxbo_state::playfield_latched_w)
 	m_playfield_tilemap->write(space, offset, data, mem_mask);
 	if (m_playfield_latch != -1)
 	{
-<<<<<<< HEAD
-		UINT16 oldval = m_playfield_tilemap->extmem_read(offset);
-		UINT16 newval = (oldval & ~0x00ff) | (m_playfield_latch & 0x00ff);
-=======
 		uint16_t oldval = m_playfield_tilemap->extmem_read(offset);
 		uint16_t newval = (oldval & ~0x00ff) | (m_playfield_latch & 0x00ff);
->>>>>>> upstream/master
 		m_playfield_tilemap->extmem_write(offset, newval);
 	}
 }
@@ -227,13 +202,8 @@ void skullxbo_state::skullxbo_scanline_update(int scanline)
 	/* update the current parameters */
 	for (x = 42; x < 64; x++)
 	{
-<<<<<<< HEAD
-		UINT16 data = m_alpha_tilemap->basemem_read(offset++);
-		UINT16 command = data & 0x000f;
-=======
 		uint16_t data = m_alpha_tilemap->basemem_read(offset++);
 		uint16_t command = data & 0x000f;
->>>>>>> upstream/master
 
 		/* only command I've ever seen */
 		if (command == 0x0d)
@@ -264,11 +234,7 @@ void skullxbo_state::skullxbo_scanline_update(int scanline)
  *
  *************************************/
 
-<<<<<<< HEAD
-UINT32 skullxbo_state::screen_update_skullxbo(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t skullxbo_state::screen_update_skullxbo(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	// start drawing
 	m_mob->draw_async(cliprect);
@@ -278,19 +244,11 @@ uint32_t skullxbo_state::screen_update_skullxbo(screen_device &screen, bitmap_in
 
 	// draw and merge the MO
 	bitmap_ind16 &mobitmap = m_mob->bitmap();
-<<<<<<< HEAD
-	for (const sparse_dirty_rect *rect = m_mob->first_dirty_rect(cliprect); rect != NULL; rect = rect->next())
-		for (int y = rect->min_y; y <= rect->max_y; y++)
-		{
-			UINT16 *mo = &mobitmap.pix16(y);
-			UINT16 *pf = &bitmap.pix16(y);
-=======
 	for (const sparse_dirty_rect *rect = m_mob->first_dirty_rect(cliprect); rect != nullptr; rect = rect->next())
 		for (int y = rect->min_y; y <= rect->max_y; y++)
 		{
 			uint16_t *mo = &mobitmap.pix16(y);
 			uint16_t *pf = &bitmap.pix16(y);
->>>>>>> upstream/master
 			for (int x = rect->min_x; x <= rect->max_x; x++)
 				if (mo[x] != 0xffff)
 				{

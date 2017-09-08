@@ -87,10 +87,7 @@
 #define UML_OR(block, dst, src1, src2)                      do { block->append()._or(dst, src1, src2); } while (0)
 #define UML_XOR(block, dst, src1, src2)                     do { block->append()._xor(dst, src1, src2); } while (0)
 #define UML_LZCNT(block, dst, src)                          do { block->append().lzcnt(dst, src); } while (0)
-<<<<<<< HEAD
-=======
 #define UML_TZCNT(block, dst, src)                          do { block->append().tzcnt(dst, src); } while (0)
->>>>>>> upstream/master
 #define UML_BSWAP(block, dst, src)                          do { block->append().bswap(dst, src); } while (0)
 #define UML_SHL(block, dst, src, count)                     do { block->append().shl(dst, src, count); } while (0)
 #define UML_SHR(block, dst, src, count)                     do { block->append().shr(dst, src, count); } while (0)
@@ -130,10 +127,7 @@
 #define UML_DOR(block, dst, src1, src2)                     do { block->append().dor(dst, src1, src2); } while (0)
 #define UML_DXOR(block, dst, src1, src2)                    do { block->append().dxor(dst, src1, src2); } while (0)
 #define UML_DLZCNT(block, dst, src)                         do { block->append().dlzcnt(dst, src); } while (0)
-<<<<<<< HEAD
-=======
 #define UML_DTZCNT(block, dst, src)                         do { block->append().dtzcnt(dst, src); } while (0)
->>>>>>> upstream/master
 #define UML_DBSWAP(block, dst, src)                         do { block->append().dbswap(dst, src); } while (0)
 #define UML_DSHL(block, dst, src, count)                    do { block->append().dshl(dst, src, count); } while (0)
 #define UML_DSHR(block, dst, src, count)                    do { block->append().dshr(dst, src, count); } while (0)
@@ -164,11 +158,8 @@
 #define UML_FSSQRT(block, dst, src1)                        do { block->append().fssqrt(dst, src1); } while (0)
 #define UML_FSRECIP(block, dst, src1)                       do { block->append().fsrecip(dst, src1); } while (0)
 #define UML_FSRSQRT(block, dst, src1)                       do { block->append().fsrsqrt(dst, src1); } while (0)
-<<<<<<< HEAD
-=======
 #define UML_FSCOPYI(block, dst, src)                        do { block->append().fscopyi(dst, src); } while (0)
 #define UML_ICOPYFS(block, dst, src)                        do { block->append().icopyfs(dst, src); } while (0)
->>>>>>> upstream/master
 
 
 /* ----- 64-bit Floating Point Arithmetic Operations ----- */
@@ -192,11 +183,8 @@
 #define UML_FDSQRT(block, dst, src1)                        do { block->append().fdsqrt(dst, src1); } while (0)
 #define UML_FDRECIP(block, dst, src1)                       do { block->append().fdrecip(dst, src1); } while (0)
 #define UML_FDRSQRT(block, dst, src1)                       do { block->append().fdrsqrt(dst, src1); } while (0)
-<<<<<<< HEAD
-=======
 #define UML_FDCOPYI(block, dst, src)                        do { block->append().fdcopyi(dst, src); } while (0)
 #define UML_ICOPYFD(block, dst, src)                        do { block->append().icopyfd(dst, src); } while (0)
->>>>>>> upstream/master
 
 
 #endif /* __DRCUMLSH_H__ */

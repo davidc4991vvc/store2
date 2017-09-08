@@ -71,11 +71,8 @@ TODO:
 #include "cpu/z80/z80.h"
 #include "sound/ay8910.h"
 #include "machine/nvram.h"
-<<<<<<< HEAD
-=======
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 class caswin_state : public driver_device
@@ -88,13 +85,8 @@ public:
 		m_maincpu(*this, "maincpu"),
 		m_gfxdecode(*this, "gfxdecode") { }
 
-<<<<<<< HEAD
-	required_shared_ptr<UINT8> m_sc0_vram;
-	required_shared_ptr<UINT8> m_sc0_attr;
-=======
 	required_shared_ptr<uint8_t> m_sc0_vram;
 	required_shared_ptr<uint8_t> m_sc0_attr;
->>>>>>> upstream/master
 	tilemap_t *m_sc0_tilemap;
 	DECLARE_WRITE8_MEMBER(sc0_vram_w);
 	DECLARE_WRITE8_MEMBER(sc0_attr_w);
@@ -104,15 +96,9 @@ public:
 	DECLARE_WRITE8_MEMBER(vvillage_output_w);
 	DECLARE_WRITE8_MEMBER(vvillage_lamps_w);
 	TILE_GET_INFO_MEMBER(get_sc0_tile_info);
-<<<<<<< HEAD
-	virtual void video_start();
-	DECLARE_PALETTE_INIT(caswin);
-	UINT32 screen_update_vvillage(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	virtual void video_start() override;
 	DECLARE_PALETTE_INIT(caswin);
 	uint32_t screen_update_vvillage(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	required_device<cpu_device> m_maincpu;
 	required_device<gfxdecode_device> m_gfxdecode;
 };
@@ -132,17 +118,10 @@ TILE_GET_INFO_MEMBER(caswin_state::get_sc0_tile_info)
 
 void caswin_state::video_start()
 {
-<<<<<<< HEAD
-	m_sc0_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(caswin_state::get_sc0_tile_info),this),TILEMAP_SCAN_ROWS,8,8,32,32);
-}
-
-UINT32 caswin_state::screen_update_vvillage(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 	m_sc0_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(caswin_state::get_sc0_tile_info),this),TILEMAP_SCAN_ROWS,8,8,32,32);
 }
 
 uint32_t caswin_state::screen_update_vvillage(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	m_sc0_tilemap->draw(screen, bitmap, cliprect, 0,0);
 	return 0;
@@ -186,19 +165,11 @@ READ8_MEMBER(caswin_state::vvillage_rng_r)
 
 WRITE8_MEMBER(caswin_state::vvillage_output_w)
 {
-<<<<<<< HEAD
-	coin_counter_w(machine(), 0,data & 1);
-	coin_counter_w(machine(), 1,data & 1);
-	// data & 4 payout counter
-	coin_lockout_w(machine(), 0,data & 0x20);
-	coin_lockout_w(machine(), 1,data & 0x20);
-=======
 	machine().bookkeeping().coin_counter_w(0,data & 1);
 	machine().bookkeeping().coin_counter_w(1,data & 1);
 	// data & 4 payout counter
 	machine().bookkeeping().coin_lockout_w(0,data & 0x20);
 	machine().bookkeeping().coin_lockout_w(1,data & 0x20);
->>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(caswin_state::vvillage_lamps_w)
@@ -210,19 +181,11 @@ WRITE8_MEMBER(caswin_state::vvillage_lamps_w)
 	---- --x- lamp button 2
 	---- ---x lamp button 1
 	*/
-<<<<<<< HEAD
-	set_led_status(machine(), 0, data & 0x01);
-	set_led_status(machine(), 1, data & 0x02);
-	set_led_status(machine(), 2, data & 0x04);
-	set_led_status(machine(), 3, data & 0x08);
-	set_led_status(machine(), 4, data & 0x10);
-=======
 	output().set_led_value(0, data & 0x01);
 	output().set_led_value(1, data & 0x02);
 	output().set_led_value(2, data & 0x04);
 	output().set_led_value(3, data & 0x08);
 	output().set_led_value(4, data & 0x10);
->>>>>>> upstream/master
 }
 
 static ADDRESS_MAP_START( vvillage_mem, AS_PROGRAM, 8, caswin_state )
@@ -333,11 +296,7 @@ GFXDECODE_END
 
 PALETTE_INIT_MEMBER(caswin_state, caswin)
 {
-<<<<<<< HEAD
-	const UINT8 *color_prom = memregion("proms")->base();
-=======
 	const uint8_t *color_prom = memregion("proms")->base();
->>>>>>> upstream/master
 	int bit0, bit1, bit2 , r, g, b;
 	int i;
 
@@ -362,11 +321,7 @@ PALETTE_INIT_MEMBER(caswin_state, caswin)
 }
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( vvillage, caswin_state )
-=======
 static MACHINE_CONFIG_START( vvillage )
->>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80,4000000)         /* ? MHz */
 	MCFG_CPU_PROGRAM_MAP(vvillage_mem)
@@ -461,14 +416,7 @@ ROM_START( rcasinoo )
 	ROM_LOAD( "prom1.e8",  0x0020, 0x0020, CRC(2b5c7826) SHA1(c0de392aebd6982e5846c12aeb2e871358be60d7) ) /* MB7051 */
 ROM_END
 
-<<<<<<< HEAD
-GAME( 1984, rcasino,  0,       vvillage, vvillage, driver_device, 0, ROT270, "Dyna Electronics", "Royal Casino (D-2608208A1-2)",                MACHINE_IMPERFECT_GRAPHICS )
-GAME( 1984, rcasino1, rcasino, vvillage, vvillage, driver_device, 0, ROT270, "Dyna Electronics", "Royal Casino (D-2608208A1-1, Larger Board)",  MACHINE_IMPERFECT_GRAPHICS )
-GAME( 1984, rcasinoo, rcasino, vvillage, vvillage, driver_device, 0, ROT270, "Dyna Electronics", "Royal Casino (D-2608208A1-1, Smaller Board)", MACHINE_IMPERFECT_GRAPHICS )
-GAME( 1985, caswin,   rcasino, vvillage, vvillage, driver_device, 0, ROT270, "Aristocrat",       "Casino Winner",                               MACHINE_IMPERFECT_GRAPHICS )
-=======
 GAME( 1984, rcasino,  0,       vvillage, vvillage, caswin_state, 0, ROT270, "Dyna Electronics", "Royal Casino (D-2608208A1-2)",                MACHINE_IMPERFECT_GRAPHICS )
 GAME( 1984, rcasino1, rcasino, vvillage, vvillage, caswin_state, 0, ROT270, "Dyna Electronics", "Royal Casino (D-2608208A1-1, Larger Board)",  MACHINE_IMPERFECT_GRAPHICS )
 GAME( 1984, rcasinoo, rcasino, vvillage, vvillage, caswin_state, 0, ROT270, "Dyna Electronics", "Royal Casino (D-2608208A1-1, Smaller Board)", MACHINE_IMPERFECT_GRAPHICS )
 GAME( 1985, caswin,   rcasino, vvillage, vvillage, caswin_state, 0, ROT270, "Aristocrat",       "Casino Winner",                               MACHINE_IMPERFECT_GRAPHICS )
->>>>>>> upstream/master

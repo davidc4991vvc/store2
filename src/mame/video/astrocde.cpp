@@ -99,21 +99,12 @@ PALETTE_INIT_MEMBER(astrocde_state, astrocde)
 			b = (by + y) * 255;
 
 			/* clamp and store */
-<<<<<<< HEAD
-			r = MAX(r, 0);
-			r = MIN(r, 255);
-			g = MAX(g, 0);
-			g = MIN(g, 255);
-			b = MAX(b, 0);
-			b = MIN(b, 255);
-=======
 			r = std::max(r, 0);
 			r = std::min(r, 255);
 			g = std::max(g, 0);
 			g = std::min(g, 255);
 			b = std::max(b, 0);
 			b = std::min(b, 255);
->>>>>>> upstream/master
 			palette.set_pen_color(color * 16 + luma, rgb_t(r, g, b));
 		}
 	}
@@ -196,21 +187,13 @@ VIDEO_START_MEMBER(astrocde_state,profpac)
 	m_intoff_timer = timer_alloc(TIMER_INTERRUPT_OFF);
 
 	/* allocate videoram */
-<<<<<<< HEAD
-	m_profpac_videoram = auto_alloc_array(machine(), UINT16, 0x4000 * 4);
-=======
 	m_profpac_videoram = std::make_unique<uint16_t[]>(0x4000 * 4);
->>>>>>> upstream/master
 
 	/* register for save states */
 	init_savestate();
 
 	/* register our specific save state data */
-<<<<<<< HEAD
-	save_pointer(NAME(m_profpac_videoram), 0x4000 * 4);
-=======
 	save_pointer(NAME(m_profpac_videoram.get()), 0x4000 * 4);
->>>>>>> upstream/master
 	save_item(NAME(m_profpac_palette));
 	save_item(NAME(m_profpac_colormap));
 	save_item(NAME(m_profpac_intercept));
@@ -264,17 +247,10 @@ void astrocde_state::init_savestate()
  *
  *************************************/
 
-<<<<<<< HEAD
-UINT32 astrocde_state::screen_update_astrocde(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-{
-	UINT8 *videoram = m_videoram;
-	UINT32 sparklebase = 0;
-=======
 uint32_t astrocde_state::screen_update_astrocde(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
 	uint8_t *videoram = m_videoram;
 	uint32_t sparklebase = 0;
->>>>>>> upstream/master
 	const int colormask = (m_video_config & AC_MONITOR_BW) ? 0 : 0x1f0;
 	int xystep = 2 - m_video_mode;
 	int y;
@@ -284,26 +260,15 @@ uint32_t astrocde_state::screen_update_astrocde(screen_device &screen, bitmap_in
 	int height = screen.height();
 
 	if (m_video_config & AC_STARS)
-<<<<<<< HEAD
-		sparklebase = (screen.frame_number() * (UINT64)(width * height)) % RNG_PERIOD;
-=======
 		sparklebase = (screen.frame_number() * (uint64_t)(width * height)) % RNG_PERIOD;
->>>>>>> upstream/master
 
 	/* iterate over scanlines */
 	for (y = cliprect.min_y; y <= cliprect.max_y; y++)
 	{
-<<<<<<< HEAD
-		UINT16 *dest = &bitmap.pix16(y);
-		int effy = mame_vpos_to_astrocade_vpos(y);
-		UINT16 offset = (effy / xystep) * (80 / xystep);
-		UINT32 sparkleoffs = 0, staroffs = 0;
-=======
 		uint16_t *dest = &bitmap.pix16(y);
 		int effy = mame_vpos_to_astrocade_vpos(y);
 		uint16_t offset = (effy / xystep) * (80 / xystep);
 		uint32_t sparkleoffs = 0, staroffs = 0;
->>>>>>> upstream/master
 		int x;
 
 		/* compute the star and sparkle offset at the start of this line */
@@ -319,13 +284,8 @@ uint32_t astrocde_state::screen_update_astrocde(screen_device &screen, bitmap_in
 		for (x = 0; x < 456/4; x += xystep)
 		{
 			int effx = x - HORZ_OFFSET/4;
-<<<<<<< HEAD
-			const UINT8 *colorbase = &m_colors[(effx < m_colorsplit) ? 4 : 0];
-			UINT8 data;
-=======
 			const uint8_t *colorbase = &m_colors[(effx < m_colorsplit) ? 4 : 0];
 			uint8_t data;
->>>>>>> upstream/master
 			int xx;
 
 			/* select either video data or background data */
@@ -334,11 +294,7 @@ uint32_t astrocde_state::screen_update_astrocde(screen_device &screen, bitmap_in
 			/* iterate over the 4 pixels */
 			for (xx = 0; xx < 4; xx++)
 			{
-<<<<<<< HEAD
-				UINT8 pixdata = (data >> 6) & 3;
-=======
 				uint8_t pixdata = (data >> 6) & 3;
->>>>>>> upstream/master
 				int colordata = colorbase[pixdata] << 1;
 				int luma = colordata & 0x0f;
 				rgb_t color;
@@ -376,11 +332,7 @@ uint32_t astrocde_state::screen_update_astrocde(screen_device &screen, bitmap_in
 }
 
 
-<<<<<<< HEAD
-UINT32 astrocde_state::screen_update_profpac(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t astrocde_state::screen_update_profpac(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int y;
 
@@ -388,13 +340,8 @@ uint32_t astrocde_state::screen_update_profpac(screen_device &screen, bitmap_ind
 	for (y = cliprect.min_y; y <= cliprect.max_y; y++)
 	{
 		int effy = mame_vpos_to_astrocade_vpos(y);
-<<<<<<< HEAD
-		UINT16 *dest = &bitmap.pix16(y);
-		UINT16 offset = m_profpac_vispage * 0x4000 + effy * 80;
-=======
 		uint16_t *dest = &bitmap.pix16(y);
 		uint16_t offset = m_profpac_vispage * 0x4000 + effy * 80;
->>>>>>> upstream/master
 		int x;
 
 		/* star with black */
@@ -405,11 +352,7 @@ uint32_t astrocde_state::screen_update_profpac(screen_device &screen, bitmap_ind
 			int effx = x - HORZ_OFFSET/4;
 
 			/* select either video data or background data */
-<<<<<<< HEAD
-			UINT16 data = (effx >= 0 && effx < 80 && effy >= 0 && effy < m_vblank) ? m_profpac_videoram[offset++] : 0;
-=======
 			uint16_t data = (effx >= 0 && effx < 80 && effy >= 0 && effy < m_vblank) ? m_profpac_videoram[offset++] : 0;
->>>>>>> upstream/master
 
 			/* iterate over the 4 pixels */
 			*dest++ = m_profpac_palette[(data >> 12) & 0x0f];
@@ -441,20 +384,12 @@ void astrocde_state::device_timer(emu_timer &timer, device_timer_id id, int para
 		scanline_callback(ptr, param);
 		break;
 	default:
-<<<<<<< HEAD
-		assert_always(FALSE, "Unknown id in astrocde_state::device_timer");
-=======
 		assert_always(false, "Unknown id in astrocde_state::device_timer");
->>>>>>> upstream/master
 	}
 }
 
 
-<<<<<<< HEAD
-void astrocde_state::astrocade_trigger_lightpen(UINT8 vfeedback, UINT8 hfeedback)
-=======
 void astrocde_state::astrocade_trigger_lightpen(uint8_t vfeedback, uint8_t hfeedback)
->>>>>>> upstream/master
 {
 	/* both bits 1 and 4 enable lightpen interrupts; bit 4 enables them even in horizontal */
 	/* blanking regions; we treat them both the same here */
@@ -504,22 +439,14 @@ TIMER_CALLBACK_MEMBER(astrocde_state::scanline_callback)
 		if ((m_interrupt_enabl & 0x04) == 0)
 		{
 			m_maincpu->set_input_line_and_vector(0, HOLD_LINE, m_interrupt_vector);
-<<<<<<< HEAD
-			timer_set(m_screen->time_until_vblank_end(), TIMER_INTERRUPT_OFF);
-=======
 			m_intoff_timer->adjust(m_screen->time_until_vblank_end());
->>>>>>> upstream/master
 		}
 
 		/* mode 1 means assert for 1 instruction */
 		else
 		{
 			m_maincpu->set_input_line_and_vector(0, ASSERT_LINE, m_interrupt_vector);
-<<<<<<< HEAD
-			timer_set(m_maincpu->cycles_to_attotime(1), TIMER_INTERRUPT_OFF);
-=======
 			m_intoff_timer->adjust(m_maincpu->cycles_to_attotime(1));
->>>>>>> upstream/master
 		}
 	}
 
@@ -544,11 +471,7 @@ TIMER_CALLBACK_MEMBER(astrocde_state::scanline_callback)
 
 READ8_MEMBER(astrocde_state::astrocade_data_chip_register_r)
 {
-<<<<<<< HEAD
-	UINT8 result = 0xff;
-=======
 	uint8_t result = 0xff;
->>>>>>> upstream/master
 
 	/* these are the core registers */
 	switch (offset & 0xff)
@@ -567,53 +490,6 @@ READ8_MEMBER(astrocde_state::astrocade_data_chip_register_r)
 			break;
 
 		case 0x10:  /* player 1 handle */
-<<<<<<< HEAD
-			result = m_p1handle? m_p1handle->read() : 0xff;
-			break;
-
-		case 0x11:  /* player 2 handle */
-			result = m_p2handle? m_p2handle->read() : 0xff;
-			break;
-
-		case 0x12:  /* player 3 handle */
-			result = m_p3handle? m_p3handle->read() : 0xff;
-			break;
-
-		case 0x13:  /* player 4 handle */
-			result = m_p4handle? m_p4handle->read() : 0xff;
-			break;
-
-		case 0x14:  /* keypad column 0 */
-			result = m_keypad0 ? m_keypad0->read() : 0xff;
-			break;
-
-		case 0x15:  /* keypad column 1 */
-			result = m_keypad1 ? m_keypad1->read() : 0xff;
-			break;
-
-		case 0x16:  /* keypad column 2 */
-			result = m_keypad2 ? m_keypad2->read() : 0xff;
-			break;
-
-		case 0x17:  /* keypad column 3 */
-			result = m_keypad3 ? m_keypad3->read() : 0xff;
-			break;
-
-		case 0x1c:  /* player 1 knob */
-			result = m_p1_knob ? m_p1_knob->read() : 0xff;
-			break;
-
-		case 0x1d:  /* player 2 knob */
-			result = m_p2_knob ? m_p2_knob->read() : 0xff;
-			break;
-
-		case 0x1e:  /* player 3 knob */
-			result = m_p3_knob ? m_p3_knob->read() : 0xff;
-			break;
-
-		case 0x1f:  /* player 4 knob */
-			result = m_p4_knob ? m_p4_knob->read() : 0xff;
-=======
 			result = m_p1handle.read_safe(0xff);
 			break;
 
@@ -659,7 +535,6 @@ READ8_MEMBER(astrocde_state::astrocade_data_chip_register_r)
 
 		case 0x1f:  /* player 4 knob */
 			result = m_p4_knob.read_safe(0xff);
->>>>>>> upstream/master
 			break;
 	}
 
@@ -709,26 +584,17 @@ WRITE8_MEMBER(astrocde_state::astrocade_data_chip_register_w)
 
 		case 0x0d:  /* interrupt feedback */
 			m_interrupt_vector = data;
-<<<<<<< HEAD
-=======
 			m_maincpu->set_input_line(0, CLEAR_LINE);
->>>>>>> upstream/master
 			break;
 
 		case 0x0e:  /* interrupt enable and mode */
 			m_interrupt_enabl = data;
-<<<<<<< HEAD
-=======
 			m_maincpu->set_input_line(0, CLEAR_LINE);
->>>>>>> upstream/master
 			break;
 
 		case 0x0f:  /* interrupt line */
 			m_interrupt_scanline = data;
-<<<<<<< HEAD
-=======
 			m_maincpu->set_input_line(0, CLEAR_LINE);
->>>>>>> upstream/master
 			break;
 
 		case 0x10:  /* master oscillator register */
@@ -761,11 +627,7 @@ WRITE8_MEMBER(astrocde_state::astrocade_data_chip_register_w)
 
 WRITE8_MEMBER(astrocde_state::astrocade_funcgen_w)
 {
-<<<<<<< HEAD
-	UINT8 prev_data;
-=======
 	uint8_t prev_data;
->>>>>>> upstream/master
 
 	/* control register:
 	    bit 0 = shift amount LSB
@@ -805,11 +667,7 @@ WRITE8_MEMBER(astrocde_state::astrocade_funcgen_w)
 		/* second 4 writes actually write it */
 		else
 		{
-<<<<<<< HEAD
-			UINT8 shift = 2 * (~m_funcgen_rotate_count++ & 3);
-=======
 			uint8_t shift = 2 * (~m_funcgen_rotate_count++ & 3);
->>>>>>> upstream/master
 			data =  (((m_funcgen_rotate_data[3] >> shift) & 3) << 6) |
 					(((m_funcgen_rotate_data[2] >> shift) & 3) << 4) |
 					(((m_funcgen_rotate_data[1] >> shift) & 3) << 2) |
@@ -819,11 +677,7 @@ WRITE8_MEMBER(astrocde_state::astrocade_funcgen_w)
 	else
 	{
 		/* shift */
-<<<<<<< HEAD
-		UINT8 shift = 2 * (m_funcgen_control & 0x03);
-=======
 		uint8_t shift = 2 * (m_funcgen_control & 0x03);
->>>>>>> upstream/master
 		data = (data >> shift) | (prev_data << (8 - shift));
 	}
 
@@ -834,11 +688,7 @@ WRITE8_MEMBER(astrocde_state::astrocade_funcgen_w)
 	/* OR/XOR */
 	if (m_funcgen_control & 0x30)
 	{
-<<<<<<< HEAD
-		UINT8 olddata = space.read_byte(0x4000 + offset);
-=======
 		uint8_t olddata = space.read_byte(0x4000 + offset);
->>>>>>> upstream/master
 
 		/* compute any intercepts */
 		m_funcgen_intercept &= 0x0f;
@@ -870,11 +720,7 @@ WRITE8_MEMBER(astrocde_state::astrocade_funcgen_w)
  *
  *************************************/
 
-<<<<<<< HEAD
-inline void astrocde_state::increment_source(UINT8 curwidth, UINT8 *u13ff)
-=======
 inline void astrocde_state::increment_source(uint8_t curwidth, uint8_t *u13ff)
->>>>>>> upstream/master
 {
 	/* if the flip-flop at U13 is high and mode.d2 is 1 we can increment */
 	/* however, if mode.d3 is set and we're on the last byte of a row, the increment is suppressed */
@@ -887,11 +733,7 @@ inline void astrocde_state::increment_source(uint8_t curwidth, uint8_t *u13ff)
 }
 
 
-<<<<<<< HEAD
-inline void astrocde_state::increment_dest(UINT8 curwidth)
-=======
 inline void astrocde_state::increment_dest(uint8_t curwidth)
->>>>>>> upstream/master
 {
 	/* increment is suppressed for the last byte in a row */
 	if (curwidth != 0)
@@ -926,13 +768,8 @@ void astrocde_state::execute_blit(address_space &space)
 	        d5 = dest direction (0 = increment dest, 1 = decrement dest)
 	*/
 
-<<<<<<< HEAD
-	UINT8 curwidth; /* = counter set U33/U42 */
-	UINT8 u13ff;    /* = flip-flop at U13 */
-=======
 	uint8_t curwidth; /* = counter set U33/U42 */
 	uint8_t u13ff;    /* = flip-flop at U13 */
->>>>>>> upstream/master
 	int cycles = 0;
 
 /*  logerror("Blit: src=%04X mode=%02X dest=%04X skip=%02X width=%02X height=%02X\n",
@@ -948,23 +785,14 @@ void astrocde_state::execute_blit(address_space &space)
 	/* loop over height */
 	do
 	{
-<<<<<<< HEAD
-		UINT16 carry;
-=======
 		uint16_t carry;
->>>>>>> upstream/master
 
 		/* loop over width */
 		curwidth = m_pattern_width;
 		do
 		{
-<<<<<<< HEAD
-			UINT16 busaddr;
-			UINT8 busdata;
-=======
 			uint16_t busaddr;
 			uint8_t busdata;
->>>>>>> upstream/master
 
 			/* ----- read phase ----- */
 
@@ -1092,31 +920,19 @@ WRITE8_MEMBER(astrocde_state::astrocade_pattern_board_w)
 
 void astrocde_state::init_sparklestar()
 {
-<<<<<<< HEAD
-	UINT32 shiftreg;
-=======
 	uint32_t shiftreg;
->>>>>>> upstream/master
 	int i;
 
 	/* reset global sparkle state */
 	m_sparkle[0] = m_sparkle[1] = m_sparkle[2] = m_sparkle[3] = 0;
 
 	/* allocate memory for the sparkle/star array */
-<<<<<<< HEAD
-	m_sparklestar = auto_alloc_array(machine(), UINT8, RNG_PERIOD);
-=======
 	m_sparklestar = std::make_unique<uint8_t[]>(RNG_PERIOD);
->>>>>>> upstream/master
 
 	/* generate the data for the sparkle/star array */
 	for (shiftreg = i = 0; i < RNG_PERIOD; i++)
 	{
-<<<<<<< HEAD
-		UINT8 newbit;
-=======
 		uint8_t newbit;
->>>>>>> upstream/master
 
 		/* clock the shift register */
 		newbit = ((shiftreg >> 12) ^ ~shiftreg) & 1;
@@ -1201,11 +1017,7 @@ WRITE8_MEMBER(astrocde_state::profpac_screenram_ctrl_w)
 
 READ8_MEMBER(astrocde_state::profpac_videoram_r)
 {
-<<<<<<< HEAD
-	UINT16 temp = m_profpac_videoram[m_profpac_readpage * 0x4000 + offset] >> m_profpac_readshift;
-=======
 	uint16_t temp = m_profpac_videoram[m_profpac_readpage * 0x4000 + offset] >> m_profpac_readshift;
->>>>>>> upstream/master
 	return ((temp >> 6) & 0xc0) | ((temp >> 4) & 0x30) | ((temp >> 2) & 0x0c) | ((temp >> 0) & 0x03);
 }
 
@@ -1213,13 +1025,8 @@ READ8_MEMBER(astrocde_state::profpac_videoram_r)
 /* All this information comes from decoding the PLA at U39 on the screen ram board */
 WRITE8_MEMBER(astrocde_state::profpac_videoram_w)
 {
-<<<<<<< HEAD
-	UINT16 oldbits = m_profpac_videoram[m_profpac_writepage * 0x4000 + offset];
-	UINT16 newbits, result = 0;
-=======
 	uint16_t oldbits = m_profpac_videoram[m_profpac_writepage * 0x4000 + offset];
 	uint16_t newbits, result = 0;
->>>>>>> upstream/master
 
 	/* apply the 2->4 bit expansion first */
 	newbits = (m_profpac_colormap[(data >> 6) & 3] << 12) |

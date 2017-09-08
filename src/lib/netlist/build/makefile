@@ -9,10 +9,6 @@
 #
 ###########################################################################
 
-<<<<<<< HEAD
-OBJ = obj
-SRC = ..
-=======
 SRC = ..
 VSBUILD = $(SRC)/buildVS
 DOC = $(SRC)/documentation
@@ -22,25 +18,11 @@ OBJ = obj/mingw
 else
 OBJ = obj/nix
 endif
->>>>>>> upstream/master
 
 #-fuse-ld=gold -Wpedantic -march=native -march=native
 
 # LTO = -flto=4  -fuse-linker-plugin -flto-partition=balanced -Wodr
 
-<<<<<<< HEAD
-CDEFS = -DPSTANDALONE=1 -DPTR64=1
-#-Werror
-CFLAGS =  $(LTO) -g -O3 -std=c++98  -march=native -msse4.2 -Wall -Wpedantic -Wsign-compare -Wextra -Wno-long-long -Wno-unused-parameter -Wno-unused-result -Wno-variadic-macros -I..
-LDFLAGS = $(LTO) -g -O3 -std=c++98 
-#CFLAGS =  $(LTO) -g -O3 -std=c++11   -Wall -Wpedantic -Wsign-compare -Wextra -Isrc
-#LDFLAGS = $(LTO) -g -O3 -std=c++11 	
-
-CC = @g++-5
-LD = @g++-5
-MD = @mkdir
-RM = @rm
-=======
 CFLAGS =  $(LTO) -g -O3 -std=c++11 -march=native -I../.. -Wall -Wpedantic -Wsign-compare -Wextra -Wno-unused-parameter $(CEXTRAFLAGS)
 LDFLAGS = $(LTO) -g -O3 -std=c++11 $(LDEXTRAFLAGS)
 LIBS = -lpthread -ldl
@@ -50,7 +32,6 @@ LD = @g++
 MD = @mkdir
 RM = @rm
 DOXYGEN = @doxygen
->>>>>>> upstream/master
 
 TARGETS = nltool nlwav
 
@@ -58,17 +39,6 @@ NLOBJ = $(OBJ)
 POBJ = $(OBJ)/plib
 
 OBJDIRS = $(OBJ) \
-<<<<<<< HEAD
-		  $(OBJ)/analog \
-		  $(OBJ)/solver \
-		  $(OBJ)/devices \
-		  $(OBJ)/plib \
-		  $(OBJ)/devices \
-		  $(OBJ)/macro \
-		  $(OBJ)/tools \
-		  $(OBJ)/prg \
-		  
-=======
 			$(OBJ)/analog \
 			$(OBJ)/solver \
 			$(OBJ)/devices \
@@ -78,18 +48,12 @@ OBJDIRS = $(OBJ) \
 			$(OBJ)/tools \
 			$(OBJ)/prg \
 
->>>>>>> upstream/master
 
 OBJS = $(POBJS) $(NLOBJS)
 
 POBJS := \
 	$(POBJ)/pstring.o \
 	$(POBJ)/palloc.o \
-<<<<<<< HEAD
-	$(POBJ)/pparser.o \
-	$(POBJ)/pstate.o \
-	$(POBJ)/pstream.o \
-=======
 	$(POBJ)/pchrono.o \
 	$(POBJ)/pdynlib.o \
 	$(POBJ)/pexception.o \
@@ -102,7 +66,6 @@ POBJS := \
 	$(POBJ)/putil.o \
 
 PMAIN := $(POBJ)/pmain.o
->>>>>>> upstream/master
 
 NLOBJS := \
 	$(NLOBJ)/nl_base.o \
@@ -110,31 +73,6 @@ NLOBJS := \
 	$(NLOBJ)/nl_setup.o \
 	$(NLOBJ)/nl_factory.o \
 	$(NLOBJ)/analog/nld_bjt.o \
-<<<<<<< HEAD
-	$(NLOBJ)/analog/nld_fourterm.o \
-	$(NLOBJ)/analog/nld_switches.o \
-	$(NLOBJ)/analog/nld_twoterm.o \
-	$(NLOBJ)/analog/nld_opamps.o \
-	$(NLOBJ)/devices/nld_4020.o \
-	$(NLOBJ)/devices/nld_4066.o \
-	$(NLOBJ)/devices/nld_7400.o \
-	$(NLOBJ)/devices/nld_7402.o \
-	$(NLOBJ)/devices/nld_7404.o \
-	$(NLOBJ)/devices/nld_7408.o \
-	$(NLOBJ)/devices/nld_7410.o \
-	$(NLOBJ)/devices/nld_7411.o \
-	$(NLOBJ)/devices/nld_7420.o \
-	$(NLOBJ)/devices/nld_7425.o \
-	$(NLOBJ)/devices/nld_7427.o \
-	$(NLOBJ)/devices/nld_7430.o \
-	$(NLOBJ)/devices/nld_7432.o \
-	$(NLOBJ)/devices/nld_7437.o \
-	$(NLOBJ)/devices/nld_7448.o \
-	$(NLOBJ)/devices/nld_7450.o \
-	$(NLOBJ)/devices/nld_7474.o \
-	$(NLOBJ)/devices/nld_7483.o \
-	$(NLOBJ)/devices/nld_7486.o \
-=======
 	$(NLOBJ)/analog/nlid_fourterm.o \
 	$(NLOBJ)/analog/nld_switches.o \
 	$(NLOBJ)/analog/nlid_twoterm.o \
@@ -151,31 +89,11 @@ NLOBJS := \
 	$(NLOBJ)/devices/nld_7475.o \
 	$(NLOBJ)/devices/nld_7483.o \
 	$(NLOBJ)/devices/nld_7485.o \
->>>>>>> upstream/master
 	$(NLOBJ)/devices/nld_7490.o \
 	$(NLOBJ)/devices/nld_7493.o \
 	$(NLOBJ)/devices/nld_74107.o \
 	$(NLOBJ)/devices/nld_74123.o \
 	$(NLOBJ)/devices/nld_74153.o \
-<<<<<<< HEAD
-	$(NLOBJ)/devices/nld_74175.o \
-	$(NLOBJ)/devices/nld_74192.o \
-	$(NLOBJ)/devices/nld_74193.o \
-	$(NLOBJ)/devices/nld_74279.o \
-	$(NLOBJ)/devices/nld_74ls629.o \
-	$(NLOBJ)/devices/nld_82S16.o \
-	$(NLOBJ)/devices/nld_9310.o \
-	$(NLOBJ)/devices/nld_9312.o \
-	$(NLOBJ)/devices/nld_9316.o \
-	$(NLOBJ)/devices/nld_mm5837.o \
-	$(NLOBJ)/devices/nld_ne555.o \
-	$(NLOBJ)/devices/nld_r2r_dac.o \
-	$(NLOBJ)/devices/nld_legacy.o \
-	$(NLOBJ)/devices/net_lib.o \
-	$(NLOBJ)/devices/nld_log.o \
-	$(NLOBJ)/devices/nld_system.o \
-	$(NLOBJ)/devices/nld_truthtable.o \
-=======
 	$(NLOBJ)/devices/nld_74161.o \
 	$(NLOBJ)/devices/nld_74164.o \
 	$(NLOBJ)/devices/nld_74165.o \
@@ -207,17 +125,11 @@ NLOBJS := \
 	$(NLOBJ)/devices/nld_system.o \
 	$(NLOBJ)/devices/nlid_truthtable.o \
 	$(NLOBJ)/macro/nlm_base.o \
->>>>>>> upstream/master
 	$(NLOBJ)/macro/nlm_cd4xxx.o \
 	$(NLOBJ)/macro/nlm_opamp.o \
 	$(NLOBJ)/macro/nlm_other.o \
 	$(NLOBJ)/macro/nlm_ttl74xx.o \
 	$(NLOBJ)/solver/nld_solver.o \
-<<<<<<< HEAD
-	$(NLOBJ)/tools/nl_convert.o \
-
-all:	maketree $(TARGETS)
-=======
 	$(NLOBJ)/solver/nld_matrix_solver.o \
 	$(NLOBJ)/tools/nl_convert.o \
 	
@@ -252,36 +164,23 @@ MAKEFILE_TARGETS_WITHOUT_INCLUDE := clean doc clang mingw
 #-------------------------------------------------
 
 all:    maketree depend $(TARGETS)
->>>>>>> upstream/master
 
 #-------------------------------------------------
 # clean
 #-------------------------------------------------
 
 clean:
-<<<<<<< HEAD
-	$(RM) -rf $(OBJS) $(TARGETS)
-=======
 	$(RM) -rf $(OBJS) $(TARGETS) $(OBJ)/prg/nltool.o $(OBJ)/prg/nlwav.o .depend
->>>>>>> upstream/master
 
 #-------------------------------------------------
 # nltool
 #-------------------------------------------------
 
-<<<<<<< HEAD
-nltool: $(OBJ)/prg/nltool.o $(OBJS)
-	@echo Linking $@...
-	$(LD) -o $@ $(LDFLAGS) $^ $(LIBS)
-
-nlwav: $(OBJ)/prg/nlwav.o $(OBJS)
-=======
 nltool: $(OBJ)/prg/nltool.o $(PMAIN) $(OBJS)
 	@echo Linking $@...
 	$(LD) -o $@ $(LDFLAGS) $^ $(LIBS)
 
 nlwav: $(OBJ)/prg/nlwav.o $(PMAIN) $(OBJS)
->>>>>>> upstream/master
 	@echo Linking $@...
 	$(LD) -o $@ $(LDFLAGS) $^ $(LIBS)
 
@@ -294,8 +193,6 @@ $(sort $(OBJDIRS)):
 
 maketree: $(sort $(OBJDIRS))
 
-<<<<<<< HEAD
-=======
 #-------------------------------------------------
 # Special targets
 #-------------------------------------------------
@@ -346,7 +243,6 @@ depend: .depend
 ifeq ($(filter $(MAKECMDGOALS),$(MAKEFILE_TARGETS_WITHOUT_INCLUDE)),)
 -include .depend
 endif
->>>>>>> upstream/master
 
 #-------------------------------------------------
 # generic rules
@@ -354,17 +250,6 @@ endif
 
 $(OBJ)/%.o: $(SRC)/%.cpp
 	@echo Compiling $<...
-<<<<<<< HEAD
-	$(CC) $(CDEFS) $(CFLAGS) -c $< -o $@
-
-$(OBJ)/%.pp: $(SRC)/%.cpp | $(OSPREBUILD)
-	@echo Compiling $<...
-	$(CC) $(CDEFS) $(CFLAGS) -E $< -o $@
-
-$(OBJ)/%.s: $(SRC)/%.cpp | $(OSPREBUILD)
-	@echo Compiling $<...
-	$(CC) $(CDEFS) $(CFLAGS) -S $< -o $@
-=======
 	@$(CC) $(CDEFS) $(CFLAGS) -c $< -o $@
 
 $(OBJ)/%.pp: $(SRC)/%.cpp
@@ -374,14 +259,9 @@ $(OBJ)/%.pp: $(SRC)/%.cpp
 $(OBJ)/%.s: $(SRC)/%.cpp
 	@echo Compiling $<...
 	@$(CC) $(CDEFS) $(CFLAGS) -S $< -o $@
->>>>>>> upstream/master
 
 $(OBJ)/%.a:
 	@echo Archiving $@...
 	$(RM) $@
 	$(AR) $(ARFLAGS) $@ $^
 
-<<<<<<< HEAD
-
-=======
->>>>>>> upstream/master

@@ -130,17 +130,6 @@
 	dofile("actions/xcode/test_xcode4_project.lua")
 	dofile("actions/xcode/test_xcode4_workspace.lua")
 
-<<<<<<< HEAD
-	-- CodeLite tests
-	dofile("actions/codelite/codelite_files.lua")
-
-	-- CodeBlocks tests
-	dofile("actions/codeblocks/codeblocks_files.lua")
-	dofile("actions/codeblocks/test_filters.lua")
-	dofile("actions/codeblocks/environment_variables.lua")
-
-=======
->>>>>>> upstream/master
 --
 -- Register a test action
 --

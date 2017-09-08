@@ -1,8 +1,6 @@
 CHANGE LOG for Independent JPEG Group's JPEG software
 
 
-<<<<<<< HEAD
-=======
 Version 9b  17-Jan-2016
 -----------------------
 
@@ -109,7 +107,6 @@ Thank to Richard Jones and Edd Dawson for various minor corrections.
 Thank to Akim Demaille for configure.ac cleanup.
 
 
->>>>>>> upstream/master
 Version 8c  16-Jan-2011
 -----------------------
 

@@ -6,14 +6,6 @@
     Largely based on documentation of the Sharp X68000
 */
 
-<<<<<<< HEAD
-#include "hd63450.h"
-
-const device_type HD63450 = &device_creator<hd63450_device>;
-
-hd63450_device::hd63450_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, HD63450, "Hitachi HD63450", tag, owner, clock, "hd63450", __FILE__),
-=======
 #include "emu.h"
 #include "hd63450.h"
 
@@ -21,7 +13,6 @@ DEFINE_DEVICE_TYPE(HD63450, hd63450_device, "hd63450", "Hitachi HD63450 DMA Cont
 
 hd63450_device::hd63450_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, HD63450, tag, owner, clock),
->>>>>>> upstream/master
 		m_dma_end(*this),
 		m_dma_error(*this),
 		m_dma_read_0(*this),
@@ -32,21 +23,6 @@ hd63450_device::hd63450_device(const machine_config &mconfig, const char *tag, d
 		m_dma_write_1(*this),
 		m_dma_write_2(*this),
 		m_dma_write_3(*this),
-<<<<<<< HEAD
-		m_cpu_tag(NULL),
-		m_cpu(NULL)
-{
-	for (int i = 0; i < 4; i++)
-		{
-			memset(&m_reg[i], 0, sizeof(m_reg[i]));
-			m_timer[i] = NULL;
-			m_in_progress[i] = 0;
-			m_transfer_size[i] = 0;
-			m_halted[i] = 0;
-			m_our_clock[i] = attotime::zero;
-			m_burst_clock[i] = attotime::zero;
-		}
-=======
 		m_cpu_tag(nullptr),
 		m_cpu(nullptr)
 {
@@ -60,7 +36,6 @@ hd63450_device::hd63450_device(const machine_config &mconfig, const char *tag, d
 		m_our_clock[i] = attotime::zero;
 		m_burst_clock[i] = attotime::zero;
 	}
->>>>>>> upstream/master
 }
 
 //-------------------------------------------------
@@ -70,16 +45,11 @@ hd63450_device::hd63450_device(const machine_config &mconfig, const char *tag, d
 void hd63450_device::device_start()
 {
 	// get the CPU device
-<<<<<<< HEAD
-	m_cpu = machine().device<cpu_device>(m_cpu_tag);
-	assert(m_cpu != NULL);
-=======
 	if ((m_cpu = machine().device<cpu_device>(m_cpu_tag)) == nullptr)
 	{
 		m_cpu = owner()->subdevice<cpu_device>(m_cpu_tag);
 	}
 	assert(m_cpu != nullptr);
->>>>>>> upstream/master
 
 	// resolve callbacks
 	m_dma_end.resolve();

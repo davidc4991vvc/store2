@@ -5,16 +5,6 @@
  *
  *   pps4.c
  *
-<<<<<<< HEAD
- *   Rockwell PPS-4 CPU
- *   Introduced in 1972, it ran at 256kHz. An improved version was released
- *   in 1975, but could only manage 200kHz. The chipset continued to be
- *   produced through the 1980s, but never found much acceptance. Chip
- *   numbers are 10660 (original), 11660, 12660.
- *
- *   List of support / peripheral chips:
- *   10706   Clock generator
-=======
  *   Rockwell Parallel Processing System (PPS-4) Microcomputer
  *
  *   Introduced in 1972, the PPS-4 was a 4-bit PMOS CPU that ran at 256kHz.
@@ -41,7 +31,6 @@
  *
  *   List of support / peripheral chips:
  *   10706   4-phase clock generator
->>>>>>> upstream/master
  *   10738   Bus interface
  *   11049   Interval timer
  *   10686   General purpose I/O
@@ -53,15 +42,10 @@
  *   10815   keyboard/printer controller
  *   10930   Serial data controller
  *   15380   dot matrix printer controller
-<<<<<<< HEAD
- *
- *   Note: External clock should be divided by 18 (not implemented).
-=======
  *   11696   Parallel input/output
  *
  *   All of the above devices, except those providing 4-bit RAM, were also
  *   compatible with the failed PPS-8 series of 8-bit PMOS CPUs.
->>>>>>> upstream/master
  *
  *   Pinouts:
  *              10660                               11660
@@ -91,31 +75,6 @@
  *      +--------------------+              +--------------------+
  *
  *****************************************************************************/
-<<<<<<< HEAD
-#include "emu.h"
-#include "debugger.h"
-#include "pps4.h"
-
-
-#define VERBOSE 0       //!< set to 1 to log certain instruction conditions
-
-#if VERBOSE
-#define LOG(x) logerror x
-#else
-#define LOG(x)
-#endif
-
-const device_type PPS4 = &device_creator<pps4_device>;
-
-pps4_device::pps4_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: cpu_device(mconfig, PPS4, "PPS4", tag, owner, clock, "pps4", __FILE__ )
-	, m_program_config("program", ENDIANNESS_LITTLE, 8, 12)
-	, m_data_config("data", ENDIANNESS_LITTLE, 8, 12)  // 4bit RAM
-	, m_io_config("io", ENDIANNESS_LITTLE, 8, 8)  // 4bit IO
-{
-}
-
-=======
 
 #include "emu.h"
 #include "pps4.h"
@@ -158,20 +117,13 @@ device_memory_interface::space_config_vector pps4_device::memory_space_config() 
 	};
 }
 
->>>>>>> upstream/master
 /**
  * @brief pps4_device::M Return the memory at address B
  * @return ROM/RAM(B)
  */
-<<<<<<< HEAD
-UINT8 pps4_device::M()
-{
-	UINT8 ret = m_data->read_byte(m_B & ~m_SAG);
-=======
 u8 pps4_device::M()
 {
 	u8 ret = m_data->read_byte(m_B & ~m_SAG);
->>>>>>> upstream/master
 	m_SAG = 0;
 	return ret;
 }
@@ -181,27 +133,16 @@ u8 pps4_device::M()
  * @brief pps4_device::W Write to the memory address at B
  * @return ROM/RAM(B)
  */
-<<<<<<< HEAD
-void pps4_device::W(UINT8 data)
-=======
 void pps4_device::W(u8 data)
->>>>>>> upstream/master
 {
 	m_data->write_byte(m_B & ~m_SAG, data);
 	m_SAG = 0;
 }
 
-<<<<<<< HEAD
-offs_t pps4_device::disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options)
-{
-	extern CPU_DISASSEMBLE( pps4 );
-	return CPU_DISASSEMBLE_NAME(pps4)(this, buffer, pc, oprom, opram, options);
-=======
 offs_t pps4_device::disasm_disassemble(std::ostream &stream, offs_t pc, const u8 *oprom, const u8 *opram, u32 options)
 {
 	extern CPU_DISASSEMBLE( pps4 );
 	return CPU_DISASSEMBLE_NAME(pps4)(this, stream, pc, oprom, opram, options);
->>>>>>> upstream/master
 }
 
 /**
@@ -211,15 +152,9 @@ offs_t pps4_device::disasm_disassemble(std::ostream &stream, offs_t pc, const u8
  * program counter is incremented. The icount is decremented.
  * @return m_I the next opcode
  */
-<<<<<<< HEAD
-inline UINT8 pps4_device::ROP()
-{
-	const UINT8 op = m_direct->read_byte(m_P & 0xFFF);
-=======
 inline u8 pps4_device::ROP()
 {
 	const u8 op = m_direct->read_byte(m_P & 0xFFF);
->>>>>>> upstream/master
 	m_Ip = m_I1;         // save previous opcode
 	m_P = (m_P + 1) & 0xFFF;
 	m_icount -= 1;
@@ -233,15 +168,9 @@ inline u8 pps4_device::ROP()
  * icount is decremented.
  * @return m_I2 the next argument
  */
-<<<<<<< HEAD
-inline UINT8 pps4_device::ARG()
-{
-	const UINT8 arg = m_direct->read_byte(m_P & 0xFFF);
-=======
 inline u8 pps4_device::ARG()
 {
 	const u8 arg = m_direct->read_byte(m_P & 0xFFF);
->>>>>>> upstream/master
 	m_P = (m_P + 1) & 0xFFF;
 	m_icount -= 1;
 	return arg;
@@ -375,11 +304,7 @@ void pps4_device::iADCSK()
  */
 void pps4_device::iADI()
 {
-<<<<<<< HEAD
-	const UINT8 imm = ~m_I1 & 15;
-=======
 	const u8 imm = ~m_I1 & 15;
->>>>>>> upstream/master
 	m_A = m_A + imm;
 	m_Skip = (m_A >> 4) & 1;
 	m_A = m_A & 15;
@@ -604,11 +529,7 @@ void pps4_device::iRF2()
  */
 void pps4_device::iLD()
 {
-<<<<<<< HEAD
-	const UINT16 i3c = ~m_I1 & 7;
-=======
 	const u16 i3c = ~m_I1 & 7;
->>>>>>> upstream/master
 	m_A = M();
 	m_B = m_B ^ (i3c << 4);
 }
@@ -631,13 +552,8 @@ void pps4_device::iLD()
  */
 void pps4_device::iEX()
 {
-<<<<<<< HEAD
-	const UINT16 i3c = ~m_I1 & 7;
-	const UINT8 mem = M();
-=======
 	const u16 i3c = ~m_I1 & 7;
 	const u8 mem = M();
->>>>>>> upstream/master
 	W(m_A);
 	m_A = mem;
 	m_B = m_B ^ (i3c << 4);
@@ -665,15 +581,9 @@ void pps4_device::iEX()
  */
 void pps4_device::iEXD()
 {
-<<<<<<< HEAD
-	const UINT8 i3c = ~m_I1 & 7;
-	const UINT8 mem = M();
-	UINT8 bl = m_B & 15;
-=======
 	const u8 i3c = ~m_I1 & 7;
 	const u8 mem = M();
 	u8 bl = m_B & 15;
->>>>>>> upstream/master
 	W(m_A);
 	m_A = mem;
 	m_B = m_B ^ (i3c << 4);
@@ -710,11 +620,7 @@ void pps4_device::iLDI()
 {
 	// previous LDI instruction?
 	if (0x70 == (m_Ip & 0xf0)) {
-<<<<<<< HEAD
-		LOG(("%s: skip prev:%02x op:%02x\n", __FUNCTION__, m_Ip, m_I1));
-=======
 		LOG("%s: skip prev:%02x op:%02x\n", __FUNCTION__, m_Ip, m_I1);
->>>>>>> upstream/master
 		return;
 	}
 	m_A = ~m_I1 & 15;
@@ -829,11 +735,7 @@ void pps4_device::iLBUA()
 void pps4_device::iXABL()
 {
 	// swap A and BL
-<<<<<<< HEAD
-	UINT8 bl = m_B & 15;
-=======
 	u8 bl = m_B & 15;
->>>>>>> upstream/master
 	m_B = (m_B & ~15) | m_A;
 	m_A = bl;
 }
@@ -854,11 +756,7 @@ void pps4_device::iXABL()
 void pps4_device::iXBMX()
 {
 	// swap X and BM
-<<<<<<< HEAD
-	const UINT8 bm = (m_B >> 4) & 15;
-=======
 	const u8 bm = (m_B >> 4) & 15;
->>>>>>> upstream/master
 	m_B = (m_B & ~(15 << 4)) | (m_X << 4);
 	m_X = bm;
 }
@@ -927,11 +825,7 @@ void pps4_device::iXS()
  */
 void pps4_device::iCYS()
 {
-<<<<<<< HEAD
-	const UINT16 sa = (m_SA >> 4) | (m_A << 8);
-=======
 	const u16 sa = (m_SA >> 4) | (m_A << 8);
->>>>>>> upstream/master
 	m_A = m_SA & 15;
 	m_SA = sa;
 }
@@ -973,11 +867,7 @@ void pps4_device::iLB()
 {
 	// previous LB or LBL instruction?
 	if (0xc0 == (m_Ip & 0xf0) || 0x00 == m_Ip) {
-<<<<<<< HEAD
-		LOG(("%s: skip prev:%02x op:%02x\n", __FUNCTION__, m_Ip, m_I1));
-=======
 		LOG("%s: skip prev:%02x op:%02x\n", __FUNCTION__, m_Ip, m_I1);
->>>>>>> upstream/master
 		return;
 	}
 	m_SB = m_SA;
@@ -1019,11 +909,7 @@ void pps4_device::iLBL()
 	m_I2 = ARG();
 	// previous LB or LBL instruction?
 	if (0xc0 == (m_Ip & 0xf0) || 0x00 == m_Ip) {
-<<<<<<< HEAD
-		LOG(("%s: skip prev:%02x op:%02x\n", __FUNCTION__, m_Ip, m_I1));
-=======
 		LOG("%s: skip prev:%02x op:%02x\n", __FUNCTION__, m_Ip, m_I1);
->>>>>>> upstream/master
 		return;
 	}
 	m_B = ~m_I2 & 255;  // Note: immediate is 1's complement
@@ -1046,17 +932,10 @@ void pps4_device::iLBL()
  */
 void pps4_device::iINCB()
 {
-<<<<<<< HEAD
-	UINT8 bl = m_B & 15;
-	bl = (bl + 1) & 15;
-	if (0 == bl) {
-		LOG(("%s: skip BL=%x\n", __FUNCTION__, bl));
-=======
 	u8 bl = m_B & 15;
 	bl = (bl + 1) & 15;
 	if (0 == bl) {
 		LOG("%s: skip BL=%x\n", __FUNCTION__, bl);
->>>>>>> upstream/master
 		m_Skip = 1;
 	}
 	m_B = (m_B & ~15) | bl;
@@ -1079,17 +958,10 @@ void pps4_device::iINCB()
  */
 void pps4_device::iDECB()
 {
-<<<<<<< HEAD
-	UINT8 bl = m_B & 15;
-	bl = (bl - 1) & 15;
-	if (15 == bl) {
-		LOG(("%s: skip BL=%x\n", __FUNCTION__, bl));
-=======
 	u8 bl = m_B & 15;
 	bl = (bl - 1) & 15;
 	if (15 == bl) {
 		LOG("%s: skip BL=%x\n", __FUNCTION__, bl);
->>>>>>> upstream/master
 		m_Skip = 1;
 	}
 	m_B = (m_B & ~15) | bl;
@@ -1112,13 +984,8 @@ void pps4_device::iDECB()
  */
 void pps4_device::iT()
 {
-<<<<<<< HEAD
-	const UINT16 p = (m_P & ~63) | (m_I1 & 63);
-	LOG(("%s: P=%03x I=%02x -> P=%03x\n", __FUNCTION__, m_P, m_I1, p));
-=======
 	const u16 p = (m_P & ~63) | (m_I1 & 63);
 	LOG("%s: P=%03x I=%02x -> P=%03x\n", __FUNCTION__, m_P, m_I1, p);
->>>>>>> upstream/master
 	m_P = p;
 }
 
@@ -1256,13 +1123,8 @@ void pps4_device::iSKZ()
  */
 void pps4_device::iSKBI()
 {
-<<<<<<< HEAD
-	const UINT8 i4 = m_I1 & 15;
-	const UINT8 bl = m_B & 15;
-=======
 	const u8 i4 = m_I1 & 15;
 	const u8 bl = m_B & 15;
->>>>>>> upstream/master
 	m_Skip = bl == i4 ? 1 : 0;
 }
 
@@ -1361,15 +1223,6 @@ void pps4_device::iRTNSK()
  * the CPU and sets up the I/O enable signal. The second
  * ROM word is then received by the I/O devices and decoded
  * for address and command. The contents of the accumulator
-<<<<<<< HEAD
- * inverted are placed on the data lines for acceptance by
- * the I/O. At the same time, input data received by the I/O
- * device is transferred to the accumulator inverted.
- *
- * FIXME: Is BL on the I/D:8-5 lines during the I/O cycle?
- * The ROM, RAM, I/O chips A17xx suggest this, because they
- * expect the value of BL to address one of the sixteen
-=======
  * inverted are placed on the data lines [I/D:4-1] for
  * acceptance by the I/O. At the same time, input data
  * received by the I/O device [on I/D:8-5] is transferred
@@ -1379,26 +1232,16 @@ void pps4_device::iRTNSK()
  * during the I/O request cycle. The original RAM chip ignores
  * this and leaves the data bus alone at this time, but the
  * A17xx uses the value of BL to address one of the sixteen
->>>>>>> upstream/master
  * input/output lines.
  */
 void pps4_device::iIOL()
 {
-<<<<<<< HEAD
-	UINT8 ac = ((m_B & 15) << 4) | (~m_A & 15);
-	m_I2 = ARG();
-	m_io->write_byte(m_I2, ac);
-	LOG(("%s: port:%02x <- %x\n", __FUNCTION__, m_I2, ac));
-	ac = m_io->read_byte(m_I2) & 15;
-	LOG(("%s: port:%02x -> %x\n", __FUNCTION__, m_I2, ac));
-=======
 	u8 ac = (~m_A & 15);
 	m_I2 = ARG();
 	m_io->write_byte(m_I2, ac);
 	LOG("%s: port:%02x <- %x\n", __FUNCTION__, m_I2, ac);
 	ac = m_io->read_byte(m_I2) & 15;
 	LOG("%s: port:%02x -> %x\n", __FUNCTION__, m_I2, ac);
->>>>>>> upstream/master
 	m_A = ~ac & 15;
 }
 
@@ -1417,11 +1260,7 @@ void pps4_device::iIOL()
  */
 void pps4_device::iDIA()
 {
-<<<<<<< HEAD
-	m_A = m_io->read_byte(PPS4_PORT_A) & 15;
-=======
 	m_A = m_dia_cb() & 15;
->>>>>>> upstream/master
 }
 
 /**
@@ -1439,9 +1278,6 @@ void pps4_device::iDIA()
  */
 void pps4_device::iDIB()
 {
-<<<<<<< HEAD
-	m_A = m_io->read_byte(PPS4_PORT_B) & 15;
-=======
 	m_A = m_dib_cb() & 15;
 }
 
@@ -1449,7 +1285,6 @@ void pps4_2_device::iDIB()
 {
 	// PPS-4/2 can write zeros onto bidirectional DIO pins to mask open-drain inputs
 	m_A = m_dib_cb() & m_DIO;
->>>>>>> upstream/master
 }
 
 /**
@@ -1467,9 +1302,6 @@ void pps4_2_device::iDIB()
  */
 void pps4_device::iDOA()
 {
-<<<<<<< HEAD
-	m_io->write_byte(PPS4_PORT_A, m_A);
-=======
 	m_do_cb(m_A);
 }
 
@@ -1478,7 +1310,6 @@ void pps4_2_device::iDOA()
 	// DOA also transfers contents of X to DIO on PPS-4/2
 	m_DIO = m_X;
 	m_do_cb(m_A | (m_X << 4));
->>>>>>> upstream/master
 }
 
 /**
@@ -1512,11 +1343,7 @@ void pps4_device::execute_one()
 	m_I1 = ROP();
 	if (m_Skip) {
 		m_Skip = 0;
-<<<<<<< HEAD
-		LOG(("%s: skip op:%02x\n", __FUNCTION__, m_I1));
-=======
 		LOG("%s: skip op:%02x\n", __FUNCTION__, m_I1);
->>>>>>> upstream/master
 		return;
 	}
 	switch (m_I1) {
@@ -1774,14 +1601,6 @@ void pps4_device::device_start()
 	state_add( PPS4_I2, "I2",  m_I2 ).formatstr("%02X").noshow();
 	state_add( PPS4_Ip, "Ip",  m_Ip ).formatstr("%02X").noshow();
 	state_add( STATE_GENPC,    "GENPC", m_P ).noshow();
-<<<<<<< HEAD
-	state_add( STATE_GENFLAGS, "GENFLAGS", m_C).formatstr("%3s").noshow();
-
-	m_icountptr = &m_icount;
-}
-
-void pps4_device::state_string_export(const device_state_entry &entry, std::string &str)
-=======
 	state_add( STATE_GENPCBASE,"CURPC", m_P ).noshow();
 	state_add( STATE_GENFLAGS, "GENFLAGS", m_C).formatstr("%3s").noshow();
 
@@ -1799,16 +1618,11 @@ void pps4_2_device::device_start()
 }
 
 void pps4_device::state_string_export(const device_state_entry &entry, std::string &str) const
->>>>>>> upstream/master
 {
 	switch (entry.index())
 	{
 		case STATE_GENFLAGS:
-<<<<<<< HEAD
-			strprintf(str, "%c%c%c",
-=======
 			str = string_format("%c%c%c",
->>>>>>> upstream/master
 				m_C ? 'C':'.',
 				m_FF1 ? '1':'.',
 				m_FF2 ? '2':'.');
@@ -1836,8 +1650,6 @@ void pps4_device::device_reset()
 	m_I2 = 0;       // Most recent parameter I2(8:1)
 	m_Ip = 0;       // Previous instruction I(8:1)
 }
-<<<<<<< HEAD
-=======
 
 void pps4_2_device::device_reset()
 {
@@ -1854,4 +1666,3 @@ READ16_MEMBER(pps4_device::address_bus_r)
 	else
 		return 0;
 }
->>>>>>> upstream/master

@@ -36,20 +36,6 @@
 #include "es5503.h"
 
 // device type definition
-<<<<<<< HEAD
-const device_type ES5503 = &device_creator<es5503_device>;
-
-// useful constants
-static const UINT16 wavesizes[8] = { 256, 512, 1024, 2048, 4096, 8192, 16384, 32768 };
-static const UINT32 wavemasks[8] = { 0x1ff00, 0x1fe00, 0x1fc00, 0x1f800, 0x1f000, 0x1e000, 0x1c000, 0x18000 };
-static const UINT32 accmasks[8]  = { 0xff, 0x1ff, 0x3ff, 0x7ff, 0xfff, 0x1fff, 0x3fff, 0x7fff };
-static const int    resshifts[8] = { 9, 10, 11, 12, 13, 14, 15, 16 };
-
-// default address map
-static ADDRESS_MAP_START( es5503, AS_0, 8, es5503_device )
-	AM_RANGE(0x000000, 0x1ffff) AM_ROM
-ADDRESS_MAP_END
-=======
 DEFINE_DEVICE_TYPE(ES5503, es5503_device, "es5503", "Ensoniq ES5503")
 
 // useful constants
@@ -57,7 +43,6 @@ static constexpr uint16_t wavesizes[8] = { 256, 512, 1024, 2048, 4096, 8192, 163
 static constexpr uint32_t wavemasks[8] = { 0x1ff00, 0x1fe00, 0x1fc00, 0x1f800, 0x1f000, 0x1e000, 0x1c000, 0x18000 };
 static constexpr uint32_t accmasks[8]  = { 0xff, 0x1ff, 0x3ff, 0x7ff, 0xfff, 0x1fff, 0x3fff, 0x7fff };
 static constexpr int    resshifts[8] = { 9, 10, 11, 12, 13, 14, 15, 16 };
->>>>>>> upstream/master
 
 //**************************************************************************
 //  LIVE DEVICE
@@ -67,35 +52,15 @@ static constexpr int    resshifts[8] = { 9, 10, 11, 12, 13, 14, 15, 16 };
 //  es5503_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-es5503_device::es5503_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, ES5503, "Ensoniq ES5503", tag, owner, clock, "es5503", __FILE__),
-		device_sound_interface(mconfig, *this),
-		device_memory_interface(mconfig, *this),
-		m_space_config("es5503_samples", ENDIANNESS_LITTLE, 8, 17, 0, NULL, *ADDRESS_MAP_NAME(es5503)),
-=======
 es5503_device::es5503_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, ES5503, tag, owner, clock),
 		device_sound_interface(mconfig, *this),
 		device_rom_interface(mconfig, *this, 17),
->>>>>>> upstream/master
 		m_irq_func(*this),
 		m_adc_func(*this)
 {
 }
 
-<<<<<<< HEAD
-//-------------------------------------------------
-//  memory_space_config - return a description of
-//  any address spaces owned by this device
-//-------------------------------------------------
-
-const address_space_config *es5503_device::memory_space_config(address_spacenum spacenum) const
-{
-	return (spacenum == 0) ? &m_space_config : NULL;
-}
-=======
->>>>>>> upstream/master
 
 //-------------------------------------------------
 //  static_set_type - configuration helper to set
@@ -117,8 +82,6 @@ void es5503_device::device_timer(emu_timer &timer, device_timer_id tid, int para
 	m_stream->update();
 }
 
-<<<<<<< HEAD
-=======
 //-------------------------------------------------
 //  rom_bank_updated - the rom bank has changed
 //-------------------------------------------------
@@ -128,16 +91,11 @@ void es5503_device::rom_bank_updated()
 	m_stream->update();
 }
 
->>>>>>> upstream/master
 // halt_osc: handle halting an oscillator
 // chip = chip ptr
 // onum = oscillator #
 // type = 1 for 0 found in sample data, 0 for hit end of table size
-<<<<<<< HEAD
-void es5503_device::halt_osc(int onum, int type, UINT32 *accumulator, int resshift)
-=======
 void es5503_device::halt_osc(int onum, int type, uint32_t *accumulator, int resshift)
->>>>>>> upstream/master
 {
 	ES5503Osc *pOsc = &oscillators[onum];
 	ES5503Osc *pPartner = &oscillators[onum^1];
@@ -150,13 +108,8 @@ void es5503_device::halt_osc(int onum, int type, uint32_t *accumulator, int ress
 	}
 	else    // preserve the relative phase of the oscillator when looping
 	{
-<<<<<<< HEAD
-		UINT16 wtsize = pOsc->wtsize - 1;
-		UINT32 altram = (*accumulator) >> resshift;
-=======
 		uint16_t wtsize = pOsc->wtsize - 1;
 		uint32_t altram = (*accumulator) >> resshift;
->>>>>>> upstream/master
 
 		if (altram > wtsize)
 		{
@@ -189,17 +142,10 @@ void es5503_device::halt_osc(int onum, int type, uint32_t *accumulator, int ress
 
 void es5503_device::sound_stream_update(sound_stream &stream, stream_sample_t **inputs, stream_sample_t **outputs, int samples)
 {
-<<<<<<< HEAD
-	static INT32 mix[(44100/60)*2*8];
-	INT32 *mixp;
-	int osc, snum, i;
-	UINT32 ramptr;
-=======
 	static int32_t mix[(44100/60)*2*8];
 	int32_t *mixp;
 	int osc, snum, i;
 	uint32_t ramptr;
->>>>>>> upstream/master
 
 	assert(samples < (44100/60)*2);
 	memset(mix, 0, sizeof(mix));
@@ -212,17 +158,6 @@ void es5503_device::sound_stream_update(sound_stream &stream, stream_sample_t **
 
 			if (!(pOsc->control & 1) && ((pOsc->control >> 4) & (output_channels - 1)) == chan)
 			{
-<<<<<<< HEAD
-				UINT32 wtptr = pOsc->wavetblpointer & wavemasks[pOsc->wavetblsize], altram;
-				UINT32 acc = pOsc->accumulator;
-				UINT16 wtsize = pOsc->wtsize - 1;
-				UINT8 ctrl = pOsc->control;
-				UINT16 freq = pOsc->freq;
-				INT16 vol = pOsc->vol;
-				INT8 data = -128;
-				int resshift = resshifts[pOsc->resolution] - pOsc->wavetblsize;
-				UINT32 sizemask = accmasks[pOsc->wavetblsize];
-=======
 				uint32_t wtptr = pOsc->wavetblpointer & wavemasks[pOsc->wavetblsize], altram;
 				uint32_t acc = pOsc->accumulator;
 				uint16_t wtsize = pOsc->wtsize - 1;
@@ -232,7 +167,6 @@ void es5503_device::sound_stream_update(sound_stream &stream, stream_sample_t **
 				int8_t data = -128;
 				int resshift = resshifts[pOsc->resolution] - pOsc->wavetblsize;
 				uint32_t sizemask = accmasks[pOsc->wavetblsize];
->>>>>>> upstream/master
 				mixp = &mix[0] + chan;
 
 				for (snum = 0; snum < samples; snum++)
@@ -244,15 +178,9 @@ void es5503_device::sound_stream_update(sound_stream &stream, stream_sample_t **
 
 					// channel strobe is always valid when reading; this allows potentially banking per voice
 					m_channel_strobe = (ctrl>>4) & 0xf;
-<<<<<<< HEAD
-					data = (INT32)m_direct->read_byte(ramptr + wtptr) ^ 0x80;
-
-					if (m_direct->read_byte(ramptr + wtptr) == 0x00)
-=======
 					data = (int32_t)read_byte(ramptr + wtptr) ^ 0x80;
 
 					if (read_byte(ramptr + wtptr) == 0x00)
->>>>>>> upstream/master
 					{
 						halt_osc(osc, 1, &acc, resshift);
 					}
@@ -293,12 +221,6 @@ void es5503_device::device_start()
 {
 	int osc;
 
-<<<<<<< HEAD
-	// find our direct access
-	m_direct = &space().direct();
-
-=======
->>>>>>> upstream/master
 	m_irq_func.resolve_safe();
 	m_adc_func.resolve_safe(0);
 
@@ -321,11 +243,7 @@ void es5503_device::device_start()
 	output_rate = (clock()/8)/34;   // (input clock / 8) / # of oscs. enabled + 2
 	m_stream = machine().sound().stream_alloc(*this, 0, output_channels, output_rate);
 
-<<<<<<< HEAD
-	m_timer = timer_alloc(0, NULL);
-=======
 	m_timer = timer_alloc(0, nullptr);
->>>>>>> upstream/master
 	m_timer->adjust(attotime::from_hz(output_rate), 0, attotime::from_hz(output_rate));
 }
 
@@ -333,20 +251,6 @@ void es5503_device::device_reset()
 {
 	rege0 = 0xff;
 
-<<<<<<< HEAD
-	for (int osc = 0; osc < 32; osc++)
-	{
-		oscillators[osc].freq = 0;
-		oscillators[osc].wtsize = 0;
-		oscillators[osc].control = 0;
-		oscillators[osc].vol = 0;
-		oscillators[osc].data = 0x80;
-		oscillators[osc].wavetblpointer = 0;
-		oscillators[osc].wavetblsize = 0;
-		oscillators[osc].resolution = 0;
-		oscillators[osc].accumulator = 0;
-		oscillators[osc].irqpend = 0;
-=======
 	for (auto & elem : oscillators)
 	{
 		elem.freq = 0;
@@ -359,7 +263,6 @@ void es5503_device::device_reset()
 		elem.resolution = 0;
 		elem.accumulator = 0;
 		elem.irqpend = 0;
->>>>>>> upstream/master
 	}
 
 	oscsenabled = 1;
@@ -371,11 +274,7 @@ void es5503_device::device_reset()
 
 READ8_MEMBER( es5503_device::read )
 {
-<<<<<<< HEAD
-	UINT8 retval;
-=======
 	uint8_t retval;
->>>>>>> upstream/master
 	int i;
 
 	m_stream->update();

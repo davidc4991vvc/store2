@@ -2,11 +2,7 @@
 // copyright-holders:Nathan Woods
 /****************************************************************************
 
-<<<<<<< HEAD
-    os9.c
-=======
     os9.cpp
->>>>>>> upstream/master
 
     CoCo OS-9 disk images
 
@@ -28,20 +24,6 @@ enum creation_policy_t
 
 struct os9_diskinfo
 {
-<<<<<<< HEAD
-	UINT32 total_sectors;
-	UINT32 sectors_per_track;
-	UINT32 allocation_bitmap_bytes;
-	UINT32 cluster_size;
-	UINT32 root_dir_lsn;
-	UINT32 owner_id;
-	UINT32 attributes;
-	UINT32 disk_id;
-	UINT32 format_flags;
-	UINT32 bootstrap_lsn;
-	UINT32 bootstrap_size;
-	UINT32 sector_size;
-=======
 	uint32_t total_sectors;
 	uint32_t sectors_per_track;
 	uint32_t allocation_bitmap_bytes;
@@ -54,7 +36,6 @@ struct os9_diskinfo
 	uint32_t bootstrap_lsn;
 	uint32_t bootstrap_size;
 	uint32_t sector_size;
->>>>>>> upstream/master
 
 	unsigned int sides : 2;
 	unsigned int double_density : 1;
@@ -63,11 +44,7 @@ struct os9_diskinfo
 	unsigned int octal_track_density : 1;
 
 	char name[33];
-<<<<<<< HEAD
-	UINT8 *allocation_bitmap;
-=======
 	uint8_t *allocation_bitmap;
->>>>>>> upstream/master
 };
 
 
@@ -82,17 +59,6 @@ struct os9_fileinfo
 	unsigned int user_write : 1;
 	unsigned int user_read : 1;
 
-<<<<<<< HEAD
-	UINT32 lsn;
-	UINT32 owner_id;
-	UINT32 link_count;
-	UINT32 file_size;
-
-	struct
-	{
-		UINT32 lsn;
-		UINT32 count;
-=======
 	uint32_t lsn;
 	uint32_t owner_id;
 	uint32_t link_count;
@@ -102,7 +68,6 @@ struct os9_fileinfo
 	{
 		uint32_t lsn;
 		uint32_t count;
->>>>>>> upstream/master
 	} sector_map[48];
 };
 
@@ -110,30 +75,18 @@ struct os9_fileinfo
 struct os9_direnum
 {
 	struct os9_fileinfo dir_info;
-<<<<<<< HEAD
-	UINT32 index;
-=======
 	uint32_t index;
->>>>>>> upstream/master
 };
 
 
 
 static void pick_string(const void *ptr, size_t offset, size_t length, char *dest)
 {
-<<<<<<< HEAD
-	UINT8 b;
-
-	while(length--)
-	{
-		b = ((UINT8 *) ptr)[offset++];
-=======
 	uint8_t b;
 
 	while(length--)
 	{
 		b = ((uint8_t *) ptr)[offset++];
->>>>>>> upstream/master
 		*(dest++) = b & 0x7F;
 		if (b & 0x80)
 			length = 0;
@@ -146,28 +99,17 @@ static void pick_string(const void *ptr, size_t offset, size_t length, char *des
 static void place_string(void *ptr, size_t offset, size_t length, const char *s)
 {
 	size_t i;
-<<<<<<< HEAD
-	UINT8 b;
-	UINT8 *bptr;
-
-	bptr = (UINT8 *) ptr;
-=======
 	uint8_t b;
 	uint8_t *bptr;
 
 	bptr = (uint8_t *) ptr;
->>>>>>> upstream/master
 	bptr += offset;
 
 	bptr[0] = 0x80;
 
 	for (i = 0; s[i] && (i < length); i++)
 	{
-<<<<<<< HEAD
-		b = ((UINT8) s[i]) & 0x7F;
-=======
 		b = ((uint8_t) s[i]) & 0x7F;
->>>>>>> upstream/master
 		if (s[i+1] == '\0')
 			b |= 0x80;
 		bptr[i] = b;
@@ -176,35 +118,21 @@ static void place_string(void *ptr, size_t offset, size_t length, const char *s)
 
 
 
-<<<<<<< HEAD
-static os9_diskinfo *os9_get_diskinfo(imgtool_image *image)
-=======
 static os9_diskinfo *os9_get_diskinfo(imgtool::image &image)
->>>>>>> upstream/master
 {
 	return (os9_diskinfo *) imgtool_floppy_extrabytes(image);
 }
 
 
 
-<<<<<<< HEAD
-static struct os9_direnum *os9_get_dirinfo(imgtool_directory *directory)
-{
-	return (struct os9_direnum *) imgtool_directory_extrabytes(directory);
-=======
 static struct os9_direnum *os9_get_dirinfo(imgtool::directory &directory)
 {
 	return (struct os9_direnum *) directory.extra_bytes();
->>>>>>> upstream/master
 }
 
 
 
-<<<<<<< HEAD
-static imgtoolerr_t os9_locate_lsn(imgtool_image *image, UINT32 lsn, UINT32 *head, UINT32 *track, UINT32 *sector)
-=======
 static imgtoolerr_t os9_locate_lsn(imgtool::image &image, uint32_t lsn, uint32_t *head, uint32_t *track, uint32_t *sector)
->>>>>>> upstream/master
 {
 	const os9_diskinfo *disk_info;
 
@@ -220,19 +148,11 @@ static imgtoolerr_t os9_locate_lsn(imgtool::image &image, uint32_t lsn, uint32_t
 
 
 
-<<<<<<< HEAD
-static imgtoolerr_t os9_read_lsn(imgtool_image *img, UINT32 lsn, int offset, void *buffer, size_t buffer_len)
-{
-	imgtoolerr_t err;
-	floperr_t ferr;
-	UINT32 head, track, sector;
-=======
 static imgtoolerr_t os9_read_lsn(imgtool::image &img, uint32_t lsn, int offset, void *buffer, size_t buffer_len)
 {
 	imgtoolerr_t err;
 	floperr_t ferr;
 	uint32_t head, track, sector;
->>>>>>> upstream/master
 
 	err = os9_locate_lsn(img, lsn, &head, &track, &sector);
 	if (err)
@@ -247,19 +167,11 @@ static imgtoolerr_t os9_read_lsn(imgtool::image &img, uint32_t lsn, int offset, 
 
 
 
-<<<<<<< HEAD
-static imgtoolerr_t os9_write_lsn(imgtool_image *img, UINT32 lsn, int offset, const void *buffer, size_t buffer_len)
-{
-	imgtoolerr_t err;
-	floperr_t ferr;
-	UINT32 head, track, sector;
-=======
 static imgtoolerr_t os9_write_lsn(imgtool::image &img, uint32_t lsn, int offset, const void *buffer, size_t buffer_len)
 {
 	imgtoolerr_t err;
 	floperr_t ferr;
 	uint32_t head, track, sector;
->>>>>>> upstream/master
 
 	err = os9_locate_lsn(img, lsn, &head, &track, &sector);
 	if (err)
@@ -274,19 +186,11 @@ static imgtoolerr_t os9_write_lsn(imgtool::image &img, uint32_t lsn, int offset,
 
 
 
-<<<<<<< HEAD
-static UINT32 os9_lookup_lsn(imgtool_image *img,
-	const struct os9_fileinfo *file_info, UINT32 *index)
-{
-	int i;
-	UINT32 lsn;
-=======
 static uint32_t os9_lookup_lsn(imgtool::image &img,
 	const struct os9_fileinfo *file_info, uint32_t *index)
 {
 	int i;
 	uint32_t lsn;
->>>>>>> upstream/master
 	const os9_diskinfo *disk_info;
 
 	disk_info = os9_get_diskinfo(img);
@@ -303,11 +207,7 @@ static uint32_t os9_lookup_lsn(imgtool::image &img,
 
 
 
-<<<<<<< HEAD
-static int os9_interpret_dirent(void *entry, char **filename, UINT32 *lsn, int *corrupt)
-=======
 static int os9_interpret_dirent(void *entry, char **filename, uint32_t *lsn, int *corrupt)
->>>>>>> upstream/master
 {
 	int i;
 	char *entry_b = (char *) entry;
@@ -315,20 +215,12 @@ static int os9_interpret_dirent(void *entry, char **filename, uint32_t *lsn, int
 	*filename = NULL;
 	*lsn = 0;
 	if (corrupt)
-<<<<<<< HEAD
-		*corrupt = FALSE;
-=======
 		*corrupt = false;
->>>>>>> upstream/master
 
 	if (entry_b[28] != '\0')
 	{
 		if (corrupt)
-<<<<<<< HEAD
-			*corrupt = TRUE;
-=======
 			*corrupt = true;
->>>>>>> upstream/master
 	}
 
 	for (i = 0; (i < 28) && !(entry_b[i] & 0x80); i++)
@@ -349,16 +241,6 @@ static int os9_interpret_dirent(void *entry, char **filename, uint32_t *lsn, int
     entry from an LSN, and decodes it
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-static imgtoolerr_t os9_decode_file_header(imgtool_image *image,
-	int lsn, struct os9_fileinfo *info)
-{
-	imgtoolerr_t err;
-	UINT32 attributes, count;
-	int max_entries, i;
-	const os9_diskinfo *disk_info;
-	UINT8 header[256];
-=======
 static imgtoolerr_t os9_decode_file_header(imgtool::image &image,
 	int lsn, struct os9_fileinfo *info)
 {
@@ -367,7 +249,6 @@ static imgtoolerr_t os9_decode_file_header(imgtool::image &image,
 	int max_entries, i;
 	const os9_diskinfo *disk_info;
 	uint8_t header[256];
->>>>>>> upstream/master
 
 	disk_info = os9_get_diskinfo(image);
 
@@ -394,11 +275,7 @@ static imgtoolerr_t os9_decode_file_header(imgtool::image &image,
 
 	/* read all sector map entries */
 	max_entries = (disk_info->sector_size - 16) / 5;
-<<<<<<< HEAD
-	max_entries = MIN(max_entries, ARRAY_LENGTH(info->sector_map) - 1);
-=======
 	max_entries = (std::min<std::size_t>)(max_entries, ARRAY_LENGTH(info->sector_map) - 1);
->>>>>>> upstream/master
 	for (i = 0; i < max_entries; i++)
 	{
 		lsn = pick_integer_be(header, 16 + (i * 5) + 0, 3);
@@ -416,19 +293,11 @@ static imgtoolerr_t os9_decode_file_header(imgtool::image &image,
 
 
 
-<<<<<<< HEAD
-static imgtoolerr_t os9_allocate_lsn(imgtool_image *image, UINT32 *lsn)
-{
-	UINT32 i;
-	os9_diskinfo *disk_info;
-	UINT8 b, mask;
-=======
 static imgtoolerr_t os9_allocate_lsn(imgtool::image &image, uint32_t *lsn)
 {
 	uint32_t i;
 	os9_diskinfo *disk_info;
 	uint8_t b, mask;
->>>>>>> upstream/master
 
 	disk_info = os9_get_diskinfo(image);
 
@@ -449,15 +318,9 @@ static imgtoolerr_t os9_allocate_lsn(imgtool::image &image, uint32_t *lsn)
 
 
 
-<<<<<<< HEAD
-static imgtoolerr_t os9_deallocate_lsn(imgtool_image *image, UINT32 lsn)
-{
-	UINT8 mask;
-=======
 static imgtoolerr_t os9_deallocate_lsn(imgtool::image &image, uint32_t lsn)
 {
 	uint8_t mask;
->>>>>>> upstream/master
 	os9_diskinfo *disk_info;
 
 	disk_info = os9_get_diskinfo(image);
@@ -468,19 +331,11 @@ static imgtoolerr_t os9_deallocate_lsn(imgtool::image &image, uint32_t lsn)
 
 
 
-<<<<<<< HEAD
-static UINT32 os9_get_free_lsns(imgtool_image *image)
-{
-	const os9_diskinfo *disk_info;
-	UINT32 i, free_lsns;
-	UINT8 b;
-=======
 static uint32_t os9_get_free_lsns(imgtool::image &image)
 {
 	const os9_diskinfo *disk_info;
 	uint32_t i, free_lsns;
 	uint8_t b;
->>>>>>> upstream/master
 
 	disk_info = os9_get_diskinfo(image);
 	free_lsns = 0;
@@ -509,17 +364,6 @@ static imgtoolerr_t os9_corrupt_file_error(const struct os9_fileinfo *file_info)
 
 
 
-<<<<<<< HEAD
-static imgtoolerr_t os9_set_file_size(imgtool_image *image,
-	struct os9_fileinfo *file_info, UINT32 new_size)
-{
-	imgtoolerr_t err;
-	const os9_diskinfo *disk_info;
-	UINT32 new_lsn_count, current_lsn_count;
-	UINT32 free_lsns, lsn, i;
-	int sector_map_length = -1;
-	UINT8 header[256];
-=======
 static imgtoolerr_t os9_set_file_size(imgtool::image &image,
 	struct os9_fileinfo *file_info, uint32_t new_size)
 {
@@ -529,7 +373,6 @@ static imgtoolerr_t os9_set_file_size(imgtool::image &image,
 	uint32_t free_lsns, lsn, i;
 	int sector_map_length = -1;
 	uint8_t header[256];
->>>>>>> upstream/master
 
 	/* easy way out? */
 	if (file_info->file_size == new_size)
@@ -618,11 +461,7 @@ static imgtoolerr_t os9_set_file_size(imgtool::image &image,
 	/* do we have to write the sector map? */
 	if (sector_map_length >= 0)
 	{
-<<<<<<< HEAD
-		for (i = 0; i < MIN(sector_map_length + 1, ARRAY_LENGTH(file_info->sector_map)); i++)
-=======
 		for (i = 0; i < (std::min<std::size_t>)(sector_map_length + 1, ARRAY_LENGTH(file_info->sector_map)); i++)
->>>>>>> upstream/master
 		{
 			place_integer_be(header, 16 + (i * 5) + 0, 3, file_info->sector_map[i].lsn);
 			place_integer_be(header, 16 + (i * 5) + 3, 2, file_info->sector_map[i].count);
@@ -644,21 +483,6 @@ static imgtoolerr_t os9_set_file_size(imgtool::image &image,
     a file
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-static imgtoolerr_t os9_lookup_path(imgtool_image *img, const char *path,
-	creation_policy_t create, struct os9_fileinfo *file_info,
-	UINT32 *parent_lsn, UINT32 *dirent_lsn, UINT32 *dirent_index)
-{
-	imgtoolerr_t err = IMGTOOLERR_SUCCESS;
-	struct os9_fileinfo dir_info;
-	UINT32 index, current_lsn, dir_size;
-	UINT32 entry_index = 0;
-	UINT32 free_entry_index = 0xffffffff;
-	UINT32 entry_lsn = 0;
-	UINT32 allocated_lsn = 0;
-	UINT8 entry[32];
-	UINT8 block[64];
-=======
 static imgtoolerr_t os9_lookup_path(imgtool::image &img, const char *path,
 	creation_policy_t create, struct os9_fileinfo *file_info,
 	uint32_t *parent_lsn, uint32_t *dirent_lsn, uint32_t *dirent_index)
@@ -672,7 +496,6 @@ static imgtoolerr_t os9_lookup_path(imgtool::image &img, const char *path,
 	uint32_t allocated_lsn = 0;
 	uint8_t entry[32];
 	uint8_t block[64];
->>>>>>> upstream/master
 	char *filename;
 	const os9_diskinfo *disk_info;
 
@@ -799,26 +622,15 @@ done:
 
 
 
-<<<<<<< HEAD
-static imgtoolerr_t os9_diskimage_open(imgtool_image *image, imgtool_stream *stream)
-=======
 static imgtoolerr_t os9_diskimage_open(imgtool::image &image, imgtool::stream::ptr &&dummy)
->>>>>>> upstream/master
 {
 	imgtoolerr_t err;
 	floperr_t ferr;
 	os9_diskinfo *info;
-<<<<<<< HEAD
-	UINT32 track_size_in_sectors, i; //, attributes;
-	UINT8 header[256];
-	UINT32 allocation_bitmap_lsns;
-	UINT8 b, mask;
-=======
 	uint32_t track_size_in_sectors, i; //, attributes;
 	uint8_t header[256];
 	uint32_t allocation_bitmap_lsns;
 	uint8_t b, mask;
->>>>>>> upstream/master
 
 	info = os9_get_diskinfo(image);
 
@@ -858,11 +670,7 @@ static imgtoolerr_t os9_diskimage_open(imgtool::image &image, imgtool::stream::p
 		return IMGTOOLERR_CORRUPTIMAGE;
 
 	/* is the allocation bitmap too big? */
-<<<<<<< HEAD
-	info->allocation_bitmap = (UINT8*)imgtool_image_malloc(image, info->allocation_bitmap_bytes);
-=======
 	info->allocation_bitmap = (uint8_t*)image.malloc(info->allocation_bitmap_bytes);
->>>>>>> upstream/master
 	if (!info->allocation_bitmap)
 		return IMGTOOLERR_OUTOFMEMORY;
 	memset(info->allocation_bitmap, 0, info->allocation_bitmap_bytes);
@@ -883,11 +691,7 @@ static imgtoolerr_t os9_diskimage_open(imgtool::image &image, imgtool::stream::p
 	for (i = 0; i < allocation_bitmap_lsns; i++)
 	{
 		err = os9_read_lsn(image, 1 + i, 0, &info->allocation_bitmap[i * info->sector_size],
-<<<<<<< HEAD
-			MIN(info->allocation_bitmap_bytes - (i * info->sector_size), info->sector_size));
-=======
 			std::min(info->allocation_bitmap_bytes - (i * info->sector_size), info->sector_size));
->>>>>>> upstream/master
 		if (err)
 			return err;
 	}
@@ -906,18 +710,6 @@ static imgtoolerr_t os9_diskimage_open(imgtool::image &image, imgtool::stream::p
 
 
 
-<<<<<<< HEAD
-static imgtoolerr_t os9_diskimage_create(imgtool_image *img, imgtool_stream *stream, option_resolution *opts)
-{
-	imgtoolerr_t err;
-	dynamic_buffer header;
-	UINT32 heads, tracks, sectors, sector_bytes, first_sector_id;
-	UINT32 cluster_size, owner_id;
-	UINT32 allocation_bitmap_bits, allocation_bitmap_lsns;
-	UINT32 attributes, format_flags, disk_id;
-	UINT32 i;
-	INT32 total_allocated_sectors;
-=======
 static imgtoolerr_t os9_diskimage_create(imgtool::image &img, imgtool::stream::ptr &&stream, util::option_resolution *opts)
 {
 	imgtoolerr_t err;
@@ -928,7 +720,6 @@ static imgtoolerr_t os9_diskimage_create(imgtool::image &img, imgtool::stream::p
 	uint32_t attributes, format_flags, disk_id;
 	uint32_t i;
 	int32_t total_allocated_sectors;
->>>>>>> upstream/master
 	const char *title;
 	time_t t;
 	struct tm *ltime;
@@ -936,19 +727,11 @@ static imgtoolerr_t os9_diskimage_create(imgtool::image &img, imgtool::stream::p
 	time(&t);
 	ltime = localtime(&t);
 
-<<<<<<< HEAD
-	heads = option_resolution_lookup_int(opts, 'H');
-	tracks = option_resolution_lookup_int(opts, 'T');
-	sectors = option_resolution_lookup_int(opts, 'S');
-	sector_bytes = option_resolution_lookup_int(opts, 'L');
-	first_sector_id = option_resolution_lookup_int(opts, 'F');
-=======
 	heads = opts->lookup_int('H');
 	tracks = opts->lookup_int('T');
 	sectors = opts->lookup_int('S');
 	sector_bytes = opts->lookup_int('L');
 	first_sector_id = opts->lookup_int('F');
->>>>>>> upstream/master
 	title = "";
 
 	header.resize(sector_bytes);
@@ -1007,11 +790,7 @@ static imgtoolerr_t os9_diskimage_create(imgtool::image &img, imgtool::stream::p
 		else if (total_allocated_sectors > 1 )
 		{
 			int offset;
-<<<<<<< HEAD
-			UINT8 mask;
-=======
 			uint8_t mask;
->>>>>>> upstream/master
 
 			while( total_allocated_sectors >= 0 )
 			{
@@ -1032,33 +811,19 @@ static imgtoolerr_t os9_diskimage_create(imgtool::image &img, imgtool::stream::p
 	header[0x00] = 0xBF;
 	header[0x01] = 0x00;
 	header[0x02] = 0x00;
-<<<<<<< HEAD
-	header[0x03] = (UINT8) ltime->tm_year;
-	header[0x04] = (UINT8) ltime->tm_mon + 1;
-	header[0x05] = (UINT8) ltime->tm_mday;
-	header[0x06] = (UINT8) ltime->tm_hour;
-	header[0x07] = (UINT8) ltime->tm_min;
-=======
 	header[0x03] = (uint8_t) ltime->tm_year;
 	header[0x04] = (uint8_t) ltime->tm_mon + 1;
 	header[0x05] = (uint8_t) ltime->tm_mday;
 	header[0x06] = (uint8_t) ltime->tm_hour;
 	header[0x07] = (uint8_t) ltime->tm_min;
->>>>>>> upstream/master
 	header[0x08] = 0x02;
 	header[0x09] = 0x00;
 	header[0x0A] = 0x00;
 	header[0x0B] = 0x00;
 	header[0x0C] = 0x40;
-<<<<<<< HEAD
-	header[0x0D] = (UINT8) (ltime->tm_year % 100);
-	header[0x0E] = (UINT8) ltime->tm_mon;
-	header[0x0F] = (UINT8) ltime->tm_mday;
-=======
 	header[0x0D] = (uint8_t) (ltime->tm_year % 100);
 	header[0x0E] = (uint8_t) ltime->tm_mon;
 	header[0x0F] = (uint8_t) ltime->tm_mday;
->>>>>>> upstream/master
 	place_integer_be(&header[0], 0x10, 3, 1 + allocation_bitmap_lsns + 1);
 	place_integer_be(&header[0], 0x13, 2, 8);
 
@@ -1082,22 +847,12 @@ done:
 
 
 
-<<<<<<< HEAD
-static imgtoolerr_t os9_diskimage_beginenum(imgtool_directory *enumeration, const char *path)
-{
-	imgtoolerr_t err = IMGTOOLERR_SUCCESS;
-	struct os9_direnum *os9enum;
-	imgtool_image *image;
-
-	image = imgtool_directory_image(enumeration);
-=======
 static imgtoolerr_t os9_diskimage_beginenum(imgtool::directory &enumeration, const char *path)
 {
 	imgtoolerr_t err = IMGTOOLERR_SUCCESS;
 	struct os9_direnum *os9enum;
 	imgtool::image &image(enumeration.image());
 
->>>>>>> upstream/master
 	os9enum = os9_get_dirinfo(enumeration);
 
 	err = os9_lookup_path(image, path, CREATE_NONE, &os9enum->dir_info, NULL, NULL, NULL);
@@ -1117,19 +872,6 @@ done:
 
 
 
-<<<<<<< HEAD
-static imgtoolerr_t os9_diskimage_nextenum(imgtool_directory *enumeration, imgtool_dirent *ent)
-{
-	struct os9_direnum *os9enum;
-	UINT32 lsn, index;
-	imgtoolerr_t err;
-	UINT8 dir_entry[32];
-	char filename[29];
-	struct os9_fileinfo file_info;
-	imgtool_image *image;
-
-	image = imgtool_directory_image(enumeration);
-=======
 static imgtoolerr_t os9_diskimage_nextenum(imgtool::directory &enumeration, imgtool_dirent &ent)
 {
 	struct os9_direnum *os9enum;
@@ -1140,7 +882,6 @@ static imgtoolerr_t os9_diskimage_nextenum(imgtool::directory &enumeration, imgt
 	struct os9_fileinfo file_info;
 	imgtool::image &image(enumeration.image());
 
->>>>>>> upstream/master
 	os9enum = os9_get_dirinfo(enumeration);
 
 	do
@@ -1148,11 +889,7 @@ static imgtoolerr_t os9_diskimage_nextenum(imgtool::directory &enumeration, imgt
 		/* check for EOF */
 		if (os9enum->index >= os9enum->dir_info.file_size)
 		{
-<<<<<<< HEAD
-			ent->eof = 1;
-=======
 			ent.eof = 1;
->>>>>>> upstream/master
 			return IMGTOOLERR_SUCCESS;
 		}
 
@@ -1210,22 +947,13 @@ static imgtoolerr_t os9_diskimage_nextenum(imgtool::directory &enumeration, imgt
 
 	/* read file attributes */
 	lsn = pick_integer_be(dir_entry, 29, 3);
-<<<<<<< HEAD
-	err = os9_decode_file_header(imgtool_directory_image(enumeration), lsn, &file_info);
-=======
 	err = os9_decode_file_header(enumeration.image(), lsn, &file_info);
->>>>>>> upstream/master
 	if (err)
 		return err;
 
 	/* fill out imgtool_dirent structure */
-<<<<<<< HEAD
-	snprintf(ent->filename, ARRAY_LENGTH(ent->filename), "%s", filename);
-	snprintf(ent->attr, ARRAY_LENGTH(ent->attr), "%c%c%c%c%c%c%c%c",
-=======
 	snprintf(ent.filename, ARRAY_LENGTH(ent.filename), "%s", filename);
 	snprintf(ent.attr, ARRAY_LENGTH(ent.attr), "%c%c%c%c%c%c%c%c",
->>>>>>> upstream/master
 		file_info.directory      ? 'd' : '-',
 		file_info.non_sharable   ? 's' : '-',
 		file_info.public_execute ? 'x' : '-',
@@ -1235,33 +963,19 @@ static imgtoolerr_t os9_diskimage_nextenum(imgtool::directory &enumeration, imgt
 		file_info.user_write     ? 'w' : '-',
 		file_info.user_read      ? 'r' : '-');
 
-<<<<<<< HEAD
-	ent->directory = file_info.directory;
-	ent->corrupt = (dir_entry[28] != 0);
-	ent->filesize = file_info.file_size;
-=======
 	ent.directory = file_info.directory;
 	ent.corrupt = (dir_entry[28] != 0);
 	ent.filesize = file_info.file_size;
->>>>>>> upstream/master
 	return IMGTOOLERR_SUCCESS;
 }
 
 
 
-<<<<<<< HEAD
-static imgtoolerr_t os9_diskimage_freespace(imgtool_partition *partition, UINT64 *size)
-{
-	imgtool_image *image = imgtool_partition_image(partition);
-	const os9_diskinfo *disk_info;
-	UINT32 free_lsns;
-=======
 static imgtoolerr_t os9_diskimage_freespace(imgtool::partition &partition, uint64_t *size)
 {
 	imgtool::image &image(partition.image());
 	const os9_diskinfo *disk_info;
 	uint32_t free_lsns;
->>>>>>> upstream/master
 
 	disk_info = os9_get_diskinfo(image);
 	free_lsns = os9_get_free_lsns(image);
@@ -1272,18 +986,6 @@ static imgtoolerr_t os9_diskimage_freespace(imgtool::partition &partition, uint6
 
 
 
-<<<<<<< HEAD
-static imgtoolerr_t os9_diskimage_readfile(imgtool_partition *partition, const char *filename, const char *fork, imgtool_stream *destf)
-{
-	imgtoolerr_t err;
-	imgtool_image *img = imgtool_partition_image(partition);
-	const os9_diskinfo *disk_info;
-	struct os9_fileinfo file_info;
-	UINT8 buffer[256];
-	int i, j;
-	UINT32 file_size;
-	UINT32 used_size;
-=======
 static imgtoolerr_t os9_diskimage_readfile(imgtool::partition &partition, const char *filename, const char *fork, imgtool::stream &destf)
 {
 	imgtoolerr_t err;
@@ -1294,7 +996,6 @@ static imgtoolerr_t os9_diskimage_readfile(imgtool::partition &partition, const 
 	int i, j;
 	uint32_t file_size;
 	uint32_t used_size;
->>>>>>> upstream/master
 
 	disk_info = os9_get_diskinfo(img);
 
@@ -1309,20 +1010,12 @@ static imgtoolerr_t os9_diskimage_readfile(imgtool::partition &partition, const 
 	{
 		for (j = 0; j < file_info.sector_map[i].count; j++)
 		{
-<<<<<<< HEAD
-			used_size = MIN(file_size, disk_info->sector_size);
-=======
 			used_size = std::min(file_size, disk_info->sector_size);
->>>>>>> upstream/master
 			err = os9_read_lsn(img, file_info.sector_map[i].lsn + j, 0,
 				buffer, used_size);
 			if (err)
 				return err;
-<<<<<<< HEAD
-			stream_write(destf, buffer, used_size);
-=======
 			destf.write(buffer, used_size);
->>>>>>> upstream/master
 			file_size -= used_size;
 		}
 	}
@@ -1331,19 +1024,6 @@ static imgtoolerr_t os9_diskimage_readfile(imgtool::partition &partition, const 
 
 
 
-<<<<<<< HEAD
-static imgtoolerr_t os9_diskimage_writefile(imgtool_partition *partition, const char *path, const char *fork, imgtool_stream *sourcef, option_resolution *opts)
-{
-	imgtoolerr_t err;
-	imgtool_image *image = imgtool_partition_image(partition);
-	struct os9_fileinfo file_info;
-	size_t write_size;
-	dynamic_buffer buf;
-	int i = -1;
-	UINT32 lsn = 0;
-	UINT32 count = 0;
-	UINT32 sz;
-=======
 static imgtoolerr_t os9_diskimage_writefile(imgtool::partition &partition, const char *path, const char *fork, imgtool::stream &sourcef, util::option_resolution *opts)
 {
 	imgtoolerr_t err;
@@ -1355,7 +1035,6 @@ static imgtoolerr_t os9_diskimage_writefile(imgtool::partition &partition, const
 	uint32_t lsn = 0;
 	uint32_t count = 0;
 	uint32_t sz;
->>>>>>> upstream/master
 	const os9_diskinfo *disk_info;
 
 	disk_info = os9_get_diskinfo(image);
@@ -1366,11 +1045,7 @@ static imgtoolerr_t os9_diskimage_writefile(imgtool::partition &partition, const
 	if (err)
 		goto done;
 
-<<<<<<< HEAD
-	sz = (UINT32) stream_size(sourcef);
-=======
 	sz = (uint32_t) sourcef.size();
->>>>>>> upstream/master
 
 	err = os9_set_file_size(image, &file_info, sz);
 	if (err)
@@ -1378,15 +1053,9 @@ static imgtoolerr_t os9_diskimage_writefile(imgtool::partition &partition, const
 
 	while(sz > 0)
 	{
-<<<<<<< HEAD
-		write_size = (size_t) MIN(sz, (UINT64) disk_info->sector_size);
-
-		stream_read(sourcef, &buf[0], write_size);
-=======
 		write_size = (std::min<uint64_t>)(sz, disk_info->sector_size);
 
 		sourcef.read(&buf[0], write_size);
->>>>>>> upstream/master
 
 		while(count == 0)
 		{
@@ -1410,19 +1079,6 @@ done:
 
 
 
-<<<<<<< HEAD
-static imgtoolerr_t os9_diskimage_delete(imgtool_partition *partition, const char *path,
-	unsigned int delete_directory)
-{
-	imgtoolerr_t err;
-	imgtool_image *image = imgtool_partition_image(partition);
-	//const os9_diskinfo *disk_info;
-	struct os9_fileinfo file_info;
-	UINT32 dirent_lsn, dirent_index;
-	UINT32 entry_lsn, entry_index;
-	UINT32 i, j, lsn;
-	UINT8 b;
-=======
 static imgtoolerr_t os9_diskimage_delete(imgtool::partition &partition, const char *path,
 	unsigned int delete_directory)
 {
@@ -1433,7 +1089,6 @@ static imgtoolerr_t os9_diskimage_delete(imgtool::partition &partition, const ch
 	uint32_t entry_lsn, entry_index;
 	uint32_t i, j, lsn;
 	uint8_t b;
->>>>>>> upstream/master
 
 	//disk_info = os9_get_diskinfo(image);
 
@@ -1505,26 +1160,13 @@ static imgtoolerr_t os9_diskimage_delete(imgtool::partition &partition, const ch
 
 
 
-<<<<<<< HEAD
-static imgtoolerr_t os9_diskimage_deletefile(imgtool_partition *partition, const char *path)
-=======
 static imgtoolerr_t os9_diskimage_deletefile(imgtool::partition &partition, const char *path)
->>>>>>> upstream/master
 {
 	return os9_diskimage_delete(partition, path, 0);
 }
 
 
 
-<<<<<<< HEAD
-static imgtoolerr_t os9_diskimage_createdir(imgtool_partition *partition, const char *path)
-{
-	imgtoolerr_t err;
-	imgtool_image *image = imgtool_partition_image(partition);
-	struct os9_fileinfo file_info;
-	UINT8 dir_data[64];
-	UINT32 parent_lsn;
-=======
 static imgtoolerr_t os9_diskimage_createdir(imgtool::partition &partition, const char *path)
 {
 	imgtoolerr_t err;
@@ -1532,7 +1174,6 @@ static imgtoolerr_t os9_diskimage_createdir(imgtool::partition &partition, const
 	struct os9_fileinfo file_info;
 	uint8_t dir_data[64];
 	uint32_t parent_lsn;
->>>>>>> upstream/master
 
 	err = os9_lookup_path(image, path, CREATE_DIR, &file_info, &parent_lsn, NULL, NULL);
 	if (err)
@@ -1559,22 +1200,14 @@ done:
 
 
 
-<<<<<<< HEAD
-static imgtoolerr_t os9_diskimage_deletedir(imgtool_partition *partition, const char *path)
-=======
 static imgtoolerr_t os9_diskimage_deletedir(imgtool::partition &partition, const char *path)
->>>>>>> upstream/master
 {
 	return os9_diskimage_delete(partition, path, 1);
 }
 
 
 
-<<<<<<< HEAD
-void os9_get_info(const imgtool_class *imgclass, UINT32 state, union imgtoolinfo *info)
-=======
 void os9_get_info(const imgtool_class *imgclass, uint32_t state, union imgtoolinfo *info)
->>>>>>> upstream/master
 {
 	switch(state)
 	{

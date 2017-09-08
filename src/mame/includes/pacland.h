@@ -1,10 +1,7 @@
 // license:BSD-3-Clause
 // copyright-holders:Ernesto Corvi
 #include "sound/namco.h"
-<<<<<<< HEAD
-=======
 #include "screen.h"
->>>>>>> upstream/master
 
 class pacland_state : public driver_device
 {
@@ -28,22 +25,6 @@ public:
 	required_device<screen_device> m_screen;
 	required_device<palette_device> m_palette;
 
-<<<<<<< HEAD
-	required_shared_ptr<UINT8> m_videoram;
-	required_shared_ptr<UINT8> m_videoram2;
-	required_shared_ptr<UINT8> m_spriteram;
-
-	UINT8 m_palette_bank;
-	const UINT8 *m_color_prom;
-	tilemap_t *m_bg_tilemap;
-	tilemap_t *m_fg_tilemap;
-	bitmap_ind16 m_fg_bitmap;
-	UINT32 *m_transmask[3];
-	UINT16 m_scroll0;
-	UINT16 m_scroll1;
-	UINT8 m_main_irq_mask;
-	UINT8 m_mcu_irq_mask;
-=======
 	required_shared_ptr<uint8_t> m_videoram;
 	required_shared_ptr<uint8_t> m_videoram2;
 	required_shared_ptr<uint8_t> m_spriteram;
@@ -58,7 +39,6 @@ public:
 	uint16_t m_scroll1;
 	uint8_t m_main_irq_mask;
 	uint8_t m_mcu_irq_mask;
->>>>>>> upstream/master
 
 	DECLARE_WRITE8_MEMBER(subreset_w);
 	DECLARE_WRITE8_MEMBER(flipscreen_w);
@@ -77,23 +57,14 @@ public:
 	TILE_GET_INFO_MEMBER(get_bg_tile_info);
 	TILE_GET_INFO_MEMBER(get_fg_tile_info);
 
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void video_start();
-=======
 	virtual void machine_start() override;
 	virtual void video_start() override;
->>>>>>> upstream/master
 	DECLARE_PALETTE_INIT(pacland);
 
 	INTERRUPT_GEN_MEMBER(main_vblank_irq);
 	INTERRUPT_GEN_MEMBER(mcu_vblank_irq);
 
-<<<<<<< HEAD
-	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	void switch_palette();
 	void draw_sprites(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int flip, int whichmask);
 	void draw_fg(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int priority );

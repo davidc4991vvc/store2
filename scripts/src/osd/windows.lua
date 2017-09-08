@@ -12,17 +12,10 @@
 dofile("modules.lua")
 
 
-<<<<<<< HEAD
-function maintargetosdoptions(_target)
-	osdmodulestargetconf()
-
-	configuration { "mingw*-gcc" }
-=======
 function maintargetosdoptions(_target,_subtarget)
 	osdmodulestargetconf()
 
 	configuration { "mingw*" }
->>>>>>> upstream/master
 		linkoptions {
 			"-municode",
 		}
@@ -53,10 +46,7 @@ function maintargetosdoptions(_target,_subtarget)
 		"comctl32",
 		"comdlg32",
 		"psapi",
-<<<<<<< HEAD
-=======
 		"ole32",
->>>>>>> upstream/master
 	}
 end
 
@@ -111,8 +101,6 @@ if _OPTIONS["CYGWIN_BUILD"] == "1" then
 end
 
 
-<<<<<<< HEAD
-=======
 project ("qtdbg_" .. _OPTIONS["osd"])
 	uuid (os.uuid("qtdbg_" .. _OPTIONS["osd"]))
 	kind (LIBTYPE)
@@ -129,7 +117,6 @@ project ("qtdbg_" .. _OPTIONS["osd"])
 	}
 	qtdebuggerbuild()
 
->>>>>>> upstream/master
 project ("osd_" .. _OPTIONS["osd"])
 	uuid (os.uuid("osd_" .. _OPTIONS["osd"]))
 	kind (LIBTYPE)
@@ -157,10 +144,7 @@ project ("osd_" .. _OPTIONS["osd"])
 		MAME_DIR .. "src/osd",
 		MAME_DIR .. "src/lib",
 		MAME_DIR .. "src/lib/util",
-<<<<<<< HEAD
-=======
 		MAME_DIR .. "src/osd/modules/file",
->>>>>>> upstream/master
 		MAME_DIR .. "src/osd/modules/render",
 		MAME_DIR .. "3rdparty",
 	}
@@ -170,22 +154,6 @@ project ("osd_" .. _OPTIONS["osd"])
 	}
 
 	files {
-<<<<<<< HEAD
-		MAME_DIR .. "src/osd/modules/render/drawd3d.cpp",
-		MAME_DIR .. "src/osd/modules/render/drawd3d.h",
-		MAME_DIR .. "src/osd/modules/render/d3d/d3d9intf.cpp",
-		MAME_DIR .. "src/osd/modules/render/d3d/d3dhlsl.cpp",
-		MAME_DIR .. "src/osd/modules/render/d3d/d3dcomm.h",
-		MAME_DIR .. "src/osd/modules/render/d3d/d3dhlsl.h",
-		MAME_DIR .. "src/osd/modules/render/d3d/d3dintf.h",
-		MAME_DIR .. "src/osd/modules/render/drawdd.cpp",
-		MAME_DIR .. "src/osd/modules/render/drawgdi.cpp",
-		MAME_DIR .. "src/osd/modules/render/drawnone.cpp",
-		MAME_DIR .. "src/osd/windows/input.cpp",
-		MAME_DIR .. "src/osd/windows/input.h",
-		MAME_DIR .. "src/osd/windows/output.cpp",
-		MAME_DIR .. "src/osd/windows/output.h",
-=======
 		MAME_DIR .. "src/osd/modules/render/d3d/d3dhlsl.cpp",
 		MAME_DIR .. "src/osd/modules/render/d3d/d3dcomm.h",
 		MAME_DIR .. "src/osd/modules/render/d3d/d3dhlsl.h",
@@ -195,15 +163,11 @@ project ("osd_" .. _OPTIONS["osd"])
 		MAME_DIR .. "src/osd/modules/render/drawgdi.h",
 		MAME_DIR .. "src/osd/modules/render/drawnone.cpp",
 		MAME_DIR .. "src/osd/modules/render/drawnone.h",
->>>>>>> upstream/master
 		MAME_DIR .. "src/osd/windows/video.cpp",
 		MAME_DIR .. "src/osd/windows/video.h",
 		MAME_DIR .. "src/osd/windows/window.cpp",
 		MAME_DIR .. "src/osd/windows/window.h",
-<<<<<<< HEAD
-=======
 		MAME_DIR .. "src/osd/modules/osdwindow.cpp",
->>>>>>> upstream/master
 		MAME_DIR .. "src/osd/modules/osdwindow.h",
 		MAME_DIR .. "src/osd/windows/winmenu.cpp",
 		MAME_DIR .. "src/osd/windows/winmain.cpp",
@@ -227,11 +191,8 @@ project ("osd_" .. _OPTIONS["osd"])
 		MAME_DIR .. "src/osd/modules/debugger/win/editwininfo.h",
 		MAME_DIR .. "src/osd/modules/debugger/win/logwininfo.cpp",
 		MAME_DIR .. "src/osd/modules/debugger/win/logwininfo.h",
-<<<<<<< HEAD
-=======
 		MAME_DIR .. "src/osd/modules/debugger/win/logviewinfo.cpp",
 		MAME_DIR .. "src/osd/modules/debugger/win/logviewinfo.h",
->>>>>>> upstream/master
 		MAME_DIR .. "src/osd/modules/debugger/win/memoryviewinfo.cpp",
 		MAME_DIR .. "src/osd/modules/debugger/win/memoryviewinfo.h",
 		MAME_DIR .. "src/osd/modules/debugger/win/memorywininfo.cpp",
@@ -242,12 +203,6 @@ project ("osd_" .. _OPTIONS["osd"])
 		MAME_DIR .. "src/osd/modules/debugger/win/uimetrics.h",
 		MAME_DIR .. "src/osd/modules/debugger/win/debugwin.h",
 	}
-<<<<<<< HEAD
-	if _OPTIONS["USE_SCALE_EFFECTS"]=="1" then
-		dofile("scale.lua")
-	end
-=======
->>>>>>> upstream/master
 
 
 project ("ocore_" .. _OPTIONS["osd"])
@@ -261,25 +216,16 @@ project ("ocore_" .. _OPTIONS["osd"])
 	dofile("windows_cfg.lua")
 
 	includedirs {
-<<<<<<< HEAD
-		MAME_DIR .. "src/emu",
-		MAME_DIR .. "src/osd",
-=======
 		MAME_DIR .. "3rdparty",
 		MAME_DIR .. "src/emu",
 		MAME_DIR .. "src/osd",
 		MAME_DIR .. "src/osd/modules/file",
->>>>>>> upstream/master
 		MAME_DIR .. "src/lib",
 		MAME_DIR .. "src/lib/util",
 	}
 
 	BASE_TARGETOS = "win32"
 	SDLOS_TARGETOS = "win32"
-<<<<<<< HEAD
-	SYNC_IMPLEMENTATION = "windows"
-=======
->>>>>>> upstream/master
 
 	includedirs {
 		MAME_DIR .. "src/osd/windows",
@@ -297,41 +243,13 @@ project ("ocore_" .. _OPTIONS["osd"])
 		MAME_DIR .. "src/osd/osdcore.h",
 		MAME_DIR .. "src/osd/strconv.cpp",
 		MAME_DIR .. "src/osd/strconv.h",
-<<<<<<< HEAD
-		MAME_DIR .. "src/osd/windows/main.cpp",
-		MAME_DIR .. "src/osd/windows/windir.cpp",
-		MAME_DIR .. "src/osd/windows/winfile.cpp",
-		MAME_DIR .. "src/osd/modules/sync/sync_windows.cpp",
-		MAME_DIR .. "src/osd/modules/sync/osdsync.h",
-=======
 		MAME_DIR .. "src/osd/osdsync.cpp",
 		MAME_DIR .. "src/osd/osdsync.h",
 		MAME_DIR .. "src/osd/windows/main.cpp",
->>>>>>> upstream/master
 		MAME_DIR .. "src/osd/windows/winutf8.cpp",
 		MAME_DIR .. "src/osd/windows/winutf8.h",
 		MAME_DIR .. "src/osd/windows/winutil.cpp",
 		MAME_DIR .. "src/osd/windows/winutil.h",
-<<<<<<< HEAD
-		MAME_DIR .. "src/osd/windows/winfile.h",
-		MAME_DIR .. "src/osd/windows/winclip.cpp",
-		MAME_DIR .. "src/osd/windows/winsocket.cpp",
-		MAME_DIR .. "src/osd/windows/winptty.cpp",
-		MAME_DIR .. "src/osd/modules/osdmodule.cpp",
-		MAME_DIR .. "src/osd/modules/osdmodule.h",
-		MAME_DIR .. "src/osd/modules/lib/osdlib_win32.cpp",
-	}
-
-	if _OPTIONS["NOASM"] == "1" then
-		files {
-			MAME_DIR .. "src/osd/modules/sync/work_mini.cpp",
-		}
-	else
-		files {
-			MAME_DIR .. "src/osd/modules/sync/work_osd.cpp",
-		}
-	end
-=======
 		MAME_DIR .. "src/osd/modules/osdmodule.cpp",
 		MAME_DIR .. "src/osd/modules/osdmodule.h",
 		MAME_DIR .. "src/osd/modules/file/windir.cpp",
@@ -342,7 +260,6 @@ project ("ocore_" .. _OPTIONS["osd"])
 		MAME_DIR .. "src/osd/modules/lib/osdlib_win32.cpp",
 	}
 
->>>>>>> upstream/master
 
 
 --------------------------------------------------
@@ -355,17 +272,10 @@ if _OPTIONS["with-tools"] then
 		kind "ConsoleApp"
 
 		flags {
-<<<<<<< HEAD
-			"Symbols", -- always include minimum symbols for executables 	
-		}
-
-		if _OPTIONS["SEPARATE_BIN"]~="1" then 
-=======
 			"Symbols", -- always include minimum symbols for executables
 		}
 
 		if _OPTIONS["SEPARATE_BIN"]~="1" then
->>>>>>> upstream/master
 			targetdir(MAME_DIR)
 		end
 
@@ -376,11 +286,7 @@ if _OPTIONS["with-tools"] then
 		includedirs {
 			MAME_DIR .. "src/osd",
 		}
-<<<<<<< HEAD
-		
-=======
 
->>>>>>> upstream/master
 		files {
 			MAME_DIR .. "src/osd/windows/ledutil.cpp",
 		}

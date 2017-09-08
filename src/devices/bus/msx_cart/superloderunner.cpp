@@ -3,16 +3,6 @@
 #include "emu.h"
 #include "superloderunner.h"
 
-<<<<<<< HEAD
-const device_type MSX_CART_SUPERLODERUNNER = &device_creator<msx_cart_superloderunner>;
-
-
-msx_cart_superloderunner::msx_cart_superloderunner(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, MSX_CART_SUPERLODERUNNER, "MSX Cartridge - Super Lode Runner", tag, owner, clock, "msx_cart_superloderunner", __FILE__)
-	, msx_cart_interface(mconfig, *this)
-	, m_selected_bank(0)
-	, m_bank_base(NULL)
-=======
 DEFINE_DEVICE_TYPE(MSX_CART_SUPERLODERUNNER, msx_cart_superloderunner_device, "msx_cart_superloderunner", "MSX Cartridge - Super Lode Runner")
 
 
@@ -21,26 +11,10 @@ msx_cart_superloderunner_device::msx_cart_superloderunner_device(const machine_c
 	, msx_cart_interface(mconfig, *this)
 	, m_selected_bank(0)
 	, m_bank_base(nullptr)
->>>>>>> upstream/master
 {
 }
 
 
-<<<<<<< HEAD
-void msx_cart_superloderunner::device_start()
-{
-	save_item(NAME(m_selected_bank));
-
-	machine().save().register_postload(save_prepost_delegate(FUNC(msx_cart_superloderunner::restore_banks), this));
-
-	// Install evil memory write handler
-	address_space &space = machine().device<cpu_device>("maincpu")->space(AS_PROGRAM);
-	space.install_write_handler(0x0000, 0x0000, write8_delegate(FUNC(msx_cart_superloderunner::banking), this));
-}
-
-
-void msx_cart_superloderunner::restore_banks()
-=======
 void msx_cart_superloderunner_device::device_start()
 {
 	save_item(NAME(m_selected_bank));
@@ -54,17 +28,12 @@ void msx_cart_superloderunner_device::device_start()
 
 
 void msx_cart_superloderunner_device::restore_banks()
->>>>>>> upstream/master
 {
 	m_bank_base = get_rom_base() + (m_selected_bank & 0x0f) * 0x4000;
 }
 
 
-<<<<<<< HEAD
-void msx_cart_superloderunner::initialize_cartridge()
-=======
 void msx_cart_superloderunner_device::initialize_cartridge()
->>>>>>> upstream/master
 {
 	if (get_rom_size() != 0x20000)
 	{
@@ -75,11 +44,7 @@ void msx_cart_superloderunner_device::initialize_cartridge()
 }
 
 
-<<<<<<< HEAD
-READ8_MEMBER(msx_cart_superloderunner::read_cart)
-=======
 READ8_MEMBER(msx_cart_superloderunner_device::read_cart)
->>>>>>> upstream/master
 {
 	if (offset >= 0x8000 && offset < 0xc000)
 	{
@@ -90,11 +55,7 @@ READ8_MEMBER(msx_cart_superloderunner_device::read_cart)
 }
 
 
-<<<<<<< HEAD
-WRITE8_MEMBER(msx_cart_superloderunner::banking)
-=======
 WRITE8_MEMBER(msx_cart_superloderunner_device::banking)
->>>>>>> upstream/master
 {
 	m_selected_bank = data;
 	restore_banks();

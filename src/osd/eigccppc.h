@@ -41,17 +41,10 @@
 -------------------------------------------------*/
 
 #define mul_32x32_hi _mul_32x32_hi
-<<<<<<< HEAD
-INLINE INT32 ATTR_CONST ATTR_FORCE_INLINE
-_mul_32x32_hi(INT32 val1, INT32 val2)
-{
-	register INT32 result;
-=======
 static inline int32_t ATTR_CONST ATTR_FORCE_INLINE
 _mul_32x32_hi(int32_t val1, int32_t val2)
 {
 	int32_t result;
->>>>>>> upstream/master
 
 	__asm__ (
 		" mulhw  %[result], %[val1], %[val2] \n"
@@ -71,17 +64,10 @@ _mul_32x32_hi(int32_t val1, int32_t val2)
 -------------------------------------------------*/
 
 #define mulu_32x32_hi _mulu_32x32_hi
-<<<<<<< HEAD
-INLINE UINT32 ATTR_CONST ATTR_FORCE_INLINE
-_mulu_32x32_hi(UINT32 val1, UINT32 val2)
-{
-	register UINT32 result;
-=======
 static inline uint32_t ATTR_CONST ATTR_FORCE_INLINE
 _mulu_32x32_hi(uint32_t val1, uint32_t val2)
 {
 	uint32_t result;
->>>>>>> upstream/master
 
 	__asm__ (
 		" mulhwu  %[result], %[val1], %[val2] \n"
@@ -103,17 +89,10 @@ _mulu_32x32_hi(uint32_t val1, uint32_t val2)
 
 #if !defined(__ppc64__) && !defined(__PPC64__) && !defined(_ARCH_PPC64)
 #define mul_32x32_shift _mul_32x32_shift
-<<<<<<< HEAD
-INLINE INT32 ATTR_CONST ATTR_FORCE_INLINE
-_mul_32x32_shift(INT32 val1, INT32 val2, UINT8 shift)
-{
-	register INT32 result;
-=======
 static inline int32_t ATTR_CONST ATTR_FORCE_INLINE
 _mul_32x32_shift(int32_t val1, int32_t val2, uint8_t shift)
 {
 	int32_t result;
->>>>>>> upstream/master
 
 	/* Valid for (0 <= shift <= 32) */
 	__asm__ (
@@ -144,17 +123,10 @@ _mul_32x32_shift(int32_t val1, int32_t val2, uint8_t shift)
 
 #if !defined(__ppc64__) && !defined(__PPC64__) && !defined(_ARCH_PPC64)
 #define mulu_32x32_shift _mulu_32x32_shift
-<<<<<<< HEAD
-INLINE UINT32 ATTR_CONST ATTR_FORCE_INLINE
-_mulu_32x32_shift(UINT32 val1, UINT32 val2, UINT8 shift)
-{
-	register UINT32 result;
-=======
 static inline uint32_t ATTR_CONST ATTR_FORCE_INLINE
 _mulu_32x32_shift(uint32_t val1, uint32_t val2, uint8_t shift)
 {
 	uint32_t result;
->>>>>>> upstream/master
 
 	/* Valid for (0 <= shift <= 32) */
 	__asm__ (
@@ -250,17 +222,10 @@ _mulu_32x32_shift(uint32_t val1, uint32_t val2, uint8_t shift)
 -------------------------------------------------*/
 
 #define recip_approx _recip_approx
-<<<<<<< HEAD
-INLINE float ATTR_CONST ATTR_FORCE_INLINE
-_recip_approx(float value)
-{
-	register float result;
-=======
 static inline float ATTR_CONST ATTR_FORCE_INLINE
 _recip_approx(float value)
 {
 	float result;
->>>>>>> upstream/master
 
 	__asm__ (
 		" fres  %[result], %[value] \n"
@@ -283,17 +248,10 @@ _recip_approx(float value)
 -------------------------------------------------*/
 
 #define count_leading_zeros _count_leading_zeros
-<<<<<<< HEAD
-INLINE UINT8 ATTR_CONST ATTR_FORCE_INLINE
-_count_leading_zeros(UINT32 value)
-{
-	register UINT32 result;
-=======
 static inline uint8_t ATTR_CONST ATTR_FORCE_INLINE
 _count_leading_zeros(uint32_t value)
 {
 	uint32_t result;
->>>>>>> upstream/master
 
 	__asm__ (
 		" cntlzw  %[result], %[value] \n"
@@ -311,17 +269,10 @@ _count_leading_zeros(uint32_t value)
 -------------------------------------------------*/
 
 #define count_leading_ones _count_leading_ones
-<<<<<<< HEAD
-INLINE UINT8 ATTR_CONST ATTR_FORCE_INLINE
-_count_leading_ones(UINT32 value)
-{
-	register UINT32 result;
-=======
 static inline uint8_t ATTR_CONST ATTR_FORCE_INLINE
 _count_leading_ones(uint32_t value)
 {
 	uint32_t result;
->>>>>>> upstream/master
 
 	__asm__ (
 		" not     %[result], %[value]  \n"
@@ -333,213 +284,4 @@ _count_leading_ones(uint32_t value)
 	return result;
 }
 
-<<<<<<< HEAD
-
-
-/***************************************************************************
-    INLINE SYNCHRONIZATION FUNCTIONS
-***************************************************************************/
-
-/*-------------------------------------------------
-    compare_exchange32 - compare the 'compare'
-    value against the memory at 'ptr'; if equal,
-    swap in the 'exchange' value. Regardless,
-    return the previous value at 'ptr'.
--------------------------------------------------*/
-
-#define compare_exchange32 _compare_exchange32
-INLINE INT32 ATTR_NONNULL(1) ATTR_FORCE_INLINE
-_compare_exchange32(INT32 volatile *ptr, INT32 compare, INT32 exchange)
-{
-	register INT32 result;
-
-	__asm__ __volatile__ (
-		"1: lwarx  %[result], 0, %[ptr]   \n"
-		"   cmpw   %[compare], %[result]  \n"
-		"   bne    2f                     \n"
-		"   stwcx. %[exchange], 0, %[ptr] \n"
-		"   bne-   1b                     \n"
-		"   lwsync                        \n"
-		"2:                                 "
-		: [dummy]    "+m"  (*ptr)   /* Lets GCC know that *ptr will be read/written in case it's not marked volatile */
-		, [result]   "=&r" (result)
-		: [ptr]      "r"   (ptr)
-		, [exchange] "r"   (exchange)
-		, [compare]  "r"   (compare)
-		: "cr0"
-	);
-
-	return result;
-}
-
-
-/*-------------------------------------------------
-    compare_exchange64 - compare the 'compare'
-    value against the memory at 'ptr'; if equal,
-    swap in the 'exchange' value. Regardless,
-    return the previous value at 'ptr'.
--------------------------------------------------*/
-
-#if defined(__ppc64__) || defined(__PPC64__)
-#define compare_exchange64 _compare_exchange64
-INLINE INT64 ATTR_NONNULL(1) ATTR_FORCE_INLINE
-_compare_exchange64(INT64 volatile *ptr, INT64 compare, INT64 exchange)
-{
-	register INT64 result;
-
-	__asm__ __volatile__ (
-		"1: ldarx  %[result], 0, %[ptr]   \n"
-		"   cmpd   %[compare], %[result]  \n"
-		"   bne    2f                     \n"
-		"   stdcx. %[exchange], 0, %[ptr] \n"
-		"   bne-   1b                     \n"
-		"   lwsync                        \n"
-		"2:                                 "
-		: [dummy]    "+m"  (*ptr)   /* Lets GCC know that *ptr will be read/written in case it's not marked volatile */
-		, [result]   "=&r" (result)
-		: [ptr]      "r"   (ptr)
-		, [exchange] "r"   (exchange)
-		, [compare]  "r"   (compare)
-		: "cr0"
-	);
-
-	return result;
-}
-#endif
-
-
-/*-------------------------------------------------
-    atomic_exchange32 - atomically exchange the
-    exchange value with the memory at 'ptr',
-    returning the original value.
--------------------------------------------------*/
-
-#define atomic_exchange32 _atomic_exchange32
-INLINE INT32 ATTR_NONNULL(1) ATTR_FORCE_INLINE
-_atomic_exchange32(INT32 volatile *ptr, INT32 exchange)
-{
-	register INT32 result;
-
-	__asm__ __volatile__ (
-		"1: lwarx  %[result], 0, %[ptr]   \n"
-		"   stwcx. %[exchange], 0, %[ptr] \n"
-		"   bne-   1b                     \n"
-		"   lwsync                        \n"
-		: [dummy]    "+m"  (*ptr)   /* Lets GCC know that *ptr will be read/written in case it's not marked volatile */
-		, [result]   "=&r" (result)
-		: [ptr]      "r"   (ptr)
-		, [exchange] "r"   (exchange)
-		: "cr0"
-	);
-
-	return result;
-}
-
-
-/*-------------------------------------------------
-    atomic_add32 - atomically add the delta value
-    to the memory at 'ptr', returning the final
-    result.
--------------------------------------------------*/
-
-#define atomic_add32 _atomic_add32
-INLINE INT32 ATTR_NONNULL(1) ATTR_FORCE_INLINE
-_atomic_add32(INT32 volatile *ptr, INT32 delta)
-{
-	register INT32 result;
-
-	__asm__ __volatile__ (
-		"1: lwarx  %[result], 0, %[ptr]           \n"
-		"   add    %[result], %[result], %[delta] \n"
-		"   stwcx. %[result], 0, %[ptr]           \n"
-		"   bne-   1b                             \n"
-		"   lwsync                                \n"
-		: [dummy]  "+m"  (*ptr) /* Lets GCC know that *ptr will be read/written in case it's not marked volatile */
-		, [result] "=&b" (result)
-		: [ptr]    "r"   (ptr)
-		, [delta]  "r"   (delta)
-		: "cr0"
-	);
-
-	return result;
-}
-
-
-/*-------------------------------------------------
-    atomic_increment32 - atomically increment the
-    32-bit value in memory at 'ptr', returning the
-    final result.
--------------------------------------------------*/
-
-#define atomic_increment32 _atomic_increment32
-INLINE INT32 ATTR_NONNULL(1) ATTR_FORCE_INLINE
-_atomic_increment32(INT32 volatile *ptr)
-{
-	register INT32 result;
-
-	__asm__ __volatile__ (
-		"1: lwarx   %[result], 0, %[ptr]    \n"
-		"   addi    %[result], %[result], 1 \n"
-		"   stwcx.  %[result], 0, %[ptr]    \n"
-		"   bne-    1b                      \n"
-		"   lwsync                          \n"
-		: [dummy]  "+m"  (*ptr) /* Lets GCC know that *ptr will be read/written in case it's not marked volatile */
-		, [result] "=&b" (result)
-		: [ptr]    "r"   (ptr)
-		: "cr0"
-	);
-
-	return result;
-}
-
-
-/*-------------------------------------------------
-    atomic_decrement32 - atomically decrement the
-    32-bit value in memory at 'ptr', returning the
-    final result.
--------------------------------------------------*/
-
-#define atomic_decrement32 _atomic_decrement32
-INLINE INT32 ATTR_NONNULL(1) ATTR_FORCE_INLINE
-_atomic_decrement32(INT32 volatile *ptr)
-{
-	register INT32 result;
-
-	__asm__ __volatile__ (
-		"1: lwarx   %[result], 0, %[ptr]     \n"
-		"   addi    %[result], %[result], -1 \n"
-		"   stwcx.  %[result], 0, %[ptr]     \n"
-		"   bne-    1b                       \n"
-		"   lwsync                           \n"
-		: [dummy]  "+m"  (*ptr) /* Lets GCC know that *ptr will be read/written in case it's not marked volatile */
-		, [result] "=&b" (result)
-		: [ptr]    "r"   (ptr)
-		: "cr0"
-	);
-
-	return result;
-}
-
-
-
-/***************************************************************************
-    INLINE TIMING FUNCTIONS
-***************************************************************************/
-
-/*-------------------------------------------------
-    get_profile_ticks - return a tick counter
-    from the processor that can be used for
-    profiling. It does not need to run at any
-    particular rate.
--------------------------------------------------*/
-
-#define get_profile_ticks _get_profile_ticks
-INLINE INT64 ATTR_UNUSED ATTR_FORCE_INLINE _get_profile_ticks(void)
-{
-	// fix me - should use the time base
-	return osd_ticks();
-}
-
-=======
->>>>>>> upstream/master
 #endif /* __EIGCCPPC__ */

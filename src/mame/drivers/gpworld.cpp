@@ -44,10 +44,7 @@ Dumping Notes:
 #include "emu.h"
 #include "cpu/z80/z80.h"
 #include "machine/ldv1000.h"
-<<<<<<< HEAD
-=======
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 class gpworld_state : public driver_device
@@ -68,17 +65,6 @@ public:
 		m_gfxdecode(*this, "gfxdecode"),
 		m_palette(*this, "palette") { }
 
-<<<<<<< HEAD
-	UINT8 m_nmi_enable;
-	UINT8 m_start_lamp;
-	UINT8 m_ldp_read_latch;
-	UINT8 m_ldp_write_latch;
-	UINT8 m_brake_gas;
-	required_device<pioneer_ldv1000_device> m_laserdisc;
-	required_shared_ptr<UINT8> m_sprite_ram;
-	required_shared_ptr<UINT8> m_palette_ram;
-	required_shared_ptr<UINT8> m_tile_ram;
-=======
 	uint8_t m_nmi_enable;
 	uint8_t m_start_lamp;
 	uint8_t m_ldp_read_latch;
@@ -89,7 +75,6 @@ public:
 	required_shared_ptr<uint8_t> m_sprite_ram;
 	required_shared_ptr<uint8_t> m_palette_ram;
 	required_shared_ptr<uint8_t> m_tile_ram;
->>>>>>> upstream/master
 	DECLARE_READ8_MEMBER(ldp_read);
 	DECLARE_READ8_MEMBER(pedal_in);
 	DECLARE_WRITE8_MEMBER(ldp_write);
@@ -97,31 +82,18 @@ public:
 	DECLARE_WRITE8_MEMBER(brake_gas_write);
 	DECLARE_WRITE8_MEMBER(palette_write);
 	DECLARE_DRIVER_INIT(gpworld);
-<<<<<<< HEAD
-	virtual void machine_start();
-	UINT32 screen_update_gpworld(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
-	INTERRUPT_GEN_MEMBER(vblank_callback_gpworld);
-	void gpworld_draw_tiles(bitmap_rgb32 &bitmap,const rectangle &cliprect);
-	inline void draw_pixel(bitmap_rgb32 &bitmap,const rectangle &cliprect,int x,int y,int color,int flip);
-	void gpworld_draw_sprites(bitmap_rgb32 &bitmap, const rectangle &cliprect);
-=======
 	virtual void machine_start() override;
 	uint32_t screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
 	INTERRUPT_GEN_MEMBER(vblank_callback);
 	void draw_tiles(bitmap_rgb32 &bitmap,const rectangle &cliprect);
 	inline void draw_pixel(bitmap_rgb32 &bitmap,const rectangle &cliprect,int x,int y,int color,int flip);
 	void draw_sprites(bitmap_rgb32 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	required_device<cpu_device> m_maincpu;
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
 
 protected:
-<<<<<<< HEAD
-	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
-=======
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
->>>>>>> upstream/master
 };
 
 
@@ -133,15 +105,9 @@ protected:
 
 
 /* VIDEO GOODS */
-<<<<<<< HEAD
-void gpworld_state::gpworld_draw_tiles(bitmap_rgb32 &bitmap,const rectangle &cliprect)
-{
-	UINT8 characterX, characterY;
-=======
 void gpworld_state::draw_tiles(bitmap_rgb32 &bitmap,const rectangle &cliprect)
 {
 	uint8_t characterX, characterY;
->>>>>>> upstream/master
 
 	/* Temporarily set to 64 wide to accommodate two screens */
 	for (characterX = 0; characterX < 64; characterX++)
@@ -168,11 +134,7 @@ void gpworld_state::draw_pixel(bitmap_rgb32 &bitmap,const rectangle &cliprect,in
 		bitmap.pix32(y, x) = m_palette->pen(color);
 }
 
-<<<<<<< HEAD
-void gpworld_state::gpworld_draw_sprites(bitmap_rgb32 &bitmap, const rectangle &cliprect)
-=======
 void gpworld_state::draw_sprites(bitmap_rgb32 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	const int SPR_Y_TOP     = 0;
 	const int SPR_Y_BOTTOM  = 1;
@@ -186,20 +148,12 @@ void gpworld_state::draw_sprites(bitmap_rgb32 &bitmap, const rectangle &cliprect
 
 	int i;
 
-<<<<<<< HEAD
-	UINT8 *GFX = memregion("gfx2")->base();
-=======
 	uint8_t *GFX = memregion("gfx2")->base();
->>>>>>> upstream/master
 
 	/* Heisted from Daphne which heisted it from MAME */
 	for (i = 0; i < 0x800; i += 8)
 	{
-<<<<<<< HEAD
-		UINT8 *spr_reg = m_sprite_ram + i;
-=======
 		uint8_t *spr_reg = m_sprite_ram + i;
->>>>>>> upstream/master
 
 		if (spr_reg[SPR_Y_BOTTOM] && spr_reg[SPR_X_LO] != 0xff)
 		{
@@ -237,11 +191,7 @@ void gpworld_state::draw_sprites(bitmap_rgb32 &bitmap, const rectangle &cliprect
 				while (1)
 				{
 					int data_lo, data_high;
-<<<<<<< HEAD
-					UINT8 pixel1, pixel2, pixel3, pixel4;
-=======
 					uint8_t pixel1, pixel2, pixel3, pixel4;
->>>>>>> upstream/master
 
 					data_lo   = GFX[(src2 & 0x7fff) | (sprite_bank << 16)];
 					data_high = GFX[(src2 & 0x7fff) | 0x8000 | (sprite_bank << 16)];
@@ -254,11 +204,7 @@ void gpworld_state::draw_sprites(bitmap_rgb32 &bitmap, const rectangle &cliprect
 					/* we'll see if this is still applicable */
 					if (src & 0x8000)
 					{
-<<<<<<< HEAD
-						UINT8 temp_pixel;
-=======
 						uint8_t temp_pixel;
->>>>>>> upstream/master
 						temp_pixel = pixel1;
 						pixel1 = pixel4;
 						pixel4 = temp_pixel;
@@ -298,21 +244,12 @@ void gpworld_state::draw_sprites(bitmap_rgb32 &bitmap, const rectangle &cliprect
 }
 
 
-<<<<<<< HEAD
-UINT32 gpworld_state::screen_update_gpworld(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
-{
-	bitmap.fill(0, cliprect);
-
-	gpworld_draw_tiles(bitmap, cliprect);
-	gpworld_draw_sprites(bitmap, cliprect);
-=======
 uint32_t gpworld_state::screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
 {
 	bitmap.fill(0, cliprect);
 
 	draw_tiles(bitmap, cliprect);
 	draw_sprites(bitmap, cliprect);
->>>>>>> upstream/master
 
 	return 0;
 }
@@ -320,10 +257,7 @@ uint32_t gpworld_state::screen_update(screen_device &screen, bitmap_rgb32 &bitma
 
 void gpworld_state::machine_start()
 {
-<<<<<<< HEAD
-=======
 	m_irq_stop_timer = timer_alloc(TIMER_IRQ_STOP);
->>>>>>> upstream/master
 }
 
 
@@ -519,19 +453,11 @@ void gpworld_state::device_timer(emu_timer &timer, device_timer_id id, int param
 		m_maincpu->set_input_line(0, CLEAR_LINE);
 		break;
 	default:
-<<<<<<< HEAD
-		assert_always(FALSE, "Unknown id in gpworld_state::device_timer");
-	}
-}
-
-INTERRUPT_GEN_MEMBER(gpworld_state::vblank_callback_gpworld)
-=======
 		assert_always(false, "Unknown id in gpworld_state::device_timer");
 	}
 }
 
 INTERRUPT_GEN_MEMBER(gpworld_state::vblank_callback)
->>>>>>> upstream/master
 {
 	/* Do an NMI if the enabled bit is set */
 	if (m_nmi_enable)
@@ -543,11 +469,7 @@ INTERRUPT_GEN_MEMBER(gpworld_state::vblank_callback)
 
 	/* The time the IRQ line stays high is set just long enough to happen after the NMI - hacky? */
 	device.execute().set_input_line(0, ASSERT_LINE);
-<<<<<<< HEAD
-	timer_set(attotime::from_usec(100), TIMER_IRQ_STOP);
-=======
 	m_irq_stop_timer->adjust(attotime::from_usec(100));
->>>>>>> upstream/master
 }
 
 static const gfx_layout gpworld_tile_layout =
@@ -566,29 +488,17 @@ static GFXDECODE_START( gpworld )
 GFXDECODE_END
 
 /* DRIVER */
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( gpworld, gpworld_state )
-=======
 static MACHINE_CONFIG_START( gpworld )
->>>>>>> upstream/master
 
 	/* main cpu */
 	MCFG_CPU_ADD("maincpu", Z80, GUESSED_CLOCK)
 	MCFG_CPU_PROGRAM_MAP(mainmem)
 	MCFG_CPU_IO_MAP(mainport)
-<<<<<<< HEAD
-	MCFG_CPU_VBLANK_INT_DRIVER("screen", gpworld_state,  vblank_callback_gpworld)
-
-
-	MCFG_LASERDISC_LDV1000_ADD("laserdisc")
-	MCFG_LASERDISC_OVERLAY_DRIVER(512, 256, gpworld_state, screen_update_gpworld)
-=======
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", gpworld_state,  vblank_callback)
 
 
 	MCFG_LASERDISC_LDV1000_ADD("laserdisc")
 	MCFG_LASERDISC_OVERLAY_DRIVER(512, 256, gpworld_state, screen_update)
->>>>>>> upstream/master
 	MCFG_LASERDISC_OVERLAY_PALETTE("palette")
 
 	/* video hardware */
@@ -651,9 +561,5 @@ DRIVER_INIT_MEMBER(gpworld_state,gpworld)
 }
 
 
-<<<<<<< HEAD
-/*    YEAR  NAME      PARENT   MACHINE  INPUT    INIT     MONITOR  COMPANY  FULLNAME    FLAGS) */
-=======
 /*    YEAR  NAME      PARENT   MACHINE  INPUT    STATE          INIT     MONITOR  COMPANY  FULLNAME     FLAGS) */
->>>>>>> upstream/master
 GAME( 1984, gpworld,  0,       gpworld, gpworld, gpworld_state, gpworld, ROT0,    "Sega",  "GP World",  MACHINE_NOT_WORKING|MACHINE_NO_SOUND)

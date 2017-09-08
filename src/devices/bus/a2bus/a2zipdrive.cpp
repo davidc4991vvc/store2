@@ -19,13 +19,8 @@
 
 *********************************************************************/
 
-<<<<<<< HEAD
-#include "a2zipdrive.h"
-#include "includes/apple2.h"
-=======
 #include "emu.h"
 #include "a2zipdrive.h"
->>>>>>> upstream/master
 #include "machine/ataintf.h"
 #include "imagedev/harddriv.h"
 
@@ -33,22 +28,11 @@
 //  GLOBAL VARIABLES
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type A2BUS_ZIPDRIVE = &device_creator<a2bus_zipdrive_device>;
-=======
 DEFINE_DEVICE_TYPE(A2BUS_ZIPDRIVE, a2bus_zipdrive_device, "a2zipdrv", "Zip Technologies ZipDrive")
->>>>>>> upstream/master
 
 #define ZIPDRIVE_ROM_REGION  "zipdrive_rom"
 #define ZIPDRIVE_ATA_TAG     "zipdrive_ata"
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_FRAGMENT( zipdrive )
-	MCFG_ATA_INTERFACE_ADD(ZIPDRIVE_ATA_TAG, ata_devices, "hdd", NULL, false)
-MACHINE_CONFIG_END
-
-=======
->>>>>>> upstream/master
 ROM_START( zipdrive )
 	ROM_REGION(0x2000, ZIPDRIVE_ROM_REGION, 0)
 	ROM_LOAD( "zip drive - rom.bin", 0x000000, 0x002000, CRC(fd800a40) SHA1(46636bfed88c864139e3d2826661908a8c07c459) )
@@ -59,33 +43,18 @@ ROM_END
 ***************************************************************************/
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  machine_config_additions - device-specific
-//  machine configurations
-//-------------------------------------------------
-
-machine_config_constructor a2bus_zipdrivebase_device::device_mconfig_additions() const
-{
-	return MACHINE_CONFIG_NAME( zipdrive );
-}
-=======
 //  device_add_mconfig - add device configuration
 //-------------------------------------------------
 
 MACHINE_CONFIG_MEMBER( a2bus_zipdrivebase_device::device_add_mconfig )
 	MCFG_ATA_INTERFACE_ADD(ZIPDRIVE_ATA_TAG, ata_devices, "hdd", nullptr, false)
 MACHINE_CONFIG_END
->>>>>>> upstream/master
 
 //-------------------------------------------------
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const rom_entry *a2bus_zipdrivebase_device::device_rom_region() const
-=======
 const tiny_rom_entry *a2bus_zipdrivebase_device::device_rom_region() const
->>>>>>> upstream/master
 {
 	return ROM_NAME( zipdrive );
 }
@@ -94,25 +63,15 @@ const tiny_rom_entry *a2bus_zipdrivebase_device::device_rom_region() const
 //  LIVE DEVICE
 //**************************************************************************
 
-<<<<<<< HEAD
-a2bus_zipdrivebase_device::a2bus_zipdrivebase_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source) :
-	device_t(mconfig, type, name, tag, owner, clock, shortname, source),
-=======
 a2bus_zipdrivebase_device::a2bus_zipdrivebase_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock) :
 	device_t(mconfig, type, tag, owner, clock),
->>>>>>> upstream/master
 	device_a2bus_card_interface(mconfig, *this),
 	m_ata(*this, ZIPDRIVE_ATA_TAG), m_rom(nullptr), m_lastdata(0)
 {
 }
 
-<<<<<<< HEAD
-a2bus_zipdrive_device::a2bus_zipdrive_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-	a2bus_zipdrivebase_device(mconfig, A2BUS_ZIPDRIVE, "Zip Technologies ZipDrive", tag, owner, clock, "a2zipdrv", __FILE__)
-=======
 a2bus_zipdrive_device::a2bus_zipdrive_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	a2bus_zipdrivebase_device(mconfig, A2BUS_ZIPDRIVE, tag, owner, clock)
->>>>>>> upstream/master
 {
 }
 
@@ -140,11 +99,7 @@ void a2bus_zipdrivebase_device::device_reset()
     read_c0nx - called for reads from this card's c0nx space
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-UINT8 a2bus_zipdrivebase_device::read_c0nx(address_space &space, UINT8 offset)
-=======
 uint8_t a2bus_zipdrivebase_device::read_c0nx(address_space &space, uint8_t offset)
->>>>>>> upstream/master
 {
 	switch (offset)
 	{
@@ -179,11 +134,7 @@ uint8_t a2bus_zipdrivebase_device::read_c0nx(address_space &space, uint8_t offse
     write_c0nx - called for writes to this card's c0nx space
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-void a2bus_zipdrivebase_device::write_c0nx(address_space &space, UINT8 offset, UINT8 data)
-=======
 void a2bus_zipdrivebase_device::write_c0nx(address_space &space, uint8_t offset, uint8_t data)
->>>>>>> upstream/master
 {
 	switch (offset)
 	{
@@ -221,11 +172,7 @@ void a2bus_zipdrivebase_device::write_c0nx(address_space &space, uint8_t offset,
     read_cnxx - called for reads from this card's cnxx space
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-UINT8 a2bus_zipdrivebase_device::read_cnxx(address_space &space, UINT8 offset)
-=======
 uint8_t a2bus_zipdrivebase_device::read_cnxx(address_space &space, uint8_t offset)
->>>>>>> upstream/master
 {
 	int slotimg = m_slot * 0x100;
 
@@ -237,11 +184,7 @@ uint8_t a2bus_zipdrivebase_device::read_cnxx(address_space &space, uint8_t offse
     read_c800 - called for reads from this card's c800 space
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-UINT8 a2bus_zipdrivebase_device::read_c800(address_space &space, UINT16 offset)
-=======
 uint8_t a2bus_zipdrivebase_device::read_c800(address_space &space, uint16_t offset)
->>>>>>> upstream/master
 {
 	offset &= 0x7ff;
 

@@ -9,9 +9,6 @@
 --
 ----------------------------------------------------------------------------
 
-<<<<<<< HEAD
-
-=======
 files {
 	MAME_DIR .. "src/devices/machine/bcreader.cpp",
 	MAME_DIR .. "src/devices/machine/bcreader.h",
@@ -61,7 +58,6 @@ files {
 	MAME_DIR .. "src/devices/imagedev/snapquik.cpp",
 	MAME_DIR .. "src/devices/imagedev/snapquik.h",
 }
->>>>>>> upstream/master
 ---------------------------------------------------
 --
 --@src/devices/machine/akiko.h,MACHINES["AKIKO"] = true
@@ -240,8 +236,6 @@ end
 
 ---------------------------------------------------
 --
-<<<<<<< HEAD
-=======
 --@src/devices/machine/68153bim.h,MACHINES["BIM68153"] = true
 ---------------------------------------------------
 
@@ -254,7 +248,6 @@ end
 
 ---------------------------------------------------
 --
->>>>>>> upstream/master
 --@src/devices/machine/68230pit.h,MACHINES["PIT68230"] = true
 ---------------------------------------------------
 
@@ -267,17 +260,10 @@ end
 
 ---------------------------------------------------
 --
-<<<<<<< HEAD
---@src/devices/machine/68561mpcc.h,MACHINES += 68561MPCC
----------------------------------------------------
-
-if (MACHINES["68561MPCC"]~=null) then
-=======
 --@src/devices/machine/68561mpcc.h,MACHINES["MPCC68561"] = true
 ---------------------------------------------------
 
 if (MACHINES["MPCC68561"]~=null) then
->>>>>>> upstream/master
 	files {
 		MAME_DIR .. "src/devices/machine/68561mpcc.cpp",
 		MAME_DIR .. "src/devices/machine/68561mpcc.h",
@@ -310,8 +296,6 @@ end
 
 ---------------------------------------------------
 --
-<<<<<<< HEAD
-=======
 --@src/devices/machine/7400.h,MACHINES["TTL7400"] = true
 ---------------------------------------------------
 
@@ -336,7 +320,6 @@ end
 
 ---------------------------------------------------
 --
->>>>>>> upstream/master
 --@src/devices/machine/74123.h,MACHINES["TTL74123"] = true
 ---------------------------------------------------
 
@@ -386,8 +369,6 @@ end
 
 ---------------------------------------------------
 --
-<<<<<<< HEAD
-=======
 --@src/devices/machine/74157.h,MACHINES["TTL74157"] = true
 ---------------------------------------------------
 
@@ -436,7 +417,6 @@ end
 
 ---------------------------------------------------
 --
->>>>>>> upstream/master
 --@src/devices/machine/74181.h,MACHINES["TTL74181"] = true
 ---------------------------------------------------
 
@@ -449,8 +429,6 @@ end
 
 ---------------------------------------------------
 --
-<<<<<<< HEAD
-=======
 --@src/devices/machine/74259.h,MACHINES["TTL74259"] = true
 ---------------------------------------------------
 
@@ -463,7 +441,6 @@ end
 
 ---------------------------------------------------
 --
->>>>>>> upstream/master
 --@src/devices/machine/7474.h,MACHINES["TTL7474"] = true
 ---------------------------------------------------
 
@@ -476,8 +453,6 @@ end
 
 ---------------------------------------------------
 --
-<<<<<<< HEAD
-=======
 --@src/devices/machine/82s129.h,MACHINES["PROM82S129"] = true
 ---------------------------------------------------
 
@@ -490,7 +465,6 @@ end
 
 ---------------------------------------------------
 --
->>>>>>> upstream/master
 --@src/devices/machine/8042kbdc.h,MACHINES["KBDC8042"] = true
 ---------------------------------------------------
 
@@ -587,8 +561,6 @@ end
 
 ---------------------------------------------------
 --
-<<<<<<< HEAD
-=======
 --@src/devices/machine/am2847.h,MACHINES["AM2847"] = true
 ---------------------------------------------------
 
@@ -601,7 +573,6 @@ end
 
 ---------------------------------------------------
 --
->>>>>>> upstream/master
 --@src/devices/machine/am53cf96.h,MACHINES["AM53CF96"] = true
 ---------------------------------------------------
 
@@ -736,8 +707,6 @@ end
 
 ---------------------------------------------------
 --
-<<<<<<< HEAD
-=======
 --@src/devices/machine/cdp1879.h,MACHINES["CDP1879"] = true
 ---------------------------------------------------
 
@@ -751,7 +720,6 @@ end
 
 ---------------------------------------------------
 --
->>>>>>> upstream/master
 --@src/devices/machine/com8116.h,MACHINES["COM8116"] = true
 ---------------------------------------------------
 
@@ -800,8 +768,6 @@ end
 
 ---------------------------------------------------
 --
-<<<<<<< HEAD
-=======
 --@src/devices/machine/cxd1095.h,MACHINES["CXD1095"] = true
 ---------------------------------------------------
 
@@ -812,7 +778,6 @@ if (MACHINES["CXD1095"]~=null) then
 	}
 end
 
->>>>>>> upstream/master
 --@src/devices/machine/ds1204.h,MACHINES["DS1204"] = true
 ---------------------------------------------------
 
@@ -825,8 +790,6 @@ end
 
 ---------------------------------------------------
 --
-<<<<<<< HEAD
-=======
 --@src/devices/machine/ds1205.h,MACHINES["DS1205"] = true
 ---------------------------------------------------
 
@@ -839,7 +802,6 @@ end
 
 ---------------------------------------------------
 --
->>>>>>> upstream/master
 --@src/devices/machine/ds1302.h,MACHINES["DS1302"] = true
 ---------------------------------------------------
 
@@ -864,8 +826,6 @@ end
 
 ---------------------------------------------------
 --
-<<<<<<< HEAD
-=======
 --@src/devices/machine/ds1386.h,MACHINES["DS1386"] = true
 ---------------------------------------------------
 
@@ -878,7 +838,6 @@ end
 
 ---------------------------------------------------
 --
->>>>>>> upstream/master
 --@src/devices/machine/ds2401.h,MACHINES["DS2401"] = true
 ---------------------------------------------------
 
@@ -1005,8 +964,6 @@ end
 
 ---------------------------------------------------
 --
-<<<<<<< HEAD
-=======
 --@src/devices/machine/fga002.h,MACHINES["FGA002"] = true
 ---------------------------------------------------
 
@@ -1019,7 +976,6 @@ end
 
 ---------------------------------------------------
 --
->>>>>>> upstream/master
 --@src/devices/machine/hd63450.h,MACHINES["HD63450"] = true
 ---------------------------------------------------
 
@@ -1044,8 +1000,6 @@ end
 
 ---------------------------------------------------
 --
-<<<<<<< HEAD
-=======
 --@src/devices/machine/hp_taco.h,MACHINES["HP_TACO"] = true
 ---------------------------------------------------
 
@@ -1070,7 +1024,6 @@ end
 
 ---------------------------------------------------
 --
->>>>>>> upstream/master
 --@src/devices/machine/i2cmem.h,MACHINES["I2CMEM"] = true
 ---------------------------------------------------
 
@@ -1083,8 +1036,6 @@ end
 
 ---------------------------------------------------
 --
-<<<<<<< HEAD
-=======
 --@src/devices/machine/i7220.h,MACHINES["I7220"] = true
 ---------------------------------------------------
 
@@ -1097,7 +1048,6 @@ end
 
 ---------------------------------------------------
 --
->>>>>>> upstream/master
 --@src/devices/machine/i8155.h,MACHINES["I8155"] = true
 ---------------------------------------------------
 
@@ -1247,8 +1197,6 @@ end
 
 ---------------------------------------------------
 --
-<<<<<<< HEAD
-=======
 --@src/devices/machine/ie15.h,MACHINES["IE15"] = true
 ---------------------------------------------------
 
@@ -1271,7 +1219,6 @@ end
 
 ---------------------------------------------------
 --
->>>>>>> upstream/master
 --@src/devices/machine/im6402.h,MACHINES["IM6402"] = true
 ---------------------------------------------------
 
@@ -1371,8 +1318,6 @@ end
 
 ---------------------------------------------------
 --
-<<<<<<< HEAD
-=======
 --@src/devices/machine/mm5740.h,MACHINES["MM5740"] = true
 ---------------------------------------------------
 
@@ -1385,7 +1330,6 @@ end
 
 ---------------------------------------------------
 --
->>>>>>> upstream/master
 --@src/devices/machine/kb3600.h,MACHINES["KB3600"] = true
 ---------------------------------------------------
 
@@ -1472,8 +1416,6 @@ end
 
 ---------------------------------------------------
 --
-<<<<<<< HEAD
-=======
 --@src/devices/machine/ldp1000.h,MACHINES["LDP1000"] = true
 ---------------------------------------------------
 
@@ -1498,7 +1440,6 @@ end
 
 ---------------------------------------------------
 --
->>>>>>> upstream/master
 --@src/devices/machine/ldvp931.h,MACHINES["LDVP931"] = true
 ---------------------------------------------------
 
@@ -1547,21 +1488,6 @@ end
 
 ---------------------------------------------------
 --
-<<<<<<< HEAD
---@src/devices/machine/matsucd.h,MACHINES["MATSUCD"] = true
----------------------------------------------------
-
-if (MACHINES["MATSUCD"]~=null) then
-	files {
-		MAME_DIR .. "src/devices/machine/matsucd.cpp",
-		MAME_DIR .. "src/devices/machine/matsucd.h",
-	}
-end
-
----------------------------------------------------
---
-=======
->>>>>>> upstream/master
 --@src/devices/machine/mb14241.h,MACHINES["MB14241"] = true
 ---------------------------------------------------
 
@@ -1660,8 +1586,6 @@ end
 
 ---------------------------------------------------
 --
-<<<<<<< HEAD
-=======
 --@src/devices/machine/mc14411.h,MACHINES["MC14411"] = true
 ---------------------------------------------------
 
@@ -1674,7 +1598,6 @@ end
 
 ---------------------------------------------------
 --
->>>>>>> upstream/master
 --@src/devices/machine/mc2661.h,MACHINES["MC2661"] = true
 ---------------------------------------------------
 
@@ -1930,10 +1853,7 @@ end
 ---------------------------------------------------
 --
 --@src/devices/machine/mos6530.h,MACHINES["MIOT6530"] = true
-<<<<<<< HEAD
-=======
 --@src/devices/machine/mos6530n.h,MACHINES["MIOT6530"] = true
->>>>>>> upstream/master
 ---------------------------------------------------
 
 if (MACHINES["MIOT6530"]~=null) then
@@ -1995,8 +1915,6 @@ end
 
 ---------------------------------------------------
 --
-<<<<<<< HEAD
-=======
 --@src/devices/machine/msm6253.h,MACHINES["MSM6253"] = true
 ---------------------------------------------------
 
@@ -2009,7 +1927,6 @@ end
 
 ---------------------------------------------------
 --
->>>>>>> upstream/master
 --@src/devices/machine/ncr539x.h,MACHINES["NCR539x"] = true
 ---------------------------------------------------
 
@@ -2094,11 +2011,8 @@ if (MACHINES["PCI"]~=null) then
 		MAME_DIR .. "src/devices/machine/pci-usb.h",
 		MAME_DIR .. "src/devices/machine/pci-sata.cpp",
 		MAME_DIR .. "src/devices/machine/pci-sata.h",
-<<<<<<< HEAD
-=======
 		MAME_DIR .. "src/devices/machine/pci-ide.cpp",
 		MAME_DIR .. "src/devices/machine/pci-ide.h",
->>>>>>> upstream/master
 		MAME_DIR .. "src/devices/machine/pci-apic.cpp",
 		MAME_DIR .. "src/devices/machine/pci-apic.h",
 		MAME_DIR .. "src/devices/machine/pci-smbus.cpp",
@@ -2109,16 +2023,12 @@ if (MACHINES["PCI"]~=null) then
 		MAME_DIR .. "src/devices/machine/i82875p.h",
 		MAME_DIR .. "src/devices/machine/i6300esb.cpp",
 		MAME_DIR .. "src/devices/machine/i6300esb.h",
-<<<<<<< HEAD
-		MAME_DIR .. "src/devices/machine/lpc.cpp",
-=======
 		MAME_DIR .. "src/devices/machine/i82439hx.cpp",
 		MAME_DIR .. "src/devices/machine/i82439hx.h",
 		MAME_DIR .. "src/devices/machine/i82439tx.cpp",
 		MAME_DIR .. "src/devices/machine/i82439tx.h",
 		MAME_DIR .. "src/devices/machine/i82371sb.cpp",
 		MAME_DIR .. "src/devices/machine/i82371sb.h",
->>>>>>> upstream/master
 		MAME_DIR .. "src/devices/machine/lpc.h",
 		MAME_DIR .. "src/devices/machine/lpc-acpi.cpp",
 		MAME_DIR .. "src/devices/machine/lpc-acpi.h",
@@ -2128,15 +2038,12 @@ if (MACHINES["PCI"]~=null) then
 		MAME_DIR .. "src/devices/machine/lpc-pit.h",
 		MAME_DIR .. "src/devices/machine/vrc4373.cpp",
 		MAME_DIR .. "src/devices/machine/vrc4373.h",
-<<<<<<< HEAD
-=======
 		MAME_DIR .. "src/devices/machine/vrc5074.cpp",
 		MAME_DIR .. "src/devices/machine/vrc5074.h",
 		MAME_DIR .. "src/devices/machine/gt64xxx.cpp",
 		MAME_DIR .. "src/devices/machine/gt64xxx.h",
 		MAME_DIR .. "src/devices/machine/sis85c496.cpp",
 		MAME_DIR .. "src/devices/machine/sis85c496.h",
->>>>>>> upstream/master
 	}
 end
 
@@ -2154,8 +2061,6 @@ end
 
 ---------------------------------------------------
 --
-<<<<<<< HEAD
-=======
 --@src/devices/machine/phi.h,MACHINES["PHI"] = true
 ---------------------------------------------------
 
@@ -2168,7 +2073,6 @@ end
 
 ---------------------------------------------------
 --
->>>>>>> upstream/master
 --@src/devices/machine/pic8259.h,MACHINES["PIC8259"] = true
 ---------------------------------------------------
 
@@ -2374,29 +2278,6 @@ end
 
 ---------------------------------------------------
 --
-<<<<<<< HEAD
---@src/devices/machine/s3c2400.h,MACHINES["S3C2400"] = true
----------------------------------------------------
-
-if (MACHINES["S3C2400"]~=null) then
-	files {
-		MAME_DIR .. "src/devices/machine/s3c2400.cpp",
-		MAME_DIR .. "src/devices/machine/s3c2400.h",
-		MAME_DIR .. "src/devices/machine/s3c24xx.inc",
-	}
-end
-
----------------------------------------------------
---
---@src/devices/machine/s3c2410.h,MACHINES["S3C2410"] = true
----------------------------------------------------
-
-if (MACHINES["S3C2410"]~=null) then
-	files {
-		MAME_DIR .. "src/devices/machine/s3c2410.cpp",
-		MAME_DIR .. "src/devices/machine/s3c2410.h",
-		MAME_DIR .. "src/devices/machine/s3c24xx.inc",
-=======
 --@src/devices/machine/s3c2400.h,MACHINES["S3C24XX"] = true
 --@src/devices/machine/s3c2410.h,MACHINES["S3C24XX"] = true
 --@src/devices/machine/s3c2440.h,MACHINES["S3C24XX"] = true
@@ -2413,7 +2294,6 @@ if (MACHINES["S3C24XX"]~=null) then
 		MAME_DIR .. "src/devices/machine/s3c24xx.cpp",
 		MAME_DIR .. "src/devices/machine/s3c24xx.h",
 		MAME_DIR .. "src/devices/machine/s3c24xx.hxx",
->>>>>>> upstream/master
 	}
 end
 
@@ -2431,27 +2311,6 @@ end
 
 ---------------------------------------------------
 --
-<<<<<<< HEAD
---@src/devices/machine/s3c2440.h,MACHINES["S3C2440"] = true
----------------------------------------------------
-
-if (MACHINES["S3C2440"]~=null) then
-	files {
-		MAME_DIR .. "src/devices/machine/s3c2440.cpp",
-		MAME_DIR .. "src/devices/machine/s3c2440.h",
-		MAME_DIR .. "src/devices/machine/s3c24xx.inc",
-	}
-end
-
----------------------------------------------------
---
---@src/devices/machine/saturn.h,MACHINES["SATURN"] = true
----------------------------------------------------
-
-if (MACHINES["SATURN"]~=null) then
-	files {
-		MAME_DIR .. "src/devices/machine/saturn.cpp",
-=======
 --@src/devices/machine/scnxx562.h,MACHINES["DUSCC"] = true
 ---------------------------------------------------
 
@@ -2459,7 +2318,6 @@ if (MACHINES["DUSCC"]~=null) then
 	files {
 		MAME_DIR .. "src/devices/machine/scnxx562.cpp",
 		MAME_DIR .. "src/devices/machine/scnxx562.h",
->>>>>>> upstream/master
 	}
 end
 
@@ -2507,10 +2365,7 @@ end
 if (MACHINES["STVCD"]~=null) then
 	files {
 		MAME_DIR .. "src/devices/machine/stvcd.cpp",
-<<<<<<< HEAD
-=======
 		MAME_DIR .. "src/devices/machine/stvcd.h",
->>>>>>> upstream/master
 	}
 end
 
@@ -2548,8 +2403,6 @@ end
 
 ---------------------------------------------------
 --
-<<<<<<< HEAD
-=======
 --@src/devices/machine/te7750.h,MACHINES["TE7750"] = true
 ---------------------------------------------------
 
@@ -2562,7 +2415,6 @@ end
 
 ---------------------------------------------------
 --
->>>>>>> upstream/master
 --@src/devices/machine/timekpr.h,MACHINES["TIMEKPR"] = true
 ---------------------------------------------------
 
@@ -2575,8 +2427,6 @@ end
 
 ---------------------------------------------------
 --
-<<<<<<< HEAD
-=======
 --@src/devices/machine/tmc0430.h,MACHINES["TMC0430"] = true
 ---------------------------------------------------
 
@@ -2589,7 +2439,6 @@ end
 
 ---------------------------------------------------
 --
->>>>>>> upstream/master
 --@src/devices/machine/tmp68301.h,MACHINES["TMP68301"] = true
 ---------------------------------------------------
 
@@ -2662,8 +2511,6 @@ end
 
 ---------------------------------------------------
 --
-<<<<<<< HEAD
-=======
 --@src/devices/machine/tube.h,MACHINES["TUBE"] = true
 ---------------------------------------------------
 
@@ -2676,7 +2523,6 @@ end
 
 ---------------------------------------------------
 --
->>>>>>> upstream/master
 --@src/devices/machine/upd1990a.h,MACHINES["UPD1990A"] = true
 ---------------------------------------------------
 
@@ -2745,11 +2591,6 @@ if (MACHINES["UPD765"]~=null) then
 	files {
 		MAME_DIR .. "src/devices/machine/upd765.cpp",
 		MAME_DIR .. "src/devices/machine/upd765.h",
-<<<<<<< HEAD
-		MAME_DIR .. "src/devices/machine/fdc_pll.cpp",
-		MAME_DIR .. "src/devices/machine/fdc_pll.h",
-=======
->>>>>>> upstream/master
 	}
 end
 
@@ -2774,11 +2615,6 @@ if (MACHINES["WD_FDC"]~=null) then
 	files {
 		MAME_DIR .. "src/devices/machine/wd_fdc.cpp",
 		MAME_DIR .. "src/devices/machine/wd_fdc.h",
-<<<<<<< HEAD
-		MAME_DIR .. "src/devices/machine/fdc_pll.cpp",
-		MAME_DIR .. "src/devices/machine/fdc_pll.h",
-=======
->>>>>>> upstream/master
 	}
 end
 
@@ -2881,8 +2717,6 @@ end
 
 ---------------------------------------------------
 --
-<<<<<<< HEAD
-=======
 --@src/devices/machine/ym3802.h,MACHINES["YM3802"] = true
 ---------------------------------------------------
 
@@ -2895,7 +2729,6 @@ end
 
 ---------------------------------------------------
 --
->>>>>>> upstream/master
 --@src/devices/machine/z80ctc.h,MACHINES["Z80CTC"] = true
 ---------------------------------------------------
 
@@ -3042,11 +2875,7 @@ end
 
 ---------------------------------------------------
 --
-<<<<<<< HEAD
---@src/devices/machine/ncr5389.h,MACHINES["NCR5390"] = true
-=======
 --@src/devices/machine/ncr5390.h,MACHINES["NCR5390"] = true
->>>>>>> upstream/master
 ---------------------------------------------------
 
 if (MACHINES["NCR5390"]~=null) then
@@ -3259,8 +3088,6 @@ if (MACHINES["VT82C496"]~=null) then
 	}
 end
 
-<<<<<<< HEAD
-=======
 ---------------------------------------------------
 --
 --@src/devices/machine/pdc.h,MACHINES["PDC"] = true
@@ -3422,4 +3249,3 @@ if (MACHINES["I82586"]~=null) then
 		MAME_DIR .. "src/devices/machine/i82586.h",
 	}
 end
->>>>>>> upstream/master

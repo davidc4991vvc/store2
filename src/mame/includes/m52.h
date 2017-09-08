@@ -1,10 +1,7 @@
 // license:BSD-3-Clause
 // copyright-holders:Nicola Salmoria
-<<<<<<< HEAD
-=======
 #include "screen.h"
 
->>>>>>> upstream/master
 class m52_state : public driver_device
 {
 public:
@@ -19,19 +16,6 @@ public:
 		m_palette(*this, "palette") { }
 
 	/* memory pointers */
-<<<<<<< HEAD
-	required_shared_ptr<UINT8> m_videoram;
-	required_shared_ptr<UINT8> m_colorram;
-	optional_shared_ptr<UINT8> m_spriteram;
-
-	/* video-related */
-	tilemap_t*             m_bg_tilemap;
-	UINT8                m_bg1xpos;
-	UINT8                m_bg1ypos;
-	UINT8                m_bg2xpos;
-	UINT8                m_bg2ypos;
-	UINT8                m_bgcontrol;
-=======
 	required_shared_ptr<uint8_t> m_videoram;
 	required_shared_ptr<uint8_t> m_colorram;
 	optional_shared_ptr<uint8_t> m_spriteram;
@@ -43,7 +27,6 @@ public:
 	uint8_t                m_bg2xpos;
 	uint8_t                m_bg2ypos;
 	uint8_t                m_bgcontrol;
->>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(m52_scroll_w);
 	DECLARE_WRITE8_MEMBER(m52_videoram_w);
 	DECLARE_WRITE8_MEMBER(m52_colorram_w);
@@ -56,17 +39,10 @@ public:
 	DECLARE_WRITE8_MEMBER(m52_flipscreen_w);
 	DECLARE_WRITE8_MEMBER(alpha1v_flipscreen_w);
 	TILE_GET_INFO_MEMBER(get_tile_info);
-<<<<<<< HEAD
-	virtual void machine_reset();
-	virtual void video_start();
-	DECLARE_PALETTE_INIT(m52);
-	UINT32 screen_update_m52(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	virtual void machine_reset() override;
 	virtual void video_start() override;
 	DECLARE_PALETTE_INIT(m52);
 	uint32_t screen_update_m52(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	void draw_background(bitmap_ind16 &bitmap, const rectangle &cliprect, int xpos, int ypos, int image);
 	required_device<cpu_device> m_maincpu;
 	required_device<gfxdecode_device> m_gfxdecode;

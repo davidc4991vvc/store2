@@ -20,24 +20,6 @@ public:
 		m_palette(*this, "palette") { }
 
 	/* memory pointers */
-<<<<<<< HEAD
-	required_shared_ptr<UINT8> m_spriteram;
-	required_shared_ptr<UINT8> m_videoram;
-	required_shared_ptr<UINT8> m_bg_scrolly;
-	required_shared_ptr<UINT8> m_bg_scrollx;
-
-	/* video-related */
-	UINT8          m_fg_scrollx;
-	UINT8          m_fg_scrolly;
-	UINT8          m_fg_select;
-	UINT8          m_text_scrolly;
-	UINT8          m_text_mode;
-	UINT8          m_bg_select;
-	UINT8          m_bg_priority;
-	UINT8          m_bg_mask;
-	UINT8          m_fg_mask;
-	UINT8          m_flipscreen;
-=======
 	required_shared_ptr<uint8_t> m_spriteram;
 	required_shared_ptr<uint8_t> m_videoram;
 	required_shared_ptr<uint8_t> m_bg_scrolly;
@@ -54,7 +36,6 @@ public:
 	uint8_t          m_bg_mask;
 	uint8_t          m_fg_mask;
 	uint8_t          m_flipscreen;
->>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(momoko_bg_read_bank_w);
 	DECLARE_WRITE8_MEMBER(momoko_fg_scrollx_w);
 	DECLARE_WRITE8_MEMBER(momoko_fg_scrolly_w);
@@ -66,15 +47,9 @@ public:
 	DECLARE_WRITE8_MEMBER(momoko_bg_select_w);
 	DECLARE_WRITE8_MEMBER(momoko_bg_priority_w);
 	DECLARE_WRITE8_MEMBER(momoko_flipscreen_w);
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void machine_reset();
-	UINT32 screen_update_momoko(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
 	uint32_t screen_update_momoko(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	void momoko_draw_bg_pri( bitmap_ind16 &bitmap, int chr, int col, int flipx, int flipy, int x, int y, int pri );
 	required_device<cpu_device> m_maincpu;
 	required_device<gfxdecode_device> m_gfxdecode;

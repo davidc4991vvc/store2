@@ -1,18 +1,10 @@
 /* Lzma86.h -- LZMA + x86 (BCJ) Filter
-<<<<<<< HEAD
-2009-08-14 : Igor Pavlov : Public domain */
-=======
 2013-01-18 : Igor Pavlov : Public domain */
->>>>>>> upstream/master
 
 #ifndef __LZMA86_H
 #define __LZMA86_H
 
-<<<<<<< HEAD
-#include "Types.h"
-=======
 #include "7zTypes.h"
->>>>>>> upstream/master
 
 EXTERN_C_BEGIN
 

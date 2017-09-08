@@ -7,20 +7,6 @@
     driver by Mathis Rosenhauer
 
     TODO:
-<<<<<<< HEAD
-    - tile/sprite priority in holeland (fixed? Needs further testing)
-    - missing high bit of sprite X coordinate? (see round 2 and 3 of attract mode
-      in crzrally)
-
-***************************************************************************/
-
-#include "emu.h"
-#include "cpu/z80/z80.h"
-#include "sound/ay8910.h"
-#include "machine/nvram.h"
-#include "includes/holeland.h"
-
-=======
     - tile/sprite priority in holeland - sprites appearing on top of text for
       example GAME OVER, is still incorrect
     - missing high bit of sprite X coordinate? (see round 2 and 3 of attract
@@ -43,62 +29,38 @@ WRITE_LINE_MEMBER(holeland_state::coin_counter_w)
 {
 	machine().bookkeeping().coin_counter_w(0, state);
 }
->>>>>>> upstream/master
 
 static ADDRESS_MAP_START( holeland_map, AS_PROGRAM, 8, holeland_state )
 	AM_RANGE(0x0000, 0x7fff) AM_ROM
 	AM_RANGE(0x8000, 0x87ff) AM_RAM
 	AM_RANGE(0xa000, 0xbfff) AM_ROM
-<<<<<<< HEAD
-	AM_RANGE(0xc000, 0xc001) AM_WRITE(holeland_pal_offs_w)
-	AM_RANGE(0xc006, 0xc007) AM_WRITE(holeland_flipscreen_w)
-	AM_RANGE(0xe000, 0xe3ff) AM_RAM_WRITE(holeland_colorram_w) AM_SHARE("colorram")
-	AM_RANGE(0xe400, 0xe7ff) AM_RAM_WRITE(holeland_videoram_w) AM_SHARE("videoram")
-=======
 	AM_RANGE(0xa000, 0xa000) AM_DEVWRITE("speech", sp0256_device, ald_w)
 	AM_RANGE(0xc000, 0xc007) AM_DEVWRITE("latch", ls259_device, write_d0) AM_READNOP
 	AM_RANGE(0xe000, 0xe3ff) AM_RAM_WRITE(colorram_w) AM_SHARE("colorram")
 	AM_RANGE(0xe400, 0xe7ff) AM_RAM_WRITE(videoram_w) AM_SHARE("videoram")
->>>>>>> upstream/master
 	AM_RANGE(0xf000, 0xf3ff) AM_RAM AM_SHARE("spriteram")
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( crzrally_map, AS_PROGRAM, 8, holeland_state )
 	AM_RANGE(0x0000, 0xbfff) AM_ROM
 	AM_RANGE(0xc000, 0xc7ff) AM_RAM AM_SHARE("nvram")
-<<<<<<< HEAD
-	AM_RANGE(0xe000, 0xe3ff) AM_RAM_WRITE(holeland_colorram_w) AM_SHARE("colorram")
-	AM_RANGE(0xe400, 0xe7ff) AM_RAM_WRITE(holeland_videoram_w) AM_SHARE("videoram")
-	AM_RANGE(0xe800, 0xebff) AM_RAM AM_SHARE("spriteram")
-	AM_RANGE(0xf000, 0xf000) AM_WRITE(holeland_scroll_w)
-	AM_RANGE(0xf800, 0xf801) AM_WRITE(holeland_pal_offs_w)
-=======
 	AM_RANGE(0xe000, 0xe3ff) AM_RAM_WRITE(colorram_w) AM_SHARE("colorram")
 	AM_RANGE(0xe400, 0xe7ff) AM_RAM_WRITE(videoram_w) AM_SHARE("videoram")
 	AM_RANGE(0xe800, 0xebff) AM_RAM AM_SHARE("spriteram")
 	AM_RANGE(0xf000, 0xf000) AM_WRITE(scroll_w)
 	AM_RANGE(0xf800, 0xf807) AM_DEVWRITE("latch", ls259_device, write_d0)
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( io_map, AS_IO, 8, holeland_state )
 	ADDRESS_MAP_GLOBAL_MASK(0xff)
-<<<<<<< HEAD
-	AM_RANGE(0x01, 0x01) AM_READ(watchdog_reset_r)  /* ? */
-=======
 	AM_RANGE(0x01, 0x01) AM_DEVREAD("watchdog", watchdog_timer_device, reset_r)  /* ? */
->>>>>>> upstream/master
 	AM_RANGE(0x04, 0x04) AM_DEVREAD("ay1", ay8910_device, data_r)
 	AM_RANGE(0x04, 0x05) AM_DEVWRITE("ay1", ay8910_device, address_data_w)
 	AM_RANGE(0x06, 0x06) AM_DEVREAD("ay2", ay8910_device, data_r)
 	AM_RANGE(0x06, 0x07) AM_DEVWRITE("ay2", ay8910_device, address_data_w)
 ADDRESS_MAP_END
 
-<<<<<<< HEAD
-
-=======
 /* Note - manual states cocktail mode should be default */
->>>>>>> upstream/master
 static INPUT_PORTS_START( holeland )
 	PORT_START("IN0")
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_BUTTON2 )
@@ -125,11 +87,7 @@ static INPUT_PORTS_START( holeland )
 	PORT_DIPNAME( 0x02, 0x00, DEF_STR( Demo_Sounds ) )
 	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x04, 0x00, DEF_STR( Language ) )
-=======
 	PORT_DIPNAME( 0x04, 0x04, DEF_STR( Language ) )
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x00, DEF_STR( English ) )
 	PORT_DIPSETTING(    0x04, "Nihongo" )
 	PORT_DIPNAME( 0x08, 0x08, DEF_STR( Cabinet ) )
@@ -172,8 +130,6 @@ static INPUT_PORTS_START( holeland )
 	PORT_DIPSETTING(    0x80, "Play" )
 INPUT_PORTS_END
 
-<<<<<<< HEAD
-=======
 static INPUT_PORTS_START( holeland2 )
 		PORT_INCLUDE( holeland )
 
@@ -183,7 +139,6 @@ static INPUT_PORTS_START( holeland2 )
 		PORT_DIPSETTING(    0x04, DEF_STR( Spanish ) )
 INPUT_PORTS_END
 
->>>>>>> upstream/master
 static INPUT_PORTS_START( crzrally )
 	PORT_START("IN0")
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_BUTTON1 )
@@ -317,23 +272,14 @@ static GFXDECODE_START( crzrally )
 GFXDECODE_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( holeland, holeland_state )
-
-	/* basic machine hardware */
-	MCFG_CPU_ADD("maincpu", Z80, 4000000)        /* 4 MHz ? */
-=======
 static MACHINE_CONFIG_START( holeland )
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, 3355700) /* measured 298ns on PCB */
->>>>>>> upstream/master
 	MCFG_CPU_PROGRAM_MAP(holeland_map)
 	MCFG_CPU_IO_MAP(io_map)
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", holeland_state,  irq0_line_hold)
 
-<<<<<<< HEAD
-=======
 	MCFG_DEVICE_ADD("latch", LS259, 0) // 3J
 	MCFG_ADDRESSABLE_LATCH_PARALLEL_OUT_CB(WRITE8(holeland_state, pal_offs_w)) MCFG_DEVCB_MASK(0x03)
 	MCFG_ADDRESSABLE_LATCH_Q5_OUT_CB(WRITELINE(holeland_state, coin_counter_w))
@@ -342,7 +288,6 @@ static MACHINE_CONFIG_START( holeland )
 
 	MCFG_WATCHDOG_ADD("watchdog")
 
->>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE(60)
@@ -353,31 +298,17 @@ static MACHINE_CONFIG_START( holeland )
 	MCFG_SCREEN_PALETTE("palette")
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", holeland)
-<<<<<<< HEAD
-	MCFG_PALETTE_ADD_RRRRGGGGBBBB_PROMS("palette", 256)
-=======
 	MCFG_PALETTE_ADD_RRRRGGGGBBBB_PROMS("palette", "proms", 256)
->>>>>>> upstream/master
 	MCFG_VIDEO_START_OVERRIDE(holeland_state,holeland)
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-	MCFG_SOUND_ADD("ay1", AY8910, 1818182)
-=======
 	MCFG_SOUND_ADD("ay1", AY8910, 20000000/32) /* verified on PCB */
->>>>>>> upstream/master
 	MCFG_AY8910_PORT_A_READ_CB(IOPORT("IN0"))
 	MCFG_AY8910_PORT_B_READ_CB(IOPORT("IN1"))
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.25)
 
-<<<<<<< HEAD
-	MCFG_SOUND_ADD("ay2", AY8910, 1818182)
-	MCFG_AY8910_PORT_A_READ_CB(IOPORT("DSW1"))
-	MCFG_AY8910_PORT_B_READ_CB(IOPORT("DSW2"))
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.25)
-=======
 	MCFG_SOUND_ADD("ay2", AY8910, 20000000/16) /* verified on PCB */
 	MCFG_AY8910_PORT_A_READ_CB(IOPORT("DSW1"))
 	MCFG_AY8910_PORT_B_READ_CB(IOPORT("DSW2"))
@@ -386,7 +317,6 @@ static MACHINE_CONFIG_START( holeland )
 	MCFG_SOUND_ADD("speech", SP0256, 3355700) /* measured 298ns on PCB */
 	MCFG_SP0256_DATA_REQUEST_CB(INPUTLINE("maincpu", INPUT_LINE_NMI))
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 /*
@@ -423,11 +353,7 @@ Notes:
 
 */
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( crzrally, holeland_state )
-=======
 static MACHINE_CONFIG_START( crzrally )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, 20000000/4)        /* 5 MHz */
@@ -437,15 +363,12 @@ static MACHINE_CONFIG_START( crzrally )
 
 	MCFG_NVRAM_ADD_1FILL("nvram")
 
-<<<<<<< HEAD
-=======
 	MCFG_DEVICE_ADD("latch", LS259, 0)
 	MCFG_ADDRESSABLE_LATCH_PARALLEL_OUT_CB(WRITE8(holeland_state, pal_offs_w)) MCFG_DEVCB_MASK(0x03)
 	MCFG_ADDRESSABLE_LATCH_Q5_OUT_CB(WRITELINE(holeland_state, coin_counter_w))
 
 	MCFG_WATCHDOG_ADD("watchdog")
 
->>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE(59)
@@ -456,11 +379,7 @@ static MACHINE_CONFIG_START( crzrally )
 	MCFG_SCREEN_PALETTE("palette")
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", crzrally)
-<<<<<<< HEAD
-	MCFG_PALETTE_ADD_RRRRGGGGBBBB_PROMS("palette", 256)
-=======
 	MCFG_PALETTE_ADD_RRRRGGGGBBBB_PROMS("palette", "proms", 256)
->>>>>>> upstream/master
 	MCFG_VIDEO_START_OVERRIDE(holeland_state,crzrally)
 
 	/* sound hardware */
@@ -486,30 +405,6 @@ MACHINE_CONFIG_END
 
 ROM_START( holeland )
 	ROM_REGION( 0x10000, "maincpu", 0 )
-<<<<<<< HEAD
-	ROM_LOAD( "holeland.0",  0x0000, 0x2000, CRC(b640e12b) SHA1(68d091a92747d2f4534386aff3ddb07c0d79384c) )
-	ROM_LOAD( "holeland.1",  0x2000, 0x2000, CRC(2f180851) SHA1(c21bcd3e9ff31a5cc415eb53d77a9cc9ebdd862d) )
-	ROM_LOAD( "holeland.2",  0x4000, 0x2000, CRC(35cfde75) SHA1(0a03c0464c771d049ae8706793ec43da5372fa58) )
-	ROM_LOAD( "holeland.3",  0x6000, 0x2000, CRC(5537c22e) SHA1(030f34d3cbc5eea30a3ede77008eba394ef37e8f) )
-	ROM_LOAD( "holeland.4",  0xa000, 0x2000, CRC(c95c355d) SHA1(44984108b6a3dab05855da4c4a3ff58d849559b8) )
-
-	ROM_REGION( 0x4000, "gfx1", ROMREGION_INVERT )
-	ROM_LOAD( "holeland.5",  0x0000, 0x2000, CRC(7f19e1f9) SHA1(75026da91e0cff262e5f6e32f836907a786aef42) )
-	ROM_LOAD( "holeland.6",  0x2000, 0x2000, CRC(844400e3) SHA1(d306b26f838b043b71c5f9d2d240228986b695fa) )
-
-	ROM_REGION( 0x8000, "gfx2", 0 )
-	ROM_LOAD( "holeland.7",  0x0000, 0x2000, CRC(d7feb25b) SHA1(581e20b07d33ba350601fc56074c43aaf13078b4) )
-	ROM_LOAD( "holeland.8",  0x2000, 0x2000, CRC(4b6eec16) SHA1(4c5da89c2babeb33951d101703e6699fbcb886b4) )
-	ROM_LOAD( "holeland.9",  0x4000, 0x2000, CRC(6fe7fcc0) SHA1(fa982551285f728cee0055a0c473f6c74d802d2e) )
-	ROM_LOAD( "holeland.10", 0x6000, 0x2000, CRC(e1e11e8f) SHA1(56082fe497d8ee8ecfe1b89c0c5ada4ddfa4740f) )
-
-	ROM_REGION( 0x0300, "proms", 0 )
-	ROM_LOAD( "3m",          0x0000, 0x0100, CRC(9d6fef5a) SHA1(e2b62909fecadfc9e0eb1ad72c8b7712a26d184e) )  /* Red component */
-	ROM_LOAD( "3l",          0x0100, 0x0100, CRC(f6682705) SHA1(1ab952c1e2a45e9b0dc9144f50711f99f6b1ebc4) )  /* Green component */
-	ROM_LOAD( "3n",          0x0200, 0x0100, CRC(3d7b3af6) SHA1(0c4f95b26e9fe25a5d8c79f06e7ceab78a07d35c) )  /* Blue component */
-ROM_END
-
-=======
 	ROM_LOAD( "0.2a",  0x0000, 0x2000, CRC(b640e12b) SHA1(68d091a92747d2f4534386aff3ddb07c0d79384c) )
 	ROM_LOAD( "1.2b",  0x2000, 0x2000, CRC(2f180851) SHA1(c21bcd3e9ff31a5cc415eb53d77a9cc9ebdd862d) )
 	ROM_LOAD( "2.1d",  0x4000, 0x2000, CRC(35cfde75) SHA1(0a03c0464c771d049ae8706793ec43da5372fa58) )
@@ -563,7 +458,6 @@ ROM_START( holeland2 )
 	ROM_LOAD( "82s129.3l", 0x0100, 0x0100, CRC(f6682705) SHA1(1ab952c1e2a45e9b0dc9144f50711f99f6b1ebc4) )  /* Green component */
 	ROM_LOAD( "82s129.3n", 0x0200, 0x0100, CRC(3d7b3af6) SHA1(0c4f95b26e9fe25a5d8c79f06e7ceab78a07d35c) )  /* Blue component */
 ROM_END
->>>>>>> upstream/master
 
 ROM_START( crzrally )
 	ROM_REGION( 0x10000, "maincpu", 0 )
@@ -653,15 +547,8 @@ ROM_START( crzrallyg )
 ROM_END
 
 
-<<<<<<< HEAD
-GAME( 1984, holeland,  0,        holeland, holeland, driver_device, 0, ROT0,   "Tecfri", "Hole Land",           MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
-GAME( 1985, crzrally,  0,        crzrally, crzrally, driver_device, 0, ROT270, "Tecfri", "Crazy Rally (set 1)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
-GAME( 1985, crzrallya, crzrally, crzrally, crzrally, driver_device, 0, ROT270, "Tecfri", "Crazy Rally (set 2)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
-GAME( 1985, crzrallyg, crzrally, crzrally, crzrally, driver_device, 0, ROT270, "Tecfri (Gecas license)", "Crazy Rally (Gecas license)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1984, holeland,  0,        holeland, holeland,  holeland_state, 0, ROT0,   "Tecfri",                 "Hole Land (Japan)",           MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
 GAME( 1984, holeland2, holeland, holeland, holeland2, holeland_state, 0, ROT0,   "Tecfri",                 "Hole Land (Spain)",           MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE ) //attract is different
 GAME( 1985, crzrally,  0,        crzrally, crzrally,  holeland_state, 0, ROT270, "Tecfri",                 "Crazy Rally (set 1)",         MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
 GAME( 1985, crzrallya, crzrally, crzrally, crzrally,  holeland_state, 0, ROT270, "Tecfri",                 "Crazy Rally (set 2)",         MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
 GAME( 1985, crzrallyg, crzrally, crzrally, crzrally,  holeland_state, 0, ROT270, "Tecfri (Gecas license)", "Crazy Rally (Gecas license)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

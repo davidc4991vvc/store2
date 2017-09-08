@@ -90,8 +90,6 @@
 
 *******************************************************************************/
 
-<<<<<<< HEAD
-=======
 #include "emu.h"
 #include "cpu/z80/z80.h"
 #include "machine/nvram.h"
@@ -102,7 +100,6 @@
 
 #include "sanremo.lh"
 
->>>>>>> upstream/master
 
 #define MASTER_CLOCK    XTAL_18MHz
 
@@ -110,16 +107,6 @@
 #define SND_CLOCK       MASTER_CLOCK/12
 #define CRTC_CLOCK      MASTER_CLOCK/12
 
-<<<<<<< HEAD
-#include "emu.h"
-#include "cpu/z80/z80.h"
-#include "video/mc6845.h"
-#include "sound/ay8910.h"
-#include "machine/nvram.h"
-#include "sanremo.lh"
-
-=======
->>>>>>> upstream/master
 
 class sanremo_state : public driver_device
 {
@@ -130,30 +117,18 @@ public:
 		m_maincpu(*this, "maincpu"),
 		m_gfxdecode(*this, "gfxdecode") { }
 
-<<<<<<< HEAD
-	required_shared_ptr<UINT8> m_videoram;
-
-	UINT8 m_attrram[0x800];
-=======
 	required_shared_ptr<uint8_t> m_videoram;
 
 	uint8_t m_attrram[0x800];
->>>>>>> upstream/master
 	tilemap_t *m_bg_tilemap;
 	DECLARE_WRITE8_MEMBER(sanremo_videoram_w);
 	TILE_GET_INFO_MEMBER(get_sanremo_tile_info);
 	DECLARE_WRITE8_MEMBER(banksel_w);
 	DECLARE_WRITE8_MEMBER(lamps_w);
 	int banksel;
-<<<<<<< HEAD
-	virtual void video_start();
-	DECLARE_PALETTE_INIT(sanremo);
-	UINT32 screen_update_sanremo(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	virtual void video_start() override;
 	DECLARE_PALETTE_INIT(sanremo);
 	uint32_t screen_update_sanremo(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	required_device<cpu_device> m_maincpu;
 	required_device<gfxdecode_device> m_gfxdecode;
 };
@@ -181,19 +156,11 @@ TILE_GET_INFO_MEMBER(sanremo_state::get_sanremo_tile_info)
 
 void sanremo_state::video_start()
 {
-<<<<<<< HEAD
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(sanremo_state::get_sanremo_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 48, 40);
-
-}
-
-UINT32 sanremo_state::screen_update_sanremo(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(sanremo_state::get_sanremo_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 48, 40);
 
 }
 
 uint32_t sanremo_state::screen_update_sanremo(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	m_bg_tilemap->draw(screen, bitmap, cliprect, 0, 0);
 	return 0;
@@ -229,15 +196,6 @@ WRITE8_MEMBER(sanremo_state::lamps_w)
     -x-- ----  BET
     x--- ----  (always on)
 */
-<<<<<<< HEAD
-	output_set_lamp_value(0, (data >> 0) & 1);  /* DISCARD 1 */
-	output_set_lamp_value(1, (data >> 1) & 1);  /* DISCARD 2 */
-	output_set_lamp_value(2, (data >> 2) & 1);  /* DISCARD 3 */
-	output_set_lamp_value(3, (data >> 3) & 1);  /* DISCARD 4 */
-	output_set_lamp_value(4, (data >> 4) & 1);  /* DISCARD 5 */
-	output_set_lamp_value(5, (data >> 5) & 1);  /* START */
-	output_set_lamp_value(6, (data >> 6) & 1);  /* BET */
-=======
 	output().set_lamp_value(0, (data >> 0) & 1);  /* DISCARD 1 */
 	output().set_lamp_value(1, (data >> 1) & 1);  /* DISCARD 2 */
 	output().set_lamp_value(2, (data >> 2) & 1);  /* DISCARD 3 */
@@ -245,7 +203,6 @@ WRITE8_MEMBER(sanremo_state::lamps_w)
 	output().set_lamp_value(4, (data >> 4) & 1);  /* DISCARD 5 */
 	output().set_lamp_value(5, (data >> 5) & 1);  /* START */
 	output().set_lamp_value(6, (data >> 6) & 1);  /* BET */
->>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(sanremo_state::banksel_w)
@@ -385,11 +342,7 @@ GFXDECODE_END
 *              Machine Drivers               *
 *********************************************/
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( sanremo, sanremo_state )
-=======
 static MACHINE_CONFIG_START( sanremo )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, CPU_CLOCK)
@@ -456,10 +409,5 @@ ROM_END
 *                Game Drivers                *
 *********************************************/
 
-<<<<<<< HEAD
-/*     YEAR  NAME     PARENT  MACHINE  INPUT    STATE          INIT   ROT    COMPANY           FULLNAME      FLAGS  LAYOUT  */
-GAMEL( 1996, number1, 0,      sanremo, number1, driver_device, 0,     ROT0, "San Remo Games", "Number One",  0,     layout_sanremo )
-=======
 //     YEAR  NAME     PARENT  MACHINE  INPUT    STATE          INIT   ROT   COMPANY           FULLNAME       FLAGS  LAYOUT
 GAMEL( 1996, number1, 0,      sanremo, number1, sanremo_state, 0,     ROT0, "San Remo Games", "Number One",  0,     layout_sanremo )
->>>>>>> upstream/master

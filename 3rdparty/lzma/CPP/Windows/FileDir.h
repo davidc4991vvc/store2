@@ -4,33 +4,11 @@
 #define __WINDOWS_FILE_DIR_H
 
 #include "../Common/MyString.h"
-<<<<<<< HEAD
-=======
 
->>>>>>> upstream/master
 #include "FileIO.h"
 
 namespace NWindows {
 namespace NFile {
-<<<<<<< HEAD
-namespace NDirectory {
-
-#ifdef WIN_LONG_PATH
-bool GetLongPaths(CFSTR s1, CFSTR s2, UString &d1, UString &d2);
-#endif
-
-bool MyGetWindowsDirectory(FString &path);
-bool MyGetSystemDirectory(FString &path);
-
-bool SetDirTime(CFSTR fileName, const FILETIME *cTime, const FILETIME *aTime, const FILETIME *mTime);
-bool MySetFileAttributes(CFSTR fileName, DWORD fileAttributes);
-bool MyMoveFile(CFSTR existFileName, CFSTR newFileName);
-bool MyRemoveDirectory(CFSTR path);
-bool MyCreateDirectory(CFSTR path);
-bool CreateComplexDirectory(CFSTR path);
-bool DeleteFileAlways(CFSTR name);
-bool RemoveDirectoryWithSubItems(const FString &path);
-=======
 namespace NDir {
 
 bool GetWindowsDir(FString &path);
@@ -56,7 +34,6 @@ bool CreateComplexDir(CFSTR path);
 
 bool DeleteFileAlways(CFSTR name);
 bool RemoveDirWithSubItems(const FString &path);
->>>>>>> upstream/master
 
 bool MyGetFullPathName(CFSTR path, FString &resFullPath);
 bool GetFullPathAndSplit(CFSTR path, FString &resDirPrefix, FString &resFileName);
@@ -64,13 +41,8 @@ bool GetOnlyDirPrefix(CFSTR path, FString &resDirPrefix);
 
 #ifndef UNDER_CE
 
-<<<<<<< HEAD
-bool MySetCurrentDirectory(CFSTR path);
-bool MyGetCurrentDirectory(FString &resultPath);
-=======
 bool SetCurrentDir(CFSTR path);
 bool GetCurrentDir(FString &resultPath);
->>>>>>> upstream/master
 
 #endif
 
@@ -104,8 +76,6 @@ public:
   bool Remove();
 };
 
-<<<<<<< HEAD
-=======
 #if !defined(UNDER_CE)
 class CCurrentDirRestorer
 {
@@ -129,7 +99,6 @@ public:
 };
 #endif
 
->>>>>>> upstream/master
 }}}
 
 #endif

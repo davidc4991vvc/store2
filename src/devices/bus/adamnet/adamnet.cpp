@@ -6,10 +6,7 @@
 
 **********************************************************************/
 
-<<<<<<< HEAD
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #include "adamnet.h"
 
 
@@ -18,13 +15,8 @@
 //  GLOBAL VARIABLES
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type ADAMNET = &device_creator<adamnet_device>;
-const device_type ADAMNET_SLOT = &device_creator<adamnet_slot_device>;
-=======
 DEFINE_DEVICE_TYPE(ADAMNET,      adamnet_device,      "adamnet",      "ADAMnet bus")
 DEFINE_DEVICE_TYPE(ADAMNET_SLOT, adamnet_slot_device, "adamnet_slot", "ADAMnet slot")
->>>>>>> upstream/master
 
 
 
@@ -60,13 +52,8 @@ device_adamnet_card_interface::~device_adamnet_card_interface()
 //-------------------------------------------------
 //  adamnet_slot_device - constructor
 //-------------------------------------------------
-<<<<<<< HEAD
-adamnet_slot_device::adamnet_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-	device_t(mconfig, ADAMNET_SLOT, "ADAMnet slot", tag, owner, clock, "adamnet_slot", __FILE__),
-=======
 adamnet_slot_device::adamnet_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	device_t(mconfig, ADAMNET_SLOT, tag, owner, clock),
->>>>>>> upstream/master
 	device_slot_interface(mconfig, *this), m_bus(nullptr)
 {
 }
@@ -93,13 +80,8 @@ void adamnet_slot_device::device_start()
 //  adamnet_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-adamnet_device::adamnet_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-	device_t(mconfig, ADAMNET, "ADAMnet bus", tag, owner, clock, "adamnet", __FILE__),
-=======
 adamnet_device::adamnet_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	device_t(mconfig, ADAMNET, tag, owner, clock),
->>>>>>> upstream/master
 	m_txd(1),
 	m_reset(CLEAR_LINE)
 {
@@ -131,11 +113,7 @@ void adamnet_device::device_stop()
 
 void adamnet_device::add_device(device_t *target)
 {
-<<<<<<< HEAD
-	daisy_entry *entry = global_alloc(daisy_entry(target));
-=======
 	auto entry = global_alloc(daisy_entry(target));
->>>>>>> upstream/master
 
 	entry->m_interface->m_bus = this;
 
@@ -148,15 +126,9 @@ void adamnet_device::add_device(device_t *target)
 //-------------------------------------------------
 
 adamnet_device::daisy_entry::daisy_entry(device_t *device)
-<<<<<<< HEAD
-	: m_next(NULL),
-		m_device(device),
-		m_interface(NULL),
-=======
 	: m_next(nullptr),
 		m_device(device),
 		m_interface(nullptr),
->>>>>>> upstream/master
 		m_txd(1)
 {
 	device->interface(m_interface);

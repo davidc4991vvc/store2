@@ -21,8 +21,6 @@
     CONSTANTS & DEFINES
 ***************************************************************************/
 
-<<<<<<< HEAD
-=======
 /**
  * @def TOKENIZE();
  *
@@ -35,7 +33,6 @@
  * @param   sizeof(token)       The sizeof(token)
  */
 
->>>>>>> upstream/master
 #define TOKENIZE i = tokenize( linebuffer, i, sizeof(linebuffer), token, sizeof(token) );
 
 
@@ -44,10 +41,7 @@
     GLOBAL VARIABLES
 ***************************************************************************/
 
-<<<<<<< HEAD
-=======
 /** @brief  The linebuffer[ 512]. */
->>>>>>> upstream/master
 static char linebuffer[512];
 
 
@@ -56,8 +50,6 @@ static char linebuffer[512];
     IMPLEMENTATION
 ***************************************************************************/
 
-<<<<<<< HEAD
-=======
 /**
  * @fn  static std::string get_file_path(std::string &path)
  *
@@ -68,7 +60,6 @@ static char linebuffer[512];
  * @return  The file path.
  */
 
->>>>>>> upstream/master
 static std::string get_file_path(std::string &path)
 {
 	int pos = path.find_last_of('\\');
@@ -84,17 +75,6 @@ static std::string get_file_path(std::string &path)
     get_file_size - get the size of a file
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-static UINT64 get_file_size(const char *filename)
-{
-	osd_file *file;
-	UINT64 filesize = 0;
-	file_error filerr;
-
-	filerr = osd_open(filename, OPEN_FLAG_READ, &file, &filesize);
-	if (filerr == FILERR_NONE)
-		osd_close(file);
-=======
 /**
  * @fn  static uint64_t get_file_size(const char *filename)
  *
@@ -111,7 +91,6 @@ static uint64_t get_file_size(const char *filename)
 	std::uint64_t filesize = 0;
 
 	osd_file::open(filename, OPEN_FLAG_READ, file, filesize);
->>>>>>> upstream/master
 
 	return filesize;
 }
@@ -121,8 +100,6 @@ static uint64_t get_file_size(const char *filename)
     tokenize - get a token from the line buffer
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-=======
 /**
  * @fn  static int tokenize( const char *linebuffer, int i, int linebuffersize, char *token, int tokensize )
  *
@@ -137,18 +114,13 @@ static uint64_t get_file_size(const char *filename)
  * @return  An int.
  */
 
->>>>>>> upstream/master
 static int tokenize( const char *linebuffer, int i, int linebuffersize, char *token, int tokensize )
 {
 	int j = 0;
 	int singlequote = 0;
 	int doublequote = 0;
 
-<<<<<<< HEAD
-	while ((i < linebuffersize) && isspace((UINT8)linebuffer[i]))
-=======
 	while ((i < linebuffersize) && isspace((uint8_t)linebuffer[i]))
->>>>>>> upstream/master
 	{
 		i++;
 	}
@@ -163,11 +135,7 @@ static int tokenize( const char *linebuffer, int i, int linebuffersize, char *to
 		{
 			singlequote = !singlequote;
 		}
-<<<<<<< HEAD
-		else if (!singlequote && !doublequote && isspace((UINT8)linebuffer[i]))
-=======
 		else if (!singlequote && !doublequote && isspace((uint8_t)linebuffer[i]))
->>>>>>> upstream/master
 		{
 			break;
 		}
@@ -190,8 +158,6 @@ static int tokenize( const char *linebuffer, int i, int linebuffersize, char *to
     msf_to_frames - convert m:s:f into a number of frames
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-=======
 /**
  * @fn  static int msf_to_frames( char *token )
  *
@@ -202,7 +168,6 @@ static int tokenize( const char *linebuffer, int i, int linebuffersize, char *to
  * @return  An int.
  */
 
->>>>>>> upstream/master
 static int msf_to_frames( char *token )
 {
 	int m = 0;
@@ -229,21 +194,6 @@ static int msf_to_frames( char *token )
     length in bytes of the data and the offset in
     bytes to where the data starts in the file.
 -------------------------------------------------*/
-<<<<<<< HEAD
-static UINT32 parse_wav_sample(const char *filename, UINT32 *dataoffs)
-{
-	unsigned long offset = 0;
-	UINT32 length, rate, filesize;
-	UINT16 bits, temp16;
-	char buf[32];
-	osd_file *file;
-	file_error filerr;
-	UINT64 fsize = 0;
-	UINT32 actual;
-
-	filerr = osd_open(filename, OPEN_FLAG_READ, &file, &fsize);
-	if (filerr != FILERR_NONE)
-=======
 
 /**
  * @fn  static uint32_t parse_wav_sample(const char *filename, uint32_t *dataoffs)
@@ -268,57 +218,26 @@ static uint32_t parse_wav_sample(const char *filename, uint32_t *dataoffs)
 
 	osd_file::error filerr = osd_file::open(filename, OPEN_FLAG_READ, file, fsize);
 	if (filerr != osd_file::error::NONE)
->>>>>>> upstream/master
 	{
 		printf("ERROR: could not open (%s)\n", filename);
 		return 0;
 	}
 
 	/* read the core header and make sure it's a WAVE file */
-<<<<<<< HEAD
-	osd_read(file, buf, 0, 4, &actual);
-	offset += actual;
-	if (offset < 4)
-	{
-		osd_close(file);
-=======
 	file->read(buf, 0, 4, actual);
 	offset += actual;
 	if (offset < 4)
 	{
->>>>>>> upstream/master
 		printf("ERROR: unexpected RIFF offset %lu (%s)\n", offset, filename);
 		return 0;
 	}
 	if (memcmp(&buf[0], "RIFF", 4) != 0)
 	{
-<<<<<<< HEAD
-		osd_close(file);
-=======
->>>>>>> upstream/master
 		printf("ERROR: could not find RIFF header (%s)\n", filename);
 		return 0;
 	}
 
 	/* get the total size */
-<<<<<<< HEAD
-	osd_read(file, &filesize, offset, 4, &actual);
-	offset += actual;
-	if (offset < 8)
-	{
-		osd_close(file);
-		printf("ERROR: unexpected size offset %lu (%s)\n", offset, filename);
-		return 0;
-	}
-	filesize = LITTLE_ENDIANIZE_INT32(filesize);
-
-	/* read the RIFF file type and make sure it's a WAVE file */
-	osd_read(file, buf, offset, 4, &actual);
-	offset += actual;
-	if (offset < 12)
-	{
-		osd_close(file);
-=======
 	file->read(&filesize, offset, 4, actual);
 	offset += actual;
 	if (offset < 8)
@@ -333,16 +252,11 @@ static uint32_t parse_wav_sample(const char *filename, uint32_t *dataoffs)
 	offset += actual;
 	if (offset < 12)
 	{
->>>>>>> upstream/master
 		printf("ERROR: unexpected WAVE offset %lu (%s)\n", offset, filename);
 		return 0;
 	}
 	if (memcmp(&buf[0], "WAVE", 4) != 0)
 	{
-<<<<<<< HEAD
-		osd_close(file);
-=======
->>>>>>> upstream/master
 		printf("ERROR: could not find WAVE header (%s)\n", filename);
 		return 0;
 	}
@@ -350,19 +264,11 @@ static uint32_t parse_wav_sample(const char *filename, uint32_t *dataoffs)
 	/* seek until we find a format tag */
 	while (1)
 	{
-<<<<<<< HEAD
-		osd_read(file, buf, offset, 4, &actual);
-		offset += actual;
-		osd_read(file, &length, offset, 4, &actual);
-		offset += actual;
-		length = LITTLE_ENDIANIZE_INT32(length);
-=======
 		file->read(buf, offset, 4, actual);
 		offset += actual;
 		file->read(&length, offset, 4, actual);
 		offset += actual;
 		length = little_endianize_int32(length);
->>>>>>> upstream/master
 		if (memcmp(&buf[0], "fmt ", 4) == 0)
 			break;
 
@@ -370,85 +276,42 @@ static uint32_t parse_wav_sample(const char *filename, uint32_t *dataoffs)
 		offset += length;
 		if (offset >= filesize)
 		{
-<<<<<<< HEAD
-			osd_close(file);
-=======
->>>>>>> upstream/master
 			printf("ERROR: could not find fmt tag (%s)\n", filename);
 			return 0;
 		}
 	}
 
 	/* read the format -- make sure it is PCM */
-<<<<<<< HEAD
-	osd_read(file, &temp16, offset, 2, &actual);
-	offset += actual;
-	temp16 = LITTLE_ENDIANIZE_INT16(temp16);
-	if (temp16 != 1)
-	{
-		osd_close(file);
-=======
 	file->read(&temp16, offset, 2, actual);
 	offset += actual;
 	temp16 = little_endianize_int16(temp16);
 	if (temp16 != 1)
 	{
->>>>>>> upstream/master
 		printf("ERROR: unsupported format %u - only PCM is supported (%s)\n", temp16, filename);
 		return 0;
 	}
 
 	/* number of channels -- only stereo is supported */
-<<<<<<< HEAD
-	osd_read(file, &temp16, offset, 2, &actual);
-	offset += actual;
-	temp16 = LITTLE_ENDIANIZE_INT16(temp16);
-	if (temp16 != 2)
-	{
-		osd_close(file);
-=======
 	file->read(&temp16, offset, 2, actual);
 	offset += actual;
 	temp16 = little_endianize_int16(temp16);
 	if (temp16 != 2)
 	{
->>>>>>> upstream/master
 		printf("ERROR: unsupported number of channels %u - only stereo is supported (%s)\n", temp16, filename);
 		return 0;
 	}
 
 	/* sample rate */
-<<<<<<< HEAD
-	osd_read(file, &rate, offset, 4, &actual);
-	offset += actual;
-	rate = LITTLE_ENDIANIZE_INT32(rate);
-	if (rate != 44100)
-	{
-		osd_close(file);
-=======
 	file->read(&rate, offset, 4, actual);
 	offset += actual;
 	rate = little_endianize_int32(rate);
 	if (rate != 44100)
 	{
->>>>>>> upstream/master
 		printf("ERROR: unsupported samplerate %u - only 44100 is supported (%s)\n", rate, filename);
 		return 0;
 	}
 
 	/* bytes/second and block alignment are ignored */
-<<<<<<< HEAD
-	osd_read(file, buf, offset, 6, &actual);
-	offset += actual;
-
-	/* bits/sample */
-	osd_read(file, &bits, offset, 2, &actual);
-	offset += actual;
-	bits = LITTLE_ENDIANIZE_INT16(bits);
-	if (bits != 16)
-	{
-		osd_close(file);
-=======
 	file->read(buf, offset, 6, actual);
 	offset += actual;
 
@@ -458,7 +321,6 @@ static uint32_t parse_wav_sample(const char *filename, uint32_t *dataoffs)
 	bits = little_endianize_int16(bits);
 	if (bits != 16)
 	{
->>>>>>> upstream/master
 		printf("ERROR: unsupported bits/sample %u - only 16 is supported (%s)\n", bits, filename);
 		return 0;
 	}
@@ -469,19 +331,11 @@ static uint32_t parse_wav_sample(const char *filename, uint32_t *dataoffs)
 	/* seek until we find a data tag */
 	while (1)
 	{
-<<<<<<< HEAD
-		osd_read(file, buf, offset, 4, &actual);
-		offset += actual;
-		osd_read(file, &length, offset, 4, &actual);
-		offset += actual;
-		length = LITTLE_ENDIANIZE_INT32(length);
-=======
 		file->read(buf, offset, 4, actual);
 		offset += actual;
 		file->read(&length, offset, 4, actual);
 		offset += actual;
 		length = little_endianize_int32(length);
->>>>>>> upstream/master
 		if (memcmp(&buf[0], "data", 4) == 0)
 			break;
 
@@ -489,20 +343,11 @@ static uint32_t parse_wav_sample(const char *filename, uint32_t *dataoffs)
 		offset += length;
 		if (offset >= filesize)
 		{
-<<<<<<< HEAD
-			osd_close(file);
-=======
->>>>>>> upstream/master
 			printf("ERROR: could not find data tag (%s)\n", filename);
 			return 0;
 		}
 	}
 
-<<<<<<< HEAD
-	osd_close(file);
-
-=======
->>>>>>> upstream/master
 	/* if there was a 0 length data block, we're done */
 	if (length == 0)
 	{
@@ -515,11 +360,6 @@ static uint32_t parse_wav_sample(const char *filename, uint32_t *dataoffs)
 	return length;
 }
 
-<<<<<<< HEAD
-UINT16 read_uint16(FILE *infile)
-{
-	UINT16 res = 0;
-=======
 /**
  * @fn  uint16_t read_uint16(FILE *infile)
  *
@@ -533,7 +373,6 @@ UINT16 read_uint16(FILE *infile)
 uint16_t read_uint16(FILE *infile)
 {
 	uint16_t res = 0;
->>>>>>> upstream/master
 	unsigned char buffer[2];
 
 	fread(buffer, 2, 1, infile);
@@ -543,11 +382,6 @@ uint16_t read_uint16(FILE *infile)
 	return res;
 }
 
-<<<<<<< HEAD
-UINT32 read_uint32(FILE *infile)
-{
-	UINT32 res = 0;
-=======
 /**
  * @fn  uint32_t read_uint32(FILE *infile)
  *
@@ -561,7 +395,6 @@ UINT32 read_uint32(FILE *infile)
 uint32_t read_uint32(FILE *infile)
 {
 	uint32_t res = 0;
->>>>>>> upstream/master
 	unsigned char buffer[4];
 
 	fread(buffer, 4, 1, infile);
@@ -571,12 +404,6 @@ uint32_t read_uint32(FILE *infile)
 	return res;
 }
 
-<<<<<<< HEAD
-UINT64 read_uint64(FILE *infile)
-{
-	UINT64 res0 = U64(0), res1 = U64(0);
-	UINT64 res;
-=======
 /**
  * @fn  uint64_t read_uint64(FILE *infile)
  *
@@ -591,7 +418,6 @@ uint64_t read_uint64(FILE *infile)
 {
 	uint64_t res0(0), res1(0);
 	uint64_t res;
->>>>>>> upstream/master
 	unsigned char buffer[8];
 
 	fread(buffer, 8, 1, infile);
@@ -608,8 +434,6 @@ uint64_t read_uint64(FILE *infile)
     chdcd_parse_nero - parse a Nero .NRG file
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-=======
 /**
  * @fn  chd_error chdcd_parse_nero(const char *tocfname, cdrom_toc &outtoc, chdcd_track_input_info &outinfo)
  *
@@ -622,16 +446,11 @@ uint64_t read_uint64(FILE *infile)
  * @return  A chd_error.
  */
 
->>>>>>> upstream/master
 chd_error chdcd_parse_nero(const char *tocfname, cdrom_toc &outtoc, chdcd_track_input_info &outinfo)
 {
 	FILE *infile;
 	unsigned char buffer[12];
-<<<<<<< HEAD
-	UINT32 chain_offs, chunk_size;
-=======
 	uint32_t chain_offs, chunk_size;
->>>>>>> upstream/master
 	int done = 0;
 
 	std::string path = std::string(tocfname);
@@ -639,11 +458,7 @@ chd_error chdcd_parse_nero(const char *tocfname, cdrom_toc &outtoc, chdcd_track_
 	infile = fopen(tocfname, "rb");
 	path = get_file_path(path);
 
-<<<<<<< HEAD
-	if (infile == (FILE *)NULL)
-=======
 	if (infile == (FILE *)nullptr)
->>>>>>> upstream/master
 	{
 		return CHDERR_FILE_NOT_FOUND;
 	}
@@ -676,13 +491,8 @@ chd_error chdcd_parse_nero(const char *tocfname, cdrom_toc &outtoc, chdcd_track_
 
 	while (!done)
 	{
-<<<<<<< HEAD
-		UINT32 offset;
-		UINT8 start, end;
-=======
 		uint32_t offset;
 		uint8_t start, end;
->>>>>>> upstream/master
 		int track;
 
 		fseek(infile, chain_offs, SEEK_SET);
@@ -708,13 +518,8 @@ chd_error chdcd_parse_nero(const char *tocfname, cdrom_toc &outtoc, chdcd_track_
 			offset = 0;
 			for (track = start; track <= end; track++)
 			{
-<<<<<<< HEAD
-				UINT32 size, mode;
-				UINT64 index0, index1, track_end;
-=======
 				uint32_t size, mode;
 				uint64_t index0, index1, track_end;
->>>>>>> upstream/master
 
 				fseek(infile, 12, SEEK_CUR);    // skip ISRC code
 				size = read_uint16(infile);
@@ -724,15 +529,9 @@ chd_error chdcd_parse_nero(const char *tocfname, cdrom_toc &outtoc, chdcd_track_
 				index1 = read_uint64(infile);
 				track_end = read_uint64(infile);
 
-<<<<<<< HEAD
-//              printf("Track %d: sector size %d mode %x index0 %llx index1 %llx track_end %llx (pregap %d sectors, length %d sectors)\n", track, size, mode, index0, index1, track_end, (UINT32)(index1-index0)/size, (UINT32)(track_end-index1)/size);
-				outinfo.track[track-1].fname.assign(tocfname);
-				outinfo.track[track-1].offset = offset + (UINT32)(index1-index0);
-=======
 //              printf("Track %d: sector size %d mode %x index0 %llx index1 %llx track_end %llx (pregap %d sectors, length %d sectors)\n", track, size, mode, index0, index1, track_end, (uint32_t)(index1-index0)/size, (uint32_t)(track_end-index1)/size);
 				outinfo.track[track-1].fname.assign(tocfname);
 				outinfo.track[track-1].offset = offset + (uint32_t)(index1-index0);
->>>>>>> upstream/master
 				outinfo.track[track-1].idx0offs = 0;
 				outinfo.track[track-1].idx1offs = 0;
 
@@ -789,13 +588,8 @@ chd_error chdcd_parse_nero(const char *tocfname, cdrom_toc &outtoc, chdcd_track_
 				outtoc.tracks[track-1].subtype = CD_SUB_NONE;
 				outtoc.tracks[track-1].subsize = 0;
 
-<<<<<<< HEAD
-				outtoc.tracks[track-1].pregap = (UINT32)(index1-index0)/size;
-				outtoc.tracks[track-1].frames = (UINT32)(track_end-index1)/size;
-=======
 				outtoc.tracks[track-1].pregap = (uint32_t)(index1-index0)/size;
 				outtoc.tracks[track-1].frames = (uint32_t)(track_end-index1)/size;
->>>>>>> upstream/master
 				outtoc.tracks[track-1].postgap = 0;
 				outtoc.tracks[track-1].pgtype = 0;
 				outtoc.tracks[track-1].pgsub = CD_SUB_NONE;
@@ -803,11 +597,7 @@ chd_error chdcd_parse_nero(const char *tocfname, cdrom_toc &outtoc, chdcd_track_
 				outtoc.tracks[track-1].pgsubsize = 0;
 				outtoc.tracks[track-1].padframes = 0;
 
-<<<<<<< HEAD
-				offset += (UINT32)track_end-index1;
-=======
 				offset += (uint32_t)track_end-index1;
->>>>>>> upstream/master
 			}
 		}
 
@@ -830,8 +620,6 @@ chd_error chdcd_parse_nero(const char *tocfname, cdrom_toc &outtoc, chdcd_track_
     chdcd_parse_iso - parse a .ISO file
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-=======
 /**
  * @fn  chd_error chdcd_parse_iso(const char *tocfname, cdrom_toc &outtoc, chdcd_track_input_info &outinfo)
  *
@@ -844,7 +632,6 @@ chd_error chdcd_parse_nero(const char *tocfname, cdrom_toc &outtoc, chdcd_track_
  * @return  A chd_error.
  */
 
->>>>>>> upstream/master
 chd_error chdcd_parse_iso(const char *tocfname, cdrom_toc &outtoc, chdcd_track_input_info &outinfo)
 {
 	FILE *infile;
@@ -853,11 +640,7 @@ chd_error chdcd_parse_iso(const char *tocfname, cdrom_toc &outtoc, chdcd_track_i
 	infile = fopen(tocfname, "rb");
 	path = get_file_path(path);
 
-<<<<<<< HEAD
-	if (infile == (FILE *)NULL)
-=======
 	if (infile == (FILE *)nullptr)
->>>>>>> upstream/master
 	{
 		return CHDERR_FILE_NOT_FOUND;
 	}
@@ -866,12 +649,7 @@ chd_error chdcd_parse_iso(const char *tocfname, cdrom_toc &outtoc, chdcd_track_i
 	memset(&outtoc, 0, sizeof(outtoc));
 	outinfo.reset();
 
-<<<<<<< HEAD
-	fseek(infile, 0, SEEK_END);
-	long size = ftell(infile);
-=======
 	uint64_t size = get_file_size(tocfname);
->>>>>>> upstream/master
 	fclose(infile);
 
 
@@ -918,8 +696,6 @@ chd_error chdcd_parse_iso(const char *tocfname, cdrom_toc &outtoc, chdcd_track_i
     chdcd_parse_gdi - parse a Sega GD-ROM rip
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-=======
 /**
  * @fn  static chd_error chdcd_parse_gdi(const char *tocfname, cdrom_toc &outtoc, chdcd_track_input_info &outinfo)
  *
@@ -932,7 +708,6 @@ chd_error chdcd_parse_iso(const char *tocfname, cdrom_toc &outtoc, chdcd_track_i
  * @return  A chd_error.
  */
 
->>>>>>> upstream/master
 static chd_error chdcd_parse_gdi(const char *tocfname, cdrom_toc &outtoc, chdcd_track_input_info &outinfo)
 {
 	FILE *infile;
@@ -943,11 +718,7 @@ static chd_error chdcd_parse_gdi(const char *tocfname, cdrom_toc &outtoc, chdcd_
 	infile = fopen(tocfname, "rt");
 	path = get_file_path(path);
 
-<<<<<<< HEAD
-	if (infile == (FILE *)NULL)
-=======
 	if (infile == (FILE *)nullptr)
->>>>>>> upstream/master
 	{
 		return CHDERR_FILE_NOT_FOUND;
 	}
@@ -982,15 +753,6 @@ static chd_error chdcd_parse_gdi(const char *tocfname, cdrom_toc &outtoc, chdcd_
 		outtoc.tracks[trknum].subsize = 0;
 		outtoc.tracks[trknum].pgsub = CD_SUB_NONE;
 
-<<<<<<< HEAD
-		tok=strtok(NULL," ");
-		outtoc.tracks[trknum].physframeofs=atoi(tok);
-
-		tok=strtok(NULL," ");
-		trktype=atoi(tok);
-
-		tok=strtok(NULL," ");
-=======
 		tok=strtok(nullptr," ");
 		outtoc.tracks[trknum].physframeofs=atoi(tok);
 
@@ -998,7 +760,6 @@ static chd_error chdcd_parse_gdi(const char *tocfname, cdrom_toc &outtoc, chdcd_
 		trktype=atoi(tok);
 
 		tok=strtok(nullptr," ");
->>>>>>> upstream/master
 		trksize=atoi(tok);
 
 		if(trktype==4 && trksize==2352)
@@ -1020,18 +781,6 @@ static chd_error chdcd_parse_gdi(const char *tocfname, cdrom_toc &outtoc, chdcd_
 
 		std::string name;
 
-<<<<<<< HEAD
-		tok=strtok(NULL," ");
-		name = tok;
-		if (tok[0]=='"') {
-			do {
-				tok=strtok(NULL," ");
-				if (tok!=NULL) {
-					name += " ";
-					name += tok;
-				}
-			} while(tok!=NULL && (strrchr(tok,'"')-tok !=(strlen(tok)-1)));
-=======
 		tok=strtok(nullptr," ");
 		name = tok;
 		if (tok[0]=='"') {
@@ -1042,7 +791,6 @@ static chd_error chdcd_parse_gdi(const char *tocfname, cdrom_toc &outtoc, chdcd_
 					name += tok;
 				}
 			} while(tok!=nullptr && (strrchr(tok,'"')-tok !=(strlen(tok)-1)));
->>>>>>> upstream/master
 			strdelchr(name,'"');
 		}
 		outinfo.track[trknum].fname.assign(path).append(name);
@@ -1080,8 +828,6 @@ static chd_error chdcd_parse_gdi(const char *tocfname, cdrom_toc &outtoc, chdcd_
     chdcd_parse_cue - parse a CDRWin format CUE file
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-=======
 /**
  * @fn  chd_error chdcd_parse_cue(const char *tocfname, cdrom_toc &outtoc, chdcd_track_input_info &outinfo)
  *
@@ -1094,27 +840,18 @@ static chd_error chdcd_parse_gdi(const char *tocfname, cdrom_toc &outtoc, chdcd_
  * @return  A chd_error.
  */
 
->>>>>>> upstream/master
 chd_error chdcd_parse_cue(const char *tocfname, cdrom_toc &outtoc, chdcd_track_input_info &outinfo)
 {
 	FILE *infile;
 	int i, trknum;
 	static char token[512];
 	std::string lastfname;
-<<<<<<< HEAD
-	UINT32 wavlen, wavoffs;
-=======
 	uint32_t wavlen, wavoffs;
->>>>>>> upstream/master
 	std::string path = std::string(tocfname);
 
 	infile = fopen(tocfname, "rt");
 	path = get_file_path(path);
-<<<<<<< HEAD
-	if (infile == (FILE *)NULL)
-=======
 	if (infile == (FILE *)nullptr)
->>>>>>> upstream/master
 	{
 		return CHDERR_FILE_NOT_FOUND;
 	}
@@ -1176,11 +913,7 @@ chd_error chdcd_parse_cue(const char *tocfname, cdrom_toc &outtoc, chdcd_track_i
 			{
 				/* get the track number */
 				TOKENIZE
-<<<<<<< HEAD
-				trknum = strtoul(token, NULL, 10) - 1;
-=======
 				trknum = strtoul(token, nullptr, 10) - 1;
->>>>>>> upstream/master
 
 				/* next token on the line is the track type */
 				TOKENIZE
@@ -1200,10 +933,7 @@ chd_error chdcd_parse_cue(const char *tocfname, cdrom_toc &outtoc, chdcd_track_i
 				}
 				outtoc.tracks[trknum].subtype = CD_SUB_NONE;
 				outtoc.tracks[trknum].subsize = 0;
-<<<<<<< HEAD
-=======
 				outtoc.tracks[trknum].pgsub = CD_SUB_NONE;
->>>>>>> upstream/master
 				outtoc.tracks[trknum].pregap = 0;
 				outtoc.tracks[trknum].padframes = 0;
 				outinfo.track[trknum].idx0offs = -1;
@@ -1231,11 +961,7 @@ chd_error chdcd_parse_cue(const char *tocfname, cdrom_toc &outtoc, chdcd_track_i
 
 				/* get index number */
 				TOKENIZE
-<<<<<<< HEAD
-				idx = strtoul(token, NULL, 10);
-=======
 				idx = strtoul(token, nullptr, 10);
->>>>>>> upstream/master
 
 				/* get index */
 				TOKENIZE
@@ -1313,11 +1039,7 @@ chd_error chdcd_parse_cue(const char *tocfname, cdrom_toc &outtoc, chdcd_track_i
 	/* now go over the files again and set the lengths */
 	for (trknum = 0; trknum < outtoc.numtrks; trknum++)
 	{
-<<<<<<< HEAD
-		UINT64 tlen = 0;
-=======
 		uint64_t tlen = 0;
->>>>>>> upstream/master
 
 		// this is true for cue/bin and cue/iso, and we need it for cue/wav since .WAV is little-endian
 		if (outtoc.tracks[trknum].trktype == CD_TRACK_AUDIO)
@@ -1402,8 +1124,6 @@ chd_error chdcd_parse_cue(const char *tocfname, cdrom_toc &outtoc, chdcd_track_i
     chdcd_parse_toc - parse a CDRDAO format TOC file
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-=======
 /**
  * @fn  chd_error chdcd_parse_toc(const char *tocfname, cdrom_toc &outtoc, chdcd_track_input_info &outinfo)
  *
@@ -1416,7 +1136,6 @@ chd_error chdcd_parse_cue(const char *tocfname, cdrom_toc &outtoc, chdcd_track_i
  * @return  A chd_error.
  */
 
->>>>>>> upstream/master
 chd_error chdcd_parse_toc(const char *tocfname, cdrom_toc &outtoc, chdcd_track_input_info &outinfo)
 {
 	FILE *infile;
@@ -1455,11 +1174,7 @@ chd_error chdcd_parse_toc(const char *tocfname, cdrom_toc &outtoc, chdcd_track_i
 	infile = fopen(tocfname, "rt");
 	path = get_file_path(path);
 
-<<<<<<< HEAD
-	if (infile == (FILE *)NULL)
-=======
 	if (infile == (FILE *)nullptr)
->>>>>>> upstream/master
 	{
 		return CHDERR_FILE_NOT_FOUND;
 	}
@@ -1509,15 +1224,9 @@ chd_error chdcd_parse_toc(const char *tocfname, cdrom_toc &outtoc, chdcd_track_i
 				if (token[0] == '#')
 				{
 					/* it's a decimal offset, use it */
-<<<<<<< HEAD
-					f = strtoul(&token[1], NULL, 10);
-				}
-				else if (isdigit((UINT8)token[0]))
-=======
 					f = strtoul(&token[1], nullptr, 10);
 				}
 				else if (isdigit((uint8_t)token[0]))
->>>>>>> upstream/master
 				{
 					/* convert the time to an offset */
 					f = msf_to_frames( token );
@@ -1533,22 +1242,14 @@ chd_error chdcd_parse_toc(const char *tocfname, cdrom_toc &outtoc, chdcd_track_i
 
 				TOKENIZE
 
-<<<<<<< HEAD
-				if (isdigit((UINT8)token[0]))
-=======
 				if (isdigit((uint8_t)token[0]))
->>>>>>> upstream/master
 				{
 					// this could be the length or an offset from the previous field.
 					f = msf_to_frames( token );
 
 					TOKENIZE
 
-<<<<<<< HEAD
-					if (isdigit((UINT8)token[0]))
-=======
 					if (isdigit((uint8_t)token[0]))
->>>>>>> upstream/master
 					{
 						// it was an offset.
 						f *= (outtoc.tracks[trknum].datasize + outtoc.tracks[trknum].subsize);
@@ -1584,10 +1285,7 @@ chd_error chdcd_parse_toc(const char *tocfname, cdrom_toc &outtoc, chdcd_track_i
 				outtoc.tracks[trknum].datasize = 0;
 				outtoc.tracks[trknum].subtype = CD_SUB_NONE;
 				outtoc.tracks[trknum].subsize = 0;
-<<<<<<< HEAD
-=======
 				outtoc.tracks[trknum].pgsub = CD_SUB_NONE;
->>>>>>> upstream/master
 				outtoc.tracks[trknum].padframes = 0;
 
 				cdrom_convert_type_string_to_track_info(token, &outtoc.tracks[trknum]);

@@ -21,11 +21,7 @@ static const rectangle bottomvisiblearea(16*8, 48*8-1, 6*8, 32*8-1);
 
 void vigilant_state::video_start()
 {
-<<<<<<< HEAD
-	m_bg_bitmap = auto_bitmap_ind16_alloc(machine(),512*4,256);
-=======
 	m_bg_bitmap = std::make_unique<bitmap_ind16>(512*4,256);
->>>>>>> upstream/master
 
 	save_item(NAME(m_horiz_scroll_low));
 	save_item(NAME(m_horiz_scroll_high));
@@ -233,11 +229,7 @@ void vigilant_state::draw_background(bitmap_ind16 &bitmap, const rectangle &clip
 		m_rear_refresh=0;
 	}
 
-<<<<<<< HEAD
-	copyscrollbitmap(bitmap,*m_bg_bitmap,1,&scrollx,0,0,bottomvisiblearea);
-=======
 	copyscrollbitmap(bitmap,*m_bg_bitmap,1,&scrollx,0,nullptr,bottomvisiblearea);
->>>>>>> upstream/master
 }
 
 
@@ -274,11 +266,7 @@ void vigilant_state::draw_sprites(bitmap_ind16 &bitmap,const rectangle &cliprect
 	}
 }
 
-<<<<<<< HEAD
-UINT32 vigilant_state::screen_update_kikcubic(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t vigilant_state::screen_update_kikcubic(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	for (int offs = 0; offs < 0x1000; offs += 2)
 	{
@@ -299,11 +287,7 @@ uint32_t vigilant_state::screen_update_kikcubic(screen_device &screen, bitmap_in
 	return 0;
 }
 
-<<<<<<< HEAD
-UINT32 vigilant_state::screen_update_vigilant(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t vigilant_state::screen_update_vigilant(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	/* copy the background palette */
 	for (int i = 0;i < 16;i++)

@@ -69,19 +69,6 @@
 */
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/m68000/m68000.h"
-#include "cpu/psx/psx.h"
-#include "cpu/tms57002/tms57002.h"
-#include "video/psx.h"
-#include "machine/am53cf96.h"
-#include "machine/eepromser.h"
-#include "machine/mb89371.h"
-#include "bus/scsi/scsi.h"
-#include "bus/scsi/scsihd.h"
-#include "sound/k056800.h"
-#include "sound/k054539.h"
-=======
 #include "bus/scsi/scsi.h"
 #include "bus/scsi/scsihd.h"
 #include "cpu/m68000/m68000.h"
@@ -96,7 +83,6 @@
 #include "video/psx.h"
 #include "speaker.h"
 
->>>>>>> upstream/master
 
 class konamigq_state : public driver_device
 {
@@ -117,17 +103,10 @@ public:
 	required_device<am53cf96_device> m_am53cf96;
 	required_device<k056800_device> m_k056800;
 
-<<<<<<< HEAD
-	UINT8 *m_p_n_pcmram;
-	UINT8 m_sector_buffer[ 512 ];
-	UINT8 m_sound_ctrl;
-	UINT8 m_sound_intck;
-=======
 	uint8_t *m_p_n_pcmram;
 	uint8_t m_sector_buffer[ 512 ];
 	uint8_t m_sound_ctrl;
 	uint8_t m_sound_intck;
->>>>>>> upstream/master
 
 	DECLARE_WRITE16_MEMBER(eeprom_w);
 	DECLARE_WRITE8_MEMBER(pcmram_w);
@@ -142,22 +121,13 @@ public:
 	INTERRUPT_GEN_MEMBER(tms_sync);
 	DECLARE_WRITE_LINE_MEMBER(k054539_irq_gen);
 
-<<<<<<< HEAD
-	void scsi_dma_read( UINT32 *p_n_psxram, UINT32 n_address, INT32 n_size );
-	void scsi_dma_write( UINT32 *p_n_psxram, UINT32 n_address, INT32 n_size );
-=======
 	void scsi_dma_read( uint32_t *p_n_psxram, uint32_t n_address, int32_t n_size );
 	void scsi_dma_write( uint32_t *p_n_psxram, uint32_t n_address, int32_t n_size );
->>>>>>> upstream/master
 };
 
 /* EEPROM */
 
-<<<<<<< HEAD
-static const UINT16 konamigq_def_eeprom[64] =
-=======
 static const uint16_t konamigq_def_eeprom[64] =
->>>>>>> upstream/master
 {
 	0x292b, 0x5256, 0x2094, 0x4155, 0x0041, 0x1414, 0x0003, 0x0101,
 	0x0103, 0x0000, 0x0707, 0x0001, 0xaa00, 0xaaaa, 0xaaaa, 0xaaaa,
@@ -286,15 +256,9 @@ WRITE_LINE_MEMBER(konamigq_state::k054539_irq_gen)
 
 /* SCSI */
 
-<<<<<<< HEAD
-void konamigq_state::scsi_dma_read( UINT32 *p_n_psxram, UINT32 n_address, INT32 n_size )
-{
-	UINT8 *sector_buffer = m_sector_buffer;
-=======
 void konamigq_state::scsi_dma_read( uint32_t *p_n_psxram, uint32_t n_address, int32_t n_size )
 {
 	uint8_t *sector_buffer = m_sector_buffer;
->>>>>>> upstream/master
 	int i;
 	int n_this;
 
@@ -326,11 +290,7 @@ void konamigq_state::scsi_dma_read( uint32_t *p_n_psxram, uint32_t n_address, in
 	}
 }
 
-<<<<<<< HEAD
-void konamigq_state::scsi_dma_write( UINT32 *p_n_psxram, UINT32 n_address, INT32 n_size )
-=======
 void konamigq_state::scsi_dma_write( uint32_t *p_n_psxram, uint32_t n_address, int32_t n_size )
->>>>>>> upstream/master
 {
 }
 
@@ -351,11 +311,7 @@ MACHINE_RESET_MEMBER(konamigq_state,konamigq)
 {
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( konamigq, konamigq_state )
-=======
 static MACHINE_CONFIG_START( konamigq )
->>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", CXD8530BQ, XTAL_67_7376MHz)
 	MCFG_CPU_PROGRAM_MAP(konamigq_map)
@@ -363,13 +319,8 @@ static MACHINE_CONFIG_START( konamigq )
 	MCFG_RAM_MODIFY("maincpu:ram")
 	MCFG_RAM_DEFAULT_SIZE("4M")
 
-<<<<<<< HEAD
-	MCFG_PSX_DMA_CHANNEL_READ( "maincpu", 5, psx_dma_read_delegate( FUNC( konamigq_state::scsi_dma_read ), (konamigq_state *) owner ) )
-	MCFG_PSX_DMA_CHANNEL_WRITE( "maincpu", 5, psx_dma_write_delegate( FUNC( konamigq_state::scsi_dma_write ), (konamigq_state *) owner ) )
-=======
 	MCFG_PSX_DMA_CHANNEL_READ( "maincpu", 5, psxdma_device::read_delegate(&konamigq_state::scsi_dma_read, (konamigq_state *) owner ) )
 	MCFG_PSX_DMA_CHANNEL_WRITE( "maincpu", 5, psxdma_device::write_delegate(&konamigq_state::scsi_dma_write, (konamigq_state *) owner ) )
->>>>>>> upstream/master
 
 	MCFG_CPU_ADD("soundcpu", M68000, XTAL_32MHz/4) /* 8MHz - measured */
 	MCFG_CPU_PROGRAM_MAP(konamigq_sound_map)

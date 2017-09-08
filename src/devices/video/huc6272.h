@@ -1,18 +1,4 @@
 // license:BSD-3-Clause
-<<<<<<< HEAD
-// copyright-holders:Wilbert Pol
-/***************************************************************************
-
-Template for skeleton device
-
-***************************************************************************/
-
-#pragma once
-
-#ifndef __huc6272DEV_H__
-#define __huc6272DEV_H__
-
-=======
 // copyright-holders:Wilbert Pol, Angelo Salese
 /***************************************************************************
 
@@ -28,17 +14,12 @@ Template for skeleton device
 #include "bus/scsi/scsi.h"
 #include "bus/scsi/scsicd.h"
 #include "video/huc6271.h"
->>>>>>> upstream/master
 
 
 //**************************************************************************
 //  INTERFACE CONFIGURATION MACROS
 //**************************************************************************
 
-<<<<<<< HEAD
-#define MCFG_HUC6272_ADD(_tag,_freq) \
-	MCFG_DEVICE_ADD(_tag, huc6272, _freq)
-=======
 #define MCFG_HUC6272_ADD(tag, freq) \
 		MCFG_DEVICE_ADD((tag), HUC6272, (freq))
 
@@ -47,7 +28,6 @@ Template for skeleton device
 
 #define MCFG_HUC6272_RAINBOW(tag) \
 		huc6272_device::set_rainbow_tag(*device, (tag));
->>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -61,61 +41,15 @@ class huc6272_device :  public device_t,
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	huc6272_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-=======
 	huc6272_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	template <class Object> static devcb_base &set_irq_changed_callback(device_t &device, Object &&cb) { return downcast<huc6272_device &>(device).m_irq_changed_cb.set_callback(std::forward<Object>(cb)); }
 	static void set_rainbow_tag(device_t &device, const char *tag) { downcast<huc6272_device &>(device).m_huc6271_tag = tag; }
->>>>>>> upstream/master
 
 	// I/O operations
 	DECLARE_WRITE32_MEMBER( write );
 	DECLARE_READ32_MEMBER( read );
 
-<<<<<<< HEAD
-
-protected:
-	// device-level overrides
-	virtual void device_validity_check(validity_checker &valid) const;
-	virtual void device_start();
-	virtual void device_reset();
-	virtual const address_space_config *memory_space_config(address_spacenum spacenum = AS_0) const;
-
-private:
-	inline UINT32 read_dword(offs_t address);
-	inline void write_dword(offs_t address, UINT32 data);
-	UINT8 m_register;
-	UINT32 m_kram_addr_r, m_kram_addr_w;
-	UINT16 m_kram_inc_r,m_kram_inc_w;
-	UINT8 m_kram_page_r,m_kram_page_w;
-	UINT32 m_page_setting;
-	UINT8 m_bgmode[4];
-
-	struct{
-		UINT8 addr;
-		UINT8 ctrl;
-		UINT16 data[16];
-	}m_micro_prg;
-
-	const address_space_config      m_space_config;
-};
-
-
-// device type definition
-extern const device_type huc6272;
-
-
-
-//**************************************************************************
-//  GLOBAL VARIABLES
-//**************************************************************************
-
-
-
-#endif
-=======
 protected:
 	// device-level overrides
 	virtual void device_validity_check(validity_checker &valid) const override;
@@ -180,4 +114,3 @@ private:
 DECLARE_DEVICE_TYPE(HUC6272, huc6272_device)
 
 #endif // MAME_VIDEO_HUC6272_H
->>>>>>> upstream/master

@@ -1,12 +1,3 @@
-<<<<<<< HEAD
-// DLLExports.cpp
-
-#include "StdAfx.h"
-
-#include "../../Common/MyInitGuid.h"
-
-#if defined(_WIN32) && defined(_7ZIP_LARGE_PAGES)
-=======
 // DLLExports2.cpp
 
 #include "StdAfx.h"
@@ -16,7 +7,6 @@
 #include "../../Common/MyInitGuid.h"
 
 #if defined(_7ZIP_LARGE_PAGES)
->>>>>>> upstream/master
 #include "../../../C/Alloc.h"
 #endif
 
@@ -28,21 +18,15 @@
 #include "../ICoder.h"
 #include "../IPassword.h"
 
-<<<<<<< HEAD
-=======
 #include "../Common/CreateCoder.h"
 
->>>>>>> upstream/master
 #include "IArchive.h"
 
 HINSTANCE g_hInstance;
 
 #define NT_CHECK_FAIL_ACTION return FALSE;
 
-<<<<<<< HEAD
-=======
 #ifdef _WIN32
->>>>>>> upstream/master
 extern "C"
 BOOL WINAPI DllMain(
   #ifdef UNDER_CE
@@ -54,24 +38,6 @@ BOOL WINAPI DllMain(
 {
   if (dwReason == DLL_PROCESS_ATTACH)
   {
-<<<<<<< HEAD
-    g_hInstance = (HINSTANCE)hInstance;
-    NT_CHECK;
-  }
-  return TRUE;
-}
-
-DEFINE_GUID(CLSID_CArchiveHandler,
-0x23170F69, 0x40C1, 0x278A, 0x10, 0x00, 0x00, 0x01, 0x10, 0x00, 0x00, 0x00);
-
-static const UInt16 kDecodeId = 0x2790;
-
-DEFINE_GUID(CLSID_CCodec,
-0x23170F69, 0x40C1, kDecodeId, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00);
-
-STDAPI CreateCoder(const GUID *clsid, const GUID *iid, void **outObject);
-STDAPI CreateArchiver(const GUID *classID, const GUID *iid, void **outObject);
-=======
     // OutputDebugStringA("7z.dll DLL_PROCESS_ATTACH");
     g_hInstance = (HINSTANCE)hInstance;
     NT_CHECK;
@@ -95,22 +61,11 @@ DEFINE_GUID(CLSID_CArchiveHandler,
 STDAPI CreateCoder(const GUID *clsid, const GUID *iid, void **outObject);
 STDAPI CreateHasher(const GUID *clsid, IHasher **hasher);
 STDAPI CreateArchiver(const GUID *clsid, const GUID *iid, void **outObject);
->>>>>>> upstream/master
 
 STDAPI CreateObject(const GUID *clsid, const GUID *iid, void **outObject)
 {
   // COM_TRY_BEGIN
   *outObject = 0;
-<<<<<<< HEAD
-  if (*iid == IID_ICompressCoder || *iid == IID_ICompressCoder2 || *iid == IID_ICompressFilter)
-  {
-    return CreateCoder(clsid, iid, outObject);
-  }
-  else
-  {
-    return CreateArchiver(clsid, iid, outObject);
-  }
-=======
   if (*iid == IID_ICompressCoder ||
       *iid == IID_ICompressCoder2 ||
       *iid == IID_ICompressFilter)
@@ -118,23 +73,16 @@ STDAPI CreateObject(const GUID *clsid, const GUID *iid, void **outObject)
   if (*iid == IID_IHasher)
     return CreateHasher(clsid, (IHasher **)outObject);
   return CreateArchiver(clsid, iid, outObject);
->>>>>>> upstream/master
   // COM_TRY_END
 }
 
 STDAPI SetLargePageMode()
 {
-<<<<<<< HEAD
-  #if defined(_WIN32) && defined(_7ZIP_LARGE_PAGES)
-=======
   #if defined(_7ZIP_LARGE_PAGES)
->>>>>>> upstream/master
   SetLargePageSize();
   #endif
   return S_OK;
 }
-<<<<<<< HEAD
-=======
 
 extern bool g_CaseSensitive;
 
@@ -172,4 +120,3 @@ STDAPI SetCodecs(ICompressCodecsInfo *)
 }
 
 #endif
->>>>>>> upstream/master

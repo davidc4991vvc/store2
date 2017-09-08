@@ -1,18 +1,10 @@
 /* Sha256.h -- SHA-256 Hash
-<<<<<<< HEAD
-2010-06-11 : Igor Pavlov : Public domain */
-=======
 2013-01-18 : Igor Pavlov : Public domain */
->>>>>>> upstream/master
 
 #ifndef __CRYPTO_SHA256_H
 #define __CRYPTO_SHA256_H
 
-<<<<<<< HEAD
-#include "Types.h"
-=======
 #include "7zTypes.h"
->>>>>>> upstream/master
 
 EXTERN_C_BEGIN
 

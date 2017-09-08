@@ -8,16 +8,6 @@
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __ATARI_JSA__
-#define __ATARI_JSA__
-
-#include "cpu/m6502/m6502.h"
-#include "sound/tms5220.h"
-#include "sound/2151intf.h"
-=======
 #ifndef MAME_AUDIO_ATARI_JSA_H
 #define MAME_AUDIO_ATARI_JSA_H
 
@@ -26,7 +16,6 @@
 #include "cpu/m6502/m6502.h"
 #include "sound/tms5220.h"
 #include "sound/ym2151.h"
->>>>>>> upstream/master
 #include "sound/okim6295.h"
 #include "sound/pokey.h"
 #include "machine/atarigen.h"
@@ -36,17 +25,10 @@
 //  GLOBAL VARIABLES
 //**************************************************************************
 
-<<<<<<< HEAD
-extern const device_type ATARI_JSA_I;
-extern const device_type ATARI_JSA_II;
-extern const device_type ATARI_JSA_III;
-extern const device_type ATARI_JSA_IIIS;
-=======
 DECLARE_DEVICE_TYPE(ATARI_JSA_I,    atari_jsa_i_device)
 DECLARE_DEVICE_TYPE(ATARI_JSA_II,   atari_jsa_ii_device)
 DECLARE_DEVICE_TYPE(ATARI_JSA_III,  atari_jsa_iii_device)
 DECLARE_DEVICE_TYPE(ATARI_JSA_IIIS, atari_jsa_iiis_device)
->>>>>>> upstream/master
 
 
 
@@ -98,21 +80,12 @@ class atari_jsa_base_device :   public device_t,
 {
 protected:
 	// construction/destruction
-<<<<<<< HEAD
-	atari_jsa_base_device(const machine_config &mconfig, device_type devtype, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, int channels);
-
-public:
-	// static configuration
-	template<class _Object> static devcb_base &static_set_test_read_cb(device_t &device, _Object object) { return downcast<atari_jsa_base_device &>(device).m_test_read_cb.set_callback(object); }
-	template<class _Object> static devcb_base &static_set_main_int_cb(device_t &device, _Object object) { return downcast<atari_jsa_base_device &>(device).m_main_int_cb.set_callback(object); }
-=======
 	atari_jsa_base_device(const machine_config &mconfig, device_type devtype, const char *tag, device_t *owner, uint32_t clock, int channels);
 
 public:
 	// static configuration
 	template <class Object> static devcb_base &static_set_test_read_cb(device_t &device, Object &&cb) { return downcast<atari_jsa_base_device &>(device).m_test_read_cb.set_callback(std::forward<Object>(cb)); }
 	template <class Object> static devcb_base &static_set_main_int_cb(device_t &device, Object &&cb) { return downcast<atari_jsa_base_device &>(device).m_main_int_cb.set_callback(std::forward<Object>(cb)); }
->>>>>>> upstream/master
 
 	// getters
 	m6502_device &soundcpu() const { return *m_jsacpu; }
@@ -133,13 +106,8 @@ public:
 
 protected:
 	// device-level overrides
-<<<<<<< HEAD
-	virtual void device_start();
-	virtual void device_reset();
-=======
 	virtual void device_start() override;
 	virtual void device_reset() override;
->>>>>>> upstream/master
 
 	// internal helpers
 	virtual void update_all_volumes() = 0;
@@ -149,12 +117,9 @@ protected:
 	required_device<m6502_device> m_jsacpu;
 	required_device<ym2151_device> m_ym2151;
 
-<<<<<<< HEAD
-=======
 	// memory regions
 	required_memory_region m_cpu_region;
 
->>>>>>> upstream/master
 	// memory banks
 	required_memory_bank m_cpu_bank;
 
@@ -164,13 +129,8 @@ protected:
 
 	// internal state
 	double              m_ym2151_volume;
-<<<<<<< HEAD
-	UINT8               m_ym2151_ct1;
-	UINT8               m_ym2151_ct2;
-=======
 	uint8_t               m_ym2151_ct1;
 	uint8_t               m_ym2151_ct2;
->>>>>>> upstream/master
 };
 
 
@@ -180,11 +140,7 @@ class atari_jsa_oki_base_device : public atari_jsa_base_device
 {
 protected:
 	// derived construction/destruction
-<<<<<<< HEAD
-	atari_jsa_oki_base_device(const machine_config &mconfig, device_type devtype, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, int channels);
-=======
 	atari_jsa_oki_base_device(const machine_config &mconfig, device_type devtype, const char *tag, device_t *owner, uint32_t clock, int channels);
->>>>>>> upstream/master
 
 public:
 	// read/write handlers
@@ -196,31 +152,20 @@ public:
 
 protected:
 	// device level overrides
-<<<<<<< HEAD
-	virtual void device_start();
-	virtual void device_reset();
-
-	// internal helpers
-	virtual void update_all_volumes();
-=======
 	virtual void device_start() override;
 	virtual void device_reset() override;
 
 	// internal helpers
 	virtual void update_all_volumes() override;
->>>>>>> upstream/master
 
 	// devices
 	optional_device<okim6295_device> m_oki1;
 	optional_device<okim6295_device> m_oki2;    // JSA IIIs only
 
-<<<<<<< HEAD
-=======
 	// memory regions
 	optional_memory_region m_oki1_region;
 	optional_memory_region m_oki2_region;
 
->>>>>>> upstream/master
 	// memory banks
 	optional_memory_bank m_oki1_banklo;         // JSA III(s) only
 	optional_memory_bank m_oki1_bankhi;         // JSA III(s)
@@ -239,11 +184,7 @@ class atari_jsa_i_device : public atari_jsa_base_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	atari_jsa_i_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-=======
 	atari_jsa_i_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
->>>>>>> upstream/master
 
 	// read/write handlers
 	DECLARE_READ8_MEMBER( rdio_r );
@@ -255,15 +196,6 @@ public:
 
 protected:
 	// device level overrides
-<<<<<<< HEAD
-	virtual machine_config_constructor device_mconfig_additions() const;
-	virtual ioport_constructor device_input_ports() const;
-	virtual void device_start();
-	virtual void device_reset();
-
-	// internal helpers
-	virtual void update_all_volumes();
-=======
 	virtual void device_add_mconfig(machine_config &config) override;
 	virtual ioport_constructor device_input_ports() const override;
 	virtual void device_start() override;
@@ -271,7 +203,6 @@ protected:
 
 	// internal helpers
 	virtual void update_all_volumes() override;
->>>>>>> upstream/master
 
 	// devices
 	optional_device<pokey_device> m_pokey;
@@ -290,24 +221,15 @@ class atari_jsa_ii_device : public atari_jsa_oki_base_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	atari_jsa_ii_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-=======
 	atari_jsa_ii_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
->>>>>>> upstream/master
 
 	// read/write handlers
 	DECLARE_READ8_MEMBER( rdio_r );
 
 protected:
 	// device level overrides
-<<<<<<< HEAD
-	virtual machine_config_constructor device_mconfig_additions() const;
-	virtual ioport_constructor device_input_ports() const;
-=======
 	virtual void device_add_mconfig(machine_config &config) override;
 	virtual ioport_constructor device_input_ports() const override;
->>>>>>> upstream/master
 
 	required_ioport m_jsaii;
 };
@@ -319,19 +241,11 @@ class atari_jsa_iii_device : public atari_jsa_oki_base_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	atari_jsa_iii_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-protected:
-	// derived construction/destruction
-	atari_jsa_iii_device(const machine_config &mconfig, device_type devtype, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, int channels);
-=======
 	atari_jsa_iii_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 protected:
 	// derived construction/destruction
 	atari_jsa_iii_device(const machine_config &mconfig, device_type devtype, const char *tag, device_t *owner, uint32_t clock, int channels);
->>>>>>> upstream/master
 
 public:
 	// read/write handlers
@@ -339,13 +253,8 @@ public:
 
 protected:
 	// device level overrides
-<<<<<<< HEAD
-	virtual machine_config_constructor device_mconfig_additions() const;
-	virtual ioport_constructor device_input_ports() const;
-=======
 	virtual void device_add_mconfig(machine_config &config) override;
 	virtual ioport_constructor device_input_ports() const override;
->>>>>>> upstream/master
 
 	required_ioport m_jsaiii;
 };
@@ -357,17 +266,6 @@ class atari_jsa_iiis_device : public atari_jsa_iii_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	atari_jsa_iiis_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-protected:
-	// device level overrides
-	virtual machine_config_constructor device_mconfig_additions() const;
-};
-
-
-#endif
-=======
 	atari_jsa_iiis_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 protected:
@@ -377,4 +275,3 @@ protected:
 
 
 #endif // MAME_AUDIO_ATARI_JSA_H
->>>>>>> upstream/master

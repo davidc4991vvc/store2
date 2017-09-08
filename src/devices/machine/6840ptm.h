@@ -8,19 +8,10 @@
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __6840PTM_H__
-#define __6840PTM_H__
-
-#include "emu.h"
-=======
 #ifndef MAME_MACHINE_6840PTM_H
 #define MAME_MACHINE_6840PTM_H
 
 #pragma once
->>>>>>> upstream/master
 
 
 
@@ -28,25 +19,10 @@
 //  DEVICE CONFIGURATION MACROS
 //**************************************************************************
 
-<<<<<<< HEAD
-#define MCFG_PTM6840_INTERNAL_CLOCK(_clk) \
-	ptm6840_device::set_internal_clock(*device, _clk);
-
-=======
->>>>>>> upstream/master
 #define MCFG_PTM6840_EXTERNAL_CLOCKS(_clk0, _clk1, _clk2) \
 	ptm6840_device::set_external_clocks(*device, _clk0, _clk1, _clk2);
 
 #define MCFG_PTM6840_OUT0_CB(_devcb) \
-<<<<<<< HEAD
-	devcb = &ptm6840_device::set_out0_callback(*device, DEVCB_##_devcb);
-
-#define MCFG_PTM6840_OUT1_CB(_devcb) \
-	devcb = &ptm6840_device::set_out1_callback(*device, DEVCB_##_devcb);
-
-#define MCFG_PTM6840_OUT2_CB(_devcb) \
-	devcb = &ptm6840_device::set_out2_callback(*device, DEVCB_##_devcb);
-=======
 	devcb = &ptm6840_device::set_out_callback(*device, 0, DEVCB_##_devcb);
 
 #define MCFG_PTM6840_OUT1_CB(_devcb) \
@@ -54,7 +30,6 @@
 
 #define MCFG_PTM6840_OUT2_CB(_devcb) \
 	devcb = &ptm6840_device::set_out_callback(*device, 2, DEVCB_##_devcb);
->>>>>>> upstream/master
 
 #define MCFG_PTM6840_IRQ_CB(_devcb) \
 	devcb = &ptm6840_device::set_irq_callback(*device, DEVCB_##_devcb);
@@ -69,20 +44,6 @@ class ptm6840_device :  public device_t
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	ptm6840_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	static void set_internal_clock(device_t &device, double clock) { downcast<ptm6840_device &>(device).m_internal_clock = clock; }
-	static void set_external_clocks(device_t &device, double clock0, double clock1, double clock2) { downcast<ptm6840_device &>(device).m_external_clock[0] = clock0; downcast<ptm6840_device &>(device).m_external_clock[1] = clock1; downcast<ptm6840_device &>(device).m_external_clock[2] = clock2; }
-	template<class _Object> static devcb_base &set_out0_callback(device_t &device, _Object object) { return downcast<ptm6840_device &>(device).m_out0_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_out1_callback(device_t &device, _Object object) { return downcast<ptm6840_device &>(device).m_out1_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_out2_callback(device_t &device, _Object object) { return downcast<ptm6840_device &>(device).m_out2_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_irq_callback(device_t &device, _Object object) { return downcast<ptm6840_device &>(device).m_irq_cb.set_callback(object); }
-
-	int status(int clock) const { return m_enabled[clock]; } // get whether timer is enabled
-	int irq_state() const { return m_IRQ; }                 // get IRQ state
-	UINT16 count(int counter) const { return compute_counter(counter); }    // get counter value
-=======
 	ptm6840_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	static void set_external_clocks(device_t &device, double clock0, double clock1, double clock2) { downcast<ptm6840_device &>(device).m_external_clock[0] = clock0; downcast<ptm6840_device &>(device).m_external_clock[1] = clock1; downcast<ptm6840_device &>(device).m_external_clock[2] = clock2; }
@@ -92,20 +53,13 @@ public:
 	int status(int clock) const { return m_enabled[clock]; } // get whether timer is enabled
 	int irq_state() const { return m_irq; }                 // get IRQ state
 	uint16_t count(int counter) const { return compute_counter(counter); }    // get counter value
->>>>>>> upstream/master
 	void set_ext_clock(int counter, double clock);  // set clock frequency
 	int ext_clock(int counter) const { return m_external_clock[counter]; }  // get clock frequency
 
 	DECLARE_WRITE8_MEMBER( write );
-<<<<<<< HEAD
-	void write(offs_t offset, UINT8 data) { write(machine().driver_data()->generic_space(), offset, data); }
-	DECLARE_READ8_MEMBER( read );
-	UINT8 read(offs_t offset) { return read(machine().driver_data()->generic_space(), offset); }
-=======
 	void write(offs_t offset, uint8_t data) { write(machine().dummy_space(), offset, data); }
 	DECLARE_READ8_MEMBER( read );
 	uint8_t read(offs_t offset) { return read(machine().dummy_space(), offset); }
->>>>>>> upstream/master
 
 	void set_gate(int idx, int state);
 	DECLARE_WRITE_LINE_MEMBER( set_g1 );
@@ -121,26 +75,16 @@ public:
 
 protected:
 	// device-level overrides
-<<<<<<< HEAD
-	virtual void device_start();
-	virtual void device_reset();
-	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
-=======
 	virtual void device_start() override;
 	virtual void device_reset() override;
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
->>>>>>> upstream/master
 
 private:
 	void subtract_from_counter(int counter, int count);
 	void tick(int counter, int count);
 	void timeout(int idx);
 
-<<<<<<< HEAD
-	UINT16 compute_counter(int counter) const;
-=======
 	uint16_t compute_counter(int counter) const;
->>>>>>> upstream/master
 	void reload_count(int idx);
 
 	enum
@@ -156,30 +100,6 @@ private:
 		PTM_6840_LSB3    = 7
 	};
 
-<<<<<<< HEAD
-	double m_internal_clock;
-	double m_external_clock[3];
-
-	devcb_write8 m_out0_cb;
-	devcb_write8 m_out1_cb;
-	devcb_write8 m_out2_cb;
-	devcb_write_line m_irq_cb;  // function called if IRQ line changes
-
-	UINT8 m_control_reg[3];
-	UINT8 m_output[3]; // Output states
-	UINT8 m_gate[3];   // Input gate states
-	UINT8 m_clk[3];  // Clock states
-	UINT8 m_enabled[3];
-	UINT8 m_mode[3];
-	UINT8 m_fired[3];
-	UINT8 m_t3_divisor;
-	UINT8 m_t3_scaler;
-	UINT8 m_IRQ;
-	UINT8 m_status_reg;
-	UINT8 m_status_read_since_int;
-	UINT8 m_lsb_buffer;
-	UINT8 m_msb_buffer;
-=======
 	enum
 	{
 		RESET_TIMERS    = 0x01,
@@ -218,31 +138,18 @@ private:
 	uint8_t m_status_read_since_int;
 	uint8_t m_lsb_buffer;
 	uint8_t m_msb_buffer;
->>>>>>> upstream/master
 
 	// Each PTM has 3 timers
 	emu_timer *m_timer[3];
 
-<<<<<<< HEAD
-	UINT16 m_latch[3];
-	UINT16 m_counter[3];
-=======
 	uint16_t m_latch[3];
 	uint16_t m_counter[3];
->>>>>>> upstream/master
 
 	static const char *const opmode[];
 };
 
 
 // device type definition
-<<<<<<< HEAD
-extern const device_type PTM6840;
-
-
-#endif /* __6840PTM_H__ */
-=======
 DECLARE_DEVICE_TYPE(PTM6840, ptm6840_device)
 
 #endif // MAME_MACHINE_6840PTM_H
->>>>>>> upstream/master

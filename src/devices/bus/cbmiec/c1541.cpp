@@ -136,10 +136,7 @@
 
 */
 
-<<<<<<< HEAD
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #include "c1541.h"
 #include "bus/centronics/ctronics.h"
 
@@ -164,20 +161,6 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type C1540 = &device_creator<c1540_t>;
-const device_type C1541 = &device_creator<c1541_t>;
-const device_type C1541C = &device_creator<c1541c_t>;
-const device_type C1541II = &device_creator<c1541ii_t>;
-const device_type SX1541 = &device_creator<sx1541_t>;
-const device_type FSD1 = &device_creator<fsd1_t>;
-const device_type FSD2 = &device_creator<fsd2_t>;
-const device_type CSD1 = &device_creator<csd1_t>;
-const device_type C1541_DOLPHIN_DOS = &device_creator<c1541_dolphin_dos_t>;
-const device_type C1541_PROFESSIONAL_DOS_V1 = &device_creator<c1541_professional_dos_v1_t>;
-const device_type C1541_PROLOGIC_DOS_CLASSIC = &device_creator<c1541_prologic_dos_classic_t>;
-const device_type INDUS_GT = &device_creator<indus_gt_t>;
-=======
 DEFINE_DEVICE_TYPE(C1540,                      c1540_device,                      "c1540",    "C1540 Disk Drive")
 DEFINE_DEVICE_TYPE(C1541,                      c1541_device,                      "c1541",    "C1541 Disk Drive")
 DEFINE_DEVICE_TYPE(C1541C,                     c1541c_device,                     "c1541c",   "C1541C Disk Drive")
@@ -190,7 +173,6 @@ DEFINE_DEVICE_TYPE(C1541_DOLPHIN_DOS,          c1541_dolphin_dos_device,        
 DEFINE_DEVICE_TYPE(C1541_PROFESSIONAL_DOS_V1,  c1541_professional_dos_v1_device,  "c1541pd",  "C1541 Professional-DOS v1 Disk Drive")
 DEFINE_DEVICE_TYPE(C1541_PROLOGIC_DOS_CLASSIC, c1541_prologic_dos_classic_device, "c1541pdc", "C1541 ProLogic-DOS Classic Disk Drive")
 DEFINE_DEVICE_TYPE(INDUS_GT,                   indus_gt_device,                   "indusgt",  "Indus GT Disk Drive")
->>>>>>> upstream/master
 
 
 //-------------------------------------------------
@@ -208,11 +190,7 @@ ROM_END
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const rom_entry *c1540_t::device_rom_region() const
-=======
 const tiny_rom_entry *c1540_device::device_rom_region() const
->>>>>>> upstream/master
 {
 	return ROM_NAME( c1540 );
 }
@@ -256,11 +234,7 @@ ROM_END
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const rom_entry *c1541_t::device_rom_region() const
-=======
 const tiny_rom_entry *c1541_device::device_rom_region() const
->>>>>>> upstream/master
 {
 	return ROM_NAME( c1541 );
 }
@@ -284,11 +258,7 @@ ROM_END
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const rom_entry *c1541c_t::device_rom_region() const
-=======
 const tiny_rom_entry *c1541c_device::device_rom_region() const
->>>>>>> upstream/master
 {
 	return ROM_NAME( c1541c );
 }
@@ -314,11 +284,7 @@ ROM_END
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const rom_entry *c1541ii_t::device_rom_region() const
-=======
 const tiny_rom_entry *c1541ii_device::device_rom_region() const
->>>>>>> upstream/master
 {
 	return ROM_NAME( c1541ii );
 }
@@ -346,11 +312,7 @@ ROM_END
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const rom_entry *sx1541_t::device_rom_region() const
-=======
 const tiny_rom_entry *sx1541_device::device_rom_region() const
->>>>>>> upstream/master
 {
 	return ROM_NAME( sx1541 );
 }
@@ -370,11 +332,7 @@ ROM_END
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const rom_entry *fsd1_t::device_rom_region() const
-=======
 const tiny_rom_entry *fsd1_device::device_rom_region() const
->>>>>>> upstream/master
 {
 	return ROM_NAME( fsd1 );
 }
@@ -386,11 +344,7 @@ const tiny_rom_entry *fsd1_device::device_rom_region() const
 
 ROM_START( fsd2 )
 	ROM_REGION( 0x4000, M6502_TAG, 0 ) // data lines D3 and D4 are swapped
-<<<<<<< HEAD
-	ROM_DEFAULT_BIOS("fsd2")
-=======
 	ROM_DEFAULT_BIOS("rb")
->>>>>>> upstream/master
 	ROM_SYSTEM_BIOS( 0, "ra", "Revision A" )
 	ROMX_LOAD( "fsd2a.u3", 0x0000, 0x4000, CRC(edf18265) SHA1(47a7c4bdcc20ecc5e59d694b151f493229becaea), ROM_BIOS(1) )
 	ROM_SYSTEM_BIOS( 1, "rb", "Revision B" )
@@ -406,11 +360,7 @@ ROM_END
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const rom_entry *fsd2_t::device_rom_region() const
-=======
 const tiny_rom_entry *fsd2_device::device_rom_region() const
->>>>>>> upstream/master
 {
 	return ROM_NAME( fsd2 );
 }
@@ -431,11 +381,7 @@ ROM_END
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const rom_entry *csd1_t::device_rom_region() const
-=======
 const tiny_rom_entry *csd1_device::device_rom_region() const
->>>>>>> upstream/master
 {
 	return ROM_NAME( csd1 );
 }
@@ -455,11 +401,7 @@ ROM_END
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const rom_entry *c1541_dolphin_dos_t::device_rom_region() const
-=======
 const tiny_rom_entry *c1541_dolphin_dos_device::device_rom_region() const
->>>>>>> upstream/master
 {
 	return ROM_NAME( c1541dd );
 }
@@ -480,11 +422,7 @@ ROM_END
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const rom_entry *c1541_professional_dos_v1_t::device_rom_region() const
-=======
 const tiny_rom_entry *c1541_professional_dos_v1_device::device_rom_region() const
->>>>>>> upstream/master
 {
 	return ROM_NAME( c1541pd );
 }
@@ -509,11 +447,7 @@ ROM_END
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const rom_entry *c1541_prologic_dos_classic_t::device_rom_region() const
-=======
 const tiny_rom_entry *c1541_prologic_dos_classic_device::device_rom_region() const
->>>>>>> upstream/master
 {
 	return ROM_NAME( c1541pdc );
 }
@@ -537,11 +471,7 @@ ROM_END
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const rom_entry *indus_gt_t::device_rom_region() const
-=======
 const tiny_rom_entry *indus_gt_device::device_rom_region() const
->>>>>>> upstream/master
 {
 	return ROM_NAME( indusgt );
 }
@@ -551,11 +481,7 @@ const tiny_rom_entry *indus_gt_device::device_rom_region() const
 //  read -
 //-------------------------------------------------
 
-<<<<<<< HEAD
-READ8_MEMBER( c1541_prologic_dos_classic_t::read )
-=======
 READ8_MEMBER( c1541_prologic_dos_classic_device::read )
->>>>>>> upstream/master
 {
 	return 0;
 }
@@ -565,11 +491,7 @@ READ8_MEMBER( c1541_prologic_dos_classic_device::read )
 //  write -
 //-------------------------------------------------
 
-<<<<<<< HEAD
-WRITE8_MEMBER( c1541_prologic_dos_classic_t::write )
-=======
 WRITE8_MEMBER( c1541_prologic_dos_classic_device::write )
->>>>>>> upstream/master
 {
 }
 
@@ -578,11 +500,7 @@ WRITE8_MEMBER( c1541_prologic_dos_classic_device::write )
 //  ADDRESS_MAP( c1541_mem )
 //-------------------------------------------------
 
-<<<<<<< HEAD
-static ADDRESS_MAP_START( c1541_mem, AS_PROGRAM, 8, c1541_base_t )
-=======
 static ADDRESS_MAP_START( c1541_mem, AS_PROGRAM, 8, c1541_device_base )
->>>>>>> upstream/master
 	AM_RANGE(0x0000, 0x07ff) AM_MIRROR(0x6000) AM_RAM
 	AM_RANGE(0x1800, 0x180f) AM_MIRROR(0x63f0) AM_DEVREADWRITE(M6522_0_TAG, via6522_device, read, write)
 	AM_RANGE(0x1c00, 0x1c0f) AM_MIRROR(0x63f0) AM_DEVREADWRITE(M6522_1_TAG, via6522_device, read, write)
@@ -594,11 +512,7 @@ ADDRESS_MAP_END
 //  ADDRESS_MAP( c1541dd_mem )
 //-------------------------------------------------
 
-<<<<<<< HEAD
-static ADDRESS_MAP_START( c1541dd_mem, AS_PROGRAM, 8, c1541_base_t )
-=======
 static ADDRESS_MAP_START( c1541dd_mem, AS_PROGRAM, 8, c1541_device_base )
->>>>>>> upstream/master
 	AM_RANGE(0x0000, 0x07ff) AM_MIRROR(0x6000) AM_RAM
 	AM_RANGE(0x1800, 0x180f) AM_MIRROR(0x63f0) AM_DEVREADWRITE(M6522_0_TAG, via6522_device, read, write)
 	AM_RANGE(0x1c00, 0x1c0f) AM_MIRROR(0x63f0) AM_DEVREADWRITE(M6522_1_TAG, via6522_device, read, write)
@@ -611,11 +525,7 @@ ADDRESS_MAP_END
 //  ADDRESS_MAP( c1541pd_mem )
 //-------------------------------------------------
 
-<<<<<<< HEAD
-static ADDRESS_MAP_START( c1541pd_mem, AS_PROGRAM, 8, c1541_base_t )
-=======
 static ADDRESS_MAP_START( c1541pd_mem, AS_PROGRAM, 8, c1541_device_base )
->>>>>>> upstream/master
 	AM_RANGE(0x0000, 0x07ff) AM_MIRROR(0x6000) AM_RAM
 	AM_RANGE(0x1800, 0x180f) AM_MIRROR(0x63f0) AM_DEVREADWRITE(M6522_0_TAG, via6522_device, read, write)
 	AM_RANGE(0x1c00, 0x1c0f) AM_MIRROR(0x63f0) AM_DEVREADWRITE(M6522_1_TAG, via6522_device, read, write)
@@ -630,11 +540,7 @@ ADDRESS_MAP_END
 //  ADDRESS_MAP( c1541pdc_mem )
 //-------------------------------------------------
 
-<<<<<<< HEAD
-static ADDRESS_MAP_START( c1541pdc_mem, AS_PROGRAM, 8, c1541_prologic_dos_classic_t )
-=======
 static ADDRESS_MAP_START( c1541pdc_mem, AS_PROGRAM, 8, c1541_prologic_dos_classic_device )
->>>>>>> upstream/master
 	AM_RANGE(0x0000, 0xffff) AM_READWRITE(read, write)
 /*  AM_RANGE(0x0000, 0x07ff) AM_MIRROR(0x6000) AM_RAM AM_SHARE("share1")
     AM_RANGE(0x1800, 0x180f) AM_MIRROR(0x63f0) AM_DEVREADWRITE(M6522_0_TAG, via6522_device, read, write)
@@ -647,46 +553,28 @@ static ADDRESS_MAP_START( c1541pdc_mem, AS_PROGRAM, 8, c1541_prologic_dos_classi
 ADDRESS_MAP_END
 
 
-<<<<<<< HEAD
-WRITE_LINE_MEMBER( c1541_base_t::via0_irq_w )
-=======
 WRITE_LINE_MEMBER( c1541_device_base::via0_irq_w )
->>>>>>> upstream/master
 {
 	m_via0_irq = state;
 
 	m_maincpu->set_input_line(INPUT_LINE_IRQ0, (m_via0_irq || m_via1_irq) ? ASSERT_LINE : CLEAR_LINE);
 }
 
-<<<<<<< HEAD
-READ8_MEMBER( c1541_base_t::via0_pa_r )
-=======
 READ8_MEMBER( c1541_device_base::via0_pa_r )
->>>>>>> upstream/master
 {
 	// dummy read to acknowledge ATN IN interrupt
 	return m_parallel_data;
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER( c1541_base_t::via0_pa_w )
-{
-	if (m_other != NULL)
-=======
 WRITE8_MEMBER( c1541_device_base::via0_pa_w )
 {
 	if (m_other != nullptr)
->>>>>>> upstream/master
 	{
 		m_other->parallel_data_w(data);
 	}
 }
 
-<<<<<<< HEAD
-READ8_MEMBER( c1541_base_t::via0_pb_r )
-=======
 READ8_MEMBER( c1541_device_base::via0_pb_r )
->>>>>>> upstream/master
 {
 	/*
 
@@ -703,11 +591,7 @@ READ8_MEMBER( c1541_device_base::via0_pb_r )
 
 	*/
 
-<<<<<<< HEAD
-	UINT8 data = 0;
-=======
 	uint8_t data;
->>>>>>> upstream/master
 
 	// data in
 	data = !m_bus->data_r() && !m_ga->atn_r();
@@ -724,11 +608,7 @@ READ8_MEMBER( c1541_device_base::via0_pb_r )
 	return data;
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER( c1541_base_t::via0_pb_w )
-=======
 WRITE8_MEMBER( c1541_device_base::via0_pb_w )
->>>>>>> upstream/master
 {
 	/*
 
@@ -755,25 +635,15 @@ WRITE8_MEMBER( c1541_device_base::via0_pb_w )
 	m_bus->clk_w(this, !BIT(data, 3));
 }
 
-<<<<<<< HEAD
-WRITE_LINE_MEMBER( c1541_base_t::via0_ca2_w )
-{
-	if (m_other != NULL)
-=======
 WRITE_LINE_MEMBER( c1541_device_base::via0_ca2_w )
 {
 	if (m_other != nullptr)
->>>>>>> upstream/master
 	{
 		m_other->parallel_strobe_w(state);
 	}
 }
 
-<<<<<<< HEAD
-READ8_MEMBER( c1541c_t::via0_pa_r )
-=======
 READ8_MEMBER( c1541c_device::via0_pa_r )
->>>>>>> upstream/master
 {
 	/*
 
@@ -794,22 +664,14 @@ READ8_MEMBER( c1541c_device::via0_pa_r )
 }
 
 
-<<<<<<< HEAD
-WRITE_LINE_MEMBER( c1541_base_t::via1_irq_w )
-=======
 WRITE_LINE_MEMBER( c1541_device_base::via1_irq_w )
->>>>>>> upstream/master
 {
 	m_via1_irq = state;
 
 	m_maincpu->set_input_line(INPUT_LINE_IRQ0, (m_via0_irq || m_via1_irq) ? ASSERT_LINE : CLEAR_LINE);
 }
 
-<<<<<<< HEAD
-READ8_MEMBER( c1541_base_t::via1_pb_r )
-=======
 READ8_MEMBER( c1541_device_base::via1_pb_r )
->>>>>>> upstream/master
 {
 	/*
 
@@ -826,11 +688,7 @@ READ8_MEMBER( c1541_device_base::via1_pb_r )
 
 	*/
 
-<<<<<<< HEAD
-	UINT8 data = 0;
-=======
 	uint8_t data = 0;
->>>>>>> upstream/master
 
 	// write protect sense
 	data |= !m_floppy->wpt_r() << 4;
@@ -841,11 +699,7 @@ READ8_MEMBER( c1541_device_base::via1_pb_r )
 	return data;
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER( c1541_base_t::via1_pb_w )
-=======
 WRITE8_MEMBER( c1541_device_base::via1_pb_w )
->>>>>>> upstream/master
 {
 	/*
 
@@ -869,11 +723,7 @@ WRITE8_MEMBER( c1541_device_base::via1_pb_w )
 	m_ga->stp_w(data & 0x03);
 
 	// activity LED
-<<<<<<< HEAD
-	output_set_led_value(LED_ACT, BIT(data, 3));
-=======
 	machine().output().set_led_value(LED_ACT, BIT(data, 3));
->>>>>>> upstream/master
 
 	// density select
 	m_ga->ds_w((data >> 5) & 0x03);
@@ -884,20 +734,12 @@ WRITE8_MEMBER( c1541_device_base::via1_pb_w )
 //  C64H156_INTERFACE( ga_intf )
 //-------------------------------------------------
 
-<<<<<<< HEAD
-WRITE_LINE_MEMBER( c1541_base_t::atn_w )
-=======
 WRITE_LINE_MEMBER( c1541_device_base::atn_w )
->>>>>>> upstream/master
 {
 	set_iec_data();
 }
 
-<<<<<<< HEAD
-WRITE_LINE_MEMBER( c1541_base_t::byte_w )
-=======
 WRITE_LINE_MEMBER( c1541_device_base::byte_w )
->>>>>>> upstream/master
 {
 	m_maincpu->set_input_line(M6502_SET_OVERFLOW, state);
 
@@ -910,11 +752,7 @@ WRITE_LINE_MEMBER( c1541_device_base::byte_w )
 //-------------------------------------------------
 
 static SLOT_INTERFACE_START( c1540_floppies )
-<<<<<<< HEAD
-	SLOT_INTERFACE( "525ssqd", ALPS_3255190x )
-=======
 	SLOT_INTERFACE( "525ssqd", ALPS_3255190X )
->>>>>>> upstream/master
 SLOT_INTERFACE_END
 
 
@@ -922,39 +760,23 @@ SLOT_INTERFACE_END
 //  FLOPPY_FORMATS( floppy_formats )
 //-------------------------------------------------
 
-<<<<<<< HEAD
-FLOPPY_FORMATS_MEMBER( c1541_base_t::floppy_formats )
-=======
 FLOPPY_FORMATS_MEMBER( c1541_device_base::floppy_formats )
->>>>>>> upstream/master
 	FLOPPY_D64_FORMAT,
 	FLOPPY_G64_FORMAT
 FLOPPY_FORMATS_END
 
 
-<<<<<<< HEAD
-READ8_MEMBER( c1541_prologic_dos_classic_t::pia_r )
-=======
 READ8_MEMBER( c1541_prologic_dos_classic_device::pia_r )
->>>>>>> upstream/master
 {
 	return m_pia->read(space, (offset >> 2) & 0x03);
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER( c1541_prologic_dos_classic_t::pia_w )
-=======
 WRITE8_MEMBER( c1541_prologic_dos_classic_device::pia_w )
->>>>>>> upstream/master
 {
 	m_pia->write(space, (offset >> 2) & 0x03, data);
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER( c1541_prologic_dos_classic_t::pia_pa_w )
-=======
 WRITE8_MEMBER( c1541_prologic_dos_classic_device::pia_pa_w )
->>>>>>> upstream/master
 {
 	/*
 
@@ -972,20 +794,12 @@ WRITE8_MEMBER( c1541_prologic_dos_classic_device::pia_pa_w )
 	*/
 }
 
-<<<<<<< HEAD
-READ8_MEMBER( c1541_prologic_dos_classic_t::pia_pb_r )
-=======
 READ8_MEMBER( c1541_prologic_dos_classic_device::pia_pb_r )
->>>>>>> upstream/master
 {
 	return m_parallel_data;
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER( c1541_prologic_dos_classic_t::pia_pb_w )
-=======
 WRITE8_MEMBER( c1541_prologic_dos_classic_device::pia_pb_w )
->>>>>>> upstream/master
 {
 	m_parallel_data = data;
 
@@ -994,84 +808,15 @@ WRITE8_MEMBER( c1541_prologic_dos_classic_device::pia_pb_w )
 
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  MACHINE_DRIVER( c1541 )
-//-------------------------------------------------
-
-static MACHINE_CONFIG_FRAGMENT( c1541 )
-=======
 //  device_add_mconfig - add device configuration
 //-------------------------------------------------
 
 MACHINE_CONFIG_MEMBER( c1541_device_base::device_add_mconfig )
->>>>>>> upstream/master
 	MCFG_CPU_ADD(M6502_TAG, M6502, XTAL_16MHz/16)
 	MCFG_CPU_PROGRAM_MAP(c1541_mem)
 	MCFG_QUANTUM_PERFECT_CPU(M6502_TAG)
 
 	MCFG_DEVICE_ADD(M6522_0_TAG, VIA6522, XTAL_16MHz/16)
-<<<<<<< HEAD
-	MCFG_VIA6522_READPA_HANDLER(READ8(c1541_base_t, via0_pa_r))
-	MCFG_VIA6522_READPB_HANDLER(READ8(c1541_base_t, via0_pb_r))
-	MCFG_VIA6522_WRITEPA_HANDLER(WRITE8(c1541_base_t, via0_pa_w))
-	MCFG_VIA6522_WRITEPB_HANDLER(WRITE8(c1541_base_t, via0_pb_w))
-	MCFG_VIA6522_CB2_HANDLER(WRITELINE(c1541_base_t, via0_ca2_w))
-	MCFG_VIA6522_IRQ_HANDLER(WRITELINE(c1541_base_t, via0_irq_w))
-
-	MCFG_DEVICE_ADD(M6522_1_TAG, VIA6522, XTAL_16MHz/16)
-	MCFG_VIA6522_READPA_HANDLER(DEVREAD8(C64H156_TAG, c64h156_device, yb_r))
-	MCFG_VIA6522_READPB_HANDLER(READ8(c1541_base_t, via1_pb_r))
-	MCFG_VIA6522_WRITEPA_HANDLER(DEVWRITE8(C64H156_TAG, c64h156_device, yb_w))
-	MCFG_VIA6522_WRITEPB_HANDLER(WRITE8(c1541_base_t, via1_pb_w))
-	MCFG_VIA6522_CA2_HANDLER(DEVWRITELINE(C64H156_TAG, c64h156_device, soe_w))
-	MCFG_VIA6522_CB2_HANDLER(DEVWRITELINE(C64H156_TAG, c64h156_device, oe_w))
-	MCFG_VIA6522_IRQ_HANDLER(WRITELINE(c1541_base_t, via1_irq_w))
-
-	MCFG_DEVICE_ADD(C64H156_TAG, C64H156, XTAL_16MHz)
-	MCFG_64H156_ATN_CALLBACK(WRITELINE(c1541_base_t, atn_w))
-	MCFG_64H156_BYTE_CALLBACK(WRITELINE(c1541_base_t, byte_w))
-	MCFG_FLOPPY_DRIVE_ADD(C64H156_TAG":0", c1540_floppies, "525ssqd", c1541_base_t::floppy_formats)
-MACHINE_CONFIG_END
-
-
-//-------------------------------------------------
-//  machine_config_additions - device-specific
-//  machine configurations
-//-------------------------------------------------
-
-machine_config_constructor c1541_base_t::device_mconfig_additions() const
-{
-	return MACHINE_CONFIG_NAME( c1541 );
-}
-
-
-//-------------------------------------------------
-//  MACHINE_DRIVER( c1541c )
-//-------------------------------------------------
-
-static MACHINE_CONFIG_FRAGMENT( c1541c )
-	MCFG_FRAGMENT_ADD(c1541)
-MACHINE_CONFIG_END
-
-
-//-------------------------------------------------
-//  machine_config_additions - device-specific
-//  machine configurations
-//-------------------------------------------------
-
-machine_config_constructor c1541c_t::device_mconfig_additions() const
-{
-	return MACHINE_CONFIG_NAME( c1541c );
-}
-
-
-//-------------------------------------------------
-//  MACHINE_DRIVER( c1541dd )
-//-------------------------------------------------
-
-static MACHINE_CONFIG_FRAGMENT( c1541dd )
-	MCFG_FRAGMENT_ADD(c1541)
-=======
 	MCFG_VIA6522_READPA_HANDLER(READ8(c1541_device_base, via0_pa_r))
 	MCFG_VIA6522_READPB_HANDLER(READ8(c1541_device_base, via0_pb_r))
 	MCFG_VIA6522_WRITEPA_HANDLER(WRITE8(c1541_device_base, via0_pa_w))
@@ -1102,77 +847,30 @@ MACHINE_CONFIG_END
 
 MACHINE_CONFIG_MEMBER( c1541_dolphin_dos_device::device_add_mconfig )
 	c1541_device_base::device_add_mconfig(config);
->>>>>>> upstream/master
 
 	MCFG_CPU_MODIFY(M6502_TAG)
 	MCFG_CPU_PROGRAM_MAP(c1541dd_mem)
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-//-------------------------------------------------
-//  machine_config_additions - device-specific
-//  machine configurations
-//-------------------------------------------------
-
-machine_config_constructor c1541_dolphin_dos_t::device_mconfig_additions() const
-{
-	return MACHINE_CONFIG_NAME( c1541dd );
-}
-
-
-//-------------------------------------------------
-//  MACHINE_DRIVER( c1541pd )
-//-------------------------------------------------
-
-static MACHINE_CONFIG_FRAGMENT( c1541pd )
-	MCFG_FRAGMENT_ADD(c1541)
-=======
 MACHINE_CONFIG_MEMBER( c1541_professional_dos_v1_device::device_add_mconfig )
 	c1541_device_base::device_add_mconfig(config);
->>>>>>> upstream/master
 
 	MCFG_CPU_MODIFY(M6502_TAG)
 	MCFG_CPU_PROGRAM_MAP(c1541pd_mem)
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-//-------------------------------------------------
-//  machine_config_additions - device-specific
-//  machine configurations
-//-------------------------------------------------
-
-machine_config_constructor c1541_professional_dos_v1_t::device_mconfig_additions() const
-{
-	return MACHINE_CONFIG_NAME( c1541pd );
-}
-
-
-//-------------------------------------------------
-//  MACHINE_DRIVER( c1541pdc )
-//-------------------------------------------------
-
-static MACHINE_CONFIG_FRAGMENT( c1541pdc )
-	MCFG_FRAGMENT_ADD(c1541)
-=======
 MACHINE_CONFIG_MEMBER( c1541_prologic_dos_classic_device::device_add_mconfig )
 	c1541_device_base::device_add_mconfig(config);
->>>>>>> upstream/master
 
 	MCFG_CPU_MODIFY(M6502_TAG)
 	MCFG_CPU_PROGRAM_MAP(c1541pdc_mem)
 
 	MCFG_DEVICE_ADD(MC6821_TAG, PIA6821, 0)
-<<<<<<< HEAD
-	MCFG_PIA_READPB_HANDLER(READ8(c1541_prologic_dos_classic_t, pia_pb_r))
-	MCFG_PIA_WRITEPA_HANDLER(WRITE8(c1541_prologic_dos_classic_t, pia_pa_w))
-	MCFG_PIA_WRITEPB_HANDLER(WRITE8(c1541_prologic_dos_classic_t, pia_pb_w))
-=======
 	MCFG_PIA_READPB_HANDLER(READ8(c1541_prologic_dos_classic_device, pia_pb_r))
 	MCFG_PIA_WRITEPA_HANDLER(WRITE8(c1541_prologic_dos_classic_device, pia_pa_w))
 	MCFG_PIA_WRITEPB_HANDLER(WRITE8(c1541_prologic_dos_classic_device, pia_pb_w))
->>>>>>> upstream/master
 	MCFG_PIA_CA2_HANDLER(DEVWRITELINE(CENTRONICS_TAG, centronics_device, write_strobe))
 
 	MCFG_CENTRONICS_ADD(CENTRONICS_TAG, centronics_devices, "printer")
@@ -1182,20 +880,6 @@ MACHINE_CONFIG_END
 
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  machine_config_additions - device-specific
-//  machine configurations
-//-------------------------------------------------
-
-machine_config_constructor c1541_prologic_dos_classic_t::device_mconfig_additions() const
-{
-	return MACHINE_CONFIG_NAME( c1541pdc );
-}
-
-
-//-------------------------------------------------
-=======
->>>>>>> upstream/master
 //  INPUT_PORTS( c1541 )
 //-------------------------------------------------
 
@@ -1213,11 +897,7 @@ INPUT_PORTS_END
 //  input_ports - device-specific input ports
 //-------------------------------------------------
 
-<<<<<<< HEAD
-ioport_constructor c1541_base_t::device_input_ports() const
-=======
 ioport_constructor c1541_device_base::device_input_ports() const
->>>>>>> upstream/master
 {
 	return INPUT_PORTS_NAME( c1541 );
 }
@@ -1232,11 +912,7 @@ ioport_constructor c1541_device_base::device_input_ports() const
 //  set_iec_data -
 //-------------------------------------------------
 
-<<<<<<< HEAD
-inline void c1541_base_t::set_iec_data()
-=======
 inline void c1541_device_base::set_iec_data()
->>>>>>> upstream/master
 {
 	int data = !m_data_out && !m_ga->atn_r();
 
@@ -1250,15 +926,6 @@ inline void c1541_device_base::set_iec_data()
 //**************************************************************************
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  c1541_base_t - constructor
-//-------------------------------------------------
-
-c1541_base_t:: c1541_base_t(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source) :
-	device_t(mconfig, type, name, tag, owner, clock, shortname, source),
-	device_cbm_iec_interface(mconfig, *this),
-	device_c64_floppy_parallel_interface(mconfig, *this),
-=======
 //  c1541_device_base - constructor
 //-------------------------------------------------
 
@@ -1267,15 +934,10 @@ c1541_device_base::c1541_device_base(const machine_config &mconfig, device_type 
 	device_cbm_iec_interface(mconfig, *this),
 	device_c64_floppy_parallel_interface(mconfig, *this),
 	m_floppy(*this, C64H156_TAG":0:525ssqd"),
->>>>>>> upstream/master
 	m_maincpu(*this, M6502_TAG),
 	m_via0(*this, M6522_0_TAG),
 	m_via1(*this, M6522_1_TAG),
 	m_ga(*this, C64H156_TAG),
-<<<<<<< HEAD
-	m_floppy(*this, C64H156_TAG":0:525ssqd"),
-=======
->>>>>>> upstream/master
 	m_address(*this, "ADDRESS"),
 	m_data_out(1),
 	m_via0_irq(CLEAR_LINE),
@@ -1285,93 +947,6 @@ c1541_device_base::c1541_device_base(const machine_config &mconfig, device_type 
 
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  c1540_t - constructor
-//-------------------------------------------------
-
-c1540_t::c1540_t(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: c1541_base_t(mconfig, C1540, "C1540", tag, owner, clock, "c1540", __FILE__) { }
-
-
-//-------------------------------------------------
-//  c1541_t - constructor
-//-------------------------------------------------
-
-c1541_t::c1541_t(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: c1541_base_t(mconfig, C1541, "C1541", tag, owner, clock, "c1541", __FILE__) { }
-
-
-//-------------------------------------------------
-//  c1541c_t - constructor
-//-------------------------------------------------
-
-c1541c_t::c1541c_t(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: c1541_base_t(mconfig, C1541C, "C1541C", tag, owner, clock, "c1541c", __FILE__) {  }
-
-
-//-------------------------------------------------
-//  c1541ii_t - constructor
-//-------------------------------------------------
-
-c1541ii_t::c1541ii_t(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: c1541_base_t(mconfig, C1541II, "C1541-II", tag, owner, clock, "c1541ii", __FILE__) {  }
-
-
-//-------------------------------------------------
-//  sx1541_t - constructor
-//-------------------------------------------------
-
-sx1541_t::sx1541_t(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: c1541_base_t(mconfig, SX1541, "SX1541", tag, owner, clock, "sx1541", __FILE__) { }
-
-
-//-------------------------------------------------
-//  fsd1_t - constructor
-//-------------------------------------------------
-
-fsd1_t::fsd1_t(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: c1541_base_t(mconfig, FSD1, "FSD-1", tag, owner, clock, "fsd1", __FILE__) { }
-
-
-//-------------------------------------------------
-//  fsd2_t - constructor
-//-------------------------------------------------
-
-fsd2_t::fsd2_t(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: c1541_base_t(mconfig, FSD2, "FSD-2", tag, owner, clock, "fsd2", __FILE__) { }
-
-
-//-------------------------------------------------
-//  csd1_t - constructor
-//-------------------------------------------------
-
-csd1_t::csd1_t(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: c1541_base_t(mconfig, CSD1, "CSD-1", tag, owner, clock, "csd1", __FILE__) { }
-
-
-//-------------------------------------------------
-//  c1541_dolphin_dos_t - constructor
-//-------------------------------------------------
-
-c1541_dolphin_dos_t::c1541_dolphin_dos_t(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: c1541_base_t(mconfig, C1541_DOLPHIN_DOS, "C1541 Dolphin-DOS 2.0", tag, owner, clock, "c1541dd", __FILE__) {  }
-
-
-//-------------------------------------------------
-//  c1541_professional_dos_v1_t - constructor
-//-------------------------------------------------
-
-c1541_professional_dos_v1_t::c1541_professional_dos_v1_t(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: c1541_base_t(mconfig, C1541_PROFESSIONAL_DOS_V1, "C1541 Professional-DOS v1", tag, owner, clock, "c1541pd", __FILE__) {  }
-
-
-//-------------------------------------------------
-//  c1541_prologic_dos_classic_t - constructor
-//-------------------------------------------------
-
-c1541_prologic_dos_classic_t::c1541_prologic_dos_classic_t(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: c1541_base_t(mconfig, C1541_PROLOGIC_DOS_CLASSIC, "C1541 ProLogic-DOS Classic", tag, owner, clock, "c1541pdc", __FILE__),
-=======
 //  c1540_device - constructor
 //-------------------------------------------------
 
@@ -1457,7 +1032,6 @@ c1541_professional_dos_v1_device::c1541_professional_dos_v1_device(const machine
 
 c1541_prologic_dos_classic_device::c1541_prologic_dos_classic_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: c1541_device_base(mconfig, C1541_PROLOGIC_DOS_CLASSIC, tag, owner, clock),
->>>>>>> upstream/master
 		m_pia(*this, MC6821_TAG),
 		m_cent_data_out(*this, "cent_data_out"),
 		m_mmu_rom(*this, "mmu")
@@ -1466,30 +1040,18 @@ c1541_prologic_dos_classic_device::c1541_prologic_dos_classic_device(const machi
 
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  indus_gt_t - constructor
-//-------------------------------------------------
-
-indus_gt_t::indus_gt_t(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: c1541_base_t(mconfig, INDUS_GT, "Indus GT", tag, owner, clock, "indusgt", __FILE__) { }
-=======
 //  indus_gt_device - constructor
 //-------------------------------------------------
 
 indus_gt_device::indus_gt_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: c1541_device_base(mconfig, INDUS_GT, tag, owner, clock) { }
->>>>>>> upstream/master
 
 
 //-------------------------------------------------
 //  device_start - device-specific startup
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void c1541_base_t::device_start()
-=======
 void c1541_device_base::device_start()
->>>>>>> upstream/master
 {
 	// install image callbacks
 	m_ga->set_floppy(m_floppy);
@@ -1500,18 +1062,6 @@ void c1541_device_base::device_start()
 	save_item(NAME(m_via1_irq));
 }
 
-<<<<<<< HEAD
-void fsd2_t::device_start()
-{
-	c1541_base_t::device_start();
-
-	// decrypt ROM
-	UINT8 *rom = memregion(M6502_TAG)->base();
-
-	for (offs_t offset = 0; offset < 0x4000; offset++)
-	{
-		UINT8 data = BITSWAP8(rom[offset], 7, 6, 5, 3, 4, 2, 1, 0);
-=======
 void fsd2_device::device_start()
 {
 	c1541_device_base::device_start();
@@ -1522,7 +1072,6 @@ void fsd2_device::device_start()
 	for (offs_t offset = 0; offset < 0x4000; offset++)
 	{
 		uint8_t data = BITSWAP8(rom[offset], 7, 6, 5, 3, 4, 2, 1, 0);
->>>>>>> upstream/master
 
 		rom[offset] = data;
 	}
@@ -1533,11 +1082,7 @@ void fsd2_device::device_start()
 //  device_reset - device-specific reset
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void c1541_base_t::device_reset()
-=======
 void c1541_device_base::device_reset()
->>>>>>> upstream/master
 {
 	m_maincpu->reset();
 
@@ -1554,11 +1099,7 @@ void c1541_device_base::device_reset()
 //  iec_atn_w -
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void c1541_base_t::cbm_iec_atn(int state)
-=======
 void c1541_device_base::cbm_iec_atn(int state)
->>>>>>> upstream/master
 {
 	m_via0->write_ca1(!state);
 	m_ga->atni_w(!state);
@@ -1571,11 +1112,7 @@ void c1541_device_base::cbm_iec_atn(int state)
 //  iec_reset_w -
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void c1541_base_t::cbm_iec_reset(int state)
-=======
 void c1541_device_base::cbm_iec_reset(int state)
->>>>>>> upstream/master
 {
 	if (!state)
 	{
@@ -1588,11 +1125,7 @@ void c1541_device_base::cbm_iec_reset(int state)
 //  parallel_data_w -
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void c1541_base_t::parallel_data_w(UINT8 data)
-=======
 void c1541_device_base::parallel_data_w(uint8_t data)
->>>>>>> upstream/master
 {
 	m_parallel_data = data;
 }
@@ -1602,11 +1135,7 @@ void c1541_device_base::parallel_data_w(uint8_t data)
 //  parallel_strobe_w -
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void c1541_base_t::parallel_strobe_w(int state)
-=======
 void c1541_device_base::parallel_strobe_w(int state)
->>>>>>> upstream/master
 {
 	m_via0->write_cb1(state);
 }

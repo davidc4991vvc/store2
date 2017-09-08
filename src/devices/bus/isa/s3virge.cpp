@@ -11,39 +11,6 @@
  *  - S3D is not implemented at all, so no 2D/3D acceleration yet.
  */
 
-<<<<<<< HEAD
-#include "s3virge.h"
-
-#define CRTC_PORT_ADDR ((vga.miscellaneous_output&1)?0x3d0:0x3b0)
-#define LOG_REG        1
-
-const device_type S3VIRGE = &device_creator<s3virge_vga_device>;
-const device_type S3VIRGEDX = &device_creator<s3virgedx_vga_device>;
-const device_type S3VIRGEDX1 = &device_creator<s3virgedx_rev1_vga_device>;
-
-s3virge_vga_device::s3virge_vga_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: s3_vga_device(mconfig, S3VIRGE, "S3 86C325", tag, owner, clock, "virge_vga", __FILE__)
-{
-}
-
-s3virge_vga_device::s3virge_vga_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source)
-	: s3_vga_device(mconfig, type, name, tag, owner, clock, shortname, source)
-{
-}
-
-s3virgedx_vga_device::s3virgedx_vga_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: s3virge_vga_device(mconfig, S3VIRGEDX, "S3 86C375", tag, owner, clock, "virgedx_vga", __FILE__)
-{
-}
-
-s3virgedx_vga_device::s3virgedx_vga_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source)
-	: s3virge_vga_device(mconfig, type, name, tag, owner, clock, shortname, source)
-{
-}
-
-s3virgedx_rev1_vga_device::s3virgedx_rev1_vga_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: s3virgedx_vga_device(mconfig, S3VIRGEDX1, "S3 86C375 (rev 1)", tag, owner, clock, "virgedx_r1", __FILE__)
-=======
 #include "emu.h"
 #include "s3virge.h"
 
@@ -79,7 +46,6 @@ s3virgedx_vga_device::s3virgedx_vga_device(const machine_config &mconfig, device
 
 s3virgedx_rev1_vga_device::s3virgedx_rev1_vga_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: s3virgedx_vga_device(mconfig, S3VIRGEDX1, tag, owner, clock)
->>>>>>> upstream/master
 {
 }
 
@@ -170,15 +136,9 @@ void s3virgedx_rev1_vga_device::device_reset()
 	s3.strapping = 0x0aff0912;
 }
 
-<<<<<<< HEAD
-UINT8 s3virge_vga_device::s3_crtc_reg_read(UINT8 index)
-{
-	UINT8 res;
-=======
 uint8_t s3virge_vga_device::s3_crtc_reg_read(uint8_t index)
 {
 	uint8_t res;
->>>>>>> upstream/master
 
 	if(index <= 0x18)
 		res = crtc_reg_read(index);
@@ -288,11 +248,7 @@ uint8_t s3virge_vga_device::s3_crtc_reg_read(uint8_t index)
 				break;
 			default:
 				res = vga.crtc.data[index];
-<<<<<<< HEAD
-				//debugger_break(machine);
-=======
 				//machine.debug_break();
->>>>>>> upstream/master
 				//printf("%02x\n",index);
 				break;
 		}
@@ -343,11 +299,7 @@ void s3virge_vga_device::s3_define_video_mode()
 	recompute_params_clock(divisor, xtal);
 }
 
-<<<<<<< HEAD
-void s3virge_vga_device::s3_crtc_reg_write(UINT8 index, UINT8 data)
-=======
 void s3virge_vga_device::s3_crtc_reg_write(uint8_t index, uint8_t data)
->>>>>>> upstream/master
 {
 	if(index <= 0x18)
 	{
@@ -660,11 +612,7 @@ bit    0  Vertical Total bit 10. Bit 10 of the Vertical Total register (3d4h
 
 READ8_MEMBER(s3virge_vga_device::port_03b0_r)
 {
-<<<<<<< HEAD
-	UINT8 res = 0xff;
-=======
 	uint8_t res = 0xff;
->>>>>>> upstream/master
 
 	if (CRTC_PORT_ADDR == 0x3b0)
 	{
@@ -701,11 +649,7 @@ WRITE8_MEMBER(s3virge_vga_device::port_03b0_w)
 
 READ8_MEMBER(s3virge_vga_device::port_03c0_r)
 {
-<<<<<<< HEAD
-	UINT8 res;
-=======
 	uint8_t res;
->>>>>>> upstream/master
 
 	switch(offset)
 	{
@@ -729,11 +673,7 @@ WRITE8_MEMBER(s3virge_vga_device::port_03c0_w)
 
 READ8_MEMBER(s3virge_vga_device::port_03d0_r)
 {
-<<<<<<< HEAD
-	UINT8 res = 0xff;
-=======
 	uint8_t res = 0xff;
->>>>>>> upstream/master
 
 	if (CRTC_PORT_ADDR == 0x3d0)
 	{
@@ -772,11 +712,7 @@ READ8_MEMBER(s3virge_vga_device::mem_r)
 {
 	if (svga.rgb8_en || svga.rgb15_en || svga.rgb16_en || svga.rgb32_en)
 	{
-<<<<<<< HEAD
-		UINT8 data;
-=======
 		uint8_t data;
->>>>>>> upstream/master
 		if(offset & 0x10000)
 			return 0;
 		data = 0xff;

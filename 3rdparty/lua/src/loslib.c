@@ -1,9 +1,5 @@
 /*
-<<<<<<< HEAD
-** $Id: loslib.c,v 1.54 2014/12/26 14:46:07 roberto Exp $
-=======
 ** $Id: loslib.c,v 1.65 2016/07/18 17:58:58 roberto Exp $
->>>>>>> upstream/master
 ** Standard Operating System library
 ** See Copyright Notice in lua.h
 */
@@ -26,25 +22,6 @@
 #include "lualib.h"
 
 
-<<<<<<< HEAD
-#if !defined(LUA_STRFTIMEOPTIONS)	/* { */
-/*
-** list of valid conversion specifiers for the 'strftime' function
-*/
-
-#if defined(LUA_USE_C89)
-#define LUA_STRFTIMEOPTIONS	{ "aAbBcdHIjmMpSUwWxXyYz%", "" }
-#else  /* C99 specification */
-#define LUA_STRFTIMEOPTIONS \
-	{ "aAbBcCdDeFgGhHIjmMnprRStTuUVwWxXyYzZ%", "", \
-	  "E", "cCxXyY",  \
-	  "O", "deHImMSuUVwWy" }
-#endif
-
-#endif					/* } */
-
-
-=======
 /*
 ** {==================================================================
 ** List of valid conversion specifiers for the 'strftime' function;
@@ -81,7 +58,6 @@
 ** Configuration for time-related stuff
 ** ===================================================================
 */
->>>>>>> upstream/master
 
 #if !defined(l_time_t)		/* { */
 /*
@@ -89,28 +65,16 @@
 */
 #define l_timet			lua_Integer
 #define l_pushtime(L,t)		lua_pushinteger(L,(lua_Integer)(t))
-<<<<<<< HEAD
-#define l_checktime(L,a)	((time_t)luaL_checkinteger(L,a))
-=======
 
 static time_t l_checktime (lua_State *L, int arg) {
   lua_Integer t = luaL_checkinteger(L, arg);
   luaL_argcheck(L, (time_t)t == t, arg, "time out-of-bounds");
   return (time_t)t;
 }
->>>>>>> upstream/master
 
 #endif				/* } */
 
 
-<<<<<<< HEAD
-
-#if !defined(lua_tmpnam)	/* { */
-/*
-** By default, Lua uses tmpnam except when POSIX is available, where it
-** uses mkstemp.
-*/
-=======
 #if !defined(l_gmtime)		/* { */
 /*
 ** By default, Lua uses gmtime/localtime, except when POSIX is available,
@@ -143,7 +107,6 @@ static time_t l_checktime (lua_State *L, int arg) {
 ** ===================================================================
 */
 #if !defined(lua_tmpnam)	/* { */
->>>>>>> upstream/master
 
 #if defined(LUA_USE_POSIX)	/* { */
 
@@ -170,38 +133,10 @@ static time_t l_checktime (lua_State *L, int arg) {
 #endif				/* } */
 
 #endif				/* } */
-<<<<<<< HEAD
-
-
-
-#if !defined(l_gmtime)		/* { */
-/*
-** By default, Lua uses gmtime/localtime, except when POSIX is available,
-** where it uses gmtime_r/localtime_r
-*/
-
-#if defined(LUA_USE_POSIX)	/* { */
-
-#define l_gmtime(t,r)		gmtime_r(t,r)
-#define l_localtime(t,r)	localtime_r(t,r)
-
-#else				/* }{ */
-
-/* ISO C definitions */
-#define l_gmtime(t,r)		((void)(r)->tm_sec, gmtime(t))
-#define l_localtime(t,r)  	((void)(r)->tm_sec, localtime(t))
-
-#endif				/* } */
-
-#endif				/* } */
-
-
-=======
 /* }================================================================== */
 
 
 
->>>>>>> upstream/master
 
 static int os_execute (lua_State *L) {
   const char *cmd = luaL_optstring(L, 1, NULL);
@@ -246,11 +181,7 @@ static int os_getenv (lua_State *L) {
 
 
 static int os_clock (lua_State *L) {
-<<<<<<< HEAD
-  lua_pushnumber(L, ((lua_Number)(int)clock())/(lua_Number)CLOCKS_PER_SEC);
-=======
   lua_pushnumber(L, ((lua_Number)clock())/(lua_Number)CLOCKS_PER_SEC);
->>>>>>> upstream/master
   return 1;
 }
 
@@ -275,8 +206,6 @@ static void setboolfield (lua_State *L, const char *key, int value) {
   lua_setfield(L, -2, key);
 }
 
-<<<<<<< HEAD
-=======
 
 /*
 ** Set all fields from structure 'tm' in the table on top of the stack
@@ -294,7 +223,6 @@ static void setallfields (lua_State *L, struct tm *stm) {
 }
 
 
->>>>>>> upstream/master
 static int getboolfield (lua_State *L, const char *key) {
   int res;
   res = (lua_getfield(L, -1, key) == LUA_TNIL) ? -1 : lua_toboolean(L, -1);
@@ -303,38 +231,6 @@ static int getboolfield (lua_State *L, const char *key) {
 }
 
 
-<<<<<<< HEAD
-static int getfield (lua_State *L, const char *key, int d) {
-  int res, isnum;
-  lua_getfield(L, -1, key);
-  res = (int)lua_tointegerx(L, -1, &isnum);
-  if (!isnum) {
-    if (d < 0)
-      return luaL_error(L, "field '%s' missing in date table", key);
-    res = d;
-  }
-  lua_pop(L, 1);
-  return res;
-}
-
-
-static const char *checkoption (lua_State *L, const char *conv, char *buff) {
-  static const char *const options[] = LUA_STRFTIMEOPTIONS;
-  unsigned int i;
-  for (i = 0; i < sizeof(options)/sizeof(options[0]); i += 2) {
-    if (*conv != '\0' && strchr(options[i], *conv) != NULL) {
-      buff[1] = *conv;
-      if (*options[i + 1] == '\0') {  /* one-char conversion specifier? */
-        buff[2] = '\0';  /* end buffer */
-        return conv + 1;
-      }
-      else if (*(conv + 1) != '\0' &&
-               strchr(options[i + 1], *(conv + 1)) != NULL) {
-        buff[2] = *(conv + 1);  /* valid two-char conversion specifier */
-        buff[3] = '\0';  /* end buffer */
-        return conv + 2;
-      }
-=======
 /* maximum value for date fields (to avoid arithmetic overflows with 'int') */
 #if !defined(L_MAXDATEFIELD)
 #define L_MAXDATEFIELD	(INT_MAX / 2)
@@ -372,7 +268,6 @@ static const char *checkoption (lua_State *L, const char *conv,
       memcpy(buff, conv, oplen);  /* copy valid option to buffer */
       buff[oplen] = '\0';
       return conv + oplen;  /* return next item */
->>>>>>> upstream/master
     }
   }
   luaL_argerror(L, 1,
@@ -381,11 +276,6 @@ static const char *checkoption (lua_State *L, const char *conv,
 }
 
 
-<<<<<<< HEAD
-static int os_date (lua_State *L) {
-  const char *s = luaL_optstring(L, 1, "%c");
-  time_t t = luaL_opt(L, l_checktime, 2, time(NULL));
-=======
 /* maximum size for an individual 'strftime' item */
 #define SIZETIMEFMT	250
 
@@ -395,7 +285,6 @@ static int os_date (lua_State *L) {
   const char *s = luaL_optlstring(L, 1, "%c", &slen);
   time_t t = luaL_opt(L, l_checktime, 2, time(NULL));
   const char *se = s + slen;  /* 's' end */
->>>>>>> upstream/master
   struct tm tmr, *stm;
   if (*s == '!') {  /* UTC? */
     stm = l_gmtime(&t, &tmr);
@@ -404,35 +293,6 @@ static int os_date (lua_State *L) {
   else
     stm = l_localtime(&t, &tmr);
   if (stm == NULL)  /* invalid date? */
-<<<<<<< HEAD
-    lua_pushnil(L);
-  else if (strcmp(s, "*t") == 0) {
-    lua_createtable(L, 0, 9);  /* 9 = number of fields */
-    setfield(L, "sec", stm->tm_sec);
-    setfield(L, "min", stm->tm_min);
-    setfield(L, "hour", stm->tm_hour);
-    setfield(L, "day", stm->tm_mday);
-    setfield(L, "month", stm->tm_mon+1);
-    setfield(L, "year", stm->tm_year+1900);
-    setfield(L, "wday", stm->tm_wday+1);
-    setfield(L, "yday", stm->tm_yday+1);
-    setboolfield(L, "isdst", stm->tm_isdst);
-  }
-  else {
-    char cc[4];
-    luaL_Buffer b;
-    cc[0] = '%';
-    luaL_buffinit(L, &b);
-    while (*s) {
-      if (*s != '%')  /* no conversion specifier? */
-        luaL_addchar(&b, *s++);
-      else {
-        size_t reslen;
-        char buff[200];  /* should be big enough for any conversion result */
-        s = checkoption(L, s + 1, cc);
-        reslen = strftime(buff, sizeof(buff), cc, stm);
-        luaL_addlstring(&b, buff, reslen);
-=======
     luaL_error(L, "time result cannot be represented in this installation");
   if (strcmp(s, "*t") == 0) {
     lua_createtable(L, 0, 9);  /* 9 = number of fields */
@@ -453,7 +313,6 @@ static int os_date (lua_State *L) {
         s = checkoption(L, s, se - s, cc + 1);  /* copy specifier to 'cc' */
         reslen = strftime(buff, SIZETIMEFMT, cc, stm);
         luaL_addsize(&b, reslen);
->>>>>>> upstream/master
       }
     }
     luaL_pushresult(&b);
@@ -470,23 +329,6 @@ static int os_time (lua_State *L) {
     struct tm ts;
     luaL_checktype(L, 1, LUA_TTABLE);
     lua_settop(L, 1);  /* make sure table is at the top */
-<<<<<<< HEAD
-    ts.tm_sec = getfield(L, "sec", 0);
-    ts.tm_min = getfield(L, "min", 0);
-    ts.tm_hour = getfield(L, "hour", 12);
-    ts.tm_mday = getfield(L, "day", -1);
-    ts.tm_mon = getfield(L, "month", -1) - 1;
-    ts.tm_year = getfield(L, "year", -1) - 1900;
-    ts.tm_isdst = getboolfield(L, "isdst");
-    t = mktime(&ts);
-  }
-  if (t != (time_t)(l_timet)t)
-    luaL_error(L, "time result cannot be represented in this Lua instalation");
-  else if (t == (time_t)(-1))
-    lua_pushnil(L);
-  else
-    l_pushtime(L, t);
-=======
     ts.tm_sec = getfield(L, "sec", 0, 0);
     ts.tm_min = getfield(L, "min", 0, 0);
     ts.tm_hour = getfield(L, "hour", 12, 0);
@@ -500,20 +342,14 @@ static int os_time (lua_State *L) {
   if (t != (time_t)(l_timet)t || t == (time_t)(-1))
     luaL_error(L, "time result cannot be represented in this installation");
   l_pushtime(L, t);
->>>>>>> upstream/master
   return 1;
 }
 
 
 static int os_difftime (lua_State *L) {
-<<<<<<< HEAD
-  double res = difftime((l_checktime(L, 1)), (l_checktime(L, 2)));
-  lua_pushnumber(L, (lua_Number)res);
-=======
   time_t t1 = l_checktime(L, 1);
   time_t t2 = l_checktime(L, 2);
   lua_pushnumber(L, (lua_Number)difftime(t1, t2));
->>>>>>> upstream/master
   return 1;
 }
 

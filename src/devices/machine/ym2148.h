@@ -8,15 +8,10 @@
 
 *********************************************************************/
 
-<<<<<<< HEAD
-#ifndef __YM2148_H__
-#define __YM2148_H__
-=======
 #ifndef MAME_MACHINE_YM2148_H
 #define MAME_MACHINE_YM2148_H
 
 #pragma once
->>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -36,20 +31,6 @@
 	devcb = &ym2148_device::set_irq_handler(*device, DEVCB_##_devcb);
 
 
-<<<<<<< HEAD
-class ym2148_device :  public device_t,
-	public device_serial_interface
-{
-public:
-	// construction/destruction
-	ym2148_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// static configuration helpers
-	template<class _Object> static devcb_base &set_txd_handler(device_t &device, _Object object) { return downcast<ym2148_device &>(device).m_txd_handler.set_callback(object); }
-	template<class _Object> static devcb_base &set_port_write_handler(device_t &device, _Object object) { return downcast<ym2148_device &>(device).m_port_write_handler.set_callback(object); }
-	template<class _Object> static devcb_base &set_port_read_handler(device_t &device, _Object object) { return downcast<ym2148_device &>(device).m_port_read_handler.set_callback(object); }
-	template<class _Object> static devcb_base &set_irq_handler(device_t &device, _Object object) { return downcast<ym2148_device &>(device).m_irq_handler.set_callback(object); }
-=======
 class ym2148_device : public device_t, public device_serial_interface
 {
 public:
@@ -61,27 +42,17 @@ public:
 	template <class Object> static devcb_base &set_port_write_handler(device_t &device, Object &&cb) { return downcast<ym2148_device &>(device).m_port_write_handler.set_callback(std::forward<Object>(cb)); }
 	template <class Object> static devcb_base &set_port_read_handler(device_t &device, Object &&cb) { return downcast<ym2148_device &>(device).m_port_read_handler.set_callback(std::forward<Object>(cb)); }
 	template <class Object> static devcb_base &set_irq_handler(device_t &device, Object &&cb) { return downcast<ym2148_device &>(device).m_irq_handler.set_callback(std::forward<Object>(cb)); }
->>>>>>> upstream/master
 
 	DECLARE_READ8_MEMBER(read);
 	DECLARE_WRITE8_MEMBER(write);
 
 	DECLARE_WRITE_LINE_MEMBER(write_rxd);
-<<<<<<< HEAD
-	UINT8 get_irq_vector();
-
-protected:
-	virtual void device_start();
-	virtual void device_reset();
-	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
-=======
 	uint8_t get_irq_vector();
 
 protected:
 	virtual void device_start() override;
 	virtual void device_reset() override;
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
->>>>>>> upstream/master
 
 private:
 	devcb_write_line m_txd_handler;
@@ -89,15 +60,6 @@ private:
 	devcb_write8 m_port_write_handler;  // write ST0-ST7
 	devcb_read8 m_port_read_handler;    // read SD0-SD7
 	int m_irq_state;
-<<<<<<< HEAD
-	UINT8 m_irq_vector;
-	UINT8 m_external_irq_vector;
-	// Does this chip have 1 or 2 data registers?
-	UINT8 m_data_out;
-	UINT8 m_data_in;
-	UINT8 m_control;
-	UINT8 m_status;
-=======
 	uint8_t m_irq_vector;
 	uint8_t m_external_irq_vector;
 	// Does this chip have 1 or 2 data registers?
@@ -105,7 +67,6 @@ private:
 	uint8_t m_data_in;
 	uint8_t m_control;
 	uint8_t m_status;
->>>>>>> upstream/master
 	emu_timer *m_timer;
 	int m_rxd;
 	bool m_tx_busy;
@@ -127,13 +88,6 @@ private:
 };
 
 
-<<<<<<< HEAD
-extern const device_type YM2148;
-
-
-#endif
-=======
 DECLARE_DEVICE_TYPE(YM2148, ym2148_device)
 
 #endif // MAME_MACHINE_YM2148_H
->>>>>>> upstream/master

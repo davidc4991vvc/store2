@@ -1,10 +1,5 @@
-<<<<<<< HEAD
-// license:BSD-3-Clause
-// copyright-holders:David Haywood
-=======
 // license: BSD-3-Clause
 // copyright-holders: David Haywood, Dirk Best
->>>>>>> upstream/master
 /*
    Dinamic / Inder arcade hardware
 
@@ -19,8 +14,6 @@
 
   trivia: Test mode graphics are the same as Little Robin(?!), TMS is very similar too, suggesting they share a common codebase.
 
-<<<<<<< HEAD
-=======
  PIC16C54 info:
  - The PIC has 5 functions:
    * Read dip switches (serially connected) [cmd 0x82 0x86]
@@ -38,7 +31,6 @@
    with the result.
 
 
->>>>>>> upstream/master
 
  ToDo:
   - where should roms 6/7 map, they contain the 68k vectors, but the game expects RAM at 0, and it doesn't seem to read any of the other data from those roms.. they contain
@@ -47,11 +39,7 @@
   - how does banking work? when the irq callbacks happen for each irq level? currently no way to access this because it's a daisy chain setup with the ctc?
   - even if i hack that the title screen speech doesn't work properly - is there a timing register like little robin?
  I/O:
-<<<<<<< HEAD
-  - port_c_r / port_c_w should go through the 8255 but I don't see how to hook them up that way? various bits of the writes are lost?
-=======
   - Verify when m_ppi_to_pic_command is set and cleared. It's currently guessed but seems to work fine this way.
->>>>>>> upstream/master
 
 
   --
@@ -88,14 +76,7 @@
 #include "emu.h"
 #include "cpu/m68000/m68000.h"
 #include "cpu/pic16c5x/pic16c5x.h"
-<<<<<<< HEAD
-
-
-
-
-=======
 #include "machine/74166.h"
->>>>>>> upstream/master
 #include "machine/i8255.h"
 #include "machine/inder_sb.h"
 #include "machine/inder_vid.h"
@@ -109,43 +90,6 @@ public:
 		: driver_device(mconfig, type, tag),
 		m_maincpu(*this, "maincpu"),
 		m_mainram(*this, "mainram"),
-<<<<<<< HEAD
-		port_c_value(0),
-		m_indersb(*this, "inder_sb"),
-		m_indervid(*this, "inder_vid")
-
-	{
-	}
-
-	required_device<cpu_device> m_maincpu;
-	required_shared_ptr<UINT16> m_mainram;
-
-
-
-
-
-	DECLARE_DRIVER_INIT(megaphx);
-
-	DECLARE_READ8_MEMBER(port_c_r);
-	DECLARE_WRITE8_MEMBER(port_c_w);
-
-	int m_pic_is_reset;
-	int m_pic_shift_pos;
-	int m_pic_data;
-	int m_pic_data_bit;
-	int m_pic_clock;
-	int m_pic_readbit;
-
-	UINT16 m_pic_result;
-
-	UINT8 port_c_value;
-
-	required_device<inder_sb_device> m_indersb;
-	required_device<inder_vid_device> m_indervid;
-
-
-
-=======
 		m_indersb(*this, "inder_sb"),
 		m_indervid(*this, "inder_vid"),
 		m_ppi(*this, "ppi8255_0"),
@@ -179,31 +123,11 @@ private:
 	int m_ppi_to_pic_data;
 	int m_pic_to_ppi_clock;
 	int m_pic_to_ppi_data;
->>>>>>> upstream/master
 };
 
 
 static ADDRESS_MAP_START( megaphx_68k_map, AS_PROGRAM, 16, megaphx_state )
 	AM_RANGE(0x000000, 0x0013ff) AM_RAM AM_SHARE("mainram") // maps over part of the rom??
-<<<<<<< HEAD
-
-	AM_RANGE(0x000000, 0x03ffff) AM_ROM AM_REGION("roms67", 0x00000) // or the rom doesn't map here? it contains the service mode grid amongst other things..
-
-	AM_RANGE(0x040000, 0x040007) AM_DEVREADWRITE("inder_vid:tms", tms34010_device, host_r, host_w)
-
-	AM_RANGE(0x050000, 0x050001) AM_DEVWRITE("inder_sb", inder_sb_device, megaphx_0x050000_w)
-	AM_RANGE(0x050002, 0x050003) AM_DEVREAD("inder_sb", inder_sb_device, megaphx_0x050002_r)
-
-
-	AM_RANGE(0x060004, 0x060005) AM_READ8( port_c_r, 0x00ff )
-	AM_RANGE(0x060006, 0x060007) AM_WRITE8( port_c_w, 0x00ff )
-	AM_RANGE(0x060000, 0x060003) AM_DEVREADWRITE8("ppi8255_0", i8255_device, read, write, 0x00ff)
-
-	AM_RANGE(0x800000, 0x83ffff) AM_ROM  AM_REGION("roms01", 0x00000) // code + bg gfx are in here
-	AM_RANGE(0x840000, 0x87ffff) AM_ROM  AM_REGION("roms23", 0x00000) // bg gfx are in here
-	AM_RANGE(0x880000, 0x8bffff) AM_ROM  AM_REGION("roms45", 0x00000) // bg gfx + title screen in here
-
-=======
 	AM_RANGE(0x000000, 0x03ffff) AM_ROM AM_REGION("roms67", 0x00000) // or the rom doesn't map here? it contains the service mode grid amongst other things..
 	AM_RANGE(0x040000, 0x040007) AM_DEVREADWRITE("inder_vid:tms", tms34010_device, host_r, host_w)
 	AM_RANGE(0x050000, 0x050001) AM_DEVWRITE("inder_sb", inder_sb_device, megaphx_0x050000_w)
@@ -212,228 +136,12 @@ static ADDRESS_MAP_START( megaphx_68k_map, AS_PROGRAM, 16, megaphx_state )
 	AM_RANGE(0x800000, 0x83ffff) AM_ROM  AM_REGION("roms01", 0x00000) // code + bg gfx are in here
 	AM_RANGE(0x840000, 0x87ffff) AM_ROM  AM_REGION("roms23", 0x00000) // bg gfx are in here
 	AM_RANGE(0x880000, 0x8bffff) AM_ROM  AM_REGION("roms45", 0x00000) // bg gfx + title screen in here
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
 
 
 static INPUT_PORTS_START( megaphx )
-<<<<<<< HEAD
-	PORT_START("P0") // verified in test mode
-	PORT_BIT( 0x0001, IP_ACTIVE_LOW, IPT_BUTTON2 ) PORT_PLAYER(1) // shield
-	PORT_BIT( 0x0002, IP_ACTIVE_LOW, IPT_COIN1 )
-	PORT_BIT( 0x0004, IP_ACTIVE_LOW, IPT_BUTTON3 ) PORT_PLAYER(1) // unused ? (in test mode)
-	PORT_BIT( 0x0008, IP_ACTIVE_LOW, IPT_JOYSTICK_UP ) PORT_PLAYER(1) // high score entry
-	PORT_BIT( 0x0010, IP_ACTIVE_LOW, IPT_JOYSTICK_DOWN ) PORT_PLAYER(1) // high score entry
-	PORT_BIT( 0x0020, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT ) PORT_PLAYER(1)
-	PORT_BIT( 0x0040, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT ) PORT_PLAYER(1)
-	PORT_BIT( 0x0080, IP_ACTIVE_LOW, IPT_BUTTON1 ) PORT_PLAYER(1)
-
-	PORT_START("P1") // verified in test mode
-	PORT_BIT( 0x0001, IP_ACTIVE_LOW, IPT_BUTTON2 ) PORT_PLAYER(2) // shield
-	PORT_BIT( 0x0002, IP_ACTIVE_LOW, IPT_COIN2 )
-	PORT_BIT( 0x0004, IP_ACTIVE_LOW, IPT_BUTTON3 ) PORT_PLAYER(2) // unused ? (in test mode)
-	PORT_BIT( 0x0008, IP_ACTIVE_LOW, IPT_JOYSTICK_UP ) PORT_PLAYER(2) // high score entry
-	PORT_BIT( 0x0010, IP_ACTIVE_LOW, IPT_JOYSTICK_DOWN ) PORT_PLAYER(2) //high score entry
-	PORT_BIT( 0x0020, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT ) PORT_PLAYER(2)
-	PORT_BIT( 0x0040, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT ) PORT_PLAYER(2)
-	PORT_BIT( 0x0080, IP_ACTIVE_LOW, IPT_BUTTON1 ) PORT_PLAYER(2)
-
-
-	PORT_START("PIC1") // via PIC  (check the other bits aren't used for anything, eg. screen timing for sound playback like little robin)
-	PORT_DIPNAME( 0x0001, 0x0001, "XX" )
-	PORT_DIPSETTING(      0x0001, DEF_STR( Off ) )
-	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
-	PORT_DIPNAME( 0x0002, 0x0002, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(      0x0002, DEF_STR( Off ) )
-	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
-	PORT_BIT( 0x0004, IP_ACTIVE_LOW, IPT_START1 )
-	PORT_BIT( 0x0008, IP_ACTIVE_LOW, IPT_START2 )
-	PORT_DIPNAME( 0x0010, 0x0010, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(      0x0010, DEF_STR( Off ) )
-	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
-	PORT_DIPNAME( 0x0020, 0x0020, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(      0x0020, DEF_STR( Off ) )
-	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
-	PORT_DIPNAME( 0x0040, 0x0040, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(      0x0040, DEF_STR( Off ) )
-	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
-	PORT_DIPNAME( 0x0080, 0x0080, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(      0x0080, DEF_STR( Off ) )
-	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
-
-	PORT_START("DSW1") // via PIC
-	PORT_DIPNAME( 0x0007, 0x0003, DEF_STR( Coin_A ) )
-	PORT_DIPSETTING(      0x0007, DEF_STR( 5C_1C ) )
-	PORT_DIPSETTING(      0x0006, DEF_STR( 4C_1C ) )
-	PORT_DIPSETTING(      0x0005, DEF_STR( 3C_1C ) )
-	PORT_DIPSETTING(      0x0004, DEF_STR( 2C_1C ) )
-	PORT_DIPSETTING(      0x0003, DEF_STR( 1C_1C ) )
-	PORT_DIPSETTING(      0x0002, DEF_STR( 1C_2C ) )
-	PORT_DIPSETTING(      0x0001, DEF_STR( 1C_3C ) )
-	PORT_DIPSETTING(      0x0000, DEF_STR( 1C_4C ) )
-	PORT_DIPNAME( 0x0038, 0x0018, DEF_STR( Coin_B ) )
-	PORT_DIPSETTING(      0x0038, DEF_STR( 5C_1C ) )
-	PORT_DIPSETTING(      0x0030, DEF_STR( 4C_1C ) )
-	PORT_DIPSETTING(      0x0028, DEF_STR( 3C_1C ) )
-	PORT_DIPSETTING(      0x0020, DEF_STR( 2C_1C ) )
-	PORT_DIPSETTING(      0x0018, DEF_STR( 1C_1C ) )
-	PORT_DIPSETTING(      0x0010, DEF_STR( 1C_2C ) )
-	PORT_DIPSETTING(      0x0008, DEF_STR( 1C_3C ) )
-	PORT_DIPSETTING(      0x0000, DEF_STR( 1C_4C ) )
-	PORT_DIPNAME( 0x00c0, 0x0080, DEF_STR( Lives ) )
-	PORT_DIPSETTING(      0x0000, "1" )
-	PORT_DIPSETTING(      0x0040, "2" )
-	PORT_DIPSETTING(      0x0080, "3" )
-	PORT_DIPSETTING(      0x00c0, "4" )
-
-
-	PORT_START("DSW2") // via PIC  // some of these are difficulty
-	PORT_DIPNAME( 0x0001, 0x0000, DEF_STR( Demo_Sounds ) )
-	PORT_DIPSETTING(      0x0001, DEF_STR( Off ) )
-	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
-	PORT_SERVICE( 0x0002, IP_ACTIVE_HIGH )
-	PORT_DIPNAME( 0x001c, 0x0010, "Difficulty?"  ) // in hammer boy at least..
-	PORT_DIPSETTING(      0x0000, "0" )
-	PORT_DIPSETTING(      0x0004, "1" )
-	PORT_DIPSETTING(      0x0008, "2" )
-	PORT_DIPSETTING(      0x000c, "3" )
-	PORT_DIPSETTING(      0x0010, "4" )
-	PORT_DIPSETTING(      0x0014, "5" )
-	PORT_DIPSETTING(      0x0018, "6" )
-	PORT_DIPSETTING(      0x001c, "7" )
-	PORT_DIPNAME( 0x0020, 0x0020, "DSW2-20" ) // something to do with time in hammer boy??
-	PORT_DIPSETTING(      0x0020, DEF_STR( Off ) )
-	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
-	PORT_DIPNAME( 0x0040, 0x0040, "DSW2-40" )
-	PORT_DIPSETTING(      0x0040, DEF_STR( Off ) )
-	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
-	PORT_DIPNAME( 0x0080, 0x0080, "DSW2-80" )
-	PORT_DIPSETTING(      0x0080, DEF_STR( Off ) )
-	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
-INPUT_PORTS_END
-
-
-
-/* why don't the port_c read/writes work properly when hooked through the 8255? */
-
-// the PIC is accessed serially through clock / data lines, each time 16-bits are accessed..
-// not 100% sure if the command takes effect after all 16-bits are written, or after 8..
-
-READ8_MEMBER(megaphx_state::port_c_r)
-{
-	//printf("read port c - write value was %02x\n", port_c_value);
-
-//  int pc = machine().device("maincpu")->safe_pc();
-	UINT8 ret = 0;
-
-//  printf("(%06x) port_c_r (thru 8255)\n", pc);
-
-	if (m_pic_clock == 1) ret |= 0x08;
-	if (m_pic_readbit == 1) ret |= 0x02;
-//  return ioport("SYS")->read();
-	return ret;
-}
-
-
-WRITE8_MEMBER(megaphx_state::port_c_w)
-{
-//  int pc = machine().device("maincpu")->safe_pc();
-	port_c_value = (data & 0x0f);
-
-	if (port_c_value == 0x9)
-	{
-	//  printf("Assert PIC reset line\n");
-		m_pic_is_reset = 1;
-	}
-	else if (port_c_value == 0x8)
-	{
-	//  printf("Clear PIC reset line\n");
-		m_pic_is_reset = 0;
-
-		m_pic_shift_pos = 0;
-		m_pic_data = 0;
-		m_pic_data_bit = 0;
-		m_pic_readbit = 0;
-		m_pic_clock = 1;
-
-	}
-	else if (port_c_value == 0xd)
-	{
-	//  printf("Set PIC data line\n");
-		m_pic_data_bit = 1;
-	}
-	else if (port_c_value == 0xc)
-	{
-	//  printf("Clear PIC data line\n");
-		m_pic_data_bit = 0;
-	}
-	else if (port_c_value == 0xf)
-	{
-		if (m_pic_clock == 0)
-		{
-		//  printf("Set PIC clock line | pos %d | bit %d\n", m_pic_shift_pos, m_pic_data_bit);
-
-
-
-
-
-			m_pic_clock = 1;
-
-		}
-	}
-	else if (port_c_value == 0xe)
-	{
-		if (m_pic_clock == 1)
-		{
-			m_pic_data |= m_pic_data_bit << m_pic_shift_pos;
-
-			if (m_pic_shift_pos == 8)
-			{
-				//printf("------------------ sending command %02x\n", m_pic_data);
-
-				if (m_pic_data == 0xfe) // get software version??
-				{
-					m_pic_result = (ioport("PIC1")->read()) | (0XFF << 8);
-				}
-				else if (m_pic_data == 0x82) // dsw1
-				{
-					m_pic_result = (ioport("PIC1")->read()) | ((ioport("DSW1")->read()) << 8);
-				}
-				else if (m_pic_data == 0x86) // dsw2
-				{
-					m_pic_result = (ioport("PIC1")->read()) | ((ioport("DSW2")->read()) << 8);
-				}
-				else
-				{
-					printf("unknown PIC command %02x\n", m_pic_data);
-				}
-			}
-
-			m_pic_readbit = (m_pic_result >> (m_pic_shift_pos)) & 1;
-
-
-			m_pic_shift_pos++;
-
-
-			//  printf("Clear PIC clock line\n");
-			m_pic_clock = 0;
-		}
-	}
-	else
-	{
-	//  printf("Unknown write to PIC %02x (PC %06x)\n", port_c_value, pc);
-	}
-
-
-
-}
-
-
-static MACHINE_CONFIG_START( megaphx, megaphx_state )
-
-=======
 	PORT_START("P1")
 	PORT_BIT(0x01, IP_ACTIVE_LOW, IPT_BUTTON2)        PORT_PLAYER(1) // shield
 	PORT_BIT(0x02, IP_ACTIVE_LOW, IPT_COIN1)
@@ -594,32 +302,10 @@ WRITE_LINE_MEMBER( megaphx_state::dsw_w )
 }
 
 static MACHINE_CONFIG_START( megaphx )
->>>>>>> upstream/master
 	MCFG_CPU_ADD("maincpu", M68000, 8000000) // ??  can't read xtal due to reflections, CPU is an 8Mhz part
 	MCFG_CPU_PROGRAM_MAP(megaphx_68k_map)
 
 	MCFG_CPU_ADD("pic", PIC16C54, 12000000)    /* 3MHz */
-<<<<<<< HEAD
-	/* Program and Data Maps are internal to the MCU */
-
-	MCFG_INDER_AUDIO_ADD("inder_sb")
-
-	MCFG_DEVICE_ADD("ppi8255_0", I8255A, 0)
-	MCFG_I8255_IN_PORTA_CB(IOPORT("P0"))
-	MCFG_I8255_IN_PORTB_CB(IOPORT("P1"))
-	// PORT C should be connected to above functions but values are incorrect
-
-	MCFG_INDER_VIDEO_ADD("inder_vid")
-MACHINE_CONFIG_END
-
-DRIVER_INIT_MEMBER(megaphx_state,megaphx)
-{
-	UINT16 *src = (UINT16*)memregion( "roms67" )->base();
-	// copy vector table? - it must be writable because the game write the irq vector..
-	memcpy(m_mainram, src, 0x80);
-
-
-=======
 	MCFG_PIC16C5x_READ_A_CB(READ8(megaphx_state, pic_porta_r))
 	MCFG_PIC16C5x_WRITE_A_CB(WRITE8(megaphx_state, pic_porta_w))
 	MCFG_PIC16C5x_READ_B_CB(READ8(megaphx_state, pic_portb_r))
@@ -651,7 +337,6 @@ DRIVER_INIT_MEMBER(megaphx_state, megaphx)
 	uint16_t *src = (uint16_t*)memregion( "roms67" )->base();
 	// copy vector table? - it must be writable because the game write the irq vector..
 	memcpy(m_mainram, src, 0x80);
->>>>>>> upstream/master
 }
 
 

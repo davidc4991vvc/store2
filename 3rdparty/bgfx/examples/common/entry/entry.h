@@ -1,28 +1,16 @@
 /*
-<<<<<<< HEAD
- * Copyright 2011-2015 Branimir Karadzic. All rights reserved.
- * License: http://www.opensource.org/licenses/BSD-2-Clause
-=======
  * Copyright 2011-2017 Branimir Karadzic. All rights reserved.
  * License: https://github.com/bkaradzic/bgfx#license-bsd-2-clause
->>>>>>> upstream/master
  */
 
 #ifndef ENTRY_H_HEADER_GUARD
 #define ENTRY_H_HEADER_GUARD
 
 #include "dbg.h"
-<<<<<<< HEAD
-#include <string.h> // memset
-#include <bx/bx.h>
-
-namespace bx { struct FileReaderI; struct FileWriterI; struct ReallocatorI; }
-=======
 #include <bx/bx.h>
 #include <bx/string.h>
 
 namespace bx { struct FileReaderI; struct FileWriterI; struct AllocatorI; }
->>>>>>> upstream/master
 
 extern "C" int _main_(int _argc, char** _argv);
 
@@ -238,11 +226,7 @@ namespace entry
 	{
 		GamepadState()
 		{
-<<<<<<< HEAD
-			memset(m_axis, 0, sizeof(m_axis) );
-=======
 			bx::memSet(m_axis, 0, sizeof(m_axis) );
->>>>>>> upstream/master
 		}
 
 		int32_t m_axis[entry::GamepadAxis::Count];
@@ -252,11 +236,7 @@ namespace entry
 
 	bx::FileReaderI* getFileReader();
 	bx::FileWriterI* getFileWriter();
-<<<<<<< HEAD
-	bx::ReallocatorI* getAllocator();
-=======
 	bx::AllocatorI*  getAllocator();
->>>>>>> upstream/master
 
 	WindowHandle createWindow(int32_t _x, int32_t _y, uint32_t _width, uint32_t _height, uint32_t _flags = ENTRY_WINDOW_FLAG_NONE, const char* _title = "");
 	void destroyWindow(WindowHandle _handle);
@@ -266,21 +246,14 @@ namespace entry
 	void toggleWindowFrame(WindowHandle _handle);
 	void toggleFullscreen(WindowHandle _handle);
 	void setMouseLock(WindowHandle _handle, bool _lock);
-<<<<<<< HEAD
-=======
 	void setCurrentDir(const char* _dir);
->>>>>>> upstream/master
 
 	struct WindowState
 	{
 		WindowState()
-<<<<<<< HEAD
-			: m_nwh(NULL)
-=======
 			: m_width(0)
 			, m_height(0)
 			, m_nwh(NULL)
->>>>>>> upstream/master
 		{
 			m_handle.idx = UINT16_MAX;
 		}
@@ -306,8 +279,6 @@ namespace entry
 	{
 	}
 
-<<<<<<< HEAD
-=======
 	class App : public AppI
 	{
 	public:
@@ -334,7 +305,6 @@ namespace entry
 	App* getFirstApp();
 
 	///
->>>>>>> upstream/master
 	int runApp(AppI* _app, int _argc, char** _argv);
 
 } // namespace entry

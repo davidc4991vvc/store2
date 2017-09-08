@@ -2,16 +2,9 @@
 // copyright-holders:Tatsuyuki Satoh
 /*
 
-<<<<<<< HEAD
-Notice: please do not modify this file, except in case of compile- or critical emulation error
-A more accurate implementation is in mame/alpha8201.*
-
-cpu/alph8201/ will be removed soon
-=======
 Notice: The alpha 8201 is now emulated using mame/alpha8201.*
 
 cpu/alph8201/ will be removed when the alpha 8304 has been dumped.
->>>>>>> upstream/master
 
 
 
@@ -274,11 +267,7 @@ static const char *const Formats[] = {
 	FMT("1111_1101", "CLR  A"),             // FD :
 	FMT("1111_1110", "LD   A,(IX0+A)"),     // FE :
 	FMT("1111_1111", "RET"),                // FF :
-<<<<<<< HEAD
-	NULL
-=======
 	nullptr
->>>>>>> upstream/master
 };
 
 #define MAX_OPS ((ARRAY_LENGTH(Formats) - 1) / PTRS_PER_FORMAT)
@@ -304,11 +293,7 @@ static void InitDasm8201(void)
 	char chr , type;
 	int pmask , pdown;
 
-<<<<<<< HEAD
-	for(i=0;(p=Formats[i*2])!=NULL;i++)
-=======
 	for(i=0;(p=Formats[i*2])!=nullptr;i++)
->>>>>>> upstream/master
 	{
 		mask = 0;
 		bits = 0;
@@ -349,19 +334,11 @@ static void InitDasm8201(void)
 		Op[i].type  = type;
 
 		/* 2 byte code ? */
-<<<<<<< HEAD
-		while (isspace((UINT8)*p)) p++;
-		if( (*p) )
-			Op[i].type |= 0x10;
-		/* number of param */
-		if( (p=strchr(Op[i].fmt,'%'))!=NULL )
-=======
 		while (isspace(u8(*p))) p++;
 		if( (*p) )
 			Op[i].type |= 0x10;
 		/* number of param */
 		if( (p=strchr(Op[i].fmt,'%'))!=nullptr )
->>>>>>> upstream/master
 		{
 			Op[i].type |= 0x01;     /* single param */
 			if(strchr(p+1,'%') )
@@ -372,11 +349,7 @@ static void InitDasm8201(void)
 	OpInizialized = 1;
 }
 
-<<<<<<< HEAD
-CPU_DISASSEMBLE( alpha8201 )
-=======
 CPU_DISASSEMBLE(alpha8201)
->>>>>>> upstream/master
 {
 	offs_t dasmflags = 0;
 	int i;
@@ -403,11 +376,7 @@ CPU_DISASSEMBLE(alpha8201)
 
 	if (op == -1)
 	{
-<<<<<<< HEAD
-		sprintf(buffer,"db   %2.2x",code);
-=======
 		util::stream_format(stream, "db   %2.2x",code);
->>>>>>> upstream/master
 		return cnt;
 	}
 
@@ -422,19 +391,11 @@ CPU_DISASSEMBLE(alpha8201)
 	}
 
 	if (Op[op].type & 0x02)
-<<<<<<< HEAD
-		sprintf(buffer, Op[op].fmt,disp,disp);
-	else if (Op[op].type & 0x01)
-		sprintf(buffer, Op[op].fmt,disp);
-	else
-		sprintf(buffer, "%s",Op[op].fmt);
-=======
 		util::stream_format(stream, Op[op].fmt,disp,disp);
 	else if (Op[op].type & 0x01)
 		util::stream_format(stream, Op[op].fmt,disp);
 	else
 		util::stream_format(stream, "%s",Op[op].fmt);
->>>>>>> upstream/master
 
 	switch (code)
 	{

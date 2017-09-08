@@ -5,15 +5,6 @@
 #include "emu.h"
 #include "konami_helper.h"
 
-<<<<<<< HEAD
-void konami_decode_gfx(running_machine &machine, gfxdecode_device * gfxdecode, palette_device &palette, int gfx_index, UINT8 *data, UINT32 total, const gfx_layout *layout, int bpp)
-{
-	gfx_layout gl;
-
-	memcpy(&gl, layout, sizeof(gl));
-	gl.total = total;
-	gfxdecode->set_gfx(gfx_index, global_alloc(gfx_element(&palette, gl, data, 0, palette.entries() >> bpp, 0)));
-=======
 void konami_decode_gfx(device_gfx_interface &gfxdecode, int gfx_index, uint8_t *data, uint32_t total, const gfx_layout *layout, int bpp)
 {
 	gfx_layout gl;
@@ -22,7 +13,6 @@ void konami_decode_gfx(device_gfx_interface &gfxdecode, int gfx_index, uint8_t *
 	memcpy(&gl, layout, sizeof(gl));
 	gl.total = total;
 	gfxdecode.set_gfx(gfx_index, std::make_unique<gfx_element>(&palette, gl, data, 0, palette.entries() >> bpp, 0));
->>>>>>> upstream/master
 }
 
 

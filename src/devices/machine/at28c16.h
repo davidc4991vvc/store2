@@ -8,17 +8,10 @@
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __AT28C16_H__
-#define __AT28C16_H__
-=======
 #ifndef MAME_MACHINE_AT28C16_H
 #define MAME_MACHINE_AT28C16_H
 
 #pragma once
->>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -42,11 +35,7 @@ class at28c16_device :
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	at28c16_device( const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock );
-=======
 	at28c16_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
->>>>>>> upstream/master
 
 	// I/O operations
 	DECLARE_WRITE8_MEMBER( write );
@@ -56,21 +45,6 @@ public:
 
 protected:
 	// device-level overrides
-<<<<<<< HEAD
-	virtual void device_config_complete();
-	virtual void device_validity_check(validity_checker &valid) const;
-	virtual void device_start();
-	virtual void device_reset();
-	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
-
-	// device_memory_interface overrides
-	virtual const address_space_config *memory_space_config( address_spacenum spacenum = AS_0 ) const;
-
-	// device_nvram_interface overrides
-	virtual void nvram_default();
-	virtual void nvram_read( emu_file &file );
-	virtual void nvram_write( emu_file &file );
-=======
 	virtual void device_start() override;
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
 
@@ -81,7 +55,6 @@ protected:
 	virtual void nvram_default() override;
 	virtual void nvram_read(emu_file &file) override;
 	virtual void nvram_write(emu_file &file) override;
->>>>>>> upstream/master
 
 	// internal state
 	address_space_config m_space_config;
@@ -89,20 +62,12 @@ protected:
 	int m_a9_12v;
 	int m_oe_12v;
 	int m_last_write;
-<<<<<<< HEAD
-=======
 	optional_region_ptr<uint8_t> m_default_data;
->>>>>>> upstream/master
 };
 
 
 // device type definition
 extern const device_type AT28C16;
-<<<<<<< HEAD
-
-#endif
-=======
 DECLARE_DEVICE_TYPE(AT28C16, at28c16_device)
 
 #endif // MAME_MACHINE_AT28C16_H
->>>>>>> upstream/master

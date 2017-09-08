@@ -8,33 +8,15 @@
     not the bitwise ones)
 
 ***************************************************************************/
-<<<<<<< HEAD
-
-#ifndef __M65C02_H__
-#define __M65C02_H__
-=======
 #ifndef MAME_CPU_M6502_M65C02_H
 #define MAME_CPU_M6502_M65C02_H
 
 #pragma once
->>>>>>> upstream/master
 
 #include "m6502.h"
 
 class m65c02_device : public m6502_device {
 public:
-<<<<<<< HEAD
-	m65c02_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-	m65c02_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source);
-
-	static const disasm_entry disasm_entries[0x100];
-
-	virtual offs_t disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options);
-	virtual void do_exec_full();
-	virtual void do_exec_partial();
-
-protected:
-=======
 	m65c02_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	static const disasm_entry disasm_entries[0x100];
@@ -46,7 +28,6 @@ protected:
 protected:
 	m65c02_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock);
 
->>>>>>> upstream/master
 #define O(o) void o ## _full(); void o ## _partial()
 
 	// 65c02 opcodes
@@ -92,12 +73,6 @@ enum {
 	M65C02_SET_OVERFLOW = m6502_device::V_LINE
 };
 
-<<<<<<< HEAD
-extern const device_type M65C02;
-
-#endif
-=======
 DECLARE_DEVICE_TYPE(M65C02, m65c02_device)
 
 #endif // MAME_CPU_M6502_M65C02_H
->>>>>>> upstream/master

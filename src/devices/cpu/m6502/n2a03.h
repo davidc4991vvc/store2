@@ -7,33 +7,16 @@
     6502, NES variant
 
 ***************************************************************************/
-<<<<<<< HEAD
-
-#ifndef __N2A03_H__
-#define __N2A03_H__
-=======
 #ifndef MAME_CPU_M6502_N2A03_H
 #define MAME_CPU_M6502_N2A03_H
 
 #pragma once
->>>>>>> upstream/master
 
 #include "m6502.h"
 #include "sound/nes_apu.h"
 
 class n2a03_device : public m6502_device {
 public:
-<<<<<<< HEAD
-	n2a03_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	required_device<nesapu_device> m_apu;
-
-	static const disasm_entry disasm_entries[0x100];
-
-	virtual offs_t disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options);
-	virtual void do_exec_full();
-	virtual void do_exec_partial();
-=======
 	n2a03_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	static const disasm_entry disasm_entries[0x100];
@@ -42,40 +25,16 @@ public:
 	virtual void do_exec_full() override;
 	virtual void do_exec_partial() override;
 	virtual void device_clock_changed() override;
->>>>>>> upstream/master
 
 	READ8_MEMBER(psg1_4014_r);
 	READ8_MEMBER(psg1_4015_r);
 	WRITE8_MEMBER(psg1_4015_w);
 	WRITE8_MEMBER(psg1_4017_w);
 
-<<<<<<< HEAD
-protected:
-	class mi_2a03_normal : public memory_interface {
-	public:
-		virtual ~mi_2a03_normal() {}
-		virtual UINT8 read(UINT16 adr);
-		virtual UINT8 read_sync(UINT16 adr);
-		virtual UINT8 read_arg(UINT16 adr);
-		virtual void write(UINT16 adr, UINT8 val);
-	};
-
-	class mi_2a03_nd : public memory_interface {
-	public:
-		virtual ~mi_2a03_nd() {}
-		virtual UINT8 read(UINT16 adr);
-		virtual UINT8 read_sync(UINT16 adr);
-		virtual UINT8 read_arg(UINT16 adr);
-		virtual void write(UINT16 adr, UINT8 val);
-	};
-
-	virtual void device_start();
-=======
 	required_device<nesapu_device> m_apu; // public for vgmplay
 
 protected:
 	virtual void device_start() override;
->>>>>>> upstream/master
 
 #define O(o) void o ## _full(); void o ## _partial()
 
@@ -88,17 +47,6 @@ protected:
 
 #undef O
 
-<<<<<<< HEAD
-	virtual machine_config_constructor device_mconfig_additions() const;
-	virtual const address_space_config *memory_space_config(address_spacenum spacenum = AS_0) const;
-
-private:
-	address_space_config m_program_config;
-
-};
-
-#define N2A03_DEFAULTCLOCK (21477272.724 / 12)
-=======
 	virtual void device_add_mconfig(machine_config &config) override;
 
 private:
@@ -116,7 +64,6 @@ private:
 #define NTSC_APU_CLOCK      (N2A03_NTSC_XTAL/12) /* 1.7897726666... MHz */
 #define PAL_APU_CLOCK       (N2A03_PAL_XTAL/16) /* 1.662607 MHz */
 #define PALC_APU_CLOCK      (N2A03_PAL_XTAL/15) /* 1.77344746666... MHz */
->>>>>>> upstream/master
 
 enum {
 	N2A03_IRQ_LINE = m6502_device::IRQ_LINE,
@@ -125,12 +72,6 @@ enum {
 	N2A03_SET_OVERFLOW = m6502_device::V_LINE
 };
 
-<<<<<<< HEAD
-extern const device_type N2A03;
-
-#endif
-=======
 DECLARE_DEVICE_TYPE(N2A03, n2a03_device)
 
 #endif // MAME_CPU_M6502_N2A03_H
->>>>>>> upstream/master

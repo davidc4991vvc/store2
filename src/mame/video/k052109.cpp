@@ -124,16 +124,10 @@ to through the chip.
 #include "k052109.h"
 
 #define VERBOSE 0
-<<<<<<< HEAD
-#define LOG(x) do { if (VERBOSE) logerror x; } while (0)
-
-const device_type K052109 = &device_creator<k052109_device>;
-=======
 #include "logmacro.h"
 
 
 DEFINE_DEVICE_TYPE(K052109, k052109_device, "k052109", "K052109 Tilemap Generator")
->>>>>>> upstream/master
 
 const gfx_layout k052109_device::charlayout =
 {
@@ -166,21 +160,6 @@ GFXDECODE_MEMBER( k052109_device::gfxinfo_ram )
 GFXDECODE_END
 
 
-<<<<<<< HEAD
-k052109_device::k052109_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, K052109, "K052109 Tilemap Generator", tag, owner, clock, "k052109", __FILE__),
-	device_gfx_interface(mconfig, *this, gfxinfo),
-	m_ram(NULL),
-	m_videoram_F(NULL),
-	m_videoram_A(NULL),
-	m_videoram_B(NULL),
-	m_videoram2_F(NULL),
-	m_videoram2_A(NULL),
-	m_videoram2_B(NULL),
-	m_colorram_F(NULL),
-	m_colorram_A(NULL),
-	m_colorram_B(NULL),
-=======
 k052109_device::k052109_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, K052109, tag, owner, clock),
 	device_gfx_interface(mconfig, *this, gfxinfo),
@@ -194,21 +173,14 @@ k052109_device::k052109_device(const machine_config &mconfig, const char *tag, d
 	m_colorram_F(nullptr),
 	m_colorram_A(nullptr),
 	m_colorram_B(nullptr),
->>>>>>> upstream/master
 	m_tileflip_enable(0),
 	m_has_extra_video_ram(0),
 	m_rmrd_line(0),
 	m_irq_enabled(0),
 	m_romsubbank(0),
 	m_scrollctrl(0),
-<<<<<<< HEAD
-	m_char_rom(NULL),
-	m_char_size(0),
-	m_screen_tag(NULL),
-=======
 	m_char_rom(*this, DEVICE_SELF),
 	m_screen(*this, finder_base::DUMMY_TAG),
->>>>>>> upstream/master
 	m_irq_handler(*this),
 	m_firq_handler(*this),
 	m_nmi_handler(*this)
@@ -233,29 +205,6 @@ void k052109_device::set_ram(device_t &device, bool ram)
 
 void k052109_device::device_start()
 {
-<<<<<<< HEAD
-	if (m_screen_tag != NULL)
-	{
-		// make sure our screen is started
-		screen_device *screen = m_owner->subdevice<screen_device>(m_screen_tag);
-		if (!screen->started())
-			throw device_missing_dependencies();
-
-		// and register a callback for vblank state
-		screen->register_vblank_callback(vblank_state_delegate(FUNC(k052109_device::vblank_callback), this));
-	}
-
-	if (region() != NULL)
-	{
-		m_char_rom = region()->base();
-		m_char_size = region()->bytes();
-	}
-
-	decode_gfx();
-	m_gfx[0]->set_colors(m_palette->entries() / m_gfx[0]->depth());
-
-	m_ram = auto_alloc_array_clear(machine(), UINT8, 0x6000);
-=======
 	if (m_screen.found())
 	{
 		// make sure our screen is started
@@ -270,7 +219,6 @@ void k052109_device::device_start()
 	gfx(0)->set_colors(palette().entries() / gfx(0)->depth());
 
 	m_ram = make_unique_clear<uint8_t[]>(0x6000);
->>>>>>> upstream/master
 
 	m_colorram_F = &m_ram[0x0000];
 	m_colorram_A = &m_ram[0x0800];
@@ -298,11 +246,7 @@ void k052109_device::device_start()
 	m_firq_handler.resolve_safe();
 	m_nmi_handler.resolve_safe();
 
-<<<<<<< HEAD
-	save_pointer(NAME(m_ram), 0x6000);
-=======
 	save_pointer(NAME(m_ram.get()), 0x6000);
->>>>>>> upstream/master
 	save_item(NAME(m_rmrd_line));
 	save_item(NAME(m_romsubbank));
 	save_item(NAME(m_scrollctrl));
@@ -337,17 +281,10 @@ void k052109_device::device_reset()
 //  set_screen_tag - set screen we are attached to
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void k052109_device::set_screen_tag(device_t &device, device_t *owner, const char *tag)
-{
-	k052109_device &dev = dynamic_cast<k052109_device &>(device);
-	dev.m_screen_tag = tag;
-=======
 void k052109_device::set_screen_tag(device_t &device, const char *tag)
 {
 	k052109_device &dev = dynamic_cast<k052109_device &>(device);
 	dev.m_screen.set_tag(tag);
->>>>>>> upstream/master
 }
 
 
@@ -385,11 +322,7 @@ READ8_MEMBER( k052109_device::read )
 	}
 	else    /* Punk Shot and TMNT read from 0000-1fff, Aliens from 2000-3fff */
 	{
-<<<<<<< HEAD
-		assert (m_char_size != 0);
-=======
 		assert (m_char_rom.found());
->>>>>>> upstream/master
 
 		int code = (offset & 0x1fff) >> 5;
 		int color = m_romsubbank;
@@ -405,13 +338,8 @@ READ8_MEMBER( k052109_device::read )
 	else
 		m_k052109_cb(0, bank, &code, &color, &flags, &priority);
 
-<<<<<<< HEAD
-		addr = (code << 5) + (offset & 0x1f);
-		addr &= m_char_size - 1;
-=======
 	addr = (code << 5) + (offset & 0x1f);
 	addr &= m_char_rom.mask();
->>>>>>> upstream/master
 
 //      logerror("%04x: off = %04x sub = %02x (bnk = %x) adr = %06x\n", space.device().safe_pc(), offset, m_romsubbank, bank, addr);
 
@@ -604,11 +532,7 @@ popmessage("%x %x %x %x",
 
 	if ((m_scrollctrl & 0x03) == 0x02)
 	{
-<<<<<<< HEAD
-		UINT8 *scrollram = &m_ram[0x1a00];
-=======
 		uint8_t *scrollram = &m_ram[0x1a00];
->>>>>>> upstream/master
 
 		m_tilemap[1]->set_scroll_rows(256);
 		m_tilemap[1]->set_scroll_cols(1);
@@ -623,11 +547,7 @@ popmessage("%x %x %x %x",
 	}
 	else if ((m_scrollctrl & 0x03) == 0x03)
 	{
-<<<<<<< HEAD
-		UINT8 *scrollram = &m_ram[0x1a00];
-=======
 		uint8_t *scrollram = &m_ram[0x1a00];
->>>>>>> upstream/master
 
 		m_tilemap[1]->set_scroll_rows(256);
 		m_tilemap[1]->set_scroll_cols(1);
@@ -642,11 +562,7 @@ popmessage("%x %x %x %x",
 	}
 	else if ((m_scrollctrl & 0x04) == 0x04)
 	{
-<<<<<<< HEAD
-		UINT8 *scrollram = &m_ram[0x1800];
-=======
 		uint8_t *scrollram = &m_ram[0x1800];
->>>>>>> upstream/master
 
 		m_tilemap[1]->set_scroll_rows(1);
 		m_tilemap[1]->set_scroll_cols(512);
@@ -661,11 +577,7 @@ popmessage("%x %x %x %x",
 	}
 	else
 	{
-<<<<<<< HEAD
-		UINT8 *scrollram = &m_ram[0x1a00];
-=======
 		uint8_t *scrollram = &m_ram[0x1a00];
->>>>>>> upstream/master
 
 		m_tilemap[1]->set_scroll_rows(1);
 		m_tilemap[1]->set_scroll_cols(1);
@@ -678,11 +590,7 @@ popmessage("%x %x %x %x",
 
 	if ((m_scrollctrl & 0x18) == 0x10)
 	{
-<<<<<<< HEAD
-		UINT8 *scrollram = &m_ram[0x3a00];
-=======
 		uint8_t *scrollram = &m_ram[0x3a00];
->>>>>>> upstream/master
 
 		m_tilemap[2]->set_scroll_rows(256);
 		m_tilemap[2]->set_scroll_cols(1);
@@ -697,11 +605,7 @@ popmessage("%x %x %x %x",
 	}
 	else if ((m_scrollctrl & 0x18) == 0x18)
 	{
-<<<<<<< HEAD
-		UINT8 *scrollram = &m_ram[0x3a00];
-=======
 		uint8_t *scrollram = &m_ram[0x3a00];
->>>>>>> upstream/master
 
 		m_tilemap[2]->set_scroll_rows(256);
 		m_tilemap[2]->set_scroll_cols(1);
@@ -716,11 +620,7 @@ popmessage("%x %x %x %x",
 	}
 	else if ((m_scrollctrl & 0x20) == 0x20)
 	{
-<<<<<<< HEAD
-		UINT8 *scrollram = &m_ram[0x3800];
-=======
 		uint8_t *scrollram = &m_ram[0x3800];
->>>>>>> upstream/master
 
 		m_tilemap[2]->set_scroll_rows(1);
 		m_tilemap[2]->set_scroll_cols(512);
@@ -735,11 +635,7 @@ popmessage("%x %x %x %x",
 	}
 	else
 	{
-<<<<<<< HEAD
-		UINT8 *scrollram = &m_ram[0x3a00];
-=======
 		uint8_t *scrollram = &m_ram[0x3a00];
->>>>>>> upstream/master
 
 		m_tilemap[2]->set_scroll_rows(1);
 		m_tilemap[2]->set_scroll_cols(1);
@@ -772,11 +668,7 @@ if (machine().input().code_pressed(KEYCODE_F))
 #endif
 }
 
-<<<<<<< HEAD
-void k052109_device::tilemap_draw( screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int tmap_num, UINT32 flags, UINT8 priority )
-=======
 void k052109_device::tilemap_draw( screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int tmap_num, uint32_t flags, uint8_t priority )
->>>>>>> upstream/master
 {
 	m_tilemap[tmap_num]->draw(screen, bitmap, cliprect, flags, priority);
 }
@@ -804,11 +696,7 @@ int k052109_device::is_irq_enabled( )
   color RAM    ------xx  depends on external connections (usually banking, flip)
 */
 
-<<<<<<< HEAD
-void k052109_device::get_tile_info( tile_data &tileinfo, int tile_index, int layer, UINT8 *cram, UINT8 *vram1, UINT8 *vram2 )
-=======
 void k052109_device::get_tile_info( tile_data &tileinfo, int tile_index, int layer, uint8_t *cram, uint8_t *vram1, uint8_t *vram2 )
->>>>>>> upstream/master
 {
 	int flipy = 0;
 	int code = vram1[tile_index] + 256 * vram2[tile_index];

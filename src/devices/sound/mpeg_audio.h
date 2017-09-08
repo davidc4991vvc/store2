@@ -6,15 +6,10 @@
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-#ifndef __MPEG_AUDIO_H__
-#define __MPEG_AUDIO_H__
-=======
 #ifndef MAME_SOUND_MPEG_AUDIO_H
 #define MAME_SOUND_MPEG_AUDIO_H
 
 #pragma once
->>>>>>> upstream/master
 
 class mpeg_audio {
 public:
@@ -61,12 +56,6 @@ public:
 	// Clear audio buffer
 	void clear();
 
-<<<<<<< HEAD
-	// Change the base pointer
-	void set_base(const void *base);
-
-=======
->>>>>>> upstream/master
 private:
 	struct limit_hit {};
 
@@ -87,11 +76,7 @@ private:
 	static const band_info band_infos[18];
 	static const double synthesis_filter[512];
 
-<<<<<<< HEAD
-	const UINT8 *base;
-=======
 	const uint8_t *base;
->>>>>>> upstream/master
 	int accepted, position_align;
 
 	int sampling_rate, last_frame_number;
@@ -108,11 +93,6 @@ private:
 	double audio_buffer[2][32*32];
 	int audio_buffer_pos[2];
 
-<<<<<<< HEAD
-	int master_pos;
-
-=======
->>>>>>> upstream/master
 	int current_pos, current_limit;
 
 	void read_header_amm(bool layer25);
@@ -128,10 +108,6 @@ private:
 	void build_amplitudes();
 	void build_next_segments(int step);
 	void retrieve_subbuffer(int step);
-<<<<<<< HEAD
-	void handle_block(int &pos);
-=======
->>>>>>> upstream/master
 	void idct32(const double *input, double *output);
 	void resynthesis(const double *input, double *output);
 	void scale_and_clamp(const double *input, short *output, int step);
@@ -151,8 +127,4 @@ private:
 	}
 };
 
-<<<<<<< HEAD
-#endif
-=======
 #endif // MAME_SOUND_MPEG_AUDIO_H
->>>>>>> upstream/master

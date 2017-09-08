@@ -1,9 +1,6 @@
 // license:BSD-3-Clause
 // copyright-holders:David Graves
-<<<<<<< HEAD
-=======
 // thanks-to:Richard Bush
->>>>>>> upstream/master
 /***************************************************************************
 
 Taito Z System [twin 68K with optional Z80]
@@ -971,15 +968,6 @@ DIP switches are not verified
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/z80/z80.h"
-#include "includes/taitoipt.h"
-#include "cpu/m68000/m68000.h"
-#include "machine/eepromser.h"
-#include "sound/2610intf.h"
-#include "sound/flt_vol.h"
-#include "includes/taito_z.h"
-=======
 #include "includes/taito_z.h"
 #include "includes/taitoipt.h"
 
@@ -990,15 +978,11 @@ DIP switches are not verified
 #include "sound/flt_vol.h"
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 #include "contcirc.lh"
 #include "dblaxle.lh"
 
-<<<<<<< HEAD
-=======
 
->>>>>>> upstream/master
 void taitoz_state::parse_cpu_control(  )
 {
 	/* bit 0 enables cpu B */
@@ -1020,24 +1004,15 @@ WRITE16_MEMBER(taitoz_state::chasehq_cpua_ctrl_w)
 {
 	cpua_ctrl_w(space, offset, data, mem_mask);
 
-<<<<<<< HEAD
-	output_set_lamp_value(0, (m_cpua_ctrl & 0x20) ? 1 : 0);
-	output_set_lamp_value(1, (m_cpua_ctrl & 0x40) ? 1 : 0);
-=======
 	output().set_lamp_value(0, (m_cpua_ctrl & 0x20) ? 1 : 0);
 	output().set_lamp_value(1, (m_cpua_ctrl & 0x40) ? 1 : 0);
->>>>>>> upstream/master
 }
 
 WRITE16_MEMBER(taitoz_state::dblaxle_cpua_ctrl_w)
 {
 	cpua_ctrl_w(space, offset, data, mem_mask);
 
-<<<<<<< HEAD
-	output_set_value("Wheel_Vibration", (data & 0x04)>>2);
-=======
 	output().set_value("Wheel_Vibration", (data & 0x04)>>2);
->>>>>>> upstream/master
 }
 
 
@@ -1058,11 +1033,7 @@ void taitoz_state::device_timer(emu_timer &timer, device_timer_id id, int param,
 		m_subcpu->set_input_line(5, HOLD_LINE);
 		break;
 	default:
-<<<<<<< HEAD
-		assert_always(FALSE, "Unknown id in taitoz_state::device_timer");
-=======
 		assert_always(false, "Unknown id in taitoz_state::device_timer");
->>>>>>> upstream/master
 	}
 }
 
@@ -1088,11 +1059,7 @@ INTERRUPT_GEN_MEMBER(taitoz_state::sci_interrupt)
                               EEPROM
 ******************************************************************/
 
-<<<<<<< HEAD
-static const UINT16 spacegun_default_eeprom[64]=
-=======
 static const uint16_t spacegun_default_eeprom[64]=
->>>>>>> upstream/master
 {
 	0x0000,0x00ff,0x0001,0x4141,0x0000,0x00ff,0x0000,0xf0f0,
 	0x0000,0x00ff,0x0001,0x4141,0x0000,0x00ff,0x0000,0xf0f0,
@@ -1112,35 +1079,16 @@ READ16_MEMBER(taitoz_state::eep_latch_r)
 }
 #endif
 
-<<<<<<< HEAD
-WRITE16_MEMBER(taitoz_state::spacegun_output_bypass_w)
-{
-	switch (offset)
-	{
-		case 0x03:
-
-=======
 WRITE8_MEMBER(taitoz_state::spacegun_eeprom_w)
 {
->>>>>>> upstream/master
 /*          0000xxxx    (unused)
             000x0000    eeprom reset (active low)
             00x00000    eeprom clock
             0x000000    eeprom data
             x0000000    (unused)                  */
 
-<<<<<<< HEAD
-			COMBINE_DATA(&m_eep_latch);
-			ioport("EEPROMOUT")->write(data, 0xff);
-			break;
-
-		default:
-			m_tc0220ioc->write(space, offset, data);  /* might be a 510NIO ! */
-	}
-=======
 	COMBINE_DATA(&m_eep_latch);
 	ioport("EEPROMOUT")->write(data, 0xff);
->>>>>>> upstream/master
 }
 
 
@@ -1150,31 +1098,18 @@ WRITE8_MEMBER(taitoz_state::spacegun_eeprom_w)
 
 CUSTOM_INPUT_MEMBER(taitoz_state::taitoz_pedal_r)
 {
-<<<<<<< HEAD
-	static const UINT8 retval[8] = { 0,1,3,2,6,7,5,4 };
-	const char *tag = (const char *)param;
-	return retval[read_safe(ioport(tag), 0) & 7];
-=======
 	static const uint8_t retval[8] = { 0,1,3,2,6,7,5,4 };
 	ioport_port *port = ioport((const char *)param);
 	return retval[port != nullptr ? port->read() & 7 : 0];
->>>>>>> upstream/master
 }
 
 
 READ8_MEMBER(taitoz_state::contcirc_input_bypass_r)
 {
-<<<<<<< HEAD
-	/* Bypass TC0220IOC controller for analog input */
-
-	UINT8 port = m_tc0220ioc->port_r(space, 0);   /* read port number */
-	UINT16 steer = 0xff80 + read_safe(ioport("STEER"), 0x80);
-=======
 	/* Bypass TC0040IOC controller for analog input */
 
 	uint8_t port = m_tc0040ioc->port_r(space, 0);   /* read port number */
 	uint16_t steer = 0xff80 + m_steer.read_safe(0x80);
->>>>>>> upstream/master
 
 	switch (port)
 	{
@@ -1185,28 +1120,17 @@ READ8_MEMBER(taitoz_state::contcirc_input_bypass_r)
 			return steer >> 8;
 
 		default:
-<<<<<<< HEAD
-			return m_tc0220ioc->portreg_r(space, offset);
-=======
 			return m_tc0040ioc->portreg_r(space, offset);
->>>>>>> upstream/master
 	}
 }
 
 
 READ8_MEMBER(taitoz_state::chasehq_input_bypass_r)
 {
-<<<<<<< HEAD
-	/* Bypass TC0220IOC controller for extra inputs */
-
-	UINT8 port = m_tc0220ioc->port_r(space, 0);   /* read port number */
-	UINT16 steer = 0xff80 + read_safe(ioport("STEER"), 0x80);
-=======
 	/* Bypass TC0040IOC controller for extra inputs */
 
 	uint8_t port = m_tc0040ioc->port_r(space, 0);   /* read port number */
 	uint16_t steer = 0xff80 + m_steer.read_safe(0x80);
->>>>>>> upstream/master
 
 	switch (port)
 	{
@@ -1229,11 +1153,7 @@ READ8_MEMBER(taitoz_state::chasehq_input_bypass_r)
 			return steer >> 8;
 
 		default:
-<<<<<<< HEAD
-			return m_tc0220ioc->portreg_r(space, offset);
-=======
 			return m_tc0040ioc->portreg_r(space, offset);
->>>>>>> upstream/master
 	}
 }
 
@@ -1297,11 +1217,7 @@ WRITE16_MEMBER(taitoz_state::bshark_stick_w)
 
 READ16_MEMBER(taitoz_state::sci_steer_input_r)
 {
-<<<<<<< HEAD
-	UINT16 steer = 0xff80 + read_safe(ioport("STEER"), 0x80);
-=======
 	uint16_t steer = 0xff80 + m_steer.read_safe(0x80);
->>>>>>> upstream/master
 
 	switch (offset)
 	{
@@ -1318,21 +1234,6 @@ READ16_MEMBER(taitoz_state::sci_steer_input_r)
 }
 
 
-<<<<<<< HEAD
-READ16_MEMBER(taitoz_state::spacegun_input_bypass_r)
-{
-	switch (offset)
-	{
-		case 0x03:
-			return m_eeprom->do_read() << 7;
-
-		default:
-			return m_tc0220ioc->read(space, offset); /* might be a 510NIO ! */
-	}
-}
-
-=======
->>>>>>> upstream/master
 READ16_MEMBER(taitoz_state::spacegun_lightgun_r)
 {
 	switch (offset)
@@ -1368,23 +1269,14 @@ WRITE16_MEMBER(taitoz_state::spacegun_lightgun_w)
 
 WRITE16_MEMBER(taitoz_state::spacegun_gun_output_w)
 {
-<<<<<<< HEAD
-	output_set_value("Player1_Gun_Recoil",(data & 0x01));
-	output_set_value("Player2_Gun_Recoil",(data & 0x02)>>1);
-=======
 	output().set_value("Player1_Gun_Recoil",(data & 0x01));
 	output().set_value("Player2_Gun_Recoil",(data & 0x02)>>1);
->>>>>>> upstream/master
 }
 
 
 READ16_MEMBER(taitoz_state::dblaxle_steer_input_r)
 {
-<<<<<<< HEAD
-	UINT16 steer = 0xff80 + read_safe(ioport("STEER"), 0x80);
-=======
 	uint16_t steer = 0xff80 + m_steer.read_safe(0x80);
->>>>>>> upstream/master
 
 	switch (offset)
 	{
@@ -1441,64 +1333,37 @@ WRITE16_MEMBER(taitoz_state::nightstr_motor_w)
 	switch (offset)
 	{
 	case 0:
-<<<<<<< HEAD
-		output_set_value("Motor_1_Direction",0);
-		if (data & 1) output_set_value("Motor_1_Direction",1);
-		if (data & 2) output_set_value("Motor_1_Direction",2);
-		output_set_value("Motor_1_Speed",(data & 60)/4);
-=======
 		output().set_value("Motor_1_Direction",0);
 		if (data & 1) output().set_value("Motor_1_Direction",1);
 		if (data & 2) output().set_value("Motor_1_Direction",2);
 		output().set_value("Motor_1_Speed",(data & 60)/4);
->>>>>>> upstream/master
 
 		break;
 
 	case 4:
-<<<<<<< HEAD
-		output_set_value("Motor_2_Direction",0);
-		if (data & 1) output_set_value("Motor_2_Direction",1);
-		if (data & 2) output_set_value("Motor_2_Direction",2);
-		output_set_value("Motor_2_Speed",(data & 60)/4);
-=======
 		output().set_value("Motor_2_Direction",0);
 		if (data & 1) output().set_value("Motor_2_Direction",1);
 		if (data & 2) output().set_value("Motor_2_Direction",2);
 		output().set_value("Motor_2_Speed",(data & 60)/4);
->>>>>>> upstream/master
 
 		break;
 
 	case 8:
-<<<<<<< HEAD
-		output_set_value("Motor_3_Direction",0);
-		if (data & 1) output_set_value("Motor_3_Direction",1);
-		if (data & 2) output_set_value("Motor_3_Direction",2);
-		output_set_value("Motor_3_Speed",(data & 60)/4);
-=======
 		output().set_value("Motor_3_Direction",0);
 		if (data & 1) output().set_value("Motor_3_Direction",1);
 		if (data & 2) output().set_value("Motor_3_Direction",2);
 		output().set_value("Motor_3_Speed",(data & 60)/4);
->>>>>>> upstream/master
 
 		break;
 
 	default:
-<<<<<<< HEAD
-		output_set_value("motor_debug",data);
-=======
 		output().set_value("motor_debug",data);
->>>>>>> upstream/master
 		break;
 	}
 
 }
 
 
-<<<<<<< HEAD
-=======
 WRITE8_MEMBER(taitoz_state::coin_control_w)
 {
 	machine().bookkeeping().coin_lockout_w(0, ~data & 0x01);
@@ -1506,7 +1371,6 @@ WRITE8_MEMBER(taitoz_state::coin_control_w)
 	machine().bookkeeping().coin_counter_w(0, data & 0x04);
 	machine().bookkeeping().coin_counter_w(1, data & 0x08);
 }
->>>>>>> upstream/master
 
 
 READ16_MEMBER(taitoz_state::aquajack_unknown_r)
@@ -1608,13 +1472,8 @@ static ADDRESS_MAP_START( contcirc_cpub_map, AS_PROGRAM, 16, taitoz_state )
 	AM_RANGE(0x000000, 0x03ffff) AM_ROM
 	AM_RANGE(0x080000, 0x083fff) AM_RAM
 	AM_RANGE(0x084000, 0x087fff) AM_RAM AM_SHARE("share1")
-<<<<<<< HEAD
-	AM_RANGE(0x100000, 0x100001) AM_READ8(contcirc_input_bypass_r, 0x00ff) AM_DEVWRITE8("tc0220ioc", tc0220ioc_device, portreg_w, 0x00ff)
-	AM_RANGE(0x100002, 0x100003) AM_DEVREADWRITE8("tc0220ioc", tc0220ioc_device, port_r, port_w, 0x00ff) /* (actually game uses TC040IOC) */
-=======
 	AM_RANGE(0x100000, 0x100001) AM_READ8(contcirc_input_bypass_r, 0x00ff) AM_DEVWRITE8("tc0040ioc", tc0040ioc_device, portreg_w, 0x00ff)
 	AM_RANGE(0x100002, 0x100003) AM_DEVREADWRITE8("tc0040ioc", tc0040ioc_device, watchdog_r, port_w, 0x00ff)
->>>>>>> upstream/master
 	AM_RANGE(0x200000, 0x200003) AM_READWRITE(taitoz_sound_r, taitoz_sound_w)
 ADDRESS_MAP_END
 
@@ -1624,13 +1483,8 @@ static ADDRESS_MAP_START( chasehq_map, AS_PROGRAM, 16, taitoz_state )
 	AM_RANGE(0x100000, 0x107fff) AM_RAM
 	AM_RANGE(0x108000, 0x10bfff) AM_RAM AM_SHARE("share1")
 	AM_RANGE(0x10c000, 0x10ffff) AM_RAM
-<<<<<<< HEAD
-	AM_RANGE(0x400000, 0x400001) AM_READ8(chasehq_input_bypass_r, 0x00ff) AM_DEVWRITE8("tc0220ioc", tc0220ioc_device, portreg_w, 0x00ff)
-	AM_RANGE(0x400002, 0x400003) AM_DEVREADWRITE8("tc0220ioc", tc0220ioc_device, port_r, port_w, 0x00ff)
-=======
 	AM_RANGE(0x400000, 0x400001) AM_READ8(chasehq_input_bypass_r, 0x00ff) AM_DEVWRITE8("tc0040ioc", tc0040ioc_device, portreg_w, 0x00ff)
 	AM_RANGE(0x400002, 0x400003) AM_DEVREADWRITE8("tc0040ioc", tc0040ioc_device, watchdog_r, port_w, 0x00ff)
->>>>>>> upstream/master
 	AM_RANGE(0x800000, 0x800001) AM_WRITE(chasehq_cpua_ctrl_w)
 	AM_RANGE(0x820000, 0x820003) AM_READWRITE(taitoz_sound_r, taitoz_sound_w)
 	AM_RANGE(0xa00000, 0xa00007) AM_DEVREADWRITE("tc0110pcr", tc0110pcr_device, word_r, step1_word_w)  /* palette */
@@ -1665,12 +1519,7 @@ static ADDRESS_MAP_START( enforce_cpub_map, AS_PROGRAM, 16, taitoz_state )
 	AM_RANGE(0x100000, 0x103fff) AM_RAM
 	AM_RANGE(0x104000, 0x107fff) AM_RAM AM_SHARE("share1")
 	AM_RANGE(0x200000, 0x200003) AM_READWRITE(taitoz_sound_r, taitoz_sound_w)
-<<<<<<< HEAD
-	AM_RANGE(0x300000, 0x300001) AM_DEVREADWRITE8("tc0220ioc", tc0220ioc_device, portreg_r, portreg_w, 0x00ff)
-	AM_RANGE(0x300002, 0x300003) AM_DEVREADWRITE8("tc0220ioc", tc0220ioc_device, port_r, port_w, 0x00ff)
-=======
 	AM_RANGE(0x300000, 0x300003) AM_DEVREADWRITE8("tc0040ioc", tc0040ioc_device, read, write, 0x00ff)
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -1798,11 +1647,7 @@ static ADDRESS_MAP_START( spacegun_cpub_map, AS_PROGRAM, 16, taitoz_state )
 	AM_RANGE(0x000000, 0x03ffff) AM_ROM
 	AM_RANGE(0x20c000, 0x20ffff) AM_RAM
 	AM_RANGE(0x210000, 0x21ffff) AM_RAM AM_SHARE("share1")
-<<<<<<< HEAD
-	AM_RANGE(0x800000, 0x80000f) AM_READWRITE(spacegun_input_bypass_r, spacegun_output_bypass_w)
-=======
 	AM_RANGE(0x800000, 0x80000f) AM_DEVREADWRITE("tc0510nio", tc0510nio_device, halfword_r, halfword_w)
->>>>>>> upstream/master
 	AM_RANGE(0xc00000, 0xc00007) AM_DEVREADWRITE8("ymsnd", ym2610_device, read, write, 0x00ff)
 	AM_RANGE(0xc0000c, 0xc0000d) AM_NOP // interrupt controller?
 	AM_RANGE(0xc0000e, 0xc0000f) AM_NOP
@@ -3036,31 +2881,6 @@ static GFXDECODE_START( dblaxle )
 GFXDECODE_END
 
 
-<<<<<<< HEAD
-
-/**************************************************************
-                         YM2610 (SOUND)
-
-The first interface is for game boards with twin 68000 and Z80.
-Interface B is for games which lack a Z80 (Spacegun, Bshark).
-**************************************************************/
-
-/* handler called by the YM2610 emulator when the internal timers cause an IRQ */
-WRITE_LINE_MEMBER(taitoz_state::irqhandler)
-{
-	m_audiocpu->set_input_line(0, state ? ASSERT_LINE : CLEAR_LINE);
-}
-
-/* handler called by the YM2610 emulator when the internal timers cause an IRQ */
-WRITE_LINE_MEMBER(taitoz_state::irqhandlerb)
-{
-	// DG: this is probably specific to Z80 and wrong?
-//  m_audiocpu->set_input_line(0, state ? ASSERT_LINE : CLEAR_LINE);
-}
-
-
-=======
->>>>>>> upstream/master
 /***********************************************************
                       MACHINE DRIVERS
 
@@ -3124,11 +2944,7 @@ MACHINE_RESET_MEMBER(taitoz_state,taitoz)
 
 /* Contcirc vis area seems narrower than the other games... */
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( contcirc, taitoz_state )
-=======
 static MACHINE_CONFIG_START( contcirc )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, 12000000)   /* 12 MHz ??? */
@@ -3145,14 +2961,6 @@ static MACHINE_CONFIG_START( contcirc )
 	MCFG_MACHINE_START_OVERRIDE(taitoz_state,taitoz)
 	MCFG_MACHINE_RESET_OVERRIDE(taitoz_state,taitoz)
 
-<<<<<<< HEAD
-	MCFG_DEVICE_ADD("tc0220ioc", TC0220IOC, 0)
-	MCFG_TC0220IOC_READ_0_CB(IOPORT("DSWA"))
-	MCFG_TC0220IOC_READ_1_CB(IOPORT("DSWB"))
-	MCFG_TC0220IOC_READ_2_CB(IOPORT("IN0"))
-	MCFG_TC0220IOC_READ_3_CB(IOPORT("IN1"))
-	MCFG_TC0220IOC_READ_7_CB(IOPORT("IN2"))
-=======
 	MCFG_DEVICE_ADD("tc0040ioc", TC0040IOC, 0)
 	MCFG_TC0040IOC_READ_0_CB(IOPORT("DSWA"))
 	MCFG_TC0040IOC_READ_1_CB(IOPORT("DSWB"))
@@ -3160,7 +2968,6 @@ static MACHINE_CONFIG_START( contcirc )
 	MCFG_TC0040IOC_READ_3_CB(IOPORT("IN1"))
 	MCFG_TC0040IOC_WRITE_4_CB(WRITE8(taitoz_state, coin_control_w))
 	MCFG_TC0040IOC_READ_7_CB(IOPORT("IN2"))
->>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
@@ -3194,11 +3001,7 @@ static MACHINE_CONFIG_START( contcirc )
 	MCFG_SPEAKER_ADD("subwoofer", 0.0, 0.0, 1.0)
 
 	MCFG_SOUND_ADD("ymsnd", YM2610, 16000000/2)
-<<<<<<< HEAD
-	MCFG_YM2610_IRQ_HANDLER(WRITELINE(taitoz_state, irqhandler))
-=======
 	MCFG_YM2610_IRQ_HANDLER(INPUTLINE("audiocpu", 0))
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(0, "subwoofer", 0.20)
 	MCFG_SOUND_ROUTE(1, "2610.1.l", 2.0)
 	MCFG_SOUND_ROUTE(1, "2610.1.r", 2.0)
@@ -3220,11 +3023,7 @@ static MACHINE_CONFIG_START( contcirc )
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( chasehq, taitoz_state )
-=======
 static MACHINE_CONFIG_START( chasehq )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, 12000000)   /* 12 MHz ??? */
@@ -3241,14 +3040,6 @@ static MACHINE_CONFIG_START( chasehq )
 	MCFG_MACHINE_START_OVERRIDE(taitoz_state,taitoz)
 	MCFG_MACHINE_RESET_OVERRIDE(taitoz_state,taitoz)
 
-<<<<<<< HEAD
-	MCFG_DEVICE_ADD("tc0220ioc", TC0220IOC, 0)
-	MCFG_TC0220IOC_READ_0_CB(IOPORT("DSWA"))
-	MCFG_TC0220IOC_READ_1_CB(IOPORT("DSWB"))
-	MCFG_TC0220IOC_READ_2_CB(IOPORT("IN0"))
-	MCFG_TC0220IOC_READ_3_CB(IOPORT("IN1"))
-	MCFG_TC0220IOC_READ_7_CB(IOPORT("IN2"))
-=======
 	MCFG_DEVICE_ADD("tc0040ioc", TC0040IOC, 0)
 	MCFG_TC0040IOC_READ_0_CB(IOPORT("DSWA"))
 	MCFG_TC0040IOC_READ_1_CB(IOPORT("DSWB"))
@@ -3256,7 +3047,6 @@ static MACHINE_CONFIG_START( chasehq )
 	MCFG_TC0040IOC_READ_3_CB(IOPORT("IN1"))
 	MCFG_TC0040IOC_WRITE_4_CB(WRITE8(taitoz_state, coin_control_w))
 	MCFG_TC0040IOC_READ_7_CB(IOPORT("IN2"))
->>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
@@ -3290,11 +3080,7 @@ static MACHINE_CONFIG_START( chasehq )
 	MCFG_SPEAKER_ADD("subwoofer", 0.0, 0.0, 1.0)
 
 	MCFG_SOUND_ADD("ymsnd", YM2610, 16000000/2)
-<<<<<<< HEAD
-	MCFG_YM2610_IRQ_HANDLER(WRITELINE(taitoz_state, irqhandler))
-=======
 	MCFG_YM2610_IRQ_HANDLER(INPUTLINE("audiocpu", 0))
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(0, "subwoofer", 0.20)
 	MCFG_SOUND_ROUTE(1, "2610.1.l", 1.0)
 	MCFG_SOUND_ROUTE(1, "2610.1.r", 1.0)
@@ -3316,11 +3102,7 @@ static MACHINE_CONFIG_START( chasehq )
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( enforce, taitoz_state )
-=======
 static MACHINE_CONFIG_START( enforce )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, 12000000)   /* 12 MHz ??? */
@@ -3339,14 +3121,6 @@ static MACHINE_CONFIG_START( enforce )
 
 	MCFG_QUANTUM_TIME(attotime::from_hz(600))
 
-<<<<<<< HEAD
-	MCFG_DEVICE_ADD("tc0220ioc", TC0220IOC, 0)
-	MCFG_TC0220IOC_READ_0_CB(IOPORT("DSWA"))
-	MCFG_TC0220IOC_READ_1_CB(IOPORT("DSWB"))
-	MCFG_TC0220IOC_READ_2_CB(IOPORT("IN0"))
-	MCFG_TC0220IOC_READ_3_CB(IOPORT("IN1"))
-	MCFG_TC0220IOC_READ_7_CB(IOPORT("IN2"))
-=======
 	MCFG_DEVICE_ADD("tc0040ioc", TC0040IOC, 0)
 	MCFG_TC0040IOC_READ_0_CB(IOPORT("DSWA"))
 	MCFG_TC0040IOC_READ_1_CB(IOPORT("DSWB"))
@@ -3354,7 +3128,6 @@ static MACHINE_CONFIG_START( enforce )
 	MCFG_TC0040IOC_READ_3_CB(IOPORT("IN1"))
 	MCFG_TC0040IOC_WRITE_4_CB(WRITE8(taitoz_state, coin_control_w))
 	MCFG_TC0040IOC_READ_7_CB(IOPORT("IN2"))
->>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
@@ -3386,11 +3159,7 @@ static MACHINE_CONFIG_START( enforce )
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
 	MCFG_SOUND_ADD("ymsnd", YM2610, 16000000/2)
-<<<<<<< HEAD
-	MCFG_YM2610_IRQ_HANDLER(WRITELINE(taitoz_state, irqhandler))
-=======
 	MCFG_YM2610_IRQ_HANDLER(INPUTLINE("audiocpu", 0))
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(0, "lspeaker",  0.25)
 	MCFG_SOUND_ROUTE(0, "rspeaker", 0.25)
 	MCFG_SOUND_ROUTE(1, "2610.1.l", 20.0)
@@ -3413,11 +3182,7 @@ static MACHINE_CONFIG_START( enforce )
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( bshark, taitoz_state )
-=======
 static MACHINE_CONFIG_START( bshark )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, 12000000)   /* 12 MHz ??? */
@@ -3438,10 +3203,7 @@ static MACHINE_CONFIG_START( bshark )
 	MCFG_TC0220IOC_READ_1_CB(IOPORT("DSWB"))
 	MCFG_TC0220IOC_READ_2_CB(IOPORT("IN0"))
 	MCFG_TC0220IOC_READ_3_CB(IOPORT("IN1"))
-<<<<<<< HEAD
-=======
 	MCFG_TC0220IOC_WRITE_4_CB(WRITE8(taitoz_state, coin_control_w))
->>>>>>> upstream/master
 	MCFG_TC0220IOC_READ_7_CB(IOPORT("IN2"))
 
 	/* video hardware */
@@ -3471,11 +3233,7 @@ static MACHINE_CONFIG_START( bshark )
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
 	MCFG_SOUND_ADD("ymsnd", YM2610, 16000000/2)
-<<<<<<< HEAD
-	MCFG_YM2610_IRQ_HANDLER(WRITELINE(taitoz_state, irqhandlerb))
-=======
 	//MCFG_YM2610_IRQ_HANDLER(INPUTLINE("audiocpu", 0)) // DG: this is probably specific to Z80 and wrong?
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(0, "lspeaker",  0.25)
 	MCFG_SOUND_ROUTE(0, "rspeaker", 0.25)
 	MCFG_SOUND_ROUTE(1, "2610.1.l", 28.0)
@@ -3503,11 +3261,7 @@ static MACHINE_CONFIG_DERIVED( bsharkjjs, bshark )
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( sci, taitoz_state )
-=======
 static MACHINE_CONFIG_START( sci )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, 12000000)   /* 12 MHz ??? */
@@ -3531,10 +3285,7 @@ static MACHINE_CONFIG_START( sci )
 	MCFG_TC0220IOC_READ_1_CB(IOPORT("DSWB"))
 	MCFG_TC0220IOC_READ_2_CB(IOPORT("IN0"))
 	MCFG_TC0220IOC_READ_3_CB(IOPORT("IN1"))
-<<<<<<< HEAD
-=======
 	MCFG_TC0220IOC_WRITE_4_CB(WRITE8(taitoz_state, coin_control_w))
->>>>>>> upstream/master
 	MCFG_TC0220IOC_READ_7_CB(IOPORT("IN2"))
 
 	/* video hardware */
@@ -3564,11 +3315,7 @@ static MACHINE_CONFIG_START( sci )
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
 	MCFG_SOUND_ADD("ymsnd", YM2610, 16000000/2)
-<<<<<<< HEAD
-	MCFG_YM2610_IRQ_HANDLER(WRITELINE(taitoz_state, irqhandler))
-=======
 	MCFG_YM2610_IRQ_HANDLER(INPUTLINE("audiocpu", 0))
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(0, "lspeaker",  0.25)
 	MCFG_SOUND_ROUTE(0, "rspeaker", 0.25)
 	MCFG_SOUND_ROUTE(1, "2610.1.l", 2.0)
@@ -3591,11 +3338,7 @@ static MACHINE_CONFIG_START( sci )
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( nightstr, taitoz_state )
-=======
 static MACHINE_CONFIG_START( nightstr )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, 12000000)   /* 12 MHz ??? */
@@ -3619,10 +3362,7 @@ static MACHINE_CONFIG_START( nightstr )
 	MCFG_TC0220IOC_READ_1_CB(IOPORT("DSWB"))
 	MCFG_TC0220IOC_READ_2_CB(IOPORT("IN0"))
 	MCFG_TC0220IOC_READ_3_CB(IOPORT("IN1"))
-<<<<<<< HEAD
-=======
 	MCFG_TC0220IOC_WRITE_4_CB(WRITE8(taitoz_state, coin_control_w))
->>>>>>> upstream/master
 	MCFG_TC0220IOC_READ_7_CB(IOPORT("IN2"))
 
 	/* video hardware */
@@ -3657,11 +3397,7 @@ static MACHINE_CONFIG_START( nightstr )
 	MCFG_SPEAKER_ADD("subwoofer", 0.0, 0.0, 1.0)
 
 	MCFG_SOUND_ADD("ymsnd", YM2610, 16000000/2)
-<<<<<<< HEAD
-	MCFG_YM2610_IRQ_HANDLER(WRITELINE(taitoz_state, irqhandler))
-=======
 	MCFG_YM2610_IRQ_HANDLER(INPUTLINE("audiocpu", 0))
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(0, "subwoofer", 0.20)
 	MCFG_SOUND_ROUTE(1, "2610.1.l", 2.0)
 	MCFG_SOUND_ROUTE(1, "2610.1.r", 2.0)
@@ -3683,11 +3419,7 @@ static MACHINE_CONFIG_START( nightstr )
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( aquajack, taitoz_state )
-=======
 static MACHINE_CONFIG_START( aquajack )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, 12000000)   /* 12 MHz ??? */
@@ -3711,10 +3443,7 @@ static MACHINE_CONFIG_START( aquajack )
 	MCFG_TC0220IOC_READ_1_CB(IOPORT("DSWB"))
 	MCFG_TC0220IOC_READ_2_CB(IOPORT("IN0"))
 	MCFG_TC0220IOC_READ_3_CB(IOPORT("IN1"))
-<<<<<<< HEAD
-=======
 	MCFG_TC0220IOC_WRITE_4_CB(WRITE8(taitoz_state, coin_control_w))
->>>>>>> upstream/master
 	MCFG_TC0220IOC_READ_7_CB(IOPORT("IN2"))
 
 	/* video hardware */
@@ -3747,11 +3476,7 @@ static MACHINE_CONFIG_START( aquajack )
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
 	MCFG_SOUND_ADD("ymsnd", YM2610, 16000000/2)
-<<<<<<< HEAD
-	MCFG_YM2610_IRQ_HANDLER(WRITELINE(taitoz_state, irqhandler))
-=======
 	MCFG_YM2610_IRQ_HANDLER(INPUTLINE("audiocpu", 0))
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(0, "lspeaker",  0.25)
 	MCFG_SOUND_ROUTE(0, "rspeaker", 0.25)
 	MCFG_SOUND_ROUTE(1, "2610.1.l", 2.0)
@@ -3774,11 +3499,7 @@ static MACHINE_CONFIG_START( aquajack )
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( spacegun, taitoz_state )
-=======
 static MACHINE_CONFIG_START( spacegun )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, 16000000)   /* 16 MHz ??? */
@@ -3795,14 +3516,6 @@ static MACHINE_CONFIG_START( spacegun )
 	MCFG_EEPROM_SERIAL_93C46_ADD("eeprom")
 	MCFG_EEPROM_SERIAL_DATA(spacegun_default_eeprom, 128)
 
-<<<<<<< HEAD
-	MCFG_DEVICE_ADD("tc0220ioc", TC0220IOC, 0)
-	MCFG_TC0220IOC_READ_0_CB(IOPORT("DSWA"))
-	MCFG_TC0220IOC_READ_1_CB(IOPORT("DSWB"))
-	MCFG_TC0220IOC_READ_2_CB(IOPORT("IN0"))
-	MCFG_TC0220IOC_READ_3_CB(IOPORT("IN1"))
-	MCFG_TC0220IOC_READ_7_CB(IOPORT("IN2"))
-=======
 	MCFG_DEVICE_ADD("tc0510nio", TC0510NIO, 0)
 	MCFG_TC0510NIO_READ_0_CB(IOPORT("DSWA"))
 	MCFG_TC0510NIO_READ_1_CB(IOPORT("DSWB"))
@@ -3811,7 +3524,6 @@ static MACHINE_CONFIG_START( spacegun )
 	MCFG_TC0510NIO_WRITE_3_CB(WRITE8(taitoz_state, spacegun_eeprom_w))
 	MCFG_TC0510NIO_WRITE_4_CB(WRITE8(taitoz_state, coin_control_w))
 	MCFG_TC0510NIO_READ_7_CB(IOPORT("IN2"))
->>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
@@ -3840,11 +3552,7 @@ static MACHINE_CONFIG_START( spacegun )
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
 	MCFG_SOUND_ADD("ymsnd", YM2610, 16000000/2)
-<<<<<<< HEAD
-	MCFG_YM2610_IRQ_HANDLER(WRITELINE(taitoz_state, irqhandlerb))
-=======
 	//MCFG_YM2610_IRQ_HANDLER(INPUTLINE("audiocpu", 0)) // DG: this is probably specific to Z80 and wrong?
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(0, "lspeaker",  0.25)
 	MCFG_SOUND_ROUTE(0, "rspeaker", 0.25)
 	MCFG_SOUND_ROUTE(1, "2610.1.l", 8.0)
@@ -3863,11 +3571,7 @@ static MACHINE_CONFIG_START( spacegun )
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( dblaxle, taitoz_state )
-=======
 static MACHINE_CONFIG_START( dblaxle )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, XTAL_32MHz/2)
@@ -3891,10 +3595,7 @@ static MACHINE_CONFIG_START( dblaxle )
 	MCFG_TC0510NIO_READ_1_CB(IOPORT("DSWB"))
 	MCFG_TC0510NIO_READ_2_CB(IOPORT("IN0"))
 	MCFG_TC0510NIO_READ_3_CB(IOPORT("IN1"))
-<<<<<<< HEAD
-=======
 	MCFG_TC0510NIO_WRITE_4_CB(WRITE8(taitoz_state, coin_control_w))
->>>>>>> upstream/master
 	MCFG_TC0510NIO_READ_7_CB(IOPORT("IN2"))
 
 	/* video hardware */
@@ -3917,10 +3618,6 @@ static MACHINE_CONFIG_START( dblaxle )
 	MCFG_TC0480SCP_TX_REGION(2)
 	MCFG_TC0480SCP_OFFSETS(0x1f, 0x08)
 	MCFG_TC0480SCP_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_TC0480SCP_PALETTE("palette")
-=======
->>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("tc0150rod", TC0150ROD, 0)
 
@@ -3928,11 +3625,7 @@ static MACHINE_CONFIG_START( dblaxle )
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
 	MCFG_SOUND_ADD("ymsnd", YM2610, XTAL_32MHz/4)
-<<<<<<< HEAD
-	MCFG_YM2610_IRQ_HANDLER(WRITELINE(taitoz_state, irqhandler))
-=======
 	MCFG_YM2610_IRQ_HANDLER(INPUTLINE("audiocpu", 0))
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(0, "lspeaker",  0.25)
 	MCFG_SOUND_ROUTE(0, "rspeaker", 0.25)
 	MCFG_SOUND_ROUTE(1, "2610.1.l", 8.0)
@@ -3955,11 +3648,7 @@ static MACHINE_CONFIG_START( dblaxle )
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( racingb, taitoz_state )
-=======
 static MACHINE_CONFIG_START( racingb )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, XTAL_32MHz/2)
@@ -3983,10 +3672,7 @@ static MACHINE_CONFIG_START( racingb )
 	MCFG_TC0510NIO_READ_1_CB(IOPORT("DSWB"))
 	MCFG_TC0510NIO_READ_2_CB(IOPORT("IN0"))
 	MCFG_TC0510NIO_READ_3_CB(IOPORT("IN1"))
-<<<<<<< HEAD
-=======
 	MCFG_TC0510NIO_WRITE_4_CB(WRITE8(taitoz_state, coin_control_w))
->>>>>>> upstream/master
 	MCFG_TC0510NIO_READ_7_CB(IOPORT("IN2"))
 
 	/* video hardware */
@@ -4008,10 +3694,6 @@ static MACHINE_CONFIG_START( racingb )
 	MCFG_TC0480SCP_TX_REGION(2)
 	MCFG_TC0480SCP_OFFSETS(0x1f, 0x08)
 	MCFG_TC0480SCP_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_TC0480SCP_PALETTE("palette")
-=======
->>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("tc0150rod", TC0150ROD, 0)
 
@@ -4019,11 +3701,7 @@ static MACHINE_CONFIG_START( racingb )
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
 	MCFG_SOUND_ADD("ymsnd", YM2610, XTAL_32MHz/4)
-<<<<<<< HEAD
-	MCFG_YM2610_IRQ_HANDLER(WRITELINE(taitoz_state, irqhandler))
-=======
 	MCFG_YM2610_IRQ_HANDLER(INPUTLINE("audiocpu", 0))
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(0, "lspeaker",  0.25)
 	MCFG_SOUND_ROUTE(0, "rspeaker", 0.25)
 	MCFG_SOUND_ROUTE(1, "2610.1.l", 8.0)
@@ -5691,51 +5369,6 @@ DRIVER_INIT_MEMBER(taitoz_state,bshark)
 
 
 
-<<<<<<< HEAD
-GAMEL(1987, contcirc,   0,        contcirc, contcirc, taitoz_state, taitoz,   ROT0,               "Taito Corporation Japan",   "Continental Circus (World)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE, layout_contcirc )
-GAMEL(1987, contcircu,  contcirc, contcirc, contcrcu, taitoz_state, taitoz,   ROT0,               "Taito America Corporation", "Continental Circus (US set 1)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE, layout_contcirc )
-GAMEL(1987, contcircua, contcirc, contcirc, contcrcj, taitoz_state, taitoz,   ROT0,               "Taito America Corporation", "Continental Circus (US set 2)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE, layout_contcirc )
-GAMEL(1987, contcircj , contcirc, contcirc, contcrcj, taitoz_state, taitoz,   ROT0,               "Taito Corporation",         "Continental Circus (Japan)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE, layout_contcirc )
-
-GAMEL(1988, chasehq,    0,        chasehq,  chasehq, taitoz_state,  taitoz,   ROT0,               "Taito Corporation Japan",   "Chase H.Q. (World)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE, layout_contcirc )
-GAMEL(1988, chasehqj,   chasehq,  chasehq,  chasehqj, taitoz_state, taitoz,   ROT0,               "Taito Corporation",         "Chase H.Q. (Japan)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE, layout_contcirc )
-GAMEL(1988, chasehqju,  chasehq,  chasehq,  chasehq, taitoz_state,  taitoz,   ROT0,               "Taito Corporation",         "Chase H.Q. (Japan, upright?)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE, layout_contcirc ) // same code rev as Chase H.Q. (World)
-GAMEL(1988, chasehqu,   chasehq,  chasehq,  chasehq, taitoz_state,  taitoz,   ROT0,               "Taito America Corporation", "Chase H.Q. (US)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE, layout_contcirc )
-
-GAME( 1988, enforce,    0,        enforce,  enforce,  taitoz_state, taitoz,   ROT0,               "Taito Corporation Japan",   "Enforce (World)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
-GAME( 1988, enforcej,   enforce,  enforce,  enforcej, taitoz_state, taitoz,   ROT0,               "Taito Corporation",         "Enforce (Japan)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
-GAME( 1988, enforceja,  enforce,  enforce,  enforceja,taitoz_state, taitoz,   ROT0,               "Taito Corporation",         "Enforce (Japan, Analog Controls)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
-
-GAME( 1989, bshark,     0,        bshark,   bshark, taitoz_state,   bshark,   ORIENTATION_FLIP_X, "Taito Corporation Japan",   "Battle Shark (World)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
-GAME( 1989, bsharku,    bshark,   bshark,   bsharku, taitoz_state,  bshark,   ORIENTATION_FLIP_X, "Taito America Corporation", "Battle Shark (US)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
-GAME( 1989, bsharkj,    bshark,   bshark,   bsharkj, taitoz_state,  bshark,   ORIENTATION_FLIP_X, "Taito Corporation",         "Battle Shark (Japan)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
-GAME( 1989, bsharkjjs,  bshark,   bsharkjjs,bsharkjjs, taitoz_state,bshark,   ORIENTATION_FLIP_X, "Taito Corporation",         "Battle Shark (Japan, Joystick)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
-
-GAMEL(1989, sci,        0,        sci,      sci, taitoz_state,      taitoz,   ROT0,               "Taito Corporation Japan",   "Special Criminal Investigation (World set 1)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE, layout_contcirc )
-GAMEL(1989, scia,       sci,      sci,      sci, taitoz_state,      taitoz,   ROT0,               "Taito Corporation Japan",   "Special Criminal Investigation (World set 2)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE, layout_contcirc )
-GAMEL(1989, scij,       sci,      sci,      scij, taitoz_state,     taitoz,   ROT0,               "Taito Corporation",         "Special Criminal Investigation (Japan)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE, layout_contcirc )
-GAMEL(1989, sciu,       sci,      sci,      sciu, taitoz_state,     taitoz,   ROT0,               "Taito America Corporation", "Special Criminal Investigation (US)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE, layout_contcirc )
-GAMEL(1991, scin,       sci,      sci,      sci, taitoz_state,      taitoz,   ROT0,               "hack (Negro Torino)",       "Super Special Criminal Investigation (Negro Torino hack)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE, layout_contcirc )
-
-GAME( 1989, nightstr,   0,        nightstr, nightstr, taitoz_state, taitoz,   ROT0,               "Taito Corporation Japan",   "Night Striker (World)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
-GAME( 1989, nightstrj,  nightstr, nightstr, nghtstrj, taitoz_state, taitoz,   ROT0,               "Taito Corporation",         "Night Striker (Japan)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
-GAME( 1989, nightstru,  nightstr, nightstr, nghtstru, taitoz_state, taitoz,   ROT0,               "Taito America Corporation", "Night Striker (US)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
-
-GAME( 1990, aquajack,   0,        aquajack, aquajack, taitoz_state, taitoz,   ROT0,               "Taito Corporation Japan",   "Aqua Jack (World)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
-GAME( 1990, aquajacku,  aquajack, aquajack, aquajack, taitoz_state, taitoz,   ROT0,               "Taito America Corporation", "Aqua Jack (US)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
-GAME( 1990, aquajackj,  aquajack, aquajack, aquajckj, taitoz_state, taitoz,   ROT0,               "Taito Corporation",         "Aqua Jack (Japan)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
-
-GAME( 1990, spacegun,   0,        spacegun, spacegun, taitoz_state, bshark,   ORIENTATION_FLIP_X, "Taito Corporation Japan",   "Space Gun (World)", MACHINE_SUPPORTS_SAVE )
-GAME( 1990, spacegunj,  spacegun, spacegun, spacegnj, taitoz_state, bshark,   ORIENTATION_FLIP_X, "Taito Corporation",         "Space Gun (Japan)", MACHINE_SUPPORTS_SAVE )
-GAME( 1990, spacegunu,  spacegun, spacegun, spacegnu, taitoz_state, bshark,   ORIENTATION_FLIP_X, "Taito America Corporation", "Space Gun (US)", MACHINE_SUPPORTS_SAVE )
-
-GAMEL(1991, dblaxle,    0,        dblaxle,  dblaxle, taitoz_state,  taitoz,   ROT0,               "Taito America Corporation", "Double Axle (US)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE, layout_dblaxle )
-GAMEL(1991, dblaxleu,   dblaxle,  dblaxle,  dblaxle, taitoz_state,  taitoz,   ROT0,               "Taito America Corporation", "Double Axle (US, earlier)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE, layout_dblaxle )
-GAMEL(1991, pwheelsj,   dblaxle,  dblaxle,  pwheelsj, taitoz_state, taitoz,   ROT0,               "Taito Corporation",         "Power Wheels (Japan)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE, layout_dblaxle )
-
-GAMEL(1991, racingb,    0,        racingb,  racingb, taitoz_state,  taitoz,   ROT0,               "Taito Corporation Japan",   "Racing Beat (World)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE, layout_dblaxle )
-GAMEL(1991, racingbj,   racingb,  racingb,  racingb, taitoz_state,  taitoz,   ROT0,               "Taito Corporation",         "Racing Beat (Japan)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE, layout_dblaxle )
-=======
 GAMEL(1987, contcirc,   0,        contcirc,  contcirc,  taitoz_state, taitoz,   ROT0,               "Taito Corporation Japan",   "Continental Circus (World)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE, layout_contcirc )
 GAMEL(1987, contcircu,  contcirc, contcirc,  contcrcu,  taitoz_state, taitoz,   ROT0,               "Taito America Corporation", "Continental Circus (US set 1)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE, layout_contcirc )
 GAMEL(1987, contcircua, contcirc, contcirc,  contcrcj,  taitoz_state, taitoz,   ROT0,               "Taito America Corporation", "Continental Circus (US set 2)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE, layout_contcirc )
@@ -5779,4 +5412,3 @@ GAMEL(1991, pwheelsj,   dblaxle,  dblaxle,   pwheelsj,  taitoz_state, taitoz,   
 
 GAMEL(1991, racingb,    0,        racingb,   racingb,   taitoz_state, taitoz,   ROT0,               "Taito Corporation Japan",   "Racing Beat (World)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE, layout_dblaxle )
 GAMEL(1991, racingbj,   racingb,  racingb,   racingb,   taitoz_state, taitoz,   ROT0,               "Taito Corporation",         "Racing Beat (Japan)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE, layout_dblaxle )
->>>>>>> upstream/master

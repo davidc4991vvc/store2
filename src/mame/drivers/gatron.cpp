@@ -321,21 +321,6 @@
 *****************************************************************************************/
 
 
-<<<<<<< HEAD
-#define MASTER_CLOCK    XTAL_16MHz
-
-#include "emu.h"
-#include "cpu/z80/z80.h"
-#include "sound/sn76496.h"
-#include "machine/i8255.h"
-#include "machine/nvram.h"
-#include "poker41.lh"
-#include "pulltabs.lh"
-#include "bingo.lh"
-#include "includes/gatron.h"
-
-
-=======
 #include "emu.h"
 #include "includes/gatron.h"
 
@@ -353,7 +338,6 @@
 
 #define MASTER_CLOCK    XTAL_16MHz
 
->>>>>>> upstream/master
 /****************************
 *    Read/Write Handlers    *
 ****************************/
@@ -430,15 +414,6 @@ WRITE8_MEMBER(gatron_state::output_port_0_w)
   .x.. .... --> Change Card / Take / Low.
 
 */
-<<<<<<< HEAD
-	output_set_lamp_value(0, (data) & 1);       /* hold3 lamp */
-	output_set_lamp_value(1, (data >> 1) & 1);  /* hold4 lamp */
-	output_set_lamp_value(2, (data >> 2) & 1);  /* hold5 lamp */
-	output_set_lamp_value(3, (data >> 3) & 1);  /* ante/bet lamp */
-	output_set_lamp_value(4, (data >> 4) & 1);  /* start lamp */
-	output_set_lamp_value(5, (data >> 5) & 1);  /* deal/hit lamp */
-	output_set_lamp_value(6, (data >> 6) & 1);  /* stand/fbdraw lamp */
-=======
 	output().set_lamp_value(0, (data) & 1);       /* hold3 lamp */
 	output().set_lamp_value(1, (data >> 1) & 1);  /* hold4 lamp */
 	output().set_lamp_value(2, (data >> 2) & 1);  /* hold5 lamp */
@@ -446,7 +421,6 @@ WRITE8_MEMBER(gatron_state::output_port_0_w)
 	output().set_lamp_value(4, (data >> 4) & 1);  /* start lamp */
 	output().set_lamp_value(5, (data >> 5) & 1);  /* deal/hit lamp */
 	output().set_lamp_value(6, (data >> 6) & 1);  /* stand/fbdraw lamp */
->>>>>>> upstream/master
 }
 
 
@@ -465,13 +439,8 @@ WRITE8_MEMBER(gatron_state::output_port_1_w)
   x... .... --> Inverted pulse. Related to counters.
 
 */
-<<<<<<< HEAD
-	output_set_lamp_value(7, (data) & 1);       /* hold2 lamp */
-	output_set_lamp_value(8, (data >> 1) & 1);  /* hold1 lamp */
-=======
 	output().set_lamp_value(7, (data) & 1);       /* hold2 lamp */
 	output().set_lamp_value(8, (data >> 1) & 1);  /* hold1 lamp */
->>>>>>> upstream/master
 }
 
 /*************************
@@ -594,11 +563,7 @@ GFXDECODE_END
 *    Machine Drivers     *
 *************************/
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( gat, gatron_state )
-=======
 static MACHINE_CONFIG_START( gat )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, MASTER_CLOCK/24)   /* 666.66 kHz, guess */
@@ -673,14 +638,7 @@ ROM_END
 *      Game Drivers      *
 *************************/
 
-<<<<<<< HEAD
-/*     YEAR  NAME      PARENT  MACHINE  INPUT      STATE           INIT  ROT    COMPANY         FULLNAME             FLAGS  LAYOUT   */
-GAMEL( 1983, poker41,  0,      gat,     poker41,   driver_device,  0,    ROT0, "Game-A-Tron",  "Four In One Poker",  0,     layout_poker41  )
-GAMEL( 1983, pulltabs, 0,      gat,     pulltabs,  driver_device,  0,    ROT0, "Game-A-Tron",  "Pull Tabs",          0,     layout_pulltabs )
-GAMEL( 1983, bingo,    0,      gat,     bingo,     driver_device,  0,    ROT0, "Game-A-Tron",  "Bingo",              0,     layout_bingo  )
-=======
 /*     YEAR  NAME      PARENT  MACHINE  INPUT      STATE          INIT  ROT   COMPANY         FULLNAME              FLAGS  LAYOUT   */
 GAMEL( 1983, poker41,  0,      gat,     poker41,   gatron_state,  0,    ROT0, "Game-A-Tron",  "Four In One Poker",  0,     layout_poker41  )
 GAMEL( 1983, pulltabs, 0,      gat,     pulltabs,  gatron_state,  0,    ROT0, "Game-A-Tron",  "Pull Tabs",          0,     layout_pulltabs )
 GAMEL( 1983, bingo,    0,      gat,     bingo,     gatron_state,  0,    ROT0, "Game-A-Tron",  "Bingo",              0,     layout_bingo  )
->>>>>>> upstream/master

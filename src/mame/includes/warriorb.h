@@ -51,34 +51,18 @@ public:
 	required_device<palette_device> m_palette;
 
 	/* memory pointers */
-<<<<<<< HEAD
-	required_shared_ptr<UINT16> m_spriteram;
-=======
 	required_shared_ptr<uint16_t> m_spriteram;
->>>>>>> upstream/master
 
 	/* misc */
 	int        m_pandata[4];
 
-<<<<<<< HEAD
-=======
 	DECLARE_WRITE8_MEMBER(coin_control_w);
->>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(sound_bankswitch_w);
 	DECLARE_WRITE16_MEMBER(sound_w);
 	DECLARE_READ16_MEMBER(sound_r);
 	DECLARE_WRITE8_MEMBER(pancontrol);
 	DECLARE_WRITE16_MEMBER(tc0100scn_dual_screen_w);
 
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void machine_reset();
-
-	UINT32 screen_update_left(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	UINT32 screen_update_right(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	void draw_sprites( screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int x_offs, int y_offs );
-	UINT32 update_screen(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int xoffs, tc0100scn_device *tc0100scn);
-=======
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
 
@@ -86,5 +70,4 @@ public:
 	uint32_t screen_update_right(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	void draw_sprites( screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int x_offs, int y_offs );
 	uint32_t update_screen(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int xoffs, tc0100scn_device *tc0100scn);
->>>>>>> upstream/master
 };

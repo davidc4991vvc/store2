@@ -106,10 +106,6 @@
 
 #include "emu.h"
 #include "kc.h"
-<<<<<<< HEAD
-#include "emuopts.h"
-=======
->>>>>>> upstream/master
 
 #define  LOG    0
 
@@ -122,13 +118,8 @@
 //  GLOBAL VARIABLES
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type KCEXP_SLOT  = &device_creator<kcexp_slot_device>;
-const device_type KCCART_SLOT = &device_creator<kccart_slot_device>;
-=======
 DEFINE_DEVICE_TYPE(KCEXP_SLOT,  kcexp_slot_device,  "kcexp_slot",  "KC85 Expansion Slot")
 DEFINE_DEVICE_TYPE(KCCART_SLOT, kccart_slot_device, "kccart_slot", "KC85 Cartridge Slot")
->>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -161,23 +152,6 @@ device_kcexp_interface::~device_kcexp_interface()
 //-------------------------------------------------
 //  kcexp_slot_device - constructor
 //-------------------------------------------------
-<<<<<<< HEAD
-kcexp_slot_device::kcexp_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-		device_t(mconfig, KCEXP_SLOT, "KC85 Expansion Slot", tag, owner, clock, "kcexp_slot", __FILE__),
-		device_slot_interface(mconfig, *this),
-		m_out_irq_cb(*this),
-		m_out_nmi_cb(*this),
-		m_out_halt_cb(*this), m_cart(nullptr), m_next_slot_tag(nullptr), m_next_slot(nullptr)
-{
-}
-
-kcexp_slot_device::kcexp_slot_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source) :
-		device_t(mconfig, type, name, tag, owner, clock, shortname, source),
-		device_slot_interface(mconfig, *this),
-		m_out_irq_cb(*this),
-		m_out_nmi_cb(*this),
-		m_out_halt_cb(*this), m_cart(nullptr), m_next_slot_tag(nullptr), m_next_slot(nullptr)
-=======
 kcexp_slot_device::kcexp_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	kcexp_slot_device(mconfig, KCEXP_SLOT, tag, owner, clock)
 {
@@ -190,7 +164,6 @@ kcexp_slot_device::kcexp_slot_device(const machine_config &mconfig, device_type 
 	m_out_nmi_cb(*this),
 	m_out_halt_cb(*this),
 	m_cart(nullptr), m_next_slot_tag(nullptr), m_next_slot(nullptr)
->>>>>>> upstream/master
 {
 }
 
@@ -216,11 +189,7 @@ kcexp_slot_device::~kcexp_slot_device()
 void kcexp_slot_device::device_start()
 {
 	m_cart = dynamic_cast<device_kcexp_interface *>(get_card_device());
-<<<<<<< HEAD
-	m_next_slot = m_next_slot_tag ? owner()->subdevice<kcexp_slot_device>(m_next_slot_tag) : NULL;
-=======
 	m_next_slot = m_next_slot_tag ? owner()->subdevice<kcexp_slot_device>(m_next_slot_tag) : nullptr;
->>>>>>> upstream/master
 
 	// resolve callbacks
 	m_out_irq_cb.resolve_safe();
@@ -233,15 +202,9 @@ void kcexp_slot_device::device_start()
     module id read
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-UINT8 kcexp_slot_device::module_id_r()
-{
-	UINT8 result = 0xff;
-=======
 uint8_t kcexp_slot_device::module_id_r()
 {
 	uint8_t result = 0xff;
->>>>>>> upstream/master
 
 	if (m_cart)
 		result = m_cart->module_id_r();
@@ -252,11 +215,7 @@ uint8_t kcexp_slot_device::module_id_r()
 /*-------------------------------------------------
     module control write
 -------------------------------------------------*/
-<<<<<<< HEAD
-void kcexp_slot_device::control_w(UINT8 data)
-=======
 void kcexp_slot_device::control_w(uint8_t data)
->>>>>>> upstream/master
 {
 	if (m_cart)
 		m_cart->control_w(data);
@@ -266,11 +225,7 @@ void kcexp_slot_device::control_w(uint8_t data)
     read
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-void kcexp_slot_device::read(offs_t offset, UINT8 &data)
-=======
 void kcexp_slot_device::read(offs_t offset, uint8_t &data)
->>>>>>> upstream/master
 {
 	if (m_cart)
 		m_cart->read(offset, data);
@@ -281,11 +236,7 @@ void kcexp_slot_device::read(offs_t offset, uint8_t &data)
     write
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-void kcexp_slot_device::write(offs_t offset, UINT8 data)
-=======
 void kcexp_slot_device::write(offs_t offset, uint8_t data)
->>>>>>> upstream/master
 {
 	if (m_cart)
 		m_cart->write(offset, data);
@@ -295,11 +246,7 @@ void kcexp_slot_device::write(offs_t offset, uint8_t data)
     IO read
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-void kcexp_slot_device::io_read(offs_t offset, UINT8 &data)
-=======
 void kcexp_slot_device::io_read(offs_t offset, uint8_t &data)
->>>>>>> upstream/master
 {
 	if (m_cart)
 		m_cart->io_read(offset, data);
@@ -310,11 +257,7 @@ void kcexp_slot_device::io_read(offs_t offset, uint8_t &data)
    IO write
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-void kcexp_slot_device::io_write(offs_t offset, UINT8 data)
-=======
 void kcexp_slot_device::io_write(offs_t offset, uint8_t data)
->>>>>>> upstream/master
 {
 	if (m_cart)
 		m_cart->io_write(offset, data);
@@ -352,15 +295,9 @@ WRITE_LINE_MEMBER( kcexp_slot_device::meo_w )
 //-------------------------------------------------
 //  kccart_slot_device - constructor
 //-------------------------------------------------
-<<<<<<< HEAD
-kccart_slot_device::kccart_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-		kcexp_slot_device(mconfig, KCCART_SLOT, "KC85 Cartridge Slot", tag, owner, clock, "kccart_slot", __FILE__),
-		device_image_interface(mconfig, *this)
-=======
 kccart_slot_device::kccart_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	kcexp_slot_device(mconfig, KCCART_SLOT, tag, owner, clock),
 	device_image_interface(mconfig, *this)
->>>>>>> upstream/master
 {
 }
 
@@ -372,37 +309,10 @@ kccart_slot_device::~kccart_slot_device()
 {
 }
 
-<<<<<<< HEAD
-//-------------------------------------------------
-//  device_config_complete - perform any
-//  operations now that the configuration is
-//  complete
-//-------------------------------------------------
-
-void kccart_slot_device::device_config_complete()
-{
-	// set brief and instance name
-	update_names();
-}
-
-=======
->>>>>>> upstream/master
 /*-------------------------------------------------
     call load
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-bool kccart_slot_device::call_load()
-{
-	if (m_cart)
-	{
-		offs_t read_length = 0;
-		UINT8 *cart_base = m_cart->get_cart_base();
-
-		if (cart_base != NULL)
-		{
-			if (software_entry() == NULL)
-=======
 image_init_result kccart_slot_device::call_load()
 {
 	if (m_cart)
@@ -413,7 +323,6 @@ image_init_result kccart_slot_device::call_load()
 		if (cart_base != nullptr)
 		{
 			if (!loaded_through_softlist())
->>>>>>> upstream/master
 			{
 				read_length = length();
 				fread(m_cart->get_cart_base(), read_length);
@@ -425,40 +334,17 @@ image_init_result kccart_slot_device::call_load()
 			}
 		}
 		else
-<<<<<<< HEAD
-			return IMAGE_INIT_FAIL;
-	}
-
-	return IMAGE_INIT_PASS;
-}
-
-/*-------------------------------------------------
-    call softlist load
--------------------------------------------------*/
-
-bool kccart_slot_device::call_softlist_load(software_list_device &swlist, const char *swname, const rom_entry *start_entry)
-{
-	load_software_part_region(*this, swlist, swname, start_entry );
-	return TRUE;
-=======
 			return image_init_result::FAIL;
 	}
 
 	return image_init_result::PASS;
->>>>>>> upstream/master
 }
 
 /*-------------------------------------------------
     get default card software
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-void kccart_slot_device::get_default_card_software(std::string &result)
-{
-	software_get_default_slot(result, "standard");
-=======
 std::string kccart_slot_device::get_default_card_software(get_default_card_software_hook &hook) const
 {
 	return software_get_default_slot("standard");
->>>>>>> upstream/master
 }

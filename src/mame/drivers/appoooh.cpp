@@ -164,12 +164,6 @@ Language
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/z80/z80.h"
-#include "includes/appoooh.h"
-#include "machine/segacrp2.h"
-#include "sound/sn76496.h"
-=======
 #include "includes/appoooh.h"
 
 #include "cpu/z80/z80.h"
@@ -177,7 +171,6 @@ Language
 #include "sound/sn76496.h"
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 WRITE_LINE_MEMBER(appoooh_state::adpcm_int)
@@ -186,11 +179,7 @@ WRITE_LINE_MEMBER(appoooh_state::adpcm_int)
 	{
 		if (m_adpcm_data == 0xffffffff)
 		{
-<<<<<<< HEAD
-			UINT8 *RAM = memregion("adpcm")->base();
-=======
 			uint8_t *RAM = memregion("adpcm")->base();
->>>>>>> upstream/master
 
 			m_adpcm_data = RAM[m_adpcm_address++];
 			m_msm->data_w(m_adpcm_data >> 4);
@@ -240,11 +229,7 @@ static ADDRESS_MAP_START( main_map, AS_PROGRAM, 8, appoooh_state )
 	AM_RANGE(0xf000, 0xffff) AM_RAM
 ADDRESS_MAP_END
 
-<<<<<<< HEAD
-static ADDRESS_MAP_START( decrypted_opcodes_map, AS_DECRYPTED_OPCODES, 8, appoooh_state )
-=======
 static ADDRESS_MAP_START( decrypted_opcodes_map, AS_OPCODES, 8, appoooh_state )
->>>>>>> upstream/master
 	AM_RANGE(0x0000, 0x7fff) AM_ROM AM_SHARE("decrypted_opcodes")
 	AM_RANGE(0x8000, 0x9fff) AM_ROM AM_REGION("maincpu", 0x8000)
 	AM_RANGE(0xa000, 0xdfff) AM_ROMBANK("bank1")
@@ -431,11 +416,7 @@ INTERRUPT_GEN_MEMBER(appoooh_state::vblank_irq)
 		device.execute().set_input_line(INPUT_LINE_NMI, PULSE_LINE);
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( appoooh_common, appoooh_state )
-=======
 static MACHINE_CONFIG_START( appoooh_common )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80,18432000/6) /* ??? the main xtal is 18.432 MHz */
@@ -458,11 +439,7 @@ static MACHINE_CONFIG_START( appoooh_common )
 
 	MCFG_SOUND_ADD("msm", MSM5205, 384000)
 	MCFG_MSM5205_VCLK_CB(WRITELINE(appoooh_state, adpcm_int)) /* interrupt function */
-<<<<<<< HEAD
-	MCFG_MSM5205_PRESCALER_SELECTOR(MSM5205_S64_4B)  /* 6KHz               */
-=======
 	MCFG_MSM5205_PRESCALER_SELECTOR(S64_4B)  /* 6KHz               */
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
 MACHINE_CONFIG_END
 
@@ -507,8 +484,6 @@ static MACHINE_CONFIG_DERIVED( robowres, appoooh_common )
 	MCFG_VIDEO_START_OVERRIDE(appoooh_state,appoooh)
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-=======
 static MACHINE_CONFIG_DERIVED( robowrese, robowres )
 
 	MCFG_CPU_REPLACE("maincpu", SEGA_315_5179,18432000/6) /* ??? the main xtal is 18.432 MHz */
@@ -519,7 +494,6 @@ static MACHINE_CONFIG_DERIVED( robowrese, robowres )
 	MCFG_SEGAZ80_SET_DECRYPTED_TAG(":decrypted_opcodes")
 MACHINE_CONFIG_END
 
->>>>>>> upstream/master
 /*************************************
  *
  *  ROM definition(s)
@@ -624,49 +598,6 @@ ROM_END
  *
  *************************************/
 
-<<<<<<< HEAD
-DRIVER_INIT_MEMBER(appoooh_state,robowres)
-{
-	static const UINT8 xor_table[128] =
-	{
-		0x00,0x45,0x41,0x14,0x10,0x55,0x51,0x01,0x04,0x40,0x45,0x11,0x14,0x50,
-		0x00,0x05,0x41,0x44,0x10,0x15,0x51,0x54,0x04,
-		0x00,0x45,0x41,0x14,0x10,0x55,0x05,0x01,0x44,0x40,0x15,0x11,0x54,0x50,
-		0x00,0x05,0x41,0x44,0x10,0x15,0x51,0x01,0x04,
-		0x40,0x45,0x11,0x14,0x50,0x55,0x05,0x01,0x44,0x40,0x15,0x11,0x54,0x04,
-		0x00,0x45,0x41,0x14,0x50,
-		0x00,0x05,0x41,0x44,0x10,0x15,0x51,0x54,0x04,
-		0x00,0x45,0x41,0x14,0x50,0x55,0x05,0x01,0x44,0x40,0x15,0x11,0x54,0x50,
-		0x00,0x05,0x41,0x44,0x10,0x55,0x51,0x01,0x04,
-		0x40,0x45,0x11,0x14,0x50,0x55,0x05,0x01,0x44,0x40,0x15,0x51,0x54,0x04,
-		0x00,0x45,0x41,0x14,0x10,0x55,0x51,0x01,0x04,
-		0x40,0x45,0x11,0x54,0x50,0x00,0x05,0x41,
-	};
-
-	static const int swap_table[128] =
-	{
-			8, 9,11,13,15, 0, 2, 4, 6,
-			8, 9,11,13,15, 1, 2, 4, 6,
-			8, 9,11,13,15, 1, 2, 4, 6,
-			8, 9,11,13,15, 1, 2, 4, 6,
-			8,10,11,13,15, 1, 2, 4, 6,
-			8,10,11,13,15, 1, 2, 4, 6,
-			8,10,11,13,15, 1, 3, 4, 6,
-			8,
-			7, 1, 2, 4, 6, 0, 1, 3, 5,
-			7, 1, 2, 4, 6, 0, 1, 3, 5,
-			7, 1, 2, 4, 6, 0, 2, 3, 5,
-			7, 1, 2, 4, 6, 0, 2, 3, 5,
-			7, 1, 2, 4, 6, 0, 2, 3, 5,
-			7, 1, 3, 4, 6, 0, 2, 3, 5,
-			7, 1, 3, 4, 6, 0, 2, 4, 5,
-			7,
-	};
-
-	sega_decode_2(memregion("maincpu")->base(), m_decrypted_opcodes, xor_table, swap_table);
-}
-=======
->>>>>>> upstream/master
 
 DRIVER_INIT_MEMBER(appoooh_state,robowresb)
 {
@@ -680,12 +611,6 @@ DRIVER_INIT_MEMBER(appoooh_state,robowresb)
  *
  *************************************/
 
-<<<<<<< HEAD
-GAME( 1984, appoooh,   0,        appoooh,  appoooh, driver_device,  0,        ROT0, "Sanritsu / Sega", "Appoooh", MACHINE_SUPPORTS_SAVE )
-GAME( 1986, robowres,  0,        robowres, robowres, appoooh_state, robowres, ROT0, "Sanritsu / Sega", "Robo Wres 2001", MACHINE_SUPPORTS_SAVE )
-GAME( 1986, robowresb, robowres, robowres, robowres, appoooh_state, robowresb,ROT0, "bootleg",         "Robo Wres 2001 (bootleg)", MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1984, appoooh,   0,        appoooh,  appoooh,  appoooh_state, 0,         ROT0, "Sanritsu / Sega", "Appoooh",                  MACHINE_SUPPORTS_SAVE )
 GAME( 1986, robowres,  0,        robowrese,robowres, appoooh_state, 0,         ROT0, "Sanritsu / Sega", "Robo Wres 2001",           MACHINE_SUPPORTS_SAVE )
 GAME( 1986, robowresb, robowres, robowres, robowres, appoooh_state, robowresb, ROT0, "bootleg",         "Robo Wres 2001 (bootleg)", MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

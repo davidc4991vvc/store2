@@ -33,11 +33,7 @@ we actually have 18 segments, including the semicolon portions.
 16-bit tables are used to hold the main characters, the rest are OR'd in
 */
 
-<<<<<<< HEAD
-static const UINT16 roc10937charset[]=
-=======
 static const uint16_t roc10937charset[]=
->>>>>>> upstream/master
 {           // FEDC BA98 7654 3210
 	0x507F, // 0101 0000 0111 1111 @.
 	0x44CF, // 0100 0100 1100 1111 A.
@@ -129,29 +125,13 @@ static const int roc10937poslut[]=
 	0//15
 };
 
-<<<<<<< HEAD
-const device_type ROC10937 = &device_creator<roc10937_t>;
-
-rocvfd_t::rocvfd_t(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source) :
-	device_t(mconfig, type, name, tag, owner, clock, shortname, source)
-=======
 rocvfd_device::rocvfd_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock) :
 	device_t(mconfig, type, tag, owner, clock)
->>>>>>> upstream/master
 {
 	m_port_val=0;
 }
 
 
-<<<<<<< HEAD
-void rocvfd_t::static_set_value(device_t &device, int val)
-{
-	rocvfd_t &roc = downcast<rocvfd_t &>(device);
-	roc.m_port_val = val;
-}
-
-void rocvfd_t::device_start()
-=======
 void rocvfd_device::static_set_value(device_t &device, int val)
 {
 	rocvfd_device &roc = downcast<rocvfd_device &>(device);
@@ -159,7 +139,6 @@ void rocvfd_device::static_set_value(device_t &device, int val)
 }
 
 void rocvfd_device::device_start()
->>>>>>> upstream/master
 {
 	save_item(NAME(m_port_val));
 	save_item(NAME(m_cursor_pos));
@@ -180,11 +159,7 @@ void rocvfd_device::device_start()
 	device_reset();
 }
 
-<<<<<<< HEAD
-void rocvfd_t::device_reset()
-=======
 void rocvfd_device::device_reset()
->>>>>>> upstream/master
 {
 	m_cursor_pos = 0;
 	m_window_size = 16;
@@ -203,66 +178,38 @@ void rocvfd_device::device_reset()
 }
 
 ///////////////////////////////////////////////////////////////////////////
-<<<<<<< HEAD
-UINT32 rocvfd_t::set_display(UINT32 segin)
-=======
 uint32_t rocvfd_device::set_display(uint32_t segin)
->>>>>>> upstream/master
 {
 	return BITSWAP32(segin, 31,30,29,28,27,26,25,24,23,22,21,20,19,18,17,16,11,9,15,13,12,8,10,14,7,6,5,4,3,2,1,0);
 
 }
 
 ///////////////////////////////////////////////////////////////////////////
-<<<<<<< HEAD
-void rocvfd_t::device_post_load()
-=======
 void rocvfd_device::device_post_load()
->>>>>>> upstream/master
 {
 	update_display();
 }
 
-<<<<<<< HEAD
-void rocvfd_t::update_display()
-=======
 void rocvfd_device::update_display()
->>>>>>> upstream/master
 {
 	for (int i =0; i<16; i++)
 	{
 		m_outputs[i] = set_display(m_chars[i]);
-<<<<<<< HEAD
-		output_set_indexed_value("vfd", (m_port_val*16) + i, m_outputs[i]);
-	}
-}
-
-WRITE_LINE_MEMBER( rocvfd_t::sclk )
-=======
 		machine().output().set_indexed_value("vfd", (m_port_val*16) + i, m_outputs[i]);
 	}
 }
 
 WRITE_LINE_MEMBER( rocvfd_device::sclk )
->>>>>>> upstream/master
 {
 	shift_clock(state);
 }
 
-<<<<<<< HEAD
-WRITE_LINE_MEMBER( rocvfd_t::data )
-=======
 WRITE_LINE_MEMBER( rocvfd_device::data )
->>>>>>> upstream/master
 {
 	m_data = state;
 }
 
-<<<<<<< HEAD
-WRITE_LINE_MEMBER( rocvfd_t::por )
-=======
 WRITE_LINE_MEMBER( rocvfd_device::por )
->>>>>>> upstream/master
 {
 	//If line goes low, reset mode is engaged, until such a time as it goes high again.
 	if (!state)
@@ -272,11 +219,7 @@ WRITE_LINE_MEMBER( rocvfd_device::por )
 }
 
 
-<<<<<<< HEAD
-void rocvfd_t::shift_clock(int state)
-=======
 void rocvfd_device::shift_clock(int state)
->>>>>>> upstream/master
 {
 	if (m_sclk != state)
 	{
@@ -301,10 +244,6 @@ void rocvfd_device::shift_clock(int state)
 }
 
 ///////////////////////////////////////////////////////////////////////////
-<<<<<<< HEAD
-roc10937_t::roc10937_t(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: rocvfd_t(mconfig, ROC10937, "Rockwell 10937 VFD controller and compatible", tag, owner, clock, "roc10937", __FILE__)
-=======
 DEFINE_DEVICE_TYPE(ROC10937, roc10937_device, "roc10937", "Rockwell 10937 VFD controller") // and compatible
 DEFINE_DEVICE_TYPE(MSC1937,  msc1937_device,  "msc1937",  "OKI MSC1937 VFD controller")
 DEFINE_DEVICE_TYPE(MIC10937, mic10937_device, "mic10937", "Micrel MIC10937 VFD controller")
@@ -319,17 +258,10 @@ roc10937_device::roc10937_device(const machine_config &mconfig, const char *tag,
 
 msc1937_device::msc1937_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: rocvfd_device(mconfig, MSC1937, tag, owner, clock)
->>>>>>> upstream/master
 {
 	m_port_val=0;
 }
 
-<<<<<<< HEAD
-const device_type MSC1937 = &device_creator<msc1937_t>;
-
-msc1937_t::msc1937_t(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: rocvfd_t(mconfig, MSC1937, "OKI MSC1937 VFD controller", tag, owner, clock, "msc1937", __FILE__)
-=======
 mic10937_device::mic10937_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: rocvfd_device(mconfig, MIC10937, tag, owner, clock)
 {
@@ -338,16 +270,11 @@ mic10937_device::mic10937_device(const machine_config &mconfig, const char *tag,
 
 s16lf01_device::s16lf01_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: rocvfd_device(mconfig, S16LF01, tag, owner, clock)
->>>>>>> upstream/master
 {
 	m_port_val=0;
 }
 
-<<<<<<< HEAD
-void rocvfd_t::write_char(int data)
-=======
 void rocvfd_device::write_char(int data)
->>>>>>> upstream/master
 {
 	if ( data & 0x80 )
 	{ // Control data received
@@ -398,24 +325,13 @@ void rocvfd_device::write_char(int data)
 	}
 }
 
-<<<<<<< HEAD
-const device_type ROC10957 = &device_creator<roc10957_t>;
-
-roc10957_t::roc10957_t(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: rocvfd_t(mconfig, ROC10957, "Rockwell 10957 VFD controller and compatible", tag, owner, clock, "roc10957", __FILE__)
-=======
 roc10957_device::roc10957_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: rocvfd_device(mconfig, ROC10957, tag, owner, clock)
->>>>>>> upstream/master
 {
 	m_port_val=0;
 }
 
-<<<<<<< HEAD
-void roc10957_t::write_char(int data)
-=======
 void roc10957_device::write_char(int data)
->>>>>>> upstream/master
 {
 	if ( data & 0x80 )
 	{ // Control data received
@@ -441,13 +357,8 @@ void roc10957_device::write_char(int data)
 		}
 	}
 	else
-<<<<<<< HEAD
-	{ // Display data
-		data &= 0x3F;
-=======
 	{ // Display data.  Bit 6 is a "don't care" bit except for PNT and TAIL.
 		data &= 0x7F;
->>>>>>> upstream/master
 
 		switch ( data )
 		{
@@ -479,14 +390,3 @@ void roc10957_device::write_char(int data)
 		}
 	}
 }
-<<<<<<< HEAD
-
-const device_type S16LF01 = &device_creator<s16lf01_t>;
-
-s16lf01_t::s16lf01_t(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: rocvfd_t(mconfig, S16LF01, "Samsung 16LF01 Series VFD controller and compatible", tag, owner, clock, "s16lf01", __FILE__)
-{
-	m_port_val=0;
-}
-=======
->>>>>>> upstream/master

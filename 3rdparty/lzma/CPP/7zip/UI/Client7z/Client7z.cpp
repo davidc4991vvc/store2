@@ -2,19 +2,6 @@
 
 #include "StdAfx.h"
 
-<<<<<<< HEAD
-#include "Common/IntToString.h"
-#include "Common/MyInitGuid.h"
-#include "Common/StringConvert.h"
-
-#include "Windows/DLL.h"
-#include "Windows/FileDir.h"
-#include "Windows/FileFind.h"
-#include "Windows/FileName.h"
-#include "Windows/NtCheck.h"
-#include "Windows/PropVariant.h"
-#include "Windows/PropVariantConversions.h"
-=======
 #include <stdio.h>
 
 #include "../../../Common/MyWindows.h"
@@ -32,35 +19,18 @@
 #include "../../../Windows/NtCheck.h"
 #include "../../../Windows/PropVariant.h"
 #include "../../../Windows/PropVariantConv.h"
->>>>>>> upstream/master
 
 #include "../../Common/FileStreams.h"
 
 #include "../../Archive/IArchive.h"
 
 #include "../../IPassword.h"
-<<<<<<< HEAD
-#include "../../MyVersion.h"
-=======
 #include "../../../../C/7zVersion.h"
->>>>>>> upstream/master
 
 #ifdef _WIN32
 HINSTANCE g_hInstance = 0;
 #endif
 
-<<<<<<< HEAD
-// use another CLSIDs, if you want to support other formats (zip, rar, ...).
-// {23170F69-40C1-278A-1000-000110070000}
-DEFINE_GUID(CLSID_CFormat7z,
-  0x23170F69, 0x40C1, 0x278A, 0x10, 0x00, 0x00, 0x01, 0x10, 0x07, 0x00, 0x00);
-
-using namespace NWindows;
-
-#define kDllName "7z.dll"
-
-static const char *kCopyrightString = "\n" MY_7ZIP_VERSION
-=======
 // Tou can find the list of all GUIDs in Guid.txt file.
 // use another CLSIDs, if you want to support other formats (zip, rar, ...).
 // {23170F69-40C1-278A-1000-000110070000}
@@ -80,7 +50,6 @@ using namespace NDir;
 #define kDllName "7z.dll"
 
 static const char *kCopyrightString = "\n7-Zip " MY_VERSION
->>>>>>> upstream/master
 " ("  kDllName " client) "
 MY_COPYRIGHT " " MY_DATE "\n";
 
@@ -92,15 +61,6 @@ static const char *kHelpString =
 "  Client7z.exe x archive.7z   : eXtract files from archive.7z\n";
 
 
-<<<<<<< HEAD
-typedef UINT32 (WINAPI * CreateObjectFunc)(
-    const GUID *clsID,
-    const GUID *interfaceID,
-    void **outObject);
-
-
-=======
->>>>>>> upstream/master
 static AString FStringToConsoleString(const FString &s)
 {
   return GetOemString(fs2us(s));
@@ -226,15 +186,11 @@ static const char *kSkippingString   =  "Skipping    ";
 static const char *kUnsupportedMethod = "Unsupported Method";
 static const char *kCRCFailed = "CRC Failed";
 static const char *kDataError = "Data Error";
-<<<<<<< HEAD
-static const char *kUnknownError = "Unknown Error";
-=======
 static const char *kUnavailableData = "Unavailable data";
 static const char *kUnexpectedEnd = "Unexpected end of data";
 static const char *kDataAfterEnd = "There are some data after the end of the payload data";
 static const char *kIsNotArc = "Is not archive";
 static const char *kHeadersError = "Headers Error";
->>>>>>> upstream/master
 
 class CArchiveExtractCallback:
   public IArchiveExtractCallback,
@@ -289,11 +245,7 @@ void CArchiveExtractCallback::Init(IInArchive *archiveHandler, const FString &di
   NumErrors = 0;
   _archiveHandler = archiveHandler;
   _directoryPath = directoryPath;
-<<<<<<< HEAD
-  NFile::NName::NormalizeDirPathPrefix(_directoryPath);
-=======
   NName::NormalizeDirPathPrefix(_directoryPath);
->>>>>>> upstream/master
 }
 
 STDMETHODIMP CArchiveExtractCallback::SetTotal(UInt64 /* size */)
@@ -357,11 +309,7 @@ STDMETHODIMP CArchiveExtractCallback::GetStream(UInt32 index,
     NCOM::CPropVariant prop;
     RINOK(_archiveHandler->GetProperty(index, kpidMTime, &prop));
     _processedFileInfo.MTimeDefined = false;
-<<<<<<< HEAD
-    switch(prop.vt)
-=======
     switch (prop.vt)
->>>>>>> upstream/master
     {
       case VT_EMPTY:
         // _processedFileInfo.MTime = _utcMTimeDefault;
@@ -379,29 +327,16 @@ STDMETHODIMP CArchiveExtractCallback::GetStream(UInt32 index,
     // Get Size
     NCOM::CPropVariant prop;
     RINOK(_archiveHandler->GetProperty(index, kpidSize, &prop));
-<<<<<<< HEAD
-    bool newFileSizeDefined = (prop.vt != VT_EMPTY);
-    UInt64 newFileSize;
-    if (newFileSizeDefined)
-      newFileSize = ConvertPropVariantToUInt64(prop);
-=======
     UInt64 newFileSize;
     /* bool newFileSizeDefined = */ ConvertPropVariantToUInt64(prop, newFileSize);
->>>>>>> upstream/master
   }
 
   
   {
     // Create folders for file
-<<<<<<< HEAD
-    int slashPos = _filePath.ReverseFind(WCHAR_PATH_SEPARATOR);
-    if (slashPos >= 0)
-      NFile::NDirectory::CreateComplexDirectory(_directoryPath + us2fs(_filePath.Left(slashPos)));
-=======
     int slashPos = _filePath.ReverseFind_PathSepar();
     if (slashPos >= 0)
       CreateComplexDir(_directoryPath + us2fs(_filePath.Left(slashPos)));
->>>>>>> upstream/master
   }
 
   FString fullProcessedPath = _directoryPath + us2fs(_filePath);
@@ -409,16 +344,6 @@ STDMETHODIMP CArchiveExtractCallback::GetStream(UInt32 index,
 
   if (_processedFileInfo.isDir)
   {
-<<<<<<< HEAD
-    NFile::NDirectory::CreateComplexDirectory(fullProcessedPath);
-  }
-  else
-  {
-    NFile::NFind::CFileInfo fi;
-    if (fi.Find(fullProcessedPath))
-    {
-      if (!NFile::NDirectory::DeleteFileAlways(fullProcessedPath))
-=======
     CreateComplexDir(fullProcessedPath);
   }
   else
@@ -427,7 +352,6 @@ STDMETHODIMP CArchiveExtractCallback::GetStream(UInt32 index,
     if (fi.Find(fullProcessedPath))
     {
       if (!DeleteFileAlways(fullProcessedPath))
->>>>>>> upstream/master
       {
         PrintError("Can not delete output file", fullProcessedPath);
         return E_ABORT;
@@ -466,33 +390,13 @@ STDMETHODIMP CArchiveExtractCallback::PrepareOperation(Int32 askExtractMode)
 
 STDMETHODIMP CArchiveExtractCallback::SetOperationResult(Int32 operationResult)
 {
-<<<<<<< HEAD
-  switch(operationResult)
-=======
   switch (operationResult)
->>>>>>> upstream/master
   {
     case NArchive::NExtract::NOperationResult::kOK:
       break;
     default:
     {
       NumErrors++;
-<<<<<<< HEAD
-      PrintString("     ");
-      switch(operationResult)
-      {
-        case NArchive::NExtract::NOperationResult::kUnSupportedMethod:
-          PrintString(kUnsupportedMethod);
-          break;
-        case NArchive::NExtract::NOperationResult::kCRCError:
-          PrintString(kCRCFailed);
-          break;
-        case NArchive::NExtract::NOperationResult::kDataError:
-          PrintString(kDataError);
-          break;
-        default:
-          PrintString(kUnknownError);
-=======
       PrintString("  :  ");
       const char *s = NULL;
       switch (operationResult)
@@ -533,16 +437,11 @@ STDMETHODIMP CArchiveExtractCallback::SetOperationResult(Int32 operationResult)
         ConvertUInt32ToString(operationResult, temp);
         PrintString("Error #");
         PrintString(temp);
->>>>>>> upstream/master
       }
     }
   }
 
-<<<<<<< HEAD
-  if (_outFileStream != NULL)
-=======
   if (_outFileStream)
->>>>>>> upstream/master
   {
     if (_processedFileInfo.MTimeDefined)
       _outFileStreamSpec->SetMTime(&_processedFileInfo.MTime);
@@ -550,11 +449,7 @@ STDMETHODIMP CArchiveExtractCallback::SetOperationResult(Int32 operationResult)
   }
   _outFileStream.Release();
   if (_extractMode && _processedFileInfo.AttribDefined)
-<<<<<<< HEAD
-    NFile::NDirectory::MySetFileAttributes(_diskFilePath, _processedFileInfo.Attrib);
-=======
     SetFileAttrib(_diskFilePath, _processedFileInfo.Attrib);
->>>>>>> upstream/master
   PrintNewLine();
   return S_OK;
 }
@@ -604,10 +499,6 @@ public:
   STDMETHOD(SetCompleted)(const UInt64 *completeValue);
 
   // IUpdateCallback2
-<<<<<<< HEAD
-  STDMETHOD(EnumProperties)(IEnumSTATPROPSTG **enumerator);
-=======
->>>>>>> upstream/master
   STDMETHOD(GetUpdateItemInfo)(UInt32 index,
       Int32 *newData, Int32 *newProperties, UInt32 *indexInArchive);
   STDMETHOD(GetProperty)(UInt32 index, PROPID propID, PROPVARIANT *value);
@@ -659,23 +550,6 @@ STDMETHODIMP CArchiveUpdateCallback::SetCompleted(const UInt64 * /* completeValu
   return S_OK;
 }
 
-<<<<<<< HEAD
-
-STDMETHODIMP CArchiveUpdateCallback::EnumProperties(IEnumSTATPROPSTG ** /* enumerator */)
-{
-  return E_NOTIMPL;
-}
-
-STDMETHODIMP CArchiveUpdateCallback::GetUpdateItemInfo(UInt32 /* index */,
-      Int32 *newData, Int32 *newProperties, UInt32 *indexInArchive)
-{
-  if (newData != NULL)
-    *newData = BoolToInt(true);
-  if (newProperties != NULL)
-    *newProperties = BoolToInt(true);
-  if (indexInArchive != NULL)
-    *indexInArchive = (UInt32)-1;
-=======
 STDMETHODIMP CArchiveUpdateCallback::GetUpdateItemInfo(UInt32 /* index */,
       Int32 *newData, Int32 *newProperties, UInt32 *indexInArchive)
 {
@@ -685,7 +559,6 @@ STDMETHODIMP CArchiveUpdateCallback::GetUpdateItemInfo(UInt32 /* index */,
     *newProperties = BoolToInt(true);
   if (indexInArchive)
     *indexInArchive = (UInt32)(Int32)-1;
->>>>>>> upstream/master
   return S_OK;
 }
 
@@ -702,11 +575,7 @@ STDMETHODIMP CArchiveUpdateCallback::GetProperty(UInt32 index, PROPID propID, PR
 
   {
     const CDirItem &dirItem = (*DirItems)[index];
-<<<<<<< HEAD
-    switch(propID)
-=======
     switch (propID)
->>>>>>> upstream/master
     {
       case kpidPath:  prop = dirItem.Name; break;
       case kpidIsDir:  prop = dirItem.isDir(); break;
@@ -793,13 +662,8 @@ STDMETHODIMP CArchiveUpdateCallback::GetVolumeStream(UInt32 index, ISequentialOu
   wchar_t temp[16];
   ConvertUInt32ToString(index + 1, temp);
   UString res = temp;
-<<<<<<< HEAD
-  while (res.Length() < 2)
-    res = UString(L'0') + res;
-=======
   while (res.Len() < 2)
     res.InsertAtFront(L'0');
->>>>>>> upstream/master
   UString fileName = VolName;
   fileName += L'.';
   fileName += res;
@@ -829,11 +693,7 @@ STDMETHODIMP CArchiveUpdateCallback::CryptoGetTextPassword2(Int32 *passwordIsDef
   return StringToBstr(Password, password);
 }
 
-<<<<<<< HEAD
-//////////////////////////////////////////////////////////////////////////
-=======
 
->>>>>>> upstream/master
 // Main function
 
 #define NT_CHECK_FAIL_ACTION PrintError("Unsupported Windows version"); return 1;
@@ -849,24 +709,16 @@ int MY_CDECL main(int numArgs, const char *args[])
     PrintStringLn(kHelpString);
     return 1;
   }
-<<<<<<< HEAD
-=======
   
->>>>>>> upstream/master
   NDLL::CLibrary lib;
   if (!lib.Load(NDLL::GetModuleDirPrefix() + FTEXT(kDllName)))
   {
     PrintError("Can not load 7-zip library");
     return 1;
   }
-<<<<<<< HEAD
-  CreateObjectFunc createObjectFunc = (CreateObjectFunc)lib.GetProc("CreateObject");
-  if (createObjectFunc == 0)
-=======
 
   Func_CreateObject createObjectFunc = (Func_CreateObject)lib.GetProc("CreateObject");
   if (!createObjectFunc)
->>>>>>> upstream/master
   {
     PrintError("Can not get CreateObject");
     return 1;
@@ -875,28 +727,17 @@ int MY_CDECL main(int numArgs, const char *args[])
   char c;
   {
     AString command = args[1];
-<<<<<<< HEAD
-    if (command.Length() != 1)
-=======
     if (command.Len() != 1)
->>>>>>> upstream/master
     {
       PrintError("incorrect command");
       return 1;
     }
-<<<<<<< HEAD
-    c = (char)MyCharUpper(command[0]);
-  }
-  FString archiveName = CmdStringToFString(args[2]);
-  if (c == 'A')
-=======
     c = (char)MyCharLower_Ascii(command[0]);
   }
 
   FString archiveName = CmdStringToFString(args[2]);
   
   if (c == 'a')
->>>>>>> upstream/master
   {
     // create archive command
     if (numArgs < 4)
@@ -905,30 +746,6 @@ int MY_CDECL main(int numArgs, const char *args[])
       return 1;
     }
     CObjectVector<CDirItem> dirItems;
-<<<<<<< HEAD
-    int i;
-    for (i = 3; i < numArgs; i++)
-    {
-      CDirItem di;
-      FString name = CmdStringToFString(args[i]);
-      
-      NFile::NFind::CFileInfo fi;
-      if (!fi.Find(name))
-      {
-        PrintError("Can't find file", name);
-        return 1;
-      }
-
-      di.Attrib = fi.Attrib;
-      di.Size = fi.Size;
-      di.CTime = fi.CTime;
-      di.ATime = fi.ATime;
-      di.MTime = fi.MTime;
-      di.Name = fs2us(name);
-      di.FullPath = name;
-      dirItems.Add(di);
-    }
-=======
     {
       int i;
       for (i = 3; i < numArgs; i++)
@@ -954,7 +771,6 @@ int MY_CDECL main(int numArgs, const char *args[])
       }
     }
 
->>>>>>> upstream/master
     COutFileStream *outFileStreamSpec = new COutFileStream;
     CMyComPtr<IOutStream> outFileStream = outFileStreamSpec;
     if (!outFileStreamSpec->Create(archiveName, false))
@@ -964,11 +780,7 @@ int MY_CDECL main(int numArgs, const char *args[])
     }
 
     CMyComPtr<IOutArchive> outArchive;
-<<<<<<< HEAD
-    if (createObjectFunc(&CLSID_CFormat7z, &IID_IOutArchive, (void **)&outArchive) != S_OK)
-=======
     if (createObjectFunc(&CLSID_Format, &IID_IOutArchive, (void **)&outArchive) != S_OK)
->>>>>>> upstream/master
     {
       PrintError("Can not get class object");
       return 1;
@@ -987,11 +799,7 @@ int MY_CDECL main(int numArgs, const char *args[])
         L"s",
         L"x"
       };
-<<<<<<< HEAD
-      const int kNumProps = sizeof(names) / sizeof(names[0]);
-=======
       const unsigned kNumProps = ARRAY_SIZE(names);
->>>>>>> upstream/master
       NCOM::CPropVariant values[kNumProps] =
       {
         false,    // solid mode OFF
@@ -1009,32 +817,21 @@ int MY_CDECL main(int numArgs, const char *args[])
     */
     
     HRESULT result = outArchive->UpdateItems(outFileStream, dirItems.Size(), updateCallback);
-<<<<<<< HEAD
-    updateCallbackSpec->Finilize();
-=======
     
     updateCallbackSpec->Finilize();
     
->>>>>>> upstream/master
     if (result != S_OK)
     {
       PrintError("Update Error");
       return 1;
     }
-<<<<<<< HEAD
-    for (i = 0; i < updateCallbackSpec->FailedFiles.Size(); i++)
-=======
     
     FOR_VECTOR (i, updateCallbackSpec->FailedFiles)
->>>>>>> upstream/master
     {
       PrintNewLine();
       PrintError("Error for file", updateCallbackSpec->FailedFiles[i]);
     }
-<<<<<<< HEAD
-=======
     
->>>>>>> upstream/master
     if (updateCallbackSpec->FailedFiles.Size() != 0)
       return 1;
   }
@@ -1047,16 +844,10 @@ int MY_CDECL main(int numArgs, const char *args[])
     }
 
     bool listCommand;
-<<<<<<< HEAD
-    if (c == 'L')
-      listCommand = true;
-    else if (c == 'X')
-=======
     
     if (c == 'l')
       listCommand = true;
     else if (c == 'x')
->>>>>>> upstream/master
       listCommand = false;
     else
     {
@@ -1065,11 +856,7 @@ int MY_CDECL main(int numArgs, const char *args[])
     }
   
     CMyComPtr<IInArchive> archive;
-<<<<<<< HEAD
-    if (createObjectFunc(&CLSID_CFormat7z, &IID_IInArchive, (void **)&archive) != S_OK)
-=======
     if (createObjectFunc(&CLSID_Format, &IID_IInArchive, (void **)&archive) != S_OK)
->>>>>>> upstream/master
     {
       PrintError("Can not get class object");
       return 1;
@@ -1091,12 +878,8 @@ int MY_CDECL main(int numArgs, const char *args[])
       // openCallbackSpec->PasswordIsDefined = true;
       // openCallbackSpec->Password = L"1";
       
-<<<<<<< HEAD
-      if (archive->Open(file, 0, openCallback) != S_OK)
-=======
       const UInt64 scanSize = 1 << 23;
       if (archive->Open(file, &scanSize, openCallback) != S_OK)
->>>>>>> upstream/master
       {
         PrintError("Can not open file as archive", archiveName);
         return 1;
@@ -1114,12 +897,8 @@ int MY_CDECL main(int numArgs, const char *args[])
           // Get uncompressed size of file
           NCOM::CPropVariant prop;
           archive->GetProperty(i, kpidSize, &prop);
-<<<<<<< HEAD
-          UString s = ConvertPropVariantToString(prop);
-=======
           char s[32];
           ConvertPropVariantToShortString(prop, s);
->>>>>>> upstream/master
           PrintString(s);
           PrintString("  ");
         }
@@ -1127,15 +906,10 @@ int MY_CDECL main(int numArgs, const char *args[])
           // Get name of file
           NCOM::CPropVariant prop;
           archive->GetProperty(i, kpidPath, &prop);
-<<<<<<< HEAD
-          UString s = ConvertPropVariantToString(prop);
-          PrintString(s);
-=======
           if (prop.vt == VT_BSTR)
             PrintString(prop.bstrVal);
           else if (prop.vt != VT_EMPTY)
             PrintString("ERROR!");
->>>>>>> upstream/master
         }
         PrintNewLine();
       }
@@ -1149,9 +923,6 @@ int MY_CDECL main(int numArgs, const char *args[])
       extractCallbackSpec->PasswordIsDefined = false;
       // extractCallbackSpec->PasswordIsDefined = true;
       // extractCallbackSpec->Password = L"1";
-<<<<<<< HEAD
-      HRESULT result = archive->Extract(NULL, (UInt32)(Int32)(-1), false, extractCallback);
-=======
 
       /*
       const wchar_t *names[] =
@@ -1173,7 +944,6 @@ int MY_CDECL main(int numArgs, const char *args[])
 
       HRESULT result = archive->Extract(NULL, (UInt32)(Int32)(-1), false, extractCallback);
   
->>>>>>> upstream/master
       if (result != S_OK)
       {
         PrintError("Extract Error");
@@ -1181,9 +951,6 @@ int MY_CDECL main(int numArgs, const char *args[])
       }
     }
   }
-<<<<<<< HEAD
-=======
 
->>>>>>> upstream/master
   return 0;
 }

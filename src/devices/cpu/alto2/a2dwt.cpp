@@ -5,10 +5,6 @@
  *   Xerox AltoII display word task
  *
  *****************************************************************************/
-<<<<<<< HEAD
-#include "alto2cpu.h"
-
-=======
 #include "emu.h"
 #include "alto2cpu.h"
 
@@ -43,53 +39,26 @@
  *  DWTF:   :DWT;
  */
 
->>>>>>> upstream/master
 //! PROM a38 bit O1 is STOPWAKE' (stop DWT if bit is zero)
 #define FIFO_STOPWAKE(a38) (0 == (a38 & disp_a38_STOPWAKE) ? true : false)
 
 /**
-<<<<<<< HEAD
- * @brief block the display word task
-=======
  * @brief Block the display word task.
->>>>>>> upstream/master
  */
 void alto2_cpu_device::f1_early_dwt_block()
 {
 	m_dsp.dwt_blocks = true;
 
-<<<<<<< HEAD
-	/* clear the wakeup for the display word task */
-	m_task_wakeup &= ~(1 << m_task);
-	LOG((this,LOG_DWT,2,"    BLOCK %s\n", task_name(m_task)));
-
-	/* wakeup the display horizontal task, if it didn't block itself */
-=======
 	// Clear the wakeup for the display word task
 	m_task_wakeup &= ~(1 << m_task);
 	LOG((this,LOG_DWT,2,"    BLOCK %s\n", task_name(m_task)));
 
 	// Wakeup the display horizontal task, if it didn't block itself
->>>>>>> upstream/master
 	if (!m_dsp.dht_blocks)
 		m_task_wakeup |= 1 << task_dht;
 }
 
 /**
-<<<<<<< HEAD
- * @brief load the display data register
- */
-void alto2_cpu_device::f2_late_dwt_load_ddr()
-{
-	LOG((this,LOG_DWT,2,"    DDR<- BUS (%#o)\n", m_bus));
-	m_dsp.fifo[m_dsp.wa] = m_bus;
-	m_dsp.wa = (m_dsp.wa + 1) % ALTO2_DISPLAY_FIFO;
-	UINT8 a38 = m_disp_a38[m_dsp.ra * 16 + m_dsp.wa];
-	if (FIFO_STOPWAKE(a38))
-		m_task_wakeup &= ~(1 << task_dwt);
-	LOG((this,LOG_DWT,2, "   DWT push %04x into FIFO[%02o]%s\n",
-		m_bus, (m_dsp.wa - 1) & (ALTO2_DISPLAY_FIFO - 1),
-=======
  * @brief Load the display data register
  * Pushes the word on the bus to the display FIFO.
  * If the FIFO becomes full, the wakeup flag for task_dwt is reset.
@@ -104,17 +73,11 @@ void alto2_cpu_device::f2_late_load_ddr()
 		m_task_wakeup &= ~(1 << task_dwt);
 	LOG((this,LOG_DWT,2, "   DWT push %04x into FIFO[%02o]%s\n",
 		m_bus, (m_dsp.wa - 1) & (A2_DISP_FIFO - 1),
->>>>>>> upstream/master
 		FIFO_STOPWAKE(a38) ? " STOPWAKE" : ""));
 }
 
 void alto2_cpu_device::init_dwt(int task)
 {
-<<<<<<< HEAD
-	set_f1(task, f1_block,          &alto2_cpu_device::f1_early_dwt_block, 0);
-	set_f2(task, f2_dwt_load_ddr,   0, &alto2_cpu_device::f2_late_dwt_load_ddr);
-=======
->>>>>>> upstream/master
 }
 
 void alto2_cpu_device::exit_dwt()

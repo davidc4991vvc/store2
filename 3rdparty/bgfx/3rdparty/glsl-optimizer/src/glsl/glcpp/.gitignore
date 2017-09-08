@@ -1,10 +1,5 @@
 glcpp
 glcpp-parse.output
-<<<<<<< HEAD
-glcpp-parse.c
-glcpp-parse.h
-=======
->>>>>>> upstream/master
 
 *.o
 *.lo

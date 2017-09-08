@@ -152,14 +152,9 @@ Notes:
 *********************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "machine/nvram.h"
-#include "cpu/e132xs/e132xs.h"
-=======
 #include "cpu/e132xs/e132xs.h"
 #include "machine/nvram.h"
 #include "screen.h"
->>>>>>> upstream/master
 
 
 class dgpix_state : public driver_device
@@ -173,21 +168,12 @@ public:
 	required_device<cpu_device> m_maincpu;
 	required_ioport m_vblank;
 
-<<<<<<< HEAD
-	UINT32 *m_vram;
-	int m_vbuffer;
-	int m_flash_roms;
-	int m_old_vbuf;
-	UINT32 m_flash_cmd;
-	INT32 m_first_offset;
-=======
 	std::unique_ptr<uint32_t[]> m_vram;
 	int m_vbuffer;
 	int m_flash_roms;
 	int m_old_vbuf;
 	uint32_t m_flash_cmd;
 	int32_t m_first_offset;
->>>>>>> upstream/master
 
 	DECLARE_READ32_MEMBER(flash_r);
 	DECLARE_WRITE32_MEMBER(flash_w);
@@ -204,29 +190,17 @@ public:
 	DECLARE_DRIVER_INIT(kdynastg);
 	DECLARE_DRIVER_INIT(fmaniac3);
 
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void machine_reset();
-	virtual void video_start();
-
-	UINT32 screen_update_dgpix(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
 	virtual void video_start() override;
 
 	uint32_t screen_update_dgpix(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 };
 
 
 READ32_MEMBER(dgpix_state::flash_r)
 {
-<<<<<<< HEAD
-	UINT32 *ROM = (UINT32 *)memregion("flash")->base();
-=======
 	uint32_t *ROM = (uint32_t *)memregion("flash")->base();
->>>>>>> upstream/master
 
 	if(offset >= (0x2000000 - m_flash_roms * 0x400000) / 4)
 	{
@@ -263,11 +237,7 @@ WRITE32_MEMBER(dgpix_state::flash_w)
 		if(data == 0xd0d00000)
 		{
 			// point to game settings
-<<<<<<< HEAD
-			UINT8 *rom = (UINT8 *)memregion("flash")->base() + offset*4;
-=======
 			uint8_t *rom = (uint8_t *)memregion("flash")->base() + offset*4;
->>>>>>> upstream/master
 
 			// erase one block
 			memset(rom, 0xff, 0x10000);
@@ -285,11 +255,7 @@ WRITE32_MEMBER(dgpix_state::flash_w)
 		}
 		else
 		{
-<<<<<<< HEAD
-			UINT16 *rom = (UINT16 *)memregion("flash")->base();
-=======
 			uint16_t *rom = (uint16_t *)memregion("flash")->base();
->>>>>>> upstream/master
 
 			// write game settings
 
@@ -312,11 +278,7 @@ WRITE32_MEMBER(dgpix_state::flash_w)
 
 WRITE32_MEMBER(dgpix_state::vram_w)
 {
-<<<<<<< HEAD
-	UINT32 *dest = &m_vram[offset+(0x40000/4)*m_vbuffer];
-=======
 	uint32_t *dest = &m_vram[offset+(0x40000/4)*m_vbuffer];
->>>>>>> upstream/master
 
 	if (mem_mask == 0xffffffff)
 	{
@@ -348,13 +310,8 @@ WRITE32_MEMBER(dgpix_state::vbuffer_w)
 
 WRITE32_MEMBER(dgpix_state::coin_w)
 {
-<<<<<<< HEAD
-	coin_counter_w(machine(), 0, data & 1);
-	coin_counter_w(machine(), 1, data & 2);
-=======
 	machine().bookkeeping().coin_counter_w(0, data & 1);
 	machine().bookkeeping().coin_counter_w(1, data & 2);
->>>>>>> upstream/master
 }
 
 READ32_MEMBER(dgpix_state::vblank_r)
@@ -420,34 +377,20 @@ INPUT_PORTS_END
 
 void dgpix_state::video_start()
 {
-<<<<<<< HEAD
-	m_vram = auto_alloc_array(machine(), UINT32, 0x40000*2/4);
-
-	save_pointer(NAME(m_vram), 0x40000*2/4);
-}
-
-UINT32 dgpix_state::screen_update_dgpix(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 	m_vram = std::make_unique<uint32_t[]>(0x40000*2/4);
 
 	save_pointer(NAME(m_vram.get()), 0x40000*2/4);
 }
 
 uint32_t dgpix_state::screen_update_dgpix(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int y;
 
 	for (y = 0; y < 240; y++)
 	{
 		int x;
-<<<<<<< HEAD
-		UINT32 *src = &m_vram[(m_vbuffer ? 0 : 0x10000) | (y << 8)];
-		UINT16 *dest = &bitmap.pix16(y);
-=======
 		uint32_t *src = &m_vram[(m_vbuffer ? 0 : 0x10000) | (y << 8)];
 		uint16_t *dest = &bitmap.pix16(y);
->>>>>>> upstream/master
 
 		for (x = 0; x < 320; x += 2)
 		{
@@ -479,11 +422,7 @@ void dgpix_state::machine_reset()
 }
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( dgpix, dgpix_state )
-=======
 static MACHINE_CONFIG_START( dgpix )
->>>>>>> upstream/master
 	MCFG_CPU_ADD("maincpu", E132XT, 20000000*4) /* 4x internal multiplier */
 	MCFG_CPU_PROGRAM_MAP(cpu_map)
 	MCFG_CPU_IO_MAP(io_map)
@@ -666,11 +605,7 @@ ROM_END
 
 DRIVER_INIT_MEMBER(dgpix_state,elfin)
 {
-<<<<<<< HEAD
-	UINT8 *rom = (UINT8 *)memregion("flash")->base() + 0x1c00000;
-=======
 	uint8_t *rom = (uint8_t *)memregion("flash")->base() + 0x1c00000;
->>>>>>> upstream/master
 
 	rom[BYTE4_XOR_BE(0x3a9e94)] = 3;
 	rom[BYTE4_XOR_BE(0x3a9e95)] = 0;
@@ -684,11 +619,7 @@ DRIVER_INIT_MEMBER(dgpix_state,elfin)
 
 DRIVER_INIT_MEMBER(dgpix_state,jumpjump)
 {
-<<<<<<< HEAD
-	UINT8 *rom = (UINT8 *)memregion("flash")->base() + 0x1c00000;
-=======
 	uint8_t *rom = (uint8_t *)memregion("flash")->base() + 0x1c00000;
->>>>>>> upstream/master
 
 	rom[BYTE4_XOR_BE(0x3a829a)] = 3;
 	rom[BYTE4_XOR_BE(0x3a829b)] = 0;
@@ -702,11 +633,7 @@ DRIVER_INIT_MEMBER(dgpix_state,jumpjump)
 
 DRIVER_INIT_MEMBER(dgpix_state,xfiles)
 {
-<<<<<<< HEAD
-	UINT8 *rom = (UINT8 *)memregion("flash")->base() + 0x1c00000;
-=======
 	uint8_t *rom = (uint8_t *)memregion("flash")->base() + 0x1c00000;
->>>>>>> upstream/master
 
 	rom[BYTE4_XOR_BE(0x3a9a2a)] = 3;
 	rom[BYTE4_XOR_BE(0x3a9a2b)] = 0;
@@ -720,11 +647,7 @@ DRIVER_INIT_MEMBER(dgpix_state,xfiles)
 
 DRIVER_INIT_MEMBER(dgpix_state,xfilesk)
 {
-<<<<<<< HEAD
-	UINT8 *rom = (UINT8 *)memregion("flash")->base() + 0x1c00000;
-=======
 	uint8_t *rom = (uint8_t *)memregion("flash")->base() + 0x1c00000;
->>>>>>> upstream/master
 
 	rom[BYTE4_XOR_BE(0x3aa92e)] = 3;
 	rom[BYTE4_XOR_BE(0x3aa92f)] = 0;
@@ -741,11 +664,7 @@ DRIVER_INIT_MEMBER(dgpix_state,xfilesk)
 
 DRIVER_INIT_MEMBER(dgpix_state,kdynastg)
 {
-<<<<<<< HEAD
-	UINT8 *rom = (UINT8 *)memregion("flash")->base() + 0x1c00000;
-=======
 	uint8_t *rom = (uint8_t *)memregion("flash")->base() + 0x1c00000;
->>>>>>> upstream/master
 
 	rom[BYTE4_XOR_BE(0x3aaa10)] = 3; // 129f0 - nopped call
 	rom[BYTE4_XOR_BE(0x3aaa11)] = 0;

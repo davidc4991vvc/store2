@@ -2,11 +2,7 @@
 // copyright-holders:David Haywood
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "includes/md_cons.h"
-=======
 #include "includes/megadriv.h"
->>>>>>> upstream/master
 #include "sound/sn76496.h"
 
 #include "imagedev/chd_cd.h"
@@ -29,17 +25,10 @@ READ8_MEMBER(md_cons_state::mess_md_io_read_data_port)
 {
 	int portnum = offset;
 
-<<<<<<< HEAD
-	UINT8 retdata;
-	int controller;
-	UINT8 helper_6b = (m_megadrive_io_ctrl_regs[portnum] & 0x3f) | 0xc0; // bits 6 & 7 always come from megadrive_io_data_regs
-	UINT8 helper_3b = (m_megadrive_io_ctrl_regs[portnum] & 0x7f) | 0x80; // bit 7 always comes from megadrive_io_data_regs
-=======
 	uint8_t retdata;
 	int controller;
 	uint8_t helper_6b = (m_megadrive_io_ctrl_regs[portnum] & 0x3f) | 0xc0; // bits 6 & 7 always come from megadrive_io_data_regs
 	uint8_t helper_3b = (m_megadrive_io_ctrl_regs[portnum] & 0x7f) | 0x80; // bit 7 always comes from megadrive_io_data_regs
->>>>>>> upstream/master
 
 	switch (portnum)
 	{
@@ -105,11 +94,7 @@ READ8_MEMBER(md_cons_state::mess_md_io_read_data_port)
 	/* Otherwise it's a 3 buttons Joypad */
 	else
 	{
-<<<<<<< HEAD
-		UINT8 svp_test = 0;
-=======
 		uint8_t svp_test = 0;
->>>>>>> upstream/master
 		if (m_cart)
 			svp_test = m_cart->read_test();
 
@@ -281,11 +266,7 @@ MACHINE_START_MEMBER(md_cons_state, md_common)
 
 	// setup timers for 6 button pads
 	for (int i = 0; i < 3; i++)
-<<<<<<< HEAD
-		m_io_timeout[i] = machine().scheduler().timer_alloc(timer_expired_delegate(FUNC(md_base_state::io_timeout_timer_callback),this), (void*)(FPTR)i);
-=======
 		m_io_timeout[i] = machine().scheduler().timer_alloc(timer_expired_delegate(FUNC(md_base_state::io_timeout_timer_callback),this), (void*)(uintptr_t)i);
->>>>>>> upstream/master
 
 	m_vdp->stop_timers();
 
@@ -293,8 +274,6 @@ MACHINE_START_MEMBER(md_cons_state, md_common)
 		m_cart->save_nvram();
 }
 
-<<<<<<< HEAD
-=======
 void md_cons_state::install_cartslot()
 {
 	// for now m_cartslot is only in MD and not 32x and SegaCD
@@ -335,7 +314,6 @@ void md_cons_state::install_tmss()
 
 }
 
->>>>>>> upstream/master
 MACHINE_START_MEMBER(md_cons_state, ms_megadriv)
 {
 	MACHINE_START_CALL_MEMBER( md_common );
@@ -344,13 +322,6 @@ MACHINE_START_MEMBER(md_cons_state, ms_megadriv)
 	if (m_cart->get_type() == SEGA_SVP)
 		m_vdp->set_dma_delay(2);
 
-<<<<<<< HEAD
-	// for now m_cartslot is only in MD and not 32x and SegaCD
-	m_maincpu->space(AS_PROGRAM).install_readwrite_handler(0x000000, 0x7fffff, read16_delegate(FUNC(base_md_cart_slot_device::read),(base_md_cart_slot_device*)m_cart), write16_delegate(FUNC(base_md_cart_slot_device::write),(base_md_cart_slot_device*)m_cart));
-	m_maincpu->space(AS_PROGRAM).install_readwrite_handler(0xa13000, 0xa130ff, read16_delegate(FUNC(base_md_cart_slot_device::read_a13),(base_md_cart_slot_device*)m_cart), write16_delegate(FUNC(base_md_cart_slot_device::write_a13),(base_md_cart_slot_device*)m_cart));
-	m_maincpu->space(AS_PROGRAM).install_readwrite_handler(0xa15000, 0xa150ff, read16_delegate(FUNC(base_md_cart_slot_device::read_a15),(base_md_cart_slot_device*)m_cart), write16_delegate(FUNC(base_md_cart_slot_device::write_a15),(base_md_cart_slot_device*)m_cart));
-	m_maincpu->space(AS_PROGRAM).install_write_handler(0xa14000, 0xa14003, write16_delegate(FUNC(base_md_cart_slot_device::write_tmss_bank),(base_md_cart_slot_device*)m_cart));
-=======
 	if (m_tmss)
 	{
 		install_tmss();
@@ -361,7 +332,6 @@ MACHINE_START_MEMBER(md_cons_state, ms_megadriv)
 	}
 
 
->>>>>>> upstream/master
 }
 
 MACHINE_START_MEMBER(md_cons_state, ms_megacd)
@@ -384,15 +354,9 @@ MACHINE_RESET_MEMBER(md_cons_state, ms_megadriv)
 }
 
 // same as screen_eof_megadriv but with addition of 32x and SegaCD/MegaCD pieces
-<<<<<<< HEAD
-void md_cons_state::screen_eof_console(screen_device &screen, bool state)
-{
-	if (m_io_reset && (m_io_reset->read() & 0x01))
-=======
 WRITE_LINE_MEMBER(md_cons_state::screen_vblank_console)
 {
 	if (m_io_reset.read_safe(0) & 0x01)
->>>>>>> upstream/master
 		m_maincpu->set_input_line(INPUT_LINE_RESET, PULSE_LINE);
 
 	// rising edge
@@ -405,42 +369,21 @@ WRITE_LINE_MEMBER(md_cons_state::screen_vblank_console)
 			m_vdp->m_megadriv_scanline_timer->adjust(attotime::zero);
 
 			if (m_32x)
-<<<<<<< HEAD
-			{
-				m_32x->m_32x_vblank_flag = 0;
-				m_32x->m_32x_hcount_compare_val = -1;
-				m_32x->update_total_scanlines(mode3);
-			}
-=======
 				m_32x->screen_eof(mode3);
 
->>>>>>> upstream/master
 			if (m_segacd)
 				m_segacd->update_total_scanlines(mode3);
 		}
 	}
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( ms_megadriv, md_cons_state )
-=======
 static MACHINE_CONFIG_START( ms_megadriv )
->>>>>>> upstream/master
 	MCFG_FRAGMENT_ADD( md_ntsc )
 
 	MCFG_MACHINE_START_OVERRIDE(md_cons_state, ms_megadriv)
 	MCFG_MACHINE_RESET_OVERRIDE(md_cons_state, ms_megadriv)
 
 	MCFG_SCREEN_MODIFY("megadriv")
-<<<<<<< HEAD
-	MCFG_SCREEN_VBLANK_DRIVER(md_cons_state, screen_eof_console)
-
-	MCFG_MD_CARTRIDGE_ADD("mdslot", md_cart, NULL)
-	MCFG_SOFTWARE_LIST_ADD("cart_list","megadriv")
-MACHINE_CONFIG_END
-
-static MACHINE_CONFIG_START( ms_megadpal, md_cons_state )
-=======
 	MCFG_SCREEN_VBLANK_CALLBACK(WRITELINE(md_cons_state, screen_vblank_console))
 
 	MCFG_MD_CARTRIDGE_ADD("mdslot", md_cart, nullptr)
@@ -448,23 +391,12 @@ static MACHINE_CONFIG_START( ms_megadpal, md_cons_state )
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_START( ms_megadpal )
->>>>>>> upstream/master
 	MCFG_FRAGMENT_ADD( md_pal )
 
 	MCFG_MACHINE_START_OVERRIDE(md_cons_state, ms_megadriv)
 	MCFG_MACHINE_RESET_OVERRIDE(md_cons_state, ms_megadriv)
 
 	MCFG_SCREEN_MODIFY("megadriv")
-<<<<<<< HEAD
-	MCFG_SCREEN_VBLANK_DRIVER(md_cons_state, screen_eof_console)
-
-	MCFG_MD_CARTRIDGE_ADD("mdslot", md_cart, NULL)
-	MCFG_SOFTWARE_LIST_ADD("cart_list","megadriv")
-MACHINE_CONFIG_END
-
-
-
-=======
 	MCFG_SCREEN_VBLANK_CALLBACK(WRITELINE(md_cons_state, screen_vblank_console))
 
 	MCFG_MD_CARTRIDGE_ADD("mdslot", md_cart, nullptr)
@@ -488,7 +420,6 @@ static MACHINE_CONFIG_START( dcat16_megadriv )
 //  MCFG_MD_CARTRIDGE_ADD("mdslot", md_cart, nullptr)
 //  MCFG_SOFTWARE_LIST_ADD("cart_list","megadriv")
 MACHINE_CONFIG_END
->>>>>>> upstream/master
 
 /*************************************
  *
@@ -514,8 +445,6 @@ ROM_START(megadrij)
 	ROM_REGION( 0x10000, "soundcpu", ROMREGION_ERASEFF)
 ROM_END
 
-<<<<<<< HEAD
-=======
 ROM_START(genesis_tmss)
 	ROM_REGION(MD_CPU_REGION_SIZE, "maincpu", ROMREGION_ERASEFF)
 	ROM_REGION( 0x10000, "soundcpu", ROMREGION_ERASEFF)
@@ -530,7 +459,6 @@ ROM_START(dcat16)
 
 	ROM_REGION( 0x10000, "soundcpu", ROMREGION_ERASEFF)
 ROM_END
->>>>>>> upstream/master
 
 /*************************************
  *
@@ -551,11 +479,7 @@ DRIVER_INIT_MEMBER(md_cons_state, genesis)
 
 	if (m_32x)
 	{
-<<<<<<< HEAD
-		m_32x->set_32x_pal(FALSE);
-=======
 		m_32x->set_32x_pal(false);
->>>>>>> upstream/master
 		m_32x->set_framerate(60);
 		m_32x->set_total_scanlines(262);
 	}
@@ -577,11 +501,7 @@ DRIVER_INIT_MEMBER(md_cons_state, md_eur)
 
 	if (m_32x)
 	{
-<<<<<<< HEAD
-		m_32x->set_32x_pal(TRUE);
-=======
 		m_32x->set_32x_pal(true);
->>>>>>> upstream/master
 		m_32x->set_framerate(50);
 		m_32x->set_total_scanlines(313);
 	}
@@ -603,11 +523,7 @@ DRIVER_INIT_MEMBER(md_cons_state, md_jpn)
 
 	if (m_32x)
 	{
-<<<<<<< HEAD
-		m_32x->set_32x_pal(FALSE);
-=======
 		m_32x->set_32x_pal(false);
->>>>>>> upstream/master
 		m_32x->set_framerate(60);
 		m_32x->set_total_scanlines(262);
 	}
@@ -626,15 +542,6 @@ DRIVER_INIT_MEMBER(md_cons_state, md_jpn)
 
 DEVICE_IMAGE_LOAD_MEMBER( md_cons_state, _32x_cart )
 {
-<<<<<<< HEAD
-	UINT32 length;
-	dynamic_buffer temp_copy;
-	UINT16 *ROM16;
-	UINT32 *ROM32;
-	int i;
-
-	if (image.software_entry() == NULL)
-=======
 	uint32_t length;
 	std::vector<uint8_t> temp_copy;
 	uint16_t *ROM16;
@@ -642,7 +549,6 @@ DEVICE_IMAGE_LOAD_MEMBER( md_cons_state, _32x_cart )
 	int i;
 
 	if (!image.loaded_through_softlist())
->>>>>>> upstream/master
 	{
 		length = image.length();
 		temp_copy.resize(length);
@@ -657,25 +563,6 @@ DEVICE_IMAGE_LOAD_MEMBER( md_cons_state, _32x_cart )
 
 	/* Copy the cart image in the locations the driver expects */
 	// Notice that, by using pick_integer, we are sure the code works on both LE and BE machines
-<<<<<<< HEAD
-	ROM16 = (UINT16 *) memregion("gamecart")->base();
-	for (i = 0; i < length; i += 2)
-		ROM16[i / 2] = pick_integer_be(&temp_copy[0], i, 2);
-
-	ROM32 = (UINT32 *) memregion("gamecart_sh2")->base();
-	for (i = 0; i < length; i += 4)
-		ROM32[i / 4] = pick_integer_be(&temp_copy[0], i, 4);
-
-	ROM16 = (UINT16 *) memregion("maincpu")->base();
-	for (i = 0x00; i < length; i += 2)
-		ROM16[i / 2] = pick_integer_be(&temp_copy[0], i, 2);
-
-	return IMAGE_INIT_PASS;
-}
-
-
-void md_cons_state::_32x_scanline_callback(int x, UINT32 priority, UINT16 &lineptr)
-=======
 	ROM16 = (uint16_t *) memregion("gamecart")->base();
 	for (i = 0; i < length; i += 2)
 		ROM16[i / 2] = pick_integer_be(&temp_copy[0], i, 2);
@@ -693,7 +580,6 @@ void md_cons_state::_32x_scanline_callback(int x, UINT32 priority, UINT16 &linep
 
 
 void md_cons_state::_32x_scanline_callback(int x, uint32_t priority, uint16_t &lineptr)
->>>>>>> upstream/master
 {
 	if (m_32x)
 		m_32x->_32x_render_videobuffer_to_screenbuffer(x, priority, lineptr);
@@ -711,11 +597,7 @@ void md_cons_state::_32x_scanline_helper_callback(int scanline)
 		m_32x->_32x_render_videobuffer_to_screenbuffer_helper(scanline);
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( genesis_32x, md_cons_state )
-=======
 static MACHINE_CONFIG_START( genesis_32x )
->>>>>>> upstream/master
 	MCFG_FRAGMENT_ADD( md_ntsc )
 
 	MCFG_MACHINE_START_OVERRIDE(md_cons_state, md_common)
@@ -730,11 +612,7 @@ static MACHINE_CONFIG_START( genesis_32x )
 	MCFG_SEGA_32X_PALETTE("gen_vdp:palette")
 
 	MCFG_SCREEN_MODIFY("megadriv")
-<<<<<<< HEAD
-	MCFG_SCREEN_VBLANK_DRIVER(md_cons_state, screen_eof_console)
-=======
 	MCFG_SCREEN_VBLANK_CALLBACK(WRITELINE(md_cons_state, screen_vblank_console))
->>>>>>> upstream/master
 
 	// we need to remove and re-add the sound system because the balance is different
 	// due to MAME / MESS having severe issues if the dac output is > 0.40? (sound is corrupted even if DAC is slient?!)
@@ -760,11 +638,7 @@ static MACHINE_CONFIG_START( genesis_32x )
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( mdj_32x, md_cons_state )
-=======
 static MACHINE_CONFIG_START( mdj_32x )
->>>>>>> upstream/master
 	MCFG_FRAGMENT_ADD( md_ntsc )
 
 	MCFG_MACHINE_START_OVERRIDE(md_cons_state, md_common)
@@ -779,11 +653,7 @@ static MACHINE_CONFIG_START( mdj_32x )
 	MCFG_SEGA_32X_PALETTE("gen_vdp:palette")
 
 	MCFG_SCREEN_MODIFY("megadriv")
-<<<<<<< HEAD
-	MCFG_SCREEN_VBLANK_DRIVER(md_cons_state, screen_eof_console)
-=======
 	MCFG_SCREEN_VBLANK_CALLBACK(WRITELINE(md_cons_state, screen_vblank_console))
->>>>>>> upstream/master
 
 	// we need to remove and re-add the sound system because the balance is different
 	// due to MAME / MESS having severe issues if the dac output is > 0.40? (sound is corrupted even if DAC is slient?!)
@@ -809,11 +679,7 @@ static MACHINE_CONFIG_START( mdj_32x )
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( md_32x, md_cons_state )
-=======
 static MACHINE_CONFIG_START( md_32x )
->>>>>>> upstream/master
 	MCFG_FRAGMENT_ADD( md_pal )
 
 	MCFG_MACHINE_START_OVERRIDE(md_cons_state, md_common)
@@ -828,11 +694,7 @@ static MACHINE_CONFIG_START( md_32x )
 	MCFG_SEGA_32X_PALETTE("gen_vdp:palette")
 
 	MCFG_SCREEN_MODIFY("megadriv")
-<<<<<<< HEAD
-	MCFG_SCREEN_VBLANK_DRIVER(md_cons_state, screen_eof_console)
-=======
 	MCFG_SCREEN_VBLANK_CALLBACK(WRITELINE(md_cons_state, screen_vblank_console))
->>>>>>> upstream/master
 
 	// we need to remove and re-add the sound system because the balance is different
 	// due to MAME / MESS having severe issues if the dac output is > 0.40? (sound is corrupted even if DAC is slient?!)
@@ -890,22 +752,14 @@ ROM_END
 
 /****************************************** SegaCD emulation ****************************************/
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( genesis_scd, md_cons_state )
-=======
 static MACHINE_CONFIG_START( genesis_scd )
->>>>>>> upstream/master
 	MCFG_FRAGMENT_ADD( md_ntsc )
 
 	MCFG_MACHINE_START_OVERRIDE(md_cons_state, ms_megacd)
 	MCFG_MACHINE_RESET_OVERRIDE(md_cons_state, ms_megadriv)
 
 	MCFG_SCREEN_MODIFY("megadriv")
-<<<<<<< HEAD
-	MCFG_SCREEN_VBLANK_DRIVER(md_cons_state, screen_eof_console)
-=======
 	MCFG_SCREEN_VBLANK_CALLBACK(WRITELINE(md_cons_state, screen_vblank_console))
->>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("segacd", SEGA_SEGACD_US, 0)
 	MCFG_GFX_PALETTE("gen_vdp:palette")
@@ -916,22 +770,14 @@ static MACHINE_CONFIG_START( genesis_scd )
 	MCFG_SOFTWARE_LIST_ADD("cd_list","segacd")
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( md_scd, md_cons_state )
-=======
 static MACHINE_CONFIG_START( md_scd )
->>>>>>> upstream/master
 	MCFG_FRAGMENT_ADD( md_pal )
 
 	MCFG_MACHINE_START_OVERRIDE(md_cons_state, ms_megacd)
 	MCFG_MACHINE_RESET_OVERRIDE(md_cons_state, ms_megadriv)
 
 	MCFG_SCREEN_MODIFY("megadriv")
-<<<<<<< HEAD
-	MCFG_SCREEN_VBLANK_DRIVER(md_cons_state, screen_eof_console)
-=======
 	MCFG_SCREEN_VBLANK_CALLBACK(WRITELINE(md_cons_state, screen_vblank_console))
->>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("segacd", SEGA_SEGACD_EUROPE, 0)
 	MCFG_GFX_PALETTE("gen_vdp:palette")
@@ -942,22 +788,14 @@ static MACHINE_CONFIG_START( md_scd )
 	MCFG_SOFTWARE_LIST_ADD("cd_list","megacd")
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( mdj_scd, md_cons_state )
-=======
 static MACHINE_CONFIG_START( mdj_scd )
->>>>>>> upstream/master
 	MCFG_FRAGMENT_ADD( md_ntsc )
 
 	MCFG_MACHINE_START_OVERRIDE(md_cons_state, ms_megacd)
 	MCFG_MACHINE_RESET_OVERRIDE(md_cons_state, ms_megadriv)
 
 	MCFG_SCREEN_MODIFY("megadriv")
-<<<<<<< HEAD
-	MCFG_SCREEN_VBLANK_DRIVER(md_cons_state, screen_eof_console)
-=======
 	MCFG_SCREEN_VBLANK_CALLBACK(WRITELINE(md_cons_state, screen_vblank_console))
->>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("segacd", SEGA_SEGACD_JAPAN, 0)
 	MCFG_GFX_PALETTE("gen_vdp:palette")
@@ -1161,11 +999,7 @@ ROM_START( 32x_scd )
 	ROM_LOAD( "mpr-15764-t.bin", 0x000000,  0x020000, CRC(2e49d72c) SHA1(328a3228c29fba244b9db2055adc1ec4f7a87e6b) )
 
 	ROM_REGION32_BE( 0x400000, "gamecart_sh2", 0 ) /* Copy for the SH2 */
-<<<<<<< HEAD
-	ROM_COPY( "gamecart", 0x0, 0x0, 0x400000)
-=======
 	ROM_COPY( "gamecart", 0x000000, 0x0, 0x400000)
->>>>>>> upstream/master
 
 	ROM_REGION16_BE( 0x400000, "32x_68k_bios", 0 ) /* 68000 Code */
 	ROM_LOAD( "32x_g_bios.bin", 0x000000,  0x000100, CRC(5c12eae8) SHA1(dbebd76a448447cb6e524ac3cb0fd19fc065d944) )
@@ -1184,11 +1018,7 @@ ROM_START( 32x_mcd )
 	ROM_LOAD( "megacd_model1_bios_1_00_e.bin", 0x000000,  0x020000, CRC(529ac15a) SHA1(f891e0ea651e2232af0c5c4cb46a0cae2ee8f356) )
 
 	ROM_REGION32_BE( 0x400000, "gamecart_sh2", 0 ) /* Copy for the SH2 */
-<<<<<<< HEAD
-	ROM_COPY( "gamecart", 0x0, 0x0, 0x400000)
-=======
 	ROM_COPY( "gamecart", 0x000000, 0x0, 0x400000)
->>>>>>> upstream/master
 
 	ROM_REGION16_BE( 0x400000, "32x_68k_bios", 0 ) /* 68000 Code */
 	ROM_LOAD( "32x_g_bios.bin", 0x000000,  0x000100, CRC(5c12eae8) SHA1(dbebd76a448447cb6e524ac3cb0fd19fc065d944) )
@@ -1221,11 +1051,7 @@ ROM_START( 32x_mcdj )
 	ROMX_LOAD( "epr-14088e.bin", 0x000000,  0x020000, CRC(9d2da8f2) SHA1(4846f448160059a7da0215a5df12ca160f26dd69), ROM_BIOS(5) )
 
 	ROM_REGION32_BE( 0x400000, "gamecart_sh2", 0 ) /* Copy for the SH2 */
-<<<<<<< HEAD
-	ROM_COPY( "gamecart", 0x0, 0x0, 0x400000)
-=======
 	ROM_COPY( "gamecart", 0x000000, 0x0, 0x400000)
->>>>>>> upstream/master
 
 	ROM_REGION16_BE( 0x400000, "32x_68k_bios", 0 ) /* 68000 Code */
 	ROM_LOAD( "32x_g_bios.bin", 0x000000,  0x000100, CRC(5c12eae8) SHA1(dbebd76a448447cb6e524ac3cb0fd19fc065d944) )
@@ -1250,13 +1076,10 @@ CONS( 1989, genesis,    0,         0,      ms_megadriv,     md, md_cons_state,  
 CONS( 1990, megadriv,   genesis,   0,      ms_megadpal,     md, md_cons_state,     md_eur,    "Sega",   "Mega Drive (Europe, PAL)", MACHINE_SUPPORTS_SAVE )
 CONS( 1988, megadrij,   genesis,   0,      ms_megadriv,     md, md_cons_state,     md_jpn,    "Sega",   "Mega Drive (Japan, NTSC)", MACHINE_SUPPORTS_SAVE )
 
-<<<<<<< HEAD
-=======
 // 1990+ models had the TMSS security chip, leave this as a clone, it reduces compatibility and nothing more.
 CONS( 1990, genesis_tmss, genesis, 0,      genesis_tmss,    md, md_cons_state,     genesis,   "Sega",   "Genesis (USA, NTSC, with TMSS chip)",  MACHINE_SUPPORTS_SAVE )
 
 
->>>>>>> upstream/master
 // the 32X plugged in the cart slot, games plugged into the 32x.  Maybe it should be handled as an expansion device?
 CONS( 1994, 32x,        0,         0,      genesis_32x,     md, md_cons_state,     genesis,   "Sega",   "Genesis with 32X (USA, NTSC)", MACHINE_NOT_WORKING )
 CONS( 1994, 32xe,       32x,       0,      md_32x,          md, md_cons_state,     md_eur,    "Sega",   "Mega Drive with 32X (Europe, PAL)", MACHINE_NOT_WORKING )
@@ -1283,9 +1106,6 @@ CONS( 1994, multmega,   cdx,       0,      md_scd,          md, md_cons_state,  
 CONS( 1994, 32x_scd,    0,         0,      genesis_32x_scd, md, md_cons_state,     genesis,   "Sega",   "Sega CD with 32X (USA, NTSC)", MACHINE_NOT_WORKING )
 CONS( 1995, 32x_mcd,    32x_scd,   0,      md_32x_scd,      md, md_cons_state,     md_eur,    "Sega",   "Mega-CD with 32X (Europe, PAL)", MACHINE_NOT_WORKING )
 CONS( 1994, 32x_mcdj,   32x_scd,   0,      mdj_32x_scd,     md, md_cons_state,     md_jpn,    "Sega",   "Mega-CD with 32X (Japan, NTSC)", MACHINE_NOT_WORKING )
-<<<<<<< HEAD
-=======
 
 /* clone hardware - not sure if this hardware is running some kind of emulator, or enhanced MD clone, or just custom banking */
 CONS( 200?, dcat16,    0,         0,      dcat16_megadriv,     md, md_cons_state,     genesis,   "Firecore",   "D-CAT16 (Mega Drive handheld)",  MACHINE_NOT_WORKING )
->>>>>>> upstream/master

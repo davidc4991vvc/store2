@@ -3,17 +3,6 @@
 #ifndef __ARCHIVE_COMMAND_LINE_H
 #define __ARCHIVE_COMMAND_LINE_H
 
-<<<<<<< HEAD
-#include "Common/CommandLineParser.h"
-#include "Common/Wildcard.h"
-
-#include "Extract.h"
-#include "Update.h"
-
-struct CArchiveCommandLineException: public AString
-{
-  CArchiveCommandLineException(const char *errorMessage): AString(errorMessage) {}
-=======
 #include "../../../Common/CommandLineParser.h"
 #include "../../../Common/Wildcard.h"
 
@@ -24,7 +13,6 @@ struct CArchiveCommandLineException: public AString
 struct CArcCmdLineException: public UString
 {
   CArcCmdLineException(const char *a, const wchar_t *u = NULL);
->>>>>>> upstream/master
 };
 
 namespace NCommandType { enum EEnum
@@ -34,37 +22,6 @@ namespace NCommandType { enum EEnum
   kDelete,
   kTest,
   kExtract,
-<<<<<<< HEAD
-  kFullExtract,
-  kList,
-  kBenchmark,
-  kInfo
-};}
-
-namespace NRecursedType { enum EEnum
-{
-  kRecursed,
-  kWildCardOnlyRecursed,
-  kNonRecursed
-};}
-
-struct CArchiveCommand
-{
-  NCommandType::EEnum CommandType;
-  bool IsFromExtractGroup() const;
-  bool IsFromUpdateGroup() const;
-  bool IsTestMode() const { return CommandType == NCommandType::kTest; }
-  NExtract::NPathMode::EEnum GetPathMode() const;
-};
-
-struct CArchiveCommandLineOptions
-{
-  bool HelpMode;
-
-  #ifdef _WIN32
-  bool LargePages;
-  #endif
-=======
   kExtractFull,
   kList,
   kBenchmark,
@@ -97,7 +54,6 @@ struct CArcCmdLineOptions
   bool LargePages;
   bool CaseSensitiveChange;
   bool CaseSensitive;
->>>>>>> upstream/master
 
   bool IsInTerminal;
   bool IsStdOutTerminal;
@@ -108,16 +64,9 @@ struct CArcCmdLineOptions
 
   bool YesToAll;
   bool ShowDialog;
-<<<<<<< HEAD
-  // NWildcard::CCensor ArchiveWildcardCensor;
-  NWildcard::CCensor WildcardCensor;
-
-  CArchiveCommand Command;
-=======
   NWildcard::CCensor Censor;
 
   CArcCommand Command;
->>>>>>> upstream/master
   UString ArchiveName;
 
   #ifndef _NO_CRYPTO
@@ -126,20 +75,6 @@ struct CArcCmdLineOptions
   #endif
 
   bool TechMode;
-<<<<<<< HEAD
-  // Extract
-  bool CalcCrc;
-  bool AppendName;
-  FString OutputDir;
-  NExtract::NOverwriteMode::EEnum OverwriteMode;
-  UStringVector ArchivePathsSorted;
-  UStringVector ArchivePathsFullSorted;
-  CObjectVector<CProperty> Properties;
-
-  CUpdateOptions UpdateOptions;
-  UString ArcType;
-  bool EnablePercents;
-=======
   bool ShowTime;
   
   UStringVector HashMethods;
@@ -170,28 +105,10 @@ struct CArcCmdLineOptions
   unsigned LogLevel;
 
   // bool IsOutAllowed() const { return Number_for_Out != k_OutStream_disabled; }
->>>>>>> upstream/master
 
   // Benchmark
   UInt32 NumIterations;
 
-<<<<<<< HEAD
-  CArchiveCommandLineOptions(): StdInMode(false), StdOutMode(false) {};
-};
-
-class CArchiveCommandLineParser
-{
-  NCommandLineParser::CParser parser;
-public:
-  CArchiveCommandLineParser();
-  void Parse1(const UStringVector &commandStrings, CArchiveCommandLineOptions &options);
-  void Parse2(CArchiveCommandLineOptions &options);
-};
-
-void EnumerateDirItemsAndSort(NWildcard::CCensor &wildcardCensor,
-    UStringVector &sortedPaths,
-    UStringVector &sortedFullPaths);
-=======
   CArcCmdLineOptions():
       LargePages(false),
       CaseSensitiveChange(false),
@@ -226,6 +143,5 @@ HRESULT EnumerateDirItemsAndSort(
     UStringVector &sortedFullPaths,
     CDirItemsStat &st,
     IDirItemsCallback *callback);
->>>>>>> upstream/master
 
 #endif

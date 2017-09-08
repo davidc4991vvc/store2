@@ -18,11 +18,8 @@ etc.
 #include "emu.h"
 #include "cpu/m6502/m6502.h"
 #include "sound/ay8910.h"
-<<<<<<< HEAD
-=======
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 class ltcasino_state : public driver_device
@@ -35,25 +32,15 @@ public:
 		m_maincpu(*this, "maincpu"),
 		m_gfxdecode(*this, "gfxdecode") { }
 
-<<<<<<< HEAD
-	required_shared_ptr<UINT8> m_tile_num_ram;
-	required_shared_ptr<UINT8> m_tile_atr_ram;
-=======
 	required_shared_ptr<uint8_t> m_tile_num_ram;
 	required_shared_ptr<uint8_t> m_tile_atr_ram;
->>>>>>> upstream/master
 	tilemap_t *m_tilemap;
 	DECLARE_WRITE8_MEMBER(ltcasino_tile_num_w);
 	DECLARE_WRITE8_MEMBER(ltcasino_tile_atr_w);
 	DECLARE_DRIVER_INIT(mv4in1);
 	TILE_GET_INFO_MEMBER(get_ltcasino_tile_info);
-<<<<<<< HEAD
-	virtual void video_start();
-	UINT32 screen_update_ltcasino(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	virtual void video_start() override;
 	uint32_t screen_update_ltcasino(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	required_device<cpu_device> m_maincpu;
 	required_device<gfxdecode_device> m_gfxdecode;
 };
@@ -75,11 +62,7 @@ TILE_GET_INFO_MEMBER(ltcasino_state::get_ltcasino_tile_info)
 
 void ltcasino_state::video_start()
 {
-<<<<<<< HEAD
-	m_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(ltcasino_state::get_ltcasino_tile_info),this),TILEMAP_SCAN_ROWS,8, 8,64,32);
-=======
 	m_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(ltcasino_state::get_ltcasino_tile_info),this),TILEMAP_SCAN_ROWS,8, 8,64,32);
->>>>>>> upstream/master
 }
 
 
@@ -661,22 +644,14 @@ static GFXDECODE_START( ltcasino )
 GFXDECODE_END
 
 
-<<<<<<< HEAD
-UINT32 ltcasino_state::screen_update_ltcasino(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t ltcasino_state::screen_update_ltcasino(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	m_tilemap->draw(screen, bitmap, cliprect, 0,0);
 	return 0;
 }
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( ltcasino, ltcasino_state )
-=======
 static MACHINE_CONFIG_START( ltcasino )
->>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6502,2000000)       /* ? MHz */
 	MCFG_CPU_PROGRAM_MAP(ltcasino_map)
@@ -746,23 +721,13 @@ ROM_END
 DRIVER_INIT_MEMBER(ltcasino_state,mv4in1)
 {
 	int i;
-<<<<<<< HEAD
-	UINT8 *rom = memregion("maincpu")->base();
-=======
 	uint8_t *rom = memregion("maincpu")->base();
->>>>>>> upstream/master
 	for(i=0;i<0x10000;i++)
 		rom[i]=BITSWAP8(rom[i],7,6,5,4,3,1,2,0);
 }
 
 
 
-<<<<<<< HEAD
-GAME( 1982, ltcasino, 0, ltcasino, ltcasino, driver_device, 0, ROT0, "Digital Controls Inc.", "Little Casino (older)", MACHINE_WRONG_COLORS | MACHINE_IMPERFECT_GRAPHICS  )
-GAME( 1983, mv4in1,  ltcasino,  ltcasino, mv4in1, ltcasino_state, mv4in1, ROT0, "Entertainment Enterprises, Ltd.", "Mini Vegas 4in1", MACHINE_WRONG_COLORS | MACHINE_IMPERFECT_GRAPHICS )
-GAME( 1984, ltcasinn, 0, ltcasino, ltcasinn, driver_device, 0, ROT0, "Digital Controls Inc.", "Little Casino (newer)", MACHINE_NOT_WORKING )
-=======
 GAME( 1982, ltcasino, 0,         ltcasino, ltcasino, ltcasino_state, 0,      ROT0, "Digital Controls Inc.",           "Little Casino (older)", MACHINE_WRONG_COLORS | MACHINE_IMPERFECT_GRAPHICS )
 GAME( 1983, mv4in1,   ltcasino,  ltcasino, mv4in1,   ltcasino_state, mv4in1, ROT0, "Entertainment Enterprises, Ltd.", "Mini Vegas 4in1",       MACHINE_WRONG_COLORS | MACHINE_IMPERFECT_GRAPHICS )
 GAME( 1984, ltcasinn, 0,         ltcasino, ltcasinn, ltcasino_state, 0,      ROT0, "Digital Controls Inc.",           "Little Casino (newer)", MACHINE_NOT_WORKING )
->>>>>>> upstream/master

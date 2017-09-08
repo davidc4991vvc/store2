@@ -31,13 +31,6 @@ TODO:
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/z80/z80.h"
-#include "cpu/m68000/m68000.h"
-#include "sound/okim6295.h"
-#include "sound/2203intf.h"
-#include "includes/powerins.h"
-=======
 #include "includes/powerins.h"
 
 #include "cpu/z80/z80.h"
@@ -46,7 +39,6 @@ TODO:
 #include "sound/okim6295.h"
 #include "sound/2203intf.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 /***************************************************************************
@@ -76,11 +68,7 @@ static ADDRESS_MAP_START( powerins_map, AS_PROGRAM, 16, powerins_state )
 	AM_RANGE(0x100014, 0x100015) AM_WRITE8(flipscreen_w, 0x00ff)
 	AM_RANGE(0x100016, 0x100017) AM_WRITENOP          // ? always 1
 	AM_RANGE(0x100018, 0x100019) AM_WRITE8(tilebank_w, 0x00ff)
-<<<<<<< HEAD
-	AM_RANGE(0x10001e, 0x10001f) AM_WRITE8(soundlatch_byte_w, 0x00ff)
-=======
 	AM_RANGE(0x10001e, 0x10001f) AM_DEVWRITE8("soundlatch", generic_latch_8_device, write, 0x00ff)
->>>>>>> upstream/master
 	AM_RANGE(0x120000, 0x120fff) AM_RAM_DEVWRITE("palette", palette_device, write) AM_SHARE("palette")
 	AM_RANGE(0x130000, 0x130007) AM_RAM AM_SHARE("vctrl_0")
 	AM_RANGE(0x140000, 0x143fff) AM_RAM_WRITE(vram_0_w) AM_SHARE("vram_0")
@@ -99,11 +87,7 @@ ADDRESS_MAP_END
 static ADDRESS_MAP_START( powerins_sound_map, AS_PROGRAM, 8, powerins_state )
 	AM_RANGE(0x0000, 0xbfff) AM_ROM
 	AM_RANGE(0xc000, 0xdfff) AM_RAM
-<<<<<<< HEAD
-	AM_RANGE(0xe000, 0xe000) AM_READ(soundlatch_byte_r)
-=======
 	AM_RANGE(0xe000, 0xe000) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
->>>>>>> upstream/master
 //  AM_RANGE(0xe000, 0xe000) AM_WRITENOP // ? written only once ?
 //  AM_RANGE(0xe001, 0xe001) AM_WRITENOP // ?
 ADDRESS_MAP_END
@@ -125,11 +109,7 @@ static ADDRESS_MAP_START( powerinsb_sound_io_map, AS_IO, 8, powerins_state )
 	AM_RANGE(0x90, 0x97) AM_DEVWRITE("nmk112", nmk112_device, okibank_w)
 ADDRESS_MAP_END
 
-<<<<<<< HEAD
-static ADDRESS_MAP_START( powerinsa_oki_map, AS_0, 8, powerins_state )
-=======
 static ADDRESS_MAP_START( powerinsa_oki_map, 0, 8, powerins_state )
->>>>>>> upstream/master
 	AM_RANGE(0x00000, 0x2ffff) AM_ROM
 	AM_RANGE(0x30000, 0x3ffff) AM_ROMBANK("okibank")
 ADDRESS_MAP_END
@@ -315,11 +295,7 @@ MACHINE_START_MEMBER(powerins_state, powerinsa)
 	membank("okibank")->configure_entries(0, 5, memregion("oki1")->base() + 0x30000, 0x10000);
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( powerins, powerins_state )
-=======
 static MACHINE_CONFIG_START( powerins )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, 12000000)   /* 12MHz */
@@ -348,19 +324,12 @@ static MACHINE_CONFIG_START( powerins )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki1", 4000000, OKIM6295_PIN7_LOW)
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.15)
-
-	MCFG_OKIM6295_ADD("oki2", 4000000, OKIM6295_PIN7_LOW)
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 
 	MCFG_OKIM6295_ADD("oki1", 4000000, PIN7_LOW)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.15)
 
 	MCFG_OKIM6295_ADD("oki2", 4000000, PIN7_LOW)
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.15)
 
 	MCFG_SOUND_ADD("ym2203", YM2203, 12000000 / 8)
@@ -386,13 +355,8 @@ static MACHINE_CONFIG_DERIVED( powerinsa, powerins )
 
 	MCFG_MACHINE_START_OVERRIDE(powerins_state, powerinsa)
 
-<<<<<<< HEAD
-	MCFG_OKIM6295_REPLACE("oki1", 990000, OKIM6295_PIN7_LOW) // pin7 not verified
-	MCFG_DEVICE_ADDRESS_MAP(AS_0, powerinsa_oki_map)
-=======
 	MCFG_OKIM6295_REPLACE("oki1", 990000, PIN7_LOW) // pin7 not verified
 	MCFG_DEVICE_ADDRESS_MAP(0, powerinsa_oki_map)
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 
 	MCFG_DEVICE_REMOVE("oki2")
@@ -557,8 +521,6 @@ ROM_START( powerinsj )
 	ROM_LOAD( "20.u54",       0x000100, 0x0100, CRC(38bd0e2f) SHA1(20d311869642cd96bb831fdf4a458e0d872f03eb) )
 ROM_END
 
-<<<<<<< HEAD
-=======
 ROM_START( powerinsp )
 	ROM_REGION( 0x100000, "maincpu", 0 )        /* 68000 Code */
 	ROM_LOAD16_WORD_SWAP( "3.P000.V4.0A.U116.27C240", 0x000000, 0x80000, CRC(d1dd5a3f) SHA1(b2a52a2bbdf63eddc04bae2b4322d6d320f35e89) )
@@ -613,7 +575,6 @@ ROM_START( powerinsp )
 	ROM_LOAD( "20.u54",       0x000100, 0x0100, CRC(38bd0e2f) SHA1(20d311869642cd96bb831fdf4a458e0d872f03eb) )
 ROM_END
 
->>>>>>> upstream/master
 /***************************************************************************
 
                                 Power Instinct
@@ -772,15 +733,8 @@ ROM_END
 
 
 /* all supported sets give a 93.10.20 date */
-<<<<<<< HEAD
-GAME( 1993, powerins,  0,        powerins,  powerins, driver_device, 0, ROT0, "Atlus", "Power Instinct (USA)", MACHINE_SUPPORTS_SAVE )
-GAME( 1993, powerinsj, powerins, powerins,  powerinj, driver_device, 0, ROT0, "Atlus", "Gouketsuji Ichizoku (Japan)", MACHINE_SUPPORTS_SAVE )
-GAME( 1993, powerinsa, powerins, powerinsa, powerins, driver_device, 0, ROT0, "bootleg", "Power Instinct (USA, bootleg set 1)", MACHINE_SUPPORTS_SAVE )
-GAME( 1993, powerinsb, powerins, powerinsb, powerins, driver_device, 0, ROT0, "bootleg", "Power Instinct (USA, bootleg set 2)", MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1993, powerins,  0,        powerins,  powerins, powerins_state, 0, ROT0, "Atlus", "Power Instinct (USA)", MACHINE_SUPPORTS_SAVE )
 GAME( 1993, powerinsj, powerins, powerins,  powerinj, powerins_state, 0, ROT0, "Atlus", "Gouketsuji Ichizoku (Japan)", MACHINE_SUPPORTS_SAVE )
 GAME( 1993, powerinsp, powerins, powerins,  powerinj, powerins_state, 0, ROT0, "Atlus", "Power Instinct (USA, prototype)", MACHINE_SUPPORTS_SAVE ) // boots as 93.10.20 just like the other sets, but code is different
 GAME( 1993, powerinsa, powerins, powerinsa, powerins, powerins_state, 0, ROT0, "bootleg", "Power Instinct (USA, bootleg set 1)", MACHINE_SUPPORTS_SAVE )
 GAME( 1993, powerinsb, powerins, powerinsb, powerins, powerins_state, 0, ROT0, "bootleg", "Power Instinct (USA, bootleg set 2)", MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

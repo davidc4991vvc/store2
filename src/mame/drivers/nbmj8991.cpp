@@ -31,14 +31,6 @@ Notes:
 ******************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/z80/z80.h"
-#include "sound/ay8910.h"
-#include "sound/3812intf.h"
-#include "sound/dac.h"
-#include "includes/nbmj8991.h"
-#include "machine/nvram.h"
-=======
 #include "includes/nbmj8991.h"
 
 #include "cpu/z80/z80.h"
@@ -48,16 +40,11 @@ Notes:
 #include "sound/dac.h"
 #include "sound/volt_reg.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 WRITE8_MEMBER(nbmj8991_state::soundbank_w)
 {
-<<<<<<< HEAD
-	if (!(data & 0x80)) soundlatch_clear_byte_w(space, 0, 0);
-=======
 	if (!(data & 0x80)) m_soundlatch->clear_w(space, 0, 0);
->>>>>>> upstream/master
 	membank("bank1")->set_entry(data & 0x03);
 }
 
@@ -72,11 +59,7 @@ void nbmj8991_state::machine_reset()
 
 DRIVER_INIT_MEMBER(nbmj8991_state,finalbny)
 {
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("maincpu")->base();
-=======
 	uint8_t *ROM = memregion("maincpu")->base();
->>>>>>> upstream/master
 	int i;
 
 	for (i = 0xf800; i < 0x10000; i++) ROM[i] = 0x00;
@@ -85,11 +68,7 @@ DRIVER_INIT_MEMBER(nbmj8991_state,finalbny)
 DRIVER_INIT_MEMBER(nbmj8991_state,galkaika)
 {
 #if 1
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("maincpu")->base();
-=======
 	uint8_t *ROM = memregion("maincpu")->base();
->>>>>>> upstream/master
 
 	// Patch to IM2 -> IM1
 	ROM[0x0002] = 0x56;
@@ -99,11 +78,7 @@ DRIVER_INIT_MEMBER(nbmj8991_state,galkaika)
 DRIVER_INIT_MEMBER(nbmj8991_state,tokyogal)
 {
 #if 1
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("maincpu")->base();
-=======
 	uint8_t *ROM = memregion("maincpu")->base();
->>>>>>> upstream/master
 
 	// Patch to IM2 -> IM1
 	ROM[0x0002] = 0x56;
@@ -113,11 +88,7 @@ DRIVER_INIT_MEMBER(nbmj8991_state,tokyogal)
 DRIVER_INIT_MEMBER(nbmj8991_state,tokimbsj)
 {
 #if 1
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("maincpu")->base();
-=======
 	uint8_t *ROM = memregion("maincpu")->base();
->>>>>>> upstream/master
 
 	// Patch to IM2 -> IM1
 	ROM[0x0002] = 0x56;
@@ -196,11 +167,7 @@ static ADDRESS_MAP_START( galkoku_io_map, AS_IO, 8, nbmj8991_state )
 	AM_RANGE(0xa0, 0xa0) AM_DEVREADWRITE("nb1413m3", nb1413m3_device, inputport1_r, inputportsel_w)
 	AM_RANGE(0xb0, 0xb0) AM_DEVREADWRITE("nb1413m3", nb1413m3_device, inputport2_r, sndrombank1_w)
 	AM_RANGE(0xc0, 0xc0) AM_DEVREADWRITE("nb1413m3", nb1413m3_device, inputport3_r, nmi_clock_w)
-<<<<<<< HEAD
-	AM_RANGE(0xd0, 0xd0) AM_DEVWRITE("dac", dac_device, write_unsigned8)
-=======
 	AM_RANGE(0xd0, 0xd0) AM_DEVWRITE("dac", dac_byte_interface, write)
->>>>>>> upstream/master
 //  AM_RANGE(0xe0, 0xe0) AM_WRITENOP
 	AM_RANGE(0xf0, 0xf0) AM_DEVREADWRITE("nb1413m3", nb1413m3_device, dipsw1_r, outcoin_w)
 	AM_RANGE(0xf1, 0xf1) AM_DEVREAD("nb1413m3", nb1413m3_device, dipsw2_r)
@@ -215,11 +182,7 @@ static ADDRESS_MAP_START( hyouban_io_map, AS_IO, 8, nbmj8991_state )
 	AM_RANGE(0xa0, 0xa0) AM_DEVREADWRITE("nb1413m3", nb1413m3_device, inputport1_r, inputportsel_w)
 	AM_RANGE(0xb0, 0xb0) AM_DEVREADWRITE("nb1413m3", nb1413m3_device, inputport2_r, sndrombank1_w)
 	AM_RANGE(0xc0, 0xc0) AM_DEVREADWRITE("nb1413m3", nb1413m3_device, inputport3_r, nmi_clock_w)
-<<<<<<< HEAD
-	AM_RANGE(0xd0, 0xd0) AM_DEVWRITE("dac", dac_device, write_unsigned8)
-=======
 	AM_RANGE(0xd0, 0xd0) AM_DEVWRITE("dac", dac_byte_interface, write)
->>>>>>> upstream/master
 //  AM_RANGE(0xe0, 0xe0) AM_WRITENOP
 	AM_RANGE(0xf0, 0xf0) AM_DEVREADWRITE("nb1413m3", nb1413m3_device, dipsw1_r, outcoin_w)
 	AM_RANGE(0xf1, 0xf1) AM_DEVREAD("nb1413m3", nb1413m3_device, dipsw2_r)
@@ -228,11 +191,7 @@ ADDRESS_MAP_END
 static ADDRESS_MAP_START( pstadium_io_map, AS_IO, 8, nbmj8991_state )
 	ADDRESS_MAP_GLOBAL_MASK(0xff)
 	AM_RANGE(0x00, 0x7f) AM_WRITE(blitter_w)
-<<<<<<< HEAD
-	AM_RANGE(0x80, 0x80) AM_WRITE(soundlatch_byte_w)
-=======
 	AM_RANGE(0x80, 0x80) AM_DEVWRITE("soundlatch", generic_latch_8_device, write)
->>>>>>> upstream/master
 	AM_RANGE(0x90, 0x90) AM_DEVREAD("nb1413m3", nb1413m3_device, inputport0_r)
 	AM_RANGE(0xa0, 0xa0) AM_DEVREADWRITE("nb1413m3", nb1413m3_device, inputport1_r, inputportsel_w)
 	AM_RANGE(0xb0, 0xb0) AM_DEVREAD("nb1413m3", nb1413m3_device, inputport2_r) //AM_WRITENOP
@@ -245,11 +204,7 @@ ADDRESS_MAP_END
 static ADDRESS_MAP_START( av2mj1bb_io_map, AS_IO, 8, nbmj8991_state )
 	ADDRESS_MAP_GLOBAL_MASK(0xff)
 	AM_RANGE(0x00, 0x7f) AM_WRITE(blitter_w)
-<<<<<<< HEAD
-	AM_RANGE(0x80, 0x80) AM_WRITE(soundlatch_byte_w)
-=======
 	AM_RANGE(0x80, 0x80) AM_DEVWRITE("soundlatch", generic_latch_8_device, write)
->>>>>>> upstream/master
 	AM_RANGE(0x90, 0x90) AM_DEVREAD("nb1413m3", nb1413m3_device, inputport0_r)
 	AM_RANGE(0xa0, 0xa0) AM_DEVREADWRITE("nb1413m3", nb1413m3_device, inputport1_r, inputportsel_w)
 	AM_RANGE(0xb0, 0xb0) AM_DEVREADWRITE("nb1413m3", nb1413m3_device, inputport2_r, vcrctrl_w)
@@ -269,13 +224,8 @@ ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( nbmj8991_sound_io_map, AS_IO, 8, nbmj8991_state )
 	ADDRESS_MAP_GLOBAL_MASK(0xff)
-<<<<<<< HEAD
-	AM_RANGE(0x00, 0x00) AM_READ(soundlatch_byte_r) AM_DEVWRITE("dac1", dac_device, write_unsigned8)
-	AM_RANGE(0x02, 0x02) AM_DEVWRITE("dac2", dac_device, write_unsigned8)
-=======
 	AM_RANGE(0x00, 0x00) AM_DEVREAD("soundlatch", generic_latch_8_device, read) AM_DEVWRITE("dac1", dac_byte_interface, write)
 	AM_RANGE(0x02, 0x02) AM_DEVWRITE("dac2", dac_byte_interface, write)
->>>>>>> upstream/master
 	AM_RANGE(0x04, 0x04) AM_WRITE(soundbank_w)
 	AM_RANGE(0x06, 0x06) AM_WRITENOP
 	AM_RANGE(0x80, 0x81) AM_DEVWRITE("fmsnd", ym3812_device, write)
@@ -339,15 +289,9 @@ static INPUT_PORTS_START( pstadium )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START("SYSTEM")
-<<<<<<< HEAD
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8991_state, nb1413m3_busyflag_r, NULL)    // DRAW BUSY
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )         //
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SERVICE3 )       // MEMORY RESET
-=======
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8991_state, nb1413m3_busyflag_r, nullptr)    // DRAW BUSY
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )         //
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_MEMORY_RESET )   // MEMORY RESET
->>>>>>> upstream/master
 	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_SERVICE2 )       // ANALYZER
 	PORT_SERVICE( 0x10, IP_ACTIVE_LOW )                 // TEST
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_COIN1 )          // COIN1
@@ -359,33 +303,11 @@ INPUT_PORTS_END
 
 static INPUT_PORTS_START( triplew1 )
 	PORT_START("DSWA")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x03, 0x03, DEF_STR( Difficulty ) )
-=======
 	PORT_DIPNAME( 0x03, 0x03, DEF_STR( Difficulty ) )   PORT_DIPLOCATION("SWA:1,2")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x03, "1 (Easy)" )
 	PORT_DIPSETTING(    0x02, "2" )
 	PORT_DIPSETTING(    0x01, "3" )
 	PORT_DIPSETTING(    0x00, "4 (Hard)" )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x04, 0x04, DEF_STR( Coinage ) )
-	PORT_DIPSETTING(    0x04, DEF_STR( 1C_1C ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( 1C_2C ) )
-	PORT_DIPNAME( 0x08, 0x08, DEF_STR( Demo_Sounds ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x08, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x10, "Game Sounds" )
-	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x10, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, DEF_STR( Flip_Screen ) )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x40, "Character Display Test" )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, "Graphic ROM Test" )
-=======
 	PORT_DIPNAME( 0x04, 0x04, DEF_STR( Coinage ) )      PORT_DIPLOCATION("SWA:3")
 	PORT_DIPSETTING(    0x04, DEF_STR( 1C_1C ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( 1C_2C ) )
@@ -402,49 +324,16 @@ static INPUT_PORTS_START( triplew1 )
 	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_DIPNAME( 0x80, 0x80, "Graphic ROM Test" )      PORT_DIPLOCATION("SWA:8")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START("DSWB")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x01, 0x01, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x02, 0x02, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x04, 0x04, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x08, 0x08, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x10, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x40, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-
-	PORT_START("SYSTEM")
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8991_state, nb1413m3_busyflag_r, NULL)    // DRAW BUSY
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )         //
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SERVICE3 )       // MEMORY RESET
-=======
 	PORT_BIT( 0xff, IP_ACTIVE_LOW, IPT_UNUSED )
 
 	PORT_START("SYSTEM")
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8991_state, nb1413m3_busyflag_r, nullptr)    // DRAW BUSY
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )         //
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_MEMORY_RESET )   // MEMORY RESET
->>>>>>> upstream/master
 	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_SERVICE2 )       // ANALYZER
 	PORT_SERVICE( 0x10, IP_ACTIVE_LOW )                 // TEST
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_COIN1 )          // COIN1
@@ -507,15 +396,9 @@ static INPUT_PORTS_START( ntopstar )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START("SYSTEM")
-<<<<<<< HEAD
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8991_state, nb1413m3_busyflag_r, NULL)    // DRAW BUSY
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )         //
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SERVICE3 )       // MEMORY RESET
-=======
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8991_state, nb1413m3_busyflag_r, nullptr)    // DRAW BUSY
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )         //
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_MEMORY_RESET )   // MEMORY RESET
->>>>>>> upstream/master
 	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_SERVICE2 )       // ANALYZER
 	PORT_SERVICE( 0x10, IP_ACTIVE_LOW )                 // TEST
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_COIN1 )          // COIN1
@@ -578,15 +461,9 @@ static INPUT_PORTS_START( mjlstory )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START("SYSTEM")
-<<<<<<< HEAD
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8991_state, nb1413m3_busyflag_r, NULL)    // DRAW BUSY
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )         //
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SERVICE3 )       // MEMORY RESET
-=======
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8991_state, nb1413m3_busyflag_r, nullptr)    // DRAW BUSY
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )         //
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_MEMORY_RESET )   // MEMORY RESET
->>>>>>> upstream/master
 	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_SERVICE2 )       // ANALYZER
 	PORT_SERVICE( 0x10, IP_ACTIVE_LOW )                 // TEST
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_COIN1 )          // COIN1
@@ -598,33 +475,11 @@ INPUT_PORTS_END
 
 static INPUT_PORTS_START( vanilla )
 	PORT_START("DSWA")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x03, 0x03, DEF_STR( Difficulty ) )
-=======
 	PORT_DIPNAME( 0x03, 0x03, DEF_STR( Difficulty ) )       PORT_DIPLOCATION("DSWA:1,2")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x03, "1 (Easy)" )
 	PORT_DIPSETTING(    0x02, "2" )
 	PORT_DIPSETTING(    0x01, "3" )
 	PORT_DIPSETTING(    0x00, "4 (Hard)" )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x04, 0x04, DEF_STR( Coinage ) )
-	PORT_DIPSETTING(    0x04, DEF_STR( 1C_1C ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( 1C_2C ) )
-	PORT_DIPNAME( 0x08, 0x08, DEF_STR( Demo_Sounds ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x08, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x10, "Game Sounds" )
-	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x10, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, DEF_STR( Flip_Screen ) )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x40, "Character Display Test" )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, "Graphic ROM Test" )
-=======
 	PORT_DIPNAME( 0x04, 0x04, DEF_STR( Coinage ) )          PORT_DIPLOCATION("DSWA:3")
 	PORT_DIPSETTING(    0x04, DEF_STR( 1C_1C ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( 1C_2C ) )
@@ -641,42 +496,10 @@ static INPUT_PORTS_START( vanilla )
 	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_DIPNAME( 0x80, 0x80, "Graphic ROM Test" )          PORT_DIPLOCATION("DSWA:8") // Marked as unused in manual
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START("DSWB")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x01, 0x01, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x02, 0x02, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x04, 0x04, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x08, 0x08, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x10, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x40, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-
-	PORT_START("SYSTEM")
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8991_state, nb1413m3_busyflag_r, NULL)    // DRAW BUSY
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )         //
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SERVICE3 )       // MEMORY RESET
-=======
 	PORT_DIPUNUSED_DIPLOC( 0x01, 0x01, "DSWB:1" )
 	PORT_DIPUNUSED_DIPLOC( 0x02, 0x02, "DSWB:2" )
 	PORT_DIPUNUSED_DIPLOC( 0x04, 0x04, "DSWB:3" )
@@ -690,7 +513,6 @@ static INPUT_PORTS_START( vanilla )
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8991_state, nb1413m3_busyflag_r, nullptr)    // DRAW BUSY
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )         //
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_MEMORY_RESET )   // MEMORY RESET
->>>>>>> upstream/master
 	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_SERVICE2 )       // ANALYZER
 	PORT_SERVICE( 0x10, IP_ACTIVE_LOW )                 // TEST
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_COIN1 )          // COIN1
@@ -702,17 +524,10 @@ INPUT_PORTS_END
 
 static INPUT_PORTS_START( finalbny )
 
-<<<<<<< HEAD
-	// I don't have manual for this game.
-
-	PORT_START("DSWA")
-	PORT_DIPNAME( 0x07, 0x07, "Game Out" )
-=======
 	// I don't have manual for this game. (finalbny)
 	// Lady Maker manual matches this, identical PCB
 	PORT_START("DSWA")
 	PORT_DIPNAME( 0x07, 0x07, "Game Out" )                  PORT_DIPLOCATION("DSWA:1,2,3")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x07, "90% (Easy)" )
 	PORT_DIPSETTING(    0x06, "85%" )
 	PORT_DIPSETTING(    0x05, "80%" )
@@ -721,21 +536,6 @@ static INPUT_PORTS_START( finalbny )
 	PORT_DIPSETTING(    0x02, "65%" )
 	PORT_DIPSETTING(    0x01, "60%" )
 	PORT_DIPSETTING(    0x00, "55% (Hard)" )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x08, 0x08, DEF_STR( Coinage ) )
-	PORT_DIPSETTING(    0x08, DEF_STR( 1C_1C ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( 1C_2C ) )
-	PORT_DIPNAME( 0x10, 0x00, "Last Chance" )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, "Last chance needs 1credit" )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x40, "DIPSW 1-7" )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, "DIPSW 1-8" )
-=======
 	PORT_DIPNAME( 0x08, 0x08, DEF_STR( Coinage ) )          PORT_DIPLOCATION("DSWA:4")
 	PORT_DIPSETTING(    0x08, DEF_STR( 1C_1C ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( 1C_2C ) )
@@ -749,23 +549,10 @@ static INPUT_PORTS_START( finalbny )
 	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unused ) )           PORT_DIPLOCATION("DSWA:8")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START("DSWB")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x01, 0x01, DEF_STR( Flip_Screen ) )
-	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x02, 0x02, "Graphic ROM Test" )
-	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x04, 0x04, "Bet1 Only" )
-	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x18, 0x18, "Bet Min" )
-=======
 	PORT_DIPNAME( 0x01, 0x01, DEF_STR( Flip_Screen ) )      PORT_DIPLOCATION("DSWB:1")
 	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
@@ -776,38 +563,23 @@ static INPUT_PORTS_START( finalbny )
 	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_DIPNAME( 0x18, 0x18, "Bet Min" )                   PORT_DIPLOCATION("DSWB:4,5")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x18, "1" )
 	PORT_DIPSETTING(    0x10, "2" )
 	PORT_DIPSETTING(    0x08, "3" )
 	PORT_DIPSETTING(    0x00, "5" )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x60, 0x00, "Bet Max" )
-=======
 	PORT_DIPNAME( 0x60, 0x00, "Bet Max" )                   PORT_DIPLOCATION("DSWB:6,7")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x60, "8" )
 	PORT_DIPSETTING(    0x40, "10" )
 	PORT_DIPSETTING(    0x20, "12" )
 	PORT_DIPSETTING(    0x00, "20" )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x80, 0x00, "Score Pool" )
-=======
 	PORT_DIPNAME( 0x80, 0x00, "Score Pool" )                PORT_DIPLOCATION("DSWB:8")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START("SYSTEM")
-<<<<<<< HEAD
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8991_state, nb1413m3_busyflag_r, NULL)    // DRAW BUSY
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )         //
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SERVICE3 )       // MEMORY RESET
-=======
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8991_state, nb1413m3_busyflag_r, nullptr)    // DRAW BUSY
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )         //
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_MEMORY_RESET )   // MEMORY RESET
->>>>>>> upstream/master
 	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_SERVICE2 )       // ANALYZER
 	PORT_SERVICE( 0x10, IP_ACTIVE_LOW )                 // TEST
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_COIN1 )          // COIN1
@@ -819,59 +591,11 @@ INPUT_PORTS_END
 
 static INPUT_PORTS_START( qmhayaku )
 	PORT_START("DSWA")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x03, 0x03, DEF_STR( Difficulty ) )
-=======
 	PORT_DIPNAME( 0x03, 0x03, DEF_STR( Difficulty ) )       PORT_DIPLOCATION("DSWA:1,2")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x03, "1 (Easy)" )
 	PORT_DIPSETTING(    0x02, "2" )
 	PORT_DIPSETTING(    0x01, "3" )
 	PORT_DIPSETTING(    0x00, "4 (Hard)" )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x04, 0x04, DEF_STR( Coinage ) )
-	PORT_DIPSETTING(    0x04, DEF_STR( 1C_1C ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( 1C_2C ) )
-	PORT_DIPNAME( 0x08, 0x08, DEF_STR( Demo_Sounds ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x08, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x10, "Game Sounds" )
-	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x10, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, DEF_STR( Flip_Screen ) )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x40, "Character Display Test" )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, "Graphic ROM Test" )
-	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-
-	PORT_START("DSWB")
-	PORT_DIPNAME( 0x01, 0x01, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x02, 0x02, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x04, 0x04, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x08, 0x08, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x10, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x40, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )
-=======
 	PORT_DIPNAME( 0x04, 0x04, DEF_STR( Coinage ) )          PORT_DIPLOCATION("DSWA:3")
 	PORT_DIPSETTING(    0x04, DEF_STR( 1C_1C ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( 1C_2C ) )
@@ -915,20 +639,13 @@ static INPUT_PORTS_START( qmhayaku )
 	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unused ) )           PORT_DIPLOCATION("DSWB:8")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START("SYSTEM")
-<<<<<<< HEAD
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8991_state, nb1413m3_busyflag_r, NULL)    // DRAW BUSY
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )         //
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SERVICE3 )       // MEMORY RESET
-=======
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8991_state, nb1413m3_busyflag_r, nullptr)    // DRAW BUSY
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )         //
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_MEMORY_RESET )   // MEMORY RESET
->>>>>>> upstream/master
 	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_SERVICE2 )       // ANALYZER
 	PORT_SERVICE( 0x10, IP_ACTIVE_LOW )                 // TEST
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_COIN1 )          // COIN1
@@ -940,11 +657,7 @@ INPUT_PORTS_END
 
 static INPUT_PORTS_START( galkoku )
 	PORT_START("DSWA")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x07, 0x07, DEF_STR( Difficulty ) )
-=======
 	PORT_DIPNAME( 0x07, 0x07, DEF_STR( Difficulty ) )   PORT_DIPLOCATION("SWA:1,2,3")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x07, "1 (Easy)" )
 	PORT_DIPSETTING(    0x06, "2" )
 	PORT_DIPSETTING(    0x05, "3" )
@@ -953,54 +666,6 @@ static INPUT_PORTS_START( galkoku )
 	PORT_DIPSETTING(    0x02, "6" )
 	PORT_DIPSETTING(    0x01, "7" )
 	PORT_DIPSETTING(    0x00, "8 (Hard)" )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x08, 0x08, DEF_STR( Coinage ) )
-	PORT_DIPSETTING(    0x08, DEF_STR( 1C_1C ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( 1C_2C ) )
-	PORT_DIPNAME( 0x10, 0x10, "Character Display Test" )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, DEF_STR( Flip_Screen ) )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x40, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-
-	PORT_START("DSWB")
-	PORT_DIPNAME( 0x01, 0x01, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x02, 0x02, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x04, 0x04, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x08, 0x08, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x10, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x40, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-
-	PORT_START("SYSTEM")
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8991_state, nb1413m3_busyflag_r, NULL)    // DRAW BUSY
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )         //
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SERVICE3 )       // MEMORY RESET
-=======
 	PORT_DIPNAME( 0x08, 0x08, DEF_STR( Coinage ) )      PORT_DIPLOCATION("SWA:4")
 	PORT_DIPSETTING(    0x08, DEF_STR( 1C_1C ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( 1C_2C ) )
@@ -1025,7 +690,6 @@ static INPUT_PORTS_START( galkoku )
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8991_state, nb1413m3_busyflag_r, nullptr)    // DRAW BUSY
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )         //
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_MEMORY_RESET )   // MEMORY RESET
->>>>>>> upstream/master
 	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_SERVICE2 )       // ANALYZER
 	PORT_SERVICE( 0x10, IP_ACTIVE_LOW )                 // TEST
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_COIN1 )          // COIN1
@@ -1092,15 +756,9 @@ static INPUT_PORTS_START( hyouban )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START("SYSTEM")
-<<<<<<< HEAD
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8991_state, nb1413m3_busyflag_r, NULL)    // DRAW BUSY
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )         //
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SERVICE3 )       // MEMORY RESET
-=======
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8991_state, nb1413m3_busyflag_r, nullptr)    // DRAW BUSY
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )         //
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_MEMORY_RESET )   // MEMORY RESET
->>>>>>> upstream/master
 	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_SERVICE2 )       // ANALYZER
 	PORT_SERVICE( 0x10, IP_ACTIVE_LOW )                 // TEST
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_COIN1 )          // COIN1
@@ -1167,15 +825,9 @@ static INPUT_PORTS_START( galkaika )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START("SYSTEM")
-<<<<<<< HEAD
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8991_state, nb1413m3_busyflag_r, NULL)    // DRAW BUSY
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )         //
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SERVICE3 )       // MEMORY RESET
-=======
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8991_state, nb1413m3_busyflag_r, nullptr)    // DRAW BUSY
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )         //
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_MEMORY_RESET )   // MEMORY RESET
->>>>>>> upstream/master
 	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_SERVICE2 )       // ANALYZER
 	PORT_SERVICE( 0x10, IP_ACTIVE_LOW )                 // TEST
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_COIN1 )          // COIN1
@@ -1242,15 +894,9 @@ static INPUT_PORTS_START( tokyogal )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START("SYSTEM")
-<<<<<<< HEAD
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8991_state, nb1413m3_busyflag_r, NULL)    // DRAW BUSY
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )         //
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SERVICE3 )       // MEMORY RESET
-=======
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8991_state, nb1413m3_busyflag_r, nullptr)    // DRAW BUSY
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )         //
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_MEMORY_RESET )   // MEMORY RESET
->>>>>>> upstream/master
 	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_SERVICE2 )       // ANALYZER
 	PORT_SERVICE( 0x10, IP_ACTIVE_LOW )                 // TEST
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_COIN1 )          // COIN1
@@ -1317,15 +963,9 @@ static INPUT_PORTS_START( tokimbsj )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START("SYSTEM")
-<<<<<<< HEAD
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8991_state, nb1413m3_busyflag_r, NULL)    // DRAW BUSY
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )         //
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SERVICE3 )       // MEMORY RESET
-=======
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8991_state, nb1413m3_busyflag_r, nullptr)    // DRAW BUSY
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )         //
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_MEMORY_RESET )   // MEMORY RESET
->>>>>>> upstream/master
 	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_SERVICE2 )       // ANALYZER
 	PORT_SERVICE( 0x10, IP_ACTIVE_LOW )                 // TEST
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_COIN1 )          // COIN1
@@ -1392,15 +1032,9 @@ static INPUT_PORTS_START( mcontest )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START("SYSTEM")
-<<<<<<< HEAD
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8991_state, nb1413m3_busyflag_r, NULL)    // DRAW BUSY
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )         //
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SERVICE3 )       // MEMORY RESET
-=======
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8991_state, nb1413m3_busyflag_r, nullptr)    // DRAW BUSY
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )         //
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_MEMORY_RESET )   // MEMORY RESET
->>>>>>> upstream/master
 	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_SERVICE2 )       // ANALYZER
 	PORT_SERVICE( 0x10, IP_ACTIVE_LOW )                 // TEST
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_COIN1 )          // COIN1
@@ -1467,15 +1101,9 @@ static INPUT_PORTS_START( uchuuai )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START("SYSTEM")
-<<<<<<< HEAD
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8991_state, nb1413m3_busyflag_r, NULL)    // DRAW BUSY
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )         //
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SERVICE3 )       // MEMORY RESET
-=======
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8991_state, nb1413m3_busyflag_r, nullptr)    // DRAW BUSY
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )         //
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_MEMORY_RESET )   // MEMORY RESET
->>>>>>> upstream/master
 	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_SERVICE2 )       // ANALYZER
 	PORT_SERVICE( 0x10, IP_ACTIVE_LOW )                 // TEST
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_COIN1 )          // COIN1
@@ -1542,15 +1170,9 @@ static INPUT_PORTS_START( mjgottub )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START("SYSTEM")
-<<<<<<< HEAD
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8991_state, nb1413m3_busyflag_r, NULL)    // DRAW BUSY
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )         //
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SERVICE3 )       // MEMORY RESET
-=======
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8991_state, nb1413m3_busyflag_r, nullptr)    // DRAW BUSY
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )         //
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_MEMORY_RESET )   // MEMORY RESET
->>>>>>> upstream/master
 	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_SERVICE2 )       // ANALYZER
 	PORT_SERVICE( 0x10, IP_ACTIVE_LOW )                 // TEST
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_COIN1 )          // COIN1
@@ -1612,15 +1234,9 @@ static INPUT_PORTS_START( av2mj1bb )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START("SYSTEM")
-<<<<<<< HEAD
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8991_state, nb1413m3_busyflag_r, NULL)    // DRAW BUSY
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )         //
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SERVICE3 )       // MEMORY RESET
-=======
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8991_state, nb1413m3_busyflag_r, nullptr)    // DRAW BUSY
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )         //
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_MEMORY_RESET )   // MEMORY RESET
->>>>>>> upstream/master
 	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_SERVICE2 )       // ANALYZER
 	PORT_SERVICE( 0x10, IP_ACTIVE_LOW )                 // TEST
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_COIN1 )          // COIN1
@@ -1685,15 +1301,9 @@ static INPUT_PORTS_START( av2mj2rg )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START("SYSTEM")
-<<<<<<< HEAD
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8991_state, nb1413m3_busyflag_r, NULL)    // DRAW BUSY
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )         //
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SERVICE3 )       // MEMORY RESET
-=======
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8991_state, nb1413m3_busyflag_r, nullptr)    // DRAW BUSY
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )         //
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_MEMORY_RESET )   // MEMORY RESET
->>>>>>> upstream/master
 	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_SERVICE2 )       // ANALYZER
 	PORT_SERVICE( 0x10, IP_ACTIVE_LOW )                 // TEST
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_COIN1 )          // COIN1
@@ -1704,11 +1314,7 @@ static INPUT_PORTS_START( av2mj2rg )
 INPUT_PORTS_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( nbmjdrv1, nbmj8991_state ) // galkoku
-=======
 static MACHINE_CONFIG_START( nbmjdrv1 ) // galkoku
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, 25000000/5)        /* 5.00 MHz ? */
@@ -1730,18 +1336,6 @@ static MACHINE_CONFIG_START( nbmjdrv1 ) // galkoku
 	MCFG_PALETTE_ADD("palette", 256)
 
 	/* sound hardware */
-<<<<<<< HEAD
-	MCFG_SPEAKER_STANDARD_MONO("mono")
-	MCFG_SOUND_ADD("fmsnd", YM3812, 25000000/10)
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.70)
-
-	MCFG_DAC_ADD("dac")
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
-MACHINE_CONFIG_END
-
-
-static MACHINE_CONFIG_START( nbmjdrv2, nbmj8991_state ) // pstadium
-=======
 	MCFG_SPEAKER_STANDARD_MONO("speaker")
 	MCFG_SOUND_ADD("fmsnd", YM3812, 25000000/10)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.7)
@@ -1753,7 +1347,6 @@ MACHINE_CONFIG_END
 
 
 static MACHINE_CONFIG_START( nbmjdrv2 ) // pstadium
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, 6000000/2) /* 3.00 MHz */
@@ -1780,18 +1373,6 @@ static MACHINE_CONFIG_START( nbmjdrv2 ) // pstadium
 	MCFG_PALETTE_ADD("palette", 256)
 
 	/* sound hardware */
-<<<<<<< HEAD
-	MCFG_SPEAKER_STANDARD_MONO("mono")
-
-	MCFG_SOUND_ADD("fmsnd", YM3812, 25000000/6.25)
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.70)
-
-	MCFG_DAC_ADD("dac1")
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
-
-	MCFG_DAC_ADD("dac2")
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
-=======
 	MCFG_SPEAKER_STANDARD_MONO("speaker")
 
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
@@ -1804,7 +1385,6 @@ static MACHINE_CONFIG_START( nbmjdrv2 ) // pstadium
 	MCFG_DEVICE_ADD("vref", VOLTAGE_REGULATOR, 0) MCFG_VOLTAGE_REGULATOR_OUTPUT(5.0)
 	MCFG_SOUND_ROUTE_EX(0, "dac1", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "dac1", -1.0, DAC_VREF_NEG_INPUT)
 	MCFG_SOUND_ROUTE_EX(0, "dac2", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "dac2", -1.0, DAC_VREF_NEG_INPUT)
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
@@ -1816,11 +1396,7 @@ static MACHINE_CONFIG_DERIVED( nbmjdrv3, nbmjdrv1 )
 	MCFG_SOUND_REPLACE("fmsnd", AY8910, 1250000)
 	MCFG_AY8910_PORT_A_READ_CB(IOPORT("DSWA"))
 	MCFG_AY8910_PORT_B_READ_CB(IOPORT("DSWB"))
-<<<<<<< HEAD
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.35)
-=======
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.35)
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
@@ -2153,8 +1729,6 @@ ROM_START( mjlstory )
 	ROM_LOAD( "mjls_16.bin", 0x180000, 0x10000, CRC(53366690) SHA1(9155897a886d0a1ce3ab5bb5389dd8852a014244) )
 ROM_END
 
-<<<<<<< HEAD
-=======
 ROM_START( ladymakr )
 	ROM_REGION( 0x10000, "maincpu", 0 ) /* main program */
 	ROM_LOAD( "1.e4", 0x00000,  0x10000, CRC(c5b5c37d) SHA1(a7a1d504c3045f9c3767ed3b76ce284a3feb9b28) )
@@ -2179,7 +1753,6 @@ ROM_START( ladymakr )
 	ROM_LOAD( "16.c7", 0x180000, 0x10000, CRC(c25889d1) SHA1(5cb526c56ebe6a34c537144574489625325955b7) )
 ROM_END
 
->>>>>>> upstream/master
 ROM_START( vanilla )
 	ROM_REGION( 0x10000, "maincpu", 0 ) /* main program */
 	ROM_LOAD( "vanilla.01", 0x00000,  0x10000, CRC(2a3341a8) SHA1(d434adf3e2dd0c95b614a0208e874bdd6bc2ede7) )
@@ -2294,11 +1867,7 @@ ROM_START( galkoku )
 	ROM_LOAD( "gkok_20.bin", 0x100000, 0x10000, CRC(36107e6f) SHA1(0872d0ae2add129bdd036754fd5d751627bc142e) )
 ROM_END
 
-<<<<<<< HEAD
-ROM_START( hyouban )
-=======
 ROM_START( hyouban ) // Medal Series No. 124N, according to dip sheet
->>>>>>> upstream/master
 	ROM_REGION( 0x10000, "maincpu", 0 ) /* program */
 	ROM_LOAD( "1.3d",        0x00000,  0x10000, CRC(307b4f7e) SHA1(303e1818cb12ede15dadec165f18a6a33d564d5e) )
 
@@ -2535,26 +2104,6 @@ ROM_START( av2mj2rg )
 ROM_END
 
 
-<<<<<<< HEAD
-GAME( 1989, galkoku,  0,        galkoku,  galkoku,  driver_device,  0,        ROT180, "Nichibutsu / T.R.Tec", "Mahjong Gal no Kokuhaku (Japan)", MACHINE_SUPPORTS_SAVE )
-GAME( 1989, hyouban,  galkoku,  hyouban,  hyouban,  driver_device,  0,        ROT180, "Nichibutsu / T.R.Tec", "Mahjong Hyouban Musume [BET] (Japan)", MACHINE_SUPPORTS_SAVE )
-GAME( 1989, galkaika, 0,        galkaika, galkaika, nbmj8991_state, galkaika, ROT180, "Nichibutsu / T.R.Tec", "Mahjong Gal no Kaika (Japan)", MACHINE_SUPPORTS_SAVE )
-GAME( 1989, tokyogal, 0,        tokyogal, tokyogal, nbmj8991_state, tokyogal, ROT180, "Nichibutsu", "Tokyo Gal Zukan (Japan)", MACHINE_SUPPORTS_SAVE )
-GAME( 1989, tokimbsj, tokyogal, tokimbsj, tokimbsj, nbmj8991_state, tokimbsj, ROT180, "Nichibutsu", "Tokimeki Bishoujo [BET] (Japan)", MACHINE_SUPPORTS_SAVE )
-GAME( 1989, mcontest, 0,        mcontest, mcontest, driver_device,  0,        ROT180, "Nichibutsu", "Miss Mahjong Contest (Japan)", MACHINE_SUPPORTS_SAVE )
-GAME( 1989, uchuuai,  0,        uchuuai,  uchuuai,  driver_device,  0,        ROT180, "Nichibutsu", "Mahjong Uchuu yori Ai wo komete (Japan)", MACHINE_SUPPORTS_SAVE )
-GAME( 1989, triplew1, 0,        triplew1, triplew1, driver_device,  0,        ROT180, "Nichibutsu", "Mahjong Triple Wars (Japan)", MACHINE_SUPPORTS_SAVE )
-GAME( 1990, pstadium, 0,        pstadium, pstadium, driver_device,  0,        ROT180, "Nichibutsu", "Mahjong Panic Stadium (Japan)", MACHINE_SUPPORTS_SAVE )
-GAME( 1990, triplew2, 0,        triplew2, triplew1, driver_device,  0,        ROT180, "Nichibutsu", "Mahjong Triple Wars 2 (Japan)", MACHINE_SUPPORTS_SAVE )
-GAME( 1990, ntopstar, 0,        ntopstar, ntopstar, driver_device,  0,        ROT180, "Nichibutsu", "Mahjong Nerae! Top Star (Japan)", MACHINE_SUPPORTS_SAVE )
-GAME( 1991, mjlstory, 0,        mjlstory, mjlstory, driver_device,  0,        ROT180, "Nichibutsu", "Mahjong Jikken Love Story (Japan)", MACHINE_SUPPORTS_SAVE )
-GAME( 1991, vanilla,  0,        vanilla,  vanilla,  driver_device,  0,        ROT180, "Nichibutsu", "Mahjong Vanilla Syndrome (Japan)", MACHINE_SUPPORTS_SAVE )
-GAME( 1991, finalbny, vanilla,  finalbny, finalbny, nbmj8991_state, finalbny, ROT180, "Nichibutsu", "Mahjong Final Bunny [BET] (Japan)", MACHINE_SUPPORTS_SAVE )
-GAME( 1991, qmhayaku, 0,        qmhayaku, qmhayaku, driver_device,  0,        ROT180, "Nichibutsu", "Quiz-Mahjong Hayaku Yatteyo! (Japan)", MACHINE_SUPPORTS_SAVE )
-GAME( 1991, mjgottub, 0,        mjgottub, mjgottub, driver_device,  0,        ROT180, "Nichibutsu", "Medal Mahjong Gottsu ee-kanji [BET] (Japan)", MACHINE_SUPPORTS_SAVE )
-GAME( 1991, av2mj1bb, 0,        av2mj1bb, av2mj1bb, driver_device,  0,        ROT0,   "Miki Syouji / AV Japan", "AV2Mahjong No.1 Bay Bridge no Seijo (Japan)", MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE )
-GAME( 1991, av2mj2rg, 0,        av2mj2rg, av2mj2rg, driver_device,  0,        ROT0,   "Miki Syouji / AV Japan", "AV2Mahjong No.2 Rouge no Kaori (Japan)", MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1989, galkoku,  0,        galkoku,  galkoku,  nbmj8991_state, 0,        ROT180, "Nichibutsu / T.R.Tec", "Mahjong Gal no Kokuhaku (Japan)", MACHINE_SUPPORTS_SAVE )
 GAME( 1989, hyouban,  galkoku,  hyouban,  hyouban,  nbmj8991_state, 0,        ROT180, "Nichibutsu / T.R.Tec", "Mahjong Hyouban Musume [BET] (Japan)", MACHINE_SUPPORTS_SAVE )
 GAME( 1989, galkaika, 0,        galkaika, galkaika, nbmj8991_state, galkaika, ROT180, "Nichibutsu / T.R.Tec", "Mahjong Gal no Kaika (Japan)", MACHINE_SUPPORTS_SAVE )
@@ -2574,4 +2123,3 @@ GAME( 1991, qmhayaku, 0,        qmhayaku, qmhayaku, nbmj8991_state, 0,        RO
 GAME( 1991, mjgottub, 0,        mjgottub, mjgottub, nbmj8991_state, 0,        ROT180, "Nichibutsu", "Medal Mahjong Gottsu ee-kanji [BET] (Japan)", MACHINE_SUPPORTS_SAVE )
 GAME( 1991, av2mj1bb, 0,        av2mj1bb, av2mj1bb, nbmj8991_state, 0,        ROT0,   "Miki Syouji / AV Japan", "AV2Mahjong No.1 Bay Bridge no Seijo (Japan)", MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE )
 GAME( 1991, av2mj2rg, 0,        av2mj2rg, av2mj2rg, nbmj8991_state, 0,        ROT0,   "Miki Syouji / AV Japan", "AV2Mahjong No.2 Rouge no Kaori (Japan)", MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

@@ -15,24 +15,15 @@
  * Kaiser KS7022
  * Kaiser KS7032
  * Kaiser KS7058
-<<<<<<< HEAD
-
- The Kaiser KS7057 bootleg board is emulated in nes_mmc3_clones.c
-=======
  * Kaiser KS7016
  * Kaiser KS7037
 
  The Kaiser KS7057 bootleg board is emulated in nes_mmc3_clones.cpp
->>>>>>> upstream/master
 
 
  TODO:
  - FCEUmm lists more Kaiser PCBs:
    * KS7030 (for Yume Koujou Doki Doki Panic by Kaiser?)
-<<<<<<< HEAD
-   * KS7037
-=======
->>>>>>> upstream/master
    but there seem to be no available dumps...
 
  ***********************************************************************************************************/
@@ -57,60 +48,6 @@
 //  constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const device_type NES_KS7058 = &device_creator<nes_ks7058_device>;
-const device_type NES_KS7022 = &device_creator<nes_ks7022_device>;
-const device_type NES_KS7032 = &device_creator<nes_ks7032_device>;
-const device_type NES_KS202 = &device_creator<nes_ks202_device>;
-const device_type NES_KS7017 = &device_creator<nes_ks7017_device>;
-const device_type NES_KS7012 = &device_creator<nes_ks7012_device>;
-const device_type NES_KS7013B = &device_creator<nes_ks7013b_device>;
-const device_type NES_KS7031 = &device_creator<nes_ks7031_device>;
-
-
-nes_ks7058_device::nes_ks7058_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: nes_nrom_device(mconfig, NES_KS7058, "NES Cart Kaiser KS-7058 PCB", tag, owner, clock, "nes_ks7058", __FILE__)
-{
-}
-
-nes_ks7022_device::nes_ks7022_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: nes_nrom_device(mconfig, NES_KS7022, "NES Cart Kaiser KS-7022 PCB", tag, owner, clock, "nes_ks7022", __FILE__), m_latch(0)
-				{
-}
-
-nes_ks7032_device::nes_ks7032_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source)
-					: nes_nrom_device(mconfig, type, name, tag, owner, clock, shortname, source), m_latch(0), m_irq_count(0), m_irq_enable(0), irq_timer(nullptr)
-				{
-}
-
-nes_ks7032_device::nes_ks7032_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: nes_nrom_device(mconfig, NES_KS7032, "NES Cart Kaiser KS-7032 PCB", tag, owner, clock, "nes_ks7032", __FILE__), m_latch(0), m_irq_count(0), m_irq_enable(0), irq_timer(nullptr)
-				{
-}
-
-nes_ks202_device::nes_ks202_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: nes_ks7032_device(mconfig, NES_KS202, "NES Cart Kaiser KS-202 PCB", tag, owner, clock, "nes_ks202", __FILE__)
-{
-}
-
-nes_ks7017_device::nes_ks7017_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: nes_nrom_device(mconfig, NES_KS7017, "NES Cart Kaiser KS-7017 PCB", tag, owner, clock, "nes_ks7017", __FILE__), m_latch(0), m_irq_count(0), m_irq_status(0), m_irq_enable(0), irq_timer(nullptr)
-				{
-}
-
-nes_ks7012_device::nes_ks7012_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: nes_nrom_device(mconfig, NES_KS7012, "NES Cart Kaiser KS-7012 PCB", tag, owner, clock, "nes_ks7012", __FILE__)
-{
-}
-
-nes_ks7013b_device::nes_ks7013b_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: nes_nrom_device(mconfig, NES_KS7013B, "NES Cart Kaiser KS-7013B PCB", tag, owner, clock, "nes_ks7013b", __FILE__)
-{
-}
-
-nes_ks7031_device::nes_ks7031_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: nes_nrom_device(mconfig, NES_KS7031, "NES Cart Kaiser KS-7031 PCB", tag, owner, clock, "nes_ks7031", __FILE__)
-=======
 DEFINE_DEVICE_TYPE(NES_KS7058,  nes_ks7058_device,  "nes_ks7058",  "NES Cart Kaiser KS-7058 PCB")
 DEFINE_DEVICE_TYPE(NES_KS7022,  nes_ks7022_device,  "nes_ks7022",  "NES Cart Kaiser KS-7022 PCB")
 DEFINE_DEVICE_TYPE(NES_KS7032,  nes_ks7032_device,  "nes_ks7032",  "NES Cart Kaiser KS-7032 PCB")
@@ -175,7 +112,6 @@ nes_ks7016_device::nes_ks7016_device(const machine_config &mconfig, const char *
 
 nes_ks7037_device::nes_ks7037_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: nes_nrom_device(mconfig, NES_KS7037, tag, owner, clock)
->>>>>>> upstream/master
 {
 }
 
@@ -303,9 +239,6 @@ void nes_ks7031_device::pcb_reset()
 	m_reg[3] = 0;
 }
 
-<<<<<<< HEAD
-
-=======
 void nes_ks7016_device::device_start()
 {
 	common_start();
@@ -341,7 +274,6 @@ void nes_ks7037_device::pcb_reset()
 	memset(m_reg, 0, sizeof(m_reg));
 	m_latch = 0;
 }
->>>>>>> upstream/master
 
 
 
@@ -701,8 +633,6 @@ WRITE8_MEMBER(nes_ks7031_device::write_h)
 	LOG_MMC(("ks7031 write_h, offset: %04x, data: %02x\n", offset, data));
 	m_reg[(offset >> 11) & 3] = data & 0x3f;
 }
-<<<<<<< HEAD
-=======
 
 
 
@@ -810,4 +740,3 @@ WRITE8_MEMBER(nes_ks7037_device::write_h)
 		}
 	}
 }
->>>>>>> upstream/master

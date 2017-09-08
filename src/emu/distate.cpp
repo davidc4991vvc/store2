@@ -15,30 +15,6 @@
 //  GLOBAL VARIABLES
 //**************************************************************************
 
-<<<<<<< HEAD
-const UINT64 device_state_entry::k_decimal_divisor[] =
-{
-	1,
-	10,
-	100,
-	1000,
-	10000,
-	100000,
-	1000000,
-	10000000,
-	100000000,
-	1000000000,
-	U64(10000000000),
-	U64(100000000000),
-	U64(1000000000000),
-	U64(10000000000000),
-	U64(100000000000000),
-	U64(1000000000000000),
-	U64(10000000000000000),
-	U64(100000000000000000),
-	U64(1000000000000000000),
-	U64(10000000000000000000)
-=======
 const u64 device_state_entry::k_decimal_divisor[] =
 {
 	1U,
@@ -61,7 +37,6 @@ const u64 device_state_entry::k_decimal_divisor[] =
 	100000000000000000U,
 	1000000000000000000U,
 	10000000000000000000U
->>>>>>> upstream/master
 };
 
 
@@ -74,14 +49,8 @@ const u64 device_state_entry::k_decimal_divisor[] =
 //  device_state_entry - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-device_state_entry::device_state_entry(int index, const char *symbol, void *dataptr, UINT8 size, device_state_interface *dev)
-	: m_device_state(dev),
-		m_next(NULL),
-=======
 device_state_entry::device_state_entry(int index, const char *symbol, void *dataptr, u8 size, device_state_interface *dev)
 	: m_device_state(dev),
->>>>>>> upstream/master
 		m_index(index),
 		m_dataptr(dataptr),
 		m_datamask(0),
@@ -100,26 +69,15 @@ device_state_entry::device_state_entry(int index, const char *symbol, void *data
 	else if (size == 4)
 		m_sizemask = 0xffffffff;
 	else
-<<<<<<< HEAD
-		m_sizemask = ~U64(0);
-=======
 		m_sizemask = ~u64(0);
->>>>>>> upstream/master
 
 	// default the data mask to the same
 	m_datamask = m_sizemask;
 	format_from_mask();
 
 	// override well-known symbols
-<<<<<<< HEAD
-	if (index == STATE_GENPC)
-		m_symbol.assign("CURPC");
-	else if (index == STATE_GENPCBASE)
-		m_symbol.assign("CURPCBASE");
-=======
 	if (index == STATE_GENPCBASE)
 		m_symbol.assign("CURPC");
->>>>>>> upstream/master
 	else if (index == STATE_GENSP)
 		m_symbol.assign("CURSP");
 	else if (index == STATE_GENFLAGS)
@@ -128,14 +86,8 @@ device_state_entry::device_state_entry(int index, const char *symbol, void *data
 
 device_state_entry::device_state_entry(int index, device_state_interface *dev)
 	: m_device_state(dev),
-<<<<<<< HEAD
-		m_next(NULL),
-		m_index(index),
-		m_dataptr(NULL),
-=======
 		m_index(index),
 		m_dataptr(nullptr),
->>>>>>> upstream/master
 		m_datamask(0),
 		m_datasize(0),
 		m_flags(DSF_DIVIDER),
@@ -155,16 +107,9 @@ device_state_entry &device_state_entry::formatstr(const char *_format)
 	m_format.assign(_format);
 	m_default_format = false;
 
-<<<<<<< HEAD
-	// set the DSF_CUSTOM_STRING flag by formatting with a NULL string
-	m_flags &= ~DSF_CUSTOM_STRING;
-	std::string dummy;
-	format(dummy, NULL);
-=======
 	// set the DSF_CUSTOM_STRING flag by formatting with a nullptr string
 	m_flags &= ~DSF_CUSTOM_STRING;
 	format(nullptr);
->>>>>>> upstream/master
 
 	return *this;
 }
@@ -183,35 +128,13 @@ void device_state_entry::format_from_mask()
 
 	// make up a format based on the mask
 	int width = 0;
-<<<<<<< HEAD
-	for (UINT64 tempmask = m_datamask; tempmask != 0; tempmask >>= 4)
-		width++;
-	strprintf(m_format,"%%0%dX", width);
-=======
 	for (u64 tempmask = m_datamask; tempmask != 0; tempmask >>= 4)
 		width++;
 	m_format = string_format("%%0%dX", width);
->>>>>>> upstream/master
 }
 
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  value - return the current value as a UINT64
-//-------------------------------------------------
-
-UINT64 device_state_entry::value() const
-{
-	// pick up the value
-	UINT64 result;
-	switch (m_datasize)
-	{
-		default:
-		case 1: result = *m_dataptr.u8;     break;
-		case 2: result = *m_dataptr.u16;    break;
-		case 4: result = *m_dataptr.u32;    break;
-		case 8: result = *m_dataptr.u64;    break;
-=======
 //  value - return the current value as a u64
 //-------------------------------------------------
 
@@ -226,7 +149,6 @@ u64 device_state_entry::value() const
 		case 2: result = *static_cast<u16 *>(m_dataptr); break;
 		case 4: result = *static_cast<u32 *>(m_dataptr); break;
 		case 8: result = *static_cast<u64 *>(m_dataptr); break;
->>>>>>> upstream/master
 	}
 	return result & m_datamask;
 }
@@ -237,16 +159,10 @@ u64 device_state_entry::value() const
 //  pieces of indexed state as a string
 //-------------------------------------------------
 
-<<<<<<< HEAD
-std::string &device_state_entry::format(std::string &dest, const char *string, bool maxout) const
-{
-	UINT64 result = value();
-=======
 std::string device_state_entry::format(const char *string, bool maxout) const
 {
 	std::string dest;
 	u64 result = value();
->>>>>>> upstream/master
 
 	// parse the format
 	bool leadzero = false;
@@ -401,11 +317,7 @@ std::string device_state_entry::format(const char *string, bool maxout) const
 			case 's':
 				if (width == 0)
 					throw emu_fatalerror("Width required for %%s formats\n");
-<<<<<<< HEAD
-				if (string == NULL)
-=======
 				if (string == nullptr)
->>>>>>> upstream/master
 				{
 					const_cast<device_state_entry *>(this)->m_flags |= DSF_CUSTOM_STRING;
 					return dest;
@@ -432,17 +344,10 @@ std::string device_state_entry::format(const char *string, bool maxout) const
 
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  set_value - set the value from a UINT64
-//-------------------------------------------------
-
-void device_state_entry::set_value(UINT64 value) const
-=======
 //  set_value - set the value from a u64
 //-------------------------------------------------
 
 void device_state_entry::set_value(u64 value) const
->>>>>>> upstream/master
 {
 	// apply the mask
 	value &= m_datamask;
@@ -455,17 +360,10 @@ void device_state_entry::set_value(u64 value) const
 	switch (m_datasize)
 	{
 		default:
-<<<<<<< HEAD
-		case 1: *m_dataptr.u8 = value;      break;
-		case 2: *m_dataptr.u16 = value;     break;
-		case 4: *m_dataptr.u32 = value;     break;
-		case 8: *m_dataptr.u64 = value;     break;
-=======
 		case 1: *static_cast<u8  *>(m_dataptr) = value; break;
 		case 2: *static_cast<u16 *>(m_dataptr) = value; break;
 		case 4: *static_cast<u32 *>(m_dataptr) = value; break;
 		case 8: *static_cast<u64 *>(m_dataptr) = value; break;
->>>>>>> upstream/master
 	}
 }
 
@@ -495,11 +393,7 @@ device_state_interface::device_state_interface(const machine_config &mconfig, de
 	memset(m_fast_state, 0, sizeof(m_fast_state));
 
 	// configure the fast accessor
-<<<<<<< HEAD
-	device.m_state = this;
-=======
 	device.interfaces().m_state = this;
->>>>>>> upstream/master
 }
 
 
@@ -514,16 +408,6 @@ device_state_interface::~device_state_interface()
 
 //-------------------------------------------------
 //  state_int - return the value of the given piece
-<<<<<<< HEAD
-//  of indexed state as a UINT64
-//-------------------------------------------------
-
-UINT64 device_state_interface::state_int(int index)
-{
-	// NULL or out-of-range entry returns 0
-	const device_state_entry *entry = state_find_entry(index);
-	if (entry == NULL)
-=======
 //  of indexed state as a u64
 //-------------------------------------------------
 
@@ -532,7 +416,6 @@ u64 device_state_interface::state_int(int index)
 	// nullptr or out-of-range entry returns 0
 	const device_state_entry *entry = state_find_entry(index);
 	if (entry == nullptr)
->>>>>>> upstream/master
 		return 0;
 
 	// call the exporter before we do anything
@@ -549,21 +432,12 @@ u64 device_state_interface::state_int(int index)
 //  pieces of indexed state as a string
 //-------------------------------------------------
 
-<<<<<<< HEAD
-std::string &device_state_interface::state_string(int index, std::string &dest)
-{
-	// NULL or out-of-range entry returns bogus string
-	const device_state_entry *entry = state_find_entry(index);
-	if (entry == NULL)
-		return dest.assign("???");
-=======
 std::string device_state_interface::state_string(int index) const
 {
 	// nullptr or out-of-range entry returns bogus string
 	const device_state_entry *entry = state_find_entry(index);
 	if (entry == nullptr)
 		return std::string("???");
->>>>>>> upstream/master
 
 	// get the custom string if needed
 	std::string custom;
@@ -571,11 +445,7 @@ std::string device_state_interface::state_string(int index) const
 		state_string_export(*entry, custom);
 
 	// ask the entry to format itself
-<<<<<<< HEAD
-	return entry->format(dest, custom.c_str());
-=======
 	return entry->format(custom.c_str());
->>>>>>> upstream/master
 }
 
 
@@ -586,16 +456,6 @@ std::string device_state_interface::state_string(int index) const
 
 int device_state_interface::state_string_max_length(int index)
 {
-<<<<<<< HEAD
-	// NULL or out-of-range entry returns bogus string
-	const device_state_entry *entry = state_find_entry(index);
-	if (entry == NULL)
-		return 3;
-
-	// ask the entry to format itself maximally
-	std::string tempstring;
-	return entry->format(tempstring, "", true).length();
-=======
 	// nullptr or out-of-range entry returns bogus string
 	const device_state_entry *entry = state_find_entry(index);
 	if (entry == nullptr)
@@ -603,22 +463,11 @@ int device_state_interface::state_string_max_length(int index)
 
 	// ask the entry to format itself maximally
 	return entry->format("", true).length();
->>>>>>> upstream/master
 }
 
 
 //-------------------------------------------------
 //  set_state_int - set the value of the given
-<<<<<<< HEAD
-//  piece of indexed state from a UINT64
-//-------------------------------------------------
-
-void device_state_interface::set_state_int(int index, UINT64 value)
-{
-	// NULL or out-of-range entry is a no-op
-	const device_state_entry *entry = state_find_entry(index);
-	if (entry == NULL)
-=======
 //  piece of indexed state from a u64
 //-------------------------------------------------
 
@@ -627,7 +476,6 @@ void device_state_interface::set_state_int(int index, u64 value)
 	// nullptr or out-of-range entry is a no-op
 	const device_state_entry *entry = state_find_entry(index);
 	if (entry == nullptr)
->>>>>>> upstream/master
 		return;
 
 	// set the value
@@ -646,15 +494,9 @@ void device_state_interface::set_state_int(int index, u64 value)
 
 void device_state_interface::set_state_string(int index, const char *string)
 {
-<<<<<<< HEAD
-	// NULL or out-of-range entry is a no-op
-	const device_state_entry *entry = state_find_entry(index);
-	if (entry == NULL)
-=======
 	// nullptr or out-of-range entry is a no-op
 	const device_state_entry *entry = state_find_entry(index);
 	if (entry == nullptr)
->>>>>>> upstream/master
 		return;
 
 	// set the value
@@ -668,28 +510,6 @@ void device_state_interface::set_state_string(int index, const char *string)
 
 //-------------------------------------------------
 //  state_add - return the value of the given
-<<<<<<< HEAD
-//  pieces of indexed state as a UINT64
-//-------------------------------------------------
-
-device_state_entry &device_state_interface::state_add(int index, const char *symbol, void *data, UINT8 size)
-{
-	// assert validity of incoming parameters
-	assert(size == 1 || size == 2 || size == 4 || size == 8);
-	assert(symbol != NULL);
-
-	// allocate new entry
-	device_state_entry *entry = global_alloc(device_state_entry(index, symbol, data, size, this));
-
-	// append to the end of the list
-	m_state_list.append(*entry);
-
-	// set the fast entry if applicable
-	if (index >= FAST_STATE_MIN && index <= FAST_STATE_MAX)
-		m_fast_state[index - FAST_STATE_MIN] = entry;
-
-	return *entry;
-=======
 //  pieces of indexed state as a u64
 //-------------------------------------------------
 
@@ -707,7 +527,6 @@ device_state_entry &device_state_interface::state_add(int index, const char *sym
 		m_fast_state[index - FAST_STATE_MIN] = m_state_list.back().get();
 
 	return *m_state_list.back().get();
->>>>>>> upstream/master
 }
 
 //-------------------------------------------------
@@ -717,20 +536,10 @@ device_state_entry &device_state_interface::state_add(int index, const char *sym
 
 device_state_entry &device_state_interface::state_add_divider(int index)
 {
-<<<<<<< HEAD
-	// allocate new entry
-	device_state_entry *entry = global_alloc(device_state_entry(index, this));
-
-	// append to the end of the list
-	m_state_list.append(*entry);
-
-	return *entry;
-=======
 	// append to the end of the list
 	m_state_list.push_back(std::make_unique<device_state_entry>(index, this));
 
 	return *m_state_list.back().get();
->>>>>>> upstream/master
 }
 
 //-------------------------------------------------
@@ -771,11 +580,7 @@ void device_state_interface::state_string_import(const device_state_entry &entry
 //  written to perform any post-processing
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void device_state_interface::state_string_export(const device_state_entry &entry, std::string &str)
-=======
 void device_state_interface::state_string_export(const device_state_entry &entry, std::string &str) const
->>>>>>> upstream/master
 {
 	// do nothing by default
 }
@@ -789,11 +594,7 @@ void device_state_interface::state_string_export(const device_state_entry &entry
 void device_state_interface::interface_post_start()
 {
 	// make sure we got something during startup
-<<<<<<< HEAD
-	if (m_state_list.count() == 0)
-=======
 	if (m_state_list.size() == 0)
->>>>>>> upstream/master
 		throw emu_fatalerror("No state registered for device '%s' that supports it!", m_device.tag());
 }
 
@@ -803,30 +604,17 @@ void device_state_interface::interface_post_start()
 //  state entry for the given index
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const device_state_entry *device_state_interface::state_find_entry(int index)
-=======
 const device_state_entry *device_state_interface::state_find_entry(int index) const
->>>>>>> upstream/master
 {
 	// use fast lookup if possible
 	if (index >= FAST_STATE_MIN && index <= FAST_STATE_MAX)
 		return m_fast_state[index - FAST_STATE_MIN];
 
 	// otherwise, scan the first
-<<<<<<< HEAD
-	for (const device_state_entry *entry = m_state_list.first(); entry != NULL; entry = entry->m_next)
-		if (entry->m_index == index)
-			return entry;
-
-	// handle failure by returning NULL
-	return NULL;
-=======
 	for (auto &entry : m_state_list)
 		if (entry->m_index == index)
 			return entry.get();
 
 	// handle failure by returning nullptr
 	return nullptr;
->>>>>>> upstream/master
 }

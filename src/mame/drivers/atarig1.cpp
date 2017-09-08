@@ -21,15 +21,10 @@
 
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "video/atarirle.h"
-#include "includes/atarig1.h"
-=======
 #include "includes/atarig1.h"
 #include "machine/eeprompar.h"
 #include "machine/watchdog.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 
@@ -125,11 +120,7 @@ void atarig1_state::update_bank(int bank)
 	{
 		/* bank 0 comes from the copy we made earlier */
 		if (bank == 0)
-<<<<<<< HEAD
-			memcpy(m_bslapstic_base, m_bslapstic_bank0, 0x2000);
-=======
 			memcpy(m_bslapstic_base, m_bslapstic_bank0.get(), 0x2000);
->>>>>>> upstream/master
 		else
 			memcpy(m_bslapstic_base, &m_bslapstic_base[bank * 0x1000], 0x2000);
 
@@ -141,11 +132,7 @@ void atarig1_state::update_bank(int bank)
 
 void atarig1_state::device_post_load()
 {
-<<<<<<< HEAD
-	if (m_bslapstic_base != NULL)
-=======
 	if (m_bslapstic_base != nullptr)
->>>>>>> upstream/master
 	{
 		int bank = m_bslapstic_bank;
 		m_bslapstic_bank = -1;
@@ -184,20 +171,12 @@ READ16_MEMBER(atarig1_state::pitfightb_cheap_slapstic_r)
 void atarig1_state::pitfightb_cheap_slapstic_init()
 {
 	/* install a read handler */
-<<<<<<< HEAD
-	m_bslapstic_base = m_maincpu->space(AS_PROGRAM).install_read_handler(0x038000, 0x03ffff, read16_delegate(FUNC(atarig1_state::pitfightb_cheap_slapstic_r),this));
-
-	/* allocate memory for a copy of bank 0 */
-	m_bslapstic_bank0 = auto_alloc_array(machine(), UINT8, 0x2000);
-	memcpy(m_bslapstic_bank0, m_bslapstic_base, 0x2000);
-=======
 	m_maincpu->space(AS_PROGRAM).install_read_handler(0x038000, 0x03ffff, read16_delegate(FUNC(atarig1_state::pitfightb_cheap_slapstic_r),this));
 	m_bslapstic_base = (uint16_t *)(memregion("maincpu")->base() + 0x38000);
 
 	/* allocate memory for a copy of bank 0 */
 	m_bslapstic_bank0 = std::make_unique<uint8_t[]>(0x2000);
 	memcpy(m_bslapstic_bank0.get(), m_bslapstic_base, 0x2000);
->>>>>>> upstream/master
 
 	/* not primed by default */
 	m_bslapstic_primed = false;
@@ -216,13 +195,8 @@ static ADDRESS_MAP_START( main_map, AS_PROGRAM, 16, atarig1_state )
 	AM_RANGE(0x038000, 0x03ffff) AM_ROM /* pitfight slapstic goes here */
 	AM_RANGE(0x040000, 0x077fff) AM_ROM
 	AM_RANGE(0x078000, 0x07ffff) AM_ROM /* hydra slapstic goes here */
-<<<<<<< HEAD
-	AM_RANGE(0xf80000, 0xf80001) AM_WRITE(watchdog_reset16_w)
-	AM_RANGE(0xf88000, 0xf8ffff) AM_DEVWRITE("eeprom", atari_eeprom_device, unlock_write)
-=======
 	AM_RANGE(0xf80000, 0xf80001) AM_DEVWRITE("watchdog", watchdog_timer_device, reset16_w)
 	AM_RANGE(0xf88000, 0xf8ffff) AM_DEVWRITE("eeprom", eeprom_parallel_28xx_device, unlock_write)
->>>>>>> upstream/master
 	AM_RANGE(0xf90000, 0xf90001) AM_DEVWRITE8("jsa", atari_jsa_ii_device, main_command_w, 0xff00)
 	AM_RANGE(0xf98000, 0xf98001) AM_DEVWRITE("jsa", atari_jsa_ii_device, sound_reset_w)
 	AM_RANGE(0xfa0000, 0xfa0001) AM_DEVWRITE8("rle", atari_rle_objects_device, control_write, 0x00ff)
@@ -230,11 +204,7 @@ static ADDRESS_MAP_START( main_map, AS_PROGRAM, 16, atarig1_state )
 	AM_RANGE(0xfc0000, 0xfc0001) AM_READ(special_port0_r)
 	AM_RANGE(0xfc8000, 0xfc8007) AM_READWRITE(a2d_data_r, a2d_select_w)
 	AM_RANGE(0xfd0000, 0xfd0001) AM_DEVREAD8("jsa", atari_jsa_ii_device, main_response_r, 0xff00)
-<<<<<<< HEAD
-	AM_RANGE(0xfd8000, 0xfdffff) AM_DEVREADWRITE8("eeprom", atari_eeprom_device, read, write, 0x00ff)
-=======
 	AM_RANGE(0xfd8000, 0xfdffff) AM_DEVREADWRITE8("eeprom", eeprom_parallel_28xx_device, read, write, 0x00ff)
->>>>>>> upstream/master
 /*  AM_RANGE(0xfe0000, 0xfe7fff) AM_READ(from_r)*/
 	AM_RANGE(0xfe8000, 0xfe89ff) AM_RAM_DEVWRITE("palette", palette_device, write) AM_SHARE("palette")
 	AM_RANGE(0xff0000, 0xff0fff) AM_RAM AM_SHARE("rle")
@@ -454,25 +424,13 @@ static const atari_rle_objects_config modesc_pitfight =
  *
  *************************************/
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( atarig1, atarig1_state )
-=======
 static MACHINE_CONFIG_START( atarig1 )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, ATARI_CLOCK_14MHz)
 	MCFG_CPU_PROGRAM_MAP(main_map)
 	MCFG_DEVICE_VBLANK_INT_DRIVER("screen", atarigen_state, video_int_gen)
 
-<<<<<<< HEAD
-	MCFG_SLAPSTIC_ADD("slapstic")
-
-	MCFG_MACHINE_START_OVERRIDE(atarig1_state,atarig1)
-	MCFG_MACHINE_RESET_OVERRIDE(atarig1_state,atarig1)
-
-	MCFG_ATARI_EEPROM_2816_ADD("eeprom")
-=======
 	MCFG_MACHINE_START_OVERRIDE(atarig1_state,atarig1)
 	MCFG_MACHINE_RESET_OVERRIDE(atarig1_state,atarig1)
 
@@ -480,7 +438,6 @@ static MACHINE_CONFIG_START( atarig1 )
 	MCFG_EEPROM_28XX_LOCK_AFTER_WRITE(true)
 
 	MCFG_WATCHDOG_ADD("watchdog")
->>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", atarig1)
@@ -508,14 +465,6 @@ static MACHINE_CONFIG_START( atarig1 )
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_DERIVED( hydra, atarig1 )
-	MCFG_ATARIRLE_ADD("rle", modesc_hydra)
-MACHINE_CONFIG_END
-
-static MACHINE_CONFIG_DERIVED( pitfight, atarig1 )
-	MCFG_ATARIRLE_ADD("rle", modesc_pitfight)
-=======
 
 static MACHINE_CONFIG_DERIVED( hydra, atarig1 )
 	MCFG_ATARIRLE_ADD("rle", modesc_hydra)
@@ -554,7 +503,6 @@ MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_DERIVED( pitfightb, atarig1 )
 	MCFG_ATARIRLE_ADD("rle", modesc_pitfight)
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
@@ -575,14 +523,8 @@ ROM_START( hydra )
 	ROM_LOAD16_BYTE( "136079-1030.bin", 0x60000, 0x10000, CRC(b31fd41f) SHA1(1738d31b3262b32f89ce64fe262682b6bb544e79) )
 	ROM_LOAD16_BYTE( "136079-1031.bin", 0x60001, 0x10000, CRC(453d076f) SHA1(a7fd8e5efebf56c22e0a7e0b224597b4dba4692a) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x14000, "jsa:cpu", 0 ) /* 64k for 6502 code */
-	ROM_LOAD( "hydraa0.bin", 0x10000, 0x4000, CRC(619d7319) SHA1(3c58f18ca5c93ae049bfca91043718fff43e674c) )
-	ROM_CONTINUE(            0x04000, 0xc000 )
-=======
 	ROM_REGION( 0x10000, "jsa:cpu", 0 ) /* 64k for 6502 code */
 	ROM_LOAD( "hydraa0.bin", 0x00000, 0x10000, CRC(619d7319) SHA1(3c58f18ca5c93ae049bfca91043718fff43e674c) )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x0a0000, "gfx1", 0 )
 	ROM_LOAD( "136079-1017.bin",  0x000000, 0x10000, CRC(bd77b747) SHA1(da57e305468c159ca3d2cfae807a85e643bbf053) ) /* playfield, planes 0-3 odd */
@@ -640,14 +582,8 @@ ROM_START( hydrap )
 	ROM_LOAD16_BYTE( "hydhi3.bin", 0x60000, 0x10000, CRC(29e9e03e) SHA1(0b03482834c1c8fcdd902d513c23c0cc04900f5f) )
 	ROM_LOAD16_BYTE( "hydlo3.bin", 0x60001, 0x10000, CRC(7b5047f0) SHA1(99b59dfebc0df0b876e69a885a3e3b07ef958fd4) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x14000, "jsa:cpu", 0 ) /* 64k for 6502 code */
-	ROM_LOAD( "hydraa0.bin", 0x10000, 0x4000, BAD_DUMP CRC(619d7319) SHA1(3c58f18ca5c93ae049bfca91043718fff43e674c)  )
-	ROM_CONTINUE(            0x04000, 0xc000 )
-=======
 	ROM_REGION( 0x10000, "jsa:cpu", 0 ) /* 64k for 6502 code */
 	ROM_LOAD( "hydraa0.bin", 0x00000, 0x10000, BAD_DUMP CRC(619d7319) SHA1(3c58f18ca5c93ae049bfca91043718fff43e674c)  )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x0a0000, "gfx1", 0 )
 	ROM_LOAD( "136079-1017.bin",  0x000000, 0x10000, CRC(bd77b747) SHA1(da57e305468c159ca3d2cfae807a85e643bbf053) ) /* playfield, planes 0-3 odd */
@@ -705,14 +641,8 @@ ROM_START( hydrap2 )
 	ROM_LOAD16_BYTE( "30c", 0x60001, 0x10000, CRC(89604306) SHA1(ccac6eabb174903f4ee144fce53a169daa734e07) )
 	ROM_LOAD16_BYTE( "30e", 0x60000, 0x10000, CRC(25221b17) SHA1(bb14117f256c3db6881bb91cace297d4c636e684) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x14000, "jsa:cpu", 0 ) /* 64k for 6502 code */
-	ROM_LOAD( "aud.1b",      0x10000, 0x4000, CRC(e1b5188a) SHA1(e9f2a78df49fa085a9363ca194e2ceb5fa5409c4) )
-	ROM_CONTINUE(            0x04000, 0xc000 )
-=======
 	ROM_REGION( 0x10000, "jsa:cpu", 0 ) /* 64k for 6502 code */
 	ROM_LOAD( "aud.1b",      0x00000, 0x10000, CRC(e1b5188a) SHA1(e9f2a78df49fa085a9363ca194e2ceb5fa5409c4) )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x0a0000, "gfx1", 0 )
 	ROM_LOAD( "136079-1017.bin",  0x000000, 0x10000, CRC(bd77b747) SHA1(da57e305468c159ca3d2cfae807a85e643bbf053) ) /* playfield, planes 0-3 odd */
@@ -799,14 +729,8 @@ ROM_START( pitfight )
 	ROM_LOAD16_BYTE( "136081-9030.15d", 0x20000, 0x10000, CRC(3bace9ef) SHA1(29072871b268f343fa1e7fcc9682674df2b2e34f) )
 	ROM_LOAD16_BYTE( "136081-9031.15b", 0x20001, 0x10000, CRC(c717f011) SHA1(3c5d6c12b85285422345a1aba3f8c497f74c6889) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x14000, "jsa:cpu", 0 ) /* 64k for 6502 code */
-	ROM_LOAD( "136081-1060.1b", 0x10000, 0x4000, CRC(231d71d7) SHA1(24622eee5fe873ef81e1df2691bd7a1d3ea7ef6b) )
-	ROM_CONTINUE(               0x04000, 0xc000 )
-=======
 	ROM_REGION( 0x10000, "jsa:cpu", 0 ) /* 64k for 6502 code */
 	ROM_LOAD( "136081-1060.1b", 0x00000, 0x10000, CRC(231d71d7) SHA1(24622eee5fe873ef81e1df2691bd7a1d3ea7ef6b) )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x0a0000, "gfx1", 0 )
 	ROM_LOAD( "136081-1017.130m", 0x000000, 0x10000, CRC(ad3cfea5) SHA1(7b6fec131230e84ab87b7fc95f08989916f30e02) ) /* playfield, planes 0-3 odd */
@@ -900,14 +824,8 @@ ROM_START( pitfight7 )
 	ROM_LOAD16_BYTE( "136081-7030.15d", 0x20000, 0x10000, CRC(5fd5a0b1) SHA1(5d4711e8d10176b6989c4db012dbb4e29860590c) )
 	ROM_LOAD16_BYTE( "136081-7031.15b", 0x20001, 0x10000, CRC(e14a1d0c) SHA1(734fa1cd5ad835fa77c686006993ea9358e3b072) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x14000, "jsa:cpu", 0 ) /* 64k for 6502 code */
-	ROM_LOAD( "136081-1060.1b", 0x10000, 0x4000, CRC(231d71d7) SHA1(24622eee5fe873ef81e1df2691bd7a1d3ea7ef6b) )
-	ROM_CONTINUE(               0x04000, 0xc000 )
-=======
 	ROM_REGION( 0x10000, "jsa:cpu", 0 ) /* 64k for 6502 code */
 	ROM_LOAD( "136081-1060.1b", 0x00000, 0x10000, CRC(231d71d7) SHA1(24622eee5fe873ef81e1df2691bd7a1d3ea7ef6b) )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x0a0000, "gfx1", 0 )
 	ROM_LOAD( "136081-1017.130m", 0x000000, 0x10000, CRC(ad3cfea5) SHA1(7b6fec131230e84ab87b7fc95f08989916f30e02) ) /* playfield, planes 0-3 odd */
@@ -968,14 +886,8 @@ ROM_START( pitfight6 )
 	ROM_LOAD16_BYTE( "136081-6030.15d", 0x20000, 0x10000, CRC(72b4b249) SHA1(295c707783ca40d6b68eb36b4511774e889bf447) )
 	ROM_LOAD16_BYTE( "136081-6031.15b", 0x20001, 0x10000, CRC(f0c5d03b) SHA1(53aed44930ebaad98d833bc86837c57ac623937d) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x14000, "jsa:cpu", 0 ) /* 64k for 6502 code */
-	ROM_LOAD( "136081-1060.1b", 0x10000, 0x4000, CRC(231d71d7) SHA1(24622eee5fe873ef81e1df2691bd7a1d3ea7ef6b) )
-	ROM_CONTINUE(               0x04000, 0xc000 )
-=======
 	ROM_REGION( 0x10000, "jsa:cpu", 0 ) /* 64k for 6502 code */
 	ROM_LOAD( "136081-1060.1b", 0x00000, 0x10000, CRC(231d71d7) SHA1(24622eee5fe873ef81e1df2691bd7a1d3ea7ef6b) )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x0a0000, "gfx1", 0 )
 	ROM_LOAD( "136081-1017.130m", 0x000000, 0x10000, CRC(ad3cfea5) SHA1(7b6fec131230e84ab87b7fc95f08989916f30e02) ) /* playfield, planes 0-3 odd */
@@ -1024,14 +936,8 @@ ROM_START( pitfight5 )
 	ROM_LOAD16_BYTE( "136081-5030.15d", 0x20000, 0x10000, CRC(6a094723) SHA1(a77046a8c5fab81cf0207122e494c32aab3b220d) )
 	ROM_LOAD16_BYTE( "136081-5031.15b", 0x20001, 0x10000, CRC(47400d94) SHA1(07ba297a9b3ae574bc501a24fb6e46db7a5b3de5) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x14000, "jsa:cpu", 0 ) /* 64k for 6502 code */
-	ROM_LOAD( "136081-1060.1b", 0x10000, 0x4000, CRC(231d71d7) SHA1(24622eee5fe873ef81e1df2691bd7a1d3ea7ef6b) )
-	ROM_CONTINUE(               0x04000, 0xc000 )
-=======
 	ROM_REGION( 0x10000, "jsa:cpu", 0 ) /* 64k for 6502 code */
 	ROM_LOAD( "136081-1060.1b", 0x00000, 0x10000, CRC(231d71d7) SHA1(24622eee5fe873ef81e1df2691bd7a1d3ea7ef6b) )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x0a0000, "gfx1", 0 )
 	ROM_LOAD( "136081-1017.130m", 0x000000, 0x10000, CRC(ad3cfea5) SHA1(7b6fec131230e84ab87b7fc95f08989916f30e02) ) /* playfield, planes 0-3 odd */
@@ -1080,14 +986,8 @@ ROM_START( pitfight4 )
 	ROM_LOAD16_BYTE( "136081-3030.15d", 0x20000, 0x10000, CRC(b053e779) SHA1(f143f0e16850ad98366db208e956f7402d1ca848) )
 	ROM_LOAD16_BYTE( "136081-3031.15b", 0x20001, 0x10000, CRC(2b8c4d13) SHA1(6f1679ef5974bf44848bfa6db0b9b05f71f6e7d6) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x14000, "jsa:cpu", 0 ) /* 64k for 6502 code */
-	ROM_LOAD( "136081-1060.1b", 0x10000, 0x4000, CRC(231d71d7) SHA1(24622eee5fe873ef81e1df2691bd7a1d3ea7ef6b) )
-	ROM_CONTINUE(               0x04000, 0xc000 )
-=======
 	ROM_REGION( 0x10000, "jsa:cpu", 0 ) /* 64k for 6502 code */
 	ROM_LOAD( "136081-1060.1b", 0x00000, 0x10000, CRC(231d71d7) SHA1(24622eee5fe873ef81e1df2691bd7a1d3ea7ef6b) )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x0a0000, "gfx1", 0 )
 	ROM_LOAD( "136081-1017.130m", 0x000000, 0x10000, CRC(ad3cfea5) SHA1(7b6fec131230e84ab87b7fc95f08989916f30e02) ) /* playfield, planes 0-3 odd */
@@ -1148,11 +1048,6 @@ ROM_START( pitfight3 )
 	ROM_LOAD16_BYTE( "136081-3030.15d", 0x20000, 0x10000, CRC(b053e779) SHA1(f143f0e16850ad98366db208e956f7402d1ca848) )
 	ROM_LOAD16_BYTE( "136081-3031.15b", 0x20001, 0x10000, CRC(2b8c4d13) SHA1(6f1679ef5974bf44848bfa6db0b9b05f71f6e7d6) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x14000, "jsa:cpu", 0 ) /* 64k for 6502 code */
-	ROM_LOAD( "136081-1060.1b", 0x10000, 0x4000, CRC(231d71d7) SHA1(24622eee5fe873ef81e1df2691bd7a1d3ea7ef6b) )
-	ROM_CONTINUE(               0x04000, 0xc000 )
-=======
 	ROM_REGION( 0x10000, "jsa:cpu", 0 ) /* 64k for 6502 code */
 	ROM_LOAD( "136081-1060.1b", 0x00000, 0x10000, CRC(231d71d7) SHA1(24622eee5fe873ef81e1df2691bd7a1d3ea7ef6b) )
 
@@ -1217,7 +1112,6 @@ ROM_START( pitfight2 )
 
 	ROM_REGION( 0x10000, "jsa:cpu", 0 ) /* 64k for 6502 code */
 	ROM_LOAD( "136081-1060.1b", 0x00000, 0x10000, CRC(231d71d7) SHA1(24622eee5fe873ef81e1df2691bd7a1d3ea7ef6b) )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x0a0000, "gfx1", 0 )
 	ROM_LOAD( "136081-1017.130m", 0x000000, 0x10000, CRC(ad3cfea5) SHA1(7b6fec131230e84ab87b7fc95f08989916f30e02) ) /* playfield, planes 0-3 odd */
@@ -1278,14 +1172,8 @@ ROM_START( pitfightj )
 	ROM_LOAD16_BYTE( "136081-3430.15d", 0x20000, 0x10000, CRC(80707ac0) SHA1(39ddd228bb630bbdf32c76c7906e54f6a62c06ad) )
 	ROM_LOAD16_BYTE( "136081-3431.15b", 0x20001, 0x10000, CRC(9bf43aa6) SHA1(b41c30118a0c0032303d1b1de471aac292a4968a) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x14000, "jsa:cpu", 0 ) /* 64k for 6502 code */
-	ROM_LOAD( "136081-2060.1b", 0x10000, 0x4000, CRC(4317a9f3) SHA1(310154be47fd16b417699338e04e08f3ed973198) )
-	ROM_CONTINUE(               0x04000, 0xc000 )
-=======
 	ROM_REGION( 0x10000, "jsa:cpu", 0 ) /* 64k for 6502 code */
 	ROM_LOAD( "136081-2060.1b", 0x00000, 0x10000, CRC(4317a9f3) SHA1(310154be47fd16b417699338e04e08f3ed973198) )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x0a0000, "gfx1", 0 )
 	ROM_LOAD( "136081-1017.130m", 0x000000, 0x10000, CRC(ad3cfea5) SHA1(7b6fec131230e84ab87b7fc95f08989916f30e02) ) /* playfield, planes 0-3 odd */
@@ -1346,14 +1234,8 @@ ROM_START( pitfightb )
 	ROM_LOAD16_BYTE( "pit8.bin", 0x20000, 0x10000, CRC(b74a8258) SHA1(779990ed95c25dd0a8e9f30c4d9a8d69162d14fc) )
 	ROM_LOAD16_BYTE( "pit6.bin", 0x20001, 0x10000, CRC(40204ecd) SHA1(73d827e119cc1408356e28c1e67f6c8e287eeb15) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x14000, "jsa:cpu", 0 ) /* 64k for 6502 code */
-	ROM_LOAD( "136081-1060.1b", 0x10000, 0x4000, CRC(231d71d7) SHA1(24622eee5fe873ef81e1df2691bd7a1d3ea7ef6b) )
-	ROM_CONTINUE(               0x04000, 0xc000 )
-=======
 	ROM_REGION( 0x10000, "jsa:cpu", 0 ) /* 64k for 6502 code */
 	ROM_LOAD( "136081-1060.1b", 0x00000, 0x10000, CRC(231d71d7) SHA1(24622eee5fe873ef81e1df2691bd7a1d3ea7ef6b) )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x0a0000, "gfx1", 0 )
 	ROM_LOAD( "136081-1017.130m", 0x000000, 0x10000, CRC(ad3cfea5) SHA1(7b6fec131230e84ab87b7fc95f08989916f30e02) ) /* playfield, planes 0-3 odd */
@@ -1403,30 +1285,6 @@ ROM_END
  *
  *************************************/
 
-<<<<<<< HEAD
-void atarig1_state::init_common(offs_t slapstic_base, int slapstic, bool is_pitfight)
-{
-	if (slapstic == -1)
-	{
-		pitfightb_cheap_slapstic_init();
-		save_item(NAME(m_bslapstic_bank));
-		save_item(NAME(m_bslapstic_primed));
-	}
-	else if (slapstic != 0)
-		slapstic_configure(*m_maincpu, slapstic_base, 0, slapstic);
-
-	m_is_pitfight = is_pitfight;
-}
-
-DRIVER_INIT_MEMBER(atarig1_state,hydra)     { init_common(0x078000, 116, 0); }
-DRIVER_INIT_MEMBER(atarig1_state,hydrap)    { init_common(0x000000,   0, 0); }
-
-DRIVER_INIT_MEMBER(atarig1_state,pitfight9)  { init_common(0x038000, 114, 1); }
-DRIVER_INIT_MEMBER(atarig1_state,pitfight7)  { init_common(0x038000, 112, 1); }
-DRIVER_INIT_MEMBER(atarig1_state,pitfight)   { init_common(0x038000, 111, 1); }
-DRIVER_INIT_MEMBER(atarig1_state,pitfightj)  { init_common(0x038000, 113, 1); }
-DRIVER_INIT_MEMBER(atarig1_state,pitfightb)  { init_common(0x038000,  -1, 1); }
-=======
 DRIVER_INIT_MEMBER(atarig1_state,hydra)
 {
 	slapstic_configure(*m_maincpu, 0x078000, 0, memregion("maincpu")->base() + 0x78000);
@@ -1451,7 +1309,6 @@ DRIVER_INIT_MEMBER(atarig1_state,pitfightb)
 	save_item(NAME(m_bslapstic_primed));
 	m_is_pitfight = 1;
 }
->>>>>>> upstream/master
 
 
 /*************************************
@@ -1460,20 +1317,6 @@ DRIVER_INIT_MEMBER(atarig1_state,pitfightb)
  *
  *************************************/
 
-<<<<<<< HEAD
-GAME( 1990, hydra,    0,        hydra, hydra, atarig1_state,    hydra,    ROT0, "Atari Games", "Hydra", MACHINE_SUPPORTS_SAVE )
-GAME( 1990, hydrap,   hydra,    hydra, hydra, atarig1_state,    hydrap,   ROT0, "Atari Games", "Hydra (prototype 5/14/90)", MACHINE_SUPPORTS_SAVE )
-GAME( 1990, hydrap2,  hydra,    hydra, hydra, atarig1_state,    hydrap,   ROT0, "Atari Games", "Hydra (prototype 5/25/90)", MACHINE_SUPPORTS_SAVE )
-
-GAME( 1990, pitfight,  0,        pitfight, pitfight, atarig1_state, pitfight9, ROT0, "Atari Games", "Pit Fighter (rev 9)", MACHINE_SUPPORTS_SAVE )
-GAME( 1990, pitfight7, pitfight, pitfight, pitfight, atarig1_state, pitfight7, ROT0, "Atari Games", "Pit Fighter (rev 7)", MACHINE_SUPPORTS_SAVE )
-GAME( 1990, pitfight6, pitfight, pitfight, pitfight, atarig1_state, pitfightj, ROT0, "Atari Games", "Pit Fighter (rev 6)", MACHINE_SUPPORTS_SAVE )
-GAME( 1990, pitfight5, pitfight, pitfight, pitfight, atarig1_state, pitfight7, ROT0, "Atari Games", "Pit Fighter (rev 5)", MACHINE_SUPPORTS_SAVE )
-GAME( 1990, pitfight4, pitfight, pitfight, pitfight, atarig1_state, pitfight,  ROT0, "Atari Games", "Pit Fighter (rev 4)", MACHINE_SUPPORTS_SAVE )
-GAME( 1990, pitfight3, pitfight, pitfight, pitfight, atarig1_state, pitfight,  ROT0, "Atari Games", "Pit Fighter (rev 3)", MACHINE_SUPPORTS_SAVE )
-GAME( 1990, pitfightj, pitfight, pitfight, pitfightj, atarig1_state,pitfightj, ROT0, "Atari Games", "Pit Fighter (Japan, 2 players)", MACHINE_SUPPORTS_SAVE )
-GAME( 1990, pitfightb, pitfight, pitfight, pitfight, atarig1_state, pitfightb, ROT0, "bootleg",     "Pit Fighter (bootleg)", MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1990, hydra,     0,        hydra,     hydra,     atarig1_state, hydra,     ROT0, "Atari Games", "Hydra", MACHINE_SUPPORTS_SAVE )
 GAME( 1990, hydrap,    hydra,    hydrap,    hydra,     atarig1_state, hydrap,    ROT0, "Atari Games", "Hydra (prototype 5/14/90)", MACHINE_SUPPORTS_SAVE )
 GAME( 1990, hydrap2,   hydra,    hydrap,    hydra,     atarig1_state, hydrap,    ROT0, "Atari Games", "Hydra (prototype 5/25/90)", MACHINE_SUPPORTS_SAVE )
@@ -1487,4 +1330,3 @@ GAME( 1990, pitfight3, pitfight, pitfight,  pitfight,  atarig1_state, pitfight, 
 GAME( 1990, pitfight2, pitfight, pitfight,  pitfight,  atarig1_state, pitfight,  ROT0, "Atari Games", "Pit Fighter (rev 2)", MACHINE_SUPPORTS_SAVE )
 GAME( 1990, pitfightj, pitfight, pitfightj, pitfightj, atarig1_state, pitfight,  ROT0, "Atari Games", "Pit Fighter (Japan rev 3, 2 players)", MACHINE_SUPPORTS_SAVE )
 GAME( 1990, pitfightb, pitfight, pitfightb, pitfight,  atarig1_state, pitfightb, ROT0, "bootleg",     "Pit Fighter (bootleg)", MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

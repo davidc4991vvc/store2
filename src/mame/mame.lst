@@ -4,14 +4,6 @@
 
     mame.lst
 
-<<<<<<< HEAD
-    List of all enabled drivers in the system. This file is parsed by
-    makelist.exe, sorted, and output as C code describing the drivers.
-
-******************************************************************************/
-
-#include "arcade.lst"
-=======
     This is not an automatically generated file, and it should be manually
     updated when new driver is added. From time to time, we will auto-update
     comments according to metadata from source files.
@@ -38773,4 +38765,3 @@ vgmplay
 @source:ldplayer.cpp
 simldv1000                      // Pioneer LD-V1000
 simpr8210                       // Pioneer PR-8210
->>>>>>> upstream/master

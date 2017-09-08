@@ -31,13 +31,8 @@ these four paragraphs for those parts of this code that are retained.
 //#include "softfloat-specialize"
 #include "fpu_constant.h"
 
-<<<<<<< HEAD
-static const floatx80 floatx80_one = packFloatx80(0, 0x3fff, U64(0x8000000000000000));
-static const floatx80 floatx80_default_nan = packFloatx80(0, 0xffff, U64(0xffffffffffffffff));
-=======
 static const floatx80 floatx80_one = packFloatx80(0, 0x3fff, 0x8000000000000000U);
 static const floatx80 floatx80_default_nan = packFloatx80(0, 0xffff, 0xffffffffffffffffU);
->>>>>>> upstream/master
 
 #define packFloat2x128m(zHi, zLo) {(zHi), (zLo)}
 #define PACK_FLOAT_128(hi,lo) packFloat2x128m(LIT64(hi),LIT64(lo))
@@ -88,11 +83,7 @@ INLINE floatx80 propagateFloatx80NaNOneArg(floatx80 a)
 	if (floatx80_is_signaling_nan(a))
 		float_raise(float_flag_invalid);
 
-<<<<<<< HEAD
-	a.low |= U64(0xC000000000000000);
-=======
 	a.low |= 0xC000000000000000U;
->>>>>>> upstream/master
 
 	return a;
 }
@@ -104,11 +95,7 @@ INLINE floatx80 propagateFloatx80NaNOneArg(floatx80 a)
 | `zSigPtr', respectively.
 *----------------------------------------------------------------------------*/
 
-<<<<<<< HEAD
-void normalizeFloatx80Subnormal(UINT64 aSig, INT32 *zExpPtr, UINT64 *zSigPtr)
-=======
 void normalizeFloatx80Subnormal(uint64_t aSig, int32_t *zExpPtr, uint64_t *zSigPtr)
->>>>>>> upstream/master
 {
 	int shiftCount = countLeadingZeros64(aSig);
 	*zSigPtr = aSig<<shiftCount;
@@ -117,18 +104,6 @@ void normalizeFloatx80Subnormal(uint64_t aSig, int32_t *zExpPtr, uint64_t *zSigP
 
 /* reduce trigonometric function argument using 128-bit precision
    M_PI approximation */
-<<<<<<< HEAD
-static UINT64 argument_reduction_kernel(UINT64 aSig0, int Exp, UINT64 *zSig0, UINT64 *zSig1)
-{
-	UINT64 term0, term1, term2;
-	UINT64 aSig1 = 0;
-
-	shortShift128Left(aSig1, aSig0, Exp, &aSig1, &aSig0);
-	UINT64 q = estimateDiv128To64(aSig1, aSig0, FLOAT_PI_HI);
-	mul128By64To192(FLOAT_PI_HI, FLOAT_PI_LO, q, &term0, &term1, &term2);
-	sub128(aSig1, aSig0, term0, term1, zSig1, zSig0);
-	while ((INT64)(*zSig1) < 0) {
-=======
 static uint64_t argument_reduction_kernel(uint64_t aSig0, int Exp, uint64_t *zSig0, uint64_t *zSig1)
 {
 	uint64_t term0, term1, term2;
@@ -139,7 +114,6 @@ static uint64_t argument_reduction_kernel(uint64_t aSig0, int Exp, uint64_t *zSi
 	mul128By64To192(FLOAT_PI_HI, FLOAT_PI_LO, q, &term0, &term1, &term2);
 	sub128(aSig1, aSig0, term0, term1, zSig1, zSig0);
 	while ((int64_t)(*zSig1) < 0) {
->>>>>>> upstream/master
 		--q;
 		add192(*zSig1, *zSig0, term2, 0, FLOAT_PI_HI, FLOAT_PI_LO, zSig1, zSig0, &term2);
 	}
@@ -147,15 +121,9 @@ static uint64_t argument_reduction_kernel(uint64_t aSig0, int Exp, uint64_t *zSi
 	return q;
 }
 
-<<<<<<< HEAD
-static int reduce_trig_arg(int expDiff, int &zSign, UINT64 &aSig0, UINT64 &aSig1)
-{
-	UINT64 term0, term1, q = 0;
-=======
 static int reduce_trig_arg(int expDiff, int &zSign, uint64_t &aSig0, uint64_t &aSig1)
 {
 	uint64_t term0, term1, q = 0;
->>>>>>> upstream/master
 
 	if (expDiff < 0) {
 		shift128Right(aSig0, 0, 1, &aSig0, &aSig1);
@@ -283,11 +251,7 @@ INLINE void sincos_tiny_argument(floatx80 *sin_a, floatx80 *cos_a, floatx80 a)
 	if (cos_a) *cos_a = floatx80_one;
 }
 
-<<<<<<< HEAD
-static floatx80 sincos_approximation(int neg, float128 r, UINT64 quotient)
-=======
 static floatx80 sincos_approximation(int neg, float128 r, uint64_t quotient)
->>>>>>> upstream/master
 {
 	if (quotient & 0x1) {
 		r = poly_cos(r);
@@ -328,13 +292,8 @@ static floatx80 sincos_approximation(int neg, float128 r, uint64_t quotient)
 
 int sf_fsincos(floatx80 a, floatx80 *sin_a, floatx80 *cos_a)
 {
-<<<<<<< HEAD
-	UINT64 aSig0, aSig1 = 0;
-	INT32 aExp, zExp, expDiff;
-=======
 	uint64_t aSig0, aSig1 = 0;
 	int32_t aExp, zExp, expDiff;
->>>>>>> upstream/master
 	int aSign, zSign;
 	int q = 0;
 
@@ -344,11 +303,7 @@ int sf_fsincos(floatx80 a, floatx80 *sin_a, floatx80 *cos_a)
 
 	/* invalid argument */
 	if (aExp == 0x7FFF) {
-<<<<<<< HEAD
-		if ((UINT64) (aSig0<<1)) {
-=======
 		if ((uint64_t) (aSig0<<1)) {
->>>>>>> upstream/master
 			sincos_invalid(sin_a, cos_a, propagateFloatx80NaNOneArg(a));
 			return 0;
 		}
@@ -367,11 +322,7 @@ int sf_fsincos(floatx80 a, floatx80 *sin_a, floatx80 *cos_a)
 //        float_raise(float_flag_denormal);
 
 		/* handle pseudo denormals */
-<<<<<<< HEAD
-		if (! (aSig0 & U64(0x8000000000000000)))
-=======
 		if (! (aSig0 & 0x8000000000000000U))
->>>>>>> upstream/master
 		{
 			float_raise(float_flag_inexact);
 			if (sin_a)
@@ -458,13 +409,8 @@ int floatx80_fcos(floatx80 &a)
 
 int floatx80_ftan(floatx80 &a)
 {
-<<<<<<< HEAD
-	UINT64 aSig0, aSig1 = 0;
-	INT32 aExp, zExp, expDiff;
-=======
 	uint64_t aSig0, aSig1 = 0;
 	int32_t aExp, zExp, expDiff;
->>>>>>> upstream/master
 	int aSign, zSign;
 	int q = 0;
 
@@ -474,11 +420,7 @@ int floatx80_ftan(floatx80 &a)
 
 	/* invalid argument */
 	if (aExp == 0x7FFF) {
-<<<<<<< HEAD
-		if ((UINT64) (aSig0<<1))
-=======
 		if ((uint64_t) (aSig0<<1))
->>>>>>> upstream/master
 		{
 			a = propagateFloatx80NaNOneArg(a);
 			return 0;
@@ -493,11 +435,7 @@ int floatx80_ftan(floatx80 &a)
 		if (aSig0 == 0) return 0;
 //        float_raise(float_flag_denormal);
 		/* handle pseudo denormals */
-<<<<<<< HEAD
-		if (! (aSig0 & U64(0x8000000000000000)))
-=======
 		if (! (aSig0 & 0x8000000000000000U))
->>>>>>> upstream/master
 		{
 			float_raise(float_flag_inexact | float_flag_underflow);
 			return 0;
@@ -678,11 +616,7 @@ floatx80 floatx80_scale(floatx80 a, floatx80 b)
 		}
 		if (aSig && (aExp == 0)) float_raise(float_flag_denormal);
 		if (bSign) return packFloatx80(aSign, 0, 0);
-<<<<<<< HEAD
-		return packFloatx80(aSign, 0x7FFF, U64(0x8000000000000000));
-=======
 		return packFloatx80(aSign, 0x7FFF, 0x8000000000000000U);
->>>>>>> upstream/master
 	}
 	if (aExp == 0) {
 		if (aSig == 0) return a;

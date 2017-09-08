@@ -48,11 +48,7 @@ initialize_mesa_context(struct gl_context *ctx, glslopt_target api)
 	{
 	default:
 	case kGlslTargetOpenGL:
-<<<<<<< HEAD
-		ctx->Const.GLSLVersion = 140;
-=======
 		ctx->Const.GLSLVersion = 150;
->>>>>>> upstream/master
 		break;
 	case kGlslTargetOpenGLES20:
 		ctx->Extensions.OES_standard_derivatives = true;
@@ -284,8 +280,6 @@ static void propagate_precision_texture(ir_instruction *ir, void *data)
 	((precision_ctx*)data)->res = true;
 }
 
-<<<<<<< HEAD
-=======
 static void propagate_precision_texture_metal(ir_instruction* ir, void* data)
 {
 	// There are no precision specifiers in Metal
@@ -294,7 +288,6 @@ static void propagate_precision_texture_metal(ir_instruction* ir, void* data)
 		tex->set_precision(glsl_precision_undefined);
 }
 
->>>>>>> upstream/master
 struct undefined_ass_ctx
 {
 	ir_variable* var;
@@ -401,11 +394,7 @@ static void propagate_precision_call(ir_instruction *ir, void *data)
 	}
 }
 
-<<<<<<< HEAD
-static bool propagate_precision(exec_list* list, bool assign_high_to_undefined)
-=======
 static bool propagate_precision(exec_list* list, bool metal_target)
->>>>>>> upstream/master
 {
 	bool anyProgress = false;
 	precision_ctx ctx;
@@ -415,15 +404,11 @@ static bool propagate_precision(exec_list* list, bool metal_target)
 		ctx.root_ir = list;
 		foreach_in_list(ir_instruction, ir, list)
 		{
-<<<<<<< HEAD
-			visit_tree (ir, propagate_precision_texture, &ctx);
-=======
 			if (metal_target)
 				visit_tree (ir, propagate_precision_texture_metal, &ctx);
 			else
 				visit_tree (ir, propagate_precision_texture, &ctx);
 				
->>>>>>> upstream/master
 			visit_tree (ir, propagate_precision_deref, &ctx);
 			bool hadProgress = ctx.res;
 			ctx.res = false;
@@ -444,11 +429,7 @@ static bool propagate_precision(exec_list* list, bool metal_target)
 	anyProgress |= ctx.res;
 	
 	// for globals that have undefined precision, set it to highp
-<<<<<<< HEAD
-	if (assign_high_to_undefined)
-=======
 	if (metal_target)
->>>>>>> upstream/master
 	{
 		foreach_in_list(ir_instruction, ir, list)
 		{
@@ -471,17 +452,12 @@ static bool propagate_precision(exec_list* list, bool metal_target)
 static void do_optimization_passes(exec_list* ir, bool linked, _mesa_glsl_parse_state* state, void* mem_ctx)
 {
 	bool progress;
-<<<<<<< HEAD
-	do {
-		progress = false;
-=======
 	// FIXME: Shouldn't need to bound the number of passes
 	int passes = 0,
 		kMaximumPasses = 1000;
 	do {
 		progress = false;
 		++passes;
->>>>>>> upstream/master
 		bool progress2;
 		debug_print_ir ("Initial", ir, state, mem_ctx);
 		if (linked) {
@@ -537,11 +513,7 @@ static void do_optimization_passes(exec_list* ir, bool linked, _mesa_glsl_parse_
 			}
 			delete ls;
 		}
-<<<<<<< HEAD
-	} while (progress);
-=======
 	} while (progress && passes < kMaximumPasses);
->>>>>>> upstream/master
 
 	if (!state->metal_target)
 	{

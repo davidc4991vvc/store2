@@ -27,14 +27,6 @@ Notes:
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-// 13.0 MHz? PCB is labeled with 13.5M
-#define MAIN_CLOCK  13000000
-
-#include "emu.h"
-#include "cpu/h8/h83048.h"
-#include "sound/okim6295.h"
-=======
 #include "emu.h"
 #include "cpu/h8/h83048.h"
 #include "sound/okim6295.h"
@@ -43,7 +35,6 @@ Notes:
 
 // 13.0 MHz? PCB is labeled with 13.5M
 #define MAIN_CLOCK  13000000
->>>>>>> upstream/master
 
 class sealy_state : public driver_device
 {
@@ -60,11 +51,7 @@ public:
 
 	// screen updates
 	DECLARE_PALETTE_INIT(sealy);
-<<<<<<< HEAD
-	UINT32 screen_update_sealy(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
-=======
 	uint32_t screen_update_sealy(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 };
 
 
@@ -74,11 +61,7 @@ PALETTE_INIT_MEMBER(sealy_state,sealy)
 //      palette.set_pen_color(i,pal5bit(i >> 5),pal5bit(i >> 10),pal5bit(i >> 0));
 }
 
-<<<<<<< HEAD
-UINT32 sealy_state::screen_update_sealy(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
-=======
 uint32_t sealy_state::screen_update_sealy(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	bitmap.fill(m_palette->black_pen(), cliprect);
 	return 0;
@@ -86,10 +69,6 @@ uint32_t sealy_state::screen_update_sealy(screen_device &screen, bitmap_rgb32 &b
 
 
 static ADDRESS_MAP_START( sealy_map, AS_PROGRAM, 16, sealy_state )
-<<<<<<< HEAD
-	ADDRESS_MAP_GLOBAL_MASK(0x3ffff)
-=======
->>>>>>> upstream/master
 	AM_RANGE(0x00000, 0x3ffff) AM_ROM
 ADDRESS_MAP_END
 
@@ -116,11 +95,7 @@ static GFXDECODE_START( sealy )
 GFXDECODE_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( sealy, sealy_state )
-=======
 static MACHINE_CONFIG_START( sealy )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", H83044, MAIN_CLOCK) /* wrong CPU, but we have not a M16C core ATM */
@@ -140,11 +115,7 @@ static MACHINE_CONFIG_START( sealy )
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki", MAIN_CLOCK/13, OKIM6295_PIN7_HIGH)
-=======
 	MCFG_OKIM6295_ADD("oki", MAIN_CLOCK/13, PIN7_HIGH)
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
 
@@ -152,11 +123,7 @@ MACHINE_CONFIG_END
 ROM_START( crzyddz )
 	ROM_REGION( 0x40000, "maincpu", 0 )
 	ROM_LOAD( "crzyddz_m30624.mcu", 0x00000, 0x40000, NO_DUMP )
-<<<<<<< HEAD
-	ROM_FILL(                       0x00000, 0x40000, 0 )
-=======
 	ROM_FILL(                       0x00000, 0x40000, 0x00 )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x200000, "gfx1", 0 )
 	ROM_LOAD( "1", 0x000000, 0x200000, CRC(d202a278) SHA1(3ae75d6942527e58a56a703e40de22e70535b332) )
@@ -169,8 +136,4 @@ ROM_START( crzyddz )
 ROM_END
 
 
-<<<<<<< HEAD
-GAME( 2004?, crzyddz,  0, sealy, sealy, driver_device, 0, ROT0, "Sealy", "Crazy Dou Di Zhu", MACHINE_IS_SKELETON )
-=======
 GAME( 2004?, crzyddz,  0, sealy, sealy, sealy_state, 0, ROT0, "Sealy", "Crazy Dou Di Zhu", MACHINE_IS_SKELETON )
->>>>>>> upstream/master

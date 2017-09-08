@@ -1,15 +1,9 @@
 // license:BSD-3-Clause
 // copyright-holders:Olivier Galibert
-<<<<<<< HEAD
-#include "pci-ac97.h"
-
-const device_type AC97 = &device_creator<ac97_device>;
-=======
 #include "emu.h"
 #include "pci-ac97.h"
 
 DEFINE_DEVICE_TYPE(AC97, ac97_device, "ac97", "AC'97 Audio")
->>>>>>> upstream/master
 
 DEVICE_ADDRESS_MAP_START(native_audio_mixer_map, 32, ac97_device)
 ADDRESS_MAP_END
@@ -23,13 +17,8 @@ ADDRESS_MAP_END
 DEVICE_ADDRESS_MAP_START(bus_mastering_map, 32, ac97_device)
 ADDRESS_MAP_END
 
-<<<<<<< HEAD
-ac97_device::ac97_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: pci_device(mconfig, AC97, "AC97 audio", tag, owner, clock, "ac97", __FILE__)
-=======
 ac97_device::ac97_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: pci_device(mconfig, AC97, tag, owner, clock)
->>>>>>> upstream/master
 {
 }
 

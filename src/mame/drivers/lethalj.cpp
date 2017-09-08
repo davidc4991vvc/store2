@@ -140,16 +140,10 @@ Pin #11(+) | | R               |
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/tms34010/tms34010.h"
-#include "includes/lethalj.h"
-#include "sound/okim6295.h"
-=======
 #include "includes/lethalj.h"
 
 #include "sound/okim6295.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 #define MASTER_CLOCK            XTAL_40MHz
@@ -182,49 +176,29 @@ CUSTOM_INPUT_MEMBER(lethalj_state::cclownz_paddle)
 
 WRITE16_MEMBER(lethalj_state::ripribit_control_w)
 {
-<<<<<<< HEAD
-	coin_counter_w(machine(), 0, data & 1);
-	m_ticket->write(space, 0, ((data >> 1) & 1) << 7);
-	output_set_lamp_value(0, (data >> 2) & 1);
-=======
 	machine().bookkeeping().coin_counter_w(0, data & 1);
 	m_ticket->write(space, 0, ((data >> 1) & 1) << 7);
 	output().set_lamp_value(0, (data >> 2) & 1);
->>>>>>> upstream/master
 }
 
 
 WRITE16_MEMBER(lethalj_state::cfarm_control_w)
 {
 	m_ticket->write(space, 0, ((data >> 0) & 1) << 7);
-<<<<<<< HEAD
-	output_set_lamp_value(0, (data >> 2) & 1);
-	output_set_lamp_value(1, (data >> 3) & 1);
-	output_set_lamp_value(2, (data >> 4) & 1);
-	coin_counter_w(machine(), 0, (data >> 7) & 1);
-=======
 	output().set_lamp_value(0, (data >> 2) & 1);
 	output().set_lamp_value(1, (data >> 3) & 1);
 	output().set_lamp_value(2, (data >> 4) & 1);
 	machine().bookkeeping().coin_counter_w(0, (data >> 7) & 1);
->>>>>>> upstream/master
 }
 
 
 WRITE16_MEMBER(lethalj_state::cclownz_control_w)
 {
 	m_ticket->write(space, 0, ((data >> 0) & 1) << 7);
-<<<<<<< HEAD
-	output_set_lamp_value(0, (data >> 2) & 1);
-	output_set_lamp_value(1, (data >> 4) & 1);
-	output_set_lamp_value(2, (data >> 5) & 1);
-	coin_counter_w(machine(), 0, (data >> 6) & 1);
-=======
 	output().set_lamp_value(0, (data >> 2) & 1);
 	output().set_lamp_value(1, (data >> 4) & 1);
 	output().set_lamp_value(2, (data >> 5) & 1);
 	machine().bookkeeping().coin_counter_w(0, (data >> 6) & 1);
->>>>>>> upstream/master
 }
 
 
@@ -539,11 +513,7 @@ static INPUT_PORTS_START( cclownz )
 	PORT_DIPSETTING(      0x0000, "3000" )
 
 	PORT_START("IN1")
-<<<<<<< HEAD
-	PORT_BIT( 0x0f0f, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, lethalj_state,cclownz_paddle, NULL)
-=======
 	PORT_BIT( 0x0f0f, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, lethalj_state,cclownz_paddle, nullptr)
->>>>>>> upstream/master
 	PORT_BIT( 0x0010, IP_ACTIVE_LOW, IPT_SPECIAL ) PORT_READ_LINE_DEVICE_MEMBER("ticket", ticket_dispenser_device, line_r)
 	PORT_BIT( 0x0060, IP_ACTIVE_LOW, IPT_UNUSED )
 	PORT_BIT( 0x0080, IP_ACTIVE_LOW, IPT_START1 )
@@ -659,20 +629,12 @@ INPUT_PORTS_END
  *
  *************************************/
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( gameroom, lethalj_state )
-=======
 static MACHINE_CONFIG_START( gameroom )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", TMS34010, MASTER_CLOCK)
 	MCFG_CPU_PROGRAM_MAP(lethalj_map)
-<<<<<<< HEAD
-	MCFG_TMS340X0_HALT_ON_RESET(FALSE) /* halt on reset */
-=======
 	MCFG_TMS340X0_HALT_ON_RESET(false) /* halt on reset */
->>>>>>> upstream/master
 	MCFG_TMS340X0_PIXEL_CLOCK(VIDEO_CLOCK) /* pixel clock */
 	MCFG_TMS340X0_PIXELS_PER_CLOCK(1) /* pixels per clock */
 	MCFG_TMS340X0_SCANLINE_IND16_CB(lethalj_state, scanline_update)     /* scanline updater (indexed16) */
@@ -690,15 +652,6 @@ static MACHINE_CONFIG_START( gameroom )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki1", SOUND_CLOCK, OKIM6295_PIN7_HIGH)
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.8)
-
-	MCFG_OKIM6295_ADD("oki2", SOUND_CLOCK, OKIM6295_PIN7_HIGH)
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.8)
-
-	MCFG_OKIM6295_ADD("oki3", SOUND_CLOCK, OKIM6295_PIN7_HIGH)
-=======
 	MCFG_OKIM6295_ADD("oki1", SOUND_CLOCK, PIN7_HIGH)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.8)
 
@@ -706,7 +659,6 @@ static MACHINE_CONFIG_START( gameroom )
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.8)
 
 	MCFG_OKIM6295_ADD("oki3", SOUND_CLOCK, PIN7_HIGH)
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.8)
 MACHINE_CONFIG_END
 
@@ -756,13 +708,8 @@ ROM_START( eggventr )
 	ROM_REGION16_LE( 0x100000, "user1", 0 )     /* 34010 code */
 	ROM_LOAD16_BYTE( "evc8.10.vc8", 0x000000, 0x020000, CRC(225d1164) SHA1(b0dc55f2e8ded1fe7874de05987fcf879772289e) ) /* Labeled as EVC8.10 */
 	ROM_LOAD16_BYTE( "evc9.10.vc9", 0x000001, 0x020000, CRC(42f6e904) SHA1(11be8e7383a218aac0e1a63236bbdb7cca0993bf) ) /* Labeled as EVC9.10 */
-<<<<<<< HEAD
-	ROM_COPY( "user1", 0x000000, 0x040000, 0x040000 ) // Program roms found as 27C010 & 27C040 with 0xff filled 0x20000-0x7ffff
-	ROM_COPY( "user1", 0x000000, 0x080000, 0x080000 ) // Program roms found as 27C010 & 27C040 with 0xff filled 0x20000-0x7ffff
-=======
 	ROM_COPY( "user1", 0x00000, 0x040000, 0x040000 ) // Program roms found as 27C010 & 27C040 with 0xff filled 0x20000-0x7ffff
 	ROM_COPY( "user1", 0x00000, 0x080000, 0x080000 ) // Program roms found as 27C010 & 27C040 with 0xff filled 0x20000-0x7ffff
->>>>>>> upstream/master
 
 	ROM_REGION16_LE( 0x600000, "gfx1", 0 )          /* graphics data */
 	ROM_LOAD16_BYTE( "egr1.gr1",   0x000000, 0x100000, CRC(f73f80d9) SHA1(6278b45579a256b9576ba6d4f5a15fab26797c3d) )
@@ -787,13 +734,8 @@ ROM_START( eggventr8 )
 	ROM_REGION16_LE( 0x100000, "user1", 0 )     /* 34010 code */
 	ROM_LOAD16_BYTE( "evc8.8.vc8", 0x000000, 0x020000, CRC(5a130c04) SHA1(00408912b436efa003bb02dce90fae4fe33a0180) ) /* Labeled as EVC8.8 */
 	ROM_LOAD16_BYTE( "evc9.8.vc9", 0x000001, 0x020000, CRC(3ac0a95b) SHA1(7f3bd0e6d2d790af4aa6881ea8de8b296a64164a) ) /* Labeled as EVC9.8 */
-<<<<<<< HEAD
-	ROM_COPY( "user1", 0x000000, 0x040000, 0x040000 ) // Program roms found as 27C010 & 27C040 with 0xff filled 0x20000-0x7ffff
-	ROM_COPY( "user1", 0x000000, 0x080000, 0x080000 ) // Program roms found as 27C010 & 27C040 with 0xff filled 0x20000-0x7ffff
-=======
 	ROM_COPY( "user1", 0x00000, 0x040000, 0x040000 ) // Program roms found as 27C010 & 27C040 with 0xff filled 0x20000-0x7ffff
 	ROM_COPY( "user1", 0x00000, 0x080000, 0x080000 ) // Program roms found as 27C010 & 27C040 with 0xff filled 0x20000-0x7ffff
->>>>>>> upstream/master
 
 	ROM_REGION16_LE( 0x600000, "gfx1", 0 )          /* graphics data */
 	ROM_LOAD16_BYTE( "egr1.gr1",   0x000000, 0x100000, CRC(f73f80d9) SHA1(6278b45579a256b9576ba6d4f5a15fab26797c3d) )
@@ -818,13 +760,8 @@ ROM_START( eggventr7 )
 	ROM_REGION16_LE( 0x100000, "user1", 0 )     /* 34010 code */
 	ROM_LOAD16_BYTE( "evc8.7.vc8", 0x000000, 0x020000, CRC(99999899) SHA1(e3908600fa711baa7f7562f86498ec7e988a5bea) ) /* Labeled as EVC8.7 */
 	ROM_LOAD16_BYTE( "evc9.7.vc9", 0x000001, 0x020000, CRC(1b608155) SHA1(256dd981515d57f806a3770bdc6ff46b9000f7f3) ) /* Labeled as EVC9.7 */
-<<<<<<< HEAD
-	ROM_COPY( "user1", 0x000000, 0x040000, 0x040000 ) // Program roms found as 27C010 & 27C040 with 0xff filled 0x20000-0x7ffff
-	ROM_COPY( "user1", 0x000000, 0x080000, 0x080000 ) // Program roms found as 27C010 & 27C040 with 0xff filled 0x20000-0x7ffff
-=======
 	ROM_COPY( "user1", 0x00000, 0x040000, 0x040000 ) // Program roms found as 27C010 & 27C040 with 0xff filled 0x20000-0x7ffff
 	ROM_COPY( "user1", 0x00000, 0x080000, 0x080000 ) // Program roms found as 27C010 & 27C040 with 0xff filled 0x20000-0x7ffff
->>>>>>> upstream/master
 
 	ROM_REGION16_LE( 0x600000, "gfx1", 0 )          /* graphics data */
 	ROM_LOAD16_BYTE( "egr1.gr1",   0x000000, 0x100000, CRC(f73f80d9) SHA1(6278b45579a256b9576ba6d4f5a15fab26797c3d) )
@@ -897,13 +834,8 @@ ROM_START( eggventrd )
 	ROM_REGION16_LE( 0x100000, "user1", 0 )     /* 34010 code */
 	ROM_LOAD16_BYTE( "eggdlx.vc8", 0x000000, 0x020000, CRC(8d678842) SHA1(92b18ec903ec8579e7dffb40284987f1d44255b8) )
 	ROM_LOAD16_BYTE( "eggdlx.vc9", 0x000001, 0x020000, CRC(9db3fd23) SHA1(165a12a2d107c93cf216e755596e7457010a8f17) )
-<<<<<<< HEAD
-	ROM_COPY( "user1", 0x000000, 0x040000, 0x040000 ) // Program roms found as 27C010 & 27C040 with data repeated 4 times
-	ROM_COPY( "user1", 0x000000, 0x080000, 0x080000 ) // Program roms found as 27C010 & 27C040 with data repeated 4 times
-=======
 	ROM_COPY( "user1", 0x00000, 0x040000, 0x040000 ) // Program roms found as 27C010 & 27C040 with data repeated 4 times
 	ROM_COPY( "user1", 0x00000, 0x080000, 0x080000 ) // Program roms found as 27C010 & 27C040 with data repeated 4 times
->>>>>>> upstream/master
 
 	ROM_REGION16_LE( 0x600000, "gfx1", 0 )          /* graphics data */
 	ROM_LOAD16_BYTE( "egr1.gr1",   0x000000, 0x100000, CRC(f73f80d9) SHA1(6278b45579a256b9576ba6d4f5a15fab26797c3d) )
@@ -1108,16 +1040,6 @@ DRIVER_INIT_MEMBER(lethalj_state,cclownz)
  *
  *************************************/
 
-<<<<<<< HEAD
-GAME( 1996, lethalj,   0,        lethalj,  lethalj,   driver_device, 0,        ROT0,  "The Game Room", "Lethal Justice (Version 2.3)", 0 )
-GAME( 1996, franticf,  0,        gameroom, franticf,  driver_device, 0,        ROT0,  "The Game Room", "Frantic Fred", MACHINE_NOT_WORKING )
-GAME( 1997, eggventr,  0,        gameroom, eggventr,  driver_device, 0,        ROT0,  "The Game Room", "Egg Venture (Release 10)", 0 )
-GAME( 1997, eggventr8, eggventr, gameroom, eggventr,  driver_device, 0,        ROT0,  "The Game Room", "Egg Venture (Release 8)", 0 )
-GAME( 1997, eggventr7, eggventr, gameroom, eggventr,  driver_device, 0,        ROT0,  "The Game Room", "Egg Venture (Release 7)", 0 )
-GAME( 1997, eggventr2, eggventr, gameroom, eggventr2, driver_device, 0,        ROT0,  "The Game Room", "Egg Venture (Release 2)", 0 )
-GAME( 1997, eggventra, eggventr, gameroom, eggventr,  driver_device, 0,        ROT0,  "The Game Room (A.L. Australia license)", "Egg Venture (A.L. Release)", 0 )
-GAME( 1997, eggventrd, eggventr, gameroom, eggvntdx,  driver_device, 0,        ROT0,  "The Game Room", "Egg Venture Deluxe", 0 )
-=======
 GAME( 1996, lethalj,   0,        lethalj,  lethalj,   lethalj_state, 0,        ROT0,  "The Game Room", "Lethal Justice (Version 2.3)", 0 )
 GAME( 1996, franticf,  0,        gameroom, franticf,  lethalj_state, 0,        ROT0,  "The Game Room", "Frantic Fred", MACHINE_NOT_WORKING )
 GAME( 1997, eggventr,  0,        gameroom, eggventr,  lethalj_state, 0,        ROT0,  "The Game Room", "Egg Venture (Release 10)", 0 )
@@ -1126,7 +1048,6 @@ GAME( 1997, eggventr7, eggventr, gameroom, eggventr,  lethalj_state, 0,        R
 GAME( 1997, eggventr2, eggventr, gameroom, eggventr2, lethalj_state, 0,        ROT0,  "The Game Room", "Egg Venture (Release 2)", 0 )
 GAME( 1997, eggventra, eggventr, gameroom, eggventr,  lethalj_state, 0,        ROT0,  "The Game Room (A.L. Australia license)", "Egg Venture (A.L. Release)", 0 )
 GAME( 1997, eggventrd, eggventr, gameroom, eggvntdx,  lethalj_state, 0,        ROT0,  "The Game Room", "Egg Venture Deluxe", 0 )
->>>>>>> upstream/master
 GAME( 1997, ripribit,  0,        gameroom, ripribit,  lethalj_state, ripribit, ROT0,  "LAI Games",     "Ripper Ribbit (Version 3.5)", 0 )
 GAME( 1997, ripribita, ripribit, gameroom, ripribit,  lethalj_state, ripribit, ROT0,  "LAI Games",     "Ripper Ribbit (Version 2.8.4)", 0 )
 GAME( 1999, cfarm,     0,        gameroom, cfarm,     lethalj_state, cfarm,    ROT90, "LAI Games",     "Chicken Farm (Version 2.0)", 0 )

@@ -25,11 +25,7 @@ WRITE16_MEMBER(vaportra_state::vaportra_priority_w)
 
 void vaportra_state::update_24bitcol( int offset )
 {
-<<<<<<< HEAD
-	UINT8 r, g, b;
-=======
 	uint8_t r, g, b;
->>>>>>> upstream/master
 
 	r = (m_generic_paletteram_16[offset] >> 0) & 0xff;
 	g = (m_generic_paletteram_16[offset] >> 8) & 0xff;
@@ -53,17 +49,6 @@ WRITE16_MEMBER(vaportra_state::vaportra_palette_24bit_b_w)
 /******************************************************************************/
 
 
-<<<<<<< HEAD
-UINT32 vaportra_state::screen_update_vaportra(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-{
-	address_space &space = machine().driver_data()->generic_space();
-	UINT16 flip = m_deco_tilegen1->pf_control_r(space, 0, 0xffff);
-	int pri = m_priority[0] & 0x03;
-
-	flip_screen_set(!BIT(flip, 7));
-	m_deco_tilegen1->pf_update(0, 0);
-	m_deco_tilegen2->pf_update(0, 0);
-=======
 uint32_t vaportra_state::screen_update_vaportra(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
 	address_space &space = machine().dummy_space();
@@ -73,7 +58,6 @@ uint32_t vaportra_state::screen_update_vaportra(screen_device &screen, bitmap_in
 	flip_screen_set(!BIT(flip, 7));
 	m_deco_tilegen1->pf_update(nullptr, nullptr);
 	m_deco_tilegen2->pf_update(nullptr, nullptr);
->>>>>>> upstream/master
 
 	m_spritegen->set_pri_type(1); // force priorities to be handled in a different way for this driver for now
 

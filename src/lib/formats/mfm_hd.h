@@ -14,10 +14,6 @@
 #ifndef __MFMHDFMT__
 #define __MFMHDFMT__
 
-<<<<<<< HEAD
-#include "emu.h"
-=======
->>>>>>> upstream/master
 #include "chd.h"
 
 const chd_metadata_tag MFM_HARD_DISK_METADATA_TAG = CHD_MAKE_TAG('G','D','D','I');
@@ -83,11 +79,7 @@ public:
 	int     headerlen;
 	int     ecctype;        // -1 is CRC
 
-<<<<<<< HEAD
-	bool sane_rec()
-=======
 	bool sane_rec() const
->>>>>>> upstream/master
 	{
 		return ((interleave > 0 && interleave < 32) && (cylskew >= 0 && cylskew < 32) && (headskew >= 0 && headskew < 32)
 			&& (write_precomp_cylinder >= -1 && write_precomp_cylinder < 100000)
@@ -100,11 +92,7 @@ public:
 		write_precomp_cylinder = reduced_wcurr_cylinder = -1;
 	}
 
-<<<<<<< HEAD
-	bool sane_gap()
-=======
 	bool sane_gap() const
->>>>>>> upstream/master
 	{
 		return ((gap1 >= 1 && gap1 < 1000) && (gap2 >= 1 && gap2 < 20) && (gap3 >= 1 && gap3 < 1000)
 			&& (sync >= 10 && sync < 20)
@@ -116,11 +104,7 @@ public:
 		gap1 = gap2 = gap3 = sync = headerlen = ecctype = 0;
 	}
 
-<<<<<<< HEAD
-	bool equals_rec(mfmhd_layout_params* other)
-=======
 	bool equals_rec(mfmhd_layout_params* other) const
->>>>>>> upstream/master
 	{
 		return ((interleave == other->interleave) &&
 				(cylskew == other->cylskew) &&
@@ -129,11 +113,7 @@ public:
 				(reduced_wcurr_cylinder == other->reduced_wcurr_cylinder));
 	}
 
-<<<<<<< HEAD
-	bool equals_gap(mfmhd_layout_params* other)
-=======
 	bool equals_gap(mfmhd_layout_params* other) const
->>>>>>> upstream/master
 	{
 		return ((gap1 == other->gap1) &&
 				(gap2 == other->gap2) &&
@@ -165,16 +145,6 @@ enum mfmhd_param_t
 class mfmhd_image_format_t
 {
 public:
-<<<<<<< HEAD
-	mfmhd_image_format_t() { m_devtag = std::string("mfmhd_image_format_t"); };
-	virtual ~mfmhd_image_format_t() {};
-
-	// Load the image.
-	virtual chd_error load(chd_file* chdfile, UINT16* trackimage, int tracksize, int cylinder, int head) = 0;
-
-	// Save the image.
-	virtual chd_error save(chd_file* chdfile, UINT16* trackimage, int tracksize, int cylinder, int head) = 0;
-=======
 	mfmhd_image_format_t(): m_lastbit(false), m_current_crc(0)
 		{ m_devtag = std::string("mfmhd_image_format_t"); };
 	virtual ~mfmhd_image_format_t() {};
@@ -184,7 +154,6 @@ public:
 
 	// Save the image.
 	virtual chd_error save(chd_file* chdfile, uint16_t* trackimage, int tracksize, int cylinder, int head) = 0;
->>>>>>> upstream/master
 
 	// Return the original parameters of the image
 	mfmhd_layout_params* get_initial_params() { return &m_param_old; }
@@ -209,27 +178,16 @@ protected:
 
 	mfmhd_layout_params m_param, m_param_old;
 
-<<<<<<< HEAD
-	void    mfm_encode(UINT16* trackimage, int& position, UINT8 byte, int count=1);
-	void    mfm_encode_a1(UINT16* trackimage, int& position);
-	void    mfm_encode_mask(UINT16* trackimage, int& position, UINT8 byte, int count, int mask);
-	UINT8   mfm_decode(UINT16 raw);
-=======
 	void    mfm_encode(uint16_t* trackimage, int& position, uint8_t byte, int count=1);
 	void    mfm_encode_a1(uint16_t* trackimage, int& position);
 	void    mfm_encode_mask(uint16_t* trackimage, int& position, uint8_t byte, int count, int mask);
 	uint8_t   mfm_decode(uint16_t raw);
->>>>>>> upstream/master
 
 	// Deliver defaults.
 	virtual int get_default(mfmhd_param_t type) =0;
 
 	// Debugging
-<<<<<<< HEAD
-	void    showtrack(UINT16* enctrack, int length);
-=======
 	void    showtrack(uint16_t* enctrack, int length);
->>>>>>> upstream/master
 	virtual const char* tag() { return m_devtag.c_str(); }
 };
 
@@ -237,17 +195,6 @@ class mfmhd_generic_format : public mfmhd_image_format_t
 {
 public:
 	mfmhd_generic_format() { m_devtag = std::string("mfmhd_generic_format"); };
-<<<<<<< HEAD
-	chd_error load(chd_file* chdfile, UINT16* trackimage, int tracksize, int cylinder, int head);
-	chd_error save(chd_file* chdfile, UINT16* trackimage, int tracksize, int cylinder, int head);
-
-	// Yes, we want to save all parameters
-	virtual bool save_param(mfmhd_param_t type) { return true; }
-	virtual int get_default(mfmhd_param_t type);
-
-protected:
-	virtual UINT8   cylinder_to_ident(int cylinder);
-=======
 	chd_error load(chd_file* chdfile, uint16_t* trackimage, int tracksize, int cylinder, int head) override;
 	chd_error save(chd_file* chdfile, uint16_t* trackimage, int tracksize, int cylinder, int head) override;
 
@@ -257,7 +204,6 @@ protected:
 
 protected:
 	virtual uint8_t   cylinder_to_ident(int cylinder);
->>>>>>> upstream/master
 	virtual int     chs_to_lba(int cylinder, int head, int sector);
 };
 

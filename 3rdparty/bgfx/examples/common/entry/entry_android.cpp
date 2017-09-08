@@ -1,22 +1,13 @@
 /*
-<<<<<<< HEAD
- * Copyright 2011-2015 Branimir Karadzic. All rights reserved.
- * License: http://www.opensource.org/licenses/BSD-2-Clause
-=======
  * Copyright 2011-2017 Branimir Karadzic. All rights reserved.
  * License: https://github.com/bkaradzic/bgfx#license-bsd-2-clause
->>>>>>> upstream/master
  */
 
 #include "entry_p.h"
 
 #if ENTRY_CONFIG_USE_NATIVE && BX_PLATFORM_ANDROID
 
-<<<<<<< HEAD
-#include <bgfx/bgfxplatform.h>
-=======
 #include <bgfx/platform.h>
->>>>>>> upstream/master
 
 #include <stdio.h>
 #include <bx/thread.h>
@@ -26,10 +17,7 @@
 #include <android/looper.h>
 #include <android/window.h>
 #include <android_native_app_glue.h>
-<<<<<<< HEAD
-=======
 #include <android/native_window.h>
->>>>>>> upstream/master
 
 extern "C"
 {
@@ -41,8 +29,6 @@ extern "C"
 
 namespace entry
 {
-<<<<<<< HEAD
-=======
 	///
 	inline void androidSetWindow(::ANativeWindow* _window)
 	{
@@ -55,7 +41,6 @@ namespace entry
 		bgfx::setPlatformData(pd);
 	}
 
->>>>>>> upstream/master
 	struct GamepadRemap
 	{
 		uint16_t  m_keyCode;
@@ -110,14 +95,8 @@ namespace entry
 	{
 		Context()
 			: m_window(NULL)
-<<<<<<< HEAD
-			, m_count(0)
-		{
-			memset(m_value, 0, sizeof(m_value) );
-=======
 		{
 			bx::memSet(m_value, 0, sizeof(m_value) );
->>>>>>> upstream/master
 
 			// Deadzone values from xinput.h
 			m_deadzone[GamepadAxis::LeftX ] =
@@ -143,11 +122,7 @@ namespace entry
 			const char* argv[1] = { "android.so" };
 			m_mte.m_argc = 1;
 			m_mte.m_argv = const_cast<char**>(argv);
-<<<<<<< HEAD
-			
-=======
 
->>>>>>> upstream/master
 			while (0 == m_app->destroyRequested)
 			{
 				int32_t num;
@@ -177,17 +152,10 @@ namespace entry
 					// Command from main thread: a new ANativeWindow is ready for use.  Upon
 					// receiving this command, android_app->window will contain the new window
 					// surface.
-<<<<<<< HEAD
-					if (m_window == NULL)
-					{
-						m_window = m_app->window;
-						bgfx::androidSetWindow(m_window);
-=======
 					if (m_window != m_app->window)
 					{
 						m_window = m_app->window;
 						androidSetWindow(m_window);
->>>>>>> upstream/master
 
 						int32_t width  = ANativeWindow_getWidth(m_window);
 						int32_t height = ANativeWindow_getHeight(m_window);
@@ -196,14 +164,10 @@ namespace entry
 						WindowHandle defaultWindow = { 0 };
 						m_eventQueue.postSizeEvent(defaultWindow, width, height);
 
-<<<<<<< HEAD
-						m_thread.init(MainThreadEntry::threadFunc, &m_mte);
-=======
 						if (!m_thread.isRunning() )
 						{
 							m_thread.init(MainThreadEntry::threadFunc, &m_mte);
 						}
->>>>>>> upstream/master
 					}
 					break;
 
@@ -345,38 +309,6 @@ namespace entry
 						int32_t action = (actionBits & AMOTION_EVENT_ACTION_MASK);
 						int32_t index  = (actionBits & AMOTION_EVENT_ACTION_POINTER_INDEX_MASK) >> AMOTION_EVENT_ACTION_POINTER_INDEX_SHIFT;
 
-<<<<<<< HEAD
-						count = m_count;
-
-						switch (action)
-						{
-						case AMOTION_EVENT_ACTION_DOWN:
-						case AMOTION_EVENT_ACTION_POINTER_DOWN:
-							m_count++;
-							break;
-
-						case AMOTION_EVENT_ACTION_UP:
-						case AMOTION_EVENT_ACTION_POINTER_UP:
-							m_count--;
-							break;
-
-						default:
-							break;
-						}
-
-						if (count != m_count)
-						{
-							m_eventQueue.postMouseEvent(defaultWindow
-								, (int32_t)mx
-								, (int32_t)my
-								, 0
-								, 1 == count ? MouseButton::Left : MouseButton::Right
-								, false
-								);
-
-							if (0 != m_count)
-							{
-=======
 						// Simulate left mouse click with 1st touch and right mouse click with 2nd touch. ignore other touchs
 						if (count < 2)
 						{
@@ -384,16 +316,10 @@ namespace entry
 							{
 							case AMOTION_EVENT_ACTION_DOWN:
 							case AMOTION_EVENT_ACTION_POINTER_DOWN:
->>>>>>> upstream/master
 								m_eventQueue.postMouseEvent(defaultWindow
 									, (int32_t)mx
 									, (int32_t)my
 									, 0
-<<<<<<< HEAD
-									, 1 == m_count ? MouseButton::Left : MouseButton::Right
-									, true
-									);
-=======
 									, action == AMOTION_EVENT_ACTION_DOWN ? MouseButton::Left : MouseButton::Right
 									, true
 									);
@@ -412,7 +338,6 @@ namespace entry
 
 							default:
 								break;
->>>>>>> upstream/master
 							}
 						}
 
@@ -484,10 +409,6 @@ namespace entry
 		ANativeWindow* m_window;
 		android_app* m_app;
 
-<<<<<<< HEAD
-		int32_t m_count;
-=======
->>>>>>> upstream/master
 		int32_t m_value[GamepadAxis::Count];
 		int32_t m_deadzone[GamepadAxis::Count];
 	};

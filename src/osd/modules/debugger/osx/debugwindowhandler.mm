@@ -6,23 +6,17 @@
 //
 //============================================================
 
-<<<<<<< HEAD
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #import "debugwindowhandler.h"
 
 #import "debugconsole.h"
 #import "debugcommandhistory.h"
 #import "debugview.h"
 
-<<<<<<< HEAD
-=======
 #include "debugger.h"
 
 #include "util/xmlfile.h"
 
->>>>>>> upstream/master
 
 //============================================================
 //  NOTIFICATIONS
@@ -31,10 +25,7 @@
 NSString *const MAMEHideDebuggerNotification = @"MAMEHideDebuggerNotification";
 NSString *const MAMEShowDebuggerNotification = @"MAMEShowDebuggerNotification";
 NSString *const MAMEAuxiliaryDebugWindowWillCloseNotification = @"MAMEAuxiliaryDebugWindowWillCloseNotification";
-<<<<<<< HEAD
-=======
 NSString *const MAMESaveDebuggerConfigurationNotification = @"MAMESaveDebuggerConfigurationNotification";
->>>>>>> upstream/master
 
 
 //============================================================
@@ -44,13 +35,10 @@ NSString *const MAMESaveDebuggerConfigurationNotification = @"MAMESaveDebuggerCo
 @implementation MAMEDebugWindowHandler
 
 + (void)addCommonActionItems:(NSMenu *)menu {
-<<<<<<< HEAD
-=======
 	[menu addItemWithTitle:@"Break"
 					action:@selector(debugBreak:)
 			 keyEquivalent:@""];
 
->>>>>>> upstream/master
 	NSMenuItem *runParentItem = [menu addItemWithTitle:@"Run"
 												action:@selector(debugRun:)
 										 keyEquivalent:[NSString stringWithFormat:@"%C", (short)NSF5FunctionKey]];
@@ -149,11 +137,7 @@ NSString *const MAMESaveDebuggerConfigurationNotification = @"MAMESaveDebuggerCo
 + (device_debug::breakpoint *)findBreakpointAtAddress:(offs_t)address forDevice:(device_t &)device {
 	device_debug *const cpuinfo = device.debug();
 	device_debug::breakpoint *bp = cpuinfo->breakpoint_first();
-<<<<<<< HEAD
-	while ((bp != NULL) && (address != bp->address())) bp = bp->next();
-=======
 	while ((bp != nullptr) && (address != bp->address())) bp = bp->next();
->>>>>>> upstream/master
 	return bp;
 }
 
@@ -175,13 +159,10 @@ NSString *const MAMESaveDebuggerConfigurationNotification = @"MAMESaveDebuggerCo
 	[window setContentMinSize:NSMakeSize(320, 240)];
 
 	[[NSNotificationCenter defaultCenter] addObserver:self
-<<<<<<< HEAD
-=======
 											 selector:@selector(saveConfig:)
 												 name:MAMESaveDebuggerConfigurationNotification
 											   object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self
->>>>>>> upstream/master
 											 selector:@selector(showDebugger:)
 												 name:MAMEShowDebuggerNotification
 											   object:nil];
@@ -214,10 +195,6 @@ NSString *const MAMESaveDebuggerConfigurationNotification = @"MAMESaveDebuggerCo
 }
 
 
-<<<<<<< HEAD
-- (IBAction)debugRun:(id)sender {
-	debug_cpu_get_visible_cpu(*machine)->debug()->go();
-=======
 - (IBAction)debugBreak:(id)sender {
 	if (machine->debug_flags & DEBUG_FLAG_ENABLED)
 		machine->debugger().cpu().get_visible_cpu()->debug()->halt_on_next_instruction("User-initiated break\n");
@@ -226,85 +203,51 @@ NSString *const MAMESaveDebuggerConfigurationNotification = @"MAMESaveDebuggerCo
 
 - (IBAction)debugRun:(id)sender {
 	machine->debugger().cpu().get_visible_cpu()->debug()->go();
->>>>>>> upstream/master
 }
 
 
 - (IBAction)debugRunAndHide:(id)sender {
-<<<<<<< HEAD
-	[[NSNotificationCenter defaultCenter] postNotificationName:MAMEHideDebuggerNotification object:self];
-	debug_cpu_get_visible_cpu(*machine)->debug()->go();
-=======
 	[[NSNotificationCenter defaultCenter] postNotificationName:MAMEHideDebuggerNotification
 														object:self
 													  userInfo:[NSDictionary dictionaryWithObject:[NSValue valueWithPointer:machine]
 																						   forKey:@"MAMEDebugMachine"]];
 	machine->debugger().cpu().get_visible_cpu()->debug()->go();
->>>>>>> upstream/master
 }
 
 
 - (IBAction)debugRunToNextCPU:(id)sender {
-<<<<<<< HEAD
-	debug_cpu_get_visible_cpu(*machine)->debug()->go_next_device();
-=======
 	machine->debugger().cpu().get_visible_cpu()->debug()->go_next_device();
->>>>>>> upstream/master
 }
 
 
 - (IBAction)debugRunToNextInterrupt:(id)sender {
-<<<<<<< HEAD
-	debug_cpu_get_visible_cpu(*machine)->debug()->go_interrupt();
-=======
 	machine->debugger().cpu().get_visible_cpu()->debug()->go_interrupt();
->>>>>>> upstream/master
 }
 
 
 - (IBAction)debugRunToNextVBLANK:(id)sender {
-<<<<<<< HEAD
-	debug_cpu_get_visible_cpu(*machine)->debug()->go_vblank();
-=======
 	machine->debugger().cpu().get_visible_cpu()->debug()->go_vblank();
->>>>>>> upstream/master
 }
 
 
 - (IBAction)debugStepInto:(id)sender {
-<<<<<<< HEAD
-	debug_cpu_get_visible_cpu(*machine)->debug()->single_step();
-=======
 	machine->debugger().cpu().get_visible_cpu()->debug()->single_step();
->>>>>>> upstream/master
 }
 
 
 - (IBAction)debugStepOver:(id)sender {
-<<<<<<< HEAD
-	debug_cpu_get_visible_cpu(*machine)->debug()->single_step_over();
-=======
 	machine->debugger().cpu().get_visible_cpu()->debug()->single_step_over();
->>>>>>> upstream/master
 }
 
 
 - (IBAction)debugStepOut:(id)sender {
-<<<<<<< HEAD
-	debug_cpu_get_visible_cpu(*machine)->debug()->single_step_out();
-=======
 	machine->debugger().cpu().get_visible_cpu()->debug()->single_step_out();
->>>>>>> upstream/master
 }
 
 
 - (IBAction)debugSoftReset:(id)sender {
 	machine->schedule_soft_reset();
-<<<<<<< HEAD
-	debug_cpu_get_visible_cpu(*machine)->debug()->go();
-=======
 	machine->debugger().cpu().get_visible_cpu()->debug()->go();
->>>>>>> upstream/master
 }
 
 
@@ -334,8 +277,6 @@ NSString *const MAMESaveDebuggerConfigurationNotification = @"MAMESaveDebuggerCo
 		[window orderOut:self];
 }
 
-<<<<<<< HEAD
-=======
 
 - (void)saveConfig:(NSNotification *)notification {
 	running_machine *m = (running_machine *)[[[notification userInfo] objectForKey:@"MAMEDebugMachine"] pointerValue];
@@ -376,7 +317,6 @@ NSString *const MAMESaveDebuggerConfigurationNotification = @"MAMESaveDebuggerCo
 	[window setFrame:frame display:YES];
 }
 
->>>>>>> upstream/master
 @end
 
 
@@ -450,18 +390,6 @@ NSString *const MAMESaveDebuggerConfigurationNotification = @"MAMESaveDebuggerCo
 
 	// limit the size to the minimum size
 	NSSize const minimum = [window minSize];
-<<<<<<< HEAD
-	windowFrame.size.width = MAX(windowFrame.size.width, minimum.width);
-	windowFrame.size.height = MAX(windowFrame.size.height, minimum.height);
-
-	// limit the size to the main screen size
-	NSRect const available = [[NSScreen mainScreen] visibleFrame];
-	windowFrame.size.width = MIN(windowFrame.size.width, available.size.width);
-	windowFrame.size.height = MIN(windowFrame.size.height, available.size.height);
-
-	// arbitrary additional height limit
-	windowFrame.size.height = MIN(windowFrame.size.height, 320);
-=======
 	windowFrame.size.width = std::max(windowFrame.size.width, minimum.width);
 	windowFrame.size.height = std::max(windowFrame.size.height, minimum.height);
 
@@ -472,7 +400,6 @@ NSString *const MAMESaveDebuggerConfigurationNotification = @"MAMESaveDebuggerCo
 
 	// arbitrary additional height limit
 	windowFrame.size.height = std::min(windowFrame.size.height, CGFloat(320));
->>>>>>> upstream/master
 
 	// place it in the bottom right corner and apply
 	windowFrame.origin.x = available.origin.x + available.size.width - windowFrame.size.width;
@@ -566,12 +493,6 @@ NSString *const MAMESaveDebuggerConfigurationNotification = @"MAMESaveDebuggerCo
 			}
 			return YES;
 		}
-<<<<<<< HEAD
-    }
-	return NO;
-}
-
-=======
 	}
 	return NO;
 }
@@ -590,5 +511,4 @@ NSString *const MAMESaveDebuggerConfigurationNotification = @"MAMESaveDebuggerCo
 		[self setExpression:[NSString stringWithUTF8String:expr->get_value()]];
 }
 
->>>>>>> upstream/master
 @end

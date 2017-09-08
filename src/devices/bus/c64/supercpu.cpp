@@ -6,10 +6,7 @@
 
 **********************************************************************/
 
-<<<<<<< HEAD
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #include "supercpu.h"
 
 
@@ -25,11 +22,7 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type C64_SUPERCPU = &device_creator<c64_supercpu_device>;
-=======
 DEFINE_DEVICE_TYPE(C64_SUPERCPU, c64_supercpu_device, "c64_supercpu", "C64 SuperCPU v2 + SuperRAM")
->>>>>>> upstream/master
 
 
 //-------------------------------------------------
@@ -46,11 +39,7 @@ ROM_END
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const rom_entry *c64_supercpu_device::device_rom_region() const
-=======
 const tiny_rom_entry *c64_supercpu_device::device_rom_region() const
->>>>>>> upstream/master
 {
 	return ROM_NAME( c64_supercpu );
 }
@@ -68,17 +57,10 @@ ADDRESS_MAP_END
 
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  MACHINE_CONFIG_FRAGMENT( c64_supercpu )
-//-------------------------------------------------
-
-static MACHINE_CONFIG_FRAGMENT( c64_supercpu )
-=======
 //  device_add_mconfig - add device configuration
 //-------------------------------------------------
 
 MACHINE_CONFIG_MEMBER( c64_supercpu_device::device_add_mconfig )
->>>>>>> upstream/master
 	MCFG_CPU_ADD(G65816_TAG, G65816, 1000000)
 	MCFG_CPU_PROGRAM_MAP(c64_supercpu_map)
 
@@ -87,20 +69,6 @@ MACHINE_CONFIG_END
 
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  machine_config_additions - device-specific
-//  machine configurations
-//-------------------------------------------------
-
-machine_config_constructor c64_supercpu_device::device_mconfig_additions() const
-{
-	return MACHINE_CONFIG_NAME( c64_supercpu );
-}
-
-
-//-------------------------------------------------
-=======
->>>>>>> upstream/master
 //  INPUT_PORTS( c64_supercpu )
 //-------------------------------------------------
 
@@ -140,13 +108,8 @@ ioport_constructor c64_supercpu_device::device_input_ports() const
 //  c64_supercpu_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-c64_supercpu_device::c64_supercpu_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-	device_t(mconfig, C64_SUPERCPU, "SuperCPU", tag, owner, clock, "c64_supercpu", __FILE__),
-=======
 c64_supercpu_device::c64_supercpu_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	device_t(mconfig, C64_SUPERCPU, tag, owner, clock),
->>>>>>> upstream/master
 	device_c64_expansion_card_interface(mconfig, *this),
 	m_maincpu(*this, G65816_TAG),
 	m_exp(*this, C64_EXPANSION_SLOT_TAG),
@@ -178,11 +141,7 @@ void c64_supercpu_device::device_reset()
 //  c64_cd_r - cartridge data read
 //-------------------------------------------------
 
-<<<<<<< HEAD
-UINT8 c64_supercpu_device::c64_cd_r(address_space &space, offs_t offset, UINT8 data, int sphi2, int ba, int roml, int romh, int io1, int io2)
-=======
 uint8_t c64_supercpu_device::c64_cd_r(address_space &space, offs_t offset, uint8_t data, int sphi2, int ba, int roml, int romh, int io1, int io2)
->>>>>>> upstream/master
 {
 	data = m_exp->cd_r(space, offset, data, sphi2, ba, roml, romh, io1, io2);
 
@@ -236,11 +195,7 @@ uint8_t c64_supercpu_device::c64_cd_r(address_space &space, offs_t offset, uint8
 //  c64_cd_w - cartridge data write
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void c64_supercpu_device::c64_cd_w(address_space &space, offs_t offset, UINT8 data, int sphi2, int ba, int roml, int romh, int io1, int io2)
-=======
 void c64_supercpu_device::c64_cd_w(address_space &space, offs_t offset, uint8_t data, int sphi2, int ba, int roml, int romh, int io1, int io2)
->>>>>>> upstream/master
 {
 	switch (offset)
 	{

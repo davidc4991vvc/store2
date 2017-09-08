@@ -4,11 +4,7 @@
 	@author Ross Bencina <rossb@audiomulch.com>
 */
 /*
-<<<<<<< HEAD
- * $Id: patest_sine8.c 1748 2011-09-01 22:08:32Z philburk $
-=======
  * $Id$
->>>>>>> upstream/master
  *
  * This program uses the PortAudio Portable Audio Library.
  * For more information see: http://www.portaudio.com

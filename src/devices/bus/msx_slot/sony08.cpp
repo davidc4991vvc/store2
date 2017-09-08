@@ -10,18 +10,6 @@
 #include "sony08.h"
 
 
-<<<<<<< HEAD
-const device_type MSX_SLOT_SONY08 = &device_creator<msx_slot_sony08_device>;
-
-
-msx_slot_sony08_device::msx_slot_sony08_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, MSX_SLOT_SONY08, "MSX Internal SONY08", tag, owner, clock, "msx_slot_sony08", __FILE__)
-	, msx_internal_slot_interface()
-	, m_nvram(*this, "nvram")
-	, m_region(NULL)
-	, m_region_offset(0)
-	, m_rom(NULL)
-=======
 DEFINE_DEVICE_TYPE(MSX_SLOT_SONY08, msx_slot_sony08_device, "msx_slot_sony08", "MSX Internal SONY08")
 
 
@@ -32,74 +20,36 @@ msx_slot_sony08_device::msx_slot_sony08_device(const machine_config &mconfig, co
 	, m_rom_region(*this, finder_base::DUMMY_TAG)
 	, m_region_offset(0)
 	, m_rom(nullptr)
->>>>>>> upstream/master
 {
 	for (int i = 0; i < 8; i++)
 	{
 		m_selected_bank[i] = 0;
-<<<<<<< HEAD
-		m_bank_base[i] = NULL;
-=======
 		m_bank_base[i] = nullptr;
->>>>>>> upstream/master
 	}
 	memset(m_sram, 0, sizeof(m_sram));
 }
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_FRAGMENT( sony08 )
-=======
 MACHINE_CONFIG_MEMBER( msx_slot_sony08_device::device_add_mconfig )
->>>>>>> upstream/master
 	MCFG_NVRAM_ADD_0FILL("nvram")
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-machine_config_constructor msx_slot_sony08_device::device_mconfig_additions() const
-{
-	return MACHINE_CONFIG_NAME( sony08 );
-}
-
-
-void msx_slot_sony08_device::set_rom_start(device_t &device, const char *region, UINT32 offset)
-{
-	msx_slot_sony08_device &dev = downcast<msx_slot_sony08_device &>(device);
-
-	dev.m_region = region;
-=======
 void msx_slot_sony08_device::set_rom_start(device_t &device, const char *region, uint32_t offset)
 {
 	msx_slot_sony08_device &dev = downcast<msx_slot_sony08_device &>(device);
 
 	dev.m_rom_region.set_tag(region);
->>>>>>> upstream/master
 	dev.m_region_offset = offset;
 }
 
 
 void msx_slot_sony08_device::device_start()
 {
-<<<<<<< HEAD
-	assert(m_region != NULL );
-
-	memory_region *m_rom_region = owner()->memregion(m_region);
-
-	// Sanity checks
-	if (m_rom_region == NULL )
-	{
-		fatalerror("Rom slot '%s': Unable to find memory region '%s'\n", tag(), m_region);
-	}
-	if (m_rom_region->bytes() < m_region_offset + 0x100000)
-	{
-		fatalerror("Memory region '%s' is too small for the SONY08 firmware\n", m_region);
-=======
 	// Sanity checks
 	if (m_rom_region->bytes() < m_region_offset + 0x100000)
 	{
 		fatalerror("Memory region '%s' is too small for the SONY08 firmware\n", m_rom_region.finder_tag());
->>>>>>> upstream/master
 	}
 
 	m_rom = m_rom_region->base() + m_region_offset;
@@ -138,13 +88,8 @@ void msx_slot_sony08_device::map_bank(int bank)
 		}
 		else
 		{
-<<<<<<< HEAD
-			m_bank_base[0] = NULL;
-			m_bank_base[1] = NULL;
-=======
 			m_bank_base[0] = nullptr;
 			m_bank_base[1] = nullptr;
->>>>>>> upstream/master
 		}
 	}
 }
@@ -171,11 +116,7 @@ READ8_MEMBER(msx_slot_sony08_device::read)
 		return m_bank_base[6 + ((offset >> 11) & 0x01)][offset & 0x7ff];
 	}
 
-<<<<<<< HEAD
-	const UINT8 *mem = m_bank_base[offset >> 13];
-=======
 	const uint8_t *mem = m_bank_base[offset >> 13];
->>>>>>> upstream/master
 
 	if (mem)
 	{
@@ -189,11 +130,7 @@ WRITE8_MEMBER(msx_slot_sony08_device::write)
 {
 	if (offset < 0x4000)
 	{
-<<<<<<< HEAD
-		if (m_bank_base[0] != NULL)
-=======
 		if (m_bank_base[0] != nullptr)
->>>>>>> upstream/master
 		{
 			m_sram[offset & 0x3fff] = data;
 			return;

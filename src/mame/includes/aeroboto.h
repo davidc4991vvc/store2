@@ -25,20 +25,6 @@ public:
 		m_palette(*this, "palette") { }
 
 	/* memory pointers */
-<<<<<<< HEAD
-	required_shared_ptr<UINT8> m_mainram;
-	required_shared_ptr<UINT8> m_videoram;
-	required_shared_ptr<UINT8> m_hscroll;
-	required_shared_ptr<UINT8> m_tilecolor;
-	required_shared_ptr<UINT8> m_spriteram;
-	required_shared_ptr<UINT8> m_vscroll;
-	required_shared_ptr<UINT8> m_starx;
-	required_shared_ptr<UINT8> m_stary;
-	required_shared_ptr<UINT8> m_bgcolor;
-
-	/* stars layout */
-	UINT8 * m_stars_rom;
-=======
 	required_shared_ptr<uint8_t> m_mainram;
 	required_shared_ptr<uint8_t> m_videoram;
 	required_shared_ptr<uint8_t> m_hscroll;
@@ -51,7 +37,6 @@ public:
 
 	/* stars layout */
 	uint8_t * m_stars_rom;
->>>>>>> upstream/master
 	int     m_stars_length;
 
 	/* video-related */
@@ -60,13 +45,8 @@ public:
 	int     m_starsoff;
 	int     m_sx;
 	int     m_sy;
-<<<<<<< HEAD
-	UINT8   m_ox;
-	UINT8   m_oy;
-=======
 	uint8_t   m_ox;
 	uint8_t   m_oy;
->>>>>>> upstream/master
 
 	/* misc */
 	int m_count;
@@ -80,17 +60,10 @@ public:
 	DECLARE_WRITE8_MEMBER(aeroboto_videoram_w);
 	DECLARE_WRITE8_MEMBER(aeroboto_tilecolor_w);
 	TILE_GET_INFO_MEMBER(get_tile_info);
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void machine_reset();
-	virtual void video_start();
-	UINT32 screen_update_aeroboto(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
 	virtual void video_start() override;
 	uint32_t screen_update_aeroboto(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	INTERRUPT_GEN_MEMBER(aeroboto_interrupt);
 	void draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect );
 	required_device<cpu_device> m_maincpu;

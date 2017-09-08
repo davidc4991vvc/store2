@@ -33,143 +33,6 @@
 //  constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const device_type NES_WAIXING_A = &device_creator<nes_waixing_a_device>;
-const device_type NES_WAIXING_A1 = &device_creator<nes_waixing_a1_device>;
-const device_type NES_WAIXING_B = &device_creator<nes_waixing_b_device>;
-const device_type NES_WAIXING_C = &device_creator<nes_waixing_c_device>;
-const device_type NES_WAIXING_D = &device_creator<nes_waixing_d_device>;
-const device_type NES_WAIXING_E = &device_creator<nes_waixing_e_device>;
-const device_type NES_WAIXING_F = &device_creator<nes_waixing_f_device>;
-const device_type NES_WAIXING_G = &device_creator<nes_waixing_g_device>;
-const device_type NES_WAIXING_H = &device_creator<nes_waixing_h_device>;
-const device_type NES_WAIXING_H1 = &device_creator<nes_waixing_h1_device>;
-const device_type NES_WAIXING_I = &device_creator<nes_waixing_i_device>;
-const device_type NES_WAIXING_J = &device_creator<nes_waixing_j_device>;
-const device_type NES_WAIXING_SH2 = &device_creator<nes_waixing_sh2_device>;
-const device_type NES_WAIXING_SEC = &device_creator<nes_waixing_sec_device>;
-const device_type NES_WAIXING_SGZ = &device_creator<nes_waixing_sgz_device>;
-const device_type NES_WAIXING_SGZLZ = &device_creator<nes_waixing_sgzlz_device>;
-const device_type NES_WAIXING_FFV = &device_creator<nes_waixing_ffv_device>;
-const device_type NES_WAIXING_WXZS = &device_creator<nes_waixing_wxzs_device>;
-const device_type NES_WAIXING_DQ8 = &device_creator<nes_waixing_dq8_device>;
-const device_type NES_WAIXING_WXZS2 = &device_creator<nes_waixing_wxzs2_device>;
-const device_type NES_WAIXING_FS304 = &device_creator<nes_waixing_fs304_device>;
-
-
-nes_waixing_a_device::nes_waixing_a_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source)
-					: nes_txrom_device(mconfig, type, name, tag, owner, clock, shortname, source)
-{
-}
-
-nes_waixing_a_device::nes_waixing_a_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: nes_txrom_device(mconfig, NES_WAIXING_A, "NES Cart Waixing Type A PCB", tag, owner, clock, "nes_waixing_a", __FILE__)
-{
-}
-
-nes_waixing_a1_device::nes_waixing_a1_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: nes_waixing_a_device(mconfig, NES_WAIXING_A1, "NES Cart Waixing Type A (Alt) PCB", tag, owner, clock, "nes_waixing_a1", __FILE__)
-{
-}
-
-nes_waixing_b_device::nes_waixing_b_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: nes_waixing_a_device(mconfig, NES_WAIXING_B, "NES Cart Waixing Type B PCB", tag, owner, clock, "nes_waixing_b", __FILE__)
-{
-}
-
-nes_waixing_c_device::nes_waixing_c_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: nes_waixing_a_device(mconfig, NES_WAIXING_C, "NES Cart Waixing Type C PCB", tag, owner, clock, "nes_waixing_c", __FILE__)
-{
-}
-
-nes_waixing_d_device::nes_waixing_d_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: nes_waixing_a_device(mconfig, NES_WAIXING_D, "NES Cart Waixing Type D PCB", tag, owner, clock, "nes_waixing_d", __FILE__)
-{
-}
-
-nes_waixing_e_device::nes_waixing_e_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: nes_waixing_a_device(mconfig, NES_WAIXING_E, "NES Cart Waixing Type E PCB", tag, owner, clock, "nes_waixing_e", __FILE__)
-{
-}
-
-nes_waixing_f_device::nes_waixing_f_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: nes_waixing_a_device(mconfig, NES_WAIXING_F, "NES Cart Waixing Type F PCB", tag, owner, clock, "nes_waixing_f", __FILE__)
-{
-}
-
-nes_waixing_g_device::nes_waixing_g_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: nes_waixing_a_device(mconfig, NES_WAIXING_G, "NES Cart Waixing Type G PCB", tag, owner, clock, "nes_waixing_g", __FILE__)
-{
-}
-
-nes_waixing_h_device::nes_waixing_h_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source)
-					: nes_txrom_device(mconfig, type, name, tag, owner, clock, shortname, source)
-{
-}
-
-nes_waixing_h_device::nes_waixing_h_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: nes_txrom_device(mconfig, NES_WAIXING_H, "NES Cart Waixing Type H PCB", tag, owner, clock, "nes_waixing_h", __FILE__)
-{
-}
-
-nes_waixing_h1_device::nes_waixing_h1_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: nes_waixing_h_device(mconfig, NES_WAIXING_H1, "NES Cart Waixing Type H (Alt) PCB", tag, owner, clock, "nes_waixing_h1", __FILE__)
-{
-}
-
-nes_waixing_i_device::nes_waixing_i_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: nes_waixing_a_device(mconfig, NES_WAIXING_I, "NES Cart Waixing Type I PCB", tag, owner, clock, "nes_waixing_i", __FILE__)
-{
-}
-
-nes_waixing_j_device::nes_waixing_j_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: nes_waixing_a_device(mconfig, NES_WAIXING_J, "NES Cart Waixing Type J PCB", tag, owner, clock, "nes_waixing_j", __FILE__)
-{
-}
-
-nes_waixing_sh2_device::nes_waixing_sh2_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: nes_txrom_device(mconfig, NES_WAIXING_SH2, "NES Cart Waixing SH2 PCB", tag, owner, clock, "nes_waixing_sh2", __FILE__)
-{
-}
-
-nes_waixing_sec_device::nes_waixing_sec_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: nes_txrom_device(mconfig, NES_WAIXING_SEC, "NES Cart Waixing Security Chip PCB", tag, owner, clock, "nes_waixing_sec", __FILE__), m_reg(0)
-				{
-}
-
-nes_waixing_sgz_device::nes_waixing_sgz_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: nes_nrom_device(mconfig, NES_WAIXING_SGZ, "NES Cart Waixing San Guo Zhi PCB", tag, owner, clock, "nes_waixing_sgz", __FILE__), m_irq_count(0), m_irq_count_latch(0), m_irq_enable(0), m_irq_enable_latch(0)
-				{
-}
-
-nes_waixing_sgzlz_device::nes_waixing_sgzlz_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: nes_nrom_device(mconfig, NES_WAIXING_SGZLZ, "NES Cart Waixing San Guo Zhong Lie Zhuan PCB", tag, owner, clock, "nes_waixing_sgzlz", __FILE__), m_latch(0)
-				{
-}
-
-nes_waixing_ffv_device::nes_waixing_ffv_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: nes_nrom_device(mconfig, NES_WAIXING_FFV, "NES Cart Waixing Final Fantasy V PCB", tag, owner, clock, "nes_waixing_ffv", __FILE__)
-{
-}
-
-nes_waixing_wxzs_device::nes_waixing_wxzs_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: nes_nrom_device(mconfig, NES_WAIXING_WXZS, "NES Cart Waixing Wai Xing Zhan Shi PCB", tag, owner, clock, "nes_waixing_wxzs", __FILE__)
-{
-}
-
-nes_waixing_dq8_device::nes_waixing_dq8_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: nes_nrom_device(mconfig, NES_WAIXING_DQ8, "NES Cart Waixing Dragon Quest VIII PCB", tag, owner, clock, "nes_waixing_dq8", __FILE__)
-{
-}
-
-nes_waixing_wxzs2_device::nes_waixing_wxzs2_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: nes_nrom_device(mconfig, NES_WAIXING_WXZS2, "NES Cart Waixing Wai Xing Zhan Shi 2 PCB", tag, owner, clock, "nes_waixing_wxzs2", __FILE__)
-{
-}
-
-nes_waixing_fs304_device::nes_waixing_fs304_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: nes_nrom_device(mconfig, NES_WAIXING_FS304, "NES Cart Waixing FS-304 PCB", tag, owner, clock, "nes_waixing_fs304", __FILE__)
-=======
 DEFINE_DEVICE_TYPE(NES_WAIXING_A,     nes_waixing_a_device,     "nes_waixing_a",     "NES Cart Waixing Type A PCB")
 DEFINE_DEVICE_TYPE(NES_WAIXING_A1,    nes_waixing_a1_device,    "nes_waixing_a1",    "NES Cart Waixing Type A (Alt) PCB")
 DEFINE_DEVICE_TYPE(NES_WAIXING_B,     nes_waixing_b_device,     "nes_waixing_b",     "NES Cart Waixing Type B PCB")
@@ -305,7 +168,6 @@ nes_waixing_wxzs2_device::nes_waixing_wxzs2_device(const machine_config &mconfig
 
 nes_waixing_fs304_device::nes_waixing_fs304_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: nes_nrom_device(mconfig, NES_WAIXING_FS304, tag, owner, clock)
->>>>>>> upstream/master
 {
 }
 
@@ -321,11 +183,7 @@ void nes_waixing_a_device::pcb_reset()
 	m_chr_source = m_vrom_chunks ? CHRROM : CHRRAM;
 	mmc3_common_initialize(0xff, 0xff, 0);
 
-<<<<<<< HEAD
-	memset(mapper_ram, 0, sizeof(mapper_ram));
-=======
 	std::fill(std::begin(mapper_ram), std::end(mapper_ram), 0x00);
->>>>>>> upstream/master
 }
 
 void nes_waixing_f_device::pcb_reset()
@@ -333,11 +191,7 @@ void nes_waixing_f_device::pcb_reset()
 	m_chr_source = m_vrom_chunks ? CHRROM : CHRRAM;
 	mmc3_common_initialize(0xff, 0xff, 0);
 
-<<<<<<< HEAD
-	memset(mapper_ram, 0, sizeof(mapper_ram));
-=======
 	std::fill(std::begin(mapper_ram), std::end(mapper_ram), 0x00);
->>>>>>> upstream/master
 	m_mmc_prg_bank[0] = 0x00;
 	m_mmc_prg_bank[1] = 0x01;
 	m_mmc_prg_bank[2] = 0x4e;
@@ -350,11 +204,7 @@ void nes_waixing_g_device::pcb_reset()
 	m_chr_source = m_vrom_chunks ? CHRROM : CHRRAM;
 	mmc3_common_initialize(0xff, 0xff, 0);
 
-<<<<<<< HEAD
-	memset(mapper_ram, 0, sizeof(mapper_ram));
-=======
 	std::fill(std::begin(mapper_ram), std::end(mapper_ram), 0x00);
->>>>>>> upstream/master
 	m_mmc_prg_bank[0] = 0x00;
 	m_mmc_prg_bank[1] = 0x01;
 	m_mmc_prg_bank[2] = 0x3e;
@@ -439,21 +289,13 @@ void nes_waixing_sgz_device::pcb_reset()
 	m_irq_count = 0;
 	m_irq_count_latch = 0;
 
-<<<<<<< HEAD
-	memset(m_mmc_vrom_bank, 0, sizeof(m_mmc_vrom_bank));
-=======
 	std::fill(std::begin(m_mmc_vrom_bank), std::end(m_mmc_vrom_bank), 0x00);
->>>>>>> upstream/master
 }
 
 void nes_waixing_sgzlz_device::device_start()
 {
 	common_start();
-<<<<<<< HEAD
-	save_item(NAME(m_latch));
-=======
 	save_item(NAME(m_reg));
->>>>>>> upstream/master
 }
 
 void nes_waixing_sgzlz_device::pcb_reset()
@@ -462,11 +304,7 @@ void nes_waixing_sgzlz_device::pcb_reset()
 	prg32(0);
 	chr8(0, m_chr_source);
 
-<<<<<<< HEAD
-	m_latch = 0;
-=======
 	std::fill(std::begin(m_reg), std::end(m_reg), 0x00);
->>>>>>> upstream/master
 }
 
 void nes_waixing_ffv_device::device_start()
@@ -534,11 +372,7 @@ void nes_waixing_fs304_device::pcb_reset()
 	prg32(0);
 	chr8(0, m_chr_source);
 
-<<<<<<< HEAD
-	memset(m_reg, 0x00, sizeof(m_reg));
-=======
 	std::fill(std::begin(m_reg), std::end(m_reg), 0x00);
->>>>>>> upstream/master
 }
 
 
@@ -567,11 +401,7 @@ void nes_waixing_fs304_device::pcb_reset()
  -------------------------------------------------*/
 
 /* MIRROR_LOW and MIRROR_HIGH are swapped! */
-<<<<<<< HEAD
-void nes_waixing_a_device::set_mirror(UINT8 nt)
-=======
 void nes_waixing_a_device::set_mirror(uint8_t nt)
->>>>>>> upstream/master
 {
 	switch (nt)
 	{
@@ -761,11 +591,7 @@ void nes_waixing_f_device::prg_cb(int start, int bank)
 
 void nes_waixing_f_device::set_prg( int prg_base, int prg_mask )
 {
-<<<<<<< HEAD
-	UINT8 prg_flip = (m_latch & 0x40) ? 2 : 0;
-=======
 	uint8_t prg_flip = (m_latch & 0x40) ? 2 : 0;
->>>>>>> upstream/master
 
 	prg_cb(0, m_mmc_prg_bank[0 ^ prg_flip]);
 	prg_cb(1, m_mmc_prg_bank[1]);
@@ -775,11 +601,7 @@ void nes_waixing_f_device::set_prg( int prg_base, int prg_mask )
 
 WRITE8_MEMBER(nes_waixing_f_device::write_h)
 {
-<<<<<<< HEAD
-	UINT8 cmd;
-=======
 	uint8_t cmd;
->>>>>>> upstream/master
 	LOG_MMC(("waixing_f write_h, offset: %04x, data: %02x\n", offset, data));
 
 	switch (offset & 0x6001)
@@ -834,15 +656,9 @@ void nes_waixing_g_device::chr_cb(int start, int bank, int source)
 	chr1_x(start, bank, chr_src);
 }
 
-<<<<<<< HEAD
-void nes_waixing_g_device::set_chr(UINT8 chr, int chr_base, int chr_mask)
-{
-	UINT8 chr_page = (m_latch & 0x80) >> 5;
-=======
 void nes_waixing_g_device::set_chr(uint8_t chr, int chr_base, int chr_mask)
 {
 	uint8_t chr_page = (m_latch & 0x80) >> 5;
->>>>>>> upstream/master
 
 	chr_cb(chr_page ^ 0, chr_base | (m_mmc_vrom_bank[0] & chr_mask), chr);
 	chr_cb(chr_page ^ 1, chr_base | (m_mmc_vrom_bank[6] & chr_mask), chr);
@@ -856,11 +672,7 @@ void nes_waixing_g_device::set_chr(uint8_t chr, int chr_base, int chr_mask)
 
 WRITE8_MEMBER(nes_waixing_g_device::write_h)
 {
-<<<<<<< HEAD
-	UINT8 cmd;
-=======
 	uint8_t cmd;
->>>>>>> upstream/master
 	LOG_MMC(("waixing_g write_h, offset: %04x, data: %02x\n", offset, data));
 
 	switch (offset & 0x6001)
@@ -923,11 +735,7 @@ void nes_waixing_h_device::chr_cb(int start, int bank, int source)
 
 WRITE8_MEMBER(nes_waixing_h_device::write_h)
 {
-<<<<<<< HEAD
-	UINT8 cmd;
-=======
 	uint8_t cmd;
->>>>>>> upstream/master
 	LOG_MMC(("waixing_h write_h, offset: %04x, data: %02x\n", offset, data));
 
 	switch (offset & 0x6001)
@@ -968,11 +776,7 @@ WRITE8_MEMBER(nes_waixing_h_device::write_h)
 
 WRITE8_MEMBER(nes_waixing_h1_device::write_h)
 {
-<<<<<<< HEAD
-	UINT8 cmd;
-=======
 	uint8_t cmd;
->>>>>>> upstream/master
 	LOG_MMC(("waixing_h1 write_h, offset: %04x, data: %02x\n", offset, data));
 
 	switch (offset & 0x6001)
@@ -1022,11 +826,7 @@ WRITE8_MEMBER(nes_waixing_h1_device::write_h)
 
 void nes_waixing_j_device::set_prg( int prg_base, int prg_mask )
 {
-<<<<<<< HEAD
-	UINT8 prg_flip = (m_latch & 0x40) ? 2 : 0;
-=======
 	uint8_t prg_flip = (m_latch & 0x40) ? 2 : 0;
->>>>>>> upstream/master
 
 	prg_cb(0, m_reg[0 ^ prg_flip]);
 	prg_cb(1, m_reg[1]);
@@ -1036,11 +836,7 @@ void nes_waixing_j_device::set_prg( int prg_base, int prg_mask )
 
 WRITE8_MEMBER(nes_waixing_j_device::write_h)
 {
-<<<<<<< HEAD
-	UINT8 cmd;
-=======
 	uint8_t cmd;
->>>>>>> upstream/master
 	LOG_MMC(("waixing_f write_h, offset: %04x, data: %02x\n", offset, data));
 
 	switch (offset & 0x6001)
@@ -1096,11 +892,7 @@ void nes_waixing_sh2_device::chr_cb(int start, int bank, int source)
 READ8_MEMBER(nes_waixing_sh2_device::chr_r)
 {
 	int bank = offset >> 10;
-<<<<<<< HEAD
-	UINT8 val = m_chr_access[bank][offset & 0x3ff]; // this would be usual return value
-=======
 	uint8_t val = m_chr_access[bank][offset & 0x3ff]; // this would be usual return value
->>>>>>> upstream/master
 	int chr_helper;
 
 	switch (offset & 0xff8)
@@ -1191,11 +983,7 @@ void nes_waixing_sgz_device::hblank_irq(int scanline, int vblank, int blanked)
 
 WRITE8_MEMBER(nes_waixing_sgz_device::write_h)
 {
-<<<<<<< HEAD
-	UINT8 helper, bank;
-=======
 	uint8_t helper, bank;
->>>>>>> upstream/master
 	LOG_MMC(("waixing_sgz write_h, offset: %04x, data: %02x\n", offset, data));
 
 	switch (offset & 0x7000)
@@ -1247,45 +1035,23 @@ WRITE8_MEMBER(nes_waixing_sgz_device::write_h)
  Waixing San Guo Zhong Lie Zhuan Board
 
  Games: Fan Kong Jing Ying, San Guo Zhong Lie Zhuan, Xing
-<<<<<<< HEAD
- Ji Zheng Ba
-=======
  Ji Zheng Ba, Chong Wu Da Jia Zu Bu Luo Fen Zheng
->>>>>>> upstream/master
 
  iNES: mapper 178
 
  In MESS: Supported.
 
-<<<<<<< HEAD
-=======
  Implementations wildly vary between emulators, but
  Cah4e3's implementation boots up both the games and
  the educational carts that assumedly use this board.
 
  TODO: Is this even correct compared to real hardware?
 
->>>>>>> upstream/master
  -------------------------------------------------*/
 
 WRITE8_MEMBER(nes_waixing_sgzlz_device::write_l)
 {
 	LOG_MMC(("waixing_sgzlz write_l, offset: %04x, data: %02x\n", offset, data));
-<<<<<<< HEAD
-
-	switch (offset)
-	{
-		case 0x700:
-			set_nt_mirroring(data ? PPU_MIRROR_HORZ : PPU_MIRROR_VERT);
-			break;
-		case 0x701:
-			m_latch = (m_latch & 0x0c) | ((data >> 1) & 0x03);
-			prg32(m_latch);
-			break;
-		case 0x702:
-			m_latch = (m_latch & 0x03) | ((data << 2) & 0x0c);
-			break;
-=======
 	if (offset >= 0x700 && offset <= 0xEFF)
 	{
 		m_reg[offset & 0x03] = data;
@@ -1332,7 +1098,6 @@ WRITE8_MEMBER(nes_waixing_sgzlz_device::write_l)
 		}
 
 		set_nt_mirroring(BIT(m_reg[0], 0) ? PPU_MIRROR_HORZ : PPU_MIRROR_VERT);
->>>>>>> upstream/master
 	}
 }
 
@@ -1351,11 +1116,7 @@ WRITE8_MEMBER(nes_waixing_sgzlz_device::write_l)
 
 WRITE8_MEMBER(nes_waixing_ffv_device::write_l)
 {
-<<<<<<< HEAD
-	UINT8 helper;
-=======
 	uint8_t helper;
->>>>>>> upstream/master
 	LOG_MMC(("waixing_ffv write_l, offset: %04x, data: %02x\n", offset, data));
 	offset += 0x100; /* the checks work better on addresses */
 
@@ -1455,13 +1216,8 @@ WRITE8_MEMBER(nes_waixing_dq8_device::write_h)
 
 WRITE8_MEMBER(nes_waixing_wxzs2_device::write_h)
 {
-<<<<<<< HEAD
-	UINT8 flip = (data & 0x80) >> 7;
-	UINT8 helper = (data & 0x7f) << 1;
-=======
 	uint8_t flip = (data & 0x80) >> 7;
 	uint8_t helper = (data & 0x7f) << 1;
->>>>>>> upstream/master
 
 	LOG_MMC(("waixing_wxzs2 write_h, offset: %04x, data: %02x\n", offset, data));
 

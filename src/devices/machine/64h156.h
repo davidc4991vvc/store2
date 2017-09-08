@@ -54,20 +54,11 @@
 
 **********************************************************************/
 
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __C64H156__
-#define __C64H156__
-
-#include "emu.h"
-=======
 #ifndef MAME_MACHINE_64H156_H
 #define MAME_MACHINE_64H156_H
 
 #pragma once
 
->>>>>>> upstream/master
 #include "imagedev/floppy.h"
 #include "formats/d64_dsk.h"
 #include "formats/g64_dsk.h"
@@ -100,19 +91,11 @@ class c64h156_device :  public device_t
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	c64h156_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	template<class _Object> static devcb_base &set_atn_wr_callback(device_t &device, _Object object) { return downcast<c64h156_device &>(device).m_write_atn.set_callback(object); }
-	template<class _Object> static devcb_base &set_sync_wr_callback(device_t &device, _Object object) { return downcast<c64h156_device &>(device).m_write_sync.set_callback(object); }
-	template<class _Object> static devcb_base &set_byte_wr_callback(device_t &device, _Object object) { return downcast<c64h156_device &>(device).m_write_byte.set_callback(object); }
-=======
 	c64h156_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	template <class Object> static devcb_base &set_atn_wr_callback(device_t &device, Object &&cb) { return downcast<c64h156_device &>(device).m_write_atn.set_callback(std::forward<Object>(cb)); }
 	template <class Object> static devcb_base &set_sync_wr_callback(device_t &device, Object &&cb) { return downcast<c64h156_device &>(device).m_write_sync.set_callback(std::forward<Object>(cb)); }
 	template <class Object> static devcb_base &set_byte_wr_callback(device_t &device, Object &&cb) { return downcast<c64h156_device &>(device).m_write_byte.set_callback(std::forward<Object>(cb)); }
->>>>>>> upstream/master
 
 	DECLARE_READ8_MEMBER( yb_r );
 	DECLARE_WRITE8_MEMBER( yb_w );
@@ -137,16 +120,10 @@ public:
 
 protected:
 	// device-level overrides
-<<<<<<< HEAD
-	virtual void device_start();
-	virtual void device_reset();
-	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
-=======
 	virtual void device_start() override;
 	virtual void device_clock_changed() override;
 	virtual void device_reset() override;
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
->>>>>>> upstream/master
 
 private:
 	enum {
@@ -164,30 +141,18 @@ private:
 		int oe;
 		int soe;
 		int accl;
-<<<<<<< HEAD
-		UINT8 accl_yb;
-
-		attotime edge;
-		UINT16 shift_reg;
-=======
 		uint8_t accl_yb;
 
 		attotime edge;
 		uint16_t shift_reg;
->>>>>>> upstream/master
 		int cycle_counter;
 		int cell_counter;
 		int bit_counter;
 		int zero_counter;
 		int cycles_until_random_flux;
 
-<<<<<<< HEAD
-		UINT8 yb;
-		UINT8 shift_reg_write;
-=======
 		uint8_t yb;
 		uint8_t shift_reg_write;
->>>>>>> upstream/master
 		attotime write_start_time;
 		attotime write_buffer[32];
 		int write_position;
@@ -206,11 +171,7 @@ private:
 	int m_soe;
 	int m_oe;
 	int m_ted;
-<<<<<<< HEAD
-	UINT8 m_yb;
-=======
 	uint8_t m_yb;
->>>>>>> upstream/master
 	int m_atni;
 	int m_atna;
 
@@ -235,17 +196,7 @@ private:
 };
 
 
-<<<<<<< HEAD
-
-// device type definition
-extern const device_type C64H156;
-
-
-
-#endif
-=======
 // device type definition
 DECLARE_DEVICE_TYPE(C64H156, c64h156_device)
 
 #endif // MAME_MACHINE_64H156_H
->>>>>>> upstream/master

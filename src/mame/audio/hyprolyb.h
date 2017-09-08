@@ -1,15 +1,5 @@
 // license:BSD-3-Clause
 // copyright-holders:Chris Hardy
-<<<<<<< HEAD
-#include "sound/msm5205.h"
-
-class hyprolyb_adpcm_device : public device_t,
-									public device_sound_interface
-{
-public:
-	hyprolyb_adpcm_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-	~hyprolyb_adpcm_device() {}
-=======
 #ifndef MAME_AUDIO_HYPROLYB_H
 #define MAME_AUDIO_HYPROLYB_H
 
@@ -22,7 +12,6 @@ class hyprolyb_adpcm_device : public device_t, public device_sound_interface
 {
 public:
 	hyprolyb_adpcm_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
->>>>>>> upstream/master
 
 	DECLARE_WRITE8_MEMBER( write );
 	DECLARE_READ8_MEMBER( busy_r );
@@ -36,22 +25,6 @@ public:
 
 protected:
 	// device-level overrides
-<<<<<<< HEAD
-	virtual void device_config_complete();
-	virtual void device_start();
-	virtual void device_reset();
-
-	// sound stream update overrides
-	virtual void sound_stream_update(sound_stream &stream, stream_sample_t **inputs, stream_sample_t **outputs, int samples);
-
-	private:
-	// internal state
-	msm5205_device *m_msm;
-	address_space *m_space;
-	UINT8    m_adpcm_ready; // only bootlegs
-	UINT8    m_adpcm_busy;
-	UINT8    m_vck_ready;
-=======
 	virtual void device_start() override;
 	virtual void device_reset() override;
 
@@ -66,15 +39,11 @@ protected:
 	uint8_t    m_adpcm_ready; // only bootlegs
 	uint8_t    m_adpcm_busy;
 	uint8_t    m_vck_ready;
->>>>>>> upstream/master
 };
 
 MACHINE_CONFIG_EXTERN( hyprolyb_adpcm );
 
 extern const device_type HYPROLYB_ADPCM;
-<<<<<<< HEAD
-=======
 DECLARE_DEVICE_TYPE(HYPROLYB_ADPCM, hyprolyb_adpcm_device)
 
 #endif // MAME_AUDIO_HYPROLYB_H
->>>>>>> upstream/master

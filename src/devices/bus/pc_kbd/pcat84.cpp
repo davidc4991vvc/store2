@@ -24,10 +24,7 @@
 
 */
 
-<<<<<<< HEAD
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #include "pcat84.h"
 
 
@@ -44,13 +41,8 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type PC_KBD_IBM_PC_AT_84 = &device_creator<ibm_pc_at_84_keyboard_device>;
-const device_type PC_KBD_IBM_3270PC_122 = &device_creator<ibm_3270pc_122_keyboard_device>;
-=======
 DEFINE_DEVICE_TYPE(PC_KBD_IBM_PC_AT_84,   ibm_pc_at_84_keyboard_device,   "kb_pcat84", "IBM PC/AT Keyboard")
 DEFINE_DEVICE_TYPE(PC_KBD_IBM_3270PC_122, ibm_3270pc_122_keyboard_device, "kb_3270pc", "IBM 3270PC Keyboard")
->>>>>>> upstream/master
 
 
 //-------------------------------------------------
@@ -74,11 +66,7 @@ ROM_END
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const rom_entry *ibm_pc_at_84_keyboard_device::device_rom_region() const
-=======
 const tiny_rom_entry *ibm_pc_at_84_keyboard_device::device_rom_region() const
->>>>>>> upstream/master
 {
 	return ROM_NAME( ibm_pc_at_84_keyboard );
 }
@@ -105,38 +93,13 @@ ROM_END
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const rom_entry *ibm_3270pc_122_keyboard_device::device_rom_region() const
-=======
 const tiny_rom_entry *ibm_3270pc_122_keyboard_device::device_rom_region() const
->>>>>>> upstream/master
 {
 	return ROM_NAME( ibm_3270pc_122_keyboard );
 }
 
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  ADDRESS_MAP( kb_io )
-//-------------------------------------------------
-
-static ADDRESS_MAP_START( ibm_pc_at_84_keyboard_io, AS_IO, 8, ibm_pc_at_84_keyboard_device )
-	AM_RANGE(MCS48_PORT_BUS, MCS48_PORT_BUS) AM_READNOP AM_WRITE(bus_w)
-	AM_RANGE(MCS48_PORT_P1, MCS48_PORT_P1) AM_READWRITE(p1_r, p1_w)
-	AM_RANGE(MCS48_PORT_P2, MCS48_PORT_P2) AM_READWRITE(p2_r, p2_w)
-	AM_RANGE(MCS48_PORT_T0, MCS48_PORT_T0) AM_READ(t0_r)
-	AM_RANGE(MCS48_PORT_T1, MCS48_PORT_T1) AM_READ(t1_r)
-ADDRESS_MAP_END
-
-
-//-------------------------------------------------
-//  MACHINE_DRIVER( ibm_pc_at_84_keyboard )
-//-------------------------------------------------
-
-static MACHINE_CONFIG_FRAGMENT( ibm_pc_at_84_keyboard )
-	MCFG_CPU_ADD(I8048_TAG, I8048, 5364000)
-	MCFG_CPU_IO_MAP(ibm_pc_at_84_keyboard_io)
-=======
 //  device_add_mconfig - add device configuration
 //-------------------------------------------------
 
@@ -149,25 +112,10 @@ MACHINE_CONFIG_MEMBER( ibm_pc_at_84_keyboard_device::device_add_mconfig )
 	MCFG_MCS48_PORT_P2_OUT_CB(WRITE8(ibm_pc_at_84_keyboard_device, p2_w))
 	MCFG_MCS48_PORT_T0_IN_CB(READLINE(ibm_pc_at_84_keyboard_device, t0_r))
 	MCFG_MCS48_PORT_T1_IN_CB(READLINE(ibm_pc_at_84_keyboard_device, t1_r))
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  machine_config_additions - device-specific
-//  machine configurations
-//-------------------------------------------------
-
-machine_config_constructor ibm_pc_at_84_keyboard_device::device_mconfig_additions() const
-{
-	return MACHINE_CONFIG_NAME( ibm_pc_at_84_keyboard );
-}
-
-
-//-------------------------------------------------
-=======
->>>>>>> upstream/master
 //  INPUT_PORTS( ibm_pc_at_84_keyboard )
 //-------------------------------------------------
 
@@ -388,68 +336,6 @@ ioport_constructor ibm_3270pc_122_keyboard_device::device_input_ports() const
 //  ibm_pc_at_84_keyboard_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-ibm_pc_at_84_keyboard_device::ibm_pc_at_84_keyboard_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source)
-	: device_t(mconfig, type, name, tag, owner, clock, shortname, source),
-		device_pc_kbd_interface(mconfig, *this),
-		m_maincpu(*this, I8048_TAG),
-		m_dr00(*this, "DR00"),
-		m_dr01(*this, "DR01"),
-		m_dr02(*this, "DR02"),
-		m_dr03(*this, "DR03"),
-		m_dr04(*this, "DR04"),
-		m_dr05(*this, "DR05"),
-		m_dr06(*this, "DR06"),
-		m_dr07(*this, "DR07"),
-		m_dr08(*this, "DR08"),
-		m_dr09(*this, "DR09"),
-		m_dr10(*this, "DR10"),
-		m_dr11(*this, "DR11"),
-		m_dr12(*this, "DR12"),
-		m_dr13(*this, "DR13"),
-		m_dr14(*this, "DR14"),
-		m_dr15(*this, "DR15"),
-		m_kbdida(*this, "KBDIDA"),
-		m_kbdidb(*this, "KBDIDB"),
-		m_db(0),
-		m_cnt(0),
-		m_sense(0),
-		m_t1(1)
-{
-}
-
-ibm_pc_at_84_keyboard_device::ibm_pc_at_84_keyboard_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, PC_KBD_IBM_PC_AT_84, "IBM PC/AT Keyboard", tag, owner, clock, "kb_pcat84", __FILE__),
-		device_pc_kbd_interface(mconfig, *this),
-		m_maincpu(*this, I8048_TAG),
-		m_dr00(*this, "DR00"),
-		m_dr01(*this, "DR01"),
-		m_dr02(*this, "DR02"),
-		m_dr03(*this, "DR03"),
-		m_dr04(*this, "DR04"),
-		m_dr05(*this, "DR05"),
-		m_dr06(*this, "DR06"),
-		m_dr07(*this, "DR07"),
-		m_dr08(*this, "DR08"),
-		m_dr09(*this, "DR09"),
-		m_dr10(*this, "DR10"),
-		m_dr11(*this, "DR11"),
-		m_dr12(*this, "DR12"),
-		m_dr13(*this, "DR13"),
-		m_dr14(*this, "DR14"),
-		m_dr15(*this, "DR15"),
-		m_kbdida(*this, "KBDIDA"),
-		m_kbdidb(*this, "KBDIDB"),
-		m_db(0),
-		m_cnt(0),
-		m_sense(0),
-		m_t1(1)
-{
-}
-
-ibm_3270pc_122_keyboard_device::ibm_3270pc_122_keyboard_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: ibm_pc_at_84_keyboard_device(mconfig, PC_KBD_IBM_3270PC_122, "IBM 3270PC Keyboard", tag, owner, clock, "kb_3270pc", __FILE__) { }
-=======
 ibm_pc_at_84_keyboard_device::ibm_pc_at_84_keyboard_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock) :
 	device_t(mconfig, type, tag, owner, clock),
 	device_pc_kbd_interface(mconfig, *this),
@@ -473,7 +359,6 @@ ibm_3270pc_122_keyboard_device::ibm_3270pc_122_keyboard_device(const machine_con
 	ibm_pc_at_84_keyboard_device(mconfig, PC_KBD_IBM_3270PC_122, tag, owner, clock)
 {
 }
->>>>>>> upstream/master
 
 
 //-------------------------------------------------
@@ -553,11 +438,7 @@ READ8_MEMBER( ibm_pc_at_84_keyboard_device::p1_r )
 
 	*/
 
-<<<<<<< HEAD
-	UINT8 data = 0;
-=======
 	uint8_t data = 0;
->>>>>>> upstream/master
 
 	data |= m_kbdida->read() << 2;
 
@@ -616,11 +497,7 @@ READ8_MEMBER( ibm_pc_at_84_keyboard_device::p2_r )
 
 	*/
 
-<<<<<<< HEAD
-	UINT8 data = 0xc0;
-=======
 	uint8_t data = 0xc0;
->>>>>>> upstream/master
 
 	data |= m_kbdidb->read();
 
@@ -649,15 +526,9 @@ WRITE8_MEMBER( ibm_pc_at_84_keyboard_device::p2_w )
 
 	*/
 
-<<<<<<< HEAD
-	output_set_led_value(LED_SCROLL, BIT(data, 0));
-	output_set_led_value(LED_NUM, BIT(data, 1));
-	output_set_led_value(LED_CAPS, BIT(data, 2));
-=======
 	machine().output().set_led_value(LED_SCROLL, BIT(data, 0));
 	machine().output().set_led_value(LED_NUM, BIT(data, 1));
 	machine().output().set_led_value(LED_CAPS, BIT(data, 2));
->>>>>>> upstream/master
 
 	m_pc_kbdc->data_write_from_kb(!BIT(data, 7));
 	m_pc_kbdc->clock_write_from_kb(!BIT(data, 6));
@@ -668,11 +539,7 @@ WRITE8_MEMBER( ibm_pc_at_84_keyboard_device::p2_w )
 //  t0_r -
 //-------------------------------------------------
 
-<<<<<<< HEAD
-READ8_MEMBER( ibm_pc_at_84_keyboard_device::t0_r )
-=======
 READ_LINE_MEMBER( ibm_pc_at_84_keyboard_device::t0_r )
->>>>>>> upstream/master
 {
 	return !data_signal();
 }
@@ -682,11 +549,7 @@ READ_LINE_MEMBER( ibm_pc_at_84_keyboard_device::t0_r )
 //  t1_r -
 //-------------------------------------------------
 
-<<<<<<< HEAD
-READ8_MEMBER( ibm_pc_at_84_keyboard_device::t1_r )
-=======
 READ_LINE_MEMBER( ibm_pc_at_84_keyboard_device::t1_r )
->>>>>>> upstream/master
 {
 	return key_depressed();
 }
@@ -698,31 +561,7 @@ READ_LINE_MEMBER( ibm_pc_at_84_keyboard_device::t1_r )
 
 int ibm_pc_at_84_keyboard_device::key_depressed()
 {
-<<<<<<< HEAD
-	UINT8 data = 0xff;
-
-	switch (m_cnt)
-	{
-	case  0: data = m_dr00->read(); break;
-	case  1: data = m_dr01->read(); break;
-	case  2: data = m_dr02->read(); break;
-	case  3: data = m_dr03->read(); break;
-	case  4: data = m_dr04->read(); break;
-	case  5: data = m_dr05->read(); break;
-	case  6: data = m_dr06->read(); break;
-	case  7: data = m_dr07->read(); break;
-	case  8: data = m_dr08->read(); break;
-	case  9: data = m_dr09->read(); break;
-	case 10: data = m_dr10->read(); break;
-	case 11: data = m_dr11->read(); break;
-	case 12: data = m_dr12->read(); break;
-	case 13: data = m_dr13->read(); break;
-	case 14: data = m_dr14->read(); break;
-	case 15: data = m_dr15->read(); break;
-	}
-=======
 	uint8_t data = m_dr[m_cnt]->read();
->>>>>>> upstream/master
 
 	return m_t1 && BIT(data, m_sense);
 }

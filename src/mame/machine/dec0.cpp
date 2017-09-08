@@ -10,13 +10,9 @@ Data East machine functions - Bryan McPhail, mish@tendril.co.uk
 
 #include "emu.h"
 #include "includes/dec0.h"
-<<<<<<< HEAD
-#include "cpu/h6280/h6280.h"
-=======
 
 #include "cpu/h6280/h6280.h"
 #include "cpu/m68000/m68000.h"
->>>>>>> upstream/master
 #include "cpu/mcs51/mcs51.h"
 
 
@@ -171,24 +167,6 @@ WRITE16_MEMBER(dec0_state::hippodrm_68000_share_w)
 
 READ8_MEMBER(dec0_state::dec0_mcu_port_r)
 {
-<<<<<<< HEAD
-	int latchEnable=m_i8751_ports[2]>>4;
-
-	// P0 connected to 4 latches
-	if (offset==0)
-	{
-		if ((latchEnable&1)==0)
-			return m_i8751_command>>8;
-		else if ((latchEnable&2)==0)
-			return m_i8751_command&0xff;
-		else if ((latchEnable&4)==0)
-			return m_i8751_return>>8;
-		else if ((latchEnable&8)==0)
-			return m_i8751_return&0xff;
-	}
-
-	return 0xff;
-=======
 	uint8_t result = 0xff;
 
 	// P0 connected to latches
@@ -201,26 +179,10 @@ READ8_MEMBER(dec0_state::dec0_mcu_port_r)
 	}
 
 	return result;
->>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(dec0_state::dec0_mcu_port_w)
 {
-<<<<<<< HEAD
-	m_i8751_ports[offset]=data;
-
-	if (offset==2)
-	{
-		if ((data&0x4)==0)
-			m_maincpu->set_input_line(5, HOLD_LINE);
-		if ((data&0x8)==0)
-			m_mcu->set_input_line(MCS51_INT1_LINE, CLEAR_LINE);
-		if ((data&0x40)==0)
-			m_i8751_return=(m_i8751_return&0xff00)|(m_i8751_ports[0]);
-		if ((data&0x80)==0)
-			m_i8751_return=(m_i8751_return&0xff)|(m_i8751_ports[0]<<8);
-	}
-=======
 	if (offset == 2)
 	{
 		if (!BIT(data, 2) && BIT(m_i8751_ports[2], 2))
@@ -234,7 +196,6 @@ WRITE8_MEMBER(dec0_state::dec0_mcu_port_w)
 	}
 
 	m_i8751_ports[offset] = data;
->>>>>>> upstream/master
 }
 
 void dec0_state::baddudes_i8751_write(int data)
@@ -275,13 +236,8 @@ void dec0_state::birdtry_i8751_write(int data)
 		/*"Sprite control"*/
 		case 0x22a: m_i8751_return = 0x200;    break;
 
-<<<<<<< HEAD
-		/* Gives an O.B. otherwise (it must be > 0xb0 )*/
-		case 0x3c7: m_i8751_return = 0x7ff;    break;
-=======
 		/* velocity of the ball, controlled by power and height formula? */
 		case 0x3c7: m_i8751_return = 0x2fff;    break;
->>>>>>> upstream/master
 
 		/*Enables shot checks*/
 		case 0x33c: m_i8751_return = 0x200;     break;
@@ -306,11 +262,7 @@ void dec0_state::birdtry_i8751_write(int data)
 		case 0x10b: pwr = 0x5c;             break; /*PW*/
 		case 0x10c: pwr = 0x60;             break; /*SW*/
 		case 0x10d: pwr = 0x80;             break; /*PT*/
-<<<<<<< HEAD
-		case 0x481: m_i8751_return = pwr;     break; /*Power meter*/
-=======
 		case 0x481: m_i8751_return = pwr*9;     break; /*Power meter*/
->>>>>>> upstream/master
 
 /*  0x200-0x20f values are for shot height(STRONG=0x200<<-->>WEAK=0x20f).    *
  *  Returned value to i8751 doesn't matter,but send the result to 0x534.     *
@@ -346,14 +298,6 @@ void dec0_state::birdtry_i8751_write(int data)
 
 void dec0_state::dec0_i8751_write(int data)
 {
-<<<<<<< HEAD
-	m_i8751_command=data;
-
-	/* Writes to this address cause an IRQ to the i8751 microcontroller */
-	if (m_game == 1) m_mcu->set_input_line(MCS51_INT1_LINE, ASSERT_LINE);
-	if (m_game == 2) baddudes_i8751_write(data);
-	if (m_game == 3) birdtry_i8751_write(data);
-=======
 	m_i8751_command = data;
 
 	/* Writes to this address raise an IRQ on the i8751 microcontroller */
@@ -370,7 +314,6 @@ void dec0_state::dec0_i8751_write(int data)
 		birdtry_i8751_write(data);
 		break;
 	}
->>>>>>> upstream/master
 
 	//logerror("%s: warning - write %02x to i8751\n",machine().describe_context(),data);
 }
@@ -411,11 +354,7 @@ WRITE16_MEMBER(dec0_state::robocop_68000_share_w)
 void dec0_state::h6280_decrypt(const char *cputag)
 {
 	int i;
-<<<<<<< HEAD
-	UINT8 *RAM = memregion(cputag)->base();
-=======
 	uint8_t *RAM = memregion(cputag)->base();
->>>>>>> upstream/master
 
 	/* Read each byte, decrypt it */
 	for (i = 0x00000; i < 0x10000; i++)
@@ -424,11 +363,7 @@ void dec0_state::h6280_decrypt(const char *cputag)
 
 DRIVER_INIT_MEMBER(dec0_state,hippodrm)
 {
-<<<<<<< HEAD
-	UINT8 *RAM = memregion("sub")->base();
-=======
 	uint8_t *RAM = memregion("sub")->base();
->>>>>>> upstream/master
 	m_maincpu->space(AS_PROGRAM).install_readwrite_handler(0x180000, 0x18003f, read16_delegate(FUNC(dec0_state::hippodrm_68000_share_r),this), write16_delegate(FUNC(dec0_state::hippodrm_68000_share_w),this));
 	m_maincpu->space(AS_PROGRAM).install_write_handler(0xffc800, 0xffcfff, write16_delegate(FUNC(dec0_state::sprite_mirror_w),this));
 
@@ -446,11 +381,7 @@ DRIVER_INIT_MEMBER(dec0_state,hippodrm)
 
 DRIVER_INIT_MEMBER(dec0_state,slyspy)
 {
-<<<<<<< HEAD
-	UINT8 *RAM = memregion("audiocpu")->base();
-=======
 	uint8_t *RAM = memregion("audiocpu")->base();
->>>>>>> upstream/master
 	h6280_decrypt("audiocpu");
 
 	/* Slyspy sound cpu has some protection */
@@ -465,31 +396,17 @@ DRIVER_INIT_MEMBER(dec0_state,robocop)
 	m_maincpu->space(AS_PROGRAM).install_readwrite_handler(0x180000, 0x180fff, read16_delegate(FUNC(dec0_state::robocop_68000_share_r),this), write16_delegate(FUNC(dec0_state::robocop_68000_share_w),this));
 }
 
-<<<<<<< HEAD
-DRIVER_INIT_MEMBER(dec0_state,baddudes)
-{
-	m_game = 2;
-=======
 DRIVER_INIT_MEMBER(dec0_state,drgninja)
 {
 	m_game = mcu_type::BADDUDES_SIM;
->>>>>>> upstream/master
 }
 
 DRIVER_INIT_MEMBER(dec0_state,hbarrel)
 {
-<<<<<<< HEAD
-	m_game = 1;
-=======
 	m_game = mcu_type::EMULATED;
->>>>>>> upstream/master
 }
 
 DRIVER_INIT_MEMBER(dec0_state,birdtry)
 {
-<<<<<<< HEAD
-	m_game=3;
-=======
 	m_game = mcu_type::BIRDTRY_SIM;
->>>>>>> upstream/master
 }

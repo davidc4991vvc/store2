@@ -25,34 +25,21 @@
 #include "emu.h"
 #include "cpu/m68000/m68000.h"
 #include "sound/okim6295.h"
-<<<<<<< HEAD
-#include "rendlay.h"
-#include "machine/nvram.h"
-=======
 #include "machine/nvram.h"
 #include "rendlay.h"
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 class cesclassic_state : public driver_device
 {
 public:
 	cesclassic_state(const machine_config &mconfig, device_type type, const char *tag)
-<<<<<<< HEAD
-	: driver_device(mconfig, type, tag),
-	m_maincpu(*this, "maincpu"),
-	m_oki(*this, "oki"),
-	m_vram(*this, "vram"),
-	m_palette(*this, "palette") { }
-=======
 		: driver_device(mconfig, type, tag)
 		, m_maincpu(*this, "maincpu")
 		, m_oki(*this, "oki")
 		, m_vram(*this, "vram")
 		, m_palette(*this, "palette")
 	{ }
->>>>>>> upstream/master
 
 	DECLARE_WRITE16_MEMBER(irq2_ack_w);
 	DECLARE_WRITE16_MEMBER(irq3_ack_w);
@@ -60,11 +47,7 @@ public:
 	DECLARE_WRITE16_MEMBER(outputs_w);
 
 
-<<<<<<< HEAD
-	UINT32 screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
-=======
 	uint32_t screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	DECLARE_PALETTE_INIT(cesclassic);
 protected:
 
@@ -72,17 +55,10 @@ protected:
 	required_device<cpu_device> m_maincpu;
 	required_device<okim6295_device> m_oki;
 
-<<<<<<< HEAD
-	required_shared_ptr<UINT16> m_vram;
-	required_device<palette_device> m_palette;
-	// driver_device overrides
-	virtual void video_start();
-=======
 	required_shared_ptr<uint16_t> m_vram;
 	required_device<palette_device> m_palette;
 	// driver_device overrides
 	virtual void video_start() override;
->>>>>>> upstream/master
 
 };
 
@@ -91,11 +67,7 @@ void cesclassic_state::video_start()
 {
 }
 
-<<<<<<< HEAD
-UINT32 cesclassic_state::screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
-=======
 uint32_t cesclassic_state::screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int x,y,xi;
 
@@ -108,11 +80,7 @@ uint32_t cesclassic_state::screen_update(screen_device &screen, bitmap_rgb32 &bi
 			{
 				for(xi=0;xi<16;xi++)
 				{
-<<<<<<< HEAD
-					UINT8 color;
-=======
 					uint8_t color;
->>>>>>> upstream/master
 
 					color = (((m_vram[x+y*16+0x400])>>(15-xi)) & 1);
 					color |= (((m_vram[x+y*16])>>(15-xi)) & 1)<<1;
@@ -149,13 +117,8 @@ WRITE16_MEMBER( cesclassic_state::outputs_w )
 	--x- ---- probably screen enable
 	---- --x- coin counter
 	*/
-<<<<<<< HEAD
-	m_oki->set_bank_base((data & 0x40) ? 0x40000 : 0);
-	coin_counter_w(machine(), 0, data & 2);
-=======
 	m_oki->set_rom_bank((data & 0x40) >> 6);
 	machine().bookkeeping().coin_counter_w(0, data & 2);
->>>>>>> upstream/master
 	if(data & ~0x62)
 	logerror("Output: %02x\n",data);
 }
@@ -284,11 +247,7 @@ PALETTE_INIT_MEMBER(cesclassic_state, cesclassic)
 		palette.set_pen_color(i, pal2bit(i), 0, 0);
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( cesclassic, cesclassic_state )
-=======
 static MACHINE_CONFIG_START( cesclassic )
->>>>>>> upstream/master
 
 	MCFG_CPU_ADD("maincpu", M68000, 24000000/2 )
 	MCFG_CPU_PROGRAM_MAP(cesclassic_map)
@@ -310,11 +269,7 @@ static MACHINE_CONFIG_START( cesclassic )
 	MCFG_PALETTE_INIT_OWNER(cesclassic_state, cesclassic)
 
 	MCFG_SPEAKER_STANDARD_MONO("mono")
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki", 24000000/16, OKIM6295_PIN7_LOW)
-=======
 	MCFG_OKIM6295_ADD("oki", 24000000/16, PIN7_LOW)
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.5)
 MACHINE_CONFIG_END
 
@@ -346,12 +301,6 @@ ROM_START(tsclass)
 ROM_END
 
 
-<<<<<<< HEAD
-GAME(1997, hrclass, 0, cesclassic, cesclassic, driver_device, 0, ROT0, "Creative Electronics And Software", "Home Run Classic (v1.21 12-feb-1997)", MACHINE_NOT_WORKING | MACHINE_IMPERFECT_SOUND )
-GAME(1997, ccclass, 0, cesclassic, cesclassic, driver_device, 0, ROT0, "Creative Electronics And Software", "Country Club Classic (v1.10 03-apr-1997)", MACHINE_NOT_WORKING | MACHINE_IMPERFECT_SOUND )
-GAME(1997, tsclass, 0, cesclassic, cesclassic, driver_device, 0, ROT0, "Creative Electronics And Software", "Trap Shoot Classic (v1.0 21-mar-1997)", MACHINE_NOT_WORKING | MACHINE_IMPERFECT_SOUND )
-=======
 GAME(1997, hrclass, 0, cesclassic, cesclassic, cesclassic_state, 0, ROT0, "Creative Electronics And Software", "Home Run Classic (v1.21 12-feb-1997)",     MACHINE_NOT_WORKING | MACHINE_IMPERFECT_SOUND )
 GAME(1997, ccclass, 0, cesclassic, cesclassic, cesclassic_state, 0, ROT0, "Creative Electronics And Software", "Country Club Classic (v1.10 03-apr-1997)", MACHINE_NOT_WORKING | MACHINE_IMPERFECT_SOUND )
 GAME(1997, tsclass, 0, cesclassic, cesclassic, cesclassic_state, 0, ROT0, "Creative Electronics And Software", "Trap Shoot Classic (v1.0 21-mar-1997)",    MACHINE_NOT_WORKING | MACHINE_IMPERFECT_SOUND )
->>>>>>> upstream/master

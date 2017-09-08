@@ -30,20 +30,11 @@
 
 **********************************************************************/
 
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __MM74C922__
-#define __MM74C922__
-
-#include "emu.h"
-=======
 #ifndef MAME_MACHINE_MM74C922_H
 #define MAME_MACHINE_MM74C922_H
 
 #pragma once
 
->>>>>>> upstream/master
 
 
 
@@ -87,30 +78,11 @@ class mm74c922_device :  public device_t
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	mm74c922_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-=======
 	mm74c922_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
->>>>>>> upstream/master
 
 	static void static_set_cap_osc(device_t &device, double value) { downcast<mm74c922_device &>(device).m_cap_osc = value; }
 	static void static_set_cap_debounce(device_t &device, double value) { downcast<mm74c922_device &>(device).m_cap_debounce = value; }
 
-<<<<<<< HEAD
-	template<class _Object> static devcb_base &set_da_wr_callback(device_t &device, _Object object) { return downcast<mm74c922_device &>(device).m_write_da.set_callback(object); }
-	template<class _Object> static devcb_base &set_x1_rd_callback(device_t &device, _Object object) { return downcast<mm74c922_device &>(device).m_read_x1.set_callback(object); }
-	template<class _Object> static devcb_base &set_x2_rd_callback(device_t &device, _Object object) { return downcast<mm74c922_device &>(device).m_read_x2.set_callback(object); }
-	template<class _Object> static devcb_base &set_x3_rd_callback(device_t &device, _Object object) { return downcast<mm74c922_device &>(device).m_read_x3.set_callback(object); }
-	template<class _Object> static devcb_base &set_x4_rd_callback(device_t &device, _Object object) { return downcast<mm74c922_device &>(device).m_read_x4.set_callback(object); }
-	template<class _Object> static devcb_base &set_x5_rd_callback(device_t &device, _Object object) { return downcast<mm74c922_device &>(device).m_read_x5.set_callback(object); }
-
-	UINT8 read();
-
-protected:
-	// device-level overrides
-	virtual void device_start();
-	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
-=======
 	template <class Object> static devcb_base &set_da_wr_callback(device_t &device, Object &&cb) { return downcast<mm74c922_device &>(device).m_write_da.set_callback(std::forward<Object>(cb)); }
 	template <class Object> static devcb_base &set_x1_rd_callback(device_t &device, Object &&cb) { return downcast<mm74c922_device &>(device).m_read_x1.set_callback(std::forward<Object>(cb)); }
 	template <class Object> static devcb_base &set_x2_rd_callback(device_t &device, Object &&cb) { return downcast<mm74c922_device &>(device).m_read_x2.set_callback(std::forward<Object>(cb)); }
@@ -124,7 +96,6 @@ protected:
 	// device-level overrides
 	virtual void device_start() override;
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
->>>>>>> upstream/master
 
 private:
 	void change_output_lines();
@@ -147,11 +118,7 @@ private:
 	int m_x;                    // currently scanned column
 	int m_y;                    // latched row
 
-<<<<<<< HEAD
-	UINT8 m_data;               // data latch
-=======
 	uint8_t m_data;               // data latch
->>>>>>> upstream/master
 
 	int m_da;                   // data available flag
 	int m_next_da;              // next value of data available flag
@@ -162,16 +129,7 @@ private:
 
 
 // device type definition
-<<<<<<< HEAD
-extern const device_type MM74C922;
-extern const device_type MM74C923;
-
-
-
-#endif
-=======
 DECLARE_DEVICE_TYPE(MM74C922, mm74c922_device)
 extern const device_type MM74C923;
 
 #endif // MAME_MACHINE_MM74C922_H
->>>>>>> upstream/master

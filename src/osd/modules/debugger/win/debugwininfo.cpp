@@ -6,27 +6,18 @@
 //
 //============================================================
 
-<<<<<<< HEAD
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #include "debugwininfo.h"
 
 #include "debugviewinfo.h"
 
-<<<<<<< HEAD
-=======
 #include "debugger.h"
->>>>>>> upstream/master
 #include "debug/debugcpu.h"
 #include "window.h"
 #include "winutf8.h"
 
 #include "winutil.h"
-<<<<<<< HEAD
-=======
 #include "modules/lib/osdobj_common.h"
->>>>>>> upstream/master
 
 
 bool debugwin_info::s_window_class_registered = false;
@@ -35,12 +26,7 @@ bool debugwin_info::s_window_class_registered = false;
 debugwin_info::debugwin_info(debugger_windows_interface &debugger, bool is_main_console, LPCSTR title, WNDPROC handler) :
 	debugbase_info(debugger),
 	m_is_main_console(is_main_console),
-<<<<<<< HEAD
-	m_next(NULL),
-	m_wnd(NULL),
-=======
 	m_wnd(nullptr),
->>>>>>> upstream/master
 	m_handler(handler),
 	m_minwidth(200),
 	m_maxwidth(0),
@@ -51,13 +37,8 @@ debugwin_info::debugwin_info(debugger_windows_interface &debugger, bool is_main_
 	register_window_class();
 
 	m_wnd = win_create_window_ex_utf8(DEBUG_WINDOW_STYLE_EX, "MAMEDebugWindow", title, DEBUG_WINDOW_STYLE,
-<<<<<<< HEAD
-			0, 0, 100, 100, win_window_list->m_hwnd, create_standard_menubar(), GetModuleHandleUni(), this);
-	if (m_wnd == NULL)
-=======
 			0, 0, 100, 100, std::static_pointer_cast<win_window_info>(osd_common_t::s_window_list.front())->platform_window(), create_standard_menubar(), GetModuleHandleUni(), this);
 	if (m_wnd == nullptr)
->>>>>>> upstream/master
 		return;
 
 	RECT work_bounds;
@@ -91,11 +72,7 @@ void debugwin_info::prev_view(debugview_info *curview)
 	int numviews;
 	for (numviews = 0; numviews < MAX_VIEWS; numviews++)
 	{
-<<<<<<< HEAD
-		if (m_views[numviews] == NULL)
-=======
 		if (m_views[numviews] == nullptr)
->>>>>>> upstream/master
 			break;
 	}
 
@@ -105,11 +82,7 @@ void debugwin_info::prev_view(debugview_info *curview)
 	{
 		for (curindex = numviews - 1; curindex > 0; curindex--)
 		{
-<<<<<<< HEAD
-			if (m_views[curindex] == curview)
-=======
 			if (m_views[curindex].get() == curview)
->>>>>>> upstream/master
 				break;
 		}
 		if (curindex < 0)
@@ -129,11 +102,7 @@ void debugwin_info::prev_view(debugview_info *curview)
 			// negative numbers mean the focuswnd
 			break;
 		}
-<<<<<<< HEAD
-		else if (curindex >= 0 && m_views[curindex] != NULL && m_views[curindex]->cursor_supported())
-=======
 		else if (curindex >= 0 && m_views[curindex] != nullptr && m_views[curindex]->cursor_supported())
->>>>>>> upstream/master
 		{
 			// positive numbers mean a view
 			m_views[curindex]->set_focus();
@@ -149,11 +118,7 @@ void debugwin_info::next_view(debugview_info *curview)
 	int numviews;
 	for (numviews = 0; numviews < MAX_VIEWS; numviews++)
 	{
-<<<<<<< HEAD
-		if (m_views[numviews] == NULL)
-=======
 		if (m_views[numviews] == nullptr)
->>>>>>> upstream/master
 			break;
 	}
 
@@ -163,11 +128,7 @@ void debugwin_info::next_view(debugview_info *curview)
 	{
 		for (curindex = numviews - 1; curindex > 0; curindex--)
 		{
-<<<<<<< HEAD
-			if (m_views[curindex] == curview)
-=======
 			if (m_views[curindex].get() == curview)
->>>>>>> upstream/master
 				break;
 		}
 	}
@@ -185,11 +146,7 @@ void debugwin_info::next_view(debugview_info *curview)
 			// negative numbers mean the focuswnd
 			break;
 		}
-<<<<<<< HEAD
-		else if (curindex >= 0 && m_views[curindex] != NULL && m_views[curindex]->cursor_supported())
-=======
 		else if (curindex >= 0 && m_views[curindex] != nullptr && m_views[curindex]->cursor_supported())
->>>>>>> upstream/master
 		{
 			// positive numbers mean a view
 			m_views[curindex]->set_focus();
@@ -293,11 +250,7 @@ bool debugwin_info::handle_key(WPARAM wparam, LPARAM lparam)
 
 void debugwin_info::recompute_children()
 {
-<<<<<<< HEAD
-	if (m_views[0] != NULL)
-=======
 	if (m_views[0] != nullptr)
->>>>>>> upstream/master
 	{
 		// compute a client rect
 		RECT bounds;
@@ -345,33 +298,6 @@ bool debugwin_info::handle_command(WPARAM wparam, LPARAM lparam)
 		case ID_RUN_AND_HIDE:
 			debugger().hide_all();
 		case ID_RUN:
-<<<<<<< HEAD
-			debug_cpu_get_visible_cpu(machine())->debug()->go();
-			return true;
-
-		case ID_NEXT_CPU:
-			debug_cpu_get_visible_cpu(machine())->debug()->go_next_device();
-			return true;
-
-		case ID_RUN_VBLANK:
-			debug_cpu_get_visible_cpu(machine())->debug()->go_vblank();
-			return true;
-
-		case ID_RUN_IRQ:
-			debug_cpu_get_visible_cpu(machine())->debug()->go_interrupt();
-			return true;
-
-		case ID_STEP:
-			debug_cpu_get_visible_cpu(machine())->debug()->single_step();
-			return true;
-
-		case ID_STEP_OVER:
-			debug_cpu_get_visible_cpu(machine())->debug()->single_step_over();
-			return true;
-
-		case ID_STEP_OUT:
-			debug_cpu_get_visible_cpu(machine())->debug()->single_step_out();
-=======
 			machine().debugger().cpu().get_visible_cpu()->debug()->go();
 			return true;
 
@@ -397,7 +323,6 @@ bool debugwin_info::handle_command(WPARAM wparam, LPARAM lparam)
 
 		case ID_STEP_OUT:
 			machine().debugger().cpu().get_visible_cpu()->debug()->single_step_out();
->>>>>>> upstream/master
 			return true;
 
 		case ID_HARD_RESET:
@@ -406,11 +331,7 @@ bool debugwin_info::handle_command(WPARAM wparam, LPARAM lparam)
 
 		case ID_SOFT_RESET:
 			machine().schedule_soft_reset();
-<<<<<<< HEAD
-			debug_cpu_get_visible_cpu(machine())->debug()->go();
-=======
 			machine().debugger().cpu().get_visible_cpu()->debug()->go();
->>>>>>> upstream/master
 			return true;
 
 		case ID_EXIT:
@@ -433,11 +354,7 @@ void debugwin_info::draw_contents(HDC dc)
 	// draw edges around all views
 	for (int curview = 0; curview < MAX_VIEWS; curview++)
 	{
-<<<<<<< HEAD
-		if (m_views[curview] != NULL)
-=======
 		if (m_views[curview] != nullptr)
->>>>>>> upstream/master
 		{
 			RECT bounds;
 			m_views[curview]->get_bounds(bounds);
@@ -515,11 +432,7 @@ LRESULT debugwin_info::window_proc(UINT message, WPARAM wparam, LPARAM lparam)
 	case WM_SIZE:
 	case WM_SIZING:
 		recompute_children();
-<<<<<<< HEAD
-		InvalidateRect(m_wnd, NULL, FALSE);
-=======
 		InvalidateRect(m_wnd, nullptr, FALSE);
->>>>>>> upstream/master
 		break;
 
 	// mouse wheel: forward to the first view
@@ -547,11 +460,7 @@ LRESULT debugwin_info::window_proc(UINT message, WPARAM wparam, LPARAM lparam)
 			{
 				for (viewnum = 0; viewnum < MAX_VIEWS; viewnum++)
 				{
-<<<<<<< HEAD
-					if ((m_views[viewnum] != NULL) && m_views[viewnum]->owns_window(child))
-=======
 					if ((m_views[viewnum] != nullptr) && m_views[viewnum]->owns_window(child))
->>>>>>> upstream/master
 						break;
 				}
 				if (viewnum == MAX_VIEWS)
@@ -559,11 +468,7 @@ LRESULT debugwin_info::window_proc(UINT message, WPARAM wparam, LPARAM lparam)
 			}
 
 			// send the appropriate message to this view's scrollbar
-<<<<<<< HEAD
-			if (m_views[viewnum] != NULL)
-=======
 			if (m_views[viewnum] != nullptr)
->>>>>>> upstream/master
 				m_views[viewnum]->send_vscroll(delta);
 
 			break;
@@ -585,11 +490,7 @@ LRESULT debugwin_info::window_proc(UINT message, WPARAM wparam, LPARAM lparam)
 		if (m_is_main_console)
 		{
 			debugger().hide_all();
-<<<<<<< HEAD
-			debug_cpu_get_visible_cpu(machine())->debug()->go();
-=======
 			machine().debugger().cpu().get_visible_cpu()->debug()->go();
->>>>>>> upstream/master
 		}
 		else
 		{
@@ -599,11 +500,7 @@ LRESULT debugwin_info::window_proc(UINT message, WPARAM wparam, LPARAM lparam)
 
 	// destroy: close down the window
 	case WM_NCDESTROY:
-<<<<<<< HEAD
-		m_wnd = NULL;
-=======
 		m_wnd = nullptr;
->>>>>>> upstream/master
 		debugger().remove_window(*this);
 		break;
 
@@ -620,13 +517,8 @@ HMENU debugwin_info::create_standard_menubar()
 {
 	// create the debug menu
 	HMENU const debugmenu = CreatePopupMenu();
-<<<<<<< HEAD
-	if (debugmenu == NULL)
-		return NULL;
-=======
 	if (debugmenu == nullptr)
 		return nullptr;
->>>>>>> upstream/master
 	AppendMenu(debugmenu, MF_ENABLED, ID_NEW_MEMORY_WND, TEXT("New Memory Window\tCtrl+M"));
 	AppendMenu(debugmenu, MF_ENABLED, ID_NEW_DISASM_WND, TEXT("New Disassembly Window\tCtrl+D"));
 	AppendMenu(debugmenu, MF_ENABLED, ID_NEW_LOG_WND, TEXT("New Error Log Window\tCtrl+L"));
@@ -648,17 +540,10 @@ HMENU debugwin_info::create_standard_menubar()
 
 	// create the menu bar
 	HMENU const menubar = CreateMenu();
-<<<<<<< HEAD
-	if (menubar == NULL)
-	{
-		DestroyMenu(debugmenu);
-		return NULL;
-=======
 	if (menubar == nullptr)
 	{
 		DestroyMenu(debugmenu);
 		return nullptr;
->>>>>>> upstream/master
 	}
 	AppendMenu(menubar, MF_ENABLED | MF_POPUP, (UINT_PTR)debugmenu, TEXT("Debug"));
 
@@ -679,19 +564,11 @@ LRESULT CALLBACK debugwin_info::static_window_proc(HWND wnd, UINT message, WPARA
 		return 0;
 	}
 
-<<<<<<< HEAD
-	debugwin_info *const info = (debugwin_info *)(FPTR)GetWindowLongPtr(wnd, GWLP_USERDATA);
-	if (info == NULL)
-		return DefWindowProc(wnd, message, wparam, lparam);
-
-	assert((info->m_wnd == wnd) || (info->m_wnd == NULL));
-=======
 	debugwin_info *const info = (debugwin_info *)(uintptr_t)GetWindowLongPtr(wnd, GWLP_USERDATA);
 	if (info == nullptr)
 		return DefWindowProc(wnd, message, wparam, lparam);
 
 	assert((info->m_wnd == wnd) || (info->m_wnd == nullptr));
->>>>>>> upstream/master
 	return info->window_proc(message, wparam, lparam);
 }
 
@@ -706,17 +583,10 @@ void debugwin_info::register_window_class()
 		wc.lpszClassName    = TEXT("MAMEDebugWindow");
 		wc.hInstance        = GetModuleHandleUni();
 		wc.lpfnWndProc      = &debugwin_info::static_window_proc;
-<<<<<<< HEAD
-		wc.hCursor          = LoadCursor(NULL, IDC_ARROW);
-		wc.hIcon            = LoadIcon(wc.hInstance, MAKEINTRESOURCE(2));
-		wc.lpszMenuName     = NULL;
-		wc.hbrBackground    = NULL;
-=======
 		wc.hCursor          = LoadCursor(nullptr, IDC_ARROW);
 		wc.hIcon            = LoadIcon(wc.hInstance, MAKEINTRESOURCE(2));
 		wc.lpszMenuName     = nullptr;
 		wc.hbrBackground    = nullptr;
->>>>>>> upstream/master
 		wc.style            = 0;
 		wc.cbClsExtra       = 0;
 		wc.cbWndExtra       = 0;

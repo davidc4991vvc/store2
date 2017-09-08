@@ -102,12 +102,8 @@
 #include "emu.h"
 #include "includes/beathead.h"
 #include "machine/nvram.h"
-<<<<<<< HEAD
-
-=======
 #include "machine/watchdog.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 #define MAX_SCANLINES   262
@@ -125,10 +121,6 @@ TIMER_DEVICE_CALLBACK_MEMBER(beathead_state::scanline_callback)
 	int scanline = param;
 
 	/* update the video */
-<<<<<<< HEAD
-//  m_screen->update_now();
-=======
->>>>>>> upstream/master
 	m_screen->update_partial(m_screen->vpos());
 
 	/* on scanline zero, clear any halt condition */
@@ -271,11 +263,7 @@ WRITE32_MEMBER( beathead_state::sound_reset_w )
 
 WRITE32_MEMBER( beathead_state::coin_count_w )
 {
-<<<<<<< HEAD
-	coin_counter_w(machine(), 0, !offset);
-=======
 	machine().bookkeeping().coin_counter_w(0, !offset);
->>>>>>> upstream/master
 }
 
 
@@ -302,11 +290,7 @@ static ADDRESS_MAP_START( main_map, AS_PROGRAM, 32, beathead_state)
 	AM_RANGE(0x41000400, 0x41000403) AM_WRITEONLY AM_SHARE("palette_select")
 	AM_RANGE(0x41000500, 0x41000503) AM_WRITE(eeprom_enable_w)
 	AM_RANGE(0x41000600, 0x41000603) AM_WRITE(finescroll_w)
-<<<<<<< HEAD
-	AM_RANGE(0x41000700, 0x41000703) AM_WRITE(watchdog_reset32_w)
-=======
 	AM_RANGE(0x41000700, 0x41000703) AM_DEVWRITE("watchdog", watchdog_timer_device, reset32_w)
->>>>>>> upstream/master
 	AM_RANGE(0x42000000, 0x4201ffff) AM_DEVREADWRITE16("palette", palette_device, read, write, 0x0000ffff) AM_SHARE("palette")
 	AM_RANGE(0x43000000, 0x43000007) AM_READWRITE(hsync_ram_r, hsync_ram_w)
 	AM_RANGE(0x8df80000, 0x8df80003) AM_READNOP /* noisy x4 during scanline int */
@@ -376,11 +360,7 @@ INPUT_PORTS_END
  *
  *************************************/
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( beathead, beathead_state )
-=======
 static MACHINE_CONFIG_START( beathead )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", ASAP, ATARI_CLOCK_14MHz)
@@ -388,11 +368,8 @@ static MACHINE_CONFIG_START( beathead )
 
 	MCFG_NVRAM_ADD_1FILL("nvram")
 
-<<<<<<< HEAD
-=======
 	MCFG_WATCHDOG_ADD("watchdog")
 
->>>>>>> upstream/master
 	MCFG_TIMER_DRIVER_ADD("scan_timer", beathead_state, scanline_callback)
 
 	/* video hardware */
@@ -425,14 +402,8 @@ MACHINE_CONFIG_END
  *************************************/
 
 ROM_START( beathead )
-<<<<<<< HEAD
-	ROM_REGION( 0x14000, "jsa:cpu", 0 )         /* 64k + 16k for 6502 code */
-	ROM_LOAD( "bhsnd.bin",  0x10000, 0x4000, CRC(dfd33f02) SHA1(479a4838c89691d5a4654a4cd84b6433a9e86109) )
-	ROM_CONTINUE(           0x04000, 0xc000 )
-=======
 	ROM_REGION( 0x10000, "jsa:cpu", 0 )         /* 64k for 6502 code */
 	ROM_LOAD( "bhsnd.bin",  0x00000, 0x10000, CRC(dfd33f02) SHA1(479a4838c89691d5a4654a4cd84b6433a9e86109) )
->>>>>>> upstream/master
 
 	ROM_REGION32_LE( 0x400000, "user1", 0 ) /* 4MB for ASAP code */
 	ROM_LOAD32_BYTE( "bhprog0.bin", 0x000000, 0x80000, CRC(87975721) SHA1(862cb3a290c829aedea26ee7100c50a12e9517e7) )
@@ -455,65 +426,8 @@ ROM_END
 
 /*************************************
  *
-<<<<<<< HEAD
- *  Driver speedups
- *
- *************************************/
-
-/*
-    In-game hotspot @ 0180F8D8
-*/
-
-
-READ32_MEMBER( beathead_state::speedup_r )
-{
-	UINT32 result = *m_speedup_data;
-	if ((space.device().safe_pcbase() & 0xfffff) == 0x006f0 && result == space.device().state().state_int(ASAP_R3))
-		space.device().execute().spin_until_interrupt();
-	return result;
-}
-
-
-READ32_MEMBER( beathead_state::movie_speedup_r )
-{
-	int result = *m_movie_speedup_data;
-	if ((space.device().safe_pcbase() & 0xfffff) == 0x00a88 && (space.device().state().state_int(ASAP_R28) & 0xfffff) == 0x397c0 &&
-		m_movie_speedup_data[4] == space.device().state().state_int(ASAP_R1))
-	{
-		UINT32 temp = (INT16)result + m_movie_speedup_data[4] * 262;
-		if (temp - (UINT32)space.device().state().state_int(ASAP_R15) < (UINT32)space.device().state().state_int(ASAP_R23))
-			space.device().execute().spin_until_interrupt();
-	}
-	return result;
-}
-
-
-
-/*************************************
- *
- *  Driver initialization
- *
- *************************************/
-
-DRIVER_INIT_MEMBER(beathead_state,beathead)
-{
-	/* prepare the speedups */
-	m_speedup_data = m_maincpu->space(AS_PROGRAM).install_read_handler(0x00000ae8, 0x00000aeb, 0, 0, read32_delegate(FUNC(beathead_state::speedup_r), this));
-	m_movie_speedup_data = m_maincpu->space(AS_PROGRAM).install_read_handler(0x00000804, 0x00000807, 0, 0, read32_delegate(FUNC(beathead_state::movie_speedup_r), this));
-}
-
-
-
-/*************************************
- *
-=======
->>>>>>> upstream/master
  *  Game driver(s)
  *
  *************************************/
 
-<<<<<<< HEAD
-GAME( 1993, beathead, 0, beathead, beathead, beathead_state, beathead, ROT0, "Atari Games", "BeatHead (prototype)", 0 )
-=======
 GAME( 1993, beathead, 0, beathead, beathead, beathead_state, 0, ROT0, "Atari Games", "BeatHead (prototype)", 0 )
->>>>>>> upstream/master

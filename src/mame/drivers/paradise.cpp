@@ -87,18 +87,12 @@ sticker from Jan 95 and factory sticker 94*41.
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/z80/z80.h"
-#include "includes/paradise.h"
-
-=======
 #include "includes/paradise.h"
 
 #include "cpu/z80/z80.h"
 #include "speaker.h"
 
 
->>>>>>> upstream/master
 /***************************************************************************
 
                                 Memory Maps
@@ -124,20 +118,12 @@ WRITE8_MEMBER(paradise_state::paradise_okibank_w)
 	if (data & ~0x02)
 		logerror("%s: unknown oki bank bits %02X\n", machine().describe_context(), data);
 
-<<<<<<< HEAD
-	m_oki2->set_bank_base((data & 0x02) ? 0x40000 : 0);
-=======
 	m_oki2->set_rom_bank((data & 0x02) >> 1);
->>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(paradise_state::torus_coin_counter_w)
 {
-<<<<<<< HEAD
-	coin_counter_w(machine(), 0, data ^ 0xff);
-=======
 	machine().bookkeeping().coin_counter_w(0, data ^ 0xff);
->>>>>>> upstream/master
 }
 
 static ADDRESS_MAP_START( base_map, AS_PROGRAM, 8, paradise_state )
@@ -438,8 +424,6 @@ static INPUT_PORTS_START( penky )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNKNOWN )
 INPUT_PORTS_END
 
-<<<<<<< HEAD
-=======
 static INPUT_PORTS_START( penkyi )
 	PORT_INCLUDE(penky)
 
@@ -472,7 +456,6 @@ static INPUT_PORTS_START( penkyi )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 INPUT_PORTS_END
 
->>>>>>> upstream/master
 static INPUT_PORTS_START( torus )
 	PORT_START("DSW1")  /* port $2020 */
 	PORT_DIPNAME( 0x03, 0x03, DEF_STR( Coinage ) )
@@ -740,11 +723,7 @@ INTERRUPT_GEN_MEMBER(paradise_state::irq)
 		m_maincpu->set_input_line(INPUT_LINE_IRQ0, HOLD_LINE);
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( paradise, paradise_state )
-=======
 static MACHINE_CONFIG_START( paradise )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, XTAL_12MHz/2)          /* Z8400B - 6mhz Verified */
@@ -769,17 +748,10 @@ static MACHINE_CONFIG_START( paradise )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki1", XTAL_12MHz/12, OKIM6295_PIN7_HIGH)    /* verified on pcb */
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
-
-	MCFG_OKIM6295_ADD("oki2", XTAL_12MHz/12, OKIM6295_PIN7_HIGH) /* verified on pcb */
-=======
 	MCFG_OKIM6295_ADD("oki1", XTAL_12MHz/12, PIN7_HIGH)    /* verified on pcb */
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
 
 	MCFG_OKIM6295_ADD("oki2", XTAL_12MHz/12, PIN7_HIGH) /* verified on pcb */
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
 MACHINE_CONFIG_END
 
@@ -817,12 +789,6 @@ static MACHINE_CONFIG_DERIVED( penky, paradise )
 	/* basic machine hardware */
 	MCFG_CPU_MODIFY("maincpu")
 	MCFG_CPU_PROGRAM_MAP(torus_map)
-<<<<<<< HEAD
-MACHINE_CONFIG_END
-
-
-
-=======
 	MCFG_CPU_IO_MAP(torus_io_map)
 MACHINE_CONFIG_END
 
@@ -833,7 +799,6 @@ static MACHINE_CONFIG_DERIVED( penkyi, penky )
 
 	MCFG_DEVICE_REMOVE("oki2")
 MACHINE_CONFIG_END
->>>>>>> upstream/master
 
 /***************************************************************************
 
@@ -1188,8 +1153,6 @@ ROM_START( penky )
 	/* not populated for this game */
 ROM_END
 
-<<<<<<< HEAD
-=======
 ROM_START( penkyi )
 	ROM_REGION( 0x80000, "maincpu", 0 )     /* Z80 Code */
 	ROM_LOAD( "U128", 0x00000, 0x80000, CRC(17c8c97c) SHA1(8f5a88670f64ae5591b4ac1b6ddd7aa7db60e042) ) // 27C040, but 1st and 2nd half identical
@@ -1216,7 +1179,6 @@ ROM_START( penkyi )
 	/* not populated for this game */
 ROM_END
 
->>>>>>> upstream/master
 /*
 
 Yun Sung Torus (c) 1996
@@ -1421,10 +1383,7 @@ GAME( 199?,  para2dx,  0,         paradise, para2dx,  paradise_state, paradise, 
 GAME( 1995,  tgtball,  0,         tgtball,  tgtball,  paradise_state, tgtball,  ROT0,  "Yun Sung", "Target Ball (Nude)", MACHINE_SUPPORTS_SAVE )
 GAME( 1995,  tgtballa, tgtball,   tgtball,  tgtball,  paradise_state, tgtball,  ROT0,  "Yun Sung", "Target Ball", MACHINE_SUPPORTS_SAVE )
 GAME( 1996,  penky,    0,         penky,    penky,    paradise_state, tgtball,  ROT0,  "Yun Sung", "Penky", MACHINE_SUPPORTS_SAVE )
-<<<<<<< HEAD
-=======
 GAME( 1996,  penkyi,   penky,     penkyi,   penkyi,   paradise_state, tgtball,  ROT0,  "Yun Sung (Impeuropex license)", "Penky (Italian)", MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master
 GAME( 1996,  torus,    0,         torus,    torus,    paradise_state, torus,    ROT90, "Yun Sung", "Torus", MACHINE_SUPPORTS_SAVE )
 GAME( 1998,  madball,  0,         madball,  madball,  paradise_state, tgtball,  ROT0,  "Yun Sung", "Mad Ball V2.0", MACHINE_SUPPORTS_SAVE )
 GAME( 1997,  madballn, madball,   madball,  madball,  paradise_state, tgtball,  ROT0,  "Yun Sung", "Mad Ball V2.0 (With Nudity)", MACHINE_SUPPORTS_SAVE )

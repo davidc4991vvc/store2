@@ -13,13 +13,6 @@
     - Super Glob seems like a later revision of The Glob, the most obvious
       difference being an updated service mode.
     - These games don't have cocktail mode.
-<<<<<<< HEAD
-    - The divisor 4 was derived using the timing loop used to split the screen
-      in the middle.  This loop takes roughly 24200 cycles, giving
-      2500 + (24200 - 2500) * 2 * 60 = 2754000 = 2.75MHz for the CPU speed,
-      assuming 60 fps and a 2500 cycle VBLANK period.
-      This should be easy to check since the schematics are available, .
-=======
     - The CPU clock divisor 4 was derived using the timing loop used to split
       the screen in the middle.  This loop takes roughly 24200 cycles, giving
       2500 + (24200 - 2500) * 2 * 60 = 2754000 = 2.75MHz for the CPU speed,
@@ -29,7 +22,6 @@
       (U92) dividing the clock by 2, and another (U91) having 3 taps, further
       dividing the already divided clock by 2 (/CLK), 4 (/PLOAD) and 8 (CLOCK).
       The CLOCK signal drives the AY.
->>>>>>> upstream/master
     - I think theglob2 is earlier than theglob.  They only differ in one routine,
       but it appears to be a bug fix.  Also, theglob3 appears to be even older.
 
@@ -37,18 +29,6 @@
 
     - Super Blob uses a busy loop during the color test to split the screen
       between the two palettes.  This effect is not emulated, but since both
-<<<<<<< HEAD
-      halfs of the palette are identical, this is not an issue.  See $039c.
-      The other games have a different color test, not using the busy loop.
-
-***************************************************************************/
-
-#include "emu.h"
-#include "cpu/z80/z80.h"
-#include "machine/i8255.h"
-#include "sound/ay8910.h"
-#include "includes/epos.h"
-=======
       halves of the palette are identical, this is not an issue.  See $039c.
       The other games have a different color test, not using the busy loop.
 
@@ -68,7 +48,6 @@
 #include "screen.h"
 #include "speaker.h"
 
->>>>>>> upstream/master
 
 WRITE8_MEMBER(epos_state::dealer_decrypt_rom)
 {
@@ -97,18 +76,10 @@ static ADDRESS_MAP_START( epos_map, AS_PROGRAM, 8, epos_state )
 	AM_RANGE(0x8000, 0xffff) AM_RAM AM_SHARE("videoram")
 ADDRESS_MAP_END
 
-<<<<<<< HEAD
-
-static ADDRESS_MAP_START( dealer_map, AS_PROGRAM, 8, epos_state )
-	AM_RANGE(0x0000, 0x5fff) AM_ROMBANK("bank1")
-	AM_RANGE(0x6000, 0x6fff) AM_ROMBANK("bank2")
-	AM_RANGE(0x7000, 0x7fff) AM_RAM
-=======
 static ADDRESS_MAP_START( dealer_map, AS_PROGRAM, 8, epos_state )
 	AM_RANGE(0x0000, 0x5fff) AM_ROMBANK("bank1")
 	AM_RANGE(0x6000, 0x6fff) AM_ROMBANK("bank2")
 	AM_RANGE(0x7000, 0x7fff) AM_RAM AM_SHARE("nvram")
->>>>>>> upstream/master
 	AM_RANGE(0x8000, 0xffff) AM_RAM AM_SHARE("videoram")
 ADDRESS_MAP_END
 
@@ -118,17 +89,10 @@ ADDRESS_MAP_END
  *
  *************************************/
 
-<<<<<<< HEAD
-static ADDRESS_MAP_START( io_map, AS_IO, 8, epos_state )
-	ADDRESS_MAP_GLOBAL_MASK(0xff)
-	AM_RANGE(0x00, 0x00) AM_READ_PORT("DSW") AM_WRITE(watchdog_reset_w)
-	AM_RANGE(0x01, 0x01) AM_READ_PORT("SYSTEM") AM_WRITE(epos_port_1_w)
-=======
 static ADDRESS_MAP_START( epos_io_map, AS_IO, 8, epos_state )
 	ADDRESS_MAP_GLOBAL_MASK(0xff)
 	AM_RANGE(0x00, 0x00) AM_READ_PORT("DSW") AM_DEVWRITE("watchdog", watchdog_timer_device, reset_w)
 	AM_RANGE(0x01, 0x01) AM_READ_PORT("SYSTEM") AM_WRITE(port_1_w)
->>>>>>> upstream/master
 	AM_RANGE(0x02, 0x02) AM_READ_PORT("INPUTS") AM_DEVWRITE("aysnd", ay8910_device, data_w)
 	AM_RANGE(0x03, 0x03) AM_READ_PORT("UNK")
 	AM_RANGE(0x06, 0x06) AM_DEVWRITE("aysnd", ay8910_device, address_w)
@@ -136,16 +100,6 @@ ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( dealer_io_map, AS_IO, 8, epos_state )
 	ADDRESS_MAP_GLOBAL_MASK(0xff)
-<<<<<<< HEAD
-	AM_RANGE(0x10, 0x13) AM_DEVREADWRITE("ppi8255", i8255_device, read, write)
-	AM_RANGE(0x20, 0x24) AM_WRITE(dealer_decrypt_rom)
-	AM_RANGE(0x34, 0x34) AM_DEVWRITE("aysnd", ay8910_device, data_w)
-	AM_RANGE(0x38, 0x38) AM_READ_PORT("DSW")
-	AM_RANGE(0x3C, 0x3C) AM_DEVWRITE("aysnd", ay8910_device, address_w)
-	AM_RANGE(0x40, 0x40) AM_WRITE(watchdog_reset_w)
-ADDRESS_MAP_END
-
-=======
 	AM_RANGE(0x00, 0x0f) AM_WRITE(dealer_pal_w)
 	AM_RANGE(0x10, 0x13) AM_DEVREADWRITE("ppi8255", i8255_device, read, write)
 	AM_RANGE(0x20, 0x24) AM_WRITE(dealer_decrypt_rom)
@@ -167,18 +121,12 @@ READ8_MEMBER(epos_state::i8255_porta_r)
 
 	return data;
 }
->>>>>>> upstream/master
 
 /*
    ROMs U01-U03 are checked with the same code in a loop.
    There's a separate ROM check for banked U04 at 30F3.
    It looks like dealer/revenger uses ppi8255 to control bankswitching.
 */
-<<<<<<< HEAD
-WRITE8_MEMBER(epos_state::write_prtc)
-{
-	membank("bank2")->set_entry(data & 0x01);
-=======
 WRITE8_MEMBER(epos_state::i8255_portc_w)
 {
 	membank("bank2")->set_entry(data & 0x01);
@@ -195,7 +143,6 @@ WRITE8_MEMBER(epos_state::flip_screen_w)
 	flip_screen_set(BIT(data, 7));
 	// bit 6: ay8910 port A/B multiplexer read
 	m_ay_porta_multiplex = BIT(data, 6);
->>>>>>> upstream/master
 }
 
 /*************************************
@@ -429,18 +376,6 @@ static INPUT_PORTS_START( dealer )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW,  IPT_UNKNOWN )
 
 	PORT_START("INPUTS")
-<<<<<<< HEAD
-	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_BUTTON1 ) //cancel
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_BUTTON2 ) //draw
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_BUTTON3 ) //stand
-	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_BUTTON4 )
-	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_BUTTON5 ) //play
-	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_BUTTON6 )
-	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_COIN1 ) //coin in
-	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_SERVICE )
-INPUT_PORTS_END
-
-=======
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_POKER_HOLD1 )
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_POKER_HOLD2 )
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_POKER_HOLD3 )
@@ -482,7 +417,6 @@ static INPUT_PORTS_START( beastf )
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_BUTTON1 ) PORT_PLAYER(2)
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_BUTTON2 ) PORT_PLAYER(2)
 INPUT_PORTS_END
->>>>>>> upstream/master
 
 /*************************************
  *
@@ -492,38 +426,24 @@ INPUT_PORTS_END
 
 MACHINE_START_MEMBER(epos_state,epos)
 {
-<<<<<<< HEAD
-	save_item(NAME(m_palette));
-	save_item(NAME(m_counter));
-=======
 	save_item(NAME(m_palette_bank));
 	save_item(NAME(m_counter));
 	save_item(NAME(m_input_multiplex));
 	save_item(NAME(m_ay_porta_multiplex));
->>>>>>> upstream/master
 }
 
 void epos_state::machine_reset()
 {
-<<<<<<< HEAD
-	m_palette = 0;
-	m_counter = 0;
-=======
 	m_palette_bank = 0;
 	m_counter = 0;
 	m_input_multiplex = 3;
 	m_ay_porta_multiplex = 0;
->>>>>>> upstream/master
 }
 
 
 MACHINE_START_MEMBER(epos_state,dealer)
 {
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("maincpu")->base();
-=======
 	uint8_t *ROM = memregion("maincpu")->base();
->>>>>>> upstream/master
 	membank("bank1")->configure_entries(0, 4, &ROM[0x0000], 0x10000);
 	membank("bank2")->configure_entries(0, 2, &ROM[0x6000], 0x1000);
 
@@ -533,16 +453,6 @@ MACHINE_START_MEMBER(epos_state,dealer)
 	MACHINE_START_CALL_MEMBER(epos);
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( epos, epos_state )
-
-	/* basic machine hardware */
-	MCFG_CPU_ADD("maincpu", Z80, 11000000/4)    /* 2.75 MHz (see notes) */
-	MCFG_CPU_PROGRAM_MAP(epos_map)
-	MCFG_CPU_IO_MAP(io_map)
-	MCFG_CPU_VBLANK_INT_DRIVER("screen", epos_state,  irq0_line_hold)
-
-=======
 static MACHINE_CONFIG_START( epos ) /* EPOS TRISTAR 8000 PCB */
 
 	/* basic machine hardware */
@@ -552,7 +462,6 @@ static MACHINE_CONFIG_START( epos ) /* EPOS TRISTAR 8000 PCB */
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", epos_state,  irq0_line_hold)
 
 	MCFG_WATCHDOG_ADD("watchdog")
->>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
@@ -560,13 +469,6 @@ static MACHINE_CONFIG_START( epos ) /* EPOS TRISTAR 8000 PCB */
 	MCFG_SCREEN_VBLANK_TIME(ATTOSECONDS_IN_USEC(2500) /* not accurate */)
 	MCFG_SCREEN_SIZE(272, 241)
 	MCFG_SCREEN_VISIBLE_AREA(0, 271, 0, 235)
-<<<<<<< HEAD
-	MCFG_SCREEN_UPDATE_DRIVER(epos_state, screen_update_epos)
-
-	/* sound hardware */
-	MCFG_SPEAKER_STANDARD_MONO("mono")
-	MCFG_SOUND_ADD("aysnd", AY8910, 11000000/4)
-=======
 	MCFG_SCREEN_UPDATE_DRIVER(epos_state, screen_update)
 
 	MCFG_PALETTE_ADD("palette", 32)
@@ -575,34 +477,19 @@ static MACHINE_CONFIG_START( epos ) /* EPOS TRISTAR 8000 PCB */
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 	MCFG_SOUND_ADD("aysnd", AY8912, XTAL_11MHz/16) /*  0.6875 MHz, confirmed from schematics */
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( dealer, epos_state )
-
-	/* basic machine hardware */
-	MCFG_CPU_ADD("maincpu", Z80, 11000000/4)    /* 2.75 MHz (see notes) */
-=======
 static MACHINE_CONFIG_START( dealer ) /* EPOS TRISTAR 9000 PCB */
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, XTAL_22_1184MHz/8)    /* 2.7648 MHz (measured) */
->>>>>>> upstream/master
 	MCFG_CPU_PROGRAM_MAP(dealer_map)
 	MCFG_CPU_IO_MAP(dealer_io_map)
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", epos_state,  irq0_line_hold)
 
 	MCFG_DEVICE_ADD("ppi8255", I8255A, 0)
-<<<<<<< HEAD
-	MCFG_I8255_IN_PORTA_CB(IOPORT("INPUTS"))
-	MCFG_I8255_OUT_PORTC_CB(WRITE8(epos_state, write_prtc))
-
-	MCFG_MACHINE_START_OVERRIDE(epos_state,dealer)
-
-=======
 	MCFG_I8255_IN_PORTA_CB(READ8(epos_state, i8255_porta_r))
 	MCFG_I8255_OUT_PORTC_CB(WRITE8(epos_state, i8255_portc_w))
 
@@ -616,21 +503,12 @@ static MACHINE_CONFIG_START( dealer ) /* EPOS TRISTAR 9000 PCB */
 
 	MCFG_WATCHDOG_ADD("watchdog")
 
->>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE(60)
 	MCFG_SCREEN_VBLANK_TIME(ATTOSECONDS_IN_USEC(2500) /* not accurate */)
 	MCFG_SCREEN_SIZE(272, 241)
 	MCFG_SCREEN_VISIBLE_AREA(0, 271, 0, 235)
-<<<<<<< HEAD
-	MCFG_SCREEN_UPDATE_DRIVER(epos_state, screen_update_epos)
-
-	/* sound hardware */
-	MCFG_SPEAKER_STANDARD_MONO("mono")
-	MCFG_SOUND_ADD("aysnd", AY8910, 11000000/4)
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
-=======
 	MCFG_SCREEN_UPDATE_DRIVER(epos_state, screen_update)
 
 	/* sound hardware */
@@ -640,7 +518,6 @@ static MACHINE_CONFIG_START( dealer ) /* EPOS TRISTAR 9000 PCB */
 	MCFG_AY8910_PORT_A_READ_CB(READ8(epos_state, ay_porta_mpx_r))
 	// port a writes?
 	MCFG_AY8910_PORT_B_WRITE_CB(WRITE8(epos_state, flip_screen_w)) // flipscreen and ay port a multiplex control
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
@@ -650,10 +527,7 @@ MACHINE_CONFIG_END
  *
  *************************************/
 
-<<<<<<< HEAD
-=======
 // Tristar 8000 boards:
->>>>>>> upstream/master
 ROM_START( megadon )
 	ROM_REGION( 0x10000, "maincpu", 0 )
 	ROM_LOAD( "2732u10b.bin",   0x0000, 0x1000, CRC(af8fbe80) SHA1(2d7857616462112fe17343a9357ee51d8f965a0f) )
@@ -766,10 +640,7 @@ ROM_START( igmo )
 ROM_END
 
 
-<<<<<<< HEAD
-=======
 // Tristar 9000 boards:
->>>>>>> upstream/master
 ROM_START( dealer )
 	ROM_REGION( 0x40000, "maincpu", 0 )
 	ROM_LOAD( "u1.bin",         0x0000, 0x2000, CRC(e06f3563) SHA1(0d58cd1f2e1ca89adb9c64d7dd520bb1f2d50f1a) )
@@ -777,46 +648,12 @@ ROM_START( dealer )
 	ROM_LOAD( "u3.bin",         0x4000, 0x2000, CRC(ab721455) SHA1(a477da0590e0431172baae972e765473e19dcbff) )
 	ROM_LOAD( "u4.bin",         0x6000, 0x2000, CRC(ddb903e4) SHA1(4c06a2048b1c6989c363b110a17c33180025b9c8) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x0020, "proms", 0 )
-	ROM_LOAD( "82s123.u66",     0x0000, 0x0020, NO_DUMP )   /* missing */
-=======
 	ROM_REGION( 0x1000, "nvram", 0)
 	ROM_LOAD( "dealer.nv", 0, 0x1000, CRC(a6f88459) SHA1(1deda2a71433c97fe3e5cb39defc285f4fa9c9b8) )
->>>>>>> upstream/master
 ROM_END
 
 /*
 
-<<<<<<< HEAD
-Revenger EPOS 1984
-
-EPOS TRISTAR 9000
-
-
-
-   8910   Z80A    4116  4116
-                  4116  4116
-                  4116  4116
-    6116          4116  4116
-    6116          4116  4116
-    U4            4116  4116     74S189
-    U3            4116  4116     74S189
-    U2            4116  4116
-    U1        8255
-                             22.1184MHz
-*/
-
-ROM_START( revenger )
-	ROM_REGION( 0x40000, "maincpu", 0 )
-	ROM_LOAD( "r06124.u1",    0x0000, 0x2000, CRC(fad1a2a5) BAD_DUMP SHA1(a31052c91fe67e2e90441abc40b6483f921ecfe3) )
-	ROM_LOAD( "r06124.u2",    0x2000, 0x2000, CRC(a8e0ee7b) BAD_DUMP SHA1(f6f78e8ce40eab07de461b364876c1eb4a78d96e) )
-	ROM_LOAD( "r06124.u3",    0x4000, 0x2000, CRC(cca414a5) BAD_DUMP SHA1(1c9dd3ff63d57e9452e63083cdbd7f5d693bb686) )
-	ROM_LOAD( "r06124.u4",    0x6000, 0x2000, CRC(0b81c303) BAD_DUMP SHA1(9022d18dec11312eb4bb471c22b563f5f897b4f7) )
-
-	ROM_REGION( 0x0020, "proms", 0 )
-	ROM_LOAD( "82s123.u66",     0x0000, 0x0020, NO_DUMP )   /* missing */
-=======
 Revenger 84 - EPOS
 
 EPOS TRISTAR 9000
@@ -894,16 +731,11 @@ ROM_START( beastf )
 
 	ROM_REGION( 0x1000, "nvram", 0)
 	ROM_LOAD( "beastf.nv", 0, 0x1000, CRC(98017b09) SHA1(0e2b2071bb47fc179d5bc36ef9431a9d2727d36a) )
->>>>>>> upstream/master
 ROM_END
 
 DRIVER_INIT_MEMBER(epos_state,dealer)
 {
-<<<<<<< HEAD
-	UINT8 *rom = memregion("maincpu")->base();
-=======
 	uint8_t *rom = memregion("maincpu")->base();
->>>>>>> upstream/master
 	int A;
 
 	/* Key 0 */
@@ -948,17 +780,6 @@ DRIVER_INIT_MEMBER(epos_state,dealer)
  *
  *************************************/
 
-<<<<<<< HEAD
-GAME( 1982, megadon,  0,        epos,   megadon, driver_device,  0,       ROT270, "Epos Corporation (Photar Industries license)", "Megadon", MACHINE_SUPPORTS_SAVE )
-GAME( 1982, catapult, 0,        epos,   catapult, driver_device, 0,       ROT270, "Epos Corporation", "Catapult", MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE ) /* bad rom, hold f2 for test mode */
-GAME( 1983, suprglob, 0,        epos,   suprglob, driver_device, 0,       ROT270, "Epos Corporation", "Super Glob", MACHINE_SUPPORTS_SAVE )
-GAME( 1983, theglob,  suprglob, epos,   suprglob, driver_device, 0,       ROT270, "Epos Corporation", "The Glob", MACHINE_SUPPORTS_SAVE )
-GAME( 1983, theglob2, suprglob, epos,   suprglob, driver_device, 0,       ROT270, "Epos Corporation", "The Glob (earlier)", MACHINE_SUPPORTS_SAVE )
-GAME( 1983, theglob3, suprglob, epos,   suprglob, driver_device, 0,       ROT270, "Epos Corporation", "The Glob (set 3)", MACHINE_SUPPORTS_SAVE )
-GAME( 1984, igmo,     0,        epos,   igmo, driver_device,     0,       ROT270, "Epos Corporation", "IGMO", MACHINE_WRONG_COLORS | MACHINE_SUPPORTS_SAVE )
-GAME( 1984, dealer,   0,        dealer, dealer, epos_state,   dealer,   ROT270, "Epos Corporation", "The Dealer", MACHINE_WRONG_COLORS | MACHINE_SUPPORTS_SAVE )
-GAME( 1984, revenger, 0,        dealer, dealer, epos_state,   dealer,   ROT270, "Epos Corporation", "Revenger", MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE )
-=======
 /* EPOS TRISTAR 8000 PCB based */
 GAME( 1982, megadon,  0,        epos,   megadon,  epos_state,    0,       ROT270, "Epos Corporation (Photar Industries license)", "Megadon", MACHINE_SUPPORTS_SAVE )
 GAME( 1982, catapult, 0,        epos,   catapult, epos_state,    0,       ROT270, "Epos Corporation", "Catapult",           MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE ) /* bad rom, hold f2 for test mode */
@@ -973,4 +794,3 @@ GAME( 1984, dealer,   0,        dealer, dealer,   epos_state,    dealer,  ROT270
 GAME( 1984, revngr84, 0,        dealer, beastf,   epos_state,    dealer,  ROT270, "Epos Corporation", "Revenger '84 (newer)", MACHINE_SUPPORTS_SAVE )
 GAME( 1984, revenger, revngr84, dealer, beastf,   epos_state,    dealer,  ROT270, "Epos Corporation", "Revenger '84 (older)", MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE )
 GAME( 1984, beastf,   suprglob, dealer, beastf,   epos_state,    dealer,  ROT270, "Epos Corporation", "Beastie Feastie",      MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

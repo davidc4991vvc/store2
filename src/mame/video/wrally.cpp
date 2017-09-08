@@ -66,13 +66,8 @@ TILE_GET_INFO_MEMBER(wrally_state::get_tile_info_screen1)
 
 void wrally_state::video_start()
 {
-<<<<<<< HEAD
-	m_pant[0] = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(wrally_state::get_tile_info_screen0),this),TILEMAP_SCAN_ROWS,16,16,64,32);
-	m_pant[1] = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(wrally_state::get_tile_info_screen1),this),TILEMAP_SCAN_ROWS,16,16,64,32);
-=======
 	m_pant[0] = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(wrally_state::get_tile_info_screen0),this),TILEMAP_SCAN_ROWS,16,16,64,32);
 	m_pant[1] = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(wrally_state::get_tile_info_screen1),this),TILEMAP_SCAN_ROWS,16,16,64,32);
->>>>>>> upstream/master
 
 	m_pant[0]->set_transmask(0,0xff01,0x00ff); /* this layer is split in two (pens 1..7, pens 8-15) */
 	m_pant[1]->set_transparent_pen(0);
@@ -138,20 +133,12 @@ void wrally_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect,
 					sx - 0x0f,sy,0);
 		} else {
 			/* get a pointer to the current sprite's gfx data */
-<<<<<<< HEAD
-			const UINT8 *gfx_src = gfx->get_data(number % gfx->elements());
-=======
 			const uint8_t *gfx_src = gfx->get_data(number % gfx->elements());
->>>>>>> upstream/master
 
 			for (py = 0; py < gfx->height(); py++){
 				/* get a pointer to the current line in the screen bitmap */
 				int ypos = ((sy + py) & 0x1ff);
-<<<<<<< HEAD
-				UINT16 *srcy = &bitmap.pix16(ypos);
-=======
 				uint16_t *srcy = &bitmap.pix16(ypos);
->>>>>>> upstream/master
 
 				int gfx_py = yflip ? (gfx->height() - 1 - py) : py;
 
@@ -160,11 +147,7 @@ void wrally_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect,
 				for (px = 0; px < gfx->width(); px++){
 					/* get current pixel */
 					int xpos = (((sx + px) & 0x3ff) - 0x0f) & 0x3ff;
-<<<<<<< HEAD
-					UINT16 *pixel = srcy + xpos;
-=======
 					uint16_t *pixel = srcy + xpos;
->>>>>>> upstream/master
 					int src_color = *pixel;
 
 					int gfx_px = xflip ? (gfx->width() - 1 - px) : px;
@@ -191,11 +174,7 @@ void wrally_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect,
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-UINT32 wrally_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t wrally_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	/* set scroll registers */
 	if (!flip_screen()) {

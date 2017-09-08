@@ -7,19 +7,11 @@
     NEOGEO Memory card functions.
 
 *********************************************************************/
-<<<<<<< HEAD
-
-#pragma once
-
-#ifndef __NG_MEMCARD_H__
-#define __NG_MEMCARD_H__
-=======
 #ifndef MAME_MACHINE_NG_MEMCARD_H
 #define MAME_MACHINE_NG_MEMCARD_H
 
 #pragma once
 
->>>>>>> upstream/master
 
 //**************************************************************************
 //  INTERFACE CONFIGURATION MACROS
@@ -39,27 +31,6 @@ class ng_memcard_device :  public device_t,
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	ng_memcard_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	virtual iodevice_t image_type() const { return IO_MEMCARD; }
-
-	virtual bool is_readable()  const { return true; }
-	virtual bool is_writeable() const { return true; }
-	virtual bool is_creatable() const { return true; }
-	virtual bool must_be_loaded() const { return false; }
-	virtual bool is_reset_on_load() const { return false; }
-	virtual const char *file_extensions() const { return "neo"; }
-	virtual const option_guide *create_option_guide() const { return NULL; }
-
-	virtual bool call_load();
-	virtual void call_unload();
-	virtual bool call_create(int format_type, option_resolution *format_options);
-
-	// device-level overrides
-	virtual void device_start();
-	virtual void device_config_complete();
-=======
 	ng_memcard_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	virtual iodevice_t image_type() const override { return IO_MEMCARD; }
@@ -77,7 +48,6 @@ public:
 
 	// device-level overrides
 	virtual void device_start() override;
->>>>>>> upstream/master
 
 	DECLARE_READ8_MEMBER(read);
 	DECLARE_WRITE8_MEMBER(write);
@@ -85,23 +55,12 @@ public:
 	/* returns the index of the current memory card, or -1 if none */
 	int present() { return is_loaded() ? 0 : -1; }
 private:
-<<<<<<< HEAD
-	UINT8 m_memcard_data[0x800];
-=======
 	uint8_t m_memcard_data[0x800];
->>>>>>> upstream/master
 };
 
 
 // device type definition
-<<<<<<< HEAD
-extern const device_type NG_MEMCARD;
-
-
-#endif  /* __NG_MEMCARD_H__ */
-=======
 DECLARE_DEVICE_TYPE(NG_MEMCARD, ng_memcard_device)
 
 
 #endif // MAME_MACHINE_NG_MEMCARD_H
->>>>>>> upstream/master

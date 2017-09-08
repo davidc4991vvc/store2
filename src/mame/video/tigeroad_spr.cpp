@@ -19,17 +19,10 @@
 #include "tigeroad_spr.h"
 
 
-<<<<<<< HEAD
-const device_type TIGEROAD_SPRITE = &device_creator<tigeroad_spr_device>;
-
-tigeroad_spr_device::tigeroad_spr_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, TIGEROAD_SPRITE, "Simple Capcom (Tiger Road) Sprite", tag, owner, clock, "tigeroad_spr", __FILE__)
-=======
 DEFINE_DEVICE_TYPE(TIGEROAD_SPRITE, tigeroad_spr_device, "tigeroad_spr", "Simple Capcom (Tiger Road) Sprite")
 
 tigeroad_spr_device::tigeroad_spr_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, TIGEROAD_SPRITE, tag, owner, clock)
->>>>>>> upstream/master
 {
 }
 
@@ -60,17 +53,10 @@ void tigeroad_spr_device::device_reset()
 */
 
 
-<<<<<<< HEAD
-void tigeroad_spr_device::draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect, gfxdecode_device *gfxdecode, int region, UINT16* ram, UINT32 size, int flip_screen, int rev_y )
-{
-	UINT16 *source = &ram[size/2] - 4;
-	UINT16 *finish = ram;
-=======
 void tigeroad_spr_device::draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect, gfxdecode_device *gfxdecode, int region, uint16_t* ram, uint32_t size, int flip_screen, int rev_y )
 {
 	uint16_t *source = &ram[size/2] - 4;
 	uint16_t *finish = ram;
->>>>>>> upstream/master
 
 	while (source >= finish)
 	{

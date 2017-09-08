@@ -31,11 +31,7 @@
 
 WRITE16_MEMBER(jpmimpct_state::jpmimpct_bt477_w)
 {
-<<<<<<< HEAD
-	UINT8 val = data & 0xff;
-=======
 	uint8_t val = data & 0xff;
->>>>>>> upstream/master
 
 	switch (offset)
 	{
@@ -47,11 +43,7 @@ WRITE16_MEMBER(jpmimpct_state::jpmimpct_bt477_w)
 		}
 		case 0x1:
 		{
-<<<<<<< HEAD
-			UINT8 *addr_cnt = &m_bt477.addr_cnt;
-=======
 			uint8_t *addr_cnt = &m_bt477.addr_cnt;
->>>>>>> upstream/master
 			rgb_t *color = &m_bt477.color;
 
 			color[*addr_cnt] = val;
@@ -98,20 +90,12 @@ READ16_MEMBER(jpmimpct_state::jpmimpct_bt477_r)
 
 TMS340X0_TO_SHIFTREG_CB_MEMBER(jpmimpct_state::to_shiftreg)
 {
-<<<<<<< HEAD
-	memcpy(shiftreg, &m_vram[TOWORD(address)], 512 * sizeof(UINT16));
-=======
 	memcpy(shiftreg, &m_vram[TOWORD(address)], 512 * sizeof(uint16_t));
->>>>>>> upstream/master
 }
 
 TMS340X0_FROM_SHIFTREG_CB_MEMBER(jpmimpct_state::from_shiftreg)
 {
-<<<<<<< HEAD
-	memcpy(&m_vram[TOWORD(address)], shiftreg, 512 * sizeof(UINT16));
-=======
 	memcpy(&m_vram[TOWORD(address)], shiftreg, 512 * sizeof(uint16_t));
->>>>>>> upstream/master
 }
 
 
@@ -123,23 +107,14 @@ TMS340X0_FROM_SHIFTREG_CB_MEMBER(jpmimpct_state::from_shiftreg)
 
 TMS340X0_SCANLINE_RGB32_CB_MEMBER(jpmimpct_state::scanline_update)
 {
-<<<<<<< HEAD
-	UINT16 *vram = &m_vram[(params->rowaddr << 8) & 0x3ff00];
-	UINT32 *dest = &bitmap.pix32(scanline);
-=======
 	uint16_t *vram = &m_vram[(params->rowaddr << 8) & 0x3ff00];
 	uint32_t *dest = &bitmap.pix32(scanline);
->>>>>>> upstream/master
 	int coladdr = params->coladdr;
 	int x;
 
 	for (x = params->heblnk; x < params->hsblnk; x += 2)
 	{
-<<<<<<< HEAD
-		UINT16 pixels = vram[coladdr++ & 0xff];
-=======
 		uint16_t pixels = vram[coladdr++ & 0xff];
->>>>>>> upstream/master
 		dest[x + 0] = m_palette->pen(pixels & 0xff);
 		dest[x + 1] = m_palette->pen(pixels >> 8);
 	}

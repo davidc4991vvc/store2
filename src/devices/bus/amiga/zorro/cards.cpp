@@ -6,10 +6,6 @@
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-#include "cards.h"
-
-=======
 #include "emu.h"
 #include "cards.h"
 
@@ -20,7 +16,6 @@
 #include "buddha.h"
 
 
->>>>>>> upstream/master
 SLOT_INTERFACE_START( a1000_expansion_cards )
 SLOT_INTERFACE_END
 

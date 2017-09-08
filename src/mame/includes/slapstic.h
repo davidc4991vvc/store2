@@ -11,32 +11,6 @@
 
 *************************************************************************/
 
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __SLAPSTIC__
-#define __SLAPSTIC__
-
-#include "emu.h"
-#include "cpu/m6800/m6800.h"
-#include "cpu/m68000/m68000.h"
-
-
-extern const device_type SLAPSTIC;
-
-#define MCFG_SLAPSTIC_ADD(_tag) \
-	MCFG_DEVICE_ADD(_tag, SLAPSTIC, 0)
-
-
-/*************************************
- *
- *  Debugging
- *
- *************************************/
-
-#define LOG_SLAPSTIC    (0)
-
-=======
 #ifndef MAME_INCLUDES_SLAPSTIC_H
 #define MAME_INCLUDES_SLAPSTIC_H
 
@@ -48,7 +22,6 @@ DECLARE_DEVICE_TYPE(SLAPSTIC, atari_slapstic_device)
 #define MCFG_SLAPSTIC_ADD(_tag, _chip) \
 	MCFG_DEVICE_ADD(_tag, SLAPSTIC, 0) \
 	MCFG_SLAPSTIC_NUM(_chip)
->>>>>>> upstream/master
 
 
 /*************************************
@@ -137,12 +110,9 @@ enum
 };
 
 
-<<<<<<< HEAD
-=======
 #define MCFG_SLAPSTIC_NUM(_chipnum) \
 	atari_slapstic_device::static_set_chipnum(*device, _chipnum);
 
->>>>>>> upstream/master
 #define MCFG_SLAPSTIC_68K_ACCESS(_type) \
 	atari_slapstic_device::static_set_access68k(*device, _type);
 
@@ -152,21 +122,12 @@ class atari_slapstic_device :  public device_t
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	atari_slapstic_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	void slapstic_init(running_machine &machine, int chip);
-	void slapstic_reset(void);
-
-	int slapstic_bank(void);
-=======
 	atari_slapstic_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	void slapstic_init();
 	void slapstic_reset();
 
 	int slapstic_bank();
->>>>>>> upstream/master
 	int slapstic_tweak(address_space &space, offs_t offset);
 
 	int alt2_kludge(address_space &space, offs_t offset);
@@ -177,17 +138,6 @@ public:
 		dev.access_68k = type;
 	}
 
-<<<<<<< HEAD
-
-	UINT8 state;
-	UINT8 current_bank;
-	int access_68k;
-
-	UINT8 alt_bank;
-	UINT8 bit_bank;
-	UINT8 add_bank;
-	UINT8 bit_xor;
-=======
 	static void static_set_chipnum(device_t &device, int chipnum)
 	{
 		atari_slapstic_device &dev = downcast<atari_slapstic_device &>(device);
@@ -204,7 +154,6 @@ public:
 	uint8_t bit_bank;
 	uint8_t add_bank;
 	uint8_t bit_xor;
->>>>>>> upstream/master
 
 	struct slapstic_data slapstic;
 
@@ -214,27 +163,9 @@ public:
 
 
 protected:
-<<<<<<< HEAD
-	virtual void device_start();
-	virtual void device_reset();
-
-
-private:
-
-
-
-
-};
-
-
-
-
-#endif
-=======
 	virtual void device_start() override;
 	virtual void device_reset() override;
 	virtual void device_validity_check(validity_checker &valid) const override;
 };
 
 #endif // MAME_INCLUDES_SLAPSTIC_H
->>>>>>> upstream/master

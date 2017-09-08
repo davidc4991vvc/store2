@@ -5,11 +5,7 @@
 #include "tiasound.h"
 
 // device type definition
-<<<<<<< HEAD
-const device_type TIA = &device_creator<tia_device>;
-=======
 DEFINE_DEVICE_TYPE(TIA, tia_device, "tia_sound", "Atari TIA (Sound)")
->>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -20,19 +16,11 @@ DEFINE_DEVICE_TYPE(TIA, tia_device, "tia_sound", "Atari TIA (Sound)")
 //  tia_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-tia_device::tia_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, TIA, "TIA", tag, owner, clock, "tia_sound", __FILE__),
-		device_sound_interface(mconfig, *this),
-		m_channel(NULL),
-		m_chip(NULL)
-=======
 tia_device::tia_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, TIA, tag, owner, clock),
 		device_sound_interface(mconfig, *this),
 		m_channel(nullptr),
 		m_chip(nullptr)
->>>>>>> upstream/master
 {
 }
 
@@ -45,11 +33,7 @@ void tia_device::device_start()
 {
 	m_channel = stream_alloc(0, 1, clock());
 	m_chip = tia_sound_init(this, clock(), clock(), 16);
-<<<<<<< HEAD
-	assert_always(m_chip != NULL, "Error creating TIA chip");
-=======
 	assert_always(m_chip != nullptr, "Error creating TIA chip");
->>>>>>> upstream/master
 }
 
 

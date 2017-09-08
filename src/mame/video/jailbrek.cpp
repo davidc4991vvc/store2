@@ -5,11 +5,7 @@
 
 PALETTE_INIT_MEMBER(jailbrek_state, jailbrek)
 {
-<<<<<<< HEAD
-	const UINT8 *color_prom = memregion("proms")->base();
-=======
 	const uint8_t *color_prom = memregion("proms")->base();
->>>>>>> upstream/master
 	int i;
 
 	/* create a lookup table for the palette */
@@ -27,40 +23,24 @@ PALETTE_INIT_MEMBER(jailbrek_state, jailbrek)
 
 	for (i = 0; i < 0x100; i++)
 	{
-<<<<<<< HEAD
-		UINT8 ctabentry = (color_prom[i] & 0x0f) | 0x10;
-=======
 		uint8_t ctabentry = (color_prom[i] & 0x0f) | 0x10;
->>>>>>> upstream/master
 		palette.set_pen_indirect(i, ctabentry);
 	}
 
 	for (i = 0x100; i < 0x200; i++)
 	{
-<<<<<<< HEAD
-		UINT8 ctabentry = color_prom[i] & 0x0f;
-=======
 		uint8_t ctabentry = color_prom[i] & 0x0f;
->>>>>>> upstream/master
 		palette.set_pen_indirect(i, ctabentry);
 	}
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER(jailbrek_state::jailbrek_videoram_w)
-=======
 WRITE8_MEMBER(jailbrek_state::videoram_w)
->>>>>>> upstream/master
 {
 	m_videoram[offset] = data;
 	m_bg_tilemap->mark_tile_dirty(offset);
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER(jailbrek_state::jailbrek_colorram_w)
-=======
 WRITE8_MEMBER(jailbrek_state::colorram_w)
->>>>>>> upstream/master
 {
 	m_colorram[offset] = data;
 	m_bg_tilemap->mark_tile_dirty(offset);
@@ -77,21 +57,12 @@ TILE_GET_INFO_MEMBER(jailbrek_state::get_bg_tile_info)
 
 void jailbrek_state::video_start()
 {
-<<<<<<< HEAD
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(jailbrek_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 64, 32);
-	m_bg_tilemap->set_scrolldx(0, 396 - 256);
-=======
 	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(jailbrek_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 64, 32);
->>>>>>> upstream/master
 }
 
 void jailbrek_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect )
 {
-<<<<<<< HEAD
-	UINT8 *spriteram = m_spriteram;
-=======
 	uint8_t *spriteram = m_spriteram;
->>>>>>> upstream/master
 	int i;
 
 	for (i = 0; i < m_spriteram.bytes(); i += 4)
@@ -118,11 +89,7 @@ void jailbrek_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &clipre
 	}
 }
 
-<<<<<<< HEAD
-UINT32 jailbrek_state::screen_update_jailbrek(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t jailbrek_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int i;
 

@@ -29,22 +29,10 @@
     15 - 1 (award is a free game)
     16 - 1 (match enabled)
 
-<<<<<<< HEAD
-ToDo:
-- Get good dump of u4 rom.
-
-=======
->>>>>>> upstream/master
 
 *******************************************************************************************/
 
 
-<<<<<<< HEAD
-#include "machine/genpin.h"
-#include "cpu/m6502/m6502.h"
-#include "machine/6532riot.h"
-#include "sound/sn76477.h"
-=======
 #include "emu.h"
 #include "machine/genpin.h"
 
@@ -53,7 +41,6 @@ ToDo:
 #include "sound/sn76477.h"
 #include "speaker.h"
 
->>>>>>> upstream/master
 #include "spectra.lh"
 
 
@@ -64,11 +51,7 @@ public:
 		: genpin_class(mconfig, type, tag)
 		, m_maincpu(*this, "maincpu")
 		, m_snsnd(*this, "snsnd")
-<<<<<<< HEAD
-		, m_switch(*this, "SWITCH")
-=======
 		, m_switch(*this, "SWITCH.%u", 0)
->>>>>>> upstream/master
 		, m_p_ram(*this, "nvram")
 	{ }
 
@@ -79,17 +62,6 @@ public:
 	TIMER_DEVICE_CALLBACK_MEMBER(nmitimer);
 	TIMER_DEVICE_CALLBACK_MEMBER(outtimer);
 private:
-<<<<<<< HEAD
-	UINT8 m_porta;
-	UINT8 m_portb;
-	UINT8 m_t_c;
-	UINT8 m_out_offs;
-	virtual void machine_reset();
-	required_device<cpu_device> m_maincpu;
-	required_device<sn76477_device> m_snsnd;
-	required_ioport_array<4> m_switch;
-	required_shared_ptr<UINT8> m_p_ram;
-=======
 	uint8_t m_porta;
 	uint8_t m_portb;
 	uint8_t m_t_c;
@@ -99,7 +71,6 @@ private:
 	required_device<sn76477_device> m_snsnd;
 	required_ioport_array<4> m_switch;
 	required_shared_ptr<uint8_t> m_p_ram;
->>>>>>> upstream/master
 };
 
 
@@ -160,15 +131,9 @@ void spectra_state::machine_reset()
 
 READ8_MEMBER( spectra_state::porta_r )
 {
-<<<<<<< HEAD
-	UINT8 row = (m_porta & 0x18) >> 3;
-	UINT8 key = m_switch[row]->read();
-	UINT8 ret = ((BIT(key, m_porta & 7)) ? 0x40 : 0) | (m_porta & 0xbf);
-=======
 	uint8_t row = (m_porta & 0x18) >> 3;
 	uint8_t key = m_switch[row]->read();
 	uint8_t ret = ((BIT(key, m_porta & 7)) ? 0x40 : 0) | (m_porta & 0xbf);
->>>>>>> upstream/master
 
 	if (ret == 0x1b && m_p_ram[0x7b] < 0x1E)
 		m_samples->start(3, 8); // coin
@@ -220,24 +185,14 @@ TIMER_DEVICE_CALLBACK_MEMBER( spectra_state::nmitimer)
 // 70-7F solenoids - no knocker
 TIMER_DEVICE_CALLBACK_MEMBER( spectra_state::outtimer)
 {
-<<<<<<< HEAD
-	static const UINT8 patterns[16] = { 0x3f, 0x06, 0x5b, 0x4f, 0x66, 0x6d, 0x7d, 0x07, 0x7f, 0x6f, 0x5c, 0x63, 0x01, 0x40, 0x08, 0 }; // 74C912
-=======
 	static const uint8_t patterns[16] = { 0x3f, 0x06, 0x5b, 0x4f, 0x66, 0x6d, 0x7d, 0x07, 0x7f, 0x6f, 0x5c, 0x63, 0x01, 0x40, 0x08, 0 }; // 74C912
->>>>>>> upstream/master
 	m_out_offs++;
 
 	if (m_out_offs < 0x28)
 	{
-<<<<<<< HEAD
-		UINT8 data = m_p_ram[m_out_offs];
-		UINT8 segments = patterns[data&15] | (BIT(data, 4) ? 0x80 : 0);
-		output_set_digit_value(m_out_offs, segments);
-=======
 		uint8_t data = m_p_ram[m_out_offs];
 		uint8_t segments = patterns[data&15] | (BIT(data, 4) ? 0x80 : 0);
 		output().set_digit_value(m_out_offs, segments);
->>>>>>> upstream/master
 	}
 	else
 	if (m_out_offs < 0x6f)
@@ -265,11 +220,7 @@ TIMER_DEVICE_CALLBACK_MEMBER( spectra_state::outtimer)
 }
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( spectra, spectra_state )
-=======
 static MACHINE_CONFIG_START( spectra )
->>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6502, XTAL_3_579545MHz/4)  // actually a M6503
 	MCFG_CPU_PROGRAM_MAP(spectra_map)
@@ -316,17 +267,9 @@ MACHINE_CONFIG_END
 ROM_START(spectra)
 	ROM_REGION(0x10000, "maincpu", 0)
 	ROM_LOAD("spect_u5.dat", 0x0400, 0x0400, CRC(49e0759f) SHA1(c3badc90ff834cbc92d8c519780069310c2b1507))
-<<<<<<< HEAD
-	ROM_LOAD("spect_u4.dat", 0x0800, 0x0400, CRC(b58f1205) SHA1(9578fd89485f3f560789cb0f24c7116e4bc1d0da) BAD_DUMP)
-=======
 	ROM_LOAD("spect_u4.dat", 0x0800, 0x0400, CRC(15e53712) SHA1(e03049178569313cb89cfe0f09043c21d05b1988))
->>>>>>> upstream/master
 	ROM_LOAD("spect_u3.dat", 0x0c00, 0x0400, CRC(9ca7510f) SHA1(a87849f16903836158063d593bb4a2e90c7473c8))
 ROM_END
 
 
-<<<<<<< HEAD
-GAME(1979,  spectra,  0,  spectra,  spectra, driver_device, 0,  ROT0,  "Valley", "Spectra IV", MACHINE_MECHANICAL )
-=======
 GAME(1979,  spectra,  0,  spectra,  spectra, spectra_state, 0,  ROT0,  "Valley", "Spectra IV", MACHINE_MECHANICAL | MACHINE_NOT_WORKING )
->>>>>>> upstream/master

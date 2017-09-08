@@ -127,14 +127,6 @@ out:
 
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/z80/z80.h"
-#include "cpu/tms32010/tms32010.h"
-#include "sound/3812intf.h"
-#include "machine/bankdev.h"
-#include "includes/toaplipt.h"
-#include "includes/twincobr.h"
-=======
 #include "includes/twincobr.h"
 #include "includes/toaplipt.h"
 
@@ -143,7 +135,6 @@ out:
 #include "machine/bankdev.h"
 #include "sound/3812intf.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 class wardner_state : public twincobr_state
@@ -161,13 +152,8 @@ public:
 	DECLARE_DRIVER_INIT(wardner);
 
 protected:
-<<<<<<< HEAD
-	virtual void driver_start();
-	virtual void machine_reset();
-=======
 	virtual void driver_start() override;
 	virtual void machine_reset() override;
->>>>>>> upstream/master
 };
 
 
@@ -248,10 +234,6 @@ static ADDRESS_MAP_START( DSP_io_map, AS_IO, 16, wardner_state )
 	AM_RANGE(0x00, 0x00) AM_WRITE(wardner_dsp_addrsel_w)
 	AM_RANGE(0x01, 0x01) AM_READWRITE(wardner_dsp_r, wardner_dsp_w)
 	AM_RANGE(0x03, 0x03) AM_WRITE(twincobr_dsp_bio_w)
-<<<<<<< HEAD
-	AM_RANGE(TMS32010_BIO, TMS32010_BIO) AM_READ(twincobr_BIO_r)
-=======
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -380,11 +362,7 @@ void wardner_state::machine_reset()
 	m_membank->set_bank(0);
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( wardner, wardner_state )
-=======
 static MACHINE_CONFIG_START( wardner )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, XTAL_24MHz/4)      /* 6MHz */
@@ -407,10 +385,7 @@ static MACHINE_CONFIG_START( wardner )
 	MCFG_CPU_PROGRAM_MAP(DSP_program_map)
 	/* Data Map is internal to the CPU */
 	MCFG_CPU_IO_MAP(DSP_io_map)
-<<<<<<< HEAD
-=======
 	MCFG_TMS32010_BIO_IN_CB(READLINE(wardner_state, twincobr_BIO_r))
->>>>>>> upstream/master
 
 	MCFG_QUANTUM_TIME(attotime::from_hz(6000))      /* 100 CPU slices per frame */
 
@@ -427,11 +402,7 @@ static MACHINE_CONFIG_START( wardner )
 	MCFG_SCREEN_VIDEO_ATTRIBUTES(VIDEO_UPDATE_BEFORE_VBLANK)
 	MCFG_SCREEN_RAW_PARAMS(XTAL_14MHz/2, 446, 0, 320, 286, 0, 240)
 	MCFG_SCREEN_UPDATE_DRIVER(wardner_state, screen_update_toaplan0)
-<<<<<<< HEAD
-	MCFG_SCREEN_VBLANK_DEVICE("spriteram8", buffered_spriteram8_device, vblank_copy_rising)
-=======
 	MCFG_SCREEN_VBLANK_CALLBACK(DEVWRITELINE("spriteram8", buffered_spriteram8_device, vblank_copy_rising))
->>>>>>> upstream/master
 	MCFG_SCREEN_PALETTE("palette")
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", wardner)
@@ -610,12 +581,6 @@ ROM_START( wardnerj )
 ROM_END
 
 
-<<<<<<< HEAD
-GAME( 1987, wardner,  0,       wardner, wardner,  driver_device, 0, ROT0, "Toaplan / Taito Corporation Japan", "Wardner (World)", MACHINE_SUPPORTS_SAVE )
-GAME( 1987, pyros,    wardner, wardner, pyros,    driver_device, 0, ROT0, "Toaplan / Taito America Corporation", "Pyros (US)", MACHINE_SUPPORTS_SAVE )
-GAME( 1987, wardnerj, wardner, wardner, wardnerj, driver_device, 0, ROT0, "Toaplan / Taito Corporation", "Wardner no Mori (Japan)", MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1987, wardner,  0,       wardner, wardner,  wardner_state, 0, ROT0, "Toaplan / Taito Corporation Japan",   "Wardner (World)",         MACHINE_SUPPORTS_SAVE )
 GAME( 1987, pyros,    wardner, wardner, pyros,    wardner_state, 0, ROT0, "Toaplan / Taito America Corporation", "Pyros (US)",              MACHINE_SUPPORTS_SAVE )
 GAME( 1987, wardnerj, wardner, wardner, wardnerj, wardner_state, 0, ROT0, "Toaplan / Taito Corporation",         "Wardner no Mori (Japan)", MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

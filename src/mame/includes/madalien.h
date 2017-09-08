@@ -8,10 +8,7 @@
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-=======
 #include "machine/gen_latch.h"
->>>>>>> upstream/master
 #include "sound/discrete.h"
 
 
@@ -37,20 +34,6 @@ public:
 		m_audiocpu(*this, "audiocpu"),
 		m_discrete(*this, "discrete"),
 		m_gfxdecode(*this, "gfxdecode"),
-<<<<<<< HEAD
-		m_palette(*this, "palette") { }
-
-	required_shared_ptr<UINT8> m_videoram;
-	required_shared_ptr<UINT8> m_charram;
-	required_shared_ptr<UINT8> m_video_control;
-	required_shared_ptr<UINT8> m_shift_hi;
-	required_shared_ptr<UINT8> m_shift_lo;
-	required_shared_ptr<UINT8> m_video_flags;
-	required_shared_ptr<UINT8> m_headlight_pos;
-	required_shared_ptr<UINT8> m_edge1_pos;
-	required_shared_ptr<UINT8> m_edge2_pos;
-	required_shared_ptr<UINT8> m_scroll;
-=======
 		m_palette(*this, "palette"),
 		m_soundlatch(*this, "soundlatch"),
 		m_soundlatch2(*this, "soundlatch2") { }
@@ -65,24 +48,14 @@ public:
 	required_shared_ptr<uint8_t> m_edge1_pos;
 	required_shared_ptr<uint8_t> m_edge2_pos;
 	required_shared_ptr<uint8_t> m_scroll;
->>>>>>> upstream/master
 
 	tilemap_t *m_tilemap_fg;
 	tilemap_t *m_tilemap_edge1[4];
 	tilemap_t *m_tilemap_edge2[4];
-<<<<<<< HEAD
-	bitmap_ind16 *m_headlight_bitmap;
-	DECLARE_READ8_MEMBER(shift_r);
-	DECLARE_READ8_MEMBER(shift_rev_r);
-	DECLARE_WRITE8_MEMBER(madalien_output_w);
-	DECLARE_WRITE8_MEMBER(madalien_sound_command_w);
-	DECLARE_READ8_MEMBER(madalien_sound_command_r);
-=======
 	std::unique_ptr<bitmap_ind16> m_headlight_bitmap;
 	DECLARE_READ8_MEMBER(shift_r);
 	DECLARE_READ8_MEMBER(shift_rev_r);
 	DECLARE_WRITE8_MEMBER(madalien_output_w);
->>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(madalien_videoram_w);
 	DECLARE_WRITE8_MEMBER(madalien_charram_w);
 	DECLARE_INPUT_CHANGED_MEMBER(coin_inserted);
@@ -97,30 +70,19 @@ public:
 	TILE_GET_INFO_MEMBER(get_tile_info_FG);
 	DECLARE_VIDEO_START(madalien);
 	DECLARE_PALETTE_INIT(madalien);
-<<<<<<< HEAD
-	UINT32 screen_update_madalien(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	uint32_t screen_update_madalien(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	inline int scan_helper(int col, int row, int section);
 	void draw_edges(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int flip, int scroll_mode);
 	void draw_headlight(bitmap_ind16 &bitmap, const rectangle &cliprect, int flip);
 	void draw_foreground(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int flip);
-<<<<<<< HEAD
-	inline UINT8 shift_common(UINT8 hi, UINT8 lo);
-=======
 	inline uint8_t shift_common(uint8_t hi, uint8_t lo);
->>>>>>> upstream/master
 	required_device<cpu_device> m_maincpu;
 	required_device<cpu_device> m_audiocpu;
 	required_device<discrete_device> m_discrete;
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
-<<<<<<< HEAD
-=======
 	required_device<generic_latch_8_device> m_soundlatch;
 	required_device<generic_latch_8_device> m_soundlatch2;
->>>>>>> upstream/master
 };
 /*----------- defined in video/madalien.c -----------*/
 

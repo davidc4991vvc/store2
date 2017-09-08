@@ -5,11 +5,7 @@
 
     - Notes -
       Cycle counts are generally considered to be 100% accurate per-instruction, does not support mid-instruction
-<<<<<<< HEAD
-      interrupts although no software has been countered yet that requires it. Evidence of cycle accuracy is given
-=======
       interrupts although no software has been encountered yet that requires it. Evidence of cycle accuracy is given
->>>>>>> upstream/master
       in the form of the demoscene 'wild' demo, Craft, by [lft], which uses an ATmega88 to write video out a 6-bit
       RGB DAC pixel-by-pixel, synchronously with the frame timing. Intentionally modifying the timing of any of
       the existing opcodes has been shown to wildly corrupt the video output in Craft, so one can assume that the
@@ -41,17 +37,10 @@
 
 */
 
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __AVR8_H__
-#define __AVR8_H__
-=======
 #ifndef MAME_CPU_AVR8_AVR8_H
 #define MAME_CPU_AVR8_AVR8_H
 
 #pragma once
->>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -75,11 +64,7 @@
 //**************************************************************************
 
 #define MCFG_CPU_AVR8_EEPROM(_tag) \
-<<<<<<< HEAD
-	avr8_device::set_eeprom_tag(*device, _tag);
-=======
 	avr8_device::set_eeprom_tag(*device, "^" _tag);
->>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -94,26 +79,6 @@ class avr8_device;
 class avr8_device : public cpu_device
 {
 public:
-<<<<<<< HEAD
-	// construction/destruction
-	avr8_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock, const device_type type, UINT32 address_mask);
-
-	// inline configuration helpers
-	static void set_eeprom_tag(device_t &device, const char *tag) { downcast<avr8_device &>(device).m_eeprom_tag = tag; }
-
-	// fuse configs
-	void set_low_fuses(UINT8 byte);
-	void set_high_fuses(UINT8 byte);
-	void set_extended_fuses(UINT8 byte);
-	void set_lock_bits(UINT8 byte);
-
-	// public interfaces
-	virtual void update_interrupt(int source);
-	UINT64 get_elapsed_cycles()
-	{
-		return m_elapsed_cycles;
-	}
-=======
 	// inline configuration helpers
 	static void set_eeprom_tag(device_t &device, const char *tag) { downcast<avr8_device &>(device).m_eeprom.set_tag(tag); }
 
@@ -126,16 +91,11 @@ public:
 	// public interfaces
 	virtual void update_interrupt(int source);
 	uint64_t get_elapsed_cycles() const { return m_elapsed_cycles; }
->>>>>>> upstream/master
 
 	// register handling
 	DECLARE_WRITE8_MEMBER( regs_w );
 	DECLARE_READ8_MEMBER( regs_r );
-<<<<<<< HEAD
-	UINT32 m_shifted_pc;
-=======
 	uint32_t m_shifted_pc;
->>>>>>> upstream/master
 
 protected:
 	enum
@@ -146,31 +106,6 @@ protected:
 		CPU_TYPE_ATMEGA2560
 	};
 
-<<<<<<< HEAD
-	avr8_device(const machine_config &mconfig, const char *name, const char *tag, device_t *owner, UINT32 clock, const device_type type, UINT32 address_mask, address_map_constructor internal_map, UINT8 cpu_type, const char *shortname, const char *source);
-
-	// device-level overrides
-	virtual void device_start();
-	virtual void device_reset();
-
-	// device_execute_interface overrides
-	virtual UINT32 execute_min_cycles() const;
-	virtual UINT32 execute_max_cycles() const;
-	virtual UINT32 execute_input_lines() const;
-	virtual void execute_run();
-	virtual void execute_set_input(int inputnum, int state);
-
-	// device_memory_interface overrides
-	virtual const address_space_config *memory_space_config(address_spacenum spacenum = AS_0) const;
-
-	// device_disasm_interface overrides
-	virtual UINT32 disasm_min_opcode_bytes() const;
-	virtual UINT32 disasm_max_opcode_bytes() const;
-	virtual offs_t disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options);
-
-	// device_state_interface overrides
-	virtual void state_string_export(const device_state_entry &entry, std::string &str);
-=======
 	avr8_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock, const device_type type, uint32_t address_mask, address_map_constructor internal_map, uint8_t cpu_type);
 
 	// device-level overrides
@@ -194,36 +129,11 @@ protected:
 
 	// device_state_interface overrides
 	virtual void state_string_export(const device_state_entry &entry, std::string &str) const override;
->>>>>>> upstream/master
 
 	// address spaces
 	const address_space_config m_program_config;
 	const address_space_config m_data_config;
 	const address_space_config m_io_config;
-<<<<<<< HEAD
-	const char *m_eeprom_tag;
-	UINT8 *m_eeprom;
-
-	// bootloader
-	UINT16 m_boot_size;
-	UINT8 m_cpu_type;
-
-	// Fuses
-	UINT8 m_lfuses;
-	UINT8 m_hfuses;
-	UINT8 m_efuses;
-	UINT8 m_lock_bits;
-
-	// CPU registers
-	UINT32 m_pc;
-	UINT8 m_r[0x200];
-
-	// internal timers
-	INT32 m_timer_top[6];
-	UINT8 m_timer_increment[6];
-	UINT16 m_timer_prescale[6];
-	UINT16 m_timer_prescale_count[6];
-=======
 	required_region_ptr<uint8_t> m_eeprom;
 
 	// bootloader
@@ -245,78 +155,29 @@ protected:
 	uint8_t m_timer_increment[6];
 	uint16_t m_timer_prescale[6];
 	uint16_t m_timer_prescale_count[6];
->>>>>>> upstream/master
 	bool m_ocr2_not_reached_yet;
 
 	// SPI
 	bool m_spi_active;
-<<<<<<< HEAD
-	UINT8 m_spi_prescale;
-	UINT8 m_spi_prescale_count;
-	INT8 m_spi_prescale_countdown;
-	static const UINT8 spi_clock_divisor[8];
-=======
 	uint8_t m_spi_prescale;
 	uint8_t m_spi_prescale_count;
 	int8_t m_spi_prescale_countdown;
 	static const uint8_t spi_clock_divisor[8];
->>>>>>> upstream/master
 	void enable_spi();
 	void disable_spi();
 	void spi_update_masterslave_select();
 	void spi_update_clock_polarity();
 	void spi_update_clock_phase();
 	void spi_update_clock_rate();
-<<<<<<< HEAD
-	void change_spcr(UINT8 data);
-	void change_spsr(UINT8 data);
-
-	// internal CPU state
-	UINT32 m_addr_mask;
-=======
 	void change_spcr(uint8_t data);
 	void change_spsr(uint8_t data);
 
 	// internal CPU state
 	uint32_t m_addr_mask;
->>>>>>> upstream/master
 	bool m_interrupt_pending;
 
 	// other internal states
 	int m_icount;
-<<<<<<< HEAD
-	UINT64 m_elapsed_cycles;
-
-	// memory access
-	inline UINT8 program_read8(UINT32 addr);
-	inline UINT16 program_read16(UINT32 addr);
-	inline void program_write8(UINT32 addr, UINT8 data);
-	inline void program_write16(UINT32 addr, UINT16 data);
-	inline UINT8 io_read8(UINT16 addr);
-	inline void io_write8(UINT16 addr, UINT8 data);
-	inline UINT16 opcode_read();
-	inline void push(UINT8 val);
-	inline UINT8 pop();
-	inline bool is_long_opcode(UINT16 op);
-
-	// utility
-	void unimplemented_opcode(UINT32 op);
-
-	// interrupts
-	void set_irq_line(UINT16 vector, int state);
-	void update_interrupt_internal(int source);
-
-	// timers
-	void timer_tick(int cycles);
-	void update_timer_clock_source(UINT8 timer, UINT8 selection);
-	void update_timer_waveform_gen_mode(UINT8 timer, UINT8 mode);
-
-	// timer 0
-	void timer0_tick();
-	void changed_tccr0a(UINT8 data);
-	void changed_tccr0b(UINT8 data);
-	void update_ocr0(UINT8 newval, UINT8 reg);
-=======
 	uint64_t m_elapsed_cycles;
 
 	// memory access
@@ -340,24 +201,10 @@ protected:
 	void changed_tccr0a(uint8_t data);
 	void changed_tccr0b(uint8_t data);
 	void update_ocr0(uint8_t newval, uint8_t reg);
->>>>>>> upstream/master
 	void timer0_force_output_compare(int reg);
 
 	// timer 1
 	void timer1_tick();
-<<<<<<< HEAD
-	void changed_tccr1a(UINT8 data);
-	void changed_tccr1b(UINT8 data);
-	void update_timer1_input_noise_canceler();
-	void update_timer1_input_edge_select();
-	void update_ocr1(UINT16 newval, UINT8 reg);
-
-	// timer 2
-	void timer2_tick();
-	void changed_tccr2a(UINT8 data);
-	void changed_tccr2b(UINT8 data);
-	void update_ocr2(UINT8 newval, UINT8 reg);
-=======
 	void changed_tccr1a(uint8_t data);
 	void changed_tccr1b(uint8_t data);
 	void update_timer1_input_noise_canceler();
@@ -369,50 +216,29 @@ protected:
 	void changed_tccr2a(uint8_t data);
 	void changed_tccr2b(uint8_t data);
 	void update_ocr2(uint8_t newval, uint8_t reg);
->>>>>>> upstream/master
 	void timer2_force_output_compare(int reg);
 
 	// timer 3
 	void timer3_tick();
-<<<<<<< HEAD
-	void changed_tccr3a(UINT8 data);
-	void changed_tccr3b(UINT8 data);
-	void changed_tccr3c(UINT8 data);
-//  void update_ocr3(UINT8 newval, UINT8 reg);
-=======
 	void changed_tccr3a(uint8_t data);
 	void changed_tccr3b(uint8_t data);
 	void changed_tccr3c(uint8_t data);
 //  void update_ocr3(uint8_t newval, uint8_t reg);
->>>>>>> upstream/master
 //  void timer3_force_output_compare(int reg);
 
 	// timer 4
 	void timer4_tick();
-<<<<<<< HEAD
-	void changed_tccr4a(UINT8 data);
-	void changed_tccr4b(UINT8 data);
-	void changed_tccr4c(UINT8 data);
-	//void update_ocr4(UINT8 newval, UINT8 reg);
-=======
 	void changed_tccr4a(uint8_t data);
 	void changed_tccr4b(uint8_t data);
 	void changed_tccr4c(uint8_t data);
 	//void update_ocr4(uint8_t newval, uint8_t reg);
->>>>>>> upstream/master
 	//void timer4_force_output_compare(int reg);
 
 	// timer 5
 	void timer5_tick();
-<<<<<<< HEAD
-	void changed_tccr5a(UINT8 data);
-	void changed_tccr5b(UINT8 data);
-//  void update_ocr5(UINT8 newval, UINT8 reg);
-=======
 	void changed_tccr5a(uint8_t data);
 	void changed_tccr5b(uint8_t data);
 //  void update_ocr5(uint8_t newval, uint8_t reg);
->>>>>>> upstream/master
 //  void timer5_force_output_compare(int reg);
 
 	// address spaces
@@ -422,17 +248,10 @@ protected:
 };
 
 // device type definition
-<<<<<<< HEAD
-extern const device_type ATMEGA88;
-extern const device_type ATMEGA644;
-extern const device_type ATMEGA1280;
-extern const device_type ATMEGA2560;
-=======
 DECLARE_DEVICE_TYPE(ATMEGA88,   atmega88_device)
 DECLARE_DEVICE_TYPE(ATMEGA644,  atmega644_device)
 DECLARE_DEVICE_TYPE(ATMEGA1280, atmega1280_device)
 DECLARE_DEVICE_TYPE(ATMEGA2560, atmega2560_device)
->>>>>>> upstream/master
 
 // ======================> atmega88_device
 
@@ -440,11 +259,7 @@ class atmega88_device : public avr8_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	atmega88_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-=======
 	atmega88_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
->>>>>>> upstream/master
 };
 
 // ======================> atmega644_device
@@ -453,15 +268,9 @@ class atmega644_device : public avr8_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	atmega644_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	virtual void update_interrupt(int source);
-=======
 	atmega644_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	virtual void update_interrupt(int source) override;
->>>>>>> upstream/master
 };
 
 // ======================> atmega1280_device
@@ -470,15 +279,9 @@ class atmega1280_device : public avr8_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	atmega1280_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	virtual void update_interrupt(int source);
-=======
 	atmega1280_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	virtual void update_interrupt(int source) override;
->>>>>>> upstream/master
 };
 
 // ======================> atmega2560_device
@@ -487,15 +290,9 @@ class atmega2560_device : public avr8_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	atmega2560_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	virtual void update_interrupt(int source);
-=======
 	atmega2560_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	virtual void update_interrupt(int source) override;
->>>>>>> upstream/master
 };
 
 /***************************************************************************

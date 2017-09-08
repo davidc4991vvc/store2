@@ -45,10 +45,7 @@ This PCB plugs into the external expansion connector on the right side of the ma
 
 */
 
-<<<<<<< HEAD
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #include "exdos.h"
 
 
@@ -65,11 +62,7 @@ This PCB plugs into the external expansion connector on the right side of the ma
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type EP64_EXDOS = &device_creator<ep64_exdos_device>;
-=======
 DEFINE_DEVICE_TYPE(EP64_EXDOS, ep64_exdos_device, "ep64_exdos", "EP64 EXDOS")
->>>>>>> upstream/master
 
 
 //-------------------------------------------------
@@ -86,11 +79,7 @@ ROM_END
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const rom_entry *ep64_exdos_device::device_rom_region() const
-=======
 const tiny_rom_entry *ep64_exdos_device::device_rom_region() const
->>>>>>> upstream/master
 {
 	return ROM_NAME( ep64_exdos );
 }
@@ -110,33 +99,6 @@ SLOT_INTERFACE_END
 
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  MACHINE_CONFIG_FRAGMENT( ep64_exdos )
-//-------------------------------------------------
-
-static MACHINE_CONFIG_FRAGMENT( ep64_exdos )
-	MCFG_WD1770_ADD(WD1770_TAG, XTAL_8MHz)
-
-	MCFG_FLOPPY_DRIVE_ADD(WD1770_TAG":0", ep64_exdos_floppies, "35dd", ep64_exdos_device::floppy_formats)
-	MCFG_FLOPPY_DRIVE_ADD(WD1770_TAG":1", ep64_exdos_floppies, NULL,  ep64_exdos_device::floppy_formats)
-	MCFG_FLOPPY_DRIVE_ADD(WD1770_TAG":2", ep64_exdos_floppies, NULL,  ep64_exdos_device::floppy_formats)
-	MCFG_FLOPPY_DRIVE_ADD(WD1770_TAG":3", ep64_exdos_floppies, NULL,  ep64_exdos_device::floppy_formats)
-MACHINE_CONFIG_END
-
-
-//-------------------------------------------------
-//  machine_config_additions - device-specific
-//  machine configurations
-//-------------------------------------------------
-
-machine_config_constructor ep64_exdos_device::device_mconfig_additions() const
-{
-	return MACHINE_CONFIG_NAME( ep64_exdos );
-}
-
-
-
-=======
 //  device_add_mconfig - add device configuration
 //-------------------------------------------------
 
@@ -150,7 +112,6 @@ MACHINE_CONFIG_MEMBER( ep64_exdos_device::device_add_mconfig )
 MACHINE_CONFIG_END
 
 
->>>>>>> upstream/master
 //**************************************************************************
 //  LIVE DEVICE
 //**************************************************************************
@@ -159,24 +120,15 @@ MACHINE_CONFIG_END
 //  ep64_exdos_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-ep64_exdos_device::ep64_exdos_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-	device_t(mconfig, EP64_EXDOS, "EXDOS", tag, owner, clock, "ep64_exdos", __FILE__),
-=======
 ep64_exdos_device::ep64_exdos_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	device_t(mconfig, EP64_EXDOS, tag, owner, clock),
->>>>>>> upstream/master
 	device_ep64_expansion_bus_card_interface(mconfig, *this),
 	m_fdc(*this, WD1770_TAG),
 	m_floppy0(*this, WD1770_TAG":0"),
 	m_floppy1(*this, WD1770_TAG":1"),
 	m_floppy2(*this, WD1770_TAG":2"),
 	m_floppy3(*this, WD1770_TAG":3"),
-<<<<<<< HEAD
-	m_floppy(NULL),
-=======
 	m_floppy(nullptr),
->>>>>>> upstream/master
 	m_rom(*this, "rom")
 {
 }
@@ -188,17 +140,10 @@ ep64_exdos_device::ep64_exdos_device(const machine_config &mconfig, const char *
 
 void ep64_exdos_device::device_start()
 {
-<<<<<<< HEAD
-	m_slot->program().install_rom(0x080000, 0x087fff, 0, 0, m_rom->base());
-
-	m_slot->io().install_readwrite_handler(0x10, 0x13, 0, 0x04, READ8_DEVICE_DELEGATE(m_fdc, wd_fdc_t, read), WRITE8_DEVICE_DELEGATE(m_fdc, wd_fdc_t, write));
-	m_slot->io().install_readwrite_handler(0x18, 0x18, 0, 0x04, READ8_DELEGATE(ep64_exdos_device, read), WRITE8_DELEGATE(ep64_exdos_device, write));
-=======
 	m_slot->program().install_rom(0x080000, 0x087fff, m_rom->base());
 
 	m_slot->io().install_readwrite_handler(0x10, 0x13, 0, 0x04, 0, READ8_DEVICE_DELEGATE(m_fdc, wd_fdc_device_base, read), WRITE8_DEVICE_DELEGATE(m_fdc, wd_fdc_device_base, write));
 	m_slot->io().install_readwrite_handler(0x18, 0x18, 0, 0x04, 0, READ8_DELEGATE(ep64_exdos_device, read), WRITE8_DELEGATE(ep64_exdos_device, write));
->>>>>>> upstream/master
 }
 
 
@@ -210,11 +155,7 @@ void ep64_exdos_device::device_reset()
 {
 	m_fdc->reset();
 
-<<<<<<< HEAD
-	m_floppy = NULL;
-=======
 	m_floppy = nullptr;
->>>>>>> upstream/master
 	m_fdc->set_floppy(m_floppy);
 	m_fdc->dden_w(0);
 }
@@ -241,11 +182,7 @@ READ8_MEMBER( ep64_exdos_device::read )
 
 	*/
 
-<<<<<<< HEAD
-	UINT8 data = 0;
-=======
 	uint8_t data = 0;
->>>>>>> upstream/master
 
 	data |= m_fdc->intrq_r() << 1;
 	data |= m_fdc->drq_r() << 7;
@@ -277,11 +214,7 @@ WRITE8_MEMBER( ep64_exdos_device::write )
 
 	*/
 
-<<<<<<< HEAD
-	m_floppy = NULL;
-=======
 	m_floppy = nullptr;
->>>>>>> upstream/master
 
 	if (BIT(data, 0)) m_floppy = m_floppy0->get_device();
 	if (BIT(data, 1)) m_floppy = m_floppy1->get_device();

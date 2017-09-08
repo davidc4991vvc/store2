@@ -8,17 +8,10 @@
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __AWACS_H__
-#define __AWACS_H__
-=======
 #ifndef MAME_SOUND_AWACS_H
 #define MAME_SOUND_AWACS_H
 
 #pragma once
->>>>>>> upstream/master
 
 
 
@@ -47,31 +40,13 @@ class awacs_device : public device_t, public device_sound_interface
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	awacs_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-=======
 	awacs_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
->>>>>>> upstream/master
 
 	DECLARE_READ8_MEMBER(read);
 	DECLARE_WRITE8_MEMBER(write);
 
 	void set_dma_base(address_space &space, int offset0, int offset1);
 
-<<<<<<< HEAD
-	sound_stream *m_stream;
-
-protected:
-	// device-level overrides
-	virtual void device_start();
-	virtual void device_reset();
-	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
-
-	virtual void sound_stream_update(sound_stream &stream, stream_sample_t **inputs, stream_sample_t **outputs, int samples);
-
-	// inline data
-	UINT8 m_regs[0x100];
-=======
 protected:
 	// device-level overrides
 	virtual void device_start() override;
@@ -84,7 +59,6 @@ protected:
 
 	// inline data
 	uint8_t m_regs[0x100];
->>>>>>> upstream/master
 
 	int m_play_ptr, m_buffer_size, m_buffer_num;
 	bool m_playback_enable;
@@ -97,13 +71,6 @@ protected:
 
 
 // device type definition
-<<<<<<< HEAD
-extern const device_type AWACS;
-
-
-#endif /* __AWACS_H__ */
-=======
 DECLARE_DEVICE_TYPE(AWACS, awacs_device)
 
 #endif // MAME_SOUND_AWACS_H
->>>>>>> upstream/master

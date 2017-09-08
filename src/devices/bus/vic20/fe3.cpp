@@ -16,10 +16,7 @@
 
 */
 
-<<<<<<< HEAD
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #include "fe3.h"
 
 
@@ -59,11 +56,7 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type VIC20_FE3 = &device_creator<vic20_final_expansion_3_t>;
-=======
 DEFINE_DEVICE_TYPE(VIC20_FE3, vic20_final_expansion_3_device, "vic20_fe3", "Final Expansion v3")
->>>>>>> upstream/master
 
 
 //-------------------------------------------------
@@ -83,65 +76,32 @@ ROM_END
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const rom_entry *vic20_final_expansion_3_t::device_rom_region() const
-=======
 const tiny_rom_entry *vic20_final_expansion_3_device::device_rom_region() const
->>>>>>> upstream/master
 {
 	return ROM_NAME( vic20_fe3 );
 }
 
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  MACHINE_DRIVER( vic20_fe3 )
-//-------------------------------------------------
-
-static MACHINE_CONFIG_FRAGMENT( vic20_fe3 )
-=======
 //  device_add_mconfig - add device configuration
 //-------------------------------------------------
 
 MACHINE_CONFIG_MEMBER( vic20_final_expansion_3_device::device_add_mconfig )
->>>>>>> upstream/master
 	MCFG_AMD_29F040_ADD(AM29F040_TAG)
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-//-------------------------------------------------
-//  machine_config_additions - device-specific
-//  machine configurations
-//-------------------------------------------------
-
-machine_config_constructor vic20_final_expansion_3_t::device_mconfig_additions() const
-{
-	return MACHINE_CONFIG_NAME( vic20_fe3 );
-}
-
-
-=======
->>>>>>> upstream/master
 
 //**************************************************************************
 //  LIVE DEVICE
 //**************************************************************************
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  vic20_final_expansion_3_t - constructor
-//-------------------------------------------------
-
-vic20_final_expansion_3_t::vic20_final_expansion_3_t(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-	device_t(mconfig, VIC20_FE3, "Final Expansion v3", tag, owner, clock, "vic20_fe3", __FILE__),
-=======
 //  vic20_final_expansion_3_device - constructor
 //-------------------------------------------------
 
 vic20_final_expansion_3_device::vic20_final_expansion_3_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	device_t(mconfig, VIC20_FE3, tag, owner, clock),
->>>>>>> upstream/master
 	device_vic20_expansion_card_interface(mconfig, *this),
 	m_flash_rom(*this, AM29F040_TAG),
 	m_ram(*this, "sram"), m_reg1(0), m_reg2(0), m_lockbit(0)
@@ -153,11 +113,7 @@ vic20_final_expansion_3_device::vic20_final_expansion_3_device(const machine_con
 //  device_start - device-specific startup
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void vic20_final_expansion_3_t::device_start()
-=======
 void vic20_final_expansion_3_device::device_start()
->>>>>>> upstream/master
 {
 	m_ram.allocate(0x80000);
 
@@ -172,11 +128,7 @@ void vic20_final_expansion_3_device::device_start()
 //  device_reset - device-specific reset
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void vic20_final_expansion_3_t::device_reset()
-=======
 void vic20_final_expansion_3_device::device_reset()
->>>>>>> upstream/master
 {
 	m_reg1 = 0;
 	m_reg2 = 0;
@@ -187,11 +139,7 @@ void vic20_final_expansion_3_device::device_reset()
 //  vic20_cd_r - cartridge data read
 //-------------------------------------------------
 
-<<<<<<< HEAD
-UINT8 vic20_final_expansion_3_t::vic20_cd_r(address_space &space, offs_t offset, UINT8 data, int ram1, int ram2, int ram3, int blk1, int blk2, int blk3, int blk5, int io2, int io3)
-=======
 uint8_t vic20_final_expansion_3_device::vic20_cd_r(address_space &space, offs_t offset, uint8_t data, int ram1, int ram2, int ram3, int blk1, int blk2, int blk3, int blk5, int io2, int io3)
->>>>>>> upstream/master
 {
 	switch (m_reg1 & REG1_MODE_MASK)
 	{
@@ -412,11 +360,7 @@ uint8_t vic20_final_expansion_3_device::vic20_cd_r(address_space &space, offs_t 
 //  vic20_cd_w - cartridge data write
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void vic20_final_expansion_3_t::vic20_cd_w(address_space &space, offs_t offset, UINT8 data, int ram1, int ram2, int ram3, int blk1, int blk2, int blk3, int blk5, int io2, int io3)
-=======
 void vic20_final_expansion_3_device::vic20_cd_w(address_space &space, offs_t offset, uint8_t data, int ram1, int ram2, int ram3, int blk1, int blk2, int blk3, int blk5, int io2, int io3)
->>>>>>> upstream/master
 {
 	switch (m_reg1 & REG1_MODE_MASK)
 	{
@@ -634,11 +578,7 @@ void vic20_final_expansion_3_device::vic20_cd_w(address_space &space, offs_t off
 //  get_address -
 //-------------------------------------------------
 
-<<<<<<< HEAD
-offs_t vic20_final_expansion_3_t::get_address(int bank, int block, offs_t offset)
-=======
 offs_t vic20_final_expansion_3_device::get_address(int bank, int block, offs_t offset)
->>>>>>> upstream/master
 {
 	block ^= (m_reg2 >> 5) & 0x03;
 
@@ -650,15 +590,9 @@ offs_t vic20_final_expansion_3_device::get_address(int bank, int block, offs_t o
 //  read_register -
 //-------------------------------------------------
 
-<<<<<<< HEAD
-UINT8 vic20_final_expansion_3_t::read_register(offs_t offset)
-{
-	UINT8 data = 0;
-=======
 uint8_t vic20_final_expansion_3_device::read_register(offs_t offset)
 {
 	uint8_t data = 0;
->>>>>>> upstream/master
 
 	switch (offset)
 	{
@@ -679,11 +613,7 @@ uint8_t vic20_final_expansion_3_device::read_register(offs_t offset)
 //  write_register -
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void vic20_final_expansion_3_t::write_register(offs_t offset, UINT8 data)
-=======
 void vic20_final_expansion_3_device::write_register(offs_t offset, uint8_t data)
->>>>>>> upstream/master
 {
 	switch (offset)
 	{

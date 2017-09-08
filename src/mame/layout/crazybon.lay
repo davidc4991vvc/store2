@@ -1,15 +1,9 @@
 <?xml version="1.0"?>
 <mamelayout version="2">
 <!--
-<<<<<<< HEAD
-		Crazy Bonus 2002 control panel
-		May or may not match arrangement/colour of real control panel
-		Written by Vas Crabb.
-=======
         Crazy Bonus 2002 control panel
         May or may not match arrangement/colour of real control panel
         Written by Vas Crabb.
->>>>>>> upstream/master
 -->
 
 <!-- define button-lamps -->
@@ -21,19 +15,6 @@
 		<rect state="0">
 			<color red="0.15" green="0.0" blue="0.0" />
 		</rect>
-<<<<<<< HEAD
-		<text string="STOP">
-			<color red="0.0" green="0.0" blue="0.0" />
-			<bounds x="0" y="0.1" width="1" height="0.4" />
-		</text>
-		<text string="TAKE">
-			<color red="0.0" green="0.0" blue="0.0" />
-			<bounds x="0" y="0.5" width="1" height="0.4" />
-		</text>
-	</element>
-
-	<element name="big" defstate="0">
-=======
 		<text string="STOP ALL">
 			<color red="0.0" green="0.0" blue="0.0" />
 			<bounds x="0" y="0.3" width="1" height="0.4" />
@@ -54,36 +35,25 @@
 	</element>
 
 	<element name="stop2" defstate="0">
->>>>>>> upstream/master
 		<rect state="1">
 			<color red="1.0" green="0.0" blue="0.0" />
 		</rect>
 		<rect state="0">
 			<color red="0.15" green="0.0" blue="0.0" />
 		</rect>
-<<<<<<< HEAD
-		<text string="BIG">
-=======
 		<text string="STOP 2">
->>>>>>> upstream/master
 			<color red="0.0" green="0.0" blue="0.0" />
 			<bounds x="0" y="0.3" width="1" height="0.4" />
 		</text>
 	</element>
 
-<<<<<<< HEAD
-	<element name="small" defstate="0">
-=======
 	<element name="stop3" defstate="0">
->>>>>>> upstream/master
 		<rect state="1">
 			<color red="1.0" green="0.0" blue="0.0" />
 		</rect>
 		<rect state="0">
 			<color red="0.15" green="0.0" blue="0.0" />
 		</rect>
-<<<<<<< HEAD
-=======
 		<text string="STOP 3">
 			<color red="0.0" green="0.0" blue="0.0" />
 			<bounds x="0" y="0.3" width="1" height="0.4" />
@@ -114,7 +84,6 @@
 		<rect state="0">
 			<color red="0.5" green="0.0" blue="0.0" />
 		</rect>
->>>>>>> upstream/master
 		<text string="SMALL">
 			<color red="0.0" green="0.0" blue="0.0" />
 			<bounds x="0" y="0.1" width="1" height="0.4" />
@@ -138,8 +107,6 @@
 		</text>
 	</element>
 
-<<<<<<< HEAD
-=======
 	<element name="take" defstate="0">
 		<rect state="1">
 			<color red="1.0" green="0.5" blue="0.0" />
@@ -153,7 +120,6 @@
 		</text>
 	</element>
 
->>>>>>> upstream/master
 	<element name="start" defstate="0">
 		<rect state="1">
 			<color red="0.0" green="1.0" blue="0.0" />
@@ -198,8 +164,6 @@
 		</rect>
 	</element>
 
-<<<<<<< HEAD
-=======
 	<element name="big_b" defstate="0">
 		<rect state="1">
 			<color red="0.7" green="0.0" blue="0.0" />
@@ -209,7 +173,6 @@
 		</rect>
 	</element>
 
->>>>>>> upstream/master
 	<element name="bet_b" defstate="0">
 		<rect state="1">
 			<color red="0.7" green="0.0" blue="0.7" />
@@ -302,44 +265,6 @@
 <!-- define lamps -->
 
 		<bezel name="lamp3" element="bet_b" inputtag="IN0" inputmask="0x20">
-<<<<<<< HEAD
-			<bounds x="0.05" y="3.08" width="0.40" height="0.24" />
-		</bezel>
-		<bezel name="lamp3" element="bet" inputtag="IN0" inputmask="0x20">
-			<bounds x="0.07" y="3.10" width="0.36" height="0.20" />
-		</bezel>
-
-
-		<bezel name="lamp4" element="stop_b" inputtag="IN0" inputmask="0x10">
-			<bounds x="1.4" y="3.08" width="0.50" height="0.24" />
-		</bezel>
-		<bezel name="lamp4" element="stop" inputtag="IN0" inputmask="0x10">
-			<bounds x="1.42" y="3.10" width="0.46" height="0.20" />
-		</bezel>
-
-
-		<bezel name="lamp5" element="dup_b" inputtag="IN0" inputmask="0x08">
-			<bounds x="0.65" y="3.08" width="0.50" height="0.24" />
-		</bezel>
-		<bezel name="lamp5" element="dup" inputtag="IN0" inputmask="0x08">
-			<bounds x="0.67" y="3.10" width="0.46" height="0.20" />
-		</bezel>
-
-
-		<bezel name="lamp7" element="stop_b" inputtag="IN0" inputmask="0x04">
-			<bounds x="2.05" y="3.08" width="0.50" height="0.24" />
-		</bezel>
-		<bezel name="lamp7" element="big" inputtag="IN0" inputmask="0x04">
-			<bounds x="2.07" y="3.10" width="0.46" height="0.20" />
-		</bezel>
-
-
-		<bezel name="lamp6" element="stop_b" inputtag="IN0" inputmask="0x40">
-			<bounds x="2.7" y="3.08" width="0.50" height="0.24" />
-		</bezel>
-		<bezel name="lamp6" element="small" inputtag="IN0" inputmask="0x40">
-			<bounds x="2.72" y="3.10" width="0.46" height="0.20" />
-=======
 			<bounds x="0.05" y="3.08" width="0.25" height="0.24" />
 		</bezel>
 		<bezel name="lamp3" element="bet" inputtag="IN0" inputmask="0x20">
@@ -403,22 +328,14 @@
 		</bezel>
 		<bezel name="lamp6" element="small" inputtag="IN0" inputmask="0x40">
 			<bounds x="3.27" y="3.10" width="0.26" height="0.20" />
->>>>>>> upstream/master
 		</bezel>
 
 
 		<bezel name="lamp1" element="start_b" inputtag="IN0" inputmask="0x80">
-<<<<<<< HEAD
-			<bounds x="3.45" y="3.08" width="0.50" height="0.24" />
-		</bezel>
-		<bezel name="lamp1" element="start" inputtag="IN0" inputmask="0x80">
-			<bounds x="3.47" y="3.10" width="0.46" height="0.20" />
-=======
 			<bounds x="3.65" y="3.08" width="0.30" height="0.24" />
 		</bezel>
 		<bezel name="lamp1" element="start" inputtag="IN0" inputmask="0x80">
 			<bounds x="3.67" y="3.10" width="0.26" height="0.20" />
->>>>>>> upstream/master
 		</bezel>
 
 	</view>

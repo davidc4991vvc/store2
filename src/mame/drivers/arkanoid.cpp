@@ -1,9 +1,5 @@
 // license:BSD-3-Clause
-<<<<<<< HEAD
-// copyright-holders:Brad Oliver
-=======
 // copyright-holders:Brad Oliver,Stephane Humbert
->>>>>>> upstream/master
 /***************************************************************************
 
     Arkanoid driver
@@ -16,20 +12,6 @@
     Here are the versions we have:
 
     arkanoid    The earlier revisions. They each differ in the country byte. These
-<<<<<<< HEAD
-    arkanoiduo    versions work fine with the current MCU rom which needs to be
-    arkanoidjb    verified against a genuine decapped A75-06.IC16 M68705 MCU.
-    arkanoidu   USA version. A later revision, code has been inserted NOT patched.
-                The 68705 code for this one was not available; I made it up from
-                the current A75-06.IC16 changing the level data pointer table.
-    arkanoidj   Japanese version.  Final revision, MCU code not dumped.
-    arkanoidja  Japanese version. A later revision with level selector.
-                The 68705 code for this one was not available; I made it up from
-                the current A75-06.IC16 changing the level data pointer table.
-    arkanoidjbl Bootleg of the early Japanese version. The only difference is
-                that the warning text has been replaced by "WAIT"
-                This version works fine with the current A75-06.IC16 MCU ROM
-=======
     arkanoiduo    versions work fine both the bootleg A75-06.IC16 MCU rom and the
     arkanoidjb    genuine decapped Taito A75__06.IC16 MC68705 MCU.
     arkanoidu   USA version. MCU code properly dumped.
@@ -43,7 +25,6 @@
                   This version came with its own 68705p3 MCU ROM which is based on
                   the original Taito A75__06.IC16 one, which the pirates must have
                   extracted somehow.
->>>>>>> upstream/master
     arkatayt    Another bootleg of the early Japanese one, more heavily modified
     arkblock    Another bootleg of the early Japanese one, more heavily modified
     arkbloc2    Another bootleg
@@ -58,13 +39,6 @@
     above $F000. For these addresses it is vital to read zero values, or else the
     player will die for no reason.
 
-<<<<<<< HEAD
-Measured Clocks:
-   Z80 - 5997077Hz (6Mhz)
-M68705 - 2998533Hz (3Mhz)
-YM2149 - 2998531Hz (3Mhz)
-
-=======
     Some bootleg boards substitute an AY-3-8910A for the YM2149. Since the clock
     divider of the GI PSG cannot be configured, this effectively doubles the
     pitch of music and sound effects on actual hardware!
@@ -94,7 +68,6 @@ The hidden credits (with full names, if known, and 3 letter hiscore initials):
     Game Designed by: Akira Fujita
 
 The "Yasu" mentioned in the MCU code as a comment is probably Yasumasa Sasabe
->>>>>>> upstream/master
 
 ****************************************************************************
 
@@ -113,14 +86,6 @@ white paint.
 
 The following MCU images were tested on an original Arkanoid PCB using sets
 'arkanoid', 'arkanoidu' and 'arkanoiduo' and work as expected.
-<<<<<<< HEAD
-(1) MCU image with CRC 0x389a8cfb
-(2) MCU image with CRC 0x515d77b6
-
-An MCU found on a Tournament Arkanoid PCB was an unprotected type MC68705P3
-and when read the CRC matched (1). So we can assume the MCUs for Arkanoid and
-Tournament Arkanoid are the same.... or are at least interchangeable and work.
-=======
 (1) MCU image with CRC 0x389a8cfb [<- this is a deprotected copy of the original Taito A75__06 MCU code]
 (2) MCU image with CRC 0x515d77b6 [<- this is a blackbox-reverse engineered bootleg MCU written by pirates]
 
@@ -128,7 +93,6 @@ An MCU found on a Tournament Arkanoid PCB was an unprotected type MC68705P3
 and when read the CRC matched (1). So we assumed the MCUs for Arkanoid and
 Tournament Arkanoid are the same.... or are at least interchangeable and work.
 This turns out not to be the case, in retrospect.
->>>>>>> upstream/master
 
 "Tetris (D.R. Korea)" in MAME is a hack on an original Arkanoid PCB.
 The hack can be undone and returned to Arkanoid simply by removing the mod
@@ -175,12 +139,7 @@ K1100181A (ROMSTAR version added sticker)
 Notes:
       Z80         - Zilog Z0840006 CPU. Clock input 6.000MHz (12/2)
       YM2149F     - Yamaha YM2149F software-controlled sound generator (SSG). Clock input 1.5MHz (12/8)
-<<<<<<< HEAD
-      A75_06.IC14 - Motorola MC68705P5 micro-controller. Clock input 3.000MHz (12/4). Labelled 'A75 06' for
-                    ROMSTAR version. Note original Taito version 68705 and Tournament Arkanoid MCUs work fine.
-=======
       A75_06.IC14 - Motorola MC68705P5 micro-controller. Clock input 3.000MHz (12/4).
->>>>>>> upstream/master
       A75_*       - 27C256 EPROMs labelled 'A75 xx'. xx = 01, 03, 04, 05 etc. See ROM loading in the src for exact ROM usage.
       A75-0*      - MMI 63S241 bipolar PROMs. Compatible with MB7116, 7621, DM74S571N etc
       TMM2018     - Toshiba TMM2018 2k x8 SRAM (DIP24)
@@ -233,36 +192,15 @@ Notes:
           GROUND | 1 A | GROUND
        VIDEO RED | 2 B | VIDEO GROUND
      VIDEO GREEN | 3 C | VIDEO BLUE
-<<<<<<< HEAD
-     VIDEO SYNC  | 4 D |
-     SOUND OUT + | 5 E | SOUND OUT -
-            POST | 6 F | POST
-                 | 7 H |
-=======
      VIDEO SYNC  | 4 D | NC
      SOUND OUT + | 5 E | SOUND OUT -
             POST | 6 F | POST
               NC | 7 H | NC
->>>>>>> upstream/master
      COIN SW (A) | 8 J | COIN SW (B)
   COIN METER (A) | 9 K | COIN METER (B)
 COIN LOCKOUT (A) |10 L | COIN LOCKOUT (B)
       SERVICE SW |11 M | TILT SW
          START 1 |12 N | START 2
-<<<<<<< HEAD
-                 |13 P |
-                 |14 R |
-        1P RIGHT |15 S | 2P RIGHT \
-         lP LEFT |16 T | 2P LEFT  / Connect 15/16/S/T to the spinner left/right connections
-                 |17 U |
-                 |18 V |
-                 |19 W |
-                 |20 X |
-   lP SERVE/FIRE |21 Y | 2P SERVE/FIRE
-                 |22 Z |
-                 |-----|
-
-=======
              NC* |13 P | NC*
              NC* |14 R | NC*
         1P RIGHT |15 S | 2P RIGHT \
@@ -278,7 +216,6 @@ COIN LOCKOUT (A) |10 L | COIN LOCKOUT (B)
 * - these NC pins are used for the main joysticks on certain other games
    (bubble bobble etc) which use the 22 pin taito connector, but are N/C and
    do not connect anywhere on the arkanoid pcb.
->>>>>>> upstream/master
 Note about spinner controller
 -----------------------------
 
@@ -287,11 +224,7 @@ controller or home-made spinner built from a PC mouse will work but the player m
 slowly and the game is unplayable. The Taito geared spinner moves the optical wheel *very*
 fast to ensure the player moves fast enough to follow and return the ball easily. The ratio of
 the control knob rotation to the optical wheel rotation is 1:20 so for one rotation of the
-<<<<<<< HEAD
-control knob the optical wheel rotates 20 times.
-=======
 control knob the optical wheel rotates 20 times. The optical quadrature wheel has 24 slots.
->>>>>>> upstream/master
 Generally a half-turn of the control knob is enough to move the player across the full screen.
 
 The spinner connections are....
@@ -358,11 +291,7 @@ Stephh's notes (based on the games Z80 code and some tests) :
 
 0) Useful addresses and routines
 
-<<<<<<< HEAD
-0a) "Game Corporation" bootlegs, Tayto bootlegs, 'arkmcubl', 'ark1ball'
-=======
 0a) "Game Corporation" bootlegs, Tayto bootlegs, 'arkanoidjbl', 'ark1ball'
->>>>>>> upstream/master
 
   - Basic routines :
       * 0x2044 : BC += A;
@@ -456,23 +385,12 @@ Stephh's notes (based on the games Z80 code and some tests) :
 
 1) Bootlegs with MCU
 
-<<<<<<< HEAD
-1a) 'arkmcubl'
-
-  - Region = 0x76 (Japan).
-  - The bootleg is based on the Japenese version.
-  - The MCU is dumped, but the game doesn't run with it.
-    However, there is no problem if I use the one from the World early version.
-    Until I know what to do with it, I use the MCU from the World early version
-    and "save" the existing one in "user1". Let me know if it's good.
-=======
 1a) 'arkanoidjbl'
 
   - Region = 0x76 (Japan).
   - The bootleg is based on the Japanese version.
   - The MCU is dumped and used, it is based on the real Taito MCU but with the
     MCU's security features disabled, so must have been extracted by bootleggers.
->>>>>>> upstream/master
   - "(c) Taito Corporation 1986".
   - Displays the "Arkanoid" title.
   - "HARDWARE TEST" message is written, tests are performed, countdown 11 to 0.
@@ -491,17 +409,10 @@ Stephh's notes (based on the games Z80 code and some tests) :
     and a fix (no dips selection) 1 ball x game and NO starting level selection".
     However, there is still code in the game which tests the Dip Switches !
   - Region = 0x76 (Japan).
-<<<<<<< HEAD
-  - The bootleg is based on a Japenese early version we don't have.
-    In fact, it is completely based on 'arkmcubl' :
-
-      Z:\MAME\roms>romcmp ark1ball.zip arkmcubl.zip -d
-=======
   - The bootleg is based on a Japanese early version we don't have.
     In fact, it is completely based on 'arkanoidjbl' :
 
       Z:\MAME\roms>romcmp ark1ball.zip arkanoidjbl.zip -d
->>>>>>> upstream/master
       3 and 2 files
       e1.6d                   a-1.7d                  IDENTICAL
       e2.6f                   2palline.7f             99.957275%
@@ -522,15 +433,9 @@ Stephh's notes (based on the games Z80 code and some tests) :
       00001EF7: 52 42
       00001EF9: 66 46
 
-<<<<<<< HEAD
-  - The MCU is not dumped, and the game doesn't run with the one from 'arkmcubl'.
-    However, there is no problem if I use the one from the World early version.
-    Until I know what to do with it, I use the MCU from the World early version.
-=======
   - The MCU is not dumped, but the game runs with either the Taito or Pirate
     version of the A75-06 MCU. It most likely really used the latter,
     but the actual MCU used is unknown.
->>>>>>> upstream/master
   - This version is supposed to be a harder version :
       * less lives (1 or 2 instead of 3 or 5)
       * 60K for 1st bonus life instead of 20K
@@ -718,11 +623,7 @@ Stephh's notes (based on the games Z80 code and some tests) :
 3) "Tayto" bootlegs and assimilated ones.
 
   - Region = 0x76 (Japan).
-<<<<<<< HEAD
-  - All bootlegs are based on a Japenese early version we don't have.
-=======
   - All bootlegs are based on a Japanese early version we don't have.
->>>>>>> upstream/master
   - Start of levels table at 0xbd75 (32 * 2 bytes - LSB first)
 
 3a) 'arkatayt'
@@ -766,11 +667,7 @@ TO DO (2006.09.12) :
       * 'arkatour'
   - Add more notes about main addresses and routines in the Z80
   - Try to understand the problem with the MCU in the following sets :
-<<<<<<< HEAD
-      * 'arkmcubl'
-=======
       * 'arkanoidjbl'
->>>>>>> upstream/master
       * 'ark1ball'
 
 
@@ -778,11 +675,7 @@ Stephh's log (2006.09.05) :
 
   - Interverted 'arkblock' and 'arkbloc2' sets for better comparaison
   - Renamed sets :
-<<<<<<< HEAD
-      * 'arkbl2'   -> 'arkmcubl'
-=======
       * 'arkbl2'   -> 'arkanoidjbl'
->>>>>>> upstream/master
       * 'arkbl3'   -> 'arkgcbl'
   - Changed some games descriptions
   - Removed flags from the following sets :
@@ -802,11 +695,7 @@ Stephh's log (2006.09.12) :
       * 'arkangc2'
       * 'arkatayt'
   - Removed flags from the following sets :
-<<<<<<< HEAD
-      * 'arkmcubl'
-=======
       * 'arkanoidjbl'
->>>>>>> upstream/master
     This way, even if emulation isn't perfect, people can try them and report bugs.
 
 
@@ -896,12 +785,6 @@ DIP locations verified for:
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/z80/z80.h"
-#include "includes/arkanoid.h"
-#include "sound/ay8910.h"
-#include "cpu/m6805/m6805.h"
-=======
 #include "includes/arkanoid.h"
 
 #include "cpu/z80/z80.h"
@@ -910,23 +793,10 @@ DIP locations verified for:
 #include "screen.h"
 #include "speaker.h"
 
->>>>>>> upstream/master
 
 /***************************************************************************/
 
 /* Memory Maps */
-<<<<<<< HEAD
-
-static ADDRESS_MAP_START( arkanoid_map, AS_PROGRAM, 8, arkanoid_state )
-	AM_RANGE(0x0000, 0xbfff) AM_ROM
-	AM_RANGE(0xc000, 0xc7ff) AM_RAM
-	AM_RANGE(0xd000, 0xd001) AM_DEVWRITE("aysnd", ay8910_device, address_data_w)
-	AM_RANGE(0xd001, 0xd001) AM_DEVREAD("aysnd", ay8910_device, data_r)
-	AM_RANGE(0xd008, 0xd008) AM_WRITE(arkanoid_d008_w)  /* gfx bank, flip screen etc. */
-	AM_RANGE(0xd00c, 0xd00c) AM_READ_PORT("SYSTEM")     /* 2 bits from the 68705 */
-	AM_RANGE(0xd010, 0xd010) AM_READ_PORT("BUTTONS") AM_WRITE(watchdog_reset_w)
-	AM_RANGE(0xd018, 0xd018) AM_READWRITE(arkanoid_Z80_mcu_r, arkanoid_Z80_mcu_w)  /* input from the 68705 */
-=======
 /*
 Address maps (x = ignored; * = selects address within this range)
 z80 address map:
@@ -964,7 +834,6 @@ static ADDRESS_MAP_START( arkanoid_map, AS_PROGRAM, 8, arkanoid_state )
 	AM_RANGE(0xd00c, 0xd00c) AM_READ_PORT("SYSTEM") AM_MIRROR(0x0fe3) /* start, service, coins, and 2 bits from the 68705 */
 	AM_RANGE(0xd010, 0xd010) AM_READ_PORT("BUTTONS") AM_DEVWRITE("watchdog", watchdog_timer_device, reset_w) AM_MIRROR(0x0fe7)
 	AM_RANGE(0xd018, 0xd018) AM_DEVREADWRITE("mcu", arkanoid_mcu_device_base, data_r, data_w) AM_MIRROR(0x0fe7) /* input from the 68705 */
->>>>>>> upstream/master
 	AM_RANGE(0xe000, 0xe7ff) AM_RAM_WRITE(arkanoid_videoram_w) AM_SHARE("videoram")
 	AM_RANGE(0xe800, 0xe83f) AM_RAM AM_SHARE("spriteram")
 	AM_RANGE(0xe840, 0xefff) AM_RAM
@@ -978,11 +847,7 @@ static ADDRESS_MAP_START( bootleg_map, AS_PROGRAM, 8, arkanoid_state )
 	AM_RANGE(0xd001, 0xd001) AM_DEVREADWRITE("aysnd", ay8910_device, data_r, data_w)
 	AM_RANGE(0xd008, 0xd008) AM_WRITE(arkanoid_d008_w)  /* gfx bank, flip screen etc. */
 	AM_RANGE(0xd00c, 0xd00c) AM_READ_PORT("SYSTEM")
-<<<<<<< HEAD
-	AM_RANGE(0xd010, 0xd010) AM_READ_PORT("BUTTONS") AM_WRITE(watchdog_reset_w)
-=======
 	AM_RANGE(0xd010, 0xd010) AM_READ_PORT("BUTTONS") AM_DEVWRITE("watchdog", watchdog_timer_device, reset_w)
->>>>>>> upstream/master
 	AM_RANGE(0xd018, 0xd018) AM_READ_PORT("MUX") AM_WRITENOP
 	AM_RANGE(0xe000, 0xe7ff) AM_RAM_WRITE(arkanoid_videoram_w) AM_SHARE("videoram")
 	AM_RANGE(0xe800, 0xe83f) AM_RAM AM_SHARE("spriteram")
@@ -997,22 +862,14 @@ static ADDRESS_MAP_START( hexa_map, AS_PROGRAM, 8, arkanoid_state )
 	AM_RANGE(0xd001, 0xd001) AM_DEVREAD("aysnd", ay8910_device, data_r)
 	AM_RANGE(0xd000, 0xd001) AM_DEVWRITE("aysnd", ay8910_device, address_data_w)
 	AM_RANGE(0xd008, 0xd008) AM_WRITE(hexa_d008_w)
-<<<<<<< HEAD
-	AM_RANGE(0xd010, 0xd010) AM_WRITE(watchdog_reset_w) /* or IRQ acknowledge, or both */
-=======
 	AM_RANGE(0xd010, 0xd010) AM_DEVWRITE("watchdog", watchdog_timer_device, reset_w) /* or IRQ acknowledge, or both */
->>>>>>> upstream/master
 	AM_RANGE(0xe000, 0xe7ff) AM_RAM_WRITE(arkanoid_videoram_w) AM_SHARE("videoram")
 ADDRESS_MAP_END
 
 READ8_MEMBER(arkanoid_state::hexaa_f000_r)
 {
 //  return m_hexaa_from_sub;
-<<<<<<< HEAD
-	return rand();
-=======
 	return machine().rand();
->>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(arkanoid_state::hexaa_f000_w)
@@ -1027,11 +884,7 @@ static ADDRESS_MAP_START( hexaa_map, AS_PROGRAM, 8, arkanoid_state )
 	AM_RANGE(0xd001, 0xd001) AM_DEVREAD("aysnd", ay8910_device, data_r)
 	AM_RANGE(0xd000, 0xd001) AM_DEVWRITE("aysnd", ay8910_device, address_data_w)
 	AM_RANGE(0xd008, 0xd008) AM_WRITE(hexa_d008_w)
-<<<<<<< HEAD
-	AM_RANGE(0xd010, 0xd010) AM_WRITE(watchdog_reset_w) /* or IRQ acknowledge, or both */
-=======
 	AM_RANGE(0xd010, 0xd010) AM_DEVWRITE("watchdog", watchdog_timer_device, reset_w) /* or IRQ acknowledge, or both */
->>>>>>> upstream/master
 	AM_RANGE(0xe000, 0xe7ff) AM_RAM_WRITE(arkanoid_videoram_w) AM_SHARE("videoram")
 	AM_RANGE(0xe800, 0xefff) AM_RAM
 	AM_RANGE(0xf000, 0xf000) AM_READWRITE(hexaa_f000_r, hexaa_f000_w)
@@ -1050,19 +903,11 @@ WRITE8_MEMBER(arkanoid_state::hexaa_sub_80_w)
 READ8_MEMBER(arkanoid_state::hexaa_sub_90_r)
 {
 	return m_hexaa_from_main;
-<<<<<<< HEAD
-//  return rand();
-}
-
-static ADDRESS_MAP_START( hexaa_sub_iomap, AS_IO, 8, arkanoid_state )
-	ADDRESS_MAP_GLOBAL_MASK(0x0f)
-=======
 //  return machine().rand();
 }
 
 static ADDRESS_MAP_START( hexaa_sub_iomap, AS_IO, 8, arkanoid_state )
 	ADDRESS_MAP_GLOBAL_MASK(0x9f)
->>>>>>> upstream/master
 	AM_RANGE(0x00, 0x0f) AM_RAM // ?? could be communication with the other chip (protection?)
 	AM_RANGE(0x80, 0x80) AM_WRITE(hexaa_sub_80_w)
 	AM_RANGE(0x90, 0x90) AM_READ(hexaa_sub_90_r)
@@ -1082,18 +927,6 @@ static ADDRESS_MAP_START( brixian_map, AS_PROGRAM, 8, arkanoid_state )
 ADDRESS_MAP_END
 
 
-<<<<<<< HEAD
-static ADDRESS_MAP_START( mcu_map, AS_PROGRAM, 8, arkanoid_state )
-	ADDRESS_MAP_GLOBAL_MASK(0x7ff)
-	AM_RANGE(0x0000, 0x0000) AM_READWRITE(arkanoid_68705_port_a_r, arkanoid_68705_port_a_w)
-	AM_RANGE(0x0001, 0x0001) AM_READ_PORT("MUX")
-	AM_RANGE(0x0002, 0x0002) AM_READWRITE(arkanoid_68705_port_c_r, arkanoid_68705_port_c_w)
-	AM_RANGE(0x0004, 0x0004) AM_WRITE(arkanoid_68705_ddr_a_w)
-	AM_RANGE(0x0006, 0x0006) AM_WRITE(arkanoid_68705_ddr_c_w)
-	AM_RANGE(0x0010, 0x007f) AM_RAM
-	AM_RANGE(0x0080, 0x07ff) AM_ROM
-ADDRESS_MAP_END
-=======
 
 /* MCU Hookup based on 'Arkanoid_TAITO_(Japan 1986) PCB.rar' from Taro and others at http://zx-pk.ru forums
 NOTE and TODO: these comments have not been significantly updated since the real taito arkanoid schematics were found. beware of mistakes!
@@ -1151,7 +984,6 @@ Note: despite having a signal on it (/VBLK according to the schematics), the TIM
 
 Note2: PA0 is connected to bit 0 of both the z80->68705 latch and the 68705->z80 latch. The board trace from http://zx-pk.ru is known to be incomplete, so its likely all of the PAx bits go both ways.
 */
->>>>>>> upstream/master
 
 
 /***************************************************************************/
@@ -1167,15 +999,6 @@ static INPUT_PORTS_START( arkanoid )
 	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_TILT )
 	PORT_BIT( 0x10, IP_ACTIVE_HIGH, IPT_COIN1 )
 	PORT_BIT( 0x20, IP_ACTIVE_HIGH, IPT_COIN2 )
-<<<<<<< HEAD
-	PORT_BIT( 0xc0, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, arkanoid_state,arkanoid_68705_input_r, NULL)  /* Inputs from the 68705 */
-
-	PORT_START("BUTTONS")
-	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_BUTTON1 )
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNKNOWN )
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_BUTTON1 ) PORT_COCKTAIL
-	PORT_BIT( 0xf8, IP_ACTIVE_LOW, IPT_UNKNOWN )
-=======
 	PORT_BIT( 0xc0, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, arkanoid_state, arkanoid_semaphore_input_r, nullptr) // Z80 and MCU Semaphores
 
 	PORT_START("SYSTEM2") // these are the secondary "RH" joystick ports for P1 and P2; the circuitry to read them is populated on the arkanoid PCB, but the game never actually reads these.
@@ -1197,7 +1020,6 @@ static INPUT_PORTS_START( arkanoid )
 	//PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_BUTTON2 ) PORT_COCKTAIL
 	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_UNKNOWN )
 	PORT_BIT( 0xf0, IP_ACTIVE_LOW, IPT_UNKNOWN )
->>>>>>> upstream/master
 
 	PORT_START("MUX")
 	PORT_BIT( 0xff, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, arkanoid_state,arkanoid_input_mux, "P1\0P2")
@@ -1481,25 +1303,6 @@ GFXDECODE_END
 
 void arkanoid_state::machine_start()
 {
-<<<<<<< HEAD
-	save_item(NAME(m_bootleg_cmd));
-
-	save_item(NAME(m_paddle_select));
-	save_item(NAME(m_z80write));
-	save_item(NAME(m_fromz80));
-	save_item(NAME(m_m68705write));
-	save_item(NAME(m_toz80));
-
-	save_item(NAME(m_port_a_in));
-	save_item(NAME(m_port_a_out));
-	save_item(NAME(m_ddr_a));
-
-	save_item(NAME(m_port_c_out));
-	save_item(NAME(m_ddr_c));
-
-	save_item(NAME(m_gfxbank));
-	save_item(NAME(m_palettebank));
-=======
 	save_item(NAME(m_gfxbank));
 	save_item(NAME(m_palettebank));
 
@@ -1507,34 +1310,16 @@ void arkanoid_state::machine_start()
 
 	save_item(NAME(m_bootleg_id));
 	save_item(NAME(m_bootleg_cmd));
->>>>>>> upstream/master
 }
 
 void arkanoid_state::machine_reset()
 {
-<<<<<<< HEAD
-	m_port_a_in = 0;
-	m_port_a_out = 0;
-	m_z80write = 0;
-	m_m68705write = 0;
-
-	m_bootleg_cmd = 0;
-	m_paddle_select = 0;
-	m_fromz80 = 0;
-	m_toz80 = 0;
-	m_ddr_a = 0;
-	m_ddr_c = 0;
-	m_port_c_out = 0;
-	m_gfxbank = 0;
-	m_palettebank = 0;
-=======
 	m_gfxbank = 0;
 	m_palettebank = 0;
 
 	m_paddle_select = 0;
 
 	m_bootleg_cmd = 0;
->>>>>>> upstream/master
 }
 
 /*
@@ -1548,27 +1333,18 @@ Pixel clock: 3 MHz = 192 HTotal, assuming it's 6 MHz
 #define ARKANOID_VBEND 16
 #define ARKANOID_VBSTART 240
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( arkanoid, arkanoid_state )
-=======
 static MACHINE_CONFIG_START( arkanoid )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, XTAL_12MHz/2) /* verified on pcb */
 	MCFG_CPU_PROGRAM_MAP(arkanoid_map)
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", arkanoid_state,  irq0_line_hold)
 
-<<<<<<< HEAD
-	MCFG_CPU_ADD("mcu", M68705, XTAL_12MHz/4) /* verified on pcb */
-	MCFG_CPU_PROGRAM_MAP(mcu_map)
-=======
 	MCFG_WATCHDOG_ADD("watchdog")
 	MCFG_WATCHDOG_VBLANK_INIT("screen", 128); // 74LS393 at ic21, counts 128 vblanks before firing watchdog; z80 /RESET ls08 ic19 pin 9 input comes from ls04 ic20 pin 8, ls04 ic20 pin 9 input comes from ic21 ls393 pin 8, and ls393 is set to chain both 4 bit counters together
 
 	MCFG_DEVICE_ADD("mcu", ARKANOID_68705P5, XTAL_12MHz/4) /* verified on pcb */
 	MCFG_ARKANOID_MCU_PORTB_R_CB(IOPORT("MUX"))
->>>>>>> upstream/master
 
 	MCFG_QUANTUM_TIME(attotime::from_hz(6000))                  // 100 CPU slices per second to synchronize between the MCU and the main CPU
 
@@ -1583,25 +1359,11 @@ static MACHINE_CONFIG_START( arkanoid )
 	MCFG_SCREEN_PALETTE("palette")
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", arkanoid)
-<<<<<<< HEAD
-	MCFG_PALETTE_ADD_RRRRGGGGBBBB_PROMS("palette", 512)
-=======
 	MCFG_PALETTE_ADD_RRRRGGGGBBBB_PROMS("palette", "proms", 512)
->>>>>>> upstream/master
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-	MCFG_SOUND_ADD("aysnd", YM2149, XTAL_12MHz/4/2) /* YM2149 clock is 3mhz, pin 26 is low so 3mhz/2 */
-	MCFG_AY8910_PORT_A_READ_CB(IOPORT("UNUSED"))
-	MCFG_AY8910_PORT_B_READ_CB(IOPORT("DSW"))
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.33)
-MACHINE_CONFIG_END
-
-
-static MACHINE_CONFIG_START( hexa, arkanoid_state )
-=======
 	MCFG_SOUND_ADD("aysnd", YM2149, XTAL_12MHz/4) /* YM2149 clock is 3mhz, pin 26 is low so final clock is 3mhz/2, handled inside the ay core */
 	MCFG_AY8910_OUTPUT_TYPE(AY8910_SINGLE_OUTPUT | YM2149_PIN26_LOW) // all outputs are tied together with no resistors, and pin 26 is low
 	MCFG_AY8910_PORT_A_READ_CB(IOPORT("UNUSED"))
@@ -1648,18 +1410,14 @@ MACHINE_CONFIG_END
 
 
 static MACHINE_CONFIG_START( hexa )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, XTAL_12MHz/2)  /* Imported from arkanoid - correct? */
 	MCFG_CPU_PROGRAM_MAP(hexa_map)
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", arkanoid_state,  irq0_line_hold)
 
-<<<<<<< HEAD
-=======
 	MCFG_WATCHDOG_ADD("watchdog")
 
->>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
 //  MCFG_SCREEN_REFRESH_RATE(60)
@@ -1671,11 +1429,7 @@ static MACHINE_CONFIG_START( hexa )
 	MCFG_SCREEN_PALETTE("palette")
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", hexa)
-<<<<<<< HEAD
-	MCFG_PALETTE_ADD_RRRRGGGGBBBB_PROMS("palette", 256)
-=======
 	MCFG_PALETTE_ADD_RRRRGGGGBBBB_PROMS("palette", "proms", 256)
->>>>>>> upstream/master
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
@@ -1696,21 +1450,7 @@ static MACHINE_CONFIG_DERIVED( hexaa, hexa )
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_DERIVED( bootleg, arkanoid )
-
-	/* basic machine hardware */
-	MCFG_CPU_MODIFY("maincpu")
-	MCFG_CPU_PROGRAM_MAP(bootleg_map)
-
-	MCFG_DEVICE_REMOVE("mcu")
-MACHINE_CONFIG_END
-
-
-static MACHINE_CONFIG_START( brixian, arkanoid_state )
-=======
 static MACHINE_CONFIG_START( brixian )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, XTAL_12MHz/2)
@@ -1718,11 +1458,7 @@ static MACHINE_CONFIG_START( brixian )
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", arkanoid_state,  irq0_line_hold)
 
 	/* there is a 68705 but it's only role appears to be to copy data to RAM at startup */
-<<<<<<< HEAD
-	/* the RAM is also battery backed, making the 68705 almost reundant as long as the battery doesn't die(!) */
-=======
 	/* the RAM is also battery backed, making the 68705 almost redundant as long as the battery doesn't die(!) */
->>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
@@ -1735,11 +1471,7 @@ static MACHINE_CONFIG_START( brixian )
 	MCFG_SCREEN_PALETTE("palette")
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", arkanoid)
-<<<<<<< HEAD
-	MCFG_PALETTE_ADD_RRRRGGGGBBBB_PROMS("palette", 512)
-=======
 	MCFG_PALETTE_ADD_RRRRGGGGBBBB_PROMS("palette", "proms", 512)
->>>>>>> upstream/master
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
@@ -1754,31 +1486,6 @@ MACHINE_CONFIG_END
 /***************************************************************************/
 
 /* ROMs */
-<<<<<<< HEAD
-/* rom numbering, with guesses:
-    A75 01   = Z80 code 1/2 v1.0 Japan
-    A75 01-1 = Z80 code 1/2 v1.1 Japan and USA/Romstar
-    A75 02   = Z80 code 2/2 v1.0 Japan
-    A75 03   = GFX 1/3
-    A75 04   = GFX 2/3
-    A75 05   = GFX 3/3
-    A75 06   = MC68705P5 MCU code, v1.0 Japan and v1.0 USA/Romstar
-    A75 07   = PROM red
-    A75 08   = PROM green
-    A75 09   = PROM blue
-    A75 10   = Z80 code 2/2 v1.1 USA/Romstar
-    A75 11   = Z80 code 2/2 v1.2 Japan (paired with 01-1 v1.1 Japan)
-    (A75 12 through 17 are unknown, could be another two sets of z80 code plus mc68705p5)
-    A75 18   = Z80 code v2.0 2/2 USA/Romstar
-    A75 19   = Z80 code v2.0 1/2 USA/Romstar
-    A75 20   = MC68705P5 MCU code, v2.0 USA/Romstar
-    A75 21   = Z80 code v2.0 1/2 Japan
-    A75 22   = Z80 code v2.0 2/2 Japan
-    A75 23   = MC68705P5 MCU code, v2.0 Japan
-    A75 24   = Z80 code v2.1 1/2 Japan
-    A75 25   = Z80 code v2.1 2/2 Japan
-    A75 26   = MC68705P5 MCU code, v2.1 Japan
-=======
 /* rom numbering, with guesses for version numbers and missing roms:
     A75 01   = Z80 code 1/2 v1.0 Japan (NOT DUMPED, arkatayt and arkangc and
                maybe arkanoidjbl may actually be bootlegs of this undumped
@@ -1809,28 +1516,11 @@ MACHINE_CONFIG_END
     A75 24   = Z80 code v2.1 1/2 Japan
     A75 25   = Z80 code v2.1 2/2 Japan
     A75 26   = MC68705P5 MCU code, v2.1 Japan (verified. dumped from MCU)
->>>>>>> upstream/master
     A75 27   = Z80 code 1/2 Tournament
     A75 28   = Z80 code 2/2 Tournament
     A75 29   = GFX 1/3 Tournament
     A75 30   = GFX 2/3 Tournament
     A75 31   = GFX 3/3 Tournament
-<<<<<<< HEAD
-    A75 32   = MC68705P5 MCU code, Tournament
-    A75 33   = PROM red Tournament
-    A75 34   = PROM green Tournament
-    A75 35   = PROM blue Tournament
-    (one of the 21/22/23 or 24/25/26 sets is likely 'world'? or are these really two japan sets?)
-*/
-
-ROM_START( arkanoid )
-	ROM_REGION( 0x10000, "maincpu", 0 )
-	ROM_LOAD( "a75-01-1.ic17", 0x0000, 0x8000, CRC(5bcda3b0) SHA1(52cadd38b5f8e8856f007a9c602d6b508f30be65) )
-	ROM_LOAD( "a75-11.ic16",   0x8000, 0x8000, CRC(eafd7191) SHA1(d2f8843b716718b1de209e97a874e8ce600f3f87) )
-
-	ROM_REGION( 0x0800, "mcu", 0 )  /* 2k for the microcontroller */
-	ROM_LOAD( "a75-06.ic14",   0x0000, 0x0800, CRC(515d77b6) SHA1(a302937683d11f663abd56a2fd7c174374e4d7fb) ) // ok for this set
-=======
     A75 32   = MC68705P5 MCU code, Tournament (verified. dumped from MCU)
     A75 33   = PROM red Tournament
     A75 34   = PROM green Tournament
@@ -1846,7 +1536,6 @@ ROM_START( arkanoid ) // v1.0 World
 
 	ROM_REGION( 0x0800, "mcu:mcu", 0 )  /* 2k for the microcontroller */
 	ROM_LOAD( "a75__06.ic14",   0x0000, 0x0800, CRC(0be83647) SHA1(625fd1e6061123df612f115ef14a06cd6009f5d1) ) // verified authentic v1.x MCU from Taito/Romstar Board
->>>>>>> upstream/master
 
 	ROM_REGION( 0x18000, "gfx1", 0 )
 	ROM_LOAD( "a75-03.ic64",   0x00000, 0x8000, CRC(038b74ba) SHA1(ac053cc4908b4075f918748b89570e07a0ba5116) )
@@ -1858,23 +1547,6 @@ ROM_START( arkanoid ) // v1.0 World
 	ROM_LOAD( "a75-08.ic23",    0x0200, 0x0200, CRC(abb002fb) SHA1(c14f56b8ef103600862e7930709d293b0aa97a73) )  /* green component */
 	ROM_LOAD( "a75-09.ic22",    0x0400, 0x0200, CRC(a7c6c277) SHA1(adaa003dcd981576ea1cc5f697d709b2d6b2ea29) )  /* blue component */
 
-<<<<<<< HEAD
-	// these were decapped, sort them!
-	// None of these work with any genuine Arkanoid sets!
-	ROM_REGION( 0x0800, "alt_mcus", 0 ) /* 2k for the microcontroller */
-	ROM_LOAD( "arkanoid1_68705p3.ic14",  0x0000, 0x0800, CRC(1b68e2d8) SHA1(f642a7cb624ee14fb0e410de5ae1fc799d2fa1c2) ) // this is close to the supported MCU, is it a bootleg?
-	ROM_LOAD( "arkanoid_mcu.ic14",       0x0000, 0x0800, CRC(4e44b50a) SHA1(c61e7d158dc8e2b003c8158053ec139b904599af) ) // this has a more genuine Programmed By Yasu 1986 string in it with 0x00 fill near the end
-	ROM_LOAD( "arkanoid_68705p5.ic14",   0x0000, 0x0800, CRC(0be83647) SHA1(625fd1e6061123df612f115ef14a06cd6009f5d1) ) // same as above, but with 0xff fill
-ROM_END
-
-ROM_START( arkanoidu )
-	ROM_REGION( 0x10000, "maincpu", 0 )
-	ROM_LOAD( "a75-19.ic17",   0x0000, 0x8000, CRC(d3ad37d7) SHA1(a172a1ef5bb83ee2d8ed2842ef8968af19ad411e) )
-	ROM_LOAD( "a75-18.ic16",   0x8000, 0x8000, CRC(cdc08301) SHA1(05f54353cc8333af14fa985a2764960e20e8161a) )
-
-	ROM_REGION( 0x0800, "mcu", 0 )  /* 2k for the microcontroller */
-	ROM_LOAD( "a75-20.ic14",   0x0000, 0x0800, BAD_DUMP CRC(de518e47) SHA1(b8eddd1c566505fb69e3d1207c7a9720dfb9f503) ) /* Hand crafted, need the decapped data here */
-=======
 	// All of these MCUs work in place of A75 06, see comments for each.
 	ROM_REGION( 0x1800, "alt_mcus", 0 ) /* 2k for the microcontroller */
 	ROM_LOAD( "arkanoid_mcu.ic14", 0x0000, 0x0800, CRC(4e44b50a) SHA1(c61e7d158dc8e2b003c8158053ec139b904599af) ) // Decapped: See below
@@ -1901,7 +1573,6 @@ ROM_START( arkanoidu ) // V2.0 US/Romstar
 
 	ROM_REGION( 0x0800, "mcu:mcu", 0 )  /* 2k for the microcontroller */
 	ROM_LOAD( "a75__20.ic14",   0x0000, 0x0800, CRC(3994ee92) SHA1(31f6577956f49ba0b0705b490ce3254033795552) ) // verified authentic v2.0 MCU from Taito/Romstar US Board
->>>>>>> upstream/master
 
 	ROM_REGION( 0x18000, "gfx1", 0 )
 	ROM_LOAD( "a75-03.ic64",   0x00000, 0x8000, CRC(038b74ba) SHA1(ac053cc4908b4075f918748b89570e07a0ba5116) )
@@ -1915,15 +1586,6 @@ ROM_START( arkanoidu ) // V2.0 US/Romstar
 ROM_END
 
 /* Observed on a real TAITO J1100075A pcb (with K1100181A sticker), pcb is white painted, and has a "ROMSTAR(C) // All Rights Reserved // Serial No. // No 14128" sticker */
-<<<<<<< HEAD
-ROM_START( arkanoiduo )
-	ROM_REGION( 0x10000, "maincpu", 0 ) /* Silkscreen: "IC17 27256" and "IC16 27256" */
-	ROM_LOAD( "a75__01-1.ic17", 0x0000, 0x8000, CRC(5bcda3b0) SHA1(52cadd38b5f8e8856f007a9c602d6b508f30be65) )
-	ROM_LOAD( "a75__10.ic16",   0x8000, 0x8000, CRC(a1769e15) SHA1(fbb45731246a098b29eb08de5d63074b496aaaba) )
-
-	ROM_REGION( 0x0800, "mcu", 0 )  /* Silkscreen: "IC14 P5", 2k for the MC68705P5S protected microcontroller */
-	ROM_LOAD( "a75__06.ic14",  0x0000, 0x0800, BAD_DUMP CRC(515d77b6) SHA1(a302937683d11f663abd56a2fd7c174374e4d7fb) ) /* Possible bootleg code??, need to re-verify the real decapped/extracted data here */
-=======
 ROM_START( arkanoiduo ) // V1.0 USA/Romstar
 	ROM_REGION( 0x10000, "maincpu", 0 ) /* Silkscreen: "IC17 27256" and "IC16 27256" */
 	ROM_LOAD( "a75__01-1.ic17", 0x0000, 0x8000, CRC(5bcda3b0) SHA1(52cadd38b5f8e8856f007a9c602d6b508f30be65) )
@@ -1931,7 +1593,6 @@ ROM_START( arkanoiduo ) // V1.0 USA/Romstar
 
 	ROM_REGION( 0x0800, "mcu:mcu", 0 )  /* 2k for the microcontroller */
 	ROM_LOAD( "a75__06.ic14",   0x0000, 0x0800, CRC(0be83647) SHA1(625fd1e6061123df612f115ef14a06cd6009f5d1) ) // verified authentic v1.x MCU from Taito/Romstar Board
->>>>>>> upstream/master
 
 	ROM_REGION( 0x18000, "gfx1", 0 ) /* Silkscreen: "IC62 27128/256", "IC63 27128/256", "IC64 27128/256" */
 	ROM_LOAD( "a75__03.ic64",   0x00000, 0x8000, CRC(038b74ba) SHA1(ac053cc4908b4075f918748b89570e07a0ba5116) )
@@ -1942,17 +1603,6 @@ ROM_START( arkanoiduo ) // V1.0 USA/Romstar
 	ROM_LOAD( "a75-07.ic24",    0x0000, 0x0200, CRC(0af8b289) SHA1(6bc589e8a609b4cf450aebedc8ce02d5d45c970f) )  /* Chip Silkscreen: "A75-07"; red component */
 	ROM_LOAD( "a75-08.ic23",    0x0200, 0x0200, CRC(abb002fb) SHA1(c14f56b8ef103600862e7930709d293b0aa97a73) )  /* Chip Silkscreen: "A75-08"; green component */
 	ROM_LOAD( "a75-09.ic22",    0x0400, 0x0200, CRC(a7c6c277) SHA1(adaa003dcd981576ea1cc5f697d709b2d6b2ea29) )  /* Chip Silkscreen: "A75-09"; blue component */
-<<<<<<< HEAD
-ROM_END
-
-ROM_START( arkanoidj )
-	ROM_REGION( 0x10000, "maincpu", 0 )
-	ROM_LOAD( "a75_24.ic17",   0x0000, 0x8000, CRC(3f2b27e9) SHA1(656035f5292d6921448e74d3e1abab57b46e7d9e) )
-	ROM_LOAD( "a75_25.ic16",   0x8000, 0x8000, CRC(c13b2038) SHA1(0b8197b48e57ffe9ccad0ebbc24891d1da7c9880) )
-
-	ROM_REGION( 0x0800, "mcu", 0 )  /* 2k for the microcontroller */
-	ROM_LOAD( "a75-26.ic14",  0x0000, 0x0800, BAD_DUMP CRC(962960d4) SHA1(64b065a54b1658364db569ac06b717eb7bdd186e) )
-=======
 
 	ROM_REGION( 0x8000, "altgfx", 0 )
 	ROM_LOAD( "a75__03(alternate).ic64",   0x00000, 0x8000, CRC(983d4485) SHA1(603a8798d1f531a70a527a5c6122f0ffd6adcfb6) ) // See below
@@ -1970,7 +1620,6 @@ ROM_START( arkanoidj ) // V2.1 Japan
 
 	ROM_REGION( 0x0800, "mcu:mcu", 0 )  /* 2k for the microcontroller */
 	ROM_LOAD( "a75__26.ic14",  0x0000, 0x0800, CRC(9c382c67) SHA1(c8518b726c40bf6ede494b38763dde4918309ef3) ) // verified authentic, dumped from actual MCU
->>>>>>> upstream/master
 
 	ROM_REGION( 0x18000, "gfx1", 0 )
 	ROM_LOAD( "a75-03.ic64",   0x00000, 0x8000, CRC(038b74ba) SHA1(ac053cc4908b4075f918748b89570e07a0ba5116) )
@@ -1983,16 +1632,6 @@ ROM_START( arkanoidj ) // V2.1 Japan
 	ROM_LOAD( "a75-09.ic22",    0x0400, 0x0200, CRC(a7c6c277) SHA1(adaa003dcd981576ea1cc5f697d709b2d6b2ea29) )  /* blue component */
 ROM_END
 
-<<<<<<< HEAD
-ROM_START( arkanoidja )
-	ROM_REGION( 0x10000, "maincpu", 0 )
-	ROM_LOAD( "a75-21.ic17",   0x0000, 0x8000, CRC(bf0455fc) SHA1(250522b84b9f491c3f4efc391bf6aa6124361369) )
-	ROM_LOAD( "a75-22.ic16",   0x8000, 0x8000, CRC(3a2688d3) SHA1(9633a661352def3d85f95ca830f6d761b0b5450e) )
-
-	ROM_REGION( 0x0800, "mcu", 0 )  /* 2k for the microcontroller */
-	// the handcrafted value at 0x351 (0x9ddb) seems incorrect compared to other sets? (but it appears the value is never used, and the data it would usually point to does not exist in the program rom?)
-	ROM_LOAD( "a75-23.ic14",  0x0000, 0x0800, BAD_DUMP CRC(0a4abef6) SHA1(fdce0b7a2eab7fd4f1f4fc3b93120b1ebc16078e)  ) /* Hand crafted, need the decapped data here */
-=======
 ROM_START( arkanoidja ) // V2.0 Japan w/level select
 	ROM_REGION( 0x10000, "maincpu", 0 )
 	ROM_LOAD( "a75-21.ic17",   0x0000, 0x8000, CRC(bf0455fc) SHA1(250522b84b9f491c3f4efc391bf6aa6124361369) )
@@ -2001,7 +1640,6 @@ ROM_START( arkanoidja ) // V2.0 Japan w/level select
 	ROM_REGION( 0x0800, "mcu:mcu", 0 )  /* 2k for the microcontroller */
 	// the handcrafted value at 0x351 (0x9ddb) seems incorrect compared to other sets? (but it appears the value is never used, and the data it would usually point to does not exist in the program rom?)
 	ROM_LOAD( "a75-23.ic14",  0x0000, 0x0800, BAD_DUMP CRC(0a4abef6) SHA1(fdce0b7a2eab7fd4f1f4fc3b93120b1ebc16078e)  ) /* Hand crafted based on the bootleg a75-06 chip, need the real data here */
->>>>>>> upstream/master
 
 	ROM_REGION( 0x18000, "gfx1", 0 )
 	ROM_LOAD( "a75-03.ic64",   0x00000, 0x8000, CRC(038b74ba) SHA1(ac053cc4908b4075f918748b89570e07a0ba5116) )
@@ -2014,15 +1652,6 @@ ROM_START( arkanoidja ) // V2.0 Japan w/level select
 	ROM_LOAD( "a75-09.ic22",    0x0400, 0x0200, CRC(a7c6c277) SHA1(adaa003dcd981576ea1cc5f697d709b2d6b2ea29) )  /* blue component */
 ROM_END
 
-<<<<<<< HEAD
-ROM_START( arkanoidjb )
-	ROM_REGION( 0x10000, "maincpu", 0 )
-	ROM_LOAD( "a75-01-1.ic17", 0x0000, 0x8000, CRC(5bcda3b0) SHA1(52cadd38b5f8e8856f007a9c602d6b508f30be65) )
-	ROM_LOAD( "a75-02.ic16",   0x8000, 0x8000, CRC(bbc33ceb) SHA1(e9b6fef98d0d20e77c7a1c25eff8e9a8c668a258) )
-
-	ROM_REGION( 0x0800, "mcu", 0 )  /* 2k for the microcontroller */
-	ROM_LOAD( "a75-06.ic14",  0x0000, 0x0800, BAD_DUMP CRC(515d77b6) SHA1(a302937683d11f663abd56a2fd7c174374e4d7fb) ) /* Possible bootleg code??, need the decapped data here */
-=======
 ROM_START( arkanoidjb ) // V1.1 Japan
 	ROM_REGION( 0x10000, "maincpu", 0 )
 	ROM_LOAD( "a75-01-1.ic17", 0x0000, 0x8000, CRC(5bcda3b0) SHA1(52cadd38b5f8e8856f007a9c602d6b508f30be65) )
@@ -2030,7 +1659,6 @@ ROM_START( arkanoidjb ) // V1.1 Japan
 
 	ROM_REGION( 0x0800, "mcu:mcu", 0 )  /* 2k for the microcontroller */
 	ROM_LOAD( "a75__06.ic14",   0x0000, 0x0800, CRC(0be83647) SHA1(625fd1e6061123df612f115ef14a06cd6009f5d1) ) // verified authentic v1.x MCU from Taito/Romstar Board
->>>>>>> upstream/master
 
 	ROM_REGION( 0x18000, "gfx1", 0 )
 	ROM_LOAD( "a75-03.ic64",   0x00000, 0x8000, CRC(038b74ba) SHA1(ac053cc4908b4075f918748b89570e07a0ba5116) )
@@ -2044,15 +1672,6 @@ ROM_START( arkanoidjb ) // V1.1 Japan
 ROM_END
 
 
-<<<<<<< HEAD
-ROM_START( arkatour )
-	ROM_REGION( 0x10000, "maincpu", 0 )
-	ROM_LOAD( "a75-27.ic17",   0x0000, 0x8000, CRC(e3b8faf5) SHA1(4c09478fa41881fa89ee6afb676aeb780f17ac2e) )
-	ROM_LOAD( "a75-28.ic16",   0x8000, 0x8000, CRC(326aca4d) SHA1(5a194b7a0361236d471b24905dc6434372f81252) )
-
-	ROM_REGION( 0x0800, "mcu", 0 )  /* 2k for the microcontroller */
-	ROM_LOAD( "a75-32.ic14",  0x0000, 0x0800, BAD_DUMP CRC(d3249559) SHA1(b1542764450016614e9e03cedd6a2f1e59961789)  ) /* Hand crafted, need the decapped data here */
-=======
 ROM_START( arkatour ) // Tournament version
 	ROM_REGION( 0x10000, "maincpu", 0 )
 	ROM_LOAD( "a75-27.ic17",   0x0000, 0x8000, CRC(e3b8faf5) SHA1(4c09478fa41881fa89ee6afb676aeb780f17ac2e) )
@@ -2060,7 +1679,6 @@ ROM_START( arkatour ) // Tournament version
 
 	ROM_REGION( 0x0800, "mcu:mcu", 0 )  /* 2k for the microcontroller */
 	ROM_LOAD( "a75__32.ic14",  0x0000, 0x0800, CRC(8c20d15c) SHA1(912996bf08de318e19dc420261f554a09dacd443)  ) // verified authentic, dumped from actual MCU
->>>>>>> upstream/master
 
 	ROM_REGION( 0x18000, "gfx1", 0 )
 	ROM_LOAD( "a75-29.ic64",   0x00000, 0x8000, CRC(5ddea3cf) SHA1(58f16515898b7cc2697bf7663a60d9ca0db6da95) )
@@ -2073,16 +1691,6 @@ ROM_START( arkatour ) // Tournament version
 	ROM_LOAD( "a75-35.ic22",    0x0400, 0x0200, CRC(38acfd3b) SHA1(2841e9db047aa039eff8567a518b6250b355507b) )  /* blue component */
 ROM_END
 
-<<<<<<< HEAD
-ROM_START( arkanoidjbl ) /* This set requires a MCU. The MCU code included doesn't seem to work??? See USER1 region below */
-	ROM_REGION( 0x10000, "maincpu", 0 )
-	ROM_LOAD( "e1.6d",        0x0000, 0x8000, CRC(dd4f2b72) SHA1(399a8636030a702dafc1da926f115df6f045bef1) ) /* Hacked up Notice warning text */
-	ROM_LOAD( "e2.6f",        0x8000, 0x8000, CRC(bbc33ceb) SHA1(e9b6fef98d0d20e77c7a1c25eff8e9a8c668a258) ) /* == A75-02.IC16 */
-
-	/* Use the current A75-06.IC14 MCU code so the game is playable */
-	ROM_REGION( 0x0800, "mcu", 0 )  /* 2k for the microcontroller */
-	ROM_LOAD( "a75-06.ic14",  0x0000, 0x0800, BAD_DUMP CRC(515d77b6) SHA1(a302937683d11f663abd56a2fd7c174374e4d7fb) ) /* Possible bootleg code??, need the decapped data here */
-=======
 // Everything from here on is bootlegs
 
 ROM_START( arkanoidjbl ) // bootleg with MCU copied from real Taito code, but notice screen hacked up.
@@ -2097,7 +1705,6 @@ ROM_START( arkanoidjbl ) // bootleg with MCU copied from real Taito code, but no
 	   missing and the security bit cleared, the area after the rom filled with
 	   0x00, and the verify mode disable jump removed. Otherwise it matches
 	   a75__06.ic14 */
->>>>>>> upstream/master
 
 	ROM_REGION( 0x18000, "gfx1", 0 )
 	ROM_LOAD( "a75-03.rom",   0x00000, 0x8000, CRC(038b74ba) SHA1(ac053cc4908b4075f918748b89570e07a0ba5116) )
@@ -2109,40 +1716,6 @@ ROM_START( arkanoidjbl ) // bootleg with MCU copied from real Taito code, but no
 	ROM_LOAD( "a75-08.bpr",    0x0200, 0x0200, CRC(abb002fb) SHA1(c14f56b8ef103600862e7930709d293b0aa97a73) )   /* green component */
 	ROM_LOAD( "a75-09.bpr",    0x0400, 0x0200, CRC(a7c6c277) SHA1(adaa003dcd981576ea1cc5f697d709b2d6b2ea29) )   /* blue component */
 
-<<<<<<< HEAD
-	/* Until we know what this MCU is supposed to do, we put it here */
-	ROM_REGION( 0x0800, "user1", 0 )
-	ROM_LOAD( "68705p3.6i",   0x0000, 0x0800, CRC(389a8cfb) SHA1(9530c051b61b5bdec7018c6fdc1ea91288a406bd) ) // this has the 1986 by Yasu copyright like some of the new decaps loaded in the parent set!
-ROM_END
-
-ROM_START( arkanoidjbl2 )
-	ROM_REGION( 0x10000, "maincpu", 0 )
-	ROM_LOAD( "1.ic81", 0x0000, 0x8000, CRC(9ff93dc2) SHA1(eee0975b799a8e6717f646dd40716dc454476106) )
-	ROM_LOAD( "2.ic82", 0x8000, 0x8000, CRC(bbc33ceb) SHA1(e9b6fef98d0d20e77c7a1c25eff8e9a8c668a258) ) /* == A75-02.IC16 */
-
-	ROM_REGION( 0x0800, "mcu", 0 )  /* 2k for the microcontroller */
-	ROM_LOAD( "a75-06.ic14",  0x0000, 0x0800, BAD_DUMP CRC(515d77b6) SHA1(a302937683d11f663abd56a2fd7c174374e4d7fb) ) /* Possible bootleg code??, need the decapped data here */
-
-	ROM_REGION( 0x18000, "gfx1", 0 )
-	ROM_LOAD( "a75-03.ic64",   0x00000, 0x8000, CRC(038b74ba) SHA1(ac053cc4908b4075f918748b89570e07a0ba5116) )
-	ROM_LOAD( "a75-04.ic63",   0x08000, 0x8000, CRC(71fae199) SHA1(5d253c46ccf4cd2976a5fb8b8713f0f345443d06) )
-	ROM_LOAD( "a75-05.ic62",   0x10000, 0x8000, CRC(c76374e2) SHA1(7520dd48de20db60a2038f134dcaa454988e7874) )
-
-	ROM_REGION( 0x0600, "proms", 0 ) /* BPROMs are silkscreened as 7621, actual BPROMs used are MMI 6306-1N */
-	ROM_LOAD( "a75-07.ic24",    0x0000, 0x0200, CRC(0af8b289) SHA1(6bc589e8a609b4cf450aebedc8ce02d5d45c970f) )  /* red component */
-	ROM_LOAD( "a75-08.ic23",    0x0200, 0x0200, CRC(abb002fb) SHA1(c14f56b8ef103600862e7930709d293b0aa97a73) )  /* green component */
-	ROM_LOAD( "a75-09.ic23",    0x0400, 0x0200, CRC(a7c6c277) SHA1(adaa003dcd981576ea1cc5f697d709b2d6b2ea29) )  /* blue component */
-ROM_END
-
-ROM_START( ark1ball ) /* This set requires a MCU. No MCU rom was supplied so we use current A75-06.IC14 for now */
-	ROM_REGION( 0x10000, "maincpu", 0 )
-	ROM_LOAD( "a-1.7d",       0x0000, 0x8000, CRC(dd4f2b72) SHA1(399a8636030a702dafc1da926f115df6f045bef1) )
-	ROM_LOAD( "2palline.7f",  0x8000, 0x8000, CRC(ed6b62ab) SHA1(4d4991b422756bd304fc5ef236aac1422fe1f999) )
-
-	/* Use the current A75-06.IC14 MCU code so the game is playable */
-	ROM_REGION( 0x0800, "mcu", 0 )  /* 2k for the microcontroller */
-	ROM_LOAD( "a75-06.ic14",  0x0000, 0x0800, BAD_DUMP CRC(515d77b6) SHA1(a302937683d11f663abd56a2fd7c174374e4d7fb) ) /* Possible bootleg code??, need the decapped data here */
-=======
 ROM_END
 
 // this pcb has the coin lockout module bypassed with some resistors
@@ -2176,7 +1749,6 @@ ROM_START( ark1ball ) /* This set requires a MCU. No MCU rom was supplied so we 
 	/* Use the current A75-06.IC14 MCU code so the game is playable */
 	ROM_REGION( 0x0800, "mcu:mcu", 0 )  /* 2k for the microcontroller */
 	ROM_LOAD( "a75-06__bootleg_68705.ic14",  0x0000, 0x0800, BAD_DUMP CRC(515d77b6) SHA1(a302937683d11f663abd56a2fd7c174374e4d7fb) ) /* Uses the bootleg MCU? Not sure what mcu is supposed to go with this set... */
->>>>>>> upstream/master
 
 	ROM_REGION( 0x18000, "gfx1", 0 )
 	ROM_LOAD( "a-3.3a",       0x00000, 0x8000, CRC(038b74ba) SHA1(ac053cc4908b4075f918748b89570e07a0ba5116) )
@@ -2189,11 +1761,7 @@ ROM_START( ark1ball ) /* This set requires a MCU. No MCU rom was supplied so we 
 	ROM_LOAD( "a75-09.bpr",    0x0400, 0x0200, CRC(a7c6c277) SHA1(adaa003dcd981576ea1cc5f697d709b2d6b2ea29) )   /* blue component */
 ROM_END
 
-<<<<<<< HEAD
-ROM_START( arkangc )
-=======
 ROM_START( arkangc ) // Game Corporation set with no mcu, d008 read after reading paddle at d018 patched out or not present
->>>>>>> upstream/master
 	ROM_REGION( 0x10000, "maincpu", 0 )
 	ROM_LOAD( "arkgc.1",      0x0000, 0x8000, CRC(c54232e6) SHA1(beb759cee68009a06824b755d2aa26d7d436b5b0) )
 	ROM_LOAD( "arkgc.2",      0x8000, 0x8000, CRC(9f0d4754) SHA1(731c9224616a338084edd6944c754d68eabba7f2) )
@@ -2209,11 +1777,7 @@ ROM_START( arkangc ) // Game Corporation set with no mcu, d008 read after readin
 	ROM_LOAD( "a75-09.bpr",    0x0400, 0x0200, CRC(a7c6c277) SHA1(adaa003dcd981576ea1cc5f697d709b2d6b2ea29) )   /* blue component */
 ROM_END
 
-<<<<<<< HEAD
-ROM_START( arkangc2 )
-=======
 ROM_START( arkangc2 ) // Game Corporation set with no mcu, has d008 read after reading paddle at d018, and bit 1 must be set; this is an older version of arkangc above, the level select is moved around a bit
->>>>>>> upstream/master
 	ROM_REGION( 0x10000, "maincpu", 0 )
 	ROM_LOAD( "1.81",         0x0000, 0x8000, CRC(bd6eb996) SHA1(a048ff01156166595dca0b6bee46344f7db548a8) )
 	ROM_LOAD( "2.82",         0x8000, 0x8000, CRC(29dbe452) SHA1(b99cb98549bddf1e673e2e715c80664001581f9f) )
@@ -2229,21 +1793,13 @@ ROM_START( arkangc2 ) // Game Corporation set with no mcu, has d008 read after r
 	ROM_LOAD( "a75-09.bpr",    0x0400, 0x0200, CRC(a7c6c277) SHA1(adaa003dcd981576ea1cc5f697d709b2d6b2ea29) )   /* blue component */
 ROM_END
 
-<<<<<<< HEAD
-ROM_START( block2 )
-=======
 // This set (block2) and the next one (arkblock3) have the same 'space invader' scrambled block gfx, a complex protection ?device?, and an oki sample rom.
 ROM_START( block2 ) // derived from 95% arkangc2, 5% arkangc
->>>>>>> upstream/master
 	ROM_REGION( 0x18000, "maincpu", 0 )
 	ROM_LOAD( "1.bin",         0x00000, 0x8000, CRC(2b026cae) SHA1(73d1d5d3e6d65fbe378ce85ff501610573ae5e95) )
 	ROM_LOAD( "2.bin",         0x08000, 0x8000, CRC(e3843fea) SHA1(8c654dcf78d9e4f4c6a7a7d384fdf622536234c1) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x8000, "unknown", 0 )  /* is it more data or something else like sound or palette ? not Z80 code nor levels anyway */
-=======
 	ROM_REGION( 0x8000, "unknown", 0 )  /* oki/vox format sample data, played by the same protection mess (simulated in machine/arkanoid.cpp) somehow? */
->>>>>>> upstream/master
 	ROM_LOAD( "3.bin",         0x00000, 0x8000, CRC(e336c219) SHA1(e1dce37727e7084a83e73f15a138312ab6224061) )
 
 	ROM_REGION( 0x18000, "gfx1", 0 )
@@ -2258,22 +1814,13 @@ ROM_START( block2 ) // derived from 95% arkangc2, 5% arkangc
 	ROM_LOAD( "a75-09.bpr",    0x0400, 0x0200, CRC(a7c6c277) SHA1(adaa003dcd981576ea1cc5f697d709b2d6b2ea29) )   /* blue component */
 ROM_END
 
-<<<<<<< HEAD
-// this set has the same 'space invader' scrambled block gfx, and unknown (sound?) rom as the one above
-//  sadly no mention of what chip it might be for in the readme.
-=======
 // see comment for 'block2' set
->>>>>>> upstream/master
 ROM_START( arkbloc3 )
 	ROM_REGION( 0x18000, "maincpu", 0 )
 	ROM_LOAD( "blockbl.001",         0x00000, 0x8000, CRC(bf7197a0) SHA1(4fbc0cbc09d292ab0f2e4a35b30505b2f7e4dc0d) )
 	ROM_LOAD( "blockbl.002",         0x08000, 0x8000, CRC(29dbe452) SHA1(b99cb98549bddf1e673e2e715c80664001581f9f) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x8000, "unknown", 0 )  /* is it more data or something else like sound or palette ? not Z80 code nor levels anyway */
-=======
 	ROM_REGION( 0x8000, "unknown", 0 )  /* oki/vox format sample data, played by the same protection mess (simulated in machine/arkanoid.cpp) somehow? */
->>>>>>> upstream/master
 	ROM_LOAD( "blockbl.006",         0x00000, 0x8000, CRC(e336c219) SHA1(e1dce37727e7084a83e73f15a138312ab6224061) )
 
 	ROM_REGION( 0x18000, "gfx1", 0 )
@@ -2288,11 +1835,7 @@ ROM_START( arkbloc3 )
 	ROM_LOAD( "a75-09.bpr",    0x0400, 0x0200, CRC(a7c6c277) SHA1(adaa003dcd981576ea1cc5f697d709b2d6b2ea29) )   /* blue component */
 ROM_END
 
-<<<<<<< HEAD
-ROM_START( arkblock )
-=======
 ROM_START( arkblock ) // no mcu, no d008/d018/f000/f002 protection, just leftover writes
->>>>>>> upstream/master
 	ROM_REGION( 0x10000, "maincpu", 0 )
 	ROM_LOAD( "ark-6.bin",    0x0000, 0x8000, CRC(0be015de) SHA1(f4209085b59d2c96a62ac9657c7bf097da55362b) )
 	ROM_LOAD( "arkgc.2",      0x8000, 0x8000, CRC(9f0d4754) SHA1(731c9224616a338084edd6944c754d68eabba7f2) )
@@ -2308,11 +1851,7 @@ ROM_START( arkblock ) // no mcu, no d008/d018/f000/f002 protection, just leftove
 	ROM_LOAD( "a75-09.bpr",    0x0400, 0x0200, CRC(a7c6c277) SHA1(adaa003dcd981576ea1cc5f697d709b2d6b2ea29) )   /* blue component */
 ROM_END
 
-<<<<<<< HEAD
-ROM_START( arkbloc2 )
-=======
 ROM_START( arkbloc2 ) // no mcu, no d008/d018/f000/f002 protection, just leftover writes
->>>>>>> upstream/master
 	ROM_REGION( 0x10000, "maincpu", 0 )
 	ROM_LOAD( "block01.bin",  0x0000, 0x8000, CRC(5be667e1) SHA1(fbc5c97d836c404a2e6c007c3836e36b52ae75a1) )
 	ROM_LOAD( "block02.bin",  0x8000, 0x8000, CRC(4f883ef1) SHA1(cb090a57fc75f17a3e2ba637f0e3ec93c1d02cea) )
@@ -2347,32 +1886,6 @@ Note:
 1x 8 switches dip
 Dumped 19/03/2006 */
 
-<<<<<<< HEAD
-ROM_START( arkgcbl )
-	ROM_REGION( 0x10000, "maincpu", 0 )
-	ROM_LOAD( "16.6e",        0x0000, 0x8000, CRC(b0f73900) SHA1(2c9a36cc1d2a3f33ec81d63c1c325554b818d2d3) )
-	ROM_LOAD( "17.6f",        0x8000, 0x8000, CRC(9827f297) SHA1(697874e73e045eb5a7bf333d7310934b239c0adf) )
-
-	ROM_REGION( 0x18000, "gfx1", 0 )
-	ROM_LOAD( "a75-03.rom",   0x00000, 0x8000, CRC(038b74ba) SHA1(ac053cc4908b4075f918748b89570e07a0ba5116) )
-	ROM_LOAD( "a75-04.rom",   0x08000, 0x8000, CRC(71fae199) SHA1(5d253c46ccf4cd2976a5fb8b8713f0f345443d06) )
-	ROM_LOAD( "a75-05.rom",   0x10000, 0x8000, CRC(c76374e2) SHA1(7520dd48de20db60a2038f134dcaa454988e7874) )
-
-	ROM_REGION( 0x0600, "proms", 0 )
-	ROM_LOAD( "82s129.5k",    0x0000, 0x0100, CRC(fa70b64d) SHA1(273669d05f793cf1ee0741b175be281307fa9b5e) )    /* red component   + */
-	ROM_LOAD( "82s129.5jk",   0x0100, 0x0100, CRC(cca69884) SHA1(fdcd66110c8eb901a401f8618821c7980946a511) )    /* red component   = a75-07.bpr*/
-	ROM_LOAD( "82s129.5l",    0x0200, 0x0100, CRC(3e4d2bf5) SHA1(c475887302dd137d6965769070b7d55f488c1b25) )    /* green component + */
-	ROM_LOAD( "82s129.5kl",   0x0300, 0x0100, CRC(085d625a) SHA1(26c96a1c1b7562fed84c31dd92fdf7829e96a9c7) )    /* green component = a75-08.bpr*/
-	ROM_LOAD( "82s129.5mn",   0x0400, 0x0100, CRC(0fe0b108) SHA1(fcf27619208922345a1e42b3a219b4274f66968d) )    /* blue component  + */
-	ROM_LOAD( "63s141.5m",    0x0500, 0x0100, CRC(5553f675) SHA1(c50255af8d99664b92e0bb34a527fd42ebf7e759) )    /* blue component  = a75-09.bpr*/
-
-	ROM_REGION( 0x0200, "pal", 0 )
-	ROM_LOAD( "pal16r8.5f",   0x0000, 0x0104, CRC(36471917) SHA1(d0f295a94d480b44416e66be4b480b299aad5c3c) )
-ROM_END
-
-/* this one still has the original copyright intact */
-ROM_START( arkgcbla )
-=======
 ROM_START( arkgcbl ) // similar to arkangc, but has added d008/d018/f000/f002 protection, likely using the PAL16R8
 	ROM_REGION( 0x10000, "maincpu", 0 )
 	ROM_LOAD( "electric__16.6e",        0x0000, 0x8000, CRC(b0f73900) SHA1(2c9a36cc1d2a3f33ec81d63c1c325554b818d2d3) )
@@ -2397,21 +1910,14 @@ ROM_END
 
 /* this one still has the original copyright intact */
 ROM_START( arkgcbla ) // similar to arkangc, but has added d008/d018/f000/f002 protection, likely using the PAL16R8
->>>>>>> upstream/master
 	ROM_REGION( 0x10000, "maincpu", 0 )
 	ROM_LOAD( "k101.e7",        0x0000, 0x8000, CRC(892a556e) SHA1(10d1a92f8ab1b8184b05182a2de070b163a603e2) )
 	ROM_LOAD( "k102.f7",        0x8000, 0x8000, CRC(d208d05c) SHA1(0aa99a0cb8211e7b90d681c91cc77aa7078a0ccc) )
 
 	ROM_REGION( 0x18000, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_LOAD( "a75-03.rom",   0x00000, 0x8000, CRC(038b74ba) SHA1(ac053cc4908b4075f918748b89570e07a0ba5116) )
-	ROM_LOAD( "a75-04.rom",   0x08000, 0x8000, CRC(71fae199) SHA1(5d253c46ccf4cd2976a5fb8b8713f0f345443d06) )
-	ROM_LOAD( "a75-05.rom",   0x10000, 0x8000, CRC(c76374e2) SHA1(7520dd48de20db60a2038f134dcaa454988e7874) )
-=======
 	ROM_LOAD( "a75-03.rom",   0x00000, 0x8000, CRC(038b74ba) SHA1(ac053cc4908b4075f918748b89570e07a0ba5116) ) // = a75-03.ic64
 	ROM_LOAD( "a75-04.rom",   0x08000, 0x8000, CRC(71fae199) SHA1(5d253c46ccf4cd2976a5fb8b8713f0f345443d06) ) // = a75-04.ic63
 	ROM_LOAD( "a75-05.rom",   0x10000, 0x8000, CRC(c76374e2) SHA1(7520dd48de20db60a2038f134dcaa454988e7874) ) // = a75-05.ic62
->>>>>>> upstream/master
 
 	ROM_REGION( 0x0600, "proms", 0 )
 	ROM_LOAD( "82s129.5k",    0x0000, 0x0100, CRC(fa70b64d) SHA1(273669d05f793cf1ee0741b175be281307fa9b5e) )    /* red component   + */
@@ -2422,11 +1928,7 @@ ROM_START( arkgcbla ) // similar to arkangc, but has added d008/d018/f000/f002 p
 	ROM_LOAD( "63s141.5m",    0x0500, 0x0100, CRC(5553f675) SHA1(c50255af8d99664b92e0bb34a527fd42ebf7e759) )    /* blue component  = a75-09.bpr*/
 
 	ROM_REGION( 0x0200, "pal", 0 )
-<<<<<<< HEAD
-	ROM_LOAD( "pal16r8.5f",   0x0000, 0x0104, CRC(36471917) SHA1(d0f295a94d480b44416e66be4b480b299aad5c3c) )
-=======
 	ROM_LOAD( "pal16r8.5f",   0x0000, 0x0104, CRC(36471917) SHA1(d0f295a94d480b44416e66be4b480b299aad5c3c) )    /* likely used for the d008/d018/f000/f002 protection */
->>>>>>> upstream/master
 ROM_END
 
 
@@ -2484,12 +1986,9 @@ ROM_START( tetrsark )
 	ROM_LOAD( "ic17.1",      0x00000, 0x8000, CRC(1a505eda) SHA1(92f171a12cf0c326d29c244514718df04b998426) )
 	ROM_LOAD( "ic16.2",      0x08000, 0x8000, CRC(157bc4df) SHA1(b2c704148e7e3ca61ab51308ee0d66ea1088bff3) )
 
-<<<<<<< HEAD
-=======
 	ROM_REGION( 0x800, "mcu", 0 )
 	ROM_LOAD( "14_mc68705p5_rom.bin", 0x000, 0x800, CRC(dfbc4239) SHA1(d97c44d90d09142fd00731c1e44646bcba0402ec) ) // unused, not programmed
 
->>>>>>> upstream/master
 	ROM_REGION( 0x18000, "gfx1", 0 )
 	ROM_LOAD( "ic64.3",      0x00000, 0x8000, CRC(c3e9b290) SHA1(6e99520606c654e531dbeb9a598cfbb443c24dff) )
 	ROM_LOAD( "ic63.4",      0x08000, 0x8000, CRC(de9a368f) SHA1(ffbb2479200648da3f3e7ab7cebcdb604f6dfb3d) )
@@ -2562,11 +2061,7 @@ ROM_START( brixian )
 	ROM_LOAD( "b1.bin",      0x00000, 0x8000, CRC(3d167d09) SHA1(1d5bd098b655b8d2f956cfcb718213915bee3e41) )
 	ROM_LOAD( "e7.bin",      0x08000, 0x2000, CRC(9e3707ab) SHA1(a04fb4824239f8ed1ef1de2f3c0f9d749320b2ba) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x0800, "mcu", 0 )
-=======
 	ROM_REGION( 0x0800, "mcu:mcu", 0 )
->>>>>>> upstream/master
 	ROM_LOAD( "68705p5", 0x0000, 0x0800, NO_DUMP ) // this just provides the 0x200 bytes of code we load in the protdata region by coping it to 0xc600 on startup
 
 	ROM_REGION( 0x200, "protdata", 0 )
@@ -2613,13 +2108,8 @@ DRIVER_INIT_MEMBER(arkanoid_state,block2)
 {
 	// the graphics on this bootleg have the data scrambled
 	int tile;
-<<<<<<< HEAD
-	UINT8* srcgfx = memregion("gfx1")->base();
-	dynamic_buffer buffer(0x18000);
-=======
 	uint8_t* srcgfx = memregion("gfx1")->base();
 	std::vector<uint8_t> buffer(0x18000);
->>>>>>> upstream/master
 
 	for (tile = 0; tile < 0x3000; tile++)
 	{
@@ -2674,11 +2164,7 @@ DRIVER_INIT_MEMBER(arkanoid_state,paddle2)
 
 DRIVER_INIT_MEMBER(arkanoid_state,tetrsark)
 {
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("maincpu")->base();
-=======
 	uint8_t *ROM = memregion("maincpu")->base();
->>>>>>> upstream/master
 	int x;
 
 	for (x = 0; x < 0x8000; x++)
@@ -2692,11 +2178,7 @@ DRIVER_INIT_MEMBER(arkanoid_state,tetrsark)
 
 DRIVER_INIT_MEMBER(arkanoid_state,hexa)
 {
-<<<<<<< HEAD
-	UINT8 *RAM = memregion("maincpu")->base();
-=======
 	uint8_t *RAM = memregion("maincpu")->base();
->>>>>>> upstream/master
 #if 0
 
 
@@ -2726,11 +2208,7 @@ DRIVER_INIT_MEMBER(arkanoid_state,hexaa)
 
 DRIVER_INIT_MEMBER(arkanoid_state,brixian)
 {
-<<<<<<< HEAD
-	UINT8 *RAM = memregion("protdata")->base();
-=======
 	uint8_t *RAM = memregion("protdata")->base();
->>>>>>> upstream/master
 
 	for (int i=0x000;i<0x200;i++)
 		m_protram[i+0x600] = RAM[i];
@@ -2740,38 +2218,6 @@ DRIVER_INIT_MEMBER(arkanoid_state,brixian)
 /* Game Drivers */
 
 // original sets of Arkanoid
-<<<<<<< HEAD
-GAME( 1986, arkanoid,   0,        arkanoid, arkanoid, driver_device, 0,        ROT90, "Taito Corporation Japan", "Arkanoid (World, oldest rev)", MACHINE_SUPPORTS_SAVE )
-GAME( 1986, arkanoidu,  arkanoid, arkanoid, arkanoid, driver_device, 0,        ROT90, "Taito America Corporation (Romstar license)", "Arkanoid (US)", MACHINE_SUPPORTS_SAVE )
-GAME( 1986, arkanoiduo, arkanoid, arkanoid, arkanoid, driver_device, 0,        ROT90, "Taito America Corporation (Romstar license)", "Arkanoid (US, oldest rev)", MACHINE_SUPPORTS_SAVE )
-GAME( 1986, arkanoidj,  arkanoid, arkanoid, arkanoidj, driver_device,0,        ROT90, "Taito Corporation", "Arkanoid (Japan)", MACHINE_SUPPORTS_SAVE )
-GAME( 1986, arkanoidja, arkanoid, arkanoid, arkanoidj, driver_device,0,        ROT90, "Taito Corporation", "Arkanoid (Japan, older rev)", MACHINE_SUPPORTS_SAVE )
-GAME( 1986, arkanoidjb, arkanoid, arkanoid, arkanoidj, driver_device,0,        ROT90, "Taito Corporation", "Arkanoid (Japan, oldest rev)", MACHINE_SUPPORTS_SAVE )
-// bootlegs of Arkanoid
-GAME( 1986, arkanoidjbl, arkanoid, arkanoid, arkanoidj, driver_device,0,        ROT90, "bootleg", "Arkanoid (bootleg with MCU, set 1)", MACHINE_SUPPORTS_SAVE )
-GAME( 1986, arkanoidjbl2,arkanoid, arkanoid, arkanoidj, driver_device,0,        ROT90, "bootleg (Beta)", "Arkanoid (bootleg with MCU, set 2)", MACHINE_SUPPORTS_SAVE )
-GAME( 1986, ark1ball,   arkanoid, arkanoid, ark1ball, driver_device, 0,        ROT90, "bootleg", "Arkanoid (bootleg with MCU, harder)", MACHINE_SUPPORTS_SAVE )
-GAME( 1986, arkangc,    arkanoid, bootleg,  arkangc, arkanoid_state,  arkangc,  ROT90, "bootleg (Game Corporation)", "Arkanoid (Game Corporation bootleg, set 1)", MACHINE_SUPPORTS_SAVE )
-GAME( 1986, arkangc2,   arkanoid, bootleg,  arkangc2, arkanoid_state, arkangc2, ROT90, "bootleg (Game Corporation)", "Arkanoid (Game Corporation bootleg, set 2)", MACHINE_SUPPORTS_SAVE )
-GAME( 1986, arkblock,   arkanoid, bootleg,  arkangc, arkanoid_state,  arkblock, ROT90, "bootleg (Game Corporation)", "Block (Game Corporation bootleg, set 1)", MACHINE_SUPPORTS_SAVE )
-GAME( 1986, arkbloc2,   arkanoid, bootleg,  arkangc, arkanoid_state,  arkbloc2, ROT90, "bootleg (Game Corporation)", "Block (Game Corporation bootleg, set 2)", MACHINE_SUPPORTS_SAVE )
-GAME( 1986, arkbloc3,   arkanoid, bootleg,  block2, arkanoid_state,   block2,   ROT90, "bootleg (Game Corporation)", "Block (Game Corporation bootleg, set 3)", MACHINE_SUPPORTS_SAVE )    // Both these sets have an extra unknown rom
-GAME( 1986, block2,     arkanoid, bootleg,  block2, arkanoid_state,   block2,   ROT90, "bootleg (S.P.A. Co.)", "Block 2 (S.P.A. Co. bootleg)", MACHINE_SUPPORTS_SAVE ) //  and scrambled gfx roms with 'space invader' themed gfx
-GAME( 1986, arkgcbl,    arkanoid, bootleg,  arkgcbl, arkanoid_state,  arkgcbl,  ROT90, "bootleg", "Arkanoid (bootleg on Block hardware, set 1)", MACHINE_SUPPORTS_SAVE )
-GAME( 1986, arkgcbla,   arkanoid, bootleg,  arkgcbl, arkanoid_state,  arkgcbl,  ROT90, "bootleg", "Arkanoid (bootleg on Block hardware, set 2)", MACHINE_SUPPORTS_SAVE )
-GAME( 1988, paddle2,    arkanoid, bootleg,  paddle2, arkanoid_state,  paddle2,  ROT90, "bootleg", "Paddle 2 (bootleg on Block hardware)", MACHINE_SUPPORTS_SAVE )
-GAME( 1986, arkatayt,   arkanoid, bootleg,  arkatayt, driver_device, 0,        ROT90, "bootleg (Tayto)", "Arkanoid (Tayto bootleg)", MACHINE_SUPPORTS_SAVE )
-GAME( 1986, arktayt2,   arkanoid, bootleg,  arktayt2, driver_device, 0,        ROT90, "bootleg (Tayto)", "Arkanoid (Tayto bootleg, harder)", MACHINE_SUPPORTS_SAVE )
-// Other games
-GAME( 1987, arkatour,   0,        arkanoid, arkanoid, driver_device, 0,        ROT90, "Taito America Corporation (Romstar license)", "Tournament Arkanoid (US)", MACHINE_SUPPORTS_SAVE )
-
-GAME( 19??, tetrsark,   0,        bootleg,  tetrsark, arkanoid_state, tetrsark, ROT0,  "D.R. Korea", "Tetris (D.R. Korea)", MACHINE_SUPPORTS_SAVE )
-
-GAME( 199?, hexa,       0,        hexa,     hexa, arkanoid_state,     hexa,     ROT0,  "D.R. Korea", "Hexa", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 199?, hexaa,      hexa,     hexaa,    hexa, arkanoid_state,     hexaa,     ROT0,  "D.R. Korea", "Hexa (with 2xZ80, protected)", MACHINE_NOT_WORKING )
-
-GAME( 1993, brixian,    0,        brixian,  brixian, arkanoid_state,  brixian,        ROT0,  "Cheil Computer System", "Brixian", MACHINE_SUPPORTS_SAVE )
-=======
 //    YEAR, NAME,        PARENT,   MACHINE,  INPUT,     STATE,          INIT,     MONITOR,COMPANY,                                       FULLNAME,                                      FLAGS
 GAME( 1986, arkanoid,    0,        arkanoid, arkanoid,  arkanoid_state, 0,        ROT90,  "Taito Corporation Japan",                     "Arkanoid (World, older)",                     MACHINE_SUPPORTS_SAVE )
 GAME( 1986, arkanoidu,   arkanoid, arkanoid, arkanoid,  arkanoid_state, 0,        ROT90,  "Taito America Corporation (Romstar license)", "Arkanoid (US, newer)",                        MACHINE_SUPPORTS_SAVE )
@@ -2803,4 +2249,3 @@ GAME( 199?, hexa,        0,        hexa,     hexa,      arkanoid_state, hexa,   
 GAME( 199?, hexaa,       hexa,     hexaa,    hexa,      arkanoid_state, hexaa,    ROT0,   "D.R. Korea",                                  "Hexa (with 2xZ80, protected)",                MACHINE_NOT_WORKING )
 
 GAME( 1993, brixian,     0,        brixian,  brixian,   arkanoid_state, brixian,  ROT0,   "Cheil Computer System",                       "Brixian",                                     MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

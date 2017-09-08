@@ -68,15 +68,10 @@ we currently simulate this as the PIC is read protected.
 
 #include "emu.h"
 #include "cpu/nec/nec.h"
-<<<<<<< HEAD
-#include "sound/okim6295.h"
-#include "machine/nvram.h"
-=======
 #include "machine/nvram.h"
 #include "sound/okim6295.h"
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 class ttchamp_state : public driver_device
@@ -90,22 +85,6 @@ public:
 	required_device<cpu_device> m_maincpu;
 	required_device<palette_device> m_palette;
 
-<<<<<<< HEAD
-	UINT16 m_paloff;
-	UINT16 m_port10;
-	UINT8 m_rombank;
-	UINT16 m_videoram0[0x10000 / 2];
-	UINT16 m_videoram2[0x10000 / 2];
-
-	enum picmode
-	{
-		PIC_IDLE = 0,
-		PIC_SET_READADDRESS = 1,
-		PIC_SET_WRITEADDRESS = 2,
-		PIC_SET_WRITELATCH = 3,
-		PIC_SET_READLATCH = 4
-
-=======
 	uint16_t m_paloff;
 	uint16_t m_port10;
 	uint8_t m_rombank;
@@ -119,7 +98,6 @@ public:
 		SET_WRITEADDRESS = 2,
 		SET_WRITELATCH = 3,
 		SET_READLATCH = 4
->>>>>>> upstream/master
 	};
 
 	picmode m_picmodex;
@@ -129,31 +107,17 @@ public:
 	int m_pic_latched;
 	int m_pic_writelatched;
 
-<<<<<<< HEAD
-	UINT8* m_bakram;
-
-	UINT16 m_mainram[0x10000 / 2];
-=======
 	std::unique_ptr<uint8_t[]> m_bakram;
 
 	uint16_t m_mainram[0x10000 / 2];
->>>>>>> upstream/master
 
 	int m_spritesinit;
 	int m_spriteswidth;
 	int m_spritesaddr;
-<<<<<<< HEAD
-	UINT16* m_rom16;
-	UINT8* m_rom8;
-
-	DECLARE_WRITE16_MEMBER(paloff_w);
-	DECLARE_WRITE16_MEMBER(pcup_prgbank_w);
-=======
 	uint16_t* m_rom16;
 	uint8_t* m_rom8;
 
 	DECLARE_WRITE16_MEMBER(paloff_w);
->>>>>>> upstream/master
 	DECLARE_WRITE16_MEMBER(paldat_w);
 
 	DECLARE_WRITE16_MEMBER(port10_w);
@@ -171,17 +135,10 @@ public:
 	DECLARE_READ16_MEMBER(mem_r);
 	DECLARE_WRITE16_MEMBER(mem_w);
 
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void video_start();
-
-	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	virtual void machine_start() override;
 	virtual void video_start() override;
 
 	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 
 	INTERRUPT_GEN_MEMBER(irq);
 };
@@ -191,15 +148,6 @@ ALLOW_SAVE_TYPE(ttchamp_state::picmode);
 
 void ttchamp_state::machine_start()
 {
-<<<<<<< HEAD
-	m_rom16 = (UINT16*)memregion("maincpu")->base();
-	m_rom8 = memregion("maincpu")->base();
-
-	m_picmodex = PIC_IDLE;
-
-	m_bakram = auto_alloc_array(machine(), UINT8, 0x100);
-	machine().device<nvram_device>("backram")->set_base(m_bakram, 0x100);
-=======
 	m_rom16 = (uint16_t*)memregion("maincpu")->base();
 	m_rom8 = memregion("maincpu")->base();
 
@@ -207,7 +155,6 @@ void ttchamp_state::machine_start()
 
 	m_bakram = std::make_unique<uint8_t[]>(0x100);
 	machine().device<nvram_device>("backram")->set_base(m_bakram.get(), 0x100);
->>>>>>> upstream/master
 
 	save_item(NAME(m_paloff));
 	save_item(NAME(m_port10));
@@ -230,11 +177,7 @@ void ttchamp_state::video_start()
 {
 }
 
-<<<<<<< HEAD
-UINT32 ttchamp_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t ttchamp_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	logerror("update\n");
 	int y,x,count;
@@ -242,21 +185,12 @@ uint32_t ttchamp_state::screen_update(screen_device &screen, bitmap_ind16 &bitma
 	static const int xxx=320,yyy=204;
 
 	bitmap.fill(m_palette->black_pen());
-<<<<<<< HEAD
-	UINT8 *videoramfg;
-	UINT8* videorambg;
-
-	count=0;
-	videorambg = (UINT8*)m_videoram0;
-	videoramfg = (UINT8*)m_videoram2;
-=======
 	uint8_t *videoramfg;
 	uint8_t* videorambg;
 
 	count=0;
 	videorambg = (uint8_t*)m_videoram0;
 	videoramfg = (uint8_t*)m_videoram2;
->>>>>>> upstream/master
 
 	for (y=0;y<yyy;y++)
 	{
@@ -269,20 +203,12 @@ uint32_t ttchamp_state::screen_update(screen_device &screen, bitmap_ind16 &bitma
 
 	/*
 	count=0;
-<<<<<<< HEAD
-	videoram = (UINT8*)m_videoram1;
-=======
 	videoram = (uint8_t*)m_videoram1;
->>>>>>> upstream/master
 	for (y=0;y<yyy;y++)
 	{
 	    for(x=0;x<xxx;x++)
 	    {
-<<<<<<< HEAD
-	        UINT8 pix = videoram[BYTE_XOR_LE(count)];
-=======
 	        uint8_t pix = videoram[BYTE_XOR_LE(count)];
->>>>>>> upstream/master
 	        if (pix) bitmap.pix16(y, x) = pix+0x200;
 	        count++;
 	    }
@@ -294,11 +220,7 @@ uint32_t ttchamp_state::screen_update(screen_device &screen, bitmap_ind16 &bitma
 	{
 		for(x=0;x<xxx;x++)
 		{
-<<<<<<< HEAD
-			UINT8 pix = videoramfg[BYTE_XOR_LE(count)];
-=======
 			uint8_t pix = videoramfg[BYTE_XOR_LE(count)];
->>>>>>> upstream/master
 			if (pix)
 			{
 				// first pen values seem to be special
@@ -310,20 +232,12 @@ uint32_t ttchamp_state::screen_update(screen_device &screen, bitmap_ind16 &bitma
 
 				if (pix == 0x01) // blend mode 1
 				{
-<<<<<<< HEAD
-					UINT8 pix = videorambg[BYTE_XOR_LE(count)];
-=======
 					uint8_t pix = videorambg[BYTE_XOR_LE(count)];
->>>>>>> upstream/master
 					bitmap.pix16(y, x) = pix + 0x200;
 				}
 				else if (pix == 0x02) // blend mode 2
 				{
-<<<<<<< HEAD
-					UINT8 pix = videorambg[BYTE_XOR_LE(count)];
-=======
 					uint8_t pix = videorambg[BYTE_XOR_LE(count)];
->>>>>>> upstream/master
 					bitmap.pix16(y, x) = pix + 0x100;
 				}
 				else
@@ -366,17 +280,10 @@ WRITE16_MEMBER(ttchamp_state::paldat_w)
 READ16_MEMBER(ttchamp_state::pic_r)
 {
 //  printf("%06x: read from PIC (%04x)\n", space.device().safe_pc(),mem_mask);
-<<<<<<< HEAD
-	if (m_picmodex == PIC_SET_READLATCH)
-	{
-//      printf("read data %02x from %02x\n", m_pic_latched, m_pic_readaddr);
-		m_picmodex = PIC_IDLE;
-=======
 	if (m_picmodex == picmode::SET_READLATCH)
 	{
 //      printf("read data %02x from %02x\n", m_pic_latched, m_pic_readaddr);
 		m_picmodex = picmode::IDLE;
->>>>>>> upstream/master
 
 		return m_pic_latched << 8;
 
@@ -388,47 +295,26 @@ READ16_MEMBER(ttchamp_state::pic_r)
 WRITE16_MEMBER(ttchamp_state::pic_w)
 {
 //  printf("%06x: write to PIC %04x (%04x) (%d)\n", space.device().safe_pc(),data,mem_mask, m_picmodex);
-<<<<<<< HEAD
-	if (m_picmodex == PIC_IDLE)
-	{
-		if (data == 0x11)
-		{
-			m_picmodex = PIC_SET_READADDRESS;
-=======
 	if (m_picmodex == picmode::IDLE)
 	{
 		if (data == 0x11)
 		{
 			m_picmodex = picmode::SET_READADDRESS;
->>>>>>> upstream/master
 //          printf("state = SET_READADDRESS\n");
 		}
 		else if (data == 0x12)
 		{
-<<<<<<< HEAD
-			m_picmodex = PIC_SET_WRITELATCH;
-=======
 			m_picmodex = picmode::SET_WRITELATCH;
->>>>>>> upstream/master
 //          printf("latch write data.. \n" );
 		}
 		else if (data == 0x20)
 		{
-<<<<<<< HEAD
-			m_picmodex = PIC_SET_WRITEADDRESS;
-//          printf("state = PIC_SET_WRITEADDRESS\n");
-		}
-		else if (data == 0x21) // write latched data
-		{
-			m_picmodex = PIC_IDLE;
-=======
 			m_picmodex = picmode::SET_WRITEADDRESS;
 //          printf("state = picmode::SET_WRITEADDRESS\n");
 		}
 		else if (data == 0x21) // write latched data
 		{
 			m_picmodex = picmode::IDLE;
->>>>>>> upstream/master
 			m_bakram[m_pic_writeaddr] = m_pic_writelatched;
 	//      printf("wrote %02x to %02x\n", m_pic_writelatched, m_pic_writeaddr);
 		}
@@ -439,33 +325,13 @@ WRITE16_MEMBER(ttchamp_state::pic_w)
 			m_pic_latched = m_bakram[m_pic_readaddr>>1];
 
 //          printf("latch read data %02x from %02x\n",m_pic_latched, m_pic_readaddr );
-<<<<<<< HEAD
-			m_picmodex = PIC_SET_READLATCH; // waiting to read...
-=======
 			m_picmodex = picmode::SET_READLATCH; // waiting to read...
->>>>>>> upstream/master
 		}
 		else
 		{
 //          printf("unknown\n");
 		}
 	}
-<<<<<<< HEAD
-	else if (m_picmodex == PIC_SET_READADDRESS)
-	{
-		m_pic_readaddr = data;
-		m_picmodex = PIC_IDLE;
-	}
-	else if (m_picmodex == PIC_SET_WRITEADDRESS)
-	{
-		m_pic_writeaddr = data;
-		m_picmodex = PIC_IDLE;
-	}
-	else if (m_picmodex == PIC_SET_WRITELATCH)
-	{
-		m_pic_writelatched = data;
-		m_picmodex = PIC_IDLE;
-=======
 	else if (m_picmodex == picmode::SET_READADDRESS)
 	{
 		m_pic_readaddr = data;
@@ -480,7 +346,6 @@ WRITE16_MEMBER(ttchamp_state::pic_w)
 	{
 		m_pic_writelatched = data;
 		m_picmodex = picmode::IDLE;
->>>>>>> upstream/master
 	}
 
 }
@@ -490,11 +355,7 @@ READ16_MEMBER(ttchamp_state::mem_r)
 {
 	// bits 0xf0 are used too, so this is likely wrong.
 
-<<<<<<< HEAD
-	UINT16* vram;
-=======
 	uint16_t* vram;
->>>>>>> upstream/master
 	if ((m_port10&0xf) == 0x00)
 		vram = m_videoram0;
 	else if ((m_port10&0xf)  == 0x01)
@@ -517,11 +378,7 @@ READ16_MEMBER(ttchamp_state::mem_r)
 	}
 	else
 	{
-<<<<<<< HEAD
-		UINT16 *src = m_rom16 + (0x100000/2); // can the CPU ever see the lower bank?
-=======
 		uint16_t *src = m_rom16 + (0x100000/2); // can the CPU ever see the lower bank?
->>>>>>> upstream/master
 		return src[offset];
 	}
 }
@@ -533,11 +390,7 @@ WRITE16_MEMBER(ttchamp_state::mem_w)
 
 	// bits 0xf0 are used too, so this is likely wrong.
 
-<<<<<<< HEAD
-	UINT16* vram;
-=======
 	uint16_t* vram;
->>>>>>> upstream/master
 	if ((m_port10&0xf)  == 0x00)
 		vram = m_videoram0;
 	else if ((m_port10&0xf)  == 0x01)
@@ -590,11 +443,7 @@ WRITE16_MEMBER(ttchamp_state::mem_w)
 			// 0x30000-0x3ffff used, on Spider it's 0x20000-0x2ffff
 			offset &= 0x7fff;
 
-<<<<<<< HEAD
-			UINT8 *src = m_rom8;
-=======
 			uint8_t *src = m_rom8;
->>>>>>> upstream/master
 
 			if (m_rombank)
 				src += 0x100000;
@@ -618,11 +467,7 @@ WRITE16_MEMBER(ttchamp_state::mem_w)
 				}
 				else
 				{
-<<<<<<< HEAD
-					UINT8 data;
-=======
 					uint8_t data;
->>>>>>> upstream/master
 
 					data = (src[(m_spritesaddr * 2) + 1]);
 					//data |= vram[offset] >> 8;
@@ -792,11 +637,7 @@ INTERRUPT_GEN_MEMBER(ttchamp_state::irq)/* right? */
 	device.execute().set_input_line(INPUT_LINE_NMI, PULSE_LINE);
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( ttchamp, ttchamp_state )
-=======
 static MACHINE_CONFIG_START( ttchamp )
->>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", V30, 8000000)
 	MCFG_CPU_PROGRAM_MAP(ttchamp_map)
@@ -818,11 +659,7 @@ static MACHINE_CONFIG_START( ttchamp )
 
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki", 8000000/8, OKIM6295_PIN7_HIGH)
-=======
 	MCFG_OKIM6295_ADD("oki", 8000000/8, PIN7_HIGH)
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 
 MACHINE_CONFIG_END
@@ -857,10 +694,5 @@ ROM_END
 
 
 // only the graphics differ between the two sets, code section is the same
-<<<<<<< HEAD
-GAME( 1995, ttchamp, 0,        ttchamp, ttchamp, driver_device, 0, ROT0,  "Gamart",                               "Table Tennis Champions", MACHINE_SUPPORTS_SAVE ) // this has various advertising boards, including 'Electronic Devices' and 'Deniam'
-GAME( 1995, ttchampa,ttchamp,  ttchamp, ttchamp, driver_device, 0, ROT0,  "Gamart (Palencia Elektronik license)", "Table Tennis Champions (Palencia Elektronik license)", MACHINE_SUPPORTS_SAVE ) // this only has Palencia Elektronik advertising boards
-=======
 GAME( 1995, ttchamp, 0,        ttchamp, ttchamp, ttchamp_state, 0, ROT0,  "Gamart",                               "Table Tennis Champions",                               MACHINE_SUPPORTS_SAVE ) // this has various advertising boards, including 'Electronic Devices' and 'Deniam'
 GAME( 1995, ttchampa,ttchamp,  ttchamp, ttchamp, ttchamp_state, 0, ROT0,  "Gamart (Palencia Elektronik license)", "Table Tennis Champions (Palencia Elektronik license)", MACHINE_SUPPORTS_SAVE ) // this only has Palencia Elektronik advertising boards
->>>>>>> upstream/master

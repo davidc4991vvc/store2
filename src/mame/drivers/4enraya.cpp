@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-// license:LGPL-2.1+
-=======
 // license:BSD-3-Clause
->>>>>>> upstream/master
 // copyright-holders:Tomasz Slanina, Roberto Fresca
 /***************************************************************************
 
@@ -14,17 +10,10 @@
 
   Supported games:
 
-<<<<<<< HEAD
-  4 En Raya (set 1),             1990, IDSA.
-  4 En Raya (set 2),             1990, IDSA.
-  unknown Pac-Man gambling game, 1990, Unknown.
-
-=======
   4 En Raya (set 1),                      1990, IDSA.
   4 En Raya (set 2),                      1990, IDSA.
   unknown Pac-Man gambling game,          1990, Unknown.
   unknown 'Space Invaders' gambling game, 1990, Unknown (made in France)
->>>>>>> upstream/master
 
   TODO:
   - Video and IRQ timings;
@@ -127,14 +116,6 @@
   have evidence of the contrary.
 
 
-<<<<<<< HEAD
-***************************************************************************/
-
-#include "emu.h"
-#include "cpu/z80/z80.h"
-#include "machine/nvram.h"
-#include "includes/4enraya.h"
-=======
 ****************************************************************************
 
   Hardware Notes: (unknown 'Space Invaders' gambling game)
@@ -173,7 +154,6 @@
 #include "machine/nvram.h"
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 #define MAIN_CLOCK XTAL_8MHz
 
@@ -213,13 +193,8 @@ WRITE8_MEMBER(_4enraya_state::sound_control_w)
 
 READ8_MEMBER(_4enraya_state::fenraya_custom_map_r)
 {
-<<<<<<< HEAD
-	UINT8 prom_routing = (m_prom[offset >> 12] & 0xf) ^ 0xf;
-	UINT8 res = 0;
-=======
 	uint8_t prom_routing = (m_prom[offset >> 12] & 0xf) ^ 0xf;
 	uint8_t res = 0;
->>>>>>> upstream/master
 
 	if (prom_routing & 1) // ROM5
 	{
@@ -246,11 +221,7 @@ READ8_MEMBER(_4enraya_state::fenraya_custom_map_r)
 
 WRITE8_MEMBER(_4enraya_state::fenraya_custom_map_w)
 {
-<<<<<<< HEAD
-	UINT8 prom_routing = (m_prom[offset >> 12] & 0xf) ^ 0xf;
-=======
 	uint8_t prom_routing = (m_prom[offset >> 12] & 0xf) ^ 0xf;
->>>>>>> upstream/master
 
 	if (prom_routing & 1) // ROM5
 	{
@@ -439,8 +410,6 @@ static INPUT_PORTS_START( unkpacg )
 
 INPUT_PORTS_END
 
-<<<<<<< HEAD
-=======
 static INPUT_PORTS_START( unkfr )
 	PORT_INCLUDE( unkpacg )
 
@@ -454,7 +423,6 @@ static INPUT_PORTS_START( unkfr )
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_START1 )         PORT_NAME("Start Non-Gambling game")
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNKNOWN )
 INPUT_PORTS_END
->>>>>>> upstream/master
 
 /***********************************
 *     GFX Layouts & GFX decode     *
@@ -485,12 +453,6 @@ void _4enraya_state::machine_start()
 	save_item(NAME(m_videoram));
 	save_item(NAME(m_workram));
 	save_item(NAME(m_soundlatch));
-<<<<<<< HEAD
-
-	m_prom = memregion("pal_prom")->base();
-	m_rom = memregion("maincpu")->base();
-=======
->>>>>>> upstream/master
 }
 
 void _4enraya_state::machine_reset()
@@ -503,11 +465,7 @@ void _4enraya_state::machine_reset()
 *         Machine Drivers          *
 ***********************************/
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( 4enraya, _4enraya_state )
-=======
 static MACHINE_CONFIG_START( 4enraya )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, MAIN_CLOCK/2)
@@ -595,8 +553,6 @@ ROM_START(unkpacg)
 	ROM_LOAD( "5.u18",   0x0000, 0x2000, CRC(44f272d2) SHA1(b39cbc1f290d9fb2453396906e4da4a682c41ef4) )
 ROM_END
 
-<<<<<<< HEAD
-=======
 /* all roms are 0x8000 but only the last 0x2000 of each is used */
 ROM_START( unkfr )
 	ROM_REGION( 0x10000, "maincpu", 0 )
@@ -624,7 +580,6 @@ ROM_START( unkfr )
 	ROM_CONTINUE(0x4000,0x2000) // only data here matters
 ROM_END
 
->>>>>>> upstream/master
 
 /***********************************
 *          Driver Init             *
@@ -633,11 +588,7 @@ ROM_END
 DRIVER_INIT_MEMBER(_4enraya_state, unkpacg)
 {
 	// descramble rom
-<<<<<<< HEAD
-	UINT8 *rom = memregion("maincpu")->base();
-=======
 	uint8_t *rom = memregion("maincpu")->base();
->>>>>>> upstream/master
 	for (int i = 0x8000; i < 0xa000; i++)
 		rom[i] = BITSWAP8(rom[i], 7,6,5,4,3,2,0,1);
 }
@@ -648,13 +599,7 @@ DRIVER_INIT_MEMBER(_4enraya_state, unkpacg)
 ***********************************/
 
 /*    YEAR  NAME      PARENT   MACHINE   INPUT    STATE           INIT     ROT    COMPANY      FULLNAME                        FLAGS  */
-<<<<<<< HEAD
-GAME( 1990, 4enraya,  0,       4enraya,  4enraya, driver_device,  0,       ROT0, "IDSA",      "4 En Raya (set 1)",             MACHINE_SUPPORTS_SAVE )
-GAME( 1990, 4enrayaa, 4enraya, 4enraya,  4enraya, driver_device,  0,       ROT0, "IDSA",      "4 En Raya (set 2)",             MACHINE_SUPPORTS_SAVE )
-GAME( 199?, unkpacg,  0,       unkpacg,  unkpacg, _4enraya_state, unkpacg, ROT0, "<unknown>", "unknown Pac-Man gambling game", MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1990, 4enraya,  0,       4enraya,  4enraya, _4enraya_state, 0,       ROT0, "IDSA",      "4 En Raya (set 1)",             MACHINE_SUPPORTS_SAVE )
 GAME( 1990, 4enrayaa, 4enraya, 4enraya,  4enraya, _4enraya_state, 0,       ROT0, "IDSA",      "4 En Raya (set 2)",             MACHINE_SUPPORTS_SAVE )
 GAME( 199?, unkpacg,  0,       unkpacg,  unkpacg, _4enraya_state, unkpacg, ROT0, "<unknown>", "unknown Pac-Man gambling game", MACHINE_SUPPORTS_SAVE )
 GAME( 199?, unkfr,    0,       unkpacg,  unkfr,   _4enraya_state, unkpacg, ROT0, "<unknown>", "unknown 'Space Invaders' gambling game", MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

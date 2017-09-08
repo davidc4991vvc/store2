@@ -6,20 +6,11 @@
 
 **********************************************************************/
 
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __VCS_WHEEL__
-#define __VCS_WHEEL__
-
-#include "emu.h"
-=======
 #ifndef MAME_BUS_VCS_CTRL_WHEEL_H
 #define MAME_BUS_VCS_CTRL_WHEEL_H
 
 #pragma once
 
->>>>>>> upstream/master
 #include "ctrl.h"
 
 
@@ -35,19 +26,6 @@ class vcs_wheel_device : public device_t,
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	vcs_wheel_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// optional information overrides
-	virtual ioport_constructor device_input_ports() const;
-
-protected:
-	// device-level overrides
-	virtual void device_start();
-
-	// device_vcs_control_port_interface overrides
-	virtual UINT8 vcs_joy_r();
-=======
 	vcs_wheel_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	// optional information overrides
@@ -59,7 +37,6 @@ protected:
 
 	// device_vcs_control_port_interface overrides
 	virtual uint8_t vcs_joy_r() override;
->>>>>>> upstream/master
 
 private:
 	required_ioport m_joy;
@@ -68,13 +45,6 @@ private:
 
 
 // device type definition
-<<<<<<< HEAD
-extern const device_type VCS_WHEEL;
-
-
-#endif
-=======
 DECLARE_DEVICE_TYPE(VCS_WHEEL, vcs_wheel_device)
 
 #endif // MAME_BUS_VCS_CTRL_WHEEL_H
->>>>>>> upstream/master

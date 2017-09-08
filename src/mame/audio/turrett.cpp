@@ -9,29 +9,18 @@
 #include "emu.h"
 #include "includes/turrett.h"
 
-<<<<<<< HEAD
-=======
 DEFINE_DEVICE_TYPE(TURRETT, turrett_device, "ttsnd", "Turret Tower Sound")
->>>>>>> upstream/master
 
 
 //-------------------------------------------------
 //  turrett_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-turrett_device::turrett_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, TURRETT, "Turret Tower Sound", tag, owner, clock, "ttsnd", __FILE__),
-		device_sound_interface(mconfig, *this),
-		device_memory_interface(mconfig, *this),
-		m_space_config("ttsound", ENDIANNESS_LITTLE, 16, 28, 0, NULL)
-=======
 turrett_device::turrett_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, TURRETT, tag, owner, clock)
 	, device_sound_interface(mconfig, *this)
 	, device_memory_interface(mconfig, *this)
 	, m_space_config("ttsound", ENDIANNESS_LITTLE, 16, 28, 0, nullptr)
->>>>>>> upstream/master
 {
 }
 
@@ -40,17 +29,11 @@ turrett_device::turrett_device(const machine_config &mconfig, const char *tag, d
 //  memory_space_config - configure address space
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const address_space_config *turrett_device::memory_space_config(address_spacenum spacenum) const
-{
-	return (spacenum == 0) ? &m_space_config : NULL;
-=======
 device_memory_interface::space_config_vector turrett_device::memory_space_config() const
 {
 	return space_config_vector {
 		std::make_pair(0, &m_space_config)
 	};
->>>>>>> upstream/master
 }
 
 
@@ -89,13 +72,8 @@ void turrett_device::device_start()
 
 void turrett_device::device_reset()
 {
-<<<<<<< HEAD
-	for (int ch = 0; ch < SOUND_CHANNELS; ++ch)
-		m_channels[ch].m_playing = false;
-=======
 	for (auto & elem : m_channels)
 		elem.m_playing = false;
->>>>>>> upstream/master
 }
 
 
@@ -116,29 +94,14 @@ void turrett_device::sound_stream_update(sound_stream &stream, stream_sample_t *
 
 		if (m_channels[ch].m_playing)
 		{
-<<<<<<< HEAD
-			UINT32 &addr = m_channels[ch].m_address;
-			INT32 lvol = (m_channels[ch].m_volume >> 16) & 0xff;
-			INT32 rvol = m_channels[ch].m_volume & 0xff;
-=======
 			uint32_t &addr = m_channels[ch].m_address;
 			int32_t lvol = (m_channels[ch].m_volume >> 16) & 0xff;
 			int32_t rvol = m_channels[ch].m_volume & 0xff;
->>>>>>> upstream/master
 
 			lvol = m_volume_table[lvol];
 			rvol = m_volume_table[rvol];
 
 			// Channels 30 and 31 expect interleaved stereo samples
-<<<<<<< HEAD
-			UINT32 incr = (ch >= 30) ? 2 : 1;
-
-			for (int s = 0; s < samples; ++s)
-			{
-				INT16 sample = m_direct->read_word(addr << 1);
-
-				if ((UINT16)sample == 0x8000)
-=======
 			uint32_t incr = (ch >= 30) ? 2 : 1;
 
 			for (int s = 0; s < samples; ++s)
@@ -146,7 +109,6 @@ void turrett_device::sound_stream_update(sound_stream &stream, stream_sample_t *
 				int16_t sample = m_direct->read_word(addr << 1);
 
 				if ((uint16_t)sample == 0x8000)
->>>>>>> upstream/master
 				{
 					m_channels[ch].m_playing = false;
 					break;

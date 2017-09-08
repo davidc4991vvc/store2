@@ -208,11 +208,7 @@ READ16_MEMBER( btoads_state::vram_fg_draw_r )
  *
  *************************************/
 
-<<<<<<< HEAD
-void btoads_state::render_sprite_row(UINT16 *sprite_source, UINT32 address)
-=======
 void btoads_state::render_sprite_row(uint16_t *sprite_source, uint32_t address)
->>>>>>> upstream/master
 {
 	int flipxor = ((*m_sprite_control >> 10) & 1) ? 0xffff : 0x0000;
 	int width = (~*m_sprite_control & 0x1ff) + 2;
@@ -228,11 +224,7 @@ void btoads_state::render_sprite_row(uint16_t *sprite_source, uint32_t address)
 	{
 		for ( ; srcoffs < srcend; srcoffs += srcstep, dstoffs += dststep)
 		{
-<<<<<<< HEAD
-			UINT16 src = sprite_source[(srcoffs >> 10) & 0x1ff];
-=======
 			uint16_t src = sprite_source[(srcoffs >> 10) & 0x1ff];
->>>>>>> upstream/master
 			if (src)
 			{
 				src = (src >> (((srcoffs ^ flipxor) >> 6) & 0x0c)) & 0x0f;
@@ -247,11 +239,7 @@ void btoads_state::render_sprite_row(uint16_t *sprite_source, uint32_t address)
 	{
 		for ( ; srcoffs < srcend; srcoffs += srcstep, dstoffs += dststep)
 		{
-<<<<<<< HEAD
-			UINT16 src = sprite_source[(srcoffs >> 10) & 0x1ff];
-=======
 			uint16_t src = sprite_source[(srcoffs >> 10) & 0x1ff];
->>>>>>> upstream/master
 			if (src)
 			{
 				src = (src >> (((srcoffs ^ flipxor) >> 6) & 0x0c)) & 0x0f;
@@ -334,19 +322,11 @@ TMS340X0_FROM_SHIFTREG_CB_MEMBER(btoads_state::from_shiftreg)
 
 TMS340X0_SCANLINE_RGB32_CB_MEMBER(btoads_state::scanline_update)
 {
-<<<<<<< HEAD
-	UINT32 fulladdr = ((params->rowaddr << 16) | params->coladdr) >> 4;
-	UINT16 *bg0_base = &m_vram_bg0[(fulladdr + (m_yscroll0 << 10)) & 0x3fc00];
-	UINT16 *bg1_base = &m_vram_bg1[(fulladdr + (m_yscroll1 << 10)) & 0x3fc00];
-	UINT8 *spr_base = &m_vram_fg_display[fulladdr & 0x3fc00];
-	UINT32 *dst = &bitmap.pix32(scanline);
-=======
 	uint32_t fulladdr = ((params->rowaddr << 16) | params->coladdr) >> 4;
 	uint16_t *bg0_base = &m_vram_bg0[(fulladdr + (m_yscroll0 << 10)) & 0x3fc00];
 	uint16_t *bg1_base = &m_vram_bg1[(fulladdr + (m_yscroll1 << 10)) & 0x3fc00];
 	uint8_t *spr_base = &m_vram_fg_display[fulladdr & 0x3fc00];
 	uint32_t *dst = &bitmap.pix32(scanline);
->>>>>>> upstream/master
 	const rgb_t *pens = m_tlc34076->get_pens();
 	int coladdr = fulladdr & 0x3ff;
 	int x;
@@ -365,11 +345,7 @@ TMS340X0_SCANLINE_RGB32_CB_MEMBER(btoads_state::scanline_update)
 		case 0:
 			for (x = params->heblnk; x < params->hsblnk; x += 2, coladdr++)
 			{
-<<<<<<< HEAD
-				UINT8 sprpix = spr_base[coladdr & 0xff];
-=======
 				uint8_t sprpix = spr_base[coladdr & 0xff];
->>>>>>> upstream/master
 
 				if (sprpix && !(sprpix & 0x80))
 				{
@@ -378,15 +354,9 @@ TMS340X0_SCANLINE_RGB32_CB_MEMBER(btoads_state::scanline_update)
 				}
 				else
 				{
-<<<<<<< HEAD
-					UINT16 bg0pix = bg0_base[(coladdr + m_xscroll0) & 0xff];
-					UINT16 bg1pix = bg1_base[(coladdr + m_xscroll1) & 0xff];
-					UINT8 sprpix = spr_base[coladdr & 0xff];
-=======
 					uint16_t bg0pix = bg0_base[(coladdr + m_xscroll0) & 0xff];
 					uint16_t bg1pix = bg1_base[(coladdr + m_xscroll1) & 0xff];
 					uint8_t sprpix = spr_base[coladdr & 0xff];
->>>>>>> upstream/master
 
 					if (bg1pix & 0x80)
 						dst[x + 0] = pens[bg1pix & 0xff];
@@ -420,11 +390,7 @@ TMS340X0_SCANLINE_RGB32_CB_MEMBER(btoads_state::scanline_update)
 		case 1:
 			for (x = params->heblnk; x < params->hsblnk; x += 2, coladdr++)
 			{
-<<<<<<< HEAD
-				UINT8 sprpix = spr_base[coladdr & 0xff];
-=======
 				uint8_t sprpix = spr_base[coladdr & 0xff];
->>>>>>> upstream/master
 
 				if (sprpix && !(sprpix & 0x80))
 				{
@@ -433,13 +399,8 @@ TMS340X0_SCANLINE_RGB32_CB_MEMBER(btoads_state::scanline_update)
 				}
 				else
 				{
-<<<<<<< HEAD
-					UINT16 bg0pix = bg0_base[(coladdr + m_xscroll0) & 0xff];
-					UINT16 bg1pix = bg1_base[(coladdr + m_xscroll1) & 0xff];
-=======
 					uint16_t bg0pix = bg0_base[(coladdr + m_xscroll0) & 0xff];
 					uint16_t bg1pix = bg1_base[(coladdr + m_xscroll1) & 0xff];
->>>>>>> upstream/master
 
 					if (bg0pix & 0xff)
 						dst[x + 0] = pens[bg0pix & 0xff];
@@ -471,11 +432,7 @@ TMS340X0_SCANLINE_RGB32_CB_MEMBER(btoads_state::scanline_update)
 		case 2:
 			for (x = params->heblnk; x < params->hsblnk; x += 2, coladdr++)
 			{
-<<<<<<< HEAD
-				UINT8 sprpix = spr_base[coladdr & 0xff];
-=======
 				uint8_t sprpix = spr_base[coladdr & 0xff];
->>>>>>> upstream/master
 
 				if (sprpix)
 				{
@@ -484,13 +441,8 @@ TMS340X0_SCANLINE_RGB32_CB_MEMBER(btoads_state::scanline_update)
 				}
 				else
 				{
-<<<<<<< HEAD
-					UINT16 bg0pix = bg0_base[(coladdr + m_xscroll0) & 0xff];
-					UINT16 bg1pix = bg1_base[(coladdr + m_xscroll1) & 0xff];
-=======
 					uint16_t bg0pix = bg0_base[(coladdr + m_xscroll0) & 0xff];
 					uint16_t bg1pix = bg1_base[(coladdr + m_xscroll1) & 0xff];
->>>>>>> upstream/master
 
 					if (bg1pix & 0xff)
 						dst[x + 0] = pens[bg1pix & 0xff];
@@ -516,15 +468,9 @@ TMS340X0_SCANLINE_RGB32_CB_MEMBER(btoads_state::scanline_update)
 		case 3:
 			for (x = params->heblnk; x < params->hsblnk; x += 2, coladdr++)
 			{
-<<<<<<< HEAD
-				UINT16 bg0pix = bg0_base[(coladdr + m_xscroll0) & 0xff];
-				UINT16 bg1pix = bg1_base[(coladdr + m_xscroll1) & 0xff];
-				UINT8 sprpix = spr_base[coladdr & 0xff];
-=======
 				uint16_t bg0pix = bg0_base[(coladdr + m_xscroll0) & 0xff];
 				uint16_t bg1pix = bg1_base[(coladdr + m_xscroll1) & 0xff];
 				uint8_t sprpix = spr_base[coladdr & 0xff];
->>>>>>> upstream/master
 
 				if (bg1pix & 0x80)
 					dst[x + 0] = pens[bg1pix & 0xff];
@@ -569,28 +515,17 @@ TMS340X0_SCANLINE_RGB32_CB_MEMBER(btoads_state::scanline_update)
 
 		for (i = 0; i < 3; i++)
 		{
-<<<<<<< HEAD
-			UINT16 *base = (i == 0) ? (UINT16 *)m_vram_fg_display : (i == 1) ? m_vram_bg0 : m_vram_bg1;
-=======
 			uint16_t *base = (i == 0) ? (uint16_t *)m_vram_fg_display : (i == 1) ? m_vram_bg0 : m_vram_bg1;
->>>>>>> upstream/master
 			int xscr = (i == 0) ? 0 : (i == 1) ? m_xscroll0 : m_xscroll1;
 			int yscr = (i == 0) ? 0 : (i == 1) ? m_yscroll0 : m_yscroll1;
 			int y;
 
 			for (y = 0; y < 224; y++)
 			{
-<<<<<<< HEAD
-				UINT32 offs = ((y + yscr) & 0xff) * TOWORD(0x4000);
-				for (x = 0; x < 256; x++)
-				{
-					UINT16 pix = base[offs + ((x + xscr) & 0xff)];
-=======
 				uint32_t offs = ((y + yscr) & 0xff) * TOWORD(0x4000);
 				for (x = 0; x < 256; x++)
 				{
 					uint16_t pix = base[offs + ((x + xscr) & 0xff)];
->>>>>>> upstream/master
 					fprintf(f, "%02X%02X", pix & 0xff, pix >> 8);
 					if (x % 16 == 15) fprintf(f, " ");
 				}

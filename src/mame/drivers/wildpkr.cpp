@@ -26,11 +26,7 @@
   - 1x D8751H            ; 8751 MCU (3.6864 MHz?)
 
   Sound device:
-<<<<<<< HEAD
-  - 1x AY8930            ; Sound IC, from Yamaha.
-=======
   - 1x AY8930            ; Sound IC, from Microchip Technology.
->>>>>>> upstream/master
 
   Video:
   - 1x HD63484CP8 @ 8MHz ; Advanced CRT Controller (ACRTC), from Hitachi Semiconductor.
@@ -160,19 +156,6 @@
 
 *******************************************************************************/
 
-<<<<<<< HEAD
-
-#define MAIN_CLOCK  XTAL_12MHz
-#define SEC_CLOCK   XTAL_3.6864MHz
-#define AUX1_CLOCK  XTAL_26MHz
-#define AUX2_CLOCK  XTAL_24MHz
-
-#include "emu.h"
-#include "cpu/m68000/m68000.h"
-//#include "video/hd63484.h"
-#include "video/ramdac.h"
-
-=======
 #include "emu.h"
 #include "cpu/m68000/m68000.h"
 #include "machine/clock.h"
@@ -194,23 +177,12 @@
 #define AUX1_CLOCK  XTAL_26MHz
 #define AUX2_CLOCK  XTAL_24MHz
 
->>>>>>> upstream/master
 
 class wildpkr_state : public driver_device
 {
 public:
 	wildpkr_state(const machine_config &mconfig, device_type type, const char *tag)
 		: driver_device(mconfig, type, tag),
-<<<<<<< HEAD
-		m_maincpu(*this, "maincpu") { }
-
-	DECLARE_DRIVER_INIT(wildpkr);
-	virtual void machine_start();
-	virtual void video_start();
-	DECLARE_PALETTE_INIT(wildpkr);
-	UINT32 screen_update_wildpkr(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	required_device<cpu_device> m_maincpu;
-=======
 		m_maincpu(*this, "maincpu"),
 		m_duart(*this, "duart"),
 		m_id(*this, "id"),
@@ -245,7 +217,6 @@ public:
 	DECLARE_WRITE16_MEMBER(clock_rate_w);
 	DECLARE_WRITE16_MEMBER(unknown_trigger_w);
 	IRQ_CALLBACK_MEMBER(tabpkr_irq_ack);
->>>>>>> upstream/master
 };
 
 
@@ -257,14 +228,6 @@ void wildpkr_state::video_start()
 {
 }
 
-<<<<<<< HEAD
-UINT32 wildpkr_state::screen_update_wildpkr(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-{
-	return 0;
-}
-
-=======
->>>>>>> upstream/master
 PALETTE_INIT_MEMBER(wildpkr_state, wildpkr)
 {
 }
@@ -279,8 +242,6 @@ PALETTE_INIT_MEMBER(wildpkr_state, wildpkr)
 *      Misc Handlers     *
 *************************/
 
-<<<<<<< HEAD
-=======
 READ8_MEMBER(wildpkr_state::unknown_read8)
 {
 	return 0xff;
@@ -334,22 +295,12 @@ WRITE16_MEMBER(wildpkr_state::clock_rate_w)
 WRITE16_MEMBER(wildpkr_state::unknown_trigger_w)
 {
 }
->>>>>>> upstream/master
 
 /*************************
 *      Memory Map        *
 *************************/
 
 static ADDRESS_MAP_START( wildpkr_map, AS_PROGRAM, 16, wildpkr_state )
-<<<<<<< HEAD
-	AM_RANGE(0x000000, 0x07ffff) AM_ROM
-	AM_RANGE(0x100000, 0x103fff) AM_RAM
-//  AM_RANGE(0x800000, 0x800003) ACRTC?
-	AM_RANGE(0x800180, 0x800181) AM_READNOP // protection, puts m68k code snippets to RAM
-	AM_RANGE(0x800200, 0x800201) AM_DEVWRITE8("ramdac", ramdac_device, index_w, 0xff00)
-	AM_RANGE(0x800202, 0x800203) AM_DEVWRITE8("ramdac", ramdac_device, pal_w, 0xff00)
-	AM_RANGE(0x800204, 0x800205) AM_DEVWRITE8("ramdac", ramdac_device, mask_w, 0xff00)
-=======
 	AM_RANGE(0x000000, 0x0fffff) AM_ROM
 	AM_RANGE(0x100000, 0x113fff) AM_RAM
 	AM_RANGE(0x800000, 0x800001) AM_DEVREADWRITE("acrtc", hd63484_device, status_r, address_w)
@@ -389,7 +340,6 @@ ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( hd63484_map, 0, 16, wildpkr_state )
 	AM_RANGE(0x00000, 0x3ffff) AM_RAM
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 /* Unknown R/W:
@@ -405,8 +355,6 @@ ADDRESS_MAP_END
 static INPUT_PORTS_START( wildpkr )
 INPUT_PORTS_END
 
-<<<<<<< HEAD
-=======
 static INPUT_PORTS_START( tabpkr )
 	PORT_START("IN0")
 	PORT_BIT(0x0001, IP_ACTIVE_LOW, IPT_UNKNOWN)
@@ -463,7 +411,6 @@ static INPUT_PORTS_START( tabpkr )
 	PORT_BIT(0x8000, IP_ACTIVE_LOW, IPT_UNKNOWN)
 INPUT_PORTS_END
 
->>>>>>> upstream/master
 
 /*************************
 *     Machine Start      *
@@ -479,25 +426,15 @@ void wildpkr_state::machine_start()
   80000-bffff = unused
   c0000-fffff = unused
 */
-<<<<<<< HEAD
-
-}
-
-
-static ADDRESS_MAP_START( ramdac_map, AS_0, 8, wildpkr_state )
-=======
 	m_clock_rate = 0;
 }
 
 
 static ADDRESS_MAP_START( ramdac_map, 0, 8, wildpkr_state )
->>>>>>> upstream/master
 	AM_RANGE(0x000, 0x3ff) AM_DEVREADWRITE("ramdac",ramdac_device,ramdac_pal_r,ramdac_rgb666_w)
 ADDRESS_MAP_END
 
 
-<<<<<<< HEAD
-=======
 IRQ_CALLBACK_MEMBER(wildpkr_state::tabpkr_irq_ack)
 {
 	m_maincpu->set_input_line(irqline, CLEAR_LINE);
@@ -507,35 +444,16 @@ IRQ_CALLBACK_MEMBER(wildpkr_state::tabpkr_irq_ack)
 		return M68K_INT_ACK_AUTOVECTOR;
 }
 
->>>>>>> upstream/master
 
 /*************************
 *    Machine Drivers     *
 *************************/
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( wildpkr, wildpkr_state )
-=======
 static MACHINE_CONFIG_START( wildpkr )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, MAIN_CLOCK)
 	MCFG_CPU_PROGRAM_MAP(wildpkr_map)
-<<<<<<< HEAD
-	MCFG_CPU_VBLANK_INT_DRIVER("screen", wildpkr_state,  irq1_line_hold)   //guess
-
-
-	MCFG_SCREEN_ADD("screen", RASTER)
-	MCFG_SCREEN_REFRESH_RATE(60)
-	MCFG_SCREEN_VBLANK_TIME(ATTOSECONDS_IN_USEC(0))
-	MCFG_SCREEN_SIZE(512, 512)
-	MCFG_SCREEN_VISIBLE_AREA(0, 512-1, 0, 512-1)
-	MCFG_SCREEN_UPDATE_DRIVER(wildpkr_state, screen_update_wildpkr)
-	MCFG_SCREEN_PALETTE("palette")
-
-//  MCFG_DEVICE_ADD("hd63484", HD63484, 0)
-=======
 	//MCFG_CPU_VBLANK_INT_DRIVER("screen", wildpkr_state, irq2_line_hold) // guess
 
 	MCFG_MC68681_ADD("duart", SEC_CLOCK)
@@ -591,21 +509,17 @@ static MACHINE_CONFIG_START( tabpkr )
 
 	MCFG_HD63484_ADD("acrtc", 0, hd63484_map)
 
->>>>>>> upstream/master
 	MCFG_RAMDAC_ADD("ramdac", ramdac_map, "palette")
 
 	MCFG_PALETTE_ADD("palette", 256)
 	MCFG_PALETTE_INIT_OWNER(wildpkr_state, wildpkr)
 
-<<<<<<< HEAD
-=======
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 	MCFG_SOUND_ADD("dac", AD557, 0)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
 	MCFG_DEVICE_ADD("vref", VOLTAGE_REGULATOR, 0) MCFG_VOLTAGE_REGULATOR_OUTPUT(5.0)
 	MCFG_SOUND_ROUTE_EX(0, "dac", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "dac", -1.0, DAC_VREF_NEG_INPUT)
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
@@ -614,11 +528,7 @@ MACHINE_CONFIG_END
 *************************/
 
 ROM_START( wildpkr )
-<<<<<<< HEAD
-	ROM_REGION( 0x80000, "maincpu", 0 )
-=======
 	ROM_REGION( 0x100000, "maincpu", 0 )
->>>>>>> upstream/master
 	ROM_LOAD16_BYTE( "vd_1.01_3.bin", 0x000000, 0x40000, CRC(d19d5609) SHA1(87eedb7daaa8ac33c0a73e4e849b9a0f76152261) )
 	ROM_LOAD16_BYTE( "vd_1.01_1.bin", 0x000001, 0x40000, CRC(f10644ab) SHA1(5872fe41b8c7fec5e83011abdf82a85f064b734f) )
 
@@ -629,8 +539,6 @@ ROM_START( wildpkr )
 	ROM_LOAD( "gal6v8s.bin",  0x0000, 0x0117, CRC(389c63a7) SHA1(4ebb26a001ed14a9e96dd268ed1c7f298f0c086b) )
 ROM_END
 
-<<<<<<< HEAD
-=======
 /* seems to be different hardware, but same basic video chips, keep here or move?
 
 cpu 68000-16
@@ -669,7 +577,6 @@ ROM_START( tabpkr ) // Royal Poker V 1.85 Oct 29 1996 12:20:07
 ROM_END
 
 
->>>>>>> upstream/master
 
 /*************************
 *      Driver Init       *
@@ -677,10 +584,6 @@ ROM_END
 
 DRIVER_INIT_MEMBER(wildpkr_state,wildpkr)
 {
-<<<<<<< HEAD
-	//HD63484_start(machine());
-=======
->>>>>>> upstream/master
 }
 
 
@@ -688,11 +591,6 @@ DRIVER_INIT_MEMBER(wildpkr_state,wildpkr)
 *      Game Drivers      *
 *************************/
 
-<<<<<<< HEAD
-/*    YEAR  NAME       PARENT    MACHINE   INPUT     INIT      ROT    COMPANY        FULLNAME                   FLAGS */
-GAME( 199?, wildpkr,   0,        wildpkr,  wildpkr, wildpkr_state,  wildpkr,  ROT0, "TAB Austria", "Wild Poker (ver. D 1.01)", MACHINE_NO_SOUND | MACHINE_NOT_WORKING | MACHINE_UNEMULATED_PROTECTION )
-=======
 //    YEAR  NAME       PARENT    MACHINE   INPUT    STATE           INIT      ROT   COMPANY        FULLNAME                    FLAGS
 GAME( 199?, wildpkr,   0,        wildpkr,  wildpkr, wildpkr_state,  wildpkr,  ROT0, "TAB Austria", "Wild Poker (ver. D 1.01)", MACHINE_NO_SOUND | MACHINE_NOT_WORKING | MACHINE_UNEMULATED_PROTECTION )
 GAME( 1996, tabpkr,    0,        tabpkr,   tabpkr,  wildpkr_state,  wildpkr,  ROT0, "TAB Austria", "Royal Poker V 1.85",       MACHINE_NO_SOUND | MACHINE_NOT_WORKING | MACHINE_UNEMULATED_PROTECTION )
->>>>>>> upstream/master

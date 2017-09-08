@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-// license:???
-=======
 // license:BSD-3-Clause
->>>>>>> upstream/master
 // copyright-holders:Phil Stroffolino, Stefan Jokisch
 /***************************************************************************
 
@@ -17,11 +13,7 @@ Atari Ultra Tank video emulation
 
 PALETTE_INIT_MEMBER(ultratnk_state, ultratnk)
 {
-<<<<<<< HEAD
-	const UINT8 *color_prom = memregion("proms")->base();
-=======
 	const uint8_t *color_prom = memregion("proms")->base();
->>>>>>> upstream/master
 
 	palette.set_indirect_color(0, rgb_t(0x00, 0x00, 0x00));
 	palette.set_indirect_color(1, rgb_t(0xa4, 0xa4, 0xa4));
@@ -42,16 +34,9 @@ PALETTE_INIT_MEMBER(ultratnk_state, ultratnk)
 }
 
 
-<<<<<<< HEAD
-TILE_GET_INFO_MEMBER(ultratnk_state::ultratnk_tile_info)
-{
-	UINT8 *videoram = m_videoram;
-	UINT8 code = videoram[tile_index];
-=======
 TILE_GET_INFO_MEMBER(ultratnk_state::tile_info)
 {
 	uint8_t code = m_videoram[tile_index];
->>>>>>> upstream/master
 
 	if (code & 0x20)
 		SET_TILE_INFO_MEMBER(0, code, code >> 6, 0);
@@ -64,27 +49,6 @@ void ultratnk_state::video_start()
 {
 	m_screen->register_screen_bitmap(m_helper);
 
-<<<<<<< HEAD
-	m_playfield = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(ultratnk_state::ultratnk_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
-}
-
-
-UINT32 ultratnk_state::screen_update_ultratnk(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-{
-	UINT8 *videoram = m_videoram;
-	int i;
-
-	m_playfield->draw(screen, bitmap, cliprect, 0, 0);
-
-	for (i = 0; i < 4; i++)
-	{
-		int bank = 0;
-
-		UINT8 horz = videoram[0x390 + 2 * i + 0];
-		UINT8 attr = videoram[0x390 + 2 * i + 1];
-		UINT8 vert = videoram[0x398 + 2 * i + 0];
-		UINT8 code = videoram[0x398 + 2 * i + 1];
-=======
 	m_playfield = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(ultratnk_state::tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
 }
 
@@ -101,7 +65,6 @@ uint32_t ultratnk_state::screen_update(screen_device &screen, bitmap_ind16 &bitm
 		uint8_t attr = m_videoram[0x390 + 2 * i + 1];
 		uint8_t vert = m_videoram[0x398 + 2 * i + 0];
 		uint8_t code = m_videoram[0x398 + 2 * i + 1];
->>>>>>> upstream/master
 
 		if (code & 4)
 			bank = 32;
@@ -121,35 +84,11 @@ uint32_t ultratnk_state::screen_update(screen_device &screen, bitmap_ind16 &bitm
 }
 
 
-<<<<<<< HEAD
-void ultratnk_state::screen_eof_ultratnk(screen_device &screen, bool state)
-=======
 WRITE_LINE_MEMBER(ultratnk_state::screen_vblank)
->>>>>>> upstream/master
 {
 	// rising edge
 	if (state)
 	{
-<<<<<<< HEAD
-		int i;
-		UINT16 BG = m_palette->pen_indirect(0);
-		UINT8 *videoram = m_videoram;
-
-		/* check for sprite-playfield collisions */
-
-		for (i = 0; i < 4; i++)
-		{
-			rectangle rect;
-
-			int x;
-			int y;
-
-			int bank = 0;
-
-			UINT8 horz = videoram[0x390 + 2 * i + 0];
-			UINT8 vert = videoram[0x398 + 2 * i + 0];
-			UINT8 code = videoram[0x398 + 2 * i + 1];
-=======
 		uint16_t BG = m_palette->pen_indirect(0);
 
 		/* check for sprite-playfield collisions */
@@ -163,7 +102,6 @@ WRITE_LINE_MEMBER(ultratnk_state::screen_vblank)
 			uint8_t horz = m_videoram[0x390 + 2 * i + 0];
 			uint8_t vert = m_videoram[0x398 + 2 * i + 0];
 			uint8_t code = m_videoram[0x398 + 2 * i + 1];
->>>>>>> upstream/master
 
 			rect.min_x = horz - 15;
 			rect.min_y = vert - 15;
@@ -172,11 +110,7 @@ WRITE_LINE_MEMBER(ultratnk_state::screen_vblank)
 
 			rect &= m_screen->visible_area();
 
-<<<<<<< HEAD
-			m_playfield->draw(screen, m_helper, rect, 0, 0);
-=======
 			m_playfield->draw(*m_screen, m_helper, rect, 0, 0);
->>>>>>> upstream/master
 
 			if (code & 4)
 				bank = 32;
@@ -188,41 +122,23 @@ WRITE_LINE_MEMBER(ultratnk_state::screen_vblank)
 				horz - 15,
 				vert - 15, 1);
 
-<<<<<<< HEAD
-			for (y = rect.min_y; y <= rect.max_y; y++)
-				for (x = rect.min_x; x <= rect.max_x; x++)
-=======
 			for (int y = rect.min_y; y <= rect.max_y; y++)
 				for (int x = rect.min_x; x <= rect.max_x; x++)
->>>>>>> upstream/master
 					if (m_palette->pen_indirect(m_helper.pix16(y, x)) != BG)
 						m_collision[i] = 1;
 		}
 
 		/* update sound status */
 
-<<<<<<< HEAD
-		address_space &space = machine().driver_data()->generic_space();
-		m_discrete->write(space, ULTRATNK_MOTOR_DATA_1, videoram[0x391] & 15);
-		m_discrete->write(space, ULTRATNK_MOTOR_DATA_2, videoram[0x393] & 15);
-=======
 		address_space &space = machine().dummy_space();
 		m_discrete->write(space, ULTRATNK_MOTOR_DATA_1, m_videoram[0x391] & 15);
 		m_discrete->write(space, ULTRATNK_MOTOR_DATA_2, m_videoram[0x393] & 15);
->>>>>>> upstream/master
 	}
 }
 
 
-<<<<<<< HEAD
-WRITE8_MEMBER(ultratnk_state::ultratnk_video_ram_w)
-{
-	UINT8 *videoram = m_videoram;
-	videoram[offset] = data;
-=======
 WRITE8_MEMBER(ultratnk_state::video_ram_w)
 {
 	m_videoram[offset] = data;
->>>>>>> upstream/master
 	m_playfield->mark_tile_dirty(offset);
 }

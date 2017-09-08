@@ -1,16 +1,10 @@
 /* 7zBuf2.c -- Byte Buffer
-<<<<<<< HEAD
-2008-10-04 : Igor Pavlov : Public domain */
-
-#include <string.h>
-=======
 2014-08-22 : Igor Pavlov : Public domain */
 
 #include "Precomp.h"
 
 #include <string.h>
 
->>>>>>> upstream/master
 #include "7zBuf.h"
 
 void DynBuf_Construct(CDynBuf *p)
@@ -40,16 +34,11 @@ int DynBuf_Write(CDynBuf *p, const Byte *buf, size_t size, ISzAlloc *alloc)
     alloc->Free(alloc, p->data);
     p->data = data;
   }
-<<<<<<< HEAD
-  memcpy(p->data + p->pos, buf, size);
-  p->pos += size;
-=======
   if (size != 0)
   {
     memcpy(p->data + p->pos, buf, size);
     p->pos += size;
   }
->>>>>>> upstream/master
   return 1;
 }
 

@@ -23,20 +23,11 @@
 
 **********************************************************************/
 
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __MOS6551__
-#define __MOS6551__
-
-#include "emu.h"
-=======
 #ifndef MAME_MACHINE_MOS6551_H
 #define MAME_MACHINE_MOS6551_H
 
 #pragma once
 
->>>>>>> upstream/master
 #include "machine/clock.h"
 
 #define MCFG_MOS6551_XTAL(_xtal) \
@@ -60,16 +51,6 @@
 class mos6551_device : public device_t
 {
 public:
-<<<<<<< HEAD
-	mos6551_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	static void set_xtal(device_t &device, UINT32 xtal) { downcast<mos6551_device &>(device).set_xtal(xtal); }
-	template<class _Object> static devcb_base &set_irq_handler(device_t &device, _Object object) { return downcast<mos6551_device &>(device).m_irq_handler.set_callback(object); }
-	template<class _Object> static devcb_base &set_txd_handler(device_t &device, _Object object) { return downcast<mos6551_device &>(device).m_txd_handler.set_callback(object); }
-	template<class _Object> static devcb_base &set_rxc_handler(device_t &device, _Object object) { return downcast<mos6551_device &>(device).m_rxc_handler.set_callback(object); }
-	template<class _Object> static devcb_base &set_rts_handler(device_t &device, _Object object) { return downcast<mos6551_device &>(device).m_rts_handler.set_callback(object); }
-	template<class _Object> static devcb_base &set_dtr_handler(device_t &device, _Object object) { return downcast<mos6551_device &>(device).m_dtr_handler.set_callback(object); }
-=======
 	mos6551_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	static void set_xtal(device_t &device, uint32_t xtal) { downcast<mos6551_device &>(device).set_xtal(xtal); }
@@ -78,7 +59,6 @@ public:
 	template <class Object> static devcb_base &set_rxc_handler(device_t &device, Object &&cb) { return downcast<mos6551_device &>(device).m_rxc_handler.set_callback(std::forward<Object>(cb)); }
 	template <class Object> static devcb_base &set_rts_handler(device_t &device, Object &&cb) { return downcast<mos6551_device &>(device).m_rts_handler.set_callback(std::forward<Object>(cb)); }
 	template <class Object> static devcb_base &set_dtr_handler(device_t &device, Object &&cb) { return downcast<mos6551_device &>(device).m_dtr_handler.set_callback(std::forward<Object>(cb)); }
->>>>>>> upstream/master
 
 	DECLARE_READ8_MEMBER(read);
 	DECLARE_WRITE8_MEMBER(write);
@@ -90,23 +70,12 @@ public:
 	DECLARE_WRITE_LINE_MEMBER(write_dsr);
 	DECLARE_WRITE_LINE_MEMBER(write_dcd);
 
-<<<<<<< HEAD
-	DECLARE_WRITE_LINE_MEMBER(internal_clock);
-
-	void set_xtal(UINT32 clock);
-
-protected:
-	virtual void device_start();
-	virtual void device_reset();
-	virtual machine_config_constructor device_mconfig_additions() const;
-=======
 	void set_xtal(uint32_t clock);
 
 protected:
 	virtual void device_start() override;
 	virtual void device_reset() override;
 	virtual void device_add_mconfig(machine_config &config) override;
->>>>>>> upstream/master
 
 private:
 	enum
@@ -162,20 +131,6 @@ private:
 	void update_irq();
 	void update_divider();
 
-<<<<<<< HEAD
-	UINT8 read_rdr();
-	UINT8 read_status();
-	UINT8 read_command();
-	UINT8 read_control();
-
-	void write_tdr(UINT8 data);
-	void write_reset(UINT8 data);
-	void write_command(UINT8 data);
-	void write_control(UINT8 data);
-
-	int stoplength();
-
-=======
 	uint8_t read_rdr();
 	uint8_t read_status();
 	uint8_t read_command();
@@ -189,7 +144,6 @@ private:
 	int stoplength();
 
 	DECLARE_WRITE_LINE_MEMBER(internal_clock);
->>>>>>> upstream/master
 	DECLARE_WRITE_LINE_MEMBER(receiver_clock);
 	DECLARE_WRITE_LINE_MEMBER(transmitter_clock);
 
@@ -203,15 +157,6 @@ private:
 	devcb_write_line m_rts_handler;
 	devcb_write_line m_dtr_handler;
 
-<<<<<<< HEAD
-	UINT8 m_control;
-	UINT8 m_command;
-	UINT8 m_status;
-	UINT8 m_tdr;
-	UINT8 m_rdr;
-
-	UINT8 m_irq_state;
-=======
 	uint8_t m_control;
 	uint8_t m_command;
 	uint8_t m_status;
@@ -219,7 +164,6 @@ private:
 	uint8_t m_rdr;
 
 	uint8_t m_irq_state;
->>>>>>> upstream/master
 
 	int m_irq;
 	int m_txd;
@@ -227,11 +171,7 @@ private:
 	int m_rts;
 	int m_dtr;
 
-<<<<<<< HEAD
-	UINT32 m_xtal;
-=======
 	uint32_t m_xtal;
->>>>>>> upstream/master
 	int m_divide;
 	int m_cts;
 	int m_dsr;
@@ -265,12 +205,6 @@ private:
 	int m_tx_internal_clock;
 };
 
-<<<<<<< HEAD
-extern const device_type MOS6551;
-
-#endif
-=======
 DECLARE_DEVICE_TYPE(MOS6551, mos6551_device)
 
 #endif // MAME_MACHINE_MOS6551_H
->>>>>>> upstream/master

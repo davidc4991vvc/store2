@@ -16,21 +16,13 @@ device_network_interface::~device_network_interface()
 {
 }
 
-<<<<<<< HEAD
-int device_network_interface::send(UINT8 *buf, int len) const
-=======
 int device_network_interface::send(u8 *buf, int len) const
->>>>>>> upstream/master
 {
 	if(!m_dev) return 0;
 	return m_dev->send(buf, len);
 }
 
-<<<<<<< HEAD
-void device_network_interface::recv_cb(UINT8 *buf, int len)
-=======
 void device_network_interface::recv_cb(u8 *buf, int len)
->>>>>>> upstream/master
 {
 }
 

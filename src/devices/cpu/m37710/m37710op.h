@@ -38,11 +38,7 @@
 /* note: difference from 65816.  when switching to 8-bit X/Y, X and Y are *not* truncated
    to 8 bits! */
 
-<<<<<<< HEAD
-void m37710_cpu_device::m37710i_set_flag_mx(UINT32 value)
-=======
 void m37710_cpu_device::m37710i_set_flag_mx(uint32_t value)
->>>>>>> upstream/master
 {
 #if FLAG_SET_M
 	if(!(value & FLAGPOS_M))
@@ -86,11 +82,7 @@ void m37710_cpu_device::m37710i_set_flag_mx(uint32_t value)
 }
 
 
-<<<<<<< HEAD
-void m37710_cpu_device::m37710i_set_reg_p(UINT32 value)
-=======
 void m37710_cpu_device::m37710i_set_reg_p(uint32_t value)
->>>>>>> upstream/master
 {
 	FLAG_N = value;
 	FLAG_V = value << 1;
@@ -243,20 +235,12 @@ void m37710_cpu_device::m37710i_set_reg_p(uint32_t value)
 #define OP_MPY(MODE)                                                        \
 	CLK(CLK_OP + CLK_R8 + CLK_##MODE + 14); \
 	SRC = OPER_8_##MODE();          \
-<<<<<<< HEAD
-	{ UINT16 temp = SRC * (REG_A&0xff);  REG_A = temp & 0xff; REG_BA = (temp>>8)&0xff; FLAG_Z = temp; FLAG_N = (temp & 0x8000) ? 1 : 0; FLAG_C = 0; }
-=======
 	{ uint16_t temp = SRC * (REG_A&0xff);  REG_A = temp & 0xff; REG_BA = (temp>>8)&0xff; FLAG_Z = temp; FLAG_N = (temp & 0x8000) ? 1 : 0; FLAG_C = 0; }
->>>>>>> upstream/master
 #else
 #define OP_MPY(MODE)                                                        \
 	CLK(CLK_OP + CLK_R16 + CLK_##MODE + 14+8);  \
 	SRC = OPER_16_##MODE();         \
-<<<<<<< HEAD
-	{ UINT32 temp = SRC * REG_A;  REG_A = temp & 0xffff;  REG_BA = (temp>>16)&0xffff; FLAG_Z = temp; FLAG_N = (temp & 0x80000000) ? 1 : 0; FLAG_C = 0; }
-=======
 	{ uint32_t temp = SRC * REG_A;  REG_A = temp & 0xffff;  REG_BA = (temp>>16)&0xffff; FLAG_Z = temp; FLAG_N = (temp & 0x80000000) ? 1 : 0; FLAG_C = 0; }
->>>>>>> upstream/master
 #endif
 
 /* M37710   Divide */
@@ -268,11 +252,7 @@ void m37710_cpu_device::m37710i_set_reg_p(uint32_t value)
 	DST = OPER_8_##MODE();          \
 	if (DST != 0)   \
 	{       \
-<<<<<<< HEAD
-		UINT16 tempa = SRC / DST; UINT16 tempb = SRC % DST;     \
-=======
 		uint16_t tempa = SRC / DST; uint16_t tempb = SRC % DST;     \
->>>>>>> upstream/master
 		FLAG_V = ((tempa | tempb) & 0xff00) ? VFLAG_SET : 0;    \
 		FLAG_C = FLAG_V ? CFLAG_SET : 0;    \
 		if (!FLAG_V) { FLAG_N = (tempa & 0x80) ? 1 : 0; }       \
@@ -286,11 +266,7 @@ void m37710_cpu_device::m37710i_set_reg_p(uint32_t value)
 	DST = OPER_16_##MODE();     \
 	if (DST != 0)   \
 	{       \
-<<<<<<< HEAD
-		UINT32 tempa = SRC / DST; UINT32 tempb = SRC % DST;     \
-=======
 		uint32_t tempa = SRC / DST; uint32_t tempb = SRC % DST;     \
->>>>>>> upstream/master
 		FLAG_V = ((tempa | tempb) & 0xffff0000) ? VFLAG_SET : 0;    \
 		FLAG_C = FLAG_V ? CFLAG_SET : 0;    \
 		if (!FLAG_V) { FLAG_N = (tempa & 0x8000) ? 1 : 0; }     \
@@ -305,11 +281,7 @@ void m37710_cpu_device::m37710i_set_reg_p(uint32_t value)
 #define OP_ADC(MODE)                                                        \
 			CLK(CLK_OP + CLK_R8 + CLK_##MODE);                              \
 			SRC    = OPER_8_##MODE();                                       \
-<<<<<<< HEAD
-			FLAG_C = REG_A + SRC + CFLAG_AS_1();                        \
-=======
 			FLAG_C = REG_A + SRC + CFLAG_1();                        \
->>>>>>> upstream/master
 			if(FLAG_D)                                                      \
 			{                                                               \
 				if((FLAG_C & 0xf) > 9)                                      \
@@ -325,33 +297,21 @@ void m37710_cpu_device::m37710i_set_reg_p(uint32_t value)
 			SRC    = OPER_16_##MODE();                                      \
 			if(!FLAG_D)                                                     \
 			{                                                               \
-<<<<<<< HEAD
-				FLAG_C = REG_A + SRC + CFLAG_AS_1();                        \
-=======
 				FLAG_C = REG_A + SRC + CFLAG_1();                        \
->>>>>>> upstream/master
 				FLAG_V = VFLAG_ADD_16(SRC, REG_A, FLAG_C);                  \
 				FLAG_Z = REG_A = MAKE_UINT_16(FLAG_C);                      \
 				FLAG_N = NFLAG_16(REG_A);                                   \
 				FLAG_C = CFLAG_16(FLAG_C);                                  \
 				BREAKOUT;                                                   \
 			}                                                               \
-<<<<<<< HEAD
-			FLAG_C = MAKE_UINT_8(REG_A) + MAKE_UINT_8(SRC) + CFLAG_AS_1();  \
-=======
 			FLAG_C = MAKE_UINT_8(REG_A) + MAKE_UINT_8(SRC) + CFLAG_1();  \
->>>>>>> upstream/master
 			if((FLAG_C & 0xf) > 9)                                          \
 				FLAG_C+=6;                                                  \
 			if((FLAG_C & 0xf0) > 0x90)                                      \
 				FLAG_C+=0x60;                                               \
 			FLAG_Z = MAKE_UINT_8(FLAG_C);                                   \
 																			\
-<<<<<<< HEAD
-			FLAG_C = MAKE_UINT_8(REG_A>>8) + MAKE_UINT_8(SRC>>8) + CFLAG_AS_1();    \
-=======
 			FLAG_C = MAKE_UINT_8(REG_A>>8) + MAKE_UINT_8(SRC>>8) + CFLAG_1();    \
->>>>>>> upstream/master
 			if((FLAG_C & 0xf) > 9)                                          \
 				FLAG_C+=6;                                                  \
 			if((FLAG_C & 0xf0) > 0x90)                                      \
@@ -368,11 +328,7 @@ void m37710_cpu_device::m37710i_set_reg_p(uint32_t value)
 #define OP_ADCB(MODE)                                                       \
 			CLK(CLK_OP + CLK_R8 + CLK_##MODE);                              \
 			SRC    = OPER_8_##MODE();                                       \
-<<<<<<< HEAD
-			FLAG_C = REG_BA + SRC + CFLAG_AS_1();                       \
-=======
 			FLAG_C = REG_BA + SRC + CFLAG_1();                       \
->>>>>>> upstream/master
 			if(FLAG_D)                                                      \
 			{                                                               \
 				if((FLAG_C & 0xf) > 9)                                      \
@@ -388,33 +344,21 @@ void m37710_cpu_device::m37710i_set_reg_p(uint32_t value)
 			SRC    = OPER_16_##MODE();                                      \
 			if(!FLAG_D)                                                     \
 			{                                                               \
-<<<<<<< HEAD
-				FLAG_C = REG_BA + SRC + CFLAG_AS_1();                       \
-=======
 				FLAG_C = REG_BA + SRC + CFLAG_1();                       \
->>>>>>> upstream/master
 				FLAG_V = VFLAG_ADD_16(SRC, REG_BA, FLAG_C);                 \
 				FLAG_Z = REG_BA = MAKE_UINT_16(FLAG_C);                     \
 				FLAG_N = NFLAG_16(REG_BA);                                  \
 				FLAG_C = CFLAG_16(FLAG_C);                                  \
 				BREAKOUT;                                                   \
 			}                                                               \
-<<<<<<< HEAD
-			FLAG_C = MAKE_UINT_8(REG_BA) + MAKE_UINT_8(SRC) + CFLAG_AS_1(); \
-=======
 			FLAG_C = MAKE_UINT_8(REG_BA) + MAKE_UINT_8(SRC) + CFLAG_1(); \
->>>>>>> upstream/master
 			if((FLAG_C & 0xf) > 9)                                          \
 				FLAG_C+=6;                                                  \
 			if((FLAG_C & 0xf0) > 0x90)                                      \
 				FLAG_C+=0x60;                                               \
 			FLAG_Z = MAKE_UINT_8(FLAG_C);                                   \
 																			\
-<<<<<<< HEAD
-			FLAG_C = MAKE_UINT_8(REG_BA>>8) + MAKE_UINT_8(SRC>>8) + CFLAG_AS_1();   \
-=======
 			FLAG_C = MAKE_UINT_8(REG_BA>>8) + MAKE_UINT_8(SRC>>8) + CFLAG_1();   \
->>>>>>> upstream/master
 			if((FLAG_C & 0xf) > 9)                                          \
 				FLAG_C+=6;                                                  \
 			if((FLAG_C & 0xf0) > 0x90)                                      \
@@ -1300,20 +1244,12 @@ void m37710_cpu_device::m37710i_set_reg_p(uint32_t value)
 #if FLAG_SET_M
 #define OP_ROL()                                                            \
 			CLK(CLK_OP + CLK_IMPLIED);                                      \
-<<<<<<< HEAD
-			FLAG_C = (REG_A<<1) | CFLAG_AS_1();                             \
-=======
 			FLAG_C = (REG_A<<1) | CFLAG_1();                             \
->>>>>>> upstream/master
 			FLAG_N = FLAG_Z = REG_A = MAKE_UINT_8(FLAG_C)
 #else
 #define OP_ROL()                                                            \
 			CLK(CLK_OP + CLK_IMPLIED);                                      \
-<<<<<<< HEAD
-			FLAG_C = (REG_A<<1) | CFLAG_AS_1();                             \
-=======
 			FLAG_C = (REG_A<<1) | CFLAG_1();                             \
->>>>>>> upstream/master
 			FLAG_Z = REG_A = MAKE_UINT_16(FLAG_C);                          \
 			FLAG_N = NFLAG_16(FLAG_C);                                      \
 			FLAG_C = CFLAG_16(FLAG_C)
@@ -1324,20 +1260,12 @@ void m37710_cpu_device::m37710i_set_reg_p(uint32_t value)
 #if FLAG_SET_M
 #define OP_ROLB()                                                           \
 			CLK(CLK_OP + CLK_IMPLIED);                                      \
-<<<<<<< HEAD
-			FLAG_C = (REG_BA<<1) | CFLAG_AS_1();                                \
-=======
 			FLAG_C = (REG_BA<<1) | CFLAG_1();                                \
->>>>>>> upstream/master
 			FLAG_N = FLAG_Z = REG_BA = MAKE_UINT_8(FLAG_C)
 #else
 #define OP_ROLB()                                                           \
 			CLK(CLK_OP + CLK_IMPLIED);                                      \
-<<<<<<< HEAD
-			FLAG_C = (REG_BA<<1) | CFLAG_AS_1();                                \
-=======
 			FLAG_C = (REG_BA<<1) | CFLAG_1();                                \
->>>>>>> upstream/master
 			FLAG_Z = REG_BA = MAKE_UINT_16(FLAG_C);                         \
 			FLAG_N = NFLAG_16(FLAG_C);                                      \
 			FLAG_C = CFLAG_16(FLAG_C)
@@ -1359,22 +1287,14 @@ void m37710_cpu_device::m37710i_set_reg_p(uint32_t value)
 #define OP_ROLM(MODE)                                                       \
 			CLK(CLK_OP + CLK_RMW8 + CLK_W_##MODE);                          \
 			DST = EA_##MODE();                                              \
-<<<<<<< HEAD
-			FLAG_C = (read_8_##MODE(DST)<<1) | CFLAG_AS_1();                \
-=======
 			FLAG_C = (read_8_##MODE(DST)<<1) | CFLAG_1();                \
->>>>>>> upstream/master
 			FLAG_N = FLAG_Z = MAKE_UINT_8(FLAG_C);                          \
 			write_8_##MODE(DST, FLAG_Z)
 #else
 #define OP_ROLM(MODE)                                                       \
 			CLK(CLK_OP + CLK_RMW16 + CLK_W_##MODE);                         \
 			DST = EA_##MODE();                                              \
-<<<<<<< HEAD
-			FLAG_C = (read_16_##MODE(DST)<<1) | CFLAG_AS_1();               \
-=======
 			FLAG_C = (read_16_##MODE(DST)<<1) | CFLAG_1();               \
->>>>>>> upstream/master
 			FLAG_Z = MAKE_UINT_16(FLAG_C);                                  \
 			FLAG_N = NFLAG_16(FLAG_C);                                      \
 			FLAG_C = CFLAG_16(FLAG_C);                                      \
@@ -1469,21 +1389,13 @@ void m37710_cpu_device::m37710i_set_reg_p(uint32_t value)
 			FLAG_C = ~FLAG_C;                                               \
 			if(!FLAG_D)                                                     \
 			{                                                               \
-<<<<<<< HEAD
-				FLAG_C = REG_A - SRC - CFLAG_AS_1();                        \
-=======
 				FLAG_C = REG_A - SRC - CFLAG_1();                        \
->>>>>>> upstream/master
 				FLAG_V = VFLAG_SUB_8(SRC, REG_A, FLAG_C);                   \
 				FLAG_N = FLAG_Z = REG_A = MAKE_UINT_8(FLAG_C);              \
 				FLAG_C = ~FLAG_C;                                           \
 				BREAKOUT;                                                   \
 			}                                                               \
-<<<<<<< HEAD
-			DST = CFLAG_AS_1();                                             \
-=======
 			DST = CFLAG_1();                                             \
->>>>>>> upstream/master
 			FLAG_C = REG_A - SRC - DST;                                     \
 			FLAG_V = VFLAG_SUB_8(SRC, REG_A, FLAG_C);                       \
 			if((FLAG_C & 0xf) > 9)                                          \
@@ -1499,33 +1411,21 @@ void m37710_cpu_device::m37710i_set_reg_p(uint32_t value)
 			FLAG_C = ~FLAG_C;                                               \
 			if(!FLAG_D)                                                     \
 			{                                                               \
-<<<<<<< HEAD
-				FLAG_C = REG_A - SRC - CFLAG_AS_1();                        \
-=======
 				FLAG_C = REG_A - SRC - CFLAG_1();                        \
->>>>>>> upstream/master
 				FLAG_V = VFLAG_SUB_16(SRC, REG_A, FLAG_C);                  \
 				FLAG_Z = REG_A = MAKE_UINT_16(FLAG_C);                      \
 				FLAG_N = NFLAG_16(REG_A);                                   \
 				FLAG_C = ~CFLAG_16(FLAG_C);                                 \
 				BREAKOUT;                                                   \
 			}                                                               \
-<<<<<<< HEAD
-			DST    = CFLAG_AS_1();                                          \
-=======
 			DST    = CFLAG_1();                                          \
->>>>>>> upstream/master
 			FLAG_C = MAKE_UINT_8(REG_A) - MAKE_UINT_8(SRC) - DST;           \
 			if((FLAG_C & 0xf) > 9)                                          \
 				FLAG_C-=6;                                                  \
 			if((FLAG_C & 0xf0) > 0x90)                                      \
 				FLAG_C-=0x60;                                               \
 			FLAG_Z = MAKE_UINT_8(FLAG_C);                                   \
-<<<<<<< HEAD
-			DST    = CFLAG_AS_1();                                          \
-=======
 			DST    = CFLAG_1();                                          \
->>>>>>> upstream/master
 			FLAG_C = MAKE_UINT_8(REG_A>>8) - MAKE_UINT_8(SRC>>8) - DST;     \
 			if((FLAG_C & 0xf) > 9)                                          \
 				FLAG_C-=6;                                                  \
@@ -1548,21 +1448,13 @@ void m37710_cpu_device::m37710i_set_reg_p(uint32_t value)
 			FLAG_C = ~FLAG_C;                                               \
 			if(!FLAG_D)                                                     \
 			{                                                               \
-<<<<<<< HEAD
-				FLAG_C = REG_BA - SRC - CFLAG_AS_1();                       \
-=======
 				FLAG_C = REG_BA - SRC - CFLAG_1();                       \
->>>>>>> upstream/master
 				FLAG_V = VFLAG_SUB_8(SRC, REG_BA, FLAG_C);                  \
 				FLAG_N = FLAG_Z = REG_BA = MAKE_UINT_8(FLAG_C);             \
 				FLAG_C = ~FLAG_C;                                           \
 				BREAKOUT;                                                   \
 			}                                                               \
-<<<<<<< HEAD
-			DST = CFLAG_AS_1();                                             \
-=======
 			DST = CFLAG_1();                                             \
->>>>>>> upstream/master
 			FLAG_C = REG_BA - SRC - DST;                                        \
 			FLAG_V = VFLAG_SUB_8(SRC, REG_BA, FLAG_C);                      \
 			if((FLAG_C & 0xf) > 9)                                          \
@@ -1578,33 +1470,21 @@ void m37710_cpu_device::m37710i_set_reg_p(uint32_t value)
 			FLAG_C = ~FLAG_C;                                               \
 			if(!FLAG_D)                                                     \
 			{                                                               \
-<<<<<<< HEAD
-				FLAG_C = REG_BA - SRC - CFLAG_AS_1();                       \
-=======
 				FLAG_C = REG_BA - SRC - CFLAG_1();                       \
->>>>>>> upstream/master
 				FLAG_V = VFLAG_SUB_16(SRC, REG_BA, FLAG_C);                 \
 				FLAG_Z = REG_BA = MAKE_UINT_16(FLAG_C);                     \
 				FLAG_N = NFLAG_16(REG_BA);                                  \
 				FLAG_C = ~CFLAG_16(FLAG_C);                                 \
 				BREAKOUT;                                                   \
 			}                                                               \
-<<<<<<< HEAD
-			DST    = CFLAG_AS_1();                                          \
-=======
 			DST    = CFLAG_1();                                          \
->>>>>>> upstream/master
 			FLAG_C = MAKE_UINT_8(REG_BA) - MAKE_UINT_8(SRC) - DST;          \
 			if((FLAG_C & 0xf) > 9)                                          \
 				FLAG_C-=6;                                                  \
 			if((FLAG_C & 0xf0) > 0x90)                                      \
 				FLAG_C-=0x60;                                               \
 			FLAG_Z = MAKE_UINT_8(FLAG_C);                                   \
-<<<<<<< HEAD
-			DST    = CFLAG_AS_1();                                          \
-=======
 			DST    = CFLAG_1();                                          \
->>>>>>> upstream/master
 			FLAG_C = MAKE_UINT_8(REG_A>>8) - MAKE_UINT_8(SRC>>8) - DST;     \
 			if((FLAG_C & 0xf) > 9)                                          \
 				FLAG_C-=6;                                                  \
@@ -2628,13 +2508,10 @@ TABLE_FUNCTION(void, set_line, (int line, int state))
 		case M37710_LINE_IRQ2:
 		case M37710_LINE_IRQ1:
 		case M37710_LINE_IRQ0:
-<<<<<<< HEAD
-=======
 		case M37710_LINE_DMA0:
 		case M37710_LINE_DMA1:
 		case M37710_LINE_DMA2:
 		case M37710_LINE_DMA3:
->>>>>>> upstream/master
 			switch(state)
 			{
 				case CLEAR_LINE:
@@ -2666,11 +2543,7 @@ TABLE_FUNCTION(void, set_line, (int line, int state))
 
 
 /* Get a register from the CPU core */
-<<<<<<< HEAD
-TABLE_FUNCTION(UINT32, get_reg, (int regnum))
-=======
 TABLE_FUNCTION(uint32_t, get_reg, (int regnum))
->>>>>>> upstream/master
 {
 	switch(regnum)
 	{
@@ -2690,11 +2563,7 @@ TABLE_FUNCTION(uint32_t, get_reg, (int regnum))
 	return 0;
 }
 
-<<<<<<< HEAD
-TABLE_FUNCTION(void, set_reg, (int regnum, UINT32 val))
-=======
 TABLE_FUNCTION(void, set_reg, (int regnum, uint32_t val))
->>>>>>> upstream/master
 {
 	switch(regnum)
 	{

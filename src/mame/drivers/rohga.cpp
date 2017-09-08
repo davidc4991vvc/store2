@@ -7,10 +7,7 @@
     Rogha Armour Attack         (c) 1991 Data East Corporation
     Wizard Fire                 (c) 1992 Data East Corporation
     Nitro Ball/Gun Ball         (c) 1992 Data East Corporation
-<<<<<<< HEAD
-=======
     Hangzo (prototype)          (c) 1992 Hot-B
->>>>>>> upstream/master
     Schmeiser Robo              (c) 1993 Hot-B
 
     This hardware is capable of alpha-blending on sprites and playfields
@@ -111,14 +108,6 @@
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/m68000/m68000.h"
-#include "cpu/h6280/h6280.h"
-#include "includes/decocrpt.h"
-#include "includes/rohga.h"
-#include "sound/2151intf.h"
-#include "sound/okim6295.h"
-=======
 #include "includes/rohga.h"
 
 #include "cpu/m68000/m68000.h"
@@ -130,7 +119,6 @@
 #include "screen.h"
 #include "speaker.h"
 
->>>>>>> upstream/master
 
 READ16_MEMBER(rohga_state::rohga_irq_ack_r)
 {
@@ -170,11 +158,7 @@ static ADDRESS_MAP_START( rohga_map, AS_PROGRAM, 16, rohga_state )
 	AM_RANGE(0x3c4000, 0x3c4fff) AM_DEVREADWRITE("tilegen2", deco16ic_device, pf1_data_r, pf1_data_w)
 	AM_RANGE(0x3c6000, 0x3c6fff) AM_DEVREADWRITE("tilegen2", deco16ic_device, pf2_data_r, pf2_data_w)
 
-<<<<<<< HEAD
-	AM_RANGE(0x3c8000, 0x3c8fff) AM_MIRROR(0x1000) AM_RAM AM_SHARE("pf1_rowscroll")
-=======
 	AM_RANGE(0x3c8000, 0x3c9fff) AM_RAM AM_SHARE("pf1_rowscroll")
->>>>>>> upstream/master
 	AM_RANGE(0x3ca000, 0x3cafff) AM_MIRROR(0x1000) AM_RAM AM_SHARE("pf2_rowscroll")
 	AM_RANGE(0x3cc000, 0x3ccfff) AM_MIRROR(0x1000) AM_RAM AM_SHARE("pf3_rowscroll")
 	AM_RANGE(0x3ce000, 0x3cefff) AM_MIRROR(0x1000) AM_RAM AM_SHARE("pf4_rowscroll")
@@ -188,13 +172,8 @@ READ16_MEMBER( rohga_state::wf_protection_region_0_104_r )
 {
 	int real_address = 0 + (offset *2);
 	int deco146_addr = BITSWAP32(real_address, /* NC */31,30,29,28,27,26,25,24,23,22,21,20,19,18, 13,12,11,/**/      17,16,15,14,    10,9,8, 7,6,5,4, 3,2,1,0) & 0x7fff;
-<<<<<<< HEAD
-	UINT8 cs = 0;
-	UINT16 data = m_deco104->read_data( deco146_addr, mem_mask, cs );
-=======
 	uint8_t cs = 0;
 	uint16_t data = m_deco104->read_data( deco146_addr, mem_mask, cs );
->>>>>>> upstream/master
 	return data;
 }
 
@@ -202,11 +181,7 @@ WRITE16_MEMBER( rohga_state::wf_protection_region_0_104_w )
 {
 	int real_address = 0 + (offset *2);
 	int deco146_addr = BITSWAP32(real_address, /* NC */31,30,29,28,27,26,25,24,23,22,21,20,19,18, 13,12,11,/**/      17,16,15,14,    10,9,8, 7,6,5,4, 3,2,1,0) & 0x7fff;
-<<<<<<< HEAD
-	UINT8 cs = 0;
-=======
 	uint8_t cs = 0;
->>>>>>> upstream/master
 	m_deco104->write_data( space, deco146_addr, data, mem_mask, cs );
 }
 
@@ -247,13 +222,8 @@ READ16_MEMBER( rohga_state::nb_protection_region_0_146_r )
 {
 	int real_address = 0 + (offset *2);
 	int deco146_addr = BITSWAP32(real_address, /* NC */31,30,29,28,27,26,25,24,23,22,21,20,19,18, 13,12,11,/**/      17,16,15,14,    10,9,8, 7,6,5,4, 3,2,1,0) & 0x7fff;
-<<<<<<< HEAD
-	UINT8 cs = 0;
-	UINT16 data = m_deco146->read_data( deco146_addr, mem_mask, cs );
-=======
 	uint8_t cs = 0;
 	uint16_t data = m_deco146->read_data( deco146_addr, mem_mask, cs );
->>>>>>> upstream/master
 	return data;
 }
 
@@ -261,11 +231,7 @@ WRITE16_MEMBER( rohga_state::nb_protection_region_0_146_w )
 {
 	int real_address = 0 + (offset *2);
 	int deco146_addr = BITSWAP32(real_address, /* NC */31,30,29,28,27,26,25,24,23,22,21,20,19,18, 13,12,11,/**/      17,16,15,14,    10,9,8, 7,6,5,4, 3,2,1,0) & 0x7fff;
-<<<<<<< HEAD
-	UINT8 cs = 0;
-=======
 	uint8_t cs = 0;
->>>>>>> upstream/master
 	m_deco146->write_data( space, deco146_addr, data, mem_mask, cs );
 }
 
@@ -304,11 +270,7 @@ static ADDRESS_MAP_START( nitrobal_map, AS_PROGRAM, 16, rohga_state )
 AM_RANGE(0xff8000, 0xffffff) AM_RAM
 ADDRESS_MAP_END
 
-<<<<<<< HEAD
-static ADDRESS_MAP_START( schmeisr_map, AS_PROGRAM, 16, rohga_state )
-=======
 static ADDRESS_MAP_START( hotb_base_map, AS_PROGRAM, 16, rohga_state )
->>>>>>> upstream/master
 	AM_RANGE(0x000000, 0x0fffff) AM_ROM
 	AM_RANGE(0x200000, 0x20000f) AM_DEVWRITE("tilegen1", deco16ic_device, pf_control_w)
 	AM_RANGE(0x240000, 0x24000f) AM_DEVWRITE("tilegen2", deco16ic_device, pf_control_w)
@@ -319,11 +281,7 @@ static ADDRESS_MAP_START( hotb_base_map, AS_PROGRAM, 16, rohga_state )
 	AM_RANGE(0x310002, 0x310003) AM_READ_PORT("SYSTEM")
 	AM_RANGE(0x310000, 0x310009) AM_WRITENOP /* Palette control? */
 	AM_RANGE(0x31000a, 0x31000b) AM_DEVWRITE("deco_common", decocomn_device, palette_dma_w) /* Write 1111 for dma?  (Or any value?) */
-<<<<<<< HEAD
-	AM_RANGE(0x320000, 0x320001) AM_WRITENOP /* ? */
-=======
 	AM_RANGE(0x320000, 0x320001) AM_WRITENOP /* bit 4: cleared on irq routine start, set on end */
->>>>>>> upstream/master
 	AM_RANGE(0x322000, 0x322001) AM_DEVWRITE("deco_common", decocomn_device, priority_w)
 	AM_RANGE(0x321100, 0x321101) AM_WRITE(wizdfire_irq_ack_w)  /* Irq ack?  Value not used */
 
@@ -331,37 +289,27 @@ static ADDRESS_MAP_START( hotb_base_map, AS_PROGRAM, 16, rohga_state )
 	AM_RANGE(0x3c2000, 0x3c2fff) AM_DEVREADWRITE("tilegen1", deco16ic_device, pf2_data_r, pf2_data_w)
 	AM_RANGE(0x3c4000, 0x3c4fff) AM_DEVREADWRITE("tilegen2", deco16ic_device, pf1_data_r, pf1_data_w)
 	AM_RANGE(0x3c6000, 0x3c6fff) AM_DEVREADWRITE("tilegen2", deco16ic_device, pf2_data_r, pf2_data_w)
-<<<<<<< HEAD
-	AM_RANGE(0x3c8000, 0x3c8fff) AM_MIRROR(0x1000) AM_RAM AM_SHARE("pf1_rowscroll")
-=======
 	AM_RANGE(0x3c8000, 0x3c9fff) AM_RAM AM_SHARE("pf1_rowscroll")
->>>>>>> upstream/master
 	AM_RANGE(0x3ca000, 0x3cafff) AM_MIRROR(0x1000) AM_RAM AM_SHARE("pf2_rowscroll")
 	AM_RANGE(0x3cc000, 0x3ccfff) AM_MIRROR(0x1000) AM_RAM AM_SHARE("pf3_rowscroll")
 	AM_RANGE(0x3ce000, 0x3cefff) AM_MIRROR(0x1000) AM_RAM AM_SHARE("pf4_rowscroll")
 
 	AM_RANGE(0x3d0000, 0x3d07ff) AM_RAM AM_SHARE("spriteram")
 	AM_RANGE(0x3e0000, 0x3e1fff) AM_MIRROR(0x2000) AM_RAM_DEVWRITE("deco_common", decocomn_device, buffered_palette_w) AM_SHARE("paletteram")
-<<<<<<< HEAD
-=======
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( schmeisr_map, AS_PROGRAM, 16, rohga_state )
 	AM_IMPORT_FROM(hotb_base_map)
->>>>>>> upstream/master
 	AM_RANGE(0xff0000, 0xff7fff) AM_RAM /* Main ram */
 ADDRESS_MAP_END
 
 
-<<<<<<< HEAD
-=======
 
 static ADDRESS_MAP_START( hangzo_map, AS_PROGRAM, 16, rohga_state )
 	AM_IMPORT_FROM(hotb_base_map)
 	AM_RANGE(0x3f0000, 0x3f3fff) AM_RAM /* Main ram */
 ADDRESS_MAP_END
 
->>>>>>> upstream/master
 /******************************************************************************/
 
 static ADDRESS_MAP_START( rohga_sound_map, AS_PROGRAM, 8, rohga_state )
@@ -370,11 +318,7 @@ static ADDRESS_MAP_START( rohga_sound_map, AS_PROGRAM, 8, rohga_state )
 	AM_RANGE(0x110000, 0x110001) AM_DEVREADWRITE("ymsnd", ym2151_device,read,write)
 	AM_RANGE(0x120000, 0x120001) AM_DEVREADWRITE("oki1", okim6295_device, read, write)
 	AM_RANGE(0x130000, 0x130001) AM_DEVREADWRITE("oki2", okim6295_device, read, write)
-<<<<<<< HEAD
-	AM_RANGE(0x140000, 0x140001) AM_READ(soundlatch_byte_r)
-=======
 	AM_RANGE(0x140000, 0x140001) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
->>>>>>> upstream/master
 	AM_RANGE(0x1f0000, 0x1f1fff) AM_RAMBANK("bank8")
 	AM_RANGE(0x1fec00, 0x1fec01) AM_DEVWRITE("audiocpu", h6280_device, timer_w)
 	AM_RANGE(0x1ff400, 0x1ff403) AM_DEVWRITE("audiocpu", h6280_device, irq_status_w)
@@ -409,11 +353,7 @@ static INPUT_PORTS_START( rohga )
 	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_CUSTOM ) PORT_VBLANK("screen")
 
 	PORT_START("DSW")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x0007, 0x0007, DEF_STR( Coin_A ) )
-=======
 	PORT_DIPNAME( 0x0007, 0x0007, DEF_STR( Coin_A ) ) PORT_DIPLOCATION("SW1:1,2,3")
->>>>>>> upstream/master
 	PORT_DIPSETTING(      0x0000, DEF_STR( 3C_1C ) )
 	PORT_DIPSETTING(      0x0001, DEF_STR( 2C_1C ) )
 	PORT_DIPSETTING(      0x0007, DEF_STR( 1C_1C ) )
@@ -422,11 +362,7 @@ static INPUT_PORTS_START( rohga )
 	PORT_DIPSETTING(      0x0004, DEF_STR( 1C_4C ) )
 	PORT_DIPSETTING(      0x0003, DEF_STR( 1C_5C ) )
 	PORT_DIPSETTING(      0x0002, DEF_STR( 1C_6C ) )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x0038, 0x0038, DEF_STR( Coin_B ) )
-=======
 	PORT_DIPNAME( 0x0038, 0x0038, DEF_STR( Coin_B ) ) PORT_DIPLOCATION("SW1:4,5,6")
->>>>>>> upstream/master
 	PORT_DIPSETTING(      0x0000, DEF_STR( 3C_1C ) )
 	PORT_DIPSETTING(      0x0008, DEF_STR( 2C_1C ) )
 	PORT_DIPSETTING(      0x0038, DEF_STR( 1C_1C ) )
@@ -435,27 +371,6 @@ static INPUT_PORTS_START( rohga )
 	PORT_DIPSETTING(      0x0020, DEF_STR( 1C_4C ) )
 	PORT_DIPSETTING(      0x0018, DEF_STR( 1C_5C ) )
 	PORT_DIPSETTING(      0x0010, DEF_STR( 1C_6C ) )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x0040, 0x0040, DEF_STR( Flip_Screen ) )
-	PORT_DIPSETTING(      0x0040, DEF_STR( Off ) )
-	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
-	PORT_DIPNAME( 0x0080, 0x0080, "2 Credits to Start, 1 to Continue" )
-	PORT_DIPSETTING(      0x0080, DEF_STR( Off ) )
-	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
-	PORT_DIPNAME( 0x0100, 0x0100, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(      0x0100, DEF_STR( Off ) )
-	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
-	PORT_DIPNAME( 0x0200, 0x0200, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(      0x0200, DEF_STR( Off ) )
-	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
-	PORT_DIPNAME( 0x0400, 0x0400, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(      0x0400, DEF_STR( Off ) )
-	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
-	PORT_DIPNAME( 0x0800, 0x0800, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(      0x0800, DEF_STR( Off ) )
-	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
-	PORT_DIPNAME( 0x3000, 0x3000, "Player's Vitality" )
-=======
 	PORT_DIPNAME( 0x0040, 0x0040, DEF_STR( Flip_Screen ) ) PORT_DIPLOCATION("SW1:7")
 	PORT_DIPSETTING(      0x0040, DEF_STR( Off ) )
 	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
@@ -467,35 +382,18 @@ static INPUT_PORTS_START( rohga )
 	PORT_DIPUNUSED_DIPLOC( 0x0400, 0x0400, "SW2:3" ) /* Listed as "Unused" */
 	PORT_DIPUNUSED_DIPLOC( 0x0800, 0x0800, "SW2:4" ) /* Listed as "Unused" */
 	PORT_DIPNAME( 0x3000, 0x3000, "Player's Vitality" ) PORT_DIPLOCATION("SW2:5,6")
->>>>>>> upstream/master
 	PORT_DIPSETTING(      0x3000, DEF_STR( Normal ) )
 	PORT_DIPSETTING(      0x2000, DEF_STR( Low ) )
 	PORT_DIPSETTING(      0x1000, "Lowest" )
 	PORT_DIPSETTING(      0x0000, DEF_STR( High ) )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x4000, 0x4000, DEF_STR( Allow_Continue ) )
-	PORT_DIPSETTING(      0x4000, DEF_STR( Off ) )
-	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
-	PORT_DIPNAME( 0x8000, 0x0000, DEF_STR( Demo_Sounds ) )
-=======
 	PORT_DIPNAME( 0x4000, 0x4000, DEF_STR( Allow_Continue ) ) PORT_DIPLOCATION("SW2:7")
 	PORT_DIPSETTING(      0x4000, DEF_STR( Off ) )
 	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
 	PORT_DIPNAME( 0x8000, 0x0000, DEF_STR( Demo_Sounds ) ) PORT_DIPLOCATION("SW2:8")
->>>>>>> upstream/master
 	PORT_DIPSETTING(      0x8000, DEF_STR( Off ) )
 	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
 
 	PORT_START("DSW3")      /* Dip switch bank 3 */
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x0001, 0x0001, "Stage Clear Bonus" ) /* Life Recovery At stage clear */
-	PORT_DIPSETTING(      0x0001, DEF_STR( Off ) )
-	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
-	PORT_DIPNAME( 0x0002, 0x0002, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(      0x0002, DEF_STR( Off ) )
-	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
-	PORT_DIPNAME( 0x000c, 0x000c, "Enemy's Vitality" )
-=======
 	PORT_DIPNAME( 0x0001, 0x0001, "Stage Clear Bonus" ) PORT_DIPLOCATION("SW3:1") /* Life Recovery At stage clear */
 	PORT_DIPSETTING(      0x0001, DEF_STR( Off ) )
 	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
@@ -503,25 +401,16 @@ static INPUT_PORTS_START( rohga )
 	PORT_DIPSETTING(      0x0002, DEF_STR( Off ) )
 	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
 	PORT_DIPNAME( 0x000c, 0x000c, "Enemy's Vitality" ) PORT_DIPLOCATION("SW3:3,4")
->>>>>>> upstream/master
 	PORT_DIPSETTING(      0x0008, DEF_STR( Low ) )
 	PORT_DIPSETTING(      0x000c, DEF_STR( Normal ) )
 	PORT_DIPSETTING(      0x0004, DEF_STR( High ) )
 	PORT_DIPSETTING(      0x0000, DEF_STR( Highest ) )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x0030, 0x0030, "Enemy Encounter Rate" )
-=======
 	PORT_DIPNAME( 0x0030, 0x0030, "Enemy Encounter Rate" ) PORT_DIPLOCATION("SW3:5,6")
->>>>>>> upstream/master
 	PORT_DIPSETTING(      0x0020, DEF_STR( Low ) )
 	PORT_DIPSETTING(      0x0030, DEF_STR( Normal ) )
 	PORT_DIPSETTING(      0x0010, DEF_STR( High ) )
 	PORT_DIPSETTING(      0x0000, DEF_STR( Highest ) )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x00c0, 0x00c0, "Enemy's Weapon Speed" )
-=======
 	PORT_DIPNAME( 0x00c0, 0x00c0, "Enemy's Weapon Speed" ) PORT_DIPLOCATION("SW3:7,8")
->>>>>>> upstream/master
 	PORT_DIPSETTING(      0x0080, "Slow" )
 	PORT_DIPSETTING(      0x00c0, DEF_STR( Normal ) )
 	PORT_DIPSETTING(      0x0040, "Fast" )
@@ -554,11 +443,7 @@ static INPUT_PORTS_START( wizdfire )
 	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_CUSTOM ) PORT_VBLANK("screen")
 
 	PORT_START("DSW")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x0007, 0x0007, DEF_STR( Coin_A ) )
-=======
 	PORT_DIPNAME( 0x0007, 0x0007, DEF_STR( Coin_A ) ) PORT_DIPLOCATION("SW1:1,2,3")
->>>>>>> upstream/master
 	PORT_DIPSETTING(      0x0000, DEF_STR( 3C_1C ) )
 	PORT_DIPSETTING(      0x0001, DEF_STR( 2C_1C ) )
 	PORT_DIPSETTING(      0x0007, DEF_STR( 1C_1C ) )
@@ -567,11 +452,7 @@ static INPUT_PORTS_START( wizdfire )
 	PORT_DIPSETTING(      0x0004, DEF_STR( 1C_4C ) )
 	PORT_DIPSETTING(      0x0003, DEF_STR( 1C_5C ) )
 	PORT_DIPSETTING(      0x0002, DEF_STR( 1C_6C ) )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x0038, 0x0038, DEF_STR( Coin_B ) )
-=======
 	PORT_DIPNAME( 0x0038, 0x0038, DEF_STR( Coin_B ) ) PORT_DIPLOCATION("SW1:4,5,6")
->>>>>>> upstream/master
 	PORT_DIPSETTING(      0x0000, DEF_STR( 3C_1C ) )
 	PORT_DIPSETTING(      0x0008, DEF_STR( 2C_1C ) )
 	PORT_DIPSETTING(      0x0038, DEF_STR( 1C_1C ) )
@@ -580,15 +461,6 @@ static INPUT_PORTS_START( wizdfire )
 	PORT_DIPSETTING(      0x0020, DEF_STR( 1C_4C ) )
 	PORT_DIPSETTING(      0x0018, DEF_STR( 1C_5C ) )
 	PORT_DIPSETTING(      0x0010, DEF_STR( 1C_6C ) )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x0040, 0x0040, DEF_STR( Flip_Screen ) )
-	PORT_DIPSETTING(      0x0040, DEF_STR( Off ) )
-	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
-	PORT_DIPNAME( 0x0080, 0x0080, "2 Credits to Start, 1 to Continue" )
-	PORT_DIPSETTING(      0x0080, DEF_STR( Off ) )
-	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
-	PORT_DIPNAME( 0x0300, 0x0300, DEF_STR( Lives ) )
-=======
 	PORT_DIPNAME( 0x0040, 0x0040, DEF_STR( Flip_Screen ) ) PORT_DIPLOCATION("SW1:7")
 	PORT_DIPSETTING(      0x0040, DEF_STR( Off ) )
 	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
@@ -596,40 +468,24 @@ static INPUT_PORTS_START( wizdfire )
 	PORT_DIPSETTING(      0x0080, DEF_STR( Off ) )
 	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
 	PORT_DIPNAME( 0x0300, 0x0300, DEF_STR( Lives ) ) PORT_DIPLOCATION("SW2:1,2")
->>>>>>> upstream/master
 	PORT_DIPSETTING(      0x0000, "2" )
 	PORT_DIPSETTING(      0x0100, "3" )
 	PORT_DIPSETTING(      0x0300, "4" )
 	PORT_DIPSETTING(      0x0200, "5" )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x0c00, 0x0c00, DEF_STR( Difficulty ) )
-=======
 	PORT_DIPNAME( 0x0c00, 0x0c00, DEF_STR( Difficulty ) ) PORT_DIPLOCATION("SW2:3,4")
->>>>>>> upstream/master
 	PORT_DIPSETTING(      0x0800, DEF_STR( Easy ) )
 	PORT_DIPSETTING(      0x0c00, DEF_STR( Normal ) )
 	PORT_DIPSETTING(      0x0400, DEF_STR( Hard ) )
 	PORT_DIPSETTING(      0x0000, DEF_STR( Hardest ) )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x3000, 0x3000, "Magic Gauge Speed" )
-=======
 	PORT_DIPNAME( 0x3000, 0x3000, "Magic Gauge Speed" ) PORT_DIPLOCATION("SW2:5,6")
->>>>>>> upstream/master
 	PORT_DIPSETTING(      0x0000, "Very Slow" )
 	PORT_DIPSETTING(      0x1000, "Slow" )
 	PORT_DIPSETTING(      0x3000, DEF_STR( Normal ) )
 	PORT_DIPSETTING(      0x2000, "Fast" )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x4000, 0x4000, DEF_STR( Unused ) )
-	PORT_DIPSETTING(      0x4000, DEF_STR( Off ) )
-	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
-	PORT_DIPNAME( 0x8000, 0x0000, DEF_STR( Demo_Sounds ) )
-=======
 	PORT_DIPNAME( 0x4000, 0x4000, DEF_STR( Unused ) ) PORT_DIPLOCATION("SW2:7")
 	PORT_DIPSETTING(      0x4000, DEF_STR( Off ) )
 	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
 	PORT_DIPNAME( 0x8000, 0x0000, DEF_STR( Demo_Sounds ) ) PORT_DIPLOCATION("SW2:8")
->>>>>>> upstream/master
 	PORT_DIPSETTING(      0x8000, DEF_STR( Off ) )
 	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
 INPUT_PORTS_END
@@ -660,11 +516,7 @@ static INPUT_PORTS_START( nitrobal )
 	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_CUSTOM ) PORT_VBLANK("screen")
 
 	PORT_START("DSW")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x0007, 0x0007, DEF_STR( Coin_A ) )
-=======
 	PORT_DIPNAME( 0x0007, 0x0007, DEF_STR( Coin_A ) ) PORT_DIPLOCATION("SW1:1,2,3")
->>>>>>> upstream/master
 	PORT_DIPSETTING(      0x0000, DEF_STR( 3C_1C ) )
 	PORT_DIPSETTING(      0x0001, DEF_STR( 2C_1C ) )
 	PORT_DIPSETTING(      0x0007, DEF_STR( 1C_1C ) )
@@ -673,11 +525,7 @@ static INPUT_PORTS_START( nitrobal )
 	PORT_DIPSETTING(      0x0004, DEF_STR( 1C_4C ) )
 	PORT_DIPSETTING(      0x0003, DEF_STR( 1C_5C ) )
 	PORT_DIPSETTING(      0x0002, DEF_STR( 1C_6C ) )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x0038, 0x0038, DEF_STR( Coin_B ) )
-=======
 	PORT_DIPNAME( 0x0038, 0x0038, DEF_STR( Coin_B ) ) PORT_DIPLOCATION("SW1:4,5,6")
->>>>>>> upstream/master
 	PORT_DIPSETTING(      0x0000, DEF_STR( 3C_1C ) )
 	PORT_DIPSETTING(      0x0008, DEF_STR( 2C_1C ) )
 	PORT_DIPSETTING(      0x0038, DEF_STR( 1C_1C ) )
@@ -686,15 +534,6 @@ static INPUT_PORTS_START( nitrobal )
 	PORT_DIPSETTING(      0x0020, DEF_STR( 1C_4C ) )
 	PORT_DIPSETTING(      0x0018, DEF_STR( 1C_5C ) )
 	PORT_DIPSETTING(      0x0010, DEF_STR( 1C_6C ) )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x0040, 0x0040, DEF_STR( Flip_Screen ) )
-	PORT_DIPSETTING(      0x0040, DEF_STR( Off ) )
-	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
-	PORT_DIPNAME( 0x0080, 0x0080, "2 Credits to Start, 1 to Continue" )
-	PORT_DIPSETTING(      0x0080, DEF_STR( Off ) )
-	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
-	PORT_DIPNAME( 0x0300, 0x0300, DEF_STR( Lives ) )
-=======
 	PORT_DIPNAME( 0x0040, 0x0040, DEF_STR( Flip_Screen ) ) PORT_DIPLOCATION("SW1:7")
 	PORT_DIPSETTING(      0x0040, DEF_STR( Off ) )
 	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
@@ -702,32 +541,15 @@ static INPUT_PORTS_START( nitrobal )
 	PORT_DIPSETTING(      0x0080, DEF_STR( Off ) )
 	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
 	PORT_DIPNAME( 0x0300, 0x0300, DEF_STR( Lives ) ) PORT_DIPLOCATION("SW2:1,2")
->>>>>>> upstream/master
 	PORT_DIPSETTING(      0x0100, "1" )
 	PORT_DIPSETTING(      0x0000, "2" )
 	PORT_DIPSETTING(      0x0300, "3" )
 	PORT_DIPSETTING(      0x0200, "4" )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x0c00, 0x0c00, "Difficulty?"  )
-=======
 	PORT_DIPNAME( 0x0c00, 0x0c00, "Difficulty?"  ) PORT_DIPLOCATION("SW2:3,4")
->>>>>>> upstream/master
 	PORT_DIPSETTING(      0x0800, DEF_STR( Easy ) )
 	PORT_DIPSETTING(      0x0c00, DEF_STR( Normal ) )
 	PORT_DIPSETTING(      0x0400, DEF_STR( Hard ) )
 	PORT_DIPSETTING(      0x0000, DEF_STR( Hardest ) )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x1000, 0x1000, "Split Coin Chutes" )
-	PORT_DIPSETTING(      0x1000, DEF_STR( Off ) )
-	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
-	PORT_DIPNAME( 0x2000, 0x2000, DEF_STR( Players) )
-	PORT_DIPSETTING(      0x2000, "2" )
-	PORT_DIPSETTING(      0x0000, "3" )
-	PORT_DIPNAME( 0x4000, 0x4000, "Shot Button to Start" )
-	PORT_DIPSETTING(      0x4000, DEF_STR( Off ) )
-	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
-	PORT_DIPNAME( 0x8000, 0x0000, DEF_STR( Demo_Sounds ) )
-=======
 	PORT_DIPNAME( 0x1000, 0x1000, "Split Coin Chutes" ) PORT_DIPLOCATION("SW2:5")
 	PORT_DIPSETTING(      0x1000, DEF_STR( Off ) )
 	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
@@ -738,7 +560,6 @@ static INPUT_PORTS_START( nitrobal )
 	PORT_DIPSETTING(      0x4000, DEF_STR( Off ) )
 	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
 	PORT_DIPNAME( 0x8000, 0x0000, DEF_STR( Demo_Sounds ) ) PORT_DIPLOCATION("SW2:8")
->>>>>>> upstream/master
 	PORT_DIPSETTING(      0x8000, DEF_STR( Off ) )
 	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
 
@@ -779,9 +600,6 @@ static INPUT_PORTS_START( schmeisr )
 	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_CUSTOM ) PORT_VBLANK("screen")
 
 	PORT_START("DSW")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x0007, 0x0007, DEF_STR( Coin_A ) )
-=======
 	PORT_DIPNAME( 0x0001, 0x0001, DEF_STR( Flip_Screen ) ) PORT_DIPLOCATION("SW1:1")
 	PORT_DIPSETTING(      0x0001, DEF_STR( Off ) )
 	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
@@ -874,7 +692,6 @@ static INPUT_PORTS_START( hangzo )
 
 	PORT_START("DSW")
 	PORT_DIPNAME( 0x0007, 0x0007, DEF_STR( Coin_A ) ) PORT_DIPLOCATION("SW1:1,2,3")
->>>>>>> upstream/master
 	PORT_DIPSETTING(      0x0000, DEF_STR( 3C_1C ) )
 	PORT_DIPSETTING(      0x0001, DEF_STR( 2C_1C ) )
 	PORT_DIPSETTING(      0x0007, DEF_STR( 1C_1C ) )
@@ -883,11 +700,7 @@ static INPUT_PORTS_START( hangzo )
 	PORT_DIPSETTING(      0x0004, DEF_STR( 1C_4C ) )
 	PORT_DIPSETTING(      0x0003, DEF_STR( 1C_5C ) )
 	PORT_DIPSETTING(      0x0002, DEF_STR( 1C_6C ) )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x0038, 0x0038, DEF_STR( Coin_B ) )
-=======
 	PORT_DIPNAME( 0x0038, 0x0038, DEF_STR( Coin_B ) ) PORT_DIPLOCATION("SW1:4,5,6")
->>>>>>> upstream/master
 	PORT_DIPSETTING(      0x0000, DEF_STR( 3C_1C ) )
 	PORT_DIPSETTING(      0x0008, DEF_STR( 2C_1C ) )
 	PORT_DIPSETTING(      0x0038, DEF_STR( 1C_1C ) )
@@ -896,60 +709,6 @@ static INPUT_PORTS_START( hangzo )
 	PORT_DIPSETTING(      0x0020, DEF_STR( 1C_4C ) )
 	PORT_DIPSETTING(      0x0018, DEF_STR( 1C_5C ) )
 	PORT_DIPSETTING(      0x0010, DEF_STR( 1C_6C ) )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x0040, 0x0040, DEF_STR( Flip_Screen ) )
-	PORT_DIPSETTING(      0x0040, DEF_STR( Off ) )
-	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
-	PORT_SERVICE( 0x0080, IP_ACTIVE_LOW )
-	PORT_DIPNAME( 0x0100, 0x0100, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(      0x0100, DEF_STR( Off ) )
-	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
-	PORT_DIPNAME( 0x0200, 0x0200, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(      0x0200, DEF_STR( Off ) )
-	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
-	PORT_DIPNAME( 0x0400, 0x0400, DEF_STR( Demo_Sounds ) )
-	PORT_DIPSETTING(      0x0000, DEF_STR( Off ) )
-	PORT_DIPSETTING(      0x0400, DEF_STR( On ) )
-	PORT_DIPNAME( 0x0800, 0x0800, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(      0x0800, DEF_STR( Off ) )
-	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
-	PORT_DIPNAME( 0x1000, 0x1000, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(      0x1000, DEF_STR( Off ) )
-	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
-	PORT_DIPNAME( 0x2000, 0x2000, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(      0x2000, DEF_STR( Off ) )
-	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
-	PORT_DIPNAME( 0x4000, 0x4000, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(      0x4000, DEF_STR( Off ) )
-	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
-	PORT_DIPNAME( 0x8000, 0x8000, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(      0x8000, DEF_STR( Off ) )
-	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
-
-	PORT_START("DSW3")  /* Dip switch bank 3 - This bank of switches are _NOT_ shown in the test mode screen */
-	PORT_DIPNAME( 0x0001, 0x0001, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(      0x0001, DEF_STR( Off ) )
-	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
-	PORT_DIPNAME( 0x0002, 0x0002, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(      0x0002, DEF_STR( Off ) )
-	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
-	PORT_DIPNAME( 0x0004, 0x0004, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(      0x0004, DEF_STR( Off ) )
-	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
-	PORT_DIPNAME( 0x0008, 0x0008, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(      0x0008, DEF_STR( Off ) )
-	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
-	PORT_DIPNAME( 0x0010, 0x0010, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(      0x0010, DEF_STR( Off ) )
-	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
-	PORT_DIPNAME( 0x0020, 0x0020, "Freeze Screen" )
-	PORT_DIPSETTING(      0x0020, DEF_STR( Off ) )
-	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
-	PORT_DIPNAME( 0x0040, 0x0040, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(      0x0040, DEF_STR( Off ) )
-	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
-	PORT_DIPNAME( 0x0080, 0x0080, DEF_STR( Unknown ) )
-=======
 	PORT_DIPNAME( 0x0040, 0x0040, DEF_STR( Flip_Screen ) ) PORT_DIPLOCATION("SW1:7")
 	PORT_DIPSETTING(      0x0040, DEF_STR( Off ) )
 	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
@@ -1004,16 +763,12 @@ static INPUT_PORTS_START( hangzo )
 	PORT_DIPSETTING(      0x0040, DEF_STR( Off ) )
 	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
 	PORT_DIPNAME( 0x0080, 0x0080, "Debug Mode" ) PORT_DIPLOCATION("SW3:8")
->>>>>>> upstream/master
 	PORT_DIPSETTING(      0x0080, DEF_STR( Off ) )
 	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
 INPUT_PORTS_END
 
-<<<<<<< HEAD
-=======
 
 
->>>>>>> upstream/master
 /**********************************************************************************/
 
 static const gfx_layout charlayout =
@@ -1103,13 +858,8 @@ GFXDECODE_END
 
 WRITE8_MEMBER(rohga_state::sound_bankswitch_w)
 {
-<<<<<<< HEAD
-	m_oki1->set_bank_base(BIT(data, 0) * 0x40000);
-	m_oki2->set_bank_base(BIT(data, 1) * 0x40000);
-=======
 	m_oki1->set_rom_bank(BIT(data, 0));
 	m_oki2->set_rom_bank(BIT(data, 1));
->>>>>>> upstream/master
 }
 
 /**********************************************************************************/
@@ -1139,22 +889,14 @@ DECOSPR_COLOUR_CB_MEMBER(rohga_state::rohga_col_callback)
 
 DECOSPR_COLOUR_CB_MEMBER(rohga_state::schmeisr_col_callback)
 {
-<<<<<<< HEAD
-	UINT16 colour = ((col >> 9) & 0xf) << 2;
-=======
 	uint16_t colour = ((col >> 9) & 0xf) << 2;
->>>>>>> upstream/master
 	if (col & 0x8000)
 		colour++;
 
 	return colour;
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( rohga, rohga_state )
-=======
 static MACHINE_CONFIG_START( rohga )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, 14000000)
@@ -1183,11 +925,7 @@ static MACHINE_CONFIG_START( rohga )
 
 	MCFG_DEVICE_ADD("tilegen1", DECO16IC, 0)
 	MCFG_DECO16IC_SPLIT(0)
-<<<<<<< HEAD
-	MCFG_DECO16IC_WIDTH12(1)
-=======
 	MCFG_DECO16IC_WIDTH12(1|4)
->>>>>>> upstream/master
 	MCFG_DECO16IC_PF1_TRANS_MASK(0x0f)
 	MCFG_DECO16IC_PF2_TRANS_MASK(0x0f)
 	MCFG_DECO16IC_PF1_COL_BANK(0x00)
@@ -1199,10 +937,6 @@ static MACHINE_CONFIG_START( rohga )
 	MCFG_DECO16IC_PF12_8X8_BANK(0)
 	MCFG_DECO16IC_PF12_16X16_BANK(1)
 	MCFG_DECO16IC_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_DECO16IC_PALETTE("palette")
-=======
->>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("tilegen2", DECO16IC, 0)
 	MCFG_DECO16IC_SPLIT(0)
@@ -1218,64 +952,39 @@ static MACHINE_CONFIG_START( rohga )
 	MCFG_DECO16IC_PF12_8X8_BANK(0)
 	MCFG_DECO16IC_PF12_16X16_BANK(2)
 	MCFG_DECO16IC_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_DECO16IC_PALETTE("palette")
-=======
->>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("spritegen1", DECO_SPRITE, 0)
 	MCFG_DECO_SPRITE_PRIORITY_CB(rohga_state, rohga_pri_callback)
 	MCFG_DECO_SPRITE_COLOUR_CB(rohga_state, rohga_col_callback)
 	MCFG_DECO_SPRITE_GFX_REGION(3)
 	MCFG_DECO_SPRITE_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_DECO_SPRITE_PALETTE("palette")
-
-	MCFG_DECO104_ADD("ioprot104")
-=======
 
 	MCFG_DECO104_ADD("ioprot104")
 	MCFG_DECO146_IN_PORTA_CB(IOPORT("INPUTS"))
 	MCFG_DECO146_IN_PORTB_CB(IOPORT("SYSTEM"))
 	MCFG_DECO146_IN_PORTC_CB(IOPORT("DSW"))
->>>>>>> upstream/master
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
-<<<<<<< HEAD
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 
->>>>>>> upstream/master
 	MCFG_YM2151_ADD("ymsnd", 32220000/9)
 	MCFG_YM2151_IRQ_HANDLER(INPUTLINE("audiocpu", 1))   /* IRQ 2 */
 	MCFG_YM2151_PORT_WRITE_HANDLER(WRITE8(rohga_state,sound_bankswitch_w))
 	MCFG_SOUND_ROUTE(0, "lspeaker", 0.78)
 	MCFG_SOUND_ROUTE(1, "rspeaker", 0.78)
 
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki1", 32220000/32, OKIM6295_PIN7_HIGH)
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 1.0)
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 1.0)
-
-	MCFG_OKIM6295_ADD("oki2", 32220000/16, OKIM6295_PIN7_HIGH)
-=======
 	MCFG_OKIM6295_ADD("oki1", 32220000/32, PIN7_HIGH)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 1.0)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 1.0)
 
 	MCFG_OKIM6295_ADD("oki2", 32220000/16, PIN7_HIGH)
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 0.40)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 0.40)
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( wizdfire, rohga_state )
-=======
 static MACHINE_CONFIG_START( wizdfire )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, 14000000)
@@ -1316,10 +1025,6 @@ static MACHINE_CONFIG_START( wizdfire )
 	MCFG_DECO16IC_PF12_8X8_BANK(0)
 	MCFG_DECO16IC_PF12_16X16_BANK(1)
 	MCFG_DECO16IC_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_DECO16IC_PALETTE("palette")
-=======
->>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("tilegen2", DECO16IC, 0)
 	MCFG_DECO16IC_SPLIT(0)
@@ -1335,33 +1040,19 @@ static MACHINE_CONFIG_START( wizdfire )
 	MCFG_DECO16IC_PF12_8X8_BANK(0)
 	MCFG_DECO16IC_PF12_16X16_BANK(2)
 	MCFG_DECO16IC_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_DECO16IC_PALETTE("palette")
-=======
->>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("spritegen1", DECO_SPRITE, 0)
 	MCFG_DECO_SPRITE_GFX_REGION(3)
 	MCFG_DECO_SPRITE_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_DECO_SPRITE_PALETTE("palette")
-=======
->>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("spritegen2", DECO_SPRITE, 0)
 	MCFG_DECO_SPRITE_GFX_REGION(4)
 	MCFG_DECO_SPRITE_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_DECO_SPRITE_PALETTE("palette")
-
-	MCFG_DECO104_ADD("ioprot104")
-=======
 
 	MCFG_DECO104_ADD("ioprot104")
 	MCFG_DECO146_IN_PORTA_CB(IOPORT("INPUTS"))
 	MCFG_DECO146_IN_PORTB_CB(IOPORT("SYSTEM"))
 	MCFG_DECO146_IN_PORTC_CB(IOPORT("DSW"))
->>>>>>> upstream/master
 	MCFG_DECO146_SET_INTERFACE_SCRAMBLE_REVERSE
 
 	MCFG_VIDEO_START_OVERRIDE(rohga_state, wizdfire)
@@ -1369,39 +1060,24 @@ static MACHINE_CONFIG_START( wizdfire )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
-<<<<<<< HEAD
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 
->>>>>>> upstream/master
 	MCFG_YM2151_ADD("ymsnd", 32220000/9)
 	MCFG_YM2151_IRQ_HANDLER(INPUTLINE("audiocpu", 1))   /* IRQ 2 */
 	MCFG_YM2151_PORT_WRITE_HANDLER(WRITE8(rohga_state,sound_bankswitch_w))
 	MCFG_SOUND_ROUTE(0, "lspeaker", 0.80)
 	MCFG_SOUND_ROUTE(1, "rspeaker", 0.80)
 
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki1", 32220000/32, OKIM6295_PIN7_HIGH)
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 1.0)
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 1.0)
-
-	MCFG_OKIM6295_ADD("oki2", 32220000/16, OKIM6295_PIN7_HIGH)
-=======
 	MCFG_OKIM6295_ADD("oki1", 32220000/32, PIN7_HIGH)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 1.0)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 1.0)
 
 	MCFG_OKIM6295_ADD("oki2", 32220000/16, PIN7_HIGH)
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 0.40)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 0.40)
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( nitrobal, rohga_state )
-=======
 static MACHINE_CONFIG_START( nitrobal )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, 14000000)
@@ -1442,10 +1118,6 @@ static MACHINE_CONFIG_START( nitrobal )
 	MCFG_DECO16IC_PF12_8X8_BANK(0)
 	MCFG_DECO16IC_PF12_16X16_BANK(1)
 	MCFG_DECO16IC_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_DECO16IC_PALETTE("palette")
-=======
->>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("tilegen2", DECO16IC, 0)
 	MCFG_DECO16IC_SPLIT(0)
@@ -1461,36 +1133,21 @@ static MACHINE_CONFIG_START( nitrobal )
 	MCFG_DECO16IC_PF12_8X8_BANK(0)
 	MCFG_DECO16IC_PF12_16X16_BANK(2)
 	MCFG_DECO16IC_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_DECO16IC_PALETTE("palette")
-=======
->>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("spritegen1", DECO_SPRITE, 0)
 	MCFG_DECO_SPRITE_GFX_REGION(3)
 	MCFG_DECO_SPRITE_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_DECO_SPRITE_PALETTE("palette")
-=======
->>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("spritegen2", DECO_SPRITE, 0)
 	MCFG_DECO_SPRITE_GFX_REGION(4)
 	MCFG_DECO_SPRITE_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_DECO_SPRITE_PALETTE("palette")
-=======
->>>>>>> upstream/master
 
 	MCFG_VIDEO_START_OVERRIDE(rohga_state, wizdfire)
 
 	MCFG_DECO146_ADD("ioprot")
-<<<<<<< HEAD
-=======
 	MCFG_DECO146_IN_PORTA_CB(IOPORT("INPUTS"))
 	MCFG_DECO146_IN_PORTB_CB(IOPORT("SYSTEM"))
 	MCFG_DECO146_IN_PORTC_CB(IOPORT("DSW"))
->>>>>>> upstream/master
 	MCFG_DECO146_SET_INTERFACE_SCRAMBLE_REVERSE
 	MCFG_DECO146_SET_USE_MAGIC_ADDRESS_XOR
 
@@ -1498,39 +1155,24 @@ static MACHINE_CONFIG_START( nitrobal )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
-<<<<<<< HEAD
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 
->>>>>>> upstream/master
 	MCFG_YM2151_ADD("ymsnd", 32220000/9)
 	MCFG_YM2151_IRQ_HANDLER(INPUTLINE("audiocpu", 1))   /* IRQ 2 */
 	MCFG_YM2151_PORT_WRITE_HANDLER(WRITE8(rohga_state,sound_bankswitch_w))
 	MCFG_SOUND_ROUTE(0, "lspeaker", 0.80)
 	MCFG_SOUND_ROUTE(1, "rspeaker", 0.80)
 
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki1", 32220000/32, OKIM6295_PIN7_HIGH)
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 1.0)
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 1.0)
-
-	MCFG_OKIM6295_ADD("oki2", 32220000/16, OKIM6295_PIN7_HIGH)
-=======
 	MCFG_OKIM6295_ADD("oki1", 32220000/32, PIN7_HIGH)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 1.0)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 1.0)
 
 	MCFG_OKIM6295_ADD("oki2", 32220000/16, PIN7_HIGH)
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 0.40)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 0.40)
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( schmeisr, rohga_state )
-=======
 static MACHINE_CONFIG_START( schmeisr )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, 14000000)
@@ -1559,11 +1201,7 @@ static MACHINE_CONFIG_START( schmeisr )
 
 	MCFG_DEVICE_ADD("tilegen1", DECO16IC, 0)
 	MCFG_DECO16IC_SPLIT(0)
-<<<<<<< HEAD
-	MCFG_DECO16IC_WIDTH12(1)
-=======
 	MCFG_DECO16IC_WIDTH12(1|4)
->>>>>>> upstream/master
 	MCFG_DECO16IC_PF1_TRANS_MASK(0x0f)
 	MCFG_DECO16IC_PF2_TRANS_MASK(0x0f)
 	MCFG_DECO16IC_PF1_COL_BANK(0x00)
@@ -1575,10 +1213,6 @@ static MACHINE_CONFIG_START( schmeisr )
 	MCFG_DECO16IC_PF12_8X8_BANK(0)
 	MCFG_DECO16IC_PF12_16X16_BANK(1)
 	MCFG_DECO16IC_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_DECO16IC_PALETTE("palette")
-=======
->>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("tilegen2", DECO16IC, 0)
 	MCFG_DECO16IC_SPLIT(0)
@@ -1594,61 +1228,38 @@ static MACHINE_CONFIG_START( schmeisr )
 	MCFG_DECO16IC_PF12_8X8_BANK(0)
 	MCFG_DECO16IC_PF12_16X16_BANK(2)
 	MCFG_DECO16IC_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_DECO16IC_PALETTE("palette")
-=======
->>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("spritegen1", DECO_SPRITE, 0)
 	MCFG_DECO_SPRITE_PRIORITY_CB(rohga_state, rohga_pri_callback)
 	MCFG_DECO_SPRITE_COLOUR_CB(rohga_state, schmeisr_col_callback)  // wire mods on pcb...
 	MCFG_DECO_SPRITE_GFX_REGION(3)
 	MCFG_DECO_SPRITE_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_DECO_SPRITE_PALETTE("palette")
-
-	MCFG_DECO104_ADD("ioprot104")
-=======
 
 	MCFG_DECO104_ADD("ioprot104")
 	MCFG_DECO146_IN_PORTA_CB(IOPORT("INPUTS"))
 	MCFG_DECO146_IN_PORTB_CB(IOPORT("SYSTEM"))
 	MCFG_DECO146_IN_PORTC_CB(IOPORT("DSW"))
->>>>>>> upstream/master
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
-<<<<<<< HEAD
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 
->>>>>>> upstream/master
 	MCFG_YM2151_ADD("ymsnd", 32220000/9)
 	MCFG_YM2151_IRQ_HANDLER(INPUTLINE("audiocpu", 1))   /* IRQ 2 */
 	MCFG_YM2151_PORT_WRITE_HANDLER(WRITE8(rohga_state,sound_bankswitch_w))
 	MCFG_SOUND_ROUTE(0, "lspeaker", 0.80)
 	MCFG_SOUND_ROUTE(1, "rspeaker", 0.80)
 
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki1", 32220000/32, OKIM6295_PIN7_HIGH)
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 1.0)
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 1.0)
-
-	MCFG_OKIM6295_ADD("oki2", 32220000/16, OKIM6295_PIN7_HIGH)
-=======
 	MCFG_OKIM6295_ADD("oki1", 32220000/32, PIN7_HIGH)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 1.0)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 1.0)
 
 	MCFG_OKIM6295_ADD("oki2", 32220000/16, PIN7_HIGH)
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 0.40)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 0.40)
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-=======
 
 
 static MACHINE_CONFIG_DERIVED( hangzo, schmeisr )
@@ -1659,7 +1270,6 @@ static MACHINE_CONFIG_DERIVED( hangzo, schmeisr )
 MACHINE_CONFIG_END
 
 
->>>>>>> upstream/master
 /**********************************************************************************/
 
 ROM_START( rohga ) /* Asia/Europe v5.0 */
@@ -1928,10 +1538,7 @@ ROM_START( wolffang ) /* Japan */
 	ROM_LOAD( "hb-00.11p", 0x00000,  0x200,  CRC(b7a7baad) SHA1(39781c3412493b985d3616ac31142fc00bbcddf4) ) /* ? */
 ROM_END
 
-<<<<<<< HEAD
-=======
 
->>>>>>> upstream/master
 ROM_START( wizdfire )
 	ROM_REGION(0x200000, "maincpu", 0 ) /* 68000 code */
 	ROM_LOAD16_BYTE( "je-01.3d", 0x000000, 0x20000, CRC(b6d62367) SHA1(e9521b28660f62b70e6e33c3e9cf345fc106eff6) ) /* Version 2.1 Over Sea */
@@ -2204,10 +1811,7 @@ ROM_START( gunball )
 	ROM_LOAD( "jn-00.17l", 0x00000,  0x400,  CRC(6ac77b84) SHA1(9e1e2cabdb20b819e592a0f07d15658062227fa4) ) /* Priority (unused) */
 ROM_END
 
-<<<<<<< HEAD
-=======
 
->>>>>>> upstream/master
 ROM_START( schmeisr )
 	ROM_REGION(0x100000, "maincpu", 0 ) /* 68000 code */
 	ROM_LOAD16_BYTE( "sr001j.8a",  0x000000, 0x80000, CRC(ed31f3ff) SHA1(3e0ae92a07ef94f377730c19069560bda864a64b) )
@@ -2243,8 +1847,6 @@ ROM_START( schmeisr )
 	ROM_LOAD( "hb-00.11p", 0x00000,  0x200,  CRC(b7a7baad) SHA1(39781c3412493b985d3616ac31142fc00bbcddf4) )
 ROM_END
 
-<<<<<<< HEAD
-=======
 
 ROM_START( hangzo ) /* Found on a Data East DE-0353-3 PCB */
 	ROM_REGION(0x200000, "maincpu", 0 ) /* 68000 code */
@@ -2288,7 +1890,6 @@ ROM_END
 
 
 
->>>>>>> upstream/master
 /**********************************************************************************/
 
 DRIVER_INIT_MEMBER(rohga_state,rohga)
@@ -2313,13 +1914,8 @@ DRIVER_INIT_MEMBER(rohga_state,nitrobal)
 
 DRIVER_INIT_MEMBER(rohga_state,schmeisr)
 {
-<<<<<<< HEAD
-	const UINT8 *src = memregion("gfx2")->base();
-	UINT8 *dst = memregion("gfx1")->base();
-=======
 	const uint8_t *src = memregion("gfx2")->base();
 	uint8_t *dst = memregion("gfx1")->base();
->>>>>>> upstream/master
 
 	memcpy(dst, src, 0x20000);
 	memcpy(dst + 0x20000, src + 0x80000, 0x20000);
@@ -2328,14 +1924,6 @@ DRIVER_INIT_MEMBER(rohga_state,schmeisr)
 	deco74_decrypt_gfx(machine(), "gfx2");
 }
 
-<<<<<<< HEAD
-GAME( 1991, rohga,     0,        rohga,    rohga, rohga_state,    rohga,    ROT0,   "Data East Corporation", "Rohga Armor Force (Asia/Europe v5.0)", MACHINE_SUPPORTS_SAVE )
-GAME( 1991, rohga1,    rohga,    rohga,    rohga, rohga_state,    rohga,    ROT0,   "Data East Corporation", "Rohga Armor Force (Asia/Europe v3.0 set 1)", MACHINE_SUPPORTS_SAVE )
-GAME( 1991, rohga2,    rohga,    rohga,    rohga, rohga_state,    rohga,    ROT0,   "Data East Corporation", "Rohga Armor Force (Asia/Europe v3.0 set 2)", MACHINE_SUPPORTS_SAVE )
-GAME( 1991, rohgah,    rohga,    rohga,    rohga, rohga_state,    rohga,    ROT0,   "Data East Corporation", "Rohga Armor Force (Hong Kong v3.0)", MACHINE_SUPPORTS_SAVE )
-GAME( 1991, rohgau,    rohga,    rohga,    rohga, rohga_state,    rohga,    ROT0,   "Data East Corporation", "Rohga Armor Force (US v1.0)", MACHINE_SUPPORTS_SAVE )
-GAME( 1991, wolffang,  rohga,    rohga,    rohga, rohga_state,    rohga,    ROT0,   "Data East Corporation", "Wolf Fang -Kuhga 2001- (Japan)", MACHINE_SUPPORTS_SAVE )
-=======
 DRIVER_INIT_MEMBER(rohga_state,hangzo)
 {
 	const uint8_t *src = memregion("gfx2")->base();
@@ -2351,7 +1939,6 @@ GAME( 1991, rohga2,    rohga,    rohga,    rohga,    rohga_state, rohga,    ROT0
 GAME( 1991, rohgah,    rohga,    rohga,    rohga,    rohga_state, rohga,    ROT0,   "Data East Corporation", "Rohga Armor Force (Hong Kong v3.0)", MACHINE_SUPPORTS_SAVE )
 GAME( 1991, rohgau,    rohga,    rohga,    rohga,    rohga_state, rohga,    ROT0,   "Data East Corporation", "Rohga Armor Force (US v1.0)", MACHINE_SUPPORTS_SAVE )
 GAME( 1991, wolffang,  rohga,    rohga,    rohga,    rohga_state, rohga,    ROT0,   "Data East Corporation", "Wolf Fang -Kuhga 2001- (Japan)", MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master
 
 GAME( 1992, wizdfire,  0,        wizdfire, wizdfire, rohga_state, wizdfire, ROT0,   "Data East Corporation", "Wizard Fire (Over Sea v2.1)", MACHINE_SUPPORTS_SAVE )
 GAME( 1992, wizdfireu, wizdfire, wizdfire, wizdfire, rohga_state, wizdfire, ROT0,   "Data East Corporation", "Wizard Fire (US v1.1)", MACHINE_SUPPORTS_SAVE )
@@ -2361,9 +1948,5 @@ GAME( 1992, nitrobal,  0,        nitrobal, nitrobal, rohga_state, nitrobal, ROT2
 GAME( 1992, nitrobala, nitrobal, nitrobal, nitrobal, rohga_state, nitrobal, ROT270, "Data East Corporation", "Nitro Ball (World, set 2)", MACHINE_SUPPORTS_SAVE ) // was marked 'US' but doesn't seem to have a 'Winners Don't Use Drugs' screen, so unlikely
 GAME( 1992, gunball,   nitrobal, nitrobal, nitrobal, rohga_state, nitrobal, ROT270, "Data East Corporation", "Gun Ball (Japan)", MACHINE_SUPPORTS_SAVE )
 
-<<<<<<< HEAD
-GAME( 1993, schmeisr,  0,        schmeisr, schmeisr, rohga_state, schmeisr, ROT0,   "Hot-B",                 "Schmeiser Robo (Japan)", MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1993, schmeisr,  0,        schmeisr, schmeisr, rohga_state, schmeisr, ROT0,   "Hot-B",                 "Schmeiser Robo (Japan)", MACHINE_SUPPORTS_SAVE | MACHINE_NO_COCKTAIL )
 GAME( 1992, hangzo,    0,        hangzo,   hangzo,   rohga_state, hangzo,   ROT0,   "Hot-B",                 "Hangzo (Japan, prototype)", MACHINE_SUPPORTS_SAVE ) // ROM contains a '(c)1992 Data East Corporation' string, but other sources indicate the game is by Hot-B
->>>>>>> upstream/master

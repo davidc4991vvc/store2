@@ -29,13 +29,6 @@
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/m6809/m6809.h"
-#include "cpu/m6809/hd6309.h"
-#include "sound/2203intf.h"
-#include "includes/konamipt.h"
-#include "includes/bladestl.h"
-=======
 #include "includes/bladestl.h"
 #include "includes/konamipt.h"
 
@@ -45,7 +38,6 @@
 #include "sound/2203intf.h"
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 TIMER_DEVICE_CALLBACK_MEMBER(bladestl_state::bladestl_scanline)
@@ -77,21 +69,12 @@ READ8_MEMBER(bladestl_state::trackball_r)
 WRITE8_MEMBER(bladestl_state::bladestl_bankswitch_w)
 {
 	/* bits 0 & 1 = coin counters */
-<<<<<<< HEAD
-	coin_counter_w(machine(), 0,data & 0x01);
-	coin_counter_w(machine(), 1,data & 0x02);
-
-	/* bits 2 & 3 = lamps */
-	set_led_status(machine(), 0,data & 0x04);
-	set_led_status(machine(), 1,data & 0x08);
-=======
 	machine().bookkeeping().coin_counter_w(0,data & 0x01);
 	machine().bookkeeping().coin_counter_w(1,data & 0x02);
 
 	/* bits 2 & 3 = lamps */
 	output().set_led_value(0,data & 0x04);
 	output().set_led_value(1,data & 0x08);
->>>>>>> upstream/master
 
 	/* bit 4 = relay (???) */
 
@@ -105,11 +88,7 @@ WRITE8_MEMBER(bladestl_state::bladestl_bankswitch_w)
 
 WRITE8_MEMBER(bladestl_state::bladestl_sh_irqtrigger_w)
 {
-<<<<<<< HEAD
-	soundlatch_byte_w(space, offset, data);
-=======
 	m_soundlatch->write(space, offset, data);
->>>>>>> upstream/master
 	m_audiocpu->set_input_line(M6809_IRQ_LINE, HOLD_LINE);
 	//logerror("(sound) write %02x\n", data);
 }
@@ -120,15 +99,6 @@ WRITE8_MEMBER(bladestl_state::bladestl_port_B_w)
 	m_upd7759->set_bank_base(((data & 0x38) >> 3) * 0x20000);
 
 	// bit 2 = SSG-C rc filter enable
-<<<<<<< HEAD
-	m_filter3->filter_rc_set_RC(FLT_RC_LOWPASS, 1000, 2200, 1000, data & 0x04 ? CAP_N(150) : 0); /* YM2203-SSG-C */
-
-	// bit 1 = SSG-B rc filter enable
-	m_filter2->filter_rc_set_RC(FLT_RC_LOWPASS, 1000, 2200, 1000, data & 0x02 ? CAP_N(150) : 0); /* YM2203-SSG-B */
-
-	// bit 0 = SSG-A rc filter enable
-	m_filter1->filter_rc_set_RC(FLT_RC_LOWPASS, 1000, 2200, 1000, data & 0x01 ? CAP_N(150) : 0); /* YM2203-SSG-A */
-=======
 	m_filter3->filter_rc_set_RC(filter_rc_device::LOWPASS, 1000, 2200, 1000, data & 0x04 ? CAP_N(150) : 0); /* YM2203-SSG-C */
 
 	// bit 1 = SSG-B rc filter enable
@@ -136,7 +106,6 @@ WRITE8_MEMBER(bladestl_state::bladestl_port_B_w)
 
 	// bit 0 = SSG-A rc filter enable
 	m_filter1->filter_rc_set_RC(filter_rc_device::LOWPASS, 1000, 2200, 1000, data & 0x01 ? CAP_N(150) : 0); /* YM2203-SSG-A */
->>>>>>> upstream/master
 }
 
 READ8_MEMBER(bladestl_state::bladestl_speech_busy_r)
@@ -168,11 +137,7 @@ static ADDRESS_MAP_START( main_map, AS_PROGRAM, 8, bladestl_state )
 	AM_RANGE(0x2e03, 0x2e03) AM_READ_PORT("DSW2")               /* DISPW #2 */
 	AM_RANGE(0x2e40, 0x2e40) AM_READ_PORT("DSW1")               /* DIPSW #1 */
 	AM_RANGE(0x2e80, 0x2e80) AM_WRITE(bladestl_sh_irqtrigger_w) /* cause interrupt on audio CPU */
-<<<<<<< HEAD
-	AM_RANGE(0x2ec0, 0x2ec0) AM_WRITE(watchdog_reset_w)         /* watchdog reset */
-=======
 	AM_RANGE(0x2ec0, 0x2ec0) AM_DEVWRITE("watchdog", watchdog_timer_device, reset_w)
->>>>>>> upstream/master
 	AM_RANGE(0x2f00, 0x2f03) AM_READ(trackball_r)               /* Trackballs */
 	AM_RANGE(0x2f40, 0x2f40) AM_WRITE(bladestl_bankswitch_w)    /* bankswitch control */
 	AM_RANGE(0x2f80, 0x2f9f) AM_DEVREADWRITE("k051733", k051733_device, read, write)    /* Protection: 051733 */
@@ -188,11 +153,7 @@ static ADDRESS_MAP_START( sound_map, AS_PROGRAM, 8, bladestl_state )
 	AM_RANGE(0x3000, 0x3000) AM_WRITE(bladestl_speech_ctrl_w)   /* UPD7759 */
 	AM_RANGE(0x4000, 0x4000) AM_READ(bladestl_speech_busy_r)    /* UPD7759 */
 	AM_RANGE(0x5000, 0x5000) AM_WRITENOP                                /* ??? */
-<<<<<<< HEAD
-	AM_RANGE(0x6000, 0x6000) AM_READ(soundlatch_byte_r)                     /* soundlatch_byte_r */
-=======
 	AM_RANGE(0x6000, 0x6000) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
->>>>>>> upstream/master
 	AM_RANGE(0x8000, 0xffff) AM_ROM
 ADDRESS_MAP_END
 
@@ -338,11 +299,7 @@ void bladestl_state::machine_reset()
 		m_last_track[i] = 0;
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( bladestl, bladestl_state )
-=======
 static MACHINE_CONFIG_START( bladestl )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", HD6309, 24000000/2)     /* 24MHz/2 (?) */
@@ -354,10 +311,7 @@ static MACHINE_CONFIG_START( bladestl )
 
 	MCFG_QUANTUM_TIME(attotime::from_hz(600))
 
-<<<<<<< HEAD
-=======
 	MCFG_WATCHDOG_ADD("watchdog")
->>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
@@ -391,11 +345,8 @@ static MACHINE_CONFIG_START( bladestl )
 	   called at initialization time */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 
->>>>>>> upstream/master
 	MCFG_SOUND_ADD("upd", UPD7759, UPD7759_STANDARD_CLOCK)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.60)
 
@@ -492,12 +443,6 @@ ROM_END
  *
  *************************************/
 
-<<<<<<< HEAD
-GAME( 1987, bladestl,  0,        bladestl, bladestl, driver_device, 0, ROT90, "Konami", "Blades of Steel (version T)", MACHINE_SUPPORTS_SAVE )
-GAME( 1987, bladestll, bladestl, bladestl, bladestle, driver_device,0, ROT90, "Konami", "Blades of Steel (version L)", MACHINE_SUPPORTS_SAVE )
-GAME( 1987, bladestle, bladestl, bladestl, bladestle, driver_device,0, ROT90, "Konami", "Blades of Steel (version E)", MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1987, bladestl,  0,        bladestl, bladestl,  bladestl_state, 0, ROT90, "Konami", "Blades of Steel (version T)", MACHINE_SUPPORTS_SAVE )
 GAME( 1987, bladestll, bladestl, bladestl, bladestle, bladestl_state, 0, ROT90, "Konami", "Blades of Steel (version L)", MACHINE_SUPPORTS_SAVE )
 GAME( 1987, bladestle, bladestl, bladestl, bladestle, bladestl_state, 0, ROT90, "Konami", "Blades of Steel (version E)", MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

@@ -23,23 +23,6 @@
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-#ifndef __H8S2320_H__
-#define __H8S2320_H__
-
-#include "h8s2000.h"
-#include "h8_adc.h"
-#include "h8_port.h"
-#include "h8_intc.h"
-#include "h8_sci.h"
-#include "h8_timer8.h"
-#include "h8_timer16.h"
-
-class h8s2320_device : public h8s2000_device {
-public:
-	h8s2320_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source);
-	h8s2320_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-=======
 #ifndef MAME_CPU_H8_H8S2320_H
 #define MAME_CPU_H8_H8S2320_H
 
@@ -59,7 +42,6 @@ public:
 class h8s2320_device : public h8s2000_device {
 public:
 	h8s2320_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
->>>>>>> upstream/master
 
 	DECLARE_READ8_MEMBER(syscr_r);
 	DECLARE_WRITE8_MEMBER(syscr_w);
@@ -67,13 +49,10 @@ public:
 protected:
 	required_device<h8s_intc_device> intc;
 	required_device<h8_adc_device> adc;
-<<<<<<< HEAD
-=======
 	optional_device<h8_dma_device> dma;
 	optional_device<h8_dma_channel_device> dma0;
 	optional_device<h8_dma_channel_device> dma1;
 	required_device<h8_dtc_device> dtc;
->>>>>>> upstream/master
 	required_device<h8_port_device> port1;
 	required_device<h8_port_device> port2;
 	required_device<h8_port_device> port3;
@@ -99,25 +78,6 @@ protected:
 	required_device<h8_sci_device> sci0;
 	required_device<h8_sci_device> sci1;
 	required_device<h8_sci_device> sci2;
-<<<<<<< HEAD
-
-	UINT32 ram_start;
-	UINT8 syscr;
-
-	virtual bool exr_in_stack() const;
-	virtual void update_irq_filter();
-	virtual void interrupt_taken();
-	virtual int trace_setup();
-	virtual int trapa_setup();
-	virtual void irq_setup();
-	virtual void internal_update(UINT64 current_time);
-	virtual machine_config_constructor device_mconfig_additions() const;
-	DECLARE_ADDRESS_MAP(map, 16);
-
-	virtual void device_start();
-	virtual void device_reset();
-	virtual void execute_set_input(int inputnum, int state);
-=======
 	required_device<h8_watchdog_device> watchdog;
 
 	uint32_t ram_start;
@@ -138,91 +98,45 @@ protected:
 	virtual void device_start() override;
 	virtual void device_reset() override;
 	virtual void execute_set_input(int inputnum, int state) override;
->>>>>>> upstream/master
 };
 
 class h8s2321_device : public h8s2320_device {
 public:
-<<<<<<< HEAD
-	h8s2321_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-=======
 	h8s2321_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
->>>>>>> upstream/master
 };
 
 class h8s2322_device : public h8s2320_device {
 public:
-<<<<<<< HEAD
-	h8s2322_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-=======
 	h8s2322_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
->>>>>>> upstream/master
 };
 
 class h8s2323_device : public h8s2320_device {
 public:
-<<<<<<< HEAD
-	h8s2323_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-=======
 	h8s2323_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
->>>>>>> upstream/master
 };
 
 class h8s2324_device : public h8s2320_device {
 public:
-<<<<<<< HEAD
-	h8s2324_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-=======
 	h8s2324_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
->>>>>>> upstream/master
 };
 
 class h8s2326_device : public h8s2320_device {
 public:
-<<<<<<< HEAD
-	h8s2326_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-=======
 	h8s2326_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
->>>>>>> upstream/master
 };
 
 class h8s2327_device : public h8s2320_device {
 public:
-<<<<<<< HEAD
-	h8s2327_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-=======
 	h8s2327_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
->>>>>>> upstream/master
 };
 
 class h8s2328_device : public h8s2320_device {
 public:
-<<<<<<< HEAD
-	h8s2328_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-=======
 	h8s2328_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
->>>>>>> upstream/master
 };
 
 class h8s2329_device : public h8s2320_device {
 public:
-<<<<<<< HEAD
-	h8s2329_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-};
-
-extern const device_type H8S2320;
-extern const device_type H8S2321;
-extern const device_type H8S2322;
-extern const device_type H8S2323;
-extern const device_type H8S2324;
-extern const device_type H8S2326;
-extern const device_type H8S2327;
-extern const device_type H8S2328;
-extern const device_type H8S2329;
-
-
-#endif
-=======
 	h8s2329_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 };
 
@@ -237,4 +151,3 @@ DECLARE_DEVICE_TYPE(H8S2328, h8s2328_device)
 DECLARE_DEVICE_TYPE(H8S2329, h8s2329_device)
 
 #endif // MAME_CPU_H8_H8S2320_H
->>>>>>> upstream/master

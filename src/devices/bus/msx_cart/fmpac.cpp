@@ -9,18 +9,6 @@ with: PAC2 BACKUP DATA. We only store the raw sram contents.
 
 #include "emu.h"
 #include "fmpac.h"
-<<<<<<< HEAD
-
-const device_type MSX_CART_FMPAC = &device_creator<msx_cart_fmpac>;
-
-
-msx_cart_fmpac::msx_cart_fmpac(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, MSX_CART_FMPAC, "MSX Cartridge - FM-PAC", tag, owner, clock, "msx_cart_fmpac", __FILE__)
-	, msx_cart_interface(mconfig, *this)
-	, m_ym2413(*this, "ym2413")
-	, m_selected_bank(0)
-	, m_bank_base(NULL)
-=======
 #include "speaker.h"
 
 DEFINE_DEVICE_TYPE(MSX_CART_FMPAC, msx_cart_fmpac_device, "msx_cart_fmpac", "MSX Cartridge - FM-PAC")
@@ -32,7 +20,6 @@ msx_cart_fmpac_device::msx_cart_fmpac_device(const machine_config &mconfig, cons
 	, m_ym2413(*this, "ym2413")
 	, m_selected_bank(0)
 	, m_bank_base(nullptr)
->>>>>>> upstream/master
 	, m_sram_active(false)
 	, m_opll_active(false)
 	, m_1ffe(0)
@@ -42,11 +29,7 @@ msx_cart_fmpac_device::msx_cart_fmpac_device(const machine_config &mconfig, cons
 }
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_FRAGMENT( fmpac )
-=======
 MACHINE_CONFIG_MEMBER( msx_cart_fmpac_device::device_add_mconfig )
->>>>>>> upstream/master
 	// This is actually incorrect. The sound output is passed back into the MSX machine where it is mixed internally and output through the system 'speaker'.
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 	MCFG_SOUND_ADD("ym2413", YM2413, XTAL_10_738635MHz/3)
@@ -54,17 +37,7 @@ MACHINE_CONFIG_MEMBER( msx_cart_fmpac_device::device_add_mconfig )
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-machine_config_constructor msx_cart_fmpac::device_mconfig_additions() const
-{
-	return MACHINE_CONFIG_NAME( fmpac );
-}
-
-
-void msx_cart_fmpac::device_start()
-=======
 void msx_cart_fmpac_device::device_start()
->>>>>>> upstream/master
 {
 	save_item(NAME(m_selected_bank));
 	save_item(NAME(m_sram_active));
@@ -73,17 +46,6 @@ void msx_cart_fmpac_device::device_start()
 	save_item(NAME(m_1fff));
 	save_item(NAME(m_7ff6));
 
-<<<<<<< HEAD
-	machine().save().register_postload(save_prepost_delegate(FUNC(msx_cart_fmpac::restore_banks), this));
-
-	// Install IO read/write handlers
-	address_space &space = machine().device<cpu_device>("maincpu")->space(AS_IO);
-	space.install_write_handler(0x7c, 0x7d, write8_delegate(FUNC(msx_cart_fmpac::write_ym2413), this));
-}
-
-
-void msx_cart_fmpac::restore_banks()
-=======
 	machine().save().register_postload(save_prepost_delegate(FUNC(msx_cart_fmpac_device::restore_banks), this));
 
 	// Install IO read/write handlers
@@ -93,17 +55,12 @@ void msx_cart_fmpac::restore_banks()
 
 
 void msx_cart_fmpac_device::restore_banks()
->>>>>>> upstream/master
 {
 	m_bank_base = get_rom_base() + ( m_selected_bank & 0x03 ) * 0x4000;
 }
 
 
-<<<<<<< HEAD
-void msx_cart_fmpac::device_reset()
-=======
 void msx_cart_fmpac_device::device_reset()
->>>>>>> upstream/master
 {
 	m_selected_bank = 0;
 	m_sram_active = false;
@@ -114,11 +71,7 @@ void msx_cart_fmpac_device::device_reset()
 }
 
 
-<<<<<<< HEAD
-void msx_cart_fmpac::initialize_cartridge()
-=======
 void msx_cart_fmpac_device::initialize_cartridge()
->>>>>>> upstream/master
 {
 	if ( get_rom_size() != 0x10000 )
 	{
@@ -134,11 +87,7 @@ void msx_cart_fmpac_device::initialize_cartridge()
 }
 
 
-<<<<<<< HEAD
-READ8_MEMBER(msx_cart_fmpac::read_cart)
-=======
 READ8_MEMBER(msx_cart_fmpac_device::read_cart)
->>>>>>> upstream/master
 {
 	if (offset >= 0x4000 && offset < 0x8000)
 	{
@@ -167,11 +116,7 @@ READ8_MEMBER(msx_cart_fmpac_device::read_cart)
 }
 
 
-<<<<<<< HEAD
-WRITE8_MEMBER(msx_cart_fmpac::write_cart)
-=======
 WRITE8_MEMBER(msx_cart_fmpac_device::write_cart)
->>>>>>> upstream/master
 {
 	if (offset >= 0x4000 && offset < 0x6000)
 	{
@@ -214,11 +159,7 @@ WRITE8_MEMBER(msx_cart_fmpac_device::write_cart)
 }
 
 
-<<<<<<< HEAD
-WRITE8_MEMBER(msx_cart_fmpac::write_ym2413)
-=======
 WRITE8_MEMBER(msx_cart_fmpac_device::write_ym2413)
->>>>>>> upstream/master
 {
 	if (m_opll_active)
 	{

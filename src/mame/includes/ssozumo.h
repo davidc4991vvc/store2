@@ -1,11 +1,8 @@
 // license:BSD-3-Clause
 // copyright-holders:Takahiro Nogi
-<<<<<<< HEAD
-=======
 
 #include "machine/gen_latch.h"
 
->>>>>>> upstream/master
 class ssozumo_state : public driver_device
 {
 public:
@@ -15,10 +12,7 @@ public:
 		m_audiocpu(*this, "audiocpu"),
 		m_gfxdecode(*this, "gfxdecode"),
 		m_palette(*this, "palette"),
-<<<<<<< HEAD
-=======
 		m_soundlatch(*this, "soundlatch"),
->>>>>>> upstream/master
 		m_spriteram(*this, "spriteram"),
 		m_paletteram(*this, "paletteram"),
 		m_videoram(*this, "videoram"),
@@ -30,19 +24,6 @@ public:
 	required_device<cpu_device> m_audiocpu;
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
-<<<<<<< HEAD
-
-	required_shared_ptr<UINT8> m_spriteram;
-	required_shared_ptr<UINT8> m_paletteram;
-	required_shared_ptr<UINT8> m_videoram;
-	required_shared_ptr<UINT8> m_colorram;
-	required_shared_ptr<UINT8> m_videoram2;
-	required_shared_ptr<UINT8> m_colorram2;
-
-	tilemap_t *m_bg_tilemap;
-	tilemap_t *m_fg_tilemap;
-	UINT8 m_sound_nmi_mask;
-=======
 	required_device<generic_latch_8_device> m_soundlatch;
 
 	required_shared_ptr<uint8_t> m_spriteram;
@@ -55,7 +36,6 @@ public:
 	tilemap_t *m_bg_tilemap;
 	tilemap_t *m_fg_tilemap;
 	uint8_t m_sound_nmi_mask;
->>>>>>> upstream/master
 
 	DECLARE_WRITE8_MEMBER(sh_command_w);
 	DECLARE_WRITE8_MEMBER(sound_nmi_mask_w);
@@ -74,18 +54,10 @@ public:
 	TILE_GET_INFO_MEMBER(get_bg_tile_info);
 	TILE_GET_INFO_MEMBER(get_fg_tile_info);
 
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void video_start();
-	DECLARE_PALETTE_INIT(ssozumo);
-
-	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	virtual void machine_start() override;
 	virtual void video_start() override;
 	DECLARE_PALETTE_INIT(ssozumo);
 
 	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	void draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect);
 };

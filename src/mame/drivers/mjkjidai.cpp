@@ -2,16 +2,10 @@
 // copyright-holders:Nicola Salmoria
 /***************************************************************************
 
-<<<<<<< HEAD
-Mahjong Kyou Jidai     (c)1986 Sanritsu
-
-CPU :Z80
-=======
 Mahjong Kyou Jidai (麻雀狂時代)     (c)1986 Sanritsu
 
 CPU: Z80
 I/O: NEC D8255AC*2
->>>>>>> upstream/master
 Sound   :SN76489*2 CUSTOM
 OSC :10MHz ??MHz
 
@@ -26,16 +20,6 @@ TODO:
     wrong with the stacks moved around, they are misaligned and something is
     missing.
 
-<<<<<<< HEAD
-- unknown reads from port 01. Only the top two bits seem to be used.
-
-***************************************************************************/
-
-#include "emu.h"
-#include "cpu/z80/z80.h"
-#include "sound/sn76496.h"
-#include "includes/mjkjidai.h"
-=======
 ***************************************************************************/
 
 #include "emu.h"
@@ -46,7 +30,6 @@ TODO:
 #include "sound/sn76496.h"
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 WRITE8_MEMBER(mjkjidai_state::adpcm_w)
@@ -64,11 +47,7 @@ WRITE_LINE_MEMBER(mjkjidai_state::adpcm_int)
 	}
 	else
 	{
-<<<<<<< HEAD
-		UINT8 const data = m_adpcmrom[m_adpcm_pos / 2];
-=======
 		uint8_t const data = m_adpcmrom[m_adpcm_pos / 2];
->>>>>>> upstream/master
 		m_msm->data_w(m_adpcm_pos & 1 ? data & 0xf : data >> 4);
 		m_adpcm_pos++;
 	}
@@ -90,17 +69,6 @@ CUSTOM_INPUT_MEMBER(mjkjidai_state::keyboard_r)
 	return res;
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER(mjkjidai_state::keyboard_select_w)
-{
-//  logerror("%04x: keyboard_select %d = %02x\n",space.device().safe_pc(),offset,data);
-
-	switch (offset)
-	{
-		case 0: m_keyb = (m_keyb & 0xff00) | (data);      break;
-		case 1: m_keyb = (m_keyb & 0x00ff) | (data << 8); break;
-	}
-=======
 WRITE8_MEMBER(mjkjidai_state::keyboard_select_lo_w)
 {
 	m_keyb = (m_keyb & 0xff00) | (data);
@@ -109,7 +77,6 @@ WRITE8_MEMBER(mjkjidai_state::keyboard_select_lo_w)
 WRITE8_MEMBER(mjkjidai_state::keyboard_select_hi_w)
 {
 	m_keyb = (m_keyb & 0x00ff) | (data << 8);
->>>>>>> upstream/master
 }
 
 
@@ -123,18 +90,8 @@ ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( mjkjidai_io_map, AS_IO, 8, mjkjidai_state )
 	ADDRESS_MAP_GLOBAL_MASK(0xff)
-<<<<<<< HEAD
-	AM_RANGE(0x00, 0x00) AM_READ_PORT("KEYBOARD")
-	AM_RANGE(0x01, 0x01) AM_READNOP // ???
-	AM_RANGE(0x02, 0x02) AM_READ_PORT("IN2")
-	AM_RANGE(0x01, 0x02) AM_WRITE(keyboard_select_w)
-	AM_RANGE(0x10, 0x10) AM_WRITE(mjkjidai_ctrl_w)  // rom bank, coin counter, flip screen etc
-	AM_RANGE(0x11, 0x11) AM_READ_PORT("DSW1")
-	AM_RANGE(0x12, 0x12) AM_READ_PORT("DSW2")
-=======
 	AM_RANGE(0x00, 0x03) AM_DEVREADWRITE("ppi1", i8255_device, read, write)
 	AM_RANGE(0x10, 0x13) AM_DEVREADWRITE("ppi2", i8255_device, read, write)
->>>>>>> upstream/master
 	AM_RANGE(0x20, 0x20) AM_DEVWRITE("sn1", sn76489_device, write)
 	AM_RANGE(0x30, 0x30) AM_DEVWRITE("sn2", sn76489_device, write)
 	AM_RANGE(0x40, 0x40) AM_WRITE(adpcm_w)
@@ -203,13 +160,8 @@ static INPUT_PORTS_START( mjkjidai )
 	PORT_BIT( 0xc0, IP_ACTIVE_LOW, IPT_UNUSED )
 
 	PORT_START("KEYBOARD")
-<<<<<<< HEAD
-	PORT_BIT( 0x3f, IP_ACTIVE_HIGH, IPT_CUSTOM) PORT_CUSTOM_MEMBER(DEVICE_SELF, mjkjidai_state, keyboard_r, NULL)
-	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_TILT )   // reinitialize NVRAM and reset the game
-=======
 	PORT_BIT( 0x3f, IP_ACTIVE_HIGH, IPT_CUSTOM) PORT_CUSTOM_MEMBER(DEVICE_SELF, mjkjidai_state, keyboard_r, nullptr)
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_MEMORY_RESET )   // reinitialize NVRAM and reset the game
->>>>>>> upstream/master
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_COIN1 )
 
 	PORT_START("ROW.0")
@@ -342,11 +294,7 @@ void mjkjidai_state::machine_reset()
 	m_adpcm_pos = m_adpcm_end = 0;
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( mjkjidai, mjkjidai_state )
-=======
 static MACHINE_CONFIG_START( mjkjidai )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80,10000000/2) /* 5 MHz ??? */
@@ -356,8 +304,6 @@ static MACHINE_CONFIG_START( mjkjidai )
 
 	MCFG_NVRAM_ADD_NO_FILL("nvram")
 
-<<<<<<< HEAD
-=======
 	MCFG_DEVICE_ADD("ppi1", I8255A, 0)
 	MCFG_I8255_IN_PORTA_CB(IOPORT("KEYBOARD"))
 	MCFG_I8255_OUT_PORTB_CB(WRITE8(mjkjidai_state, keyboard_select_lo_w))
@@ -369,7 +315,6 @@ static MACHINE_CONFIG_START( mjkjidai )
 	MCFG_I8255_IN_PORTB_CB(IOPORT("DSW1"))
 	MCFG_I8255_IN_PORTC_CB(IOPORT("DSW2"))
 
->>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE(60)
@@ -380,11 +325,7 @@ static MACHINE_CONFIG_START( mjkjidai )
 	MCFG_SCREEN_PALETTE("palette")
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", mjkjidai)
-<<<<<<< HEAD
-	MCFG_PALETTE_ADD_RRRRGGGGBBBB_PROMS("palette", 0x100)
-=======
 	MCFG_PALETTE_ADD_RRRRGGGGBBBB_PROMS("palette", "proms", 0x100)
->>>>>>> upstream/master
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
@@ -397,11 +338,7 @@ static MACHINE_CONFIG_START( mjkjidai )
 
 	MCFG_SOUND_ADD("msm", MSM5205, 384000)
 	MCFG_MSM5205_VCLK_CB(WRITELINE(mjkjidai_state, adpcm_int))
-<<<<<<< HEAD
-	MCFG_MSM5205_PRESCALER_SELECTOR(MSM5205_S64_4B)  /* 6kHz */
-=======
 	MCFG_MSM5205_PRESCALER_SELECTOR(S64_4B)  /* 6kHz */
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
 
@@ -440,8 +377,4 @@ ROM_START( mjkjidai )
 ROM_END
 
 
-<<<<<<< HEAD
-GAME( 1986, mjkjidai, 0, mjkjidai, mjkjidai, driver_device, 0, ROT0, "Sanritsu",  "Mahjong Kyou Jidai (Japan)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1986, mjkjidai, 0, mjkjidai, mjkjidai, mjkjidai_state, 0, ROT0, "Sanritsu",  "Mahjong Kyou Jidai (Japan)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

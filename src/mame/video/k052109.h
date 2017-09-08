@@ -1,17 +1,11 @@
 // license:BSD-3-Clause
 // copyright-holders:Fabio Priuli,Acho A. Tang, R. Belmont
-<<<<<<< HEAD
-#pragma once
-#ifndef __K052109_H__
-#define __K052109_H__
-=======
 #ifndef MAME_VIDEO_K052109_H
 #define MAME_VIDEO_K052109_H
 
 #pragma once
 
 #include "screen.h"
->>>>>>> upstream/master
 
 typedef device_delegate<void (int layer, int bank, int *code, int *color, int *flags, int *priority)> k052109_cb_delegate;
 #define K052109_CB_MEMBER(_name)   void _name(int layer, int bank, int *code, int *color, int *flags, int *priority)
@@ -23,11 +17,7 @@ typedef device_delegate<void (int layer, int bank, int *code, int *color, int *f
 	k052109_device::set_ram(*device, _ram);
 
 #define MCFG_K052109_SCREEN_TAG(_tag) \
-<<<<<<< HEAD
-		k052109_device::set_screen_tag(*device, owner, _tag);
-=======
 	k052109_device::set_screen_tag(*device, "^" _tag);
->>>>>>> upstream/master
 
 #define MCFG_K052109_IRQ_HANDLER(_devcb) \
 	devcb = &k052109_device::set_irq_handler(*device, DEVCB_##_devcb);
@@ -41,17 +31,6 @@ class k052109_device : public device_t, public device_gfx_interface
 	DECLARE_GFXDECODE_MEMBER(gfxinfo_ram);
 
 public:
-<<<<<<< HEAD
-	k052109_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-	~k052109_device() {}
-
-	template<class _Object> static devcb_base &set_irq_handler(device_t &device, _Object object)
-			{ return downcast<k052109_device &>(device).m_irq_handler.set_callback(object); }
-
-	static void set_k052109_callback(device_t &device, k052109_cb_delegate callback) { downcast<k052109_device &>(device).m_k052109_cb = callback; }
-	static void set_ram(device_t &device, bool ram);
-	static void set_screen_tag(device_t &device, device_t *owner, const char *tag);
-=======
 	k052109_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 	~k052109_device() {}
 
@@ -61,7 +40,6 @@ public:
 	static void set_k052109_callback(device_t &device, k052109_cb_delegate callback) { downcast<k052109_device &>(device).m_k052109_cb = callback; }
 	static void set_ram(device_t &device, bool ram);
 	static void set_screen_tag(device_t &device, const char *tag);
->>>>>>> upstream/master
 
 	/*
 	The callback is passed:
@@ -90,47 +68,12 @@ public:
 	void tilemap_update();
 	int is_irq_enabled();
 	void tilemap_mark_dirty(int tmap_num);
-<<<<<<< HEAD
-	void tilemap_draw(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int tmap_num, UINT32 flags, UINT8 priority);
-=======
 	void tilemap_draw(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int tmap_num, uint32_t flags, uint8_t priority);
->>>>>>> upstream/master
 
 	void vblank_callback(screen_device &screen, bool state);
 
 protected:
 	// device-level overrides
-<<<<<<< HEAD
-	virtual void device_start();
-	virtual void device_reset();
-
-private:
-	// internal state
-	UINT8    *m_ram;
-	UINT8    *m_videoram_F;
-	UINT8    *m_videoram_A;
-	UINT8    *m_videoram_B;
-	UINT8    *m_videoram2_F;
-	UINT8    *m_videoram2_A;
-	UINT8    *m_videoram2_B;
-	UINT8    *m_colorram_F;
-	UINT8    *m_colorram_A;
-	UINT8    *m_colorram_B;
-
-	tilemap_t  *m_tilemap[3];
-	int      m_tileflip_enable;
-	UINT8    m_charrombank[4];
-	UINT8    m_charrombank_2[4];
-	UINT8    m_has_extra_video_ram;
-	INT32    m_rmrd_line;
-	UINT8    m_irq_enabled;
-	UINT8    m_romsubbank, m_scrollctrl;
-
-	UINT8 *m_char_rom;
-	UINT32 m_char_size;
-
-	const char *m_screen_tag;
-=======
 	virtual void device_start() override;
 	virtual void device_reset() override;
 
@@ -159,7 +102,6 @@ private:
 	optional_region_ptr<uint8_t> m_char_rom;
 
 	optional_device<screen_device> m_screen;
->>>>>>> upstream/master
 
 	k052109_cb_delegate m_k052109_cb;
 
@@ -171,15 +113,6 @@ private:
 	TILE_GET_INFO_MEMBER(get_tile_info1);
 	TILE_GET_INFO_MEMBER(get_tile_info2);
 
-<<<<<<< HEAD
-	void get_tile_info( tile_data &tileinfo, int tile_index, int layer, UINT8 *cram, UINT8 *vram1, UINT8 *vram2 );
-	void tileflip_reset();
-};
-
-extern const device_type K052109;
-
-#endif
-=======
 	void get_tile_info( tile_data &tileinfo, int tile_index, int layer, uint8_t *cram, uint8_t *vram1, uint8_t *vram2 );
 	void tileflip_reset();
 };
@@ -187,4 +120,3 @@ extern const device_type K052109;
 DECLARE_DEVICE_TYPE(K052109, k052109_device)
 
 #endif // MAME_VIDEO_K052109_H
->>>>>>> upstream/master

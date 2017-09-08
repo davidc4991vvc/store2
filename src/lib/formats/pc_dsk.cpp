@@ -16,11 +16,7 @@
 
 struct pc_disk_sizes
 {
-<<<<<<< HEAD
-	UINT32 image_size;
-=======
 	uint32_t image_size;
->>>>>>> upstream/master
 	int sectors;
 	int heads;
 };
@@ -47,11 +43,7 @@ static const struct pc_disk_sizes disk_sizes[] =
 static floperr_t pc_dsk_compute_geometry(floppy_image_legacy *floppy, struct basicdsk_geometry *geometry)
 {
 	int i;
-<<<<<<< HEAD
-	UINT64 size;
-=======
 	uint64_t size;
->>>>>>> upstream/master
 
 	memset(geometry, 0, sizeof(*geometry));
 	size = floppy_image_size(floppy);
@@ -75,20 +67,12 @@ static floperr_t pc_dsk_compute_geometry(floppy_image_legacy *floppy, struct bas
 		 * get info from boot sector.
 		 * not correct on all disks
 		 */
-<<<<<<< HEAD
-		UINT8 scl, spt, heads;
-=======
 		uint8_t scl, spt, heads;
->>>>>>> upstream/master
 		floppy_image_read(floppy, &scl, 0x0c, 1);
 		floppy_image_read(floppy, &spt, 0x18, 1);
 		floppy_image_read(floppy, &heads, 0x1A, 1);
 
-<<<<<<< HEAD
-		if (size == ((UINT64) scl) * spt * heads * 0x200)
-=======
 		if (size == ((uint64_t) scl) * spt * heads * 0x200)
->>>>>>> upstream/master
 		{
 			geometry->sectors = spt;
 			geometry->heads = heads;
@@ -128,15 +112,9 @@ static FLOPPY_CONSTRUCT(pc_dsk_construct)
 	{
 		/* create */
 		memset(&geometry, 0, sizeof(geometry));
-<<<<<<< HEAD
-		geometry.heads = option_resolution_lookup_int(params, PARAM_HEADS);
-		geometry.tracks = option_resolution_lookup_int(params, PARAM_TRACKS);
-		geometry.sectors = option_resolution_lookup_int(params, PARAM_SECTORS);
-=======
 		geometry.heads = params->lookup_int(PARAM_HEADS);
 		geometry.tracks = params->lookup_int(PARAM_TRACKS);
 		geometry.sectors = params->lookup_int(PARAM_SECTORS);
->>>>>>> upstream/master
 		geometry.first_sector_id = 1;
 		geometry.sector_length = 512;
 	}
@@ -156,11 +134,7 @@ static FLOPPY_CONSTRUCT(pc_dsk_construct)
 /* ----------------------------------------------------------------------- */
 
 LEGACY_FLOPPY_OPTIONS_START( pc )
-<<<<<<< HEAD
-	LEGACY_FLOPPY_OPTION( pc_dsk, "dsk,ima,img,ufi,360",        "PC floppy disk image", pc_dsk_identify, pc_dsk_construct, NULL,
-=======
 	LEGACY_FLOPPY_OPTION( pc_dsk, "dsk,ima,img,ufi,360",        "PC floppy disk image", pc_dsk_identify, pc_dsk_construct, nullptr,
->>>>>>> upstream/master
 		HEADS([1]-2)
 		TRACKS(40/[80])
 		SECTORS(8/[9]/10/15/18/36))
@@ -185,8 +159,6 @@ const char *pc_format::extensions() const
 	return "dsk,ima,img,ufi,360";
 }
 
-<<<<<<< HEAD
-=======
 int pc_format::identify(io_generic *io, uint32_t form_factor)
 {
 	uint64_t size = io_generic_size(io);
@@ -204,7 +176,6 @@ int pc_format::identify(io_generic *io, uint32_t form_factor)
 	return upd765_format::identify(io, form_factor);
 }
 
->>>>>>> upstream/master
 const pc_format::format pc_format::formats[] = {
 	{   /*  160K 5 1/4 inch double density single sided */
 		floppy_image::FF_525, floppy_image::SSDD, floppy_image::MFM,
@@ -222,11 +193,6 @@ const pc_format::format pc_format::formats[] = {
 		floppy_image::FF_525, floppy_image::DSDD, floppy_image::MFM,
 		2000,  9, 40, 2, 512, {}, 1, {}, 80, 50, 22, 80
 	},
-<<<<<<< HEAD
-	{   /*  400K 5 1/4 inch double density - gaps unverified */
-		floppy_image::FF_525, floppy_image::DSDD, floppy_image::MFM,
-		2000, 10, 40, 2, 512, {}, 1, {}, 80, 50, 22, 80
-=======
 	{   /*  360K 5 1/4 inch double density, 42 tracks */
 		floppy_image::FF_525, floppy_image::DSDD, floppy_image::MFM,
 		2000,  9, 42, 2, 512, {}, 1, {}, 80, 50, 22, 80
@@ -234,7 +200,6 @@ const pc_format::format pc_format::formats[] = {
 	{   /*  400K 5 1/4 inch double density - gaps unverified */
 		floppy_image::FF_525, floppy_image::DSDD, floppy_image::MFM,
 		2000, 10, 40, 2, 512, {}, 1, {}, 80, 50, 22, 36
->>>>>>> upstream/master
 	},
 	{   /*  720K 5 1/4 inch quad density - gaps unverified */
 		floppy_image::FF_525, floppy_image::DSQD, floppy_image::MFM,

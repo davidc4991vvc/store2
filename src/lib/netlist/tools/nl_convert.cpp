@@ -6,31 +6,6 @@
  */
 
 #include <algorithm>
-<<<<<<< HEAD
-#include <cstdio>
-#include <cmath>
-#include "nl_convert.h"
-
-
-template<typename Class>
-static plist_t<int> bubble(const pnamedlist_t<Class *> &sl)
-{
-	plist_t<int> ret(sl.size());
-	for (unsigned i=0; i<sl.size(); i++)
-		ret[i] = i;
-
-	for(unsigned i=0; i < sl.size(); i++)
-	{
-		for(unsigned j=i+1; j < sl.size(); j++)
-		{
-			if(sl[ret[i]]->name() > sl[ret[j]]->name())
-			{
-				std::swap(ret[i], ret[j]);
-			}
-		}
-	}
-	return ret;
-=======
 #include <cmath>
 #include <unordered_map>
 #include "nl_convert.h"
@@ -77,18 +52,12 @@ static lib_map_t read_lib_map(const pstring &lm)
 		m[split[0].trim()] = { split[1].trim(), split[2].trim() };
 	}
 	return m;
->>>>>>> upstream/master
 }
 
 /*-------------------------------------------------
     convert - convert a spice netlist
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-void nl_convert_base_t::add_pin_alias(const pstring &devname, const pstring &name, const pstring &alias)
-{
-	m_pins.add(palloc(pin_alias_t(devname + "." + name, devname + "." + alias)), false);
-=======
 nl_convert_base_t::nl_convert_base_t()
 	: out(m_buf)
 	, m_numberchars("0123456789-+e.")
@@ -106,14 +75,10 @@ void nl_convert_base_t::add_pin_alias(const pstring &devname, const pstring &nam
 {
 	pstring pname = devname + "." + name;
 	m_pins.emplace(pname, plib::make_unique<pin_alias_t>(pname, devname + "." + alias));
->>>>>>> upstream/master
 }
 
 void nl_convert_base_t::add_ext_alias(const pstring &alias)
 {
-<<<<<<< HEAD
-	m_ext_alias.add(alias);
-=======
 	m_ext_alias.push_back(alias);
 }
 
@@ -126,22 +91,10 @@ void nl_convert_base_t::add_device(std::unique_ptr<dev_t> dev)
 			return;
 		}
 	m_devs.push_back(std::move(dev));
->>>>>>> upstream/master
 }
 
 void nl_convert_base_t::add_device(const pstring &atype, const pstring &aname, const pstring &amodel)
 {
-<<<<<<< HEAD
-	m_devs.add(palloc(dev_t(atype, aname, amodel)), false);
-}
-void nl_convert_base_t::add_device(const pstring &atype, const pstring &aname, double aval)
-{
-	m_devs.add(palloc(dev_t(atype, aname, aval)), false);
-}
-void nl_convert_base_t::add_device(const pstring &atype, const pstring &aname)
-{
-	m_devs.add(palloc(dev_t(atype, aname)), false);
-=======
 	add_device(plib::make_unique<dev_t>(atype, aname, amodel));
 }
 void nl_convert_base_t::add_device(const pstring &atype, const pstring &aname, double aval)
@@ -151,27 +104,10 @@ void nl_convert_base_t::add_device(const pstring &atype, const pstring &aname, d
 void nl_convert_base_t::add_device(const pstring &atype, const pstring &aname)
 {
 	add_device(plib::make_unique<dev_t>(atype, aname));
->>>>>>> upstream/master
 }
 
 void nl_convert_base_t::add_term(pstring netname, pstring termname)
 {
-<<<<<<< HEAD
-	net_t * net = m_nets.find_by_name(netname);
-	if (net == NULL)
-	{
-		net = palloc(net_t(netname));
-		m_nets.add(net, false);
-	}
-
-	/* if there is a pin alias, translate ... */
-	pin_alias_t *alias = m_pins.find_by_name(termname);
-
-	if (alias != NULL)
-		net->terminals().add(alias->alias());
-	else
-		net->terminals().add(termname);
-=======
 	net_t * net = nullptr;
 	auto idx = m_nets.find(netname);
 	if (idx != m_nets.end())
@@ -190,29 +126,19 @@ void nl_convert_base_t::add_term(pstring netname, pstring termname)
 		net->terminals().push_back(alias->alias());
 	else
 		net->terminals().push_back(termname);
->>>>>>> upstream/master
 }
 
 void nl_convert_base_t::dump_nl()
 {
 	for (std::size_t i=0; i<m_ext_alias.size(); i++)
 	{
-<<<<<<< HEAD
-		net_t *net = m_nets.find_by_name(m_ext_alias[i]);
-		// use the first terminal ...
-		out("ALIAS({}, {})\n", m_ext_alias[i].cstr(), net->terminals()[0].cstr());
-=======
 		net_t *net = m_nets[m_ext_alias[i]].get();
 		// use the first terminal ...
 		out("ALIAS({}, {})\n", m_ext_alias[i].c_str(), net->terminals()[0].c_str());
->>>>>>> upstream/master
 		// if the aliased net only has this one terminal connected ==> don't dump
 		if (net->terminals().size() == 1)
 			net->set_no_export();
 	}
-<<<<<<< HEAD
-	plist_t<int> sorted = bubble(m_devs);
-=======
 
 	std::vector<size_t> sorted;
 	for (size_t i=0; i < m_devs.size(); i++)
@@ -220,34 +146,11 @@ void nl_convert_base_t::dump_nl()
 	std::sort(sorted.begin(), sorted.end(),
 			[&](size_t i1, size_t i2) { return m_devs[i1]->name() < m_devs[i2]->name(); });
 
->>>>>>> upstream/master
 	for (std::size_t i=0; i<m_devs.size(); i++)
 	{
 		std::size_t j = sorted[i];
 
 		if (m_devs[j]->has_value())
-<<<<<<< HEAD
-			out("{}({}, {})\n", m_devs[j]->type().cstr(),
-					m_devs[j]->name().cstr(), get_nl_val(m_devs[j]->value()).cstr());
-		else if (m_devs[j]->has_model())
-			out("{}({}, \"{}\")\n", m_devs[j]->type().cstr(),
-					m_devs[j]->name().cstr(), m_devs[j]->model().cstr());
-		else
-			out("{}({})\n", m_devs[j]->type().cstr(),
-					m_devs[j]->name().cstr());
-	}
-	// print nets
-	for (std::size_t i=0; i<m_nets.size(); i++)
-	{
-		net_t * net = m_nets[i];
-		if (!net->is_no_export())
-		{
-			//printf("Net {}\n", net->name().cstr());
-			out("NET_C({}", net->terminals()[0].cstr() );
-			for (std::size_t j=1; j<net->terminals().size(); j++)
-			{
-				out(", {}", net->terminals()[j].cstr() );
-=======
 			out("{}({}, {})\n", m_devs[j]->type().c_str(),
 					m_devs[j]->name().c_str(), get_nl_val(m_devs[j]->value()).c_str());
 		else if (m_devs[j]->has_model())
@@ -268,20 +171,13 @@ void nl_convert_base_t::dump_nl()
 			for (std::size_t j=1; j<net->terminals().size(); j++)
 			{
 				out(", {}", net->terminals()[j].c_str() );
->>>>>>> upstream/master
 			}
 			out(")\n");
 		}
 	}
-<<<<<<< HEAD
-	m_devs.clear_and_free();
-	m_nets.clear_and_free();
-	m_pins.clear_and_free();
-=======
 	m_devs.clear();
 	m_nets.clear();
 	m_pins.clear();
->>>>>>> upstream/master
 	m_ext_alias.clear();
 }
 
@@ -289,35 +185,18 @@ const pstring nl_convert_base_t::get_nl_val(const double val)
 {
 	{
 		int i = 0;
-<<<<<<< HEAD
-		while (m_units[i].m_unit != "-" )
-=======
 		while (pstring(m_units[i].m_unit, pstring::UTF8) != "-" )
->>>>>>> upstream/master
 		{
 			if (m_units[i].m_mult <= std::abs(val))
 				break;
 			i++;
 		}
-<<<<<<< HEAD
-		return pfmt(m_units[i].m_func.cstr())(val / m_units[i].m_mult);
-=======
 		return plib::pfmt(pstring(m_units[i].m_func, pstring::UTF8))(val / m_units[i].m_mult);
->>>>>>> upstream/master
 	}
 }
 double nl_convert_base_t::get_sp_unit(const pstring &unit)
 {
 	int i = 0;
-<<<<<<< HEAD
-	while (m_units[i].m_unit != "-")
-	{
-		if (m_units[i].m_unit == unit)
-			return m_units[i].m_mult;
-		i++;
-	}
-	fprintf(stderr, "Unit %s unknown\n", unit.cstr());
-=======
 	while (pstring(m_units[i].m_unit, pstring::UTF8) != "-")
 	{
 		if (pstring(m_units[i].m_unit, pstring::UTF8) == unit)
@@ -325,26 +204,16 @@ double nl_convert_base_t::get_sp_unit(const pstring &unit)
 		i++;
 	}
 	fprintf(stderr, "Unit %s unknown\n", unit.c_str());
->>>>>>> upstream/master
 	return 0.0;
 }
 
 double nl_convert_base_t::get_sp_val(const pstring &sin)
 {
-<<<<<<< HEAD
-	int p = sin.len() - 1;
-	while (p>=0 && (sin.substr(p,1) < "0" || sin.substr(p,1) > "9"))
-		p--;
-	pstring val = sin.substr(0,p + 1);
-	pstring unit = sin.substr(p + 1);
-
-=======
 	std::size_t p = 0;
 	while (p < sin.length() && (m_numberchars.find(sin.substr(p, 1)) != pstring::npos))
 		++p;
 	pstring val = sin.left(p);
 	pstring unit = sin.substr(p);
->>>>>>> upstream/master
 	double ret = get_sp_unit(unit) * val.as_double();
 	return ret;
 }
@@ -359,14 +228,9 @@ nl_convert_base_t::unit_t nl_convert_base_t::m_units[] = {
 		{"M",   "CAP_M({1})", 1.0e-3 },
 		{"u",   "CAP_U({1})", 1.0e-6 }, /* eagle */
 		{"U",   "CAP_U({1})", 1.0e-6 },
-<<<<<<< HEAD
-		{"??",   "CAP_U({1})", 1.0e-6    },
-		{"N",   "CAP_N({1})", 1.0e-9 },
-=======
 		{"μ",  "CAP_U({1})",  1.0e-6 },
 		{"N",   "CAP_N({1})", 1.0e-9 },
 		{"pF",  "CAP_P({1})", 1.0e-12},
->>>>>>> upstream/master
 		{"P",   "CAP_P({1})", 1.0e-12},
 		{"F",   "{1}e-15",    1.0e-15},
 
@@ -378,11 +242,7 @@ nl_convert_base_t::unit_t nl_convert_base_t::m_units[] = {
 
 void nl_convert_spice_t::convert(const pstring &contents)
 {
-<<<<<<< HEAD
-	pstring_list_t spnl(contents, "\n");
-=======
 	std::vector<pstring> spnl(plib::psplit(contents, "\n"));
->>>>>>> upstream/master
 
 	// Add gnd net
 
@@ -414,17 +274,6 @@ void nl_convert_spice_t::process_line(const pstring &line)
 {
 	if (line != "")
 	{
-<<<<<<< HEAD
-		pstring_list_t tt(line, " ", true);
-		double val = 0.0;
-		switch (tt[0].code_at(0))
-		{
-			case ';':
-				out("// {}\n", line.substr(1).cstr());
-				break;
-			case '*':
-				out("// {}\n", line.substr(1).cstr());
-=======
 		std::vector<pstring> tt(plib::psplit(line, " ", true));
 		double val = 0.0;
 		switch (tt[0].at(0))
@@ -434,16 +283,11 @@ void nl_convert_spice_t::process_line(const pstring &line)
 				break;
 			case '*':
 				out("// {}\n", line.substr(1).c_str());
->>>>>>> upstream/master
 				break;
 			case '.':
 				if (tt[0].equals(".SUBCKT"))
 				{
-<<<<<<< HEAD
-					out("NETLIST_START({})\n", tt[1].cstr());
-=======
 					out("NETLIST_START({})\n", tt[1].c_str());
->>>>>>> upstream/master
 					for (std::size_t i=2; i<tt.size(); i++)
 						add_ext_alias(tt[i]);
 				}
@@ -453,11 +297,7 @@ void nl_convert_spice_t::process_line(const pstring &line)
 					out("NETLIST_END()\n");
 				}
 				else
-<<<<<<< HEAD
-					out("// {}\n", line.cstr());
-=======
 					out("// {}\n", line.c_str());
->>>>>>> upstream/master
 				break;
 			case 'Q':
 			{
@@ -465,11 +305,7 @@ void nl_convert_spice_t::process_line(const pstring &line)
 				/* check for fourth terminal ... should be numeric net
 				 * including "0" or start with "N" (ltspice)
 				 */
-<<<<<<< HEAD
-				ATTR_UNUSED int nval =tt[4].as_long(&cerr);
-=======
 				ATTR_UNUSED long nval(tt[4].as_long(&cerr));
->>>>>>> upstream/master
 				pstring model;
 				pstring pins ="CBE";
 
@@ -477,19 +313,6 @@ void nl_convert_spice_t::process_line(const pstring &line)
 					model = tt[5];
 				else
 					model = tt[4];
-<<<<<<< HEAD
-				pstring_list_t m(model,"{");
-				if (m.size() == 2)
-				{
-					if (m[1].len() != 4)
-						fprintf(stderr, "error with model desc %s\n", model.cstr());
-					pins = m[1].left(3);
-				}
-				add_device("QBJT_EB", tt[0], m[0]);
-				add_term(tt[1], tt[0] + "." + pins.code_at(0));
-				add_term(tt[2], tt[0] + "." + pins.code_at(1));
-				add_term(tt[3], tt[0] + "." + pins.code_at(2));
-=======
 				std::vector<pstring> m(plib::psplit(model,"{"));
 				if (m.size() == 2)
 				{
@@ -501,7 +324,6 @@ void nl_convert_spice_t::process_line(const pstring &line)
 				add_term(tt[1], tt[0] + "." + pins.at(0));
 				add_term(tt[2], tt[0] + "." + pins.at(1));
 				add_term(tt[3], tt[0] + "." + pins.at(2));
->>>>>>> upstream/master
 			}
 				break;
 			case 'R':
@@ -537,11 +359,7 @@ void nl_convert_spice_t::process_line(const pstring &line)
 					//add_term(tt[2], tt[0] + ".2");
 				}
 				else
-<<<<<<< HEAD
-					fprintf(stderr, "Voltage Source %s not connected to GND\n", tt[0].cstr());
-=======
 					fprintf(stderr, "Voltage Source %s not connected to GND\n", tt[0].c_str());
->>>>>>> upstream/master
 				break;
 			case 'I': // Input pin special notation
 				{
@@ -563,41 +381,22 @@ void nl_convert_spice_t::process_line(const pstring &line)
 				//        last element is component type
 				// FIXME: Parameter
 
-<<<<<<< HEAD
-				pstring xname = tt[0].replace(".", "_");
-=======
 				pstring xname = tt[0].replace_all(".", "_");
->>>>>>> upstream/master
 				pstring tname = "TTL_" + tt[tt.size()-1] + "_DIP";
 				add_device(tname, xname);
 				for (std::size_t i=1; i < tt.size() - 1; i++)
 				{
-<<<<<<< HEAD
-					pstring term = pfmt("{1}.{2}")(xname)(i);
-=======
 					pstring term = plib::pfmt("{1}.{2}")(xname)(i);
->>>>>>> upstream/master
 					add_term(tt[i], term);
 				}
 				break;
 			}
 			default:
-<<<<<<< HEAD
-				out("// IGNORED {}: {}\n", tt[0].cstr(), line.cstr());
-=======
 				out("// IGNORED {}: {}\n", tt[0].c_str(), line.c_str());
->>>>>>> upstream/master
 		}
 	}
 }
 
-<<<<<<< HEAD
-//FIXME: should accept a stream as well
-void nl_convert_eagle_t::convert(const pstring &contents)
-{
-	pistringstream istrm(contents);
-	eagle_tokenizer tok(*this, istrm);
-=======
 /*-------------------------------------------------
     Eagle converter
 -------------------------------------------------*/
@@ -632,22 +431,14 @@ void nl_convert_eagle_t::convert(const pstring &contents)
 	plib::pistringstream istrm(contents);
 	plib::putf8_reader reader(istrm);
 	tokenizer tok(*this, reader);
->>>>>>> upstream/master
 
 	out("NETLIST_START(dummy)\n");
 	add_term("GND", "GND");
 	add_term("VCC", "VCC");
-<<<<<<< HEAD
-	eagle_tokenizer::token_t token = tok.get_token();
-	while (true)
-	{
-		if (token.is_type(eagle_tokenizer::ENDOFFILE))
-=======
 	tokenizer::token_t token = tok.get_token();
 	while (true)
 	{
 		if (token.is_type(tokenizer::ENDOFFILE))
->>>>>>> upstream/master
 		{
 			dump_nl();
 			// FIXME: Parameter
@@ -676,8 +467,6 @@ void nl_convert_eagle_t::convert(const pstring &contents)
 				tok.require_token(tok.m_tok_SEMICOLON);
 				token = tok.get_token();
 			}
-<<<<<<< HEAD
-=======
 			switch (name.at(0))
 			{
 				case 'Q':
@@ -915,7 +704,6 @@ void nl_convert_rinf_t::convert(const pstring &contents)
 				tok.require_token(tok.m_tok_SEMICOLON);
 				token = tok.get_token();
 			}
->>>>>>> upstream/master
 			switch (name.code_at(0))
 			{
 				case 'Q':
@@ -974,16 +762,10 @@ void nl_convert_rinf_t::convert(const pstring &contents)
 				add_term(netname, devname + "." + pin);
 				token = tok.get_token();                }
 		}
-<<<<<<< HEAD
-		else
-		{
-			out("Unexpected {}\n", token.str().cstr());
-=======
 #endif
 		else
 		{
 			out("Unexpected {}\n", token.str());
->>>>>>> upstream/master
 			return;
 		}
 	}

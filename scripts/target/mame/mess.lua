@@ -10,8 +10,6 @@
 ---------------------------------------------------------------------------
 
 --------------------------------------------------
-<<<<<<< HEAD
-=======
 -- specify available CPU cores
 --------------------------------------------------
 
@@ -140,14 +138,10 @@ CPUS["CLIPPER"] = true
 CPUS["CAPRICORN"] = true
 
 --------------------------------------------------
->>>>>>> upstream/master
 -- specify available sound cores; some of these are
 -- only for MAME and so aren't included
 --------------------------------------------------
 
-<<<<<<< HEAD
-SOUNDS["VRC6"] = true
-=======
 --SOUNDS["SAMPLES"] = true
 SOUNDS["DAC"] = true
 SOUNDS["DMADAC"] = true
@@ -358,15 +352,11 @@ VIDEOS["GB_LCD"] = true
 VIDEOS["GBA_LCD"] = true
 VIDEOS["MGA2064W"] = true
 VIDEOS["PPU2C0X"] = true
->>>>>>> upstream/master
 
 --------------------------------------------------
 -- specify available machine cores
 --------------------------------------------------
 
-<<<<<<< HEAD
-MACHINES["YM2148"] = true
-=======
 MACHINES["AKIKO"] = true
 MACHINES["AUTOCONFIG"] = true
 MACHINES["CR511B"] = true
@@ -624,17 +614,11 @@ MACHINES["FGA002"] = true
 MACHINES["I82586"] = true
 MACHINES["INPUT_MERGER"] = true
 -- MACHINES["K054321"] = true
->>>>>>> upstream/master
 
 --------------------------------------------------
 -- specify available bus cores
 --------------------------------------------------
 
-<<<<<<< HEAD
-BUSES["A7800"] = true
-BUSES["A800"] = true
-BUSES["ABCBUS"] = true
-=======
 BUSES["A1BUS"] = true
 BUSES["A2BUS"] = true
 BUSES["A7800"] = true
@@ -678,23 +662,10 @@ BUSES["ECONET"] = true
 BUSES["ELECTRON"] = true
 BUSES["EP64"] = true
 BUSES["EPSON_SIO"] = true
->>>>>>> upstream/master
 BUSES["GAMEBOY"] = true
 BUSES["GAMEGEAR"] = true
 BUSES["GBA"] = true
 BUSES["GENERIC"] = true
-<<<<<<< HEAD
-BUSES["MIDI"] = true
-BUSES["MEGADRIVE"] = true
-BUSES["MSX_SLOT"] = true
-BUSES["NEOGEO"] = true
-BUSES["NES"] = true
-BUSES["NES_CTRL"] = true
-BUSES["PCE"] = true
-BUSES["PSX_CONTROLLER"] = true
-BUSES["SATURN"] = true
-BUSES["SEGA8"] = true
-=======
 BUSES["HEXBUS"] = true
 BUSES["HPHIL"] = true
 BUSES["HPDIO"] = true
@@ -743,16 +714,10 @@ BUSES["SCSI"] = true
 BUSES["SCV"] = true
 BUSES["SEGA8"] = true
 BUSES["SG1000_EXP"] = true
->>>>>>> upstream/master
 BUSES["SMS_CTRL"] = true
 BUSES["SMS_EXP"] = true
 BUSES["SNES"] = true
 BUSES["SNES_CTRL"] = true
-<<<<<<< HEAD
-BUSES["VCS"] = true
-BUSES["VCS_CTRL"] = true
-BUSES["WSWAN"] = true
-=======
 BUSES["SPC1000"] = true
 BUSES["SUNKBD"] = true
 BUSES["SVI_EXPANDER"] = true
@@ -929,7 +894,6 @@ FORMATS["X07_CAS"] = true
 FORMATS["X1_TAP"] = true
 FORMATS["XDF_DSK"] = true
 FORMATS["ZX81_P"] = true
->>>>>>> upstream/master
 
 --------------------------------------------------
 -- this is the list of driver libraries that
@@ -938,18 +902,6 @@ FORMATS["ZX81_P"] = true
 --------------------------------------------------
 function linkProjects_mame_mess(_target, _subtarget)
 	links {
-<<<<<<< HEAD
-		"ascii",
-		"atari",
-		"bandai",
-		"funtech",
-		"nec",
-		"nintendo",
-		"sega",
-		"snk",
-		"sony",
-	}
-=======
 		"access",
 		"acorn",
 		"act",
@@ -1173,7 +1125,6 @@ function linkProjects_mame_mess(_target, _subtarget)
 		"mameshared",
 	}
 	end
->>>>>>> upstream/master
 end
 
 function createMESSProjects(_target, _subtarget, _name)
@@ -1181,11 +1132,8 @@ function createMESSProjects(_target, _subtarget, _name)
 	targetsubdir(_target .."_" .. _subtarget)
 	kind (LIBTYPE)
 	uuid (os.uuid("drv-" .. _target .."_" .. _subtarget .. "_" .._name))
-<<<<<<< HEAD
-=======
 	addprojectflags()
 	precompiledheaders()
->>>>>>> upstream/master
 
 	includedirs {
 		MAME_DIR .. "src/osd",
@@ -1196,17 +1144,12 @@ function createMESSProjects(_target, _subtarget, _name)
 		MAME_DIR .. "src/lib/util",
 		MAME_DIR .. "src/lib/netlist",
 		MAME_DIR .. "3rdparty",
-<<<<<<< HEAD
-=======
 		GEN_DIR  .. "mess/layout",
->>>>>>> upstream/master
 		GEN_DIR  .. "mame/layout",
 	}
 end
 
 function createProjects_mame_mess(_target, _subtarget)
-<<<<<<< HEAD
-=======
 --------------------------------------------------
 -- the following files are MAME components and
 -- shared across a number of drivers
@@ -1561,7 +1504,6 @@ files {
 	MAME_DIR .. "src/mame/audio/arcadia.h",
 	MAME_DIR .. "src/mame/video/arcadia.cpp",
 }
->>>>>>> upstream/master
 
 createMESSProjects(_target, _subtarget, "ascii")
 files {
@@ -1572,17 +1514,11 @@ files {
 	MAME_DIR .. "src/mame/machine/msx_matsushita.h",
 	MAME_DIR .. "src/mame/machine/msx_s1985.cpp",
 	MAME_DIR .. "src/mame/machine/msx_s1985.h",
-<<<<<<< HEAD
-	MAME_DIR .. "src/mame/machine/msx_switched.cpp",
-=======
->>>>>>> upstream/master
 	MAME_DIR .. "src/mame/machine/msx_switched.h",
 	MAME_DIR .. "src/mame/machine/msx_systemflags.cpp",
 	MAME_DIR .. "src/mame/machine/msx_systemflags.h",
 }
 
-<<<<<<< HEAD
-=======
 createMESSProjects(_target, _subtarget, "at")
 files {
 	MAME_DIR .. "src/mame/drivers/at.cpp",
@@ -1593,7 +1529,6 @@ files {
 	MAME_DIR .. "src/mame/drivers/ct486.cpp",
 }
 
->>>>>>> upstream/master
 createMESSProjects(_target, _subtarget, "atari")
 files {
 	MAME_DIR .. "src/mame/drivers/a2600.cpp",
@@ -1603,8 +1538,6 @@ files {
 	MAME_DIR .. "src/mame/drivers/atari400.cpp",
 	MAME_DIR .. "src/mame/machine/atarifdc.cpp",
 	MAME_DIR .. "src/mame/machine/atarifdc.h",
-<<<<<<< HEAD
-=======
 	MAME_DIR .. "src/mame/drivers/atarist.cpp",
 	MAME_DIR .. "src/mame/includes/atarist.h",
 	MAME_DIR .. "src/mame/video/atarist.cpp",
@@ -1630,117 +1563,10 @@ files {
 createMESSProjects(_target, _subtarget, "banctec")
 files {
 	MAME_DIR .. "src/mame/drivers/banctec.cpp",
->>>>>>> upstream/master
 }
 
 createMESSProjects(_target, _subtarget, "bandai")
 files {
-<<<<<<< HEAD
-	MAME_DIR .. "src/mame/drivers/wswan.cpp",
-	MAME_DIR .. "src/mame/includes/wswan.h",
-	MAME_DIR .. "src/mame/audio/wswan_snd.cpp",
-	MAME_DIR .. "src/mame/audio/wswan_snd.h",
-	MAME_DIR .. "src/mame/machine/wswan.cpp",
-	MAME_DIR .. "src/mame/video/wswan_video.cpp",
-	MAME_DIR .. "src/mame/video/wswan_video.h",
-}
-	
-	--------------------------------------------------
-	-- layout dependencies
-	--------------------------------------------------
-
-	dependency {
-		{ MAME_DIR .. "src/mame/drivers/wswan.cpp", GEN_DIR .. "mame/layout/wswan.lh" },
-	}
-
-	custombuildtask {
-		layoutbuildtask("mame/layout", "wswan"),
-	}
-
-createMESSProjects(_target, _subtarget, "funtech")
-files {
-	MAME_DIR .. "src/mame/drivers/supracan.cpp",
-}
-
-createMESSProjects(_target, _subtarget, "nec")
-files {
-	MAME_DIR .. "src/mame/drivers/pce.cpp",
-	MAME_DIR .. "src/mame/includes/pce.h",
-	MAME_DIR .. "src/mame/machine/pce.cpp",
-	MAME_DIR .. "src/mame/machine/pce_cd.cpp",
-	MAME_DIR .. "src/mame/machine/pce_cd.h",
-}
-
-createMESSProjects(_target, _subtarget, "nintendo")
-files {
-	MAME_DIR .. "src/mame/drivers/gb.cpp",
-	MAME_DIR .. "src/mame/includes/gb.h",
-	MAME_DIR .. "src/mame/audio/gb.cpp",
-	MAME_DIR .. "src/mame/audio/gb.h",
-	MAME_DIR .. "src/mame/machine/gb.cpp",
-	MAME_DIR .. "src/mame/video/gb_lcd.cpp",
-	MAME_DIR .. "src/mame/video/gb_lcd.h",
-	MAME_DIR .. "src/mame/drivers/gba.cpp",
-	MAME_DIR .. "src/mame/includes/gba.h",
-	MAME_DIR .. "src/mame/video/gba.cpp",
-	MAME_DIR .. "src/mame/drivers/n64.cpp",
-	MAME_DIR .. "src/mame/includes/n64.h",
-	MAME_DIR .. "src/mame/drivers/nes.cpp",
-	MAME_DIR .. "src/mame/includes/nes.h",
-	MAME_DIR .. "src/mame/machine/nes.cpp",
-	MAME_DIR .. "src/mame/video/nes.cpp",
-	MAME_DIR .. "src/mame/drivers/snes.cpp",
-	MAME_DIR .. "src/mame/includes/snes.h",
-	MAME_DIR .. "src/mame/machine/snescx4.cpp",
-	MAME_DIR .. "src/mame/machine/snescx4.h",
-}
-
-createMESSProjects(_target, _subtarget, "sega")
-files {
-	MAME_DIR .. "src/mame/drivers/megadriv.cpp",
-	MAME_DIR .. "src/mame/includes/megadriv.h",
-	MAME_DIR .. "src/mame/drivers/saturn.cpp",
-	MAME_DIR .. "src/mame/drivers/segapico.cpp",
-	MAME_DIR .. "src/mame/drivers/sms.cpp",
-	MAME_DIR .. "src/mame/includes/sms.h",
-	MAME_DIR .. "src/mame/machine/sms.cpp",
-	MAME_DIR .. "src/mame/machine/mega32x.cpp",
-	MAME_DIR .. "src/mame/machine/mega32x.h",
-	MAME_DIR .. "src/mame/machine/megacd.cpp",
-	MAME_DIR .. "src/mame/machine/megacd.h",
-	MAME_DIR .. "src/mame/machine/megacdcd.cpp",
-	MAME_DIR .. "src/mame/machine/megacdcd.h",
-}
-	
-	--------------------------------------------------
-	-- layout dependencies
-	--------------------------------------------------
-
-	dependency {
-		{ MAME_DIR .. "src/mame/drivers/sms.cpp", GEN_DIR .. "mame/layout/sms1.lh" },
-		{ MAME_DIR .. "src/mame/machine/megacd.cpp", GEN_DIR .. "mame/layout/megacd.lh" },
-	}
-
-	custombuildtask {
-		layoutbuildtask("mame/layout", "sms1"),
-		layoutbuildtask("mame/layout", "megacd"),
-	}
-
-createMESSProjects(_target, _subtarget, "snk")
-files {
-	MAME_DIR .. "src/mame/drivers/ng_aes.cpp",
-	MAME_DIR .. "src/mame/drivers/ngp.cpp",
-	MAME_DIR .. "src/mame/video/k1ge.cpp",
-	MAME_DIR .. "src/mame/video/k1ge.h",
-}
-
-createMESSProjects(_target, _subtarget, "sony")
-files {
-	MAME_DIR .. "src/mame/drivers/pockstat.cpp",
-	MAME_DIR .. "src/mame/drivers/psx.cpp",
-	MAME_DIR .. "src/mame/machine/psxcd.cpp",
-	MAME_DIR .. "src/mame/machine/psxcd.h",
-=======
 	MAME_DIR .. "src/mame/drivers/sv8000.cpp",
 	MAME_DIR .. "src/mame/drivers/rx78.cpp",
 	MAME_DIR .. "src/mame/drivers/tamag1.cpp",
@@ -3740,7 +3566,6 @@ files {
 	MAME_DIR .. "src/mame/includes/zorba.h",
 	MAME_DIR .. "src/mame/machine/zorbakbd.cpp",
 	MAME_DIR .. "src/mame/machine/zorbakbd.h",
->>>>>>> upstream/master
 }
 
 end

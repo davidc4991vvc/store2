@@ -1,14 +1,9 @@
 // license:BSD-3-Clause
 // copyright-holders:Olivier Galibert
-<<<<<<< HEAD
-#ifndef NCR5390_H
-#define NCR5390_H
-=======
 #ifndef MAME_MACHINE_NCR5390_H
 #define MAME_MACHINE_NCR5390_H
 
 #pragma once
->>>>>>> upstream/master
 
 #include "machine/nscsi_bus.h"
 
@@ -21,19 +16,6 @@
 class ncr5390_device : public nscsi_device
 {
 public:
-<<<<<<< HEAD
-	ncr5390_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// static configuration helpers
-	template<class _Object> static devcb_base &set_irq_handler(device_t &device, _Object object) { return downcast<ncr5390_device &>(device).m_irq_handler.set_callback(object); }
-	template<class _Object> static devcb_base &set_drq_handler(device_t &device, _Object object) { return downcast<ncr5390_device &>(device).m_drq_handler.set_callback(object); }
-
-	DECLARE_ADDRESS_MAP(map, 8);
-
-	DECLARE_READ8_MEMBER(tcount_lo_r);
-	DECLARE_WRITE8_MEMBER(tcount_lo_w);
-	DECLARE_READ8_MEMBER(tcount_hi_r);
-=======
 	ncr5390_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	// static configuration helpers
@@ -45,7 +27,6 @@ public:
 	DECLARE_READ8_MEMBER(tcounter_lo_r);
 	DECLARE_WRITE8_MEMBER(tcount_lo_w);
 	DECLARE_READ8_MEMBER(tcounter_hi_r);
->>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(tcount_hi_w);
 	DECLARE_READ8_MEMBER(fifo_r);
 	DECLARE_WRITE8_MEMBER(fifo_w);
@@ -61,21 +42,6 @@ public:
 	DECLARE_WRITE8_MEMBER(sync_offset_w);
 	DECLARE_READ8_MEMBER(conf_r);
 	DECLARE_WRITE8_MEMBER(conf_w);
-<<<<<<< HEAD
-	DECLARE_WRITE8_MEMBER(clock_w);
-
-	virtual void scsi_ctrl_changed();
-
-	UINT8 dma_r();
-	void dma_w(UINT8 val);
-
-protected:
-	virtual void device_start();
-	virtual void device_reset();
-	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
-
-private:
-=======
 	DECLARE_WRITE8_MEMBER(test_w);
 	DECLARE_WRITE8_MEMBER(clock_w);
 
@@ -95,7 +61,6 @@ protected:
 	virtual void device_reset() override;
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
 
->>>>>>> upstream/master
 	enum { MODE_D, MODE_T, MODE_I };
 	enum { IDLE };
 
@@ -147,11 +112,8 @@ protected:
 		INIT_XFR_RECV_PAD,
 		INIT_XFR_RECV_BYTE_ACK,
 		INIT_XFR_RECV_BYTE_NACK,
-<<<<<<< HEAD
-=======
 		INIT_XFR_FUNCTION_COMPLETE,
 		INIT_XFR_BUS_COMPLETE,
->>>>>>> upstream/master
 		INIT_XFR_WAIT_REQ,
 		INIT_CPT_RECV_BYTE_ACK,
 		INIT_CPT_RECV_WAIT_REQ,
@@ -232,18 +194,11 @@ protected:
 
 	emu_timer *tm;
 
-<<<<<<< HEAD
-	UINT8 command[2], config, status, istatus;
-	UINT8 clock_conv, sync_offset, sync_period, bus_id, select_timeout, seq;
-	UINT8 fifo[16];
-	UINT16 tcount;
-=======
 	uint8_t command[2], config, status, istatus;
 	uint8_t clock_conv, sync_offset, sync_period, bus_id, select_timeout, seq;
 	uint8_t fifo[16];
 	uint16_t tcount;
 	uint16_t tcounter;
->>>>>>> upstream/master
 	int mode, fifo_pos, command_pos;
 	int state, xfr_phase;
 	int command_length;
@@ -251,11 +206,8 @@ protected:
 	int dma_dir;
 
 	bool irq, drq;
-<<<<<<< HEAD
-=======
 	bool dma_command;
 	bool test_mode;
->>>>>>> upstream/master
 
 	void dma_set(int dir);
 	void drq_set();
@@ -263,13 +215,8 @@ protected:
 
 	void start_command();
 	void step(bool timeout);
-<<<<<<< HEAD
-	bool check_valid_command(UINT8 cmd);
-	int derive_msg_size(UINT8 msg_id);
-=======
 	bool check_valid_command(uint8_t cmd);
 	int derive_msg_size(uint8_t msg_id);
->>>>>>> upstream/master
 	void function_complete();
 	void function_bus_complete();
 	void bus_complete();
@@ -278,13 +225,6 @@ protected:
 	void command_pop_and_chain();
 	void check_irq();
 
-<<<<<<< HEAD
-	void reset_soft();
-	void reset_disconnect();
-
-	UINT8 fifo_pop();
-	void fifo_push(UINT8 val);
-=======
 protected:
 	void reset_soft();
 
@@ -293,27 +233,18 @@ private:
 
 	uint8_t fifo_pop();
 	void fifo_push(uint8_t val);
->>>>>>> upstream/master
 	void send_byte();
 	void recv_byte();
 
 	void delay(int cycles);
 	void delay_cycles(int cycles);
 
-<<<<<<< HEAD
-=======
 	void decrement_tcounter();
 
->>>>>>> upstream/master
 	devcb_write_line m_irq_handler;
 	devcb_write_line m_drq_handler;
 };
 
-<<<<<<< HEAD
-extern const device_type NCR5390;
-
-#endif
-=======
 class ncr53c90a_device : public ncr5390_device
 {
 public:
@@ -366,4 +297,3 @@ DECLARE_DEVICE_TYPE(NCR53C90A, ncr53c90a_device)
 DECLARE_DEVICE_TYPE(NCR53C94, ncr53c94_device)
 
 #endif // MAME_MACHINE_NCR5390_H
->>>>>>> upstream/master

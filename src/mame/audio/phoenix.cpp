@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-// license:???
-=======
 // license:BSD-3-Clause
->>>>>>> upstream/master
 // copyright-holders:Juergen Buchmueller, Derrick Renaud
 /****************************************************************************
  *
@@ -15,11 +11,7 @@
 
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "includes/phoenix.h"
-=======
 #include "audio/phoenix.h"
->>>>>>> upstream/master
 
 /****************************************************************************
  * 4006
@@ -38,11 +30,7 @@
  * [This information is part of the GIICM]
  *
  * Pin 8 and 9 are connected to an EXOR gate and the inverted
-<<<<<<< HEAD
- * output (EXNOR) is fed back to pin 1 (and the pseudo polynome output).
-=======
  * output (EXNOR) is fed back to pin 1 (and the pseudo polynomial output).
->>>>>>> upstream/master
  *
  *      1D5          1Q1  2D4       2Q0  3D4       3Q0  4D5      4Q1 4Q0
  *      +--+--+--+--+--+  +--+--+--+--+  +--+--+--+--+  +--+--+--+--+--+
@@ -60,29 +48,11 @@
 
 
 
-<<<<<<< HEAD
-const device_type PHOENIX = &device_creator<phoenix_sound_device>;
-
-phoenix_sound_device::phoenix_sound_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, PHOENIX, "Phoenix Audio Custom", tag, owner, clock, "phoenix_sound", __FILE__),
-		device_sound_interface(mconfig, *this)
-{
-}
-
-//-------------------------------------------------
-//  device_config_complete - perform any
-//  operations now that the configuration is
-//  complete
-//-------------------------------------------------
-
-void phoenix_sound_device::device_config_complete()
-=======
 DEFINE_DEVICE_TYPE(PHOENIX, phoenix_sound_device, "phoenix_sound", "Phoenix Audio Custom")
 
 phoenix_sound_device::phoenix_sound_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, PHOENIX, tag, owner, clock)
 	, device_sound_interface(mconfig, *this)
->>>>>>> upstream/master
 {
 }
 
@@ -93,11 +63,7 @@ phoenix_sound_device::phoenix_sound_device(const machine_config &mconfig, const 
 void phoenix_sound_device::device_start()
 {
 	int i, j;
-<<<<<<< HEAD
-	UINT32 shiftreg;
-=======
 	uint32_t shiftreg;
->>>>>>> upstream/master
 
 	m_sound_latch_a = 0;
 	memset(&m_c24_state, 0, sizeof(m_c24_state));
@@ -107,20 +73,12 @@ void phoenix_sound_device::device_start()
 	m_discrete = machine().device<discrete_device>("discrete");
 	m_tms = machine().device<tms36xx_device>("tms");
 
-<<<<<<< HEAD
-	m_poly18 = auto_alloc_array(machine(), UINT32, 1ul << (18-5));
-=======
 	m_poly18 = std::make_unique<uint32_t[]>(1ul << (18-5));
->>>>>>> upstream/master
 
 	shiftreg = 0;
 	for( i = 0; i < (1ul << (18-5)); i++ )
 	{
-<<<<<<< HEAD
-		UINT32 bits = 0;
-=======
 		uint32_t bits = 0;
->>>>>>> upstream/master
 		for( j = 0; j < 32; j++ )
 		{
 			bits = (bits >> 1) | (shiftreg << 31);
@@ -144,11 +102,7 @@ void phoenix_sound_device::device_start()
 	save_item(NAME(m_noise_state.polyoffs));
 	save_item(NAME(m_noise_state.lowpass_counter));
 	save_item(NAME(m_noise_state.lowpass_polybit));
-<<<<<<< HEAD
-	save_pointer(NAME(m_poly18), (1ul << (18-5)));
-=======
 	save_pointer(NAME(m_poly18.get()), (1ul << (18-5)));
->>>>>>> upstream/master
 }
 
 int phoenix_sound_device::update_c24(int samplerate)

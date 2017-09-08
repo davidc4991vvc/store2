@@ -6,10 +6,6 @@
 
 **********************************************************************/
 
-<<<<<<< HEAD
-#include "isa_cards.h"
-
-=======
 #include "emu.h"
 #include "isa_cards.h"
 
@@ -66,7 +62,6 @@
 #include "finalchs.h"
 
 
->>>>>>> upstream/master
 SLOT_INTERFACE_START( pc_isa8_cards )
 	SLOT_INTERFACE("mda", ISA8_MDA)
 	SLOT_INTERFACE("cga", ISA8_CGA)
@@ -78,10 +73,7 @@ SLOT_INTERFACE_START( pc_isa8_cards )
 	SLOT_INTERFACE("aga_pc200", ISA8_AGA_PC200)
 	SLOT_INTERFACE("ega", ISA8_EGA)
 	SLOT_INTERFACE("pgc", ISA8_PGC)
-<<<<<<< HEAD
-=======
 	SLOT_INTERFACE("vga", ISA8_VGA)
->>>>>>> upstream/master
 	SLOT_INTERFACE("svga_et4k", ISA8_SVGA_ET4K)
 	SLOT_INTERFACE("num9rev",ISA8_NUM_9_REV)
 	SLOT_INTERFACE("com", ISA8_COM)
@@ -103,10 +95,7 @@ SLOT_INTERFACE_START( pc_isa8_cards )
 	SLOT_INTERFACE("sblaster1_0", ISA8_SOUND_BLASTER_1_0)
 	SLOT_INTERFACE("sblaster1_5", ISA8_SOUND_BLASTER_1_5)
 	SLOT_INTERFACE("stereo_fx", ISA8_STEREO_FX)
-<<<<<<< HEAD
-=======
 	SLOT_INTERFACE("ssi2001", ISA8_SSI2001)
->>>>>>> upstream/master
 	SLOT_INTERFACE("mpu401", ISA8_MPU401)
 	SLOT_INTERFACE("ne1000", NE1000)
 	SLOT_INTERFACE("3c503", EL2_3C503)
@@ -167,8 +156,5 @@ SLOT_INTERFACE_START( pc_isa16_cards )
 	SLOT_INTERFACE("3c505", ISA16_3C505)
 	SLOT_INTERFACE("mach64", ISA16_SVGA_MACH64)
 	SLOT_INTERFACE("sb16_lle", ISA16_SB16)
-<<<<<<< HEAD
-=======
 	SLOT_INTERFACE("mcd", ISA16_MCD)
->>>>>>> upstream/master
 SLOT_INTERFACE_END

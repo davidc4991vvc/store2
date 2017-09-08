@@ -65,33 +65,14 @@ this requires the -joystick_contradictory switch on the commandline.
 #include "sound/ay8910.h"
 #include "machine/i2cmem.h"
 #include "video/ramdac.h"
-<<<<<<< HEAD
-=======
 #include "screen.h"
 #include "speaker.h"
 
->>>>>>> upstream/master
 
 class twins_state : public driver_device
 {
 public:
 	twins_state(const machine_config &mconfig, device_type type, const char *tag)
-<<<<<<< HEAD
-		: driver_device(mconfig, type, tag),
-		m_maincpu(*this, "maincpu"),
-		m_paletteram(*this, "paletteram"),
-		m_palette(*this, "palette"),
-		m_i2cmem(*this, "i2cmem"),
-		m_spritesinit(0),
-		m_videorambank(0)
-		{ }
-
-	required_device<cpu_device> m_maincpu;
-	optional_shared_ptr<UINT16> m_paletteram;
-	required_device<palette_device> m_palette;
-	optional_device<i2cmem_device> m_i2cmem;
-	UINT16 m_paloff;
-=======
 		: driver_device(mconfig, type, tag)
 		, m_maincpu(*this, "maincpu")
 		, m_paletteram(*this, "paletteram")
@@ -106,7 +87,6 @@ public:
 	required_device<palette_device> m_palette;
 	optional_device<i2cmem_device> m_i2cmem;
 	uint16_t m_paloff;
->>>>>>> upstream/master
 	DECLARE_READ16_MEMBER(twins_port4_r);
 	DECLARE_WRITE16_MEMBER(twins_port4_w);
 	DECLARE_WRITE16_MEMBER(twins_pal_w);
@@ -124,20 +104,6 @@ public:
 	int m_spriteswidth;
 	int m_spritesaddr;
 
-<<<<<<< HEAD
-	UINT16 m_mainram[0x10000 / 2];
-	UINT16 m_videoram[0x10000 / 2];
-	UINT16 m_videoram2[0x10000 / 2];
-	UINT16 m_videorambank;
-
-	UINT32 screen_update_twins(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	UINT32 screen_update_spider(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-
-	virtual void machine_start();
-	virtual void video_start();
-	UINT16* m_rom16;
-	UINT8* m_rom8;
-=======
 	uint16_t m_mainram[0x10000 / 2];
 	uint16_t m_videoram[0x10000 / 2];
 	uint16_t m_videoram2[0x10000 / 2];
@@ -150,18 +116,13 @@ public:
 	virtual void video_start() override;
 	uint16_t* m_rom16;
 	uint8_t* m_rom8;
->>>>>>> upstream/master
 
 };
 
 
 void twins_state::machine_start()
 {
-<<<<<<< HEAD
-	m_rom16 = (UINT16*)memregion("maincpu")->base();
-=======
 	m_rom16 = (uint16_t*)memregion("maincpu")->base();
->>>>>>> upstream/master
 	m_rom8 = memregion("maincpu")->base();
 }
 
@@ -217,11 +178,7 @@ WRITE16_MEMBER(twins_state::porte_paloff0_w)
 
 READ16_MEMBER(twins_state::spider_blitter_r)
 {
-<<<<<<< HEAD
-	UINT16* vram;
-=======
 	uint16_t* vram;
->>>>>>> upstream/master
 	if (m_videorambank & 1)
 		vram = m_videoram2;
 	else
@@ -237,11 +194,7 @@ READ16_MEMBER(twins_state::spider_blitter_r)
 	}
 	else
 	{
-<<<<<<< HEAD
-		UINT16 *src = m_rom16;
-=======
 		uint16_t *src = m_rom16;
->>>>>>> upstream/master
 		return src[offset];
 	}
 }
@@ -251,11 +204,7 @@ WRITE16_MEMBER(twins_state::spider_blitter_w)
 {
 	// this is very strange, we use the offset (address bits) not data bits to set values..
 	// I get the impression this might actually overlay the entire address range, including RAM and regular VRAM?
-<<<<<<< HEAD
-	UINT16* vram;
-=======
 	uint16_t* vram;
->>>>>>> upstream/master
 	if (m_videorambank & 1)
 		vram = m_videoram2;
 	else
@@ -290,22 +239,14 @@ WRITE16_MEMBER(twins_state::spider_blitter_w)
 		}
 		else if (offset < 0x30000 / 2)
 		{
-<<<<<<< HEAD
-			UINT8 *src = m_rom8;
-=======
 			uint8_t *src = m_rom8;
->>>>>>> upstream/master
 
 		//  printf("spider_blitter_w %08x %04x %04x (previous data width %d address %08x)\n", offset * 2, data, mem_mask, m_spriteswidth, m_spritesaddr);
 			offset &= 0x7fff;
 
 			for (int i = 0; i < m_spriteswidth; i++)
 			{
-<<<<<<< HEAD
-				UINT8 data;
-=======
 				uint8_t data;
->>>>>>> upstream/master
 
 				data = (src[(m_spritesaddr * 2) + 1]);
 
@@ -362,11 +303,7 @@ void twins_state::video_start()
 
 
 
-<<<<<<< HEAD
-UINT32 twins_state::screen_update_twins(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t twins_state::screen_update_twins(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int y,x,count;
 	static const int xxx=320,yyy=204;
@@ -374,11 +311,7 @@ uint32_t twins_state::screen_update_twins(screen_device &screen, bitmap_ind16 &b
 	bitmap.fill(m_palette->black_pen());
 
 	count=0;
-<<<<<<< HEAD
-	UINT8 *videoram = (UINT8*)m_videoram;
-=======
 	uint8_t *videoram = (uint8_t*)m_videoram;
->>>>>>> upstream/master
 	for (y=0;y<yyy;y++)
 	{
 		for(x=0;x<xxx;x++)
@@ -390,11 +323,7 @@ uint32_t twins_state::screen_update_twins(screen_device &screen, bitmap_ind16 &b
 	return 0;
 }
 
-<<<<<<< HEAD
-UINT32 twins_state::screen_update_spider(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t twins_state::screen_update_spider(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int y,x,count;
 	static const int xxx=320,yyy=204;
@@ -402,11 +331,7 @@ uint32_t twins_state::screen_update_spider(screen_device &screen, bitmap_ind16 &
 	bitmap.fill(m_palette->black_pen());
 
 	count=0;
-<<<<<<< HEAD
-	UINT8 *videoram = (UINT8*)m_videoram;
-=======
 	uint8_t *videoram = (uint8_t*)m_videoram;
->>>>>>> upstream/master
 	for (y=0;y<yyy;y++)
 	{
 		for(x=0;x<xxx;x++)
@@ -417,20 +342,12 @@ uint32_t twins_state::screen_update_spider(screen_device &screen, bitmap_ind16 &
 	}
 
 	count = 0;
-<<<<<<< HEAD
-	videoram = (UINT8*)m_videoram2;
-=======
 	videoram = (uint8_t*)m_videoram2;
->>>>>>> upstream/master
 	for (y=0;y<yyy;y++)
 	{
 		for(x=0;x<xxx;x++)
 		{
-<<<<<<< HEAD
-			UINT8 pixel = videoram[BYTE_XOR_LE(count)];
-=======
 			uint8_t pixel = videoram[BYTE_XOR_LE(count)];
->>>>>>> upstream/master
 			if (pixel) bitmap.pix16(y, x) = pixel;
 			count++;
 		}
@@ -462,11 +379,7 @@ static INPUT_PORTS_START(twins)
 INPUT_PORTS_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( twins, twins_state )
-=======
 static MACHINE_CONFIG_START( twins )
->>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", V30, 8000000)
 	MCFG_CPU_PROGRAM_MAP(twins_map)
@@ -509,20 +422,12 @@ static ADDRESS_MAP_START( twinsa_io, AS_IO, 16, twins_state )
 ADDRESS_MAP_END
 
 
-<<<<<<< HEAD
-static ADDRESS_MAP_START( ramdac_map, AS_0, 8, twins_state )
-=======
 static ADDRESS_MAP_START( ramdac_map, 0, 8, twins_state )
->>>>>>> upstream/master
 	AM_RANGE(0x000, 0x3ff) AM_DEVREADWRITE("ramdac",ramdac_device,ramdac_pal_r,ramdac_rgb666_w)
 ADDRESS_MAP_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( twinsa, twins_state )
-=======
 static MACHINE_CONFIG_START( twinsa )
->>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", V30, XTAL_16MHz/2) /* verified on pcb */
 	MCFG_CPU_PROGRAM_MAP(twins_map)
@@ -601,11 +506,7 @@ WRITE16_MEMBER(twins_state::spider_port_1c_w)
 //  data written is always 00, only seems to want the upper layer to be cleared
 //  otherwise you get garbage sprites between rounds and the bg incorrectly wiped
 
-<<<<<<< HEAD
-	UINT16* vram;
-=======
 	uint16_t* vram;
->>>>>>> upstream/master
 //  if (m_videorambank & 1)
 		vram = m_videoram2;
 //  else
@@ -655,11 +556,7 @@ ADDRESS_MAP_END
 
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( spider, twins_state )
-=======
 static MACHINE_CONFIG_START( spider )
->>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", V30, 8000000)
 	MCFG_CPU_PROGRAM_MAP(twins_map)
@@ -726,14 +623,7 @@ ROM_START( spider )
 	ROM_LOAD16_BYTE( "21.bin", 0x000000, 0x080000, CRC(ff224206) SHA1(d8d45850983542e811facc917d016841fc56a97f) )
 ROM_END
 
-<<<<<<< HEAD
-GAME( 1994, twins,  0,     twins,  twins, driver_device, 0, ROT0, "Electronic Devices", "Twins (set 1)", MACHINE_SUPPORTS_SAVE )
-GAME( 1994, twinsa, twins, twinsa, twins, driver_device, 0, ROT0, "Electronic Devices", "Twins (set 2)", MACHINE_SUPPORTS_SAVE )
-
-GAME( 1994, spider,  0,     spider,  twins, driver_device, 0, ROT0, "Buena Vision", "Spider", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1994, twins,  0,     twins,  twins, twins_state, 0, ROT0, "Electronic Devices", "Twins (set 1)", MACHINE_SUPPORTS_SAVE )
 GAME( 1994, twinsa, twins, twinsa, twins, twins_state, 0, ROT0, "Electronic Devices", "Twins (set 2)", MACHINE_SUPPORTS_SAVE )
 
 GAME( 1994, spider, 0,     spider, twins, twins_state, 0, ROT0, "Buena Vision",       "Spider",        MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

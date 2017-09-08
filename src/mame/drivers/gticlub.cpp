@@ -236,14 +236,9 @@ Hang Pilot (uses an unknown but similar video board)                12W         
 #include "video/k001006.h"
 #include "video/k001604.h"
 
-<<<<<<< HEAD
-
-#include "rendlay.h"
-=======
 #include "rendlay.h"
 #include "speaker.h"
 
->>>>>>> upstream/master
 
 class gticlub_state : public driver_device
 {
@@ -270,14 +265,10 @@ public:
 		m_analog1(*this, "AN1"),
 		m_analog2(*this, "AN2"),
 		m_analog3(*this, "AN3"),
-<<<<<<< HEAD
-		m_ports(*this, ports) { }
-=======
 		m_ports(*this, "IN%u", 0)
 	{
 	}
 
->>>>>>> upstream/master
 
 	// TODO: Needs verification on real hardware
 	static const int m_sound_timer_usec = 2400;
@@ -285,11 +276,7 @@ public:
 	required_device<ppc_device> m_maincpu;
 	required_device<cpu_device> m_audiocpu;
 	required_device<adsp21062_device> m_dsp;
-<<<<<<< HEAD
-	optional_device<cpu_device> m_dsp2;
-=======
 	optional_device<adsp21062_device> m_dsp2;
->>>>>>> upstream/master
 	required_device<k056800_device> m_k056800;
 	required_device<adc1038_device> m_adc1038;
 	required_device<eeprom_serial_93cxx_device> m_eeprom;
@@ -301,23 +288,13 @@ public:
 	optional_device<k001604_device> m_k001604_1;
 	optional_device<k001604_device> m_k001604_2;
 
-<<<<<<< HEAD
-	required_shared_ptr<UINT32> m_work_ram;
-	required_shared_ptr<UINT32> m_generic_paletteram_32;
-=======
 	required_shared_ptr<uint32_t> m_work_ram;
 	required_shared_ptr<uint32_t> m_generic_paletteram_32;
->>>>>>> upstream/master
 
 	optional_ioport m_analog0, m_analog1, m_analog2, m_analog3;
 
 	required_ioport_array<4> m_ports;
 
-<<<<<<< HEAD
-	DECLARE_IOPORT_ARRAY(ports);
-
-=======
->>>>>>> upstream/master
 	DECLARE_WRITE32_MEMBER(paletteram32_w);
 	DECLARE_READ32_MEMBER(gticlub_k001604_tile_r);
 	DECLARE_WRITE32_MEMBER(gticlub_k001604_tile_w);
@@ -349,18 +326,6 @@ public:
 
 	ADC1038_INPUT_CB(adc1038_input_callback);
 
-<<<<<<< HEAD
-	UINT32 screen_update_gticlub(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
-	UINT32 screen_update_hangplt(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
-
-private:
-	void gticlub_led_setreg(int offset, UINT8 data);
-
-	UINT8 m_gticlub_led_reg[2];
-	emu_timer *m_sound_irq_timer;
-	UINT32 *m_sharc_dataram_0;
-	UINT32 *m_sharc_dataram_1;
-=======
 	uint32_t screen_update_gticlub(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
 	uint32_t screen_update_hangplt(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
 
@@ -371,7 +336,6 @@ private:
 	emu_timer *m_sound_irq_timer;
 	std::unique_ptr<uint32_t[]> m_sharc_dataram_0;
 	std::unique_ptr<uint32_t[]> m_sharc_dataram_1;
->>>>>>> upstream/master
 };
 
 
@@ -432,11 +396,6 @@ WRITE32_MEMBER(gticlub_state::gticlub_k001604_reg_w)
 
 /******************************************************************/
 
-<<<<<<< HEAD
-IOPORT_ARRAY_MEMBER(gticlub_state::ports) { "IN0", "IN1", "IN2", "IN3" };
-
-=======
->>>>>>> upstream/master
 READ8_MEMBER(gticlub_state::sysreg_r)
 {
 	switch (offset)
@@ -457,13 +416,8 @@ READ8_MEMBER(gticlub_state::sysreg_r)
 			// a = ADC readout
 			// e = EEPROM data out
 
-<<<<<<< HEAD
-			UINT32 eeprom_bit = (m_eeprom->do_read() << 1);
-			UINT32 adc_bit = (m_adc1038->do_read() << 2);
-=======
 			uint32_t eeprom_bit = (m_eeprom->do_read() << 1);
 			uint32_t adc_bit = (m_adc1038->do_read() << 2);
->>>>>>> upstream/master
 			return (eeprom_bit | adc_bit);
 		}
 
@@ -542,11 +496,7 @@ MACHINE_START_MEMBER(gticlub_state,gticlub)
 	m_maincpu->ppcdrc_set_options(PPCDRC_COMPATIBLE_OPTIONS);
 
 	/* configure fast RAM regions for DRC */
-<<<<<<< HEAD
-	m_maincpu->ppcdrc_add_fastram(0x00000000, 0x000fffff, FALSE, m_work_ram);
-=======
 	m_maincpu->ppcdrc_add_fastram(0x00000000, 0x000fffff, false, m_work_ram);
->>>>>>> upstream/master
 
 	m_sound_irq_timer = machine().scheduler().timer_alloc(timer_expired_delegate(FUNC(gticlub_state::sound_irq), this));
 }
@@ -872,11 +822,7 @@ MACHINE_RESET_MEMBER(gticlub_state,gticlub)
 	m_dsp->set_input_line(INPUT_LINE_RESET, ASSERT_LINE);
 }
 
-<<<<<<< HEAD
-void gticlub_state::gticlub_led_setreg(int offset, UINT8 data)
-=======
 void gticlub_state::gticlub_led_setreg(int offset, uint8_t data)
->>>>>>> upstream/master
 {
 	m_gticlub_led_reg[offset] = data;
 }
@@ -892,11 +838,7 @@ VIDEO_START_MEMBER(gticlub_state,gticlub)
 	*/
 }
 
-<<<<<<< HEAD
-UINT32 gticlub_state::screen_update_gticlub(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
-=======
 uint32_t gticlub_state::screen_update_gticlub(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	m_k001604_1->draw_back_layer(bitmap, cliprect);
 
@@ -938,21 +880,13 @@ uint32_t gticlub_state::screen_update_gticlub(screen_device &screen, bitmap_rgb3
 		int index = (debug_tex_page - 1) * 0x40000;
 		int pal = debug_tex_palette & 7;
 		int tp = (debug_tex_palette >> 3) & 1;
-<<<<<<< HEAD
-		UINT8 *rom = machine.root_device().memregion("gfx1")->base();
-=======
 		uint8_t *rom = machine.root_device().memregion("gfx1")->base();
->>>>>>> upstream/master
 
 		for (y=0; y < 384; y++)
 		{
 			for (x=0; x < 512; x++)
 			{
-<<<<<<< HEAD
-				UINT8 pixel = rom[index + (y*512) + x];
-=======
 				uint8_t pixel = rom[index + (y*512) + x];
->>>>>>> upstream/master
 				bitmap.pix32(y, x) = K001006_palette[tp][(pal * 256) + pixel];
 			}
 		}
@@ -970,47 +904,27 @@ uint32_t gticlub_state::screen_update_gticlub(screen_device &screen, bitmap_rgb3
 	return 0;
 }
 
-<<<<<<< HEAD
-UINT32 gticlub_state::screen_update_hangplt(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
-=======
 uint32_t gticlub_state::screen_update_hangplt(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	bitmap.fill(m_palette->pen(0), cliprect);
 
 	if (strcmp(screen.tag(), ":lscreen") == 0)
 	{
-<<<<<<< HEAD
-		device_t *voodoo = machine().device("voodoo0");
-
-	//  m_k001604_1->draw_back_layer(bitmap, cliprect);
-
-		voodoo_update(voodoo, bitmap, cliprect);
-=======
 		voodoo_device *voodoo = (voodoo_device*)machine().device("voodoo0");
 
 	//  m_k001604_1->draw_back_layer(bitmap, cliprect);
 
 		voodoo->voodoo_update(bitmap, cliprect);
->>>>>>> upstream/master
 
 		m_k001604_1->draw_front_layer(screen, bitmap, cliprect);
 	}
 	else if (strcmp(screen.tag(), ":rscreen") == 0)
 	{
-<<<<<<< HEAD
-		device_t *voodoo = machine().device("voodoo1");
-
-	//  m_k001604_2->draw_back_layer(bitmap, cliprect);
-
-		voodoo_update(voodoo, bitmap, cliprect);
-=======
 		voodoo_device *voodoo = (voodoo_device*)machine().device("voodoo1");
 
 	//  m_k001604_2->draw_back_layer(bitmap, cliprect);
 
 		voodoo->voodoo_update(bitmap, cliprect);
->>>>>>> upstream/master
 
 		m_k001604_2->draw_front_layer(screen, bitmap, cliprect);
 	}
@@ -1020,11 +934,7 @@ uint32_t gticlub_state::screen_update_hangplt(screen_device &screen, bitmap_rgb3
 
 	return 0;
 }
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( gticlub, gticlub_state )
-=======
 static MACHINE_CONFIG_START( gticlub )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", PPC403GA, XTAL_64MHz/2)   /* PowerPC 403GA 32MHz */
@@ -1063,22 +973,11 @@ static MACHINE_CONFIG_START( gticlub )
 
 	MCFG_VIDEO_START_OVERRIDE(gticlub_state,gticlub)
 
-<<<<<<< HEAD
-	MCFG_GFXDECODE_ADD("gfxdecode", "palette", empty)
 	MCFG_DEVICE_ADD("k001604_1", K001604, 0)
-	MCFG_K001604_GFX_INDEX1(1)
-	MCFG_K001604_GFX_INDEX2(2)
-=======
-	MCFG_DEVICE_ADD("k001604_1", K001604, 0)
->>>>>>> upstream/master
 	MCFG_K001604_LAYER_SIZE(1)
 	MCFG_K001604_ROZ_SIZE(1)
 	MCFG_K001604_TXT_OFFSET(0)
 	MCFG_K001604_ROZ_OFFSET(0)
-<<<<<<< HEAD
-	MCFG_K001604_GFXDECODE("gfxdecode")
-=======
->>>>>>> upstream/master
 	MCFG_K001604_PALETTE("palette")
 
 	MCFG_DEVICE_ADD("k001005", K001005, 0)
@@ -1105,11 +1004,7 @@ static MACHINE_CONFIG_START( gticlub )
 
 	MCFG_DEVICE_ADD("konppc", KONPPC, 0)
 	MCFG_KONPPC_CGBOARD_NUMBER(1)
-<<<<<<< HEAD
-	MCFG_KONPPC_CGBOARD_TYPE(CGBOARD_TYPE_GTICLUB)
-=======
 	MCFG_KONPPC_CGBOARD_TYPE(GTICLUB)
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_DERIVED( thunderh, gticlub )
@@ -1132,19 +1027,10 @@ static MACHINE_CONFIG_DERIVED( slrasslt, gticlub )
 
 	MCFG_DEVICE_REMOVE("k001604_1")
 	MCFG_DEVICE_ADD("k001604_1", K001604, 0)
-<<<<<<< HEAD
-	MCFG_K001604_GFX_INDEX1(1)
-	MCFG_K001604_GFX_INDEX2(2)
-=======
->>>>>>> upstream/master
 	MCFG_K001604_LAYER_SIZE(0)
 	MCFG_K001604_ROZ_SIZE(0)
 	MCFG_K001604_TXT_OFFSET(16384)
 	MCFG_K001604_ROZ_OFFSET(0)
-<<<<<<< HEAD
-	MCFG_K001604_GFXDECODE("gfxdecode")
-=======
->>>>>>> upstream/master
 	MCFG_K001604_PALETTE("palette")
 MACHINE_CONFIG_END
 
@@ -1155,11 +1041,7 @@ MACHINE_RESET_MEMBER(gticlub_state,hangplt)
 	m_dsp2->set_input_line(INPUT_LINE_RESET, ASSERT_LINE);
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( hangplt, gticlub_state )
-=======
 static MACHINE_CONFIG_START( hangplt )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", PPC403GA, XTAL_64MHz/2)   /* PowerPC 403GA 32MHz */
@@ -1224,39 +1106,18 @@ static MACHINE_CONFIG_START( hangplt )
 	MCFG_SCREEN_VISIBLE_AREA(0, 511, 0, 383)
 	MCFG_SCREEN_UPDATE_DRIVER(gticlub_state, screen_update_hangplt)
 
-<<<<<<< HEAD
-	MCFG_GFXDECODE_ADD("gfxdecode", "palette", empty)
-
 	MCFG_DEVICE_ADD("k001604_1", K001604, 0)
-	MCFG_K001604_GFX_INDEX1(1)
-	MCFG_K001604_GFX_INDEX2(2)
-=======
-	MCFG_DEVICE_ADD("k001604_1", K001604, 0)
->>>>>>> upstream/master
 	MCFG_K001604_LAYER_SIZE(0)
 	MCFG_K001604_ROZ_SIZE(1)
 	MCFG_K001604_TXT_OFFSET(0)
 	MCFG_K001604_ROZ_OFFSET(16384)
-<<<<<<< HEAD
-	MCFG_K001604_GFXDECODE("gfxdecode")
 	MCFG_K001604_PALETTE("palette")
 
 	MCFG_DEVICE_ADD("k001604_2", K001604, 0)
-	MCFG_K001604_GFX_INDEX1(3)
-	MCFG_K001604_GFX_INDEX2(4)
-=======
-	MCFG_K001604_PALETTE("palette")
-
-	MCFG_DEVICE_ADD("k001604_2", K001604, 0)
->>>>>>> upstream/master
 	MCFG_K001604_LAYER_SIZE(0)
 	MCFG_K001604_ROZ_SIZE(1)
 	MCFG_K001604_TXT_OFFSET(0)
 	MCFG_K001604_ROZ_OFFSET(16384)
-<<<<<<< HEAD
-	MCFG_K001604_GFXDECODE("gfxdecode")
-=======
->>>>>>> upstream/master
 	MCFG_K001604_PALETTE("palette")
 
 	MCFG_K056800_ADD("k056800", XTAL_33_8688MHz/2)
@@ -1270,11 +1131,7 @@ static MACHINE_CONFIG_START( hangplt )
 
 	MCFG_DEVICE_ADD("konppc", KONPPC, 0)
 	MCFG_KONPPC_CGBOARD_NUMBER(2)
-<<<<<<< HEAD
-	MCFG_KONPPC_CGBOARD_TYPE(CGBOARD_TYPE_HANGPLT)
-=======
 	MCFG_KONPPC_CGBOARD_TYPE(HANGPLT)
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 /*************************************************************************/
@@ -1461,13 +1318,8 @@ ROM_END
 
 ROM_START( slrasslt ) /* USA version UAA */
 	ROM_REGION(0x200000, "user1", 0)    /* PowerPC program roms */
-<<<<<<< HEAD
-	ROM_LOAD32_BYTE( "792uaa01.21u", 0x000003, 0x080000, CRC(c73bf7fb) SHA1(ffe0fea155473827929339a9261a158287ce30a8) )
-	ROM_LOAD32_BYTE( "792uaa02.19u", 0x000002, 0x080000, CRC(a940bb9b) SHA1(65a60157697a21cc2485c02c689c9addb3ac91f1) )
-=======
 	ROM_LOAD32_BYTE( "792uaa01.21u", 0x000003, 0x080000, CRC(c73bf7fb) SHA1(ffe0fea155473827929339a9261a158287ce30a8) ) // ROM check screen shows version as:  SOLAR ASSAULT DR2  VER UA-A
 	ROM_LOAD32_BYTE( "792uaa02.19u", 0x000002, 0x080000, CRC(a940bb9b) SHA1(65a60157697a21cc2485c02c689c9addb3ac91f1) ) // Based on "Revised" code but title screen only shows Solar Assault
->>>>>>> upstream/master
 	ROM_LOAD32_BYTE( "792uaa03.21r", 0x000001, 0x080000, CRC(363e8411) SHA1(b9c70033d8e3de4b339b61a66172bfecb7c2b3ab) )
 	ROM_LOAD32_BYTE( "792uaa04.19r", 0x000000, 0x080000, CRC(7910d99c) SHA1(e2114d369060528998b58331d590c086d306f541) )
 
@@ -1494,8 +1346,6 @@ ROM_START( slrasslt ) /* USA version UAA */
 	ROM_LOAD16_WORD( "eeprom-slrasslt.bin", 0x0000, 0x0100, CRC(51eb4d93) SHA1(bc1359daccad80b0e16eb144a0bae715a4fb2e8d) )
 ROM_END
 
-<<<<<<< HEAD
-=======
 ROM_START( slrassltj ) /* Japan version JAA */
 	ROM_REGION(0x200000, "user1", 0)    /* PowerPC program roms */
 	ROM_LOAD32_BYTE( "792jaa01.21u", 0x000003, 0x080000, CRC(112717c6) SHA1(be5066e1aefef20b6eab2340abc1bdc3d7a5a6e3) ) // ROM check screen shows version as:  SOLAR ASSAULT DR2  VER JA-A
@@ -1556,7 +1406,6 @@ ROM_START( slrassltj1 ) /* Japan version JAA */
 	ROM_LOAD16_WORD( "eeprom-slrassltj.bin", 0x0000, 0x0100, CRC(407871d6) SHA1(17a311c412f450edb206750bf7d1055bd16a2135) )
 ROM_END
 
->>>>>>> upstream/master
 ROM_START( hangplt ) /* Japan version JAB */
 	ROM_REGION(0x200000, "user1", 0)    /* PowerPC program roms */
 	ROM_LOAD32_BYTE( "685jab01.21u", 0x000003, 0x080000, CRC(f98a3e82) SHA1(94ebaa172b0e98c5cd08efaea5f56e707e5032b4) )
@@ -1612,26 +1461,17 @@ ROM_END
 
 DRIVER_INIT_MEMBER(gticlub_state,gticlub)
 {
-<<<<<<< HEAD
-	m_sharc_dataram_0 = auto_alloc_array(machine(), UINT32, 0x100000/4);
-=======
 	m_sharc_dataram_0 = std::make_unique<uint32_t[]>(0x100000/4);
 
 	m_dsp->enable_recompiler();
->>>>>>> upstream/master
 }
 
 void gticlub_state::init_hangplt_common()
 {
 	m_konppc->set_cgboard_texture_bank(0, "bank5", memregion("user5")->base());
 	m_konppc->set_cgboard_texture_bank(1, "bank6", memregion("user5")->base());
-<<<<<<< HEAD
-	m_sharc_dataram_0 = auto_alloc_array(machine(), UINT32, 0x100000/4);
-	m_sharc_dataram_1 = auto_alloc_array(machine(), UINT32, 0x100000/4);
-=======
 	m_sharc_dataram_0 = std::make_unique<uint32_t[]>(0x100000/4);
 	m_sharc_dataram_1 = std::make_unique<uint32_t[]>(0x100000/4);
->>>>>>> upstream/master
 }
 
 DRIVER_INIT_MEMBER(gticlub_state,hangplt)
@@ -1639,11 +1479,7 @@ DRIVER_INIT_MEMBER(gticlub_state,hangplt)
 	init_hangplt_common();
 
 	// workaround for lock/unlock errors
-<<<<<<< HEAD
-	UINT32 *rom = (UINT32*)memregion("user1")->base();
-=======
 	uint32_t *rom = (uint32_t*)memregion("user1")->base();
->>>>>>> upstream/master
 	rom[(0x153ac^4) / 4] = 0x4e800020;
 	rom[(0x15428^4) / 4] = 0x4e800020;
 }
@@ -1653,28 +1489,13 @@ DRIVER_INIT_MEMBER(gticlub_state,hangpltu)
 	init_hangplt_common();
 
 	// workaround for lock/unlock errors
-<<<<<<< HEAD
-	UINT32 *rom = (UINT32*)memregion("user1")->base();
-=======
 	uint32_t *rom = (uint32_t*)memregion("user1")->base();
->>>>>>> upstream/master
 	rom[(0x153d0^4) / 4] = 0x4e800020;
 	rom[(0x15428^4) / 4] = 0x4e800020;
 }
 
 /*************************************************************************/
 
-<<<<<<< HEAD
-GAME( 1996, gticlub,  0,        gticlub,  gticlub,  gticlub_state, gticlub,  ROT0, "Konami", "GTI Club (ver EAA)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_SOUND )
-GAME( 1996, gticlubu, gticlub,  gticlub,  gticlub,  gticlub_state, gticlub,  ROT0, "Konami", "GTI Club (ver UAA)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_SOUND )
-GAME( 1996, gticluba, gticlub,  gticlub,  gticlub,  gticlub_state, gticlub,  ROT0, "Konami", "GTI Club (ver AAA)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_SOUND )
-GAME( 1996, gticlubj, gticlub,  gticlub,  gticlub,  gticlub_state, gticlub,  ROT0, "Konami", "GTI Club (ver JAA)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_SOUND )
-GAME( 1996, thunderh, 0,        thunderh, thunderh, gticlub_state, gticlub,  ROT0, "Konami", "Operation Thunder Hurricane (ver EAA)", MACHINE_NOT_WORKING | MACHINE_IMPERFECT_SOUND )
-GAME( 1996, thunderhu,thunderh, thunderh, thunderh, gticlub_state, gticlub,  ROT0, "Konami", "Operation Thunder Hurricane (ver UAA)", MACHINE_NOT_WORKING | MACHINE_IMPERFECT_SOUND )
-GAME( 1997, slrasslt, 0,        slrasslt, slrasslt, gticlub_state, gticlub,  ROT0, "Konami", "Solar Assault (ver UAA)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_SOUND )
-GAMEL(1997, hangplt,  0,        hangplt,  hangplt,  gticlub_state, hangplt,  ROT0, "Konami", "Hang Pilot (ver JAB)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_SOUND, layout_dualhovu )
-GAMEL(1997, hangpltu, hangplt,  hangplt,  hangplt,  gticlub_state, hangpltu, ROT0, "Konami", "Hang Pilot (ver UAA)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_SOUND, layout_dualhovu )
-=======
 GAME( 1996, gticlub,    0,        gticlub,  gticlub,  gticlub_state, gticlub,  ROT0, "Konami", "GTI Club (ver EAA)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_SOUND )
 GAME( 1996, gticlubu,   gticlub,  gticlub,  gticlub,  gticlub_state, gticlub,  ROT0, "Konami", "GTI Club (ver UAA)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_SOUND )
 GAME( 1996, gticluba,   gticlub,  gticlub,  gticlub,  gticlub_state, gticlub,  ROT0, "Konami", "GTI Club (ver AAA)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_SOUND )
@@ -1686,4 +1507,3 @@ GAME( 1997, slrassltj,  slrasslt, slrasslt, slrasslt, gticlub_state, gticlub,  R
 GAME( 1997, slrassltj1, slrasslt, slrasslt, slrasslt, gticlub_state, gticlub,  ROT0, "Konami", "Solar Assault (ver JAA)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_SOUND )
 GAMEL(1997, hangplt,    0,        hangplt,  hangplt,  gticlub_state, hangplt,  ROT0, "Konami", "Hang Pilot (ver JAB)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_SOUND, layout_dualhovu )
 GAMEL(1997, hangpltu,   hangplt,  hangplt,  hangplt,  gticlub_state, hangpltu, ROT0, "Konami", "Hang Pilot (ver UAA)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_SOUND, layout_dualhovu )
->>>>>>> upstream/master

@@ -1,10 +1,5 @@
-<<<<<<< HEAD
-// license:BSD-3-Clause
-// copyright-holders:Philip Bennett
-=======
 // license: BSD-3-Clause
 // copyright-holders: Philip Bennett, Dirk Best
->>>>>>> upstream/master
 /***************************************************************************
 
     JPM Give us a Break hardware
@@ -27,9 +22,6 @@
         count gets updated in the code. Each game requires a unique
         security PAL - maybe this is related? I'm poking the coin values
         directly into RAM for now.
-<<<<<<< HEAD
-        * Verify WD FDC type
-=======
         * Game hangs when you try to 'collect' cash
         * Verify WD FDC type
         * Are IRQs 1 or 2 connected to something?
@@ -42,46 +34,10 @@
     Notes:
         * Toggle both 'Back door' and 'Key switch' to enter test mode
         * Video hardware seems to match JPM System 5
->>>>>>> upstream/master
 
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/m68000/m68000.h"
-#include "machine/6840ptm.h"
-#include "video/tms34061.h"
-#include "sound/sn76496.h"
-#include "machine/wd_fdc.h"
-#include "formats/guab_dsk.h"
-#include "softlist.h"
-
-/*************************************
- *
- *  Defines
- *
- *************************************/
-
-
-enum int_levels
-{
-	INT_UNKNOWN1     = 1,
-	INT_UNKNOWN2     = 2,
-	INT_6840PTM      = 3,
-	INT_6850ACIA     = 4,
-	INT_TMS34061     = 5,
-	INT_FLOPPYCTRL   = 6,
-	INT_WATCHDOG_INT = 7
-};
-
-
-struct ef9369
-{
-	UINT32 addr;
-	UINT16 clut[16];    /* 13-bits - a marking bit and a 444 color */
-};
-
-=======
 
 #include "cpu/m68000/m68000.h"
 #include "formats/guab_dsk.h"
@@ -102,7 +58,6 @@ struct ef9369
 //**************************************************************************
 //  TYPE DEFINITIONS
 //**************************************************************************
->>>>>>> upstream/master
 
 class guab_state : public driver_device
 {
@@ -114,20 +69,6 @@ public:
 		m_sn(*this, "snsnd"),
 		m_fdc(*this, "fdc"),
 		m_floppy(*this, "fdc:0"),
-<<<<<<< HEAD
-		m_palette(*this, "palette") { }
-
-	DECLARE_WRITE_LINE_MEMBER(generate_tms34061_interrupt);
-	DECLARE_WRITE16_MEMBER(guab_tms34061_w);
-	DECLARE_READ16_MEMBER(guab_tms34061_r);
-	DECLARE_WRITE16_MEMBER(ef9369_w);
-	DECLARE_READ16_MEMBER(ef9369_r);
-	DECLARE_READ16_MEMBER(io_r);
-	DECLARE_WRITE16_MEMBER(io_w);
-	DECLARE_INPUT_CHANGED_MEMBER(coin_inserted);
-	DECLARE_WRITE_LINE_MEMBER(ptm_irq);
-	UINT32 screen_update_guab(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 		m_palette(*this, "palette"),
 		m_sound_buffer(0), m_sound_latch(false)
 	{ }
@@ -150,58 +91,16 @@ public:
 	DECLARE_WRITE8_MEMBER(watchdog_w);
 
 	DECLARE_INPUT_CHANGED_MEMBER(coin_inserted);
->>>>>>> upstream/master
 
 	DECLARE_FLOPPY_FORMATS(floppy_formats);
 
 protected:
-<<<<<<< HEAD
-	virtual void machine_start();
-=======
 	virtual void machine_start() override;
->>>>>>> upstream/master
 
 private:
 	required_device<cpu_device> m_maincpu;
 	required_device<tms34061_device> m_tms34061;
 	required_device<sn76489_device> m_sn;
-<<<<<<< HEAD
-	required_device<wd1773_t> m_fdc;
-	required_device<floppy_connector> m_floppy;
-	required_device<palette_device> m_palette;
-
-	struct ef9369 m_pal;
-};
-
-
-/*************************************
- *
- *  6840 PTM
- *
- *************************************/
-
-WRITE_LINE_MEMBER(guab_state::ptm_irq)
-{
-	m_maincpu->set_input_line(INT_6840PTM, state);
-}
-
-/*************************************
- *
- *  Video hardware
- *
- *************************************/
-
-/*****************
- * TMS34061 CRTC
- *****************/
-
-WRITE_LINE_MEMBER(guab_state::generate_tms34061_interrupt)
-{
-	m_maincpu->set_input_line(INT_TMS34061, state);
-}
-
-WRITE16_MEMBER(guab_state::guab_tms34061_w)
-=======
 	required_device<wd1773_device> m_fdc;
 	required_device<floppy_connector> m_floppy;
 	required_device<palette_device> m_palette;
@@ -317,7 +216,6 @@ EF9369_COLOR_UPDATE( guab_state::ef9369_color_update )
 }
 
 WRITE16_MEMBER( guab_state::tms34061_w )
->>>>>>> upstream/master
 {
 	int func = (offset >> 19) & 3;
 	int row = (offset >> 7) & 0xff;
@@ -335,16 +233,9 @@ WRITE16_MEMBER( guab_state::tms34061_w )
 		m_tms34061->write(space, col | 1, row, func, data & 0xff);
 }
 
-<<<<<<< HEAD
-
-READ16_MEMBER(guab_state::guab_tms34061_r)
-{
-	UINT16 data = 0;
-=======
 READ16_MEMBER( guab_state::tms34061_r )
 {
 	uint16_t data = 0;
->>>>>>> upstream/master
 	int func = (offset >> 19) & 3;
 	int row = (offset >> 7) & 0xff;
 	int col;
@@ -363,81 +254,8 @@ READ16_MEMBER( guab_state::tms34061_r )
 	return data;
 }
 
-<<<<<<< HEAD
-
-/****************************
- *  EF9369 color palette IC
- *  (16 colors from 4096)
- ****************************/
-
-/* Non-multiplexed mode */
-WRITE16_MEMBER(guab_state::ef9369_w)
-{
-	struct ef9369 &pal = m_pal;
-	data &= 0x00ff;
-
-	/* Address register */
-	if (offset & 1)
-	{
-		pal.addr = data & 0x1f;
-	}
-	/* Data register */
-	else
-	{
-		UINT32 entry = pal.addr >> 1;
-
-		if ((pal.addr & 1) == 0)
-		{
-			pal.clut[entry] &= ~0x00ff;
-			pal.clut[entry] |= data;
-		}
-		else
-		{
-			UINT16 col;
-
-			pal.clut[entry] &= ~0x1f00;
-			pal.clut[entry] |= (data & 0x1f) << 8;
-
-			/* Remove the marking bit */
-			col = pal.clut[entry] & 0xfff;
-
-			/* Update the MAME palette */
-			m_palette->set_pen_color(entry, pal4bit(col >> 0), pal4bit(col >> 4), pal4bit(col >> 8));
-		}
-
-			/* Address register auto-increment */
-		if (++pal.addr == 32)
-			pal.addr = 0;
-	}
-}
-
-READ16_MEMBER(guab_state::ef9369_r)
-{
-	struct ef9369 &pal = m_pal;
-	if ((offset & 1) == 0)
-	{
-		UINT16 col = pal.clut[pal.addr >> 1];
-
-		if ((pal.addr & 1) == 0)
-			return col & 0xff;
-		else
-			return col >> 8;
-	}
-	else
-	{
-		/* Address register is write only */
-		return 0xffff;
-	}
-}
-
-UINT32 guab_state::screen_update_guab(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-{
-	int x, y;
-
-=======
 uint32_t guab_state::screen_update_guab(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
->>>>>>> upstream/master
 	m_tms34061->get_display_state();
 
 	/* If blanked, fill with black */
@@ -447,16 +265,6 @@ uint32_t guab_state::screen_update_guab(screen_device &screen, bitmap_ind16 &bit
 		return 0;
 	}
 
-<<<<<<< HEAD
-	for (y = cliprect.min_y; y <= cliprect.max_y; ++y)
-	{
-		UINT8 *src = &m_tms34061->m_display.vram[256 * y];
-		UINT16 *dest = &bitmap.pix16(y);
-
-		for (x = cliprect.min_x; x <= cliprect.max_x; x += 2)
-		{
-			UINT8 pen = src[x >> 1];
-=======
 	for (int y = cliprect.min_y; y <= cliprect.max_y; ++y)
 	{
 		uint8_t *src = &m_tms34061->m_display.vram[256 * y];
@@ -465,7 +273,6 @@ uint32_t guab_state::screen_update_guab(screen_device &screen, bitmap_ind16 &bit
 		for (int x = cliprect.min_x; x <= cliprect.max_x; x += 2)
 		{
 			uint8_t pen = src[x >> 1];
->>>>>>> upstream/master
 
 			/* Draw two 4-bit pixels */
 			*dest++ = m_palette->pen(pen >> 4);
@@ -477,48 +284,6 @@ uint32_t guab_state::screen_update_guab(screen_device &screen, bitmap_ind16 &bit
 }
 
 
-<<<<<<< HEAD
-/****************************************
- *
- *  Hardware inputs (coins, buttons etc)
- *
- ****************************************/
-
-READ16_MEMBER(guab_state::io_r)
-{
-	static const char *const portnames[] = { "IN0", "IN1", "IN2" };
-
-	switch (offset)
-	{
-		case 0x00:
-		case 0x01:
-		case 0x02:
-		{
-			return ioport(portnames[offset])->read();
-		}
-		case 0x30:
-		{
-			/* Whatever it is, bit 7 must be 0 */
-			return 0x7f;
-		}
-		default:
-		{
-			osd_printf_debug("Unknown IO R:0x%x\n", 0xc0000 + (offset * 2));
-			return 0;
-		}
-	}
-}
-
-INPUT_CHANGED_MEMBER(guab_state::coin_inserted)
-{
-	if (newval == 0)
-	{
-		UINT32 credit;
-		address_space &space = m_maincpu->space(AS_PROGRAM);
-
-		/* Get the current credit value and add the new coin value */
-		credit = space.read_dword(0x8002c) + (UINT32)(FPTR)param;
-=======
 //**************************************************************************
 //  MACHINE EMULATION
 //**************************************************************************
@@ -574,190 +339,10 @@ INPUT_CHANGED_MEMBER( guab_state::coin_inserted )
 
 		/* Get the current credit value and add the new coin value */
 		credit = space.read_dword(0x8002c) + (uint32_t)(uintptr_t)param;
->>>>>>> upstream/master
 		space.write_dword(0x8002c, credit);
 	}
 }
 
-<<<<<<< HEAD
-/****************************************
- *
- *  Hardware outputs (lamps, meters etc)
- *
- ****************************************/
-
-WRITE16_MEMBER(guab_state::io_w)
-{
-	switch (offset)
-	{
-		case 0x10:
-		{
-			/* Outputs 0 - 7 */
-			break;
-		}
-		case 0x11:
-		{
-			/* Outputs 8 - 15 */
-			break;
-		}
-		case 0x12:
-		{
-			/* Outputs 16 - 23 */
-			break;
-		}
-		case 0x20:
-		{
-			/* Outputs 24 - 31 */
-			break;
-		}
-		case 0x21:
-		{
-			/* Outputs 32 - 39 */
-			break;
-		}
-		case 0x22:
-		{
-			/* Outputs 40 - 47 */
-			break;
-		}
-		case 0x30:
-		{
-			m_sn->write(space, 0, data & 0xff);
-			break;
-		}
-		case 0x31:
-		{
-			/* Only JPM knows about the other bits... */
-			m_floppy->get_device()->ss_w(BIT(data, 3));
-
-			// one of those bits will probably control the motor, we just let it run all the time for now
-			m_floppy->get_device()->mon_w(0);
-			break;
-		}
-		case 0x32:
-		{
-			/* Watchdog? */
-			break;
-		}
-		case 0x33:
-		{
-			/* Dunno */
-			break;
-		}
-		default:
-		{
-			osd_printf_debug("Unknown IO W:0x%x with %x\n", 0xc0000 + (offset * 2), data);
-		}
-	}
-}
-
-
-/*************************************
- *
- *  68000 CPU memory handlers
- *
- *************************************/
-
-static ADDRESS_MAP_START( guab_map, AS_PROGRAM, 16, guab_state )
-	AM_RANGE(0x000000, 0x00ffff) AM_ROM
-	AM_RANGE(0x040000, 0x04ffff) AM_ROM AM_REGION("maincpu", 0x10000)
-	AM_RANGE(0x0c0000, 0x0c007f) AM_READWRITE(io_r, io_w)
-	AM_RANGE(0x0c0080, 0x0c0083) AM_NOP /* ACIA 1 */
-	AM_RANGE(0x0c00a0, 0x0c00a3) AM_NOP /* ACIA 2 */
-	AM_RANGE(0x0c00c0, 0x0c00cf) AM_DEVREADWRITE8("6840ptm", ptm6840_device, read, write, 0xff)
-	AM_RANGE(0x0c00e0, 0x0c00e7) AM_DEVREADWRITE8("fdc", wd1773_t, read, write, 0x00ff)
-	AM_RANGE(0x080000, 0x080fff) AM_RAM
-	AM_RANGE(0x100000, 0x100003) AM_READWRITE(ef9369_r, ef9369_w)
-	AM_RANGE(0x800000, 0xb0ffff) AM_READWRITE(guab_tms34061_r, guab_tms34061_w)
-	AM_RANGE(0xb10000, 0xb1ffff) AM_RAM
-	AM_RANGE(0xb80000, 0xb8ffff) AM_RAM
-	AM_RANGE(0xb90000, 0xb9ffff) AM_RAM
-ADDRESS_MAP_END
-
-
-/*************************************
- *
- *  Port definitions
- *
- *************************************/
-
-static INPUT_PORTS_START( guab )
-	PORT_START("IN0")
-	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_COIN3 )   PORT_NAME("50p") PORT_CHANGED_MEMBER(DEVICE_SELF, guab_state,coin_inserted, (void *)50)
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_COIN4 )   PORT_NAME("100p") PORT_CHANGED_MEMBER(DEVICE_SELF, guab_state,coin_inserted, (void *)100)
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SERVICE ) PORT_NAME("Back door") PORT_CODE(KEYCODE_R) PORT_TOGGLE
-	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_SERVICE ) PORT_NAME("Cash door") PORT_CODE(KEYCODE_T) PORT_TOGGLE
-	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_SERVICE ) PORT_NAME("Key switch") PORT_CODE(KEYCODE_Y) PORT_TOGGLE
-	PORT_BIT( 0x20, IP_ACTIVE_HIGH,IPT_UNUSED )  PORT_NAME("50p level")
-	PORT_BIT( 0x40, IP_ACTIVE_HIGH,IPT_UNUSED )  PORT_NAME("100p level")
-	PORT_BIT( 0x80, IP_ACTIVE_HIGH,IPT_UNUSED )
-
-	PORT_START("IN1")
-	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_UNUSED )
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_START )
-	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_UNUSED )
-	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_UNUSED )
-	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_UNUSED )
-	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_BUTTON1 ) PORT_NAME("A")
-	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_BUTTON2 ) PORT_NAME("B")
-
-	PORT_START("IN2")
-	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_BUTTON5 ) PORT_NAME("Select")
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_UNUSED )
-	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_UNUSED )
-	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_BUTTON3 ) PORT_NAME("C")
-	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_BUTTON4 ) PORT_NAME("D")
-	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_COIN1 )   PORT_NAME("10p") PORT_CHANGED_MEMBER(DEVICE_SELF, guab_state,coin_inserted, (void *)10)
-	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_COIN2 )   PORT_NAME("20p") PORT_CHANGED_MEMBER(DEVICE_SELF, guab_state,coin_inserted, (void *)20)
-INPUT_PORTS_END
-
-static INPUT_PORTS_START( tenup )
-	PORT_START("IN0")
-	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_COIN3 )   PORT_NAME("50p") PORT_CHANGED_MEMBER(DEVICE_SELF, guab_state,coin_inserted, (void *)50)
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_COIN4 )   PORT_NAME("100p") PORT_CHANGED_MEMBER(DEVICE_SELF, guab_state,coin_inserted, (void *)100)
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SERVICE ) PORT_NAME("Back door") PORT_CODE(KEYCODE_R) PORT_TOGGLE
-	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_SERVICE ) PORT_NAME("Cash door") PORT_CODE(KEYCODE_T) PORT_TOGGLE
-	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_SERVICE ) PORT_NAME("Key switch") PORT_CODE(KEYCODE_Y) PORT_TOGGLE
-	PORT_BIT( 0x20, IP_ACTIVE_HIGH,IPT_UNUSED )  PORT_NAME("10p level")
-	PORT_BIT( 0x40, IP_ACTIVE_HIGH,IPT_UNUSED )  PORT_NAME("100p level")
-	PORT_BIT( 0x80, IP_ACTIVE_HIGH,IPT_UNUSED )
-
-	PORT_START("IN1")
-	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_UNUSED )
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_START )
-	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_UNUSED )
-	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_UNUSED )
-	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_UNUSED )
-	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_UNUSED )
-	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_BUTTON5 ) PORT_NAME("Pass")
-
-	PORT_START("IN2")
-	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_BUTTON4 ) PORT_NAME("Collect")
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_UNUSED )
-	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_BUTTON1 ) PORT_NAME("A")
-	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_BUTTON2 ) PORT_NAME("B")
-	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_BUTTON3 ) PORT_NAME("C")
-	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_COIN1 )   PORT_NAME("10p")  PORT_CHANGED_MEMBER(DEVICE_SELF, guab_state,coin_inserted, (void *)10)
-	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_COIN2 )   PORT_NAME("20p")  PORT_CHANGED_MEMBER(DEVICE_SELF, guab_state,coin_inserted, (void *)20)
-INPUT_PORTS_END
-
-
-/*************************************
- *
- *  Machine driver
- *
- *************************************/
-
-void guab_state::machine_start()
-{
-	m_fdc->set_floppy(m_floppy->get_device());
-}
-
-=======
 WRITE8_MEMBER( guab_state::output1_w )
 {
 	output().set_value("led_0", BIT(data, 0)); // cash in (ten up: cash in)
@@ -851,7 +436,6 @@ WRITE8_MEMBER( guab_state::sn76489_buffer_w )
 //  FLOPPY DRIVE
 //**************************************************************************
 
->>>>>>> upstream/master
 FLOPPY_FORMATS_MEMBER( guab_state::floppy_formats )
 	FLOPPY_GUAB_FORMAT
 FLOPPY_FORMATS_END
@@ -860,16 +444,12 @@ static SLOT_INTERFACE_START( guab_floppies )
 	SLOT_INTERFACE("dd", FLOPPY_35_DD)
 SLOT_INTERFACE_END
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( guab, guab_state )
-=======
 
 //**************************************************************************
 //  MACHINE DEFINTIONS
 //**************************************************************************
 
 static MACHINE_CONFIG_START( guab )
->>>>>>> upstream/master
 	/* TODO: Verify clock */
 	MCFG_CPU_ADD("maincpu", M68000, 8000000)
 	MCFG_CPU_PROGRAM_MAP(guab_map)
@@ -883,14 +463,6 @@ static MACHINE_CONFIG_START( guab )
 	MCFG_SCREEN_UPDATE_DRIVER(guab_state, screen_update_guab)
 	MCFG_SCREEN_PALETTE("palette")
 
-<<<<<<< HEAD
-	MCFG_PALETTE_ADD("palette", 16)
-
-	MCFG_DEVICE_ADD("tms34061", TMS34061, 0)
-	MCFG_TMS34061_ROWSHIFT(8)  /* VRAM address is (row << rowshift) | col */
-	MCFG_TMS34061_VRAM_SIZE(0x40000) /* size of video RAM */
-	MCFG_TMS34061_INTERRUPT_CB(WRITELINE(guab_state, generate_tms34061_interrupt))      /* interrupt gen callback */
-=======
 	MCFG_PALETTE_ADD("palette", ef9369_device::NUMCOLORS)
 
 	MCFG_EF9369_ADD("ef9369")
@@ -900,7 +472,6 @@ static MACHINE_CONFIG_START( guab )
 	MCFG_TMS34061_ROWSHIFT(8)  /* VRAM address is (row << rowshift) | col */
 	MCFG_TMS34061_VRAM_SIZE(0x40000)
 	MCFG_TMS34061_INTERRUPT_CB(INPUTLINE("maincpu", 5))
->>>>>>> upstream/master
 
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
@@ -908,17 +479,6 @@ static MACHINE_CONFIG_START( guab )
 	MCFG_SOUND_ADD("snsnd", SN76489, 2000000)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
 
-<<<<<<< HEAD
-	/* 6840 PTM */
-	MCFG_DEVICE_ADD("6840ptm", PTM6840, 0)
-	MCFG_PTM6840_INTERNAL_CLOCK(1000000)
-	MCFG_PTM6840_EXTERNAL_CLOCKS(0, 0, 0)
-	MCFG_PTM6840_IRQ_CB(WRITELINE(guab_state, ptm_irq))
-
-	// floppy
-	MCFG_WD1773_ADD("fdc", 8000000)
-	MCFG_WD_FDC_DRQ_CALLBACK(INPUTLINE("maincpu", INT_FLOPPYCTRL))
-=======
 	MCFG_DEVICE_ADD("6840ptm", PTM6840, 1000000)
 	MCFG_PTM6840_EXTERNAL_CLOCKS(0, 0, 0)
 	MCFG_PTM6840_IRQ_CB(INPUTLINE("maincpu", 3))
@@ -952,22 +512,11 @@ static MACHINE_CONFIG_START( guab )
 	// floppy
 	MCFG_WD1773_ADD("fdc", 8000000)
 	MCFG_WD_FDC_DRQ_CALLBACK(INPUTLINE("maincpu", 6))
->>>>>>> upstream/master
 
 	MCFG_FLOPPY_DRIVE_ADD("fdc:0", guab_floppies, "dd", guab_state::floppy_formats)
 	MCFG_SLOT_FIXED(true)
 
 	MCFG_SOFTWARE_LIST_ADD("floppy_list", "guab")
-<<<<<<< HEAD
-MACHINE_CONFIG_END
-
-
-/*************************************
- *
- *  ROM definition(s)
- *
- *************************************/
-=======
 
 	MCFG_DEFAULT_LAYOUT(layout_guab)
 MACHINE_CONFIG_END
@@ -976,7 +525,6 @@ MACHINE_CONFIG_END
 //**************************************************************************
 //  ROM DEFINITIONS
 //**************************************************************************
->>>>>>> upstream/master
 
 ROM_START( guab )
 	ROM_REGION( 0x20000, "maincpu", 0 )
@@ -1001,17 +549,6 @@ ROM_START( tenup )
 ROM_END
 
 
-<<<<<<< HEAD
-/*************************************
- *
- *  Game driver(s)
- *
- *************************************/
-
-GAME( 1986, guab,     0, guab, guab,  driver_device, 0, ROT0, "JPM", "Give us a Break",      0 )
-GAME( 1986, crisscrs, 0, guab, guab,  driver_device, 0, ROT0, "JPM", "Criss Cross (Sweden)", MACHINE_NOT_WORKING )
-GAME( 1988, tenup,    0, guab, tenup, driver_device, 0, ROT0, "JPM", "Ten Up",               0 )
-=======
 //**************************************************************************
 //  SYSTEM DRIVERS
 //**************************************************************************
@@ -1020,4 +557,3 @@ GAME( 1988, tenup,    0, guab, tenup, driver_device, 0, ROT0, "JPM", "Ten Up",  
 GAME( 1986, guab,     0,      guab,    guab,  guab_state, 0,    ROT0,     "JPM",   "Give us a Break",      0 )
 GAME( 1986, crisscrs, 0,      guab,    guab,  guab_state, 0,    ROT0,     "JPM",   "Criss Cross (Sweden)", MACHINE_NOT_WORKING )
 GAME( 1988, tenup,    0,      guab,    tenup, guab_state, 0,    ROT0,     "JPM",   "Ten Up",               0 )
->>>>>>> upstream/master

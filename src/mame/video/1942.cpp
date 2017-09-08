@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-// license:???
-=======
 // license:BSD-3-Clause
->>>>>>> upstream/master
 // copyright-holders:Paul Leaman, Couriersud
 /***************************************************************************
 
@@ -32,11 +28,7 @@
 
 void _1942_state::create_palette()
 {
-<<<<<<< HEAD
-	const UINT8 *color_prom = memregion("proms")->base();
-=======
 	const uint8_t *color_prom = memregion("proms")->base();
->>>>>>> upstream/master
 	int i;
 
 	for (i = 0; i < 256; i++)
@@ -70,11 +62,7 @@ PALETTE_INIT_MEMBER(_1942_state,1942)
 {
 	create_palette();
 
-<<<<<<< HEAD
-	const UINT8 *color_prom = memregion("proms")->base();
-=======
 	const uint8_t *color_prom = memregion("proms")->base();
->>>>>>> upstream/master
 	int i, colorbase;
 	color_prom += 3 * 256;
 	/* color_prom now points to the beginning of the lookup table */
@@ -111,11 +99,7 @@ PALETTE_INIT_MEMBER(_1942_state,1942p)
 		palette.set_pen_indirect(i, i);
 	}
 
-<<<<<<< HEAD
-	const UINT8 *color_prom = memregion("proms")->base();
-=======
 	const uint8_t *color_prom = memregion("proms")->base();
->>>>>>> upstream/master
 	for (int i = 0; i < 0x100; i++)
 	{
 		palette.set_pen_indirect(i+0x400, color_prom[i]| 0x240);
@@ -164,26 +148,16 @@ TILE_GET_INFO_MEMBER(_1942_state::get_bg_tile_info)
 ***************************************************************************/
 void _1942_state::video_start()
 {
-<<<<<<< HEAD
-	m_fg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(_1942_state::get_fg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(_1942_state::get_bg_tile_info),this), TILEMAP_SCAN_COLS, 16, 16, 32, 16);
-=======
 	m_fg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(_1942_state::get_fg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
 	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(_1942_state::get_bg_tile_info),this), TILEMAP_SCAN_COLS, 16, 16, 32, 16);
->>>>>>> upstream/master
 
 	m_fg_tilemap->set_transparent_pen(0);
 }
 
 void _1942_state::video_start_c1942p()
 {
-<<<<<<< HEAD
-	m_fg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(_1942_state::get_fg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(_1942_state::get_bg_tile_info),this), TILEMAP_SCAN_COLS, 16, 16, 32, 16);
-=======
 	m_fg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(_1942_state::get_fg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
 	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(_1942_state::get_bg_tile_info),this), TILEMAP_SCAN_COLS, 16, 16, 32, 16);
->>>>>>> upstream/master
 
 	m_fg_tilemap->set_transparent_pen(3);
 }
@@ -230,11 +204,7 @@ WRITE8_MEMBER(_1942_state::c1942_c804_w)
 	   bit 4: cpu B reset
 	   bit 0: coin counter */
 
-<<<<<<< HEAD
-	coin_counter_w(machine(), 0,data & 0x01);
-=======
 	machine().bookkeeping().coin_counter_w(0,data & 0x01);
->>>>>>> upstream/master
 
 	m_audiocpu->set_input_line(INPUT_LINE_RESET, (data & 0x10) ? ASSERT_LINE : CLEAR_LINE);
 
@@ -289,11 +259,7 @@ void _1942_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect 
 
 }
 
-<<<<<<< HEAD
-UINT32 _1942_state::screen_update_1942(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t _1942_state::screen_update_1942(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	m_bg_tilemap->draw(screen, bitmap, cliprect, 0, 0);
 	draw_sprites(bitmap, cliprect);
@@ -352,11 +318,7 @@ void _1942_state::draw_sprites_p( bitmap_ind16 &bitmap, const rectangle &cliprec
 
 }
 
-<<<<<<< HEAD
-UINT32 _1942_state::screen_update_1942p(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t _1942_state::screen_update_1942p(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	m_bg_tilemap->draw(screen, bitmap, cliprect, 0, 0);
 	draw_sprites_p(bitmap, cliprect);

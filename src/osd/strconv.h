@@ -6,13 +6,8 @@
 //
 //============================================================
 
-<<<<<<< HEAD
-#ifndef __OSD_STRCONV__
-#define __OSD_STRCONV__
-=======
 #ifndef MAME_OSD_STRCONV_H
 #define MAME_OSD_STRCONV_H
->>>>>>> upstream/master
 
 #include "osdcore.h"
 
@@ -22,34 +17,6 @@
 //  FUNCTION PROTOTYPES
 //============================================================
 
-<<<<<<< HEAD
-#if defined(SDLMAME_WIN32) || defined(OSD_WINDOWS)
-
-#if defined(SDLMAME_WIN32)
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
-#endif
-// the result of these functions has to be released with osd_free()
-
-CHAR *astring_from_utf8(const char *s);
-char *utf8_from_astring(const CHAR *s);
-
-WCHAR *wstring_from_utf8(const char *s);
-char *utf8_from_wstring(const WCHAR *s);
-
-#ifdef UNICODE
-#define tstring_from_utf8   wstring_from_utf8
-#define utf8_from_tstring   utf8_from_wstring
-#else // !UNICODE
-#define tstring_from_utf8   astring_from_utf8
-#define utf8_from_tstring   utf8_from_astring
-#endif // UNICODE
-
-#endif //SDLMAME_WIN32
-
-
-#endif // __OSD_STRCONV__
-=======
 #if defined(WIN32)
 
 #include <windows.h>
@@ -93,4 +60,3 @@ typedef std::string tstring;
 
 
 #endif // MAME_OSD_STRCONV_H
->>>>>>> upstream/master

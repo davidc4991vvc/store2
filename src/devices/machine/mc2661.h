@@ -23,20 +23,11 @@
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __MC2661__
-#define __MC2661__
-
-#include "emu.h"
-=======
 #ifndef MAME_MACHINE_MC2661_H
 #define MAME_MACHINE_MC2661_H
 
 #pragma once
 
->>>>>>> upstream/master
 
 
 
@@ -87,25 +78,11 @@ class mc2661_device :  public device_t,
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	mc2661_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-=======
 	mc2661_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
->>>>>>> upstream/master
 
 	static void static_set_rxc(device_t &device, int clock) { downcast<mc2661_device &>(device).m_rxc = clock; }
 	static void static_set_txc(device_t &device, int clock) { downcast<mc2661_device &>(device).m_txc = clock; }
 
-<<<<<<< HEAD
-	template<class _Object> static devcb_base &set_txd_callback(device_t &device, _Object object) { return downcast<mc2661_device &>(device).m_write_txd.set_callback(object); }
-	template<class _Object> static devcb_base &set_rxrdy_callback(device_t &device, _Object object) { return downcast<mc2661_device &>(device).m_write_rxrdy.set_callback(object); }
-	template<class _Object> static devcb_base &set_txrdy_callback(device_t &device, _Object object) { return downcast<mc2661_device &>(device).m_write_txrdy.set_callback(object); }
-	template<class _Object> static devcb_base &set_rts_callback(device_t &device, _Object object) { return downcast<mc2661_device &>(device).m_write_rts.set_callback(object); }
-	template<class _Object> static devcb_base &set_dtr_callback(device_t &device, _Object object) { return downcast<mc2661_device &>(device).m_write_dtr.set_callback(object); }
-	template<class _Object> static devcb_base &set_txemt_dschg_callback(device_t &device, _Object object) { return downcast<mc2661_device &>(device).m_write_txemt_dschg.set_callback(object); }
-	template<class _Object> static devcb_base &set_bkdet_callback(device_t &device, _Object object) { return downcast<mc2661_device &>(device).m_write_bkdet.set_callback(object); }
-	template<class _Object> static devcb_base &set_xsync_callback(device_t &device, _Object object) { return downcast<mc2661_device &>(device).m_write_xsync.set_callback(object); }
-=======
 	template <class Object> static devcb_base &set_txd_callback(device_t &device, Object &&cb) { return downcast<mc2661_device &>(device).m_write_txd.set_callback(std::forward<Object>(cb)); }
 	template <class Object> static devcb_base &set_rxrdy_callback(device_t &device, Object &&cb) { return downcast<mc2661_device &>(device).m_write_rxrdy.set_callback(std::forward<Object>(cb)); }
 	template <class Object> static devcb_base &set_txrdy_callback(device_t &device, Object &&cb) { return downcast<mc2661_device &>(device).m_write_txrdy.set_callback(std::forward<Object>(cb)); }
@@ -114,7 +91,6 @@ public:
 	template <class Object> static devcb_base &set_txemt_dschg_callback(device_t &device, Object &&cb) { return downcast<mc2661_device &>(device).m_write_txemt_dschg.set_callback(std::forward<Object>(cb)); }
 	template <class Object> static devcb_base &set_bkdet_callback(device_t &device, Object &&cb) { return downcast<mc2661_device &>(device).m_write_bkdet.set_callback(std::forward<Object>(cb)); }
 	template <class Object> static devcb_base &set_xsync_callback(device_t &device, Object &&cb) { return downcast<mc2661_device &>(device).m_write_xsync.set_callback(std::forward<Object>(cb)); }
->>>>>>> upstream/master
 
 	DECLARE_READ8_MEMBER( read );
 	DECLARE_WRITE8_MEMBER( write );
@@ -130,16 +106,6 @@ public:
 
 protected:
 	// device-level overrides
-<<<<<<< HEAD
-	virtual void device_start();
-	virtual void device_reset();
-	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
-
-	// device_serial_interface overrides
-	virtual void tra_callback();
-	virtual void tra_complete();
-	virtual void rcv_complete();
-=======
 	virtual void device_start() override;
 	virtual void device_reset() override;
 
@@ -147,7 +113,6 @@ protected:
 	virtual void tra_callback() override;
 	virtual void tra_complete() override;
 	virtual void rcv_complete() override;
->>>>>>> upstream/master
 
 private:
 	devcb_write_line   m_write_txd;
@@ -162,21 +127,12 @@ private:
 	int m_rxc;
 	int m_txc;
 
-<<<<<<< HEAD
-	UINT8 m_rhr;
-	UINT8 m_thr;
-	UINT8 m_cr;
-	UINT8 m_sr;
-	UINT8 m_mr[2];
-	UINT8 m_sync[3];
-=======
 	uint8_t m_rhr;
 	uint8_t m_thr;
 	uint8_t m_cr;
 	uint8_t m_sr;
 	uint8_t m_mr[2];
 	uint8_t m_sync[3];
->>>>>>> upstream/master
 
 	int m_mode_index;
 	int m_sync_index;
@@ -184,14 +140,6 @@ private:
 
 
 // device type definition
-<<<<<<< HEAD
-extern const device_type MC2661;
-
-
-
-#endif
-=======
 DECLARE_DEVICE_TYPE(MC2661, mc2661_device)
 
 #endif // MAME_MACHINE_MC2661_H
->>>>>>> upstream/master

@@ -34,22 +34,12 @@
 
 **********************************************************************/
 
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __PLUS4_EXPANSION_SLOT__
-#define __PLUS4_EXPANSION_SLOT__
-
-#include "emu.h"
-
-=======
 #ifndef MAME_BUS_PLUS4_EXP_H
 #define MAME_BUS_PLUS4_EXP_H
 
 #pragma once
 
 #include "softlist_dev.h"
->>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -69,11 +59,7 @@
 	MCFG_DEVICE_SLOT_INTERFACE(_slot_intf, _def_slot, false)
 
 #define MCFG_PLUS4_PASSTHRU_EXPANSION_SLOT_ADD() \
-<<<<<<< HEAD
-	MCFG_PLUS4_EXPANSION_SLOT_ADD(PLUS4_EXPANSION_SLOT_TAG, 0, plus4_expansion_cards, NULL) \
-=======
 	MCFG_PLUS4_EXPANSION_SLOT_ADD(PLUS4_EXPANSION_SLOT_TAG, 0, plus4_expansion_cards, nullptr) \
->>>>>>> upstream/master
 	MCFG_PLUS4_EXPANSION_SLOT_IRQ_CALLBACK(DEVWRITELINE(DEVICE_SELF_OWNER, plus4_expansion_slot_device, irq_w)) \
 	MCFG_PLUS4_EXPANSION_SLOT_CD_INPUT_CALLBACK(DEVREAD8(DEVICE_SELF_OWNER, plus4_expansion_slot_device, dma_cd_r)) \
 	MCFG_PLUS4_EXPANSION_SLOT_CD_OUTPUT_CALLBACK(DEVWRITE8(DEVICE_SELF_OWNER, plus4_expansion_slot_device, dma_cd_w)) \
@@ -108,18 +94,6 @@ class plus4_expansion_slot_device : public device_t,
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	plus4_expansion_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	template<class _Object> static devcb_base &set_irq_wr_callback(device_t &device, _Object object) { return downcast<plus4_expansion_slot_device &>(device).m_write_irq.set_callback(object); }
-	template<class _Object> static devcb_base &set_cd_rd_callback(device_t &device, _Object object) { return downcast<plus4_expansion_slot_device &>(device).m_read_dma_cd.set_callback(object); }
-	template<class _Object> static devcb_base &set_cd_wr_callback(device_t &device, _Object object) { return downcast<plus4_expansion_slot_device &>(device).m_write_dma_cd.set_callback(object); }
-	template<class _Object> static devcb_base &set_aec_wr_callback(device_t &device, _Object object) { return downcast<plus4_expansion_slot_device &>(device).m_write_aec.set_callback(object); }
-
-	// computer interface
-	UINT8 cd_r(address_space &space, offs_t offset, UINT8 data, int ba, int cs0, int c1l, int c2l, int cs1, int c1h, int c2h);
-	void cd_w(address_space &space, offs_t offset, UINT8 data, int ba, int cs0, int c1l, int c2l, int cs1, int c1h, int c2h);
-=======
 	plus4_expansion_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	template <class Object> static devcb_base &set_irq_wr_callback(device_t &device, Object &&cb) { return downcast<plus4_expansion_slot_device &>(device).m_write_irq.set_callback(std::forward<Object>(cb)); }
@@ -130,7 +104,6 @@ public:
 	// computer interface
 	uint8_t cd_r(address_space &space, offs_t offset, uint8_t data, int ba, int cs0, int c1l, int c2l, int cs1, int c1h, int c2h);
 	void cd_w(address_space &space, offs_t offset, uint8_t data, int ba, int cs0, int c1l, int c2l, int cs1, int c1h, int c2h);
->>>>>>> upstream/master
 
 	// cartridge interface
 	DECLARE_READ8_MEMBER( dma_cd_r ) { return m_read_dma_cd(offset); }
@@ -141,29 +114,6 @@ public:
 
 protected:
 	// device-level overrides
-<<<<<<< HEAD
-	virtual void device_config_complete() { update_names(); }
-	virtual void device_start();
-	virtual void device_reset();
-
-	// image-level overrides
-	virtual bool call_load();
-	virtual bool call_softlist_load(software_list_device &swlist, const char *swname, const rom_entry *start_entry);
-
-	virtual iodevice_t image_type() const { return IO_CARTSLOT; }
-
-	virtual bool is_readable()  const { return 1; }
-	virtual bool is_writeable() const { return 0; }
-	virtual bool is_creatable() const { return 0; }
-	virtual bool must_be_loaded() const { return 0; }
-	virtual bool is_reset_on_load() const { return 1; }
-	virtual const char *image_interface() const { return "plus4_cart"; }
-	virtual const char *file_extensions() const { return "rom,bin"; }
-	virtual const option_guide *create_option_guide() const { return NULL; }
-
-	// slot interface overrides
-	virtual void get_default_card_software(std::string &result);
-=======
 	virtual void device_start() override;
 	virtual void device_reset() override;
 
@@ -183,7 +133,6 @@ protected:
 
 	// slot interface overrides
 	virtual std::string get_default_card_software(get_default_card_software_hook &hook) const override;
->>>>>>> upstream/master
 
 	devcb_write_line   m_write_irq;
 	devcb_read8        m_read_dma_cd;
@@ -202,20 +151,6 @@ class device_plus4_expansion_card_interface : public device_slot_card_interface
 
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	device_plus4_expansion_card_interface(const machine_config &mconfig, device_t &device);
-	virtual ~device_plus4_expansion_card_interface();
-
-	// runtime
-	virtual UINT8 plus4_cd_r(address_space &space, offs_t offset, UINT8 data, int ba, int cs0, int c1l, int c2l, int cs1, int c1h, int c2h) { return data; };
-	virtual void plus4_cd_w(address_space &space, offs_t offset, UINT8 data, int ba, int cs0, int c1l, int c2l, int cs1, int c1h, int c2h) { };
-
-protected:
-	optional_shared_ptr<UINT8> m_c1l;
-	optional_shared_ptr<UINT8> m_c1h;
-	optional_shared_ptr<UINT8> m_c2l;
-	optional_shared_ptr<UINT8> m_c2h;
-=======
 	virtual ~device_plus4_expansion_card_interface();
 
 	// runtime
@@ -229,7 +164,6 @@ protected:
 	optional_shared_ptr<uint8_t> m_c1h;
 	optional_shared_ptr<uint8_t> m_c2l;
 	optional_shared_ptr<uint8_t> m_c2h;
->>>>>>> upstream/master
 
 	size_t m_c1l_mask;
 	size_t m_c1h_mask;
@@ -241,19 +175,9 @@ protected:
 
 
 // device type definition
-<<<<<<< HEAD
-extern const device_type PLUS4_EXPANSION_SLOT;
-=======
 DECLARE_DEVICE_TYPE(PLUS4_EXPANSION_SLOT, plus4_expansion_slot_device)
->>>>>>> upstream/master
 
 
 SLOT_INTERFACE_EXTERN( plus4_expansion_cards );
 
-<<<<<<< HEAD
-
-
-#endif
-=======
 #endif // MAME_BUS_PLUS4_EXP_H
->>>>>>> upstream/master

@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-// license:???
-=======
 // license:GPL-2.0+
->>>>>>> upstream/master
 // copyright-holders:Jarek Burczynski
 /***************************************************************************
 
@@ -105,14 +101,6 @@ TP-S.1 TP-S.2 TP-S.3 TP-B.1  8212 TP-B.2 TP-B.3          TP-B.4
 
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/m6800/m6800.h"
-#include "cpu/z80/z80.h"
-#include "cpu/m6805/m6805.h"
-#include "sound/ay8910.h"
-#include "sound/msm5205.h"
-#include "includes/tubep.h"
-=======
 #include "includes/tubep.h"
 
 #include "cpu/m6800/m6800.h"
@@ -123,7 +111,6 @@ TP-S.1 TP-S.2 TP-S.3 TP-B.1  8212 TP-B.2 TP-B.3          TP-B.4
 #include "sound/ay8910.h"
 #include "sound/msm5205.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 /*************************************
@@ -133,35 +120,6 @@ TP-S.1 TP-S.2 TP-S.3 TP-B.1  8212 TP-B.2 TP-B.3          TP-B.4
  *************************************/
 
 
-<<<<<<< HEAD
-WRITE8_MEMBER(tubep_state::tubep_LS259_w)
-{
-	switch(offset)
-	{
-		case 0:
-		case 1:
-				/*
-				    port b0: bit0 - coin 1 counter
-				    port b1  bit0 - coin 2 counter
-				*/
-				coin_counter_w(machine(), offset,data&1);
-				break;
-		case 2:
-				//something...
-				break;
-		case 5:
-				//screen_flip_w(offset,data&1); /* bit 0 = screen flip, active high */
-				break;
-		case 6:
-				tubep_background_romselect_w(space,offset,data);    /* bit0 = 0->select roms: B1,B3,B5; bit0 = 1->select roms: B2,B4,B6 */
-				break;
-		case 7:
-				tubep_colorproms_A4_line_w(space,offset,data);  /* bit0 = line A4 (color proms address) state */
-				break;
-		default:
-				break;
-	}
-=======
 WRITE_LINE_MEMBER(tubep_state::coin1_counter_w)
 {
 	machine().bookkeeping().coin_counter_w(0, state);
@@ -170,7 +128,6 @@ WRITE_LINE_MEMBER(tubep_state::coin1_counter_w)
 WRITE_LINE_MEMBER(tubep_state::coin2_counter_w)
 {
 	machine().bookkeeping().coin_counter_w(1, state);
->>>>>>> upstream/master
 }
 
 
@@ -207,11 +164,7 @@ static ADDRESS_MAP_START( tubep_main_portmap, AS_IO, 8, tubep_state )
 	AM_RANGE(0xd0, 0xd0) AM_READ_PORT("P1")
 
 	AM_RANGE(0x80, 0x80) AM_WRITE(main_cpu_irq_line_clear_w)
-<<<<<<< HEAD
-	AM_RANGE(0xb0, 0xb7) AM_WRITE(tubep_LS259_w)
-=======
 	AM_RANGE(0xb0, 0xb7) AM_DEVWRITE("mainlatch", ls259_device, write_d0)
->>>>>>> upstream/master
 	AM_RANGE(0xd0, 0xd0) AM_WRITE(tubep_soundlatch_w)
 ADDRESS_MAP_END
 
@@ -302,11 +255,7 @@ void tubep_state::device_timer(emu_timer &timer, device_timer_id id, int param, 
 		rjammer_scanline_callback(ptr, param);
 		break;
 	default:
-<<<<<<< HEAD
-		assert_always(FALSE, "Unknown id in tubep_state::device_timer");
-=======
 		assert_always(false, "Unknown id in tubep_state::device_timer");
->>>>>>> upstream/master
 	}
 }
 
@@ -429,33 +378,6 @@ ADDRESS_MAP_END
  *
  *************************************/
 
-<<<<<<< HEAD
-WRITE8_MEMBER(tubep_state::rjammer_LS259_w)
-{
-	switch(offset)
-	{
-		case 0:
-		case 1:
-				coin_counter_w(machine(), offset,data&1);   /* bit 0 = coin counter */
-				break;
-		case 5:
-				//screen_flip_w(offset,data&1); /* bit 0 = screen flip, active high */
-				break;
-		default:
-				break;
-	}
-}
-
-
-WRITE8_MEMBER(tubep_state::rjammer_soundlatch_w)
-{
-	m_sound_latch = data;
-	m_soundcpu->set_input_line(INPUT_LINE_NMI, PULSE_LINE);
-}
-
-
-=======
->>>>>>> upstream/master
 static ADDRESS_MAP_START( rjammer_main_map, AS_PROGRAM, 8, tubep_state )
 	AM_RANGE(0x0000, 0x9fff) AM_ROM
 	AM_RANGE(0xa000, 0xa7ff) AM_RAM                                 /* MB8416 SRAM on daughterboard on main PCB (there are two SRAMs, this is the one on the left) */
@@ -473,15 +395,9 @@ static ADDRESS_MAP_START( rjammer_main_portmap, AS_IO, 8, tubep_state )
 	AM_RANGE(0xb0, 0xb0) AM_READ_PORT("P1")
 	AM_RANGE(0xc0, 0xc0) AM_READ_PORT("P2")
 
-<<<<<<< HEAD
-	AM_RANGE(0xd0, 0xd7) AM_WRITE(rjammer_LS259_w)
-	AM_RANGE(0xe0, 0xe0) AM_WRITE(main_cpu_irq_line_clear_w)    /* clear IRQ interrupt */
-	AM_RANGE(0xf0, 0xf0) AM_WRITE(rjammer_soundlatch_w)
-=======
 	AM_RANGE(0xd0, 0xd7) AM_DEVWRITE("mainlatch", ls259_device, write_d0)
 	AM_RANGE(0xe0, 0xe0) AM_WRITE(main_cpu_irq_line_clear_w)    /* clear IRQ interrupt */
 	AM_RANGE(0xf0, 0xf0) AM_DEVWRITE("soundlatch", generic_latch_8_device, write)
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -583,16 +499,6 @@ MACHINE_RESET_MEMBER(tubep_state,rjammer)
  *
  *************************************/
 
-<<<<<<< HEAD
-READ8_MEMBER(tubep_state::rjammer_soundlatch_r)
-{
-	int res = m_sound_latch;
-	return res;
-}
-
-
-=======
->>>>>>> upstream/master
 WRITE8_MEMBER(tubep_state::rjammer_voice_startstop_w)
 {
 	/* bit 0 of data selects voice start/stop (reset pin on MSM5205)*/
@@ -608,17 +514,9 @@ WRITE8_MEMBER(tubep_state::rjammer_voice_frequency_select_w)
 	/* bit 0 of data selects voice frequency on MSM5205 */
 	// 0 -4 KHz; 1- 8KHz
 	if (data & 1)
-<<<<<<< HEAD
-		m_msm->playmode_w(MSM5205_S48_4B); /* 8 KHz */
-	else
-		m_msm->playmode_w(MSM5205_S96_4B); /* 4 KHz */
-
-	return;
-=======
 		m_msm->playmode_w(msm5205_device::S48_4B); /* 8 KHz */
 	else
 		m_msm->playmode_w(msm5205_device::S96_4B); /* 4 KHz */
->>>>>>> upstream/master
 }
 
 
@@ -672,11 +570,7 @@ ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( rjammer_sound_portmap, AS_IO, 8, tubep_state )
 	ADDRESS_MAP_GLOBAL_MASK(0xff)
-<<<<<<< HEAD
-	AM_RANGE(0x00, 0x00) AM_READ(rjammer_soundlatch_r)
-=======
 	AM_RANGE(0x00, 0x00) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
->>>>>>> upstream/master
 	AM_RANGE(0x10, 0x10) AM_WRITE(rjammer_voice_startstop_w)
 	AM_RANGE(0x18, 0x18) AM_WRITE(rjammer_voice_frequency_select_w)
 	AM_RANGE(0x80, 0x80) AM_WRITE(rjammer_voice_input_w)
@@ -788,11 +682,7 @@ static INPUT_PORTS_START( tubep )
 	PORT_DIPNAME( 0x10, 0x00, DEF_STR( Cabinet ) ) PORT_DIPLOCATION("SW2:2")
 	PORT_DIPSETTING(    0x00, DEF_STR( Upright ) )
 	PORT_DIPSETTING(    0x10, DEF_STR( Cocktail ) )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x20, 0x20, "Serivce mode" ) PORT_DIPLOCATION("SW2:1")
-=======
 	PORT_DIPNAME( 0x20, 0x20, "Service mode" ) PORT_DIPLOCATION("SW2:1")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_UNUSED )
@@ -917,11 +807,7 @@ INPUT_PORTS_END
  *
  *************************************/
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( tubep, tubep_state )
-=======
 static MACHINE_CONFIG_START( tubep )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu",Z80,16000000 / 4)    /* 4 MHz */
@@ -941,8 +827,6 @@ static MACHINE_CONFIG_START( tubep )
 
 	MCFG_QUANTUM_TIME(attotime::from_hz(6000))
 
-<<<<<<< HEAD
-=======
 	MCFG_DEVICE_ADD("mainlatch", LS259, 0)
 	MCFG_ADDRESSABLE_LATCH_Q0_OUT_CB(WRITELINE(tubep_state, coin1_counter_w))
 	MCFG_ADDRESSABLE_LATCH_Q1_OUT_CB(WRITELINE(tubep_state, coin2_counter_w))
@@ -951,7 +835,6 @@ static MACHINE_CONFIG_START( tubep )
 	MCFG_ADDRESSABLE_LATCH_Q6_OUT_CB(WRITELINE(tubep_state, background_romselect_w))
 	MCFG_ADDRESSABLE_LATCH_Q7_OUT_CB(WRITELINE(tubep_state, colorproms_A4_line_w))
 
->>>>>>> upstream/master
 	MCFG_MACHINE_START_OVERRIDE(tubep_state,tubep)
 	MCFG_MACHINE_RESET_OVERRIDE(tubep_state,tubep)
 
@@ -966,11 +849,6 @@ static MACHINE_CONFIG_START( tubep )
 	MCFG_PALETTE_ADD("palette", 32 + 256*64)
 
 	MCFG_PALETTE_INIT_OWNER(tubep_state,tubep)
-<<<<<<< HEAD
-	MCFG_VIDEO_START_OVERRIDE(tubep_state,tubep)
-	MCFG_VIDEO_RESET_OVERRIDE(tubep_state,tubep)
-=======
->>>>>>> upstream/master
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
@@ -1000,11 +878,7 @@ static MACHINE_CONFIG_DERIVED( tubepb, tubep )
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( rjammer, tubep_state )
-=======
 static MACHINE_CONFIG_START( rjammer )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu",Z80,16000000 / 4)    /* 4 MHz */
@@ -1019,11 +893,6 @@ static MACHINE_CONFIG_START( rjammer )
 	MCFG_CPU_PROGRAM_MAP(rjammer_sound_map)
 	MCFG_CPU_IO_MAP(rjammer_sound_portmap)
 
-<<<<<<< HEAD
-	MCFG_CPU_ADD("mcu",NSC8105,6000000) /* 6 MHz Xtal - divided internally ??? */
-	MCFG_CPU_PROGRAM_MAP(nsc_map)
-
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 	MCFG_GENERIC_LATCH_DATA_PENDING_CB(INPUTLINE("soundcpu", INPUT_LINE_NMI))
 
@@ -1035,7 +904,6 @@ static MACHINE_CONFIG_START( rjammer )
 	MCFG_ADDRESSABLE_LATCH_Q1_OUT_CB(WRITELINE(tubep_state, coin2_counter_w))
 	MCFG_ADDRESSABLE_LATCH_Q5_OUT_CB(WRITELINE(tubep_state, screen_flip_w))
 
->>>>>>> upstream/master
 	MCFG_MACHINE_START_OVERRIDE(tubep_state,rjammer)
 	MCFG_MACHINE_RESET_OVERRIDE(tubep_state,rjammer)
 
@@ -1051,11 +919,6 @@ static MACHINE_CONFIG_START( rjammer )
 	MCFG_PALETTE_ADD("palette", 64)
 
 	MCFG_PALETTE_INIT_OWNER(tubep_state,rjammer)
-<<<<<<< HEAD
-	MCFG_VIDEO_START_OVERRIDE(tubep_state,tubep)
-	MCFG_VIDEO_RESET_OVERRIDE(tubep_state,tubep)
-=======
->>>>>>> upstream/master
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
@@ -1077,11 +940,7 @@ static MACHINE_CONFIG_START( rjammer )
 
 	MCFG_SOUND_ADD("msm", MSM5205, 384000)
 	MCFG_MSM5205_VCLK_CB(WRITELINE(tubep_state, rjammer_adpcm_vck))          /* VCK function */
-<<<<<<< HEAD
-	MCFG_MSM5205_PRESCALER_SELECTOR(MSM5205_S48_4B)              /* 8 KHz (changes at run time) */
-=======
 	MCFG_MSM5205_PRESCALER_SELECTOR(S48_4B)              /* 8 KHz (changes at run time) */
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
 
@@ -1281,14 +1140,7 @@ ROM_END
  *
  *************************************/
 
-<<<<<<< HEAD
-/*     year  rom      parent  machine  inp   init */
-GAME( 1984, tubep,   0,      tubep,   tubep, driver_device,   0, ROT0, "Nichibutsu / Fujitek", "Tube Panic", MACHINE_SUPPORTS_SAVE )
-GAME( 1984, tubepb,  tubep,  tubepb,  tubepb, driver_device,  0, ROT0, "bootleg", "Tube Panic (bootleg)", MACHINE_SUPPORTS_SAVE )
-GAME( 1984, rjammer, 0,      rjammer, rjammer, driver_device, 0, ROT0, "Nichibutsu / Alice", "Roller Jammer", MACHINE_SUPPORTS_SAVE )
-=======
 //    year  rom      parent  machine  inp      state        init
 GAME( 1984, tubep,   0,      tubep,   tubep,   tubep_state, 0,    ROT0, "Nichibutsu / Fujitek", "Tube Panic",           MACHINE_SUPPORTS_SAVE )
 GAME( 1984, tubepb,  tubep,  tubepb,  tubepb,  tubep_state, 0,    ROT0, "bootleg",              "Tube Panic (bootleg)", MACHINE_SUPPORTS_SAVE )
 GAME( 1984, rjammer, 0,      rjammer, rjammer, tubep_state, 0,    ROT0, "Nichibutsu / Alice",   "Roller Jammer",        MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

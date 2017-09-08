@@ -1,9 +1,5 @@
 /* Ppmd7.h -- PPMdH compression codec
-<<<<<<< HEAD
-2010-03-12 : Igor Pavlov : Public domain
-=======
 2016-05-21 : Igor Pavlov : Public domain
->>>>>>> upstream/master
 This code is based on PPMd var.H (2001): Dmitry Shkarin : Public domain */
 
 /* This code supports virtual RangeDecoder and includes the implementation
@@ -90,17 +86,10 @@ void Ppmd7_Update2(CPpmd7 *p);
 void Ppmd7_UpdateBin(CPpmd7 *p);
 
 #define Ppmd7_GetBinSumm(p) \
-<<<<<<< HEAD
-    &p->BinSumm[Ppmd7Context_OneState(p->MinContext)->Freq - 1][p->PrevSuccess + \
-    p->NS2BSIndx[Ppmd7_GetContext(p, p->MinContext->Suffix)->NumStats - 1] + \
-    (p->HiBitsFlag = p->HB2Flag[p->FoundState->Symbol]) + \
-    2 * p->HB2Flag[Ppmd7Context_OneState(p->MinContext)->Symbol] + \
-=======
     &p->BinSumm[(unsigned)Ppmd7Context_OneState(p->MinContext)->Freq - 1][p->PrevSuccess + \
     p->NS2BSIndx[Ppmd7_GetContext(p, p->MinContext->Suffix)->NumStats - 1] + \
     (p->HiBitsFlag = p->HB2Flag[p->FoundState->Symbol]) + \
     2 * p->HB2Flag[(unsigned)Ppmd7Context_OneState(p->MinContext)->Symbol] + \
->>>>>>> upstream/master
     ((p->RunLength >> 26) & 0x20)]
 
 CPpmd_See *Ppmd7_MakeEscFreq(CPpmd7 *p, unsigned numMasked, UInt32 *scale);

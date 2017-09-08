@@ -20,11 +20,7 @@
 //  GLOBAL VARIABLES
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type BML3BUS_KANJI = &device_creator<bml3bus_kanji_device>;
-=======
 DEFINE_DEVICE_TYPE(BML3BUS_KANJI, bml3bus_kanji_device, "bml3kanji", "Hitachi MP-9740 Kanji Character ROM Card")
->>>>>>> upstream/master
 
 #define KANJI_ROM_REGION  "kanji_rom"
 
@@ -33,50 +29,23 @@ ROM_START( kanji )
 	ROM_LOAD("kanji.rom", 0x00000, 0x20000, BAD_DUMP CRC(de99a726) SHA1(65fead5d0d779b242f6e0ac25fcc9899dc343101))
 ROM_END
 
-<<<<<<< HEAD
-MACHINE_CONFIG_FRAGMENT( kanji )
-	// nothing to add
-MACHINE_CONFIG_END
-=======
->>>>>>> upstream/master
 
 /***************************************************************************
     FUNCTION PROTOTYPES
 ***************************************************************************/
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  machine_config_additions - device-specific
-//  machine configurations
-//-------------------------------------------------
-
-machine_config_constructor bml3bus_kanji_device::device_mconfig_additions() const
-{
-	return MACHINE_CONFIG_NAME( kanji );
-}
-
-//-------------------------------------------------
-//  rom_region - device-specific ROM region
-//-------------------------------------------------
-
-const rom_entry *bml3bus_kanji_device::device_rom_region() const
-=======
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
 const tiny_rom_entry *bml3bus_kanji_device::device_rom_region() const
->>>>>>> upstream/master
 {
 	return ROM_NAME( kanji );
 }
 
 READ8_MEMBER( bml3bus_kanji_device::bml3_kanji_r )
 {
-<<<<<<< HEAD
-	return m_rom[((UINT32)m_kanji_addr << 1) + offset];
-=======
 	return m_rom[((uint32_t)m_kanji_addr << 1) + offset];
->>>>>>> upstream/master
 }
 
 WRITE8_MEMBER( bml3bus_kanji_device::bml3_kanji_w )
@@ -90,13 +59,8 @@ WRITE8_MEMBER( bml3bus_kanji_device::bml3_kanji_w )
 //  LIVE DEVICE
 //**************************************************************************
 
-<<<<<<< HEAD
-bml3bus_kanji_device::bml3bus_kanji_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-	device_t(mconfig, BML3BUS_KANJI, "Hitachi MP-9740 Kanji Character ROM Card", tag, owner, clock, "bml3kanji", __FILE__),
-=======
 bml3bus_kanji_device::bml3bus_kanji_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	device_t(mconfig, BML3BUS_KANJI, tag, owner, clock),
->>>>>>> upstream/master
 	device_bml3bus_card_interface(mconfig, *this), m_kanji_addr(0), m_rom(nullptr)
 {
 }

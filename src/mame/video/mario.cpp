@@ -66,11 +66,7 @@ static const res_net_info mario_net_info_std =
 ***************************************************************************/
 PALETTE_INIT_MEMBER(mario_state, mario)
 {
-<<<<<<< HEAD
-	const UINT8 *color_prom = memregion("proms")->base();
-=======
 	const uint8_t *color_prom = memregion("proms")->base();
->>>>>>> upstream/master
 	std::vector<rgb_t> rgb;
 
 	if (m_monitor == 0)
@@ -88,24 +84,6 @@ WRITE8_MEMBER(mario_state::mario_videoram_w)
 	m_bg_tilemap->mark_tile_dirty(offset);
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER(mario_state::mario_gfxbank_w)
-{
-	if (m_gfx_bank != (data & 0x01))
-	{
-		m_gfx_bank = data & 0x01;
-		machine().tilemap().mark_all_dirty();
-	}
-}
-
-WRITE8_MEMBER(mario_state::mario_palettebank_w)
-{
-	if (m_palette_bank != (data & 0x01))
-	{
-		m_palette_bank = data & 0x01;
-		machine().tilemap().mark_all_dirty();
-	}
-=======
 WRITE_LINE_MEMBER(mario_state::gfx_bank_w)
 {
 	m_gfx_bank = state;
@@ -116,7 +94,6 @@ WRITE_LINE_MEMBER(mario_state::palette_bank_w)
 {
 	m_palette_bank = state;
 	machine().tilemap().mark_all_dirty();
->>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(mario_state::mario_scroll_w)
@@ -124,24 +101,6 @@ WRITE8_MEMBER(mario_state::mario_scroll_w)
 	m_gfx_scroll = data + 17;
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER(mario_state::mariobl_scroll_w)
-{
-	m_gfx_scroll = data;
-}
-
-WRITE8_MEMBER(mario_state::mario_flip_w)
-{
-	if (m_flip != (data & 0x01))
-	{
-		m_flip = data & 0x01;
-		if (m_flip)
-			machine().tilemap().set_flip_all(TILEMAP_FLIPX | TILEMAP_FLIPY);
-		else
-			machine().tilemap().set_flip_all(0);
-		machine().tilemap().mark_all_dirty();
-	}
-=======
 WRITE_LINE_MEMBER(mario_state::flip_w)
 {
 	m_flip = state;
@@ -150,7 +109,6 @@ WRITE_LINE_MEMBER(mario_state::flip_w)
 	else
 		machine().tilemap().set_flip_all(0);
 	machine().tilemap().mark_all_dirty();
->>>>>>> upstream/master
 }
 
 TILE_GET_INFO_MEMBER(mario_state::get_bg_tile_info)
@@ -162,12 +120,8 @@ TILE_GET_INFO_MEMBER(mario_state::get_bg_tile_info)
 
 void mario_state::video_start()
 {
-<<<<<<< HEAD
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(mario_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS,
-=======
 	m_bg_tilemap = &machine().tilemap().create(
 			*m_gfxdecode, tilemap_get_info_delegate(FUNC(mario_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS,
->>>>>>> upstream/master
 			8, 8, 32, 32);
 
 	m_gfxdecode->gfx(0)->set_granularity(8);
@@ -187,11 +141,7 @@ void mario_state::video_start()
  * confirmed on mametests.org as being present on real PCB as well.
  */
 
-<<<<<<< HEAD
-void mario_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect, int is_bootleg)
-=======
 void mario_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	/* TODO: draw_sprites should adopt the scanline logic from dkong.c
 	 * The schematics have the same logic for sprite buffering.
@@ -200,82 +150,19 @@ void mario_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect)
 
 	int start, end, inc;
 
-<<<<<<< HEAD
-	if (!is_bootleg)
-	{
-		start = 0;
-		end = m_spriteram.bytes();
-		inc = 4;
-	}
-	else
-	{
-		start = m_spriteram.bytes()-4;
-		end = -4;
-		inc = -4;
-	}
-=======
 	start = 0;
 	end = m_spriteram.bytes();
 	inc = 4;
->>>>>>> upstream/master
 
 	offs = start;
 
 	while (offs != end)
 	{
-<<<<<<< HEAD
-		if (is_bootleg || m_spriteram[offs])
-=======
 		if (m_spriteram[offs])
->>>>>>> upstream/master
 		{
 			int x, y;
 			int code, color, flipx, flipy;
 
-<<<<<<< HEAD
-			if (!is_bootleg)
-			{
-				// from schematics ....
-				y = (m_spriteram[offs + 0] + (m_flip ? 0xF7 : 0xF9) + 1) & 0xFF;
-				x = m_spriteram[offs + 3];
-				// sprite will be drawn if (y + scanline) & 0xF0 = 0xF0
-				y = 240 - y; /* logical screen position */
-
-				y = y ^ (m_flip ? 0xFF : 0x00); /* physical screen location */
-				x = x ^ (m_flip ? 0xFF : 0x00); /* physical screen location */
-
-				code = m_spriteram[offs + 2];
-				color = (m_spriteram[offs + 1] & 0x0f) + 16 * m_palette_bank;
-				flipx = (m_spriteram[offs + 1] & 0x80);
-				flipy = (m_spriteram[offs + 1] & 0x40);
-
-				if (m_flip)
-				{
-					y -= 14;
-					x -= 7;
-				}
-				else
-				{
-					y += 1;
-					x -= 8;
-				}
-			}
-			else
-			{
-				y = (m_spriteram[offs + 3] + (m_flip ? 0xF7 : 0xF9) + 1) & 0xFF;
-				x = m_spriteram[offs + 0];
-				y = 240 - y; /* logical screen position */
-
-			//  y = y ^ (m_flip ? 0xFF : 0x00); /* physical screen location */
-			//  x = x ^ (m_flip ? 0xFF : 0x00); /* physical screen location */
-
-				code = (m_spriteram[offs + 2] & 0x7f) | ((m_spriteram[offs + 1] & 0x40) << 1); // upper tile bit is where the flipy bit goes on mario
-				color = (m_spriteram[offs + 1] & 0x0f) + 16 * m_palette_bank;
-				flipx = (m_spriteram[offs + 1] & 0x80);
-				flipy = (m_spriteram[offs + 2] & 0x80); // and the flipy bit is where the upper tile bit is on mario
-
-				y += -7;
-=======
 			// from schematics ....
 			y = (m_spriteram[offs + 0] + (m_flip ? 0xF7 : 0xF9) + 1) & 0xFF;
 			x = m_spriteram[offs + 3];
@@ -299,7 +186,6 @@ void mario_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect)
 			{
 				y += 1;
 				x -= 8;
->>>>>>> upstream/master
 			}
 
 			if (m_flip)
@@ -324,11 +210,7 @@ void mario_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect)
 	}
 }
 
-<<<<<<< HEAD
-UINT32 mario_state::screen_update_common(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t mario_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int t;
 
@@ -336,34 +218,6 @@ uint32_t mario_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap,
 	if (t != m_monitor)
 	{
 		m_monitor = t;
-<<<<<<< HEAD
-		PALETTE_INIT_NAME(mario)(m_palette);
-	}
-
-	m_bg_tilemap->set_scrolly(0, m_gfx_scroll);
-
-	m_bg_tilemap->draw(screen, bitmap, cliprect, 0, 0);
-
-	return 0;
-}
-
-UINT32 mario_state::screen_update_mario(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-{
-	screen_update_common(screen, bitmap, cliprect);
-	draw_sprites(bitmap, cliprect, 0);
-	return 0;
-}
-
-UINT32 mario_state::screen_update_mariobl(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-{
-	// not sure
-	m_palette_bank = m_gfx_bank; // might be the 'attr' ram
-	machine().tilemap().mark_all_dirty();
-
-
-	screen_update_common(screen, bitmap, cliprect);
-	draw_sprites(bitmap, cliprect, 1);
-=======
 		PALETTE_INIT_NAME(mario)(*m_palette);
 	}
 
@@ -372,6 +226,5 @@ UINT32 mario_state::screen_update_mariobl(screen_device &screen, bitmap_ind16 &b
 
 	draw_sprites(bitmap, cliprect);
 
->>>>>>> upstream/master
 	return 0;
 }

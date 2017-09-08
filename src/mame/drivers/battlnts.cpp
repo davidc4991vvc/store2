@@ -13,13 +13,6 @@
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/m6809/hd6309.h"
-#include "cpu/z80/z80.h"
-#include "sound/3812intf.h"
-#include "includes/konamipt.h"
-#include "includes/battlnts.h"
-=======
 #include "includes/battlnts.h"
 #include "includes/konamipt.h"
 
@@ -30,7 +23,6 @@
 #include "sound/3812intf.h"
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 /*************************************
@@ -56,13 +48,8 @@ WRITE8_MEMBER(battlnts_state::battlnts_bankswitch_w)
 	m_rombank->set_entry((data & 0xc0) >> 6);
 
 	/* bits 4 & 5 = coin counters */
-<<<<<<< HEAD
-	coin_counter_w(machine(), 0, data & 0x10);
-	coin_counter_w(machine(), 1, data & 0x20);
-=======
 	machine().bookkeeping().coin_counter_w(0, data & 0x10);
 	machine().bookkeeping().coin_counter_w(1, data & 0x20);
->>>>>>> upstream/master
 
 	/* other bits unknown */
 }
@@ -87,13 +74,8 @@ static ADDRESS_MAP_START( battlnts_map, AS_PROGRAM, 8, battlnts_state )
 	AM_RANGE(0x2e04, 0x2e04) AM_READ_PORT("DSW2")
 	AM_RANGE(0x2e08, 0x2e08) AM_WRITE(battlnts_bankswitch_w)    /* bankswitch control */
 	AM_RANGE(0x2e0c, 0x2e0c) AM_WRITE(battlnts_spritebank_w)    /* sprite bank select */
-<<<<<<< HEAD
-	AM_RANGE(0x2e10, 0x2e10) AM_WRITE(watchdog_reset_w)         /* watchdog reset */
-	AM_RANGE(0x2e14, 0x2e14) AM_WRITE(soundlatch_byte_w)                /* sound code # */
-=======
 	AM_RANGE(0x2e10, 0x2e10) AM_DEVWRITE("watchdog", watchdog_timer_device, reset_w)
 	AM_RANGE(0x2e14, 0x2e14) AM_DEVWRITE("soundlatch", generic_latch_8_device, write) /* sound code # */
->>>>>>> upstream/master
 	AM_RANGE(0x2e18, 0x2e18) AM_WRITE(battlnts_sh_irqtrigger_w) /* cause interrupt on audio CPU */
 	AM_RANGE(0x4000, 0x7fff) AM_ROMBANK("rombank")              /* banked ROM */
 	AM_RANGE(0x8000, 0xffff) AM_ROM                             /* ROM 777e02.bin */
@@ -104,11 +86,7 @@ static ADDRESS_MAP_START( battlnts_sound_map, AS_PROGRAM, 8, battlnts_state )
 	AM_RANGE(0x8000, 0x87ff) AM_RAM                         /* RAM */
 	AM_RANGE(0xa000, 0xa001) AM_DEVREADWRITE("ym1", ym3812_device, read, write)      /* YM3812 (chip 1) */
 	AM_RANGE(0xc000, 0xc001) AM_DEVREADWRITE("ym2", ym3812_device, read, write)      /* YM3812 (chip 2) */
-<<<<<<< HEAD
-	AM_RANGE(0xe000, 0xe000) AM_READ(soundlatch_byte_r)         /* soundlatch_byte_r */
-=======
 	AM_RANGE(0xe000, 0xe000) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 /*************************************
@@ -239,11 +217,7 @@ GFXDECODE_END
 
 void battlnts_state::machine_start()
 {
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("maincpu")->base();
-=======
 	uint8_t *ROM = memregion("maincpu")->base();
->>>>>>> upstream/master
 
 	m_rombank->configure_entries(0, 4, &ROM[0x10000], 0x4000);
 
@@ -255,11 +229,7 @@ void battlnts_state::machine_reset()
 	m_spritebank = 0;
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( battlnts, battlnts_state )
-=======
 static MACHINE_CONFIG_START( battlnts )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", HD6309, XTAL_24MHz / 2 /* 3000000*4? */)
@@ -269,10 +239,7 @@ static MACHINE_CONFIG_START( battlnts )
 	MCFG_CPU_ADD("audiocpu", Z80, XTAL_24MHz / 6 /* 3579545? */)
 	MCFG_CPU_PROGRAM_MAP(battlnts_sound_map)
 
-<<<<<<< HEAD
-=======
 	MCFG_WATCHDOG_ADD("watchdog")
->>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
@@ -300,11 +267,8 @@ static MACHINE_CONFIG_START( battlnts )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 
->>>>>>> upstream/master
 	MCFG_SOUND_ADD("ym1", YM3812, XTAL_24MHz / 8)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 
@@ -417,18 +381,9 @@ ROM_END
  *
  *************************************/
 
-<<<<<<< HEAD
-GAME( 1987, battlnts,  0,        battlnts, battlnts, driver_device, 0, ROT90, "Konami", "Battlantis (program code G)",         MACHINE_SUPPORTS_SAVE )
-GAME( 1987, battlntsa, battlnts, battlnts, battlnts, driver_device, 0, ROT90, "Konami", "Battlantis (program code F)",         MACHINE_SUPPORTS_SAVE )
-GAME( 1987, battlntsj, battlnts, battlnts, battlnts, driver_device, 0, ROT90, "Konami", "Battlantis (Japan, program code E)",  MACHINE_SUPPORTS_SAVE )
-GAME( 1987, rackemup,  0,        battlnts, rackemup, driver_device, 0, ROT90, "Konami", "Rack 'em Up (program code L)",        MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
-GAME( 1987, thehustl,  rackemup, battlnts, thehustl, driver_device, 0, ROT90, "Konami", "The Hustler (Japan, program code M)", MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
-GAME( 1987, thehustlj, rackemup, battlnts, thehustl, driver_device, 0, ROT90, "Konami", "The Hustler (Japan, program code J)", MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1987, battlnts,  0,        battlnts, battlnts, battlnts_state, 0, ROT90, "Konami", "Battlantis (program code G)",         MACHINE_SUPPORTS_SAVE )
 GAME( 1987, battlntsa, battlnts, battlnts, battlnts, battlnts_state, 0, ROT90, "Konami", "Battlantis (program code F)",         MACHINE_SUPPORTS_SAVE )
 GAME( 1987, battlntsj, battlnts, battlnts, battlnts, battlnts_state, 0, ROT90, "Konami", "Battlantis (Japan, program code E)",  MACHINE_SUPPORTS_SAVE )
 GAME( 1987, rackemup,  0,        battlnts, rackemup, battlnts_state, 0, ROT90, "Konami", "Rack 'em Up (program code L)",        MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
 GAME( 1987, thehustl,  rackemup, battlnts, thehustl, battlnts_state, 0, ROT90, "Konami", "The Hustler (Japan, program code M)", MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
 GAME( 1987, thehustlj, rackemup, battlnts, thehustl, battlnts_state, 0, ROT90, "Konami", "The Hustler (Japan, program code J)", MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

@@ -14,25 +14,6 @@
 
 #define xxxx 0x00
 
-<<<<<<< HEAD
-const UINT8 ga2_v25_opcode_table[256] = {
-		xxxx,xxxx,0xEA,xxxx,xxxx,0x8B,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,
-		xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,0xFA,
-		xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,0x49,xxxx,xxxx,xxxx,
-		xxxx,xxxx,xxxx,xxxx,xxxx,0xE8,xxxx,xxxx,0x75,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,
-		xxxx,xxxx,xxxx,xxxx,0x8D,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,0xBF,xxxx,0x88,xxxx,
-		xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,
-		xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,
-		xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,0xBC,
-		xxxx,xxxx,xxxx,0x8A,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,0x83,xxxx,xxxx,xxxx,xxxx,xxxx,
-		xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,0xB8,0x26,xxxx,
-		xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,0xEB,
-		xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,0xB2,xxxx,xxxx,xxxx,xxxx,
-		xxxx,xxxx,xxxx,0xC3,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,
-		xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,0xB9,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,
-		xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,
-		xxxx,xxxx,0x8E,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,0xBE,xxxx,xxxx,xxxx,xxxx
-=======
 const uint8_t segas32_v25_state::ga2_opcode_table[256] = {
 		xxxx,xxxx,0xEA,xxxx,xxxx,0x8B,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,
 		xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,0xFA,
@@ -50,24 +31,15 @@ const uint8_t segas32_v25_state::ga2_opcode_table[256] = {
 		xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,0xB9,0xBB,xxxx,0x43,xxxx,xxxx,xxxx,xxxx,
 		xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,
 		xxxx,xxxx,0x8E,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,0xBE,xxxx,0x80,xxxx,xxxx
->>>>>>> upstream/master
 };
 
 #undef xxxx
 
-<<<<<<< HEAD
-void segas32_state::decrypt_ga2_protrom()
-{
-	int i;
-	UINT8 *rom = memregion("mcu")->base();
-	dynamic_buffer temp(0x100000);
-=======
 void segas32_v25_state::decrypt_protrom()
 {
 	int i;
 	uint8_t *rom = memregion("mcu")->base();
 	std::vector<uint8_t> temp(0x100000);
->>>>>>> upstream/master
 
 	// make copy of ROM so original can be overwritten
 	memcpy(&temp[0], rom, 0x10000);
@@ -77,28 +49,11 @@ void segas32_v25_state::decrypt_protrom()
 		rom[i] = temp[BITSWAP16(i, 14, 11, 15, 12, 13, 4, 3, 7, 5, 10, 2, 8, 9, 6, 1, 0)];
 }
 
-<<<<<<< HEAD
-WRITE16_MEMBER(segas32_state::ga2_dpram_w)
-{
-	/* does it ever actually write.. */
-}
-
-READ16_MEMBER(segas32_state::ga2_dpram_r)
-{
-	return (m_ga2_dpram[offset])|(m_ga2_dpram[offset+1]<<8);
-}
-
-=======
->>>>>>> upstream/master
 
 #if 0 // simulation
 READ16_MEMBER(segas32_state::ga2_sprite_protection_r)
 {
-<<<<<<< HEAD
-	static const UINT16 prot[16] =
-=======
 	static const uint16_t prot[16] =
->>>>>>> upstream/master
 	{
 		0x0a, 0,
 		0xc5, 0,
@@ -137,15 +92,9 @@ READ16_MEMBER(segas32_state::ga2_wakeup_protection_r)
 
 WRITE16_MEMBER(segas32_state::sonic_level_load_protection)
 {
-<<<<<<< HEAD
-	UINT16 level;
-//Perform write
-	m_system32_workram[CLEARED_LEVELS / 2] = (data & mem_mask) | (m_system32_workram[CLEARED_LEVELS / 2] & ~mem_mask);
-=======
 	uint16_t level;
 //Perform write
 	COMBINE_DATA(&m_system32_workram[CLEARED_LEVELS / 2]);
->>>>>>> upstream/master
 
 //Refresh current level
 		if (m_system32_workram[CLEARED_LEVELS / 2] == 0)
@@ -154,11 +103,7 @@ WRITE16_MEMBER(segas32_state::sonic_level_load_protection)
 		}
 		else
 		{
-<<<<<<< HEAD
-			const UINT8 *ROM = memregion("maincpu")->base();
-=======
 			const uint8_t *ROM = memregion("maincpu")->base();
->>>>>>> upstream/master
 			level =  *((ROM + LEVEL_ORDER_ARRAY) + (m_system32_workram[CLEARED_LEVELS / 2] * 2) - 1);
 			level |= *((ROM + LEVEL_ORDER_ARRAY) + (m_system32_workram[CLEARED_LEVELS / 2] * 2) - 2) << 8;
 		}
@@ -208,11 +153,7 @@ WRITE16_MEMBER(segas32_state::brival_protection_w)
 	};
 	char ret[32];
 	int curProtType;
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("maincpu")->base();
-=======
 	uint8_t *ROM = memregion("maincpu")->base();
->>>>>>> upstream/master
 
 	switch (offset)
 	{
@@ -297,11 +238,7 @@ void segas32_state::f1lap_fd1149_vblank()
 	space.write_byte(0x20F7C6, 0);
 
 	// needed to start a game
-<<<<<<< HEAD
-	UINT8 val = space.read_byte(0x20EE81);
-=======
 	uint8_t val = space.read_byte(0x20EE81);
->>>>>>> upstream/master
 	if (val == 0xff)  space.write_byte(0x20EE81,0);
 
 }
@@ -333,10 +270,6 @@ READ16_MEMBER(segas32_state::dbzvrvs_protection_r)
  ******************************************************************************
  ******************************************************************************/
 
-<<<<<<< HEAD
-
-// protection ram is 8-bits wide and only occupies every other address
-=======
 #define xxxx 0x00
 
 const uint8_t segas32_v25_state::arf_opcode_table[256] = {
@@ -361,7 +294,6 @@ const uint8_t segas32_v25_state::arf_opcode_table[256] = {
 #undef xxxx
 
 #if 0 // old simulation
->>>>>>> upstream/master
 READ16_MEMBER(segas32_state::arabfgt_protection_r)
 {
 	int PC = space.device().safe_pc();
@@ -392,10 +324,7 @@ READ16_MEMBER(segas32_state::arf_wakeup_protection_r)
 		"wake up! ARF!                                   ";
 	return prot[offset];
 }
-<<<<<<< HEAD
-=======
 #endif
->>>>>>> upstream/master
 
 /******************************************************************************
  ******************************************************************************

@@ -7,11 +7,8 @@
 #include "machine/nvram.h"
 #include "machine/pgmcrypt.h"
 #include "sound/ics2115.h"
-<<<<<<< HEAD
-=======
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 class igs_fear_state : public driver_device
@@ -28,11 +25,7 @@ public:
 	DECLARE_DRIVER_INIT(igs_fear);
 	//virtual void video_start();
 	virtual void video_start_igs_fear();
-<<<<<<< HEAD
-	UINT32 screen_update_igs_fear(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	uint32_t screen_update_igs_fear(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	void pgm_create_dummy_internal_arm_region();
 	required_device<cpu_device> m_maincpu;
 	optional_device<gfxdecode_device> m_gfxdecode;
@@ -45,11 +38,7 @@ void igs_fear_state::video_start_igs_fear()
 }
 
 
-<<<<<<< HEAD
-UINT32 igs_fear_state::screen_update_igs_fear(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t igs_fear_state::screen_update_igs_fear(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	return 0;
 }
@@ -86,11 +75,7 @@ WRITE_LINE_MEMBER(igs_fear_state::sound_irq)
 }
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( igs_fear, igs_fear_state )
-=======
 static MACHINE_CONFIG_START( igs_fear )
->>>>>>> upstream/master
 	MCFG_CPU_ADD("maincpu",ARM7, 50000000/2)
 	MCFG_CPU_PROGRAM_MAP(igs_igs_fear_map)
 
@@ -151,11 +136,7 @@ ROM_END
 
 void igs_fear_state::pgm_create_dummy_internal_arm_region()
 {
-<<<<<<< HEAD
-	UINT16 *temp16 = (UINT16 *)memregion("maincpu")->base();
-=======
 	uint16_t *temp16 = (uint16_t *)memregion("maincpu")->base();
->>>>>>> upstream/master
 
 	// fill with RX 14
 	int i;

@@ -1,10 +1,3 @@
-<<<<<<< HEAD
-
-#include "nlm_ttl74xx.h"
-
-#include "devices/nld_truthtable.h"
-#include "devices/nld_system.h"
-=======
 // license:GPL-2.0+
 // copyright-holders:Couriersud
 #include "nlm_ttl74xx.h"
@@ -306,31 +299,14 @@ static NETLIST_START(TTL_74LS14_DIP)
 				/*       +--------------+      */
 	)
 NETLIST_END()
->>>>>>> upstream/master
 
 /*
  *   DM7416: Hex Inverting Buffers with
  *           High Voltage Open-Collector Outputs
  *
-<<<<<<< HEAD
- *          +--------------+
- *       A1 |1     ++    14| VCC
- *       Y1 |2           13| A6
- *       A2 |3           12| Y6
- *       Y2 |4    7416   11| A5
- *       A3 |5           10| Y5
- *       Y3 |6            9| A4
- *      GND |7            8| Y4
- *          +--------------+
- *
- */
-
-NETLIST_START(TTL_7416_DIP)
-=======
  */
 
 static NETLIST_START(TTL_7416_DIP)
->>>>>>> upstream/master
 	TTL_7416_GATE(s1)
 	TTL_7416_GATE(s2)
 	TTL_7416_GATE(s3)
@@ -353,10 +329,6 @@ static NETLIST_START(TTL_7416_DIP)
 	)
 NETLIST_END()
 
-<<<<<<< HEAD
-NETLIST_START(TTL74XX_lib)
-	TRUTHTABLE_START(TTL_7416_GATE, 1, 1, 0, "")
-=======
 /*
  *  DM7420: Dual 4-Input NAND Gates
  *
@@ -957,7 +929,6 @@ NETLIST_START(TTL74XX_lib)
 	TRUTHTABLE_END()
 
 	TRUTHTABLE_START(TTL_7416_GATE, 1, 1, "")
->>>>>>> upstream/master
 		TT_HEAD(" A | Q ")
 		TT_LINE(" 0 | 1 |15")
 		TT_LINE(" 1 | 0 |23")
@@ -965,9 +936,6 @@ NETLIST_START(TTL74XX_lib)
 		TT_FAMILY("74XXOC")
 	TRUTHTABLE_END()
 
-<<<<<<< HEAD
-	LOCAL_LIB_ENTRY(TTL_7416_DIP)
-=======
 	TRUTHTABLE_START(TTL_7420_GATE, 4, 1, "")
 		TT_HEAD("A,B,C,D|Q ")
 		TT_LINE("0,X,X,X|1|22")
@@ -1239,5 +1207,4 @@ NETLIST_START(TTL74XX_lib)
 	LOCAL_LIB_ENTRY(TTL_74260_DIP)
 	LOCAL_LIB_ENTRY(TTL_74279_DIP)
 	LOCAL_LIB_ENTRY(DM9312_DIP)
->>>>>>> upstream/master
 NETLIST_END()

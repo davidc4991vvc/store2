@@ -1,25 +1,6 @@
 // license:BSD-3-Clause
 // copyright-holders:F. Ulivi
 
-<<<<<<< HEAD
-#include "emu.h"
-#include "debugger.h"
-#include "hphybrid.h"
-
-enum {
-				HPHYBRID_A,
-				HPHYBRID_B,
-				HPHYBRID_C,
-				HPHYBRID_D,
-				HPHYBRID_P,
-				HPHYBRID_R,
-				HPHYBRID_IV,
-				HPHYBRID_PA,
-				HPHYBRID_DMAPA,
-				HPHYBRID_DMAMA,
-				HPHYBRID_DMAC,
-				HPHYBRID_I
-=======
 // I found 2 undocumented instructions in 5061-3001. First I noticed that PPU processor in
 // hp9845b emulator executed 2 unknown instructions at each keyboard interrupt whose opcodes
 // were 0x7026 & 0x7027.
@@ -85,7 +66,6 @@ enum {
 	HPHYBRID_R35,
 	HPHYBRID_R36,
 	HPHYBRID_R37
->>>>>>> upstream/master
 };
 
 #define BIT_MASK(n) (1U << (n))
@@ -108,11 +88,6 @@ enum {
 #define HPHYBRID_IRH_SVC_BIT    10  // IRH in service
 #define HPHYBRID_IRL_SVC_BIT    11  // IRL in service
 #define HPHYBRID_DMAR_BIT       12  // DMA request
-<<<<<<< HEAD
-
-#define HPHYBRID_IV_MASK        0xfff0  // IV mask
-
-=======
 #define HPHYBRID_STS_BIT        13  // Status flag
 #define HPHYBRID_FLG_BIT        14  // "Flag" flag
 #define HPHYBRID_DC_BIT         15  // Decimal carry
@@ -122,111 +97,10 @@ enum {
 
 #define HP_REG_SE_MASK  0x000f
 
->>>>>>> upstream/master
 #define CURRENT_PA      (m_reg_PA[ 0 ])
 
 #define HP_RESET_ADDR   0x0020
 
-<<<<<<< HEAD
-const device_type HP_5061_3011 = &device_creator<hp_5061_3011_cpu_device>;
-
-WRITE_LINE_MEMBER(hp_hybrid_cpu_device::dmar_w)
-{
-				if (state) {
-								BIT_SET(m_flags , HPHYBRID_DMAR_BIT);
-				} else {
-								BIT_CLR(m_flags , HPHYBRID_DMAR_BIT);
-				}
-}
-
-hp_hybrid_cpu_device::hp_hybrid_cpu_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname)
-: cpu_device(mconfig, type, name, tag, owner, clock, shortname, __FILE__),
-				m_program_config("program", ENDIANNESS_BIG, 16, 16, -1),
-				m_io_config("io", ENDIANNESS_BIG, 16, 6, -1)
-{
-}
-
-void hp_hybrid_cpu_device::device_start()
-{
-				m_reg_A = 0;
-				m_reg_B = 0;
-				m_reg_P = HP_RESET_ADDR;
-				m_reg_R = 0;
-				m_reg_C = 0;
-				m_reg_D = 0;
-				m_reg_IV = 0;
-				m_reg_PA[ 0 ] = 0;
-				m_reg_PA[ 1 ] = 0;
-				m_reg_PA[ 2 ] = 0;
-				m_flags = 0;
-				m_dmapa = 0;
-				m_dmama = 0;
-				m_dmac = 0;
-				m_reg_I = 0;
-
-				{
-								state_add(HPHYBRID_A,  "A", m_reg_A);
-								state_add(HPHYBRID_B,  "B", m_reg_B);
-								state_add(HPHYBRID_C,  "C", m_reg_C);
-								state_add(HPHYBRID_D,  "D", m_reg_D);
-								state_add(HPHYBRID_P,  "P", m_reg_P);
-								state_add(STATE_GENPC, "GENPC", m_reg_P).noshow();
-								state_add(HPHYBRID_R,  "R", m_reg_R);
-								state_add(STATE_GENSP, "GENSP", m_reg_R).noshow();
-								state_add(HPHYBRID_IV, "IV", m_reg_IV);
-								state_add(HPHYBRID_PA, "PA", m_reg_PA[ 0 ]);
-								state_add(STATE_GENFLAGS, "GENFLAGS", m_flags).noshow().formatstr("%9s");
-								state_add(HPHYBRID_DMAPA , "DMAPA" , m_dmapa).noshow();
-								state_add(HPHYBRID_DMAMA , "DMAMA" , m_dmama).noshow();
-								state_add(HPHYBRID_DMAC , "DMAC" , m_dmac).noshow();
-								state_add(HPHYBRID_I , "I" , m_reg_I).noshow();
-				}
-
-				m_program = &space(AS_PROGRAM);
-				m_direct = &m_program->direct();
-				m_io = &space(AS_IO);
-
-				save_item(NAME(m_reg_A));
-				save_item(NAME(m_reg_B));
-				save_item(NAME(m_reg_C));
-				save_item(NAME(m_reg_D));
-				save_item(NAME(m_reg_P));
-				save_item(NAME(m_reg_R));
-				save_item(NAME(m_reg_IV));
-				save_item(NAME(m_reg_PA[0]));
-				save_item(NAME(m_reg_PA[1]));
-				save_item(NAME(m_reg_PA[2]));
-				save_item(NAME(m_flags));
-				save_item(NAME(m_dmapa));
-				save_item(NAME(m_dmama));
-				save_item(NAME(m_dmac));
-				save_item(NAME(m_reg_I));
-
-				m_icountptr = &m_icount;
-}
-
-void hp_hybrid_cpu_device::device_reset()
-{
-				m_reg_P = HP_RESET_ADDR;
-				m_reg_I = RM(m_reg_P);
-				m_flags = 0;
-}
-
-void hp_hybrid_cpu_device::execute_run()
-{
-				do {
-								if (BIT(m_flags , HPHYBRID_DMAEN_BIT) && BIT(m_flags , HPHYBRID_DMAR_BIT)) {
-												handle_dma();
-								} else {
-												debugger_instruction_hook(this, m_reg_P);
-
-												// Check for interrupts
-												check_for_interrupts();
-
-												m_reg_I = execute_one(m_reg_I);
-								}
-				} while (m_icount > 0);
-=======
 // Part of r32-r37 that is actually output as address extension (6 bits of "BSC": block select code)
 #define BSC_REG_MASK    0x3f
 
@@ -374,27 +248,16 @@ void hp_hybrid_cpu_device::execute_run()
 			check_for_interrupts();
 		}
 	} while (m_icount > 0);
->>>>>>> upstream/master
 }
 
 void hp_hybrid_cpu_device::execute_set_input(int inputnum, int state)
 {
-<<<<<<< HEAD
-				if (inputnum < HPHYBRID_INT_LVLS) {
-								if (state) {
-												BIT_SET(m_flags , HPHYBRID_IRH_BIT + inputnum);
-								} else {
-												BIT_CLR(m_flags , HPHYBRID_IRH_BIT + inputnum);
-								}
-				}
-=======
 	if (inputnum < HPHYBRID_INT_LVLS) {
 		if (state)
 			BIT_SET(m_flags , HPHYBRID_IRH_BIT + inputnum);
 		else
 			BIT_CLR(m_flags , HPHYBRID_IRH_BIT + inputnum);
 	}
->>>>>>> upstream/master
 }
 
 /**
@@ -404,18 +267,6 @@ void hp_hybrid_cpu_device::execute_set_input(int inputnum, int state)
  *
  * @return Next opcode to be executed
  */
-<<<<<<< HEAD
-UINT16 hp_hybrid_cpu_device::execute_one(UINT16 opcode)
-{
-				if ((opcode & 0x7fe0) == 0x7000) {
-								// EXE
-								m_icount -= 8;
-								return RM(opcode & 0x1f);
-				} else {
-								m_reg_P = execute_one_sub(opcode);
-								return RM(m_reg_P);
-				}
-=======
 uint16_t hp_hybrid_cpu_device::execute_one(uint16_t opcode)
 {
 	if ((opcode & 0x7fe0) == 0x7000) {
@@ -434,7 +285,6 @@ uint16_t hp_hybrid_cpu_device::execute_one(uint16_t opcode)
 		m_reg_P = execute_one_sub(opcode);
 		return fetch();
 	}
->>>>>>> upstream/master
 }
 
 /**
@@ -444,17 +294,10 @@ uint16_t hp_hybrid_cpu_device::execute_one(uint16_t opcode)
  *
  * @return new value of P register
  */
-<<<<<<< HEAD
-UINT16 hp_hybrid_cpu_device::execute_one_sub(UINT16 opcode)
-{
-				UINT16 ea;
-				UINT16 tmp;
-=======
 uint16_t hp_hybrid_cpu_device::execute_one_sub(uint16_t opcode)
 {
 				uint32_t ea;
 				uint16_t tmp;
->>>>>>> upstream/master
 
 				switch (opcode & 0x7800) {
 				case 0x0000:
@@ -514,13 +357,8 @@ uint16_t hp_hybrid_cpu_device::execute_one_sub(uint16_t opcode)
 				case 0x4000:
 								// JSM
 								m_icount -= 17;
-<<<<<<< HEAD
-								WM(++m_reg_R , m_reg_P);
-								return get_ea(opcode);
-=======
 								WM(AEC_CASE_C , ++m_reg_R , m_reg_P);
 								return remove_mae(get_ea(opcode));
->>>>>>> upstream/master
 
 				case 0x4800:
 								// ISZ
@@ -561,11 +399,7 @@ uint16_t hp_hybrid_cpu_device::execute_one_sub(uint16_t opcode)
 				case 0x6800:
 								// JMP
 								m_icount -= 8;
-<<<<<<< HEAD
-								return get_ea(opcode);
-=======
 								return remove_mae(get_ea(opcode));
->>>>>>> upstream/master
 
 				default:
 								switch (opcode & 0xfec0) {
@@ -585,12 +419,7 @@ uint16_t hp_hybrid_cpu_device::execute_one_sub(uint16_t opcode)
 												// SFS
 												// SFC
 												m_icount -= 14;
-<<<<<<< HEAD
-												// TODO: read flag bit
-												return get_skip_addr(opcode , true);
-=======
 												return get_skip_addr(opcode , !BIT(m_flags , HPHYBRID_FLG_BIT));
->>>>>>> upstream/master
 
 								case 0x7C00:
 												// RZB
@@ -608,12 +437,7 @@ uint16_t hp_hybrid_cpu_device::execute_one_sub(uint16_t opcode)
 												// SSS
 												// SSC
 												m_icount -= 14;
-<<<<<<< HEAD
-												// TODO: read status bit
-												return get_skip_addr(opcode , true);
-=======
 												return get_skip_addr(opcode , !BIT(m_flags , HPHYBRID_STS_BIT));
->>>>>>> upstream/master
 
 								case 0x7cc0:
 												// SHS
@@ -733,14 +557,6 @@ uint16_t hp_hybrid_cpu_device::execute_one_sub(uint16_t opcode)
 																												if (BIT(m_flags , HPHYBRID_IRH_SVC_BIT)) {
 																																BIT_CLR(m_flags , HPHYBRID_IRH_SVC_BIT);
 																																memmove(&m_reg_PA[ 0 ] , &m_reg_PA[ 1 ] , HPHYBRID_INT_LVLS);
-<<<<<<< HEAD
-																												} else if (BIT(m_flags , HPHYBRID_IRL_SVC_BIT)) {
-																																BIT_CLR(m_flags , HPHYBRID_IRL_SVC_BIT);
-																																memmove(&m_reg_PA[ 0 ] , &m_reg_PA[ 1 ] , HPHYBRID_INT_LVLS);
-																												}
-																								}
-																								tmp = RM(m_reg_R--) + (opcode & 0x1f);
-=======
 																																																																m_pa_changed_func((uint8_t)CURRENT_PA);
 																												} else if (BIT(m_flags , HPHYBRID_IRL_SVC_BIT)) {
 																																BIT_CLR(m_flags , HPHYBRID_IRL_SVC_BIT);
@@ -752,7 +568,6 @@ uint16_t hp_hybrid_cpu_device::execute_one_sub(uint16_t opcode)
 																								} else {
 																									tmp = RM(AEC_CASE_C , m_reg_R--) + (opcode & 0x1f);
 																								}
->>>>>>> upstream/master
 																								return BIT(opcode , 5) ? tmp - 0x20 : tmp;
 																				} else {
 																								switch (opcode) {
@@ -843,17 +658,6 @@ uint16_t hp_hybrid_cpu_device::execute_one_sub(uint16_t opcode)
 																												break;
 
 																								default:
-<<<<<<< HEAD
-																												// Unrecognized instructions: NOP
-																												// Execution time is fictional
-																												m_icount -= 6;
-																								}
-																				}
-																}
-												}
-								}
-				}
-=======
 																																																		// Unrecognized instruction: pass it on for further processing (by EMC if present)
 																																																		return execute_no_bpc_ioc(opcode);
 																																																}
@@ -862,63 +666,10 @@ uint16_t hp_hybrid_cpu_device::execute_one_sub(uint16_t opcode)
 																								}
 																}
 								}
->>>>>>> upstream/master
 
 				return m_reg_P + 1;
 }
 
-<<<<<<< HEAD
-void hp_hybrid_cpu_device::state_string_export(const device_state_entry &entry, std::string &str)
-{
-				if (entry.index() == STATE_GENFLAGS) {
-								strprintf(str, "%s %s %c %c",
-														BIT(m_flags , HPHYBRID_DB_BIT) ? "Db":"..",
-														BIT(m_flags , HPHYBRID_CB_BIT) ? "Cb":"..",
-														BIT(m_flags , HPHYBRID_O_BIT) ? 'O':'.',
-														BIT(m_flags , HPHYBRID_C_BIT) ? 'E':'.');
-				}
-}
-
-offs_t hp_hybrid_cpu_device::disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options)
-{
-				extern CPU_DISASSEMBLE(hp_hybrid);
-				return CPU_DISASSEMBLE_NAME(hp_hybrid)(this, buffer, pc, oprom, opram, options);
-}
-
-UINT16 hp_hybrid_cpu_device::get_ea(UINT16 opcode)
-{
-				UINT16 base;
-				UINT16 off;
-
-				if (BIT(opcode , 10)) {
-								// Current page
-								base = m_reg_P;
-				} else {
-								// Base page
-								base = 0;
-				}
-
-				off = opcode & 0x3ff;
-				if (off & 0x200) {
-								off -= 0x400;
-				}
-
-				base += off;
-
-				if (BIT(opcode , 15)) {
-								// Indirect addressing
-								m_icount -= 6;
-								return RM(base);
-				} else {
-								// Direct addressing
-								return base;
-				}
-}
-
-void hp_hybrid_cpu_device::do_add(UINT16& addend1 , UINT16 addend2)
-{
-				UINT32 tmp = addend1 + addend2;
-=======
 void hp_hybrid_cpu_device::state_string_export(const device_state_entry &entry, std::string &str) const
 {
 	if (entry.index() == STATE_GENFLAGS) {
@@ -1136,7 +887,6 @@ uint32_t hp_hybrid_cpu_device::get_ea(uint16_t opcode)
 void hp_hybrid_cpu_device::do_add(uint16_t& addend1 , uint16_t addend2)
 {
 				uint32_t tmp = addend1 + addend2;
->>>>>>> upstream/master
 
 				if (BIT(tmp , 16)) {
 								// Carry
@@ -1148,26 +898,15 @@ void hp_hybrid_cpu_device::do_add(uint16_t& addend1 , uint16_t addend2)
 								BIT_SET(m_flags , HPHYBRID_O_BIT);
 				}
 
-<<<<<<< HEAD
-				addend1 = (UINT16)tmp;
-}
-
-UINT16 hp_hybrid_cpu_device::get_skip_addr(UINT16 opcode , bool condition) const
-=======
 				addend1 = (uint16_t)tmp;
 }
 
 uint16_t hp_hybrid_cpu_device::get_skip_addr(uint16_t opcode , bool condition) const
->>>>>>> upstream/master
 {
 				bool skip_val = BIT(opcode , 8) != 0;
 
 				if (condition == skip_val) {
-<<<<<<< HEAD
-								UINT16 off = opcode & 0x1f;
-=======
 								uint16_t off = opcode & 0x1f;
->>>>>>> upstream/master
 
 								if (BIT(opcode , 5)) {
 												off -= 0x20;
@@ -1178,11 +917,7 @@ uint16_t hp_hybrid_cpu_device::get_skip_addr(uint16_t opcode , bool condition) c
 				}
 }
 
-<<<<<<< HEAD
-UINT16 hp_hybrid_cpu_device::get_skip_addr_sc(UINT16 opcode , UINT16& v , unsigned n)
-=======
 uint16_t hp_hybrid_cpu_device::get_skip_addr_sc(uint16_t opcode , uint16_t& v , unsigned n)
->>>>>>> upstream/master
 {
 				bool val = BIT(v , n);
 
@@ -1197,14 +932,6 @@ uint16_t hp_hybrid_cpu_device::get_skip_addr_sc(uint16_t opcode , uint16_t& v , 
 				return get_skip_addr(opcode , val);
 }
 
-<<<<<<< HEAD
-void hp_hybrid_cpu_device::do_pw(UINT16 opcode)
-{
-				UINT16 tmp;
-				UINT16 reg_addr = opcode & 7;
-				UINT16 *ptr_reg;
-				UINT16 b_mask;
-=======
 uint16_t hp_hybrid_cpu_device::get_skip_addr_sc(uint16_t opcode , uint32_t& v , unsigned n)
 {
 		bool val = BIT(v , n);
@@ -1226,7 +953,6 @@ void hp_hybrid_cpu_device::do_pw(uint16_t opcode)
 				uint16_t reg_addr = opcode & 7;
 				uint16_t *ptr_reg;
 				uint16_t b_mask;
->>>>>>> upstream/master
 
 				if (BIT(opcode , 3)) {
 								ptr_reg = &m_reg_D;
@@ -1240,19 +966,11 @@ void hp_hybrid_cpu_device::do_pw(uint16_t opcode)
 								// Withdraw
 								if (BIT(opcode , 11)) {
 												// Byte
-<<<<<<< HEAD
-												UINT32 tmp_addr = (UINT32)(*ptr_reg);
-												if (m_flags & b_mask) {
-																tmp_addr |= 0x10000;
-												}
-												tmp = RM((UINT16)(tmp_addr >> 1));
-=======
 												uint32_t tmp_addr = (uint32_t)(*ptr_reg);
 												if (m_flags & b_mask) {
 																tmp_addr |= 0x10000;
 												}
 												tmp = RM(AEC_CASE_C , (uint16_t)(tmp_addr >> 1));
->>>>>>> upstream/master
 												if (BIT(tmp_addr , 0)) {
 																tmp &= 0xff;
 												} else {
@@ -1260,11 +978,7 @@ void hp_hybrid_cpu_device::do_pw(uint16_t opcode)
 												}
 								} else {
 												// Word
-<<<<<<< HEAD
-												tmp = RM(*ptr_reg);
-=======
 												tmp = RM(AEC_CASE_C , *ptr_reg);
->>>>>>> upstream/master
 								}
 								WM(reg_addr , tmp);
 
@@ -1295,16 +1009,6 @@ void hp_hybrid_cpu_device::do_pw(uint16_t opcode)
 								tmp = RM(reg_addr);
 								if (BIT(opcode , 11)) {
 												// Byte
-<<<<<<< HEAD
-												UINT32 tmp_addr = (UINT32)(*ptr_reg);
-												if (m_flags & b_mask) {
-																tmp_addr |= 0x10000;
-												}
-												WMB(tmp_addr , (UINT8)tmp);
-								} else {
-												// Word
-												WM(*ptr_reg , tmp);
-=======
 												uint32_t tmp_addr = (uint32_t)(*ptr_reg);
 												if (m_flags & b_mask) {
 																tmp_addr |= 0x10000;
@@ -1328,18 +1032,13 @@ void hp_hybrid_cpu_device::do_pw(uint16_t opcode)
 								} else {
 												// Word
 												WM(AEC_CASE_C , *ptr_reg , tmp);
->>>>>>> upstream/master
 								}
 				}
 }
 
 void hp_hybrid_cpu_device::check_for_interrupts(void)
 {
-<<<<<<< HEAD
-				if (!BIT(m_flags , HPHYBRID_INTEN_BIT) || BIT(m_flags , HPHYBRID_IRH_SVC_BIT)) {
-=======
 		if (!BIT(m_flags , HPHYBRID_INTEN_BIT) || BIT(m_flags , HPHYBRID_IRH_SVC_BIT) || BIT(m_flags , HPHYBRID_IM_BIT)) {
->>>>>>> upstream/master
 								return;
 				}
 
@@ -1349,12 +1048,9 @@ void hp_hybrid_cpu_device::check_for_interrupts(void)
 								// Service high-level interrupt
 								BIT_SET(m_flags , HPHYBRID_IRH_SVC_BIT);
 								irqline = HPHYBRID_IRH;
-<<<<<<< HEAD
-=======
 																if (BIT(m_flags , HPHYBRID_IRL_SVC_BIT)) {
 																		logerror("H pre-empted L @ %06x\n" , m_genpc);
 																}
->>>>>>> upstream/master
 				} else if (BIT(m_flags , HPHYBRID_IRL_BIT) && !BIT(m_flags , HPHYBRID_IRL_SVC_BIT)) {
 								// Service low-level interrupt
 								BIT_SET(m_flags , HPHYBRID_IRL_SVC_BIT);
@@ -1364,13 +1060,8 @@ void hp_hybrid_cpu_device::check_for_interrupts(void)
 				}
 
 				// Get interrupt vector in low byte
-<<<<<<< HEAD
-				UINT8 vector = (UINT8)standard_irq_callback(irqline);
-				UINT8 new_PA;
-=======
 				uint8_t vector = (uint8_t)standard_irq_callback(irqline);
 				uint8_t new_PA;
->>>>>>> upstream/master
 
 				// Get highest numbered 1
 				// Don't know what happens if vector is 0, here we assume bit 7 = 1
@@ -1389,16 +1080,6 @@ void hp_hybrid_cpu_device::check_for_interrupts(void)
 
 				CURRENT_PA = new_PA;
 
-<<<<<<< HEAD
-				// Is this correct? Patent @ pg 210 suggests that the whole interrupt recognition sequence
-				// lasts for 32 cycles (6 are already accounted for in get_ea for one indirection)
-				m_icount -= 26;
-
-				// Do a double-indirect JSM IV,I instruction
-				WM(++m_reg_R , m_reg_P);
-				m_reg_P = RM(get_ea(0xc008));
-				m_reg_I = RM(m_reg_P);
-=======
 								m_pa_changed_func((uint8_t)CURRENT_PA);
 
 				// Is this correct? Patent @ pg 210 suggests that the whole interrupt recognition sequence
@@ -1417,191 +1098,10 @@ void hp_hybrid_cpu_device::check_for_interrupts(void)
 void hp_hybrid_cpu_device::enter_isr(void)
 {
 		// Do nothing special
->>>>>>> upstream/master
 }
 
 void hp_hybrid_cpu_device::handle_dma(void)
 {
-<<<<<<< HEAD
-				// Patent hints at the fact that terminal count is detected by bit 15 of dmac being 1 after decrementing
-				bool tc = BIT(--m_dmac , 15) != 0;
-				UINT16 tmp;
-
-				if (BIT(m_flags , HPHYBRID_DMADIR_BIT)) {
-								// "Outward" DMA: memory -> peripheral
-								tmp = RM(m_dmama++);
-								WIO(m_dmapa , tc ? 2 : 0 , tmp);
-								m_icount -= 10;
-				} else {
-								// "Inward" DMA: peripheral -> memory
-								tmp = RIO(m_dmapa , tc ? 2 : 0);
-								WM(m_dmama++ , tmp);
-								m_icount -= 9;
-				}
-
-				// This is the one of the biggest question marks: is the DMA automatically disabled on TC?
-				// Here we assume it is. After all it would make no difference because there is no way
-				// to read the DMA enable flag back, so each time the DMA is needed it has to be enabled again.
-				if (tc) {
-								BIT_CLR(m_flags , HPHYBRID_DMAEN_BIT);
-				}
-}
-
-UINT16 hp_hybrid_cpu_device::RM(UINT16 addr)
-{
-				UINT16 tmp;
-
-				if (addr <= HP_REG_LAST_ADDR) {
-								// Memory mapped registers
-								switch (addr) {
-								case HP_REG_A_ADDR:
-												return m_reg_A;
-
-								case HP_REG_B_ADDR:
-												return m_reg_B;
-
-								case HP_REG_P_ADDR:
-												return m_reg_P;
-
-								case HP_REG_R_ADDR:
-												return m_reg_R;
-
-								case HP_REG_R4_ADDR:
-								case HP_REG_R5_ADDR:
-								case HP_REG_R6_ADDR:
-								case HP_REG_R7_ADDR:
-												return RIO(CURRENT_PA , addr - HP_REG_R4_ADDR);
-
-								case HP_REG_IV_ADDR:
-												// Correct?
-												if (!BIT(m_flags , HPHYBRID_IRH_SVC_BIT) && !BIT(m_flags , HPHYBRID_IRL_SVC_BIT)) {
-																return m_reg_IV;
-												} else {
-																return m_reg_IV | CURRENT_PA;
-												}
-
-								case HP_REG_PA_ADDR:
-												return CURRENT_PA;
-
-								case HP_REG_DMAPA_ADDR:
-												tmp = m_dmapa & HP_REG_PA_MASK;
-												if (BIT(m_flags , HPHYBRID_CB_BIT)) {
-																BIT_SET(tmp , 15);
-												}
-												if (BIT(m_flags , HPHYBRID_DB_BIT)) {
-																BIT_SET(tmp , 14);
-												}
-												return tmp;
-
-								case HP_REG_DMAMA_ADDR:
-												return m_dmama;
-
-								case HP_REG_DMAC_ADDR:
-												return m_dmac;
-
-								case HP_REG_C_ADDR:
-												return m_reg_C;
-
-								case HP_REG_D_ADDR:
-												return m_reg_D;
-
-								default:
-												// Unknown registers are returned as 0
-												return 0;
-								}
-				} else {
-								return m_direct->read_word((offs_t)addr << 1);
-				}
-}
-
-void hp_hybrid_cpu_device::WM(UINT16 addr , UINT16 v)
-{
-				if (addr <= HP_REG_LAST_ADDR) {
-								// Memory mapped registers
-								switch (addr) {
-								case HP_REG_A_ADDR:
-												m_reg_A = v;
-												break;
-
-								case HP_REG_B_ADDR:
-												m_reg_B = v;
-												break;
-
-								case HP_REG_P_ADDR:
-												m_reg_P = v;
-												break;
-
-								case HP_REG_R_ADDR:
-												m_reg_R = v;
-												break;
-
-								case HP_REG_R4_ADDR:
-								case HP_REG_R5_ADDR:
-								case HP_REG_R6_ADDR:
-								case HP_REG_R7_ADDR:
-												WIO(CURRENT_PA , addr - HP_REG_R4_ADDR , v);
-												break;
-
-								case HP_REG_IV_ADDR:
-												m_reg_IV = v & HP_REG_IV_MASK;
-												break;
-
-								case HP_REG_PA_ADDR:
-												CURRENT_PA = v & HP_REG_PA_MASK;
-												break;
-
-								case HP_REG_DMAPA_ADDR:
-												m_dmapa = v & HP_REG_PA_MASK;
-												break;
-
-								case HP_REG_DMAMA_ADDR:
-												m_dmama = v;
-												break;
-
-								case HP_REG_DMAC_ADDR:
-												m_dmac = v;
-												break;
-
-								case HP_REG_C_ADDR:
-												m_reg_C = v;
-												break;
-
-								case HP_REG_D_ADDR:
-												m_reg_D = v;
-												break;
-
-								default:
-												// Unknown registers are silently discarded
-												break;
-								}
-				} else {
-								m_program->write_word((offs_t)addr << 1 , v);
-				}
-}
-
-void hp_hybrid_cpu_device::WMB(UINT32 addr , UINT8 v)
-{
-				if (addr <= (HP_REG_LAST_ADDR * 2 + 1)) {
-								// Cannot write bytes to registers
-				} else {
-								m_program->write_byte(addr , v);
-				}
-}
-
-UINT16 hp_hybrid_cpu_device::RIO(UINT8 pa , UINT8 ic)
-{
-				return m_io->read_word(HP_MAKE_IOADDR(pa, ic) << 1);
-}
-
-void hp_hybrid_cpu_device::WIO(UINT8 pa , UINT8 ic , UINT16 v)
-{
-				m_io->write_word(HP_MAKE_IOADDR(pa, ic) << 1 , v);
-}
-
-hp_5061_3011_cpu_device::hp_5061_3011_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-: hp_hybrid_cpu_device(mconfig, HP_5061_3011, "HP_5061_3011", tag, owner, clock, "5061-3011")
-{
-=======
 	// Patent hints at the fact that terminal count is detected by bit 15 of dmac being 1 after decrementing
 	bool tc = BIT(--m_dmac , 15) != 0;
 	uint16_t tmp;
@@ -2224,5 +1724,4 @@ uint16_t hp_5061_3011_cpu_device::read_non_common_reg(uint16_t addr)
 void hp_5061_3011_cpu_device::write_non_common_reg(uint16_t addr , uint16_t v)
 {
 	// Non-existing registers are silently discarded
->>>>>>> upstream/master
 }

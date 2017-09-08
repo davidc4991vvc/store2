@@ -8,15 +8,10 @@
 
 **************************************************************************/
 
-<<<<<<< HEAD
-#ifndef __KAN_PAND_H__
-#define __KAN_PAND_H__
-=======
 #ifndef MAME_VIDEO_KAN_PAND_H
 #define MAME_VIDEO_KAN_PAND_H
 
 #pragma once
->>>>>>> upstream/master
 
 /***************************************************************************
     TYPE DEFINITIONS
@@ -26,19 +21,10 @@ class kaneko_pandora_device : public device_t,
 								public device_video_interface
 {
 public:
-<<<<<<< HEAD
-	kaneko_pandora_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-	~kaneko_pandora_device() {}
-
-	// static configuration
-	static void static_set_gfxdecode_tag(device_t &device, const char *tag);
-	static void static_set_palette_tag(device_t &device, const char *tag);
-=======
 	kaneko_pandora_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	// static configuration
 	static void static_set_gfxdecode_tag(device_t &device, const char *tag);
->>>>>>> upstream/master
 	static void set_gfx_region(device_t &device, int gfxregion) { downcast<kaneko_pandora_device &>(device).m_gfx_region = gfxregion; }
 	static void set_offsets(device_t &device, int x_offset, int y_offset)
 	{
@@ -55,39 +41,17 @@ public:
 	void set_clear_bitmap( int clear );
 	void eof();
 	void set_bg_pen( int pen );
-<<<<<<< HEAD
-
-protected:
-	// device-level overrides
-	virtual void device_start();
-	virtual void device_reset();
-=======
 	void flip_screen_set(bool flip) { m_flip_screen = flip; }
 
 protected:
 	// device-level overrides
 	virtual void device_start() override;
 	virtual void device_reset() override;
->>>>>>> upstream/master
 
 	void draw( bitmap_ind16 &bitmap, const rectangle &cliprect );
 
 private:
 	// internal state
-<<<<<<< HEAD
-	UINT8 *         m_spriteram;
-	bitmap_ind16    *m_sprites_bitmap; /* bitmap to render sprites to, Pandora seems to be frame'buffered' */
-	int             m_clear_bitmap;
-	int             m_bg_pen; // might work some other way..
-	UINT8           m_gfx_region;
-	int             m_xoffset;
-	int             m_yoffset;
-	required_device<gfxdecode_device> m_gfxdecode;
-	required_device<palette_device> m_palette;
-};
-
-extern const device_type KANEKO_PANDORA;
-=======
 	std::unique_ptr<uint8_t[]>        m_spriteram;
 	std::unique_ptr<bitmap_ind16> m_sprites_bitmap; /* bitmap to render sprites to, Pandora seems to be frame'buffered' */
 	int             m_clear_bitmap;
@@ -100,7 +64,6 @@ extern const device_type KANEKO_PANDORA;
 };
 
 DECLARE_DEVICE_TYPE(KANEKO_PANDORA, kaneko_pandora_device)
->>>>>>> upstream/master
 
 
 /***************************************************************************
@@ -116,11 +79,4 @@ DECLARE_DEVICE_TYPE(KANEKO_PANDORA, kaneko_pandora_device)
 #define MCFG_KANEKO_PANDORA_GFXDECODE(_gfxtag) \
 	kaneko_pandora_device::static_set_gfxdecode_tag(*device, "^" _gfxtag);
 
-<<<<<<< HEAD
-#define MCFG_KANEKO_PANDORA_PALETTE(_palette_tag) \
-	kaneko_pandora_device::static_set_palette_tag(*device, "^" _palette_tag);
-
-#endif /* __KAN_PAND_H__ */
-=======
 #endif // MAME_VIDEO_KAN_PAND_H
->>>>>>> upstream/master

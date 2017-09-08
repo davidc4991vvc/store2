@@ -20,11 +20,7 @@
 
 PALETTE_INIT_MEMBER(vulgus_state, vulgus)
 {
-<<<<<<< HEAD
-	const UINT8 *color_prom = memregion("proms")->base();
-=======
 	const uint8_t *color_prom = memregion("proms")->base();
->>>>>>> upstream/master
 	int i;
 
 	for (i = 0;i < 256;i++)
@@ -115,13 +111,8 @@ TILE_GET_INFO_MEMBER(vulgus_state::get_bg_tile_info)
 
 void vulgus_state::video_start()
 {
-<<<<<<< HEAD
-	m_fg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(vulgus_state::get_fg_tile_info),this),TILEMAP_SCAN_ROWS, 8, 8,32,32);
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(vulgus_state::get_bg_tile_info),this),TILEMAP_SCAN_COLS,16,16,32,32);
-=======
 	m_fg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(vulgus_state::get_fg_tile_info),this),TILEMAP_SCAN_ROWS, 8, 8,32,32);
 	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(vulgus_state::get_bg_tile_info),this),TILEMAP_SCAN_COLS,16,16,32,32);
->>>>>>> upstream/master
 
 	m_fg_tilemap->configure_groups(*m_gfxdecode->gfx(0), 47);
 
@@ -151,13 +142,8 @@ WRITE8_MEMBER(vulgus_state::bgvideoram_w)
 WRITE8_MEMBER(vulgus_state::c804_w)
 {
 	/* bits 0 and 1 are coin counters */
-<<<<<<< HEAD
-	coin_counter_w(machine(), 0, data & 0x01);
-	coin_counter_w(machine(), 1, data & 0x02);
-=======
 	machine().bookkeeping().coin_counter_w(0, data & 0x01);
 	machine().bookkeeping().coin_counter_w(1, data & 0x02);
->>>>>>> upstream/master
 
 	/* bit 7 flips screen */
 	flip_screen_set(data & 0x80);
@@ -212,11 +198,7 @@ void vulgus_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect)
 	}
 }
 
-<<<<<<< HEAD
-UINT32 vulgus_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t vulgus_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	m_bg_tilemap->set_scrollx(0, m_scroll_low[1] + 256 * m_scroll_high[1]);
 	m_bg_tilemap->set_scrolly(0, m_scroll_low[0] + 256 * m_scroll_high[0]);

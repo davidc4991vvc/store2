@@ -22,18 +22,11 @@
 
 #include "emu.h"
 #include "includes/pgm.h"
-<<<<<<< HEAD
-
-// tables are xored by table at $1998dc
-// tables are the same as drgw3 and drgw2
-static const UINT8 m_olds_source_data[8][0xec] = // table addresses $2951CA
-=======
 #include "machine/pgmprot_igs025_igs028.h"
 
 // tables are xored by table at $1998dc
 // tables are the same as drgw3 and drgw2
 static const uint8_t m_olds_source_data[8][0xec] = // table addresses $2951CA
->>>>>>> upstream/master
 {
 	{ // region 0, unused...
 		0,
@@ -159,18 +152,6 @@ static const uint8_t m_olds_source_data[8][0xec] = // table addresses $2951CA
 	}
 };
 
-<<<<<<< HEAD
-READ16_MEMBER(pgm_028_025_state::olds_prot_swap_r)
-{
-	if (space.device().safe_pc() < 0x100000)	//bios
-		return m_mainram[0x178f4 / 2];
-	else						//game
-		return m_mainram[0x178d8 / 2];
-
-}
-
-=======
->>>>>>> upstream/master
 MACHINE_RESET_MEMBER(pgm_028_025_state,olds)
 {
 	int region = (ioport(":Region")->read()) & 0xff;
@@ -178,25 +159,6 @@ MACHINE_RESET_MEMBER(pgm_028_025_state,olds)
 	m_igs025->m_kb_region = region;
 	m_igs025->m_kb_game_id = 0x00900000 | region;
 
-<<<<<<< HEAD
-	UINT16 *mem16 = (UINT16 *)(memregion(":user2")->base());
-	int i;
-
-	/* populate shared protection ram with data read from pcb .. */
-	for (i = 0; i < 0x4000 / 2; i++)
-	{
-		m_sharedprotram[i] = mem16[i];
-	}
-
-	//ROM:004008B4                 .word 0xFBA5
-	for(i = 0; i < 0x4000 / 2; i++)
-	{
-		if (m_sharedprotram[i] == (0xffff - i))
-			m_sharedprotram[i] = 0x4e75;
-	}
-
-=======
->>>>>>> upstream/master
 	MACHINE_RESET_CALL_MEMBER(pgm);
 }
 
@@ -204,12 +166,7 @@ DRIVER_INIT_MEMBER(pgm_028_025_state,olds)
 {
 	pgm_basic_init();
 
-<<<<<<< HEAD
-	m_maincpu->space(AS_PROGRAM).install_readwrite_handler(0xdcb400, 0xdcb403, read16_delegate(FUNC(igs025_device::olds_r), (igs025_device*)m_igs025), write16_delegate(FUNC(igs025_device::olds_w), (igs025_device*)m_igs025));
-	m_maincpu->space(AS_PROGRAM).install_read_handler(0x8178f4, 0x8178f5, read16_delegate(FUNC(pgm_028_025_state::olds_prot_swap_r), this));
-=======
 	m_maincpu->space(AS_PROGRAM).install_readwrite_handler(0xdcb400, 0xdcb403, read16_delegate(FUNC(igs025_device::killbld_igs025_prot_r), (igs025_device*)m_igs025), write16_delegate(FUNC(igs025_device::olds_w), (igs025_device*)m_igs025));
->>>>>>> upstream/master
 	m_igs028->m_sharedprotram = m_sharedprotram;
 	m_igs025->m_kb_source_data = m_olds_source_data;
 
@@ -228,11 +185,7 @@ void pgm_028_025_state::igs025_to_igs028_callback( void )
 }
 
 
-<<<<<<< HEAD
-MACHINE_CONFIG_START( pgm_028_025_ol, pgm_028_025_state )
-=======
 MACHINE_CONFIG_START( pgm_028_025_ol )
->>>>>>> upstream/master
 	MCFG_FRAGMENT_ADD(pgmbase)
 
 	MCFG_CPU_MODIFY("maincpu")

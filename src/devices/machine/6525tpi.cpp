@@ -104,17 +104,10 @@
 #define CB_MANUAL_LEVEL ((m_cr & 0x40) ? 1 : 0)
 
 
-<<<<<<< HEAD
-const device_type TPI6525 = &device_creator<tpi6525_device>;
-
-tpi6525_device::tpi6525_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, TPI6525, "6525 TPI", tag, owner, clock, "tpi6525", __FILE__),
-=======
 DEFINE_DEVICE_TYPE(TPI6525, tpi6525_device, "tpi6525", "6525 TPI")
 
 tpi6525_device::tpi6525_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, TPI6525, tag, owner, clock),
->>>>>>> upstream/master
 	m_out_irq_cb(*this),
 	m_in_pa_cb(*this),
 	m_out_pa_cb(*this),
@@ -139,15 +132,9 @@ tpi6525_device::tpi6525_device(const machine_config &mconfig, const char *tag, d
 	m_cr(0),
 	m_air(0)
 {
-<<<<<<< HEAD
-	for (int i = 0; i < 5; i++)
-	{
-		m_irq_level[i] = 0;
-=======
 	for (auto & elem : m_irq_level)
 	{
 		elem = 0;
->>>>>>> upstream/master
 	}
 }
 
@@ -309,11 +296,7 @@ WRITE_LINE_MEMBER( tpi6525_device::i4_w )
 
 READ8_MEMBER( tpi6525_device::pa_r )
 {
-<<<<<<< HEAD
-	UINT8 data = m_in_a;
-=======
 	uint8_t data = m_in_a;
->>>>>>> upstream/master
 
 	if (!m_in_pa_cb.isnull())
 		data = m_in_pa_cb(offset);
@@ -332,11 +315,7 @@ WRITE8_MEMBER( tpi6525_device::pa_w )
 
 READ8_MEMBER( tpi6525_device::pb_r )
 {
-<<<<<<< HEAD
-	UINT8 data = m_in_b;
-=======
 	uint8_t data = m_in_b;
->>>>>>> upstream/master
 
 	if (!m_in_pb_cb.isnull())
 		data = m_in_pb_cb(offset);
@@ -355,11 +334,7 @@ WRITE8_MEMBER( tpi6525_device::pb_w )
 
 READ8_MEMBER( tpi6525_device::pc_r )
 {
-<<<<<<< HEAD
-	UINT8 data = m_in_c;
-=======
 	uint8_t data = m_in_c;
->>>>>>> upstream/master
 
 	if (!m_in_pc_cb.isnull())
 		data &= m_in_pc_cb(offset);
@@ -378,11 +353,7 @@ WRITE8_MEMBER( tpi6525_device::pc_w )
 
 READ8_MEMBER( tpi6525_device::read )
 {
-<<<<<<< HEAD
-	UINT8 data = 0xff;
-=======
 	uint8_t data = 0xff;
->>>>>>> upstream/master
 
 	switch (offset & 7)
 	{
@@ -566,11 +537,7 @@ WRITE8_MEMBER( tpi6525_device::write )
 	}
 }
 
-<<<<<<< HEAD
-void tpi6525_device::port_line_w(UINT8 &port, int line, int state)
-=======
 void tpi6525_device::port_line_w(uint8_t &port, int line, int state)
->>>>>>> upstream/master
 {
 	port &= ~(1 << line);
 	port |= state << line;
@@ -578,29 +545,17 @@ void tpi6525_device::port_line_w(uint8_t &port, int line, int state)
 
 /* this should probably be done better, needed for amigacd.c */
 
-<<<<<<< HEAD
-UINT8 tpi6525_device::get_ddr_a()
-=======
 uint8_t tpi6525_device::get_ddr_a()
->>>>>>> upstream/master
 {
 	return m_ddr_a;
 }
 
-<<<<<<< HEAD
-UINT8 tpi6525_device::get_ddr_b()
-=======
 uint8_t tpi6525_device::get_ddr_b()
->>>>>>> upstream/master
 {
 	return m_ddr_b;
 }
 
-<<<<<<< HEAD
-UINT8 tpi6525_device::get_ddr_c()
-=======
 uint8_t tpi6525_device::get_ddr_c()
->>>>>>> upstream/master
 {
 	return m_ddr_c;
 }

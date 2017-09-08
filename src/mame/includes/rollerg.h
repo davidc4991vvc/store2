@@ -29,10 +29,7 @@ public:
 
 	/* misc */
 	int        m_readzoomroms;
-<<<<<<< HEAD
-=======
 	emu_timer *m_nmi_timer;
->>>>>>> upstream/master
 
 	/* devices */
 	required_device<cpu_device> m_maincpu;
@@ -46,23 +43,13 @@ public:
 	DECLARE_WRITE8_MEMBER(sound_arm_nmi_w);
 	DECLARE_READ8_MEMBER(pip_r);
 	DECLARE_WRITE_LINE_MEMBER(rollerg_irq_ack_w);
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void machine_reset();
-	UINT32 screen_update_rollerg(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
 	uint32_t screen_update_rollerg(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	K05324X_CB_MEMBER(sprite_callback);
 	K051316_CB_MEMBER(zoom_callback);
 	DECLARE_WRITE8_MEMBER(banking_callback);
 
 protected:
-<<<<<<< HEAD
-	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
-=======
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
->>>>>>> upstream/master
 };

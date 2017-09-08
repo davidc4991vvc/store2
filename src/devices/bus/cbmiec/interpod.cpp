@@ -57,10 +57,7 @@ Notes:
 
 */
 
-<<<<<<< HEAD
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #include "interpod.h"
 
 
@@ -79,11 +76,7 @@ Notes:
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type INTERPOD = &device_creator<interpod_device>;
-=======
 DEFINE_DEVICE_TYPE(INTERPOD, interpod_device, "interpod", "Interpod")
->>>>>>> upstream/master
 
 
 
@@ -106,11 +99,7 @@ ROM_END
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const rom_entry *interpod_device::device_rom_region() const
-=======
 const tiny_rom_entry *interpod_device::device_rom_region() const
->>>>>>> upstream/master
 {
 	return ROM_NAME( interpod );
 }
@@ -121,13 +110,8 @@ const tiny_rom_entry *interpod_device::device_rom_region() const
 //-------------------------------------------------
 
 static ADDRESS_MAP_START( interpod_mem, AS_PROGRAM, 8, interpod_device )
-<<<<<<< HEAD
-	AM_RANGE(0x0000, 0x007f) AM_MIRROR(0x3b80) AM_DEVICE(R6532_TAG, mos6532_t, ram_map)
-	AM_RANGE(0x0400, 0x041f) AM_MIRROR(0x3be0) AM_DEVICE(R6532_TAG, mos6532_t, io_map)
-=======
 	AM_RANGE(0x0000, 0x007f) AM_MIRROR(0x3b80) AM_DEVICE(R6532_TAG, mos6532_new_device, ram_map)
 	AM_RANGE(0x0400, 0x041f) AM_MIRROR(0x3be0) AM_DEVICE(R6532_TAG, mos6532_new_device, io_map)
->>>>>>> upstream/master
 	AM_RANGE(0x2000, 0x2000) AM_MIRROR(0x9ffe) AM_DEVREADWRITE(MC6850_TAG, acia6850_device, status_r, control_w)
 	AM_RANGE(0x2001, 0x2001) AM_MIRROR(0x9ffe) AM_DEVREADWRITE(MC6850_TAG, acia6850_device, data_r, data_w)
 	AM_RANGE(0x4000, 0x47ff) AM_MIRROR(0xb800) AM_ROM AM_REGION(R6502_TAG, 0)
@@ -136,41 +120,14 @@ ADDRESS_MAP_END
 
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  MACHINE_DRIVER( interpod )
-//-------------------------------------------------
-
-static MACHINE_CONFIG_FRAGMENT( interpod )
-=======
 //  device_add_mconfig - add device configuration
 //-------------------------------------------------
 
 MACHINE_CONFIG_MEMBER( interpod_device::device_add_mconfig )
->>>>>>> upstream/master
 	MCFG_CPU_ADD(R6502_TAG, M6502, 1000000)
 	MCFG_CPU_PROGRAM_MAP(interpod_mem)
 
 	MCFG_DEVICE_ADD(R6522_TAG, VIA6522, 1000000)
-<<<<<<< HEAD
-	MCFG_DEVICE_ADD(R6532_TAG, MOS6532n, 1000000)
-	MCFG_DEVICE_ADD(MC6850_TAG, ACIA6850, 0)
-
-	MCFG_CBM_IEEE488_ADD(NULL)
-MACHINE_CONFIG_END
-
-
-//-------------------------------------------------
-//  machine_config_additions - device-specific
-//  machine configurations
-//-------------------------------------------------
-
-machine_config_constructor interpod_device::device_mconfig_additions() const
-{
-	return MACHINE_CONFIG_NAME( interpod );
-}
-
-
-=======
 	MCFG_DEVICE_ADD(R6532_TAG, MOS6532_NEW, 1000000)
 	MCFG_DEVICE_ADD(MC6850_TAG, ACIA6850, 0)
 
@@ -178,7 +135,6 @@ machine_config_constructor interpod_device::device_mconfig_additions() const
 MACHINE_CONFIG_END
 
 
->>>>>>> upstream/master
 //**************************************************************************
 //  LIVE DEVICE
 //**************************************************************************
@@ -187,13 +143,8 @@ MACHINE_CONFIG_END
 //  interpod_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-interpod_device::interpod_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, INTERPOD, "Interpod", tag, owner, clock, "interpod", __FILE__),
-=======
 interpod_device::interpod_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, INTERPOD, tag, owner, clock),
->>>>>>> upstream/master
 		device_cbm_iec_interface(mconfig, *this),
 		m_maincpu(*this, R6502_TAG),
 		m_via(*this, R6522_TAG),

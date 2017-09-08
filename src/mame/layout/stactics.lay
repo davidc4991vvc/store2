@@ -1,7 +1,4 @@
-<<<<<<< HEAD
-=======
 <?xml version="1.0"?>
->>>>>>> upstream/master
 <mamelayout version="2">
 	<element name="divider">
 		<rect>
@@ -1162,8 +1159,4 @@
 			<color alpha="0.7" />
 		</bezel>
 	</view>
-<<<<<<< HEAD
 </mamelayout>
-=======
-</mamelayout>
->>>>>>> upstream/master

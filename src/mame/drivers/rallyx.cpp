@@ -191,11 +191,6 @@ TODO:
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/z80/z80.h"
-#include "sound/samples.h"
-#include "includes/rallyx.h"
-=======
 #include "includes/rallyx.h"
 
 #include "cpu/z80/z80.h"
@@ -205,7 +200,6 @@ TODO:
 #include "sound/samples.h"
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 #define MASTER_CLOCK    XTAL_18_432MHz
 
@@ -223,97 +217,6 @@ WRITE8_MEMBER(rallyx_state::rallyx_interrupt_vector_w)
 }
 
 
-<<<<<<< HEAD
-WRITE8_MEMBER(rallyx_state::rallyx_bang_w)
-{
-	if (data == 0 && m_last_bang != 0)
-		m_samples->start(0, 0);
-
-	m_last_bang = data;
-}
-
-WRITE8_MEMBER(rallyx_state::rallyx_latch_w)
-{
-	int bit = data & 1;
-
-	switch (offset)
-	{
-		case 0x00:  /* BANG */
-			rallyx_bang_w(space, 0, bit);
-			break;
-
-		case 0x01:  /* INT ON */
-			m_main_irq_mask = bit;
-			if (!bit)
-				m_maincpu->set_input_line(0, CLEAR_LINE);
-			break;
-
-		case 0x02:  /* SOUND ON */
-			/* this doesn't work in New Rally X so I'm not supporting it */
-//          m_namco_sound->pacman_sound_enable_w(bit);
-			break;
-
-		case 0x03:  /* FLIP */
-			flip_screen_set(bit);
-			break;
-
-		case 0x04:
-			set_led_status(machine(), 0, bit);
-			break;
-
-		case 0x05:
-			set_led_status(machine(), 1, bit);
-			break;
-
-		case 0x06:
-			coin_lockout_w(machine(), 0, !bit);
-			break;
-
-		case 0x07:
-			coin_counter_w(machine(), 0, bit);
-			break;
-	}
-}
-
-
-WRITE8_MEMBER(rallyx_state::locomotn_latch_w)
-{
-	int bit = data & 1;
-
-	switch (offset)
-	{
-		case 0x00:  /* SOUNDON */
-			m_timeplt_audio->sh_irqtrigger_w(space,0,bit);
-			break;
-
-		case 0x01:  /* INTST */
-			m_main_irq_mask = bit;
-			break;
-
-		case 0x02:  /* MUT */
-//          sound disable
-			break;
-
-		case 0x03:  /* FLIP */
-			flip_screen_set(bit);
-			break;
-
-		case 0x04:  /* OUT1 */
-			coin_counter_w(machine(), 0, bit);
-			break;
-
-		case 0x05:  /* OUT2 */
-			break;
-
-		case 0x06:  /* OUT3 */
-			coin_counter_w(machine(), 1,bit);
-			break;
-
-		case 0x07:  /* STARSON */
-			tactcian_starson_w(space, offset, bit);
-			break;
-	}
-=======
 WRITE_LINE_MEMBER(rallyx_state::bang_w)
 {
 	if (state == 0 && m_last_bang != 0)
@@ -371,7 +274,6 @@ WRITE_LINE_MEMBER(rallyx_state::coin_counter_1_w)
 WRITE_LINE_MEMBER(rallyx_state::coin_counter_2_w)
 {
 	machine().bookkeeping().coin_counter_w(1, state);
->>>>>>> upstream/master
 }
 
 
@@ -389,20 +291,12 @@ static ADDRESS_MAP_START( rallyx_map, AS_PROGRAM, 8, rallyx_state )
 	AM_RANGE(0xa080, 0xa080) AM_READ_PORT("P2")
 	AM_RANGE(0xa100, 0xa100) AM_READ_PORT("DSW")
 	AM_RANGE(0xa000, 0xa00f) AM_WRITEONLY AM_SHARE("radarattr")
-<<<<<<< HEAD
-	AM_RANGE(0xa080, 0xa080) AM_WRITE(watchdog_reset_w)
-=======
 	AM_RANGE(0xa080, 0xa080) AM_DEVWRITE("watchdog", watchdog_timer_device, reset_w)
->>>>>>> upstream/master
 	AM_RANGE(0xa100, 0xa11f) AM_DEVWRITE("namco", namco_device, pacman_sound_w)
 	AM_RANGE(0xa130, 0xa130) AM_WRITE(rallyx_scrollx_w)
 	AM_RANGE(0xa140, 0xa140) AM_WRITE(rallyx_scrolly_w)
 	AM_RANGE(0xa170, 0xa170) AM_WRITENOP            /* ? */
-<<<<<<< HEAD
-	AM_RANGE(0xa180, 0xa187) AM_WRITE(rallyx_latch_w)
-=======
 	AM_RANGE(0xa180, 0xa187) AM_DEVWRITE("mainlatch", ls259_device, write_d0)
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( io_map, AS_IO, 8, rallyx_state )
@@ -420,19 +314,11 @@ static ADDRESS_MAP_START( jungler_map, AS_PROGRAM, 8, rallyx_state )
 	AM_RANGE(0xa100, 0xa100) AM_READ_PORT("DSW1")
 	AM_RANGE(0xa180, 0xa180) AM_READ_PORT("DSW2")
 	AM_RANGE(0xa000, 0xa00f) AM_MIRROR(0x00f0) AM_WRITEONLY AM_SHARE("radarattr")   // jungler writes to a03x
-<<<<<<< HEAD
-	AM_RANGE(0xa080, 0xa080) AM_WRITE(watchdog_reset_w)
-	AM_RANGE(0xa100, 0xa100) AM_WRITE(soundlatch_byte_w)
-	AM_RANGE(0xa130, 0xa130) AM_WRITE(rallyx_scrollx_w) /* only jungler and tactcian */
-	AM_RANGE(0xa140, 0xa140) AM_WRITE(rallyx_scrolly_w) /* only jungler and tactcian */
-	AM_RANGE(0xa180, 0xa187) AM_WRITE(locomotn_latch_w)
-=======
 	AM_RANGE(0xa080, 0xa080) AM_DEVWRITE("watchdog", watchdog_timer_device, reset_w)
 	AM_RANGE(0xa100, 0xa100) AM_DEVWRITE("soundlatch", generic_latch_8_device, write)
 	AM_RANGE(0xa130, 0xa130) AM_WRITE(rallyx_scrollx_w) /* only jungler and tactcian */
 	AM_RANGE(0xa140, 0xa140) AM_WRITE(rallyx_scrolly_w) /* only jungler and tactcian */
 	AM_RANGE(0xa180, 0xa187) AM_DEVWRITE("mainlatch", ls259_device, write_d0)
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -516,8 +402,6 @@ static INPUT_PORTS_START( rallyx )
 	PORT_SERVICE_DIPLOC( 0x01, 0x01, "DSW:1")
 INPUT_PORTS_END
 
-<<<<<<< HEAD
-=======
 static INPUT_PORTS_START( dngrtrck )
 	PORT_INCLUDE( rallyx )
 
@@ -529,7 +413,6 @@ static INPUT_PORTS_START( dngrtrck )
 	PORT_DIPSETTING(    0xc0, "1stC/2C 2ndC/3C" )
 INPUT_PORTS_END
 
->>>>>>> upstream/master
 static INPUT_PORTS_START( nrallyx )
 	PORT_INCLUDE( rallyx )
 
@@ -905,11 +788,7 @@ static const char *const rallyx_sample_names[] =
 {
 	"*rallyx",
 	"bang",
-<<<<<<< HEAD
-	0   /* end of array */
-=======
 	nullptr   /* end of array */
->>>>>>> upstream/master
 };
 
 /*************************************
@@ -924,15 +803,6 @@ MACHINE_START_MEMBER(rallyx_state,rallyx)
 	save_item(NAME(m_stars_enable));
 }
 
-<<<<<<< HEAD
-MACHINE_RESET_MEMBER(rallyx_state,rallyx)
-{
-	m_last_bang = 0;
-	m_stars_enable = 0;
-}
-
-=======
->>>>>>> upstream/master
 INTERRUPT_GEN_MEMBER(rallyx_state::rallyx_vblank_irq)
 {
 	if (m_main_irq_mask)
@@ -945,11 +815,7 @@ INTERRUPT_GEN_MEMBER(rallyx_state::jungler_vblank_irq)
 		device.execute().set_input_line(INPUT_LINE_NMI, PULSE_LINE);
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( rallyx, rallyx_state )
-=======
 static MACHINE_CONFIG_START( rallyx )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, MASTER_CLOCK/6)    /* 3.072 MHz */
@@ -957,10 +823,6 @@ static MACHINE_CONFIG_START( rallyx )
 	MCFG_CPU_IO_MAP(io_map)
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", rallyx_state, rallyx_vblank_irq)
 
-<<<<<<< HEAD
-	MCFG_MACHINE_START_OVERRIDE(rallyx_state,rallyx)
-	MCFG_MACHINE_RESET_OVERRIDE(rallyx_state,rallyx)
-=======
 	MCFG_DEVICE_ADD("mainlatch", LS259, 0) // 259 at 12M or 4099 at 11M on Logic Board I
 	MCFG_ADDRESSABLE_LATCH_Q0_OUT_CB(WRITELINE(rallyx_state, bang_w)) // BANG
 	MCFG_ADDRESSABLE_LATCH_Q1_OUT_CB(WRITELINE(rallyx_state, irq_mask_w)) // INT ON
@@ -974,7 +836,6 @@ static MACHINE_CONFIG_START( rallyx )
 	MCFG_WATCHDOG_ADD("watchdog")
 
 	MCFG_MACHINE_START_OVERRIDE(rallyx_state,rallyx)
->>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
@@ -1007,21 +868,13 @@ static MACHINE_CONFIG_START( rallyx )
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( jungler, rallyx_state )
-=======
 static MACHINE_CONFIG_START( jungler )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, MASTER_CLOCK/6)    /* 3.072 MHz */
 	MCFG_CPU_PROGRAM_MAP(jungler_map)
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", rallyx_state, jungler_vblank_irq)
 
-<<<<<<< HEAD
-	MCFG_MACHINE_START_OVERRIDE(rallyx_state,rallyx)
-	MCFG_MACHINE_RESET_OVERRIDE(rallyx_state,rallyx)
-=======
 	MCFG_DEVICE_ADD("mainlatch", LS259, 0) // 1C on Loco-Motion
 	MCFG_ADDRESSABLE_LATCH_Q0_OUT_CB(DEVWRITELINE("timeplt_audio", timeplt_audio_device, sh_irqtrigger_w)) // SOUNDON
 	MCFG_ADDRESSABLE_LATCH_Q1_OUT_CB(WRITELINE(rallyx_state, irq_mask_w)) // INTST
@@ -1035,7 +888,6 @@ static MACHINE_CONFIG_START( jungler )
 	MCFG_WATCHDOG_ADD("watchdog")
 
 	MCFG_MACHINE_START_OVERRIDE(rallyx_state,rallyx)
->>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
@@ -1054,11 +906,8 @@ static MACHINE_CONFIG_START( jungler )
 	MCFG_PALETTE_INIT_OWNER(rallyx_state,jungler)
 	MCFG_VIDEO_START_OVERRIDE(rallyx_state,jungler)
 
-<<<<<<< HEAD
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 
->>>>>>> upstream/master
 	/* sound hardware */
 	MCFG_FRAGMENT_ADD(locomotn_sound)
 MACHINE_CONFIG_END
@@ -1211,8 +1060,6 @@ ROM_START( rallyxmr )
 	ROM_LOAD( "rx1-4.2m",     0x0100, 0x0100, CRC(77245b66) SHA1(0c4d0bee858b97632411c440bea6948a74759746) )  /* Prom type: IM5623 - not used */
 ROM_END
 
-<<<<<<< HEAD
-=======
 ROM_START( dngrtrck ) // PROMs weren't dumped for this PCB, supposed to match
 	ROM_REGION( 0x10000, "maincpu", 0 )
 	ROM_LOAD( "1B-2716.BIN",      0x0000, 0x0800, CRC(b6180a12) SHA1(f442fe81f7fac6e915944640c763d7016a6577f6) )
@@ -1242,7 +1089,6 @@ ROM_START( dngrtrck ) // PROMs weren't dumped for this PCB, supposed to match
 	ROM_LOAD( "rx1-4.2m",     0x0100, 0x0100, CRC(77245b66) SHA1(0c4d0bee858b97632411c440bea6948a74759746) )  /* Prom type: IM5623 - not used */
 ROM_END
 
->>>>>>> upstream/master
 ROM_START( nrallyx )
 	ROM_REGION( 0x10000, "maincpu", 0 )
 	ROM_LOAD( "nrx_prg1.1d",  0x0000, 0x0800, CRC(ba7de9fc) SHA1(2133ca327589600bcbd796c213f034daa0457f72) )
@@ -1584,25 +1430,6 @@ ROM_END
  *
  *************************************/
 
-<<<<<<< HEAD
-GAME( 1980, rallyx,   0,        rallyx,   rallyx, driver_device,   0, ROT0,  "Namco", "Rally X (32k Ver.?)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 1980, rallyxa,  rallyx,   rallyx,   rallyx, driver_device,   0, ROT0,  "Namco", "Rally X", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 1980, rallyxm,  rallyx,   rallyx,   rallyx, driver_device,   0, ROT0,  "Namco (Midway license)", "Rally X (Midway)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 1980, rallyxmr, rallyx,   rallyx,   rallyx, driver_device,   0, ROT0,  "bootleg (Model Racing)", "Rally X (Model Racing bootleg)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 1981, nrallyx,  0,        rallyx,   nrallyx, driver_device,  0, ROT0,  "Namco", "New Rally X", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 1981, nrallyxb, nrallyx,  rallyx,   nrallyx, driver_device,  0, ROT0,  "Namco", "New Rally X (bootleg?)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 1981, jungler,  0,        jungler,  jungler, driver_device,  0, ROT90, "Konami", "Jungler", MACHINE_SUPPORTS_SAVE )
-GAME( 1981, junglers, jungler,  jungler,  jungler, driver_device,  0, ROT90, "Konami (Stern Electronics license)", "Jungler (Stern Electronics)", MACHINE_SUPPORTS_SAVE )
-GAME( 1982, jackler,  jungler,  jungler,  jungler, driver_device,  0, ROT90, "bootleg", "Jackler (Jungler bootleg)", MACHINE_SUPPORTS_SAVE )
-GAME( 1982, savanna,  jungler,  jungler,  jungler, driver_device,  0, ROT90, "bootleg (Olympia)", "Savanna (Jungler bootleg)", MACHINE_SUPPORTS_SAVE ) // or licensed from Konami?
-GAME( 1982, tactcian, 0,        tactcian, tactcian, driver_device, 0, ROT90, "Konami (Sega license)", "Tactician (set 1)", MACHINE_SUPPORTS_SAVE )
-GAME( 1981, tactcian2,tactcian, tactcian, tactcian, driver_device, 0, ROT90, "Konami (Sega license)", "Tactician (set 2)", MACHINE_SUPPORTS_SAVE )
-GAME( 1982, locomotn, 0,        locomotn, locomotn, driver_device, 0, ROT90, "Konami (Centuri license)", "Loco-Motion", MACHINE_SUPPORTS_SAVE )
-GAME( 1982, gutangtn, locomotn, locomotn, locomotn, driver_device, 0, ROT90, "Konami (Sega license)", "Guttang Gottong", MACHINE_SUPPORTS_SAVE )
-GAME( 1982, cottong,  locomotn, locomotn, locomotn, driver_device, 0, ROT90, "bootleg", "Cotocoto Cottong", MACHINE_SUPPORTS_SAVE )
-GAME( 1982, locoboot, locomotn, locomotn, locomotn, driver_device, 0, ROT90, "bootleg", "Loco-Motion (bootleg)", MACHINE_SUPPORTS_SAVE )
-GAME( 1983, commsega, 0,        commsega, commsega, driver_device, 0, ROT90, "Sega", "Commando (Sega)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1980, rallyx,   0,        rallyx,   rallyx,   rallyx_state, 0, ROT0,  "Namco", "Rally X (32k Ver.?)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
 GAME( 1980, rallyxa,  rallyx,   rallyx,   rallyx,   rallyx_state, 0, ROT0,  "Namco", "Rally X", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
 GAME( 1980, rallyxm,  rallyx,   rallyx,   rallyx,   rallyx_state, 0, ROT0,  "Namco (Midway license)", "Rally X (Midway)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
@@ -1621,4 +1448,3 @@ GAME( 1982, gutangtn, locomotn, locomotn, locomotn, rallyx_state, 0, ROT90, "Kon
 GAME( 1982, cottong,  locomotn, locomotn, locomotn, rallyx_state, 0, ROT90, "bootleg", "Cotocoto Cottong", MACHINE_SUPPORTS_SAVE )
 GAME( 1982, locoboot, locomotn, locomotn, locomotn, rallyx_state, 0, ROT90, "bootleg", "Loco-Motion (bootleg)", MACHINE_SUPPORTS_SAVE )
 GAME( 1983, commsega, 0,        commsega, commsega, rallyx_state, 0, ROT90, "Sega", "Commando (Sega)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

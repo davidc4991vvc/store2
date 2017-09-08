@@ -1,9 +1,5 @@
 // license:BSD-3-Clause
-<<<<<<< HEAD
-// copyright-holders:Aaron Giles
-=======
 // copyright-holders:Aaron Giles, Vas Crabb
->>>>>>> upstream/master
 /***************************************************************************
 
     coretmpl.h
@@ -11,63 +7,6 @@
     Core templates for basic non-string types.
 
 ***************************************************************************/
-<<<<<<< HEAD
-
-#pragma once
-
-#ifndef __CORETMPL_H__
-#define __CORETMPL_H__
-
-#include "osdcore.h"
-#include "corealloc.h"
-
-#include <vector>
-
-// TEMPORARY helper to catch is_pod assertions in the debugger
-#if 0
-#undef assert
-#define assert(x) do { if (!(x)) { fprintf(stderr, "Assert: %s\n", #x); osd_break_into_debugger("Assertion failed"); } } while (0)
-#endif
-
-
-// ======================> auto_pointer
-
-// an object that transparently wraps a pointer and auto-frees it upon destruction
-template<class _ElementType>
-class auto_pointer
-{
-private:
-	// we don't support deep copying
-	auto_pointer(const auto_pointer &);
-	auto_pointer &operator=(const auto_pointer &);
-
-public:
-	// construction/destruction
-	auto_pointer(_ElementType *value = NULL)
-		: m_ptr(value) { }
-	virtual ~auto_pointer() { reset(); }
-
-	// operators
-	operator _ElementType *() const { return m_ptr; }
-	_ElementType &operator*() const { assert(m_ptr != NULL); return *m_ptr; }
-	_ElementType *operator->() const { return m_ptr; }
-
-	// simple getters
-	_ElementType *get() const { return m_ptr; }
-
-	// core operations
-	void reset(_ElementType *ptr = NULL) { if (m_ptr != ptr) { global_free(m_ptr); m_ptr = ptr; } }
-
-private:
-	// internal state
-	_ElementType *  m_ptr;          // pointer we are tracking
-};
-
-
-
-typedef std::vector<UINT8> dynamic_buffer;
-
-=======
 #ifndef MAME_UTIL_CORETMPL_H
 #define MAME_UTIL_CORETMPL_H
 
@@ -93,39 +32,12 @@ typedef std::vector<UINT8> dynamic_buffer;
 #include <utility>
 #include <vector>
 
->>>>>>> upstream/master
 
 // ======================> simple_list
 
 // a simple_list is a singly-linked list whose 'next' pointer is owned
 // by the object
 template<class _ElementType>
-<<<<<<< HEAD
-class simple_list
-{
-	// we don't support deep copying
-	simple_list(const simple_list &);
-	simple_list &operator=(const simple_list &);
-
-public:
-	// construction/destruction
-	simple_list()
-		: m_head(NULL),
-			m_tail(NULL),
-			m_count(0) { }
-
-	virtual ~simple_list() { reset(); }
-
-	// simple getters
-	_ElementType *first() const { return m_head; }
-	_ElementType *last() const { return m_tail; }
-	int count() const { return m_count; }
-
-	// remove (free) all objects in the list, leaving an empty list
-	void reset()
-	{
-		while (m_head != NULL)
-=======
 class simple_list final
 {
 public:
@@ -193,35 +105,22 @@ public:
 	void reset() noexcept
 	{
 		while (m_head != nullptr)
->>>>>>> upstream/master
 			remove(*m_head);
 	}
 
 	// add the given object to the head of the list
-<<<<<<< HEAD
-	_ElementType &prepend(_ElementType &object)
-	{
-		object.m_next = m_head;
-		m_head = &object;
-		if (m_tail == NULL)
-=======
 	_ElementType &prepend(_ElementType &object) noexcept
 	{
 		object.m_next = m_head;
 		m_head = &object;
 		if (m_tail == nullptr)
->>>>>>> upstream/master
 			m_tail = m_head;
 		m_count++;
 		return object;
 	}
 
 	// add the given list to the head of the list
-<<<<<<< HEAD
-	void prepend_list(simple_list<_ElementType> &list)
-=======
 	void prepend_list(simple_list<_ElementType> &list) noexcept
->>>>>>> upstream/master
 	{
 		int count = list.count();
 		if (count == 0)
@@ -230,27 +129,16 @@ public:
 		_ElementType *head = list.detach_all();
 		tail->m_next = m_head;
 		m_head = head;
-<<<<<<< HEAD
-		if (m_tail == NULL)
-=======
 		if (m_tail == nullptr)
->>>>>>> upstream/master
 			m_tail = tail;
 		m_count += count;
 	}
 
 	// add the given object to the tail of the list
-<<<<<<< HEAD
-	_ElementType &append(_ElementType &object)
-	{
-		object.m_next = NULL;
-		if (m_tail != NULL)
-=======
 	_ElementType &append(_ElementType &object) noexcept
 	{
 		object.m_next = nullptr;
 		if (m_tail != nullptr)
->>>>>>> upstream/master
 			m_tail = m_tail->m_next = &object;
 		else
 			m_tail = m_head = &object;
@@ -259,22 +147,14 @@ public:
 	}
 
 	// add the given list to the tail of the list
-<<<<<<< HEAD
-	void append_list(simple_list<_ElementType> &list)
-=======
 	void append_list(simple_list<_ElementType> &list) noexcept
->>>>>>> upstream/master
 	{
 		int count = list.count();
 		if (count == 0)
 			return;
 		_ElementType *tail = list.last();
 		_ElementType *head = list.detach_all();
-<<<<<<< HEAD
-		if (m_tail != NULL)
-=======
 		if (m_tail != nullptr)
->>>>>>> upstream/master
 			m_tail->m_next = head;
 		else
 			m_head = head;
@@ -282,17 +162,10 @@ public:
 		m_count += count;
 	}
 
-<<<<<<< HEAD
-	// insert the given object after a particular object (NULL means prepend)
-	_ElementType &insert_after(_ElementType &object, _ElementType *insert_after)
-	{
-		if (insert_after == NULL)
-=======
 	// insert the given object after a particular object (nullptr means prepend)
 	_ElementType &insert_after(_ElementType &object, _ElementType *insert_after) noexcept
 	{
 		if (insert_after == nullptr)
->>>>>>> upstream/master
 			return prepend(object);
 		object.m_next = insert_after->m_next;
 		insert_after->m_next = &object;
@@ -302,21 +175,12 @@ public:
 		return object;
 	}
 
-<<<<<<< HEAD
-	// insert the given object before a particular object (NULL means append)
-	_ElementType &insert_before(_ElementType &object, _ElementType *insert_before)
-	{
-		if (insert_before == NULL)
-			return append(object);
-		for (_ElementType **curptr = &m_head; *curptr != NULL; curptr = &(*curptr)->m_next)
-=======
 	// insert the given object before a particular object (nullptr means append)
 	_ElementType &insert_before(_ElementType &object, _ElementType *insert_before) noexcept
 	{
 		if (insert_before == nullptr)
 			return append(object);
 		for (_ElementType **curptr = &m_head; *curptr != nullptr; curptr = &(*curptr)->m_next)
->>>>>>> upstream/master
 			if (*curptr == insert_before)
 			{
 				object.m_next = insert_before;
@@ -330,15 +194,6 @@ public:
 	}
 
 	// replace an item in the list at the same location, and remove it
-<<<<<<< HEAD
-	_ElementType &replace_and_remove(_ElementType &object, _ElementType &toreplace)
-	{
-		_ElementType *prev = NULL;
-		for (_ElementType *cur = m_head; cur != NULL; prev = cur, cur = cur->m_next)
-			if (cur == &toreplace)
-			{
-				if (prev != NULL)
-=======
 	_ElementType &replace_and_remove(_ElementType &object, _ElementType &toreplace) noexcept
 	{
 		_ElementType *prev = nullptr;
@@ -346,7 +201,6 @@ public:
 			if (cur == &toreplace)
 			{
 				if (prev != nullptr)
->>>>>>> upstream/master
 					prev->m_next = &object;
 				else
 					m_head = &object;
@@ -360,17 +214,6 @@ public:
 	}
 
 	// detach the head item from the list, but don't free its memory
-<<<<<<< HEAD
-	_ElementType *detach_head()
-	{
-		_ElementType *result = m_head;
-		if (result != NULL)
-		{
-			m_head = result->m_next;
-			m_count--;
-			if (m_head == NULL)
-				m_tail = NULL;
-=======
 	_ElementType *detach_head() noexcept
 	{
 		_ElementType *result = m_head;
@@ -380,21 +223,11 @@ public:
 			m_count--;
 			if (m_head == nullptr)
 				m_tail = nullptr;
->>>>>>> upstream/master
 		}
 		return result;
 	}
 
 	// detach the given item from the list, but don't free its memory
-<<<<<<< HEAD
-	_ElementType &detach(_ElementType &object)
-	{
-		_ElementType *prev = NULL;
-		for (_ElementType *cur = m_head; cur != NULL; prev = cur, cur = cur->m_next)
-			if (cur == &object)
-			{
-				if (prev != NULL)
-=======
 	_ElementType &detach(_ElementType &object) noexcept
 	{
 		_ElementType *prev = nullptr;
@@ -402,7 +235,6 @@ public:
 			if (cur == &object)
 			{
 				if (prev != nullptr)
->>>>>>> upstream/master
 					prev->m_next = object.m_next;
 				else
 					m_head = object.m_next;
@@ -414,49 +246,22 @@ public:
 		return object;
 	}
 
-<<<<<<< HEAD
-	// deatch the entire list, returning the head, but don't free memory
-	_ElementType *detach_all()
-	{
-		_ElementType *result = m_head;
-		m_head = m_tail = NULL;
-=======
 	// detach the entire list, returning the head, but don't free memory
 	_ElementType *detach_all() noexcept
 	{
 		_ElementType *result = m_head;
 		m_head = m_tail = nullptr;
->>>>>>> upstream/master
 		m_count = 0;
 		return result;
 	}
 
 	// remove the given object and free its memory
-<<<<<<< HEAD
-	void remove(_ElementType &object)
-=======
 	void remove(_ElementType &object) noexcept
->>>>>>> upstream/master
 	{
 		global_free(&detach(object));
 	}
 
 	// find an object by index in the list
-<<<<<<< HEAD
-	_ElementType *find(int index) const
-	{
-		for (_ElementType *cur = m_head; cur != NULL; cur = cur->m_next)
-			if (index-- == 0)
-				return cur;
-		return NULL;
-	}
-
-	// return the index of the given object in the list
-	int indexof(const _ElementType &object) const
-	{
-		int index = 0;
-		for (_ElementType *cur = m_head; cur != NULL; cur = cur->m_next)
-=======
 	_ElementType *find(int index) const noexcept
 	{
 		for (_ElementType *cur = m_head; cur != nullptr; cur = cur->m_next)
@@ -470,7 +275,6 @@ public:
 	{
 		int index = 0;
 		for (_ElementType *cur = m_head; cur != nullptr; cur = cur->m_next)
->>>>>>> upstream/master
 		{
 			if (cur == &object)
 				return index;
@@ -500,11 +304,7 @@ public:
 
 	// construction/destruction
 	simple_list_wrapper(_ObjectType *object)
-<<<<<<< HEAD
-		: m_next(NULL),
-=======
 		: m_next(nullptr),
->>>>>>> upstream/master
 			m_object(object) { }
 
 	// operators
@@ -542,21 +342,13 @@ public:
 	_ItemType *alloc()
 	{
 		_ItemType *result = m_freelist.detach_head();
-<<<<<<< HEAD
-		if (result == NULL)
-=======
 		if (result == nullptr)
->>>>>>> upstream/master
 			result = global_alloc(_ItemType);
 		return result;
 	}
 
 	// reclaim an item by adding it to the free list
-<<<<<<< HEAD
-	void reclaim(_ItemType *item) { if (item != NULL) m_freelist.append(*item); }
-=======
 	void reclaim(_ItemType *item) { if (item != nullptr) m_freelist.append(*item); }
->>>>>>> upstream/master
 	void reclaim(_ItemType &item) { m_freelist.append(item); }
 
 	// reclaim all items from a list
@@ -568,9 +360,6 @@ private:
 };
 
 
-<<<<<<< HEAD
-#endif
-=======
 // ======================> contiguous_sequence_wrapper
 
 namespace util {
@@ -1151,4 +940,3 @@ private:
 }; // namespace util
 
 #endif // MAME_UTIL_CORETMPL_H
->>>>>>> upstream/master

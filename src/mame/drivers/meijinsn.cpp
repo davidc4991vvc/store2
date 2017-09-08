@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-// license:LGPL-2.1+
-=======
 // license:BSD-3-Clause
->>>>>>> upstream/master
 // copyright-holders:Tomasz Slanina
 /*
  Meijinsen (snk/alpha)
@@ -67,16 +63,11 @@ SOFT  PSG & VOICE  BY M.C & S.H
 #include "emu.h"
 #include "cpu/z80/z80.h"
 #include "cpu/m68000/m68000.h"
-<<<<<<< HEAD
-#include "video/resnet.h"
-#include "sound/ay8910.h"
-=======
 #include "machine/gen_latch.h"
 #include "video/resnet.h"
 #include "sound/ay8910.h"
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 class meijinsn_state : public driver_device
 {
@@ -84,37 +75,19 @@ public:
 	meijinsn_state(const machine_config &mconfig, device_type type, const char *tag)
 		: driver_device(mconfig, type, tag),
 		m_maincpu(*this,"maincpu"),
-<<<<<<< HEAD
-=======
 		m_soundlatch(*this, "soundlatch"),
->>>>>>> upstream/master
 		m_videoram(*this, "videoram"),
 		m_shared_ram(*this, "shared_ram"){ }
 
 	required_device<cpu_device> m_maincpu;
-<<<<<<< HEAD
-	/* memory pointers */
-	required_shared_ptr<UINT16> m_videoram;
-	required_shared_ptr<UINT16> m_shared_ram;
-=======
 	required_device<generic_latch_8_device> m_soundlatch;
 	/* memory pointers */
 	required_shared_ptr<uint16_t> m_videoram;
 	required_shared_ptr<uint16_t> m_shared_ram;
->>>>>>> upstream/master
 
 	/* video-related */
 	tilemap_t  *m_bg_tilemap;
 	tilemap_t  *m_fg_tilemap;
-<<<<<<< HEAD
-	UINT8    m_bg_bank;
-
-	/* misc */
-	UINT8 m_deposits1;
-	UINT8 m_deposits2;
-	UINT8 m_credits;
-	UINT8 m_coinvalue;
-=======
 	uint8_t    m_bg_bank;
 
 	/* misc */
@@ -122,24 +95,15 @@ public:
 	uint8_t m_deposits2;
 	uint8_t m_credits;
 	uint8_t m_coinvalue;
->>>>>>> upstream/master
 	int m_mcu_latch;
 
 	DECLARE_WRITE16_MEMBER(sound_w);
 	DECLARE_READ16_MEMBER(alpha_mcu_r);
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void machine_reset();
-	virtual void video_start();
-	DECLARE_PALETTE_INIT(meijinsn);
-	UINT32 screen_update_meijinsn(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
 	virtual void video_start() override;
 	DECLARE_PALETTE_INIT(meijinsn);
 	uint32_t screen_update_meijinsn(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	TIMER_DEVICE_CALLBACK_MEMBER(meijinsn_interrupt);
 };
 
@@ -148,22 +112,13 @@ public:
 WRITE16_MEMBER(meijinsn_state::sound_w)
 {
 	if (ACCESSING_BITS_0_7)
-<<<<<<< HEAD
-		soundlatch_byte_w(space, 0, data & 0xff);
-=======
 		m_soundlatch->write(space, 0, data & 0xff);
->>>>>>> upstream/master
 }
 
 READ16_MEMBER(meijinsn_state::alpha_mcu_r)
 {
-<<<<<<< HEAD
-	static const UINT8 coinage1[2][2] = {{1,1}, {1,2}};
-	static const UINT8 coinage2[2][2] = {{1,5}, {2,1}};
-=======
 	static const uint8_t coinage1[2][2] = {{1,1}, {1,2}};
 	static const uint8_t coinage2[2][2] = {{1,5}, {2,1}};
->>>>>>> upstream/master
 
 	int source = m_shared_ram[offset];
 
@@ -249,11 +204,7 @@ static ADDRESS_MAP_START( meijinsn_sound_io_map, AS_IO, 8, meijinsn_state )
 	ADDRESS_MAP_GLOBAL_MASK(0xff)
 	AM_RANGE(0x00, 0x01) AM_DEVWRITE("aysnd", ay8910_device, address_data_w)
 	AM_RANGE(0x01, 0x01) AM_DEVREAD("aysnd", ay8910_device, data_r)
-<<<<<<< HEAD
-	AM_RANGE(0x02, 0x02) AM_WRITE(soundlatch_clear_byte_w)
-=======
 	AM_RANGE(0x02, 0x02) AM_DEVWRITE("soundlatch", generic_latch_8_device, clear_w)
->>>>>>> upstream/master
 	AM_RANGE(0x06, 0x06) AM_WRITENOP
 ADDRESS_MAP_END
 
@@ -310,11 +261,7 @@ void meijinsn_state::video_start()
 
 PALETTE_INIT_MEMBER(meijinsn_state, meijinsn)
 {
-<<<<<<< HEAD
-	const UINT8 *color_prom = memregion("proms")->base();
-=======
 	const uint8_t *color_prom = memregion("proms")->base();
->>>>>>> upstream/master
 	int i;
 	static const int resistances_b[2]  = { 470, 220 };
 	static const int resistances_rg[3] = { 1000, 470, 220 };
@@ -352,11 +299,7 @@ PALETTE_INIT_MEMBER(meijinsn_state, meijinsn)
 }
 
 
-<<<<<<< HEAD
-UINT32 meijinsn_state::screen_update_meijinsn(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t meijinsn_state::screen_update_meijinsn(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int offs;
 
@@ -407,11 +350,7 @@ void meijinsn_state::machine_reset()
 }
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( meijinsn, meijinsn_state )
-=======
 static MACHINE_CONFIG_START( meijinsn )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, 9000000 )
@@ -439,15 +378,10 @@ static MACHINE_CONFIG_START( meijinsn )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-	MCFG_SOUND_ADD("aysnd", AY8910, 2000000)
-	MCFG_AY8910_PORT_A_READ_CB(READ8(driver_device, soundlatch_byte_r))
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 
 	MCFG_SOUND_ADD("aysnd", AY8910, 2000000)
 	MCFG_AY8910_PORT_A_READ_CB(DEVREAD8("soundlatch", generic_latch_8_device, read))
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.75)
 
 MACHINE_CONFIG_END
@@ -480,8 +414,4 @@ ROM_START( meijinsn )
 	ROM_LOAD( "clr", 0x00, 0x20, CRC(7b95b5a7) SHA1(c15be28bcd6f5ffdde659f2d352ae409f04b2557) )
 ROM_END
 
-<<<<<<< HEAD
-GAME( 1986, meijinsn, 0, meijinsn, meijinsn, driver_device, 0, ROT0, "SNK", "Meijinsen", MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1986, meijinsn, 0, meijinsn, meijinsn, meijinsn_state, 0, ROT0, "SNK", "Meijinsen", MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

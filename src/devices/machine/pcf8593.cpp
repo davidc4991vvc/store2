@@ -8,10 +8,7 @@
 
 *********************************************************************/
 
-<<<<<<< HEAD
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #include "pcf8593.h"
 
 
@@ -43,28 +40,17 @@
 //  GLOBAL VARIABLES
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type PCF8593 = &device_creator<pcf8593_device>;
-=======
 DEFINE_DEVICE_TYPE(PCF8593, pcf8593_device, "pcf8593", "PCF8593 RTC")
->>>>>>> upstream/master
 
 
 //-------------------------------------------------
 //  pcf8593_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-pcf8593_device::pcf8593_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, PCF8593, "PCF8593 RTC", tag, owner, clock, "pcf8593", __FILE__),
-		device_rtc_interface(mconfig, *this),
-		device_nvram_interface(mconfig, *this)
-=======
 pcf8593_device::pcf8593_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, PCF8593, tag, owner, clock)
 	, device_rtc_interface(mconfig, *this)
 	, device_nvram_interface(mconfig, *this)
->>>>>>> upstream/master
 {
 }
 
@@ -90,11 +76,7 @@ void pcf8593_device::device_reset()
 	_logerror( 0, ("pcf8593_reset\n"));
 	m_pin_scl = 1;
 	m_pin_sda = 1;
-<<<<<<< HEAD
-	m_active  = FALSE;
-=======
 	m_active  = false;
->>>>>>> upstream/master
 	m_inp     = 0;
 	m_mode    = RTC_MODE_RECV;
 	m_bits    = 0;
@@ -204,11 +186,7 @@ WRITE_LINE_MEMBER(pcf8593_device::scl_w)
 					// A2 + xx + .. = write byte
 					if ((m_data_recv[0] == 0xA2) && (m_data_recv_index >= 2))
 					{
-<<<<<<< HEAD
-						UINT8 rtc_pos, rtc_val;
-=======
 						uint8_t rtc_pos, rtc_val;
->>>>>>> upstream/master
 						rtc_pos = m_data_recv[1] + (m_data_recv_index - 2);
 						rtc_val = m_data_recv[m_data_recv_index];
 						//if (rtc_pos == 0) rtc_val = rtc_val & 3; // what is this doing here?
@@ -267,11 +245,7 @@ WRITE_LINE_MEMBER(pcf8593_device::sda_w)
 		if ((!state) && (m_pin_sda))
 		{
 			_logerror( 1, ("pcf8593 start condition\n"));
-<<<<<<< HEAD
-			m_active          = TRUE;
-=======
 			m_active          = true;
->>>>>>> upstream/master
 			m_bits            = 0;
 			m_data_recv_index = 0;
 			clear_buffer_rx();
@@ -281,11 +255,7 @@ WRITE_LINE_MEMBER(pcf8593_device::sda_w)
 		if ((state) && (!m_pin_sda))
 		{
 			_logerror( 1, ("pcf8593 stop condition\n"));
-<<<<<<< HEAD
-			m_active = FALSE;
-=======
 			m_active = false;
->>>>>>> upstream/master
 		}
 	}
 	// save sda

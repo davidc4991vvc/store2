@@ -53,11 +53,7 @@ void redalert_state::get_pens(pen_t *pens)
 	double charmap_b_weights[2];
 	double back_r_weight[1];
 	double back_gb_weight[1];
-<<<<<<< HEAD
-	const UINT8 *prom = memregion("proms")->base();
-=======
 	const uint8_t *prom = memregion("proms")->base();
->>>>>>> upstream/master
 
 	scaler = compute_resistor_weights(0, 0xff, -1,
 										1, resistances_bitmap,     bitmap_weight,      470, 0,
@@ -67,32 +63,11 @@ void redalert_state::get_pens(pen_t *pens)
 				compute_resistor_weights(0, 0xff, scaler,
 										1, resistances_back_r,     back_r_weight,      470, 0,
 										1, resistances_back_gb,    back_gb_weight,     470, 0,
-<<<<<<< HEAD
-										0, 0, 0, 0, 0);
-=======
 										0, nullptr, nullptr, 0, 0);
->>>>>>> upstream/master
 
 	/* the character layer colors come from the PROM */
 	for (offs = 0; offs < NUM_CHARMAP_PENS; offs++)
 	{
-<<<<<<< HEAD
-		UINT8 data = prom[offs];
-
-		/* very strange mapping */
-		UINT8 r0_bit = (data >> 2) & 0x01;
-		UINT8 r1_bit = (data >> 6) & 0x01;
-		UINT8 r2_bit = (data >> 4) & 0x01;
-		UINT8 g0_bit = (data >> 1) & 0x01;
-		UINT8 g1_bit = (data >> 3) & 0x01;
-		UINT8 g2_bit = (data >> 5) & 0x01;
-		UINT8 b0_bit = (data >> 0) & 0x01;
-		UINT8 b1_bit = (data >> 7) & 0x01;
-
-		UINT8 r = combine_3_weights(charmap_rg_weights, r0_bit, r1_bit, r2_bit);
-		UINT8 g = combine_3_weights(charmap_rg_weights, g0_bit, g1_bit, g2_bit);
-		UINT8 b = combine_2_weights(charmap_b_weights,  b0_bit, b1_bit);
-=======
 		uint8_t data = prom[offs];
 
 		/* very strange mapping */
@@ -108,7 +83,6 @@ void redalert_state::get_pens(pen_t *pens)
 		uint8_t r = combine_3_weights(charmap_rg_weights, r0_bit, r1_bit, r2_bit);
 		uint8_t g = combine_3_weights(charmap_rg_weights, g0_bit, g1_bit, g2_bit);
 		uint8_t b = combine_2_weights(charmap_b_weights,  b0_bit, b1_bit);
->>>>>>> upstream/master
 
 		pens[offs] = rgb_t(r, g, b);
 	}
@@ -116,15 +90,9 @@ void redalert_state::get_pens(pen_t *pens)
 	/* the bitmap layer colors are directly mapped */
 	for (offs = 0; offs < NUM_BITMAP_PENS; offs++)
 	{
-<<<<<<< HEAD
-		UINT8 r = bitmap_weight[(offs >> 2) & 0x01];
-		UINT8 g = bitmap_weight[(offs >> 1) & 0x01];
-		UINT8 b = bitmap_weight[(offs >> 0) & 0x01];
-=======
 		uint8_t r = bitmap_weight[(offs >> 2) & 0x01];
 		uint8_t g = bitmap_weight[(offs >> 1) & 0x01];
 		uint8_t b = bitmap_weight[(offs >> 0) & 0x01];
->>>>>>> upstream/master
 
 		pens[NUM_CHARMAP_PENS + offs] = rgb_t(r, g, b);
 	}
@@ -150,11 +118,7 @@ void redalert_state::get_panther_pens(pen_t *pens)
 	double charmap_b_weights[2];
 	double back_r_weight[1];
 	double back_gb_weight[1];
-<<<<<<< HEAD
-	const UINT8 *prom = memregion("proms")->base();
-=======
 	const uint8_t *prom = memregion("proms")->base();
->>>>>>> upstream/master
 
 	scaler = compute_resistor_weights(0, 0xff, -1,
 										1, resistances_bitmap,     bitmap_weight,      470, 0,
@@ -164,28 +128,16 @@ void redalert_state::get_panther_pens(pen_t *pens)
 				compute_resistor_weights(0, 0xff, scaler,
 										1, resistances_back_r,     back_r_weight,      470, 0,
 										1, resistances_back_gb,    back_gb_weight,     470, 0,
-<<<<<<< HEAD
-										0, 0, 0, 0, 0);
-=======
 										0, nullptr, nullptr, 0, 0);
->>>>>>> upstream/master
 
 	/* the character layer colors come from the PROM */
 	for (offs = 0; offs < NUM_CHARMAP_PENS; offs++)
 	{
-<<<<<<< HEAD
-		UINT8 data = prom[offs];
-
-		UINT8 r = bitmap_weight[(~data >> 2) & 0x01];
-		UINT8 g = bitmap_weight[(~data >> 1) & 0x01];
-		UINT8 b = bitmap_weight[(~data >> 0) & 0x01];
-=======
 		uint8_t data = prom[offs];
 
 		uint8_t r = bitmap_weight[(~data >> 2) & 0x01];
 		uint8_t g = bitmap_weight[(~data >> 1) & 0x01];
 		uint8_t b = bitmap_weight[(~data >> 0) & 0x01];
->>>>>>> upstream/master
 
 		pens[offs] = rgb_t(r, g, b);
 	}
@@ -193,15 +145,9 @@ void redalert_state::get_panther_pens(pen_t *pens)
 	/* the bitmap layer colors are directly mapped */
 	for (offs = 0; offs < NUM_BITMAP_PENS; offs++)
 	{
-<<<<<<< HEAD
-		UINT8 r = bitmap_weight[(offs >> 2) & 0x01];
-		UINT8 g = bitmap_weight[(offs >> 1) & 0x01];
-		UINT8 b = bitmap_weight[(offs >> 0) & 0x01];
-=======
 		uint8_t r = bitmap_weight[(offs >> 2) & 0x01];
 		uint8_t g = bitmap_weight[(offs >> 1) & 0x01];
 		uint8_t b = bitmap_weight[(offs >> 0) & 0x01];
->>>>>>> upstream/master
 
 		pens[NUM_CHARMAP_PENS + offs] = rgb_t(r, g, b);
 	}
@@ -218,15 +164,9 @@ void redalert_state::get_panther_pens(pen_t *pens)
 
 VIDEO_START_MEMBER(redalert_state,redalert)
 {
-<<<<<<< HEAD
-	m_bitmap_colorram = auto_alloc_array(machine(), UINT8, 0x0400);
-
-	save_pointer(NAME(m_bitmap_colorram), 0x0400);
-=======
 	m_bitmap_colorram = std::make_unique<uint8_t[]>(0x0400);
 
 	save_pointer(NAME(m_bitmap_colorram.get()), 0x0400);
->>>>>>> upstream/master
 
 	m_control_xor = 0x00;
 }
@@ -245,11 +185,7 @@ VIDEO_START_MEMBER(redalert_state,ww3)
  *
  *************************************/
 
-<<<<<<< HEAD
-UINT32 redalert_state::screen_update_redalert(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
-=======
 uint32_t redalert_state::screen_update_redalert(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	pen_t pens[NUM_CHARMAP_PENS + NUM_BITMAP_PENS + 1];
 	offs_t offs;
@@ -259,18 +195,6 @@ uint32_t redalert_state::screen_update_redalert(screen_device &screen, bitmap_rg
 	for (offs = 0; offs < 0x2000; offs++)
 	{
 		int i;
-<<<<<<< HEAD
-		UINT8 charmap_data_1;
-		UINT8 charmap_data_2;
-
-		UINT8 y = offs & 0xff;
-		UINT8 x = (~offs >> 8) << 3;
-
-		UINT8 bitmap_data = m_bitmap_videoram[offs];
-		UINT8 bitmap_color = m_bitmap_colorram[offs >> 3];
-
-		UINT8 charmap_code = m_charmap_videoram[0x0000 | (offs >> 3)];
-=======
 		uint8_t charmap_data_1;
 		uint8_t charmap_data_2;
 
@@ -281,7 +205,6 @@ uint32_t redalert_state::screen_update_redalert(screen_device &screen, bitmap_rg
 		uint8_t bitmap_color = m_bitmap_colorram[offs >> 3];
 
 		uint8_t charmap_code = m_charmap_videoram[0x0000 | (offs >> 3)];
->>>>>>> upstream/master
 		offs_t charmap_data_base = ((charmap_code & 0x7f) << 3) | (offs & 0x07);
 
 		/* D7 of the char code selects the char set to use */
@@ -301,11 +224,7 @@ uint32_t redalert_state::screen_update_redalert(screen_device &screen, bitmap_rg
 			pen_t pen;
 
 			int bitmap_bit = bitmap_data & 0x80;
-<<<<<<< HEAD
-			UINT8 color_prom_a0_a1 = ((charmap_data_2 & 0x80) >> 6) | ((charmap_data_1 & 0x80) >> 7);
-=======
 			uint8_t color_prom_a0_a1 = ((charmap_data_2 & 0x80) >> 6) | ((charmap_data_1 & 0x80) >> 7);
->>>>>>> upstream/master
 
 			/* determine priority */
 			if ((color_prom_a0_a1 == 0) || (bitmap_bit && ((charmap_code & 0xc0) == 0xc0)))
@@ -338,11 +257,7 @@ uint32_t redalert_state::screen_update_redalert(screen_device &screen, bitmap_rg
  *
  *************************************/
 
-<<<<<<< HEAD
-UINT32 redalert_state::screen_update_demoneye(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
-=======
 uint32_t redalert_state::screen_update_demoneye(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	pen_t pens[NUM_CHARMAP_PENS + NUM_BITMAP_PENS + 1];
 	offs_t offs;
@@ -352,18 +267,6 @@ uint32_t redalert_state::screen_update_demoneye(screen_device &screen, bitmap_rg
 	for (offs = 0; offs < 0x2000; offs++)
 	{
 		int i;
-<<<<<<< HEAD
-		UINT8 charmap_data_1;
-		UINT8 charmap_data_2;
-
-		UINT8 y = offs & 0xff;
-		UINT8 x = (~offs >> 8) << 3;
-
-		UINT8 bitmap_data = m_bitmap_videoram[offs];
-		UINT8 bitmap_color = m_bitmap_colorram[offs >> 3];
-
-		UINT8 charmap_code = m_charmap_videoram[0x1000 | (offs >> 3)];
-=======
 		uint8_t charmap_data_1;
 		uint8_t charmap_data_2;
 
@@ -374,7 +277,6 @@ uint32_t redalert_state::screen_update_demoneye(screen_device &screen, bitmap_rg
 		uint8_t bitmap_color = m_bitmap_colorram[offs >> 3];
 
 		uint8_t charmap_code = m_charmap_videoram[0x1000 | (offs >> 3)];
->>>>>>> upstream/master
 		offs_t charmap_data_base = ((charmap_code & 0x7f) << 3) | (offs & 0x07);
 
 		/* D7 of the char code selects the char set to use */
@@ -398,11 +300,7 @@ uint32_t redalert_state::screen_update_demoneye(screen_device &screen, bitmap_rg
 			pen_t pen;
 
 			int bitmap_bit = bitmap_data & 0x80;
-<<<<<<< HEAD
-			UINT8 color_prom_a0_a1 = ((charmap_data_2 & 0x80) >> 6) | ((charmap_data_1 & 0x80) >> 7);
-=======
 			uint8_t color_prom_a0_a1 = ((charmap_data_2 & 0x80) >> 6) | ((charmap_data_1 & 0x80) >> 7);
->>>>>>> upstream/master
 
 			/* determine priority */
 			if ((color_prom_a0_a1 == 0) || (bitmap_bit && ((charmap_code & 0xc0) == 0xc0)))
@@ -433,11 +331,7 @@ uint32_t redalert_state::screen_update_demoneye(screen_device &screen, bitmap_rg
  *
  *************************************/
 
-<<<<<<< HEAD
-UINT32 redalert_state::screen_update_panther(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
-=======
 uint32_t redalert_state::screen_update_panther(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	pen_t pens[NUM_CHARMAP_PENS + NUM_BITMAP_PENS + 1];
 	offs_t offs;
@@ -447,18 +341,6 @@ uint32_t redalert_state::screen_update_panther(screen_device &screen, bitmap_rgb
 	for (offs = 0; offs < 0x2000; offs++)
 	{
 		int i;
-<<<<<<< HEAD
-		UINT8 charmap_data_1;
-		UINT8 charmap_data_2;
-
-		UINT8 y = offs & 0xff;
-		UINT8 x = (~offs >> 8) << 3;
-
-		UINT8 bitmap_data = m_bitmap_videoram[offs];
-		UINT8 bitmap_color = m_bitmap_colorram[offs >> 3];
-
-		UINT8 charmap_code = m_charmap_videoram[0x0000 | (offs >> 3)];
-=======
 		uint8_t charmap_data_1;
 		uint8_t charmap_data_2;
 
@@ -469,7 +351,6 @@ uint32_t redalert_state::screen_update_panther(screen_device &screen, bitmap_rgb
 		uint8_t bitmap_color = m_bitmap_colorram[offs >> 3];
 
 		uint8_t charmap_code = m_charmap_videoram[0x0000 | (offs >> 3)];
->>>>>>> upstream/master
 		offs_t charmap_data_base = ((charmap_code & 0x7f) << 3) | (offs & 0x07);
 
 		/* D7 of the char code selects the char set to use */
@@ -489,11 +370,7 @@ uint32_t redalert_state::screen_update_panther(screen_device &screen, bitmap_rgb
 			pen_t pen;
 
 			int bitmap_bit = bitmap_data & 0x80;
-<<<<<<< HEAD
-			UINT8 color_prom_a0_a1 = ((charmap_data_2 & 0x80) >> 6) | ((charmap_data_1 & 0x80) >> 7);
-=======
 			uint8_t color_prom_a0_a1 = ((charmap_data_2 & 0x80) >> 6) | ((charmap_data_1 & 0x80) >> 7);
->>>>>>> upstream/master
 
 			/* determine priority */
 			if ((color_prom_a0_a1 == 0) || (bitmap_bit && ((charmap_code & 0xc0) == 0xc0)))
@@ -525,11 +402,7 @@ uint32_t redalert_state::screen_update_panther(screen_device &screen, bitmap_rgb
  *
  *************************************/
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_FRAGMENT( redalert_video_common )
-=======
 static MACHINE_CONFIG_START( redalert_video_common )
->>>>>>> upstream/master
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE(60)
 	MCFG_SCREEN_VBLANK_TIME(ATTOSECONDS_IN_USEC(0))
@@ -538,22 +411,14 @@ static MACHINE_CONFIG_START( redalert_video_common )
 	MCFG_SCREEN_UPDATE_DRIVER(redalert_state, screen_update_redalert)
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-MACHINE_CONFIG_FRAGMENT( redalert_video )
-=======
 MACHINE_CONFIG_START( redalert_video )
->>>>>>> upstream/master
 
 	MCFG_VIDEO_START_OVERRIDE(redalert_state,redalert)
 	MCFG_FRAGMENT_ADD( redalert_video_common )
 
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-MACHINE_CONFIG_FRAGMENT( ww3_video )
-=======
 MACHINE_CONFIG_START( ww3_video )
->>>>>>> upstream/master
 
 	MCFG_VIDEO_START_OVERRIDE(redalert_state, ww3 )
 	MCFG_FRAGMENT_ADD( redalert_video_common )
@@ -567,11 +432,7 @@ MACHINE_CONFIG_END
  *
  *************************************/
 
-<<<<<<< HEAD
-MACHINE_CONFIG_FRAGMENT( demoneye_video )
-=======
 MACHINE_CONFIG_START( demoneye_video )
->>>>>>> upstream/master
 	MCFG_VIDEO_START_OVERRIDE(redalert_state,redalert)
 
 	MCFG_SCREEN_ADD("screen", RASTER)
@@ -583,11 +444,7 @@ MACHINE_CONFIG_START( demoneye_video )
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-MACHINE_CONFIG_FRAGMENT( panther_video )
-=======
 MACHINE_CONFIG_START( panther_video )
->>>>>>> upstream/master
 
 	MCFG_VIDEO_START_OVERRIDE(redalert_state,ww3)
 

@@ -41,11 +41,8 @@ Dumped by Chackn
 #include "emu.h"
 #include "cpu/z180/z180.h"
 #include "sound/okim6295.h"
-<<<<<<< HEAD
-=======
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 class pinkiri8_state : public driver_device
@@ -66,23 +63,6 @@ public:
 		m_gfxdecode(*this, "gfxdecode"),
 		m_palette(*this, "palette")  { }
 
-<<<<<<< HEAD
-	required_shared_ptr<UINT8> m_janshi_back_vram;
-	required_shared_ptr<UINT8> m_janshi_vram1;
-	required_shared_ptr<UINT8> m_janshi_unk1;
-	required_shared_ptr<UINT8> m_janshi_widthflags;
-	required_shared_ptr<UINT8> m_janshi_unk2;
-	required_shared_ptr<UINT8> m_janshi_vram2;
-	required_shared_ptr<UINT8> m_janshi_paletteram;
-	required_shared_ptr<UINT8> m_janshi_paletteram2;
-	required_shared_ptr<UINT8> m_janshi_crtc_regs;
-	UINT32 m_vram_addr;
-	int m_prev_writes;
-	UINT8 m_mux_data;
-	UINT8 m_prot_read_index;
-	UINT8 m_prot_char[5];
-	UINT8 m_prot_index;
-=======
 	required_shared_ptr<uint8_t> m_janshi_back_vram;
 	required_shared_ptr<uint8_t> m_janshi_vram1;
 	required_shared_ptr<uint8_t> m_janshi_unk1;
@@ -98,7 +78,6 @@ public:
 	uint8_t m_prot_read_index;
 	uint8_t m_prot_char[5];
 	uint8_t m_prot_index;
->>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(output_regs_w);
 	DECLARE_WRITE8_MEMBER(pinkiri8_vram_w);
 	DECLARE_WRITE8_MEMBER(mux_w);
@@ -109,13 +88,8 @@ public:
 	DECLARE_READ8_MEMBER(ronjan_prot_status_r);
 	DECLARE_READ8_MEMBER(ronjan_patched_prot_r);
 	DECLARE_DRIVER_INIT(ronjan);
-<<<<<<< HEAD
-	virtual void video_start();
-	UINT32 screen_update_pinkiri8(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	virtual void video_start() override;
 	uint32_t screen_update_pinkiri8(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	required_device<cpu_device> m_maincpu;
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
@@ -131,16 +105,6 @@ class janshi_vdp_device : public device_t,
 							public device_memory_interface
 {
 public:
-<<<<<<< HEAD
-	janshi_vdp_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-	DECLARE_ADDRESS_MAP(map, 8);
-protected:
-	virtual void device_config_complete();
-	virtual void device_validity_check(validity_checker &valid) const;
-	virtual void device_start();
-	virtual void device_reset();
-	virtual const address_space_config *memory_space_config(address_spacenum spacenum = AS_0) const;
-=======
 	janshi_vdp_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 	DECLARE_ADDRESS_MAP(map, 8);
 protected:
@@ -148,7 +112,6 @@ protected:
 	virtual void device_start() override;
 	virtual void device_reset() override;
 	virtual space_config_vector memory_space_config() const override;
->>>>>>> upstream/master
 	address_space_config        m_space_config;
 };
 
@@ -169,18 +132,6 @@ DEVICE_ADDRESS_MAP_START( map, 8, janshi_vdp_device )
 	AM_RANGE(0xff6000, 0xff601f) AM_RAM AM_SHARE("crtc_regs")
 ADDRESS_MAP_END
 
-<<<<<<< HEAD
-const device_type JANSHIVDP = &device_creator<janshi_vdp_device>;
-
-janshi_vdp_device::janshi_vdp_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, JANSHIVDP, "Janshi VDP", tag, owner, clock, "janshi_vdp", __FILE__),
-		device_memory_interface(mconfig, *this),
-		m_space_config("janshi_vdp", ENDIANNESS_LITTLE, 8,24, 0, address_map_delegate(FUNC(janshi_vdp_device::map), this))
-{
-}
-
-void janshi_vdp_device::device_config_complete(){}
-=======
 DEFINE_DEVICE_TYPE(JANSHIVDP, janshi_vdp_device, "janshi_vdp", "Janshi VDP")
 
 janshi_vdp_device::janshi_vdp_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
@@ -190,22 +141,15 @@ janshi_vdp_device::janshi_vdp_device(const machine_config &mconfig, const char *
 {
 }
 
->>>>>>> upstream/master
 void janshi_vdp_device::device_validity_check(validity_checker &valid) const {}
 void janshi_vdp_device::device_start() {}
 void janshi_vdp_device::device_reset() {}
 
-<<<<<<< HEAD
-const address_space_config *janshi_vdp_device::memory_space_config(address_spacenum spacenum) const
-{
-	return (spacenum == 0) ? &m_space_config : NULL;
-=======
 device_memory_interface::space_config_vector janshi_vdp_device::memory_space_config() const
 {
 	return space_config_vector {
 		std::make_pair(0, &m_space_config)
 	};
->>>>>>> upstream/master
 }
 
 void pinkiri8_state::video_start() {}
@@ -383,20 +327,12 @@ void pinkiri8_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprec
 	}
 }
 
-<<<<<<< HEAD
-UINT32 pinkiri8_state::screen_update_pinkiri8(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t pinkiri8_state::screen_update_pinkiri8(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	/* update palette */
 	for (int pen = 0; pen < 0x800 ; pen++)
 	{
-<<<<<<< HEAD
-		UINT16 val = (m_janshi_paletteram[pen]) | (m_janshi_paletteram2[pen]<<8);
-=======
 		uint16_t val = (m_janshi_paletteram[pen]) | (m_janshi_paletteram2[pen]<<8);
->>>>>>> upstream/master
 		int r = (val & 0x001f) >> 0;
 		int g = (val & 0x03e0) >> 5;
 		int b = (val & 0x7c00) >> 10;
@@ -1151,13 +1087,8 @@ static GFXDECODE_START( pinkiri8 )
 	GFXDECODE_ENTRY( "gfx1", 0, charlayout,     0, 0x100 )
 GFXDECODE_END
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( pinkiri8, pinkiri8_state )
-	MCFG_CPU_ADD("maincpu",Z180,16000000)
-=======
 static MACHINE_CONFIG_START( pinkiri8 )
 	MCFG_CPU_ADD("maincpu",Z180,XTAL_32MHz/2)
->>>>>>> upstream/master
 	MCFG_CPU_PROGRAM_MAP(pinkiri8_map)
 	MCFG_CPU_IO_MAP(pinkiri8_io)
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", pinkiri8_state, nmi_line_assert)
@@ -1179,11 +1110,7 @@ static MACHINE_CONFIG_START( pinkiri8 )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki", 1056000, OKIM6295_PIN7_HIGH) // clock frequency & pin 7 not verified
-=======
 	MCFG_OKIM6295_ADD("oki", 1056000, PIN7_HIGH) // clock frequency & pin 7 not verified
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.5)
 MACHINE_CONFIG_END
 
@@ -1225,11 +1152,7 @@ ROM_START( janshi )
 	ROM_LOAD( "6.1k", 0x00000, 0x40000, CRC(8197034d) SHA1(b501dc7a27b1faad1361c309afd726da14b8b5f5) )
 ROM_END
 
-<<<<<<< HEAD
-ROM_START( ronjan )
-=======
 ROM_START( ronjans )
->>>>>>> upstream/master
 	ROM_REGION( 0x24000, "maincpu", 0 )
 	ROM_LOAD( "ver201.bin",    0x00000, 0x20000, CRC(caa98c79) SHA1(e18f52fc910e3a77142ad2a3167805cfd664f0f4) )
 	ROM_LOAD( "9009 1996.08 ron jan.bin", 0x00000, 0x4000, CRC(4eb74322) SHA1(84f864c0da3fb69948f6eb7ffecf0e722a882efc) ) //overlapped internal ROM
@@ -1245,8 +1168,6 @@ ROM_START( ronjans )
 	ROM_LOAD( "eagle.6", 0x00000, 0x40000, CRC(8197034d) SHA1(b501dc7a27b1faad1361c309afd726da14b8b5f5) )
 ROM_END
 
-<<<<<<< HEAD
-=======
 ROM_START( ronjan ) // the Z180 internal ROM wasn't extracted from this PCB. Using the one from the above set for the time being, which might be the same but should be checked.
 	ROM_REGION( 0x24000, "maincpu", 0 )
 	ROM_LOAD( "9.l1",    0x00000, 0x20000, CRC(1bc4468e) SHA1(5b317c922d9a6f533958526e676f95af0ee6a19f) )
@@ -1262,7 +1183,6 @@ ROM_START( ronjan ) // the Z180 internal ROM wasn't extracted from this PCB. Usi
 	ROM_REGION( 0x40000, "oki", 0 )
 	ROM_LOAD( "6.j1", 0x00000, 0x20000, CRC(d0b53513) SHA1(e94402f494adae741989c98a8c9587f464f144d2) )
 ROM_END
->>>>>>> upstream/master
 
 READ8_MEMBER(pinkiri8_state::ronjan_prot_r)
 {
@@ -1311,13 +1231,7 @@ DRIVER_INIT_MEMBER(pinkiri8_state,ronjan)
 	m_maincpu->space(AS_IO).install_read_handler(0x9f, 0x9f, read8_delegate(FUNC(pinkiri8_state::ronjan_patched_prot_r), this));
 }
 
-<<<<<<< HEAD
-GAME( 1992,  janshi,    0,   pinkiri8, janshi, driver_device,    0,      ROT0, "Eagle",         "Janshi",          MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_GRAPHICS | MACHINE_NOT_WORKING )
-GAME( 1994,  ronjan,    0,   pinkiri8, ronjan, pinkiri8_state,    ronjan, ROT0, "Wing Co., Ltd", "Ron Jan (Super)", MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_GRAPHICS | MACHINE_NOT_WORKING ) // 'SUPER' flashes in the middle of the screen
-GAME( 1994,  pinkiri8,  0,   pinkiri8, pinkiri8, driver_device,  0,      ROT0, "Alta",          "Pinkiri 8",       MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_GRAPHICS | MACHINE_NOT_WORKING )
-=======
 GAME( 1992,  janshi,   0,       pinkiri8, janshi,   pinkiri8_state, 0,      ROT0, "Eagle",         "Janshi",        MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_GRAPHICS | MACHINE_NOT_WORKING )
 GAME( 1991,  ronjan,   ronjans, pinkiri8, ronjan,   pinkiri8_state, ronjan, ROT0, "Wing Co., Ltd", "Ron Jan",       MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_GRAPHICS | MACHINE_NOT_WORKING )
 GAME( 1994,  ronjans,  0,       pinkiri8, ronjan,   pinkiri8_state, ronjan, ROT0, "Wing Co., Ltd", "Ron Jan Super", MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_GRAPHICS | MACHINE_NOT_WORKING ) // 'SUPER' flashes in the middle of the screen
 GAME( 1994,  pinkiri8, 0,       pinkiri8, pinkiri8, pinkiri8_state, 0,      ROT0, "Alta",          "Pinkiri 8",     MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_GRAPHICS | MACHINE_NOT_WORKING )
->>>>>>> upstream/master

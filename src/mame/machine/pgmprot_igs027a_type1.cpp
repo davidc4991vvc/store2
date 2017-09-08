@@ -58,14 +58,10 @@
  ***********************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "includes/pgm.h"
-=======
 #include "machine/pgmprot_igs027a_type1.h"
 
 #include "screen.h"
 
->>>>>>> upstream/master
 
 /**************************** EMULATION *******************************/
 /* used by photoy2k, kovsh */
@@ -123,11 +119,7 @@ WRITE16_MEMBER(pgm_arm_type1_state::pgm_arm7_type1_68k_protlatch_w )
 
 READ16_MEMBER(pgm_arm_type1_state::pgm_arm7_type1_ram_r )
 {
-<<<<<<< HEAD
-	UINT16 *share16 = reinterpret_cast<UINT16 *>(m_arm7_shareram.target());
-=======
 	uint16_t *share16 = reinterpret_cast<uint16_t *>(m_arm7_shareram.target());
->>>>>>> upstream/master
 
 	if (PGMARM7LOGERROR)
 		logerror("M68K: ARM7 Shared RAM Read: %04x = %04x (%08x) (%06x)\n", BYTE_XOR_LE(offset), share16[BYTE_XOR_LE(offset)], mem_mask, space.device().safe_pc());
@@ -136,11 +128,7 @@ READ16_MEMBER(pgm_arm_type1_state::pgm_arm7_type1_ram_r )
 
 WRITE16_MEMBER(pgm_arm_type1_state::pgm_arm7_type1_ram_w )
 {
-<<<<<<< HEAD
-	UINT16 *share16 = reinterpret_cast<UINT16 *>(m_arm7_shareram.target());
-=======
 	uint16_t *share16 = reinterpret_cast<uint16_t *>(m_arm7_shareram.target());
->>>>>>> upstream/master
 
 	if (PGMARM7LOGERROR)
 		logerror("M68K: ARM7 Shared RAM Write: %04x = %04x (%04x) (%06x)\n", BYTE_XOR_LE(offset), data, mem_mask, space.device().safe_pc());
@@ -223,11 +211,7 @@ MACHINE_START_MEMBER(pgm_arm_type1_state,pgm_arm_type1)
 	save_item(NAME(m_slots));
 }
 
-<<<<<<< HEAD
-MACHINE_CONFIG_START( pgm_arm_type1_cave, pgm_arm_type1_state )
-=======
 MACHINE_CONFIG_START( pgm_arm_type1_cave )
->>>>>>> upstream/master
 	MCFG_FRAGMENT_ADD(pgmbase)
 
 	MCFG_CPU_MODIFY("maincpu")
@@ -279,11 +263,7 @@ READ16_MEMBER(pgm_arm_type1_state::kovsh_fake_region_r )
 	if (regionhack != 0xff) return regionhack;
 
 	offset = 0x4;
-<<<<<<< HEAD
-	UINT16 *share16 = reinterpret_cast<UINT16 *>(m_arm7_shareram.target());
-=======
 	uint16_t *share16 = reinterpret_cast<uint16_t *>(m_arm7_shareram.target());
->>>>>>> upstream/master
 	return share16[BYTE_XOR_LE(offset << 1)];
 }
 
@@ -321,11 +301,7 @@ WRITE16_MEMBER(pgm_arm_type1_state::kovshp_asic27a_write_word )
 
 			switch (asic_cmd)
 			{
-<<<<<<< HEAD
-				case 0x9a: asic_cmd = 0x99; break; // kovassga
-=======
 				case 0x9a: asic_cmd = 0x99; break; // kovshxas
->>>>>>> upstream/master
 
 				case 0x38: asic_cmd = 0xad; break;
 				case 0x43: asic_cmd = 0xca; break;
@@ -369,414 +345,9 @@ WRITE16_MEMBER(pgm_arm_type1_state::kovshp_asic27a_write_word )
 }
 
 
-<<<<<<< HEAD
-void pgm_arm_type1_state::kovplus_fix_patch()
-{
-	UINT8 *mem8 = (UINT8 *)(memregion("maincpu")->base());
-
-	mem8[0x1085D4] = 0x1B;
-	mem8[0x1085D5] = 0x3;
-	mem8[0x1085D6] = 0x1B;
-	mem8[0x1085D7] = 0xA4;
-	mem8[0x10EBEE] = 0x10;
-	mem8[0x10EBEF] = 0x15;
-	mem8[0x10EBF0] = 0x1A;
-	mem8[0x10EBF1] = 0x11;
-	mem8[0x11D3E4] = 0xC9;
-	mem8[0x11D3E5] = 0xF8;
-	mem8[0x11D3E6] = 0xB4;
-	mem8[0x11D3E7] = 0x9A;
-	mem8[0x11D492] = 0xA;
-	mem8[0x11D493] = 0x5A;
-	mem8[0x11D494] = 0xA;
-	mem8[0x11D495] = 0x6D;
-	mem8[0x11DAC6] = 0x18;
-	mem8[0x11DAC7] = 0x3B;
-	mem8[0x11DAC8] = 0xD1;
-	mem8[0x11DAC9] = 0xFE;
-	mem8[0x11DACA] = 0xE9;
-	mem8[0x11DACB] = 0xE;
-	mem8[0x11DACC] = 0x90;
-	mem8[0x11DACD] = 0x6B;
-	mem8[0x11DACE] = 0x90;
-	mem8[0x11DACF] = 0xF;
-	mem8[0x11DAD1] = 0x41;
-	mem8[0x11DE56] = 0x12;
-	mem8[0x11DE57] = 0x7F;
-	mem8[0x11DE58] = 0xD3;
-	mem8[0x11DE59] = 0x1C;
-	mem8[0x11DE5A] = 0xEB;
-	mem8[0x11DE5B] = 0xEA;
-	mem8[0x11DE5D] = 0x86;
-	mem8[0x11DE60] = 0x10;
-	mem8[0x11DE61] = 0x7F;
-	mem8[0x11DE62] = 0xD1;
-	mem8[0x11DE63] = 0x82;
-	mem8[0x11DE64] = 0xE9;
-	mem8[0x11DE65] = 0xB6;
-	mem8[0x11DF72] = 0x12;
-	mem8[0x11DF73] = 0x53;
-	mem8[0x11DF74] = 0xD3;
-	mem8[0x11DF75] = 0x84;
-	mem8[0x11DF76] = 0xEB;
-	mem8[0x11DF77] = 0xB8;
-	mem8[0x11DF79] = 0x2A;
-	mem8[0x11DF7C] = 0x12;
-	mem8[0x11DF7D] = 0x23;
-	mem8[0x11DF7E] = 0xD3;
-	mem8[0x11DF7F] = 0xDC;
-	mem8[0x11DF80] = 0x69;
-	mem8[0x11DF81] = 0x7C;
-	mem8[0x12E7A4] = 0x95;
-	mem8[0x12E7A5] = 0xCA;
-	mem8[0x12E7A6] = 0x54;
-	mem8[0x12E7A8] = 0x6C;
-	mem8[0x12E7A9] = 0x5;
-	mem8[0x13B25E] = 0xBA;
-	mem8[0x13B25F] = 0xBF;
-	mem8[0x1463A0] = 0x95;
-	mem8[0x1463A1] = 0x87;
-	mem8[0x1463A2] = 0x7F;
-	mem8[0x1463A3] = 0x95;
-	mem8[0x1463A4] = 0xB4;
-	mem8[0x1463A5] = 0x31;
-	mem8[0x1463A6] = 0x15;
-	mem8[0x1463A8] = 0x1D;
-	mem8[0x162408] = 0xB9;
-	mem8[0x162409] = 0x63;
-	mem8[0x1655E0] = 0x54;
-	mem8[0x1655E2] = 0x68;
-	mem8[0x1655E4] = 0x4D;
-	mem8[0x1655E5] = 0xBA;
-	mem8[0x1655E6] = 0xD1;
-	mem8[0x1655E7] = 0x23;
-	mem8[0x1655E8] = 0xE9;
-	mem8[0x1655EA] = 0x28;
-	mem8[0x1655EB] = 0x6A;
-	mem8[0x183476] = 0xDC;
-	mem8[0x183477] = 0xE7;
-	mem8[0x183DB6] = 0x3D;
-	mem8[0x32A00A] = 0x21;
-	mem8[0x32A00C] = 0x46;
-	mem8[0x32A00D] = 0x93;
-	mem8[0x32A01E] = 0x8B;
-	mem8[0x32A020] = 0x7E;
-	mem8[0x32A021] = 0xD0;
-	mem8[0x381000] = 0x50;
-	mem8[0x381001] = 0x45;
-	mem8[0x381002] = 0xE9;
-	mem8[0x381003] = 0x1C;
-	mem8[0x381004] = 0x87;
-	mem8[0x381005] = 0x3F;
-	mem8[0x381006] = 0x50;
-	mem8[0x381007] = 0xE;
-	mem8[0x381008] = 0x43;
-	mem8[0x381009] = 0x62;
-	mem8[0x38100A] = 0xC9;
-	mem8[0x38100B] = 0x59;
-	mem8[0x38100C] = 0xA7;
-	mem8[0x38100D] = 0x4B;
-	mem8[0x38100E] = 0xB0;
-	mem8[0x38100F] = 0x4;
-	mem8[0x381010] = 0x78;
-	mem8[0x381011] = 0x67;
-	mem8[0x381012] = 0xB9;
-	mem8[0x381013] = 0x97;
-	mem8[0x382000] = 0x50;
-	mem8[0x382001] = 0x1B;
-	mem8[0x382002] = 0x63;
-	mem8[0x382003] = 0x1C;
-	mem8[0x382004] = 0xE9;
-	mem8[0x382005] = 0xE3;
-	mem8[0x382006] = 0x87;
-	mem8[0x382007] = 0xDE;
-	mem8[0x382008] = 0xB0;
-	mem8[0x382009] = 0x2C;
-	mem8[0x38200A] = 0x58;
-	mem8[0x38200B] = 0x59;
-	mem8[0x38200C] = 0x15;
-	mem8[0x38200D] = 0x49;
-	mem8[0x383000] = 0x50;
-	mem8[0x383001] = 0x1B;
-	mem8[0x383002] = 0x60;
-	mem8[0x383003] = 0x1C;
-	mem8[0x383004] = 0xE9;
-	mem8[0x383005] = 0xE3;
-	mem8[0x383006] = 0x87;
-	mem8[0x383007] = 0xDE;
-	mem8[0x383008] = 0xB0;
-	mem8[0x383009] = 0x2C;
-	mem8[0x38300A] = 0x58;
-	mem8[0x38300B] = 0x59;
-	mem8[0x38300C] = 0x2F;
-	mem8[0x38300D] = 0x49;
-	mem8[0x384000] = 0x50;
-	mem8[0x384001] = 0x1B;
-	mem8[0x384002] = 0x63;
-	mem8[0x384003] = 0x1C;
-	mem8[0x384004] = 0xE9;
-	mem8[0x384005] = 0xE3;
-	mem8[0x384006] = 0x87;
-	mem8[0x384007] = 0xDE;
-	mem8[0x384008] = 0x90;
-	mem8[0x384009] = 0x2C;
-	mem8[0x38400A] = 0x78;
-	mem8[0x38400B] = 0x59;
-	mem8[0x38400C] = 0x11;
-	mem8[0x38400D] = 0x48;
-	mem8[0x385000] = 0x50;
-	mem8[0x385001] = 0x1B;
-	mem8[0x385002] = 0x60;
-	mem8[0x385003] = 0x1C;
-	mem8[0x385004] = 0xE9;
-	mem8[0x385005] = 0xE3;
-	mem8[0x385006] = 0x87;
-	mem8[0x385007] = 0xDE;
-	mem8[0x385008] = 0x90;
-	mem8[0x385009] = 0x2C;
-	mem8[0x38500A] = 0x78;
-	mem8[0x38500B] = 0x59;
-	mem8[0x38500C] = 0xEB;
-	mem8[0x38500D] = 0x48;
-	mem8[0x386000] = 0x5;
-	mem8[0x386001] = 0x5D;
-	mem8[0x386002] = 0x71;
-	mem8[0x386003] = 0x1C;
-	mem8[0x386004] = 0x6D;
-	mem8[0x386005] = 0x84;
-	mem8[0x386006] = 0x5;
-	mem8[0x386007] = 0x40;
-	mem8[0x386008] = 0x71;
-	mem8[0x386009] = 0x62;
-	mem8[0x38600A] = 0xC5;
-	mem8[0x38600B] = 0x51;
-	mem8[0x38600C] = 0x6C;
-	mem8[0x38600D] = 0x97;
-	mem8[0x38600E] = 0x79;
-	mem8[0x38600F] = 0x4B;
-	mem8[0x386010] = 0x90;
-	mem8[0x386011] = 0x29;
-	mem8[0x386012] = 0x7B;
-	mem8[0x386013] = 0x4D;
-	mem8[0x386014] = 0xC3;
-	mem8[0x386015] = 0xF8;
-}
-
-void pgm_arm_type1_state::kovboot_fix_patch()
-{
-	UINT8 *mem8 = (UINT8 *)(memregion("maincpu")->base());
-
-	mem8[0x1085D4] = 0x71;
-	mem8[0x1085D5] = 0x4E;
-	mem8[0x1085D6] = 0x71;
-	mem8[0x1085D7] = 0x4E;
-	mem8[0x11D3E4] = 0x29;
-	mem8[0x11D3E5] = 0x42;
-	mem8[0x11D3E6] = 0x54;
-	mem8[0x11D3E7] = 0x29;
-	mem8[0x11D492] = 0x71;
-	mem8[0x11D493] = 0x4E;
-	mem8[0x11D494] = 0x71;
-	mem8[0x11D495] = 0x4E;
-	mem8[0x11DAC6] = 0xF9;
-	mem8[0x11DAC7] = 0x4E;
-	mem8[0x11DAC8] = 0x38;
-	mem8[0x11DAC9] = 0x0;
-	mem8[0x11DACA] = 0x0;
-	mem8[0x11DACB] = 0xF;
-	mem8[0x11DACC] = 0x71;
-	mem8[0x11DACD] = 0x4E;
-	mem8[0x11DACE] = 0x71;
-	mem8[0x11DACF] = 0x4E;
-	mem8[0x11DAD1] = 0x65;
-	mem8[0x11DE56] = 0xF9;
-	mem8[0x11DE57] = 0x4E;
-	mem8[0x11DE58] = 0x38;
-	mem8[0x11DE59] = 0x0;
-	mem8[0x11DE5A] = 0x20;
-	mem8[0x11DE5B] = 0xF;
-	mem8[0x11DE5D] = 0x64;
-	mem8[0x11DE60] = 0xF9;
-	mem8[0x11DE61] = 0x4E;
-	mem8[0x11DE62] = 0x38;
-	mem8[0x11DE63] = 0x0;
-	mem8[0x11DE64] = 0x30;
-	mem8[0x11DE65] = 0x0F;
-	mem8[0x11DF72] = 0xF9;
-	mem8[0x11DF73] = 0x4E;
-	mem8[0x11DF74] = 0x38;
-	mem8[0x11DF75] = 0x0;
-	mem8[0x11DF76] = 0x40;
-	mem8[0x11DF77] = 0x0F;
-	mem8[0x11DF79] = 0x64;
-	mem8[0x11DF7C] = 0xF9;
-	mem8[0x11DF7D] = 0x4E;
-	mem8[0x11DF7E] = 0x38;
-	mem8[0x11DF7F] = 0x0;
-	mem8[0x11DF80] = 0x50;
-	mem8[0x11DF81] = 0x0F;
-	mem8[0x12E7A4] = 0xF9;
-	mem8[0x12E7A5] = 0x4E;
-	mem8[0x12E7A6] = 0x38;
-	mem8[0x12E7A8] = 0x60;
-	mem8[0x12E7A9] = 0x0F;
-	mem8[0x13B25E] = 0x71;
-	mem8[0x13B25F] = 0x4E;
-	mem8[0x1463A0] = 0xF9;
-	mem8[0x1463A1] = 0x4E;
-	mem8[0x1463A2] = 0x13;
-	mem8[0x1463A3] = 0x0;
-	mem8[0x1463A4] = 0xD0;
-	mem8[0x1463A5] = 0xB5;
-	mem8[0x1463A6] = 0x71;
-	mem8[0x1463A8] = 0x71;
-	mem8[0x162408] = 0xD0;
-	mem8[0x162409] = 0x1;
-	mem8[0x1655E0] = 0x3C;
-	mem8[0x1655E2] = 0x0;
-	mem8[0x1655E4] = 0x25;
-	mem8[0x1655E5] = 0x0;
-	mem8[0x1655E6] = 0xB9;
-	mem8[0x1655E7] = 0x90;
-	mem8[0x1655E8] = 0x81;
-	mem8[0x1655EA] = 0x40;
-	mem8[0x1655EB] = 0xB2;
-	mem8[0x183476] = 0xB5;
-	mem8[0x183477] = 0x1;
-	mem8[0x183DB6] = 0x50;
-	mem8[0x32A00A] = 0x68;
-	mem8[0x32A00C] = 0xF;
-	mem8[0x32A00D] = 0x4;
-	mem8[0x32A01E] = 0xC0;
-	mem8[0x32A020] = 0x13;
-	mem8[0x32A021] = 0x2;
-	mem8[0x380F00] = 0x39;
-	mem8[0x380F01] = 0x52;
-	mem8[0x380F02] = 0x80;
-	mem8[0x380F03] = 0x0;
-	mem8[0x380F04] = 0xEE;
-	mem8[0x380F05] = 0xDC;
-	mem8[0x380F06] = 0x39;
-	mem8[0x380F07] = 0xC;
-	mem8[0x380F08] = 0xA;
-	mem8[0x380F09] = 0x0;
-	mem8[0x380F0A] = 0x80;
-	mem8[0x380F0B] = 0x0;
-	mem8[0x380F0C] = 0xEE;
-	mem8[0x380F0D] = 0xDC;
-	mem8[0x380F0E] = 0xF9;
-	mem8[0x380F0F] = 0x4E;
-	mem8[0x380F10] = 0x11;
-	mem8[0x380F11] = 0x0;
-	mem8[0x380F12] = 0xD0;
-	mem8[0x380F13] = 0xDA;
-	mem8[0x380F20] = 0x39;
-	mem8[0x380F21] = 0xC;
-	mem8[0x380F22] = 0xA;
-	mem8[0x380F23] = 0x0;
-	mem8[0x380F24] = 0x80;
-	mem8[0x380F25] = 0x0;
-	mem8[0x380F26] = 0xEE;
-	mem8[0x380F27] = 0xDC;
-	mem8[0x380F28] = 0xF9;
-	mem8[0x380F29] = 0x4E;
-	mem8[0x380F2A] = 0x11;
-	mem8[0x380F2B] = 0x0;
-	mem8[0x380F2C] = 0x5C;
-	mem8[0x380F2D] = 0xDE;
-	mem8[0x380F30] = 0x39;
-	mem8[0x380F31] = 0xC;
-	mem8[0x380F32] = 0x9;
-	mem8[0x380F33] = 0x0;
-	mem8[0x380F34] = 0x80;
-	mem8[0x380F35] = 0x0;
-	mem8[0x380F36] = 0xEE;
-	mem8[0x380F37] = 0xDC;
-	mem8[0x380F38] = 0xF9;
-	mem8[0x380F39] = 0x4E;
-	mem8[0x380F3A] = 0x11;
-	mem8[0x380F3B] = 0x0;
-	mem8[0x380F3C] = 0x66;
-	mem8[0x380F3D] = 0xDE;
-	mem8[0x380F40] = 0x39;
-	mem8[0x380F41] = 0xC;
-	mem8[0x380F42] = 0xA;
-	mem8[0x380F43] = 0x0;
-	mem8[0x380F44] = 0x80;
-	mem8[0x380F45] = 0x0;
-	mem8[0x380F46] = 0xEE;
-	mem8[0x380F47] = 0xDC;
-	mem8[0x380F48] = 0xF9;
-	mem8[0x380F49] = 0x4E;
-	mem8[0x380F4A] = 0x11;
-	mem8[0x380F4B] = 0x0;
-	mem8[0x380F4C] = 0x78;
-	mem8[0x380F4D] = 0xDF;
-	mem8[0x380F50] = 0x39;
-	mem8[0x380F51] = 0xC;
-	mem8[0x380F52] = 0x9;
-	mem8[0x380F53] = 0x0;
-	mem8[0x380F54] = 0x80;
-	mem8[0x380F55] = 0x0;
-	mem8[0x380F56] = 0xEE;
-	mem8[0x380F57] = 0xDC;
-	mem8[0x380F58] = 0xF9;
-	mem8[0x380F59] = 0x4E;
-	mem8[0x380F5A] = 0x11;
-	mem8[0x380F5B] = 0x0;
-	mem8[0x380F5C] = 0x82;
-	mem8[0x380F5D] = 0xDF;
-	mem8[0x380F60] = 0x6C;
-	mem8[0x380F61] = 0x4A;
-	mem8[0x380F62] = 0x18;
-	mem8[0x380F63] = 0x0;
-	mem8[0x380F64] = 0x4;
-	mem8[0x380F65] = 0x67;
-	mem8[0x380F66] = 0x6C;
-	mem8[0x380F67] = 0x42;
-	mem8[0x380F68] = 0x18;
-	mem8[0x380F69] = 0x0;
-	mem8[0x380F6A] = 0xAC;
-	mem8[0x380F6B] = 0x8;
-	mem8[0x380F6C] = 0x5;
-	mem8[0x380F6D] = 0x0;
-	mem8[0x380F6E] = 0x10;
-	mem8[0x380F6F] = 0x1;
-	mem8[0x380F70] = 0xF9;
-	mem8[0x380F71] = 0x4E;
-	mem8[0x380F72] = 0x12;
-	mem8[0x380F73] = 0x0;
-	mem8[0x380F74] = 0xAA;
-	mem8[0x380F75] = 0xE7;
-}
-
-void pgm_arm_type1_state::kovshp_fix_patch()
-{
-	UINT8 *mem8 = (UINT8 *)(memregion("prot")->base());
-
-	mem8[0x2892] = 0x1;
-	mem8[0x2893] = 0x1;
-	mem8[0x289F] = 0x1;
-	mem8[0x28A5] = 0x1;
-	mem8[0x28A8] = 0x1;
-	mem8[0x28A9] = 0x1;
-	mem8[0x2BF3] = 0x48;
-	mem8[0x2BF5] = 0x80;
-	mem8[0x2C92] = 0xF;
-	mem8[0x2C93] = 0x40;
-	mem8[0x2CE1] = 0x6C;
-	mem8[0x2CE2] = 0x48;
-}
-
 DRIVER_INIT_MEMBER(pgm_arm_type1_state,kovshp)
 {
 	pgm_basic_init();
-	kovshp_fix_patch();
-=======
-DRIVER_INIT_MEMBER(pgm_arm_type1_state,kovshp)
-{
-	pgm_basic_init();
->>>>>>> upstream/master
 	pgm_kovshp_decrypt(machine());
 	pgm_arm7_type1_latch_init();
 	m_maincpu->space(AS_PROGRAM).install_read_handler(0x4f0008, 0x4f0009, read16_delegate(FUNC(pgm_arm_type1_state::kovsh_fake_region_r),this));
@@ -787,16 +358,9 @@ DRIVER_INIT_MEMBER(pgm_arm_type1_state,kovshp)
 
 /* bootleg inits */
 
-<<<<<<< HEAD
-DRIVER_INIT_MEMBER(pgm_arm_type1_state,kovassga)
-{
-	pgm_basic_init();
-	kovshp_fix_patch();
-=======
 DRIVER_INIT_MEMBER(pgm_arm_type1_state,kovshxas)
 {
 	pgm_basic_init();
->>>>>>> upstream/master
 //  pgm_kovshp_decrypt(machine());
 	pgm_arm7_type1_latch_init();
 	m_maincpu->space(AS_PROGRAM).install_read_handler(0x4f0008, 0x4f0009, read16_delegate(FUNC(pgm_arm_type1_state::kovsh_fake_region_r),this));
@@ -806,13 +370,8 @@ DRIVER_INIT_MEMBER(pgm_arm_type1_state,kovshxas)
 void pgm_arm_type1_state::pgm_decode_kovlsqh2_tiles()
 {
 	int i, j;
-<<<<<<< HEAD
-	UINT16 *src = (UINT16 *)(memregion("tiles")->base() + 0x180000);
-	std::vector<UINT16> dst(0x800000);
-=======
 	uint16_t *src = (uint16_t *)(memregion("tiles")->base() + 0x180000);
 	std::vector<uint16_t> dst(0x800000);
->>>>>>> upstream/master
 
 	for (i = 0; i < 0x800000 / 2; i++)
 	{
@@ -824,17 +383,10 @@ void pgm_arm_type1_state::pgm_decode_kovlsqh2_tiles()
 	memcpy( src, &dst[0], 0x800000 );
 }
 
-<<<<<<< HEAD
-void pgm_arm_type1_state::pgm_decode_kovlsqh2_sprites( UINT8 *src )
-{
-	int i, j;
-	dynamic_buffer dst(0x800000);
-=======
 void pgm_arm_type1_state::pgm_decode_kovlsqh2_sprites( uint8_t *src )
 {
 	int i, j;
 	std::vector<uint8_t> dst(0x800000);
->>>>>>> upstream/master
 
 	for (i = 0; i < 0x800000; i++)
 	{
@@ -849,11 +401,7 @@ void pgm_arm_type1_state::pgm_decode_kovlsqh2_sprites( uint8_t *src )
 void pgm_arm_type1_state::pgm_decode_kovlsqh2_samples()
 {
 	int i;
-<<<<<<< HEAD
-	UINT8 *src = (UINT8 *)(memregion("ics")->base() + 0x400000);
-=======
 	uint8_t *src = (uint8_t *)(memregion("ics")->base() + 0x400000);
->>>>>>> upstream/master
 
 	for (i = 0; i < 0x400000; i+=2) {
 		src[i + 0x000001] = src[i + 0x400001];
@@ -865,13 +413,8 @@ void pgm_arm_type1_state::pgm_decode_kovlsqh2_samples()
 void pgm_arm_type1_state::pgm_decode_kovqhsgs_program()
 {
 	int i;
-<<<<<<< HEAD
-	UINT16 *src = (UINT16 *)(memregion("maincpu")->base() + 0x100000);
-	std::vector<UINT16> dst(0x400000);
-=======
 	uint16_t *src = (uint16_t *)(memregion("maincpu")->base() + 0x100000);
 	std::vector<uint16_t> dst(0x400000);
->>>>>>> upstream/master
 
 	for (i = 0; i < 0x400000 / 2; i++)
 	{
@@ -886,13 +429,8 @@ void pgm_arm_type1_state::pgm_decode_kovqhsgs_program()
 void pgm_arm_type1_state::pgm_decode_kovqhsgs2_program()
 {
 	int i;
-<<<<<<< HEAD
-	UINT16 *src = (UINT16 *)(memregion("maincpu")->base() + 0x100000);
-	std::vector<UINT16> dst(0x400000);
-=======
 	uint16_t *src = (uint16_t *)(memregion("maincpu")->base() + 0x100000);
 	std::vector<uint16_t> dst(0x400000);
->>>>>>> upstream/master
 
 	for (i = 0; i < 0x400000 / 2; i++)
 	{
@@ -904,25 +442,6 @@ void pgm_arm_type1_state::pgm_decode_kovqhsgs2_program()
 	memcpy( src, &dst[0], 0x400000 );
 }
 
-<<<<<<< HEAD
-void pgm_arm_type1_state::pgm_decode_kovassg_program()
-{
-	int i;
-	UINT16 *src = (UINT16 *)(memregion("maincpu")->base() + 0x100000);
-	std::vector<UINT16> dst(0x400000);
-
-	for (i = 0; i < 0x400000 / 2; i++)
-	{
-		int j = (i & ~0xffff) | (BITSWAP16(i, 15, 14, 13, 12,  11, 10, 7, 3,  1, 9, 4, 8,  6, 0, 2, 5) ^ 0x019c);
-
-		dst[j] = BITSWAP16(src[j], 13, 9, 10, 11, 2, 0, 12 ,5, 4, 1, 14, 8, 15, 6, 3, 7) ^ 0x9d05;
-	}
-
-	memcpy( src, &dst[0], 0x400000 );
-}
-
-=======
->>>>>>> upstream/master
 
 DRIVER_INIT_MEMBER(pgm_arm_type1_state,kovlsqh2)
 {
@@ -966,30 +485,6 @@ DRIVER_INIT_MEMBER(pgm_arm_type1_state,kovqhsgs)
 	m_maincpu->space(AS_PROGRAM).install_read_handler(0x4f0008, 0x4f0009, read16_delegate(FUNC(pgm_arm_type1_state::kovsh_fake_region_r),this));
 }
 
-<<<<<<< HEAD
-DRIVER_INIT_MEMBER(pgm_arm_type1_state,kovassg)
-{
-	pgm_decode_kovassg_program();
-	pgm_decode_kovlsqh2_tiles();
-
-	pgm_decode_kovlsqh2_sprites(memregion("sprcol")->base() + 0x0000000);
-	pgm_decode_kovlsqh2_sprites(memregion("sprcol")->base() + 0x0800000);
-	pgm_decode_kovlsqh2_sprites(memregion("sprcol")->base() + 0x1000000);
-	pgm_decode_kovlsqh2_sprites(memregion("sprcol")->base() + 0x1800000);
-	pgm_decode_kovlsqh2_sprites(memregion("sprcol")->base() + 0x2000000);
-	pgm_decode_kovlsqh2_sprites(memregion("sprcol")->base() + 0x2800000);
-	pgm_decode_kovlsqh2_sprites(memregion("sprmask")->base() + 0x0000000);
-	pgm_decode_kovlsqh2_sprites(memregion("sprmask")->base() + 0x0800000);
-
-	pgm_decode_kovlsqh2_samples();
-	pgm_basic_init();
-	pgm_arm7_type1_latch_init();
-	/* we only have a china internal ROM dumped for now.. allow region to be changed for debugging (to ensure all alt titles / regions can be seen) */
-	m_maincpu->space(AS_PROGRAM).install_read_handler(0x4f0008, 0x4f0009, read16_delegate(FUNC(pgm_arm_type1_state::kovsh_fake_region_r),this));
-}
-
-=======
->>>>>>> upstream/master
 /*
  in Ketsui (ket) @ 000A719C (move.w)
 
@@ -1003,13 +498,8 @@ READ16_MEMBER(pgm_arm_type1_state::pgm_arm7_type1_sim_r )
 {
 	if (offset == 0)
 	{
-<<<<<<< HEAD
-		UINT16 d = m_valueresponse & 0xffff;
-		UINT16 realkey = m_valuekey >> 8;
-=======
 		uint16_t d = m_valueresponse & 0xffff;
 		uint16_t realkey = m_valuekey >> 8;
->>>>>>> upstream/master
 		realkey |= m_valuekey;
 		d ^= realkey;
 
@@ -1018,13 +508,8 @@ READ16_MEMBER(pgm_arm_type1_state::pgm_arm7_type1_sim_r )
 	}
 	else if (offset == 1)
 	{
-<<<<<<< HEAD
-		UINT16 d = m_valueresponse >> 16;
-		UINT16 realkey = m_valuekey >> 8;
-=======
 		uint16_t d = m_valueresponse >> 16;
 		uint16_t realkey = m_valuekey >> 8;
->>>>>>> upstream/master
 		realkey |= m_valuekey;
 		d ^= realkey;
 		return d;
@@ -1082,11 +567,7 @@ void pgm_arm_type1_state::command_handler_ddp3(int pc)
 /* preliminary */
 
 // should be correct, note each value only appears once
-<<<<<<< HEAD
-UINT8 puzzli2_level_decode[256] = {
-=======
 uint8_t puzzli2_level_decode[256] = {
->>>>>>> upstream/master
 	// 0  ,  1  ,  2  ,  3  ,  4  ,  5   , 6  ,  7  ,  8  ,  9  ,  a  ,  b  ,  c  ,  d  ,  e  ,  f  ,
 	0x32, 0x3e, 0xb2, 0x37, 0x31, 0x22, 0xd6, 0x0d, 0x35, 0x5c, 0x8d, 0x3c, 0x7a, 0x5f, 0xd7, 0xac, // 0x0
 //   0  ,  0  ,  0  ,  0  ,  0  ,  1  ,  1  ,  0  ,  1  ,  1  ,  0  ,  0  ,  0  ,  0  ,  x  ,  x  ,
@@ -1224,13 +705,8 @@ void pgm_arm_type1_state::command_handler_puzzli2(int pc)
 						// but different for the writes on startup?
 						m_valueresponse = 0x00d20000;
 
-<<<<<<< HEAD
-						//UINT8 tableaddr = (hack_31_table_offset + (hack_31_table_offset2&0xf))&0xff;
-						//UINT8 xoredval = m_value0 ^ puzzli2_level_decode[tableaddr];
-=======
 						//uint8_t tableaddr = (hack_31_table_offset + (hack_31_table_offset2&0xf))&0xff;
 						//uint8_t xoredval = m_value0 ^ puzzli2_level_decode[tableaddr];
->>>>>>> upstream/master
 						//puzzli2_printf("value %02x, after xor is %02x (table address,value %02x,%02x)\n", m_value0, xoredval, tableaddr, puzzli2_level_decode[tableaddr]);
 
 						hackcount2++;
@@ -1243,13 +719,8 @@ void pgm_arm_type1_state::command_handler_puzzli2(int pc)
 						// when the ARM detects the end of the stream has been reached it returns a 0x63 status with the number of columns in the data word
 						m_valueresponse = 0x00630000 | numbercolumns;
 
-<<<<<<< HEAD
-						//UINT8 tableaddr = (hack_31_table_offset + (hack_31_table_offset2&0xf))&0xff;
-						//UINT8 xoredval = m_value0 ^ puzzli2_level_decode[tableaddr];
-=======
 						//uint8_t tableaddr = (hack_31_table_offset + (hack_31_table_offset2&0xf))&0xff;
 						//uint8_t xoredval = m_value0 ^ puzzli2_level_decode[tableaddr];
->>>>>>> upstream/master
 						//puzzli2_printf("value %02x, after xor is %02x (table address,value %02x,%02x) (end, returning %02x as playfield width)\n", m_value0, xoredval, tableaddr, puzzli2_level_decode[tableaddr], m_valueresponse);
 
 
@@ -1279,11 +750,7 @@ void pgm_arm_type1_state::command_handler_puzzli2(int pc)
 
 			// this is the how to play screen, correctly returned with current code
 			/*
-<<<<<<< HEAD
-			UINT16 retvals[61] =
-=======
 			uint16_t retvals[61] =
->>>>>>> upstream/master
 			{ 0x0008, // depth (-2?)
 			  0x0103, 0x0101, 0x0102, 0x0102, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, // first column
 			  0x0103, 0x0100, 0x0101, 0x0105, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000,
@@ -1295,11 +762,7 @@ void pgm_arm_type1_state::command_handler_puzzli2(int pc)
 			*/
 
 
-<<<<<<< HEAD
-			UINT16* leveldata = &level_structure[0][0];
-=======
 			uint16_t* leveldata = &level_structure[0][0];
->>>>>>> upstream/master
 			if (hackcount==0)
 			{
 				m_valueresponse = 0x002d0000 | ((depth>>4)+1); // this *seems* to come from upper bits of the first real value written to the device during the level stream (verify, seems wrong for some levels because you get a black bar on the bottom of the screen, but might be bad xors)
@@ -1421,15 +884,9 @@ void pgm_arm_type1_state::command_handler_puzzli2(int pc)
 			m_valueresponse = 0x36<<16;
 
 			//  clear the return structure
-<<<<<<< HEAD
-			for (int columns=0;columns<8;columns++)
-				for (int rows=0;rows<10;rows++)
-					level_structure[columns][rows] = 0x0000;
-=======
 			for (auto & elem : level_structure)
 				for (int rows=0;rows<10;rows++)
 					elem[rows] = 0x0000;
->>>>>>> upstream/master
 
 		break;
 
@@ -1812,21 +1269,13 @@ void pgm_arm_type1_state::command_handler_pstars(int pc)
 
 /* Old KOV and bootlegs sim ... really these should be read out... */
 
-<<<<<<< HEAD
-static const UINT8 kov_BATABLE[0x40] = {
-=======
 static const uint8_t kov_BATABLE[0x40] = {
->>>>>>> upstream/master
 	0x00,0x29,0x2c,0x35,0x3a,0x41,0x4a,0x4e,0x57,0x5e,0x77,0x79,0x7a,0x7b,0x7c,0x7d,
 	0x7e,0x7f,0x80,0x81,0x82,0x85,0x86,0x87,0x88,0x89,0x8a,0x8b,0x8c,0x8d,0x8e,0x90,
 	0x95,0x96,0x97,0x98,0x99,0x9a,0x9b,0x9c,0x9e,0xa3,0xd4,0xa9,0xaf,0xb5,0xbb,0xc1
 };
 
-<<<<<<< HEAD
-static const UINT8 kov_B0TABLE[16] = { 2, 0, 1, 4, 3 }; // Maps char portraits to tables
-=======
 static const uint8_t kov_B0TABLE[16] = { 2, 0, 1, 4, 3 }; // Maps char portraits to tables
->>>>>>> upstream/master
 
 
 void pgm_arm_type1_state::command_handler_kov(int pc)
@@ -1917,11 +1366,7 @@ void pgm_arm_type1_state::command_handler_kov(int pc)
 		{
 			m_valueresponse = 0x880000;
 
-<<<<<<< HEAD
-			INT32 sel = (m_curslots >> 12) & 0x0f;
-=======
 			int32_t sel = (m_curslots >> 12) & 0x0f;
->>>>>>> upstream/master
 			m_slots[sel] = (m_slots[sel] & 0x00ff0000) | ((m_value0 & 0xffff) <<  0);
 		}
 		break;
@@ -1931,11 +1376,7 @@ void pgm_arm_type1_state::command_handler_kov(int pc)
 			m_valueresponse = 0x880000;
 			m_curslots = m_value0;
 
-<<<<<<< HEAD
-			INT32 sel = (m_curslots >> 12) & 0x0f;
-=======
 			int32_t sel = (m_curslots >> 12) & 0x0f;
->>>>>>> upstream/master
 			m_slots[sel] = (m_slots[sel] & 0x0000ffff) | ((m_value0 & 0x00ff) << 16);
 		}
 		break;
@@ -2305,11 +1746,7 @@ WRITE16_MEMBER(pgm_arm_type1_state::pgm_arm7_type1_sim_w )
 	}
 	else if (offset == 1)
 	{
-<<<<<<< HEAD
-		UINT16 realkey;
-=======
 		uint16_t realkey;
->>>>>>> upstream/master
 		if ((data >> 8) == 0xff)
 			m_valuekey = 0xff00;
 		realkey = m_valuekey >> 8;
@@ -2379,11 +1816,7 @@ DRIVER_INIT_MEMBER(pgm_arm_type1_state,espgal)
 }
 
 
-<<<<<<< HEAD
-int count_bits(UINT16 value)
-=======
 int count_bits(uint16_t value)
->>>>>>> upstream/master
 {
 	int count = 0;
 	for (int i=0;i<16;i++)
@@ -2396,11 +1829,7 @@ int count_bits(uint16_t value)
 	return count;
 }
 
-<<<<<<< HEAD
-int get_position_of_bit(UINT16 value, int bit_wanted)
-=======
 int get_position_of_bit(uint16_t value, int bit_wanted)
->>>>>>> upstream/master
 {
 	int count = 0;
 	for (int i=0;i<16;i++)
@@ -2416,11 +1845,7 @@ int get_position_of_bit(uint16_t value, int bit_wanted)
 	return -1;
 }
 
-<<<<<<< HEAD
-int pgm_arm_type1_state::puzzli2_take_leveldata_value(UINT8 datvalue)
-=======
 int pgm_arm_type1_state::puzzli2_take_leveldata_value(uint8_t datvalue)
->>>>>>> upstream/master
 {
 	if (stage==-1)
 	{
@@ -2441,13 +1866,8 @@ int pgm_arm_type1_state::puzzli2_take_leveldata_value(uint8_t datvalue)
 	}
 	else
 	{
-<<<<<<< HEAD
-		UINT8 rawvalue = datvalue;
-		UINT8 tableloc = (tableoffs+tableoffs2)&0xff;
-=======
 		uint8_t rawvalue = datvalue;
 		uint8_t tableloc = (tableoffs+tableoffs2)&0xff;
->>>>>>> upstream/master
 		rawvalue ^= puzzli2_level_decode[tableloc];
 
 		tableoffs2++;
@@ -2583,11 +2003,7 @@ int pgm_arm_type1_state::puzzli2_take_leveldata_value(uint8_t datvalue)
 		}
 		else if (stage==3)
 		{
-<<<<<<< HEAD
-			UINT16 object_value;
-=======
 			uint16_t object_value;
->>>>>>> upstream/master
 
 			// return values
 			// 0x0100 = normal fish
@@ -2702,11 +2118,7 @@ DRIVER_INIT_MEMBER(pgm_arm_type1_state,puzzli2)
 
 //#define PUZZLI2_LEVEL_STRUCTURE_LOG
 #ifdef PUZZLI2_LEVEL_STRUCTURE_LOG
-<<<<<<< HEAD
-	UINT8 *src2 = (UINT8 *) (machine().root_device().memregion("maincpu")->base());
-=======
 	uint8_t *src2 = (uint8_t *) (machine().root_device().memregion("maincpu")->base());
->>>>>>> upstream/master
 
 	int offset;
 	int limit;
@@ -2729,15 +2141,9 @@ DRIVER_INIT_MEMBER(pgm_arm_type1_state,puzzli2)
 
 	for (int i=0;i<limit;i++)
 	{
-<<<<<<< HEAD
-		UINT32 val1 = (src2[offset+1]<<24) | (src2[offset+0] << 16) | (src2[offset+3]<<8) | (src2[offset+2] << 0);
-		offset += 4;
-		UINT32 val2 = (src2[offset+1]<<24) | (src2[offset+0] << 16) | (src2[offset+3]<<8) | (src2[offset+2] << 0);
-=======
 		uint32_t val1 = (src2[offset+1]<<24) | (src2[offset+0] << 16) | (src2[offset+3]<<8) | (src2[offset+2] << 0);
 		offset += 4;
 		uint32_t val2 = (src2[offset+1]<<24) | (src2[offset+0] << 16) | (src2[offset+3]<<8) | (src2[offset+2] << 0);
->>>>>>> upstream/master
 
 
 		printf("(%d) data range %08x %08x\n", i, val1, val2);
@@ -2796,11 +2202,7 @@ DRIVER_INIT_MEMBER(pgm_arm_type1_state,puzzli2)
 #if 0
 	if (!strcmp(machine().system().name,"puzzli2"))
 	{
-<<<<<<< HEAD
-	UINT8 *src3 = (UINT8 *) (machine().root_device().memregion("maincpu")->base());
-=======
 	uint8_t *src3 = (uint8_t *) (machine().root_device().memregion("maincpu")->base());
->>>>>>> upstream/master
 	printf("how to play data pointer %02x %02x %02x %02x\n", src3[0x17b28e ^1], src3[0x17b28f ^1], src3[0x17b290 ^1], src3[0x17b291 ^1]);
 	src3[0x17b28e ^1] = 0x00;
 	src3[0x17b28f ^1] = 0x11;
@@ -2812,11 +2214,7 @@ DRIVER_INIT_MEMBER(pgm_arm_type1_state,puzzli2)
 	pgm_puzzli2_decrypt(machine());
 
 	{
-<<<<<<< HEAD
-		UINT8 *ROM = (UINT8*)memregion("maincpu")->base();
-=======
 		uint8_t *ROM = (uint8_t*)memregion("maincpu")->base();
->>>>>>> upstream/master
 
 		FILE *fp;
 		char filename[256];
@@ -2865,11 +2263,7 @@ DRIVER_INIT_MEMBER(pgm_arm_type1_state,pstar)
 	m_extra_ram[0] = 0;
 	m_extra_ram[1] = 0;
 	m_extra_ram[2] = 0;
-<<<<<<< HEAD
-	memset(m_slots, 0, 16 * sizeof(UINT32));
-=======
 	memset(m_slots, 0, 16 * sizeof(uint32_t));
->>>>>>> upstream/master
 
 	arm_sim_handler = &pgm_arm_type1_state::command_handler_pstars;
 	m_maincpu->space(AS_PROGRAM).install_readwrite_handler(0x500000, 0x500005, read16_delegate(FUNC(pgm_arm_type1_state::pgm_arm7_type1_sim_r),this), write16_delegate(FUNC(pgm_arm_type1_state::pgm_arm7_type1_sim_w),this));
@@ -2895,32 +2289,10 @@ DRIVER_INIT_MEMBER(pgm_arm_type1_state,kov)
 	m_maincpu->space(AS_PROGRAM).install_read_handler(0x4f0000, 0x4f003f, read16_delegate(FUNC(pgm_arm_type1_state::pgm_arm7_type1_sim_protram_r),this));
 }
 
-<<<<<<< HEAD
-DRIVER_INIT_MEMBER(pgm_arm_type1_state,kovplus)
-{
-	pgm_basic_init();
-	kovplus_fix_patch();
-	pgm_kov_decrypt(machine());
-	pgm_arm7_type1_latch_init();
-	m_curslots = 0;
-	m_kov_c0_value = 0;
-	m_kov_cb_value = 0;
-	m_kov_fe_value = 0;
-	arm_sim_handler = &pgm_arm_type1_state::command_handler_kov;
-	m_maincpu->space(AS_PROGRAM).install_readwrite_handler(0x500000, 0x500005, read16_delegate(FUNC(pgm_arm_type1_state::pgm_arm7_type1_sim_r),this), write16_delegate(FUNC(pgm_arm_type1_state::pgm_arm7_type1_sim_w),this));
-	m_maincpu->space(AS_PROGRAM).install_read_handler(0x4f0000, 0x4f003f, read16_delegate(FUNC(pgm_arm_type1_state::pgm_arm7_type1_sim_protram_r),this));
-}
-
-=======
->>>>>>> upstream/master
 DRIVER_INIT_MEMBER(pgm_arm_type1_state,kovboot)
 {
 	pgm_basic_init();
 //  pgm_kov_decrypt(machine());
-<<<<<<< HEAD
-	kovboot_fix_patch();
-=======
->>>>>>> upstream/master
 	pgm_arm7_type1_latch_init();
 	m_curslots = 0;
 	m_kov_c0_value = 0;
@@ -2937,13 +2309,8 @@ DRIVER_INIT_MEMBER(pgm_arm_type1_state,oldsplus)
 	pgm_basic_init();
 	pgm_oldsplus_decrypt(machine());
 	pgm_arm7_type1_latch_init();
-<<<<<<< HEAD
-	memset(m_extra_ram, 0, 0x100 * sizeof(UINT16));
-	memset(m_slots, 0, 0x100 * sizeof(UINT32));
-=======
 	memset(m_extra_ram, 0, 0x100 * sizeof(uint16_t));
 	memset(m_slots, 0, 0x100 * sizeof(uint32_t));
->>>>>>> upstream/master
 	arm_sim_handler = &pgm_arm_type1_state::command_handler_oldsplus;
 	m_maincpu->space(AS_PROGRAM).install_readwrite_handler(0x500000, 0x500005, read16_delegate(FUNC(pgm_arm_type1_state::pgm_arm7_type1_sim_r),this), write16_delegate(FUNC(pgm_arm_type1_state::pgm_arm7_type1_sim_w),this));
 	m_maincpu->space(AS_PROGRAM).install_read_handler(0x4f0000, 0x4f003f, read16_delegate(FUNC(pgm_arm_type1_state::pgm_arm7_type1_sim_protram_r),this));

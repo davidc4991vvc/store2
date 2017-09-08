@@ -6,11 +6,7 @@
 
 ****************************************************************************
 
-<<<<<<< HEAD
-    Exerion is a unique driver in that it has idiosyncracies that are straight
-=======
     Exerion is a unique driver in that it has idiosyncrasies that are straight
->>>>>>> upstream/master
     out of Bizarro World. I submit for your approval:
 
     * The mystery reads from $d802 - timer-based protection?
@@ -124,18 +120,12 @@ Stephh's notes (based on the games Z80 code and some tests) :
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/z80/z80.h"
-#include "includes/exerion.h"
-#include "sound/ay8910.h"
-=======
 #include "includes/exerion.h"
 
 #include "cpu/z80/z80.h"
 #include "machine/gen_latch.h"
 #include "sound/ay8910.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 /*************************************
@@ -212,11 +202,7 @@ static ADDRESS_MAP_START( main_map, AS_PROGRAM, 8, exerion_state )
 	AM_RANGE(0xa800, 0xa800) AM_READ_PORT("DSW0")
 	AM_RANGE(0xb000, 0xb000) AM_READ_PORT("DSW1")
 	AM_RANGE(0xc000, 0xc000) AM_WRITE(exerion_videoreg_w)
-<<<<<<< HEAD
-	AM_RANGE(0xc800, 0xc800) AM_WRITE(soundlatch_byte_w)
-=======
 	AM_RANGE(0xc800, 0xc800) AM_DEVWRITE("soundlatch", generic_latch_8_device, write)
->>>>>>> upstream/master
 	AM_RANGE(0xd000, 0xd001) AM_DEVWRITE("ay1", ay8910_device, address_data_w)
 	AM_RANGE(0xd800, 0xd801) AM_DEVWRITE("ay2", ay8910_device, address_data_w)
 	AM_RANGE(0xd802, 0xd802) AM_DEVREAD("ay2", ay8910_device, data_r)
@@ -233,11 +219,7 @@ ADDRESS_MAP_END
 static ADDRESS_MAP_START( sub_map, AS_PROGRAM, 8, exerion_state )
 	AM_RANGE(0x0000, 0x1fff) AM_ROM
 	AM_RANGE(0x4000, 0x47ff) AM_RAM
-<<<<<<< HEAD
-	AM_RANGE(0x6000, 0x6000) AM_READ(soundlatch_byte_r)
-=======
 	AM_RANGE(0x6000, 0x6000) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
->>>>>>> upstream/master
 	AM_RANGE(0x8000, 0x800c) AM_WRITE(exerion_video_latch_w)
 	AM_RANGE(0xa000, 0xa000) AM_READ(exerion_video_timing_r)
 ADDRESS_MAP_END
@@ -253,11 +235,7 @@ ADDRESS_MAP_END
 /* verified from Z80 code */
 static INPUT_PORTS_START( exerion )
 	PORT_START("IN0")
-<<<<<<< HEAD
-	PORT_BIT( 0x3f, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, exerion_state,exerion_controls_r, (void *)0)
-=======
 	PORT_BIT( 0x3f, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, exerion_state, exerion_controls_r, nullptr)
->>>>>>> upstream/master
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_START1 )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_START2 )
 
@@ -392,11 +370,7 @@ void exerion_state::machine_reset()
 		m_background_latches[i] = 0;
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( exerion, exerion_state )
-=======
 static MACHINE_CONFIG_START( exerion )
->>>>>>> upstream/master
 
 	MCFG_CPU_ADD("maincpu", Z80, EXERION_CPU_CLOCK)
 	MCFG_CPU_PROGRAM_MAP(main_map)
@@ -419,11 +393,8 @@ static MACHINE_CONFIG_START( exerion )
 	/* audio hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 
->>>>>>> upstream/master
 	MCFG_SOUND_ADD("ay1", AY8910, EXERION_AY8910_CLOCK)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.30)
 
@@ -540,19 +511,11 @@ ROM_END
 
 DRIVER_INIT_MEMBER(exerion_state,exerion)
 {
-<<<<<<< HEAD
-	UINT32 oldaddr, newaddr, length;
-	UINT8 *src, *dst;
-
-	/* allocate some temporary space */
-	dynamic_buffer temp(0x10000);
-=======
 	uint32_t oldaddr, newaddr, length;
 	uint8_t *src, *dst;
 
 	/* allocate some temporary space */
 	std::vector<uint8_t> temp(0x10000);
->>>>>>> upstream/master
 
 	/* make a temporary copy of the character data */
 	src = &temp[0];
@@ -595,11 +558,7 @@ DRIVER_INIT_MEMBER(exerion_state,exerion)
 
 DRIVER_INIT_MEMBER(exerion_state,exerionb)
 {
-<<<<<<< HEAD
-	UINT8 *ram = memregion("maincpu")->base();
-=======
 	uint8_t *ram = memregion("maincpu")->base();
->>>>>>> upstream/master
 	int addr;
 
 	/* the program ROMs have data lines D1 and D2 swapped. Decode them. */

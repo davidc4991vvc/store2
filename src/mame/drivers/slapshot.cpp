@@ -134,14 +134,6 @@ Region byte at offset 0x031:
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/z80/z80.h"
-#include "cpu/m68000/m68000.h"
-#include "audio/taitosnd.h"
-#include "sound/2610intf.h"
-#include "machine/timekpr.h"
-#include "includes/slapshot.h"
-=======
 #include "includes/slapshot.h"
 #include "audio/taitosnd.h"
 
@@ -151,7 +143,6 @@ Region byte at offset 0x031:
 #include "sound/2610intf.h"
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 /***********************************************************
@@ -166,11 +157,7 @@ void slapshot_state::device_timer(emu_timer &timer, device_timer_id id, int para
 		m_maincpu->set_input_line(6, HOLD_LINE);
 		break;
 	default:
-<<<<<<< HEAD
-		assert_always(FALSE, "Unknown id in slapshot_state::device_timer");
-=======
 		assert_always(false, "Unknown id in slapshot_state::device_timer");
->>>>>>> upstream/master
 	}
 }
 
@@ -217,16 +204,6 @@ WRITE16_MEMBER(slapshot_state::opwolf3_adc_req_w)
 	/* also you get a false fire every once in a while on the p1 gun */
 
 	if (((data & 0x100) == 0x100) && ((data & 0x400)==0))
-<<<<<<< HEAD
-		output_set_value("Player1_Gun_Recoil",1);
-	else
-		output_set_value("Player1_Gun_Recoil",0);
-
-	if (((data & 0x100) == 0x100) && ((data & 0x400)==0x400))
-		output_set_value("Player2_Gun_Recoil",1);
-	else
-		output_set_value("Player2_Gun_Recoil",0);
-=======
 		output().set_value("Player1_Gun_Recoil",1);
 	else
 		output().set_value("Player1_Gun_Recoil",0);
@@ -235,7 +212,6 @@ WRITE16_MEMBER(slapshot_state::opwolf3_adc_req_w)
 		output().set_value("Player2_Gun_Recoil",1);
 	else
 		output().set_value("Player2_Gun_Recoil",0);
->>>>>>> upstream/master
 	break;
 	}
 
@@ -243,8 +219,6 @@ WRITE16_MEMBER(slapshot_state::opwolf3_adc_req_w)
 	m_maincpu->set_input_line(3, HOLD_LINE);
 }
 
-<<<<<<< HEAD
-=======
 WRITE8_MEMBER(slapshot_state::coin_control_w)
 {
 	machine().bookkeeping().coin_lockout_w(0, ~data & 0x01);
@@ -253,7 +227,6 @@ WRITE8_MEMBER(slapshot_state::coin_control_w)
 	machine().bookkeeping().coin_counter_w(1, data & 0x08);
 }
 
->>>>>>> upstream/master
 /*****************************************************
                 SOUND
 *****************************************************/
@@ -496,11 +469,7 @@ void slapshot_state::machine_start()
 }
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( slapshot, slapshot_state )
-=======
 static MACHINE_CONFIG_START( slapshot )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, 14346000)   /* 28.6860 MHz / 2 ??? */
@@ -516,10 +485,7 @@ static MACHINE_CONFIG_START( slapshot )
 	MCFG_TC0640FIO_READ_1_CB(IOPORT("COINS"))
 	MCFG_TC0640FIO_READ_2_CB(IOPORT("BUTTONS"))
 	MCFG_TC0640FIO_READ_3_CB(IOPORT("SYSTEM"))
-<<<<<<< HEAD
-=======
 	MCFG_TC0640FIO_WRITE_4_CB(WRITE8(slapshot_state, coin_control_w))
->>>>>>> upstream/master
 	MCFG_TC0640FIO_READ_7_CB(IOPORT("JOY"))
 
 	/* video hardware */
@@ -529,11 +495,7 @@ static MACHINE_CONFIG_START( slapshot )
 	MCFG_SCREEN_SIZE(40*8, 32*8)
 	MCFG_SCREEN_VISIBLE_AREA(0*8, 40*8-1, 2*8, 30*8-1)
 	MCFG_SCREEN_UPDATE_DRIVER(slapshot_state, screen_update)
-<<<<<<< HEAD
-	MCFG_SCREEN_VBLANK_DRIVER(slapshot_state, screen_eof_taito_no_buffer)
-=======
 	MCFG_SCREEN_VBLANK_CALLBACK(WRITELINE(slapshot_state, screen_vblank_taito_no_buffer))
->>>>>>> upstream/master
 	MCFG_SCREEN_PALETTE("palette")
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", slapshot)
@@ -548,10 +510,6 @@ static MACHINE_CONFIG_START( slapshot )
 	MCFG_TC0480SCP_OFFSETS_FLIP(0, 2)
 	MCFG_TC0480SCP_COL_BASE(4096)
 	MCFG_TC0480SCP_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_TC0480SCP_PALETTE("palette")
-=======
->>>>>>> upstream/master
 
 	MCFG_TC0360PRI_ADD("tc0360pri")
 
@@ -572,11 +530,7 @@ static MACHINE_CONFIG_START( slapshot )
 	MCFG_TC0140SYT_SLAVE_CPU("audiocpu")
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( opwolf3, slapshot_state )
-=======
 static MACHINE_CONFIG_START( opwolf3 )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, 14346000)   /* 28.6860 MHz / 2 ??? */
@@ -592,10 +546,7 @@ static MACHINE_CONFIG_START( opwolf3 )
 	MCFG_TC0640FIO_READ_1_CB(IOPORT("COINS"))
 	MCFG_TC0640FIO_READ_2_CB(IOPORT("BUTTONS"))
 	MCFG_TC0640FIO_READ_3_CB(IOPORT("SYSTEM"))
-<<<<<<< HEAD
-=======
 	MCFG_TC0640FIO_WRITE_4_CB(WRITE8(slapshot_state, coin_control_w))
->>>>>>> upstream/master
 	MCFG_TC0640FIO_READ_7_CB(IOPORT("JOY"))
 
 	/* video hardware */
@@ -605,11 +556,7 @@ static MACHINE_CONFIG_START( opwolf3 )
 	MCFG_SCREEN_SIZE(40*8, 32*8)
 	MCFG_SCREEN_VISIBLE_AREA(0*8, 40*8-1, 2*8, 30*8-1)
 	MCFG_SCREEN_UPDATE_DRIVER(slapshot_state, screen_update)
-<<<<<<< HEAD
-	MCFG_SCREEN_VBLANK_DRIVER(slapshot_state, screen_eof_taito_no_buffer)
-=======
 	MCFG_SCREEN_VBLANK_CALLBACK(WRITELINE(slapshot_state, screen_vblank_taito_no_buffer))
->>>>>>> upstream/master
 	MCFG_SCREEN_PALETTE("palette")
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", slapshot)
@@ -624,10 +571,6 @@ static MACHINE_CONFIG_START( opwolf3 )
 	MCFG_TC0480SCP_OFFSETS_FLIP(0, 2)
 	MCFG_TC0480SCP_COL_BASE(4096)
 	MCFG_TC0480SCP_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_TC0480SCP_PALETTE("palette")
-=======
->>>>>>> upstream/master
 
 	MCFG_TC0360PRI_ADD("tc0360pri")
 
@@ -668,11 +611,7 @@ ROM_START( slapshot )
 	ROM_LOAD16_BYTE( "d71-01.23", 0x000000, 0x100000, CRC(0b1e8c27) SHA1(ffa452f7414f3d61edb69bb61b29a0cc8d9176d0) )    /* OBJ 6bpp */
 	ROM_LOAD16_BYTE( "d71-02.24", 0x000001, 0x100000, CRC(ccaaea2d) SHA1(71b507f215f37e991abae5523642417a6b23a70d) )
 	ROM_LOAD       ( "d71-03.25", 0x300000, 0x100000, CRC(dccef9ec) SHA1(ee7a49727b822cf4c1d7acff994b77ea6191c423) )
-<<<<<<< HEAD
-	ROM_FILL       (              0x200000, 0x100000, 0 )
-=======
 	ROM_FILL       (              0x200000, 0x100000, 0x00 )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x80000, "ymsnd", 0 )   /* ADPCM samples */
 	ROM_LOAD( "d71-06.37", 0x00000, 0x80000, CRC(f3324188) SHA1(70dd724441eae8614218bc7f0f51860bd2462f0c) )
@@ -706,11 +645,7 @@ ROM_START( opwolf3 )
 	ROM_LOAD16_BYTE( "d74_02.23", 0x000000, 0x200000, CRC(aab86332) SHA1(b9133407504e9ef4fd5ae7d284cdb0c7f78f9a99) )    /* OBJ 6bpp */
 	ROM_LOAD16_BYTE( "d74_03.24", 0x000001, 0x200000, CRC(3f398916) SHA1(4b6a3ee0baf5f32e24e5040f233300f1ca347fe7) )
 	ROM_LOAD       ( "d74_04.25", 0x600000, 0x200000, CRC(2f385638) SHA1(1ba2ec7d9b1c491e1cc6d7e646e09ef2bc063f25) )
-<<<<<<< HEAD
-	ROM_FILL       (              0x400000, 0x200000, 0 )
-=======
 	ROM_FILL       (              0x400000, 0x200000, 0x00 )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x200000, "ymsnd", 0 )  /* ADPCM samples */
 	ROM_LOAD( "d74_01.37",  0x000000, 0x200000, CRC(115313e0) SHA1(51a69e7a26960b1328ccefeaec0fb26bdccc39f2) )
@@ -736,11 +671,7 @@ ROM_START( opwolf3u )
 	ROM_LOAD16_BYTE( "d74_02.23", 0x000000, 0x200000, CRC(aab86332) SHA1(b9133407504e9ef4fd5ae7d284cdb0c7f78f9a99) )    /* OBJ 6bpp */
 	ROM_LOAD16_BYTE( "d74_03.24", 0x000001, 0x200000, CRC(3f398916) SHA1(4b6a3ee0baf5f32e24e5040f233300f1ca347fe7) )
 	ROM_LOAD       ( "d74_04.25", 0x600000, 0x200000, CRC(2f385638) SHA1(1ba2ec7d9b1c491e1cc6d7e646e09ef2bc063f25) )
-<<<<<<< HEAD
-	ROM_FILL       (              0x400000, 0x200000, 0 )
-=======
 	ROM_FILL       (              0x400000, 0x200000, 0x00 )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x200000, "ymsnd", 0 )  /* ADPCM samples */
 	ROM_LOAD( "d74_01.37",  0x000000, 0x200000, CRC(115313e0) SHA1(51a69e7a26960b1328ccefeaec0fb26bdccc39f2) )
@@ -751,13 +682,8 @@ ROM_END
 
 DRIVER_INIT_MEMBER(slapshot_state,slapshot)
 {
-<<<<<<< HEAD
-	UINT32 offset,i;
-	UINT8 *gfx = memregion("gfx2")->base();
-=======
 	uint32_t offset,i;
 	uint8_t *gfx = memregion("gfx2")->base();
->>>>>>> upstream/master
 	int size = memregion("gfx2")->bytes();
 	int data;
 
@@ -781,12 +707,6 @@ DRIVER_INIT_MEMBER(slapshot_state,slapshot)
 	}
 }
 
-<<<<<<< HEAD
-GAME( 1994, slapshot, 0,       slapshot, slapshot, slapshot_state, slapshot, ROT0, "Taito Corporation",         "Slap Shot (Japan)", MACHINE_SUPPORTS_SAVE )
-GAME( 1994, opwolf3,  0,       opwolf3,  opwolf3, slapshot_state,  slapshot, ROT0, "Taito Corporation Japan",   "Operation Wolf 3 (World)", MACHINE_SUPPORTS_SAVE )
-GAME( 1994, opwolf3u, opwolf3, opwolf3,  opwolf3, slapshot_state,  slapshot, ROT0, "Taito America Corporation", "Operation Wolf 3 (US)", MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1994, slapshot, 0,       slapshot, slapshot, slapshot_state, slapshot, ROT0, "Taito Corporation",         "Slap Shot (Japan)",        MACHINE_SUPPORTS_SAVE )
 GAME( 1994, opwolf3,  0,       opwolf3,  opwolf3,  slapshot_state, slapshot, ROT0, "Taito Corporation Japan",   "Operation Wolf 3 (World)", MACHINE_SUPPORTS_SAVE )
 GAME( 1994, opwolf3u, opwolf3, opwolf3,  opwolf3,  slapshot_state, slapshot, ROT0, "Taito America Corporation", "Operation Wolf 3 (US)",    MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

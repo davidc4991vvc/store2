@@ -4,10 +4,6 @@
 
   Sharp SM511 MCU core implementation
 
-<<<<<<< HEAD
-*/
-
-=======
   TODO:
   - undocumented/guessed opcodes:
     * $01 is guessed as DIV to ACC transfer, unknown which bits
@@ -18,19 +14,13 @@
 */
 
 #include "emu.h"
->>>>>>> upstream/master
 #include "sm510.h"
 #include "debugger.h"
 
 
 // MCU types
-<<<<<<< HEAD
-const device_type SM511 = &device_creator<sm511_device>;
-const device_type SM512 = &device_creator<sm512_device>;
-=======
 DEFINE_DEVICE_TYPE(SM511, sm511_device, "sm511", "SM511") // 4Kx8 ROM, 128x4 RAM(32x4 for LCD), melody controller
 DEFINE_DEVICE_TYPE(SM512, sm512_device, "sm512", "SM512") // 4Kx8 ROM, 128x4 RAM(48x4 for LCD), melody controller
->>>>>>> upstream/master
 
 
 // internal memory maps
@@ -53,34 +43,14 @@ ADDRESS_MAP_END
 
 
 // disasm
-<<<<<<< HEAD
-offs_t sm511_device::disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options)
-{
-	extern CPU_DISASSEMBLE(sm511);
-	return CPU_DISASSEMBLE_NAME(sm511)(this, buffer, pc, oprom, opram, options);
-=======
 offs_t sm511_device::disasm_disassemble(std::ostream &stream, offs_t pc, const u8 *oprom, const u8 *opram, u32 options)
 {
 	extern CPU_DISASSEMBLE(sm511);
 	return CPU_DISASSEMBLE_NAME(sm511)(this, stream, pc, oprom, opram, options);
->>>>>>> upstream/master
 }
 
 
 // device definitions
-<<<<<<< HEAD
-sm511_device::sm511_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: sm510_base_device(mconfig, SM511, "SM511", tag, owner, clock, 2 /* stack levels */, 12 /* prg width */, ADDRESS_MAP_NAME(program_4k), 7 /* data width */, ADDRESS_MAP_NAME(data_96_32x4), "sm511", __FILE__)
-{ }
-
-sm511_device::sm511_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, int stack_levels, int prgwidth, address_map_constructor program, int datawidth, address_map_constructor data, const char *shortname, const char *source)
-	: sm510_base_device(mconfig, type, name, tag, owner, clock, stack_levels, prgwidth, program, datawidth, data, shortname, source)
-{ }
-
-sm512_device::sm512_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: sm511_device(mconfig, SM512, "SM512", tag, owner, clock, 2, 12, ADDRESS_MAP_NAME(program_4k), 7, ADDRESS_MAP_NAME(data_80_48x4), "sm512", __FILE__)
-{ }
-=======
 sm511_device::sm511_device(const machine_config &mconfig, const char *tag, device_t *owner, u32 clock)
 	: sm511_device(mconfig, SM511, tag, owner, clock, 2 /* stack levels */, 12 /* prg width */, ADDRESS_MAP_NAME(program_4k), 7 /* data width */, ADDRESS_MAP_NAME(data_96_32x4))
 {
@@ -186,7 +156,6 @@ void sm511_device::init_melody()
 			logerror("%s unknown melody ROM data $%02X at $%02X\n", tag(), data, i);
 	}
 }
->>>>>>> upstream/master
 
 
 
@@ -196,13 +165,8 @@ void sm511_device::init_melody()
 
 void sm511_device::get_opcode_param()
 {
-<<<<<<< HEAD
-	// XXX?, LBL, PRE, TL, TML and prefix opcodes are 2 bytes
-	if (m_op == 0x01 || (m_op >= 0x5f && m_op <= 0x61) || (m_op & 0xf0) == 0x70 || (m_op & 0xfc) == 0x68)
-=======
 	// LBL, PRE, TL, TML and prefix opcodes are 2 bytes
 	if ((m_op >= 0x5f && m_op <= 0x61) || (m_op & 0xf0) == 0x70 || (m_op & 0xfc) == 0x68)
->>>>>>> upstream/master
 	{
 		m_icount--;
 		m_param = m_program->read_byte(m_pc);
@@ -240,11 +204,7 @@ void sm511_device::execute_one()
 			switch (m_op)
 			{
 		case 0x00: op_rot(); break;
-<<<<<<< HEAD
-//      case 0x01: op_xxx(); break; // ?
-=======
 		case 0x01: op_dta(); break;
->>>>>>> upstream/master
 		case 0x02: op_sbm(); break;
 		case 0x03: op_atpl(); break;
 		case 0x08: op_add(); break;
@@ -261,11 +221,7 @@ void sm511_device::execute_one()
 		case 0x5a: op_ta0(); break;
 		case 0x5b: op_tabl(); break;
 		case 0x5c: op_atx(); break;
-<<<<<<< HEAD
-//      case 0x5d: op_cend(); break;
-=======
 		case 0x5d: op_cend(); break;
->>>>>>> upstream/master
 		case 0x5e: op_tal(); break;
 		case 0x5f: op_lbl(); break;
 
@@ -273,11 +229,7 @@ void sm511_device::execute_one()
 		case 0x62: op_wr(); break;
 		case 0x63: op_ws(); break;
 		case 0x64: op_incb(); break;
-<<<<<<< HEAD
-//      case 0x65: op_idiv(); break;
-=======
 		case 0x65: op_dr(); break;
->>>>>>> upstream/master
 		case 0x66: op_rc(); break;
 		case 0x67: op_sc(); break;
 		case 0x6c: op_decb(); break;
@@ -296,11 +248,8 @@ void sm511_device::execute_one()
 		case 0x33: op_atfc(); break;
 		case 0x34: op_bdc(); break;
 		case 0x35: op_atbp(); break;
-<<<<<<< HEAD
-=======
 		case 0x36: op_clkhi(); break;
 		case 0x37: op_clklo(); break;
->>>>>>> upstream/master
 
 		default: op_illegal(); break;
 			}
@@ -314,10 +263,7 @@ void sm511_device::execute_one()
 			break; // 0xfc
 
 	} // big switch
-<<<<<<< HEAD
-=======
 
 	// BM high bit is only valid for 1 step
 	m_sbm = (m_op == 0x02);
->>>>>>> upstream/master
 }

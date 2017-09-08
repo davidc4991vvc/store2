@@ -19,16 +19,6 @@
 
 *************************************************************************/
 
-<<<<<<< HEAD
-#define MASTER_CLOCK    20000000
-
-
-#include "emu.h"
-#include "cpu/z80/z80.h"
-#include "sound/sn76496.h"
-#include "machine/ldv1000.h"
-#include "video/resnet.h"
-=======
 #include "emu.h"
 #include "cpu/z80/z80.h"
 #include "machine/ldv1000.h"
@@ -39,7 +29,6 @@
 
 #define MASTER_CLOCK    20000000
 
->>>>>>> upstream/master
 
 class superdq_state : public driver_device
 {
@@ -53,17 +42,10 @@ public:
 		m_palette(*this, "palette")  { }
 
 	required_device<pioneer_ldv1000_device> m_laserdisc;
-<<<<<<< HEAD
-	UINT8 m_ld_in_latch;
-	UINT8 m_ld_out_latch;
-
-	required_shared_ptr<UINT8> m_videoram;
-=======
 	uint8_t m_ld_in_latch;
 	uint8_t m_ld_out_latch;
 
 	required_shared_ptr<uint8_t> m_videoram;
->>>>>>> upstream/master
 	tilemap_t *m_tilemap;
 	int m_color_bank;
 	DECLARE_WRITE8_MEMBER(superdq_videoram_w);
@@ -71,19 +53,11 @@ public:
 	DECLARE_READ8_MEMBER(superdq_ld_r);
 	DECLARE_WRITE8_MEMBER(superdq_ld_w);
 	TILE_GET_INFO_MEMBER(get_tile_info);
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void machine_reset();
-	virtual void video_start();
-	DECLARE_PALETTE_INIT(superdq);
-	UINT32 screen_update_superdq(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
-=======
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
 	virtual void video_start() override;
 	DECLARE_PALETTE_INIT(superdq);
 	uint32_t screen_update_superdq(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	INTERRUPT_GEN_MEMBER(superdq_vblank);
 	required_device<cpu_device> m_maincpu;
 	required_device<gfxdecode_device> m_gfxdecode;
@@ -99,17 +73,10 @@ TILE_GET_INFO_MEMBER(superdq_state::get_tile_info)
 
 void superdq_state::video_start()
 {
-<<<<<<< HEAD
-	m_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(superdq_state::get_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
-}
-
-UINT32 superdq_state::screen_update_superdq(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
-=======
 	m_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(superdq_state::get_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
 }
 
 uint32_t superdq_state::screen_update_superdq(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	m_tilemap->draw(screen, bitmap, cliprect, 0, 0);
 
@@ -126,11 +93,7 @@ uint32_t superdq_state::screen_update_superdq(screen_device &screen, bitmap_rgb3
 
 PALETTE_INIT_MEMBER(superdq_state, superdq)
 {
-<<<<<<< HEAD
-	const UINT8 *color_prom = memregion("proms")->base();
-=======
 	const uint8_t *color_prom = memregion("proms")->base();
->>>>>>> upstream/master
 	int i;
 	static const int resistances[3] = { 820, 390, 200 };
 	double rweights[3], gweights[3], bweights[2];
@@ -198,22 +161,13 @@ WRITE8_MEMBER(superdq_state::superdq_videoram_w)
 WRITE8_MEMBER(superdq_state::superdq_io_w)
 {
 	int             i;
-<<<<<<< HEAD
-	static const UINT8 black_color_entries[] = {7,15,16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31};
-=======
 	static const uint8_t black_color_entries[] = {7,15,16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31};
->>>>>>> upstream/master
 
 	if ( data & 0x40 ) /* bit 6 = irqack */
 		m_maincpu->set_input_line(0, CLEAR_LINE);
 
-<<<<<<< HEAD
-	coin_counter_w( machine(), 0, data & 0x08 );
-	coin_counter_w( machine(), 1, data & 0x04 );
-=======
 	machine().bookkeeping().coin_counter_w(0, data & 0x08 );
 	machine().bookkeeping().coin_counter_w(1, data & 0x04 );
->>>>>>> upstream/master
 
 	m_color_bank = ( data & 2 ) ? 1 : 0;
 
@@ -371,11 +325,7 @@ void superdq_state::machine_start()
 }
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( superdq, superdq_state )
-=======
 static MACHINE_CONFIG_START( superdq )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, MASTER_CLOCK/8)
@@ -464,12 +414,6 @@ ROM_END
  *
  *************************************/
 
-<<<<<<< HEAD
-GAME( 1984, superdq,  0,        superdq, superdq, driver_device, 0, ROT0, "Universal", "Super Don Quix-ote (Long Scenes)", MACHINE_NOT_WORKING )
-GAME( 1984, superdqs, superdq,  superdq, superdq, driver_device, 0, ROT0, "Universal", "Super Don Quix-ote (Short Scenes)", MACHINE_NOT_WORKING )
-GAME( 1984, superdqa, superdq,  superdq, superdq, driver_device, 0, ROT0, "Universal", "Super Don Quix-ote (Short Scenes, Alt)", MACHINE_NOT_WORKING )
-=======
 GAME( 1984, superdq,  0,        superdq, superdq, superdq_state, 0, ROT0, "Universal", "Super Don Quix-ote (Long Scenes)",       MACHINE_NOT_WORKING )
 GAME( 1984, superdqs, superdq,  superdq, superdq, superdq_state, 0, ROT0, "Universal", "Super Don Quix-ote (Short Scenes)",      MACHINE_NOT_WORKING )
 GAME( 1984, superdqa, superdq,  superdq, superdq, superdq_state, 0, ROT0, "Universal", "Super Don Quix-ote (Short Scenes, Alt)", MACHINE_NOT_WORKING )
->>>>>>> upstream/master

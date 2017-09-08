@@ -69,11 +69,7 @@ TAP - has an ID header of TAP_DGOS_BEE or MBEE, null terminated.
 static int mbee_image_size;
 static bool mbee_speed;
 
-<<<<<<< HEAD
-static int mbee_put_samples(INT16 *buffer, int sample_pos, int count, int level)
-=======
 static int mbee_put_samples(int16_t *buffer, int sample_pos, int count, int level)
->>>>>>> upstream/master
 {
 	if (buffer)
 	{
@@ -84,11 +80,7 @@ static int mbee_put_samples(int16_t *buffer, int sample_pos, int count, int leve
 	return count;
 }
 
-<<<<<<< HEAD
-static int mbee_output_bit(INT16 *buffer, int sample_pos, bool bit)
-=======
 static int mbee_output_bit(int16_t *buffer, int sample_pos, bool bit)
->>>>>>> upstream/master
 {
 	int samples = 0;
 	if (mbee_speed)
@@ -143,17 +135,10 @@ static int mbee_output_bit(int16_t *buffer, int sample_pos, bool bit)
 	return samples;
 }
 
-<<<<<<< HEAD
-static int mbee_output_byte(INT16 *buffer, int sample_pos, UINT8 byte)
-{
-	int samples = 0;
-	UINT8 i;
-=======
 static int mbee_output_byte(int16_t *buffer, int sample_pos, uint8_t byte)
 {
 	int samples = 0;
 	uint8_t i;
->>>>>>> upstream/master
 
 	/* start */
 	samples += mbee_output_bit (buffer, sample_pos + samples, 0);
@@ -169,16 +154,6 @@ static int mbee_output_byte(int16_t *buffer, int sample_pos, uint8_t byte)
 	return samples;
 }
 
-<<<<<<< HEAD
-static int mbee_handle_tap(INT16 *buffer, const UINT8 *bytes)
-{
-	UINT32 sample_count = 0;
-	UINT32 byte_count = 0;
-	UINT32 i = 0;
-	bool temp_speed = 0;
-	UINT8 temp_blocks = 0;
-	UINT16 temp_size = 0;
-=======
 static int mbee_handle_tap(int16_t *buffer, const uint8_t *bytes)
 {
 	uint32_t sample_count = 0;
@@ -187,7 +162,6 @@ static int mbee_handle_tap(int16_t *buffer, const uint8_t *bytes)
 	bool temp_speed = 0;
 	uint8_t temp_blocks = 0;
 	uint16_t temp_size = 0;
->>>>>>> upstream/master
 
 	// TAP file starts with a null-terminate ID string. We just skip this.
 	while (bytes[byte_count])
@@ -237,11 +211,7 @@ static int mbee_handle_tap(int16_t *buffer, const uint8_t *bytes)
    Generate samples for the tape image
 ********************************************************************/
 
-<<<<<<< HEAD
-static int mbee_tap_fill_wave(INT16 *buffer, int length, UINT8 *bytes)
-=======
 static int mbee_tap_fill_wave(int16_t *buffer, int length, uint8_t *bytes)
->>>>>>> upstream/master
 {
 	return mbee_handle_tap(buffer, bytes);
 }
@@ -250,19 +220,11 @@ static int mbee_tap_fill_wave(int16_t *buffer, int length, uint8_t *bytes)
    Calculate the number of samples needed for this tape image
 ********************************************************************/
 
-<<<<<<< HEAD
-static int mbee_tap_calculate_size_in_samples(const UINT8 *bytes, int length)
-{
-	mbee_image_size = length;
-
-	return mbee_handle_tap(NULL, bytes);
-=======
 static int mbee_tap_calculate_size_in_samples(const uint8_t *bytes, int length)
 {
 	mbee_image_size = length;
 
 	return mbee_handle_tap(nullptr, bytes);
->>>>>>> upstream/master
 }
 
 static const struct CassetteLegacyWaveFiller mbee_tap_config =
@@ -276,20 +238,12 @@ static const struct CassetteLegacyWaveFiller mbee_tap_config =
 	0                                       /* trailer_samples */
 };
 
-<<<<<<< HEAD
-static casserr_t mbee_tap_identify(cassette_image *cassette, struct CassetteOptions *opts)
-=======
 static cassette_image::error mbee_tap_identify(cassette_image *cassette, struct CassetteOptions *opts)
->>>>>>> upstream/master
 {
 	return cassette_legacy_identify(cassette, opts, &mbee_tap_config);
 }
 
-<<<<<<< HEAD
-static casserr_t mbee_tap_load(cassette_image *cassette)
-=======
 static cassette_image::error mbee_tap_load(cassette_image *cassette)
->>>>>>> upstream/master
 {
 	return cassette_legacy_construct(cassette, &mbee_tap_config);
 }
@@ -299,11 +253,7 @@ static const struct CassetteFormat mbee_tap_image_format =
 	"tap",
 	mbee_tap_identify,
 	mbee_tap_load,
-<<<<<<< HEAD
-	NULL
-=======
 	nullptr
->>>>>>> upstream/master
 };
 
 CASSETTE_FORMATLIST_START(mbee_cassette_formats)

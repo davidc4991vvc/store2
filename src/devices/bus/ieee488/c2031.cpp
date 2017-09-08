@@ -6,10 +6,7 @@
 
 **********************************************************************/
 
-<<<<<<< HEAD
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #include "c2031.h"
 
 
@@ -36,11 +33,7 @@ enum
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type C2031 = &device_creator<c2031_device>;
-=======
 DEFINE_DEVICE_TYPE(C2031, c2031_device, "c2031", "Commodore 2031")
->>>>>>> upstream/master
 
 
 //-------------------------------------------------
@@ -58,11 +51,7 @@ ROM_END
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const rom_entry *c2031_device::device_rom_region() const
-=======
 const tiny_rom_entry *c2031_device::device_rom_region() const
->>>>>>> upstream/master
 {
 	return ROM_NAME( c2031 );
 }
@@ -144,11 +133,7 @@ READ8_MEMBER( c2031_device::via0_pb_r )
 
 	*/
 
-<<<<<<< HEAD
-	UINT8 data = 0;
-=======
 	uint8_t data = 0;
->>>>>>> upstream/master
 
 	// not ready for data
 	data |= m_bus->nrfd_r() << 1;
@@ -240,11 +225,7 @@ READ8_MEMBER( c2031_device::via1_pb_r )
 
 	*/
 
-<<<<<<< HEAD
-	UINT8 data = 0;
-=======
 	uint8_t data = 0;
->>>>>>> upstream/master
 
 	// write protect sense
 	data |= !m_floppy->wpt_r() << 4;
@@ -279,11 +260,7 @@ WRITE8_MEMBER( c2031_device::via1_pb_w )
 	m_ga->stp_w(data & 0x03);
 
 	// activity LED
-<<<<<<< HEAD
-	output_set_led_value(LED_ACT, BIT(data, 3));
-=======
 	machine().output().set_led_value(LED_ACT, BIT(data, 3));
->>>>>>> upstream/master
 
 	// density select
 	m_ga->ds_w((data >> 5) & 0x03);
@@ -322,17 +299,10 @@ FLOPPY_FORMATS_END
 
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  MACHINE_DRIVER( c2031 )
-//-------------------------------------------------
-
-static MACHINE_CONFIG_FRAGMENT( c2031 )
-=======
 //  device_add_mconfig - add device configuration
 //-------------------------------------------------
 
 MACHINE_CONFIG_MEMBER( c2031_device::device_add_mconfig )
->>>>>>> upstream/master
 	MCFG_CPU_ADD(M6502_TAG, M6502, XTAL_16MHz/16)
 	MCFG_CPU_PROGRAM_MAP(c2031_mem)
 	MCFG_QUANTUM_PERFECT_CPU(M6502_TAG)
@@ -355,29 +325,11 @@ MACHINE_CONFIG_MEMBER( c2031_device::device_add_mconfig )
 
 	MCFG_DEVICE_ADD(C64H156_TAG, C64H156, XTAL_16MHz)
 	MCFG_64H156_BYTE_CALLBACK(WRITELINE(c2031_device, byte_w))
-<<<<<<< HEAD
-	MCFG_FLOPPY_DRIVE_ADD(C64H156_TAG":0", c2031_floppies, "525ssqd", c2031_device::floppy_formats)
-=======
 	MCFG_FLOPPY_DRIVE_ADD_FIXED(C64H156_TAG":0", c2031_floppies, "525ssqd", c2031_device::floppy_formats)
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  machine_config_additions - device-specific
-//  machine configurations
-//-------------------------------------------------
-
-machine_config_constructor c2031_device::device_mconfig_additions() const
-{
-	return MACHINE_CONFIG_NAME( c2031 );
-}
-
-
-//-------------------------------------------------
-=======
->>>>>>> upstream/master
 //  INPUT_PORTS( c2031 )
 //-------------------------------------------------
 
@@ -435,22 +387,6 @@ inline int c2031_device::get_device_number()
 //  c2031_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-c2031_device::c2031_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, C2031, "C2031", tag, owner, clock, "c2031", __FILE__),
-		device_ieee488_interface(mconfig, *this),
-		m_maincpu(*this, M6502_TAG),
-		m_via0(*this, M6522_0_TAG),
-		m_via1(*this, M6522_1_TAG),
-		m_ga(*this, C64H156_TAG),
-		m_floppy(*this, C64H156_TAG":0:525ssqd"),
-		m_address(*this, "ADDRESS"),
-		m_nrfd_out(1),
-		m_ndac_out(1),
-		m_atna(1), m_ifc(0),
-		m_via0_irq(0),
-		m_via1_irq(0)
-=======
 c2031_device::c2031_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, C2031, tag, owner, clock)
 	, device_ieee488_interface(mconfig, *this)
@@ -466,7 +402,6 @@ c2031_device::c2031_device(const machine_config &mconfig, const char *tag, devic
 	, m_ifc(0)
 	, m_via0_irq(0)
 	, m_via1_irq(0)
->>>>>>> upstream/master
 {
 }
 

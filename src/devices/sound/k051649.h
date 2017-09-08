@@ -1,16 +1,9 @@
 // license:BSD-3-Clause
 // copyright-holders:Bryan McPhail
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __K051649_H__
-#define __K051649_H__
-=======
 #ifndef MAME_SOUND_K051649_H
 #define MAME_SOUND_K051649_H
 
 #pragma once
->>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -27,28 +20,6 @@
 //  TYPE DEFINITIONS
 //**************************************************************************
 
-<<<<<<< HEAD
-// Parameters for a channel
-struct k051649_sound_channel
-{
-	k051649_sound_channel() :
-		counter(0),
-		frequency(0),
-		volume(0),
-		key(0)
-	{
-		memset(waveram, 0, sizeof(signed char)*32);
-	}
-
-	unsigned long counter;
-	int frequency;
-	int volume;
-	int key;
-	signed char waveram[32];
-};
-
-=======
->>>>>>> upstream/master
 
 // ======================> k051649_device
 
@@ -56,23 +27,8 @@ class k051649_device : public device_t,
 						public device_sound_interface
 {
 public:
-<<<<<<< HEAD
-	k051649_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-	~k051649_device() { }
-
-protected:
-	// device-level overrides
-	virtual void device_start();
-	virtual void device_reset();
-
-	// sound stream update overrides
-	virtual void sound_stream_update(sound_stream &stream, stream_sample_t **inputs, stream_sample_t **outputs, int samples);
-
-public:
-=======
 	k051649_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
->>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER( k051649_waveform_w );
 	DECLARE_READ8_MEMBER ( k051649_waveform_r );
 	DECLARE_WRITE8_MEMBER( k051649_volume_w );
@@ -84,13 +40,6 @@ public:
 	DECLARE_WRITE8_MEMBER( k052539_waveform_w );
 	DECLARE_READ8_MEMBER ( k052539_waveform_r );
 
-<<<<<<< HEAD
-private:
-	void make_mixer_table(int voices);
-
-private:
-	k051649_sound_channel m_channel_list[5];
-=======
 protected:
 	// device-level overrides
 	virtual void device_start() override;
@@ -122,7 +71,6 @@ private:
 	void make_mixer_table(int voices);
 
 	sound_channel m_channel_list[5];
->>>>>>> upstream/master
 
 	/* global sound parameters */
 	sound_stream *m_stream;
@@ -130,20 +78,6 @@ private:
 	int m_rate;
 
 	/* mixer tables and internal buffers */
-<<<<<<< HEAD
-	INT16 *m_mixer_table;
-	INT16 *m_mixer_lookup;
-	short *m_mixer_buffer;
-
-	/* chip registers */
-	UINT8 m_test;
-};
-
-extern const device_type K051649;
-
-
-#endif /* __K051649_H__ */
-=======
 	std::unique_ptr<int16_t[]> m_mixer_table;
 	int16_t *m_mixer_lookup;
 	std::unique_ptr<short[]> m_mixer_buffer;
@@ -155,4 +89,3 @@ extern const device_type K051649;
 DECLARE_DEVICE_TYPE(K051649, k051649_device)
 
 #endif // MAME_SOUND_K051649_H
->>>>>>> upstream/master

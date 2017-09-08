@@ -276,20 +276,10 @@ Stephh's notes (based on the games M6502 code and some tests) :
     - music freq (Satan of Saturn and clone)
     - correct music waveform/volume control
     - correct ROM names
-<<<<<<< HEAD
-    - fantasy is German? (the continue text is in German)
-=======
->>>>>>> upstream/master
 
 */
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/m6502/m6502.h"
-#include "video/mc6845.h"
-#include "sound/samples.h"
-#include "includes/snk6502.h"
-=======
 #include "includes/snk6502.h"
 #include "audio/snk6502.h"
 
@@ -299,7 +289,6 @@ Stephh's notes (based on the games M6502 code and some tests) :
 #include "video/mc6845.h"
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 #define MASTER_CLOCK    XTAL_11_289MHz
@@ -425,12 +414,8 @@ static ADDRESS_MAP_START( fantasy_map, AS_PROGRAM, 8, snk6502_state )
 	AM_RANGE(0x1000, 0x1fff) AM_RAM_WRITE(charram_w) AM_SHARE("charram")
 	AM_RANGE(0x2000, 0x2000) AM_DEVWRITE("crtc", mc6845_device, address_w)
 	AM_RANGE(0x2001, 0x2001) AM_DEVWRITE("crtc", mc6845_device, register_w)
-<<<<<<< HEAD
-	AM_RANGE(0x2100, 0x2103) AM_DEVWRITE("snk6502", snk6502_sound_device, fantasy_sound_w)
-=======
 	AM_RANGE(0x2100, 0x2102) AM_DEVWRITE("snk6502", snk6502_sound_device, fantasy_sound_w)
 	AM_RANGE(0x2103, 0x2103) AM_WRITE(fantasy_flipscreen_w) // affects both video and sound
->>>>>>> upstream/master
 	AM_RANGE(0x2104, 0x2104) AM_READ_PORT("IN0")
 	AM_RANGE(0x2105, 0x2105) AM_READ_PORT("IN1")
 	AM_RANGE(0x2106, 0x2106) AM_READ_PORT("DSW")
@@ -451,12 +436,8 @@ static ADDRESS_MAP_START( pballoon_map, AS_PROGRAM, 8, snk6502_state )
 	AM_RANGE(0x3000, 0x9fff) AM_ROM
 	AM_RANGE(0xb000, 0xb000) AM_DEVWRITE("crtc", mc6845_device, address_w)
 	AM_RANGE(0xb001, 0xb001) AM_DEVWRITE("crtc", mc6845_device, register_w)
-<<<<<<< HEAD
-	AM_RANGE(0xb100, 0xb103) AM_DEVWRITE("snk6502", snk6502_sound_device, fantasy_sound_w)
-=======
 	AM_RANGE(0xb100, 0xb102) AM_DEVWRITE("snk6502", snk6502_sound_device, fantasy_sound_w)
 	AM_RANGE(0xb103, 0xb103) AM_WRITE(fantasy_flipscreen_w) // affects both video and sound
->>>>>>> upstream/master
 	AM_RANGE(0xb104, 0xb104) AM_READ_PORT("IN0")
 	AM_RANGE(0xb105, 0xb105) AM_READ_PORT("IN1")
 	AM_RANGE(0xb106, 0xb106) AM_READ_PORT("DSW")
@@ -548,20 +529,12 @@ static INPUT_PORTS_START( satansat )
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_START1 )
 	PORT_BIT( 0x02, IP_ACTIVE_HIGH, IPT_START2 )
 	PORT_BIT( 0x7c, IP_ACTIVE_HIGH, IPT_UNKNOWN )
-<<<<<<< HEAD
-	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, snk6502_state,snk6502_music0_r, NULL)     /* music0 playing */
-=======
 	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, snk6502_state,snk6502_music0_r, nullptr)     /* music0 playing */
->>>>>>> upstream/master
 
 	PORT_START("IN2")
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_COIN1 ) PORT_IMPULSE(1) PORT_CHANGED_MEMBER(DEVICE_SELF, snk6502_state,coin_inserted, 0)
 	PORT_BIT( 0x0e, IP_ACTIVE_HIGH, IPT_UNKNOWN )                                         /* NC */
-<<<<<<< HEAD
-	PORT_BIT( 0xf0, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, snk6502_state,sasuke_count_r, NULL)       /* connected to a binary counter */
-=======
 	PORT_BIT( 0xf0, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, snk6502_state,sasuke_count_r, nullptr)       /* connected to a binary counter */
->>>>>>> upstream/master
 
 	PORT_START("DSW")
 	PORT_DIPNAME( 0x01, 0x01, DEF_STR( Cabinet ) ) PORT_DIPLOCATION("SW1:!1")
@@ -586,11 +559,7 @@ static INPUT_PORTS_START( satansat )
 	PORT_DIPSETTING (   0x80, DEF_STR( On ) )
 INPUT_PORTS_END
 
-<<<<<<< HEAD
-/* Derived from 'satansat'. Might not reflect the actual hardware. Dip Swicthes verified from game code though. */
-=======
 /* Derived from 'satansat'. Might not reflect the actual hardware. Dip Switches verified from game code though. */
->>>>>>> upstream/master
 static INPUT_PORTS_START( sasuke )
 	PORT_INCLUDE(satansat)
 
@@ -625,11 +594,7 @@ static INPUT_PORTS_START( vanguard )
 	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_BUTTON1 ) PORT_COCKTAIL  /* fire left */
 
 	PORT_MODIFY("IN2")
-<<<<<<< HEAD
-	PORT_BIT( 0x10, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, snk6502_state,snk6502_music0_r, NULL)     /* music0 playing */
-=======
 	PORT_BIT( 0x10, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, snk6502_state,snk6502_music0_r, nullptr)     /* music0 playing */
->>>>>>> upstream/master
 INPUT_PORTS_END
 
 static INPUT_PORTS_START( fantasy )
@@ -661,28 +626,15 @@ static INPUT_PORTS_START( pballoon )
 INPUT_PORTS_END
 
 static INPUT_PORTS_START( nibbler )
-<<<<<<< HEAD
-	PORT_INCLUDE(snk6502_generic_joy8way)
-
-	/* There are no buttons on a real "Nibbler" cabinet, but I guess that the game was tested
-	   with a "Vanguard" cabinet so they have been mapped with debug features. */
-#if NIBBLER_HACK
-	PORT_MODIFY("IN0")
-=======
 	/* There are no buttons on a real "Nibbler" cabinet, but I guess that the game was tested
 	   with a "Vanguard" cabinet so they have been mapped with debug features.
 	   Rock-Ola documentation recommends a "4 Way Joystick - Heavy Duty" (RMC #G-6477-A). */
 	PORT_START("IN0")
 #if NIBBLER_HACK
->>>>>>> upstream/master
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SERVICE ) PORT_NAME("Debug 0") PORT_CODE(KEYCODE_Z) // slow down
 	PORT_BIT( 0x02, IP_ACTIVE_HIGH, IPT_SERVICE ) PORT_NAME("Debug 1") PORT_CODE(KEYCODE_X)
 	PORT_BIT( 0x04, IP_ACTIVE_HIGH, IPT_SERVICE ) PORT_NAME("Debug 2") PORT_CODE(KEYCODE_C)
 	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_SERVICE ) PORT_NAME("Debug 3") PORT_CODE(KEYCODE_V)
-<<<<<<< HEAD
-
-	PORT_MODIFY("IN1")
-=======
 #else
 	PORT_BIT( 0x0f, IP_ACTIVE_HIGH, IPT_UNKNOWN )
 #endif
@@ -693,16 +645,10 @@ static INPUT_PORTS_START( nibbler )
 
 	PORT_START("IN1")
 #if NIBBLER_HACK
->>>>>>> upstream/master
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SERVICE ) PORT_NAME("Debug 4") PORT_CODE(KEYCODE_B) // pause
 	PORT_BIT( 0x02, IP_ACTIVE_HIGH, IPT_SERVICE ) PORT_NAME("Debug 5") PORT_CODE(KEYCODE_N) // unpause
 	PORT_BIT( 0x04, IP_ACTIVE_HIGH, IPT_SERVICE ) PORT_NAME("Debug 6") PORT_CODE(KEYCODE_M) // end game
 	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_SERVICE ) PORT_NAME("Debug 7") PORT_CODE(KEYCODE_K)
-<<<<<<< HEAD
-#endif
-
-	PORT_MODIFY("DSW")
-=======
 #else
 	PORT_BIT( 0x0f, IP_ACTIVE_HIGH, IPT_UNKNOWN )
 #endif
@@ -719,7 +665,6 @@ static INPUT_PORTS_START( nibbler )
 	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_START1 )
 
 	PORT_START("DSW")
->>>>>>> upstream/master
 	PORT_DIPNAME( 0x03, 0x00, DEF_STR( Lives ) ) PORT_DIPLOCATION("SW1:!1,!2")
 	PORT_DIPSETTING(    0x00, "3" )
 	PORT_DIPSETTING(    0x01, "4" )
@@ -806,29 +751,17 @@ static const gfx_layout charlayout_memory =
 
 
 static GFXDECODE_START( sasuke )
-<<<<<<< HEAD
-	GFXDECODE_ENTRY( NULL,           0x1000, swapcharlayout,      0, 4 )    /* the game dynamically modifies this */
-=======
 	GFXDECODE_ENTRY( nullptr,           0x1000, swapcharlayout,      0, 4 )    /* the game dynamically modifies this */
->>>>>>> upstream/master
 	GFXDECODE_ENTRY( "gfx1", 0x0000, swapcharlayout,    4*4, 4 )
 GFXDECODE_END
 
 static GFXDECODE_START( satansat )
-<<<<<<< HEAD
-	GFXDECODE_ENTRY( NULL,           0x1000, charlayout_memory,   0, 4 )    /* the game dynamically modifies this */
-=======
 	GFXDECODE_ENTRY( nullptr,           0x1000, charlayout_memory,   0, 4 )    /* the game dynamically modifies this */
->>>>>>> upstream/master
 	GFXDECODE_ENTRY( "gfx1", 0x0000, charlayout,        4*4, 4 )
 GFXDECODE_END
 
 static GFXDECODE_START( vanguard )
-<<<<<<< HEAD
-	GFXDECODE_ENTRY( NULL,           0x1000, charlayout_memory,   0, 8 )    /* the game dynamically modifies this */
-=======
 	GFXDECODE_ENTRY( nullptr,           0x1000, charlayout_memory,   0, 8 )    /* the game dynamically modifies this */
->>>>>>> upstream/master
 	GFXDECODE_ENTRY( "gfx1", 0x0000, charlayout,        8*4, 8 )
 GFXDECODE_END
 
@@ -895,11 +828,7 @@ MACHINE_RESET_MEMBER(snk6502_state,pballoon)
  *
  *************************************/
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( sasuke, snk6502_state )
-=======
 static MACHINE_CONFIG_START( sasuke )
->>>>>>> upstream/master
 
 	// basic machine hardware
 	MCFG_CPU_ADD("maincpu", M6502, MASTER_CLOCK / 16) // 700 kHz
@@ -1031,11 +960,7 @@ static MACHINE_CONFIG_DERIVED( satansat, sasuke )
 	MCFG_DEVICE_REMOVE("sn76477.3")
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( vanguard, snk6502_state )
-=======
 static MACHINE_CONFIG_START( vanguard )
->>>>>>> upstream/master
 
 	// basic machine hardware
 	MCFG_CPU_ADD("maincpu", M6502, MASTER_CLOCK / 16) // adjusted using common divisor
@@ -1277,12 +1202,9 @@ ROM_START( zarzon )
 	ROM_LOAD( "zarz134.54",   0x0800, 0x0800, CRC(580934d2) SHA1(c1c7eba56bca2a0ea6a68c0245b071a3308f92bd) )
 ROM_END
 
-<<<<<<< HEAD
-=======
 
 
 
->>>>>>> upstream/master
 ROM_START( satansatind )
 	ROM_REGION( 0x10000, "maincpu", 0 )
 	ROM_LOAD( "ss01.rom",   0x4000, 0x0800, CRC(7f16f8fe) SHA1(7ba2a3c31f7463eda0f300a27008a3fed9c84d9d) )
@@ -1437,11 +1359,7 @@ ROM_START( fantasyu )
 	ROM_LOAD( "fs_f_11.bin",  0x5000, 0x0800, CRC(3a352e1f) SHA1(af880ce3daed0877d454421bd08c86ff71f6bf72) )
 ROM_END
 
-<<<<<<< HEAD
-ROM_START( fantasy )
-=======
 ROM_START( fantasyg )
->>>>>>> upstream/master
 	ROM_REGION( 0x10000, "maincpu", 0 )
 	ROM_LOAD( "5.12",         0x3000, 0x1000, CRC(0968ab50) SHA1(f09d03a171349895c5cb69e684901be63d272b32) )
 	ROM_LOAD( "1.7",          0x4000, 0x1000, CRC(de83000e) SHA1(ede1dda46406b4d340f1efea3bc85b2227af9e1d) )
@@ -1609,16 +1527,6 @@ ROM_START( nibbler8 ) /* revision 8 */
 	ROM_LOAD( "g-0959-45.ic53", 0x1000, 0x0800, CRC(33189917) SHA1(01a1b1693db0172609780daeb60430fa0c8bcec2) )
 ROM_END
 
-<<<<<<< HEAD
-ROM_START( nibbler6 ) /* revision 6 */
-	ROM_REGION( 0x10000, "maincpu", 0 )
-	ROM_LOAD( "ic12",           0x3000, 0x1000, CRC(ac6a802b) SHA1(ac1072e30994f13097663dc24d9d1dc35a95d874) )
-	ROM_LOAD( "ic7",            0x4000, 0x1000, CRC(35971364) SHA1(6430c7be9e5f47d3f1f2cc157d949246e4085e8b) )
-	ROM_LOAD( "ic8",            0x5000, 0x1000, CRC(6b33b806) SHA1(29444e45bf5a6ab1d86e0aa19dc6c1bc64ba633f) )
-	ROM_LOAD( "ic9",            0x6000, 0x1000, CRC(91a4f98d) SHA1(678c7e8c91a7fdba8dc2faff4192eb0964abdb3f) )
-	ROM_LOAD( "ic10",           0x7000, 0x1000, CRC(a151d934) SHA1(6681bdcd84cf62b40b2430ff530cb3c9aa36656c) )
-	ROM_LOAD( "ic14",           0x8000, 0x1000, CRC(063f05cc) SHA1(039ac1b007cb817ae0902484ca611ae7076930d6) )
-=======
 ROM_START( nibbler7 ) /* revision 7 */
 	ROM_REGION( 0x10000, "maincpu", 0 )
 	ROM_LOAD( "ic12",           0x3000, 0x1000, CRC(8685d060) SHA1(64b10f9afc9ca97db7b4f7784da0df1574a56919) ) // sldh
@@ -1653,7 +1561,6 @@ ROM_START( nibbler6 ) /* revision 6 */
 	ROM_LOAD( "ic9",            0x6000, 0x1000, CRC(91a4f98d) SHA1(678c7e8c91a7fdba8dc2faff4192eb0964abdb3f) )
 	ROM_LOAD( "ic10",           0x7000, 0x1000, CRC(a151d934) SHA1(6681bdcd84cf62b40b2430ff530cb3c9aa36656c) )
 	ROM_LOAD( "ic14",           0x8000, 0x1000, CRC(063f05cc) SHA1(039ac1b007cb817ae0902484ca611ae7076930d6) ) // sldh
->>>>>>> upstream/master
 	ROM_RELOAD(                 0xf000, 0x1000 )    /* for the reset and interrupt vectors */
 	ROM_LOAD( "g-0960-54.ic15", 0x9000, 0x1000, CRC(7205fb8d) SHA1(bc341bc11a383aa8b8dd7b2be851907a3ec56f8b) )
 	ROM_LOAD( "g-0960-55.ic16", 0xa000, 0x1000, CRC(4bb39815) SHA1(1755c28d7d300524ab839aedcc744254544e9c19) )
@@ -1672,13 +1579,6 @@ ROM_START( nibbler6 ) /* revision 6 */
 	ROM_LOAD( "g-0959-45.ic53", 0x1000, 0x0800, CRC(33189917) SHA1(01a1b1693db0172609780daeb60430fa0c8bcec2) )
 ROM_END
 
-<<<<<<< HEAD
-ROM_START( nibblerp ) /* revision 6 + extra soundrom */
-	ROM_REGION( 0x10000, "maincpu", 0 )
-	ROM_LOAD( "ic12",           0x3000, 0x1000, CRC(ac6a802b) SHA1(ac1072e30994f13097663dc24d9d1dc35a95d874) )
-	ROM_LOAD( "ic7",            0x4000, 0x1000, CRC(35971364) SHA1(6430c7be9e5f47d3f1f2cc157d949246e4085e8b) )
-	ROM_LOAD( "ic8",            0x5000, 0x1000, CRC(6b33b806) SHA1(29444e45bf5a6ab1d86e0aa19dc6c1bc64ba633f) )
-=======
 ROM_START( nibblera ) /* revision 9 - alternate? */
 	ROM_REGION( 0x10000, "maincpu", 0 )
 	ROM_LOAD( "2732.ic12", 0x3000, 0x1000, CRC(e569937b) SHA1(6ee9aa528cc3f0685153b3170f41b9a665d358e0) )
@@ -1710,7 +1610,6 @@ ROM_START( nibblerp ) /* revision 6 + extra soundrom */
 	ROM_LOAD( "ic12",           0x3000, 0x1000, CRC(ac6a802b) SHA1(ac1072e30994f13097663dc24d9d1dc35a95d874) ) // sldh
 	ROM_LOAD( "ic7",            0x4000, 0x1000, CRC(35971364) SHA1(6430c7be9e5f47d3f1f2cc157d949246e4085e8b) ) // sldh
 	ROM_LOAD( "ic8",            0x5000, 0x1000, CRC(6b33b806) SHA1(29444e45bf5a6ab1d86e0aa19dc6c1bc64ba633f) ) // sldh
->>>>>>> upstream/master
 	ROM_LOAD( "ic9",            0x6000, 0x1000, CRC(91a4f98d) SHA1(678c7e8c91a7fdba8dc2faff4192eb0964abdb3f) )
 	ROM_LOAD( "ic10",           0x7000, 0x1000, CRC(a151d934) SHA1(6681bdcd84cf62b40b2430ff530cb3c9aa36656c) )
 	ROM_LOAD( "ic14",           0x8000, 0x1000, CRC(063f05cc) SHA1(039ac1b007cb817ae0902484ca611ae7076930d6) )
@@ -1759,41 +1658,6 @@ ROM_START( nibblero ) /* revision 8 */
 	ROM_LOAD( "g-0959-45.ic53", 0x1000, 0x0800, CRC(33189917) SHA1(01a1b1693db0172609780daeb60430fa0c8bcec2) )
 ROM_END
 
-<<<<<<< HEAD
-/* Homebrew */
-ROM_START( vantris )
-	ROM_REGION( 0x10000, "maincpu", 0 )
-	ROM_LOAD( "sk4_ic07.bin", 0x4000, 0x1000, CRC(6a29e354) SHA1(ff953962ebc14a28cfc96f8e269cb1e1c188ed8a) )
-	ROM_LOAD( "sk4_ic08.bin", 0x5000, 0x1000, CRC(302bba54) SHA1(1944f229481328a0635fafda65054106f42a532a) )
-	ROM_LOAD( "sk4_ic09.bin", 0x6000, 0x1000, CRC(424755f6) SHA1(b4762b40c7ed70d4b90319a1a30983a41a096afb) )
-	ROM_LOAD( "sk4_ic10.bin", 0x7000, 0x1000, CRC(54603274) SHA1(31571a560dbe300417b3ed5b114fa1d9ef742da9) )
-	ROM_LOAD( "sk4_ic13_homebrew.bin", 0x8000, 0x1000, CRC(f9f367a5) SHA1(49249a73951ae9a8a965954d8b03627b5fcf4fe3) )
-	ROM_RELOAD(               0xf000, 0x1000 )   /* for the reset and interrupt vectors */
-	ROM_LOAD( "sk4_ic14.bin", 0x9000, 0x1000, CRC(0d5b47d0) SHA1(922621c23f33fe756cb6baa12e5465c4e64f2dda) )
-	ROM_LOAD( "sk4_ic15.bin", 0xa000, 0x1000, CRC(8549b8f8) SHA1(375bc6f7e15564d5cf7e00c44e2651793c56d6ca) )
-	ROM_LOAD( "sk4_ic16.bin", 0xb000, 0x1000, CRC(062e0be2) SHA1(45aaf315a62f37460e32d3ba99caaacf4c994810) )
-
-	ROM_REGION( 0x1000, "gfx1", 0 )
-	ROM_LOAD( "sk5_ic50_homebrew.bin", 0x0000, 0x0800, CRC(a7061526) SHA1(f5f5860a9dc468cb4177348e0b0592e5adda28f1) )
-	ROM_LOAD( "sk5_ic51_homebrew.bin", 0x0800, 0x0800, CRC(67bd31ed) SHA1(24f03cf097e5382500a85483351f21913a98fdd5) )
-
-	ROM_REGION( 0x0040, "proms", 0 )
-	ROM_LOAD( "sk5_ic7_homebrew.bin",  0x0000, 0x0020, CRC(90f17fc1) SHA1(fc92864178cbceccd6f7f2c75249b5c568bdbea8) ) /* foreground colors */
-	ROM_LOAD( "sk5_ic6_homebrew.bin",  0x0020, 0x0020, CRC(90f17fc1) SHA1(fc92864178cbceccd6f7f2c75249b5c568bdbea8) ) /* background colors */
-	
-	ROM_REGION( 0x1000, "snk6502", 0 )   /* sound ROMs */
-	ROM_LOAD( "sk4_ic51_homebrew.bin", 0x0000, 0x0800, CRC(fd4d8bb0) SHA1(d59ec7569147263aed50041b15aed2ca4f395c23) ) /* sound ROM 1 */
-	ROM_LOAD( "sk4_ic52.bin", 0x0800, 0x0800, CRC(cc4a0b6f) SHA1(251b24d60083d516c4ba686d75b41e04d10f7198) ) /* sound ROM 2 */
-	
-	ROM_REGION( 0x5800, "speech", 0 )   /* space for the speech ROMs (not supported) */
-	//ROM_LOAD( "hd38882.bin",  0x0000, 0x4000, NO_DUMP )   /* HD38882 internal ROM */
-	ROM_LOAD( "sk6_ic07.bin", 0x4000, 0x0800, CRC(2b7cbae9) SHA1(3d44a0232d7c94d8170cc06e90cc30bd57c99202) )
-	ROM_LOAD( "sk6_ic08.bin", 0x4800, 0x0800, CRC(3b7e9d7c) SHA1(d9033188068b2aaa1502c89cf09f955eded8fa7a) )
-	ROM_LOAD( "sk6_ic11.bin", 0x5000, 0x0800, CRC(c36df041) SHA1(8b51934229b961180d1edb99be3a4d337d37f66f) )
-ROM_END
-
-=======
->>>>>>> upstream/master
 
 /*************************************
  *
@@ -1801,28 +1665,6 @@ ROM_END
  *
  *************************************/
 
-<<<<<<< HEAD
-GAME( 1980, sasuke,   0,        sasuke,   sasuke, driver_device,   0, ROT90, "SNK", "Sasuke vs. Commander", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 1981, satansat, 0,        satansat, satansat, driver_device, 0, ROT90, "SNK", "Satan of Saturn (set 1)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 1981, satansata,satansat, satansat, satansat, driver_device, 0, ROT90, "SNK", "Satan of Saturn (set 2)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 1981, zarzon,   satansat, satansat, satansat, driver_device, 0, ROT90, "SNK (Taito America license)", "Zarzon", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 1981, satansatind,satansat,satansat,satansat, driver_device, 0, ROT90, "bootleg (Inder S.A.)", "Satan of Saturn (Inder S.A., bootleg)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 1981, vanguard, 0,        vanguard, vanguard, driver_device, 0, ROT90, "SNK", "Vanguard (SNK)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 1981, vanguardc,vanguard, vanguard, vanguard, driver_device, 0, ROT90, "SNK (Centuri license)", "Vanguard (Centuri)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 1981, vanguardj,vanguard, vanguard, vanguard, driver_device, 0, ROT90, "SNK", "Vanguard (Japan)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 1981, fantasy,  0,        fantasy,  fantasy, driver_device,  0, ROT90, "SNK", "Fantasy (World)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 1981, fantasyu, fantasy,  fantasy,  fantasyu, driver_device, 0, ROT90, "SNK (Rock-Ola license)", "Fantasy (US)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 1981, fantasyj, fantasy,  fantasy,  fantasyu, driver_device, 0, ROT90, "SNK", "Fantasy (Japan)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 1982, pballoon, 0,        pballoon, pballoon, driver_device, 0, ROT90, "SNK", "Pioneer Balloon", MACHINE_SUPPORTS_SAVE )
-GAME( 1982, pballoonr,pballoon, pballoon, pballoon, driver_device, 0, ROT90, "SNK (Rock-Ola license)", "Pioneer Balloon (Rock-Ola license)", MACHINE_SUPPORTS_SAVE )
-GAME( 1982, nibbler,  0,        nibbler,  nibbler, driver_device,  0, ROT90, "Rock-Ola", "Nibbler (rev 9)", MACHINE_SUPPORTS_SAVE )
-GAME( 1982, nibbler8, nibbler,  nibbler,  nibbler8, driver_device, 0, ROT90, "Rock-Ola", "Nibbler (rev 8)", MACHINE_SUPPORTS_SAVE )
-GAME( 1982, nibbler6, nibbler,  nibbler,  nibbler6, driver_device, 0, ROT90, "Rock-Ola", "Nibbler (rev 6)", MACHINE_SUPPORTS_SAVE )
-GAME( 1982, nibblerp, nibbler,  nibbler,  nibbler6, driver_device, 0, ROT90, "Rock-Ola", "Nibbler (Pioneer Balloon conversion)", MACHINE_SUPPORTS_SAVE )
-GAME( 1983, nibblero, nibbler,  nibbler,  nibbler8, driver_device, 0, ROT90, "Rock-Ola (Olympia license)", "Nibbler (Olympia - rev 8)", MACHINE_SUPPORTS_SAVE )
-/* Homebrew */
-GAME( 1998, vantris,  vanguard, vanguard, vanguard, driver_device, 0, ROT90, "SNK / N. Kehrer", "Vantris (Vanguard hardware, Homebrew)", MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1980, sasuke,      0,        sasuke,   sasuke,   snk6502_state, 0, ROT90, "SNK", "Sasuke vs. Commander", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
 GAME( 1981, satansat,    0,        satansat, satansat, snk6502_state, 0, ROT90, "SNK", "Satan of Saturn (set 1)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
 GAME( 1981, satansata,   satansat, satansat, satansat, snk6502_state, 0, ROT90, "SNK", "Satan of Saturn (set 2)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
@@ -1843,4 +1685,3 @@ GAME( 1982, nibbler7,    nibbler,  nibbler,  nibbler8, snk6502_state, 0, ROT90, 
 GAME( 1982, nibbler6,    nibbler,  nibbler,  nibbler6, snk6502_state, 0, ROT90, "Rock-Ola", "Nibbler (rev 6)", MACHINE_SUPPORTS_SAVE )
 GAME( 1982, nibblerp,    nibbler,  nibbler,  nibbler6, snk6502_state, 0, ROT90, "Rock-Ola", "Nibbler (Pioneer Balloon conversion - rev 6)", MACHINE_SUPPORTS_SAVE )
 GAME( 1983, nibblero,    nibbler,  nibbler,  nibbler8, snk6502_state, 0, ROT90, "Rock-Ola (Olympia license)", "Nibbler (Olympia - rev 8)", MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

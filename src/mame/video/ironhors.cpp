@@ -20,11 +20,7 @@
 
 PALETTE_INIT_MEMBER(ironhors_state, ironhors)
 {
-<<<<<<< HEAD
-	const UINT8 *color_prom = memregion("proms")->base();
-=======
 	const uint8_t *color_prom = memregion("proms")->base();
->>>>>>> upstream/master
 	static const int resistances[4] = { 2000, 1000, 470, 220 };
 	double rweights[4], gweights[4], bweights[4];
 	int i;
@@ -76,11 +72,7 @@ PALETTE_INIT_MEMBER(ironhors_state, ironhors)
 
 		for (j = 0; j < 8; j++)
 		{
-<<<<<<< HEAD
-			UINT8 ctabentry = (j << 5) | ((~i & 0x100) >> 4) | (color_prom[i] & 0x0f);
-=======
 			uint8_t ctabentry = (j << 5) | ((~i & 0x100) >> 4) | (color_prom[i] & 0x0f);
->>>>>>> upstream/master
 			palette.set_pen_indirect(((i & 0x100) << 3) | (j << 8) | (i & 0xff), ctabentry);
 		}
 	}
@@ -119,13 +111,8 @@ WRITE8_MEMBER(ironhors_state::palettebank_w)
 		machine().tilemap().mark_all_dirty();
 	}
 
-<<<<<<< HEAD
-	coin_counter_w(machine(), 0, data & 0x10);
-	coin_counter_w(machine(), 1, data & 0x20);
-=======
 	machine().bookkeeping().coin_counter_w(0, data & 0x10);
 	machine().bookkeeping().coin_counter_w(1, data & 0x20);
->>>>>>> upstream/master
 
 	/* bit 6 unknown - set after game over */
 
@@ -157,11 +144,7 @@ TILE_GET_INFO_MEMBER(ironhors_state::get_bg_tile_info)
 
 void ironhors_state::video_start()
 {
-<<<<<<< HEAD
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(ironhors_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
-=======
 	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(ironhors_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
->>>>>>> upstream/master
 
 	m_bg_tilemap->set_scroll_rows(32);
 }
@@ -169,11 +152,7 @@ void ironhors_state::video_start()
 void ironhors_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect )
 {
 	int offs;
-<<<<<<< HEAD
-	UINT8 *sr;
-=======
 	uint8_t *sr;
->>>>>>> upstream/master
 
 	if (m_spriterambank != 0)
 		sr = m_spriteram;
@@ -253,11 +232,7 @@ void ironhors_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &clipre
 	}
 }
 
-<<<<<<< HEAD
-UINT32 ironhors_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t ironhors_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int row;
 
@@ -281,11 +256,7 @@ TILE_GET_INFO_MEMBER(ironhors_state::farwest_get_bg_tile_info)
 
 VIDEO_START_MEMBER(ironhors_state,farwest)
 {
-<<<<<<< HEAD
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(ironhors_state::farwest_get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
-=======
 	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(ironhors_state::farwest_get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
->>>>>>> upstream/master
 
 	m_bg_tilemap->set_scroll_rows(32);
 }
@@ -293,13 +264,8 @@ VIDEO_START_MEMBER(ironhors_state,farwest)
 void ironhors_state::farwest_draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect )
 {
 	int offs;
-<<<<<<< HEAD
-	UINT8 *sr = m_spriteram2;
-	UINT8 *sr2 = m_spriteram;
-=======
 	uint8_t *sr = m_spriteram2;
 	uint8_t *sr2 = m_spriteram;
->>>>>>> upstream/master
 
 	for (offs = 0; offs < m_spriteram.bytes(); offs += 4)
 	{
@@ -375,11 +341,7 @@ void ironhors_state::farwest_draw_sprites( bitmap_ind16 &bitmap, const rectangle
 	}
 }
 
-<<<<<<< HEAD
-UINT32 ironhors_state::screen_update_farwest(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t ironhors_state::screen_update_farwest(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int row;
 

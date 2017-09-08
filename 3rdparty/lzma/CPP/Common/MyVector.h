@@ -1,94 +1,3 @@
-<<<<<<< HEAD
-// Common/Vector.h
-
-#ifndef __COMMON_VECTOR_H
-#define __COMMON_VECTOR_H
-
-#include "Defs.h"
-
-class CBaseRecordVector
-{
-  void MoveItems(int destIndex, int srcIndex);
-protected:
-  int _capacity;
-  int _size;
-  void *_items;
-  size_t _itemSize;
-  
-  void ReserveOnePosition();
-  void InsertOneItem(int index);
-  void TestIndexAndCorrectNum(int index, int &num) const
-    { if (index + num > _size) num = _size - index; }
-public:
-  CBaseRecordVector(size_t itemSize): _capacity(0), _size(0), _items(0), _itemSize(itemSize) {}
-  virtual ~CBaseRecordVector();
-  void ClearAndFree();
-  int Size() const { return _size; }
-  bool IsEmpty() const { return (_size == 0); }
-  void Reserve(int newCapacity);
-  void ReserveDown();
-  virtual void Delete(int index, int num = 1);
-  void Clear();
-  void DeleteFrom(int index);
-  void DeleteBack();
-};
-
-template <class T>
-class CRecordVector: public CBaseRecordVector
-{
-public:
-  CRecordVector(): CBaseRecordVector(sizeof(T)){};
-  CRecordVector(const CRecordVector &v): CBaseRecordVector(sizeof(T)) { *this = v; }
-  CRecordVector& operator=(const CRecordVector &v)
-  {
-    Clear();
-    return (*this += v);
-  }
-  CRecordVector& operator+=(const CRecordVector &v)
-  {
-    int size = v.Size();
-    Reserve(Size() + size);
-    for (int i = 0; i < size; i++)
-      Add(v[i]);
-    return *this;
-  }
-  int Add(T item)
-  {
-    ReserveOnePosition();
-    ((T *)_items)[_size] = item;
-    return _size++;
-  }
-  void Insert(int index, T item)
-  {
-    InsertOneItem(index);
-    ((T *)_items)[index] = item;
-  }
-  // T* GetPointer() const { return (T*)_items; }
-  // operator const T *() const { return _items; };
-  const T& operator[](int index) const { return ((T *)_items)[index]; }
-  T& operator[](int index) { return ((T *)_items)[index]; }
-  const T& Front() const { return operator[](0); }
-  T& Front() { return operator[](0); }
-  const T& Back() const { return operator[](_size - 1); }
-  T& Back() { return operator[](_size - 1); }
-
-  void Swap(int i, int j)
-  {
-    T temp = operator[](i);
-    operator[](i) = operator[](j);
-    operator[](j) = temp;
-  }
-
-  int FindInSorted(const T& item, int left, int right) const
-  {
-    while (left != right)
-    {
-      int mid = (left + right) / 2;
-      const T& midValue = (*this)[mid];
-      if (item == midValue)
-        return mid;
-      if (item < midValue)
-=======
 // Common/MyVector.h
 
 #ifndef __COMMON_MY_VECTOR_H
@@ -342,7 +251,6 @@ public:
       if (item == midVal)
         return mid;
       if (item < midVal)
->>>>>>> upstream/master
         right = mid;
       else
         left = mid + 1;
@@ -350,18 +258,6 @@ public:
     return -1;
   }
 
-<<<<<<< HEAD
-  int FindInSorted(const T& item) const
-  {
-    int left = 0, right = Size();
-    while (left != right)
-    {
-      int mid = (left + right) / 2;
-      const T& midValue = (*this)[mid];
-      if (item == midValue)
-        return mid;
-      if (item < midValue)
-=======
   int FindInSorted2(const T &item, unsigned left, unsigned right) const
   {
     while (left != right)
@@ -372,7 +268,6 @@ public:
       if (comp == 0)
         return mid;
       if (comp < 0)
->>>>>>> upstream/master
         right = mid;
       else
         left = mid + 1;
@@ -380,18 +275,6 @@ public:
     return -1;
   }
 
-<<<<<<< HEAD
-  int AddToUniqueSorted(const T& item)
-  {
-    int left = 0, right = Size();
-    while (left != right)
-    {
-      int mid = (left + right) / 2;
-      const T& midValue = (*this)[mid];
-      if (item == midValue)
-        return mid;
-      if (item < midValue)
-=======
   int FindInSorted(const T item) const
   {
     return FindInSorted(item, 0, _size);
@@ -412,7 +295,6 @@ public:
       if (item == midVal)
         return mid;
       if (item < midVal)
->>>>>>> upstream/master
         right = mid;
       else
         left = mid + 1;
@@ -421,9 +303,6 @@ public:
     return right;
   }
 
-<<<<<<< HEAD
-  static void SortRefDown(T* p, int k, int size, int (*compare)(const T*, const T*, void *), void *param)
-=======
   unsigned AddToUniqueSorted2(const T &item)
   {
     unsigned left = 0, right = _size;
@@ -444,16 +323,11 @@ public:
   }
 
   static void SortRefDown(T* p, unsigned k, unsigned size, int (*compare)(const T*, const T*, void *), void *param)
->>>>>>> upstream/master
   {
     T temp = p[k];
     for (;;)
     {
-<<<<<<< HEAD
-      int s = (k << 1);
-=======
       unsigned s = (k << 1);
->>>>>>> upstream/master
       if (s > size)
         break;
       if (s < size && compare(p + s + 1, p + s, param) > 0)
@@ -468,20 +342,12 @@ public:
 
   void Sort(int (*compare)(const T*, const T*, void *), void *param)
   {
-<<<<<<< HEAD
-    int size = _size;
-=======
     unsigned size = _size;
->>>>>>> upstream/master
     if (size <= 1)
       return;
     T* p = (&Front()) - 1;
     {
-<<<<<<< HEAD
-      int i = size / 2;
-=======
       unsigned i = size >> 1;
->>>>>>> upstream/master
       do
         SortRefDown(p, i, size, compare, param);
       while (--i != 0);
@@ -495,8 +361,6 @@ public:
     }
     while (size > 1);
   }
-<<<<<<< HEAD
-=======
 
   static void SortRefDown2(T* p, unsigned k, unsigned size)
   {
@@ -537,7 +401,6 @@ public:
     }
     while (size > 1);
   }
->>>>>>> upstream/master
 };
 
 typedef CRecordVector<int> CIntVector;
@@ -547,45 +410,6 @@ typedef CRecordVector<unsigned char> CByteVector;
 typedef CRecordVector<void *> CPointerVector;
 
 template <class T>
-<<<<<<< HEAD
-class CObjectVector: public CPointerVector
-{
-public:
-  CObjectVector() {};
-  ~CObjectVector() { Clear(); };
-  CObjectVector(const CObjectVector &v): CPointerVector() { *this = v; }
-  CObjectVector& operator=(const CObjectVector &v)
-  {
-    Clear();
-    return (*this += v);
-  }
-  CObjectVector& operator+=(const CObjectVector &v)
-  {
-    int size = v.Size();
-    Reserve(Size() + size);
-    for (int i = 0; i < size; i++)
-      Add(v[i]);
-    return *this;
-  }
-  const T& operator[](int index) const { return *((T *)CPointerVector::operator[](index)); }
-  T& operator[](int index) { return *((T *)CPointerVector::operator[](index)); }
-  T& Front() { return operator[](0); }
-  const T& Front() const { return operator[](0); }
-  T& Back() { return operator[](_size - 1); }
-  const T& Back() const { return operator[](_size - 1); }
-  int Add(const T& item) { return CPointerVector::Add(new T(item)); }
-  void Insert(int index, const T& item) { CPointerVector::Insert(index, new T(item)); }
-  virtual void Delete(int index, int num = 1)
-  {
-    TestIndexAndCorrectNum(index, num);
-    for (int i = 0; i < num; i++)
-      delete (T *)(((void **)_items)[index + i]);
-    CPointerVector::Delete(index, num);
-  }
-  int Find(const T& item) const
-  {
-    for (int i = 0; i < Size(); i++)
-=======
 class CObjectVector
 {
   CPointerVector _v;
@@ -721,23 +545,10 @@ public:
   {
     unsigned size = Size();
     for (unsigned i = 0; i < size; i++)
->>>>>>> upstream/master
       if (item == (*this)[i])
         return i;
     return -1;
   }
-<<<<<<< HEAD
-  int FindInSorted(const T& item) const
-  {
-    int left = 0, right = Size();
-    while (left != right)
-    {
-      int mid = (left + right) / 2;
-      const T& midValue = (*this)[mid];
-      if (item == midValue)
-        return mid;
-      if (item < midValue)
-=======
   */
   
   int FindInSorted(const T& item) const
@@ -751,23 +562,12 @@ public:
       if (comp == 0)
         return mid;
       if (comp < 0)
->>>>>>> upstream/master
         right = mid;
       else
         left = mid + 1;
     }
     return -1;
   }
-<<<<<<< HEAD
-  int AddToSorted(const T& item)
-  {
-    int left = 0, right = Size();
-    while (left != right)
-    {
-      int mid = (left + right) / 2;
-      const T& midValue = (*this)[mid];
-      if (item == midValue)
-=======
 
   unsigned AddToUniqueSorted(const T& item)
   {
@@ -798,16 +598,11 @@ public:
       const T& midVal = (*this)[mid];
       int comp = item.Compare(midVal);
       if (comp == 0)
->>>>>>> upstream/master
       {
         right = mid + 1;
         break;
       }
-<<<<<<< HEAD
-      if (item < midValue)
-=======
       if (comp < 0)
->>>>>>> upstream/master
         right = mid;
       else
         left = mid + 1;
@@ -815,17 +610,6 @@ public:
     Insert(right, item);
     return right;
   }
-<<<<<<< HEAD
-
-  void Sort(int (*compare)(void *const *, void *const *, void *), void *param)
-    { CPointerVector::Sort(compare, param); }
-
-  static int CompareObjectItems(void *const *a1, void *const *a2, void * /* param */)
-    { return MyCompare(*(*((const T **)a1)), *(*((const T **)a2))); }
-  void Sort() { CPointerVector::Sort(CompareObjectItems, 0); }
-};
-
-=======
   */
 
   void Sort(int (*compare)(void *const *, void *const *, void *), void *param)
@@ -839,5 +623,4 @@ public:
 
 #define FOR_VECTOR(_i_, _v_) for (unsigned _i_ = 0; _i_ < (_v_).Size(); _i_++)
 
->>>>>>> upstream/master
 #endif

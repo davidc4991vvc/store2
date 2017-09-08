@@ -12,34 +12,14 @@
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "debugger.h"
-#include "asap.h"
-=======
 #include "asap.h"
 #include "debugger.h"
->>>>>>> upstream/master
 
 
 //**************************************************************************
 //  CONSTANTS
 //**************************************************************************
 
-<<<<<<< HEAD
-const UINT32 PS_CFLAG           = 0x00000001;
-const UINT32 PS_VFLAG           = 0x00000002;
-const UINT32 PS_ZFLAG           = 0x00000004;
-const UINT32 PS_NFLAG           = 0x00000008;
-const UINT32 PS_IFLAG           = 0x00000010;
-const UINT32 PS_PFLAG           = 0x00000020;
-
-//const int EXCEPTION_RESET       = 0;
-const int EXCEPTION_TRAP0       = 1;
-const int EXCEPTION_TRAPF       = 2;
-const int EXCEPTION_INTERRUPT   = 3;
-
-const int REGBASE               = 0xffe0;
-=======
 constexpr uint32_t PS_CFLAG           = 0x00000001;
 constexpr uint32_t PS_VFLAG           = 0x00000002;
 constexpr uint32_t PS_ZFLAG           = 0x00000004;
@@ -53,7 +33,6 @@ constexpr int EXCEPTION_TRAPF       = 2;
 constexpr int EXCEPTION_INTERRUPT   = 3;
 
 constexpr int REGBASE               = 0xffe0;
->>>>>>> upstream/master
 
 
 
@@ -61,13 +40,8 @@ constexpr int REGBASE               = 0xffe0;
 //  MACROS
 //**************************************************************************
 
-<<<<<<< HEAD
-#define SET_C_ADD(a,b)          (m_cflag = (UINT32)(b) > (UINT32)(~(a)))
-#define SET_C_SUB(a,b)          (m_cflag = (UINT32)(b) <= (UINT32)(a))
-=======
 #define SET_C_ADD(a,b)          (m_cflag = (uint32_t)(b) > (uint32_t)(~(a)))
 #define SET_C_SUB(a,b)          (m_cflag = (uint32_t)(b) <= (uint32_t)(a))
->>>>>>> upstream/master
 #define SET_V_ADD(r,a,b)        (m_vflag = ~((a) ^ (b)) & ((a) ^ (r)))
 #define SET_V_SUB(r,a,b)        (m_vflag =  ((a) ^ (b)) & ((a) ^ (r)))
 #define SET_ZN(r)               (m_znflag = (r))
@@ -156,23 +130,14 @@ const asap_device::ophandler asap_device::s_conditiontable[16] =
 //**************************************************************************
 
 // device type definition
-<<<<<<< HEAD
-const device_type ASAP = &device_creator<asap_device>;
-=======
 DEFINE_DEVICE_TYPE(ASAP, asap_device, "asap", "ASAP")
->>>>>>> upstream/master
 
 //-------------------------------------------------
 //  asap_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-asap_device::asap_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: cpu_device(mconfig, ASAP, "ASAP", tag, owner, clock, "asap", __FILE__),
-=======
 asap_device::asap_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: cpu_device(mconfig, ASAP, tag, owner, clock),
->>>>>>> upstream/master
 		m_program_config("program", ENDIANNESS_LITTLE, 32, 32),
 		m_pc(0),
 		m_pflag(0),
@@ -186,13 +151,8 @@ asap_device::asap_device(const machine_config &mconfig, const char *tag, device_
 		m_nextpc(0),
 		m_irq_state(0),
 		m_icount(0),
-<<<<<<< HEAD
-		m_program(NULL),
-		m_direct(NULL)
-=======
 		m_program(nullptr),
 		m_direct(nullptr)
->>>>>>> upstream/master
 {
 	// initialize the src2val table to contain immediates for low values
 	for (int i = 0; i < REGBASE; i++)
@@ -226,24 +186,14 @@ void asap_device::device_start()
 	m_direct = &m_program->direct();
 
 	// register our state for the debugger
-<<<<<<< HEAD
-	std::string tempstr;
-	state_add(STATE_GENPC,     "GENPC",     m_pc).noshow();
-	state_add(STATE_GENPCBASE, "GENPCBASE", m_ppc).noshow();
-=======
 	state_add(STATE_GENPC,     "GENPC",     m_pc).noshow();
 	state_add(STATE_GENPCBASE, "CURPC",     m_ppc).noshow();
->>>>>>> upstream/master
 	state_add(STATE_GENSP,     "GENSP",     m_src2val[REGBASE + 31]).noshow();
 	state_add(STATE_GENFLAGS,  "GENFLAGS",  m_flagsio).callimport().callexport().formatstr("%6s").noshow();
 	state_add(ASAP_PC,         "PC",        m_pc);
 	state_add(ASAP_PS,         "PS",        m_flagsio).callimport().callexport();
 	for (int regnum = 0; regnum < 32; regnum++)
-<<<<<<< HEAD
-		state_add(ASAP_R0 + regnum, strformat(tempstr, "R%d", regnum).c_str(), m_src2val[REGBASE + regnum]);
-=======
 		state_add(ASAP_R0 + regnum, string_format("R%d", regnum).c_str(), m_src2val[REGBASE + regnum]);
->>>>>>> upstream/master
 
 	// register our state for saving
 	save_item(NAME(m_pc));
@@ -281,15 +231,6 @@ void asap_device::device_reset()
 
 //-------------------------------------------------
 //  memory_space_config - return the configuration
-<<<<<<< HEAD
-//  of the specified address space, or NULL if
-//  the space doesn't exist
-//-------------------------------------------------
-
-const address_space_config *asap_device::memory_space_config(address_spacenum spacenum) const
-{
-	return (spacenum == AS_PROGRAM) ? &m_program_config : NULL;
-=======
 //  of the specified address space, or nullptr if
 //  the space doesn't exist
 //-------------------------------------------------
@@ -299,7 +240,6 @@ device_memory_interface::space_config_vector asap_device::memory_space_config() 
 	return space_config_vector {
 		std::make_pair(AS_PROGRAM, &m_program_config)
 	};
->>>>>>> upstream/master
 }
 
 
@@ -342,24 +282,11 @@ void asap_device::state_export(const device_state_entry &entry)
 //  for the debugger
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void asap_device::state_string_export(const device_state_entry &entry, std::string &str)
-=======
 void asap_device::state_string_export(const device_state_entry &entry, std::string &str) const
->>>>>>> upstream/master
 {
 	switch (entry.index())
 	{
 		case STATE_GENFLAGS:
-<<<<<<< HEAD
-			strprintf(str, "%c%c%c%c%c%c",
-							m_pflag ? 'P' : '.',
-							m_iflag ? 'I' : '.',
-							((INT32)m_znflag < 0) ? 'N' : '.',
-							(m_znflag == 0) ? 'Z' : '.',
-							((m_vflag >> 30) & PS_VFLAG) ? 'V' : '.',
-							m_cflag ? 'C' : '.');
-=======
 			str = string_format("%c%c%c%c%c%c",
 					m_pflag ? 'P' : '.',
 					m_iflag ? 'I' : '.',
@@ -367,7 +294,6 @@ void asap_device::state_string_export(const device_state_entry &entry, std::stri
 					(m_znflag == 0) ? 'Z' : '.',
 					((m_vflag >> 30) & PS_VFLAG) ? 'V' : '.',
 					m_cflag ? 'C' : '.');
->>>>>>> upstream/master
 			break;
 	}
 }
@@ -378,11 +304,7 @@ void asap_device::state_string_export(const device_state_entry &entry, std::stri
 //  of the shortest instruction, in bytes
 //-------------------------------------------------
 
-<<<<<<< HEAD
-UINT32 asap_device::disasm_min_opcode_bytes() const
-=======
 uint32_t asap_device::disasm_min_opcode_bytes() const
->>>>>>> upstream/master
 {
 	return 4;
 }
@@ -393,11 +315,7 @@ uint32_t asap_device::disasm_min_opcode_bytes() const
 //  of the longest instruction, in bytes
 //-------------------------------------------------
 
-<<<<<<< HEAD
-UINT32 asap_device::disasm_max_opcode_bytes() const
-=======
 uint32_t asap_device::disasm_max_opcode_bytes() const
->>>>>>> upstream/master
 {
 	return 12;
 }
@@ -408,17 +326,10 @@ uint32_t asap_device::disasm_max_opcode_bytes() const
 //  helper function
 //-------------------------------------------------
 
-<<<<<<< HEAD
-offs_t asap_device::disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options)
-{
-	extern CPU_DISASSEMBLE( asap );
-	return CPU_DISASSEMBLE_NAME(asap)(this, buffer, pc, oprom, opram, options);
-=======
 offs_t asap_device::disasm_disassemble(std::ostream &stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, uint32_t options)
 {
 	extern CPU_DISASSEMBLE( asap );
 	return CPU_DISASSEMBLE_NAME(asap)(this, stream, pc, oprom, opram, options);
->>>>>>> upstream/master
 }
 
 
@@ -431,11 +342,7 @@ offs_t asap_device::disasm_disassemble(std::ostream &stream, offs_t pc, const ui
 //  readop - read an opcode at the given address
 //-------------------------------------------------
 
-<<<<<<< HEAD
-inline UINT32 asap_device::readop(offs_t pc)
-=======
 inline uint32_t asap_device::readop(offs_t pc)
->>>>>>> upstream/master
 {
 	return m_direct->read_dword(pc);
 }
@@ -445,11 +352,7 @@ inline uint32_t asap_device::readop(offs_t pc)
 //  readbyte - read a byte at the given address
 //-------------------------------------------------
 
-<<<<<<< HEAD
-inline UINT8 asap_device::readbyte(offs_t address)
-=======
 inline uint8_t asap_device::readbyte(offs_t address)
->>>>>>> upstream/master
 {
 	// no alignment issues with bytes
 	return m_program->read_byte(address);
@@ -460,17 +363,10 @@ inline uint8_t asap_device::readbyte(offs_t address)
 //  readword - read a word at the given address
 //-------------------------------------------------
 
-<<<<<<< HEAD
-inline UINT16 asap_device::readword(offs_t address)
-{
-	// aligned reads are easy
-	if (!(address & 1))
-=======
 inline uint16_t asap_device::readword(offs_t address)
 {
 	// aligned reads are easy
 	if (WORD_ALIGNED(address))
->>>>>>> upstream/master
 		return m_program->read_word(address);
 
 	// misaligned reads are tricky
@@ -482,17 +378,10 @@ inline uint16_t asap_device::readword(offs_t address)
 //  readlong - read a long at the given address
 //-------------------------------------------------
 
-<<<<<<< HEAD
-inline UINT32 asap_device::readlong(offs_t address)
-{
-	// aligned reads are easy
-	if (!(address & 3))
-=======
 inline uint32_t asap_device::readlong(offs_t address)
 {
 	// aligned reads are easy
 	if (DWORD_ALIGNED(address))
->>>>>>> upstream/master
 		return m_program->read_dword(address);
 
 	// misaligned reads are tricky
@@ -504,11 +393,7 @@ inline uint32_t asap_device::readlong(offs_t address)
 //  writebyte - write a byte at the given address
 //-------------------------------------------------
 
-<<<<<<< HEAD
-inline void asap_device::writebyte(offs_t address, UINT8 data)
-=======
 inline void asap_device::writebyte(offs_t address, uint8_t data)
->>>>>>> upstream/master
 {
 	// no alignment issues with bytes
 	m_program->write_byte(address, data);
@@ -519,17 +404,10 @@ inline void asap_device::writebyte(offs_t address, uint8_t data)
 //  writeword - write a word at the given address
 //-------------------------------------------------
 
-<<<<<<< HEAD
-inline void asap_device::writeword(offs_t address, UINT16 data)
-{
-	// aligned writes are easy
-	if (!(address & 1))
-=======
 inline void asap_device::writeword(offs_t address, uint16_t data)
 {
 	// aligned writes are easy
 	if (WORD_ALIGNED(address))
->>>>>>> upstream/master
 	{
 		m_program->write_word(address, data);
 		return;
@@ -550,17 +428,10 @@ inline void asap_device::writeword(offs_t address, uint16_t data)
 //  writelong - write a long at the given address
 //-------------------------------------------------
 
-<<<<<<< HEAD
-inline void asap_device::writelong(offs_t address, UINT32 data)
-{
-	// aligned writes are easy
-	if (!(address & 3))
-=======
 inline void asap_device::writelong(offs_t address, uint32_t data)
 {
 	// aligned writes are easy
 	if (DWORD_ALIGNED(address))
->>>>>>> upstream/master
 	{
 		m_program->write_dword(address, data);
 		return;
@@ -655,11 +526,7 @@ inline void asap_device::execute_instruction()
 //  cycles it takes for one instruction to execute
 //-------------------------------------------------
 
-<<<<<<< HEAD
-UINT32 asap_device::execute_min_cycles() const
-=======
 uint32_t asap_device::execute_min_cycles() const
->>>>>>> upstream/master
 {
 	return 1;
 }
@@ -670,11 +537,7 @@ uint32_t asap_device::execute_min_cycles() const
 //  cycles it takes for one instruction to execute
 //-------------------------------------------------
 
-<<<<<<< HEAD
-UINT32 asap_device::execute_max_cycles() const
-=======
 uint32_t asap_device::execute_max_cycles() const
->>>>>>> upstream/master
 {
 	return 2;
 }
@@ -685,11 +548,7 @@ uint32_t asap_device::execute_max_cycles() const
 //  input/interrupt lines
 //-------------------------------------------------
 
-<<<<<<< HEAD
-UINT32 asap_device::execute_input_lines() const
-=======
 uint32_t asap_device::execute_input_lines() const
->>>>>>> upstream/master
 {
 	return 1;
 }
@@ -778,15 +637,9 @@ void asap_device::trap0()
 
 void asap_device::bsp()
 {
-<<<<<<< HEAD
-	if ((INT32)m_znflag > 0)
-	{
-		m_nextpc = m_ppc + ((INT32)(m_op << 10) >> 8);
-=======
 	if ((int32_t)m_znflag > 0)
 	{
 		m_nextpc = m_ppc + ((int32_t)(m_op << 10) >> 8);
->>>>>>> upstream/master
 
 		fetch_instruction();
 		m_pc = m_nextpc;
@@ -799,15 +652,9 @@ void asap_device::bsp()
 
 void asap_device::bmz()
 {
-<<<<<<< HEAD
-	if ((INT32)m_znflag <= 0)
-	{
-		m_nextpc = m_ppc + ((INT32)(m_op << 10) >> 8);
-=======
 	if ((int32_t)m_znflag <= 0)
 	{
 		m_nextpc = m_ppc + ((int32_t)(m_op << 10) >> 8);
->>>>>>> upstream/master
 
 		fetch_instruction();
 		m_pc = m_nextpc;
@@ -820,15 +667,9 @@ void asap_device::bmz()
 
 void asap_device::bgt()
 {
-<<<<<<< HEAD
-	if (m_znflag != 0 && (INT32)(m_znflag ^ m_vflag) >= 0)
-	{
-		m_nextpc = m_ppc + ((INT32)(m_op << 10) >> 8);
-=======
 	if (m_znflag != 0 && (int32_t)(m_znflag ^ m_vflag) >= 0)
 	{
 		m_nextpc = m_ppc + ((int32_t)(m_op << 10) >> 8);
->>>>>>> upstream/master
 
 		fetch_instruction();
 		m_pc = m_nextpc;
@@ -841,15 +682,9 @@ void asap_device::bgt()
 
 void asap_device::ble()
 {
-<<<<<<< HEAD
-	if (m_znflag == 0 || (INT32)(m_znflag ^ m_vflag) < 0)
-	{
-		m_nextpc = m_ppc + ((INT32)(m_op << 10) >> 8);
-=======
 	if (m_znflag == 0 || (int32_t)(m_znflag ^ m_vflag) < 0)
 	{
 		m_nextpc = m_ppc + ((int32_t)(m_op << 10) >> 8);
->>>>>>> upstream/master
 
 		fetch_instruction();
 		m_pc = m_nextpc;
@@ -862,15 +697,9 @@ void asap_device::ble()
 
 void asap_device::bge()
 {
-<<<<<<< HEAD
-	if ((INT32)(m_znflag ^ m_vflag) >= 0)
-	{
-		m_nextpc = m_ppc + ((INT32)(m_op << 10) >> 8);
-=======
 	if ((int32_t)(m_znflag ^ m_vflag) >= 0)
 	{
 		m_nextpc = m_ppc + ((int32_t)(m_op << 10) >> 8);
->>>>>>> upstream/master
 
 		fetch_instruction();
 		m_pc = m_nextpc;
@@ -883,15 +712,9 @@ void asap_device::bge()
 
 void asap_device::blt()
 {
-<<<<<<< HEAD
-	if ((INT32)(m_znflag ^ m_vflag) < 0)
-	{
-		m_nextpc = m_ppc + ((INT32)(m_op << 10) >> 8);
-=======
 	if ((int32_t)(m_znflag ^ m_vflag) < 0)
 	{
 		m_nextpc = m_ppc + ((int32_t)(m_op << 10) >> 8);
->>>>>>> upstream/master
 
 		fetch_instruction();
 		m_pc = m_nextpc;
@@ -906,11 +729,7 @@ void asap_device::bhi()
 {
 	if (m_znflag != 0 && m_cflag)
 	{
-<<<<<<< HEAD
-		m_nextpc = m_ppc + ((INT32)(m_op << 10) >> 8);
-=======
 		m_nextpc = m_ppc + ((int32_t)(m_op << 10) >> 8);
->>>>>>> upstream/master
 
 		fetch_instruction();
 		m_pc = m_nextpc;
@@ -925,11 +744,7 @@ void asap_device::bls()
 {
 	if (m_znflag == 0 || !m_cflag)
 	{
-<<<<<<< HEAD
-		m_nextpc = m_ppc + ((INT32)(m_op << 10) >> 8);
-=======
 		m_nextpc = m_ppc + ((int32_t)(m_op << 10) >> 8);
->>>>>>> upstream/master
 
 		fetch_instruction();
 		m_pc = m_nextpc;
@@ -944,11 +759,7 @@ void asap_device::bcc()
 {
 	if (!m_cflag)
 	{
-<<<<<<< HEAD
-		m_nextpc = m_ppc + ((INT32)(m_op << 10) >> 8);
-=======
 		m_nextpc = m_ppc + ((int32_t)(m_op << 10) >> 8);
->>>>>>> upstream/master
 
 		fetch_instruction();
 		m_pc = m_nextpc;
@@ -963,11 +774,7 @@ void asap_device::bcs()
 {
 	if (m_cflag)
 	{
-<<<<<<< HEAD
-		m_nextpc = m_ppc + ((INT32)(m_op << 10) >> 8);
-=======
 		m_nextpc = m_ppc + ((int32_t)(m_op << 10) >> 8);
->>>>>>> upstream/master
 
 		fetch_instruction();
 		m_pc = m_nextpc;
@@ -980,15 +787,9 @@ void asap_device::bcs()
 
 void asap_device::bpl()
 {
-<<<<<<< HEAD
-	if ((INT32)m_znflag >= 0)
-	{
-		m_nextpc = m_ppc + ((INT32)(m_op << 10) >> 8);
-=======
 	if ((int32_t)m_znflag >= 0)
 	{
 		m_nextpc = m_ppc + ((int32_t)(m_op << 10) >> 8);
->>>>>>> upstream/master
 
 		fetch_instruction();
 		m_pc = m_nextpc;
@@ -1001,15 +802,9 @@ void asap_device::bpl()
 
 void asap_device::bmi()
 {
-<<<<<<< HEAD
-	if ((INT32)m_znflag < 0)
-	{
-		m_nextpc = m_ppc + ((INT32)(m_op << 10) >> 8);
-=======
 	if ((int32_t)m_znflag < 0)
 	{
 		m_nextpc = m_ppc + ((int32_t)(m_op << 10) >> 8);
->>>>>>> upstream/master
 
 		fetch_instruction();
 		m_pc = m_nextpc;
@@ -1024,11 +819,7 @@ void asap_device::bne()
 {
 	if (m_znflag != 0)
 	{
-<<<<<<< HEAD
-		m_nextpc = m_ppc + ((INT32)(m_op << 10) >> 8);
-=======
 		m_nextpc = m_ppc + ((int32_t)(m_op << 10) >> 8);
->>>>>>> upstream/master
 
 		fetch_instruction();
 		m_pc = m_nextpc;
@@ -1043,11 +834,7 @@ void asap_device::beq()
 {
 	if (m_znflag == 0)
 	{
-<<<<<<< HEAD
-		m_nextpc = m_ppc + ((INT32)(m_op << 10) >> 8);
-=======
 		m_nextpc = m_ppc + ((int32_t)(m_op << 10) >> 8);
->>>>>>> upstream/master
 
 		fetch_instruction();
 		m_pc = m_nextpc;
@@ -1060,15 +847,9 @@ void asap_device::beq()
 
 void asap_device::bvc()
 {
-<<<<<<< HEAD
-	if ((INT32)m_vflag >= 0)
-	{
-		m_nextpc = m_ppc + ((INT32)(m_op << 10) >> 8);
-=======
 	if ((int32_t)m_vflag >= 0)
 	{
 		m_nextpc = m_ppc + ((int32_t)(m_op << 10) >> 8);
->>>>>>> upstream/master
 
 		fetch_instruction();
 		m_pc = m_nextpc;
@@ -1081,15 +862,9 @@ void asap_device::bvc()
 
 void asap_device::bvs()
 {
-<<<<<<< HEAD
-	if ((INT32)m_vflag < 0)
-	{
-		m_nextpc = m_ppc + ((INT32)(m_op << 10) >> 8);
-=======
 	if ((int32_t)m_vflag < 0)
 	{
 		m_nextpc = m_ppc + ((int32_t)(m_op << 10) >> 8);
->>>>>>> upstream/master
 
 		fetch_instruction();
 		m_pc = m_nextpc;
@@ -1105,11 +880,7 @@ void asap_device::bvs()
 void asap_device::bsr()
 {
 	DSTVAL = m_pc + 4;
-<<<<<<< HEAD
-	m_nextpc = m_ppc + ((INT32)(m_op << 10) >> 8);
-=======
 	m_nextpc = m_ppc + ((int32_t)(m_op << 10) >> 8);
->>>>>>> upstream/master
 
 	fetch_instruction();
 	m_pc = m_nextpc;
@@ -1121,11 +892,7 @@ void asap_device::bsr()
 
 void asap_device::bsr_0()
 {
-<<<<<<< HEAD
-	m_nextpc = m_ppc + ((INT32)(m_op << 10) >> 8);
-=======
 	m_nextpc = m_ppc + ((int32_t)(m_op << 10) >> 8);
->>>>>>> upstream/master
 
 	fetch_instruction();
 	m_pc = m_nextpc;
@@ -1144,15 +911,9 @@ void asap_device::lea()
 
 void asap_device::lea_c()
 {
-<<<<<<< HEAD
-	UINT32 src1 = SRC1VAL;
-	UINT32 src2 = SRC2VAL;
-	UINT32 dst = src1 + (src2 << 2);
-=======
 	uint32_t src1 = SRC1VAL;
 	uint32_t src2 = SRC2VAL;
 	uint32_t dst = src1 + (src2 << 2);
->>>>>>> upstream/master
 
 	SET_ZNCV_ADD(dst, src1, src2);
 	if (src1 & 0xc0000000)
@@ -1164,15 +925,9 @@ void asap_device::lea_c()
 
 void asap_device::lea_c0()
 {
-<<<<<<< HEAD
-	UINT32 src1 = SRC1VAL;
-	UINT32 src2 = SRC2VAL;
-	UINT32 dst = src1 + (src2 << 2);
-=======
 	uint32_t src1 = SRC1VAL;
 	uint32_t src2 = SRC2VAL;
 	uint32_t dst = src1 + (src2 << 2);
->>>>>>> upstream/master
 
 	SET_ZNCV_ADD(dst, src1, src2);
 	if (src1 & 0xc0000000)
@@ -1190,15 +945,9 @@ void asap_device::leah()
 
 void asap_device::leah_c()
 {
-<<<<<<< HEAD
-	UINT32 src1 = SRC1VAL;
-	UINT32 src2 = SRC2VAL;
-	UINT32 dst = src1 + (src2 << 1);
-=======
 	uint32_t src1 = SRC1VAL;
 	uint32_t src2 = SRC2VAL;
 	uint32_t dst = src1 + (src2 << 1);
->>>>>>> upstream/master
 
 	SET_ZNCV_ADD(dst, src1, src2);
 	if (src1 & 0x80000000)
@@ -1210,15 +959,9 @@ void asap_device::leah_c()
 
 void asap_device::leah_c0()
 {
-<<<<<<< HEAD
-	UINT32 src1 = SRC1VAL;
-	UINT32 src2 = SRC2VAL;
-	UINT32 dst = src1 + (src2 << 1);
-=======
 	uint32_t src1 = SRC1VAL;
 	uint32_t src2 = SRC2VAL;
 	uint32_t dst = src1 + (src2 << 1);
->>>>>>> upstream/master
 
 	SET_ZNCV_ADD(dst, src1, src2);
 	if (src1 & 0x80000000)
@@ -1236,15 +979,9 @@ void asap_device::subr()
 
 void asap_device::subr_c()
 {
-<<<<<<< HEAD
-	UINT32 src1 = SRC1VAL;
-	UINT32 src2 = SRC2VAL;
-	UINT32 dst = src2 - src1;
-=======
 	uint32_t src1 = SRC1VAL;
 	uint32_t src2 = SRC2VAL;
 	uint32_t dst = src2 - src1;
->>>>>>> upstream/master
 
 	SET_ZNCV_SUB(dst, src2, src1);
 	DSTVAL = dst;
@@ -1252,15 +989,9 @@ void asap_device::subr_c()
 
 void asap_device::subr_c0()
 {
-<<<<<<< HEAD
-	UINT32 src1 = SRC1VAL;
-	UINT32 src2 = SRC2VAL;
-	UINT32 dst = src2 - src1;
-=======
 	uint32_t src1 = SRC1VAL;
 	uint32_t src2 = SRC2VAL;
 	uint32_t dst = src2 - src1;
->>>>>>> upstream/master
 
 	SET_ZNCV_SUB(dst, src2, src1);
 }
@@ -1274,22 +1005,14 @@ void asap_device::xor_()
 
 void asap_device::xor_c()
 {
-<<<<<<< HEAD
-	UINT32 dst = SRC1VAL ^ SRC2VAL;
-=======
 	uint32_t dst = SRC1VAL ^ SRC2VAL;
->>>>>>> upstream/master
 	SET_ZN(dst);
 	DSTVAL = dst;
 }
 
 void asap_device::xor_c0()
 {
-<<<<<<< HEAD
-	UINT32 dst = SRC1VAL ^ SRC2VAL;
-=======
 	uint32_t dst = SRC1VAL ^ SRC2VAL;
->>>>>>> upstream/master
 	SET_ZN(dst);
 }
 
@@ -1302,22 +1025,14 @@ void asap_device::xorn()
 
 void asap_device::xorn_c()
 {
-<<<<<<< HEAD
-	UINT32 dst = SRC1VAL ^ ~SRC2VAL;
-=======
 	uint32_t dst = SRC1VAL ^ ~SRC2VAL;
->>>>>>> upstream/master
 	SET_ZN(dst);
 	DSTVAL = dst;
 }
 
 void asap_device::xorn_c0()
 {
-<<<<<<< HEAD
-	UINT32 dst = SRC1VAL ^ ~SRC2VAL;
-=======
 	uint32_t dst = SRC1VAL ^ ~SRC2VAL;
->>>>>>> upstream/master
 	SET_ZN(dst);
 }
 
@@ -1330,15 +1045,9 @@ void asap_device::add()
 
 void asap_device::add_c()
 {
-<<<<<<< HEAD
-	UINT32 src1 = SRC1VAL;
-	UINT32 src2 = SRC2VAL;
-	UINT32 dst = src1 + src2;
-=======
 	uint32_t src1 = SRC1VAL;
 	uint32_t src2 = SRC2VAL;
 	uint32_t dst = src1 + src2;
->>>>>>> upstream/master
 
 	SET_ZNCV_ADD(dst, src1, src2);
 	DSTVAL = dst;
@@ -1346,15 +1055,9 @@ void asap_device::add_c()
 
 void asap_device::add_c0()
 {
-<<<<<<< HEAD
-	UINT32 src1 = SRC1VAL;
-	UINT32 src2 = SRC2VAL;
-	UINT32 dst = src1 + src2;
-=======
 	uint32_t src1 = SRC1VAL;
 	uint32_t src2 = SRC2VAL;
 	uint32_t dst = src1 + src2;
->>>>>>> upstream/master
 
 	SET_ZNCV_ADD(dst, src1, src2);
 }
@@ -1368,15 +1071,9 @@ void asap_device::sub()
 
 void asap_device::sub_c()
 {
-<<<<<<< HEAD
-	UINT32 src1 = SRC1VAL;
-	UINT32 src2 = SRC2VAL;
-	UINT32 dst = src1 - src2;
-=======
 	uint32_t src1 = SRC1VAL;
 	uint32_t src2 = SRC2VAL;
 	uint32_t dst = src1 - src2;
->>>>>>> upstream/master
 
 	SET_ZNCV_SUB(dst, src1, src2);
 	DSTVAL = dst;
@@ -1384,15 +1081,9 @@ void asap_device::sub_c()
 
 void asap_device::sub_c0()
 {
-<<<<<<< HEAD
-	UINT32 src1 = SRC1VAL;
-	UINT32 src2 = SRC2VAL;
-	UINT32 dst = src1 - src2;
-=======
 	uint32_t src1 = SRC1VAL;
 	uint32_t src2 = SRC2VAL;
 	uint32_t dst = src1 - src2;
->>>>>>> upstream/master
 
 	SET_ZNCV_SUB(dst, src1, src2);
 }
@@ -1406,15 +1097,9 @@ void asap_device::addc()
 
 void asap_device::addc_c()
 {
-<<<<<<< HEAD
-	UINT32 src1 = SRC1VAL;
-	UINT32 src2 = SRC2VAL;
-	UINT32 dst = src1 + src2 + m_cflag;
-=======
 	uint32_t src1 = SRC1VAL;
 	uint32_t src2 = SRC2VAL;
 	uint32_t dst = src1 + src2 + m_cflag;
->>>>>>> upstream/master
 
 	SET_ZNCV_ADD(dst, src1, src2);
 	DSTVAL = dst;
@@ -1422,15 +1107,9 @@ void asap_device::addc_c()
 
 void asap_device::addc_c0()
 {
-<<<<<<< HEAD
-	UINT32 src1 = SRC1VAL;
-	UINT32 src2 = SRC2VAL;
-	UINT32 dst = src1 + src2 + m_cflag;
-=======
 	uint32_t src1 = SRC1VAL;
 	uint32_t src2 = SRC2VAL;
 	uint32_t dst = src1 + src2 + m_cflag;
->>>>>>> upstream/master
 
 	SET_ZNCV_ADD(dst, src1, src2);
 }
@@ -1444,15 +1123,9 @@ void asap_device::subc()
 
 void asap_device::subc_c()
 {
-<<<<<<< HEAD
-	UINT32 src1 = SRC1VAL;
-	UINT32 src2 = SRC2VAL;
-	UINT32 dst = src1 - src2 - 1 + m_cflag;
-=======
 	uint32_t src1 = SRC1VAL;
 	uint32_t src2 = SRC2VAL;
 	uint32_t dst = src1 - src2 - 1 + m_cflag;
->>>>>>> upstream/master
 
 	SET_ZNCV_SUB(dst, src1, src2);
 	DSTVAL = dst;
@@ -1460,15 +1133,9 @@ void asap_device::subc_c()
 
 void asap_device::subc_c0()
 {
-<<<<<<< HEAD
-	UINT32 src1 = SRC1VAL;
-	UINT32 src2 = SRC2VAL;
-	UINT32 dst = src1 - src2 - 1 + m_cflag;
-=======
 	uint32_t src1 = SRC1VAL;
 	uint32_t src2 = SRC2VAL;
 	uint32_t dst = src1 - src2 - 1 + m_cflag;
->>>>>>> upstream/master
 
 	SET_ZNCV_SUB(dst, src1, src2);
 }
@@ -1482,22 +1149,14 @@ void asap_device::and_()
 
 void asap_device::and_c()
 {
-<<<<<<< HEAD
-	UINT32 dst = SRC1VAL & SRC2VAL;
-=======
 	uint32_t dst = SRC1VAL & SRC2VAL;
->>>>>>> upstream/master
 	SET_ZN(dst);
 	DSTVAL = dst;
 }
 
 void asap_device::and_c0()
 {
-<<<<<<< HEAD
-	UINT32 dst = SRC1VAL & SRC2VAL;
-=======
 	uint32_t dst = SRC1VAL & SRC2VAL;
->>>>>>> upstream/master
 	SET_ZN(dst);
 }
 
@@ -1510,22 +1169,14 @@ void asap_device::andn()
 
 void asap_device::andn_c()
 {
-<<<<<<< HEAD
-	UINT32 dst = SRC1VAL & ~SRC2VAL;
-=======
 	uint32_t dst = SRC1VAL & ~SRC2VAL;
->>>>>>> upstream/master
 	SET_ZN(dst);
 	DSTVAL = dst;
 }
 
 void asap_device::andn_c0()
 {
-<<<<<<< HEAD
-	UINT32 dst = SRC1VAL & ~SRC2VAL;
-=======
 	uint32_t dst = SRC1VAL & ~SRC2VAL;
->>>>>>> upstream/master
 	SET_ZN(dst);
 }
 
@@ -1538,22 +1189,14 @@ void asap_device::or_()
 
 void asap_device::or_c()
 {
-<<<<<<< HEAD
-	UINT32 dst = SRC1VAL | SRC2VAL;
-=======
 	uint32_t dst = SRC1VAL | SRC2VAL;
->>>>>>> upstream/master
 	SET_ZN(dst);
 	DSTVAL = dst;
 }
 
 void asap_device::or_c0()
 {
-<<<<<<< HEAD
-	UINT32 dst = SRC1VAL | SRC2VAL;
-=======
 	uint32_t dst = SRC1VAL | SRC2VAL;
->>>>>>> upstream/master
 	SET_ZN(dst);
 }
 
@@ -1566,22 +1209,14 @@ void asap_device::orn()
 
 void asap_device::orn_c()
 {
-<<<<<<< HEAD
-	UINT32 dst = SRC1VAL | ~SRC2VAL;
-=======
 	uint32_t dst = SRC1VAL | ~SRC2VAL;
->>>>>>> upstream/master
 	SET_ZN(dst);
 	DSTVAL = dst;
 }
 
 void asap_device::orn_c0()
 {
-<<<<<<< HEAD
-	UINT32 dst = SRC1VAL | ~SRC2VAL;
-=======
 	uint32_t dst = SRC1VAL | ~SRC2VAL;
->>>>>>> upstream/master
 	SET_ZN(dst);
 }
 
@@ -1599,22 +1234,14 @@ void asap_device::ld_0()
 
 void asap_device::ld_c()
 {
-<<<<<<< HEAD
-	UINT32 dst = readlong(SRC1VAL + (SRC2VAL << 2));
-=======
 	uint32_t dst = readlong(SRC1VAL + (SRC2VAL << 2));
->>>>>>> upstream/master
 	SET_ZN(dst);
 	DSTVAL = dst;
 }
 
 void asap_device::ld_c0()
 {
-<<<<<<< HEAD
-	UINT32 dst = readlong(SRC1VAL + (SRC2VAL << 2));
-=======
 	uint32_t dst = readlong(SRC1VAL + (SRC2VAL << 2));
->>>>>>> upstream/master
 	SET_ZN(dst);
 }
 
@@ -1622,11 +1249,7 @@ void asap_device::ld_c0()
 
 void asap_device::ldh()
 {
-<<<<<<< HEAD
-	DSTVAL = (INT16)readword(SRC1VAL + (SRC2VAL << 1));
-=======
 	DSTVAL = (int16_t)readword(SRC1VAL + (SRC2VAL << 1));
->>>>>>> upstream/master
 }
 
 void asap_device::ldh_0()
@@ -1636,22 +1259,14 @@ void asap_device::ldh_0()
 
 void asap_device::ldh_c()
 {
-<<<<<<< HEAD
-	UINT32 dst = (INT16)readword(SRC1VAL + (SRC2VAL << 1));
-=======
 	uint32_t dst = (int16_t)readword(SRC1VAL + (SRC2VAL << 1));
->>>>>>> upstream/master
 	SET_ZN(dst);
 	DSTVAL = dst;
 }
 
 void asap_device::ldh_c0()
 {
-<<<<<<< HEAD
-	UINT32 dst = (INT16)readword(SRC1VAL + (SRC2VAL << 1));
-=======
 	uint32_t dst = (int16_t)readword(SRC1VAL + (SRC2VAL << 1));
->>>>>>> upstream/master
 	SET_ZN(dst);
 }
 
@@ -1669,22 +1284,14 @@ void asap_device::lduh_0()
 
 void asap_device::lduh_c()
 {
-<<<<<<< HEAD
-	UINT32 dst = readword(SRC1VAL + (SRC2VAL << 1));
-=======
 	uint32_t dst = readword(SRC1VAL + (SRC2VAL << 1));
->>>>>>> upstream/master
 	SET_ZN(dst);
 	DSTVAL = dst;
 }
 
 void asap_device::lduh_c0()
 {
-<<<<<<< HEAD
-	UINT32 dst = readword(SRC1VAL + (SRC2VAL << 1));
-=======
 	uint32_t dst = readword(SRC1VAL + (SRC2VAL << 1));
->>>>>>> upstream/master
 	SET_ZN(dst);
 }
 
@@ -1702,11 +1309,7 @@ void asap_device::sth_0()
 
 void asap_device::sth_c()
 {
-<<<<<<< HEAD
-	UINT32 dst = (UINT16)DSTVAL;
-=======
 	uint32_t dst = (uint16_t)DSTVAL;
->>>>>>> upstream/master
 	SET_ZN(dst);
 	writeword(SRC1VAL + (SRC2VAL << 1), dst);
 }
@@ -1731,11 +1334,7 @@ void asap_device::st_0()
 
 void asap_device::st_c()
 {
-<<<<<<< HEAD
-	UINT32 dst = DSTVAL;
-=======
 	uint32_t dst = DSTVAL;
->>>>>>> upstream/master
 	SET_ZN(dst);
 	writelong(SRC1VAL + (SRC2VAL << 2), dst);
 }
@@ -1750,11 +1349,7 @@ void asap_device::st_c0()
 
 void asap_device::ldb()
 {
-<<<<<<< HEAD
-	DSTVAL = (INT8)readbyte(SRC1VAL + SRC2VAL);
-=======
 	DSTVAL = (int8_t)readbyte(SRC1VAL + SRC2VAL);
->>>>>>> upstream/master
 }
 
 void asap_device::ldb_0()
@@ -1764,22 +1359,14 @@ void asap_device::ldb_0()
 
 void asap_device::ldb_c()
 {
-<<<<<<< HEAD
-	UINT32 dst = (INT8)readbyte(SRC1VAL + SRC2VAL);
-=======
 	uint32_t dst = (int8_t)readbyte(SRC1VAL + SRC2VAL);
->>>>>>> upstream/master
 	SET_ZN(dst);
 	DSTVAL = dst;
 }
 
 void asap_device::ldb_c0()
 {
-<<<<<<< HEAD
-	UINT32 dst = (INT8)readbyte(SRC1VAL + SRC2VAL);
-=======
 	uint32_t dst = (int8_t)readbyte(SRC1VAL + SRC2VAL);
->>>>>>> upstream/master
 	SET_ZN(dst);
 }
 
@@ -1797,22 +1384,14 @@ void asap_device::ldub_0()
 
 void asap_device::ldub_c()
 {
-<<<<<<< HEAD
-	UINT32 dst = readbyte(SRC1VAL + SRC2VAL);
-=======
 	uint32_t dst = readbyte(SRC1VAL + SRC2VAL);
->>>>>>> upstream/master
 	SET_ZN(dst);
 	DSTVAL = dst;
 }
 
 void asap_device::ldub_c0()
 {
-<<<<<<< HEAD
-	UINT32 dst = readbyte(SRC1VAL + SRC2VAL);
-=======
 	uint32_t dst = readbyte(SRC1VAL + SRC2VAL);
->>>>>>> upstream/master
 	SET_ZN(dst);
 }
 
@@ -1830,11 +1409,7 @@ void asap_device::stb_0()
 
 void asap_device::stb_c()
 {
-<<<<<<< HEAD
-	UINT32 dst = (UINT8)DSTVAL;
-=======
 	uint32_t dst = (uint8_t)DSTVAL;
->>>>>>> upstream/master
 	SET_ZN(dst);
 	writebyte(SRC1VAL + SRC2VAL, dst);
 }
@@ -1849,32 +1424,18 @@ void asap_device::stb_c0()
 
 void asap_device::ashr()
 {
-<<<<<<< HEAD
-	UINT32 src2 = SRC2VAL;
-	DSTVAL = (src2 < 32) ? ((INT32)SRC1VAL >> src2) : ((INT32)SRC1VAL >> 31);
-=======
 	uint32_t src2 = SRC2VAL;
 	DSTVAL = (src2 < 32) ? ((int32_t)SRC1VAL >> src2) : ((int32_t)SRC1VAL >> 31);
->>>>>>> upstream/master
 }
 
 void asap_device::ashr_c()
 {
-<<<<<<< HEAD
-	UINT32 src2 = SRC2VAL;
-	m_cflag = 0;
-	if (src2 < 32)
-	{
-		UINT32 src1 = SRC1VAL;
-		UINT32 dst = (INT32)src1 >> src2;
-=======
 	uint32_t src2 = SRC2VAL;
 	m_cflag = 0;
 	if (src2 < 32)
 	{
 		uint32_t src1 = SRC1VAL;
 		uint32_t dst = (int32_t)src1 >> src2;
->>>>>>> upstream/master
 		SET_ZN(dst);
 		if (src2 != 0)
 		{
@@ -1885,11 +1446,7 @@ void asap_device::ashr_c()
 	}
 	else
 	{
-<<<<<<< HEAD
-		UINT32 dst = (INT32)SRC1VAL >> 31;
-=======
 		uint32_t dst = (int32_t)SRC1VAL >> 31;
->>>>>>> upstream/master
 		SET_ZN(dst);
 		DSTVAL = dst;
 	}
@@ -1897,21 +1454,12 @@ void asap_device::ashr_c()
 
 void asap_device::ashr_c0()
 {
-<<<<<<< HEAD
-	UINT32 src2 = SRC2VAL;
-	m_cflag = 0;
-	if (src2 < 32)
-	{
-		UINT32 src1 = SRC1VAL;
-		UINT32 dst = (INT32)src1 >> src2;
-=======
 	uint32_t src2 = SRC2VAL;
 	m_cflag = 0;
 	if (src2 < 32)
 	{
 		uint32_t src1 = SRC1VAL;
 		uint32_t dst = (int32_t)src1 >> src2;
->>>>>>> upstream/master
 		SET_ZN(dst);
 		if (src2 != 0)
 		{
@@ -1921,11 +1469,7 @@ void asap_device::ashr_c0()
 	}
 	else
 	{
-<<<<<<< HEAD
-		UINT32 dst = (INT32)SRC1VAL >> 31;
-=======
 		uint32_t dst = (int32_t)SRC1VAL >> 31;
->>>>>>> upstream/master
 		SET_ZN(dst);
 	}
 }
@@ -1934,31 +1478,18 @@ void asap_device::ashr_c0()
 
 void asap_device::lshr()
 {
-<<<<<<< HEAD
-	UINT32 src2 = SRC2VAL;
-=======
 	uint32_t src2 = SRC2VAL;
->>>>>>> upstream/master
 	DSTVAL = (src2 < 32) ? (SRC1VAL >> src2) : (SRC1VAL >> 31);
 }
 
 void asap_device::lshr_c()
 {
-<<<<<<< HEAD
-	UINT32 src2 = SRC2VAL;
-	m_cflag = 0;
-	if (src2 < 32)
-	{
-		UINT32 src1 = SRC1VAL;
-		UINT32 dst = src1 >> src2;
-=======
 	uint32_t src2 = SRC2VAL;
 	m_cflag = 0;
 	if (src2 < 32)
 	{
 		uint32_t src1 = SRC1VAL;
 		uint32_t dst = src1 >> src2;
->>>>>>> upstream/master
 		SET_ZN(dst);
 		if (src2 != 0)
 		{
@@ -1969,11 +1500,7 @@ void asap_device::lshr_c()
 	}
 	else
 	{
-<<<<<<< HEAD
-		UINT32 dst = SRC1VAL >> 31;
-=======
 		uint32_t dst = SRC1VAL >> 31;
->>>>>>> upstream/master
 		SET_ZN(dst);
 		DSTVAL = dst;
 	}
@@ -1981,21 +1508,12 @@ void asap_device::lshr_c()
 
 void asap_device::lshr_c0()
 {
-<<<<<<< HEAD
-	UINT32 src2 = SRC2VAL;
-	m_cflag = 0;
-	if (src2 < 32)
-	{
-		UINT32 src1 = SRC1VAL;
-		UINT32 dst = src1 >> src2;
-=======
 	uint32_t src2 = SRC2VAL;
 	m_cflag = 0;
 	if (src2 < 32)
 	{
 		uint32_t src1 = SRC1VAL;
 		uint32_t dst = src1 >> src2;
->>>>>>> upstream/master
 		SET_ZN(dst);
 		if (src2 != 0)
 		{
@@ -2014,30 +1532,12 @@ void asap_device::lshr_c0()
 
 void asap_device::ashl()
 {
-<<<<<<< HEAD
-	UINT32 src2 = SRC2VAL;
-=======
 	uint32_t src2 = SRC2VAL;
->>>>>>> upstream/master
 	DSTVAL = (src2 < 32) ? (SRC1VAL << src2) : 0;
 }
 
 void asap_device::ashl_c()
 {
-<<<<<<< HEAD
-	UINT32 src2 = SRC2VAL;
-	m_cflag = m_vflag = 0;
-	if (src2 < 32)
-	{
-		UINT32 src1 = SRC1VAL;
-		UINT32 dst = src1 << src2;
-		SET_ZN(dst);
-		if (src2 != 0)
-		{
-			src1 = (INT32)src1 >> (32 - src2);
-			m_cflag = src1 & PS_CFLAG;
-			m_vflag = (src1 != ((INT32)dst >> 31)) << 31;
-=======
 	uint32_t src2 = SRC2VAL;
 	m_cflag = m_vflag = 0;
 	if (src2 < 32)
@@ -2050,7 +1550,6 @@ void asap_device::ashl_c()
 			src1 = (int32_t)src1 >> (32 - src2);
 			m_cflag = src1 & PS_CFLAG;
 			m_vflag = (src1 != ((int32_t)dst >> 31)) << 31;
->>>>>>> upstream/master
 		}
 		DSTVAL = dst;
 	}
@@ -2063,20 +1562,6 @@ void asap_device::ashl_c()
 
 void asap_device::ashl_c0()
 {
-<<<<<<< HEAD
-	UINT32 src2 = SRC2VAL;
-	m_cflag = m_vflag = 0;
-	if (src2 < 32)
-	{
-		UINT32 src1 = SRC1VAL;
-		UINT32 dst = src1 << src2;
-		SET_ZN(dst);
-		if (src2 != 0)
-		{
-			src1 = (INT32)src1 >> (32 - src2);
-			m_cflag = src1 & PS_CFLAG;
-			m_vflag = (src1 != ((INT32)dst >> 31)) << 31;
-=======
 	uint32_t src2 = SRC2VAL;
 	m_cflag = m_vflag = 0;
 	if (src2 < 32)
@@ -2089,7 +1574,6 @@ void asap_device::ashl_c0()
 			src1 = (int32_t)src1 >> (32 - src2);
 			m_cflag = src1 & PS_CFLAG;
 			m_vflag = (src1 != ((int32_t)dst >> 31)) << 31;
->>>>>>> upstream/master
 		}
 	}
 	else
@@ -2100,42 +1584,25 @@ void asap_device::ashl_c0()
 
 void asap_device::rotl()
 {
-<<<<<<< HEAD
-	UINT32 src1 = SRC1VAL;
-	UINT32 src2 = SRC2VAL & 31;
-=======
 	uint32_t src1 = SRC1VAL;
 	uint32_t src2 = SRC2VAL & 31;
->>>>>>> upstream/master
 	DSTVAL = (src1 << src2) | (src1 >> (32 - src2));
 }
 
 void asap_device::rotl_c()
 {
-<<<<<<< HEAD
-	UINT32 src1 = SRC1VAL;
-	UINT32 src2 = SRC2VAL & 31;
-	UINT32 dst = (src1 << src2) | (src1 >> (32 - src2));
-=======
 	uint32_t src1 = SRC1VAL;
 	uint32_t src2 = SRC2VAL & 31;
 	uint32_t dst = (src1 << src2) | (src1 >> (32 - src2));
->>>>>>> upstream/master
 	SET_ZN(dst);
 	DSTVAL = dst;
 }
 
 void asap_device::rotl_c0()
 {
-<<<<<<< HEAD
-	UINT32 src1 = SRC1VAL;
-	UINT32 src2 = SRC2VAL & 31;
-	UINT32 dst = (src1 << src2) | (src1 >> (32 - src2));
-=======
 	uint32_t src1 = SRC1VAL;
 	uint32_t src2 = SRC2VAL & 31;
 	uint32_t dst = (src1 << src2) | (src1 >> (32 - src2));
->>>>>>> upstream/master
 	SET_ZN(dst);
 }
 
@@ -2150,11 +1617,7 @@ void asap_device::getps()
 
 void asap_device::putps()
 {
-<<<<<<< HEAD
-	UINT32 src2 = SRC2VAL & 0x3f;
-=======
 	uint32_t src2 = SRC2VAL & 0x3f;
->>>>>>> upstream/master
 	SET_FLAGS(src2);
 	check_irqs();
 }

@@ -8,48 +8,16 @@
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-#ifndef __I82371SB_H__
-#define __I82371SB_H__
-=======
 #ifndef MAME_BUS_LPCI_I82371SB_H
 #define MAME_BUS_LPCI_I82371SB_H
 
 #pragma once
->>>>>>> upstream/master
 
 #include "pci.h"
 #include "southbridge.h"
 
 // ======================> i82371sb_device
 
-<<<<<<< HEAD
-class i82371sb_device :  public southbridge_device,
-							public pci_device_interface
-{
-public:
-	// construction/destruction
-	i82371sb_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	virtual UINT32 pci_read(pci_bus_device *pcibus, int function, int offset, UINT32 mem_mask);
-	virtual void pci_write(pci_bus_device *pcibus, int function, int offset, UINT32 data, UINT32 mem_mask);
-
-protected:
-	// device-level overrides
-	virtual void device_start();
-	virtual void device_reset();
-
-	UINT32 pci_isa_r(device_t *busdevice, int offset, UINT32 mem_mask);
-	void pci_isa_w(device_t *busdevice, int offset, UINT32 data, UINT32 mem_mask);
-
-	UINT32 pci_ide_r(device_t *busdevice, int offset, UINT32 mem_mask);
-	void pci_ide_w(device_t *busdevice, int offset, UINT32 data, UINT32 mem_mask);
-
-	UINT32 pci_usb_r(device_t *busdevice, int offset, UINT32 mem_mask);
-	void pci_usb_w(device_t *busdevice, int offset, UINT32 data, UINT32 mem_mask);
-private:
-	UINT32 m_regs[3][0x400/4];
-=======
 class i82371sb_device : public southbridge_device, public pci_device_interface
 {
 public:
@@ -78,20 +46,13 @@ protected:
 private:
 	uint32_t m_regs[3][0x400/4];
 	devcb_write8 m_boot_state_hook;
->>>>>>> upstream/master
 };
 
 // device type definition
 extern const device_type I82371SB;
-<<<<<<< HEAD
-
-
-#endif /* __I82371SB_H__ */
-=======
 DECLARE_DEVICE_TYPE(I82371SB, i82371sb_device)
 
 #define MCFG_I82371SB_BOOT_STATE_HOOK(_devcb) \
 	devcb = &i82371sb_device::set_boot_state_hook(*device, DEVCB_##_devcb);
 
 #endif // MAME_BUS_LPCI_I82371SB_H
->>>>>>> upstream/master

@@ -10,10 +10,7 @@
 
 #include "emu.h"
 #include "includes/20pacgal.h"
-<<<<<<< HEAD
-=======
 #include "screen.h"
->>>>>>> upstream/master
 
 
 #define SCREEN_HEIGHT   (224)
@@ -31,11 +28,7 @@
 void _20pacgal_state::get_pens(pen_t *pens)
 {
 	offs_t offs;
-<<<<<<< HEAD
-	UINT8 *color_prom = memregion("proms")->base() + (NUM_PENS * m_game_selected);
-=======
 	uint8_t *color_prom = memregion("proms")->base() + (NUM_PENS * m_game_selected);
->>>>>>> upstream/master
 
 	for (offs = 0; offs < NUM_PENS ;offs++)
 	{
@@ -104,11 +97,7 @@ void _20pacgal_state::do_pen_lookup(bitmap_rgb32 &bitmap, const rectangle &clipr
  *************************************/
 
 void _20pacgal_state::draw_sprite(bitmap_rgb32 &bitmap, int y, int x,
-<<<<<<< HEAD
-						UINT8 code, UINT8 color, int flip_y, int flip_x)
-=======
 						uint8_t code, uint8_t color, int flip_y, int flip_x)
->>>>>>> upstream/master
 {
 	int sy;
 
@@ -129,11 +118,7 @@ void _20pacgal_state::draw_sprite(bitmap_rgb32 &bitmap, int y, int x,
 		if ((y >= 0) && (y < SCREEN_HEIGHT))
 		{
 			int sx;
-<<<<<<< HEAD
-			UINT32 data;
-=======
 			uint32_t data;
->>>>>>> upstream/master
 
 			offs_t gfx_offs = ((code & 0x7f) << 6) | (sy << 2);
 
@@ -151,11 +136,7 @@ void _20pacgal_state::draw_sprite(bitmap_rgb32 &bitmap, int y, int x,
 				if ((x >= 0) && (x < SCREEN_WIDTH))
 				{
 					offs_t pen = (data & 0xc0000000) >> 30;
-<<<<<<< HEAD
-					UINT8 col;
-=======
 					uint8_t col;
->>>>>>> upstream/master
 
 					col = m_sprite_color_lookup[pen_base | pen] & 0x0f;
 
@@ -198,13 +179,8 @@ void _20pacgal_state::draw_sprites(bitmap_rgb32 &bitmap)
 		};
 		int x, y;
 
-<<<<<<< HEAD
-		UINT8 code = m_sprite_ram[offs + 0x000];
-		UINT8 color = m_sprite_ram[offs + 0x001];
-=======
 		uint8_t code = m_sprite_ram[offs + 0x000];
 		uint8_t color = m_sprite_ram[offs + 0x001];
->>>>>>> upstream/master
 
 		int sx = m_sprite_ram[offs + 0x081] - 41 + 0x100*(m_sprite_ram[offs + 0x101] & 3);
 		int sy = 256 - m_sprite_ram[offs + 0x080] + 1;
@@ -254,13 +230,8 @@ void _20pacgal_state::draw_chars(bitmap_rgb32 &bitmap)
 		int sy;
 		int y, x;
 
-<<<<<<< HEAD
-		UINT8 *gfx = &m_char_gfx_ram.target()[m_video_ram[0x0000 | offs] << 4];
-		UINT32 color_base = (m_video_ram[0x0400 | offs] & 0x3f) << 2;
-=======
 		uint8_t *gfx = &m_char_gfx_ram.target()[m_video_ram[0x0000 | offs] << 4];
 		uint32_t color_base = (m_video_ram[0x0400 | offs] & 0x3f) << 2;
->>>>>>> upstream/master
 
 		/* map the offset to (x, y) character coordinates */
 		if ((offs & 0x03c0) == 0)
@@ -297,20 +268,12 @@ void _20pacgal_state::draw_chars(bitmap_rgb32 &bitmap)
 			int sx;
 			int x_sav = x;
 
-<<<<<<< HEAD
-			UINT16 data = (gfx[8] << 8) | gfx[0];
-=======
 			uint16_t data = (gfx[8] << 8) | gfx[0];
->>>>>>> upstream/master
 
 			/* for each pixel in the row */
 			for (sx = 0; sx < 8; sx++)
 			{
-<<<<<<< HEAD
-				UINT32 col = ((data & 0x8000) >> 14) | ((data & 0x0800) >> 11);
-=======
 				uint32_t col = ((data & 0x8000) >> 14) | ((data & 0x0800) >> 11);
->>>>>>> upstream/master
 
 				/* pen bits A4-A11 */
 				if ( col != 0 )
@@ -394,17 +357,10 @@ void _20pacgal_state::draw_stars(bitmap_rgb32 &bitmap, const rectangle &cliprect
 	if ( (m_stars_ctrl[0] >> 5) & 1 )
 	{
 		int clock;
-<<<<<<< HEAD
-		UINT16 lfsr =   m_stars_seed[0] + m_stars_seed[1]*256;
-		UINT8 feedback = (m_stars_ctrl[0] >> 6) & 1;
-		UINT16 star_seta = (m_stars_ctrl[0] >> 3) & 0x01;
-		UINT16 star_setb = (m_stars_ctrl[0] >> 3) & 0x02;
-=======
 		uint16_t lfsr =   m_stars_seed[0] + m_stars_seed[1]*256;
 		uint8_t feedback = (m_stars_ctrl[0] >> 6) & 1;
 		uint16_t star_seta = (m_stars_ctrl[0] >> 3) & 0x01;
 		uint16_t star_setb = (m_stars_ctrl[0] >> 3) & 0x02;
->>>>>>> upstream/master
 		int cnt = 0;
 
 		/* This is a guess based on galaga star sets */
@@ -453,11 +409,7 @@ void _20pacgal_state::draw_stars(bitmap_rgb32 &bitmap, const rectangle &cliprect
  *
  *************************************/
 
-<<<<<<< HEAD
-UINT32 _20pacgal_state::screen_update_20pacgal(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
-=======
 uint32_t _20pacgal_state::screen_update_20pacgal(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	bitmap.fill(0, cliprect);
 	draw_stars(bitmap,cliprect);
@@ -476,11 +428,7 @@ uint32_t _20pacgal_state::screen_update_20pacgal(screen_device &screen, bitmap_r
  *
  *************************************/
 
-<<<<<<< HEAD
-MACHINE_CONFIG_FRAGMENT( 20pacgal_video )
-=======
 MACHINE_CONFIG_START( 20pacgal_video )
->>>>>>> upstream/master
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE(60)
 	MCFG_SCREEN_VBLANK_TIME(ATTOSECONDS_IN_USEC(0))

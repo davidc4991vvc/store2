@@ -14,11 +14,7 @@
 #define VERBOSE 0
 
 
-<<<<<<< HEAD
-INLINE void set_color_555(palette_device &palette, pen_t color, int rshift, int gshift, int bshift, UINT16 data);
-=======
 static inline void set_color_555(palette_device &palette, pen_t color, int rshift, int gshift, int bshift, uint16_t data);
->>>>>>> upstream/master
 
 
 void konamigx_state::konamigx_precache_registers(void)
@@ -178,15 +174,9 @@ int konamigx_state::K055555GX_decode_vmixcolor(int layer, int *color) // (see p.
 	emx   |=  vmx;
 	pal   |=  vcb;
 
-<<<<<<< HEAD
-	if (m_gx_le2_textcolour_hack)
-		if (layer==0)
-			pal |= 0x1c0;
-=======
 	//if (m_gx_le2_textcolour_hack)
 	//  if (layer==0)
 	//      pal |= 0x1c0;
->>>>>>> upstream/master
 
 	if (von == 3) emx = -1; // invalidate external mix code if all bits are from internal
 	*color =  pal;
@@ -241,22 +231,14 @@ void konamigx_state::wipezbuf(int noshadow)
 	int w = visarea.width();
 	int h = visarea.height();
 
-<<<<<<< HEAD
-	UINT8 *zptr = m_gx_objzbuf;
-=======
 	uint8_t *zptr = m_gx_objzbuf;
->>>>>>> upstream/master
 	int ecx = h;
 
 	do { memset(zptr, -1, w); zptr += GX_ZBUFW; } while (--ecx);
 
 	if (!noshadow)
 	{
-<<<<<<< HEAD
-		zptr = m_gx_shdzbuf;
-=======
 		zptr = m_gx_shdzbuf.get();
->>>>>>> upstream/master
 		w <<= 1;
 		ecx = h;
 		do { memset(zptr, -1, w); zptr += (GX_ZBUFW<<1); } while (--ecx);
@@ -303,22 +285,14 @@ void konamigx_state::konamigx_mixer_init(screen_device &screen, int objdma)
 	m_gx_primode = 0;
 
 	m_gx_objzbuf = &screen.priority().pix8(0);
-<<<<<<< HEAD
-	m_gx_shdzbuf = auto_alloc_array(machine(), UINT8, GX_ZBUFSIZE);
-=======
 	m_gx_shdzbuf = std::make_unique<uint8_t[]>(GX_ZBUFSIZE);
->>>>>>> upstream/master
 	gx_objpool = auto_alloc_array(machine(), struct GX_OBJ, GX_MAX_OBJECTS);
 
 	m_k054338->export_config(&m_K054338_shdRGB);
 
 	if (objdma)
 	{
-<<<<<<< HEAD
-		m_gx_spriteram = auto_alloc_array(machine(), UINT16, 0x1000/2);
-=======
 		m_gx_spriteram = auto_alloc_array(machine(), uint16_t, 0x1000/2);
->>>>>>> upstream/master
 		m_gx_objdma = 1;
 	}
 	else
@@ -335,11 +309,7 @@ void konamigx_state::konamigx_mixer_primode(int mode)
 
 void konamigx_state::konamigx_objdma(void)
 {
-<<<<<<< HEAD
-	UINT16* k053247_ram;
-=======
 	uint16_t* k053247_ram;
->>>>>>> upstream/master
 	m_k055673->k053247_get_ram(&k053247_ram);
 
 	if (m_gx_objdma && m_gx_spriteram && k053247_ram) memcpy(m_gx_spriteram, k053247_ram, 0x1000);
@@ -453,11 +423,7 @@ void konamigx_state::konamigx_mixer(screen_device &screen, bitmap_rgb32 &bitmap,
 		for (i=0; i<4; i++) if (!(temp>>i & 1) && spri_min < layerpri[i]) spri_min = layerpri[i]; // HACK
 
 		// update shadows status
-<<<<<<< HEAD
-		m_k054338->update_all_shadows(rushingheroes_hack, m_palette);
-=======
 		m_k054338->update_all_shadows(rushingheroes_hack, *m_palette);
->>>>>>> upstream/master
 	}
 
 	// pre-sort layers
@@ -467,11 +433,7 @@ void konamigx_state::konamigx_mixer(screen_device &screen, bitmap_rgb32 &bitmap,
 		for (int i=j+1; i<6; i++)
 		{
 			int temp2 = layerpri[i];
-<<<<<<< HEAD
-			if ((UINT32)temp1 <= (UINT32)temp2)
-=======
 			if ((uint32_t)temp1 <= (uint32_t)temp2)
->>>>>>> upstream/master
 			{
 				layerpri[i] = temp1; layerpri[j] = temp1 = temp2;
 				temp2 = layerid[i]; layerid[i] = layerid[j]; layerid[j] = temp2;
@@ -678,11 +640,7 @@ void konamigx_state::konamigx_mixer(screen_device &screen, bitmap_rgb32 &bitmap,
 		{
 			int temp3 = objbuf[i];
 			int temp4 = objpool[temp3].order;
-<<<<<<< HEAD
-			if ((UINT32)temp2 <= (UINT32)temp4) { temp2 = temp4; objbuf[i] = temp1; objbuf[j] = temp1 = temp3; }
-=======
 			if ((uint32_t)temp2 <= (uint32_t)temp4) { temp2 = temp4; objbuf[i] = temp1; objbuf[j] = temp1 = temp3; }
->>>>>>> upstream/master
 		}
 	}
 
@@ -716,11 +674,7 @@ void konamigx_state::gx_draw_basic_tilemaps(screen_device &screen, bitmap_rgb32 
 		/* blend layer only when:
 		    1) m_vinmix != 0xff
 		    2) its internal mix code is set
-<<<<<<< HEAD
-		    3) all mix code bits are internal(overriden until tile blending has been implemented)
-=======
 		    3) all mix code bits are internal(overridden until tile blending has been implemented)
->>>>>>> upstream/master
 		    4) 0 > alpha < 255;
 		*/
 		if (temp1!=0xff && temp2 /*&& temp3==3*/)
@@ -777,11 +731,7 @@ void konamigx_state::gx_draw_basic_extended_tilemaps_1(screen_device &screen, bi
 			if (width>512) // vsnetscr case
 				pixeldouble_output = 1;
 
-<<<<<<< HEAD
-			K053936GP_0_zoom_draw(machine(), bitmap, cliprect, sub1, l, k, alpha, pixeldouble_output, m_k053936_0_ctrl_16, m_k053936_0_linectrl_16, m_k053936_0_ctrl, m_k053936_0_linectrl, m_palette);
-=======
 			K053936GP_0_zoom_draw(machine(), bitmap, cliprect, sub1, l, k, alpha, pixeldouble_output, m_k053936_0_ctrl_16, m_k053936_0_linectrl_16, m_k053936_0_ctrl, m_k053936_0_linectrl, *m_palette);
->>>>>>> upstream/master
 		}
 		else
 		{
@@ -836,21 +786,12 @@ void konamigx_state::gx_draw_basic_extended_tilemaps_2(screen_device &screen, bi
 				// - todo, use the pixeldouble_output I just added for vsnet instead?
 				for (yy=0;yy<height;yy++)
 				{
-<<<<<<< HEAD
-					UINT16* src = &extra_bitmap->pix16(yy);
-					UINT32* dst = &bitmap.pix32(yy);
-					int shiftpos = 0;
-					for (xx=0;xx<width;xx+=2)
-					{
-						UINT16 dat = src[(((xx/2)+shiftpos))%width];
-=======
 					uint16_t* src = &extra_bitmap->pix16(yy);
 					uint32_t* dst = &bitmap.pix32(yy);
 					int shiftpos = 0;
 					for (xx=0;xx<width;xx+=2)
 					{
 						uint16_t dat = src[(((xx/2)+shiftpos))%width];
->>>>>>> upstream/master
 						if (dat&0xff)
 							dst[xx+1] = dst[xx] = paldata[dat];
 					}
@@ -920,17 +861,10 @@ void konamigx_state::konamigx_mixer_draw(screen_device &screen, bitmap_rgb32 &bi
 
 
 			m_k055673->k053247_draw_single_sprite_gxcore(bitmap, cliprect,
-<<<<<<< HEAD
-				m_gx_objzbuf, m_gx_shdzbuf, code, m_gx_spriteram, offs,
-				color, alpha, drawmode, zcode, pri,
-				/* non-gx only */
-				0,0,NULL,NULL,0
-=======
 				m_gx_objzbuf, m_gx_shdzbuf.get(), code, m_gx_spriteram, offs,
 				color, alpha, drawmode, zcode, pri,
 				/* non-gx only */
 				0,0,nullptr,nullptr,0
->>>>>>> upstream/master
 				);
 		}
 		/* the rest are tilemaps of various kinda */
@@ -1008,11 +942,7 @@ WRITE32_MEMBER(konamigx_state::konamigx_type3_psac2_bank_w)
 TILE_GET_INFO_MEMBER(konamigx_state::get_gx_psac3_tile_info)
 	{
 	int tileno, colour, flip;
-<<<<<<< HEAD
-	UINT8 *tmap = memregion("gfx4")->base();
-=======
 	uint8_t *tmap = memregion("gfx4")->base();
->>>>>>> upstream/master
 
 	int base_index = tile_index;
 
@@ -1033,11 +963,7 @@ TILE_GET_INFO_MEMBER(konamigx_state::get_gx_psac3_tile_info)
 TILE_GET_INFO_MEMBER(konamigx_state::get_gx_psac3_alt_tile_info)
 	{
 	int tileno, colour, flip;
-<<<<<<< HEAD
-	UINT8 *tmap = memregion("gfx4")->base()+0x20000;
-=======
 	uint8_t *tmap = memregion("gfx4")->base()+0x20000;
->>>>>>> upstream/master
 
 	int base_index = tile_index;
 
@@ -1123,13 +1049,9 @@ K056832_CB_MEMBER(konamigx_state::alpha_tile_callback)
 	else
 	{
 		/* save mixcode and mark tile alpha (unimplemented) */
-<<<<<<< HEAD
-		*code = 0;
-=======
 		// Daisu-Kiss stage presentation
 		// Sexy Parodius level 3b
 		*code =  (m_gx_tilebanks[(d & 0xe000)>>13]<<13) + (d & 0x1fff);
->>>>>>> upstream/master
 
 		if (VERBOSE)
 			popmessage("skipped alpha tile(layer=%d mix=%d)", layer, mixcode);
@@ -1175,9 +1097,6 @@ void konamigx_state::common_init()
 		m_gx_tilebanks[i] = m_gx_oldbanks[i] = 0;
 	}
 
-<<<<<<< HEAD
-	machine().save().save_item(NAME(m_gx_tilebanks));
-=======
 	save_pointer(NAME(m_gx_spriteram), 0x800);
 	save_item(NAME(m_gx_tilebanks));
 	save_item(NAME(m_k053247_vrcbk));
@@ -1192,17 +1111,12 @@ void konamigx_state::common_init()
 	save_item(NAME(m_vmixon));
 	save_item(NAME(m_osinmix));
 	save_item(NAME(m_osmixon));
->>>>>>> upstream/master
 
 	m_gx_tilemode = 0;
 
 	m_gx_rozenable = 0;
 	m_gx_specialrozenable = 0;
 	m_gx_rushingheroes_hack = 0;
-<<<<<<< HEAD
-	m_gx_le2_textcolour_hack = 0;
-=======
->>>>>>> upstream/master
 
 	// Documented relative offsets of non-flipped games are (-2, 0, 2, 3),(0, 0, 0, 0).
 	// (+ve values move layers to the right and -ve values move layers to the left)
@@ -1246,11 +1160,6 @@ VIDEO_START_MEMBER(konamigx_state, le2)
 	common_init();
 
 	konamigx_mixer_primode(-1); // swapped layer B and C priorities?
-<<<<<<< HEAD
-
-	m_gx_le2_textcolour_hack = 1; // force text layer to use the right palette
-=======
->>>>>>> upstream/master
 }
 
 VIDEO_START_MEMBER(konamigx_state, konamigx_6bpp)
@@ -1264,15 +1173,6 @@ VIDEO_START_MEMBER(konamigx_state, konamigx_type3)
 	int width = m_screen->width();
 	int height = m_screen->height();
 
-<<<<<<< HEAD
-	m_dualscreen_left_tempbitmap = auto_bitmap_rgb32_alloc(machine(), width, height);
-	m_dualscreen_right_tempbitmap = auto_bitmap_rgb32_alloc(machine(), width, height);
-
-	common_init();
-
-	m_gx_psac_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(konamigx_state::get_gx_psac3_tile_info),this), TILEMAP_SCAN_COLS,  16, 16, 256, 256);
-	m_gx_psac_tilemap_alt = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(konamigx_state::get_gx_psac3_alt_tile_info),this), TILEMAP_SCAN_COLS,  16, 16, 256, 256);
-=======
 	m_dualscreen_left_tempbitmap = std::make_unique<bitmap_rgb32>( width, height);
 	m_dualscreen_right_tempbitmap = std::make_unique<bitmap_rgb32>( width, height);
 
@@ -1280,18 +1180,13 @@ VIDEO_START_MEMBER(konamigx_state, konamigx_type3)
 
 	m_gx_psac_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(konamigx_state::get_gx_psac3_tile_info),this), TILEMAP_SCAN_COLS,  16, 16, 256, 256);
 	m_gx_psac_tilemap_alt = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(konamigx_state::get_gx_psac3_alt_tile_info),this), TILEMAP_SCAN_COLS,  16, 16, 256, 256);
->>>>>>> upstream/master
 
 	m_gx_rozenable = 0;
 	m_gx_specialrozenable = 2;
 
 
 	/* set up tile layers */
-<<<<<<< HEAD
-	m_type3_roz_temp_bitmap = auto_bitmap_ind16_alloc(machine(), width, height);
-=======
 	m_type3_roz_temp_bitmap = std::make_unique<bitmap_ind16>(width, height);
->>>>>>> upstream/master
 
 
 	//m_gx_psac_tilemap->set_flip(TILEMAP_FLIPX| TILEMAP_FLIPY);
@@ -1314,21 +1209,12 @@ VIDEO_START_MEMBER(konamigx_state, konamigx_type4)
 	int width = m_screen->width();
 	int height = m_screen->height();
 
-<<<<<<< HEAD
-	m_dualscreen_left_tempbitmap = auto_bitmap_rgb32_alloc(machine(), width, height);
-	m_dualscreen_right_tempbitmap = auto_bitmap_rgb32_alloc(machine(), width, height);
-
-	common_init();
-
-	m_gx_psac_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(konamigx_state::get_gx_psac_tile_info),this), TILEMAP_SCAN_COLS,  16, 16, 128, 128);
-=======
 	m_dualscreen_left_tempbitmap = std::make_unique<bitmap_rgb32>( width, height);
 	m_dualscreen_right_tempbitmap = std::make_unique<bitmap_rgb32>( width, height);
 
 	common_init();
 
 	m_gx_psac_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(konamigx_state::get_gx_psac_tile_info),this), TILEMAP_SCAN_COLS,  16, 16, 128, 128);
->>>>>>> upstream/master
 	m_gx_rozenable = 0;
 	m_gx_specialrozenable = 3;
 
@@ -1351,21 +1237,12 @@ VIDEO_START_MEMBER(konamigx_state, konamigx_type4_vsn)
 	int width = m_screen->width();
 	int height = m_screen->height();
 
-<<<<<<< HEAD
-	m_dualscreen_left_tempbitmap = auto_bitmap_rgb32_alloc(machine(), width, height);
-	m_dualscreen_right_tempbitmap = auto_bitmap_rgb32_alloc(machine(), width, height);
-
-	common_init();
-
-	m_gx_psac_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(konamigx_state::get_gx_psac_tile_info),this), TILEMAP_SCAN_COLS,  16, 16, 128, 128);
-=======
 	m_dualscreen_left_tempbitmap = std::make_unique<bitmap_rgb32>( width, height);
 	m_dualscreen_right_tempbitmap = std::make_unique<bitmap_rgb32>( width, height);
 
 	common_init();
 
 	m_gx_psac_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(konamigx_state::get_gx_psac_tile_info),this), TILEMAP_SCAN_COLS,  16, 16, 128, 128);
->>>>>>> upstream/master
 	m_gx_rozenable = 0;
 	m_gx_specialrozenable = 3;
 
@@ -1387,21 +1264,12 @@ VIDEO_START_MEMBER(konamigx_state, konamigx_type4_sd2)
 	int width = m_screen->width();
 	int height = m_screen->height();
 
-<<<<<<< HEAD
-	m_dualscreen_left_tempbitmap = auto_bitmap_rgb32_alloc(machine(), width, height);
-	m_dualscreen_right_tempbitmap = auto_bitmap_rgb32_alloc(machine(), width, height);
-
-	common_init();
-
-	m_gx_psac_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(konamigx_state::get_gx_psac_tile_info),this), TILEMAP_SCAN_COLS,  16, 16, 128, 128);
-=======
 	m_dualscreen_left_tempbitmap = std::make_unique<bitmap_rgb32>( width, height);
 	m_dualscreen_right_tempbitmap = std::make_unique<bitmap_rgb32>( width, height);
 
 	common_init();
 
 	m_gx_psac_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(konamigx_state::get_gx_psac_tile_info),this), TILEMAP_SCAN_COLS,  16, 16, 128, 128);
->>>>>>> upstream/master
 	m_gx_rozenable = 0;
 	m_gx_specialrozenable = 3;
 
@@ -1430,13 +1298,8 @@ VIDEO_START_MEMBER(konamigx_state, opengolf)
 	m_k056832->set_layer_offs(2,  2+1, 0);
 	m_k056832->set_layer_offs(3,  3+1, 0);
 
-<<<<<<< HEAD
-	m_gx_psac_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(konamigx_state::get_gx_psac1a_tile_info),this), TILEMAP_SCAN_COLS,  16, 16, 128, 128);
-	m_gx_psac_tilemap2 = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(konamigx_state::get_gx_psac1b_tile_info),this), TILEMAP_SCAN_COLS,  16, 16, 128, 128);
-=======
 	m_gx_psac_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(konamigx_state::get_gx_psac1a_tile_info),this), TILEMAP_SCAN_COLS,  16, 16, 128, 128);
 	m_gx_psac_tilemap2 = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(konamigx_state::get_gx_psac1b_tile_info),this), TILEMAP_SCAN_COLS,  16, 16, 128, 128);
->>>>>>> upstream/master
 
 	// transparency will be handled manually in post-processing
 	//m_gx_psac_tilemap->set_transparent_pen(0);
@@ -1445,13 +1308,8 @@ VIDEO_START_MEMBER(konamigx_state, opengolf)
 	m_gx_rozenable = 0;
 	m_gx_specialrozenable = 1;
 
-<<<<<<< HEAD
-	m_gxtype1_roz_dstbitmap =  auto_bitmap_ind16_alloc(machine(),512,512); // BITMAP_FORMAT_IND16 because we NEED the raw pen data for post-processing
-	m_gxtype1_roz_dstbitmap2 = auto_bitmap_ind16_alloc(machine(),512,512); // BITMAP_FORMAT_IND16 because we NEED the raw pen data for post-processing
-=======
 	m_gxtype1_roz_dstbitmap =  std::make_unique<bitmap_ind16>(512,512); // BITMAP_FORMAT_IND16 because we NEED the raw pen data for post-processing
 	m_gxtype1_roz_dstbitmap2 = std::make_unique<bitmap_ind16>(512,512); // BITMAP_FORMAT_IND16 because we NEED the raw pen data for post-processing
->>>>>>> upstream/master
 
 
 	m_gxtype1_roz_dstbitmapclip.set(0, 512-1, 0, 512-1);
@@ -1470,15 +1328,6 @@ VIDEO_START_MEMBER(konamigx_state, racinfrc)
 {
 	common_init();
 
-<<<<<<< HEAD
-	m_k056832->set_layer_offs(0, -2+1, 0);
-	m_k056832->set_layer_offs(1,  0+1, 0);
-	m_k056832->set_layer_offs(2,  2+1, 0);
-	m_k056832->set_layer_offs(3,  3+1, 0);
-
-	m_gx_psac_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(konamigx_state::get_gx_psac1a_tile_info),this), TILEMAP_SCAN_COLS,  16, 16, 128, 128);
-	m_gx_psac_tilemap2 = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(konamigx_state::get_gx_psac1b_tile_info),this), TILEMAP_SCAN_COLS,  16, 16, 128, 128);
-=======
 	m_k056832->set_layer_offs(0, -2+1, -16);
 	m_k056832->set_layer_offs(1,  0+1, -16);
 	m_k056832->set_layer_offs(2,  2+1, -16);
@@ -1486,7 +1335,6 @@ VIDEO_START_MEMBER(konamigx_state, racinfrc)
 
 	m_gx_psac_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(konamigx_state::get_gx_psac1a_tile_info),this), TILEMAP_SCAN_COLS,  16, 16, 128, 128);
 	m_gx_psac_tilemap2 = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(konamigx_state::get_gx_psac1b_tile_info),this), TILEMAP_SCAN_COLS,  16, 16, 128, 128);
->>>>>>> upstream/master
 
 	// transparency will be handled manually in post-processing
 	//m_gx_psac_tilemap->set_transparent_pen(0);
@@ -1495,13 +1343,8 @@ VIDEO_START_MEMBER(konamigx_state, racinfrc)
 	m_gx_rozenable = 0;
 	m_gx_specialrozenable = 1;
 
-<<<<<<< HEAD
-	m_gxtype1_roz_dstbitmap =  auto_bitmap_ind16_alloc(machine(),512,512); // BITMAP_FORMAT_IND16 because we NEED the raw pen data for post-processing
-	m_gxtype1_roz_dstbitmap2 = auto_bitmap_ind16_alloc(machine(),512,512); // BITMAP_FORMAT_IND16 because we NEED the raw pen data for post-processing
-=======
 	m_gxtype1_roz_dstbitmap =  std::make_unique<bitmap_ind16>(512,512); // BITMAP_FORMAT_IND16 because we NEED the raw pen data for post-processing
 	m_gxtype1_roz_dstbitmap2 = std::make_unique<bitmap_ind16>(512,512); // BITMAP_FORMAT_IND16 because we NEED the raw pen data for post-processing
->>>>>>> upstream/master
 
 
 	m_gxtype1_roz_dstbitmapclip.set(0, 512-1, 0, 512-1);
@@ -1517,11 +1360,7 @@ VIDEO_START_MEMBER(konamigx_state, racinfrc)
 
 }
 
-<<<<<<< HEAD
-UINT32 konamigx_state::screen_update_konamigx(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
-=======
 uint32_t konamigx_state::screen_update_konamigx(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int i, newbank, newbase, dirty, unchained;
 
@@ -1576,11 +1415,7 @@ uint32_t konamigx_state::screen_update_konamigx(screen_device &screen, bitmap_rg
 	// Type-1
 	if (m_gx_specialrozenable == 1)
 	{
-<<<<<<< HEAD
-		K053936_0_zoom_draw(screen, *m_gxtype1_roz_dstbitmap, m_gxtype1_roz_dstbitmapclip,m_gx_psac_tilemap, 0,0,0); // height data
-=======
 		//K053936_0_zoom_draw(screen, *m_gxtype1_roz_dstbitmap, m_gxtype1_roz_dstbitmapclip,m_gx_psac_tilemap, 0,0,0); // height data
->>>>>>> upstream/master
 		K053936_0_zoom_draw(screen, *m_gxtype1_roz_dstbitmap2,m_gxtype1_roz_dstbitmapclip,m_gx_psac_tilemap2,0,0,0); // colour data (+ some voxel height data?)
 	}
 
@@ -1588,14 +1423,8 @@ uint32_t konamigx_state::screen_update_konamigx(screen_device &screen, bitmap_rg
 
 	if (m_gx_specialrozenable==3)
 	{
-<<<<<<< HEAD
-		konamigx_mixer(screen, bitmap, cliprect, m_gx_psac_tilemap, GXSUB_8BPP,0,0,  0, 0, m_gx_rushingheroes_hack);
-	}
-	// hack, draw the roz tilemap if W is held
-=======
 		konamigx_mixer(screen, bitmap, cliprect, m_gx_psac_tilemap, GXSUB_8BPP,nullptr,0,  0, nullptr, m_gx_rushingheroes_hack);
 	}
->>>>>>> upstream/master
 	// todo: fix so that it works with the mixer without crashing(!)
 	else if (m_gx_specialrozenable == 2)
 	{
@@ -1608,19 +1437,11 @@ uint32_t konamigx_state::screen_update_konamigx(screen_device &screen, bitmap_rg
 		else K053936_0_zoom_draw(screen, *m_type3_roz_temp_bitmap, temprect,m_gx_psac_tilemap, 0,0,0); // soccerss playfield
 
 
-<<<<<<< HEAD
-		konamigx_mixer(screen, bitmap, cliprect, 0, 0, 0, 0, 0, m_type3_roz_temp_bitmap, m_gx_rushingheroes_hack);
-	}
-	else
-	{
-		konamigx_mixer(screen, bitmap, cliprect, 0, 0, 0, 0, 0, 0, m_gx_rushingheroes_hack);
-=======
 		konamigx_mixer(screen, bitmap, cliprect, nullptr, 0, nullptr, 0, 0, m_type3_roz_temp_bitmap.get(), m_gx_rushingheroes_hack);
 	}
 	else
 	{
 		konamigx_mixer(screen, bitmap, cliprect, nullptr, 0, nullptr, 0, 0, nullptr, m_gx_rushingheroes_hack);
->>>>>>> upstream/master
 	}
 
 
@@ -1630,10 +1451,7 @@ uint32_t konamigx_state::screen_update_konamigx(screen_device &screen, bitmap_rg
 	{
 		const pen_t *paldata = m_palette->pens();
 
-<<<<<<< HEAD
-=======
 		// hack, draw the roz tilemap if W is held
->>>>>>> upstream/master
 		if ( machine().input().code_pressed(KEYCODE_W) )
 		{
 			int y,x;
@@ -1643,19 +1461,6 @@ uint32_t konamigx_state::screen_update_konamigx(screen_device &screen, bitmap_rg
 			{
 				for (y=0;y<256;y++)
 				{
-<<<<<<< HEAD
-					//UINT16* src = &m_gxtype1_roz_dstbitmap->pix16(y);
-
-					//UINT32* dst = &bitmap.pix32(y);
-					// ths K053936 rendering should probably just be flipped
-					// this is just kludged to align the racing force 2d logo
-					UINT16* src = &m_gxtype1_roz_dstbitmap2->pix16(y+30);
-					UINT32* dst = &bitmap.pix32(256-y);
-
-					for (x=0;x<512;x++)
-					{
-						UINT16 dat = src[x];
-=======
 					//uint32_t* dst = &bitmap.pix32(y);
 					// ths K053936 rendering should probably just be flipped
 					// this is just kludged to align the racing force 2d logo
@@ -1667,7 +1472,6 @@ uint32_t konamigx_state::screen_update_konamigx(screen_device &screen, bitmap_rg
 					for (x=0;x<512;x++)
 					{
 						uint16_t dat = src[x];
->>>>>>> upstream/master
 						dst[x] = paldata[dat];
 					}
 				}
@@ -1680,11 +1484,7 @@ uint32_t konamigx_state::screen_update_konamigx(screen_device &screen, bitmap_rg
 	return 0;
 }
 
-<<<<<<< HEAD
-UINT32 konamigx_state::screen_update_konamigx_left(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
-=======
 uint32_t konamigx_state::screen_update_konamigx_left(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	/* the video gets demuxed by a board which plugs into the jamma connector */
 	m_konamigx_current_frame^=1;
@@ -1697,17 +1497,10 @@ uint32_t konamigx_state::screen_update_konamigx_left(screen_device &screen, bitm
 		{
 			for (offset=0;offset<0x4000/4;offset++)
 			{
-<<<<<<< HEAD
-				UINT32 coldat = m_generic_paletteram_32[offset];
-
-				set_color_555(m_palette, offset*2, 0, 5, 10,coldat >> 16);
-				set_color_555(m_palette, offset*2+1, 0, 5, 10,coldat & 0xffff);
-=======
 				uint32_t coldat = m_generic_paletteram_32[offset];
 
 				set_color_555(*m_palette, offset*2, 0, 5, 10,coldat >> 16);
 				set_color_555(*m_palette, offset*2+1, 0, 5, 10,coldat & 0xffff);
->>>>>>> upstream/master
 			}
 		}
 		else
@@ -1735,11 +1528,7 @@ uint32_t konamigx_state::screen_update_konamigx_left(screen_device &screen, bitm
 	return 0;
 }
 
-<<<<<<< HEAD
-UINT32 konamigx_state::screen_update_konamigx_right(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
-=======
 uint32_t konamigx_state::screen_update_konamigx_right(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	if (m_konamigx_current_frame==1)
 	{
@@ -1753,17 +1542,10 @@ uint32_t konamigx_state::screen_update_konamigx_right(screen_device &screen, bit
 		{
 			for (offset=0;offset<0x4000/4;offset++)
 			{
-<<<<<<< HEAD
-				UINT32 coldat = m_subpaletteram32[offset];
-
-				set_color_555(m_palette, offset*2, 0, 5, 10,coldat >> 16);
-				set_color_555(m_palette, offset*2+1, 0, 5, 10,coldat & 0xffff);
-=======
 				uint32_t coldat = m_subpaletteram32[offset];
 
 				set_color_555(*m_palette, offset*2, 0, 5, 10,coldat >> 16);
 				set_color_555(*m_palette, offset*2+1, 0, 5, 10,coldat & 0xffff);
->>>>>>> upstream/master
 			}
 		}
 		else
@@ -1787,11 +1569,7 @@ uint32_t konamigx_state::screen_update_konamigx_right(screen_device &screen, bit
 	return 0;
 }
 
-<<<<<<< HEAD
-INLINE void set_color_555(palette_device &palette, pen_t color, int rshift, int gshift, int bshift, UINT16 data)
-=======
 static inline void set_color_555(palette_device &palette, pen_t color, int rshift, int gshift, int bshift, uint16_t data)
->>>>>>> upstream/master
 {
 	palette.set_pen_color(color, pal5bit(data >> rshift), pal5bit(data >> gshift), pal5bit(data >> bshift));
 }
@@ -1800,44 +1578,26 @@ static inline void set_color_555(palette_device &palette, pen_t color, int rshif
 // main monitor for type 3
 WRITE32_MEMBER(konamigx_state::konamigx_555_palette_w)
 {
-<<<<<<< HEAD
-	UINT32 coldat;
-=======
 	uint32_t coldat;
->>>>>>> upstream/master
 	COMBINE_DATA(&m_generic_paletteram_32[offset]);
 
 	coldat = m_generic_paletteram_32[offset];
 
-<<<<<<< HEAD
-	set_color_555(m_palette, offset*2, 0, 5, 10,coldat >> 16);
-	set_color_555(m_palette, offset*2+1, 0, 5, 10,coldat & 0xffff);
-=======
 	set_color_555(*m_palette, offset*2, 0, 5, 10,coldat >> 16);
 	set_color_555(*m_palette, offset*2+1, 0, 5, 10,coldat & 0xffff);
->>>>>>> upstream/master
 }
 
 // sub monitor for type 3
 WRITE32_MEMBER(konamigx_state::konamigx_555_palette2_w)
 {
-<<<<<<< HEAD
-	UINT32 coldat;
-=======
 	uint32_t coldat;
->>>>>>> upstream/master
 	COMBINE_DATA(&m_subpaletteram32[offset]);
 	coldat = m_subpaletteram32[offset];
 
 	offset += (0x4000/4);
 
-<<<<<<< HEAD
-	set_color_555(m_palette, offset*2, 0, 5, 10,coldat >> 16);
-	set_color_555(m_palette, offset*2+1, 0, 5, 10,coldat & 0xffff);
-=======
 	set_color_555(*m_palette, offset*2, 0, 5, 10,coldat >> 16);
 	set_color_555(*m_palette, offset*2+1, 0, 5, 10,coldat & 0xffff);
->>>>>>> upstream/master
 }
 #endif
 

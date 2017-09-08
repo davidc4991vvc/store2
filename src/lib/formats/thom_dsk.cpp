@@ -23,11 +23,7 @@ static const char sap_header[] =
 	"(c) Alexandre PUKALL Avril 1998";
 
 
-<<<<<<< HEAD
-static const UINT16 sap_crc[] =
-=======
 static const uint16_t sap_crc[] =
->>>>>>> upstream/master
 {
 	0x0000, 0x1081, 0x2102, 0x3183,   0x4204, 0x5285, 0x6306, 0x7387,
 	0x8408, 0x9489, 0xa50a, 0xb58b,   0xc60c, 0xd68d, 0xe70e, 0xf78f,
@@ -40,17 +36,10 @@ struct sap_dsk_tag
 		int sector_pos[80][16]; /* remember sector position in file */
 };
 
-<<<<<<< HEAD
-static UINT16 thom_sap_crc( UINT8* data, int size )
-{
-		int i;
-		UINT16 crc = 0xffff, crc2;
-=======
 static uint16_t thom_sap_crc( uint8_t* data, int size )
 {
 		int i;
 		uint16_t crc = 0xffff, crc2;
->>>>>>> upstream/master
 		for ( i = 0; i < size; i++ )
 		{
 				crc2 = ( crc >> 4 ) ^ sap_crc[ ( crc ^ data[i] ) & 15 ];
@@ -90,15 +79,9 @@ static int sap_get_tracks_per_disk(floppy_image_legacy *floppy)
 }
 
 
-<<<<<<< HEAD
-static floperr_t get_offset(floppy_image_legacy *floppy, int head, int track, int sector, int sector_is_index, UINT64 *offset)
-{
-	UINT64 offs;
-=======
 static floperr_t get_offset(floppy_image_legacy *floppy, int head, int track, int sector, bool sector_is_index, uint64_t *offset)
 {
 	uint64_t offs;
->>>>>>> upstream/master
 		struct sap_dsk_tag *tag = get_tag(floppy);
 	/* translate the sector to a raw sector */
 	if (!sector_is_index)
@@ -110,15 +93,9 @@ static floperr_t get_offset(floppy_image_legacy *floppy, int head, int track, in
 			|| (sector < 0) || (sector >= 16))
 		return FLOPPY_ERROR_SEEKERROR;
 
-<<<<<<< HEAD
-		offs = tag->sector_pos[track][sector];
-		if (offs <= 0 )
-				return FLOPPY_ERROR_SEEKERROR;
-=======
 	offs = tag->sector_pos[track][sector];
 	if (offs <= 0 )
 		return FLOPPY_ERROR_SEEKERROR;
->>>>>>> upstream/master
 
 	if (offset)
 		*offset = offs;
@@ -127,31 +104,18 @@ static floperr_t get_offset(floppy_image_legacy *floppy, int head, int track, in
 
 
 
-<<<<<<< HEAD
-static floperr_t internal_sap_read_sector(floppy_image_legacy *floppy, int head, int track, int sector, int sector_is_index, void *buffer, size_t buflen)
-{
-	UINT64 offset;
-	floperr_t err;
-	int i;
-	UINT8 *buf;
-=======
 static floperr_t internal_sap_read_sector(floppy_image_legacy *floppy, int head, int track, int sector, bool sector_is_index, void *buffer, size_t buflen)
 {
 	uint64_t offset;
 	floperr_t err;
 	int i;
 	uint8_t *buf;
->>>>>>> upstream/master
 	err = get_offset(floppy, head, track, sector, sector_is_index, &offset);
 	if (err)
 		return err;
 
 	floppy_image_read(floppy, buffer, offset+4, buflen);
-<<<<<<< HEAD
-	buf = (UINT8*)buffer;
-=======
 	buf = (uint8_t*)buffer;
->>>>>>> upstream/master
 	for (i=0;i<buflen;i++) {
 		buf[i] ^= sap_magic_num;
 	}
@@ -160,21 +124,12 @@ static floperr_t internal_sap_read_sector(floppy_image_legacy *floppy, int head,
 
 
 
-<<<<<<< HEAD
-static floperr_t internal_sap_write_sector(floppy_image_legacy *floppy, int head, int track, int sector, int sector_is_index, const void *buffer, size_t buflen, int ddam)
-{
-	UINT64 offset;
-	floperr_t err;
-	UINT8 buf[256+6];
-		UINT16 crc;
-=======
 static floperr_t internal_sap_write_sector(floppy_image_legacy *floppy, int head, int track, int sector, bool sector_is_index, const void *buffer, size_t buflen, int ddam)
 {
 	uint64_t offset;
 	floperr_t err;
 	uint8_t buf[256+6];
 		uint16_t crc;
->>>>>>> upstream/master
 	int i;
 	err = get_offset(floppy, head, track, sector, sector_is_index, &offset);
 	if (err)
@@ -183,11 +138,7 @@ static floperr_t internal_sap_write_sector(floppy_image_legacy *floppy, int head
 		/* buf = 4-byte header + sector + 2-byte CRC */
 	floppy_image_read(floppy, buf, offset, 4);
 	for (i=0;i<buflen;i++) {
-<<<<<<< HEAD
-		buf[i+4] = ((UINT8*)buffer)[i];
-=======
 		buf[i+4] = ((uint8_t*)buffer)[i];
->>>>>>> upstream/master
 	}
 		crc = thom_sap_crc( buf, buflen+4 );
 		buf[buflen+4] = crc >> 8;
@@ -203,42 +154,21 @@ static floperr_t internal_sap_write_sector(floppy_image_legacy *floppy, int head
 
 static floperr_t sap_read_sector(floppy_image_legacy *floppy, int head, int track, int sector, void *buffer, size_t buflen)
 {
-<<<<<<< HEAD
-	return internal_sap_read_sector(floppy, head, track, sector, FALSE, buffer, buflen);
-=======
 	return internal_sap_read_sector(floppy, head, track, sector, false, buffer, buflen);
->>>>>>> upstream/master
 }
 
 static floperr_t sap_write_sector(floppy_image_legacy *floppy, int head, int track, int sector, const void *buffer, size_t buflen, int ddam)
 {
-<<<<<<< HEAD
-	return internal_sap_write_sector(floppy, head, track, sector, FALSE, buffer, buflen, ddam);
-=======
 	return internal_sap_write_sector(floppy, head, track, sector, false, buffer, buflen, ddam);
->>>>>>> upstream/master
 }
 
 static floperr_t sap_read_indexed_sector(floppy_image_legacy *floppy, int head, int track, int sector, void *buffer, size_t buflen)
 {
-<<<<<<< HEAD
-	return internal_sap_read_sector(floppy, head, track, sector, TRUE, buffer, buflen);
-=======
 	return internal_sap_read_sector(floppy, head, track, sector, true, buffer, buflen);
->>>>>>> upstream/master
 }
 
 static floperr_t sap_write_indexed_sector(floppy_image_legacy *floppy, int head, int track, int sector, const void *buffer, size_t buflen, int ddam)
 {
-<<<<<<< HEAD
-	return internal_sap_write_sector(floppy, head, track, sector, TRUE, buffer, buflen, ddam);
-}
-
-static floperr_t sap_get_sector_length(floppy_image_legacy *floppy, int head, int track, int sector, UINT32 *sector_length)
-{
-	floperr_t err;
-	err = get_offset(floppy, head, track, sector, FALSE, NULL);
-=======
 	return internal_sap_write_sector(floppy, head, track, sector, true, buffer, buflen, ddam);
 }
 
@@ -246,7 +176,6 @@ static floperr_t sap_get_sector_length(floppy_image_legacy *floppy, int head, in
 {
 	floperr_t err;
 	err = get_offset(floppy, head, track, sector, false, nullptr);
->>>>>>> upstream/master
 	if (err)
 		return err;
 
@@ -258,15 +187,6 @@ static floperr_t sap_get_sector_length(floppy_image_legacy *floppy, int head, in
 
 
 
-<<<<<<< HEAD
-static floperr_t sap_get_indexed_sector_info(floppy_image_legacy *floppy, int head, int track, int sector_index, int *cylinder, int *side, int *sector, UINT32 *sector_length, unsigned long *flags)
-{
-	floperr_t err;
-	UINT8 header[4];
-	UINT64 offset = 0;
-	sector_index += 1;
-	err = get_offset(floppy, head, track, sector_index, FALSE, &offset);
-=======
 static floperr_t sap_get_indexed_sector_info(floppy_image_legacy *floppy, int head, int track, int sector_index, int *cylinder, int *side, int *sector, uint32_t *sector_length, unsigned long *flags)
 {
 	floperr_t err;
@@ -274,7 +194,6 @@ static floperr_t sap_get_indexed_sector_info(floppy_image_legacy *floppy, int he
 	uint64_t offset = 0;
 	sector_index += 1;
 	err = get_offset(floppy, head, track, sector_index, false, &offset);
->>>>>>> upstream/master
 
 	floppy_image_read(floppy, header, offset, 4);
 	if (cylinder)
@@ -291,19 +210,11 @@ static floperr_t sap_get_indexed_sector_info(floppy_image_legacy *floppy, int he
 	return err;
 }
 
-<<<<<<< HEAD
-static floperr_t sap_post_format(floppy_image_legacy *floppy, option_resolution *params)
-{
-		int track,sector;
-		int pos;
-		UINT8 buf[256], header[4];
-=======
 static floperr_t sap_post_format(floppy_image_legacy *floppy, util::option_resolution *params)
 {
 		int track,sector;
 		int pos;
 		uint8_t buf[256], header[4];
->>>>>>> upstream/master
 	struct sap_dsk_tag *tag;
 		tag = (struct sap_dsk_tag *) floppy_create_tag(floppy, sizeof(struct sap_dsk_tag));
 
@@ -344,11 +255,7 @@ static FLOPPY_CONSTRUCT(sap_dsk_construct)
 	struct FloppyCallbacks *callbacks;
 	struct sap_dsk_tag *tag;
 	int j;
-<<<<<<< HEAD
-	UINT8 fmt;
-=======
 	uint8_t fmt;
->>>>>>> upstream/master
 	tag = (struct sap_dsk_tag *) floppy_create_tag(floppy, sizeof(struct sap_dsk_tag));
 	if (!tag)
 		return FLOPPY_ERROR_OUTOFMEMORY;
@@ -364,15 +271,9 @@ static FLOPPY_CONSTRUCT(sap_dsk_construct)
 						tag->sector_pos[i][j] = 0;
 
 		/* count tracks & fill sector offset table */
-<<<<<<< HEAD
-	for ( UINT64 i = 0x42; i+4 < floppy_image_size(floppy); i += tag->sector_size + 6 ) // CRC 2 bytes + 4 bytes sector header
-	{
-				UINT8 sector, track;
-=======
 	for ( uint64_t i = 0x42; i+4 < floppy_image_size(floppy); i += tag->sector_size + 6 ) // CRC 2 bytes + 4 bytes sector header
 	{
 				uint8_t sector, track;
->>>>>>> upstream/master
 		floppy_image_read(floppy, &track, i+2, 1);
 		floppy_image_read(floppy, &sector, i+3, 1);
 				if ( track >= 80 || sector < 1 || sector > 16 ) continue;
@@ -450,46 +351,6 @@ static FLOPPY_CONSTRUCT(qdd_dsk_construct)
 
 /* ----------------------------------------------------------------------- */
 
-<<<<<<< HEAD
-LEGACY_FLOPPY_OPTIONS_START(thomson)
-
-	LEGACY_FLOPPY_OPTION(fdmfm2, "fd", "Thomson FD (MFM) 80 tracks disk image (3\"1/2 DD)", basicdsk_identify_default, basicdsk_construct_default, NULL,
-		HEADS([1])
-		TRACKS([80])
-		SECTORS([16])
-		SECTOR_LENGTH([256])
-		FIRST_SECTOR_ID([1]))
-
-	LEGACY_FLOPPY_OPTION(fdmfm, "fd", "Thomson FD (MFM) 40 tracks disk image (5\"1/4 DD)", basicdsk_identify_default, basicdsk_construct_default, NULL,
-		HEADS([1])
-		TRACKS([40])
-		SECTORS([16])
-		SECTOR_LENGTH([256])
-		FIRST_SECTOR_ID([1]))
-
-	LEGACY_FLOPPY_OPTION(fd2, "fd", "Thomson FD (FM) 80 tracks disk image (3\"1/2 SD)", basicdsk_identify_default, basicdsk_construct_default, NULL,
-		HEADS([1])
-		TRACKS([80])
-		SECTORS([16])
-		SECTOR_LENGTH([128])
-		FIRST_SECTOR_ID([1]))
-
-	LEGACY_FLOPPY_OPTION(fd, "fd", "Thomson FD (FM) 40 tracks disk image (5\"1/4 SD)", basicdsk_identify_default, basicdsk_construct_default, NULL,
-		HEADS([1])
-		TRACKS([40])
-		SECTORS([16])
-		SECTOR_LENGTH([128])
-		FIRST_SECTOR_ID([1]))
-
-		LEGACY_FLOPPY_OPTION(sap,"sap", "Thomson SAP floppy disk image",    sap_dsk_identify, sap_dsk_construct, NULL, NULL)
-
-	LEGACY_FLOPPY_OPTION(qdd,"qd", "Thomson QDD floppy disk image (2\"8 SD)",   qdd_dsk_identify, qdd_dsk_construct, NULL,
-		HEADS([1])
-		TRACKS([1])
-		SECTORS([400])
-		SECTOR_LENGTH([128])
-		FIRST_SECTOR_ID([0]))
-=======
 
 static floperr_t fd_identify(floppy_image_legacy *floppy, int *vote, int tracks, int sector_size)
 {
@@ -579,6 +440,5 @@ LEGACY_FLOPPY_OPTION(sap,"sap", "Thomson SAP floppy disk image",
 
 LEGACY_FLOPPY_OPTION(qdd,"qd", "Thomson QDD floppy disk image (2\"8 SD)",
 					 qdd_dsk_identify, qdd_dsk_construct, nullptr, nullptr)
->>>>>>> upstream/master
 
 LEGACY_FLOPPY_OPTIONS_END

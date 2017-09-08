@@ -12,10 +12,7 @@ ToDo: Fix Sprites & Rowscroll/Select for Cocktail
 
 #include "emu.h"
 #include "includes/mcatadv.h"
-<<<<<<< HEAD
-=======
 #include "screen.h"
->>>>>>> upstream/master
 
 TILE_GET_INFO_MEMBER(mcatadv_state::get_mcatadv_tile_info1)
 {
@@ -56,17 +53,6 @@ WRITE16_MEMBER(mcatadv_state::mcatadv_videoram2_w)
 
 void mcatadv_state::draw_sprites( screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect )
 {
-<<<<<<< HEAD
-	UINT16 *source = (m_spriteram_old + (m_spriteram.bytes() / 2) /2);
-	source -= 4;
-	UINT16 *finish = m_spriteram_old;
-	int global_x = m_vidregs[0] - 0x184;
-	int global_y = m_vidregs[1] - 0x1f1;
-
-	UINT16 *destline;
-	UINT8 *priline;
-	UINT8 *sprdata = memregion("gfx1")->base();
-=======
 	uint16_t *source = (m_spriteram_old.get() + (m_spriteram.bytes() / 2) /2);
 	source -= 4;
 	uint16_t *finish = m_spriteram_old.get();
@@ -76,7 +62,6 @@ void mcatadv_state::draw_sprites( screen_device &screen, bitmap_ind16 &bitmap, c
 	uint16_t *destline;
 	uint8_t *priline;
 	uint8_t *sprdata = memregion("gfx1")->base();
->>>>>>> upstream/master
 	int sprmask = memregion("gfx1")->bytes()-1;
 
 	int xstart, xend, xinc;
@@ -184,17 +169,10 @@ void mcatadv_state::draw_sprites( screen_device &screen, bitmap_ind16 &bitmap, c
 	}
 }
 
-<<<<<<< HEAD
-void mcatadv_state::mcatadv_draw_tilemap_part( screen_device &screen, UINT16* current_scroll, UINT16* current_videoram1, int i, tilemap_t* current_tilemap, bitmap_ind16 &bitmap, const rectangle &cliprect )
-{
-	int flip;
-	UINT32 drawline;
-=======
 void mcatadv_state::mcatadv_draw_tilemap_part( screen_device &screen, uint16_t* current_scroll, uint16_t* current_videoram1, int i, tilemap_t* current_tilemap, bitmap_ind16 &bitmap, const rectangle &cliprect )
 {
 	int flip;
 	uint32_t drawline;
->>>>>>> upstream/master
 	rectangle clip;
 
 	clip.min_x = cliprect.min_x;
@@ -235,11 +213,7 @@ void mcatadv_state::mcatadv_draw_tilemap_part( screen_device &screen, uint16_t* 
 	}
 }
 
-<<<<<<< HEAD
-UINT32 mcatadv_state::screen_update_mcatadv(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t mcatadv_state::screen_update_mcatadv(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int i;
 
@@ -292,16 +266,6 @@ uint32_t mcatadv_state::screen_update_mcatadv(screen_device &screen, bitmap_ind1
 
 void mcatadv_state::video_start()
 {
-<<<<<<< HEAD
-	m_tilemap1 = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(mcatadv_state::get_mcatadv_tile_info1),this), TILEMAP_SCAN_ROWS, 16, 16, 32, 32);
-	m_tilemap1->set_transparent_pen(0);
-
-	m_tilemap2 = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(mcatadv_state::get_mcatadv_tile_info2),this), TILEMAP_SCAN_ROWS, 16, 16, 32, 32);
-	m_tilemap2->set_transparent_pen(0);
-
-	m_spriteram_old = auto_alloc_array_clear(machine(), UINT16, m_spriteram.bytes() / 2);
-	m_vidregs_old = auto_alloc_array(machine(), UINT16, (0x0f + 1) / 2);
-=======
 	m_tilemap1 = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(mcatadv_state::get_mcatadv_tile_info1),this), TILEMAP_SCAN_ROWS, 16, 16, 32, 32);
 	m_tilemap1->set_transparent_pen(0);
 
@@ -310,34 +274,20 @@ void mcatadv_state::video_start()
 
 	m_spriteram_old = make_unique_clear<uint16_t[]>(m_spriteram.bytes() / 2);
 	m_vidregs_old = std::make_unique<uint16_t[]>((0x0f + 1) / 2);
->>>>>>> upstream/master
 
 	m_palette_bank1 = 0;
 	m_palette_bank2 = 0;
 
-<<<<<<< HEAD
-	save_pointer(NAME(m_spriteram_old), m_spriteram.bytes() / 2);
-	save_pointer(NAME(m_vidregs_old), (0x0f + 1) / 2);
-}
-
-void mcatadv_state::screen_eof_mcatadv(screen_device &screen, bool state)
-=======
 	save_pointer(NAME(m_spriteram_old.get()), m_spriteram.bytes() / 2);
 	save_pointer(NAME(m_vidregs_old.get()), (0x0f + 1) / 2);
 }
 
 WRITE_LINE_MEMBER(mcatadv_state::screen_vblank_mcatadv)
->>>>>>> upstream/master
 {
 	// rising edge
 	if (state)
 	{
-<<<<<<< HEAD
-		memcpy(m_spriteram_old, m_spriteram, m_spriteram.bytes());
-		memcpy(m_vidregs_old, m_vidregs, 0xf);
-=======
 		memcpy(m_spriteram_old.get(), m_spriteram, m_spriteram.bytes());
 		memcpy(m_vidregs_old.get(), m_vidregs, 0xf);
->>>>>>> upstream/master
 	}
 }

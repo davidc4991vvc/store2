@@ -44,13 +44,6 @@ ToDo:
 
 ************************************************************************************/
 
-<<<<<<< HEAD
-
-#include "machine/genpin.h"
-#include "cpu/m6800/m6800.h"
-#include "machine/6821pia.h"
-#include "sound/dac.h"
-=======
 #include "emu.h"
 #include "machine/genpin.h"
 
@@ -60,7 +53,6 @@ ToDo:
 #include "sound/volt_reg.h"
 #include "speaker.h"
 
->>>>>>> upstream/master
 #include "s8.lh"
 
 
@@ -71,10 +63,6 @@ public:
 		: genpin_class(mconfig, type, tag)
 		, m_maincpu(*this, "maincpu")
 		, m_audiocpu(*this, "audiocpu")
-<<<<<<< HEAD
-		, m_dac(*this, "dac")
-=======
->>>>>>> upstream/master
 		, m_pias(*this, "pias")
 		, m_pia21(*this, "pia21")
 		, m_pia24(*this, "pia24")
@@ -82,11 +70,7 @@ public:
 		, m_pia30(*this, "pia30")
 	{ }
 
-<<<<<<< HEAD
-	DECLARE_READ8_MEMBER(dac_r);
-=======
 	DECLARE_READ8_MEMBER(sound_r);
->>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(dig0_w);
 	DECLARE_WRITE8_MEMBER(dig1_w);
 	DECLARE_WRITE8_MEMBER(lamp0_w);
@@ -94,10 +78,6 @@ public:
 	DECLARE_WRITE8_MEMBER(sol2_w) { }; // solenoids 8-15
 	DECLARE_WRITE8_MEMBER(sol3_w); // solenoids 0-7
 	DECLARE_WRITE8_MEMBER(sound_w);
-<<<<<<< HEAD
-	DECLARE_READ8_MEMBER(dips_r);
-=======
->>>>>>> upstream/master
 	DECLARE_READ8_MEMBER(switch_r);
 	DECLARE_WRITE8_MEMBER(switch_w);
 	DECLARE_READ_LINE_MEMBER(pia21_ca1_r);
@@ -112,18 +92,6 @@ public:
 	DECLARE_MACHINE_RESET(s8);
 	DECLARE_DRIVER_INIT(s8);
 private:
-<<<<<<< HEAD
-	UINT8 m_sound_data;
-	UINT8 m_strobe;
-	UINT8 m_kbdrow;
-	bool m_data_ok;
-	emu_timer* m_irq_timer;
-	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
-	static const device_timer_id TIMER_IRQ = 0;
-	required_device<cpu_device> m_maincpu;
-	required_device<cpu_device> m_audiocpu;
-	required_device<dac_device> m_dac;
-=======
 	uint8_t m_sound_data;
 	uint8_t m_strobe;
 	uint8_t m_kbdrow;
@@ -133,7 +101,6 @@ private:
 	static const device_timer_id TIMER_IRQ = 0;
 	required_device<cpu_device> m_maincpu;
 	required_device<cpu_device> m_audiocpu;
->>>>>>> upstream/master
 	required_device<pia6821_device> m_pias;
 	required_device<pia6821_device> m_pia21;
 	required_device<pia6821_device> m_pia24;
@@ -254,36 +221,20 @@ WRITE8_MEMBER( s8_state::lamp0_w )
 
 WRITE8_MEMBER( s8_state::dig0_w )
 {
-<<<<<<< HEAD
-	static const UINT8 patterns[16] = { 0x3f, 0x06, 0x5b, 0x4f, 0x66, 0x6d, 0x7c, 0x07, 0x7f, 0x67, 0x58, 0x4c, 0x62, 0x69, 0x78, 0 }; // 7447
-	data &= 0x7f;
-	m_strobe = data & 15;
-	m_data_ok = true;
-	output_set_digit_value(60, patterns[data>>4]); // diag digit
-=======
 	static const uint8_t patterns[16] = { 0x3f, 0x06, 0x5b, 0x4f, 0x66, 0x6d, 0x7c, 0x07, 0x7f, 0x67, 0x58, 0x4c, 0x62, 0x69, 0x78, 0 }; // 7447
 	data &= 0x7f;
 	m_strobe = data & 15;
 	m_data_ok = true;
 	output().set_digit_value(60, patterns[data>>4]); // diag digit
->>>>>>> upstream/master
 }
 
 WRITE8_MEMBER( s8_state::dig1_w )
 {
-<<<<<<< HEAD
-	static const UINT8 patterns[16] = { 0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7d,0x07,0x7f,0x6f,0,0,0,0,0,0 }; // MC14543
-	if (m_data_ok)
-	{
-		output_set_digit_value(m_strobe+16, patterns[data&15]);
-		output_set_digit_value(m_strobe, patterns[data>>4]);
-=======
 	static const uint8_t patterns[16] = { 0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7d,0x07,0x7f,0x6f,0,0,0,0,0,0 }; // MC14543
 	if (m_data_ok)
 	{
 		output().set_digit_value(m_strobe+16, patterns[data&15]);
 		output().set_digit_value(m_strobe, patterns[data>>4]);
->>>>>>> upstream/master
 	}
 	m_data_ok = false;
 }
@@ -300,11 +251,7 @@ WRITE8_MEMBER( s8_state::switch_w )
 	m_kbdrow = data;
 }
 
-<<<<<<< HEAD
-READ8_MEMBER( s8_state::dac_r )
-=======
 READ8_MEMBER( s8_state::sound_r )
->>>>>>> upstream/master
 {
 	return m_sound_data;
 }
@@ -331,22 +278,14 @@ void s8_state::device_timer(emu_timer &timer, device_timer_id id, int param, voi
 	case TIMER_IRQ:
 		if(param == 1)
 		{
-<<<<<<< HEAD
-			m_maincpu->set_input_line(M6800_IRQ_LINE,ASSERT_LINE);
-=======
 			m_maincpu->set_input_line(M6802_IRQ_LINE, ASSERT_LINE);
->>>>>>> upstream/master
 			m_irq_timer->adjust(attotime::from_ticks(32,1e6),0);
 			m_pia28->ca1_w(BIT(ioport("DIAGS")->read(), 2));  // Advance
 			m_pia28->cb1_w(BIT(ioport("DIAGS")->read(), 3));  // Up/Down
 		}
 		else
 		{
-<<<<<<< HEAD
-			m_maincpu->set_input_line(M6800_IRQ_LINE,CLEAR_LINE);
-=======
 			m_maincpu->set_input_line(M6802_IRQ_LINE, CLEAR_LINE);
->>>>>>> upstream/master
 			m_irq_timer->adjust(attotime::from_ticks(980,1e6),1);
 			m_pia28->ca1_w(1);
 			m_pia28->cb1_w(1);
@@ -365,11 +304,7 @@ DRIVER_INIT_MEMBER( s8_state, s8 )
 	m_irq_timer->adjust(attotime::from_ticks(980,1e6),1);
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( s8, s8_state )
-=======
 static MACHINE_CONFIG_START( s8 )
->>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6802, XTAL_4MHz)
 	MCFG_CPU_PROGRAM_MAP(s8_main_map)
@@ -383,11 +318,7 @@ static MACHINE_CONFIG_START( s8 )
 
 	/* Devices */
 	MCFG_DEVICE_ADD("pia21", PIA6821, 0)
-<<<<<<< HEAD
-	MCFG_PIA_READPA_HANDLER(READ8(s8_state, dac_r))
-=======
 	MCFG_PIA_READPA_HANDLER(READ8(s8_state, sound_r))
->>>>>>> upstream/master
 	MCFG_PIA_READCA1_HANDLER(READLINE(s8_state, pia21_ca1_r))
 	MCFG_PIA_WRITEPA_HANDLER(WRITE8(s8_state, sound_w))
 	MCFG_PIA_WRITEPB_HANDLER(WRITE8(s8_state, sol2_w))
@@ -422,17 +353,6 @@ static MACHINE_CONFIG_START( s8 )
 	/* Add the soundcard */
 	MCFG_CPU_ADD("audiocpu", M6808, XTAL_4MHz)
 	MCFG_CPU_PROGRAM_MAP(s8_audio_map)
-<<<<<<< HEAD
-	MCFG_SPEAKER_STANDARD_MONO("mono")
-	MCFG_SOUND_ADD("dac", DAC, 0)
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.00)
-
-	MCFG_DEVICE_ADD("pias", PIA6821, 0)
-	MCFG_PIA_READPA_HANDLER(READ8(s8_state, dac_r))
-	MCFG_PIA_WRITEPB_HANDLER(DEVWRITE8("dac", dac_device, write_unsigned8))
-	MCFG_PIA_IRQA_HANDLER(DEVWRITELINE("audiocpu", m6808_cpu_device, irq_line))
-	MCFG_PIA_IRQB_HANDLER(DEVWRITELINE("audiocpu", m6808_cpu_device, irq_line))
-=======
 
 	MCFG_SPEAKER_STANDARD_MONO("speaker")
 	MCFG_SOUND_ADD("dac", MC1408, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.5)
@@ -444,7 +364,6 @@ static MACHINE_CONFIG_START( s8 )
 	MCFG_PIA_WRITEPB_HANDLER(DEVWRITE8("dac", dac_byte_interface, write))
 	MCFG_PIA_IRQA_HANDLER(INPUTLINE("audiocpu", M6808_IRQ_LINE))
 	MCFG_PIA_IRQB_HANDLER(INPUTLINE("audiocpu", M6808_IRQ_LINE))
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 /*------------------------------
@@ -469,10 +388,5 @@ ROM_START(pfevr_p3)
 ROM_END
 
 
-<<<<<<< HEAD
-GAME(1984,pfevr_l2, 0,        s8, s8, s8_state, s8, ROT0, "Williams", "Pennant Fever (L-2)", MACHINE_MECHANICAL)
-GAME(1984,pfevr_p3, pfevr_l2, s8, s8, s8_state, s8, ROT0, "Williams", "Pennant Fever (P-3)", MACHINE_MECHANICAL)
-=======
 GAME(1984, pfevr_l2, 0,        s8, s8, s8_state, s8, ROT0, "Williams", "Pennant Fever (L-2)", MACHINE_MECHANICAL | MACHINE_NOT_WORKING )
 GAME(1984, pfevr_p3, pfevr_l2, s8, s8, s8_state, s8, ROT0, "Williams", "Pennant Fever (P-3)", MACHINE_MECHANICAL | MACHINE_NOT_WORKING )
->>>>>>> upstream/master

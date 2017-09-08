@@ -6,21 +6,12 @@
 
 *************************************************************************/
 
-<<<<<<< HEAD
-#define MASTER_CLOCK 57272700   // main oscillator frequency
-
-#include "emu.h"
-#include "cpu/sh2/sh2.h"
-#include "sound/ymf278b.h"
-#include "machine/eepromser.h"
-=======
 #include "cpu/sh2/sh2.h"
 #include "sound/ymf278b.h"
 #include "machine/eepromser.h"
 #include "screen.h"
 
 #define MASTER_CLOCK 57272700   // main oscillator frequency
->>>>>>> upstream/master
 
 class psikyo4_state : public driver_device
 {
@@ -39,21 +30,6 @@ public:
 		m_palette2(*this, "rpalette"),
 		m_lscreen(*this, "lscreen"),
 		m_rscreen(*this, "rscreen"),
-<<<<<<< HEAD
-		m_keys(*this, "KEY")
-	{ }
-
-	/* memory pointers */
-	required_shared_ptr<UINT32> m_spriteram;
-	required_shared_ptr<UINT32> m_vidregs;
-	required_shared_ptr<UINT32> m_bgpen_1;
-	required_shared_ptr<UINT32> m_bgpen_2;
-	required_shared_ptr<UINT32> m_paletteram;
-
-	memory_bank *m_ymf_bank[4];
-	UINT8 m_ymf_max_bank;
-	UINT8 m_io_select;
-=======
 		m_keys(*this, "KEY.%u", 0)
 	{ }
 
@@ -67,7 +43,6 @@ public:
 	memory_bank *m_ymf_bank[4];
 	uint8_t m_ymf_max_bank;
 	uint8_t m_io_select;
->>>>>>> upstream/master
 
 	/* video-related */
 	double         m_oldbrt1;
@@ -93,15 +68,6 @@ public:
 	DECLARE_CUSTOM_INPUT_MEMBER(mahjong_ctrl_r);
 	DECLARE_WRITE32_MEMBER(ps4_eeprom_w);
 	DECLARE_READ32_MEMBER(ps4_eeprom_r);
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void machine_reset();
-	virtual void video_start();
-	UINT32 screen_update_psikyo4_left(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	UINT32 screen_update_psikyo4_right(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	INTERRUPT_GEN_MEMBER(psikyosh_interrupt);
-	void draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect, UINT32 scr);
-=======
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
 	virtual void video_start() override;
@@ -109,5 +75,4 @@ public:
 	uint32_t screen_update_psikyo4_right(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	INTERRUPT_GEN_MEMBER(psikyosh_interrupt);
 	void draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect, uint32_t scr);
->>>>>>> upstream/master
 };

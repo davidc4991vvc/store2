@@ -1,18 +1,9 @@
 // license:BSD-3-Clause
 // copyright-holders:pSXAuthor, R. Belmont
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __SPU_H__
-#define __SPU_H__
-
-#include "spureverb.h"
-=======
 #ifndef MAME_SOUND_SPU_H
 #define MAME_SOUND_SPU_H
 
 #pragma once
->>>>>>> upstream/master
 
 //**************************************************************************
 //  INTERFACE CONFIGURATION MACROS
@@ -27,21 +18,11 @@
 	MCFG_PSX_SPU_WRITE_HANDLER(DEVWRITE16(_tag, spu_device, write)) \
 	MCFG_DEVICE_ADD(_tag, SPU, _clock) \
 	MCFG_SPU_IRQ_HANDLER(DEVWRITELINE("maincpu:irq", psxirq_device, intin9)) \
-<<<<<<< HEAD
-	MCFG_PSX_DMA_CHANNEL_READ( "maincpu", 4, psx_dma_read_delegate( FUNC( spu_device::dma_read ), (spu_device *) device ) ) \
-	MCFG_PSX_DMA_CHANNEL_WRITE( "maincpu", 4, psx_dma_write_delegate( FUNC( spu_device::dma_write ), (spu_device *) device ) )
-
-// ======================> spu_device
-
-const unsigned int spu_base_frequency_hz=44100;
-
-=======
 	MCFG_PSX_DMA_CHANNEL_READ( "maincpu", 4, psxdma_device::read_delegate(&spu_device::dma_read, (spu_device *) device ) ) \
 	MCFG_PSX_DMA_CHANNEL_WRITE( "maincpu", 4, psxdma_device::write_delegate(&spu_device::dma_write, (spu_device *) device ) )
 
 // ======================> spu_device
 
->>>>>>> upstream/master
 class stream_buffer;
 
 class spu_device : public device_t, public device_sound_interface
@@ -60,15 +41,6 @@ class spu_device : public device_t, public device_sound_interface
 	};
 
 protected:
-<<<<<<< HEAD
-	// device-level overrides
-	virtual void device_start();
-	virtual void device_reset();
-	virtual void device_post_load();
-	virtual void device_stop();
-
-	virtual void sound_stream_update(sound_stream &stream, stream_sample_t **inputs, stream_sample_t **outputs, int samples);
-=======
 	static constexpr unsigned int spu_base_frequency_hz=44100;
 	class reverb;
 
@@ -88,7 +60,6 @@ protected:
 	static const float decay_rate[];
 	static const float linear_release_rate[];
 	static const float exp_release_rate[];
->>>>>>> upstream/master
 
 	// internal state
 	devcb_write_line m_irq_handler;
@@ -107,11 +78,7 @@ protected:
 					cur_generate_sample,
 					dirty_flags;
 
-<<<<<<< HEAD
-	UINT16 m_cd_out_ptr;
-=======
 	uint16_t m_cd_out_ptr;
->>>>>>> upstream/master
 
 	signed short xa_last[4];
 	bool status_enabled,
@@ -178,18 +145,6 @@ protected:
 
 	#pragma pack(pop,spureg)
 
-<<<<<<< HEAD
-	struct reverb_preset
-	{
-		const char *name;
-		unsigned short param[32];
-		reverb_params cfg;
-	};
-
-	reverb_preset *cur_reverb_preset;
-
-	static reverb_preset reverb_presets[];
-=======
 	struct reverb_params;
 	struct reverb_preset;
 
@@ -199,7 +154,6 @@ protected:
 
 	static reverb_preset reverb_presets[];
 	static reverb_params *spu_reverb_cfg;
->>>>>>> upstream/master
 
 	void key_on(const int v);
 	void key_off(const int v);
@@ -218,10 +172,6 @@ protected:
 											void *fmnoise_ptr,
 											void *outxptr,
 											unsigned int *tleft);
-<<<<<<< HEAD
-	void process();
-=======
->>>>>>> upstream/master
 	void process_until(const unsigned int tsample);
 	void update_voice_loop(const unsigned int v);
 	bool update_voice_state(const unsigned int v);
@@ -260,17 +210,10 @@ protected:
 #if 0
 	void write_cache_pointer(outfile *fout,
 														cache_pointer *cp,
-<<<<<<< HEAD
-														sample_loop_cache *lc=NULL);
-	void read_cache_pointer(infile *fin,
-													cache_pointer *cp,
-													sample_loop_cache **lc=NULL);
-=======
 														sample_loop_cache *lc=nullptr);
 	void read_cache_pointer(infile *fin,
 													cache_pointer *cp,
 													sample_loop_cache **lc=nullptr);
->>>>>>> upstream/master
 #endif
 	static float get_linear_rate(const int n);
 	static float get_linear_rate_neg_phase(const int n);
@@ -285,15 +228,6 @@ protected:
 	static reverb_preset *find_reverb_preset(const unsigned short *param);
 
 public:
-<<<<<<< HEAD
-	spu_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// static configuration helpers
-	template<class _Object> static devcb_base &set_irq_handler(device_t &device, _Object object) { return downcast<spu_device &>(device).m_irq_handler.set_callback(object); }
-
-	void dma_read( UINT32 *ram, UINT32 n_address, INT32 n_size );
-	void dma_write( UINT32 *ram, UINT32 n_address, INT32 n_size );
-=======
 	spu_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	// static configuration helpers
@@ -301,42 +235,21 @@ public:
 
 	void dma_read( uint32_t *ram, uint32_t n_address, int32_t n_size );
 	void dma_write( uint32_t *ram, uint32_t n_address, int32_t n_size );
->>>>>>> upstream/master
 
 	void reinit_sound();
 	void kill_sound();
 
-<<<<<<< HEAD
-	void update();
-
-	void start_dma(UINT8 *mainram, bool to_spu, UINT32 size);
-=======
 	void start_dma(uint8_t *mainram, bool to_spu, uint32_t size);
->>>>>>> upstream/master
 	bool play_xa(const unsigned int sector, const unsigned char *sec);
 	bool play_cdda(const unsigned int sector, const unsigned char *sec);
 	void flush_xa(const unsigned int sector=0);
 	void flush_cdda(const unsigned int sector=0);
 
-<<<<<<< HEAD
-	sound_stream *m_stream;
-
-=======
->>>>>>> upstream/master
 	DECLARE_READ16_MEMBER( read );
 	DECLARE_WRITE16_MEMBER( write );
 };
 
-<<<<<<< HEAD
-extern reverb_params *spu_reverb_cfg;
-
-// device type definition
-extern const device_type SPU;
-
-#endif
-=======
 // device type definition
 DECLARE_DEVICE_TYPE(SPU, spu_device)
 
 #endif // MAME_SOUND_SPU_H
->>>>>>> upstream/master

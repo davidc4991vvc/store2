@@ -9,11 +9,7 @@
 -- Built-in command line options
 --
 
-<<<<<<< HEAD
-	newoption 
-=======
 	newoption
->>>>>>> upstream/master
 	{
 		trigger     = "cc",
 		value       = "VALUE",
@@ -21,10 +17,7 @@
 		allowed = {
 			{ "gcc", "GNU GCC (gcc/g++)" },
 			{ "ow",  "OpenWatcom"        },
-<<<<<<< HEAD
-=======
 			{ "ghs", "Green Hills Software" },
->>>>>>> upstream/master
 		}
 	}
 
@@ -46,21 +39,13 @@
 		value       = "FILE",
 		description = "Read FILE as a Premake script; default is 'premake4.lua'"
 	}
-<<<<<<< HEAD
-	
-=======
 
->>>>>>> upstream/master
 	newoption
 	{
 		trigger     = "help",
 		description = "Display this information"
 	}
-<<<<<<< HEAD
-		
-=======
 
->>>>>>> upstream/master
 	newoption
 	{
 		trigger     = "os",
@@ -86,15 +71,6 @@
 			{ "universal",   "Mac OS X Universal, 32- and 64-bit" },
 			{ "universal32", "Mac OS X Universal, 32-bit only" },
 			{ "universal64", "Mac OS X Universal, 64-bit only" },
-<<<<<<< HEAD
-			{ "ps3",         "Playstation 3 (experimental)" },
-			{ "orbis",       "Playstation 4" },
-			{ "xbox360",     "Xbox 360 (experimental)" },
-			{ "ARM",         "ARM (Microsoft)" },
-		}
-	}
-	
-=======
 			{ "ps3",         "Playstation 3" },
 			{ "orbis",       "Playstation 4" },
 			{ "xbox360",     "Xbox 360" },
@@ -104,16 +80,12 @@
 		}
 	}
 
->>>>>>> upstream/master
 	newoption
 	{
 		trigger     = "scripts",
 		value       = "path",
 		description = "Search for additional scripts on the given path"
 	}
-<<<<<<< HEAD
-	
-=======
 
 	newoption
 	{
@@ -121,13 +93,8 @@
 		description = "GENie script generation profiler."
 	}
 
->>>>>>> upstream/master
 	newoption
 	{
 		trigger     = "version",
 		description = "Display version information"
 	}
-<<<<<<< HEAD
-	
-=======
->>>>>>> upstream/master

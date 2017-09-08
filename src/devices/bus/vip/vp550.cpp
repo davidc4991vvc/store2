@@ -14,16 +14,11 @@
 
 */
 
-<<<<<<< HEAD
-#include "vp550.h"
-
-=======
 #include "emu.h"
 #include "vp550.h"
 
 #include "speaker.h"
 
->>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -48,16 +43,6 @@ enum
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type VP550 = &device_creator<vp550_device>;
-
-
-//-------------------------------------------------
-//  MACHINE_CONFIG_FRAGMENT( vp550 )
-//-------------------------------------------------
-
-static MACHINE_CONFIG_FRAGMENT( vp550 )
-=======
 DEFINE_DEVICE_TYPE(VP550, vp550_device, "vp550", "VP-550 Super Sound")
 
 
@@ -66,7 +51,6 @@ DEFINE_DEVICE_TYPE(VP550, vp550_device, "vp550", "VP-550 Super Sound")
 //-------------------------------------------------
 
 MACHINE_CONFIG_MEMBER( vp550_device::device_add_mconfig )
->>>>>>> upstream/master
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
 	MCFG_CDP1863_ADD(CDP1863_A_TAG, 0, 0)
@@ -77,20 +61,6 @@ MACHINE_CONFIG_MEMBER( vp550_device::device_add_mconfig )
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-//-------------------------------------------------
-//  machine_config_additions - device-specific
-//  machine configurations
-//-------------------------------------------------
-
-machine_config_constructor vp550_device::device_mconfig_additions() const
-{
-	return MACHINE_CONFIG_NAME( vp550 );
-}
-
-
-=======
->>>>>>> upstream/master
 
 //**************************************************************************
 //  LIVE DEVICE
@@ -100,20 +70,12 @@ machine_config_constructor vp550_device::device_mconfig_additions() const
 //  vp550_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-vp550_device::vp550_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-	device_t(mconfig, VP550, "VP550", tag, owner, clock, "vp550", __FILE__),
-	device_vip_expansion_card_interface(mconfig, *this),
-	m_pfg_a(*this, CDP1863_A_TAG),
-	m_pfg_b(*this, CDP1863_B_TAG), m_sync_timer(nullptr)
-=======
 vp550_device::vp550_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	device_t(mconfig, VP550, tag, owner, clock),
 	device_vip_expansion_card_interface(mconfig, *this),
 	m_pfg_a(*this, CDP1863_A_TAG),
 	m_pfg_b(*this, CDP1863_B_TAG),
 	m_sync_timer(nullptr)
->>>>>>> upstream/master
 {
 }
 
@@ -147,11 +109,7 @@ void vp550_device::device_timer(emu_timer &timer, device_timer_id id, int param,
 //  vip_program_w - program write
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void vp550_device::vip_program_w(address_space &space, offs_t offset, UINT8 data, int cdef, int *minh)
-=======
 void vp550_device::vip_program_w(address_space &space, offs_t offset, uint8_t data, int cdef, int *minh)
->>>>>>> upstream/master
 {
 	if (BIT(offset, 15))
 	{

@@ -9,10 +9,7 @@
 #include "machine/eeprompar.h"
 #include "video/rgbutil.h"
 #include "video/poly.h"
-<<<<<<< HEAD
-=======
 #include "screen.h"
->>>>>>> upstream/master
 
 enum
 {
@@ -113,17 +110,10 @@ struct namcos22_object_data
 	int zfog_enabled;
 	int cz_adjust;
 	int cz_sdelta;
-<<<<<<< HEAD
-	const UINT8 *czram;
-
-	/* sprites */
-	const UINT8 *source;
-=======
 	const uint8_t *czram;
 
 	/* sprites */
 	const uint8_t *source;
->>>>>>> upstream/master
 	int alpha;
 	int line_modulo;
 	int flipx;
@@ -138,16 +128,8 @@ class namcos22_renderer : public poly_manager<float, namcos22_object_data, 4, 80
 public:
 	namcos22_renderer(namcos22_state &state);
 
-<<<<<<< HEAD
-	// static configuration
-	static void static_set_gfxdecode_tag(device_t &device, const char *tag);
-
-	void render_scene(screen_device &screen, bitmap_rgb32 &bitmap);
-	struct namcos22_scenenode *new_scenenode(running_machine &machine, UINT32 zsort, namcos22_scenenode_type type);
-=======
 	void render_scene(screen_device &screen, bitmap_rgb32 &bitmap);
 	struct namcos22_scenenode *new_scenenode(running_machine &machine, uint32_t zsort, namcos22_scenenode_type type);
->>>>>>> upstream/master
 
 	void reset();
 
@@ -161,33 +143,19 @@ private:
 	int m_clipy;
 	rectangle m_cliprect;
 
-<<<<<<< HEAD
-	inline UINT8 nthbyte(const UINT32 *src, int n) { return (src[n / 4] << ((n & 3) * 8)) >> 24; }
-	inline UINT16 nthword(const UINT32 *src, int n) { return (src[n / 2] << ((n & 1) * 16)) >> 16; }
-=======
 	inline uint8_t nthbyte(const uint32_t *src, int n) { return (src[n / 4] << ((n & 3) * 8)) >> 24; }
 	inline uint16_t nthword(const uint32_t *src, int n) { return (src[n / 2] << ((n & 1) * 16)) >> 16; }
->>>>>>> upstream/master
 
 	void render_scene_nodes(screen_device &screen, bitmap_rgb32 &bitmap, struct namcos22_scenenode *node);
 	void render_sprite(screen_device &screen, bitmap_rgb32 &bitmap, struct namcos22_scenenode *node);
 	void poly3d_drawquad(screen_device &screen, bitmap_rgb32 &bitmap, struct namcos22_scenenode *node);
-<<<<<<< HEAD
-	void poly3d_drawsprite(screen_device &screen, bitmap_rgb32 &dest_bmp, UINT32 code, UINT32 color, int flipx, int flipy, int sx, int sy, int scalex, int scaley, int cz_factor, int prioverchar, int alpha);
-=======
 	void poly3d_drawsprite(screen_device &screen, bitmap_rgb32 &dest_bmp, uint32_t code, uint32_t color, int flipx, int flipy, int sx, int sy, int scalex, int scaley, int cz_factor, int prioverchar, int alpha);
->>>>>>> upstream/master
 
 	void free_scenenode(struct namcos22_scenenode *node);
 	struct namcos22_scenenode *alloc_scenenode(running_machine &machine, struct namcos22_scenenode *node);
 
-<<<<<<< HEAD
-	void renderscanline_uvi_full(INT32 scanline, const extent_t &extent, const namcos22_object_data &extra, int threadid);
-	void renderscanline_sprite(INT32 scanline, const extent_t &extent, const namcos22_object_data &extra, int threadid);
-=======
 	void renderscanline_uvi_full(int32_t scanline, const extent_t &extent, const namcos22_object_data &extra, int threadid);
 	void renderscanline_sprite(int32_t scanline, const extent_t &extent, const namcos22_object_data &extra, int threadid);
->>>>>>> upstream/master
 };
 
 
@@ -232,15 +200,11 @@ public:
 		m_gfxdecode(*this, "gfxdecode"),
 		m_screen(*this, "screen"),
 		m_palette(*this, "palette"),
-<<<<<<< HEAD
-		m_adc_ports(*this, "ADC")
-=======
 		m_adc_ports(*this, "ADC.%u", 0),
 		m_p1(*this, "P1"),
 		m_p2(*this, "P2"),
 		m_mcup5a(*this, "MCUP5A"),
 		m_mcup5b(*this, "MCUP5B")
->>>>>>> upstream/master
 	{ }
 
 	required_device<cpu_device> m_maincpu;
@@ -248,24 +212,6 @@ public:
 	required_device<cpu_device> m_slave;
 	required_device<cpu_device> m_mcu;
 	optional_device<cpu_device> m_iomcu;
-<<<<<<< HEAD
-	optional_shared_ptr<UINT32> m_spriteram;
-	required_shared_ptr<UINT32> m_shareram;
-	required_device<eeprom_parallel_28xx_device> m_eeprom;
-	required_shared_ptr<UINT16> m_pSlaveExternalRAM;
-	required_shared_ptr<UINT16> m_pMasterExternalRAM;
-	required_shared_ptr<UINT32> m_paletteram;
-	required_shared_ptr<UINT32> m_cgram;
-	required_shared_ptr<UINT32> m_textram;
-	required_shared_ptr<UINT32> m_polygonram;
-	required_shared_ptr<UINT32> m_mixer;
-	optional_region_ptr<UINT8> m_gamma_proms;
-	optional_shared_ptr<UINT32> m_vics_data;
-	optional_shared_ptr<UINT32> m_vics_control;
-	optional_shared_ptr<UINT32> m_czattr;
-	required_shared_ptr<UINT32> m_tilemapattr;
-	optional_shared_ptr<UINT32> m_czram;
-=======
 	optional_shared_ptr<uint32_t> m_spriteram;
 	required_shared_ptr<uint32_t> m_shareram;
 	required_device<eeprom_parallel_28xx_device> m_eeprom;
@@ -282,41 +228,12 @@ public:
 	optional_shared_ptr<uint32_t> m_czattr;
 	required_shared_ptr<uint32_t> m_tilemapattr;
 	optional_shared_ptr<uint32_t> m_czram;
->>>>>>> upstream/master
 	optional_device<timer_device> m_motor_timer;
 	optional_device<timer_device> m_pc_pedal_interrupt;
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<screen_device> m_screen;
 	required_device<palette_device> m_palette;
 	optional_ioport_array<8> m_adc_ports;
-<<<<<<< HEAD
-
-
-	UINT8 m_syscontrol[0x20];
-	bool m_dsp_irq_enabled;
-	emu_timer *m_ar_tb_interrupt[2];
-	UINT16 m_dsp_master_bioz;
-	UINT32 *m_pointram;
-	UINT32 m_old_coin_state;
-	UINT32 m_credits1;
-	UINT32 m_credits2;
-	UINT32 m_point_address;
-	UINT32 m_point_data;
-	UINT16 m_SerialDataSlaveToMasterNext;
-	UINT16 m_SerialDataSlaveToMasterCurrent;
-	int m_RenderBufSize;
-	UINT16 m_RenderBufData[NAMCOS22_MAX_RENDER_CMD_SEQ];
-	UINT16 m_portbits[2];
-	int m_irq_state;
-	namcos22_dsp_upload_state m_dsp_upload_state;
-	int m_UploadDestIdx;
-	UINT32 m_alpinesa_protection;
-	int m_motor_status;
-	int m_p4;
-	UINT16 m_su_82;
-	UINT16 m_keycus_id;
-	UINT16 m_keycus_rng;
-=======
 	optional_ioport m_p1;
 	optional_ioport m_p2;
 	optional_ioport m_mcup5a;
@@ -346,40 +263,12 @@ public:
 	uint16_t m_su_82;
 	uint16_t m_keycus_id;
 	uint16_t m_keycus_rng;
->>>>>>> upstream/master
 	int m_gametype;
 	int m_is_ss22;
 	int m_chipselect;
 	int m_spot_enable;
 	int m_spot_read_address;
 	int m_spot_write_address;
-<<<<<<< HEAD
-	UINT16 *m_spotram;
-	UINT16 *m_banked_czram[4];
-	UINT8 *m_recalc_czram[4];
-	UINT32 m_cz_was_written[4];
-	int m_cz_adjust;
-	namcos22_renderer *m_poly;
-	UINT16 *m_texture_tilemap;
-	UINT8 *m_texture_tileattr;
-	UINT8 *m_texture_tiledata;
-	UINT8 *m_texture_ayx_to_pixel;
-	UINT16 m_dspram_bank;
-	UINT16 m_dspram16_latch;
-	bool m_slave_simulation_active;
-	INT32 m_absolute_priority;
-	INT32 m_objectshift;
-	UINT16 m_PrimitiveID;
-	float m_viewmatrix[4][4];
-	UINT8 m_LitSurfaceInfo[NAMCOS22_MAX_LIT_SURFACES];
-	INT32 m_SurfaceNormalFormat;
-	unsigned m_LitSurfaceCount;
-	unsigned m_LitSurfaceIndex;
-	int m_pointrom_size;
-	INT32 *m_pointrom;
-	UINT8 *m_dirtypal;
-	bitmap_ind16 *m_mix_bitmap;
-=======
 	std::unique_ptr<uint16_t[]> m_spotram;
 	std::unique_ptr<uint16_t[]> m_banked_czram[4];
 	std::unique_ptr<uint8_t[]> m_recalc_czram[4];
@@ -405,7 +294,6 @@ public:
 	int32_t *m_pointrom;
 	std::unique_ptr<uint8_t[]> m_dirtypal;
 	std::unique_ptr<bitmap_ind16> m_mix_bitmap;
->>>>>>> upstream/master
 	tilemap_t *m_bgtilemap;
 
 	int m_mixer_flags;
@@ -415,11 +303,7 @@ public:
 	int m_fog_r_per_cztype[4];
 	int m_fog_g_per_cztype[4];
 	int m_fog_b_per_cztype[4];
-<<<<<<< HEAD
-	UINT32 m_fog_colormask;
-=======
 	uint32_t m_fog_colormask;
->>>>>>> upstream/master
 	int m_poly_fade_r;
 	int m_poly_fade_g;
 	int m_poly_fade_b;
@@ -496,10 +380,6 @@ public:
 	DECLARE_READ16_MEMBER(dsp_slave_portb_r);
 	DECLARE_WRITE16_MEMBER(dsp_slave_portb_w);
 	DECLARE_READ32_MEMBER(namcos22_sci_r);
-<<<<<<< HEAD
-	DECLARE_WRITE32_MEMBER(namcos22_sci_w);
-=======
->>>>>>> upstream/master
 	DECLARE_READ8_MEMBER(namcos22_system_controller_r);
 	DECLARE_WRITE8_MEMBER(namcos22s_system_controller_w);
 	DECLARE_WRITE8_MEMBER(namcos22_system_controller_w);
@@ -533,16 +413,6 @@ public:
 	DECLARE_READ16_MEMBER(mcu130_speedup_r);
 	DECLARE_READ16_MEMBER(mcuc74_speedup_r);
 
-<<<<<<< HEAD
-	inline UINT8 nthbyte(const UINT32 *src, int n) { return (src[n / 4] << ((n & 3) * 8)) >> 24; }
-	inline UINT16 nthword(const UINT32 *src, int n) { return (src[n / 2] << ((n & 1) * 16)) >> 16; }
-
-	inline INT32 signed18(INT32 val) { return (val & 0x00020000) ? (INT32)(val | 0xfffc0000) : val & 0x0001ffff; }
-	inline INT32 signed24(INT32 val) { return (val & 0x00800000) ? (INT32)(val | 0xff000000) : val & 0x007fffff; }
-
-	inline float dspfixed_to_nativefloat(INT16 val) { return val / (float)0x7fff; }
-	float dspfloat_to_nativefloat(UINT32 val);
-=======
 	inline uint8_t nthbyte(const uint32_t *src, int n) { return (src[n / 4] << ((n & 3) * 8)) >> 24; }
 	inline uint16_t nthword(const uint32_t *src, int n) { return (src[n / 2] << ((n & 1) * 16)) >> 16; }
 
@@ -551,20 +421,13 @@ public:
 
 	inline float dspfixed_to_nativefloat(int16_t val) { return val / (float)0x7fff; }
 	float dspfloat_to_nativefloat(uint32_t val);
->>>>>>> upstream/master
 
 	void handle_driving_io();
 	void handle_coinage(int slots, int address_is_odd);
 	void handle_cybrcomm_io();
-<<<<<<< HEAD
-	UINT32 pdp_polygonram_read(offs_t offs);
-	void pdp_polygonram_write(offs_t offs, UINT32 data);
-	void point_write(offs_t offs, UINT32 data);
-=======
 	uint32_t pdp_polygonram_read(offs_t offs);
 	void pdp_polygonram_write(offs_t offs, uint32_t data);
 	void point_write(offs_t offs, uint32_t data);
->>>>>>> upstream/master
 	void slave_halt();
 	void slave_enable();
 	void enable_slave_simulation(bool enable);
@@ -573,21 +436,6 @@ public:
 	void matrix3d_identity(float m[4][4]);
 	void transform_point(float *vx, float *vy, float *vz, float m[4][4]);
 	void transform_normal(float *nx, float *ny, float *nz, float m[4][4]);
-<<<<<<< HEAD
-	void register_normals(INT32 addr, float m[4][4]);
-
-	void blit_single_quad(bitmap_rgb32 &bitmap, UINT32 color, UINT32 addr, float m[4][4], INT32 polyshift, int flags, int packetformat);
-	void blit_quads(bitmap_rgb32 &bitmap, INT32 addr, float m[4][4], INT32 base);
-	void blit_polyobject(bitmap_rgb32 &bitmap, int code, float m[4][4]);
-
-	void slavesim_handle_bb0003(const INT32 *src);
-	void slavesim_handle_200002(bitmap_rgb32 &bitmap, const INT32 *src);
-	void slavesim_handle_300000(const INT32 *src);
-	void slavesim_handle_233002(const INT32 *src);
-	void simulate_slavedsp(bitmap_rgb32 &bitmap);
-
-	INT32 point_read(INT32 addr);
-=======
 	void register_normals(int32_t addr, float m[4][4]);
 
 	void blit_single_quad(bitmap_rgb32 &bitmap, uint32_t color, uint32_t addr, float m[4][4], int32_t polyshift, int flags, int packetformat);
@@ -601,22 +449,14 @@ public:
 	void simulate_slavedsp(bitmap_rgb32 &bitmap);
 
 	int32_t point_read(int32_t addr);
->>>>>>> upstream/master
 	void init_tables();
 	void update_mixer();
 	void update_palette();
 	void recalc_czram();
-<<<<<<< HEAD
-	void draw_direct_poly(const UINT16 *src);
-	void draw_polygons(bitmap_rgb32 &bitmap);
-	void draw_sprites(bitmap_rgb32 &bitmap, const rectangle &cliprect);
-	void draw_sprite_group(bitmap_rgb32 &bitmap, const rectangle &cliprect, const UINT32 *src, const UINT32 *attr, int num_sprites, int deltax, int deltay, int y_lowres);
-=======
 	void draw_direct_poly(const uint16_t *src);
 	void draw_polygons(bitmap_rgb32 &bitmap);
 	void draw_sprites(bitmap_rgb32 &bitmap, const rectangle &cliprect);
 	void draw_sprite_group(bitmap_rgb32 &bitmap, const rectangle &cliprect, const uint32_t *src, const uint32_t *attr, int num_sprites, int deltax, int deltay, int y_lowres);
->>>>>>> upstream/master
 	void draw_text_layer(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
 	void namcos22s_mix_text_layer(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect, int prival);
 	void namcos22_mix_text_layer(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
@@ -645,21 +485,12 @@ public:
 	DECLARE_DRIVER_INIT(alpinesa);
 
 	TILE_GET_INFO_MEMBER(get_text_tile_info);
-<<<<<<< HEAD
-	virtual void machine_reset();
-	virtual void machine_start();
-	virtual void video_start();
-	DECLARE_MACHINE_START(adillor);
-	UINT32 screen_update_namcos22s(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
-	UINT32 screen_update_namcos22(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
-=======
 	virtual void machine_reset() override;
 	virtual void machine_start() override;
 	virtual void video_start() override;
 	DECLARE_MACHINE_START(adillor);
 	uint32_t screen_update_namcos22s(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
 	uint32_t screen_update_namcos22(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	INTERRUPT_GEN_MEMBER(namcos22s_interrupt);
 	INTERRUPT_GEN_MEMBER(namcos22_interrupt);
 	TIMER_DEVICE_CALLBACK_MEMBER(adillor_trackball_update);

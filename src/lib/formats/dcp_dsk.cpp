@@ -43,17 +43,10 @@ const char *dcp_format::extensions() const
 	return "dcp,dcu";
 }
 
-<<<<<<< HEAD
-int dcp_format::identify(io_generic *io, UINT32 form_factor)
-{
-	UINT64 size = io_generic_size(io);
-	UINT8 h[0xa2];
-=======
 int dcp_format::identify(io_generic *io, uint32_t form_factor)
 {
 	uint64_t size = io_generic_size(io);
 	uint8_t h[0xa2];
->>>>>>> upstream/master
 	int heads, tracks, spt, bps, count_tracks = 0;
 	bool is_hdb = false;
 
@@ -119,15 +112,9 @@ int dcp_format::identify(io_generic *io, uint32_t form_factor)
 	return 0;
 }
 
-<<<<<<< HEAD
-bool dcp_format::load(io_generic *io, UINT32 form_factor, floppy_image *image)
-{
-	UINT8 h[0xa2];
-=======
 bool dcp_format::load(io_generic *io, uint32_t form_factor, floppy_image *image)
 {
 	uint8_t h[0xa2];
->>>>>>> upstream/master
 	int heads, tracks, spt, bps;
 	bool is_hdb = false;
 
@@ -218,17 +205,10 @@ bool dcp_format::load(io_generic *io, uint32_t form_factor, floppy_image *image)
 	int cell_count = form_factor == floppy_image::FF_35 ? 200000 : 166666;
 
 	int ssize;
-<<<<<<< HEAD
-	for (ssize = 0; (128 << ssize) < bps; ssize++);
-
-	desc_pc_sector sects[256];
-	UINT8 sect_data[65536];
-=======
 	for (ssize = 0; (128 << ssize) < bps; ssize++) {};
 
 	desc_pc_sector sects[256];
 	uint8_t sect_data[65536];
->>>>>>> upstream/master
 
 	if (!is_hdb)
 	{
@@ -289,11 +269,7 @@ bool dcp_format::load(io_generic *io, uint32_t form_factor, floppy_image *image)
 		build_pc_track_mfm(0, 1, image, cell_count, spt, sects, calc_default_pc_gap3_size(form_factor, bps));
 
 		// Read other tracks as usual
-<<<<<<< HEAD
-		UINT32 data_offs = 0xa2 + (26 * 0x80) + (26 * 0x100);
-=======
 		uint32_t data_offs = 0xa2 + (26 * 0x80) + (26 * 0x100);
->>>>>>> upstream/master
 		for (int track = 1; track < tracks; track++)
 			for (int head = 0; head < heads; head++)
 			{

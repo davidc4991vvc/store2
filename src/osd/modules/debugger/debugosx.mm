@@ -8,11 +8,7 @@
 
 
 // TODO:
-<<<<<<< HEAD
-//  * Automatic scrolling for console and log views
-=======
 //  * Automatic scrolling for console view
->>>>>>> upstream/master
 //  * Keyboard shortcuts in error log and device windows
 //  * Don't accept keyboard input while the game is running
 //  * Interior focus rings - standard/exterior focus rings look really ugly here
@@ -22,10 +18,7 @@
 
 // MAME headers
 #include "emu.h"
-<<<<<<< HEAD
-=======
 #include "config.h"
->>>>>>> upstream/master
 #include "debugger.h"
 
 // MAMEOS headers
@@ -37,13 +30,10 @@
 #import "osx/debugconsole.h"
 #import "osx/debugwindowhandler.h"
 
-<<<<<<< HEAD
-=======
 #include "util/xmlfile.h"
 
 #include <atomic>
 
->>>>>>> upstream/master
 
 //============================================================
 //  MODULE SUPPORT
@@ -52,19 +42,12 @@
 class debugger_osx : public osd_module, public debug_module
 {
 public:
-<<<<<<< HEAD
-	debugger_osx()
-	: osd_module(OSD_DEBUG_PROVIDER, "osx"), debug_module(),
-	  m_machine(NULL),
-	  m_console(nil)
-=======
 	debugger_osx() :
 		osd_module(OSD_DEBUG_PROVIDER, "osx"),
 		debug_module(),
 		m_machine(nullptr),
 		m_console(nil),
 		m_config()
->>>>>>> upstream/master
 	{
 	}
 
@@ -82,10 +65,6 @@ public:
 	virtual void debugger_update();
 
 private:
-<<<<<<< HEAD
-	running_machine *m_machine;
-	MAMEDebugConsole *m_console;
-=======
 	void create_console();
 	void build_menus();
 	void config_load(config_type cfgtype, util::xml::data_node const *parentnode);
@@ -96,22 +75,16 @@ private:
 	util::xml::file::ptr m_config;
 
 	static std::atomic_bool s_added_menus;
->>>>>>> upstream/master
 };
 
 MODULE_DEFINITION(DEBUG_OSX, debugger_osx)
 
-<<<<<<< HEAD
-//============================================================
-//  debugger_osx::init
-=======
 std::atomic_bool debugger_osx::s_added_menus(false);
 
 
 //============================================================
 //  debugger_osx::init
 //  initialise debugger module
->>>>>>> upstream/master
 //============================================================
 
 int debugger_osx::init(const osd_options &options)
@@ -119,65 +92,37 @@ int debugger_osx::init(const osd_options &options)
 	return 0;
 }
 
-<<<<<<< HEAD
-//============================================================
-//  debugger_osx::exit
-=======
 
 //============================================================
 //  debugger_osx::exit
 //  clean up debugger module
->>>>>>> upstream/master
 //============================================================
 
 void debugger_osx::exit()
 {
-<<<<<<< HEAD
-	NSAutoreleasePool *const pool = [[NSAutoreleasePool alloc] init];
-	if (m_console)
-	{
-		NSDictionary *info = [NSDictionary dictionaryWithObject:[NSValue valueWithPointer:m_machine]
-														forKey:@"MAMEDebugMachine"];
-=======
 	if (m_console)
 	{
 		NSAutoreleasePool *const pool = [[NSAutoreleasePool alloc] init];
 		NSDictionary *info = [NSDictionary dictionaryWithObject:[NSValue valueWithPointer:m_machine]
 														 forKey:@"MAMEDebugMachine"];
->>>>>>> upstream/master
 		[[NSNotificationCenter defaultCenter] postNotificationName:MAMEHideDebuggerNotification
 															object:m_console
 														  userInfo:info];
 		[m_console release];
 		m_console = nil;
-<<<<<<< HEAD
-		m_machine = NULL;
-	}
-	[pool release];
-=======
 		m_machine = nullptr;
 		[pool release];
 	}
->>>>>>> upstream/master
 }
 
 //============================================================
 //  debugger_osx::init_debugger
-<<<<<<< HEAD
-=======
 //  attach debugger module to a machine
->>>>>>> upstream/master
 //============================================================
 
 void debugger_osx::init_debugger(running_machine &machine)
 {
 	m_machine = &machine;
-<<<<<<< HEAD
-}
-
-//============================================================
-//  debugger_osx::wait_for_debugger
-=======
 	machine.configuration().config_register(
 			"debugger",
 			config_load_delegate(&debugger_osx::config_load, this),
@@ -188,7 +133,6 @@ void debugger_osx::init_debugger(running_machine &machine)
 //============================================================
 //  debugger_osx::wait_for_debugger
 //  perform debugger event processing
->>>>>>> upstream/master
 //============================================================
 
 void debugger_osx::wait_for_debugger(device_t &device, bool firststop)
@@ -196,24 +140,16 @@ void debugger_osx::wait_for_debugger(device_t &device, bool firststop)
 	NSAutoreleasePool *const pool = [[NSAutoreleasePool alloc] init];
 
 	// create a console window
-<<<<<<< HEAD
-	if (m_console == nil)
-		m_console = [[MAMEDebugConsole alloc] initWithMachine:*m_machine];
-=======
 	create_console();
->>>>>>> upstream/master
 
 	// make sure the debug windows are visible
 	if (firststop)
 	{
-<<<<<<< HEAD
-=======
 		if (m_config)
 		{
 			[m_console loadConfiguration:m_config->get_first_child()];
 			m_config.reset();
 		}
->>>>>>> upstream/master
 		NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:[NSValue valueWithPointer:&device],
 																		@"MAMEDebugDevice",
 																		[NSValue valueWithPointer:m_machine],
@@ -237,18 +173,12 @@ void debugger_osx::wait_for_debugger(device_t &device, bool firststop)
 
 
 //============================================================
-<<<<<<< HEAD
-//  debugger_update
-=======
 //  debugger_osx::debugger_update
->>>>>>> upstream/master
 //============================================================
 
 void debugger_osx::debugger_update()
 {
 }
-<<<<<<< HEAD
-=======
 
 
 //============================================================
@@ -411,4 +341,3 @@ void debugger_osx::config_save(config_type cfgtype, util::xml::data_node *parent
 		[pool release];
 	}
 }
->>>>>>> upstream/master

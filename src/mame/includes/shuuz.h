@@ -20,29 +20,17 @@ public:
 
 	int m_cur[2];
 
-<<<<<<< HEAD
-	virtual void update_interrupts();
-=======
 	virtual void update_interrupts() override;
->>>>>>> upstream/master
 
 	DECLARE_WRITE16_MEMBER(latch_w);
 	DECLARE_READ16_MEMBER(leta_r);
 	DECLARE_READ16_MEMBER(special_port0_r);
 
-<<<<<<< HEAD
-	virtual void machine_start();
-
-	TILE_GET_INFO_MEMBER(get_playfield_tile_info);
-
-	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	virtual void machine_start() override;
 
 	TILE_GET_INFO_MEMBER(get_playfield_tile_info);
 
 	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 
 	static const atari_motion_objects_config s_mob_config;
 };

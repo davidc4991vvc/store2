@@ -1,9 +1,5 @@
 // license:BSD-3-Clause
-<<<<<<< HEAD
-// copyright-holders:Nicola Salmoria
-=======
 // copyright-holders:Nicola Salmoria,Derrick Renaud
->>>>>>> upstream/master
 /***************************************************************************
 
     Taito Crazy Balloon hardware
@@ -14,10 +10,7 @@
 
 #include "emu.h"
 #include "includes/crbaloon.h"
-<<<<<<< HEAD
-=======
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 /* timing sources */
@@ -145,11 +138,7 @@ static DISCRETE_SOUND_START(crbaloon)
 DISCRETE_SOUND_END
 
 
-<<<<<<< HEAD
-MACHINE_CONFIG_FRAGMENT( crbaloon_audio )
-=======
 MACHINE_CONFIG_START( crbaloon_audio )
->>>>>>> upstream/master
 
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 

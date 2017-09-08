@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-// license:???
-=======
 // license:BSD-3-Clause
->>>>>>> upstream/master
 // copyright-holders:Philip Bennett,Carlos A. Lozano, Rob Rosenbrock, Phil Stroffolino, Ernesto Corvi, David Haywood, R. Belmont
 /***************************************************************************
 
@@ -64,11 +60,7 @@ TILEMAP_MAPPER_MEMBER(ddragon_state::background_scan)
 
 TILE_GET_INFO_MEMBER(ddragon_state::get_bg_tile_info)
 {
-<<<<<<< HEAD
-	UINT8 attr = m_bgvideoram[2 * tile_index];
-=======
 	uint8_t attr = m_bgvideoram[2 * tile_index];
->>>>>>> upstream/master
 	SET_TILE_INFO_MEMBER(2,
 			m_bgvideoram[2 * tile_index+1] + ((attr & 0x07) << 8),
 			(attr >> 3) & 0x07,
@@ -77,11 +69,7 @@ TILE_GET_INFO_MEMBER(ddragon_state::get_bg_tile_info)
 
 TILE_GET_INFO_MEMBER(ddragon_state::get_fg_tile_info)
 {
-<<<<<<< HEAD
-	UINT8 attr = m_fgvideoram[2 * tile_index];
-=======
 	uint8_t attr = m_fgvideoram[2 * tile_index];
->>>>>>> upstream/master
 	SET_TILE_INFO_MEMBER(0,
 			m_fgvideoram[2 * tile_index + 1] + ((attr & 0x07) << 8),
 			attr >> 5,
@@ -90,11 +78,7 @@ TILE_GET_INFO_MEMBER(ddragon_state::get_fg_tile_info)
 
 TILE_GET_INFO_MEMBER(ddragon_state::get_fg_16color_tile_info)
 {
-<<<<<<< HEAD
-	UINT8 attr = m_fgvideoram[2 * tile_index];
-=======
 	uint8_t attr = m_fgvideoram[2 * tile_index];
->>>>>>> upstream/master
 	SET_TILE_INFO_MEMBER(0,
 			m_fgvideoram[2 * tile_index+1] + ((attr & 0x0f) << 8),
 			attr >> 4,
@@ -110,13 +94,8 @@ TILE_GET_INFO_MEMBER(ddragon_state::get_fg_16color_tile_info)
 
 VIDEO_START_MEMBER(ddragon_state,ddragon)
 {
-<<<<<<< HEAD
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(ddragon_state::get_bg_tile_info),this), tilemap_mapper_delegate(FUNC(ddragon_state::background_scan),this), 16, 16, 32, 32);
-	m_fg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(ddragon_state::get_fg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
-=======
 	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(ddragon_state::get_bg_tile_info),this), tilemap_mapper_delegate(FUNC(ddragon_state::background_scan),this), 16, 16, 32, 32);
 	m_fg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(ddragon_state::get_fg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
->>>>>>> upstream/master
 
 	m_fg_tilemap->set_transparent_pen(0);
 	m_fg_tilemap->set_scrolldx(0, 0);
@@ -158,17 +137,10 @@ WRITE8_MEMBER(ddragon_state::ddragon_fgvideoram_w)
 void ddragon_state::draw_sprites(bitmap_ind16 &bitmap,const rectangle &cliprect)
 {
 	gfx_element *gfx = m_gfxdecode->gfx(1);
-<<<<<<< HEAD
-	const UINT8 *src = m_spriteram;
-	const UINT32 bytes = m_spriteram.bytes();
-
-	for (UINT32 i = 0; i < bytes; i += 5)
-=======
 	const uint8_t *src = m_spriteram;
 	const uint32_t bytes = m_spriteram.bytes();
 
 	for (uint32_t i = 0; i < bytes; i += 5)
->>>>>>> upstream/master
 	{
 		int attr = src[i + 1];
 		if (attr & 0x80)  /* visible */
@@ -241,11 +213,7 @@ void ddragon_state::draw_sprites(bitmap_ind16 &bitmap,const rectangle &cliprect)
 #undef DRAW_SPRITE
 
 
-<<<<<<< HEAD
-UINT32 ddragon_state::screen_update_ddragon(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t ddragon_state::screen_update_ddragon(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int scrollx = (m_scrollx_hi << 8) | *m_scrollx_lo;
 	int scrolly = (m_scrolly_hi << 8) | *m_scrolly_lo;

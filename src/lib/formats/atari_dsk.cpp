@@ -31,12 +31,7 @@ LEGACY_FLOPPY_OPTIONS_START( atari_only )
 		"Atari floppy disk image",
 		atari_dsk_identify,
 		atari_dsk_construct,
-<<<<<<< HEAD
-		NULL,
-		NULL
-=======
 		nullptr,
 		nullptr
->>>>>>> upstream/master
 	)
 LEGACY_FLOPPY_OPTIONS_END0

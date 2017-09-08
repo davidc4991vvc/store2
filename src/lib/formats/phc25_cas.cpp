@@ -42,11 +42,7 @@ enough to make it work.
 // image size
 static int phc25_image_size;
 
-<<<<<<< HEAD
-static int phc25_put_samples(INT16 *buffer, int sample_pos, int count, int level)
-=======
 static int phc25_put_samples(int16_t *buffer, int sample_pos, int count, int level)
->>>>>>> upstream/master
 {
 	if (buffer)
 	{
@@ -57,11 +53,7 @@ static int phc25_put_samples(int16_t *buffer, int sample_pos, int count, int lev
 	return count;
 }
 
-<<<<<<< HEAD
-static int phc25_output_bit(INT16 *buffer, int sample_pos, bool bit)
-=======
 static int phc25_output_bit(int16_t *buffer, int sample_pos, bool bit)
->>>>>>> upstream/master
 {
 	int samples = 0;
 
@@ -81,17 +73,10 @@ static int phc25_output_bit(int16_t *buffer, int sample_pos, bool bit)
 	return samples;
 }
 
-<<<<<<< HEAD
-static int phc25_output_byte(INT16 *buffer, int sample_pos, UINT8 byte)
-{
-	int samples = 0;
-	UINT8 i;
-=======
 static int phc25_output_byte(int16_t *buffer, int sample_pos, uint8_t byte)
 {
 	int samples = 0;
 	uint8_t i;
->>>>>>> upstream/master
 
 	/* start */
 	samples += phc25_output_bit (buffer, sample_pos + samples, 0);
@@ -107,19 +92,11 @@ static int phc25_output_byte(int16_t *buffer, int sample_pos, uint8_t byte)
 	return samples;
 }
 
-<<<<<<< HEAD
-static int phc25_handle_cassette(INT16 *buffer, const UINT8 *bytes)
-{
-	UINT32 sample_count = 0;
-	UINT32 byte_count = 0;
-	UINT32 i;
-=======
 static int phc25_handle_cassette(int16_t *buffer, const uint8_t *bytes)
 {
 	uint32_t sample_count = 0;
 	uint32_t byte_count = 0;
 	uint32_t i;
->>>>>>> upstream/master
 
 	// silence
 //  sample_count += phc25_put_samples(buffer, 6640, 2, WAVEENTRY_HIGH);
@@ -154,11 +131,7 @@ static int phc25_handle_cassette(int16_t *buffer, const uint8_t *bytes)
    Generate samples for the tape image
 ********************************************************************/
 
-<<<<<<< HEAD
-static int phc25_cassette_fill_wave(INT16 *buffer, int length, UINT8 *bytes)
-=======
 static int phc25_cassette_fill_wave(int16_t *buffer, int length, uint8_t *bytes)
->>>>>>> upstream/master
 {
 	return phc25_handle_cassette(buffer, bytes);
 }
@@ -167,19 +140,11 @@ static int phc25_cassette_fill_wave(int16_t *buffer, int length, uint8_t *bytes)
    Calculate the number of samples needed for this tape image
 ********************************************************************/
 
-<<<<<<< HEAD
-static int phc25_cassette_calculate_size_in_samples(const UINT8 *bytes, int length)
-{
-	phc25_image_size = length;
-
-	return phc25_handle_cassette(NULL, bytes);
-=======
 static int phc25_cassette_calculate_size_in_samples(const uint8_t *bytes, int length)
 {
 	phc25_image_size = length;
 
 	return phc25_handle_cassette(nullptr, bytes);
->>>>>>> upstream/master
 }
 
 static const struct CassetteLegacyWaveFiller phc25_legacy_fill_wave =
@@ -193,20 +158,12 @@ static const struct CassetteLegacyWaveFiller phc25_legacy_fill_wave =
 	0                                       /* trailer_samples */
 };
 
-<<<<<<< HEAD
-static casserr_t phc25_cassette_identify(cassette_image *cassette, struct CassetteOptions *opts)
-=======
 static cassette_image::error phc25_cassette_identify(cassette_image *cassette, struct CassetteOptions *opts)
->>>>>>> upstream/master
 {
 	return cassette_legacy_identify(cassette, opts, &phc25_legacy_fill_wave);
 }
 
-<<<<<<< HEAD
-static casserr_t phc25_cassette_load(cassette_image *cassette)
-=======
 static cassette_image::error phc25_cassette_load(cassette_image *cassette)
->>>>>>> upstream/master
 {
 	return cassette_legacy_construct(cassette, &phc25_legacy_fill_wave);
 }
@@ -216,11 +173,7 @@ static const struct CassetteFormat phc25_cassette_image_format =
 	"phc",
 	phc25_cassette_identify,
 	phc25_cassette_load,
-<<<<<<< HEAD
-	NULL
-=======
 	nullptr
->>>>>>> upstream/master
 };
 
 CASSETTE_FORMATLIST_START(phc25_cassette_formats)

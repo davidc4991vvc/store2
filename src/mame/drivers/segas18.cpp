@@ -8,11 +8,8 @@
 
     Known bugs:
         * lghost sprites seem to be slightly out of sync
-<<<<<<< HEAD
-=======
         * lghost gun offset correction is not perfect yet - we should be able
           to get an exact conversion from the disasm
->>>>>>> upstream/master
         * vdp gfx on 2nd attract level of lghost are corrupt at top of stairs
           after attract mode loops
         * pauses in lghost where all sprites vanish
@@ -35,14 +32,6 @@
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "machine/segaic16.h"
-#include "machine/nvram.h"
-#include "includes/segas18.h"
-#include "sound/2612intf.h"
-#include "sound/rf5c68.h"
-#include "includes/segaipt.h"
-=======
 #include "includes/segas18.h"
 #include "includes/segaipt.h"
 
@@ -50,7 +39,6 @@
 #include "sound/2612intf.h"
 #include "sound/rf5c68.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 /*************************************
  *
@@ -58,15 +46,9 @@
  *
  *************************************/
 
-<<<<<<< HEAD
-void segas18_state::memory_mapper(sega_315_5195_mapper_device &mapper, UINT8 index)
-{
-	UINT32 romsize = m_maincpu->region()->bytes();
-=======
 void segas18_state::memory_mapper(sega_315_5195_mapper_device &mapper, uint8_t index)
 {
 	uint32_t romsize = m_maincpu_region->bytes();
->>>>>>> upstream/master
 	switch (index)
 	{
 		case 7:
@@ -143,24 +125,14 @@ void segas18_state::memory_mapper(sega_315_5195_mapper_device &mapper, uint8_t i
  *
  *************************************/
 
-<<<<<<< HEAD
-UINT8 segas18_state::mapper_sound_r()
-=======
 uint8_t segas18_state::mapper_sound_r()
->>>>>>> upstream/master
 {
 	return m_mcu_data;
 }
 
-<<<<<<< HEAD
-void segas18_state::mapper_sound_w(UINT8 data)
-{
-	soundlatch_write(data & 0xff);
-=======
 void segas18_state::mapper_sound_w(uint8_t data)
 {
 	m_soundlatch->write(m_soundcpu->space(AS_PROGRAM), 0, data & 0xff);
->>>>>>> upstream/master
 	m_soundcpu->set_input_line(INPUT_LINE_NMI, PULSE_LINE);
 }
 
@@ -174,11 +146,7 @@ void segas18_state::init_generic(segas18_rom_board rom_board)
 
 	// configure VDP
 	m_vdp->set_use_cram(1);
-<<<<<<< HEAD
-	m_vdp->set_vdp_pal(FALSE);
-=======
 	m_vdp->set_vdp_pal(false);
->>>>>>> upstream/master
 	m_vdp->set_framerate(60);
 	m_vdp->set_total_scanlines(262);
 	m_vdp->stop_timers(); // 315-5124 timers
@@ -187,11 +155,6 @@ void segas18_state::init_generic(segas18_rom_board rom_board)
 	save_item(NAME(m_mcu_data));
 	save_item(NAME(m_lghost_value));
 	save_item(NAME(m_lghost_select));
-<<<<<<< HEAD
-	save_item(NAME(m_wwally_last_x));
-	save_item(NAME(m_wwally_last_y));
-=======
->>>>>>> upstream/master
 }
 
 
@@ -212,13 +175,10 @@ void segas18_state::device_timer(emu_timer &timer, device_timer_id id, int param
 	}
 }
 
-<<<<<<< HEAD
-=======
 void segas18_state::machine_start()
 {
 	membank("soundbank")->configure_entries(0, 256, memregion("soundcpu")->base() + 0x10000, 0x2000);
 }
->>>>>>> upstream/master
 
 void segas18_state::machine_reset()
 {
@@ -227,11 +187,7 @@ void segas18_state::machine_reset()
 	m_vdp->device_reset_old();
 
 	// if we are running with a real live 8751, we need to boost the interleave at startup
-<<<<<<< HEAD
-	if (m_mcu != NULL && m_mcu->type() == I8751)
-=======
 	if (m_mcu != nullptr && m_mcu->type() == I8751)
->>>>>>> upstream/master
 		synchronize(TID_INITIAL_BOOST);
 }
 
@@ -251,17 +207,10 @@ WRITE8_MEMBER( segas18_state::misc_outputs_w )
 	m_sprites->set_flip(data & 0x20);
 	// These are correct according to cgfm's docs, but mwalker and ddcrew both
 	// enable the lockout and never turn it off
-<<<<<<< HEAD
-	// coin_lockout_w(machine(), 1, data & 0x08);
-	// coin_lockout_w(machine(), 0, data & 0x04);
-	coin_counter_w(machine(), 1, data & 0x02);
-	coin_counter_w(machine(), 0, data & 0x01);
-=======
 	// machine().bookkeeping().coin_lockout_w(1, data & 0x08);
 	// machine().bookkeeping().coin_lockout_w(0, data & 0x04);
 	machine().bookkeeping().coin_counter_w(1, data & 0x02);
 	machine().bookkeeping().coin_counter_w(0, data & 0x01);
->>>>>>> upstream/master
 }
 
 
@@ -431,11 +380,7 @@ READ16_MEMBER( segas18_state::ddcrew_custom_io_r )
 
 READ16_MEMBER( segas18_state::lghost_custom_io_r )
 {
-<<<<<<< HEAD
-	UINT16 result;
-=======
 	uint16_t result;
->>>>>>> upstream/master
 	switch (offset)
 	{
 		case 0x3010/2:
@@ -451,24 +396,6 @@ READ16_MEMBER( segas18_state::lghost_custom_io_r )
 
 WRITE16_MEMBER( segas18_state::lghost_custom_io_w )
 {
-<<<<<<< HEAD
-	switch (offset)
-	{
-		case 0x3010/2:
-			m_lghost_value = 255 - ioport("GUNY1")->read();
-			break;
-
-		case 0x3012/2:
-			m_lghost_value = ioport("GUNX1")->read();
-			break;
-
-		case 0x3014/2:
-			m_lghost_value = 255 - ioport(m_lghost_select ? "GUNY3" : "GUNY2")->read();
-			break;
-
-		case 0x3016/2:
-			m_lghost_value = ioport(m_lghost_select ? "GUNX3" : "GUNX2")->read();
-=======
 	uint8_t pos_value_x, pos_value_y;
 
 	switch (offset)
@@ -638,7 +565,6 @@ WRITE16_MEMBER( segas18_state::lghost_custom_io_w )
 			// Player 2, X axis. It doesn't need any offset adjustement.
 			else
 				m_lghost_value = ioport("GUNX2")->read();
->>>>>>> upstream/master
 			break;
 
 		case 0x3020/2:
@@ -650,15 +576,9 @@ WRITE16_MEMBER( segas18_state::lghost_custom_io_w )
 
 WRITE8_MEMBER( segas18_state::lghost_gun_recoil_w )
 {
-<<<<<<< HEAD
-	output_set_value("P1_Gun_Recoil", (~data & 0x01));
-	output_set_value("P2_Gun_Recoil", (~data & 0x02)>>1);
-	output_set_value("P3_Gun_Recoil", (~data & 0x04)>>2);
-=======
 	output().set_value("P1_Gun_Recoil", (~data & 0x01));
 	output().set_value("P2_Gun_Recoil", (~data & 0x02)>>1);
 	output().set_value("P3_Gun_Recoil", (~data & 0x04)>>2);
->>>>>>> upstream/master
 }
 
 
@@ -671,63 +591,17 @@ WRITE8_MEMBER( segas18_state::lghost_gun_recoil_w )
 
 READ16_MEMBER( segas18_state::wwally_custom_io_r )
 {
-<<<<<<< HEAD
-	switch (offset)
-	{
-		case 0x3000/2:
-			return (ioport("TRACKX1")->read() - m_wwally_last_x[0]) & 0xff;
-
-		case 0x3004/2:
-			return (ioport("TRACKY1")->read() - m_wwally_last_y[0]) & 0xff;
-
-		case 0x3008/2:
-			return (ioport("TRACKX2")->read() - m_wwally_last_x[1]) & 0xff;
-
-		case 0x300c/2:
-			return (ioport("TRACKY2")->read() - m_wwally_last_y[1]) & 0xff;
-
-		case 0x3010/2:
-			return (ioport("TRACKX3")->read() - m_wwally_last_x[2]) & 0xff;
-
-		case 0x3014/2:
-			return (ioport("TRACKY3")->read() - m_wwally_last_y[2]) & 0xff;
-	}
-=======
 	if (offset >= 0x3000/2 && offset < 0x3018/2)
 		return m_upd4701[(offset & 0x0018/2) >> 2]->read_xy(space, offset & 0x0006/2);
 
->>>>>>> upstream/master
 	return open_bus_r(space, 0, mem_mask);
 }
 
 
 WRITE16_MEMBER( segas18_state::wwally_custom_io_w )
 {
-<<<<<<< HEAD
-	switch (offset)
-	{
-		case 0x3000/2:
-		case 0x3004/2:
-			m_wwally_last_x[0] = ioport("TRACKX1")->read();
-			m_wwally_last_y[0] = ioport("TRACKY1")->read();
-			break;
-
-		case 0x3008/2:
-		case 0x300c/2:
-			m_wwally_last_x[1] = ioport("TRACKX2")->read();
-			m_wwally_last_y[1] = ioport("TRACKY2")->read();
-			break;
-
-		case 0x3010/2:
-		case 0x3014/2:
-			m_wwally_last_x[2] = ioport("TRACKX3")->read();
-			m_wwally_last_y[2] = ioport("TRACKY3")->read();
-			break;
-	}
-=======
 	if (offset >= 0x3000/2 && offset < 0x3018/2)
 		m_upd4701[(offset & 0x0018/2) >> 2]->reset_xy(space, 0);
->>>>>>> upstream/master
 }
 
 
@@ -740,11 +614,7 @@ WRITE16_MEMBER( segas18_state::wwally_custom_io_w )
 
 WRITE8_MEMBER( segas18_state::soundbank_w )
 {
-<<<<<<< HEAD
-	membank("bank1")->set_base(memregion("soundcpu")->base() + 0x10000 + 0x2000 * data);
-=======
 	membank("soundbank")->set_entry(data);
->>>>>>> upstream/master
 }
 
 
@@ -775,11 +645,7 @@ static ADDRESS_MAP_START( system18_map, AS_PROGRAM, 16, segas18_state )
 	AM_RANGE(0x500000, 0x503fff) AM_RAM AM_SHARE("workram")
 ADDRESS_MAP_END
 
-<<<<<<< HEAD
-static ADDRESS_MAP_START( decrypted_opcodes_map, AS_DECRYPTED_OPCODES, 16, segas18_state )
-=======
 static ADDRESS_MAP_START( decrypted_opcodes_map, AS_OPCODES, 16, segas18_state )
->>>>>>> upstream/master
 	AM_RANGE(0x00000, 0xfffff) AM_ROMBANK("fd1094_decrypted_opcodes")
 ADDRESS_MAP_END
 
@@ -792,11 +658,7 @@ ADDRESS_MAP_END
 static ADDRESS_MAP_START( sound_map, AS_PROGRAM, 8, segas18_state )
 	ADDRESS_MAP_UNMAP_HIGH
 	AM_RANGE(0x0000, 0x9fff) AM_ROM AM_REGION("soundcpu", 0x10000)
-<<<<<<< HEAD
-	AM_RANGE(0xa000, 0xbfff) AM_ROMBANK("bank1")
-=======
 	AM_RANGE(0xa000, 0xbfff) AM_ROMBANK("soundbank")
->>>>>>> upstream/master
 	AM_RANGE(0xc000, 0xc00f) AM_MIRROR(0x0ff0) AM_DEVWRITE("rfsnd", rf5c68_device, rf5c68_w)
 	AM_RANGE(0xd000, 0xdfff) AM_DEVREADWRITE("rfsnd", rf5c68_device, rf5c68_mem_r, rf5c68_mem_w)
 	AM_RANGE(0xe000, 0xffff) AM_RAM
@@ -808,11 +670,7 @@ static ADDRESS_MAP_START( sound_portmap, AS_IO, 8, segas18_state )
 	AM_RANGE(0x80, 0x83) AM_MIRROR(0x0c) AM_DEVREADWRITE("ym1", ym3438_device, read, write)
 	AM_RANGE(0x90, 0x93) AM_MIRROR(0x0c) AM_DEVREADWRITE("ym2", ym3438_device, read, write)
 	AM_RANGE(0xa0, 0xa0) AM_MIRROR(0x1f) AM_WRITE(soundbank_w)
-<<<<<<< HEAD
-	AM_RANGE(0xc0, 0xc0) AM_MIRROR(0x1f) AM_READ(soundlatch_byte_r) AM_WRITE(mcu_data_w)
-=======
 	AM_RANGE(0xc0, 0xc0) AM_MIRROR(0x1f) AM_DEVREAD("soundlatch", generic_latch_8_device, read) AM_WRITE(mcu_data_w)
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -1266,14 +1124,11 @@ static INPUT_PORTS_START( lghost )
 
 	PORT_START("GUNY3")
 	PORT_BIT( 0xff, 0x80, IPT_LIGHTGUN_Y ) PORT_CROSSHAIR(Y, 1.0, 0.0, 0) PORT_SENSITIVITY(50) PORT_KEYDELTA(5) PORT_PLAYER(3)
-<<<<<<< HEAD
-=======
 
 	PORT_START("FAKE")
 	PORT_CONFNAME( 0x01, 0x01, "Correct P1/P3 Gun Offsets")
 	PORT_CONFSETTING(    0x00, DEF_STR( No ) )
 	PORT_CONFSETTING(    0x01, DEF_STR( Yes ) )
->>>>>>> upstream/master
 INPUT_PORTS_END
 
 
@@ -1396,24 +1251,6 @@ static INPUT_PORTS_START( wwally )
 	//"SW2:8" unused
 
 	PORT_START("TRACKX1")
-<<<<<<< HEAD
-	PORT_BIT( 0xff, 0x00, IPT_TRACKBALL_X ) PORT_SENSITIVITY(75) PORT_KEYDELTA(5) PORT_REVERSE
-
-	PORT_START("TRACKY1")
-	PORT_BIT( 0xff, 0x00, IPT_TRACKBALL_Y ) PORT_SENSITIVITY(75) PORT_KEYDELTA(5)
-
-	PORT_START("TRACKX2")
-	PORT_BIT( 0xff, 0x00, IPT_TRACKBALL_X ) PORT_SENSITIVITY(75) PORT_KEYDELTA(5) PORT_PLAYER(2) PORT_REVERSE
-
-	PORT_START("TRACKY2")
-	PORT_BIT( 0xff, 0x00, IPT_TRACKBALL_Y ) PORT_SENSITIVITY(75) PORT_KEYDELTA(5) PORT_PLAYER(2)
-
-	PORT_START("TRACKX3")
-	PORT_BIT( 0xff, 0x00, IPT_TRACKBALL_X ) PORT_SENSITIVITY(75) PORT_KEYDELTA(5) PORT_PLAYER(3) PORT_REVERSE
-
-	PORT_START("TRACKY3")
-	PORT_BIT( 0xff, 0x00, IPT_TRACKBALL_Y ) PORT_SENSITIVITY(75) PORT_KEYDELTA(5) PORT_PLAYER(3)
-=======
 	PORT_BIT( 0xfff, 0x000, IPT_TRACKBALL_X ) PORT_SENSITIVITY(75) PORT_KEYDELTA(5) PORT_REVERSE PORT_RESET
 
 	PORT_START("TRACKY1")
@@ -1430,7 +1267,6 @@ static INPUT_PORTS_START( wwally )
 
 	PORT_START("TRACKY3")
 	PORT_BIT( 0xfff, 0x000, IPT_TRACKBALL_Y ) PORT_SENSITIVITY(75) PORT_KEYDELTA(5) PORT_PLAYER(3) PORT_RESET
->>>>>>> upstream/master
 INPUT_PORTS_END
 
 
@@ -1483,11 +1319,7 @@ WRITE_LINE_MEMBER(segas18_state::ym3438_irq_handler)
 }
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( system18, segas18_state )
-=======
 static MACHINE_CONFIG_START( system18 )
->>>>>>> upstream/master
 
 	// basic machine hardware
 	MCFG_CPU_ADD("maincpu", M68000, 10000000)
@@ -1543,11 +1375,8 @@ static MACHINE_CONFIG_START( system18 )
 	// sound hardware
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 
->>>>>>> upstream/master
 	MCFG_SOUND_ADD("ym1", YM3438, 8000000)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.40)
 	MCFG_YM2612_IRQ_HANDLER(WRITELINE(segas18_state, ym3438_irq_handler))
@@ -1583,8 +1412,6 @@ static MACHINE_CONFIG_DERIVED( lghost, system18 )
 	MCFG_315_5296_OUT_PORTC_CB(WRITE8(segas18_state, lghost_gun_recoil_w))
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-=======
 static MACHINE_CONFIG_DERIVED( wwally_fd1094, system18_fd1094 )
 	MCFG_DEVICE_ADD("upd1", UPD4701A, 0)
 	MCFG_UPD4701_PORTX("TRACKX1")
@@ -1613,7 +1440,6 @@ static MACHINE_CONFIG_DERIVED( wwally, system18 )
 	MCFG_UPD4701_PORTY("TRACKY3")
 MACHINE_CONFIG_END
 
->>>>>>> upstream/master
 static MACHINE_CONFIG_DERIVED( system18_i8751, system18 )
 
 	// basic machine hardware
@@ -1675,11 +1501,7 @@ ROM_START( astorm )
 	ROM_LOAD16_BYTE( "epr-13086.bin", 0x180000, 0x40000, CRC(8c9a71c4) SHA1(40b774765ac888792aad46b6351a24b7ef40d2dc) )
 
 	ROM_REGION( 0x210000, "soundcpu", ROMREGION_ERASEFF ) // sound CPU
-<<<<<<< HEAD
-	ROM_LOAD( "epr-13083a.bin", 0x010000, 0x20000, CRC(e7528e06) SHA1(1f4e618692c20aeb316d578c5ded12440eb072ab) ) // Also known to have EPR-13083B like astormj
-=======
 	ROM_LOAD( "epr-13083a.bin", 0x010000, 0x20000, CRC(e7528e06) SHA1(1f4e618692c20aeb316d578c5ded12440eb072ab) ) // Also known to come with EPR-13083B rom instead of EPR-13083A (like astormj)
->>>>>>> upstream/master
 	ROM_LOAD( "epr-13076.bin",  0x090000, 0x40000, CRC(94e6c76e) SHA1(f99e58a9bf372c41af211bd9b9ea3ac5b924c6ed) )
 	ROM_LOAD( "epr-13077.bin",  0x110000, 0x40000, CRC(e2ec0d8d) SHA1(225b0d223b7282cba7710300a877fb4a2c6dbabb) )
 	ROM_LOAD( "epr-13078.bin",  0x190000, 0x40000, CRC(15684dc5) SHA1(595051006de24f791dae937584e502ff2fa31d9c) )
@@ -1715,11 +1537,7 @@ ROM_START( astorm3 )
 	ROM_LOAD16_BYTE( "epr-13086.bin", 0x180000, 0x40000, CRC(8c9a71c4) SHA1(40b774765ac888792aad46b6351a24b7ef40d2dc) )
 
 	ROM_REGION( 0x210000, "soundcpu", ROMREGION_ERASEFF ) // sound CPU
-<<<<<<< HEAD
-	ROM_LOAD( "epr-13083.bin", 0x010000, 0x20000, CRC(5df3af20) SHA1(e49105fcfd5bf37d14bd760f6adca5ce2412883d) )
-=======
 	ROM_LOAD( "epr-13083.bin", 0x010000, 0x20000, CRC(5df3af20) SHA1(e49105fcfd5bf37d14bd760f6adca5ce2412883d) ) // Also known to come with EPR-13083A rom instead of EPR-13083
->>>>>>> upstream/master
 	ROM_LOAD( "epr-13076.bin", 0x090000, 0x40000, CRC(94e6c76e) SHA1(f99e58a9bf372c41af211bd9b9ea3ac5b924c6ed) )
 	ROM_LOAD( "epr-13077.bin", 0x110000, 0x40000, CRC(e2ec0d8d) SHA1(225b0d223b7282cba7710300a877fb4a2c6dbabb) )
 	ROM_LOAD( "epr-13078.bin", 0x190000, 0x40000, CRC(15684dc5) SHA1(595051006de24f791dae937584e502ff2fa31d9c) )
@@ -1897,15 +1715,9 @@ ROM_START( bloxeed )
 	ROM_LOAD( "opr-12885.b2", 0x10000, 0x10000, CRC(8041b814) SHA1(29fa49ba9a73eed07865a86ea774e2c6a60aed5b) )
 	ROM_LOAD( "opr-12886.b3", 0x20000, 0x10000, CRC(de32285e) SHA1(8994dc128d6a23763e5fcfca1868b336d4aa0a21) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x20000, "sprites", 0 ) // sprites
-	ROM_LOAD16_BYTE( "opr-12891.a11", 0x00001, 0x10000, CRC(90d31a8c) SHA1(1747652a5109ce65add197cf06535f2463a99fdc) )
-	ROM_LOAD16_BYTE( "opr-12887.b11", 0x00000, 0x10000, CRC(f0c0f49d) SHA1(7ecd591265165f3149241e2ceb5059faab88360f) )
-=======
 	ROM_REGION16_BE( 0x20000, "sprites", 0 ) // sprites
 	ROM_LOAD16_BYTE( "opr-12891.a11", 0x00000, 0x10000, CRC(90d31a8c) SHA1(1747652a5109ce65add197cf06535f2463a99fdc) )
 	ROM_LOAD16_BYTE( "opr-12887.b11", 0x00001, 0x10000, CRC(f0c0f49d) SHA1(7ecd591265165f3149241e2ceb5059faab88360f) )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x210000, "soundcpu", ROMREGION_ERASEFF ) // sound CPU
 	ROM_LOAD( "epr-12888.a4", 0x010000, 0x20000, CRC(6f2fc63c) SHA1(3cce22c8f80013f05b5a2d36c42a61a81e4d6cbd) )
@@ -1921,15 +1733,9 @@ ROM_START( bloxeedd )
 	ROM_LOAD( "opr-12885.b2", 0x10000, 0x10000, CRC(8041b814) SHA1(29fa49ba9a73eed07865a86ea774e2c6a60aed5b) )
 	ROM_LOAD( "opr-12886.b3", 0x20000, 0x10000, CRC(de32285e) SHA1(8994dc128d6a23763e5fcfca1868b336d4aa0a21) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x20000, "sprites", 0 ) // sprites
-	ROM_LOAD16_BYTE( "opr-12891.a11", 0x00001, 0x10000, CRC(90d31a8c) SHA1(1747652a5109ce65add197cf06535f2463a99fdc) )
-	ROM_LOAD16_BYTE( "opr-12887.b11", 0x00000, 0x10000, CRC(f0c0f49d) SHA1(7ecd591265165f3149241e2ceb5059faab88360f) )
-=======
 	ROM_REGION16_BE( 0x20000, "sprites", 0 ) // sprites
 	ROM_LOAD16_BYTE( "opr-12891.a11", 0x00000, 0x10000, CRC(90d31a8c) SHA1(1747652a5109ce65add197cf06535f2463a99fdc) )
 	ROM_LOAD16_BYTE( "opr-12887.b11", 0x00001, 0x10000, CRC(f0c0f49d) SHA1(7ecd591265165f3149241e2ceb5059faab88360f) )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x210000, "soundcpu", ROMREGION_ERASEFF ) // sound CPU
 	ROM_LOAD( "epr-12888.a4", 0x010000, 0x20000, CRC(6f2fc63c) SHA1(3cce22c8f80013f05b5a2d36c42a61a81e4d6cbd) )
@@ -2658,11 +2464,7 @@ ROM_END
 /**************************************************************************************************************************
  **************************************************************************************************************************
  **************************************************************************************************************************
-<<<<<<< HEAD
-    Laser Ghost, Sega System 18
-=======
     Laser Ghost (World), Sega System 18
->>>>>>> upstream/master
     CPU: FD1094 (317-0166)
     ROM Board: 171-5873B
 */
@@ -2693,10 +2495,6 @@ ROM_START( lghost )
 
 	ROM_REGION( 0x210000, "soundcpu", ROMREGION_ERASEFF ) // sound CPU
 	ROM_LOAD( "epr-13417.c7",   0x010000, 0x20000, CRC(cd7beb49) SHA1(2435ce000f1eefdd06b27ea93e22fd82c0e999d2) )
-<<<<<<< HEAD
-	// these seem best 3 from the different sized dumps
-=======
->>>>>>> upstream/master
 	ROM_LOAD( "mpr-13420.c6",   0x090000, 0x40000, CRC(3de0dee4) SHA1(31833684df5a34d5e9ef04f2ab42355b8e9cbb45) )
 	ROM_LOAD( "mpr-13419.c5",   0x110000, 0x40000, CRC(e7021b0a) SHA1(82e390fac63965d4f80ae01758c19ae951c39475) )
 	ROM_LOAD( "mpr-13418.c4",   0x190000, 0x40000, CRC(0732594d) SHA1(9fbeae29f1a31d136ddc9a49c786b2a08a523e0d) )
@@ -2726,27 +2524,17 @@ ROM_START( lghostd )
 
 	ROM_REGION( 0x210000, "soundcpu", ROMREGION_ERASEFF ) // sound CPU
 	ROM_LOAD( "epr-13417.c7",   0x010000, 0x20000, CRC(cd7beb49) SHA1(2435ce000f1eefdd06b27ea93e22fd82c0e999d2) )
-<<<<<<< HEAD
-	// these seem best 3 from the different sized dumps
-=======
->>>>>>> upstream/master
 	ROM_LOAD( "mpr-13420.c6",   0x090000, 0x40000, CRC(3de0dee4) SHA1(31833684df5a34d5e9ef04f2ab42355b8e9cbb45) )
 	ROM_LOAD( "mpr-13419.c5",   0x110000, 0x40000, CRC(e7021b0a) SHA1(82e390fac63965d4f80ae01758c19ae951c39475) )
 	ROM_LOAD( "mpr-13418.c4",   0x190000, 0x40000, CRC(0732594d) SHA1(9fbeae29f1a31d136ddc9a49c786b2a08a523e0d) )
 ROM_END
 
 /**************************************************************************************************************************
-<<<<<<< HEAD
-    Laser Ghost, Sega System 18
-=======
     Laser Ghost (US), Sega System 18
->>>>>>> upstream/master
     CPU: FD1094 (317-0165)
       Game BD: 833-7627-04 LASER GHOST
     ROM Board: 834-7597-04 (type 171-5873B)
     A/D BD NO. 837-7536
-<<<<<<< HEAD
-=======
 
 A PCB was found with a Game BD: 833-7627-01-T GHOST HUNTERS
 While the DATA matched the set below (lghostu), all roms were hand labeled and dated as follows:
@@ -2778,7 +2566,6 @@ Sound 3 10/22 @ C4
 
 suggesting the original name for the game was Ghost Hunters and the roms dated 11/20-14 & 11/19-14
 contain the data for name change to Laser Ghost
->>>>>>> upstream/master
 */
 ROM_START( lghostu )
 	ROM_REGION( 0x100000, "maincpu", 0 ) // 68000 code
@@ -2807,10 +2594,6 @@ ROM_START( lghostu )
 
 	ROM_REGION( 0x210000, "soundcpu", ROMREGION_ERASEFF ) // sound CPU
 	ROM_LOAD( "epr-13417.c7",   0x010000, 0x20000, CRC(cd7beb49) SHA1(2435ce000f1eefdd06b27ea93e22fd82c0e999d2) )
-<<<<<<< HEAD
-	// these seem best 3 from the different sized dumps
-=======
->>>>>>> upstream/master
 	ROM_LOAD( "mpr-13420.c6",   0x090000, 0x40000, CRC(3de0dee4) SHA1(31833684df5a34d5e9ef04f2ab42355b8e9cbb45) )
 	ROM_LOAD( "mpr-13419.c5",   0x110000, 0x40000, CRC(e7021b0a) SHA1(82e390fac63965d4f80ae01758c19ae951c39475) )
 	ROM_LOAD( "mpr-13418.c4",   0x190000, 0x40000, CRC(0732594d) SHA1(9fbeae29f1a31d136ddc9a49c786b2a08a523e0d) )
@@ -2841,9 +2624,6 @@ ROM_START( lghostud )
 
 	ROM_REGION( 0x210000, "soundcpu", ROMREGION_ERASEFF ) // sound CPU
 	ROM_LOAD( "epr-13417.c7",   0x010000, 0x20000, CRC(cd7beb49) SHA1(2435ce000f1eefdd06b27ea93e22fd82c0e999d2) )
-<<<<<<< HEAD
-	// these seem best 3 from the different sized dumps
-=======
 	ROM_LOAD( "mpr-13420.c6",   0x090000, 0x40000, CRC(3de0dee4) SHA1(31833684df5a34d5e9ef04f2ab42355b8e9cbb45) )
 	ROM_LOAD( "mpr-13419.c5",   0x110000, 0x40000, CRC(e7021b0a) SHA1(82e390fac63965d4f80ae01758c19ae951c39475) )
 	ROM_LOAD( "mpr-13418.c4",   0x190000, 0x40000, CRC(0732594d) SHA1(9fbeae29f1a31d136ddc9a49c786b2a08a523e0d) )
@@ -2884,7 +2664,6 @@ ROM_START( lghostj )
 
 	ROM_REGION( 0x210000, "soundcpu", ROMREGION_ERASEFF ) // sound CPU
 	ROM_LOAD( "epr-13417.c7",   0x010000, 0x20000, CRC(cd7beb49) SHA1(2435ce000f1eefdd06b27ea93e22fd82c0e999d2) )
->>>>>>> upstream/master
 	ROM_LOAD( "mpr-13420.c6",   0x090000, 0x40000, CRC(3de0dee4) SHA1(31833684df5a34d5e9ef04f2ab42355b8e9cbb45) )
 	ROM_LOAD( "mpr-13419.c5",   0x110000, 0x40000, CRC(e7021b0a) SHA1(82e390fac63965d4f80ae01758c19ae951c39475) )
 	ROM_LOAD( "mpr-13418.c4",   0x190000, 0x40000, CRC(0732594d) SHA1(9fbeae29f1a31d136ddc9a49c786b2a08a523e0d) )
@@ -3135,13 +2914,6 @@ ROM_END
     Shadow Dancer, Sega System 18
     CPU: 68000
     ROM Board: 171-5873B
-<<<<<<< HEAD
-*/
-ROM_START( shdancer )
-	ROM_REGION( 0x80000, "maincpu", 0 ) // 68000 code
-	ROM_LOAD16_BYTE( "shdancer.a6",  0x000000, 0x40000, CRC(3d5b3fa9) SHA1(370dd6e8ab9fb9e77eee9262d13fbdb4cf575abc) )
-	ROM_LOAD16_BYTE( "shdancer.a5",  0x000001, 0x40000, CRC(2596004e) SHA1(1b993aa74e7559f7e99253fd2144db9449c04cce) )
-=======
 
     game No. 833-7246-03
     pcb  No. 837-7248-01
@@ -3151,7 +2923,6 @@ ROM_START( shdancer )
 	ROM_REGION( 0x80000, "maincpu", 0 ) // 68000 code
 	ROM_LOAD16_BYTE( "epr-12774b.a6",  0x000000, 0x40000, CRC(3d5b3fa9) SHA1(370dd6e8ab9fb9e77eee9262d13fbdb4cf575abc) )
 	ROM_LOAD16_BYTE( "epr-12773b.a5",  0x000001, 0x40000, CRC(2596004e) SHA1(1b993aa74e7559f7e99253fd2144db9449c04cce) )
->>>>>>> upstream/master
 
 	ROM_REGION( 0xc0000, "gfx1", 0 ) // tiles
 	ROM_LOAD( "mpr-12712.b1",  0x00000, 0x40000, CRC(9bdabe3d) SHA1(4bb30fa2d4cdefe4a864cef7153b516bc5b02c42) )
@@ -3169,11 +2940,7 @@ ROM_START( shdancer )
 	ROM_LOAD16_BYTE( "epr-12723.a8",  0x180000, 0x40000, CRC(c606cf90) SHA1(cb53ae9a6da1eb31c584173d1fbbd1c8539fb54c) )
 
 	ROM_REGION( 0x210000, "soundcpu", ROMREGION_ERASEFF ) // sound CPU
-<<<<<<< HEAD
-	ROM_LOAD( "epr-12720.a4",  0x10000, 0x20000, CRC(7a0d8de1) SHA1(eca5e2104e5b3e772d083a718171234f06ea8a55) )
-=======
 	ROM_LOAD( "epr-12987.a4",  0x10000, 0x20000, CRC(d1c020cc) SHA1(7823e31fc44180570ee2512a73e993533204b5ab) )
->>>>>>> upstream/master
 	ROM_LOAD( "mpr-12715.b4",  0x90000, 0x40000, CRC(07051a52) SHA1(d48658497f4a34665d3e051f893ff057c38925ae) )
 ROM_END
 
@@ -3448,10 +3215,7 @@ GAME( 1991, hamaway,   0,        system18,             hamaway,  segas18_state, 
 
 GAME( 1990, lghost,    0,        lghost_fd1094,        lghost,   segas18_state, lghost,       ROT0,   "Sega",          "Laser Ghost (World) (FD1094 317-0166)", 0 )
 GAME( 1990, lghostu,   lghost,   lghost_fd1094,        lghost,   segas18_state, lghost,       ROT0,   "Sega",          "Laser Ghost (US) (FD1094 317-0165)", 0 )
-<<<<<<< HEAD
-=======
 GAME( 1990, lghostj,   lghost,   lghost_fd1094,        lghost,   segas18_state, lghost,       ROT0,   "Sega",          "Laser Ghost (Japan) (FD1094 317-0164)", 0 )
->>>>>>> upstream/master
 
 GAME( 1990, mwalk,     0,        system18_fd1094_i8751,mwalk,    segas18_state, generic_5874, ROT0,   "Sega",          "Michael Jackson's Moonwalker (World) (FD1094/8751 317-0159)", 0 )
 GAME( 1990, mwalku,    mwalk,    system18_fd1094_i8751,mwalka,   segas18_state, generic_5874, ROT0,   "Sega",          "Michael Jackson's Moonwalker (US) (FD1094/8751 317-0158)", 0 )
@@ -3463,13 +3227,8 @@ GAME( 1989, shdancer,  0,        system18,             shdancer, segas18_state, 
 GAME( 1989, shdancerj, shdancer, system18,             shdancer, segas18_state, generic_shad, ROT0,   "Sega",          "Shadow Dancer (Japan)", 0 )
 GAME( 1989, shdancer1, shdancer, system18,             shdancer, segas18_state, generic_shad, ROT0,   "Sega",          "Shadow Dancer (US)", 0 )
 
-<<<<<<< HEAD
-GAME( 1992, wwallyj,   0,        system18_fd1094,      wwally,   segas18_state, wwally,       ROT0,   "Sega",          "Wally wo Sagase! (rev B, Japan) (FD1094 317-0197B)", 0 ) // the roms do contain an english logo so maybe there is a world / us set too
-GAME( 1992, wwallyja,  wwallyj,  system18_fd1094,      wwally,   segas18_state, wwally,       ROT0,   "Sega",          "Wally wo Sagase! (rev A, Japan) (FD1094 317-0197A)", 0 )
-=======
 GAME( 1992, wwallyj,   0,        wwally_fd1094,        wwally,   segas18_state, wwally,       ROT0,   "Sega",          "Wally wo Sagase! (rev B, Japan) (FD1094 317-0197B)", 0 ) // the roms do contain an english logo so maybe there is a world / us set too
 GAME( 1992, wwallyja,  wwallyj,  wwally_fd1094,        wwally,   segas18_state, wwally,       ROT0,   "Sega",          "Wally wo Sagase! (rev A, Japan) (FD1094 317-0197A)", 0 )
->>>>>>> upstream/master
 
 // decrypted bootleg sets
 
@@ -3499,10 +3258,5 @@ GAME( 1990, mwalkd,     mwalk,    system18_i8751,mwalk,    segas18_state, generi
 GAME( 1990, mwalkud,    mwalk,    system18_i8751,mwalka,   segas18_state, generic_5874, ROT0,   "bootleg",          "Michael Jackson's Moonwalker (US) (bootleg of FD1094/8751 317-0158)", 0 )
 GAME( 1990, mwalkjd,    mwalk,    system18_i8751,mwalk,    segas18_state, generic_5874, ROT0,   "bootleg",          "Michael Jackson's Moonwalker (Japan) (bootleg of FD1094/8751 317-0157 set)", 0 )
 
-<<<<<<< HEAD
-GAME( 1992, wwallyjd,   wwallyj,  system18,      wwally,   segas18_state, wwally,       ROT0,   "bootleg",          "Wally wo Sagase! (rev B, Japan) (bootleg of FD1094 317-0197B set)", 0 )
-GAME( 1992, wwallyjad,  wwallyj,  system18,      wwally,   segas18_state, wwally,       ROT0,   "bootleg",          "Wally wo Sagase! (rev A, Japan) (bootleg of FD1094 317-0197A set)", 0 )
-=======
 GAME( 1992, wwallyjd,   wwallyj,  wwally,        wwally,   segas18_state, wwally,       ROT0,   "bootleg",          "Wally wo Sagase! (rev B, Japan) (bootleg of FD1094 317-0197B set)", 0 )
 GAME( 1992, wwallyjad,  wwallyj,  wwally,        wwally,   segas18_state, wwally,       ROT0,   "bootleg",          "Wally wo Sagase! (rev A, Japan) (bootleg of FD1094 317-0197A set)", 0 )
->>>>>>> upstream/master

@@ -26,10 +26,7 @@
 
 */
 
-<<<<<<< HEAD
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #include "vizastar.h"
 
 
@@ -50,11 +47,7 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type C64_VIZASTAR = &device_creator<c64_vizastar_cartridge_device>;
-=======
 DEFINE_DEVICE_TYPE(C64_VIZASTAR, c64_vizastar_cartridge_device, "c64_vizastar", "VizaStar 64 XL4")
->>>>>>> upstream/master
 
 
 
@@ -66,13 +59,8 @@ DEFINE_DEVICE_TYPE(C64_VIZASTAR, c64_vizastar_cartridge_device, "c64_vizastar", 
 //  c64_vizastar_cartridge_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-c64_vizastar_cartridge_device::c64_vizastar_cartridge_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-	device_t(mconfig, C64_VIZASTAR, "VizaStar 64 XL4", tag, owner, clock, "c64_vizastar", __FILE__),
-=======
 c64_vizastar_cartridge_device::c64_vizastar_cartridge_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	device_t(mconfig, C64_VIZASTAR, tag, owner, clock),
->>>>>>> upstream/master
 	device_c64_expansion_card_interface(mconfig, *this)
 {
 }
@@ -91,11 +79,7 @@ void c64_vizastar_cartridge_device::device_start()
 //  c64_cd_r - cartridge data read
 //-------------------------------------------------
 
-<<<<<<< HEAD
-UINT8 c64_vizastar_cartridge_device::c64_cd_r(address_space &space, offs_t offset, UINT8 data, int sphi2, int ba, int roml, int romh, int io1, int io2)
-=======
 uint8_t c64_vizastar_cartridge_device::c64_cd_r(address_space &space, offs_t offset, uint8_t data, int sphi2, int ba, int roml, int romh, int io1, int io2)
->>>>>>> upstream/master
 {
 	if (!roml)
 	{

@@ -12,11 +12,7 @@ TODO:
 -terminal pcb(s) roms aren't dumped,so no video can be shown,a cabinet snap is here ->
  http://www.system16.com/hardware.php?id=840&page=1#2743 ,every player should have his own
  screen.
-<<<<<<< HEAD
--inconsistant (likely wrong) sound banking.
-=======
 -inconsistent (likely wrong) sound banking.
->>>>>>> upstream/master
 
 ============================================================================================
 BINGO CIRCUS (MAIN PCB)
@@ -36,17 +32,12 @@ SOUND : YM2151 uPD7759C
 #include "emu.h"
 #include "cpu/m68000/m68000.h"
 #include "cpu/z80/z80.h"
-<<<<<<< HEAD
-#include "sound/2151intf.h"
-#include "sound/upd7759.h"
-=======
 #include "machine/gen_latch.h"
 #include "machine/i8251.h"
 #include "sound/ym2151.h"
 #include "sound/upd7759.h"
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 class bingoc_state : public driver_device
@@ -56,20 +47,6 @@ public:
 		: driver_device(mconfig, type, tag),
 		m_maincpu(*this, "maincpu"),
 		m_soundcpu(*this, "soundcpu"),
-<<<<<<< HEAD
-		m_upd7759(*this, "upd") { }
-
-	UINT8 m_x;
-	DECLARE_READ16_MEMBER(unknown_r);
-	DECLARE_READ8_MEMBER(sound_test_r);
-	DECLARE_WRITE16_MEMBER(main_sound_latch_w);
-	DECLARE_WRITE8_MEMBER(sound_play_w);
-	virtual void video_start();
-	UINT32 screen_update_bingoc(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	required_device<cpu_device> m_maincpu;
-	required_device<cpu_device> m_soundcpu;
-	required_device<upd7759_device> m_upd7759;
-=======
 		m_upd7759(*this, "upd"),
 		m_soundlatch(*this, "soundlatch") { }
 
@@ -83,7 +60,6 @@ public:
 	required_device<cpu_device> m_soundcpu;
 	required_device<upd7759_device> m_upd7759;
 	required_device<generic_latch_8_device> m_soundlatch;
->>>>>>> upstream/master
 };
 
 
@@ -93,11 +69,7 @@ void bingoc_state::video_start()
 {
 }
 
-<<<<<<< HEAD
-UINT32 bingoc_state::screen_update_bingoc(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t bingoc_state::screen_update_bingoc(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	return 0;
 }
@@ -131,11 +103,7 @@ READ8_MEMBER(bingoc_state::sound_test_r)
 #else
 WRITE16_MEMBER(bingoc_state::main_sound_latch_w)
 {
-<<<<<<< HEAD
-	soundlatch_byte_w(space,0,data&0xff);
-=======
 	m_soundlatch->write(space,0,data&0xff);
->>>>>>> upstream/master
 	m_soundcpu->set_input_line(INPUT_LINE_NMI, PULSE_LINE);
 }
 #endif
@@ -146,11 +114,7 @@ WRITE8_MEMBER(bingoc_state::sound_play_w)
 	---- --x- sound rom banking
 	---- ---x start-stop sample
 	*/
-<<<<<<< HEAD
-	UINT8 *upd = memregion("upd")->base();
-=======
 	uint8_t *upd = memregion("upd")->base();
->>>>>>> upstream/master
 	memcpy(&upd[0x00000], &upd[0x20000 + (((data & 2)>>1) * 0x20000)], 0x20000);
 	m_upd7759->start_w(data & 1);
 //  printf("%02x\n",data);
@@ -158,10 +122,6 @@ WRITE8_MEMBER(bingoc_state::sound_play_w)
 
 static ADDRESS_MAP_START( main_map, AS_PROGRAM, 16, bingoc_state )
 	AM_RANGE(0x000000, 0x03ffff) AM_ROM
-<<<<<<< HEAD
-	AM_RANGE(0x100000, 0x10007f) AM_READ(unknown_r) //comms? lamps?
-	AM_RANGE(0x180000, 0x18007f) AM_READ(unknown_r) //comms? lamps?
-=======
 	AM_RANGE(0x100000, 0x100001) AM_DEVREADWRITE8("uart1", i8251_device, data_r, data_w, 0x00ff)
 	AM_RANGE(0x100002, 0x100003) AM_DEVREADWRITE8("uart1", i8251_device, status_r, control_w, 0x00ff)
 	AM_RANGE(0x100008, 0x100009) AM_DEVREADWRITE8("uart2", i8251_device, data_r, data_w, 0x00ff)
@@ -179,7 +139,6 @@ static ADDRESS_MAP_START( main_map, AS_PROGRAM, 16, bingoc_state )
 	AM_RANGE(0x100038, 0x100039) AM_DEVREADWRITE8("uart8", i8251_device, data_r, data_w, 0x00ff)
 	AM_RANGE(0x10003a, 0x10003b) AM_DEVREADWRITE8("uart8", i8251_device, status_r, control_w, 0x00ff)
 	AM_RANGE(0x180000, 0x18007f) AM_READ(unknown_r) //lamps?
->>>>>>> upstream/master
 #if !SOUND_TEST
 	AM_RANGE(0x180010, 0x180011) AM_WRITE(main_sound_latch_w) //WRONG there...
 #endif
@@ -197,11 +156,7 @@ static ADDRESS_MAP_START( sound_io, AS_IO, 8, bingoc_state )
 	AM_RANGE(0x40, 0x40) AM_WRITE(sound_play_w)
 	AM_RANGE(0x80, 0x80) AM_DEVWRITE("upd", upd7759_device, port_w)
 #if !SOUND_TEST
-<<<<<<< HEAD
-	AM_RANGE(0xc0, 0xc0) AM_READ(soundlatch_byte_r) //soundlatch
-=======
 	AM_RANGE(0xc0, 0xc0) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
->>>>>>> upstream/master
 #else
 	AM_RANGE(0xc0, 0xc0) AM_READ(sound_test_r)
 #endif
@@ -212,11 +167,7 @@ static INPUT_PORTS_START( bingoc )
 INPUT_PORTS_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( bingoc, bingoc_state )
-=======
 static MACHINE_CONFIG_START( bingoc )
->>>>>>> upstream/master
 
 	MCFG_CPU_ADD("maincpu", M68000,8000000)      /* ? MHz */
 	MCFG_CPU_PROGRAM_MAP(main_map)
@@ -229,8 +180,6 @@ static MACHINE_CONFIG_START( bingoc )
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", bingoc_state,  nmi_line_pulse)
 #endif
 
-<<<<<<< HEAD
-=======
 	MCFG_DEVICE_ADD("uart1", I8251, 4000000) // unknown
 	MCFG_DEVICE_ADD("uart2", I8251, 4000000) // unknown
 	MCFG_DEVICE_ADD("uart3", I8251, 4000000) // unknown
@@ -240,7 +189,6 @@ static MACHINE_CONFIG_START( bingoc )
 	MCFG_DEVICE_ADD("uart7", I8251, 4000000) // unknown
 	MCFG_DEVICE_ADD("uart8", I8251, 4000000) // unknown
 
->>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE(60)
@@ -255,11 +203,8 @@ static MACHINE_CONFIG_START( bingoc )
 
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker") //might just be mono...
 
-<<<<<<< HEAD
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 
->>>>>>> upstream/master
 	MCFG_YM2151_ADD("ymsnd", 7159160/2)
 	MCFG_SOUND_ROUTE(0, "lspeaker", 1.0)
 	MCFG_SOUND_ROUTE(1, "rspeaker", 1.0)
@@ -286,8 +231,4 @@ ROM_START( bingoc )
 	ROM_COPY( "upd",       0x20000, 0x00000, 0x20000 )
 ROM_END
 
-<<<<<<< HEAD
-GAME( 1989, bingoc,  0,    bingoc, bingoc, driver_device,  0, ROT0, "Sega", "Bingo Circus (Rev. A 891001)", MACHINE_NOT_WORKING )
-=======
 GAME( 1989, bingoc,  0,    bingoc, bingoc, bingoc_state,  0, ROT0, "Sega", "Bingo Circus (Rev. A 891001)", MACHINE_NOT_WORKING )
->>>>>>> upstream/master

@@ -190,22 +190,14 @@ public:
 		{
 			char temp[32];
 			sprintf(temp, "molea_%d", i);
-<<<<<<< HEAD
-			output_set_value(temp, mole_state_a[i]);
-=======
 			output().set_value(temp, mole_state_a[i]);
->>>>>>> upstream/master
 		}
 
 		for (int i = 0; i < 6; i++)
 		{
 			char temp[32];
 			sprintf(temp, "moleb_%d", i);
-<<<<<<< HEAD
-			output_set_value(temp, mole_state_b[i]);
-=======
 			output().set_value(temp, mole_state_b[i]);
->>>>>>> upstream/master
 		}
 	}
 
@@ -232,17 +224,10 @@ public:
 	WRITE8_MEMBER(mb8936_portb_w); // maybe molesb output? (6-bits?)
 	WRITE8_MEMBER(mb8936_portf_w); // maybe strobe output?
 
-<<<<<<< HEAD
-	UINT8 m_to_68k_cmd_low;
-	UINT8 m_to_68k_cmd_d9;
-	UINT8 m_to_68k_cmd_req;
-	UINT8 m_to_68k_cmd_LVm;
-=======
 	uint8_t m_to_68k_cmd_low;
 	uint8_t m_to_68k_cmd_d9;
 	uint8_t m_to_68k_cmd_req;
 	uint8_t m_to_68k_cmd_LVm;
->>>>>>> upstream/master
 
 
 	int m_from68k_ack;
@@ -257,11 +242,7 @@ public:
 	DECLARE_CUSTOM_INPUT_MEMBER(kenseim_cmd_req_r);
 	DECLARE_CUSTOM_INPUT_MEMBER(kenseim_cmd_LVm_r);
 
-<<<<<<< HEAD
-	void set_leds(UINT32 ledstates);
-=======
 	void set_leds(uint32_t ledstates);
->>>>>>> upstream/master
 	int m_led_latch;
 	int m_led_serial_data;
 	int m_led_clock;
@@ -276,17 +257,10 @@ public:
   Misc System Functions
  ******************************/
 
-<<<<<<< HEAD
-void kenseim_state::set_leds(UINT32 ledstates)
-{
-	for (int i=0; i<20; i++)
-		output_set_lamp_value(i+1, ((ledstates & (1 << i)) != 0));
-=======
 void kenseim_state::set_leds(uint32_t ledstates)
 {
 	for (int i=0; i<20; i++)
 		output().set_lamp_value(i+1, ((ledstates & (1 << i)) != 0));
->>>>>>> upstream/master
 }
 
 // could be wrong
@@ -378,17 +352,10 @@ WRITE8_MEMBER(kenseim_state::cpu_portc_w)
 	// d5: coin lock
 	// d6: left start button lamp
 	// d7: right start button lamp
-<<<<<<< HEAD
-	coin_lockout_w(machine(), 0, (data & 0x10) ? 0 : 1); // toggles if you attempt to insert a coin when there are already 15 coins inserted
-	coin_counter_w(machine(), 0, (data & 0x20) ? 0 : 1);
-	output_set_value("startlamp1", (data & 0x80) ? 0 : 1);
-	output_set_value("startlamp2", (data & 0x40) ? 0 : 1);
-=======
 	machine().bookkeeping().coin_lockout_w(0, (data & 0x10) ? 0 : 1); // toggles if you attempt to insert a coin when there are already 15 coins inserted
 	machine().bookkeeping().coin_counter_w(0, (data & 0x20) ? 0 : 1);
 	output().set_value("startlamp1", (data & 0x80) ? 0 : 1);
 	output().set_value("startlamp2", (data & 0x40) ? 0 : 1);
->>>>>>> upstream/master
 }
 
 
@@ -433,17 +400,10 @@ WRITE16_MEMBER(kenseim_state::cps1_kensei_w)
 	if (ACCESSING_BITS_8_15)
 	{
 		// NOTE: remapped from default jamma output pins:
-<<<<<<< HEAD
-		// coin_counter_w(machine(), 0, data & 0x0100);
-		// coin_counter_w(machine(), 1, data & 0x0200);
-		// coin_lockout_w(machine(), 0, ~data & 0x0400);
-		// coin_lockout_w(machine(), 1, ~data & 0x0800);
-=======
 		// machine().bookkeeping().coin_counter_w(0, data & 0x0100);
 		// machine().bookkeeping().coin_counter_w(1, data & 0x0200);
 		// machine().bookkeeping().coin_lockout_w(0, ~data & 0x0400);
 		// machine().bookkeeping().coin_lockout_w(1, ~data & 0x0800);
->>>>>>> upstream/master
 
 		// bit 15 = CPS-A custom reset?
 
@@ -499,12 +459,7 @@ static ADDRESS_MAP_START( kenseim_map, AS_PROGRAM, 8, kenseim_state )
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( kenseim_io_map, AS_IO, 8, kenseim_state )
-<<<<<<< HEAD
-	ADDRESS_MAP_GLOBAL_MASK(0xff)
-	AM_RANGE(0x20, 0x27) AM_DEVREADWRITE("mb89363b", mb89363b_device, read, write)
-=======
 	AM_RANGE(0x20, 0x27) AM_MIRROR(0xff00) AM_DEVREADWRITE("mb89363b", mb89363b_device, read, write)
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -512,16 +467,6 @@ ADDRESS_MAP_END
 static const z80_daisy_config daisy_chain_gamecpu[] =
 {
 	TMPZ84C011_DAISY_INTERNAL,
-<<<<<<< HEAD
-	{ NULL }
-};
-
-static MACHINE_CONFIG_DERIVED_CLASS( kenseim, cps1_12MHz, kenseim_state )
-
-	/* basic machine hardware */
-	MCFG_CPU_ADD("gamecpu", TMPZ84C011, XTAL_16MHz/2) // tmpz84c011-8
-	MCFG_CPU_CONFIG(daisy_chain_gamecpu)
-=======
 	{ nullptr }
 };
 
@@ -530,7 +475,6 @@ static MACHINE_CONFIG_DERIVED( kenseim, cps1_12MHz )
 	/* basic machine hardware */
 	MCFG_CPU_ADD("gamecpu", TMPZ84C011, XTAL_16MHz/2) // tmpz84c011-8
 	MCFG_Z80_DAISY_CHAIN(daisy_chain_gamecpu)
->>>>>>> upstream/master
 	MCFG_CPU_PROGRAM_MAP(kenseim_map)
 	MCFG_CPU_IO_MAP(kenseim_io_map)
 	MCFG_TMPZ84C011_PORTC_WRITE_CB(WRITE8(kenseim_state, cpu_portc_w))
@@ -559,17 +503,10 @@ static INPUT_PORTS_START( kenseim )
 	PORT_START("IN0")
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_UNUSED /*IPT_COIN1*/ ) // n/c
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED /*IPT_COIN2*/ ) // n/c
-<<<<<<< HEAD
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, kenseim_state, kenseim_cmd_9_r, NULL) //   PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SERVICE1 ) // D9
-	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_UNKNOWN ) // n/c?
-	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, kenseim_state, kenseim_cmd_req_r, NULL) // PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_START1 ) // REQ
-	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, kenseim_state, kenseim_cmd_LVm_r, NULL) // PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_START2 ) // LVm
-=======
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, kenseim_state, kenseim_cmd_9_r, nullptr) //   PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SERVICE1 ) // D9
 	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_UNKNOWN ) // n/c?
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, kenseim_state, kenseim_cmd_req_r, nullptr) // PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_START1 ) // REQ
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, kenseim_state, kenseim_cmd_LVm_r, nullptr) // PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_START2 ) // LVm
->>>>>>> upstream/master
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_UNUSED ) // PORT_SERVICE( 0x40, IP_ACTIVE_LOW ) n/c
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNKNOWN ) // n/c?
 
@@ -578,11 +515,7 @@ static INPUT_PORTS_START( kenseim )
 //  PORT_BIT( 0x0002, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT ) PORT_8WAY PORT_PLAYER(1) // D6
 //  PORT_BIT( 0x0004, IP_ACTIVE_LOW, IPT_JOYSTICK_DOWN ) PORT_8WAY PORT_PLAYER(1) // D7
 //  PORT_BIT( 0x0008, IP_ACTIVE_LOW, IPT_JOYSTICK_UP ) PORT_8WAY PORT_PLAYER(1) // D8
-<<<<<<< HEAD
-	PORT_BIT( 0x000f, IP_ACTIVE_LOW, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, kenseim_state, kenseim_cmd_5678_r, NULL)
-=======
 	PORT_BIT( 0x000f, IP_ACTIVE_LOW, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, kenseim_state, kenseim_cmd_5678_r, nullptr)
->>>>>>> upstream/master
 	PORT_BIT( 0x0010, IP_ACTIVE_LOW, IPT_UNUSED/*IPT_BUTTON1*/ ) /*PORT_PLAYER(1)*/ // n/c
 	PORT_BIT( 0x0020, IP_ACTIVE_LOW, IPT_UNUSED/*IPT_BUTTON2*/ ) /*PORT_PLAYER(1)*/ // n/c
 	PORT_BIT( 0x0040, IP_ACTIVE_LOW, IPT_UNUSED/*IPT_BUTTON3*/ ) /*PORT_PLAYER(1)*/ // n/c
@@ -592,11 +525,7 @@ static INPUT_PORTS_START( kenseim )
 //  PORT_BIT( 0x0200, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT ) PORT_8WAY PORT_PLAYER(2) // D2
 //  PORT_BIT( 0x0400, IP_ACTIVE_LOW, IPT_JOYSTICK_DOWN ) PORT_8WAY PORT_PLAYER(2) // D3
 //  PORT_BIT( 0x0800, IP_ACTIVE_LOW, IPT_JOYSTICK_UP ) PORT_8WAY PORT_PLAYER(2) // D4
-<<<<<<< HEAD
-	PORT_BIT( 0x0f00, IP_ACTIVE_LOW, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, kenseim_state, kenseim_cmd_1234_r, NULL)
-=======
 	PORT_BIT( 0x0f00, IP_ACTIVE_LOW, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, kenseim_state, kenseim_cmd_1234_r, nullptr)
->>>>>>> upstream/master
 	PORT_BIT( 0x1000, IP_ACTIVE_LOW, IPT_UNUSED /*IPT_BUTTON1*/ ) /*PORT_PLAYER(2)*/ // n/c
 	PORT_BIT( 0x2000, IP_ACTIVE_LOW, IPT_UNUSED /*IPT_BUTTON2*/ ) /*PORT_PLAYER(2)*/ // n/c
 	PORT_BIT( 0x4000, IP_ACTIVE_LOW, IPT_UNUSED /*IPT_BUTTON3*/ ) /*PORT_PLAYER(2)*/ // n/c

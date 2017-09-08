@@ -17,19 +17,13 @@ ToDo:
 
 *********************************************************************************/
 
-<<<<<<< HEAD
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #include "machine/genpin.h"
 
 #include "cpu/tms9900/tms9995.h"
 #include "sound/ay8910.h"
-<<<<<<< HEAD
-=======
 #include "speaker.h"
 
->>>>>>> upstream/master
 #include "nsm.lh"
 
 
@@ -50,17 +44,10 @@ protected:
 	required_device<cpu_device> m_maincpu;
 
 	// driver_device overrides
-<<<<<<< HEAD
-	virtual void machine_reset();
-private:
-	UINT8 m_cru_data[9];
-	UINT8 m_cru_count;
-=======
 	virtual void machine_reset() override;
 private:
 	uint8_t m_cru_data[9];
 	uint8_t m_cru_count;
->>>>>>> upstream/master
 };
 
 static ADDRESS_MAP_START( nsm_map, AS_PROGRAM, 8, nsm_state )
@@ -106,11 +93,7 @@ WRITE8_MEMBER( nsm_state::cru_w )
 	}
 	m_cru_data[m_cru_count] |= (data << offset);
 
-<<<<<<< HEAD
-	UINT8 i,j;
-=======
 	uint8_t i,j;
->>>>>>> upstream/master
 	int segments;
 	if (!m_cru_count && (offset == 7))
 	{
@@ -123,11 +106,7 @@ WRITE8_MEMBER( nsm_state::cru_w )
 				for (j = 0; j < 5; j++)
 				{
 					segments = m_cru_data[8-j]^0xff;
-<<<<<<< HEAD
-					output_set_digit_value(j * 10 + i, BITSWAP16(segments, 8, 8, 8, 8, 8, 8, 0, 0, 1, 1, 2, 3, 4, 5, 6, 7));
-=======
 					output().set_digit_value(j * 10 + i, BITSWAP16(segments, 8, 8, 8, 8, 8, 8, 0, 0, 1, 1, 2, 3, 4, 5, 6, 7));
->>>>>>> upstream/master
 				}
 			}
 		}
@@ -137,17 +116,10 @@ WRITE8_MEMBER( nsm_state::cru_w )
 void nsm_state::machine_reset()
 {
 	// Disable auto wait state generation by raising the READY line on reset
-<<<<<<< HEAD
-	static_cast<tms9995_device*>(machine().device("maincpu"))->set_ready(ASSERT_LINE);
-}
-
-static MACHINE_CONFIG_START( nsm, nsm_state )
-=======
 	static_cast<tms9995_device*>(machine().device("maincpu"))->ready_line(ASSERT_LINE);
 }
 
 static MACHINE_CONFIG_START( nsm )
->>>>>>> upstream/master
 	// CPU TMS9995, standard variant; no line connection
 	MCFG_TMS99xx_ADD("maincpu", TMS9995, 11052000, nsm_map, nsm_io_map)
 
@@ -184,8 +156,4 @@ ROM_END
 / The Games (1985)
 /-------------------------------------------------------------------*/
 
-<<<<<<< HEAD
-GAME(1985,  firebird,  0,  nsm,  nsm, driver_device, 0,  ROT0, "NSM", "Hot Fire Birds", MACHINE_NOT_WORKING | MACHINE_MECHANICAL)
-=======
 GAME(1985,  firebird,  0,  nsm,  nsm, nsm_state, 0,  ROT0, "NSM", "Hot Fire Birds", MACHINE_NOT_WORKING | MACHINE_MECHANICAL)
->>>>>>> upstream/master

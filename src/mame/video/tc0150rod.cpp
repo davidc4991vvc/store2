@@ -12,19 +12,11 @@ Road generator. Two roads allow for forking. Gfx data fetched from ROM. Refer to
 
 #define TC0150ROD_RAM_SIZE 0x2000
 
-<<<<<<< HEAD
-const device_type TC0150ROD = &device_creator<tc0150rod_device>;
-
-tc0150rod_device::tc0150rod_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, TC0150ROD, "Taito TC0150ROD", tag, owner, clock, "tc0150rod", __FILE__),
-	m_roadgfx(NULL)
-=======
 DEFINE_DEVICE_TYPE(TC0150ROD, tc0150rod_device, "tc0150rod", "Taito TC0150ROD")
 
 tc0150rod_device::tc0150rod_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, TC0150ROD, tag, owner, clock)
 	, m_roadgfx(*this, DEVICE_SELF, 0x40000)
->>>>>>> upstream/master
 {
 }
 
@@ -37,12 +29,6 @@ void tc0150rod_device::device_start()
 	m_ram.resize(TC0150ROD_RAM_SIZE / 2);
 	memset(&m_ram[0], 0, TC0150ROD_RAM_SIZE);
 	save_item(NAME(m_ram));
-<<<<<<< HEAD
-
-	m_roadgfx = (UINT16 *)region()->base();
-	assert(m_roadgfx);
-=======
->>>>>>> upstream/master
 }
 
 
@@ -223,29 +209,13 @@ lookup table from rom for the TaitoZ sprites.
 
 ******************************************************************************/
 
-<<<<<<< HEAD
-void tc0150rod_device::draw( bitmap_ind16 &bitmap, const rectangle &cliprect, int y_offs, int palette_offs, int type, int road_trans, bitmap_ind8 &priority_bitmap, UINT32 low_priority, UINT32 high_priority )
-=======
 void tc0150rod_device::draw( bitmap_ind16 &bitmap, const rectangle &cliprect, int y_offs, int palette_offs, int type, int road_trans, bitmap_ind8 &priority_bitmap, uint32_t low_priority, uint32_t high_priority )
->>>>>>> upstream/master
 {
 	#ifdef MAME_DEBUG
 	static int dislayer[6]; /* Road Layer toggles to help get road correct */
 	#endif
 
 	int x_offs = 0xa7;  /* Increasing this shifts road to right */
-<<<<<<< HEAD
-	UINT16 scanline[512];
-	UINT16 roada_line[512], roadb_line[512];
-	UINT16 *dst16;
-	UINT16 *roada, *roadb;
-
-	UINT16 pixel, color, gfx_word;
-	UINT16 roada_clipl, roada_clipr, roada_bodyctrl;
-	UINT16 roadb_clipl, roadb_clipr, roadb_bodyctrl;
-	UINT16 pri, pixpri;
-	UINT8 priorities[6];
-=======
 	uint16_t scanline[512];
 	uint16_t roada_line[512], roadb_line[512];
 	uint16_t *dst16;
@@ -256,7 +226,6 @@ void tc0150rod_device::draw( bitmap_ind16 &bitmap, const rectangle &cliprect, in
 	uint16_t roadb_clipl, roadb_clipr, roadb_bodyctrl;
 	uint16_t pri, pixpri;
 	uint8_t priorities[6];
->>>>>>> upstream/master
 	int x_index, roadram_index, roadram2_index, i;
 	int xoffset, paloffs, palloffs, palroffs;
 	int road_gfx_tilenum, colbank, road_center;

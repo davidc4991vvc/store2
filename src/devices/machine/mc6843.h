@@ -8,15 +8,10 @@
 
 **********************************************************************/
 
-<<<<<<< HEAD
-#ifndef MC6843_H
-#define MC6843_H
-=======
 #ifndef MAME_MACHINE_MC6843_H
 #define MAME_MACHINE_MC6843_H
 
 #pragma once
->>>>>>> upstream/master
 
 #include "imagedev/flopdrv.h"
 
@@ -26,16 +21,9 @@
 class mc6843_device : public device_t
 {
 public:
-<<<<<<< HEAD
-	mc6843_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-	~mc6843_device() {}
-
-	template<class _Object> static devcb_base &set_irq_wr_callback(device_t &device, _Object object) { return downcast<mc6843_device &>(device).m_write_irq.set_callback(object); }
-=======
 	mc6843_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	template <class Object> static devcb_base &set_irq_wr_callback(device_t &device, Object &&cb) { return downcast<mc6843_device &>(device).m_write_irq.set_callback(std::forward<Object>(cb)); }
->>>>>>> upstream/master
 
 	DECLARE_READ8_MEMBER(read);
 	DECLARE_WRITE8_MEMBER(write);
@@ -46,15 +34,9 @@ public:
 
 protected:
 	// device-level overrides
-<<<<<<< HEAD
-	virtual void device_start();
-	virtual void device_reset();
-	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
-=======
 	virtual void device_start() override;
 	virtual void device_reset() override;
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
->>>>>>> upstream/master
 
 private:
 	enum
@@ -65,27 +47,6 @@ private:
 	devcb_write_line m_write_irq;
 
 	/* registers */
-<<<<<<< HEAD
-	UINT8 m_CTAR;       /* current track */
-	UINT8 m_CMR;        /* command */
-	UINT8 m_ISR;        /* interrupt status */
-	UINT8 m_SUR;        /* set-up */
-	UINT8 m_STRA;       /* status */
-	UINT8 m_STRB;       /* status */
-	UINT8 m_SAR;        /* sector address */
-	UINT8 m_GCR;        /* general count */
-	UINT8 m_CCR;        /* CRC control */
-	UINT8 m_LTAR;       /* logical address track (=track destination) */
-
-	/* internal state */
-	UINT8  m_drive;
-	UINT8  m_side;
-	UINT8  m_data[128];   /* sector buffer */
-	UINT32 m_data_size;   /* size of data */
-	UINT32 m_data_idx;    /* current read/write position in data */
-	UINT32 m_data_id;     /* chrd_id for sector write */
-	UINT8  m_index_pulse;
-=======
 	uint8_t m_CTAR;       /* current track */
 	uint8_t m_CMR;        /* command */
 	uint8_t m_ISR;        /* interrupt status */
@@ -105,16 +66,11 @@ private:
 	uint32_t m_data_idx;    /* current read/write position in data */
 	uint32_t m_data_id;     /* chrd_id for sector write */
 	uint8_t  m_index_pulse;
->>>>>>> upstream/master
 
 	/* trigger delayed actions (bottom halves) */
 	emu_timer* m_timer_cont;
 
-<<<<<<< HEAD
-	legacy_floppy_image_device* floppy_image(UINT8 drive);
-=======
 	legacy_floppy_image_device* floppy_image(uint8_t drive);
->>>>>>> upstream/master
 	legacy_floppy_image_device* floppy_image();
 	void status_update();
 	void cmd_end();
@@ -128,12 +84,6 @@ private:
 
 };
 
-<<<<<<< HEAD
-extern const device_type MC6843;
-
-#endif
-=======
 DECLARE_DEVICE_TYPE(MC6843, mc6843_device)
 
 #endif // MAME_MACHINE_MC6843_H
->>>>>>> upstream/master

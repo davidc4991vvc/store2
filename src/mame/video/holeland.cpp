@@ -2,11 +2,7 @@
 // copyright-holders:Mathis Rosenhauer
 /***************************************************************************
 
-<<<<<<< HEAD
-  video.c
-=======
   holeland.cpp
->>>>>>> upstream/master
 
   Functions to emulate the video hardware of the machine.
 
@@ -61,86 +57,47 @@ TILE_GET_INFO_MEMBER(holeland_state::crzrally_get_tile_info)
 
 VIDEO_START_MEMBER(holeland_state,holeland)
 {
-<<<<<<< HEAD
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(holeland_state::holeland_get_tile_info),this), TILEMAP_SCAN_ROWS, 16, 16, 32, 32);
-
-	m_bg_tilemap->set_transmask(0, 0xff, 0x00); /* split type 0 is totally transparent in front half */
-	m_bg_tilemap->set_transmask(1, 0x01, 0xfe); /* split type 1 has pen 0? transparent in front half */
-=======
 	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(holeland_state::holeland_get_tile_info),this), TILEMAP_SCAN_ROWS, 16, 16, 32, 32);
 
 	m_bg_tilemap->set_transmask(0, 0xff, 0x00); /* split type 0 is totally transparent in front half */
 	m_bg_tilemap->set_transmask(1, 0x01, 0xfe); /* split type 1 has pen 0? transparent in front half */
 
 	save_item(NAME(m_palette_offset));
->>>>>>> upstream/master
 }
 
 VIDEO_START_MEMBER(holeland_state,crzrally)
 {
-<<<<<<< HEAD
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(holeland_state::crzrally_get_tile_info),this), TILEMAP_SCAN_COLS, 8, 8, 32, 32);
-}
-
-WRITE8_MEMBER(holeland_state::holeland_videoram_w)
-=======
 	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(holeland_state::crzrally_get_tile_info),this), TILEMAP_SCAN_COLS, 8, 8, 32, 32);
 
 	save_item(NAME(m_palette_offset));
 }
 
 WRITE8_MEMBER(holeland_state::videoram_w)
->>>>>>> upstream/master
 {
 	m_videoram[offset] = data;
 	m_bg_tilemap->mark_tile_dirty(offset);
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER(holeland_state::holeland_colorram_w)
-=======
 WRITE8_MEMBER(holeland_state::colorram_w)
->>>>>>> upstream/master
 {
 	m_colorram[offset] = data;
 	m_bg_tilemap->mark_tile_dirty(offset);
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER(holeland_state::holeland_pal_offs_w)
-{
-	if ((data & 1) != m_po[offset])
-	{
-		m_po[offset] = data & 1;
-		m_palette_offset = (m_po[0] + (m_po[1] << 1)) << 4;
-=======
 WRITE8_MEMBER(holeland_state::pal_offs_w)
 {
 	if ((m_palette_offset >> 4) != (data & 3))
 	{
 		m_palette_offset = (data & 3) << 4;
->>>>>>> upstream/master
 		machine().tilemap().mark_all_dirty();
 	}
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER(holeland_state::holeland_scroll_w)
-=======
 WRITE8_MEMBER(holeland_state::scroll_w)
->>>>>>> upstream/master
 {
 	m_bg_tilemap->set_scrollx(0, data);
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER(holeland_state::holeland_flipscreen_w)
-{
-	if (offset)
-		flip_screen_y_set(data);
-	else
-		flip_screen_x_set(data);
-=======
 WRITE_LINE_MEMBER(holeland_state::flipscreen_x_w)
 {
 	flip_screen_x_set(state);
@@ -149,17 +106,12 @@ WRITE_LINE_MEMBER(holeland_state::flipscreen_x_w)
 WRITE_LINE_MEMBER(holeland_state::flipscreen_y_w)
 {
 	flip_screen_y_set(state);
->>>>>>> upstream/master
 }
 
 
 void holeland_state::holeland_draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect )
 {
-<<<<<<< HEAD
-	UINT8 *spriteram = m_spriteram;
-=======
 	uint8_t *spriteram = m_spriteram;
->>>>>>> upstream/master
 	int offs, code, sx, sy, color, flipx, flipy;
 
 	/* Weird, sprites entries don't start on DWORD boundary */
@@ -198,11 +150,7 @@ void holeland_state::holeland_draw_sprites( bitmap_ind16 &bitmap, const rectangl
 
 void holeland_state::crzrally_draw_sprites( bitmap_ind16 &bitmap,const rectangle &cliprect )
 {
-<<<<<<< HEAD
-	UINT8 *spriteram = m_spriteram;
-=======
 	uint8_t *spriteram = m_spriteram;
->>>>>>> upstream/master
 	int offs, code, sx, sy, color, flipx, flipy;
 
 	/* Weird, sprites entries don't start on DWORD boundary */
@@ -238,11 +186,7 @@ void holeland_state::crzrally_draw_sprites( bitmap_ind16 &bitmap,const rectangle
 	}
 }
 
-<<<<<<< HEAD
-UINT32 holeland_state::screen_update_holeland(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t holeland_state::screen_update_holeland(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	m_bg_tilemap->draw(screen, bitmap, cliprect, TILEMAP_DRAW_LAYER1, 0);
 	holeland_draw_sprites(bitmap, cliprect);
@@ -250,11 +194,7 @@ uint32_t holeland_state::screen_update_holeland(screen_device &screen, bitmap_in
 	return 0;
 }
 
-<<<<<<< HEAD
-UINT32 holeland_state::screen_update_crzrally(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t holeland_state::screen_update_crzrally(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	m_bg_tilemap->draw(screen, bitmap, cliprect, 0, 0);
 	crzrally_draw_sprites(bitmap, cliprect);

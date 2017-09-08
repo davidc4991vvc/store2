@@ -8,18 +8,11 @@
 
 *********************************************************************/
 
-<<<<<<< HEAD
-#ifndef __A2BUS_LASER128__
-#define __A2BUS_LASER128__
-
-#include "emu.h"
-=======
 #ifndef MAME_BUS_A2BUS_LASER128_H
 #define MAME_BUS_A2BUS_LASER128_H
 
 #pragma once
 
->>>>>>> upstream/master
 #include "a2bus.h"
 
 //**************************************************************************
@@ -32,29 +25,6 @@ class a2bus_laser128_device:
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	a2bus_laser128_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source);
-	a2bus_laser128_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// optional information overrides
-	virtual machine_config_constructor device_mconfig_additions() const;
-
-protected:
-	virtual void device_start();
-	virtual void device_reset();
-
-	// overrides of standard a2bus slot functions
-	virtual UINT8 read_c0nx(address_space &space, UINT8 offset);
-	virtual void write_c0nx(address_space &space, UINT8 offset, UINT8 data);
-	virtual UINT8 read_cnxx(address_space &space, UINT8 offset);
-	virtual UINT8 read_c800(address_space &space, UINT16 offset);
-	virtual void write_c800(address_space &space, UINT16 offset, UINT8 data);
-	virtual bool take_c800();
-
-private:
-	UINT8 *m_rom;
-	UINT8 m_slot7_ram[0x800];
-=======
 	a2bus_laser128_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 protected:
@@ -75,17 +45,10 @@ protected:
 private:
 	uint8_t *m_rom;
 	uint8_t m_slot7_ram[0x800];
->>>>>>> upstream/master
 	int m_slot7_bank, m_slot7_ram_bank;
 };
 
 // device type definition
-<<<<<<< HEAD
-extern const device_type A2BUS_LASER128;
-
-#endif /* __A2BUS_LASER128__ */
-=======
 DECLARE_DEVICE_TYPE(A2BUS_LASER128, a2bus_laser128_device)
 
 #endif // MAME_BUS_A2BUS_LASER128_H
->>>>>>> upstream/master

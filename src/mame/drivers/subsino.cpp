@@ -222,16 +222,11 @@ To Do:
 #include "machine/subsino.h"
 #include "machine/ticket.h"
 #include "sound/okim6295.h"
-<<<<<<< HEAD
-#include "sound/2413intf.h"
-#include "sound/3812intf.h"
-=======
 #include "sound/ym2413.h"
 #include "sound/3812intf.h"
 #include "video/ramdac.h"
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 #include "victor5.lh"
 #include "victor21.lh"
@@ -261,17 +256,6 @@ public:
 		m_palette(*this, "palette") {
 	}
 
-<<<<<<< HEAD
-	required_shared_ptr<UINT8> m_colorram;
-	required_shared_ptr<UINT8> m_videoram;
-	optional_shared_ptr<UINT8> m_reel3_scroll;
-	optional_shared_ptr<UINT8> m_reel2_scroll;
-	optional_shared_ptr<UINT8> m_reel1_scroll;
-	optional_shared_ptr<UINT8> m_reel1_ram;
-	optional_shared_ptr<UINT8> m_reel2_ram;
-	optional_shared_ptr<UINT8> m_reel3_ram;
-	optional_shared_ptr<UINT8> m_stbsub_out_c;
-=======
 	required_shared_ptr<uint8_t> m_colorram;
 	required_shared_ptr<uint8_t> m_videoram;
 	optional_shared_ptr<uint8_t> m_reel3_scroll;
@@ -281,24 +265,12 @@ public:
 	optional_shared_ptr<uint8_t> m_reel2_ram;
 	optional_shared_ptr<uint8_t> m_reel3_ram;
 	optional_shared_ptr<uint8_t> m_stbsub_out_c;
->>>>>>> upstream/master
 
 	tilemap_t *m_tmap;
 	tilemap_t *m_reel1_tilemap;
 	tilemap_t *m_reel2_tilemap;
 	tilemap_t *m_reel3_tilemap;
 	int m_tiles_offset;
-<<<<<<< HEAD
-	UINT8 m_out_c;
-	UINT8 *m_reel1_attr;
-	UINT8 *m_reel2_attr;
-	UINT8 *m_reel3_attr;
-	UINT8 m_flash_val;
-	UINT8 m_flash_packet;
-	UINT8 m_flash_packet_start;
-	int m_colordac_offs;
-	UINT8 *m_stbsub_colorram;
-=======
 	uint8_t m_out_c;
 	std::unique_ptr<uint8_t[]> m_reel1_attr;
 	std::unique_ptr<uint8_t[]> m_reel2_attr;
@@ -306,7 +278,6 @@ public:
 	uint8_t m_flash_val;
 	uint8_t m_flash_packet;
 	uint8_t m_flash_packet_start;
->>>>>>> upstream/master
 
 	ticket_dispenser_device *m_hopper;
 
@@ -322,10 +293,6 @@ public:
 	DECLARE_WRITE8_MEMBER(flash_w);
 	DECLARE_READ8_MEMBER(hwcheck_r);
 	DECLARE_WRITE8_MEMBER(subsino_out_c_w);
-<<<<<<< HEAD
-	DECLARE_WRITE8_MEMBER(colordac_w);
-=======
->>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(reel_scrollattr_w);
 	DECLARE_READ8_MEMBER(reel_scrollattr_r);
 	DECLARE_DRIVER_INIT(stbsub);
@@ -355,17 +322,10 @@ public:
 	DECLARE_PALETTE_INIT(subsino_3proms);
 	DECLARE_VIDEO_START(subsino_reels);
 	DECLARE_VIDEO_START(stbsub);
-<<<<<<< HEAD
-	UINT32 screen_update_subsino(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	UINT32 screen_update_subsino_reels(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	UINT32 screen_update_stbsub_reels(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	virtual void machine_start();
-=======
 	uint32_t screen_update_subsino(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	uint32_t screen_update_subsino_reels(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	uint32_t screen_update_stbsub_reels(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	virtual void machine_start() override;
->>>>>>> upstream/master
 	required_device<cpu_device> m_maincpu;
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
@@ -402,13 +362,8 @@ WRITE8_MEMBER(subsino_state::subsino_colorram_w)
 
 TILE_GET_INFO_MEMBER(subsino_state::get_tile_info)
 {
-<<<<<<< HEAD
-	UINT16 code = m_videoram[ tile_index ] + (m_colorram[ tile_index ] << 8);
-	UINT16 color = (code >> 8) & 0x0f;
-=======
 	uint16_t code = m_videoram[ tile_index ] + (m_colorram[ tile_index ] << 8);
 	uint16_t color = (code >> 8) & 0x0f;
->>>>>>> upstream/master
 	code = ((code & 0xf000) >> 4) + ((code & 0xff) >> 0);
 	code += m_tiles_offset;
 	SET_TILE_INFO_MEMBER(0, code, color, 0);
@@ -416,11 +371,7 @@ TILE_GET_INFO_MEMBER(subsino_state::get_tile_info)
 
 TILE_GET_INFO_MEMBER(subsino_state::get_stbsub_tile_info)
 {
-<<<<<<< HEAD
-	UINT16 code = m_videoram[ tile_index ] + (m_colorram[ tile_index ] << 8);
-=======
 	uint16_t code = m_videoram[ tile_index ] + (m_colorram[ tile_index ] << 8);
->>>>>>> upstream/master
 	code&= 0x3fff;
 	SET_TILE_INFO_MEMBER(0, code, 0, 0);
 }
@@ -428,11 +379,7 @@ TILE_GET_INFO_MEMBER(subsino_state::get_stbsub_tile_info)
 
 VIDEO_START_MEMBER(subsino_state,subsino)
 {
-<<<<<<< HEAD
-	m_tmap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(subsino_state::get_tile_info),this), TILEMAP_SCAN_ROWS, 8,8, 0x40,0x20 );
-=======
 	m_tmap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(subsino_state::get_tile_info),this), TILEMAP_SCAN_ROWS, 8,8, 0x40,0x20 );
->>>>>>> upstream/master
 	m_tmap->set_transparent_pen(0 );
 	m_tiles_offset = 0;
 }
@@ -529,15 +476,9 @@ VIDEO_START_MEMBER(subsino_state,subsino_reels)
 {
 	VIDEO_START_CALL_MEMBER( subsino );
 
-<<<<<<< HEAD
-	m_reel1_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(subsino_state::get_subsino_reel1_tile_info),this),TILEMAP_SCAN_ROWS, 8, 32, 64, 8);
-	m_reel2_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(subsino_state::get_subsino_reel2_tile_info),this),TILEMAP_SCAN_ROWS, 8, 32, 64, 8);
-	m_reel3_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(subsino_state::get_subsino_reel3_tile_info),this),TILEMAP_SCAN_ROWS, 8, 32, 64, 8);
-=======
 	m_reel1_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(subsino_state::get_subsino_reel1_tile_info),this),TILEMAP_SCAN_ROWS, 8, 32, 64, 8);
 	m_reel2_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(subsino_state::get_subsino_reel2_tile_info),this),TILEMAP_SCAN_ROWS, 8, 32, 64, 8);
 	m_reel3_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(subsino_state::get_subsino_reel3_tile_info),this),TILEMAP_SCAN_ROWS, 8, 32, 64, 8);
->>>>>>> upstream/master
 
 	m_reel1_tilemap->set_scroll_cols(64);
 	m_reel2_tilemap->set_scroll_cols(64);
@@ -547,21 +488,12 @@ VIDEO_START_MEMBER(subsino_state,subsino_reels)
 
 VIDEO_START_MEMBER(subsino_state,stbsub)
 {
-<<<<<<< HEAD
-	m_tmap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(subsino_state::get_stbsub_tile_info),this), TILEMAP_SCAN_ROWS, 8,8, 0x40,0x20 );
-	m_tmap->set_transparent_pen(0 );
-
-	m_reel1_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(subsino_state::get_stbsub_reel1_tile_info),this),TILEMAP_SCAN_ROWS, 8, 32, 64, 8);
-	m_reel2_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(subsino_state::get_stbsub_reel2_tile_info),this),TILEMAP_SCAN_ROWS, 8, 32, 64, 8);
-	m_reel3_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(subsino_state::get_stbsub_reel3_tile_info),this),TILEMAP_SCAN_ROWS, 8, 32, 64, 8);
-=======
 	m_tmap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(subsino_state::get_stbsub_tile_info),this), TILEMAP_SCAN_ROWS, 8,8, 0x40,0x20 );
 	m_tmap->set_transparent_pen(0 );
 
 	m_reel1_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(subsino_state::get_stbsub_reel1_tile_info),this),TILEMAP_SCAN_ROWS, 8, 32, 64, 8);
 	m_reel2_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(subsino_state::get_stbsub_reel2_tile_info),this),TILEMAP_SCAN_ROWS, 8, 32, 64, 8);
 	m_reel3_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(subsino_state::get_stbsub_reel3_tile_info),this),TILEMAP_SCAN_ROWS, 8, 32, 64, 8);
->>>>>>> upstream/master
 
 	m_reel1_tilemap->set_scroll_cols(64);
 	m_reel2_tilemap->set_scroll_cols(64);
@@ -571,22 +503,14 @@ VIDEO_START_MEMBER(subsino_state,stbsub)
 }
 
 
-<<<<<<< HEAD
-UINT32 subsino_state::screen_update_subsino(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t subsino_state::screen_update_subsino(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	bitmap.fill(0, cliprect);
 	m_tmap->draw(screen, bitmap, cliprect, 0, 0);
 	return 0;
 }
 
-<<<<<<< HEAD
-UINT32 subsino_state::screen_update_subsino_reels(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t subsino_state::screen_update_subsino_reels(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int i;
 	bitmap.fill(0, cliprect);
@@ -615,11 +539,7 @@ uint32_t subsino_state::screen_update_subsino_reels(screen_device &screen, bitma
 }
 
 
-<<<<<<< HEAD
-UINT32 subsino_state::screen_update_stbsub_reels(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t subsino_state::screen_update_stbsub_reels(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int i;
 	bitmap.fill(0, cliprect);
@@ -658,11 +578,7 @@ uint32_t subsino_state::screen_update_stbsub_reels(screen_device &screen, bitmap
 
 PALETTE_INIT_MEMBER(subsino_state,subsino_2proms)
 {
-<<<<<<< HEAD
-	const UINT8 *color_prom = memregion("proms")->base();
-=======
 	const uint8_t *color_prom = memregion("proms")->base();
->>>>>>> upstream/master
 	int i,r,g,b,val;
 	int bit0,bit1,bit2;
 
@@ -689,11 +605,7 @@ PALETTE_INIT_MEMBER(subsino_state,subsino_2proms)
 
 PALETTE_INIT_MEMBER(subsino_state,subsino_3proms)
 {
-<<<<<<< HEAD
-	const UINT8 *color_prom = memregion("proms")->base();
-=======
 	const uint8_t *color_prom = memregion("proms")->base();
->>>>>>> upstream/master
 	int i,r,g,b,val;
 	int bit0,bit1,bit2;
 
@@ -754,21 +666,6 @@ WRITE8_MEMBER(subsino_state::subsino_out_a_w)
 
 */
 
-<<<<<<< HEAD
-	output_set_lamp_value(8, (data) & 1);       /* Lamp 8 */
-	output_set_lamp_value(9, (data >> 1) & 1);  /* Lamp 9 */
-	output_set_lamp_value(10, (data >> 2) & 1); /* Lamp 10 */
-	output_set_lamp_value(11, (data >> 3) & 1); /* Lamp 11 */
-	output_set_lamp_value(12, (data >> 4) & 1); /* Lamp 12 */
-	output_set_lamp_value(13, (data >> 5) & 1); /* Lamp 13 */
-	output_set_lamp_value(14, (data >> 6) & 1); /* Lamp 14 */
-	output_set_lamp_value(15, (data >> 7) & 1); /* Lamp 15 */
-
-	coin_counter_w( machine(), 0, data & 0x01 );    /* coin / keyin */
-	coin_counter_w( machine(), 1, data & 0x02 );    /* keyin / coin */
-	coin_counter_w( machine(), 2, data & 0x10 );    /* keyout */
-	coin_counter_w( machine(), 3, data & 0x20 );    /* payout */
-=======
 	output().set_lamp_value(8, (data) & 1);       /* Lamp 8 */
 	output().set_lamp_value(9, (data >> 1) & 1);  /* Lamp 9 */
 	output().set_lamp_value(10, (data >> 2) & 1); /* Lamp 10 */
@@ -782,7 +679,6 @@ WRITE8_MEMBER(subsino_state::subsino_out_a_w)
 	machine().bookkeeping().coin_counter_w(1, data & 0x02 );    /* keyin / coin */
 	machine().bookkeeping().coin_counter_w(2, data & 0x10 );    /* keyout */
 	machine().bookkeeping().coin_counter_w(3, data & 0x20 );    /* payout */
->>>>>>> upstream/master
 
 	m_hopper->write(space, 0, (data & 0x0020) ? 0x80 : 0);   // hopper motor
 
@@ -912,16 +808,6 @@ WRITE8_MEMBER(subsino_state::subsino_out_b_w)
 
 */
 
-<<<<<<< HEAD
-	output_set_lamp_value(0, (data) & 1);       /* Lamp 0 */
-	output_set_lamp_value(1, (data >> 1) & 1);  /* Lamp 1 */
-	output_set_lamp_value(2, (data >> 2) & 1);  /* Lamp 2 */
-	output_set_lamp_value(3, (data >> 3) & 1);  /* Lamp 3 */
-	output_set_lamp_value(4, (data >> 4) & 1);  /* Lamp 4 */
-	output_set_lamp_value(5, (data >> 5) & 1);  /* Lamp 5 */
-	output_set_lamp_value(6, (data >> 6) & 1);  /* Lamp 6 */
-	output_set_lamp_value(7, (data >> 7) & 1);  /* Lamp 7 */
-=======
 	output().set_lamp_value(0, (data) & 1);       /* Lamp 0 */
 	output().set_lamp_value(1, (data >> 1) & 1);  /* Lamp 1 */
 	output().set_lamp_value(2, (data >> 2) & 1);  /* Lamp 2 */
@@ -930,7 +816,6 @@ WRITE8_MEMBER(subsino_state::subsino_out_b_w)
 	output().set_lamp_value(5, (data >> 5) & 1);  /* Lamp 5 */
 	output().set_lamp_value(6, (data >> 6) & 1);  /* Lamp 6 */
 	output().set_lamp_value(7, (data >> 7) & 1);  /* Lamp 7 */
->>>>>>> upstream/master
 
 //  popmessage("Out B %02x",data);
 }
@@ -945,18 +830,8 @@ static ADDRESS_MAP_START( srider_map, AS_PROGRAM, 8, subsino_state )
 
 	AM_RANGE( 0x0c000, 0x0cfff ) AM_RAM
 
-<<<<<<< HEAD
-	AM_RANGE( 0x0d000, 0x0d000 ) AM_READ_PORT( "SW1" )
-	AM_RANGE( 0x0d001, 0x0d001 ) AM_READ_PORT( "SW2" )
-	AM_RANGE( 0x0d002, 0x0d002 ) AM_READ_PORT( "SW3" )
-
-	AM_RANGE( 0x0d004, 0x0d004 ) AM_READ_PORT( "SW4" )
-	AM_RANGE( 0x0d005, 0x0d005 ) AM_READ_PORT( "INA" )
-	AM_RANGE( 0x0d006, 0x0d006 ) AM_READ_PORT( "INB" )
-=======
 	AM_RANGE( 0x0d000, 0x0d002 ) AM_DEVREAD("ppi1", i8255_device, read)
 	AM_RANGE( 0x0d004, 0x0d006 ) AM_DEVREAD("ppi2", i8255_device, read)
->>>>>>> upstream/master
 
 	AM_RANGE( 0x0d009, 0x0d009 ) AM_WRITE(subsino_out_b_w )
 	AM_RANGE( 0x0d00a, 0x0d00a ) AM_WRITE(subsino_out_a_w )
@@ -977,18 +852,8 @@ ADDRESS_MAP_END
 static ADDRESS_MAP_START( sharkpy_map, AS_PROGRAM, 8, subsino_state )
 	AM_RANGE( 0x09800, 0x09fff ) AM_RAM
 
-<<<<<<< HEAD
-	AM_RANGE( 0x09000, 0x09000 ) AM_READ_PORT( "SW1" )
-	AM_RANGE( 0x09001, 0x09001 ) AM_READ_PORT( "SW2" )
-	AM_RANGE( 0x09002, 0x09002 ) AM_READ_PORT( "SW3" )
-
-	AM_RANGE( 0x09004, 0x09004 ) AM_READ_PORT( "SW4" )
-	AM_RANGE( 0x09005, 0x09005 ) AM_READ_PORT( "INA" )
-	AM_RANGE( 0x09006, 0x09006 ) AM_READ_PORT( "INB" )
-=======
 	AM_RANGE( 0x09000, 0x09002 ) AM_DEVREAD("ppi1", i8255_device, read)
 	AM_RANGE( 0x09004, 0x09006 ) AM_DEVREAD("ppi2", i8255_device, read)
->>>>>>> upstream/master
 
 	AM_RANGE( 0x09009, 0x09009 ) AM_WRITE(subsino_out_b_w )
 	AM_RANGE( 0x0900a, 0x0900a ) AM_WRITE(subsino_out_a_w )
@@ -1017,18 +882,9 @@ this event makes the game to reset without any money in the bank.
 static ADDRESS_MAP_START( victor21_map, AS_PROGRAM, 8, subsino_state )
 	AM_RANGE( 0x09800, 0x09fff ) AM_RAM
 
-<<<<<<< HEAD
-	AM_RANGE( 0x09000, 0x09000 ) AM_WRITE(subsino_out_a_w )
-	AM_RANGE( 0x09001, 0x09001 ) AM_WRITE(subsino_out_b_w )
-	AM_RANGE( 0x09002, 0x09002 ) AM_READ_PORT( "INC" )
-	AM_RANGE( 0x09004, 0x09004 ) AM_READ_PORT( "INA" )
-	AM_RANGE( 0x09005, 0x09005 ) AM_READ_PORT( "INB" )
-
-=======
 	AM_RANGE( 0x09000, 0x09003 ) AM_DEVREADWRITE("ppi", i8255_device, read, write)
 	AM_RANGE( 0x09004, 0x09004 ) AM_READ_PORT( "INA" )
 	AM_RANGE( 0x09005, 0x09005 ) AM_READ_PORT( "INB" )
->>>>>>> upstream/master
 	AM_RANGE( 0x09006, 0x09006 ) AM_READ_PORT( "SW1" )
 	AM_RANGE( 0x09007, 0x09007 ) AM_READ_PORT( "SW2" )
 	AM_RANGE( 0x09008, 0x09008 ) AM_READ_PORT( "SW3" )
@@ -1165,18 +1021,8 @@ WRITE8_MEMBER(subsino_state::subsino_out_c_w)
 static ADDRESS_MAP_START( tisub_map, AS_PROGRAM, 8, subsino_state )
 	AM_RANGE( 0x09800, 0x09fff ) AM_RAM
 
-<<<<<<< HEAD
-	AM_RANGE( 0x09000, 0x09000 ) AM_READ_PORT( "SW1" )
-	AM_RANGE( 0x09001, 0x09001 ) AM_READ_PORT( "SW2" )
-	AM_RANGE( 0x09002, 0x09002 ) AM_READ_PORT( "SW3" )
-
-	AM_RANGE( 0x09004, 0x09004 ) AM_READ_PORT( "SW4" )
-	AM_RANGE( 0x09005, 0x09005 ) AM_READ_PORT( "INA" )
-	AM_RANGE( 0x09006, 0x09006 ) AM_READ_PORT( "INB" )
-=======
 	AM_RANGE( 0x09000, 0x09002 ) AM_DEVREAD("ppi1", i8255_device, read)
 	AM_RANGE( 0x09004, 0x09006 ) AM_DEVREAD("ppi2", i8255_device, read)
->>>>>>> upstream/master
 
 	/* 0x09008: is marked as OUTPUT C in the test mode. */
 	AM_RANGE( 0x09008, 0x09008 ) AM_WRITE(subsino_out_c_w )
@@ -1208,40 +1054,9 @@ static ADDRESS_MAP_START( tisub_map, AS_PROGRAM, 8, subsino_state )
 	AM_RANGE( 0x15c00, 0x15dff ) AM_RAM_WRITE(subsino_reel3_ram_w) AM_SHARE("reel3_ram")
 ADDRESS_MAP_END
 
-<<<<<<< HEAD
-
-WRITE8_MEMBER(subsino_state::colordac_w)
-{
-	switch ( offset )
-	{
-		case 0:
-			m_colordac_offs = data * 3;
-			break;
-
-		case 1:
-			m_stbsub_colorram[m_colordac_offs] = data;
-			m_palette->set_pen_color(m_colordac_offs/3,
-				pal6bit(m_stbsub_colorram[(m_colordac_offs/3)*3+0]),
-				pal6bit(m_stbsub_colorram[(m_colordac_offs/3)*3+1]),
-				pal6bit(m_stbsub_colorram[(m_colordac_offs/3)*3+2])
-			);
-			m_colordac_offs = (m_colordac_offs+1) % (256*3);
-			break;
-
-		case 2:
-			// ff?
-			break;
-
-		case 3:
-			break;
-	}
-}
-
-=======
 static ADDRESS_MAP_START( ramdac_map, 0, 8, subsino_state )
 	AM_RANGE(0x000, 0x3ff) AM_DEVREADWRITE("ramdac", ramdac_device, ramdac_pal_r, ramdac_rgb666_w)
 ADDRESS_MAP_END
->>>>>>> upstream/master
 
 // this stuff is banked..
 // not 100% sure on the bank bits.. other bits are also set
@@ -1299,18 +1114,8 @@ static ADDRESS_MAP_START( stbsub_map, AS_PROGRAM, 8, subsino_state )
 
 	AM_RANGE( 0x0c000, 0x0cfff ) AM_RAM
 
-<<<<<<< HEAD
-	AM_RANGE( 0x0d000, 0x0d000 ) AM_READ_PORT( "SW1" )
-	AM_RANGE( 0x0d001, 0x0d001 ) AM_READ_PORT( "SW2" )
-	AM_RANGE( 0x0d002, 0x0d002 ) AM_READ_PORT( "SW3" )
-
-	AM_RANGE( 0x0d004, 0x0d004 ) AM_READ_PORT( "SW4" )
-	AM_RANGE( 0x0d005, 0x0d005 ) AM_READ_PORT( "INB" )
-	AM_RANGE( 0x0d006, 0x0d006 ) AM_READ_PORT( "INA" )
-=======
 	AM_RANGE( 0x0d000, 0x0d002 ) AM_DEVREAD("ppi1", i8255_device, read)
 	AM_RANGE( 0x0d004, 0x0d006 ) AM_DEVREAD("ppi2", i8255_device, read)
->>>>>>> upstream/master
 
 	AM_RANGE( 0x0d008, 0x0d008 ) AM_RAM AM_SHARE("stbsub_out_c")
 
@@ -1319,13 +1124,9 @@ static ADDRESS_MAP_START( stbsub_map, AS_PROGRAM, 8, subsino_state )
 
 	AM_RANGE( 0x0d00c, 0x0d00c ) AM_READ_PORT( "INC" )
 
-<<<<<<< HEAD
-	AM_RANGE( 0x0d010, 0x0d013 ) AM_WRITE(colordac_w)
-=======
 	AM_RANGE( 0x0d010, 0x0d010 ) AM_DEVWRITE("ramdac", ramdac_device, index_w)
 	AM_RANGE( 0x0d011, 0x0d011 ) AM_DEVWRITE("ramdac", ramdac_device, pal_w)
 	AM_RANGE( 0x0d012, 0x0d012 ) AM_DEVWRITE("ramdac", ramdac_device, mask_w)
->>>>>>> upstream/master
 
 	AM_RANGE( 0x0d016, 0x0d017 ) AM_DEVWRITE("ymsnd", ym3812_device, write)
 
@@ -1351,32 +1152,18 @@ static ADDRESS_MAP_START( mtrainnv_map, AS_PROGRAM, 8, subsino_state )
 
 	AM_RANGE( 0x0c000, 0x0cfff ) AM_RAM
 
-<<<<<<< HEAD
-	AM_RANGE( 0x0d000, 0x0d000 ) AM_READ_PORT( "SW1" )
-	AM_RANGE( 0x0d001, 0x0d001 ) AM_READ_PORT( "SW2" )
-	AM_RANGE( 0x0d002, 0x0d002 ) AM_READ_PORT( "SW3" )
-
-	AM_RANGE( 0x0d004, 0x0d004 ) AM_READ_PORT( "SW4" )
-	AM_RANGE( 0x0d005, 0x0d005 ) AM_READ_PORT( "INB" )
-	AM_RANGE( 0x0d006, 0x0d006 ) AM_READ_PORT( "INA" )
-=======
 	AM_RANGE( 0x0d000, 0x0d002 ) AM_DEVREAD("ppi1", i8255_device, read)
 	AM_RANGE( 0x0d004, 0x0d006 ) AM_DEVREAD("ppi2", i8255_device, read)
 
->>>>>>> upstream/master
 	AM_RANGE( 0x0d008, 0x0d008 ) AM_RAM AM_SHARE("stbsub_out_c")
 //  AM_RANGE( 0x0d009, 0x0d009 ) AM_WRITE
 //  AM_RANGE( 0x0d00a, 0x0d00a ) AM_WRITE
 //  AM_RANGE( 0x0d00b, 0x0d00b ) AM_WRITE
 	AM_RANGE( 0x0d00c, 0x0d00c ) AM_READ_PORT( "INC" )
 
-<<<<<<< HEAD
-	AM_RANGE( 0x0d010, 0x0d013 ) AM_WRITE(colordac_w)
-=======
 	AM_RANGE( 0x0d010, 0x0d010 ) AM_DEVWRITE("ramdac", ramdac_device, index_w)
 	AM_RANGE( 0x0d011, 0x0d011 ) AM_DEVWRITE("ramdac", ramdac_device, pal_w)
 	AM_RANGE( 0x0d012, 0x0d012 ) AM_DEVWRITE("ramdac", ramdac_device, mask_w)
->>>>>>> upstream/master
 
 //  AM_RANGE( 0x0d012, 0x0d012 ) AM_WRITE
 
@@ -2961,18 +2748,12 @@ GFXDECODE_END
 *                             Machine Drivers                              *
 ***************************************************************************/
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( victor21, subsino_state )
-=======
 static MACHINE_CONFIG_START( victor21 )
->>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z180, XTAL_12MHz / 8)   /* Unknown clock */
 	MCFG_CPU_PROGRAM_MAP(victor21_map)
 	MCFG_CPU_IO_MAP(subsino_iomap)
 
-<<<<<<< HEAD
-=======
 	MCFG_DEVICE_ADD("ppi", I8255A, 0)
 	MCFG_I8255_OUT_PORTA_CB(WRITE8(subsino_state, subsino_out_a_w))
 	MCFG_I8255_TRISTATE_PORTA_CB(CONSTANT(0))
@@ -2980,7 +2761,6 @@ static MACHINE_CONFIG_START( victor21 )
 	MCFG_I8255_TRISTATE_PORTB_CB(CONSTANT(0))
 	MCFG_I8255_IN_PORTC_CB(IOPORT("INC"))
 
->>>>>>> upstream/master
 	MCFG_TICKET_DISPENSER_ADD("hopper", attotime::from_msec(200), TICKET_MOTOR_ACTIVE_HIGH, TICKET_STATUS_ACTIVE_LOW)
 
 	/* video hardware */
@@ -3005,11 +2785,7 @@ static MACHINE_CONFIG_START( victor21 )
 	MCFG_SOUND_ADD("ymsnd", YM2413, XTAL_3_579545MHz)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki", XTAL_4_433619MHz / 4, OKIM6295_PIN7_HIGH)  /* Clock frequency & pin 7 not verified */
-=======
 	MCFG_OKIM6295_ADD("oki", XTAL_4_433619MHz / 4, PIN7_HIGH)  /* Clock frequency & pin 7 not verified */
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
 
@@ -3022,11 +2798,7 @@ static MACHINE_CONFIG_DERIVED( victor5, victor21 )
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( crsbingo, subsino_state )
-=======
 static MACHINE_CONFIG_START( crsbingo )
->>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z180, XTAL_12MHz / 8)   /* Unknown CPU and clock */
 	MCFG_CPU_PROGRAM_MAP(crsbingo_map)
@@ -3058,18 +2830,12 @@ static MACHINE_CONFIG_START( crsbingo )
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( srider, subsino_state )
-=======
 static MACHINE_CONFIG_START( srider )
->>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z180, XTAL_12MHz / 8)   /* Unknown clock */
 	MCFG_CPU_PROGRAM_MAP(srider_map)
 	MCFG_CPU_IO_MAP(subsino_iomap)
 
-<<<<<<< HEAD
-=======
 	MCFG_DEVICE_ADD("ppi1", I8255A, 0)
 	MCFG_I8255_IN_PORTA_CB(IOPORT("SW1"))
 	MCFG_I8255_IN_PORTB_CB(IOPORT("SW2"))
@@ -3080,7 +2846,6 @@ static MACHINE_CONFIG_START( srider )
 	MCFG_I8255_IN_PORTB_CB(IOPORT("INA"))
 	MCFG_I8255_IN_PORTC_CB(IOPORT("INB"))
 
->>>>>>> upstream/master
 	MCFG_TICKET_DISPENSER_ADD("hopper", attotime::from_msec(200), TICKET_MOTOR_ACTIVE_HIGH, TICKET_STATUS_ACTIVE_LOW)
 
 	/* video hardware */
@@ -3105,11 +2870,7 @@ static MACHINE_CONFIG_START( srider )
 	MCFG_SOUND_ADD("ymsnd", YM3812, XTAL_3_579545MHz)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki", XTAL_4_433619MHz / 4, OKIM6295_PIN7_HIGH)  /* Clock frequency & pin 7 not verified */
-=======
 	MCFG_OKIM6295_ADD("oki", XTAL_4_433619MHz / 4, PIN7_HIGH)  /* Clock frequency & pin 7 not verified */
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
 
@@ -3121,18 +2882,12 @@ static MACHINE_CONFIG_DERIVED( sharkpy, srider )
 	MCFG_CPU_PROGRAM_MAP(sharkpy_map)
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( tisub, subsino_state )
-=======
 static MACHINE_CONFIG_START( tisub )
->>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z180, XTAL_12MHz / 8)   /* Unknown CPU and clock */
 	MCFG_CPU_PROGRAM_MAP(tisub_map)
 	MCFG_CPU_IO_MAP(subsino_iomap)
 
-<<<<<<< HEAD
-=======
 	MCFG_DEVICE_ADD("ppi1", I8255A, 0)
 	MCFG_I8255_IN_PORTA_CB(IOPORT("SW1"))
 	MCFG_I8255_IN_PORTB_CB(IOPORT("SW2"))
@@ -3143,7 +2898,6 @@ static MACHINE_CONFIG_START( tisub )
 	MCFG_I8255_IN_PORTB_CB(IOPORT("INA"))
 	MCFG_I8255_IN_PORTC_CB(IOPORT("INB"))
 
->>>>>>> upstream/master
 	MCFG_TICKET_DISPENSER_ADD("hopper", attotime::from_msec(200), TICKET_MOTOR_ACTIVE_HIGH, TICKET_STATUS_ACTIVE_LOW)
 
 	/* video hardware */
@@ -3169,18 +2923,12 @@ static MACHINE_CONFIG_START( tisub )
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( stbsub, subsino_state )
-=======
 static MACHINE_CONFIG_START( stbsub )
->>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z180, XTAL_12MHz / 8)   /* Unknown clock */
 	MCFG_CPU_PROGRAM_MAP(stbsub_map)
 	MCFG_CPU_IO_MAP(subsino_iomap)
 
-<<<<<<< HEAD
-=======
 	MCFG_DEVICE_ADD("ppi1", I8255A, 0)
 	MCFG_I8255_IN_PORTA_CB(IOPORT("SW1"))
 	MCFG_I8255_IN_PORTB_CB(IOPORT("SW2"))
@@ -3191,7 +2939,6 @@ static MACHINE_CONFIG_START( stbsub )
 	MCFG_I8255_IN_PORTB_CB(IOPORT("INB"))
 	MCFG_I8255_IN_PORTC_CB(IOPORT("INA"))
 
->>>>>>> upstream/master
 	MCFG_TICKET_DISPENSER_ADD("hopper", attotime::from_msec(200), TICKET_MOTOR_ACTIVE_HIGH, TICKET_STATUS_ACTIVE_LOW)
 
 	/* video hardware */
@@ -3208,11 +2955,8 @@ static MACHINE_CONFIG_START( stbsub )
 	MCFG_PALETTE_ADD("palette", 0x100)
 	//MCFG_PALETTE_INIT_OWNER(subsino_state,subsino_3proms)
 
-<<<<<<< HEAD
-=======
 	MCFG_RAMDAC_ADD("ramdac", ramdac_map, "palette") // HMC HM86171 VGA 256 colour RAMDAC
 
->>>>>>> upstream/master
 	MCFG_VIDEO_START_OVERRIDE(subsino_state,stbsub)
 
 	/* sound hardware */
@@ -3784,11 +3528,7 @@ ROM_END
 
 DRIVER_INIT_MEMBER(subsino_state,smoto16)
 {
-<<<<<<< HEAD
-	UINT8 *rom = memregion( "maincpu" )->base();
-=======
 	uint8_t *rom = memregion( "maincpu" )->base();
->>>>>>> upstream/master
 	rom[0x12d0] = 0x20; // "ERROR 951010"
 }
 
@@ -3801,11 +3541,7 @@ Chips:
 
 2x custom QFP44 label SUBSINOSS9100
 1x custom DIP42 label SUBSINOSS9101
-<<<<<<< HEAD
-2x D8255AC-2 (are they 8255 equivalent?)
-=======
 2x D8255AC-2 (equivalent to 8255)
->>>>>>> upstream/master
 1x custom QFP44 label K-665 (sound)(equivalent to OKI M6295)
 1x custom DIP24 label SM64 (sound)(equivalent to YM3812)
 1x custom DIP8 label K-664 (sound)(equivalent to YM3014)
@@ -4014,19 +3750,11 @@ ROM_START( mtrainnv )
 
 	ROM_REGION( 0x10000, "tilemap", 0 )
 	ROM_LOAD( "mtrain_tilemap.bin", 0x00000, 0x10000, NO_DUMP )
-<<<<<<< HEAD
-	ROM_COPY( "maincpu", 0x0000, 0x00000, 0x10000 ) // just to show something
-
-	ROM_REGION( 0x10000, "reels", 0 )
-	ROM_LOAD( "mtrain_reels.bin", 0x00000, 0x10000, NO_DUMP )
-	ROM_COPY( "maincpu", 0x0000, 0x00000, 0x10000 ) // just to show something
-=======
 	ROM_COPY( "maincpu", 0x000000, 0x00000, 0x10000 ) // just to show something
 
 	ROM_REGION( 0x10000, "reels", 0 )
 	ROM_LOAD( "mtrain_reels.bin", 0x00000, 0x10000, NO_DUMP )
 	ROM_COPY( "maincpu", 0x000000, 0x00000, 0x10000 ) // just to show something
->>>>>>> upstream/master
 ROM_END
 
 
@@ -4061,21 +3789,13 @@ DRIVER_INIT_MEMBER(subsino_state,sharkpye)
 
 DRIVER_INIT_MEMBER(subsino_state,smoto20)
 {
-<<<<<<< HEAD
-	UINT8 *rom = memregion( "maincpu" )->base();
-=======
 	uint8_t *rom = memregion( "maincpu" )->base();
->>>>>>> upstream/master
 	rom[0x12e1] = 0x20; // "ERROR 951010"
 }
 
 DRIVER_INIT_MEMBER(subsino_state,tisub)
 {
-<<<<<<< HEAD
-	UINT8 *rom = memregion( "maincpu" )->base();
-=======
 	uint8_t *rom = memregion( "maincpu" )->base();
->>>>>>> upstream/master
 
 	DRIVER_INIT_CALL(victor5);
 
@@ -4090,11 +3810,7 @@ DRIVER_INIT_MEMBER(subsino_state,tisub)
 
 DRIVER_INIT_MEMBER(subsino_state,tisuba)
 {
-<<<<<<< HEAD
-	UINT8 *rom = memregion( "maincpu" )->base();
-=======
 	uint8_t *rom = memregion( "maincpu" )->base();
->>>>>>> upstream/master
 
 	DRIVER_INIT_CALL(victor5);
 
@@ -4110,155 +3826,84 @@ DRIVER_INIT_MEMBER(subsino_state,tisuba)
 DRIVER_INIT_MEMBER(subsino_state,stbsub)
 {
 #if 1
-<<<<<<< HEAD
-	UINT8 *rom = memregion( "maincpu" )->base();
-=======
 	uint8_t *rom = memregion( "maincpu" )->base();
->>>>>>> upstream/master
 	rom[0x1005] = 0x1d; //patch protection check
 	rom[0x7ab] = 0x18; //patch "winning protection" check
 	rom[0x957] = 0x18; //patch "losing protection" check
 #endif
 
-<<<<<<< HEAD
-	m_stbsub_colorram = auto_alloc_array(machine(), UINT8, 256*3);
-
-=======
->>>>>>> upstream/master
 	m_reel1_scroll.allocate(0x40);
 	m_reel2_scroll.allocate(0x40);
 	m_reel3_scroll.allocate(0x40);
 
-<<<<<<< HEAD
-	m_reel1_attr = auto_alloc_array(machine(), UINT8, 0x200);
-	m_reel2_attr = auto_alloc_array(machine(), UINT8, 0x200);
-	m_reel3_attr = auto_alloc_array(machine(), UINT8, 0x200);
-=======
 	m_reel1_attr = std::make_unique<uint8_t[]>(0x200);
 	m_reel2_attr = std::make_unique<uint8_t[]>(0x200);
 	m_reel3_attr = std::make_unique<uint8_t[]>(0x200);
->>>>>>> upstream/master
 }
 
 DRIVER_INIT_MEMBER(subsino_state, stisub)
 {
-<<<<<<< HEAD
-	UINT8 *rom = memregion( "maincpu" )->base();
-	rom[0x0FA0] = 0x28;
-	rom[0x0FA1] = 0x1d; //patch protection check
-
-	m_stbsub_colorram = auto_alloc_array(machine(), UINT8, 256*3);
-
-=======
 	uint8_t *rom = memregion( "maincpu" )->base();
 	rom[0x0FA0] = 0x28;
 	rom[0x0FA1] = 0x1d; //patch protection check
 
->>>>>>> upstream/master
 	m_reel1_scroll.allocate(0x40);
 	m_reel2_scroll.allocate(0x40);
 	m_reel3_scroll.allocate(0x40);
 
-<<<<<<< HEAD
-	m_reel1_attr = auto_alloc_array(machine(), UINT8, 0x200);
-	m_reel2_attr = auto_alloc_array(machine(), UINT8, 0x200);
-	m_reel3_attr = auto_alloc_array(machine(), UINT8, 0x200);
-=======
 	m_reel1_attr = std::make_unique<uint8_t[]>(0x200);
 	m_reel2_attr = std::make_unique<uint8_t[]>(0x200);
 	m_reel3_attr = std::make_unique<uint8_t[]>(0x200);
->>>>>>> upstream/master
 }
 
 DRIVER_INIT_MEMBER(subsino_state,tesorone)
 {
 #if 1
-<<<<<<< HEAD
-	UINT8 *rom = memregion( "maincpu" )->base();
-=======
 	uint8_t *rom = memregion( "maincpu" )->base();
->>>>>>> upstream/master
 	rom[0x10a4] = 0x18; //patch protection check ("ERROR 08073"):
 	rom[0x10a5] = 0x11;
 	rom[0x8b6] = 0x18; //patch "winning protection" check
 	rom[0xa84] = 0x18; //patch "losing protection" check
 #endif
 
-<<<<<<< HEAD
-	m_stbsub_colorram = auto_alloc_array(machine(), UINT8, 256*3);
-
-=======
->>>>>>> upstream/master
 	m_reel1_scroll.allocate(0x40);
 	m_reel2_scroll.allocate(0x40);
 	m_reel3_scroll.allocate(0x40);
 
-<<<<<<< HEAD
-	m_reel1_attr = auto_alloc_array(machine(), UINT8, 0x200);
-	m_reel2_attr = auto_alloc_array(machine(), UINT8, 0x200);
-	m_reel3_attr = auto_alloc_array(machine(), UINT8, 0x200);
-=======
 	m_reel1_attr = std::make_unique<uint8_t[]>(0x200);
 	m_reel2_attr = std::make_unique<uint8_t[]>(0x200);
 	m_reel3_attr = std::make_unique<uint8_t[]>(0x200);
->>>>>>> upstream/master
 }
 
 DRIVER_INIT_MEMBER(subsino_state,tesorone230)
 {
 #if 1
-<<<<<<< HEAD
-	UINT8 *rom = memregion( "maincpu" )->base();            //check this patch!!!!
-=======
 	uint8_t *rom = memregion( "maincpu" )->base();            //check this patch!!!!
->>>>>>> upstream/master
 	rom[0x10a8] = 0x18; //patch protection check ("ERROR 08073"):
 	rom[0x10a9] = 0x11;
 	rom[0x8ba] = 0x18; //patch "winning protection" check
 	rom[0xa88] = 0x18; //patch "losing protection" check
 #endif
 
-<<<<<<< HEAD
-	m_stbsub_colorram = auto_alloc_array(machine(), UINT8, 256*3);
-
-=======
->>>>>>> upstream/master
 	m_reel1_scroll.allocate(0x40);
 	m_reel2_scroll.allocate(0x40);
 	m_reel3_scroll.allocate(0x40);
 
-<<<<<<< HEAD
-	m_reel1_attr = auto_alloc_array(machine(), UINT8, 0x200);
-	m_reel2_attr = auto_alloc_array(machine(), UINT8, 0x200);
-	m_reel3_attr = auto_alloc_array(machine(), UINT8, 0x200);
-=======
 	m_reel1_attr = std::make_unique<uint8_t[]>(0x200);
 	m_reel2_attr = std::make_unique<uint8_t[]>(0x200);
 	m_reel3_attr = std::make_unique<uint8_t[]>(0x200);
->>>>>>> upstream/master
 }
 
 
 DRIVER_INIT_MEMBER(subsino_state,mtrainnv)
 {
-<<<<<<< HEAD
-	m_stbsub_colorram = auto_alloc_array(machine(), UINT8, 256*3);
-
-=======
->>>>>>> upstream/master
 	m_reel1_scroll.allocate(0x40);
 	m_reel2_scroll.allocate(0x40);
 	m_reel3_scroll.allocate(0x40);
 
-<<<<<<< HEAD
-	m_reel1_attr = auto_alloc_array(machine(), UINT8, 0x200);
-	m_reel2_attr = auto_alloc_array(machine(), UINT8, 0x200);
-	m_reel3_attr = auto_alloc_array(machine(), UINT8, 0x200);
-=======
 	m_reel1_attr = std::make_unique<uint8_t[]>(0x200);
 	m_reel2_attr = std::make_unique<uint8_t[]>(0x200);
 	m_reel3_attr = std::make_unique<uint8_t[]>(0x200);
->>>>>>> upstream/master
 }
 
 /***************************************************************************

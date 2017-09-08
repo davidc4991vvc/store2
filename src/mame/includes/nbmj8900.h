@@ -1,10 +1,7 @@
 // license:BSD-3-Clause
 // copyright-holders:Takahiro Nogi
 #include "includes/nb1413m3.h"
-<<<<<<< HEAD
-=======
 #include "screen.h"
->>>>>>> upstream/master
 
 class nbmj8900_state : public driver_device
 {
@@ -45,29 +42,15 @@ public:
 	int m_screen_width;
 	bitmap_ind16 m_tmpbitmap0;
 	bitmap_ind16 m_tmpbitmap1;
-<<<<<<< HEAD
-	UINT8 *m_videoram0;
-	UINT8 *m_videoram1;
-	UINT8 *m_palette_ptr;
-	UINT8 *m_clut;
-=======
 	std::unique_ptr<uint8_t[]> m_videoram0;
 	std::unique_ptr<uint8_t[]> m_videoram1;
 	std::unique_ptr<uint8_t[]> m_palette_ptr;
 	std::unique_ptr<uint8_t[]> m_clut;
->>>>>>> upstream/master
 	int m_flipscreen_old;
 	emu_timer *m_blitter_timer;
 
 	DECLARE_READ8_MEMBER(palette_type1_r);
 	DECLARE_WRITE8_MEMBER(palette_type1_w);
-<<<<<<< HEAD
-	DECLARE_READ8_MEMBER(palette_type2_r);
-	DECLARE_WRITE8_MEMBER(palette_type2_w);
-	DECLARE_READ8_MEMBER(palette_type3_r);
-	DECLARE_WRITE8_MEMBER(palette_type3_w);
-=======
->>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(clutsel_w);
 	DECLARE_READ8_MEMBER(clut_r);
 	DECLARE_WRITE8_MEMBER(clut_w);
@@ -78,15 +61,9 @@ public:
 
 	DECLARE_DRIVER_INIT(togenkyo);
 	DECLARE_DRIVER_INIT(ohpaipee);
-<<<<<<< HEAD
-	virtual void video_start();
-
-	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	virtual void video_start() override;
 
 	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	void vramflip(int vram);
 	void update_pixel0(int x, int y);
 	void update_pixel1(int x, int y);
@@ -94,9 +71,5 @@ public:
 	void postload();
 
 protected:
-<<<<<<< HEAD
-	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
-=======
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
->>>>>>> upstream/master
 };

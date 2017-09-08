@@ -11,10 +11,7 @@
 #include "video/k055555.h"
 #include "video/k054338.h"
 #include "video/konami_helper.h"
-<<<<<<< HEAD
-=======
 #include "screen.h"
->>>>>>> upstream/master
 
 #define CPU_CLOCK       (XTAL_24MHz / 2)        /* 68000 clock */
 #define SOUND_CLOCK     XTAL_16_9344MHz     /* YMZ280 clock */
@@ -33,23 +30,14 @@ public:
 		m_screen(*this, "screen") { }
 
 	/* memory pointers */
-<<<<<<< HEAD
-	UINT8 *    m_ram;
-=======
 	uint8_t *    m_ram;
->>>>>>> upstream/master
 
 	/* video-related */
 	int        m_layer_colorbase[4];
 
 	/* misc */
-<<<<<<< HEAD
-	UINT16     m_cur_control;
-	UINT16     m_cur_control2;
-=======
 	uint16_t     m_cur_control;
 	uint16_t     m_cur_control2;
->>>>>>> upstream/master
 
 	/* devices */
 	required_device<cpu_device> m_maincpu;
@@ -64,17 +52,10 @@ public:
 	DECLARE_WRITE16_MEMBER(control2_w);
 	DECLARE_READ16_MEMBER(bishi_mirror_r);
 	DECLARE_READ16_MEMBER(bishi_K056832_rom_r);
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void machine_reset();
-	virtual void video_start();
-	UINT32 screen_update_bishi(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
-=======
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
 	virtual void video_start() override;
 	uint32_t screen_update_bishi(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	TIMER_DEVICE_CALLBACK_MEMBER(bishi_scanline);
 	K056832_CB_MEMBER(tile_callback);
 };

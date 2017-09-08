@@ -1,25 +1,14 @@
 /*
-<<<<<<< HEAD
- * Copyright 2011-2015 Branimir Karadzic. All rights reserved.
- * License: http://www.opensource.org/licenses/BSD-2-Clause
-=======
  * Copyright 2011-2017 Branimir Karadzic. All rights reserved.
  * License: https://github.com/bkaradzic/bgfx#license-bsd-2-clause
->>>>>>> upstream/master
  */
 
 #include "common.h"
 #include "bgfx_utils.h"
 #include "imgui/imgui.h"
-<<<<<<< HEAD
-
-static float s_texelHalf = 0.0f;
-static bool  s_originBottomLeft = false;
-=======
 #include <bx/rng.h>
 
 static float s_texelHalf = 0.0f;
->>>>>>> upstream/master
 
 struct PosColorTexCoord0Vertex
 {
@@ -47,11 +36,7 @@ bgfx::VertexDecl PosColorTexCoord0Vertex::ms_decl;
 
 void screenSpaceQuad(float _textureWidth, float _textureHeight, bool _originBottomLeft = false, float _width = 1.0f, float _height = 1.0f)
 {
-<<<<<<< HEAD
-	if (bgfx::checkAvailTransientVertexBuffer(3, PosColorTexCoord0Vertex::ms_decl) )
-=======
 	if (3 == bgfx::getAvailTransientVertexBuffer(3, PosColorTexCoord0Vertex::ms_decl) )
->>>>>>> upstream/master
 	{
 		bgfx::TransientVertexBuffer vb;
 		bgfx::allocTransientVertexBuffer(&vb, 3, PosColorTexCoord0Vertex::ms_decl);
@@ -114,11 +99,7 @@ void setOffsets2x2Lum(bgfx::UniformHandle _handle, uint32_t _width, uint32_t _he
 	float du = 1.0f/_width;
 	float dv = 1.0f/_height;
 
-<<<<<<< HEAD
-	uint32_t num = 0;
-=======
 	uint16_t num = 0;
->>>>>>> upstream/master
 	for (uint32_t yy = 0; yy < 3; ++yy)
 	{
 		for (uint32_t xx = 0; xx < 3; ++xx)
@@ -139,11 +120,7 @@ void setOffsets4x4Lum(bgfx::UniformHandle _handle, uint32_t _width, uint32_t _he
 	float du = 1.0f/_width;
 	float dv = 1.0f/_height;
 
-<<<<<<< HEAD
-	uint32_t num = 0;
-=======
 	uint16_t num = 0;
->>>>>>> upstream/master
 	for (uint32_t yy = 0; yy < 4; ++yy)
 	{
 		for (uint32_t xx = 0; xx < 4; ++xx)
@@ -162,11 +139,7 @@ inline float square(float _x)
 	return _x*_x;
 }
 
-<<<<<<< HEAD
-class HDR : public entry::AppI
-=======
 class ExampleHDR : public entry::AppI
->>>>>>> upstream/master
 {
 	void init(int _argc, char** _argv) BX_OVERRIDE
 	{
@@ -183,37 +156,10 @@ class ExampleHDR : public entry::AppI
 		// Enable m_debug text.
 		bgfx::setDebug(m_debug);
 
-<<<<<<< HEAD
-		// Set view 0 clear state.
-		bgfx::setViewClear(0
-				, BGFX_CLEAR_COLOR|BGFX_CLEAR_DEPTH
-				, 0x303030ff
-				, 1.0f
-				, 0
-				);
-
-		// Create vertex stream declaration.
-		PosColorTexCoord0Vertex::init();
-
-		// Set view m_debug names.
-		bgfx::setViewName(0, "Skybox");
-		bgfx::setViewName(1, "Mesh");
-		bgfx::setViewName(2, "Luminance");
-		bgfx::setViewName(3, "Downscale luminance 0");
-		bgfx::setViewName(4, "Downscale luminance 1");
-		bgfx::setViewName(5, "Downscale luminance 2");
-		bgfx::setViewName(6, "Downscale luminance 3");
-		bgfx::setViewName(7, "Brightness");
-		bgfx::setViewName(8, "Blur vertical");
-		bgfx::setViewName(9, "Blur horizontal + tonemap");
-
-		m_uffizi = loadTexture("uffizi.dds"
-=======
 		// Create vertex stream declaration.
 		PosColorTexCoord0Vertex::init();
 
 		m_uffizi = loadTexture("textures/uffizi.dds"
->>>>>>> upstream/master
 				, 0
 				| BGFX_TEXTURE_U_CLAMP
 				| BGFX_TEXTURE_V_CLAMP
@@ -238,13 +184,8 @@ class ExampleHDR : public entry::AppI
 
 		m_mesh = meshLoad("meshes/bunny.bin");
 
-<<<<<<< HEAD
-		m_fbtextures[0] = bgfx::createTexture2D(m_width, m_height, 1, bgfx::TextureFormat::BGRA8, BGFX_TEXTURE_RT|BGFX_TEXTURE_U_CLAMP|BGFX_TEXTURE_V_CLAMP);
-		m_fbtextures[1] = bgfx::createTexture2D(m_width, m_height, 1, bgfx::TextureFormat::D16, BGFX_TEXTURE_RT_BUFFER_ONLY);
-=======
 		m_fbtextures[0] = bgfx::createTexture2D(uint16_t(m_width), uint16_t(m_height), false, 1, bgfx::TextureFormat::BGRA8, BGFX_TEXTURE_RT | BGFX_TEXTURE_U_CLAMP | BGFX_TEXTURE_V_CLAMP);
 		m_fbtextures[1] = bgfx::createTexture2D(uint16_t(m_width), uint16_t(m_height), false, 1, bgfx::TextureFormat::D16, BGFX_TEXTURE_RT_WRITE_ONLY);
->>>>>>> upstream/master
 		m_fbh = bgfx::createFrameBuffer(BX_COUNTOF(m_fbtextures), m_fbtextures, true);
 
 		m_lum[0] = bgfx::createFrameBuffer(128, 128, bgfx::TextureFormat::BGRA8);
@@ -259,11 +200,7 @@ class ExampleHDR : public entry::AppI
 		m_lumBgra8 = 0;
 		if ( (BGFX_CAPS_TEXTURE_BLIT|BGFX_CAPS_TEXTURE_READ_BACK) == (bgfx::getCaps()->supported & (BGFX_CAPS_TEXTURE_BLIT|BGFX_CAPS_TEXTURE_READ_BACK) ) )
 		{
-<<<<<<< HEAD
-			m_rb = bgfx::createTexture2D(1, 1, 1, bgfx::TextureFormat::BGRA8, BGFX_TEXTURE_READ_BACK);
-=======
 			m_rb = bgfx::createTexture2D(1, 1, false, 1, bgfx::TextureFormat::BGRA8, BGFX_TEXTURE_READ_BACK);
->>>>>>> upstream/master
 		}
 		else
 		{
@@ -273,14 +210,8 @@ class ExampleHDR : public entry::AppI
 		// Imgui.
 		imguiCreate();
 
-<<<<<<< HEAD
-		const bgfx::RendererType::Enum renderer = bgfx::getRendererType();
-		s_texelHalf = bgfx::RendererType::Direct3D9 == renderer ? 0.5f : 0.0f;
-		s_originBottomLeft = bgfx::RendererType::OpenGL == renderer || bgfx::RendererType::OpenGLES == renderer;
-=======
 		m_caps = bgfx::getCaps();
 		s_texelHalf = bgfx::RendererType::Direct3D9 == m_caps->rendererType ? 0.5f : 0.0f;
->>>>>>> upstream/master
 
 		m_oldWidth  = 0;
 		m_oldHeight = 0;
@@ -355,13 +286,8 @@ class ExampleHDR : public entry::AppI
 
 				bgfx::destroyFrameBuffer(m_fbh);
 
-<<<<<<< HEAD
-				m_fbtextures[0] = bgfx::createTexture2D(m_width, m_height, 1, bgfx::TextureFormat::BGRA8, ( (msaa+1)<<BGFX_TEXTURE_RT_MSAA_SHIFT)|BGFX_TEXTURE_U_CLAMP|BGFX_TEXTURE_V_CLAMP);
-				m_fbtextures[1] = bgfx::createTexture2D(m_width, m_height, 1, bgfx::TextureFormat::D16, BGFX_TEXTURE_RT_BUFFER_ONLY|( (msaa+1)<<BGFX_TEXTURE_RT_MSAA_SHIFT) );
-=======
 				m_fbtextures[0] = bgfx::createTexture2D(uint16_t(m_width), uint16_t(m_height), false, 1, bgfx::TextureFormat::BGRA8, ((msaa + 1) << BGFX_TEXTURE_RT_MSAA_SHIFT) | BGFX_TEXTURE_U_CLAMP | BGFX_TEXTURE_V_CLAMP);
 				m_fbtextures[1] = bgfx::createTexture2D(uint16_t(m_width), uint16_t(m_height), false, 1, bgfx::TextureFormat::D16, BGFX_TEXTURE_RT_WRITE_ONLY|( (msaa+1)<<BGFX_TEXTURE_RT_MSAA_SHIFT) );
->>>>>>> upstream/master
 				m_fbh = bgfx::createFrameBuffer(BX_COUNTOF(m_fbtextures), m_fbtextures, true);
 			}
 
@@ -371,13 +297,8 @@ class ExampleHDR : public entry::AppI
 					| (m_mouseState.m_buttons[entry::MouseButton::Right ] ? IMGUI_MBUT_RIGHT  : 0)
 					| (m_mouseState.m_buttons[entry::MouseButton::Middle] ? IMGUI_MBUT_MIDDLE : 0)
 					,  m_mouseState.m_mz
-<<<<<<< HEAD
-					, m_width
-					, m_height
-=======
 					, uint16_t(m_width)
 					, uint16_t(m_height)
->>>>>>> upstream/master
 					);
 
 			imguiBeginScrollArea("Settings", m_width - m_width / 5 - 10, 10, m_width / 5, m_height / 2, &m_scrollArea);
@@ -394,11 +315,7 @@ class ExampleHDR : public entry::AppI
 			{
 				union { uint32_t color; uint8_t bgra[4]; } cast = { m_lumBgra8 };
 				float exponent = cast.bgra[3]/255.0f * 255.0f - 128.0f;
-<<<<<<< HEAD
-				float lumAvg   = cast.bgra[2]/255.0f * exp2(exponent);
-=======
 				float lumAvg   = cast.bgra[2]/255.0f * bx::fexp2(exponent);
->>>>>>> upstream/master
 				imguiSlider("Lum Avg", lumAvg, 0.0f, 1.0f, 0.01f, false);
 			}
 
@@ -421,56 +338,6 @@ class ExampleHDR : public entry::AppI
 			// Use m_debug font to print information about this example.
 			bgfx::dbgTextClear();
 			bgfx::dbgTextPrintf(0, 1, 0x4f, "bgfx/examples/09-hdr");
-<<<<<<< HEAD
-			bgfx::dbgTextPrintf(0, 2, 0x6f, "Description: Using multiple views and frame buffers.");
-			bgfx::dbgTextPrintf(0, 3, 0x0f, "Frame: % 7.3f[ms]", double(frameTime)*toMs);
-
-			// Set views.
-			for (uint32_t ii = 0; ii < 6; ++ii)
-			{
-				bgfx::setViewRect(ii, 0, 0, bgfx::BackbufferRatio::Equal);
-			}
-			bgfx::setViewFrameBuffer(0, m_fbh);
-			bgfx::setViewFrameBuffer(1, m_fbh);
-			bgfx::setViewClear(1, BGFX_CLEAR_DISCARD_DEPTH|BGFX_CLEAR_DISCARD_STENCIL);
-
-			bgfx::setViewRect(2, 0, 0, 128, 128);
-			bgfx::setViewFrameBuffer(2, m_lum[0]);
-
-			bgfx::setViewRect(3, 0, 0, 64, 64);
-			bgfx::setViewFrameBuffer(3, m_lum[1]);
-
-			bgfx::setViewRect(4, 0, 0, 16, 16);
-			bgfx::setViewFrameBuffer(4, m_lum[2]);
-
-			bgfx::setViewRect(5, 0, 0, 4, 4);
-			bgfx::setViewFrameBuffer(5, m_lum[3]);
-
-			bgfx::setViewRect(6, 0, 0, 1, 1);
-			bgfx::setViewFrameBuffer(6, m_lum[4]);
-
-			bgfx::setViewRect(7, 0, 0, bgfx::BackbufferRatio::Half);
-			bgfx::setViewFrameBuffer(7, m_bright);
-
-			bgfx::setViewRect(8, 0, 0, bgfx::BackbufferRatio::Eighth);
-			bgfx::setViewFrameBuffer(8, m_blur);
-
-			bgfx::setViewRect(9, 0, 0, bgfx::BackbufferRatio::Equal);
-
-			float view[16];
-			float proj[16];
-
-			bx::mtxIdentity(view);
-			bx::mtxOrtho(proj, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 100.0f);
-
-			// Set view and projection matrix for view 0.
-			for (uint32_t ii = 0; ii < 10; ++ii)
-			{
-				bgfx::setViewTransform(ii, view, proj);
-			}
-
-			float at[3] = { 0.0f, 1.0f, 0.0f };
-=======
 			bgfx::dbgTextPrintf(0, 2, 0x6f, "Description: Using multiple views with frame buffers, and view order remapping.");
 			bgfx::dbgTextPrintf(0, 3, 0x0f, "Frame: % 7.3f[ms]", double(frameTime)*toMs);
 
@@ -557,7 +424,6 @@ class ExampleHDR : public entry::AppI
 			}
 
 			float at[3]  = { 0.0f, 1.0f, 0.0f };
->>>>>>> upstream/master
 			float eye[3] = { 0.0f, 1.0f, -2.5f };
 
 			float mtx[16];
@@ -569,26 +435,6 @@ class ExampleHDR : public entry::AppI
 			float temp[4];
 			bx::vec3MulMtx(temp, eye, mtx);
 
-<<<<<<< HEAD
-			bx::mtxLookAt(view, temp, at);
-			bx::mtxProj(proj, 60.0f, float(m_width)/float(m_height), 0.1f, 100.0f);
-
-			// Set view and projection matrix for view 1.
-			bgfx::setViewTransform(1, view, proj);
-
-			bgfx::setUniform(u_mtx, mtx);
-
-			// Render skybox into view 0.
-			bgfx::setTexture(0, s_texCube, m_uffizi);
-
-			bgfx::setState(BGFX_STATE_RGB_WRITE|BGFX_STATE_ALPHA_WRITE);
-			screenSpaceQuad( (float)m_width, (float)m_height, true);
-			bgfx::submit(0, m_skyProgram);
-
-			// Render m_mesh into view 1
-			bgfx::setTexture(0, s_texCube, m_uffizi);
-			meshSubmit(m_mesh, 1, m_meshProgram, NULL);
-=======
 			float view[16];
 			bx::mtxLookAt(view, temp, at);
 			bx::mtxProj(proj, 60.0f, float(m_width)/float(m_height), 0.1f, 100.0f, bgfx::getCaps()->homogeneousDepth);
@@ -609,47 +455,11 @@ class ExampleHDR : public entry::AppI
 			bgfx::setTexture(0, s_texCube, m_uffizi);
 			bgfx::setUniform(u_tonemap, tonemap);
 			meshSubmit(m_mesh, hdrMesh, m_meshProgram, NULL);
->>>>>>> upstream/master
 
 			// Calculate luminance.
 			setOffsets2x2Lum(u_offset, 128, 128);
 			bgfx::setTexture(0, s_texColor, m_fbtextures[0]);
 			bgfx::setState(BGFX_STATE_RGB_WRITE|BGFX_STATE_ALPHA_WRITE);
-<<<<<<< HEAD
-			screenSpaceQuad(128.0f, 128.0f, s_originBottomLeft);
-			bgfx::submit(2, m_lumProgram);
-
-			// Downscale luminance 0.
-			setOffsets4x4Lum(u_offset, 128, 128);
-			bgfx::setTexture(0, s_texColor, m_lum[0]);
-			bgfx::setState(BGFX_STATE_RGB_WRITE|BGFX_STATE_ALPHA_WRITE);
-			screenSpaceQuad(64.0f, 64.0f, s_originBottomLeft);
-			bgfx::submit(3, m_lumAvgProgram);
-
-			// Downscale luminance 1.
-			setOffsets4x4Lum(u_offset, 64, 64);
-			bgfx::setTexture(0, s_texColor, m_lum[1]);
-			bgfx::setState(BGFX_STATE_RGB_WRITE|BGFX_STATE_ALPHA_WRITE);
-			screenSpaceQuad(16.0f, 16.0f, s_originBottomLeft);
-			bgfx::submit(4, m_lumAvgProgram);
-
-			// Downscale luminance 2.
-			setOffsets4x4Lum(u_offset, 16, 16);
-			bgfx::setTexture(0, s_texColor, m_lum[2]);
-			bgfx::setState(BGFX_STATE_RGB_WRITE|BGFX_STATE_ALPHA_WRITE);
-			screenSpaceQuad(4.0f, 4.0f, s_originBottomLeft);
-			bgfx::submit(5, m_lumAvgProgram);
-
-			// Downscale luminance 3.
-			setOffsets4x4Lum(u_offset, 4, 4);
-			bgfx::setTexture(0, s_texColor, m_lum[3]);
-			bgfx::setState(BGFX_STATE_RGB_WRITE|BGFX_STATE_ALPHA_WRITE);
-			screenSpaceQuad(1.0f, 1.0f, s_originBottomLeft);
-			bgfx::submit(6, m_lumAvgProgram);
-
-			float tonemap[4] = { m_middleGray, square(m_white), m_threshold, m_time };
-			bgfx::setUniform(u_tonemap, tonemap);
-=======
 			screenSpaceQuad(128.0f, 128.0f, m_caps->originBottomLeft);
 			bgfx::submit(hdrLuminance, m_lumProgram);
 
@@ -680,35 +490,10 @@ class ExampleHDR : public entry::AppI
 			bgfx::setState(BGFX_STATE_RGB_WRITE|BGFX_STATE_ALPHA_WRITE);
 			screenSpaceQuad(1.0f, 1.0f, m_caps->originBottomLeft);
 			bgfx::submit(hdrLumScale3, m_lumAvgProgram);
->>>>>>> upstream/master
 
 			// m_bright pass m_threshold is tonemap[3].
 			setOffsets4x4Lum(u_offset, m_width/2, m_height/2);
 			bgfx::setTexture(0, s_texColor, m_fbtextures[0]);
-<<<<<<< HEAD
-			bgfx::setTexture(1, s_texLum, m_lum[4]);
-			bgfx::setState(BGFX_STATE_RGB_WRITE|BGFX_STATE_ALPHA_WRITE);
-			screenSpaceQuad( (float)m_width/2.0f, (float)m_height/2.0f, s_originBottomLeft);
-			bgfx::submit(7, m_brightProgram);
-
-			// m_blur m_bright pass vertically.
-			bgfx::setTexture(0, s_texColor, m_bright);
-			bgfx::setState(BGFX_STATE_RGB_WRITE|BGFX_STATE_ALPHA_WRITE);
-			screenSpaceQuad( (float)m_width/8.0f, (float)m_height/8.0f, s_originBottomLeft);
-			bgfx::submit(8, m_blurProgram);
-
-			// m_blur m_bright pass horizontally, do tonemaping and combine.
-			bgfx::setTexture(0, s_texColor, m_fbtextures[0]);
-			bgfx::setTexture(1, s_texLum, m_lum[4]);
-			bgfx::setTexture(2, s_texBlur, m_blur);
-			bgfx::setState(BGFX_STATE_RGB_WRITE|BGFX_STATE_ALPHA_WRITE);
-			screenSpaceQuad( (float)m_width, (float)m_height, s_originBottomLeft);
-			bgfx::submit(9, m_tonemapProgram);
-
-			if (bgfx::isValid(m_rb) )
-			{
-				bgfx::blit(9, m_rb, 0, 0, m_lum[4]);
-=======
 			bgfx::setTexture(1, s_texLum, bgfx::getTexture(m_lum[4]) );
 			bgfx::setState(BGFX_STATE_RGB_WRITE|BGFX_STATE_ALPHA_WRITE);
 			bgfx::setUniform(u_tonemap, tonemap);
@@ -733,7 +518,6 @@ class ExampleHDR : public entry::AppI
 			if (bgfx::isValid(m_rb) )
 			{
 				bgfx::blit(hdrHBlurTonemap, m_rb, 0, 0, bgfx::getTexture(m_lum[4]) );
->>>>>>> upstream/master
 				bgfx::readTexture(m_rb, &m_lumBgra8);
 			}
 
@@ -775,11 +559,8 @@ class ExampleHDR : public entry::AppI
 	bgfx::FrameBufferHandle m_bright;
 	bgfx::FrameBufferHandle m_blur;
 
-<<<<<<< HEAD
-=======
 	bx::RngMwc m_rng;
 
->>>>>>> upstream/master
 	uint32_t m_width;
 	uint32_t m_height;
 	uint32_t m_debug;
@@ -797,15 +578,8 @@ class ExampleHDR : public entry::AppI
 
 	int32_t m_scrollArea;
 
-<<<<<<< HEAD
-	float m_time;
-};
-
-ENTRY_IMPLEMENT_MAIN(HDR);
-=======
 	const bgfx::Caps* m_caps;
 	float m_time;
 };
 
 ENTRY_IMPLEMENT_MAIN(ExampleHDR);
->>>>>>> upstream/master

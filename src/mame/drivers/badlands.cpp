@@ -164,13 +164,6 @@ Measurements -
 
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/z80/z80.h"
-#include "cpu/m68000/m68000.h"
-#include "cpu/m6502/m6502.h"
-#include "sound/2151intf.h"
-#include "includes/badlands.h"
-=======
 #include "includes/badlands.h"
 #include "cpu/z80/z80.h"
 #include "cpu/m68000/m68000.h"
@@ -179,7 +172,6 @@ Measurements -
 #include "machine/watchdog.h"
 #include "sound/ym2151.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 
@@ -198,20 +190,6 @@ void badlands_state::update_interrupts()
 
 void badlands_state::scanline_update(screen_device &screen, int scanline)
 {
-<<<<<<< HEAD
-	if (m_audiocpu != 0)
-	{
-		address_space &space = m_audiocpu->space(AS_PROGRAM);
-
-		/* sound IRQ is on 32V */
-		if (scanline & 32)
-			m_soundcomm->sound_irq_ack_r(space, 0);
-		else if (!(ioport("FE4000")->read() & 0x40))
-			m_soundcomm->sound_irq_gen(m_audiocpu);
-	}
-	else
-		return;
-=======
 	// sound CPU irq is scanline controlled, we update it below to make bootlegs happy
 }
 
@@ -223,17 +201,12 @@ TIMER_DEVICE_CALLBACK_MEMBER(badlands_state::sound_scanline)
 	// 32V
 	if ((scanline % 64) == 0 && scanline < 240)
 		m_soundcomm->sound_irq_gen(*m_audiocpu);
->>>>>>> upstream/master
 }
 
 
 MACHINE_START_MEMBER(badlands_state,badlands)
 {
 	atarigen_state::machine_start();
-<<<<<<< HEAD
-
-=======
->>>>>>> upstream/master
 	save_item(NAME(m_pedal_value));
 }
 
@@ -243,15 +216,9 @@ MACHINE_RESET_MEMBER(badlands_state,badlands)
 	m_pedal_value[0] = m_pedal_value[1] = 0x80;
 
 	atarigen_state::machine_reset();
-<<<<<<< HEAD
-	scanline_timer_reset(*m_screen, 32);
-
-	memcpy(m_bank_base, &m_bank_source_data[0x0000], 0x1000);
-=======
 	//scanline_timer_reset(*m_screen, 32);
 
 	membank("soundbank")->set_entry(0);
->>>>>>> upstream/master
 }
 
 
@@ -264,10 +231,7 @@ MACHINE_RESET_MEMBER(badlands_state,badlands)
 
 INTERRUPT_GEN_MEMBER(badlands_state::vblank_int)
 {
-<<<<<<< HEAD
-=======
 	// TODO: remove this hack
->>>>>>> upstream/master
 	int pedal_state = ioport("PEDALS")->read();
 	int i;
 
@@ -310,10 +274,6 @@ READ16_MEMBER(badlands_state::pedal_1_r)
 }
 
 
-<<<<<<< HEAD
-
-=======
->>>>>>> upstream/master
 /*************************************
  *
  *  Audio I/O handlers
@@ -391,13 +351,8 @@ WRITE8_MEMBER(badlands_state::audio_io_w)
 		case 0x204:     /* WRIO */
 			/*
 			    0xc0 = bank address
-<<<<<<< HEAD
-			    0x20 = coin counter 2
-			    0x10 = coin counter 1
-=======
 			    0x20 = coin counter 1
 			    0x10 = coin counter 2
->>>>>>> upstream/master
 			    0x08 = n/c
 			    0x04 = n/c
 			    0x02 = n/c
@@ -405,13 +360,9 @@ WRITE8_MEMBER(badlands_state::audio_io_w)
 			*/
 
 			/* update the bank */
-<<<<<<< HEAD
-			memcpy(m_bank_base, &m_bank_source_data[0x1000 * ((data >> 6) & 3)], 0x1000);
-=======
 			membank("soundbank")->set_entry((data >> 6) & 3);
 			machine().bookkeeping().coin_counter_w(0, data & 0x20);
 			machine().bookkeeping().coin_counter_w(1, data & 0x10);
->>>>>>> upstream/master
 			break;
 	}
 }
@@ -427,13 +378,8 @@ WRITE8_MEMBER(badlands_state::audio_io_w)
 static ADDRESS_MAP_START( main_map, AS_PROGRAM, 16, badlands_state )
 	AM_RANGE(0x000000, 0x03ffff) AM_ROM
 	AM_RANGE(0xfc0000, 0xfc1fff) AM_READ(sound_busy_r) AM_DEVWRITE("soundcomm", atari_sound_comm_device, sound_reset_w)
-<<<<<<< HEAD
-	AM_RANGE(0xfd0000, 0xfd1fff) AM_DEVREADWRITE8("eeprom", atari_eeprom_device, read, write, 0x00ff)
-	AM_RANGE(0xfe0000, 0xfe1fff) AM_WRITE(watchdog_reset16_w)
-=======
 	AM_RANGE(0xfd0000, 0xfd1fff) AM_DEVREADWRITE8("eeprom", eeprom_parallel_28xx_device, read, write, 0x00ff)
 	AM_RANGE(0xfe0000, 0xfe1fff) AM_DEVWRITE("watchdog", watchdog_timer_device, reset16_w)
->>>>>>> upstream/master
 	AM_RANGE(0xfe2000, 0xfe3fff) AM_WRITE(video_int_ack_w)
 	AM_RANGE(0xfe4000, 0xfe5fff) AM_READ_PORT("FE4000")
 	AM_RANGE(0xfe6000, 0xfe6001) AM_READ_PORT("FE6000")
@@ -443,11 +389,7 @@ static ADDRESS_MAP_START( main_map, AS_PROGRAM, 16, badlands_state )
 	AM_RANGE(0xfe8000, 0xfe9fff) AM_DEVWRITE8("soundcomm", atari_sound_comm_device, main_command_w, 0xff00)
 	AM_RANGE(0xfea000, 0xfebfff) AM_DEVREAD8("soundcomm", atari_sound_comm_device, main_response_r, 0xff00)
 	AM_RANGE(0xfec000, 0xfedfff) AM_WRITE(badlands_pf_bank_w)
-<<<<<<< HEAD
-	AM_RANGE(0xfee000, 0xfeffff) AM_DEVWRITE("eeprom", atari_eeprom_device, unlock_write)
-=======
 	AM_RANGE(0xfee000, 0xfeffff) AM_DEVWRITE("eeprom", eeprom_parallel_28xx_device, unlock_write)
->>>>>>> upstream/master
 	AM_RANGE(0xffc000, 0xffc3ff) AM_DEVREADWRITE8("palette", palette_device, read, write, 0xff00) AM_SHARE("palette")
 	AM_RANGE(0xffe000, 0xffefff) AM_RAM_DEVWRITE("playfield", tilemap_device, write) AM_SHARE("playfield")
 	AM_RANGE(0xfff000, 0xfff1ff) AM_RAM AM_SHARE("mob")
@@ -466,12 +408,8 @@ static ADDRESS_MAP_START( audio_map, AS_PROGRAM, 8, badlands_state )
 	AM_RANGE(0x0000, 0x1fff) AM_RAM
 	AM_RANGE(0x2000, 0x2001) AM_DEVREADWRITE("ymsnd", ym2151_device, read, write)
 	AM_RANGE(0x2800, 0x2bff) AM_READWRITE(audio_io_r, audio_io_w)
-<<<<<<< HEAD
-	AM_RANGE(0x3000, 0xffff) AM_ROM
-=======
 	AM_RANGE(0x3000, 0x3fff) AM_ROMBANK("soundbank")
 	AM_RANGE(0x4000, 0xffff) AM_ROM
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -484,18 +422,12 @@ ADDRESS_MAP_END
 
 static INPUT_PORTS_START( badlands )
 	PORT_START("FE4000")    /* fe4000 */
-<<<<<<< HEAD
-	PORT_BIT( 0x000f, IP_ACTIVE_LOW, IPT_UNUSED )
-	PORT_BIT( 0x0010, IP_ACTIVE_LOW, IPT_BUTTON2 ) PORT_PLAYER(1)
-	PORT_BIT( 0x0020, IP_ACTIVE_LOW, IPT_BUTTON2 ) PORT_PLAYER(2)
-=======
 	PORT_BIT( 0x0001, IP_ACTIVE_LOW, IPT_UNKNOWN ) // old steering wheels
 	PORT_BIT( 0x0002, IP_ACTIVE_LOW, IPT_UNKNOWN ) // old gas pedals
 	PORT_BIT( 0x0004, IP_ACTIVE_LOW, IPT_UNKNOWN ) // freeze-step
 	PORT_BIT( 0x0008, IP_ACTIVE_LOW, IPT_SERVICE1 ) PORT_NAME("Freeze") // freeze
 	PORT_BIT( 0x0010, IP_ACTIVE_LOW, IPT_BUTTON2 ) PORT_PLAYER(1) PORT_NAME("P1 Start / Fire")
 	PORT_BIT( 0x0020, IP_ACTIVE_LOW, IPT_BUTTON2 ) PORT_PLAYER(2) PORT_NAME("P2 Start / Fire")
->>>>>>> upstream/master
 	PORT_BIT( 0x0040, IP_ACTIVE_HIGH, IPT_CUSTOM ) PORT_VBLANK("screen")
 	PORT_SERVICE( 0x0080, IP_ACTIVE_LOW )
 	PORT_BIT( 0xff00, IP_ACTIVE_LOW, IPT_UNUSED )
@@ -509,15 +441,9 @@ static INPUT_PORTS_START( badlands )
 	PORT_BIT( 0xff00, IP_ACTIVE_LOW, IPT_UNUSED )
 
 	PORT_START("AUDIO")     /* audio port */
-<<<<<<< HEAD
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_COIN1 )
-	PORT_BIT( 0x02, IP_ACTIVE_HIGH, IPT_COIN2 )
-	PORT_BIT( 0x04, IP_ACTIVE_HIGH, IPT_COIN3 )
-=======
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_COIN2 )
 	PORT_BIT( 0x02, IP_ACTIVE_HIGH, IPT_COIN1 )
 	PORT_BIT( 0x04, IP_ACTIVE_HIGH, IPT_UNUSED )
->>>>>>> upstream/master
 	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_UNUSED )
 	PORT_BIT( 0x10, IP_ACTIVE_HIGH, IPT_SPECIAL )   /* self test */
 	PORT_BIT( 0x20, IP_ACTIVE_HIGH, IPT_CUSTOM ) PORT_ATARI_COMM_SOUND_TO_MAIN_READY("soundcomm")   /* response buffer full */
@@ -525,13 +451,8 @@ static INPUT_PORTS_START( badlands )
 	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_SPECIAL )   /* self test */
 
 	PORT_START("PEDALS")    /* fake for pedals */
-<<<<<<< HEAD
-	PORT_BIT( 0x0001, IP_ACTIVE_HIGH, IPT_BUTTON1 ) PORT_PLAYER(1)
-	PORT_BIT( 0x0002, IP_ACTIVE_HIGH, IPT_BUTTON1 ) PORT_PLAYER(2)
-=======
 	PORT_BIT( 0x0001, IP_ACTIVE_HIGH, IPT_BUTTON1 ) PORT_PLAYER(1) PORT_NAME("P1 Pedal")
 	PORT_BIT( 0x0002, IP_ACTIVE_HIGH, IPT_BUTTON1 ) PORT_PLAYER(2) PORT_NAME("P2 Pedal")
->>>>>>> upstream/master
 	PORT_BIT( 0xfffc, IP_ACTIVE_HIGH, IPT_UNUSED )
 INPUT_PORTS_END
 
@@ -579,11 +500,7 @@ GFXDECODE_END
  *
  *************************************/
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( badlands, badlands_state )
-=======
 static MACHINE_CONFIG_START( badlands )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, ATARI_CLOCK_14MHz/2)
@@ -592,22 +509,15 @@ static MACHINE_CONFIG_START( badlands )
 
 	MCFG_CPU_ADD("audiocpu", M6502, ATARI_CLOCK_14MHz/8)
 	MCFG_CPU_PROGRAM_MAP(audio_map)
-<<<<<<< HEAD
-=======
 	MCFG_TIMER_DRIVER_ADD_SCANLINE("scantimer", badlands_state, sound_scanline, "screen", 0, 1)
->>>>>>> upstream/master
 
 	MCFG_MACHINE_START_OVERRIDE(badlands_state,badlands)
 	MCFG_MACHINE_RESET_OVERRIDE(badlands_state,badlands)
 
-<<<<<<< HEAD
-	MCFG_ATARI_EEPROM_2816_ADD("eeprom")
-=======
 	MCFG_EEPROM_2816_ADD("eeprom")
 	MCFG_EEPROM_28XX_LOCK_AFTER_WRITE(true)
 
 	MCFG_WATCHDOG_ADD("watchdog")
->>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", badlands)
@@ -653,14 +563,8 @@ ROM_START( badlands )
 	ROM_LOAD16_BYTE( "136074-1009.17f",  0x20000, 0x10000, CRC(0e2e807f) SHA1(5b61de066dca12c44335aa68a13c821845657866) )
 	ROM_LOAD16_BYTE( "136074-1007.24f",  0x20001, 0x10000, CRC(99a20c2c) SHA1(9b0a5a5dafb8816e72330d302c60339b600b49a8) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x14000, "audiocpu", 0 )    /* 64k for 6502 code */
-	ROM_LOAD( "136074-1018.9c", 0x10000, 0x4000, CRC(a05fd146) SHA1(d97abbcf7897ca720cc18ff3a323f41cd3b23c34) )
-	ROM_CONTINUE(               0x04000, 0xc000 )
-=======
 	ROM_REGION( 0x10000, "audiocpu", 0 )    /* 64k for 6502 code */
 	ROM_LOAD( "136074-1018.9c", 0x00000, 0x10000, CRC(a05fd146) SHA1(d97abbcf7897ca720cc18ff3a323f41cd3b23c34) )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x60000, "gfx1", ROMREGION_INVERT )
 	ROM_LOAD( "136074-1012.4n",  0x000000, 0x10000, CRC(5d124c6c) SHA1(afebaaf90b3751f5e873fc4c45f1d5385ef86a6e) )  /* playfield */
@@ -695,12 +599,7 @@ ROM_END
 DRIVER_INIT_MEMBER(badlands_state,badlands)
 {
 	/* initialize the audio system */
-<<<<<<< HEAD
-	m_bank_base = &memregion("audiocpu")->base()[0x03000];
-	m_bank_source_data = &memregion("audiocpu")->base()[0x10000];
-=======
 	membank("soundbank")->configure_entries(0, 4, memregion("audiocpu")->base(), 0x01000);
->>>>>>> upstream/master
 }
 
 
@@ -711,11 +610,7 @@ DRIVER_INIT_MEMBER(badlands_state,badlands)
  *
  *************************************/
 
-<<<<<<< HEAD
-GAME( 1989, badlands, 0, badlands, badlands, badlands_state, badlands, ROT0, "Atari Games", "Bad Lands", 0 )
-=======
 GAME( 1989, badlands, 0, badlands, badlands, badlands_state, badlands, ROT0, "Atari Games", "Bad Lands", MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master
 
 /* Badlands - Playmark Bootleg support - split this into its own file?
 
@@ -749,30 +644,6 @@ READ16_MEMBER(badlands_state::badlandsb_unk_r)
 	return 0xffff;
 }
 
-<<<<<<< HEAD
-static ADDRESS_MAP_START( bootleg_map, AS_PROGRAM, 16, badlands_state )
-	AM_RANGE(0x000000, 0x03ffff) AM_ROM
-
-
-	AM_RANGE(0x400008, 0x400009) AM_READ(badlandsb_unk_r )
-	AM_RANGE(0x4000fe, 0x4000ff) AM_READ(badlandsb_unk_r )
-
-	AM_RANGE(0xfc0000, 0xfc0001) AM_READ(badlandsb_unk_r )
-
-	AM_RANGE(0xfe4000, 0xfe4001) AM_READ(badlandsb_unk_r )
-	AM_RANGE(0xfe4004, 0xfe4005) AM_READ(badlandsb_unk_r )
-	AM_RANGE(0xfe4006, 0xfe4007) AM_READ(badlandsb_unk_r )
-
-
-	AM_RANGE(0xfd0000, 0xfd1fff) AM_DEVREADWRITE8("eeprom", atari_eeprom_device, read, write, 0x00ff)
-	//AM_RANGE(0xfe0000, 0xfe1fff) AM_WRITE(watchdog_reset16_w)
-	AM_RANGE(0xfe2000, 0xfe3fff) AM_WRITE(video_int_ack_w)
-
-	AM_RANGE(0xfec000, 0xfedfff) AM_WRITE(badlands_pf_bank_w)
-	AM_RANGE(0xfee000, 0xfeffff) AM_DEVWRITE("eeprom", atari_eeprom_device, unlock_write)
-	AM_RANGE(0xffc000, 0xffc3ff) AM_DEVREADWRITE8("palette", palette_device, read, write, 0xff00) AM_SHARE("palette")
-	AM_RANGE(0xffe000, 0xffefff) AM_RAM_DEVWRITE("playfield", tilemap_device, write) AM_SHARE("playfield")
-=======
 READ8_MEMBER(badlands_state::bootleg_shared_r)
 {
 	return m_b_sharedram[offset];
@@ -805,17 +676,10 @@ static ADDRESS_MAP_START( bootleg_map, AS_PROGRAM, 16, badlands_state )
 	AM_RANGE(0xffc000, 0xffc3ff) AM_DEVREADWRITE8("palette", palette_device, read, write, 0xff00) AM_SHARE("palette")
 	AM_RANGE(0xffe000, 0xffefff) AM_RAM_DEVWRITE("playfield", tilemap_device, write) AM_SHARE("playfield")
 	// TODO: actually sprites are at 0xfff600-0x7ff ?
->>>>>>> upstream/master
 	AM_RANGE(0xfff000, 0xfff1ff) AM_RAM AM_SHARE("mob")
 	AM_RANGE(0xfff200, 0xffffff) AM_RAM
 ADDRESS_MAP_END
 
-<<<<<<< HEAD
-static INPUT_PORTS_START( badlandsb )
-
-	PORT_INCLUDE( badlands )
-
-=======
 WRITE8_MEMBER(badlands_state::bootleg_main_irq_w)
 {
 	m_maincpu->set_input_line(2, HOLD_LINE);
@@ -849,7 +713,6 @@ static INPUT_PORTS_START( badlandsb )
 	PORT_MODIFY("FE6002")
 	PORT_BIT( 0xffff, IP_ACTIVE_LOW, IPT_UNUSED )
 
->>>>>>> upstream/master
 	PORT_MODIFY("AUDIO") /* audio port */
 	PORT_BIT( 0x20, IP_ACTIVE_HIGH, IPT_UNUSED )
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_UNUSED )
@@ -877,21 +740,12 @@ GFXDECODE_END
 MACHINE_RESET_MEMBER(badlands_state,badlandsb)
 {
 //  m_pedal_value[0] = m_pedal_value[1] = 0x80;
-<<<<<<< HEAD
-
-	atarigen_state::machine_reset();
-	scanline_timer_reset(*m_screen, 32);
-=======
 	atarigen_state::machine_reset();
 //  scanline_timer_reset(*m_screen, 32);
->>>>>>> upstream/master
 
 //  memcpy(m_bank_base, &m_bank_source_data[0x0000], 0x1000);
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( badlandsb, badlands_state )
-=======
 TIMER_DEVICE_CALLBACK_MEMBER(badlands_state::bootleg_sound_scanline)
 {
 	int scanline = param;
@@ -903,33 +757,21 @@ TIMER_DEVICE_CALLBACK_MEMBER(badlands_state::bootleg_sound_scanline)
 }
 
 static MACHINE_CONFIG_START( badlandsb )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, XTAL_28MHz/4)   /* Divisor estimated */
 	MCFG_CPU_PROGRAM_MAP(bootleg_map)
-<<<<<<< HEAD
-	MCFG_CPU_VBLANK_INT_DRIVER("screen", badlands_state,  vblank_int)
-
-//  MCFG_CPU_ADD("audiocpu", Z80, XTAL_20MHz/12)    /* Divisor estimated */
-//  MCFG_CPU_PROGRAM_MAP(bootleg_soundmap)
-=======
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", badlands_state,  irq1_line_hold) //vblank_int)
 
 	MCFG_CPU_ADD("audiocpu", Z80, XTAL_20MHz/12)    /* Divisor estimated */
 	MCFG_CPU_PROGRAM_MAP(bootleg_audio_map)
 	MCFG_TIMER_DRIVER_ADD_SCANLINE("scantimer", badlands_state, bootleg_sound_scanline, "screen", 0, 1)
->>>>>>> upstream/master
 
 	MCFG_MACHINE_START_OVERRIDE(badlands_state,badlands)
 	MCFG_MACHINE_RESET_OVERRIDE(badlands_state,badlandsb)
 
-<<<<<<< HEAD
-	MCFG_ATARI_EEPROM_2816_ADD("eeprom")
-=======
 	MCFG_EEPROM_2816_ADD("eeprom")
 	MCFG_EEPROM_28XX_LOCK_AFTER_WRITE(true)
->>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", badlandsb)
@@ -971,11 +813,7 @@ ROM_START( badlandsb )
 	ROM_LOAD16_BYTE( "blb21.ic20",  0x20001, 0x10000, CRC(99a20c2c) SHA1(9b0a5a5dafb8816e72330d302c60339b600b49a8) )
 
 	/* Z80 on the bootleg! */
-<<<<<<< HEAD
-	ROM_REGION( 0x10000, "cpu1", 0 )
-=======
 	ROM_REGION( 0x10000, "audiorom", 0 )
->>>>>>> upstream/master
 	ROM_LOAD( "blb26.ic27", 0x00000, 0x10000, CRC(59503ab4) SHA1(ea5686ee28f6125c1394d687cc35c6322c8f900c) )
 
 	/* the 2nd half of 122,123,124 and 125 is identical to the first half and not used */
@@ -1007,11 +845,7 @@ ROM_START( badlandsb2 )
 	ROM_LOAD16_BYTE( "1.ic20",  0x20001, 0x10000, CRC(99a20c2c) SHA1(9b0a5a5dafb8816e72330d302c60339b600b49a8) )
 
 	/* Z80 on the bootleg! */
-<<<<<<< HEAD
-	ROM_REGION( 0x10000, "cpu1", 0 )
-=======
 	ROM_REGION( 0x10000, "audiorom", 0 )
->>>>>>> upstream/master
 	ROM_LOAD( "3.ic27", 0x00000, 0x10000, CRC(08850eb5) SHA1(be169e8ccee275b72bcfca66cd126cc27af7a1d6) )  // only rom that differs from badlandsb
 
 	/* the 2nd half of 122,123,124 and 125 is identical to the first half and not used */
@@ -1035,10 +869,5 @@ ROM_END
 
 
 
-<<<<<<< HEAD
-GAME( 1989, badlandsb, badlands, badlandsb, badlandsb, driver_device, 0, ROT0, "bootleg (Playmark)", "Bad Lands (bootleg)", MACHINE_NOT_WORKING )
-GAME( 1989, badlandsb2,badlands, badlandsb, badlandsb, driver_device, 0, ROT0, "bootleg (Playmark)", "Bad Lands (bootleg, alternate)", MACHINE_NOT_WORKING )
-=======
 GAME( 1989, badlandsb, badlands, badlandsb, badlandsb, badlands_state, 0, ROT0, "bootleg (Playmark)", "Bad Lands (bootleg)", MACHINE_NOT_WORKING )
 GAME( 1989, badlandsb2,badlands, badlandsb, badlandsb, badlands_state, 0, ROT0, "bootleg (Playmark)", "Bad Lands (bootleg, alternate)", MACHINE_NOT_WORKING )
->>>>>>> upstream/master

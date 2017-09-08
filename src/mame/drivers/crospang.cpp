@@ -33,38 +33,12 @@
 */
 
 #include "emu.h"
-<<<<<<< HEAD
-=======
 #include "includes/crospang.h"
 
->>>>>>> upstream/master
 #include "cpu/z80/z80.h"
 #include "cpu/m68000/m68000.h"
 #include "sound/okim6295.h"
 #include "sound/3812intf.h"
-<<<<<<< HEAD
-#include "includes/crospang.h"
-
-
-WRITE16_MEMBER(crospang_state::crospang_soundlatch_w)
-{
-	if(ACCESSING_BITS_0_7)
-	{
-		soundlatch_byte_w(space, 0, data & 0xff);
-	}
-}
-
-/* main cpu */
-
-static ADDRESS_MAP_START( crospang_map, AS_PROGRAM, 16, crospang_state )
-	AM_RANGE(0x000000, 0x0fffff) AM_ROM AM_WRITENOP // writes to rom quite often
-	AM_RANGE(0x100000, 0x100001) AM_WRITENOP
-	AM_RANGE(0x100002, 0x100003) AM_WRITE(crospang_fg_scrolly_w)
-	AM_RANGE(0x100004, 0x100005) AM_WRITE(crospang_bg_scrollx_w)
-	AM_RANGE(0x100006, 0x100007) AM_WRITE(crospang_bg_scrolly_w)
-	AM_RANGE(0x100008, 0x100009) AM_WRITE(crospang_fg_scrollx_w)
-	AM_RANGE(0x10000e, 0x10000f) AM_WRITENOP
-=======
 #include "screen.h"
 #include "speaker.h"
 
@@ -74,17 +48,10 @@ static ADDRESS_MAP_START( crospang_map, AS_PROGRAM, 16, crospang_state )
 static ADDRESS_MAP_START( crospang_base_map, AS_PROGRAM, 16, crospang_state )
 	AM_RANGE(0x000000, 0x0fffff) AM_ROM AM_WRITENOP // writes to rom quite often
 
->>>>>>> upstream/master
 	AM_RANGE(0x120000, 0x1207ff) AM_RAM_WRITE(crospang_fg_videoram_w) AM_SHARE("fg_videoram")
 	AM_RANGE(0x122000, 0x1227ff) AM_RAM_WRITE(crospang_bg_videoram_w) AM_SHARE("bg_videoram")
 	AM_RANGE(0x200000, 0x2005ff) AM_RAM_DEVWRITE("palette", palette_device, write) AM_SHARE("palette")
 	AM_RANGE(0x210000, 0x2107ff) AM_RAM AM_SHARE("spriteram")
-<<<<<<< HEAD
-	AM_RANGE(0x270000, 0x270001) AM_WRITE(crospang_soundlatch_w)
-	AM_RANGE(0x280000, 0x280001) AM_READ_PORT("P1_P2")
-	AM_RANGE(0x280002, 0x280003) AM_READ_PORT("COIN")
-	AM_RANGE(0x280004, 0x280005) AM_READ_PORT("DSW")
-=======
 	AM_RANGE(0x270000, 0x270001) AM_DEVWRITE8("soundlatch", generic_latch_8_device, write, 0x00ff)
 	AM_RANGE(0x270004, 0x270007) AM_WRITENOP // ??
 	AM_RANGE(0x280000, 0x280001) AM_READ_PORT("P1_P2")
@@ -103,16 +70,11 @@ static ADDRESS_MAP_START( crospang_map, AS_PROGRAM, 16, crospang_state )
 	AM_RANGE(0x100008, 0x100009) AM_WRITE(crospang_fg_scrollx_w)
 	AM_RANGE(0x10000e, 0x10000f) AM_WRITENOP
 
->>>>>>> upstream/master
 	AM_RANGE(0x320000, 0x32ffff) AM_RAM
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( bestri_map, AS_PROGRAM, 16, crospang_state )
-<<<<<<< HEAD
-	AM_RANGE(0x000000, 0x0fffff) AM_ROM AM_WRITENOP // writes to rom quite often
-=======
 	AM_IMPORT_FROM(crospang_base_map)
->>>>>>> upstream/master
 
 	AM_RANGE(0x100004, 0x100005) AM_WRITE(bestri_fg_scrollx_w)
 	AM_RANGE(0x100006, 0x100007) AM_WRITE(bestri_fg_scrolly_w)
@@ -120,21 +82,6 @@ static ADDRESS_MAP_START( bestri_map, AS_PROGRAM, 16, crospang_state )
 	AM_RANGE(0x10000c, 0x10000d) AM_WRITE(bestri_bg_scrollx_w)
 	AM_RANGE(0x10000e, 0x10000f) AM_WRITE(bestri_tilebank_w)
 
-<<<<<<< HEAD
-	AM_RANGE(0x120000, 0x1207ff) AM_RAM_WRITE(crospang_fg_videoram_w) AM_SHARE("fg_videoram")
-	AM_RANGE(0x122000, 0x1227ff) AM_RAM_WRITE(crospang_bg_videoram_w) AM_SHARE("bg_videoram")
-	AM_RANGE(0x200000, 0x2005ff) AM_RAM_DEVWRITE("palette", palette_device, write) AM_SHARE("palette")
-	AM_RANGE(0x210000, 0x2107ff) AM_RAM AM_SHARE("spriteram")
-	AM_RANGE(0x270000, 0x270001) AM_WRITE(crospang_soundlatch_w)
-	AM_RANGE(0x270004, 0x270005) AM_WRITENOP
-	AM_RANGE(0x280000, 0x280001) AM_READ_PORT("P1_P2")
-	AM_RANGE(0x280002, 0x280003) AM_READ_PORT("COIN")
-	AM_RANGE(0x280004, 0x280005) AM_READ_PORT("DSW")
-
-	AM_RANGE(0x3a0000, 0x3affff) AM_RAM
-ADDRESS_MAP_END
-
-=======
 	AM_RANGE(0x3a0000, 0x3affff) AM_RAM
 ADDRESS_MAP_END
 
@@ -151,7 +98,6 @@ static ADDRESS_MAP_START( bestria_map, AS_PROGRAM, 16, crospang_state )
 	AM_RANGE(0x340000, 0x34ffff) AM_RAM
 ADDRESS_MAP_END
 
->>>>>>> upstream/master
 /* sound cpu */
 
 static ADDRESS_MAP_START( crospang_sound_map, AS_PROGRAM, 8, crospang_state )
@@ -163,11 +109,7 @@ static ADDRESS_MAP_START( crospang_sound_io_map, AS_IO, 8, crospang_state )
 	ADDRESS_MAP_GLOBAL_MASK(0xff)
 	AM_RANGE(0x00, 0x01) AM_DEVREADWRITE("ymsnd", ym3812_device, read, write)
 	AM_RANGE(0x02, 0x02) AM_DEVREADWRITE("oki", okim6295_device, read, write)
-<<<<<<< HEAD
-	AM_RANGE(0x06, 0x06) AM_READ(soundlatch_byte_r)
-=======
 	AM_RANGE(0x06, 0x06) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -394,11 +336,7 @@ void crospang_state::machine_reset()
 }
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( crospang, crospang_state )
-=======
 static MACHINE_CONFIG_START( crospang )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, 14318180)
@@ -429,29 +367,18 @@ static MACHINE_CONFIG_START( crospang )
 	MCFG_DECO_SPRITE_ISBOOTLEG(true)
 	MCFG_DECO_SPRITE_OFFSETS(5, 7)
 	MCFG_DECO_SPRITE_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_DECO_SPRITE_PALETTE("palette")
-=======
->>>>>>> upstream/master
 
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 
->>>>>>> upstream/master
 	MCFG_SOUND_ADD("ymsnd", YM3812, 14318180/4)
 	MCFG_YM3812_IRQ_HANDLER(INPUTLINE("audiocpu", 0))
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki", 1056000, OKIM6295_PIN7_HIGH) // clock frequency & pin 7 not verified
-=======
 	MCFG_OKIM6295_ADD("oki", 1056000, PIN7_HIGH) // clock frequency & pin 7 not verified
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
 
@@ -463,8 +390,6 @@ static MACHINE_CONFIG_DERIVED( bestri, crospang )
 
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-=======
 static MACHINE_CONFIG_DERIVED( bestria, crospang )
 
 	/* basic machine hardware */
@@ -473,7 +398,6 @@ static MACHINE_CONFIG_DERIVED( bestria, crospang )
 
 MACHINE_CONFIG_END
 
->>>>>>> upstream/master
 
 ROM_START( crospang )
 	ROM_REGION( 0x100000, "maincpu", 0 ) /* 68k */
@@ -635,12 +559,6 @@ ROM_START( bestri )
 	ROM_LOAD16_BYTE( "ud17.e12", 0x100001, 0x80000, CRC(3a3a3f1a) SHA1(48843140cd63c9387e09b84bd41b13dba35f48ad) )
 ROM_END
 
-<<<<<<< HEAD
-
-void crospang_state::tumblepb_gfx1_rearrange()
-{
-	UINT8 *rom = memregion("gfx1")->base();
-=======
 ROM_START( bestria )
 	ROM_REGION( 0x100000, "maincpu", 0 ) /* 68000 Code */
 	ROM_LOAD16_BYTE( "O_UA02.I3", 0x00001, 0x80000, CRC(035c86f6) SHA1(d501553ed7fdb462c9c26fff6473cefe71424e26) )
@@ -682,7 +600,6 @@ ROM_END
 void crospang_state::tumblepb_gfx1_rearrange()
 {
 	uint8_t *rom = memregion("gfx1")->base();
->>>>>>> upstream/master
 	int len = memregion("gfx1")->bytes();
 	int i;
 
@@ -706,13 +623,7 @@ DRIVER_INIT_MEMBER(crospang_state,crospang)
 	tumblepb_gfx1_rearrange();
 }
 
-<<<<<<< HEAD
-GAME( 1998, crospang, 0, crospang, crospang, crospang_state, crospang, ROT0, "F2 System", "Cross Pang", MACHINE_SUPPORTS_SAVE )
-GAME( 199?, heuksun,  0, crospang, heuksun, crospang_state,  crospang, ROT0, "Oksan / F2 System", "Heuk Sun Baek Sa (Korea)", MACHINE_SUPPORTS_SAVE )
-GAME( 1998, bestri,   0, bestri,   bestri, crospang_state,   crospang, ROT0, "F2 System", "Bestri (Korea)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1998, crospang,        0, crospang, crospang, crospang_state, crospang, ROT0, "F2 System",         "Cross Pang", MACHINE_SUPPORTS_SAVE )
 GAME( 199?, heuksun,         0, crospang,  heuksun, crospang_state, crospang, ROT0, "Oksan / F2 System", "Heuk Sun Baek Sa (Korea)", MACHINE_SUPPORTS_SAVE )
 GAME( 1998, bestri,          0,   bestri,   bestri, crospang_state, crospang, ROT0, "F2 System",         "Bestri (Korea, set 1)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
 GAME( 1998, bestria,    bestri,  bestria,   bestri, crospang_state, crospang, ROT0, "F2 System",         "Bestri (Korea, set 2)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

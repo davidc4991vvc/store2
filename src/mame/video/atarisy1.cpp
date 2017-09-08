@@ -83,11 +83,7 @@ static const gfx_layout objlayout_6bpp =
 
 TILE_GET_INFO_MEMBER(atarisy1_state::get_alpha_tile_info)
 {
-<<<<<<< HEAD
-	UINT16 data = tilemap.basemem_read(tile_index);
-=======
 	uint16_t data = m_alpha_tilemap->basemem_read(tile_index);
->>>>>>> upstream/master
 	int code = data & 0x3ff;
 	int color = (data >> 10) & 0x07;
 	int opaque = data & 0x2000;
@@ -97,13 +93,8 @@ TILE_GET_INFO_MEMBER(atarisy1_state::get_alpha_tile_info)
 
 TILE_GET_INFO_MEMBER(atarisy1_state::get_playfield_tile_info)
 {
-<<<<<<< HEAD
-	UINT16 data = tilemap.basemem_read(tile_index);
-	UINT16 lookup = m_playfield_lookup[((data >> 8) & 0x7f) | (m_playfield_tile_bank << 7)];
-=======
 	uint16_t data = m_playfield_tilemap->basemem_read(tile_index);
 	uint16_t lookup = m_playfield_lookup[((data >> 8) & 0x7f) | (m_playfield_tile_bank << 7)];
->>>>>>> upstream/master
 	int gfxindex = (lookup >> 8) & 15;
 	int code = ((lookup & 0xff) << 8) | (data & 0xff);
 	int color = 0x20 + (((lookup >> 12) & 15) << m_bank_color_shift[gfxindex]);
@@ -155,30 +146,17 @@ const atari_motion_objects_config atarisy1_state::s_mob_config =
 VIDEO_START_MEMBER(atarisy1_state,atarisy1)
 {
 	/* first decode the graphics */
-<<<<<<< HEAD
-	UINT16 motable[256];
-	decode_gfx(m_playfield_lookup, motable);
-
-	/* modify the motion object code lookup */
-	std::vector<UINT16> &codelookup = m_mob->code_lookup();
-=======
 	uint16_t motable[256];
 	decode_gfx(m_playfield_lookup, motable);
 
 	/* modify the motion object code lookup */
 	std::vector<uint16_t> &codelookup = m_mob->code_lookup();
->>>>>>> upstream/master
 	for (unsigned int i = 0; i < codelookup.size(); i++)
 		codelookup[i] = (i & 0xff) | ((motable[i >> 8] & 0xff) << 8);
 
 	/* modify the motion object color and gfx lookups */
-<<<<<<< HEAD
-	std::vector<UINT8> &colorlookup = m_mob->color_lookup();
-	std::vector<UINT8> &gfxlookup = m_mob->gfx_lookup();
-=======
 	std::vector<uint8_t> &colorlookup = m_mob->color_lookup();
 	std::vector<uint8_t> &gfxlookup = m_mob->gfx_lookup();
->>>>>>> upstream/master
 	for (unsigned int i = 0; i < colorlookup.size(); i++)
 	{
 		colorlookup[i] = ((motable[i] >> 12) & 15) << 1;
@@ -205,13 +183,8 @@ VIDEO_START_MEMBER(atarisy1_state,atarisy1)
 
 WRITE16_MEMBER( atarisy1_state::atarisy1_bankselect_w )
 {
-<<<<<<< HEAD
-	UINT16 oldselect = *m_bankselect;
-	UINT16 newselect = oldselect, diff;
-=======
 	uint16_t oldselect = *m_bankselect;
 	uint16_t newselect = oldselect, diff;
->>>>>>> upstream/master
 	int scanline = m_screen->vpos();
 
 	/* update memory */
@@ -219,18 +192,11 @@ WRITE16_MEMBER( atarisy1_state::atarisy1_bankselect_w )
 	diff = oldselect ^ newselect;
 
 	/* sound CPU reset */
-<<<<<<< HEAD
-	if (diff & 0x0080)
-	{
-		m_audiocpu->set_input_line(INPUT_LINE_RESET, (newselect & 0x0080) ? CLEAR_LINE : ASSERT_LINE);
-		if (!(newselect & 0x0080)) m_soundcomm->sound_cpu_reset();
-=======
 	if (BIT(diff, 7))
 	{
 		m_outlatch->clear_w(BIT(newselect, 7));
 		m_audiocpu->set_input_line(INPUT_LINE_RESET, BIT(newselect, 7) ? CLEAR_LINE : ASSERT_LINE);
 		if (!BIT(newselect, 7)) m_soundcomm->sound_cpu_reset();
->>>>>>> upstream/master
 	}
 
 	/* if MO or playfield banks change, force a partial update */
@@ -262,13 +228,8 @@ WRITE16_MEMBER( atarisy1_state::atarisy1_bankselect_w )
 
 WRITE16_MEMBER( atarisy1_state::atarisy1_priority_w )
 {
-<<<<<<< HEAD
-	UINT16 oldpens = m_playfield_priority_pens;
-	UINT16 newpens = oldpens;
-=======
 	uint16_t oldpens = m_playfield_priority_pens;
 	uint16_t newpens = oldpens;
->>>>>>> upstream/master
 
 	/* force a partial update in case this changes mid-screen */
 	COMBINE_DATA(&newpens);
@@ -287,13 +248,8 @@ WRITE16_MEMBER( atarisy1_state::atarisy1_priority_w )
 
 WRITE16_MEMBER( atarisy1_state::atarisy1_xscroll_w )
 {
-<<<<<<< HEAD
-	UINT16 oldscroll = *m_xscroll;
-	UINT16 newscroll = oldscroll;
-=======
 	uint16_t oldscroll = *m_xscroll;
 	uint16_t newscroll = oldscroll;
->>>>>>> upstream/master
 
 	/* force a partial update in case this changes mid-screen */
 	COMBINE_DATA(&newscroll);
@@ -323,13 +279,8 @@ TIMER_DEVICE_CALLBACK_MEMBER(atarisy1_state::atarisy1_reset_yscroll_callback)
 
 WRITE16_MEMBER( atarisy1_state::atarisy1_yscroll_w )
 {
-<<<<<<< HEAD
-	UINT16 oldscroll = *m_yscroll;
-	UINT16 newscroll = oldscroll;
-=======
 	uint16_t oldscroll = *m_yscroll;
 	uint16_t newscroll = oldscroll;
->>>>>>> upstream/master
 	int scanline = m_screen->vpos();
 	int adjusted_scroll;
 
@@ -363,11 +314,7 @@ WRITE16_MEMBER( atarisy1_state::atarisy1_yscroll_w )
 WRITE16_MEMBER( atarisy1_state::atarisy1_spriteram_w )
 {
 	int active_bank = m_mob->bank();
-<<<<<<< HEAD
-	UINT16 *spriteram = m_mob->spriteram();
-=======
 	uint16_t *spriteram = m_mob->spriteram();
->>>>>>> upstream/master
 	int oldword = spriteram[offset];
 	int newword = oldword;
 	COMBINE_DATA(&newword);
@@ -418,11 +365,7 @@ TIMER_DEVICE_CALLBACK_MEMBER(atarisy1_state::atarisy1_int3_callback)
 	int scanline = param;
 
 	/* update the state */
-<<<<<<< HEAD
-	scanline_int_gen(m_maincpu);
-=======
 	scanline_int_gen(*m_maincpu);
->>>>>>> upstream/master
 
 	/* set a timer to turn it off */
 	m_int3off_timer->adjust(m_screen->scan_period());
@@ -457,11 +400,7 @@ void atarisy1_state::update_timers(int scanline)
 {
 	int offset = m_mob->bank() * 64 * 4;
 	int link = 0, best = scanline, found = 0;
-<<<<<<< HEAD
-	UINT8 spritevisit[64];
-=======
 	uint8_t spritevisit[64];
->>>>>>> upstream/master
 
 	/* track which ones we've visited */
 	memset(spritevisit, 0, sizeof(spritevisit));
@@ -522,11 +461,7 @@ void atarisy1_state::update_timers(int scanline)
  *
  *************************************/
 
-<<<<<<< HEAD
-UINT32 atarisy1_state::screen_update_atarisy1(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t atarisy1_state::screen_update_atarisy1(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	// start drawing
 	m_mob->draw_async(cliprect);
@@ -536,19 +471,11 @@ uint32_t atarisy1_state::screen_update_atarisy1(screen_device &screen, bitmap_in
 
 	// draw and merge the MO
 	bitmap_ind16 &mobitmap = m_mob->bitmap();
-<<<<<<< HEAD
-	for (const sparse_dirty_rect *rect = m_mob->first_dirty_rect(cliprect); rect != NULL; rect = rect->next())
-		for (int y = rect->min_y; y <= rect->max_y; y++)
-		{
-			UINT16 *mo = &mobitmap.pix16(y);
-			UINT16 *pf = &bitmap.pix16(y);
-=======
 	for (const sparse_dirty_rect *rect = m_mob->first_dirty_rect(cliprect); rect != nullptr; rect = rect->next())
 		for (int y = rect->min_y; y <= rect->max_y; y++)
 		{
 			uint16_t *mo = &mobitmap.pix16(y);
 			uint16_t *pf = &bitmap.pix16(y);
->>>>>>> upstream/master
 			for (int x = rect->min_x; x <= rect->max_x; x++)
 				if (mo[x] != 0xffff)
 				{
@@ -583,17 +510,10 @@ uint32_t atarisy1_state::screen_update_atarisy1(screen_device &screen, bitmap_in
  *
  *************************************/
 
-<<<<<<< HEAD
-void atarisy1_state::decode_gfx(UINT16 *pflookup, UINT16 *molookup)
-{
-	UINT8 *prom1 = &memregion("proms")->u8(0x000);
-	UINT8 *prom2 = &memregion("proms")->u8(0x200);
-=======
 void atarisy1_state::decode_gfx(uint16_t *pflookup, uint16_t *molookup)
 {
 	uint8_t *prom1 = &memregion("proms")->as_u8(0x000);
 	uint8_t *prom2 = &memregion("proms")->as_u8(0x200);
->>>>>>> upstream/master
 	int obj, i;
 
 	/* reset the globals */
@@ -652,15 +572,9 @@ void atarisy1_state::decode_gfx(uint16_t *pflookup, uint16_t *molookup)
  *
  *************************************/
 
-<<<<<<< HEAD
-int atarisy1_state::get_bank(UINT8 prom1, UINT8 prom2, int bpp)
-{
-	const UINT8 *srcdata;
-=======
 int atarisy1_state::get_bank(uint8_t prom1, uint8_t prom2, int bpp)
 {
 	const uint8_t *srcdata;
->>>>>>> upstream/master
 	int bank_index, gfx_index;
 
 	/* determine the bank index */
@@ -695,30 +609,11 @@ int atarisy1_state::get_bank(uint8_t prom1, uint8_t prom2, int bpp)
 
 	/* don't have one? let's make it ... first find any empty slot */
 	for (gfx_index = 0; gfx_index < MAX_GFX_ELEMENTS; gfx_index++)
-<<<<<<< HEAD
-		if (m_gfxdecode->gfx(gfx_index) == NULL)
-=======
 		if (m_gfxdecode->gfx(gfx_index) == nullptr)
->>>>>>> upstream/master
 			break;
 	assert(gfx_index != MAX_GFX_ELEMENTS);
 
 	/* decode the graphics */
-<<<<<<< HEAD
-	srcdata = &tiles->u8(0x80000 * (bank_index - 1));
-	switch (bpp)
-	{
-	case 4:
-		m_gfxdecode->set_gfx(gfx_index,global_alloc(gfx_element(m_palette, objlayout_4bpp, srcdata, 0, 0x40, 256)));
-		break;
-
-	case 5:
-		m_gfxdecode->set_gfx(gfx_index,global_alloc(gfx_element(m_palette, objlayout_5bpp, srcdata, 0, 0x40, 256)));
-		break;
-
-	case 6:
-		m_gfxdecode->set_gfx(gfx_index,global_alloc(gfx_element(m_palette, objlayout_6bpp, srcdata, 0, 0x40, 256)));
-=======
 	srcdata = &tiles->as_u8(0x80000 * (bank_index - 1));
 	switch (bpp)
 	{
@@ -732,7 +627,6 @@ int atarisy1_state::get_bank(uint8_t prom1, uint8_t prom2, int bpp)
 
 	case 6:
 		m_gfxdecode->set_gfx(gfx_index,std::make_unique<gfx_element>(m_palette, objlayout_6bpp, srcdata, 0, 0x40, 256));
->>>>>>> upstream/master
 		break;
 
 	default:

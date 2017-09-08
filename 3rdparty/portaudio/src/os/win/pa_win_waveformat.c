@@ -38,12 +38,9 @@
 
 #include <windows.h>
 #include <mmsystem.h>
-<<<<<<< HEAD
-=======
 #if defined(WINAPI_FAMILY) && (WINAPI_FAMILY == WINAPI_FAMILY_APP)
     #include <mmreg.h> /* for WAVEFORMATEX */
 #endif
->>>>>>> upstream/master
 
 #include "portaudio.h"
 #include "pa_win_waveformat.h"
@@ -53,10 +50,7 @@
 #define  WAVE_FORMAT_EXTENSIBLE         0xFFFE
 #endif
 
-<<<<<<< HEAD
-=======
 
->>>>>>> upstream/master
 static GUID pawin_ksDataFormatSubtypeGuidBase = 
 	{ (USHORT)(WAVE_FORMAT_PCM), 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71 };
 

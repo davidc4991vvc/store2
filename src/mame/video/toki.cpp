@@ -36,11 +36,7 @@ WRITE16_MEMBER(toki_state::toki_control_w)
 
 TILE_GET_INFO_MEMBER(toki_state::get_text_tile_info)
 {
-<<<<<<< HEAD
-	UINT16 *videoram = m_videoram;
-=======
 	uint16_t *videoram = m_videoram;
->>>>>>> upstream/master
 	int tile = videoram[tile_index];
 	int color = (tile >> 12) & 0xf;
 
@@ -87,15 +83,9 @@ TILE_GET_INFO_MEMBER(toki_state::get_fore_tile_info)
 
 void toki_state::video_start()
 {
-<<<<<<< HEAD
-	m_text_layer       = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(toki_state::get_text_tile_info),this),TILEMAP_SCAN_ROWS,  8,8,32,32);
-	m_background_layer = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(toki_state::get_back_tile_info),this),TILEMAP_SCAN_ROWS,16,16,32,32);
-	m_foreground_layer = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(toki_state::get_fore_tile_info),this),TILEMAP_SCAN_ROWS,16,16,32,32);
-=======
 	m_text_layer       = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(toki_state::get_text_tile_info),this),TILEMAP_SCAN_ROWS,  8,8,32,32);
 	m_background_layer = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(toki_state::get_back_tile_info),this),TILEMAP_SCAN_ROWS,16,16,32,32);
 	m_foreground_layer = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(toki_state::get_fore_tile_info),this),TILEMAP_SCAN_ROWS,16,16,32,32);
->>>>>>> upstream/master
 
 	m_text_layer->set_transparent_pen(15);
 	m_background_layer->set_transparent_pen(15);
@@ -106,11 +96,7 @@ void toki_state::video_start()
 
 WRITE16_MEMBER(toki_state::foreground_videoram_w)
 {
-<<<<<<< HEAD
-	UINT16 *videoram = m_videoram;
-=======
 	uint16_t *videoram = m_videoram;
->>>>>>> upstream/master
 	COMBINE_DATA(&videoram[offset]);
 	m_text_layer->mark_tile_dirty(offset);
 }
@@ -179,11 +165,7 @@ WRITE16_MEMBER(toki_state::background2_videoram_w)
 void toki_state::toki_draw_sprites(bitmap_ind16 &bitmap,const rectangle &cliprect)
 {
 	int x,y,xoffs,yoffs,tile,flipx,flipy,color,offs;
-<<<<<<< HEAD
-	UINT16 *sprite_word;
-=======
 	uint16_t *sprite_word;
->>>>>>> upstream/master
 
 	for (offs = (m_spriteram->bytes()/2)-4;offs >= 0;offs -= 4)
 	{
@@ -226,11 +208,7 @@ void toki_state::toki_draw_sprites(bitmap_ind16 &bitmap,const rectangle &cliprec
 void toki_state::tokib_draw_sprites(bitmap_ind16 &bitmap,const rectangle &cliprect)
 {
 	int x,y,tile,flipx,color,offs;
-<<<<<<< HEAD
-	UINT16 *sprite_word;
-=======
 	uint16_t *sprite_word;
->>>>>>> upstream/master
 
 	for (offs = 0;offs < m_spriteram->bytes() / 2;offs += 4)
 	{
@@ -269,11 +247,7 @@ void toki_state::tokib_draw_sprites(bitmap_ind16 &bitmap,const rectangle &clipre
  *
  *************************************/
 
-<<<<<<< HEAD
-UINT32 toki_state::screen_update_toki(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t toki_state::screen_update_toki(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int background_y_scroll,foreground_y_scroll,background_x_scroll,foreground_x_scroll;
 
@@ -307,11 +281,7 @@ uint32_t toki_state::screen_update_toki(screen_device &screen, bitmap_ind16 &bit
 	return 0;
 }
 
-<<<<<<< HEAD
-UINT32 toki_state::screen_update_tokib(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t toki_state::screen_update_tokib(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	m_foreground_layer->set_scroll_rows(1);
 	m_background_layer->set_scroll_rows(1);

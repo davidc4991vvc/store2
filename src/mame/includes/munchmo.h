@@ -6,11 +6,8 @@
 
 *************************************************************************/
 
-<<<<<<< HEAD
-=======
 #include "machine/gen_latch.h"
 
->>>>>>> upstream/master
 class munchmo_state : public driver_device
 {
 public:
@@ -25,20 +22,6 @@ public:
 		m_maincpu(*this, "maincpu"),
 		m_audiocpu(*this, "audiocpu"),
 		m_gfxdecode(*this, "gfxdecode"),
-<<<<<<< HEAD
-		m_palette(*this, "palette"){ }
-
-	/* memory pointers */
-	required_shared_ptr<UINT8> m_sprite_xpos;
-	required_shared_ptr<UINT8> m_sprite_tile;
-	required_shared_ptr<UINT8> m_sprite_attr;
-	required_shared_ptr<UINT8> m_videoram;
-	required_shared_ptr<UINT8> m_status_vram;
-	required_shared_ptr<UINT8> m_vreg;
-
-	/* video-related */
-	bitmap_ind16     *m_tmpbitmap;
-=======
 		m_palette(*this, "palette"),
 		m_soundlatch(*this, "soundlatch") { }
 
@@ -52,7 +35,6 @@ public:
 
 	/* video-related */
 	std::unique_ptr<bitmap_ind16> m_tmpbitmap;
->>>>>>> upstream/master
 	int          m_palette_bank;
 	int          m_flipscreen;
 
@@ -64,23 +46,6 @@ public:
 	required_device<cpu_device> m_audiocpu;
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
-<<<<<<< HEAD
-
-	DECLARE_WRITE8_MEMBER(mnchmobl_nmi_enable_w);
-	DECLARE_WRITE8_MEMBER(mnchmobl_soundlatch_w);
-	DECLARE_WRITE8_MEMBER(sound_nmi_ack_w);
-	DECLARE_WRITE8_MEMBER(mnchmobl_palette_bank_w);
-	DECLARE_WRITE8_MEMBER(mnchmobl_flipscreen_w);
-	DECLARE_READ8_MEMBER(munchmo_ay1reset_r);
-	DECLARE_READ8_MEMBER(munchmo_ay2reset_r);
-	virtual void machine_start();
-	virtual void machine_reset();
-	virtual void video_start();
-	DECLARE_PALETTE_INIT(munchmo);
-	UINT32 screen_update_mnchmobl(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	INTERRUPT_GEN_MEMBER(mnchmobl_vblank_irq);
-	INTERRUPT_GEN_MEMBER(mnchmobl_sound_irq);
-=======
 	required_device<generic_latch_8_device> m_soundlatch;
 
 	DECLARE_WRITE_LINE_MEMBER(nmi_enable_w);
@@ -97,7 +62,6 @@ public:
 	u32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	DECLARE_WRITE_LINE_MEMBER(vblank_irq);
 	IRQ_CALLBACK_MEMBER(generic_irq_ack);
->>>>>>> upstream/master
 	void draw_status( bitmap_ind16 &bitmap, const rectangle &cliprect );
 	void draw_background( bitmap_ind16 &bitmap, const rectangle &cliprect );
 	void draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect );

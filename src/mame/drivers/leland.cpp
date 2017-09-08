@@ -1,16 +1,8 @@
 // license:BSD-3-Clause
-<<<<<<< HEAD
-// copyright-holders:Aaron Giles
-/***************************************************************************
-
-    Cinemat/Leland driver
-
-=======
 // copyright-holders:Aaron Giles,Paul Leaman
 /***************************************************************************
 
     Cinematronics/Leland driver
->>>>>>> upstream/master
     driver by Aaron Giles and Paul Leaman
 
     Games supported:
@@ -32,8 +24,6 @@
         * Ironman Stewart's Super Off-Road
         * Pigout
 
-<<<<<<< HEAD
-=======
     Leland Ataxx-era
     Games supported:
         * Ataxx
@@ -42,7 +32,6 @@
         * Brute Force
         * Asylum (prototype)
 
->>>>>>> upstream/master
     Known bugs:
         * none at this time
 
@@ -58,20 +47,6 @@
 
     For Pigout, press 1P start and then press the service switch (F2).
 
-<<<<<<< HEAD
-***************************************************************************/
-
-
-#include "emu.h"
-#include "cpu/i86/i186.h"
-#include "machine/eepromser.h"
-#include "machine/nvram.h"
-#include "cpu/z80/z80.h"
-#include "includes/leland.h"
-#include "sound/ay8910.h"
-
-
-=======
     To enter service mode in Ataxx and Brute Force, press 1P start and
     then press the service switch (F2).
 
@@ -95,7 +70,6 @@
 
 /* Master Clock2 is for Asylum, Ataxx, Brute Force, Danny Sullivan's Indy Heat, World Soccer Finals */
 #define MASTER_CLOCK2       XTAL_28_63636MHZ
->>>>>>> upstream/master
 #define MASTER_CLOCK        XTAL_12MHz
 #define VIDEO_CLOCK         XTAL_14_31818MHz
 #define MCU_CLOCK           XTAL_16MHz
@@ -112,11 +86,7 @@ static ADDRESS_MAP_START( master_map_program, AS_PROGRAM, 8, leland_state )
 	AM_RANGE(0x0000, 0x1fff) AM_ROM
 	AM_RANGE(0x2000, 0x9fff) AM_ROMBANK("bank1")
 	AM_RANGE(0xa000, 0xdfff) AM_ROMBANK("bank2") AM_WRITE(leland_battery_ram_w) AM_SHARE("battery")
-<<<<<<< HEAD
-	AM_RANGE(0xe000, 0xefff) AM_RAM
-=======
 	AM_RANGE(0xe000, 0xefff) AM_RAM AM_SHARE("mainram")
->>>>>>> upstream/master
 	AM_RANGE(0xf000, 0xf3ff) AM_READWRITE(leland_gated_paletteram_r, leland_gated_paletteram_w) AM_SHARE("palette")
 	AM_RANGE(0xf800, 0xf801) AM_WRITE(leland_master_video_addr_w)
 ADDRESS_MAP_END
@@ -136,8 +106,6 @@ static ADDRESS_MAP_START( master_redline_map_io, AS_IO, 8, leland_state )
 ADDRESS_MAP_END
 
 
-<<<<<<< HEAD
-=======
 static ADDRESS_MAP_START( master_map_program_2, AS_PROGRAM, 8, leland_state )
 	AM_RANGE(0x0000, 0x1fff) AM_ROM
 	AM_RANGE(0x2000, 0x9fff) AM_ROMBANK("bank1")
@@ -159,7 +127,6 @@ static ADDRESS_MAP_START( master_map_io_2, AS_IO, 8, leland_state )
 ADDRESS_MAP_END
 
 
->>>>>>> upstream/master
 
 /*************************************
  *
@@ -194,8 +161,6 @@ static ADDRESS_MAP_START( slave_map_io, AS_IO, 8, leland_state )
 ADDRESS_MAP_END
 
 
-<<<<<<< HEAD
-=======
 static ADDRESS_MAP_START( slave_map_program, AS_PROGRAM, 8, leland_state )
 	AM_RANGE(0x0000, 0x1fff) AM_ROM
 	AM_RANGE(0x2000, 0x9fff) AM_ROMBANK("bank3")
@@ -213,7 +178,6 @@ static ADDRESS_MAP_START( slave_map_io_2, AS_IO, 8, leland_state )
 ADDRESS_MAP_END
 
 
->>>>>>> upstream/master
 
 /*************************************
  *
@@ -788,28 +752,6 @@ static INPUT_PORTS_START( pigout )      /* complete, verified from code */
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_START1 )
 INPUT_PORTS_END
 
-<<<<<<< HEAD
-
-
-/*************************************
- *
- *  Sound definitions
- *
- *************************************/
-
-/*
-   2 AY8910 chips - Actually, one of these is an 8912
-   (8910 with only 1 output port)
-
-   Port A of both chips is connected to a banking control
-   register.
-
-   All 6 (3*2) AY-3-8910/12 outputs are tied together
-   and put with 1000 Ohm to gnd.
-   The following is a approximation, since
-   it does not take cross-chip mixing effects into account.
-*/
-=======
 static INPUT_PORTS_START( ataxx )
 	PORT_START("IN0")       /* 0xF6 */
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_COIN1 )
@@ -990,7 +932,6 @@ static INPUT_PORTS_START( brutforc )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNUSED )
 INPUT_PORTS_END
 
->>>>>>> upstream/master
 
 
 /*************************************
@@ -999,11 +940,7 @@ INPUT_PORTS_END
  *
  *************************************/
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( leland, leland_state )
-=======
 static MACHINE_CONFIG_START( leland )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("master", Z80, MASTER_CLOCK/2)
@@ -1024,35 +961,14 @@ static MACHINE_CONFIG_START( leland )
 	/* video hardware */
 	MCFG_FRAGMENT_ADD(leland_video)
 	/* sound hardware */
-<<<<<<< HEAD
-	MCFG_SPEAKER_STANDARD_MONO("mono")
-
-	MCFG_SOUND_ADD("ay8910.1", AY8910, 10000000/6)
-=======
 	MCFG_SPEAKER_STANDARD_MONO("speaker")
 
 	// only one of the AY sockets is populated
 	MCFG_SOUND_ADD("ay8910", AY8910, 10000000/6)
->>>>>>> upstream/master
 	MCFG_AY8910_OUTPUT_TYPE(AY8910_SINGLE_OUTPUT)
 	MCFG_AY8910_RES_LOADS(1000, 0, 0)
 	MCFG_AY8910_PORT_A_READ_CB(READ8(leland_state, leland_sound_port_r))
 	MCFG_AY8910_PORT_A_WRITE_CB(WRITE8(leland_state, leland_sound_port_w))
-<<<<<<< HEAD
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.25)
-
-	MCFG_SOUND_ADD("ay8910.2", AY8910, 10000000/6)
-	MCFG_AY8910_OUTPUT_TYPE(AY8910_SINGLE_OUTPUT)
-	MCFG_AY8910_RES_LOADS(1000, 0, 0)
-	MCFG_AY8910_PORT_A_READ_CB(READ8(leland_state, leland_sound_port_r))
-	MCFG_AY8910_PORT_A_WRITE_CB(WRITE8(leland_state, leland_sound_port_w))
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.25)
-
-	MCFG_SOUND_ADD("dac0", DAC, 0)
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.25)
-	MCFG_SOUND_ADD("dac1", DAC, 0)
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.25)
-=======
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.25)
 
 //  MCFG_SOUND_ADD("ay8912", AY8912, 10000000/6)
@@ -1067,7 +983,6 @@ static MACHINE_CONFIG_START( leland )
 	MCFG_DEVICE_ADD("vref", VOLTAGE_REGULATOR, 0) MCFG_VOLTAGE_REGULATOR_OUTPUT(5.0)
 	MCFG_SOUND_ROUTE_EX(0, "dac0", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "dac0", -1.0, DAC_VREF_NEG_INPUT)
 	MCFG_SOUND_ROUTE_EX(0, "dac1", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "dac1", -1.0, DAC_VREF_NEG_INPUT)
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
@@ -1107,8 +1022,6 @@ static MACHINE_CONFIG_DERIVED( lelandi, quarterb )
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-=======
 static MACHINE_CONFIG_START( ataxx )
 
 	/* basic machine hardware */
@@ -1151,7 +1064,6 @@ static MACHINE_CONFIG_DERIVED( wsf, ataxx )
 MACHINE_CONFIG_END
 
 
->>>>>>> upstream/master
 
 /*************************************
  *
@@ -2318,8 +2230,6 @@ ROM_START( pigouta )
 	ROM_LOAD16_WORD( "eeprom-pigout.bin", 0x0000, 0x0080, CRC(9646fa72) SHA1(80311bd6ba8988afc4ad1aabf3f452266686917f) )
 ROM_END
 
-<<<<<<< HEAD
-=======
 ROM_START( ataxx )
 	ROM_REGION( 0x30000, "master", 0 )
 	ROM_LOAD( "e-302-31005-04.u38",   0x00000, 0x20000, CRC(e1cf6236) SHA1(fabf423a006b1db22273c6fffa03edc148d7d957) )
@@ -2657,7 +2567,6 @@ ROM_START( asylum )
 	ROM_LOAD16_WORD( "eeprom-asylum.bin", 0x0000, 0x0100, CRC(9a9a361b) SHA1(35daf1677ba18c09d2f9e33e75cf3f8d6a01e7c8) )
 ROM_END
 
->>>>>>> upstream/master
 
 
 /*************************************
@@ -2666,11 +2575,7 @@ ROM_END
  *
  *************************************/
 
-<<<<<<< HEAD
-void leland_state::init_master_ports(UINT8 mvram_base, UINT8 io_base)
-=======
 void leland_state::init_master_ports(uint8_t mvram_base, uint8_t io_base)
->>>>>>> upstream/master
 {
 	/* set up the master CPU VRAM I/O */
 	m_master->space(AS_IO).install_readwrite_handler(mvram_base, mvram_base + 0x1f, read8_delegate(FUNC(leland_state::leland_mvram_port_r),this), write8_delegate(FUNC(leland_state::leland_mvram_port_w),this));
@@ -2739,12 +2644,8 @@ DRIVER_INIT_MEMBER(leland_state,alleymas)
 	/* kludge warning: the game uses location E0CA to determine if the joysticks are available */
 	/* it gets cleared by the code, but there is no obvious way for the value to be set to a */
 	/* non-zero value. If the value is zero, the joystick is never read. */
-<<<<<<< HEAD
-	m_alleymas_kludge_mem = m_master->space(AS_PROGRAM).install_write_handler(0xe0ca, 0xe0ca, write8_delegate(FUNC(leland_state::alleymas_joystick_kludge),this));
-=======
 	m_master->space(AS_PROGRAM).install_write_handler(0xe0ca, 0xe0ca, write8_delegate(FUNC(leland_state::alleymas_joystick_kludge),this));
 	m_alleymas_kludge_mem = m_mainram + (0xe0ca - 0xe000);
->>>>>>> upstream/master
 }
 
 
@@ -2770,12 +2671,9 @@ DRIVER_INIT_MEMBER(leland_state,dangerz)
 	m_master->space(AS_IO).install_read_handler(0xf4, 0xf4, read8_delegate(FUNC(leland_state::dangerz_input_upper_r),this));
 	m_master->space(AS_IO).install_read_handler(0xf8, 0xf8, read8_delegate(FUNC(leland_state::dangerz_input_y_r),this));
 	m_master->space(AS_IO).install_read_handler(0xfc, 0xfc, read8_delegate(FUNC(leland_state::dangerz_input_x_r),this));
-<<<<<<< HEAD
-=======
 
 	save_item(NAME(m_dangerz_x));
 	save_item(NAME(m_dangerz_y));
->>>>>>> upstream/master
 }
 
 
@@ -2855,12 +2753,9 @@ DRIVER_INIT_MEMBER(leland_state,viper)
 	m_master->space(AS_IO).install_read_handler(0xa4, 0xa4, read8_delegate(FUNC(leland_state::dangerz_input_upper_r),this));
 	m_master->space(AS_IO).install_read_handler(0xb8, 0xb8, read8_delegate(FUNC(leland_state::dangerz_input_y_r),this));
 	m_master->space(AS_IO).install_read_handler(0xbc, 0xbc, read8_delegate(FUNC(leland_state::dangerz_input_x_r),this));
-<<<<<<< HEAD
-=======
 
 	save_item(NAME(m_dangerz_x));
 	save_item(NAME(m_dangerz_y));
->>>>>>> upstream/master
 }
 
 
@@ -2992,8 +2887,6 @@ DRIVER_INIT_MEMBER(leland_state,pigout)
 }
 
 
-<<<<<<< HEAD
-=======
 DRIVER_INIT_MEMBER(leland_state,ataxx)
 {
 	leland_rotate_memory("master");
@@ -3070,7 +2963,6 @@ DRIVER_INIT_MEMBER(leland_state,asylum)
 }
 
 
->>>>>>> upstream/master
 
 /*************************************
  *
@@ -3091,31 +2983,6 @@ GAME( 1986, dangerz,  0,       leland,   dangerz, leland_state,  dangerz,  ROT0,
 
 /* small master banks + extra top board, small slave banks */
 GAME( 1987, basebal2, 0,       leland,   basebal2, leland_state, basebal2, ROT0,   "Cinematronics", "Baseball: The Season II", 0 )
-<<<<<<< HEAD
-GAME( 1987, dblplay,  0,       leland,   basebal2, leland_state, dblplay,  ROT0,   "Leland Corp. / Tradewest", "Super Baseball Double Play Home Run Derby", 0 )
-GAME( 1988, strkzone, 0,       leland,   basebal2, leland_state, strkzone, ROT0,   "Leland Corp.", "Strike Zone Baseball", 0 )
-
-/* large master banks, small slave banks, 80186 sound */
-GAME( 1987, redlin2p, 0,       redline,  redline, leland_state,  redlin2p, ROT270, "Cinematronics (Tradewest license)", "Redline Racer (2 players)", 0 )
-GAME( 1987, quarterb, 0,       quarterb, quarterb, leland_state, quarterb, ROT270, "Leland Corp.", "Quarterback (set 1)", 0 )
-GAME( 1987, quarterba,quarterb,quarterb, quarterb, leland_state, quarterb, ROT270, "Leland Corp.", "Quarterback (set 2)", 0 )
-
-/* large master banks, large slave banks, 80186 sound */
-GAME( 1988, viper,    0,       lelandi,  dangerz, leland_state,  viper,    ROT0,   "Leland Corp.", "Viper", 0 )
-GAME( 1988, teamqb,   0,       lelandi,  teamqb, leland_state,   teamqb,   ROT270, "Leland Corp.", "John Elway's Team Quarterback (set 1)", 0 )
-GAME( 1988, teamqb2,  teamqb,  lelandi,  teamqb, leland_state,   teamqb,   ROT270, "Leland Corp.", "John Elway's Team Quarterback (set 2)", 0 )
-GAME( 1989, aafb,     0,       lelandi,  teamqb, leland_state,   aafb,     ROT270, "Leland Corp.", "All American Football (rev E)", 0 )
-GAME( 1989, aafbd2p,  aafb,    lelandi,  aafb2p, leland_state,   aafbd2p,  ROT270, "Leland Corp.", "All American Football (rev D, 2 Players)", 0 )
-GAME( 1989, aafbc,    aafb,    lelandi,  teamqb, leland_state,   aafbb,    ROT270, "Leland Corp.", "All American Football (rev C)", 0 )
-GAME( 1989, aafbb,    aafb,    lelandi,  teamqb, leland_state,   aafbb,    ROT270, "Leland Corp.", "All American Football (rev B)", MACHINE_NOT_WORKING )
-
-/* huge master banks, large slave banks, 80186 sound */
-GAME( 1989, offroad,    0,       lelandi,  offroad, leland_state,    offroad,  ROT0,   "Leland Corp.", "Ironman Ivan Stewart's Super Off-Road", 0 )
-GAME( 1989, offroadt,   0,       lelandi,  offroad, leland_state,    offroadt, ROT0,   "Leland Corp.", "Ironman Ivan Stewart's Super Off-Road Track-Pak", 0 )
-GAME( 1989, offroadt2p, offroadt,lelandi,  offroadt2p, leland_state, offroadt, ROT0,   "Leland Corp.", "Ironman Ivan Stewart's Super Off-Road Track-Pak (2 Players)", 0 )
-GAME( 1990, pigout,     0,       lelandi,  pigout, leland_state,     pigout,   ROT0,   "Leland Corp.", "Pig Out: Dine Like a Swine! (set 1)", 0 )
-GAME( 1990, pigouta,    pigout,  lelandi,  pigout, leland_state,     pigout,   ROT0,   "Leland Corp.", "Pig Out: Dine Like a Swine! (set 2)", 0 )
-=======
 GAME( 1987, dblplay,  0,       leland,   basebal2, leland_state, dblplay,  ROT0,   "Leland Corporation / Tradewest", "Super Baseball Double Play Home Run Derby", 0 )
 GAME( 1988, strkzone, 0,       leland,   basebal2, leland_state, strkzone, ROT0,   "Leland Corporation", "Strike Zone Baseball", 0 )
 
@@ -3149,4 +3016,3 @@ GAME( 1990, wsf,      0,      wsf,     wsf,      leland_state, wsf,      ROT0,  
 GAME( 1991, indyheat, 0,      wsf,     indyheat, leland_state, indyheat, ROT0,   "Leland Corporation", "Danny Sullivan's Indy Heat", 0 )
 GAME( 1991, brutforc, 0,      wsf,     brutforc, leland_state, brutforc, ROT0,   "Leland Corporation", "Brute Force", 0 )
 GAME( 1991, asylum,   0,      wsf,     brutforc, leland_state, asylum,   ROT270, "Leland Corporation", "Asylum (prototype)", 0 )
->>>>>>> upstream/master

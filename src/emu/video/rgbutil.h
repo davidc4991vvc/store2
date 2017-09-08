@@ -9,17 +9,10 @@
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-#ifndef __RGBUTIL__
-#define __RGBUTIL__
-
-/* use SSE on 64-bit implementations, where it can be assumed */
-=======
 #ifndef MAME_EMU_VIDEO_RGBUTIL_H
 #define MAME_EMU_VIDEO_RGBUTIL_H
 
 // use SSE on 64-bit implementations, where it can be assumed
->>>>>>> upstream/master
 #if (!defined(MAME_DEBUG) || defined(__OPTIMIZE__)) && (defined(__SSE2__) || defined(_MSC_VER)) && defined(PTR64)
 #include "rgbsse.h"
 #elif defined(__ALTIVEC__)
@@ -28,8 +21,4 @@
 #include "rgbgen.h"
 #endif
 
-<<<<<<< HEAD
-#endif /* __RGBUTIL__ */
-=======
 #endif // MAME_EMU_VIDEO_RGBUTIL_H
->>>>>>> upstream/master

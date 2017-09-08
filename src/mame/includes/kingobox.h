@@ -6,12 +6,9 @@
 
 *************************************************************************/
 
-<<<<<<< HEAD
-=======
 #include "machine/gen_latch.h"
 #include "machine/input_merger.h"
 
->>>>>>> upstream/master
 class kingofb_state : public driver_device
 {
 public:
@@ -27,18 +24,6 @@ public:
 		m_sprite_cpu(*this, "sprite"),
 		m_maincpu(*this, "maincpu"),
 		m_audiocpu(*this, "audiocpu"),
-<<<<<<< HEAD
-		m_gfxdecode(*this, "gfxdecode"),
-		m_palette(*this, "palette") { }
-
-	/* memory pointers */
-	required_shared_ptr<UINT8> m_scroll_y;
-	required_shared_ptr<UINT8> m_videoram;
-	required_shared_ptr<UINT8> m_colorram;
-	required_shared_ptr<UINT8> m_videoram2;
-	required_shared_ptr<UINT8> m_colorram2;
-	required_shared_ptr<UINT8> m_spriteram;
-=======
 		m_nmigate(*this, "nmigate"),
 		m_gfxdecode(*this, "gfxdecode"),
 		m_palette(*this, "palette"),
@@ -51,19 +36,12 @@ public:
 	required_shared_ptr<uint8_t> m_videoram2;
 	required_shared_ptr<uint8_t> m_colorram2;
 	required_shared_ptr<uint8_t> m_spriteram;
->>>>>>> upstream/master
 
 	/* video-related */
 	tilemap_t    *m_bg_tilemap;
 	tilemap_t    *m_fg_tilemap;
 	int        m_palette_bank;
 
-<<<<<<< HEAD
-	/* misc */
-	int        m_nmi_enable;
-
-=======
->>>>>>> upstream/master
 	/* devices */
 	required_device<cpu_device> m_video_cpu;
 	required_device<cpu_device> m_sprite_cpu;
@@ -81,43 +59,24 @@ public:
 	TILE_GET_INFO_MEMBER(get_bg_tile_info);
 	TILE_GET_INFO_MEMBER(get_fg_tile_info);
 	TILE_GET_INFO_MEMBER(ringking_get_bg_tile_info);
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void machine_reset();
-=======
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
->>>>>>> upstream/master
 	DECLARE_VIDEO_START(kingofb);
 	DECLARE_PALETTE_INIT(kingofb);
 	DECLARE_VIDEO_START(ringking);
 	DECLARE_PALETTE_INIT(ringking);
-<<<<<<< HEAD
-	UINT32 screen_update_kingofb(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	UINT32 screen_update_ringking(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	INTERRUPT_GEN_MEMBER(kingofb_interrupt);
-	void palette_init_common( palette_device &palette, const UINT8 *color_prom, void (kingofb_state::*get_rgb_data)(const UINT8 *, int, int *, int *, int *) );
-	void kingofb_get_rgb_data( const UINT8 *color_prom, int i, int *r_data, int *g_data, int *b_data );
-	void ringking_get_rgb_data( const UINT8 *color_prom, int i, int *r_data, int *g_data, int *b_data );
-=======
 	uint32_t screen_update_kingofb(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	uint32_t screen_update_ringking(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	INTERRUPT_GEN_MEMBER(kingofb_interrupt);
 	void palette_init_common( palette_device &palette, const uint8_t *color_prom, void (kingofb_state::*get_rgb_data)(const uint8_t *, int, int *, int *, int *) );
 	void kingofb_get_rgb_data( const uint8_t *color_prom, int i, int *r_data, int *g_data, int *b_data );
 	void ringking_get_rgb_data( const uint8_t *color_prom, int i, int *r_data, int *g_data, int *b_data );
->>>>>>> upstream/master
 	void kingofb_draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect);
 	void ringking_draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect );
 	required_device<cpu_device> m_maincpu;
 	required_device<cpu_device> m_audiocpu;
-<<<<<<< HEAD
-	required_device<gfxdecode_device> m_gfxdecode;
-	required_device<palette_device> m_palette;
-=======
 	required_device<input_merger_device> m_nmigate;
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
 	required_device<generic_latch_8_device> m_soundlatch;
->>>>>>> upstream/master
 };

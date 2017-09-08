@@ -24,13 +24,8 @@
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-#ifndef __PIC8259_H__
-#define __PIC8259_H__
-=======
 #ifndef MAME_MACHINE_PIC8259_H
 #define MAME_MACHINE_PIC8259_H
->>>>>>> upstream/master
 
 
 /***************************************************************************
@@ -47,17 +42,6 @@
 class pic8259_device : public device_t
 {
 public:
-<<<<<<< HEAD
-	pic8259_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	template<class _Object> static devcb_base &static_set_out_int_callback(device_t &device, _Object object) { return downcast<pic8259_device &>(device).m_out_int_func.set_callback(object); }
-	template<class _Object> static devcb_base &static_set_sp_en_callback(device_t &device, _Object object) { return downcast<pic8259_device &>(device).m_sp_en_func.set_callback(object); }
-	template<class _Object> static devcb_base &static_set_read_slave_ack_callback(device_t &device, _Object object) { return downcast<pic8259_device &>(device).m_read_slave_ack_func.set_callback(object); }
-
-	DECLARE_READ8_MEMBER( read );
-	DECLARE_WRITE8_MEMBER( write );
-	UINT32 acknowledge();
-=======
 	pic8259_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	template <class Object> static devcb_base &static_set_out_int_callback(device_t &device, Object &&cb) { return downcast<pic8259_device &>(device).m_out_int_func.set_callback(std::forward<Object>(cb)); }
@@ -67,7 +51,6 @@ public:
 	DECLARE_READ8_MEMBER( read );
 	DECLARE_WRITE8_MEMBER( write );
 	uint32_t acknowledge();
->>>>>>> upstream/master
 
 	DECLARE_WRITE_LINE_MEMBER( ir0_w ) { set_irq_line(0, state); }
 	DECLARE_WRITE_LINE_MEMBER( ir1_w ) { set_irq_line(1, state); }
@@ -80,19 +63,6 @@ public:
 
 	IRQ_CALLBACK_MEMBER(inta_cb);
 
-<<<<<<< HEAD
-	// used by m92.c until we can figure out how to hook it up in a way that doesn't break nbbatman (probably need correct IRQ timing / clears for the sprites IRQs
-	int HACK_get_base_vector() { return m_base;  }
-
-protected:
-	// device-level overrides
-	virtual void device_start();
-	virtual void device_reset();
-	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
-
-private:
-	static const device_timer_id TIMER_CHECK_IRQ = 0;
-=======
 protected:
 	// device-level overrides
 	virtual void device_start() override;
@@ -101,21 +71,11 @@ protected:
 
 private:
 	static constexpr device_timer_id TIMER_CHECK_IRQ = 0;
->>>>>>> upstream/master
 
 	inline void set_timer() { timer_set(attotime::zero, TIMER_CHECK_IRQ); }
 	void set_irq_line(int irq, int state);
 
 
-<<<<<<< HEAD
-	enum pic8259_state_t
-	{
-		STATE_ICW1,
-		STATE_ICW2,
-		STATE_ICW3,
-		STATE_ICW4,
-		STATE_READY
-=======
 	enum class state_t : u8
 	{
 		ICW1,
@@ -123,50 +83,12 @@ private:
 		ICW3,
 		ICW4,
 		READY
->>>>>>> upstream/master
 	};
 
 	devcb_write_line m_out_int_func;
 	devcb_read_line m_sp_en_func;
 	devcb_read8 m_read_slave_ack_func;
 
-<<<<<<< HEAD
-	pic8259_state_t m_state;
-
-	UINT8 m_isr;
-	UINT8 m_irr;
-	UINT8 m_prio;
-	UINT8 m_imr;
-	UINT8 m_irq_lines;
-
-	UINT8 m_input;
-	UINT8 m_ocw3;
-
-	UINT8 m_master;
-	/* ICW1 state */
-	UINT8 m_level_trig_mode;
-	UINT8 m_vector_size;
-	UINT8 m_cascade;
-	UINT8 m_icw4_needed;
-	UINT32 m_vector_addr_low;
-	/* ICW2 state */
-	UINT8 m_base;
-	UINT8 m_vector_addr_high;
-
-	/* ICW3 state */
-	UINT8 m_slave;
-
-	/* ICW4 state */
-	UINT8 m_nested;
-	UINT8 m_mode;
-	UINT8 m_auto_eoi;
-	UINT8 m_is_x86;
-};
-
-extern const device_type PIC8259;
-
-#endif /* __PIC8259_H__ */
-=======
 	state_t m_state;
 
 	uint8_t m_isr;
@@ -202,4 +124,3 @@ extern const device_type PIC8259;
 DECLARE_DEVICE_TYPE(PIC8259, pic8259_device)
 
 #endif // MAME_MACHINE_PIC8259_H
->>>>>>> upstream/master

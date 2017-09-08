@@ -14,23 +14,18 @@
 #include "includes/gaelcrpt.h"
 #include "includes/wrally.h"
 
-<<<<<<< HEAD
-=======
 
 void wrally_state::machine_start()
 {
 	membank("okibank")->configure_entries(0, 16, memregion("oki")->base(), 0x10000);
 }
 
->>>>>>> upstream/master
 /***************************************************************************
 
     World Rally memory handlers
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-=======
 WRITE8_MEMBER(wrally_state::shareram_w)
 {
 	// why isn't there an AM_SOMETHING macro for this?
@@ -43,7 +38,6 @@ READ8_MEMBER(wrally_state::shareram_r)
 	return reinterpret_cast<u8 const *>(m_shareram.target())[BYTE_XOR_BE(offset)];
 }
 
->>>>>>> upstream/master
 WRITE16_MEMBER(wrally_state::vram_w)
 {
 	data = gaelco_decrypt(space, offset, data, 0x1f, 0x522a);
@@ -52,36 +46,13 @@ WRITE16_MEMBER(wrally_state::vram_w)
 	m_pant[(offset & 0x1fff) >> 12]->mark_tile_dirty(((offset << 1) & 0x1fff) >> 2);
 }
 
-<<<<<<< HEAD
-WRITE16_MEMBER(wrally_state::flipscreen_w)
-{
-	flip_screen_set(data & 0x01);
-=======
 WRITE_LINE_MEMBER(wrally_state::flipscreen_w)
 {
 	flip_screen_set(state);
->>>>>>> upstream/master
 }
 
 WRITE16_MEMBER(wrally_state::okim6295_bankswitch_w)
 {
-<<<<<<< HEAD
-	UINT8 *RAM = memregion("oki")->base();
-
-	if (ACCESSING_BITS_0_7){
-		memcpy(&RAM[0x30000], &RAM[0x40000 + (data & 0x0f)*0x10000], 0x10000);
-	}
-}
-
-WRITE16_MEMBER(wrally_state::wrally_coin_counter_w)
-{
-	coin_counter_w( machine(), (offset >> 3) & 0x01, data & 0x01);
-}
-
-WRITE16_MEMBER(wrally_state::wrally_coin_lockout_w)
-{
-	coin_lockout_w( machine(), (offset >> 3) & 0x01, ~data & 0x01);
-=======
 	if (ACCESSING_BITS_0_7){
 		membank("okibank")->set_entry(data & 0x0f);
 	}
@@ -105,5 +76,4 @@ WRITE_LINE_MEMBER(wrally_state::coin1_lockout_w)
 WRITE_LINE_MEMBER(wrally_state::coin2_lockout_w)
 {
 	machine().bookkeeping().coin_lockout_w(1, !state);
->>>>>>> upstream/master
 }

@@ -23,20 +23,11 @@
 
 **********************************************************************/
 
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __CRT9021__
-#define __CRT9021__
-
-#include "emu.h"
-=======
 #ifndef MAME_VIDEO_CRT9021_H
 #define MAME_VIDEO_CRT9021_H
 
 #pragma once
 
->>>>>>> upstream/master
 
 
 
@@ -44,42 +35,17 @@
 //  INTERFACE CONFIGURATION MACROS
 //**************************************************************************
 
-<<<<<<< HEAD
-#define CRT9021_DRAW_CHARACTER_MEMBER(_name) void _name(bitmap_rgb32 &bitmap, int y, int x, UINT8 video, int intout)
-
-
-#define MCFG_CRT9021_DRAW_CHARACTER_CALLBACK_OWNER(_class, _method) \
-	crt9021_t::static_set_display_callback(*device, crt9021_draw_character_delegate(&_class::_method, #_class "::" #_method, downcast<_class *>(owner)));
-=======
 #define CRT9021_DRAW_CHARACTER_MEMBER(_name) void _name(bitmap_rgb32 &bitmap, int y, int x, uint8_t video, int intout)
 
 
 #define MCFG_CRT9021_DRAW_CHARACTER_CALLBACK_OWNER(_class, _method) \
 	crt9021_device::static_set_display_callback(*device, crt9021_device::draw_character_delegate(&_class::_method, #_class "::" #_method, downcast<_class *>(owner)));
->>>>>>> upstream/master
 
 
 //**************************************************************************
 //  TYPE DEFINITIONS
 //**************************************************************************
 
-<<<<<<< HEAD
-typedef device_delegate<void (bitmap_rgb32 &bitmap, int y, int x, UINT8 video, int intout)> crt9021_draw_character_delegate;
-
-
-// ======================> crt9021_t
-
-class crt9021_t :  public device_t,
-					public device_video_interface
-{
-public:
-	// construction/destruction
-	crt9021_t(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	static void static_set_display_callback(device_t &device, crt9021_draw_character_delegate callback) { downcast<crt9021_t &>(device).m_display_cb = callback; }
-
-	void write(UINT8 data) { m_data = data; }
-=======
 
 // ======================> crt9021_device
 
@@ -94,7 +60,6 @@ public:
 	static void static_set_display_callback(device_t &device, draw_character_delegate &&cb) { downcast<crt9021_device &>(device).m_display_cb = std::move(cb); }
 
 	void write(uint8_t data) { m_data = data; }
->>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER( write ) { write(data); }
 	DECLARE_WRITE_LINE_MEMBER( ms0_w ) { m_ms0 = state; }
 	DECLARE_WRITE_LINE_MEMBER( ms1_w ) { m_ms1 = state; }
@@ -116,19 +81,11 @@ public:
 	DECLARE_WRITE_LINE_MEMBER( sl3_w ) { m_sl3 = state; }
 	DECLARE_WRITE_LINE_MEMBER( vsync_w );
 
-<<<<<<< HEAD
-	UINT32 screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
-
-protected:
-	// device-level overrides
-	virtual void device_start();
-=======
 	uint32_t screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
 
 protected:
 	// device-level overrides
 	virtual void device_start() override;
->>>>>>> upstream/master
 
 private:
 	enum
@@ -139,20 +96,12 @@ private:
 		MS_UNDERLINE
 	};
 
-<<<<<<< HEAD
-	crt9021_draw_character_delegate m_display_cb;
-=======
 	draw_character_delegate m_display_cb;
->>>>>>> upstream/master
 
 	bitmap_rgb32 m_bitmap;
 
 	// inputs
-<<<<<<< HEAD
-	UINT8 m_data;
-=======
 	uint8_t m_data;
->>>>>>> upstream/master
 	int m_ms0;
 	int m_ms1;
 	int m_revid;
@@ -174,25 +123,13 @@ private:
 	int m_vsync;
 
 	// outputs
-<<<<<<< HEAD
-	UINT8 m_sr;
-=======
 	uint8_t m_sr;
->>>>>>> upstream/master
 	int m_intout;
 	int m_sl;
 };
 
 
 // device type definition
-<<<<<<< HEAD
-extern const device_type CRT9021;
-
-
-
-#endif
-=======
 DECLARE_DEVICE_TYPE(CRT9021, crt9021_device)
 
 #endif // MAME_VIDEO_CRT9021_H
->>>>>>> upstream/master

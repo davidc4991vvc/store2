@@ -10,10 +10,6 @@
 
 #import "debugwindowhandler.h"
 
-<<<<<<< HEAD
-#include "emu.h"
-=======
->>>>>>> upstream/master
 
 #import <Cocoa/Cocoa.h>
 
@@ -30,9 +26,6 @@
 
 - (IBAction)showDeviceDetail:(id)sender;
 
-<<<<<<< HEAD
-=======
 - (void)saveConfigurationToNode:(util::xml::data_node *)node;
 
->>>>>>> upstream/master
 @end

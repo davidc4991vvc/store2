@@ -2,11 +2,8 @@
 // copyright-holders:David Haywood
 /*
 
-<<<<<<< HEAD
-=======
 what is this HW cloned from? I doubt it's an original design
 
->>>>>>> upstream/master
 1945 K-3 driver
 ---------------
 
@@ -50,11 +47,8 @@ Notes:
 #include "emu.h"
 #include "cpu/m68000/m68000.h"
 #include "sound/okim6295.h"
-<<<<<<< HEAD
-=======
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 #define MASTER_CLOCK    XTAL_16MHz
 
@@ -64,13 +58,8 @@ class k3_state : public driver_device
 public:
 	k3_state(const machine_config &mconfig, device_type type, const char *tag)
 		: driver_device(mconfig, type, tag),
-<<<<<<< HEAD
-			m_oki1(*this, "oki1"),
-			m_oki2(*this, "oki2") ,
-=======
 			m_oki2(*this, "oki2"),
 			m_oki1(*this, "oki1") ,
->>>>>>> upstream/master
 		m_spriteram_1(*this, "spritera1"),
 		m_spriteram_2(*this, "spritera2"),
 		m_bgram(*this, "bgram"),
@@ -79,21 +68,12 @@ public:
 		m_palette(*this, "palette")  { }
 
 	/* devices */
-<<<<<<< HEAD
-	required_device<okim6295_device> m_oki1;
-	required_device<okim6295_device> m_oki2;
-	/* memory pointers */
-	required_shared_ptr<UINT16> m_spriteram_1;
-	required_shared_ptr<UINT16> m_spriteram_2;
-	required_shared_ptr<UINT16> m_bgram;
-=======
 	optional_device<okim6295_device> m_oki2;
 	required_device<okim6295_device> m_oki1;
 	/* memory pointers */
 	required_shared_ptr<uint16_t> m_spriteram_1;
 	required_shared_ptr<uint16_t> m_spriteram_2;
 	required_shared_ptr<uint16_t> m_bgram;
->>>>>>> upstream/master
 
 	/* video-related */
 	tilemap_t  *m_bg_tilemap;
@@ -102,20 +82,12 @@ public:
 	DECLARE_WRITE16_MEMBER(k3_scrollx_w);
 	DECLARE_WRITE16_MEMBER(k3_scrolly_w);
 	DECLARE_WRITE16_MEMBER(k3_soundbanks_w);
-<<<<<<< HEAD
-	TILE_GET_INFO_MEMBER(get_k3_bg_tile_info);
-	virtual void machine_start();
-	virtual void video_start();
-	void draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect);
-	UINT32 screen_update_k3(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	DECLARE_WRITE16_MEMBER(flagrall_soundbanks_w);
 	TILE_GET_INFO_MEMBER(get_k3_bg_tile_info);
 	virtual void machine_start() override;
 	virtual void video_start() override;
 	void draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect);
 	uint32_t screen_update_k3(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	required_device<cpu_device> m_maincpu;
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
@@ -136,25 +108,15 @@ TILE_GET_INFO_MEMBER(k3_state::get_k3_bg_tile_info)
 
 void k3_state::video_start()
 {
-<<<<<<< HEAD
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(k3_state::get_k3_bg_tile_info),this), TILEMAP_SCAN_ROWS, 16, 16, 32, 64);
-=======
 	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(k3_state::get_k3_bg_tile_info),this), TILEMAP_SCAN_ROWS, 16, 16, 32, 32);
->>>>>>> upstream/master
 }
 
 void k3_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
 	gfx_element *gfx = m_gfxdecode->gfx(0);
-<<<<<<< HEAD
-	UINT16 *source = m_spriteram_1;
-	UINT16 *source2 = m_spriteram_2;
-	UINT16 *finish = source + 0x1000 / 2;
-=======
 	uint16_t *source = m_spriteram_1;
 	uint16_t *source2 = m_spriteram_2;
 	uint16_t *finish = source + 0x1000 / 2;
->>>>>>> upstream/master
 
 	while (source < finish)
 	{
@@ -174,11 +136,7 @@ void k3_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect)
 	}
 }
 
-<<<<<<< HEAD
-UINT32 k3_state::screen_update_k3(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t k3_state::screen_update_k3(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	m_bg_tilemap->draw(screen, bitmap, cliprect, 0, 0);
 	draw_sprites(bitmap, cliprect);
@@ -198,15 +156,6 @@ WRITE16_MEMBER(k3_state::k3_scrolly_w)
 
 WRITE16_MEMBER(k3_state::k3_soundbanks_w)
 {
-<<<<<<< HEAD
-	m_oki1->set_bank_base((data & 4) ? 0x40000 : 0);
-	m_oki2->set_bank_base((data & 2) ? 0x40000 : 0);
-}
-
-static ADDRESS_MAP_START( k3_map, AS_PROGRAM, 16, k3_state )
-	AM_RANGE(0x0009ce, 0x0009cf) AM_WRITENOP    // bug in code? (clean up log)
-	AM_RANGE(0x0009d2, 0x0009d3) AM_WRITENOP    // bug in code? (clean up log)
-=======
 	m_oki2->set_rom_bank((data & 4) >> 2);
 	m_oki1->set_rom_bank((data & 2) >> 1);
 }
@@ -237,27 +186,12 @@ WRITE16_MEMBER(k3_state::flagrall_soundbanks_w)
 static ADDRESS_MAP_START( k3_base_map, AS_PROGRAM, 16, k3_state )
 	AM_RANGE(0x0009ce, 0x0009cf) AM_WRITENOP    // k3 - bug in code? (clean up log)
 	AM_RANGE(0x0009d2, 0x0009d3) AM_WRITENOP    // l3 - bug in code? (clean up log)
->>>>>>> upstream/master
 
 	AM_RANGE(0x000000, 0x0fffff) AM_ROM // ROM
 	AM_RANGE(0x100000, 0x10ffff) AM_RAM // Main Ram
 	AM_RANGE(0x200000, 0x200fff) AM_RAM_DEVWRITE("palette", palette_device, write) AM_SHARE("palette")
 	AM_RANGE(0x240000, 0x240fff) AM_RAM AM_SHARE("spritera1")
 	AM_RANGE(0x280000, 0x280fff) AM_RAM AM_SHARE("spritera2")
-<<<<<<< HEAD
-	AM_RANGE(0x2c0000, 0x2c0fff) AM_RAM_WRITE(k3_bgram_w) AM_SHARE("bgram")
-	AM_RANGE(0x340000, 0x340001) AM_WRITE(k3_scrollx_w)
-	AM_RANGE(0x380000, 0x380001) AM_WRITE(k3_scrolly_w)
-	AM_RANGE(0x3c0000, 0x3c0001) AM_WRITE(k3_soundbanks_w)
-	AM_RANGE(0x400000, 0x400001) AM_READ_PORT("INPUTS")
-	AM_RANGE(0x440000, 0x440001) AM_READ_PORT("SYSTEM")
-	AM_RANGE(0x480000, 0x480001) AM_READ_PORT("DSW")
-	AM_RANGE(0x4c0000, 0x4c0001) AM_DEVREADWRITE8("oki2", okim6295_device, read, write, 0xff00)
-	AM_RANGE(0x500000, 0x500001) AM_DEVREADWRITE8("oki1", okim6295_device, read, write, 0xff00)
-	AM_RANGE(0x8c0000, 0x8cffff) AM_RAM // not used?
-ADDRESS_MAP_END
-
-=======
 	AM_RANGE(0x2c0000, 0x2c07ff) AM_RAM_WRITE(k3_bgram_w) AM_SHARE("bgram")
 	AM_RANGE(0x2c0800, 0x2c0fff) AM_RAM // or does k3 have a bigger tilemap? (flagrall is definitely 32x32 tiles)
 	AM_RANGE(0x340000, 0x340001) AM_WRITE(k3_scrollx_w)
@@ -286,7 +220,6 @@ static ADDRESS_MAP_START( flagrall_map, AS_PROGRAM, 16, k3_state )
 ADDRESS_MAP_END
 
 
->>>>>>> upstream/master
 static INPUT_PORTS_START( k3 )
 	PORT_START("INPUTS")
 	PORT_BIT( 0x0001, IP_ACTIVE_LOW, IPT_JOYSTICK_UP ) PORT_8WAY PORT_PLAYER(1)
@@ -349,8 +282,6 @@ static INPUT_PORTS_START( k3 )
 INPUT_PORTS_END
 
 
-<<<<<<< HEAD
-=======
 static INPUT_PORTS_START( flagrall )
 	PORT_START("INPUTS")
 	PORT_BIT( 0x0001, IP_ACTIVE_LOW, IPT_JOYSTICK_UP ) PORT_8WAY PORT_PLAYER(1)
@@ -414,28 +345,18 @@ static INPUT_PORTS_START( flagrall )
 INPUT_PORTS_END
 
 
->>>>>>> upstream/master
 static const gfx_layout k3_layout =
 {
 	16,16,
 	RGN_FRAC(1,1),
 	8,
 	{ 0,1,2,3,4,5,6,7 },
-<<<<<<< HEAD
-	{ 0,8,16,24,32,40,48,56, 64, 72, 80, 88, 96, 104, 112, 120 },
-	{ 0*128, 1*128, 2*128, 3*128, 4*128, 5*128, 6*128, 7*128,
-		8*128, 9*128,10*128,11*128,12*128,13*128,14*128,15*128 },
-	16*128
-};
-
-=======
 	{ 0*8,1*8,2*8,3*8,4*8,5*8,6*8,7*8,8*8,9*8,10*8,11*8,12*8,13*8,14*8,15*8 },
 	{ 0*128, 1*128, 2*128, 3*128, 4*128, 5*128, 6*128, 7*128, 8*128, 9*128, 10*128, 11*128, 12*128, 13*128, 14*128, 15*128 },
 	16*128,
 };
 
 
->>>>>>> upstream/master
 static GFXDECODE_START( 1945kiii )
 	GFXDECODE_ENTRY( "gfx1", 0, k3_layout,   0x0, 2  ) /* bg tiles */
 	GFXDECODE_ENTRY( "gfx2", 0, k3_layout,   0x0, 2  ) /* bg tiles */
@@ -446,34 +367,19 @@ void k3_state::machine_start()
 {
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( k3, k3_state )
-
-	MCFG_CPU_ADD("maincpu", M68000, MASTER_CLOCK)
-	MCFG_CPU_PROGRAM_MAP(k3_map)
-	MCFG_CPU_VBLANK_INT_DRIVER("screen", k3_state,  irq4_line_hold)
-
-
-=======
 static MACHINE_CONFIG_START( flagrall )
 
 	MCFG_CPU_ADD("maincpu", M68000, MASTER_CLOCK ) // ?
 	MCFG_CPU_PROGRAM_MAP(flagrall_map)
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", k3_state,  irq4_line_hold)
 
->>>>>>> upstream/master
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", 1945kiii)
 
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE(60)
 	MCFG_SCREEN_VBLANK_TIME(ATTOSECONDS_IN_USEC(0))
-<<<<<<< HEAD
-	MCFG_SCREEN_SIZE(64*8, 64*8)
-	MCFG_SCREEN_VISIBLE_AREA(0*8, 40*8-1, 0*8, 28*8-1)
-=======
 	MCFG_SCREEN_SIZE(64*8, 32*8)
 	MCFG_SCREEN_VISIBLE_AREA(0*8, 40*8-1, 0*8, 30*8-1)
->>>>>>> upstream/master
 	MCFG_SCREEN_UPDATE_DRIVER(k3_state, screen_update_k3)
 	MCFG_SCREEN_PALETTE("palette")
 
@@ -482,13 +388,6 @@ static MACHINE_CONFIG_START( flagrall )
 
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki1", MASTER_CLOCK/16, OKIM6295_PIN7_HIGH)  /* dividers? */
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
-
-	MCFG_OKIM6295_ADD("oki2", MASTER_CLOCK/16, OKIM6295_PIN7_HIGH) /* dividers? */
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
-=======
 	MCFG_OKIM6295_ADD("oki1", MASTER_CLOCK/16, PIN7_HIGH)  /* dividers? */
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
@@ -504,7 +403,6 @@ static MACHINE_CONFIG_DERIVED( k3, flagrall )
 
 	MCFG_SCREEN_MODIFY("screen")
 	MCFG_SCREEN_VISIBLE_AREA(0*8, 40*8-1, 0*8, 28*8-1)
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
@@ -514,17 +412,10 @@ ROM_START( 1945kiii )
 	ROM_LOAD16_BYTE( "prg-1.u51", 0x00001, 0x80000, CRC(6b345f27) SHA1(60867fa0e2ea7ebdd4b8046315ee0c83e5cf0d74) )
 	ROM_LOAD16_BYTE( "prg-2.u52", 0x00000, 0x80000, CRC(ce09b98c) SHA1(a06bb712b9cf2249cc535de4055b14a21c68e0c5) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x080000, "oki1", 0 ) /* Samples */
-	ROM_LOAD( "snd-2.su4", 0x00000, 0x80000, CRC(47e3952e) SHA1(d56524621a3f11981e4434e02f5fdb7e89fff0b4) )
-
-	ROM_REGION( 0x080000, "oki2", 0 ) /* Samples */
-=======
 	ROM_REGION( 0x080000, "oki2", 0 ) /* Samples */
 	ROM_LOAD( "snd-2.su4", 0x00000, 0x80000, CRC(47e3952e) SHA1(d56524621a3f11981e4434e02f5fdb7e89fff0b4) )
 
 	ROM_REGION( 0x080000, "oki1", 0 ) /* Samples */
->>>>>>> upstream/master
 	ROM_LOAD( "snd-1.su7", 0x00000, 0x80000, CRC(bbb7f0ff) SHA1(458cf3a0c2d42110bc2427db675226c6b8d30999) )
 
 	ROM_REGION( 0x400000, "gfx1", 0 ) // sprites
@@ -535,9 +426,6 @@ ROM_START( 1945kiii )
 	ROM_LOAD( "m16m-3.u61", 0x00000, 0x200000, CRC(32fc80dd) SHA1(bee32493a250e9f21997114bba26b9535b1b636c) )
 ROM_END
 
-<<<<<<< HEAD
-GAME( 2000, 1945kiii, 0, k3, k3, driver_device, 0, ROT270, "Oriental Soft", "1945k III", MACHINE_SUPPORTS_SAVE )
-=======
 ROM_START( 1945kiiin )
 	ROM_REGION( 0x100000, "maincpu", 0 ) /* 68000 Code */
 	ROM_LOAD16_BYTE( "U34", 0x00001, 0x80000, CRC(d0cf4f03) SHA1(3455927221afae5103c02b12c1b855f416c47e91) ) /* 27C040 ROM had no label */
@@ -629,4 +517,3 @@ GAME( 2000, 1945kiiin, 1945kiii, k3,       k3,       k3_state, 0, ROT270, "Orien
 GAME( 1999, 1945kiiio, 1945kiii, k3,       k3,       k3_state, 0, ROT270, "Oriental Soft", "1945k III (older, OPCX1 PCB)", MACHINE_SUPPORTS_SAVE )
 
 GAME( 1996, flagrall,  0,        flagrall, flagrall, k3_state, 0, ROT0,   "Promat?",       "'96 Flag Rally",               MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

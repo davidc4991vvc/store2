@@ -6,10 +6,7 @@
 
 **********************************************************************/
 
-<<<<<<< HEAD
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #include "multitap.h"
 
 
@@ -20,11 +17,7 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type SMS_MULTITAP = &device_creator<sms_multitap_device>;
-=======
 DEFINE_DEVICE_TYPE(SMS_MULTITAP, sms_multitap_device, "sms_multitap", "Sega SMS Multitap")
->>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -35,13 +28,8 @@ DEFINE_DEVICE_TYPE(SMS_MULTITAP, sms_multitap_device, "sms_multitap", "Sega SMS 
 //  sms_multitap_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-sms_multitap_device::sms_multitap_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-	device_t(mconfig, SMS_MULTITAP, "Sega SMS Multitap", tag, owner, clock, "sms_multitap", __FILE__),
-=======
 sms_multitap_device::sms_multitap_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	device_t(mconfig, SMS_MULTITAP, tag, owner, clock),
->>>>>>> upstream/master
 	device_sms_control_port_interface(mconfig, *this),
 	m_subctrl1_port(*this, "ctrl1"),
 	m_subctrl2_port(*this, "ctrl2"),
@@ -61,14 +49,6 @@ void sms_multitap_device::device_start()
 {
 	save_item(NAME(m_read_state));
 	save_item(NAME(m_last_data));
-<<<<<<< HEAD
-
-	m_subctrl1_port->device_start();
-	m_subctrl2_port->device_start();
-	m_subctrl3_port->device_start();
-	m_subctrl4_port->device_start();
-=======
->>>>>>> upstream/master
 }
 
 
@@ -76,15 +56,9 @@ void sms_multitap_device::device_start()
 //  sms_peripheral_r - multitap read
 //-------------------------------------------------
 
-<<<<<<< HEAD
-UINT8 sms_multitap_device::peripheral_r()
-{
-	UINT8 data = 0xff;
-=======
 uint8_t sms_multitap_device::peripheral_r()
 {
 	uint8_t data = 0xff;
->>>>>>> upstream/master
 
 	switch(m_read_state)
 	{
@@ -113,15 +87,9 @@ uint8_t sms_multitap_device::peripheral_r()
 //  sms_peripheral_w - multitap write
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void sms_multitap_device::peripheral_w(UINT8 data)
-{
-	UINT8 output_data;
-=======
 void sms_multitap_device::peripheral_w(uint8_t data)
 {
 	uint8_t output_data;
->>>>>>> upstream/master
 
 	// check if TH level is low (0) and was high (1)
 	if (!(data & 0x40) && (m_last_data & 0x40))
@@ -152,12 +120,7 @@ void sms_multitap_device::peripheral_w(uint8_t data)
 
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  machine_config_additions - device-specific
-//  machine configurations
-=======
 //  device_add_mconfig - add device configuration
->>>>>>> upstream/master
 //-------------------------------------------------
 
 READ32_MEMBER( sms_multitap_device::pixel_r )
@@ -166,11 +129,7 @@ READ32_MEMBER( sms_multitap_device::pixel_r )
 }
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_FRAGMENT( multitap_slot )
-=======
 MACHINE_CONFIG_MEMBER( sms_multitap_device::device_add_mconfig )
->>>>>>> upstream/master
 	// Controller subports setup, without the TH callback declaration,
 	// because the circuit scheme shows TH of subports without connection.
 	MCFG_SMS_CONTROL_PORT_ADD("ctrl1", sms_control_port_devices, "joypad")
@@ -182,12 +141,3 @@ MACHINE_CONFIG_MEMBER( sms_multitap_device::device_add_mconfig )
 	MCFG_SMS_CONTROL_PORT_ADD("ctrl4", sms_control_port_devices, "joypad")
 	MCFG_SMS_CONTROL_PORT_PIXEL_HANDLER(READ32(sms_multitap_device, pixel_r))
 MACHINE_CONFIG_END
-<<<<<<< HEAD
-
-
-machine_config_constructor sms_multitap_device::device_mconfig_additions() const
-{
-	return MACHINE_CONFIG_NAME( multitap_slot );
-}
-=======
->>>>>>> upstream/master

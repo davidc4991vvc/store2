@@ -2,112 +2,34 @@
 
 #include "StdAfx.h"
 
-<<<<<<< HEAD
-#include "FileIO.h"
-=======
 #ifdef SUPPORT_DEVICE_FILE
 #include "../../C/Alloc.h"
 #endif
 
 #include "FileIO.h"
 #include "FileName.h"
->>>>>>> upstream/master
 
 #ifndef _UNICODE
 extern bool g_IsNT;
 #endif
 
-<<<<<<< HEAD
-=======
 using namespace NWindows;
 using namespace NFile;
 using namespace NName;
 
->>>>>>> upstream/master
 namespace NWindows {
 namespace NFile {
 
 #ifdef SUPPORT_DEVICE_FILE
 
-<<<<<<< HEAD
-bool IsDeviceName(CFSTR n)
-{
-  #ifdef UNDER_CE
-  int len = (int)MyStringLen(n);
-  if (len < 5 || len > 5 || memcmp(n, FTEXT("DSK"), 3 * sizeof(FCHAR)) != 0)
-    return false;
-  if (n[4] != ':')
-    return false;
-  // for reading use SG_REQ sg; if (DeviceIoControl(dsk, IOCTL_DISK_READ));
-  #else
-  if (n[0] != '\\' || n[1] != '\\' || n[2] != '.' ||  n[3] != '\\')
-    return false;
-  int len = (int)MyStringLen(n);
-  if (len == 6 && n[5] == ':')
-    return true;
-  if (len < 18 || len > 22 || memcmp(n + 4, FTEXT("PhysicalDrive"), 13 * sizeof(FCHAR)) != 0)
-    return false;
-  for (int i = 17; i < len; i++)
-    if (n[i] < '0' || n[i] > '9')
-      return false;
-  #endif
-  return true;
-}
-
-#endif
-
-#if defined(WIN_LONG_PATH) && defined(_UNICODE)
-#define WIN_LONG_PATH2
-#endif
-
-#ifdef WIN_LONG_PATH
-bool GetLongPathBase(CFSTR s, UString &res)
-{
-  res.Empty();
-  int len = MyStringLen(s);
-  FChar c = s[0];
-  if (len < 1 || c == '\\' || c == '.' && (len == 1 || len == 2 && s[1] == '.'))
-    return true;
-  UString curDir;
-  bool isAbs = false;
-  if (len > 3)
-    isAbs = (s[1] == ':' && s[2] == '\\' && (c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z'));
-
-  if (!isAbs)
-  {
-    WCHAR temp[MAX_PATH + 2];
-    temp[0] = 0;
-    DWORD needLength = ::GetCurrentDirectoryW(MAX_PATH + 1, temp);
-    if (needLength == 0 || needLength > MAX_PATH)
-      return false;
-    curDir = temp;
-    if (curDir.Back() != L'\\')
-      curDir += L'\\';
-  }
-  res = UString(L"\\\\?\\") + curDir + fs2us(s);
-  return true;
-}
-
-bool GetLongPath(CFSTR path, UString &longPath)
-{
-  if (GetLongPathBase(path, longPath))
-    return !longPath.IsEmpty();
-  return false;
-=======
 namespace NSystem
 {
 bool MyGetDiskFreeSpace(CFSTR rootPath, UInt64 &clusterSize, UInt64 &totalSize, UInt64 &freeSize);
->>>>>>> upstream/master
 }
 #endif
 
 namespace NIO {
 
-<<<<<<< HEAD
-CFileBase::~CFileBase() { Close(); }
-
-bool CFileBase::Create(CFSTR fileName, DWORD desiredAccess,
-=======
 /*
 WinXP-64 CreateFile():
   ""             -  ERROR_PATH_NOT_FOUND
@@ -125,7 +47,6 @@ WinXP-64 CreateFile():
 */
 
 bool CFileBase::Create(CFSTR path, DWORD desiredAccess,
->>>>>>> upstream/master
     DWORD shareMode, DWORD creationDisposition, DWORD flagsAndAttributes)
 {
   if (!Close())
@@ -138,26 +59,12 @@ bool CFileBase::Create(CFSTR path, DWORD desiredAccess,
   #ifndef _UNICODE
   if (!g_IsNT)
   {
-<<<<<<< HEAD
-    _handle = ::CreateFile(fs2fas(fileName), desiredAccess, shareMode,
-=======
     _handle = ::CreateFile(fs2fas(path), desiredAccess, shareMode,
->>>>>>> upstream/master
         (LPSECURITY_ATTRIBUTES)NULL, creationDisposition, flagsAndAttributes, (HANDLE)NULL);
   }
   else
   #endif
   {
-<<<<<<< HEAD
-    _handle = ::CreateFileW(fs2us(fileName), desiredAccess, shareMode,
-        (LPSECURITY_ATTRIBUTES)NULL, creationDisposition, flagsAndAttributes, (HANDLE)NULL);
-    #ifdef WIN_LONG_PATH
-    if (_handle == INVALID_HANDLE_VALUE)
-    {
-      UString longPath;
-      if (GetLongPath(fileName, longPath))
-        _handle = ::CreateFileW(longPath, desiredAccess, shareMode,
-=======
     IF_USE_MAIN_PATH
       _handle = ::CreateFileW(fs2us(path), desiredAccess, shareMode,
         (LPSECURITY_ATTRIBUTES)NULL, creationDisposition, flagsAndAttributes, (HANDLE)NULL);
@@ -167,7 +74,6 @@ bool CFileBase::Create(CFSTR path, DWORD desiredAccess,
       UString superPath;
       if (GetSuperPath(path, superPath, USE_MAIN_PATH))
         _handle = ::CreateFileW(superPath, desiredAccess, shareMode,
->>>>>>> upstream/master
             (LPSECURITY_ATTRIBUTES)NULL, creationDisposition, flagsAndAttributes, (HANDLE)NULL);
     }
     #endif
@@ -175,11 +81,7 @@ bool CFileBase::Create(CFSTR path, DWORD desiredAccess,
   return (_handle != INVALID_HANDLE_VALUE);
 }
 
-<<<<<<< HEAD
-bool CFileBase::Close()
-=======
 bool CFileBase::Close() throw()
->>>>>>> upstream/master
 {
   if (_handle == INVALID_HANDLE_VALUE)
     return true;
@@ -189,30 +91,17 @@ bool CFileBase::Close() throw()
   return true;
 }
 
-<<<<<<< HEAD
-bool CFileBase::GetPosition(UInt64 &position) const
-=======
 bool CFileBase::GetPosition(UInt64 &position) const throw()
->>>>>>> upstream/master
 {
   return Seek(0, FILE_CURRENT, position);
 }
 
-<<<<<<< HEAD
-bool CFileBase::GetLength(UInt64 &length) const
-{
-  #ifdef SUPPORT_DEVICE_FILE
-  if (IsDeviceFile && LengthDefined)
-  {
-    length = Length;
-=======
 bool CFileBase::GetLength(UInt64 &length) const throw()
 {
   #ifdef SUPPORT_DEVICE_FILE
   if (IsDeviceFile && SizeDefined)
   {
     length = Size;
->>>>>>> upstream/master
     return true;
   }
   #endif
@@ -226,38 +115,16 @@ bool CFileBase::GetLength(UInt64 &length) const throw()
   return true;
 }
 
-<<<<<<< HEAD
-bool CFileBase::Seek(Int64 distanceToMove, DWORD moveMethod, UInt64 &newPosition) const
-{
-  #ifdef SUPPORT_DEVICE_FILE
-  if (IsDeviceFile && LengthDefined && moveMethod == FILE_END)
-  {
-    distanceToMove += Length;
-=======
 bool CFileBase::Seek(Int64 distanceToMove, DWORD moveMethod, UInt64 &newPosition) const throw()
 {
   #ifdef SUPPORT_DEVICE_FILE
   if (IsDeviceFile && SizeDefined && moveMethod == FILE_END)
   {
     distanceToMove += Size;
->>>>>>> upstream/master
     moveMethod = FILE_BEGIN;
   }
   #endif
 
-<<<<<<< HEAD
-  LARGE_INTEGER value;
-  value.QuadPart = distanceToMove;
-  value.LowPart = ::SetFilePointer(_handle, value.LowPart, &value.HighPart, moveMethod);
-  if (value.LowPart == 0xFFFFFFFF)
-    if (::GetLastError() != NO_ERROR)
-      return false;
-  newPosition = value.QuadPart;
-  return true;
-}
-
-bool CFileBase::Seek(UInt64 position, UInt64 &newPosition)
-=======
   LONG high = (LONG)(distanceToMove >> 32);
   DWORD low = ::SetFilePointer(_handle, (LONG)(distanceToMove & 0xFFFFFFFF), &high, moveMethod);
   if (low == 0xFFFFFFFF)
@@ -268,81 +135,21 @@ bool CFileBase::Seek(UInt64 position, UInt64 &newPosition)
 }
 
 bool CFileBase::Seek(UInt64 position, UInt64 &newPosition) const throw()
->>>>>>> upstream/master
 {
   return Seek(position, FILE_BEGIN, newPosition);
 }
 
-<<<<<<< HEAD
-bool CFileBase::SeekToBegin()
-=======
 bool CFileBase::SeekToBegin() const throw()
->>>>>>> upstream/master
 {
   UInt64 newPosition;
   return Seek(0, newPosition);
 }
 
-<<<<<<< HEAD
-bool CFileBase::SeekToEnd(UInt64 &newPosition)
-=======
 bool CFileBase::SeekToEnd(UInt64 &newPosition) const throw()
->>>>>>> upstream/master
 {
   return Seek(0, FILE_END, newPosition);
 }
 
-<<<<<<< HEAD
-/*
-bool CFileBase::GetFileInformation(CByHandleFileInfo &fi) const
-{
-  BY_HANDLE_FILE_INFORMATION wfi;
-  if (!::GetFileInformationByHandle(_handle, &wfi))
-    return false;
-  fi.Attrib = wfi.dwFileAttributes;
-  fi.CTime = wfi.ftCreationTime;
-  fi.ATime = wfi.ftLastAccessTime;
-  fi.MTime = wfi.ftLastWriteTime;
-  fi.Size = (((UInt64)wfi.nFileSizeHigh) << 32) + wfi.nFileSizeLow;
-  fi.VolumeSerialNumber = wfi.dwVolumeSerialNumber;
-  fi.NumLinks = wfi.nNumberOfLinks;
-  fi.FileIndex = (((UInt64)wfi.nFileIndexHigh) << 32) + wfi.nFileIndexLow;
-  return true;
-}
-*/
-
-/////////////////////////
-// CInFile
-
-#ifdef SUPPORT_DEVICE_FILE
-void CInFile::GetDeviceLength()
-{
-  if (_handle != INVALID_HANDLE_VALUE && IsDeviceFile)
-  {
-    #ifdef UNDER_CE
-    LengthDefined = true;
-    Length = 128 << 20;
-
-    #else
-    PARTITION_INFORMATION partInfo;
-    LengthDefined = true;
-    Length = 0;
-
-    if (GetPartitionInfo(&partInfo))
-      Length = partInfo.PartitionLength.QuadPart;
-    else
-    {
-      DISK_GEOMETRY geom;
-      if (!GetGeometry(&geom))
-        if (!GetCdRomGeometry(&geom))
-          LengthDefined = false;
-      if (LengthDefined)
-        Length = geom.Cylinders.QuadPart * geom.TracksPerCylinder * geom.SectorsPerTrack * geom.BytesPerSector;
-    }
-    // SeekToBegin();
-    #endif
-  }
-=======
 // ---------- CInFile ---------
 
 #ifdef SUPPORT_DEVICE_FILE
@@ -490,19 +297,13 @@ void CInFile::CalcDeviceSize(CFSTR s)
 
   // SeekToBegin();
   #endif
->>>>>>> upstream/master
 }
 
 // ((desiredAccess & (FILE_WRITE_DATA | FILE_APPEND_DATA | GENERIC_WRITE)) == 0 &&
 
 #define MY_DEVICE_EXTRA_CODE \
-<<<<<<< HEAD
-  IsDeviceFile = IsDeviceName(fileName); \
-  GetDeviceLength();
-=======
   IsDeviceFile = IsDevicePath(fileName); \
   CalcDeviceSize(fileName);
->>>>>>> upstream/master
 #else
 #define MY_DEVICE_EXTRA_CODE
 #endif
@@ -531,11 +332,7 @@ bool CInFile::Open(CFSTR fileName)
 
 static UInt32 kChunkSizeMax = (1 << 22);
 
-<<<<<<< HEAD
-bool CInFile::Read1(void *data, UInt32 size, UInt32 &processedSize)
-=======
 bool CInFile::Read1(void *data, UInt32 size, UInt32 &processedSize) throw()
->>>>>>> upstream/master
 {
   DWORD processedLoc = 0;
   bool res = BOOLToBool(::ReadFile(_handle, data, size, &processedLoc, NULL));
@@ -543,22 +340,14 @@ bool CInFile::Read1(void *data, UInt32 size, UInt32 &processedSize) throw()
   return res;
 }
 
-<<<<<<< HEAD
-bool CInFile::ReadPart(void *data, UInt32 size, UInt32 &processedSize)
-=======
 bool CInFile::ReadPart(void *data, UInt32 size, UInt32 &processedSize) throw()
->>>>>>> upstream/master
 {
   if (size > kChunkSizeMax)
     size = kChunkSizeMax;
   return Read1(data, size, processedSize);
 }
 
-<<<<<<< HEAD
-bool CInFile::Read(void *data, UInt32 size, UInt32 &processedSize)
-=======
 bool CInFile::Read(void *data, UInt32 size, UInt32 &processedSize) throw()
->>>>>>> upstream/master
 {
   processedSize = 0;
   do
@@ -577,12 +366,7 @@ bool CInFile::Read(void *data, UInt32 size, UInt32 &processedSize) throw()
   return true;
 }
 
-<<<<<<< HEAD
-/////////////////////////
-// COutFile
-=======
 // ---------- COutFile ---------
->>>>>>> upstream/master
 
 static inline DWORD GetCreationDisposition(bool createAlways)
   { return createAlways? CREATE_ALWAYS: CREATE_NEW; }
@@ -596,14 +380,6 @@ bool COutFile::Open(CFSTR fileName, DWORD creationDisposition)
 bool COutFile::Create(CFSTR fileName, bool createAlways)
   { return Open(fileName, GetCreationDisposition(createAlways)); }
 
-<<<<<<< HEAD
-bool COutFile::SetTime(const FILETIME *cTime, const FILETIME *aTime, const FILETIME *mTime)
-  { return BOOLToBool(::SetFileTime(_handle, cTime, aTime, mTime)); }
-
-bool COutFile::SetMTime(const FILETIME *mTime) {  return SetTime(NULL, NULL, mTime); }
-
-bool COutFile::WritePart(const void *data, UInt32 size, UInt32 &processedSize)
-=======
 bool COutFile::CreateAlways(CFSTR fileName, DWORD flagsAndAttributes)
   { return Open(fileName, FILE_SHARE_READ, GetCreationDisposition(true), flagsAndAttributes); }
 
@@ -613,7 +389,6 @@ bool COutFile::SetTime(const FILETIME *cTime, const FILETIME *aTime, const FILET
 bool COutFile::SetMTime(const FILETIME *mTime) throw() {  return SetTime(NULL, NULL, mTime); }
 
 bool COutFile::WritePart(const void *data, UInt32 size, UInt32 &processedSize) throw()
->>>>>>> upstream/master
 {
   if (size > kChunkSizeMax)
     size = kChunkSizeMax;
@@ -623,11 +398,7 @@ bool COutFile::WritePart(const void *data, UInt32 size, UInt32 &processedSize) t
   return res;
 }
 
-<<<<<<< HEAD
-bool COutFile::Write(const void *data, UInt32 size, UInt32 &processedSize)
-=======
 bool COutFile::Write(const void *data, UInt32 size, UInt32 &processedSize) throw()
->>>>>>> upstream/master
 {
   processedSize = 0;
   do
@@ -646,15 +417,9 @@ bool COutFile::Write(const void *data, UInt32 size, UInt32 &processedSize) throw
   return true;
 }
 
-<<<<<<< HEAD
-bool COutFile::SetEndOfFile() { return BOOLToBool(::SetEndOfFile(_handle)); }
-
-bool COutFile::SetLength(UInt64 length)
-=======
 bool COutFile::SetEndOfFile() throw() { return BOOLToBool(::SetEndOfFile(_handle)); }
 
 bool COutFile::SetLength(UInt64 length) throw()
->>>>>>> upstream/master
 {
   UInt64 newPosition;
   if (!Seek(length, newPosition))

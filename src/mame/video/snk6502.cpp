@@ -10,10 +10,7 @@
 
 #include "emu.h"
 #include "includes/snk6502.h"
-<<<<<<< HEAD
-=======
 #include "audio/snk6502.h"
->>>>>>> upstream/master
 
 
 #define TOTAL_COLORS(gfxn) (m_gfxdecode->gfx(gfxn)->colors() * m_gfxdecode->gfx(gfxn)->granularity())
@@ -30,11 +27,7 @@
 ***************************************************************************/
 PALETTE_INIT_MEMBER(snk6502_state,snk6502)
 {
-<<<<<<< HEAD
-	const UINT8 *color_prom = memregion("proms")->base();
-=======
 	const uint8_t *color_prom = memregion("proms")->base();
->>>>>>> upstream/master
 	int i;
 
 	for (i = 0; i < palette.entries(); i++)
@@ -144,15 +137,12 @@ WRITE8_MEMBER(snk6502_state::flipscreen_w)
 	}
 }
 
-<<<<<<< HEAD
-=======
 WRITE8_MEMBER(snk6502_state::fantasy_flipscreen_w)
 {
 	m_sound->fantasy_sound_w(space, offset | 0x03, data, mem_mask);
 	flipscreen_w(space, offset, data, mem_mask);
 }
 
->>>>>>> upstream/master
 WRITE8_MEMBER(snk6502_state::scrollx_w)
 {
 	m_bg_tilemap->set_scrollx(0, data);
@@ -182,13 +172,8 @@ TILE_GET_INFO_MEMBER(snk6502_state::get_fg_tile_info)
 
 VIDEO_START_MEMBER(snk6502_state,snk6502)
 {
-<<<<<<< HEAD
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(snk6502_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
-	m_fg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(snk6502_state::get_fg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
-=======
 	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(snk6502_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
 	m_fg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(snk6502_state::get_fg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
->>>>>>> upstream/master
 
 	m_fg_tilemap->set_transparent_pen(0);
 
@@ -210,11 +195,7 @@ VIDEO_START_MEMBER(snk6502_state,pballoon)
 }
 
 
-<<<<<<< HEAD
-UINT32 snk6502_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t snk6502_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	m_bg_tilemap->draw(screen, bitmap, cliprect, 0, 0);
 	m_fg_tilemap->draw(screen, bitmap, cliprect, 0, 0);
@@ -225,11 +206,7 @@ uint32_t snk6502_state::screen_update(screen_device &screen, bitmap_ind16 &bitma
 
 PALETTE_INIT_MEMBER(snk6502_state,satansat)
 {
-<<<<<<< HEAD
-	const UINT8 *color_prom = memregion("proms")->base();
-=======
 	const uint8_t *color_prom = memregion("proms")->base();
->>>>>>> upstream/master
 	int i;
 
 	for (i = 0; i < palette.entries(); i++)
@@ -326,13 +303,8 @@ TILE_GET_INFO_MEMBER(snk6502_state::satansat_get_fg_tile_info)
 
 VIDEO_START_MEMBER(snk6502_state,satansat)
 {
-<<<<<<< HEAD
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(snk6502_state::satansat_get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
-	m_fg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(snk6502_state::satansat_get_fg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
-=======
 	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(snk6502_state::satansat_get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
 	m_fg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(snk6502_state::satansat_get_fg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
->>>>>>> upstream/master
 
 	m_fg_tilemap->set_transparent_pen(0);
 

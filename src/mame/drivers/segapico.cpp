@@ -118,14 +118,9 @@ C = MB3514 / 9325 M36
 */
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "includes/md_cons.h"
-#include "sound/315-5641.h"
-=======
 #include "includes/megadriv.h"
 #include "sound/315-5641.h"
 #include "bus/megadrive/rom.h"
->>>>>>> upstream/master
 #include "softlist.h"
 
 
@@ -151,15 +146,9 @@ public:
 	required_ioport m_io_penx;
 	required_ioport m_io_peny;
 
-<<<<<<< HEAD
-	UINT8 m_page_register;
-
-	UINT16 pico_read_penpos(int pen);
-=======
 	uint8_t m_page_register;
 
 	uint16_t pico_read_penpos(int pen);
->>>>>>> upstream/master
 	DECLARE_READ16_MEMBER(pico_68k_io_read);
 	DECLARE_WRITE16_MEMBER(pico_68k_io_write);
 	DECLARE_WRITE_LINE_MEMBER(sound_cause_irq);
@@ -173,11 +162,7 @@ class pico_state : public pico_base_state
 {
 public:
 	pico_state(const machine_config &mconfig, device_type type, const char *tag)
-<<<<<<< HEAD
-	: pico_base_state(mconfig, type, tag),
-=======
 		: pico_base_state(mconfig, type, tag),
->>>>>>> upstream/master
 	m_picocart(*this, "picoslot") { }
 
 	required_device<pico_cart_slot_device> m_picocart;
@@ -186,15 +171,9 @@ public:
 
 
 
-<<<<<<< HEAD
-UINT16 pico_base_state::pico_read_penpos(int pen)
-{
-	UINT16 penpos = 0;
-=======
 uint16_t pico_base_state::pico_read_penpos(int pen)
 {
 	uint16_t penpos = 0;
->>>>>>> upstream/master
 
 	switch (pen)
 	{
@@ -217,11 +196,7 @@ uint16_t pico_base_state::pico_read_penpos(int pen)
 
 READ16_MEMBER(pico_base_state::pico_68k_io_read )
 {
-<<<<<<< HEAD
-	UINT8 retdata = 0;
-=======
 	uint8_t retdata = 0;
->>>>>>> upstream/master
 
 	switch (offset)
 	{
@@ -262,11 +237,7 @@ READ16_MEMBER(pico_base_state::pico_68k_io_read )
 		   either page 5 or page 6 is often unused.
 		*/
 			{
-<<<<<<< HEAD
-				UINT8 tmp = m_io_page->read();
-=======
 				uint8_t tmp = m_io_page->read();
->>>>>>> upstream/master
 				if (tmp == 2 && m_page_register != 0x3f)
 				{
 					m_page_register <<= 1;
@@ -360,13 +331,8 @@ WRITE16_MEMBER(pico_base_state::pico_68k_io_write )
 			m_sega_315_5641_pcm->reset_w(1);
 			m_sega_315_5641_pcm->start_w(1);
 
-<<<<<<< HEAD
-			if (mem_mask&0x00ff) m_sega_315_5641_pcm->port_w(space,0,data&0xff);
-			if (mem_mask&0xff00) m_sega_315_5641_pcm->port_w(space,0,(data>>8)&0xff);*/
-=======
 			if (ACCESSING_BITS_0_7) m_sega_315_5641_pcm->port_w(space,0,data&0xff);
 			if (ACCESSING_BITS_8_15) m_sega_315_5641_pcm->port_w(space,0,(data>>8)&0xff);*/
->>>>>>> upstream/master
 
 			break;
 	}
@@ -419,11 +385,7 @@ MACHINE_START_MEMBER(pico_state,pico)
 	m_vdp->stop_timers();
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( pico, pico_state )
-=======
 static MACHINE_CONFIG_START( pico )
->>>>>>> upstream/master
 	MCFG_FRAGMENT_ADD( md_ntsc )
 
 	MCFG_CPU_MODIFY("maincpu")
@@ -435,11 +397,7 @@ static MACHINE_CONFIG_START( pico )
 	MCFG_MACHINE_START_OVERRIDE( pico_state, pico )
 	MCFG_MACHINE_RESET_OVERRIDE( pico_base_state, ms_megadriv )
 
-<<<<<<< HEAD
-	MCFG_PICO_CARTRIDGE_ADD("picoslot", pico_cart, NULL)
-=======
 	MCFG_PICO_CARTRIDGE_ADD("picoslot", pico_cart, nullptr)
->>>>>>> upstream/master
 	MCFG_SOFTWARE_LIST_ADD("cart_list","pico")
 
 	MCFG_SOUND_ADD("315_5641", SEGA_315_5641_PCM, UPD7759_STANDARD_CLOCK*2)
@@ -448,11 +406,7 @@ static MACHINE_CONFIG_START( pico )
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 0.16)
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( picopal, pico_state )
-=======
 static MACHINE_CONFIG_START( picopal )
->>>>>>> upstream/master
 	MCFG_FRAGMENT_ADD( md_pal )
 
 	MCFG_CPU_MODIFY("maincpu")
@@ -464,11 +418,7 @@ static MACHINE_CONFIG_START( picopal )
 	MCFG_MACHINE_START_OVERRIDE( pico_state, pico )
 	MCFG_MACHINE_RESET_OVERRIDE( pico_base_state, ms_megadriv )
 
-<<<<<<< HEAD
-	MCFG_PICO_CARTRIDGE_ADD("picoslot", pico_cart, NULL)
-=======
 	MCFG_PICO_CARTRIDGE_ADD("picoslot", pico_cart, nullptr)
->>>>>>> upstream/master
 	MCFG_SOFTWARE_LIST_ADD("cart_list","pico")
 
 	MCFG_SOUND_ADD("315_5641", SEGA_315_5641_PCM, UPD7759_STANDARD_CLOCK*2)
@@ -520,15 +470,9 @@ DRIVER_INIT_MEMBER(pico_base_state, picoj)
 }
 
 
-<<<<<<< HEAD
-CONS( 1994, pico,       0,         0,      picopal,         pico, pico_base_state,   pico,    "Sega",   "Pico (Europe, PAL)", MACHINE_NOT_WORKING)
-CONS( 1994, picou,      pico,      0,      pico,            pico, pico_base_state,   picou,   "Sega",   "Pico (USA, NTSC)", MACHINE_NOT_WORKING)
-CONS( 1993, picoj,      pico,      0,      pico,            pico, pico_base_state,   picoj,   "Sega",   "Pico (Japan, NTSC)", MACHINE_NOT_WORKING)
-=======
 CONS( 1994, pico,       0,         0,      picopal,         pico, pico_state,   pico,    "Sega",   "Pico (Europe, PAL)", MACHINE_NOT_WORKING)
 CONS( 1994, picou,      pico,      0,      pico,            pico, pico_state,   picou,   "Sega",   "Pico (USA, NTSC)", MACHINE_NOT_WORKING)
 CONS( 1993, picoj,      pico,      0,      pico,            pico, pico_state,   picoj,   "Sega",   "Pico (Japan, NTSC)", MACHINE_NOT_WORKING)
->>>>>>> upstream/master
 
 /*
 
@@ -653,11 +597,7 @@ MACHINE_START_MEMBER(copera_state,copera)
 
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( copera, copera_state )
-=======
 static MACHINE_CONFIG_START( copera )
->>>>>>> upstream/master
 	MCFG_FRAGMENT_ADD( md_ntsc )
 
 	MCFG_CPU_MODIFY("maincpu")
@@ -669,11 +609,7 @@ static MACHINE_CONFIG_START( copera )
 	MCFG_MACHINE_START_OVERRIDE( copera_state, copera )
 	MCFG_MACHINE_RESET_OVERRIDE( pico_base_state, ms_megadriv )
 
-<<<<<<< HEAD
-	MCFG_COPERA_CARTRIDGE_ADD("coperaslot", copera_cart, NULL)
-=======
 	MCFG_COPERA_CARTRIDGE_ADD("coperaslot", copera_cart, nullptr)
->>>>>>> upstream/master
 	MCFG_SOFTWARE_LIST_ADD("cart_list","copera")
 
 	MCFG_SOUND_ADD("315_5641", SEGA_315_5641_PCM, UPD7759_STANDARD_CLOCK)
@@ -689,8 +625,4 @@ ROM_START( copera )
 	ROM_REGION( 0x10000, "soundcpu", ROMREGION_ERASEFF)
 ROM_END
 
-<<<<<<< HEAD
-CONS( 1993, copera,       0,         0,      copera,         pico, pico_base_state,   picoj,    "Yamaha / Sega",   "Yamaha Mixt Book Player Copera", MACHINE_NOT_WORKING)
-=======
 CONS( 1993, copera,       0,         0,      copera,         pico, copera_state,   picoj,    "Yamaha / Sega",   "Yamaha Mixt Book Player Copera", MACHINE_NOT_WORKING)
->>>>>>> upstream/master

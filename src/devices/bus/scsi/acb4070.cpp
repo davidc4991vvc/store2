@@ -5,15 +5,6 @@
  *
  */
 
-<<<<<<< HEAD
-#include "acb4070.h"
-
-// device type definition
-const device_type ACB4070 = &device_creator<acb4070_device>;
-
-acb4070_device::acb4070_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: scsihd_device(mconfig, ACB4070, "ACB4070", tag, owner, clock, "acb4070", __FILE__)
-=======
 #include "emu.h"
 #include "acb4070.h"
 
@@ -22,7 +13,6 @@ DEFINE_DEVICE_TYPE(ACB4070, acb4070_device, "acb4070", "ACB4070")
 
 acb4070_device::acb4070_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: scsihd_device(mconfig, ACB4070, tag, owner, clock)
->>>>>>> upstream/master
 {
 }
 
@@ -59,11 +49,7 @@ void acb4070_device::ExecCommand()
 	}
 }
 
-<<<<<<< HEAD
-void acb4070_device::WriteData( UINT8 *data, int dataLength )
-=======
 void acb4070_device::WriteData( uint8_t *data, int dataLength )
->>>>>>> upstream/master
 {
 	switch( command[ 0 ] )
 	{

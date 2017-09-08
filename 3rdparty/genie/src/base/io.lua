@@ -4,8 +4,6 @@
 -- Copyright (c) 2008-2009 Jason Perkins and the Premake project
 --
 
-<<<<<<< HEAD
-=======
 io.eol         = "\n"
 io.indent      = "\t"
 io.indentLevel = 0
@@ -14,7 +12,6 @@ io.indentLevel = 0
 local function _escaper(v) return v end
 _esc = _escaper
 
->>>>>>> upstream/master
 
 --
 -- Prepare to capture the output from all subsequent calls to io.printf(), 
@@ -87,8 +84,6 @@ _esc = _escaper
 		end
 	end
 
-<<<<<<< HEAD
-=======
 --
 -- Write a formatted string to the exported file, after passing all
 -- arguments (except for the first, which is the formatting string)
@@ -127,7 +122,6 @@ _esc = _escaper
 	function io.escaper(func)
 		_esc = func or _escaper
 	end
->>>>>>> upstream/master
 
 --
 -- Because I use io.printf() so often in the generators, create a terse shortcut
@@ -135,7 +129,4 @@ _esc = _escaper
 --
 
 	_p = io.printf
-<<<<<<< HEAD
-=======
 	_x = io.xprintf
->>>>>>> upstream/master

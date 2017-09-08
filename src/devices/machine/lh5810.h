@@ -6,39 +6,10 @@
 
 **********************************************************************/
 
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __LH5810__
-#define __LH5810__
-
-#include "emu.h"
-
-//*************************************************************************
-//  MACROS / CONSTANTS
-//*************************************************************************
-
-enum
-{
-	LH5810_RESET = 4,
-	LH5810_U,
-	LH5810_L,
-	LH5820_F,
-	LH5810_OPC,
-	LH5810_G,
-	LH5810_MSK,
-	LH5810_IF,
-	LH5810_DDA,
-	LH5810_DDB,
-	LH5810_OPA,
-	LH5810_OPB
-};
-=======
 #ifndef MAME_MACHINE_LH5810_H
 #define MAME_MACHINE_LH5810_H
 
 #pragma once
->>>>>>> upstream/master
 
 
 //*************************************************************************
@@ -71,20 +42,6 @@ enum
 
 // ======================> lh5810_device
 
-<<<<<<< HEAD
-class lh5810_device :   public device_t
-{
-public:
-	// construction/destruction
-	lh5810_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	template<class _Object> static devcb_base &set_porta_r_callback(device_t &device, _Object object) { return downcast<lh5810_device &>(device).m_porta_r_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_porta_w_callback(device_t &device, _Object object) { return downcast<lh5810_device &>(device).m_porta_w_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_portb_r_callback(device_t &device, _Object object) { return downcast<lh5810_device &>(device).m_portb_r_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_portb_w_callback(device_t &device, _Object object) { return downcast<lh5810_device &>(device).m_portb_w_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_portc_w_callback(device_t &device, _Object object) { return downcast<lh5810_device &>(device).m_portc_w_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_out_int_callback(device_t &device, _Object object) { return downcast<lh5810_device &>(device).m_out_int_cb.set_callback(object); }
-=======
 class lh5810_device : public device_t
 {
 public:
@@ -97,20 +54,14 @@ public:
 	template <class Object> static devcb_base &set_portb_w_callback(device_t &device, Object &&cb) { return downcast<lh5810_device &>(device).m_portb_w_cb.set_callback(std::forward<Object>(cb)); }
 	template <class Object> static devcb_base &set_portc_w_callback(device_t &device, Object &&cb) { return downcast<lh5810_device &>(device).m_portc_w_cb.set_callback(std::forward<Object>(cb)); }
 	template <class Object> static devcb_base &set_out_int_callback(device_t &device, Object &&cb) { return downcast<lh5810_device &>(device).m_out_int_cb.set_callback(std::forward<Object>(cb)); }
->>>>>>> upstream/master
 
 	DECLARE_READ8_MEMBER( data_r );
 	DECLARE_WRITE8_MEMBER( data_w );
 
 protected:
 	// device-level overrides
-<<<<<<< HEAD
-	virtual void device_start();
-	virtual void device_reset();
-=======
 	virtual void device_start() override;
 	virtual void device_reset() override;
->>>>>>> upstream/master
 
 private:
 
@@ -122,23 +73,12 @@ private:
 
 	devcb_write_line    m_out_int_cb;       //IRQ callback
 
-<<<<<<< HEAD
-	UINT8 m_reg[0x10];
-	UINT8 m_irq;
-=======
 	uint8_t m_reg[0x10];
 	uint8_t m_irq;
->>>>>>> upstream/master
 };
 
 
 // device type definition
-<<<<<<< HEAD
-extern const device_type LH5810;
-
-#endif
-=======
 DECLARE_DEVICE_TYPE(LH5810, lh5810_device)
 
 #endif // MAME_MACHINE_LH5810_H
->>>>>>> upstream/master

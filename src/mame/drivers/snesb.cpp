@@ -1,10 +1,5 @@
-<<<<<<< HEAD
-// license:LGPL-2.1+
-// copyright-holders:Tomasz Slanina, Peter Ferrie
-=======
 // license:BSD-3-Clause
 // copyright-holders:Tomasz Slanina, Peter Ferrie,Stephane Humbert
->>>>>>> upstream/master
 /***************************************************************************
 
  Arcade games (hacks of console games) running on SNES harware.
@@ -18,10 +13,7 @@
     - Ghost Chaser Densei
     - Sonic Blast Man 2
     - Gundam Wing: Endless Duel
-<<<<<<< HEAD
-=======
     - Legend
->>>>>>> upstream/master
 
     Not dumped:
     - Final Fight 3
@@ -32,16 +24,10 @@ TODO:
  - kiinstb  : fix gfx glitches, missing texts
  - ffight2b : remove hack for starting credits (RAM - mainly 0x7eadce where credits are stored - is filled with 0x55,
    so you are awarded 55 credits on a hard reset)
-<<<<<<< HEAD
- - sblast2b : dipswicthes
- - sblast2b : pressing start during gameplay changes the character used. Intentional?
- - denseib  :  fix gfx glitches, missing texts
-=======
  - sblast2b : dipswitches
  - sblast2b : pressing start during gameplay changes the character used. Intentional?
  - denseib  :  fix gfx glitches, missing texts
  - legendsb : dipswitches
->>>>>>> upstream/master
 
 ***************************************************************************
 
@@ -163,12 +149,8 @@ Iron PCB (same as Final Fight 2?)
 
 #include "emu.h"
 #include "includes/snes.h"
-<<<<<<< HEAD
-
-=======
 #include "cpu/mcs51/mcs51.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 class snesb_state : public snes_state
 {
@@ -176,15 +158,9 @@ public:
 	snesb_state(const machine_config &mconfig, device_type type, const char *tag)
 		: snes_state(mconfig, type, tag) { }
 
-<<<<<<< HEAD
-	INT8 *m_shared_ram;
-	UINT8 m_cnt;
-	INT8 *m_shared_ram2;
-=======
 	std::unique_ptr<int8_t[]> m_shared_ram;
 	uint8_t m_cnt;
 	std::unique_ptr<int8_t[]> m_shared_ram2;
->>>>>>> upstream/master
 	DECLARE_READ8_MEMBER(sharedram_r);
 	DECLARE_WRITE8_MEMBER(sharedram_w);
 	DECLARE_READ8_MEMBER(sb2b_75bd37_r);
@@ -206,11 +182,8 @@ public:
 	DECLARE_DRIVER_INIT(sblast2b);
 	DECLARE_DRIVER_INIT(ffight2b);
 	DECLARE_DRIVER_INIT(endless);
-<<<<<<< HEAD
-=======
 	DECLARE_DRIVER_INIT(mk3snes);
 	DECLARE_DRIVER_INIT(legendsb);
->>>>>>> upstream/master
 	DECLARE_MACHINE_RESET(ffight2b);
 };
 
@@ -713,11 +686,7 @@ static INPUT_PORTS_START( endless )
 INPUT_PORTS_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( kinstb, snesb_state )
-=======
 static MACHINE_CONFIG_START( kinstb )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", _5A22, 3580000*6)   /* 2.68Mhz, also 3.58Mhz */
@@ -745,8 +714,6 @@ static MACHINE_CONFIG_START( kinstb )
 	MCFG_SOUND_ROUTE(1, "rspeaker", 1.00)
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-=======
 static ADDRESS_MAP_START( mcu_io_map, AS_IO, 8, snesb_state )
 ADDRESS_MAP_END
 
@@ -758,7 +725,6 @@ static MACHINE_CONFIG_DERIVED( mk3snes, kinstb )
 MACHINE_CONFIG_END
 
 
->>>>>>> upstream/master
 MACHINE_RESET_MEMBER( snesb_state, ffight2b )
 {
 	address_space &cpu0space = m_maincpu->space(AS_PROGRAM);
@@ -774,24 +740,15 @@ MACHINE_CONFIG_END
 
 DRIVER_INIT_MEMBER(snesb_state,kinstb)
 {
-<<<<<<< HEAD
-	INT32 i;
-	UINT8 *rom = memregion("user3")->base();
-=======
 	int32_t i;
 	uint8_t *rom = memregion("user3")->base();
->>>>>>> upstream/master
 
 	for (i = 0; i < 0x400000; i++)
 	{
 		rom[i] = BITSWAP8(rom[i], 5, 0, 6, 1, 7, 4, 3, 2);
 	}
 
-<<<<<<< HEAD
-	m_shared_ram = auto_alloc_array(machine(), INT8, 0x100);
-=======
 	m_shared_ram = std::make_unique<int8_t[]>(0x100);
->>>>>>> upstream/master
 	m_maincpu->space(AS_PROGRAM).install_readwrite_handler(0x781000, 0x7810ff, read8_delegate(FUNC(snesb_state::sharedram_r),this), write8_delegate(FUNC(snesb_state::sharedram_w),this));
 
 	/* extra inputs */
@@ -802,12 +759,6 @@ DRIVER_INIT_MEMBER(snesb_state,kinstb)
 	DRIVER_INIT_CALL(snes_hirom);
 }
 
-<<<<<<< HEAD
-DRIVER_INIT_MEMBER(snesb_state,ffight2b)
-{
-	INT32 i;
-	UINT8 *rom = memregion("user3")->base();
-=======
 DRIVER_INIT_MEMBER(snesb_state,mk3snes)
 {
 	DRIVER_INIT_CALL(snes_hirom);
@@ -817,7 +768,6 @@ DRIVER_INIT_MEMBER(snesb_state,ffight2b)
 {
 	int32_t i;
 	uint8_t *rom = memregion("user3")->base();
->>>>>>> upstream/master
 
 	for(i = 0; i < 0x200000; i++)
 	{
@@ -859,13 +809,8 @@ DRIVER_INIT_MEMBER(snesb_state,ffight2b)
 
 DRIVER_INIT_MEMBER(snesb_state,iron)
 {
-<<<<<<< HEAD
-	INT32 i;
-	UINT8 *rom = memregion("user3")->base();
-=======
 	int32_t i;
 	uint8_t *rom = memregion("user3")->base();
->>>>>>> upstream/master
 
 	for (i = 0; i < 0x140000; i++)
 	{
@@ -889,13 +834,8 @@ DRIVER_INIT_MEMBER(snesb_state,iron)
 
 DRIVER_INIT_MEMBER(snesb_state,denseib)
 {
-<<<<<<< HEAD
-	UINT8 *rom = memregion("user3")->base();
-	INT32 i;
-=======
 	uint8_t *rom = memregion("user3")->base();
 	int32_t i;
->>>>>>> upstream/master
 
 	for (i = 0; i < 0x200000; i++)
 	{
@@ -923,11 +863,6 @@ DRIVER_INIT_MEMBER(snesb_state,denseib)
 	DRIVER_INIT_CALL(snes_hirom);
 }
 
-<<<<<<< HEAD
-static const UINT8 data_substitution0[] = {0x88,0x02,0x2a,0x08,0x28,0xaa,0x8a,0x0a,0xa2,0x00,0x80,0xa0,0x22,0xa8,0x82,0x20,};
-static const UINT8 data_substitution1[] = {0x44,0x01,0x51,0x40,0x50,0x55,0x45,0x41,0x15,0x00,0x04,0x14,0x11,0x54,0x05,0x10,};
-static const UINT8 address_substitution_low[] =
-=======
 DRIVER_INIT_MEMBER(snesb_state,legendsb)
 {
 	u8 *rom = memregion("user3")->base();
@@ -963,7 +898,6 @@ DRIVER_INIT_MEMBER(snesb_state,legendsb)
 static const uint8_t data_substitution0[] = {0x88,0x02,0x2a,0x08,0x28,0xaa,0x8a,0x0a,0xa2,0x00,0x80,0xa0,0x22,0xa8,0x82,0x20,};
 static const uint8_t data_substitution1[] = {0x44,0x01,0x51,0x40,0x50,0x55,0x45,0x41,0x15,0x00,0x04,0x14,0x11,0x54,0x05,0x10,};
 static const uint8_t address_substitution_low[] =
->>>>>>> upstream/master
 {
 	0x32,0x35,0x3a,0x28,0x2a,0x0c,0x36,0x38,0x29,0x39,0x04,0x2c,0x21,0x23,0x3d,0x2d,
 	0x3c,0x02,0x17,0x31,0x00,0x2e,0x0a,0x2f,0x25,0x26,0x27,0x30,0x33,0x01,0x18,0x19,
@@ -971,11 +905,7 @@ static const uint8_t address_substitution_low[] =
 	0x08,0x3b,0x09,0x14,0x15,0x1d,0x0b,0x0f,0x1e,0x1f,0x2b,0x1a,0x03,0x20,0x3f,0x3e,
 };
 
-<<<<<<< HEAD
-static const UINT8  address_substitution_high[] =
-=======
 static const uint8_t  address_substitution_high[] =
->>>>>>> upstream/master
 {
 	0x1b,0x15,0x08,0x1f,0x06,0x02,0x13,0x0a,0x1d,0x04,0x0e,0x00,0x17,0x0c,0x11,0x19,
 	0x16,0x0d,0x1c,0x07,0x10,0x03,0x1a,0x0b,0x12,0x05,0x0f,0x18,0x1e,0x01,0x14,0x09,
@@ -985,13 +915,8 @@ static const uint8_t  address_substitution_high[] =
 DRIVER_INIT_MEMBER(snesb_state,sblast2b)
 {
 	int i, cipherText, plainText, newAddress;
-<<<<<<< HEAD
-	UINT8 *src = memregion("user7")->base();
-	UINT8 *dst = memregion("user3")->base();
-=======
 	uint8_t *src = memregion("user7")->base();
 	uint8_t *dst = memregion("user3")->base();
->>>>>>> upstream/master
 
 	for (i =0; i < 0x80000 * 3; i++)
 	{
@@ -1040,47 +965,28 @@ DRIVER_INIT_MEMBER(snesb_state,sblast2b)
 DRIVER_INIT_MEMBER(snesb_state,endless)
 {
 	int i;
-<<<<<<< HEAD
-	UINT8 *src = memregion("user7")->base();
-	UINT8 *dst = memregion("user3")->base();
-
-	static const UINT8 address_tab_high[0x40] = {
-=======
 	uint8_t *src = memregion("user7")->base();
 	uint8_t *dst = memregion("user3")->base();
 
 	static const uint8_t address_tab_high[0x40] = {
->>>>>>> upstream/master
 		0x3b, 0x1d, 0x35, 0x15, 0x39, 0x19, 0x34, 0x13, 0x32, 0x1f, 0x37, 0x17, 0x3d, 0x11, 0x3a, 0x1a,
 		0x14, 0x3e, 0x18, 0x36, 0x1e, 0x31, 0x10, 0x3c, 0x1b, 0x3f, 0x16, 0x30, 0x12, 0x38, 0x1c, 0x33,
 		0x2b, 0x0d, 0x25, 0x05, 0x29, 0x09, 0x24, 0x03, 0x22, 0x0f, 0x27, 0x07, 0x2d, 0x01, 0x2a, 0x0a,
 		0x04, 0x2e, 0x08, 0x26, 0x0e, 0x21, 0x00, 0x2c, 0x0b, 0x2f, 0x06, 0x20, 0x02, 0x28, 0x0c, 0x23
 	};
 
-<<<<<<< HEAD
-	static const UINT8 address_tab_low[0x40] = {
-=======
 	static const uint8_t address_tab_low[0x40] = {
->>>>>>> upstream/master
 		0x14, 0x1d, 0x11, 0x3c, 0x0a, 0x29, 0x2d, 0x2e, 0x30, 0x32, 0x16, 0x36, 0x05, 0x25, 0x26, 0x37,
 		0x20, 0x21, 0x27, 0x28, 0x33, 0x34, 0x23, 0x12, 0x1e, 0x1f, 0x3b, 0x24, 0x2c, 0x35, 0x38, 0x39,
 		0x3d, 0x0c, 0x2a, 0x0d, 0x22, 0x18, 0x19, 0x1a, 0x03, 0x08, 0x04, 0x3a, 0x0b, 0x0f, 0x15, 0x17,
 		0x1b, 0x13, 0x00, 0x1c, 0x2b, 0x01, 0x06, 0x2f, 0x07, 0x09, 0x02, 0x31, 0x10, 0x0e, 0x3f, 0x3e
 	};
 
-<<<<<<< HEAD
-	static const UINT8 data_high[16] = {
-		0x88, 0x38, 0x10, 0x98, 0x90, 0x00, 0x08, 0x18, 0x20, 0xb8, 0xa8, 0xa0, 0x30, 0x80, 0x28, 0xb0
-	};
-
-	static const UINT8 data_low[16] = {
-=======
 	static const uint8_t data_high[16] = {
 		0x88, 0x38, 0x10, 0x98, 0x90, 0x00, 0x08, 0x18, 0x20, 0xb8, 0xa8, 0xa0, 0x30, 0x80, 0x28, 0xb0
 	};
 
 	static const uint8_t data_low[16] = {
->>>>>>> upstream/master
 		0x41, 0x46, 0x02, 0x43, 0x03, 0x00, 0x40, 0x42, 0x04, 0x47, 0x45, 0x05, 0x06, 0x01, 0x44, 0x07
 	};
 
@@ -1117,13 +1023,8 @@ DRIVER_INIT_MEMBER(snesb_state,endless)
 	/* work around missing content */
 	m_maincpu->space(AS_PROGRAM).install_read_handler(0x800b, 0x800c, read8_delegate(FUNC(snesb_state::endless_800b_r),this));
 
-<<<<<<< HEAD
-	m_shared_ram = auto_alloc_array(machine(), INT8, 0x22);
-	m_shared_ram2 = auto_alloc_array(machine(), INT8, 0x22);
-=======
 	m_shared_ram = std::make_unique<int8_t[]>(0x22);
 	m_shared_ram2 = std::make_unique<int8_t[]>(0x22);
->>>>>>> upstream/master
 	m_maincpu->space(AS_PROGRAM).install_readwrite_handler(0x781000, 0x781021, read8_delegate(FUNC(snesb_state::sharedram_r),this), write8_delegate(FUNC(snesb_state::sharedram_w),this));
 	m_maincpu->space(AS_PROGRAM).install_readwrite_handler(0x781200, 0x781221, read8_delegate(FUNC(snesb_state::sharedram2_r),this), write8_delegate(FUNC(snesb_state::sharedram2_w),this));
 
@@ -1149,8 +1050,6 @@ ROM_START( kinstb )
 	ROM_REGION(0x800,           "user6", ROMREGION_ERASEFF)
 ROM_END
 
-<<<<<<< HEAD
-=======
 ROM_START( mk3snes ) // this is identical to the SNES release apart from a single byte, the MCU (or some other device?) must be providing the 'arcade-side' of the hardware (or code patches?)
 	ROM_REGION( 0x400000, "user3", 0 )
 	ROM_LOAD( "5.U5", 0x000000, 0x080000, CRC(c21ee1ac) SHA1(12fc526e39b0b998b39d558fbe5660e72c7fad14) )
@@ -1173,7 +1072,6 @@ ROM_END
 
 
 
->>>>>>> upstream/master
 ROM_START( ffight2b )
 	ROM_REGION( 0x400000, "user3", 0 )
 	ROM_LOAD( "ff2_3.u6", 0x000000, 0x008000, CRC(343bf582) SHA1(cc6b7219bb2fe61f0b377b606ad28b0e5a78be0b) )
@@ -1256,8 +1154,6 @@ ROM_START( sblast2b )
 
 ROM_END
 
-<<<<<<< HEAD
-=======
 ROM_START( legendsb )
 	ROM_REGION( 0x100000, "user3", 0 )
 	ROM_LOAD( "u37_0", 0x000000, 0x080000, BAD_DUMP CRC(44101f23) SHA1(7563886598b290faa616397f7e87a56e2f984b79) ) // U37 ROM is bad, was unable to get stable reads
@@ -1300,7 +1196,6 @@ ROM_START( legendsb )
 
 	ROM_REGION(0x800,           "user6", ROMREGION_ERASEFF)
 ROM_END
->>>>>>> upstream/master
 
 ROM_START( endless )
 	ROM_REGION( 0x200000, "user3", ROMREGION_ERASEFF )
@@ -1319,14 +1214,6 @@ ROM_END
 
 
 
-<<<<<<< HEAD
-GAME( 199?, kinstb,       0,     kinstb,         kinstb, snesb_state,    kinstb,       ROT0, "bootleg",  "Killer Instinct (SNES bootleg)",                 MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_GRAPHICS )
-GAME( 1996, ffight2b,     0,     ffight2b,       ffight2b, snesb_state,  ffight2b,     ROT0, "bootleg",  "Final Fight 2 (SNES bootleg)",                   MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_GRAPHICS )
-GAME( 1996, iron,         0,     kinstb,         iron, snesb_state,      iron,         ROT0, "bootleg",  "Iron (SNES bootleg)",                            MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_GRAPHICS )
-GAME( 1996, denseib,      0,     kinstb,         denseib, snesb_state,   denseib,      ROT0, "bootleg",  "Ghost Chaser Densei (SNES bootleg)",             MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_GRAPHICS )
-GAME( 1997, sblast2b,     0,     kinstb,         sblast2b, snesb_state,  sblast2b,     ROT0, "bootleg",  "Sonic Blast Man 2 Special Turbo (SNES bootleg)", MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_GRAPHICS)
-GAME( 1996, endless,      0,     kinstb,         endless, snesb_state,   endless,      ROT0, "bootleg",  "Gundam Wing: Endless Duel (SNES bootleg)",       MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_GRAPHICS )
-=======
 GAME( 199?, kinstb,       0,     kinstb,         kinstb,   snesb_state,  kinstb,       ROT0, "bootleg",  "Killer Instinct (SNES bootleg)",                 MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_GRAPHICS )
 GAME( 199?, mk3snes,      0,     mk3snes,        kinstb,   snesb_state,  mk3snes,      ROT0, "bootleg",  "Mortal Kombat 3 (SNES bootleg)",                 MACHINE_NOT_WORKING | MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_GRAPHICS )
 GAME( 1996, ffight2b,     0,     ffight2b,       ffight2b, snesb_state,  ffight2b,     ROT0, "bootleg",  "Final Fight 2 (SNES bootleg)",                   MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_GRAPHICS )
@@ -1335,4 +1222,3 @@ GAME( 1996, denseib,      0,     kinstb,         denseib,  snesb_state,  denseib
 GAME( 1997, sblast2b,     0,     kinstb,         sblast2b, snesb_state,  sblast2b,     ROT0, "bootleg",  "Sonic Blast Man 2 Special Turbo (SNES bootleg)", MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_GRAPHICS)
 GAME( 1996, endless,      0,     kinstb,         endless,  snesb_state,  endless,      ROT0, "bootleg",  "Gundam Wing: Endless Duel (SNES bootleg)",       MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_GRAPHICS )
 GAME( 1996, legendsb,     0,     kinstb,         kinstb,   snesb_state,  legendsb,     ROT0, "bootleg",  "Legend (SNES bootleg)",                          MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_GRAPHICS )
->>>>>>> upstream/master

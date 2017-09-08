@@ -5,11 +5,7 @@
     @author Phil Burk <philburk@softsynth.com>
 */
 /*
-<<<<<<< HEAD
- * $Id: paex_sine.c 1752 2011-09-08 03:21:55Z philburk $
-=======
  * $Id$
->>>>>>> upstream/master
  *
  * This program uses the PortAudio Portable Audio Library.
  * For more information see: http://www.portaudio.com/
@@ -117,14 +113,8 @@ int main(void)
     paTestData data;
     int i;
 
-<<<<<<< HEAD
-    
-    printf("PortAudio Test: output sine wave. SR = %d, BufSize = %d\n", SAMPLE_RATE, FRAMES_PER_BUFFER);
-    
-=======
     printf("PortAudio Test: output sine wave. SR = %d, BufSize = %d\n", SAMPLE_RATE, FRAMES_PER_BUFFER);
 
->>>>>>> upstream/master
     /* initialise sinusoidal wavetable */
     for( i=0; i<TABLE_SIZE; i++ )
     {

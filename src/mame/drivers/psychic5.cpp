@@ -309,14 +309,6 @@ The first sprite data is located at f20b,then f21b and so on.
         F= Flip
     SZ=Size 0=16x16 sprite,1=32x32 sprite
         C= Color palette selector
-<<<<<<< HEAD
-*/
-
-#include "emu.h"
-#include "cpu/z80/z80.h"
-#include "sound/2203intf.h"
-#include "includes/psychic5.h"
-=======
 
 ====
 
@@ -345,7 +337,6 @@ Notes (23-Jan-2016 AS):
 #include "sound/2203intf.h"
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 MACHINE_START_MEMBER(psychic5_state, psychic5)
@@ -418,13 +409,8 @@ WRITE8_MEMBER(psychic5_state::bombsa_bankselect_w)
 
 WRITE8_MEMBER(psychic5_state::psychic5_coin_counter_w)
 {
-<<<<<<< HEAD
-	coin_counter_w(machine(), 0, data & 0x01);
-	coin_counter_w(machine(), 1, data & 0x02);
-=======
 	machine().bookkeeping().coin_counter_w(0, data & 0x01);
 	machine().bookkeeping().coin_counter_w(1, data & 0x02);
->>>>>>> upstream/master
 
 	// bit 7 toggles flip screen
 	if (data & 0x80)
@@ -454,11 +440,7 @@ static ADDRESS_MAP_START( psychic5_main_map, AS_PROGRAM, 8, psychic5_state )
 	AM_RANGE(0x8000, 0xbfff) AM_ROMBANK("mainbank")
 	AM_RANGE(0xc000, 0xdfff) AM_DEVICE("vrambank", address_map_bank_device, amap8)
 	AM_RANGE(0xe000, 0xefff) AM_RAM
-<<<<<<< HEAD
-	AM_RANGE(0xf000, 0xf000) AM_WRITE(soundlatch_byte_w)
-=======
 	AM_RANGE(0xf000, 0xf000) AM_DEVWRITE("soundlatch", generic_latch_8_device, write)
->>>>>>> upstream/master
 	AM_RANGE(0xf001, 0xf001) AM_READNOP AM_WRITE(psychic5_coin_counter_w)
 	AM_RANGE(0xf002, 0xf002) AM_READWRITE(bankselect_r, psychic5_bankselect_w)
 	AM_RANGE(0xf003, 0xf003) AM_READWRITE(vram_page_select_r, vram_page_select_w)
@@ -494,11 +476,7 @@ ADDRESS_MAP_END
 static ADDRESS_MAP_START( psychic5_sound_map, AS_PROGRAM, 8, psychic5_state )
 	AM_RANGE(0x0000, 0x7fff) AM_ROM
 	AM_RANGE(0xc000, 0xc7ff) AM_RAM
-<<<<<<< HEAD
-	AM_RANGE(0xe000, 0xe000) AM_READ(soundlatch_byte_r)
-=======
 	AM_RANGE(0xe000, 0xe000) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( psychic5_soundport_map, AS_IO, 8, psychic5_state )
@@ -514,11 +492,7 @@ static ADDRESS_MAP_START( bombsa_main_map, AS_PROGRAM, 8, psychic5_state )
 	AM_RANGE(0xc000, 0xcfff) AM_RAM
 
 	/* ports look like the other games */
-<<<<<<< HEAD
-	AM_RANGE(0xd000, 0xd000) AM_WRITE(soundlatch_byte_w) // confirmed
-=======
 	AM_RANGE(0xd000, 0xd000) AM_DEVWRITE("soundlatch", generic_latch_8_device, write) // confirmed
->>>>>>> upstream/master
 	AM_RANGE(0xd001, 0xd001) AM_WRITE(bombsa_flipscreen_w)
 	AM_RANGE(0xd002, 0xd002) AM_READWRITE(bankselect_r, bombsa_bankselect_w)
 	AM_RANGE(0xd003, 0xd003) AM_READWRITE(vram_page_select_r, vram_page_select_w)
@@ -534,11 +508,7 @@ ADDRESS_MAP_END
 static ADDRESS_MAP_START( bombsa_sound_map, AS_PROGRAM, 8, psychic5_state )
 	AM_RANGE(0x0000, 0xbfff) AM_ROM
 	AM_RANGE(0xc000, 0xc7ff) AM_RAM
-<<<<<<< HEAD
-	AM_RANGE(0xe000, 0xe000) AM_READ(soundlatch_byte_r)
-=======
 	AM_RANGE(0xe000, 0xe000) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
->>>>>>> upstream/master
 	AM_RANGE(0xf000, 0xf000) AM_WRITEONLY                               // Is this a confirm of some sort?
 ADDRESS_MAP_END
 
@@ -742,11 +712,7 @@ static GFXDECODE_START( bombsa )
 GFXDECODE_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( psychic5, psychic5_state )
-=======
 static MACHINE_CONFIG_START( psychic5 )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, XTAL_12MHz/2)
@@ -770,15 +736,7 @@ static MACHINE_CONFIG_START( psychic5 )
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
-<<<<<<< HEAD
-	MCFG_SCREEN_REFRESH_RATE(53.8)
-	MCFG_SCREEN_VBLANK_TIME(ATTOSECONDS_IN_USEC(0))
-	/* frames per second hand tuned to match game and music speed */
-	MCFG_SCREEN_SIZE(32*8, 32*8)
-	MCFG_SCREEN_VISIBLE_AREA(0*8, 32*8-1, 2*8, 30*8-1)
-=======
 	MCFG_SCREEN_RAW_PARAMS(XTAL_12MHz/2,394, 0, 256, 282, 16, 240) // was 53.8 Hz before, assume same as Bombs Away
->>>>>>> upstream/master
 	MCFG_SCREEN_UPDATE_DRIVER(psychic5_state, screen_update_psychic5)
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", psychic5)
@@ -792,11 +750,8 @@ static MACHINE_CONFIG_START( psychic5 )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 
->>>>>>> upstream/master
 	MCFG_SOUND_ADD("ym1", YM2203, XTAL_12MHz/8)
 	MCFG_YM2203_IRQ_HANDLER(INPUTLINE("audiocpu", 0))
 	MCFG_SOUND_ROUTE(0, "mono", 0.15)
@@ -811,11 +766,7 @@ static MACHINE_CONFIG_START( psychic5 )
 	MCFG_SOUND_ROUTE(3, "mono", 0.50)
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( bombsa, psychic5_state )
-=======
 static MACHINE_CONFIG_START( bombsa )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, XTAL_12MHz/2 ) /* 6 MHz */
@@ -839,14 +790,7 @@ static MACHINE_CONFIG_START( bombsa )
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
-<<<<<<< HEAD
-	MCFG_SCREEN_REFRESH_RATE(54)                /* Guru says : VSync - 54Hz . HSync - 15.25kHz */
-	MCFG_SCREEN_VBLANK_TIME(ATTOSECONDS_IN_USEC(0))
-	MCFG_SCREEN_SIZE(64*8, 32*8)
-	MCFG_SCREEN_VISIBLE_AREA(0*8, 32*8-1, 2*8, 30*8-1)
-=======
 	MCFG_SCREEN_RAW_PARAMS(XTAL_12MHz/2,394, 0, 256, 282, 16, 240) /* Guru says : VSync - 54Hz . HSync - 15.25kHz */
->>>>>>> upstream/master
 	MCFG_SCREEN_UPDATE_DRIVER(psychic5_state, screen_update_bombsa)
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", bombsa)
@@ -858,11 +802,8 @@ static MACHINE_CONFIG_START( bombsa )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 
->>>>>>> upstream/master
 	MCFG_SOUND_ADD("ym1", YM2203, XTAL_12MHz/8)
 	MCFG_YM2203_IRQ_HANDLER(INPUTLINE("audiocpu", 0))
 	MCFG_SOUND_ROUTE(0, "mono", 0.30)
@@ -1002,14 +943,6 @@ Notes:
       logic on both sides.
 */
 
-<<<<<<< HEAD
-ROM_START( bombsa )
-	ROM_REGION( 0x30000, "maincpu", 0 )                 /* Main CPU */
-	ROM_LOAD( "4.7a",         0x00000, 0x08000, CRC(0191f6a7) SHA1(10a0434abbf4be068751e65c81b1a211729e3742) )
-	/* these fail their self-test... should be checked on real hw (hold start1+start2 on boot) */
-	ROM_LOAD( "5.7c",         0x10000, 0x08000, BAD_DUMP CRC(095c451a) SHA1(892ca84376f89640ad4d28f1e548c26bc8f72c0e) ) // contains palettes etc. but fails rom check??
-	ROM_LOAD( "6.7d",         0x20000, 0x10000, BAD_DUMP CRC(89f9dc0f) SHA1(5cf6a7aade3d56bc229d3771bc4141ad0c0e8da2) )
-=======
 
 ROM_START( bombsa )
 	ROM_REGION( 0x30000, "maincpu", ROMREGION_ERASEFF )                 /* Main CPU */
@@ -1017,7 +950,6 @@ ROM_START( bombsa )
 	/* these two fail their self-test, happens on real HW as well. */
 	ROM_LOAD( "5.7c",         0x10000, 0x08000, CRC(095c451a) SHA1(892ca84376f89640ad4d28f1e548c26bc8f72c0e) )
 	ROM_LOAD( "6.7d",         0x20000, 0x10000, CRC(89f9dc0f) SHA1(5cf6a7aade3d56bc229d3771bc4141ad0c0e8da2) )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x10000, "audiocpu", 0 )                    /* Sound CPU */
 	ROM_LOAD( "1.3a",         0x00000, 0x08000, CRC(92801404) SHA1(c4ff47989d355b18a909eaa88f138e2f68178ecc) )
@@ -1027,15 +959,9 @@ ROM_START( bombsa )
 	ROM_LOAD( "3.4s",         0x10000, 0x10000, CRC(9a8a8a97) SHA1(13328631202c196c9d8791cc6063048eb6be0472) )
 
 	ROM_REGION( 0x20000, "gfx2", 0 )    /* background tiles */
-<<<<<<< HEAD
-	/* some corrupt 'blank' characters, should also be checked with a redump */
-	ROM_LOAD( "8.2l",         0x00000, 0x10000, BAD_DUMP CRC(3391c769) SHA1(7ae7575ac81d6e0d915c279c1f57a9bc6d096bd6) )
-	ROM_LOAD( "9.2m",         0x10000, 0x10000, BAD_DUMP CRC(5b315976) SHA1(d17cc1926f926bdd88b66ea6af88dac30880e7d4) )
-=======
 	/* some corrupt 'blank' characters in these */
 	ROM_LOAD( "8.2l",         0x00000, 0x10000, CRC(3391c769) SHA1(7ae7575ac81d6e0d915c279c1f57a9bc6d096bd6) )
 	ROM_LOAD( "9.2m",         0x10000, 0x10000, CRC(5b315976) SHA1(d17cc1926f926bdd88b66ea6af88dac30880e7d4) )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x08000, "gfx3", 0 )    /* foreground tiles */
 	ROM_LOAD( "7.4f",         0x00000, 0x08000, CRC(400114b9) SHA1(db2f3ba05a2005ae0e0e7d19c8739353032cbeab) )
@@ -1046,12 +972,6 @@ ROM_START( bombsa )
 ROM_END
 
 
-<<<<<<< HEAD
-GAME( 1987, psychic5,  0,        psychic5, psychic5, driver_device, 0, ROT270, "Jaleco / NMK", "Psychic 5 (World)", MACHINE_SUPPORTS_SAVE ) // "Oversea's version V2.00 CHANGED BY TAMIO NAKASATO" text present in ROM, various modifications (English names, more complete attract demo etc.)
-GAME( 1987, psychic5j, psychic5, psychic5, psychic5, driver_device, 0, ROT270, "Jaleco / NMK", "Psychic 5 (Japan)", MACHINE_SUPPORTS_SAVE )
-GAME( 1988, bombsa,    0,        bombsa,   bombsa,   driver_device, 0, ROT270, "Jaleco", "Bombs Away", MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1987, psychic5,  0,        psychic5, psychic5, psychic5_state, 0, ROT270, "Jaleco / NMK", "Psychic 5 (World)", MACHINE_SUPPORTS_SAVE ) // "Oversea's version V2.00 CHANGED BY TAMIO NAKASATO" text present in ROM, various modifications (English names, more complete attract demo etc.)
 GAME( 1987, psychic5j, psychic5, psychic5, psychic5, psychic5_state, 0, ROT270, "Jaleco / NMK", "Psychic 5 (Japan)", MACHINE_SUPPORTS_SAVE )
 GAME( 1988, bombsa,    0,        bombsa,   bombsa,   psychic5_state, 0, ROT270, "Jaleco", "Bombs Away (prototype)", MACHINE_IS_INCOMPLETE | MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

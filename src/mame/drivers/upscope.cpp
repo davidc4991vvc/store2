@@ -26,19 +26,12 @@
 **********************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/m68000/m68000.h"
-#include "includes/amiga.h"
-#include "machine/nvram.h"
-#include "machine/amigafdc.h"
-=======
 #include "includes/amiga.h"
 #include "cpu/m68000/m68000.h"
 #include "machine/i8255.h"
 #include "machine/nvram.h"
 #include "machine/amigafdc.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 class upscope_state : public amiga_state
@@ -47,16 +40,6 @@ public:
 	upscope_state(const machine_config &mconfig, device_type type, const char *tag)
 		: amiga_state(mconfig, type, tag),
 	m_prev_cia1_porta(0xff),
-<<<<<<< HEAD
-	m_parallel_data(0xff)
-	{ }
-
-	UINT8 m_nvram[0x100];
-	UINT8 m_prev_cia1_porta;
-	UINT8 m_parallel_data;
-	UINT8 m_nvram_address_latch;
-	UINT8 m_nvram_data_latch;
-=======
 	m_parallel_data(0xff),
 	m_ppi(*this, "ppi")
 	{ }
@@ -66,19 +49,12 @@ public:
 	uint8_t m_parallel_data;
 	uint8_t m_nvram_address_latch;
 	uint8_t m_nvram_data_latch;
->>>>>>> upstream/master
 
 	DECLARE_READ8_MEMBER(upscope_cia_0_portb_r);
 	DECLARE_WRITE8_MEMBER(upscope_cia_0_portb_w);
 	DECLARE_READ8_MEMBER(upscope_cia_1_porta_r);
 	DECLARE_WRITE8_MEMBER(upscope_cia_1_porta_w);
 
-<<<<<<< HEAD
-	DECLARE_DRIVER_INIT(upscope);
-
-protected:
-	virtual void machine_reset();
-=======
 	DECLARE_WRITE8_MEMBER(lamps_w);
 	DECLARE_WRITE8_MEMBER(coin_counter_w);
 
@@ -89,7 +65,6 @@ protected:
 
 private:
 	required_device<i8255_device> m_ppi;
->>>>>>> upstream/master
 };
 
 
@@ -165,38 +140,7 @@ WRITE8_MEMBER( upscope_state::upscope_cia_1_porta_w )
 		/* if SEL == 1 && BUSY == 1, we write data to internal registers */
 		else if ((data & 5) == 5)
 		{
-<<<<<<< HEAD
-			switch (m_nvram_address_latch)
-			{
-				case 0x01:
-					/* lamps:
-					    01 = Enemy Right
-					    02 = Enemy Left
-					    04 = Torpedo 1
-					    08 = Torpedo 2
-					    10 = Torpedo 3
-					    20 = Torpedo 4
-					    40 = Sight
-					    80 = Bubble Light
-					*/
-					break;
-
-				case 0x02:
-					/* coin counter */
-					coin_counter_w(machine(), 0, data & 1);
-					break;
-
-				case 0x03:
-					/* Written $98 at startup and nothing afterwards */
-					break;
-
-				default:
-					logerror("Internal register (%d) = %02X\n", m_nvram_address_latch, m_parallel_data);
-					break;
-			}
-=======
 			m_ppi->write(space, m_nvram_address_latch & 0x03, m_parallel_data);
->>>>>>> upstream/master
 		}
 
 		/* if SEL == 0 && BUSY == 1, we write data to NVRAM */
@@ -220,11 +164,7 @@ WRITE8_MEMBER( upscope_state::upscope_cia_1_porta_w )
 		if (data & 4)
 		{
 			if (LOG_IO) logerror("Internal register (%d) read\n", m_nvram_address_latch);
-<<<<<<< HEAD
-			m_nvram_data_latch = (m_nvram_address_latch == 0) ? ioport("IO0")->read() : 0xff;
-=======
 			m_nvram_data_latch = m_ppi->read(space, m_nvram_address_latch & 0x03);
->>>>>>> upstream/master
 		}
 
 		/* if SEL == 0, we read NVRAM */
@@ -239,8 +179,6 @@ WRITE8_MEMBER( upscope_state::upscope_cia_1_porta_w )
 	m_prev_cia1_porta = data;
 }
 
-<<<<<<< HEAD
-=======
 WRITE8_MEMBER( upscope_state::lamps_w )
 {
 	// 7-------  bubble light
@@ -257,7 +195,6 @@ WRITE8_MEMBER( upscope_state::coin_counter_w )
 {
 	machine().bookkeeping().coin_counter_w(0, data & 1);
 }
->>>>>>> upstream/master
 
 
 /*************************************
@@ -319,11 +256,7 @@ INPUT_PORTS_END
  *
  *************************************/
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( upscope, upscope_state )
-=======
 static MACHINE_CONFIG_START( upscope )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, amiga_state::CLK_7M_NTSC)
@@ -349,20 +282,13 @@ static MACHINE_CONFIG_START( upscope )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
-<<<<<<< HEAD
-	MCFG_SOUND_ADD("amiga", AMIGA, amiga_state::CLK_C1_NTSC)
-=======
 	MCFG_SOUND_ADD("amiga", PAULA_8364, amiga_state::CLK_C1_NTSC)
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(0, "rspeaker", 0.50)
 	MCFG_SOUND_ROUTE(1, "lspeaker", 0.50)
 	MCFG_SOUND_ROUTE(2, "lspeaker", 0.50)
 	MCFG_SOUND_ROUTE(3, "rspeaker", 0.50)
-<<<<<<< HEAD
-=======
 	MCFG_PAULA_MEM_READ_CB(READ16(amiga_state, chip_ram_r))
 	MCFG_PAULA_INT_CB(WRITELINE(amiga_state, paula_int_w))
->>>>>>> upstream/master
 
 	/* cia */
 	MCFG_DEVICE_ADD("cia_0", MOS8520, amiga_state::CLK_E_NTSC)
@@ -378,15 +304,12 @@ static MACHINE_CONFIG_START( upscope )
 	/* fdc */
 	MCFG_DEVICE_ADD("fdc", AMIGA_FDC, amiga_state::CLK_7M_NTSC)
 	MCFG_AMIGA_FDC_INDEX_CALLBACK(DEVWRITELINE("cia_1", mos8520_device, flag_w))
-<<<<<<< HEAD
-=======
 
 	// i/o extension
 	MCFG_DEVICE_ADD("ppi", I8255, 0)
 	MCFG_I8255_IN_PORTA_CB(IOPORT("IO0"))
 	MCFG_I8255_OUT_PORTB_CB(WRITE8(upscope_state, lamps_w))
 	MCFG_I8255_OUT_PORTC_CB(WRITE8(upscope_state, coin_counter_w))
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
@@ -400,11 +323,7 @@ MACHINE_CONFIG_END
 ROM_START( upscope )
 	ROM_REGION(0x80000, "kickstart", 0)
 	ROM_LOAD16_WORD_SWAP("315093-01.u2", 0x00000, 0x40000, CRC(a6ce1636) SHA1(11f9e62cf299f72184835b7b2a70a16333fc0d88))
-<<<<<<< HEAD
-	ROM_COPY("kickstart", 0x00000, 0x40000, 0x40000)
-=======
 	ROM_COPY("kickstart", 0x000000, 0x40000, 0x40000)
->>>>>>> upstream/master
 
 	ROM_REGION(0x080000, "user2", 0)
 	ROM_LOAD16_BYTE( "upscope.u5",   0x000000, 0x008000, CRC(c109912e) SHA1(dcac9522e3c4818b2a02212b9173540fcf4bd463) )

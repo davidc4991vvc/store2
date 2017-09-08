@@ -1,10 +1,7 @@
 // license:BSD-3-Clause
 // copyright-holders:Luca Elia
 #include "sound/okim6295.h"
-<<<<<<< HEAD
-=======
 #include "screen.h"
->>>>>>> upstream/master
 
 class paradise_state : public driver_device
 {
@@ -31,21 +28,12 @@ public:
 	required_device<palette_device> m_palette;
 
 	/* memory pointers */
-<<<<<<< HEAD
-	required_shared_ptr<UINT8> m_vram_0;
-	required_shared_ptr<UINT8> m_vram_1;
-	required_shared_ptr<UINT8> m_vram_2;
-	required_shared_ptr<UINT8> m_videoram;
-	required_shared_ptr<UINT8> m_paletteram;
-	required_shared_ptr<UINT8> m_spriteram;
-=======
 	required_shared_ptr<uint8_t> m_vram_0;
 	required_shared_ptr<uint8_t> m_vram_1;
 	required_shared_ptr<uint8_t> m_vram_2;
 	required_shared_ptr<uint8_t> m_videoram;
 	required_shared_ptr<uint8_t> m_paletteram;
 	required_shared_ptr<uint8_t> m_spriteram;
->>>>>>> upstream/master
 
 	/* video-related */
 	tilemap_t *m_tilemap_0;
@@ -53,15 +41,9 @@ public:
 	tilemap_t *m_tilemap_2;
 
 	bitmap_ind16 m_tmpbitmap;
-<<<<<<< HEAD
-	UINT8 m_palbank;
-	UINT8 m_priority;
-	UINT8 m_pixbank;
-=======
 	uint8_t m_palbank;
 	uint8_t m_priority;
 	uint8_t m_pixbank;
->>>>>>> upstream/master
 	int m_sprite_inc;
 	int m_irq_count;
 
@@ -93,15 +75,6 @@ public:
 	TILE_GET_INFO_MEMBER(get_tile_info_1);
 	TILE_GET_INFO_MEMBER(get_tile_info_2);
 
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void machine_reset();
-	virtual void video_start();
-
-	UINT32 screen_update_paradise(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	UINT32 screen_update_torus(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	UINT32 screen_update_madball(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
 	virtual void video_start() override;
@@ -109,7 +82,6 @@ public:
 	uint32_t screen_update_paradise(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	uint32_t screen_update_torus(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	uint32_t screen_update_madball(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 
 	INTERRUPT_GEN_MEMBER(irq);
 

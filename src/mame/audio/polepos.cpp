@@ -1,20 +1,10 @@
-<<<<<<< HEAD
-// license:???
-=======
 // license:BSD-3-Clause
->>>>>>> upstream/master
 // copyright-holders:Derrick Renaud
 /***************************************************************************
     polepos.c
     Sound handler
 ****************************************************************************/
 #include "emu.h"
-<<<<<<< HEAD
-#include "machine/rescap.h"
-#include "namco52.h"
-#include "namco54.h"
-#include "includes/polepos.h"
-=======
 #include "includes/polepos.h"
 
 #include "namco52.h"
@@ -22,7 +12,6 @@
 
 #include "machine/rescap.h"
 
->>>>>>> upstream/master
 
 #define OUTPUT_RATE         24000
 
@@ -50,13 +39,6 @@ static const double volume_table[8] =
 static const double r_filt_out[3] = {RES_K(4.7), RES_K(7.5), RES_K(10)};
 static const double r_filt_total = 1.0 / (1.0/RES_K(4.7) + 1.0/RES_K(7.5) + 1.0/RES_K(10));
 
-<<<<<<< HEAD
-
-
-
-// device type definition
-const device_type POLEPOS = &device_creator<polepos_sound_device>;
-=======
 /* Max filter order */
 #define FILTER_ORDER_MAX 51
 
@@ -235,7 +217,6 @@ static void filter_opamp_m_bandpass_setup(device_t *device, double r1, double r2
 
 // device type definition
 DEFINE_DEVICE_TYPE(POLEPOS, polepos_sound_device, "polepos_sound", "Pole Position Audio Custom")
->>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -246,23 +227,14 @@ DEFINE_DEVICE_TYPE(POLEPOS, polepos_sound_device, "polepos_sound", "Pole Positio
 //  polepos_sound_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-polepos_sound_device::polepos_sound_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, POLEPOS, "Pole Position Audio Custom", tag, owner, clock, "polepos_sound", __FILE__),
-=======
 polepos_sound_device::polepos_sound_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, POLEPOS, tag, owner, clock),
->>>>>>> upstream/master
 		device_sound_interface(mconfig, *this),
 		m_current_position(0),
 		m_sample_msb(0),
 		m_sample_lsb(0),
 		m_sample_enable(0),
-<<<<<<< HEAD
-		m_stream(NULL)
-=======
 		m_stream(nullptr)
->>>>>>> upstream/master
 {
 }
 
@@ -306,13 +278,8 @@ void polepos_sound_device::device_reset()
 
 void polepos_sound_device::sound_stream_update(sound_stream &stream, stream_sample_t **inputs, stream_sample_t **outputs, int samples)
 {
-<<<<<<< HEAD
-	UINT32 step, clock, slot;
-	UINT8 *base;
-=======
 	uint32_t step, clock, slot;
 	uint8_t *base;
->>>>>>> upstream/master
 	double volume, i_total;
 	stream_sample_t *buffer = outputs[0];
 	int loop;

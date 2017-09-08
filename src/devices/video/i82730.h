@@ -8,20 +8,11 @@
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __I82730_H__
-#define __I82730_H__
-
-#include "emu.h"
-=======
 #ifndef MAME_VIDEO_I82730_H
 #define MAME_VIDEO_I82730_H
 
 #pragma once
 
->>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -36,26 +27,15 @@
 	devcb = &i82730_device::set_sint_handler(*device, DEVCB_##_devcb);
 
 #define MCFG_I82730_UPDATE_ROW_CB(_class, _method) \
-<<<<<<< HEAD
-	i82730_device::set_update_row_callback(*device, i82730_update_row_delegate(&_class::_method, #_class "::" #_method, downcast<_class *>(owner)));
-=======
 	i82730_device::set_update_row_callback(*device, i82730_device::update_row_delegate(&_class::_method, #_class "::" #_method, downcast<_class *>(owner)));
->>>>>>> upstream/master
 
 
 //**************************************************************************
 //  TYPE DEFINITIONS
 //**************************************************************************
 
-<<<<<<< HEAD
-typedef device_delegate<void (bitmap_rgb32 &bitmap, UINT16 *data, UINT8 lc, UINT16 y, int x_count)> i82730_update_row_delegate;
-
-#define I82730_UPDATE_ROW(name) \
-	void name(bitmap_rgb32 &bitmap, UINT16 *data, UINT8 lc, UINT16 y, int x_count)
-=======
 #define I82730_UPDATE_ROW(name) \
 	void name(bitmap_rgb32 &bitmap, uint16_t *data, uint8_t lc, uint16_t y, int x_count)
->>>>>>> upstream/master
 
 
 // ======================> i82730_device
@@ -63,20 +43,6 @@ typedef device_delegate<void (bitmap_rgb32 &bitmap, UINT16 *data, UINT8 lc, UINT
 class i82730_device : public device_t, public device_video_interface
 {
 public:
-<<<<<<< HEAD
-	// construction/destruction
-	i82730_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// callbacks
-	template<class _Object> static devcb_base &set_sint_handler(device_t &device, _Object object)
-		{ return downcast<i82730_device &>(device).m_sint_handler.set_callback(object); }
-
-	// inline configuration
-	static void set_cpu_tag(device_t &device, device_t *owner, const char *tag);
-	static void set_update_row_callback(device_t &device, i82730_update_row_delegate callback) { downcast<i82730_device &>(device).m_update_row_cb = callback; }
-
-	UINT32 screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
-=======
 	typedef device_delegate<void (bitmap_rgb32 &bitmap, uint16_t *data, uint8_t lc, uint16_t y, int x_count)> update_row_delegate;
 
 	// construction/destruction
@@ -91,19 +57,13 @@ public:
 	static void set_update_row_callback(device_t &device, update_row_delegate &&cb) { downcast<i82730_device &>(device).m_update_row_cb = std::move(cb); }
 
 	uint32_t screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 
 	DECLARE_WRITE_LINE_MEMBER(ca_w);
 	DECLARE_WRITE_LINE_MEMBER(irst_w);
 
 protected:
-<<<<<<< HEAD
-	virtual void device_start();
-	virtual void device_reset();
-=======
 	virtual void device_start() override;
 	virtual void device_reset() override;
->>>>>>> upstream/master
 
 private:
 	// status
@@ -120,16 +80,6 @@ private:
 		VDIP = 0x100   // virtual display in progress
 	};
 
-<<<<<<< HEAD
-	static const char* m_command_names[];
-
-	bool sysbus_16bit() { return BIT(m_sysbus, 0); }
-
-	UINT8 read_byte(offs_t address);
-	UINT16 read_word(offs_t address);
-	void write_byte(offs_t address, UINT8 data);
-	void write_word(offs_t address, UINT16 data);
-=======
 	static const char *const s_command_names[];
 
 	bool sysbus_16bit() { return BIT(m_sysbus, 0); }
@@ -138,7 +88,6 @@ private:
 	uint16_t read_word(offs_t address);
 	void write_byte(offs_t address, uint8_t data);
 	void write_word(offs_t address, uint16_t data);
->>>>>>> upstream/master
 
 	void update_interrupts();
 	void mode_set();
@@ -148,11 +97,7 @@ private:
 	TIMER_CALLBACK_MEMBER(row_update);
 
 	devcb_write_line m_sint_handler;
-<<<<<<< HEAD
-	i82730_update_row_delegate m_update_row_cb;
-=======
 	update_row_delegate m_update_row_cb;
->>>>>>> upstream/master
 
 	const char *m_cpu_tag;
 	address_space *m_program;
@@ -167,20 +112,6 @@ private:
 	int m_ca;
 
 	// internal registers
-<<<<<<< HEAD
-	UINT8 m_sysbus;
-	UINT32 m_ibp;
-	UINT32 m_cbp;
-	UINT16 m_intmask;
-	UINT16 m_status;
-
-	int m_list_switch;
-	int m_auto_line_feed;
-	UINT8 m_max_dma_count;
-
-	UINT32 m_lptr;
-	UINT32 m_sptr;
-=======
 	uint8_t m_sysbus;
 	uint32_t m_ibp;
 	uint32_t m_cbp;
@@ -193,7 +124,6 @@ private:
 
 	uint32_t m_lptr;
 	uint32_t m_sptr;
->>>>>>> upstream/master
 
 	int m_dma_burst_space;
 	int m_dma_burst_length;
@@ -202,11 +132,7 @@ private:
 	int m_hfldstrt;
 	int m_margin;
 	int m_lpr;
-<<<<<<< HEAD
-	UINT16 m_field_attribute_mask;
-=======
 	uint16_t m_field_attribute_mask;
->>>>>>> upstream/master
 	int m_vsyncstp;
 	int m_vfldstrt;
 	int m_vfldstp;
@@ -216,11 +142,7 @@ private:
 	// row buffers
 	struct row_buffer
 	{
-<<<<<<< HEAD
-		UINT16 data[200];
-=======
 		uint16_t data[200];
->>>>>>> upstream/master
 		int count;
 	};
 
@@ -229,12 +151,6 @@ private:
 };
 
 // device type definition
-<<<<<<< HEAD
-extern const device_type I82730;
-
-#endif // __I82730_H__
-=======
 DECLARE_DEVICE_TYPE(I82730, i82730_device)
 
 #endif // MAME_VIDEO_I82730_H
->>>>>>> upstream/master

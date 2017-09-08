@@ -8,18 +8,11 @@
 
 *********************************************************************/
 
-<<<<<<< HEAD
-#ifndef __A2BUS_DX1__
-#define __A2BUS_DX1__
-
-#include "emu.h"
-=======
 #ifndef MAME_BUS_A2BUS_A2DX1_H
 #define MAME_BUS_A2BUS_A2DX1_H
 
 #pragma once
 
->>>>>>> upstream/master
 #include "a2bus.h"
 #include "sound/dac.h"
 
@@ -33,33 +26,6 @@ class a2bus_dx1_device:
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	a2bus_dx1_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source);
-	a2bus_dx1_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// optional information overrides
-	virtual machine_config_constructor device_mconfig_additions() const;
-
-	required_device<dac_device> m_dac;
-
-protected:
-	virtual void device_start();
-	virtual void device_reset();
-
-	// overrides of standard a2bus slot functions
-	virtual UINT8 read_c0nx(address_space &space, UINT8 offset);
-	virtual void write_c0nx(address_space &space, UINT8 offset, UINT8 data);
-	virtual bool take_c800();
-
-private:
-	UINT8 m_volume, m_lastdac;
-};
-
-// device type definition
-extern const device_type A2BUS_DX1;
-
-#endif /* __A2BUS_DX1__ */
-=======
 	a2bus_dx1_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 protected:
@@ -81,4 +47,3 @@ protected:
 DECLARE_DEVICE_TYPE(A2BUS_DX1, a2bus_dx1_device)
 
 #endif // MAME_BUS_A2BUS_A2DX1_H
->>>>>>> upstream/master

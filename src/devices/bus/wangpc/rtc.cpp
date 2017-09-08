@@ -6,10 +6,7 @@
 
 **********************************************************************/
 
-<<<<<<< HEAD
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #include "rtc.h"
 
 
@@ -32,11 +29,7 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type WANGPC_RTC = &device_creator<wangpc_rtc_device>;
-=======
 DEFINE_DEVICE_TYPE(WANGPC_RTC, wangpc_rtc_device, "wangpc_rtc", "Wang PC-PM040-B Remote Telecommunication Controller")
->>>>>>> upstream/master
 
 
 //-------------------------------------------------
@@ -53,11 +46,7 @@ ROM_END
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const rom_entry *wangpc_rtc_device::device_rom_region() const
-=======
 const tiny_rom_entry *wangpc_rtc_device::device_rom_region() const
->>>>>>> upstream/master
 {
 	return ROM_NAME( wangpc_rtc );
 }
@@ -107,18 +96,6 @@ static const z80_daisy_config wangpc_rtc_daisy_chain[] =
 	{ Z80SIO_TAG },
 	{ Z80CTC_0_TAG },
 	{ Z80CTC_1_TAG },
-<<<<<<< HEAD
-	{ NULL }
-};
-
-//-------------------------------------------------
-//  MACHINE_CONFIG_FRAGMENT( wangpc_rtc )
-//-------------------------------------------------
-
-static MACHINE_CONFIG_FRAGMENT( wangpc_rtc )
-	MCFG_CPU_ADD(Z80_TAG, Z80, 2000000)
-	MCFG_CPU_CONFIG(wangpc_rtc_daisy_chain)
-=======
 	{ nullptr }
 };
 
@@ -129,7 +106,6 @@ static MACHINE_CONFIG_FRAGMENT( wangpc_rtc )
 MACHINE_CONFIG_MEMBER( wangpc_rtc_device::device_add_mconfig )
 	MCFG_CPU_ADD(Z80_TAG, Z80, 2000000)
 	MCFG_Z80_DAISY_CHAIN(wangpc_rtc_daisy_chain)
->>>>>>> upstream/master
 	MCFG_CPU_PROGRAM_MAP(wangpc_rtc_mem)
 	MCFG_CPU_IO_MAP(wangpc_rtc_io)
 
@@ -147,20 +123,6 @@ MACHINE_CONFIG_END
 
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  machine_config_additions - device-specific
-//  machine configurations
-//-------------------------------------------------
-
-machine_config_constructor wangpc_rtc_device::device_mconfig_additions() const
-{
-	return MACHINE_CONFIG_NAME( wangpc_rtc );
-}
-
-
-//-------------------------------------------------
-=======
->>>>>>> upstream/master
 //  INPUT_PORTS( wangpc_rtc )
 //-------------------------------------------------
 
@@ -213,13 +175,8 @@ ioport_constructor wangpc_rtc_device::device_input_ports() const
 //  wangpc_rtc_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-wangpc_rtc_device::wangpc_rtc_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-	device_t(mconfig, WANGPC_RTC, "Wang PC-PM040-B", tag, owner, clock, "wangpc_rtc", __FILE__),
-=======
 wangpc_rtc_device::wangpc_rtc_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	device_t(mconfig, WANGPC_RTC, tag, owner, clock),
->>>>>>> upstream/master
 	device_wangpcbus_card_interface(mconfig, *this),
 	m_maincpu(*this, Z80_TAG),
 	m_dmac(*this, AM9517A_TAG),
@@ -254,15 +211,9 @@ void wangpc_rtc_device::device_reset()
 //  wangpcbus_mrdc_r - memory read
 //-------------------------------------------------
 
-<<<<<<< HEAD
-UINT16 wangpc_rtc_device::wangpcbus_mrdc_r(address_space &space, offs_t offset, UINT16 mem_mask)
-{
-	UINT16 data = 0xffff;
-=======
 uint16_t wangpc_rtc_device::wangpcbus_mrdc_r(address_space &space, offs_t offset, uint16_t mem_mask)
 {
 	uint16_t data = 0xffff;
->>>>>>> upstream/master
 
 	return data;
 }
@@ -272,11 +223,7 @@ uint16_t wangpc_rtc_device::wangpcbus_mrdc_r(address_space &space, offs_t offset
 //  wangpcbus_amwc_w - memory write
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void wangpc_rtc_device::wangpcbus_amwc_w(address_space &space, offs_t offset, UINT16 mem_mask, UINT16 data)
-=======
 void wangpc_rtc_device::wangpcbus_amwc_w(address_space &space, offs_t offset, uint16_t mem_mask, uint16_t data)
->>>>>>> upstream/master
 {
 }
 
@@ -285,15 +232,9 @@ void wangpc_rtc_device::wangpcbus_amwc_w(address_space &space, offs_t offset, ui
 //  wangpcbus_iorc_r - I/O read
 //-------------------------------------------------
 
-<<<<<<< HEAD
-UINT16 wangpc_rtc_device::wangpcbus_iorc_r(address_space &space, offs_t offset, UINT16 mem_mask)
-{
-	UINT16 data = 0xffff;
-=======
 uint16_t wangpc_rtc_device::wangpcbus_iorc_r(address_space &space, offs_t offset, uint16_t mem_mask)
 {
 	uint16_t data = 0xffff;
->>>>>>> upstream/master
 
 	if (sad(offset))
 	{
@@ -313,11 +254,7 @@ uint16_t wangpc_rtc_device::wangpcbus_iorc_r(address_space &space, offs_t offset
 //  wangpcbus_aiowc_w - I/O write
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void wangpc_rtc_device::wangpcbus_aiowc_w(address_space &space, offs_t offset, UINT16 mem_mask, UINT16 data)
-=======
 void wangpc_rtc_device::wangpcbus_aiowc_w(address_space &space, offs_t offset, uint16_t mem_mask, uint16_t data)
->>>>>>> upstream/master
 {
 	if (sad(offset))
 	{

@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-// license:LGPL-2.1+
-=======
 // license:BSD-3-Clause
->>>>>>> upstream/master
 // copyright-holders:Tomasz Slanina
 /*********************************************
  Quiz Olympic (c)1985 Seoul Coin Corp.
@@ -32,11 +28,8 @@ Xtals 8MHz, 21.47727MHz
 #include "emu.h"
 #include "cpu/z80/z80.h"
 #include "sound/ay8910.h"
-<<<<<<< HEAD
-=======
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 class quizo_state : public driver_device
@@ -48,15 +41,9 @@ public:
 
 	required_device<cpu_device> m_maincpu;
 
-<<<<<<< HEAD
-	UINT8 *m_videoram;
-	UINT8 m_port60;
-	UINT8 m_port70;
-=======
 	std::unique_ptr<uint8_t[]> m_videoram;
 	uint8_t m_port60;
 	uint8_t m_port70;
->>>>>>> upstream/master
 
 	DECLARE_WRITE8_MEMBER(vram_w);
 	DECLARE_WRITE8_MEMBER(port70_w);
@@ -65,11 +52,7 @@ public:
 	DECLARE_DRIVER_INIT(quizo);
 	DECLARE_PALETTE_INIT(quizo);
 
-<<<<<<< HEAD
-	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 };
 
 
@@ -77,19 +60,11 @@ public:
 #define XTAL2   21477270
 
 
-<<<<<<< HEAD
-static const UINT8 rombankLookup[]={ 2, 3, 4, 4, 4, 4, 4, 5, 0, 1};
-
-PALETTE_INIT_MEMBER(quizo_state, quizo)
-{
-	const UINT8 *color_prom = memregion("proms")->base();
-=======
 static const uint8_t rombankLookup[]={ 2, 3, 4, 4, 4, 4, 4, 5, 0, 1};
 
 PALETTE_INIT_MEMBER(quizo_state, quizo)
 {
 	const uint8_t *color_prom = memregion("proms")->base();
->>>>>>> upstream/master
 	int i;
 	for (i = 0;i < 16;i++)
 	{
@@ -115,11 +90,7 @@ PALETTE_INIT_MEMBER(quizo_state, quizo)
 	}
 }
 
-<<<<<<< HEAD
-UINT32 quizo_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t quizo_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int x,y;
 	for(y=0;y<200;y++)
@@ -239,11 +210,7 @@ static INPUT_PORTS_START( quizo )
 	PORT_DIPSETTING(    0x80, DEF_STR( On ) )
 INPUT_PORTS_END
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( quizo, quizo_state )
-=======
 static MACHINE_CONFIG_START( quizo )
->>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80,XTAL1/2)
 	MCFG_CPU_PROGRAM_MAP(memmap)
@@ -303,17 +270,10 @@ ROM_END
 
 DRIVER_INIT_MEMBER(quizo_state,quizo)
 {
-<<<<<<< HEAD
-	m_videoram=auto_alloc_array(machine(), UINT8, 0x4000*2);
-	membank("bank1")->configure_entries(0, 6, memregion("user1")->base(), 0x4000);
-
-	save_pointer(NAME(m_videoram), 0x4000*2);
-=======
 	m_videoram=std::make_unique<uint8_t[]>(0x4000*2);
 	membank("bank1")->configure_entries(0, 6, memregion("user1")->base(), 0x4000);
 
 	save_pointer(NAME(m_videoram.get()), 0x4000*2);
->>>>>>> upstream/master
 	//save_item(NAME(m_port60));
 	save_item(NAME(m_port70));
 }

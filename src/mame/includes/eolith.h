@@ -1,16 +1,9 @@
-<<<<<<< HEAD
-// license:LGPL-2.1+
-=======
 // license:BSD-3-Clause
->>>>>>> upstream/master
 // copyright-holders:Tomasz Slanina,Pierpaolo Prazzoli
 
 #include "cpu/mcs51/mcs51.h"
 #include "sound/qs1000.h"
-<<<<<<< HEAD
-=======
 #include "screen.h"
->>>>>>> upstream/master
 
 class eolith_state : public driver_device
 {
@@ -49,15 +42,9 @@ public:
 
 	int m_coin_counter_bit;
 	int m_buffer;
-<<<<<<< HEAD
-	UINT32 *m_vram;
-
-	UINT8 m_sound_data;
-=======
 	std::unique_ptr<uint32_t[]> m_vram;
 
 	uint8_t m_sound_data;
->>>>>>> upstream/master
 
 	// speedups - see machine/eolithsp.c
 	int m_speedup_address;
@@ -93,11 +80,7 @@ public:
 	DECLARE_MACHINE_RESET(eolith);
 	DECLARE_VIDEO_START(eolith);
 
-<<<<<<< HEAD
-	UINT32 screen_update_eolith(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	uint32_t screen_update_eolith(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 
 	TIMER_DEVICE_CALLBACK_MEMBER(eolith_speedup);
 };

@@ -6,10 +6,7 @@
 
 **********************************************************************/
 
-<<<<<<< HEAD
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #include "abckb.h"
 
 
@@ -19,11 +16,7 @@
 //**************************************************************************
 
 // device type definition
-<<<<<<< HEAD
-const device_type ABC_KEYBOARD_PORT = &device_creator<abc_keyboard_port_device>;
-=======
 DEFINE_DEVICE_TYPE(ABC_KEYBOARD_PORT, abc_keyboard_port_device, "abc_keyboard_port", "Luxor ABC keyboard port")
->>>>>>> upstream/master
 
 
 
@@ -50,13 +43,8 @@ abc_keyboard_interface::abc_keyboard_interface(const machine_config &mconfig, de
 //  abc_keyboard_port_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-abc_keyboard_port_device::abc_keyboard_port_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-	device_t(mconfig, ABC_KEYBOARD_PORT, "Luxor ABC keyboard port", tag, owner, clock, "abc_keyboard_port", __FILE__),
-=======
 abc_keyboard_port_device::abc_keyboard_port_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	device_t(mconfig, ABC_KEYBOARD_PORT, tag, owner, clock),
->>>>>>> upstream/master
 	device_slot_interface(mconfig, *this),
 	m_out_rx_handler(*this),
 	m_out_trxc_handler(*this),
@@ -86,11 +74,7 @@ void abc_keyboard_port_device::device_start()
 
 void abc_keyboard_port_device::device_reset()
 {
-<<<<<<< HEAD
-	if (m_card != NULL)
-=======
 	if (m_card != nullptr)
->>>>>>> upstream/master
 		get_card_device()->reset();
 }
 
@@ -111,11 +95,7 @@ WRITE_LINE_MEMBER( abc_keyboard_port_device::write_rx )
 
 WRITE_LINE_MEMBER( abc_keyboard_port_device::txd_w )
 {
-<<<<<<< HEAD
-	if (m_card != NULL)
-=======
 	if (m_card != nullptr)
->>>>>>> upstream/master
 		m_card->txd_w(state);
 }
 

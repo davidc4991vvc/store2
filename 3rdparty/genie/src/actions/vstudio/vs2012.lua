@@ -20,11 +20,7 @@
 		description     = "Generate Microsoft Visual Studio 2012 project files",
 		os              = "windows",
 
-<<<<<<< HEAD
-		valid_kinds     = { "ConsoleApp", "WindowedApp", "StaticLib", "SharedLib" },
-=======
 		valid_kinds     = { "ConsoleApp", "WindowedApp", "StaticLib", "SharedLib", "Bundle" },
->>>>>>> upstream/master
 
 		valid_languages = { "C", "C++", "C#"},
 
@@ -57,11 +53,8 @@
 			solutionVersion = "12",
 			targetFramework = "4.5",
 			toolsVersion    = "4.0",
-<<<<<<< HEAD
-=======
 			supports64bitEditContinue = false,
 			intDirAbsolute  = false,
->>>>>>> upstream/master
 		}
 	}
 

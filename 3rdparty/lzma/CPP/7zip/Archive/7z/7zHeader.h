@@ -3,20 +3,12 @@
 #ifndef __7Z_HEADER_H
 #define __7Z_HEADER_H
 
-<<<<<<< HEAD
-#include "../../../Common/Types.h"
-=======
 #include "../../../Common/MyTypes.h"
->>>>>>> upstream/master
 
 namespace NArchive {
 namespace N7z {
 
-<<<<<<< HEAD
-const int kSignatureSize = 6;
-=======
 const unsigned kSignatureSize = 6;
->>>>>>> upstream/master
 extern Byte kSignature[kSignatureSize];
 
 // #define _7Z_VOL
@@ -90,22 +82,13 @@ namespace NID
     kCTime,
     kATime,
     kMTime,
-<<<<<<< HEAD
-    kWinAttributes,
-=======
     kWinAttrib,
->>>>>>> upstream/master
     kComment,
 
     kEncodedHeader,
 
     kStartPos,
     kDummy
-<<<<<<< HEAD
-  };
-}
-
-=======
 
     // kNtSecure,
     // kParent,
@@ -160,7 +143,6 @@ static inline bool IsFilterMethod(UInt64 m)
   return false;
 }
 
->>>>>>> upstream/master
 }}
 
 #endif

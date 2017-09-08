@@ -7,15 +7,6 @@
 
   Preliminary driver by Roberto Fresca.
 
-<<<<<<< HEAD
-  TODO:
-  - i8259 and irqs
-  - understand how videoram works (tied to port $70?)
-  - inputs
-  - everything else;
-
-=======
->>>>>>> upstream/master
 *******************************************************************************
 
   Hardware Notes:
@@ -36,11 +27,7 @@
   1x 27128 (U37) ROM.   Handwritten sticker:  Char C U37.
   1x 27256 (U42) ROM.   Handwritten sticker:  PK V1.4 U42.
 
-<<<<<<< HEAD
-  1x TI SN76489     Digital Complex Sound Generator (DCSG).
-=======
   1x TI SN76489AN   Digital Complex Sound Generator (DCSG).
->>>>>>> upstream/master
 
   3x MMI PAL16L8ACN (U47, U48, U50)
   1x MMI PAL16R4 (U49)    <-- couldn't get a consistent read
@@ -48,8 +35,6 @@
   22.1184 MHz. Crystal
   15.000  MHz. Crystal
 
-<<<<<<< HEAD
-=======
   An unidentified but similar Amusco PCB auctioned on eBay had an AMD P8088 filling the
   CPU socket. Some of the other chips on this board were replaced with clones (e.g.
   AMD P8253, SY6545-1).
@@ -59,7 +44,6 @@
   patterns also suggest that each or both of these devices are accessed through an
   Intel 8155 or compatible interface chip. The printer uses NCR-style control codes.
 
->>>>>>> upstream/master
 *****************************************************************************************
 
   DRIVER UPDATES:
@@ -77,13 +61,6 @@
   TODO:
 
   - Proper tile colors.
-<<<<<<< HEAD
-  - Hook PPI8255 devices.
-  - I/O.
-
-*******************************************************************************/
-
-=======
   - Determine PIT clocks for proper IRQ timing.
   - Make the 6845 transparent videoram addressing actually transparent.
     (IRQ1 changes the 6845 address twice but neither reads nor writes data?)
@@ -108,7 +85,6 @@
 
 #include "amusco.lh"
 
->>>>>>> upstream/master
 
 #define MASTER_CLOCK        XTAL_22_1184MHz     /* confirmed */
 #define SECOND_CLOCK        XTAL_15MHz          /* confirmed */
@@ -116,21 +92,10 @@
 #define CPU_CLOCK           MASTER_CLOCK / 4    /* guess */
 #define CRTC_CLOCK          SECOND_CLOCK / 8    /* guess */
 #define SND_CLOCK           SECOND_CLOCK / 8    /* guess */
-<<<<<<< HEAD
-
-
-#include "emu.h"
-#include "cpu/i86/i86.h"
-#include "video/mc6845.h"
-#include "machine/i8255.h"
-#include "sound/sn76496.h"
-#include "machine/pic8259.h"
-=======
 #define PIT_CLOCK0          SECOND_CLOCK / 8    /* guess */
 #define PIT_CLOCK1          SECOND_CLOCK / 8    /* guess */
 
 #define COIN_IMPULSE        3
->>>>>>> upstream/master
 
 
 class amusco_state : public driver_device
@@ -141,32 +106,6 @@ public:
 		m_videoram(*this, "videoram"),
 		m_maincpu(*this, "maincpu"),
 		m_gfxdecode(*this, "gfxdecode"),
-<<<<<<< HEAD
-		m_pic(*this, "pic8259"),
-		m_crtc(*this, "crtc")
-		{ }
-
-	required_shared_ptr<UINT16> m_videoram;
-	tilemap_t *m_bg_tilemap;
-	DECLARE_WRITE16_MEMBER(amusco_videoram_w);
-	TILE_GET_INFO_MEMBER(get_bg_tile_info);
-	virtual void video_start();
-	DECLARE_READ8_MEMBER(mc6845_r);
-	DECLARE_WRITE8_MEMBER(mc6845_w);
-	DECLARE_WRITE16_MEMBER(vram_w);
-	MC6845_ON_UPDATE_ADDR_CHANGED(crtc_addr);
-
-	UINT32 screen_update_amusco(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	INTERRUPT_GEN_MEMBER(amusco_interrupt);
-	required_device<cpu_device> m_maincpu;
-	required_device<gfxdecode_device> m_gfxdecode;
-	required_device<pic8259_device> m_pic;
-	required_device<mc6845_device> m_crtc;
-	INTERRUPT_GEN_MEMBER(amusco_vblank_irq);
-	INTERRUPT_GEN_MEMBER(amusco_timer_irq);
-	UINT16 m_mc6845_address;
-	UINT16 m_video_update_address;
-=======
 		m_pit(*this, "pit8253"),
 		m_pic(*this, "pic8259"),
 		m_rtc(*this, "rtc"),
@@ -204,7 +143,6 @@ public:
 	uint8_t m_mc6845_address;
 	uint16_t m_video_update_address;
 	bool m_blink_state;
->>>>>>> upstream/master
 };
 
 
@@ -212,13 +150,6 @@ public:
 *     Video Hardware     *
 *************************/
 
-<<<<<<< HEAD
-WRITE16_MEMBER(amusco_state::amusco_videoram_w)
-{
-}
-
-=======
->>>>>>> upstream/master
 TILE_GET_INFO_MEMBER(amusco_state::get_bg_tile_info)
 {
 /*  - bits -
@@ -227,47 +158,22 @@ TILE_GET_INFO_MEMBER(amusco_state::get_bg_tile_info)
     ---- ----   color code.
     ---- ----   seems unused.
 */
-<<<<<<< HEAD
-	int code = m_videoram[tile_index];
-=======
 	int code = m_videoram[tile_index * 2] | (m_videoram[tile_index * 2 + 1] << 8);
 	int color = (code & 0x7000) >> 12;
 
 	if (BIT(code, 15) && !m_blink_state)
 		code = 0;
->>>>>>> upstream/master
 
 	SET_TILE_INFO_MEMBER(
 							0 /* bank */,
 							code & 0x3ff,
-<<<<<<< HEAD
-							0 /* color */,
-=======
 							color,
->>>>>>> upstream/master
 							0
 						);
 }
 
 void amusco_state::video_start()
 {
-<<<<<<< HEAD
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(amusco_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 10, 74, 24);
-}
-
-UINT32 amusco_state::screen_update_amusco(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-{
-	m_bg_tilemap->draw(screen, bitmap, cliprect, 0, 0);
-	return 0;
-}
-
-
-/**************************
-*  Read / Write Handlers  *
-**************************/
-
-
-=======
 	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(amusco_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 10, 74, 24);
 	m_blink_state = false;
 }
@@ -277,16 +183,11 @@ void amusco_state::machine_start()
 }
 
 
->>>>>>> upstream/master
 /*************************
 * Memory Map Information *
 *************************/
 
-<<<<<<< HEAD
-static ADDRESS_MAP_START( amusco_mem_map, AS_PROGRAM, 16, amusco_state )
-=======
 static ADDRESS_MAP_START( amusco_mem_map, AS_PROGRAM, 8, amusco_state )
->>>>>>> upstream/master
 	AM_RANGE(0x00000, 0x0ffff) AM_RAM
 	AM_RANGE(0xec000, 0xecfff) AM_RAM AM_SHARE("videoram")  // placeholder
 	AM_RANGE(0xf8000, 0xfffff) AM_ROM
@@ -317,11 +218,6 @@ WRITE8_MEMBER( amusco_state::mc6845_w)
 	}
 }
 
-<<<<<<< HEAD
-WRITE16_MEMBER( amusco_state::vram_w)
-{
-	m_videoram[m_video_update_address] = data;
-=======
 WRITE8_MEMBER(amusco_state::output_a_w)
 {
 /* Lamps from port A
@@ -392,25 +288,10 @@ WRITE8_MEMBER(amusco_state::output_c_w)
 WRITE8_MEMBER(amusco_state::vram_w)
 {
 	m_videoram[m_video_update_address * 2 + offset] = data;
->>>>>>> upstream/master
 	m_bg_tilemap->mark_tile_dirty(m_video_update_address);
 //  printf("%04x %04x\n",m_video_update_address,data);
 }
 
-<<<<<<< HEAD
-static ADDRESS_MAP_START( amusco_io_map, AS_IO, 16, amusco_state )
-	AM_RANGE(0x0000, 0x0001) AM_READWRITE8(mc6845_r, mc6845_w, 0xffff)
-//  AM_RANGE(0x0000, 0x0001) AM_DEVREADWRITE8("crtc", mc6845_device, status_r,   address_w,  0x00ff)
-//  AM_RANGE(0x0000, 0x0001) AM_DEVREADWRITE8("crtc", mc6845_device, register_r, register_w, 0xff00)
-	AM_RANGE(0x0010, 0x0011) AM_DEVREADWRITE8("pic8259", pic8259_device, read, write, 0xffff ) //PPI 8255
-
-	AM_RANGE(0x0060, 0x0061) AM_DEVWRITE8("sn", sn76489_device, write, 0x00ff)                              /* sound */
-	AM_RANGE(0x0070, 0x0071) AM_WRITE(vram_w)
-//  AM_RANGE(0x0010, 0x0011) AM_READ_PORT("IN1")
-//  AM_RANGE(0x0012, 0x0013) AM_READ_PORT("IN3")
-	AM_RANGE(0x0030, 0x0031) AM_READ_PORT("DSW1") AM_WRITENOP // lamps?
-	AM_RANGE(0x0040, 0x0041) AM_READ_PORT("DSW2")
-=======
 READ8_MEMBER(amusco_state::lpt_status_r)
 {
 	// Bit 0 = busy
@@ -476,7 +357,6 @@ static ADDRESS_MAP_START( amusco_io_map, AS_IO, 8, amusco_state )
 	AM_RANGE(0x0070, 0x0071) AM_WRITE(vram_w)
 	AM_RANGE(0x0280, 0x0283) AM_DEVREADWRITE("lpt_interface", i8155_device, io_r, io_w)
 	AM_RANGE(0x0380, 0x0383) AM_DEVREADWRITE("rtc_interface", i8155_device, io_r, io_w)
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 /* I/O byte R/W
@@ -497,213 +377,6 @@ ADDRESS_MAP_END
 
 static INPUT_PORTS_START( amusco )
 	PORT_START("IN0")
-<<<<<<< HEAD
-	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_OTHER ) PORT_CODE(KEYCODE_1) PORT_NAME("IN0-1")
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_OTHER ) PORT_CODE(KEYCODE_2) PORT_NAME("IN0-2")
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_OTHER ) PORT_CODE(KEYCODE_3) PORT_NAME("IN0-3")
-	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_OTHER ) PORT_CODE(KEYCODE_4) PORT_NAME("IN0-4")
-	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_OTHER ) PORT_CODE(KEYCODE_5) PORT_NAME("IN0-5")
-	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_OTHER ) PORT_CODE(KEYCODE_6) PORT_NAME("IN0-6")
-	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_OTHER ) PORT_CODE(KEYCODE_7) PORT_NAME("IN0-7")
-	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_OTHER ) PORT_CODE(KEYCODE_8) PORT_NAME("IN0-8")
-
-	PORT_START("IN1")
-	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_OTHER ) PORT_CODE(KEYCODE_Q) PORT_NAME("IN1-1")
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_OTHER ) PORT_CODE(KEYCODE_W) PORT_NAME("IN1-2")
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_OTHER ) PORT_CODE(KEYCODE_E) PORT_NAME("IN1-3")
-	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_OTHER ) PORT_CODE(KEYCODE_R) PORT_NAME("IN1-4")
-	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_OTHER ) PORT_CODE(KEYCODE_T) PORT_NAME("IN1-5")
-	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_OTHER ) PORT_CODE(KEYCODE_Y) PORT_NAME("IN1-6")
-	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_OTHER ) PORT_CODE(KEYCODE_U) PORT_NAME("IN1-7")
-	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_OTHER ) PORT_CODE(KEYCODE_I) PORT_NAME("IN1-8")
-
-	PORT_START("IN2")
-	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_OTHER ) PORT_CODE(KEYCODE_A) PORT_NAME("IN2-1")
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_OTHER ) PORT_CODE(KEYCODE_S) PORT_NAME("IN2-2")
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_OTHER ) PORT_CODE(KEYCODE_D) PORT_NAME("IN2-3")
-	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_OTHER ) PORT_CODE(KEYCODE_F) PORT_NAME("IN2-4")
-	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_OTHER ) PORT_CODE(KEYCODE_G) PORT_NAME("IN2-5")
-	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_OTHER ) PORT_CODE(KEYCODE_H) PORT_NAME("IN2-6")
-	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_OTHER ) PORT_CODE(KEYCODE_J) PORT_NAME("IN2-7")
-	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_OTHER ) PORT_CODE(KEYCODE_K) PORT_NAME("IN2-8")
-	PORT_BIT( 0xff00, IP_ACTIVE_LOW, IPT_UNUSED)
-
-	PORT_START("IN3")
-	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_OTHER ) PORT_CODE(KEYCODE_Z) PORT_NAME("IN3-1")
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_OTHER ) PORT_CODE(KEYCODE_X) PORT_NAME("IN3-2")
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_OTHER ) PORT_CODE(KEYCODE_C) PORT_NAME("IN3-3")
-	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_OTHER ) PORT_CODE(KEYCODE_V) PORT_NAME("IN3-4")
-	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_OTHER ) PORT_CODE(KEYCODE_B) PORT_NAME("IN3-5")
-	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_OTHER ) PORT_CODE(KEYCODE_N) PORT_NAME("IN3-6")
-	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_OTHER ) PORT_CODE(KEYCODE_M) PORT_NAME("IN3-7")
-	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_OTHER ) PORT_CODE(KEYCODE_L) PORT_NAME("IN3-8")
-	PORT_BIT( 0xff00, IP_ACTIVE_LOW, IPT_UNUSED)
-
-	PORT_START("IN4")
-	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_OTHER ) PORT_CODE(KEYCODE_1_PAD) PORT_NAME("IN4-1")
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_OTHER ) PORT_CODE(KEYCODE_2_PAD) PORT_NAME("IN4-2")
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_OTHER ) PORT_CODE(KEYCODE_3_PAD) PORT_NAME("IN4-3")
-	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_OTHER ) PORT_CODE(KEYCODE_4_PAD) PORT_NAME("IN4-4")
-	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_OTHER ) PORT_CODE(KEYCODE_5_PAD) PORT_NAME("IN4-5")
-	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_OTHER ) PORT_CODE(KEYCODE_6_PAD) PORT_NAME("IN4-6")
-	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_OTHER ) PORT_CODE(KEYCODE_7_PAD) PORT_NAME("IN4-7")
-	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_OTHER ) PORT_CODE(KEYCODE_8_PAD) PORT_NAME("IN4-8")
-
-	PORT_START("DSW1")
-	PORT_DIPNAME( 0x01, 0x01, "DSW1" )
-	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x02, 0x02, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x04, 0x04, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x08, 0x08, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x10, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x40, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x0100, 0x0100, "DSW1-2" )
-	PORT_DIPSETTING(    0x0100, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x0000, DEF_STR( On ) )
-	PORT_DIPNAME( 0x0200, 0x0200, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x0200, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x0000, DEF_STR( On ) )
-	PORT_DIPNAME( 0x0400, 0x0400, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x0400, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x0000, DEF_STR( On ) )
-	PORT_DIPNAME( 0x0800, 0x0800, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x0800, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x0000, DEF_STR( On ) )
-	PORT_DIPNAME( 0x1000, 0x1000, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x1000, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x0000, DEF_STR( On ) )
-	PORT_DIPNAME( 0x2000, 0x2000, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x2000, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x0000, DEF_STR( On ) )
-	PORT_DIPNAME( 0x4000, 0x4000, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x4000, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x0000, DEF_STR( On ) )
-	PORT_DIPNAME( 0x8000, 0x8000, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x8000, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x0000, DEF_STR( On ) )
-
-	PORT_START("DSW2")
-	PORT_DIPNAME( 0x01, 0x01, "DSW2" )
-	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x02, 0x02, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x04, 0x04, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x08, 0x08, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x10, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x40, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x0100, 0x0100, "DSW2-1" )
-	PORT_DIPSETTING(    0x0100, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x0000, DEF_STR( On ) )
-	PORT_DIPNAME( 0x0200, 0x0200, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x0200, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x0000, DEF_STR( On ) )
-	PORT_DIPNAME( 0x0400, 0x0400, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x0400, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x0000, DEF_STR( On ) )
-	PORT_DIPNAME( 0x0800, 0x0800, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x0800, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x0000, DEF_STR( On ) )
-	PORT_DIPNAME( 0x1000, 0x1000, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x1000, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x0000, DEF_STR( On ) )
-	PORT_DIPNAME( 0x2000, 0x2000, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x2000, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x0000, DEF_STR( On ) )
-	PORT_DIPNAME( 0x4000, 0x4000, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x4000, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x0000, DEF_STR( On ) )
-	PORT_DIPNAME( 0x8000, 0x8000, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x8000, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x0000, DEF_STR( On ) )
-
-	PORT_START("DSW3")
-	PORT_DIPNAME( 0x01, 0x01, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x02, 0x02, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x04, 0x04, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x08, 0x08, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x10, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x40, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-
-	PORT_START("DSW4")
-	PORT_DIPNAME( 0x01, 0x01, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x02, 0x02, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x04, 0x04, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x08, 0x08, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x10, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x40, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-
-INPUT_PORTS_END
-
-=======
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_GAMBLE_BET ) PORT_NAME("Play Credit")
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_START1 ) // actual name uncertain; next screen in service mode
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_GAMBLE_PAYOUT ) // decrement in service mode
@@ -744,7 +417,6 @@ WRITE_LINE_MEMBER(amusco_state::coin_irq)
 }
 
 
->>>>>>> upstream/master
 
 /*************************
 *    Graphics Layouts    *
@@ -767,11 +439,7 @@ static const gfx_layout charlayout =
 ******************************/
 
 static GFXDECODE_START( amusco )
-<<<<<<< HEAD
-	GFXDECODE_ENTRY( "gfx1", 0, charlayout, 0, 8 )
-=======
 	GFXDECODE_ENTRY( "gfx1", 0, charlayout, 0, /*8*/ 1 ) // current palette has only 8 colors...
->>>>>>> upstream/master
 GFXDECODE_END
 
 
@@ -784,18 +452,6 @@ MC6845_ON_UPDATE_ADDR_CHANGED(amusco_state::crtc_addr)
 //  m_video_update_address = address;
 }
 
-<<<<<<< HEAD
-INTERRUPT_GEN_MEMBER(amusco_state::amusco_vblank_irq)
-{
-	device.execute().set_input_line_and_vector(0, HOLD_LINE, 0x80/4); // sets 0x665 to 0xff
-}
-
-
-INTERRUPT_GEN_MEMBER(amusco_state::amusco_timer_irq)
-{
-	/* This probably goes inside on mc6845 update change */
-	device.execute().set_input_line_and_vector(0, HOLD_LINE, 0x84/4); // sets 0x918 bit 3
-=======
 MC6845_UPDATE_ROW(amusco_state::update_row)
 {
 	// Latch blink state at start of first line, where cursor is always positioned
@@ -807,26 +463,12 @@ MC6845_UPDATE_ROW(amusco_state::update_row)
 
 	const rectangle rowrect(0, 8 * x_count - 1, y, y);
 	m_bg_tilemap->draw(*m_screen, bitmap, rowrect, 0, 0);
->>>>>>> upstream/master
 }
 
 /*************************
 *    Machine Drivers     *
 *************************/
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( amusco, amusco_state )
-
-	/* basic machine hardware */
-	/* FIXME: Need to find the correct CPU */
-	MCFG_CPU_ADD("maincpu", I8086, CPU_CLOCK)        // 5 MHz ?
-	MCFG_CPU_PROGRAM_MAP(amusco_mem_map)
-	MCFG_CPU_IO_MAP(amusco_io_map)
-	MCFG_CPU_VBLANK_INT_DRIVER("screen", amusco_state, amusco_vblank_irq)
-	MCFG_CPU_PERIODIC_INT_DRIVER(amusco_state, amusco_timer_irq,  60*32)
-
-	MCFG_PIC8259_ADD( "pic8259", INPUTLINE("maincpu", 0), VCC, NULL )
-=======
 static MACHINE_CONFIG_START( amusco )
 
 	/* basic machine hardware */
@@ -866,7 +508,6 @@ static MACHINE_CONFIG_START( amusco )
 	MCFG_I8155_OUT_PORTC_CB(DEVWRITE8("rtc", msm5832_device, data_w))
 
 	MCFG_TICKET_DISPENSER_ADD("hopper", attotime::from_msec(30), TICKET_MOTOR_ACTIVE_LOW, TICKET_STATUS_ACTIVE_HIGH)
->>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
@@ -874,32 +515,16 @@ static MACHINE_CONFIG_START( amusco )
 	MCFG_SCREEN_VBLANK_TIME(ATTOSECONDS_IN_USEC(0))
 	MCFG_SCREEN_SIZE(88*8, 27*10)                           // screen size: 88*8 27*10
 	MCFG_SCREEN_VISIBLE_AREA(0*8, 74*8-1, 0*10, 24*10-1)    // visible scr: 74*8 24*10
-<<<<<<< HEAD
-	MCFG_SCREEN_UPDATE_DRIVER(amusco_state, screen_update_amusco)
-
-	MCFG_SCREEN_PALETTE("palette")
-	MCFG_GFXDECODE_ADD("gfxdecode", "palette", amusco)
-=======
 	MCFG_SCREEN_UPDATE_DEVICE("crtc", mc6845_device, screen_update)
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", amusco)
 
->>>>>>> upstream/master
 	MCFG_PALETTE_ADD_3BIT_GBR("palette")
 
 	MCFG_MC6845_ADD("crtc", R6545_1, "screen", CRTC_CLOCK) /* guess */
 	MCFG_MC6845_SHOW_BORDER_AREA(false)
 	MCFG_MC6845_CHAR_WIDTH(8)
 	MCFG_MC6845_ADDR_CHANGED_CB(amusco_state, crtc_addr)
-<<<<<<< HEAD
-
-	/* sound hardware */
-	MCFG_SPEAKER_STANDARD_MONO("mono")
-	MCFG_SOUND_ADD("sn", SN76489, SND_CLOCK)
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.80)
-MACHINE_CONFIG_END
-
-=======
 	MCFG_MC6845_OUT_DE_CB(DEVWRITELINE("pic8259", pic8259_device, ir1_w)) // IRQ1 sets 0x918 bit 3
 	MCFG_MC6845_UPDATE_ROW_CB(amusco_state, update_row)
 
@@ -913,7 +538,6 @@ static MACHINE_CONFIG_DERIVED( draw88pkr, amusco )
 	//MCFG_DEVICE_MODIFY("ppi_outputs") // Some bits are definitely different
 MACHINE_CONFIG_END
 
->>>>>>> upstream/master
 
 /*************************
 *        Rom Load        *
@@ -938,8 +562,6 @@ ROM_START( amusco )
 	ROM_LOAD( "pal16l8a.u50", 0x0600, 0x0104, CRC(f5d80001) SHA1(ba0e55ebb45eceec256d432aee6d4123365a0af2) )
 ROM_END
 
-<<<<<<< HEAD
-=======
 /*
   Draw 88 Poker (V2.0) ??
 
@@ -959,17 +581,11 @@ ROM_START( draw88pkr )
 	ROM_LOAD( "u37.bin",  0x8000, 0x4000, CRC(6e23b9f2) SHA1(6916828d84d1ecb44dc454e6786f97801a8550c7) )
 ROM_END
 
->>>>>>> upstream/master
 
 /*************************
 *      Game Drivers      *
 *************************/
 
-<<<<<<< HEAD
-/*    YEAR  NAME      PARENT  MACHINE   INPUT     STATE          INIT  ROT    COMPANY   FULLNAME                      FLAGS */
-GAME( 1987, amusco,   0,      amusco,   amusco,   driver_device, 0,    ROT0, "Amusco", "American Music Poker (V1.4)", MACHINE_NOT_WORKING )
-=======
 /*     YEAR  NAME        PARENT  MACHINE   INPUT      STATE         INIT  ROT   COMPANY      FULLNAME                       FLAGS                                                LAYOUT    */
 GAMEL( 1987, amusco,     0,      amusco,   amusco,    amusco_state, 0,    ROT0, "Amusco",    "American Music Poker (V1.4)", MACHINE_IMPERFECT_COLORS | MACHINE_NODEVICE_PRINTER, layout_amusco ) // palette totally wrong
 GAMEL( 1988, draw88pkr,  0,      draw88pkr,draw88pkr, amusco_state, 0,    ROT0, "BTE, Inc.", "Draw 88 Poker (V2.0)",        MACHINE_IMPERFECT_COLORS | MACHINE_NODEVICE_PRINTER, layout_amusco ) // palette totally wrong
->>>>>>> upstream/master

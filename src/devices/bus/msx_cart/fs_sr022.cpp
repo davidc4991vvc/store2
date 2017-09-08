@@ -4,15 +4,6 @@
 #include "fs_sr022.h"
 
 
-<<<<<<< HEAD
-const device_type MSX_CART_FS_SR022 = &device_creator<msx_cart_fs_sr022>;
-
-
-msx_cart_fs_sr022::msx_cart_fs_sr022(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, MSX_CART_FS_SR022, "MSX Cartridge - FS-SR022", tag, owner, clock, "msx_cart_fs_sr022", __FILE__)
-	, msx_cart_interface(mconfig, *this)
-	, m_bunsetsu_rom(NULL)
-=======
 DEFINE_DEVICE_TYPE(MSX_CART_FS_SR022, msx_cart_fs_sr022_device, "msx_cart_fs_sr022", "MSX Cartridge - FS-SR022")
 
 
@@ -20,37 +11,24 @@ msx_cart_fs_sr022_device::msx_cart_fs_sr022_device(const machine_config &mconfig
 	: device_t(mconfig, MSX_CART_FS_SR022, tag, owner, clock)
 	, msx_cart_interface(mconfig, *this)
 	, m_bunsetsu_rom(nullptr)
->>>>>>> upstream/master
 	, m_bunsetsu_address(0)
 {
 }
 
 
-<<<<<<< HEAD
-void msx_cart_fs_sr022::device_start()
-=======
 void msx_cart_fs_sr022_device::device_start()
->>>>>>> upstream/master
 {
 	save_item(NAME(m_bunsetsu_address));
 }
 
 
-<<<<<<< HEAD
-void msx_cart_fs_sr022::device_reset()
-=======
 void msx_cart_fs_sr022_device::device_reset()
->>>>>>> upstream/master
 {
 	m_bunsetsu_address = 0;
 }
 
 
-<<<<<<< HEAD
-void msx_cart_fs_sr022::initialize_cartridge()
-=======
 void msx_cart_fs_sr022_device::initialize_cartridge()
->>>>>>> upstream/master
 {
 	if (get_rom_size() != 0x40000)
 	{
@@ -60,11 +38,7 @@ void msx_cart_fs_sr022_device::initialize_cartridge()
 }
 
 
-<<<<<<< HEAD
-READ8_MEMBER(msx_cart_fs_sr022::read_cart)
-=======
 READ8_MEMBER(msx_cart_fs_sr022_device::read_cart)
->>>>>>> upstream/master
 {
 	if (offset >= 0x4000 && offset < 0xc000)
 	{
@@ -78,11 +52,7 @@ READ8_MEMBER(msx_cart_fs_sr022_device::read_cart)
 }
 
 
-<<<<<<< HEAD
-WRITE8_MEMBER(msx_cart_fs_sr022::write_cart)
-=======
 WRITE8_MEMBER(msx_cart_fs_sr022_device::write_cart)
->>>>>>> upstream/master
 {
 	switch (offset)
 	{

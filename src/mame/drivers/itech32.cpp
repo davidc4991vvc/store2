@@ -9,11 +9,7 @@
     Golden Tee variants & World Class Bowling Deluxe additions by Brian A. Troha
 
     Games supported:
-<<<<<<< HEAD
-        * Time Killers (3 sets)
-=======
         * Time Killers (4 sets)
->>>>>>> upstream/master
         * Bloodstorm (5 sets)
         * Hard Yardage (2 sets)
         * Pairs (4 sets)
@@ -24,11 +20,7 @@
         * Shuffleshot (3 sets)
         * Golden Tee 3D Golf (12 sets)
         * Golden Tee Golf '97 (7 sets)
-<<<<<<< HEAD
-        * Golden Tee Golf '98 (5 sets)
-=======
         * Golden Tee Golf '98 (6 sets)
->>>>>>> upstream/master
         * Golden Tee Golf '99 (4 Sets)
         * Golden Tee Golf 2K (5 Sets)
         * Golden Tee Classic (3 Sets)
@@ -218,11 +210,7 @@ P/N 1060 REV 0                         P/N 1061 REV1
 |---------------------------------|    |---------------------------------|
 Notes:
       *      - These locations not populated
-<<<<<<< HEAD
-      ES5506 - Ensonic ES5506 OTTOR2, clock 16.000MHz
-=======
       ES5506 - Ensoniq ES5506 OTTOR2, clock 16.000MHz
->>>>>>> upstream/master
       6809   - STMicroelectronics EF68B09, clock 2.000MHz
       ENSONIC- DIP42 chip labelled 'ENSONIC (C)1992 2M 1350901601 9320 1.00' at location SROM0
                -This is actually a 16MBit DIP42 MaskROM
@@ -363,18 +351,6 @@ Notes:
 ****************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/tms32031/tms32031.h"
-#include "cpu/m6800/m6800.h"
-#include "cpu/m6809/m6809.h"
-#include "cpu/m68000/m68000.h"
-#include "machine/6522via.h"
-#include "machine/nvram.h"
-#include "machine/ticket.h"
-#include "includes/itech32.h"
-#include "sound/es5506.h"
-#include "machine/timekpr.h"
-=======
 #include "includes/itech32.h"
 
 #include "cpu/m6800/m6801.h"
@@ -389,7 +365,6 @@ Notes:
 #include "sound/es5506.h"
 
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 #define FULL_LOGGING                0
@@ -398,11 +373,7 @@ Notes:
 
 
 #define START_TMS_SPINNING(n)           do { space.device().execute().spin_until_trigger(7351 + n); m_tms_spinning[n] = 1; } while (0)
-<<<<<<< HEAD
-#define STOP_TMS_SPINNING(machine, n)   do { (machine).scheduler().trigger(7351 + n); (machine).driver_data<itech32_state>()->m_tms_spinning[n] = 0; } while (0)
-=======
 #define STOP_TMS_SPINNING(machine, n)   do { (machine).scheduler().trigger(7351 + n); m_tms_spinning[n] = 0; } while (0)
->>>>>>> upstream/master
 
 
 
@@ -472,8 +443,6 @@ WRITE16_MEMBER(itech32_state::int1_ack_w)
  *
  *************************************/
 
-<<<<<<< HEAD
-=======
 void itech32_state::machine_start()
 {
 	membank("soundbank")->configure_entries(0, 256, memregion("soundcpu")->base() + 0x10000, 0x4000);
@@ -497,7 +466,6 @@ void itech32_state::machine_start()
 	save_item(NAME(m_written));
 }
 
->>>>>>> upstream/master
 void itech32_state::machine_reset()
 {
 	m_vint_state = m_xint_state = m_qint_state = 0;
@@ -668,11 +636,7 @@ READ16_MEMBER(itech32_state::wcbowl_prot_result_r)
 
 READ32_MEMBER(itech32_state::itech020_prot_result_r)
 {
-<<<<<<< HEAD
-	UINT32 result = ((UINT32 *)m_main_ram.target())[m_itech020_prot_address >> 2];
-=======
 	uint32_t result = ((uint32_t *)m_main_ram.target())[m_itech020_prot_address >> 2];
->>>>>>> upstream/master
 	result >>= (~m_itech020_prot_address & 3) * 8;
 	return (result & 0xff) << 8;
 }
@@ -699,11 +663,7 @@ READ32_MEMBER(itech32_state::gtclass_prot_result_r)
 
 WRITE8_MEMBER(itech32_state::sound_bank_w)
 {
-<<<<<<< HEAD
-	membank("bank1")->set_base(&memregion("soundcpu")->base()[0x10000 + data * 0x4000]);
-=======
 	membank("soundbank")->set_entry(data);
->>>>>>> upstream/master
 }
 
 
@@ -779,29 +739,17 @@ WRITE8_MEMBER(itech32_state::drivedge_portb_out)
 	/* bit 4 controls the ticket dispenser */
 	/* bit 5 controls the coin counter */
 	/* bit 6 controls the diagnostic sound LED */
-<<<<<<< HEAD
-	set_led_status(machine(), 1, data & 0x01);
-	set_led_status(machine(), 2, data & 0x02);
-	set_led_status(machine(), 3, data & 0x04);
-	machine().device<ticket_dispenser_device>("ticket")->write(machine().driver_data()->generic_space(), 0, (data & 0x10) << 3);
-	coin_counter_w(machine(), 0, (data & 0x20) >> 5);
-=======
 	output().set_led_value(1, data & 0x01);
 	output().set_led_value(2, data & 0x02);
 	output().set_led_value(3, data & 0x04);
 	machine().device<ticket_dispenser_device>("ticket")->write(machine().dummy_space(), 0, (data & 0x10) << 3);
 	machine().bookkeeping().coin_counter_w(0, (data & 0x20) >> 5);
->>>>>>> upstream/master
 }
 
 
 WRITE_LINE_MEMBER(itech32_state::drivedge_turbo_light)
 {
-<<<<<<< HEAD
-	set_led_status(machine(), 0, state);
-=======
 	output().set_led_value(0, state);
->>>>>>> upstream/master
 }
 
 
@@ -812,13 +760,8 @@ WRITE8_MEMBER(itech32_state::pia_portb_out)
 	/* bit 4 controls the ticket dispenser */
 	/* bit 5 controls the coin counter */
 	/* bit 6 controls the diagnostic sound LED */
-<<<<<<< HEAD
-	machine().device<ticket_dispenser_device>("ticket")->write(machine().driver_data()->generic_space(), 0, (data & 0x10) << 3);
-	coin_counter_w(machine(), 0, (data & 0x20) >> 5);
-=======
 	machine().device<ticket_dispenser_device>("ticket")->write(machine().dummy_space(), 0, (data & 0x10) << 3);
 	machine().bookkeeping().coin_counter_w(0, (data & 0x20) >> 5);
->>>>>>> upstream/master
 }
 
 
@@ -937,19 +880,11 @@ void itech32_state::nvram_init(nvram_device &nvram, void *base, size_t length)
 	// if nvram is the main RAM, don't overwrite exception vectors
 	int start = (base == m_main_ram) ? 0x80 : 0x00;
 	for (int i = start; i < length; i++)
-<<<<<<< HEAD
-		((UINT8 *)base)[i] = machine().rand();
-
-	// due to accessing uninitialized RAM, we need this hack
-	if (m_is_drivedge)
-		((UINT32 *)m_main_ram.target())[0x2ce4/4] = 0x0000001e;
-=======
 		((uint8_t *)base)[i] = machine().rand();
 
 	// due to accessing uninitialized RAM, we need this hack
 	if (m_is_drivedge)
 		((uint32_t *)m_main_ram.target())[0x2ce4/4] = 0x0000001e;
->>>>>>> upstream/master
 }
 
 
@@ -965,11 +900,7 @@ static ADDRESS_MAP_START( timekill_map, AS_PROGRAM, 16, itech32_state )
 	AM_RANGE(0x040000, 0x040001) AM_READ_PORT("P1")
 	AM_RANGE(0x048000, 0x048001) AM_READ_PORT("P2")
 	AM_RANGE(0x050000, 0x050001) AM_READ_PORT("SYSTEM") AM_WRITE(timekill_intensity_w)
-<<<<<<< HEAD
-	AM_RANGE(0x058000, 0x058001) AM_READ_PORT("DIPS") AM_WRITE(watchdog_reset16_w)
-=======
 	AM_RANGE(0x058000, 0x058001) AM_READ_PORT("DIPS") AM_DEVWRITE("watchdog", watchdog_timer_device, reset16_w)
->>>>>>> upstream/master
 	AM_RANGE(0x060000, 0x060001) AM_WRITE(timekill_colora_w)
 	AM_RANGE(0x068000, 0x068001) AM_WRITE(timekill_colorbc_w)
 	AM_RANGE(0x070000, 0x070001) AM_WRITENOP    /* noisy */
@@ -987,19 +918,11 @@ static ADDRESS_MAP_START( bloodstm_map, AS_PROGRAM, 16, itech32_state )
 	AM_RANGE(0x080000, 0x080001) AM_READ_PORT("P1") AM_WRITE(int1_ack_w)
 	AM_RANGE(0x100000, 0x100001) AM_READ_PORT("P2")
 	AM_RANGE(0x180000, 0x180001) AM_READ_PORT("P3")
-<<<<<<< HEAD
-	AM_RANGE(0x200000, 0x200001) AM_READ_PORT("P4") AM_WRITE(watchdog_reset16_w)
-	AM_RANGE(0x280000, 0x280001) AM_READ_PORT("DIPS")
-	AM_RANGE(0x300000, 0x300001) AM_WRITE(bloodstm_color1_w)
-	AM_RANGE(0x380000, 0x380001) AM_WRITE(bloodstm_color2_w)
-	AM_RANGE(0x400000, 0x400001) AM_WRITE(watchdog_reset16_w)
-=======
 	AM_RANGE(0x200000, 0x200001) AM_READ_PORT("P4") AM_DEVWRITE("watchdog", watchdog_timer_device, reset16_w)
 	AM_RANGE(0x280000, 0x280001) AM_READ_PORT("DIPS")
 	AM_RANGE(0x300000, 0x300001) AM_WRITE(bloodstm_color1_w)
 	AM_RANGE(0x380000, 0x380001) AM_WRITE(bloodstm_color2_w)
 	AM_RANGE(0x400000, 0x400001) AM_DEVWRITE("watchdog", watchdog_timer_device, reset16_w)
->>>>>>> upstream/master
 	AM_RANGE(0x480000, 0x480001) AM_WRITE(sound_data_w)
 	AM_RANGE(0x500000, 0x5000ff) AM_READWRITE(bloodstm_video_r, bloodstm_video_w) AM_SHARE("video")
 	AM_RANGE(0x580000, 0x59ffff) AM_RAM_WRITE(bloodstm_paletteram_w) AM_SHARE("palette")
@@ -1019,11 +942,7 @@ READ32_MEMBER(itech32_state::test1_r)
 	if (ACCESSING_BITS_16_23 && !m_written[0x100 + offset*4+1]) logerror("%06X:read from uninitialized memory %04X\n", space.device().safe_pc(), 0x100 + offset*4+1);
 	if (ACCESSING_BITS_8_15 && !m_written[0x100 + offset*4+2]) logerror("%06X:read from uninitialized memory %04X\n", space.device().safe_pc(), 0x100 + offset*4+2);
 	if (ACCESSING_BITS_0_7 && !m_written[0x100 + offset*4+3]) logerror("%06X:read from uninitialized memory %04X\n", space.device().safe_pc(), 0x100 + offset*4+3);
-<<<<<<< HEAD
-	return ((UINT32 *)m_main_ram)[0x100/4 + offset];
-=======
 	return ((uint32_t *)m_main_ram)[0x100/4 + offset];
->>>>>>> upstream/master
 }
 
 WRITE32_MEMBER(itech32_state::test1_w)
@@ -1032,11 +951,7 @@ WRITE32_MEMBER(itech32_state::test1_w)
 	if (ACCESSING_BITS_16_23) m_written[0x100 + offset*4+1] = 1;
 	if (ACCESSING_BITS_8_15) m_written[0x100 + offset*4+2] = 1;
 	if (ACCESSING_BITS_0_7) m_written[0x100 + offset*4+3] = 1;
-<<<<<<< HEAD
-	COMBINE_DATA(&((UINT32 *)m_main_ram)[0x100/4 + offset]);
-=======
 	COMBINE_DATA(&((uint32_t *)m_main_ram)[0x100/4 + offset]);
->>>>>>> upstream/master
 }
 
 READ32_MEMBER(itech32_state::test2_r)
@@ -1045,11 +960,7 @@ READ32_MEMBER(itech32_state::test2_r)
 	if (ACCESSING_BITS_16_23 && !m_written[0xc00 + offset*4+1]) logerror("%06X:read from uninitialized memory %04X\n", space.device().safe_pc(), 0xc00 + offset*4+1);
 	if (ACCESSING_BITS_8_15 && !m_written[0xc00 + offset*4+2]) logerror("%06X:read from uninitialized memory %04X\n", space.device().safe_pc(), 0xc00 + offset*4+2);
 	if (ACCESSING_BITS_0_7 && !m_written[0xc00 + offset*4+3]) logerror("%06X:read from uninitialized memory %04X\n", space.device().safe_pc(), 0xc00 + offset*4+3);
-<<<<<<< HEAD
-	return ((UINT32 *)m_main_ram)[0xc00/4 + offset];
-=======
 	return ((uint32_t *)m_main_ram)[0xc00/4 + offset];
->>>>>>> upstream/master
 }
 
 WRITE32_MEMBER(itech32_state::test2_w)
@@ -1058,11 +969,7 @@ WRITE32_MEMBER(itech32_state::test2_w)
 	if (ACCESSING_BITS_16_23) m_written[0xc00 + offset*4+1] = 1;
 	if (ACCESSING_BITS_8_15) m_written[0xc00 + offset*4+2] = 1;
 	if (ACCESSING_BITS_0_7) m_written[0xc00 + offset*4+3] = 1;
-<<<<<<< HEAD
-	COMBINE_DATA(&((UINT32 *)m_main_ram)[0xc00/4 + offset]);
-=======
 	COMBINE_DATA(&((uint32_t *)m_main_ram)[0xc00/4 + offset]);
->>>>>>> upstream/master
 }
 #endif
 
@@ -1090,11 +997,7 @@ AM_RANGE(0x000c00, 0x007fff) AM_MIRROR(0x40000) AM_READWRITE(test2_r, test2_w)
 	AM_RANGE(0x200000, 0x200003) AM_READ_PORT("200000")
 	AM_RANGE(0x280000, 0x280fff) AM_RAM_WRITE(tms1_68k_ram_w) AM_SHARE("tms1_ram")
 	AM_RANGE(0x300000, 0x300fff) AM_RAM_WRITE(tms2_68k_ram_w) AM_SHARE("tms2_ram")
-<<<<<<< HEAD
-	AM_RANGE(0x380000, 0x380003) AM_WRITENOP // AM_WRITE(watchdog_reset16_w)
-=======
 	AM_RANGE(0x380000, 0x380003) AM_WRITENOP // AM_DEVWRITE("watchdog", watchdog_timer_device, reset16_w)
->>>>>>> upstream/master
 	AM_RANGE(0x600000, 0x607fff) AM_ROM AM_REGION("user1", 0) AM_SHARE("main_rom")
 ADDRESS_MAP_END
 
@@ -1105,11 +1008,7 @@ static ADDRESS_MAP_START( drivedge_tms1_map, AS_PROGRAM, 32, itech32_state )
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( drivedge_tms2_map, AS_PROGRAM, 32, itech32_state )
-<<<<<<< HEAD
-	AM_RANGE(0x008000, 0x0083ff) AM_MIRROR(0x8400) AM_RAM_WRITE(tms2_trigger_w) AM_SHARE("tms2_ram")
-=======
 	AM_RANGE(0x000000, 0x0003ff) AM_MIRROR(0x8400) AM_RAM_WRITE(tms2_trigger_w) AM_SHARE("tms2_ram")
->>>>>>> upstream/master
 	AM_RANGE(0x080000, 0x08ffff) AM_RAM
 ADDRESS_MAP_END
 
@@ -1124,11 +1023,7 @@ static ADDRESS_MAP_START( itech020_map, AS_PROGRAM, 32, itech32_state )
 	AM_RANGE(0x280000, 0x280003) AM_READ_PORT("DIPS")
 	AM_RANGE(0x300000, 0x300003) AM_WRITE(itech020_color1_w)
 	AM_RANGE(0x380000, 0x380003) AM_WRITE(itech020_color2_w)
-<<<<<<< HEAD
-	AM_RANGE(0x400000, 0x400003) AM_WRITE(watchdog_reset32_w)
-=======
 	AM_RANGE(0x400000, 0x400003) AM_DEVWRITE("watchdog", watchdog_timer_device, reset32_w)
->>>>>>> upstream/master
 	AM_RANGE(0x480000, 0x480003) AM_WRITE(sound_data32_w)
 	AM_RANGE(0x500000, 0x5000ff) AM_READWRITE(itech020_video_r, itech020_video_w) AM_SHARE("video")
 	AM_RANGE(0x578000, 0x57ffff) AM_READNOP             /* touched by protection */
@@ -1158,11 +1053,7 @@ static ADDRESS_MAP_START( sound_map, AS_PROGRAM, 8, itech32_state )
 	AM_RANGE(0x1000, 0x1000) AM_WRITENOP    /* noisy */
 	AM_RANGE(0x1400, 0x140f) AM_DEVREADWRITE("via6522_0", via6522_device, read, write)
 	AM_RANGE(0x2000, 0x3fff) AM_RAM
-<<<<<<< HEAD
-	AM_RANGE(0x4000, 0x7fff) AM_ROMBANK("bank1")
-=======
 	AM_RANGE(0x4000, 0x7fff) AM_ROMBANK("soundbank")
->>>>>>> upstream/master
 	AM_RANGE(0x8000, 0xffff) AM_ROM
 ADDRESS_MAP_END
 
@@ -1175,11 +1066,7 @@ static ADDRESS_MAP_START( sound_020_map, AS_PROGRAM, 8, itech32_state )
 	AM_RANGE(0x1400, 0x1400) AM_WRITE(firq_clear_w)
 	AM_RANGE(0x1800, 0x1800) AM_READ(sound_data_buffer_r) AM_WRITENOP
 	AM_RANGE(0x2000, 0x3fff) AM_RAM
-<<<<<<< HEAD
-	AM_RANGE(0x4000, 0x7fff) AM_ROMBANK("bank1")
-=======
 	AM_RANGE(0x4000, 0x7fff) AM_ROMBANK("soundbank")
->>>>>>> upstream/master
 	AM_RANGE(0x8000, 0xffff) AM_ROM
 ADDRESS_MAP_END
 
@@ -1226,11 +1113,7 @@ static INPUT_PORTS_START( timekill )
 	PORT_SERVICE_NO_TOGGLE( 0x0001, IP_ACTIVE_LOW )
 	PORT_BIT( 0x0002, IP_ACTIVE_LOW, IPT_SERVICE1 )
 	PORT_BIT( 0x0004, IP_ACTIVE_LOW, IPT_CUSTOM ) PORT_VBLANK("screen")
-<<<<<<< HEAD
-	PORT_BIT( 0x0008, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, itech32_state,special_port_r, NULL)
-=======
 	PORT_BIT( 0x0008, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, itech32_state,special_port_r, nullptr)
->>>>>>> upstream/master
 	PORT_DIPNAME( 0x0010, 0x0000, "Video Sync" )     PORT_DIPLOCATION("SW1:1")
 	PORT_DIPSETTING(      0x0000, "-" )
 	PORT_DIPSETTING(      0x0010, "+" )
@@ -1275,11 +1158,7 @@ static INPUT_PORTS_START( itech32_base_16bit )
 	PORT_SERVICE_NO_TOGGLE( 0x0001, IP_ACTIVE_LOW )
 	PORT_BIT( 0x0002, IP_ACTIVE_LOW, IPT_SERVICE1 )
 	PORT_BIT( 0x0004, IP_ACTIVE_LOW, IPT_CUSTOM ) PORT_VBLANK("screen")
-<<<<<<< HEAD
-	PORT_BIT( 0x0008, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, itech32_state,special_port_r, NULL)
-=======
 	PORT_BIT( 0x0008, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, itech32_state,special_port_r, nullptr)
->>>>>>> upstream/master
 	PORT_DIPNAME( 0x0010, 0x0000, "Video Sync" )     PORT_DIPLOCATION("SW1:4")
 	PORT_DIPSETTING(      0x0000, "-" )
 	PORT_DIPSETTING(      0x0010, "+" )
@@ -1498,11 +1377,7 @@ static INPUT_PORTS_START( itech32_base_32bit )
 	PORT_SERVICE_NO_TOGGLE( 0x00010000, IP_ACTIVE_LOW )
 	PORT_BIT( 0x00020000, IP_ACTIVE_LOW, IPT_SERVICE1 )
 	PORT_BIT( 0x00040000, IP_ACTIVE_LOW, IPT_CUSTOM ) PORT_VBLANK("screen")
-<<<<<<< HEAD
-	PORT_BIT( 0x00080000, IP_ACTIVE_LOW, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, itech32_state,special_port_r, NULL)
-=======
 	PORT_BIT( 0x00080000, IP_ACTIVE_LOW, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, itech32_state,special_port_r, nullptr)
->>>>>>> upstream/master
 	PORT_DIPNAME( 0x00100000, 0x00000000, "Video Sync" )     PORT_DIPLOCATION("SW1:4")
 	PORT_DIPSETTING(          0x00000000, "-" )
 	PORT_DIPSETTING(          0x00100000, "+" )
@@ -1797,11 +1672,7 @@ INPUT_PORTS_END
  *
  *************************************/
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( timekill, itech32_state )
-=======
 static MACHINE_CONFIG_START( timekill )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, CPU_CLOCK)
@@ -1815,11 +1686,8 @@ static MACHINE_CONFIG_START( timekill )
 
 	MCFG_TICKET_DISPENSER_ADD("ticket", attotime::from_msec(200), TICKET_MOTOR_ACTIVE_HIGH, TICKET_STATUS_ACTIVE_HIGH)
 
-<<<<<<< HEAD
-=======
 	MCFG_WATCHDOG_ADD("watchdog")
 
->>>>>>> upstream/master
 	/* video hardware */
 	MCFG_PALETTE_ADD("palette", 8192)
 	MCFG_PALETTE_FORMAT(GRBX)
@@ -1846,11 +1714,7 @@ static MACHINE_CONFIG_START( timekill )
 	/* via */
 	MCFG_DEVICE_ADD("via6522_0", VIA6522, SOUND_CLOCK/8)
 	MCFG_VIA6522_WRITEPB_HANDLER(WRITE8(itech32_state,pia_portb_out))
-<<<<<<< HEAD
-	MCFG_VIA6522_IRQ_HANDLER(DEVWRITELINE("soundcpu", m6809_device, firq_line))
-=======
 	MCFG_VIA6522_IRQ_HANDLER(INPUTLINE("soundcpu", M6809_FIRQ_LINE))
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
@@ -1965,8 +1829,6 @@ ROM_START( timekill )
 	ROM_LOAD16_BYTE( "tksrom02_u26.u26", 0x200000, 0x80000, CRC(051ced3e) SHA1(6b63c4837e709806ffea9a37d93933635d356a6e) ) /* Labeled TKSROM02 (U26) */
 ROM_END
 
-<<<<<<< HEAD
-=======
 ROM_START( timekill132i ) /* Additional Violence Level:  Level 4 - Limbs, Decapitations, No Blood */
 	ROM_REGION16_BE( 0x80000, "user1", 0 )
 	ROM_LOAD16_BYTE( "tk00_v1.32i_u54.u54", 0x00000, 0x40000, CRC(6cef5e8c) SHA1(43cd3e704567be7a60558e12c43f0bb4456ec96d) ) /* Labeled TK00 V1.32I (U54) */
@@ -1994,7 +1856,6 @@ ROM_START( timekill132i ) /* Additional Violence Level:  Level 4 - Limbs, Decapi
 	ROM_LOAD16_BYTE( "tksrom01_u20.u20", 0x100000, 0x80000, CRC(ec01648c) SHA1(b83c66cf22db5d89b9ed79b79861b79429d8380c) ) /* Labeled TKSROM01 (U20) */
 	ROM_LOAD16_BYTE( "tksrom02_u26.u26", 0x200000, 0x80000, CRC(051ced3e) SHA1(6b63c4837e709806ffea9a37d93933635d356a6e) ) /* Labeled TKSROM02 (U26) */
 ROM_END
->>>>>>> upstream/master
 
 ROM_START( timekill131 )
 	ROM_REGION16_BE( 0x80000, "user1", 0 )
@@ -2308,24 +2169,6 @@ ROM_END
 
 ROM_START( pairs )  /* Version 1.2 (3-tier board set: P/N 1059 Rev 3, P/N 1061 Rev 1 &  P/N 1060 Rev 0) */
 	ROM_REGION16_BE( 0x80000, "user1", 0 )
-<<<<<<< HEAD
-	ROM_LOAD16_BYTE( "pair0_v1.2.u83", 0x00000, 0x20000, CRC(a9c761d8) SHA1(2618c9c3f336cf30f760fd88f12c09985cfd4ee7) )
-	ROM_LOAD16_BYTE( "pair1_v1.2.u88", 0x00001, 0x20000, CRC(5141eb86) SHA1(3bb10d588e6334a33e5c2c468651699e84f46cdc) )
-
-	ROM_REGION( 0x28000, "soundcpu", 0 )
-	ROM_LOAD( "snd.u17", 0x10000, 0x18000, CRC(7a514cfd) SHA1(ef5bc74c9560d2c058298051070fa748e58f07e1) )
-	ROM_CONTINUE(        0x08000, 0x08000 )
-
-	ROM_REGION( 0x880000, "gfx1", 0 )
-	ROM_LOAD32_BYTE( "grom0",  0x000000, 0x80000, CRC(baf1c2dd) SHA1(4de50001bce294ea5eea581cee9ca5a966701176) )
-	ROM_LOAD32_BYTE( "grom5",  0x000001, 0x80000, CRC(30e993f3) SHA1(fe32aabacbe9d6d9419410faafe048c01988ac78) )
-	ROM_LOAD32_BYTE( "grom10", 0x000002, 0x80000, CRC(3f52f50d) SHA1(abb7ec8fa1af0876dacfe04d76fbc8fc18a2b610) )
-	ROM_LOAD32_BYTE( "grom15", 0x000003, 0x80000, CRC(fd38aa36) SHA1(7c65b2a42bb45b81b841792c475ea391c03a4eb2) )
-	ROM_LOAD32_BYTE( "grom1",  0x200000, 0x40000, CRC(b0bd7008) SHA1(29cb334e9af73f7aef4bf55eae79d8cc05412164) )
-	ROM_LOAD32_BYTE( "grom6",  0x200001, 0x40000, CRC(f7b20a47) SHA1(5a68add24b0f9cfb56b3e7aedc28382c8ead81a1) )
-	ROM_LOAD32_BYTE( "grom11", 0x200002, 0x40000, CRC(1e5f2523) SHA1(c6c362bc0bb303e271176ce8c2a49990be1834cd) )
-	ROM_LOAD32_BYTE( "grom16", 0x200003, 0x40000, CRC(b2975259) SHA1(aa82f8e855f2ebf1d7178a46f2b515d7c9a26299) )
-=======
 	ROM_LOAD16_BYTE( "pair0_u83_x_v1.2.u83", 0x00000, 0x20000, CRC(a9c761d8) SHA1(2618c9c3f336cf30f760fd88f12c09985cfd4ee7) )
 	ROM_LOAD16_BYTE( "pair1_u88_x_v1.2.u88", 0x00001, 0x20000, CRC(5141eb86) SHA1(3bb10d588e6334a33e5c2c468651699e84f46cdc) )
 
@@ -2342,36 +2185,11 @@ ROM_START( pairs )  /* Version 1.2 (3-tier board set: P/N 1059 Rev 3, P/N 1061 R
 	ROM_LOAD32_BYTE( "pairx_grom6_v1.grom6",   0x200001, 0x40000, CRC(f7b20a47) SHA1(5a68add24b0f9cfb56b3e7aedc28382c8ead81a1) )
 	ROM_LOAD32_BYTE( "pairx_grom11_v1.grom11", 0x200002, 0x40000, CRC(1e5f2523) SHA1(c6c362bc0bb303e271176ce8c2a49990be1834cd) )
 	ROM_LOAD32_BYTE( "pairx_grom16_v1.grom16", 0x200003, 0x40000, CRC(b2975259) SHA1(aa82f8e855f2ebf1d7178a46f2b515d7c9a26299) )
->>>>>>> upstream/master
 
 	ROM_REGION16_BE( 0x400000, "ensoniq.0", ROMREGION_ERASE00 )
 	ROM_LOAD16_BYTE( "ensoniq.2m", 0x000000, 0x200000, CRC(9fdc4825) SHA1(71e5255c66d9010be7e6f27916b605441fc53839) ) /* Ensoniq 2m 1350901601 */
 
 	ROM_REGION16_BE( 0x400000, "ensoniq.2", ROMREGION_ERASE00 )
-<<<<<<< HEAD
-	ROM_LOAD16_BYTE( "srom0.bin", 0x000000, 0x80000, CRC(19a857f9) SHA1(2515b4c127191d52d3b5a72477384847d8cabad3) )
-ROM_END
-
-
-ROM_START( pairsa ) /* Version ?? (3-tier board set: P/N 1059 Rev 3, P/N 1061 Rev 1 &  P/N 1060 Rev 0) */
-	ROM_REGION16_BE( 0x80000, "user1", 0 )
-	ROM_LOAD16_BYTE( "pair0.u83", 0x00000, 0x20000, CRC(774995a3) SHA1(93df91378b56802d14c105f7f48ed8a4f7bafffd) )
-	ROM_LOAD16_BYTE( "pair1.u88", 0x00001, 0x20000, CRC(85d0b73a) SHA1(48a6ac6de94be13e407da13e3e2440d858714b4b) )
-
-	ROM_REGION( 0x28000, "soundcpu", 0 )
-	ROM_LOAD( "snd.u17", 0x10000, 0x18000, CRC(7a514cfd) SHA1(ef5bc74c9560d2c058298051070fa748e58f07e1) )
-	ROM_CONTINUE(        0x08000, 0x08000 )
-
-	ROM_REGION( 0x880000, "gfx1", 0 )
-	ROM_LOAD32_BYTE( "grom0",  0x000000, 0x80000, CRC(baf1c2dd) SHA1(4de50001bce294ea5eea581cee9ca5a966701176) )
-	ROM_LOAD32_BYTE( "grom5",  0x000001, 0x80000, CRC(30e993f3) SHA1(fe32aabacbe9d6d9419410faafe048c01988ac78) )
-	ROM_LOAD32_BYTE( "grom10", 0x000002, 0x80000, CRC(3f52f50d) SHA1(abb7ec8fa1af0876dacfe04d76fbc8fc18a2b610) )
-	ROM_LOAD32_BYTE( "grom15", 0x000003, 0x80000, CRC(fd38aa36) SHA1(7c65b2a42bb45b81b841792c475ea391c03a4eb2) )
-	ROM_LOAD32_BYTE( "grom1",  0x200000, 0x40000, CRC(b0bd7008) SHA1(29cb334e9af73f7aef4bf55eae79d8cc05412164) )
-	ROM_LOAD32_BYTE( "grom6",  0x200001, 0x40000, CRC(f7b20a47) SHA1(5a68add24b0f9cfb56b3e7aedc28382c8ead81a1) )
-	ROM_LOAD32_BYTE( "grom11", 0x200002, 0x40000, CRC(1e5f2523) SHA1(c6c362bc0bb303e271176ce8c2a49990be1834cd) )
-	ROM_LOAD32_BYTE( "grom16", 0x200003, 0x40000, CRC(b2975259) SHA1(aa82f8e855f2ebf1d7178a46f2b515d7c9a26299) )
-=======
 	ROM_LOAD16_BYTE( "srom0.bin", 0x000000, 0x80000, CRC(19a857f9) SHA1(2515b4c127191d52d3b5a72477384847d8cabad3) ) /* Unknown label and / or revision */
 ROM_END
 
@@ -2394,17 +2212,12 @@ ROM_START( pairsa ) /* Version 1 (3-tier board set: P/N 1059 Rev 3, P/N 1061 Rev
 	ROM_LOAD32_BYTE( "pairx_grom6_v1.grom6",   0x200001, 0x40000, CRC(f7b20a47) SHA1(5a68add24b0f9cfb56b3e7aedc28382c8ead81a1) )
 	ROM_LOAD32_BYTE( "pairx_grom11_v1.grom11", 0x200002, 0x40000, CRC(1e5f2523) SHA1(c6c362bc0bb303e271176ce8c2a49990be1834cd) )
 	ROM_LOAD32_BYTE( "pairx_grom16_v1.grom16", 0x200003, 0x40000, CRC(b2975259) SHA1(aa82f8e855f2ebf1d7178a46f2b515d7c9a26299) )
->>>>>>> upstream/master
 
 	ROM_REGION16_BE( 0x400000, "ensoniq.0", ROMREGION_ERASE00 )
 	ROM_LOAD16_BYTE( "ensoniq.2m", 0x000000, 0x200000, CRC(9fdc4825) SHA1(71e5255c66d9010be7e6f27916b605441fc53839) ) /* Ensoniq 2m 1350901601 */
 
 	ROM_REGION16_BE( 0x400000, "ensoniq.2", ROMREGION_ERASE00 )
-<<<<<<< HEAD
-	ROM_LOAD16_BYTE( "srom0", 0x000000, 0x80000, CRC(1d96c581) SHA1(3b7c84b7db3b098ec28c7058c16f97e9cf0e4733) )
-=======
 	ROM_LOAD16_BYTE( "srom0_pairs_v1.srom0", 0x000000, 0x80000, CRC(1d96c581) SHA1(3b7c84b7db3b098ec28c7058c16f97e9cf0e4733) )
->>>>>>> upstream/master
 ROM_END
 
 
@@ -3951,8 +3764,6 @@ ROM_START( gt98t303 )   /* Version 3.03 Tournament Edition (PCB P/N 1083 Rev 2) 
 ROM_END
 
 
-<<<<<<< HEAD
-=======
 ROM_START( gt98t302 )   /* Version 3.02 Tournament Edition (PCB P/N 1083 Rev 2) */
 	ROM_REGION32_BE( CODE_SIZE, "user1", 0 )
 	ROM_LOAD32_BYTE( "gt98_prom0_v3.02t.prom0", 0x00000, 0x100000, CRC(744e0d9b) SHA1(affb05390485d3523478199493e15f32359511f1) )
@@ -3984,7 +3795,6 @@ ROM_START( gt98t302 )   /* Version 3.02 Tournament Edition (PCB P/N 1083 Rev 2) 
 ROM_END
 
 
->>>>>>> upstream/master
 ROM_START( gtdiamond )  /* Version 3.05TL Tournament Edition (PCB P/N 1083 Rev 2) */
 	ROM_REGION32_BE( CODE_SIZE, "user1", 0 )
 	ROM_LOAD32_BYTE( "gt98_golf_elc_prom0_v3.05tl.prom0", 0x00000, 0x100000, CRC(b6b0e3b8) SHA1(e2ff88f205ad902d78b8c52ed554eb612c300d3c) )
@@ -4438,11 +4248,7 @@ ROM_END
 
 void itech32_state::init_program_rom()
 {
-<<<<<<< HEAD
-	if (m_main_ram == NULL)
-=======
 	if (m_main_ram == nullptr)
->>>>>>> upstream/master
 		m_main_ram.set_target(m_nvram, m_nvram.bytes());
 	memcpy(m_main_ram, m_main_rom, 0x80);
 }
@@ -4727,43 +4533,6 @@ Label1  bne.s       Label1          ; Infinite loop if result isn't 0x80
  *
  *************************************/
 
-<<<<<<< HEAD
-GAME( 1992, timekill,    0,        timekill, timekill, itech32_state, timekill, ROT0, "Strata/Incredible Technologies",   "Time Killers (v1.32)", 0 )
-GAME( 1992, timekill131, timekill, timekill, timekill, itech32_state, timekill, ROT0, "Strata/Incredible Technologies",   "Time Killers (v1.31)", 0 )
-GAME( 1992, timekill121, timekill, timekill, timekill, itech32_state, timekill, ROT0, "Strata/Incredible Technologies",   "Time Killers (v1.21)", 0 )
-GAME( 1993, hardyard,    0,        bloodstm, hardyard, itech32_state, hardyard, ROT0, "Strata/Incredible Technologies",   "Hard Yardage (v1.20)", 0 )
-GAME( 1993, hardyard10,  hardyard, bloodstm, hardyard, itech32_state, hardyard, ROT0, "Strata/Incredible Technologies",   "Hard Yardage (v1.00)", 0 )
-GAME( 1994, bloodstm,    0,        bloodstm, bloodstm, itech32_state, bloodstm, ROT0, "Strata/Incredible Technologies",   "Blood Storm (v2.22)", 0 )
-GAME( 1994, bloodstm22,  bloodstm, bloodstm, bloodstm, itech32_state, bloodstm, ROT0, "Strata/Incredible Technologies",   "Blood Storm (v2.20)", 0 )
-GAME( 1994, bloodstm21,  bloodstm, bloodstm, bloodstm, itech32_state, bloodstm, ROT0, "Strata/Incredible Technologies",   "Blood Storm (v2.10)", 0 )
-GAME( 1994, bloodstm11,  bloodstm, bloodstm, bloodstm, itech32_state, bloodstm, ROT0, "Strata/Incredible Technologies",   "Blood Storm (v1.10)", 0 )
-GAME( 1994, bloodstm10,  bloodstm, bloodstm, bloodstm, itech32_state, bloodstm, ROT0, "Strata/Incredible Technologies",   "Blood Storm (v1.04)", 0 )
-GAME( 1994, pairsred,    0,        bloodstm, pairs,    itech32_state, bloodstm, ROT0, "Strata/Incredible Technologies",   "Pairs Redemption (V1.0, 10/25/94)", 0 )
-GAME( 1994, pairs,       0,        bloodstm, pairs,    itech32_state, bloodstm, ROT0, "Strata/Incredible Technologies",   "Pairs (V1.2, 09/30/94)", 0 )
-GAME( 1994, pairsa,      pairs,    bloodstm, pairs,    itech32_state, bloodstm, ROT0, "Strata/Incredible Technologies",   "Pairs (09/07/94)", 0 )
-GAME( 1994, hotmemry,    pairs,    bloodstm, pairs,    itech32_state, bloodstm, ROT0, "Incredible Technologies (Tuning license)", "Hot Memory (V1.2, Germany, 12/28/94)", 0 )
-GAME( 1994, hotmemry11,  pairs,    bloodstm, pairs,    itech32_state, bloodstm, ROT0, "Incredible Technologies (Tuning license)", "Hot Memory (V1.1, Germany, 11/30/94)", 0 )
-GAME( 1994, drivedge,    0,        drivedge, drivedge, itech32_state, drivedge, ROT0, "Strata/Incredible Technologies",   "Driver's Edge", MACHINE_IMPERFECT_GRAPHICS )
-GAME( 1995, wcbowl,      0,        sftm,     wcbowln,  itech32_state, wcbowln,  ROT0, "Incredible Technologies",          "World Class Bowling (v1.66)" , 0) /* PIC 16C54 labeled as ITBWL-3 */
-GAME( 1995, wcbowl165,   wcbowl,   sftm,     wcbowlo,  itech32_state, wcbowln,  ROT0, "Incredible Technologies",          "World Class Bowling (v1.65)" , 0) /* PIC 16C54 labeled as ITBWL-3 */
-GAME( 1995, wcbowl161,   wcbowl,   sftm,     wcbowlo,  itech32_state, wcbowln,  ROT0, "Incredible Technologies",          "World Class Bowling (v1.61)" , 0) /* PIC 16C54 labeled as ITBWL-3 */
-GAME( 1995, wcbowl16,    wcbowl,   sftm,     wcbowlo,  itech32_state, wcbowln,  ROT0, "Incredible Technologies",          "World Class Bowling (v1.6)" , 0) /* PIC 16C54 labeled as ITBWL-3 */
-GAME( 1995, wcbowl15,    wcbowl,   bloodstm, wcbowl,   itech32_state, wcbowl,   ROT0, "Incredible Technologies",          "World Class Bowling (v1.5)" , 0) /* PIC 16C54 labeled as ITBWL-1 */
-GAME( 1995, wcbowl14,    wcbowl,   bloodstm, wcbowl,   itech32_state, wcbowl,   ROT0, "Incredible Technologies",          "World Class Bowling (v1.4)" , 0) /* PIC 16C54 labeled as ITBWL-1 */
-GAME( 1995, wcbowl13,    wcbowl,   bloodstm, wcbowl,   itech32_state, wcbowl,   ROT0, "Incredible Technologies",          "World Class Bowling (v1.3)" , 0) /* PIC 16C54 labeled as ITBWL-1 */
-GAME( 1995, wcbowl13j,   wcbowl,   bloodstm, wcbowlj,  itech32_state, wcbowlj,  ROT0, "Incredible Technologies",          "World Class Bowling (v1.3J, Japan)" , 0) /* PIC 16C54 labeled as ITBWL-1 */
-GAME( 1995, wcbowl12,    wcbowl,   bloodstm, wcbowl,   itech32_state, wcbowl,   ROT0, "Incredible Technologies",          "World Class Bowling (v1.2)" , 0) /* PIC 16C54 labeled as ITBWL-1 */
-GAME( 1995, wcbowl11,    wcbowl,   bloodstm, wcbowl,   itech32_state, wcbowl,   ROT0, "Incredible Technologies",          "World Class Bowling (v1.1)" , 0) /* PIC 16C54 labeled as ITBWL-1 */
-GAME( 1995, sftm,        0,        sftm,     sftm,     itech32_state, sftm,     ROT0, "Capcom / Incredible Technologies", "Street Fighter: The Movie (v1.12)" , 0) /* PIC 16C54 labeled as ITSF-1 */
-GAME( 1995, sftm111,     sftm,     sftm,     sftm,     itech32_state, sftm110,  ROT0, "Capcom / Incredible Technologies", "Street Fighter: The Movie (v1.11)" , 0) /* PIC 16C54 labeled as ITSF-1 */
-GAME( 1995, sftm110,     sftm,     sftm,     sftm,     itech32_state, sftm110,  ROT0, "Capcom / Incredible Technologies", "Street Fighter: The Movie (v1.10)" , 0) /* PIC 16C54 labeled as ITSF-1 */
-GAME( 1995, sftmj,       sftm,     sftm,     sftm,     itech32_state, sftm,     ROT0, "Capcom / Incredible Technologies", "Street Fighter: The Movie (v1.12N, Japan)" , 0) /* PIC 16C54 labeled as ITSF-1 */
-GAME( 1997, shufshot,    0,        sftm,     shufshot, itech32_state, shufshot, ROT0, "Strata/Incredible Technologies",   "Shuffleshot (v1.40)" , 0) /* PIC 16C54 labeled as ITSHF-1 */
-GAME( 1997, shufshot139, shufshot, sftm,     shufshot, itech32_state, shufshot, ROT0, "Strata/Incredible Technologies",   "Shuffleshot (v1.39)" , 0) /* PIC 16C54 labeled as ITSHF-1 */
-GAME( 1997, shufshot137, shufshot, sftm,     shufshto, itech32_state, shufshot, ROT0, "Strata/Incredible Technologies",   "Shuffleshot (v1.37)" , 0) /* PIC 16C54 labeled as ITSHF-1 */
-GAME( 1997, wcbowl140,   wcbowldx, tourny,   wcbowldx, itech32_state, wcbowlt,  ROT0, "Incredible Technologies",          "World Class Bowling Tournament (v1.40)" , 0) /* PIC 16C54 labeled as ITBWL-3 */
-GAME( 1999, wcbowldx,    0,        sftm,     wcbowldx, itech32_state, shufshot, ROT0, "Incredible Technologies",          "World Class Bowling Deluxe (v2.00)" , 0) /* PIC 16C54 labeled as ITBWL-4 */
-=======
 GAME( 1992, timekill,     0,        timekill, timekill, itech32_state, timekill, ROT0, "Strata/Incredible Technologies",   "Time Killers (v1.32)", MACHINE_SUPPORTS_SAVE )
 GAME( 1992, timekill132i, timekill, timekill, timekill, itech32_state, timekill, ROT0, "Strata/Incredible Technologies",   "Time Killers (v1.32I)", MACHINE_SUPPORTS_SAVE )
 GAME( 1992, timekill131,  timekill, timekill, timekill, itech32_state, timekill, ROT0, "Strata/Incredible Technologies",   "Time Killers (v1.31)", MACHINE_SUPPORTS_SAVE )
@@ -4800,7 +4569,6 @@ GAME( 1997, shufshot139,  shufshot, sftm,     shufshot, itech32_state, shufshot,
 GAME( 1997, shufshot137,  shufshot, sftm,     shufshto, itech32_state, shufshot, ROT0, "Strata/Incredible Technologies",   "Shuffleshot (v1.37)" , MACHINE_SUPPORTS_SAVE ) /* PIC 16C54 labeled as ITSHF-1 */
 GAME( 1997, wcbowl140,    wcbowldx, tourny,   wcbowldx, itech32_state, wcbowlt,  ROT0, "Incredible Technologies",          "World Class Bowling Tournament (v1.40)" , MACHINE_SUPPORTS_SAVE ) /* PIC 16C54 labeled as ITBWL-3 */
 GAME( 1999, wcbowldx,     0,        sftm,     wcbowldx, itech32_state, shufshot, ROT0, "Incredible Technologies",          "World Class Bowling Deluxe (v2.00)" , MACHINE_SUPPORTS_SAVE ) /* PIC 16C54 labeled as ITBWL-4 */
->>>>>>> upstream/master
 
 /*
     The following naming conventions are used:
@@ -4843,49 +4611,6 @@ NOTE: There is an "8 Meg board" version of the P/N 1083 Rev 2 PCB, so GROM0_0 th
     Parent set will always be gt(year) with the most recent version.  IE: gt97 is Golden Tee '97 v1.30
 
 */
-<<<<<<< HEAD
-GAME( 1995, gt3d,      0,        sftm,    gt3d,  itech32_state,  aama,    ROT0, "Incredible Technologies", "Golden Tee 3D Golf (v1.93N)" , 0) /* PIC 16C54 labeled as ITGF-2 */
-GAME( 1995, gt3dl192,  gt3d,     sftm,    gt3d,  itech32_state,  gt3dl,   ROT0, "Incredible Technologies", "Golden Tee 3D Golf (v1.92L)" , 0) /* PIC 16C54 labeled as ITGF-2 */
-GAME( 1995, gt3dl191,  gt3d,     sftm,    gt3d,  itech32_state,  gt3dl,   ROT0, "Incredible Technologies", "Golden Tee 3D Golf (v1.91L)" , 0) /* PIC 16C54 labeled as ITGF-2 */
-GAME( 1995, gt3dl19,   gt3d,     sftm,    gt3d,  itech32_state,  gt3dl,   ROT0, "Incredible Technologies", "Golden Tee 3D Golf (v1.9L)" , 0) /* PIC 16C54 labeled as ITGF-2 */
-GAME( 1995, gt3ds192,  gt3d,     sftm,    gt3d,  itech32_state,  gt3d,    ROT0, "Incredible Technologies", "Golden Tee 3D Golf (v1.92S)" , 0) /* PIC 16C54 labeled as ITGF-1 */
-GAME( 1995, gt3dv18,   gt3d,     sftm,    gt3d,  itech32_state,  gt3d,    ROT0, "Incredible Technologies", "Golden Tee 3D Golf (v1.8)" , 0) /* PIC 16C54 labeled as ITGF-1 */
-GAME( 1995, gt3dv17,   gt3d,     sftm,    gt3d,  itech32_state,  gt3d,    ROT0, "Incredible Technologies", "Golden Tee 3D Golf (v1.7)" , 0) /* PIC 16C54 labeled as ITGF-1 */
-GAME( 1995, gt3dv16,   gt3d,     sftm,    gt3d,  itech32_state,  gt3d,    ROT0, "Incredible Technologies", "Golden Tee 3D Golf (v1.6)" , 0) /* PIC 16C54 labeled as ITGF-1 */
-GAME( 1995, gt3dv15,   gt3d,     sftm,    gt3d,  itech32_state,  gt3d,    ROT0, "Incredible Technologies", "Golden Tee 3D Golf (v1.5)" , 0) /* PIC 16C54 labeled as ITGF-1 */
-GAME( 1995, gt3dv14,   gt3d,     sftm,    gt3d,  itech32_state,  gt3d,    ROT0, "Incredible Technologies", "Golden Tee 3D Golf (v1.4)" , 0) /* PIC 16C54 labeled as ITGF-1 */
-GAME( 1995, gt3dt231,  gt3d,     tourny,  gt3d,  itech32_state,  aamat,   ROT0, "Incredible Technologies", "Golden Tee 3D Golf Tournament (v2.31)" , 0) /* PIC 16C54 labeled as ITGF-2 */
-GAME( 1995, gt3dt211,  gt3d,     tourny,  gt3d,  itech32_state,  aamat,   ROT0, "Incredible Technologies", "Golden Tee 3D Golf Tournament (v2.11)" , 0) /* PIC 16C54 labeled as ITGF-2 */
-
-GAME( 1997, gt97,      0,        sftm,    gt97,  itech32_state, aama,     ROT0, "Incredible Technologies", "Golden Tee '97 (v1.30)" , 0) /* PIC 16C54 labeled as ITGFS-3 */
-GAME( 1997, gt97v122,  gt97,     sftm,    gt97o, itech32_state, aama,     ROT0, "Incredible Technologies", "Golden Tee '97 (v1.22)" , 0) /* PIC 16C54 labeled as ITGFS-3 */
-GAME( 1997, gt97v121,  gt97,     sftm,    gt97o, itech32_state, aama,     ROT0, "Incredible Technologies", "Golden Tee '97 (v1.21)" , 0) /* PIC 16C54 labeled as ITGFS-3 */
-GAME( 1997, gt97s121,  gt97,     sftm,    gt97s, itech32_state, s_ver,    ROT0, "Incredible Technologies", "Golden Tee '97 (v1.21S)" , 0) /* PIC 16C54 labeled as ITGFM-3 */
-GAME( 1997, gt97v120,  gt97,     sftm,    gt97o, itech32_state, aama,     ROT0, "Incredible Technologies", "Golden Tee '97 (v1.20)" , 0) /* PIC 16C54 labeled as ITGFS-3 */
-GAME( 1997, gt97t243,  gt97,     tourny,  gt97o, itech32_state, aamat,    ROT0, "Incredible Technologies", "Golden Tee '97 Tournament (v2.43)" , 0) /* PIC 16C54 labeled as ITGFS-3 */
-GAME( 1997, gt97t240,  gt97,     tourny,  gt97o, itech32_state, aamat,    ROT0, "Incredible Technologies", "Golden Tee '97 Tournament (v2.40)" , 0) /* PIC 16C54 labeled as ITGFS-3 */
-
-GAME( 1998, gt98,      0,        sftm,    aama,  itech32_state, aama,     ROT0, "Incredible Technologies", "Golden Tee '98 (v1.10)" , 0) /* PIC 16C54 labeled as ITGF98 */
-GAME( 1998, gt98v100,  gt98,     sftm,    gt98,  itech32_state, aama,     ROT0, "Incredible Technologies", "Golden Tee '98 (v1.00)" , 0) /* PIC 16C54 labeled as ITGF98 */
-GAME( 1998, gt98s100,  gt98,     sftm,    gt98s, itech32_state, s_ver,    ROT0, "Incredible Technologies", "Golden Tee '98 (v1.00S)" , 0) /* PIC 16C54 labeled as ITGF98-M */
-GAME( 1998, gt98t303,  gt98,     tourny,  gt98s, itech32_state, aamat,    ROT0, "Incredible Technologies", "Golden Tee '98 Tournament (v3.03)" , 0) /* PIC 16C54 labeled as ITGF98 */
-GAME( 1998, gtdiamond, gt98,     tourny,  gt98s, itech32_state, aamat,    ROT0, "Incredible Technologies", "Golden Tee Diamond Edition Tournament (v3.05T ELC)" , 0) /* PIC 16C54 labeled as ITGF98 */
-
-GAME( 1999, gt99,      0,        sftm,    aama,  itech32_state, aama,     ROT0, "Incredible Technologies", "Golden Tee '99 (v1.00)" , 0) /* PIC 16C54 labeled as ITGF99 */
-GAME( 1999, gt99s100,  gt99,     sftm,    s_ver, itech32_state, s_ver,    ROT0, "Incredible Technologies", "Golden Tee '99 (v1.00S)" , 0) /* PIC 16C54 labeled as ITGF99-M */
-GAME( 1999, gt99t400,  gt99,     tourny,  gt98s, itech32_state, aamat,    ROT0, "Incredible Technologies", "Golden Tee '99 Tournament (v4.00)" , 0) /* PIC 16C54 labeled as ITGF99 */
-GAME( 1999, gtroyal,   gt99,     tourny,  gt98s, itech32_state, aamat,    ROT0, "Incredible Technologies", "Golden Tee Royal Edition Tournament (v4.02T EDM)" , 0) /* PIC 16C54 labeled as ITGF99I */
-
-GAME( 2000, gt2k,      0,        sftm,    aama,  itech32_state, aama,     ROT0, "Incredible Technologies", "Golden Tee 2K (v1.00)" , 0) /* PIC 16C54 labeled as ITGF2K */
-GAME( 2000, gt2kp100,  gt2k,     sftm,    aama,  itech32_state, gt2kp,    ROT0, "Incredible Technologies", "Golden Tee 2K (v1.00) (alt protection)" , 0) /* PIC 16C54 labeled as ???? */
-GAME( 2000, gt2ks100,  gt2k,     sftm,    s_ver, itech32_state, s_ver,    ROT0, "Incredible Technologies", "Golden Tee 2K (v1.00S)" , 0) /* PIC 16C54 labeled as ITGF2K-M */
-GAME( 2000, gt2kt500,  gt2k,     tourny,  gt98s, itech32_state, aamat,    ROT0, "Incredible Technologies", "Golden Tee 2K Tournament (v5.00)" , 0) /* PIC 16C54 labeled as ITGF2K */
-GAME( 2002, gtsupreme, gt2k,     tourny,  gt98s, itech32_state, aamat,    ROT0, "Incredible Technologies", "Golden Tee Supreme Edition Tournament (v5.10T ELC S)" , 0) /* PIC 16C54 labeled as ITGF2K-I */
-
-GAME( 2001, gtclassc,  0,        sftm,    aama, itech32_state, aama,      ROT0, "Incredible Technologies", "Golden Tee Classic (v1.00)" , 0) /* PIC 16C54 labeled as ITGFCL */
-GAME( 2001, gtclasscp, gtclassc, sftm,    aama, itech32_state, gtclasscp, ROT0, "Incredible Technologies", "Golden Tee Classic (v1.00) (alt protection)" , 0) /* PIC 16C54 labeled as ITGFCL */
-GAME( 2001, gtclasscs, gtclassc, sftm,   s_ver, itech32_state, s_ver,     ROT0, "Incredible Technologies", "Golden Tee Classic (v1.00S)" , 0) /* PIC 16C54 labeled as ITGFCL-M */
-=======
 GAME( 1995, gt3d,      0,        sftm,    gt3d,  itech32_state,  aama,    ROT0, "Incredible Technologies", "Golden Tee 3D Golf (v1.93N)" , MACHINE_SUPPORTS_SAVE ) /* PIC 16C54 labeled as ITGF-2 */
 GAME( 1995, gt3dl192,  gt3d,     sftm,    gt3d,  itech32_state,  gt3dl,   ROT0, "Incredible Technologies", "Golden Tee 3D Golf (v1.92L)" , MACHINE_SUPPORTS_SAVE ) /* PIC 16C54 labeled as ITGF-2 */
 GAME( 1995, gt3dl191,  gt3d,     sftm,    gt3d,  itech32_state,  gt3dl,   ROT0, "Incredible Technologies", "Golden Tee 3D Golf (v1.91L)" , MACHINE_SUPPORTS_SAVE ) /* PIC 16C54 labeled as ITGF-2 */
@@ -4928,4 +4653,3 @@ GAME( 2002, gtsupreme, gt2k,     tourny,  gt98s, itech32_state, aamat,    ROT0, 
 GAME( 2001, gtclassc,  0,        sftm,    aama, itech32_state, aama,      ROT0, "Incredible Technologies", "Golden Tee Classic (v1.00)" , MACHINE_SUPPORTS_SAVE ) /* PIC 16C54 labeled as ITGFCL */
 GAME( 2001, gtclasscp, gtclassc, sftm,    aama, itech32_state, gtclasscp, ROT0, "Incredible Technologies", "Golden Tee Classic (v1.00) (alt protection)" , MACHINE_SUPPORTS_SAVE ) /* PIC 16C54 labeled as ITGFCL */
 GAME( 2001, gtclasscs, gtclassc, sftm,   s_ver, itech32_state, s_ver,     ROT0, "Incredible Technologies", "Golden Tee Classic (v1.00S)" , MACHINE_SUPPORTS_SAVE ) /* PIC 16C54 labeled as ITGFCL-M */
->>>>>>> upstream/master

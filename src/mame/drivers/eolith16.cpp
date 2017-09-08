@@ -12,13 +12,6 @@
 **********************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/e132xs/e132xs.h"
-#include "machine/eepromser.h"
-
-#include "sound/okim6295.h"
-#include "includes/eolith.h"
-=======
 #include "includes/eolith.h"
 
 #include "cpu/e132xs/e132xs.h"
@@ -26,7 +19,6 @@
 #include "sound/okim6295.h"
 
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 class eolith16_state : public eolith_state
@@ -35,11 +27,7 @@ public:
 	eolith16_state(const machine_config &mconfig, device_type type, const char *tag)
 		: eolith_state(mconfig, type, tag) { }
 
-<<<<<<< HEAD
-	UINT16 *m_vram;
-=======
 	std::unique_ptr<uint16_t[]> m_vram;
->>>>>>> upstream/master
 	int m_vbuffer;
 
 	DECLARE_WRITE16_MEMBER(eeprom_w);
@@ -51,11 +39,7 @@ public:
 	DECLARE_VIDEO_START(eolith16);
 	DECLARE_PALETTE_INIT(eolith16);
 
-<<<<<<< HEAD
-	UINT32 screen_update_eolith16(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	uint32_t screen_update_eolith16(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 };
 
 
@@ -63,11 +47,7 @@ public:
 WRITE16_MEMBER(eolith16_state::eeprom_w)
 {
 	m_vbuffer = (data & 0x80) >> 7;
-<<<<<<< HEAD
-	coin_counter_w(machine(), 0, data & 1);
-=======
 	machine().bookkeeping().coin_counter_w(0, data & 1);
->>>>>>> upstream/master
 
 	m_eepromoutport->write(data, 0xff);
 
@@ -109,11 +89,7 @@ ADDRESS_MAP_END
 static INPUT_PORTS_START( eolith16 )
 	PORT_START("SPECIAL")
 	PORT_BIT( 0x0010, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_READ_LINE_DEVICE_MEMBER("eeprom", eeprom_serial_93cxx_device, do_read)
-<<<<<<< HEAD
-	PORT_BIT( 0x0080, IP_ACTIVE_LOW, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, eolith16_state, eolith_speedup_getvblank, NULL)
-=======
 	PORT_BIT( 0x0080, IP_ACTIVE_LOW, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, eolith16_state, eolith_speedup_getvblank, nullptr)
->>>>>>> upstream/master
 	PORT_BIT( 0xff6f, IP_ACTIVE_LOW, IPT_UNUSED )
 
 	PORT_START("SYSTEM")
@@ -142,21 +118,12 @@ INPUT_PORTS_END
 
 VIDEO_START_MEMBER(eolith16_state,eolith16)
 {
-<<<<<<< HEAD
-	m_vram = auto_alloc_array(machine(), UINT16, 0x10000);
-	save_pointer(NAME(m_vram), 0x10000);
-	save_item(NAME(m_vbuffer));
-}
-
-UINT32 eolith16_state::screen_update_eolith16(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 	m_vram = std::make_unique<uint16_t[]>(0x10000);
 	save_pointer(NAME(m_vram.get()), 0x10000);
 	save_item(NAME(m_vbuffer));
 }
 
 uint32_t eolith16_state::screen_update_eolith16(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int x,y,count;
 	int color;
@@ -205,11 +172,7 @@ PALETTE_INIT_MEMBER(eolith16_state,eolith16)
 
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( eolith16, eolith16_state )
-=======
 static MACHINE_CONFIG_START( eolith16 )
->>>>>>> upstream/master
 	MCFG_CPU_ADD("maincpu", E116T, 60000000)        /* no internal multiplier */
 	MCFG_CPU_PROGRAM_MAP(eolith16_map)
 	MCFG_TIMER_DRIVER_ADD_SCANLINE("scantimer", eolith16_state, eolith_speedup, "screen", 0, 1)
@@ -232,11 +195,7 @@ static MACHINE_CONFIG_START( eolith16 )
 
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki", 1000000, OKIM6295_PIN7_HIGH)
-=======
 	MCFG_OKIM6295_ADD("oki", 1000000, PIN7_HIGH)
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 1.0)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 1.0)
 MACHINE_CONFIG_END

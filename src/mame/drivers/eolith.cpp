@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-// license:LGPL-2.1+
-=======
 // license:BSD-3-Clause
->>>>>>> upstream/master
 // copyright-holders:Tomasz Slanina,Pierpaolo Prazzoli
 /********************************************************************
  Eolith 32 bits hardware: Gradation 2D system
@@ -40,12 +36,8 @@
   1999 - Land Breaker (pcb ver 3.03) (MCU internal flash dump is missing)
   1999 - Land Breaker (pcb ver 3.02)
   1999 - New Hidden Catch (pcb ver 3.02)
-<<<<<<< HEAD
-  1999 - Penfan Girls
-=======
   1999 - Penfan Girls (set 1, pcb ver 3.03)
   1999 - Penfan Girls (set 2, pcb ver 3.03P)
->>>>>>> upstream/master
   2000 - Hidden Catch 3 (v. 1.00 / pcb ver 3.05)
   2001 - Fortress 2 Blue Arcade (v. 1.01 / pcb ver 3.05)
   2001 - Fortress 2 Blue Arcade (v. 1.00 / pcb ver 3.05)
@@ -109,13 +101,6 @@
  *********************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/e132xs/e132xs.h"
-#include "cpu/mcs51/mcs51.h"
-
-#include "machine/eepromser.h"
-#include "includes/eolith.h"
-=======
 #include "includes/eolith.h"
 
 #include "cpu/e132xs/e132xs.h"
@@ -123,7 +108,6 @@
 #include "machine/eepromser.h"
 
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 /*************************************
@@ -150,13 +134,8 @@ READ32_MEMBER(eolith_state::eolith_custom_r)
 WRITE32_MEMBER(eolith_state::systemcontrol_w)
 {
 	m_buffer = (data & 0x80) >> 7;
-<<<<<<< HEAD
-	coin_counter_w(machine(), 0, data & m_coin_counter_bit);
-	set_led_status(machine(), 0, data & 1);
-=======
 	machine().bookkeeping().coin_counter_w(0, data & m_coin_counter_bit);
 	output().set_led_value(0, data & 1);
->>>>>>> upstream/master
 
 	m_eepromoutport->write(data, 0xff);
 
@@ -305,11 +284,7 @@ static INPUT_PORTS_START( common )
 	PORT_BIT( 0x00000008, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_READ_LINE_DEVICE_MEMBER("eeprom", eeprom_serial_93cxx_device, do_read)
 	PORT_BIT( 0x00000010, IP_ACTIVE_LOW, IPT_COIN1 )
 	PORT_BIT( 0x00000020, IP_ACTIVE_LOW, IPT_UNUSED )
-<<<<<<< HEAD
-	PORT_BIT( 0x00000040, IP_ACTIVE_LOW, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, eolith_state, eolith_speedup_getvblank, NULL)
-=======
 	PORT_BIT( 0x00000040, IP_ACTIVE_LOW, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, eolith_state, eolith_speedup_getvblank, nullptr)
->>>>>>> upstream/master
 	PORT_BIT( 0x00003f80, IP_ACTIVE_LOW, IPT_UNUSED )
 	PORT_BIT( 0x00004000, IP_ACTIVE_LOW, IPT_SERVICE1 )
 	PORT_SERVICE_NO_TOGGLE( 0x00008000, IP_ACTIVE_LOW )
@@ -547,11 +522,7 @@ static INPUT_PORTS_START( stealsee )
 	PORT_INCLUDE(common)
 
 	PORT_MODIFY("IN0")
-<<<<<<< HEAD
-	PORT_BIT( 0x00000040, IP_ACTIVE_LOW, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, eolith_state, stealsee_speedup_getvblank, NULL)
-=======
 	PORT_BIT( 0x00000040, IP_ACTIVE_LOW, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, eolith_state, stealsee_speedup_getvblank, nullptr)
->>>>>>> upstream/master
 INPUT_PORTS_END
 
 
@@ -573,11 +544,7 @@ INPUT_PORTS_END
  *
  *************************************/
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( eolith45, eolith_state )
-=======
 static MACHINE_CONFIG_START( eolith45 )
->>>>>>> upstream/master
 	MCFG_CPU_ADD("maincpu", E132N, 45000000)         /* 45 MHz */
 	MCFG_CPU_PROGRAM_MAP(eolith_map)
 	MCFG_TIMER_DRIVER_ADD_SCANLINE("scantimer", eolith_state, eolith_speedup, "screen", 0, 1)
@@ -586,10 +553,7 @@ static MACHINE_CONFIG_START( eolith45 )
 	MCFG_CPU_ADD("soundcpu", I8032, XTAL_12MHz)
 	MCFG_CPU_PROGRAM_MAP(sound_prg_map)
 	MCFG_CPU_IO_MAP(sound_io_map)
-<<<<<<< HEAD
-=======
 	MCFG_MCS51_SERIAL_TX_CB(WRITE8(eolith_state, soundcpu_to_qs1000)) // Sound CPU -> QS1000 CPU serial link
->>>>>>> upstream/master
 
 	MCFG_MACHINE_RESET_OVERRIDE(eolith_state,eolith)
 
@@ -632,11 +596,7 @@ MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_DERIVED( ironfort, eolith45 )
 	MCFG_CPU_MODIFY("maincpu")
-<<<<<<< HEAD
-	MCFG_CPU_CLOCK(44900000) /* Normaly 45MHz??? but PCB actually had a 44.9MHz OSC, so it's value is used */
-=======
 	MCFG_CPU_CLOCK(44900000) /* Normally 45MHz??? but PCB actually had a 44.9MHz OSC, so it's value is used */
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
@@ -1243,14 +1203,9 @@ ROM_START( penfana )
 	ROM_LOAD32_WORD_SWAP( "11.u11", 0x1400002, 0x200000, CRC(ddcd2bae) SHA1(c4fa5ebbaf801a7f06222150658033955966fe1b) )
 	ROM_LOAD32_WORD_SWAP( "12.u17", 0x1800000, 0x200000, CRC(2eed0f64) SHA1(3b9e65e41d8699a93ea74225ba12a3f66ecba11d) )
 	ROM_LOAD32_WORD_SWAP( "13.u12", 0x1800002, 0x200000, CRC(cc3068a8) SHA1(0022fad5a4d36678d35e99092c870f2b99d3d8d4) )
-<<<<<<< HEAD
-	ROM_LOAD32_WORD_SWAP( "14.u18", 0x1c00000, 0x200000, CRC(20a9a08e) SHA1(fe4071cdf78d362bccaee92cdc70c66f7e30f817) ) // not checked by rom check
-	ROM_LOAD32_WORD_SWAP( "15.u13", 0x1c00002, 0x200000, CRC(872fa9c4) SHA1(4902faa97c9a3a9671cfefc6a711cfcd25f2d6bc) ) // not checked by rom check
-=======
 	// The 3.03P version doesn't even have these populated
 	//ROM_LOAD32_WORD_SWAP( "14.u18", 0x1c00000, 0x200000, CRC(20a9a08e) SHA1(fe4071cdf78d362bccaee92cdc70c66f7e30f817) ) // not checked by rom check
 	//ROM_LOAD32_WORD_SWAP( "15.u13", 0x1c00002, 0x200000, CRC(872fa9c4) SHA1(4902faa97c9a3a9671cfefc6a711cfcd25f2d6bc) ) // not checked by rom check
->>>>>>> upstream/master
 
 	ROM_REGION( 0x008000, "soundcpu", 0 ) /* Sound (80c301) CPU Code */
 	ROM_LOAD( "pfg.u111", 0x0000, 0x8000, CRC(79012474) SHA1(09a2d5705d7bc52cc2d1644c87c1e31ee44813ef) )
@@ -1541,12 +1496,6 @@ DRIVER_INIT_MEMBER(eolith_state,eolith)
 {
 	init_speedup();
 
-<<<<<<< HEAD
-	// Sound CPU -> QS1000 CPU serial link
-	m_soundcpu->i8051_set_serial_tx_callback(write8_delegate(FUNC(eolith_state::soundcpu_to_qs1000),this));
-
-=======
->>>>>>> upstream/master
 	// Configure the sound ROM banking
 	membank("sound_bank")->configure_entries(0, 16, memregion("sounddata")->base(), 0x8000);
 
@@ -1569,11 +1518,7 @@ DRIVER_INIT_MEMBER(eolith_state,landbrka)
 	//it fails compares with memories:
 	//$4002d338 -> $4002d348 .... $4002d33f -> $4002d34f
 	//related with bits 0x100 - 0x200 read at startup from input(0) ?
-<<<<<<< HEAD
-	UINT32 *rombase = (UINT32*)memregion("maincpu")->base();
-=======
 	uint32_t *rombase = (uint32_t*)memregion("maincpu")->base();
->>>>>>> upstream/master
 	rombase[0x14f00/4] = (rombase[0x14f00/4] & 0xffff) | 0x03000000; /* Change BR to NOP */
 
 	m_coin_counter_bit = 0x2000;
@@ -1584,11 +1529,7 @@ DRIVER_INIT_MEMBER(eolith_state,landbrka)
 DRIVER_INIT_MEMBER(eolith_state,hidctch2)
 {
 	//it fails compares in memory like in landbrka
-<<<<<<< HEAD
-	UINT32 *rombase = (UINT32*)memregion("maincpu")->base();
-=======
 	uint32_t *rombase = (uint32_t*)memregion("maincpu")->base();
->>>>>>> upstream/master
 	rombase[0xbcc8/4] = (rombase[0xbcc8/4] & 0xffff) | 0x03000000; /* Change BR to NOP */
 
 	DRIVER_INIT_CALL(eolith);
@@ -1597,11 +1538,7 @@ DRIVER_INIT_MEMBER(eolith_state,hidctch2)
 
 DRIVER_INIT_MEMBER(eolith_state,hidnc2k)
 {
-<<<<<<< HEAD
-	UINT32 *rombase = (UINT32*)memregion("maincpu")->base();
-=======
 	uint32_t *rombase = (uint32_t*)memregion("maincpu")->base();
->>>>>>> upstream/master
 	rombase[0x17b2c/4] = (rombase[0x17b2c/4] & 0x0000ffff) | 0x03000000; /* Change BR to NOP */
 	DRIVER_INIT_CALL(eolith);
 }
@@ -1627,8 +1564,6 @@ DRIVER_INIT_MEMBER(eolith_state,hidctch3)
 	DRIVER_INIT_CALL(eolith);
 }
 
-<<<<<<< HEAD
-=======
 /* Eolith Speedup Handling */
 
 /*
@@ -1755,7 +1690,6 @@ CUSTOM_INPUT_MEMBER(eolith_state::stealsee_speedup_getvblank)
 	return (m_screen->vpos() >= 240);
 }
 
->>>>>>> upstream/master
 
 /*************************************
  *

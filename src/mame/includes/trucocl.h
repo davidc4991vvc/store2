@@ -20,13 +20,6 @@ public:
 
 	int m_cur_dac_address;
 	int m_cur_dac_address_index;
-<<<<<<< HEAD
-	required_shared_ptr<UINT8> m_videoram;
-	required_shared_ptr<UINT8> m_colorram;
-	tilemap_t *m_bg_tilemap;
-
-	UINT8 m_irq_mask;
-=======
 	required_shared_ptr<uint8_t> m_videoram;
 	required_shared_ptr<uint8_t> m_colorram;
 	tilemap_t *m_bg_tilemap;
@@ -34,25 +27,12 @@ public:
 	uint8_t m_irq_mask;
 	emu_timer *m_dac_irq_timer;
 
->>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(irq_enable_w);
 	DECLARE_WRITE8_MEMBER(trucocl_videoram_w);
 	DECLARE_WRITE8_MEMBER(trucocl_colorram_w);
 	DECLARE_WRITE8_MEMBER(audio_dac_w);
 	DECLARE_DRIVER_INIT(trucocl);
 	TILE_GET_INFO_MEMBER(get_bg_tile_info);
-<<<<<<< HEAD
-	virtual void video_start();
-	DECLARE_PALETTE_INIT(trucocl);
-	UINT32 screen_update_trucocl(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	INTERRUPT_GEN_MEMBER(trucocl_interrupt);
-	required_device<cpu_device> m_maincpu;
-	required_device<dac_device> m_dac;
-	required_device<gfxdecode_device> m_gfxdecode;
-
-protected:
-	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
-=======
 	virtual void video_start() override;
 	DECLARE_PALETTE_INIT(trucocl);
 	uint32_t screen_update_trucocl(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
@@ -63,5 +43,4 @@ protected:
 
 protected:
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
->>>>>>> upstream/master
 };

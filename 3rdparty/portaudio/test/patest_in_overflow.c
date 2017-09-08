@@ -11,11 +11,7 @@
 	@author Phil Burk <philburk@softsynth.com>
 */
 /*
-<<<<<<< HEAD
- * $Id: patest_in_overflow.c 1368 2008-03-01 00:38:27Z rossb $
-=======
  * $Id$
->>>>>>> upstream/master
  *
  * This program uses the PortAudio Portable Audio Library.
  * For more information see: http://www.portaudio.com

@@ -2,12 +2,6 @@
 // copyright-holders:Fabio Priuli
 /**********************************************************************
 
-<<<<<<< HEAD
-    Sega Master System "Rapid Fire Unit" emulation
-
-**********************************************************************/
-
-=======
     Sega SG-1000/Mark-III/SMS "Rapid Fire Unit" emulation
 
 
@@ -26,7 +20,6 @@ Notes:
 **********************************************************************/
 
 #include "emu.h"
->>>>>>> upstream/master
 #include "rfu.h"
 
 
@@ -35,15 +28,9 @@ Notes:
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type SMS_RAPID_FIRE = &device_creator<sms_rapid_fire_device>;
-
-
-=======
 DEFINE_DEVICE_TYPE(SMS_RAPID_FIRE, sms_rapid_fire_device, "sms_rapid_fire", "Sega SMS Rapid Fire Unit")
 
 // time interval not verified
->>>>>>> upstream/master
 #define RAPID_FIRE_INTERVAL attotime::from_hz(10)
 
 
@@ -76,13 +63,8 @@ ioport_constructor sms_rapid_fire_device::device_input_ports() const
 //  sms_rapid_fire_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-sms_rapid_fire_device::sms_rapid_fire_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-	device_t(mconfig, SMS_RAPID_FIRE, "Sega SMS Rapid Fire", tag, owner, clock, "sms_rapid_fire", __FILE__),
-=======
 sms_rapid_fire_device::sms_rapid_fire_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	device_t(mconfig, SMS_RAPID_FIRE, tag, owner, clock),
->>>>>>> upstream/master
 	device_sms_control_port_interface(mconfig, *this),
 	m_rfire_sw(*this, "rfu_sw"),
 	m_subctrl_port(*this, "ctrl"),
@@ -102,11 +84,6 @@ void sms_rapid_fire_device::device_start()
 
 	save_item(NAME(m_start_time));
 	save_item(NAME(m_read_state));
-<<<<<<< HEAD
-
-	m_subctrl_port->device_start();
-=======
->>>>>>> upstream/master
 }
 
 
@@ -114,15 +91,9 @@ void sms_rapid_fire_device::device_start()
 //  sms_peripheral_r - rapid fire read
 //-------------------------------------------------
 
-<<<<<<< HEAD
-UINT8 sms_rapid_fire_device::peripheral_r()
-{
-	UINT8 data = 0xff;
-=======
 uint8_t sms_rapid_fire_device::peripheral_r()
 {
 	uint8_t data;
->>>>>>> upstream/master
 
 	int num_intervals = (machine().time() - m_start_time).as_double() / m_interval.as_double();
 	m_read_state = num_intervals & 1;
@@ -145,23 +116,14 @@ uint8_t sms_rapid_fire_device::peripheral_r()
 //  sms_peripheral_w - rapid fire write
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void sms_rapid_fire_device::peripheral_w(UINT8 data)
-=======
 void sms_rapid_fire_device::peripheral_w(uint8_t data)
->>>>>>> upstream/master
 {
 	m_subctrl_port->port_w(data);
 }
 
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  machine_config_additions - device-specific
-//  machine configurations
-=======
 //  device_add_mconfig - add device configuration
->>>>>>> upstream/master
 //-------------------------------------------------
 
 WRITE_LINE_MEMBER( sms_rapid_fire_device::th_pin_w )
@@ -176,21 +138,8 @@ READ32_MEMBER( sms_rapid_fire_device::pixel_r )
 }
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_FRAGMENT( rfire_slot )
-=======
 MACHINE_CONFIG_MEMBER( sms_rapid_fire_device::device_add_mconfig )
->>>>>>> upstream/master
 	MCFG_SMS_CONTROL_PORT_ADD("ctrl", sms_control_port_devices, "joypad")
 	MCFG_SMS_CONTROL_PORT_TH_INPUT_HANDLER(WRITELINE(sms_rapid_fire_device, th_pin_w))
 	MCFG_SMS_CONTROL_PORT_PIXEL_HANDLER(READ32(sms_rapid_fire_device, pixel_r))
 MACHINE_CONFIG_END
-<<<<<<< HEAD
-
-
-machine_config_constructor sms_rapid_fire_device::device_mconfig_additions() const
-{
-	return MACHINE_CONFIG_NAME( rfire_slot );
-}
-=======
->>>>>>> upstream/master

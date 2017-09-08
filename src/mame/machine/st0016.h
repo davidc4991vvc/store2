@@ -2,44 +2,6 @@
 // copyright-holders:Tomasz Slanina, David Haywood
 /* ST0016 - CPU (z80) + Sound + Video */
 
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __ST0016_CPU__
-#define __ST0016_CPU__
-
-#include "emu.h"
-#include "cpu/z80/z80.h"
-#include "sound/st0016.h"
-
-extern UINT8 macs_cart_slot;
-
-#define ISMACS  (st0016_game&0x80)
-#define ISMACS1 (((st0016_game&0x180)==0x180))
-#define ISMACS2 (((st0016_game&0x180)==0x080))
-
-
-#define ST0016_MAX_SPR_BANK   0x10
-#define ST0016_MAX_CHAR_BANK  0x10000
-#define ST0016_MAX_PAL_BANK   4
-
-#define ST0016_SPR_BANK_SIZE  0x1000
-#define ST0016_CHAR_BANK_SIZE 0x20
-#define ST0016_PAL_BANK_SIZE  0x200
-
-#define UNUSED_PEN 1024
-
-#define ST0016_SPR_BANK_MASK  (ST0016_MAX_SPR_BANK-1)
-#define ST0016_CHAR_BANK_MASK (ST0016_MAX_CHAR_BANK-1)
-#define ST0016_PAL_BANK_MASK  (ST0016_MAX_PAL_BANK-1)
-
-
-
-class st0016_cpu_device : public z80_device
-{
-public:
-	st0016_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32);
-=======
 #ifndef MAME_MACHINE_ST0016_H
 #define MAME_MACHINE_ST0016_H
 
@@ -62,7 +24,6 @@ public:
 	st0016_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t);
 
 	static void set_dma_offs_callback(device_t &device, st0016_dma_offs_delegate callback) { downcast<st0016_cpu_device &>(device).m_dma_offs_cb = callback; }
->>>>>>> upstream/master
 
 	DECLARE_WRITE8_MEMBER(st0016_sprite_bank_w);
 	DECLARE_WRITE8_MEMBER(st0016_palette_bank_w);
@@ -78,41 +39,14 @@ public:
 	DECLARE_READ8_MEMBER(st0016_vregs_r);
 	DECLARE_READ8_MEMBER(st0016_dma_r);
 	DECLARE_WRITE8_MEMBER(st0016_vregs_w);
-<<<<<<< HEAD
-	DECLARE_READ8_MEMBER(soundram_read);
-
-=======
 
 	void set_st0016_game_flag(uint32_t flag) { m_game_flag = flag; }
->>>>>>> upstream/master
 
 	void draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect);
 	void st0016_save_init();
 	void draw_bgmap(bitmap_ind16 &bitmap,const rectangle &cliprect, int priority);
 
 	void startup();
-<<<<<<< HEAD
-	UINT32 update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	void st0016_draw_screen(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-
-	UINT8 *st0016_spriteram,*st0016_paletteram;
-
-	UINT32 st0016_game;
-
-
-	INT32 st0016_spr_bank,st0016_spr2_bank,st0016_pal_bank,st0016_char_bank;
-	int spr_dx,spr_dy;
-
-	UINT8 st0016_vregs[0xc0];
-	int st0016_ramgfx;
-	UINT8 *m_charram;
-
-protected:
-	// device-level overrides
-	virtual machine_config_constructor device_mconfig_additions() const;
-	virtual void device_start();
-	virtual void device_reset();
-=======
 	uint32_t update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	void st0016_draw_screen(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 
@@ -152,31 +86,11 @@ protected:
 	virtual void device_add_mconfig(machine_config &config) override;
 	virtual void device_start() override;
 	virtual void device_reset() override;
->>>>>>> upstream/master
 
 	const address_space_config m_io_space_config;
 	const address_space_config m_space_config;
 
 
-<<<<<<< HEAD
-	const address_space_config *memory_space_config(address_spacenum spacenum) const
-	{
-		switch (spacenum)
-		{
-			case AS_IO: return &m_io_space_config;
-			case AS_PROGRAM: return &m_space_config;
-			default: return z80_device::memory_space_config(spacenum);
-		}
-	};
-	required_device<screen_device> m_screen;
-	required_device<gfxdecode_device> m_gfxdecode;
-
-public: // speglsht needs to access this for mixing
-	required_device<palette_device> m_palette;
-
-private:
-
-=======
 	virtual space_config_vector memory_space_config() const override;
 
 	required_device<screen_device> m_screen;
@@ -187,19 +101,11 @@ private:
 	uint32_t m_game_flag;
 
 	DECLARE_READ8_MEMBER(soundram_read);
->>>>>>> upstream/master
 };
 
 
 // device type definition
-<<<<<<< HEAD
-extern const device_type ST0016_CPU;
-
-
-#endif /// __ST0016_CPU__
-=======
 DECLARE_DEVICE_TYPE(ST0016_CPU, st0016_cpu_device)
 
 
 #endif // MAME_MACHINE_ST0016_H
->>>>>>> upstream/master

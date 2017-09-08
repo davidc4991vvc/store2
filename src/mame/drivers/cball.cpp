@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-// license:???
-=======
 // license:BSD-3-Clause
->>>>>>> upstream/master
 // copyright-holders:Stefan Jokisch
 /***************************************************************************
 
@@ -12,10 +8,7 @@
 
 #include "emu.h"
 #include "cpu/m6800/m6800.h"
-<<<<<<< HEAD
-=======
 #include "screen.h"
->>>>>>> upstream/master
 
 
 class cball_state : public driver_device
@@ -41,11 +34,7 @@ public:
 	required_device<palette_device> m_palette;
 
 	/* memory pointers */
-<<<<<<< HEAD
-	required_shared_ptr<UINT8> m_video_ram;
-=======
 	required_shared_ptr<uint8_t> m_video_ram;
->>>>>>> upstream/master
 
 	/* video-related */
 	tilemap_t* m_bg_tilemap;
@@ -59,17 +48,6 @@ public:
 
 	TILE_GET_INFO_MEMBER(get_tile_info);
 
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void machine_reset();
-	virtual void video_start();
-	DECLARE_PALETTE_INIT(cball);
-
-	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-
-protected:
-	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
-=======
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
 	virtual void video_start() override;
@@ -79,17 +57,12 @@ protected:
 
 protected:
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
->>>>>>> upstream/master
 };
 
 
 TILE_GET_INFO_MEMBER(cball_state::get_tile_info)
 {
-<<<<<<< HEAD
-	UINT8 code = m_video_ram[tile_index];
-=======
 	uint8_t code = m_video_ram[tile_index];
->>>>>>> upstream/master
 
 	SET_TILE_INFO_MEMBER(0, code, code >> 7, 0);
 }
@@ -104,19 +77,11 @@ WRITE8_MEMBER(cball_state::vram_w)
 
 void cball_state::video_start()
 {
-<<<<<<< HEAD
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(cball_state::get_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
-}
-
-
-UINT32 cball_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(cball_state::get_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
 }
 
 
 uint32_t cball_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	/* draw playfield */
 	m_bg_tilemap->draw(screen, bitmap, cliprect, 0, 0);
@@ -140,11 +105,7 @@ void cball_state::device_timer(emu_timer &timer, device_timer_id id, int param, 
 		interrupt_callback(ptr, param);
 		break;
 	default:
-<<<<<<< HEAD
-		assert_always(FALSE, "Unknown id in cball_state::device_timer");
-=======
 		assert_always(false, "Unknown id in cball_state::device_timer");
->>>>>>> upstream/master
 	}
 }
 
@@ -298,11 +259,7 @@ static GFXDECODE_START( cball )
 GFXDECODE_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( cball, cball_state )
-=======
 static MACHINE_CONFIG_START( cball )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6800, XTAL_12_096MHz / 16) /* ? */
@@ -347,8 +304,4 @@ ROM_START( cball )
 ROM_END
 
 
-<<<<<<< HEAD
-GAME( 1976, cball, 0, cball, cball, driver_device, 0, ROT0, "Atari", "Cannonball (Atari, prototype)", MACHINE_NO_SOUND | MACHINE_WRONG_COLORS | MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1976, cball, 0, cball, cball, cball_state, 0, ROT0, "Atari", "Cannonball (Atari, prototype)", MACHINE_NO_SOUND | MACHINE_WRONG_COLORS | MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

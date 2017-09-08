@@ -51,11 +51,7 @@ void gameplan_state::device_timer(emu_timer &timer, device_timer_id id, int para
 		via_0_ca1_timer_callback(ptr, param);
 		break;
 	default:
-<<<<<<< HEAD
-		assert_always(FALSE, "Unknown id in gameplan_state::device_timer");
-=======
 		assert_always(false, "Unknown id in gameplan_state::device_timer");
->>>>>>> upstream/master
 	}
 }
 
@@ -83,17 +79,10 @@ void gameplan_state::leprechn_get_pens( pen_t *pens )
 
 	for (i = 0; i < LEPRECHN_NUM_PENS; i++)
 	{
-<<<<<<< HEAD
-		UINT8 bk = (i & 8) ? 0x40 : 0x00;
-		UINT8 r = (i & 1) ? 0xff : bk;
-		UINT8 g = (i & 2) ? 0xff : bk;
-		UINT8 b = (i & 4) ? 0xff : bk;
-=======
 		uint8_t bk = (i & 8) ? 0x40 : 0x00;
 		uint8_t r = (i & 1) ? 0xff : bk;
 		uint8_t g = (i & 2) ? 0xff : bk;
 		uint8_t b = (i & 4) ? 0xff : bk;
->>>>>>> upstream/master
 
 		pens[i] = rgb_t(r, g, b);
 	}
@@ -107,11 +96,7 @@ void gameplan_state::leprechn_get_pens( pen_t *pens )
  *
  *************************************/
 
-<<<<<<< HEAD
-UINT32 gameplan_state::screen_update_gameplan(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
-=======
 uint32_t gameplan_state::screen_update_gameplan(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	pen_t pens[GAMEPLAN_NUM_PENS];
 	offs_t offs;
@@ -120,13 +105,8 @@ uint32_t gameplan_state::screen_update_gameplan(screen_device &screen, bitmap_rg
 
 	for (offs = 0; offs < m_videoram_size; offs++)
 	{
-<<<<<<< HEAD
-		UINT8 y = offs >> 8;
-		UINT8 x = offs & 0xff;
-=======
 		uint8_t y = offs >> 8;
 		uint8_t x = offs & 0xff;
->>>>>>> upstream/master
 
 		bitmap.pix32(y, x) = pens[m_videoram[offs] & 0x07];
 	}
@@ -135,11 +115,7 @@ uint32_t gameplan_state::screen_update_gameplan(screen_device &screen, bitmap_rg
 }
 
 
-<<<<<<< HEAD
-UINT32 gameplan_state::screen_update_leprechn(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
-=======
 uint32_t gameplan_state::screen_update_leprechn(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	pen_t pens[LEPRECHN_NUM_PENS];
 	offs_t offs;
@@ -148,13 +124,8 @@ uint32_t gameplan_state::screen_update_leprechn(screen_device &screen, bitmap_rg
 
 	for (offs = 0; offs < m_videoram_size; offs++)
 	{
-<<<<<<< HEAD
-		UINT8 y = offs >> 8;
-		UINT8 x = offs & 0xff;
-=======
 		uint8_t y = offs >> 8;
 		uint8_t x = offs & 0xff;
->>>>>>> upstream/master
 
 		bitmap.pix32(y, x) = pens[m_videoram[offs] & (LEPRECHN_NUM_PENS-1)];
 	}
@@ -248,11 +219,7 @@ WRITE_LINE_MEMBER(gameplan_state::video_command_trigger_w)
 				m_via_0->write_ca1(1);
 			}
 
-<<<<<<< HEAD
-			memset(m_videoram, m_video_data & 0x0f, m_videoram_size);
-=======
 			memset(m_videoram.get(), m_video_data & 0x0f, m_videoram_size);
->>>>>>> upstream/master
 
 			/* set a timer for an arbitrarily short period.
 			   The real time it takes to clear to screen is not
@@ -301,20 +268,12 @@ TIMER_CALLBACK_MEMBER(gameplan_state::via_0_ca1_timer_callback)
 VIDEO_START_MEMBER(gameplan_state,common)
 {
 	m_videoram_size = (HBSTART - HBEND) * (VBSTART - VBEND);
-<<<<<<< HEAD
-	m_videoram = auto_alloc_array(machine(), UINT8, m_videoram_size);
-=======
 	m_videoram = std::make_unique<uint8_t[]>(m_videoram_size);
->>>>>>> upstream/master
 
 	m_via_0_ca1_timer = timer_alloc(TIMER_VIA_0_CAL);
 
 	/* register for save states */
-<<<<<<< HEAD
-	save_pointer(NAME(m_videoram), m_videoram_size);
-=======
 	save_pointer(NAME(m_videoram.get()), m_videoram_size);
->>>>>>> upstream/master
 }
 
 
@@ -356,11 +315,7 @@ VIDEO_RESET_MEMBER(gameplan_state,gameplan)
  *
  *************************************/
 
-<<<<<<< HEAD
-MACHINE_CONFIG_FRAGMENT( gameplan_video )
-=======
 MACHINE_CONFIG_START( gameplan_video )
->>>>>>> upstream/master
 	MCFG_VIDEO_START_OVERRIDE(gameplan_state,gameplan)
 	MCFG_VIDEO_RESET_OVERRIDE(gameplan_state,gameplan)
 
@@ -370,11 +325,7 @@ MACHINE_CONFIG_START( gameplan_video )
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-MACHINE_CONFIG_FRAGMENT( leprechn_video )
-=======
 MACHINE_CONFIG_START( leprechn_video )
->>>>>>> upstream/master
 	MCFG_VIDEO_START_OVERRIDE(gameplan_state,leprechn)
 	MCFG_SCREEN_MODIFY("screen")
 	MCFG_SCREEN_UPDATE_DRIVER(gameplan_state, screen_update_leprechn)

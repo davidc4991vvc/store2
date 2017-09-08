@@ -647,13 +647,8 @@ ir_constant::ir_constant()
 }
 
 ir_constant::ir_constant(const struct glsl_type *type,
-<<<<<<< HEAD
-			 const ir_constant_data *data)
-   : ir_rvalue(ir_type_constant, glsl_precision_undefined)
-=======
 			 const ir_constant_data *data, glsl_precision precision)
    : ir_rvalue(ir_type_constant, precision)
->>>>>>> upstream/master
 {
    assert((type->base_type >= GLSL_TYPE_UINT)
 	  && (type->base_type <= GLSL_TYPE_BOOL));
@@ -1415,8 +1410,6 @@ ir_texture::set_sampler(ir_dereference *sampler, const glsl_type *type)
 }
 
 
-<<<<<<< HEAD
-=======
 bool
 ir_texture::has_lod(const glsl_type *sampler_type)
 {
@@ -1433,7 +1426,6 @@ ir_texture::has_lod(const glsl_type *sampler_type)
 }
 
 
->>>>>>> upstream/master
 void
 ir_swizzle::init_mask(const unsigned *comp, unsigned count)
 {

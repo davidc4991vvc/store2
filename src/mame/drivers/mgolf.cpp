@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-// license:???
-=======
 // license:BSD-3-Clause
->>>>>>> upstream/master
 // copyright-holders:Stefan Jokisch
 /***************************************************************************
 
@@ -12,10 +8,7 @@
 
 #include "emu.h"
 #include "cpu/m6502/m6502.h"
-<<<<<<< HEAD
-=======
 #include "screen.h"
->>>>>>> upstream/master
 
 class mgolf_state : public driver_device
 {
@@ -40,23 +33,14 @@ public:
 	required_device<palette_device> m_palette;
 
 	/* memory pointers */
-<<<<<<< HEAD
-	required_shared_ptr<UINT8> m_video_ram;
-=======
 	required_shared_ptr<uint8_t> m_video_ram;
->>>>>>> upstream/master
 
 	/* video-related */
 	tilemap_t* m_bg_tilemap;
 
 	/* misc */
-<<<<<<< HEAD
-	UINT8 m_prev;
-	UINT8 m_mask;
-=======
 	uint8_t m_prev;
 	uint8_t m_mask;
->>>>>>> upstream/master
 	attotime m_time_pushed;
 	attotime m_time_released;
 	emu_timer *m_interrupt_timer;
@@ -69,21 +53,12 @@ public:
 
 	TILE_GET_INFO_MEMBER(get_tile_info);
 
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void machine_reset();
-	virtual void video_start();
-	DECLARE_PALETTE_INIT(mgolf);
-
-	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
 	virtual void video_start() override;
 	DECLARE_PALETTE_INIT(mgolf);
 
 	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 
 	TIMER_CALLBACK_MEMBER(interrupt_callback);
 
@@ -91,21 +66,13 @@ public:
 	double calc_plunger_pos();
 
 protected:
-<<<<<<< HEAD
-	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
-=======
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
->>>>>>> upstream/master
 };
 
 
 TILE_GET_INFO_MEMBER(mgolf_state::get_tile_info)
 {
-<<<<<<< HEAD
-	UINT8 code = m_video_ram[tile_index];
-=======
 	uint8_t code = m_video_ram[tile_index];
->>>>>>> upstream/master
 
 	SET_TILE_INFO_MEMBER(0, code, code >> 7, 0);
 }
@@ -120,19 +87,11 @@ WRITE8_MEMBER(mgolf_state::vram_w)
 
 void mgolf_state::video_start()
 {
-<<<<<<< HEAD
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(mgolf_state::get_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
-}
-
-
-UINT32 mgolf_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(mgolf_state::get_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
 }
 
 
 uint32_t mgolf_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int i;
 
@@ -162,11 +121,7 @@ uint32_t mgolf_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap,
 
 void mgolf_state::update_plunger(  )
 {
-<<<<<<< HEAD
-	UINT8 val = ioport("BUTTON")->read();
-=======
 	uint8_t val = ioport("BUTTON")->read();
->>>>>>> upstream/master
 
 	if (m_prev != val)
 	{
@@ -193,11 +148,7 @@ void mgolf_state::device_timer(emu_timer &timer, device_timer_id id, int param, 
 		interrupt_callback(ptr, param);
 		break;
 	default:
-<<<<<<< HEAD
-		assert_always(FALSE, "Unknown id in mgolf_state::device_timer");
-=======
 		assert_always(false, "Unknown id in mgolf_state::device_timer");
->>>>>>> upstream/master
 	}
 }
 
@@ -233,11 +184,7 @@ READ8_MEMBER(mgolf_state::wram_r)
 
 READ8_MEMBER(mgolf_state::dial_r)
 {
-<<<<<<< HEAD
-	UINT8 val = ioport("41")->read();
-=======
 	uint8_t val = ioport("41")->read();
->>>>>>> upstream/master
 
 	if ((ioport("DIAL")->read() + 0x00) & 0x20)
 	{
@@ -256,11 +203,7 @@ READ8_MEMBER(mgolf_state::misc_r)
 {
 	double plunger = calc_plunger_pos(); /* see Video Pinball */
 
-<<<<<<< HEAD
-	UINT8 val = ioport("61")->read();
-=======
 	uint8_t val = ioport("61")->read();
->>>>>>> upstream/master
 
 	if (plunger >= 0.000 && plunger <= 0.001)
 	{
@@ -419,11 +362,7 @@ void mgolf_state::machine_reset()
 }
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( mgolf, mgolf_state )
-=======
 static MACHINE_CONFIG_START( mgolf )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6502, 12096000 / 16) /* ? */
@@ -470,8 +409,4 @@ ROM_START( mgolf )
 ROM_END
 
 
-<<<<<<< HEAD
-GAME( 1978, mgolf, 0, mgolf, mgolf, driver_device, 0, ROT270, "Atari", "Atari Mini Golf (prototype)", MACHINE_NO_SOUND | MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1978, mgolf, 0, mgolf, mgolf, mgolf_state, 0, ROT270, "Atari", "Atari Mini Golf (prototype)", MACHINE_NO_SOUND | MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

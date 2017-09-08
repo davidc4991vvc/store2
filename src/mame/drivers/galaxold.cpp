@@ -1,9 +1,5 @@
 // license:BSD-3-Clause
-<<<<<<< HEAD
-// copyright-holders:Nicola Salmoria
-=======
 // copyright-holders:Nicola Salmoria,Stephane Humbert
->>>>>>> upstream/master
 /***************************************************************************
 
  Galaxian/Moon Cresta hardware
@@ -104,15 +100,6 @@ Stephh's notes (based on the games Z80 code and some tests) for other games :
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/z80/z80.h"
-#include "cpu/s2650/s2650.h"
-#include "sound/ay8910.h"
-#include "sound/sn76496.h"
-#include "sound/dac.h"
-#include "audio/galaxian.h"
-#include "includes/galaxold.h"
-=======
 #include "includes/galaxold.h"
 #include "audio/galaxian.h"
 
@@ -122,7 +109,6 @@ Stephh's notes (based on the games Z80 code and some tests) for other games :
 #include "sound/ay8910.h"
 #include "sound/sn76496.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 /*************************************
@@ -183,11 +169,7 @@ static ADDRESS_MAP_START( galaxold_map, AS_PROGRAM, 8, galaxold_state )
 	AM_RANGE(0x7004, 0x7004) AM_WRITE(galaxold_stars_enable_w)
 	AM_RANGE(0x7006, 0x7006) AM_WRITE(galaxold_flip_screen_x_w)
 	AM_RANGE(0x7007, 0x7007) AM_WRITE(galaxold_flip_screen_y_w)
-<<<<<<< HEAD
-	AM_RANGE(0x7800, 0x7fff) AM_READ(watchdog_reset_r)
-=======
 	AM_RANGE(0x7800, 0x7fff) AM_DEVREAD("watchdog", watchdog_timer_device, reset_r)
->>>>>>> upstream/master
 	AM_RANGE(0x7800, 0x7800) AM_DEVWRITE("cust", galaxian_sound_device, pitch_w)
 	AM_RANGE(0xfffc, 0xffff) AM_RAM
 ADDRESS_MAP_END
@@ -215,11 +197,7 @@ static ADDRESS_MAP_START( mooncrst_map, AS_PROGRAM, 8, galaxold_state )
 	AM_RANGE(0xb004, 0xb004) AM_WRITE(galaxold_stars_enable_w)
 	AM_RANGE(0xb006, 0xb006) AM_WRITE(galaxold_flip_screen_x_w)
 	AM_RANGE(0xb007, 0xb007) AM_WRITE(galaxold_flip_screen_y_w)
-<<<<<<< HEAD
-	AM_RANGE(0xb800, 0xb800) AM_READ(watchdog_reset_r)
-=======
 	AM_RANGE(0xb800, 0xb800) AM_DEVREAD("watchdog", watchdog_timer_device, reset_r)
->>>>>>> upstream/master
 	AM_RANGE(0xb800, 0xb800) AM_DEVWRITE("cust", galaxian_sound_device, pitch_w)
 ADDRESS_MAP_END
 
@@ -239,11 +217,7 @@ static ADDRESS_MAP_START( hustlerb3_map, AS_PROGRAM, 8, galaxold_state )
 	AM_RANGE(0xa000, 0xa000) AM_READ_PORT("IN0")
 	AM_RANGE(0xa800, 0xa800) AM_READ_PORT("IN1")
 	AM_RANGE(0xb000, 0xb000) AM_READ_PORT("DSW0")
-<<<<<<< HEAD
-	AM_RANGE(0xb800, 0xb800) AM_READ(watchdog_reset_r)
-=======
 	AM_RANGE(0xb800, 0xb800) AM_DEVREAD("watchdog", watchdog_timer_device, reset_r)
->>>>>>> upstream/master
 
 	AM_RANGE(0xa004, 0xa007) AM_DEVWRITE("cust", galaxian_sound_device, lfo_freq_w)
 	AM_RANGE(0xa800, 0xa802) AM_DEVWRITE("cust", galaxian_sound_device, background_enable_w)
@@ -281,11 +255,7 @@ static ADDRESS_MAP_START( rockclim_map, AS_PROGRAM, 8, galaxold_state )
 	AM_RANGE(0xb000, 0xb000) AM_READ_PORT("DSW0") AM_WRITE(galaxold_nmi_enable_w)
 	AM_RANGE(0xb006, 0xb006) AM_WRITE(galaxold_flip_screen_x_w)
 	AM_RANGE(0xb007, 0xb007) AM_WRITE(galaxold_flip_screen_y_w)
-<<<<<<< HEAD
-	AM_RANGE(0xb800, 0xb800) AM_READ(watchdog_reset_r)
-=======
 	AM_RANGE(0xb800, 0xb800) AM_DEVREAD("watchdog", watchdog_timer_device, reset_r)
->>>>>>> upstream/master
 	AM_RANGE(0xb800, 0xb800) AM_DEVWRITE("cust", galaxian_sound_device, pitch_w)
 ADDRESS_MAP_END
 
@@ -313,11 +283,7 @@ static ADDRESS_MAP_START( ckongg_map, AS_PROGRAM, 8, galaxold_state )
 	AM_RANGE(0xc804, 0xc804) AM_WRITENOP // link cut
 	AM_RANGE(0xc806, 0xc806) AM_WRITE(galaxold_flip_screen_x_w)
 	AM_RANGE(0xc807, 0xc807) AM_WRITE(galaxold_flip_screen_y_w)
-<<<<<<< HEAD
-	AM_RANGE(0xcc00, 0xcc00) AM_READ(watchdog_reset_r) AM_DEVWRITE("cust", galaxian_sound_device, pitch_w)
-=======
 	AM_RANGE(0xcc00, 0xcc00) AM_DEVREAD("watchdog", watchdog_timer_device, reset_r) AM_DEVWRITE("cust", galaxian_sound_device, pitch_w)
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 /* Memory map based on mooncrst_map according to Z80 code - seems to be good but needs further checking */
@@ -344,11 +310,7 @@ static ADDRESS_MAP_START( ckongmc_map, AS_PROGRAM, 8, galaxold_state )
 	AM_RANGE(0xb004, 0xb004) AM_WRITENOP                                                            /* AM_WRITE(galaxold_stars_enable_w) */
 	AM_RANGE(0xb006, 0xb006) AM_WRITE(galaxold_flip_screen_x_w)                                     /* GUESS */
 	AM_RANGE(0xb007, 0xb007) AM_WRITE(galaxold_flip_screen_y_w)                                     /* GUESS */
-<<<<<<< HEAD
-	AM_RANGE(0xb800, 0xb800) AM_READ(watchdog_reset_r) AM_DEVWRITE("cust", galaxian_sound_device, pitch_w)     /* GUESS */
-=======
 	AM_RANGE(0xb800, 0xb800) AM_DEVREAD("watchdog", watchdog_timer_device, reset_r) AM_DEVWRITE("cust", galaxian_sound_device, pitch_w)     /* GUESS */
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -376,11 +338,7 @@ static ADDRESS_MAP_START( scramblb_map, AS_PROGRAM, 8, galaxold_state )
 	AM_RANGE(0x7004, 0x7004) AM_WRITE(galaxold_stars_enable_w)
 	AM_RANGE(0x7006, 0x7006) AM_WRITE(galaxold_flip_screen_x_w)
 	AM_RANGE(0x7007, 0x7007) AM_WRITE(galaxold_flip_screen_y_w)
-<<<<<<< HEAD
-	AM_RANGE(0x7800, 0x7800) AM_READ(watchdog_reset_r)
-=======
 	AM_RANGE(0x7800, 0x7800) AM_DEVREAD("watchdog", watchdog_timer_device, reset_r)
->>>>>>> upstream/master
 	AM_RANGE(0x7800, 0x7800) AM_DEVWRITE("cust", galaxian_sound_device, pitch_w)
 	AM_RANGE(0x8102, 0x8102) AM_READ(scramblb_protection_1_r)
 	AM_RANGE(0x8202, 0x8202) AM_READ(scramblb_protection_2_r)
@@ -408,11 +366,7 @@ static ADDRESS_MAP_START( scramb2_map, AS_PROGRAM, 8, galaxold_state )
 	AM_RANGE(0x6804, 0x6804) AM_WRITE(galaxold_stars_enable_w)
 	AM_RANGE(0x6806, 0x6806) AM_WRITE(galaxold_flip_screen_x_w)
 	AM_RANGE(0x6807, 0x6807) AM_WRITE(galaxold_flip_screen_y_w)
-<<<<<<< HEAD
-	AM_RANGE(0x7000, 0x7007) AM_READ(watchdog_reset_r)
-=======
 	AM_RANGE(0x7000, 0x7007) AM_DEVREAD("watchdog", watchdog_timer_device, reset_r)
->>>>>>> upstream/master
 	AM_RANGE(0x7006, 0x7006) AM_WRITENOP
 	AM_RANGE(0x7007, 0x7007) AM_WRITENOP
 	AM_RANGE(0x7800, 0x7807) AM_READ(scramb2_port2_r) // reads from 8 addresses, 1 bit per address
@@ -454,11 +408,7 @@ static ADDRESS_MAP_START( scrambler_map, AS_PROGRAM, 8, galaxold_state )
 	AM_RANGE(0x7004, 0x7004) AM_WRITE(galaxold_stars_enable_w)
 	AM_RANGE(0x7006, 0x7006) AM_WRITE(galaxold_flip_screen_x_w)
 	AM_RANGE(0x7007, 0x7007) AM_WRITE(galaxold_flip_screen_y_w)
-<<<<<<< HEAD
-	AM_RANGE(0x7800, 0x7800) AM_READ(watchdog_reset_r)
-=======
 	AM_RANGE(0x7800, 0x7800) AM_DEVREAD("watchdog", watchdog_timer_device, reset_r)
->>>>>>> upstream/master
 	AM_RANGE(0x7800, 0x7800) AM_DEVWRITE("cust", galaxian_sound_device, pitch_w)
 //  AM_RANGE(0x8102, 0x8102) AM_READ(scramblb_protection_1_r)
 	AM_RANGE(0x8202, 0x8202) AM_READ(scrambler_protection_2_r)
@@ -469,20 +419,12 @@ WRITE8_MEMBER( galaxold_state::guttang_rombank_w )
 //  printf("rombank %02x\n",data);
 	if (data&1)
 	{
-<<<<<<< HEAD
-		UINT8 *rom = memregion("maincpu")->base();
-=======
 		uint8_t *rom = memregion("maincpu")->base();
->>>>>>> upstream/master
 		membank("cpubank")->set_base(rom + 0x4000);
 	}
 	else
 	{
-<<<<<<< HEAD
-		UINT8 *rom = memregion("maincpu")->base();
-=======
 		uint8_t *rom = memregion("maincpu")->base();
->>>>>>> upstream/master
 		membank("cpubank")->set_base(rom + 0x2000);
 	}
 }
@@ -511,11 +453,7 @@ static ADDRESS_MAP_START( guttang_map, AS_PROGRAM, 8, galaxold_state )
 	AM_RANGE(0x7000, 0x7000) AM_READ_PORT("IN2")
 	AM_RANGE(0x7001, 0x7001) AM_WRITE(galaxold_nmi_enable_w)
 
-<<<<<<< HEAD
-	AM_RANGE(0x7800, 0x7800) AM_READ(watchdog_reset_r)  AM_DEVWRITE("cust", galaxian_sound_device, pitch_w)
-=======
 	AM_RANGE(0x7800, 0x7800) AM_DEVREAD("watchdog", watchdog_timer_device, reset_r)  AM_DEVWRITE("cust", galaxian_sound_device, pitch_w)
->>>>>>> upstream/master
 
 ADDRESS_MAP_END
 
@@ -544,11 +482,7 @@ static ADDRESS_MAP_START( _4in1_map, AS_PROGRAM, 8, galaxold_state )
 	AM_RANGE(0x7004, 0x7004) AM_WRITE(galaxold_stars_enable_w)
 	AM_RANGE(0x7006, 0x7006) AM_WRITE(galaxold_flip_screen_x_w)
 	AM_RANGE(0x7007, 0x7007) AM_WRITE(galaxold_flip_screen_y_w)
-<<<<<<< HEAD
-	AM_RANGE(0x7800, 0x78ff) AM_READ(watchdog_reset_r)
-=======
 	AM_RANGE(0x7800, 0x78ff) AM_DEVREAD("watchdog", watchdog_timer_device, reset_r)
->>>>>>> upstream/master
 	AM_RANGE(0x7800, 0x78ff) AM_DEVWRITE("cust", galaxian_sound_device, pitch_w)
 	AM_RANGE(0x8000, 0x8000) AM_WRITE(_4in1_bank_w)
 	AM_RANGE(0xc000, 0xdfff) AM_ROM     /* fixed menu code */
@@ -573,11 +507,7 @@ static ADDRESS_MAP_START( bagmanmc_map, AS_PROGRAM, 8, galaxold_state )
 	AM_RANGE(0xb002, 0xb002) AM_WRITE(galaxold_gfxbank_w)
 	AM_RANGE(0xb006, 0xb006) AM_WRITE(galaxold_flip_screen_x_w)
 	AM_RANGE(0xb007, 0xb007) AM_WRITE(galaxold_flip_screen_y_w)
-<<<<<<< HEAD
-	AM_RANGE(0xb800, 0xb800) AM_READ(watchdog_reset_r) AM_DEVWRITE("cust", galaxian_sound_device, pitch_w)
-=======
 	AM_RANGE(0xb800, 0xb800) AM_DEVREAD("watchdog", watchdog_timer_device, reset_r) AM_DEVWRITE("cust", galaxian_sound_device, pitch_w)
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -603,9 +533,6 @@ static ADDRESS_MAP_START( dkongjrm_map, AS_PROGRAM, 8, galaxold_state )
 	//AM_RANGE(0xb004, 0xb004) AM_WRITE(galaxold_stars_enable_w)
 	AM_RANGE(0xb006, 0xb006) AM_WRITE(galaxold_flip_screen_x_w)
 	AM_RANGE(0xb007, 0xb007) AM_WRITE(galaxold_flip_screen_y_w)
-<<<<<<< HEAD
-	AM_RANGE(0xb800, 0xb800) AM_READ(watchdog_reset_r) AM_DEVWRITE("cust", galaxian_sound_device, pitch_w)
-=======
 	AM_RANGE(0xb800, 0xb800) AM_DEVREAD("watchdog", watchdog_timer_device, reset_r) AM_DEVWRITE("cust", galaxian_sound_device, pitch_w)
 ADDRESS_MAP_END
 
@@ -633,7 +560,6 @@ static ADDRESS_MAP_START( dkongjrmc_map, AS_PROGRAM, 8, galaxold_state )
 	AM_RANGE(0x8104, 0x8107) AM_DEVWRITE("cust", galaxian_sound_device, lfo_freq_w)
 	AM_RANGE(0x8200, 0x8200) AM_DEVWRITE("cust", galaxian_sound_device, pitch_w)
 	AM_RANGE(0x9000, 0x9fff) AM_ROM
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -646,11 +572,7 @@ static ADDRESS_MAP_START( tazzmang, AS_PROGRAM, 8, galaxold_state )
 	AM_RANGE(0x8860, 0x887f) AM_RAM AM_SHARE("bulletsram")
 	AM_RANGE(0x8880, 0x8bff) AM_WRITENOP
 	AM_RANGE(0x9000, 0x93ff) AM_RAM_WRITE(galaxold_videoram_w) AM_SHARE("videoram")
-<<<<<<< HEAD
-	AM_RANGE(0x9800, 0x9800) AM_READ(watchdog_reset_r)
-=======
 	AM_RANGE(0x9800, 0x9800) AM_DEVREAD("watchdog", watchdog_timer_device, reset_r)
->>>>>>> upstream/master
 	AM_RANGE(0xa000, 0xa000) AM_READ_PORT("IN0")
 	AM_RANGE(0xa7ff, 0xa7ff) AM_READ_PORT("IN0") /* mirror */
 	AM_RANGE(0xa800, 0xa800) AM_READ_PORT("IN1") AM_DEVWRITE("cust", galaxian_sound_device, background_enable_w)
@@ -662,11 +584,7 @@ static ADDRESS_MAP_START( tazzmang, AS_PROGRAM, 8, galaxold_state )
 	AM_RANGE(0xb004, 0xb004) AM_WRITE(galaxold_stars_enable_w)
 	AM_RANGE(0xb006, 0xb006) AM_WRITE(galaxold_flip_screen_x_w)
 	AM_RANGE(0xb007, 0xb007) AM_WRITE(galaxold_flip_screen_y_w)
-<<<<<<< HEAD
-	AM_RANGE(0xb800, 0xb800) AM_READ(watchdog_reset_r) AM_DEVWRITE("cust", galaxian_sound_device, pitch_w)
-=======
 	AM_RANGE(0xb800, 0xb800) AM_DEVREAD("watchdog", watchdog_timer_device, reset_r) AM_DEVWRITE("cust", galaxian_sound_device, pitch_w)
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -686,11 +604,7 @@ static ADDRESS_MAP_START( bongo, AS_PROGRAM, 8, galaxold_state )
 	AM_RANGE(0xb004, 0xb004) AM_WRITE(galaxold_stars_enable_w)
 	AM_RANGE(0xb006, 0xb006) AM_WRITE(galaxold_flip_screen_x_w)
 	AM_RANGE(0xb007, 0xb007) AM_WRITE(galaxold_flip_screen_y_w)
-<<<<<<< HEAD
-	AM_RANGE(0xb800, 0xb800) AM_READ(watchdog_reset_r) AM_WRITENOP
-=======
 	AM_RANGE(0xb800, 0xb800) AM_DEVREAD("watchdog", watchdog_timer_device, reset_r) AM_WRITENOP
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( bongo_io, AS_IO, 8, galaxold_state )
@@ -743,11 +657,7 @@ static ADDRESS_MAP_START( hunchbkg, AS_PROGRAM, 8, galaxold_state )
 	AM_RANGE(0x1604, 0x1604) AM_MIRROR(0x6000) AM_WRITE(galaxold_stars_enable_w)
 	AM_RANGE(0x1606, 0x1606) AM_MIRROR(0x6000) AM_WRITE(galaxold_flip_screen_x_w)
 	AM_RANGE(0x1607, 0x1607) AM_MIRROR(0x6000) AM_WRITE(galaxold_flip_screen_y_w)
-<<<<<<< HEAD
-	AM_RANGE(0x1680, 0x1680) AM_MIRROR(0x6000) AM_READ(watchdog_reset_r) AM_DEVWRITE("cust", galaxian_sound_device, pitch_w)
-=======
 	AM_RANGE(0x1680, 0x1680) AM_MIRROR(0x6000) AM_DEVREAD("watchdog", watchdog_timer_device, reset_r) AM_DEVWRITE("cust", galaxian_sound_device, pitch_w)
->>>>>>> upstream/master
 	AM_RANGE(0x1800, 0x1bff) AM_MIRROR(0x6000) AM_WRITE(galaxold_videoram_w) AM_SHARE("videoram")
 	AM_RANGE(0x1c00, 0x1fff) AM_MIRROR(0x6000) AM_RAM
 	AM_RANGE(0x2000, 0x2fff) AM_ROM
@@ -755,11 +665,7 @@ static ADDRESS_MAP_START( hunchbkg, AS_PROGRAM, 8, galaxold_state )
 	AM_RANGE(0x6000, 0x6fff) AM_ROM
 ADDRESS_MAP_END
 
-<<<<<<< HEAD
-/* majorly shifted, hunchbkg style */
-=======
 /* hunchbkg style */
->>>>>>> upstream/master
 static ADDRESS_MAP_START( spcwarp, AS_PROGRAM, 8, galaxold_state )
 	AM_RANGE(0x0000, 0x0fff) AM_ROM
 	AM_RANGE(0x1480, 0x14bf) AM_MIRROR(0x6000) AM_RAM_WRITE(galaxold_attributesram_w) AM_SHARE("attributesram")
@@ -775,11 +681,7 @@ static ADDRESS_MAP_START( spcwarp, AS_PROGRAM, 8, galaxold_state )
 	AM_RANGE(0x1585, 0x1585) AM_MIRROR(0x6000) AM_DEVWRITE("cust", galaxian_sound_device, fire_enable_w)
 	AM_RANGE(0x1586, 0x1587) AM_MIRROR(0x6000) AM_DEVWRITE("cust", galaxian_sound_device, vol_w)
 	// everything else in the $16xx range is moved to $17xx
-<<<<<<< HEAD
-	AM_RANGE(0x1680, 0x1680) AM_MIRROR(0x6000) AM_READ(watchdog_reset_r) AM_DEVWRITE("cust", galaxian_sound_device, pitch_w)
-=======
 	AM_RANGE(0x1680, 0x1680) AM_MIRROR(0x6000) AM_DEVREAD("watchdog", watchdog_timer_device, reset_r) AM_DEVWRITE("cust", galaxian_sound_device, pitch_w)
->>>>>>> upstream/master
 	AM_RANGE(0x1700, 0x1700) AM_MIRROR(0x6000) AM_READ_PORT("DSW0")
 	AM_RANGE(0x1701, 0x1701) AM_MIRROR(0x6000) AM_WRITE(galaxold_nmi_enable_w)
 	AM_RANGE(0x1704, 0x1704) AM_MIRROR(0x6000) AM_WRITE(galaxold_stars_enable_w)
@@ -793,11 +695,7 @@ static ADDRESS_MAP_START( spcwarp, AS_PROGRAM, 8, galaxold_state )
 	AM_RANGE(0x6000, 0x6fff) AM_ROM
 ADDRESS_MAP_END
 
-<<<<<<< HEAD
-static ADDRESS_MAP_START( hunchbkg_io, AS_IO, 8, galaxold_state )
-=======
 static ADDRESS_MAP_START( hunchbkg_data, AS_DATA, 8, galaxold_state )
->>>>>>> upstream/master
 	AM_RANGE(S2650_DATA_PORT,  S2650_DATA_PORT) AM_READNOP // not used
 ADDRESS_MAP_END
 
@@ -826,10 +724,6 @@ ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( drivfrcg_io, AS_IO, 8, galaxold_state )
 	AM_RANGE(0x00, 0x00) AM_READ(drivfrcg_port0_r)
-<<<<<<< HEAD
-	AM_RANGE(S2650_SENSE_PORT, S2650_SENSE_PORT) AM_READ_PORT("SENSE") AM_WRITENOP
-=======
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -859,10 +753,6 @@ static ADDRESS_MAP_START( racknrol_io, AS_IO, 8, galaxold_state )
 //  AM_RANGE(0x1e, 0x1e) AM_WRITENOP
 //  AM_RANGE(0x1f, 0x1f) AM_WRITENOP
 	AM_RANGE(0x20, 0x3f) AM_WRITE(racknrol_tiles_bank_w) AM_SHARE("racknrol_tbank")
-<<<<<<< HEAD
-	AM_RANGE(S2650_SENSE_PORT, S2650_SENSE_PORT) AM_READ_PORT("SENSE")
-=======
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 READ8_MEMBER(galaxold_state::hexpoola_data_port_r)
@@ -882,15 +772,10 @@ READ8_MEMBER(galaxold_state::hexpoola_data_port_r)
 static ADDRESS_MAP_START( hexpoola_io, AS_IO, 8, galaxold_state )
 	AM_RANGE(0x00, 0x00) AM_READNOP
 	AM_RANGE(0x20, 0x3f) AM_WRITE(racknrol_tiles_bank_w) AM_SHARE("racknrol_tbank")
-<<<<<<< HEAD
-	AM_RANGE(S2650_DATA_PORT, S2650_DATA_PORT) AM_READ(hexpoola_data_port_r) AM_DEVWRITE("snsnd", sn76496_device, write)
-	AM_RANGE(S2650_SENSE_PORT, S2650_SENSE_PORT) AM_READ_PORT("SENSE")
-=======
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( hexpoola_data, AS_DATA, 8, galaxold_state )
 	AM_RANGE(S2650_DATA_PORT, S2650_DATA_PORT) AM_READ(hexpoola_data_port_r) AM_DEVWRITE("snsnd", sn76496_device, write)
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 READ8_MEMBER(galaxold_state::bullsdrtg_data_port_r)
@@ -914,26 +799,14 @@ READ8_MEMBER(galaxold_state::bullsdrtg_data_port_r)
 	return 0;
 }
 
-<<<<<<< HEAD
-static ADDRESS_MAP_START( bullsdrtg_io_map, AS_IO, 8, galaxold_state )
-	AM_RANGE(0x00, 0x00) AM_READNOP
-	AM_RANGE(0x20, 0x3f) AM_WRITE(racknrol_tiles_bank_w) AM_SHARE("racknrol_tbank")
-	AM_RANGE(S2650_DATA_PORT, S2650_DATA_PORT) AM_READ(bullsdrtg_data_port_r) AM_DEVWRITE("snsnd", sn76496_device, write)
-	AM_RANGE(S2650_SENSE_PORT, S2650_SENSE_PORT) AM_READ_PORT("SENSE")
-=======
 static ADDRESS_MAP_START( bullsdrtg_data_map, AS_IO, 8, galaxold_state )
 	AM_RANGE(S2650_DATA_PORT, S2650_DATA_PORT) AM_READ(bullsdrtg_data_port_r) AM_DEVWRITE("snsnd", sn76496_device, write)
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 /* Lives Dips are spread across two input ports */
 CUSTOM_INPUT_MEMBER(galaxold_state::vpool_lives_r)
 {
-<<<<<<< HEAD
-	int bit_mask = (FPTR)param;
-=======
 	int bit_mask = (uintptr_t)param;
->>>>>>> upstream/master
 
 	switch (bit_mask)
 	{
@@ -1176,11 +1049,7 @@ INPUT_PORTS_END
 /* Coinage Dips are spread across two input ports */
 CUSTOM_INPUT_MEMBER(galaxold_state::ckongg_coinage_r)
 {
-<<<<<<< HEAD
-	int bit_mask = (FPTR)param;
-=======
 	int bit_mask = (uintptr_t)param;
->>>>>>> upstream/master
 
 	switch (bit_mask)
 	{
@@ -1692,11 +1561,7 @@ INPUT_PORTS_END
 /* Coinage Dips are spread across two input ports */
 CUSTOM_INPUT_MEMBER(galaxold_state::dkongjrm_coinage_r)
 {
-<<<<<<< HEAD
-	int bit_mask = (FPTR)param;
-=======
 	int bit_mask = (uintptr_t)param;
->>>>>>> upstream/master
 
 	switch (bit_mask)
 	{
@@ -1757,8 +1622,6 @@ static INPUT_PORTS_START( dkongjrm )
 INPUT_PORTS_END
 
 
-<<<<<<< HEAD
-=======
 static INPUT_PORTS_START( dkongjrmc )
 	PORT_START("IN0")
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_COIN1 )
@@ -1797,7 +1660,6 @@ static INPUT_PORTS_START( dkongjrmc )
 INPUT_PORTS_END
 
 
->>>>>>> upstream/master
 /* verified from Z80 code */
 static INPUT_PORTS_START( porter )
 	PORT_START("IN0")
@@ -1883,34 +1745,20 @@ static INPUT_PORTS_START( bongo )
 	PORT_START("IN0")
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_COIN1 )
 	PORT_BIT( 0x02, IP_ACTIVE_HIGH, IPT_UNKNOWN )           /* see notes */
-<<<<<<< HEAD
-	PORT_BIT( 0x04, IP_ACTIVE_HIGH, IPT_JOYSTICK_LEFT )
-	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_JOYSTICK_RIGHT )
-	PORT_BIT( 0x10, IP_ACTIVE_HIGH, IPT_UNUSED )            /* see notes */
-	PORT_BIT( 0x20, IP_ACTIVE_HIGH, IPT_JOYSTICK_UP )
-=======
 	PORT_BIT( 0x04, IP_ACTIVE_HIGH, IPT_JOYSTICK_LEFT ) PORT_2WAY
 	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_JOYSTICK_RIGHT ) PORT_2WAY
 	PORT_BIT( 0x10, IP_ACTIVE_HIGH, IPT_UNUSED )            /* see notes */
 	PORT_BIT( 0x20, IP_ACTIVE_HIGH, IPT_BUTTON1 )
->>>>>>> upstream/master
 	PORT_BIT( 0x40, IP_ACTIVE_HIGH, IPT_UNUSED )            /* see notes */
 	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_UNUSED )            /* see notes */
 
 	PORT_START("IN1")
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_START1 )
 	PORT_BIT( 0x02, IP_ACTIVE_HIGH, IPT_START2 )
-<<<<<<< HEAD
-	PORT_BIT( 0x04, IP_ACTIVE_HIGH, IPT_JOYSTICK_LEFT )  PORT_COCKTAIL
-	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_JOYSTICK_RIGHT ) PORT_COCKTAIL
-	PORT_BIT( 0x10, IP_ACTIVE_HIGH, IPT_UNUSED )            /* see notes */
-	PORT_BIT( 0x20, IP_ACTIVE_HIGH, IPT_JOYSTICK_UP )    PORT_COCKTAIL
-=======
 	PORT_BIT( 0x04, IP_ACTIVE_HIGH, IPT_JOYSTICK_LEFT ) PORT_2WAY PORT_COCKTAIL
 	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_JOYSTICK_RIGHT ) PORT_2WAY PORT_COCKTAIL
 	PORT_BIT( 0x10, IP_ACTIVE_HIGH, IPT_UNUSED )            /* see notes */
 	PORT_BIT( 0x20, IP_ACTIVE_HIGH, IPT_BUTTON1 ) PORT_COCKTAIL
->>>>>>> upstream/master
 	PORT_BIT( 0x40, IP_ACTIVE_HIGH, IPT_UNUSED )
 	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_UNUSED )
 
@@ -1976,51 +1824,6 @@ static INPUT_PORTS_START( ozon1 )
 	PORT_BIT( 0xf0, IP_ACTIVE_HIGH, IPT_UNUSED )
 INPUT_PORTS_END
 
-<<<<<<< HEAD
-
-/* verified from Z80 code */
-static INPUT_PORTS_START( ladybugg )
-	PORT_START("IN0")
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_COIN1 )
-	PORT_BIT( 0x02, IP_ACTIVE_HIGH, IPT_COIN2 )
-	PORT_BIT( 0x04, IP_ACTIVE_HIGH, IPT_JOYSTICK_LEFT )  PORT_4WAY
-	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_JOYSTICK_RIGHT ) PORT_4WAY
-	PORT_BIT( 0x10, IP_ACTIVE_HIGH, IPT_UNUSED )
-	PORT_BIT( 0x20, IP_ACTIVE_HIGH, IPT_JOYSTICK_DOWN )  PORT_4WAY
-	PORT_BIT( 0x40, IP_ACTIVE_HIGH, IPT_JOYSTICK_UP )    PORT_4WAY PORT_COCKTAIL
-	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_JOYSTICK_UP )    PORT_4WAY
-
-	PORT_START("IN1")
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_START1 )
-	PORT_BIT( 0x02, IP_ACTIVE_HIGH, IPT_START2 )
-	PORT_BIT( 0x04, IP_ACTIVE_HIGH, IPT_JOYSTICK_LEFT )  PORT_4WAY PORT_COCKTAIL
-	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_JOYSTICK_RIGHT ) PORT_4WAY PORT_COCKTAIL
-	PORT_BIT( 0x10, IP_ACTIVE_HIGH, IPT_UNUSED )
-	PORT_BIT( 0x20, IP_ACTIVE_HIGH, IPT_JOYSTICK_DOWN )  PORT_4WAY PORT_COCKTAIL
-	PORT_DIPNAME( 0xc0, 0x00, DEF_STR( Coinage ) )
-	PORT_DIPSETTING(    0x40, DEF_STR( 2C_1C ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( 1C_1C ) )
-	PORT_DIPSETTING(    0x80, DEF_STR( 1C_2C ) )
-	PORT_DIPSETTING(    0xc0, DEF_STR( Free_Play ) )
-
-	PORT_START("IN2")
-	PORT_DIPNAME( 0x03, 0x00, DEF_STR( Difficulty ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( Easy ) )
-	PORT_DIPSETTING(    0x01, DEF_STR( Medium ) )
-	PORT_DIPSETTING(    0x02, DEF_STR( Hard ) )
-	PORT_DIPSETTING(    0x03, DEF_STR( Hardest ) )
-	PORT_DIPNAME( 0x04, 0x00, DEF_STR( Lives ) )
-	PORT_DIPSETTING(    0x00, "3" )
-	PORT_DIPSETTING(    0x04, "5" )
-	PORT_DIPNAME( 0x08, 0x00, DEF_STR( Cabinet ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( Upright ) )
-	PORT_DIPSETTING(    0x08, DEF_STR( Cocktail ) )
-	PORT_BIT( 0xf0, IP_ACTIVE_HIGH, IPT_UNUSED )
-INPUT_PORTS_END
-
-
-=======
->>>>>>> upstream/master
 static INPUT_PORTS_START( hunchbkg )
 	PORT_START("IN0")
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_COIN1 )
@@ -2133,12 +1936,6 @@ static INPUT_PORTS_START( drivfrcg )
 	PORT_DIPNAME( 0x80, 0x00, DEF_STR( Unknown ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x80, DEF_STR( On ) )
-<<<<<<< HEAD
-
-	PORT_START("SENSE")
-	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_CUSTOM ) PORT_VBLANK("screen")
-=======
->>>>>>> upstream/master
 INPUT_PORTS_END
 
 
@@ -2200,12 +1997,6 @@ static INPUT_PORTS_START( racknrol )
 	PORT_DIPNAME( 0x80, 0x00, DEF_STR( Unknown ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x80, DEF_STR( On ) )
-<<<<<<< HEAD
-
-	PORT_START("SENSE")
-	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_CUSTOM ) PORT_VBLANK("screen")
-=======
->>>>>>> upstream/master
 INPUT_PORTS_END
 
 
@@ -2267,12 +2058,6 @@ static INPUT_PORTS_START( trvchlng )
 	PORT_DIPNAME( 0x80, 0x00, DEF_STR( Unknown ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x80, DEF_STR( On ) )
-<<<<<<< HEAD
-
-	PORT_START("SENSE")
-	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_CUSTOM ) PORT_VBLANK("screen")
-=======
->>>>>>> upstream/master
 INPUT_PORTS_END
 
 
@@ -2434,11 +2219,7 @@ static GFXDECODE_START( _4in1 )
 GFXDECODE_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( galaxold_base, galaxold_state )
-=======
 static MACHINE_CONFIG_START( galaxold_base )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, PIXEL_CLOCK/2) /* 3.072 MHz */
@@ -2454,11 +2235,8 @@ static MACHINE_CONFIG_START( galaxold_base )
 
 	MCFG_TIMER_DRIVER_ADD("int_timer", galaxold_state, galaxold_interrupt_timer)
 
-<<<<<<< HEAD
-=======
 	MCFG_WATCHDOG_ADD("watchdog")
 
->>>>>>> upstream/master
 	/* video hardware */
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", galaxian)
 	MCFG_PALETTE_ADD("palette", 32+2+64)        /* 32 for the characters, 2 for the bullets, 64 for the stars */
@@ -2472,11 +2250,7 @@ static MACHINE_CONFIG_START( galaxold_base )
 	MCFG_VIDEO_START_OVERRIDE(galaxold_state,galaxold)
 
 	/* sound hardware */
-<<<<<<< HEAD
-	MCFG_SPEAKER_STANDARD_MONO("mono")
-=======
 	MCFG_SPEAKER_STANDARD_MONO("speaker")
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
@@ -2489,20 +2263,7 @@ static MACHINE_CONFIG_DERIVED( galaxian, galaxold_base )
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_DERIVED( batman2, galaxian )
-
-	/* basic machine hardware */
-
-	/* video hardware */
-	MCFG_VIDEO_START_OVERRIDE(galaxold_state,batman2)
-MACHINE_CONFIG_END
-
-
-static MACHINE_CONFIG_DERIVED( mooncrst, galaxian )
-=======
 static MACHINE_CONFIG_DERIVED( mooncrst, galaxold_base )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_MODIFY("maincpu")
@@ -2510,12 +2271,9 @@ static MACHINE_CONFIG_DERIVED( mooncrst, galaxold_base )
 
 	/* video hardware */
 	MCFG_VIDEO_START_OVERRIDE(galaxold_state,mooncrst)
-<<<<<<< HEAD
-=======
 
 	/* sound hardware */
 	MCFG_FRAGMENT_ADD(mooncrst_audio)
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 // 'Videotron'
@@ -2616,11 +2374,7 @@ static MACHINE_CONFIG_DERIVED( 4in1, galaxian )
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_DERIVED( bagmanmc, galaxian )
-=======
 static MACHINE_CONFIG_DERIVED( bagmanmc, mooncrst )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_MODIFY("maincpu")
@@ -2633,11 +2387,7 @@ static MACHINE_CONFIG_DERIVED( bagmanmc, mooncrst )
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_DERIVED( dkongjrm, galaxian )
-=======
 static MACHINE_CONFIG_DERIVED( dkongjrm, mooncrst )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_MODIFY("maincpu")
@@ -2648,9 +2398,6 @@ static MACHINE_CONFIG_DERIVED( dkongjrm, mooncrst )
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_DERIVED( rockclim, galaxian )
-=======
 static MACHINE_CONFIG_DERIVED( dkongjrmc, mooncrst )
 	MCFG_CPU_MODIFY("maincpu")
 	MCFG_CPU_PROGRAM_MAP(dkongjrmc_map)
@@ -2660,7 +2407,6 @@ MACHINE_CONFIG_END
 
 
 static MACHINE_CONFIG_DERIVED( rockclim, mooncrst )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_MODIFY("maincpu")
@@ -2695,29 +2441,18 @@ static MACHINE_CONFIG_DERIVED( ozon1, galaxold_base )
 
 	MCFG_VIDEO_START_OVERRIDE(galaxold_state,ozon1)
 	MCFG_SOUND_ADD("aysnd", AY8910, PIXEL_CLOCK/4)
-<<<<<<< HEAD
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
-MACHINE_CONFIG_END
-
-
-static MACHINE_CONFIG_START( drivfrcg, galaxold_state )
-=======
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.5)
 MACHINE_CONFIG_END
 
 
 static MACHINE_CONFIG_START( drivfrcg )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", S2650, MASTER_CLOCK/6)
 	MCFG_CPU_PROGRAM_MAP(drivfrcg)
 	MCFG_CPU_IO_MAP(drivfrcg_io)
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", galaxold_state,  hunchbks_vh_interrupt)
-<<<<<<< HEAD
-=======
 	MCFG_S2650_SENSE_INPUT(DEVREADLINE("screen", screen_device, vblank)) // ???
->>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
@@ -2736,11 +2471,7 @@ static MACHINE_CONFIG_START( drivfrcg )
 	MCFG_VIDEO_START_OVERRIDE(galaxold_state,drivfrcg)
 
 	/* sound hardware */
-<<<<<<< HEAD
-	MCFG_SPEAKER_STANDARD_MONO("mono")
-=======
 	MCFG_SPEAKER_STANDARD_MONO("speaker")
->>>>>>> upstream/master
 
 	MCFG_FRAGMENT_ADD(galaxian_audio)
 MACHINE_CONFIG_END
@@ -2761,11 +2492,7 @@ static MACHINE_CONFIG_DERIVED( bongo, galaxold_base )
 	/* sound hardware */
 	MCFG_SOUND_ADD("aysnd", AY8910, PIXEL_CLOCK/4)
 	MCFG_AY8910_PORT_A_READ_CB(IOPORT("DSW1"))
-<<<<<<< HEAD
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
-=======
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.5)
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
@@ -2775,20 +2502,12 @@ static MACHINE_CONFIG_DERIVED( hunchbkg, galaxold_base )
 	MCFG_CPU_REPLACE("maincpu", S2650, PIXEL_CLOCK / 4)
 
 	MCFG_CPU_PROGRAM_MAP(hunchbkg)
-<<<<<<< HEAD
-	MCFG_CPU_IO_MAP(hunchbkg_io)
-=======
 	MCFG_CPU_DATA_MAP(hunchbkg_data)
->>>>>>> upstream/master
 	MCFG_CPU_IRQ_ACKNOWLEDGE_DRIVER(galaxold_state,hunchbkg_irq_callback)
 
 	MCFG_DEVICE_MODIFY("7474_9m_1")
 	/* the nmi line seems to be inverted on the cpu plugin board */
-<<<<<<< HEAD
-	MCFG_7474_COMP_OUTPUT_CB(DEVWRITELINE("maincpu", s2650_device, write_sense))
-=======
 	MCFG_7474_COMP_OUTPUT_CB(INPUTLINE("maincpu", S2650_SENSE_LINE))
->>>>>>> upstream/master
 
 	MCFG_MACHINE_RESET_OVERRIDE(galaxold_state,hunchbkg)
 
@@ -2797,11 +2516,7 @@ MACHINE_CONFIG_END
 
 
 static MACHINE_CONFIG_DERIVED( spcwarp, hunchbkg )
-<<<<<<< HEAD
-	/* hunchbkg but with different banking */
-=======
 	/* hunchbkg, but with a different memory map */
->>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_CPU_MODIFY("maincpu")
 	MCFG_CPU_PROGRAM_MAP(spcwarp)
@@ -2816,21 +2531,14 @@ static MACHINE_CONFIG_DERIVED( tazzmang, galaxian )
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( racknrol, galaxold_state )
-=======
 static MACHINE_CONFIG_START( racknrol )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", S2650, PIXEL_CLOCK/2)
 	MCFG_CPU_PROGRAM_MAP(racknrol)
 	MCFG_CPU_IO_MAP(racknrol_io)
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", galaxold_state,  hunchbks_vh_interrupt)
-<<<<<<< HEAD
-=======
 	MCFG_S2650_SENSE_INPUT(DEVREADLINE("screen", screen_device, vblank)) MCFG_DEVCB_INVERT // ???
->>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", galaxian)
@@ -2845,15 +2553,6 @@ static MACHINE_CONFIG_START( racknrol )
 	MCFG_VIDEO_START_OVERRIDE(galaxold_state,racknrol)
 
 	/* sound hardware */
-<<<<<<< HEAD
-	MCFG_SPEAKER_STANDARD_MONO("mono")
-	MCFG_SOUND_ADD("snsnd", SN76489A, PIXEL_CLOCK/2) // SN76489AN
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
-MACHINE_CONFIG_END
-
-
-static MACHINE_CONFIG_START( hexpoola, galaxold_state )
-=======
 	MCFG_SPEAKER_STANDARD_MONO("speaker")
 	MCFG_SOUND_ADD("snsnd", SN76489A, PIXEL_CLOCK/2) // SN76489AN
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 1.0)
@@ -2861,17 +2560,13 @@ MACHINE_CONFIG_END
 
 
 static MACHINE_CONFIG_START( hexpoola )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", S2650, PIXEL_CLOCK/2)
 	MCFG_CPU_PROGRAM_MAP(racknrol)
 	MCFG_CPU_IO_MAP(hexpoola_io)
-<<<<<<< HEAD
-=======
 	MCFG_CPU_DATA_MAP(hexpoola_data)
 	MCFG_S2650_SENSE_INPUT(DEVREADLINE("screen", screen_device, vblank)) MCFG_DEVCB_INVERT // ???
->>>>>>> upstream/master
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", galaxold_state,  hunchbks_vh_interrupt)
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", galaxian)
@@ -2886,15 +2581,9 @@ static MACHINE_CONFIG_START( hexpoola )
 	MCFG_VIDEO_START_OVERRIDE(galaxold_state,racknrol)
 
 	/* sound hardware */
-<<<<<<< HEAD
-	MCFG_SPEAKER_STANDARD_MONO("mono")
-	MCFG_SOUND_ADD("snsnd", SN76496, PIXEL_CLOCK/2)
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
-=======
 	MCFG_SPEAKER_STANDARD_MONO("speaker")
 	MCFG_SOUND_ADD("snsnd", SN76496, PIXEL_CLOCK/2)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 1.0)
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
@@ -2910,11 +2599,7 @@ static MACHINE_CONFIG_DERIVED( ckongg, galaxian )
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_DERIVED( ckongmc, galaxian )
-=======
 static MACHINE_CONFIG_DERIVED( ckongmc, mooncrst )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_MODIFY("maincpu")
@@ -2929,11 +2614,7 @@ MACHINE_CONFIG_END
 static MACHINE_CONFIG_DERIVED( bullsdrtg, hexpoola )
 
 	MCFG_CPU_MODIFY("maincpu")
-<<<<<<< HEAD
-	MCFG_CPU_IO_MAP(bullsdrtg_io_map)
-=======
 	MCFG_CPU_DATA_MAP(bullsdrtg_data_map)
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
@@ -3118,11 +2799,7 @@ ROM_END
 
 DRIVER_INIT_MEMBER(galaxold_state,ckonggx)
 {
-<<<<<<< HEAD
-	UINT16 ckonggx_remap[88] = {
-=======
 	uint16_t ckonggx_remap[88] = {
->>>>>>> upstream/master
 		0x5000, 0x0d00, 0x0e00, 0x0f00, 0x0c00, 0x0100, 0x0200, 0x0300, 0x0400, 0x0500, 0x0600, 0x0700, 0x0800, 0x0900, 0x0a00, 0x0b00,
 		0x1400, 0x1500, 0x1600, 0x1700, 0x1800, 0x1900, 0x1a00, 0x1b00, 0x1c00, 0x1d00, 0x1e00, 0x1f00, 0x1000, 0x1100, 0x1200, 0x1300,
 		0x2400, 0x2500, 0x2600, 0x2700, 0x2800, 0x2900, 0x2a00, 0x2b00, 0x2c00, 0x2d00, 0x2e00, 0x2f00, 0x2000, 0x2100, 0x2200, 0x2300,
@@ -3132,13 +2809,8 @@ DRIVER_INIT_MEMBER(galaxold_state,ckonggx)
 		/*^ at 0x0000 there is alt startup code? does it get banked in? */
 	};
 
-<<<<<<< HEAD
-	UINT8 *rom = memregion("maincpu")->base();
-	dynamic_buffer buffer(0x5800);
-=======
 	uint8_t *rom = memregion("maincpu")->base();
 	std::vector<uint8_t> buffer(0x5800);
->>>>>>> upstream/master
 
 	for (int i=0;i<88;i++)
 	{
@@ -3431,8 +3103,6 @@ ROM_START( dkongjrm )
 	ROM_LOAD( "hustler.clr",  0x0000, 0x0020, CRC(aa1f7f5e) SHA1(311dd17aa11490a1173c76223e4ccccf8ea29850) )
 ROM_END
 
-<<<<<<< HEAD
-=======
 ROM_START( dkongjrmc ) // "CENTROMATIC - G/G" main board
 	ROM_REGION( 0x10000, "maincpu", 0 )
 	ROM_LOAD( "2732-1.bin",   0x0000, 0x1000, CRC(1bcb41be) SHA1(74b1700babd26cb0c781bc702130a63da0386463) )
@@ -3457,7 +3127,6 @@ ROM_START( dkongjrmc ) // "CENTROMATIC - G/G" main board
 	ROM_LOAD( "TBP28L22N-A8240A.bin", 0x0100, 0x0100, CRC(9575df2b) SHA1(9360730fc230d17f6be5fc7f8d46d79566839cfa) )
 ROM_END
 
->>>>>>> upstream/master
 ROM_START( porter )
 	ROM_REGION( 0x10000, "maincpu", 0 )
 	ROM_LOAD( "port1.bin",          0x0000, 0x0800, CRC(babaf7fe) SHA1(2138abf57990df9b6f9953efd3be9b2bede49520) )
@@ -3549,30 +3218,6 @@ ROM_START( ozon1 )
 	ROM_LOAD( "ozon1.clr", 0x0000, 0x0020, CRC(605ea6e9) SHA1(d3471e6ef756059c2f7feb32fb8e41181cc1718e) )
 ROM_END
 
-<<<<<<< HEAD
-ROM_START( ladybugg )
-	ROM_REGION( 0x10000, "maincpu", 0 )
-	ROM_LOAD( "lbuggx.1",   0x0000, 0x0800, CRC(e67e241d) SHA1(42b8eaca71c6b346ab54bc722850d6e6d169c517) )
-	ROM_LOAD( "lbuggx.2",   0x0800, 0x0800, CRC(3cb1fb9a) SHA1(ee76758c94329dfcc740571195a74d9242aaf49f) )
-	ROM_LOAD( "lbuggx.3",   0x1000, 0x0800, CRC(0937009e) SHA1(ef57ebf3d6ab3d6ac0e1faa10c3109d2c80a1248) )
-	ROM_LOAD( "lbuggx.4",   0x1800, 0x0800, CRC(3e773f62) SHA1(6348e61f48e5d1f04289098c4c0395335ea5e2a5) )
-	ROM_LOAD( "lbuggx.5",   0x2000, 0x0800, CRC(2b0d42e5) SHA1(1547b8127f964eb10862b566f5779f8011c3441d) )
-	ROM_LOAD( "lbuggx.6",   0x2800, 0x0800, CRC(159f9433) SHA1(93341a4de1e1e4a3fb004019fc1edba73db6a4c8) )
-	ROM_LOAD( "lbuggx.7",   0x3000, 0x0800, CRC(f2be06d5) SHA1(1354332d2d107ad810aa2e261b595285394dfb49) )
-	ROM_LOAD( "lbuggx.8",   0x3800, 0x0800, CRC(646fe79f) SHA1(03223d6c4f9050fd6c1c313f0e366ab4989feca4) )
-
-	ROM_REGION( 0x2000, "gfx1", 0 )
-	ROM_LOAD( "lbuggx.a",   0x0800, 0x0800, CRC(7efb9dc5) SHA1(5e02ea8cd1a1c8efa6708a8615cc2dc9da65a455) )
-	ROM_CONTINUE ( 0x0000, 0x0800)
-	ROM_LOAD( "lbuggx.b",   0x1800, 0x0800, CRC(351d4ddc) SHA1(048e8a60e57c6eb0a4d7c2175ddd46c4273756c5) )
-	ROM_CONTINUE ( 0x1000, 0x0800)
-
-	ROM_REGION( 0x0020, "proms", 0 )
-	ROM_LOAD( "lbuggx.clr", 0x0000, 0x0020, CRC(4e3caeab) SHA1(a25083c3e36d28afdefe4af6e6d4f3155e303625) )
-ROM_END
-
-=======
->>>>>>> upstream/master
 ROM_START( hunchbkg )
 	ROM_REGION( 0x8000, "maincpu", 0 )
 	ROM_LOAD( "gal_hb_1",     0x0000, 0x0800, CRC(46590e9b) SHA1(5d26578c91adec20d8d8a17d5dade9ef2febcbe5) )
@@ -3592,19 +3237,6 @@ ROM_START( hunchbkg )
 	ROM_LOAD( "gal_hb_cp",    0x0000, 0x0020, CRC(cbff6762) SHA1(4515a6e12a0a5c485a55291feee17a571120a549) )
 ROM_END
 
-<<<<<<< HEAD
-ROM_START( spcwarp )
-	// conversion of 'cosmos' (cvs.c) to Galaxian hardware
-	// notes:
-	// -came out of an unemulated games collection - may or may not be actually spcwarp but it's unique
-	// -uses hunchbkg hardware with a different map
-	// -the game likely calls a checksum check every 10 frames, causes game to freeze (probably because of bad ROM)
-	// -so far using hunchbkg inputs work
-	// -text in ROM confirms year of release and company; ASCII shows "COPYRIGHT 1983", "CENTURY ELECTRONICS UK LTD" in swarpt7f.bin
-	ROM_REGION( 0x8000, "maincpu", 0 )
-	ROM_LOAD( "swarpt7f.bin", 0x0000, 0x1000, CRC(04d744e3) SHA1(db8218510052a05670cb0b722b73d3f10464788c) )
-	ROM_LOAD( "swarpt7h.bin", 0x2000, 0x1000, CRC(34a36536) SHA1(bc438515618683b2a7c29637871ee00ed95ad7f8) )
-=======
 /*
 For all we know, this could be anything, but the text in ROM confirms the
 copyright (swarpt7f.bin):
@@ -3625,21 +3257,15 @@ ROM_START( spcwarp )
 	ROM_LOAD( "swarpt7f.bin", 0x0000, 0x1000, CRC(04d744e3) SHA1(db8218510052a05670cb0b722b73d3f10464788c) )
 	ROM_LOAD( "swarpt7h.bin", 0x2000, 0x1000, CRC(34a36536) SHA1(bc438515618683b2a7c29637871ee00ed95ad7f8) )
 	/* missing ROM at $4000 */
->>>>>>> upstream/master
 	ROM_LOAD( "swarpt7m.bin", 0x6000, 0x1000, BAD_DUMP CRC(a2dff6c8) SHA1(d1c72848450dc5ff386dc94a26e4bf704ccc7121) ) /* ROMCMP reports "BADADDR            xxxxxx-xxxxx".  Observed data sequence repeated every 32 bytes */
 
 	ROM_REGION( 0x1000, "gfx1", 0 )
 	ROM_LOAD( "swarpb1h.bin", 0x0000, 0x0800, CRC(6ee3b5f7) SHA1(8150f2ecd59d3a165c0541b550664c56d049edd5) )
 	ROM_LOAD( "swarpb1k.bin", 0x0800, 0x0800, CRC(da4cee6b) SHA1(28b91381658f598fa62049489beee443232825c6) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x0020, "proms", 0 )
-	ROM_LOAD( "clr",    0x0000, 0x0020, NO_DUMP )
-=======
 	/* using hunchbkg proms for now */
 	ROM_REGION( 0x0020, "proms", 0 )
 	ROM_LOAD( "gal_hb_cp",    0x0000, 0x0020, BAD_DUMP CRC(cbff6762) SHA1(4515a6e12a0a5c485a55291feee17a571120a549) )
->>>>>>> upstream/master
 ROM_END
 
 
@@ -3889,58 +3515,13 @@ ROM_END
 DRIVER_INIT_MEMBER(galaxold_state,guttangt)
 {
 	address_space &space = m_maincpu->space(AS_PROGRAM);
-<<<<<<< HEAD
-	space.install_read_bank( 0x2000, 0x27ff, 0, 0, "cpubank" );
-	UINT8 *rom = memregion("maincpu")->base();
-=======
 	space.install_read_bank( 0x2000, 0x27ff, "cpubank" );
 	uint8_t *rom = memregion("maincpu")->base();
->>>>>>> upstream/master
 	membank("cpubank")->set_base(rom + 0x2000);
 }
 
 
 /* Z80 games */
-<<<<<<< HEAD
-//    YEAR  NAME       PARENT    MACHINE    INPUT      INIT                       ROT     COMPANY, FULLNAME, FLAGS, LAYOUT
-GAME( 1981, vpool,     hustler,  mooncrst,  vpool,     driver_device,  0,         ROT90,  "bootleg", "Video Pool (bootleg on Moon Cresta hardware)", MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
-GAME( 1981, rockclim,  0,        rockclim,  rockclim,  driver_device,  0,         ROT180, "Taito", "Rock Climber", MACHINE_SUPPORTS_SAVE )
-GAME( 1981, ckongg,    ckong,    ckongg,    ckongg,    driver_device,  0,         ROT90,  "bootleg", "Crazy Kong (bootleg on Galaxian hardware)", MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
-GAME( 1981, ckongmc,   ckong,    ckongmc,   ckongmc,   driver_device,  0,         ROT90,  "bootleg", "Crazy Kong (bootleg on Moon Cresta hardware)", MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE ) // set was marked as 'King Kong on Galaxian'
-GAME( 1981, ckonggx,   ckong,    ckongg,    ckonggx,   galaxold_state, ckonggx,   ROT90,  "bootleg", "Crazy Kong (bootleg on Galaxian hardware, encrypted, set 1)", MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
-GAME( 1982, ckongcv,   ckong,    ckongg,    ckonggx,   galaxold_state, ckonggx,   ROT90,  "bootleg", "Crazy Kong (bootleg on Galaxian hardware, encrypted, set 2)", MACHINE_NOT_WORKING )
-GAME( 1982, ckongis,   ckong,    ckongg,    ckonggx,   galaxold_state, ckonggx,   ROT90,  "bootleg", "Crazy Kong (bootleg on Galaxian hardware, encrypted, set 3)", MACHINE_NOT_WORKING )
-GAME( 1981, scramblb,  scramble, scramblb,  scramblb,  driver_device,  0,         ROT90,  "bootleg", "Scramble (bootleg on Galaxian hardware)", MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
-GAME( 1981, scramb2,   scramble, scramb2,   scramb2,   driver_device,  0,         ROT90,  "bootleg", "Scramble (bootleg)", MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
-GAME( 1981, scrambler, scramble, scrambler, scrambler, driver_device,  0,         ROT90,  "bootleg (Reben S.A.)", "Scramble (Reben S.A. Spanish bootleg)", MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
-GAME( 1981, 4in1,      0,        4in1,      4in1,      galaxold_state, 4in1,      ROT90,  "Armenia / Food and Fun", "4 Fun in 1", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 1982, bagmanmc,  bagman,   bagmanmc,  bagmanmc,  driver_device,  0,         ROT90,  "bootleg", "Bagman (bootleg on Moon Cresta hardware, set 1)", MACHINE_IMPERFECT_COLORS | MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
-GAME( 1984, bagmanm2,  bagman,   bagmanmc,  bagmanmc,  driver_device,  0,         ROT90,  "bootleg (GIB)", "Bagman (bootleg on Moon Cresta hardware, set 2)", MACHINE_IMPERFECT_COLORS | MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
-GAME( 1982, dkongjrm,  dkongjr,  dkongjrm,  dkongjrm,  driver_device,  0,         ROT90,  "bootleg", "Donkey Kong Jr. (bootleg on Moon Cresta hardware)", MACHINE_WRONG_COLORS | MACHINE_IMPERFECT_SOUND | MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
-GAME( 1982, porter,    dockman,  porter,    porter,    driver_device,  0,         ROT90,  "bootleg", "Port Man (bootleg on Moon Cresta hardware)", MACHINE_IMPERFECT_COLORS | MACHINE_NO_COCKTAIL )
-GAME( 1982, tazzmang,  tazmania, tazzmang,  tazzmang,  driver_device,  0,         ROT90,  "bootleg", "Tazz-Mania (bootleg on Galaxian hardware)", MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
-GAME( 1982, tazzmang2, tazmania, tazzmang,  tazzmang,  driver_device,  0,         ROT90,  "bootleg", "Tazz-Mania (bootleg on Galaxian hardware with Starfield)", MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
-GAME( 1983, bongo,     0,        bongo,     bongo,     driver_device,  0,         ROT90,  "Jetsoft", "Bongo", MACHINE_SUPPORTS_SAVE )
-GAME( 1983, ozon1,     0,        ozon1,     ozon1,     driver_device,  0,         ROT90,  "Proma", "Ozon I", MACHINE_SUPPORTS_SAVE )
-GAME( 1983, ladybugg,  ladybug,  batman2,   ladybugg,  galaxold_state, ladybugg,  ROT270, "bootleg", "Lady Bug (bootleg on Galaxian hardware)", MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
-GAME( 1982, guttangt,  locomotn, guttang,   guttangt,  galaxold_state, guttangt,  ROT270, "bootleg (Recreativos Franco?)", "Guttang Gottong (bootleg on Galaxian type hardware)", MACHINE_NOT_WORKING | MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE ) // or by 'Tren' ?
-
-// Videotron cartridge system
-GAME( 1981, hustlerb3, hustler,  videotron, hustlerb3, driver_device,  0,         ROT90,  "bootleg (Videotron)", "Video Pool (Video Hustler bootleg)", MACHINE_SUPPORTS_SAVE )
-GAME( 1981, froggerv,  frogger,  videotron, froggerv,  driver_device,  0,         ROT90,  "bootleg (Videotron / Gamepack)", "Frogger (Videotron bootleg)", MACHINE_SUPPORTS_SAVE )
-
-/* S2650 games */
-//    YEAR  NAME       PARENT    MACHINE    INPUT      INIT                       ROT     COMPANY, FULLNAME, FLAGS, LAYOUT
-GAME( 1983, hunchbkg,  hunchbak, hunchbkg,  hunchbkg,  driver_device,  0,         ROT90,  "Century Electronics", "Hunchback (Galaxian hardware)", MACHINE_SUPPORTS_SAVE )
-GAME( 1983, spcwarp,   0,        spcwarp,   hunchbkg,  driver_device,  0,         ROT90,  "Century Electronics", "Space Warp? (Cosmos conversion on Galaxian hardware)",  MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE | MACHINE_WRONG_COLORS ) // bad dump
-GAME( 1984, drivfrcg,  drivfrcp, drivfrcg,  drivfrcg,  driver_device,  0,         ROT90,  "Shinkai Inc. (Magic Electronics USA license)", "Driving Force (Galaxian conversion)", MACHINE_SUPPORTS_SAVE )
-GAME( 1984, drivfrct,  drivfrcp, drivfrcg,  drivfrcg,  driver_device,  0,         ROT90,  "bootleg (EMT Germany)", "Top Racer (bootleg of Driving Force)", MACHINE_SUPPORTS_SAVE ) // Video Klein PCB
-GAME( 1985, drivfrcb,  drivfrcp, drivfrcg,  drivfrcg,  driver_device,  0,         ROT90,  "bootleg (Elsys Software)", "Driving Force (Galaxian conversion bootleg)", MACHINE_SUPPORTS_SAVE )
-GAME( 1986, racknrol,  0,        racknrol,  racknrol,  driver_device,  0,         ROT0,   "Senko Industries (Status license from Shinkai Inc.)", "Rack + Roll", MACHINE_SUPPORTS_SAVE )
-GAME( 1986, hexpool,   racknrol, racknrol,  racknrol,  driver_device,  0,         ROT90,  "Senko Industries (Shinkai Inc. license)", "Hex Pool (Shinkai)", MACHINE_SUPPORTS_SAVE ) // still has Senko logo in gfx rom
-GAME( 1985, hexpoola,  racknrol, hexpoola,  racknrol,  driver_device,  0,         ROT90,  "Senko Industries", "Hex Pool (Senko)", MACHINE_SUPPORTS_SAVE )
-GAME( 1985, trvchlng,  0,        racknrol,  trvchlng,  driver_device,  0,         ROT90,  "Joyland (Senko license)", "Trivia Challenge", MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE )
-=======
 //    YEAR  NAME       PARENT    MACHINE    INPUT      STATE          INIT       ROT     COMPANY, FULLNAME, FLAGS, LAYOUT
 GAME( 1981, vpool,     hustler,  mooncrst,  vpool,     galaxold_state, 0,        ROT90,  "bootleg", "Video Pool (bootleg on Moon Cresta hardware)", MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
 GAME( 1981, rockclim,  0,        rockclim,  rockclim,  galaxold_state, 0,        ROT180, "Taito", "Rock Climber", MACHINE_SUPPORTS_SAVE )
@@ -3979,5 +3560,4 @@ GAME( 1986, racknrol,  0,        racknrol,  racknrol,  galaxold_state, 0,       
 GAME( 1986, hexpool,   racknrol, racknrol,  racknrol,  galaxold_state, 0,         ROT90,  "Senko Industries (Shinkai Inc. license)", "Hex Pool (Shinkai)", MACHINE_SUPPORTS_SAVE ) // still has Senko logo in gfx rom
 GAME( 1985, hexpoola,  racknrol, hexpoola,  racknrol,  galaxold_state, 0,         ROT90,  "Senko Industries", "Hex Pool (Senko)", MACHINE_SUPPORTS_SAVE )
 GAME( 1985, trvchlng,  0,        racknrol,  trvchlng,  galaxold_state, 0,         ROT90,  "Joyland (Senko license)", "Trivia Challenge", MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master
 GAME( 1985, bullsdrtg, bullsdrt, bullsdrtg, racknrol,  galaxold_state, bullsdrtg, ROT90,  "Senko Industries", "Bulls Eye Darts (Galaxian conversion)", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_GRAPHICS | MACHINE_WRONG_COLORS )

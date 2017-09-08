@@ -8,17 +8,10 @@
 
 *************************************************************************/
 
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __LDVP931_H__
-#define __LDVP931_H__
-=======
 #ifndef MAME_MACHINE_LDVP931_H
 #define MAME_MACHINE_LDVP931_H
 
 #pragma once
->>>>>>> upstream/master
 
 #include "laserdsc.h"
 #include "cpu/mcs48/mcs48.h"
@@ -37,11 +30,7 @@
 //**************************************************************************
 
 // device type definition
-<<<<<<< HEAD
-extern const device_type PHILLIPS_22VP931;
-=======
 DECLARE_DEVICE_TYPE(PHILLIPS_22VP931, phillips_22vp931_device)
->>>>>>> upstream/master
 
 
 
@@ -59,16 +48,6 @@ public:
 	typedef delegate<void (phillips_22vp931_device &, int)> data_ready_delegate;
 
 	// construction/destruction
-<<<<<<< HEAD
-	phillips_22vp931_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// input and output
-	void data_w(UINT8 data) { synchronize(TID_DEFERRED_DATA, data); }
-	void reset_w(UINT8 data);
-	UINT8 data_r();
-	UINT8 ready_r() { return m_fromcontroller_pending ? CLEAR_LINE : ASSERT_LINE; }
-	UINT8 data_available_r() { return m_tocontroller_pending ? ASSERT_LINE : CLEAR_LINE; }
-=======
 	phillips_22vp931_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	// input and output
@@ -77,7 +56,6 @@ public:
 	uint8_t data_r();
 	uint8_t ready_r() { return m_fromcontroller_pending ? CLEAR_LINE : ASSERT_LINE; }
 	uint8_t data_available_r() { return m_tocontroller_pending ? ASSERT_LINE : CLEAR_LINE; }
->>>>>>> upstream/master
 
 	// configuration
 	void set_data_ready_callback(data_ready_delegate callback) { m_data_ready = callback; }
@@ -95,18 +73,6 @@ protected:
 	};
 
 	// device-level overrides
-<<<<<<< HEAD
-	virtual void device_start();
-	virtual void device_reset();
-	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
-	virtual const rom_entry *device_rom_region() const;
-	virtual machine_config_constructor device_mconfig_additions() const;
-
-	// subclass overrides
-	virtual void player_vsync(const vbi_metadata &vbi, int fieldnum, const attotime &curtime);
-	virtual INT32 player_update(const vbi_metadata &vbi, int fieldnum, const attotime &curtime);
-	virtual void player_overlay(bitmap_yuy16 &bitmap) { }
-=======
 	virtual void device_start() override;
 	virtual void device_reset() override;
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
@@ -117,7 +83,6 @@ protected:
 	virtual void player_vsync(const vbi_metadata &vbi, int fieldnum, const attotime &curtime) override;
 	virtual int32_t player_update(const vbi_metadata &vbi, int fieldnum, const attotime &curtime) override;
 	virtual void player_overlay(bitmap_yuy16 &bitmap) override { }
->>>>>>> upstream/master
 
 public:
 	// internal read/write handlers
@@ -129,62 +94,22 @@ public:
 	DECLARE_READ8_MEMBER( i8049_datic_r );
 	DECLARE_READ8_MEMBER( i8049_from_controller_r );
 	DECLARE_WRITE8_MEMBER( i8049_to_controller_w );
-<<<<<<< HEAD
-=======
 
 private:
 	// internal read/write handlers
->>>>>>> upstream/master
 	DECLARE_READ8_MEMBER( i8049_port1_r );
 	DECLARE_WRITE8_MEMBER( i8049_port1_w );
 	DECLARE_READ8_MEMBER( i8049_port2_r );
 	DECLARE_WRITE8_MEMBER( i8049_port2_w );
-<<<<<<< HEAD
-	DECLARE_READ8_MEMBER( i8049_t0_r );
-	DECLARE_READ8_MEMBER( i8049_t1_r );
-
-protected:
-=======
 	DECLARE_READ_LINE_MEMBER( i8049_t0_r );
 	DECLARE_READ_LINE_MEMBER( i8049_t1_r );
 
->>>>>>> upstream/master
 	// internal state
 	required_device<i8049_device> m_i8049_cpu;      // CPU index of the 8049
 	emu_timer *         m_tracktimer;               // timer device
 	data_ready_delegate m_data_ready;               // data ready callback
 
 	// I/O port states
-<<<<<<< HEAD
-	UINT8               m_i8049_out0;               // output 0 state
-	UINT8               m_i8049_out1;               // output 1 state
-	UINT8               m_i8049_port1;              // port 1 state
-
-	// DATIC circuit implementation
-	UINT8               m_daticval;                 // latched DATIC value
-	UINT8               m_daticerp;                 // /ERP value from DATIC
-	UINT8               m_datastrobe;               // DATA STROBE line from DATIC
-
-	// communication status
-	UINT8               m_reset_state;              // state of the reset input
-	UINT8               m_fromcontroller;           // command byte from the controller
-	bool                m_fromcontroller_pending;   // true if data is pending
-	UINT8               m_tocontroller;             // command byte to the controller
-	bool                m_tocontroller_pending;     // true if data is pending
-
-	// tracking
-	INT8                m_trackdir;                 // direction of tracking
-	UINT8               m_trackstate;               // state of tracking
-
-	// debugging
-	UINT8               m_cmdbuf[3];                // 3 bytes worth of commands
-	UINT8               m_cmdcount;                 // number of command bytes seen
-	INT16               m_advanced;                 // number of frames advanced
-};
-
-
-#endif
-=======
 	uint8_t               m_i8049_out0;               // output 0 state
 	uint8_t               m_i8049_out1;               // output 1 state
 	uint8_t               m_i8049_port1;              // port 1 state
@@ -212,4 +137,3 @@ protected:
 };
 
 #endif // MAME_MACHINE_LDVP931_H
->>>>>>> upstream/master

@@ -1,11 +1,7 @@
 // license:BSD-3-Clause
 // copyright-holders:Andrew Gardner
-<<<<<<< HEAD
-#define NO_MEM_TRACKING
-=======
 #include "emu.h"
 #include <QtWidgets/QVBoxLayout>
->>>>>>> upstream/master
 
 #include "logwindow.h"
 
@@ -15,19 +11,11 @@
 
 
 LogWindow::LogWindow(running_machine* machine, QWidget* parent) :
-<<<<<<< HEAD
-	WindowQt(machine, NULL)
-{
-	setWindowTitle("Debug: Machine Log");
-
-	if (parent != NULL)
-=======
 	WindowQt(machine, nullptr)
 {
 	setWindowTitle("Debug: Machine Log");
 
 	if (parent != nullptr)
->>>>>>> upstream/master
 	{
 		QPoint parentPos = parent->pos();
 		setGeometry(parentPos.x()+100, parentPos.y()+100, 800, 400);
@@ -73,21 +61,13 @@ void LogWindowQtConfig::applyToQWidget(QWidget* widget)
 }
 
 
-<<<<<<< HEAD
-void LogWindowQtConfig::addToXmlDataNode(xml_data_node* node) const
-=======
 void LogWindowQtConfig::addToXmlDataNode(util::xml::data_node &node) const
->>>>>>> upstream/master
 {
 	WindowQtConfig::addToXmlDataNode(node);
 }
 
 
-<<<<<<< HEAD
-void LogWindowQtConfig::recoverFromXmlNode(xml_data_node* node)
-=======
 void LogWindowQtConfig::recoverFromXmlNode(util::xml::data_node const &node)
->>>>>>> upstream/master
 {
 	WindowQtConfig::recoverFromXmlNode(node);
 }

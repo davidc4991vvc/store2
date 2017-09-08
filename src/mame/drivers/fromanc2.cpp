@@ -19,14 +19,6 @@
 ******************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/m68000/m68000.h"
-#include "cpu/z80/z80.h"
-#include "machine/eepromser.h"
-#include "sound/2610intf.h"
-#include "includes/fromanc2.h"
-#include "rendlay.h"
-=======
 #include "includes/fromanc2.h"
 
 #include "cpu/m68000/m68000.h"
@@ -35,7 +27,6 @@
 #include "rendlay.h"
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 /*************************************
@@ -52,13 +43,8 @@ INTERRUPT_GEN_MEMBER(fromanc2_state::fromanc2_interrupt)
 
 WRITE16_MEMBER(fromanc2_state::fromanc2_sndcmd_w)
 {
-<<<<<<< HEAD
-	soundlatch_byte_w(space, offset, (data >> 8) & 0xff);   // 1P (LEFT)
-	soundlatch2_byte_w(space, offset, data & 0xff);         // 2P (RIGHT)
-=======
 	m_soundlatch->write(space, offset, (data >> 8) & 0xff);   // 1P (LEFT)
 	m_soundlatch2->write(space, offset, data & 0xff);         // 2P (RIGHT)
->>>>>>> upstream/master
 
 	m_audiocpu->set_input_line(INPUT_LINE_NMI, PULSE_LINE);
 	m_sndcpu_nmi_flag = 0;
@@ -71,11 +57,7 @@ WRITE16_MEMBER(fromanc2_state::fromanc2_portselect_w)
 
 READ16_MEMBER(fromanc2_state::fromanc2_keymatrix_r)
 {
-<<<<<<< HEAD
-	UINT16 ret;
-=======
 	uint16_t ret;
->>>>>>> upstream/master
 
 	switch (m_portselect)
 	{
@@ -176,15 +158,12 @@ WRITE8_MEMBER(fromanc2_state::fromanc2_subcpu_rombank_w)
 	membank("bank2")->set_entry((data & 0x0c) >> 2);
 }
 
-<<<<<<< HEAD
-=======
 // custom handler allowing byte-smeared writes
 WRITE16_MEMBER(fromanc2_state::uart_w)
 {
 	m_uart->ins8250_w(space, offset, data & 0xff);
 }
 
->>>>>>> upstream/master
 
 /*************************************
  *
@@ -284,12 +263,7 @@ static ADDRESS_MAP_START( fromanc4_main_map, AS_PROGRAM, 16, fromanc2_state )
 	AM_RANGE(0xe30000, 0xe30013) AM_WRITENOP                        // ???
 	AM_RANGE(0xe40000, 0xe40013) AM_WRITENOP                        // ???
 
-<<<<<<< HEAD
-	AM_RANGE(0xe50000, 0xe50009) AM_WRITENOP                        // EXT-COMM PORT ?
-	AM_RANGE(0xe5000c, 0xe5000d) AM_READNOP                         // EXT-COMM PORT ?
-=======
 	AM_RANGE(0xe50000, 0xe5000f) AM_DEVREAD8("uart", ns16550_device, ins8250_r, 0x00ff) AM_WRITE(uart_w) // EXT-COMM PORT ?
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -316,13 +290,8 @@ ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( fromanc2_sound_io_map, AS_IO, 8, fromanc2_state )
 	ADDRESS_MAP_GLOBAL_MASK(0xff)
-<<<<<<< HEAD
-	AM_RANGE(0x00, 0x00) AM_READ(soundlatch_byte_r) AM_WRITENOP     // snd cmd (1P) / ?
-	AM_RANGE(0x04, 0x04) AM_READ(soundlatch2_byte_r)                // snd cmd (2P)
-=======
 	AM_RANGE(0x00, 0x00) AM_DEVREAD("soundlatch", generic_latch_8_device, read) AM_WRITENOP     // snd cmd (1P) / ?
 	AM_RANGE(0x04, 0x04) AM_DEVREAD("soundlatch2", generic_latch_8_device, read)                // snd cmd (2P)
->>>>>>> upstream/master
 	AM_RANGE(0x08, 0x0b) AM_DEVREADWRITE("ymsnd", ym2610_device, read, write)
 	AM_RANGE(0x0c, 0x0c) AM_READ(fromanc2_sndcpu_nmi_clr)
 ADDRESS_MAP_END
@@ -340,15 +309,9 @@ static INPUT_PORTS_START( fromanc2 )
 	PORT_BIT( 0x0002, IP_ACTIVE_LOW, IPT_COIN2 )
 	PORT_BIT( 0x0004, IP_ACTIVE_LOW, IPT_COIN3 )
 	PORT_BIT( 0x0008, IP_ACTIVE_LOW, IPT_COIN4 )
-<<<<<<< HEAD
-	PORT_BIT( 0x0010, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, fromanc2_state,subcpu_int_r, NULL) // SUBCPU INT FLAG
-	PORT_BIT( 0x0020, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, fromanc2_state,sndcpu_nmi_r, NULL) // SNDCPU NMI FLAG
-	PORT_BIT( 0x0040, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, fromanc2_state,subcpu_nmi_r, NULL) // SUBCPU NMI FLAG
-=======
 	PORT_BIT( 0x0010, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, fromanc2_state,subcpu_int_r, nullptr) // SUBCPU INT FLAG
 	PORT_BIT( 0x0020, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, fromanc2_state,sndcpu_nmi_r, nullptr) // SNDCPU NMI FLAG
 	PORT_BIT( 0x0040, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, fromanc2_state,subcpu_nmi_r, nullptr) // SUBCPU NMI FLAG
->>>>>>> upstream/master
 	PORT_BIT( 0x0080, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_READ_LINE_DEVICE_MEMBER("eeprom", eeprom_serial_93cxx_device, do_read)
 	PORT_BIT( 0x0100, IP_ACTIVE_LOW, IPT_SERVICE ) PORT_NAME( "Service Mode (1P)" ) PORT_CODE(KEYCODE_F2) // TEST (1P)
 	PORT_BIT( 0x0200, IP_ACTIVE_LOW, IPT_SERVICE ) PORT_NAME( "Service Mode (2P)" ) PORT_CODE(KEYCODE_F2) // TEST (2P)
@@ -447,11 +410,7 @@ static INPUT_PORTS_START( fromanc4 )
 	PORT_BIT( 0x0004, IP_ACTIVE_LOW, IPT_COIN2 )
 	PORT_BIT( 0x0008, IP_ACTIVE_LOW, IPT_COIN3 )
 	PORT_BIT( 0x0010, IP_ACTIVE_LOW, IPT_COIN4 )
-<<<<<<< HEAD
-	PORT_BIT( 0x0020, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, fromanc2_state,sndcpu_nmi_r, NULL) // SNDCPU NMI FLAG
-=======
 	PORT_BIT( 0x0020, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, fromanc2_state,sndcpu_nmi_r, nullptr) // SNDCPU NMI FLAG
->>>>>>> upstream/master
 	PORT_BIT( 0x0040, IP_ACTIVE_LOW, IPT_UNUSED )
 	PORT_BIT( 0x0080, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_READ_LINE_DEVICE_MEMBER("eeprom", eeprom_serial_93cxx_device, do_read)
 	PORT_BIT( 0x0100, IP_ACTIVE_LOW, IPT_UNUSED )
@@ -509,21 +468,6 @@ GFXDECODE_END
 
 /*************************************
  *
-<<<<<<< HEAD
- *  Sound interface
- *
- *************************************/
-
-WRITE_LINE_MEMBER(fromanc2_state::irqhandler)
-{
-	m_audiocpu->set_input_line(0, state ? ASSERT_LINE : CLEAR_LINE);
-}
-
-
-/*************************************
- *
-=======
->>>>>>> upstream/master
  *  Machine driver
  *
  *************************************/
@@ -541,29 +485,17 @@ MACHINE_START_MEMBER(fromanc2_state,fromanc4)
 
 MACHINE_START_MEMBER(fromanc2_state,fromanc2)
 {
-<<<<<<< HEAD
-	m_bankedram = auto_alloc_array(machine(), UINT8, 0x4000 * 3);
-
-	membank("bank1")->configure_entries(0, 4, memregion("sub")->base(), 0x4000);
-	membank("bank2")->configure_entry(0, memregion("sub")->base() + 0x08000);
-	membank("bank2")->configure_entries(1, 3, m_bankedram, 0x4000);
-=======
 	m_bankedram = std::make_unique<uint8_t[]>(0x4000 * 3);
 
 	membank("bank1")->configure_entries(0, 4, memregion("sub")->base(), 0x4000);
 	membank("bank2")->configure_entry(0, memregion("sub")->base() + 0x08000);
 	membank("bank2")->configure_entries(1, 3, m_bankedram.get(), 0x4000);
->>>>>>> upstream/master
 
 	MACHINE_START_CALL_MEMBER(fromanc4);
 
 	save_item(NAME(m_subcpu_int_flag));
 	save_item(NAME(m_subcpu_nmi_flag));
-<<<<<<< HEAD
-	save_pointer(NAME(m_bankedram), 0x4000 * 3);
-=======
 	save_pointer(NAME(m_bankedram.get()), 0x4000 * 3);
->>>>>>> upstream/master
 }
 
 void fromanc2_state::machine_reset()
@@ -574,11 +506,7 @@ void fromanc2_state::machine_reset()
 	m_datalatch_2l = 0;
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( fromanc2, fromanc2_state )
-=======
 static MACHINE_CONFIG_START( fromanc2 )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000,32000000/2)      /* 16.00 MHz */
@@ -628,26 +556,17 @@ static MACHINE_CONFIG_START( fromanc2 )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-	MCFG_SOUND_ADD("ymsnd", YM2610, 8000000)
-	MCFG_YM2610_IRQ_HANDLER(WRITELINE(fromanc2_state, irqhandler))
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch2")
 
 	MCFG_SOUND_ADD("ymsnd", YM2610, 8000000)
 	MCFG_YM2610_IRQ_HANDLER(INPUTLINE("audiocpu", 0))
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(0, "mono", 0.50)
 	MCFG_SOUND_ROUTE(1, "mono", 0.75)
 	MCFG_SOUND_ROUTE(2, "mono", 0.75)
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( fromancr, fromanc2_state )
-=======
 static MACHINE_CONFIG_START( fromancr )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000,32000000/2)      /* 16.00 MHz */
@@ -697,31 +616,16 @@ static MACHINE_CONFIG_START( fromancr )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-	MCFG_SOUND_ADD("ymsnd", YM2610, 8000000)
-	MCFG_YM2610_IRQ_HANDLER(WRITELINE(fromanc2_state, irqhandler))
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch2")
 
 	MCFG_SOUND_ADD("ymsnd", YM2610, 8000000)
 	MCFG_YM2610_IRQ_HANDLER(INPUTLINE("audiocpu", 0))
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(0, "mono", 0.50)
 	MCFG_SOUND_ROUTE(1, "mono", 0.75)
 	MCFG_SOUND_ROUTE(2, "mono", 0.75)
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( fromanc4, fromanc2_state )
-
-	/* basic machine hardware */
-	MCFG_CPU_ADD("maincpu", M68000,32000000/2)      /* 16.00 MHz */
-	MCFG_CPU_PROGRAM_MAP(fromanc4_main_map)
-	MCFG_CPU_VBLANK_INT_DRIVER("lscreen", fromanc2_state,  fromanc2_interrupt)
-
-	MCFG_CPU_ADD("audiocpu", Z80,32000000/4)        /* 8.00 MHz */
-=======
 static MACHINE_CONFIG_START( fromanc4 )
 
 	/* basic machine hardware */
@@ -730,7 +634,6 @@ static MACHINE_CONFIG_START( fromanc4 )
 	MCFG_CPU_VBLANK_INT_DRIVER("lscreen", fromanc2_state,  fromanc2_interrupt)
 
 	MCFG_CPU_ADD("audiocpu", Z80, XTAL_32MHz/4)        /* 8.00 MHz */
->>>>>>> upstream/master
 	MCFG_CPU_PROGRAM_MAP(fromanc2_sound_map)
 	MCFG_CPU_IO_MAP(fromanc2_sound_io_map)
 
@@ -738,14 +641,11 @@ static MACHINE_CONFIG_START( fromanc4 )
 
 	MCFG_EEPROM_SERIAL_93C46_ADD("eeprom")
 
-<<<<<<< HEAD
-=======
 	MCFG_DEVICE_ADD("uart", NS16550, 2000000) // actual type is TL16C550CFN; clock unknown
 	MCFG_INS8250_OUT_INT_CB(INPUTLINE("maincpu", M68K_IRQ_2))
 	//MCFG_INS8250_OUT_TX_CB(DEVWRITELINE("link", rs232_port_device, write_txd))
 	//MCFG_INS8250_OUT_RTS_CB(DEVWRITELINE("link", rs232_port_device, write_rts))
 
->>>>>>> upstream/master
 	/* video hardware */
 	MCFG_GFXDECODE_ADD("gfxdecode", "lpalette", fromancr)
 
@@ -777,16 +677,11 @@ static MACHINE_CONFIG_START( fromanc4 )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-	MCFG_SOUND_ADD("ymsnd", YM2610, 8000000)
-	MCFG_YM2610_IRQ_HANDLER(WRITELINE(fromanc2_state, irqhandler))
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch2")
 
 	MCFG_SOUND_ADD("ymsnd", YM2610, 8000000)
 	MCFG_YM2610_IRQ_HANDLER(INPUTLINE("audiocpu", 0))
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(0, "mono", 0.50)
 	MCFG_SOUND_ROUTE(1, "mono", 0.75)
 	MCFG_SOUND_ROUTE(2, "mono", 0.75)
@@ -801,8 +696,6 @@ MACHINE_CONFIG_END
 
 ROM_START( fromanc2 )
 	ROM_REGION( 0x0080000, "maincpu", 0 )   // MAIN CPU
-<<<<<<< HEAD
-=======
 	ROM_LOAD16_WORD_SWAP( "9.ic23", 0x000000, 0x080000, CRC(1b8b2570) SHA1(efcaa9af0737ab280c1e49ad69dcd4e05f6102c8) )
 
 	ROM_REGION( 0x0010000, "audiocpu", 0 )  // SOUND CPU
@@ -834,7 +727,6 @@ ROM_END
 
 ROM_START( fromanc2o )
 	ROM_REGION( 0x0080000, "maincpu", 0 )   // MAIN CPU
->>>>>>> upstream/master
 	ROM_LOAD16_WORD_SWAP( "4-ic23.bin", 0x000000, 0x080000, CRC(96c90f9e) SHA1(c233e91d6967ef05cf14923273be84b17fce200f) )
 
 	ROM_REGION( 0x0010000, "audiocpu", 0 )  // SOUND CPU
@@ -959,13 +851,7 @@ DRIVER_INIT_MEMBER(fromanc2_state,fromanc4)
  *
  *************************************/
 
-<<<<<<< HEAD
-GAME( 1995, fromanc2, 0, fromanc2, fromanc2, fromanc2_state, fromanc2, ROT0, "Video System Co.", "Taisen Idol-Mahjong Final Romance 2 (Japan)", MACHINE_SUPPORTS_SAVE )
-GAME( 1995, fromancr, 0, fromancr, fromanc2, fromanc2_state, fromanc2, ROT0, "Video System Co.", "Taisen Mahjong Final Romance R (Japan)", MACHINE_SUPPORTS_SAVE )
-GAME( 1998, fromanc4, 0, fromanc4, fromanc4, fromanc2_state, fromanc4, ROT0, "Video System Co.", "Taisen Mahjong Final Romance 4 (Japan)", MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1995, fromanc2,  0,        fromanc2, fromanc2, fromanc2_state, fromanc2, ROT0, "Video System Co.", "Taisen Idol-Mahjong Final Romance 2 (Japan, newer)", MACHINE_SUPPORTS_SAVE )
 GAME( 1995, fromanc2o, fromanc2, fromanc2, fromanc2, fromanc2_state, fromanc2, ROT0, "Video System Co.", "Taisen Idol-Mahjong Final Romance 2 (Japan, older)", MACHINE_SUPPORTS_SAVE )
 GAME( 1995, fromancr,  0,        fromancr, fromanc2, fromanc2_state, fromanc2, ROT0, "Video System Co.", "Taisen Mahjong Final Romance R (Japan)",      MACHINE_SUPPORTS_SAVE )
 GAME( 1998, fromanc4,  0,        fromanc4, fromanc4, fromanc2_state, fromanc4, ROT0, "Video System Co.", "Taisen Mahjong Final Romance 4 (Japan)",      MACHINE_NODEVICE_LAN | MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

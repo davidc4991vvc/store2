@@ -5,19 +5,6 @@
 
 #include "MyString.h"
 
-<<<<<<< HEAD
-int CompareFileNames(const UString &s1, const UString &s2);
-
-void SplitPathToParts(const UString &path, UStringVector &pathParts);
-void SplitPathToParts(const UString &path, UString &dirPrefix, UString &name);
-UString ExtractDirPrefixFromPath(const UString &path);
-UString ExtractFileNameFromPath(const UString &path);
-bool DoesNameContainWildCard(const UString &path);
-bool CompareWildCardWithName(const UString &mask, const UString &name);
-
-namespace NWildcard {
-
-=======
 int CompareFileNames(const wchar_t *s1, const wchar_t *s2) STRING_UNICODE_THROW;
 #ifndef USE_UNICODE_FSTRING
   int CompareFileNames(const char *s1, const char *s2);
@@ -43,15 +30,12 @@ bool IsDriveColonName(const wchar_t *s);
 unsigned GetNumPrefixParts_if_DrivePath(UStringVector &pathParts);
 #endif
 
->>>>>>> upstream/master
 struct CItem
 {
   UStringVector PathParts;
   bool Recursive;
   bool ForFile;
   bool ForDir;
-<<<<<<< HEAD
-=======
   bool WildcardMatching;
   
   #ifdef _WIN32
@@ -64,22 +48,12 @@ struct CItem
   // CItem(): WildcardMatching(true) {}
 
   bool AreAllAllowed() const;
->>>>>>> upstream/master
   bool CheckPath(const UStringVector &pathParts, bool isFile) const;
 };
 
 class CCensorNode
 {
   CCensorNode *Parent;
-<<<<<<< HEAD
-  bool CheckPathCurrent(bool include, const UStringVector &pathParts, bool isFile) const;
-  void AddItemSimple(bool include, CItem &item);
-  bool CheckPath(UStringVector &pathParts, bool isFile, bool &include) const;
-public:
-  CCensorNode(): Parent(0) { };
-  CCensorNode(const UString &name, CCensorNode *parent): Name(name), Parent(parent) { };
-  UString Name;
-=======
   
   bool CheckPathCurrent(bool include, const UStringVector &pathParts, bool isFile) const;
   void AddItemSimple(bool include, CItem &item);
@@ -90,18 +64,10 @@ public:
   CCensorNode(const UString &name, CCensorNode *parent): Name(name), Parent(parent) { };
 
   UString Name; // WIN32 doesn't support wildcards in file names
->>>>>>> upstream/master
   CObjectVector<CCensorNode> SubNodes;
   CObjectVector<CItem> IncludeItems;
   CObjectVector<CItem> ExcludeItems;
 
-<<<<<<< HEAD
-  int FindSubNode(const UString &path) const;
-
-  void AddItem(bool include, CItem &item);
-  void AddItem(bool include, const UString &path, bool recursive, bool forFile, bool forDir);
-  void AddItem2(bool include, const UString &path, bool recursive);
-=======
   bool AreAllAllowed() const;
 
   int FindSubNode(const UString &path) const;
@@ -109,18 +75,12 @@ public:
   void AddItem(bool include, CItem &item, int ignoreWildcardIndex = -1);
   void AddItem(bool include, const UString &path, bool recursive, bool forFile, bool forDir, bool wildcardMatching);
   void AddItem2(bool include, const UString &path, bool recursive, bool wildcardMatching);
->>>>>>> upstream/master
 
   bool NeedCheckSubDirs() const;
   bool AreThereIncludeItems() const;
 
-<<<<<<< HEAD
-  bool CheckPath(const UString &path, bool isFile, bool &include) const;
-  bool CheckPath(const UString &path, bool isFile) const;
-=======
   // bool CheckPath2(bool isAltStream, const UString &path, bool isFile, bool &include) const;
   // bool CheckPath(bool isAltStream, const UString &path, bool isFile) const;
->>>>>>> upstream/master
 
   bool CheckPathToRoot(bool include, UStringVector &pathParts, bool isFile) const;
   // bool CheckPathToRoot(const UString &path, bool isFile, bool include) const;
@@ -131,11 +91,6 @@ struct CPair
 {
   UString Prefix;
   CCensorNode Head;
-<<<<<<< HEAD
-  CPair(const UString &prefix): Prefix(prefix) { };
-};
-
-=======
   
   CPair(const UString &prefix): Prefix(prefix) { };
 };
@@ -161,21 +116,11 @@ struct CCensorPath
     {}
 };
 
->>>>>>> upstream/master
 class CCensor
 {
   int FindPrefix(const UString &prefix) const;
 public:
   CObjectVector<CPair> Pairs;
-<<<<<<< HEAD
-  bool AllAreRelative() const
-    { return (Pairs.Size() == 1 && Pairs.Front().Prefix.IsEmpty()); }
-  void AddItem(bool include, const UString &path, bool recursive);
-  bool CheckPath(const UString &path, bool isFile) const;
-  void ExtendExclude();
-};
-
-=======
 
   CObjectVector<NWildcard::CCensorPath> CensorPaths;
   
@@ -199,7 +144,6 @@ public:
 };
 
 
->>>>>>> upstream/master
 }
 
 #endif

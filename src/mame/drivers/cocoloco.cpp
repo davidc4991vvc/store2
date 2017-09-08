@@ -157,8 +157,6 @@
 
 ***************************************************************************************
 
-<<<<<<< HEAD
-=======
   Game notes...
 
   The third set is resetting after drawing the maze, and when start a game.
@@ -175,7 +173,6 @@
 
 ***************************************************************************************
 
->>>>>>> upstream/master
   DRIVER UPDATES:
 
   2014-05-11
@@ -191,20 +188,6 @@
 
 **************************************************************************************/
 
-<<<<<<< HEAD
-
-#define MASTER_CLOCK    XTAL_20MHz           /* confirmed */
-#define CPU_CLOCK       MASTER_CLOCK / 16    /* confirmed */
-#define SND_CLOCK       MASTER_CLOCK / 8     /* confirmed */
-
-#include "emu.h"
-#include "cpu/m6502/m6502.h"
-#include "sound/ay8910.h"
-#include "machine/netlist.h"
-#include "netlist/devices/net_lib.h"
-
-
-=======
 #include "emu.h"
 
 #include "cpu/m6502/m6502.h"
@@ -221,7 +204,6 @@
 #define SND_CLOCK       MASTER_CLOCK / 8     /* confirmed */
 
 
->>>>>>> upstream/master
 class cocoloco_state : public driver_device
 {
 public:
@@ -233,13 +215,8 @@ public:
 	required_device<cpu_device> m_maincpu;
 	required_device<palette_device> m_palette;
 
-<<<<<<< HEAD
-	UINT8 *m_videoram;
-	UINT8 m_videobank;
-=======
 	std::unique_ptr<uint8_t[]> m_videoram;
 	uint8_t m_videobank;
->>>>>>> upstream/master
 
 	DECLARE_READ8_MEMBER(vram_r);
 	DECLARE_WRITE8_MEMBER(vram_w);
@@ -249,19 +226,12 @@ public:
 
 	DECLARE_INPUT_CHANGED_MEMBER(coin_inserted);
 
-<<<<<<< HEAD
-	virtual void video_start();
-	DECLARE_PALETTE_INIT(cocoloco);
-
-	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	DECLARE_DRIVER_INIT(cocob);
 
 	virtual void video_start() override;
 	DECLARE_PALETTE_INIT(cocoloco);
 
 	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 };
 
 /***********************************
@@ -342,15 +312,6 @@ PALETTE_INIT_MEMBER(cocoloco_state, cocoloco)
 
 void cocoloco_state::video_start()
 {
-<<<<<<< HEAD
-	m_videoram = auto_alloc_array(machine(), UINT8, 0x2000 * 8);
-
-	save_pointer(NAME(m_videoram), 0x2000 * 8);
-	save_item(NAME(m_videobank));
-}
-
-UINT32 cocoloco_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 	m_videoram = std::make_unique<uint8_t[]>(0x2000 * 8);
 
 	save_pointer(NAME(m_videoram.get()), 0x2000 * 8);
@@ -358,7 +319,6 @@ UINT32 cocoloco_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap
 }
 
 uint32_t cocoloco_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int x, y, count, xi;
 
@@ -429,11 +389,7 @@ WRITE8_MEMBER( cocoloco_state::coincounter_w )
     They explain in a sheet that the coin in for 50 pesetas
     behaves like 2x 25 pesetas (1 duro) coins, so has sense.
 */
-<<<<<<< HEAD
-	coin_counter_w(machine(), 0, data & 0x08);
-=======
 	machine().bookkeeping().coin_counter_w(0, data & 0x08);
->>>>>>> upstream/master
 }
 
 
@@ -460,8 +416,6 @@ ADDRESS_MAP_END
   All 3 instances of A005 reads (d07e, d355 and dca8),
   discard the read in a non-sense way....
 
-<<<<<<< HEAD
-=======
   IE (from set 2):
 
   D7B6: A9 00     ; lda #$00
@@ -483,7 +437,6 @@ ADDRESS_MAP_END
   D08C: 8D 03 80  ; sta $8003
   ...
 
->>>>>>> upstream/master
   There is another register (8005h), that is written by the code
   (bit3 on/off) after coin-in, and checking the inputs too...
   Seems coin counter, but the input check is suspicious.
@@ -552,8 +505,6 @@ static INPUT_PORTS_START( cocoloco )
 INPUT_PORTS_END
 
 
-<<<<<<< HEAD
-=======
 static INPUT_PORTS_START( cocolocoa )
 	PORT_INCLUDE( cocoloco )
 
@@ -564,16 +515,11 @@ INPUT_PORTS_END
 
 
 
->>>>>>> upstream/master
 /***********************************
 *         Machine Drivers          *
 ***********************************/
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( cocoloco, cocoloco_state )
-=======
 static MACHINE_CONFIG_START( cocoloco )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6502, CPU_CLOCK)   /* confirmed */
@@ -628,11 +574,6 @@ ROM_START( cocoloco )
 	ROM_LOAD( "coco1-h.e1", 0xf800, 0x0800, CRC(b6d0ebea) SHA1(a8f09558f71dfe0d300a6bb946dcb3bf6393c02b) )
 
 	ROM_REGION( 0x0100, "proms", 0 )
-<<<<<<< HEAD
-	ROM_LOAD( "prom.c10",   0x0000, 0x0100, CRC(fea8a821) SHA1(c744cac6af7621524fc3a2b0a9a135a32b33c81b) )
-ROM_END
-
-=======
 	ROM_LOAD( "prom.c10",   0x0000, 0x0100, CRC(fea8a821) SHA1(c744cac6af7621524fc3a2b0a9a135a32b33c81b) )  // blank. verified
 ROM_END
 
@@ -686,18 +627,12 @@ DRIVER_INIT_MEMBER(cocoloco_state, cocob)
 	rom[0xe04b] = 0xea;
 }
 
->>>>>>> upstream/master
 
 /***********************************
 *           Game Drivers           *
 ***********************************/
 
-<<<<<<< HEAD
-/*    YEAR  NAME       PARENT   MACHINE   INPUT     STATE          INIT   ROT     COMPANY         FULLNAME      FLAGS  */
-GAME( 198?, cocoloco,  0,       cocoloco, cocoloco, driver_device, 0,     ROT90, "Petaco S.A.",  "Coco Loco", MACHINE_SUPPORTS_SAVE )
-=======
 //    YEAR  NAME       PARENT    MACHINE   INPUT      STATE           INIT   ROT    COMPANY         FULLNAME             FLAGS
 GAME( 198?, cocoloco,  0,        cocoloco, cocoloco,  cocoloco_state, 0,     ROT90, "Petaco S.A.",  "Coco Loco (set 1)", MACHINE_SUPPORTS_SAVE )
 GAME( 198?, cocolocoa, cocoloco, cocoloco, cocolocoa, cocoloco_state, 0,     ROT90, "Recel S.A.",   "Coco Loco (set 2)", MACHINE_SUPPORTS_SAVE )
 GAME( 198?, cocolocob, cocoloco, cocoloco, cocoloco,  cocoloco_state, cocob, ROT90, "Petaco S.A.",  "Coco Loco (set 3)", MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

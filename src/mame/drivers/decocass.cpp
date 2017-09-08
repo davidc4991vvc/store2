@@ -14,32 +14,14 @@
     The Dumping Union
     Team Japump!!!
     Hau
-<<<<<<< HEAD
-=======
     Jean-Francois Del Nero
     Omar Cornut
     Game Preservation Society
     Joseph Redon
->>>>>>> upstream/master
 
     The DECO cassette system consists of three PCBS in a card cage:
     Early boardset: (1980-1983) (proms unknown for this boardset, no schematics for this boardset)
     One DE-0069C-0 RMS-3 pcb with a 6502 processor, D8041C MCU (DECO Cassette control), two ay-3-8910s, and one 2708 eprom holding the audio bios. (audio, needs external amp and volume control)
-<<<<<<< HEAD
-    One DE-0068B-0 DSP-3 pcb with a 'DECO CPU-3' custom, two 2716 eproms (main processor and bios, graphics, dipswitches?)
-    One DE-0070C-0 BIO-3 pcb with an analog ADC0908 8-bit adc
-    One DE-0066B-0 card rack board that the other three boards plug into.
-    TODO: get more info about this older boardset: D. Widel has some info about it on his page at http://www.widel.com/stuff/decopin.htm
-
-    Later boardset: (1984 onward, schematic is dated 10/83)
-    One DE-0097C-0 RMS-8 pcb with a 6502 processor, two ay-3-8910s, two eproms (2716 and 2732) plus one prom, and 48k worth of 4116 16kx1 DRAMs; the 6502 processor has its own 4K of SRAM. (audio processor and RAM, Main processor's dram, dipswitches)
-    One DE-0096C-0 DSP-8 board with a 'DECO 222' custom on it (labeled '8049 // C10707-2') which appears to really be a 'cleverly' disguised 6502, and two proms, plus 4K of sram, and three hm2511-1 1kx1 srams. (main processor and graphics)
-    One DE-0098C-0 B10-8 (BIO-8 on schematics) board with an 8041, an analog devices ADC0908 8-bit adc, and 4K of SRAM on it (DECO Cassette control, inputs)
-    One DE-0109C-0 card rack board that the other three boards plug into.
-
-    The actual cassettes use a custom player hooked to the BIO board, and are roughly microcassette form factor, but are larger and will not fit in a conventional microcassette player.
-    Each cassette has two tracks on it: a clock track and a data track, for a form of synchronous serial. The data is stored in blocks with headers and checksums.
-=======
     One DE-0068B-0 DSP-3 pcb with a 'DECO CPU-3' custom, two 2716 eproms. (main processor and bios, graphics, dipswitches?)
     One DE-0070C-0 BIO-3 pcb with an analog ADC0908 8-bit adc.
     One DE-0066B-0 card rack board that the other three boards plug into.
@@ -56,19 +38,10 @@
     The data is stored in blocks with headers and CRC16 checksums.
     The first block contains information such as the region (A:Japan, B:USA, C:UK, D:Europe) and the total number of blocks left to read.
     The last physical block on the cassette is a dummy block not used by the system. (only used to mark the end of last block)
->>>>>>> upstream/master
 
  ***********************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/m6502/m6502.h"
-#include "cpu/mcs48/mcs48.h"
-#include "includes/decocass.h"
-#include "machine/decocass_tape.h"
-#include "sound/ay8910.h"
-#include "machine/deco222.h"
-=======
 #include "includes/decocass.h"
 
 #include "cpu/m6502/m6502.h"
@@ -77,7 +50,6 @@
 #include "machine/decocass_tape.h"
 #include "sound/ay8910.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 #define MASTER_CLOCK    XTAL_12MHz
 #define HCLK            (MASTER_CLOCK/2)
@@ -163,14 +135,6 @@ static ADDRESS_MAP_START( decocass_sound_map, AS_PROGRAM, 8, decocass_state )
 ADDRESS_MAP_END
 
 
-<<<<<<< HEAD
-static ADDRESS_MAP_START( decocass_mcu_portmap, AS_IO, 8, decocass_state )
-	AM_RANGE(MCS48_PORT_P1, MCS48_PORT_P1) AM_READWRITE(i8041_p1_r, i8041_p1_w)
-	AM_RANGE(MCS48_PORT_P2, MCS48_PORT_P2) AM_READWRITE(i8041_p2_r, i8041_p2_w)
-ADDRESS_MAP_END
-
-=======
->>>>>>> upstream/master
 static INPUT_PORTS_START( decocass )
 	PORT_START("IN0")
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH,IPT_JOYSTICK_RIGHT )
@@ -289,9 +253,6 @@ static INPUT_PORTS_START( csuperas )
 	/* Switches 6, 7 & 8 are listed as "Country Code" A through F and "Don't Change" */
 INPUT_PORTS_END
 
-<<<<<<< HEAD
-static INPUT_PORTS_START( clocknch )
-=======
 
 static INPUT_PORTS_START( cocean1a ) /* 10 */
 	PORT_INCLUDE( decocass )
@@ -329,7 +290,6 @@ static INPUT_PORTS_START( cocean1a ) /* 10 */
 INPUT_PORTS_END
 
 static INPUT_PORTS_START( clocknchj )
->>>>>>> upstream/master
 	PORT_INCLUDE( decocass )
 
 	PORT_MODIFY("DSW2")
@@ -344,8 +304,6 @@ static INPUT_PORTS_START( clocknchj )
 	/* Switches 4, 5, 6, 7 & 8 are listed as "Not Used" and "Don't Change" */
 INPUT_PORTS_END
 
-<<<<<<< HEAD
-=======
 static INPUT_PORTS_START( clocknch )
 	PORT_INCLUDE( clocknchj )
 
@@ -355,7 +313,6 @@ static INPUT_PORTS_START( clocknch )
 	PORT_DIPSETTING(    0x00, DEF_STR( Hard ) )
 INPUT_PORTS_END
 
->>>>>>> upstream/master
 static INPUT_PORTS_START( cprogolf )
 	PORT_INCLUDE( decocass )
 
@@ -712,8 +669,6 @@ static INPUT_PORTS_START( cfishing )
 	/* Switches 5, 6, 7 & 8 are listed as "Not Used" and "Don't Change" */
 INPUT_PORTS_END
 
-<<<<<<< HEAD
-=======
 static INPUT_PORTS_START( cfboy0a1 ) /* 12 */
 	PORT_INCLUDE( decocass )
 
@@ -916,7 +871,6 @@ static INPUT_PORTS_START( cprobowl )
 	PORT_DIPSETTING(    0x01, DEF_STR( On ) )
 	/* other dips not verified */
 INPUT_PORTS_END
->>>>>>> upstream/master
 
 static const gfx_layout charlayout =
 {
@@ -951,21 +905,13 @@ static const gfx_layout tilelayout =
 	2*16*16
 };
 
-<<<<<<< HEAD
-static const UINT32 objlayout_xoffset[64] =
-=======
 static const uint32_t objlayout_xoffset[64] =
->>>>>>> upstream/master
 {
 	STEP8(7*8,1), STEP8(6*8,1), STEP8(5*8,1), STEP8(4*8,1),
 	STEP8(3*8,1), STEP8(2*8,1), STEP8(1*8,1), STEP8(0*8,1)
 };
 
-<<<<<<< HEAD
-static const UINT32 objlayout_yoffset[64] =
-=======
 static const uint32_t objlayout_yoffset[64] =
->>>>>>> upstream/master
 {
 	STEP32(63*2*64, -1*2*64),
 	STEP32(31*2*64, -1*2*64)
@@ -985,49 +931,16 @@ static const gfx_layout objlayout =
 };
 
 static GFXDECODE_START( decocass )
-<<<<<<< HEAD
-	GFXDECODE_ENTRY( NULL, 0x6000, charlayout,       0, 4 )  /* char set #1 */
-	GFXDECODE_ENTRY( NULL, 0x6000, spritelayout,     0, 4 )  /* sprites */
-	GFXDECODE_ENTRY( NULL, 0xd000, tilelayout,      32, 2 )  /* background tiles */
-	GFXDECODE_ENTRY( NULL, 0xd800, objlayout,       48, 4 )  /* object */
-=======
 	GFXDECODE_ENTRY( nullptr, 0x6000, charlayout,       0, 4 )  /* char set #1 */
 	GFXDECODE_ENTRY( nullptr, 0x6000, spritelayout,     0, 4 )  /* sprites */
 	GFXDECODE_ENTRY( nullptr, 0xd000, tilelayout,       0, 8 )  /* background tiles */
 	GFXDECODE_ENTRY( nullptr, 0xd800, objlayout,        0, 64 )  /* object */
->>>>>>> upstream/master
 GFXDECODE_END
 
 PALETTE_INIT_MEMBER(decocass_state, decocass)
 {
 	int i;
 
-<<<<<<< HEAD
-	/* set up 32 colors 1:1 pens */
-	for (i = 0; i < 32; i++)
-		palette.set_pen_indirect(i, i);
-
-	/* setup straight/flipped colors for background tiles (D7 of color_center_bot ?) */
-	for (i = 0; i < 8; i++)
-	{
-		palette.set_pen_indirect(32+i, 3*8+i);
-		palette.set_pen_indirect(40+i, 3*8+((i << 1) & 0x04) + ((i >> 1) & 0x02) + (i & 0x01));
-	}
-
-	/* setup 4 colors for 1bpp object */
-	palette.set_pen_indirect(48+0*2+0, 0);
-	palette.set_pen_indirect(48+0*2+1, 25); /* testtape red from 4th palette section? */
-	palette.set_pen_indirect(48+1*2+0, 0);
-	palette.set_pen_indirect(48+1*2+1, 28); /* testtape blue from 4th palette section? */
-	palette.set_pen_indirect(48+2*2+0, 0);
-	palette.set_pen_indirect(48+2*2+1, 26); /* testtape green from 4th palette section? */
-	palette.set_pen_indirect(48+3*2+0, 0);
-	palette.set_pen_indirect(48+3*2+1, 23); /* ???? */
-}
-
-
-static MACHINE_CONFIG_START( decocass, decocass_state )
-=======
 	// set up 32 colors 1:1 pens and flipped colors for background tiles (D7 of color_center_bot)
 	for (i = 0; i < 32; i++)
 	{
@@ -1038,7 +951,6 @@ static MACHINE_CONFIG_START( decocass, decocass_state )
 
 
 static MACHINE_CONFIG_START( decocass )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", DECO_222, HCLK4) /* the earlier revision board doesn't have the 222 but must have the same thing implemented in logic for the M6502 */
@@ -1049,12 +961,6 @@ static MACHINE_CONFIG_START( decocass )
 	MCFG_TIMER_DRIVER_ADD_SCANLINE("audionmi", decocass_state, decocass_audio_nmi_gen, "screen", 0, 8)
 
 	MCFG_CPU_ADD("mcu", I8041, HCLK)
-<<<<<<< HEAD
-	MCFG_CPU_IO_MAP(decocass_mcu_portmap)
-
-	MCFG_QUANTUM_TIME(attotime::from_hz(4200))              /* interleave CPUs */
-
-=======
 	MCFG_MCS48_PORT_P1_IN_CB(READ8(decocass_state, i8041_p1_r))
 	MCFG_MCS48_PORT_P1_OUT_CB(WRITE8(decocass_state, i8041_p1_w))
 	MCFG_MCS48_PORT_P2_IN_CB(READ8(decocass_state, i8041_p2_r))
@@ -1063,7 +969,6 @@ static MACHINE_CONFIG_START( decocass )
 	MCFG_QUANTUM_TIME(attotime::from_hz(4200))              /* interleave CPUs */
 
 	MCFG_WATCHDOG_ADD("watchdog")
->>>>>>> upstream/master
 
 	MCFG_DECOCASS_TAPE_ADD("cassette")
 
@@ -1074,23 +979,16 @@ static MACHINE_CONFIG_START( decocass )
 	MCFG_SCREEN_PALETTE("palette")
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", decocass)
-<<<<<<< HEAD
-	MCFG_PALETTE_ADD("palette", 32+2*8+2*4)
-=======
 	MCFG_PALETTE_ADD("palette", 64)
->>>>>>> upstream/master
 	MCFG_PALETTE_INDIRECT_ENTRIES(32)
 	MCFG_PALETTE_INIT_OWNER(decocass_state, decocass)
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch2")
 
->>>>>>> upstream/master
 	MCFG_SOUND_ADD("ay1", AY8910, HCLK2)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.40)
 
@@ -1102,163 +1000,58 @@ MACHINE_CONFIG_END
 static MACHINE_CONFIG_DERIVED( ctsttape, decocass )
 
 	/* basic machine hardware */
-<<<<<<< HEAD
-	MCFG_MACHINE_RESET_OVERRIDE(decocass_state,ctsttape)
-=======
 	MCFG_MACHINE_RESET_OVERRIDE(decocass_type1_state,ctsttape)
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_DERIVED( cprogolfj, decocass )
 
 	/* basic machine hardware */
-<<<<<<< HEAD
-	MCFG_MACHINE_RESET_OVERRIDE(decocass_state,cprogolfj)
-=======
 	MCFG_MACHINE_RESET_OVERRIDE(decocass_type1_state,cprogolfj)
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_DERIVED( cdsteljn, decocass )
 
 	/* basic machine hardware */
-<<<<<<< HEAD
-	MCFG_MACHINE_RESET_OVERRIDE(decocass_state,cdsteljn)
-=======
 	MCFG_MACHINE_RESET_OVERRIDE(decocass_type1_state,cdsteljn)
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_DERIVED( cmanhat, decocass )
 
 	/* basic machine hardware */
-<<<<<<< HEAD
-	MCFG_MACHINE_RESET_OVERRIDE(decocass_state,cmanhat)
-=======
 	MCFG_MACHINE_RESET_OVERRIDE(decocass_type1_state,cmanhat)
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_DERIVED( cfishing, decocass )
 
 	/* basic machine hardware */
-<<<<<<< HEAD
-	MCFG_MACHINE_RESET_OVERRIDE(decocass_state,cfishing)
-=======
 	MCFG_MACHINE_RESET_OVERRIDE(decocass_type3_state,cfishing)
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
 static MACHINE_CONFIG_DERIVED( chwy, decocass )
 
 	/* basic machine hardware */
-<<<<<<< HEAD
-	MCFG_MACHINE_RESET_OVERRIDE(decocass_state,chwy)
-=======
 	MCFG_MACHINE_RESET_OVERRIDE(decocass_type1_state,chwy)
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
 static MACHINE_CONFIG_DERIVED( cterrani, decocass )
 
 	/* basic machine hardware */
-<<<<<<< HEAD
-	MCFG_MACHINE_RESET_OVERRIDE(decocass_state,cterrani)
-=======
 	MCFG_MACHINE_RESET_OVERRIDE(decocass_type1_state,cterrani)
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
 static MACHINE_CONFIG_DERIVED( castfant, decocass )
 
 	/* basic machine hardware */
-<<<<<<< HEAD
-	MCFG_MACHINE_RESET_OVERRIDE(decocass_state,castfant)
-=======
 	MCFG_MACHINE_RESET_OVERRIDE(decocass_type1_state,castfant)
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
 static MACHINE_CONFIG_DERIVED( csuperas, decocass )
 
 	/* basic machine hardware */
-<<<<<<< HEAD
-	MCFG_MACHINE_RESET_OVERRIDE(decocass_state,csuperas)
-MACHINE_CONFIG_END
-
-
-static MACHINE_CONFIG_DERIVED( clocknch, decocass )
-
-	/* basic machine hardware */
-	MCFG_MACHINE_RESET_OVERRIDE(decocass_state,clocknch)
-MACHINE_CONFIG_END
-
-
-static MACHINE_CONFIG_DERIVED( cprogolf, decocass )
-
-	/* basic machine hardware */
-	MCFG_MACHINE_RESET_OVERRIDE(decocass_state,cprogolf)
-MACHINE_CONFIG_END
-
-
-static MACHINE_CONFIG_DERIVED( cluckypo, decocass )
-
-	/* basic machine hardware */
-	MCFG_MACHINE_RESET_OVERRIDE(decocass_state,cluckypo)
-MACHINE_CONFIG_END
-
-
-static MACHINE_CONFIG_DERIVED( ctisland, decocass )
-
-	/* basic machine hardware */
-	MCFG_MACHINE_RESET_OVERRIDE(decocass_state,ctisland)
-MACHINE_CONFIG_END
-
-
-static MACHINE_CONFIG_DERIVED( cexplore, decocass )
-
-	/* basic machine hardware */
-	MCFG_MACHINE_RESET_OVERRIDE(decocass_state,cexplore)
-MACHINE_CONFIG_END
-
-
-static MACHINE_CONFIG_DERIVED( cdiscon1, decocass )
-
-	/* basic machine hardware */
-	MCFG_MACHINE_RESET_OVERRIDE(decocass_state,cdiscon1)
-MACHINE_CONFIG_END
-
-
-static MACHINE_CONFIG_DERIVED( ctornado, decocass )
-
-	/* basic machine hardware */
-	MCFG_MACHINE_RESET_OVERRIDE(decocass_state,ctornado)
-MACHINE_CONFIG_END
-
-
-static MACHINE_CONFIG_DERIVED( cmissnx, decocass )
-
-	/* basic machine hardware */
-	MCFG_MACHINE_RESET_OVERRIDE(decocass_state,cmissnx)
-MACHINE_CONFIG_END
-
-
-static MACHINE_CONFIG_DERIVED( cptennis, decocass )
-
-	/* basic machine hardware */
-	MCFG_MACHINE_RESET_OVERRIDE(decocass_state,cptennis)
-MACHINE_CONFIG_END
-
-
-static MACHINE_CONFIG_DERIVED( cbtime, decocass )
-
-	/* basic machine hardware */
-	MCFG_MACHINE_RESET_OVERRIDE(decocass_state,cbtime)
-=======
 	MCFG_MACHINE_RESET_OVERRIDE(decocass_type1_state,csuperas)
 MACHINE_CONFIG_END
 
@@ -1328,201 +1121,89 @@ static MACHINE_CONFIG_DERIVED( cbtime, decocass )
 
 	/* basic machine hardware */
 	MCFG_MACHINE_RESET_OVERRIDE(decocass_type3_state,cbtime)
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
 static MACHINE_CONFIG_DERIVED( cburnrub, decocass )
 
 	/* basic machine hardware */
-<<<<<<< HEAD
-	MCFG_MACHINE_RESET_OVERRIDE(decocass_state,cburnrub)
-=======
 	MCFG_MACHINE_RESET_OVERRIDE(decocass_type3_state,cburnrub)
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
 static MACHINE_CONFIG_DERIVED( cgraplop, decocass )
 
 	/* basic machine hardware */
-<<<<<<< HEAD
-	MCFG_MACHINE_RESET_OVERRIDE(decocass_state,cgraplop)
-=======
 	MCFG_MACHINE_RESET_OVERRIDE(decocass_type3_state,cgraplop)
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
 static MACHINE_CONFIG_DERIVED( cgraplop2, decocass )
 
 	/* basic machine hardware */
-<<<<<<< HEAD
-	MCFG_MACHINE_RESET_OVERRIDE(decocass_state,cgraplop2)
-=======
 	MCFG_MACHINE_RESET_OVERRIDE(decocass_type3_state,cgraplop2)
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
 static MACHINE_CONFIG_DERIVED( clapapa, decocass )
 
 	/* basic machine hardware */
-<<<<<<< HEAD
-	MCFG_MACHINE_RESET_OVERRIDE(decocass_state,clapapa)
-=======
 	MCFG_MACHINE_RESET_OVERRIDE(decocass_type3_state,clapapa)
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
 static MACHINE_CONFIG_DERIVED( cskater, decocass )
 
 	/* basic machine hardware */
-<<<<<<< HEAD
-	MCFG_MACHINE_RESET_OVERRIDE(decocass_state,cskater)
-=======
 	MCFG_MACHINE_RESET_OVERRIDE(decocass_type3_state,cskater)
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
 static MACHINE_CONFIG_DERIVED( cprobowl, decocass )
 
 	/* basic machine hardware */
-<<<<<<< HEAD
-	MCFG_MACHINE_RESET_OVERRIDE(decocass_state,cprobowl)
-=======
 	MCFG_MACHINE_RESET_OVERRIDE(decocass_type3_state,cprobowl)
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
 static MACHINE_CONFIG_DERIVED( cnightst, decocass )
 
 	/* basic machine hardware */
-<<<<<<< HEAD
-	MCFG_MACHINE_RESET_OVERRIDE(decocass_state,cnightst)
-=======
 	MCFG_MACHINE_RESET_OVERRIDE(decocass_type3_state,cnightst)
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
 static MACHINE_CONFIG_DERIVED( cpsoccer, decocass )
 
 	/* basic machine hardware */
-<<<<<<< HEAD
-	MCFG_MACHINE_RESET_OVERRIDE(decocass_state,cpsoccer)
-=======
 	MCFG_MACHINE_RESET_OVERRIDE(decocass_type3_state,cpsoccer)
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
 static MACHINE_CONFIG_DERIVED( csdtenis, decocass )
 
 	/* basic machine hardware */
-<<<<<<< HEAD
-	MCFG_MACHINE_RESET_OVERRIDE(decocass_state,csdtenis)
-=======
 	MCFG_MACHINE_RESET_OVERRIDE(decocass_type3_state,csdtenis)
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
 static MACHINE_CONFIG_DERIVED( czeroize, decocass )
 
 	/* basic machine hardware */
-<<<<<<< HEAD
-	MCFG_MACHINE_RESET_OVERRIDE(decocass_state,czeroize)
-=======
 	MCFG_MACHINE_RESET_OVERRIDE(decocass_type3_state,czeroize)
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
 static MACHINE_CONFIG_DERIVED( cppicf, decocass )
 
 	/* basic machine hardware */
-<<<<<<< HEAD
-	MCFG_MACHINE_RESET_OVERRIDE(decocass_state,cppicf)
-=======
 	MCFG_MACHINE_RESET_OVERRIDE(decocass_type3_state,cppicf)
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
 static MACHINE_CONFIG_DERIVED( cfghtice, decocass )
 
 	/* basic machine hardware */
-<<<<<<< HEAD
-	MCFG_MACHINE_RESET_OVERRIDE(decocass_state,cfghtice)
-MACHINE_CONFIG_END
-
-
-static MACHINE_CONFIG_DERIVED( type4, decocass )
-
-	/* basic machine hardware */
-	MCFG_MACHINE_RESET_OVERRIDE(decocass_state,type4)
-MACHINE_CONFIG_END
-
-
-static MACHINE_CONFIG_DERIVED( cbdash, decocass )
-
-	/* basic machine hardware */
-	MCFG_MACHINE_RESET_OVERRIDE(decocass_state,cbdash)
-MACHINE_CONFIG_END
-
-
-static MACHINE_CONFIG_DERIVED( cflyball, decocass )
-
-	/* basic machine hardware */
-	MCFG_MACHINE_RESET_OVERRIDE(decocass_state,cflyball)
-MACHINE_CONFIG_END
-
-
-#define DECOCASS_COMMON_ROMS    \
-	ROM_REGION( 0x10000, "audiocpu", 0 )      \
-	ROM_LOAD( "v1-.5a",     0xf800, 0x0800, CRC(b66b2c2a) SHA1(0097f38beb4872e735e560148052e258a26b08fd) ) /* from RMS-8 board: 2716 eprom @5A w/V1- label,  contains audio cpu code */ \
-\
-	ROM_REGION( 0x10000, "mcu", 0 )   /* 4k for the 8041 MCU (actually 1K ROM + 64 bytes RAM @ 0x800) */ \
-	ROM_LOAD( "cassmcu.1c", 0x0000, 0x0400, CRC(a6df18fd) SHA1(1f9ea47e372d31767c936c15852b43df2b0ee8ff) ) /* from B10-B board: "NEC // JAPAN // X1202D-108 // D8041C 535" 8041 MCU @1C, handles cassette and other stuff; This info needs additional verification, as the d8041-535 mcu has not been dumped yet to prove code is the same. */ \
-\
-	ROM_REGION( 0x00060, "proms", 0 )     /* PROMS */ \
-	ROM_LOAD( "v2.3m",      0x0000, 0x0020, CRC(238fdb40) SHA1(b88e8fabb82092105c3828154608ea067acbf2e5) ) /* from DSP-8 board: M3-7603-5 (82s123 equiv, 32x8 TS) PROM @3M w/'V2' stamp, unknown purpose (gfx related: row/interrupt/vblank related? vertical counter related) */ \
-	ROM_LOAD( "v4.10d",     0x0020, 0x0020, CRC(3b5836b4) SHA1(b630bb277d9ec09d46ef26b944014dd6165b35d8) ) /* from DSP-8 board: M3-7603-5 (82s123 equiv, 32x8 TS) PROM @10D w/'V4' stamp, unknown purpose (gfx related: tile banking? horizontal counter related) */ \
-	ROM_LOAD( "v3.3j",      0x0040, 0x0020, CRC(51eef657) SHA1(eaedce5caf55624ad6ae706aedf82c5717c60f1f) ) /* from RMS-8 board: M3-7603-5 (82s123 equiv, 32x8 TS) PROM @3J w/'V3' stamp, handles DRAM banking and timing */
-
-#define DECOCASS_BIOS_A_ROMS    \
-	/* v0a.7e, New boardset bios, revision A */ \
-\
-	ROM_REGION( 0x10000, "maincpu", 0 ) \
-	ROM_LOAD( "v0a-.7e",    0xf000, 0x1000, CRC(3d33ac34) SHA1(909d59e7a993affd10224402b4370e82a5f5545c) ) /* from RMS-8 board: 2732 EPROM @7E w/'V0A-' label (has HDRA01HDR string inside it), bios code */ \
-\
-	DECOCASS_COMMON_ROMS
-
-#define DECOCASS_BIOS_B_ROMS    \
-	/* rms8.7e, New boardset bios, revision B */ \
-\
-	ROM_REGION( 0x10000, "maincpu", 0 ) \
-	ROM_LOAD( "v0b-.7e",    0xf000, 0x1000, CRC(23d929b7) SHA1(063f83020ba3d6f43ab8471f95ca919767b93aa4) ) /* from RMS-8 board: 2732 EPROM @7E w/'V0B-' label (has HDRB01HDR string inside it), bios code */ \
-\
-	DECOCASS_COMMON_ROMS
-
-#define DECOCASS_BIOS_B2_ROMS   \
-	/* dsp3.p0b/p1b, Old boardset bios, revision B?; from DSP-3 board? has HDRB01x string in it, 2x 2716 EPROM? */ \
-\
-	ROM_REGION( 0x10000, "maincpu", 0 ) \
-	ROM_LOAD( "dsp3.p0b",   0xf000, 0x0800, CRC(b67a91d9) SHA1(681c040be0f0ed1ba0a50161b36d0ad8e1c8c5cb) ) \
-	ROM_LOAD( "dsp3.p1b",   0xf800, 0x0800, CRC(3bfff5f3) SHA1(4e9437cb1b76d64da6b37f01bd6e879fb399e8ce) ) \
-\
-	DECOCASS_COMMON_ROMS
-
-ROM_START( decocass )
-	DECOCASS_BIOS_B_ROMS
-
-=======
 	MCFG_MACHINE_RESET_OVERRIDE(decocass_type3_state,cfghtice)
 MACHINE_CONFIG_END
 
@@ -1648,7 +1329,6 @@ MACHINE_CONFIG_END
 
 ROM_START( decocass )
 	DECOCASS_BIOS_MAIN
->>>>>>> upstream/master
 ROM_END
 
 /* The Following use Dongle Type 1 (DE-0061)
@@ -1720,8 +1400,6 @@ ROM_START( csuperas )
 	ROM_LOAD( "csuperas.cas", 0x0000, 0x8000, CRC(fabcd07f) SHA1(4070c668ad6725f0710cf7fe6df0d5f80272a449) )
 ROM_END
 
-<<<<<<< HEAD
-=======
 /* 10 Ocean to Ocean (World) */
 ROM_START( cocean1a ) // version MD 1-A-0 verified, 061 blocks, decrypted main data CRC(b97ab3cb)
 	DECOCASS_BIOS_AO_ROMS
@@ -1743,7 +1421,6 @@ ROM_START( cocean6b ) // version MD 10-B-0 not verified, 068 blocks, decrypted m
 	ROM_LOAD( "dp-1100-b.rom",   0x0000, 0x0020, CRC(e09ae5de) SHA1(7dec067d0739a6dad2607132641b66880a5b7751) )
 ROM_END
 
->>>>>>> upstream/master
 /* 11 Lock'n'Chase */
 ROM_START( clocknch )
 	DECOCASS_BIOS_B_ROMS
@@ -1755,8 +1432,6 @@ ROM_START( clocknch )
 	ROM_LOAD( "clocknch.cas",  0x0000, 0x8000, CRC(c9d163a4) SHA1(3ef55a8d8f603059e263776c08eb81f2cf18b75c) )
 ROM_END
 
-<<<<<<< HEAD
-=======
 ROM_START( clocknchj )
 	DECOCASS_BIOS_A_ROMS
 
@@ -1778,7 +1453,6 @@ ROM_START( cfboy0a1 ) // version MD 0-A-1 verified, 105 blocks, decrypted main d
 	ROM_LOAD( "dp-1120-a.rom",   0x0000, 0x0020, CRC(1bc9fccb) SHA1(ffc59c7660d5c87a8deca294f80260b6bc7c3027) )
 ROM_END
 
->>>>>>> upstream/master
 /* 13 */
 /* Photo of Dongle shows DP-1130B (the "B" is in a separate white box then the DP-1130 label) */
 ROM_START( cprogolf ) // version 9-B-0
@@ -1845,11 +1519,7 @@ ROM_START( ctisland )
 	ROM_REGION( 0x10000, "cassette", 0 )      /* (max) 64k for cassette image */
 	ROM_LOAD( "ctisland.cas", 0x0000, 0x8000, CRC(3f63b8f8) SHA1(2fd0679ef9750a228ebb098672ab6091fda75804) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x4000, "user3", 0 )      /* roms from the overlay pcb */
-=======
 	ROM_REGION( 0xa000, "user3", ROMREGION_ERASEFF )      /* roms from the overlay pcb */
->>>>>>> upstream/master
 	ROM_LOAD( "deco-ti.x1",   0x0000, 0x1000, CRC(a7f8aeba) SHA1(0c9ba1a46d0636b36f40fad31638db89f374f778) )
 	ROM_LOAD( "deco-ti.x2",   0x1000, 0x1000, CRC(2a0d3c91) SHA1(552d08fcddddbea5b52fa1e8decd188ae49c86ea) )
 	ROM_LOAD( "deco-ti.x3",   0x2000, 0x1000, CRC(3a26b97c) SHA1(f57e76077806e149a9e455c85e5431eac2d42bc3) )
@@ -1865,11 +1535,7 @@ ROM_START( ctisland2 )
 	ROM_REGION( 0x10000, "cassette", 0 )      /* (max) 64k for cassette image */
 	ROM_LOAD( "ctislnd2.cas", 0x0000, 0x8000, CRC(2854b4c0) SHA1(d3b4e0031dbb2340fbbe396a1ff9b8fbfd63663e) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x4000, "user3", 0 )      /* roms from the overlay pcb */
-=======
 	ROM_REGION( 0xa000, "user3", ROMREGION_ERASEFF )      /* roms from the overlay pcb */
->>>>>>> upstream/master
 	ROM_LOAD( "deco-ti.x1",   0x0000, 0x1000, CRC(a7f8aeba) SHA1(0c9ba1a46d0636b36f40fad31638db89f374f778) )
 	ROM_LOAD( "deco-ti.x2",   0x1000, 0x1000, CRC(2a0d3c91) SHA1(552d08fcddddbea5b52fa1e8decd188ae49c86ea) )
 	ROM_LOAD( "deco-ti.x3",   0x2000, 0x1000, CRC(3a26b97c) SHA1(f57e76077806e149a9e455c85e5431eac2d42bc3) )
@@ -1877,26 +1543,15 @@ ROM_START( ctisland2 )
 ROM_END
 
 ROM_START( ctisland3 )
-<<<<<<< HEAD
-	DECOCASS_BIOS_B_ROMS
-
-	ROM_REGION( 0x00020, "dongle", 0 )    /* dongle data */
-	ROM_LOAD( "de-0061.pro", 0x0000, 0x0020, CRC(e09ae5de) SHA1(7dec067d0739a6dad2607132641b66880a5b7751) )
-=======
 	DECOCASS_BIOS_D_ROMS
 
 	ROM_REGION( 0x00020, "dongle", 0 )    /* dongle data */
 	ROM_LOAD( "ctisland3.pro", 0x0000, 0x0020, CRC(b87b56a7) SHA1(ca84cd61e53985cf24230d297967374ae3822b3b) ) // handcrafted
->>>>>>> upstream/master
 
 	ROM_REGION( 0x10000, "cassette", 0 )      /* (max) 64k for cassette image */
 	ROM_LOAD( "ctislnd3.cas", 0x0000, 0x8000, CRC(45464e1e) SHA1(03275694d963c7ab0e0f5525e248e69da5f9b591) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x4000, "user3", 0 )      /* roms from the overlay pcb */
-=======
 	ROM_REGION( 0xa000, "user3", ROMREGION_ERASEFF )      /* roms from the overlay pcb */
->>>>>>> upstream/master
 	ROM_LOAD( "deco-ti.x1",   0x0000, 0x1000, CRC(a7f8aeba) SHA1(0c9ba1a46d0636b36f40fad31638db89f374f778) )
 	ROM_LOAD( "deco-ti.x2",   0x1000, 0x1000, CRC(2a0d3c91) SHA1(552d08fcddddbea5b52fa1e8decd188ae49c86ea) )
 	ROM_LOAD( "deco-ti.x3",   0x2000, 0x1000, CRC(3a26b97c) SHA1(f57e76077806e149a9e455c85e5431eac2d42bc3) )
@@ -1915,10 +1570,6 @@ ROM_START( cexplore )
 	ROM_REGION( 0x10000, "cassette", 0 )      /* (max) 64k for cassette image */
 	ROM_LOAD( "cexplore.cas", 0x0000, 0x8000, CRC(fae49c66) SHA1(4ae69e2f706fdf30204f0aa1277619395cacc21b) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x4000, "user3", 0 )      /* roms from the overlay pcb */
-	ROM_LOAD( "cexplore_overlay_roms", 0x0000, 0x4000, NO_DUMP )
-=======
 	ROM_REGION( 0xa000, "user3", ROMREGION_ERASEFF )      /* roms from the DECO GRO DE-0091C-1 overlay pcb */
 	ROM_LOAD( "x1_made_in_japan_18.x1",   0x0000, 0x1000, CRC(f2ca58f0) SHA1(5c9faeca6247b70586dc2a3765805ac96960ac79) )
 	ROM_LOAD( "x2_made_in_japan_18.x2",   0x1000, 0x1000, CRC(75d999bf) SHA1(7c257285d5b69642ec542dc56defdbb1f2072454) )
@@ -1930,7 +1581,6 @@ ROM_START( cexplore )
 	ROM_LOAD( "y3_made_in_japan_18.y3",   0x7000, 0x1000, CRC(7a787ecf) SHA1(5261747823b58be3fabb8d1a8cb4069082f95b30) )
 	ROM_LOAD( "y4_made_in_japan_18.y4",   0x8000, 0x1000, CRC(ac30e8c7) SHA1(f8f53b982df356e5bf2624afe0f8a72635b3b4b3) )
 	ROM_LOAD( "y5_made_in_japan_18.y5",   0x9000, 0x1000, CRC(0a6b8f03) SHA1(09b477579a5fed4c45299b6366141ef4a8c9a410) )
->>>>>>> upstream/master
 ROM_END
 
 /* The Following use Dongle Type 2 (CS82-007)
@@ -1992,8 +1642,6 @@ ROM_START( cptennis )
 	ROM_LOAD( "cptennis.cas", 0x0000, 0x8000, CRC(6bb257fe) SHA1(7554bf1996bc9e9c04a276aab050708d70103f54) )
 ROM_END
 
-<<<<<<< HEAD
-=======
 ROM_START( cptennisj )
 	DECOCASS_BIOS_A_ROMS
 
@@ -2005,7 +1653,6 @@ ROM_START( cptennisj )
 ROM_END
 
 
->>>>>>> upstream/master
 
 /* The Following use Dongle Type 3 (unknown part number?)
     (dongle data differs for each game)      */
@@ -2086,8 +1733,6 @@ ROM_START( cbnj )
 	ROM_LOAD( "cbnj.cas",       0x0000, 0x8000, CRC(eed41560) SHA1(85d5df76efac33cd10427f659c4259afabb3daaf) )
 ROM_END
 
-<<<<<<< HEAD
-=======
 ROM_START( cburnrubj )
 	DECOCASS_BIOS_A_ROMS
 
@@ -2098,7 +1743,6 @@ ROM_START( cburnrubj )
 	ROM_LOAD( "dt-1271-a-0.bin",   0x0000, 0x7800, CRC(6bd0adab) SHA1(4c536991e4ec6cbdf4b74497dae9f0dba17ebb95) )
 ROM_END
 
->>>>>>> upstream/master
 /* 28 Graplop / Cluster Buster */
 ROM_START( cgraplop )
 	DECOCASS_BIOS_B_ROMS
@@ -2110,8 +1754,6 @@ ROM_START( cgraplop )
 	ROM_LOAD( "cgraplop.cas", 0x0000, 0x8000, CRC(d2c1c1bb) SHA1(db67304caa11540363735e7d4bf03507ccbe9980) )
 ROM_END
 
-<<<<<<< HEAD
-=======
 ROM_START( cgraplopj )
 	DECOCASS_BIOS_A_ROMS
 
@@ -2122,7 +1764,6 @@ ROM_START( cgraplopj )
 	ROM_LOAD( "dt-1280-a-0.bin", 0x0000, 0x7800, CRC(a0d7d1a7) SHA1(4260edd19786b6cf4cd0c426783637f0c61ca007) )
 ROM_END
 
->>>>>>> upstream/master
 ROM_START( cgraplop2 )
 	DECOCASS_BIOS_B_ROMS
 
@@ -2330,8 +1971,6 @@ ROM_START( cflyball )
 	ROM_LOAD( "cflyball.cas",   0x0000, 0x10000, CRC(cb40d043) SHA1(57698bac7e0d552167efa99d08116bf19a3b29c9) )
 ROM_END
 
-<<<<<<< HEAD
-=======
 ROM_START( decomult )
 	ROM_REGION( 0x10000, "maincpu", 0 )
 	ROM_LOAD( "WIDLBIOS.V0B",    0xf800, 0x0800, CRC(9ad7c451) SHA1(cda3513ca9904cd9f097a4a79226e3e30f83bb1c) )
@@ -2352,7 +1991,6 @@ ROM_START( decomult )
 	ROM_LOAD( "cassmcu.1c", 0x0000, 0x0400, CRC(a6df18fd) SHA1(1f9ea47e372d31767c936c15852b43df2b0ee8ff) )
 ROM_END
 
->>>>>>> upstream/master
 
 DRIVER_INIT_MEMBER(decocass_state,decocass)
 {
@@ -2372,10 +2010,7 @@ DRIVER_INIT_MEMBER(decocass_state,decocrom)
 	m_maincpu->space(AS_PROGRAM).install_write_handler(0x6000, 0xafff, write8_delegate(FUNC(decocass_state::decocass_de0091_w),this));
 	membank("bank1")->configure_entry(0, m_charram);
 	membank("bank1")->configure_entry(1, memregion("user3")->base());
-<<<<<<< HEAD
-=======
 	membank("bank1")->configure_entry(2, memregion("user3")->base()+0x5000);
->>>>>>> upstream/master
 	membank("bank1")->set_entry(0);
 
 	/* install the bank selector */
@@ -2384,11 +2019,7 @@ DRIVER_INIT_MEMBER(decocass_state,decocrom)
 
 READ8_MEMBER(decocass_state::cdsteljn_input_r )
 {
-<<<<<<< HEAD
-	UINT8 res;
-=======
 	uint8_t res;
->>>>>>> upstream/master
 	static const char *const portnames[2][4] = {
 		{"P1_MP0", "P1_MP1", "P1_MP2", "P1_MP3"},
 		{"P2_MP0", "P2_MP1", "P2_MP2", "P2_MP3"}         };
@@ -2420,68 +2051,6 @@ DRIVER_INIT_MEMBER(decocass_state,cdsteljn)
 	m_maincpu->space(AS_PROGRAM).install_read_handler(0xe600, 0xe6ff, read8_delegate(FUNC(decocass_state::cdsteljn_input_r), this));
 }
 
-<<<<<<< HEAD
-/* -- */ GAME( 1981, decocass,  0,        decocass, decocass, decocass_state, decocass, ROT270, "Data East Corporation", "DECO Cassette System", MACHINE_IS_BIOS_ROOT )
-/* -- */ GAME( 1981, ctsttape,  decocass, ctsttape, decocass, decocass_state, decocass, ROT270, "Data East Corporation", "Test Tape (DECO Cassette)", 0 )
-/* 01 */ GAME( 1980, chwy,      decocass, chwy,     decocass, decocass_state, decocass, ROT270, "Data East Corporation", "Highway Chase (DECO Cassette)", 0 )
-/* 02 */ // 1980.12 Sengoku Ninjatai
-/* 03 */ GAME( 1981, cmanhat,   decocass, cmanhat,  decocass, decocass_state, decocass, ROT270, "Data East Corporation", "Manhattan (DECO Cassette)", MACHINE_IMPERFECT_GRAPHICS )
-/* 04 */ GAME( 1981, cterrani,  decocass, cterrani, cterrani, decocass_state, decocass, ROT270, "Data East Corporation", "Terranean (DECO Cassette)", 0 )
-/* 05 */ // 1981.?? Missile Sprinter
-/* 06 */ // 1980.12 Nebula
-/* 07 */ GAME( 1981, castfant,  decocass, castfant, decocass, decocass_state, decocass, ROT270, "Data East Corporation", "Astro Fantasia (DECO Cassette)", 0 )
-/* 08 */ // 1981.03 The Tower
-/* 09 */ GAME( 1981, csuperas,  decocass, csuperas, csuperas, decocass_state, decocass, ROT270, "Data East Corporation", "Super Astro Fighter (DECO Cassette)", 0 )
-/* 10 */ // 1981.?? Ocean to Ocean (medal)
-/* 11 */ GAME( 1981, clocknch,  decocass, clocknch, clocknch, decocass_state, decocass, ROT270, "Data East Corporation", "Lock'n'Chase (DECO Cassette)", 0 )
-/* 12 */ // 1981.08 Flash Boy/DECO Kid
-/* 13 */ GAME( 1981, cprogolf,  decocass, cprogolf, cprogolf, decocass_state, decocass, ROT270, "Data East Corporation", "Tournament Pro Golf (DECO Cassette)", 0 )
-/*    */ GAME( 1981, cprogolfj, cprogolf, cprogolfj,cprogolf, decocass_state, decocass, ROT270, "Data East Corporation", "Tournament Pro Golf (DECO Cassette, Japan)", 0 )
-/* 14 */ GAME( 1981, cdsteljn,  decocass, cdsteljn, cdsteljn, decocass_state, cdsteljn, ROT270, "Data East Corporation", "DS Telejan (DECO Cassette, Japan)", 0 )
-/* 15 */ GAME( 1981, cluckypo,  decocass, cluckypo, decocass, decocass_state, decocass, ROT270, "Data East Corporation", "Lucky Poker (DECO Cassette)", 0 )
-/* 16 */ GAME( 1981, ctisland,  decocass, ctisland, decocass, decocass_state, decocrom, ROT270, "Data East Corporation", "Treasure Island (DECO Cassette, set 1)", 0 )
-/*    */ GAME( 1981, ctisland2, ctisland, ctisland, decocass, decocass_state, decocrom, ROT270, "Data East Corporation", "Treasure Island (DECO Cassette, set 2)", 0 )
-/*    */ GAME( 1981, ctisland3, ctisland, ctisland, decocass, decocass_state, decocrom, ROT270, "Data East Corporation", "Treasure Island (DECO Cassette, set 3)", MACHINE_NOT_WORKING ) /* Different Bitswap? */
-/* 17 */ // 1981.10 Bobbitto
-/* 18 */ GAME( 1982, cexplore,  decocass, cexplore, cexplore, decocass_state, decocass, ROT270, "Data East Corporation", "Explorer (DECO Cassette)", MACHINE_NOT_WORKING )
-/* 19 */ GAME( 1982, cdiscon1,  decocass, cdiscon1, decocass, decocass_state, decocass, ROT270, "Data East Corporation", "Disco No.1 (DECO Cassette)", 0 )
-/*    */ GAME( 1982, csweetht,  cdiscon1, cdiscon1, decocass, decocass_state, decocass, ROT270, "Data East Corporation", "Sweet Heart (DECO Cassette)", 0 )
-/* 20 */ GAME( 1982, ctornado,  decocass, ctornado, ctornado, decocass_state, decocass, ROT270, "Data East Corporation", "Tornado (DECO Cassette)", 0 )
-/* 21 */ GAME( 1982, cmissnx,   decocass, cmissnx,  cmissnx,  decocass_state, decocass, ROT270, "Data East Corporation", "Mission-X (DECO Cassette)", 0 )
-/* 22 */ GAME( 1982, cptennis,  decocass, cptennis, decocass, decocass_state, decocass, ROT270, "Data East Corporation", "Pro Tennis (DECO Cassette)", 0 )
-/* 23 */ GAME( 1982, cprogolf18,cprogolf, cprogolfj,cprogolf, decocass_state, decocass, ROT270, "Data East Corporation", "18 Challenge Pro Golf (DECO Cassette, Japan)", 0 ) // 1982.?? 18 Hole Pro Golf
-/* 24 */ // 1982.07 Tsumego Kaisyou
-/* 25 */ GAME( 1982, cadanglr,  decocass, cfishing, cfishing, decocass_state, decocass, ROT270, "Data East Corporation", "Angler Dangler (DECO Cassette)", 0 )
-/* 25 */ GAME( 1982, cfishing,  cadanglr, cfishing, cfishing, decocass_state, decocass, ROT270, "Data East Corporation", "Fishing (DECO Cassette, Japan)", 0 )
-/* 26 */ GAME( 1983, cbtime,    decocass, cbtime,   cbtime,   decocass_state, decocass, ROT270, "Data East Corporation", "Burger Time (DECO Cassette)", 0 )
-/*    */ GAME( 1982, chamburger,cbtime,   cbtime,   cbtime,   decocass_state, decocass, ROT270, "Data East Corporation", "Hamburger (DECO Cassette, Japan)", 0 )
-/* 27 */ GAME( 1982, cburnrub,  decocass, cburnrub, decocass, decocass_state, decocass, ROT270, "Data East Corporation", "Burnin' Rubber (DECO Cassette, set 1)", 0 )
-/*    */ GAME( 1982, cburnrub2, cburnrub, cburnrub, decocass, decocass_state, decocass, ROT270, "Data East Corporation", "Burnin' Rubber (DECO Cassette, set 2)", 0 )
-/*    */ GAME( 1982, cbnj,      cburnrub, cburnrub, decocass, decocass_state, decocass, ROT270, "Data East Corporation", "Bump 'n' Jump (DECO Cassette, Japan)", 0 )
-/* 28 */ GAME( 1983, cgraplop,  decocass, cgraplop, cgraplop, decocass_state, decocass, ROT270, "Data East Corporation", "Cluster Buster (DECO Cassette)", 0 )
-/*    */ GAME( 1983, cgraplop2, cgraplop, cgraplop2,cgraplop, decocass_state, decocass, ROT270, "Data East Corporation", "Graplop (no title screen) (DECO Cassette)", 0 ) // a version with title screen exists, see reference videos
-/* 29 */ GAME( 1983, clapapa,   decocass, clapapa,  decocass, decocass_state, decocass, ROT270, "Data East Corporation", "Rootin' Tootin' / La-Pa-Pa (DECO Cassette)" , 0) /* Displays 'La-Pa-Pa during attract */
-/*    */ GAME( 1983, clapapa2,  clapapa,  clapapa,  decocass, decocass_state, decocass, ROT270, "Data East Corporation", "Rootin' Tootin' (DECO Cassette)" , 0) /* Displays 'Rootin' Tootin' during attract */
-/* 30 */ GAME( 1983, cskater,   decocass, cskater,  cskater,  decocass_state, decocass, ROT270, "Data East Corporation", "Skater (DECO Cassette, Japan)", 0 )
-/* 31 */ GAME( 1983, cprobowl,  decocass, cprobowl, decocass, decocass_state, decocass, ROT270, "Data East Corporation", "Pro Bowling (DECO Cassette)", 0 )
-/* 32 */ GAME( 1983, cnightst,  decocass, cnightst, cnightst, decocass_state, decocass, ROT270, "Data East Corporation", "Night Star (DECO Cassette, set 1)", 0 )
-/*    */ GAME( 1983, cnightst2, cnightst, cnightst, cnightst, decocass_state, decocass, ROT270, "Data East Corporation", "Night Star (DECO Cassette, set 2)", 0 )
-/* 33 */ GAME( 1983, cpsoccer,  decocass, cpsoccer, cpsoccer, decocass_state, decocass, ROT270, "Data East Corporation", "Pro Soccer (DECO Cassette)", 0 )
-/*    */ GAME( 1983, cpsoccerj, cpsoccer, cpsoccer, cpsoccer, decocass_state, decocass, ROT270, "Data East Corporation", "Pro Soccer (DECO Cassette, Japan)", 0 )
-/* 34 */ GAME( 1983, csdtenis,  decocass, csdtenis, csdtenis, decocass_state, decocass, ROT270, "Data East Corporation", "Super Doubles Tennis (DECO Cassette, Japan)", MACHINE_WRONG_COLORS )
-/* 35 */ GAME( 1985, cflyball,  decocass, cflyball, decocass, decocass_state, decocass, ROT270, "Data East Corporation", "Flying Ball (DECO Cassette)", 0 )
-/* 36 */ // 1984.04 Genesis/Boomer Rang'r
-/* 37 */ GAME( 1983, czeroize,  decocass, czeroize, decocass, decocass_state, decocass, ROT270, "Data East Corporation", "Zeroize (DECO Cassette)", 0 )
-/* 38 */ GAME( 1984, cscrtry,   decocass, type4,    cscrtry,  decocass_state, decocass, ROT270, "Data East Corporation", "Scrum Try (DECO Cassette, set 1)", 0 )
-/*    */ GAME( 1984, cscrtry2,  cscrtry,  type4,    cscrtry,  decocass_state, decocass, ROT270, "Data East Corporation", "Scrum Try (DECO Cassette, set 2)", 0 )
-/* 39 */ GAME( 1984, cppicf,    decocass, cppicf,   decocass, decocass_state, decocass, ROT270, "Data East Corporation", "Peter Pepper's Ice Cream Factory (DECO Cassette, set 1)", 0 )
-/*    */ GAME( 1984, cppicf2,   cppicf,   cppicf,   decocass, decocass_state, decocass, ROT270, "Data East Corporation", "Peter Pepper's Ice Cream Factory (DECO Cassette, set 2)", 0 )
-/* 40 */ GAME( 1984, cfghtice,  decocass, cfghtice, cfghtice, decocass_state, decocass, ROT270, "Data East Corporation", "Fighting Ice Hockey (DECO Cassette)", 0 )
-/* 41 */ GAME( 1984, coozumou,  decocass, type4,    cscrtry,  decocass_state, decocass, ROT270, "Data East Corporation", "Oozumou - The Grand Sumo (DECO Cassette, Japan)", 0 )
-/* 42 */ // 1984.08 Hellow Gateball // not a typo, this is official spelling
-/* 43 */ // 1984.08 Yellow Cab
-/* 44 */ GAME( 1985, cbdash,    decocass, cbdash,   cbdash,   decocass_state, decocass, ROT270, "Data East Corporation", "Boulder Dash (DECO Cassette)", 0 )
-=======
 /* -- */ GAME( 1981, decocass,  0,        decocass, decocass, decocass_state,       decocass, ROT270, "Data East Corporation", "DECO Cassette System", MACHINE_IS_BIOS_ROOT )
 /* -- */ GAME( 1981, ctsttape,  decocass, ctsttape, decocass, decocass_type1_state, decocass, ROT270, "Data East Corporation", "Test Tape (DECO Cassette) (US)", 0 )
 /* 01 */ GAME( 1980, chwy,      decocass, chwy,     chwy,     decocass_type1_state, decocass, ROT270, "Data East Corporation", "Highway Chase (DECO Cassette) (US)", 0 )
@@ -2547,14 +2116,10 @@ DRIVER_INIT_MEMBER(decocass_state,cdsteljn)
 /* 42 */ // 1984.08 Hellow Gateball // not a typo, this is official spelling
 /* 43 */ // 1984.08 Yellow Cab
 /* 44 */ GAME( 1985, cbdash,    decocass, decocass, cbdash,   decocass_type5_state, decocass, ROT270, "Data East Corporation", "Boulder Dash (DECO Cassette) (US)", 0 )
->>>>>>> upstream/master
 
 /* UX7 */ // 1984.12 Tokyo MIE Clinic/Tokyo MIE Shinryoujo
 /* UX8 */ // 1985.01 Tokyo MIE Clinic/Tokyo MIE Shinryoujo Part 2
 /* UX9 */ // 1985.05 Geinoujin Shikaku Shiken
-<<<<<<< HEAD
-=======
 
 /* xx */ GAME( 2008, decomult,  decocass, decocass, decocass, decocass_widel_state, decocass, ROT270, "bootleg (David Widel)", "Deco Cassette System Multigame (ROM based)", 0 )
 
->>>>>>> upstream/master

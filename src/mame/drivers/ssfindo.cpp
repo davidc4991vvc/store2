@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-// license:LGPL-2.1+
-=======
 // license:BSD-3-Clause
->>>>>>> upstream/master
 // copyright-holders:Tomasz Slanina
 /************************************************************************
 
@@ -131,12 +127,9 @@ Notes:
 #include "emu.h"
 #include "cpu/arm7/arm7.h"
 #include "cpu/arm7/arm7core.h"
-<<<<<<< HEAD
-=======
 #include "machine/i2cmem.h"
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 enum
 {
@@ -231,62 +224,36 @@ public:
 		: driver_device(mconfig, type, tag),
 		m_maincpu(*this, "maincpu"),
 		m_palette(*this, "palette"),
-<<<<<<< HEAD
-=======
 		m_i2cmem(*this, "i2cmem"),
->>>>>>> upstream/master
 		m_vram(*this, "vram"),
 		m_flashrom(*this, "flash"),
 		m_io_ps7500(*this, "PS7500") { }
 
 	required_device<cpu_device> m_maincpu;
 	required_device<palette_device> m_palette;
-<<<<<<< HEAD
-
-	required_shared_ptr<UINT32> m_vram;
-
-	required_region_ptr<UINT16> m_flashrom;
-=======
 	optional_device<i2cmem_device> m_i2cmem;
 
 	required_shared_ptr<uint32_t> m_vram;
 
 	required_region_ptr<uint16_t> m_flashrom;
->>>>>>> upstream/master
 
 	required_ioport m_io_ps7500;
 
 	// driver init configuration
-<<<<<<< HEAD
-	UINT32 m_flashType;
-	int m_iocr_hack;
-
-	// common
-	UINT32 m_PS7500_IO[MAXIO];
-	UINT32 m_PS7500_FIFO[256];
-=======
 	uint32_t m_flashType;
 	int m_iocr_hack;
 
 	// common
 	uint32_t m_PS7500_IO[MAXIO];
 	uint32_t m_PS7500_FIFO[256];
->>>>>>> upstream/master
 	emu_timer *m_PS7500timer0;
 	emu_timer *m_PS7500timer1;
 
 	// ssfindo and ppcar
-<<<<<<< HEAD
-	UINT32 m_flashAdr;
-	UINT32 m_flashOffset;
-	UINT32 m_adrLatch;
-	UINT32 m_flashN;
-=======
 	uint32_t m_flashAdr;
 	uint32_t m_flashOffset;
 	uint32_t m_adrLatch;
 	uint32_t m_flashN;
->>>>>>> upstream/master
 
 	// common
 	DECLARE_WRITE32_MEMBER(FIFO_w);
@@ -313,15 +280,9 @@ public:
 	DECLARE_DRIVER_INIT(ssfindo);
 	DECLARE_DRIVER_INIT(ppcar);
 	DECLARE_DRIVER_INIT(tetfight);
-<<<<<<< HEAD
-	virtual void machine_reset();
-
-	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	virtual void machine_reset() override;
 
 	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 
 	INTERRUPT_GEN_MEMBER(interrupt);
 	TIMER_CALLBACK_MEMBER(PS7500_Timer0_callback);
@@ -338,11 +299,7 @@ public:
 };
 
 
-<<<<<<< HEAD
-UINT32 ssfindo_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t ssfindo_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int s,x,y;
 
@@ -382,11 +339,7 @@ TIMER_CALLBACK_MEMBER(ssfindo_state::PS7500_Timer0_callback)
 	m_PS7500_IO[IRQSTA]|=0x20;
 	if(m_PS7500_IO[IRQMSKA]&0x20)
 	{
-<<<<<<< HEAD
-		generic_pulse_irq_line(m_maincpu, ARM7_IRQ_LINE, 1);
-=======
 		generic_pulse_irq_line(*m_maincpu, ARM7_IRQ_LINE, 1);
->>>>>>> upstream/master
 	}
 }
 
@@ -405,11 +358,7 @@ TIMER_CALLBACK_MEMBER(ssfindo_state::PS7500_Timer1_callback)
 	m_PS7500_IO[IRQSTA]|=0x40;
 	if(m_PS7500_IO[IRQMSKA]&0x40)
 	{
-<<<<<<< HEAD
-		generic_pulse_irq_line(m_maincpu, ARM7_IRQ_LINE, 1);
-=======
 		generic_pulse_irq_line(*m_maincpu, ARM7_IRQ_LINE, 1);
->>>>>>> upstream/master
 	}
 }
 
@@ -486,11 +435,7 @@ READ32_MEMBER(ssfindo_state::PS7500_IO_r)
 
 			if( m_iocr_hack)
 			{
-<<<<<<< HEAD
-				return (m_io_ps7500->read() & 0x80) | 0x34 | (machine().rand()&3); //eeprom read ?
-=======
 				return (m_io_ps7500->read() & 0x80) | 0x34 | (m_i2cmem->read_sda() ? 0x03 : 0x00); //eeprom read
->>>>>>> upstream/master
 			}
 
 			return (m_io_ps7500->read() & 0x80) | 0x37;
@@ -516,11 +461,7 @@ READ32_MEMBER(ssfindo_state::PS7500_IO_r)
 
 WRITE32_MEMBER(ssfindo_state::PS7500_IO_w)
 {
-<<<<<<< HEAD
-	UINT32 temp=m_PS7500_IO[offset];
-=======
 	uint32_t temp=m_PS7500_IO[offset];
->>>>>>> upstream/master
 
 	COMBINE_DATA(&temp);
 
@@ -543,16 +484,6 @@ WRITE32_MEMBER(ssfindo_state::PS7500_IO_w)
 
 		case IRQRQA:
 			m_PS7500_IO[IRQSTA]&=~temp;
-<<<<<<< HEAD
-		break;
-
-		case IRQMSKA:
-			m_PS7500_IO[IRQMSKA]=(temp&(~2))|0x80;
-		break;
-
-		case T1GO:
-				PS7500_startTimer1();
-=======
 			break;
 
 		case IRQMSKA:
@@ -561,26 +492,16 @@ WRITE32_MEMBER(ssfindo_state::PS7500_IO_w)
 
 		case T1GO:
 			PS7500_startTimer1();
->>>>>>> upstream/master
 			break;
 
 		case T0GO:
 			PS7500_startTimer0();
-<<<<<<< HEAD
-		break;
-=======
 			break;
->>>>>>> upstream/master
 
 		case VIDEND:
 		case VIDSTART:
 			COMBINE_DATA(&m_PS7500_IO[offset]);
 			m_PS7500_IO[offset]&=0xfffffff0; // qword align
-<<<<<<< HEAD
-		break;
-
-		case IOCR:
-=======
 			break;
 
 		case IOCR:
@@ -591,7 +512,6 @@ WRITE32_MEMBER(ssfindo_state::PS7500_IO_w)
 			m_i2cmem->write_sda((data & 0x02) ? 1 : 0);
 			break;
 
->>>>>>> upstream/master
 		case REFCR:
 		case DRAMCR:
 		case SD0CR:
@@ -604,16 +524,8 @@ WRITE32_MEMBER(ssfindo_state::PS7500_IO_w)
 		case T0high:
 		case VIDCR:
 		case VIDINITA: //TODO: bit 30 (last bit) p.105
-<<<<<<< HEAD
-					COMBINE_DATA(&m_PS7500_IO[offset]);
-		break;
-
-
-
-=======
 			COMBINE_DATA(&m_PS7500_IO[offset]);
 			break;
->>>>>>> upstream/master
 	}
 }
 
@@ -627,19 +539,11 @@ READ32_MEMBER(ssfindo_state::io_r)
 		case 0:
 			if(m_PS7500_IO[IOLINES]&1) //bit 0 of IOLINES  = flash select ( 5/6 or 3/2 )
 				adr+=0x400000;
-<<<<<<< HEAD
-		break;
-
-		case 1:
-			adr+=0x400000*m_flashN;
-		break;
-=======
 			break;
 
 		case 1:
 			adr+=0x400000*m_flashN;
 			break;
->>>>>>> upstream/master
 	}
 
 	if(adr<0x400000*2)
@@ -652,11 +556,7 @@ READ32_MEMBER(ssfindo_state::io_r)
 
 WRITE32_MEMBER(ssfindo_state::io_w)
 {
-<<<<<<< HEAD
-	UINT32 temp = 0;
-=======
 	uint32_t temp = 0;
->>>>>>> upstream/master
 	COMBINE_DATA(&temp);
 
 #if 0
@@ -743,13 +643,8 @@ static ADDRESS_MAP_START( tetfight_map, AS_PROGRAM, 32, ssfindo_state )
 	AM_RANGE(0x00000000, 0x001fffff) AM_ROM
 	AM_RANGE(0x03200000, 0x032001ff) AM_READWRITE(PS7500_IO_r,PS7500_IO_w)
 	AM_RANGE(0x03400000, 0x03400003) AM_WRITE(FIFO_w)
-<<<<<<< HEAD
-	AM_RANGE(0x03240000, 0x03240003) AM_READ_PORT("DSW")
-	AM_RANGE(0x03240004, 0x03240007) AM_READ_PORT("IN0")
-=======
 	AM_RANGE(0x03240000, 0x03240003) AM_READ_PORT("IN0")
 	AM_RANGE(0x03240004, 0x03240007) AM_READ_PORT("IN1")
->>>>>>> upstream/master
 	AM_RANGE(0x03240008, 0x0324000b) AM_READ_PORT("DSW2")
 	AM_RANGE(0x03240020, 0x03240023) AM_READWRITE(tetfight_unk_r, tetfight_unk_w)
 	AM_RANGE(0x10000000, 0x14ffffff) AM_RAM AM_SHARE("vram")
@@ -831,33 +726,6 @@ static INPUT_PORTS_START( tetfight )
 	PORT_START("PS7500")
 	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_CUSTOM ) PORT_VBLANK("screen")
 
-<<<<<<< HEAD
-	PORT_START("DSW")
-	PORT_DIPNAME( 0x01, 0x01, "DSW 0" )
-	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x02, 0x02, "DSW 1" )
-	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x04, 0x04, "DSW 2" )
-	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x08, 0x08, "DSW 3" )
-	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x010, "DSW 4" )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, "DSW 5" )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x040, "DSW 6" )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, "DSW 7" )
-	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-=======
 	PORT_START("IN0")
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_UNKNOWN )
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNKNOWN )
@@ -885,7 +753,6 @@ static INPUT_PORTS_START( tetfight )
 	PORT_BIT( 0x2000, IP_ACTIVE_LOW, IPT_BUTTON1    ) PORT_PLAYER(2)
 	PORT_BIT( 0x4000, IP_ACTIVE_LOW, IPT_BUTTON2    ) PORT_PLAYER(2)
 	PORT_BIT( 0x8000, IP_ACTIVE_LOW, IPT_BUTTON3    ) PORT_PLAYER(2)
->>>>>>> upstream/master
 
 	PORT_START("DSW2")
 	PORT_DIPNAME( 0x01, 0x01, "Test Mode" )
@@ -903,35 +770,12 @@ static INPUT_PORTS_START( tetfight )
 	PORT_DIPNAME( 0x10, 0x010, "DSW 4" )
 	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x20, 0x20, "DSW 5" )
-=======
 	PORT_DIPNAME( 0x20, 0x20, DEF_STR( Free_Play ) )
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_DIPNAME( 0x40, 0x040, "DSW 6" )
 	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x80, 0x80, "DSW 7" )
-	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-
-	PORT_START("IN0")
-	PORT_BIT( 0x0001, IP_ACTIVE_LOW, IPT_START1 )  //guess
-	PORT_BIT( 0x0002, IP_ACTIVE_LOW, IPT_JOYSTICK_UP    ) PORT_8WAY PORT_PLAYER(1)
-	PORT_BIT( 0x0004, IP_ACTIVE_LOW, IPT_JOYSTICK_DOWN  ) PORT_8WAY PORT_PLAYER(1)
-	PORT_BIT( 0x0008, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT  ) PORT_8WAY PORT_PLAYER(1)
-	PORT_BIT( 0x0010, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT ) PORT_8WAY PORT_PLAYER(1)
-	PORT_BIT( 0x0020, IP_ACTIVE_LOW, IPT_BUTTON1    ) PORT_PLAYER(1)
-	PORT_BIT( 0x0040, IP_ACTIVE_LOW, IPT_BUTTON2    ) PORT_PLAYER(1)
-	PORT_BIT( 0x0080, IP_ACTIVE_LOW, IPT_BUTTON3    ) PORT_PLAYER(1)
-INPUT_PORTS_END
-
-
-static MACHINE_CONFIG_START( ssfindo, ssfindo_state )
-=======
 	PORT_DIPNAME( 0x80, 0x80, "Number of rounds" )
 	PORT_DIPSETTING(    0x80, "2" )
 	PORT_DIPSETTING(    0x00, "1" )
@@ -939,7 +783,6 @@ INPUT_PORTS_END
 
 
 static MACHINE_CONFIG_START( ssfindo )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", ARM7, 54000000) // guess...
@@ -947,10 +790,7 @@ static MACHINE_CONFIG_START( ssfindo )
 
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", ssfindo_state,  interrupt)
 
-<<<<<<< HEAD
-=======
 	MCFG_24C01_ADD("i2cmem")
->>>>>>> upstream/master
 
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE(60)
@@ -968,26 +808,17 @@ static MACHINE_CONFIG_DERIVED( ppcar, ssfindo )
 	/* basic machine hardware */
 	MCFG_CPU_MODIFY("maincpu")
 	MCFG_CPU_PROGRAM_MAP(ppcar_map)
-<<<<<<< HEAD
-MACHINE_CONFIG_END
-
-static MACHINE_CONFIG_DERIVED( tetfight, ssfindo )
-=======
 
 	MCFG_DEVICE_REMOVE("i2cmem")
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_DERIVED( tetfight, ppcar )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_MODIFY("maincpu")
 	MCFG_CPU_PROGRAM_MAP(tetfight_map)
-<<<<<<< HEAD
-=======
 
 	MCFG_24C02_ADD("i2cmem")
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 ROM_START( ssfindo )
@@ -1002,11 +833,7 @@ ROM_START( ssfindo )
 	ROM_LOAD16_BYTE( "du3",     0x800000, 0x400000, CRC(d1e8afb2) SHA1(598dfcbba14435a1d0571dcefe0ec62fec657fca) )
 	ROM_LOAD16_BYTE( "du2",     0x800001, 0x400000, CRC(56998515) SHA1(9b71a44f56a545ff0c1170775c839d21bd01f545) )
 
-<<<<<<< HEAD
-	ROM_REGION(0x80, "eeprom", 0 ) /* eeprom */
-=======
 	ROM_REGION(0x80, "i2cmem", 0 ) /* eeprom */
->>>>>>> upstream/master
 	ROM_LOAD( "24c01a.u36",     0x00, 0x80, CRC(b4f4849b) SHA1(f8f17dc94b2a305048693cfb78d14be57310ce56) )
 
 	ROM_REGION(0x10000, "user4", 0 ) /* qdsp code */
@@ -1049,41 +876,24 @@ ROM_START( tetfight )
 	ROM_REGION16_LE(0x1000000, "flash", ROMREGION_ERASEFF ) /* flash roms */
 	/* nothing? */
 
-<<<<<<< HEAD
-	ROM_REGION(0x100, "eeprom", 0 ) /* eeprom */
-	ROM_LOAD( "u1",     0x00, 0x100, CRC(dd207b40) SHA1(6689d9dfa980bdfbd4e4e6cef7973e22ebbfe22e) )
-
-	ROM_REGION(0x10000, "user4", 0 ) /* qdsp code */
-	ROM_LOAD( "u12",        0x000000, 0x10000, CRC(49976f7b) SHA1(eba5b97b81736f3c184ae0c19f1b10c5ae250d51) ) // = e.u14 on ssfindo
-=======
 	ROM_REGION(0x100, "i2cmem", 0 ) /* 24c02 eeprom */
 	ROM_LOAD( "u1",     0x00, 0x100, CRC(dd207b40) SHA1(6689d9dfa980bdfbd4e4e6cef7973e22ebbfe22e) )
 
 	ROM_REGION(0x10000, "user4", 0 ) /* qdsp code */
 	ROM_LOAD( "u12",        0x000000, 0x10000, CRC(49976f7b) SHA1(eba5b97b81736f3c184ae0c19f1b10c5ae250d51) ) // 27c512 = e.u14 on ssfindo
->>>>>>> upstream/master
 
 	ROM_REGION(0x100000, "user5", ROMREGION_ERASE00 )/*  qdsp samples */
 	// probably the same, but wasn't dumped
 	//ROM_LOAD( "1008s-1.u16",  0x000000, 0x100000, CRC(9aef9545) SHA1(f23ef72c3e3667923768dfdd0c5b4951b23dcbcf) )
 
 	ROM_REGION(0x100000, "user6", 0 ) /* samples - same internal structure as qdsp samples  */
-<<<<<<< HEAD
-	ROM_LOAD( "u11",        0x000000, 0x80000, CRC(073050f6) SHA1(07f362f3ba468bde2341a99e6b26931d11459a92) )
-	ROM_LOAD( "u15",        0x080000, 0x80000, CRC(477f8089) SHA1(8084facb254d60da7983d628d5945d27b9494e65) )
-=======
 	ROM_LOAD( "u11",        0x000000, 0x80000, CRC(073050f6) SHA1(07f362f3ba468bde2341a99e6b26931d11459a92) ) // 27c040
 	ROM_LOAD( "u15",        0x080000, 0x80000, CRC(477f8089) SHA1(8084facb254d60da7983d628d5945d27b9494e65) ) // 27c040
->>>>>>> upstream/master
 ROM_END
 
 DRIVER_INIT_MEMBER(ssfindo_state,common)
 {
-<<<<<<< HEAD
-	m_speedup = 0;
-=======
 	m_speedup = nullptr;
->>>>>>> upstream/master
 	m_PS7500timer0 = machine().scheduler().timer_alloc(timer_expired_delegate(FUNC(ssfindo_state::PS7500_Timer0_callback),this));
 	m_PS7500timer1 = machine().scheduler().timer_alloc(timer_expired_delegate(FUNC(ssfindo_state::PS7500_Timer1_callback),this));
 
@@ -1118,12 +928,6 @@ DRIVER_INIT_MEMBER(ssfindo_state,tetfight)
 	m_iocr_hack=1;
 }
 
-<<<<<<< HEAD
-GAME( 1999, ssfindo, 0,        ssfindo,  ssfindo, ssfindo_state,  ssfindo,  ROT0, "Icarus", "See See Find Out", MACHINE_NO_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 1999, ppcar,   0,        ppcar,    ppcar, ssfindo_state,    ppcar,    ROT0, "Icarus", "Pang Pang Car", MACHINE_NO_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 2001, tetfight,0,        tetfight, tetfight, ssfindo_state,  tetfight,ROT0, "Sego", "Tetris Fighters", MACHINE_NO_SOUND | MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1999, ssfindo, 0,        ssfindo,  ssfindo,  ssfindo_state, ssfindo,  ROT0, "Icarus", "See See Find Out", MACHINE_NO_SOUND | MACHINE_SUPPORTS_SAVE )
 GAME( 1999, ppcar,   0,        ppcar,    ppcar,    ssfindo_state, ppcar,    ROT0, "Icarus", "Pang Pang Car",    MACHINE_NO_SOUND | MACHINE_SUPPORTS_SAVE )
 GAME( 2001, tetfight,0,        tetfight, tetfight, ssfindo_state, tetfight, ROT0, "Sego",   "Tetris Fighters",  MACHINE_NO_SOUND | MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

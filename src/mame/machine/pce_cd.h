@@ -1,14 +1,9 @@
 // license:BSD-3-Clause
 // copyright-holders:Wilbert Pol
-<<<<<<< HEAD
-#ifndef __PCE_CD_H
-#define __PCE_CD_H
-=======
 #ifndef MAME_MACHINE_PCE_CD_H
 #define MAME_MACHINE_PCE_CD_H
 
 #pragma once
->>>>>>> upstream/master
 
 /***************************************************************************
  TYPE DEFINITIONS
@@ -49,17 +44,7 @@ class pce_cd_device : public device_t
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	pce_cd_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-	virtual ~pce_cd_device() {}
-
-	// device-level overrides
-	virtual void device_start();
-	virtual machine_config_constructor device_mconfig_additions() const;
-	virtual void device_reset();
-=======
 	pce_cd_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
->>>>>>> upstream/master
 
 	void update();
 
@@ -68,22 +53,10 @@ public:
 	DECLARE_WRITE8_MEMBER(bram_w);
 	DECLARE_WRITE8_MEMBER(intf_w);
 	DECLARE_WRITE8_MEMBER(acard_w);
-<<<<<<< HEAD
-	DECLARE_WRITE_LINE_MEMBER(msm5205_int);
-=======
->>>>>>> upstream/master
 	DECLARE_READ8_MEMBER(bram_r);
 	DECLARE_READ8_MEMBER(intf_r);
 	DECLARE_READ8_MEMBER(acard_r);
 
-<<<<<<< HEAD
-	void nvram_init(nvram_device &nvram, void *data, size_t size);
-
-private:
-	void adpcm_stop(UINT8 irq_flag);
-	void adpcm_play();
-	void reply_status_byte(UINT8 status);
-=======
 protected:
 	// device-level overrides
 	virtual void device_start() override;
@@ -94,7 +67,6 @@ private:
 	void adpcm_stop(uint8_t irq_flag);
 	void adpcm_play();
 	void reply_status_byte(uint8_t status);
->>>>>>> upstream/master
 	void test_unit_ready();
 	void read_6();
 	void nec_set_audio_start_position();
@@ -108,15 +80,9 @@ private:
 	void handle_message_output();
 	void handle_message_input();
 	void set_irq_line(int num, int state);
-<<<<<<< HEAD
-	void set_adpcm_ram_byte(UINT8 val);
-	UINT8 get_cd_data_byte();
-	UINT8 get_adpcm_ram_byte();
-=======
 	void set_adpcm_ram_byte(uint8_t val);
 	uint8_t get_cd_data_byte();
 	uint8_t get_adpcm_ram_byte();
->>>>>>> upstream/master
 
 	TIMER_CALLBACK_MEMBER(data_timer_callback);
 	TIMER_CALLBACK_MEMBER(cdda_fadeout_callback);
@@ -128,24 +94,6 @@ private:
 
 	required_device<cpu_device> m_maincpu;
 
-<<<<<<< HEAD
-	UINT8   m_regs[16];
-	UINT8   *m_bram;
-	UINT8   *m_adpcm_ram;
-	int     m_bram_locked;
-	int     m_adpcm_read_ptr;
-	UINT8   m_adpcm_read_buf;
-	int     m_adpcm_write_ptr;
-	UINT8   m_adpcm_write_buf;
-	int     m_adpcm_length;
-	int     m_adpcm_clock_divider;
-	UINT32  m_msm_start_addr;
-	UINT32  m_msm_end_addr;
-	UINT32  m_msm_half_addr;
-	UINT8   m_msm_nibble;
-	UINT8   m_msm_idle;
-	UINT8   m_msm_repeat;
-=======
 	uint8_t   m_regs[16];
 	std::unique_ptr<uint8_t[]>   m_bram;
 	std::unique_ptr<uint8_t[]>   m_adpcm_ram;
@@ -162,7 +110,6 @@ private:
 	uint8_t   m_msm_nibble;
 	uint8_t   m_msm_idle;
 	uint8_t   m_msm_repeat;
->>>>>>> upstream/master
 
 	/* SCSI signals */
 	int     m_scsi_BSY;   /* Busy. Bus in use */
@@ -177,43 +124,17 @@ private:
 	int     m_scsi_last_RST;  /* To catch setting of RST signal */
 	int     m_cd_motor_on;
 	int     m_selected;
-<<<<<<< HEAD
-	UINT8   *m_command_buffer;
-=======
 	std::unique_ptr<uint8_t[]>  m_command_buffer;
->>>>>>> upstream/master
 	int     m_command_buffer_index;
 	int     m_status_sent;
 	int     m_message_after_status;
 	int     m_message_sent;
-<<<<<<< HEAD
-	UINT8   *m_data_buffer;
-=======
 	std::unique_ptr<uint8_t[]> m_data_buffer;
->>>>>>> upstream/master
 	int     m_data_buffer_size;
 	int     m_data_buffer_index;
 	int     m_data_transferred;
 
 	/* Arcade Card specific */
-<<<<<<< HEAD
-	UINT8   *m_acard_ram;
-	UINT8   m_acard_latch;
-	UINT8   m_acard_ctrl[4];
-	UINT32  m_acard_base_addr[4];
-	UINT16  m_acard_addr_offset[4];
-	UINT16  m_acard_addr_inc[4];
-	UINT32  m_acard_shift;
-	UINT8   m_acard_shift_reg;
-
-	UINT32  m_current_frame;
-	UINT32  m_end_frame;
-	UINT32  m_last_frame;
-	UINT8   m_cdda_status;
-	UINT8   m_cdda_play_mode;
-	UINT8   *m_subcode_buffer;
-	UINT8   m_end_mark;
-=======
 	std::unique_ptr<uint8_t[]>  m_acard_ram;
 	uint8_t   m_acard_latch;
 	uint8_t   m_acard_ctrl[4];
@@ -230,7 +151,6 @@ private:
 	uint8_t   m_cdda_play_mode;
 	std::unique_ptr<uint8_t[]>   m_subcode_buffer;
 	uint8_t   m_end_mark;
->>>>>>> upstream/master
 
 	required_device<msm5205_device> m_msm;
 	required_device<cdda_device> m_cdda;
@@ -248,22 +168,15 @@ private:
 	emu_timer   *m_adpcm_fadeout_timer;
 	emu_timer   *m_adpcm_fadein_timer;
 	double  m_adpcm_volume;
-<<<<<<< HEAD
-=======
 
 	DECLARE_WRITE_LINE_MEMBER(msm5205_int);
 	void nvram_init(nvram_device &nvram, void *data, size_t size);
->>>>>>> upstream/master
 };
 
 
 
 // device type definition
-<<<<<<< HEAD
-extern const device_type PCE_CD;
-=======
 DECLARE_DEVICE_TYPE(PCE_CD, pce_cd_device)
->>>>>>> upstream/master
 
 
 /***************************************************************************
@@ -274,8 +187,4 @@ DECLARE_DEVICE_TYPE(PCE_CD, pce_cd_device)
 	MCFG_DEVICE_ADD(_tag, PCE_CD, 0)
 
 
-<<<<<<< HEAD
-#endif
-=======
 #endif // MAME_MACHINE_PCE_CD_H
->>>>>>> upstream/master

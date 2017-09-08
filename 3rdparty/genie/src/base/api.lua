@@ -42,15 +42,12 @@
 			scope = "config",
 		},
 
-<<<<<<< HEAD
-=======
 		buildoptions_asm =
 		{
 			kind  = "list",
 			scope = "config",
 		},
 
->>>>>>> upstream/master
 		buildoptions_c =
 		{
 			kind  = "list",
@@ -69,8 +66,6 @@
 			scope = "config",
 		},
 
-<<<<<<< HEAD
-=======
 		buildoptions_objcpp =
 		{
 			kind  = "list",
@@ -89,7 +84,6 @@
 			scope = "container",
 		},
 
->>>>>>> upstream/master
 		configurations =
 		{
 			kind  = "list",
@@ -139,23 +133,18 @@
 			scope = "config",
 		},
 
-<<<<<<< HEAD
-=======
 		deploymode =
 		{
 			kind = "string",
 			scope = "config",
 		},
 
->>>>>>> upstream/master
 		excludes =
 		{
 			kind  = "filelist",
 			scope = "config",
 		},
 
-<<<<<<< HEAD
-=======
 		forcenative =
 		{
 			kind = "filelist",
@@ -168,7 +157,6 @@
 			scope = "config",
 		},
 
->>>>>>> upstream/master
 		files =
 		{
 			kind  = "filelist",
@@ -191,13 +179,6 @@
 
 				local allowed_flags = {
 					ATL = 1,
-<<<<<<< HEAD
-					DebugEnvsDontMerge = 1,
-					DebugEnvsInherit = 1,
-					EnableMinimalRebuild = 1,
-					EnableSSE = 1,
-					EnableSSE2 = 1,
-=======
 					C7DebugInfo = 1,
 					DebugEnvsDontMerge = 1,
 					DebugEnvsInherit = 1,
@@ -207,23 +188,16 @@
 					EnableSSE2 = 1,
 					EnableAVX = 1,
 					EnableAVX2 = 1,
->>>>>>> upstream/master
 					ExtraWarnings = 1,
 					FatalWarnings = 1,
 					FloatFast = 1,
 					FloatStrict = 1,
 					Managed = 1,
-<<<<<<< HEAD
-					MFC = 1,
-					NativeWChar = 1,
-					No64BitChecks = 1,
-=======
 					MinimumWarnings = 1,
 					MFC = 1,
 					NativeWChar = 1,
 					No64BitChecks = 1,
 					NoBufferSecurityCheck = 1,
->>>>>>> upstream/master
 					NoEditAndContinue = 1,
 					NoExceptions = 1,
 					NoFramePointer = 1,
@@ -234,11 +208,8 @@
 					NoNativeWChar = 1,
 					NoPCH = 1,
 					NoRTTI = 1,
-<<<<<<< HEAD
-=======
 					NoWinMD = 1,    -- explicitly disables Windows Metadata
 					NoWinRT = 1,    -- explicitly disables Windows Runtime Extension
->>>>>>> upstream/master
 					FastCall = 1,
 					StdCall = 1,
 					SingleOutputDir = 1,
@@ -254,10 +225,7 @@
 					Unicode = 1,
 					Unsafe = 1,
 					UnsignedChar = 1,
-<<<<<<< HEAD
-=======
 					UseFullPaths = 1,
->>>>>>> upstream/master
 					WinMain = 1,
 				}
 
@@ -291,14 +259,11 @@
 				"3.5",
 				"4.0",
 				"4.5",
-<<<<<<< HEAD
-=======
 				"4.5.1",
 				"4.5.2",
 				"4.6",
 				"4.6.1",
 				"4.6.2",
->>>>>>> upstream/master
 			}
 		},
 
@@ -308,11 +273,6 @@
 			scope = "project",
 		},
 
-<<<<<<< HEAD
-		forcedincludes =
-		{
-			kind  = "absolutefilelist",
-=======
 		windowstargetplatformminversion =
 		{
 			kind = "string",
@@ -322,7 +282,6 @@
 		forcedincludes =
 		{
 			kind  = "list",
->>>>>>> upstream/master
 			scope = "config",
 		},
 
@@ -375,8 +334,6 @@
 			usagecopy = true,
 		},
 
-<<<<<<< HEAD
-=======
 		userincludedirs =
 		{
 			kind  = "dirlist",
@@ -391,7 +348,6 @@
 			usagecopy = true,
 		},
 
->>>>>>> upstream/master
 		kind =
 		{
 			kind  = "string",
@@ -400,12 +356,8 @@
 				"ConsoleApp",
 				"WindowedApp",
 				"StaticLib",
-<<<<<<< HEAD
-				"SharedLib"
-=======
 				"SharedLib",
 				"Bundle",
->>>>>>> upstream/master
 			}
 		},
 
@@ -416,13 +368,9 @@
 			allowed = {
 				"C",
 				"C++",
-<<<<<<< HEAD
-				"C#"
-=======
 				"C#",
 				"Vala",
 				"Swift",
->>>>>>> upstream/master
 			}
 		},
 
@@ -451,10 +399,7 @@
 				return value
 			end,
 			linkagecopy = true,
-<<<<<<< HEAD
-=======
 			--mergecopiestotail = true,
->>>>>>> upstream/master
 		},
 
 		location =
@@ -506,15 +451,12 @@
 			scope = "config",
 		},
 
-<<<<<<< HEAD
-=======
 		msgprecompile =
 		{
 			kind  = "string",
 			scope = "config",
 		},
 
->>>>>>> upstream/master
 		msgcompile_objc =
 		{
 			kind  = "string",
@@ -605,8 +547,6 @@
 			scope = "config",
 		},
 
-<<<<<<< HEAD
-=======
 		propertysheets =
 		{
 			kind  = "dirlist",
@@ -619,7 +559,6 @@
 			scope = "config",
 		},
 
->>>>>>> upstream/master
 		resdefines =
 		{
 			kind  = "list",
@@ -638,15 +577,12 @@
 			scope = "config",
 		},
 
-<<<<<<< HEAD
-=======
 		sdkreferences =
 		{
 			kind  = "list",
 			scope = "config",
 		},
 
->>>>>>> upstream/master
 		startproject =
 		{
 			kind  = "string",
@@ -723,23 +659,18 @@
 			scope = "config",
 		},
 
-<<<<<<< HEAD
-=======
 		vapidirs =
 		{
 			kind  = "dirlist",
 			scope = "config",
 		},
 
->>>>>>> upstream/master
 		vpaths =
 		{
 			kind = "keypath",
 			scope = "container",
 		},
 
-<<<<<<< HEAD
-=======
 		vsimportreferences =
 		{
 			kind = "filelist",
@@ -764,7 +695,6 @@
 			kind  = "list",
 			scope = "config",
 		},
->>>>>>> upstream/master
 	}
 
 
@@ -818,17 +748,10 @@
 		end
 
 		if t == "solution" then
-<<<<<<< HEAD
-			if type(container) == "project" then
-				container = container.solution
-			end
-			if type(container) ~= "solution" then
-=======
 			if typex(container) == "project" then
 				container = container.solution
 			end
 			if typex(container) ~= "solution" then
->>>>>>> upstream/master
 				container = nil
 			end
 		end
@@ -901,13 +824,6 @@
 	end
 --
 -- Adds values to an array-of-directories field of a solution/project/configuration.
-<<<<<<< HEAD
--- `ctype` specifies the container type (see premake.getobject) for the field. All
--- values are converted to absolute paths before being stored.
---
-
-	local function domatchedarray(ctype, fieldname, value, matchfunc)
-=======
 -- `fields` is an array of containers/fieldname pairs to add the results to. All
 -- values are converted to absolute paths before being stored.
 --
@@ -915,7 +831,6 @@
 --
 
 	local function domatchedarray(fields, value, matchfunc)
->>>>>>> upstream/master
 		local result = { }
 
 		function makeabsolute(value, depth)
@@ -939,17 +854,6 @@
 		end
 
 		makeabsolute(value, 3)
-<<<<<<< HEAD
-		return premake.setarray(ctype, fieldname, result)
-	end
-
-	function premake.setdirarray(ctype, fieldname, value)
-		return domatchedarray(ctype, fieldname, value, os.matchdirs)
-	end
-
-	function premake.setfilearray(ctype, fieldname, value)
-		return domatchedarray(ctype, fieldname, value, os.matchfiles)
-=======
 
 		local retval = {}
 
@@ -972,7 +876,6 @@
 
 	function premake.setfilearray(fields, value)
 		return domatchedarray(fields, value, os.matchfiles)
->>>>>>> upstream/master
 	end
 
 
@@ -1074,11 +977,6 @@
 		elseif kind == "table" then
 			return premake.settable(container, name, value, allowed)
 		elseif kind == "dirlist" then
-<<<<<<< HEAD
-			return premake.setdirarray(container, name, value)
-		elseif kind == "filelist" or kind == "absolutefilelist" then
-			return premake.setfilearray(container, name, value)
-=======
 			return premake.setdirarray({{container, name}}, value)
 		elseif kind == "filelist" or kind == "absolutefilelist" then
 			-- HACK: If we're adding files, we should also add them to the project's
@@ -1094,7 +992,6 @@
 				table.insert(fields, {prj.blocks[1], "allfiles"})
 			end
 			return premake.setfilearray(fields, value)
->>>>>>> upstream/master
 		elseif kind == "keyvalue" or kind == "keypath" then
 			return premake.setkeyvalue(scope, name, value)
 		end
@@ -1280,31 +1177,19 @@
 	function usage(name)
 		if (not name) then
 			--Only return usage projects.
-<<<<<<< HEAD
-			if(type(premake.CurrentContainer) ~= "project") then return nil end
-=======
 			if(typex(premake.CurrentContainer) ~= "project") then return nil end
->>>>>>> upstream/master
 			if(not premake.CurrentContainer.usage) then return nil end
 			return premake.CurrentContainer
 		end
 
 		-- identify the parent solution
 		local sln
-<<<<<<< HEAD
-		if (type(premake.CurrentContainer) == "project") then
-=======
 		if (typex(premake.CurrentContainer) == "project") then
->>>>>>> upstream/master
 			sln = premake.CurrentContainer.solution
 		else
 			sln = premake.CurrentContainer
 		end
-<<<<<<< HEAD
-		if (type(sln) ~= "solution") then
-=======
 		if (typex(sln) ~= "solution") then
->>>>>>> upstream/master
 			error("no active solution", 2)
 		end
 
@@ -1326,31 +1211,19 @@
 	function project(name)
 		if (not name) then
 			--Only return non-usage projects
-<<<<<<< HEAD
-			if(type(premake.CurrentContainer) ~= "project") then return nil end
-=======
 			if(typex(premake.CurrentContainer) ~= "project") then return nil end
->>>>>>> upstream/master
 			if(premake.CurrentContainer.usage) then return nil end
 			return premake.CurrentContainer
 		end
 
 		-- identify the parent solution
 		local sln
-<<<<<<< HEAD
-		if (type(premake.CurrentContainer) == "project") then
-=======
 		if (typex(premake.CurrentContainer) == "project") then
->>>>>>> upstream/master
 			sln = premake.CurrentContainer.solution
 		else
 			sln = premake.CurrentContainer
 		end
-<<<<<<< HEAD
-		if (type(sln) ~= "solution") then
-=======
 		if (typex(sln) ~= "solution") then
->>>>>>> upstream/master
 			error("no active solution", 2)
 		end
 
@@ -1370,11 +1243,7 @@
 
 	function solution(name)
 		if not name then
-<<<<<<< HEAD
-			if type(premake.CurrentContainer) == "project" then
-=======
 			if typex(premake.CurrentContainer) == "project" then
->>>>>>> upstream/master
 				return premake.CurrentContainer.solution
 			else
 				return premake.CurrentContainer
@@ -1402,8 +1271,6 @@
 		return premake.CurrentGroup
 	end
 
-<<<<<<< HEAD
-=======
 	function importvsproject(location)
 		if string.find(_ACTION, "vs") ~= 1 then
 			error("Only available for visual studio actions")
@@ -1424,7 +1291,6 @@
 		table.insert(sln.importedprojects, project)
     end
 
->>>>>>> upstream/master
 
 --
 -- Define a new action.
@@ -1448,8 +1314,6 @@
 	function newoption(opt)
 		premake.option.add(opt)
 	end
-<<<<<<< HEAD
-=======
 
 
 --
@@ -1460,4 +1324,3 @@
 	function enablefilelevelconfig()
 		premake._filelevelconfig = true
 	end
->>>>>>> upstream/master

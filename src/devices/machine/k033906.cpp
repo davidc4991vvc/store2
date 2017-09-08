@@ -8,10 +8,6 @@
 
 #include "emu.h"
 #include "k033906.h"
-<<<<<<< HEAD
-#include "video/voodoo.h"
-=======
->>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -19,25 +15,16 @@
 //**************************************************************************
 
 // device type definition
-<<<<<<< HEAD
-const device_type K033906 = &device_creator<k033906_device>;
-=======
 DEFINE_DEVICE_TYPE(K033906, k033906_device, "k033906", "K033906 PCI bridge")
->>>>>>> upstream/master
 
 //-------------------------------------------------
 //  k033906_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-k033906_device::k033906_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, K033906, "K033906 PCI bridge", tag, owner, clock, "k033906", __FILE__), m_reg_set(0), m_voodoo_tag(nullptr), m_voodoo(nullptr)
-=======
 k033906_device::k033906_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, K033906, tag, owner, clock)
 	, m_reg_set(0)
 	, m_voodoo(*this, finder_base::DUMMY_TAG)
->>>>>>> upstream/master
 {
 }
 
@@ -47,11 +34,6 @@ k033906_device::k033906_device(const machine_config &mconfig, const char *tag, d
 
 void k033906_device::device_start()
 {
-<<<<<<< HEAD
-	m_voodoo = machine().device(m_voodoo_tag);
-
-=======
->>>>>>> upstream/master
 	m_reg_set = 0;
 
 	save_item(NAME(m_reg));
@@ -65,11 +47,7 @@ WRITE_LINE_MEMBER(k033906_device::set_reg)
 	m_reg_set = state & 1;
 }
 
-<<<<<<< HEAD
-UINT32 k033906_device::reg_r(int reg)
-=======
 uint32_t k033906_device::reg_r(int reg)
->>>>>>> upstream/master
 {
 	switch (reg)
 	{
@@ -79,21 +57,13 @@ uint32_t k033906_device::reg_r(int reg)
 		case 0x0f:      return m_reg[0x0f];         // interrupt_line, interrupt_pin, min_gnt, max_lat
 
 		default:
-<<<<<<< HEAD
-			fatalerror("%s: k033906_reg_r: %08X\n", machine().describe_context(), reg);
-=======
 			fatalerror("%s: k033906_reg_r: %08X\n", machine().describe_context().c_str(), reg);
->>>>>>> upstream/master
 	}
 	// never executed
 	//return 0;
 }
 
-<<<<<<< HEAD
-void k033906_device::reg_w(int reg, UINT32 data)
-=======
 void k033906_device::reg_w(int reg, uint32_t data)
->>>>>>> upstream/master
 {
 	switch (reg)
 	{
@@ -124,11 +94,7 @@ void k033906_device::reg_w(int reg, uint32_t data)
 
 		case 0x10:      // initEnable
 		{
-<<<<<<< HEAD
-			voodoo_set_init_enable(m_voodoo, data);
-=======
 			m_voodoo->voodoo_set_init_enable(data);
->>>>>>> upstream/master
 			break;
 		}
 
@@ -140,11 +106,7 @@ void k033906_device::reg_w(int reg, uint32_t data)
 			break;
 
 		default:
-<<<<<<< HEAD
-			fatalerror("%s:K033906_w: %08X, %08X\n", machine().describe_context(), data, reg);
-=======
 			fatalerror("%s:K033906_w: %08X, %08X\n", machine().describe_context().c_str(), data, reg);
->>>>>>> upstream/master
 	}
 }
 

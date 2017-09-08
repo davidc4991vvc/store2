@@ -26,10 +26,6 @@ The Crystal of Kings
 Brezza Soft Corporation (Japan), 2001
 
 This game runs on a small cartridge-based PCB known as the 'Crystal System'
-<<<<<<< HEAD
-There are only two known games running on this system, Crystal of Kings and Evolution Soccer.
-=======
->>>>>>> upstream/master
 The main PCB is small (approx 6" square) and contains only a few components. All of the processing
 work is done by the large IC in the middle of the PCB. The system looks a bit like IGS's PGM System, in
 that it's housed in a plastic case and has a single slot for insertion of a game cart. However this
@@ -123,30 +119,18 @@ Notes:
 
 P's Attack (c) 2004 Uniana Co., Ltd
 
-<<<<<<< HEAD
-+----------1||||---1|||||--1|||||---------------------------+
-=======
 +----------54321---654321--654321---------------------------+
->>>>>>> upstream/master
 |VOL       TICKET  GUN_1P  GUN_2P                 +---------|
 |                                                 |         |
 +-+                                               |  256MB  |
   |       CC-DAC                                  | Compact |
 +-+                                  EMUL*        |  Flash  |
 |                                                 |         |
-<<<<<<< HEAD
-|J          +---+                                 +---------|
-|A          |   |                                           |
-|M          | R |   25.1750MHz              +--------------+|
-|M          | A |                           |     42Pin*   ||
-|A          | M |                           +--------------+|
-=======
 |5          +---+                                 +---------|
 |6          |   |                                           |
 |P          | R |   25.1750MHz              +--------------+|
 |I          | A |                           |     42Pin*   ||
 |N          | M |                           +--------------+|
->>>>>>> upstream/master
 |           |   |                           +--------------+|
 |C          +---+       +------------+      |     SYS      ||
 |O                      |            |      +--------------+|
@@ -177,26 +161,6 @@ EMUL is an unpopulated 8 pin connector
 EEPROM is a 93C86 16K 5.0v Serial EEPROM (2048x8-bit or 1024x16-bit)
 CC-DAC is a TDA1311A Stereo Continuous Calibration DAC
 
-<<<<<<< HEAD
-TICKET is a 5 pin connector:
-
-  1| +12v
-  2| IN
-  3| OUT
-  4| GND
-  5| LED
-
-GUN_xP are 6 pin gun connectors (pins 1-4 match the UNICO sytle guns):
-
-  1| GND
-  2| SW
-  3| +5v
-  4| SENS
-  5| SOL
-  6| GND
-
-
-=======
 
  P's Attack non JAMMA standard 56pin Edge Connector Pinout:
 
@@ -260,25 +224,17 @@ GUN_xP are 6 pin gun connectors (pins 3-6 match the UNICO sytle guns):
   4| +5V
   5| Switch (Trigger)
   6| GND
->>>>>>> upstream/master
 
 */
 
 #include "emu.h"
 #include "cpu/se3208/se3208.h"
-<<<<<<< HEAD
-#include "video/vrender0.h"
-#include "machine/ds1302.h"
-#include "sound/vrender0.h"
-#include "machine/nvram.h"
-=======
 #include "machine/ds1302.h"
 #include "machine/nvram.h"
 #include "sound/vrender0.h"
 #include "video/vrender0.h"
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 #define IDLE_LOOP_SPEEDUP
 
@@ -297,18 +253,6 @@ public:
 		m_vr0(*this, "vr0"),
 		m_ds1302(*this, "rtc"),
 		m_screen(*this, "screen")
-<<<<<<< HEAD
-		{ }
-
-	/* memory pointers */
-	required_shared_ptr<UINT32> m_sysregs;
-	required_shared_ptr<UINT32> m_workram;
-	required_shared_ptr<UINT32> m_vidregs;
-	required_shared_ptr<UINT32> m_textureram;
-	required_shared_ptr<UINT32> m_frameram;
-	optional_shared_ptr<UINT32> m_reset_patch; // not needed for trivrus
-//  UINT32 *  m_nvram;    // currently this uses generic nvram handling
-=======
 	{ }
 
 	/* memory pointers */
@@ -318,7 +262,6 @@ public:
 	required_shared_ptr<uint32_t> m_textureram;
 	required_shared_ptr<uint32_t> m_frameram;
 	optional_shared_ptr<uint32_t> m_reset_patch; // not needed for trivrus
->>>>>>> upstream/master
 
 	/* devices */
 	required_device<cpu_device> m_maincpu;
@@ -327,20 +270,6 @@ public:
 	required_device<screen_device> m_screen;
 
 #ifdef IDLE_LOOP_SPEEDUP
-<<<<<<< HEAD
-	UINT8     m_FlipCntRead;
-#endif
-
-	UINT32    m_Bank;
-	UINT8     m_FlipCount;
-	UINT8     m_IntHigh;
-	UINT32    m_Timerctrl[4];
-	emu_timer *m_Timer[4];
-	UINT32    m_FlashCmd;
-	UINT32    m_PIO;
-	UINT32    m_DMActrl[2];
-	UINT8     m_OldPort4;
-=======
 	uint8_t     m_FlipCntRead;
 #endif
 
@@ -355,7 +284,6 @@ public:
 
 	uint32_t *TimerRegsPtr(int which) const;
 	void TimerStart(int which);
->>>>>>> upstream/master
 
 	DECLARE_READ32_MEMBER(FlipCount_r);
 	DECLARE_WRITE32_MEMBER(FlipCount_w);
@@ -387,14 +315,6 @@ public:
 
 	DECLARE_READ32_MEMBER(trivrus_input_r);
 	DECLARE_WRITE32_MEMBER(trivrus_input_w);
-<<<<<<< HEAD
-	UINT8 m_trivrus_input;
-
-	virtual void machine_start();
-	virtual void machine_reset();
-	UINT32 screen_update_crystal(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	void screen_eof_crystal(screen_device &screen, bool state);
-=======
 	uint8_t m_trivrus_input;
 
 	DECLARE_READ32_MEMBER(crzyddz2_key_r);
@@ -405,39 +325,23 @@ public:
 	virtual void machine_reset() override;
 	uint32_t screen_update_crystal(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	DECLARE_WRITE_LINE_MEMBER(screen_vblank_crystal);
->>>>>>> upstream/master
 	INTERRUPT_GEN_MEMBER(crystal_interrupt);
 	TIMER_CALLBACK_MEMBER(Timercb);
 	IRQ_CALLBACK_MEMBER(icallback);
 	void crystal_banksw_postload();
 	void IntReq( int num );
-<<<<<<< HEAD
-	inline void Timer_w( address_space &space, int which, UINT32 data, UINT32 mem_mask );
-	inline void DMA_w( address_space &space, int which, UINT32 data, UINT32 mem_mask );
-	void PatchReset(  );
-	UINT16 GetVidReg( address_space &space, UINT16 reg );
-	void SetVidReg( address_space &space, UINT16 reg, UINT16 val );
-
-
-=======
 	inline void Timer_w( address_space &space, int which, uint32_t data, uint32_t mem_mask );
 	inline void DMA_w( address_space &space, int which, uint32_t data, uint32_t mem_mask );
 	void PatchReset(  );
 	uint16_t GetVidReg( address_space &space, uint16_t reg );
 	void SetVidReg( address_space &space, uint16_t reg, uint16_t val );
->>>>>>> upstream/master
 };
 
 void crystal_state::IntReq( int num )
 {
 	address_space &space = m_maincpu->space(AS_PROGRAM);
-<<<<<<< HEAD
-	UINT32 IntEn = space.read_dword(0x01800c08);
-	UINT32 IntPend = space.read_dword(0x01800c0c);
-=======
 	uint32_t IntEn = space.read_dword(0x01800c08);
 	uint32_t IntPend = space.read_dword(0x01800c0c);
->>>>>>> upstream/master
 	if (IntEn & (1 << num))
 	{
 		IntPend |= (1 << num);
@@ -453,29 +357,17 @@ void crystal_state::IntReq( int num )
 READ32_MEMBER(crystal_state::FlipCount_r)
 {
 #ifdef IDLE_LOOP_SPEEDUP
-<<<<<<< HEAD
-	UINT32 IntPend = space.read_dword(0x01800c0c);
-=======
 	uint32_t IntPend = space.read_dword(0x01800c0c);
->>>>>>> upstream/master
 	m_FlipCntRead++;
 	if (m_FlipCntRead >= 16 && !IntPend && m_FlipCount != 0)
 		m_maincpu->suspend(SUSPEND_REASON_SPIN, 1);
 #endif
-<<<<<<< HEAD
-	return ((UINT32) m_FlipCount) << 16;
-=======
 	return ((uint32_t) m_FlipCount) << 16;
->>>>>>> upstream/master
 }
 
 WRITE32_MEMBER(crystal_state::FlipCount_w)
 {
-<<<<<<< HEAD
-	if (mem_mask & 0x00ff0000)
-=======
 	if (ACCESSING_BITS_16_23)
->>>>>>> upstream/master
 	{
 		int fc = (data >> 16) & 0xff;
 		if (fc == 1)
@@ -493,11 +385,7 @@ READ32_MEMBER(crystal_state::Input_r)
 		return ioport("P3_P4")->read();
 	else if( offset == 2)
 	{
-<<<<<<< HEAD
-		UINT8 Port4 = ioport("SYSTEM")->read();
-=======
 		uint8_t Port4 = ioport("SYSTEM")->read();
->>>>>>> upstream/master
 		if (!(Port4 & 0x10) && ((m_OldPort4 ^ Port4) & 0x10))   //coin buttons trigger IRQs
 			IntReq(12);
 		if (!(Port4 & 0x20) && ((m_OldPort4 ^ Port4) & 0x20))
@@ -510,37 +398,23 @@ READ32_MEMBER(crystal_state::Input_r)
 
 WRITE32_MEMBER(crystal_state::IntAck_w)
 {
-<<<<<<< HEAD
-	UINT32 IntPend = space.read_dword(0x01800c0c);
-
-	if (mem_mask & 0xff)
-=======
 	uint32_t IntPend = space.read_dword(0x01800c0c);
 
 	if (ACCESSING_BITS_0_7)
->>>>>>> upstream/master
 	{
 		IntPend &= ~(1 << (data & 0x1f));
 		space.write_dword(0x01800c0c, IntPend);
 		if (!IntPend)
 			m_maincpu->set_input_line(SE3208_INT, CLEAR_LINE);
 	}
-<<<<<<< HEAD
-	if (mem_mask & 0xff00)
-=======
 	if (ACCESSING_BITS_8_15)
->>>>>>> upstream/master
 		m_IntHigh = (data >> 8) & 7;
 }
 
 IRQ_CALLBACK_MEMBER(crystal_state::icallback)
 {
 	address_space &space = device.memory().space(AS_PROGRAM);
-<<<<<<< HEAD
-	UINT32 IntPend = space.read_dword(0x01800c0c);
-=======
 	uint32_t IntPend = space.read_dword(0x01800c0c);
->>>>>>> upstream/master
 	int i;
 
 	for (i = 0; i < 32; ++i)
@@ -562,15 +436,6 @@ WRITE32_MEMBER(crystal_state::Banksw_w)
 		membank("bank1")->set_base(memregion("user2")->base());
 }
 
-<<<<<<< HEAD
-TIMER_CALLBACK_MEMBER(crystal_state::Timercb)
-{
-	int which = (int)(FPTR)ptr;
-	static const int num[] = { 0, 1, 9, 10 };
-
-	if (!(m_Timerctrl[which] & 2))
-		m_Timerctrl[which] &= ~1;
-=======
 uint32_t *crystal_state::TimerRegsPtr(int which) const
 {
 	return &m_sysregs[0x1400/4 + which * 8/4];
@@ -599,27 +464,10 @@ TIMER_CALLBACK_MEMBER(crystal_state::Timercb)
 		TimerStart(which);
 	else
 		regs[0] &= ~1;
->>>>>>> upstream/master
 
 	IntReq(num[which]);
 }
 
-<<<<<<< HEAD
-void crystal_state::Timer_w( address_space &space, int which, UINT32 data, UINT32 mem_mask )
-{
-	if (((data ^ m_Timerctrl[which]) & 1) && (data & 1)) //Timer activate
-	{
-		int PD = (data >> 8) & 0xff;
-		int TCV = space.read_dword(0x01801404 + which * 8);
-		attotime period = attotime::from_hz(43000000) * ((PD + 1) * (TCV + 1));
-
-		if (m_Timerctrl[which] & 2)
-			m_Timer[which]->adjust(period, 0, period);
-		else
-			m_Timer[which]->adjust(period);
-	}
-	COMBINE_DATA(&m_Timerctrl[which]);
-=======
 void crystal_state::Timer_w( address_space &space, int which, uint32_t data, uint32_t mem_mask )
 {
 	uint32_t *regs = TimerRegsPtr(which);
@@ -640,7 +488,6 @@ void crystal_state::Timer_w( address_space &space, int which, uint32_t data, uin
 //          printf("timer %d stop\n", which);
 		}
 	}
->>>>>>> upstream/master
 }
 
 WRITE32_MEMBER(crystal_state::Timer0_w)
@@ -650,11 +497,7 @@ WRITE32_MEMBER(crystal_state::Timer0_w)
 
 READ32_MEMBER(crystal_state::Timer0_r)
 {
-<<<<<<< HEAD
-	return m_Timerctrl[0];
-=======
 	return *TimerRegsPtr(0);
->>>>>>> upstream/master
 }
 
 WRITE32_MEMBER(crystal_state::Timer1_w)
@@ -664,11 +507,7 @@ WRITE32_MEMBER(crystal_state::Timer1_w)
 
 READ32_MEMBER(crystal_state::Timer1_r)
 {
-<<<<<<< HEAD
-	return m_Timerctrl[1];
-=======
 	return *TimerRegsPtr(1);
->>>>>>> upstream/master
 }
 
 WRITE32_MEMBER(crystal_state::Timer2_w)
@@ -678,11 +517,7 @@ WRITE32_MEMBER(crystal_state::Timer2_w)
 
 READ32_MEMBER(crystal_state::Timer2_r)
 {
-<<<<<<< HEAD
-	return m_Timerctrl[2];
-=======
 	return *TimerRegsPtr(2);
->>>>>>> upstream/master
 }
 
 WRITE32_MEMBER(crystal_state::Timer3_w)
@@ -692,11 +527,7 @@ WRITE32_MEMBER(crystal_state::Timer3_w)
 
 READ32_MEMBER(crystal_state::Timer3_r)
 {
-<<<<<<< HEAD
-	return m_Timerctrl[3];
-=======
 	return *TimerRegsPtr(3);
->>>>>>> upstream/master
 }
 
 READ32_MEMBER(crystal_state::FlashCmd_r)
@@ -705,11 +536,7 @@ READ32_MEMBER(crystal_state::FlashCmd_r)
 	{
 		if (m_Bank <= 2)
 		{
-<<<<<<< HEAD
-			UINT32 *ptr = (UINT32*)(memregion("user1")->base() + m_Bank * 0x1000000);
-=======
 			uint32_t *ptr = (uint32_t*)(memregion("user1")->base() + m_Bank * 0x1000000);
->>>>>>> upstream/master
 			return ptr[0];
 		}
 		else
@@ -737,15 +564,9 @@ READ32_MEMBER(crystal_state::PIO_r)
 
 WRITE32_MEMBER(crystal_state::PIO_w)
 {
-<<<<<<< HEAD
-	UINT32 RST = data & 0x01000000;
-	UINT32 CLK = data & 0x02000000;
-	UINT32 DAT = data & 0x10000000;
-=======
 	uint32_t RST = data & 0x01000000;
 	uint32_t CLK = data & 0x02000000;
 	uint32_t DAT = data & 0x10000000;
->>>>>>> upstream/master
 
 	m_ds1302->ce_w(RST ? 1 : 0);
 	m_ds1302->io_w(DAT ? 1 : 0);
@@ -759,16 +580,6 @@ WRITE32_MEMBER(crystal_state::PIO_w)
 	COMBINE_DATA(&m_PIO);
 }
 
-<<<<<<< HEAD
-void crystal_state::DMA_w( address_space &space, int which, UINT32 data, UINT32 mem_mask )
-{
-	if (((data ^ m_DMActrl[which]) & (1 << 10)) && (data & (1 << 10)))   //DMAOn
-	{
-		UINT32 CTR = data;
-		UINT32 SRC = space.read_dword(0x01800804 + which * 0x10);
-		UINT32 DST = space.read_dword(0x01800808 + which * 0x10);
-		UINT32 CNT = space.read_dword(0x0180080C + which * 0x10);
-=======
 void crystal_state::DMA_w( address_space &space, int which, uint32_t data, uint32_t mem_mask )
 {
 	if (((data ^ m_DMActrl[which]) & (1 << 10)) && (data & (1 << 10)))   //DMAOn
@@ -777,18 +588,13 @@ void crystal_state::DMA_w( address_space &space, int which, uint32_t data, uint3
 		uint32_t SRC = space.read_dword(0x01800804 + which * 0x10);
 		uint32_t DST = space.read_dword(0x01800808 + which * 0x10);
 		uint32_t CNT = space.read_dword(0x0180080C + which * 0x10);
->>>>>>> upstream/master
 		int i;
 
 		if (CTR & 0x2)  //32 bits
 		{
 			for (i = 0; i < CNT; ++i)
 			{
-<<<<<<< HEAD
-				UINT32 v = space.read_dword(SRC + i * 4);
-=======
 				uint32_t v = space.read_dword(SRC + i * 4);
->>>>>>> upstream/master
 				space.write_dword(DST + i * 4, v);
 			}
 		}
@@ -796,11 +602,7 @@ void crystal_state::DMA_w( address_space &space, int which, uint32_t data, uint3
 		{
 			for (i = 0; i < CNT; ++i)
 			{
-<<<<<<< HEAD
-				UINT16 v = space.read_word(SRC + i * 2);
-=======
 				uint16_t v = space.read_word(SRC + i * 2);
->>>>>>> upstream/master
 				space.write_word(DST + i * 2, v);
 			}
 		}
@@ -808,11 +610,7 @@ void crystal_state::DMA_w( address_space &space, int which, uint32_t data, uint3
 		{
 			for (i = 0; i < CNT; ++i)
 			{
-<<<<<<< HEAD
-				UINT8 v = space.read_byte(SRC + i);
-=======
 				uint8_t v = space.read_byte(SRC + i);
->>>>>>> upstream/master
 				space.write_byte(DST + i, v);
 			}
 		}
@@ -851,27 +649,17 @@ static ADDRESS_MAP_START( crystal_mem, AS_PROGRAM, 32, crystal_state )
 	AM_RANGE(0x01280000, 0x01280003) AM_WRITE(Banksw_w)
 	AM_RANGE(0x01400000, 0x0140ffff) AM_RAM AM_SHARE("nvram")
 
-<<<<<<< HEAD
-=======
 	AM_RANGE(0x01800800, 0x01800803) AM_READWRITE(DMA0_r, DMA0_w)
 	AM_RANGE(0x01800810, 0x01800813) AM_READWRITE(DMA1_r, DMA1_w)
 
 	AM_RANGE(0x01800c04, 0x01800c07) AM_WRITE(IntAck_w)
 
->>>>>>> upstream/master
 	AM_RANGE(0x01801400, 0x01801403) AM_READWRITE(Timer0_r, Timer0_w)
 	AM_RANGE(0x01801408, 0x0180140b) AM_READWRITE(Timer1_r, Timer1_w)
 	AM_RANGE(0x01801410, 0x01801413) AM_READWRITE(Timer2_r, Timer2_w)
 	AM_RANGE(0x01801418, 0x0180141b) AM_READWRITE(Timer3_r, Timer3_w)
 	AM_RANGE(0x01802004, 0x01802007) AM_READWRITE(PIO_r, PIO_w)
 
-<<<<<<< HEAD
-	AM_RANGE(0x01800800, 0x01800803) AM_READWRITE(DMA0_r, DMA0_w)
-	AM_RANGE(0x01800810, 0x01800813) AM_READWRITE(DMA1_r, DMA1_w)
-
-	AM_RANGE(0x01800c04, 0x01800c07) AM_WRITE(IntAck_w)
-=======
->>>>>>> upstream/master
 	AM_RANGE(0x01800000, 0x0180ffff) AM_RAM AM_SHARE("sysregs")
 	AM_RANGE(0x02000000, 0x027fffff) AM_RAM AM_SHARE("workram")
 
@@ -886,10 +674,6 @@ static ADDRESS_MAP_START( crystal_mem, AS_PROGRAM, 32, crystal_state )
 	AM_RANGE(0x05000000, 0x05ffffff) AM_ROMBANK("bank1")
 
 	AM_RANGE(0x44414F4C, 0x44414F7F) AM_RAM AM_SHARE("reset_patch")
-<<<<<<< HEAD
-
-=======
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 // Trivia R Us
@@ -929,22 +713,17 @@ static ADDRESS_MAP_START( trivrus_mem, AS_PROGRAM, 32, crystal_state )
 //  0x0150001c & 0x000000ff = year - 2000
 	AM_RANGE(0x01600000, 0x01607fff) AM_RAM AM_SHARE("nvram")
 
-<<<<<<< HEAD
-=======
 	AM_RANGE(0x01800800, 0x01800803) AM_READWRITE(DMA0_r, DMA0_w)
 	AM_RANGE(0x01800810, 0x01800813) AM_READWRITE(DMA1_r, DMA1_w)
 
 	AM_RANGE(0x01800c04, 0x01800c07) AM_WRITE(IntAck_w)
 
->>>>>>> upstream/master
 	AM_RANGE(0x01801400, 0x01801403) AM_READWRITE(Timer0_r, Timer0_w)
 	AM_RANGE(0x01801408, 0x0180140b) AM_READWRITE(Timer1_r, Timer1_w)
 	AM_RANGE(0x01801410, 0x01801413) AM_READWRITE(Timer2_r, Timer2_w)
 	AM_RANGE(0x01801418, 0x0180141b) AM_READWRITE(Timer3_r, Timer3_w)
 	AM_RANGE(0x01802004, 0x01802007) AM_READWRITE(PIO_r, PIO_w)
 
-<<<<<<< HEAD
-=======
 	AM_RANGE(0x01800000, 0x0180ffff) AM_RAM AM_SHARE("sysregs")
 	AM_RANGE(0x02000000, 0x027fffff) AM_RAM AM_SHARE("workram")
 
@@ -1021,13 +800,10 @@ static ADDRESS_MAP_START( crzyddz2_mem, AS_PROGRAM, 32, crystal_state )
 	AM_RANGE(0x01500000, 0x01500003) AM_READ_PORT("P1_P2")
 	AM_RANGE(0x01500004, 0x01500007) AM_READ(crzyddz2_key_r)
 
->>>>>>> upstream/master
 	AM_RANGE(0x01800800, 0x01800803) AM_READWRITE(DMA0_r, DMA0_w)
 	AM_RANGE(0x01800810, 0x01800813) AM_READWRITE(DMA1_r, DMA1_w)
 
 	AM_RANGE(0x01800c04, 0x01800c07) AM_WRITE(IntAck_w)
-<<<<<<< HEAD
-=======
 
 	AM_RANGE(0x01801400, 0x01801403) AM_READWRITE(Timer0_r, Timer0_w)
 	AM_RANGE(0x01801408, 0x0180140b) AM_READWRITE(Timer1_r, Timer1_w)
@@ -1035,7 +811,6 @@ static ADDRESS_MAP_START( crzyddz2_mem, AS_PROGRAM, 32, crystal_state )
 	AM_RANGE(0x01801418, 0x0180141b) AM_READWRITE(Timer3_r, Timer3_w)
 	AM_RANGE(0x01802004, 0x01802007) AM_READWRITE(PIO_r, crzyddz2_PIO_w)
 
->>>>>>> upstream/master
 	AM_RANGE(0x01800000, 0x0180ffff) AM_RAM AM_SHARE("sysregs")
 	AM_RANGE(0x02000000, 0x027fffff) AM_RAM AM_SHARE("workram")
 
@@ -1050,10 +825,6 @@ static ADDRESS_MAP_START( crzyddz2_mem, AS_PROGRAM, 32, crystal_state )
 	AM_RANGE(0x05000000, 0x05ffffff) AM_ROMBANK("bank1")
 
 //  AM_RANGE(0x44414F4C, 0x44414F7F) AM_RAM AM_SHARE("reset_patch")
-<<<<<<< HEAD
-
-=======
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -1086,11 +857,7 @@ loop:
 
 
 #if 1
-<<<<<<< HEAD
-	static const UINT32 Patch[] =
-=======
 	static const uint32_t Patch[] =
->>>>>>> upstream/master
 	{
 		0x40c0ea01,
 		0xe906400a,
@@ -1102,11 +869,7 @@ loop:
 
 	memcpy(m_reset_patch, Patch, sizeof(Patch));
 #else
-<<<<<<< HEAD
-	static const UINT8 Patch[] =
-=======
 	static const uint8_t Patch[] =
->>>>>>> upstream/master
 	{
 		0x01,0xEA,0xC0,0x40,0x0A,0x40,0x06,0xE9,
 		0x20,0x2A,0xC0,0x40,0x0A,0x40,0x06,0xE9,
@@ -1130,11 +893,7 @@ void crystal_state::machine_start()
 	int i;
 
 	for (i = 0; i < 4; i++)
-<<<<<<< HEAD
-		m_Timer[i] = machine().scheduler().timer_alloc(timer_expired_delegate(FUNC(crystal_state::Timercb),this), (void*)(FPTR)i);
-=======
 		m_Timer[i] = machine().scheduler().timer_alloc(timer_expired_delegate(FUNC(crystal_state::Timercb),this), (void*)(uintptr_t)i);
->>>>>>> upstream/master
 
 	PatchReset();
 
@@ -1145,10 +904,6 @@ void crystal_state::machine_start()
 	save_item(NAME(m_Bank));
 	save_item(NAME(m_FlipCount));
 	save_item(NAME(m_IntHigh));
-<<<<<<< HEAD
-	save_item(NAME(m_Timerctrl));
-=======
->>>>>>> upstream/master
 	save_item(NAME(m_FlashCmd));
 	save_item(NAME(m_PIO));
 	save_item(NAME(m_DMActrl));
@@ -1163,10 +918,7 @@ void crystal_state::machine_reset()
 
 	memset(m_sysregs, 0, 0x10000);
 	memset(m_vidregs, 0, 0x10000);
-<<<<<<< HEAD
-=======
 
->>>>>>> upstream/master
 	m_FlipCount = 0;
 	m_IntHigh = 0;
 	m_Bank = 0;
@@ -1179,11 +931,7 @@ void crystal_state::machine_reset()
 
 	for (i = 0; i < 4; i++)
 	{
-<<<<<<< HEAD
-		m_Timerctrl[i] = 0;
-=======
 		*TimerRegsPtr(i) = 0xff << 8;
->>>>>>> upstream/master
 		m_Timer[i]->adjust(attotime::never);
 	}
 
@@ -1193,36 +941,22 @@ void crystal_state::machine_reset()
 #endif
 
 	PatchReset();
-<<<<<<< HEAD
-}
-
-UINT16 crystal_state::GetVidReg( address_space &space, UINT16 reg )
-=======
 
 	m_crzyddz2_prot = 0x00;
 }
 
 uint16_t crystal_state::GetVidReg( address_space &space, uint16_t reg )
->>>>>>> upstream/master
 {
 	return space.read_word(0x03000000 + reg);
 }
 
-<<<<<<< HEAD
-void crystal_state::SetVidReg( address_space &space, UINT16 reg, UINT16 val )
-=======
 void crystal_state::SetVidReg( address_space &space, uint16_t reg, uint16_t val )
->>>>>>> upstream/master
 {
 	space.write_word(0x03000000 + reg, val);
 }
 
 
-<<<<<<< HEAD
-UINT32 crystal_state::screen_update_crystal(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t crystal_state::screen_update_crystal(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int xres = 320;
 	int yres = 240;
@@ -1245,31 +979,6 @@ uint32_t crystal_state::screen_update_crystal(screen_device &screen, bitmap_ind1
 	address_space &space = m_maincpu->space(AS_PROGRAM);
 	int DoFlip;
 
-<<<<<<< HEAD
-	UINT32 B0 = 0x0;
-	UINT32 B1 = (GetVidReg(space, 0x90) & 0x8000) ? 0x400000 : 0x100000;
-	UINT16 *Front, *Back;
-	UINT16 *Visible, *DrawDest;
-	UINT16 *srcline;
-	int y;
-	UINT16 head, tail;
-	UINT32 width = screen.width();
-
-	if (GetVidReg(space, 0x8e) & 1)
-	{
-		Front = (UINT16*) (m_frameram + B1 / 4);
-		Back  = (UINT16*) (m_frameram + B0 / 4);
-	}
-	else
-	{
-		Front = (UINT16*) (m_frameram + B0 / 4);
-		Back  = (UINT16*) (m_frameram + B1 / 4);
-	}
-
-	Visible  = (UINT16*) Front;
-	// ERROR: This cast is NOT endian-safe without the use of BYTE/WORD/DWORD_XOR_* macros!
-	DrawDest = reinterpret_cast<UINT16 *>(m_frameram.target());
-=======
 	uint32_t B0 = 0x0;
 	uint32_t B1 = (GetVidReg(space, 0x90) & 0x8000) ? 0x400000 : 0x100000;
 	uint16_t *Front, *Back;
@@ -1293,7 +1002,6 @@ uint32_t crystal_state::screen_update_crystal(screen_device &screen, bitmap_ind1
 	Visible  = (uint16_t*) Front;
 	// ERROR: This cast is NOT endian-safe without the use of BYTE/WORD/DWORD_XOR_* macros!
 	DrawDest = reinterpret_cast<uint16_t *>(m_frameram.target());
->>>>>>> upstream/master
 
 
 	if (GetVidReg(space, 0x8c) & 0x80)
@@ -1303,11 +1011,7 @@ uint32_t crystal_state::screen_update_crystal(screen_device &screen, bitmap_ind1
 
 //  DrawDest = Visible;
 
-<<<<<<< HEAD
-	srcline = (UINT16 *) DrawDest;
-=======
 	srcline = (uint16_t *) DrawDest;
->>>>>>> upstream/master
 
 	DoFlip = 0;
 	head = GetVidReg(space, 0x82);
@@ -1315,11 +1019,7 @@ uint32_t crystal_state::screen_update_crystal(screen_device &screen, bitmap_ind1
 	while ((head & 0x7ff) != (tail & 0x7ff))
 	{
 		// ERROR: This cast is NOT endian-safe without the use of BYTE/WORD/DWORD_XOR_* macros!
-<<<<<<< HEAD
-		DoFlip = m_vr0->vrender0_ProcessPacket(0x03800000 + head * 64, DrawDest, reinterpret_cast<UINT8*>(m_textureram.target()));
-=======
 		DoFlip = m_vr0->vrender0_ProcessPacket(0x03800000 + head * 64, DrawDest, reinterpret_cast<uint8_t*>(m_textureram.target()));
->>>>>>> upstream/master
 		head++;
 		head &= 0x7ff;
 		if (DoFlip)
@@ -1329,43 +1029,27 @@ uint32_t crystal_state::screen_update_crystal(screen_device &screen, bitmap_ind1
 	if (DoFlip)
 		SetVidReg(space, 0x8e, GetVidReg(space, 0x8e) ^ 1);
 
-<<<<<<< HEAD
-	srcline = (UINT16 *) Visible;
-=======
 	srcline = (uint16_t *) Visible;
->>>>>>> upstream/master
 	for (y = 0; y < screen.height(); y++)
 		memcpy(&bitmap.pix16(y), &srcline[y * 1024], width * 2);
 
 	return 0;
 }
 
-<<<<<<< HEAD
-void crystal_state::screen_eof_crystal(screen_device &screen, bool state)
-=======
 WRITE_LINE_MEMBER(crystal_state::screen_vblank_crystal)
->>>>>>> upstream/master
 {
 	// rising edge
 	if (state)
 	{
 		address_space &space = m_maincpu->space(AS_PROGRAM);
-<<<<<<< HEAD
-		UINT16 head, tail;
-=======
 		uint16_t head, tail;
->>>>>>> upstream/master
 		int DoFlip = 0;
 
 		head = GetVidReg(space, 0x82);
 		tail = GetVidReg(space, 0x80);
 		while ((head & 0x7ff) != (tail & 0x7ff))
 		{
-<<<<<<< HEAD
-			UINT16 Packet0 = space.read_word(0x03800000 + head * 64);
-=======
 			uint16_t Packet0 = space.read_word(0x03800000 + head * 64);
->>>>>>> upstream/master
 			if (Packet0 & 0x81)
 				DoFlip = 1;
 			head++;
@@ -1614,10 +1298,6 @@ static INPUT_PORTS_START(trivrus)
 	PORT_BIT( 0xffffff00, IP_ACTIVE_LOW, IPT_UNKNOWN )
 INPUT_PORTS_END
 
-<<<<<<< HEAD
-
-static MACHINE_CONFIG_START( crystal, crystal_state )
-=======
 static INPUT_PORTS_START(crospuzl)
 	PORT_START("IN0")
 	PORT_DIPNAME( 0x01, 0x01, "DSW1" )
@@ -1792,7 +1472,6 @@ INPUT_PORTS_END
 
 
 static MACHINE_CONFIG_START( crystal )
->>>>>>> upstream/master
 
 	MCFG_CPU_ADD("maincpu", SE3208, 43000000)
 	MCFG_CPU_PROGRAM_MAP(crystal_mem)
@@ -1807,11 +1486,7 @@ static MACHINE_CONFIG_START( crystal )
 	MCFG_SCREEN_SIZE(640, 480)
 	MCFG_SCREEN_VISIBLE_AREA(0, 639, 0, 479)
 	MCFG_SCREEN_UPDATE_DRIVER(crystal_state, screen_update_crystal)
-<<<<<<< HEAD
-	MCFG_SCREEN_VBLANK_DRIVER(crystal_state, screen_eof_crystal)
-=======
 	MCFG_SCREEN_VBLANK_CALLBACK(WRITELINE(crystal_state, screen_vblank_crystal))
->>>>>>> upstream/master
 	MCFG_SCREEN_PALETTE("palette")
 
 	MCFG_DEVICE_ADD("vr0", VIDEO_VRENDER0, 0)
@@ -1835,8 +1510,6 @@ static MACHINE_CONFIG_DERIVED( trivrus, crystal )
 	MCFG_CPU_PROGRAM_MAP(trivrus_mem)
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-=======
 static MACHINE_CONFIG_DERIVED( crospuzl, crystal )
 	MCFG_CPU_MODIFY("maincpu")
 	MCFG_CPU_PROGRAM_MAP(crospuzl_mem)
@@ -1847,7 +1520,6 @@ static MACHINE_CONFIG_DERIVED( crzyddz2, crystal )
 	MCFG_CPU_PROGRAM_MAP(crzyddz2_mem)
 MACHINE_CONFIG_END
 
->>>>>>> upstream/master
 
 ROM_START( crysbios )
 	ROM_REGION( 0x20000, "maincpu", 0 ) // bios
@@ -1935,8 +1607,6 @@ ROM_START( trivrus )
 	ROM_REGION( 0x1000000, "user2", ROMREGION_ERASEFF ) // Unmapped flash
 ROM_END
 
-<<<<<<< HEAD
-=======
 /*
   uses ADC 'Amazon-LF' SoC, EISC CPU core - similar to crystal system?
 */
@@ -1952,7 +1622,6 @@ ROM_START( crospuzl )
 	ROM_REGION( 0x1000000, "user2", ROMREGION_ERASEFF ) // Unmapped flash
 ROM_END
 
->>>>>>> upstream/master
 ROM_START( psattack )
 	ROM_REGION( 0x200000, "maincpu", 0 )
 	ROM_LOAD("5.sys",  0x000000, 0x200000, CRC(f09878e4) SHA1(25b8dbac47d3911615c8874746e420ece13e7181) )
@@ -1980,9 +1649,6 @@ ROM_START( ddz )
 	ROM_REGION( 0x1000000, "user2",   ROMREGION_ERASEFF )
 ROM_END
 
-<<<<<<< HEAD
-
-=======
 /***************************************************************************
 
 Crazy Dou Di Zhu II
@@ -2065,16 +1731,11 @@ ROM_START( menghong )
 
 	ROM_REGION( 0x1000000, "user2", ROMREGION_ERASEFF ) // Unmapped flash
 ROM_END
->>>>>>> upstream/master
 
 
 DRIVER_INIT_MEMBER(crystal_state,crysking)
 {
-<<<<<<< HEAD
-	UINT16 *Rom = (UINT16*) memregion("user1")->base();
-=======
 	uint16_t *Rom = (uint16_t*) memregion("user1")->base();
->>>>>>> upstream/master
 
 	//patch the data feed by the protection
 
@@ -2093,11 +1754,7 @@ DRIVER_INIT_MEMBER(crystal_state,crysking)
 
 DRIVER_INIT_MEMBER(crystal_state,evosocc)
 {
-<<<<<<< HEAD
-	UINT16 *Rom = (UINT16*) memregion("user1")->base();
-=======
 	uint16_t *Rom = (uint16_t*) memregion("user1")->base();
->>>>>>> upstream/master
 	Rom += 0x1000000 * 2 / 2;
 
 	Rom[WORD_XOR_LE(0x97388E/2)] = 0x90FC;  //PUSH R2..R7
@@ -2125,11 +1782,7 @@ also it seems that bit 0x40000000 is the PIC reset.
 DRIVER_INIT_MEMBER(crystal_state,topbladv)
 {
 	// patches based on analysis of PIC dump
-<<<<<<< HEAD
-	UINT16 *Rom = (UINT16*) memregion("user1")->base();
-=======
 	uint16_t *Rom = (uint16_t*) memregion("user1")->base();
->>>>>>> upstream/master
 	/*
 	    PIC Protection data:
 	    - RAM ADDR - --PATCH--
@@ -2156,11 +1809,7 @@ DRIVER_INIT_MEMBER(crystal_state,topbladv)
 DRIVER_INIT_MEMBER(crystal_state,officeye)
 {
 	// patches based on analysis of PIC dump
-<<<<<<< HEAD
-	UINT16 *Rom = (UINT16*) memregion("user1")->base();
-=======
 	uint16_t *Rom = (uint16_t*) memregion("user1")->base();
->>>>>>> upstream/master
 
 	/*
 	    PIC Protection data:
@@ -2186,11 +1835,7 @@ DRIVER_INIT_MEMBER(crystal_state,officeye)
 
 DRIVER_INIT_MEMBER(crystal_state, donghaer)
 {
-<<<<<<< HEAD
-	UINT16 *Rom = (UINT16*)memregion("user1")->base();
-=======
 	uint16_t *Rom = (uint16_t*)memregion("user1")->base();
->>>>>>> upstream/master
 
 	Rom[WORD_XOR_LE(0x037A2 / 2)] = 0x9004; // PUSH %R2
 	Rom[WORD_XOR_LE(0x037A4 / 2)] = 0x8202; // LD   (%SP,0x8),%R2
@@ -2210,19 +1855,6 @@ DRIVER_INIT_MEMBER(crystal_state,psattack)
 }
 
 
-<<<<<<< HEAD
-GAME( 2001, crysbios,        0, crystal,  crystal, driver_device,         0, ROT0, "BrezzaSoft",          "Crystal System BIOS",                  MACHINE_IS_BIOS_ROOT )
-GAME( 2001, crysking, crysbios, crystal,  crystal, crystal_state,  crysking, ROT0, "BrezzaSoft",          "The Crystal of Kings",                 0 )
-GAME( 2001, evosocc,  crysbios, crystal,  crystal, crystal_state,  evosocc,  ROT0, "Evoga",               "Evolution Soccer",                     0 )
-GAME( 2003, topbladv, crysbios, crystal,  crystal, crystal_state,  topbladv, ROT0, "SonoKong / Expotato", "Top Blade V",                          0 )
-GAME( 2001, officeye,        0, crystal,  officeye,crystal_state,  officeye, ROT0, "Danbi",               "Office Yeo In Cheon Ha (version 1.2)", MACHINE_NOT_WORKING ) // still has some instability issues
-GAME( 2001, donghaer,        0, crystal,  crystal, crystal_state,  donghaer, ROT0, "Danbi",               "Donggul Donggul Haerong",              MACHINE_NOT_WORKING )
-GAME( 2009, trivrus,         0, trivrus,  trivrus, driver_device,         0, ROT0, "AGT",                 "Trivia R Us (v1.07)",                  0 )
-// has a CF card instead of flash roms
-GAME( 2004, psattack, 0, crystal, crystal, crystal_state, psattack, ROT0, "Uniana", "P's Attack", MACHINE_IS_SKELETON )
-// looks like the same kind of hw from strings in the ROM, but scrambled / encrypted?
-GAME( 200?, ddz,    0,  crystal, crystal, driver_device, 0, ROT0, "IGS?", "Dou Di Zhu", MACHINE_IS_SKELETON )
-=======
 GAME( 2001, crysbios, 0,        crystal,  crystal,  crystal_state, 0,        ROT0, "BrezzaSoft",          "Crystal System BIOS",                  MACHINE_IS_BIOS_ROOT )
 GAME( 2001, crysking, crysbios, crystal,  crystal,  crystal_state, crysking, ROT0, "BrezzaSoft",          "The Crystal of Kings",                 0 )
 GAME( 2001, evosocc,  crysbios, crystal,  crystal,  crystal_state, evosocc,  ROT0, "Evoga",               "Evolution Soccer",                     0 )
@@ -2237,4 +1869,3 @@ GAME( 200?, crospuzl, 0,        crospuzl, crospuzl, crystal_state, 0,        ROT
 GAME( 2004, psattack, 0,        crystal,  crystal,  crystal_state, psattack, ROT0, "Uniana",              "P's Attack",                           MACHINE_IS_SKELETON )
 // looks like the same kind of hw from strings in the ROM, but scrambled / encrypted?
 GAME( 200?, ddz,      0,        crystal,  crystal,  crystal_state, 0,        ROT0, "IGS?",                "Dou Di Zhu",                           MACHINE_IS_SKELETON )
->>>>>>> upstream/master

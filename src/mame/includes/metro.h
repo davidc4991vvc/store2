@@ -7,19 +7,12 @@
 *************************************************************************/
 
 #include "sound/okim6295.h"
-<<<<<<< HEAD
-#include "sound/2151intf.h"
-#include "sound/es8712.h"
-#include "video/k053936.h"
-#include "machine/eepromser.h"
-=======
 #include "sound/ym2151.h"
 #include "sound/es8712.h"
 #include "video/k053936.h"
 #include "machine/eepromser.h"
 #include "machine/gen_latch.h"
 #include "screen.h"
->>>>>>> upstream/master
 
 class metro_state : public driver_device
 {
@@ -39,14 +32,11 @@ public:
 		m_ymsnd(*this, "ymsnd"),
 		m_essnd(*this, "essnd"),
 		m_k053936(*this, "k053936") ,
-<<<<<<< HEAD
-=======
 		m_eeprom(*this, "eeprom"),
 		m_gfxdecode(*this, "gfxdecode"),
 		m_screen(*this, "screen"),
 		m_palette(*this, "palette"),
 		m_soundlatch(*this, "soundlatch"),
->>>>>>> upstream/master
 		m_vram_0(*this, "vram_0"),
 		m_vram_1(*this, "vram_1"),
 		m_vram_2(*this, "vram_2"),
@@ -62,15 +52,7 @@ public:
 		m_videoregs(*this, "videoregs"),
 		m_screenctrl(*this, "screenctrl"),
 		m_input_sel(*this, "input_sel"),
-<<<<<<< HEAD
-		m_k053936_ram(*this, "k053936_ram"),
-		m_eeprom(*this, "eeprom"),
-		m_gfxdecode(*this, "gfxdecode"),
-		m_screen(*this, "screen"),
-		m_palette(*this, "palette")
-=======
 		m_k053936_ram(*this, "k053936_ram")
->>>>>>> upstream/master
 	{ }
 
 	/* devices */
@@ -80,33 +62,10 @@ public:
 	optional_device<device_t> m_ymsnd; // TODO set correct type
 	optional_device<es8712_device> m_essnd;
 	optional_device<k053936_device> m_k053936;
-<<<<<<< HEAD
-	/* memory pointers */
-	optional_shared_ptr<UINT16> m_vram_0;
-	optional_shared_ptr<UINT16> m_vram_1;
-	optional_shared_ptr<UINT16> m_vram_2;
-	required_shared_ptr<UINT16> m_spriteram;
-	optional_shared_ptr<UINT16> m_tiletable;
-	optional_shared_ptr<UINT16> m_blitter_regs;
-	optional_shared_ptr<UINT16> m_scroll;
-	optional_shared_ptr<UINT16> m_window;
-	optional_shared_ptr<UINT16> m_irq_enable;
-	optional_shared_ptr<UINT16> m_irq_levels;
-	optional_shared_ptr<UINT16> m_irq_vectors;
-	optional_shared_ptr<UINT16> m_rombank;
-	required_shared_ptr<UINT16> m_videoregs;
-	optional_shared_ptr<UINT16> m_screenctrl;
-	optional_shared_ptr<UINT16> m_input_sel;
-	optional_shared_ptr<UINT16> m_k053936_ram;
-
-=======
->>>>>>> upstream/master
 	optional_device<eeprom_serial_93cxx_device> m_eeprom;
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<screen_device> m_screen;
 	required_device<palette_device> m_palette;
-<<<<<<< HEAD
-=======
 	optional_device<generic_latch_8_device> m_soundlatch;
 
 	/* memory pointers */
@@ -126,7 +85,6 @@ public:
 	optional_shared_ptr<uint16_t> m_screenctrl;
 	optional_shared_ptr<uint16_t> m_input_sel;
 	optional_shared_ptr<uint16_t> m_k053936_ram;
->>>>>>> upstream/master
 
 	int         m_flip_screen;
 
@@ -140,29 +98,14 @@ public:
 	int         m_sprite_xoffs;
 	int         m_sprite_yoffs;
 	int         m_sprite_xoffs_dx;
-<<<<<<< HEAD
-
-	UINT8       *m_expanded_gfx1;
-=======
 	emu_timer   *m_blit_done_timer;
 
 	std::unique_ptr<uint8_t[]>      m_expanded_gfx1;
->>>>>>> upstream/master
 
 	/* irq_related */
 	int         m_vblank_bit;
 	int         m_blitter_bit;
 	int         m_irq_line;
-<<<<<<< HEAD
-	UINT8       m_requested_int[8];
-	emu_timer   *m_mouja_irq_timer;
-
-	/* sound related */
-	UINT16      m_soundstatus;
-	int         m_porta;
-	int         m_portb;
-	int         m_busy_sndcpu;
-=======
 	uint8_t     m_requested_int[8];
 	emu_timer   *m_mouja_irq_timer;
 	emu_timer   *m_karatour_irq_timer;
@@ -173,7 +116,6 @@ public:
 	int         m_portb;
 	int         m_busy_sndcpu;
 	bool        m_essnd_gate;
->>>>>>> upstream/master
 
 	/* misc */
 	int         m_gakusai_oki_bank_lo;
@@ -216,11 +158,7 @@ public:
 	DECLARE_WRITE16_MEMBER(metro_vram_1_w);
 	DECLARE_WRITE16_MEMBER(metro_vram_2_w);
 	DECLARE_WRITE16_MEMBER(metro_window_w);
-<<<<<<< HEAD
-	void blt_write( address_space &space, const int tmap, const offs_t offs, const UINT16 data, const UINT16 mask );
-=======
 	void blt_write( address_space &space, const int tmap, const offs_t offs, const uint16_t data, const uint16_t mask );
->>>>>>> upstream/master
 	DECLARE_CUSTOM_INPUT_MEMBER(custom_soundstatus_r);
 	DECLARE_WRITE16_MEMBER(gakusai_oki_bank_hi_w);
 	DECLARE_WRITE16_MEMBER(gakusai_oki_bank_lo_w);
@@ -234,30 +172,20 @@ public:
 
 	// vmetal
 	DECLARE_WRITE8_MEMBER(vmetal_control_w);
-<<<<<<< HEAD
-	DECLARE_WRITE8_MEMBER(vmetal_es8712_w);
-=======
 	DECLARE_WRITE8_MEMBER(es8712_reset_w);
 	DECLARE_WRITE_LINE_MEMBER(vmetal_es8712_irq);
->>>>>>> upstream/master
 
 	DECLARE_DRIVER_INIT(karatour);
 	DECLARE_DRIVER_INIT(daitorid);
 	DECLARE_DRIVER_INIT(blzntrnd);
-<<<<<<< HEAD
-=======
 	DECLARE_DRIVER_INIT(vmetal);
->>>>>>> upstream/master
 	DECLARE_DRIVER_INIT(mouja);
 	DECLARE_DRIVER_INIT(balcube);
 	DECLARE_DRIVER_INIT(gakusai);
 	DECLARE_DRIVER_INIT(dharmak);
 	DECLARE_DRIVER_INIT(puzzlet);
 	DECLARE_DRIVER_INIT(metro);
-<<<<<<< HEAD
-=======
 	DECLARE_DRIVER_INIT(lastfortg);
->>>>>>> upstream/master
 	TILE_GET_INFO_MEMBER(metro_k053936_get_tile_info);
 	TILE_GET_INFO_MEMBER(metro_k053936_gstrik2_get_tile_info);
 	TILEMAP_MAPPER_MEMBER(tilemap_scan_gstrik2);
@@ -269,35 +197,11 @@ public:
 	DECLARE_VIDEO_START(metro_i4300);
 	DECLARE_VIDEO_START(blzntrnd);
 	DECLARE_VIDEO_START(gstrik2);
-<<<<<<< HEAD
-	UINT32 screen_update_metro(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	uint32_t screen_update_metro(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	INTERRUPT_GEN_MEMBER(metro_vblank_interrupt);
 	INTERRUPT_GEN_MEMBER(metro_periodic_interrupt);
 	INTERRUPT_GEN_MEMBER(karatour_interrupt);
 	INTERRUPT_GEN_MEMBER(puzzlet_interrupt);
-<<<<<<< HEAD
-	TIMER_CALLBACK_MEMBER(karatour_irq_callback);
-	TIMER_CALLBACK_MEMBER(mouja_irq_callback);
-	TIMER_CALLBACK_MEMBER(metro_blit_done);
-	void update_irq_state();
-	IRQ_CALLBACK_MEMBER(metro_irq_callback);
-	inline UINT8 get_tile_pix( UINT16 code, UINT8 x, UINT8 y, int big, UINT16 *pix );
-	inline void metro_vram_w( offs_t offset, UINT16 data, UINT16 mem_mask, int layer, UINT16 *vram );
-	void metro_draw_sprites( screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect );
-	void draw_layers( screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int pri, int layers_ctrl );
-	inline int blt_read( const UINT8 *ROM, const int offs );
-	void metro_common(  );
-	void draw_tilemap( screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, UINT32 flags, UINT32 pcode,
-					int sx, int sy, int wx, int wy, int big, UINT16 *tilemapram, int layer );
-	DECLARE_READ_LINE_MEMBER(metro_rxd_r);
-
-protected:
-	virtual void machine_start();
-	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
-=======
 	TIMER_CALLBACK_MEMBER(metro_blit_done);
 	void update_irq_state();
 	IRQ_CALLBACK_MEMBER(metro_irq_callback);
@@ -314,5 +218,4 @@ protected:
 protected:
 	virtual void machine_start() override;
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
->>>>>>> upstream/master
 };

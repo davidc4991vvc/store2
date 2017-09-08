@@ -31,11 +31,7 @@
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-static void palette_init_common( palette_device &palette, const UINT8 *color_prom,
-=======
 void ladybug_state::palette_init_common( palette_device &palette, const uint8_t *color_prom,
->>>>>>> upstream/master
 								int r_bit0, int r_bit1, int g_bit0, int g_bit1, int b_bit0, int b_bit1 )
 {
 	static const int resistances[2] = { 470, 220 };
@@ -78,22 +74,14 @@ void ladybug_state::palette_init_common( palette_device &palette, const uint8_t 
 	/* characters */
 	for (i = 0; i < 0x20; i++)
 	{
-<<<<<<< HEAD
-		UINT8 ctabentry = ((i << 3) & 0x18) | ((i >> 2) & 0x07);
-=======
 		uint8_t ctabentry = ((i << 3) & 0x18) | ((i >> 2) & 0x07);
->>>>>>> upstream/master
 		palette.set_pen_indirect(i, ctabentry);
 	}
 
 	/* sprites */
 	for (i = 0x20; i < 0x40; i++)
 	{
-<<<<<<< HEAD
-		UINT8 ctabentry = color_prom[(i - 0x20) >> 1];
-=======
 		uint8_t ctabentry = color_prom[(i - 0x20) >> 1];
->>>>>>> upstream/master
 
 		ctabentry = BITSWAP8((color_prom[i - 0x20] >> 0) & 0x0f, 7,6,5,4,0,1,2,3);
 		palette.set_pen_indirect(i + 0x00, ctabentry);
@@ -106,55 +94,10 @@ void ladybug_state::palette_init_common( palette_device &palette, const uint8_t 
 
 PALETTE_INIT_MEMBER(ladybug_state,ladybug)
 {
-<<<<<<< HEAD
-	const UINT8 *color_prom = memregion("proms")->base();
-	palette_init_common(palette, color_prom, 0, 5, 2, 6, 4, 7);
-}
-
-PALETTE_INIT_MEMBER(ladybug_state,sraider)
-{
-	const UINT8 *color_prom = memregion("proms")->base();
-	int i;
-
-	/* the resistor net may be probably different than Lady Bug */
-	palette_init_common(palette, color_prom, 3, 0, 5, 4, 7, 6);
-
-	/* star colors */
-	for (i = 0x20; i < 0x40; i++)
-	{
-		int bit0, bit1;
-		int r, g, b;
-
-		/* red component */
-		bit0 = ((i - 0x20) >> 3) & 0x01;
-		bit1 = ((i - 0x20) >> 4) & 0x01;
-		b = 0x47 * bit0 + 0x97 * bit1;
-
-		/* green component */
-		bit0 = ((i - 0x20) >> 1) & 0x01;
-		bit1 = ((i - 0x20) >> 2) & 0x01;
-		g = 0x47 * bit0 + 0x97 * bit1;
-
-		/* blue component */
-		bit0 = ((i - 0x20) >> 0) & 0x01;
-		r = 0x47 * bit0;
-
-		palette.set_indirect_color(i, rgb_t(r, g, b));
-	}
-
-	for (i = 0x60; i < 0x80; i++)
-		palette.set_pen_indirect(i, (i - 0x60) + 0x20);
-
-	/* stationary part of grid */
-	palette.set_pen_indirect(0x81, 0x40);
-}
-
-=======
 	const uint8_t *color_prom = memregion("proms")->base();
 	palette_init_common(palette, color_prom, 0, 5, 2, 6, 4, 7);
 }
 
->>>>>>> upstream/master
 WRITE8_MEMBER(ladybug_state::ladybug_videoram_w)
 {
 	m_videoram[offset] = data;
@@ -167,54 +110,15 @@ WRITE8_MEMBER(ladybug_state::ladybug_colorram_w)
 	m_bg_tilemap->mark_tile_dirty(offset);
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER(ladybug_state::ladybug_flipscreen_w)
-{
-	if (flip_screen() != (data & 0x01))
-	{
-		flip_screen_set(data & 0x01);
-=======
 WRITE_LINE_MEMBER(ladybug_state::flipscreen_w)
 {
 	if (flip_screen() != state)
 	{
 		flip_screen_set(state);
->>>>>>> upstream/master
 		machine().tilemap().mark_all_dirty();
 	}
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER(ladybug_state::sraider_io_w)
-{
-	// bit7 = flip
-	// bit6 = grid red
-	// bit5 = grid green
-	// bit4 = grid blue
-	// bit3 = enable stars
-	// bit210 = stars speed/dir
-
-	if (flip_screen() != (data & 0x80))
-	{
-		flip_screen_set(data & 0x80);
-		machine().tilemap().mark_all_dirty();
-	}
-
-	m_grid_color = data & 0x70;
-
-	redclash_set_stars_enable((data & 0x08) >> 3);
-
-	/*
-	 * There must be a subtle clocking difference between
-	 * Space Raider and the other games using this star generator,
-	 * hence the -1 here
-	 */
-
-	redclash_set_stars_speed((data & 0x07) - 1);
-}
-
-=======
->>>>>>> upstream/master
 TILE_GET_INFO_MEMBER(ladybug_state::get_bg_tile_info)
 {
 	int code = m_videoram[tile_index] + 32 * (m_colorram[tile_index] & 0x08);
@@ -237,33 +141,14 @@ TILE_GET_INFO_MEMBER(ladybug_state::get_grid_tile_info)
 
 VIDEO_START_MEMBER(ladybug_state,ladybug)
 {
-<<<<<<< HEAD
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(ladybug_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
-	m_bg_tilemap->set_scroll_rows(32);
-	m_bg_tilemap->set_transparent_pen(0);
-}
-
-VIDEO_START_MEMBER(ladybug_state,sraider)
-{
-	m_grid_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(ladybug_state::get_grid_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
-	m_grid_tilemap->set_scroll_rows(32);
-	m_grid_tilemap->set_transparent_pen(0);
-
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(ladybug_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
-=======
 	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(ladybug_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
->>>>>>> upstream/master
 	m_bg_tilemap->set_scroll_rows(32);
 	m_bg_tilemap->set_transparent_pen(0);
 }
 
 void ladybug_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect )
 {
-<<<<<<< HEAD
-	UINT8 *spriteram = m_spriteram;
-=======
 	uint8_t *spriteram = m_spriteram;
->>>>>>> upstream/master
 	int offs;
 
 	for (offs = m_spriteram.bytes() - 2 * 0x40; offs >= 2 * 0x40; offs -= 0x40)
@@ -311,11 +196,7 @@ void ladybug_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprec
 	}
 }
 
-<<<<<<< HEAD
-UINT32 ladybug_state::screen_update_ladybug(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t ladybug_state::screen_update_ladybug(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int offs;
 
@@ -337,70 +218,3 @@ uint32_t ladybug_state::screen_update_ladybug(screen_device &screen, bitmap_ind1
 	draw_sprites(bitmap, cliprect);
 	return 0;
 }
-<<<<<<< HEAD
-
-void ladybug_state::screen_eof_sraider(screen_device &screen, bool state)/* update starfield position */
-{
-	// falling edge
-	if (!state)
-		redclash_update_stars_state();
-}
-
-UINT32 ladybug_state::screen_update_sraider(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-{
-	// this part is boilerplate from ladybug, not sure if hardware does this,
-	// since it's not used
-
-	int offs;
-	int i;
-
-	for (offs = 0; offs < 32; offs++)
-	{
-		int sx = offs % 4;
-		int sy = offs / 4;
-
-		if (flip_screen())
-			m_bg_tilemap->set_scrollx(offs, -m_videoram[32 * sx + sy]);
-		else
-			m_bg_tilemap->set_scrollx(offs, m_videoram[32 * sx + sy]);
-	}
-
-	// clear the bg bitmap
-	bitmap.fill(0, cliprect);
-
-	// draw the stars
-	if (flip_screen())
-		redclash_draw_stars(bitmap, cliprect, 0x60, 1, 0x27, 0xff);
-	else
-		redclash_draw_stars(bitmap, cliprect, 0x60, 1, 0x00, 0xd8);
-
-	// draw the gridlines
-	m_palette->set_indirect_color(0x40, rgb_t(m_grid_color & 0x40 ? 0xff : 0,
-																				m_grid_color & 0x20 ? 0xff : 0,
-																				m_grid_color & 0x10 ? 0xff : 0));
-	m_grid_tilemap->draw(screen, bitmap, cliprect, 0, flip_screen());
-
-	for (i = 0; i < 0x100; i++)
-	{
-		if (m_grid_data[i] != 0)
-		{
-			UINT8 x = i;
-			int height = cliprect.max_y - cliprect.min_y + 1;
-
-			if (flip_screen())
-				x = ~x;
-
-			bitmap.plot_box(x, cliprect.min_y, 1, height, 0x81);
-		}
-	}
-
-	// now the chars
-	m_bg_tilemap->draw(screen, bitmap, cliprect, 0, flip_screen());
-
-	// now the sprites
-	draw_sprites(bitmap, cliprect);
-
-	return 0;
-}
-=======
->>>>>>> upstream/master

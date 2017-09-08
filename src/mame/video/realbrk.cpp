@@ -29,13 +29,8 @@ WRITE16_MEMBER(realbrk_state::realbrk_flipscreen_w)
 {
 	if (ACCESSING_BITS_0_7)
 	{
-<<<<<<< HEAD
-		coin_counter_w(machine(), 0,    data & 0x0001);
-		coin_counter_w(machine(), 1,    data & 0x0004);
-=======
 		machine().bookkeeping().coin_counter_w(0,    data & 0x0001);
 		machine().bookkeeping().coin_counter_w(1,    data & 0x0004);
->>>>>>> upstream/master
 
 		flip_screen_set(    data & 0x0080);
 	}
@@ -77,13 +72,8 @@ WRITE16_MEMBER(realbrk_state::dai2kaku_flipscreen_w)
 
 TILE_GET_INFO_MEMBER(realbrk_state::get_tile_info_0)
 {
-<<<<<<< HEAD
-	UINT16 attr = m_vram_0[tile_index * 2 + 0];
-	UINT16 code = m_vram_0[tile_index * 2 + 1];
-=======
 	uint16_t attr = m_vram_0[tile_index * 2 + 0];
 	uint16_t code = m_vram_0[tile_index * 2 + 1];
->>>>>>> upstream/master
 	SET_TILE_INFO_MEMBER(0,
 			code,
 			attr & 0x7f,
@@ -92,13 +82,8 @@ TILE_GET_INFO_MEMBER(realbrk_state::get_tile_info_0)
 
 TILE_GET_INFO_MEMBER(realbrk_state::get_tile_info_1)
 {
-<<<<<<< HEAD
-	UINT16 attr = m_vram_1[tile_index * 2 + 0];
-	UINT16 code = m_vram_1[tile_index * 2 + 1];
-=======
 	uint16_t attr = m_vram_1[tile_index * 2 + 0];
 	uint16_t code = m_vram_1[tile_index * 2 + 1];
->>>>>>> upstream/master
 	SET_TILE_INFO_MEMBER(0,
 			code,
 			attr & 0x7f,
@@ -133,11 +118,7 @@ WRITE16_MEMBER(realbrk_state::vram_1_w)
 
 TILE_GET_INFO_MEMBER(realbrk_state::get_tile_info_2)
 {
-<<<<<<< HEAD
-	UINT16 code = m_vram_2[tile_index];
-=======
 	uint16_t code = m_vram_2[tile_index];
->>>>>>> upstream/master
 	SET_TILE_INFO_MEMBER(1,
 			code & 0x0fff,
 			((code & 0xf000) >> 12) | ((m_vregs[0xa/2] & 0x7f) << 4),
@@ -163,31 +144,18 @@ WRITE16_MEMBER(realbrk_state::vram_2_w)
 void realbrk_state::video_start()
 {
 	/* Backgrounds */
-<<<<<<< HEAD
-	m_tilemap_0 = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(realbrk_state::get_tile_info_0),this), TILEMAP_SCAN_ROWS, 16, 16, 0x40, 0x20);
-	m_tilemap_1 = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(realbrk_state::get_tile_info_1),this), TILEMAP_SCAN_ROWS, 16, 16, 0x40, 0x20);
-
-	/* Text */
-	m_tilemap_2 = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(realbrk_state::get_tile_info_2),this), TILEMAP_SCAN_ROWS,  8,  8, 0x40, 0x20);
-=======
 	m_tilemap_0 = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(realbrk_state::get_tile_info_0),this), TILEMAP_SCAN_ROWS, 16, 16, 0x40, 0x20);
 	m_tilemap_1 = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(realbrk_state::get_tile_info_1),this), TILEMAP_SCAN_ROWS, 16, 16, 0x40, 0x20);
 
 	/* Text */
 	m_tilemap_2 = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(realbrk_state::get_tile_info_2),this), TILEMAP_SCAN_ROWS,  8,  8, 0x40, 0x20);
->>>>>>> upstream/master
 
 	m_tilemap_0->set_transparent_pen(0);
 	m_tilemap_1->set_transparent_pen(0);
 	m_tilemap_2->set_transparent_pen(0);
 
-<<<<<<< HEAD
-	m_tmpbitmap0 = auto_bitmap_ind16_alloc(machine(),32,32);
-	m_tmpbitmap1 = auto_bitmap_ind16_alloc(machine(),32,32);
-=======
 	m_tmpbitmap0 = std::make_unique<bitmap_ind16>(32,32);
 	m_tmpbitmap1 = std::make_unique<bitmap_ind16>(32,32);
->>>>>>> upstream/master
 
 	save_item(NAME(m_disable_video));
 }
@@ -253,11 +221,7 @@ void realbrk_state::draw_sprites(bitmap_ind16 &bitmap,const rectangle &cliprect)
 		int x, xdim, xnum, xstart, xend, xinc;
 		int y, ydim, ynum, ystart, yend, yinc;
 
-<<<<<<< HEAD
-		UINT16 *s;
-=======
 		uint16_t *s;
->>>>>>> upstream/master
 
 		if (m_spriteram[offs] & 0x8000) continue;
 
@@ -339,17 +303,10 @@ void realbrk_state::draw_sprites(bitmap_ind16 &bitmap,const rectangle &cliprect)
 				{
 					case 0x10: // rot 90
 						copyrozbitmap_trans( *m_tmpbitmap1, m_tmpbitmap1->cliprect(), *m_tmpbitmap0,
-<<<<<<< HEAD
-							(UINT32)0<<16,
-							(UINT32)16<<16,
-							0 << 16,
-							-1 << 16,
-=======
 							(uint32_t)0<<16,
 							(uint32_t)16<<16,
 							0 << 16,
 							0xffff << 16,
->>>>>>> upstream/master
 							1 << 16,
 							0 << 16,
 							0, 0 );
@@ -362,21 +319,12 @@ void realbrk_state::draw_sprites(bitmap_ind16 &bitmap,const rectangle &cliprect)
 
 					case 0x20: // rot 180
 						copyrozbitmap_trans( *m_tmpbitmap1, m_tmpbitmap1->cliprect(), *m_tmpbitmap0,
-<<<<<<< HEAD
-							(UINT32)16<<16,
-							(UINT32)16<<16,
-							-1 << 16,
-							0 << 16,
-							0 << 16,
-							-1 << 16,
-=======
 							(uint32_t)16<<16,
 							(uint32_t)16<<16,
 							0xffff << 16,
 							0 << 16,
 							0 << 16,
 							0xffff << 16,
->>>>>>> upstream/master
 							0, 0 );
 
 							currx = (sx - (x+1) * xdim) / 0x10000;
@@ -387,19 +335,11 @@ void realbrk_state::draw_sprites(bitmap_ind16 &bitmap,const rectangle &cliprect)
 
 					case 0x30: // rot 270
 						copyrozbitmap_trans( *m_tmpbitmap1, m_tmpbitmap1->cliprect(), *m_tmpbitmap0,
-<<<<<<< HEAD
-							(UINT32)16<<16,
-							(UINT32)0<<16,
-							0 << 16,
-							1 << 16,
-							-1 << 16,
-=======
 							(uint32_t)16<<16,
 							(uint32_t)0<<16,
 							0 << 16,
 							1 << 16,
 							0xffff << 16,
->>>>>>> upstream/master
 							0 << 16,
 							0, 0 );
 
@@ -440,11 +380,7 @@ void realbrk_state::dai2kaku_draw_sprites(bitmap_ind16 &bitmap,const rectangle &
 		int x, xdim, xnum, xstart, xend, xinc;
 		int y, ydim, ynum, ystart, yend, yinc;
 
-<<<<<<< HEAD
-		UINT16 *s;
-=======
 		uint16_t *s;
->>>>>>> upstream/master
 
 		if (m_spriteram[offs] & 0x8000) continue;
 
@@ -535,13 +471,8 @@ void realbrk_state::dai2kaku_draw_sprites(bitmap_ind16 &bitmap,const rectangle &
 
 WRITE16_MEMBER(realbrk_state::vregs_w)
 {
-<<<<<<< HEAD
-	UINT16 old_data = m_vregs[offset];
-	UINT16 new_data = COMBINE_DATA(&m_vregs[offset]);
-=======
 	uint16_t old_data = m_vregs[offset];
 	uint16_t new_data = COMBINE_DATA(&m_vregs[offset]);
->>>>>>> upstream/master
 	if (new_data != old_data)
 	{
 		if (offset == 0xa/2)
@@ -549,11 +480,7 @@ WRITE16_MEMBER(realbrk_state::vregs_w)
 	}
 }
 
-<<<<<<< HEAD
-UINT32 realbrk_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t realbrk_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int layers_ctrl = -1;
 
@@ -595,11 +522,7 @@ if ( machine().input().code_pressed(KEYCODE_Z) )
 }
 
 /* DaiDaiKakumei */
-<<<<<<< HEAD
-UINT32 realbrk_state::screen_update_dai2kaku(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t realbrk_state::screen_update_dai2kaku(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int layers_ctrl = -1;
 	int offs, bgx0, bgy0, bgx1, bgy1;

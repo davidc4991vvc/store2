@@ -16,14 +16,9 @@
 #include "emu.h"
 #include "wd33c93.h"
 
-<<<<<<< HEAD
-#define VERBOSE 0
-#define LOG(x) do { if (VERBOSE) logerror x; } while (0)
-=======
 //#define VERBOSE 1
 #include "logmacro.h"
 
->>>>>>> upstream/master
 
 /* WD commands */
 #define WD_CMD_RESET                0x00
@@ -143,11 +138,7 @@
 #define SRCID_ER                    0x80
 
 /* convernience functions */
-<<<<<<< HEAD
-UINT8 wd33c93_device::getunit( void )
-=======
 uint8_t wd33c93_device::getunit()
->>>>>>> upstream/master
 {
 	/* return the destination unit id */
 	return regs[WD_DESTINATION_ID] & SRCID_MASK;
@@ -161,11 +152,7 @@ void wd33c93_device::set_xfer_count( int count )
 	regs[ WD_TRANSFER_COUNT_MSB ] = ( count >> 16 ) & 0xff;
 }
 
-<<<<<<< HEAD
-int wd33c93_device::get_xfer_count( void )
-=======
 int wd33c93_device::get_xfer_count()
->>>>>>> upstream/master
 {
 	/* get the count */
 	int count = regs[ WD_TRANSFER_COUNT_MSB ];
@@ -229,11 +216,7 @@ void wd33c93_device::device_timer(emu_timer &timer, device_timer_id tid, int par
 	}
 }
 
-<<<<<<< HEAD
-void wd33c93_device::complete_cmd( UINT8 status )
-=======
 void wd33c93_device::complete_cmd( uint8_t status )
->>>>>>> upstream/master
 {
 	/* fire off a timer to complete the command */
 	cmd_timer->adjust( attotime::from_usec(1), status );
@@ -287,13 +270,8 @@ void wd33c93_device::disconnect_cmd()
 
 void wd33c93_device::select_cmd()
 {
-<<<<<<< HEAD
-	UINT8 unit = getunit();
-	UINT8 newstatus;
-=======
 	uint8_t unit = getunit();
 	uint8_t newstatus;
->>>>>>> upstream/master
 
 	/* see if we can select that device */
 	if (select(unit))
@@ -328,13 +306,8 @@ void wd33c93_device::select_cmd()
 
 void wd33c93_device::selectxfer_cmd()
 {
-<<<<<<< HEAD
-	UINT8 unit = getunit();
-	UINT8 newstatus;
-=======
 	uint8_t unit = getunit();
 	uint8_t newstatus;
->>>>>>> upstream/master
 
 	/* see if we can select that device */
 	if (select(unit))
@@ -426,11 +399,7 @@ void wd33c93_device::xferinfo_cmd()
 void wd33c93_device::dispatch_command()
 {
 	/* get the command */
-<<<<<<< HEAD
-	UINT8 cmd = regs[WD_COMMAND] & 0x7f;
-=======
 	uint8_t cmd = regs[WD_COMMAND] & 0x7f;
->>>>>>> upstream/master
 
 	switch(cmd)
 	{
@@ -505,11 +474,7 @@ WRITE8_MEMBER(wd33c93_device::write)
 
 		case 1:
 		{
-<<<<<<< HEAD
-			LOG(( "WD33C93: PC=%08x - Write REG=%02x, data = %02x\n", space.device().safe_pc(), sasr, data ));
-=======
 			LOG( "WD33C93: PC=%08x - Write REG=%02x, data = %02x\n", space.device().safe_pc(), sasr, data );
->>>>>>> upstream/master
 
 			/* update the register */
 			regs[sasr] = data;
@@ -517,11 +482,7 @@ WRITE8_MEMBER(wd33c93_device::write)
 			/* if we receive a command, schedule to process it */
 			if ( sasr == WD_COMMAND )
 			{
-<<<<<<< HEAD
-				LOG(( "WDC33C93: PC=%08x - Executing command %08x - unit %d\n", space.device().safe_pc(), data, getunit() ));
-=======
 				LOG( "WDC33C93: PC=%08x - Executing command %08x - unit %d\n", space.device().safe_pc(), data, getunit() );
->>>>>>> upstream/master
 
 				/* signal we're processing it */
 				regs[WD_AUXILIARY_STATUS] |= ASR_CIP;
@@ -658,11 +619,7 @@ READ8_MEMBER(wd33c93_device::read)
 
 		case 1:
 		{
-<<<<<<< HEAD
-			UINT8 ret;
-=======
 			uint8_t ret;
->>>>>>> upstream/master
 
 			/* if reading status, clear irq flag */
 			if ( sasr == WD_SCSI_STATUS )
@@ -674,11 +631,7 @@ READ8_MEMBER(wd33c93_device::read)
 					m_irq_cb(0);
 				}
 
-<<<<<<< HEAD
-				LOG(( "WD33C93: PC=%08x - Status read (%02x)\n", space.device().safe_pc(), regs[WD_SCSI_STATUS] ));
-=======
 				LOG( "WD33C93: PC=%08x - Status read (%02x)\n", space.device().safe_pc(), regs[WD_SCSI_STATUS] );
->>>>>>> upstream/master
 			}
 			else if ( sasr == WD_DATA )
 			{
@@ -747,11 +700,7 @@ READ8_MEMBER(wd33c93_device::read)
 				}
 			}
 
-<<<<<<< HEAD
-			LOG(( "WD33C93: PC=%08x - Data read (%02x)\n", space.device().safe_pc(), regs[WD_DATA] ));
-=======
 			LOG( "WD33C93: PC=%08x - Data read (%02x)\n", space.device().safe_pc(), regs[WD_DATA] );
->>>>>>> upstream/master
 
 			/* get the register value */
 			ret = regs[sasr];
@@ -775,13 +724,8 @@ READ8_MEMBER(wd33c93_device::read)
 	return 0;
 }
 
-<<<<<<< HEAD
-wd33c93_device::wd33c93_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-	legacy_scsi_host_adapter(mconfig, WD33C93, "33C93 SCSI", tag, owner, clock, "wd33c93", __FILE__),
-=======
 wd33c93_device::wd33c93_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	legacy_scsi_host_adapter(mconfig, WD33C93, tag, owner, clock),
->>>>>>> upstream/master
 	m_irq_cb(*this)
 {
 }
@@ -819,11 +763,7 @@ void wd33c93_device::device_start()
 	save_item( NAME( read_pending ) );
 }
 
-<<<<<<< HEAD
-void wd33c93_device::dma_read_data( int bytes, UINT8 *pData )
-=======
 void wd33c93_device::dma_read_data( int bytes, uint8_t *pData )
->>>>>>> upstream/master
 {
 	int len = bytes;
 
@@ -848,11 +788,7 @@ void wd33c93_device::dma_read_data( int bytes, uint8_t *pData )
 	set_xfer_count(len);
 }
 
-<<<<<<< HEAD
-void wd33c93_device::dma_write_data(int bytes, UINT8 *pData)
-=======
 void wd33c93_device::dma_write_data(int bytes, uint8_t *pData)
->>>>>>> upstream/master
 {
 	write_data(pData, bytes);
 }
@@ -869,8 +805,4 @@ int wd33c93_device::get_dma_count()
 	return get_xfer_count();
 }
 
-<<<<<<< HEAD
-const device_type WD33C93 = &device_creator<wd33c93_device>;
-=======
 DEFINE_DEVICE_TYPE(WD33C93, wd33c93_device, "wd33c93", "Western Digital WD33C93 SCSI")
->>>>>>> upstream/master

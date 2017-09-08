@@ -209,17 +209,10 @@ TILE_GET_INFO_MEMBER(toaplan1_state::get_pf4_tile_info)
 
 void toaplan1_state::toaplan1_create_tilemaps()
 {
-<<<<<<< HEAD
-	m_pf1_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(toaplan1_state::get_pf1_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 64, 64);
-	m_pf2_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(toaplan1_state::get_pf2_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 64, 64);
-	m_pf3_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(toaplan1_state::get_pf3_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 64, 64);
-	m_pf4_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(toaplan1_state::get_pf4_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 64, 64);
-=======
 	m_pf1_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(toaplan1_state::get_pf1_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 64, 64);
 	m_pf2_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(toaplan1_state::get_pf2_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 64, 64);
 	m_pf3_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(toaplan1_state::get_pf3_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 64, 64);
 	m_pf4_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(toaplan1_state::get_pf4_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 64, 64);
->>>>>>> upstream/master
 
 	m_pf1_tilemap->set_transparent_pen(0);
 	m_pf2_tilemap->set_transparent_pen(0);
@@ -229,17 +222,6 @@ void toaplan1_state::toaplan1_create_tilemaps()
 
 void toaplan1_state::toaplan1_vram_alloc()
 {
-<<<<<<< HEAD
-	m_pf1_tilevram16 = auto_alloc_array_clear(machine(), UINT16, TOAPLAN1_TILEVRAM_SIZE/2);
-	m_pf2_tilevram16 = auto_alloc_array_clear(machine(), UINT16, TOAPLAN1_TILEVRAM_SIZE/2);
-	m_pf3_tilevram16 = auto_alloc_array_clear(machine(), UINT16, TOAPLAN1_TILEVRAM_SIZE/2);
-	m_pf4_tilevram16 = auto_alloc_array_clear(machine(), UINT16, TOAPLAN1_TILEVRAM_SIZE/2);
-
-	save_pointer(NAME(m_pf1_tilevram16), TOAPLAN1_TILEVRAM_SIZE/2);
-	save_pointer(NAME(m_pf2_tilevram16), TOAPLAN1_TILEVRAM_SIZE/2);
-	save_pointer(NAME(m_pf3_tilevram16), TOAPLAN1_TILEVRAM_SIZE/2);
-	save_pointer(NAME(m_pf4_tilevram16), TOAPLAN1_TILEVRAM_SIZE/2);
-=======
 	m_pf1_tilevram16 = make_unique_clear<uint16_t[]>(TOAPLAN1_TILEVRAM_SIZE/2);
 	m_pf2_tilevram16 = make_unique_clear<uint16_t[]>(TOAPLAN1_TILEVRAM_SIZE/2);
 	m_pf3_tilevram16 = make_unique_clear<uint16_t[]>(TOAPLAN1_TILEVRAM_SIZE/2);
@@ -249,7 +231,6 @@ void toaplan1_state::toaplan1_vram_alloc()
 	save_pointer(NAME(m_pf2_tilevram16.get()), TOAPLAN1_TILEVRAM_SIZE/2);
 	save_pointer(NAME(m_pf3_tilevram16.get()), TOAPLAN1_TILEVRAM_SIZE/2);
 	save_pointer(NAME(m_pf4_tilevram16.get()), TOAPLAN1_TILEVRAM_SIZE/2);
->>>>>>> upstream/master
 
 #ifdef MAME_DEBUG
 	m_display_pf1 = 1;
@@ -263,15 +244,6 @@ void toaplan1_state::toaplan1_vram_alloc()
 void toaplan1_state::toaplan1_spritevram_alloc()
 {
 	m_spriteram.allocate(TOAPLAN1_SPRITERAM_SIZE/2);
-<<<<<<< HEAD
-	m_buffered_spriteram = auto_alloc_array_clear(machine(), UINT16, TOAPLAN1_SPRITERAM_SIZE/2);
-	m_spritesizeram16 = auto_alloc_array_clear(machine(), UINT16, TOAPLAN1_SPRITESIZERAM_SIZE/2);
-	m_buffered_spritesizeram16 = auto_alloc_array_clear(machine(), UINT16, TOAPLAN1_SPRITESIZERAM_SIZE/2);
-
-	save_pointer(NAME(m_buffered_spriteram), TOAPLAN1_SPRITERAM_SIZE/2);
-	save_pointer(NAME(m_spritesizeram16), TOAPLAN1_SPRITESIZERAM_SIZE/2);
-	save_pointer(NAME(m_buffered_spritesizeram16), TOAPLAN1_SPRITESIZERAM_SIZE/2);
-=======
 	m_buffered_spriteram = make_unique_clear<uint16_t[]>(TOAPLAN1_SPRITERAM_SIZE/2);
 	m_spritesizeram16 = make_unique_clear<uint16_t[]>(TOAPLAN1_SPRITESIZERAM_SIZE/2);
 	m_buffered_spritesizeram16 = make_unique_clear<uint16_t[]>(TOAPLAN1_SPRITESIZERAM_SIZE/2);
@@ -279,7 +251,6 @@ void toaplan1_state::toaplan1_spritevram_alloc()
 	save_pointer(NAME(m_buffered_spriteram.get()), TOAPLAN1_SPRITERAM_SIZE/2);
 	save_pointer(NAME(m_spritesizeram16.get()), TOAPLAN1_SPRITESIZERAM_SIZE/2);
 	save_pointer(NAME(m_buffered_spritesizeram16.get()), TOAPLAN1_SPRITESIZERAM_SIZE/2);
->>>>>>> upstream/master
 }
 
 void toaplan1_state::toaplan1_set_scrolls()
@@ -323,13 +294,8 @@ VIDEO_START_MEMBER(toaplan1_rallybik_state,rallybik)
 	toaplan1_create_tilemaps();
 	toaplan1_vram_alloc();
 
-<<<<<<< HEAD
-	m_buffered_spriteram = auto_alloc_array_clear(machine(), UINT16, m_spriteram.bytes()/2);
-	save_pointer(NAME(m_buffered_spriteram), m_spriteram.bytes()/2);
-=======
 	m_buffered_spriteram = make_unique_clear<uint16_t[]>(m_spriteram.bytes()/2);
 	save_pointer(NAME(m_buffered_spriteram.get()), m_spriteram.bytes()/2);
->>>>>>> upstream/master
 
 	m_pf1_tilemap->set_scrolldx(-0x00d-6, -0x80+6);
 	m_pf2_tilemap->set_scrolldx(-0x00d-4, -0x80+4);
@@ -504,11 +470,7 @@ WRITE16_MEMBER(toaplan1_state::toaplan1_tileram_offs_w)
 READ16_MEMBER(toaplan1_state::toaplan1_tileram16_r)
 {
 	offs_t vram_offset;
-<<<<<<< HEAD
-	UINT16 video_data = 0;
-=======
 	uint16_t video_data = 0;
->>>>>>> upstream/master
 
 	switch (m_pf_voffs & 0xf000)    /* Locate Layer (PlayField) */
 	{
@@ -538,11 +500,7 @@ READ16_MEMBER(toaplan1_state::toaplan1_tileram16_r)
 
 READ16_MEMBER(toaplan1_rallybik_state::rallybik_tileram16_r)
 {
-<<<<<<< HEAD
-	UINT16 data = toaplan1_tileram16_r(space, offset, mem_mask);
-=======
 	uint16_t data = toaplan1_tileram16_r(space, offset, mem_mask);
->>>>>>> upstream/master
 
 	if (offset == 0)    /* some bit lines may be stuck to others */
 	{
@@ -588,11 +546,7 @@ WRITE16_MEMBER(toaplan1_state::toaplan1_tileram16_w)
 
 READ16_MEMBER(toaplan1_state::toaplan1_scroll_regs_r)
 {
-<<<<<<< HEAD
-	UINT16 scroll = 0;
-=======
 	uint16_t scroll = 0;
->>>>>>> upstream/master
 
 	switch(offset)
 	{
@@ -653,25 +607,15 @@ void toaplan1_state::toaplan1_log_vram()
 
 	if ( machine().input().code_pressed(KEYCODE_M) )
 	{
-<<<<<<< HEAD
-		UINT16 *spriteram16 = m_spriteram;
-		UINT16 *buffered_spriteram16 = m_buffered_spriteram;
-=======
 		uint16_t *spriteram16 = m_spriteram;
 		uint16_t *buffered_spriteram16 = m_buffered_spriteram.get();
->>>>>>> upstream/master
 		offs_t sprite_voffs;
 		while (machine().input().code_pressed(KEYCODE_M)) ;
 		if (m_spritesizeram16)           /* FCU controller */
 		{
 			int schar,sattr,sxpos,sypos,bschar,bsattr,bsxpos,bsypos;
-<<<<<<< HEAD
-			UINT16 *size  = (UINT16 *)(m_spritesizeram16);
-			UINT16 *bsize = (UINT16 *)(m_buffered_spritesizeram16);
-=======
 			uint16_t *size  = (uint16_t *)(m_spritesizeram16.get());
 			uint16_t *bsize = (uint16_t *)(m_buffered_spritesizeram16.get());
->>>>>>> upstream/master
 			logerror("Scrolls    PF1-X  PF1-Y     PF2-X  PF2-Y     PF3-X  PF3-Y     PF4-X  PF4-Y\n");
 			logerror("------>    #%04x  #%04x     #%04x  #%04x     #%04x  #%04x     #%04x  #%04x\n",
 				m_pf1_scrollx, m_pf1_scrolly, m_pf2_scrollx, m_pf2_scrolly, m_pf3_scrollx, m_pf3_scrolly, m_pf4_scrollx, m_pf4_scrolly);
@@ -715,13 +659,8 @@ void toaplan1_state::toaplan1_log_vram()
 
 	if ( machine().input().code_pressed(KEYCODE_SLASH) )
 	{
-<<<<<<< HEAD
-		UINT16 *size  = (UINT16 *)(m_spritesizeram16);
-		UINT16 *bsize = (UINT16 *)(m_buffered_spritesizeram16);
-=======
 		uint16_t *size  = (uint16_t *)(m_spritesizeram16.get());
 		uint16_t *bsize = (uint16_t *)(m_buffered_spritesizeram16.get());
->>>>>>> upstream/master
 		offs_t offs;
 		while (machine().input().code_pressed(KEYCODE_SLASH)) ;
 		if (m_spritesizeram16)           /* FCU controller */
@@ -821,19 +760,11 @@ void toaplan1_state::toaplan1_log_vram()
 
 // custom function to draw a single sprite. needed to keep correct sprites - sprites and sprites - tilemaps priorities
 static void toaplan1_draw_sprite_custom(screen_device &screen, bitmap_ind16 &dest_bmp,const rectangle &clip,gfx_element *gfx,
-<<<<<<< HEAD
-		UINT32 code,UINT32 color,int flipx,int flipy,int sx,int sy,
-		int priority)
-{
-	int pal_base = gfx->colorbase() + gfx->granularity() * (color % gfx->colors());
-	const UINT8 *source_base = gfx->get_data(code % gfx->elements());
-=======
 		uint32_t code,uint32_t color,int flipx,int flipy,int sx,int sy,
 		int priority)
 {
 	int pal_base = gfx->colorbase() + gfx->granularity() * (color % gfx->colors());
 	const uint8_t *source_base = gfx->get_data(code % gfx->elements());
->>>>>>> upstream/master
 	bitmap_ind8 &priority_bitmap = screen.priority();
 	int sprite_screen_height = ((1<<16)*gfx->height()+0x8000)>>16;
 	int sprite_screen_width = ((1<<16)*gfx->width()+0x8000)>>16;
@@ -900,15 +831,9 @@ static void toaplan1_draw_sprite_custom(screen_device &screen, bitmap_ind16 &des
 
 			for( y=sy; y<ey; y++ )
 			{
-<<<<<<< HEAD
-				const UINT8 *source = source_base + (y_index>>16) * gfx->rowbytes();
-				UINT16 *dest = &dest_bmp.pix16(y);
-				UINT8 *pri = &priority_bitmap.pix8(y);
-=======
 				const uint8_t *source = source_base + (y_index>>16) * gfx->rowbytes();
 				uint16_t *dest = &dest_bmp.pix16(y);
 				uint8_t *pri = &priority_bitmap.pix8(y);
->>>>>>> upstream/master
 
 				int x, x_index = x_index_base;
 				for( x=sx; x<ex; x++ )
@@ -932,13 +857,8 @@ static void toaplan1_draw_sprite_custom(screen_device &screen, bitmap_ind16 &des
 
 void toaplan1_state::draw_sprites(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect )
 {
-<<<<<<< HEAD
-	UINT16 *source = (UINT16 *)m_buffered_spriteram;
-	UINT16 *size   = (UINT16 *)m_buffered_spritesizeram16;
-=======
 	uint16_t *source = (uint16_t *)m_buffered_spriteram.get();
 	uint16_t *size   = (uint16_t *)m_buffered_spritesizeram16.get();
->>>>>>> upstream/master
 	int fcu_flipscreen = m_fcu_flipscreen;
 	int offs;
 
@@ -1008,21 +928,13 @@ void toaplan1_state::draw_sprites(screen_device &screen, bitmap_ind16 &bitmap, c
     Draw the game screen in the given bitmap_ind16.
 ***************************************************************************/
 
-<<<<<<< HEAD
-UINT32 toaplan1_rallybik_state::screen_update_rallybik(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t toaplan1_rallybik_state::screen_update_rallybik(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int priority;
 
 	toaplan1_log_vram();
 
-<<<<<<< HEAD
-	m_spritegen->draw_sprites_to_tempbitmap(cliprect, m_buffered_spriteram,  m_spriteram.bytes());
-=======
 	m_spritegen->draw_sprites_to_tempbitmap(cliprect, m_buffered_spriteram.get(),  m_spriteram.bytes());
->>>>>>> upstream/master
 
 	// first draw everything, including "disabled" tiles and priority 0
 	m_pf1_tilemap->draw(screen, bitmap, cliprect, TILEMAP_DRAW_OPAQUE | TILEMAP_DRAW_ALL_CATEGORIES, 0);
@@ -1045,11 +957,7 @@ uint32_t toaplan1_rallybik_state::screen_update_rallybik(screen_device &screen, 
 	return 0;
 }
 
-<<<<<<< HEAD
-UINT32 toaplan1_state::screen_update_toaplan1(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t toaplan1_state::screen_update_toaplan1(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int priority;
 
@@ -1079,58 +987,32 @@ uint32_t toaplan1_state::screen_update_toaplan1(screen_device &screen, bitmap_in
     assume it happens automatically every frame, at the end of vblank
 ****************************************************************************/
 
-<<<<<<< HEAD
-void toaplan1_rallybik_state::screen_eof_rallybik(screen_device &screen, bool state)
-=======
 WRITE_LINE_MEMBER(toaplan1_rallybik_state::screen_vblank_rallybik)
->>>>>>> upstream/master
 {
 	// rising edge
 	if (state)
 	{
-<<<<<<< HEAD
-		memcpy(m_buffered_spriteram, m_spriteram, m_spriteram.bytes());
-	}
-}
-
-void toaplan1_state::screen_eof_toaplan1(screen_device &screen, bool state)
-=======
 		memcpy(m_buffered_spriteram.get(), m_spriteram, m_spriteram.bytes());
 	}
 }
 
 WRITE_LINE_MEMBER(toaplan1_state::screen_vblank_toaplan1)
->>>>>>> upstream/master
 {
 	// rising edge
 	if (state)
 	{
-<<<<<<< HEAD
-		memcpy(m_buffered_spriteram, m_spriteram, m_spriteram.bytes());
-		memcpy(m_buffered_spritesizeram16, m_spritesizeram16, TOAPLAN1_SPRITESIZERAM_SIZE);
-	}
-}
-
-void toaplan1_state::screen_eof_samesame(screen_device &screen, bool state)
-=======
 		memcpy(m_buffered_spriteram.get(), m_spriteram, m_spriteram.bytes());
 		memcpy(m_buffered_spritesizeram16.get(), m_spritesizeram16.get(), TOAPLAN1_SPRITESIZERAM_SIZE);
 	}
 }
 
 WRITE_LINE_MEMBER(toaplan1_state::screen_vblank_samesame)
->>>>>>> upstream/master
 {
 	// rising edge
 	if (state)
 	{
-<<<<<<< HEAD
-		memcpy(m_buffered_spriteram, m_spriteram, m_spriteram.bytes());
-		memcpy(m_buffered_spritesizeram16, m_spritesizeram16, TOAPLAN1_SPRITESIZERAM_SIZE);
-=======
 		memcpy(m_buffered_spriteram.get(), m_spriteram, m_spriteram.bytes());
 		memcpy(m_buffered_spritesizeram16.get(), m_spritesizeram16.get(), TOAPLAN1_SPRITESIZERAM_SIZE);
->>>>>>> upstream/master
 		m_maincpu->set_input_line(M68K_IRQ_2, HOLD_LINE);   /* Frame done */
 	}
 }

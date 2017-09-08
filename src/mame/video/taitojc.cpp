@@ -25,11 +25,7 @@ static const gfx_layout taitojc_char_layout =
 
 TILE_GET_INFO_MEMBER(taitojc_state::taitojc_tile_info)
 {
-<<<<<<< HEAD
-	UINT32 val = m_tile_ram[tile_index];
-=======
 	uint32_t val = m_tile_ram[tile_index];
->>>>>>> upstream/master
 	int color = (val >> 22) & 0xff;
 	int tile = (val >> 2) & 0x7f;
 	SET_TILE_INFO_MEMBER(m_gfx_index, tile, color, 0);
@@ -43,11 +39,7 @@ READ32_MEMBER(taitojc_state::taitojc_palette_r)
 WRITE32_MEMBER(taitojc_state::taitojc_palette_w)
 {
 	int r, g, b;
-<<<<<<< HEAD
-	UINT32 color;
-=======
 	uint32_t color;
->>>>>>> upstream/master
 
 	COMBINE_DATA( m_palette_ram + offset );
 
@@ -71,21 +63,13 @@ READ32_MEMBER(taitojc_state::taitojc_char_r)
 
 WRITE32_MEMBER(taitojc_state::taitojc_tile_w)
 {
-<<<<<<< HEAD
-	COMBINE_DATA(m_tile_ram + offset);
-=======
 	COMBINE_DATA(m_tile_ram.get() + offset);
->>>>>>> upstream/master
 	m_tilemap->mark_tile_dirty(offset);
 }
 
 WRITE32_MEMBER(taitojc_state::taitojc_char_w)
 {
-<<<<<<< HEAD
-	COMBINE_DATA(m_char_ram + offset);
-=======
 	COMBINE_DATA(m_char_ram.get() + offset);
->>>>>>> upstream/master
 	m_gfxdecode->gfx(m_gfx_index)->mark_dirty(offset/32);
 }
 
@@ -136,27 +120,16 @@ WRITE32_MEMBER(taitojc_state::taitojc_char_w)
 
 */
 
-<<<<<<< HEAD
-void taitojc_state::draw_object(bitmap_ind16 &bitmap, const rectangle &cliprect, UINT32 w1, UINT32 w2, UINT8 bank_type)
-=======
 void taitojc_state::draw_object(bitmap_ind16 &bitmap, const rectangle &cliprect, uint32_t w1, uint32_t w2, uint8_t bank_type)
->>>>>>> upstream/master
 {
 	int x, y, width, height, palette;
 	int i, j;
 	int x1, x2, y1, y2;
 	int ix, iy;
-<<<<<<< HEAD
-	UINT32 address;
-	UINT8 *v;
-	UINT8 color_depth;
-	UINT8 mask_screen;
-=======
 	uint32_t address;
 	uint8_t *v;
 	uint8_t color_depth;
 	uint8_t mask_screen;
->>>>>>> upstream/master
 
 	color_depth = (w2 & 0x10000) >> 16;
 	mask_screen = (w2 & 0x20000) >> 17;
@@ -179,15 +152,6 @@ void taitojc_state::draw_object(bitmap_ind16 &bitmap, const rectangle &cliprect,
 
 	/* TODO: untangle this! */
 	if(address >= 0xff000)
-<<<<<<< HEAD
-		v = (UINT8*)&m_objlist[(address-0xff000)/4];
-	if(address >= 0xfc000)
-		v = (UINT8*)&m_char_ram[(address-0xfc000)/4];
-	else if(address >= 0xf8000)
-		v = (UINT8*)&m_tile_ram[(address-0xf8000)/4];
-	else
-		v = (UINT8*)&m_vram[address/4];
-=======
 		v = (uint8_t*)&m_objlist[(address-0xff000)/4];
 	if(address >= 0xfc000)
 		v = (uint8_t*)&m_char_ram[(address-0xfc000)/4];
@@ -195,7 +159,6 @@ void taitojc_state::draw_object(bitmap_ind16 &bitmap, const rectangle &cliprect,
 		v = (uint8_t*)&m_tile_ram[(address-0xf8000)/4];
 	else
 		v = (uint8_t*)&m_vram[address/4];
->>>>>>> upstream/master
 
 	/* guess, but it's probably doable via a vreg ... */
 	if ((width == 0 || height == 0) && bank_type == 2)
@@ -251,11 +214,7 @@ void taitojc_state::draw_object(bitmap_ind16 &bitmap, const rectangle &cliprect,
 
 		for (j=y1; j < y2; j++)
 		{
-<<<<<<< HEAD
-			UINT16 *d = &bitmap.pix16(j);
-=======
 			uint16_t *d = &bitmap.pix16(j);
->>>>>>> upstream/master
 
 			for (i=x1; i < x2; i++)
 			{
@@ -271,20 +230,12 @@ void taitojc_state::draw_object(bitmap_ind16 &bitmap, const rectangle &cliprect,
 	{
 		for (j=y1; j < y2; j++)
 		{
-<<<<<<< HEAD
-			UINT16 *d = &bitmap.pix16(j);
-=======
 			uint16_t *d = &bitmap.pix16(j);
->>>>>>> upstream/master
 			int index = (iy * (width / 2)) + ix;
 
 			for (i=x1; i < x2; i+=2)
 			{
-<<<<<<< HEAD
-				UINT8 pen = (v[BYTE4_XOR_BE(index)] & 0xf0) >> 4;
-=======
 				uint8_t pen = (v[BYTE4_XOR_BE(index)] & 0xf0) >> 4;
->>>>>>> upstream/master
 				if (pen != 0)
 					d[i] = palette + pen;
 
@@ -303,20 +254,12 @@ void taitojc_state::draw_object(bitmap_ind16 &bitmap, const rectangle &cliprect,
 		{
 			for (j=y1; j < y2; j++)
 			{
-<<<<<<< HEAD
-				UINT16 *d = &bitmap.pix16(j);
-=======
 				uint16_t *d = &bitmap.pix16(j);
->>>>>>> upstream/master
 				int index = (iy * width) + ix;
 
 				for (i=x1; i < x2; i++)
 				{
-<<<<<<< HEAD
-					UINT8 pen = v[BYTE4_XOR_BE(index)];
-=======
 					uint8_t pen = v[BYTE4_XOR_BE(index)];
->>>>>>> upstream/master
 					if (pen != 0)
 					{
 						d[i] = palette + pen;
@@ -331,17 +274,10 @@ void taitojc_state::draw_object(bitmap_ind16 &bitmap, const rectangle &cliprect,
 	}
 }
 
-<<<<<<< HEAD
-void taitojc_state::draw_object_bank(bitmap_ind16 &bitmap, const rectangle &cliprect, UINT8 bank_type, UINT8 pri)
-{
-	UINT16 start_offs;
-//  UINT8 double_xy;
-=======
 void taitojc_state::draw_object_bank(bitmap_ind16 &bitmap, const rectangle &cliprect, uint8_t bank_type, uint8_t pri)
 {
 	uint16_t start_offs;
 //  uint8_t double_xy;
->>>>>>> upstream/master
 	int i;
 
 	start_offs = ((bank_type+1)*0x400)/4;
@@ -353,13 +289,8 @@ void taitojc_state::draw_object_bank(bitmap_ind16 &bitmap, const rectangle &clip
 
 	for (i=start_offs-2; i >= (start_offs-0x400/4); i-=2)
 	{
-<<<<<<< HEAD
-		UINT32 w1 = m_objlist[i + 0];
-		UINT32 w2 = m_objlist[i + 1];
-=======
 		uint32_t w1 = m_objlist[i + 0];
 		uint32_t w2 = m_objlist[i + 1];
->>>>>>> upstream/master
 
 		if (((w2 & 0x200000) >> 21) == pri)
 		{
@@ -373,37 +304,11 @@ void taitojc_state::video_start()
 {
 	/* find first empty slot to decode gfx */
 	for (m_gfx_index = 0; m_gfx_index < MAX_GFX_ELEMENTS; m_gfx_index++)
-<<<<<<< HEAD
-		if (m_gfxdecode->gfx(m_gfx_index) == 0)
-=======
 		if (m_gfxdecode->gfx(m_gfx_index) == nullptr)
->>>>>>> upstream/master
 			break;
 
 	assert(m_gfx_index != MAX_GFX_ELEMENTS);
 
-<<<<<<< HEAD
-	m_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(taitojc_state::taitojc_tile_info),this), TILEMAP_SCAN_ROWS, 16, 16, 64, 64);
-
-	m_tilemap->set_transparent_pen(0);
-
-	m_char_ram = auto_alloc_array_clear(machine(), UINT32, 0x4000/4);
-	m_tile_ram = auto_alloc_array_clear(machine(), UINT32, 0x4000/4);
-
-	/* create the char set (gfx will then be updated dynamically from RAM) */
-	m_gfxdecode->set_gfx(m_gfx_index, global_alloc(gfx_element(m_palette, taitojc_char_layout, (UINT8 *)m_char_ram, 0, m_palette->entries() / 16, 0)));
-
-	m_texture = auto_alloc_array(machine(), UINT8, 0x400000);
-
-	m_screen->register_screen_bitmap(m_framebuffer);
-	m_screen->register_screen_bitmap(m_zbuffer);
-
-	/* create renderer */
-	m_renderer = auto_alloc(machine(), taitojc_renderer(machine(), &m_framebuffer, &m_zbuffer, m_texture));
-}
-
-UINT32 taitojc_state::screen_update_taitojc(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 	m_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(taitojc_state::taitojc_tile_info),this), TILEMAP_SCAN_ROWS, 16, 16, 64, 64);
 
 	m_tilemap->set_transparent_pen(0);
@@ -416,7 +321,6 @@ UINT32 taitojc_state::screen_update_taitojc(screen_device &screen, bitmap_ind16 
 }
 
 uint32_t taitojc_state::screen_update_taitojc(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	bitmap.fill(0, cliprect);
 
@@ -426,11 +330,7 @@ uint32_t taitojc_state::screen_update_taitojc(screen_device &screen, bitmap_ind1
 	draw_object_bank(bitmap, cliprect, 2, 0);
 
 	// 3D layer
-<<<<<<< HEAD
-	copybitmap_trans(bitmap, m_framebuffer, 0, 0, 0, 0, cliprect, 0);
-=======
 	m_tc0780fpa->draw(bitmap, cliprect);
->>>>>>> upstream/master
 
 	// high priority objects
 	draw_object_bank(bitmap, cliprect, 0, 1);
@@ -444,15 +344,6 @@ uint32_t taitojc_state::screen_update_taitojc(screen_device &screen, bitmap_ind1
 	return 0;
 }
 
-<<<<<<< HEAD
-UINT32 taitojc_state::screen_update_dendego(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-{
-	// update controller state in artwork
-	static const UINT8 dendego_mascon_table[6] = { 0x76, 0x67, 0x75, 0x57, 0x73, 0x37 };
-	static const UINT8 dendego_brake_table[11] = { 0x00, 0x05, 0x1d, 0x35, 0x4d, 0x65, 0x7d, 0x95, 0xad, 0xc5, 0xd4 };
-
-	UINT8 btn = (ioport("BUTTONS")->read() & 0x77);
-=======
 uint32_t taitojc_state::screen_update_dendego(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
 	// update controller state in artwork
@@ -460,426 +351,19 @@ uint32_t taitojc_state::screen_update_dendego(screen_device &screen, bitmap_ind1
 	static const uint8_t dendego_brake_table[11] = { 0x00, 0x05, 0x1d, 0x35, 0x4d, 0x65, 0x7d, 0x95, 0xad, 0xc5, 0xd4 };
 
 	uint8_t btn = (ioport("BUTTONS")->read() & 0x77);
->>>>>>> upstream/master
 	int level;
 	for (level = 5; level > 0; level--)
 		if (btn == dendego_mascon_table[level]) break;
 
-<<<<<<< HEAD
-	if (level != output_get_value("counter0"))
-		output_set_value("counter0", level);
-=======
 	if (level != output().get_value("counter0"))
 		output().set_value("counter0", level);
->>>>>>> upstream/master
 
 	btn = m_analog_ports[0]->read() & 0xff;
 	for (level = 10; level > 0; level--)
 		if (btn >= dendego_brake_table[level]) break;
 
-<<<<<<< HEAD
-	if (level != output_get_value("counter1"))
-		output_set_value("counter1", level);
-
-	return screen_update_taitojc(screen, bitmap, cliprect);
-}
-
-
-
-void taitojc_renderer::render_solid_scan(INT32 scanline, const extent_t &extent, const taitojc_polydata &extradata, int threadid)
-{
-	float z = extent.param[0].start;
-	int color = extent.param[1].start;
-	float dz = extent.param[0].dpdx;
-	UINT16 *fb = &m_framebuffer->pix16(scanline);
-	UINT16 *zb = &m_zbuffer->pix16(scanline);
-
-	for (int x = extent.startx; x < extent.stopx; x++)
-	{
-		int iz = (int)z & 0xffff;
-
-		if (iz <= zb[x])
-		{
-			fb[x] = color;
-			zb[x] = iz;
-		}
-
-		z += dz;
-	}
-}
-
-void taitojc_renderer::render_shade_scan(INT32 scanline, const extent_t &extent, const taitojc_polydata &extradata, int threadid)
-{
-	float z = extent.param[0].start;
-	float color = extent.param[1].start;
-	float dz = extent.param[0].dpdx;
-	float dcolor = extent.param[1].dpdx;
-	UINT16 *fb = &m_framebuffer->pix16(scanline);
-	UINT16 *zb = &m_zbuffer->pix16(scanline);
-
-	for (int x = extent.startx; x < extent.stopx; x++)
-	{
-		int ic = (int)color & 0xffff;
-		int iz = (int)z & 0xffff;
-
-		if (iz <= zb[x])
-		{
-			fb[x] = ic;
-			zb[x] = iz;
-		}
-
-		color += dcolor;
-		z += dz;
-	}
-}
-
-void taitojc_renderer::render_texture_scan(INT32 scanline, const extent_t &extent, const taitojc_polydata &extradata, int threadid)
-{
-	float z = extent.param[0].start;
-	float u = extent.param[1].start;
-	float v = extent.param[2].start;
-	float color = extent.param[3].start;
-	float dz = extent.param[0].dpdx;
-	float du = extent.param[1].dpdx;
-	float dv = extent.param[2].dpdx;
-	float dcolor = extent.param[3].dpdx;
-	UINT16 *fb = &m_framebuffer->pix16(scanline);
-	UINT16 *zb = &m_zbuffer->pix16(scanline);
-	int tex_wrap_x = extradata.tex_wrap_x;
-	int tex_wrap_y = extradata.tex_wrap_y;
-	int tex_base_x = extradata.tex_base_x;
-	int tex_base_y = extradata.tex_base_y;
-
-	for (int x = extent.startx; x < extent.stopx; x++)
-	{
-		int iu, iv;
-		UINT8 texel;
-		int palette = ((int)color & 0x7f) << 8;
-		int iz = (int)z & 0xffff;
-
-		if (!tex_wrap_x)
-		{
-			iu = ((int)u >> 4) & 0x7ff;
-		}
-		else
-		{
-			iu = (tex_base_x + (((int)u >> 4) & 0x3f)) & 0x7ff;
-		}
-
-		if (!tex_wrap_y)
-		{
-			iv = ((int)v >> 4) & 0x7ff;
-		}
-		else
-		{
-			iv = (tex_base_y + (((int)v >> 4) & 0x3f)) & 0x7ff;
-		}
-
-		texel = m_texture[(iv * 2048) + iu];
-
-		if (iz <= zb[x] && texel != 0)
-		{
-			fb[x] = palette | texel;
-			zb[x] = iz;
-		}
-
-		u += du;
-		v += dv;
-		color += dcolor;
-		z += dz;
-	}
-}
-
-void taitojc_renderer::render_polygons(UINT16 *polygon_fifo, int length)
-{
-	const rectangle visarea = machine().first_screen()->visible_area();
-	vertex_t vert[4];
-	int i;
-	int ptr;
-
-	ptr = 0;
-	while (ptr < length)
-	{
-		UINT16 cmd = polygon_fifo[ptr++];
-
-		switch (cmd & 0x7)
-		{
-			// screen global clipping for 3d(?)
-			case 0x00:
-			{
-				UINT16 min_x,min_y,min_z,max_x,max_y,max_z;
-
-				min_x = polygon_fifo[ptr+1];
-				min_y = polygon_fifo[ptr+0];
-				min_z = polygon_fifo[ptr+2];
-				max_x = polygon_fifo[ptr+4];
-				max_y = polygon_fifo[ptr+3];
-				max_z = polygon_fifo[ptr+5];
-
-				/* let's check if we need to implement this ... */
-				if(min_x != 0 || min_y != 0 || min_z != 0 || max_x != 512 || max_y != 400 || max_z != 0x7fff)
-				{
-					printf("CMD %04x\n",cmd);
-					printf("MIN Y %04x\n",polygon_fifo[ptr+0]);
-					printf("MIN X %04x\n",polygon_fifo[ptr+1]);
-					printf("MIN Z %04x\n",polygon_fifo[ptr+2]);
-					printf("MAX Y %04x\n",polygon_fifo[ptr+3]);
-					printf("MAX X %04x\n",polygon_fifo[ptr+4]);
-					printf("MAX Z %04x\n",polygon_fifo[ptr+5]);
-				}
-				ptr += 6;
-				break;
-			}
-
-			// Gouraud Shaded Triangle (Landing Gear)
-			case 0x01:
-			{
-				// 0x00: Command ID (0x0001)
-				// 0x01: Vertex 1 color
-				// 0x02: Vertex 1 Y
-				// 0x03: Vertex 1 X
-				// 0x04: Vertex 1 Z
-				// 0x05: Vertex 2 color
-				// 0x06: Vertex 2 Y
-				// 0x07: Vertex 2 X
-				// 0x08: Vertex 2 Z
-				// 0x09: Vertex 3 color
-				// 0x0a: Vertex 3 Y
-				// 0x0b: Vertex 3 X
-				// 0x0c: Vertex 3 Z
-
-#if 0
-				printf("CMD1: ");
-				for (i=0; i < 0x0c; i++)
-				{
-					printf("%04X ", polygon_fifo[ptr+i]);
-				}
-				printf("\n");
-#endif
-
-				for (i=0; i < 3; i++)
-				{
-					vert[i].p[1] = polygon_fifo[ptr++];
-					vert[i].y =  (INT16)(polygon_fifo[ptr++]);
-					vert[i].x =  (INT16)(polygon_fifo[ptr++]);
-					vert[i].p[0] = (UINT16)(polygon_fifo[ptr++]);
-				}
-
-				if (vert[0].p[0] < 0x8000 && vert[1].p[0] < 0x8000 && vert[2].p[0] < 0x8000)
-				{
-					if (vert[0].p[1] == vert[1].p[1] &&
-						vert[1].p[1] == vert[2].p[1])
-					{
-						// optimization: all colours the same -> render solid
-						render_triangle(visarea, render_delegate(FUNC(taitojc_renderer::render_solid_scan), this), 2, vert[0], vert[1], vert[2]);
-					}
-					else
-					{
-						render_triangle(visarea, render_delegate(FUNC(taitojc_renderer::render_shade_scan), this), 2, vert[0], vert[1], vert[2]);
-					}
-				}
-				break;
-			}
-
-			// Textured Triangle
-			case 0x03:
-			{
-				// 0x00: Command ID (0x0003)
-				// 0x01: Texture base
-				// 0x02: Vertex 1 Palette
-				// 0x03: Vertex 1 V
-				// 0x04: Vertex 1 U
-				// 0x05: Vertex 1 Y
-				// 0x06: Vertex 1 X
-				// 0x07: Vertex 1 Z
-				// 0x08: Vertex 2 Palette
-				// 0x09: Vertex 2 V
-				// 0x0a: Vertex 2 U
-				// 0x0b: Vertex 2 Y
-				// 0x0c: Vertex 2 X
-				// 0x0d: Vertex 2 Z
-				// 0x0e: Vertex 3 Palette
-				// 0x0f: Vertex 3 V
-				// 0x10: Vertex 3 U
-				// 0x11: Vertex 3 Y
-				// 0x12: Vertex 3 X
-				// 0x13: Vertex 3 Z
-
-#if 0
-				printf("CMD3: ");
-				for (i=0; i < 0x13; i++)
-				{
-					printf("%04X ", polygon_fifo[ptr+i]);
-				}
-				printf("\n");
-#endif
-
-				taitojc_polydata &extra = object_data_alloc();
-				UINT16 texbase = polygon_fifo[ptr++];
-
-				extra.tex_base_x = ((texbase >> 0) & 0xff) << 4;
-				extra.tex_base_y = ((texbase >> 8) & 0xff) << 4;
-
-				extra.tex_wrap_x = (cmd & 0xc0) ? 1 : 0;
-				extra.tex_wrap_y = (cmd & 0x30) ? 1 : 0;
-
-				for (i=0; i < 3; i++)
-				{
-					vert[i].p[3] = polygon_fifo[ptr++] + 0.5;   // palette
-					vert[i].p[2] = (UINT16)(polygon_fifo[ptr++]);
-					vert[i].p[1] = (UINT16)(polygon_fifo[ptr++]);
-					vert[i].y =  (INT16)(polygon_fifo[ptr++]);
-					vert[i].x =  (INT16)(polygon_fifo[ptr++]);
-					vert[i].p[0] = (UINT16)(polygon_fifo[ptr++]);
-				}
-
-				if (vert[0].p[0] < 0x8000 && vert[1].p[0] < 0x8000 && vert[2].p[0] < 0x8000)
-				{
-					render_triangle(visarea, render_delegate(FUNC(taitojc_renderer::render_texture_scan), this), 4, vert[0], vert[1], vert[2]);
-				}
-				break;
-			}
-
-			// Gouraud shaded Quad
-			case 0x04:
-			{
-				// 0x00: Command ID (0x0004)
-				// 0x01: Vertex 1 color
-				// 0x02: Vertex 1 Y
-				// 0x03: Vertex 1 X
-				// 0x04: Vertex 1 Z
-				// 0x05: Vertex 2 color
-				// 0x06: Vertex 2 Y
-				// 0x07: Vertex 2 X
-				// 0x08: Vertex 2 Z
-				// 0x09: Vertex 3 color
-				// 0x0a: Vertex 3 Y
-				// 0x0b: Vertex 3 X
-				// 0x0c: Vertex 3 Z
-				// 0x0d: Vertex 4 color
-				// 0x0e: Vertex 4 Y
-				// 0x0f: Vertex 4 X
-				// 0x10: Vertex 4 Z
-
-#if 0
-				printf("CMD4: ");
-				for (i=0; i < 0x10; i++)
-				{
-					printf("%04X ", polygon_fifo[ptr+i]);
-				}
-				printf("\n");
-#endif
-
-				for (i=0; i < 4; i++)
-				{
-					vert[i].p[1] = polygon_fifo[ptr++];
-					vert[i].y =  (INT16)(polygon_fifo[ptr++]);
-					vert[i].x =  (INT16)(polygon_fifo[ptr++]);
-					vert[i].p[0] = (UINT16)(polygon_fifo[ptr++]);
-				}
-
-				if (vert[0].p[0] < 0x8000 && vert[1].p[0] < 0x8000 && vert[2].p[0] < 0x8000 && vert[3].p[0] < 0x8000)
-				{
-					if (vert[0].p[1] == vert[1].p[1] &&
-						vert[1].p[1] == vert[2].p[1] &&
-						vert[2].p[1] == vert[3].p[1])
-					{
-						// optimization: all colours the same -> render solid
-						render_polygon<4>(visarea, render_delegate(FUNC(taitojc_renderer::render_solid_scan), this), 2, vert);
-					}
-					else
-					{
-						render_polygon<4>(visarea, render_delegate(FUNC(taitojc_renderer::render_shade_scan), this), 2, vert);
-					}
-				}
-				break;
-			}
-
-			// Textured Quad
-			case 0x06:
-			{
-				// 0x00: Command ID (0x0006)
-				// 0x01: Texture base
-				// 0x02: Vertex 1 Palette
-				// 0x03: Vertex 1 V
-				// 0x04: Vertex 1 U
-				// 0x05: Vertex 1 Y
-				// 0x06: Vertex 1 X
-				// 0x07: Vertex 1 Z
-				// 0x08: Vertex 2 Palette
-				// 0x09: Vertex 2 V
-				// 0x0a: Vertex 2 U
-				// 0x0b: Vertex 2 Y
-				// 0x0c: Vertex 2 X
-				// 0x0d: Vertex 2 Z
-				// 0x0e: Vertex 3 Palette
-				// 0x0f: Vertex 3 V
-				// 0x10: Vertex 3 U
-				// 0x11: Vertex 3 Y
-				// 0x12: Vertex 3 X
-				// 0x13: Vertex 3 Z
-				// 0x14: Vertex 4 Palette
-				// 0x15: Vertex 4 V
-				// 0x16: Vertex 4 U
-				// 0x17: Vertex 4 Y
-				// 0x18: Vertex 4 X
-				// 0x19: Vertex 4 Z
-
-#if 0
-				printf("CMD6: ");
-				for (i=0; i < 0x19; i++)
-				{
-					printf("%04X ", polygon_fifo[ptr+i]);
-				}
-				printf("\n");
-#endif
-
-				taitojc_polydata &extra = object_data_alloc();
-				UINT16 texbase = polygon_fifo[ptr++];
-
-				extra.tex_base_x = ((texbase >> 0) & 0xff) << 4;
-				extra.tex_base_y = ((texbase >> 8) & 0xff) << 4;
-
-				extra.tex_wrap_x = (cmd & 0xc0) ? 1 : 0;
-				extra.tex_wrap_y = (cmd & 0x30) ? 1 : 0;
-
-				for (i=0; i < 4; i++)
-				{
-					vert[i].p[3] = polygon_fifo[ptr++] + 0.5;   // palette
-					vert[i].p[2] = (UINT16)(polygon_fifo[ptr++]);
-					vert[i].p[1] = (UINT16)(polygon_fifo[ptr++]);
-					vert[i].y =  (INT16)(polygon_fifo[ptr++]);
-					vert[i].x =  (INT16)(polygon_fifo[ptr++]);
-					vert[i].p[0] = (UINT16)(polygon_fifo[ptr++]);
-				}
-
-				if (vert[0].p[0] < 0x8000 && vert[1].p[0] < 0x8000 && vert[2].p[0] < 0x8000 && vert[3].p[0] < 0x8000)
-				{
-					render_polygon<4>(visarea, render_delegate(FUNC(taitojc_renderer::render_texture_scan), this), 4, vert);
-				}
-				break;
-			}
-
-			default:
-			{
-				printf("render_polygons: unknown command %04X %d\n", cmd,ptr);
-				break;
-			}
-		}
-	}
-
-	wait("Finished render");
-}
-
-void taitojc_state::taitojc_clear_frame()
-{
-	m_framebuffer.fill(0, m_screen->visible_area());
-	m_zbuffer.fill(0xffff, m_screen->visible_area());
-}
-=======
 	if (level != output().get_value("counter1"))
 		output().set_value("counter1", level);
 
 	return screen_update_taitojc(screen, bitmap, cliprect);
 }
->>>>>>> upstream/master

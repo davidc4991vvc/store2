@@ -19,39 +19,21 @@ public:
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
 
-<<<<<<< HEAD
-	required_shared_ptr<UINT16> m_videoram;
-	required_shared_ptr<UINT16> m_spriteram;
-=======
 	required_shared_ptr<uint16_t> m_videoram;
 	required_shared_ptr<uint16_t> m_spriteram;
->>>>>>> upstream/master
 
 	tilemap_t *m_bg_tilemap;
 
 	DECLARE_WRITE16_MEMBER(irq2_ack_w);
 	DECLARE_WRITE16_MEMBER(irq6_ack_w);
 	DECLARE_WRITE16_MEMBER(videoram_w);
-<<<<<<< HEAD
-	DECLARE_WRITE16_MEMBER(eeprom_chip_select_w);
-	DECLARE_WRITE16_MEMBER(eeprom_serial_clock_w);
-	DECLARE_WRITE16_MEMBER(eeprom_data_w);
-=======
->>>>>>> upstream/master
 
 	TILE_GET_INFO_MEMBER(get_bg_tile_info);
 
 	DECLARE_DRIVER_INIT(xorworld);
-<<<<<<< HEAD
-	virtual void video_start();
-	DECLARE_PALETTE_INIT(xorworld);
-
-	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	virtual void video_start() override;
 	DECLARE_PALETTE_INIT(xorworld);
 
 	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	void draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect );
 };

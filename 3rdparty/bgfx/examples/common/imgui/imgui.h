@@ -1,11 +1,6 @@
 /*
-<<<<<<< HEAD
- * Copyright 2011-2015 Branimir Karadzic. All rights reserved.
- * License: http://www.opensource.org/licenses/BSD-2-Clause
-=======
  * Copyright 2011-2017 Branimir Karadzic. All rights reserved.
  * License: https://github.com/bkaradzic/bgfx#license-bsd-2-clause
->>>>>>> upstream/master
  */
 
 // This code is based on:
@@ -33,12 +28,8 @@
 
 #include <bgfx/bgfx.h>
 #include <ocornut-imgui/imgui.h>
-<<<<<<< HEAD
-#include <ocornut-imgui/imgui_wm.h>
-=======
 #include <iconfontheaders/icons_kenney.h>
 #include <iconfontheaders/icons_font_awesome.h>
->>>>>>> upstream/master
 
 #define IMGUI_MBUT_LEFT   0x01
 #define IMGUI_MBUT_RIGHT  0x02
@@ -141,21 +132,13 @@ inline uint32_t imguiRGBA(uint8_t _r, uint8_t _g, uint8_t _b, uint8_t _a = 255)
 
 BGFX_HANDLE(ImguiFontHandle);
 
-<<<<<<< HEAD
-ImguiFontHandle imguiCreateFont(const void* _data, float _fontSize=15.0f);
-=======
 ImguiFontHandle imguiCreateFont(const void* _data, float _fontSize = 18.0f);
->>>>>>> upstream/master
 void imguiSetFont(ImguiFontHandle _handle);
 ImguiFontHandle imguiGetCurrentFont();
 
 namespace bx { struct AllocatorI; }
 
-<<<<<<< HEAD
-ImguiFontHandle imguiCreate(const void* _data = NULL, uint32_t _size = 0, float _fontSize = 15.0f, bx::AllocatorI* _allocator = NULL);
-=======
 ImguiFontHandle imguiCreate(const void* _data = NULL, uint32_t _size = 0, float _fontSize = 18.0f, bx::AllocatorI* _allocator = NULL);
->>>>>>> upstream/master
 void imguiDestroy();
 
 void imguiBeginFrame(int32_t _mx, int32_t _my, uint8_t _button, int32_t _scroll, uint16_t _width, uint16_t _height, char _inputChar = 0, uint8_t _view = 255);
@@ -191,11 +174,7 @@ void imguiSetCurrentScissor(); // Call before drawing custom widgets over imgui 
 bool imguiButton(const char* _text, bool _enabled = true, ImguiAlign::Enum _align = ImguiAlign::LeftIndented, uint32_t _rgb0 = IMGUI_BUTTON_RGB0, int32_t _r = IMGUI_BUTTON_R);
 bool imguiItem(const char* _text, bool _enabled = true);
 bool imguiCheck(const char* _text, bool _checked, bool _enabled = true);
-<<<<<<< HEAD
-void imguiBool(const char* _text, bool& _flag, bool _enabled = true);
-=======
 bool imguiBool(const char* _text, bool& _flag, bool _enabled = true);
->>>>>>> upstream/master
 bool imguiCollapse(const char* _text, const char* _subtext, bool _checked, bool _enabled = true);
 void imguiLabel(const char* _format, ...);
 void imguiLabel(uint32_t _rgba, const char* _format, ...);
@@ -210,13 +189,8 @@ void imguiInput(const char* _label, char* _str, uint32_t _len, bool _enabled = t
 /// _nEnabled - Number of specified 'enabled' flags. All other unspecified tabs are considered enabled by default.
 ///             In the above example, there are 2 enabled flags: 'Tab0' is specified as enabled and 'Tab1' is specified as disabled.
 ///             Tab2 is unspecified and therefore is treated as enabled.
-<<<<<<< HEAD
-uint8_t imguiTabs(uint8_t _selected, bool _enabled, ImguiAlign::Enum _align, int32_t _height, int32_t _r, uint8_t _nTabs, uint8_t _nEnabled, ...);
-uint8_t imguiTabs(uint8_t _selected, bool _enabled, ImguiAlign::Enum _align, int32_t _height, int32_t _r, uint8_t _nTabs, ...);
-=======
 uint8_t imguiTabs(uint8_t _selected, bool _enabled, ImguiAlign::Enum _align, int32_t _height, int32_t _r, uint32_t _nTabs, uint32_t _nEnabled, ...);
 uint8_t imguiTabs(uint8_t _selected, bool _enabled, ImguiAlign::Enum _align, int32_t _height, int32_t _r, uint32_t _nTabs, ...);
->>>>>>> upstream/master
 
 uint32_t imguiChooseUseMacroInstead(uint32_t _selected, ...);
 #define imguiChoose(...) imguiChooseUseMacroInstead(__VA_ARGS__, NULL)
@@ -235,14 +209,6 @@ bool imguiMouseOverArea();
 
 namespace ImGui
 {
-<<<<<<< HEAD
-#define IMGUI_FLAGS_NONE        UINT16_C(0x0000)
-#define IMGUI_FLAGS_ALPHA_BLEND UINT16_C(0x0001)
-
-	// Helper function for passing bgfx::TextureHandle to ImGui::Image.
-	inline void Image(bgfx::TextureHandle _handle
-		, uint16_t _flags
-=======
 #define IMGUI_FLAGS_NONE        UINT8_C(0x00)
 #define IMGUI_FLAGS_ALPHA_BLEND UINT8_C(0x01)
 
@@ -250,7 +216,6 @@ namespace ImGui
 	inline void Image(bgfx::TextureHandle _handle
 		, uint8_t _flags
 		, uint8_t _mip
->>>>>>> upstream/master
 		, const ImVec2& _size
 		, const ImVec2& _uv0       = ImVec2(0.0f, 0.0f)
 		, const ImVec2& _uv1       = ImVec2(1.0f, 1.0f)
@@ -258,16 +223,10 @@ namespace ImGui
 		, const ImVec4& _borderCol = ImVec4(0.0f, 0.0f, 0.0f, 0.0f)
 		)
 	{
-<<<<<<< HEAD
-		union { struct { uint16_t flags; bgfx::TextureHandle handle; } s; ImTextureID ptr; } texture;
-		texture.s.flags  = _flags;
-		texture.s.handle = _handle;
-=======
 		union { struct { bgfx::TextureHandle handle; uint8_t flags; uint8_t mip; } s; ImTextureID ptr; } texture;
 		texture.s.handle = _handle;
 		texture.s.flags  = _flags;
 		texture.s.mip    = _mip;
->>>>>>> upstream/master
 		Image(texture.ptr, _size, _uv0, _uv1, _tintCol, _borderCol);
 	}
 
@@ -280,21 +239,13 @@ namespace ImGui
 		, const ImVec4& _borderCol = ImVec4(0.0f, 0.0f, 0.0f, 0.0f)
 		)
 	{
-<<<<<<< HEAD
-		Image(_handle, IMGUI_FLAGS_ALPHA_BLEND, _size, _uv0, _uv1, _tintCol, _borderCol);
-=======
 		Image(_handle, IMGUI_FLAGS_ALPHA_BLEND, 0, _size, _uv0, _uv1, _tintCol, _borderCol);
->>>>>>> upstream/master
 	}
 
 	// Helper function for passing bgfx::TextureHandle to ImGui::ImageButton.
 	inline bool ImageButton(bgfx::TextureHandle _handle
-<<<<<<< HEAD
-		, uint16_t _flags
-=======
 		, uint8_t _flags
 		, uint8_t _mip
->>>>>>> upstream/master
 		, const ImVec2& _size
 		, const ImVec2& _uv0     = ImVec2(0.0f, 0.0f)
 		, const ImVec2& _uv1     = ImVec2(1.0f, 1.0f)
@@ -303,16 +254,10 @@ namespace ImGui
 		, const ImVec4& _tintCol = ImVec4(1.0f, 1.0f, 1.0f, 1.0f)
 		)
 	{
-<<<<<<< HEAD
-		union { struct { uint16_t flags; bgfx::TextureHandle handle; } s; ImTextureID ptr; } texture;
-		texture.s.flags  = _flags;
-		texture.s.handle = _handle;
-=======
 		union { struct { bgfx::TextureHandle handle; uint8_t flags; uint8_t mip; } s; ImTextureID ptr; } texture;
 		texture.s.handle = _handle;
 		texture.s.flags  = _flags;
 		texture.s.mip    = _mip;
->>>>>>> upstream/master
 		return ImageButton(texture.ptr, _size, _uv0, _uv1, _framePadding, _bgCol, _tintCol);
 	}
 
@@ -326,16 +271,12 @@ namespace ImGui
 		, const ImVec4& _tintCol = ImVec4(1.0f, 1.0f, 1.0f, 1.0f)
 		)
 	{
-<<<<<<< HEAD
-		return ImageButton(_handle, IMGUI_FLAGS_ALPHA_BLEND, _size, _uv0, _uv1, _framePadding, _bgCol, _tintCol);
-=======
 		return ImageButton(_handle, IMGUI_FLAGS_ALPHA_BLEND, 0, _size, _uv0, _uv1, _framePadding, _bgCol, _tintCol);
 	}
 
 	inline void NextLine()
 	{
 		SetCursorPosY(GetCursorPosY() + GetTextLineHeightWithSpacing() );
->>>>>>> upstream/master
 	}
 
 } // namespace ImGui

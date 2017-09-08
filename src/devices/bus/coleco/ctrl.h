@@ -9,20 +9,11 @@
 
 **********************************************************************/
 
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __COLECOVISION_CONTROL_PORT__
-#define __COLECOVISION_CONTROL_PORT__
-
-#include "emu.h"
-=======
 #ifndef MAME_BUS_COLECO_CTRL_H
 #define MAME_BUS_COLECO_CTRL_H
 
 #pragma once
 
->>>>>>> upstream/master
 
 
 
@@ -52,17 +43,6 @@ class colecovision_control_port_device;
 class device_colecovision_control_port_interface : public device_slot_card_interface
 {
 public:
-<<<<<<< HEAD
-	// construction/destruction
-	device_colecovision_control_port_interface(const machine_config &mconfig, device_t &device);
-	virtual ~device_colecovision_control_port_interface() { }
-
-	virtual UINT8 joy_r() { return 0xff; };
-	virtual void common0_w(int state) { m_common0 = state; };
-	virtual void common1_w(int state) { m_common1 = state; };
-
-protected:
-=======
 	virtual uint8_t joy_r() { return 0xff; }
 	virtual void common0_w(int state) { m_common0 = state; }
 	virtual void common1_w(int state) { m_common1 = state; }
@@ -71,7 +51,6 @@ protected:
 	// construction/destruction
 	device_colecovision_control_port_interface(const machine_config &mconfig, device_t &device);
 
->>>>>>> upstream/master
 	colecovision_control_port_device *m_port;
 
 	int m_common0;
@@ -86,16 +65,6 @@ class colecovision_control_port_device : public device_t,
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	colecovision_control_port_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-	virtual ~colecovision_control_port_device() { }
-
-	// static configuration helpers
-	template<class _Object> static devcb_base &set_irq_wr_callback(device_t &device, _Object object) { return downcast<colecovision_control_port_device &>(device).m_write_irq.set_callback(object); }
-
-	// computer interface
-	UINT8 read() { UINT8 data = 0xff; if (exists()) data = m_device->joy_r(); return data; }
-=======
 	colecovision_control_port_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	// static configuration helpers
@@ -103,27 +72,18 @@ public:
 
 	// computer interface
 	uint8_t read() { uint8_t data = 0xff; if (exists()) data = m_device->joy_r(); return data; }
->>>>>>> upstream/master
 	DECLARE_READ8_MEMBER( read ) { return read(); }
 
 	DECLARE_WRITE_LINE_MEMBER( common0_w ) { if (exists()) m_device->common0_w(state); }
 	DECLARE_WRITE_LINE_MEMBER( common1_w ) { if (exists()) m_device->common1_w(state); }
 
-<<<<<<< HEAD
-	bool exists() { return m_device != NULL; }
-=======
 	bool exists() { return m_device != nullptr; }
->>>>>>> upstream/master
 
 	void irq_w(int state) { m_write_irq(state); }
 
 protected:
 	// device-level overrides
-<<<<<<< HEAD
-	virtual void device_start();
-=======
 	virtual void device_start() override;
->>>>>>> upstream/master
 
 	device_colecovision_control_port_interface *m_device;
 
@@ -133,18 +93,9 @@ private:
 
 
 // device type definition
-<<<<<<< HEAD
-extern const device_type COLECOVISION_CONTROL_PORT;
-=======
 DECLARE_DEVICE_TYPE(COLECOVISION_CONTROL_PORT, colecovision_control_port_device)
->>>>>>> upstream/master
 
 SLOT_INTERFACE_EXTERN( colecovision_control_port_devices );
 
 
-<<<<<<< HEAD
-
-#endif
-=======
 #endif // MAME_BUS_COLECO_CTRL_H
->>>>>>> upstream/master

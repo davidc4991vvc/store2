@@ -21,11 +21,7 @@
 //  mips3_frontend - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-mips3_frontend::mips3_frontend(mips3_device *mips3, UINT32 window_start, UINT32 window_end, UINT32 max_sequence)
-=======
 mips3_frontend::mips3_frontend(mips3_device *mips3, uint32_t window_start, uint32_t window_end, uint32_t max_sequence)
->>>>>>> upstream/master
 	: drc_frontend(*mips3, window_start, window_end, max_sequence),
 		m_mips3(mips3)
 {
@@ -39,11 +35,7 @@ mips3_frontend::mips3_frontend(mips3_device *mips3, uint32_t window_start, uint3
 
 bool mips3_frontend::describe(opcode_desc &desc, const opcode_desc *prev)
 {
-<<<<<<< HEAD
-	UINT32 op, opswitch;
-=======
 	uint32_t op, opswitch;
->>>>>>> upstream/master
 
 	// compute the physical PC
 	assert((desc.physpc & 3) == 0);
@@ -238,11 +230,7 @@ bool mips3_frontend::describe(opcode_desc &desc, const opcode_desc *prev)
 //  single instruction in the 'special' group
 //-------------------------------------------------
 
-<<<<<<< HEAD
-bool mips3_frontend::describe_special(UINT32 op, opcode_desc &desc)
-=======
 bool mips3_frontend::describe_special(uint32_t op, opcode_desc &desc)
->>>>>>> upstream/master
 {
 	switch (op & 63)
 	{
@@ -393,11 +381,7 @@ bool mips3_frontend::describe_special(uint32_t op, opcode_desc &desc)
 //  single instruction in the 'regimm' group
 //-------------------------------------------------
 
-<<<<<<< HEAD
-bool mips3_frontend::describe_regimm(UINT32 op, opcode_desc &desc)
-=======
 bool mips3_frontend::describe_regimm(uint32_t op, opcode_desc &desc)
->>>>>>> upstream/master
 {
 	switch (RTREG)
 	{
@@ -454,11 +438,7 @@ bool mips3_frontend::describe_regimm(uint32_t op, opcode_desc &desc)
 //  instruction in the IDT-specific group
 //-------------------------------------------------
 
-<<<<<<< HEAD
-bool mips3_frontend::describe_idt(UINT32 op, opcode_desc &desc)
-=======
 bool mips3_frontend::describe_idt(uint32_t op, opcode_desc &desc)
->>>>>>> upstream/master
 {
 	// only on the R4650
 	if (m_mips3->m_flavor != mips3_device::MIPS3_TYPE_R4650)
@@ -489,11 +469,7 @@ bool mips3_frontend::describe_idt(uint32_t op, opcode_desc &desc)
 //  single instruction in the COP0 group
 //-------------------------------------------------
 
-<<<<<<< HEAD
-bool mips3_frontend::describe_cop0(UINT32 op, opcode_desc &desc)
-=======
 bool mips3_frontend::describe_cop0(uint32_t op, opcode_desc &desc)
->>>>>>> upstream/master
 {
 	// any COP0 instruction can potentially cause an exception
 	desc.flags |= OPFLAG_CAN_CAUSE_EXCEPTION;
@@ -568,11 +544,7 @@ bool mips3_frontend::describe_cop0(uint32_t op, opcode_desc &desc)
 //  single instruction in the COP1 group
 //-------------------------------------------------
 
-<<<<<<< HEAD
-bool mips3_frontend::describe_cop1(UINT32 op, opcode_desc &desc)
-=======
 bool mips3_frontend::describe_cop1(uint32_t op, opcode_desc &desc)
->>>>>>> upstream/master
 {
 	// any COP1 instruction can potentially cause an exception
 //  desc.flags |= OPFLAG_CAN_CAUSE_EXCEPTION;
@@ -690,11 +662,7 @@ bool mips3_frontend::describe_cop1(uint32_t op, opcode_desc &desc)
 //  single instruction in the COP1X group
 //-------------------------------------------------
 
-<<<<<<< HEAD
-bool mips3_frontend::describe_cop1x(UINT32 op, opcode_desc &desc)
-=======
 bool mips3_frontend::describe_cop1x(uint32_t op, opcode_desc &desc)
->>>>>>> upstream/master
 {
 	// any COP1 instruction can potentially cause an exception
 //  desc.flags |= OPFLAG_CAN_CAUSE_EXCEPTION;
@@ -737,11 +705,7 @@ bool mips3_frontend::describe_cop1x(uint32_t op, opcode_desc &desc)
 //  single instruction in the COP2 group
 //-------------------------------------------------
 
-<<<<<<< HEAD
-bool mips3_frontend::describe_cop2(UINT32 op, opcode_desc &desc)
-=======
 bool mips3_frontend::describe_cop2(uint32_t op, opcode_desc &desc)
->>>>>>> upstream/master
 {
 	// any COP2 instruction can potentially cause an exception
 	desc.flags |= OPFLAG_CAN_CAUSE_EXCEPTION;

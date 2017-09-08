@@ -6,10 +6,7 @@
 
 **********************************************************************/
 
-<<<<<<< HEAD
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #include "econet.h"
 
 
@@ -29,13 +26,8 @@ static const char *const SIGNAL_NAME[] = { "CLK", "DATA" };
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type ECONET = &device_creator<econet_device>;
-const device_type ECONET_SLOT = &device_creator<econet_slot_device>;
-=======
 DEFINE_DEVICE_TYPE(ECONET,      econet_device,      "econet",      "Econet")
 DEFINE_DEVICE_TYPE(ECONET_SLOT, econet_slot_device, "econet_slot", "Econet station")
->>>>>>> upstream/master
 
 
 
@@ -48,11 +40,7 @@ DEFINE_DEVICE_TYPE(ECONET_SLOT, econet_slot_device, "econet_slot", "Econet stati
 //-------------------------------------------------
 
 device_econet_interface::device_econet_interface(const machine_config &mconfig, device_t &device) :
-<<<<<<< HEAD
-	device_slot_card_interface(mconfig, device), m_next(nullptr), m_econet(nullptr), m_address(0)
-=======
 	device_slot_card_interface(mconfig, device), m_econet(nullptr), m_address(0), m_next(nullptr)
->>>>>>> upstream/master
 {
 }
 
@@ -66,16 +54,10 @@ device_econet_interface::device_econet_interface(const machine_config &mconfig, 
 //  econet_slot_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-econet_slot_device::econet_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-	device_t(mconfig, ECONET_SLOT, "Econet station", tag, owner, clock, "econet_slot", __FILE__),
-	device_slot_interface(mconfig, *this), m_address(0), m_econet(nullptr)
-=======
 econet_slot_device::econet_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	device_t(mconfig, ECONET_SLOT, tag, owner, clock),
 	device_slot_interface(mconfig, *this),
 	m_address(0), m_econet(nullptr)
->>>>>>> upstream/master
 {
 }
 
@@ -213,16 +195,6 @@ inline int econet_device::get_signal(int signal)
 //  econet_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-econet_device::econet_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-	device_t(mconfig, ECONET, "Econet", tag, owner, clock, "econet", __FILE__),
-	m_write_clk(*this),
-	m_write_data(*this)
-{
-	for (int i = 0; i < SIGNAL_COUNT; i++)
-	{
-		m_line[i] = 1;
-=======
 econet_device::econet_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	device_t(mconfig, ECONET, tag, owner, clock),
 	m_write_clk(*this),
@@ -231,7 +203,6 @@ econet_device::econet_device(const machine_config &mconfig, const char *tag, dev
 	for (auto & elem : m_line)
 	{
 		elem = 1;
->>>>>>> upstream/master
 	}
 }
 
@@ -264,11 +235,7 @@ void econet_device::device_stop()
 
 void econet_device::add_device(device_t *target, int address)
 {
-<<<<<<< HEAD
-	daisy_entry *entry = global_alloc(daisy_entry(target));
-=======
 	auto entry = global_alloc(daisy_entry(target));
->>>>>>> upstream/master
 
 	entry->m_interface->m_econet = this;
 	entry->m_interface->m_address = address;
@@ -282,15 +249,6 @@ void econet_device::add_device(device_t *target, int address)
 //-------------------------------------------------
 
 econet_device::daisy_entry::daisy_entry(device_t *device) :
-<<<<<<< HEAD
-	m_next(NULL),
-	m_device(device),
-	m_interface(NULL)
-{
-	for (int i = 0; i < SIGNAL_COUNT; i++)
-	{
-		m_line[i] = 1;
-=======
 	m_next(nullptr),
 	m_device(device),
 	m_interface(nullptr)
@@ -298,7 +256,6 @@ econet_device::daisy_entry::daisy_entry(device_t *device) :
 	for (auto & elem : m_line)
 	{
 		elem = 1;
->>>>>>> upstream/master
 	}
 
 	device->interface(m_interface);
@@ -353,11 +310,6 @@ void econet_device::data_w(device_t *device, int state)
 #include "e01.h"
 
 SLOT_INTERFACE_START( econet_devices )
-<<<<<<< HEAD
-	SLOT_INTERFACE("e01", E01)
-	SLOT_INTERFACE("e01s", E01S)
-=======
 	SLOT_INTERFACE("e01",  ECONET_E01)
 	SLOT_INTERFACE("e01s", ECONET_E01S)
->>>>>>> upstream/master
 SLOT_INTERFACE_END

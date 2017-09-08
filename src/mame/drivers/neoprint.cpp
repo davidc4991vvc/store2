@@ -23,18 +23,12 @@
 #include "emu.h"
 #include "cpu/m68000/m68000.h"
 #include "cpu/z80/z80.h"
-<<<<<<< HEAD
-#include "machine/nvram.h"
-#include "sound/2610intf.h"
-#include "machine/upd1990a.h"
-=======
 #include "machine/gen_latch.h"
 #include "machine/nvram.h"
 #include "machine/upd1990a.h"
 #include "sound/2610intf.h"
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 class neoprint_state : public driver_device
@@ -50,39 +44,24 @@ public:
 		m_gfxdecode(*this, "gfxdecode"),
 		m_screen(*this, "screen"),
 		m_palette(*this, "palette"),
-<<<<<<< HEAD
-		m_generic_paletteram_16(*this, "paletteram") { }
-
-	required_shared_ptr<UINT16> m_npvidram;
-	required_shared_ptr<UINT16> m_npvidregs;
-=======
 		m_soundlatch(*this, "soundlatch"),
 		m_generic_paletteram_16(*this, "paletteram")
 	{ }
 
 	required_shared_ptr<uint16_t> m_npvidram;
 	required_shared_ptr<uint16_t> m_npvidregs;
->>>>>>> upstream/master
 	required_device<cpu_device> m_maincpu;
 	required_device<cpu_device> m_audiocpu;
 	required_device<upd4990a_device> m_upd4990a;
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<screen_device> m_screen;
 	required_device<palette_device> m_palette;
-<<<<<<< HEAD
-	optional_shared_ptr<UINT16> m_generic_paletteram_16;
-
-	UINT8 m_audio_result;
-	UINT8 m_bank_val;
-	UINT8 m_vblank;
-=======
 	required_device<generic_latch_8_device> m_soundlatch;
 	optional_shared_ptr<uint16_t> m_generic_paletteram_16;
 
 	uint8_t m_audio_result;
 	uint8_t m_bank_val;
 	uint8_t m_vblank;
->>>>>>> upstream/master
 	DECLARE_READ8_MEMBER(neoprint_calendar_r);
 	DECLARE_WRITE8_MEMBER(neoprint_calendar_w);
 	DECLARE_READ8_MEMBER(neoprint_unk_r);
@@ -98,16 +77,6 @@ public:
 	DECLARE_DRIVER_INIT(npcartv1);
 	DECLARE_DRIVER_INIT(nprsp);
 	DECLARE_DRIVER_INIT(unkneo);
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void video_start();
-	DECLARE_MACHINE_RESET(nprsp);
-	UINT32 screen_update_neoprint(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	UINT32 screen_update_nprsp(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	void draw_layer(bitmap_ind16 &bitmap,const rectangle &cliprect,int layer,int data_shift);
-	void audio_cpu_assert_nmi();
-	DECLARE_WRITE_LINE_MEMBER(audio_cpu_irq);
-=======
 	virtual void machine_start() override;
 	virtual void video_start() override;
 	DECLARE_MACHINE_RESET(nprsp);
@@ -115,7 +84,6 @@ public:
 	uint32_t screen_update_nprsp(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	void draw_layer(bitmap_ind16 &bitmap,const rectangle &cliprect,int layer,int data_shift);
 	void audio_cpu_assert_nmi();
->>>>>>> upstream/master
 };
 
 
@@ -136,11 +104,7 @@ void neoprint_state::draw_layer(bitmap_ind16 &bitmap,const rectangle &cliprect,i
 {
 	int i, y, x;
 	gfx_element *gfx = m_gfxdecode->gfx(0);
-<<<<<<< HEAD
-	INT16 scrollx, scrolly;
-=======
 	int16_t scrollx, scrolly;
->>>>>>> upstream/master
 
 	i = (m_npvidregs[((layer*8)+0x06)/2] & 7) * 0x1000/4;
 	scrollx = ((m_npvidregs[((layer*8)+0x00)/2] - (0xd8 + layer*4)) & 0x03ff);
@@ -153,24 +117,14 @@ void neoprint_state::draw_layer(bitmap_ind16 &bitmap,const rectangle &cliprect,i
 	{
 		for (x=0;x<32;x++)
 		{
-<<<<<<< HEAD
-			UINT16 dat = m_npvidram[i*2] >> data_shift; // a video register?
-			UINT16 color;
-=======
 			uint16_t dat = m_npvidram[i*2] >> data_shift; // a video register?
 			uint16_t color;
->>>>>>> upstream/master
 			if(m_npvidram[i*2+1] & 0x0020) // TODO: 8bpp switch?
 				color = ((m_npvidram[i*2+1] & 0x8000) << 1) | 0x200 | ((m_npvidram[i*2+1] & 0xff00) >> 7);
 			else
 				color = ((m_npvidram[i*2+1] & 0xff00) >> 8) | ((m_npvidram[i*2+1] & 0x0010) << 4);
-<<<<<<< HEAD
-			UINT8 fx = (m_npvidram[i*2+1] & 0x0040);
-			UINT8 fy = (m_npvidram[i*2+1] & 0x0080);
-=======
 			uint8_t fx = (m_npvidram[i*2+1] & 0x0040);
 			uint8_t fy = (m_npvidram[i*2+1] & 0x0080);
->>>>>>> upstream/master
 
 			gfx->transpen(bitmap,cliprect,dat,color,fx,fy,x*16+scrollx,y*16-scrolly,0);
 			gfx->transpen(bitmap,cliprect,dat,color,fx,fy,x*16+scrollx-512,y*16-scrolly,0);
@@ -183,11 +137,7 @@ void neoprint_state::draw_layer(bitmap_ind16 &bitmap,const rectangle &cliprect,i
 	}
 }
 
-<<<<<<< HEAD
-UINT32 neoprint_state::screen_update_neoprint(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t neoprint_state::screen_update_neoprint(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	bitmap.fill(0, cliprect);
 
@@ -197,11 +147,7 @@ uint32_t neoprint_state::screen_update_neoprint(screen_device &screen, bitmap_in
 	return 0;
 }
 
-<<<<<<< HEAD
-UINT32 neoprint_state::screen_update_nprsp(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t neoprint_state::screen_update_nprsp(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	bitmap.fill(0, cliprect);
 
@@ -257,11 +203,7 @@ WRITE8_MEMBER(neoprint_state::audio_cpu_clear_nmi_w)
 
 WRITE8_MEMBER(neoprint_state::audio_command_w)
 {
-<<<<<<< HEAD
-	soundlatch_byte_w(space, 0, data);
-=======
 	m_soundlatch->write(space, 0, data);
->>>>>>> upstream/master
 
 	audio_cpu_assert_nmi();
 
@@ -274,11 +216,7 @@ WRITE8_MEMBER(neoprint_state::audio_command_w)
 
 READ8_MEMBER(neoprint_state::audio_command_r)
 {
-<<<<<<< HEAD
-	UINT8 ret = soundlatch_byte_r(space, 0);
-=======
 	uint8_t ret = m_soundlatch->read(space, 0);
->>>>>>> upstream/master
 
 	//if (LOG_CPU_COMM) logerror(" AUD CPU PC   %04x: audio_command_r %02x\n", space.device().safe_pc(), ret);
 
@@ -320,11 +258,7 @@ ADDRESS_MAP_END
 
 WRITE16_MEMBER(neoprint_state::nprsp_palette_w)
 {
-<<<<<<< HEAD
-	UINT8 r,g,b,i;
-=======
 	uint8_t r,g,b,i;
->>>>>>> upstream/master
 
 	COMBINE_DATA(&m_generic_paletteram_16[offset]);
 
@@ -341,11 +275,7 @@ WRITE16_MEMBER(neoprint_state::nprsp_palette_w)
 		return;
 
 	{
-<<<<<<< HEAD
-		UINT32 pal_entry;
-=======
 		uint32_t pal_entry;
->>>>>>> upstream/master
 
 		pal_entry = ((offset & 0xfffe) >> 1) + ((offset & 0x20000) ? 0x8000 : 0);
 
@@ -368,11 +298,7 @@ WRITE8_MEMBER(neoprint_state::nprsp_bank_w)
 
 READ16_MEMBER(neoprint_state::rom_window_r)
 {
-<<<<<<< HEAD
-	UINT16 *rom = (UINT16 *)memregion("maincpu")->base();
-=======
 	uint16_t *rom = (uint16_t *)memregion("maincpu")->base();
->>>>>>> upstream/master
 
 	return rom[offset | 0x80000/2 | m_bank_val*0x40000/2];
 }
@@ -426,17 +352,10 @@ static ADDRESS_MAP_START( neoprint_audio_io_map, AS_IO, 8, neoprint_state )
 	AM_RANGE(0x00, 0x00) AM_MIRROR(0xff00) AM_READ(audio_command_r) AM_WRITENOP
 	AM_RANGE(0x04, 0x07) AM_MIRROR(0xff00) AM_DEVREADWRITE("ymsnd", ym2610_device, read, write)
 //  AM_RANGE(0x08, 0x08) AM_MIRROR(0xff00) /* write - NMI enable / acknowledge? (the data written doesn't matter) */
-<<<<<<< HEAD
-//  AM_RANGE(0x08, 0x08) AM_MIRROR(0xfff0) AM_MASK(0xfff0) AM_READ(audio_cpu_bank_select_f000_f7ff_r)
-//  AM_RANGE(0x09, 0x09) AM_MIRROR(0xfff0) AM_MASK(0xfff0) AM_READ(audio_cpu_bank_select_e000_efff_r)
-//  AM_RANGE(0x0a, 0x0a) AM_MIRROR(0xfff0) AM_MASK(0xfff0) AM_READ(audio_cpu_bank_select_c000_dfff_r)
-//  AM_RANGE(0x0b, 0x0b) AM_MIRROR(0xfff0) AM_MASK(0xfff0) AM_READ(audio_cpu_bank_select_8000_bfff_r)
-=======
 //  AM_RANGE(0x08, 0x08) AM_SELECT(0xfff0) AM_READ(audio_cpu_bank_select_f000_f7ff_r)
 //  AM_RANGE(0x09, 0x09) AM_SELECT(0xfff0) AM_READ(audio_cpu_bank_select_e000_efff_r)
 //  AM_RANGE(0x0a, 0x0a) AM_SELECT(0xfff0) AM_READ(audio_cpu_bank_select_c000_dfff_r)
 //  AM_RANGE(0x0b, 0x0b) AM_SELECT(0xfff0) AM_READ(audio_cpu_bank_select_8000_bfff_r)
->>>>>>> upstream/master
 	AM_RANGE(0x0c, 0x0c) AM_MIRROR(0xff00) AM_WRITE(audio_result_w)
 //  AM_RANGE(0x18, 0x18) AM_MIRROR(0xff00) /* write - NMI disable? (the data written doesn't matter) */
 ADDRESS_MAP_END
@@ -549,14 +468,6 @@ static GFXDECODE_START( neoprint )
 	GFXDECODE_ENTRY( "gfx1", 0, neoprint_layout,   0x0, 0x1000 )
 GFXDECODE_END
 
-<<<<<<< HEAD
-WRITE_LINE_MEMBER(neoprint_state::audio_cpu_irq)
-{
-	m_audiocpu->set_input_line(0, state ? ASSERT_LINE : CLEAR_LINE);
-}
-
-=======
->>>>>>> upstream/master
 void neoprint_state::machine_start()
 {
 	// enable rtc and serial mode
@@ -567,11 +478,7 @@ void neoprint_state::machine_start()
 	m_upd4990a->c2_w(1);
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( neoprint, neoprint_state )
-=======
 static MACHINE_CONFIG_START( neoprint )
->>>>>>> upstream/master
 	MCFG_CPU_ADD("maincpu", M68000, 12000000)
 	MCFG_CPU_PROGRAM_MAP(neoprint_map)
 	MCFG_CPU_PERIODIC_INT_DRIVER(neoprint_state, irq3_line_hold, 45) /* camera / printer irq, unknown timing */
@@ -581,11 +488,7 @@ static MACHINE_CONFIG_START( neoprint )
 	MCFG_CPU_PROGRAM_MAP(neoprint_audio_map)
 	MCFG_CPU_IO_MAP(neoprint_audio_io_map)
 
-<<<<<<< HEAD
-	MCFG_UPD4990A_ADD("upd4990a", XTAL_32_768kHz, NULL, NULL)
-=======
 	MCFG_UPD4990A_ADD("upd4990a", XTAL_32_768kHz, NOOP, NOOP)
->>>>>>> upstream/master
 	MCFG_NVRAM_ADD_0FILL("nvram")
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", neoprint)
@@ -603,15 +506,10 @@ static MACHINE_CONFIG_START( neoprint )
 
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
-<<<<<<< HEAD
-	MCFG_SOUND_ADD("ymsnd", YM2610, 24000000 / 3)
-	MCFG_YM2610_IRQ_HANDLER(WRITELINE(neoprint_state, audio_cpu_irq))
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 
 	MCFG_SOUND_ADD("ymsnd", YM2610, 24000000 / 3)
 	MCFG_YM2610_IRQ_HANDLER(INPUTLINE("audiocpu", 0))
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(0, "lspeaker",  0.60)
 	MCFG_SOUND_ROUTE(0, "rspeaker", 0.60)
 	MCFG_SOUND_ROUTE(1, "lspeaker",  1.0)
@@ -623,11 +521,7 @@ MACHINE_RESET_MEMBER(neoprint_state,nprsp)
 	m_bank_val = 0;
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( nprsp, neoprint_state )
-=======
 static MACHINE_CONFIG_START( nprsp )
->>>>>>> upstream/master
 	MCFG_CPU_ADD("maincpu", M68000, 12000000)
 	MCFG_CPU_PROGRAM_MAP(nprsp_map)
 	MCFG_CPU_PERIODIC_INT_DRIVER(neoprint_state, irq3_line_hold, 45) /* camera / printer irq, unknown timing */
@@ -637,11 +531,7 @@ static MACHINE_CONFIG_START( nprsp )
 	MCFG_CPU_PROGRAM_MAP(neoprint_audio_map)
 	MCFG_CPU_IO_MAP(neoprint_audio_io_map)
 
-<<<<<<< HEAD
-	MCFG_UPD4990A_ADD("upd4990a", XTAL_32_768kHz, NULL, NULL)
-=======
 	MCFG_UPD4990A_ADD("upd4990a", XTAL_32_768kHz, NOOP, NOOP)
->>>>>>> upstream/master
 	MCFG_NVRAM_ADD_0FILL("nvram")
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", neoprint)
@@ -661,15 +551,10 @@ static MACHINE_CONFIG_START( nprsp )
 
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
-<<<<<<< HEAD
-	MCFG_SOUND_ADD("ymsnd", YM2610, 24000000 / 3)
-	MCFG_YM2610_IRQ_HANDLER(WRITELINE(neoprint_state, audio_cpu_irq))
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 
 	MCFG_SOUND_ADD("ymsnd", YM2610, 24000000 / 3)
 	MCFG_YM2610_IRQ_HANDLER(INPUTLINE("audiocpu", 0))
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(0, "lspeaker",  0.60)
 	MCFG_SOUND_ROUTE(0, "rspeaker", 0.60)
 	MCFG_SOUND_ROUTE(1, "lspeaker",  1.0)
@@ -755,11 +640,7 @@ ROM_END
 /* FIXME: get rid of these two, probably something to do with irq3 and camera / printer devices */
 DRIVER_INIT_MEMBER(neoprint_state,npcartv1)
 {
-<<<<<<< HEAD
-	UINT16 *ROM = (UINT16 *)memregion( "maincpu" )->base();
-=======
 	uint16_t *ROM = (uint16_t *)memregion( "maincpu" )->base();
->>>>>>> upstream/master
 
 	ROM[0x1260/2] = 0x4e71;
 
@@ -769,22 +650,14 @@ DRIVER_INIT_MEMBER(neoprint_state,npcartv1)
 
 DRIVER_INIT_MEMBER(neoprint_state,98best44)
 {
-<<<<<<< HEAD
-	UINT16 *ROM = (UINT16 *)memregion( "maincpu" )->base();
-=======
 	uint16_t *ROM = (uint16_t *)memregion( "maincpu" )->base();
->>>>>>> upstream/master
 
 	ROM[0x1312/2] = 0x4e71;
 }
 
 DRIVER_INIT_MEMBER(neoprint_state,nprsp)
 {
-<<<<<<< HEAD
-	UINT16 *ROM = (UINT16 *)memregion( "maincpu" )->base();
-=======
 	uint16_t *ROM = (uint16_t *)memregion( "maincpu" )->base();
->>>>>>> upstream/master
 
 	ROM[0x13a4/2] = 0x4e71;
 	ROM[0x13bc/2] = 0x4e71;
@@ -796,16 +669,6 @@ DRIVER_INIT_MEMBER(neoprint_state,nprsp)
 
 DRIVER_INIT_MEMBER(neoprint_state,unkneo)
 {
-<<<<<<< HEAD
-	UINT16 *ROM = (UINT16 *)memregion( "maincpu" )->base();
-	ROM[0x12c2/2] = 0x4e71;
-}
-
-GAME( 1996, neoprint,    0,        neoprint,    neoprint, neoprint_state,   unkneo,   ROT0, "SNK", "Neo Print (Japan) (T2d)", MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_GRAPHICS | MACHINE_NOT_WORKING )
-GAME( 1996, npcartv1,    0,        neoprint,    neoprint, neoprint_state,   npcartv1, ROT0, "SNK", "Neo Print V1 (World) (E1a)", MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_GRAPHICS | MACHINE_NOT_WORKING )
-GAME( 1998, 98best44,    0,        neoprint,    neoprint, neoprint_state,   98best44, ROT0, "SNK", "Neo Print - '98 NeoPri Best 44 (Japan) (T4i 3.07)", MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_GRAPHICS |  MACHINE_NOT_WORKING )
-GAME( 1996, nprsp,       0,        nprsp,       neoprint, neoprint_state,   nprsp,    ROT0, "SNK", "NeopriSP Retro Collection (Japan)", MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_GRAPHICS | MACHINE_NOT_WORKING )
-=======
 	uint16_t *ROM = (uint16_t *)memregion( "maincpu" )->base();
 	ROM[0x12c2/2] = 0x4e71;
 }
@@ -814,4 +677,3 @@ GAME( 1996, neoprint,    0,        neoprint,    neoprint, neoprint_state,   unkn
 GAME( 1996, npcartv1,    0,        neoprint,    neoprint, neoprint_state,   npcartv1, ROT0, "SNK", "Neo Print V1 (World) (E1a)",                        MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_GRAPHICS | MACHINE_NOT_WORKING )
 GAME( 1998, 98best44,    0,        neoprint,    neoprint, neoprint_state,   98best44, ROT0, "SNK", "Neo Print - '98 NeoPri Best 44 (Japan) (T4i 3.07)", MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_GRAPHICS | MACHINE_NOT_WORKING )
 GAME( 1996, nprsp,       0,        nprsp,       neoprint, neoprint_state,   nprsp,    ROT0, "SNK", "NeopriSP Retro Collection (Japan)",                 MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_GRAPHICS | MACHINE_NOT_WORKING )
->>>>>>> upstream/master

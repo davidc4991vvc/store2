@@ -7,15 +7,7 @@
 #ifdef HAVE_EXPAT_CONFIG_H
 #include <expat_config.h>
 #endif
-<<<<<<< HEAD
-#ifdef HAVE_CHECK_H
-#include <check.h>
-#else
 #include "minicheck.h"
-#endif
-=======
-#include "minicheck.h"
->>>>>>> upstream/master
 
 #include <assert.h>
 #include <stdio.h>

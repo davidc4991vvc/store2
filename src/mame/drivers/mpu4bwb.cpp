@@ -21,11 +21,6 @@
 
 */
 
-<<<<<<< HEAD
-
-
-=======
->>>>>>> upstream/master
 #include "emu.h"
 #include "includes/mpu4.h"
 
@@ -36,10 +31,6 @@ INPUT_PORTS_EXTERN( mpu4 );
 
 #define GAME_FLAGS (MACHINE_NOT_WORKING|MACHINE_REQUIRES_ARTWORK|MACHINE_MECHANICAL)
 
-<<<<<<< HEAD
-
-=======
->>>>>>> upstream/master
 #define M4BIGMT_EXTRA_ROMS \
 	ROM_REGION( 0x180000, "altmsm6376", 0 ) /* this is NOT the same, some samples are changed */ \
 	ROM_LOAD( "bigmsnd", 0x0000, 0x07db60, CRC(876c53ae) SHA1(ea2511ec9ba4ff67879212c6e2ba908873130a4e) ) \

@@ -1,24 +1,5 @@
 // license:BSD-3-Clause
 // copyright-holders:Ted Green
-<<<<<<< HEAD
-#include "es1373.h"
-
-#define LOG_ES            (0)
-#define LOG_ES_REG        (0)
-#define LOG_ES_FILE         (0)
-
-
-static MACHINE_CONFIG_FRAGMENT( es1373 )
-	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
-MACHINE_CONFIG_END
-
-machine_config_constructor es1373_device::device_mconfig_additions() const
-{
-	return MACHINE_CONFIG_NAME( es1373 );
-}
-
-const device_type ES1373 = &device_creator<es1373_device>;
-=======
 #include "emu.h"
 #include "es1373.h"
 
@@ -95,19 +76,13 @@ MACHINE_CONFIG_MEMBER( es1373_device::device_add_mconfig )
 MACHINE_CONFIG_END
 
 DEFINE_DEVICE_TYPE(ES1373, es1373_device, "es1373", "Creative Labs Ensoniq AudioPCI97 ES1373")
->>>>>>> upstream/master
 
 DEVICE_ADDRESS_MAP_START(map, 32, es1373_device)
 	AM_RANGE(0x00, 0x3f) AM_READWRITE  (reg_r,  reg_w)
 ADDRESS_MAP_END
 
-<<<<<<< HEAD
-es1373_device::es1373_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: pci_device(mconfig, ES1373, "Creative Labs Ensoniq AudioPCI97 ES1373", tag, owner, clock, "es1373", __FILE__),
-=======
 es1373_device::es1373_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: pci_device(mconfig, ES1373, tag, owner, clock),
->>>>>>> upstream/master
 		device_sound_interface(mconfig, *this), m_stream(nullptr),
 		m_eslog(nullptr), m_tempCount(0), m_timer(nullptr), m_memory_space(nullptr), m_cpu_tag(nullptr), m_cpu(nullptr),
 		m_irq_num(-1)
@@ -129,11 +104,7 @@ void es1373_device::device_stop()
 	if (LOG_ES_FILE && m_eslog)
 	{
 		fclose(m_eslog);
-<<<<<<< HEAD
-		m_eslog = NULL;
-=======
 		m_eslog = nullptr;
->>>>>>> upstream/master
 	}
 }
 
@@ -149,11 +120,6 @@ void es1373_device::device_start()
 	// create the stream
 	m_stream = machine().sound().stream_alloc(*this, 0, 2, 44100/2);
 
-<<<<<<< HEAD
-	m_timer = timer_alloc(0, NULL);
-	m_timer->adjust(attotime::zero, 0, attotime::from_hz(44100/2/16));
-
-=======
 	m_timer = timer_alloc(0, nullptr);
 	m_timer->adjust(attotime::zero, 0, attotime::from_hz(44100/2/16));
 
@@ -207,7 +173,6 @@ void es1373_device::device_start()
 void es1373_device::postload()
 {
 	remap_cb();
->>>>>>> upstream/master
 }
 
 void es1373_device::device_reset()
@@ -217,11 +182,7 @@ void es1373_device::device_reset()
 	if (LOG_ES_FILE && m_eslog)
 	{
 		fclose(m_eslog);
-<<<<<<< HEAD
-		m_eslog = NULL;
-=======
 		m_eslog = nullptr;
->>>>>>> upstream/master
 	}
 	if (LOG_ES_FILE && !m_eslog)
 		m_eslog = fopen("es.log", "w");
@@ -252,13 +213,8 @@ void es1373_device::device_reset()
 	m_stream->update();
 }
 
-<<<<<<< HEAD
-void es1373_device::map_extra(UINT64 memory_window_start, UINT64 memory_window_end, UINT64 memory_offset, address_space *memory_space,
-							UINT64 io_window_start, UINT64 io_window_end, UINT64 io_offset, address_space *io_space)
-=======
 void es1373_device::map_extra(uint64_t memory_window_start, uint64_t memory_window_end, uint64_t memory_offset, address_space *memory_space,
 							uint64_t io_window_start, uint64_t io_window_end, uint64_t io_offset, address_space *io_space)
->>>>>>> upstream/master
 {
 	m_memory_space = memory_space;
 }
@@ -337,11 +293,7 @@ void es1373_device::sound_stream_update(sound_stream &stream, stream_sample_t **
 //-------------------------------------------------
 //  send_audio_out - Sends channel audio output data
 //-------------------------------------------------
-<<<<<<< HEAD
-void es1373_device::send_audio_out(chan_info& chan, UINT32 intr_mask, stream_sample_t *outL, stream_sample_t *outR, int samples)
-=======
 void es1373_device::send_audio_out(chan_info& chan, uint32_t intr_mask, stream_sample_t *outL, stream_sample_t *outR, int samples)
->>>>>>> upstream/master
 {
 	// Only transfer PCI data if bus mastering is enabled
 	// Fill initial half buffer
@@ -349,11 +301,7 @@ void es1373_device::send_audio_out(chan_info& chan, uint32_t intr_mask, stream_s
 		chan.initialized = true;
 		transfer_pci_audio(chan, ES_PCI_READ);
 	}
-<<<<<<< HEAD
-	//UINT32 sample_size = calc_size(chan.format);
-=======
 	//uint32_t sample_size = calc_size(chan.format);
->>>>>>> upstream/master
 	// Send data to sound stream
 	bool buf_row_done;
 	for (int i=0; i<samples; i++) {
@@ -380,31 +328,18 @@ void es1373_device::send_audio_out(chan_info& chan, uint32_t intr_mask, stream_s
 						// The sound cache is 32 bit wide fifo, so each entry is two mono 16 bit samples
 						if ((chan.buf_count&0x1)) {
 							// Read high 16 bits
-<<<<<<< HEAD
-							outL[i] = outR[i] = (INT16)(m_sound_cache[chan.buf_rptr]>>16);
-=======
 							outL[i] = outR[i] = (int16_t)(m_sound_cache[chan.buf_rptr]>>16);
->>>>>>> upstream/master
 							chan.buf_rptr++;
 							buf_row_done = true;
 						} else {
 							// Read low 16 bits
-<<<<<<< HEAD
-							outL[i] = outR[i] = (INT16)(m_sound_cache[chan.buf_rptr]&0xffff);
-=======
 							outL[i] = outR[i] = (int16_t)(m_sound_cache[chan.buf_rptr]&0xffff);
->>>>>>> upstream/master
 						}
 					break;
 				case SCTRL_16BIT_STEREO:
 						// The sound cache is 32 bit wide fifo, so each entry is one stereo 16 bit sample
-<<<<<<< HEAD
-						outL[i] = (INT16) m_sound_cache[chan.buf_rptr]&0xffff;
-						outR[i] = (INT16) m_sound_cache[chan.buf_rptr]>>16;
-=======
 						outL[i] = (int16_t) m_sound_cache[chan.buf_rptr]&0xffff;
 						outR[i] = (int16_t) m_sound_cache[chan.buf_rptr]>>16;
->>>>>>> upstream/master
 						chan.buf_rptr++;
 						buf_row_done = true;
 					break;
@@ -443,11 +378,7 @@ void es1373_device::send_audio_out(chan_info& chan, uint32_t intr_mask, stream_s
 
 void es1373_device::transfer_pci_audio(chan_info& chan, int type)
 {
-<<<<<<< HEAD
-	UINT32 pci_addr, data;
-=======
 	uint32_t pci_addr, data;
->>>>>>> upstream/master
 	pci_addr = chan.pci_addr + (chan.pci_count<<2);
 	if (LOG_ES)
 		logerror("%s: transfer_pci_audio start chan: %X pci_addr: %08X pci_count: %X pci_size: %X buf_rptr: %X buf_wptr: %X\n",
@@ -476,11 +407,7 @@ void es1373_device::transfer_pci_audio(chan_info& chan, int type)
 	}
 }
 
-<<<<<<< HEAD
-UINT32 es1373_device::calc_size(const UINT8 &format)
-=======
 uint32_t es1373_device::calc_size(const uint8_t &format)
->>>>>>> upstream/master
 {
 	switch (format) {
 		case SCTRL_8BIT_MONO:
@@ -502,11 +429,7 @@ uint32_t es1373_device::calc_size(const uint8_t &format)
 
 READ32_MEMBER (es1373_device::reg_r)
 {
-<<<<<<< HEAD
-	UINT32 result = m_es_regs[offset];
-=======
 	uint32_t result = m_es_regs[offset];
->>>>>>> upstream/master
 	switch (offset) {
 		case ES_CODEC:
 			break;

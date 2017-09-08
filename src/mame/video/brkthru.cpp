@@ -36,11 +36,7 @@
 
 PALETTE_INIT_MEMBER(brkthru_state, brkthru)
 {
-<<<<<<< HEAD
-	const UINT8 *color_prom = memregion("proms")->base();
-=======
 	const uint8_t *color_prom = memregion("proms")->base();
->>>>>>> upstream/master
 	int i;
 
 	for (i = 0; i < palette.entries(); i++)
@@ -101,11 +97,7 @@ WRITE8_MEMBER(brkthru_state::brkthru_bgram_w)
 
 TILE_GET_INFO_MEMBER(brkthru_state::get_fg_tile_info)
 {
-<<<<<<< HEAD
-	UINT8 code = m_fg_videoram[tile_index];
-=======
 	uint8_t code = m_fg_videoram[tile_index];
->>>>>>> upstream/master
 	SET_TILE_INFO_MEMBER(0, code, 0, 0);
 }
 
@@ -117,13 +109,8 @@ WRITE8_MEMBER(brkthru_state::brkthru_fgram_w)
 
 void brkthru_state::video_start()
 {
-<<<<<<< HEAD
-	m_fg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(brkthru_state::get_fg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(brkthru_state::get_bg_tile_info),this), TILEMAP_SCAN_COLS, 16, 16, 32, 16);
-=======
 	m_fg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(brkthru_state::get_fg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
 	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(brkthru_state::get_bg_tile_info),this), TILEMAP_SCAN_COLS, 16, 16, 32, 16);
->>>>>>> upstream/master
 
 	m_fg_tilemap->set_transparent_pen(0);
 	m_bg_tilemap->set_transparent_pen(0);
@@ -162,11 +149,7 @@ WRITE8_MEMBER(brkthru_state::brkthru_1800_w)
 
 
 #if 0
-<<<<<<< HEAD
-void brkthru_state::show_register( bitmap_ind16 &bitmap, int x, int y, UINT32 data )
-=======
 void brkthru_state::show_register( bitmap_ind16 &bitmap, int x, int y, uint32_t data )
->>>>>>> upstream/master
 {
 	char buf[5];
 
@@ -259,11 +242,7 @@ void brkthru_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprec
 	}
 }
 
-<<<<<<< HEAD
-UINT32 brkthru_state::screen_update_brkthru(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t brkthru_state::screen_update_brkthru(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	m_bg_tilemap->set_scrollx(0, m_bgscroll);
 	m_bg_tilemap->draw(screen, bitmap, cliprect, TILEMAP_DRAW_OPAQUE, 0);
@@ -280,11 +259,7 @@ uint32_t brkthru_state::screen_update_brkthru(screen_device &screen, bitmap_ind1
 	/* fg layer */
 	m_fg_tilemap->draw(screen, bitmap, cliprect, 0, 0);
 
-<<<<<<< HEAD
-/*  show_register(bitmap, 8, 8, (UINT32)m_flipscreen); */
-=======
 /*  show_register(bitmap, 8, 8, (uint32_t)m_flipscreen); */
->>>>>>> upstream/master
 
 	return 0;
 }

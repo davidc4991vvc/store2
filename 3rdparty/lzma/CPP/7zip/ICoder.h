@@ -10,8 +10,6 @@
 CODER_INTERFACE(ICompressProgressInfo, 0x04)
 {
   STDMETHOD(SetRatioInfo)(const UInt64 *inSize, const UInt64 *outSize) PURE;
-<<<<<<< HEAD
-=======
   
   /* (inSize) can be NULL, if unknown
      (outSize) can be NULL, if unknown
@@ -21,7 +19,6 @@ CODER_INTERFACE(ICompressProgressInfo, 0x04)
     E_ABORT  : Break by user
     another error codes
   */
->>>>>>> upstream/master
 };
 
 CODER_INTERFACE(ICompressCoder, 0x05)
@@ -33,13 +30,6 @@ CODER_INTERFACE(ICompressCoder, 0x05)
 
 CODER_INTERFACE(ICompressCoder2, 0x18)
 {
-<<<<<<< HEAD
-  STDMETHOD(Code)(ISequentialInStream **inStreams, const UInt64 **inSizes, UInt32 numInStreams,
-      ISequentialOutStream **outStreams, const UInt64 **outSizes, UInt32 numOutStreams,
-      ICompressProgressInfo *progress) PURE;
-};
-
-=======
   STDMETHOD(Code)(ISequentialInStream * const *inStreams, const UInt64 * const *inSizes, UInt32 numInStreams,
       ISequentialOutStream * const *outStreams, const UInt64 * const *outSizes, UInt32 numOutStreams,
       ICompressProgressInfo *progress) PURE;
@@ -109,7 +99,6 @@ CODER_INTERFACE(ICompressCoder2, 0x18)
 */
 
 
->>>>>>> upstream/master
 namespace NCoderPropID
 {
   enum EEnum
@@ -148,15 +137,12 @@ CODER_INTERFACE(ICompressSetCoderProperties, 0x21)
 
 CODER_INTERFACE(ICompressSetDecoderProperties2, 0x22)
 {
-<<<<<<< HEAD
-=======
   /* returns:
     S_OK
     E_NOTIMP      : unsupported properties
     E_INVALIDARG  : incorrect (or unsupported) properties
     E_OUTOFMEMORY : memory allocation error
   */
->>>>>>> upstream/master
   STDMETHOD(SetDecoderProperties2)(const Byte *data, UInt32 size) PURE;
 };
 
@@ -175,11 +161,6 @@ CODER_INTERFACE(ICompressSetCoderMt, 0x25)
   STDMETHOD(SetNumberOfThreads)(UInt32 numThreads) PURE;
 };
 
-<<<<<<< HEAD
-CODER_INTERFACE(ICompressGetSubStreamSize, 0x30)
-{
-  STDMETHOD(GetSubStreamSize)(UInt64 subStream, UInt64 *value) PURE;
-=======
 CODER_INTERFACE(ICompressSetFinishMode, 0x26)
 {
   STDMETHOD(SetFinishMode)(UInt32 finishMode) PURE;
@@ -208,7 +189,6 @@ CODER_INTERFACE(ICompressGetSubStreamSize, 0x30)
       subStream++;
     }
   */
->>>>>>> upstream/master
 };
 
 CODER_INTERFACE(ICompressSetInStream, 0x31)
@@ -223,30 +203,21 @@ CODER_INTERFACE(ICompressSetOutStream, 0x32)
   STDMETHOD(ReleaseOutStream)() PURE;
 };
 
-<<<<<<< HEAD
-=======
 /*
->>>>>>> upstream/master
 CODER_INTERFACE(ICompressSetInStreamSize, 0x33)
 {
   STDMETHOD(SetInStreamSize)(const UInt64 *inSize) PURE;
 };
-<<<<<<< HEAD
-=======
 */
->>>>>>> upstream/master
 
 CODER_INTERFACE(ICompressSetOutStreamSize, 0x34)
 {
   STDMETHOD(SetOutStreamSize)(const UInt64 *outSize) PURE;
-<<<<<<< HEAD
-=======
 
   /* That function initializes decoder structures.
      Call this function only for stream version of decoder.
        if (outSize == NULL), then output size is unknown
        if (outSize != NULL), then the decoder must stop decoding after (*outSize) bytes. */
->>>>>>> upstream/master
 };
 
 CODER_INTERFACE(ICompressSetBufSize, 0x35)
@@ -255,23 +226,6 @@ CODER_INTERFACE(ICompressSetBufSize, 0x35)
   STDMETHOD(SetOutBufSize)(UInt32 streamIndex, UInt32 size) PURE;
 };
 
-<<<<<<< HEAD
-CODER_INTERFACE(ICompressFilter, 0x40)
-{
-  STDMETHOD(Init)() PURE;
-  STDMETHOD_(UInt32, Filter)(Byte *data, UInt32 size) PURE;
-  // Filter converts as most as possible bytes
-  // Filter return outSize (UInt32)
-  // if (outSize <= size): Filter have converted outSize bytes
-  // if (outSize > size): Filter have not converted anything.
-  //      and it needs at least outSize bytes to convert one block
-  //      (it's for crypto block algorithms).
-};
-
-CODER_INTERFACE(ICompressCodecsInfo, 0x60)
-{
-  STDMETHOD(GetNumberOfMethods)(UInt32 *numMethods) PURE;
-=======
 CODER_INTERFACE(ICompressInitEncoder, 0x36)
 {
   STDMETHOD(InitEncoder)() PURE;
@@ -323,15 +277,11 @@ CODER_INTERFACE(ICompressFilter, 0x40)
 CODER_INTERFACE(ICompressCodecsInfo, 0x60)
 {
   STDMETHOD(GetNumMethods)(UInt32 *numMethods) PURE;
->>>>>>> upstream/master
   STDMETHOD(GetProperty)(UInt32 index, PROPID propID, PROPVARIANT *value) PURE;
   STDMETHOD(CreateDecoder)(UInt32 index, const GUID *iid, void **coder) PURE;
   STDMETHOD(CreateEncoder)(UInt32 index, const GUID *iid, void **coder) PURE;
 };
-<<<<<<< HEAD
-=======
 
->>>>>>> upstream/master
 CODER_INTERFACE(ISetCompressCodecsInfo, 0x61)
 {
   STDMETHOD(SetCompressCodecsInfo)(ICompressCodecsInfo *compressCodecsInfo) PURE;
@@ -353,13 +303,10 @@ CODER_INTERFACE(ICryptoResetSalt, 0x88)
 CODER_INTERFACE(ICryptoResetInitVector, 0x8C)
 {
   STDMETHOD(ResetInitVector)() PURE;
-<<<<<<< HEAD
-=======
 
   /* Call ResetInitVector() only for encoding.
      Call ResetInitVector() before encoding and before WriteCoderProperties().
      Crypto encoder can create random IV in that function. */
->>>>>>> upstream/master
 };
 
 CODER_INTERFACE(ICryptoSetPassword, 0x90)
@@ -372,12 +319,7 @@ CODER_INTERFACE(ICryptoSetCRC, 0xA0)
   STDMETHOD(CryptoSetCRC)(UInt32 crc) PURE;
 };
 
-<<<<<<< HEAD
-//////////////////////
-// It's for DLL file
-=======
 
->>>>>>> upstream/master
 namespace NMethodPropID
 {
   enum EEnum
@@ -386,16 +328,6 @@ namespace NMethodPropID
     kName,
     kDecoder,
     kEncoder,
-<<<<<<< HEAD
-    kInStreams,
-    kOutStreams,
-    kDescription,
-    kDecoderIsAssigned,
-    kEncoderIsAssigned
-  };
-}
-
-=======
     kPackStreams,
     kUnpackStreams,
     kDescription,
@@ -436,5 +368,4 @@ extern "C"
   typedef HRESULT (WINAPI *Func_SetCodecs)(ICompressCodecsInfo *compressCodecsInfo);
 }
 
->>>>>>> upstream/master
 #endif

@@ -167,24 +167,6 @@
 
 struct PXA255_DMA_Regs
 {
-<<<<<<< HEAD
-	UINT32 dcsr[16];
-
-	UINT32 pad0[44];
-
-	UINT32 dint;
-
-	UINT32 pad1[3];
-
-	UINT32 drcmr[40];
-
-	UINT32 pad2[24];
-
-	UINT32 ddadr[16];
-	UINT32 dsadr[16];
-	UINT32 dtadr[16];
-	UINT32 dcmd[16];
-=======
 	uint32_t dcsr[16];
 
 	uint32_t pad0[44];
@@ -201,7 +183,6 @@ struct PXA255_DMA_Regs
 	uint32_t dsadr[16];
 	uint32_t dtadr[16];
 	uint32_t dcmd[16];
->>>>>>> upstream/master
 
 	emu_timer* timer[16];
 };
@@ -253,27 +234,6 @@ struct PXA255_DMA_Regs
 
 struct PXA255_I2S_Regs
 {
-<<<<<<< HEAD
-	UINT32 sacr0;
-	UINT32 sacr1;
-
-	UINT32 pad0;
-
-	UINT32 sasr0;
-
-	UINT32 pad1;
-
-	UINT32 saimr;
-	UINT32 saicr;
-
-	UINT32 pad2[17];
-
-	UINT32 sadiv;
-
-	UINT32 pad3[6];
-
-	UINT32 sadr;
-=======
 	uint32_t sacr0;
 	uint32_t sacr1;
 
@@ -293,7 +253,6 @@ struct PXA255_I2S_Regs
 	uint32_t pad3[6];
 
 	uint32_t sadr;
->>>>>>> upstream/master
 };
 
 /*
@@ -324,19 +283,11 @@ struct PXA255_I2S_Regs
 
 struct PXA255_OSTMR_Regs
 {
-<<<<<<< HEAD
-	UINT32 osmr[4];
-	UINT32 oscr;
-	UINT32 ossr;
-	UINT32 ower;
-	UINT32 oier;
-=======
 	uint32_t osmr[4];
 	uint32_t oscr;
 	uint32_t ossr;
 	uint32_t ower;
 	uint32_t oier;
->>>>>>> upstream/master
 
 	emu_timer* timer[4];
 };
@@ -384,21 +335,12 @@ struct PXA255_OSTMR_Regs
 
 struct PXA255_INTC_Regs
 {
-<<<<<<< HEAD
-	UINT32 icip;
-	UINT32 icmr;
-	UINT32 iclr;
-	UINT32 icfp;
-	UINT32 icpr;
-	UINT32 iccr;
-=======
 	uint32_t icip;
 	uint32_t icmr;
 	uint32_t iclr;
 	uint32_t icfp;
 	uint32_t icpr;
 	uint32_t iccr;
->>>>>>> upstream/master
 };
 
 /*
@@ -440,42 +382,6 @@ struct PXA255_INTC_Regs
 
 struct PXA255_GPIO_Regs
 {
-<<<<<<< HEAD
-	UINT32 gplr0; // GPIO Pin-Leve
-	UINT32 gplr1;
-	UINT32 gplr2;
-
-	UINT32 gpdr0;
-	UINT32 gpdr1;
-	UINT32 gpdr2;
-
-	UINT32 gpsr0;
-	UINT32 gpsr1;
-	UINT32 gpsr2;
-
-	UINT32 gpcr0;
-	UINT32 gpcr1;
-	UINT32 gpcr2;
-
-	UINT32 grer0;
-	UINT32 grer1;
-	UINT32 grer2;
-
-	UINT32 gfer0;
-	UINT32 gfer1;
-	UINT32 gfer2;
-
-	UINT32 gedr0;
-	UINT32 gedr1;
-	UINT32 gedr2;
-
-	UINT32 gafr0l;
-	UINT32 gafr0u;
-	UINT32 gafr1l;
-	UINT32 gafr1u;
-	UINT32 gafr2l;
-	UINT32 gafr2u;
-=======
 	uint32_t gplr0; // GPIO Pin-Leve
 	uint32_t gplr1;
 	uint32_t gplr2;
@@ -510,7 +416,6 @@ struct PXA255_GPIO_Regs
 	uint32_t gafr1u;
 	uint32_t gafr2l;
 	uint32_t gafr2u;
->>>>>>> upstream/master
 };
 
 /*
@@ -575,41 +480,15 @@ struct PXA255_GPIO_Regs
 
 struct PXA255_LCD_DMA_Regs
 {
-<<<<<<< HEAD
-	UINT32 fdadr;
-	UINT32 fsadr;
-	UINT32 fidr;
-	UINT32 ldcmd;
-=======
 	uint32_t fdadr;
 	uint32_t fsadr;
 	uint32_t fidr;
 	uint32_t ldcmd;
->>>>>>> upstream/master
 	emu_timer *eof;
 };
 
 struct PXA255_LCD_Regs
 {
-<<<<<<< HEAD
-	UINT32 lccr0;
-	UINT32 lccr1;
-	UINT32 lccr2;
-	UINT32 lccr3;
-
-	UINT32 pad0[4];
-
-	UINT32 fbr[2];
-
-	UINT32 pad1[4];
-
-	UINT32 lcsr;
-	UINT32 liidr;
-	UINT32 trgbr;
-	UINT32 tcr;
-
-	UINT32 pad2[110];
-=======
 	uint32_t lccr0;
 	uint32_t lccr1;
 	uint32_t lccr2;
@@ -627,7 +506,6 @@ struct PXA255_LCD_Regs
 	uint32_t tcr;
 
 	uint32_t pad2[110];
->>>>>>> upstream/master
 
 	PXA255_LCD_DMA_Regs dma[2];
 };

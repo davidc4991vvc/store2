@@ -16,10 +16,6 @@
 #include "emu.h"
 #include "formats/imageutl.h"
 #include "flopdrv.h"
-<<<<<<< HEAD
-#include "image.h"
-=======
->>>>>>> upstream/master
 
 #define VERBOSE     0
 #define LOG(x) do { if (VERBOSE) logerror x; } while (0)
@@ -85,11 +81,7 @@ void legacy_floppy_image_device::flopimg_get_id_callback(chrn_id *id, int id_ind
 {
 	int cylinder, sector, N;
 	unsigned long flags;
-<<<<<<< HEAD
-	UINT32 sector_length;
-=======
 	uint32_t sector_length;
->>>>>>> upstream/master
 
 	if (!m_floppy)
 		return;
@@ -111,11 +103,7 @@ void legacy_floppy_image_device::log_readwrite(const char *name, int head, int t
 	char membuf[1024];
 	int i;
 	for (i = 0; i < length; i++)
-<<<<<<< HEAD
-		sprintf(membuf + i*2, "%02x", (int) (UINT8) buf[i]);
-=======
 		sprintf(membuf + i*2, "%02x", (int) (uint8_t) buf[i]);
->>>>>>> upstream/master
 	logerror("%s:  head=%i track=%i sector=%i buffer='%s'\n", name, head, track, sector, membuf);
 }
 
@@ -135,19 +123,11 @@ void legacy_floppy_image_device::floppy_drive_init()
 {
 	/* initialise flags */
 	m_flags = 0;
-<<<<<<< HEAD
-	m_index_pulse_callback = NULL;
-	m_index_timer = machine().scheduler().timer_alloc(timer_expired_delegate(FUNC(legacy_floppy_image_device::floppy_drive_index_callback),this));
-	m_idx = 0;
-
-	floppy_drive_set_geometry(((floppy_interface*)static_config())->floppy_type);
-=======
 	m_index_pulse_callback = nullptr;
 	m_index_timer = machine().scheduler().timer_alloc(timer_expired_delegate(FUNC(legacy_floppy_image_device::floppy_drive_index_callback),this));
 	m_idx = 0;
 
 	floppy_drive_set_geometry(m_config->floppy_type);
->>>>>>> upstream/master
 
 	/* initialise id index - not so important */
 	m_id_index = 0;
@@ -157,11 +137,7 @@ void legacy_floppy_image_device::floppy_drive_init()
 	/* default RPM */
 	m_rpm = 300;
 
-<<<<<<< HEAD
-	m_controller = NULL;
-=======
 	m_controller = nullptr;
->>>>>>> upstream/master
 
 	m_floppy_drive_type = FLOPPY_TYPE_REGULAR;
 }
@@ -399,11 +375,7 @@ void legacy_floppy_image_device::floppy_drive_write_sector_data(int side, int in
 	}
 }
 
-<<<<<<< HEAD
-void legacy_floppy_image_device::floppy_install_load_proc(void (*proc)(device_image_interface &image))
-=======
 void legacy_floppy_image_device::floppy_install_load_proc(void (*proc)(device_image_interface &image, bool is_created))
->>>>>>> upstream/master
 {
 	m_load_proc = proc;
 }
@@ -424,11 +396,7 @@ int legacy_floppy_image_device::floppy_drive_get_current_track()
 	return m_current_track;
 }
 
-<<<<<<< HEAD
-UINT64 legacy_floppy_image_device::floppy_drive_get_current_track_size(int head)
-=======
 uint64_t legacy_floppy_image_device::floppy_drive_get_current_track_size(int head)
->>>>>>> upstream/master
 {
 	int size = 0;
 	if (exists())
@@ -449,31 +417,17 @@ void legacy_floppy_image_device::floppy_drive_set_controller(device_t *controlle
 	m_controller = controller;
 }
 
-<<<<<<< HEAD
-int legacy_floppy_image_device::internal_floppy_device_load(int create_format, option_resolution *create_args)
-=======
 image_init_result legacy_floppy_image_device::internal_floppy_device_load(bool is_create, int create_format, util::option_resolution *create_args)
->>>>>>> upstream/master
 {
 	floperr_t err;
 	const struct FloppyFormat *floppy_options;
 	int floppy_flags, i;
-<<<<<<< HEAD
-	const char *extension;
-
-	device_image_interface *image = NULL;
-	interface(image);   /* figure out the floppy options */
-	floppy_options = ((floppy_interface*)static_config())->formats;
-
-	if (has_been_created())
-=======
 
 	device_image_interface *image = nullptr;
 	interface(image);   /* figure out the floppy options */
 	floppy_options = m_config->formats;
 
 	if (is_create)
->>>>>>> upstream/master
 	{
 		/* creating an image */
 		assert(create_format >= 0);
@@ -485,12 +439,7 @@ image_init_result legacy_floppy_image_device::internal_floppy_device_load(bool i
 	{
 		/* opening an image */
 		floppy_flags = !is_readonly() ? FLOPPY_FLAGS_READWRITE : FLOPPY_FLAGS_READONLY;
-<<<<<<< HEAD
-		extension = filetype();
-		err = floppy_open_choices((void *) image, &image_ioprocs, extension, floppy_options, floppy_flags, &m_floppy);
-=======
 		err = floppy_open_choices((void *) image, &image_ioprocs, filetype(), floppy_options, floppy_flags, &m_floppy);
->>>>>>> upstream/master
 		if (err)
 			goto error;
 	}
@@ -501,15 +450,11 @@ image_init_result legacy_floppy_image_device::internal_floppy_device_load(bool i
 	/* disk changed */
 	m_dskchg = CLEAR_LINE;
 
-<<<<<<< HEAD
-	return IMAGE_INIT_PASS;
-=======
 	// If we have one of our hacky load procs, call it
 	if (m_load_proc)
 		m_load_proc(*this, is_create);
 
 	return image_init_result::PASS;
->>>>>>> upstream/master
 
 error:
 	for (i = 0; i < ARRAY_LENGTH(errmap); i++)
@@ -517,11 +462,7 @@ error:
 		if (err == errmap[i].ferr)
 			seterror(errmap[i].ierr, errmap[i].message);
 	}
-<<<<<<< HEAD
-	return IMAGE_INIT_FAIL;
-=======
 	return image_init_result::FAIL;
->>>>>>> upstream/master
 }
 
 TIMER_CALLBACK_MEMBER( legacy_floppy_image_device::set_wpt )
@@ -538,11 +479,7 @@ legacy_floppy_image_device *floppy_get_device(running_machine &machine,int drive
 		case 2 : return machine.device<legacy_floppy_image_device>(FLOPPY_2);
 		case 3 : return machine.device<legacy_floppy_image_device>(FLOPPY_3);
 	}
-<<<<<<< HEAD
-	return NULL;
-=======
 	return nullptr;
->>>>>>> upstream/master
 }
 
 int legacy_floppy_image_device::floppy_get_drive_type()
@@ -568,11 +505,7 @@ legacy_floppy_image_device *floppy_get_device_by_type(running_machine &machine,i
 			cnt++;
 		}
 	}
-<<<<<<< HEAD
-	return NULL;
-=======
 	return nullptr;
->>>>>>> upstream/master
 }
 
 int floppy_get_drive(device_t *image)
@@ -708,13 +641,10 @@ WRITE_LINE_MEMBER( legacy_floppy_image_device::floppy_stp_w )
 
 		/* update track 0 line with new status */
 		//m_out_tk00_func(m_tk00);
-<<<<<<< HEAD
-=======
 
 		/* inform disk image of step operation so it can cache information */
 		if (exists())
 			m_track = m_current_track;
->>>>>>> upstream/master
 	}
 
 	m_stp = state;
@@ -747,11 +677,7 @@ READ_LINE_MEMBER( legacy_floppy_image_device::floppy_dskchg_r )
 /* 2-sided disk */
 READ_LINE_MEMBER( legacy_floppy_image_device::floppy_twosid_r )
 {
-<<<<<<< HEAD
-	if (m_floppy == NULL)
-=======
 	if (m_floppy == nullptr)
->>>>>>> upstream/master
 		return ASSERT_LINE;
 	else
 		return !floppy_get_heads_per_disk(m_floppy);
@@ -768,54 +694,12 @@ READ_LINE_MEMBER( legacy_floppy_image_device::floppy_ready_r )
 }
 
 // device type definition
-<<<<<<< HEAD
-const device_type LEGACY_FLOPPY = &device_creator<legacy_floppy_image_device>;
-=======
 DEFINE_DEVICE_TYPE(LEGACY_FLOPPY, legacy_floppy_image_device, "legacy_floppy_image", "Floppy Disk")
->>>>>>> upstream/master
 
 //-------------------------------------------------
 //  legacy_floppy_image_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-legacy_floppy_image_device::legacy_floppy_image_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, LEGACY_FLOPPY, "Floppy Disk", tag, owner, clock, "legacy_floppy_image", __FILE__),
-		device_image_interface(mconfig, *this),
-		m_out_idx_func(*this),
-		m_drtn(0),
-		m_stp(0),
-		m_wtg(0),
-		m_mon(0),
-		m_idx(0),
-		m_tk00(0),
-		m_wpt(0),
-		m_rdy(0),
-		m_dskchg(0),
-		m_drive_id(0),
-		m_active(0),
-		m_config(NULL),
-		m_flags(0),
-		m_max_track(0),
-		m_num_sides(0),
-		m_current_track(0),
-		m_index_timer(NULL),
-		m_index_pulse_callback(NULL),
-		m_rpm(0.0f),
-		m_id_index(0),
-		m_controller(NULL),
-		m_floppy(NULL),
-		m_track(0),
-		m_load_proc(NULL),
-		m_unload_proc(NULL),
-		m_floppy_drive_type(0)
-{
-	memset(&m_extension_list,0,sizeof(m_extension_list));
-}
-
-legacy_floppy_image_device::legacy_floppy_image_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source)
-	: device_t(mconfig, type, name, tag, owner, clock, shortname, source),
-=======
 legacy_floppy_image_device::legacy_floppy_image_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: legacy_floppy_image_device(mconfig, LEGACY_FLOPPY, tag, owner, clock)
 {
@@ -823,7 +707,6 @@ legacy_floppy_image_device::legacy_floppy_image_device(const machine_config &mco
 
 legacy_floppy_image_device::legacy_floppy_image_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, type, tag, owner, clock),
->>>>>>> upstream/master
 		device_image_interface(mconfig, *this),
 		m_out_idx_func(*this),
 		m_drtn(0),
@@ -837,26 +720,11 @@ legacy_floppy_image_device::legacy_floppy_image_device(const machine_config &mco
 		m_dskchg(0),
 		m_drive_id(0),
 		m_active(0),
-<<<<<<< HEAD
-		m_config(NULL),
-=======
 		m_config(nullptr),
->>>>>>> upstream/master
 		m_flags(0),
 		m_max_track(0),
 		m_num_sides(0),
 		m_current_track(0),
-<<<<<<< HEAD
-		m_index_timer(NULL),
-		m_index_pulse_callback(NULL),
-		m_rpm(0.0f),
-		m_id_index(0),
-		m_controller(NULL),
-		m_floppy(NULL),
-		m_track(0),
-		m_load_proc(NULL),
-		m_unload_proc(NULL),
-=======
 		m_index_timer(nullptr),
 		m_index_pulse_callback(nullptr),
 		m_rpm(0.0f),
@@ -866,7 +734,6 @@ legacy_floppy_image_device::legacy_floppy_image_device(const machine_config &mco
 		m_track(0),
 		m_load_proc(nullptr),
 		m_unload_proc(nullptr),
->>>>>>> upstream/master
 		m_floppy_drive_type(0)
 {
 	memset(&m_extension_list,0,sizeof(m_extension_list));
@@ -886,18 +753,10 @@ legacy_floppy_image_device::~legacy_floppy_image_device()
 
 void legacy_floppy_image_device::device_start()
 {
-<<<<<<< HEAD
-	m_config = (const floppy_interface*)static_config();
-	floppy_drive_init();
-
-	m_drive_id = floppy_get_drive(this);
-	m_active = FALSE;
-=======
 	floppy_drive_init();
 
 	m_drive_id = floppy_get_drive(this);
 	m_active = false;
->>>>>>> upstream/master
 
 	/* resolve callbacks */
 	m_out_idx_func.resolve_safe();
@@ -933,36 +792,6 @@ void legacy_floppy_image_device::device_start()
 void legacy_floppy_image_device::device_config_complete()
 {
 	m_extension_list[0] = '\0';
-<<<<<<< HEAD
-	const struct FloppyFormat *floppy_options = ((floppy_interface*)static_config())->formats;
-	for (int i = 0; floppy_options[i].construct; i++)
-	{
-		// only add if creatable
-		if (floppy_options[i].param_guidelines) {
-			// allocate a new format and append it to the list
-			m_formatlist.append(*global_alloc(image_device_format(floppy_options[i].name, floppy_options[i].description, floppy_options[i].extensions, floppy_options[i].param_guidelines)));
-		}
-		image_specify_extension( m_extension_list, 256, floppy_options[i].extensions );
-	}
-
-	// set brief and instance name
-	update_names();
-}
-
-bool legacy_floppy_image_device::call_create(int format_type, option_resolution *format_options)
-{
-	return internal_floppy_device_load(format_type, format_options);
-}
-
-bool legacy_floppy_image_device::call_load()
-{
-	int retVal = internal_floppy_device_load(-1, NULL);
-	if (retVal==IMAGE_INIT_PASS) {
-		/* if we have one of our hacky unload procs, call it */
-		if (m_load_proc)
-			m_load_proc(*this);
-	}
-=======
 	if (m_config)
 	{
 		const struct FloppyFormat *floppy_options = m_config->formats;
@@ -986,7 +815,6 @@ image_init_result legacy_floppy_image_device::call_create(int format_type, util:
 image_init_result legacy_floppy_image_device::call_load()
 {
 	image_init_result retVal = internal_floppy_device_load(false, -1, nullptr);
->>>>>>> upstream/master
 
 	/* push disk halfway into drive */
 	m_wpt = CLEAR_LINE;
@@ -1011,11 +839,7 @@ void legacy_floppy_image_device::call_unload()
 		m_unload_proc(*this);
 
 	floppy_close(m_floppy);
-<<<<<<< HEAD
-	m_floppy = NULL;
-=======
 	m_floppy = nullptr;
->>>>>>> upstream/master
 
 	/* disk changed */
 	m_dskchg = CLEAR_LINE;
@@ -1032,15 +856,9 @@ void legacy_floppy_image_device::call_unload()
 bool legacy_floppy_image_device::is_creatable() const
 {
 	int cnt = 0;
-<<<<<<< HEAD
-	if (static_config() )
-	{
-		const struct FloppyFormat *floppy_options = ((floppy_interface*)static_config())->formats;
-=======
 	if (m_config != nullptr)
 	{
 		const struct FloppyFormat *floppy_options = m_config->formats;
->>>>>>> upstream/master
 		int i;
 		for ( i = 0; floppy_options[i].construct; i++ ) {
 			if(floppy_options[i].param_guidelines) cnt++;
@@ -1051,9 +869,5 @@ bool legacy_floppy_image_device::is_creatable() const
 
 const char *legacy_floppy_image_device::image_interface() const
 {
-<<<<<<< HEAD
-	return ((floppy_interface *)static_config())->interface;
-=======
 	return m_config->interface;
->>>>>>> upstream/master
 }

@@ -5,15 +5,6 @@
  *
  */
 
-<<<<<<< HEAD
-#include "d9060hd.h"
-
-// device type definition
-const device_type D9060HD = &device_creator<d9060hd_device>;
-
-d9060hd_device::d9060hd_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: scsihd_device(mconfig, D9060HD, "D9060HD", tag, owner, clock, "d9060hd", __FILE__)
-=======
 #include "emu.h"
 #include "d9060hd.h"
 
@@ -22,7 +13,6 @@ DEFINE_DEVICE_TYPE(D9060HD, d9060hd_device, "d9060hd", "D9060HD")
 
 d9060hd_device::d9060hd_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: scsihd_device(mconfig, D9060HD, tag, owner, clock)
->>>>>>> upstream/master
 {
 }
 

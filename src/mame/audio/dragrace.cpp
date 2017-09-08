@@ -1,10 +1,5 @@
-<<<<<<< HEAD
-// license:???
-// copyright-holders:Stefan Jokisch
-=======
 // license:BSD-3-Clause
 // copyright-holders:Derrick Renaud
->>>>>>> upstream/master
 /*************************************************************************
 
     audio\dragrace.c

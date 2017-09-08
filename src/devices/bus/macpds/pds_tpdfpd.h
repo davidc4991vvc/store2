@@ -1,19 +1,10 @@
 // license:BSD-3-Clause
 // copyright-holders:R. Belmont
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __PDS_SEDISPLAY_H__
-#define __PDS_SEDISPLAY_H__
-
-#include "emu.h"
-=======
 #ifndef MAME_BUS_PDS_TPDFPD_H
 #define MAME_BUS_PDS_TPDFPD_H
 
 #pragma once
 
->>>>>>> upstream/master
 #include "macpds.h"
 
 //**************************************************************************
@@ -28,34 +19,6 @@ class macpds_sedisplay_device :
 		public device_macpds_card_interface
 {
 public:
-<<<<<<< HEAD
-		// construction/destruction
-		macpds_sedisplay_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-		macpds_sedisplay_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source);
-
-		// optional information overrides
-		virtual machine_config_constructor device_mconfig_additions() const;
-		virtual const rom_entry *device_rom_region() const;
-
-		UINT32 screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
-protected:
-		// device-level overrides
-		virtual void device_start();
-		virtual void device_reset();
-		virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
-
-		DECLARE_READ16_MEMBER(sedisplay_r);
-		DECLARE_WRITE16_MEMBER(sedisplay_w);
-		DECLARE_READ16_MEMBER(ramdac_r);
-		DECLARE_WRITE16_MEMBER(ramdac_w);
-
-public:
-		UINT8 *m_vram;
-		UINT32 m_vbl_disable;
-		UINT32 m_palette[256], m_colors[3], m_count, m_clutoffs;
-		emu_timer *m_timer;
-		std::string m_assembled_tag;
-=======
 	// construction/destruction
 	macpds_sedisplay_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
@@ -84,17 +47,10 @@ private:
 	uint32_t m_palette[256], m_colors[3], m_count, m_clutoffs;
 	emu_timer *m_timer;
 	const std::string m_assembled_tag;
->>>>>>> upstream/master
 };
 
 
 // device type definition
-<<<<<<< HEAD
-extern const device_type PDS_SEDISPLAY;
-
-#endif  /* __MACPDS_SEDISPLAY_H__ */
-=======
 DECLARE_DEVICE_TYPE(PDS_SEDISPLAY, macpds_sedisplay_device)
 
 #endif // MAME_BUS_PDS_TPDFPD_H
->>>>>>> upstream/master

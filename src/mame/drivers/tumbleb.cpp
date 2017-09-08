@@ -298,29 +298,18 @@ Stephh's notes (based on the games M68000 code and some tests) :
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-=======
 #include "includes/tumbleb.h"
 
->>>>>>> upstream/master
 #include "cpu/z80/z80.h"
 #include "cpu/m68000/m68000.h"
 #include "cpu/h6280/h6280.h"
 #include "cpu/mcs51/mcs51.h" // for semicom mcu
-<<<<<<< HEAD
-#include "includes/decocrpt.h"
-#include "sound/2151intf.h"
-#include "sound/3812intf.h"
-#include "sound/okim6295.h"
-#include "includes/tumbleb.h"
-=======
 #include "machine/decocrpt.h"
 #include "sound/ym2151.h"
 #include "sound/3812intf.h"
 #include "sound/okim6295.h"
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 #define TUMBLEP_HACK    0
@@ -439,19 +428,6 @@ command 1 - stop?
 */
 
 
-<<<<<<< HEAD
-static void tumbleb2_playmusic( device_t *device )
-{
-	tumbleb_state *state = device->machine().driver_data<tumbleb_state>();
-	okim6295_device *oki = downcast<okim6295_device *>(device);
-	int status = oki->read_status();
-
-	if (state->m_music_is_playing)
-	{
-		if (!BIT(status, 3))
-		{
-			oki->write_command(0x80 | state->m_music_command);
-=======
 void tumbleb_state::tumbleb2_playmusic(okim6295_device *oki)
 {
 	int status = oki->read_status();
@@ -461,7 +437,6 @@ void tumbleb_state::tumbleb2_playmusic(okim6295_device *oki)
 		if (!BIT(status, 3))
 		{
 			oki->write_command(0x80 | m_music_command);
->>>>>>> upstream/master
 			oki->write_command(0x00 | 0x82);
 		}
 	}
@@ -497,11 +472,7 @@ static const int tumbleb_sound_lookup[256] = {
 /* we use channels 1,2,3 for sound effects, and channel 4 for music */
 void tumbleb_state::tumbleb2_set_music_bank( int bank )
 {
-<<<<<<< HEAD
-	UINT8 *oki = memregion("oki")->base();
-=======
 	uint8_t *oki = memregion("oki")->base();
->>>>>>> upstream/master
 	memcpy(&oki[0x38000], &oki[0x80000 + 0x38000 + 0x8000 * bank], 0x8000);
 }
 
@@ -730,11 +701,7 @@ ADDRESS_MAP_END
 
 WRITE16_MEMBER(tumbleb_state::jumpkids_sound_w)
 {
-<<<<<<< HEAD
-	soundlatch_byte_w(space, 0, data & 0xff);
-=======
 	m_soundlatch->write(space, 0, data & 0xff);
->>>>>>> upstream/master
 	m_audiocpu->set_input_line(0, HOLD_LINE);
 }
 
@@ -772,11 +739,7 @@ WRITE16_MEMBER(tumbleb_state::semicom_soundcmd_w)
 {
 	if (ACCESSING_BITS_0_7)
 	{
-<<<<<<< HEAD
-		soundlatch_byte_w(space, 0, data & 0xff);
-=======
 		m_soundlatch->write(space, 0, data & 0xff);
->>>>>>> upstream/master
 		// needed for Super Trio which reads the sound with polling
 		// space.device().execute().spin_until_time(attotime::from_usec(100));
 		machine().scheduler().boost_interleave(attotime::zero, attotime::from_usec(20));
@@ -786,11 +749,7 @@ WRITE16_MEMBER(tumbleb_state::semicom_soundcmd_w)
 
 WRITE8_MEMBER(tumbleb_state::oki_sound_bank_w)
 {
-<<<<<<< HEAD
-	UINT8 *oki = memregion("oki")->base();
-=======
 	uint8_t *oki = memregion("oki")->base();
->>>>>>> upstream/master
 	memcpy(&oki[0x30000], &oki[(data * 0x10000) + 0x40000], 0x10000);
 }
 
@@ -800,11 +759,7 @@ static ADDRESS_MAP_START( semicom_sound_map, AS_PROGRAM, 8, tumbleb_state )
 	AM_RANGE(0xf000, 0xf001) AM_DEVREADWRITE("ymsnd", ym2151_device, read, write)
 	AM_RANGE(0xf002, 0xf002) AM_DEVREADWRITE("oki", okim6295_device, read, write)
 	//AM_RANGE(0xf006, 0xf006) ??
-<<<<<<< HEAD
-	AM_RANGE(0xf008, 0xf008) AM_READ(soundlatch_byte_r)
-=======
 	AM_RANGE(0xf008, 0xf008) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
->>>>>>> upstream/master
 	AM_RANGE(0xf00e, 0xf00e) AM_WRITE(oki_sound_bank_w)
 ADDRESS_MAP_END
 
@@ -813,11 +768,7 @@ static ADDRESS_MAP_START( suprtrio_sound_map, AS_PROGRAM, 8, tumbleb_state )
 	AM_RANGE(0xd000, 0xd7ff) AM_RAM
 	AM_RANGE(0xf002, 0xf002) AM_DEVREADWRITE("oki", okim6295_device, read, write)
 	//AM_RANGE(0xf006, 0xf006) ??
-<<<<<<< HEAD
-	AM_RANGE(0xf008, 0xf008) AM_READ(soundlatch_byte_r)
-=======
 	AM_RANGE(0xf008, 0xf008) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
->>>>>>> upstream/master
 	AM_RANGE(0xf00e, 0xf00e) AM_WRITE(oki_sound_bank_w)
 ADDRESS_MAP_END
 
@@ -844,13 +795,8 @@ ADDRESS_MAP_END
 
 WRITE8_MEMBER(tumbleb_state::jumpkids_oki_bank_w)
 {
-<<<<<<< HEAD
-	UINT8* sound1 = memregion("oki")->base();
-	UINT8* sound2 = memregion("oki2")->base();
-=======
 	uint8_t* sound1 = memregion("oki")->base();
 	uint8_t* sound2 = memregion("oki2")->base();
->>>>>>> upstream/master
 	int bank = data & 0x03;
 
 	memcpy(sound1 + 0x20000, sound2 + bank * 0x20000, 0x20000);
@@ -861,11 +807,7 @@ static ADDRESS_MAP_START( jumpkids_sound_map, AS_PROGRAM, 8, tumbleb_state )
 	AM_RANGE(0x8000, 0x87ff) AM_RAM
 	AM_RANGE(0x9000, 0x9000) AM_WRITE(jumpkids_oki_bank_w)
 	AM_RANGE(0x9800, 0x9800) AM_DEVREADWRITE("oki", okim6295_device, read, write)
-<<<<<<< HEAD
-	AM_RANGE(0xa000, 0xa000) AM_READ(soundlatch_byte_r)
-=======
 	AM_RANGE(0xa000, 0xa000) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -883,11 +825,7 @@ WRITE8_MEMBER(tumbleb_state::prot_io_w)
 	{
 		case 0x00:
 		{
-<<<<<<< HEAD
-			UINT16 word = m_mainram[(m_protbase/2) + m_semicom_prot_offset];
-=======
 			uint16_t word = m_mainram[(m_protbase/2) + m_semicom_prot_offset];
->>>>>>> upstream/master
 			word = (word & 0xff00) | (data << 0);
 			m_mainram[(m_protbase/2) + m_semicom_prot_offset] = word;
 
@@ -896,11 +834,7 @@ WRITE8_MEMBER(tumbleb_state::prot_io_w)
 
 		case 0x01:
 		{
-<<<<<<< HEAD
-			UINT16 word = m_mainram[(m_protbase/2) + m_semicom_prot_offset];
-=======
 			uint16_t word = m_mainram[(m_protbase/2) + m_semicom_prot_offset];
->>>>>>> upstream/master
 			word = (word & 0x00ff) | (data << 8);
 			m_mainram[(m_protbase/2) + m_semicom_prot_offset] = word;
 
@@ -2107,11 +2041,7 @@ MACHINE_RESET_MEMBER(tumbleb_state,tumbleb)
 	memset(m_control_0, 0, sizeof(m_control_0));
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( tumblepb, tumbleb_state )
-=======
 static MACHINE_CONFIG_START( tumblepb )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, 14000000)
@@ -2134,10 +2064,6 @@ static MACHINE_CONFIG_START( tumblepb )
 	MCFG_DECO_SPRITE_GFX_REGION(3)
 	MCFG_DECO_SPRITE_ISBOOTLEG(true)
 	MCFG_DECO_SPRITE_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_DECO_SPRITE_PALETTE("palette")
-=======
->>>>>>> upstream/master
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", tumbleb)
 	MCFG_PALETTE_ADD("palette", 1024)
@@ -2148,20 +2074,12 @@ static MACHINE_CONFIG_START( tumblepb )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki", 8000000/10, OKIM6295_PIN7_HIGH)
-=======
 	MCFG_OKIM6295_ADD("oki", 8000000/10, PIN7_HIGH)
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.70)
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( tumbleb2, tumbleb_state )
-=======
 static MACHINE_CONFIG_START( tumbleb2 )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, 14000000)
@@ -2184,10 +2102,6 @@ static MACHINE_CONFIG_START( tumbleb2 )
 	MCFG_DECO_SPRITE_GFX_REGION(3)
 	MCFG_DECO_SPRITE_ISBOOTLEG(true)
 	MCFG_DECO_SPRITE_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_DECO_SPRITE_PALETTE("palette")
-=======
->>>>>>> upstream/master
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", tumbleb)
 	MCFG_PALETTE_ADD("palette", 1024)
@@ -2198,19 +2112,11 @@ static MACHINE_CONFIG_START( tumbleb2 )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki", 8000000/10, OKIM6295_PIN7_HIGH)
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.70)
-MACHINE_CONFIG_END
-
-static MACHINE_CONFIG_START( jumpkids, tumbleb_state )
-=======
 	MCFG_OKIM6295_ADD("oki", 8000000/10, PIN7_HIGH)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.70)
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_START( jumpkids )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, 12000000)
@@ -2237,10 +2143,6 @@ static MACHINE_CONFIG_START( jumpkids )
 	MCFG_DECO_SPRITE_GFX_REGION(3)
 	MCFG_DECO_SPRITE_ISBOOTLEG(true)
 	MCFG_DECO_SPRITE_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_DECO_SPRITE_PALETTE("palette")
-=======
->>>>>>> upstream/master
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", tumbleb)
 	MCFG_PALETTE_ADD("palette", 1024)
@@ -2251,13 +2153,6 @@ static MACHINE_CONFIG_START( jumpkids )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki", 8000000/8, OKIM6295_PIN7_HIGH)
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.70)
-MACHINE_CONFIG_END
-
-static MACHINE_CONFIG_START( fncywld, tumbleb_state )
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 
 	MCFG_OKIM6295_ADD("oki", 8000000/8, PIN7_HIGH)
@@ -2265,7 +2160,6 @@ static MACHINE_CONFIG_START( fncywld, tumbleb_state )
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_START( fncywld )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, 12000000)
@@ -2289,10 +2183,6 @@ static MACHINE_CONFIG_START( fncywld )
 	MCFG_DECO_SPRITE_ISBOOTLEG(true)
 	MCFG_DECO_SPRITE_TRANSPEN(15)
 	MCFG_DECO_SPRITE_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_DECO_SPRITE_PALETTE("palette")
-=======
->>>>>>> upstream/master
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", fncywld)
 	MCFG_PALETTE_ADD("palette", 0x800)
@@ -2301,17 +2191,6 @@ static MACHINE_CONFIG_START( fncywld )
 	MCFG_VIDEO_START_OVERRIDE(tumbleb_state,fncywld)
 
 	/* sound hardware */
-<<<<<<< HEAD
-	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
-
-	MCFG_YM2151_ADD("ymsnd", 32220000/9)
-	MCFG_SOUND_ROUTE(0, "lspeaker", 0.20)
-	MCFG_SOUND_ROUTE(1, "rspeaker", 0.20)
-
-	MCFG_OKIM6295_ADD("oki", 1023924, OKIM6295_PIN7_HIGH) // clock frequency & pin 7 not verified
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 1.0)
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 1.0)
-=======
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
 	MCFG_YM2151_ADD("ymsnd", 32220000/9)
@@ -2319,21 +2198,12 @@ static MACHINE_CONFIG_START( fncywld )
 
 	MCFG_OKIM6295_ADD("oki", 1023924, PIN7_HIGH) // clock frequency & pin 7 not verified
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
 
 MACHINE_RESET_MEMBER(tumbleb_state,htchctch)
 {
-<<<<<<< HEAD
-	/* copy protection data every reset */
-	UINT16 *PROTDATA = (UINT16*)memregion("user1")->base();
-	int i, len = memregion("user1")->bytes();
-
-	for (i = 0; i < len / 2; i++)
-		m_mainram[0x000/2 + i] = PROTDATA[i];
-=======
 	if (memregion("user1") != nullptr)
 	{
 		/* copy protection data every reset */
@@ -2343,16 +2213,11 @@ MACHINE_RESET_MEMBER(tumbleb_state,htchctch)
 		for (i = 0; i < len / 2; i++)
 			m_mainram[0x000 / 2 + i] = PROTDATA[i];
 	}
->>>>>>> upstream/master
 
 	MACHINE_RESET_CALL_MEMBER(tumbleb);
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( htchctch, tumbleb_state )
-=======
 static MACHINE_CONFIG_START( htchctch )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, 15000000) /* verified */
@@ -2378,10 +2243,6 @@ static MACHINE_CONFIG_START( htchctch )
 	MCFG_DECO_SPRITE_GFX_REGION(3)
 	MCFG_DECO_SPRITE_ISBOOTLEG(true)
 	MCFG_DECO_SPRITE_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_DECO_SPRITE_PALETTE("palette")
-=======
->>>>>>> upstream/master
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", tumbleb)
 	MCFG_PALETTE_ADD("palette", 1024)
@@ -2390,21 +2251,6 @@ static MACHINE_CONFIG_START( htchctch )
 	MCFG_VIDEO_START_OVERRIDE(tumbleb_state,tumblepb)
 
 	/* sound hardware - same as hyperpac */
-<<<<<<< HEAD
-	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
-
-	/* on at least hatch catch, cookie & bibi and choky choky the YM2151 clock is connected
-	       directly to the Z80 clock so the speed should match */
-		MCFG_YM2151_ADD("ymsnd", 15000000/4)
-	MCFG_YM2151_IRQ_HANDLER(INPUTLINE("audiocpu", 0))
-	MCFG_SOUND_ROUTE(0, "lspeaker", 0.10)
-	MCFG_SOUND_ROUTE(1, "rspeaker", 0.10)
-
-	/* correct for cookie & bibi and hatch catch, (4096000/4) */
-	MCFG_OKIM6295_ADD("oki", 1024000, OKIM6295_PIN7_HIGH)
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 1.0)
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 1.0)
-=======
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
@@ -2417,7 +2263,6 @@ static MACHINE_CONFIG_START( htchctch )
 	/* correct for cookie & bibi and hatch catch, (4096000/4) */
 	MCFG_OKIM6295_ADD("oki", 1024000, PIN7_HIGH)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_DERIVED( cookbib, htchctch )
@@ -2426,14 +2271,6 @@ static MACHINE_CONFIG_DERIVED( cookbib, htchctch )
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_DERIVED( chokchok, htchctch )
-<<<<<<< HEAD
-		MCFG_PALETTE_MODIFY("palette")
-		MCFG_PALETTE_FORMAT(xxxxBBBBGGGGRRRR)
-
-		MCFG_OKIM6295_REPLACE("oki", 3579545/4, OKIM6295_PIN7_HIGH)
-		MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 1.0)
-		MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 1.0)
-=======
 	MCFG_PALETTE_MODIFY("palette")
 	MCFG_PALETTE_FORMAT(xxxxBBBBGGGGRRRR)
 	// some PCBs have left factory with a 3.57mhz while some have a 4.096 which matches other games, assuming the former are factory errors
@@ -2441,7 +2278,6 @@ static MACHINE_CONFIG_DERIVED( chokchok, htchctch )
 	//       assuming it's worth emulating a factory error in the first place.
 	MCFG_OKIM6295_REPLACE("oki", 4096000/4, PIN7_HIGH)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_DERIVED( cookbib_mcu, htchctch )
@@ -2462,12 +2298,7 @@ static MACHINE_CONFIG_DERIVED( bcstory, htchctch )
 
 	MCFG_SOUND_REPLACE("ymsnd", YM2151, 3427190)
 	MCFG_YM2151_IRQ_HANDLER(INPUTLINE("audiocpu", 0))
-<<<<<<< HEAD
-	MCFG_SOUND_ROUTE(0, "lspeaker", 0.10)
-	MCFG_SOUND_ROUTE(1, "rspeaker", 0.10)
-=======
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.10)
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_DERIVED( semibase, bcstory )
@@ -2488,22 +2319,13 @@ static MACHINE_CONFIG_DERIVED( metlsavr, cookbib )
 
 	MCFG_SOUND_REPLACE("ymsnd", YM2151, 3427190)
 	MCFG_YM2151_IRQ_HANDLER(INPUTLINE("audiocpu", 0))
-<<<<<<< HEAD
-	MCFG_SOUND_ROUTE(0, "lspeaker", 0.10)
-	MCFG_SOUND_ROUTE(1, "rspeaker", 0.10)
-=======
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.10)
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( suprtrio, tumbleb_state )
-=======
 static MACHINE_CONFIG_START( suprtrio )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, 14000000) /* 14mhz should be correct, but lots of sprite flicker later in game */
@@ -2529,10 +2351,6 @@ static MACHINE_CONFIG_START( suprtrio )
 	MCFG_DECO_SPRITE_GFX_REGION(3)
 	MCFG_DECO_SPRITE_ISBOOTLEG(true)
 	MCFG_DECO_SPRITE_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_DECO_SPRITE_PALETTE("palette")
-=======
->>>>>>> upstream/master
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", suprtrio)
 	MCFG_PALETTE_ADD("palette", 1024)
@@ -2541,16 +2359,6 @@ static MACHINE_CONFIG_START( suprtrio )
 	MCFG_VIDEO_START_OVERRIDE(tumbleb_state,suprtrio)
 
 	/* sound hardware */
-<<<<<<< HEAD
-	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
-
-	MCFG_OKIM6295_ADD("oki", 875000, OKIM6295_PIN7_HIGH)
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 0.50)
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 0.50)
-MACHINE_CONFIG_END
-
-static MACHINE_CONFIG_START( pangpang, tumbleb_state )
-=======
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
@@ -2560,7 +2368,6 @@ static MACHINE_CONFIG_START( pangpang, tumbleb_state )
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_START( pangpang )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, 14000000)
@@ -2583,10 +2390,6 @@ static MACHINE_CONFIG_START( pangpang )
 	MCFG_DECO_SPRITE_GFX_REGION(3)
 	MCFG_DECO_SPRITE_ISBOOTLEG(true)
 	MCFG_DECO_SPRITE_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_DECO_SPRITE_PALETTE("palette")
-=======
->>>>>>> upstream/master
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", tumbleb)
 	MCFG_PALETTE_ADD("palette", 1024)
@@ -2597,11 +2400,7 @@ static MACHINE_CONFIG_START( pangpang )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki", 8000000/10, OKIM6295_PIN7_HIGH)
-=======
 	MCFG_OKIM6295_ADD("oki", 8000000/10, PIN7_HIGH)
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.70)
 MACHINE_CONFIG_END
 
@@ -3609,17 +3408,10 @@ ROM_END
 /******************************************************************************/
 
 #if TUMBLEP_HACK
-<<<<<<< HEAD
-void tumbleb_state::tumblepb_patch_code(UINT16 offset)
-{
-	/* A hack which enables all Dip Switches effects */
-	UINT16 *RAM = (UINT16 *)memregion("maincpu")->base();
-=======
 void tumbleb_state::tumblepb_patch_code(uint16_t offset)
 {
 	/* A hack which enables all Dip Switches effects */
 	uint16_t *RAM = (uint16_t *)memregion("maincpu")->base();
->>>>>>> upstream/master
 	RAM[(offset + 0)/2] = 0x0240;
 	RAM[(offset + 2)/2] = 0xffff;   // andi.w  #$f3ff, D0
 }
@@ -3628,11 +3420,7 @@ void tumbleb_state::tumblepb_patch_code(uint16_t offset)
 
 void tumbleb_state::tumblepb_gfx_rearrange(int rgn)
 {
-<<<<<<< HEAD
-	UINT8* rom;
-=======
 	uint8_t* rom;
->>>>>>> upstream/master
 	int len;
 
 	if (rgn == 1)
@@ -3705,11 +3493,7 @@ DRIVER_INIT_MEMBER(tumbleb_state,fncywld)
 	#if FNCYWLD_HACK
 	/* This is a hack to allow you to use the extra features
 	   of the 2 first "Unused" Dip Switch (see notes above). */
-<<<<<<< HEAD
-	UINT16 *RAM = (UINT16 *)memregion("maincpu")->base();
-=======
 	uint16_t *RAM = (uint16_t *)memregion("maincpu")->base();
->>>>>>> upstream/master
 	RAM[0x0005fa/2] = 0x4e71;
 	RAM[0x00060a/2] = 0x4e71;
 	#endif
@@ -3733,11 +3517,7 @@ DRIVER_INIT_MEMBER(tumbleb_state,bcstory)
 
 DRIVER_INIT_MEMBER(tumbleb_state,htchctch)
 {
-<<<<<<< HEAD
-	UINT16 *PROTDATA = (UINT16*)memregion("user1")->base();
-=======
 	uint16_t *PROTDATA = (uint16_t*)memregion("user1")->base();
->>>>>>> upstream/master
 	int i, len = memregion("user1")->bytes();
 	/* simulate RAM initialization done by the protection MCU */
 
@@ -3751,13 +3531,8 @@ DRIVER_INIT_MEMBER(tumbleb_state,htchctch)
 
 void tumbleb_state::suprtrio_decrypt_code()
 {
-<<<<<<< HEAD
-	UINT16 *rom = (UINT16 *)memregion("maincpu")->base();
-	std::vector<UINT16> buf(0x80000/2);
-=======
 	uint16_t *rom = (uint16_t *)memregion("maincpu")->base();
 	std::vector<uint16_t> buf(0x80000/2);
->>>>>>> upstream/master
 	int i;
 
 	/* decrypt main ROMs */
@@ -3773,13 +3548,8 @@ void tumbleb_state::suprtrio_decrypt_code()
 
 void tumbleb_state::suprtrio_decrypt_gfx()
 {
-<<<<<<< HEAD
-	UINT16 *rom = (UINT16 *)memregion("tilegfx")->base();
-	std::vector<UINT16> buf(0x100000/2);
-=======
 	uint16_t *rom = (uint16_t *)memregion("tilegfx")->base();
 	std::vector<uint16_t> buf(0x100000/2);
->>>>>>> upstream/master
 	int i;
 
 	/* decrypt tiles */

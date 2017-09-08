@@ -11,29 +11,6 @@
 #include "emu.h"
 #include "audio/wiping.h"
 
-<<<<<<< HEAD
-static const int samplerate = 48000;
-static const int defgain = 48;
-
-const device_type WIPING = &device_creator<wiping_sound_device>;
-
-wiping_sound_device::wiping_sound_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, WIPING, "Wiping Audio Custom", tag, owner, clock, "wiping_sound", __FILE__),
-		device_sound_interface(mconfig, *this),
-	m_last_channel(NULL),
-	m_sound_prom(NULL),
-	m_sound_rom(NULL),
-	m_num_voices(0),
-	m_sound_enable(0),
-	m_stream(NULL),
-	m_mixer_table(NULL),
-	m_mixer_lookup(NULL),
-	m_mixer_buffer(NULL),
-	m_mixer_buffer_2(NULL)
-{
-	memset(m_channel_list, 0, sizeof(wp_sound_channel)*MAX_VOICES);
-	memset(m_soundregs, 0, sizeof(UINT8)*0x4000);
-=======
 static constexpr int samplerate = 48000;
 static constexpr int defgain = 48;
 
@@ -55,7 +32,6 @@ wiping_sound_device::wiping_sound_device(const machine_config &mconfig, const ch
 {
 	memset(m_channel_list, 0, sizeof(wp_sound_channel)*MAX_VOICES);
 	memset(m_soundregs, 0, sizeof(uint8_t)*0x4000);
->>>>>>> upstream/master
 }
 
 
@@ -71,13 +47,8 @@ void wiping_sound_device::device_start()
 	m_stream = machine().sound().stream_alloc(*this, 0, 1, samplerate);
 
 	/* allocate a pair of buffers to mix into - 1 second's worth should be more than enough */
-<<<<<<< HEAD
-	m_mixer_buffer = auto_alloc_array_clear(machine(), short, 2 * samplerate);
-	m_mixer_buffer_2 = m_mixer_buffer + samplerate;
-=======
 	m_mixer_buffer   = make_unique_clear<short[]>(samplerate);
 	m_mixer_buffer_2 = make_unique_clear<short[]>(samplerate);
->>>>>>> upstream/master
 
 	/* build the mixer table */
 	make_mixer_table(8, defgain);
@@ -120,17 +91,10 @@ void wiping_sound_device::make_mixer_table(int voices, int gain)
 	int i;
 
 	/* allocate memory */
-<<<<<<< HEAD
-	m_mixer_table = auto_alloc_array_clear(machine(), INT16, 256 * voices);
-
-	/* find the middle of the table */
-	m_mixer_lookup = m_mixer_table + (128 * voices);
-=======
 	m_mixer_table = make_unique_clear<int16_t[]>(256 * voices);
 
 	/* find the middle of the table */
 	m_mixer_lookup = m_mixer_table.get() + (128 * voices);
->>>>>>> upstream/master
 
 	/* fill in the table - 16 bit case */
 	for (i = 0; i < count; i++)
@@ -210,11 +174,7 @@ void wiping_sound_device::sound_stream_update(sound_stream &stream, stream_sampl
 	}
 
 	/* zap the contents of the mixer buffer */
-<<<<<<< HEAD
-	memset(m_mixer_buffer, 0, samples * sizeof(short));
-=======
 	memset(m_mixer_buffer.get(), 0, samples * sizeof(short));
->>>>>>> upstream/master
 
 	/* loop over each voice and add its contribution */
 	for (voice = m_channel_list; voice < m_last_channel; voice++)
@@ -225,17 +185,10 @@ void wiping_sound_device::sound_stream_update(sound_stream &stream, stream_sampl
 		/* only update if we have non-zero volume and frequency */
 		if (v && f)
 		{
-<<<<<<< HEAD
-			const UINT8 *w = voice->wave;
-			int c = voice->counter;
-
-			mix = m_mixer_buffer;
-=======
 			const uint8_t *w = voice->wave;
 			int c = voice->counter;
 
 			mix = m_mixer_buffer.get();
->>>>>>> upstream/master
 
 			/* add our contribution */
 			for (i = 0; i < samples; i++)
@@ -282,11 +235,7 @@ void wiping_sound_device::sound_stream_update(sound_stream &stream, stream_sampl
 	}
 
 	/* mix it down */
-<<<<<<< HEAD
-	mix = m_mixer_buffer;
-=======
 	mix = m_mixer_buffer.get();
->>>>>>> upstream/master
 	for (i = 0; i < samples; i++)
 		*buffer++ = m_mixer_lookup[*mix++];
 }

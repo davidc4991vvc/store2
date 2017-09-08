@@ -40,11 +40,7 @@ static INPUT_PORTS_START( stellafr )
 INPUT_PORTS_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( stellafr, stellafr_state )
-=======
 static MACHINE_CONFIG_START( stellafr )
->>>>>>> upstream/master
 	MCFG_CPU_ADD("maincpu", M68000, 10000000 ) //?
 	MCFG_CPU_PROGRAM_MAP(stellafr_map)
 MACHINE_CONFIG_END
@@ -64,10 +60,5 @@ ROM_START( st_vulkn )
 ROM_END
 
 
-<<<<<<< HEAD
-GAME(199?,  st_ohla,   0,  stellafr,  stellafr, driver_device,  0,  ROT0,  "Stella",    "Oh La La (Stella)",    MACHINE_IS_SKELETON_MECHANICAL )
-GAME(199?,  st_vulkn,  0,  stellafr,  stellafr, driver_device,  0,  ROT0,  "Stella",    "Vulkan (Stella)",      MACHINE_IS_SKELETON_MECHANICAL )
-=======
 GAME(199?,  st_ohla,   0,  stellafr,  stellafr, stellafr_state,  0,  ROT0,  "Stella",    "Oh La La (Stella)",    MACHINE_IS_SKELETON_MECHANICAL )
 GAME(199?,  st_vulkn,  0,  stellafr,  stellafr, stellafr_state,  0,  ROT0,  "Stella",    "Vulkan (Stella)",      MACHINE_IS_SKELETON_MECHANICAL )
->>>>>>> upstream/master

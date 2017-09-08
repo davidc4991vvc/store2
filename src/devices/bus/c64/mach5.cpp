@@ -6,10 +6,7 @@
 
 **********************************************************************/
 
-<<<<<<< HEAD
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #include "mach5.h"
 
 
@@ -18,11 +15,7 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type C64_MACH5 = &device_creator<c64_mach5_cartridge_device>;
-=======
 DEFINE_DEVICE_TYPE(C64_MACH5, c64_mach5_cartridge_device, "c64_mach5", "C64 MACH5 cartridge")
->>>>>>> upstream/master
 
 
 //-------------------------------------------------
@@ -59,13 +52,8 @@ ioport_constructor c64_mach5_cartridge_device::device_input_ports() const
 //  c64_mach5_cartridge_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-c64_mach5_cartridge_device::c64_mach5_cartridge_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-	device_t(mconfig, C64_MACH5, "C64 MACH5 cartridge", tag, owner, clock, "c64_mach5", __FILE__),
-=======
 c64_mach5_cartridge_device::c64_mach5_cartridge_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	device_t(mconfig, C64_MACH5, tag, owner, clock),
->>>>>>> upstream/master
 	device_c64_expansion_card_interface(mconfig, *this),
 	m_s1(*this, "S1"), m_c128(false)
 {
@@ -100,11 +88,7 @@ void c64_mach5_cartridge_device::device_reset()
 //  c64_cd_r - cartridge data read
 //-------------------------------------------------
 
-<<<<<<< HEAD
-UINT8 c64_mach5_cartridge_device::c64_cd_r(address_space &space, offs_t offset, UINT8 data, int sphi2, int ba, int roml, int romh, int io1, int io2)
-=======
 uint8_t c64_mach5_cartridge_device::c64_cd_r(address_space &space, offs_t offset, uint8_t data, int sphi2, int ba, int roml, int romh, int io1, int io2)
->>>>>>> upstream/master
 {
 	if (!roml || !romh || !io1 || !io2)
 	{
@@ -119,11 +103,7 @@ uint8_t c64_mach5_cartridge_device::c64_cd_r(address_space &space, offs_t offset
 //  c64_cd_w - cartridge data write
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void c64_mach5_cartridge_device::c64_cd_w(address_space &space, offs_t offset, UINT8 data, int sphi2, int ba, int roml, int romh, int io1, int io2)
-=======
 void c64_mach5_cartridge_device::c64_cd_w(address_space &space, offs_t offset, uint8_t data, int sphi2, int ba, int roml, int romh, int io1, int io2)
->>>>>>> upstream/master
 {
 	if (!m_c128)
 	{

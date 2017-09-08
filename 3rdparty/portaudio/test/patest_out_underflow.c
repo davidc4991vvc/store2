@@ -6,11 +6,7 @@
 	@author Phil Burk <philburk@softsynth.com>
 */
 /*
-<<<<<<< HEAD
- * $Id: patest_out_underflow.c 1609 2011-02-27 00:06:07Z philburk $
-=======
  * $Id$
->>>>>>> upstream/master
  *
  * This program uses the PortAudio Portable Audio Library.
  * For more information see: http://www.portaudio.com
@@ -89,14 +85,9 @@ static int patestCallback( const void *inputBuffer, void *outputBuffer,
 
 
     if( data->countUnderflows && (statusFlags & paOutputUnderflow) )
-<<<<<<< HEAD
-        data->outputUnderflowCount++;
-
-=======
     {
         data->outputUnderflowCount++;
     }
->>>>>>> upstream/master
     for( i=0; i<framesPerBuffer; i++ )
     {
         float output = 0.0;
@@ -131,17 +122,11 @@ int main(void)
     PaStream *stream;
     PaError err;
     int safeSineCount, stressedSineCount;
-<<<<<<< HEAD
-    int safeUnderflowCount, stressedUnderflowCount;
-    paTestData data = {0};
-    double load;
-=======
     int sineCount;
     int safeUnderflowCount, stressedUnderflowCount;
     paTestData data = {0};
     double load;
     double suggestedLatency;
->>>>>>> upstream/master
 
 
     printf("PortAudio Test: output sine waves, count underflows. SR = %d, BufSize = %d. MAX_LOAD = %f\n",
@@ -157,12 +142,8 @@ int main(void)
     }
     outputParameters.channelCount = 1;                      /* mono output */
     outputParameters.sampleFormat = paFloat32;              /* 32 bit floating point output */
-<<<<<<< HEAD
-    outputParameters.suggestedLatency = Pa_GetDeviceInfo( outputParameters.device )->defaultLowOutputLatency;
-=======
     suggestedLatency = Pa_GetDeviceInfo( outputParameters.device )->defaultLowOutputLatency;
     outputParameters.suggestedLatency = suggestedLatency;
->>>>>>> upstream/master
     outputParameters.hostApiSpecificStreamInfo = NULL;
 
     err = Pa_OpenStream(
@@ -183,30 +164,11 @@ int main(void)
     /* Determine number of sines required to get to 50% */
     do
     {        
-<<<<<<< HEAD
-		Pa_Sleep( 100 );
-=======
         Pa_Sleep( 100 );
->>>>>>> upstream/master
 
         load = Pa_GetStreamCpuLoad( stream );
         printf("sineCount = %d, CPU load = %f\n", data.sineCount, load );
 		
-<<<<<<< HEAD
-		if( load < 0.3 )
-		{
-			data.sineCount += 10;
-		}
-		else if( load < 0.4 )
-		{
-			data.sineCount += 2;
-		}
-		else
-		{
-			data.sineCount += 1;
-		}
-		
-=======
         if( load < 0.3 )
         {
             data.sineCount += 10;
@@ -219,7 +181,6 @@ int main(void)
         {
             data.sineCount += 1;
         }
->>>>>>> upstream/master
     }
     while( load < 0.5 && data.sineCount < (MAX_SINES-1));
 
@@ -229,18 +190,6 @@ int main(void)
     stressedSineCount = (int) (2.0 * data.sineCount * MAX_LOAD );
     if( stressedSineCount > MAX_SINES )
         stressedSineCount = MAX_SINES;
-<<<<<<< HEAD
-    for( ; data.sineCount < stressedSineCount; data.sineCount+=4 )
-    {
-        Pa_Sleep( 100 );
-        load = Pa_GetStreamCpuLoad( stream );
-        printf("STRESSING: sineCount = %d, CPU load = %f\n", data.sineCount, load );
-    }
-    
-    printf("Counting underflows for 5 seconds.\n");
-    data.countUnderflows = 1;
-    Pa_Sleep( 5000 );
-=======
     sineCount = data.sineCount;
     for( ; sineCount < stressedSineCount; sineCount+=4 )
     {
@@ -253,7 +202,6 @@ int main(void)
     printf("Counting underflows for 2 seconds.\n");
     data.countUnderflows = 1;
     Pa_Sleep( 2000 );
->>>>>>> upstream/master
 
     stressedUnderflowCount = data.outputUnderflowCount;
 
@@ -282,14 +230,6 @@ int main(void)
     
     Pa_Terminate();
 
-<<<<<<< HEAD
-    if( stressedUnderflowCount == 0 )
-        printf("Test failed, no output underflows detected under stress.\n");
-    else if( safeUnderflowCount != 0 )
-        printf("Test failed, %d unexpected underflows detected under safe load.\n", safeUnderflowCount);
-    else
-        printf("Test passed, %d expected output underflows detected under stress, 0 unexpected underflows detected under safe load.\n", stressedUnderflowCount );
-=======
     printf("suggestedLatency = %f\n", suggestedLatency);
 
     // Report pass or fail
@@ -300,7 +240,6 @@ int main(void)
                "%d unexpected underflows detected under safe load.\n",
                (safeUnderflowCount == 0) ? "PASSED" : "FAILED",
                stressedUnderflowCount, safeUnderflowCount );
->>>>>>> upstream/master
 
     return err;
 error:

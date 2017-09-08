@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-// license:???
-=======
 // license:BSD-3-Clause
->>>>>>> upstream/master
 // copyright-holders:Stefan Jokisch
 /***************************************************************************
 
@@ -11,14 +7,9 @@ Atari Sprint 4 video emulation
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "audio/sprint4.h"
-#include "includes/sprint4.h"
-=======
 #include "includes/sprint4.h"
 #include "audio/sprint4.h"
 #include "screen.h"
->>>>>>> upstream/master
 
 
 PALETTE_INIT_MEMBER(sprint4_state, sprint4)
@@ -44,16 +35,9 @@ PALETTE_INIT_MEMBER(sprint4_state, sprint4)
 }
 
 
-<<<<<<< HEAD
-TILE_GET_INFO_MEMBER(sprint4_state::sprint4_tile_info)
-{
-	UINT8 *videoram = m_videoram;
-	UINT8 code = videoram[tile_index];
-=======
 TILE_GET_INFO_MEMBER(sprint4_state::tile_info)
 {
 	uint8_t code = m_videoram[tile_index];
->>>>>>> upstream/master
 
 	if ((code & 0x30) == 0x30)
 		SET_TILE_INFO_MEMBER(0, code & ~0x40, (code >> 6) ^ 3, 0);
@@ -66,27 +50,6 @@ void sprint4_state::video_start()
 {
 	m_screen->register_screen_bitmap(m_helper);
 
-<<<<<<< HEAD
-	m_playfield = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(sprint4_state::sprint4_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
-}
-
-
-UINT32 sprint4_state::screen_update_sprint4(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-{
-	UINT8 *videoram = m_videoram;
-	int i;
-
-	m_playfield->draw(screen, bitmap, cliprect, 0, 0);
-
-	for (i = 0; i < 4; i++)
-	{
-		int bank = 0;
-
-		UINT8 horz = videoram[0x390 + 2 * i + 0];
-		UINT8 attr = videoram[0x390 + 2 * i + 1];
-		UINT8 vert = videoram[0x398 + 2 * i + 0];
-		UINT8 code = videoram[0x398 + 2 * i + 1];
-=======
 	m_playfield = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(sprint4_state::tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
 }
 
@@ -103,7 +66,6 @@ uint32_t sprint4_state::screen_update(screen_device &screen, bitmap_ind16 &bitma
 		uint8_t attr = m_videoram[0x390 + 2 * i + 1];
 		uint8_t vert = m_videoram[0x398 + 2 * i + 0];
 		uint8_t code = m_videoram[0x398 + 2 * i + 1];
->>>>>>> upstream/master
 
 		if (i & 1)
 			bank = 32;
@@ -119,34 +81,11 @@ uint32_t sprint4_state::screen_update(screen_device &screen, bitmap_ind16 &bitma
 }
 
 
-<<<<<<< HEAD
-void sprint4_state::screen_eof_sprint4(screen_device &screen, bool state)
-=======
 WRITE_LINE_MEMBER(sprint4_state::screen_vblank)
->>>>>>> upstream/master
 {
 	// rising edge
 	if (state)
 	{
-<<<<<<< HEAD
-		UINT8 *videoram = m_videoram;
-		int i;
-
-		/* check for sprite-playfield collisions */
-
-		for (i = 0; i < 4; i++)
-		{
-			rectangle rect;
-
-			int x;
-			int y;
-
-			int bank = 0;
-
-			UINT8 horz = videoram[0x390 + 2 * i + 0];
-			UINT8 vert = videoram[0x398 + 2 * i + 0];
-			UINT8 code = videoram[0x398 + 2 * i + 1];
-=======
 		/* check for sprite-playfield collisions */
 
 		for (int i = 0; i < 4; i++)
@@ -158,7 +97,6 @@ WRITE_LINE_MEMBER(sprint4_state::screen_vblank)
 			uint8_t horz = m_videoram[0x390 + 2 * i + 0];
 			uint8_t vert = m_videoram[0x398 + 2 * i + 0];
 			uint8_t code = m_videoram[0x398 + 2 * i + 1];
->>>>>>> upstream/master
 
 			rect.min_x = horz - 15;
 			rect.min_y = vert - 15;
@@ -167,11 +105,7 @@ WRITE_LINE_MEMBER(sprint4_state::screen_vblank)
 
 			rect &= m_screen->visible_area();
 
-<<<<<<< HEAD
-			m_playfield->draw(screen, m_helper, rect, 0, 0);
-=======
 			m_playfield->draw(*m_screen, m_helper, rect, 0, 0);
->>>>>>> upstream/master
 
 			if (i & 1)
 				bank = 32;
@@ -183,45 +117,25 @@ WRITE_LINE_MEMBER(sprint4_state::screen_vblank)
 				horz - 15,
 				vert - 15, 1);
 
-<<<<<<< HEAD
-			for (y = rect.min_y; y <= rect.max_y; y++)
-				for (x = rect.min_x; x <= rect.max_x; x++)
-=======
 			for (int y = rect.min_y; y <= rect.max_y; y++)
 				for (int x = rect.min_x; x <= rect.max_x; x++)
->>>>>>> upstream/master
 					if (m_palette->pen_indirect(m_helper.pix16(y, x)) != 0)
 						m_collision[i] = 1;
 		}
 
 		/* update sound status */
 
-<<<<<<< HEAD
-		address_space &space = machine().driver_data()->generic_space();
-		m_discrete->write(space, SPRINT4_MOTOR_DATA_1, videoram[0x391] & 15);
-		m_discrete->write(space, SPRINT4_MOTOR_DATA_2, videoram[0x393] & 15);
-		m_discrete->write(space, SPRINT4_MOTOR_DATA_3, videoram[0x395] & 15);
-		m_discrete->write(space, SPRINT4_MOTOR_DATA_4, videoram[0x397] & 15);
-=======
 		address_space &space = machine().dummy_space();
 		m_discrete->write(space, SPRINT4_MOTOR_DATA_1, m_videoram[0x391] & 15);
 		m_discrete->write(space, SPRINT4_MOTOR_DATA_2, m_videoram[0x393] & 15);
 		m_discrete->write(space, SPRINT4_MOTOR_DATA_3, m_videoram[0x395] & 15);
 		m_discrete->write(space, SPRINT4_MOTOR_DATA_4, m_videoram[0x397] & 15);
->>>>>>> upstream/master
 	}
 }
 
 
-<<<<<<< HEAD
-WRITE8_MEMBER(sprint4_state::sprint4_video_ram_w)
-{
-	UINT8 *videoram = m_videoram;
-	videoram[offset] = data;
-=======
 WRITE8_MEMBER(sprint4_state::video_ram_w)
 {
 	m_videoram[offset] = data;
->>>>>>> upstream/master
 	m_playfield->mark_tile_dirty(offset);
 }

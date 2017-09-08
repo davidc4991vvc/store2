@@ -13,10 +13,7 @@
 #include "video/tlc34076.h"
 #include "sound/bsmt2000.h"
 #include "machine/nvram.h"
-<<<<<<< HEAD
-=======
 #include "screen.h"
->>>>>>> upstream/master
 
 class btoads_state : public driver_device
 {
@@ -64,30 +61,18 @@ public:
 	DECLARE_WRITE16_MEMBER( vram_fg_draw_w );
 	DECLARE_READ16_MEMBER( vram_fg_display_r );
 	DECLARE_READ16_MEMBER( vram_fg_draw_r );
-<<<<<<< HEAD
-	void render_sprite_row(UINT16 *sprite_source, UINT32 address);
-=======
 	void render_sprite_row(uint16_t *sprite_source, uint32_t address);
->>>>>>> upstream/master
 	TMS340X0_TO_SHIFTREG_CB_MEMBER(to_shiftreg);
 	TMS340X0_FROM_SHIFTREG_CB_MEMBER(from_shiftreg);
 	TMS340X0_SCANLINE_RGB32_CB_MEMBER(scanline_update);
 
 protected:
 	// device overrides
-<<<<<<< HEAD
-	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
-
-	// driver_device overrides
-	virtual void machine_start();
-	virtual void video_start();
-=======
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
 
 	// driver_device overrides
 	virtual void machine_start() override;
 	virtual void video_start() override;
->>>>>>> upstream/master
 
 	// timer IDs
 	enum
@@ -102,33 +87,6 @@ protected:
 	required_device<tlc34076_device> m_tlc34076;
 
 	// shared pointers
-<<<<<<< HEAD
-	required_shared_ptr<UINT8> m_vram_fg0;
-	required_shared_ptr<UINT8> m_vram_fg1;
-	required_shared_ptr<UINT16> m_vram_fg_data;
-	required_shared_ptr<UINT16> m_vram_bg0;
-	required_shared_ptr<UINT16> m_vram_bg1;
-	required_shared_ptr<UINT16> m_sprite_scale;
-	required_shared_ptr<UINT16> m_sprite_control;
-
-	// state
-	UINT8 m_main_to_sound_data;
-	UINT8 m_main_to_sound_ready;
-	UINT8 m_sound_to_main_data;
-	UINT8 m_sound_to_main_ready;
-	UINT8 m_sound_int_state;
-	UINT8 *m_vram_fg_draw;
-	UINT8 *m_vram_fg_display;
-	INT32 m_xscroll0;
-	INT32 m_yscroll0;
-	INT32 m_xscroll1;
-	INT32 m_yscroll1;
-	UINT8 m_screen_control;
-	UINT16 m_sprite_source_offs;
-	UINT8 *m_sprite_dest_base;
-	UINT16 m_sprite_dest_offs;
-	UINT16 m_misc_control;
-=======
 	required_shared_ptr<uint8_t> m_vram_fg0;
 	required_shared_ptr<uint8_t> m_vram_fg1;
 	required_shared_ptr<uint16_t> m_vram_fg_data;
@@ -154,7 +112,6 @@ protected:
 	uint8_t *m_sprite_dest_base;
 	uint16_t m_sprite_dest_offs;
 	uint16_t m_misc_control;
->>>>>>> upstream/master
 	int m_xcount;
 	required_device<cpu_device> m_maincpu;
 	required_device<screen_device> m_screen;

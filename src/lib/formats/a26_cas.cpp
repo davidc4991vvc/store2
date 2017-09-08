@@ -17,28 +17,16 @@ Atari 2600 SuperCharger support
 #define BIT_ONE_LENGTH          15
 #define ZEROS_ONES              2755
 
-<<<<<<< HEAD
-static const UINT16 one_wave[BIT_ONE_LENGTH] = {
-=======
 static const uint16_t one_wave[BIT_ONE_LENGTH] = {
->>>>>>> upstream/master
 	0x2AE5, 0x4E60, 0x644E, 0x68E4, 0x5B56, 0x3DFE, 0x15ED, 0xEA13, 0xC202, 0xA4AA,
 	0x971C, 0x9BB2, 0xB1A0, 0xD51B, 0x0000
 };
 
-<<<<<<< HEAD
-static const UINT16 zero_wave[BIT_ZERO_LENGTH] = {
-	0x3DFE, 0x644E, 0x644E, 0x3DFE, 0x0000, 0xC202, 0x9BB2, 0x9BB2, 0xC202, 0x0000
-};
-
-static int a26_cas_output_wave( INT16 **buffer, INT16 wave_data, int length ) {
-=======
 static const uint16_t zero_wave[BIT_ZERO_LENGTH] = {
 	0x3DFE, 0x644E, 0x644E, 0x3DFE, 0x0000, 0xC202, 0x9BB2, 0x9BB2, 0xC202, 0x0000
 };
 
 static int a26_cas_output_wave( int16_t **buffer, int16_t wave_data, int length ) {
->>>>>>> upstream/master
 	int i;
 
 	if ( buffer ) {
@@ -50,17 +38,10 @@ static int a26_cas_output_wave( int16_t **buffer, int16_t wave_data, int length 
 	return length;
 }
 
-<<<<<<< HEAD
-static int a26_cas_output_bit( INT16 **buffer, int bit ) {
-	int size = 0;
-	int bit_size = bit ? BIT_ONE_LENGTH : BIT_ZERO_LENGTH;
-	const INT16 *p = bit ? (const INT16 *)one_wave : (const INT16 *)zero_wave;
-=======
 static int a26_cas_output_bit( int16_t **buffer, int bit ) {
 	int size = 0;
 	int bit_size = bit ? BIT_ONE_LENGTH : BIT_ZERO_LENGTH;
 	const int16_t *p = bit ? (const int16_t *)one_wave : (const int16_t *)zero_wave;
->>>>>>> upstream/master
 	int i;
 
 	for ( i = 0; i < bit_size; i++ ) {
@@ -70,11 +51,7 @@ static int a26_cas_output_bit( int16_t **buffer, int bit ) {
 	return size;
 }
 
-<<<<<<< HEAD
-static int a26_cas_output_byte( INT16 **buffer, UINT8 byte ) {
-=======
 static int a26_cas_output_byte( int16_t **buffer, uint8_t byte ) {
->>>>>>> upstream/master
 	int     size = 0;
 	int     i;
 
@@ -84,22 +61,14 @@ static int a26_cas_output_byte( int16_t **buffer, uint8_t byte ) {
 	return size;
 }
 
-<<<<<<< HEAD
-static int a26_cas_clearing_tone( INT16 **buffer ) {
-=======
 static int a26_cas_clearing_tone( int16_t **buffer ) {
->>>>>>> upstream/master
 	int     size = 0;
 
 	size += a26_cas_output_wave( buffer, 0, 44100 );
 	return size;
 }
 
-<<<<<<< HEAD
-static int a26_cas_zeros_ones( INT16 **buffer ) {
-=======
 static int a26_cas_zeros_ones( int16_t **buffer ) {
->>>>>>> upstream/master
 	int     size = 0;
 	int     i;
 
@@ -112,11 +81,7 @@ static int a26_cas_zeros_ones( int16_t **buffer ) {
 	return size;
 }
 
-<<<<<<< HEAD
-static int a26_cas_output_contents( INT16 **buffer, const UINT8 *bytes ) {
-=======
 static int a26_cas_output_contents( int16_t **buffer, const uint8_t *bytes ) {
->>>>>>> upstream/master
 	int     size = 0;
 	int     i, pages, j;
 
@@ -139,11 +104,7 @@ static int a26_cas_output_contents( int16_t **buffer, const uint8_t *bytes ) {
 	return size;
 }
 
-<<<<<<< HEAD
-static int a26_cas_do_work( INT16 **buffer, const UINT8 *bytes ) {
-=======
 static int a26_cas_do_work( int16_t **buffer, const uint8_t *bytes ) {
->>>>>>> upstream/master
 	int     size = 0;
 
 	/* Output clearing tone */
@@ -161,16 +122,6 @@ static int a26_cas_do_work( int16_t **buffer, const uint8_t *bytes ) {
 	return size;
 }
 
-<<<<<<< HEAD
-static int a26_cas_fill_wave( INT16 *buffer, int length, UINT8 *bytes ) {
-	INT16   *p = buffer;
-
-	return a26_cas_do_work( &p, (const UINT8 *)bytes );
-}
-
-static int a26_cas_to_wav_size( const UINT8 *casdata, int caslen ) {
-	return a26_cas_do_work( NULL, casdata );
-=======
 static int a26_cas_fill_wave( int16_t *buffer, int length, uint8_t *bytes ) {
 	int16_t   *p = buffer;
 
@@ -179,7 +130,6 @@ static int a26_cas_fill_wave( int16_t *buffer, int length, uint8_t *bytes ) {
 
 static int a26_cas_to_wav_size( const uint8_t *casdata, int caslen ) {
 	return a26_cas_do_work( nullptr, casdata );
->>>>>>> upstream/master
 }
 
 static const struct CassetteLegacyWaveFiller a26_legacy_fill_wave = {
@@ -192,29 +142,17 @@ static const struct CassetteLegacyWaveFiller a26_legacy_fill_wave = {
 	0
 };
 
-<<<<<<< HEAD
-static casserr_t a26_cassette_identify( cassette_image *cassette, struct CassetteOptions *opts ) {
-	UINT64 size;
-=======
 static cassette_image::error a26_cassette_identify( cassette_image *cassette, struct CassetteOptions *opts ) {
 	uint64_t size;
->>>>>>> upstream/master
 
 	size = cassette_image_size( cassette );
 	if ( size == A26_CAS_SIZE ) {
 		return cassette_legacy_identify( cassette, opts, &a26_legacy_fill_wave );
 	}
-<<<<<<< HEAD
-	return CASSETTE_ERROR_INVALIDIMAGE;
-}
-
-static casserr_t a26_cassette_load( cassette_image *cassette ) {
-=======
 	return cassette_image::error::INVALID_IMAGE;
 }
 
 static cassette_image::error a26_cassette_load( cassette_image *cassette ) {
->>>>>>> upstream/master
 	return cassette_legacy_construct( cassette, &a26_legacy_fill_wave );
 }
 
@@ -222,11 +160,7 @@ static const struct CassetteFormat a26_cassette_format = {
 	"a26",
 	a26_cassette_identify,
 	a26_cassette_load,
-<<<<<<< HEAD
-	NULL
-=======
 	nullptr
->>>>>>> upstream/master
 };
 
 CASSETTE_FORMATLIST_START(a26_cassette_formats)

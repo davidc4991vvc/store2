@@ -8,10 +8,7 @@
 
 *********************************************************************/
 
-<<<<<<< HEAD
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #include "ramcard16k.h"
 
 /***************************************************************************
@@ -22,11 +19,7 @@
 //  GLOBAL VARIABLES
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type A2BUS_RAMCARD16K = &device_creator<a2bus_ramcard_device>;
-=======
 DEFINE_DEVICE_TYPE(A2BUS_RAMCARD16K, a2bus_ramcard_device, "a2ram16k", "Apple II 16K Language Card")
->>>>>>> upstream/master
 
 /***************************************************************************
     FUNCTION PROTOTYPES
@@ -36,17 +29,6 @@ DEFINE_DEVICE_TYPE(A2BUS_RAMCARD16K, a2bus_ramcard_device, "a2ram16k", "Apple II
 //  LIVE DEVICE
 //**************************************************************************
 
-<<<<<<< HEAD
-a2bus_ramcard_device::a2bus_ramcard_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source) :
-	device_t(mconfig, type, name, tag, owner, clock, shortname, source),
-	device_a2bus_card_interface(mconfig, *this), m_inh_state(0), m_last_offset(0), m_dxxx_bank(0)
-{
-}
-
-a2bus_ramcard_device::a2bus_ramcard_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-	device_t(mconfig, A2BUS_RAMCARD16K, "Apple II 16K Language Card", tag, owner, clock, "a2ram16k", __FILE__),
-	device_a2bus_card_interface(mconfig, *this), m_inh_state(0), m_last_offset(0), m_dxxx_bank(0)
-=======
 a2bus_ramcard_device::a2bus_ramcard_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock) :
 	device_t(mconfig, type, tag, owner, clock),
 	device_a2bus_card_interface(mconfig, *this), m_inh_state(0), m_prewrite(false), m_dxxx_bank(0)
@@ -55,7 +37,6 @@ a2bus_ramcard_device::a2bus_ramcard_device(const machine_config &mconfig, device
 
 a2bus_ramcard_device::a2bus_ramcard_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	a2bus_ramcard_device(mconfig, A2BUS_RAMCARD16K, tag, owner, clock)
->>>>>>> upstream/master
 {
 }
 
@@ -73,54 +54,11 @@ void a2bus_ramcard_device::device_start()
 	save_item(NAME(m_inh_state));
 	save_item(NAME(m_ram));
 	save_item(NAME(m_dxxx_bank));
-<<<<<<< HEAD
-	save_item(NAME(m_last_offset));
-=======
 	save_item(NAME(m_prewrite));
->>>>>>> upstream/master
 }
 
 void a2bus_ramcard_device::device_reset()
 {
-<<<<<<< HEAD
-	m_inh_state = INH_NONE;
-	m_dxxx_bank = 0;
-	m_last_offset = -1;
-}
-
-void a2bus_ramcard_device::do_io(int offset)
-{
-	int old_inh_state = m_inh_state;
-
-	switch (offset)
-	{
-		case 0x1: case 0x3: case 0x9: case 0xb:
-			if (offset != m_last_offset)
-			{
-				m_last_offset = offset;
-				return;
-			}
-			break;
-	}
-	m_last_offset = offset;
-
-	m_inh_state = INH_NONE;
-	m_dxxx_bank = 0;
-
-	if (offset & 0x1)
-	{
-		m_inh_state |= INH_WRITE;
-	}
-
-	switch(offset & 0x03)
-	{
-		case 0x00:
-		case 0x03:
-			m_inh_state |= INH_READ;
-			break;
-	}
-
-=======
 	m_inh_state = INH_WRITE;
 	m_dxxx_bank = 0;
 	m_prewrite = false;
@@ -175,7 +113,6 @@ void a2bus_ramcard_device::do_io(int offset, bool writing)
 
 	m_dxxx_bank = 0;
 
->>>>>>> upstream/master
 	if (!(offset & 8))
 	{
 		m_dxxx_bank = 0x1000;
@@ -199,15 +136,9 @@ void a2bus_ramcard_device::do_io(int offset, bool writing)
     read_c0nx - called for reads from this card's c0nx space
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-UINT8 a2bus_ramcard_device::read_c0nx(address_space &space, UINT8 offset)
-{
-	do_io(offset & 0xf);
-=======
 uint8_t a2bus_ramcard_device::read_c0nx(address_space &space, uint8_t offset)
 {
 	do_io(offset & 0xf, false);
->>>>>>> upstream/master
 	return 0xff;
 }
 
@@ -216,21 +147,12 @@ uint8_t a2bus_ramcard_device::read_c0nx(address_space &space, uint8_t offset)
     write_c0nx - called for writes to this card's c0nx space
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-void a2bus_ramcard_device::write_c0nx(address_space &space, UINT8 offset, UINT8 data)
-{
-	do_io(offset & 0xf);
-}
-
-UINT8 a2bus_ramcard_device::read_inh_rom(address_space &space, UINT16 offset)
-=======
 void a2bus_ramcard_device::write_c0nx(address_space &space, uint8_t offset, uint8_t data)
 {
 	do_io(offset & 0xf, true);
 }
 
 uint8_t a2bus_ramcard_device::read_inh_rom(address_space &space, uint16_t offset)
->>>>>>> upstream/master
 {
 	assert(m_inh_state & INH_READ); // this should never happen
 
@@ -242,11 +164,7 @@ uint8_t a2bus_ramcard_device::read_inh_rom(address_space &space, uint16_t offset
 	return m_ram[(offset & 0x1fff) + 0x2000];
 }
 
-<<<<<<< HEAD
-void a2bus_ramcard_device::write_inh_rom(address_space &space, UINT16 offset, UINT8 data)
-=======
 void a2bus_ramcard_device::write_inh_rom(address_space &space, uint16_t offset, uint8_t data)
->>>>>>> upstream/master
 {
 	// are writes enabled?
 	if (!(m_inh_state & INH_WRITE))

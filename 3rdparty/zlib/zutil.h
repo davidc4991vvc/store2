@@ -1,9 +1,5 @@
 /* zutil.h -- internal interface and configuration of the compression library
-<<<<<<< HEAD
- * Copyright (C) 1995-2013 Jean-loup Gailly.
-=======
  * Copyright (C) 1995-2016 Jean-loup Gailly, Mark Adler
->>>>>>> upstream/master
  * For conditions of distribution and use, see copyright notice in zlib.h
  */
 
@@ -40,13 +36,9 @@
 #ifndef local
 #  define local static
 #endif
-<<<<<<< HEAD
-/* compile with -Dlocal if your debugger can't find static symbols */
-=======
 /* since "static" is used to mean two completely different things in C, we
    define "local" for the non-static meaning of "static", for readability
    (compile with -Dlocal if your debugger can't find static symbols) */
->>>>>>> upstream/master
 
 typedef unsigned char  uch;
 typedef uch FAR uchf;
@@ -108,31 +100,15 @@ extern z_const char * const z_errmsg[10]; /* indexed by 2-zlib_error */
 #endif
 
 #ifdef AMIGA
-<<<<<<< HEAD
-#  define OS_CODE  0x01
-#endif
-
-#if defined(VAXC) || defined(VMS)
-#  define OS_CODE  0x02
-=======
 #  define OS_CODE  1
 #endif
 
 #if defined(VAXC) || defined(VMS)
 #  define OS_CODE  2
->>>>>>> upstream/master
 #  define F_OPEN(name, mode) \
      fopen((name), (mode), "mbc=60", "ctx=stm", "rfm=fix", "mrs=512")
 #endif
 
-<<<<<<< HEAD
-#if defined(ATARI) || defined(atarist)
-#  define OS_CODE  0x05
-#endif
-
-#ifdef OS2
-#  define OS_CODE  0x06
-=======
 #ifdef __370__
 #  if __TARGET_LIB__ < 0x20000000
 #    define OS_CODE 4
@@ -149,18 +125,13 @@ extern z_const char * const z_errmsg[10]; /* indexed by 2-zlib_error */
 
 #ifdef OS2
 #  define OS_CODE  6
->>>>>>> upstream/master
 #  if defined(M_I86) && !defined(Z_SOLO)
 #    include <malloc.h>
 #  endif
 #endif
 
 #if defined(MACOS) || defined(TARGET_OS_MAC)
-<<<<<<< HEAD
-#  define OS_CODE  0x07
-=======
 #  define OS_CODE  7
->>>>>>> upstream/master
 #  ifndef Z_SOLO
 #    if defined(__MWERKS__) && __dest_os != __be_os && __dest_os != __win32_os
 #      include <unix.h> /* for fdopen */
@@ -172,20 +143,6 @@ extern z_const char * const z_errmsg[10]; /* indexed by 2-zlib_error */
 #  endif
 #endif
 
-<<<<<<< HEAD
-#ifdef TOPS20
-#  define OS_CODE  0x0a
-#endif
-
-#ifdef WIN32
-#  ifndef __CYGWIN__  /* Cygwin is Unix, not Win32 */
-#    define OS_CODE  0x0b
-#  endif
-#endif
-
-#ifdef __50SERIES /* Prime/PRIMOS */
-#  define OS_CODE  0x0f
-=======
 #ifdef __acorn
 #  define OS_CODE 13
 #endif
@@ -204,7 +161,6 @@ extern z_const char * const z_errmsg[10]; /* indexed by 2-zlib_error */
 
 #ifdef __APPLE__
 #  define OS_CODE 19
->>>>>>> upstream/master
 #endif
 
 #if defined(_BEOS_) || defined(RISCOS)
@@ -239,11 +195,7 @@ extern z_const char * const z_errmsg[10]; /* indexed by 2-zlib_error */
         /* common defaults */
 
 #ifndef OS_CODE
-<<<<<<< HEAD
-#  define OS_CODE  0x03  /* assume Unix */
-=======
 #  define OS_CODE  3     /* assume Unix */
->>>>>>> upstream/master
 #endif
 
 #ifndef F_OPEN
@@ -282,11 +234,7 @@ extern z_const char * const z_errmsg[10]; /* indexed by 2-zlib_error */
 #endif
 
 /* Diagnostic functions */
-<<<<<<< HEAD
-#ifdef DEBUG
-=======
 #ifdef ZLIB_DEBUG
->>>>>>> upstream/master
 #  include <stdio.h>
    extern int ZLIB_INTERNAL z_verbose;
    extern void ZLIB_INTERNAL z_error OF((char *m));

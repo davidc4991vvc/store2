@@ -1,11 +1,6 @@
 /*
-<<<<<<< HEAD
- * Copyright 2011-2015 Branimir Karadzic. All rights reserved.
- * License: http://www.opensource.org/licenses/BSD-2-Clause
-=======
  * Copyright 2011-2017 Branimir Karadzic. All rights reserved.
  * License: https://github.com/bkaradzic/bgfx#license-bsd-2-clause
->>>>>>> upstream/master
  */
 
 #ifndef BOUNDS_H_HEADER_GUARD
@@ -17,8 +12,6 @@ struct Aabb
 	float m_max[3];
 };
 
-<<<<<<< HEAD
-=======
 struct Cylinder
 {
 	float m_pos[3];
@@ -33,14 +26,11 @@ struct Disk
 	float m_radius;
 };
 
->>>>>>> upstream/master
 struct Obb
 {
 	float m_mtx[16];
 };
 
-<<<<<<< HEAD
-=======
 struct Plane
 {
 	float m_normal[3];
@@ -53,15 +43,12 @@ struct Ray
 	float m_dir[3];
 };
 
->>>>>>> upstream/master
 struct Sphere
 {
 	float m_center[3];
 	float m_radius;
 };
 
-<<<<<<< HEAD
-=======
 struct Tris
 {
 	float m_v0[3];
@@ -76,23 +63,10 @@ struct Intersection
 	float m_dist;
 };
 
->>>>>>> upstream/master
 /// Convert axis aligned bounding box to oriented bounding box.
 void aabbToObb(Obb& _obb, const Aabb& _aabb);
 
 /// Convert sphere to axis aligned bounding box.
-<<<<<<< HEAD
-void sphereToAabb(Aabb& _aabb, const Sphere& _sphere);
-
-/// Calculate surface area of axis aligned bounding box.
-float calcAabbArea(Aabb& _aabb);
-
-/// Calculate axis aligned bounding box.
-void calcAabb(Aabb& _aabb, const void* _vertices, uint32_t _numVertices, uint32_t _stride);
-
-/// Transform vertices and calculate axis aligned bounding box.
-void calcAabb(Aabb& _aabb, const float* _mtx, const void* _vertices, uint32_t _numVertices, uint32_t _stride);
-=======
 void toAabb(Aabb& _aabb, const Sphere& _sphere);
 
 /// Convert disk to axis aligned bounding box.
@@ -106,16 +80,10 @@ void toAabb(Aabb& _aabb, const void* _vertices, uint32_t _numVertices, uint32_t 
 
 /// Transform vertices and calculate axis aligned bounding box.
 void toAabb(Aabb& _aabb, const float* _mtx, const void* _vertices, uint32_t _numVertices, uint32_t _stride);
->>>>>>> upstream/master
 
 /// Expand AABB.
 void aabbExpand(Aabb& _aabb, float _factor);
 
-<<<<<<< HEAD
-/// Returns 0 is two AABB don't overlap, otherwise returns flags of overlap
-/// test.
-uint32_t aabbOverlapTest(Aabb& _aabb0, Aabb& _aabb1);
-=======
 /// Expand AABB with xyz.
 void aabbExpand(Aabb& _aabb, const float* _pos);
 
@@ -125,7 +93,6 @@ float calcAreaAabb(const Aabb& _aabb);
 /// Returns 0 is two AABB don't overlap, otherwise returns flags of overlap
 /// test.
 uint32_t aabbOverlapTest(const Aabb& _aabb0, const Aabb& _aabb1);
->>>>>>> upstream/master
 
 /// Calculate oriented bounding box.
 void calcObb(Obb& _obb, const void* _vertices, uint32_t _numVertices, uint32_t _stride, uint32_t _steps = 17);
@@ -136,8 +103,6 @@ void calcMaxBoundingSphere(Sphere& _sphere, const void* _vertices, uint32_t _num
 /// Calculate minimum bounding sphere.
 void calcMinBoundingSphere(Sphere& _sphere, const void* _vertices, uint32_t _numVertices, uint32_t _stride, float _step = 0.01f);
 
-<<<<<<< HEAD
-=======
 /// Returns 6 (near, far, left, right, top, bottom) planes representing frustum planes.
 void buildFrustumPlanes(Plane* _planes, const float* _viewProj);
 
@@ -165,5 +130,4 @@ bool intersect(const Ray& _ray, const Sphere& _sphere, Intersection* _intersecti
 /// Intersect ray / triangle.
 bool intersect(const Ray& _ray, const Tris& _triangle, Intersection* _intersection = NULL);
 
->>>>>>> upstream/master
 #endif // BOUNDS_H_HEADER_GUARD

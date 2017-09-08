@@ -13,33 +13,15 @@
 #include "osdepend.h"
 #include "modules/lib/osdobj_common.h"
 
-<<<<<<< HEAD
-extern bool g_print_verbose;
-
-const options_entry osd_options::s_option_entries[] =
-{
-	{ NULL,                                   NULL,             OPTION_HEADER,    "OSD KEYBOARD MAPPING OPTIONS" },
-=======
 const options_entry osd_options::s_option_entries[] =
 {
 	{ nullptr,                               nullptr,           OPTION_HEADER,    "OSD KEYBOARD MAPPING OPTIONS" },
->>>>>>> upstream/master
 #ifdef SDLMAME_MACOSX
 	{ OSDOPTION_UIMODEKEY,                   "DEL",             OPTION_STRING,    "Key to toggle keyboard mode" },
 #else
 	{ OSDOPTION_UIMODEKEY,                   "SCRLOCK",         OPTION_STRING,    "Key to toggle keyboard mode" },
 #endif  // SDLMAME_MACOSX
 
-<<<<<<< HEAD
-	{ NULL,                                   NULL,             OPTION_HEADER,    "OSD FONT OPTIONS" },
-	{ OSD_FONT_PROVIDER,                      OSDOPTVAL_AUTO,   OPTION_STRING,    "provider for ui font: " },
-
-	{ NULL,                                   NULL,             OPTION_HEADER,    "OSD CLI OPTIONS" },
-	{ OSDCOMMAND_LIST_MIDI_DEVICES ";mlist",  "0",              OPTION_COMMAND,   "list available MIDI I/O devices" },
-	{ OSDCOMMAND_LIST_NETWORK_ADAPTERS ";nlist", "0",           OPTION_COMMAND,   "list available network adapters" },
-
-	{ NULL,                                   NULL,             OPTION_HEADER,    "OSD DEBUGGING OPTIONS" },
-=======
 	{ nullptr,                                nullptr,          OPTION_HEADER,    "OSD FONT OPTIONS" },
 	{ OSD_FONT_PROVIDER,                      OSDOPTVAL_AUTO,   OPTION_STRING,    "provider for ui font: " },
 
@@ -57,47 +39,27 @@ const options_entry osd_options::s_option_entries[] =
 	{ OSDCOMMAND_LIST_NETWORK_ADAPTERS ";nlist", "0",           OPTION_COMMAND,   "list available network adapters" },
 
 	{ nullptr,                                nullptr,          OPTION_HEADER,    "OSD DEBUGGING OPTIONS" },
->>>>>>> upstream/master
 	{ OSDOPTION_DEBUGGER,                     OSDOPTVAL_AUTO,   OPTION_STRING,    "debugger used: " },
 	{ OSDOPTION_DEBUGGER_FONT ";dfont",       OSDOPTVAL_AUTO,   OPTION_STRING,    "specifies the font to use for debugging" },
 	{ OSDOPTION_DEBUGGER_FONT_SIZE ";dfontsize", "0",           OPTION_FLOAT,     "specifies the font size to use for debugging" },
 	{ OSDOPTION_WATCHDOG ";wdog",             "0",              OPTION_INTEGER,   "force the program to terminate if no updates within specified number of seconds" },
 
-<<<<<<< HEAD
-	{ NULL,                                   NULL,             OPTION_HEADER,    "OSD PERFORMANCE OPTIONS" },
-	{ OSDOPTION_MULTITHREADING ";mt",         "0",              OPTION_BOOLEAN,   "enable multithreading; this enables rendering and blitting on a separate thread" },
-	{ OSDOPTION_NUMPROCESSORS ";np",          OSDOPTVAL_AUTO,   OPTION_STRING,    "number of processors; this overrides the number the system reports" },
-	{ OSDOPTION_BENCH,                        "0",              OPTION_INTEGER,   "benchmark for the given number of emulated seconds; implies -video none -sound none -nothrottle" },
-
-	{ NULL,                                   NULL,             OPTION_HEADER,    "OSD VIDEO OPTIONS" },
-=======
 	{ nullptr,                                nullptr,          OPTION_HEADER,    "OSD PERFORMANCE OPTIONS" },
 	{ OSDOPTION_NUMPROCESSORS ";np",          OSDOPTVAL_AUTO,   OPTION_STRING,    "number of processors; this overrides the number the system reports" },
 	{ OSDOPTION_BENCH,                        "0",              OPTION_INTEGER,   "benchmark for the given number of emulated seconds; implies -video none -sound none -nothrottle" },
 
 	{ nullptr,                                nullptr,          OPTION_HEADER,    "OSD VIDEO OPTIONS" },
->>>>>>> upstream/master
 // OS X can be trusted to have working hardware OpenGL, so default to it on for the best user experience
 	{ OSDOPTION_VIDEO,                        OSDOPTVAL_AUTO,   OPTION_STRING,    "video output method: " },
 	{ OSDOPTION_NUMSCREENS "(1-4)",           "1",              OPTION_INTEGER,   "number of screens to create; usually, you want just one" },
 	{ OSDOPTION_WINDOW ";w",                  "0",              OPTION_BOOLEAN,   "enable window mode; otherwise, full screen mode is assumed" },
 	{ OSDOPTION_MAXIMIZE ";max",              "1",              OPTION_BOOLEAN,   "default to maximized windows; otherwise, windows will be minimized" },
-<<<<<<< HEAD
-	{ OSDOPTION_KEEPASPECT ";ka",             "1",              OPTION_BOOLEAN,   "constrain to the proper aspect ratio" },
-	{ OSDOPTION_UNEVENSTRETCH ";ues",         "1",              OPTION_BOOLEAN,   "allow non-integer stretch factors" },
-	{ OSDOPTION_WAITVSYNC ";vs",              "0",              OPTION_BOOLEAN,   "enable waiting for the start of VBLANK before flipping screens; reduces tearing effects" },
-	{ OSDOPTION_SYNCREFRESH ";srf",           "0",              OPTION_BOOLEAN,   "enable using the start of VBLANK for throttling instead of the game time" },
-
-	// per-window options
-	{ NULL,                                   NULL,             OPTION_HEADER,    "OSD PER-WINDOW VIDEO OPTIONS" },
-=======
 	{ OSDOPTION_WAITVSYNC ";vs",              "0",              OPTION_BOOLEAN,   "enable waiting for the start of VBLANK before flipping screens; reduces tearing effects" },
 	{ OSDOPTION_SYNCREFRESH ";srf",           "0",              OPTION_BOOLEAN,   "enable using the start of VBLANK for throttling instead of the game time" },
 	{ OSD_MONITOR_PROVIDER,                   OSDOPTVAL_AUTO,   OPTION_STRING,    "monitor discovery method" },
 
 	// per-window options
 	{ nullptr,                                nullptr,          OPTION_HEADER,    "OSD PER-WINDOW VIDEO OPTIONS" },
->>>>>>> upstream/master
 	{ OSDOPTION_SCREEN,                       OSDOPTVAL_AUTO,   OPTION_STRING,    "explicit name of the first screen; 'auto' here will try to make a best guess" },
 	{ OSDOPTION_ASPECT ";screen_aspect",      OSDOPTVAL_AUTO,   OPTION_STRING,    "aspect ratio for all screens; 'auto' here will try to make a best guess" },
 	{ OSDOPTION_RESOLUTION ";r",              OSDOPTVAL_AUTO,   OPTION_STRING,    "preferred resolution for all screens; format is <width>x<height>[@<refreshrate>] or 'auto'" },
@@ -124,26 +86,15 @@ const options_entry osd_options::s_option_entries[] =
 	{ OSDOPTION_VIEW "3",                     OSDOPTVAL_AUTO,   OPTION_STRING,    "preferred view for the fourth screen" },
 
 	// full screen options
-<<<<<<< HEAD
-	{ NULL,                                   NULL,             OPTION_HEADER,    "OSD FULL SCREEN OPTIONS" },
-	{ OSDOPTION_SWITCHRES,                    "0",              OPTION_BOOLEAN,   "enable resolution switching" },
-
-	{ NULL,                                   NULL,             OPTION_HEADER,    "OSD ACCELERATED VIDEO OPTIONS" },
-=======
 	{ nullptr,                                nullptr,          OPTION_HEADER,    "OSD FULL SCREEN OPTIONS" },
 	{ OSDOPTION_SWITCHRES,                    "0",              OPTION_BOOLEAN,   "enable resolution switching" },
 
 	{ nullptr,                                nullptr,          OPTION_HEADER,    "OSD ACCELERATED VIDEO OPTIONS" },
->>>>>>> upstream/master
 	{ OSDOPTION_FILTER ";glfilter;flt",       "1",              OPTION_BOOLEAN,   "enable bilinear filtering on screen output" },
 	{ OSDOPTION_PRESCALE,                     "1",              OPTION_INTEGER,   "scale screen rendering by this amount in software" },
 
 #if USE_OPENGL
-<<<<<<< HEAD
-	{ NULL,                                   NULL,             OPTION_HEADER,    "OpenGL-SPECIFIC OPTIONS" },
-=======
 	{ nullptr,                                nullptr,          OPTION_HEADER,    "OpenGL-SPECIFIC OPTIONS" },
->>>>>>> upstream/master
 	{ OSDOPTION_GL_FORCEPOW2TEXTURE,          "0",              OPTION_BOOLEAN,   "force power of two textures  (default no)" },
 	{ OSDOPTION_GL_NOTEXTURERECT,             "0",              OPTION_BOOLEAN,   "don't use OpenGL GL_ARB_texture_rectangle (default on)" },
 	{ OSDOPTION_GL_VBO,                       "1",              OPTION_BOOLEAN,   "enable OpenGL VBO,  if available (default on)" },
@@ -172,14 +123,6 @@ const options_entry osd_options::s_option_entries[] =
 	{ OSDOPTION_SHADER_SCREEN "9",            OSDOPTVAL_NONE,   OPTION_STRING,    "custom OpenGL GLSL shader screen bitmap 9" },
 #endif
 
-<<<<<<< HEAD
-	{ NULL,                                   NULL,             OPTION_HEADER,    "OSD SOUND OPTIONS" },
-	{ OSDOPTION_SOUND,                        OSDOPTVAL_AUTO,   OPTION_STRING,    "sound output method: " },
-	{ OSDOPTION_AUDIO_LATENCY "(1-5)",        "2",              OPTION_INTEGER,   "set audio latency (increase to reduce glitches, decrease for responsiveness)" },
-
-#ifdef SDLMAME_MACOSX
-	{ NULL,                                   NULL,             OPTION_HEADER,    "CoreAudio-SPECIFIC OPTIONS" },
-=======
 	{ nullptr,                                nullptr,          OPTION_HEADER,    "OSD SOUND OPTIONS" },
 	{ OSDOPTION_SOUND,                        OSDOPTVAL_AUTO,   OPTION_STRING,    "sound output method: " },
 	{ OSDOPTION_AUDIO_LATENCY "(1-5)",        "2",              OPTION_INTEGER,   "set audio latency (increase to reduce glitches, decrease for responsiveness)" },
@@ -193,7 +136,6 @@ const options_entry osd_options::s_option_entries[] =
 
 #ifdef SDLMAME_MACOSX
 	{ nullptr,                                nullptr,          OPTION_HEADER,    "CoreAudio-SPECIFIC OPTIONS" },
->>>>>>> upstream/master
 	{ OSDOPTION_AUDIO_OUTPUT,                 OSDOPTVAL_AUTO,   OPTION_STRING,    "Audio output device" },
 	{ OSDOPTION_AUDIO_EFFECT "0",             OSDOPTVAL_NONE,   OPTION_STRING,    "AudioUnit effect 0" },
 	{ OSDOPTION_AUDIO_EFFECT "1",             OSDOPTVAL_NONE,   OPTION_STRING,    "AudioUnit effect 1" },
@@ -207,14 +149,6 @@ const options_entry osd_options::s_option_entries[] =
 	{ OSDOPTION_AUDIO_EFFECT "9",             OSDOPTVAL_NONE,   OPTION_STRING,    "AudioUnit effect 9" },
 #endif
 
-<<<<<<< HEAD
-	// End of list
-	{ NULL }
-};
-
-osd_options::osd_options()
-: cli_options()
-=======
 	{ nullptr,                                nullptr,           OPTION_HEADER, "BGFX POST-PROCESSING OPTIONS" },
 	{ OSDOPTION_BGFX_PATH,                    "bgfx",            OPTION_STRING, "path to BGFX-related files" },
 	{ OSDOPTION_BGFX_BACKEND,                 "auto",            OPTION_STRING, "BGFX backend to use (d3d9, d3d11, metal, opengl, gles)" },
@@ -229,28 +163,18 @@ osd_options::osd_options()
 
 osd_options::osd_options()
 : emu_options()
->>>>>>> upstream/master
 {
 	add_entries(osd_options::s_option_entries);
 }
 
-<<<<<<< HEAD
-=======
 // Window list
 std::list<std::shared_ptr<osd_window>> osd_common_t::s_window_list;
->>>>>>> upstream/master
 
 //-------------------------------------------------
 //  osd_interface - constructor
 //-------------------------------------------------
 
 osd_common_t::osd_common_t(osd_options &options)
-<<<<<<< HEAD
-	: osd_output(), m_machine(NULL),
-		m_options(options),
-		m_sound(NULL),
-		m_debugger(NULL)
-=======
 	: osd_output(), m_machine(nullptr),
 		m_options(options),
 		m_print_verbose(false),
@@ -265,7 +189,6 @@ osd_common_t::osd_common_t(osd_options &options)
 		m_output(nullptr),
 		m_monitor_module(nullptr),
 		m_watchdog(nullptr)
->>>>>>> upstream/master
 {
 	osd_output::push(this);
 }
@@ -277,11 +200,7 @@ osd_common_t::osd_common_t(osd_options &options)
 osd_common_t::~osd_common_t()
 {
 	for(unsigned int i= 0; i < m_video_names.size(); ++i)
-<<<<<<< HEAD
-		osd_free(const_cast<char*>(m_video_names[i]));
-=======
 		free(const_cast<char*>(m_video_names[i]));
->>>>>>> upstream/master
 	//m_video_options,reset();
 	osd_output::pop(this);
 }
@@ -292,25 +211,15 @@ void osd_common_t::register_options()
 {
 	REGISTER_MODULE(m_mod_man, FONT_OSX);
 	REGISTER_MODULE(m_mod_man, FONT_WINDOWS);
-<<<<<<< HEAD
-	REGISTER_MODULE(m_mod_man, FONT_SDL);
-	REGISTER_MODULE(m_mod_man, FONT_NONE);
-
-=======
 	REGISTER_MODULE(m_mod_man, FONT_DWRITE);
 	REGISTER_MODULE(m_mod_man, FONT_SDL);
 	REGISTER_MODULE(m_mod_man, FONT_NONE);
 
 	REGISTER_MODULE(m_mod_man, SOUND_XAUDIO2);
->>>>>>> upstream/master
 	REGISTER_MODULE(m_mod_man, SOUND_DSOUND);
 	REGISTER_MODULE(m_mod_man, SOUND_COREAUDIO);
 	REGISTER_MODULE(m_mod_man, SOUND_JS);
 	REGISTER_MODULE(m_mod_man, SOUND_SDL);
-<<<<<<< HEAD
-	REGISTER_MODULE(m_mod_man, SOUND_NONE);
-
-=======
 #ifndef NO_USE_PORTAUDIO
 	REGISTER_MODULE(m_mod_man, SOUND_PORTAUDIO);
 #endif
@@ -320,18 +229,13 @@ void osd_common_t::register_options()
 	REGISTER_MODULE(m_mod_man, MONITOR_WIN32);
 	REGISTER_MODULE(m_mod_man, MONITOR_DXGI);
 
->>>>>>> upstream/master
 #ifdef SDLMAME_MACOSX
 	REGISTER_MODULE(m_mod_man, DEBUG_OSX);
 #endif
 #ifndef OSD_MINI
 	REGISTER_MODULE(m_mod_man, DEBUG_WINDOWS);
 	REGISTER_MODULE(m_mod_man, DEBUG_QT);
-<<<<<<< HEAD
-	REGISTER_MODULE(m_mod_man, DEBUG_INTERNAL);
-=======
 	REGISTER_MODULE(m_mod_man, DEBUG_IMGUI);
->>>>>>> upstream/master
 	REGISTER_MODULE(m_mod_man, DEBUG_NONE);
 #endif
 
@@ -344,8 +248,6 @@ void osd_common_t::register_options()
 #endif
 	REGISTER_MODULE(m_mod_man, MIDI_NONE);
 
-<<<<<<< HEAD
-=======
 	REGISTER_MODULE(m_mod_man, KEYBOARDINPUT_SDL);
 	REGISTER_MODULE(m_mod_man, KEYBOARDINPUT_RAWINPUT);
 	REGISTER_MODULE(m_mod_man, KEYBOARDINPUT_DINPUT);
@@ -377,15 +279,10 @@ void osd_common_t::register_options()
 	REGISTER_MODULE(m_mod_man, OUTPUT_WIN32);
 
 
->>>>>>> upstream/master
 	// after initialization we know which modules are supported
 
 	const char *names[20];
 	int num;
-<<<<<<< HEAD
-	m_mod_man.get_module_names(OSD_FONT_PROVIDER, 20, &num, names);
-	std::vector<const char *> dnames;
-=======
 	std::vector<const char *> dnames;
 
 	m_mod_man.get_module_names(OSD_MONITOR_PROVIDER, 20, &num, names);
@@ -395,13 +292,10 @@ void osd_common_t::register_options()
 
 	m_mod_man.get_module_names(OSD_FONT_PROVIDER, 20, &num, names);
 	dnames.clear();
->>>>>>> upstream/master
 	for (int i = 0; i < num; i++)
 		dnames.push_back(names[i]);
 	update_option(OSD_FONT_PROVIDER, dnames);
 
-<<<<<<< HEAD
-=======
 	m_mod_man.get_module_names(OSD_KEYBOARDINPUT_PROVIDER, 20, &num, names);
 	dnames.clear();
 	for (int i = 0; i < num; i++)
@@ -426,7 +320,6 @@ void osd_common_t::register_options()
 		dnames.push_back(names[i]);
 	update_option(OSD_JOYSTICKINPUT_PROVIDER, dnames);
 
->>>>>>> upstream/master
 	m_mod_man.get_module_names(OSD_SOUND_PROVIDER, 20, &num, names);
 	dnames.clear();
 	for (int i = 0; i < num; i++)
@@ -449,10 +342,6 @@ void osd_common_t::register_options()
 		dnames.push_back(names[i]);
 	update_option(OSD_DEBUG_PROVIDER, dnames);
 
-<<<<<<< HEAD
-	// Register video options and update options
-	video_options_add("none", NULL);
-=======
 	m_mod_man.get_module_names(OSD_OUTPUT_PROVIDER, 20, &num, names);
 	dnames.clear();
 	for (int i = 0; i < num; i++)
@@ -461,16 +350,11 @@ void osd_common_t::register_options()
 
 	// Register video options and update options
 	video_options_add("none", nullptr);
->>>>>>> upstream/master
 	video_register();
 	update_option(OSDOPTION_VIDEO, m_video_names);
 }
 
-<<<<<<< HEAD
-void osd_common_t::update_option(const char * key, std::vector<const char *> &values)
-=======
 void osd_common_t::update_option(const char * key, std::vector<const char *> &values) const
->>>>>>> upstream/master
 {
 	std::string current_value(m_options.description(key));
 	std::string new_option_value("");
@@ -503,19 +387,12 @@ void osd_common_t::output_callback(osd_output_channel channel, const char *msg, 
 			vfprintf(stderr, msg, args);
 			break;
 		case OSD_OUTPUT_CHANNEL_INFO:
-<<<<<<< HEAD
-		case OSD_OUTPUT_CHANNEL_VERBOSE:
-		case OSD_OUTPUT_CHANNEL_LOG:
-			vfprintf(stdout, msg, args);
-			break;
-=======
 		case OSD_OUTPUT_CHANNEL_LOG:
 			vfprintf(stdout, msg, args);
 			break;
 		case OSD_OUTPUT_CHANNEL_VERBOSE:
 			if (verbose()) vfprintf(stdout, msg, args);
 			break;
->>>>>>> upstream/master
 		case OSD_OUTPUT_CHANNEL_DEBUG:
 #ifdef MAME_DEBUG
 			vfprintf(stdout, msg, args);
@@ -567,12 +444,6 @@ void osd_common_t::init(running_machine &machine)
 	osd_options &options = downcast<osd_options &>(machine.options());
 	// extract the verbose printing option
 	if (options.verbose())
-<<<<<<< HEAD
-		g_print_verbose = true;
-
-	// ensure we get called on the way out
-	machine.add_notifier(MACHINE_NOTIFY_EXIT, machine_notify_delegate(FUNC(osd_common_t::osd_exit), this));
-=======
 		set_verbose(true);
 
 	// ensure we get called on the way out
@@ -587,7 +458,6 @@ void osd_common_t::init(running_machine &machine)
 		m_watchdog = std::make_unique<osd_watchdog>();
 		m_watchdog->setTimeout(watchdog_timeout);
 	}
->>>>>>> upstream/master
 }
 
 
@@ -605,14 +475,11 @@ void osd_common_t::update(bool skip_redraw)
 	// irregular intervals in some circumstances (e.g., multi-screen games
 	// or games with asynchronous updates).
 	//
-<<<<<<< HEAD
-=======
 	if (m_watchdog != nullptr)
 		m_watchdog->reset();
 
 	update_slider_list();
 
->>>>>>> upstream/master
 }
 
 
@@ -659,11 +526,7 @@ void osd_common_t::debugger_update()
 //  stream
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void osd_common_t::update_audio_stream(const INT16 *buffer, int samples_this_frame)
-=======
 void osd_common_t::update_audio_stream(const int16_t *buffer, int samples_this_frame)
->>>>>>> upstream/master
 {
 	//
 	// This method is called whenever the system has new audio data to stream.
@@ -687,11 +550,7 @@ void osd_common_t::set_mastervolume(int attenuation)
 	//    while (attenuation++ < 0)
 	//       volume /= 1.122018454;      //  = (10 ^ (1/20)) = 1dB
 	//
-<<<<<<< HEAD
-	if (m_sound != NULL)
-=======
 	if (m_sound != nullptr)
->>>>>>> upstream/master
 		m_sound->set_mastervolume(attenuation);
 }
 
@@ -717,25 +576,6 @@ void osd_common_t::customize_input_type_list(simple_list<input_type_entry> &type
 
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  font_open - attempt to "open" a handle to the
-//  font with the given name
-//-------------------------------------------------
-
-osd_font *osd_common_t::font_open(const char *name, int &height)
-{
-	return NULL;
-}
-
-
-//-------------------------------------------------
-//  font_close - release resources associated with
-//  a given OSD font
-//-------------------------------------------------
-
-void osd_common_t::font_close(osd_font *font)
-{
-=======
 //  get_slider_list - allocate and populate a
 //  list of OS-dependent slider values.
 //-------------------------------------------------
@@ -743,34 +583,10 @@ void osd_common_t::font_close(osd_font *font)
 std::vector<ui::menu_item> osd_common_t::get_slider_list()
 {
 	return m_sliders;
->>>>>>> upstream/master
 }
 
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  font_get_bitmap - allocate and populate a
-//  BITMAP_FORMAT_ARGB32 bitmap containing the
-//  pixel values rgb_t(0xff,0xff,0xff,0xff)
-//  or rgb_t(0x00,0xff,0xff,0xff) for each
-//  pixel of a black & white font
-//-------------------------------------------------
-
-bool osd_common_t::font_get_bitmap(osd_font *font, unicode_char chnum, bitmap_argb32 &bitmap, INT32 &width, INT32 &xoffs, INT32 &yoffs)
-{
-	return false;
-}
-
-//-------------------------------------------------
-//  get_slider_list - allocate and populate a
-//  list of OS-dependent slider values.
-//-------------------------------------------------
-
-void *osd_common_t::get_slider_list()
-{
-	return NULL;
-}
-=======
 //  add_audio_to_recording - append audio samples
 //  to an AVI recording if one is active
 //-------------------------------------------------
@@ -780,7 +596,6 @@ void osd_common_t::add_audio_to_recording(const int16_t *buffer, int samples_thi
 	// Do nothing
 }
 
->>>>>>> upstream/master
 
 //-------------------------------------------------
 //  execute_command - execute a command not yet
@@ -820,10 +635,6 @@ bool osd_common_t::execute_command(const char *command)
 
 }
 
-<<<<<<< HEAD
-void osd_common_t::init_subsystems()
-{
-=======
 static void output_notifier_callback(const char *outname, int32_t value, void *param)
 {
 	static_cast<osd_common_t*>(param)->notify(outname, value);
@@ -836,7 +647,6 @@ void osd_common_t::init_subsystems()
 	assert(m_monitor_module != nullptr);
 	m_monitor_module->init(options());
 
->>>>>>> upstream/master
 	if (!video_init())
 	{
 		video_exit();
@@ -846,24 +656,12 @@ void osd_common_t::init_subsystems()
 		exit(-1);
 	}
 
-<<<<<<< HEAD
-	input_init();
-	// we need pause callbacks
-	machine().add_notifier(MACHINE_NOTIFY_PAUSE, machine_notify_delegate(FUNC(osd_common_t::input_pause), this));
-	machine().add_notifier(MACHINE_NOTIFY_RESUME, machine_notify_delegate(FUNC(osd_common_t::input_resume), this));
-
-	output_init();
-
-	m_font_module = select_module_options<font_module *>(options(), OSD_FONT_PROVIDER);
-
-=======
 	m_keyboard_input = select_module_options<input_module *>(options(), OSD_KEYBOARDINPUT_PROVIDER);
 	m_mouse_input = select_module_options<input_module *>(options(), OSD_MOUSEINPUT_PROVIDER);
 	m_lightgun_input = select_module_options<input_module *>(options(), OSD_LIGHTGUNINPUT_PROVIDER);
 	m_joystick_input = select_module_options<input_module *>(options(), OSD_JOYSTICKINPUT_PROVIDER);
 
 	m_font_module = select_module_options<font_module *>(options(), OSD_FONT_PROVIDER);
->>>>>>> upstream/master
 	m_sound = select_module_options<sound_module *>(options(), OSD_SOUND_PROVIDER);
 	m_sound->m_sample_rate = options().sample_rate();
 	m_sound->m_audio_latency = options().audio_latency();
@@ -874,10 +672,6 @@ void osd_common_t::init_subsystems()
 
 	m_midi = select_module_options<midi_module *>(options(), OSD_MIDI_PROVIDER);
 
-<<<<<<< HEAD
-	m_mod_man.init(options());
-
-=======
 	m_output = select_module_options<output_module *>(options(), OSD_OUTPUT_PROVIDER);
 	m_output->set_machine(&machine());
 	machine().output().set_notifier(nullptr, output_notifier_callback, this);
@@ -888,7 +682,6 @@ void osd_common_t::init_subsystems()
 	// we need pause callbacks
 	machine().add_notifier(MACHINE_NOTIFY_PAUSE, machine_notify_delegate(&osd_common_t::input_pause, this));
 	machine().add_notifier(MACHINE_NOTIFY_RESUME, machine_notify_delegate(&osd_common_t::input_resume, this));
->>>>>>> upstream/master
 }
 
 bool osd_common_t::video_init()
@@ -912,51 +705,32 @@ void osd_common_t::video_register()
 
 bool osd_common_t::input_init()
 {
-<<<<<<< HEAD
-=======
 	m_keyboard_input->input_init(machine());
 	m_mouse_input->input_init(machine());
 	m_lightgun_input->input_init(machine());
 	m_joystick_input->input_init(machine());
->>>>>>> upstream/master
 	return true;
 }
 
 void osd_common_t::input_pause()
 {
-<<<<<<< HEAD
-=======
 	m_keyboard_input->pause();
 	m_mouse_input->pause();
 	m_lightgun_input->pause();
 	m_joystick_input->pause();
->>>>>>> upstream/master
 }
 
 void osd_common_t::input_resume()
 {
-<<<<<<< HEAD
-}
-
-bool osd_common_t::output_init()
-{
-	return true;
-=======
 	m_keyboard_input->resume();
 	m_mouse_input->resume();
 	m_lightgun_input->resume();
 	m_joystick_input->resume();
->>>>>>> upstream/master
 }
 
 void osd_common_t::exit_subsystems()
 {
 	video_exit();
-<<<<<<< HEAD
-	input_exit();
-	output_exit();
-=======
->>>>>>> upstream/master
 }
 
 void osd_common_t::video_exit()
@@ -967,17 +741,6 @@ void osd_common_t::window_exit()
 {
 }
 
-<<<<<<< HEAD
-void osd_common_t::input_exit()
-{
-}
-
-void osd_common_t::output_exit()
-{
-}
-
-=======
->>>>>>> upstream/master
 void osd_common_t::osd_exit()
 {
 	m_mod_man.exit();

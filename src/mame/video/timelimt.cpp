@@ -2,21 +2,14 @@
 // copyright-holders:Ernesto Corvi
 #include "emu.h"
 #include "includes/timelimt.h"
-<<<<<<< HEAD
-=======
 #include "video/resnet.h"
->>>>>>> upstream/master
 
 
 /***************************************************************************
 
   Convert the color PROMs into a more useable format.
 
-<<<<<<< HEAD
-  Time Limit has two 32 bytes palette PROM, connected to the RGB output this
-=======
   Time Limit has three 32 bytes palette PROM, connected to the RGB output this
->>>>>>> upstream/master
   way:
 
   bit 7 -- 220 ohm resistor  -- BLUE
@@ -30,11 +23,6 @@
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-PALETTE_INIT_MEMBER(timelimt_state, timelimt){
-	const UINT8 *color_prom = memregion("proms")->base();
-	int i;
-=======
 PALETTE_INIT_MEMBER(timelimt_state, timelimt)
 {
 	const uint8_t *color_prom = memregion("proms")->base();
@@ -48,7 +36,6 @@ PALETTE_INIT_MEMBER(timelimt_state, timelimt)
 			3,  resistances_rg, weights_g,  0,  0,
 			2,  resistances_b,  weights_b,  0,  0);
 
->>>>>>> upstream/master
 
 	for (i = 0;i < palette.entries();i++)
 	{
@@ -58,28 +45,16 @@ PALETTE_INIT_MEMBER(timelimt_state, timelimt)
 		bit0 = (*color_prom >> 0) & 0x01;
 		bit1 = (*color_prom >> 1) & 0x01;
 		bit2 = (*color_prom >> 2) & 0x01;
-<<<<<<< HEAD
-		r = 0x21 * bit0 + 0x47 * bit1 + 0x97 * bit2;
-=======
 		r = combine_3_weights(weights_r, bit0, bit1, bit2);
->>>>>>> upstream/master
 		/* green component */
 		bit0 = (*color_prom >> 3) & 0x01;
 		bit1 = (*color_prom >> 4) & 0x01;
 		bit2 = (*color_prom >> 5) & 0x01;
-<<<<<<< HEAD
-		g = 0x21 * bit0 + 0x47 * bit1 + 0x97 * bit2;
-		/* blue component */
-		bit0 = (*color_prom >> 6) & 0x01;
-		bit1 = (*color_prom >> 7) & 0x01;
-		b = 0x4f * bit0 + 0xa8 * bit1;
-=======
 		g = combine_3_weights(weights_g, bit0, bit1, bit2);
 		/* blue component */
 		bit0 = (*color_prom >> 6) & 0x01;
 		bit1 = (*color_prom >> 7) & 0x01;
 		b = combine_2_weights(weights_b, bit0, bit1);
->>>>>>> upstream/master
 
 		palette.set_pen_color(i,rgb_t(r,g,b));
 		color_prom++;
@@ -104,17 +79,10 @@ TILE_GET_INFO_MEMBER(timelimt_state::get_fg_tile_info)
 
 void timelimt_state::video_start()
 {
-<<<<<<< HEAD
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(timelimt_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS,
-			8, 8, 64, 32);
-
-	m_fg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(timelimt_state::get_fg_tile_info),this), TILEMAP_SCAN_ROWS,
-=======
 	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(timelimt_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS,
 			8, 8, 64, 32);
 
 	m_fg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(timelimt_state::get_fg_tile_info),this), TILEMAP_SCAN_ROWS,
->>>>>>> upstream/master
 			8, 8, 32, 32);
 
 	m_fg_tilemap->set_transparent_pen(0);
@@ -171,22 +139,14 @@ void timelimt_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprec
 
 		m_gfxdecode->gfx(2)->transpen(bitmap,cliprect,
 				code,
-<<<<<<< HEAD
-				attr & 7,
-=======
 				attr & 3, // was & 7, wrong for 3bpp and 32 colors
->>>>>>> upstream/master
 				flipx,flipy,
 				sx,sy,0);
 	}
 }
 
 
-<<<<<<< HEAD
-UINT32 timelimt_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t timelimt_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	m_bg_tilemap->set_scrollx(0, m_scrollx);
 	m_bg_tilemap->set_scrolly(0, m_scrolly);

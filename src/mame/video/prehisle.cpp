@@ -10,10 +10,7 @@
 
 #include "emu.h"
 #include "includes/prehisle.h"
-<<<<<<< HEAD
-=======
 #include "screen.h"
->>>>>>> upstream/master
 
 
 WRITE16_MEMBER(prehisle_state::fg_vram_w)
@@ -54,13 +51,8 @@ WRITE16_MEMBER(prehisle_state::control_w)
 	case 0x10: m_bg_tilemap->set_scrolly(0, scroll); break;
 	case 0x18: m_bg_tilemap->set_scrollx(0, scroll); break;
 	case 0x23: m_invert_controls = data ? 0x00ff : 0x0000; break;
-<<<<<<< HEAD
-	case 0x28: coin_counter_w(machine(), 0, data & 1); break;
-	case 0x29: coin_counter_w(machine(), 1, data & 1); break;
-=======
 	case 0x28: machine().bookkeeping().coin_counter_w(0, data & 1); break;
 	case 0x29: machine().bookkeeping().coin_counter_w(1, data & 1); break;
->>>>>>> upstream/master
 	case 0x30: flip_screen_set(data & 0x01); break;
 	}
 }
@@ -114,11 +106,7 @@ void prehisle_state::video_start()
 {
 	// ROM-based background layer
 	m_bg_tilemap = &machine().tilemap().create(
-<<<<<<< HEAD
-			m_gfxdecode,
-=======
 			*m_gfxdecode,
->>>>>>> upstream/master
 			tilemap_get_info_delegate(FUNC(prehisle_state::get_bg_tile_info), this),
 			TILEMAP_SCAN_COLS,      // scan order
 			16, 16,                 // tile size
@@ -126,11 +114,7 @@ void prehisle_state::video_start()
 
 	// RAM-based foreground layer (overlays most sprites)
 	m_fg_tilemap = &machine().tilemap().create(
-<<<<<<< HEAD
-			m_gfxdecode,
-=======
 			*m_gfxdecode,
->>>>>>> upstream/master
 			tilemap_get_info_delegate(FUNC(prehisle_state::get_fg_tile_info), this),
 			TILEMAP_SCAN_COLS,      // scan order
 			16, 16,                 // tile size
@@ -139,11 +123,7 @@ void prehisle_state::video_start()
 
 	// text layer
 	m_tx_tilemap = &machine().tilemap().create(
-<<<<<<< HEAD
-			m_gfxdecode,
-=======
 			*m_gfxdecode,
->>>>>>> upstream/master
 			tilemap_get_info_delegate(FUNC(prehisle_state::get_tx_tile_info), this),
 			TILEMAP_SCAN_ROWS,      // scan order
 			8, 8,                   // tile size
@@ -166,11 +146,7 @@ void prehisle_state::video_start()
 */
 void prehisle_state::draw_sprites(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
-<<<<<<< HEAD
-	UINT16 const *const spriteram16 = m_spriteram;
-=======
 	uint16_t const *const spriteram16 = m_spriteram;
->>>>>>> upstream/master
 
 	for (int offs = 1024 - 4; offs >= 0; offs -= 4)
 	{
@@ -205,11 +181,7 @@ void prehisle_state::draw_sprites(screen_device &screen, bitmap_ind16 &bitmap, c
 	}
 }
 
-<<<<<<< HEAD
-UINT32 prehisle_state::screen_update_prehisle(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t prehisle_state::screen_update_prehisle(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	screen.priority().fill(0, cliprect);
 

@@ -1,10 +1,7 @@
 // license:BSD-3-Clause
 // copyright-holders:Mike Coates
 #include "sound/discrete.h"
-<<<<<<< HEAD
-=======
 #include "sound/samples.h"
->>>>>>> upstream/master
 
 class circus_state : public driver_device
 {
@@ -19,11 +16,7 @@ public:
 		m_palette(*this, "palette") { }
 
 	/* memory pointers */
-<<<<<<< HEAD
-	required_shared_ptr<UINT8> m_videoram;
-=======
 	required_shared_ptr<uint8_t> m_videoram;
->>>>>>> upstream/master
 
 	/* video-related */
 	tilemap_t  *m_bg_tilemap;
@@ -50,15 +43,6 @@ public:
 	DECLARE_DRIVER_INIT(robotbwl);
 	DECLARE_DRIVER_INIT(crash);
 	TILE_GET_INFO_MEMBER(get_bg_tile_info);
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void machine_reset();
-	virtual void video_start();
-	UINT32 screen_update_circus(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	UINT32 screen_update_robotbwl(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	UINT32 screen_update_crash(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	UINT32 screen_update_ripcord(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
 	virtual void video_start() override;
@@ -66,7 +50,6 @@ public:
 	uint32_t screen_update_robotbwl(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	uint32_t screen_update_crash(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	uint32_t screen_update_ripcord(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	TIMER_DEVICE_CALLBACK_MEMBER(crash_scanline);
 	void draw_line( bitmap_ind16 &bitmap, const rectangle &cliprect, int x1, int y1, int x2, int y2, int dotted );
 	void draw_sprite_collision( bitmap_ind16 &bitmap, const rectangle &cliprect );

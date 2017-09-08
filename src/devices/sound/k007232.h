@@ -4,41 +4,21 @@
 /*    Konami PCM controller                              */
 /*********************************************************/
 
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __K007232_H__
-#define __K007232_H__
-
-#define  KDAC_A_PCM_MAX    (2)      /* Channels per chip */
-=======
 #ifndef MAME_SOUND_K007232_H
 #define MAME_SOUND_K007232_H
 
 #pragma once
->>>>>>> upstream/master
 
 #define MCFG_K007232_PORT_WRITE_HANDLER(_devcb) \
 	devcb = &k007232_device::set_port_write_handler(*device, DEVCB_##_devcb);
 
 
-<<<<<<< HEAD
-class k007232_device : public device_t,
-									public device_sound_interface
-{
-public:
-	k007232_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-	~k007232_device() {}
-
-	template<class _Object> static devcb_base &set_port_write_handler(device_t &device, _Object object) { return downcast<k007232_device &>(device).m_port_write_handler.set_callback(object); }
-=======
 class k007232_device : public device_t, public device_sound_interface
 {
 public:
 	k007232_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	template <class Object> static devcb_base &set_port_write_handler(device_t &device, Object &&cb) { return downcast<k007232_device &>(device).m_port_write_handler.set_callback(std::forward<Object>(cb)); }
->>>>>>> upstream/master
 
 	DECLARE_WRITE8_MEMBER( write );
 	DECLARE_READ8_MEMBER( read );
@@ -57,46 +37,14 @@ public:
 
 protected:
 	// device-level overrides
-<<<<<<< HEAD
-	virtual void device_start();
-
-	// sound stream update overrides
-	virtual void sound_stream_update(sound_stream &stream, stream_sample_t **inputs, stream_sample_t **outputs, int samples);
-=======
 	virtual void device_start() override;
 
 	// sound stream update overrides
 	virtual void sound_stream_update(sound_stream &stream, stream_sample_t **inputs, stream_sample_t **outputs, int samples) override;
->>>>>>> upstream/master
 
 	void KDAC_A_make_fncode();
 
 private:
-<<<<<<< HEAD
-	// internal state
-	required_region_ptr<UINT8> m_rom;
-
-	UINT8           m_vol[KDAC_A_PCM_MAX][2]; /* volume for the left and right channel */
-	UINT32          m_addr[KDAC_A_PCM_MAX];
-	UINT32          m_start[KDAC_A_PCM_MAX];
-	UINT32          m_step[KDAC_A_PCM_MAX];
-	UINT32          m_bank[KDAC_A_PCM_MAX];
-	int             m_play[KDAC_A_PCM_MAX];
-
-	UINT8           m_wreg[0x10]; /* write data */
-
-	UINT32          m_pcmlimit;
-
-	sound_stream *  m_stream;
-	UINT32          m_fncode[0x200];
-	devcb_write8 m_port_write_handler;
-};
-
-extern const device_type K007232;
-
-
-#endif /* __K007232_H__ */
-=======
 	static constexpr unsigned KDAC_A_PCM_MAX = 2;      /* Channels per chip */
 
 	// internal state
@@ -121,4 +69,3 @@ extern const device_type K007232;
 DECLARE_DEVICE_TYPE(K007232, k007232_device)
 
 #endif // MAME_SOUND_K007232_H
->>>>>>> upstream/master

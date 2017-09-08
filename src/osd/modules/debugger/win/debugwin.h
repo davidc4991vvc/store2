@@ -10,10 +10,6 @@
 #define __DEBUG_WIN_DEBUG_WIN_H__
 
 // standard windows headers
-<<<<<<< HEAD
-#define WIN32_LEAN_AND_MEAN
-=======
->>>>>>> upstream/master
 #include <windows.h>
 #include <windowsx.h>
 #include <tchar.h>
@@ -22,10 +18,6 @@
 #include <zmouse.h>
 #endif
 
-<<<<<<< HEAD
-#include "emu.h"
-=======
->>>>>>> upstream/master
 
 
 class debugview_info;

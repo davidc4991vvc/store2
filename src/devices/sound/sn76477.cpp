@@ -1,9 +1,6 @@
 // license:BSD-3-Clause
 // copyright-holders:Zsolt Vasvari
-<<<<<<< HEAD
-=======
 // thanks-to:Derrick Renaud
->>>>>>> upstream/master
 /*****************************************************************************
 
     Texas Instruments SN76477 emulator
@@ -19,12 +16,9 @@
           application at http://zunzun.com to come up with the functions.
 
     Known issues/to-do's:
-<<<<<<< HEAD
-=======
         * Use RES_INF for unconnected resistor pins and treat 0 as a short
           circuit
 
->>>>>>> upstream/master
         * VCO
             * confirm value of VCO_MAX_EXT_VOLTAGE, VCO_TO_SLF_VOLTAGE_DIFF
               VCO_CAP_VOLTAGE_MIN and VCO_CAP_VOLTAGE_MAX
@@ -32,23 +26,11 @@
             * get real formulas for VCO cap charging and discharging
             * get real formula for VCO duty cycle
             * what happens if no vco_res
-<<<<<<< HEAD
-            * what happens if no vco_cap
-=======
             * what happens if no vco_cap (needed for laserbat/lazarian)
->>>>>>> upstream/master
 
         * Attack/Decay
             * get real formulas for a/d cap charging and discharging
 
-<<<<<<< HEAD
- *****************************************************************************/
-
-#include "emu.h"
-#include "sound/wavwrite.h"
-#include "sn76477.h"
-
-=======
         * Output
             * what happens if output is taken at pin 12 with no feedback_res
               (needed for laserbat/lazarian)
@@ -60,7 +42,6 @@
 
 #include "wavwrite.h"
 
->>>>>>> upstream/master
 
 /*****************************************************************************
  *
@@ -94,38 +75,12 @@
 #define LOG_WAV_FILE_NAME       "sn76477_%s.wav"
 
 
-<<<<<<< HEAD
-#define LOG(n,x) do { if (VERBOSE >= (n)) logerror x; } while (0)
-
-#define CHECK_CHIP_NUM                  assert(this != NULL)
-#define CHECK_CHIP_NUM_AND_BOOLEAN      CHECK_CHIP_NUM; assert((state & 0x01) == state)
-#define CHECK_CHIP_NUM_AND_POSITIVE     CHECK_CHIP_NUM; assert(data >= 0.0)
-#define CHECK_CHIP_NUM_AND_VOLTAGE      CHECK_CHIP_NUM; assert((data >= 0.0) && (data <= 5.0))
-#define CHECK_CHIP_NUM_AND_CAP_VOLTAGE  CHECK_CHIP_NUM; assert(((data >= 0.0) && (data <= 5.0)) || (data == SN76477_EXTERNAL_VOLTAGE_DISCONNECT))
-
-
-
-/*****************************************************************************
- *
- *  Test Mode
- *
- *  in test mode, calls by the driver to
- *  the input setter functions are ignored.
- *  Interface values can be set in device_start
- *  to any desired test value.
- *  Use the space bar to enable/disable the chip.
- *
- *****************************************************************************/
-
-#define TEST_MODE   0
-=======
 #define LOG(n,...) do { if (VERBOSE >= (n)) logerror(__VA_ARGS__); } while (0)
 
 #define CHECK_BOOLEAN      assert((state & 0x01) == state)
 #define CHECK_POSITIVE     assert(data >= 0.0)
 #define CHECK_VOLTAGE      assert((data >= 0.0) && (data <= 5.0))
 #define CHECK_CAP_VOLTAGE  assert(((data >= 0.0) && (data <= 5.0)) || (data == EXTERNAL_VOLTAGE_DISCONNECT))
->>>>>>> upstream/master
 
 /*****************************************************************************
  *
@@ -167,11 +122,7 @@
 #define OUT_LOW_CLIP_THRESHOLD      (0.715)     /* the minimum voltage that can be put out (measured) */
 
 /* gain factors for OUT voltage in 0.1V increments (measured) */
-<<<<<<< HEAD
-static const double out_pos_gain[] =
-=======
 static constexpr double out_pos_gain[] =
->>>>>>> upstream/master
 {
 	0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.01,  /* 0.0 - 0.9V */
 	0.03, 0.11, 0.15, 0.19, 0.21, 0.23, 0.26, 0.29, 0.31, 0.33,  /* 1.0 - 1.9V */
@@ -180,15 +131,9 @@ static constexpr double out_pos_gain[] =
 	0.90, 0.93, 0.96, 0.98, 1.00                                 /* 4.0 - 4.4V */
 };
 
-<<<<<<< HEAD
-static const double out_neg_gain[] =
-{
-		0.00,  0.00,  0.00,  0.00,  0.00,  0.00,  0.00,  0.00,  0.00, -0.01,  /* 0.0 - 0.9V */
-=======
 static constexpr double out_neg_gain[] =
 {
 	 0.00,  0.00,  0.00,  0.00,  0.00,  0.00,  0.00,  0.00,  0.00, -0.01,  /* 0.0 - 0.9V */
->>>>>>> upstream/master
 	-0.02, -0.09, -0.13, -0.15, -0.17, -0.19, -0.22, -0.24, -0.26, -0.28,  /* 1.0 - 1.9V */
 	-0.30, -0.32, -0.34, -0.37, -0.39, -0.41, -0.44, -0.46, -0.48, -0.51,  /* 2.0 - 2.9V */
 	-0.53, -0.56, -0.58, -0.60, -0.62, -0.65, -0.67, -0.69, -0.72, -0.74,  /* 3.0 - 3.9V */
@@ -196,46 +141,15 @@ static constexpr double out_neg_gain[] =
 };
 
 
-<<<<<<< HEAD
-const device_type SN76477 = &device_creator<sn76477_device>;
-
-sn76477_device::sn76477_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, SN76477, "SN76477", tag, owner, clock, "sn76477", __FILE__),
-=======
 DEFINE_DEVICE_TYPE(SN76477, sn76477_device, "sn76477", "TI SN76477 CSG")
 
 sn76477_device::sn76477_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, SN76477, tag, owner, clock),
->>>>>>> upstream/master
 		device_sound_interface(mconfig, *this),
 		m_enable(0),
 		m_envelope_mode(0),
 		m_vco_mode(0),
 		m_mixer_mode(0),
-<<<<<<< HEAD
-		m_one_shot_res(0),
-		m_one_shot_cap(0),
-		m_one_shot_cap_voltage_ext(0),
-		m_slf_res(0),
-		m_slf_cap(0),
-		m_slf_cap_voltage_ext(0),
-		m_vco_voltage(0),
-		m_vco_res(0),
-		m_vco_cap(0),
-		m_vco_cap_voltage_ext(0),
-		m_noise_clock_res(0),
-		m_noise_clock_ext(0),
-		m_noise_clock(0),
-		m_noise_filter_res(0),
-		m_noise_filter_cap(0),
-		m_noise_filter_cap_voltage_ext(0),
-		m_attack_res(0),
-		m_decay_res(0),
-		m_attack_decay_cap(0),
-		m_attack_decay_cap_voltage_ext(0),
-		m_amplitude_res(0),
-		m_feedback_res(0),
-=======
 		m_one_shot_res(RES_INF),
 		m_one_shot_cap(0),
 		m_one_shot_cap_voltage_ext(0),
@@ -258,7 +172,6 @@ sn76477_device::sn76477_device(const machine_config &mconfig, const char *tag, d
 		m_attack_decay_cap_voltage_ext(0),
 		m_amplitude_res(RES_INF),
 		m_feedback_res(RES_INF),
->>>>>>> upstream/master
 		m_pitch_voltage(0),
 		m_one_shot_cap_voltage(0),
 		m_one_shot_running_ff(0),
@@ -278,15 +191,9 @@ sn76477_device::sn76477_device(const machine_config &mconfig, const char *tag, d
 		m_mixer_c(0),
 		m_envelope_1(0),
 		m_envelope_2(0),
-<<<<<<< HEAD
-		m_channel(NULL),
-		m_our_sample_rate(0),
-		m_file(NULL)
-=======
 		m_channel(nullptr),
 		m_our_sample_rate(0),
 		m_file(nullptr)
->>>>>>> upstream/master
 {
 }
 
@@ -310,19 +217,11 @@ void sn76477_device::device_start()
 	intialize_noise();
 
 	// set up mixer and envelope modes, based on interface values
-<<<<<<< HEAD
-	_SN76477_mixer_a_w(m_mixer_a);
-	_SN76477_mixer_b_w(m_mixer_b);
-	_SN76477_mixer_c_w(m_mixer_c);
-	_SN76477_envelope_1_w(m_envelope_1);
-	_SN76477_envelope_2_w(m_envelope_2);
-=======
 	mixer_a_w(m_mixer_a);
 	mixer_b_w(m_mixer_b);
 	mixer_c_w(m_mixer_c);
 	envelope_1_w(m_envelope_1);
 	envelope_2_w(m_envelope_2);
->>>>>>> upstream/master
 
 	m_one_shot_cap_voltage = ONE_SHOT_CAP_VOLTAGE_MIN;
 	m_slf_cap_voltage = SLF_CAP_VOLTAGE_MIN;
@@ -358,21 +257,13 @@ void sn76477_device::device_stop()
 #undef max
 #undef min
 
-<<<<<<< HEAD
-INLINE double max(double a, double b)
-=======
 static inline double max(double a, double b)
->>>>>>> upstream/master
 {
 	return (a > b) ? a : b;
 }
 
 
-<<<<<<< HEAD
-INLINE double min(double a, double b)
-=======
 static inline double min(double a, double b)
->>>>>>> upstream/master
 {
 	return (a < b) ? a : b;
 }
@@ -527,11 +418,7 @@ double sn76477_device::compute_vco_duty_cycle() /* no measure, just a number */
 }
 
 
-<<<<<<< HEAD
-UINT32 sn76477_device::compute_noise_gen_freq() /* in Hz */
-=======
 uint32_t sn76477_device::compute_noise_gen_freq() /* in Hz */
->>>>>>> upstream/master
 {
 	/* this formula was derived using the data points below
 
@@ -561,11 +448,7 @@ uint32_t sn76477_device::compute_noise_gen_freq() /* in Hz */
 	    3.3M          487.59
 	*/
 
-<<<<<<< HEAD
-	UINT32 ret = 0;
-=======
 	uint32_t ret = 0;
->>>>>>> upstream/master
 
 	if ((m_noise_clock_res >= NOISE_MIN_CLOCK_RES) &&
 		(m_noise_clock_res <= NOISE_MAX_CLOCK_RES))
@@ -744,11 +627,7 @@ void sn76477_device::log_enable_line()
 		"Enabled", "Inhibited"
 	};
 
-<<<<<<< HEAD
-	LOG(1, ("SN76477 '%s':              Enable line (9): %d [%s]\n", tag(), m_enable, desc[m_enable]));
-=======
 	LOG(1, "SN76477:              Enable line (9): %d [%s]\n", m_enable, desc[m_enable]);
->>>>>>> upstream/master
 }
 
 
@@ -760,11 +639,7 @@ void sn76477_device::log_mixer_mode()
 		"SLF/Noise", "SLF/VCO/Noise", "SLF/VCO", "Inhibit"
 	};
 
-<<<<<<< HEAD
-	LOG(1, ("SN76477 '%s':           Mixer mode (25-27): %d [%s]\n", tag(), m_mixer_mode, desc[m_mixer_mode]));
-=======
 	LOG(1, "SN76477:           Mixer mode (25-27): %d [%s]\n", m_mixer_mode, desc[m_mixer_mode]);
->>>>>>> upstream/master
 }
 
 
@@ -775,11 +650,7 @@ void sn76477_device::log_envelope_mode()
 		"VCO", "One-Shot", "Mixer Only", "VCO with Alternating Polarity"
 	};
 
-<<<<<<< HEAD
-	LOG(1, ("SN76477 '%s':         Envelope mode (1,28): %d [%s]\n", tag(), m_envelope_mode, desc[m_envelope_mode]));
-=======
 	LOG(1, "SN76477:         Envelope mode (1,28): %d [%s]\n", m_envelope_mode, desc[m_envelope_mode]);
->>>>>>> upstream/master
 }
 
 
@@ -790,11 +661,7 @@ void sn76477_device::log_vco_mode()
 		"External (Pin 16)", "Internal (SLF)"
 	};
 
-<<<<<<< HEAD
-	LOG(1, ("SN76477 '%s':                VCO mode (22): %d [%s]\n", tag(), m_vco_mode, desc[m_vco_mode]));
-=======
 	LOG(1, "SN76477:                VCO mode (22): %d [%s]\n", m_vco_mode, desc[m_vco_mode]);
->>>>>>> upstream/master
 }
 
 
@@ -804,28 +671,16 @@ void sn76477_device::log_one_shot_time()
 	{
 		if (compute_one_shot_cap_charging_rate() > 0)
 		{
-<<<<<<< HEAD
-			LOG(1, ("SN76477 '%s':        One-shot time (23,24): %.4f sec\n", tag(), ONE_SHOT_CAP_VOLTAGE_RANGE * (1 / compute_one_shot_cap_charging_rate())));
-		}
-		else
-		{
-			LOG(1, ("SN76477 '%s':        One-shot time (23,24): N/A\n", tag()));
-=======
 			LOG(1, "SN76477:        One-shot time (23,24): %.4f sec\n", ONE_SHOT_CAP_VOLTAGE_RANGE * (1 / compute_one_shot_cap_charging_rate()));
 		}
 		else
 		{
 			LOG(1, "SN76477:        One-shot time (23,24): N/A\n");
->>>>>>> upstream/master
 		}
 	}
 	else
 	{
-<<<<<<< HEAD
-		LOG(1, ("SN76477 '%s':        One-shot time (23,24): External (cap = %.2fV)\n", tag(), m_one_shot_cap_voltage));
-=======
 		LOG(1, "SN76477:        One-shot time (23,24): External (cap = %.2fV)\n", m_one_shot_cap_voltage);
->>>>>>> upstream/master
 	}
 }
 
@@ -839,49 +694,29 @@ void sn76477_device::log_slf_freq()
 			double charging_time = (1 / compute_slf_cap_charging_rate()) * SLF_CAP_VOLTAGE_RANGE;
 			double discharging_time = (1 / compute_slf_cap_discharging_rate()) * SLF_CAP_VOLTAGE_RANGE;
 
-<<<<<<< HEAD
-			LOG(1, ("SN76477 '%s':        SLF frequency (20,21): %.2f Hz\n", tag(), 1 / (charging_time + discharging_time)));
-		}
-		else
-		{
-			LOG(1, ("SN76477 '%s':        SLF frequency (20,21): N/A\n", tag()));
-=======
 			LOG(1, "SN76477:        SLF frequency (20,21): %.2f Hz\n", 1 / (charging_time + discharging_time));
 		}
 		else
 		{
 			LOG(1, "SN76477:        SLF frequency (20,21): N/A\n");
->>>>>>> upstream/master
 		}
 	}
 	else
 	{
-<<<<<<< HEAD
-		LOG(1, ("SN76477 '%s':        SLF frequency (20,21): External (cap = %.2fV)\n", tag(), m_slf_cap_voltage));
-=======
 		LOG(1, "SN76477:        SLF frequency (20,21): External (cap = %.2fV)\n", m_slf_cap_voltage);
->>>>>>> upstream/master
 	}
 }
 
 
 void sn76477_device::log_vco_pitch_voltage()
 {
-<<<<<<< HEAD
-	LOG(1, ("SN76477 '%s':       VCO pitch voltage (19): %.2fV\n", tag(), m_pitch_voltage));
-=======
 	LOG(1, "SN76477:       VCO pitch voltage (19): %.2fV\n", m_pitch_voltage);
->>>>>>> upstream/master
 }
 
 
 void sn76477_device::log_vco_duty_cycle()
 {
-<<<<<<< HEAD
-	LOG(1, ("SN76477 '%s':       VCO duty cycle (16,19): %.0f%%\n", tag(), compute_vco_duty_cycle() * 100.0));
-=======
 	LOG(1, "SN76477:       VCO duty cycle (16,19): %.0f%%\n", compute_vco_duty_cycle() * 100.0);
->>>>>>> upstream/master
 }
 
 
@@ -894,28 +729,16 @@ void sn76477_device::log_vco_freq()
 			double min_freq = compute_vco_cap_charging_discharging_rate() / (2 * VCO_CAP_VOLTAGE_RANGE);
 			double max_freq = compute_vco_cap_charging_discharging_rate() / (2 * VCO_TO_SLF_VOLTAGE_DIFF);
 
-<<<<<<< HEAD
-			LOG(1, ("SN76477 '%s':        VCO frequency (17,18): %.2f Hz - %.1f Hz\n", tag(), min_freq, max_freq));
-		}
-		else
-		{
-			LOG(1, ("SN76477 '%s':        VCO frequency (17,18): N/A\n", tag()));
-=======
 			LOG(1, "SN76477:        VCO frequency (17,18): %.2f Hz - %.1f Hz\n", min_freq, max_freq);
 		}
 		else
 		{
 			LOG(1, "SN76477:        VCO frequency (17,18): N/A\n");
->>>>>>> upstream/master
 		}
 	}
 	else
 	{
-<<<<<<< HEAD
-		LOG(1, ("SN76477 '%s':        VCO frequency (17,18): External (cap = %.2fV)\n", tag(), m_vco_cap_voltage));
-=======
 		LOG(1, "SN76477:        VCO frequency (17,18): External (cap = %.2fV)\n", m_vco_cap_voltage);
->>>>>>> upstream/master
 	}
 }
 
@@ -927,15 +750,6 @@ void sn76477_device::log_vco_ext_voltage()
 		double min_freq = compute_vco_cap_charging_discharging_rate() / (2 * VCO_CAP_VOLTAGE_RANGE);
 		double max_freq = compute_vco_cap_charging_discharging_rate() / (2 * VCO_TO_SLF_VOLTAGE_DIFF);
 
-<<<<<<< HEAD
-		LOG(1, ("SN76477 '%s':        VCO ext. voltage (16): %.2fV (%.2f Hz)\n", tag(),
-				m_vco_voltage,
-				min_freq + ((max_freq - min_freq) * m_vco_voltage / VCO_MAX_EXT_VOLTAGE)));
-	}
-	else
-	{
-		LOG(1, ("SN76477 '%s':        VCO ext. voltage (16): %.2fV (saturated, no output)\n", tag(), m_vco_voltage));
-=======
 		LOG(1, "SN76477:        VCO ext. voltage (16): %.2fV (%.2f Hz)\n",
 				m_vco_voltage,
 				min_freq + ((max_freq - min_freq) * m_vco_voltage / VCO_MAX_EXT_VOLTAGE));
@@ -943,7 +757,6 @@ void sn76477_device::log_vco_ext_voltage()
 	else
 	{
 		LOG(1, "SN76477:        VCO ext. voltage (16): %.2fV (saturated, no output)\n", m_vco_voltage);
->>>>>>> upstream/master
 	}
 }
 
@@ -952,29 +765,17 @@ void sn76477_device::log_noise_gen_freq()
 {
 	if (m_noise_clock_ext)
 	{
-<<<<<<< HEAD
-		LOG(1, ("SN76477 '%s':      Noise gen frequency (4): External\n", tag()));
-=======
 		LOG(1, "SN76477:      Noise gen frequency (4): External\n");
->>>>>>> upstream/master
 	}
 	else
 	{
 		if (compute_noise_gen_freq() > 0)
 		{
-<<<<<<< HEAD
-			LOG(1, ("SN76477 '%s':      Noise gen frequency (4): %d Hz\n", tag(), compute_noise_gen_freq()));
-		}
-		else
-		{
-			LOG(1, ("SN76477 '%s':      Noise gen frequency (4): N/A\n", tag()));
-=======
 			LOG(1, "SN76477:      Noise gen frequency (4): %d Hz\n", compute_noise_gen_freq());
 		}
 		else
 		{
 			LOG(1, "SN76477:      Noise gen frequency (4): N/A\n");
->>>>>>> upstream/master
 		}
 	}
 }
@@ -993,37 +794,21 @@ void sn76477_device::log_noise_filter_freq()
 				double charging_time = (1 / charging_rate) * NOISE_CAP_VOLTAGE_RANGE;
 				double discharging_time = (1 / charging_rate) * NOISE_CAP_VOLTAGE_RANGE;
 
-<<<<<<< HEAD
-				LOG(1, ("SN76477 '%s': Noise filter frequency (5,6): %.0f Hz\n", tag(), 1 / (charging_time + discharging_time)));
-			}
-			else
-			{
-				LOG(1, ("SN76477 '%s': Noise filter frequency (5,6): Very Large (Filtering Disabled)\n", tag()));
-=======
 				LOG(1, "SN76477: Noise filter frequency (5,6): %.0f Hz\n", 1 / (charging_time + discharging_time));
 			}
 			else
 			{
 				LOG(1, "SN76477: Noise filter frequency (5,6): Very Large (Filtering Disabled)\n");
->>>>>>> upstream/master
 			}
 		}
 		else
 		{
-<<<<<<< HEAD
-			LOG(1, ("SN76477 '%s': Noise filter frequency (5,6): N/A\n", tag()));
-=======
 			LOG(1, "SN76477: Noise filter frequency (5,6): N/A\n");
->>>>>>> upstream/master
 		}
 	}
 	else
 	{
-<<<<<<< HEAD
-		LOG(1, ("SN76477 '%s': Noise filter frequency (5,6): External (cap = %.2fV)\n", tag(), m_noise_filter_cap));
-=======
 		LOG(1, "SN76477: Noise filter frequency (5,6): External (cap = %.2fV)\n", m_noise_filter_cap);
->>>>>>> upstream/master
 	}
 }
 
@@ -1034,28 +819,16 @@ void sn76477_device::log_attack_time()
 	{
 		if (compute_attack_decay_cap_charging_rate() > 0)
 		{
-<<<<<<< HEAD
-			LOG(1, ("SN76477 '%s':           Attack time (8,10): %.4f sec\n", tag(), AD_CAP_VOLTAGE_RANGE * (1 / compute_attack_decay_cap_charging_rate())));
-		}
-		else
-		{
-			LOG(1, ("SN76477 '%s':           Attack time (8,10): N/A\n", tag()));
-=======
 			LOG(1, "SN76477:           Attack time (8,10): %.4f sec\n", AD_CAP_VOLTAGE_RANGE * (1 / compute_attack_decay_cap_charging_rate()));
 		}
 		else
 		{
 			LOG(1, "SN76477:           Attack time (8,10): N/A\n");
->>>>>>> upstream/master
 		}
 	}
 	else
 	{
-<<<<<<< HEAD
-		LOG(1, ("SN76477 '%s':           Attack time (8,10): External (cap = %.2fV)\n", tag(), m_attack_decay_cap_voltage));
-=======
 		LOG(1, "SN76477:           Attack time (8,10): External (cap = %.2fV)\n", m_attack_decay_cap_voltage);
->>>>>>> upstream/master
 	}
 }
 
@@ -1066,46 +839,26 @@ void sn76477_device::log_decay_time()
 	{
 		if (compute_attack_decay_cap_discharging_rate() > 0)
 		{
-<<<<<<< HEAD
-			LOG(1, ("SN76477 '%s':             Decay time (7,8): %.4f sec\n", tag(), AD_CAP_VOLTAGE_RANGE * (1 / compute_attack_decay_cap_discharging_rate())));
-		}
-		else
-		{
-			LOG(1, ("SN76477 '%s':            Decay time (8,10): N/A\n", tag()));
-=======
 			LOG(1, "SN76477:             Decay time (7,8): %.4f sec\n", AD_CAP_VOLTAGE_RANGE * (1 / compute_attack_decay_cap_discharging_rate()));
 		}
 		else
 		{
 			LOG(1, "SN76477:            Decay time (8,10): N/A\n");
->>>>>>> upstream/master
 		}
 	}
 	else
 	{
-<<<<<<< HEAD
-		LOG(1, ("SN76477 '%s':             Decay time (7, 8): External (cap = %.2fV)\n", tag(), m_attack_decay_cap_voltage));
-=======
 		LOG(1, "SN76477:             Decay time (7, 8): External (cap = %.2fV)\n", m_attack_decay_cap_voltage);
->>>>>>> upstream/master
 	}
 }
 
 
 void sn76477_device::log_voltage_out()
 {
-<<<<<<< HEAD
-	LOG(1, ("SN76477 '%s':    Voltage OUT range (11,12): %.2fV - %.2fV (clips above %.2fV)\n",
-			tag(),
-			OUT_CENTER_LEVEL_VOLTAGE + compute_center_to_peak_voltage_out() * out_neg_gain[(int)(AD_CAP_VOLTAGE_MAX * 10)],
-			OUT_CENTER_LEVEL_VOLTAGE + compute_center_to_peak_voltage_out() * out_pos_gain[(int)(AD_CAP_VOLTAGE_MAX * 10)],
-			OUT_HIGH_CLIP_THRESHOLD));
-=======
 	LOG(1, "SN76477:    Voltage OUT range (11,12): %.2fV - %.2fV (clips above %.2fV)\n",
 			OUT_CENTER_LEVEL_VOLTAGE + compute_center_to_peak_voltage_out() * out_neg_gain[(int)(AD_CAP_VOLTAGE_MAX * 10)],
 			OUT_CENTER_LEVEL_VOLTAGE + compute_center_to_peak_voltage_out() * out_pos_gain[(int)(AD_CAP_VOLTAGE_MAX * 10)],
 			OUT_HIGH_CLIP_THRESHOLD);
->>>>>>> upstream/master
 }
 
 
@@ -1144,11 +897,7 @@ void sn76477_device::open_wav_file()
 	sprintf(wav_file_name, LOG_WAV_FILE_NAME, tag());
 	m_file = wav_open(wav_file_name, m_our_sample_rate, 2);
 
-<<<<<<< HEAD
-	LOG(1, ("SN76477 '%s':         Logging output: %s\n", tag(), wav_file_name));
-=======
 	LOG(1, "SN76477:         Logging output: %s\n", wav_file_name);
->>>>>>> upstream/master
 }
 
 
@@ -1158,11 +907,7 @@ void sn76477_device::close_wav_file()
 }
 
 
-<<<<<<< HEAD
-void sn76477_device::add_wav_data(INT16 data_l, INT16 data_r)
-=======
 void sn76477_device::add_wav_data(int16_t data_l, int16_t data_r)
->>>>>>> upstream/master
 {
 	wav_add_data_16lr(m_file, &data_l, &data_r, 1);
 }
@@ -1181,15 +926,9 @@ void sn76477_device::intialize_noise()
 }
 
 
-<<<<<<< HEAD
-inline UINT32 sn76477_device::generate_next_real_noise_bit()
-{
-	UINT32 out = ((m_rng >> 28) & 1) ^ ((m_rng >> 0) & 1);
-=======
 inline uint32_t sn76477_device::generate_next_real_noise_bit()
 {
 	uint32_t out = ((m_rng >> 28) & 1) ^ ((m_rng >> 0) & 1);
->>>>>>> upstream/master
 
 		/* if bits 0-4 and 28 are all zero then force the output to 1 */
 	if ((m_rng & 0x1000001f) == 0)
@@ -1210,31 +949,6 @@ inline uint32_t sn76477_device::generate_next_real_noise_bit()
  *
  *****************************************************************************/
 
-<<<<<<< HEAD
-void sn76477_device::_SN76477_enable_w(UINT32 data)
-{
-	m_enable = data;
-
-		/* if falling edge */
-	if (!m_enable)
-	{
-		/* start the attack phase */
-		m_attack_decay_cap_voltage = AD_CAP_VOLTAGE_MIN;
-
-		/* one-shot runs regardless of envelope mode */
-		m_one_shot_running_ff = 1;
-	}
-}
-
-
-void sn76477_device::SN76477_test_enable_w(UINT32 data)
-{
-	if (data != m_enable)
-	{
-		m_channel->update();
-
-		_SN76477_enable_w(data);
-=======
 WRITE_LINE_MEMBER(sn76477_device::enable_w)
 {
 	CHECK_BOOLEAN;
@@ -1254,26 +968,12 @@ WRITE_LINE_MEMBER(sn76477_device::enable_w)
 			/* one-shot runs regardless of envelope mode */
 			m_one_shot_running_ff = 1;
 		}
->>>>>>> upstream/master
 
 		log_enable_line();
 	}
 }
 
 
-<<<<<<< HEAD
-WRITE_LINE_MEMBER( sn76477_device::enable_w )
-{
-#if TEST_MODE == 0
-	CHECK_CHIP_NUM_AND_BOOLEAN;
-
-	SN76477_test_enable_w(state);
-#endif
-}
-
-
-=======
->>>>>>> upstream/master
 
 /*****************************************************************************
  *
@@ -1281,47 +981,14 @@ WRITE_LINE_MEMBER( sn76477_device::enable_w )
  *
  *****************************************************************************/
 
-<<<<<<< HEAD
-void sn76477_device::_SN76477_mixer_a_w(UINT32 data)
-{
-	m_mixer_mode = (m_mixer_mode & ~0x01) | (data << 0);
-}
-
-
-WRITE_LINE_MEMBER( sn76477_device::mixer_a_w )
-{
-#if TEST_MODE == 0
-	CHECK_CHIP_NUM_AND_BOOLEAN;
-=======
 WRITE_LINE_MEMBER( sn76477_device::mixer_a_w )
 {
 	CHECK_BOOLEAN;
->>>>>>> upstream/master
 
 	if (state != ((m_mixer_mode >> 0) & 0x01))
 	{
 		m_channel->update();
 
-<<<<<<< HEAD
-		_SN76477_mixer_a_w(state);
-
-		log_mixer_mode();
-	}
-#endif
-}
-
-
-void sn76477_device::_SN76477_mixer_b_w(UINT32 data)
-{
-	m_mixer_mode = (m_mixer_mode & ~0x02) | (data << 1);
-}
-
-
-WRITE_LINE_MEMBER( sn76477_device::mixer_b_w )
-{
-#if TEST_MODE == 0
-	CHECK_CHIP_NUM_AND_BOOLEAN;
-=======
 		m_mixer_mode = (m_mixer_mode & ~0x01) | state;
 
 		log_mixer_mode();
@@ -1331,32 +998,11 @@ WRITE_LINE_MEMBER( sn76477_device::mixer_b_w )
 WRITE_LINE_MEMBER( sn76477_device::mixer_b_w )
 {
 	CHECK_BOOLEAN;
->>>>>>> upstream/master
 
 	if (state != ((m_mixer_mode >> 1) & 0x01))
 	{
 		m_channel->update();
 
-<<<<<<< HEAD
-		_SN76477_mixer_b_w(state);
-
-		log_mixer_mode();
-	}
-#endif
-}
-
-
-void sn76477_device::_SN76477_mixer_c_w(UINT32 data)
-{
-	m_mixer_mode = (m_mixer_mode & ~0x04) | (data << 2);
-}
-
-
-WRITE_LINE_MEMBER( sn76477_device::mixer_c_w )
-{
-#if TEST_MODE == 0
-	CHECK_CHIP_NUM_AND_BOOLEAN;
-=======
 		m_mixer_mode = (m_mixer_mode & ~0x02) | (state << 1);
 
 		log_mixer_mode();
@@ -1366,77 +1012,31 @@ WRITE_LINE_MEMBER( sn76477_device::mixer_c_w )
 WRITE_LINE_MEMBER( sn76477_device::mixer_c_w )
 {
 	CHECK_BOOLEAN;
->>>>>>> upstream/master
 
 	if (state != ((m_mixer_mode >> 2) & 0x01))
 	{
 		m_channel->update();
 
-<<<<<<< HEAD
-		_SN76477_mixer_c_w(state);
-
-		log_mixer_mode();
-	}
-#endif
-}
-
-
-
-=======
 		m_mixer_mode = (m_mixer_mode & ~0x04) | (state << 2);
 
 		log_mixer_mode();
 	}
 }
 
->>>>>>> upstream/master
 /*****************************************************************************
  *
  *  Set envelope select inputs
  *
  *****************************************************************************/
 
-<<<<<<< HEAD
-void sn76477_device::_SN76477_envelope_1_w(UINT32 data)
-{
-	m_envelope_mode = (m_envelope_mode & ~0x01) | (data << 0);
-}
-
-
-WRITE_LINE_MEMBER( sn76477_device::envelope_1_w )
-{
-#if TEST_MODE == 0
-	CHECK_CHIP_NUM_AND_BOOLEAN;
-=======
 WRITE_LINE_MEMBER( sn76477_device::envelope_1_w )
 {
 	CHECK_BOOLEAN;
->>>>>>> upstream/master
 
 	if (state != ((m_envelope_mode >> 0) & 0x01))
 	{
 		m_channel->update();
 
-<<<<<<< HEAD
-		_SN76477_envelope_1_w(state);
-
-		log_envelope_mode();
-	}
-#endif
-}
-
-
-void sn76477_device::_SN76477_envelope_2_w(UINT32 data)
-{
-	m_envelope_mode = (m_envelope_mode & ~0x02) | (data << 1);
-}
-
-
-WRITE_LINE_MEMBER( sn76477_device::envelope_2_w )
-{
-#if TEST_MODE == 0
-	CHECK_CHIP_NUM_AND_BOOLEAN;
-=======
 		m_envelope_mode = (m_envelope_mode & ~0x01) | state;
 
 		log_envelope_mode();
@@ -1446,166 +1046,78 @@ WRITE_LINE_MEMBER( sn76477_device::envelope_2_w )
 WRITE_LINE_MEMBER( sn76477_device::envelope_2_w )
 {
 	CHECK_BOOLEAN;
->>>>>>> upstream/master
 
 	if (state != ((m_envelope_mode >> 1) & 0x01))
 	{
 		m_channel->update();
 
-<<<<<<< HEAD
-		_SN76477_envelope_2_w(state);
-
-		log_envelope_mode();
-	}
-#endif
-}
-
-
-
-=======
 		m_envelope_mode = (m_envelope_mode & ~0x02) | (state << 1);
 
 		log_envelope_mode();
 	}
 }
 
->>>>>>> upstream/master
 /*****************************************************************************
  *
  *  Set VCO select input
  *
  *****************************************************************************/
 
-<<<<<<< HEAD
-void sn76477_device::_SN76477_vco_w(UINT32 data)
-{
-	m_vco_mode = data;
-}
-
-
-WRITE_LINE_MEMBER( sn76477_device::vco_w )
-{
-#if TEST_MODE == 0
-	CHECK_CHIP_NUM_AND_BOOLEAN;
-=======
 WRITE_LINE_MEMBER( sn76477_device::vco_w )
 {
 	CHECK_BOOLEAN;
->>>>>>> upstream/master
 
 	if (state != m_vco_mode)
 	{
 		m_channel->update();
 
-<<<<<<< HEAD
-		_SN76477_vco_w(state);
-
-		log_vco_mode();
-	}
-#endif
-}
-
-
-
-=======
 		m_vco_mode = state;
 
 		log_vco_mode();
 	}
 }
 
->>>>>>> upstream/master
 /*****************************************************************************
  *
  *  Set one-shot resistor
  *
  *****************************************************************************/
 
-<<<<<<< HEAD
-void sn76477_device::_SN76477_one_shot_res_w(double data)
-{
-	m_one_shot_res = data;
-}
-
-
-void sn76477_device::one_shot_res_w(double data)
-{
-#if TEST_MODE == 0
-	CHECK_CHIP_NUM_AND_POSITIVE;
-=======
 void sn76477_device::one_shot_res_w(double data)
 {
 	if (data != RES_INF)
 		CHECK_POSITIVE;
->>>>>>> upstream/master
 
 	if (data != m_one_shot_res)
 	{
 		m_channel->update();
 
-<<<<<<< HEAD
-		_SN76477_one_shot_res_w(data);
-
-		log_one_shot_time();
-	}
-#endif
-}
-
-
-
-=======
 		m_one_shot_res = data;
 
 		log_one_shot_time();
 	}
 }
 
->>>>>>> upstream/master
 /*****************************************************************************
  *
  *  Set one-shot capacitor
  *
  *****************************************************************************/
 
-<<<<<<< HEAD
-void sn76477_device::_SN76477_one_shot_cap_w(double data)
-{
-	m_one_shot_cap = data;
-}
-
-
-void sn76477_device::one_shot_cap_w(double data)
-{
-#if TEST_MODE == 0
-	CHECK_CHIP_NUM_AND_POSITIVE;
-=======
 void sn76477_device::one_shot_cap_w(double data)
 {
 	CHECK_POSITIVE;
->>>>>>> upstream/master
 
 	if (data != m_one_shot_cap)
 	{
 		m_channel->update();
 
-<<<<<<< HEAD
-		_SN76477_one_shot_cap_w(data);
-
-		log_one_shot_time();
-	}
-#endif
-}
-
-
-
-=======
 		m_one_shot_cap = data;
 
 		log_one_shot_time();
 	}
 }
 
->>>>>>> upstream/master
 /*****************************************************************************
  *
  *  Set the voltage on the one-shot capacitor
@@ -1614,16 +1126,9 @@ void sn76477_device::one_shot_cap_w(double data)
 
 void sn76477_device::one_shot_cap_voltage_w(double data)
 {
-<<<<<<< HEAD
-#if TEST_MODE == 0
-	CHECK_CHIP_NUM_AND_CAP_VOLTAGE;
-
-	if (data == SN76477_EXTERNAL_VOLTAGE_DISCONNECT)
-=======
 	CHECK_CAP_VOLTAGE;
 
 	if (data == EXTERNAL_VOLTAGE_DISCONNECT)
->>>>>>> upstream/master
 	{
 		/* switch to internal, if not already */
 		if (m_one_shot_cap_voltage_ext)
@@ -1648,107 +1153,49 @@ void sn76477_device::one_shot_cap_voltage_w(double data)
 			log_one_shot_time();
 		}
 	}
-<<<<<<< HEAD
-#endif
 }
 
-
-
-=======
-}
-
->>>>>>> upstream/master
 /*****************************************************************************
  *
  *  Set SLF resistor
  *
  *****************************************************************************/
 
-<<<<<<< HEAD
-void sn76477_device::_SN76477_slf_res_w(double data)
-{
-	m_slf_res = data;
-}
-
-
-void sn76477_device::slf_res_w(double data)
-{
-#if TEST_MODE == 0
-	CHECK_CHIP_NUM_AND_POSITIVE;
-=======
 void sn76477_device::slf_res_w(double data)
 {
 	if (data != RES_INF)
 		CHECK_POSITIVE;
->>>>>>> upstream/master
 
 	if (data != m_slf_res)
 	{
 		m_channel->update();
 
-<<<<<<< HEAD
-		_SN76477_slf_res_w(data);
-
-		log_slf_freq();
-	}
-#endif
-}
-
-
-
-=======
 		m_slf_res = data;
 
 		log_slf_freq();
 	}
 }
 
->>>>>>> upstream/master
 /*****************************************************************************
  *
  *  Set SLF capacitor
  *
  *****************************************************************************/
 
-<<<<<<< HEAD
-void sn76477_device::_SN76477_slf_cap_w(double data)
-{
-	m_slf_cap = data;
-}
-
-
-void sn76477_device::slf_cap_w(double data)
-{
-#if TEST_MODE == 0
-	CHECK_CHIP_NUM_AND_POSITIVE;
-=======
 void sn76477_device::slf_cap_w(double data)
 {
 	CHECK_POSITIVE;
->>>>>>> upstream/master
 
 	if (data != m_slf_cap)
 	{
 		m_channel->update();
 
-<<<<<<< HEAD
-		_SN76477_slf_cap_w(data);
-
-		log_slf_freq();
-	}
-#endif
-}
-
-
-
-=======
 		m_slf_cap = data;
 
 		log_slf_freq();
 	}
 }
 
->>>>>>> upstream/master
 /*****************************************************************************
  *
  *  Set the voltage on the SLF capacitor
@@ -1759,16 +1206,9 @@ void sn76477_device::slf_cap_w(double data)
 
 void sn76477_device::slf_cap_voltage_w(double data)
 {
-<<<<<<< HEAD
-#if TEST_MODE == 0
-	CHECK_CHIP_NUM_AND_CAP_VOLTAGE;
-
-	if (data == SN76477_EXTERNAL_VOLTAGE_DISCONNECT)
-=======
 	CHECK_CAP_VOLTAGE;
 
 	if (data == EXTERNAL_VOLTAGE_DISCONNECT)
->>>>>>> upstream/master
 	{
 		/* switch to internal, if not already */
 		if (m_slf_cap_voltage_ext)
@@ -1793,107 +1233,49 @@ void sn76477_device::slf_cap_voltage_w(double data)
 			log_slf_freq();
 		}
 	}
-<<<<<<< HEAD
-#endif
 }
 
-
-
-=======
-}
-
->>>>>>> upstream/master
 /*****************************************************************************
  *
  *  Set VCO resistor
  *
  *****************************************************************************/
 
-<<<<<<< HEAD
-void sn76477_device::_SN76477_vco_res_w(double data)
-{
-	m_vco_res = data;
-}
-
-
-void sn76477_device::vco_res_w(double data)
-{
-#if TEST_MODE == 0
-	CHECK_CHIP_NUM_AND_POSITIVE;
-=======
 void sn76477_device::vco_res_w(double data)
 {
 	if (data != RES_INF)
 		CHECK_POSITIVE;
->>>>>>> upstream/master
 
 	if (data != m_vco_res)
 	{
 		m_channel->update();
 
-<<<<<<< HEAD
-		_SN76477_vco_res_w(data);
-
-		log_vco_freq();
-	}
-#endif
-}
-
-
-
-=======
 		m_vco_res = data;
 
 		log_vco_freq();
 	}
 }
 
->>>>>>> upstream/master
 /*****************************************************************************
  *
  *  Set VCO capacitor
  *
  *****************************************************************************/
 
-<<<<<<< HEAD
-void sn76477_device::_SN76477_vco_cap_w(double data)
-{
-	m_vco_cap = data;
-}
-
-
-void sn76477_device::vco_cap_w(double data)
-{
-#if TEST_MODE == 0
-	CHECK_CHIP_NUM_AND_POSITIVE;
-=======
 void sn76477_device::vco_cap_w(double data)
 {
 	CHECK_POSITIVE;
->>>>>>> upstream/master
 
 	if (data != m_vco_cap)
 	{
 		m_channel->update();
 
-<<<<<<< HEAD
-		_SN76477_vco_cap_w(data);
-
-		log_vco_freq();
-	}
-#endif
-}
-
-
-
-=======
 		m_vco_cap = data;
 
 		log_vco_freq();
 	}
 }
 
->>>>>>> upstream/master
 /*****************************************************************************
  *
  *  Set the voltage on the VCO capacitor
@@ -1902,16 +1284,9 @@ void sn76477_device::vco_cap_w(double data)
 
 void sn76477_device::vco_cap_voltage_w(double data)
 {
-<<<<<<< HEAD
-#if TEST_MODE == 0
-	CHECK_CHIP_NUM_AND_CAP_VOLTAGE;
-
-	if (data == SN76477_EXTERNAL_VOLTAGE_DISCONNECT)
-=======
 	CHECK_CAP_VOLTAGE;
 
 	if (data == EXTERNAL_VOLTAGE_DISCONNECT)
->>>>>>> upstream/master
 	{
 		/* switch to internal, if not already */
 		if (m_vco_cap_voltage_ext)
@@ -1936,108 +1311,50 @@ void sn76477_device::vco_cap_voltage_w(double data)
 			log_vco_freq();
 		}
 	}
-<<<<<<< HEAD
-#endif
 }
 
-
-
-=======
-}
-
->>>>>>> upstream/master
 /*****************************************************************************
  *
  *  Set VCO voltage
  *
  *****************************************************************************/
 
-<<<<<<< HEAD
-void sn76477_device::_SN76477_vco_voltage_w(double data)
-{
-	m_vco_voltage = data;
-}
-
-
-void sn76477_device::vco_voltage_w(double data)
-{
-#if TEST_MODE == 0
-	CHECK_CHIP_NUM_AND_VOLTAGE;
-=======
 void sn76477_device::vco_voltage_w(double data)
 {
 	CHECK_VOLTAGE;
->>>>>>> upstream/master
 
 	if (data != m_vco_voltage)
 	{
 		m_channel->update();
 
-<<<<<<< HEAD
-		_SN76477_vco_voltage_w(data);
-=======
 		m_vco_voltage = data;
->>>>>>> upstream/master
 
 		log_vco_ext_voltage();
 		log_vco_duty_cycle();
 	}
-<<<<<<< HEAD
-#endif
 }
 
-
-
-=======
-}
-
->>>>>>> upstream/master
 /*****************************************************************************
  *
  *  Set pitch voltage
  *
  *****************************************************************************/
 
-<<<<<<< HEAD
-void sn76477_device::_SN76477_pitch_voltage_w(double data)
-{
-	m_pitch_voltage = data;
-}
-
-
-void sn76477_device::pitch_voltage_w(double data)
-{
-#if TEST_MODE == 0
-	CHECK_CHIP_NUM_AND_VOLTAGE;
-=======
 void sn76477_device::pitch_voltage_w(double data)
 {
 	CHECK_VOLTAGE;
->>>>>>> upstream/master
 
 	if (data != m_pitch_voltage)
 	{
 		m_channel->update();
 
-<<<<<<< HEAD
-		_SN76477_pitch_voltage_w(data);
-=======
 		m_pitch_voltage = data;
->>>>>>> upstream/master
 
 		log_vco_pitch_voltage();
 		log_vco_duty_cycle();
 	}
-<<<<<<< HEAD
-#endif
 }
 
-
-
-=======
-}
-
->>>>>>> upstream/master
 /*****************************************************************************
  *
  *  Set noise external clock
@@ -2046,12 +1363,7 @@ void sn76477_device::pitch_voltage_w(double data)
 
 WRITE_LINE_MEMBER( sn76477_device::noise_clock_w )
 {
-<<<<<<< HEAD
-#if TEST_MODE == 0
-	CHECK_CHIP_NUM_AND_BOOLEAN;
-=======
 	CHECK_BOOLEAN;
->>>>>>> upstream/master
 
 	if (state != m_noise_clock)
 	{
@@ -2066,65 +1378,24 @@ WRITE_LINE_MEMBER( sn76477_device::noise_clock_w )
 			m_real_noise_bit_ff = generate_next_real_noise_bit();
 		}
 	}
-<<<<<<< HEAD
-#endif
 }
 
-
-
-=======
-}
-
->>>>>>> upstream/master
 /*****************************************************************************
  *
  *  Set noise clock resistor
  *
  *****************************************************************************/
 
-<<<<<<< HEAD
-void sn76477_device::_SN76477_noise_clock_res_w(double data)
-{
-	if (data == 0)
-	{
-		m_noise_clock_ext = 1;
-	}
-	else
-	{
-		m_noise_clock_ext = 0;
-
-		m_noise_clock_res = data;
-	}
-}
-
-
-void sn76477_device::noise_clock_res_w(double data)
-{
-#if TEST_MODE == 0
-	CHECK_CHIP_NUM_AND_POSITIVE;
-=======
 void sn76477_device::noise_clock_res_w(double data)
 {
 	if (data != RES_INF)
 		CHECK_POSITIVE;
->>>>>>> upstream/master
 
 	if (((data == 0) && !m_noise_clock_ext) ||
 		((data != 0) && (data != m_noise_clock_res)))
 	{
 		m_channel->update();
 
-<<<<<<< HEAD
-		_SN76477_noise_clock_res_w(data);
-
-		log_noise_gen_freq();
-	}
-#endif
-}
-
-
-
-=======
 		if (data == 0)
 		{
 			m_noise_clock_ext = 1;
@@ -2140,98 +1411,47 @@ void sn76477_device::noise_clock_res_w(double data)
 	}
 }
 
->>>>>>> upstream/master
 /*****************************************************************************
  *
  *  Set noise filter resistor
  *
  *****************************************************************************/
 
-<<<<<<< HEAD
-void sn76477_device::_SN76477_noise_filter_res_w(double data)
-{
-	m_noise_filter_res = data;
-}
-
-
-void sn76477_device::noise_filter_res_w(double data)
-{
-#if TEST_MODE == 0
-	CHECK_CHIP_NUM_AND_POSITIVE;
-=======
 void sn76477_device::noise_filter_res_w(double data)
 {
 	if (data != RES_INF)
 		CHECK_POSITIVE;
->>>>>>> upstream/master
 
 	if (data != m_noise_filter_res)
 	{
 		m_channel->update();
 
-<<<<<<< HEAD
-		_SN76477_noise_filter_res_w(data);
-
-		log_noise_filter_freq();
-	}
-#endif
-}
-
-
-
-=======
 		m_noise_filter_res = data;
 
 		log_noise_filter_freq();
 	}
 }
 
->>>>>>> upstream/master
 /*****************************************************************************
  *
  *  Set noise filter capacitor
  *
  *****************************************************************************/
 
-<<<<<<< HEAD
-void sn76477_device::_SN76477_noise_filter_cap_w(double data)
-{
-	m_noise_filter_cap = data;
-}
-
-
-void sn76477_device::noise_filter_cap_w(double data)
-{
-#if TEST_MODE == 0
-	CHECK_CHIP_NUM_AND_POSITIVE;
-=======
 void sn76477_device::noise_filter_cap_w(double data)
 {
 	CHECK_POSITIVE;
->>>>>>> upstream/master
 
 	if (data != m_noise_filter_cap)
 	{
 		m_channel->update();
 
-<<<<<<< HEAD
-		_SN76477_noise_filter_cap_w(data);
-
-		log_noise_filter_freq();
-	}
-#endif
-}
-
-
-
-=======
 		m_noise_filter_cap = data;
 
 		log_noise_filter_freq();
 	}
 }
 
->>>>>>> upstream/master
 /*****************************************************************************
  *
  *  Set the voltage on the noise filter capacitor
@@ -2240,16 +1460,9 @@ void sn76477_device::noise_filter_cap_w(double data)
 
 void sn76477_device::noise_filter_cap_voltage_w(double data)
 {
-<<<<<<< HEAD
-#if TEST_MODE == 0
-	CHECK_CHIP_NUM_AND_CAP_VOLTAGE;
-
-	if (data == SN76477_EXTERNAL_VOLTAGE_DISCONNECT)
-=======
 	CHECK_CAP_VOLTAGE;
 
 	if (data == EXTERNAL_VOLTAGE_DISCONNECT)
->>>>>>> upstream/master
 	{
 		/* switch to internal, if not already */
 		if (m_noise_filter_cap_voltage_ext)
@@ -2274,154 +1487,71 @@ void sn76477_device::noise_filter_cap_voltage_w(double data)
 			log_noise_filter_freq();
 		}
 	}
-<<<<<<< HEAD
-#endif
 }
 
-
-
-=======
-}
-
->>>>>>> upstream/master
 /*****************************************************************************
  *
  *  Set attack resistor
  *
  *****************************************************************************/
 
-<<<<<<< HEAD
-void sn76477_device::_SN76477_attack_res_w(double data)
-{
-	m_attack_res = data;
-}
-
-
-void sn76477_device::attack_res_w(double data)
-{
-#if TEST_MODE == 0
-	CHECK_CHIP_NUM_AND_POSITIVE;
-=======
 void sn76477_device::attack_res_w(double data)
 {
 	if (data != RES_INF)
 		CHECK_POSITIVE;
->>>>>>> upstream/master
 
 	if (data != m_attack_res)
 	{
 		m_channel->update();
 
-<<<<<<< HEAD
-		_SN76477_attack_res_w(data);
-
-		log_attack_time();
-	}
-#endif
-}
-
-
-
-=======
 		m_attack_res = data;
 
 		log_attack_time();
 	}
 }
 
->>>>>>> upstream/master
 /*****************************************************************************
  *
  *  Set decay resistor
  *
  *****************************************************************************/
 
-<<<<<<< HEAD
-void sn76477_device::_SN76477_decay_res_w(double data)
-{
-	m_decay_res = data;
-}
-
-
-void sn76477_device::decay_res_w(double data)
-{
-#if TEST_MODE == 0
-	CHECK_CHIP_NUM_AND_POSITIVE;
-=======
 void sn76477_device::decay_res_w(double data)
 {
 	if (data != RES_INF)
 		CHECK_POSITIVE;
->>>>>>> upstream/master
 
 	if (data != m_decay_res)
 	{
 		m_channel->update();
 
-<<<<<<< HEAD
-		_SN76477_decay_res_w(data);
-
-		log_decay_time();
-	}
-#endif
-}
-
-
-
-=======
 		m_decay_res = data;
 
 		log_decay_time();
 	}
 }
 
->>>>>>> upstream/master
 /*****************************************************************************
  *
  *  Set attack/decay capacitor
  *
  *****************************************************************************/
 
-<<<<<<< HEAD
-void sn76477_device::_SN76477_attack_decay_cap_w(double data)
-{
-	m_attack_decay_cap = data;
-}
-
-
-void sn76477_device::attack_decay_cap_w(double data)
-{
-#if TEST_MODE == 0
-	CHECK_CHIP_NUM_AND_POSITIVE;
-=======
 void sn76477_device::attack_decay_cap_w(double data)
 {
 	CHECK_POSITIVE;
->>>>>>> upstream/master
 
 	if (data != m_attack_decay_cap)
 	{
 		m_channel->update();
 
-<<<<<<< HEAD
-		_SN76477_attack_decay_cap_w(data);
-=======
 		m_attack_decay_cap = data;
->>>>>>> upstream/master
 
 		log_attack_time();
 		log_decay_time();
 	}
-<<<<<<< HEAD
-#endif
 }
 
-
-
-=======
-}
-
->>>>>>> upstream/master
 /*****************************************************************************
  *
  *  Set the voltage on the attack/decay capacitor
@@ -2430,16 +1560,9 @@ void sn76477_device::attack_decay_cap_w(double data)
 
 void sn76477_device::attack_decay_cap_voltage_w(double data)
 {
-<<<<<<< HEAD
-#if TEST_MODE == 0
-	CHECK_CHIP_NUM_AND_CAP_VOLTAGE;
-
-	if (data == SN76477_EXTERNAL_VOLTAGE_DISCONNECT)
-=======
 	CHECK_CAP_VOLTAGE;
 
 	if (data == EXTERNAL_VOLTAGE_DISCONNECT)
->>>>>>> upstream/master
 	{
 		/* switch to internal, if not already */
 		if (m_attack_decay_cap_voltage_ext)
@@ -2466,107 +1589,50 @@ void sn76477_device::attack_decay_cap_voltage_w(double data)
 			log_decay_time();
 		}
 	}
-<<<<<<< HEAD
-#endif
 }
 
-
-
-=======
-}
-
->>>>>>> upstream/master
 /*****************************************************************************
  *
  *  Set amplitude resistor
  *
  *****************************************************************************/
 
-<<<<<<< HEAD
-void sn76477_device::_SN76477_amplitude_res_w(double data)
-{
-	m_amplitude_res = data;
-}
-
-
-void sn76477_device::amplitude_res_w(double data)
-{
-#if TEST_MODE == 0
-	CHECK_CHIP_NUM_AND_POSITIVE;
-=======
 void sn76477_device::amplitude_res_w(double data)
 {
 	if (data != RES_INF)
 		CHECK_POSITIVE;
->>>>>>> upstream/master
 
 	if (data != m_amplitude_res)
 	{
 		m_channel->update();
 
-<<<<<<< HEAD
-		_SN76477_amplitude_res_w(data);
-
-		log_voltage_out();
-	}
-#endif
-}
-
-
-
-=======
 		m_amplitude_res = data;
 
 		log_voltage_out();
 	}
 }
 
->>>>>>> upstream/master
 /*****************************************************************************
  *
  *  Set feedback resistor
  *
  *****************************************************************************/
 
-<<<<<<< HEAD
-void sn76477_device::_SN76477_feedback_res_w(double data)
-{
-	m_feedback_res = data;
-}
-
-
-void sn76477_device::feedback_res_w(double data)
-{
-#if TEST_MODE == 0
-	CHECK_CHIP_NUM_AND_POSITIVE;
-=======
 void sn76477_device::feedback_res_w(double data)
 {
 	if (data != RES_INF)
 		CHECK_POSITIVE;
->>>>>>> upstream/master
 
 	if (data != m_feedback_res)
 	{
 		m_channel->update();
 
-<<<<<<< HEAD
-		_SN76477_feedback_res_w(data);
-
-		log_voltage_out();
-	}
-#endif
-}
-
-
-=======
 		m_feedback_res = data;
 
 		log_voltage_out();
 	}
 }
 
->>>>>>> upstream/master
 /*****************************************************************************
  *
  *  State saving
@@ -2643,11 +1709,7 @@ void sn76477_device::sound_stream_update(sound_stream &stream, stream_sample_t *
 	double vco_cap_charging_step;
 	double vco_cap_discharging_step;
 	double vco_cap_voltage_max;
-<<<<<<< HEAD
-	UINT32 noise_gen_freq;
-=======
 	uint32_t noise_gen_freq;
->>>>>>> upstream/master
 	double noise_filter_cap_charging_step;
 	double noise_filter_cap_discharging_step;
 	double attack_decay_cap_charging_step;
@@ -2658,24 +1720,6 @@ void sn76477_device::sound_stream_update(sound_stream &stream, stream_sample_t *
 
 	stream_sample_t *buffer = outputs[0];
 
-<<<<<<< HEAD
-
-#if TEST_MODE
-	static int recursing = 0;   /* we need to prevent recursion since enable_w calls machine().input().code_pressed_once(KEYCODE_SPACE->update */
-
-	if () && !recursing)
-	{
-		recursing = 1;
-
-		machine().sound().system_enable();
-		SN76477_test_enable_w(!m_enable);
-	}
-
-	recursing = 0;
-#endif
-
-=======
->>>>>>> upstream/master
 	/* compute charging values, doing it here ensures that we always use the latest values */
 	one_shot_cap_charging_step = compute_one_shot_cap_charging_rate() / m_our_sample_rate;
 	one_shot_cap_discharging_step = compute_one_shot_cap_discharging_rate() / m_our_sample_rate;
@@ -2883,11 +1927,7 @@ void sn76477_device::sound_stream_update(sound_stream &stream, stream_sample_t *
 		/* mix the output, if enabled, or not saturated by the VCO */
 		if (!m_enable && (m_vco_cap_voltage <= VCO_CAP_VOLTAGE_MAX))
 		{
-<<<<<<< HEAD
-			UINT32 out;
-=======
 			uint32_t out;
->>>>>>> upstream/master
 
 			/* enabled */
 			switch (m_mixer_mode)
@@ -2958,13 +1998,8 @@ void sn76477_device::sound_stream_update(sound_stream &stream, stream_sample_t *
 
 		if (LOG_WAV && LOG_WAV_ENABLED_ONLY && !m_enable)
 		{
-<<<<<<< HEAD
-			INT16 log_data_l;
-			INT16 log_data_r;
-=======
 			int16_t log_data_l;
 			int16_t log_data_r;
->>>>>>> upstream/master
 
 			switch (LOG_WAV_VALUE_L)
 			{

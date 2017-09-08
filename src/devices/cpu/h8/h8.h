@@ -9,10 +9,6 @@
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-#ifndef __H8_H__
-#define __H8_H__
-=======
 #ifndef MAME_CPU_H8_H8_H
 #define MAME_CPU_H8_H8_H
 
@@ -22,7 +18,6 @@ class h8_dma_device;
 class h8_dtc_device;
 struct h8_dma_state;
 struct h8_dtc_state;
->>>>>>> upstream/master
 
 class h8_device : public cpu_device {
 public:
@@ -58,13 +53,6 @@ public:
 		ADC_7
 	};
 
-<<<<<<< HEAD
-	h8_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source, bool mode_a16, address_map_delegate map_delegate);
-
-	void internal_update();
-
-	void set_irq(int irq_vector, int irq_level, bool irq_nmi);
-=======
 	enum {
 		STATE_RESET              = 0x10000,
 		STATE_IRQ                = 0x10001,
@@ -82,33 +70,18 @@ public:
 	void set_current_dtc(h8_dtc_state *state);
 	void request_state(int state);
 	bool access_is_dma() const { return inst_state == STATE_DMA || inst_state == STATE_DTC; }
->>>>>>> upstream/master
 
 protected:
 	struct disasm_entry {
 		int slot;
-<<<<<<< HEAD
-		UINT32 val, mask;
-		UINT16 val0, mask0;
-=======
 		uint32_t val, mask;
 		uint16_t val0, mask0;
->>>>>>> upstream/master
 		const char *opcode;
 		int am1, am2;
 		offs_t flags;
 	};
 
 	enum {
-<<<<<<< HEAD
-		STATE_RESET = 0x10000,
-		STATE_IRQ   = 0x10001,
-		STATE_TRACE = 0x10002
-	};
-
-	enum {
-=======
->>>>>>> upstream/master
 		F_I  = 0x80,
 		F_UI = 0x40,
 		F_H  = 0x20,
@@ -181,30 +154,6 @@ protected:
 		DASM_mach      /* internal register mach */
 	};
 
-<<<<<<< HEAD
-	// device-level overrides
-	virtual void device_start();
-	virtual void device_reset();
-
-	// device_execute_interface overrides
-	virtual UINT32 execute_min_cycles() const;
-	virtual UINT32 execute_max_cycles() const;
-	virtual UINT32 execute_input_lines() const;
-	virtual void execute_run();
-
-	// device_memory_interface overrides
-	virtual const address_space_config *memory_space_config(address_spacenum spacenum = AS_0) const;
-
-	// device_state_interface overrides
-	virtual void state_import(const device_state_entry &entry);
-	virtual void state_export(const device_state_entry &entry);
-	virtual void state_string_export(const device_state_entry &entry, std::string &str);
-
-	// device_disasm_interface overrides
-	virtual UINT32 disasm_min_opcode_bytes() const;
-	virtual UINT32 disasm_max_opcode_bytes() const;
-	virtual offs_t disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options);
-=======
 	h8_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock, bool mode_a16, address_map_delegate map_delegate);
 
 	// device-level overrides
@@ -229,31 +178,10 @@ protected:
 	virtual uint32_t disasm_min_opcode_bytes() const override;
 	virtual uint32_t disasm_max_opcode_bytes() const override;
 	virtual offs_t disasm_disassemble(std::ostream &stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, uint32_t options) override;
->>>>>>> upstream/master
 
 	address_space_config program_config, io_config;
 	address_space *program, *io;
 	direct_read_data *direct;
-<<<<<<< HEAD
-
-	UINT32  PPC;                    /* previous program counter */
-	UINT32  NPC;                    /* next start-of-instruction program counter */
-	UINT32  PC;                     /* program counter */
-	UINT16  PIR;                    /* Prefetched word */
-	UINT16  IR[5];                  /* Fetched instruction */
-	UINT16  R[16];                  /* Rn (0-7), En (8-15, h8-300h+) */
-	UINT8   EXR;                    /* Interrupt/trace register (h8s/2000+) */
-	UINT8   CCR;                    /* Condition-code register */
-	INT64   MAC;                    /* Multiply accumulator (h8s/2600+) */
-	UINT8   MACF;                   /* MAC flags (h8s/2600+) */
-	UINT32  TMP1, TMP2;
-	UINT32  TMPR;                   /* For debugger ER register import */
-
-	bool has_exr, has_trace, supports_advanced, mode_advanced, mac_saturating;
-
-	int inst_state, inst_substate;
-	int icount, bcount;
-=======
 	h8_dma_device *dma_device;
 	h8_dtc_device *dtc_device;
 	h8_dma_state *current_dma;
@@ -276,26 +204,12 @@ protected:
 
 	int inst_state, inst_substate, requested_state;
 	int icount, bcount, count_before_instruction_step;
->>>>>>> upstream/master
 	int irq_vector, taken_irq_vector;
 	int irq_level, taken_irq_level;
 	bool irq_required, irq_nmi;
 
 	static const disasm_entry disasm_entries[];
 
-<<<<<<< HEAD
-	offs_t disassemble_generic(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options, const disasm_entry *table);
-	void disassemble_am(char *&buffer, int am, offs_t pc, const UINT8 *oprom, UINT32 opcode, int offset);
-
-	virtual void do_exec_full();
-	virtual void do_exec_partial();
-	static void add_event(UINT64 &event_time, UINT64 new_event);
-	virtual bool exr_in_stack() const;
-	virtual void update_irq_filter() = 0;
-	virtual void interrupt_taken() = 0;
-	virtual void internal_update(UINT64 current_time) = 0;
-	void recompute_bcount(UINT64 event_time);
-=======
 	offs_t disassemble_generic(std::ostream &stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, uint32_t options, const disasm_entry *table);
 	void disassemble_am(std::ostream &stream, int am, offs_t pc, const uint8_t *oprom, uint32_t opcode, int slot, int offset);
 
@@ -307,20 +221,10 @@ protected:
 	virtual void interrupt_taken() = 0;
 	virtual void internal_update(uint64_t current_time) = 0;
 	void recompute_bcount(uint64_t event_time);
->>>>>>> upstream/master
 	virtual int trace_setup();
 	virtual int trapa_setup();
 	virtual void irq_setup() = 0;
 
-<<<<<<< HEAD
-	UINT16 read16i(UINT32 adr);
-	UINT16 fetch();
-	inline void fetch(int slot) { IR[slot] = fetch(); }
-	UINT8 read8(UINT32 adr);
-	void write8(UINT32 adr, UINT8 data);
-	UINT16 read16(UINT32 adr);
-	void write16(UINT32 adr, UINT16 data);
-=======
 	uint16_t read16i(uint32_t adr);
 	uint16_t fetch();
 	inline void fetch(int slot) { IR[slot] = fetch(); }
@@ -328,115 +232,17 @@ protected:
 	void write8(uint32_t adr, uint8_t data);
 	uint16_t read16(uint32_t adr);
 	void write16(uint32_t adr, uint16_t data);
->>>>>>> upstream/master
 	void internal(int cycles);
 	inline void prefetch() { prefetch_start(); prefetch_done(); }
 	inline void prefetch_noirq() { prefetch_start(); prefetch_done_noirq(); }
 	inline void prefetch_noirq_notrace() { prefetch_start(); prefetch_done_noirq_notrace(); }
 	void prefetch_start() { NPC = PC; PIR = fetch(); }
-<<<<<<< HEAD
-	void prefetch_switch(UINT32 pc, UINT16 ir) { NPC = pc; PC = pc+2; PIR = ir; }
-=======
 	void prefetch_switch(uint32_t pc, uint16_t ir) { NPC = pc; PC = pc+2; PIR = ir; }
->>>>>>> upstream/master
 	void prefetch_done();
 	void prefetch_done_noirq();
 	void prefetch_done_noirq_notrace();
 	void illegal();
 
-<<<<<<< HEAD
-	UINT8 do_addx8(UINT8 a, UINT8 b);
-	UINT8 do_subx8(UINT8 a, UINT8 b);
-
-	UINT8 do_inc8(UINT8 a, UINT8 b);
-	UINT16 do_inc16(UINT16 a, UINT16 b);
-	UINT32 do_inc32(UINT32 a, UINT32 b);
-
-	UINT8 do_add8(UINT8 a, UINT8 b);
-	UINT16 do_add16(UINT16 a, UINT16 b);
-	UINT32 do_add32(UINT32 a, UINT32 b);
-
-	UINT8 do_dec8(UINT8 a, UINT8 b);
-	UINT16 do_dec16(UINT16 a, UINT16 b);
-	UINT32 do_dec32(UINT32 a, UINT32 b);
-
-	UINT8 do_sub8(UINT8 a, UINT8 b);
-	UINT16 do_sub16(UINT16 a, UINT16 b);
-	UINT32 do_sub32(UINT32 a, UINT32 b);
-
-	UINT8 do_shal8(UINT8 v);
-	UINT16 do_shal16(UINT16 v);
-	UINT32 do_shal32(UINT32 v);
-
-	UINT8 do_shar8(UINT8 v);
-	UINT16 do_shar16(UINT16 v);
-	UINT32 do_shar32(UINT32 v);
-
-	UINT8 do_shll8(UINT8 v);
-	UINT16 do_shll16(UINT16 v);
-	UINT32 do_shll32(UINT32 v);
-
-	UINT8 do_shlr8(UINT8 v);
-	UINT16 do_shlr16(UINT16 v);
-	UINT32 do_shlr32(UINT32 v);
-
-	UINT8 do_rotl8(UINT8 v);
-	UINT16 do_rotl16(UINT16 v);
-	UINT32 do_rotl32(UINT32 v);
-
-	UINT8 do_rotr8(UINT8 v);
-	UINT16 do_rotr16(UINT16 v);
-	UINT32 do_rotr32(UINT32 v);
-
-	UINT8 do_rotxl8(UINT8 v);
-	UINT16 do_rotxl16(UINT16 v);
-	UINT32 do_rotxl32(UINT32 v);
-
-	UINT8 do_rotxr8(UINT8 v);
-	UINT16 do_rotxr16(UINT16 v);
-	UINT32 do_rotxr32(UINT32 v);
-
-	UINT8 do_shal2_8(UINT8 v);
-	UINT16 do_shal2_16(UINT16 v);
-	UINT32 do_shal2_32(UINT32 v);
-
-	UINT8 do_shar2_8(UINT8 v);
-	UINT16 do_shar2_16(UINT16 v);
-	UINT32 do_shar2_32(UINT32 v);
-
-	UINT8 do_shll2_8(UINT8 v);
-	UINT16 do_shll2_16(UINT16 v);
-	UINT32 do_shll2_32(UINT32 v);
-
-	UINT8 do_shlr2_8(UINT8 v);
-	UINT16 do_shlr2_16(UINT16 v);
-	UINT32 do_shlr2_32(UINT32 v);
-
-	UINT8 do_rotl2_8(UINT8 v);
-	UINT16 do_rotl2_16(UINT16 v);
-	UINT32 do_rotl2_32(UINT32 v);
-
-	UINT8 do_rotr2_8(UINT8 v);
-	UINT16 do_rotr2_16(UINT16 v);
-	UINT32 do_rotr2_32(UINT32 v);
-
-	UINT8 do_rotxl2_8(UINT8 v);
-	UINT16 do_rotxl2_16(UINT16 v);
-	UINT32 do_rotxl2_32(UINT32 v);
-
-	UINT8 do_rotxr2_8(UINT8 v);
-	UINT16 do_rotxr2_16(UINT16 v);
-	UINT32 do_rotxr2_32(UINT32 v);
-
-	void set_nzv8(UINT8 v);
-	void set_nzv16(UINT16 v);
-	void set_nzv32(UINT32 v);
-
-	void set_nz16(UINT16 v);
-	void set_nz32(UINT32 v);
-
-	inline void r8_w(int reg, UINT8 val) {
-=======
 	uint8_t do_addx8(uint8_t a, uint8_t b);
 	uint8_t do_subx8(uint8_t a, uint8_t b);
 
@@ -528,18 +334,13 @@ protected:
 	void set_nz32(uint32_t v);
 
 	inline void r8_w(int reg, uint8_t val) {
->>>>>>> upstream/master
 		if(reg & 8)
 			R[reg & 7] = (R[reg & 7] & 0xff00) | val;
 		else
 			R[reg & 7] = (R[reg & 7] & 0xff) | (val << 8);
 	}
 
-<<<<<<< HEAD
-	inline UINT8 r8_r(int reg) {
-=======
 	inline uint8_t r8_r(int reg) {
->>>>>>> upstream/master
 		if(reg & 8)
 			return R[reg & 7];
 		else
@@ -554,13 +355,8 @@ protected:
 	// and the h8-300h is r32 of course, we have to be careful to mask
 	// in h8.lst there if the top bit is 1.
 
-<<<<<<< HEAD
-	inline void r16_w(int reg, UINT16 val) { R[reg & 0xf] = val; }
-	inline UINT16 r16_r(int reg) { return R[reg & 0xf]; }
-=======
 	inline void r16_w(int reg, uint16_t val) { R[reg & 0xf] = val; }
 	inline uint16_t r16_r(int reg) { return R[reg & 0xf]; }
->>>>>>> upstream/master
 
 #define O(o) void o ## _full(); void o ## _partial()
 	O(add_b_imm8_r8u); O(add_b_r8h_r8l); O(add_w_imm16_r16l); O(add_w_r16h_r16l);
@@ -670,10 +466,7 @@ protected:
 
 	O(state_reset);
 	O(state_irq);
-<<<<<<< HEAD
-=======
 	O(state_dma);
->>>>>>> upstream/master
 #undef O
 };
 
@@ -699,8 +492,4 @@ enum {
 	H8_EXR
 };
 
-<<<<<<< HEAD
-#endif
-=======
 #endif // MAME_CPU_H8_H8_H
->>>>>>> upstream/master

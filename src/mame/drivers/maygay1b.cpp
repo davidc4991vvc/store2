@@ -73,11 +73,6 @@
 ******************************************************************************************/
 #include "emu.h"
 #include "includes/maygay1b.h"
-<<<<<<< HEAD
-
-#include "maygay1b.lh"
-
-=======
 #include "speaker.h"
 
 #include "maygay1b.lh"
@@ -147,7 +142,6 @@
 // not yet working
 //#define USE_MCU
 
->>>>>>> upstream/master
 ///////////////////////////////////////////////////////////////////////////
 // called if board is reset ///////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////
@@ -231,11 +225,7 @@ WRITE8_MEMBER(maygay1b_state::m1_pia_portb_w)
 	{
 		if ( data & (1 << i) )
 		{
-<<<<<<< HEAD
-			output_set_indexed_value("triac", i, data & (1 << i));
-=======
 			output().set_indexed_value("triac", i, data & (1 << i));
->>>>>>> upstream/master
 		}
 	}
 }
@@ -359,25 +349,14 @@ INPUT_PORTS_END
 
 void maygay1b_state::machine_start()
 {
-<<<<<<< HEAD
-// setup 8 mechanical meters ////////////////////////////////////////////
-	MechMtr_config(machine(),8);
-
-=======
->>>>>>> upstream/master
 }
 WRITE8_MEMBER(maygay1b_state::reel12_w)
 {
 	m_reel0->update( data     & 0x0F);
 	m_reel1->update((data>>4) & 0x0F);
 
-<<<<<<< HEAD
-	awp_draw_reel("reel1", m_reel0);
-	awp_draw_reel("reel2", m_reel1);
-=======
 	awp_draw_reel(machine(),"reel1", *m_reel0);
 	awp_draw_reel(machine(),"reel2", *m_reel1);
->>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(maygay1b_state::reel34_w)
@@ -385,13 +364,8 @@ WRITE8_MEMBER(maygay1b_state::reel34_w)
 	m_reel2->update( data     & 0x0F);
 	m_reel3->update((data>>4) & 0x0F);
 
-<<<<<<< HEAD
-	awp_draw_reel("reel3", m_reel2);
-	awp_draw_reel("reel4", m_reel3);
-=======
 	awp_draw_reel(machine(),"reel3", *m_reel2);
 	awp_draw_reel(machine(),"reel4", *m_reel3);
->>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(maygay1b_state::reel56_w)
@@ -399,13 +373,8 @@ WRITE8_MEMBER(maygay1b_state::reel56_w)
 	m_reel4->update( data     & 0x0F);
 	m_reel5->update((data>>4) & 0x0F);
 
-<<<<<<< HEAD
-	awp_draw_reel("reel5", m_reel4);
-	awp_draw_reel("reel6", m_reel5);
-=======
 	awp_draw_reel(machine(),"reel5", *m_reel4);
 	awp_draw_reel(machine(),"reel6", *m_reel5);
->>>>>>> upstream/master
 }
 
 READ8_MEMBER(maygay1b_state::m1_duart_r)
@@ -420,11 +389,7 @@ WRITE8_MEMBER(maygay1b_state::m1_meter_w)
 	{
 		if ( data & (1 << i) )
 		{
-<<<<<<< HEAD
-			MechMtr_update(i, data & (1 << i) );
-=======
 			m_meters->update(i, data & (1 << i) );
->>>>>>> upstream/master
 			m_meter = data;
 		}
 	}
@@ -503,11 +468,7 @@ WRITE8_MEMBER(maygay1b_state::m1_lockout_w)
 	int i;
 	for (i=0; i<6; i++)
 	{
-<<<<<<< HEAD
-		coin_lockout_w(machine(), i, data & (1 << i) );
-=======
 		machine().bookkeeping().coin_lockout_w(i, data & (1 << i) );
->>>>>>> upstream/master
 	}
 }
 
@@ -519,15 +480,6 @@ static ADDRESS_MAP_START( m1_memmap, AS_PROGRAM, 8, maygay1b_state )
 	AM_RANGE(0x2020, 0x2020) AM_WRITE(reel56_w)
 
 	// there is actually an 8279 and an 8051 (which I guess is the MCU?).
-<<<<<<< HEAD
-	AM_RANGE(0x2030, 0x2030) AM_DEVREADWRITE("i8279", i8279_device, data_r, data_w )
-	AM_RANGE(0x2031, 0x2031) AM_DEVREADWRITE("i8279", i8279_device, status_r, cmd_w)
-
-	//8051
-	AM_RANGE(0x2040, 0x2040) AM_DEVREADWRITE("i8279_2", i8279_device, data_r, data_w )
-	AM_RANGE(0x2041, 0x2041) AM_DEVREADWRITE("i8279_2", i8279_device, status_r, cmd_w)
-//  AM_RANGE(0x2050, 0x2050)// SCAN on M1B
-=======
 	AM_RANGE(0x2030, 0x2031) AM_DEVREADWRITE("i8279", i8279_device, read, write)
 
 #ifdef USE_MCU
@@ -539,7 +491,6 @@ static ADDRESS_MAP_START( m1_memmap, AS_PROGRAM, 8, maygay1b_state )
 	AM_RANGE(0x2040, 0x2041) AM_DEVREADWRITE("i8279_2", i8279_device, read, write)
 //  AM_RANGE(0x2050, 0x2050)// SCAN on M1B
 #endif
->>>>>>> upstream/master
 
 	AM_RANGE(0x2070, 0x207f) AM_DEVREADWRITE("duart68681", mc68681_device, read, write )
 
@@ -566,11 +517,8 @@ static ADDRESS_MAP_START( m1_memmap, AS_PROGRAM, 8, maygay1b_state )
 
 ADDRESS_MAP_END
 
-<<<<<<< HEAD
-=======
 
 
->>>>>>> upstream/master
 /*************************************************
  *
  *  NEC uPD7759 handling (used as OKI replacement)
@@ -617,15 +565,6 @@ static ADDRESS_MAP_START( m1_nec_memmap, AS_PROGRAM, 8, maygay1b_state )
 	AM_RANGE(0x2020, 0x2020) AM_WRITE(reel56_w)
 
 	// there is actually an 8279 and an 8051 (which I guess is the MCU?).
-<<<<<<< HEAD
-	AM_RANGE(0x2030, 0x2030) AM_DEVREADWRITE("i8279", i8279_device, data_r, data_w )
-	AM_RANGE(0x2031, 0x2031) AM_DEVREADWRITE("i8279", i8279_device, status_r, cmd_w)
-
-	//8051
-	AM_RANGE(0x2040, 0x2040) AM_DEVREADWRITE("i8279_2", i8279_device, data_r, data_w )
-	AM_RANGE(0x2041, 0x2041) AM_DEVREADWRITE("i8279_2", i8279_device, status_r, cmd_w)
-//  AM_RANGE(0x2050, 0x2050)// SCAN on M1B
-=======
 	AM_RANGE(0x2030, 0x2031) AM_DEVREADWRITE("i8279", i8279_device, read, write)
 
 #ifdef USE_MCU
@@ -637,7 +576,6 @@ static ADDRESS_MAP_START( m1_nec_memmap, AS_PROGRAM, 8, maygay1b_state )
 	AM_RANGE(0x2040, 0x2041) AM_DEVREADWRITE("i8279_2", i8279_device, read, write)
 //  AM_RANGE(0x2050, 0x2050)// SCAN on M1B
 #endif
->>>>>>> upstream/master
 
 	AM_RANGE(0x2070, 0x207f) AM_DEVREADWRITE("duart68681", mc68681_device, read, write )
 
@@ -685,19 +623,11 @@ WRITE8_MEMBER( maygay1b_state::lamp_data_w )
 		// Because of the nature of the lamping circuit, there is an element of persistance
 		// As a consequence, the lamp column data can change before the input strobe without
 		// causing the relevant lamps to black out.
-<<<<<<< HEAD
-
-		for (int i = 0; i < 8; i++)
-		{
-			output_set_lamp_value((8*m_lamp_strobe)+i, ((data  & (1 << i)) !=0));
-		}
-=======
 		for (int i = 0; i < 8; i++)
 		{
 			output().set_lamp_value((8*m_lamp_strobe)+i, ((data  & (1 << (i^4))) !=0));
 		}
 
->>>>>>> upstream/master
 		m_old_lamp_strobe = m_lamp_strobe;
 	}
 
@@ -705,17 +635,12 @@ WRITE8_MEMBER( maygay1b_state::lamp_data_w )
 
 READ8_MEMBER( maygay1b_state::kbd_r )
 {
-<<<<<<< HEAD
-	ioport_port * portnames[] = { m_sw1_port, m_s2_port, m_s3_port, m_s4_port, m_s5_port, m_s6_port, m_s7_port, m_sw2_port};
-	return (portnames[m_lamp_strobe&0x07])->read();
-=======
 	return (m_kbd_ports[(m_lamp_strobe&0x07)^4])->read();
 }
 
 WRITE8_MEMBER( maygay1b_state::scanlines_2_w )
 {
 	m_lamp_strobe2 = data;
->>>>>>> upstream/master
 }
 
 WRITE8_MEMBER( maygay1b_state::lamp_data_2_w )
@@ -727,29 +652,16 @@ WRITE8_MEMBER( maygay1b_state::lamp_data_2_w )
 		// Because of the nature of the lamping circuit, there is an element of persistance
 		// As a consequence, the lamp column data can change before the input strobe without
 		// causing the relevant lamps to black out.
-<<<<<<< HEAD
-
-		for (int i = 0; i < 8; i++)
-		{
-			output_set_lamp_value((8*m_lamp_strobe)+i+128, ((data  & (1 << i)) !=0));
-		}
-=======
 		for (int i = 0; i < 8; i++)
 		{
 			output().set_lamp_value((8*m_lamp_strobe2)+i+128, ((data  & (1 << (i^4))) !=0));
 		}
 
->>>>>>> upstream/master
 		m_old_lamp_strobe2 = m_lamp_strobe2;
 	}
 
 }
 
-<<<<<<< HEAD
-// machine driver for maygay m1 board /////////////////////////////////
-
-MACHINE_CONFIG_START( maygay_m1, maygay1b_state )
-=======
 // MCU hookup not yet working
 
 WRITE8_MEMBER(maygay1b_state::main_to_mcu_0_w)
@@ -856,18 +768,14 @@ ADDRESS_MAP_END
 // machine driver for maygay m1 board /////////////////////////////////
 
 MACHINE_CONFIG_START( maygay_m1 )
->>>>>>> upstream/master
 
 	MCFG_CPU_ADD("maincpu", M6809, M1_MASTER_CLOCK/2)
 	MCFG_CPU_PROGRAM_MAP(m1_memmap)
 
-<<<<<<< HEAD
-=======
 	MCFG_CPU_ADD("mcu", I80C51, 2000000) //  EP840034.A-P-80C51AVW
 	MCFG_CPU_IO_MAP(maygay_mcu_io)
 
 
->>>>>>> upstream/master
 	MCFG_MC68681_ADD("duart68681", M1_DUART_CLOCK)
 	MCFG_MC68681_IRQ_CALLBACK(WRITELINE(maygay1b_state, duart_irq_handler))
 	MCFG_MC68681_INPORT_CALLBACK(READ8(maygay1b_state, m1_duart_r))
@@ -893,18 +801,11 @@ MACHINE_CONFIG_START( maygay_m1 )
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 1.0)
 
 	MCFG_TIMER_DRIVER_ADD_PERIODIC("nmitimer", maygay1b_state, maygay1b_nmitimer_callback, attotime::from_hz(75)) // freq?
-<<<<<<< HEAD
-=======
 
->>>>>>> upstream/master
 	MCFG_DEVICE_ADD("i8279", I8279, M1_MASTER_CLOCK/4)    // unknown clock
 	MCFG_I8279_OUT_SL_CB(WRITE8(maygay1b_state, scanlines_w))   // scan SL lines
 	MCFG_I8279_OUT_DISP_CB(WRITE8(maygay1b_state, lamp_data_w))     // display A&B
 	MCFG_I8279_IN_RL_CB(READ8(maygay1b_state, kbd_r))           // kbd RL lines
-<<<<<<< HEAD
-	MCFG_DEVICE_ADD("i8279_2", I8279, M1_MASTER_CLOCK/4)        // unknown clock
-	MCFG_I8279_OUT_DISP_CB(WRITE8(maygay1b_state, lamp_data_2_w))       // display A&B
-=======
 
 #ifndef USE_MCU
 	// on M1B there is a 2nd i8279, on M1 / M1A a 8051 handles this task!
@@ -912,7 +813,6 @@ MACHINE_CONFIG_START( maygay_m1 )
 	MCFG_I8279_OUT_SL_CB(WRITE8(maygay1b_state, scanlines_2_w))   // scan SL lines
 	MCFG_I8279_OUT_DISP_CB(WRITE8(maygay1b_state, lamp_data_2_w))       // display A&B
 #endif
->>>>>>> upstream/master
 
 	MCFG_STARPOINT_48STEP_ADD("reel0")
 	MCFG_STEPPER_OPTIC_CALLBACK(WRITELINE(maygay1b_state, reel0_optic_cb))
@@ -927,12 +827,9 @@ MACHINE_CONFIG_START( maygay_m1 )
 	MCFG_STARPOINT_48STEP_ADD("reel5")
 	MCFG_STEPPER_OPTIC_CALLBACK(WRITELINE(maygay1b_state, reel5_optic_cb))
 
-<<<<<<< HEAD
-=======
 	MCFG_DEVICE_ADD("meters", METERS, 0)
 	MCFG_METERS_NUMBER(8)
 
->>>>>>> upstream/master
 	MCFG_NVRAM_ADD_0FILL("nvram")
 
 	MCFG_DEFAULT_LAYOUT(layout_maygay1b)
@@ -961,32 +858,20 @@ WRITE8_MEMBER(maygay1b_state::m1ab_no_oki_w)
 DRIVER_INIT_MEMBER(maygay1b_state,m1common)
 {
 	//Initialise paging for non-extended ROM space
-<<<<<<< HEAD
-	UINT8 *rom = memregion("maincpu")->base();
-=======
 	uint8_t *rom = memregion("maincpu")->base();
->>>>>>> upstream/master
 	membank("bank1")->configure_entries(0, 2, &rom[0x0e000], 0x10000);
 	membank("bank1")->set_entry(0);
 
 	// print out the rom id / header info to give us some hints
 	// note this isn't always correct, alley cat has 'Calpsyo' still in the ident string?
 	{
-<<<<<<< HEAD
-		UINT8 *cpu = memregion( "maincpu" )->base();
-=======
 		uint8_t *cpu = memregion( "maincpu" )->base();
->>>>>>> upstream/master
 		int base = 0xff20;
 		for (int i=0;i<14;i++)
 		{
 			for (int j=0;j<16;j++)
 			{
-<<<<<<< HEAD
-				UINT8 rom = cpu[base];
-=======
 				uint8_t rom = cpu[base];
->>>>>>> upstream/master
 
 				if ((rom>=0x20) && (rom<0x7f))
 				{
@@ -1017,18 +902,9 @@ DRIVER_INIT_MEMBER(maygay1b_state,m1)
 	//AM_RANGE(0x2420, 0x2421) AM_WRITE(latch_ch2_w ) // oki
 	// if there is no OKI region disable writes here, the rom might be missing, so alert user
 
-<<<<<<< HEAD
-	UINT8 *okirom = memregion( "msm6376" )->base();
-
-	if (!okirom) {
-		m_maincpu->space(AS_PROGRAM).install_write_handler(0x2420, 0x2421, write8_delegate(FUNC(maygay1b_state::m1ab_no_oki_w), this));
-	}
-}
-=======
 	if (m_oki_region == nullptr) {
 		m_maincpu->space(AS_PROGRAM).install_write_handler(0x2420, 0x2421, write8_delegate(FUNC(maygay1b_state::m1ab_no_oki_w), this));
 	}
 }
 
 #include "maygay1b.hxx"
->>>>>>> upstream/master

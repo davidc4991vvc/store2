@@ -71,21 +71,6 @@
 
 ***********************************************************************************/
 
-<<<<<<< HEAD
-
-#define MAIN_CLOCK      XTAL_11_0592MHz
-#define VDP_CLOCK       XTAL_10_730MHz
-#define TMS_CLOCK       VDP_CLOCK / 24
-
-#include "emu.h"
-#include "cpu/mcs51/mcs51.h"
-#include "video/tms9928a.h"
-#include "sound/ay8910.h"
-#include "machine/nvram.h"
-#include "re900.lh"
-
-
-=======
 #include "emu.h"
 
 #include "cpu/mcs51/mcs51.h"
@@ -103,7 +88,6 @@
 #define TMS_CLOCK       VDP_CLOCK / 24
 
 
->>>>>>> upstream/master
 class re900_state : public driver_device
 {
 public:
@@ -114,17 +98,6 @@ public:
 
 	required_device<cpu_device> m_maincpu;
 
-<<<<<<< HEAD
-	required_shared_ptr<UINT8> m_rom;
-
-	// re900 specific
-	UINT8 m_psg_pa;
-	UINT8 m_psg_pb;
-	UINT8 m_mux_data;
-	UINT8 m_ledant;
-	UINT8 m_player;
-	UINT8 m_stat_a;
-=======
 	required_shared_ptr<uint8_t> m_rom;
 
 	// re900 specific
@@ -134,7 +107,6 @@ public:
 	uint8_t m_ledant;
 	uint8_t m_player;
 	uint8_t m_stat_a;
->>>>>>> upstream/master
 
 	// common
 	DECLARE_READ8_MEMBER(rom_r);
@@ -159,20 +131,12 @@ READ8_MEMBER(re900_state::re_psg_portA_r)
 {
 	if ((ioport("IN0")->read() & 0x01) == 0)
 	{
-<<<<<<< HEAD
-		output_set_lamp_value(0,1);     // Operator Key ON
-=======
 		output().set_lamp_value(0,1);     // Operator Key ON
->>>>>>> upstream/master
 	}
 
 	else
 	{
-<<<<<<< HEAD
-		output_set_lamp_value(0,0);     // Operator Key OFF
-=======
 		output().set_lamp_value(0,0);     // Operator Key OFF
->>>>>>> upstream/master
 	}
 
 	return ioport("IN0")->read();
@@ -180,39 +144,22 @@ READ8_MEMBER(re900_state::re_psg_portA_r)
 
 READ8_MEMBER(re900_state::re_psg_portB_r)
 {
-<<<<<<< HEAD
-	UINT8 retval = 0xff;
-	logerror("llamada a re_psg_portB_r\n");
-	/* This is a hack to select the active player due to Keyboard size restrictions  */
-
-	output_set_lamp_value(m_player,1);
-=======
 	uint8_t retval = 0xff;
 	logerror("llamada a re_psg_portB_r\n");
 	/* This is a hack to select the active player due to Keyboard size restrictions  */
 
 	output().set_lamp_value(m_player,1);
->>>>>>> upstream/master
 
 	if (ioport("IN_S")->read())
 	{
 		if (!m_stat_a)
 		{
-<<<<<<< HEAD
-			output_set_lamp_value(1, 0);
-			output_set_lamp_value(2, 0);
-			output_set_lamp_value(3, 0);
-			output_set_lamp_value(4, 0);
-			output_set_lamp_value(5, 0);
-			output_set_lamp_value(6, 0);
-=======
 			output().set_lamp_value(1, 0);
 			output().set_lamp_value(2, 0);
 			output().set_lamp_value(3, 0);
 			output().set_lamp_value(4, 0);
 			output().set_lamp_value(5, 0);
 			output().set_lamp_value(6, 0);
->>>>>>> upstream/master
 			m_player++;
 
 			if (m_player == 7)
@@ -220,11 +167,7 @@ READ8_MEMBER(re900_state::re_psg_portB_r)
 				m_player = 1;
 			}
 
-<<<<<<< HEAD
-			output_set_lamp_value(m_player, 1); /* It shows active player via layout buttons   */
-=======
 			output().set_lamp_value(m_player, 1); /* It shows active player via layout buttons   */
->>>>>>> upstream/master
 			m_stat_a = 1;
 		}
 	}
@@ -267,29 +210,17 @@ WRITE8_MEMBER(re900_state::re_mux_port_A_w)
 
 WRITE8_MEMBER(re900_state::re_mux_port_B_w)
 {
-<<<<<<< HEAD
-	UINT8 led;
-=======
 	uint8_t led;
->>>>>>> upstream/master
 	m_psg_pb = data;
 	led = (m_psg_pa >> 2) & 0x3f;
 
 	if (data == 0x7f)
 	{
-<<<<<<< HEAD
-		output_set_lamp_value(20 + led, 1);
-
-		if (led != m_ledant)
-		{
-			output_set_lamp_value(20 + m_ledant, 0);
-=======
 		output().set_lamp_value(20 + led, 1);
 
 		if (led != m_ledant)
 		{
 			output().set_lamp_value(20 + m_ledant, 0);
->>>>>>> upstream/master
 			m_ledant = led;
 		}
 	}
@@ -297,13 +228,8 @@ WRITE8_MEMBER(re900_state::re_mux_port_B_w)
 
 WRITE8_MEMBER(re900_state::cpu_port_0_w)
 {
-<<<<<<< HEAD
-//  output_set_lamp_value(7,1 ^ ( (data >> 4) & 1)); /* Cont. Sal */
-//  output_set_lamp_value(8,1 ^ ( (data >> 5) & 1)); /* Cont. Ent */
-=======
 //  output().set_lamp_value(7,1 ^ ( (data >> 4) & 1)); /* Cont. Sal */
 //  output().set_lamp_value(8,1 ^ ( (data >> 5) & 1)); /* Cont. Ent */
->>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(re900_state::watchdog_reset_w)
@@ -451,11 +377,7 @@ INPUT_PORTS_END
 *      Machine Driver      *
 ***************************/
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( re900, re900_state )
-=======
 static MACHINE_CONFIG_START( re900 )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", I8051, MAIN_CLOCK)
@@ -487,13 +409,8 @@ static MACHINE_CONFIG_DERIVED( bs94, re900 )
 	MCFG_SOUND_MODIFY("ay_re900")
 	MCFG_AY8910_PORT_A_READ_CB(IOPORT("IN0"))
 	MCFG_AY8910_PORT_B_READ_CB(IOPORT("IN1"))
-<<<<<<< HEAD
-	MCFG_AY8910_PORT_A_WRITE_CB(NULL)
-	MCFG_AY8910_PORT_B_WRITE_CB(NULL)
-=======
 	MCFG_AY8910_PORT_A_WRITE_CB(NOOP)
 	MCFG_AY8910_PORT_B_WRITE_CB(NOOP)
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
@@ -535,12 +452,6 @@ DRIVER_INIT_MEMBER(re900_state,re900)
 *      Game Drivers      *
 *************************/
 
-<<<<<<< HEAD
-/*     YEAR  NAME   PARENT MACHINE INPUT  INIT   ROT     COMPANY                    FULLNAME            FLAGS LAYOUT */
-GAMEL( 1993, re900, 0,     re900,  re900, re900_state,   re900, ROT90, "Entretenimientos GEMINIS", "Ruleta RE-900",    MACHINE_SUPPORTS_SAVE,    layout_re900)
-GAME ( 1994, bs94 , 0,     bs94,   bs94 , driver_device, 0,     ROT0,  "Entretenimientos GEMINIS", "Buena Suerte '94", MACHINE_SUPPORTS_SAVE )
-=======
 //     YEAR  NAME   PARENT MACHINE INPUT  STATE        INIT   ROT    COMPANY                     FULLNAME            FLAGS                  LAYOUT
 GAMEL( 1993, re900, 0,     re900,  re900, re900_state, re900, ROT90, "Entretenimientos GEMINIS", "Ruleta RE-900",    MACHINE_SUPPORTS_SAVE, layout_re900 )
 GAME ( 1994, bs94 , 0,     bs94,   bs94 , re900_state, 0,     ROT0,  "Entretenimientos GEMINIS", "Buena Suerte '94", MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

@@ -29,10 +29,7 @@ mov sreg, doesnot disable until next operation is executed
 8086/8088
 ---------
 "mov cs, " causes unconditional jump!
-<<<<<<< HEAD
-=======
 0xd6 is salc (sbb al,al) as all other intel x86-16 and -32 cpus
->>>>>>> upstream/master
 
 80C86/80C88
 -----------
@@ -40,16 +37,10 @@ mov sreg, doesnot disable until next operation is executed
 
 80186/80188
 -----------
-<<<<<<< HEAD
-integrated pic8259, pit8253, dma8253 (but not at standard pc addresses)
-additional instructions
-"mov cs, " ?
-=======
 integrated pic, timer and dmac entirely incompatible with 8259, 825[3,4] and 82[3,5]7
 additional instructions
 #BR/bound/int 5, #UD/illegal instruction/int 6, #NM/coprocessor unavailable/int 7 support 
 "mov cs, " ignored (likely causes int 6) 
->>>>>>> upstream/master
 shift count anded with 0x1f
 
 80188
@@ -63,10 +54,7 @@ although it is based on 80186 instruction set, some behaviours follow 8086
 8080 emulation mode
 "mov cs, " ignored
 shift count not anded (acts like 8086)
-<<<<<<< HEAD
-=======
 0xd6 is xlat alias
->>>>>>> upstream/master
 
 NEC 70116 (V30)
 ---------------
@@ -84,19 +72,11 @@ no 8080 emulation mode
 
 NEC V40
 -------
-<<<<<<< HEAD
-pinout, integrated peripherals as 80186
-
-NEC V50
--------
-pinout, integrated peripherals as 80188
-=======
 pinout, integrated peripherals 8259,54,37 clones at nonpc compatible addresses
 
 NEC V50
 -------
 pinout, integrated peripherals as v40 
->>>>>>> upstream/master
 
 NEC V33?
 --------
@@ -115,15 +95,9 @@ v30? emulation mode (without 8080 emulation mode)
 
 80286
 -----
-<<<<<<< HEAD
-80186 with additional instructions
-24 bit address bus,
-protected mode
-=======
 80186 with additional instructions but no peripherals
 24 bit address bus,
 protected mode selector/descriptor
->>>>>>> upstream/master
 
 80386 and later
 ---------------

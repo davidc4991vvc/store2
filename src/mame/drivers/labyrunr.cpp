@@ -11,13 +11,6 @@
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/m6809/hd6309.h"
-#include "sound/2203intf.h"
-
-#include "includes/konamipt.h"
-#include "includes/labyrunr.h"
-=======
 #include "includes/labyrunr.h"
 #include "includes/konamipt.h"
 
@@ -26,7 +19,6 @@
 #include "sound/2203intf.h"
 
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 INTERRUPT_GEN_MEMBER(labyrunr_state::labyrunr_vblank_interrupt)
@@ -52,13 +44,8 @@ WRITE8_MEMBER(labyrunr_state::labyrunr_bankswitch_w)
 	membank("bank1")->set_entry(data & 0x07);   // shall we check if data&7 > #banks?
 
 	/* bits 3 and 4 are coin counters */
-<<<<<<< HEAD
-	coin_counter_w(machine(), 0, data & 0x08);
-	coin_counter_w(machine(), 1, data & 0x10);
-=======
 	machine().bookkeeping().coin_counter_w(0, data & 0x08);
 	machine().bookkeeping().coin_counter_w(1, data & 0x10);
->>>>>>> upstream/master
 }
 
 static ADDRESS_MAP_START( labyrunr_map, AS_PROGRAM, 8, labyrunr_state )
@@ -73,11 +60,7 @@ static ADDRESS_MAP_START( labyrunr_map, AS_PROGRAM, 8, labyrunr_state )
 	AM_RANGE(0x0b00, 0x0b00) AM_READ_PORT("SYSTEM")
 	AM_RANGE(0x0c00, 0x0c00) AM_WRITE(labyrunr_bankswitch_w)
 	AM_RANGE(0x0d00, 0x0d1f) AM_DEVREADWRITE("k051733", k051733_device, read, write)
-<<<<<<< HEAD
-	AM_RANGE(0x0e00, 0x0e00) AM_WRITE(watchdog_reset_w)
-=======
 	AM_RANGE(0x0e00, 0x0e00) AM_DEVWRITE("watchdog", watchdog_timer_device, reset_w)
->>>>>>> upstream/master
 	AM_RANGE(0x1000, 0x10ff) AM_RAM_DEVWRITE("palette", palette_device, write_indirect) AM_SHARE("palette")
 	AM_RANGE(0x1800, 0x1fff) AM_RAM
 	AM_RANGE(0x2000, 0x2fff) AM_RAM AM_SHARE("spriteram")
@@ -177,20 +160,12 @@ GFXDECODE_END
 
 void labyrunr_state::machine_start()
 {
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("maincpu")->base();
-=======
 	uint8_t *ROM = memregion("maincpu")->base();
->>>>>>> upstream/master
 
 	membank("bank1")->configure_entries(0, 6, &ROM[0x10000], 0x4000);
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( labyrunr, labyrunr_state )
-=======
 static MACHINE_CONFIG_START( labyrunr )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", HD6309, 3000000*4)      /* 24MHz/8? */
@@ -198,10 +173,7 @@ static MACHINE_CONFIG_START( labyrunr )
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", labyrunr_state,  labyrunr_vblank_interrupt)
 	MCFG_CPU_PERIODIC_INT_DRIVER(labyrunr_state, labyrunr_timer_interrupt,  4*60)
 
-<<<<<<< HEAD
-=======
 	MCFG_WATCHDOG_ADD("watchdog")
->>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
@@ -297,12 +269,6 @@ ROM_START( labyrunrk )
 ROM_END
 
 
-<<<<<<< HEAD
-GAME( 1987, tricktrp, 0,        labyrunr, labyrunr, driver_device, 0, ROT90, "Konami", "Trick Trap (World?)", MACHINE_SUPPORTS_SAVE )
-GAME( 1987, labyrunr, tricktrp, labyrunr, labyrunr, driver_device, 0, ROT90, "Konami", "Labyrinth Runner (Japan)", MACHINE_SUPPORTS_SAVE )
-GAME( 1987, labyrunrk,tricktrp, labyrunr, labyrunr, driver_device, 0, ROT90, "Konami", "Labyrinth Runner (World Ver. K)", MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1987, tricktrp, 0,        labyrunr, labyrunr, labyrunr_state, 0, ROT90, "Konami", "Trick Trap (World?)",             MACHINE_SUPPORTS_SAVE )
 GAME( 1987, labyrunr, tricktrp, labyrunr, labyrunr, labyrunr_state, 0, ROT90, "Konami", "Labyrinth Runner (Japan)",        MACHINE_SUPPORTS_SAVE )
 GAME( 1987, labyrunrk,tricktrp, labyrunr, labyrunr, labyrunr_state, 0, ROT90, "Konami", "Labyrinth Runner (World Ver. K)", MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

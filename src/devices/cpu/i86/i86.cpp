@@ -12,15 +12,6 @@
 ****************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "debugger.h"
-#include "i86.h"
-#include "i86inline.h"
-
-#define I8086_NMI_INT_VECTOR 2
-
-const UINT8 i8086_cpu_device::m_i8086_timing[] =
-=======
 #include "i86.h"
 #include "debugger.h"
 #include "i86inline.h"
@@ -29,7 +20,6 @@ const UINT8 i8086_cpu_device::m_i8086_timing[] =
 #define I8086_NMI_INT_VECTOR 2
 
 const uint8_t i8086_cpu_device::m_i8086_timing[] =
->>>>>>> upstream/master
 {
 	51,32,          /* exception, IRET */
 		2, 0, 4, 2, /* INTs */
@@ -98,51 +88,23 @@ const uint8_t i8086_cpu_device::m_i8086_timing[] =
 
 /***************************************************************************/
 
-<<<<<<< HEAD
-const device_type I8086 = &device_creator<i8086_cpu_device>;
-const device_type I8088 = &device_creator<i8088_cpu_device>;
-
-i8088_cpu_device::i8088_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: i8086_cpu_device(mconfig, I8088, "I8088", tag, owner, clock, "i8088", __FILE__, 8)
-=======
 DEFINE_DEVICE_TYPE(I8086, i8086_cpu_device, "i8086", "I8086")
 DEFINE_DEVICE_TYPE(I8088, i8088_cpu_device, "i8088", "I8088")
 
 i8088_cpu_device::i8088_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: i8086_cpu_device(mconfig, I8088, tag, owner, clock, 8)
->>>>>>> upstream/master
 {
 	memcpy(m_timing, m_i8086_timing, sizeof(m_i8086_timing));
 	m_fetch_xor = 0;
 }
 
-<<<<<<< HEAD
-i8086_cpu_device::i8086_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: i8086_common_cpu_device(mconfig, I8086, "I8086", tag, owner, clock, "i8086", __FILE__)
-	, m_program_config("program", ENDIANNESS_LITTLE, 16, 20, 0)
-	, m_io_config("io", ENDIANNESS_LITTLE, 16, 16, 0)
-=======
 i8086_cpu_device::i8086_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: i8086_cpu_device(mconfig, I8086, tag, owner, clock, 16)
->>>>>>> upstream/master
 {
 	memcpy(m_timing, m_i8086_timing, sizeof(m_i8086_timing));
 	m_fetch_xor = BYTE_XOR_LE(0);
 }
 
-<<<<<<< HEAD
-i8086_cpu_device::i8086_cpu_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source, int data_bus_size)
-	: i8086_common_cpu_device(mconfig, type, name, tag, owner, clock, shortname, source)
-	, m_program_config("program", ENDIANNESS_LITTLE, data_bus_size, 20, 0)
-	, m_io_config("io", ENDIANNESS_LITTLE, data_bus_size, 16, 0)
-{
-}
-
-UINT8 i8086_cpu_device::fetch_op()
-{
-	UINT8 data;
-	data = m_direct->read_byte(pc(), m_fetch_xor);
-=======
 i8086_cpu_device::i8086_cpu_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock, int data_bus_size)
 	: i8086_common_cpu_device(mconfig, type, tag, owner, clock)
 	, m_program_config("program", ENDIANNESS_LITTLE, data_bus_size, 20, 0)
@@ -176,32 +138,21 @@ uint8_t i8086_cpu_device::fetch_op()
 {
 	uint8_t data;
 	data = m_direct_opcodes->read_byte(pc(), m_fetch_xor);
->>>>>>> upstream/master
 	m_ip++;
 	return data;
 }
 
-<<<<<<< HEAD
-UINT8 i8086_cpu_device::fetch()
-{
-	UINT8 data;
-	data = m_direct->read_byte(pc(), m_fetch_xor);
-=======
 uint8_t i8086_cpu_device::fetch()
 {
 	uint8_t data;
 	data = m_direct_opcodes->read_byte(pc(), m_fetch_xor);
->>>>>>> upstream/master
 	m_ip++;
 	return data;
 }
 
 void i8086_cpu_device::execute_run()
 {
-<<<<<<< HEAD
-=======
 	u8 iflag = m_IF;
->>>>>>> upstream/master
 	while(m_icount > 0 )
 	{
 		if ( m_seg_prefix_next )
@@ -215,11 +166,7 @@ void i8086_cpu_device::execute_run()
 			m_seg_prefix = false;
 
 				/* Dispatch IRQ */
-<<<<<<< HEAD
-			if ( m_pending_irq && m_no_interrupt == 0 )
-=======
 			if ( m_pending_irq && (m_no_interrupt == 0) )
->>>>>>> upstream/master
 			{
 				if ( m_pending_irq & NMI_IRQ )
 				{
@@ -234,21 +181,6 @@ void i8086_cpu_device::execute_run()
 				}
 			}
 
-<<<<<<< HEAD
-			/* No interrupt allowed between last instruction and this one */
-			if ( m_no_interrupt )
-			{
-				m_no_interrupt--;
-			}
-
-			/* trap should allow one instruction to be executed */
-			if ( m_fire_trap )
-			{
-				if ( m_fire_trap >= 2 )
-				{
-					interrupt(1);
-					m_fire_trap = 0;
-=======
 			/* Trap should allow one instruction to be executed.
 			   CPUID.ASM (by Bob Smith, 1985) suggests that in situations where m_no_interrupt is 1,
 			   (directly after POP SS / MOV_SREG), single step IRQs don't fire.
@@ -259,15 +191,12 @@ void i8086_cpu_device::execute_run()
 				{
 					m_fire_trap = 0; // reset trap flag upon entry
 					interrupt(1);
->>>>>>> upstream/master
 				}
 				else
 				{
 					m_fire_trap++;
 				}
 			}
-<<<<<<< HEAD
-=======
 
 			/* No interrupt allowed between last instruction and this one */
 			if ( m_no_interrupt )
@@ -275,7 +204,6 @@ void i8086_cpu_device::execute_run()
 				m_no_interrupt--;
 			}
 
->>>>>>> upstream/master
 		}
 
 		if (!m_seg_prefix)
@@ -283,11 +211,7 @@ void i8086_cpu_device::execute_run()
 			debugger_instruction_hook( this, pc() );
 		}
 
-<<<<<<< HEAD
-		UINT8 op = fetch_op();
-=======
 		uint8_t op = fetch_op();
->>>>>>> upstream/master
 
 		switch(op)
 		{
@@ -298,11 +222,7 @@ void i8086_cpu_device::execute_run()
 
 			case 0xd2: // i_rotshft_bcl
 				{
-<<<<<<< HEAD
-					UINT8 c;
-=======
 					uint8_t c;
->>>>>>> upstream/master
 
 					m_modrm = fetch();
 					m_src = GetRMByte();
@@ -329,11 +249,7 @@ void i8086_cpu_device::execute_run()
 
 			case 0xd3: // i_rotshft_wcl
 				{
-<<<<<<< HEAD
-					UINT8 c;
-=======
 					uint8_t c;
->>>>>>> upstream/master
 
 					m_modrm = fetch();
 					m_src = GetRMWord();
@@ -362,42 +278,22 @@ void i8086_cpu_device::execute_run()
 				if(!common_op(op))
 				{
 					m_icount -= 10;
-<<<<<<< HEAD
-					logerror("%s: %06x: Invalid Opcode %02x\n", tag(), pc(), op);
-=======
 					logerror("%06x: Invalid Opcode %02x\n", pc(), op);
->>>>>>> upstream/master
 					break;
 				}
 				break;
 		}
-<<<<<<< HEAD
-=======
 		if(iflag != m_IF)
 		{
 			m_out_if_func(m_IF ? ASSERT_LINE : CLEAR_LINE);
 			iflag = m_IF;
 		}
->>>>>>> upstream/master
 	}
 }
 
 void i8086_cpu_device::device_start()
 {
 	i8086_common_cpu_device::device_start();
-<<<<<<< HEAD
-	state_add( I8086_ES, "ES", m_sregs[ES] ).callimport().callexport().formatstr("%04X");
-	state_add( I8086_CS, "CS", m_sregs[CS] ).callimport().callexport().formatstr("%04X");
-	state_add( I8086_SS, "SS", m_sregs[SS] ).callimport().callexport().formatstr("%04X");
-	state_add( I8086_DS, "DS", m_sregs[DS] ).callimport().callexport().formatstr("%04X");
-	state_add( I8086_VECTOR, "V", m_int_vector).callimport().callexport().formatstr("%02X");
-
-	state_add(STATE_GENPC, "curpc", m_pc).callimport().callexport().formatstr("%05X");
-}
-
-i8086_common_cpu_device::i8086_common_cpu_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source)
-	: cpu_device(mconfig, type, name, tag, owner, clock, shortname, source)
-=======
 	m_out_if_func.resolve_safe();
 	m_stack = has_space(AS_STACK) ? &space(AS_STACK) : m_program;
 	m_code = has_space(AS_CODE) ? &space(AS_CODE) : m_program;
@@ -415,7 +311,6 @@ i8086_common_cpu_device::i8086_common_cpu_device(const machine_config &mconfig, 
 
 i8086_common_cpu_device::i8086_common_cpu_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock)
 	: cpu_device(mconfig, type, tag, owner, clock)
->>>>>>> upstream/master
 	, m_ip(0)
 	, m_TF(0)
 	, m_int_vector(0)
@@ -430,38 +325,23 @@ i8086_common_cpu_device::i8086_common_cpu_device(const machine_config &mconfig, 
 	static const BREGS reg_name[8]={ AL, CL, DL, BL, AH, CH, DH, BH };
 
 	/* Set up parity lookup table. */
-<<<<<<< HEAD
-	for (UINT16 i = 0;i < 256; i++)
-	{
-		UINT16 c = 0;
-		for (UINT16 j = i; j > 0; j >>= 1)
-=======
 	for (uint16_t i = 0;i < 256; i++)
 	{
 		uint16_t c = 0;
 		for (uint16_t j = i; j > 0; j >>= 1)
->>>>>>> upstream/master
 		{
 			if (j & 1) c++;
 		}
 		m_parity_table[i] = !(c & 1);
 	}
 
-<<<<<<< HEAD
-	for (UINT16 i = 0; i < 256; i++)
-=======
 	for (uint16_t i = 0; i < 256; i++)
->>>>>>> upstream/master
 	{
 		m_Mod_RM.reg.b[i] = reg_name[(i & 0x38) >> 3];
 		m_Mod_RM.reg.w[i] = (WREGS) ( (i & 0x38) >> 3) ;
 	}
 
-<<<<<<< HEAD
-	for (UINT16 i = 0xc0; i < 0x100; i++)
-=======
 	for (uint16_t i = 0xc0; i < 0x100; i++)
->>>>>>> upstream/master
 	{
 		m_Mod_RM.RM.w[i] = (WREGS)( i & 7 );
 		m_Mod_RM.RM.b[i] = (BREGS)reg_name[i & 7];
@@ -471,20 +351,6 @@ i8086_common_cpu_device::i8086_common_cpu_device(const machine_config &mconfig, 
 	memset(m_sregs, 0x00, sizeof(m_sregs));
 }
 
-<<<<<<< HEAD
-void i8086_common_cpu_device::state_string_export(const device_state_entry &entry, std::string &str)
-{
-	switch (entry.index())
-	{
-		case STATE_GENPC:
-			strprintf(str, "%08X", pc());
-			break;
-
-		case STATE_GENFLAGS:
-			{
-				UINT16 flags = CompressFlags();
-				strprintf(str, "%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c",
-=======
 
 //-------------------------------------------------
 //  state_import - import state into the device,
@@ -523,7 +389,6 @@ void i8086_common_cpu_device::state_string_export(const device_state_entry &entr
 			{
 				uint16_t flags = CompressFlags();
 				str = string_format("%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c",
->>>>>>> upstream/master
 					flags & 0x8000 ? '1':'.',
 					flags & 0x4000 ? '1':'.',
 					flags & 0x2000 ? '1':'.',
@@ -548,16 +413,12 @@ void i8086_common_cpu_device::state_string_export(const device_state_entry &entr
 void i8086_common_cpu_device::device_start()
 {
 	m_program = &space(AS_PROGRAM);
-<<<<<<< HEAD
-	m_direct = &m_program->direct();
-=======
 	m_opcodes = has_space(AS_OPCODES) ? &space(AS_OPCODES) : m_program;
 	m_stack = m_program;
 	m_code = m_program;
 	m_extra = m_program;
 	m_direct = &m_program->direct();
 	m_direct_opcodes = &m_opcodes->direct();
->>>>>>> upstream/master
 	m_io = &space(AS_IO);
 
 	save_item(NAME(m_regs.w));
@@ -586,20 +447,6 @@ void i8086_common_cpu_device::device_start()
 	save_item(NAME(m_halt));
 
 	// Register state for debugger
-<<<<<<< HEAD
-//  state_add( I8086_PC, "PC", m_PC ).callimport().callexport().formatstr("%04X");
-	state_add( I8086_IP, "IP", m_ip         ).callimport().callexport().formatstr("%04X");
-	state_add( I8086_AX, "AX", m_regs.w[AX] ).callimport().callexport().formatstr("%04X");
-	state_add( I8086_CX, "CX", m_regs.w[CS] ).callimport().callexport().formatstr("%04X");
-	state_add( I8086_DX, "DX", m_regs.w[DX] ).callimport().callexport().formatstr("%04X");
-	state_add( I8086_BX, "BX", m_regs.w[BX] ).callimport().callexport().formatstr("%04X");
-	state_add( I8086_SP, "SP", m_regs.w[SP] ).callimport().callexport().formatstr("%04X");
-	state_add( I8086_BP, "BP", m_regs.w[BP] ).callimport().callexport().formatstr("%04X");
-	state_add( I8086_SI, "SI", m_regs.w[SI] ).callimport().callexport().formatstr("%04X");
-	state_add( I8086_DI, "DI", m_regs.w[DI] ).callimport().callexport().formatstr("%04X");
-
-	state_add(STATE_GENFLAGS, "GENFLAGS", m_TF).callimport().callexport().formatstr("%16s").noshow();
-=======
 	state_add( I8086_IP, "IP", m_ip         ).callimport().formatstr("%04X");
 	state_add( I8086_AX, "AX", m_regs.w[AX] ).formatstr("%04X");
 	state_add( I8086_CX, "CX", m_regs.w[CS] ).formatstr("%04X");
@@ -611,7 +458,6 @@ void i8086_common_cpu_device::device_start()
 	state_add( I8086_DI, "DI", m_regs.w[DI] ).formatstr("%04X");
 
 	state_add(STATE_GENFLAGS, "GENFLAGS", m_TF).formatstr("%16s").noshow();
->>>>>>> upstream/master
 
 	m_icountptr = &m_icount;
 
@@ -664,10 +510,7 @@ void i8086_common_cpu_device::device_reset()
 	m_src = 0;
 	m_halt = false;
 	m_lock = false;
-<<<<<<< HEAD
-=======
 	m_easeg = DS;
->>>>>>> upstream/master
 }
 
 
@@ -685,13 +528,8 @@ void i8086_common_cpu_device::interrupt(int int_num, int trap)
 		m_pending_irq &= ~INT_IRQ;
 	}
 
-<<<<<<< HEAD
-	UINT16 dest_off = read_word( int_num * 4 + 0 );
-	UINT16 dest_seg = read_word( int_num * 4 + 2 );
-=======
 	uint16_t dest_off = read_word( int_num * 4 + 0, CS );
 	uint16_t dest_seg = read_word( int_num * 4 + 2, CS );
->>>>>>> upstream/master
 
 	PUSH(m_sregs[CS]);
 	PUSH(m_ip);
@@ -732,82 +570,46 @@ void i8086_common_cpu_device::execute_set_input( int inptnum, int state )
 	}
 }
 
-<<<<<<< HEAD
-offs_t i8086_common_cpu_device::disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options)
-{
-	extern int i386_dasm_one(char *buffer, offs_t eip, const UINT8 *oprom, int mode);
-	return i386_dasm_one(buffer, pc, oprom, 1);
-}
-
-UINT8 i8086_common_cpu_device::read_port_byte(UINT16 port)
-=======
 offs_t i8086_common_cpu_device::disasm_disassemble(std::ostream &stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, uint32_t options)
 {
 	return i386_dasm_one(stream, pc, oprom, 1);
 }
 
 uint8_t i8086_common_cpu_device::read_port_byte(uint16_t port)
->>>>>>> upstream/master
 {
 	return m_io->read_byte(port);
 }
 
-<<<<<<< HEAD
-UINT16 i8086_common_cpu_device::read_port_word(UINT16 port)
-=======
 uint16_t i8086_common_cpu_device::read_port_word(uint16_t port)
->>>>>>> upstream/master
 {
 	return m_io->read_word_unaligned(port);
 }
 
-<<<<<<< HEAD
-void i8086_common_cpu_device::write_port_byte(UINT16 port, UINT8 data)
-=======
 void i8086_common_cpu_device::write_port_byte(uint16_t port, uint8_t data)
->>>>>>> upstream/master
 {
 	m_io->write_byte(port, data);
 }
 
-<<<<<<< HEAD
-void i8086_common_cpu_device::write_port_word(UINT16 port, UINT16 data)
-=======
 void i8086_common_cpu_device::write_port_word(uint16_t port, uint16_t data)
->>>>>>> upstream/master
 {
 	m_io->write_word_unaligned(port, data);
 }
 
-<<<<<<< HEAD
-UINT32 i8086_common_cpu_device::calc_addr(int seg, UINT16 offset, int size, int op, bool override)
-{
-	if ( m_seg_prefix && (seg==DS || seg==SS) && override )
-	{
-=======
 uint32_t i8086_common_cpu_device::calc_addr(int seg, uint16_t offset, int size, int op, bool override)
 {
 	if ( m_seg_prefix && (seg==DS || seg==SS) && override )
 	{
 		m_easeg = m_seg_prefix;
->>>>>>> upstream/master
 		return (m_sregs[m_prefix_seg] << 4) + offset;
 	}
 	else
 	{
-<<<<<<< HEAD
-=======
 		m_easeg = seg;
->>>>>>> upstream/master
 		return (m_sregs[seg] << 4) + offset;
 	}
 }
 
-<<<<<<< HEAD
-bool i8086_common_cpu_device::common_op(UINT8 op)
-=======
 bool i8086_common_cpu_device::common_op(uint8_t op)
->>>>>>> upstream/master
 {
 	switch(op)
 	{
@@ -914,11 +716,7 @@ bool i8086_common_cpu_device::common_op(uint8_t op)
 		{
 			DEF_br8();
 			m_src += CF ? 1 : 0;
-<<<<<<< HEAD
-			UINT32 tmpcf = ADDB();
-=======
 			uint32_t tmpcf = ADDB();
->>>>>>> upstream/master
 			PutbackRMByte(m_dst);
 			set_CFB(tmpcf);
 			CLKM(ALU_RR8,ALU_MR8);
@@ -928,11 +726,7 @@ bool i8086_common_cpu_device::common_op(uint8_t op)
 		{
 			DEF_wr16();
 			m_src += CF ? 1 : 0;
-<<<<<<< HEAD
-			UINT32 tmpcf = ADDX();
-=======
 			uint32_t tmpcf = ADDX();
->>>>>>> upstream/master
 			PutbackRMWord(m_dst);
 			set_CFW(tmpcf);
 			CLKM(ALU_RR16,ALU_MR16);
@@ -984,11 +778,7 @@ bool i8086_common_cpu_device::common_op(uint8_t op)
 
 		case 0x18: // i_sbb_br8
 		{
-<<<<<<< HEAD
-			UINT32 tmpcf;
-=======
 			uint32_t tmpcf;
->>>>>>> upstream/master
 			DEF_br8();
 			m_src += CF ? 1 : 0;
 			tmpcf = SUBB();
@@ -1000,11 +790,7 @@ bool i8086_common_cpu_device::common_op(uint8_t op)
 
 		case 0x19: // i_sbb_wr16
 		{
-<<<<<<< HEAD
-			UINT32 tmpcf;
-=======
 			uint32_t tmpcf;
->>>>>>> upstream/master
 			DEF_wr16();
 			m_src += CF ? 1 : 0;
 			tmpcf = SUBX();
@@ -1504,11 +1290,7 @@ bool i8086_common_cpu_device::common_op(uint8_t op)
 
 		case 0x6d:
 		case 0x7d: // i_jnl
-<<<<<<< HEAD
-			JMP((ZF)||(SF==OF));
-=======
 			JMP(SF==OF);
->>>>>>> upstream/master
 			break;
 
 		case 0x6e:
@@ -1524,11 +1306,7 @@ bool i8086_common_cpu_device::common_op(uint8_t op)
 
 		case 0x80: // i_80pre
 		{
-<<<<<<< HEAD
-			UINT32 tmpcf;
-=======
 			uint32_t tmpcf;
->>>>>>> upstream/master
 			m_modrm = fetch();
 			m_dst = GetRMByte();
 			m_src = fetch();
@@ -1552,11 +1330,7 @@ bool i8086_common_cpu_device::common_op(uint8_t op)
 
 		case 0x81: // i_81pre
 		{
-<<<<<<< HEAD
-			UINT32 tmpcf;
-=======
 			uint32_t tmpcf;
->>>>>>> upstream/master
 			m_modrm = fetch();
 			m_dst = GetRMWord();
 			m_src = fetch_word();
@@ -1580,17 +1354,10 @@ bool i8086_common_cpu_device::common_op(uint8_t op)
 
 		case 0x82: // i_82pre
 		{
-<<<<<<< HEAD
-			UINT32 tmpcf;
-			m_modrm = fetch();
-			m_dst = GetRMByte();
-			m_src = (INT8)fetch();
-=======
 			uint32_t tmpcf;
 			m_modrm = fetch();
 			m_dst = GetRMByte();
 			m_src = (int8_t)fetch();
->>>>>>> upstream/master
 			if (m_modrm >=0xc0 )             { CLK(ALU_RI8); }
 			else if ((m_modrm & 0x38)==0x38) { CLK(ALU_MI8_RO); }
 			else                             { CLK(ALU_MI8); }
@@ -1611,17 +1378,10 @@ bool i8086_common_cpu_device::common_op(uint8_t op)
 
 		case 0x83: // i_83pre
 		{
-<<<<<<< HEAD
-			UINT32 tmpcf;
-			m_modrm = fetch();
-			m_dst = GetRMWord();
-			m_src = (UINT16)((INT16)((INT8)fetch()));
-=======
 			uint32_t tmpcf;
 			m_modrm = fetch();
 			m_dst = GetRMWord();
 			m_src = (uint16_t)((int16_t)((int8_t)fetch()));
->>>>>>> upstream/master
 			if (m_modrm >=0xc0 )             { CLK(ALU_R16I8); }
 			else if ((m_modrm & 0x38)==0x38) { CLK(ALU_M16I8_RO); }
 			else                             { CLK(ALU_M16I8); }
@@ -1713,10 +1473,7 @@ bool i8086_common_cpu_device::common_op(uint8_t op)
 			m_src = GetRMWord();
 			m_sregs[(m_modrm & 0x18) >> 3] = m_src; // confirmed on hw: modrm bit 5 ignored
 			CLKM(MOV_SR,MOV_SM);
-<<<<<<< HEAD
-=======
 			m_no_interrupt = 1; // Disable IRQ after load segment register.
->>>>>>> upstream/master
 			break;
 
 		case 0x8f: // i_popw
@@ -1777,13 +1534,8 @@ bool i8086_common_cpu_device::common_op(uint8_t op)
 
 		case 0x9a: // i_call_far
 			{
-<<<<<<< HEAD
-				UINT16 tmp = fetch_word();
-				UINT16 tmp2 = fetch_word();
-=======
 				uint16_t tmp = fetch_word();
 				uint16_t tmp2 = fetch_word();
->>>>>>> upstream/master
 				PUSH(m_sregs[CS]);
 				PUSH(m_ip);
 				m_ip = tmp;
@@ -1814,11 +1566,7 @@ bool i8086_common_cpu_device::common_op(uint8_t op)
 
 		case 0x9e: // i_sahf
 			{
-<<<<<<< HEAD
-				UINT32 tmp = (CompressFlags() & 0xff00) | (m_regs.b[AH] & 0xd5);
-=======
 				uint32_t tmp = (CompressFlags() & 0xff00) | (m_regs.b[AH] & 0xd5);
->>>>>>> upstream/master
 				ExpandFlags(tmp);
 				CLK(SAHF);
 			}
@@ -1832,11 +1580,7 @@ bool i8086_common_cpu_device::common_op(uint8_t op)
 
 		case 0xa0: // i_mov_aldisp
 			{
-<<<<<<< HEAD
-				UINT32 addr = fetch_word();
-=======
 				uint32_t addr = fetch_word();
->>>>>>> upstream/master
 				m_regs.b[AL] = GetMemB(DS, addr);
 				CLK(MOV_AM8);
 			}
@@ -1844,11 +1588,7 @@ bool i8086_common_cpu_device::common_op(uint8_t op)
 
 		case 0xa1: // i_mov_axdisp
 			{
-<<<<<<< HEAD
-				UINT32 addr = fetch_word();
-=======
 				uint32_t addr = fetch_word();
->>>>>>> upstream/master
 				m_regs.w[AX] = GetMemW(DS, addr);
 				CLK(MOV_AM16);
 			}
@@ -1856,11 +1596,7 @@ bool i8086_common_cpu_device::common_op(uint8_t op)
 
 		case 0xa2: // i_mov_dispal
 			{
-<<<<<<< HEAD
-				UINT32 addr = fetch_word();
-=======
 				uint32_t addr = fetch_word();
->>>>>>> upstream/master
 				PutMemB(DS, addr, m_regs.b[AL]);
 				CLK(MOV_MA8);
 			}
@@ -1868,11 +1604,7 @@ bool i8086_common_cpu_device::common_op(uint8_t op)
 
 		case 0xa3: // i_mov_dispax
 			{
-<<<<<<< HEAD
-				UINT32 addr = fetch_word();
-=======
 				uint32_t addr = fetch_word();
->>>>>>> upstream/master
 				PutMemW(DS, addr, m_regs.w[AX]);
 				CLK(MOV_MA16);
 			}
@@ -2024,11 +1756,7 @@ bool i8086_common_cpu_device::common_op(uint8_t op)
 		case 0xc0: // 0xc0 is 0xc2 - see (*)
 		case 0xc2: // i_ret_d16
 			{
-<<<<<<< HEAD
-				UINT32 count = fetch_word();
-=======
 				uint32_t count = fetch_word();
->>>>>>> upstream/master
 				m_ip = POP();
 				m_regs.w[SP] += count;
 				CLK(RET_NEAR_IMM);
@@ -2070,11 +1798,7 @@ bool i8086_common_cpu_device::common_op(uint8_t op)
 		case 0xc8: // 0xc8 = 0xca - see (*)
 		case 0xca: // i_retf_d16
 			{
-<<<<<<< HEAD
-				UINT32 count = fetch_word();
-=======
 				uint32_t count = fetch_word();
->>>>>>> upstream/master
 				m_ip = POP();
 				m_sregs[CS] = POP();
 				m_regs.w[SP] += count;
@@ -2154,11 +1878,7 @@ bool i8086_common_cpu_device::common_op(uint8_t op)
 
 		case 0xd4: // i_aam
 		{
-<<<<<<< HEAD
-			UINT8 base = fetch();
-=======
 			uint8_t base = fetch();
->>>>>>> upstream/master
 			if(!base)
 			{
 				interrupt(0);
@@ -2173,11 +1893,7 @@ bool i8086_common_cpu_device::common_op(uint8_t op)
 
 		case 0xd5: // i_aad
 		{
-<<<<<<< HEAD
-			UINT8 base = fetch();
-=======
 			uint8_t base = fetch();
->>>>>>> upstream/master
 			m_regs.b[AL] = m_regs.b[AH] * base + m_regs.b[AL];
 			m_regs.b[AH] = 0;
 			set_SZPF_Byte(m_regs.b[AL]);
@@ -2206,21 +1922,13 @@ bool i8086_common_cpu_device::common_op(uint8_t op)
 			m_modrm = fetch();
 			GetRMByte();
 			CLK(NOP);
-<<<<<<< HEAD
-			logerror("%s: %06x: Unimplemented floating point escape %02x%02x\n", tag(), pc(), op, m_modrm);
-=======
 			logerror("%06x: Unimplemented floating point escape %02x%02x\n", pc(), op, m_modrm);
->>>>>>> upstream/master
 			break;
 
 
 		case 0xe0: // i_loopne
 			{
-<<<<<<< HEAD
-				INT8 disp = (INT8)fetch();
-=======
 				int8_t disp = (int8_t)fetch();
->>>>>>> upstream/master
 
 				m_regs.w[CX]--;
 				if (!ZF && m_regs.w[CX])
@@ -2235,11 +1943,7 @@ bool i8086_common_cpu_device::common_op(uint8_t op)
 
 		case 0xe1: // i_loope
 			{
-<<<<<<< HEAD
-				INT8 disp = (INT8)fetch();
-=======
 				int8_t disp = (int8_t)fetch();
->>>>>>> upstream/master
 
 				m_regs.w[CX]--;
 				if (ZF && m_regs.w[CX])
@@ -2254,11 +1958,7 @@ bool i8086_common_cpu_device::common_op(uint8_t op)
 
 		case 0xe2: // i_loop
 			{
-<<<<<<< HEAD
-				INT8 disp = (INT8)fetch();
-=======
 				int8_t disp = (int8_t)fetch();
->>>>>>> upstream/master
 
 				m_regs.w[CX]--;
 				if (m_regs.w[CX])
@@ -2273,11 +1973,7 @@ bool i8086_common_cpu_device::common_op(uint8_t op)
 
 		case 0xe3: // i_jcxz
 			{
-<<<<<<< HEAD
-				INT8 disp = (INT8)fetch();
-=======
 				int8_t disp = (int8_t)fetch();
->>>>>>> upstream/master
 
 				if (m_regs.w[CX] == 0)
 				{
@@ -2298,11 +1994,7 @@ bool i8086_common_cpu_device::common_op(uint8_t op)
 
 		case 0xe5: // i_inax
 			{
-<<<<<<< HEAD
-				UINT8 port = fetch();
-=======
 				uint8_t port = fetch();
->>>>>>> upstream/master
 
 				m_regs.w[AX] = read_port_word(port);
 				CLK(IN_IMM16);
@@ -2316,11 +2008,7 @@ bool i8086_common_cpu_device::common_op(uint8_t op)
 
 		case 0xe7: // i_outax
 			{
-<<<<<<< HEAD
-				UINT8 port = fetch();
-=======
 				uint8_t port = fetch();
->>>>>>> upstream/master
 
 				write_port_word(port, m_regs.w[AX]);
 				CLK(OUT_IMM16);
@@ -2330,11 +2018,7 @@ bool i8086_common_cpu_device::common_op(uint8_t op)
 
 		case 0xe8: // i_call_d16
 			{
-<<<<<<< HEAD
-				INT16 tmp = (INT16)fetch_word();
-=======
 				int16_t tmp = (int16_t)fetch_word();
->>>>>>> upstream/master
 
 				PUSH(m_ip);
 				m_ip = m_ip + tmp;
@@ -2344,11 +2028,7 @@ bool i8086_common_cpu_device::common_op(uint8_t op)
 
 		case 0xe9: // i_jmp_d16
 			{
-<<<<<<< HEAD
-				INT16 offset = (INT16)fetch_word();
-=======
 				int16_t offset = (int16_t)fetch_word();
->>>>>>> upstream/master
 				m_ip += offset;
 				CLK(JMP_NEAR);
 			}
@@ -2356,13 +2036,8 @@ bool i8086_common_cpu_device::common_op(uint8_t op)
 
 		case 0xea: // i_jmp_far
 			{
-<<<<<<< HEAD
-				UINT16 tmp = fetch_word();
-				UINT16 tmp1 = fetch_word();
-=======
 				uint16_t tmp = fetch_word();
 				uint16_t tmp1 = fetch_word();
->>>>>>> upstream/master
 
 				m_sregs[CS] = tmp1;
 				m_ip = tmp;
@@ -2372,22 +2047,14 @@ bool i8086_common_cpu_device::common_op(uint8_t op)
 
 		case 0xeb: // i_jmp_d8
 			{
-<<<<<<< HEAD
-				int tmp = (int)((INT8)fetch());
-=======
 				int tmp = (int)((int8_t)fetch());
->>>>>>> upstream/master
 
 				CLK(JMP_SHORT);
 				if (tmp==-2 && m_no_interrupt==0 && (m_pending_irq==0) && m_icount>0)
 				{
 					m_icount%=12; /* cycle skip */
 				}
-<<<<<<< HEAD
-				m_ip = (UINT16)(m_ip+tmp);
-=======
 				m_ip = (uint16_t)(m_ip+tmp);
->>>>>>> upstream/master
 			}
 			break;
 
@@ -2398,11 +2065,7 @@ bool i8086_common_cpu_device::common_op(uint8_t op)
 
 		case 0xed: // i_inaxdx
 			{
-<<<<<<< HEAD
-				UINT32 port = m_regs.w[DX];
-=======
 				uint32_t port = m_regs.w[DX];
->>>>>>> upstream/master
 
 				m_regs.w[AX] = read_port_word(port);
 				CLK(IN_DX16);
@@ -2416,11 +2079,7 @@ bool i8086_common_cpu_device::common_op(uint8_t op)
 
 		case 0xef: // i_outdxax
 			{
-<<<<<<< HEAD
-				UINT32 port = m_regs.w[DX];
-=======
 				uint32_t port = m_regs.w[DX];
->>>>>>> upstream/master
 
 				write_port_word(port, m_regs.w[AX]);
 				CLK(OUT_DX16);
@@ -2430,11 +2089,7 @@ bool i8086_common_cpu_device::common_op(uint8_t op)
 
 		case 0xf0: // i_lock
 		case 0xf1: // 0xf1 is 0xf0; verified on real CPU
-<<<<<<< HEAD
-			logerror("%s: %06x: Warning - BUSLOCK\n", tag(), pc());
-=======
 			logerror("%06x: Warning - BUSLOCK\n", pc());
->>>>>>> upstream/master
 			m_lock = true;
 			m_no_interrupt = 1;
 			CLK(NOP);
@@ -2443,13 +2098,8 @@ bool i8086_common_cpu_device::common_op(uint8_t op)
 		case 0xf2: // i_repne
 			{
 				bool invalid = false;
-<<<<<<< HEAD
-				UINT8 next = repx_op();
-				UINT16 c = m_regs.w[CX];
-=======
 				uint8_t next = repx_op();
 				uint16_t c = m_regs.w[CX];
->>>>>>> upstream/master
 
 				switch (next)
 				{
@@ -2464,11 +2114,7 @@ bool i8086_common_cpu_device::common_op(uint8_t op)
 				case 0xae:  CLK(OVERRIDE); if (c) do { i_scasb(); c--; } while (c>0 && !ZF && m_icount>0);   m_regs.w[CX]=c; m_seg_prefix = false; m_seg_prefix_next = false; break;
 				case 0xaf:  CLK(OVERRIDE); if (c) do { i_scasw(); c--; } while (c>0 && !ZF && m_icount>0);   m_regs.w[CX]=c; m_seg_prefix = false; m_seg_prefix_next = false; break;
 				default:
-<<<<<<< HEAD
-					logerror("%s: %06x: REPNE invalid\n", tag(), pc());
-=======
 					logerror("%06x: REPNE invalid\n", pc());
->>>>>>> upstream/master
 					// Decrement IP so the normal instruction will be executed next
 					m_ip--;
 					invalid = true;
@@ -2485,13 +2131,8 @@ bool i8086_common_cpu_device::common_op(uint8_t op)
 		case 0xf3: // i_repe
 			{
 				bool invalid = false;
-<<<<<<< HEAD
-				UINT8 next = repx_op();
-				UINT16 c = m_regs.w[CX];
-=======
 				uint8_t next = repx_op();
 				uint16_t c = m_regs.w[CX];
->>>>>>> upstream/master
 
 				switch (next)
 				{
@@ -2506,11 +2147,7 @@ bool i8086_common_cpu_device::common_op(uint8_t op)
 				case 0xae:  CLK(OVERRIDE); if (c) do { i_scasb(); c--; } while (c>0 && ZF && m_icount>0);    m_regs.w[CX]=c; m_seg_prefix = false; m_seg_prefix_next = false; break;
 				case 0xaf:  CLK(OVERRIDE); if (c) do { i_scasw(); c--; } while (c>0 && ZF && m_icount>0);    m_regs.w[CX]=c; m_seg_prefix = false; m_seg_prefix_next = false; break;
 				default:
-<<<<<<< HEAD
-					logerror("%s: %06x: REPE invalid\n", tag(), pc());
-=======
 					logerror("%06x: REPE invalid\n", pc());
->>>>>>> upstream/master
 					// Decrement IP so the normal instruction will be executed next
 					m_ip--;
 					invalid = true;
@@ -2537,15 +2174,9 @@ bool i8086_common_cpu_device::common_op(uint8_t op)
 
 		case 0xf6: // i_f6pre
 			{
-<<<<<<< HEAD
-				UINT32 tmp;
-				UINT32 uresult,uresult2;
-				INT32 result,result2;
-=======
 				uint32_t tmp;
 				uint32_t uresult,uresult2;
 				int32_t result,result2;
->>>>>>> upstream/master
 
 				m_modrm = fetch();
 				tmp = GetRMByte();
@@ -2571,23 +2202,14 @@ bool i8086_common_cpu_device::common_op(uint8_t op)
 					break;
 				case 0x20:  /* MUL */
 					uresult = m_regs.b[AL] * tmp;
-<<<<<<< HEAD
-					m_regs.w[AX] = (UINT16)uresult;
-=======
 					m_regs.w[AX] = (uint16_t)uresult;
->>>>>>> upstream/master
 					m_CarryVal = m_OverVal = (m_regs.b[AH]!=0) ? 1 : 0;
 					set_ZF(m_regs.w[AX]);
 					CLKM(MUL_R8,MUL_M8);
 					break;
 				case 0x28:  /* IMUL */
-<<<<<<< HEAD
-					result = (INT16)((INT8)m_regs.b[AL])*(INT16)((INT8)tmp);
-					m_regs.w[AX] = (UINT16)result;
-=======
 					result = (int16_t)((int8_t)m_regs.b[AL])*(int16_t)((int8_t)tmp);
 					m_regs.w[AX] = (uint16_t)result;
->>>>>>> upstream/master
 					m_CarryVal = m_OverVal = (m_regs.b[AH]!=0) ? 1 : 0;
 					set_ZF(m_regs.w[AX]);
 					CLKM(IMUL_R8,IMUL_M8);
@@ -2616,15 +2238,9 @@ bool i8086_common_cpu_device::common_op(uint8_t op)
 				case 0x38:  /* IDIV */
 					if (tmp)
 					{
-<<<<<<< HEAD
-						result = (INT16)m_regs.w[AX];
-						result2 = result % (INT16)((INT8)tmp);
-						if ((result /= (INT16)((INT8)tmp)) > 0xff)
-=======
 						result = (int16_t)m_regs.w[AX];
 						result2 = result % (int16_t)((int8_t)tmp);
 						if ((result /= (int16_t)((int8_t)tmp)) > 0xff)
->>>>>>> upstream/master
 						{
 							interrupt(0);
 						}
@@ -2647,15 +2263,9 @@ bool i8086_common_cpu_device::common_op(uint8_t op)
 
 		case 0xf7: // i_f7pre
 			{
-<<<<<<< HEAD
-				UINT32 tmp,tmp2;
-				UINT32 uresult,uresult2;
-				INT32 result,result2;
-=======
 				uint32_t tmp,tmp2;
 				uint32_t uresult,uresult2;
 				int32_t result,result2;
->>>>>>> upstream/master
 
 				m_modrm = fetch();
 				tmp = GetRMWord();
@@ -2683,21 +2293,13 @@ bool i8086_common_cpu_device::common_op(uint8_t op)
 				case 0x20:  /* MUL */
 					uresult = m_regs.w[AX]*tmp;
 					m_regs.w[AX] = uresult & 0xffff;
-<<<<<<< HEAD
-					m_regs.w[DX] = ((UINT32)uresult)>>16;
-=======
 					m_regs.w[DX] = ((uint32_t)uresult)>>16;
->>>>>>> upstream/master
 					m_CarryVal = m_OverVal = (m_regs.w[DX] != 0) ? 1 : 0;
 					set_ZF(m_regs.w[AX] | m_regs.w[DX]);
 					CLKM(MUL_R16,MUL_M16);
 					break;
 				case 0x28:  /* IMUL */
-<<<<<<< HEAD
-					result = (INT32)((INT16)m_regs.w[AX]) * (INT32)((INT16)tmp);
-=======
 					result = (int32_t)((int16_t)m_regs.w[AX]) * (int32_t)((int16_t)tmp);
->>>>>>> upstream/master
 					m_regs.w[AX] = result & 0xffff;
 					m_regs.w[DX] = result >> 16;
 					m_CarryVal = m_OverVal = (m_regs.w[DX] != 0) ? 1 : 0;
@@ -2707,11 +2309,7 @@ bool i8086_common_cpu_device::common_op(uint8_t op)
 				case 0x30:  /* DIV */
 					if (tmp)
 					{
-<<<<<<< HEAD
-						uresult = (((UINT32)m_regs.w[DX]) << 16) | m_regs.w[AX];
-=======
 						uresult = (((uint32_t)m_regs.w[DX]) << 16) | m_regs.w[AX];
->>>>>>> upstream/master
 						uresult2 = uresult % tmp;
 						if ((uresult /= tmp) > 0xffff)
 						{
@@ -2732,15 +2330,9 @@ bool i8086_common_cpu_device::common_op(uint8_t op)
 				case 0x38:  /* IDIV */
 					if (tmp)
 					{
-<<<<<<< HEAD
-						result = ((UINT32)m_regs.w[DX] << 16) + m_regs.w[AX];
-						result2 = result % (INT32)((INT16)tmp);
-						if ((result /= (INT32)((INT16)tmp)) > 0xffff)
-=======
 						result = ((uint32_t)m_regs.w[DX] << 16) + m_regs.w[AX];
 						result2 = result % (int32_t)((int16_t)tmp);
 						if ((result /= (int32_t)((int16_t)tmp)) > 0xffff)
->>>>>>> upstream/master
 						{
 							interrupt(0);
 						}
@@ -2793,11 +2385,7 @@ bool i8086_common_cpu_device::common_op(uint8_t op)
 
 		case 0xfe: // i_fepre
 			{
-<<<<<<< HEAD
-				UINT32 tmp, tmp1;
-=======
 				uint32_t tmp, tmp1;
->>>>>>> upstream/master
 				m_modrm = fetch();
 				tmp = GetRMByte();
 				switch ( m_modrm & 0x38 )
@@ -2819,11 +2407,7 @@ bool i8086_common_cpu_device::common_op(uint8_t op)
 					CLKM(INCDEC_R8,INCDEC_M8);
 					break;
 				default:
-<<<<<<< HEAD
-					logerror("%s: %06x: FE Pre with unimplemented mod\n", tag(), pc());
-=======
 					logerror("%06x: FE Pre with unimplemented mod\n", pc());
->>>>>>> upstream/master
 					break;
 				}
 			}
@@ -2831,11 +2415,7 @@ bool i8086_common_cpu_device::common_op(uint8_t op)
 
 		case 0xff: // i_ffpre
 			{
-<<<<<<< HEAD
-				UINT32 tmp, tmp1;
-=======
 				uint32_t tmp, tmp1;
->>>>>>> upstream/master
 				m_modrm = fetch();
 				tmp = GetRMWord();
 				switch ( m_modrm & 0x38 )
@@ -2883,11 +2463,7 @@ bool i8086_common_cpu_device::common_op(uint8_t op)
 					CLKM(PUSH_R16,PUSH_M16);
 					break;
 				default:
-<<<<<<< HEAD
-					logerror("%s: %06x: FF Pre with unimplemented mod\n", tag(), pc());
-=======
 					logerror("%06x: FF Pre with unimplemented mod\n", pc());
->>>>>>> upstream/master
 					break;
 				}
 			}

@@ -22,12 +22,8 @@
 #include "bootleg.h"
 
 #include "cpu/m6502/m6502.h"
-<<<<<<< HEAD
-#include "video/ppu2c0x.h"      // this has to be included so that IRQ functions can access PPU_BOTTOM_VISIBLE_SCANLINE
-=======
 #include "video/ppu2c0x.h"      // this has to be included so that IRQ functions can access ppu2c0x_device::BOTTOM_VISIBLE_SCANLINE
 #include "screen.h"
->>>>>>> upstream/master
 
 
 #ifdef NES_PCB_DEBUG
@@ -43,128 +39,6 @@
 //  constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const device_type NES_AX5705 = &device_creator<nes_ax5705_device>;
-const device_type NES_SC127 = &device_creator<nes_sc127_device>;
-const device_type NES_MARIOBABY = &device_creator<nes_mbaby_device>;
-const device_type NES_ASN = &device_creator<nes_asn_device>;
-const device_type NES_SMB3PIRATE = &device_creator<nes_smb3p_device>;
-const device_type NES_BTL_DNINJA = &device_creator<nes_btl_dn_device>;
-const device_type NES_WHIRLWIND_2706 = &device_creator<nes_whirl2706_device>;
-const device_type NES_SMB2J = &device_creator<nes_smb2j_device>;
-const device_type NES_SMB2JA = &device_creator<nes_smb2ja_device>;
-const device_type NES_SMB2JB = &device_creator<nes_smb2jb_device>;
-const device_type NES_09034A = &device_creator<nes_09034a_device>;
-const device_type NES_TOBIDASE = &device_creator<nes_tobidase_device>;
-const device_type NES_LH32 = &device_creator<nes_lh32_device>;
-const device_type NES_LH10 = &device_creator<nes_lh10_device>;
-const device_type NES_LH53 = &device_creator<nes_lh53_device>;
-const device_type NES_2708 = &device_creator<nes_2708_device>;
-const device_type NES_AC08 = &device_creator<nes_ac08_device>;
-const device_type NES_UNL_BB = &device_creator<nes_unl_bb_device>;
-const device_type NES_MMALEE = &device_creator<nes_mmalee_device>;
-const device_type NES_SHUIGUAN = &device_creator<nes_shuiguan_device>;
-
-
-nes_ax5705_device::nes_ax5705_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: nes_nrom_device(mconfig, NES_AX5705, "NES Cart AX5705 PCB", tag, owner, clock, "nes_ax5705", __FILE__)
-{
-}
-
-nes_sc127_device::nes_sc127_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: nes_nrom_device(mconfig, NES_SC127, "NES Cart SC-127 PCB", tag, owner, clock, "nes_sc127", __FILE__), m_irq_count(0), m_irq_enable(0)
-				{
-}
-
-nes_mbaby_device::nes_mbaby_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: nes_nrom_device(mconfig, NES_MARIOBABY, "NES Cart Mario Baby Bootleg PCB", tag, owner, clock, "nes_mbaby", __FILE__), m_latch(0), m_irq_enable(0), irq_timer(nullptr)
-				{
-}
-
-nes_asn_device::nes_asn_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: nes_nrom_device(mconfig, NES_ASN, "NES Cart Ai Senshi Nicol Bootleg PCB", tag, owner, clock, "nes_asn", __FILE__), m_latch(0)
-				{
-}
-
-nes_smb3p_device::nes_smb3p_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: nes_nrom_device(mconfig, NES_SMB3PIRATE, "NES Cart Super Mario Bros. 3 Pirate PCB", tag, owner, clock, "nes_smb3p", __FILE__), m_irq_count(0), m_irq_enable(0), irq_timer(nullptr)
-				{
-}
-
-nes_btl_dn_device::nes_btl_dn_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: nes_nrom_device(mconfig, NES_BTL_DNINJA, "NES Cart DragonNinja Pirate PCB", tag, owner, clock, "nes_btl_dn", __FILE__), m_irq_count(0)
-				{
-}
-
-nes_whirl2706_device::nes_whirl2706_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: nes_nrom_device(mconfig, NES_WHIRLWIND_2706, "NES Cart Whirlwind 2706 PCB", tag, owner, clock, "nes_whirl2706", __FILE__), m_latch(0)
-				{
-}
-
-nes_smb2j_device::nes_smb2j_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: nes_nrom_device(mconfig, NES_SMB2J, "NES Cart Super Mario Bros. 2 Jpn PCB", tag, owner, clock, "nes_smb2j", __FILE__), m_irq_count(0), m_irq_enable(0), irq_timer(nullptr)
-				{
-}
-
-nes_smb2ja_device::nes_smb2ja_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: nes_nrom_device(mconfig, NES_SMB2JA, "NES Cart Super Mario Bros. 2 Jpn (Alt) PCB", tag, owner, clock, "nes_smb2ja", __FILE__), m_irq_count(0), m_irq_enable(0), irq_timer(nullptr)
-				{
-}
-
-nes_smb2jb_device::nes_smb2jb_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: nes_nrom_device(mconfig, NES_SMB2JB, "NES Cart Super Mario Bros. 2 Jpn (Alt 2) PCB", tag, owner, clock, "nes_smb2jb", __FILE__), m_irq_count(0), m_irq_enable(0), irq_timer(nullptr)
-				{
-}
-
-nes_09034a_device::nes_09034a_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: nes_nrom_device(mconfig, NES_09034A, "NES Cart 09-034A PCB", tag, owner, clock, "nes_09034a", __FILE__), m_reg(0)
-				{
-}
-
-nes_tobidase_device::nes_tobidase_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: nes_nrom_device(mconfig, NES_TOBIDASE, "NES Cart Tobidase Daisakusen Pirate PCB", tag, owner, clock, "nes_tobidase", __FILE__), m_latch(0)
-				{
-}
-
-nes_lh32_device::nes_lh32_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: nes_nrom_device(mconfig, NES_LH32, "NES Cart LH-32 Pirate PCB", tag, owner, clock, "nes_lh32", __FILE__), m_latch(0)
-				{
-}
-
-nes_lh10_device::nes_lh10_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: nes_nrom_device(mconfig, NES_LH10, "NES Cart LH-10 Pirate PCB", tag, owner, clock, "nes_lh10", __FILE__), m_latch(0)
-				{
-}
-
-nes_lh53_device::nes_lh53_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: nes_nrom_device(mconfig, NES_LH53, "NES Cart LH-53 Pirate PCB", tag, owner, clock, "nes_lh53", __FILE__), m_irq_count(0), m_irq_enable(0), m_reg(0), irq_timer(nullptr)
-				{
-}
-
-nes_2708_device::nes_2708_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: nes_nrom_device(mconfig, NES_2708, "NES Cart BTL-2708 Pirate PCB", tag, owner, clock, "nes_2708", __FILE__)
-{
-}
-
-nes_ac08_device::nes_ac08_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: nes_nrom_device(mconfig, NES_AC08, "NES Cart AC08 Pirate PCB", tag, owner, clock, "nes_ac08", __FILE__), m_latch(0)
-				{
-}
-
-nes_unl_bb_device::nes_unl_bb_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: nes_nrom_device(mconfig, NES_UNL_BB, "NES Cart FDS+CHR Pirate PCB", tag, owner, clock, "nes_unl_bb", __FILE__)
-{
-}
-
-nes_mmalee_device::nes_mmalee_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: nes_nrom_device(mconfig, NES_MMALEE, "NES Cart Super Mario Bros. Malee 2 Pirate PCB", tag, owner, clock, "nes_mmalee", __FILE__)
-{
-}
-
-nes_shuiguan_device::nes_shuiguan_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: nes_nrom_device(mconfig, NES_SHUIGUAN, "NES Cart Shui Guan Pipe Pirate PCB", tag, owner, clock, "nes_shuiguan", __FILE__), m_irq_count(0), m_irq_enable(0), irq_timer(nullptr)
-				{
-=======
 DEFINE_DEVICE_TYPE(NES_AX5705,         nes_ax5705_device,    "nes_ax5705",    "NES Cart AX5705 PCB")
 DEFINE_DEVICE_TYPE(NES_SC127,          nes_sc127_device,     "nes_sc127",     "NES Cart SC-127 PCB")
 DEFINE_DEVICE_TYPE(NES_MARIOBABY,      nes_mbaby_device,     "nes_mbaby",     "NES Cart Mario Baby Bootleg PCB")
@@ -291,7 +165,6 @@ nes_shuiguan_device::nes_shuiguan_device(const machine_config &mconfig, const ch
 nes_rt01_device::nes_rt01_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: nes_nrom_device(mconfig, NES_RT01, tag, owner, clock)
 {
->>>>>>> upstream/master
 }
 
 
@@ -662,8 +535,6 @@ void nes_shuiguan_device::pcb_reset()
 }
 
 
-<<<<<<< HEAD
-=======
 void nes_rt01_device::device_start()
 {
 	common_start();
@@ -679,7 +550,6 @@ void nes_rt01_device::pcb_reset()
 	prg16_cdef(0);
 }
 
->>>>>>> upstream/master
 
 /*-------------------------------------------------
  mapper specific handlers
@@ -703,11 +573,7 @@ void nes_ax5705_device::set_prg()
 
 WRITE8_MEMBER(nes_ax5705_device::write_h)
 {
-<<<<<<< HEAD
-	UINT8 bank;
-=======
 	uint8_t bank;
->>>>>>> upstream/master
 	LOG_MMC(("ax5705 write_h, offset: %04x, data: %02x\n", offset, data));
 
 	switch (offset & 0x700f)
@@ -774,11 +640,7 @@ WRITE8_MEMBER(nes_ax5705_device::write_h)
 
 void nes_sc127_device::hblank_irq(int scanline, int vblank, int blanked)
 {
-<<<<<<< HEAD
-	if (scanline < PPU_BOTTOM_VISIBLE_SCANLINE && m_irq_enable)
-=======
 	if (scanline < ppu2c0x_device::BOTTOM_VISIBLE_SCANLINE && m_irq_enable)
->>>>>>> upstream/master
 	{
 		m_irq_count--;
 
@@ -1021,11 +883,7 @@ void nes_btl_dn_device::hblank_irq(int scanline, int vblank, int blanked )
 
 WRITE8_MEMBER(nes_btl_dn_device::write_h)
 {
-<<<<<<< HEAD
-	UINT8 bank;
-=======
 	uint8_t bank;
->>>>>>> upstream/master
 	LOG_MMC(("btl_dn write_h, offset: %04x, data: %02x\n", offset, data));
 
 	switch (offset & 0x7003)
@@ -1142,11 +1000,7 @@ WRITE8_MEMBER(nes_smb2j_device::write_ex)
 
 	if (offset == 2)
 	{
-<<<<<<< HEAD
-		int temp = 0;
-=======
 		int temp;
->>>>>>> upstream/master
 
 		// According to hardware tests
 		if (data & 1)
@@ -1264,11 +1118,7 @@ void nes_smb2jb_device::device_timer(emu_timer &timer, device_timer_id id, int p
 
 WRITE8_MEMBER(nes_smb2jb_device::write_l)
 {
-<<<<<<< HEAD
-	UINT8 prg;
-=======
 	uint8_t prg;
->>>>>>> upstream/master
 	LOG_MMC(("smb2jb write_l, offset: %04x, data: %02x\n", offset, data));
 	offset += 0x100;
 
@@ -1295,11 +1145,7 @@ READ8_MEMBER(nes_smb2jb_device::read_m)
 /* This goes to 0x4020-0x403f & 0x40a0-0x40bf */
 WRITE8_MEMBER(nes_smb2jb_device::write_ex)
 {
-<<<<<<< HEAD
-	UINT8 prg;
-=======
 	uint8_t prg;
->>>>>>> upstream/master
 	LOG_MMC(("smb2jb write_ex, offset: %04x, data: %02x\n", offset, data));
 
 	if ((offset < 0x20) || (offset >= 0x80 && offset < 0xa0))
@@ -1393,11 +1239,7 @@ READ8_MEMBER(nes_lh32_device::read_m)
 
 READ8_MEMBER(nes_lh32_device::read_h)
 {
-<<<<<<< HEAD
-	LOG_MMC(("lh32 read_h, offset: %04x\n", offset));
-=======
 //  LOG_MMC(("lh32 read_h, offset: %04x\n", offset));
->>>>>>> upstream/master
 
 	if (offset >= 0x4000 && offset < 0x6000)
 		return m_prgram[offset & 0x1fff];
@@ -1431,12 +1273,7 @@ WRITE8_MEMBER(nes_lh32_device::write_h)
  Games: Fuuun Shaolin Kyo (FDS conversion)
 
  This PCB maps WRAM in 0xc000-0xdfff and PRG in 0x6000-0x7fff
-<<<<<<< HEAD
- This is very similar to KS7037 (not sure which conversion
- uses that one)
-=======
  This is very similar to KS7037 (see kaiser.cpp)
->>>>>>> upstream/master
 
  iNES:
 
@@ -1458,11 +1295,7 @@ READ8_MEMBER(nes_lh10_device::read_m)
 
 READ8_MEMBER(nes_lh10_device::read_h)
 {
-<<<<<<< HEAD
-	LOG_MMC(("lh10 read_h, offset: %04x\n", offset));
-=======
 //  LOG_MMC(("lh10 read_h, offset: %04x\n", offset));
->>>>>>> upstream/master
 
 	if (offset >= 0x4000 && offset < 0x6000)
 		return m_prgram[offset & 0x1fff];
@@ -1531,11 +1364,7 @@ READ8_MEMBER(nes_lh53_device::read_m)
 
 READ8_MEMBER(nes_lh53_device::read_h)
 {
-<<<<<<< HEAD
-	LOG_MMC(("lh53 read_h, offset: %04x\n", offset));
-=======
 //  LOG_MMC(("lh53 read_h, offset: %04x\n", offset));
->>>>>>> upstream/master
 
 	if (offset >= 0x3800 && offset < 0x5800)
 		return m_battery[offset & 0x1fff];
@@ -1603,11 +1432,7 @@ WRITE8_MEMBER(nes_2708_device::write_m)
 
 READ8_MEMBER(nes_2708_device::read_h)
 {
-<<<<<<< HEAD
-	LOG_MMC(("btl-2708 read_h, offset: %04x\n", offset));
-=======
 //  LOG_MMC(("btl-2708 read_h, offset: %04x\n", offset));
->>>>>>> upstream/master
 
 	if (offset >= 0x3800 && offset < 0x5800 && !m_reg[1])
 		return m_prgram[0x2000 + ((offset - 0x3800) & 0x1fff)]; // higher 8K of WRAM
@@ -1829,8 +1654,6 @@ READ8_MEMBER(nes_shuiguan_device::read_m)
 	LOG_MMC(("shuiguan read_m, offset: %04x\n", offset));
 	return m_prg[offset & 0x1fff];
 }
-<<<<<<< HEAD
-=======
 
 
 /*-------------------------------------------------
@@ -1860,4 +1683,3 @@ READ8_MEMBER(nes_rt01_device::read_h)
 
 	return hi_access_rom(offset);
 }
->>>>>>> upstream/master

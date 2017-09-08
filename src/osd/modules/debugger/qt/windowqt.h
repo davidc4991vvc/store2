@@ -3,14 +3,8 @@
 #ifndef __DEBUG_QT_WINDOW_QT_H__
 #define __DEBUG_QT_WINDOW_QT_H__
 
-<<<<<<< HEAD
-#include <QtGui/QtGui>
-
-#include "emu.h"
-=======
 #include <QtWidgets/QMainWindow>
 
->>>>>>> upstream/master
 #include "config.h"
 #include "debugger.h"
 
@@ -23,11 +17,7 @@ class WindowQt : public QMainWindow
 	Q_OBJECT
 
 public:
-<<<<<<< HEAD
-	WindowQt(running_machine* machine, QWidget* parent=NULL);
-=======
 	WindowQt(running_machine* machine, QWidget* parent=nullptr);
->>>>>>> upstream/master
 	virtual ~WindowQt();
 
 	// The interface to an all-window refresh
@@ -101,13 +91,8 @@ public:
 
 	virtual void buildFromQWidget(QWidget* widget);
 	virtual void applyToQWidget(QWidget* widget);
-<<<<<<< HEAD
-	virtual void addToXmlDataNode(xml_data_node* node) const;
-	virtual void recoverFromXmlNode(xml_data_node* node);
-=======
 	virtual void addToXmlDataNode(util::xml::data_node &node) const;
 	virtual void recoverFromXmlNode(util::xml::data_node const &node);
->>>>>>> upstream/master
 };
 
 

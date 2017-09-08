@@ -5,11 +5,7 @@
 
 PALETTE_INIT_MEMBER(pcktgal_state, pcktgal)
 {
-<<<<<<< HEAD
-	const UINT8 *color_prom = memregion("proms")->base();
-=======
 	const uint8_t *color_prom = memregion("proms")->base();
->>>>>>> upstream/master
 
 	for (int i = 0;i < palette.entries();i++)
 	{
@@ -65,11 +61,7 @@ void pcktgal_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect
 	}
 }
 
-<<<<<<< HEAD
-UINT32 pcktgal_state::screen_update_pcktgal(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t pcktgal_state::screen_update_pcktgal(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	flip_screen_set(m_tilegen1->get_flip_state());
 	m_tilegen1->deco_bac06_pf_draw(bitmap,cliprect,TILEMAP_DRAW_OPAQUE, 0x00, 0x00, 0x00, 0x00);
@@ -77,11 +69,7 @@ uint32_t pcktgal_state::screen_update_pcktgal(screen_device &screen, bitmap_ind1
 	return 0;
 }
 
-<<<<<<< HEAD
-UINT32 pcktgal_state::screen_update_pcktgalb(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t pcktgal_state::screen_update_pcktgalb(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	flip_screen_set(m_tilegen1->get_flip_state());
 	// the bootleg doesn't properly set the tilemap registers, because it's on non-original hardware, which probably doesn't have the flexible tilemaps.

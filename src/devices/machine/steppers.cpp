@@ -41,16 +41,6 @@
 #include "emu.h"
 #include "steppers.h"
 
-<<<<<<< HEAD
-const device_type STEPPER = &device_creator<stepper_device>;
-
-stepper_device::stepper_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-		: device_t(mconfig, STEPPER, "Stepper Motor", tag, owner, clock, "stepper", __FILE__),
-		m_optic_cb(*this)
-	{
-		m_max_steps=(48*2);
-	}
-=======
 DEFINE_DEVICE_TYPE(STEPPER, stepper_device, "stepper", "Stepper Motor")
 
 stepper_device::stepper_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
@@ -59,7 +49,6 @@ stepper_device::stepper_device(const machine_config &mconfig, const char *tag, d
 {
 	m_max_steps=(48*2);
 }
->>>>>>> upstream/master
 ///////////////////////////////////////////////////////////////////////////
 
 void stepper_device::update_optic()
@@ -132,11 +121,7 @@ void stepper_device::device_reset()
 
 ///////////////////////////////////////////////////////////////////////////
 
-<<<<<<< HEAD
-int stepper_device::update(UINT8 pattern)
-=======
 int stepper_device::update(uint8_t pattern)
->>>>>>> upstream/master
 {
 	int changed = 0;
 
@@ -157,11 +142,7 @@ int stepper_device::update(uint8_t pattern)
 	a small movement that may trigger the optic tab.
 	*/
 
-<<<<<<< HEAD
-	int pos,steps=0;
-=======
 	int pos,steps;
->>>>>>> upstream/master
 	m_pattern = pattern;
 	switch ( m_type )
 	{

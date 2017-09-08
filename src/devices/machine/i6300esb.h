@@ -2,13 +2,8 @@
 // copyright-holders:Olivier Galibert
 // Intel i6300ESB southbridge
 
-<<<<<<< HEAD
-#ifndef I6300ESB_H
-#define I6300ESB_H
-=======
 #ifndef MAME_MACHINE_I6300ESB_H
 #define MAME_MACHINE_I6300ESB_H
->>>>>>> upstream/master
 
 #include "pci.h"
 #include "lpc-acpi.h"
@@ -23,20 +18,6 @@
 
 class i6300esb_lpc_device : public pci_device {
 public:
-<<<<<<< HEAD
-	i6300esb_lpc_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	virtual void reset_all_mappings();
-	virtual void map_extra(UINT64 memory_window_start, UINT64 memory_window_end, UINT64 memory_offset, address_space *memory_space,
-							UINT64 io_window_start, UINT64 io_window_end, UINT64 io_offset, address_space *io_space);
-
-	virtual DECLARE_ADDRESS_MAP(config_map, 32);
-
-
-protected:
-	virtual void device_start();
-	virtual void device_reset();
-=======
 	i6300esb_lpc_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	virtual void reset_all_mappings() override;
@@ -49,24 +30,11 @@ protected:
 protected:
 	virtual void device_start() override;
 	virtual void device_reset() override;
->>>>>>> upstream/master
 
 private:
 	required_device<lpc_acpi_device> acpi;
 	required_device<lpc_rtc_device> rtc;
 	required_device<lpc_pit_device> pit;
-<<<<<<< HEAD
-
-	DECLARE_ADDRESS_MAP(internal_io_map, 32);
-
-	UINT32 pmbase, gpio_base, fwh_sel1, gen_cntl, etr1, rst_cnt2, gpi_rout;
-	UINT16 bios_cntl, pci_dma_cfg, gen1_dec, lpc_en, gen2_dec, fwh_sel2, func_dis, gen_pmcon_1;
-	UINT16 mon_trp_rng[4], mon_trp_msk;
-	UINT8 pirq_rout[8];
-	UINT8 acpi_cntl, tco_cntl, gpio_cntl, serirq_cntl, d31_err_cfg, d31_err_sts, gen_sta, back_cntl, rtc_conf;
-	UINT8 lpc_if_com_range, lpc_if_fdd_lpt_range, lpc_if_sound_range, fwh_dec_en1, fwh_dec_en2, siu_config_port;
-	UINT8 gen_pmcon_2, gen_pmcon_3, apm_cnt, apm_sts, mon_fwd_en, nmi_sc;
-=======
 	required_memory_region m_region;
 
 	DECLARE_ADDRESS_MAP(internal_io_map, 32);
@@ -78,7 +46,6 @@ private:
 	uint8_t acpi_cntl, tco_cntl, gpio_cntl, serirq_cntl, d31_err_cfg, d31_err_sts, gen_sta, back_cntl, rtc_conf;
 	uint8_t lpc_if_com_range, lpc_if_fdd_lpt_range, lpc_if_sound_range, fwh_dec_en1, fwh_dec_en2, siu_config_port;
 	uint8_t gen_pmcon_2, gen_pmcon_3, apm_cnt, apm_sts, mon_fwd_en, nmi_sc;
->>>>>>> upstream/master
 	int siu_config_state;
 
 	DECLARE_WRITE8_MEMBER (nop_w);
@@ -173,41 +140,22 @@ private:
 	DECLARE_READ8_MEMBER  (nmi_sc_r);               // 61
 	DECLARE_WRITE8_MEMBER (nmi_sc_w);
 
-<<<<<<< HEAD
-	void map_bios(address_space *memory_space, UINT32 start, UINT32 end, int idsel);
-=======
 	void map_bios(address_space *memory_space, uint32_t start, uint32_t end, int idsel);
->>>>>>> upstream/master
 };
 
 class i6300esb_watchdog_device : public pci_device {
 public:
-<<<<<<< HEAD
-	i6300esb_watchdog_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-protected:
-	virtual void device_start();
-	virtual void device_reset();
-=======
 	i6300esb_watchdog_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 protected:
 	virtual void device_start() override;
 	virtual void device_reset() override;
->>>>>>> upstream/master
 
 private:
 	DECLARE_ADDRESS_MAP(map, 32);
 };
 
-<<<<<<< HEAD
-extern const device_type I6300ESB_LPC;
-extern const device_type I6300ESB_WATCHDOG;
-
-#endif
-=======
 DECLARE_DEVICE_TYPE(I6300ESB_LPC,      i6300esb_lpc_device)
 DECLARE_DEVICE_TYPE(I6300ESB_WATCHDOG, i6300esb_watchdog_device)
 
 #endif // MAME_MACHINE_I6300ESB_H
->>>>>>> upstream/master

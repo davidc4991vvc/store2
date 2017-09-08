@@ -15,10 +15,7 @@
 	premake.gcc.cc     = "gcc"
 	premake.gcc.cxx    = "g++"
 	premake.gcc.ar     = "ar"
-<<<<<<< HEAD
-=======
 	premake.gcc.rc     = "windres"
->>>>>>> upstream/master
 	premake.gcc.llvm   = false
 
 
@@ -30,11 +27,8 @@
 	{
 		EnableSSE      = "-msse",
 		EnableSSE2     = "-msse2",
-<<<<<<< HEAD
-=======
 		EnableAVX      = "-mavx",
 		EnableAVX2     = "-mavx2",
->>>>>>> upstream/master
 		ExtraWarnings  = "-Wall -Wextra",
 		FatalWarnings  = "-Werror",
 		FloatFast      = "-ffast-math",
@@ -61,28 +55,6 @@
 	premake.gcc.platforms =
 	{
 		Native = {
-<<<<<<< HEAD
-			cppflags = "-MMD",
-		},
-		x32 = {
-			cppflags = "-MMD",
-			flags    = "-m32",
-		},
-		x64 = {
-			cppflags = "-MMD",
-			flags    = "-m64",
-		},
-		Universal = {
-			cppflags = "",
-			flags    = "-arch i386 -arch x86_64 -arch ppc -arch ppc64",
-		},
-		Universal32 = {
-			cppflags = "",
-			flags    = "-arch i386 -arch ppc",
-		},
-		Universal64 = {
-			cppflags = "",
-=======
 			cppflags = "-MMD -MP",
 		},
 		x32 = {
@@ -106,18 +78,13 @@
 		Universal64 = {
 			ar       = "libtool",
 			cppflags = "-MMD -MP",
->>>>>>> upstream/master
 			flags    = "-arch x86_64 -arch ppc64",
 		},
 		PS3 = {
 			cc         = "ppu-lv2-g++",
 			cxx        = "ppu-lv2-g++",
 			ar         = "ppu-lv2-ar",
-<<<<<<< HEAD
-			cppflags   = "-MMD",
-=======
 			cppflags   = "-MMD -MP",
->>>>>>> upstream/master
 		},
 		WiiDev = {
 			cppflags    = "-MMD -MP -I$(LIBOGC_INC) $(MACHDEP)",
@@ -229,9 +196,6 @@
 		return result
 	end
 
-<<<<<<< HEAD
-
-=======
 --
 -- Given a path, return true if it's considered a real path
 -- to a library file, false otherwise.
@@ -261,7 +225,6 @@
 		end
 		return result
 	end
->>>>>>> upstream/master
 
 --
 -- This is poorly named: returns a list of linker flags for external
@@ -271,13 +234,6 @@
 
 	function premake.gcc.getlinkflags(cfg)
 		local result = {}
-<<<<<<< HEAD
-		for _, value in ipairs(premake.getlinks(cfg, "system", "name")) do
-			if path.getextension(value) == ".framework" then
-				table.insert(result, '-framework ' .. _MAKE.esc(path.getbasename(value)))
-			else
-				table.insert(result, '-l' .. _MAKE.esc(value))
-=======
 		for _, value in ipairs(premake.getlinks(cfg, "system", "fullpath")) do
 			if premake.gcc.islibfile(value) then
 				table.insert(result, _MAKE.esc(value))
@@ -285,14 +241,11 @@
 				table.insert(result, '-framework ' .. _MAKE.esc(path.getbasename(value)))
 			else
 				table.insert(result, '-l' .. _MAKE.esc(path.getname(value)))
->>>>>>> upstream/master
 			end
 		end
 		return result
 	end
 
-<<<<<<< HEAD
-=======
 --
 -- Get flags for passing to AR before the target is appended to the commandline
 --  prj: project
@@ -332,7 +285,6 @@
 		end
 		return result
 	end
->>>>>>> upstream/master
 
 
 --
@@ -361,8 +313,6 @@
 		return result
 	end
 
-<<<<<<< HEAD
-=======
 --
 -- Decorate user include file search paths for the GCC command line.
 --
@@ -374,7 +324,6 @@
 		end
 		return result
 	end
->>>>>>> upstream/master
 
 --
 -- Return platform specific project and configuration level

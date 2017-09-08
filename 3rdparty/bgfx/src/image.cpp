@@ -1,109 +1,15 @@
 /*
-<<<<<<< HEAD
- * Copyright 2011-2015 Branimir Karadzic. All rights reserved.
- * License: http://www.opensource.org/licenses/BSD-2-Clause
- */
-
-#include "bgfx_p.h"
-#include <math.h> // powf, sqrtf
-
-=======
  * Copyright 2011-2017 Branimir Karadzic. All rights reserved.
  * License: https://github.com/bkaradzic/bgfx#license-bsd-2-clause
  */
 
 #include "bgfx_p.h"
->>>>>>> upstream/master
 #include "image.h"
 
 namespace bgfx
 {
 	static const ImageBlockInfo s_imageBlockInfo[] =
 	{
-<<<<<<< HEAD
-		//  +------------------------------- bits per pixel
-		//  |  +---------------------------- block width
-		//  |  |  +------------------------- block height
-		//  |  |  |   +--------------------- block size
-		//  |  |  |   |  +------------------ min blocks x
-		//  |  |  |   |  |  +--------------- min blocks y
-		//  |  |  |   |  |  |   +----------- depth bits
-		//  |  |  |   |  |  |   |  +-------- stencil bits
-		//  |  |  |   |  |  |   |  |  +----- encoding type
-		//  |  |  |   |  |  |   |  |  |
-		{   4, 4, 4,  8, 1, 1,  0, 0, uint8_t(EncodingType::Unorm) }, // BC1
-		{   8, 4, 4, 16, 1, 1,  0, 0, uint8_t(EncodingType::Unorm) }, // BC2
-		{   8, 4, 4, 16, 1, 1,  0, 0, uint8_t(EncodingType::Unorm) }, // BC3
-		{   4, 4, 4,  8, 1, 1,  0, 0, uint8_t(EncodingType::Unorm) }, // BC4
-		{   8, 4, 4, 16, 1, 1,  0, 0, uint8_t(EncodingType::Unorm) }, // BC5
-		{   8, 4, 4, 16, 1, 1,  0, 0, uint8_t(EncodingType::Unorm) }, // BC6H
-		{   8, 4, 4, 16, 1, 1,  0, 0, uint8_t(EncodingType::Unorm) }, // BC7
-		{   4, 4, 4,  8, 1, 1,  0, 0, uint8_t(EncodingType::Unorm) }, // ETC1
-		{   4, 4, 4,  8, 1, 1,  0, 0, uint8_t(EncodingType::Unorm) }, // ETC2
-		{   8, 4, 4, 16, 1, 1,  0, 0, uint8_t(EncodingType::Unorm) }, // ETC2A
-		{   4, 4, 4,  8, 1, 1,  0, 0, uint8_t(EncodingType::Unorm) }, // ETC2A1
-		{   2, 8, 4,  8, 2, 2,  0, 0, uint8_t(EncodingType::Unorm) }, // PTC12
-		{   4, 4, 4,  8, 2, 2,  0, 0, uint8_t(EncodingType::Unorm) }, // PTC14
-		{   2, 8, 4,  8, 2, 2,  0, 0, uint8_t(EncodingType::Unorm) }, // PTC12A
-		{   4, 4, 4,  8, 2, 2,  0, 0, uint8_t(EncodingType::Unorm) }, // PTC14A
-		{   2, 8, 4,  8, 2, 2,  0, 0, uint8_t(EncodingType::Unorm) }, // PTC22
-		{   4, 4, 4,  8, 2, 2,  0, 0, uint8_t(EncodingType::Unorm) }, // PTC24
-		{   0, 0, 0,  0, 0, 0,  0, 0, uint8_t(EncodingType::Count) }, // Unknown
-		{   1, 8, 1,  1, 1, 1,  0, 0, uint8_t(EncodingType::Unorm) }, // R1
-		{   8, 1, 1,  1, 1, 1,  0, 0, uint8_t(EncodingType::Unorm) }, // A8
-		{   8, 1, 1,  1, 1, 1,  0, 0, uint8_t(EncodingType::Unorm) }, // R8
-		{   8, 1, 1,  1, 1, 1,  0, 0, uint8_t(EncodingType::Int  ) }, // R8I
-		{   8, 1, 1,  1, 1, 1,  0, 0, uint8_t(EncodingType::Uint ) }, // R8U
-		{   8, 1, 1,  1, 1, 1,  0, 0, uint8_t(EncodingType::Snorm) }, // R8S
-		{  16, 1, 1,  2, 1, 1,  0, 0, uint8_t(EncodingType::Unorm) }, // R16
-		{  16, 1, 1,  2, 1, 1,  0, 0, uint8_t(EncodingType::Int  ) }, // R16I
-		{  16, 1, 1,  2, 1, 1,  0, 0, uint8_t(EncodingType::Uint ) }, // R16U
-		{  16, 1, 1,  2, 1, 1,  0, 0, uint8_t(EncodingType::Float) }, // R16F
-		{  16, 1, 1,  2, 1, 1,  0, 0, uint8_t(EncodingType::Snorm) }, // R16S
-		{  32, 1, 1,  4, 1, 1,  0, 0, uint8_t(EncodingType::Int  ) }, // R32I
-		{  32, 1, 1,  4, 1, 1,  0, 0, uint8_t(EncodingType::Uint ) }, // R32U
-		{  32, 1, 1,  4, 1, 1,  0, 0, uint8_t(EncodingType::Float) }, // R32F
-		{  16, 1, 1,  2, 1, 1,  0, 0, uint8_t(EncodingType::Unorm) }, // RG8
-		{  16, 1, 1,  2, 1, 1,  0, 0, uint8_t(EncodingType::Int  ) }, // RG8I
-		{  16, 1, 1,  2, 1, 1,  0, 0, uint8_t(EncodingType::Uint ) }, // RG8U
-		{  16, 1, 1,  2, 1, 1,  0, 0, uint8_t(EncodingType::Snorm) }, // RG8S
-		{  32, 1, 1,  4, 1, 1,  0, 0, uint8_t(EncodingType::Unorm) }, // RG16
-		{  32, 1, 1,  4, 1, 1,  0, 0, uint8_t(EncodingType::Int  ) }, // RG16I
-		{  32, 1, 1,  4, 1, 1,  0, 0, uint8_t(EncodingType::Uint ) }, // RG16U
-		{  32, 1, 1,  4, 1, 1,  0, 0, uint8_t(EncodingType::Float) }, // RG16F
-		{  32, 1, 1,  4, 1, 1,  0, 0, uint8_t(EncodingType::Snorm) }, // RG16S
-		{  64, 1, 1,  8, 1, 1,  0, 0, uint8_t(EncodingType::Int  ) }, // RG32I
-		{  64, 1, 1,  8, 1, 1,  0, 0, uint8_t(EncodingType::Uint ) }, // RG32U
-		{  64, 1, 1,  8, 1, 1,  0, 0, uint8_t(EncodingType::Float) }, // RG32F
-		{  32, 1, 1,  4, 1, 1,  0, 0, uint8_t(EncodingType::Float) }, // RGB9E5F
-		{  32, 1, 1,  4, 1, 1,  0, 0, uint8_t(EncodingType::Unorm) }, // BGRA8
-		{  32, 1, 1,  4, 1, 1,  0, 0, uint8_t(EncodingType::Unorm) }, // RGBA8
-		{  32, 1, 1,  4, 1, 1,  0, 0, uint8_t(EncodingType::Int  ) }, // RGBA8I
-		{  32, 1, 1,  4, 1, 1,  0, 0, uint8_t(EncodingType::Uint ) }, // RGBA8U
-		{  32, 1, 1,  4, 1, 1,  0, 0, uint8_t(EncodingType::Snorm) }, // RGBA8S
-		{  64, 1, 1,  8, 1, 1,  0, 0, uint8_t(EncodingType::Unorm) }, // RGBA16
-		{  64, 1, 1,  8, 1, 1,  0, 0, uint8_t(EncodingType::Int  ) }, // RGBA16I
-		{  64, 1, 1,  8, 1, 1,  0, 0, uint8_t(EncodingType::Uint ) }, // RGBA16U
-		{  64, 1, 1,  8, 1, 1,  0, 0, uint8_t(EncodingType::Float) }, // RGBA16F
-		{  64, 1, 1,  8, 1, 1,  0, 0, uint8_t(EncodingType::Snorm) }, // RGBA16S
-		{ 128, 1, 1, 16, 1, 1,  0, 0, uint8_t(EncodingType::Int  ) }, // RGBA32I
-		{ 128, 1, 1, 16, 1, 1,  0, 0, uint8_t(EncodingType::Uint ) }, // RGBA32U
-		{ 128, 1, 1, 16, 1, 1,  0, 0, uint8_t(EncodingType::Float) }, // RGBA32F
-		{  16, 1, 1,  2, 1, 1,  0, 0, uint8_t(EncodingType::Unorm) }, // R5G6B5
-		{  16, 1, 1,  2, 1, 1,  0, 0, uint8_t(EncodingType::Unorm) }, // RGBA4
-		{  16, 1, 1,  2, 1, 1,  0, 0, uint8_t(EncodingType::Unorm) }, // RGB5A1
-		{  32, 1, 1,  4, 1, 1,  0, 0, uint8_t(EncodingType::Unorm) }, // RGB10A2
-		{  32, 1, 1,  4, 1, 1,  0, 0, uint8_t(EncodingType::Unorm) }, // R11G11B10F
-		{   0, 0, 0,  0, 0, 0,  0, 0, uint8_t(EncodingType::Count) }, // UnknownDepth
-		{  16, 1, 1,  2, 1, 1, 16, 0, uint8_t(EncodingType::Unorm) }, // D16
-		{  24, 1, 1,  3, 1, 1, 24, 0, uint8_t(EncodingType::Unorm) }, // D24
-		{  32, 1, 1,  4, 1, 1, 24, 8, uint8_t(EncodingType::Unorm) }, // D24S8
-		{  32, 1, 1,  4, 1, 1, 32, 0, uint8_t(EncodingType::Unorm) }, // D32
-		{  16, 1, 1,  2, 1, 1, 16, 0, uint8_t(EncodingType::Unorm) }, // D16F
-		{  24, 1, 1,  3, 1, 1, 24, 0, uint8_t(EncodingType::Unorm) }, // D24F
-		{  32, 1, 1,  4, 1, 1, 32, 0, uint8_t(EncodingType::Unorm) }, // D32F
-		{   8, 1, 1,  1, 1, 1,  0, 8, uint8_t(EncodingType::Unorm) }, // D0S8
-=======
 		//  +-------------------------------------------- bits per pixel
 		//  |  +----------------------------------------- block width
 		//  |  |  +-------------------------------------- block height
@@ -191,7 +97,6 @@ namespace bgfx
 		{  24, 1, 1,  3, 1, 1, 24, 0,  0,  0,  0,  0, uint8_t(bx::EncodingType::Float) }, // D24F
 		{  32, 1, 1,  4, 1, 1, 32, 0,  0,  0,  0,  0, uint8_t(bx::EncodingType::Float) }, // D32F
 		{   8, 1, 1,  1, 1, 1,  0, 8,  0,  0,  0,  0, uint8_t(bx::EncodingType::Unorm) }, // D0S8
->>>>>>> upstream/master
 	};
 	BX_STATIC_ASSERT(TextureFormat::Count == BX_COUNTOF(s_imageBlockInfo) );
 
@@ -241,13 +146,10 @@ namespace bgfx
 		"RG32I",      // RG32I
 		"RG32U",      // RG32U
 		"RG32F",      // RG32F
-<<<<<<< HEAD
-=======
 		"RGB8",       // RGB8
 		"RGB8I",      // RGB8I
 		"RGB8U",      // RGB8U
 		"RGB8S",      // RGB8S
->>>>>>> upstream/master
 		"RGB9E5",     // RGB9E5F
 		"BGRA8",      // BGRA8
 		"RGBA8",      // RGBA8
@@ -298,8 +200,6 @@ namespace bgfx
 			;
 	}
 
-<<<<<<< HEAD
-=======
 	bool isValid(TextureFormat::Enum _format)
 	{
 		return _format != TextureFormat::Unknown
@@ -308,7 +208,6 @@ namespace bgfx
 			;
 	}
 
->>>>>>> upstream/master
 	uint8_t getBitsPerPixel(TextureFormat::Enum _format)
 	{
 		return s_imageBlockInfo[_format].bitsPerPixel;
@@ -329,9 +228,6 @@ namespace bgfx
 		return s_textureFormatName[_format];
 	}
 
-<<<<<<< HEAD
-	void imageSolid(uint32_t _width, uint32_t _height, uint32_t _solid, void* _dst)
-=======
 	TextureFormat::Enum getFormat(const char* _name)
 	{
 		for (uint32_t ii = 0; ii < TextureFormat::Count; ++ii)
@@ -419,7 +315,6 @@ namespace bgfx
 	}
 
 	void imageSolid(void* _dst, uint32_t _width, uint32_t _height, uint32_t _solid)
->>>>>>> upstream/master
 	{
 		uint32_t* dst = (uint32_t*)_dst;
 		for (uint32_t ii = 0, num = _width*_height; ii < num; ++ii)
@@ -428,11 +323,7 @@ namespace bgfx
 		}
 	}
 
-<<<<<<< HEAD
-	void imageCheckerboard(uint32_t _width, uint32_t _height, uint32_t _step, uint32_t _0, uint32_t _1, void* _dst)
-=======
 	void imageCheckerboard(void* _dst, uint32_t _width, uint32_t _height, uint32_t _step, uint32_t _0, uint32_t _1)
->>>>>>> upstream/master
 	{
 		uint32_t* dst = (uint32_t*)_dst;
 		for (uint32_t yy = 0; yy < _height; ++yy)
@@ -445,11 +336,7 @@ namespace bgfx
 		}
 	}
 
-<<<<<<< HEAD
-	void imageRgba8Downsample2x2Ref(uint32_t _width, uint32_t _height, uint32_t _srcPitch, const void* _src, void* _dst)
-=======
 	void imageRgba8Downsample2x2Ref(void* _dst, uint32_t _width, uint32_t _height, uint32_t _pitch, const void* _src)
->>>>>>> upstream/master
 	{
 		const uint32_t dstwidth  = _width/2;
 		const uint32_t dstheight = _height/2;
@@ -463,33 +350,11 @@ namespace bgfx
 		uint8_t* dst = (uint8_t*)_dst;
 		const uint8_t* src = (const uint8_t*)_src;
 
-<<<<<<< HEAD
-		for (uint32_t yy = 0, ystep = _srcPitch*2; yy < dstheight; ++yy, src += ystep)
-=======
 		for (uint32_t yy = 0, ystep = _pitch*2; yy < dstheight; ++yy, src += ystep)
->>>>>>> upstream/master
 		{
 			const uint8_t* rgba = src;
 			for (uint32_t xx = 0; xx < dstwidth; ++xx, rgba += 8, dst += 4)
 			{
-<<<<<<< HEAD
-				float rr = powf(rgba[          0], 2.2f);
-				float gg = powf(rgba[          1], 2.2f);
-				float bb = powf(rgba[          2], 2.2f);
-				float aa =      rgba[          3];
-				rr      += powf(rgba[          4], 2.2f);
-				gg      += powf(rgba[          5], 2.2f);
-				bb      += powf(rgba[          6], 2.2f);
-				aa      +=      rgba[          7];
-				rr      += powf(rgba[_srcPitch+0], 2.2f);
-				gg      += powf(rgba[_srcPitch+1], 2.2f);
-				bb      += powf(rgba[_srcPitch+2], 2.2f);
-				aa      +=      rgba[_srcPitch+3];
-				rr      += powf(rgba[_srcPitch+4], 2.2f);
-				gg      += powf(rgba[_srcPitch+5], 2.2f);
-				bb      += powf(rgba[_srcPitch+6], 2.2f);
-				aa      +=      rgba[_srcPitch+7];
-=======
 				float rr = bx::fpow(rgba[       0], 2.2f);
 				float gg = bx::fpow(rgba[       1], 2.2f);
 				float bb = bx::fpow(rgba[       2], 2.2f);
@@ -506,21 +371,14 @@ namespace bgfx
 				gg      += bx::fpow(rgba[_pitch+5], 2.2f);
 				bb      += bx::fpow(rgba[_pitch+6], 2.2f);
 				aa      +=          rgba[_pitch+7];
->>>>>>> upstream/master
 
 				rr *= 0.25f;
 				gg *= 0.25f;
 				bb *= 0.25f;
 				aa *= 0.25f;
-<<<<<<< HEAD
-				rr = powf(rr, 1.0f/2.2f);
-				gg = powf(gg, 1.0f/2.2f);
-				bb = powf(bb, 1.0f/2.2f);
-=======
 				rr = bx::fpow(rr, 1.0f/2.2f);
 				gg = bx::fpow(gg, 1.0f/2.2f);
 				bb = bx::fpow(bb, 1.0f/2.2f);
->>>>>>> upstream/master
 				dst[0] = (uint8_t)rr;
 				dst[1] = (uint8_t)gg;
 				dst[2] = (uint8_t)bb;
@@ -529,11 +387,7 @@ namespace bgfx
 		}
 	}
 
-<<<<<<< HEAD
-	void imageRgba8Downsample2x2(uint32_t _width, uint32_t _height, uint32_t _srcPitch, const void* _src, void* _dst)
-=======
 	void imageRgba8Downsample2x2(void* _dst, uint32_t _width, uint32_t _height, uint32_t _pitch, const void* _src)
->>>>>>> upstream/master
 	{
 		const uint32_t dstwidth  = _width/2;
 		const uint32_t dstheight = _height/2;
@@ -548,19 +402,6 @@ namespace bgfx
 		const uint8_t* src = (const uint8_t*)_src;
 
 		using namespace bx;
-<<<<<<< HEAD
-		const float4_t unpack = float4_ld(1.0f, 1.0f/256.0f, 1.0f/65536.0f, 1.0f/16777216.0f);
-		const float4_t pack   = float4_ld(1.0f, 256.0f*0.5f, 65536.0f, 16777216.0f*0.5f);
-		const float4_t umask  = float4_ild(0xff, 0xff00, 0xff0000, 0xff000000);
-		const float4_t pmask  = float4_ild(0xff, 0x7f80, 0xff0000, 0x7f800000);
-		const float4_t wflip  = float4_ild(0, 0, 0, 0x80000000);
-		const float4_t wadd   = float4_ld(0.0f, 0.0f, 0.0f, 32768.0f*65536.0f);
-		const float4_t gamma  = float4_ld(1.0f/2.2f, 1.0f/2.2f, 1.0f/2.2f, 1.0f);
-		const float4_t linear = float4_ld(2.2f, 2.2f, 2.2f, 1.0f);
-		const float4_t quater = float4_splat(0.25f);
-
-		for (uint32_t yy = 0, ystep = _srcPitch*2; yy < dstheight; ++yy, src += ystep)
-=======
 		const simd128_t unpack = simd_ld(1.0f, 1.0f/256.0f, 1.0f/65536.0f, 1.0f/16777216.0f);
 		const simd128_t pack   = simd_ld(1.0f, 256.0f*0.5f, 65536.0f, 16777216.0f*0.5f);
 		const simd128_t umask  = simd_ild(0xff, 0xff00, 0xff0000, 0xff000000);
@@ -572,60 +413,10 @@ namespace bgfx
 		const simd128_t quater = simd_splat(0.25f);
 
 		for (uint32_t yy = 0, ystep = _pitch*2; yy < dstheight; ++yy, src += ystep)
->>>>>>> upstream/master
 		{
 			const uint8_t* rgba = src;
 			for (uint32_t xx = 0; xx < dstwidth; ++xx, rgba += 8, dst += 4)
 			{
-<<<<<<< HEAD
-				const float4_t abgr0  = float4_splat(rgba);
-				const float4_t abgr1  = float4_splat(rgba+4);
-				const float4_t abgr2  = float4_splat(rgba+_srcPitch);
-				const float4_t abgr3  = float4_splat(rgba+_srcPitch+4);
-
-				const float4_t abgr0m = float4_and(abgr0, umask);
-				const float4_t abgr1m = float4_and(abgr1, umask);
-				const float4_t abgr2m = float4_and(abgr2, umask);
-				const float4_t abgr3m = float4_and(abgr3, umask);
-				const float4_t abgr0x = float4_xor(abgr0m, wflip);
-				const float4_t abgr1x = float4_xor(abgr1m, wflip);
-				const float4_t abgr2x = float4_xor(abgr2m, wflip);
-				const float4_t abgr3x = float4_xor(abgr3m, wflip);
-				const float4_t abgr0f = float4_itof(abgr0x);
-				const float4_t abgr1f = float4_itof(abgr1x);
-				const float4_t abgr2f = float4_itof(abgr2x);
-				const float4_t abgr3f = float4_itof(abgr3x);
-				const float4_t abgr0c = float4_add(abgr0f, wadd);
-				const float4_t abgr1c = float4_add(abgr1f, wadd);
-				const float4_t abgr2c = float4_add(abgr2f, wadd);
-				const float4_t abgr3c = float4_add(abgr3f, wadd);
-				const float4_t abgr0n = float4_mul(abgr0c, unpack);
-				const float4_t abgr1n = float4_mul(abgr1c, unpack);
-				const float4_t abgr2n = float4_mul(abgr2c, unpack);
-				const float4_t abgr3n = float4_mul(abgr3c, unpack);
-
-				const float4_t abgr0l = float4_pow(abgr0n, linear);
-				const float4_t abgr1l = float4_pow(abgr1n, linear);
-				const float4_t abgr2l = float4_pow(abgr2n, linear);
-				const float4_t abgr3l = float4_pow(abgr3n, linear);
-
-				const float4_t sum0   = float4_add(abgr0l, abgr1l);
-				const float4_t sum1   = float4_add(abgr2l, abgr3l);
-				const float4_t sum2   = float4_add(sum0, sum1);
-				const float4_t avg0   = float4_mul(sum2, quater);
-				const float4_t avg1   = float4_pow(avg0, gamma);
-
-				const float4_t avg2   = float4_mul(avg1, pack);
-				const float4_t ftoi0  = float4_ftoi(avg2);
-				const float4_t ftoi1  = float4_and(ftoi0, pmask);
-				const float4_t zwxy   = float4_swiz_zwxy(ftoi1);
-				const float4_t tmp0   = float4_or(ftoi1, zwxy);
-				const float4_t yyyy   = float4_swiz_yyyy(tmp0);
-				const float4_t tmp1   = float4_iadd(yyyy, yyyy);
-				const float4_t result = float4_or(tmp0, tmp1);
-
-				float4_stx(dst, result);
-=======
 				const simd128_t abgr0  = simd_splat(rgba);
 				const simd128_t abgr1  = simd_splat(rgba+4);
 				const simd128_t abgr2  = simd_splat(rgba+_pitch);
@@ -673,20 +464,10 @@ namespace bgfx
 				const simd128_t result = simd_or(tmp0, tmp1);
 
 				simd_stx(dst, result);
->>>>>>> upstream/master
 			}
 		}
 	}
 
-<<<<<<< HEAD
-	void imageSwizzleBgra8Ref(uint32_t _width, uint32_t _height, uint32_t _srcPitch, const void* _src, void* _dst)
-	{
-		const uint8_t* src = (uint8_t*) _src;
-		const uint8_t* next = src + _srcPitch;
-		uint8_t* dst = (uint8_t*)_dst;
-
-		for (uint32_t yy = 0; yy < _height; ++yy, src = next, next += _srcPitch)
-=======
 	void imageRgba32fToLinear(void* _dst, uint32_t _width, uint32_t _height, uint32_t _pitch, const void* _src)
 	{
 		      uint8_t* dst = (      uint8_t*)_dst;
@@ -831,7 +612,6 @@ namespace bgfx
 		uint8_t* dst = (uint8_t*)_dst;
 
 		for (uint32_t yy = 0; yy < _height; ++yy, src = next, next += _pitch)
->>>>>>> upstream/master
 		{
 			for (uint32_t xx = 0; xx < _width; ++xx, src += 4, dst += 4)
 			{
@@ -847,25 +627,11 @@ namespace bgfx
 		}
 	}
 
-<<<<<<< HEAD
-	void imageSwizzleBgra8(uint32_t _width, uint32_t _height, uint32_t _srcPitch, const void* _src, void* _dst)
-=======
 	void imageSwizzleBgra8(void* _dst, uint32_t _width, uint32_t _height, uint32_t _pitch, const void* _src)
->>>>>>> upstream/master
 	{
 		// Test can we do four 4-byte pixels at the time.
 		if (0 != (_width&0x3)
 		||  _width < 4
-<<<<<<< HEAD
-		||  !bx::isPtrAligned(_src, 16)
-		||  !bx::isPtrAligned(_dst, 16) )
-		{
-			BX_WARN(false, "Image swizzle is taking slow path.");
-			BX_WARN(bx::isPtrAligned(_src, 16), "Source %p is not 16-byte aligned.", _src);
-			BX_WARN(bx::isPtrAligned(_dst, 16), "Destination %p is not 16-byte aligned.", _dst);
-			BX_WARN(_width < 4, "Image width must be multiple of 4 (width %d).", _width);
-			imageSwizzleBgra8Ref(_width, _height, _srcPitch, _src, _dst);
-=======
 		||  !bx::isAligned(_src, 16)
 		||  !bx::isAligned(_dst, 16) )
 		{
@@ -874,41 +640,19 @@ namespace bgfx
 			BX_WARN(bx::isAligned(_dst, 16), "Destination %p is not 16-byte aligned.", _dst);
 			BX_WARN(_width < 4, "Image width must be multiple of 4 (width %d).", _width);
 			imageSwizzleBgra8Ref(_dst, _width, _height, _pitch, _src);
->>>>>>> upstream/master
 			return;
 		}
 
 		using namespace bx;
 
-<<<<<<< HEAD
-		const float4_t mf0f0 = float4_isplat(0xff00ff00);
-		const float4_t m0f0f = float4_isplat(0x00ff00ff);
-		const uint8_t* src = (uint8_t*) _src;
-		const uint8_t* next = src + _srcPitch;
-=======
 		const simd128_t mf0f0 = simd_isplat(0xff00ff00);
 		const simd128_t m0f0f = simd_isplat(0x00ff00ff);
 		const uint8_t* src = (uint8_t*) _src;
 		const uint8_t* next = src + _pitch;
->>>>>>> upstream/master
 		uint8_t* dst = (uint8_t*)_dst;
 
 		const uint32_t width = _width/4;
 
-<<<<<<< HEAD
-		for (uint32_t yy = 0; yy < _height; ++yy, src = next, next += _srcPitch)
-		{
-			for (uint32_t xx = 0; xx < width; ++xx, src += 16, dst += 16)
-			{
-				const float4_t tabgr = float4_ld(src);
-				const float4_t t00ab = float4_srl(tabgr, 16);
-				const float4_t tgr00 = float4_sll(tabgr, 16);
-				const float4_t tgrab = float4_or(t00ab, tgr00);
-				const float4_t ta0g0 = float4_and(tabgr, mf0f0);
-				const float4_t t0r0b = float4_and(tgrab, m0f0f);
-				const float4_t targb = float4_or(ta0g0, t0r0b);
-				float4_st(dst, targb);
-=======
 		for (uint32_t yy = 0; yy < _height; ++yy, src = next, next += _pitch)
 		{
 			for (uint32_t xx = 0; xx < width; ++xx, src += 16, dst += 16)
@@ -921,16 +665,11 @@ namespace bgfx
 				const simd128_t t0r0b = simd_and(tgrab, m0f0f);
 				const simd128_t targb = simd_or(ta0g0, t0r0b);
 				simd_st(dst, targb);
->>>>>>> upstream/master
 			}
 		}
 	}
 
-<<<<<<< HEAD
-	void imageCopy(uint32_t _height, uint32_t _srcPitch, const void* _src, uint32_t _dstPitch, void* _dst)
-=======
 	void imageCopy(void* _dst, uint32_t _height, uint32_t _srcPitch, const void* _src, uint32_t _dstPitch)
->>>>>>> upstream/master
 	{
 		const uint32_t pitch = bx::uint32_min(_srcPitch, _dstPitch);
 		const uint8_t* src = (uint8_t*)_src;
@@ -938,57 +677,6 @@ namespace bgfx
 
 		for (uint32_t yy = 0; yy < _height; ++yy, src += _srcPitch, dst += _dstPitch)
 		{
-<<<<<<< HEAD
-			memcpy(dst, src, pitch);
-		}
-	}
-
-	void imageCopy(uint32_t _width, uint32_t _height, uint32_t _bpp, uint32_t _srcPitch, const void* _src, void* _dst)
-	{
-		const uint32_t dstPitch = _width*_bpp/8;
-		imageCopy(_height, _srcPitch, _src, dstPitch, _dst);
-	}
-
-	void imageWriteTga(bx::WriterI* _writer, uint32_t _width, uint32_t _height, uint32_t _srcPitch, const void* _src, bool _grayscale, bool _yflip)
-	{
-		uint8_t type = _grayscale ? 3 : 2;
-		uint8_t bpp = _grayscale ? 8 : 32;
-
-		uint8_t header[18] = {};
-		header[2] = type;
-		header[12] = _width&0xff;
-		header[13] = (_width>>8)&0xff;
-		header[14] = _height&0xff;
-		header[15] = (_height>>8)&0xff;
-		header[16] = bpp;
-		header[17] = 32;
-
-		bx::write(_writer, header, sizeof(header) );
-
-		uint32_t dstPitch = _width*bpp/8;
-		if (_yflip)
-		{
-			uint8_t* data = (uint8_t*)_src + _srcPitch*_height - _srcPitch;
-			for (uint32_t yy = 0; yy < _height; ++yy)
-			{
-				bx::write(_writer, data, dstPitch);
-				data -= _srcPitch;
-			}
-		}
-		else if (_srcPitch == dstPitch)
-		{
-			bx::write(_writer, _src, _height*_srcPitch);
-		}
-		else
-		{
-			uint8_t* data = (uint8_t*)_src;
-			for (uint32_t yy = 0; yy < _height; ++yy)
-			{
-				bx::write(_writer, data, dstPitch);
-				data += _srcPitch;
-			}
-		}
-=======
 			bx::memCopy(dst, src, pitch);
 		}
 	}
@@ -1237,7 +925,6 @@ namespace bgfx
 		}
 
 		return output;
->>>>>>> upstream/master
 	}
 
 	uint8_t bitRangeConvert(uint32_t _in, uint32_t _from, uint32_t _to)
@@ -1786,11 +1473,7 @@ namespace bgfx
 
 		{ 8, 0, 8, 0 },
 		{ 4, 4, 4, 4 },
-<<<<<<< HEAD
-		{ 4, 4, 0, 0 },
-=======
 		{ 4, 4, 4, 4 },
->>>>>>> upstream/master
 		{ 0, 8, 0, 8 },
 	};
 
@@ -1925,11 +1608,7 @@ namespace bgfx
 			*_r += bitRangeConvert( (_block >> 10) & 0x1f, 5, 8) * _factor;
 			*_g += bitRangeConvert( (_block >>  5) & 0x1f, 5, 8) * _factor;
 			*_b += bitRangeConvert( (_block >>  1) & 0x0f, 4, 8) * _factor;
-<<<<<<< HEAD
-			*_a += 255;
-=======
 			*_a += 255 * _factor;
->>>>>>> upstream/master
 		}
 		else
 		{
@@ -1947,11 +1626,7 @@ namespace bgfx
 			*_r += bitRangeConvert( (_block >> 26) & 0x1f, 5, 8) * _factor;
 			*_g += bitRangeConvert( (_block >> 21) & 0x1f, 5, 8) * _factor;
 			*_b += bitRangeConvert( (_block >> 16) & 0x1f, 5, 8) * _factor;
-<<<<<<< HEAD
-			*_a += 255;
-=======
 			*_a += 255 * _factor;
->>>>>>> upstream/master
 		}
 		else
 		{
@@ -2036,8 +1711,6 @@ namespace bgfx
 		}
 	}
 
-<<<<<<< HEAD
-=======
 	ImageContainer* imageAlloc(bx::AllocatorI* _allocator, TextureFormat::Enum _format, uint16_t _width, uint16_t _height, uint16_t _depth, uint16_t _numLayers, bool _cubeMap, bool _hasMips, const void* _data)
 	{
 		const ImageBlockInfo& blockInfo = getBlockInfo(_format);
@@ -2085,7 +1758,6 @@ namespace bgfx
 		BX_FREE(_imageContainer->m_allocator, _imageContainer);
 	}
 
->>>>>>> upstream/master
 // DDS
 #define DDS_MAGIC             BX_MAKEFOURCC('D', 'D', 'S', ' ')
 #define DDS_HEADER_SIZE       124
@@ -2196,11 +1868,7 @@ namespace bgfx
 		bool m_srgb;
 	};
 
-<<<<<<< HEAD
-	static TranslateDdsFormat s_translateDdsFourccFormat[] =
-=======
 	static const TranslateDdsFormat s_translateDdsFourccFormat[] =
->>>>>>> upstream/master
 	{
 		{ DDS_DXT1,                  TextureFormat::BC1,     false },
 		{ DDS_DXT2,                  TextureFormat::BC2,     false },
@@ -2233,11 +1901,7 @@ namespace bgfx
 		{ DDS_A2B10G10R10,           TextureFormat::RGB10A2, false },
 	};
 
-<<<<<<< HEAD
-	static TranslateDdsFormat s_translateDxgiFormat[] =
-=======
 	static const TranslateDdsFormat s_translateDxgiFormat[] =
->>>>>>> upstream/master
 	{
 		{ DDS_FORMAT_BC1_UNORM,           TextureFormat::BC1,        false },
 		{ DDS_FORMAT_BC1_UNORM_SRGB,      TextureFormat::BC1,        true  },
@@ -2284,21 +1948,14 @@ namespace bgfx
 		TextureFormat::Enum m_textureFormat;
 	};
 
-<<<<<<< HEAD
-	static TranslateDdsPixelFormat s_translateDdsPixelFormat[] =
-=======
 	static const TranslateDdsPixelFormat s_translateDdsPixelFormat[] =
->>>>>>> upstream/master
 	{
 		{  8, { 0x000000ff, 0x00000000, 0x00000000, 0x00000000 }, TextureFormat::R8      },
 		{ 16, { 0x0000ffff, 0x00000000, 0x00000000, 0x00000000 }, TextureFormat::R16U    },
 		{ 16, { 0x00000f00, 0x000000f0, 0x0000000f, 0x0000f000 }, TextureFormat::RGBA4   },
 		{ 16, { 0x0000f800, 0x000007e0, 0x0000001f, 0x00000000 }, TextureFormat::R5G6B5  },
 		{ 16, { 0x00007c00, 0x000003e0, 0x0000001f, 0x00008000 }, TextureFormat::RGB5A1  },
-<<<<<<< HEAD
-=======
 		{ 24, { 0x00ff0000, 0x0000ff00, 0x000000ff, 0x00000000 }, TextureFormat::RGB8    },
->>>>>>> upstream/master
 		{ 32, { 0x00ff0000, 0x0000ff00, 0x000000ff, 0xff000000 }, TextureFormat::BGRA8   },
 		{ 32, { 0x00ff0000, 0x0000ff00, 0x000000ff, 0x00000000 }, TextureFormat::BGRA8   },
 		{ 32, { 0x000003ff, 0x000ffc00, 0x3ff00000, 0xc0000000 }, TextureFormat::RGB10A2 },
@@ -2362,10 +2019,7 @@ namespace bgfx
 		bx::skip(_reader, 4); // reserved
 
 		uint32_t dxgiFormat = 0;
-<<<<<<< HEAD
-=======
 		uint32_t arraySize = 1;
->>>>>>> upstream/master
 		if (DDPF_FOURCC == pixelFlags
 		&&  DDS_DX10 == fourcc)
 		{
@@ -2377,10 +2031,6 @@ namespace bgfx
 			uint32_t miscFlags;
 			bx::read(_reader, miscFlags);
 
-<<<<<<< HEAD
-			uint32_t arraySize;
-=======
->>>>>>> upstream/master
 			bx::read(_reader, arraySize);
 
 			uint32_t miscFlags2;
@@ -2449,20 +2099,6 @@ namespace bgfx
 			}
 		}
 
-<<<<<<< HEAD
-		_imageContainer.m_data = NULL;
-		_imageContainer.m_size = 0;
-		_imageContainer.m_offset = (uint32_t)bx::seek(_reader);
-		_imageContainer.m_width  = width;
-		_imageContainer.m_height = height;
-		_imageContainer.m_depth  = depth;
-		_imageContainer.m_format   = uint8_t(format);
-		_imageContainer.m_numMips  = uint8_t( (caps[0] & DDSCAPS_MIPMAP) ? mips : 1);
-		_imageContainer.m_hasAlpha = hasAlpha;
-		_imageContainer.m_cubeMap  = cubeMap;
-		_imageContainer.m_ktx = false;
-		_imageContainer.m_srgb = srgb;
-=======
 		_imageContainer.m_allocator = NULL;
 		_imageContainer.m_data      = NULL;
 		_imageContainer.m_size      = 0;
@@ -2478,7 +2114,6 @@ namespace bgfx
 		_imageContainer.m_ktx       = false;
 		_imageContainer.m_ktxLE     = false;
 		_imageContainer.m_srgb      = srgb;
->>>>>>> upstream/master
 
 		return TextureFormat::Unknown != format;
 	}
@@ -2507,27 +2142,21 @@ namespace bgfx
 #define KTX_COMPRESSED_RGBA_S3TC_DXT1_EXT             0x83F1
 #define KTX_COMPRESSED_RGBA_S3TC_DXT3_EXT             0x83F2
 #define KTX_COMPRESSED_RGBA_S3TC_DXT5_EXT             0x83F3
-<<<<<<< HEAD
-=======
 #define KTX_COMPRESSED_SRGB_ALPHA_S3TC_DXT1_EXT       0x8C4D
 #define KTX_COMPRESSED_SRGB_ALPHA_S3TC_DXT3_EXT       0x8C4E
 #define KTX_COMPRESSED_SRGB_ALPHA_S3TC_DXT5_EXT       0x8C4F
->>>>>>> upstream/master
 #define KTX_COMPRESSED_LUMINANCE_LATC1_EXT            0x8C70
 #define KTX_COMPRESSED_LUMINANCE_ALPHA_LATC2_EXT      0x8C72
 #define KTX_COMPRESSED_RGBA_BPTC_UNORM_ARB            0x8E8C
 #define KTX_COMPRESSED_SRGB_ALPHA_BPTC_UNORM_ARB      0x8E8D
 #define KTX_COMPRESSED_RGB_BPTC_SIGNED_FLOAT_ARB      0x8E8E
 #define KTX_COMPRESSED_RGB_BPTC_UNSIGNED_FLOAT_ARB    0x8E8F
-<<<<<<< HEAD
-=======
 #define KTX_COMPRESSED_SRGB_PVRTC_2BPPV1_EXT          0x8A54
 #define KTX_COMPRESSED_SRGB_PVRTC_4BPPV1_EXT          0x8A55
 #define KTX_COMPRESSED_SRGB_ALPHA_PVRTC_2BPPV1_EXT    0x8A56
 #define KTX_COMPRESSED_SRGB_ALPHA_PVRTC_4BPPV1_EXT    0x8A57
 
 #define KTX_A8                                        0x803C
->>>>>>> upstream/master
 #define KTX_R8                                        0x8229
 #define KTX_R16                                       0x822A
 #define KTX_RG8                                       0x822B
@@ -2536,70 +2165,17 @@ namespace bgfx
 #define KTX_R32F                                      0x822E
 #define KTX_RG16F                                     0x822F
 #define KTX_RG32F                                     0x8230
-<<<<<<< HEAD
-=======
 #define KTX_RGBA8                                     0x8058
->>>>>>> upstream/master
 #define KTX_RGBA16                                    0x805B
 #define KTX_RGBA16F                                   0x881A
 #define KTX_R32UI                                     0x8236
 #define KTX_RG32UI                                    0x823C
 #define KTX_RGBA32UI                                  0x8D70
-<<<<<<< HEAD
-#define KTX_BGRA                                      0x80E1
-=======
->>>>>>> upstream/master
 #define KTX_RGBA32F                                   0x8814
 #define KTX_RGB565                                    0x8D62
 #define KTX_RGBA4                                     0x8056
 #define KTX_RGB5_A1                                   0x8057
 #define KTX_RGB10_A2                                  0x8059
-<<<<<<< HEAD
-
-	static struct TranslateKtxFormat
-	{
-		uint32_t m_format;
-		TextureFormat::Enum m_textureFormat;
-
-	} s_translateKtxFormat[] =
-	{
-		{ KTX_COMPRESSED_RGBA_S3TC_DXT1_EXT,             TextureFormat::BC1     },
-		{ KTX_COMPRESSED_RGBA_S3TC_DXT3_EXT,             TextureFormat::BC2     },
-		{ KTX_COMPRESSED_RGBA_S3TC_DXT5_EXT,             TextureFormat::BC3     },
-		{ KTX_COMPRESSED_LUMINANCE_LATC1_EXT,            TextureFormat::BC4     },
-		{ KTX_COMPRESSED_LUMINANCE_ALPHA_LATC2_EXT,      TextureFormat::BC5     },
-		{ KTX_COMPRESSED_RGB_BPTC_SIGNED_FLOAT_ARB,      TextureFormat::BC6H    },
-		{ KTX_COMPRESSED_RGBA_BPTC_UNORM_ARB,            TextureFormat::BC7     },
-		{ KTX_ETC1_RGB8_OES,                             TextureFormat::ETC1    },
-		{ KTX_COMPRESSED_RGB8_ETC2,                      TextureFormat::ETC2    },
-		{ KTX_COMPRESSED_RGBA8_ETC2_EAC,                 TextureFormat::ETC2A   },
-		{ KTX_COMPRESSED_RGB8_PUNCHTHROUGH_ALPHA1_ETC2,  TextureFormat::ETC2A1  },
-		{ KTX_COMPRESSED_RGB_PVRTC_2BPPV1_IMG,           TextureFormat::PTC12   },
-		{ KTX_COMPRESSED_RGBA_PVRTC_2BPPV1_IMG,          TextureFormat::PTC12A  },
-		{ KTX_COMPRESSED_RGB_PVRTC_4BPPV1_IMG,           TextureFormat::PTC14   },
-		{ KTX_COMPRESSED_RGBA_PVRTC_4BPPV1_IMG,          TextureFormat::PTC14A  },
-		{ KTX_COMPRESSED_RGBA_PVRTC_2BPPV2_IMG,          TextureFormat::PTC22   },
-		{ KTX_COMPRESSED_RGBA_PVRTC_4BPPV2_IMG,          TextureFormat::PTC24   },
-		{ KTX_R8,                                        TextureFormat::R8      },
-		{ KTX_RGBA16,                                    TextureFormat::RGBA16  },
-		{ KTX_RGBA16F,                                   TextureFormat::RGBA16F },
-		{ KTX_R32UI,                                     TextureFormat::R32U    },
-		{ KTX_R32F,                                      TextureFormat::R32F    },
-		{ KTX_RG8,                                       TextureFormat::RG8     },
-		{ KTX_RG16,                                      TextureFormat::RG16    },
-		{ KTX_RG16F,                                     TextureFormat::RG16F   },
-		{ KTX_RG32UI,                                    TextureFormat::RG32U   },
-		{ KTX_RG32F,                                     TextureFormat::RG32F   },
-		{ KTX_BGRA,                                      TextureFormat::BGRA8   },
-		{ KTX_RGBA16,                                    TextureFormat::RGBA16  },
-		{ KTX_RGBA16F,                                   TextureFormat::RGBA16F },
-		{ KTX_RGBA32UI,                                  TextureFormat::RGBA32U },
-		{ KTX_RGBA32F,                                   TextureFormat::RGBA32F },
-		{ KTX_RGB565,                                    TextureFormat::R5G6B5  },
-		{ KTX_RGBA4,                                     TextureFormat::RGBA4   },
-		{ KTX_RGB5_A1,                                   TextureFormat::RGB5A1  },
-		{ KTX_RGB10_A2,                                  TextureFormat::RGB10A2 },
-=======
 #define KTX_R8I                                       0x8231
 #define KTX_R8UI                                      0x8232
 #define KTX_R16I                                      0x8233
@@ -2752,7 +2328,6 @@ namespace bgfx
 		{ KTX_A8,  TextureFormat::A8   },
 		{ KTX_RED, TextureFormat::R8   },
 		{ KTX_RGB, TextureFormat::RGB8 },
->>>>>>> upstream/master
 	};
 
 	bool imageParseKtx(ImageContainer& _imageContainer, bx::ReaderSeekerI* _reader)
@@ -2815,32 +2390,13 @@ namespace bgfx
 
 		for (uint32_t ii = 0; ii < BX_COUNTOF(s_translateKtxFormat); ++ii)
 		{
-<<<<<<< HEAD
-			if (s_translateKtxFormat[ii].m_format == glInternalFormat)
-			{
-				format = s_translateKtxFormat[ii].m_textureFormat;
-=======
 			if (s_translateKtxFormat[ii].m_internalFmt == glInternalFormat)
 			{
 				format = TextureFormat::Enum(ii);
->>>>>>> upstream/master
 				break;
 			}
 		}
 
-<<<<<<< HEAD
-		_imageContainer.m_data = NULL;
-		_imageContainer.m_size = 0;
-		_imageContainer.m_offset = (uint32_t)offset;
-		_imageContainer.m_width  = width;
-		_imageContainer.m_height = height;
-		_imageContainer.m_depth  = depth;
-		_imageContainer.m_format = uint8_t(format);
-		_imageContainer.m_numMips  = uint8_t(numMips);
-		_imageContainer.m_hasAlpha = hasAlpha;
-		_imageContainer.m_cubeMap  = numFaces > 1;
-		_imageContainer.m_ktx = true;
-=======
 		if (TextureFormat::Unknown == format)
 		{
 			for (uint32_t ii = 0; ii < BX_COUNTOF(s_translateKtxFormat2); ++ii)
@@ -2868,7 +2424,6 @@ namespace bgfx
 		_imageContainer.m_ktx       = true;
 		_imageContainer.m_ktxLE     = fromLittleEndian;
 		_imageContainer.m_srgb      = false;
->>>>>>> upstream/master
 
 		return TextureFormat::Unknown != format;
 	}
@@ -2910,23 +2465,14 @@ namespace bgfx
 #define PVR3_CHANNEL_TYPE_ANY   UINT32_MAX
 #define PVR3_CHANNEL_TYPE_FLOAT UINT32_C(12)
 
-<<<<<<< HEAD
-	static struct TranslatePvr3Format
-=======
 	struct TranslatePvr3Format
->>>>>>> upstream/master
 	{
 		uint64_t m_format;
 		uint32_t m_channelTypeMask;
 		TextureFormat::Enum m_textureFormat;
-<<<<<<< HEAD
-
-	} s_translatePvr3Format[] =
-=======
 	};
 
 	static const TranslatePvr3Format s_translatePvr3Format[] =
->>>>>>> upstream/master
 	{
 		{ PVR3_PVRTC1_2BPP_RGB,  PVR3_CHANNEL_TYPE_ANY,   TextureFormat::PTC12   },
 		{ PVR3_PVRTC1_2BPP_RGBA, PVR3_CHANNEL_TYPE_ANY,   TextureFormat::PTC12A  },
@@ -3014,20 +2560,6 @@ namespace bgfx
 			}
 		}
 
-<<<<<<< HEAD
-		_imageContainer.m_data = NULL;
-		_imageContainer.m_size = 0;
-		_imageContainer.m_offset = (uint32_t)offset;
-		_imageContainer.m_width  = width;
-		_imageContainer.m_height = height;
-		_imageContainer.m_depth  = depth;
-		_imageContainer.m_format = uint8_t(format);
-		_imageContainer.m_numMips  = uint8_t(numMips);
-		_imageContainer.m_hasAlpha = hasAlpha;
-		_imageContainer.m_cubeMap  = numFaces > 1;
-		_imageContainer.m_ktx = false;
-		_imageContainer.m_srgb = colorSpace > 0;
-=======
 		_imageContainer.m_allocator = NULL;
 		_imageContainer.m_data      = NULL;
 		_imageContainer.m_size      = 0;
@@ -3043,7 +2575,6 @@ namespace bgfx
 		_imageContainer.m_ktx       = false;
 		_imageContainer.m_ktxLE     = false;
 		_imageContainer.m_srgb      = colorSpace > 0;
->>>>>>> upstream/master
 
 		return TextureFormat::Unknown != format;
 	}
@@ -3072,10 +2603,7 @@ namespace bgfx
 
 			_imageContainer.m_format = tc.m_format;
 			_imageContainer.m_offset = UINT32_MAX;
-<<<<<<< HEAD
-=======
 			_imageContainer.m_allocator = NULL;
->>>>>>> upstream/master
 			if (NULL == tc.m_mem)
 			{
 				_imageContainer.m_data = NULL;
@@ -3086,16 +2614,6 @@ namespace bgfx
 				_imageContainer.m_data = tc.m_mem->data;
 				_imageContainer.m_size = tc.m_mem->size;
 			}
-<<<<<<< HEAD
-			_imageContainer.m_width = tc.m_width;
-			_imageContainer.m_height = tc.m_height;
-			_imageContainer.m_depth = tc.m_depth;
-			_imageContainer.m_numMips = tc.m_numMips;
-			_imageContainer.m_hasAlpha = false;
-			_imageContainer.m_cubeMap = tc.m_cubeMap;
-			_imageContainer.m_ktx = false;
-			_imageContainer.m_srgb = false;
-=======
 			_imageContainer.m_width     = tc.m_width;
 			_imageContainer.m_height    = tc.m_height;
 			_imageContainer.m_depth     = tc.m_depth;
@@ -3106,15 +2624,11 @@ namespace bgfx
 			_imageContainer.m_ktx       = false;
 			_imageContainer.m_ktxLE     = false;
 			_imageContainer.m_srgb      = false;
->>>>>>> upstream/master
 
 			return true;
 		}
 
-<<<<<<< HEAD
-=======
 		BX_TRACE("Unrecognized image format (magic: 0x%08x)!", magic);
->>>>>>> upstream/master
 		return false;
 	}
 
@@ -3124,27 +2638,17 @@ namespace bgfx
 		return imageParse(_imageContainer, &reader);
 	}
 
-<<<<<<< HEAD
-	void imageDecodeToBgra8(uint8_t* _dst, const uint8_t* _src, uint32_t _width, uint32_t _height, uint32_t _pitch, uint8_t _type)
-	{
-		const uint8_t* src = _src;
-=======
 	void imageDecodeToBgra8(void* _dst, const void* _src, uint32_t _width, uint32_t _height, uint32_t _pitch, TextureFormat::Enum _format)
 	{
 		const uint8_t* src = (const uint8_t*)_src;
 		uint8_t* dst = (uint8_t*)_dst;
->>>>>>> upstream/master
 
 		uint32_t width  = _width/4;
 		uint32_t height = _height/4;
 
 		uint8_t temp[16*4];
 
-<<<<<<< HEAD
-		switch (_type)
-=======
 		switch (_format)
->>>>>>> upstream/master
 		{
 		case TextureFormat::BC1:
 			for (uint32_t yy = 0; yy < height; ++yy)
@@ -3154,19 +2658,11 @@ namespace bgfx
 					decodeBlockDxt1(temp, src);
 					src += 8;
 
-<<<<<<< HEAD
-					uint8_t* dst = &_dst[(yy*_pitch+xx*4)*4];
-					memcpy(&dst[0*_pitch], &temp[ 0], 16);
-					memcpy(&dst[1*_pitch], &temp[16], 16);
-					memcpy(&dst[2*_pitch], &temp[32], 16);
-					memcpy(&dst[3*_pitch], &temp[48], 16);
-=======
 					uint8_t* block = &dst[(yy*_pitch+xx*4)*4];
 					bx::memCopy(&block[0*_pitch], &temp[ 0], 16);
 					bx::memCopy(&block[1*_pitch], &temp[16], 16);
 					bx::memCopy(&block[2*_pitch], &temp[32], 16);
 					bx::memCopy(&block[3*_pitch], &temp[48], 16);
->>>>>>> upstream/master
 				}
 			}
 			break;
@@ -3181,19 +2677,11 @@ namespace bgfx
 					decodeBlockDxt(temp, src);
 					src += 8;
 
-<<<<<<< HEAD
-					uint8_t* dst = &_dst[(yy*_pitch+xx*4)*4];
-					memcpy(&dst[0*_pitch], &temp[ 0], 16);
-					memcpy(&dst[1*_pitch], &temp[16], 16);
-					memcpy(&dst[2*_pitch], &temp[32], 16);
-					memcpy(&dst[3*_pitch], &temp[48], 16);
-=======
 					uint8_t* block = &dst[(yy*_pitch+xx*4)*4];
 					bx::memCopy(&block[0*_pitch], &temp[ 0], 16);
 					bx::memCopy(&block[1*_pitch], &temp[16], 16);
 					bx::memCopy(&block[2*_pitch], &temp[32], 16);
 					bx::memCopy(&block[3*_pitch], &temp[48], 16);
->>>>>>> upstream/master
 				}
 			}
 			break;
@@ -3208,19 +2696,11 @@ namespace bgfx
 					decodeBlockDxt(temp, src);
 					src += 8;
 
-<<<<<<< HEAD
-					uint8_t* dst = &_dst[(yy*_pitch+xx*4)*4];
-					memcpy(&dst[0*_pitch], &temp[ 0], 16);
-					memcpy(&dst[1*_pitch], &temp[16], 16);
-					memcpy(&dst[2*_pitch], &temp[32], 16);
-					memcpy(&dst[3*_pitch], &temp[48], 16);
-=======
 					uint8_t* block = &dst[(yy*_pitch+xx*4)*4];
 					bx::memCopy(&block[0*_pitch], &temp[ 0], 16);
 					bx::memCopy(&block[1*_pitch], &temp[16], 16);
 					bx::memCopy(&block[2*_pitch], &temp[32], 16);
 					bx::memCopy(&block[3*_pitch], &temp[48], 16);
->>>>>>> upstream/master
 				}
 			}
 			break;
@@ -3233,19 +2713,11 @@ namespace bgfx
 					decodeBlockDxt45A(temp, src);
 					src += 8;
 
-<<<<<<< HEAD
-					uint8_t* dst = &_dst[(yy*_pitch+xx*4)*4];
-					memcpy(&dst[0*_pitch], &temp[ 0], 16);
-					memcpy(&dst[1*_pitch], &temp[16], 16);
-					memcpy(&dst[2*_pitch], &temp[32], 16);
-					memcpy(&dst[3*_pitch], &temp[48], 16);
-=======
 					uint8_t* block = &dst[(yy*_pitch+xx*4)*4];
 					bx::memCopy(&block[0*_pitch], &temp[ 0], 16);
 					bx::memCopy(&block[1*_pitch], &temp[16], 16);
 					bx::memCopy(&block[2*_pitch], &temp[32], 16);
 					bx::memCopy(&block[3*_pitch], &temp[48], 16);
->>>>>>> upstream/master
 				}
 			}
 			break;
@@ -3255,44 +2727,25 @@ namespace bgfx
 			{
 				for (uint32_t xx = 0; xx < width; ++xx)
 				{
-<<<<<<< HEAD
-					decodeBlockDxt45A(temp+1, src);
-					src += 8;
-					decodeBlockDxt45A(temp+2, src);
-					src += 8;
-=======
 					decodeBlockDxt45A(temp+2, src);
 					src += 8;
 					decodeBlockDxt45A(temp+1, src);
 					src += 8;
->>>>>>> upstream/master
 
 					for (uint32_t ii = 0; ii < 16; ++ii)
 					{
 						float nx = temp[ii*4+2]*2.0f/255.0f - 1.0f;
 						float ny = temp[ii*4+1]*2.0f/255.0f - 1.0f;
-<<<<<<< HEAD
-						float nz = sqrtf(1.0f - nx*nx - ny*ny);
-=======
 						float nz = bx::fsqrt(1.0f - nx*nx - ny*ny);
->>>>>>> upstream/master
 						temp[ii*4+0] = uint8_t( (nz + 1.0f)*255.0f/2.0f);
 						temp[ii*4+3] = 0;
 					}
 
-<<<<<<< HEAD
-					uint8_t* dst = &_dst[(yy*_pitch+xx*4)*4];
-					memcpy(&dst[0*_pitch], &temp[ 0], 16);
-					memcpy(&dst[1*_pitch], &temp[16], 16);
-					memcpy(&dst[2*_pitch], &temp[32], 16);
-					memcpy(&dst[3*_pitch], &temp[48], 16);
-=======
 					uint8_t* block = &dst[(yy*_pitch+xx*4)*4];
 					bx::memCopy(&block[0*_pitch], &temp[ 0], 16);
 					bx::memCopy(&block[1*_pitch], &temp[16], 16);
 					bx::memCopy(&block[2*_pitch], &temp[32], 16);
 					bx::memCopy(&block[3*_pitch], &temp[48], 16);
->>>>>>> upstream/master
 				}
 			}
 			break;
@@ -3306,57 +2759,33 @@ namespace bgfx
 					decodeBlockEtc12(temp, src);
 					src += 8;
 
-<<<<<<< HEAD
-					uint8_t* dst = &_dst[(yy*_pitch+xx*4)*4];
-					memcpy(&dst[0*_pitch], &temp[ 0], 16);
-					memcpy(&dst[1*_pitch], &temp[16], 16);
-					memcpy(&dst[2*_pitch], &temp[32], 16);
-					memcpy(&dst[3*_pitch], &temp[48], 16);
-=======
 					uint8_t* block = &dst[(yy*_pitch+xx*4)*4];
 					bx::memCopy(&block[0*_pitch], &temp[ 0], 16);
 					bx::memCopy(&block[1*_pitch], &temp[16], 16);
 					bx::memCopy(&block[2*_pitch], &temp[32], 16);
 					bx::memCopy(&block[3*_pitch], &temp[48], 16);
->>>>>>> upstream/master
 				}
 			}
 			break;
 
 		case TextureFormat::ETC2A:
 			BX_WARN(false, "ETC2A decoder is not implemented.");
-<<<<<<< HEAD
-			imageCheckerboard(_width, _height, 16, UINT32_C(0xff000000), UINT32_C(0xff00ff00), _dst);
-=======
 			imageCheckerboard(_dst, _width, _height, 16, UINT32_C(0xff000000), UINT32_C(0xff00ff00) );
->>>>>>> upstream/master
 			break;
 
 		case TextureFormat::ETC2A1:
 			BX_WARN(false, "ETC2A1 decoder is not implemented.");
-<<<<<<< HEAD
-			imageCheckerboard(_width, _height, 16, UINT32_C(0xff000000), UINT32_C(0xffff0000), _dst);
-=======
 			imageCheckerboard(_dst, _width, _height, 16, UINT32_C(0xff000000), UINT32_C(0xffff0000) );
->>>>>>> upstream/master
 			break;
 
 		case TextureFormat::PTC12:
 			BX_WARN(false, "PTC12 decoder is not implemented.");
-<<<<<<< HEAD
-			imageCheckerboard(_width, _height, 16, UINT32_C(0xff000000), UINT32_C(0xffff00ff), _dst);
-=======
 			imageCheckerboard(_dst, _width, _height, 16, UINT32_C(0xff000000), UINT32_C(0xffff00ff) );
->>>>>>> upstream/master
 			break;
 
 		case TextureFormat::PTC12A:
 			BX_WARN(false, "PTC12A decoder is not implemented.");
-<<<<<<< HEAD
-			imageCheckerboard(_width, _height, 16, UINT32_C(0xff000000), UINT32_C(0xffffff00), _dst);
-=======
 			imageCheckerboard(_dst, _width, _height, 16, UINT32_C(0xff000000), UINT32_C(0xffffff00) );
->>>>>>> upstream/master
 			break;
 
 		case TextureFormat::PTC14:
@@ -3366,19 +2795,11 @@ namespace bgfx
 				{
 					decodeBlockPtc14(temp, src, xx, yy, width, height);
 
-<<<<<<< HEAD
-					uint8_t* dst = &_dst[(yy*_pitch+xx*4)*4];
-					memcpy(&dst[0*_pitch], &temp[ 0], 16);
-					memcpy(&dst[1*_pitch], &temp[16], 16);
-					memcpy(&dst[2*_pitch], &temp[32], 16);
-					memcpy(&dst[3*_pitch], &temp[48], 16);
-=======
 					uint8_t* block = &dst[(yy*_pitch+xx*4)*4];
 					bx::memCopy(&block[0*_pitch], &temp[ 0], 16);
 					bx::memCopy(&block[1*_pitch], &temp[16], 16);
 					bx::memCopy(&block[2*_pitch], &temp[32], 16);
 					bx::memCopy(&block[3*_pitch], &temp[48], 16);
->>>>>>> upstream/master
 				}
 			}
 			break;
@@ -3390,50 +2811,22 @@ namespace bgfx
 				{
 					decodeBlockPtc14A(temp, src, xx, yy, width, height);
 
-<<<<<<< HEAD
-					uint8_t* dst = &_dst[(yy*_pitch+xx*4)*4];
-					memcpy(&dst[0*_pitch], &temp[ 0], 16);
-					memcpy(&dst[1*_pitch], &temp[16], 16);
-					memcpy(&dst[2*_pitch], &temp[32], 16);
-					memcpy(&dst[3*_pitch], &temp[48], 16);
-=======
 					uint8_t* block = &dst[(yy*_pitch+xx*4)*4];
 					bx::memCopy(&block[0*_pitch], &temp[ 0], 16);
 					bx::memCopy(&block[1*_pitch], &temp[16], 16);
 					bx::memCopy(&block[2*_pitch], &temp[32], 16);
 					bx::memCopy(&block[3*_pitch], &temp[48], 16);
->>>>>>> upstream/master
 				}
 			}
 			break;
 
 		case TextureFormat::PTC22:
 			BX_WARN(false, "PTC22 decoder is not implemented.");
-<<<<<<< HEAD
-			imageCheckerboard(_width, _height, 16, UINT32_C(0xff00ff00), UINT32_C(0xff0000ff), _dst);
-=======
 			imageCheckerboard(_dst, _width, _height, 16, UINT32_C(0xff00ff00), UINT32_C(0xff0000ff) );
->>>>>>> upstream/master
 			break;
 
 		case TextureFormat::PTC24:
 			BX_WARN(false, "PTC24 decoder is not implemented.");
-<<<<<<< HEAD
-			imageCheckerboard(_width, _height, 16, UINT32_C(0xff000000), UINT32_C(0xffffffff), _dst);
-			break;
-
-		case TextureFormat::RGBA8:
-			imageSwizzleBgra8(_width, _height, _pitch, _src, _dst);
-			break;
-
-		case TextureFormat::BGRA8:
-			memcpy(_dst, _src, _pitch*_height);
-			break;
-
-		default:
-			// Decompression not implemented... Make ugly red-yellow checkerboard texture.
-			imageCheckerboard(_width, _height, 16, UINT32_C(0xffff0000), UINT32_C(0xffffff00), _dst);
-=======
 			imageCheckerboard(_dst, _width, _height, 16, UINT32_C(0xff000000), UINT32_C(0xffffffff) );
 			break;
 
@@ -3455,28 +2848,10 @@ namespace bgfx
 					imageCheckerboard(_dst, _width, _height, 16, UINT32_C(0xffff0000), UINT32_C(0xffffff00) );
 				}
 			}
->>>>>>> upstream/master
 			break;
 		}
 	}
 
-<<<<<<< HEAD
-	void imageDecodeToRgba8(uint8_t* _dst, const uint8_t* _src, uint32_t _width, uint32_t _height, uint32_t _pitch, uint8_t _type)
-	{
-		switch (_type)
-		{
-		case TextureFormat::RGBA8:
-			memcpy(_dst, _src, _pitch*_height);
-			break;
-
-		case TextureFormat::BGRA8:
-			imageSwizzleBgra8(_width, _height, _pitch, _src, _dst);
-			break;
-
-		default:
-			imageDecodeToBgra8(_dst, _src, _width, _height, _pitch, _type);
-			imageSwizzleBgra8(_width, _height, _pitch, _dst, _dst);
-=======
 	void imageDecodeToRgba8(void* _dst, const void* _src, uint32_t _width, uint32_t _height, uint32_t _pitch, TextureFormat::Enum _format)
 	{
 		switch (_format)
@@ -3492,20 +2867,10 @@ namespace bgfx
 		default:
 			imageDecodeToBgra8(_dst, _src, _width, _height, _pitch, _format);
 			imageSwizzleBgra8(_dst, _width, _height, _width*4, _dst);
->>>>>>> upstream/master
 			break;
 		}
 	}
 
-<<<<<<< HEAD
-	bool imageGetRawData(const ImageContainer& _imageContainer, uint8_t _side, uint8_t _lod, const void* _data, uint32_t _size, ImageMip& _mip)
-	{
-		uint32_t offset = _imageContainer.m_offset;
-		TextureFormat::Enum type = TextureFormat::Enum(_imageContainer.m_format);
-		bool hasAlpha = _imageContainer.m_hasAlpha;
-
-		const ImageBlockInfo& blockInfo = s_imageBlockInfo[type];
-=======
 	void imageRgba8ToRgba32fRef(void* _dst, uint32_t _width, uint32_t _height, uint32_t _pitch, const void* _src)
 	{
 		const uint32_t dstwidth  = _width;
@@ -3643,7 +3008,6 @@ namespace bgfx
 		bool hasAlpha = _imageContainer.m_hasAlpha;
 
 		const ImageBlockInfo& blockInfo = s_imageBlockInfo[format];
->>>>>>> upstream/master
 		const uint8_t  bpp         = blockInfo.bitsPerPixel;
 		const uint32_t blockSize   = blockInfo.blockSize;
 		const uint32_t blockWidth  = blockInfo.blockWidth;
@@ -3663,14 +3027,10 @@ namespace bgfx
 			_size = _imageContainer.m_size;
 		}
 
-<<<<<<< HEAD
-		for (uint8_t side = 0, numSides = _imageContainer.m_cubeMap ? 6 : 1; side < numSides; ++side)
-=======
 		const uint8_t* data = (const uint8_t*)_data;
 		const uint16_t numSides = _imageContainer.m_numLayers * (_imageContainer.m_cubeMap ? 6 : 1);
 
 		if (_imageContainer.m_ktx)
->>>>>>> upstream/master
 		{
 			uint32_t width  = _imageContainer.m_width;
 			uint32_t height = _imageContainer.m_height;
@@ -3678,40 +3038,14 @@ namespace bgfx
 
 			for (uint8_t lod = 0, num = _imageContainer.m_numMips; lod < num; ++lod)
 			{
-<<<<<<< HEAD
-				// skip imageSize in KTX format.
-				offset += _imageContainer.m_ktx ? sizeof(uint32_t) : 0;
-=======
 				uint32_t imageSize = bx::toHostEndian(*(const uint32_t*)&data[offset], _imageContainer.m_ktxLE) / _imageContainer.m_numLayers;
 				offset += sizeof(uint32_t);
->>>>>>> upstream/master
 
 				width  = bx::uint32_max(blockWidth  * minBlockX, ( (width  + blockWidth  - 1) / blockWidth )*blockWidth);
 				height = bx::uint32_max(blockHeight * minBlockY, ( (height + blockHeight - 1) / blockHeight)*blockHeight);
 				depth  = bx::uint32_max(1, depth);
 
 				uint32_t size = width*height*depth*bpp/8;
-<<<<<<< HEAD
-
-				if (side == _side
-				&&  lod == _lod)
-				{
-					_mip.m_width     = width;
-					_mip.m_height    = height;
-					_mip.m_blockSize = blockSize;
-					_mip.m_size = size;
-					_mip.m_data = (const uint8_t*)_data + offset;
-					_mip.m_bpp  = bpp;
-					_mip.m_format   = uint8_t(type);
-					_mip.m_hasAlpha = hasAlpha;
-					return true;
-				}
-
-				offset += size;
-
-				BX_CHECK(offset <= _size, "Reading past size of data buffer! (offset %d, size %d)", offset, _size);
-				BX_UNUSED(_size);
-=======
 				BX_CHECK(size == imageSize, "KTX: Image size mismatch %d (expected %d).", size, imageSize);
 
 				for (uint16_t side = 0; side < numSides; ++side)
@@ -3735,15 +3069,12 @@ namespace bgfx
 					BX_CHECK(offset <= _size, "Reading past size of data buffer! (offset %d, size %d)", offset, _size);
 					BX_UNUSED(_size);
 				}
->>>>>>> upstream/master
 
 				width  >>= 1;
 				height >>= 1;
 				depth  >>= 1;
 			}
 		}
-<<<<<<< HEAD
-=======
 		else
 		{
 			for (uint16_t side = 0; side < numSides; ++side)
@@ -3785,13 +3116,10 @@ namespace bgfx
 				}
 			}
 		}
->>>>>>> upstream/master
 
 		return false;
 	}
 
-<<<<<<< HEAD
-=======
 	void imageWriteTga(bx::WriterI* _writer, uint32_t _width, uint32_t _height, uint32_t _pitch, const void* _src, bool _grayscale, bool _yflip, bx::Error* _err)
 	{
 		BX_ERROR_SCOPE(_err);
@@ -3930,5 +3258,4 @@ namespace bgfx
 		}
 	}
 
->>>>>>> upstream/master
 } // namespace bgfx

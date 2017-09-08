@@ -5,24 +5,16 @@
  *
  */
 
-<<<<<<< HEAD
-#ifndef FONT_MODULE_H_
-#define FONT_MODULE_H_
-=======
 #ifndef MAME_OSD_MODULES_FONT_FONTMODULE_H
 #define MAME_OSD_MODULES_FONT_FONTMODULE_H
->>>>>>> upstream/master
 
 #include "osdepend.h"
 #include "modules/osdmodule.h"
 
-<<<<<<< HEAD
-=======
 #include <string>
 #include <vector>
 
 
->>>>>>> upstream/master
 //============================================================
 //  CONSTANTS
 //============================================================
@@ -33,13 +25,6 @@ class font_module
 {
 public:
 	virtual ~font_module() { }
-<<<<<<< HEAD
-	virtual osd_font *font_alloc() = 0;
-};
-
-
-#endif /* FONT_MODULE_H_ */
-=======
 
 	/** attempt to allocate a font instance */
 	virtual osd_font::ptr font_alloc() = 0;
@@ -50,4 +35,3 @@ public:
 
 
 #endif // MAME_OSD_MODULES_FONT_FONTMODULE_H
->>>>>>> upstream/master

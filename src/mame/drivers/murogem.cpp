@@ -108,16 +108,11 @@ val (hex):  27  20  22  04  26  00  20  20  00  07  00  00  80  00  00  00  ns  
 
 #include "emu.h"
 #include "cpu/m6800/m6800.h"
-<<<<<<< HEAD
-#include "video/mc6845.h"
-#include "sound/dac.h"
-=======
 #include "sound/dac.h"
 #include "sound/volt_reg.h"
 #include "video/mc6845.h"
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 class murogem_state : public driver_device
@@ -132,28 +127,16 @@ public:
 		m_videoram(*this, "videoram") { }
 
 	required_device<cpu_device> m_maincpu;
-<<<<<<< HEAD
-	required_device<dac_device> m_dac;
-	required_device<gfxdecode_device> m_gfxdecode;
-	required_device<palette_device> m_palette;
-
-	required_shared_ptr<UINT8> m_videoram;
-=======
 	required_device<dac_bit_interface> m_dac;
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
 
 	required_shared_ptr<uint8_t> m_videoram;
->>>>>>> upstream/master
 
 	DECLARE_WRITE8_MEMBER(outport_w);
 	DECLARE_PALETTE_INIT(murogem);
 
-<<<<<<< HEAD
-	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 };
 
 
@@ -166,11 +149,7 @@ WRITE8_MEMBER(murogem_state::outport_w)
     7654 3210
     ---- x---   Sound DAC.
 */
-<<<<<<< HEAD
-	m_dac->write_unsigned8(data & 0x08);
-=======
 	m_dac->write(BIT(data, 3));
->>>>>>> upstream/master
 }
 
 
@@ -240,11 +219,7 @@ GFXDECODE_END
 PALETTE_INIT_MEMBER(murogem_state, murogem)
 {}
 
-<<<<<<< HEAD
-UINT32 murogem_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t murogem_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int xx,yy,count;
 	count = 0x000;
@@ -270,11 +245,7 @@ uint32_t murogem_state::screen_update(screen_device &screen, bitmap_ind16 &bitma
 }
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( murogem, murogem_state )
-=======
 static MACHINE_CONFIG_START( murogem )
->>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6802, 8000000)      /* ? MHz */
 	MCFG_CPU_PROGRAM_MAP(murogem_map)
@@ -298,16 +269,10 @@ static MACHINE_CONFIG_START( murogem )
 	MCFG_MC6845_CHAR_WIDTH(8)
 
 	/* sound hardware */
-<<<<<<< HEAD
-	MCFG_SPEAKER_STANDARD_MONO("mono")
-	MCFG_DAC_ADD("dac")
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 12.00)
-=======
 	MCFG_SPEAKER_STANDARD_MONO("speaker")
 	MCFG_SOUND_ADD("dac", DAC_1BIT, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.375)
 	MCFG_DEVICE_ADD("vref", VOLTAGE_REGULATOR, 0) MCFG_VOLTAGE_REGULATOR_OUTPUT(5.0)
 	MCFG_SOUND_ROUTE_EX(0, "dac", 1.0, DAC_VREF_POS_INPUT)
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
@@ -367,14 +332,7 @@ ROM_START( lasvegas )
 	ROM_LOAD( "a3.1b", 0x0000, 0x0020, CRC(abddfb6b) SHA1(ed78b93701b5a3bf2053d2584e9a354fb6cec203) )   /* 74s288 at 1B */
 ROM_END
 
-<<<<<<< HEAD
-GAME( 198?, murogem,  0,       murogem, murogem, driver_device, 0, ROT0, "<unknown>", "Muroge Monaco (set 1)", MACHINE_WRONG_COLORS | MACHINE_SUPPORTS_SAVE )
-GAME( 198?, murogema, murogem, murogem, murogem, driver_device, 0, ROT0, "<unknown>", "Muroge Monaco (set 2)", MACHINE_WRONG_COLORS | MACHINE_SUPPORTS_SAVE )
-GAME( 198?, murogemb, murogem, murogem, murogem, driver_device, 0, ROT0, "<unknown>", "Muroge Monaco (set 3)", MACHINE_WRONG_COLORS | MACHINE_SUPPORTS_SAVE )
-GAME( 198?, lasvegas, murogem, murogem, murogem, driver_device, 0, ROT0, "hack",      "Las Vegas, Nevada",     MACHINE_WRONG_COLORS | MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 198?, murogem,  0,       murogem, murogem, murogem_state, 0, ROT0, "<unknown>", "Muroge Monaco (set 1)", MACHINE_WRONG_COLORS | MACHINE_SUPPORTS_SAVE )
 GAME( 198?, murogema, murogem, murogem, murogem, murogem_state, 0, ROT0, "<unknown>", "Muroge Monaco (set 2)", MACHINE_WRONG_COLORS | MACHINE_SUPPORTS_SAVE )
 GAME( 198?, murogemb, murogem, murogem, murogem, murogem_state, 0, ROT0, "<unknown>", "Muroge Monaco (set 3)", MACHINE_WRONG_COLORS | MACHINE_SUPPORTS_SAVE )
 GAME( 198?, lasvegas, murogem, murogem, murogem, murogem_state, 0, ROT0, "hack",      "Las Vegas, Nevada",     MACHINE_WRONG_COLORS | MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

@@ -6,12 +6,6 @@
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-// this function assumes a fixed portion of ROM at 0000-7FFF, and
-// an arbitrary amount of banks at 8000-BFFF.
-
-void mc8123_decode(UINT8 *rom, UINT8 *opcodes, const UINT8 *key, int length);
-=======
 #ifndef MAME_MACHINE_MC8123
 #define MAME_MACHINE_MC8123
 
@@ -48,4 +42,3 @@ extern const device_type MC8123;
 DECLARE_DEVICE_TYPE(MC8123, mc8123_device)
 
 #endif // MAME_MACHINE_MC8123
->>>>>>> upstream/master

@@ -22,11 +22,7 @@
 //**************************************************************************
 
 // device type definition
-<<<<<<< HEAD
-const device_type UPD4992 = &device_creator<upd4992_device>;
-=======
 DEFINE_DEVICE_TYPE(UPD4992, upd4992_device, "upd4992", "uPD4992 RTC")
->>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -37,16 +33,10 @@ DEFINE_DEVICE_TYPE(UPD4992, upd4992_device, "upd4992", "uPD4992 RTC")
 //  upd4992_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-upd4992_device::upd4992_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, UPD4992, "uPD4992 RTC", tag, owner, clock, "upd4992", __FILE__),
-		device_rtc_interface(mconfig, *this), m_timer_clock(nullptr)
-=======
 upd4992_device::upd4992_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, UPD4992, tag, owner, clock)
 	, device_rtc_interface(mconfig, *this)
 	, m_timer_clock(nullptr)
->>>>>>> upstream/master
 {
 }
 
@@ -72,19 +62,6 @@ void upd4992_device::device_start()
 }
 
 
-<<<<<<< HEAD
-//-------------------------------------------------
-//  device_reset - device-specific reset
-//-------------------------------------------------
-
-void upd4992_device::device_reset()
-{
-	set_current_time(machine());
-}
-
-
-=======
->>>>>>> upstream/master
 void upd4992_device::device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr)
 {
 	switch (id)

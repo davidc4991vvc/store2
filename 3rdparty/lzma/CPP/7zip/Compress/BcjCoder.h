@@ -5,18 +5,6 @@
 
 #include "../../../C/Bra.h"
 
-<<<<<<< HEAD
-#include "BranchCoder.h"
-
-struct CBranch86
-{
-  UInt32 _prevMask;
-  void x86Init() { x86_Convert_Init(_prevMask); }
-};
-
-MyClassB(BCJ_x86, 0x01, 3, CBranch86 ,
-    virtual void SubInit() { x86Init(); })
-=======
 #include "../../Common/MyCom.h"
 
 #include "../ICoder.h"
@@ -39,6 +27,5 @@ public:
 };
 
 }}
->>>>>>> upstream/master
 
 #endif

@@ -15,37 +15,6 @@
 //  sns_rom_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const device_type SNS_LOROM = &device_creator<sns_rom_device>;
-const device_type SNS_LOROM_OBC1 = &device_creator<sns_rom_obc1_device>;
-// LoROM pirate carts with protection
-const device_type SNS_LOROM_POKEMON = &device_creator<sns_rom_pokemon_device>;
-const device_type SNS_LOROM_TEKKEN2 = &device_creator<sns_rom_tekken2_device>;
-const device_type SNS_LOROM_SOULBLAD = &device_creator<sns_rom_soulblad_device>;
-const device_type SNS_LOROM_BANANA = &device_creator<sns_rom_banana_device>;
-const device_type SNS_LOROM_BUGSLIFE = &device_creator<sns_rom_bugs_device>;
-// LoROM pirate multicarts
-const device_type SNS_LOROM_MCPIR1 = &device_creator<sns_rom_mcpirate1_device>;
-const device_type SNS_LOROM_MCPIR2 = &device_creator<sns_rom_mcpirate2_device>;
-const device_type SNS_LOROM_20COL = &device_creator<sns_rom_20col_device>;
-
-
-sns_rom_device::sns_rom_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source)
-					: device_t(mconfig, type, name, tag, owner, clock, shortname, source),
-						device_sns_cart_interface( mconfig, *this )
-{
-}
-
-sns_rom_device::sns_rom_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: device_t(mconfig, SNS_LOROM, "SNES Cart (LoROM)", tag, owner, clock, "sns_rom", __FILE__),
-						device_sns_cart_interface( mconfig, *this )
-{
-}
-
-sns_rom_obc1_device::sns_rom_obc1_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: sns_rom_device(mconfig, SNS_LOROM_OBC1, "SNES Cart (LoROM) + OBC-1", tag, owner, clock, "sns_rom_obc1", __FILE__), m_address(0), m_offset(0), m_shift(0)
-				{
-=======
 DEFINE_DEVICE_TYPE(SNS_LOROM,          sns_rom_device,           "sns_rom",           "SNES Cart (LoROM)")
 DEFINE_DEVICE_TYPE(SNS_LOROM_OBC1,     sns_rom_obc1_device,      "sns_rom_obc1",      "SNES Cart (LoROM) + OBC-1")
 // LoROM pirate carts with protection
@@ -73,36 +42,11 @@ sns_rom_device::sns_rom_device(const machine_config &mconfig, const char *tag, d
 sns_rom_obc1_device::sns_rom_obc1_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: sns_rom_device(mconfig, SNS_LOROM_OBC1, tag, owner, clock), m_address(0), m_offset(0), m_shift(0)
 {
->>>>>>> upstream/master
 }
 
 
 
 // Pirate LoROM 'mappers'
-<<<<<<< HEAD
-sns_rom_pokemon_device::sns_rom_pokemon_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: sns_rom_device(mconfig, SNS_LOROM_POKEMON, "SNES Pirate Carts with Protection", tag, owner, clock, "sns_rom_pokemon", __FILE__), m_latch(0)
-				{
-}
-
-sns_rom_tekken2_device::sns_rom_tekken2_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: sns_rom_device(mconfig, SNS_LOROM_TEKKEN2, "SNES Tekken 2", tag, owner, clock, "sns_rom_tekken2", __FILE__), m_prot(0)
-				{
-}
-
-sns_rom_soulblad_device::sns_rom_soulblad_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: sns_rom_device(mconfig, SNS_LOROM_SOULBLAD, "SNES Soul Blade", tag, owner, clock, "sns_rom_soulblad", __FILE__)
-{
-}
-
-sns_rom_banana_device::sns_rom_banana_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: sns_rom_device(mconfig, SNS_LOROM_BANANA, "SNES Banana de Pijamas", tag, owner, clock, "sns_rom_banana", __FILE__)
-{
-}
-
-sns_rom_bugs_device::sns_rom_bugs_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: sns_rom_device(mconfig, SNS_LOROM_BUGSLIFE, "SNES A Bug's Life", tag, owner, clock, "sns_rom_bugslife", __FILE__)
-=======
 sns_rom_pokemon_device::sns_rom_pokemon_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: sns_rom_device(mconfig, SNS_LOROM_POKEMON, tag, owner, clock), m_latch(0)
 {
@@ -125,26 +69,10 @@ sns_rom_banana_device::sns_rom_banana_device(const machine_config &mconfig, cons
 
 sns_rom_bugs_device::sns_rom_bugs_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: sns_rom_device(mconfig, SNS_LOROM_BUGSLIFE, tag, owner, clock)
->>>>>>> upstream/master
 {
 }
 
 // Multigame LoROM 'mappers'
-<<<<<<< HEAD
-sns_rom_mcpirate1_device::sns_rom_mcpirate1_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: sns_rom_device(mconfig, SNS_LOROM_MCPIR1, "SNES Pirate Multigame Carts Type 1", tag, owner, clock, "sns_rom_mcpirate1", __FILE__), m_base_bank(0)
-				{
-}
-
-sns_rom_mcpirate2_device::sns_rom_mcpirate2_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: sns_rom_device(mconfig, SNS_LOROM_MCPIR2, "SNES Pirate Multigame Carts Type 2", tag, owner, clock, "sns_rom_mcpirate2", __FILE__), m_base_bank(0)
-				{
-}
-
-sns_rom_20col_device::sns_rom_20col_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: sns_rom_device(mconfig, SNS_LOROM_20COL, "SNES Super 20 Collection", tag, owner, clock, "sns_rom_20col", __FILE__), m_base_bank(0)
-				{
-=======
 sns_rom_mcpirate1_device::sns_rom_mcpirate1_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: sns_rom_device(mconfig, SNS_LOROM_MCPIR1, tag, owner, clock), m_base_bank(0)
 {
@@ -158,7 +86,6 @@ sns_rom_mcpirate2_device::sns_rom_mcpirate2_device(const machine_config &mconfig
 sns_rom_20col_device::sns_rom_20col_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: sns_rom_device(mconfig, SNS_LOROM_20COL, tag, owner, clock), m_base_bank(0)
 {
->>>>>>> upstream/master
 }
 
 
@@ -275,13 +202,8 @@ READ8_MEMBER(sns_rom_device::read_h)
 
 READ8_MEMBER( sns_rom_obc1_device::chip_read )
 {
-<<<<<<< HEAD
-	UINT16 address = offset & 0x1fff;
-	UINT8 value;
-=======
 	uint16_t address = offset & 0x1fff;
 	uint8_t value;
->>>>>>> upstream/master
 
 	switch (address)
 	{
@@ -316,13 +238,8 @@ READ8_MEMBER( sns_rom_obc1_device::chip_read )
 
 WRITE8_MEMBER( sns_rom_obc1_device::chip_write )
 {
-<<<<<<< HEAD
-	UINT16 address = offset & 0x1fff;
-	UINT8 temp;
-=======
 	uint16_t address = offset & 0x1fff;
 	uint8_t temp;
->>>>>>> upstream/master
 
 	switch(address)
 	{
@@ -389,11 +306,7 @@ WRITE8_MEMBER( sns_rom_pokemon_device::chip_write )
 // The protection itself is accessed in banks $80-$bf. Accessing (read/write, doesn't matter) address lines
 // A8,A9,A10 in these banks in a certain sequence makes the mc return a 4bit value. [d4s]
 // Details on a possible algorythm behind the sequence of accesses were provided by nocash. Thanks!
-<<<<<<< HEAD
-void sns_rom_tekken2_device::update_prot(UINT32 offset)
-=======
 void sns_rom_tekken2_device::update_prot(uint32_t offset)
->>>>>>> upstream/master
 {
 	// accesses to [80-bf][8000-87ff] ranges update the protection value
 	offset &= 0x7ff;
@@ -462,11 +375,7 @@ WRITE8_MEMBER( sns_rom_tekken2_device::chip_write )
 // Banks $c0-$ff return open bus.
 READ8_MEMBER( sns_rom_soulblad_device::chip_read )
 {
-<<<<<<< HEAD
-	UINT8 value = 0;
-=======
 	uint8_t value;
->>>>>>> upstream/master
 	offset &= 3;
 	switch (offset)
 	{

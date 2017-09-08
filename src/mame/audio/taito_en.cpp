@@ -7,30 +7,13 @@
     TODO:
 
     * Implement ES5510 ESP
-<<<<<<< HEAD
-    * Where does the MB8421 go? Taito F3(and Super Chase) have 2 of them on
-=======
     * Where does the MB8421 go? Taito F3 (and Super Chase) have 2 of them on
->>>>>>> upstream/master
       the sound area, Taito JC has one.
 
 ****************************************************************************/
 
 #include "emu.h"
 #include "taito_en.h"
-<<<<<<< HEAD
-
-
-const device_type TAITO_EN = &device_creator<taito_en_device>;
-
-taito_en_device::taito_en_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, TAITO_EN, "Taito Ensoniq Sound System", tag, owner, clock, "taito_en", __FILE__),
-	m_audiocpu(*this, ":audiocpu"),
-	m_ensoniq(*this, ":ensoniq"),
-	m_duart68681(*this, ":duart68681"),
-	m_mb87078(*this, ":mb87078"),
-	m_snd_shared_ram(*this, ":snd_shared"),
-=======
 #include "speaker.h"
 
 
@@ -42,7 +25,6 @@ taito_en_device::taito_en_device(const machine_config &mconfig, const char *tag,
 	m_ensoniq(*this, "ensoniq"),
 	m_duart68681(*this, "duart68681"),
 	m_mb87078(*this, "mb87078"),
->>>>>>> upstream/master
 	m_es5510_dol_latch(0),
 	m_es5510_dil_latch(0),
 	m_es5510_dadr_latch(0),
@@ -57,18 +39,12 @@ taito_en_device::taito_en_device(const machine_config &mconfig, const char *tag,
 
 void taito_en_device::device_start()
 {
-<<<<<<< HEAD
-	save_item(NAME(m_es5510_dsp_ram));
-	save_item(NAME(m_es5510_gpr));
-	save_item(NAME(m_es5510_dram));
-=======
 	// TODO: 16Mx32? Not likely!
 	m_es5510_dram = std::make_unique<uint32_t[]>(1<<24);
 
 	save_pointer(NAME(m_es5510_dram.get()), 1<<24);
 	save_item(NAME(m_es5510_dsp_ram));
 	save_item(NAME(m_es5510_gpr));
->>>>>>> upstream/master
 	save_item(NAME(m_es5510_dol_latch));
 	save_item(NAME(m_es5510_dil_latch));
 	save_item(NAME(m_es5510_dadr_latch));
@@ -83,19 +59,11 @@ void taito_en_device::device_start()
 void taito_en_device::device_reset()
 {
 	/* Sound cpu program loads to 0xc00000 so we use a bank */
-<<<<<<< HEAD
-	UINT16 *ROM = (UINT16 *)machine().root_device().memregion("audiocpu")->base();
-	UINT16 *sound_ram = (UINT16 *)machine().root_device().memshare("share1")->ptr();
-	machine().root_device().membank("bank1")->set_base(&ROM[0x80000]);
-	machine().root_device().membank("bank2")->set_base(&ROM[0x90000]);
-	machine().root_device().membank("bank3")->set_base(&ROM[0xa0000]);
-=======
 	uint16_t *ROM = (uint16_t *)memregion("audiocpu")->base();
 	uint16_t *sound_ram = (uint16_t *)memshare("share1")->ptr();
 	membank("bank1")->set_base(&ROM[0x80000]);
 	membank("bank2")->set_base(&ROM[0x90000]);
 	membank("bank3")->set_base(&ROM[0xa0000]);
->>>>>>> upstream/master
 
 	sound_ram[0] = ROM[0x80000]; /* Stack and Reset vectors */
 	sound_ram[1] = ROM[0x80001];
@@ -114,39 +82,9 @@ void taito_en_device::device_reset()
  *
  *************************************/
 
-<<<<<<< HEAD
-READ8_MEMBER( taito_en_device::en_68000_share_r )
-{
-	switch (offset & 3)
-	{
-		case 0: return (m_snd_shared_ram[offset/4]&0xff000000)>>24;
-		case 1: return (m_snd_shared_ram[offset/4]&0x00ff0000)>>16;
-		case 2: return (m_snd_shared_ram[offset/4]&0x0000ff00)>>8;
-		case 3: return (m_snd_shared_ram[offset/4]&0x000000ff)>>0;
-	}
-
-	return 0;
-}
-
-WRITE8_MEMBER( taito_en_device::en_68000_share_w )
-{
-	switch (offset & 3)
-	{
-		case 0: m_snd_shared_ram[offset/4] = (m_snd_shared_ram[offset/4]&0x00ffffff)|(data<<24);
-		case 1: m_snd_shared_ram[offset/4] = (m_snd_shared_ram[offset/4]&0xff00ffff)|(data<<16);
-		case 2: m_snd_shared_ram[offset/4] = (m_snd_shared_ram[offset/4]&0xffff00ff)|(data<<8);
-		case 3: m_snd_shared_ram[offset/4] = (m_snd_shared_ram[offset/4]&0xffffff00)|(data<<0);
-	}
-}
-
-WRITE16_MEMBER( taito_en_device::en_es5505_bank_w )
-{
-	UINT32 max_banks_this_game = (space.machine().root_device().memregion("ensoniq.0")->bytes()/0x200000)-1;
-=======
 WRITE16_MEMBER( taito_en_device::en_es5505_bank_w )
 {
 	uint32_t max_banks_this_game = (memregion(":ensoniq.0")->bytes()/0x200000)-1;
->>>>>>> upstream/master
 
 	/* mask out unused bits */
 	data &= max_banks_this_game;
@@ -187,11 +125,7 @@ READ16_MEMBER( taito_en_device::es5510_dsp_r )
 
 WRITE16_MEMBER( taito_en_device::es5510_dsp_w )
 {
-<<<<<<< HEAD
-	UINT8 *snd_mem = (UINT8 *)space.machine().root_device().memregion("ensoniq.0")->base();
-=======
 	uint8_t *snd_mem = (uint8_t *)memregion(":ensoniq.0")->base();
->>>>>>> upstream/master
 
 //  if (offset>4 && offset!=0x80  && offset!=0xa0  && offset!=0xc0  && offset!=0xe0)
 //      logerror("%06x: DSP write offset %04x %04x\n",space.device().safe_pc(),offset,data);
@@ -263,16 +197,6 @@ WRITE16_MEMBER( taito_en_device::es5510_dsp_w )
  *
  *************************************/
 
-<<<<<<< HEAD
-static ADDRESS_MAP_START( en_sound_map, AS_PROGRAM, 16, driver_device )
-	AM_RANGE(0x000000, 0x00ffff) AM_RAM AM_MIRROR(0x30000) AM_SHARE("share1")
-	AM_RANGE(0x140000, 0x140fff) AM_DEVREADWRITE8("taito_en", taito_en_device, en_68000_share_r, en_68000_share_w, 0xff00)
-	AM_RANGE(0x200000, 0x20001f) AM_DEVREADWRITE("ensoniq", es5505_device, read, write)
-	AM_RANGE(0x260000, 0x2601ff) AM_DEVREADWRITE("taito_en", taito_en_device, es5510_dsp_r, es5510_dsp_w) //todo: hook up cpu/es5510
-	AM_RANGE(0x280000, 0x28001f) AM_DEVREADWRITE8("duart68681", mc68681_device, read, write, 0x00ff)
-	AM_RANGE(0x300000, 0x30003f) AM_DEVWRITE("taito_en", taito_en_device, en_es5505_bank_w)
-	AM_RANGE(0x340000, 0x340003) AM_DEVWRITE8("taito_en", taito_en_device, en_volume_w, 0xff00)
-=======
 static ADDRESS_MAP_START( en_sound_map, AS_PROGRAM, 16, taito_en_device )
 	AM_RANGE(0x000000, 0x00ffff) AM_RAM AM_MIRROR(0x30000) AM_SHARE("share1")
 	AM_RANGE(0x140000, 0x140fff) AM_DEVREADWRITE8("dpram", mb8421_device, right_r, right_w, 0xff00)
@@ -281,7 +205,6 @@ static ADDRESS_MAP_START( en_sound_map, AS_PROGRAM, 16, taito_en_device )
 	AM_RANGE(0x280000, 0x28001f) AM_DEVREADWRITE8("duart68681", mc68681_device, read, write, 0x00ff)
 	AM_RANGE(0x300000, 0x30003f) AM_WRITE(en_es5505_bank_w)
 	AM_RANGE(0x340000, 0x340003) AM_WRITE8(en_volume_w, 0xff00)
->>>>>>> upstream/master
 	AM_RANGE(0xc00000, 0xc1ffff) AM_ROMBANK("bank1")
 	AM_RANGE(0xc20000, 0xc3ffff) AM_ROMBANK("bank2")
 	AM_RANGE(0xc40000, 0xc7ffff) AM_ROMBANK("bank3")
@@ -342,18 +265,6 @@ WRITE_LINE_MEMBER(taito_en_device::duart_irq_handler)
     IP5: 1MHz
 */
 
-<<<<<<< HEAD
-/*************************************
- *
- *  Machine driver
- *
- *************************************/
-
-MACHINE_CONFIG_FRAGMENT( taito_en_sound )
-
-	/* basic machine hardware */
-	MCFG_TAITO_EN_ADD("taito_en")
-=======
 
 //-------------------------------------------------
 // device_add_mconfig - add device configuration
@@ -362,25 +273,17 @@ MACHINE_CONFIG_FRAGMENT( taito_en_sound )
 MACHINE_CONFIG_MEMBER( taito_en_device::device_add_mconfig )
 
 	/* basic machine hardware */
->>>>>>> upstream/master
 	MCFG_CPU_ADD("audiocpu", M68000, XTAL_30_4761MHz / 2)
 	MCFG_CPU_PROGRAM_MAP(en_sound_map)
 
 	MCFG_MC68681_ADD("duart68681", XTAL_16MHz / 4)
 	MCFG_MC68681_SET_EXTERNAL_CLOCKS(XTAL_16MHz/2/8, XTAL_16MHz/2/16, XTAL_16MHz/2/16, XTAL_16MHz/2/8)
-<<<<<<< HEAD
-	MCFG_MC68681_IRQ_CALLBACK(DEVWRITELINE("taito_en", taito_en_device, duart_irq_handler))
-
-	MCFG_DEVICE_ADD("mb87078", MB87078, 0)
-	MCFG_MB87078_GAIN_CHANGED_CB(DEVWRITE8("taito_en", taito_en_device, mb87078_gain_changed))
-=======
 	MCFG_MC68681_IRQ_CALLBACK(WRITELINE(taito_en_device, duart_irq_handler))
 
 	MCFG_DEVICE_ADD("mb87078", MB87078, 0)
 	MCFG_MB87078_GAIN_CHANGED_CB(WRITE8(taito_en_device, mb87078_gain_changed))
 
 	MCFG_DEVICE_ADD("dpram", MB8421, 0) // host accesses this from the other side
->>>>>>> upstream/master
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")

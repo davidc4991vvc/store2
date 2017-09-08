@@ -152,12 +152,6 @@ TODO:
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/m6809/m6809.h"
-#include "machine/namco62.h"
-#include "sound/samples.h"
-#include "includes/gaplus.h"
-=======
 #include "includes/gaplus.h"
 
 #include "cpu/m6809/m6809.h"
@@ -165,7 +159,6 @@ TODO:
 #include "machine/watchdog.h"
 #include "sound/samples.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 WRITE8_MEMBER(gaplus_state::irq_1_ctrl_w)
@@ -221,27 +214,6 @@ void gaplus_state::device_timer(emu_timer &timer, device_timer_id id, int param,
 {
 	switch (id)
 	{
-<<<<<<< HEAD
-	case TIMER_NAMCOIO_RUN:
-		namcoio_run(ptr, param);
-		break;
-	default:
-		assert_always(FALSE, "Unknown id in gaplus_state::device_timer");
-	}
-}
-
-TIMER_CALLBACK_MEMBER(gaplus_state::namcoio_run)
-{
-	switch (param)
-	{
-		case 0:
-			m_namco58xx->customio_run();
-			break;
-		case 1:
-			m_namco56xx->customio_run();
-			break;
-	}
-=======
 	case TIMER_NAMCOIO0_RUN:
 		namcoio0_run(ptr, param);
 		break;
@@ -261,7 +233,6 @@ TIMER_CALLBACK_MEMBER(gaplus_state::namcoio0_run)
 TIMER_CALLBACK_MEMBER(gaplus_state::namcoio1_run)
 {
 	m_namco56xx->customio_run();
->>>>>>> upstream/master
 }
 
 INTERRUPT_GEN_MEMBER(gaplus_state::vblank_main_irq)
@@ -270,17 +241,10 @@ INTERRUPT_GEN_MEMBER(gaplus_state::vblank_main_irq)
 		m_maincpu->set_input_line(0, ASSERT_LINE);
 
 	if (!m_namco58xx->read_reset_line())       /* give the cpu a tiny bit of time to write the command before processing it */
-<<<<<<< HEAD
-		timer_set(attotime::from_usec(50), TIMER_NAMCOIO_RUN, 0);
-
-	if (!m_namco56xx->read_reset_line())       /* give the cpu a tiny bit of time to write the command before processing it */
-		timer_set(attotime::from_usec(50), TIMER_NAMCOIO_RUN, 1);
-=======
 		m_namcoio0_run_timer->adjust(attotime::from_usec(50));
 
 	if (!m_namco56xx->read_reset_line())       /* give the cpu a tiny bit of time to write the command before processing it */
 		m_namcoio1_run_timer->adjust(attotime::from_usec(50));
->>>>>>> upstream/master
 }
 
 INTERRUPT_GEN_MEMBER(gaplus_state::gapluso_vblank_main_irq)
@@ -289,17 +253,10 @@ INTERRUPT_GEN_MEMBER(gaplus_state::gapluso_vblank_main_irq)
 		m_maincpu->set_input_line(0, ASSERT_LINE);
 
 	if (!m_namco58xx->read_reset_line())       /* give the cpu a tiny bit of time to write the command before processing it */
-<<<<<<< HEAD
-		timer_set(attotime::from_usec(50), TIMER_NAMCOIO_RUN, 1);
-
-	if (!m_namco56xx->read_reset_line())       /* give the cpu a tiny bit of time to write the command before processing it */
-		timer_set(attotime::from_usec(50), TIMER_NAMCOIO_RUN, 0);
-=======
 		m_namcoio1_run_timer->adjust(attotime::from_usec(50));
 
 	if (!m_namco56xx->read_reset_line())       /* give the cpu a tiny bit of time to write the command before processing it */
 		m_namcoio0_run_timer->adjust(attotime::from_usec(50));
->>>>>>> upstream/master
 }
 
 INTERRUPT_GEN_MEMBER(gaplus_state::vblank_sub_irq)
@@ -323,11 +280,7 @@ static ADDRESS_MAP_START( cpu1_map, AS_PROGRAM, 8, gaplus_state )
 	AM_RANGE(0x6810, 0x681f) AM_DEVREADWRITE("namcoio_2", namcoio_device, read, write)                                                   /* custom I/O chips interface */
 	AM_RANGE(0x6820, 0x682f) AM_READWRITE(customio_3_r, customio_3_w) AM_SHARE("customio_3")  /* custom I/O chip #3 interface */
 	AM_RANGE(0x7000, 0x7fff) AM_WRITE(irq_1_ctrl_w)                                                      /* main CPU irq control */
-<<<<<<< HEAD
-	AM_RANGE(0x7800, 0x7fff) AM_READ(watchdog_reset_r)                                                          /* watchdog */
-=======
 	AM_RANGE(0x7800, 0x7fff) AM_DEVREAD("watchdog", watchdog_timer_device, reset_r)
->>>>>>> upstream/master
 	AM_RANGE(0x8000, 0x8fff) AM_WRITE(sreset_w)                                                          /* reset CPU #2 & #3, enable sound */
 	AM_RANGE(0x9000, 0x9fff) AM_WRITE(freset_w)                                                          /* reset I/O chips */
 	AM_RANGE(0xa000, 0xa7ff) AM_WRITE(starfield_control_w)               /* starfield control */
@@ -344,11 +297,7 @@ ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( cpu3_map, AS_PROGRAM, 8, gaplus_state )
 	AM_RANGE(0x0000, 0x03ff) AM_DEVREADWRITE("namco", namco_15xx_device, sharedram_r, sharedram_w)  /* shared RAM with the main CPU + sound registers */
-<<<<<<< HEAD
-	AM_RANGE(0x2000, 0x3fff) AM_READWRITE(watchdog_reset_r, watchdog_reset_w)                       /* watchdog? */
-=======
 	AM_RANGE(0x2000, 0x3fff) AM_DEVREADWRITE("watchdog", watchdog_timer_device, reset_r, reset_w)  /* watchdog? */
->>>>>>> upstream/master
 	AM_RANGE(0x4000, 0x7fff) AM_WRITE(irq_3_ctrl_w)                                          /* interrupt enable/disable */
 	AM_RANGE(0xe000, 0xffff) AM_ROM                                                                 /* ROM */
 ADDRESS_MAP_END
@@ -517,11 +466,7 @@ static const char *const gaplus_sample_names[] =
 {
 	"*gaplus",
 	"bang",
-<<<<<<< HEAD
-	0
-=======
 	nullptr
->>>>>>> upstream/master
 };
 
 /***************************************************************************
@@ -532,36 +477,22 @@ static const char *const gaplus_sample_names[] =
 
 WRITE8_MEMBER(gaplus_state::out_lamps0)
 {
-<<<<<<< HEAD
-	set_led_status(machine(), 0, data & 1);
-	set_led_status(machine(), 1, data & 2);
-	coin_lockout_global_w(machine(), data & 4);
-	coin_counter_w(machine(), 0, ~data & 8);
-=======
 	output().set_led_value(0, data & 1);
 	output().set_led_value(1, data & 2);
 	machine().bookkeeping().coin_lockout_global_w(data & 4);
 	machine().bookkeeping().coin_counter_w(0, ~data & 8);
->>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(gaplus_state::out_lamps1)
 {
-<<<<<<< HEAD
-	coin_counter_w(machine(), 1, ~data & 1);
-=======
 	machine().bookkeeping().coin_counter_w(1, ~data & 1);
->>>>>>> upstream/master
 }
 
 void gaplus_state::machine_start()
 {
-<<<<<<< HEAD
-=======
 	m_namcoio0_run_timer = timer_alloc(TIMER_NAMCOIO0_RUN);
 	m_namcoio1_run_timer = timer_alloc(TIMER_NAMCOIO1_RUN);
 
->>>>>>> upstream/master
 	switch (m_type)
 	{
 		case GAME_GALAGA3:
@@ -581,11 +512,7 @@ void gaplus_state::machine_start()
 }
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( gaplus, gaplus_state )
-=======
 static MACHINE_CONFIG_START( gaplus )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6809,  24576000/16)    /* 1.536 MHz */
@@ -602,13 +529,9 @@ static MACHINE_CONFIG_START( gaplus )
 
 	MCFG_QUANTUM_TIME(attotime::from_hz(6000))  /* a high value to ensure proper synchronization of the CPUs */
 
-<<<<<<< HEAD
-	MCFG_DEVICE_ADD("namcoio_1", NAMCO56XX, 0)
-=======
 	MCFG_WATCHDOG_ADD("watchdog")
 
 	MCFG_DEVICE_ADD("namcoio_1", NAMCO_56XX, 0)
->>>>>>> upstream/master
 	MCFG_NAMCO56XX_IN_0_CB(IOPORT("COINS"))
 	MCFG_NAMCO56XX_IN_1_CB(IOPORT("P1"))
 	MCFG_NAMCO56XX_IN_2_CB(IOPORT("P2"))
@@ -616,11 +539,7 @@ static MACHINE_CONFIG_START( gaplus )
 	MCFG_NAMCO56XX_OUT_0_CB(WRITE8(gaplus_state, out_lamps0))
 	MCFG_NAMCO56XX_OUT_1_CB(WRITE8(gaplus_state, out_lamps1))
 
-<<<<<<< HEAD
-	MCFG_DEVICE_ADD("namcoio_2", NAMCO58XX, 0)
-=======
 	MCFG_DEVICE_ADD("namcoio_2", NAMCO_58XX, 0)
->>>>>>> upstream/master
 	MCFG_NAMCO58XX_IN_0_CB(IOPORT("DSWA_HIGH"))
 	MCFG_NAMCO58XX_IN_1_CB(IOPORT("DSWB_LOW"))
 	MCFG_NAMCO58XX_IN_2_CB(IOPORT("DSWB_HIGH"))
@@ -641,11 +560,7 @@ static MACHINE_CONFIG_START( gaplus )
 	MCFG_SCREEN_SIZE(36*8, 28*8)
 	MCFG_SCREEN_VISIBLE_AREA(0*8, 36*8-1, 0*8, 28*8-1)
 	MCFG_SCREEN_UPDATE_DRIVER(gaplus_state, screen_update)
-<<<<<<< HEAD
-	MCFG_SCREEN_VBLANK_DRIVER(gaplus_state, screen_eof)
-=======
 	MCFG_SCREEN_VBLANK_CALLBACK(WRITELINE(gaplus_state, screen_vblank))
->>>>>>> upstream/master
 	MCFG_SCREEN_PALETTE("palette")
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", gaplus)
@@ -668,21 +583,13 @@ MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_DERIVED( gaplusd, gaplus )
 
-<<<<<<< HEAD
-	MCFG_DEVICE_REPLACE("namcoio_1", NAMCO58XX, 0)
-=======
 	MCFG_DEVICE_REPLACE("namcoio_1", NAMCO_58XX, 0)
->>>>>>> upstream/master
 	MCFG_NAMCO58XX_IN_0_CB(IOPORT("COINS"))
 	MCFG_NAMCO58XX_IN_1_CB(IOPORT("P1"))
 	MCFG_NAMCO58XX_IN_2_CB(IOPORT("P2"))
 	MCFG_NAMCO58XX_IN_3_CB(IOPORT("BUTTONS"))
 
-<<<<<<< HEAD
-	MCFG_DEVICE_REPLACE("namcoio_2", NAMCO56XX, 0)
-=======
 	MCFG_DEVICE_REPLACE("namcoio_2", NAMCO_56XX, 0)
->>>>>>> upstream/master
 	MCFG_NAMCO56XX_IN_0_CB(IOPORT("DSWA_HIGH"))
 	MCFG_NAMCO56XX_IN_1_CB(IOPORT("DSWB_LOW"))
 	MCFG_NAMCO56XX_IN_2_CB(IOPORT("DSWB_HIGH"))
@@ -695,21 +602,13 @@ static MACHINE_CONFIG_DERIVED( gapluso, gaplusd )
 	MCFG_CPU_MODIFY("maincpu")
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", gaplus_state,  gapluso_vblank_main_irq)
 
-<<<<<<< HEAD
-	MCFG_DEVICE_REPLACE("namcoio_1", NAMCO56XX, 0)
-=======
 	MCFG_DEVICE_REPLACE("namcoio_1", NAMCO_56XX, 0)
->>>>>>> upstream/master
 	MCFG_NAMCO56XX_IN_0_CB(IOPORT("COINS"))
 	MCFG_NAMCO56XX_IN_1_CB(IOPORT("P1"))
 	MCFG_NAMCO56XX_IN_2_CB(IOPORT("P2"))
 	MCFG_NAMCO56XX_IN_3_CB(IOPORT("BUTTONS"))
 
-<<<<<<< HEAD
-	MCFG_DEVICE_REPLACE("namcoio_2", NAMCO58XX, 0)
-=======
 	MCFG_DEVICE_REPLACE("namcoio_2", NAMCO_58XX, 0)
->>>>>>> upstream/master
 	MCFG_NAMCO58XX_IN_0_CB(IOPORT("DSWA_HIGH"))
 	MCFG_NAMCO58XX_IN_1_CB(IOPORT("DSWB_LOW"))
 	MCFG_NAMCO58XX_IN_2_CB(IOPORT("DSWB_HIGH"))
@@ -1085,11 +984,7 @@ ROM_END
 
 DRIVER_INIT_MEMBER(gaplus_state,gaplus)
 {
-<<<<<<< HEAD
-	UINT8 *rom;
-=======
 	uint8_t *rom;
->>>>>>> upstream/master
 
 	rom = memregion("gfx1")->base();
 	for (int i = 0;i < 0x2000;i++)

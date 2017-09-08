@@ -1,19 +1,11 @@
 /*
-<<<<<<< HEAD
- * Copyright 2011-2015 Branimir Karadzic. All rights reserved.
- * License: http://www.opensource.org/licenses/BSD-2-Clause
-=======
  * Copyright 2011-2017 Branimir Karadzic. All rights reserved.
  * License: https://github.com/bkaradzic/bgfx#license-bsd-2-clause
->>>>>>> upstream/master
  */
 
 #include "bgfx_p.h"
 
 #if BGFX_CONFIG_RENDERER_VULKAN
-<<<<<<< HEAD
-#	include "../../bgfx-ext/src/renderer_vk.cpp"
-=======
 #	include "renderer_vk.h"
 
 namespace bgfx { namespace vk
@@ -4646,7 +4638,6 @@ BX_UNUSED(presentMin, presentMax);
 
 } /* namespace vk */ } // namespace bgfx
 
->>>>>>> upstream/master
 #else
 
 namespace bgfx { namespace vk

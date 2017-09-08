@@ -8,35 +8,20 @@
   Addittional work by Roberto Fresca.
 
   Notes:
-<<<<<<< HEAD
-  - To init chsuper3, just soft-reset and keep pressed both service keys (9 & 0)
-=======
   - To init chsuper3, chmpnum & chmpnuma, just keep pressed both service keys (9 & 0),
     and do a soft-reset (F3).
->>>>>>> upstream/master
 
   TODO:
   - sound.
   - ticket dispenser.
   - Trace the hold3 lamp line on the pcb,
-<<<<<<< HEAD
-    for a properly implementation.
-=======
     for a proper implementation.
->>>>>>> upstream/master
 
 *******************************************************************************************/
 
 
 #include "emu.h"
 #include "cpu/z180/z180.h"
-<<<<<<< HEAD
-#include "sound/dac.h"
-#include "machine/nvram.h"
-#include "video/ramdac.h"
-#include "chsuper.lh"
-
-=======
 #include "machine/nvram.h"
 #include "sound/dac.h"
 #include "sound/volt_reg.h"
@@ -47,7 +32,6 @@
 #include "chsuper.lh"
 
 
->>>>>>> upstream/master
 class chsuper_state : public driver_device
 {
 public:
@@ -62,35 +46,21 @@ public:
 	DECLARE_WRITE8_MEMBER(chsuper_outportb_w);
 
 	int m_tilexor;
-<<<<<<< HEAD
-	UINT8 m_blacklamp;
-	UINT8 m_redlamp;
-	UINT8 *m_vram;
-=======
 	uint8_t m_blacklamp;
 	uint8_t m_redlamp;
 	std::unique_ptr<uint8_t[]> m_vram;
->>>>>>> upstream/master
 
 	required_device<z180_device> m_maincpu;
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
-<<<<<<< HEAD
-	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 
 protected:
 	// driver_device overrides
 	//virtual void machine_start();
 	//virtual void machine_reset();
 
-<<<<<<< HEAD
-	virtual void video_start();
-=======
 	virtual void video_start() override;
->>>>>>> upstream/master
 public:
 	DECLARE_DRIVER_INIT(chsuper3);
 	DECLARE_DRIVER_INIT(chmpnum);
@@ -99,14 +69,6 @@ public:
 
 
 
-<<<<<<< HEAD
-void chsuper_state::video_start()
-{
-	m_vram = auto_alloc_array_clear(machine(), UINT8, 1 << 14);
-}
-
-UINT32 chsuper_state::screen_update( screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect )
-=======
 /***************************
 *      Video Hardware      *
 ***************************/
@@ -117,7 +79,6 @@ void chsuper_state::video_start()
 }
 
 uint32_t chsuper_state::screen_update( screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect )
->>>>>>> upstream/master
 {
 	gfx_element *gfx = m_gfxdecode->gfx(0);
 	int count = 0x0000;
@@ -186,21 +147,12 @@ WRITE8_MEMBER( chsuper_state::chsuper_vram_w )
 
 WRITE8_MEMBER( chsuper_state::chsuper_outporta_w )  // Port EEh
 {
-<<<<<<< HEAD
-	coin_counter_w(machine(), 0, data & 0x01);  // Coin counter
-	output_set_lamp_value(0, (data >> 1) & 1);  // Hold 1 / Black (Nero) lamp.
-	coin_counter_w(machine(), 1, data & 0x04);  // Payout / Ticket Out pulse
-	output_set_lamp_value(1, (data >> 3) & 1);  // Hold 2 / Low (Bassa) lamp.
-	// D4: unused...
-	output_set_lamp_value(5, (data >> 5) & 1);  // BET lamp
-=======
 	machine().bookkeeping().coin_counter_w(0, data & 0x01);  // Coin counter
 	output().set_lamp_value(0, (data >> 1) & 1);  // Hold 1 / Black (Nero) lamp.
 	machine().bookkeeping().coin_counter_w(1, data & 0x04);  // Payout / Ticket Out pulse
 	output().set_lamp_value(1, (data >> 3) & 1);  // Hold 2 / Low (Bassa) lamp.
 	// D4: unused...
 	output().set_lamp_value(5, (data >> 5) & 1);  // BET lamp
->>>>>>> upstream/master
 	// D6: ticket motor...
 	// D7: unused...
 
@@ -211,19 +163,11 @@ WRITE8_MEMBER( chsuper_state::chsuper_outporta_w )  // Port EEh
 
 	if ((m_blacklamp == 1) & (m_redlamp == 1))  // if both are ON...
 	{
-<<<<<<< HEAD
-		output_set_lamp_value(2, 1);            // HOLD 3 ON
-	}
-	else
-	{
-		output_set_lamp_value(2, 0);            // otherwise HOLD 3 OFF
-=======
 		output().set_lamp_value(2, 1);            // HOLD 3 ON
 	}
 	else
 	{
 		output().set_lamp_value(2, 0);            // otherwise HOLD 3 OFF
->>>>>>> upstream/master
 	}
 }
 
@@ -231,19 +175,11 @@ WRITE8_MEMBER( chsuper_state::chsuper_outportb_w )  // Port EFh
 {
 	// D0: unknown...
 	// D1: unused...
-<<<<<<< HEAD
-	output_set_lamp_value(3, (data >> 2) & 1);  // Hold 4 / High (Alta) lamp.
-	// D3: unused...
-	// D4: unused...
-	output_set_lamp_value(4, (data >> 5) & 1);  // Hold 5 / Red (Rosso) / Gamble (Raddoppio) lamp.
-	output_set_lamp_value(6, (data >> 6) & 1);  // Start / Gamble (Raddoppio) lamp.
-=======
 	output().set_lamp_value(3, (data >> 2) & 1);  // Hold 4 / High (Alta) lamp.
 	// D3: unused...
 	// D4: unused...
 	output().set_lamp_value(4, (data >> 5) & 1);  // Hold 5 / Red (Rosso) / Gamble (Raddoppio) lamp.
 	output().set_lamp_value(6, (data >> 6) & 1);  // Start / Gamble (Raddoppio) lamp.
->>>>>>> upstream/master
 	// D7: unused...
 
 /*  Workaround to get the HOLD 3 lamp line active,
@@ -253,30 +189,19 @@ WRITE8_MEMBER( chsuper_state::chsuper_outportb_w )  // Port EFh
 
 	if ((m_blacklamp == 1) & (m_redlamp == 1))  // if both are ON...
 	{
-<<<<<<< HEAD
-		output_set_lamp_value(2, 1);    // Hold 3 ON
-	}
-	else
-	{
-		output_set_lamp_value(2, 0);    // Hold 3 OFF
-=======
 		output().set_lamp_value(2, 1);    // Hold 3 ON
 	}
 	else
 	{
 		output().set_lamp_value(2, 0);    // Hold 3 OFF
->>>>>>> upstream/master
 	}
 }
 
 
-<<<<<<< HEAD
-=======
 /***************************
 *   Memory Map handlers    *
 ***************************/
 
->>>>>>> upstream/master
 static ADDRESS_MAP_START( chsuper_prg_map, AS_PROGRAM, 8, chsuper_state )
 	AM_RANGE(0x00000, 0x0efff) AM_ROM
 	AM_RANGE(0x00000, 0x01fff) AM_WRITE( chsuper_vram_w )
@@ -298,11 +223,7 @@ static ADDRESS_MAP_START( chsuper_portmap, AS_IO, 8, chsuper_state )
 	AM_RANGE( 0x00fd, 0x00fd ) AM_DEVWRITE("ramdac", ramdac_device, pal_w)
 	AM_RANGE( 0x00fe, 0x00fe ) AM_DEVWRITE("ramdac", ramdac_device, mask_w)
 	AM_RANGE( 0x8300, 0x8300 ) AM_READ_PORT("IN2")  // valid input port present in test mode.
-<<<<<<< HEAD
-	AM_RANGE( 0xff20, 0xff3f ) AM_DEVWRITE("dac", dac_device, write_unsigned8) // unk writes
-=======
 	AM_RANGE( 0xff20, 0xff3f ) AM_DEVWRITE("dac", dac_byte_interface, write) // unk writes
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 /* About Sound...
@@ -339,13 +260,10 @@ ADDRESS_MAP_END
 */
 
 
-<<<<<<< HEAD
-=======
 /***************************
 *  Input Ports definition  *
 ***************************/
 
->>>>>>> upstream/master
 static INPUT_PORTS_START( chsuper )
 	PORT_START("IN0")
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_OTHER )       PORT_CODE(KEYCODE_Q) PORT_NAME("IN0-1")
@@ -405,13 +323,10 @@ static INPUT_PORTS_START( chsuper )
 INPUT_PORTS_END
 
 
-<<<<<<< HEAD
-=======
 /*****************************
 *  Graphics Decode Routines  *
 *****************************/
 
->>>>>>> upstream/master
 static const gfx_layout charlayout =
 {
 	4,8,
@@ -427,24 +342,16 @@ static GFXDECODE_START( chsuper )
 	GFXDECODE_ENTRY( "gfx1", 0x00000, charlayout,   0, 1 )
 GFXDECODE_END
 
-<<<<<<< HEAD
-static ADDRESS_MAP_START( ramdac_map, AS_0, 8, chsuper_state )
-=======
 static ADDRESS_MAP_START( ramdac_map, 0, 8, chsuper_state )
->>>>>>> upstream/master
 	AM_RANGE(0x000, 0x3ff) AM_DEVREADWRITE("ramdac",ramdac_device,ramdac_pal_r,ramdac_rgb666_w)
 ADDRESS_MAP_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( chsuper, chsuper_state )
-=======
 /***************************
 *     Machine Drivers      *
 ***************************/
 
 static MACHINE_CONFIG_START( chsuper )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z180, XTAL_12MHz / 4)   /* HD64180RP8, 8 MHz? */
@@ -469,17 +376,6 @@ static MACHINE_CONFIG_START( chsuper )
 	MCFG_RAMDAC_ADD("ramdac", ramdac_map, "palette")
 
 	/* sound hardware */
-<<<<<<< HEAD
-	MCFG_SPEAKER_STANDARD_MONO("mono")
-
-	MCFG_DAC_ADD("dac")
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
-MACHINE_CONFIG_END
-
-
-/*  ROM Regions definition
- */
-=======
 	MCFG_SPEAKER_STANDARD_MONO("speaker")
 
 	MCFG_SOUND_ADD("dac", DAC_8BIT_R2R, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.25) // unknown DAC
@@ -491,7 +387,6 @@ MACHINE_CONFIG_END
 /***************************
 *  ROM Regions definition  *
 ***************************/
->>>>>>> upstream/master
 
 ROM_START( chsuper3 )
 	ROM_REGION( 0x80000, "maincpu", 0 )
@@ -529,13 +424,6 @@ ROM_START( chmpnum )
 	ROM_COPY( "maincpu", 0x10000, 0x00000, 0x70000 )
 ROM_END
 
-<<<<<<< HEAD
-
-DRIVER_INIT_MEMBER(chsuper_state,chsuper2)
-{
-	UINT8 *buffer;
-	UINT8 *rom = memregion("gfx1")->base();
-=======
 /*
   Champion Number (v0.67)
   Year: 1999
@@ -584,16 +472,11 @@ DRIVER_INIT_MEMBER(chsuper_state,chsuper2)
 {
 	std::unique_ptr<uint8_t[]> buffer;
 	uint8_t *rom = memregion("gfx1")->base();
->>>>>>> upstream/master
 	int i;
 
 	m_tilexor = 0x7f00;
 
-<<<<<<< HEAD
-	buffer = auto_alloc_array(machine(), UINT8, 0x100000);
-=======
 	buffer = std::make_unique<uint8_t[]>(0x100000);
->>>>>>> upstream/master
 
 	for (i=0;i<0x100000;i++)
 	{
@@ -604,31 +487,18 @@ DRIVER_INIT_MEMBER(chsuper_state,chsuper2)
 		buffer[j] = rom[i];
 	}
 
-<<<<<<< HEAD
-	memcpy(rom,buffer,0x100000);
-=======
 	memcpy(rom,buffer.get(),0x100000);
->>>>>>> upstream/master
 }
 
 DRIVER_INIT_MEMBER(chsuper_state,chsuper3)
 {
-<<<<<<< HEAD
-	UINT8 *buffer;
-	UINT8 *rom = memregion("gfx1")->base();
-=======
 	std::unique_ptr<uint8_t[]> buffer;
 	uint8_t *rom = memregion("gfx1")->base();
->>>>>>> upstream/master
 	int i;
 
 	m_tilexor = 0x0e00;
 
-<<<<<<< HEAD
-	buffer = auto_alloc_array(machine(), UINT8, 0x100000);
-=======
 	buffer = std::make_unique<uint8_t[]>(0x100000);
->>>>>>> upstream/master
 
 	for (i=0;i<0x100000;i++)
 	{
@@ -639,31 +509,18 @@ DRIVER_INIT_MEMBER(chsuper_state,chsuper3)
 		buffer[j] = rom[i];
 	}
 
-<<<<<<< HEAD
-	memcpy(rom,buffer,0x100000);
-=======
 	memcpy(rom,buffer.get(),0x100000);
->>>>>>> upstream/master
 }
 
 DRIVER_INIT_MEMBER(chsuper_state,chmpnum)
 {
-<<<<<<< HEAD
-	UINT8 *buffer;
-	UINT8 *rom = memregion("gfx1")->base();
-=======
 	std::unique_ptr<uint8_t[]> buffer;
 	uint8_t *rom = memregion("gfx1")->base();
->>>>>>> upstream/master
 	int i;
 
 	m_tilexor = 0x1800;
 
-<<<<<<< HEAD
-	buffer = auto_alloc_array(machine(), UINT8, 0x100000);
-=======
 	buffer = std::make_unique<uint8_t[]>(0x100000);
->>>>>>> upstream/master
 
 	for (i=0;i<0x100000;i++)
 	{
@@ -678,11 +535,7 @@ DRIVER_INIT_MEMBER(chsuper_state,chmpnum)
 		buffer[j] = rom[i];
 	}
 
-<<<<<<< HEAD
-	memcpy(rom,buffer,0x100000);
-=======
 	memcpy(rom,buffer.get(),0x100000);
->>>>>>> upstream/master
 }
 
 
@@ -694,7 +547,4 @@ DRIVER_INIT_MEMBER(chsuper_state,chmpnum)
 GAMEL( 1999, chsuper3, 0,        chsuper, chsuper, chsuper_state,  chsuper3, ROT0, "<unknown>",    "Champion Super 3 (V0.35)", MACHINE_IMPERFECT_SOUND, layout_chsuper ) //24/02/99
 GAMEL( 1999, chsuper2, chsuper3, chsuper, chsuper, chsuper_state,  chsuper2, ROT0, "<unknown>",    "Champion Super 2 (V0.13)", MACHINE_IMPERFECT_SOUND, layout_chsuper ) //26/01/99
 GAME(  1999, chmpnum,  chsuper3, chsuper, chsuper, chsuper_state,  chmpnum,  ROT0, "<unknown>",    "Champion Number (V0.74)",  MACHINE_IMPERFECT_SOUND )                 //10/11/99
-<<<<<<< HEAD
-=======
 GAME(  1999, chmpnuma, chsuper3, chsuper, chsuper, chsuper_state,  chmpnum,  ROT0, "<unknown>",    "Champion Number (V0.67)",  MACHINE_IMPERFECT_SOUND )                 //21/10/99
->>>>>>> upstream/master

@@ -17,19 +17,11 @@
 //**************************************************************************
 
 // device type definition
-<<<<<<< HEAD
-const device_type OKIM9810 = &device_creator<okim9810_device>;
-
-// volume lookup table. The manual lists a full 16 steps, 2dB per step.
-// Given the dB values, that seems to map to a 7-bit volume control.
-const UINT8 okim9810_device::okim_voice::s_volume_table[16] =
-=======
 DEFINE_DEVICE_TYPE(OKIM9810, okim9810_device, "okim9810", "OKI MSM9810 ADPCM")
 
 // volume lookup table. The manual lists a full 16 steps, 2dB per step.
 // Given the dB values, that seems to map to a 7-bit volume control.
 const uint8_t okim9810_device::okim_voice::s_volume_table[16] =
->>>>>>> upstream/master
 {
 	0x80,   //  0 dB
 	0x65,   // -2 dB
@@ -50,11 +42,7 @@ const uint8_t okim9810_device::okim_voice::s_volume_table[16] =
 };
 
 // sampling frequency lookup table.
-<<<<<<< HEAD
-const UINT32 okim9810_device::s_sampling_freq_table[16] =
-=======
 const uint32_t okim9810_device::s_sampling_freq_table[16] =
->>>>>>> upstream/master
 {
 	4000,
 	8000,
@@ -74,14 +62,6 @@ const uint32_t okim9810_device::s_sampling_freq_table[16] =
 	0
 };
 
-<<<<<<< HEAD
-// default address map
-static ADDRESS_MAP_START( okim9810, AS_0, 8, okim9810_device )
-	AM_RANGE(0x000000, 0xffffff) AM_ROM
-ADDRESS_MAP_END
-
-=======
->>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -92,18 +72,6 @@ ADDRESS_MAP_END
 //  okim9810_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-okim9810_device::okim9810_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, OKIM9810, "OKI9810", tag, owner, clock, "okim9810", __FILE__),
-		device_sound_interface(mconfig, *this),
-		device_memory_interface(mconfig, *this),
-		m_space_config("samples", ENDIANNESS_BIG, 8, 24, 0, NULL, *ADDRESS_MAP_NAME(okim9810)),
-		m_stream(NULL),
-		m_TMP_register(0x00),
-		m_global_volume(0x00),
-		m_filter_type(OKIM9810_SECONDARY_FILTER),
-		m_output_level(OKIM9810_OUTPUT_TO_DIRECT_DAC)
-=======
 okim9810_device::okim9810_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, OKIM9810, tag, owner, clock),
 		device_sound_interface(mconfig, *this),
@@ -113,7 +81,6 @@ okim9810_device::okim9810_device(const machine_config &mconfig, const char *tag,
 		m_global_volume(0x00),
 		m_filter_type(SECONDARY_FILTER),
 		m_output_level(OUTPUT_TO_DIRECT_DAC)
->>>>>>> upstream/master
 {
 }
 
@@ -124,12 +91,6 @@ okim9810_device::okim9810_device(const machine_config &mconfig, const char *tag,
 
 void okim9810_device::device_start()
 {
-<<<<<<< HEAD
-	// find our direct access
-	m_direct = &space().direct();
-
-=======
->>>>>>> upstream/master
 	// create the stream
 	//int divisor = m_pin7 ? 132 : 165;
 	m_stream = machine().sound().stream_alloc(*this, 0, 2, clock());
@@ -174,13 +135,8 @@ void okim9810_device::device_start()
 void okim9810_device::device_reset()
 {
 	m_stream->update();
-<<<<<<< HEAD
-	for (int voicenum = 0; voicenum < OKIM9810_VOICES; voicenum++)
-		m_voice[voicenum].m_playing = false;
-=======
 	for (auto & elem : m_voice)
 		elem.m_playing = false;
->>>>>>> upstream/master
 }
 
 
@@ -203,16 +159,6 @@ void okim9810_device::device_clock_changed()
 }
 
 
-<<<<<<< HEAD
-//-------------------------------------------------
-//  memory_space_config - return a description of
-//  any address spaces owned by this device
-//-------------------------------------------------
-
-const address_space_config *okim9810_device::memory_space_config(address_spacenum spacenum) const
-{
-	return (spacenum == 0) ? &m_space_config : NULL;
-=======
 
 //-------------------------------------------------
 //  rom_bank_updated - the rom bank has changed
@@ -221,7 +167,6 @@ const address_space_config *okim9810_device::memory_space_config(address_spacenu
 void okim9810_device::rom_bank_updated()
 {
 	m_stream->update();
->>>>>>> upstream/master
 }
 
 
@@ -237,13 +182,8 @@ void okim9810_device::sound_stream_update(sound_stream &stream, stream_sample_t 
 	memset(outputs[1], 0, samples * sizeof(*outputs[1]));
 
 	// iterate over voices and accumulate sample data
-<<<<<<< HEAD
-	for (int voicenum = 0; voicenum < OKIM9810_VOICES; voicenum++)
-		m_voice[voicenum].generate_audio(*m_direct, outputs, samples, m_global_volume, clock(), m_filter_type);
-=======
 	for (auto & elem : m_voice)
 		elem.generate_audio(*this, outputs, samples, m_global_volume, clock(), m_filter_type);
->>>>>>> upstream/master
 }
 
 
@@ -251,17 +191,10 @@ void okim9810_device::sound_stream_update(sound_stream &stream, stream_sample_t 
 //  read_status - read the status register
 //-------------------------------------------------
 
-<<<<<<< HEAD
-UINT8 okim9810_device::read_status()
-{
-	UINT8 result = 0x00;
-	UINT8 channelMask = 0x01;
-=======
 uint8_t okim9810_device::read_status()
 {
 	uint8_t result = 0x00;
 	uint8_t channelMask = 0x01;
->>>>>>> upstream/master
 	for (int i = 0; i < OKIM9810_VOICES; i++, channelMask <<= 1)
 	{
 		if (!m_voice[i].m_playing)
@@ -286,28 +219,17 @@ READ8_MEMBER( okim9810_device::read )
 //-------------------------------------------------
 
 // The command is written when the CMD pin is low
-<<<<<<< HEAD
-void okim9810_device::write_command(UINT8 data)
-{
-	const UINT8 cmd = (data & 0xf8) >> 3;
-	const UINT8 channel = (data & 0x07);
-=======
 void okim9810_device::write_command(uint8_t data)
 {
 	const uint8_t cmd = (data & 0xf8) >> 3;
 	const uint8_t channel = (data & 0x07);
->>>>>>> upstream/master
 
 	switch(cmd)
 	{
 		case 0x00:  // START
 		{
 			osd_printf_debug("START channel mask %02x\n", m_TMP_register);
-<<<<<<< HEAD
-			UINT8 channelMask = 0x01;
-=======
 			uint8_t channelMask = 0x01;
->>>>>>> upstream/master
 			for (int i = 0; i < OKIM9810_VOICES; i++, channelMask <<= 1)
 			{
 				if (channelMask & m_TMP_register)
@@ -329,11 +251,7 @@ void okim9810_device::write_command(uint8_t data)
 		case 0x01:  // STOP
 		{
 			osd_printf_debug("STOP  channel mask %02x\n", m_TMP_register);
-<<<<<<< HEAD
-			UINT8 channelMask = 0x01;
-=======
 			uint8_t channelMask = 0x01;
->>>>>>> upstream/master
 			for (int i = 0; i < OKIM9810_VOICES; i++, channelMask <<= 1)
 			{
 				if (channelMask & m_TMP_register)
@@ -347,11 +265,7 @@ void okim9810_device::write_command(uint8_t data)
 		case 0x02:  // LOOP
 		{
 			osd_printf_debug("LOOP  channel mask %02x\n", m_TMP_register);
-<<<<<<< HEAD
-			UINT8 channelMask = 0x01;
-=======
 			uint8_t channelMask = 0x01;
->>>>>>> upstream/master
 			for (int i = 0; i < OKIM9810_VOICES; i++, channelMask <<= 1)
 			{
 				if (channelMask & m_TMP_register)
@@ -390,18 +304,6 @@ void okim9810_device::write_command(uint8_t data)
 			const offs_t base = m_TMP_register * 8;
 
 			offs_t startAddr;
-<<<<<<< HEAD
-			UINT8 startFlags = m_direct->read_byte(base + 0);
-			startAddr  = m_direct->read_byte(base + 1) << 16;
-			startAddr |= m_direct->read_byte(base + 2) << 8;
-			startAddr |= m_direct->read_byte(base + 3) << 0;
-
-			offs_t endAddr;
-			UINT8 endFlags = m_direct->read_byte(base + 4);
-			endAddr  = m_direct->read_byte(base + 5) << 16;
-			endAddr |= m_direct->read_byte(base + 6) << 8;
-			endAddr |= m_direct->read_byte(base + 7) << 0;
-=======
 			uint8_t startFlags = read_byte(base + 0);
 			startAddr  = read_byte(base + 1) << 16;
 			startAddr |= read_byte(base + 2) << 8;
@@ -412,24 +314,12 @@ void okim9810_device::write_command(uint8_t data)
 			endAddr  = read_byte(base + 5) << 16;
 			endAddr |= read_byte(base + 6) << 8;
 			endAddr |= read_byte(base + 7) << 0;
->>>>>>> upstream/master
 
 			// Sub-table
 			if (startFlags & 0x80)
 			{
 				offs_t subTable = startAddr;
 				// TODO: New startFlags &= 0x80.  Are there further subtables?
-<<<<<<< HEAD
-				startFlags = m_direct->read_byte(subTable + 0);
-				startAddr  = m_direct->read_byte(subTable + 1) << 16;
-				startAddr |= m_direct->read_byte(subTable + 2) << 8;
-				startAddr |= m_direct->read_byte(subTable + 3) << 0;
-
-				// TODO: What does byte (subTable + 4) refer to?
-				endAddr  = m_direct->read_byte(subTable + 5) << 16;
-				endAddr |= m_direct->read_byte(subTable + 6) << 8;
-				endAddr |= m_direct->read_byte(subTable + 7) << 0;
-=======
 				startFlags = read_byte(subTable + 0);
 				startAddr  = read_byte(subTable + 1) << 16;
 				startAddr |= read_byte(subTable + 2) << 8;
@@ -439,7 +329,6 @@ void okim9810_device::write_command(uint8_t data)
 				endAddr  = read_byte(subTable + 5) << 16;
 				endAddr |= read_byte(subTable + 6) << 8;
 				endAddr |= read_byte(subTable + 7) << 0;
->>>>>>> upstream/master
 			}
 
 			m_voice[channel].m_sample = 0;
@@ -451,13 +340,8 @@ void okim9810_device::write_command(uint8_t data)
 
 			m_voice[channel].m_playbackAlgo = (startFlags & 0x30) >> 4;
 			m_voice[channel].m_samplingFreq = s_sampling_freq_table[startFlags & 0x0f];
-<<<<<<< HEAD
-			if (m_voice[channel].m_playbackAlgo == OKIM9810_ADPCM_PLAYBACK ||
-				m_voice[channel].m_playbackAlgo == OKIM9810_ADPCM2_PLAYBACK)
-=======
 			if (m_voice[channel].m_playbackAlgo == ADPCM_PLAYBACK ||
 				m_voice[channel].m_playbackAlgo == ADPCM2_PLAYBACK)
->>>>>>> upstream/master
 				m_voice[channel].m_count *= 2;
 			else
 				osd_printf_warning("MSM9810: UNIMPLEMENTED PLAYBACK METHOD %d\n", m_voice[channel].m_playbackAlgo);
@@ -483,13 +367,8 @@ void okim9810_device::write_command(uint8_t data)
 		}
 		case 0x08:  // PAN
 		{
-<<<<<<< HEAD
-			const UINT8 leftVolIndex = (m_TMP_register & 0xf0) >> 4;
-			const UINT8 rightVolIndex = m_TMP_register & 0x0f;
-=======
 			const uint8_t leftVolIndex = (m_TMP_register & 0xf0) >> 4;
 			const uint8_t rightVolIndex = m_TMP_register & 0x0f;
->>>>>>> upstream/master
 			osd_printf_debug("PAN   channel %d left index: %02x right index: %02x (%02x)\n", channel, leftVolIndex, rightVolIndex, m_TMP_register);
 			osd_printf_debug("\tChannel %d left -> %d right -> %d\n", channel, leftVolIndex, rightVolIndex);
 			m_voice[channel].m_pan_volume_left = leftVolIndex;
@@ -515,24 +394,14 @@ WRITE8_MEMBER( okim9810_device::write )
 //-----------------------------------------------------------
 
 // TMP is written when the CMD pin is high
-<<<<<<< HEAD
-void okim9810_device::write_TMP_register(UINT8 data)
-=======
 void okim9810_device::write_tmp_register(uint8_t data)
->>>>>>> upstream/master
 {
 	m_TMP_register = data;
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER( okim9810_device::write_TMP_register )
-{
-	write_TMP_register(data);
-=======
 WRITE8_MEMBER( okim9810_device::write_tmp_register )
 {
 	write_tmp_register(data);
->>>>>>> upstream/master
 }
 
 
@@ -545,11 +414,7 @@ WRITE8_MEMBER( okim9810_device::write_tmp_register )
 //-------------------------------------------------
 
 okim9810_device::okim_voice::okim_voice()
-<<<<<<< HEAD
-	: m_playbackAlgo(OKIM9810_ADPCM2_PLAYBACK),
-=======
 	: m_playbackAlgo(ADPCM2_PLAYBACK),
->>>>>>> upstream/master
 		m_looping(false),
 		m_startFlags(0),
 		m_endFlags(0),
@@ -572,21 +437,12 @@ okim9810_device::okim_voice::okim_voice()
 //  add them to an output stream
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void okim9810_device::okim_voice::generate_audio(direct_read_data &direct,
-													stream_sample_t **buffers,
-													int samples,
-													const UINT8 global_volume,
-													const UINT32 clock,
-													const UINT8 filter_type)
-=======
 void okim9810_device::okim_voice::generate_audio(device_rom_interface &rom,
 													stream_sample_t **buffers,
 													int samples,
 													const uint8_t global_volume,
 													const uint32_t clock,
 													const uint8_t filter_type)
->>>>>>> upstream/master
 {
 	// skip if not active
 	if (!m_playing)
@@ -597,19 +453,11 @@ void okim9810_device::okim_voice::generate_audio(device_rom_interface &rom,
 	stream_sample_t *outR = buffers[1];
 
 	// get left and right volumes
-<<<<<<< HEAD
-	UINT8 volume_scale_left = volume_scale(global_volume, m_channel_volume, m_pan_volume_left);
-	UINT8 volume_scale_right = volume_scale(global_volume, m_channel_volume, m_pan_volume_right);
-
-	// total samples per byte
-	UINT32 totalInterpSamples = clock / m_samplingFreq;
-=======
 	uint8_t volume_scale_left = volume_scale(global_volume, m_channel_volume, m_pan_volume_left);
 	uint8_t volume_scale_right = volume_scale(global_volume, m_channel_volume, m_pan_volume_right);
 
 	// total samples per byte
 	uint32_t totalInterpSamples = clock / m_samplingFreq;
->>>>>>> upstream/master
 
 	// loop while we still have samples to generate
 	while (samples-- != 0)
@@ -621,21 +469,6 @@ void okim9810_device::okim_voice::generate_audio(device_rom_interface &rom,
 			if (m_sample == 0)
 			{
 				// fetch the first sample nibble
-<<<<<<< HEAD
-				int nibble0 = direct.read_byte(m_base_offset + m_sample / 2) >> (((m_sample & 1) << 2) ^ 4);
-				switch (m_playbackAlgo)
-				{
-					case OKIM9810_ADPCM_PLAYBACK:
-					{
-						m_adpcm.reset();
-						m_startSample = (INT32)m_adpcm.clock(nibble0);
-						break;
-					}
-					case OKIM9810_ADPCM2_PLAYBACK:
-					{
-						m_adpcm2.reset();
-						m_startSample = (INT32)m_adpcm2.clock(nibble0);
-=======
 				int nibble0 = rom.read_byte(m_base_offset + m_sample / 2) >> (((m_sample & 1) << 2) ^ 4);
 				switch (m_playbackAlgo)
 				{
@@ -649,7 +482,6 @@ void okim9810_device::okim_voice::generate_audio(device_rom_interface &rom,
 					{
 						m_adpcm2.reset();
 						m_startSample = (int32_t)m_adpcm2.clock(nibble0);
->>>>>>> upstream/master
 						break;
 					}
 					default:
@@ -663,19 +495,6 @@ void okim9810_device::okim_voice::generate_audio(device_rom_interface &rom,
 			}
 
 			// And fetch the second sample nibble
-<<<<<<< HEAD
-			int nibble1 = direct.read_byte(m_base_offset + (m_sample+1) / 2) >> ((((m_sample+1) & 1) << 2) ^ 4);
-			switch (m_playbackAlgo)
-			{
-				case OKIM9810_ADPCM_PLAYBACK:
-				{
-					m_endSample = (INT32)m_adpcm.clock(nibble1);
-					break;
-				}
-				case OKIM9810_ADPCM2_PLAYBACK:
-				{
-					m_endSample = (INT32)m_adpcm2.clock(nibble1);
-=======
 			int nibble1 = rom.read_byte(m_base_offset + (m_sample+1) / 2) >> ((((m_sample+1) & 1) << 2) ^ 4);
 			switch (m_playbackAlgo)
 			{
@@ -687,7 +506,6 @@ void okim9810_device::okim_voice::generate_audio(device_rom_interface &rom,
 				case ADPCM2_PLAYBACK:
 				{
 					m_endSample = (int32_t)m_adpcm2.clock(nibble1);
->>>>>>> upstream/master
 					break;
 				}
 				default:
@@ -697,32 +515,18 @@ void okim9810_device::okim_voice::generate_audio(device_rom_interface &rom,
 
 		// TODO: Interpolate using proper numeric types.
 		float progress = (float)m_interpSampleNum / (float)totalInterpSamples;
-<<<<<<< HEAD
-		INT32 interpValue = (INT32)((float)m_startSample + (((float)m_endSample-(float)m_startSample) * progress));
-
-		// if filtering is unwanted
-		if (filter_type != OKIM9810_SECONDARY_FILTER && filter_type != OKIM9810_PRIMARY_FILTER)
-=======
 		int32_t interpValue = (int32_t)((float)m_startSample + (((float)m_endSample-(float)m_startSample) * progress));
 
 		// if filtering is unwanted
 		if (filter_type != SECONDARY_FILTER && filter_type != PRIMARY_FILTER)
->>>>>>> upstream/master
 			interpValue = m_startSample;
 
 		// output to the stereo buffers, scaling by the volume
 		// signal in range -2048..2047, volume in range 2..128 => signal * volume / 8 in range -32768..32767
-<<<<<<< HEAD
-		INT32 interpValueL = (interpValue * (INT32)volume_scale_left) / 8;
-		*outL++ += interpValueL;
-
-		INT32 interpValueR = (interpValue * (INT32)volume_scale_right) / 8;
-=======
 		int32_t interpValueL = (interpValue * (int32_t)volume_scale_left) / 8;
 		*outL++ += interpValueL;
 
 		int32_t interpValueR = (interpValue * (int32_t)volume_scale_right) / 8;
->>>>>>> upstream/master
 		*outR++ += interpValueR;
 
 		// if the interpsample has reached its end, move on to the next sample
@@ -756,16 +560,6 @@ void okim9810_device::okim_voice::generate_audio(device_rom_interface &rom,
 //  Returns a value from the volume lookup table.
 //-------------------------------------------------
 
-<<<<<<< HEAD
-UINT8 okim9810_device::okim_voice::volume_scale(const UINT8 global_volume_index,
-												const UINT8 channel_volume_index,
-												const UINT8 pan_volume_index) const
-{
-	const UINT8& V = channel_volume_index;
-	const UINT8& L = pan_volume_index;
-	const UINT8& O = global_volume_index;
-	UINT32 index = (V+L) + (O*3);
-=======
 uint8_t okim9810_device::okim_voice::volume_scale(const uint8_t global_volume_index,
 												const uint8_t channel_volume_index,
 												const uint8_t pan_volume_index) const
@@ -774,7 +568,6 @@ uint8_t okim9810_device::okim_voice::volume_scale(const uint8_t global_volume_in
 	const uint8_t& L = pan_volume_index;
 	const uint8_t& O = global_volume_index;
 	uint32_t index = (V+L) + (O*3);
->>>>>>> upstream/master
 
 	if (index > 15)
 		index = 15;

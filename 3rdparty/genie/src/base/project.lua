@@ -17,11 +17,7 @@
 --    contains a reference back to the original project: prj = tr.project.
 --
 
-<<<<<<< HEAD
-	function premake.project.buildsourcetree(prj)
-=======
 	function premake.project.buildsourcetree(prj, allfiles)
->>>>>>> upstream/master
 		local tr = premake.tree.new(prj.name)
 		tr.project = prj
 
@@ -31,11 +27,7 @@
 			node.isvpath = isvpath
 		end
 
-<<<<<<< HEAD
-		for fcfg in premake.project.eachfile(prj) do
-=======
 		for fcfg in premake.project.eachfile(prj, allfiles) do
->>>>>>> upstream/master
 			isvpath = (fcfg.name ~= fcfg.vpath)
 			local node = premake.tree.add(tr, fcfg.vpath, onadd)
 			node.cfg = fcfg
@@ -73,17 +65,6 @@
 -- Iterator for a project's files; returns a file configuration object.
 --
 
-<<<<<<< HEAD
-	function premake.project.eachfile(prj)
-		-- project root config contains the file config list
-		if not prj.project then prj = premake.getconfig(prj) end
-		local i = 0
-		local t = prj.files
-		return function ()
-			i = i + 1
-			if (i <= #t) then
-				local fcfg = prj.__fileconfigs[t[i]]
-=======
 	function premake.project.eachfile(prj, allfiles)
 		-- project root config contains the file config list
 		if not prj.project then prj = premake.getconfig(prj) end
@@ -94,7 +75,6 @@
 			i = i + 1
 			if (i <= #t) then
 				local fcfg = c[t[i]]
->>>>>>> upstream/master
 				fcfg.vpath = premake.project.getvpath(prj, fcfg.name)
 				return fcfg
 			end
@@ -347,11 +327,8 @@
 				return premake.iscppproject(target)
 			elseif premake.isdotnetproject(source) then
 				return premake.isdotnetproject(target)
-<<<<<<< HEAD
-=======
 			elseif premake.isswiftproject(source) then
 				return premake.isswiftproject(source) or premake.iscppproject(source)
->>>>>>> upstream/master
 			end
 		end
 
@@ -555,11 +532,8 @@
 			elseif kind == "StaticLib" then
 				prefix = "lib"
 				ext = ".a"
-<<<<<<< HEAD
-=======
 			elseif kind == "SharedLib" then
 				ext = ".prx"
->>>>>>> upstream/master
 			end
 		end
 
@@ -603,17 +577,12 @@
 				return premake[action.valid_tools.cc[1]]
 			end
 			return premake.gcc
-<<<<<<< HEAD
-		else
-			return premake.dotnet
-=======
 		elseif premake.isdotnetproject(cfg) then
 			return premake.dotnet
 		elseif premake.isswiftproject(cfg) then
 			return premake.swift
 		else
 			return premake.valac
->>>>>>> upstream/master
 		end
 	end
 
@@ -634,10 +603,6 @@
 
 		local fname = path.getname(abspath)
 		local max = abspath:len() - fname:len()
-<<<<<<< HEAD
-
-		-- Look for matching patterns
-=======
         
         -- First check for an exact match from the inverse vpaths
         if prj.inversevpaths and prj.inversevpaths[abspath] then
@@ -646,7 +611,6 @@
 
 		-- Look for matching patterns
         local matches = {}
->>>>>>> upstream/master
 		for replacement, patterns in pairs(prj.vpaths or {}) do
 			for _, pattern in ipairs(patterns) do
 				local i = abspath:find(path.wildcards(pattern))
@@ -691,13 +655,6 @@
 						leaf = path.getname(leaf)
 					end
 
-<<<<<<< HEAD
-					vpath = path.join(stem, leaf)
-
-				end
-			end
-		end
-=======
 					table.insert(matches, path.join(stem, leaf))
 				end
 			end
@@ -708,7 +665,6 @@
             table.sort(matches)
             vpath = matches[1]
         end
->>>>>>> upstream/master
 
 		return path.trimdots(vpath)
 	end
@@ -768,8 +724,6 @@
 	function premake.isdotnetproject(prj)
 		return (prj.language == "C#")
 	end
-<<<<<<< HEAD
-=======
 
 --
 -- Returns true if the project uses the Vala language.
@@ -786,4 +740,3 @@
 	function premake.isswiftproject(prj)
 		return (prj.language == "Swift")
 	end
->>>>>>> upstream/master

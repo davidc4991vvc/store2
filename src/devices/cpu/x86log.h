@@ -13,21 +13,12 @@
 #ifndef __X86LOG_H__
 #define __X86LOG_H__
 
-<<<<<<< HEAD
-=======
 #include <cstdint>
 #include <cassert>
->>>>>>> upstream/master
 #include "x86emit.h"
 
 
 /***************************************************************************
-<<<<<<< HEAD
-    TYPE DEFINITIONS
-***************************************************************************/
-
-struct x86log_context;
-=======
     CONSTANTS
 ***************************************************************************/
 
@@ -73,7 +64,6 @@ struct x86log_context
 	char comment_pool[COMMENT_POOL_SIZE]; /* string pool to hold comments */
 	char* comment_pool_next; /* pointer to next string pool location */
 };
->>>>>>> upstream/master
 
 
 
@@ -82,27 +72,6 @@ struct x86log_context
 ***************************************************************************/
 
 /* create a new context */
-<<<<<<< HEAD
-x86log_context *x86log_create_context(const char *filename);
-
-/* release a context */
-void x86log_free_context(x86log_context *log);
-
-/* add a comment associated with a given code pointer */
-void x86log_add_comment(x86log_context *log, x86code *base, const char *format, ...) ATTR_PRINTF(3,4);
-
-/* mark a given range as data for logging purposes */
-void x86log_mark_as_data(x86log_context *log, x86code *base, x86code *end, int size);
-
-/* disassemble a range of code and reset accumulated information */
-void x86log_disasm_code_range(x86log_context *log, const char *label, x86code *start, x86code *stop);
-
-/* manually printf information to the log file */
-void x86log_printf(x86log_context *log, const char *format, ...) ATTR_PRINTF(2,3);
-
-
-#endif  /* __X86LOG_H__ */
-=======
 x86log_context* x86log_create_context(const char* filename);
 
 /* release a context */
@@ -189,4 +158,3 @@ inline void x86log_printf(x86log_context* log, const char* format, Ts&&... xs)
 }
 
 #endif /* __X86LOG_H__ */
->>>>>>> upstream/master

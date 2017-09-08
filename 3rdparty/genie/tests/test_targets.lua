@@ -156,8 +156,6 @@
 	end
 
 
-<<<<<<< HEAD
-=======
 --
 -- Bundle tests
 --
@@ -210,7 +208,6 @@
 		test.isequal([[../bin/MyProject.bundle]], result.fullpath)
 	end
 
->>>>>>> upstream/master
 
 --
 -- StaticLib tests

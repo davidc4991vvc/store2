@@ -1,12 +1,7 @@
 // license:BSD-3-Clause
 // copyright-holders:Raphael Nabet
-<<<<<<< HEAD
-#ifndef __MM58274C_H__
-#define __MM58274C_H__
-=======
 #ifndef MAME_MACHINE_MM58274C_H
 #define MAME_MACHINE_MM58274C_H
->>>>>>> upstream/master
 
 /***************************************************************************
     MACROS
@@ -15,12 +10,7 @@
 class mm58274c_device : public device_t
 {
 public:
-<<<<<<< HEAD
-	mm58274c_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-	~mm58274c_device() {}
-=======
 	mm58274c_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
->>>>>>> upstream/master
 
 	static void set_mode24(device_t &device, int mode) { downcast<mm58274c_device &>(device).m_mode24 = mode; }
 	static void set_day1(device_t &device, int day) { downcast<mm58274c_device &>(device).m_day1 = day; }
@@ -33,13 +23,8 @@ public:
 
 protected:
 	// device-level overrides
-<<<<<<< HEAD
-	virtual void device_start();
-	virtual void device_reset();
-=======
 	virtual void device_start() override;
 	virtual void device_reset() override;
->>>>>>> upstream/master
 
 private:
 	// internal state
@@ -78,11 +63,7 @@ private:
 	emu_timer *m_interrupt_timer;
 };
 
-<<<<<<< HEAD
-extern const device_type MM58274C;
-=======
 DECLARE_DEVICE_TYPE(MM58274C, mm58274c_device)
->>>>>>> upstream/master
 
 
 /***************************************************************************
@@ -95,9 +76,4 @@ DECLARE_DEVICE_TYPE(MM58274C, mm58274c_device)
 #define MCFG_MM58274C_DAY1(_day) \
 	mm58274c_device::set_day1(*device, _day);
 
-<<<<<<< HEAD
-
-#endif
-=======
 #endif // MAME_MACHINE_MM58274C_H
->>>>>>> upstream/master

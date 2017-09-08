@@ -31,11 +31,6 @@ public:
 	optional_device<mc146818_device> m_mc146818;
 	required_device<kbdc8042_device> m_kbdc;
 
-<<<<<<< HEAD
-	DECLARE_READ8_MEMBER(at_dma8237_2_r);
-	DECLARE_WRITE8_MEMBER(at_dma8237_2_w);
-=======
->>>>>>> upstream/master
 	DECLARE_WRITE_LINE_MEMBER(pc_dma_hrq_changed);
 	DECLARE_READ8_MEMBER(pc_dma_read_byte);
 	DECLARE_WRITE8_MEMBER(pc_dma_write_byte);
@@ -49,13 +44,8 @@ public:
 	DECLARE_READ8_MEMBER( get_slave_ack );
 	DECLARE_WRITE_LINE_MEMBER( at_pit8254_out2_changed );
 	int m_dma_channel;
-<<<<<<< HEAD
-	UINT8 m_dma_offset[2][4];
-	UINT8 m_at_pages[0x10];
-=======
 	uint8_t m_dma_offset[2][4];
 	uint8_t m_at_pages[0x10];
->>>>>>> upstream/master
 	int m_pit_out2;
 };
 

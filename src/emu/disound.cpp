@@ -9,10 +9,7 @@
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-=======
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 
@@ -46,11 +43,7 @@ device_sound_interface::~device_sound_interface()
 //  a new route to the device
 //-------------------------------------------------
 
-<<<<<<< HEAD
-device_sound_interface::sound_route &device_sound_interface::static_add_route(device_t &device, UINT32 output, const char *target, double gain, UINT32 input, UINT32 mixoutput)
-=======
 void device_sound_interface::static_add_route(device_t &device, u32 output, const char *target, double gain, u32 input, u32 mixoutput)
->>>>>>> upstream/master
 {
 	// find our sound interface
 	device_sound_interface *sound;
@@ -58,11 +51,7 @@ void device_sound_interface::static_add_route(device_t &device, u32 output, cons
 		throw emu_fatalerror("MCFG_SOUND_ROUTE called on device '%s' with no sound interface", device.tag());
 
 	// append a new route to the list
-<<<<<<< HEAD
-	return sound->m_route_list.append(*global_alloc(sound_route(output, input, gain, target, mixoutput)));
-=======
 	sound->m_route_list.push_back(std::make_unique<sound_route>(output, input, gain, target, mixoutput));
->>>>>>> upstream/master
 }
 
 
@@ -79,11 +68,7 @@ void device_sound_interface::static_reset_routes(device_t &device)
 		throw emu_fatalerror("MCFG_SOUND_ROUTES_RESET called on device '%s' with no sound interface", device.tag());
 
 	// reset the routine list
-<<<<<<< HEAD
-	sound->m_route_list.reset();
-=======
 	sound->m_route_list.clear();
->>>>>>> upstream/master
 }
 
 
@@ -107,11 +92,7 @@ int device_sound_interface::inputs() const
 {
 	// scan the list counting streams we own and summing their inputs
 	int inputs = 0;
-<<<<<<< HEAD
-	for (sound_stream *stream = m_device.machine().sound().first_stream(); stream != NULL; stream = stream->next())
-=======
 	for (auto &stream : m_device.machine().sound().streams())
->>>>>>> upstream/master
 		if (&stream->device() == &m_device)
 			inputs += stream->input_count();
 	return inputs;
@@ -127,11 +108,7 @@ int device_sound_interface::outputs() const
 {
 	// scan the list counting streams we own and summing their outputs
 	int outputs = 0;
-<<<<<<< HEAD
-	for (sound_stream *stream = m_device.machine().sound().first_stream(); stream != NULL; stream = stream->next())
-=======
 	for (auto &stream : m_device.machine().sound().streams())
->>>>>>> upstream/master
 		if (&stream->device() == &m_device)
 			outputs += stream->output_count();
 	return outputs;
@@ -144,40 +121,24 @@ int device_sound_interface::outputs() const
 //  on that stream
 //-------------------------------------------------
 
-<<<<<<< HEAD
-sound_stream *device_sound_interface::input_to_stream_input(int inputnum, int &stream_inputnum)
-=======
 sound_stream *device_sound_interface::input_to_stream_input(int inputnum, int &stream_inputnum) const
->>>>>>> upstream/master
 {
 	assert(inputnum >= 0);
 
 	// scan the list looking for streams owned by this device
-<<<<<<< HEAD
-	for (sound_stream *stream = m_device.machine().sound().first_stream(); stream != NULL; stream = stream->next())
-=======
 	for (auto &stream : m_device.machine().sound().streams())
->>>>>>> upstream/master
 		if (&stream->device() == &m_device)
 		{
 			if (inputnum < stream->input_count())
 			{
 				stream_inputnum = inputnum;
-<<<<<<< HEAD
-				return stream;
-=======
 				return stream.get();
->>>>>>> upstream/master
 			}
 			inputnum -= stream->input_count();
 		}
 
 	// not found
-<<<<<<< HEAD
-	return NULL;
-=======
 	return nullptr;
->>>>>>> upstream/master
 }
 
 
@@ -187,40 +148,24 @@ sound_stream *device_sound_interface::input_to_stream_input(int inputnum, int &s
 //  on that stream
 //-------------------------------------------------
 
-<<<<<<< HEAD
-sound_stream *device_sound_interface::output_to_stream_output(int outputnum, int &stream_outputnum)
-=======
 sound_stream *device_sound_interface::output_to_stream_output(int outputnum, int &stream_outputnum) const
->>>>>>> upstream/master
 {
 	assert(outputnum >= 0);
 
 	// scan the list looking for streams owned by this device
-<<<<<<< HEAD
-	for (sound_stream *stream = m_device.machine().sound().first_stream(); stream != NULL; stream = stream->next())
-=======
 	for (auto &stream : m_device.machine().sound().streams())
->>>>>>> upstream/master
 		if (&stream->device() == &device())
 		{
 			if (outputnum < stream->output_count())
 			{
 				stream_outputnum = outputnum;
-<<<<<<< HEAD
-				return stream;
-=======
 				return stream.get();
->>>>>>> upstream/master
 			}
 			outputnum -= stream->output_count();
 		}
 
 	// not found
-<<<<<<< HEAD
-	return NULL;
-=======
 	return nullptr;
->>>>>>> upstream/master
 }
 
 
@@ -233,11 +178,7 @@ void device_sound_interface::set_input_gain(int inputnum, float gain)
 {
 	int stream_inputnum;
 	sound_stream *stream = input_to_stream_input(inputnum, stream_inputnum);
-<<<<<<< HEAD
-	if (stream != NULL)
-=======
 	if (stream != nullptr)
->>>>>>> upstream/master
 		stream->set_input_gain(stream_inputnum, gain);
 }
 
@@ -252,11 +193,7 @@ void device_sound_interface::set_output_gain(int outputnum, float gain)
 	// handle ALL_OUTPUTS as a special case
 	if (outputnum == ALL_OUTPUTS)
 	{
-<<<<<<< HEAD
-		for (sound_stream *stream = m_device.machine().sound().first_stream(); stream != NULL; stream = stream->next())
-=======
 		for (auto &stream : m_device.machine().sound().streams())
->>>>>>> upstream/master
 			if (&stream->device() == &device())
 				for (int num = 0; num < stream->output_count(); num++)
 					stream->set_output_gain(num, gain);
@@ -267,11 +204,7 @@ void device_sound_interface::set_output_gain(int outputnum, float gain)
 	{
 		int stream_outputnum;
 		sound_stream *stream = output_to_stream_output(outputnum, stream_outputnum);
-<<<<<<< HEAD
-		if (stream != NULL)
-=======
 		if (stream != nullptr)
->>>>>>> upstream/master
 			stream->set_output_gain(stream_outputnum, gain);
 	}
 }
@@ -285,11 +218,7 @@ void device_sound_interface::set_output_gain(int outputnum, float gain)
 int device_sound_interface::inputnum_from_device(device_t &source_device, int outputnum) const
 {
 	int overall = 0;
-<<<<<<< HEAD
-	for (sound_stream *stream = m_device.machine().sound().first_stream(); stream != NULL; stream = stream->next())
-=======
 	for (auto &stream : m_device.machine().sound().streams())
->>>>>>> upstream/master
 		if (&stream->device() == &device())
 			for (int inputnum = 0; inputnum < stream->input_count(); inputnum++, overall++)
 				if (stream->input_source_device(inputnum) == &source_device && stream->input_source_outputnum(inputnum) == outputnum)
@@ -307,28 +236,16 @@ int device_sound_interface::inputnum_from_device(device_t &source_device, int ou
 void device_sound_interface::interface_validity_check(validity_checker &valid) const
 {
 	// loop over all the routes
-<<<<<<< HEAD
-	for (const sound_route *route = first_route(); route != NULL; route = route->next())
-	{
-		// find a device with the requested tag
-		const device_t *target = device().siblingdevice(route->m_target.c_str());
-		if (target == NULL)
-=======
 	for (auto &route : routes())
 	{
 		// find a device with the requested tag
 		const device_t *target = device().siblingdevice(route->m_target.c_str());
 		if (target == nullptr)
->>>>>>> upstream/master
 			osd_printf_error("Attempting to route sound to non-existant device '%s'\n", route->m_target.c_str());
 
 		// if it's not a speaker or a sound device, error
 		const device_sound_interface *sound;
-<<<<<<< HEAD
-		if (target != NULL && target->type() != SPEAKER && !target->interface(sound))
-=======
 		if (target != nullptr && target->type() != SPEAKER && !target->interface(sound))
->>>>>>> upstream/master
 			osd_printf_error("Attempting to route sound to a non-sound device '%s' (%s)\n", route->m_target.c_str(), target->name());
 	}
 }
@@ -343,16 +260,6 @@ void device_sound_interface::interface_pre_start()
 {
 	// scan all the sound devices
 	sound_interface_iterator iter(m_device.machine().root_device());
-<<<<<<< HEAD
-	for (device_sound_interface *sound = iter.first(); sound != NULL; sound = iter.next())
-	{
-		// scan each route on the device
-		for (const sound_route *route = sound->first_route(); route != NULL; route = route->next())
-		{
-			// see if we are the target of this route; if we are, make sure the source device is started
-			device_t *target_device = sound->device().siblingdevice(route->m_target.c_str());
-			if (target_device == &m_device && !sound->device().started())
-=======
 	for (device_sound_interface &sound : iter)
 	{
 		// scan each route on the device
@@ -361,26 +268,12 @@ void device_sound_interface::interface_pre_start()
 			// see if we are the target of this route; if we are, make sure the source device is started
 			device_t *target_device = sound.device().siblingdevice(route->m_target.c_str());
 			if (target_device == &m_device && !sound.device().started())
->>>>>>> upstream/master
 				throw device_missing_dependencies();
 		}
 	}
 
 	// now iterate through devices again and assign any auto-allocated inputs
 	m_auto_allocated_inputs = 0;
-<<<<<<< HEAD
-	for (device_sound_interface *sound = iter.first(); sound != NULL; sound = iter.next())
-	{
-		// scan each route on the device
-		for (const sound_route *route = sound->first_route(); route != NULL; route = route->next())
-		{
-			// see if we are the target of this route
-			device_t *target_device = sound->device().siblingdevice(route->m_target.c_str());
-			if (target_device == &m_device && route->m_input == AUTO_ALLOC_INPUT)
-			{
-				const_cast<sound_route *>(route)->m_input = m_auto_allocated_inputs;
-				m_auto_allocated_inputs += (route->m_output == ALL_OUTPUTS) ? sound->outputs() : 1;
-=======
 	for (device_sound_interface &sound : iter)
 	{
 		// scan each route on the device
@@ -392,7 +285,6 @@ void device_sound_interface::interface_pre_start()
 			{
 				route->m_input = m_auto_allocated_inputs;
 				m_auto_allocated_inputs += (route->m_output == ALL_OUTPUTS) ? sound.outputs() : 1;
->>>>>>> upstream/master
 			}
 		}
 	}
@@ -407,16 +299,6 @@ void device_sound_interface::interface_pre_start()
 void device_sound_interface::interface_post_start()
 {
 	// iterate over all the sound devices
-<<<<<<< HEAD
-	sound_interface_iterator iter(m_device.machine().root_device());
-	for (device_sound_interface *sound = iter.first(); sound != NULL; sound = iter.next())
-	{
-		// scan each route on the device
-		for (const sound_route *route = sound->first_route(); route != NULL; route = route->next())
-		{
-			// if we are the target of this route, hook it up
-			device_t *target_device = sound->device().siblingdevice(route->m_target.c_str());
-=======
 	for (device_sound_interface &sound : sound_interface_iterator(m_device.machine().root_device()))
 	{
 		// scan each route on the device
@@ -424,38 +306,24 @@ void device_sound_interface::interface_post_start()
 		{
 			// if we are the target of this route, hook it up
 			device_t *target_device = sound.device().siblingdevice(route->m_target.c_str());
->>>>>>> upstream/master
 			if (target_device == &m_device)
 			{
 				// iterate over all outputs, matching any that apply
 				int inputnum = route->m_input;
-<<<<<<< HEAD
-				int numoutputs = sound->outputs();
-=======
 				int numoutputs = sound.outputs();
->>>>>>> upstream/master
 				for (int outputnum = 0; outputnum < numoutputs; outputnum++)
 					if (route->m_output == outputnum || route->m_output == ALL_OUTPUTS)
 					{
 						// find the output stream to connect from
 						int streamoutputnum;
-<<<<<<< HEAD
-						sound_stream *outputstream = sound->output_to_stream_output(outputnum, streamoutputnum);
-						if (outputstream == NULL)
-=======
 						sound_stream *outputstream = sound.output_to_stream_output(outputnum, streamoutputnum);
 						if (outputstream == nullptr)
->>>>>>> upstream/master
 							fatalerror("Sound device '%s' specifies route for non-existant output #%d\n", route->m_target.c_str(), outputnum);
 
 						// find the input stream to connect to
 						int streaminputnum;
 						sound_stream *inputstream = input_to_stream_input(inputnum++, streaminputnum);
-<<<<<<< HEAD
-						if (inputstream == NULL)
-=======
 						if (inputstream == nullptr)
->>>>>>> upstream/master
 							fatalerror("Sound device '%s' targeted output #%d to non-existant device '%s' input %d\n", route->m_target.c_str(), outputnum, m_device.tag(), inputnum - 1);
 
 						// set the input
@@ -475,11 +343,7 @@ void device_sound_interface::interface_post_start()
 void device_sound_interface::interface_pre_reset()
 {
 	// update all streams on this device prior to reset
-<<<<<<< HEAD
-	for (sound_stream *stream = m_device.machine().sound().first_stream(); stream != NULL; stream = stream->next())
-=======
 	for (auto &stream : m_device.machine().sound().streams())
->>>>>>> upstream/master
 		if (&stream->device() == &device())
 			stream->update();
 }
@@ -494,14 +358,8 @@ void device_sound_interface::interface_pre_reset()
 //  sound_route - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-device_sound_interface::sound_route::sound_route(int output, int input, float gain, const char *target, UINT32 mixoutput)
-	: m_next(NULL),
-		m_output(output),
-=======
 device_sound_interface::sound_route::sound_route(int output, int input, float gain, const char *target, u32 mixoutput)
 	:   m_output(output),
->>>>>>> upstream/master
 		m_input(input),
 		m_mixoutput(mixoutput),
 		m_gain(gain),
@@ -522,11 +380,7 @@ device_sound_interface::sound_route::sound_route(int output, int input, float ga
 device_mixer_interface::device_mixer_interface(const machine_config &mconfig, device_t &device, int outputs)
 	: device_sound_interface(mconfig, device),
 		m_outputs(outputs),
-<<<<<<< HEAD
-		m_mixer_stream(NULL)
-=======
 		m_mixer_stream(nullptr)
->>>>>>> upstream/master
 {
 }
 
@@ -561,17 +415,6 @@ void device_mixer_interface::interface_pre_start()
 	m_outputmap.resize(m_auto_allocated_inputs);
 
 	// iterate through all routes that point to us and note their mixer output
-<<<<<<< HEAD
-	sound_interface_iterator iter(m_device.machine().root_device());
-	for (device_sound_interface *sound = iter.first(); sound != NULL; sound = iter.next())
-		for (const sound_route *route = sound->first_route(); route != NULL; route = route->next())
-		{
-			// see if we are the target of this route
-			device_t *target_device = sound->device().siblingdevice(route->m_target.c_str());
-			if (target_device == &device() && route->m_input < m_auto_allocated_inputs)
-			{
-				int count = (route->m_output == ALL_OUTPUTS) ? sound->outputs() : 1;
-=======
 	for (device_sound_interface &sound : sound_interface_iterator(m_device.machine().root_device()))
 		for (auto &route : sound.routes())
 		{
@@ -580,7 +423,6 @@ void device_mixer_interface::interface_pre_start()
 			if (target_device == &device() && route->m_input < m_auto_allocated_inputs)
 			{
 				int count = (route->m_output == ALL_OUTPUTS) ? sound.outputs() : 1;
->>>>>>> upstream/master
 				for (int output = 0; output < count; output++)
 					m_outputmap[route->m_input + output] = route->m_mixoutput;
 			}
@@ -599,14 +441,10 @@ void device_mixer_interface::interface_pre_start()
 
 void device_mixer_interface::interface_post_load()
 {
-<<<<<<< HEAD
-	m_mixer_stream->set_sample_rate(device().machine().sample_rate());
-=======
 	// Beware that there's not going to be a mixer stream if there was
 	// no inputs
 	if (m_mixer_stream)
 		m_mixer_stream->set_sample_rate(device().machine().sample_rate());
->>>>>>> upstream/master
 
 	// call our parent
 	device_sound_interface::interface_post_load();
@@ -624,11 +462,7 @@ void device_mixer_interface::sound_stream_update(sound_stream &stream, stream_sa
 		memset(outputs[output], 0, samples * sizeof(outputs[0][0]));
 
 	// loop over samples
-<<<<<<< HEAD
-	const UINT8 *outmap = &m_outputmap[0];
-=======
 	const u8 *outmap = &m_outputmap[0];
->>>>>>> upstream/master
 	for (int pos = 0; pos < samples; pos++)
 	{
 		// for each input, add it to the appropriate output

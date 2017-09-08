@@ -5,11 +5,7 @@
 // TODO: CHECK ME.
 //
 
-<<<<<<< HEAD
-inline rsp_vec_t vec_vmulf_vmulu(UINT32 iw, rsp_vec_t vs, rsp_vec_t vt, rsp_vec_t zero, rsp_vec_t *acc_lo, rsp_vec_t *acc_md, rsp_vec_t *acc_hi)
-=======
 inline rsp_vec_t vec_vmulf_vmulu(uint32_t iw, rsp_vec_t vs, rsp_vec_t vt, rsp_vec_t zero, rsp_vec_t *acc_lo, rsp_vec_t *acc_md, rsp_vec_t *acc_hi)
->>>>>>> upstream/master
 {
 	rsp_vec_t lo = _mm_mullo_epi16(vs, vt);
 	rsp_vec_t round = _mm_cmpeq_epi16(zero, zero);

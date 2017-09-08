@@ -1,33 +1,11 @@
 // license:BSD-3-Clause
-<<<<<<< HEAD
-// copyright-holders:hap
-=======
 // copyright-holders:hap,AJR
->>>>>>> upstream/master
 /**********************************************************************
 
     Fujitsu MB8421/22/31/32-90/-90L/-90LL/-12/-12L/-12LL
     CMOS 16K-bit (2KB) dual-port SRAM
 
     MB84x2 lacks interrupt pins, it's basically as simple as AM_RAM AM_SHARE("x")
-<<<<<<< HEAD
-    MB843x is same as MB842x, except that it supports slave mode. It makes
-    sure there are no clashes, with the _BUSY pin.
-
-**********************************************************************/
-
-#include "machine/mb8421.h"
-
-
-const device_type MB8421 = &device_creator<mb8421_device>;
-
-//-------------------------------------------------
-//  mb8421_device - constructor
-//-------------------------------------------------
-
-mb8421_device::mb8421_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, MB8421, "MB8421 DPSRAM", tag, owner, clock, "mb8421", __FILE__),
-=======
     MB843x is same as MB842x, except that it supports slave mode for 16-bit or
     32-bit expansion. It makes sure there are no clashes with the _BUSY pin.
 
@@ -46,28 +24,12 @@ DEFINE_DEVICE_TYPE(MB8421_MB8431_16BIT, mb8421_mb8431_16_device, "mb8421_mb8431_
 
 mb8421_master_device::mb8421_master_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, u32 clock)
 	: device_t(mconfig, type, tag, owner, clock),
->>>>>>> upstream/master
 		m_intl_handler(*this),
 		m_intr_handler(*this)
 {
 }
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  device_start - device-specific startup
-//-------------------------------------------------
-
-void mb8421_device::device_start()
-{
-	memset(m_ram, 0, 0x800);
-
-	// resolve callbacks
-	m_intl_handler.resolve_safe();
-	m_intr_handler.resolve_safe();
-
-	// state save
-	save_item(NAME(m_ram));
-=======
 //  mb8421_device - constructor
 //-------------------------------------------------
 
@@ -114,26 +76,18 @@ void mb8421_mb8431_16_device::device_start()
 
 	// state save
 	save_pointer(NAME(m_ram.get()), 0x800);
->>>>>>> upstream/master
 }
 
 //-------------------------------------------------
 //  device_reset - device-specific reset
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void mb8421_device::device_reset()
-=======
 void mb8421_master_device::device_reset()
->>>>>>> upstream/master
 {
 	m_intl_handler(0);
 	m_intr_handler(0);
 }
 
-<<<<<<< HEAD
-
-=======
 //-------------------------------------------------
 //  update_intr - update interrupt lines upon
 //  read or write accesses to special locations
@@ -155,29 +109,11 @@ void mb8421_master_device::update_intr(offs_t offset)
 //  left_w - write access for left-side bus
 //  (write to 7FF asserts INTR)
 //-------------------------------------------------
->>>>>>> upstream/master
 
 WRITE8_MEMBER(mb8421_device::left_w)
 {
 	offset &= 0x7ff;
 	m_ram[offset] = data;
-<<<<<<< HEAD
-
-	if (offset == 0x7ff)
-		m_intr_handler(1);
-}
-
-READ8_MEMBER(mb8421_device::left_r)
-{
-	offset &= 0x7ff;
-
-	if (offset == 0x7fe && !space.debugger_access())
-		m_intl_handler(0);
-
-	return m_ram[offset];
-}
-
-=======
 	update_intr<read_or_write::WRITE, false>(offset);
 }
 
@@ -212,25 +148,10 @@ READ16_MEMBER(mb8421_mb8431_16_device::left_r)
 //  (write to 7FE asserts INTL)
 //-------------------------------------------------
 
->>>>>>> upstream/master
 WRITE8_MEMBER(mb8421_device::right_w)
 {
 	offset &= 0x7ff;
 	m_ram[offset] = data;
-<<<<<<< HEAD
-
-	if (offset == 0x7fe)
-		m_intl_handler(1);
-}
-
-READ8_MEMBER(mb8421_device::right_r)
-{
-	offset &= 0x7ff;
-
-	if (offset == 0x7ff && !space.debugger_access())
-		m_intr_handler(0);
-
-=======
 	update_intr<read_or_write::WRITE, true>(offset);
 }
 
@@ -257,6 +178,5 @@ READ16_MEMBER(mb8421_mb8431_16_device::right_r)
 {
 	offset &= 0x7ff;
 	update_intr<read_or_write::READ, true>(offset);
->>>>>>> upstream/master
 	return m_ram[offset];
 }

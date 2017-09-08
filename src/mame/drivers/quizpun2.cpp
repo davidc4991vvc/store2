@@ -2,21 +2,12 @@
 // copyright-holders:Luca Elia
 /***************************************************************************
 
-<<<<<<< HEAD
-Quiz Punch 2 (C)1989 Space Computer
-
-Preliminary driver by Luca Elia
-
-- It uses an unknown DIP40 device for protection, that supplies
-  the address to jump to (same as mosaic.c) and handles the EEPROM
-=======
 Quiz Punch II (C)1989 Space Computer
 
 Driver by Luca Elia
 
 - It uses an unknown DIP40 device for protection, that supplies
   the address to jump to (same as mosaic.cpp) and handles the EEPROM
->>>>>>> upstream/master
 
 PCB Layout
 ----------
@@ -47,13 +38,8 @@ Notes:
       Possibly Z80's @ 4MHz and YM2203 @ 2MHz
       PCB marked 'Ducksan Trading Co. Ltd. Made In Korea'
 
-<<<<<<< HEAD
-
-
-=======
 ***************************************************************************/
 /***************************************************************************
->>>>>>> upstream/master
 
 Quiz Punch (C)1988 Space Computer
 Ducksan 1989
@@ -84,18 +70,6 @@ Ducksan 1989
 Notes:
        Z80A - clock 4.000MHz (8/2)
      YM2203 - clock 4.000MHz (8/2)
-<<<<<<< HEAD
-     Epoxy Module likely contains a Z80A (an input clock of 4.000MHz is present) and possibly a ROM
-     VSync - 59.3148Hz
-     HSync - 15.2526kHz
-
-***************************************************************************/
-
-#include "emu.h"
-#include "cpu/z80/z80.h"
-#include "sound/2203intf.h"
-
-=======
      VSync - 59.3148Hz
      HSync - 15.2526kHz
 
@@ -124,7 +98,6 @@ Notes:
 // very preliminary quizpun2 protection simulation
 
 #define VERBOSE_PROTECTION_LOG 0
->>>>>>> upstream/master
 
 enum prot_state { STATE_IDLE = 0, STATE_ADDR_R, STATE_ROM_R, STATE_EEPROM_R, STATE_EEPROM_W };
 struct prot_t {
@@ -140,40 +113,6 @@ class quizpun2_state : public driver_device
 public:
 	quizpun2_state(const machine_config &mconfig, device_type type, const char *tag)
 		: driver_device(mconfig, type, tag),
-<<<<<<< HEAD
-		m_fg_ram(*this, "fg_ram"),
-		m_bg_ram(*this, "bg_ram"),
-		m_maincpu(*this, "maincpu"),
-		m_audiocpu(*this, "audiocpu"),
-		m_gfxdecode(*this, "gfxdecode"),
-		m_palette(*this, "palette")  { }
-
-	struct prot_t m_prot;
-	required_shared_ptr<UINT8> m_fg_ram;
-	required_shared_ptr<UINT8> m_bg_ram;
-	tilemap_t *m_bg_tmap;
-	tilemap_t *m_fg_tmap;
-	DECLARE_WRITE8_MEMBER(bg_ram_w);
-	DECLARE_WRITE8_MEMBER(fg_ram_w);
-	DECLARE_READ8_MEMBER(quizpun2_protection_r);
-	DECLARE_WRITE8_MEMBER(quizpun2_protection_w);
-	DECLARE_WRITE8_MEMBER(quizpun2_rombank_w);
-	DECLARE_WRITE8_MEMBER(quizpun2_irq_ack);
-	DECLARE_WRITE8_MEMBER(quizpun2_soundlatch_w);
-	TILE_GET_INFO_MEMBER(get_bg_tile_info);
-	TILE_GET_INFO_MEMBER(get_fg_tile_info);
-	virtual void machine_reset();
-	virtual void video_start();
-	UINT32 screen_update_quizpun2(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	required_device<cpu_device> m_maincpu;
-	required_device<cpu_device> m_audiocpu;
-	required_device<gfxdecode_device> m_gfxdecode;
-	required_device<palette_device> m_palette;
-};
-
-
-#define VERBOSE_PROTECTION_LOG 0
-=======
 		m_maincpu(*this, "maincpu"),
 		m_audiocpu(*this, "audiocpu"),
 		m_gfxdecode(*this, "gfxdecode"),
@@ -235,7 +174,6 @@ public:
 	DECLARE_READ8_MEMBER(quizpun_protection_r);
 	DECLARE_WRITE8_MEMBER(quizpun_protection_w);
 };
->>>>>>> upstream/master
 
 /***************************************************************************
                                 Video Hardware
@@ -243,26 +181,15 @@ public:
 
 TILE_GET_INFO_MEMBER(quizpun2_state::get_bg_tile_info)
 {
-<<<<<<< HEAD
-	UINT16 code = m_bg_ram[ tile_index * 2 ] + m_bg_ram[ tile_index * 2 + 1 ] * 256;
-	SET_TILE_INFO_MEMBER(0, code, 0, 0);
-=======
 	uint16_t code = m_bg_ram[ tile_index * 2 ] + m_bg_ram[ tile_index * 2 + 1 ] * 256;
 	SET_TILE_INFO_MEMBER(0, code, code >> 12, TILE_FLIPXY((code & 0x800) >> 11));
->>>>>>> upstream/master
 }
 
 TILE_GET_INFO_MEMBER(quizpun2_state::get_fg_tile_info)
 {
-<<<<<<< HEAD
-	UINT16 code  = m_fg_ram[ tile_index * 4 ] + m_fg_ram[ tile_index * 4 + 1 ] * 256;
-	UINT8  color = m_fg_ram[ tile_index * 4 + 2 ];
-	SET_TILE_INFO_MEMBER(1, code, color & 0x0f, 0);
-=======
 	uint16_t code  = m_fg_ram[ tile_index * 4 ]/* + m_fg_ram[ tile_index * 4 + 1 ] * 256*/;
 	uint8_t  color = m_fg_ram[ tile_index * 4 + 2 ];
 	SET_TILE_INFO_MEMBER(1, code, color / 2, 0);
->>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(quizpun2_state::bg_ram_w)
@@ -277,12 +204,6 @@ WRITE8_MEMBER(quizpun2_state::fg_ram_w)
 	m_fg_tmap->mark_tile_dirty(offset/4);
 }
 
-<<<<<<< HEAD
-void quizpun2_state::video_start()
-{
-	m_bg_tmap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(quizpun2_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS,8,16,0x20,0x20);
-	m_fg_tmap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(quizpun2_state::get_fg_tile_info),this), TILEMAP_SCAN_ROWS,8,16,0x20,0x20);
-=======
 WRITE8_MEMBER(quizpun2_state::scroll_w)
 {
 	m_scroll = data;
@@ -292,17 +213,12 @@ void quizpun2_state::video_start()
 {
 	m_bg_tmap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(quizpun2_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS,16,16,0x20,0x40);
 	m_fg_tmap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(quizpun2_state::get_fg_tile_info),this), TILEMAP_SCAN_ROWS,16,16,0x20,0x40);
->>>>>>> upstream/master
 
 	m_bg_tmap->set_transparent_pen(0);
 	m_fg_tmap->set_transparent_pen(0);
 }
 
-<<<<<<< HEAD
-UINT32 quizpun2_state::screen_update_quizpun2(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t quizpun2_state::screen_update_quizpun2(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int layers_ctrl = -1;
 
@@ -316,20 +232,6 @@ uint32_t quizpun2_state::screen_update_quizpun2(screen_device &screen, bitmap_in
 	}
 #endif
 
-<<<<<<< HEAD
-	if (layers_ctrl & 1)    m_bg_tmap->draw(screen, bitmap, cliprect, TILEMAP_DRAW_OPAQUE, 0);
-	else                    bitmap.fill(m_palette->black_pen(), cliprect);
-
-bitmap.fill(m_palette->black_pen(), cliprect);
-	if (layers_ctrl & 2)    m_fg_tmap->draw(screen, bitmap, cliprect, 0, 0);
-
-	return 0;
-}
-
-
-/***************************************************************************
-                                Protection
-=======
 	int bg_scroll = (m_scroll & 0x3) >> 0;
 	int fg_scroll = (m_scroll & 0xc) >> 2;
 
@@ -348,7 +250,6 @@ bitmap.fill(m_palette->black_pen(), cliprect);
 
 /***************************************************************************
                          Quizpun2 Protection Simulation
->>>>>>> upstream/master
 
     ROM checksum:   write 0x80 | (0x00-0x7f), write 0, read 2 bytes
     Read address:   write 0x80 | param1 & 0x07f (0x00), write param2 & 0x7f, read 2 bytes
@@ -357,28 +258,6 @@ bitmap.fill(m_palette->black_pen(), cliprect);
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-void quizpun2_state::machine_reset()
-{
-	struct prot_t &prot = m_prot;
-	prot.state = STATE_IDLE;
-	prot.wait_param = 0;
-	prot.param = 0;
-	prot.cmd = 0;
-	prot.addr = 0;
-}
-
-static void log_protection( address_space &space, const char *warning )
-{
-	quizpun2_state *state = space.machine().driver_data<quizpun2_state>();
-	struct prot_t &prot = state->m_prot;
-	state->logerror("%04x: protection - %s (state %x, wait %x, param %02x, cmd %02x, addr %02x)\n", space.device().safe_pc(), warning,
-		prot.state,
-		prot.wait_param,
-		prot.param,
-		prot.cmd,
-		prot.addr
-=======
 void quizpun2_state::machine_start()
 {
 	uint8_t *ROM = memregion("maincpu")->base();
@@ -409,18 +288,13 @@ void quizpun2_state::log_protection( address_space &space, const char *warning )
 		m_prot.param,
 		m_prot.cmd,
 		m_prot.addr
->>>>>>> upstream/master
 	);
 }
 
 READ8_MEMBER(quizpun2_state::quizpun2_protection_r)
 {
 	struct prot_t &prot = m_prot;
-<<<<<<< HEAD
-	UINT8 ret;
-=======
 	uint8_t ret;
->>>>>>> upstream/master
 
 	switch ( prot.state )
 	{
@@ -453,11 +327,7 @@ READ8_MEMBER(quizpun2_state::quizpun2_protection_r)
 
 		case STATE_EEPROM_R:        // EEPROM read
 		{
-<<<<<<< HEAD
-			UINT8 *eeprom = memregion("eeprom")->base();
-=======
 			uint8_t *eeprom = memregion("eeprom")->base();
->>>>>>> upstream/master
 			ret = eeprom[prot.addr];
 			break;
 		}
@@ -484,11 +354,7 @@ WRITE8_MEMBER(quizpun2_state::quizpun2_protection_w)
 	{
 		case STATE_EEPROM_W:
 		{
-<<<<<<< HEAD
-			UINT8 *eeprom = memregion("eeprom")->base();
-=======
 			uint8_t *eeprom = memregion("eeprom")->base();
->>>>>>> upstream/master
 			eeprom[prot.addr] = data;
 			prot.addr++;
 			if ((prot.addr % 8) == 0)
@@ -519,20 +385,12 @@ WRITE8_MEMBER(quizpun2_state::quizpun2_protection_w)
 					else
 						log_protection(space, "unknown command");
 				}
-<<<<<<< HEAD
-				else if (prot.cmd >= 0x00 && prot.cmd <= 0x0f )
-=======
 				else if (prot.cmd >= 0x00 && prot.cmd <= 0x0f)
->>>>>>> upstream/master
 				{
 					prot.state = STATE_EEPROM_W;
 					prot.addr = (prot.cmd & 0x0f) * 8;
 				}
-<<<<<<< HEAD
-				else if (prot.cmd >= 0x20 && prot.cmd <= 0x2f )
-=======
 				else if (prot.cmd >= 0x20 && prot.cmd <= 0x2f)
->>>>>>> upstream/master
 				{
 					prot.state = STATE_EEPROM_R;
 					prot.addr = (prot.cmd & 0x0f) * 8;
@@ -556,43 +414,23 @@ WRITE8_MEMBER(quizpun2_state::quizpun2_protection_w)
 #endif
 }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> upstream/master
 /***************************************************************************
                             Memory Maps - Main CPU
 ***************************************************************************/
 
-<<<<<<< HEAD
-WRITE8_MEMBER(quizpun2_state::quizpun2_rombank_w)
-{
-	UINT8 *ROM = memregion("maincpu")->base();
-	membank("bank1")->set_base(&ROM[ 0x10000 + 0x2000 * (data & 0x1f) ] );
-}
-
-WRITE8_MEMBER(quizpun2_state::quizpun2_irq_ack)
-=======
 WRITE8_MEMBER(quizpun2_state::rombank_w)
 {
 	membank("bank1")->set_entry(data & 0x1f);
 }
 
 WRITE8_MEMBER(quizpun2_state::irq_ack)
->>>>>>> upstream/master
 {
 	m_maincpu->set_input_line(INPUT_LINE_IRQ0, CLEAR_LINE);
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER(quizpun2_state::quizpun2_soundlatch_w)
-{
-	soundlatch_byte_w(space, 0, data);
-=======
 WRITE8_MEMBER(quizpun2_state::soundlatch_w)
 {
 	m_soundlatch->write(space, 0, data ^ 0x80);
->>>>>>> upstream/master
 	m_audiocpu->set_input_line(INPUT_LINE_NMI, PULSE_LINE);
 }
 
@@ -600,32 +438,13 @@ static ADDRESS_MAP_START( quizpun2_map, AS_PROGRAM, 8, quizpun2_state )
 	AM_RANGE( 0x0000, 0x7fff ) AM_ROM
 	AM_RANGE( 0x8000, 0x9fff ) AM_ROMBANK("bank1")
 
-<<<<<<< HEAD
-	AM_RANGE( 0xa000, 0xbfff ) AM_RAM_WRITE(fg_ram_w ) AM_SHARE("fg_ram")   // 4 * 800
-	AM_RANGE( 0xc000, 0xc7ff ) AM_RAM_WRITE(bg_ram_w ) AM_SHARE("bg_ram")   // 4 * 400
-	AM_RANGE( 0xc800, 0xcfff ) AM_RAM                                       //
-=======
 	AM_RANGE( 0xa000, 0xbfff ) AM_RAM_WRITE(fg_ram_w) AM_SHARE("fg_ram")
 	AM_RANGE( 0xc000, 0xcfff ) AM_RAM_WRITE(bg_ram_w) AM_SHARE("bg_ram")
->>>>>>> upstream/master
 
 	AM_RANGE( 0xd000, 0xd3ff ) AM_RAM_DEVWRITE("palette", palette_device, write) AM_SHARE("palette")
 	AM_RANGE( 0xe000, 0xffff ) AM_RAM
 ADDRESS_MAP_END
 
-<<<<<<< HEAD
-static ADDRESS_MAP_START( quizpun2_io_map, AS_IO, 8, quizpun2_state )
-	ADDRESS_MAP_GLOBAL_MASK(0xff)
-	AM_RANGE( 0x40, 0x40 ) AM_WRITE(quizpun2_irq_ack )
-	AM_RANGE( 0x50, 0x50 ) AM_WRITE(quizpun2_soundlatch_w )
-	AM_RANGE( 0x60, 0x60 ) AM_WRITE(quizpun2_rombank_w )
-	AM_RANGE( 0x80, 0x80 ) AM_READ_PORT( "DSW" )
-	AM_RANGE( 0x90, 0x90 ) AM_READ_PORT( "IN0" )
-	AM_RANGE( 0xa0, 0xa0 ) AM_READ_PORT( "IN1" )
-	AM_RANGE( 0xe0, 0xe0 ) AM_READWRITE(quizpun2_protection_r, quizpun2_protection_w )
-ADDRESS_MAP_END
-
-=======
 static ADDRESS_MAP_START( common_io_map, AS_IO, 8, quizpun2_state )
 	ADDRESS_MAP_GLOBAL_MASK(0xff)
 	AM_RANGE( 0x40, 0x40 ) AM_WRITE(irq_ack)
@@ -763,7 +582,6 @@ WRITE8_MEMBER(quizpun2_state::quizpun_68705_port_c_w)
 
 //  logerror("%s: port C write %02x\n", machine().describe_context(), data);
 }
->>>>>>> upstream/master
 
 /***************************************************************************
                             Memory Maps - Sound CPU
@@ -778,18 +596,10 @@ static ADDRESS_MAP_START( quizpun2_sound_io_map, AS_IO, 8, quizpun2_state )
 	ADDRESS_MAP_GLOBAL_MASK(0xff)
 	AM_RANGE( 0x00, 0x00 ) AM_WRITENOP  // IRQ end
 	AM_RANGE( 0x20, 0x20 ) AM_WRITENOP  // NMI end
-<<<<<<< HEAD
-	AM_RANGE( 0x40, 0x40 ) AM_READ(soundlatch_byte_r )
-	AM_RANGE( 0x60, 0x61 ) AM_DEVREADWRITE("ymsnd", ym2203_device, read, write )
-ADDRESS_MAP_END
-
-
-=======
 	AM_RANGE( 0x40, 0x40 ) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
 	AM_RANGE( 0x60, 0x61 ) AM_DEVREADWRITE("ymsnd", ym2203_device, read, write)
 ADDRESS_MAP_END
 
->>>>>>> upstream/master
 /***************************************************************************
                                 Input Ports
 ***************************************************************************/
@@ -814,25 +624,6 @@ static INPUT_PORTS_START( quizpun2 )
 	PORT_DIPSETTING(    0x40, "4" )
 	PORT_DIPSETTING(    0x00, "5" )
 
-<<<<<<< HEAD
-	PORT_START("IN0")
-	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_BUTTON1 ) PORT_PLAYER(1)
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_BUTTON2 ) PORT_PLAYER(1)
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_BUTTON3 ) PORT_PLAYER(1)
-	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_BUTTON4 ) PORT_PLAYER(1)
-	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_BUTTON1 ) PORT_PLAYER(2)
-	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_BUTTON2 ) PORT_PLAYER(2)
-	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_BUTTON3 ) PORT_PLAYER(2)
-	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_BUTTON4 ) PORT_PLAYER(2)
-
-	PORT_START("IN1")
-	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_COIN1 )
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_COIN2 )
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_COIN3 )
-	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_COIN4 )
-	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_START1 )
-	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_START2 )
-=======
 	PORT_START("IN0") // port $90
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_BUTTON1 ) PORT_PLAYER(2)
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_BUTTON2 ) PORT_PLAYER(2)
@@ -850,50 +641,14 @@ static INPUT_PORTS_START( quizpun2 )
 	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_START1  )
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_UNKNOWN )
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_UNKNOWN )
->>>>>>> upstream/master
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_UNKNOWN )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNKNOWN )
 INPUT_PORTS_END
 
-<<<<<<< HEAD
-
-=======
->>>>>>> upstream/master
 /***************************************************************************
                                 Graphics Layout
 ***************************************************************************/
 
-<<<<<<< HEAD
-static const gfx_layout layout_8x16x8 =
-{
-	8, 16,
-	RGN_FRAC(1, 1),
-	8,
-	{ STEP8(0,1) },
-	{ STEP8(0,8) },
-	{ STEP16(0,8*8) },
-	8*16*8
-};
-
-static const gfx_layout layout_8x16x2 =
-{
-	8, 16,
-	RGN_FRAC(1, 1),
-	2,
-	{ 0,1 },
-	{ STEP4(3*2,-2),STEP4(7*2,-2) },
-	{ STEP16(0,8*2) },
-	8*16*2
-};
-
-static GFXDECODE_START( quizpun2 )
-	GFXDECODE_ENTRY( "gfx1", 0, layout_8x16x8, 0,  1*2 )
-	GFXDECODE_ENTRY( "gfx2", 0, layout_8x16x2, 0, 64*2 )
-	GFXDECODE_ENTRY( "gfx3", 0, layout_8x16x2, 0, 64*2 )
-GFXDECODE_END
-
-
-=======
 static const gfx_layout layout_16x16x4 =
 {
 	16, 16,
@@ -922,50 +677,31 @@ static GFXDECODE_START( quizpun2 )
 	GFXDECODE_ENTRY( "fg2", 0, layout_16x16x1, 0x100, 256/2  )
 GFXDECODE_END
 
->>>>>>> upstream/master
 /***************************************************************************
                                 Machine Drivers
 ***************************************************************************/
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( quizpun2, quizpun2_state )
-	/* basic machine hardware */
-	MCFG_CPU_ADD("maincpu", Z80, XTAL_8MHz / 2) // 4 MHz?
-=======
 static MACHINE_CONFIG_START( quizpun2 )
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, XTAL_8MHz / 2) // 4 MHz
->>>>>>> upstream/master
 	MCFG_CPU_PROGRAM_MAP(quizpun2_map)
 	MCFG_CPU_IO_MAP(quizpun2_io_map)
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", quizpun2_state,  irq0_line_hold)
 
-<<<<<<< HEAD
-	MCFG_CPU_ADD("audiocpu", Z80, XTAL_8MHz / 2)    // 4 MHz?
-=======
 	MCFG_CPU_ADD("audiocpu", Z80, XTAL_8MHz / 2)    // 4 MHz
->>>>>>> upstream/master
 	MCFG_CPU_PROGRAM_MAP(quizpun2_sound_map)
 	MCFG_CPU_IO_MAP(quizpun2_sound_io_map)
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", quizpun2_state,  irq0_line_hold)
 	// NMI generated by main CPU
 
-<<<<<<< HEAD
-=======
 	MCFG_EEPROM_SERIAL_93C46_ADD("eeprom")
->>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE(60)
 	MCFG_SCREEN_VBLANK_TIME(ATTOSECONDS_IN_USEC(0))
-<<<<<<< HEAD
-	MCFG_SCREEN_SIZE(256, 256)
-	MCFG_SCREEN_VISIBLE_AREA(0, 256-1, 0, 256-1)
-=======
 	MCFG_SCREEN_SIZE(384, 256)
 	MCFG_SCREEN_VISIBLE_AREA(0, 384-1, 0, 256-1)
->>>>>>> upstream/master
 	MCFG_SCREEN_UPDATE_DRIVER(quizpun2_state, screen_update_quizpun2)
 	MCFG_SCREEN_PALETTE("palette")
 
@@ -973,16 +709,6 @@ static MACHINE_CONFIG_START( quizpun2 )
 	MCFG_PALETTE_ADD("palette", 0x200)
 	MCFG_PALETTE_FORMAT(xRRRRRGGGGGBBBBB)
 
-<<<<<<< HEAD
-
-	/* sound hardware */
-	MCFG_SPEAKER_STANDARD_MONO("mono")
-
-	MCFG_SOUND_ADD("ymsnd", YM2203, XTAL_8MHz / 4 ) // 2 MHz?
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
-MACHINE_CONFIG_END
-
-=======
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
@@ -1004,7 +730,6 @@ static MACHINE_CONFIG_DERIVED( quizpun, quizpun2 )
 	MCFG_M68705_PORTB_W_CB(WRITE8(quizpun2_state, quizpun_68705_port_b_w))
 	MCFG_M68705_PORTC_W_CB(WRITE8(quizpun2_state, quizpun_68705_port_c_w))
 MACHINE_CONFIG_END
->>>>>>> upstream/master
 
 /***************************************************************************
                                 ROMs Loading
@@ -1022,43 +747,19 @@ ROM_START( quizpun2 )
 	ROM_LOAD( "u22", 0x00000, 0x10000, CRC(f40768b5) SHA1(4410f71850357ec1d10a3a114bb540966e72781b) )
 
 	ROM_REGION( 0x1000, "mcu", 0 )
-<<<<<<< HEAD
-	ROM_LOAD( "mcu.bin", 0x0000, 0x1000, NO_DUMP ) // could be a state machine instead
-
-	ROM_REGION( 0x40000, "gfx1", 0 )    // 8x16x8
-=======
 	ROM_LOAD( "mcu.bin", 0x0000, 0x1000, NO_DUMP )
 
 	ROM_REGION( 0x40000, "bg", 0 )    // 16x16x8
->>>>>>> upstream/master
 	ROM_LOAD( "u21", 0x00000, 0x10000, CRC(8ac86759) SHA1(2eac9ceee4462ce905aa08ff4f5a6215e0b6672f) )
 	ROM_LOAD( "u20", 0x10000, 0x10000, CRC(67640a46) SHA1(5b33850afbb89db9ce9044a578423bfe3a55420d) )
 	ROM_LOAD( "u29", 0x20000, 0x10000, CRC(cd8ff05b) SHA1(25e5be914fe49ff96a3c04de0c0e266a79068930) )
 	ROM_LOAD( "u30", 0x30000, 0x10000, CRC(8612b443) SHA1(1033a378b21023eca471f43309d49461494b5ea1) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x6000, "gfx2", 0 ) // 8x16x2
-=======
 	ROM_REGION( 0x6000, "fg", 0 ) // 16x16x1
->>>>>>> upstream/master
 	ROM_LOAD( "u26", 0x1000, 0x1000, CRC(151de8af) SHA1(2159ab030043e69d63cc9fbbc772f5bae8ab3f9d) )
 	ROM_CONTINUE(    0x0000, 0x1000 )
 	ROM_LOAD( "u27", 0x3000, 0x1000, CRC(2afdafea) SHA1(4c116a1e8a91f2e309646063139763b837e24bc7) )
 	ROM_CONTINUE(    0x2000, 0x1000 )
-<<<<<<< HEAD
-	ROM_LOAD( "u28", 0x5000, 0x1000, CRC(c8bd85ad) SHA1(e7f0882f669edea1bb4634c263872f63da6a3290) )
-	ROM_CONTINUE(    0x4000, 0x1000 )
-
-	ROM_REGION( 0x20000, "gfx3", 0 )    // 8x16x2
-	ROM_LOAD( "u1", 0x00000, 0x10000, CRC(58506040) SHA1(9d8bed2585e8f188a20270fccd9cfbdb91e48599) )
-	ROM_LOAD( "u2", 0x10000, 0x10000, CRC(9294a19c) SHA1(cd7109262e5f68b946c84aa390108bcc47ee1300) )
-
-	ROM_REGION( 0x80, "eeprom", 0 ) // EEPROM (tied to the unknown DIP40)
-	ROM_LOAD( "93c46", 0x00, 0x80, CRC(4d244cc8) SHA1(6593d5b7ac1ebb77fee4648ad1d3d9b59a25fdc8) )
-
-	ROM_REGION( 0x2000, "unknown", 0 )
-	ROM_LOAD( "u2a", 0x0000, 0x2000, CRC(13afc2bd) SHA1(0d9c8813525dfc7a844e72d2cf84261db3d10a23) )
-=======
 	ROM_LOAD( "u28", 0x5000, 0x1000, CRC(c8bd85ad) SHA1(e7f0882f669edea1bb4634c263872f63da6a3290) ) // 1ST HALF = xx00
 	ROM_CONTINUE(    0x4000, 0x1000 )
 
@@ -1071,7 +772,6 @@ ROM_START( quizpun2 )
 
 	ROM_REGION( 0x2000, "unknown", 0 )
 	ROM_LOAD( "u2a", 0x0000, 0x2000, CRC(13afc2bd) SHA1(0d9c8813525dfc7a844e72d2cf84261db3d10a23) ) // 111xxxxxxxxxx = 0xFF
->>>>>>> upstream/master
 ROM_END
 
 ROM_START( quizpun )
@@ -1085,43 +785,15 @@ ROM_START( quizpun )
 	ROM_REGION( 0x10000, "audiocpu", 0 )
 	ROM_LOAD( "05.u22", 0x00000, 0x10000, CRC(515f337e) SHA1(21b2cca95b5da934fd8139892c2ee2c623d51a4e) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x1000, "mcu", 0 )
-	ROM_LOAD( "mcu.bin", 0x0000, 0x1000, NO_DUMP ) // could be a state machine instead
-
-	ROM_REGION( 0x40000, "gfx1", 0 )    // 8x16x8
-=======
 	ROM_REGION( 0x800, "mcu", 0 )
 	ROM_LOAD( "68705p5.bin", 0x000, 0x800, CRC(2e52bc67) SHA1(13ad4aee88c53c75c7cc1f31a149ba0234447f42) ) // in epoxy block
 
 	ROM_REGION( 0x40000, "bg", 0 )    // 16x16x8
->>>>>>> upstream/master
 	ROM_LOAD( "04.u21", 0x00000, 0x10000, CRC(fa8d64f4) SHA1(71badabf8f34f246dec83323a1cddbe74deb91bd) )
 	ROM_LOAD( "03.u20", 0x10000, 0x10000, CRC(8dda8167) SHA1(42838cf6866fb1d59c5bb3b477053aac448e7760) )
 	ROM_LOAD( "09.u29", 0x20000, 0x10000, CRC(b9f28569) SHA1(1395cd226d314ee57385eed25f28b68607bfda53) )
 	ROM_LOAD( "10.u30", 0x30000, 0x10000, CRC(db5762c0) SHA1(606dc4a3e6b8034f063f11dcf0a2b1db59838f4c) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0xc000, "gfx2", 0 ) // 8x16x2
-	ROM_LOAD( "06.u26", 0x1000, 0x1000, CRC(6d071b6d) SHA1(19565c8d768eeecd4119677915cc06f3ea18a47a) )
-	ROM_CONTINUE(    0x0000, 0x1000 )
-	ROM_LOAD( "07.u27", 0x3000, 0x1000, CRC(0f8b516e) SHA1(8bfabfd0bd28a1c7ddd01586fe9757b241feb59b) )
-	ROM_CONTINUE(    0x2000, 0x1000 )
-	ROM_CONTINUE(    0x6000, 0x6000 ) // ??
-	ROM_LOAD( "08.u28", 0x5000, 0x1000, CRC(51c0c5cb) SHA1(0c7bfc9b6b3ce0cdd5c0e36df2b4d90f9cff7fae) )
-	ROM_CONTINUE(    0x4000, 0x1000 )
-
-	ROM_REGION( 0x20000, "gfx3", 0 )    // 8x16x2
-	ROM_LOAD( "01.u1", 0x00000, 0x10000, CRC(58506040) SHA1(9d8bed2585e8f188a20270fccd9cfbdb91e48599) )
-	ROM_LOAD( "02.u2", 0x10000, 0x10000, CRC(9294a19c) SHA1(cd7109262e5f68b946c84aa390108bcc47ee1300) )
-
-	ROM_REGION( 0x80, "eeprom", ROMREGION_ERASEFF )
-
-ROM_END
-
-GAME( 1988, quizpun, 0, quizpun2, quizpun2, driver_device, 0, ROT270, "Space Computer", "Quiz Punch", MACHINE_NOT_WORKING | MACHINE_UNEMULATED_PROTECTION )
-GAME( 1989, quizpun2, 0, quizpun2, quizpun2, driver_device, 0, ROT270, "Space Computer", "Quiz Punch 2", MACHINE_NOT_WORKING | MACHINE_UNEMULATED_PROTECTION )
-=======
 	ROM_REGION( 0xc000, "fg", 0 ) // 16x16x1
 	ROM_LOAD( "06.u26", 0x1000, 0x1000, CRC(6d071b6d) SHA1(19565c8d768eeecd4119677915cc06f3ea18a47a) )
 	ROM_CONTINUE(       0x0000, 0x1000 )
@@ -1141,4 +813,3 @@ ROM_END
 
 GAME( 1988, quizpun,  0, quizpun,  quizpun2, quizpun2_state, 0, ROT270, "Space Computer", "Quiz Punch",    MACHINE_NOT_WORKING | MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_SOUND )
 GAME( 1989, quizpun2, 0, quizpun2, quizpun2, quizpun2_state, 0, ROT270, "Space Computer", "Quiz Punch II", MACHINE_NOT_WORKING | MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_SOUND | MACHINE_UNEMULATED_PROTECTION )
->>>>>>> upstream/master

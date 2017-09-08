@@ -44,10 +44,7 @@ Viking?s Fun Mill
 #include "emu.h"
 #include "cpu/arm7/arm7.h"
 #include "cpu/arm7/arm7core.h"
-<<<<<<< HEAD
-=======
 #include "speaker.h"
->>>>>>> upstream/master
 
 class belatra_state : public driver_device
 {
@@ -70,11 +67,7 @@ ADDRESS_MAP_END
 static INPUT_PORTS_START( belatra )
 INPUT_PORTS_END
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( belatra, belatra_state )
-=======
 static MACHINE_CONFIG_START( belatra )
->>>>>>> upstream/master
 	MCFG_CPU_ADD("maincpu", ARM7, 54000000) // guess...
 	MCFG_CPU_PROGRAM_MAP(belatra_map)
 
@@ -128,17 +121,6 @@ ROM_START( ldrinka )
 ROM_END
 
 
-<<<<<<< HEAD
-GAME( 2004, fairyl2     ,0,         belatra, belatra, driver_device, 0, ROT0, "Belatra","Fairy Land 2 (set 1)", MACHINE_IS_SKELETON )
-GAME( 2004, fairyl2a    ,fairyl2,   belatra, belatra, driver_device, 0, ROT0, "Belatra","Fairy Land 2 (set 2)", MACHINE_IS_SKELETON )
-GAME( 2004, fairyl2b    ,fairyl2,   belatra, belatra, driver_device, 0, ROT0, "Belatra","Fairy Land 2 (set 3)", MACHINE_IS_SKELETON )
-GAME( 2004, fairyl2bl   ,fairyl2,   belatra, belatra, driver_device, 0, ROT0, "Belatra","Fairy Land 2 (bootleg)", MACHINE_IS_SKELETON )
-
-GAME( 2004, ldrink      ,0,         belatra, belatra, driver_device, 0, ROT0, "Belatra","Lucky Drink (set 1)", MACHINE_IS_SKELETON )
-GAME( 2004, ldrinka     ,ldrink,    belatra, belatra, driver_device, 0, ROT0, "Belatra","Lucky Drink (set 2)", MACHINE_IS_SKELETON )
-
-GAME( 2004, merryjn     ,0,         belatra, belatra, driver_device, 0, ROT0, "Belatra","Merry Joiner", MACHINE_IS_SKELETON )
-=======
 GAME( 2004, fairyl2,   0,         belatra, belatra, belatra_state, 0, ROT0, "Belatra","Fairy Land 2 (set 1)",   MACHINE_IS_SKELETON )
 GAME( 2004, fairyl2a,  fairyl2,   belatra, belatra, belatra_state, 0, ROT0, "Belatra","Fairy Land 2 (set 2)",   MACHINE_IS_SKELETON )
 GAME( 2004, fairyl2b,  fairyl2,   belatra, belatra, belatra_state, 0, ROT0, "Belatra","Fairy Land 2 (set 3)",   MACHINE_IS_SKELETON )
@@ -148,4 +130,3 @@ GAME( 2004, ldrink,    0,         belatra, belatra, belatra_state, 0, ROT0, "Bel
 GAME( 2004, ldrinka,   ldrink,    belatra, belatra, belatra_state, 0, ROT0, "Belatra","Lucky Drink (set 2)",    MACHINE_IS_SKELETON )
 
 GAME( 2004, merryjn,   0,         belatra, belatra, belatra_state, 0, ROT0, "Belatra","Merry Joiner",           MACHINE_IS_SKELETON )
->>>>>>> upstream/master

@@ -1,16 +1,9 @@
 // license:BSD-3-Clause
 // copyright-holders:Olivier Galibert
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __M3745X_H__
-#define __M3745X_H__
-=======
 #ifndef MAME_CPU_M6502_M3745X_H
 #define MAME_CPU_M6502_M3745X_H
 
 #pragma once
->>>>>>> upstream/master
 
 #include "m740.h"
 
@@ -67,12 +60,6 @@ public:
 		M3745X_SET_OVERFLOW = M740_SET_OVERFLOW
 	};
 
-<<<<<<< HEAD
-	// construction/destruction
-	m3745x_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, address_map_constructor internal_map, const char *shortname, const char *source);
-
-=======
->>>>>>> upstream/master
 	const address_space_config m_program_config;
 
 	template<class _read, class _write> void set_p3_callbacks(_read rd, _write wr)
@@ -127,27 +114,6 @@ public:
 	DECLARE_READ8_MEMBER(intregs_r);
 	DECLARE_WRITE8_MEMBER(intregs_w);
 
-<<<<<<< HEAD
-	bool are_port_bits_output(UINT8 port, UINT8 mask) { return ((m_ddrs[port] & mask) == mask) ? true : false; }
-
-protected:
-	// device-level overrides
-	virtual void device_start();
-	virtual void device_reset();
-	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
-	virtual void execute_set_input(int inputnum, int state);
-	virtual const address_space_config *memory_space_config(address_spacenum spacenum) const { return (spacenum == AS_PROGRAM) ? &m_program_config : NULL; }
-
-	void send_port(address_space &space, UINT8 offset, UINT8 data);
-	UINT8 read_port(UINT8 offset);
-
-	void recalc_irqs();
-
-	UINT8 m_ports[6], m_ddrs[6];
-	UINT8 m_intreq1, m_intreq2, m_intctrl1, m_intctrl2;
-	UINT8 m_adctrl;
-	UINT16 m_last_all_ints;
-=======
 	bool are_port_bits_output(uint8_t port, uint8_t mask) { return ((m_ddrs[port] & mask) == mask) ? true : false; }
 
 protected:
@@ -170,7 +136,6 @@ protected:
 	uint8_t m_intreq1, m_intreq2, m_intctrl1, m_intctrl2;
 	uint8_t m_adctrl;
 	uint16_t m_last_all_ints;
->>>>>>> upstream/master
 
 private:
 	emu_timer *m_timers[NUM_TIMERS];
@@ -179,19 +144,6 @@ private:
 class m37450_device : public m3745x_device
 {
 public:
-<<<<<<< HEAD
-	m37450_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-	m37450_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source);
-
-protected:
-
-private:
-};
-
-extern const device_type M37450;
-
-#endif
-=======
 	m37450_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 protected:
@@ -201,4 +153,3 @@ protected:
 DECLARE_DEVICE_TYPE(M37450, m37450_device)
 
 #endif // MAME_CPU_M6502_M3745X_H
->>>>>>> upstream/master

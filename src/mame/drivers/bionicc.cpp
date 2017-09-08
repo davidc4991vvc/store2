@@ -1,11 +1,6 @@
-<<<<<<< HEAD
-// license:???
-// copyright-holders:Steven Frew, Phil Stroffolino, Paul Leaman
-=======
 // license:BSD-3-Clause
 // copyright-holders:Phil Stroffolino, Paul Leaman
 // thanks-to: Steven Frew (the author of Slutte)
->>>>>>> upstream/master
 /******************************************************************************************
 
     Bionic Commando
@@ -16,22 +11,13 @@
     Graphics ROM board: 86612-B-2
      Program ROM board: 86612-C-2
 
-<<<<<<< HEAD
-      Main CPU: 68000CP10
-     Sound CPU: Z80A
-           MCU: Intel C8751H-88
-=======
       Main CPU: 68000CP10        @ 24MHz / 2 = 12MHz
      Sound CPU: Z80A             @ 14.31818 / 4 = 3.579545MHz
            MCU: Intel C8751H-88  @ 24MHz / 4 = 6MHz
->>>>>>> upstream/master
     Sound Chip: YM2151 & YM3012
            OSC: 24.000 MHz (on the 86612-B-2 PCB)
         Custom: CAPCOM DL-010D-103 (on the 86612-B-2 PCB)
 
-<<<<<<< HEAD
-
-=======
     Horizontal scan rate: 15.606kHz
     Vertical scan rate: 60.024Hz
 
@@ -56,7 +42,6 @@
 
     Note: Protection MCU is labelled "TS" without a number and without a coloured
           stripe. Maybe its code is not region dependant.
->>>>>>> upstream/master
     Note: Euro rom labels (IE: "TSE") had a blue stripe, while those labeled
           as USA (TSU) had an red stripe on the sticker.  The intermixing
           of TSE and TSU roms in the parent set is correct and verified.
@@ -79,11 +64,7 @@
         0xFFFFFD (player 2)
         0xFFFFFF (player 1)
 
-<<<<<<< HEAD
-        This is probably done by the Intel C8751H MCU on the board (whose interal ROM
-=======
         This is probably done by the Intel C8751H MCU on the board (whose internal ROM
->>>>>>> upstream/master
         is not yet available).
 
         The MCU also takes care of the commands for the sound CPU, which are stored
@@ -100,12 +81,6 @@
 ******************************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/z80/z80.h"
-#include "cpu/m68000/m68000.h"
-#include "sound/2151intf.h"
-#include "includes/bionicc.h"
-=======
 #include "includes/bionicc.h"
 
 #include "cpu/z80/z80.h"
@@ -113,7 +88,6 @@
 #include "sound/ym2151.h"
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 /*************************************
@@ -134,11 +108,7 @@ READ16_MEMBER(bionicc_state::hacked_controls_r)
 	return m_inp[offset];
 }
 
-<<<<<<< HEAD
-WRITE16_MEMBER(bionicc_state::bionicc_mpu_trigger_w)
-=======
 WRITE16_MEMBER(bionicc_state::mpu_trigger_w)
->>>>>>> upstream/master
 {
 	data = ioport("SYSTEM")->read() >> 12;
 	m_inp[0] = data ^ 0x0f;
@@ -154,11 +124,7 @@ WRITE16_MEMBER(bionicc_state::mpu_trigger_w)
 WRITE16_MEMBER(bionicc_state::hacked_soundcommand_w)
 {
 	COMBINE_DATA(&m_soundcommand);
-<<<<<<< HEAD
-	soundlatch_byte_w(space, 0, m_soundcommand & 0xff);
-=======
 	m_soundlatch->write(space, 0, m_soundcommand & 0xff);
->>>>>>> upstream/master
 }
 
 READ16_MEMBER(bionicc_state::hacked_soundcommand_r)
@@ -178,11 +144,7 @@ READ16_MEMBER(bionicc_state::hacked_soundcommand_r)
 
 ********************************************************************/
 
-<<<<<<< HEAD
-TIMER_DEVICE_CALLBACK_MEMBER(bionicc_state::bionicc_scanline)
-=======
 TIMER_DEVICE_CALLBACK_MEMBER(bionicc_state::scanline)
->>>>>>> upstream/master
 {
 	int scanline = param;
 
@@ -205,16 +167,6 @@ static ADDRESS_MAP_START( main_map, AS_PROGRAM, 16, bionicc_state )
 	AM_RANGE(0xfe0000, 0xfe07ff) AM_RAM /* RAM? */
 	AM_RANGE(0xfe0800, 0xfe0cff) AM_RAM AM_SHARE("spriteram")
 	AM_RANGE(0xfe0d00, 0xfe3fff) AM_RAM              /* RAM? */
-<<<<<<< HEAD
-	AM_RANGE(0xfe4000, 0xfe4001) AM_WRITE(bionicc_gfxctrl_w)    /* + coin counters */
-	AM_RANGE(0xfe4000, 0xfe4001) AM_READ_PORT("SYSTEM")
-	AM_RANGE(0xfe4002, 0xfe4003) AM_READ_PORT("DSW")
-	AM_RANGE(0xfe8010, 0xfe8017) AM_WRITE(bionicc_scroll_w)
-	AM_RANGE(0xfe801a, 0xfe801b) AM_WRITE(bionicc_mpu_trigger_w)    /* ??? not sure, but looks like it */
-	AM_RANGE(0xfec000, 0xfecfff) AM_RAM_WRITE(bionicc_txvideoram_w) AM_SHARE("txvideoram")
-	AM_RANGE(0xff0000, 0xff3fff) AM_RAM_WRITE(bionicc_fgvideoram_w) AM_SHARE("fgvideoram")
-	AM_RANGE(0xff4000, 0xff7fff) AM_RAM_WRITE(bionicc_bgvideoram_w) AM_SHARE("bgvideoram")
-=======
 	AM_RANGE(0xfe4000, 0xfe4001) AM_WRITE(gfxctrl_w)    /* + coin counters */
 	AM_RANGE(0xfe4000, 0xfe4001) AM_READ_PORT("SYSTEM")
 	AM_RANGE(0xfe4002, 0xfe4003) AM_READ_PORT("DSW")
@@ -224,7 +176,6 @@ static ADDRESS_MAP_START( main_map, AS_PROGRAM, 16, bionicc_state )
 	AM_RANGE(0xfec000, 0xfecfff) AM_RAM_WRITE(txvideoram_w) AM_SHARE("txvideoram")
 	AM_RANGE(0xff0000, 0xff3fff) AM_RAM_WRITE(fgvideoram_w) AM_SHARE("fgvideoram")
 	AM_RANGE(0xff4000, 0xff7fff) AM_RAM_WRITE(bgvideoram_w) AM_SHARE("bgvideoram")
->>>>>>> upstream/master
 	AM_RANGE(0xff8000, 0xff87ff) AM_RAM_DEVWRITE("palette", palette_device, write) AM_SHARE("palette")
 	AM_RANGE(0xffc000, 0xfffff7) AM_RAM /* working RAM */
 	AM_RANGE(0xfffff8, 0xfffff9) AM_READWRITE(hacked_soundcommand_r, hacked_soundcommand_w)      /* hack */
@@ -235,11 +186,7 @@ ADDRESS_MAP_END
 static ADDRESS_MAP_START( sound_map, AS_PROGRAM, 8, bionicc_state )
 	AM_RANGE(0x0000, 0x7fff) AM_ROM
 	AM_RANGE(0x8000, 0x8001) AM_DEVREADWRITE("ymsnd", ym2151_device, read, write)
-<<<<<<< HEAD
-	AM_RANGE(0xa000, 0xa000) AM_READ(soundlatch_byte_r)
-=======
 	AM_RANGE(0xa000, 0xa000) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
->>>>>>> upstream/master
 	AM_RANGE(0xc000, 0xc7ff) AM_RAM
 ADDRESS_MAP_END
 
@@ -422,22 +369,14 @@ void bionicc_state::machine_reset()
 	m_soundcommand = 0;
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( bionicc, bionicc_state )
-=======
 static MACHINE_CONFIG_START( bionicc )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, XTAL_24MHz / 2) /* 12 MHz - verified in schematics */
 	MCFG_CPU_PROGRAM_MAP(main_map)
-<<<<<<< HEAD
-	MCFG_TIMER_DRIVER_ADD_SCANLINE("scantimer", bionicc_state, bionicc_scanline, "screen", 0, 1)
-=======
 	MCFG_TIMER_DRIVER_ADD_SCANLINE("scantimer", bionicc_state, scanline, "screen", 0, 1)
 
 	/* Protection MCU Intel C8751H-88 runs at 24MHz / 4 = 6MHz */
->>>>>>> upstream/master
 
 	MCFG_CPU_ADD("audiocpu", Z80, XTAL_14_31818MHz / 4)   /* EXO3 C,B=GND, A=5V ==> Divisor 2^2 */
 	MCFG_CPU_PROGRAM_MAP(sound_map)
@@ -450,19 +389,10 @@ static MACHINE_CONFIG_START( bionicc )
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
-<<<<<<< HEAD
-	MCFG_SCREEN_REFRESH_RATE(60)
-	MCFG_SCREEN_VBLANK_TIME(ATTOSECONDS_IN_USEC(2500) /* not accurate */)
-	MCFG_SCREEN_SIZE(32*8, 32*8)
-	MCFG_SCREEN_VISIBLE_AREA(0*8, 32*8-1, 2*8, 30*8-1)
-	MCFG_SCREEN_UPDATE_DRIVER(bionicc_state, screen_update_bionicc)
-	MCFG_SCREEN_VBLANK_DEVICE("spriteram", buffered_spriteram16_device, vblank_copy_rising)
-=======
 	/* FIXME: should be 257 visible horizontal pixels, first visible pixel should be repeated, back porch/front porch should be separated */
 	MCFG_SCREEN_RAW_PARAMS(XTAL_24MHz / 4, 386, 0, 256, 260, 16, 240)
 	MCFG_SCREEN_UPDATE_DRIVER(bionicc_state, screen_update)
 	MCFG_SCREEN_VBLANK_CALLBACK(DEVWRITELINE("spriteram", buffered_spriteram16_device, vblank_copy_rising))
->>>>>>> upstream/master
 	MCFG_SCREEN_PALETTE("palette")
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", bionicc)
@@ -476,11 +406,8 @@ static MACHINE_CONFIG_START( bionicc )
 
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 
->>>>>>> upstream/master
 	MCFG_YM2151_ADD("ymsnd", XTAL_14_31818MHz / 4)
 	MCFG_SOUND_ROUTE(0, "mono", 0.60)
 	MCFG_SOUND_ROUTE(1, "mono", 0.60)
@@ -711,8 +638,6 @@ ROM_START( bioniccbl )
 	ROM_LOAD( "63s141.18f",   0x0000, 0x0100, CRC(b58d0023) SHA1(e8a4a2e2951bf73b3d9eed6957e9ee1e61c9c58a) )    /* priority (not used), Labeled "TSB" */
 ROM_END
 
-<<<<<<< HEAD
-=======
 ROM_START( bioniccbl2 ) // only the 4 maincpu ROMs differ, they came from an original, not working, Capcom board, but the title screen is Bionic Commandos like a bootleg? The other ROMs match topsecrt
 	ROM_REGION( 0x40000, "maincpu", 0 )      /* 68000 code */
 	ROM_LOAD16_BYTE( "tsu_02.1a",   0x00000, 0x10000, CRC(c03d3424) SHA1(1d47185e10813c2792bda31c7dfbb40e88fd46ee) ) //sldc
@@ -756,7 +681,6 @@ ROM_START( bioniccbl2 ) // only the 4 maincpu ROMs differ, they came from an ori
 	ROM_REGION( 0x0100, "proms", 0 )
 	ROM_LOAD( "63s141.18f",   0x0000, 0x0100, CRC(b58d0023) SHA1(e8a4a2e2951bf73b3d9eed6957e9ee1e61c9c58a) )    /* priority (not used), Labeled "TSB" */
 ROM_END
->>>>>>> upstream/master
 
 
 /*************************************
@@ -765,19 +689,11 @@ ROM_END
  *
  *************************************/
 
-<<<<<<< HEAD
-GAME( 1987, bionicc,  0,       bionicc, bionicc, driver_device, 0, ROT0, "Capcom", "Bionic Commando (Euro)", MACHINE_SUPPORTS_SAVE )
-GAME( 1987, bionicc1, bionicc, bionicc, bionicc, driver_device, 0, ROT0, "Capcom", "Bionic Commando (US set 1)", MACHINE_SUPPORTS_SAVE )
-GAME( 1987, bionicc2, bionicc, bionicc, bionicc, driver_device, 0, ROT0, "Capcom", "Bionic Commando (US set 2)", MACHINE_SUPPORTS_SAVE )
-GAME( 1987, topsecrt, bionicc, bionicc, bionicc, driver_device, 0, ROT0, "Capcom", "Top Secret (Japan, old revision)", MACHINE_SUPPORTS_SAVE )
-GAME( 1987, bioniccbl,bionicc, bionicc, bionicc, driver_device, 0, ROT0, "bootleg", "Bionic Commandos (bootleg)", MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1987, bionicc,   0,       bionicc, bionicc, bionicc_state, 0, ROT0, "Capcom",  "Bionic Commando (Euro)",            MACHINE_SUPPORTS_SAVE )
 GAME( 1987, bionicc1,  bionicc, bionicc, bionicc, bionicc_state, 0, ROT0, "Capcom",  "Bionic Commando (US set 1)",        MACHINE_SUPPORTS_SAVE )
 GAME( 1987, bionicc2,  bionicc, bionicc, bionicc, bionicc_state, 0, ROT0, "Capcom",  "Bionic Commando (US set 2)",        MACHINE_SUPPORTS_SAVE )
 GAME( 1987, topsecrt,  bionicc, bionicc, bionicc, bionicc_state, 0, ROT0, "Capcom",  "Top Secret (Japan, old revision)",  MACHINE_SUPPORTS_SAVE )
 GAME( 1987, bioniccbl, bionicc, bionicc, bionicc, bionicc_state, 0, ROT0, "bootleg", "Bionic Commandos (bootleg, set 1)", MACHINE_SUPPORTS_SAVE )
 GAME( 1987, bioniccbl2,bionicc, bionicc, bionicc, bionicc_state, 0, ROT0, "bootleg", "Bionic Commandos (bootleg, set 2)", MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master
 
 // there's also an undumped JP new revision on which there are no extra lives after 1 million points, plus other bug-fixes / changes

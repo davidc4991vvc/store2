@@ -1,24 +1,16 @@
-<<<<<<< HEAD
-// license:???
-// copyright-holders:Marco Cassili,Ernesto Corvi,Tim Lindquist,Carlos A. Lozano,Bryan McPhail,Jarek Parchanski,Nicola Salmoria,Tomasz Slanina,Phil Stroffolino,Acho A. Tang,Victor Trucco
-=======
 // license:BSD-3-Clause
 // copyright-holders:Ernesto Corvi,Tim Lindquist,Carlos A. Lozano,Bryan McPhail,Jarek Parchanski,Nicola Salmoria,Tomasz Slanina,Phil Stroffolino,Acho A. Tang,Victor Trucco
 // thanks-to:Marco Cassili
 
->>>>>>> upstream/master
 /*************************************************************************
 
     various SNK triple Z80 games
 
 *************************************************************************/
 
-<<<<<<< HEAD
-=======
 #include "machine/gen_latch.h"
 #include "screen.h"
 
->>>>>>> upstream/master
 class snk_state : public driver_device
 {
 public:
@@ -30,10 +22,7 @@ public:
 		m_gfxdecode(*this, "gfxdecode"),
 		m_screen(*this, "screen"),
 		m_palette(*this, "palette"),
-<<<<<<< HEAD
-=======
 		m_soundlatch(*this, "soundlatch"),
->>>>>>> upstream/master
 		m_spriteram(*this, "spriteram"),
 		m_fg_videoram(*this, "fg_videoram"),
 		m_bg_videoram(*this, "bg_videoram"),
@@ -45,20 +34,12 @@ public:
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<screen_device> m_screen;
 	required_device<palette_device> m_palette;
-<<<<<<< HEAD
-
-	required_shared_ptr<UINT8> m_spriteram;
-	optional_shared_ptr<UINT8> m_fg_videoram;
-	required_shared_ptr<UINT8> m_bg_videoram;
-	required_shared_ptr<UINT8> m_tx_videoram;
-=======
 	optional_device<generic_latch_8_device> m_soundlatch;
 
 	required_shared_ptr<uint8_t> m_spriteram;
 	optional_shared_ptr<uint8_t> m_fg_videoram;
 	required_shared_ptr<uint8_t> m_bg_videoram;
 	required_shared_ptr<uint8_t> m_tx_videoram;
->>>>>>> upstream/master
 
 	int m_countryc_trackball;
 	int m_last_value[2];
@@ -79,17 +60,6 @@ public:
 	int m_sp16_scrolly;
 	int m_sp32_scrollx;
 	int m_sp32_scrolly;
-<<<<<<< HEAD
-	UINT8 m_sprite_split_point;
-	int m_num_sprites;
-	int m_yscroll_mask;
-	UINT32 m_bg_tile_offset;
-	UINT32 m_tx_tile_offset;
-	int m_is_psychos;
-
-	UINT8 m_drawmode_table[16];
-	UINT8 m_empty_tile[16*16];
-=======
 	uint8_t m_sprite_split_point;
 	int m_num_sprites;
 	int m_yscroll_mask;
@@ -99,7 +69,6 @@ public:
 
 	uint8_t m_drawmode_table[16];
 	uint8_t m_empty_tile[16*16];
->>>>>>> upstream/master
 	int m_hf_posy;
 	int m_hf_posx;
 	int m_tc16_posy;
@@ -217,32 +186,19 @@ public:
 	DECLARE_VIDEO_START(psychos);
 	DECLARE_VIDEO_START(snk_3bpp_shadow);
 	DECLARE_VIDEO_START(snk_4bpp_shadow);
-<<<<<<< HEAD
-	UINT32 screen_update_marvins(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	UINT32 screen_update_tnk3(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	UINT32 screen_update_ikari(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	UINT32 screen_update_gwar(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	UINT32 screen_update_tdfever(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	uint32_t screen_update_marvins(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	uint32_t screen_update_tnk3(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	uint32_t screen_update_ikari(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	uint32_t screen_update_gwar(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	uint32_t screen_update_tdfever(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	uint32_t screen_update_fitegolf2(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	TIMER_CALLBACK_MEMBER(sgladiat_sndirq_update_callback);
 	TIMER_CALLBACK_MEMBER(sndirq_update_callback);
 	DECLARE_WRITE_LINE_MEMBER(ymirq_callback_2);
 	void marvins_draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect, const int scrollx, const int scrolly, const int from, const int to);
 	void tnk3_draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect, const int xscroll, const int yscroll);
-<<<<<<< HEAD
-	void ikari_draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect, const int start, const int xscroll, const int yscroll, const UINT8 *source, const int gfxnum );
-	void tdfever_draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect,  const int xscroll, const int yscroll, const UINT8 *source, const int gfxnum, const int hw_xflip, const int from, const int to);
-=======
 	void ikari_draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect, const int start, const int xscroll, const int yscroll, const uint8_t *source, const int gfxnum );
 	void tdfever_draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect,  const int xscroll, const int yscroll, const uint8_t *source, const int gfxnum, const int hw_xflip, const int from, const int to);
->>>>>>> upstream/master
 	int hardflags_check(int num);
 	int hardflags_check8(int num);
 	int turbofront_check(int small, int num);

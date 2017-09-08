@@ -1,7 +1,4 @@
-<<<<<<< HEAD
-=======
 <?xml version="1.0"?>
->>>>>>> upstream/master
 <!-- gts80b copied from wpc_an.lay -->
 
 <!-- 2014-10-17: Initial version. -->
@@ -155,8 +152,4 @@
 			<bounds left="466" top="100" right="486" bottom="139" />
 		</bezel>
 	</view>
-<<<<<<< HEAD
 </mamelayout>
-=======
-</mamelayout>
->>>>>>> upstream/master

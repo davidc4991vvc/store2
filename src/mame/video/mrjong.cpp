@@ -20,11 +20,7 @@
 
 PALETTE_INIT_MEMBER(mrjong_state, mrjong)
 {
-<<<<<<< HEAD
-	const UINT8 *color_prom = memregion("proms")->base();
-=======
 	const uint8_t *color_prom = memregion("proms")->base();
->>>>>>> upstream/master
 	int i;
 
 	/* create a lookup table for the palette */
@@ -60,11 +56,7 @@ PALETTE_INIT_MEMBER(mrjong_state, mrjong)
 	/* characters/sprites */
 	for (i = 0; i < 0x80; i++)
 	{
-<<<<<<< HEAD
-		UINT8 ctabentry = color_prom[i] & 0x0f;
-=======
 		uint8_t ctabentry = color_prom[i] & 0x0f;
->>>>>>> upstream/master
 		palette.set_pen_indirect(i, ctabentry);
 	}
 }
@@ -108,11 +100,7 @@ TILE_GET_INFO_MEMBER(mrjong_state::get_bg_tile_info)
 
 void mrjong_state::video_start()
 {
-<<<<<<< HEAD
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(mrjong_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS_FLIP_XY, 8, 8, 32, 32);
-=======
 	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(mrjong_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS_FLIP_XY, 8, 8, 32, 32);
->>>>>>> upstream/master
 }
 
 /*
@@ -152,11 +140,7 @@ void mrjong_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect
 	}
 }
 
-<<<<<<< HEAD
-UINT32 mrjong_state::screen_update_mrjong(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t mrjong_state::screen_update_mrjong(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	m_bg_tilemap->draw(screen, bitmap, cliprect, 0, 0);
 	draw_sprites(bitmap, cliprect);

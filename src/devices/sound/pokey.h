@@ -7,16 +7,6 @@
  *  Based on original info found in Ron Fries' Pokey emulator,
  *  with additions by Brad Oliver, Eric Smith and Juergen Buchmueller.
  *  paddle (a/d conversion) details from the Atari 400/800 Hardware Manual.
-<<<<<<< HEAD
- *  Polynome algorithms according to info supplied by Perry McFarlane.
- *
- *****************************************************************************/
-
-#pragma once
-
-#ifndef __POKEY_H__
-#define __POKEY_H__
-=======
  *  Polynomial algorithms according to info supplied by Perry McFarlane.
  *
  *****************************************************************************/
@@ -25,7 +15,6 @@
 #define MAME_SOUND_POKEY_H
 
 #pragma once
->>>>>>> upstream/master
 
 #include "machine/rescap.h"
 
@@ -57,26 +46,11 @@
  *
  */
 
-<<<<<<< HEAD
-/* CONSTANT DEFINITIONS */
-
-/* exact 1.79 MHz clock freq (of the Atari 800 that is) */
-#define FREQ_17_EXACT   1789790
-
-=======
->>>>>>> upstream/master
 //**************************************************************************
 //  CALLBACK HANDLERS
 //**************************************************************************
 
-<<<<<<< HEAD
-typedef device_delegate<UINT8 (UINT8 k543210)> pokey_kb_cb_delegate;
-typedef device_delegate<void (int mask)> pokey_int_cb_delegate;
-
-#define POKEY_KEYBOARD_CB_MEMBER(_name) UINT8 _name(UINT8 k543210)
-=======
 #define POKEY_KEYBOARD_CB_MEMBER(_name) uint8_t _name(uint8_t k543210)
->>>>>>> upstream/master
 #define POKEY_INTERRUPT_CB_MEMBER(_name) void _name(int mask)
 
 
@@ -85,30 +59,6 @@ typedef device_delegate<void (int mask)> pokey_int_cb_delegate;
 //**************************************************************************
 
 #define MCFG_POKEY_POT0_R_CB(_devcb) \
-<<<<<<< HEAD
-	devcb = &pokey_device::set_pot0_r_callback(*device, DEVCB_##_devcb);
-
-#define MCFG_POKEY_POT1_R_CB(_devcb) \
-	devcb = &pokey_device::set_pot1_r_callback(*device, DEVCB_##_devcb);
-
-#define MCFG_POKEY_POT2_R_CB(_devcb) \
-	devcb = &pokey_device::set_pot2_r_callback(*device, DEVCB_##_devcb);
-
-#define MCFG_POKEY_POT3_R_CB(_devcb) \
-	devcb = &pokey_device::set_pot3_r_callback(*device, DEVCB_##_devcb);
-
-#define MCFG_POKEY_POT4_R_CB(_devcb) \
-	devcb = &pokey_device::set_pot4_r_callback(*device, DEVCB_##_devcb);
-
-#define MCFG_POKEY_POT5_R_CB(_devcb) \
-	devcb = &pokey_device::set_pot5_r_callback(*device, DEVCB_##_devcb);
-
-#define MCFG_POKEY_POT6_R_CB(_devcb) \
-	devcb = &pokey_device::set_pot6_r_callback(*device, DEVCB_##_devcb);
-
-#define MCFG_POKEY_POT7_R_CB(_devcb) \
-	devcb = &pokey_device::set_pot7_r_callback(*device, DEVCB_##_devcb);
-=======
 	devcb = &pokey_device::set_pot_r_callback<0>(*device, DEVCB_##_devcb);
 
 #define MCFG_POKEY_POT1_R_CB(_devcb) \
@@ -131,7 +81,6 @@ typedef device_delegate<void (int mask)> pokey_int_cb_delegate;
 
 #define MCFG_POKEY_POT7_R_CB(_devcb) \
 	devcb = &pokey_device::set_pot_r_callback<7>(*device, DEVCB_##_devcb);
->>>>>>> upstream/master
 
 #define MCFG_POKEY_ALLPOT_R_CB(_devcb) \
 	devcb = &pokey_device::set_allpot_r_callback(*device, DEVCB_##_devcb);
@@ -145,17 +94,10 @@ typedef device_delegate<void (int mask)> pokey_int_cb_delegate;
 /* k543210 = k5 ... k0 returns bit0: kr1, bit1: kr2 */
 /* all are, in contrast to actual hardware, ACTIVE_HIGH */
 #define MCFG_POKEY_KEYBOARD_CB(_class, _method) \
-<<<<<<< HEAD
-	pokey_device::set_keyboard_callback(*device, pokey_kb_cb_delegate(&_class::_method, #_class "::" #_method, downcast<_class *>(owner)));
-
-#define MCFG_POKEY_INTERRUPT_CB(_class, _method) \
-	pokey_device::set_interrupt_callback(*device, pokey_int_cb_delegate(&_class::_method, #_class "::" #_method, downcast<_class *>(owner)));
-=======
 	pokey_device::set_keyboard_callback(*device, pokey_device::kb_cb_delegate(&_class::_method, #_class "::" #_method, downcast<_class *>(owner)));
 
 #define MCFG_POKEY_INTERRUPT_CB(_class, _method) \
 	pokey_device::set_interrupt_callback(*device, pokey_device::int_cb_delegate(&_class::_method, #_class "::" #_method, downcast<_class *>(owner)));
->>>>>>> upstream/master
 
 
 #define MCFG_POKEY_OUTPUT_RC(_R, _C, _V) \
@@ -194,8 +136,6 @@ class pokey_device : public device_t,
 {
 public:
 
-<<<<<<< HEAD
-=======
 	typedef device_delegate<uint8_t (uint8_t k543210)> kb_cb_delegate;
 	typedef device_delegate<void (int mask)> int_cb_delegate;
 
@@ -204,7 +144,6 @@ public:
 	/* exact 1.79 MHz clock freq (of the Atari 800 that is) */
 	static constexpr unsigned FREQ_17_EXACT = 1789790;
 
->>>>>>> upstream/master
 	enum
 	{
 		POK_KEY_BREAK = 0x30,
@@ -269,24 +208,6 @@ public:
 	};
 
 	// construction/destruction
-<<<<<<< HEAD
-	pokey_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	template<class _Object> static devcb_base &set_pot0_r_callback(device_t &device, _Object object) { return downcast<pokey_device &>(device).m_pot0_r_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_pot1_r_callback(device_t &device, _Object object) { return downcast<pokey_device &>(device).m_pot1_r_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_pot2_r_callback(device_t &device, _Object object) { return downcast<pokey_device &>(device).m_pot2_r_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_pot3_r_callback(device_t &device, _Object object) { return downcast<pokey_device &>(device).m_pot3_r_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_pot4_r_callback(device_t &device, _Object object) { return downcast<pokey_device &>(device).m_pot4_r_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_pot5_r_callback(device_t &device, _Object object) { return downcast<pokey_device &>(device).m_pot5_r_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_pot6_r_callback(device_t &device, _Object object) { return downcast<pokey_device &>(device).m_pot6_r_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_pot7_r_callback(device_t &device, _Object object) { return downcast<pokey_device &>(device).m_pot7_r_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_allpot_r_callback(device_t &device, _Object object) { return downcast<pokey_device &>(device).m_allpot_r_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_serin_r_callback(device_t &device, _Object object) { return downcast<pokey_device &>(device).m_serin_r_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_serout_w_callback(device_t &device, _Object object) { return downcast<pokey_device &>(device).m_serout_w_cb.set_callback(object); }
-
-	static void set_keyboard_callback(device_t &device, pokey_kb_cb_delegate callback) { downcast<pokey_device &>(device).m_keyboard_r = callback; }
-	static void set_interrupt_callback(device_t &device, pokey_int_cb_delegate callback) { downcast<pokey_device &>(device).m_irq_f = callback; }
-=======
 	pokey_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	template <unsigned N, class Object> static devcb_base &set_pot_r_callback(device_t &device, Object &&cb) { return downcast<pokey_device &>(device).m_pot_r_cb[N].set_callback(std::forward<Object>(cb)); }
@@ -296,18 +217,12 @@ public:
 
 	static void set_keyboard_callback(device_t &device, kb_cb_delegate &&cb) { downcast<pokey_device &>(device).m_keyboard_r = std::move(cb); }
 	static void set_interrupt_callback(device_t &device, int_cb_delegate &&cb) { downcast<pokey_device &>(device).m_irq_f = std::move(cb); }
->>>>>>> upstream/master
 
 	DECLARE_READ8_MEMBER( read );
 	DECLARE_WRITE8_MEMBER( write );
 
-<<<<<<< HEAD
-	UINT8 read(offs_t offset);
-	void  write(offs_t offset, UINT8 data);
-=======
 	uint8_t read(offs_t offset);
 	void  write(offs_t offset, uint8_t data);
->>>>>>> upstream/master
 
 	DECLARE_WRITE_LINE_MEMBER( sid_w ); // pin 24
 	void serin_ready(int after);
@@ -321,20 +236,6 @@ public:
 
 protected:
 	// device-level overrides
-<<<<<<< HEAD
-	virtual void device_start();
-	virtual void device_reset();
-	virtual void device_post_load();
-	virtual void device_clock_changed();
-	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
-
-	// device_sound_interface overrides
-	virtual void sound_stream_update(sound_stream &stream, stream_sample_t **inputs, stream_sample_t **outputs, int samples);
-
-	virtual void execute_run();
-
-	//virtual UINT32 execute_min_cycles() const { return 114; }
-=======
 	virtual void device_start() override;
 	virtual void device_reset() override;
 	virtual void device_post_load() override;
@@ -347,31 +248,16 @@ protected:
 	virtual void execute_run() override;
 
 	//virtual uint32_t execute_min_cycles() const { return 114; }
->>>>>>> upstream/master
 	// other internal states
 	int m_icount;
 
 private:
 
-<<<<<<< HEAD
-
-=======
->>>>>>> upstream/master
 	class pokey_channel
 	{
 	public:
 		pokey_channel();
 		pokey_device *m_parent;
-<<<<<<< HEAD
-		UINT8 m_INTMask;
-		UINT8 m_AUDF;           /* AUDFx (D200, D202, D204, D206) */
-		UINT8 m_AUDC;           /* AUDCx (D201, D203, D205, D207) */
-		INT32 m_borrow_cnt;     /* borrow counter */
-		INT32 m_counter;        /* channel counter */
-		UINT8 m_output;         /* channel output signal (1 active, 0 inactive) */
-		UINT8 m_filter_sample;  /* high-pass filter sample */
-		UINT8 m_div2;           /* division by 2 */
-=======
 		uint8_t m_INTMask;
 		uint8_t m_AUDF;           /* AUDFx (D200, D202, D204, D206) */
 		uint8_t m_AUDC;           /* AUDCx (D201, D203, D205, D207) */
@@ -380,7 +266,6 @@ private:
 		uint8_t m_output;         /* channel output signal (1 active, 0 inactive) */
 		uint8_t m_filter_sample;  /* high-pass filter sample */
 		uint8_t m_div2;           /* division by 2 */
->>>>>>> upstream/master
 
 		inline void sample(void)            { m_filter_sample = m_output; }
 		inline void reset_channel(void)     { m_counter = m_AUDF ^ 0xff; }
@@ -410,16 +295,6 @@ private:
 		}
 	};
 
-<<<<<<< HEAD
-	static const int POKEY_CHANNELS = 4;
-
-	UINT32 step_one_clock();
-	void step_keyboard();
-	void step_pot();
-
-	void poly_init_4_5(UINT32 *poly, int size, int xorbit, int invert);
-	void poly_init_9_17(UINT32 *poly, int size);
-=======
 	static constexpr int POKEY_CHANNELS = 4;
 
 	uint32_t step_one_clock();
@@ -428,7 +303,6 @@ private:
 
 	void poly_init_4_5(uint32_t *poly, int size, int xorbit, int invert);
 	void poly_init_9_17(uint32_t *poly, int size);
->>>>>>> upstream/master
 	void vol_init();
 
 	inline void process_channel(int ch);
@@ -436,36 +310,13 @@ private:
 	char *audc2str(int val);
 	char *audctl2str(int val);
 
-<<<<<<< HEAD
-	void write_internal(offs_t offset, UINT8 data);
-=======
 	void write_internal(offs_t offset, uint8_t data);
->>>>>>> upstream/master
 
 	// internal state
 	sound_stream* m_stream;
 
 	pokey_channel m_channel[POKEY_CHANNELS];
 
-<<<<<<< HEAD
-	UINT32 m_output;        /* raw output */
-	double m_out_filter;    /* filtered output */
-
-	INT32 m_clock_cnt[3];       /* clock counters */
-	UINT32 m_p4;              /* poly4 index */
-	UINT32 m_p5;              /* poly5 index */
-	UINT32 m_p9;              /* poly9 index */
-	UINT32 m_p17;             /* poly17 index */
-
-	devcb_read8 m_pot0_r_cb;
-	devcb_read8 m_pot1_r_cb;
-	devcb_read8 m_pot2_r_cb;
-	devcb_read8 m_pot3_r_cb;
-	devcb_read8 m_pot4_r_cb;
-	devcb_read8 m_pot5_r_cb;
-	devcb_read8 m_pot6_r_cb;
-	devcb_read8 m_pot7_r_cb;
-=======
 	uint32_t m_output;        /* raw output */
 	double m_out_filter;    /* filtered output */
 
@@ -476,39 +327,10 @@ private:
 	uint32_t m_p17;             /* poly17 index */
 
 	devcb_read8 m_pot_r_cb[8];
->>>>>>> upstream/master
 	devcb_read8 m_allpot_r_cb;
 	devcb_read8 m_serin_r_cb;
 	devcb_write8 m_serout_w_cb;
 
-<<<<<<< HEAD
-	pokey_kb_cb_delegate m_keyboard_r;
-	pokey_int_cb_delegate m_irq_f;
-
-	UINT8 m_POTx[8];        /* POTx   (R/D200-D207) */
-	UINT8 m_AUDCTL;         /* AUDCTL (W/D208) */
-	UINT8 m_ALLPOT;         /* ALLPOT (R/D208) */
-	UINT8 m_KBCODE;         /* KBCODE (R/D209) */
-	UINT8 m_SERIN;          /* SERIN  (R/D20D) */
-	UINT8 m_SEROUT;         /* SEROUT (W/D20D) */
-	UINT8 m_IRQST;          /* IRQST  (R/D20E) */
-	UINT8 m_IRQEN;          /* IRQEN  (W/D20E) */
-	UINT8 m_SKSTAT;         /* SKSTAT (R/D20F) */
-	UINT8 m_SKCTL;          /* SKCTL  (W/D20F) */
-
-	UINT8 m_pot_counter;
-	UINT8 m_kbd_cnt;
-	UINT8 m_kbd_latch;
-	UINT8 m_kbd_state;
-
-	attotime m_clock_period;
-
-	UINT32 m_poly4[0x0f];
-	UINT32 m_poly5[0x1f];
-	UINT32 m_poly9[0x1ff];
-	UINT32 m_poly17[0x1ffff];
-	UINT32 m_voltab[0x10000];
-=======
 	kb_cb_delegate m_keyboard_r;
 	int_cb_delegate m_irq_f;
 
@@ -535,17 +357,10 @@ private:
 	uint32_t m_poly9[0x1ff];
 	uint32_t m_poly17[0x1ffff];
 	uint32_t m_voltab[0x10000];
->>>>>>> upstream/master
 };
 
 
 // device type definition
-<<<<<<< HEAD
-extern const device_type POKEY;
-
-#endif  /* __POKEY_H__ */
-=======
 DECLARE_DEVICE_TYPE(POKEY, pokey_device)
 
 #endif // MAME_SOUND_POKEY_H
->>>>>>> upstream/master

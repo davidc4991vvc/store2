@@ -3,45 +3,6 @@
 -- Global tables and variables, replacements and extensions to Lua's global functions.
 -- Copyright (c) 2002-2009 Jason Perkins and the Premake project
 --
-<<<<<<< HEAD
-	
-	
--- A top-level namespace for support functions
-
-	premake = { }
-	
-
--- The list of supported platforms; also update list in cmdline.lua
-
-	premake.platforms = 
-	{
-		Native = 
-		{ 
-			cfgsuffix       = "",
-		},
-		x32 = 
-		{ 
-			cfgsuffix       = "32",
-		},
-		x64 = 
-		{ 
-			cfgsuffix       = "64",
-		},
-		Universal = 
-		{ 
-			cfgsuffix       = "univ",
-		},
-		Universal32 = 
-		{ 
-			cfgsuffix       = "univ32",
-		},
-		Universal64 = 
-		{ 
-			cfgsuffix       = "univ64",
-		},
-		PS3 = 
-		{ 
-=======
 
 
 -- A top-level namespace for support functions
@@ -79,7 +40,6 @@
 		},
 		PS3 =
 		{
->>>>>>> upstream/master
 			cfgsuffix       = "ps3",
 			iscrosscompiler = true,
 			nosharedlibs    = true,
@@ -91,40 +51,21 @@
 			iscrosscompiler = true,
 			namestyle       = "PS3",
 		},
-<<<<<<< HEAD
-		Xbox360 = 
-		{ 
-=======
 		Xbox360 =
 		{
->>>>>>> upstream/master
 			cfgsuffix       = "xbox360",
 			iscrosscompiler = true,
 			namestyle       = "windows",
 		},
-<<<<<<< HEAD
-=======
 		PowerPC =
 		{
 			cfgsuffix       = "ppc",
 			iscrosscompiler = true,
 		},
->>>>>>> upstream/master
 		ARM =
 		{
 			cfgsuffix       = "ARM",
 			iscrosscompiler = true,
-<<<<<<< HEAD
-			namestyle       = "windows"
-		},
-		Orbis = 
-		{ 
-			cfgsuffix       = "orbis",
-			iscrosscompiler = true,
-			nosharedlibs    = true,  -- @thendrix, Fix this to allow SPRXs
-			namestyle       = "Orbis",
-		},
-=======
 		},
 		Orbis =
 		{
@@ -139,7 +80,6 @@
 			nosharedlibs    = true,
 			namestyle       = "windows",
 		},
->>>>>>> upstream/master
 	}
 
 
@@ -166,16 +106,6 @@
 		-- use the absolute path to the script file, to avoid any file name
 		-- ambiguity if an error should arise
 		_SCRIPT = path.getabsolute(fname)
-<<<<<<< HEAD
-		
-		-- switch the working directory to the new script location
-		local newcwd = path.getdirectory(_SCRIPT)
-		os.chdir(newcwd)
-		
-		-- run the chunk. How can I catch variable return values?
-		local a, b, c, d, e, f = builtin_dofile(_SCRIPT)
-		
-=======
 
 		-- switch the working directory to the new script location
 		local newcwd = path.getdirectory(_SCRIPT)
@@ -184,7 +114,6 @@
 		-- run the chunk. How can I catch variable return values?
 		local a, b, c, d, e, f = builtin_dofile(_SCRIPT)
 
->>>>>>> upstream/master
 		-- restore the previous working directory when done
 		_SCRIPT = oldfile
 		os.chdir(oldcwd)
@@ -204,15 +133,9 @@
 			return falseval
 		end
 	end
-<<<<<<< HEAD
-	
-	
-	
-=======
 
 
 
->>>>>>> upstream/master
 --
 -- A shortcut for including another build file, often used for projects.
 --
@@ -222,11 +145,7 @@
 		if dir ~= nil then
 			return dofile(dir .. "/" .. name)
 		end
-<<<<<<< HEAD
-		
-=======
 
->>>>>>> upstream/master
 		return nil
 	end
 
@@ -241,17 +160,6 @@
 		print(string.format(msg, table.unpack(arg)))
 	end
 
-<<<<<<< HEAD
-	
-		
---
--- An extension to type() to identify project object types by reading the
--- "__type" field from the metatable.
---
-
-	local builtin_type = type	
-	function type(t)
-=======
 
 
 --
@@ -260,19 +168,12 @@
 --
 
 	function typex(t)
->>>>>>> upstream/master
 		local mt = getmetatable(t)
 		if (mt) then
 			if (mt.__type) then
 				return mt.__type
 			end
 		end
-<<<<<<< HEAD
-		return builtin_type(t)
-	end
-	
-=======
 		return type(t)
 	end
 
->>>>>>> upstream/master

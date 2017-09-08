@@ -9,21 +9,12 @@
 #define TC0180VCU_SCROLLRAM_SIZE    0x0800
 
 
-<<<<<<< HEAD
-const device_type TC0180VCU = &device_creator<tc0180vcu_device>;
-
-tc0180vcu_device::tc0180vcu_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, TC0180VCU, "Taito TC0180VCU", tag, owner, clock, "tc0180vcu", __FILE__),
-	m_ram(NULL),
-	//m_scrollram(NULL),
-=======
 DEFINE_DEVICE_TYPE(TC0180VCU, tc0180vcu_device, "tc0180vcu", "Taito TC0180VCU")
 
 tc0180vcu_device::tc0180vcu_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, TC0180VCU, tag, owner, clock),
 	m_ram(nullptr),
 	//m_scrollram(nullptr),
->>>>>>> upstream/master
 	//m_bg_rambank(0),
 	//m_fg_rambank(0),
 	//m_tx_rambank(0),
@@ -32,11 +23,7 @@ tc0180vcu_device::tc0180vcu_device(const machine_config &mconfig, const char *ta
 	m_bg_color_base(0),
 	m_fg_color_base(0),
 	m_tx_color_base(0),
-<<<<<<< HEAD
-	m_gfxdecode(*this)
-=======
 	m_gfxdecode(*this, finder_base::DUMMY_TAG)
->>>>>>> upstream/master
 {
 }
 
@@ -59,32 +46,18 @@ void tc0180vcu_device::device_start()
 	if(!m_gfxdecode->started())
 		throw device_missing_dependencies();
 
-<<<<<<< HEAD
-	m_tilemap[0] = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(tc0180vcu_device::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 16, 16, 64, 64);
-	m_tilemap[1] = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(tc0180vcu_device::get_fg_tile_info),this), TILEMAP_SCAN_ROWS, 16, 16, 64, 64);
-	m_tilemap[2] = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(tc0180vcu_device::get_tx_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 64, 32);
-=======
 	m_tilemap[0] = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(tc0180vcu_device::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 16, 16, 64, 64);
 	m_tilemap[1] = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(tc0180vcu_device::get_fg_tile_info),this), TILEMAP_SCAN_ROWS, 16, 16, 64, 64);
 	m_tilemap[2] = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(tc0180vcu_device::get_tx_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 64, 32);
->>>>>>> upstream/master
 
 	m_tilemap[1]->set_transparent_pen(0);
 	m_tilemap[2]->set_transparent_pen(0);
 
-<<<<<<< HEAD
-	m_ram = auto_alloc_array_clear(machine(), UINT16, TC0180VCU_RAM_SIZE / 2);
-	m_scrollram = auto_alloc_array_clear(machine(), UINT16, TC0180VCU_SCROLLRAM_SIZE / 2);
-
-	save_pointer(NAME(m_ram), TC0180VCU_RAM_SIZE / 2);
-	save_pointer(NAME(m_scrollram), TC0180VCU_SCROLLRAM_SIZE / 2);
-=======
 	m_ram = make_unique_clear<uint16_t[]>(TC0180VCU_RAM_SIZE / 2);
 	m_scrollram = make_unique_clear<uint16_t[]>(TC0180VCU_SCROLLRAM_SIZE / 2);
 
 	save_pointer(NAME(m_ram.get()), TC0180VCU_RAM_SIZE / 2);
 	save_pointer(NAME(m_scrollram.get()), TC0180VCU_SCROLLRAM_SIZE / 2);
->>>>>>> upstream/master
 
 	save_item(NAME(m_bg_rambank));
 	save_item(NAME(m_fg_rambank));
@@ -180,11 +153,7 @@ READ8_MEMBER( tc0180vcu_device::get_videoctrl )
 	return m_video_control;
 }
 
-<<<<<<< HEAD
-void tc0180vcu_device::video_control( UINT8 data )
-=======
 void tc0180vcu_device::video_control( uint8_t data )
->>>>>>> upstream/master
 {
 #if 0
 	if (data != m_video_control)
@@ -206,11 +175,7 @@ READ16_MEMBER( tc0180vcu_device::ctrl_r )
 
 WRITE16_MEMBER( tc0180vcu_device::ctrl_w )
 {
-<<<<<<< HEAD
-	UINT16 oldword = m_ctrl[offset];
-=======
 	uint16_t oldword = m_ctrl[offset];
->>>>>>> upstream/master
 
 	COMBINE_DATA (&m_ctrl[offset]);
 

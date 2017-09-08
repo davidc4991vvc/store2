@@ -93,13 +93,8 @@ WRITE16_MEMBER(ultraman_state::ultraman_gfxctrl_w)
 			m_k051316_3->mark_tmap_dirty();
 		}
 
-<<<<<<< HEAD
-		coin_counter_w(machine(), 0, data & 0x40);
-		coin_counter_w(machine(), 1, data & 0x80);
-=======
 		machine().bookkeeping().coin_counter_w(0, data & 0x40);
 		machine().bookkeeping().coin_counter_w(1, data & 0x80);
->>>>>>> upstream/master
 	}
 }
 
@@ -111,11 +106,7 @@ WRITE16_MEMBER(ultraman_state::ultraman_gfxctrl_w)
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-UINT32 ultraman_state::screen_update_ultraman(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t ultraman_state::screen_update_ultraman(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	screen.priority().fill(0, cliprect);
 

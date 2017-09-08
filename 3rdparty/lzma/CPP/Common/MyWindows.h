@@ -7,14 +7,11 @@
 
 #include <windows.h>
 
-<<<<<<< HEAD
-=======
 #ifdef UNDER_CE
   #undef VARIANT_TRUE
   #define VARIANT_TRUE ((VARIANT_BOOL)-1)
 #endif
 
->>>>>>> upstream/master
 #else
 
 #include <stddef.h> // for wchar_t
@@ -22,11 +19,8 @@
 
 #include "MyGuidDef.h"
 
-<<<<<<< HEAD
-=======
 #define WINAPI
 
->>>>>>> upstream/master
 typedef char CHAR;
 typedef unsigned char UCHAR;
 
@@ -158,11 +152,6 @@ typedef WORD PROPVAR_PAD1;
 typedef WORD PROPVAR_PAD2;
 typedef WORD PROPVAR_PAD3;
 
-<<<<<<< HEAD
-#ifdef __cplusplus
-
-=======
->>>>>>> upstream/master
 typedef struct tagPROPVARIANT
 {
   VARTYPE vt;
@@ -193,11 +182,7 @@ typedef tagVARIANT VARIANT;
 typedef VARIANT VARIANTARG;
 
 MY_EXTERN_C HRESULT VariantClear(VARIANTARG *prop);
-<<<<<<< HEAD
-MY_EXTERN_C HRESULT VariantCopy(VARIANTARG *dest, VARIANTARG *src);
-=======
 MY_EXTERN_C HRESULT VariantCopy(VARIANTARG *dest, const VARIANTARG *src);
->>>>>>> upstream/master
 
 typedef struct tagSTATPROPSTG
 {
@@ -206,14 +191,8 @@ typedef struct tagSTATPROPSTG
   VARTYPE vt;
 } STATPROPSTG;
 
-<<<<<<< HEAD
-#endif
-
-MY_EXTERN_C BSTR SysAllocStringByteLen(LPCSTR psz, UINT len);
-=======
 MY_EXTERN_C BSTR SysAllocStringByteLen(LPCSTR psz, UINT len);
 MY_EXTERN_C BSTR SysAllocStringLen(const OLECHAR *sz, UINT len);
->>>>>>> upstream/master
 MY_EXTERN_C BSTR SysAllocString(const OLECHAR *sz);
 MY_EXTERN_C void SysFreeString(BSTR bstr);
 MY_EXTERN_C UINT SysStringByteLen(BSTR bstr);
@@ -224,10 +203,7 @@ MY_EXTERN_C LONG CompareFileTime(const FILETIME* ft1, const FILETIME* ft2);
 
 #define CP_ACP    0
 #define CP_OEMCP  1
-<<<<<<< HEAD
-=======
 #define CP_UTF8   65001
->>>>>>> upstream/master
 
 typedef enum tagSTREAM_SEEK
 {

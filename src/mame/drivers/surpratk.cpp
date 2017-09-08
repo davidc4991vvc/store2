@@ -11,12 +11,6 @@
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/m6809/konami.h" /* for the callback and the firq irq definition */
-#include "sound/2151intf.h"
-#include "includes/konamipt.h"
-#include "includes/surpratk.h"
-=======
 #include "includes/surpratk.h"
 #include "includes/konamipt.h"
 
@@ -25,7 +19,6 @@
 #include "sound/ym2151.h"
 #include "speaker.h"
 
->>>>>>> upstream/master
 
 INTERRUPT_GEN_MEMBER(surpratk_state::surpratk_interrupt)
 {
@@ -53,13 +46,8 @@ WRITE8_MEMBER(surpratk_state::surpratk_5fc0_w)
 		logerror("%04x: 3fc0 = %02x\n",space.device().safe_pc(),data);
 
 	/* bit 0/1 = coin counters */
-<<<<<<< HEAD
-	coin_counter_w(machine(), 0, data & 0x01);
-	coin_counter_w(machine(), 1, data & 0x02);
-=======
 	machine().bookkeeping().coin_counter_w(0, data & 0x01);
 	machine().bookkeeping().coin_counter_w(1, data & 0x02);
->>>>>>> upstream/master
 
 	/* bit 3 = enable char ROM reading through the video RAM */
 	m_k052109->set_rmrd_line((data & 0x08) ? ASSERT_LINE : CLEAR_LINE);
@@ -81,11 +69,7 @@ static ADDRESS_MAP_START( surpratk_map, AS_PROGRAM, 8, surpratk_state )
 	AM_RANGE(0x5f90, 0x5f90) AM_READ_PORT("DSW2")
 	AM_RANGE(0x5fa0, 0x5faf) AM_DEVREADWRITE("k053244", k05324x_device, k053244_r, k053244_w)
 	AM_RANGE(0x5fb0, 0x5fbf) AM_DEVWRITE("k053251", k053251_device, write)
-<<<<<<< HEAD
-	AM_RANGE(0x5fc0, 0x5fc0) AM_READ(watchdog_reset_r) AM_WRITE(surpratk_5fc0_w)
-=======
 	AM_RANGE(0x5fc0, 0x5fc0) AM_DEVREAD("watchdog", watchdog_timer_device, reset_r) AM_WRITE(surpratk_5fc0_w)
->>>>>>> upstream/master
 	AM_RANGE(0x5fd0, 0x5fd1) AM_DEVWRITE("ymsnd", ym2151_device, write)
 	AM_RANGE(0x5fc4, 0x5fc4) AM_WRITE(surpratk_videobank_w)
 	AM_RANGE(0x4000, 0x7fff) AM_DEVREADWRITE("k052109", k052109_device, read, write)
@@ -182,11 +166,7 @@ WRITE8_MEMBER( surpratk_state::banking_callback )
 	membank("bank1")->set_entry(data & 0x1f);
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( surpratk, surpratk_state )
-=======
 static MACHINE_CONFIG_START( surpratk )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", KONAMI, XTAL_24MHz/2/4) /* 053248, the clock input is 12MHz, and internal CPU divider of 4 */
@@ -201,11 +181,8 @@ static MACHINE_CONFIG_START( surpratk )
 	MCFG_ADDRESS_MAP_BANK_ADDRBUS_WIDTH(13)
 	MCFG_ADDRESS_MAP_BANK_STRIDE(0x800)
 
-<<<<<<< HEAD
-=======
 	MCFG_WATCHDOG_ADD("watchdog")
 
->>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE(60)
@@ -294,12 +271,6 @@ ROM_END
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-GAME( 1990, suratk,  0,      surpratk, surpratk, driver_device, 0, ROT0, "Konami", "Surprise Attack (World ver. K)", MACHINE_SUPPORTS_SAVE )
-GAME( 1990, suratka, suratk, surpratk, surpratk, driver_device, 0, ROT0, "Konami", "Surprise Attack (Asia ver. L)", MACHINE_SUPPORTS_SAVE )
-GAME( 1990, suratkj, suratk, surpratk, surpratk, driver_device, 0, ROT0, "Konami", "Surprise Attack (Japan ver. M)", MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1990, suratk,  0,      surpratk, surpratk, surpratk_state, 0, ROT0, "Konami", "Surprise Attack (World ver. K)", MACHINE_SUPPORTS_SAVE )
 GAME( 1990, suratka, suratk, surpratk, surpratk, surpratk_state, 0, ROT0, "Konami", "Surprise Attack (Asia ver. L)",  MACHINE_SUPPORTS_SAVE )
 GAME( 1990, suratkj, suratk, surpratk, surpratk, surpratk_state, 0, ROT0, "Konami", "Surprise Attack (Japan ver. M)", MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

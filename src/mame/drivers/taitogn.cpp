@@ -331,23 +331,11 @@ Type 3 (PCMCIA Compact Flash Adaptor + Compact Flash card, sealed together with 
 
 #include "emu.h"
 #include "audio/taito_zm.h"
-<<<<<<< HEAD
-=======
 
->>>>>>> upstream/master
 #include "cpu/psx/psx.h"
 #include "machine/at28c16.h"
 #include "machine/ataflash.h"
 #include "machine/bankdev.h"
-<<<<<<< HEAD
-#include "machine/intelfsh.h"
-#include "machine/mb3773.h"
-#include "machine/rf5c296.h"
-#include "machine/cat702.h"
-#include "machine/zndip.h"
-#include "sound/spu.h"
-#include "video/psx.h"
-=======
 #include "machine/cat702.h"
 #include "machine/intelfsh.h"
 #include "machine/mb3773.h"
@@ -358,7 +346,6 @@ Type 3 (PCMCIA Compact Flash Adaptor + Compact Flash card, sealed together with 
 #include "video/psx.h"
 #include "speaker.h"
 
->>>>>>> upstream/master
 
 class taitogn_state : public driver_device
 {
@@ -368,11 +355,7 @@ public:
 		m_sio0(*this, "maincpu:sio0"),
 		m_cat702_1(*this, "cat702_1"),
 		m_cat702_2(*this, "cat702_2"),
-<<<<<<< HEAD
-		m_zndip(*this, "zndip"),
-=======
 		m_znmcu(*this, "znmcu"),
->>>>>>> upstream/master
 		m_maincpu(*this, "maincpu"),
 		m_mn10200(*this, "mn10200"),
 		m_flashbank(*this, "flashbank"),
@@ -382,21 +365,6 @@ public:
 		m_sndflash0(*this, "sndflash0"),
 		m_sndflash1(*this, "sndflash1"),
 		m_sndflash2(*this, "sndflash2"),
-<<<<<<< HEAD
-		m_has_zoom(true),
-		m_cat702_1_dataout(1),
-		m_cat702_2_dataout(1),
-		m_zndip_dataout(1)
-	{
-	}
-
-	DECLARE_WRITE_LINE_MEMBER(sio0_sck){ m_cat702_1->write_clock(state);  m_cat702_2->write_clock(state); m_zndip->write_clock(state); }
-	DECLARE_WRITE_LINE_MEMBER(sio0_txd){ m_cat702_1->write_datain(state);  m_cat702_2->write_datain(state); }
-	DECLARE_WRITE_LINE_MEMBER(cat702_1_dataout){ m_cat702_1_dataout = state; update_sio0_rxd(); }
-	DECLARE_WRITE_LINE_MEMBER(cat702_2_dataout){ m_cat702_2_dataout = state; update_sio0_rxd(); }
-	DECLARE_WRITE_LINE_MEMBER(zndip_dataout){ m_zndip_dataout = state; update_sio0_rxd(); }
-	void update_sio0_rxd() { m_sio0->write_rxd(m_cat702_1_dataout && m_cat702_2_dataout && m_zndip_dataout); }
-=======
 		m_jp1(*this, "JP1"),
 		m_has_zoom(true),
 		m_cat702_1_dataout(1),
@@ -411,7 +379,6 @@ public:
 	DECLARE_WRITE_LINE_MEMBER(cat702_2_dataout){ m_cat702_2_dataout = state; update_sio0_rxd(); }
 	DECLARE_WRITE_LINE_MEMBER(znmcu_dataout){ m_znmcu_dataout = state; update_sio0_rxd(); }
 	void update_sio0_rxd() { m_sio0->write_rxd(m_cat702_1_dataout && m_cat702_2_dataout && m_znmcu_dataout); }
->>>>>>> upstream/master
 	DECLARE_READ8_MEMBER(control_r);
 	DECLARE_WRITE8_MEMBER(control_w);
 	DECLARE_WRITE16_MEMBER(control2_w);
@@ -430,23 +397,14 @@ public:
 	DECLARE_DRIVER_INIT(coh3002t_nz);
 
 protected:
-<<<<<<< HEAD
-	virtual void driver_start();
-	virtual void machine_reset();
-=======
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
->>>>>>> upstream/master
 
 private:
 	required_device<psxsio0_device> m_sio0;
 	required_device<cat702_device> m_cat702_1;
 	required_device<cat702_device> m_cat702_2;
-<<<<<<< HEAD
-	required_device<zndip_device> m_zndip;
-=======
 	required_device<znmcu_device> m_znmcu;
->>>>>>> upstream/master
 	required_device<cpu_device> m_maincpu;
 	required_device<cpu_device> m_mn10200;
 	required_device<address_map_bank_device> m_flashbank;
@@ -456,22 +414,6 @@ private:
 	required_device<intelfsh16_device> m_sndflash0;
 	required_device<intelfsh16_device> m_sndflash1;
 	required_device<intelfsh16_device> m_sndflash2;
-<<<<<<< HEAD
-
-	bool m_has_zoom;
-	UINT8 m_control;
-	UINT16 m_control2;
-	UINT8 m_control3;
-	int m_v;
-
-	UINT8 m_n_znsecsel;
-
-	UINT8 m_coin_info;
-
-	int m_cat702_1_dataout;
-	int m_cat702_2_dataout;
-	int m_zndip_dataout;
-=======
 	required_ioport m_jp1;
 
 	bool m_has_zoom;
@@ -487,7 +429,6 @@ private:
 	int m_cat702_1_dataout;
 	int m_cat702_2_dataout;
 	int m_znmcu_dataout;
->>>>>>> upstream/master
 };
 
 
@@ -525,11 +466,7 @@ WRITE8_MEMBER(taitogn_state::control_w)
 	// 04 = select bank
 	// According to the rom code, bits 1-0 may be part of the bank
 	// selection too, but they're always 0.
-<<<<<<< HEAD
-	m_flashbank->set_bank(data & 4);
-=======
 	m_flashbank->set_bank(((data>>2) & 1) | (m_jp1->read() << 1));
->>>>>>> upstream/master
 
 	m_control = data;
 }
@@ -587,12 +524,6 @@ READ16_MEMBER(taitogn_state::hack1_r)
 
 // Lifted from zn.c
 
-<<<<<<< HEAD
-static const UINT8 tt10[ 8 ] = { 0x80, 0x20, 0x38, 0x08, 0xf1, 0x03, 0xfe, 0xfc };
-static const UINT8 tt16[ 8 ] = { 0xc0, 0x04, 0xf9, 0xe1, 0x60, 0x70, 0xf2, 0x02 };
-
-=======
->>>>>>> upstream/master
 READ8_MEMBER(taitogn_state::znsecsel_r)
 {
 	return m_n_znsecsel;
@@ -600,16 +531,10 @@ READ8_MEMBER(taitogn_state::znsecsel_r)
 
 WRITE8_MEMBER(taitogn_state::znsecsel_w)
 {
-<<<<<<< HEAD
-	m_cat702_1->write_select((data >> 2) & 1);
-	m_cat702_2->write_select((data >> 3) & 1);
-	m_zndip->write_select((data & 0x8c) != 0x8c);
-=======
 	m_cat702_1->write_select(BIT(data, 2));
 	m_cat702_2->write_select(BIT(data, 3));
 	m_znmcu->write_select((data & 0x8c) != 0x8c);
 	// BIT(data,4); // read analogue controls?
->>>>>>> upstream/master
 
 	m_n_znsecsel = data;
 }
@@ -625,18 +550,12 @@ WRITE8_MEMBER(taitogn_state::coin_w)
 {
 	/* 0x01=counter
 	   0x02=coin lock 1
-<<<<<<< HEAD
-	   0x08=??
-	   0x20=coin lock 2
-	   0x80=??
-=======
 	   0x04=mahjong row select
 	   0x08=mahjong row select
 	   0x10=??
 	   0x20=coin lock 2
 	   0x40=mahjong row select
 	   0x80=mahjong row select
->>>>>>> upstream/master
 	*/
 	m_coin_info = data;
 }
@@ -680,14 +599,6 @@ READ32_MEMBER(taitogn_state::zsg2_ext_r)
 	return 0;
 }
 
-<<<<<<< HEAD
-// Init and reset
-
-void taitogn_state::driver_start()
-{
-	m_cat702_1->init(tt10);
-	m_cat702_2->init(tt16);
-=======
 void taitogn_state::machine_start()
 {
 	save_item(NAME(m_control));
@@ -699,7 +610,6 @@ void taitogn_state::machine_start()
 	save_item(NAME(m_cat702_1_dataout));
 	save_item(NAME(m_cat702_2_dataout));
 	save_item(NAME(m_znmcu_dataout));
->>>>>>> upstream/master
 }
 
 void taitogn_state::machine_reset()
@@ -708,10 +618,7 @@ void taitogn_state::machine_reset()
 	m_mn10200->set_input_line(INPUT_LINE_RESET, ASSERT_LINE);
 
 	m_control = 0x10;
-<<<<<<< HEAD
-=======
 	m_flashbank->set_bank(m_jp1->read() << 1);
->>>>>>> upstream/master
 }
 
 DRIVER_INIT_MEMBER(taitogn_state,coh3002t_nz)
@@ -746,21 +653,11 @@ static ADDRESS_MAP_START( taitogn_map, AS_PROGRAM, 32, taitogn_state )
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( flashbank_map, AS_PROGRAM, 16, taitogn_state )
-<<<<<<< HEAD
-	// Bank 0 has access to the subbios, the mn102 flash and the rf5c296 mem zone
-=======
 	// Bank 0 has access to the sub-bios, the mn102 flash and the rf5c296 mem zone
->>>>>>> upstream/master
 	AM_RANGE(0x00000000, 0x001fffff) AM_DEVREADWRITE("biosflash", intelfsh16_device, read, write)
 	AM_RANGE(0x00200000, 0x002fffff) AM_DEVREADWRITE("rf5c296", rf5c296_device, mem_r, mem_w )
 	AM_RANGE(0x00300000, 0x0037ffff) AM_DEVREADWRITE("pgmflash", intelfsh16_device, read, write)
 
-<<<<<<< HEAD
-	// Bank 1 has access to the 3 samples flashes
-	AM_RANGE(0x08000000, 0x081fffff) AM_DEVREADWRITE("sndflash0", intelfsh16_device, read, write)
-	AM_RANGE(0x08200000, 0x083fffff) AM_DEVREADWRITE("sndflash1", intelfsh16_device, read, write)
-	AM_RANGE(0x08400000, 0x085fffff) AM_DEVREADWRITE("sndflash2", intelfsh16_device, read, write)
-=======
 	// Bank 1 & 3 has access to the 3 samples flashes
 	AM_RANGE(0x08000000, 0x081fffff) AM_MIRROR(0x10000000) AM_DEVREADWRITE("sndflash0", intelfsh16_device, read, write)
 	AM_RANGE(0x08200000, 0x083fffff) AM_MIRROR(0x10000000) AM_DEVREADWRITE("sndflash1", intelfsh16_device, read, write)
@@ -770,7 +667,6 @@ static ADDRESS_MAP_START( flashbank_map, AS_PROGRAM, 16, taitogn_state )
 	AM_RANGE(0x10000000, 0x100fffff) AM_ROM AM_REGION("bioseprom", 0)
 	AM_RANGE(0x10100000, 0x1017ffff) AM_MIRROR(0x80000) AM_DEVREADWRITE("pgmflash", intelfsh16_device, read, write)
 	AM_RANGE(0x10200000, 0x103fffff) AM_DEVREADWRITE("biosflash", intelfsh16_device, read, write)
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( taitogn_mp_map, AS_PROGRAM, 32, taitogn_state )
@@ -784,12 +680,6 @@ static ADDRESS_MAP_START( taitogn_mn_map, AS_PROGRAM, 16, taitogn_state )
 ADDRESS_MAP_END
 
 SLOT_INTERFACE_START(slot_ataflash)
-<<<<<<< HEAD
-	SLOT_INTERFACE("ataflash", ATA_FLASH_PCCARD)
-SLOT_INTERFACE_END
-
-static MACHINE_CONFIG_START( coh3002t, taitogn_state )
-=======
 	SLOT_INTERFACE("taitopccard1", TAITO_PCCARD1)
 	SLOT_INTERFACE("taitopccard2", TAITO_PCCARD2)
 	SLOT_INTERFACE("taitocf", TAITO_COMPACT_FLASH)
@@ -797,7 +687,6 @@ static MACHINE_CONFIG_START( coh3002t, taitogn_state )
 SLOT_INTERFACE_END
 
 static MACHINE_CONFIG_START( coh3002t )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD( "maincpu", CXD8661R, XTAL_100MHz )
@@ -816,14 +705,6 @@ static MACHINE_CONFIG_START( coh3002t )
 	MCFG_DEVICE_ADD("cat702_2", CAT702, 0)
 	MCFG_CAT702_DATAOUT_HANDLER(WRITELINE(taitogn_state, cat702_2_dataout))
 
-<<<<<<< HEAD
-	MCFG_DEVICE_ADD("zndip", ZNDIP, 0)
-	MCFG_ZNDIP_DATAOUT_HANDLER(WRITELINE(taitogn_state, zndip_dataout))
-	MCFG_ZNDIP_DSR_HANDLER(DEVWRITELINE("maincpu:sio0", psxsio0_device, write_dsr))
-	MCFG_ZNDIP_DATA_HANDLER(IOPORT(":DSW"))
-
-	MCFG_AT28C16_ADD( "at28c16", 0 )
-=======
 	MCFG_DEVICE_ADD("znmcu", ZNMCU, 0)
 	MCFG_ZNMCU_DATAOUT_HANDLER(WRITELINE(taitogn_state, znmcu_dataout))
 	MCFG_ZNMCU_DSR_HANDLER(DEVWRITELINE("maincpu:sio0", psxsio0_device, write_dsr))
@@ -832,16 +713,11 @@ static MACHINE_CONFIG_START( coh3002t )
 	MCFG_ZNMCU_ANALOG2_HANDLER(IOPORT(":ANALOG2"))
 
 	MCFG_DEVICE_ADD("at28c16", AT28C16, 0)
->>>>>>> upstream/master
 	MCFG_DEVICE_ADD("rf5c296", RF5C296, 0)
 	MCFG_RF5C296_SLOT(":pccard")
 
 	MCFG_DEVICE_ADD("pccard", PCCARD_SLOT, 0)
-<<<<<<< HEAD
-	MCFG_DEVICE_SLOT_INTERFACE(slot_ataflash, "ataflash", false)
-=======
 	MCFG_DEVICE_SLOT_INTERFACE(slot_ataflash, nullptr, false)
->>>>>>> upstream/master
 
 	MCFG_MB3773_ADD("mb3773")
 
@@ -855,11 +731,7 @@ static MACHINE_CONFIG_START( coh3002t )
 	MCFG_DEVICE_PROGRAM_MAP(flashbank_map)
 	MCFG_ADDRESS_MAP_BANK_ENDIANNESS(ENDIANNESS_LITTLE)
 	MCFG_ADDRESS_MAP_BANK_DATABUS_WIDTH(16)
-<<<<<<< HEAD
-	MCFG_ADDRESS_MAP_BANK_STRIDE(0x2000000)
-=======
 	MCFG_ADDRESS_MAP_BANK_STRIDE(0x8000000)
->>>>>>> upstream/master
 
 	// 5MHz NEC uPD78081 MCU:
 	// we don't have a 78K0 emulation core yet..
@@ -885,9 +757,6 @@ static MACHINE_CONFIG_START( coh3002t )
 	MCFG_SOUND_ROUTE(1, "rspeaker", 1.0)
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_DERIVED( coh3002t_mp, coh3002t )
-=======
 static MACHINE_CONFIG_DERIVED(coh3002t_t1, coh3002t)
 	MCFG_DEVICE_MODIFY("pccard")
 	MCFG_SLOT_DEFAULT_OPTION("taitopccard1")
@@ -899,15 +768,12 @@ static MACHINE_CONFIG_DERIVED(coh3002t_t2, coh3002t)
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_DERIVED( coh3002t_t1_mp, coh3002t_t1 )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_MODIFY( "maincpu" )
 	MCFG_CPU_PROGRAM_MAP(taitogn_mp_map)
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-=======
 static MACHINE_CONFIG_DERIVED( coh3002t_t2_mp, coh3002t_t2 )
 
 	/* basic machine hardware */
@@ -921,7 +787,6 @@ static MACHINE_CONFIG_DERIVED(coh3002t_cf, coh3002t)
 MACHINE_CONFIG_END
 
 
->>>>>>> upstream/master
 static INPUT_PORTS_START( coh3002t )
 	PORT_START("P1")
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_JOYSTICK_UP ) PORT_8WAY PORT_PLAYER(1)
@@ -988,8 +853,6 @@ static INPUT_PORTS_START( coh3002t )
 	PORT_DIPNAME( 0x08, 0x08, "Test Mode" )             PORT_DIPLOCATION("S551:4") // game testmode
 	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-<<<<<<< HEAD
-=======
 
 	PORT_START( "ANALOG1" )
 	PORT_BIT( 0xff, IP_ACTIVE_LOW, IPT_UNKNOWN )
@@ -1019,7 +882,6 @@ static INPUT_PORTS_START(gobyrc)
 	//PORT_CONFSETTING( 1, "2" )
 	//PORT_CONFSETTING( 2, "3" )
 	//PORT_CONFSETTING( 3, "4" )
->>>>>>> upstream/master
 INPUT_PORTS_END
 
 /* input port define for the mahjong panel (standard type) */
@@ -1061,12 +923,6 @@ static INPUT_PORTS_START( coh3002t_mp )
 	PORT_BIT( 0xf0, IP_ACTIVE_LOW, IPT_UNUSED )
 INPUT_PORTS_END
 
-<<<<<<< HEAD
-
-//
-
-#define ROM_LOAD16_WORD_BIOS(bios,name,offset,length,hash) \
-=======
 static INPUT_PORTS_START(coh3002t_jp1)
 	PORT_INCLUDE(coh3002t)
 	PORT_MODIFY("JP1")
@@ -1078,27 +934,10 @@ INPUT_PORTS_END
 //
 
 #define ROM_LOAD16_WORD_SWAP_BIOS(bios,name,offset,length,hash) \
->>>>>>> upstream/master
 		ROMX_LOAD(name, offset, length, hash, ROM_GROUPWORD | ROM_REVERSE | ROM_BIOS(bios+1)) /* Note '+1' */
 
 #define TAITOGNET_BIOS \
 	ROM_REGION32_LE( 0x080000, "maincpu:rom", 0 ) \
-<<<<<<< HEAD
-	ROM_LOAD( "coh-3002t.353", 0x000000, 0x080000, CRC(03967fa7) SHA1(0e17fec2286e4e25deb23d40e41ce0986f373d49) ) \
-	ROM_REGION( 0x2000, "mcu", 0 ) \
-	ROM_LOAD( "upd78081.655", 0x0000, 0x2000, NO_DUMP ) /* internal rom :( */ \
-	ROM_REGION( 0x200000, "biosflash", 0 ) \
-	ROM_SYSTEM_BIOS( 0, "v1",   "G-NET Bios v1" ) \
-		ROM_LOAD16_WORD_BIOS(0, "flash.u30", 0x000000, 0x200000, CRC(c48c8236) SHA1(c6dad60266ce2ff635696bc0d91903c543273559) ) \
-	ROM_SYSTEM_BIOS( 1, "v2",   "G-NET Bios v2" ) \
-		ROM_LOAD16_WORD_BIOS(1, "flashv2.u30", 0x000000, 0x200000, CRC(cae462d3) SHA1(f1b10846a8423d9fe021191c5876190857c3d2a4) ) \
-	ROM_REGION( 0x80000, "mn10200", 0) \
-	ROM_FILL( 0, 0x80000, 0xff) \
-	ROM_REGION32_LE( 0x600000, "zsg2", 0) \
-	ROM_FILL( 0, 0x600000, 0xff)
-
-ROM_START( taitogn )
-=======
 	ROM_LOAD( "m534002c-60.ic353", 0x000000, 0x080000, CRC(03967fa7) SHA1(0e17fec2286e4e25deb23d40e41ce0986f373d49) ) \
 	ROM_REGION( 0x8, "cat702_1", 0) \
 	ROM_LOAD( "tt10.ic652", 0x000000, 0x000008, CRC(235510b1) SHA1(2cc02113207a8f0b078152d31ce6503411750e70) ) \
@@ -1119,7 +958,6 @@ ROM_START( taitogn )
 	ROM_FILL( 0, 0x600000, 0xff )
 
 ROM_START( coh3002t )
->>>>>>> upstream/master
 	TAITOGNET_BIOS
 ROM_END
 
@@ -1128,17 +966,6 @@ ROM_END
 ROM_START(raycris)
 	TAITOGNET_BIOS
 
-<<<<<<< HEAD
-	DISK_REGION( "pccard:ataflash:image" )
-	DISK_IMAGE( "raycris", 0, SHA1(015cb0e6c4421cc38809de28c4793b4491386aee))
-ROM_END
-
-
-ROM_START(gobyrc)
-	TAITOGNET_BIOS
-
-	DISK_REGION( "pccard:ataflash:image" )
-=======
 	DISK_REGION( "pccard:taitopccard1:image" )
 	DISK_IMAGE( "raycris", 0, SHA1(015cb0e6c4421cc38809de28c4793b4491386aee))
 ROM_END
@@ -1147,54 +974,26 @@ ROM_START(gobyrc)
 	TAITOGNET_BIOS
 
 	DISK_REGION( "pccard:taitopccard2:image" )
->>>>>>> upstream/master
 	DISK_IMAGE( "gobyrc", 0, SHA1(0bee1f495fc8b033fd56aad9260ae94abb35eb58))
 ROM_END
 
 ROM_START(rcdego)
 	TAITOGNET_BIOS
 
-<<<<<<< HEAD
-	DISK_REGION( "pccard:ataflash:image" )
-=======
 	DISK_REGION( "pccard:taitopccard1:image" )
->>>>>>> upstream/master
 	DISK_IMAGE( "rcdego", 0, SHA1(9e177f2a3954cfea0c8c5a288e116324d10f5dd1))
 ROM_END
 
 ROM_START(chaoshea)
 	TAITOGNET_BIOS
 
-<<<<<<< HEAD
-	DISK_REGION( "pccard:ataflash:image" )
-=======
 	DISK_REGION( "pccard:taitopccard1:image" )
->>>>>>> upstream/master
 	DISK_IMAGE( "chaosheat", 0, SHA1(c13b7d7025eee05f1f696d108801c7bafb3f1356))
 ROM_END
 
 ROM_START(chaosheaj)
 	TAITOGNET_BIOS
 
-<<<<<<< HEAD
-	DISK_REGION( "pccard:ataflash:image" )
-	DISK_IMAGE( "chaosheatj", 0, SHA1(2f211ac08675ea8ec33c7659a13951db94eaa627))
-ROM_END
-
-
-ROM_START(flipmaze)
-	TAITOGNET_BIOS
-
-	DISK_REGION( "pccard:ataflash:image" )
-	DISK_IMAGE( "flipmaze", 0, SHA1(423b6c06f4f2d9a608ce20b61a3ac11687d22c40) )
-ROM_END
-
-
-ROM_START(spuzbobl)
-	TAITOGNET_BIOS
-
-	DISK_REGION( "pccard:ataflash:image" )
-=======
 	DISK_REGION( "pccard:taitopccard1:image" )
 	DISK_IMAGE( "chaosheatj", 0, SHA1(2f211ac08675ea8ec33c7659a13951db94eaa627))
 ROM_END
@@ -1210,62 +1009,41 @@ ROM_START(spuzbobl)
 	TAITOGNET_BIOS
 
 	DISK_REGION( "pccard:taitopccard2:image" )
->>>>>>> upstream/master
 	DISK_IMAGE( "spuzbobl", 0, SHA1(1b1c72fb7e5656021485fefaef8f2ba48e2b4ea8))
 ROM_END
 
 ROM_START(spuzboblj)
 	TAITOGNET_BIOS
 
-<<<<<<< HEAD
-	DISK_REGION( "pccard:ataflash:image" )
-=======
 	DISK_REGION( "pccard:taitopccard2:image" )
->>>>>>> upstream/master
 	DISK_IMAGE( "spuzbobj", 0, SHA1(dac433cf88543d2499bf797d7406b82ae4338726))
 ROM_END
 
 ROM_START(soutenry)
 	TAITOGNET_BIOS
 
-<<<<<<< HEAD
-	DISK_REGION( "pccard:ataflash:image" )
-=======
 	DISK_REGION( "pccard:taitopccard1:image" )
->>>>>>> upstream/master
 	DISK_IMAGE( "soutenry", 0, SHA1(9204d0be833d29f37b8cd3fbdf09da69b622254b))
 ROM_END
 
 ROM_START(shanghss)
 	TAITOGNET_BIOS
 
-<<<<<<< HEAD
-	DISK_REGION( "pccard:ataflash:image" )
-=======
 	DISK_REGION( "pccard:taitopccard1:image" )
->>>>>>> upstream/master
 	DISK_IMAGE( "shanghss", 0, SHA1(7964f71ec5c81d2120d83b63a82f97fbad5a8e6d))
 ROM_END
 
 ROM_START(sianniv)
 	TAITOGNET_BIOS
 
-<<<<<<< HEAD
-	DISK_REGION( "pccard:ataflash:image" )
-=======
 	DISK_REGION( "pccard:taitopccard1:image" )
->>>>>>> upstream/master
 	DISK_IMAGE( "sianniv", 0, SHA1(1e08b813190a9e1baf29bc16884172d6c8da7ae3))
 ROM_END
 
 ROM_START(kollon)
 	TAITOGNET_BIOS
 
-<<<<<<< HEAD
-	DISK_REGION( "pccard:ataflash:image" )
-=======
 	DISK_REGION( "pccard:taitopccard1:image" )
->>>>>>> upstream/master
 	DISK_IMAGE( "kollon", 0, SHA1(d8ea5b5b0ee99004b16ef89883e23de6c7ddd7ce))
 ROM_END
 
@@ -1273,23 +1051,13 @@ ROM_START(kollonc)
 	TAITOGNET_BIOS
 	ROM_DEFAULT_BIOS( "v2" )
 
-<<<<<<< HEAD
-	DISK_REGION( "pccard:ataflash:image" )
-=======
 	DISK_REGION( "pccard:taitocf:image" )
->>>>>>> upstream/master
 	DISK_IMAGE( "kollonc", 0, SHA1(ce62181659701cfb8f7c564870ab902be4d8e060)) /* Original Taito Compact Flash version */
 ROM_END
 
 ROM_START(shikigam)
 	TAITOGNET_BIOS
 
-<<<<<<< HEAD
-	DISK_REGION( "pccard:ataflash:image" )
-	DISK_IMAGE( "shikigam", 0, SHA1(fa49a0bc47f5cb7c30d7e49e2c3696b21bafb840))
-ROM_END
-
-=======
 	DISK_REGION( "pccard:taitopccard1:image" )
 	DISK_IMAGE( "shikigam", 0, SHA1(fa49a0bc47f5cb7c30d7e49e2c3696b21bafb840))
 ROM_END
@@ -1301,24 +1069,12 @@ ROM_START(shikigama)
 	DISK_IMAGE( "shikigama", 0, SHA1(a6fe194c86730963301be9710782ca4ac1bf3e8d))
 ROM_END
 
->>>>>>> upstream/master
 
 /* Success */
 
 ROM_START(otenamih)
 	TAITOGNET_BIOS
 
-<<<<<<< HEAD
-	DISK_REGION( "pccard:ataflash:image" )
-	DISK_IMAGE( "otenamih", 0, SHA1(b3babe3a1876c43745616ee1e7d87276ce7dad0b) )
-ROM_END
-
-
-ROM_START(psyvaria)
-	TAITOGNET_BIOS
-
-	DISK_REGION( "pccard:ataflash:image" )
-=======
 	DISK_REGION( "pccard:taitopccard1:image" )
 	DISK_IMAGE( "otenamih", 0, SHA1(b3babe3a1876c43745616ee1e7d87276ce7dad0b) )
 ROM_END
@@ -1327,40 +1083,27 @@ ROM_START(psyvaria)
 	TAITOGNET_BIOS
 
 	DISK_REGION( "pccard:taitopccard1:image" )
->>>>>>> upstream/master
 	DISK_IMAGE( "psyvaria", 0,  SHA1(b981a42a10069322b77f7a268beae1d409b4156d))
 ROM_END
 
 ROM_START(psyvarrv)
 	TAITOGNET_BIOS
 
-<<<<<<< HEAD
-	DISK_REGION( "pccard:ataflash:image" )
-=======
 	DISK_REGION( "pccard:taitopccard1:image" )
->>>>>>> upstream/master
 	DISK_IMAGE( "psyvarrv", 0, SHA1(277c4f52502bcd7acc1889840962ec80d56465f3))
 ROM_END
 
 ROM_START(zooo)
 	TAITOGNET_BIOS
 
-<<<<<<< HEAD
-	DISK_REGION( "pccard:ataflash:image" )
-=======
 	DISK_REGION( "pccard:taitopccard1:image" )
->>>>>>> upstream/master
 	DISK_IMAGE( "zooo", 0, SHA1(e275b3141b2bc49142990e6b497a5394a314a30b))
 ROM_END
 
 ROM_START(zokuoten)
 	TAITOGNET_BIOS
 
-<<<<<<< HEAD
-	DISK_REGION( "pccard:ataflash:image" )
-=======
 	DISK_REGION( "pccard:taitopccard1:image" )
->>>>>>> upstream/master
 	DISK_IMAGE( "zokuoten", 0, SHA1(5ce13db00518f96af64935176c71ec68d2a51938))
 ROM_END
 
@@ -1368,80 +1111,48 @@ ROM_START(otenamhf)
 	TAITOGNET_BIOS
 	ROM_DEFAULT_BIOS( "v2" )
 
-<<<<<<< HEAD
-	DISK_REGION( "pccard:ataflash:image" )
-=======
 	DISK_REGION( "pccard:taitocf:image" )
->>>>>>> upstream/master
 	DISK_IMAGE( "otenamhf", 0, SHA1(5b15c33bf401e5546d78e905f538513d6ffcf562)) /* Original Taito Compact Flash version */
 ROM_END
 
 
-<<<<<<< HEAD
-
-
-=======
->>>>>>> upstream/master
 /* Takumi */
 
 ROM_START(nightrai)
 	TAITOGNET_BIOS
 
-<<<<<<< HEAD
-	DISK_REGION( "pccard:ataflash:image" )
-=======
 	DISK_REGION( "pccard:taitopccard1:image" )
->>>>>>> upstream/master
 	DISK_IMAGE( "nightrai", 0, SHA1(74d0458f851cbcf10453c5cc4c47bb4388244cdf))
 ROM_END
 
 ROM_START(otenki)
 	TAITOGNET_BIOS
 
-<<<<<<< HEAD
-	DISK_REGION( "pccard:ataflash:image" )
-	DISK_IMAGE( "otenki", 0, SHA1(7e745ca4c4570215f452fd09cdd56a42c39caeba))
-ROM_END
-
-=======
 	DISK_REGION( "pccard:taitopccard1:image" )
 	DISK_IMAGE( "otenki", 0, SHA1(7e745ca4c4570215f452fd09cdd56a42c39caeba))
 ROM_END
 
 
->>>>>>> upstream/master
 /* Warashi */
 
 ROM_START(usagi)
 	TAITOGNET_BIOS
 
-<<<<<<< HEAD
-	DISK_REGION( "pccard:ataflash:image" )
-=======
 	DISK_REGION( "pccard:taitopccard2:image" )
->>>>>>> upstream/master
 	DISK_IMAGE( "usagi", 0, SHA1(edf9dd271957f6cb06feed238ae21100514bef8e))
 ROM_END
 
 ROM_START(mahjngoh)
 	TAITOGNET_BIOS
 
-<<<<<<< HEAD
-	DISK_REGION( "pccard:ataflash:image" )
-=======
 	DISK_REGION( "pccard:taitopccard1:image" )
->>>>>>> upstream/master
 	DISK_IMAGE( "mahjngoh", 0, SHA1(3ef1110d15582d7c0187438d7ad61765dd121cff))
 ROM_END
 
 ROM_START(shangtou)
 	TAITOGNET_BIOS
 
-<<<<<<< HEAD
-	DISK_REGION( "pccard:ataflash:image" )
-=======
 	DISK_REGION( "pccard:taitopccard1:image" )
->>>>>>> upstream/master
 	DISK_IMAGE( "shanghaito", 0, SHA1(9901db5a9aae77e3af4157aa2c601eaab5b7ca85) )
 ROM_END
 
@@ -1451,11 +1162,7 @@ ROM_END
 ROM_START(xiistag)
 	TAITOGNET_BIOS
 
-<<<<<<< HEAD
-	DISK_REGION( "pccard:ataflash:image" )
-=======
 	DISK_REGION( "pccard:taitopccard1:image" )
->>>>>>> upstream/master
 	DISK_IMAGE( "xiistag", 0, SHA1(586e37c8d926293b2bd928e5f0d693910cfb05a2))
 ROM_END
 
@@ -1463,40 +1170,6 @@ ROM_END
 /* A dummy driver, so that the bios can be debugged, and to serve as */
 /* parent for the coh-3002t.353 file, so that we do not have to include */
 /* it in every zip file */
-<<<<<<< HEAD
-GAME( 1997, taitogn,  0,        coh3002t,    coh3002t,    driver_device, 0,           ROT0,   "Taito", "Taito GNET", MACHINE_IS_BIOS_ROOT )
-
-GAME( 1998, chaoshea, taitogn,  coh3002t,    coh3002t,    driver_device, 0,           ROT0,   "Taito", "Chaos Heat (V2.09O)", MACHINE_IMPERFECT_SOUND )
-GAME( 1998, chaosheaj,chaoshea, coh3002t,    coh3002t,    driver_device, 0,           ROT0,   "Taito", "Chaos Heat (V2.08J)", MACHINE_IMPERFECT_SOUND )
-GAME( 1998, raycris,  taitogn,  coh3002t,    coh3002t,    driver_device, 0,           ROT0,   "Taito", "Ray Crisis (V2.03J)", MACHINE_IMPERFECT_SOUND )
-GAME( 1999, spuzbobl, taitogn,  coh3002t,    coh3002t,    driver_device, 0,           ROT0,   "Taito", "Super Puzzle Bobble (V2.05O)", MACHINE_IMPERFECT_SOUND )
-GAME( 1999, spuzboblj,spuzbobl, coh3002t,    coh3002t,    driver_device, 0,           ROT0,   "Taito", "Super Puzzle Bobble (V2.04J)", MACHINE_IMPERFECT_SOUND )
-GAME( 1999, gobyrc,   taitogn,  coh3002t,    coh3002t,    driver_device, 0,           ROT0,   "Taito", "Go By RC (V2.03O)", MACHINE_NOT_WORKING | MACHINE_IMPERFECT_SOUND ) // analog controls, needs mcu emulation
-GAME( 1999, rcdego,   gobyrc,   coh3002t,    coh3002t,    driver_device, 0,           ROT0,   "Taito", "RC De Go (V2.03J)", MACHINE_NOT_WORKING | MACHINE_IMPERFECT_SOUND ) // "
-GAME( 1999, flipmaze, taitogn,  coh3002t,    coh3002t,    driver_device, 0,           ROT0,   "MOSS / Taito", "Flip Maze (V2.04J)", MACHINE_IMPERFECT_SOUND )
-GAME( 2001, shikigam, taitogn,  coh3002t,    coh3002t,    driver_device, 0,           ROT270, "Alfa System / Taito", "Shikigami no Shiro (V2.03J)", MACHINE_IMPERFECT_SOUND )
-GAME( 2003, sianniv,  taitogn,  coh3002t,    coh3002t,    driver_device, 0,           ROT270, "Taito", "Space Invaders Anniversary (V2.02J)", MACHINE_NOT_WORKING | MACHINE_IMPERFECT_SOUND ) // IRQ at the wrong time
-GAME( 2003, kollon,   taitogn,  coh3002t,    coh3002t,    driver_device, 0,           ROT0,   "Taito", "Kollon (V2.04J)", MACHINE_IMPERFECT_SOUND )
-GAME( 2003, kollonc,  kollon,   coh3002t,    coh3002t,    driver_device, 0,           ROT0,   "Taito", "Kollon (V2.04JC)", MACHINE_IMPERFECT_SOUND )
-
-GAME( 1999, otenamih, taitogn,  coh3002t,    coh3002t,    taitogn_state, coh3002t_nz, ROT0,   "Success", "Otenami Haiken (V2.04J)", 0 )
-GAME( 2005, otenamhf, taitogn,  coh3002t,    coh3002t,    taitogn_state, coh3002t_nz, ROT0,   "Success / Warashi", "Otenami Haiken Final (V2.07JC)", 0 )
-GAME( 2000, psyvaria, taitogn,  coh3002t,    coh3002t,    driver_device, 0,           ROT270, "Success", "Psyvariar -Medium Unit- (V2.04J)", MACHINE_IMPERFECT_SOUND )
-GAME( 2000, psyvarrv, taitogn,  coh3002t,    coh3002t,    driver_device, 0,           ROT270, "Success", "Psyvariar -Revision- (V2.04J)", MACHINE_IMPERFECT_SOUND )
-GAME( 2000, zokuoten, taitogn,  coh3002t,    coh3002t,    taitogn_state, coh3002t_nz, ROT0,   "Success", "Zoku Otenamihaiken (V2.03J)", 0 ) // boots the soundcpu without any valid code, causing an infinite NMI loop (currently circumvented)
-GAME( 2004, zooo,     taitogn,  coh3002t,    coh3002t,    taitogn_state, coh3002t_nz, ROT0,   "Success", "Zooo (V2.01J)", 0 )
-
-GAME( 1999, mahjngoh, taitogn,  coh3002t_mp, coh3002t_mp, driver_device, 0,           ROT0,   "Warashi / Mahjong Kobo / Taito", "Mahjong Oh (V2.06J)", MACHINE_IMPERFECT_SOUND )
-GAME( 2001, usagi,    taitogn,  coh3002t_mp, coh3002t_mp, driver_device, 0,           ROT0,   "Warashi / Mahjong Kobo / Taito", "Usagi (V2.02J)", MACHINE_IMPERFECT_SOUND )
-GAME( 2000, soutenry, taitogn,  coh3002t,    coh3002t,    driver_device, 0,           ROT0,   "Warashi", "Soutenryu (V2.07J)", MACHINE_IMPERFECT_SOUND )
-GAME( 2000, shanghss, taitogn,  coh3002t,    coh3002t,    driver_device, 0,           ROT0,   "Warashi", "Shanghai Shoryu Sairin (V2.03J)", MACHINE_IMPERFECT_SOUND )
-GAME( 2002, shangtou, taitogn,  coh3002t,    coh3002t,    driver_device, 0,           ROT0,   "Warashi / Sunsoft / Taito", "Shanghai Sangokuhai Tougi (Ver 2.01J)", MACHINE_IMPERFECT_SOUND )
-
-GAME( 2001, nightrai, taitogn,  coh3002t,    coh3002t,    driver_device, 0,           ROT0,   "Takumi", "Night Raid (V2.03J)", MACHINE_IMPERFECT_SOUND )
-GAME( 2001, otenki,   taitogn,  coh3002t,    coh3002t,    driver_device, 0,           ROT0,   "Takumi", "Otenki Kororin (V2.01J)", MACHINE_IMPERFECT_SOUND )
-
-GAME( 2002, xiistag,  taitogn,  coh3002t,    coh3002t,    driver_device, 0,           ROT270, "Triangle Service", "XII Stag (V2.01J)", MACHINE_IMPERFECT_SOUND )
-=======
 GAME( 1997, coh3002t,  0,        coh3002t,       coh3002t,     taitogn_state, 0,           ROT0,   "Taito", "Taito GNET", MACHINE_IS_BIOS_ROOT )
 
 /* Taito */
@@ -1535,4 +1208,3 @@ GAME( 2002, shangtou,  coh3002t, coh3002t_t1,    coh3002t,     taitogn_state, 0,
 
 /* Triangle Service */
 GAME( 2002, xiistag,   coh3002t, coh3002t_t1,    coh3002t,     taitogn_state, 0,           ROT270, "Triangle Service", "XII Stag (V2.01J 2002/6/26 22:27)", MACHINE_IMPERFECT_SOUND )
->>>>>>> upstream/master

@@ -79,11 +79,7 @@ static const char *const s_mnemonic[] = {
 #define _OVER  DASMFLAG_STEP_OVER
 #define _OUT   DASMFLAG_STEP_OUT
 
-<<<<<<< HEAD
-static const UINT32 s_flags[] = {
-=======
 static const uint32_t s_flags[] = {
->>>>>>> upstream/master
 	0, 0, 0, 0, 0, 0, _OVER, _OVER, _OVER, _OVER, _OVER,
 	_OVER, _OVER, _OVER, _OVER, _OVER, _OVER, _OVER, _OVER,
 	_OVER, _OVER, _OVER, _OVER, _OVER, _OVER, _OVER, _OVER,
@@ -98,15 +94,9 @@ static const uint32_t s_flags[] = {
 };
 
 struct minxdasm {
-<<<<<<< HEAD
-	UINT8   mnemonic;
-	UINT8   argument1;
-	UINT8   argument2;
-=======
 	uint8_t   mnemonic;
 	uint8_t   argument1;
 	uint8_t   argument2;
->>>>>>> upstream/master
 };
 
 static const minxdasm mnemonic[256] = {
@@ -359,28 +349,6 @@ static const minxdasm mnemonic_cf[256] = {
 };
 
 #define HANDLE_ARGUMENT                         \
-<<<<<<< HEAD
-case R_A:   dst += sprintf( dst, "%cA", fill ); break;          \
-case R_B:   dst += sprintf( dst, "%cB", fill ); break;          \
-case R_L:   dst += sprintf( dst, "%cL", fill ); break;          \
-case R_H:   dst += sprintf( dst, "%cH", fill ); break;          \
-case R_N:   dst += sprintf( dst, "%cN", fill ); break;          \
-case R_F:   dst += sprintf( dst, "%cF", fill ); break;          \
-case R_SP:  dst += sprintf( dst, "%cSP", fill ); break;         \
-case R_BA:  dst += sprintf( dst, "%cBA", fill ); break;         \
-case R_HL:  dst += sprintf( dst, "%cHL", fill ); break;         \
-case R_X:   dst += sprintf( dst, "%cX", fill ); break;          \
-case R_Y:   dst += sprintf( dst, "%cY", fill ); break;          \
-case R_U:   dst += sprintf( dst, "%cU", fill ); break;          \
-case R_V:   dst += sprintf( dst, "%cV", fill ); break;          \
-case R_I:   dst += sprintf( dst, "%cI", fill ); break;          \
-case R_XI:  dst += sprintf( dst, "%cXI", fill ); break;         \
-case R_YI:  dst += sprintf( dst, "%cYI", fill ); break;         \
-case R_PC:  dst += sprintf( dst, "%cPC", fill ); break;         \
-case I_8:            /* 8 bit immediate */              \
-	ea = oprom[pos++];                      \
-	dst += sprintf( dst, "%c$%02X", fill, ea );         \
-=======
 case R_A:   util::stream_format(stream, "%cA", fill); break;          \
 case R_B:   util::stream_format(stream, "%cB", fill); break;          \
 case R_L:   util::stream_format(stream, "%cL", fill); break;          \
@@ -401,41 +369,20 @@ case R_PC:  util::stream_format(stream, "%cPC", fill); break;         \
 case I_8:            /* 8 bit immediate */              \
 	ea = oprom[pos++];                      \
 	util::stream_format(stream, "%c$%02X", fill, ea);         \
->>>>>>> upstream/master
 	break;                              \
 case I_16:           /* 16 bit immediate */             \
 	ea = oprom[pos++];                      \
 	ea += oprom[pos++] << 8;                    \
-<<<<<<< HEAD
-	dst += sprintf( dst, "%c$%04X", fill, ea );         \
-	break;                              \
-case D_8:            /* PC + 8 bit displacement (signed) */     \
-	ofs8 = oprom[pos++];                        \
-	dst += sprintf( dst, "%c$%04X", fill, pc + pos - 1 + ofs8 );    \
-=======
 	util::stream_format(stream, "%c$%04X", fill, ea);         \
 	break;                              \
 case D_8:            /* PC + 8 bit displacement (signed) */     \
 	ofs8 = oprom[pos++];                        \
 	util::stream_format(stream, "%c$%04X", fill, pc + pos - 1 + ofs8);    \
->>>>>>> upstream/master
 	break;                              \
 case D_16:           /* PC + 16 bit displacement */         \
 	ea = oprom[pos++];                      \
 	ea += oprom[pos++] << 8;                    \
 	ea = ea - 1;                            \
-<<<<<<< HEAD
-	dst += sprintf( dst, "%c$%04X", fill, pc + pos + ea );      \
-	break;                              \
-case S_8:            /* SP + 8 bit displacement (signed) */     \
-	ea = oprom[pos++];                      \
-	dst += sprintf( dst, "%cSP+$%02X", fill, ea );          \
-	break;                              \
-case M_IHL: dst += sprintf( dst, "%c[I+HL]", fill ); break;     \
-case M_N8:           /* [I+N+ofs8] */                   \
-	ea = oprom[pos++];                      \
-	dst += sprintf( dst, "%c[I+N+$%02X]", fill, ea );       \
-=======
 	util::stream_format(stream, "%c$%04X", fill, pc + pos + ea);      \
 	break;                              \
 case S_8:            /* SP + 8 bit displacement (signed) */     \
@@ -446,44 +393,10 @@ case M_IHL: util::stream_format(stream, "%c[I+HL]", fill); break;     \
 case M_N8:           /* [I+N+ofs8] */                   \
 	ea = oprom[pos++];                      \
 	util::stream_format(stream, "%c[I+N+$%02X]", fill, ea);       \
->>>>>>> upstream/master
 	break;                              \
 case M_I16:          /* [I+ofs16] */                    \
 	ea = oprom[pos++];                      \
 	ea += oprom[pos++] << 8;                    \
-<<<<<<< HEAD
-	dst += sprintf( dst, "%c[I+$%04X]", fill, ea );         \
-	break;                              \
-case M_X:   dst += sprintf( dst, "%c[X]", fill ); break;        \
-case M_Y:   dst += sprintf( dst, "%c[Y]", fill ); break;        \
-case M_X8:           /* [X + 8 bit displacement (signed)] */        \
-	ea = oprom[pos++];                      \
-	dst += sprintf( dst, "%c[X+$%02X]", fill, ea );         \
-	break;                              \
-case M_Y8:           /* [Y + 8 bit displacement (signed)] */        \
-	ea = oprom[pos++];                      \
-	dst += sprintf( dst, "%c[Y+$%02X]", fill, ea );         \
-	break;                              \
-case M_XL:  dst += sprintf( dst, "%c[X+L]", fill ); break;      \
-case M_YL:  dst += sprintf( dst, "%c[Y+L]", fill ); break;      \
-case M_16:           /* [16bit] */                  \
-	ea = oprom[pos++];                      \
-	ea += oprom[pos++] << 8;                    \
-	dst += sprintf( dst, "%c[$%04X]", fill, ea );           \
-	break;                              \
-case M_HL:  dst += sprintf( dst, "%c[HL]", fill ); break;       \
-case OP:    dst += sprintf( dst, "%c$%02X", fill, op ); break;      \
-case OP1:   dst += sprintf( dst, "%c$%02X", fill, op1 ); break;
-
-CPU_DISASSEMBLE( minx )
-{
-	const minxdasm *instr;
-	UINT8 op, op1;
-	INT8  ofs8 = 0;
-	UINT16 ea = 0;
-	int pos = 0;
-	char *dst = buffer;
-=======
 	util::stream_format(stream, "%c[I+$%04X]", fill, ea);         \
 	break;                              \
 case M_X:   util::stream_format(stream, "%c[X]", fill); break;        \
@@ -514,7 +427,6 @@ CPU_DISASSEMBLE(minx)
 	int8_t  ofs8;
 	uint16_t ea;
 	int pos = 0;
->>>>>>> upstream/master
 
 	op1 = op = oprom[pos++];
 
@@ -532,11 +444,7 @@ CPU_DISASSEMBLE(minx)
 		break;
 	}
 
-<<<<<<< HEAD
-	dst += sprintf( dst, "%-6s", s_mnemonic[ instr->mnemonic ] );
-=======
 	util::stream_format(stream, "%-6s", s_mnemonic[ instr->mnemonic ]);
->>>>>>> upstream/master
 
 	if ( instr->argument1 ) {
 		char fill = ' ';

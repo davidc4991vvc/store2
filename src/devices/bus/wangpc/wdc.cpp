@@ -6,10 +6,7 @@
 
 **********************************************************************/
 
-<<<<<<< HEAD
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #include "wdc.h"
 #include "bus/scsi/scsihd.h"
 
@@ -34,11 +31,7 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type WANGPC_WDC = &device_creator<wangpc_wdc_device>;
-=======
 DEFINE_DEVICE_TYPE(WANGPC_WDC, wangpc_wdc_device, "wangpc_wdc", "Wang PC-PM001 Winchester Disk Controller")
->>>>>>> upstream/master
 
 
 //-------------------------------------------------
@@ -61,11 +54,7 @@ ROM_END
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const rom_entry *wangpc_wdc_device::device_rom_region() const
-=======
 const tiny_rom_entry *wangpc_wdc_device::device_rom_region() const
->>>>>>> upstream/master
 {
 	return ROM_NAME( wangpc_wdc );
 }
@@ -98,21 +87,12 @@ ADDRESS_MAP_END
 
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  MACHINE_CONFIG_FRAGMENT( wangpc_wdc )
-//-------------------------------------------------
-
-static MACHINE_CONFIG_FRAGMENT( wangpc_wdc )
-	MCFG_CPU_ADD(Z80_TAG, Z80, 2000000) // XTAL_10MHz / ?
-	//MCFG_CPU_CONFIG(wangpc_wdc_daisy_chain)
-=======
 //  MACHINE_CONFIG_START( wangpc_wdc )
 //-------------------------------------------------
 
 MACHINE_CONFIG_MEMBER( wangpc_wdc_device::device_add_mconfig )
 	MCFG_CPU_ADD(Z80_TAG, Z80, 2000000) // XTAL_10MHz / ?
 	//MCFG_Z80_DAISY_CHAIN(wangpc_wdc_daisy_chain)
->>>>>>> upstream/master
 	MCFG_CPU_PROGRAM_MAP(wangpc_wdc_mem)
 	MCFG_CPU_IO_MAP(wangpc_wdc_io)
 
@@ -123,20 +103,6 @@ MACHINE_CONFIG_MEMBER( wangpc_wdc_device::device_add_mconfig )
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-//-------------------------------------------------
-//  machine_config_additions - device-specific
-//  machine configurations
-//-------------------------------------------------
-
-machine_config_constructor wangpc_wdc_device::device_mconfig_additions() const
-{
-	return MACHINE_CONFIG_NAME( wangpc_wdc );
-}
-
-
-=======
->>>>>>> upstream/master
 
 //**************************************************************************
 //  INLINE HELPERS
@@ -165,13 +131,8 @@ inline void wangpc_wdc_device::set_irq(int state)
 //  wangpc_wdc_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-wangpc_wdc_device::wangpc_wdc_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-	device_t(mconfig, WANGPC_WDC, "Wang PC-PM001", tag, owner, clock, "wangpc_wdc", __FILE__),
-=======
 wangpc_wdc_device::wangpc_wdc_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	device_t(mconfig, WANGPC_WDC, tag, owner, clock),
->>>>>>> upstream/master
 	device_wangpcbus_card_interface(mconfig, *this),
 	m_maincpu(*this, Z80_TAG),
 	m_ctc(*this, MK3882_TAG), m_status(0), m_option(0), m_irq(0)
@@ -209,15 +170,9 @@ void wangpc_wdc_device::device_reset()
 //  wangpcbus_mrdc_r - memory read
 //-------------------------------------------------
 
-<<<<<<< HEAD
-UINT16 wangpc_wdc_device::wangpcbus_mrdc_r(address_space &space, offs_t offset, UINT16 mem_mask)
-{
-	UINT16 data = 0xffff;
-=======
 uint16_t wangpc_wdc_device::wangpcbus_mrdc_r(address_space &space, offs_t offset, uint16_t mem_mask)
 {
 	uint16_t data = 0xffff;
->>>>>>> upstream/master
 
 	return data;
 }
@@ -227,11 +182,7 @@ uint16_t wangpc_wdc_device::wangpcbus_mrdc_r(address_space &space, offs_t offset
 //  wangpcbus_amwc_w - memory write
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void wangpc_wdc_device::wangpcbus_amwc_w(address_space &space, offs_t offset, UINT16 mem_mask, UINT16 data)
-=======
 void wangpc_wdc_device::wangpcbus_amwc_w(address_space &space, offs_t offset, uint16_t mem_mask, uint16_t data)
->>>>>>> upstream/master
 {
 }
 
@@ -240,15 +191,9 @@ void wangpc_wdc_device::wangpcbus_amwc_w(address_space &space, offs_t offset, ui
 //  wangpcbus_iorc_r - I/O read
 //-------------------------------------------------
 
-<<<<<<< HEAD
-UINT16 wangpc_wdc_device::wangpcbus_iorc_r(address_space &space, offs_t offset, UINT16 mem_mask)
-{
-	UINT16 data = 0xffff;
-=======
 uint16_t wangpc_wdc_device::wangpcbus_iorc_r(address_space &space, offs_t offset, uint16_t mem_mask)
 {
 	uint16_t data = 0xffff;
->>>>>>> upstream/master
 
 	if (sad(offset))
 	{
@@ -280,11 +225,7 @@ uint16_t wangpc_wdc_device::wangpcbus_iorc_r(address_space &space, offs_t offset
 //  wangpcbus_aiowc_w - I/O write
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void wangpc_wdc_device::wangpcbus_aiowc_w(address_space &space, offs_t offset, UINT16 mem_mask, UINT16 data)
-=======
 void wangpc_wdc_device::wangpcbus_aiowc_w(address_space &space, offs_t offset, uint16_t mem_mask, uint16_t data)
->>>>>>> upstream/master
 {
 	if (sad(offset) && ACCESSING_BITS_0_7)
 	{
@@ -319,11 +260,7 @@ void wangpc_wdc_device::wangpcbus_aiowc_w(address_space &space, offs_t offset, u
 //  wangpcbus_dack_r - DMA acknowledge read
 //-------------------------------------------------
 
-<<<<<<< HEAD
-UINT8 wangpc_wdc_device::wangpcbus_dack_r(address_space &space, int line)
-=======
 uint8_t wangpc_wdc_device::wangpcbus_dack_r(address_space &space, int line)
->>>>>>> upstream/master
 {
 	return 0;
 }
@@ -333,11 +270,7 @@ uint8_t wangpc_wdc_device::wangpcbus_dack_r(address_space &space, int line)
 //  wangpcbus_dack_r - DMA acknowledge write
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void wangpc_wdc_device::wangpcbus_dack_w(address_space &space, int line, UINT8 data)
-=======
 void wangpc_wdc_device::wangpcbus_dack_w(address_space &space, int line, uint8_t data)
->>>>>>> upstream/master
 {
 }
 

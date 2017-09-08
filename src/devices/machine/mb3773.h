@@ -8,17 +8,10 @@
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __MB3773_H__
-#define __MB3773_H__
-=======
 #ifndef MAME_MACHINE_MB3773_H
 #define MAME_MACHINE_MB3773_H
 
 #pragma once
->>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -31,37 +24,21 @@
 
 // ======================> mb3773_device
 
-<<<<<<< HEAD
-class mb3773_device :
-	public device_t
-{
-public:
-	// construction/destruction
-	mb3773_device( const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock );
-=======
 class mb3773_device : public device_t
 {
 public:
 	// construction/destruction
 	mb3773_device( const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock );
->>>>>>> upstream/master
 
 	// I/O operations
 	WRITE_LINE_MEMBER( write_line_ck );
 
 protected:
 	// device-level overrides
-<<<<<<< HEAD
-	virtual void device_start();
-	virtual void device_reset();
-
-	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
-=======
 	virtual void device_start() override;
 	virtual void device_reset() override;
 
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
->>>>>>> upstream/master
 
 private:
 	void reset_timer();
@@ -73,12 +50,6 @@ private:
 
 
 // device type definition
-<<<<<<< HEAD
-extern const device_type MB3773;
-
-#endif
-=======
 DECLARE_DEVICE_TYPE(MB3773, mb3773_device)
 
 #endif // MAME_MACHINE_MB3773_H
->>>>>>> upstream/master

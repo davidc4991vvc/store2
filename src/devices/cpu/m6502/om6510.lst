@@ -1,8 +1,5 @@
-<<<<<<< HEAD
-=======
 # license:BSD-3-Clause
 # copyright-holders:Olivier Galibert
->>>>>>> upstream/master
 # 6510 undocumented instructions in a C64 context
 anc_10_imm
 	TMP2 = read_pc();

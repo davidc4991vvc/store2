@@ -6,38 +6,14 @@
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-#ifndef _SCSIHD_H_
-#define _SCSIHD_H_
-=======
 #ifndef MAME_BUS_SCSI_SCSIHD_H
 #define MAME_BUS_SCSI_SCSIHD_H
 
 #pragma once
->>>>>>> upstream/master
 
 #include "scsihle.h"
 #include "machine/t10sbc.h"
 
-<<<<<<< HEAD
-class scsihd_device : public scsihle_device,
-	public t10sbc
-{
-public:
-	// construction/destruction
-	scsihd_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-	scsihd_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source);
-	virtual machine_config_constructor device_mconfig_additions() const;
-
-protected:
-	virtual void device_start();
-};
-
-// device type definition
-extern const device_type SCSIHD;
-
-#endif
-=======
 class scsihd_device : public scsihle_device, public t10sbc
 {
 public:
@@ -55,4 +31,3 @@ protected:
 DECLARE_DEVICE_TYPE(SCSIHD, scsihd_device)
 
 #endif // MAME_BUS_SCSI_SCSIHD_H
->>>>>>> upstream/master

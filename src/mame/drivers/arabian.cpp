@@ -45,12 +45,6 @@
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/z80/z80.h"
-#include "cpu/mb88xx/mb88xx.h"
-#include "includes/arabian.h"
-#include "sound/ay8910.h"
-=======
 #include "includes/arabian.h"
 
 #include "cpu/mb88xx/mb88xx.h"
@@ -59,7 +53,6 @@
 #include "screen.h"
 #include "speaker.h"
 
->>>>>>> upstream/master
 
 /* constants */
 #define MAIN_OSC        XTAL_12MHz
@@ -97,13 +90,8 @@ WRITE8_MEMBER(arabian_state::ay8910_portb_w)
 	m_mcu->set_input_line(INPUT_LINE_RESET, data & 0x10 ? CLEAR_LINE : ASSERT_LINE);
 
 	/* clock the coin counters */
-<<<<<<< HEAD
-	coin_counter_w(machine(), 1, ~data & 0x02);
-	coin_counter_w(machine(), 0, ~data & 0x01);
-=======
 	machine().bookkeeping().coin_counter_w(1, ~data & 0x02);
 	machine().bookkeeping().coin_counter_w(0, ~data & 0x01);
->>>>>>> upstream/master
 }
 
 
@@ -114,41 +102,16 @@ WRITE8_MEMBER(arabian_state::ay8910_portb_w)
  *
  *************************************/
 
-<<<<<<< HEAD
-READ8_MEMBER(arabian_state::mcu_port_r_r)
-{
-	UINT8 val = m_mcu_port_r[offset];
-
-	/* RAM mode is enabled */
-	if (offset == 0)
-		val |= 4;
-=======
 READ8_MEMBER(arabian_state::mcu_port_r0_r)
 {
 	uint8_t val = m_mcu_port_r[0];
 
 	/* RAM mode is enabled */
 	val |= 4;
->>>>>>> upstream/master
 
 	return val;
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER(arabian_state::mcu_port_r_w)
-{
-	if (offset == 0)
-	{
-		UINT32 ram_addr = ((m_mcu_port_p & 7) << 8) | m_mcu_port_o;
-
-		if (~data & 2)
-			m_custom_cpu_ram[ram_addr] = 0xf0 | m_mcu_port_r[3];
-
-		m_flip_screen = data & 8;
-	}
-
-	m_mcu_port_r[offset] = data & 0x0f;
-=======
 READ8_MEMBER(arabian_state::mcu_port_r1_r)
 {
 	uint8_t val = m_mcu_port_r[1];
@@ -195,34 +158,21 @@ WRITE8_MEMBER(arabian_state::mcu_port_r2_w)
 WRITE8_MEMBER(arabian_state::mcu_port_r3_w)
 {
 	m_mcu_port_r[3] = data & 0x0f;
->>>>>>> upstream/master
 }
 
 READ8_MEMBER(arabian_state::mcu_portk_r)
 {
-<<<<<<< HEAD
-	UINT8 val = 0xf;
-
-	if (~m_mcu_port_r[0] & 1)
-	{
-		UINT32 ram_addr = ((m_mcu_port_p & 7) << 8) | m_mcu_port_o;
-=======
 	uint8_t val = 0xf;
 
 	if (~m_mcu_port_r[0] & 1)
 	{
 		uint32_t ram_addr = ((m_mcu_port_p & 7) << 8) | m_mcu_port_o;
->>>>>>> upstream/master
 		val = m_custom_cpu_ram[ram_addr];
 	}
 	else
 	{
 		static const char *const comnames[] = { "COM0", "COM1", "COM2", "COM3", "COM4", "COM5" };
-<<<<<<< HEAD
-		UINT8 sel = ((m_mcu_port_r[2] << 4) | m_mcu_port_r[1]) & 0x3f;
-=======
 		uint8_t sel = ((m_mcu_port_r[2] << 4) | m_mcu_port_r[1]) & 0x3f;
->>>>>>> upstream/master
 		int i;
 
 		for (i = 0; i < 6; ++i)
@@ -240,11 +190,7 @@ READ8_MEMBER(arabian_state::mcu_portk_r)
 
 WRITE8_MEMBER(arabian_state::mcu_port_o_w)
 {
-<<<<<<< HEAD
-	UINT8 out = data & 0x0f;
-=======
 	uint8_t out = data & 0x0f;
->>>>>>> upstream/master
 
 	if (data & 0x10)
 		m_mcu_port_o = (m_mcu_port_o & 0x0f) | (out << 4);
@@ -291,24 +237,6 @@ ADDRESS_MAP_END
 
 /*************************************
  *
-<<<<<<< HEAD
- *  MCU port handlers
- *
- *************************************/
-
-static ADDRESS_MAP_START( mcu_io_map, AS_IO, 8, arabian_state )
-	AM_RANGE(MB88_PORTK,  MB88_PORTK ) AM_READ(mcu_portk_r)
-	AM_RANGE(MB88_PORTO,  MB88_PORTO ) AM_WRITE(mcu_port_o_w)
-	AM_RANGE(MB88_PORTP,  MB88_PORTP ) AM_WRITE(mcu_port_p_w)
-	AM_RANGE(MB88_PORTR0, MB88_PORTR3) AM_READWRITE(mcu_port_r_r, mcu_port_r_w)
-ADDRESS_MAP_END
-
-
-
-/*************************************
- *
-=======
->>>>>>> upstream/master
  *  Port definitions
  *
  *************************************/
@@ -425,11 +353,7 @@ void arabian_state::machine_reset()
 	m_video_control = 0;
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( arabian, arabian_state )
-=======
 static MACHINE_CONFIG_START( arabian )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, MAIN_OSC/4)
@@ -438,9 +362,6 @@ static MACHINE_CONFIG_START( arabian )
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", arabian_state,  irq0_line_hold)
 
 	MCFG_CPU_ADD("mcu", MB8841, MAIN_OSC/3/2)
-<<<<<<< HEAD
-	MCFG_CPU_IO_MAP(mcu_io_map)
-=======
 	MCFG_MB88XX_READ_K_CB(READ8(arabian_state, mcu_portk_r))
 	MCFG_MB88XX_WRITE_O_CB(WRITE8(arabian_state, mcu_port_o_w))
 	MCFG_MB88XX_WRITE_P_CB(WRITE8(arabian_state, mcu_port_p_w))
@@ -452,7 +373,6 @@ static MACHINE_CONFIG_START( arabian )
 	MCFG_MB88XX_WRITE_R2_CB(WRITE8(arabian_state, mcu_port_r2_w))
 	MCFG_MB88XX_READ_R3_CB(READ8(arabian_state, mcu_port_r3_r))
 	MCFG_MB88XX_WRITE_R3_CB(WRITE8(arabian_state, mcu_port_r3_w))
->>>>>>> upstream/master
 
 	MCFG_QUANTUM_TIME(attotime::from_hz(6000))
 
@@ -529,10 +449,5 @@ ROM_END
  *
  *************************************/
 
-<<<<<<< HEAD
-GAME( 1983, arabian,  0,       arabian, arabian, driver_device,  0, ROT270, "Sun Electronics",                 "Arabian",         MACHINE_SUPPORTS_SAVE )
-GAME( 1983, arabiana, arabian, arabian, arabiana, driver_device, 0, ROT270, "Sun Electronics (Atari license)", "Arabian (Atari)", MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1983, arabian,  0,       arabian, arabian,  arabian_state, 0, ROT270, "Sun Electronics",                 "Arabian",         MACHINE_SUPPORTS_SAVE )
 GAME( 1983, arabiana, arabian, arabian, arabiana, arabian_state, 0, ROT270, "Sun Electronics (Atari license)", "Arabian (Atari)", MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

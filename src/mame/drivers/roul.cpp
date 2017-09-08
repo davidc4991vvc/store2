@@ -64,11 +64,6 @@ Stephh's notes (based on the game Z80 code and some tests) :
 
 #include "emu.h"
 #include "cpu/z80/z80.h"
-<<<<<<< HEAD
-#include "sound/ay8910.h"
-#include "roul.lh"
-#include "machine/nvram.h"
-=======
 #include "machine/gen_latch.h"
 #include "machine/nvram.h"
 #include "sound/ay8910.h"
@@ -76,7 +71,6 @@ Stephh's notes (based on the game Z80 code and some tests) :
 #include "speaker.h"
 
 #include "roul.lh"
->>>>>>> upstream/master
 
 
 class roul_state : public driver_device
@@ -85,16 +79,6 @@ public:
 	roul_state(const machine_config &mconfig, device_type type, const char *tag)
 		: driver_device(mconfig, type, tag),
 		m_maincpu(*this, "maincpu"),
-<<<<<<< HEAD
-		m_soundcpu(*this, "soundcpu") { }
-
-	required_device<cpu_device> m_maincpu;
-	required_device<cpu_device> m_soundcpu;
-
-	UINT8 m_reg[0x10];
-	UINT8 *m_videobuf;
-	UINT8 m_lamp_old;
-=======
 		m_soundcpu(*this, "soundcpu"),
 		m_soundlatch(*this, "soundlatch") { }
 
@@ -105,24 +89,16 @@ public:
 	uint8_t m_reg[0x10];
 	std::unique_ptr<uint8_t[]> m_videobuf;
 	uint8_t m_lamp_old;
->>>>>>> upstream/master
 
 	DECLARE_READ8_MEMBER(blitter_status_r);
 	DECLARE_WRITE8_MEMBER(blitter_cmd_w);
 	DECLARE_WRITE8_MEMBER(sound_latch_w);
 	DECLARE_WRITE8_MEMBER(ball_w);
 
-<<<<<<< HEAD
-	virtual void video_start();
-	DECLARE_PALETTE_INIT(roul);
-
-	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	virtual void video_start() override;
 	DECLARE_PALETTE_INIT(roul);
 
 	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 };
 
 
@@ -131,11 +107,7 @@ public:
 
 PALETTE_INIT_MEMBER(roul_state, roul)
 {
-<<<<<<< HEAD
-	const UINT8 *color_prom = memregion("proms")->base();
-=======
 	const uint8_t *color_prom = memregion("proms")->base();
->>>>>>> upstream/master
 	int bit6, bit7, bit0, bit1, r, g, b;
 	int i;
 
@@ -214,11 +186,7 @@ WRITE8_MEMBER(roul_state::blitter_cmd_w)
 
 WRITE8_MEMBER(roul_state::sound_latch_w)
 {
-<<<<<<< HEAD
-	soundlatch_byte_w(space, 0, data & 0xff);
-=======
 	m_soundlatch->write(space, 0, data & 0xff);
->>>>>>> upstream/master
 	m_soundcpu->set_input_line(0, HOLD_LINE);
 }
 
@@ -226,13 +194,8 @@ WRITE8_MEMBER(roul_state::ball_w)
 {
 	int lamp = data;
 
-<<<<<<< HEAD
-	output_set_lamp_value(data, 1);
-	output_set_lamp_value(m_lamp_old, 0);
-=======
 	output().set_lamp_value(data, 1);
 	output().set_lamp_value(m_lamp_old, 0);
->>>>>>> upstream/master
 	m_lamp_old = lamp;
 }
 
@@ -259,26 +222,12 @@ ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( sound_cpu_io_map, AS_IO, 8, roul_state )
 	ADDRESS_MAP_GLOBAL_MASK(0xff)
-<<<<<<< HEAD
-	AM_RANGE(0x00, 0x00) AM_READ(soundlatch_byte_r)
-=======
 	AM_RANGE(0x00, 0x00) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
->>>>>>> upstream/master
 	AM_RANGE(0x00, 0x01) AM_DEVWRITE("aysnd", ay8910_device, address_data_w)
 ADDRESS_MAP_END
 
 void roul_state::video_start()
 {
-<<<<<<< HEAD
-	m_videobuf = auto_alloc_array_clear(machine(), UINT8, VIDEOBUF_SIZE);
-
-	save_item(NAME(m_reg));
-	save_pointer(NAME(m_videobuf), VIDEOBUF_SIZE);
-	save_item(NAME(m_lamp_old));
-}
-
-UINT32 roul_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 	m_videobuf = make_unique_clear<uint8_t[]>(VIDEOBUF_SIZE);
 
 	save_item(NAME(m_reg));
@@ -287,7 +236,6 @@ UINT32 roul_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, co
 }
 
 uint32_t roul_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int i,j;
 	for (i = 0; i < 256; i++)
@@ -346,11 +294,7 @@ static INPUT_PORTS_START( roul )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 INPUT_PORTS_END
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( roul, roul_state )
-=======
 static MACHINE_CONFIG_START( roul )
->>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, 4000000)
 	MCFG_CPU_PROGRAM_MAP(roul_map)
@@ -377,12 +321,9 @@ static MACHINE_CONFIG_START( roul )
 	MCFG_PALETTE_INIT_OWNER(roul_state, roul)
 
 	MCFG_SPEAKER_STANDARD_MONO("mono")
-<<<<<<< HEAD
-=======
 
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 
->>>>>>> upstream/master
 	MCFG_SOUND_ADD("aysnd", AY8910, 1000000)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
@@ -400,8 +341,4 @@ ROM_START(roul)
 	ROM_LOAD( "roul.u38",   0x0020, 0x0020, CRC(23ae22c1) SHA1(bf0383462976ec6341ffa8a173264ce820bc654a) )
 ROM_END
 
-<<<<<<< HEAD
-GAMEL( 1990, roul,  0,   roul, roul, driver_device, 0, ROT0, "bootleg", "Super Lucky Roulette", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE, layout_roul )
-=======
 GAMEL( 1990, roul,  0,   roul, roul, roul_state, 0, ROT0, "bootleg", "Super Lucky Roulette", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE, layout_roul )
->>>>>>> upstream/master

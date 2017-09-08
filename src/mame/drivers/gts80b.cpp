@@ -13,13 +13,6 @@
 
 *****************************************************************************************************************/
 
-<<<<<<< HEAD
-#include "machine/genpin.h"
-#include "audio/gottlieb.h"
-#include "cpu/i86/i86.h"
-#include "gts80b.lh"
-
-=======
 #include "emu.h"
 #include "machine/genpin.h"
 #include "audio/gottlieb.h"
@@ -30,7 +23,6 @@
 #include "gts80b.lh"
 
 
->>>>>>> upstream/master
 class gts80b_state : public genpin_class
 {
 public:
@@ -50,16 +42,6 @@ public:
 	DECLARE_WRITE8_MEMBER(port3a_w);
 	DECLARE_WRITE8_MEMBER(port3b_w);
 private:
-<<<<<<< HEAD
-	UINT8 m_dispcmd;
-	UINT8 m_port2a;
-	UINT8 m_port2b;
-	UINT8 m_lamprow;
-	UINT8 m_swrow;
-	bool m_in_cmd_mode[2];
-	UINT8 m_digit[2];
-	virtual void machine_reset();
-=======
 	uint8_t m_dispcmd;
 	uint8_t m_port2a;
 	uint8_t m_port2b;
@@ -68,7 +50,6 @@ private:
 	bool m_in_cmd_mode[2];
 	uint8_t m_digit[2];
 	virtual void machine_reset() override;
->>>>>>> upstream/master
 	required_device<cpu_device> m_maincpu;
 	optional_device<gottlieb_sound_r0_device> m_r0_sound;
 	optional_device<gottlieb_sound_r1_device> m_r1_sound;
@@ -275,11 +256,7 @@ static INPUT_PORTS_START( gts80b )
 	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_OTHER ) PORT_CODE(KEYCODE_O)
 INPUT_PORTS_END
 
-<<<<<<< HEAD
-static const UINT16 patterns[] = {
-=======
 static const uint16_t patterns[] = {
->>>>>>> upstream/master
 	/* 0x00-0x07 */ 0x0000, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff,
 	/* 0x08-0x0f */ 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff,
 	/* 0x10-0x17 */ 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff,
@@ -301,11 +278,7 @@ static const uint16_t patterns[] = {
 READ8_MEMBER( gts80b_state::port1a_r )
 {
 	char kbdrow[8];
-<<<<<<< HEAD
-	UINT8 data = 0;
-=======
 	uint8_t data = 0;
->>>>>>> upstream/master
 	if ((m_lamprow < 4) && (m_port2b==0x80))
 	{
 		sprintf(kbdrow,"DSW.%d",m_lamprow);
@@ -334,15 +307,9 @@ WRITE8_MEMBER( gts80b_state::port1b_w )
 WRITE8_MEMBER( gts80b_state::port2a_w )
 {
 	m_port2a = data;
-<<<<<<< HEAD
-	if BIT(data, 4)
-		m_dispcmd = (m_dispcmd & 0xf0) | m_port2b;
-	if BIT(data, 5)
-=======
 	if (BIT(data, 4))
 		m_dispcmd = (m_dispcmd & 0xf0) | m_port2b;
 	if (BIT(data, 5))
->>>>>>> upstream/master
 		m_dispcmd = (m_dispcmd & 0x0f) | (m_port2b << 4);
 }
 
@@ -350,17 +317,10 @@ WRITE8_MEMBER( gts80b_state::port2a_w )
 WRITE8_MEMBER( gts80b_state::port2b_w )
 {
 	m_port2b = data & 15;
-<<<<<<< HEAD
-	UINT16 segment;
-
-	// crude approximation of the Rockwell display chips
-	for (UINT8 i = 0; i < 2; i++) // 2 chips
-=======
 	uint16_t segment;
 
 	// crude approximation of the Rockwell display chips
 	for (uint8_t i = 0; i < 2; i++) // 2 chips
->>>>>>> upstream/master
 	{
 		if (!BIT(data, i+4)) // are we addressing the chip?
 		{
@@ -379,11 +339,7 @@ WRITE8_MEMBER( gts80b_state::port2b_w )
 			{ // display a character
 				segment = patterns[m_dispcmd & 0x7f]; // ignore blank/inverse bit
 				segment = BITSWAP16(segment, 12, 10, 8, 14, 13, 9, 11, 6, 5, 4, 3, 3, 2, 1, 0, 0);
-<<<<<<< HEAD
-				output_set_digit_value(m_digit[i]+i*20, segment);
-=======
 				output().set_digit_value(m_digit[i]+i*20, segment);
->>>>>>> upstream/master
 				m_digit[i]++; // auto-increment pointer
 				if (m_digit[i] > 19) m_digit[i] = 0; // check for overflow
 			}
@@ -399,11 +355,7 @@ WRITE8_MEMBER( gts80b_state::port3a_w )
 //pb0-3 = sound; pb4-7 = lamprow
 WRITE8_MEMBER( gts80b_state::port3b_w )
 {
-<<<<<<< HEAD
-	UINT8 sndcmd = data & 15;
-=======
 	uint8_t sndcmd = data & 15;
->>>>>>> upstream/master
 	m_lamprow = data >> 4;
 	if (m_r0_sound)
 		m_r0_sound->write(space, offset, sndcmd);
@@ -422,11 +374,7 @@ DRIVER_INIT_MEMBER( gts80b_state, gts80b )
 }
 
 /* with Sound Board */
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( gts80b, gts80b_state )
-=======
 static MACHINE_CONFIG_START( gts80b )
->>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6502, XTAL_3_579545MHz/4)
 	MCFG_CPU_PROGRAM_MAP(gts80b_map)
@@ -458,20 +406,6 @@ static MACHINE_CONFIG_START( gts80b )
 
 	/* Sound */
 	MCFG_FRAGMENT_ADD( genpin_audio )
-<<<<<<< HEAD
-	MCFG_SPEAKER_STANDARD_MONO("mono")
-MACHINE_CONFIG_END
-
-static MACHINE_CONFIG_DERIVED( gts80b_s, gts80b )
-	MCFG_GOTTLIEB_SOUND_R0_ADD("r0sound")
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
-MACHINE_CONFIG_END
-
-//static MACHINE_CONFIG_DERIVED( gts80b_ss, gts80b )
-//  MCFG_GOTTLIEB_SOUND_R1_ADD("r1sound")
-//  //MCFG_GOTTLIEB_SOUND_R1_ADD_VOTRAX("r1sound")  // votrax crashes
-//  MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
-=======
 	MCFG_SPEAKER_STANDARD_MONO("speaker")
 MACHINE_CONFIG_END
 
@@ -484,7 +418,6 @@ MACHINE_CONFIG_END
 //  MCFG_SOUND_ADD("r1sound", GOTTLIEB_SOUND_REV1, 0)
 //  //MCFG_SOUND_ADD("r1sound", GOTTLIEB_SOUND_REV1_WITH_VOTRAX, 0)  // votrax crashes
 //  MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 1.0)
->>>>>>> upstream/master
 //MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_DERIVED( gts80b_s1, gts80b )
@@ -517,11 +450,6 @@ MACHINE_CONFIG_END
 /-------------------------------------------------------------------*/
 
 /*-------------------------------------------------------------------
-<<<<<<< HEAD
-/ Amazon Hunt II 05/85
-/-------------------------------------------------------------------*/
-
-=======
 / Amazon Hunt II (#684C)
 /-------------------------------------------------------------------*/
 
@@ -568,7 +496,6 @@ ROM_START(amazonh3a)
 	ROM_REGION(0x10000, "cpu2", ROMREGION_ERASEFF)
 ROM_END
 
->>>>>>> upstream/master
 /*-------------------------------------------------------------------
 / Arena (#709)
 /-------------------------------------------------------------------*/
@@ -591,8 +518,6 @@ ROM_START(arena)
 	ROM_LOAD("yrom2.snd",0xc000,0x2000, CRC(cc2aef4e) SHA1(a6e243de99f6a76eb527e879f4441c036dd379b6))
 ROM_END
 
-<<<<<<< HEAD
-=======
 ROM_START(arenaa)
 	ROM_REGION(0x10000, "maincpu", 0)
 	ROM_LOAD("prom2a.cpu", 0x1000, 0x0800, CRC(13c8813b) SHA1(756e3583fd55b72e0bfb15e9b4a60740b389ca2e))
@@ -650,7 +575,6 @@ ROM_START(arenag)
 	ROM_LOAD("yrom2.snd",0xc000,0x2000, CRC(cc2aef4e) SHA1(a6e243de99f6a76eb527e879f4441c036dd379b6))
 ROM_END
 
->>>>>>> upstream/master
 /*-------------------------------------------------------------------
 / Bad Girls (#717)
 /-------------------------------------------------------------------*/
@@ -672,8 +596,6 @@ ROM_START(badgirls)
 	ROM_LOAD("yrom1.snd", 0x8000, 0x8000, CRC(ab3b8e2d) SHA1(b57a0b804b42b923bb102d295e3b8a69b1033d27))
 ROM_END
 
-<<<<<<< HEAD
-=======
 ROM_START(badgirlsf)
 	ROM_REGION(0x10000, "maincpu", 0)
 	ROM_LOAD("prom2f.cpu", 0x1000, 0x0800, CRC(58c35099) SHA1(ff76bd28175ea0f5d0437c16c5ae6886339edfe2))
@@ -710,7 +632,6 @@ ROM_START(badgirlsg)
 	ROM_LOAD("yrom1.snd", 0x8000, 0x8000, CRC(ab3b8e2d) SHA1(b57a0b804b42b923bb102d295e3b8a69b1033d27))
 ROM_END
 
->>>>>>> upstream/master
 /*-------------------------------------------------------------------
 / Big House (#713)
 /-------------------------------------------------------------------*/
@@ -732,8 +653,6 @@ ROM_START(bighouse)
 	ROM_LOAD("yrom1.snd", 0x8000, 0x8000, CRC(0b1ba1cb) SHA1(26327689992018837b1c9957c515ab67248623eb))
 ROM_END
 
-<<<<<<< HEAD
-=======
 ROM_START(bighousef)
 	ROM_REGION(0x10000, "maincpu", 0)
 	ROM_LOAD("prom2f.cpu", 0x1000, 0x0800, CRC(767efc44) SHA1(6b8f9a580e6a6ad92c9efe9f4345496d5063b7a8))
@@ -770,7 +689,6 @@ ROM_START(bighouseg)
 	ROM_LOAD("yrom1.snd", 0x8000, 0x8000, CRC(0b1ba1cb) SHA1(26327689992018837b1c9957c515ab67248623eb))
 ROM_END
 
->>>>>>> upstream/master
 /*-------------------------------------------------------------------
 / Bone Busters Inc. (#719)
 /-------------------------------------------------------------------*/
@@ -816,8 +734,6 @@ ROM_START(bonebstrf)
 	ROM_LOAD("yrom1.snd", 0x8000, 0x8000, CRC(a95eedfc) SHA1(5ced2d6869a9895f8ff26d830b21d3c9364b32e7))
 ROM_END
 
-<<<<<<< HEAD
-=======
 ROM_START(bonebstrg)
 	ROM_REGION(0x10000, "maincpu", 0)
 	ROM_LOAD("prom2g.cpu", 0x1000, 0x0800, CRC(3b85c8bd) SHA1(5c99349dc3ae05b82932d6ec9d2d1a29c2a7e36d))
@@ -839,7 +755,6 @@ ROM_START(bonebstrg)
 	ROM_LOAD("yrom1.snd", 0x8000, 0x8000, CRC(a95eedfc) SHA1(5ced2d6869a9895f8ff26d830b21d3c9364b32e7))
 ROM_END
 
->>>>>>> upstream/master
 /*-------------------------------------------------------------------
 / Bounty Hunter (#694)
 /-------------------------------------------------------------------*/
@@ -854,8 +769,6 @@ ROM_START(bountyh)
 	ROM_LOAD("694-s.snd", 0x0800, 0x0800, CRC(a0383e41) SHA1(156514d2b52fcd89b608b85991c5066780949979))
 ROM_END
 
-<<<<<<< HEAD
-=======
 ROM_START(bountyhg)
 	ROM_REGION(0x10000, "maincpu", 0)
 	ROM_LOAD("prom1g.cpu", 0x2000, 0x2000, CRC(ea4b7e2d) SHA1(9141c950b33e32ae8ad76fd0dd06d1a13d38be9d))
@@ -867,7 +780,6 @@ ROM_START(bountyhg)
 	ROM_LOAD("694-s.snd", 0x0800, 0x0800, CRC(a0383e41) SHA1(156514d2b52fcd89b608b85991c5066780949979))
 ROM_END
 
->>>>>>> upstream/master
 /*-------------------------------------------------------------------
 / Chicago Cubs' Triple Play (#696)
 /-------------------------------------------------------------------*/
@@ -882,8 +794,6 @@ ROM_START(triplay)
 	ROM_LOAD("696-s.snd", 0x0800, 0x0800, CRC(deedea61) SHA1(6aec221397f250d5dd99faefa313e8028c8818f7))
 ROM_END
 
-<<<<<<< HEAD
-=======
 ROM_START(triplaya)
 	ROM_REGION(0x10000, "maincpu", 0)
 	ROM_LOAD("prom1a.cpu", 0x2000, 0x2000, CRC(fc2145cb) SHA1(f7b9648c533997e9f777a8b40dad9852f26abd9a))
@@ -895,7 +805,6 @@ ROM_START(triplaya)
 	ROM_LOAD("696-s.snd", 0x0800, 0x0800, CRC(deedea61) SHA1(6aec221397f250d5dd99faefa313e8028c8818f7))
 ROM_END
 
->>>>>>> upstream/master
 /*-------------------------------------------------------------------
 / Diamond Lady (#711)
 /-------------------------------------------------------------------*/
@@ -917,18 +826,6 @@ ROM_START(diamondp)
 	ROM_LOAD("yrom1.snd", 0x8000, 0x8000, CRC(0a18d626) SHA1(6b367668be55ca04c69c4c4c5a4a524ae8f790f8))
 ROM_END
 
-<<<<<<< HEAD
-/*-------------------------------------------------------------------
-/ Excalibur (#715)
-/-------------------------------------------------------------------*/
-ROM_START(excalibr)
-	ROM_REGION(0x10000, "maincpu", 0)
-	ROM_LOAD("prom2.cpu", 0x1000, 0x0800, CRC(499e2e41) SHA1(1e3fcba18882bd7df30a43843916aa5d7968eecc))
-	ROM_CONTINUE(0x9000, 0x0800)
-	ROM_RELOAD(0x5000, 0x0800)
-	ROM_CONTINUE(0xd000, 0x0800)
-	ROM_LOAD("prom1.cpu", 0x2000, 0x2000, CRC(ed1083d7) SHA1(3ff829ecfaba7d20c75268d3ee5224cb3cac3507))
-=======
 ROM_START(diamondpf)
 	ROM_REGION(0x10000, "maincpu", 0)
 	ROM_LOAD("prom2f.cpu", 0x1000, 0x0800, CRC(943019a8) SHA1(558c3696339bb6e150b4ddb499bc60897d5954ec))
@@ -936,30 +833,11 @@ ROM_START(diamondpf)
 	ROM_RELOAD(0x9000, 0x0800)
 	ROM_RELOAD(0xd000, 0x0800)
 	ROM_LOAD("prom1f.cpu", 0x2000, 0x2000, CRC(479b0267) SHA1(a9586c5b2cc3561ba3409123eca5a73ebabfd823))
->>>>>>> upstream/master
 	ROM_RELOAD(0x6000, 0x2000)
 	ROM_RELOAD(0xa000, 0x2000)
 	ROM_RELOAD(0xe000, 0x2000)
 
 	ROM_REGION(0x10000, "cpu3", 0)
-<<<<<<< HEAD
-	ROM_LOAD("drom1.snd", 0x8000, 0x8000, CRC(a4368cd0) SHA1(c48513e56899938dc83a3545d8ee9def3dc1491f))
-
-	ROM_REGION(0x10000, "cpu2", 0)
-	ROM_LOAD("yrom1.snd", 0x8000, 0x8000, CRC(9f194744) SHA1(dbd73b546071c3d4f0dcfe21e3e646da716c5b71))
-ROM_END
-
-/*-------------------------------------------------------------------
-/ Genesis (#705)
-/-------------------------------------------------------------------*/
-ROM_START(genesisp)
-	ROM_REGION(0x10000, "maincpu", 0)
-	ROM_LOAD("prom2.cpu", 0x1000, 0x0800, CRC(ac9f3a0f) SHA1(0e44888dc046121794e824d128628f991245c1cb))
-	ROM_RELOAD(0x5000, 0x0800)
-	ROM_RELOAD(0x9000, 0x0800)
-	ROM_RELOAD(0xd000, 0x0800)
-	ROM_LOAD("prom1.cpu", 0x2000, 0x2000, CRC(4a2f185c) SHA1(b45982b1ce9777292731ad523516c76cde4ddfa4))
-=======
 	ROM_LOAD("drom1.snd", 0x8000, 0x8000, CRC(c216d1e4) SHA1(aa38db5ad36d1d1d35e727ab27c1f1c05a9627cd))
 
 	ROM_REGION(0x10000, "cpu2", 0)
@@ -973,31 +851,11 @@ ROM_START(diamondpg)
 	ROM_RELOAD(0x9000, 0x0800)
 	ROM_RELOAD(0xd000, 0x0800)
 	ROM_LOAD("prom1g.cpu", 0x2000, 0x2000, CRC(961cfdf9) SHA1(97135f77705969736f704acdeda6157bb765c73e))
->>>>>>> upstream/master
 	ROM_RELOAD(0x6000, 0x2000)
 	ROM_RELOAD(0xa000, 0x2000)
 	ROM_RELOAD(0xe000, 0x2000)
 
 	ROM_REGION(0x10000, "cpu3", 0)
-<<<<<<< HEAD
-	ROM_LOAD("drom1.snd",0xe000,0x2000, CRC(758e1743) SHA1(6df3011c044796afcd88e52d1ca69692cb489ff4))
-
-	ROM_REGION(0x10000, "cpu2", 0)
-	ROM_LOAD("yrom1.snd",0xe000,0x2000, CRC(4869b0ec) SHA1(b8a56753257205af56e06105515b8a700bb1935b))
-	ROM_LOAD("yrom2.snd",0xc000,0x2000, CRC(0528c024) SHA1(d24ff7e088b08c1f35b54be3c806f8a8757d96c7))
-ROM_END
-
-/*-------------------------------------------------------------------
-/ Gold Wings (#707)
-/-------------------------------------------------------------------*/
-ROM_START(goldwing)
-	ROM_REGION(0x10000, "maincpu", 0)
-	ROM_LOAD("prom2.cpu", 0x1000, 0x0800, CRC(a5318c20) SHA1(8b4dcf45b13657ff753237a2e7d0352fda7755ef))
-	ROM_RELOAD(0x5000, 0x0800)
-	ROM_RELOAD(0x9000, 0x0800)
-	ROM_RELOAD(0xd000, 0x0800)
-	ROM_LOAD("prom1.cpu", 0x2000, 0x2000, CRC(bf242185) SHA1(0bf231050aa29f8bba5cb478a815b3d83bad93b3))
-=======
 	ROM_LOAD("drom1.snd", 0x8000, 0x8000, CRC(c216d1e4) SHA1(aa38db5ad36d1d1d35e727ab27c1f1c05a9627cd))
 
 	ROM_REGION(0x10000, "cpu2", 0)
@@ -1014,31 +872,11 @@ ROM_START(excalibr)
 	ROM_RELOAD(0x5000, 0x0800)
 	ROM_CONTINUE(0xd000, 0x0800)
 	ROM_LOAD("prom1.cpu", 0x2000, 0x2000, CRC(e8902c16) SHA1(c3e4ece6be7027a4deef052ba4be752070e9b542))
->>>>>>> upstream/master
 	ROM_RELOAD(0x6000, 0x2000)
 	ROM_RELOAD(0xa000, 0x2000)
 	ROM_RELOAD(0xe000, 0x2000)
 
 	ROM_REGION(0x10000, "cpu3", 0)
-<<<<<<< HEAD
-	ROM_LOAD("drom1.snd",0xe000,0x2000, CRC(892dbb21) SHA1(e24611544693e95dd2b9c0f2532c4d1f0b8ac10c))
-
-	ROM_REGION(0x10000, "cpu2", 0)
-	ROM_LOAD("yrom1.snd",0xe000,0x2000, CRC(e17e9b1f) SHA1(ada9a6139a13ef31173801d560ec732d5a285140))
-	ROM_LOAD("yrom2.snd",0xc000,0x2000, CRC(4e482023) SHA1(62e97d229eb28ff67f0ebc4ee04c1b4918a4affe))
-ROM_END
-
-/*-------------------------------------------------------------------
-/ Hollywood Heat (#703)
-/-------------------------------------------------------------------*/
-ROM_START(hlywoodh)
-	ROM_REGION(0x10000, "maincpu", 0)
-	ROM_LOAD("prom2.cpu", 0x1000, 0x0800, CRC(a465e5f3) SHA1(56afa2f67aebcd17345bba76ecb814653719ee7b))
-	ROM_RELOAD(0x5000, 0x0800)
-	ROM_RELOAD(0x9000, 0x0800)
-	ROM_RELOAD(0xd000, 0x0800)
-	ROM_LOAD("prom1.cpu", 0x2000, 0x2000, CRC(0493e27a) SHA1(72c603cda3cc43ed0f841a9fcc6f40d020475e74))
-=======
 	ROM_LOAD("drom1.snd", 0x8000, 0x8000, CRC(a4368cd0) SHA1(c48513e56899938dc83a3545d8ee9def3dc1491f))
 
 	ROM_REGION(0x10000, "cpu2", 0)
@@ -1052,31 +890,11 @@ ROM_START(excalibrf)
 	ROM_RELOAD(0x5000, 0x0800)
 	ROM_CONTINUE(0xd000, 0x0800)
 	ROM_LOAD("prom1f.cpu", 0x2000, 0x2000, CRC(ed1083d7) SHA1(3ff829ecfaba7d20c75268d3ee5224cb3cac3507))
->>>>>>> upstream/master
 	ROM_RELOAD(0x6000, 0x2000)
 	ROM_RELOAD(0xa000, 0x2000)
 	ROM_RELOAD(0xe000, 0x2000)
 
 	ROM_REGION(0x10000, "cpu3", 0)
-<<<<<<< HEAD
-	ROM_LOAD("drom1.snd",0xe000,0x2000, CRC(a698ec33) SHA1(e7c1d28279ec4f12095c3a106c6cefcc2a84b31e))
-
-	ROM_REGION(0x10000, "cpu2", 0)
-	ROM_LOAD("yrom1.snd",0xe000,0x2000, CRC(9232591e) SHA1(72883e0c542c572226c6c654bea14749cc9e351f))
-	ROM_LOAD("yrom2.snd",0xc000,0x2000, CRC(51709c2f) SHA1(5834d7b72bd36e30c87377dc7c3ad0cf26ff303a))
-ROM_END
-
-/*-------------------------------------------------------------------
-/ Hot Shots (#718)
-/-------------------------------------------------------------------*/
-ROM_START(hotshots)
-	ROM_REGION(0x10000, "maincpu", 0)
-	ROM_LOAD("prom2.cpu", 0x1000, 0x0800, CRC(7695c7db) SHA1(90188ff83b888262ba849e5af9d99145c5bc1c30))
-	ROM_CONTINUE(0x9000, 0x0800)
-	ROM_RELOAD(0x5000, 0x0800)
-	ROM_CONTINUE(0xd000, 0x0800)
-	ROM_LOAD("prom1.cpu", 0x2000, 0x2000, CRC(122ff4a8) SHA1(195392b9f2050b52392a123831bb7a9428087c1b))
-=======
 	ROM_LOAD("drom1.snd", 0x8000, 0x8000, CRC(a4368cd0) SHA1(c48513e56899938dc83a3545d8ee9def3dc1491f))
 
 	ROM_REGION(0x10000, "cpu2", 0)
@@ -1090,30 +908,11 @@ ROM_START(excalibrg)
 	ROM_RELOAD(0x5000, 0x0800)
 	ROM_CONTINUE(0xd000, 0x0800)
 	ROM_LOAD("prom1g.cpu", 0x2000, 0x2000, CRC(504fad7a) SHA1(6648778d537161e9bdcf2955209e1525e90a3617))
->>>>>>> upstream/master
 	ROM_RELOAD(0x6000, 0x2000)
 	ROM_RELOAD(0xa000, 0x2000)
 	ROM_RELOAD(0xe000, 0x2000)
 
 	ROM_REGION(0x10000, "cpu3", 0)
-<<<<<<< HEAD
-	ROM_LOAD("drom1.snd", 0x8000, 0x8000, CRC(42c3cc3d) SHA1(26ca7f3a71b83df18ac6be1d1eb28da20120285e))
-
-	ROM_REGION(0x10000, "cpu2", 0)
-	ROM_LOAD("yrom1.snd", 0x8000, 0x8000, CRC(2933a80e) SHA1(5982b9ed361d90f8ea47047fc29770ef142acbec))
-ROM_END
-
-/*-------------------------------------------------------------------
-/ Monte Carlo (#708)
-/-------------------------------------------------------------------*/
-ROM_START(mntecrlo)
-	ROM_REGION(0x10000, "maincpu", 0)
-	ROM_LOAD("prom2.cpu", 0x1000, 0x0800, CRC(6860e315) SHA1(cecb1815334506dfebf29efe3e4e2a838010e8db))
-	ROM_RELOAD(0x5000, 0x0800)
-	ROM_RELOAD(0x9000, 0x0800)
-	ROM_RELOAD(0xd000, 0x0800)
-	ROM_LOAD("prom1.cpu", 0x2000, 0x2000, CRC(0fbf15a3) SHA1(0155b39c2c38224301857313ab784c1d39f1183b))
-=======
 	ROM_LOAD("drom1.snd", 0x8000, 0x8000, CRC(a4368cd0) SHA1(c48513e56899938dc83a3545d8ee9def3dc1491f))
 
 	ROM_REGION(0x10000, "cpu2", 0)
@@ -1130,23 +929,11 @@ ROM_START(genesisp)
 	ROM_RELOAD(0x9000, 0x0800)
 	ROM_RELOAD(0xd000, 0x0800)
 	ROM_LOAD("prom1.cpu", 0x2000, 0x2000, CRC(4a2f185c) SHA1(b45982b1ce9777292731ad523516c76cde4ddfa4))
->>>>>>> upstream/master
 	ROM_RELOAD(0x6000, 0x2000)
 	ROM_RELOAD(0xa000, 0x2000)
 	ROM_RELOAD(0xe000, 0x2000)
 
 	ROM_REGION(0x10000, "cpu3", 0)
-<<<<<<< HEAD
-	ROM_LOAD("drom1.snd",0xe000,0x2000, CRC(1a53ac15) SHA1(f2751664a09431e908873580ddf4f44df9b4eda7))
-
-	ROM_REGION(0x10000, "cpu2", 0)
-	ROM_LOAD("yrom1.snd",0xe000,0x2000, CRC(6e234c49) SHA1(fdb4126ecdaac378d144e9dd3c29b4e79290da2a))
-	ROM_LOAD("yrom2.snd",0xc000,0x2000, CRC(a95d1a6b) SHA1(91946ef7af0e4dd96db6d2d6f4f2e9a3a7279b81))
-ROM_END
-
-/*-------------------------------------------------------------------
-/ Night Moves C-103
-=======
 	ROM_LOAD("drom1.snd",0xe000,0x2000, CRC(758e1743) SHA1(6df3011c044796afcd88e52d1ca69692cb489ff4))
 
 	ROM_REGION(0x10000, "cpu2", 0)
@@ -1469,7 +1256,6 @@ ROM_END
 
 /*-------------------------------------------------------------------
 / Night Moves C-103
->>>>>>> upstream/master
 /-------------------------------------------------------------------*/
 ROM_START(nmoves)
 	ROM_REGION(0x10000, "maincpu", 0)
@@ -1510,8 +1296,6 @@ ROM_START(raven)
 	ROM_LOAD("yrom1.snd",0xe000,0x2000, CRC(ee5f868b) SHA1(23ef4112b94109ad4d4a6b9bb5215acec20e5e55))
 ROM_END
 
-<<<<<<< HEAD
-=======
 ROM_START(raveng)
 	ROM_REGION(0x10000, "maincpu", 0)
 	ROM_LOAD("prom2g.cpu", 0x1000, 0x0800, CRC(4ca540a5) SHA1(50bb240465d80b7763574e1261f8d0ddda5ad587))
@@ -1548,7 +1332,6 @@ ROM_START(ravena)
 	ROM_LOAD("yrom1.snd",0xe000,0x2000, CRC(ee5f868b) SHA1(23ef4112b94109ad4d4a6b9bb5215acec20e5e55))
 ROM_END
 
->>>>>>> upstream/master
 /*-------------------------------------------------------------------
 / Robo-War (#714)
 /-------------------------------------------------------------------*/
@@ -1570,8 +1353,6 @@ ROM_START(robowars)
 	ROM_LOAD("yrom1.snd", 0x8000, 0x8000, CRC(7ecd8b67) SHA1(c5167b0acc64e535d389ba70be92a65672e119f6))
 ROM_END
 
-<<<<<<< HEAD
-=======
 ROM_START(robowarsf)
 	ROM_REGION(0x10000, "maincpu", 0)
 	ROM_LOAD("prom2f.cpu", 0x1000, 0x0800, CRC(1afa0e69) SHA1(178813494b877ac9ca36863661596b4df04df1bb))
@@ -1590,7 +1371,6 @@ ROM_START(robowarsf)
 	ROM_LOAD("yrom1.snd", 0x8000, 0x8000, CRC(7ecd8b67) SHA1(c5167b0acc64e535d389ba70be92a65672e119f6))
 ROM_END
 
->>>>>>> upstream/master
 /*-------------------------------------------------------------------
 / Rock (#697)
 /-------------------------------------------------------------------*/
@@ -1608,8 +1388,6 @@ ROM_START(rock)
 	ROM_LOAD("yrom1.snd",0xe000,0x2000, CRC(effba2ad) SHA1(2288a4f655376e0aa18f8ecd9a3818ed4d6c6891))
 ROM_END
 
-<<<<<<< HEAD
-=======
 ROM_START(rockg)
 	ROM_REGION(0x10000, "maincpu", 0)
 	ROM_LOAD("prom1g.cpu", 0x2000, 0x2000, CRC(2de3f1e5) SHA1(ceb964292703080bb742dbc073a14dbf745ad38e))
@@ -1624,7 +1402,6 @@ ROM_START(rockg)
 	ROM_LOAD("yrom1.snd",0xe000,0x2000, CRC(effba2ad) SHA1(2288a4f655376e0aa18f8ecd9a3818ed4d6c6891))
 ROM_END
 
->>>>>>> upstream/master
 /*-------------------------------------------------------------------
 / Rock Encore (#704)
 /-------------------------------------------------------------------*/
@@ -1643,8 +1420,6 @@ ROM_START(rock_enc)
 	ROM_LOAD("yrom2a.snd",0xc000,0x2000, CRC(66645a3f) SHA1(f06261af81e6b1829d639933297d2461a8c993fc))
 ROM_END
 
-<<<<<<< HEAD
-=======
 ROM_START(rock_encg)
 	ROM_REGION(0x10000, "maincpu", 0)
 	ROM_LOAD("prom1g.cpu", 0x2000, 0x2000, CRC(2de3f1e5) SHA1(ceb964292703080bb742dbc073a14dbf745ad38e))
@@ -1660,7 +1435,6 @@ ROM_START(rock_encg)
 	ROM_LOAD("yrom2a.snd",0xc000,0x2000, CRC(66645a3f) SHA1(f06261af81e6b1829d639933297d2461a8c993fc))
 ROM_END
 
->>>>>>> upstream/master
 /*-------------------------------------------------------------------
 / Spring Break (#706)
 /-------------------------------------------------------------------*/
@@ -1683,8 +1457,6 @@ ROM_START(sprbreak)
 	ROM_LOAD("yrom2.snd",0xc000,0x2000, CRC(0fb0128e) SHA1(3bdc5ed11b8e062f71f2a78b955830bd985e80a3))
 ROM_END
 
-<<<<<<< HEAD
-=======
 ROM_START(sprbreaka)
 	ROM_REGION(0x10000, "maincpu", 0)
 	ROM_LOAD("prom2a.cpu", 0x1000, 0x0800, CRC(d9d841b4) SHA1(8b9773e5ae9917d27089deca3b8311cb74e7f88e))
@@ -1742,7 +1514,6 @@ ROM_START(sprbreakg)
 	ROM_LOAD("yrom2.snd",0xc000,0x2000, CRC(0fb0128e) SHA1(3bdc5ed11b8e062f71f2a78b955830bd985e80a3))
 ROM_END
 
->>>>>>> upstream/master
 ROM_START(sprbreaks)
 	ROM_REGION(0x10000, "maincpu", 0)
 	ROM_LOAD("prom2.rv2", 0x1000, 0x0800, CRC(911cd14f) SHA1(2bc3ff6a3889da69b97f8ec318f93208e3d42cfe))
@@ -1780,8 +1551,6 @@ ROM_START(tagteamp)
 	ROM_LOAD("698-s.snd", 0x0800, 0x0800, CRC(9c8191b7) SHA1(12b017692f078dcdc8e4bbf1ffcea1c5d0293d06))
 ROM_END
 
-<<<<<<< HEAD
-=======
 ROM_START(tagteampg)
 	ROM_REGION(0x10000, "maincpu", 0)
 	ROM_LOAD("prom2g.cpu", 0x1000, 0x0800, CRC(5e6d2da7) SHA1(9b23d1ac34163edeaceffe806a2a559f3d408b41))
@@ -1797,7 +1566,6 @@ ROM_START(tagteampg)
 	ROM_LOAD("698-s.snd", 0x0800, 0x0800, CRC(9c8191b7) SHA1(12b017692f078dcdc8e4bbf1ffcea1c5d0293d06))
 ROM_END
 
->>>>>>> upstream/master
 ROM_START(tagteamp2)
 	ROM_REGION(0x10000, "maincpu", 0)
 	ROM_LOAD("prom2a.cpu", 0x1000, 0x0800, CRC(6d56b636) SHA1(8f50f2742be727835e7343307787b4b5daa1623a))
@@ -1834,8 +1602,6 @@ ROM_START(txsector)
 	ROM_LOAD("yrom1.snd", 0x8000, 0x8000, CRC(469ef444) SHA1(faa16f34357a53c3fc61b59251fabdc44c605000))
 ROM_END
 
-<<<<<<< HEAD
-=======
 ROM_START(txsectorf)
 	ROM_REGION(0x10000, "maincpu", 0)
 	ROM_LOAD("prom2f.cpu", 0x1000, 0x0800, CRC(1bd08247) SHA1(968cc30e5e5c783e73cb3278a58189c4f8b8186f))
@@ -1872,7 +1638,6 @@ ROM_START(txsectorg)
 	ROM_LOAD("yrom1.snd", 0x8000, 0x8000, CRC(469ef444) SHA1(faa16f34357a53c3fc61b59251fabdc44c605000))
 ROM_END
 
->>>>>>> upstream/master
 /*-------------------------------------------------------------------
 / Victory (#710)
 /-------------------------------------------------------------------*/
@@ -1894,34 +1659,6 @@ ROM_START(victoryp)
 	ROM_LOAD("yrom1.snd", 0x8000, 0x8000, CRC(921a100e) SHA1(0c3c7eae4ceeb5a1a8150bac52203d3f1e8f917e))
 ROM_END
 
-<<<<<<< HEAD
-
-GAME(1985, bountyh,   0,        gts80b_s,  gts80b, gts80b_state, gts80b, ROT0, "Gottlieb",               "Bounty Hunter",        MACHINE_IS_SKELETON_MECHANICAL)
-GAME(1985, triplay,   0,        gts80b_s,  gts80b, gts80b_state, gts80b, ROT0, "Gottlieb",               "Triple Play",          MACHINE_IS_SKELETON_MECHANICAL)
-GAME(1985, rock,      0,        gts80b_s1, gts80b, gts80b_state, gts80b, ROT0, "Gottlieb",               "Rock",             MACHINE_IS_SKELETON_MECHANICAL)
-GAME(1985, tagteamp,  0,        gts80b_s,  gts80b, gts80b_state, gts80b, ROT0, "Gottlieb",               "Tag-Team Wrestling",   MACHINE_IS_SKELETON_MECHANICAL)
-GAME(1985, tagteamp2, tagteamp, gts80b_s,  gts80b, gts80b_state, gts80b, ROT0, "Gottlieb",               "Tag-Team Wrestling (rev.2)", MACHINE_IS_SKELETON_MECHANICAL)
-GAME(1986, raven,     0,        gts80b_s1, gts80b, gts80b_state, gts80b, ROT0, "Gottlieb",               "Raven",                MACHINE_IS_SKELETON_MECHANICAL)
-GAME(1986, hlywoodh,  0,        gts80b_s1, gts80b, gts80b_state, gts80b, ROT0, "Gottlieb",               "Hollywood Heat",       MACHINE_IS_SKELETON_MECHANICAL)
-GAME(1986, rock_enc,  rock,     gts80b_s1, gts80b, gts80b_state, gts80b, ROT0, "Gottlieb",               "Rock Encore",          MACHINE_IS_SKELETON_MECHANICAL)
-GAME(1986, genesisp,  0,        gts80b_s1, gts80b, gts80b_state, gts80b, ROT0, "Gottlieb",               "Genesis",              MACHINE_IS_SKELETON_MECHANICAL)
-GAME(1987, sprbreak,  0,        gts80b_s1, gts80b, gts80b_state, gts80b, ROT0, "Gottlieb",               "Spring Break",         MACHINE_IS_SKELETON_MECHANICAL)
-GAME(19??, sprbreaks, sprbreak, gts80b_s1, gts80b, gts80b_state, gts80b, ROT0, "Gottlieb",               "Spring Break (single ball game)", MACHINE_IS_SKELETON_MECHANICAL)
-GAME(1986, goldwing,  0,        gts80b_s1, gts80b, gts80b_state, gts80b, ROT0, "Gottlieb",               "Gold Wings",           MACHINE_IS_SKELETON_MECHANICAL)
-GAME(1987, mntecrlo,  0,        gts80b_s1, gts80b, gts80b_state, gts80b, ROT0, "Gottlieb",               "Monte Carlo (Pinball)", MACHINE_IS_SKELETON_MECHANICAL)
-GAME(1987, arena,     0,        gts80b_s1, gts80b, gts80b_state, gts80b, ROT0, "Gottlieb",               "Arena",                MACHINE_IS_SKELETON_MECHANICAL)
-GAME(1987, victoryp,  0,        gts80b_s2, gts80b, gts80b_state, gts80b, ROT0, "Gottlieb",               "Victory (Pinball)",    MACHINE_IS_SKELETON_MECHANICAL)
-GAME(1988, diamondp,  0,        gts80b_s2, gts80b, gts80b_state, gts80b, ROT0, "Gottlieb",               "Diamond Lady",         MACHINE_IS_SKELETON_MECHANICAL)
-GAME(1988, txsector,  0,        gts80b_s2, gts80b, gts80b_state, gts80b, ROT0, "Gottlieb",               "TX-Sector",            MACHINE_IS_SKELETON_MECHANICAL)
-GAME(1989, bighouse,  0,        gts80b_s3, gts80b, gts80b_state, gts80b, ROT0, "Gottlieb",               "Big House",            MACHINE_IS_SKELETON_MECHANICAL)
-GAME(1988, robowars,  0,        gts80b_s2, gts80b, gts80b_state, gts80b, ROT0, "Gottlieb",               "Robo-War",             MACHINE_IS_SKELETON_MECHANICAL)
-GAME(1988, excalibr,  0,        gts80b_s3, gts80b, gts80b_state, gts80b, ROT0, "Gottlieb",               "Excalibur",            MACHINE_IS_SKELETON_MECHANICAL)
-GAME(1988, badgirls,  0,        gts80b_s3, gts80b, gts80b_state, gts80b, ROT0, "Gottlieb",               "Bad Girls",            MACHINE_IS_SKELETON_MECHANICAL)
-GAME(1989, hotshots,  0,        gts80b_s2, gts80b, gts80b_state, gts80b, ROT0, "Gottlieb",               "Hot Shots",            MACHINE_IS_SKELETON_MECHANICAL)
-GAME(1989, bonebstr,  0,        bonebstr,  gts80b, gts80b_state, gts80b, ROT0, "Gottlieb",               "Bone Busters Inc.",    MACHINE_IS_SKELETON_MECHANICAL)
-GAME(1989, bonebstrf, bonebstr, bonebstr,  gts80b, gts80b_state, gts80b, ROT0, "Gottlieb",               "Bone Busters Inc. (French)", MACHINE_IS_SKELETON_MECHANICAL)
-GAME(1989, nmoves,    0,        gts80b_s2, gts80b, gts80b_state, gts80b, ROT0, "International Concepts", "Night Moves",          MACHINE_IS_SKELETON_MECHANICAL)
-=======
 ROM_START(victorypf)
 	ROM_REGION(0x10000, "maincpu", 0)
 	ROM_LOAD("prom2f.cpu", 0x1000, 0x0800, CRC(dffcfa77) SHA1(3efaca85295ca55268b8d7c7cfe8f09f159d5fbd))
@@ -2046,4 +1783,3 @@ GAME(1989, nmoves,    0,        gts80b_s2, gts80b, gts80b_state, gts80b, ROT0, "
 GAME(1987, amazonh3,  0,        gts80b_s1, gts80b, gts80b_state, gts80b, ROT0, "Gottlieb",               "Amazon Hunt III (French)",                  MACHINE_IS_SKELETON_MECHANICAL)
 GAME(1987, amazonh3a, amazonh3, gts80b_s1, gts80b, gts80b_state, gts80b, ROT0, "Gottlieb",               "Amazon Hunt III (rev. 1, French)",          MACHINE_IS_SKELETON_MECHANICAL)
 GAME(198?, s80btest,  0,        gts80b_s2, gts80b, gts80b_state, gts80b, ROT0, "Gottlieb",               "System 80B Test",                           MACHINE_IS_SKELETON_MECHANICAL)
->>>>>>> upstream/master

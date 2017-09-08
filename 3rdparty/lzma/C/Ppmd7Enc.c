@@ -1,15 +1,9 @@
 /* Ppmd7Enc.c -- PPMdH Encoder
-<<<<<<< HEAD
-2010-03-12 : Igor Pavlov : Public domain
-This code is based on PPMd var.H (2001): Dmitry Shkarin : Public domain */
-
-=======
 2015-09-28 : Igor Pavlov : Public domain
 This code is based on PPMd var.H (2001): Dmitry Shkarin : Public domain */
 
 #include "Precomp.h"
 
->>>>>>> upstream/master
 #include "Ppmd7.h"
 
 #define kTopValue (1 << 24)
@@ -32,11 +26,7 @@ static void RangeEnc_ShiftLow(CPpmd7z_RangeEnc *p)
       p->Stream->Write(p->Stream, (Byte)(temp + (Byte)(p->Low >> 32)));
       temp = 0xFF;
     }
-<<<<<<< HEAD
-    while(--p->CacheSize != 0);
-=======
     while (--p->CacheSize != 0);
->>>>>>> upstream/master
     p->Cache = (Byte)((UInt32)p->Low >> 24);
   }
   p->CacheSize++;

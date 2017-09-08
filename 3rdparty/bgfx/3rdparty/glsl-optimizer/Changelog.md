@@ -1,8 +1,6 @@
 GLSL optimizer Change Log
 =========================
 
-<<<<<<< HEAD
-=======
 
 2016 10
 -------
@@ -45,7 +43,6 @@ Fixed:
 * Fixed translation performance regression in loop analysis (regressed in 2015 06 fixes).
 
 
->>>>>>> upstream/master
 2015 08
 -------
 
@@ -80,10 +77,7 @@ Fixes:
 -------
 
 Goodies:
-<<<<<<< HEAD
-=======
 
->>>>>>> upstream/master
 * GLES2: support EXT_draw_instanced / gl_InstanceIDEXT.
 * Support gl_VertexID in GLSL < 1.30 when EXT_gpu_shader4 is used.
 

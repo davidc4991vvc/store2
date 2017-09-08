@@ -10,11 +10,7 @@
 
 static HRESULT SResToHRESULT(SRes res)
 {
-<<<<<<< HEAD
-  switch(res)
-=======
   switch (res)
->>>>>>> upstream/master
   {
     case SZ_OK: return S_OK;
     case SZ_ERROR_MEM: return E_OUTOFMEMORY;
@@ -29,29 +25,16 @@ namespace NCompress {
 namespace NLzma {
 
 CDecoder::CDecoder(): _inBuf(0), _propsWereSet(false), _outSizeDefined(false),
-<<<<<<< HEAD
-  _inBufSize(1 << 20),
-  _outBufSize(1 << 22),
-  FinishStream(false)
-=======
     _inBufSize(1 << 20),
     _outBufSize(1 << 22),
     FinishStream(false),
     NeedMoreInput(false)
->>>>>>> upstream/master
 {
   _inSizeProcessed = 0;
   _inPos = _inSize = 0;
   LzmaDec_Construct(&_state);
 }
 
-<<<<<<< HEAD
-static void *SzAlloc(void *p, size_t size) { p = p; return MyAlloc(size); }
-static void SzFree(void *p, void *address) { p = p; MyFree(address); }
-static ISzAlloc g_Alloc = { SzAlloc, SzFree };
-
-=======
->>>>>>> upstream/master
 CDecoder::~CDecoder()
 {
   LzmaDec_Free(&_state, &g_Alloc);
@@ -95,23 +78,17 @@ STDMETHODIMP CDecoder::SetOutStreamSize(const UInt64 *outSize)
 {
   _inSizeProcessed = 0;
   _inPos = _inSize = 0;
-<<<<<<< HEAD
-=======
   NeedMoreInput = false;
->>>>>>> upstream/master
   SetOutStreamSizeResume(outSize);
   return S_OK;
 }
 
-<<<<<<< HEAD
-=======
 STDMETHODIMP CDecoder::SetFinishMode(UInt32 finishMode)
 {
   FinishStream = (finishMode != 0);
   return S_OK;
 }
 
->>>>>>> upstream/master
 HRESULT CDecoder::CodeSpec(ISequentialInStream *inStream, ISequentialOutStream *outStream, ICompressProgressInfo *progress)
 {
   if (_inBuf == 0 || !_propsWereSet)
@@ -171,11 +148,6 @@ HRESULT CDecoder::CodeSpec(ISequentialInStream *inStream, ISequentialOutStream *
         return S_FALSE;
       RINOK(res2);
       if (stopDecoding)
-<<<<<<< HEAD
-        return S_OK;
-      if (finished)
-        return (status == LZMA_STATUS_FINISHED_WITH_MARK ? S_OK : S_FALSE);
-=======
       {
         if (status == LZMA_STATUS_NEEDS_MORE_INPUT)
           NeedMoreInput = true;
@@ -191,7 +163,6 @@ HRESULT CDecoder::CodeSpec(ISequentialInStream *inStream, ISequentialOutStream *
           NeedMoreInput = true;
         return (status == LZMA_STATUS_FINISHED_WITH_MARK ? S_OK : S_FALSE);
       }
->>>>>>> upstream/master
     }
     if (progress)
     {

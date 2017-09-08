@@ -39,20 +39,12 @@ public:
 	sound_coreaudio() :
 		osd_module(OSD_SOUND_PROVIDER, "coreaudio"),
 		sound_module(),
-<<<<<<< HEAD
-		m_graph(NULL),
-=======
 		m_graph(nullptr),
->>>>>>> upstream/master
 		m_node_count(0),
 		m_sample_bytes(0),
 		m_headroom(0),
 		m_buffer_size(0),
-<<<<<<< HEAD
-		m_buffer(NULL),
-=======
 		m_buffer(nullptr),
->>>>>>> upstream/master
 		m_playpos(0),
 		m_writepos(0),
 		m_in_underrun(false),
@@ -70,21 +62,13 @@ public:
 
 	// sound_module
 
-<<<<<<< HEAD
-	virtual void update_audio_stream(bool is_throttled, INT16 const *buffer, int samples_this_frame);
-=======
 	virtual void update_audio_stream(bool is_throttled, int16_t const *buffer, int samples_this_frame);
->>>>>>> upstream/master
 	virtual void set_mastervolume(int attenuation);
 
 private:
 	struct node_detail
 	{
-<<<<<<< HEAD
-		node_detail() : m_node(0), m_unit(NULL) { }
-=======
 		node_detail() : m_node(0), m_unit(nullptr) { }
->>>>>>> upstream/master
 
 		AUNode      m_node;
 		AudioUnit   m_unit;
@@ -97,17 +81,6 @@ private:
 		EFFECT_COUNT_MAX = 10
 	};
 
-<<<<<<< HEAD
-	UINT32 clamped_latency() const { return MAX(MIN(m_audio_latency, LATENCY_MAX), LATENCY_MIN); }
-	UINT32 buffer_avail() const { return ((m_writepos >= m_playpos) ? m_buffer_size : 0) + m_playpos - m_writepos; }
-	UINT32 buffer_used() const { return ((m_playpos > m_writepos) ? m_buffer_size : 0) + m_writepos - m_playpos; }
-
-	void copy_scaled(void *dst, void const *src, UINT32 bytes) const
-	{
-		bytes /= sizeof(INT16);
-		INT16 const *s = (INT16 const *)src;
-		for (INT16 *d = (INT16 *)dst; bytes > 0; bytes--, s++, d++)
-=======
 	uint32_t clamped_latency() const { return unsigned(std::max(std::min(m_audio_latency, int(LATENCY_MAX)), int(LATENCY_MIN))); }
 	uint32_t buffer_avail() const { return ((m_writepos >= m_playpos) ? m_buffer_size : 0) + m_playpos - m_writepos; }
 	uint32_t buffer_used() const { return ((m_playpos > m_writepos) ? m_buffer_size : 0) + m_writepos - m_playpos; }
@@ -117,7 +90,6 @@ private:
 		bytes /= sizeof(int16_t);
 		int16_t const *s = (int16_t const *)src;
 		for (int16_t *d = (int16_t *)dst; bytes > 0; bytes--, s++, d++)
->>>>>>> upstream/master
 			*d = (*s * m_scale) >> 7;
 	}
 
@@ -138,11 +110,7 @@ private:
 		return AUGraphNodeInfo(
 				m_graph,
 				m_node_details[m_node_count].m_node,
-<<<<<<< HEAD
-				NULL,
-=======
 				nullptr,
->>>>>>> upstream/master
 				&m_node_details[m_node_count].m_unit);
 	}
 
@@ -178,19 +146,11 @@ private:
 		CFIndex const len = CFStringGetMaximumSizeForEncoding(
 				CFStringGetLength(str),
 				kCFStringEncodingUTF8);
-<<<<<<< HEAD
-		char *const result = global_alloc_array_clear(char, len + 1);
-		if (!CFStringGetCString(str, result, len + 1, kCFStringEncodingUTF8))
-		{
-			global_free_array(result);
-			return NULL;
-=======
 		char *const result = global_alloc_array_clear<char>(len + 1);
 		if (!CFStringGetCString(str, result, len + 1, kCFStringEncodingUTF8))
 		{
 			global_free_array(result);
 			return nullptr;
->>>>>>> upstream/master
 		}
 		return result;
 	}
@@ -214,16 +174,6 @@ private:
 	unsigned    m_node_count;
 	node_detail m_node_details[EFFECT_COUNT_MAX + 2];
 
-<<<<<<< HEAD
-	UINT32      m_sample_bytes;
-	UINT32      m_headroom;
-	UINT32      m_buffer_size;
-	INT8        *m_buffer;
-	UINT32      m_playpos;
-	UINT32      m_writepos;
-	bool        m_in_underrun;
-	INT32       m_scale;
-=======
 	uint32_t      m_sample_bytes;
 	uint32_t      m_headroom;
 	uint32_t      m_buffer_size;
@@ -232,7 +182,6 @@ private:
 	uint32_t      m_writepos;
 	bool        m_in_underrun;
 	int32_t       m_scale;
->>>>>>> upstream/master
 	unsigned    m_overflows;
 	unsigned    m_underflows;
 };
@@ -279,13 +228,8 @@ int sound_coreaudio::init(const osd_options &options)
 
 	// Allocate buffer
 	m_headroom = m_sample_bytes * (clamped_latency() * sample_rate() / 40);
-<<<<<<< HEAD
-	m_buffer_size = m_sample_bytes * MAX(sample_rate() * (clamped_latency() + 3) / 40, 256);
-	m_buffer = global_alloc_array_clear(INT8, m_buffer_size);
-=======
 	m_buffer_size = m_sample_bytes * std::max<uint32_t>(sample_rate() * (clamped_latency() + 3) / 40, 256U);
 	m_buffer = global_alloc_array_clear<int8_t>(m_buffer_size);
->>>>>>> upstream/master
 	if (!m_buffer)
 	{
 		osd_printf_error("Could not allocate stream buffer\n");
@@ -317,19 +261,11 @@ int sound_coreaudio::init(const osd_options &options)
 free_buffer_and_return_error:
 	global_free_array(m_buffer);
 	m_buffer_size = 0;
-<<<<<<< HEAD
-	m_buffer = NULL;
-close_graph_and_return_error:
-	AUGraphClose(m_graph);
-	DisposeAUGraph(m_graph);
-	m_graph = NULL;
-=======
 	m_buffer = nullptr;
 close_graph_and_return_error:
 	AUGraphClose(m_graph);
 	DisposeAUGraph(m_graph);
 	m_graph = nullptr;
->>>>>>> upstream/master
 	m_node_count = 0;
 	return -1;
 }
@@ -344,21 +280,13 @@ void sound_coreaudio::exit()
 		AUGraphStop(m_graph);
 		AUGraphUninitialize(m_graph);
 		DisposeAUGraph(m_graph);
-<<<<<<< HEAD
-		m_graph = NULL;
-=======
 		m_graph = nullptr;
->>>>>>> upstream/master
 		m_node_count = 0;
 	}
 	if (m_buffer)
 	{
 		global_free_array(m_buffer);
-<<<<<<< HEAD
-		m_buffer = NULL;
-=======
 		m_buffer = nullptr;
->>>>>>> upstream/master
 	}
 	if (m_overflows || m_underflows)
 		osd_printf_verbose("Sound buffer: overflows=%u underflows=%u\n", m_overflows, m_underflows);
@@ -366,33 +294,20 @@ void sound_coreaudio::exit()
 }
 
 
-<<<<<<< HEAD
-void sound_coreaudio::update_audio_stream(bool is_throttled, INT16 const *buffer, int samples_this_frame)
-=======
 void sound_coreaudio::update_audio_stream(bool is_throttled, int16_t const *buffer, int samples_this_frame)
->>>>>>> upstream/master
 {
 	if ((sample_rate() == 0) || !m_buffer)
 		return;
 
-<<<<<<< HEAD
-	UINT32 const bytes_this_frame = samples_this_frame * m_sample_bytes;
-=======
 	uint32_t const bytes_this_frame = samples_this_frame * m_sample_bytes;
->>>>>>> upstream/master
 	if (bytes_this_frame >= buffer_avail())
 	{
 		m_overflows++;
 		return;
 	}
 
-<<<<<<< HEAD
-	UINT32 const chunk = MIN(m_buffer_size - m_writepos, bytes_this_frame);
-	memcpy(m_buffer + m_writepos, (INT8 *)buffer, chunk);
-=======
 	uint32_t const chunk = std::min(m_buffer_size - m_writepos, bytes_this_frame);
 	memcpy(m_buffer + m_writepos, (int8_t *)buffer, chunk);
->>>>>>> upstream/master
 	m_writepos += chunk;
 	if (m_writepos >= m_buffer_size)
 		m_writepos = 0;
@@ -401,11 +316,7 @@ void sound_coreaudio::update_audio_stream(bool is_throttled, int16_t const *buff
 	{
 		assert(0U == m_writepos);
 		assert(m_playpos > (bytes_this_frame - chunk));
-<<<<<<< HEAD
-		memcpy(m_buffer, (INT8 *)buffer + chunk, bytes_this_frame - chunk);
-=======
 		memcpy(m_buffer, (int8_t *)buffer + chunk, bytes_this_frame - chunk);
->>>>>>> upstream/master
 		m_writepos += bytes_this_frame - chunk;
 	}
 }
@@ -413,13 +324,8 @@ void sound_coreaudio::update_audio_stream(bool is_throttled, int16_t const *buff
 
 void sound_coreaudio::set_mastervolume(int attenuation)
 {
-<<<<<<< HEAD
-	int const clamped_attenuation = MAX(MIN(attenuation, 0), -32);
-	m_scale = (-32 == clamped_attenuation) ? 0 : (INT32)(pow(10.0, clamped_attenuation / 20.0) * 128);
-=======
 	int const clamped_attenuation = std::max(std::min(attenuation, 0), -32);
 	m_scale = (-32 == clamped_attenuation) ? 0 : (int32_t)(pow(10.0, clamped_attenuation / 20.0) * 128);
->>>>>>> upstream/master
 }
 
 
@@ -467,11 +373,7 @@ bool sound_coreaudio::create_graph(osd_options const &options)
 		goto close_graph_and_return_error;
 	}
 
-<<<<<<< HEAD
-	err = AUGraphUpdate(m_graph, NULL);
-=======
 	err = AUGraphUpdate(m_graph, nullptr);
->>>>>>> upstream/master
 	if (noErr != err)
 	{
 		osd_printf_error(
@@ -487,11 +389,7 @@ close_graph_and_return_error:
 dispose_graph_and_return_error:
 	DisposeAUGraph(m_graph);
 return_error:
-<<<<<<< HEAD
-	m_graph = NULL;
-=======
 	m_graph = nullptr;
->>>>>>> upstream/master
 	m_node_count = 0;
 	return false;
 }
@@ -639,11 +537,7 @@ bool sound_coreaudio::add_effect(char const *name)
 		return true;
 
 	CFPropertyListRef const properties = load_property_list(name);
-<<<<<<< HEAD
-	if (NULL == properties)
-=======
 	if (nullptr == properties)
->>>>>>> upstream/master
 		return true;
 
 	OSType type, subtype, manufacturer;
@@ -695,11 +589,7 @@ bool sound_coreaudio::add_effect(char const *name)
 				kAUParameterListener_AnyParameter,
 				0,
 				0 };
-<<<<<<< HEAD
-		err = AUParameterListenerNotify(NULL, NULL, &change);
-=======
 		err = AUParameterListenerNotify(nullptr, nullptr, &change);
->>>>>>> upstream/master
 	}
 	if (noErr != err)
 	{
@@ -750,11 +640,7 @@ bool sound_coreaudio::get_output_device_id(
 			kAudioObjectSystemObject,
 			&devices_addr,
 			0,
-<<<<<<< HEAD
-			NULL,
-=======
 			nullptr,
->>>>>>> upstream/master
 			&property_size);
 	if (noErr != err)
 	{
@@ -762,21 +648,13 @@ bool sound_coreaudio::get_output_device_id(
 		return false;
 	}
 	property_size /= sizeof(AudioDeviceID);
-<<<<<<< HEAD
-	AudioDeviceID *const devices = global_alloc_array_clear(AudioDeviceID, property_size);
-=======
 	AudioDeviceID *const devices = global_alloc_array_clear<AudioDeviceID>(property_size);
->>>>>>> upstream/master
 	property_size *= sizeof(AudioDeviceID);
 	err = AudioObjectGetPropertyData(
 			kAudioObjectSystemObject,
 			&devices_addr,
 			0,
-<<<<<<< HEAD
-			NULL,
-=======
 			nullptr,
->>>>>>> upstream/master
 			&property_size,
 			devices);
 	UInt32 const device_count = property_size / sizeof(AudioDeviceID);
@@ -791,11 +669,7 @@ bool sound_coreaudio::get_output_device_id(
 	{
 		char *const device_uid = get_device_uid(devices[i]);
 		char *const device_name = get_device_name(devices[i]);
-<<<<<<< HEAD
-		if ((NULL == device_uid) && (NULL == device_name))
-=======
 		if ((nullptr == device_uid) && (nullptr == device_name))
->>>>>>> upstream/master
 		{
 			osd_printf_warning(
 					"Could not get UID or name for device %lu - skipping\n",
@@ -811,17 +685,10 @@ bool sound_coreaudio::get_output_device_id(
 		{
 			osd_printf_verbose(
 					"No output streams found for device %s (%s) - skipping\n",
-<<<<<<< HEAD
-					(NULL != device_name) ? device_name : "<anonymous>",
-					(NULL != device_uid) ? device_uid : "<unknown>");
-			if (NULL != device_uid) global_free_array(device_uid);
-			if (NULL != device_name) global_free_array(device_name);
-=======
 					(nullptr != device_name) ? device_name : "<anonymous>",
 					(nullptr != device_uid) ? device_uid : "<unknown>");
 			if (nullptr != device_uid) global_free_array(device_uid);
 			if (nullptr != device_name) global_free_array(device_name);
->>>>>>> upstream/master
 			continue;
 		}
 
@@ -830,24 +697,14 @@ bool sound_coreaudio::get_output_device_id(
 		for (std::size_t j = strlen(device_name); (0 < j) && (' ' == device_name[j - 1]); j--)
 			device_name[j - 1] = '\0';
 
-<<<<<<< HEAD
-		bool const matched_uid = (NULL != device_uid) && !strcmp(name, device_uid);
-		bool const matched_name = (NULL != device_name) && !strcmp(name, device_name);
-=======
 		bool const matched_uid = (nullptr != device_uid) && !strcmp(name, device_uid);
 		bool const matched_name = (nullptr != device_name) && !strcmp(name, device_name);
->>>>>>> upstream/master
 		if (matched_uid || matched_name)
 		{
 			osd_printf_verbose(
 					"Matched device %s (%s) with %lu output stream(s)\n",
-<<<<<<< HEAD
-					(NULL != device_name) ? device_name : "<anonymous>",
-					(NULL != device_uid) ? device_uid : "<unknown>",
-=======
 					(nullptr != device_name) ? device_name : "<anonymous>",
 					(nullptr != device_uid) ? device_uid : "<unknown>",
->>>>>>> upstream/master
 					(unsigned long)streams);
 		}
 		global_free_array(device_uid);
@@ -873,45 +730,26 @@ char *sound_coreaudio::get_device_uid(AudioDeviceID id) const
 			kAudioDevicePropertyDeviceUID,
 			kAudioObjectPropertyScopeGlobal,
 			kAudioObjectPropertyElementMaster };
-<<<<<<< HEAD
-	CFStringRef device_uid = NULL;
-=======
 	CFStringRef device_uid = nullptr;
->>>>>>> upstream/master
 	UInt32 property_size = sizeof(device_uid);
 	OSStatus const err = AudioObjectGetPropertyData(
 			id,
 			&uid_addr,
 			0,
-<<<<<<< HEAD
-			NULL,
-			&property_size,
-			&device_uid);
-	if ((noErr != err) || (NULL == device_uid))
-=======
 			nullptr,
 			&property_size,
 			&device_uid);
 	if ((noErr != err) || (nullptr == device_uid))
->>>>>>> upstream/master
 	{
 		osd_printf_warning(
 				"Error getting UID for audio device %lu (%ld)\n",
 				(unsigned long)id,
 				(long)err);
-<<<<<<< HEAD
-		return NULL;
-	}
-	char *const result = convert_cfstring_to_utf8(device_uid);
-	CFRelease(device_uid);
-	if (NULL == result)
-=======
 		return nullptr;
 	}
 	char *const result = convert_cfstring_to_utf8(device_uid);
 	CFRelease(device_uid);
 	if (nullptr == result)
->>>>>>> upstream/master
 	{
 		osd_printf_warning(
 				"Error converting UID for audio device %lu to UTF-8\n",
@@ -927,45 +765,26 @@ char *sound_coreaudio::get_device_name(AudioDeviceID id) const
 			kAudioDevicePropertyDeviceNameCFString,
 			kAudioObjectPropertyScopeGlobal,
 			kAudioObjectPropertyElementMaster };
-<<<<<<< HEAD
-	CFStringRef device_name = NULL;
-=======
 	CFStringRef device_name = nullptr;
->>>>>>> upstream/master
 	UInt32 property_size = sizeof(device_name);
 	OSStatus const err = AudioObjectGetPropertyData(
 			id,
 			&name_addr,
 			0,
-<<<<<<< HEAD
-			NULL,
-			&property_size,
-			&device_name);
-	if ((noErr != err) || (NULL == device_name))
-=======
 			nullptr,
 			&property_size,
 			&device_name);
 	if ((noErr != err) || (nullptr == device_name))
->>>>>>> upstream/master
 	{
 		osd_printf_warning(
 				"Error getting name for audio device %lu (%ld)\n",
 				(unsigned long)id,
 				(long)err);
-<<<<<<< HEAD
-		return NULL;
-	}
-	char *const result = convert_cfstring_to_utf8(device_name);
-	CFRelease(device_name);
-	if (NULL == result)
-=======
 		return nullptr;
 	}
 	char *const result = convert_cfstring_to_utf8(device_name);
 	CFRelease(device_name);
 	if (nullptr == result)
->>>>>>> upstream/master
 	{
 		osd_printf_warning(
 				"Error converting name for audio device %lu to UTF-8\n",
@@ -989,23 +808,14 @@ UInt32 sound_coreaudio::get_output_stream_count(
 			id,
 			&streams_addr,
 			0,
-<<<<<<< HEAD
-			NULL,
-=======
 			nullptr,
->>>>>>> upstream/master
 			&property_size);
 	if (noErr != err)
 	{
 		osd_printf_warning(
 				"Error getting output stream count for audio device %s (%s) (%ld)\n",
-<<<<<<< HEAD
-				(NULL != name) ? name : "<anonymous>",
-				(NULL != uid) ? uid : "<unknown>",
-=======
 				(nullptr != name) ? name : "<anonymous>",
 				(nullptr != uid) ? uid : "<unknown>",
->>>>>>> upstream/master
 				(long)err);
 		return 0;
 	}
@@ -1030,15 +840,9 @@ bool sound_coreaudio::extract_effect_info(
 	}
 
 	CFDictionaryRef const desc = (CFDictionaryRef)properties;
-<<<<<<< HEAD
-	CFTypeRef type_val = NULL;
-	CFTypeRef subtype_val = NULL;
-	CFTypeRef manufacturer_val = NULL;
-=======
 	CFTypeRef type_val = nullptr;
 	CFTypeRef subtype_val = nullptr;
 	CFTypeRef manufacturer_val = nullptr;
->>>>>>> upstream/master
 	if (CFDictionaryContainsKey(desc, CFSTR("ComponentType"))
 		&& CFDictionaryContainsKey(desc, CFSTR("ComponentSubType"))
 		&& CFDictionaryContainsKey(desc, CFSTR("ComponentManufacturer"))
@@ -1067,17 +871,10 @@ bool sound_coreaudio::extract_effect_info(
 	}
 
 	SInt64 type_int, subtype_int, manufacturer_int;
-<<<<<<< HEAD
-	if ((NULL == type_val)
-		|| (NULL == subtype_val)
-		|| (NULL == manufacturer_val)
-		|| (NULL == class_info)
-=======
 	if ((nullptr == type_val)
 		|| (nullptr == subtype_val)
 		|| (nullptr == manufacturer_val)
 		|| (nullptr == class_info)
->>>>>>> upstream/master
 		|| (CFNumberGetTypeID() != CFGetTypeID(type_val))
 		|| (CFNumberGetTypeID() != CFGetTypeID(subtype_val))
 		|| (CFNumberGetTypeID() != CFGetTypeID(manufacturer_val))
@@ -1112,25 +909,6 @@ bool sound_coreaudio::extract_effect_info(
 CFPropertyListRef sound_coreaudio::load_property_list(char const *name) const
 {
 	CFURLRef const url = CFURLCreateFromFileSystemRepresentation(
-<<<<<<< HEAD
-			NULL,
-			(UInt8 const *)name,
-			strlen(name),
-			false);
-	if (NULL == url)
-	{
-		return NULL;
-	}
-
-	CFDataRef data = NULL;
-	SInt32 err;
-	Boolean const status = CFURLCreateDataAndPropertiesFromResource(
-			NULL,
-			url,
-			&data,
-			NULL,
-			NULL,
-=======
 			nullptr,
 			(UInt8 const *)name,
 			strlen(name),
@@ -1148,7 +926,6 @@ CFPropertyListRef sound_coreaudio::load_property_list(char const *name) const
 			&data,
 			nullptr,
 			nullptr,
->>>>>>> upstream/master
 			&err);
 	CFRelease(url);
 	if (!status)
@@ -1157,15 +934,6 @@ CFPropertyListRef sound_coreaudio::load_property_list(char const *name) const
 				"Error reading data from %s (%ld)\n",
 				name,
 				(long)err);
-<<<<<<< HEAD
-		if (NULL != data) CFRelease(data);
-		return NULL;
-	}
-
-	CFStringRef msg = NULL;
-	CFPropertyListRef const result = CFPropertyListCreateFromXMLData(
-			NULL,
-=======
 		if (nullptr != data) CFRelease(data);
 		return nullptr;
 	}
@@ -1173,20 +941,10 @@ CFPropertyListRef sound_coreaudio::load_property_list(char const *name) const
 	CFStringRef msg = nullptr;
 	CFPropertyListRef const result = CFPropertyListCreateFromXMLData(
 			nullptr,
->>>>>>> upstream/master
 			data,
 			kCFPropertyListImmutable,
 			&msg);
 	CFRelease(data);
-<<<<<<< HEAD
-	if ((NULL == result) || (NULL != msg))
-	{
-		char *buf = (NULL != msg) ? convert_cfstring_to_utf8(msg) : NULL;
-		if (NULL != msg)
-			CFRelease(msg);
-
-		if (NULL != buf)
-=======
 	if ((nullptr == result) || (nullptr != msg))
 	{
 		char *buf = (nullptr != msg) ? convert_cfstring_to_utf8(msg) : nullptr;
@@ -1194,7 +952,6 @@ CFPropertyListRef sound_coreaudio::load_property_list(char const *name) const
 			CFRelease(msg);
 
 		if (nullptr != buf)
->>>>>>> upstream/master
 		{
 			osd_printf_error(
 					"Error creating property list from %s: %s\n",
@@ -1208,13 +965,8 @@ CFPropertyListRef sound_coreaudio::load_property_list(char const *name) const
 					"Error creating property list from %s\n",
 					name);
 		}
-<<<<<<< HEAD
-		if (NULL != result) CFRelease(result);
-		return NULL;
-=======
 		if (nullptr != result) CFRelease(result);
 		return nullptr;
->>>>>>> upstream/master
 	}
 
 	return result;
@@ -1228,13 +980,8 @@ OSStatus sound_coreaudio::render(
 		UInt32                      number_frames,
 		AudioBufferList             *data)
 {
-<<<<<<< HEAD
-	UINT32 const number_bytes = number_frames * m_sample_bytes;
-	UINT32 const used = buffer_used();
-=======
 	uint32_t const number_bytes = number_frames * m_sample_bytes;
 	uint32_t const used = buffer_used();
->>>>>>> upstream/master
 	if (m_in_underrun && (used < m_headroom))
 	{
 		memset(data->mBuffers[0].mData, 0, number_bytes);
@@ -1249,13 +996,8 @@ OSStatus sound_coreaudio::render(
 		return noErr;
 	}
 
-<<<<<<< HEAD
-	UINT32 const chunk = MIN(m_buffer_size - m_playpos, number_bytes);
-	copy_scaled((INT8 *)data->mBuffers[0].mData, m_buffer + m_playpos, chunk);
-=======
 	uint32_t const chunk = std::min(m_buffer_size - m_playpos, number_bytes);
 	copy_scaled((int8_t *)data->mBuffers[0].mData, m_buffer + m_playpos, chunk);
->>>>>>> upstream/master
 	m_playpos += chunk;
 	if (m_playpos >= m_buffer_size)
 		m_playpos = 0;
@@ -1264,11 +1006,7 @@ OSStatus sound_coreaudio::render(
 	{
 		assert(0U == m_playpos);
 		assert(m_writepos >= (number_bytes - chunk));
-<<<<<<< HEAD
-		copy_scaled((INT8 *)data->mBuffers[0].mData + chunk, m_buffer, number_bytes - chunk);
-=======
 		copy_scaled((int8_t *)data->mBuffers[0].mData + chunk, m_buffer, number_bytes - chunk);
->>>>>>> upstream/master
 		m_playpos += number_bytes - chunk;
 	}
 

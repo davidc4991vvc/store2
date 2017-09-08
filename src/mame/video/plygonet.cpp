@@ -10,14 +10,9 @@
 */
 
 #include "emu.h"
-<<<<<<< HEAD
-
-#include "includes/plygonet.h"
-=======
 #include "includes/plygonet.h"
 #include "screen.h"
 
->>>>>>> upstream/master
 
 /* TTL text plane */
 
@@ -44,22 +39,14 @@ TILE_GET_INFO_MEMBER(polygonet_state::roz_get_tile_info)
 
 READ32_MEMBER(polygonet_state::polygonet_ttl_ram_r)
 {
-<<<<<<< HEAD
-	UINT32 *vram = (UINT32 *)m_ttl_vram;
-=======
 	uint32_t *vram = (uint32_t *)m_ttl_vram;
->>>>>>> upstream/master
 
 	return vram[offset];
 }
 
 WRITE32_MEMBER(polygonet_state::polygonet_ttl_ram_w)
 {
-<<<<<<< HEAD
-	UINT32 *vram = (UINT32 *)m_ttl_vram;
-=======
 	uint32_t *vram = (uint32_t *)m_ttl_vram;
->>>>>>> upstream/master
 
 	COMBINE_DATA(&vram[offset]);
 
@@ -69,22 +56,14 @@ WRITE32_MEMBER(polygonet_state::polygonet_ttl_ram_w)
 
 READ32_MEMBER(polygonet_state::polygonet_roz_ram_r)
 {
-<<<<<<< HEAD
-	UINT32 *vram = (UINT32 *)m_roz_vram;
-=======
 	uint32_t *vram = (uint32_t *)m_roz_vram;
->>>>>>> upstream/master
 
 	return vram[offset];
 }
 
 WRITE32_MEMBER(polygonet_state::polygonet_roz_ram_w)
 {
-<<<<<<< HEAD
-	UINT32 *vram = (UINT32 *)m_roz_vram;
-=======
 	uint32_t *vram = (uint32_t *)m_roz_vram;
->>>>>>> upstream/master
 
 	COMBINE_DATA(&vram[offset]);
 
@@ -117,36 +96,21 @@ void polygonet_state::video_start()
 
 	/* find first empty slot to decode gfx */
 	for (m_ttl_gfx_index = 0; m_ttl_gfx_index < MAX_GFX_ELEMENTS; m_ttl_gfx_index++)
-<<<<<<< HEAD
-		if (m_gfxdecode->gfx(m_ttl_gfx_index) == 0)
-=======
 		if (m_gfxdecode->gfx(m_ttl_gfx_index) == nullptr)
->>>>>>> upstream/master
 			break;
 
 	assert(m_ttl_gfx_index != MAX_GFX_ELEMENTS);
 
 	/* decode the ttl layer's gfx */
-<<<<<<< HEAD
-	m_gfxdecode->set_gfx(m_ttl_gfx_index, global_alloc(gfx_element(m_palette, charlayout, memregion("gfx1")->base(), 0, m_palette->entries() / 16, 0)));
-
-	/* create the tilemap */
-	m_ttl_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(polygonet_state::ttl_get_tile_info),this), tilemap_mapper_delegate(FUNC(polygonet_state::plygonet_scan),this),  8, 8, 64, 32);
-=======
 	m_gfxdecode->set_gfx(m_ttl_gfx_index, std::make_unique<gfx_element>(m_palette, charlayout, memregion("gfx1")->base(), 0, m_palette->entries() / 16, 0));
 
 	/* create the tilemap */
 	m_ttl_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(polygonet_state::ttl_get_tile_info),this), tilemap_mapper_delegate(FUNC(polygonet_state::plygonet_scan),this),  8, 8, 64, 32);
->>>>>>> upstream/master
 
 	m_ttl_tilemap->set_transparent_pen(0);
 
 	/* set up the roz t-map too */
-<<<<<<< HEAD
-	m_roz_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(polygonet_state::roz_get_tile_info),this), tilemap_mapper_delegate(FUNC(polygonet_state::plygonet_scan_cols),this), 16, 16, 32, 64);
-=======
 	m_roz_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(polygonet_state::roz_get_tile_info),this), tilemap_mapper_delegate(FUNC(polygonet_state::plygonet_scan_cols),this), 16, 16, 32, 64);
->>>>>>> upstream/master
 	m_roz_tilemap->set_transparent_pen(0);
 
 	/* save states */
@@ -155,11 +119,7 @@ void polygonet_state::video_start()
 	save_item(NAME(m_roz_vram));
 }
 
-<<<<<<< HEAD
-UINT32 polygonet_state::screen_update_polygonet(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t polygonet_state::screen_update_polygonet(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	screen.priority().fill(0);
 	bitmap.fill(m_palette->black_pen(), cliprect);

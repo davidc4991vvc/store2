@@ -1,20 +1,10 @@
-<<<<<<< HEAD
-// license:???
-// copyright-holders:John Butler, Ed Mueller, Aaron Giles
-=======
 // license:BSD-3-Clause
 // copyright-holders:Aaron Giles, Zsolt Vasvari
 // thanks-to: John Butler, Ed Mueller
->>>>>>> upstream/master
 /***************************************************************************
 
     Taito Qix hardware
 
-<<<<<<< HEAD
-    driver by John Butler, Ed Mueller, Aaron Giles
-
-=======
->>>>>>> upstream/master
 ***************************************************************************/
 
 #include "emu.h"
@@ -58,13 +48,8 @@ WRITE_LINE_MEMBER(qix_state::display_enable_changed)
 	/* on the rising edge, latch the scanline */
 	if (state)
 	{
-<<<<<<< HEAD
-		UINT16 ma = m_crtc->get_ma();
-		UINT8 ra = m_crtc->get_ra();
-=======
 		uint16_t ma = m_crtc->get_ma();
 		uint8_t ra = m_crtc->get_ra();
->>>>>>> upstream/master
 
 		/* RA0-RA2 goes to D0-D2 and MA5-MA9 goes to D3-D7 */
 		*m_scanline_latch = ((ma >> 2) & 0xf8) | (ra & 0x07);
@@ -201,11 +186,7 @@ WRITE8_MEMBER(qix_state::slither_addresslatch_w)
 
 WRITE8_MEMBER(qix_state::qix_paletteram_w)
 {
-<<<<<<< HEAD
-	UINT8 old_data = m_paletteram[offset];
-=======
 	uint8_t old_data = m_paletteram[offset];
->>>>>>> upstream/master
 
 	/* set the palette RAM value */
 	m_paletteram[offset] = data;
@@ -242,11 +223,7 @@ void qix_state::set_pen(int offs)
 	/* this conversion table should be about right. It gives a reasonable */
 	/* gray scale in the test screen, and the red, green and blue squares */
 	/* in the same screen are barely visible, as the manual requires. */
-<<<<<<< HEAD
-	static const UINT8 table[16] =
-=======
 	static const uint8_t table[16] =
->>>>>>> upstream/master
 	{
 		0x00,   /* value = 0, intensity = 0 */
 		0x12,   /* value = 0, intensity = 1 */
@@ -268,11 +245,7 @@ void qix_state::set_pen(int offs)
 
 	int bits, intensity, r, g, b;
 
-<<<<<<< HEAD
-	UINT8 data = m_paletteram[offs];
-=======
 	uint8_t data = m_paletteram[offs];
->>>>>>> upstream/master
 
 	/* compute R, G, B from the table */
 	intensity = (data >> 0) & 0x03;
@@ -307,22 +280,14 @@ MC6845_BEGIN_UPDATE( qix_state::crtc_begin_update )
 
 MC6845_UPDATE_ROW( qix_state::crtc_update_row )
 {
-<<<<<<< HEAD
-	UINT32 *dest = &bitmap.pix32(y);
-=======
 	uint32_t *dest = &bitmap.pix32(y);
->>>>>>> upstream/master
 	pen_t *pens = &m_pens[m_palette_bank << 8];
 
 	/* the memory is hooked up to the MA, RA lines this way */
 	offs_t offs = ((ma << 6) & 0xf800) | ((ra << 8) & 0x0700);
 	offs_t offs_xor = m_flip ? 0xffff : 0;
 
-<<<<<<< HEAD
-	for (UINT16 x = 0; x < x_count * 8; x++)
-=======
 	for (uint16_t x = 0; x < x_count * 8; x++)
->>>>>>> upstream/master
 		dest[x] = pens[m_videoram[(offs + x) ^ offs_xor]];
 }
 
@@ -411,11 +376,7 @@ ADDRESS_MAP_END
  *
  *************************************/
 
-<<<<<<< HEAD
-MACHINE_CONFIG_FRAGMENT( qix_video )
-=======
 MACHINE_CONFIG_START( qix_video )
->>>>>>> upstream/master
 	MCFG_CPU_ADD("videocpu", M6809, MAIN_CLOCK_OSC/4/4) /* 1.25 MHz */
 	MCFG_CPU_PROGRAM_MAP(qix_video_map)
 
@@ -435,32 +396,20 @@ MACHINE_CONFIG_START( qix_video )
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-MACHINE_CONFIG_FRAGMENT( kram3_video )
-=======
 MACHINE_CONFIG_START( kram3_video )
->>>>>>> upstream/master
 	MCFG_CPU_REPLACE("videocpu", M6809E, MAIN_CLOCK_OSC/4) /* 1.25 MHz */
 	MCFG_CPU_PROGRAM_MAP(kram3_video_map)
 	MCFG_M6809E_LIC_CB(WRITELINE(qix_state,kram3_lic_videocpu_changed))
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-MACHINE_CONFIG_FRAGMENT( zookeep_video )
-=======
 MACHINE_CONFIG_START( zookeep_video )
->>>>>>> upstream/master
 	MCFG_CPU_MODIFY("videocpu")
 	MCFG_CPU_PROGRAM_MAP(zookeep_video_map)
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-MACHINE_CONFIG_FRAGMENT( slither_video )
-=======
 MACHINE_CONFIG_START( slither_video )
->>>>>>> upstream/master
 	MCFG_CPU_MODIFY("videocpu")
 	MCFG_CPU_CLOCK(SLITHER_CLOCK_OSC/4/4)   /* 1.34 MHz */
 	MCFG_CPU_PROGRAM_MAP(slither_video_map)

@@ -1,11 +1,6 @@
 /*
-<<<<<<< HEAD
- * Copyright 2011-2015 Branimir Karadzic. All rights reserved.
- * License: http://www.opensource.org/licenses/BSD-2-Clause
-=======
  * Copyright 2011-2017 Branimir Karadzic. All rights reserved.
  * License: https://github.com/bkaradzic/bgfx#license-bsd-2-clause
->>>>>>> upstream/master
  */
 
 #ifndef BGFX_RENDERER_D3D_H_HEADER_GUARD
@@ -26,15 +21,12 @@
 
 namespace bgfx
 {
-<<<<<<< HEAD
-=======
 #if BX_PLATFORM_XBOXONE
 	typedef ::IGraphicsUnknown IUnknown;
 #else
 	typedef ::IUnknown IUnknown;
 #endif // BX_PLATFORM_XBOXONE
 
->>>>>>> upstream/master
 #define _DX_CHECK(_call) \
 			BX_MACRO_BLOCK_BEGIN \
 				HRESULT __hr__ = _call; \
@@ -104,8 +96,6 @@ namespace bgfx
 #	define PIX_ENDEVENT()
 #endif // BGFX_CONFIG_DEBUG_PIX
 
-<<<<<<< HEAD
-=======
 #define D3DCOLOR_FRAME   D3DCOLOR_RGBA(0xff, 0xd7, 0xc9, 0xff)
 #define D3DCOLOR_VIEW    D3DCOLOR_RGBA(0xe4, 0xb4, 0x8e, 0xff)
 #define D3DCOLOR_VIEW_L  D3DCOLOR_RGBA(0xf9, 0xee, 0xe5, 0xff)
@@ -114,18 +104,13 @@ namespace bgfx
 #define D3DCOLOR_COMPUTE D3DCOLOR_RGBA(0xa7, 0xdb, 0xd8, 0xff)
 #define D3DCOLOR_MARKER  D3DCOLOR_RGBA(0xff, 0x00, 0x00, 0xff)
 
->>>>>>> upstream/master
 	inline int getRefCount(IUnknown* _interface)
 	{
 		_interface->AddRef();
 		return _interface->Release();
 	}
 
-<<<<<<< HEAD
-	template <typename Ty>
-=======
 	template<typename Ty>
->>>>>>> upstream/master
 	class StateCacheT
 	{
 	public:
@@ -133,14 +118,11 @@ namespace bgfx
 		{
 			invalidate(_key);
 			m_hashMap.insert(stl::make_pair(_key, _value) );
-<<<<<<< HEAD
-=======
 			BX_CHECK(isGraphicsDebuggerPresent()
 				|| 1 == getRefCount(_value), "Interface ref count %d, hash %" PRIx64 "."
 				, getRefCount(_value)
 				, _key
 				);
->>>>>>> upstream/master
 		}
 
 		Ty* find(uint64_t _key)
@@ -185,178 +167,12 @@ namespace bgfx
 		HashMap m_hashMap;
 	};
 
-<<<<<<< HEAD
-	class StateCache
-	{
-	public:
-		void add(uint64_t _key, uint16_t _value)
-		{
-			invalidate(_key);
-			m_hashMap.insert(stl::make_pair(_key, _value) );
-		}
-
-		uint16_t find(uint64_t _key)
-		{
-			HashMap::iterator it = m_hashMap.find(_key);
-			if (it != m_hashMap.end() )
-			{
-				return it->second;
-			}
-
-			return UINT16_MAX;
-		}
-
-		void invalidate(uint64_t _key)
-		{
-			HashMap::iterator it = m_hashMap.find(_key);
-			if (it != m_hashMap.end() )
-			{
-				m_hashMap.erase(it);
-			}
-		}
-
-		void invalidate()
-		{
-			m_hashMap.clear();
-		}
-
-		uint32_t getCount() const
-		{
-			return uint32_t(m_hashMap.size() );
-		}
-
-	private:
-		typedef stl::unordered_map<uint64_t, uint16_t> HashMap;
-		HashMap m_hashMap;
-	};
-
-	template<typename Ty>
-	inline void release(Ty)
-	{
-	}
-
-=======
->>>>>>> upstream/master
 	template<>
 	inline void release<IUnknown*>(IUnknown* _ptr)
 	{
 		DX_RELEASE(_ptr, 0);
 	}
 
-<<<<<<< HEAD
-	template <typename Ty, uint16_t MaxHandleT>
-	class StateCacheLru
-	{
-	public:
-		void add(uint64_t _key, Ty _value, uint16_t _parent)
-		{
-			uint16_t handle = m_alloc.alloc();
-			if (UINT16_MAX == handle)
-			{
-				uint16_t back = m_alloc.getBack();
-				invalidate(back);
-				handle = m_alloc.alloc();
-			}
-
-			BX_CHECK(UINT16_MAX != handle, "Failed to find handle.");
-
-			Data& data = m_data[handle];
-			data.m_hash   = _key;
-			data.m_value  = _value;
-			data.m_parent = _parent;
-			m_hashMap.insert(stl::make_pair(_key, handle) );
-		}
-
-		Ty* find(uint64_t _key)
-		{
-			HashMap::iterator it = m_hashMap.find(_key);
-			if (it != m_hashMap.end() )
-			{
-				uint16_t handle = it->second;
-				m_alloc.touch(handle);
-				return &m_data[handle].m_value;
-			}
-
-			return NULL;
-		}
-
-		void invalidate(uint64_t _key)
-		{
-			HashMap::iterator it = m_hashMap.find(_key);
-			if (it != m_hashMap.end() )
-			{
-				uint16_t handle = it->second;
-				m_alloc.free(handle);
-				m_hashMap.erase(it);
-				release(m_data[handle].m_value);
-			}
-		}
-
-		void invalidate(uint16_t _handle)
-		{
-			if (m_alloc.isValid(_handle) )
-			{
-				m_alloc.free(_handle);
-				Data& data = m_data[_handle];
-				m_hashMap.erase(m_hashMap.find(data.m_hash) );
-				release(data.m_value);
-			}
-		}
-
-		void invalidateWithParent(uint16_t _parent)
-		{
-			for (uint16_t ii = 0; ii < m_alloc.getNumHandles();)
-			{
-				uint16_t handle = m_alloc.getHandleAt(ii);
-				Data& data = m_data[handle];
-
-				if (data.m_parent == _parent)
-				{
-					m_alloc.free(handle);
-					m_hashMap.erase(m_hashMap.find(data.m_hash) );
-					release(data.m_value);
-				}
-				else
-				{
-					++ii;
-				}
-			}
-		}
-
-		void invalidate()
-		{
-			for (uint16_t ii = 0, num = m_alloc.getNumHandles(); ii < num; ++ii)
-			{
-				uint16_t handle = m_alloc.getHandleAt(ii);
-				Data& data = m_data[handle];
-				release(data.m_value);
-			}
-
-			m_hashMap.clear();
-			m_alloc.reset();
-		}
-
-		uint32_t getCount() const
-		{
-			return uint32_t(m_hashMap.size() );
-		}
-
-	private:
-		typedef stl::unordered_map<uint64_t, uint16_t> HashMap;
-		HashMap m_hashMap;
-		bx::HandleAllocLruT<MaxHandleT> m_alloc;
-		struct Data
-		{
-			uint64_t m_hash;
-			Ty m_value;
-			uint16_t m_parent;
-		};
-
-		Data m_data[MaxHandleT];
-	};
-
-=======
->>>>>>> upstream/master
 } // namespace bgfx
 
 #endif // BGFX_RENDERER_D3D_H_HEADER_GUARD

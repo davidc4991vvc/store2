@@ -8,16 +8,11 @@
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-#ifndef __TTL74145_H__
-#define __TTL74145_H__
-=======
 #ifndef MAME_MACHINE_74145_H
 #define MAME_MACHINE_74145_H
 
 #pragma once
 
->>>>>>> upstream/master
 
 //**************************************************************************
 //  INTERFACE CONFIGURATION MACROS
@@ -62,27 +57,6 @@ class ttl74145_device :  public device_t
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	ttl74145_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	template<class _Object> static devcb_base &set_output_line_0_callback(device_t &device, _Object object) { return downcast<ttl74145_device &>(device).m_output_line_0_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_output_line_1_callback(device_t &device, _Object object) { return downcast<ttl74145_device &>(device).m_output_line_1_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_output_line_2_callback(device_t &device, _Object object) { return downcast<ttl74145_device &>(device).m_output_line_2_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_output_line_3_callback(device_t &device, _Object object) { return downcast<ttl74145_device &>(device).m_output_line_3_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_output_line_4_callback(device_t &device, _Object object) { return downcast<ttl74145_device &>(device).m_output_line_4_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_output_line_5_callback(device_t &device, _Object object) { return downcast<ttl74145_device &>(device).m_output_line_5_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_output_line_6_callback(device_t &device, _Object object) { return downcast<ttl74145_device &>(device).m_output_line_6_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_output_line_7_callback(device_t &device, _Object object) { return downcast<ttl74145_device &>(device).m_output_line_7_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_output_line_8_callback(device_t &device, _Object object) { return downcast<ttl74145_device &>(device).m_output_line_8_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_output_line_9_callback(device_t &device, _Object object) { return downcast<ttl74145_device &>(device).m_output_line_9_cb.set_callback(object); }
-
-	UINT16 read();
-	void write(UINT8 data);
-protected:
-	// device-level overrides
-	virtual void device_start();
-	virtual void device_reset();
-=======
 	ttl74145_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	template <class Object> static devcb_base &set_output_line_0_callback(device_t &device, Object &&cb) { return downcast<ttl74145_device &>(device).m_output_line_0_cb.set_callback(std::forward<Object>(cb)); }
@@ -103,7 +77,6 @@ protected:
 	// device-level overrides
 	virtual void device_start() override;
 	virtual void device_reset() override;
->>>>>>> upstream/master
 
 private:
 	devcb_write_line m_output_line_0_cb;
@@ -118,15 +91,6 @@ private:
 	devcb_write_line m_output_line_9_cb;
 
 	/* decoded number */
-<<<<<<< HEAD
-	UINT16 m_number;
-};
-
-// device type definition
-extern const device_type TTL74145;
-
-#endif /* TTL74145 */
-=======
 	uint16_t m_number;
 };
 
@@ -134,4 +98,3 @@ extern const device_type TTL74145;
 DECLARE_DEVICE_TYPE(TTL74145, ttl74145_device)
 
 #endif // MAME_MACHINE_74145_H
->>>>>>> upstream/master

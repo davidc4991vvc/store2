@@ -5,11 +5,8 @@
 
 #include "../../../Common/MyCom.h"
 
-<<<<<<< HEAD
-=======
 #include "../../../Windows/PropVariant.h"
 
->>>>>>> upstream/master
 #include "../../IPassword.h"
 #include "../../IStream.h"
 
@@ -20,9 +17,6 @@
  
 namespace NArchive {
 namespace N7z {
-<<<<<<< HEAD
-  
-=======
 
 /*
   We don't need to init isEncrypted and passwordIsDefined
@@ -178,7 +172,6 @@ struct CDatabase: public CFolders
   HRESULT GetPath_Prop(unsigned index, PROPVARIANT *path) const throw();
 };
 
->>>>>>> upstream/master
 struct CInArchiveInfo
 {
   CArchiveVersion Version;
@@ -187,10 +180,6 @@ struct CInArchiveInfo
   UInt64 DataStartPosition;
   UInt64 DataStartPosition2;
   CRecordVector<UInt64> FileInfoPopIDs;
-<<<<<<< HEAD
-  void Clear()
-  {
-=======
   
   void Clear()
   {
@@ -198,41 +187,20 @@ struct CInArchiveInfo
     StartPositionAfterHeader = 0;
     DataStartPosition = 0;
     DataStartPosition2 = 0;
->>>>>>> upstream/master
     FileInfoPopIDs.Clear();
   }
 };
 
-<<<<<<< HEAD
-struct CArchiveDatabaseEx: public CArchiveDatabase
-{
-  CInArchiveInfo ArchiveInfo;
-  CRecordVector<UInt64> PackStreamStartPositions;
-  CRecordVector<CNum> FolderStartPackStreamIndex;
-  CRecordVector<CNum> FolderStartFileIndex;
-  CRecordVector<CNum> FileIndexToFolderIndexMap;
-=======
 struct CDbEx: public CDatabase
 {
   CInArchiveInfo ArcInfo;
   
   CObjArray<CNum> FolderStartFileIndex;
   CObjArray<CNum> FileIndexToFolderIndexMap;
->>>>>>> upstream/master
 
   UInt64 HeadersSize;
   UInt64 PhySize;
 
-<<<<<<< HEAD
-  void Clear()
-  {
-    CArchiveDatabase::Clear();
-    ArchiveInfo.Clear();
-    PackStreamStartPositions.Clear();
-    FolderStartPackStreamIndex.Clear();
-    FolderStartFileIndex.Clear();
-    FileIndexToFolderIndexMap.Clear();
-=======
   /*
   CRecordVector<size_t> SecureOffsets;
   bool IsTree;
@@ -282,44 +250,11 @@ struct CDbEx: public CDatabase
     ArcInfo.Clear();
     FolderStartFileIndex.Free();
     FileIndexToFolderIndexMap.Free();
->>>>>>> upstream/master
 
     HeadersSize = 0;
     PhySize = 0;
   }
 
-<<<<<<< HEAD
-  void FillFolderStartPackStream();
-  void FillStartPos();
-  void FillFolderStartFileIndex();
-
-  void Fill()
-  {
-    FillFolderStartPackStream();
-    FillStartPos();
-    FillFolderStartFileIndex();
-  }
-  
-  UInt64 GetFolderStreamPos(int folderIndex, int indexInFolder) const
-  {
-    return ArchiveInfo.DataStartPosition +
-        PackStreamStartPositions[FolderStartPackStreamIndex[folderIndex] + indexInFolder];
-  }
-  
-  UInt64 GetFolderFullPackSize(int folderIndex) const
-  {
-    CNum packStreamIndex = FolderStartPackStreamIndex[folderIndex];
-    const CFolder &folder = Folders[folderIndex];
-    UInt64 size = 0;
-    for (int i = 0; i < folder.PackStreams.Size(); i++)
-      size += PackSizes[packStreamIndex + i];
-    return size;
-  }
-  
-  UInt64 GetFolderPackStreamSize(int folderIndex, int streamIndex) const
-  {
-    return PackSizes[FolderStartPackStreamIndex[folderIndex] + streamIndex];
-=======
   void FillLinks();
   
   UInt64 GetFolderStreamPos(CNum folderIndex, unsigned indexInFolder) const
@@ -339,7 +274,6 @@ struct CDbEx: public CDatabase
   {
     size_t i = FoStartPackStreamIndex[folderIndex] + streamIndex;
     return PackPositions[i + 1] - PackPositions[i];
->>>>>>> upstream/master
   }
 
   UInt64 GetFilePackSize(CNum fileIndex) const
@@ -352,14 +286,6 @@ struct CDbEx: public CDatabase
   }
 };
 
-<<<<<<< HEAD
-class CInByte2
-{
-  const Byte *_buffer;
-  size_t _size;
-public:
-  size_t _pos;
-=======
 const unsigned kNumBufLevelsMax = 4;
 
 struct CInByte2
@@ -371,7 +297,6 @@ public:
   
   size_t GetRem() const { return _size - _pos; }
   const Byte *GetPtr() const { return _buffer + _pos; }
->>>>>>> upstream/master
   void Init(const Byte *buffer, size_t size)
   {
     _buffer = buffer;
@@ -380,26 +305,17 @@ public:
   }
   Byte ReadByte();
   void ReadBytes(Byte *data, size_t size);
-<<<<<<< HEAD
-  void SkipData(UInt64 size);
-  void SkipData();
-=======
   void SkipDataNoCheck(UInt64 size) { _pos += (size_t)size; }
   void SkipData(UInt64 size);
 
   void SkipData();
   void SkipRem() { _pos = _size; }
->>>>>>> upstream/master
   UInt64 ReadNumber();
   CNum ReadNum();
   UInt32 ReadUInt32();
   UInt64 ReadUInt64();
-<<<<<<< HEAD
-  void ReadString(UString &s);
-=======
 
   void ParseFolder(CFolder &folder);
->>>>>>> upstream/master
 };
 
 class CStreamSwitch;
@@ -412,16 +328,11 @@ class CInArchive
 
   CMyComPtr<IInStream> _stream;
 
-<<<<<<< HEAD
-  CObjectVector<CInByte2> _inByteVector;
-  CInByte2 *_inByteBack;
-=======
   unsigned _numInByteBufs;
   CInByte2 _inByteVector[kNumBufLevelsMax];
 
   CInByte2 *_inByteBack;
   bool ThereIsHeaderError;
->>>>>>> upstream/master
  
   UInt64 _arhiveBeginStreamPosition;
   UInt64 _fileEndPosition;
@@ -430,23 +341,6 @@ class CInArchive
 
   UInt64 HeadersSize;
 
-<<<<<<< HEAD
-  void AddByteStream(const Byte *buffer, size_t size)
-  {
-    _inByteVector.Add(CInByte2());
-    _inByteBack = &_inByteVector.Back();
-    _inByteBack->Init(buffer, size);
-  }
-  
-  void DeleteByteStream()
-  {
-    _inByteVector.DeleteBack();
-    if (!_inByteVector.IsEmpty())
-      _inByteBack = &_inByteVector.Back();
-  }
-
-private:
-=======
   bool _useMixerMT;
 
   void AddByteStream(const Byte *buffer, size_t size);
@@ -462,7 +356,6 @@ private:
     }
   }
 
->>>>>>> upstream/master
   HRESULT FindAndReadSignature(IInStream *stream, const UInt64 *searchHeaderSizeLimit);
   
   void ReadBytes(Byte *data, size_t size) { _inByteBack->ReadBytes(data, size); }
@@ -474,31 +367,6 @@ private:
   UInt64 ReadUInt64() { return _inByteBack->ReadUInt64(); }
   void SkipData(UInt64 size) { _inByteBack->SkipData(size); }
   void SkipData() { _inByteBack->SkipData(); }
-<<<<<<< HEAD
-  void WaitAttribute(UInt64 attribute);
-
-  void ReadArchiveProperties(CInArchiveInfo &archiveInfo);
-  void GetNextFolderItem(CFolder &itemInfo);
-  void ReadHashDigests(int numItems,
-      CBoolVector &digestsDefined, CRecordVector<UInt32> &digests);
-  
-  void ReadPackInfo(
-      UInt64 &dataOffset,
-      CRecordVector<UInt64> &packSizes,
-      CBoolVector &packCRCsDefined,
-      CRecordVector<UInt32> &packCRCs);
-  
-  void ReadUnpackInfo(
-      const CObjectVector<CByteBuffer> *dataVector,
-      CObjectVector<CFolder> &folders);
-  
-  void ReadSubStreamsInfo(
-      const CObjectVector<CFolder> &folders,
-      CRecordVector<CNum> &numUnpackStreamsInFolders,
-      CRecordVector<UInt64> &unpackSizes,
-      CBoolVector &digestsDefined,
-      CRecordVector<UInt32> &digests);
-=======
   void WaitId(UInt64 id);
 
   void ReadArchiveProperties(CInArchiveInfo &archiveInfo);
@@ -514,27 +382,10 @@ private:
       CFolders &folders,
       CRecordVector<UInt64> &unpackSizes,
       CUInt32DefVector &digests);
->>>>>>> upstream/master
 
   void ReadStreamsInfo(
       const CObjectVector<CByteBuffer> *dataVector,
       UInt64 &dataOffset,
-<<<<<<< HEAD
-      CRecordVector<UInt64> &packSizes,
-      CBoolVector &packCRCsDefined,
-      CRecordVector<UInt32> &packCRCs,
-      CObjectVector<CFolder> &folders,
-      CRecordVector<CNum> &numUnpackStreamsInFolders,
-      CRecordVector<UInt64> &unpackSizes,
-      CBoolVector &digestsDefined,
-      CRecordVector<UInt32> &digests);
-
-
-  void ReadBoolVector(int numItems, CBoolVector &v);
-  void ReadBoolVector2(int numItems, CBoolVector &v);
-  void ReadUInt64DefVector(const CObjectVector<CByteBuffer> &dataVector,
-      CUInt64DefVector &v, int numFiles);
-=======
       CFolders &folders,
       CRecordVector<UInt64> &unpackSizes,
       CUInt32DefVector &digests);
@@ -543,32 +394,10 @@ private:
   void ReadBoolVector2(unsigned numItems, CBoolVector &v);
   void ReadUInt64DefVector(const CObjectVector<CByteBuffer> &dataVector,
       CUInt64DefVector &v, unsigned numItems);
->>>>>>> upstream/master
   HRESULT ReadAndDecodePackedStreams(
       DECL_EXTERNAL_CODECS_LOC_VARS
       UInt64 baseOffset, UInt64 &dataOffset,
       CObjectVector<CByteBuffer> &dataVector
-<<<<<<< HEAD
-      #ifndef _NO_CRYPTO
-      , ICryptoGetTextPassword *getTextPassword, bool &passwordIsDefined
-      #endif
-      );
-  HRESULT ReadHeader(
-      DECL_EXTERNAL_CODECS_LOC_VARS
-      CArchiveDatabaseEx &db
-      #ifndef _NO_CRYPTO
-      ,ICryptoGetTextPassword *getTextPassword, bool &passwordIsDefined
-      #endif
-      );
-  HRESULT ReadDatabase2(
-      DECL_EXTERNAL_CODECS_LOC_VARS
-      CArchiveDatabaseEx &db
-      #ifndef _NO_CRYPTO
-      ,ICryptoGetTextPassword *getTextPassword, bool &passwordIsDefined
-      #endif
-      );
-public:
-=======
       _7Z_DECODER_CRYPRO_VARS_DECL
       );
   HRESULT ReadHeader(
@@ -587,21 +416,13 @@ public:
       _useMixerMT(useMixerMT)
       {}
   
->>>>>>> upstream/master
   HRESULT Open(IInStream *stream, const UInt64 *searchHeaderSizeLimit); // S_FALSE means is not archive
   void Close();
 
   HRESULT ReadDatabase(
       DECL_EXTERNAL_CODECS_LOC_VARS
-<<<<<<< HEAD
-      CArchiveDatabaseEx &db
-      #ifndef _NO_CRYPTO
-      ,ICryptoGetTextPassword *getTextPassword, bool &passwordIsDefined
-      #endif
-=======
       CDbEx &db
       _7Z_DECODER_CRYPRO_VARS_DECL
->>>>>>> upstream/master
       );
 };
   

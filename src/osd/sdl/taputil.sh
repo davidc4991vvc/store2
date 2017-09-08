@@ -1,10 +1,6 @@
 #!/bin/sh
-<<<<<<< HEAD
-
-=======
 # license:BSD-3-Clause
 # copyright-holders:Carl
->>>>>>> upstream/master
 NAME=$2
 OURUID=`id -u $NAME`
 HOSTIP=$4

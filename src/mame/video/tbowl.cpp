@@ -111,15 +111,9 @@ WRITE8_MEMBER(tbowl_state::bg2yscroll_hi)
 
 void tbowl_state::video_start()
 {
-<<<<<<< HEAD
-	m_tx_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(tbowl_state::get_tx_tile_info),this),TILEMAP_SCAN_ROWS, 8, 8,64,32);
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(tbowl_state::get_bg_tile_info),this),TILEMAP_SCAN_ROWS, 16, 16,128,32);
-	m_bg2_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(tbowl_state::get_bg2_tile_info),this),TILEMAP_SCAN_ROWS, 16, 16,128,32);
-=======
 	m_tx_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(tbowl_state::get_tx_tile_info),this),TILEMAP_SCAN_ROWS, 8, 8,64,32);
 	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(tbowl_state::get_bg_tile_info),this),TILEMAP_SCAN_ROWS, 16, 16,128,32);
 	m_bg2_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(tbowl_state::get_bg2_tile_info),this),TILEMAP_SCAN_ROWS, 16, 16,128,32);
->>>>>>> upstream/master
 
 	m_tx_tilemap->set_transparent_pen(0);
 	m_bg_tilemap->set_transparent_pen(0);
@@ -133,11 +127,7 @@ void tbowl_state::video_start()
 
 
 
-<<<<<<< HEAD
-UINT32 tbowl_state::screen_update_left(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t tbowl_state::screen_update_left(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	m_bg_tilemap->set_scrollx(0, m_xscroll );
 	m_bg_tilemap->set_scrolly(0, m_yscroll );
@@ -146,11 +136,7 @@ uint32_t tbowl_state::screen_update_left(screen_device &screen, bitmap_ind16 &bi
 	m_tx_tilemap->set_scrollx(0, 0 );
 	m_tx_tilemap->set_scrolly(0, 0 );
 
-<<<<<<< HEAD
-	bitmap.fill(0x100, cliprect); /* is there a register controling the colour? looks odd when screen is blank */
-=======
 	bitmap.fill(0x100, cliprect); /* is there a register controlling the colour? looks odd when screen is blank */
->>>>>>> upstream/master
 	m_bg_tilemap->draw(screen, bitmap, cliprect, 0,0);
 	m_sprgen->tbowl_draw_sprites(bitmap,cliprect, m_gfxdecode, 0, m_spriteram);
 	m_bg2_tilemap->draw(screen, bitmap, cliprect, 0,0);
@@ -159,11 +145,7 @@ uint32_t tbowl_state::screen_update_left(screen_device &screen, bitmap_ind16 &bi
 	return 0;
 }
 
-<<<<<<< HEAD
-UINT32 tbowl_state::screen_update_right(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t tbowl_state::screen_update_right(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	m_bg_tilemap->set_scrollx(0, m_xscroll+32*8 );
 	m_bg_tilemap->set_scrolly(0, m_yscroll );
@@ -172,11 +154,7 @@ uint32_t tbowl_state::screen_update_right(screen_device &screen, bitmap_ind16 &b
 	m_tx_tilemap->set_scrollx(0, 32*8 );
 	m_tx_tilemap->set_scrolly(0, 0 );
 
-<<<<<<< HEAD
-	bitmap.fill(0x100, cliprect); /* is there a register controling the colour? looks odd when screen is blank */
-=======
 	bitmap.fill(0x100, cliprect); /* is there a register controlling the colour? looks odd when screen is blank */
->>>>>>> upstream/master
 	m_bg_tilemap->draw(screen, bitmap, cliprect, 0,0);
 	m_sprgen->tbowl_draw_sprites(bitmap,cliprect, m_gfxdecode, 32*8, m_spriteram);
 	m_bg2_tilemap->draw(screen, bitmap, cliprect, 0,0);

@@ -1,11 +1,6 @@
 /*
-<<<<<<< HEAD
- * Copyright 2011-2015 Branimir Karadzic. All rights reserved.
- * License: http://www.opensource.org/licenses/BSD-2-Clause
-=======
  * Copyright 2011-2017 Branimir Karadzic. All rights reserved.
  * License: https://github.com/bkaradzic/bgfx#license-bsd-2-clause
->>>>>>> upstream/master
  */
 
 #include <bx/rng.h>
@@ -14,11 +9,7 @@
 
 void aabbToObb(Obb& _obb, const Aabb& _aabb)
 {
-<<<<<<< HEAD
-	memset(_obb.m_mtx, 0, sizeof(_obb.m_mtx) );
-=======
 	bx::memSet(_obb.m_mtx, 0, sizeof(_obb.m_mtx) );
->>>>>>> upstream/master
 	_obb.m_mtx[ 0] = (_aabb.m_max[0] - _aabb.m_min[0]) * 0.5f;
 	_obb.m_mtx[ 5] = (_aabb.m_max[1] - _aabb.m_min[1]) * 0.5f;
 	_obb.m_mtx[10] = (_aabb.m_max[2] - _aabb.m_min[2]) * 0.5f;
@@ -28,20 +19,6 @@ void aabbToObb(Obb& _obb, const Aabb& _aabb)
 	_obb.m_mtx[15] = 1.0f;
 }
 
-<<<<<<< HEAD
-void sphereToAabb(Aabb& _aabb, const Sphere& _sphere)
-{
-	float xx = _sphere.m_center[0];
-	float yy = _sphere.m_center[1];
-	float zz = _sphere.m_center[2];
-	float radius = _sphere.m_radius;
-	_aabb.m_min[0] = xx - radius;
-	_aabb.m_min[1] = yy - radius;
-	_aabb.m_min[2] = zz - radius;
-	_aabb.m_max[0] = xx + radius;
-	_aabb.m_max[1] = yy + radius;
-	_aabb.m_max[2] = zz + radius;
-=======
 void toAabb(Aabb& _aabb, const Sphere& _sphere)
 {
 	float radius = _sphere.m_radius;
@@ -107,7 +84,6 @@ void toAabb(Aabb& _aabb, const Cylinder& _cylinder)
 
 	bx::vec3Min(_aabb.m_min, minP, minE);
 	bx::vec3Max(_aabb.m_max, maxP, maxE);
->>>>>>> upstream/master
 }
 
 void aabbTransformToObb(Obb& _obb, const Aabb& _aabb, const float* _mtx)
@@ -115,25 +91,10 @@ void aabbTransformToObb(Obb& _obb, const Aabb& _aabb, const float* _mtx)
 	aabbToObb(_obb, _aabb);
 	float result[16];
 	bx::mtxMul(result, _obb.m_mtx, _mtx);
-<<<<<<< HEAD
-	memcpy(_obb.m_mtx, result, sizeof(result) );
-}
-
-float calcAreaAabb(Aabb& _aabb)
-{
-	float ww = _aabb.m_max[0] - _aabb.m_min[0];
-	float hh = _aabb.m_max[1] - _aabb.m_min[1];
-	float dd = _aabb.m_max[2] - _aabb.m_min[2];
-	return 2.0f * (ww*hh + ww*dd + hh*dd);
-}
-
-void calcAabb(Aabb& _aabb, const void* _vertices, uint32_t _numVertices, uint32_t _stride)
-=======
 	bx::memCopy(_obb.m_mtx, result, sizeof(result) );
 }
 
 void toAabb(Aabb& _aabb, const void* _vertices, uint32_t _numVertices, uint32_t _stride)
->>>>>>> upstream/master
 {
 	float min[3], max[3];
 	uint8_t* vertex = (uint8_t*)_vertices;
@@ -167,11 +128,7 @@ void toAabb(Aabb& _aabb, const void* _vertices, uint32_t _numVertices, uint32_t 
 	_aabb.m_max[2] = max[2];
 }
 
-<<<<<<< HEAD
-void calcAabb(Aabb& _aabb, const float* _mtx, const void* _vertices, uint32_t _numVertices, uint32_t _stride)
-=======
 void toAabb(Aabb& _aabb, const float* _mtx, const void* _vertices, uint32_t _numVertices, uint32_t _stride)
->>>>>>> upstream/master
 {
 	float min[3], max[3];
 	uint8_t* vertex = (uint8_t*)_vertices;
@@ -207,8 +164,6 @@ void toAabb(Aabb& _aabb, const float* _mtx, const void* _vertices, uint32_t _num
 	_aabb.m_max[2] = max[2];
 }
 
-<<<<<<< HEAD
-=======
 float calcAreaAabb(const Aabb& _aabb)
 {
 	float ww = _aabb.m_max[0] - _aabb.m_min[0];
@@ -217,7 +172,6 @@ float calcAreaAabb(const Aabb& _aabb)
 	return 2.0f * (ww*hh + ww*dd + hh*dd);
 }
 
->>>>>>> upstream/master
 void aabbExpand(Aabb& _aabb, float _factor)
 {
 	_aabb.m_min[0] -= _factor;
@@ -228,9 +182,6 @@ void aabbExpand(Aabb& _aabb, float _factor)
 	_aabb.m_max[2] += _factor;
 }
 
-<<<<<<< HEAD
-uint32_t aabbOverlapTest(Aabb& _aabb0, Aabb& _aabb1)
-=======
 void aabbExpand(Aabb& _aabb, const float* _pos)
 {
 	bx::vec3Min(_aabb.m_min, _aabb.m_min, _pos);
@@ -238,7 +189,6 @@ void aabbExpand(Aabb& _aabb, const float* _pos)
 }
 
 uint32_t aabbOverlapTest(const Aabb& _aabb0, const Aabb& _aabb1)
->>>>>>> upstream/master
 {
 	const uint32_t ltMinX = _aabb0.m_max[0] < _aabb1.m_min[0];
 	const uint32_t gtMaxX = _aabb0.m_min[0] > _aabb1.m_max[0];
@@ -260,11 +210,7 @@ uint32_t aabbOverlapTest(const Aabb& _aabb0, const Aabb& _aabb1)
 void calcObb(Obb& _obb, const void* _vertices, uint32_t _numVertices, uint32_t _stride, uint32_t _steps)
 {
 	Aabb aabb;
-<<<<<<< HEAD
-	calcAabb(aabb, _vertices, _numVertices, _stride);
-=======
 	toAabb(aabb, _vertices, _numVertices, _stride);
->>>>>>> upstream/master
 	float minArea = calcAreaAabb(aabb);
 
 	Obb best;
@@ -288,11 +234,7 @@ void calcObb(Obb& _obb, const void* _vertices, uint32_t _numVertices, uint32_t _
 
 				float mtxT[16];
 				bx::mtxTranspose(mtxT, mtx);
-<<<<<<< HEAD
-				calcAabb(aabb, mtxT, _vertices, _numVertices, _stride);
-=======
 				toAabb(aabb, mtxT, _vertices, _numVertices, _stride);
->>>>>>> upstream/master
 
 				float area = calcAreaAabb(aabb);
 				if (area < minArea)
@@ -310,21 +252,13 @@ void calcObb(Obb& _obb, const void* _vertices, uint32_t _numVertices, uint32_t _
 		ax += angleStep;
 	}
 
-<<<<<<< HEAD
-	memcpy(&_obb, &best, sizeof(Obb) );
-=======
 	bx::memCopy(&_obb, &best, sizeof(Obb) );
->>>>>>> upstream/master
 }
 
 void calcMaxBoundingSphere(Sphere& _sphere, const void* _vertices, uint32_t _numVertices, uint32_t _stride)
 {
 	Aabb aabb;
-<<<<<<< HEAD
-	calcAabb(aabb, _vertices, _numVertices, _stride);
-=======
 	toAabb(aabb, _vertices, _numVertices, _stride);
->>>>>>> upstream/master
 
 	float center[3];
 	center[0] = (aabb.m_min[0] + aabb.m_max[0]) * 0.5f;
@@ -347,15 +281,8 @@ void calcMaxBoundingSphere(Sphere& _sphere, const void* _vertices, uint32_t _num
 		maxDistSq = bx::fmax(distSq, maxDistSq);
 	}
 
-<<<<<<< HEAD
-	_sphere.m_center[0] = center[0];
-	_sphere.m_center[1] = center[1];
-	_sphere.m_center[2] = center[2];
-	_sphere.m_radius = sqrtf(maxDistSq);
-=======
 	bx::vec3Move(_sphere.m_center, center);
 	_sphere.m_radius = bx::fsqrt(maxDistSq);
->>>>>>> upstream/master
 }
 
 void calcMinBoundingSphere(Sphere& _sphere, const void* _vertices, uint32_t _numVertices, uint32_t _stride, float _step)
@@ -366,13 +293,7 @@ void calcMinBoundingSphere(Sphere& _sphere, const void* _vertices, uint32_t _num
 
 	float center[3];
 	float* position = (float*)&vertex[0];
-<<<<<<< HEAD
-	center[0] = position[0];
-	center[1] = position[1];
-	center[2] = position[2];
-=======
 	bx::vec3Move(center, position);
->>>>>>> upstream/master
 
 	position = (float*)&vertex[1*_stride];
 	center[0] += position[0];
@@ -391,11 +312,7 @@ void calcMinBoundingSphere(Sphere& _sphere, const void* _vertices, uint32_t _num
 	float radiusStep = _step * 0.37f;
 
 	bool done;
-<<<<<<< HEAD
-	do 
-=======
 	do
->>>>>>> upstream/master
 	{
 		done = true;
 		for (uint32_t ii = 0, index = rng.gen()%_numVertices; ii < _numVertices; ++ii, index = (index + 1)%_numVertices)
@@ -422,12 +339,6 @@ void calcMinBoundingSphere(Sphere& _sphere, const void* _vertices, uint32_t _num
 
 	} while (!done);
 
-<<<<<<< HEAD
-	_sphere.m_center[0] = center[0];
-	_sphere.m_center[1] = center[1];
-	_sphere.m_center[2] = center[2];
-	_sphere.m_radius = sqrtf(maxDistSq);
-=======
 	bx::vec3Move(_sphere.m_center, center);
 	_sphere.m_radius = bx::fsqrt(maxDistSq);
 }
@@ -854,5 +765,4 @@ bool intersect(const Ray& _ray, const Tris& _triangle, Intersection* _intersecti
 	}
 
 	return true;
->>>>>>> upstream/master
 }

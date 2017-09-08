@@ -1,9 +1,6 @@
 // license:BSD-3-Clause
 // copyright-holders:Nicola Salmoria
-<<<<<<< HEAD
-=======
 #include "screen.h"
->>>>>>> upstream/master
 
 #define PIXMAP_COLOR_BASE  (16 + 32)
 #define BITMAPRAM_SIZE      0x6000
@@ -24,24 +21,14 @@ public:
 		m_palette(*this, "palette") { }
 
 	/* memory pointers */
-<<<<<<< HEAD
-	required_shared_ptr<UINT8> m_bgvideoram;
-	required_shared_ptr<UINT8> m_spriteram;
-	required_shared_ptr<UINT8> m_sharedram;
-=======
 	required_shared_ptr<uint8_t> m_bgvideoram;
 	required_shared_ptr<uint8_t> m_spriteram;
 	required_shared_ptr<uint8_t> m_sharedram;
->>>>>>> upstream/master
 
 	/* video-related */
 	bitmap_ind16 m_pixbitmap;
 	tilemap_t   *m_bg_tilemap;
-<<<<<<< HEAD
-	UINT8     *m_bitmapram;
-=======
 	std::unique_ptr<uint8_t[]>     m_bitmapram;
->>>>>>> upstream/master
 	int       m_bm_plane;
 	int       m_pixcolor;
 	int       m_scroll[4];
@@ -68,19 +55,11 @@ public:
 	DECLARE_WRITE8_MEMBER(dogfgt_scroll_w);
 	DECLARE_WRITE8_MEMBER(dogfgt_1800_w);
 	TILE_GET_INFO_MEMBER(get_tile_info);
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void machine_reset();
-	virtual void video_start();
-	DECLARE_PALETTE_INIT(dogfgt);
-	UINT32 screen_update_dogfgt(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
 	virtual void video_start() override;
 	DECLARE_PALETTE_INIT(dogfgt);
 	uint32_t screen_update_dogfgt(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	void draw_sprites( bitmap_ind16 &bitmap,const rectangle &cliprect );
 	required_device<cpu_device> m_maincpu;
 	required_device<gfxdecode_device> m_gfxdecode;

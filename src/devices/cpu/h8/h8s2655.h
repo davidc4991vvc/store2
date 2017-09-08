@@ -12,23 +12,6 @@
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-#ifndef __H8S2655_H__
-#define __H8S2655_H__
-
-#include "h8s2600.h"
-#include "h8_adc.h"
-#include "h8_port.h"
-#include "h8_intc.h"
-#include "h8_timer8.h"
-#include "h8_timer16.h"
-#include "h8_sci.h"
-
-class h8s2655_device : public h8s2600_device {
-public:
-	h8s2655_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source);
-	h8s2655_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-=======
 #ifndef MAME_CPU_H8_H8S2655_H
 #define MAME_CPU_H8_H8S2655_H
 
@@ -46,7 +29,6 @@ public:
 class h8s2655_device : public h8s2600_device {
 public:
 	h8s2655_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
->>>>>>> upstream/master
 
 	DECLARE_READ8_MEMBER(syscr_r);
 	DECLARE_WRITE8_MEMBER(syscr_w);
@@ -79,24 +61,6 @@ protected:
 	required_device<h8_sci_device> sci0;
 	required_device<h8_sci_device> sci1;
 	required_device<h8_sci_device> sci2;
-<<<<<<< HEAD
-
-	UINT8 syscr;
-
-	virtual bool exr_in_stack() const;
-	virtual void update_irq_filter();
-	virtual void interrupt_taken();
-	virtual int trace_setup();
-	virtual int trapa_setup();
-	virtual void irq_setup();
-	virtual void internal_update(UINT64 current_time);
-	virtual machine_config_constructor device_mconfig_additions() const;
-	DECLARE_ADDRESS_MAP(map, 16);
-
-	virtual void device_start();
-	virtual void device_reset();
-	virtual void execute_set_input(int inputnum, int state);
-=======
 	required_device<h8_watchdog_device> watchdog;
 
 	uint8_t syscr;
@@ -116,20 +80,10 @@ protected:
 	virtual void device_start() override;
 	virtual void device_reset() override;
 	virtual void execute_set_input(int inputnum, int state) override;
->>>>>>> upstream/master
 };
 
 class h8s2653_device : public h8s2655_device {
 public:
-<<<<<<< HEAD
-	h8s2653_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-};
-
-extern const device_type H8S2655;
-extern const device_type H8S2653;
-
-#endif
-=======
 	h8s2653_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 };
 
@@ -137,4 +91,3 @@ DECLARE_DEVICE_TYPE(H8S2655, h8s2655_device)
 DECLARE_DEVICE_TYPE(H8S2653, h8s2653_device)
 
 #endif // MAME_CPU_H8_H8S2655_H
->>>>>>> upstream/master

@@ -6,19 +6,10 @@ Shanghai
 
 driver by Nicola Salmoria
 
-<<<<<<< HEAD
-The end of round animation in Shanghai is wrong; change the opcode at 0xfb1f2
-to a NOP to jump to it immediately at the beginning of a round.
-
-I'm not sure about the refresh rate, 60Hz makes time match the dip switch
-settings, but music runs too fast.
-
-=======
 TODO:
 - games are currently too fast (especially noticeable with kothello screen transitions), either irqs actually
   fires every two frames or a HD63484 SR bit isn't behaving correctly;
 - minor glitch with gfx copy on shanghai stage info panel (garbage on right);
->>>>>>> upstream/master
 
 * kothello
 
@@ -29,11 +20,6 @@ displayed.
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/nec/nec.h"
-#include "audio/seibu.h"
-#include "video/hd63484.h"
-=======
 #include "audio/seibu.h"
 
 #include "cpu/nec/nec.h"
@@ -41,7 +27,6 @@ displayed.
 #include "video/hd63484.h"
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 class shanghai_state : public driver_device
@@ -49,22 +34,6 @@ class shanghai_state : public driver_device
 public:
 	shanghai_state(const machine_config &mconfig, device_type type, const char *tag)
 		: driver_device(mconfig, type, tag),
-<<<<<<< HEAD
-		m_maincpu(*this, "maincpu"),
-		m_hd63484(*this, "hd63484") { }
-
-	required_device<cpu_device> m_maincpu;
-	required_device<hd63484_device> m_hd63484;
-
-	DECLARE_WRITE16_MEMBER(shanghai_coin_w);
-	DECLARE_READ16_MEMBER(kothello_hd63484_status_r);
-
-	virtual void video_start();
-	DECLARE_PALETTE_INIT(shanghai);
-
-	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-
-=======
 		m_maincpu(*this, "maincpu") { }
 
 	required_device<cpu_device> m_maincpu;
@@ -73,7 +42,6 @@ public:
 
 	DECLARE_PALETTE_INIT(shanghai);
 
->>>>>>> upstream/master
 	INTERRUPT_GEN_MEMBER(interrupt);
 };
 
@@ -108,60 +76,6 @@ PALETTE_INIT_MEMBER(shanghai_state,shanghai)
 	}
 }
 
-<<<<<<< HEAD
-void shanghai_state::video_start()
-{
-}
-
-UINT32 shanghai_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-{
-	int x, y, b, src;
-
-	address_space &space = machine().driver_data()->generic_space();
-	b = ((m_hd63484->regs_r(space, 0xcc/2, 0xffff) & 0x000f) << 16) + m_hd63484->regs_r(space, 0xce/2, 0xffff);
-	for (y = 0; y < 280; y++)
-	{
-		for (x = 0 ; x < (m_hd63484->regs_r(space, 0xca/2, 0xffff) & 0x0fff) * 2 ; x += 2)
-		{
-			b &= (HD63484_RAM_SIZE - 1);
-			src = m_hd63484->ram_r(space, b, 0xffff);
-			bitmap.pix16(y, x)     = src & 0x00ff;
-			bitmap.pix16(y, x + 1) = (src & 0xff00) >> 8;
-			b++;
-		}
-	}
-
-	if ((m_hd63484->regs_r(space, 0x06/2, 0xffff) & 0x0300) == 0x0300)
-	{
-		int sy = (m_hd63484->regs_r(space, 0x94/2, 0xffff) & 0x0fff) - (m_hd63484->regs_r(space, 0x88/2, 0xffff) >> 8);
-		int h = m_hd63484->regs_r(space, 0x96/2, 0xffff) & 0x0fff;
-		int sx = ((m_hd63484->regs_r(space, 0x92/2, 0xffff) >> 8) - (m_hd63484->regs_r(space, 0x84/2, 0xffff) >> 8)) * 4;
-		int w = (m_hd63484->regs_r(space, 0x92/2, 0xffff) & 0xff) * 4;
-		if (sx < 0) sx = 0; // not sure about this (shangha2 title screen)
-
-		b = (((m_hd63484->regs_r(space, 0xdc/2, 0xffff) & 0x000f) << 16) + m_hd63484->regs_r(space, 0xde/2, 0xffff));
-
-		for (y = sy ; y <= sy + h && y < 280 ; y++)
-		{
-			for (x = 0 ; x < (m_hd63484->regs_r(space, 0xca/2, 0xffff) & 0x0fff) * 2 ; x += 2)
-			{
-				b &= (HD63484_RAM_SIZE - 1);
-				src = m_hd63484->ram_r(space, b, 0xffff);
-				if (x <= w && x + sx >= 0 && x + sx < (m_hd63484->regs_r(space, 0xca/2, 0xffff) & 0x0fff) * 2)
-				{
-					bitmap.pix16(y, x + sx)     = src & 0x00ff;
-					bitmap.pix16(y, x + sx + 1) = (src & 0xff00) >> 8;
-				}
-				b++;
-			}
-		}
-	}
-
-	return 0;
-}
-
-=======
->>>>>>> upstream/master
 INTERRUPT_GEN_MEMBER(shanghai_state::interrupt)
 {
 	device.execute().set_input_line_and_vector(0,HOLD_LINE,0x80);
@@ -171,13 +85,8 @@ WRITE16_MEMBER(shanghai_state::shanghai_coin_w)
 {
 	if (ACCESSING_BITS_0_7)
 	{
-<<<<<<< HEAD
-		coin_counter_w(machine(), 0,data & 1);
-		coin_counter_w(machine(), 1,data & 2);
-=======
 		machine().bookkeeping().coin_counter_w(0,data & 1);
 		machine().bookkeeping().coin_counter_w(1,data & 2);
->>>>>>> upstream/master
 	}
 }
 
@@ -215,32 +124,15 @@ static ADDRESS_MAP_START( shangha2_portmap, AS_IO, 16, shanghai_state )
 	AM_RANGE(0x50, 0x51) AM_WRITE(shanghai_coin_w)
 ADDRESS_MAP_END
 
-<<<<<<< HEAD
-READ16_MEMBER(shanghai_state::kothello_hd63484_status_r)
-{
-	return 0xff22;  /* write FIFO ready + command end + read FIFO ready */
-}
-
-static ADDRESS_MAP_START( kothello_map, AS_PROGRAM, 16, shanghai_state )
-	AM_RANGE(0x00000, 0x07fff) AM_RAM
-	AM_RANGE(0x08010, 0x08011) AM_READ(kothello_hd63484_status_r) AM_DEVWRITE("hd63484", hd63484_device, address_w)
-=======
 static ADDRESS_MAP_START( kothello_map, AS_PROGRAM, 16, shanghai_state )
 	AM_RANGE(0x00000, 0x07fff) AM_RAM
 	AM_RANGE(0x08010, 0x08011) AM_DEVREADWRITE("hd63484", hd63484_device, status_r, address_w)
->>>>>>> upstream/master
 	AM_RANGE(0x08012, 0x08013) AM_DEVREADWRITE("hd63484", hd63484_device, data_r, data_w)
 	AM_RANGE(0x09010, 0x09011) AM_READ_PORT("P1")
 	AM_RANGE(0x09012, 0x09013) AM_READ_PORT("P2")
 	AM_RANGE(0x09014, 0x09015) AM_READ_PORT("SYSTEM")
 	AM_RANGE(0x09016, 0x0901f) AM_WRITENOP // 0x9016 is set to 0 at the boot
 	AM_RANGE(0x0a000, 0x0a1ff) AM_DEVWRITE("palette", palette_device, write) AM_SHARE("palette")
-<<<<<<< HEAD
-	AM_RANGE(0x0b010, 0x0b01f) AM_DEVREADWRITE("seibu_sound", seibu_sound_device, main_word_r, main_word_w)
-	AM_RANGE(0x80000, 0xfffff) AM_ROM
-ADDRESS_MAP_END
-
-=======
 	AM_RANGE(0x0b010, 0x0b01f) AM_DEVREADWRITE8("seibu_sound", seibu_sound_device, main_r, main_w, 0x00ff)
 	AM_RANGE(0x80000, 0xfffff) AM_ROM
 ADDRESS_MAP_END
@@ -264,7 +156,6 @@ static ADDRESS_MAP_START( kothello_sound_map, AS_PROGRAM, 8, shanghai_state )
 	AM_RANGE(0x8000, 0xffff) AM_ROMBANK("seibu_bank1")
 ADDRESS_MAP_END
 
->>>>>>> upstream/master
 static INPUT_PORTS_START( kothello )
 	SEIBU_COIN_INPUTS   /* coin inputs read through sound cpu */
 
@@ -301,13 +192,8 @@ static INPUT_PORTS_START( kothello )
 	PORT_BIT( 0x0080, IP_ACTIVE_LOW, IPT_UNKNOWN )
 	PORT_BIT( 0xff00, IP_ACTIVE_LOW, IPT_UNKNOWN )
 
-<<<<<<< HEAD
-	PORT_START("DSW")
-	PORT_DIPNAME( 0x07, 0x07, DEF_STR( Coinage ) )
-=======
 	PORT_START("DSW1")
 	PORT_DIPNAME( 0x07, 0x07, DEF_STR( Coin_A ) ) PORT_DIPLOCATION("SW1:1,2,3")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x00, DEF_STR( 5C_1C ) )
 	PORT_DIPSETTING(    0x04, DEF_STR( 4C_1C ) )
 	PORT_DIPSETTING(    0x02, DEF_STR( 3C_1C ) )
@@ -316,23 +202,6 @@ static INPUT_PORTS_START( kothello )
 	PORT_DIPSETTING(    0x03, DEF_STR( 1C_2C ) )
 	PORT_DIPSETTING(    0x05, DEF_STR( 1C_3C ) )
 	PORT_DIPSETTING(    0x01, DEF_STR( 1C_4C ) )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x08, 0x08, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x10, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x40, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-=======
 	PORT_DIPNAME( 0x38, 0x38, DEF_STR( Coin_B ) ) PORT_DIPLOCATION("SW1:4,5,6")
 	PORT_DIPSETTING(    0x00, DEF_STR( 5C_1C ) )
 	PORT_DIPSETTING(    0x20, DEF_STR( 4C_1C ) )
@@ -370,7 +239,6 @@ static INPUT_PORTS_START( kothello )
 	PORT_DIPSETTING(    0x40, "2" )
 	PORT_DIPSETTING(    0x80, "3" )
 	PORT_DIPSETTING(    0x00, "4" )
->>>>>>> upstream/master
 INPUT_PORTS_END
 
 
@@ -531,16 +399,11 @@ static INPUT_PORTS_START( shangha2 )
 	PORT_DIPSETTING(    0x80, DEF_STR( 1C_4C ) )
 INPUT_PORTS_END
 
-<<<<<<< HEAD
-
-static MACHINE_CONFIG_START( shanghai, shanghai_state )
-=======
 static ADDRESS_MAP_START( hd63484_map, 0, 16, shanghai_state )
 	AM_RANGE(0x00000, 0x3ffff) AM_RAM
 ADDRESS_MAP_END
 
 static MACHINE_CONFIG_START( shanghai )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", V30, XTAL_16MHz/2) /* NEC D70116C-8 */
@@ -550,30 +413,18 @@ static MACHINE_CONFIG_START( shanghai )
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
-<<<<<<< HEAD
-	MCFG_SCREEN_REFRESH_RATE(30)
-	MCFG_SCREEN_SIZE(384, 280)
-	MCFG_SCREEN_VISIBLE_AREA(0, 384-1, 0, 280-1) // Base Screen is 384 pixel
-	MCFG_SCREEN_UPDATE_DRIVER(shanghai_state, screen_update)
-=======
 	MCFG_SCREEN_REFRESH_RATE(57)
 	//MCFG_SCREEN_VBLANK_TIME(ATTOSECONDS_IN_USEC(2500))
 	MCFG_SCREEN_SIZE(384, 280)
 	MCFG_SCREEN_VISIBLE_AREA(0, 384-1, 0, 280-1)
 	MCFG_SCREEN_UPDATE_DEVICE("hd63484", hd63484_device, update_screen)
->>>>>>> upstream/master
 	MCFG_SCREEN_PALETTE("palette")
 
 	MCFG_PALETTE_ADD("palette", 256)
 	MCFG_PALETTE_FORMAT(xxxxBBBBGGGGRRRR)
 	MCFG_PALETTE_INIT_OWNER(shanghai_state,shanghai)
 
-<<<<<<< HEAD
-	// TODO: convert to use H63484
-	MCFG_DEVICE_ADD("hd63484", HD63484, 0)
-=======
 	MCFG_HD63484_ADD("hd63484", 0, hd63484_map)
->>>>>>> upstream/master
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
@@ -588,11 +439,7 @@ static MACHINE_CONFIG_START( shanghai )
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( shangha2, shanghai_state )
-=======
 static MACHINE_CONFIG_START( shangha2 )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", V30, XTAL_16MHz/2) /* ? */
@@ -602,29 +449,17 @@ static MACHINE_CONFIG_START( shangha2 )
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
-<<<<<<< HEAD
-	MCFG_SCREEN_REFRESH_RATE(30)
-	MCFG_SCREEN_SIZE(384, 280)
-	MCFG_SCREEN_VISIBLE_AREA(0, 384-1, 0, 280-1) // Base Screen is 384 pixel
-	MCFG_SCREEN_UPDATE_DRIVER(shanghai_state, screen_update)
-=======
 	MCFG_SCREEN_REFRESH_RATE(57)
 	//MCFG_SCREEN_VBLANK_TIME(ATTOSECONDS_IN_USEC(2500))
 	MCFG_SCREEN_SIZE(384, 280)
 	MCFG_SCREEN_VISIBLE_AREA(0, 384-1, 0, 280-1)
 	MCFG_SCREEN_UPDATE_DEVICE("hd63484", hd63484_device, update_screen)
->>>>>>> upstream/master
 	MCFG_SCREEN_PALETTE("palette")
 
 	MCFG_PALETTE_ADD("palette", 256)
 	MCFG_PALETTE_FORMAT(xxxxBBBBGGGGRRRR)
 
-<<<<<<< HEAD
-	// TODO: convert to use H63484
-	MCFG_DEVICE_ADD("hd63484", HD63484, 0)
-=======
 	MCFG_HD63484_ADD("hd63484", 0, hd63484_map)
->>>>>>> upstream/master
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
@@ -639,67 +474,35 @@ static MACHINE_CONFIG_START( shangha2 )
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( kothello, shanghai_state )
-=======
 static MACHINE_CONFIG_START( kothello )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", V30, XTAL_16MHz)
 	MCFG_CPU_PROGRAM_MAP(kothello_map)
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", shanghai_state,  interrupt)
 
-<<<<<<< HEAD
-	SEIBU3A_SOUND_SYSTEM_CPU(XTAL_16MHz/4)
-=======
 	MCFG_CPU_ADD("audiocpu", Z80, XTAL_16MHz/4)
 	MCFG_CPU_PROGRAM_MAP(kothello_sound_map)
->>>>>>> upstream/master
 
 	MCFG_QUANTUM_TIME(attotime::from_hz(12000))
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
-<<<<<<< HEAD
-	MCFG_SCREEN_REFRESH_RATE(30) /* Should be 57Hz, but plays too fast */
-	MCFG_SCREEN_SIZE(384, 280)
-	MCFG_SCREEN_VISIBLE_AREA(8, 384-1, 0, 250-1) // Base Screen is 376 pixel
-	MCFG_SCREEN_UPDATE_DRIVER(shanghai_state, screen_update)
-=======
 	MCFG_SCREEN_REFRESH_RATE(57)
 	//MCFG_SCREEN_VBLANK_TIME(ATTOSECONDS_IN_USEC(2500))
 	MCFG_SCREEN_SIZE(384, 280)
 	MCFG_SCREEN_VISIBLE_AREA(0, 384-1, 0, 280-1)
 	MCFG_SCREEN_UPDATE_DEVICE("hd63484", hd63484_device, update_screen)
->>>>>>> upstream/master
 	MCFG_SCREEN_PALETTE("palette")
 
 	MCFG_PALETTE_ADD("palette", 256)
 	MCFG_PALETTE_FORMAT(xxxxBBBBGGGGRRRR)
 
-<<<<<<< HEAD
-	// TODO: convert to use H63484
-	MCFG_DEVICE_ADD("hd63484", HD63484, 0)
-=======
 	MCFG_HD63484_ADD("hd63484", 0, hd63484_map)
->>>>>>> upstream/master
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-	/* same as standard seibu ym2203, but "ym1" also reads "DSW" */
-	MCFG_SOUND_ADD("ym1", YM2203, XTAL_16MHz/4)
-	MCFG_YM2203_IRQ_HANDLER(DEVWRITELINE("seibu_sound", seibu_sound_device, fm_irqhandler))
-	MCFG_AY8910_PORT_A_READ_CB(IOPORT("DSW"))
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.15)
-
-	MCFG_SOUND_ADD("ym2", YM2203, XTAL_16MHz/4)
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.15)
-
-	SEIBU_SOUND_SYSTEM_ADPCM_INTERFACE
-=======
 	/* same as standard seibu ym2203, but also reads "DSW" */
 	MCFG_SOUND_ADD("ymsnd", YM2203, XTAL_16MHz/4)
 	MCFG_YM2203_IRQ_HANDLER(DEVWRITELINE("seibu_sound", seibu_sound_device, fm_irqhandler))
@@ -715,7 +518,6 @@ static MACHINE_CONFIG_START( kothello )
 
 	MCFG_SOUND_ADD("adpcm", SEIBU_ADPCM, 8000) // actually MSM5205
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.80)
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 /***************************************************************************
@@ -870,29 +672,14 @@ ROM_START( kothello )
 	ROM_LOAD( "rom5.5l",   0x00000, 0x02000, CRC(7eb6e697) SHA1(4476e13f9a9e04472581f2c069760f53b33d5672))
 	ROM_CONTINUE(          0x10000, 0x0e000 )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x10000, "adpcm1", 0 )
-	ROM_LOAD( "rom6.7m",   0x00000, 0x10000, CRC(4ab1335d) SHA1(3a803e8a7e9b0c2a26ee23e7ac9c89c70cf2504b))
-
-	ROM_REGION( 0x10000, "adpcm2", ROMREGION_ERASE00 )
-=======
 	ROM_REGION( 0x10000, "adpcm", 0 )
 	ROM_LOAD( "rom6.7m",   0x00000, 0x10000, CRC(4ab1335d) SHA1(3a803e8a7e9b0c2a26ee23e7ac9c89c70cf2504b))
->>>>>>> upstream/master
 ROM_END
 
 
 
-<<<<<<< HEAD
-GAME( 1988, shanghai,  0,        shanghai, shanghai, driver_device, 0, ROT0, "Sunsoft", "Shanghai (World)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
-GAME( 1988, shanghaij, shanghai, shanghai, shanghai, driver_device, 0, ROT0, "Sunsoft", "Shanghai (Japan)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
-GAME( 1989, shangha2,  0,        shangha2, shangha2, driver_device, 0, ROT0, "Sunsoft", "Shanghai II (Japan, set 1)", MACHINE_SUPPORTS_SAVE )
-GAME( 1989, shangha2a, shangha2, shangha2, shangha2, driver_device, 0, ROT0, "Sunsoft", "Shanghai II (Japan, set 2)", MACHINE_SUPPORTS_SAVE )
-GAME( 1990, kothello,  0,        kothello, kothello, driver_device, 0, ROT0, "Success", "Kyuukyoku no Othello", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1988, shanghai,  0,        shanghai, shanghai, shanghai_state, 0, ROT0, "Sunsoft", "Shanghai (World)",           MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
 GAME( 1988, shanghaij, shanghai, shanghai, shanghai, shanghai_state, 0, ROT0, "Sunsoft", "Shanghai (Japan)",           MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
 GAME( 1989, shangha2,  0,        shangha2, shangha2, shanghai_state, 0, ROT0, "Sunsoft", "Shanghai II (Japan, set 1)", MACHINE_SUPPORTS_SAVE )
 GAME( 1989, shangha2a, shangha2, shangha2, shangha2, shanghai_state, 0, ROT0, "Sunsoft", "Shanghai II (Japan, set 2)", MACHINE_SUPPORTS_SAVE )
 GAME( 1990, kothello,  0,        kothello, kothello, shanghai_state, 0, ROT0, "Success", "Kyuukyoku no Othello",       MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

@@ -1,22 +1,4 @@
 --
-<<<<<<< HEAD
--- Copyright 2010-2015 Branimir Karadzic. All rights reserved.
--- License: http://www.opensource.org/licenses/BSD-2-Clause
---
- 
-project "bx"
-	uuid "4db0b09e-d6df-11e1-a0ec-65ccdd6a022f"
-	kind "StaticLib"
-
-	configuration { "osx or ios" }
-		-- OSX ar doesn't like creating archive without object files
-		-- here is object file...
-		prebuildcommands {
-			"@echo \"void dummy() {}\" > /tmp/dummy.cpp",
-		}
-		files {
-			"/tmp/dummy.cpp",
-=======
 -- Copyright 2010-2017 Branimir Karadzic. All rights reserved.
 -- License: https://github.com/bkaradzic/bx#license-bsd-2-clause
 --
@@ -37,16 +19,10 @@ project "bx"
 	configuration { "linux-*" }
 		buildoptions {
 			"-fPIC",
->>>>>>> upstream/master
 		}
 
 	configuration {}
 
-<<<<<<< HEAD
-	files {
-		"../include/**.h",
-	}
-=======
 	if _OPTIONS["with-amalgamated"] then
 		excludes {
 			path.join(BX_DIR, "src/commandline.cpp"),
@@ -70,4 +46,3 @@ project "bx"
 	end
 
 	configuration {}
->>>>>>> upstream/master

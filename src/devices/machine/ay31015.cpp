@@ -40,13 +40,8 @@ Device Data:
 -- Pin 21 - XR - External Reset - resets all registers to initial state except for the control register
 -- Pin 35 - NP - No Parity - "1" will kill any parity processing
 -- Pin 36 - TSB - Number of Stop Bits - "0" = 1 stop bit; "1" = 2 stop bits. If "1", and 5 bits per character, then we have 1.5 stop bits
-<<<<<<< HEAD
--- pin 37 - NB1
--- pin 38 - NB2 - Number of bits per character = NB1 + (NB2 * 2) + 5
-=======
 -- pin 37 - NB2
 -- pin 38 - NB1 - Number of bits per character = NB1 + (NB2 * 2) + 5
->>>>>>> upstream/master
 -- pin 39 - EPS - Odd or Even Parity Select - "0" = Odd parity; "1" = Even parity. Has no effect if NP is high.
 -- Pin 34 - CS - Control Strobe - Read NP, TSB, EPS, NB1, NB2 into the control register.
 
@@ -99,69 +94,6 @@ Start bit (low), Bit 0, Bit 1... highest bit, Parity bit (if enabled), 1-2 stop 
 
 
 
-<<<<<<< HEAD
-const device_type AY31015 = &device_creator<ay31015_device>;
-const device_type AY51013 = &device_creator<ay51013_device>;
-
-ay31015_device::ay31015_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source)
-				: device_t(mconfig, type, name, tag, owner, clock, shortname, source),
-				m_control_reg(0),
-				m_status_reg(0),
-				m_second_stop_bit(0),
-				m_total_pulses(0),
-				m_internal_sample(0),
-				m_rx_data(0),
-				m_rx_buffer(0),
-				m_rx_bit_count(0),
-				m_rx_parity(0),
-				m_rx_pulses(0),
-				m_rx_clock(0),
-				m_rx_timer(NULL),
-				m_tx_data(0),
-				m_tx_buffer(0),
-				m_tx_parity(0),
-				m_tx_pulses(0),
-				m_tx_clock(0),
-				m_tx_timer(NULL),
-				m_read_si_cb(*this),
-				m_write_so_cb(*this),
-				m_status_changed_cb(*this)
-{
-	for (int i = 0; i < 41; i++)
-		m_pins[i] = 0;
-}
-
-ay31015_device::ay31015_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-				: device_t(mconfig, AY31015, "AY-3-1015", tag, owner, clock, "ay31015", __FILE__),
-				m_control_reg(0),
-				m_status_reg(0),
-				m_second_stop_bit(0),
-				m_total_pulses(0),
-				m_internal_sample(0),
-				m_rx_data(0),
-				m_rx_buffer(0),
-				m_rx_bit_count(0),
-				m_rx_parity(0),
-				m_rx_pulses(0),
-				m_rx_clock(0),
-				m_rx_timer(NULL),
-				m_tx_data(0),
-				m_tx_buffer(0),
-				m_tx_parity(0),
-				m_tx_pulses(0),
-				m_tx_clock(0),
-				m_tx_timer(NULL),
-				m_read_si_cb(*this),
-				m_write_so_cb(*this),
-				m_status_changed_cb(*this)
-{
-	for (int i = 0; i < 41; i++)
-		m_pins[i] = 0;
-}
-
-ay51013_device::ay51013_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-				: ay31015_device(mconfig, AY31015, "AY-5-1013", tag, owner, clock, "ay51013", __FILE__)
-=======
 DEFINE_DEVICE_TYPE(AY31015, ay31015_device, "ay31015", "AY-3-1015")
 DEFINE_DEVICE_TYPE(AY51013, ay51013_device, "ay51013", "AY-5-1013")
 
@@ -200,7 +132,6 @@ ay31015_device::ay31015_device(const machine_config &mconfig, const char *tag, d
 
 ay51013_device::ay51013_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: ay31015_device(mconfig, AY51013, tag, owner, clock)
->>>>>>> upstream/master
 {
 }
 
@@ -214,19 +145,12 @@ void ay31015_device::device_start()
 	m_write_so_cb.resolve();
 	m_status_changed_cb.resolve();
 
-<<<<<<< HEAD
-	m_rx_timer = machine().scheduler().timer_alloc(timer_expired_delegate(FUNC(ay31015_device::rx_process),this));
-	m_tx_timer = machine().scheduler().timer_alloc(timer_expired_delegate(FUNC(ay31015_device::tx_process),this));
-
-	update_rx_timer();
-=======
 	m_rx_timer = timer_alloc(TIMER_RX);
 	m_rx_timer->adjust(attotime::never);
 	update_rx_timer();
 
 	m_tx_timer = timer_alloc(TIMER_TX);
 	m_tx_timer->adjust(attotime::never);
->>>>>>> upstream/master
 	update_tx_timer();
 
 	save_item(NAME(m_pins));
@@ -265,11 +189,7 @@ void ay31015_device::device_reset()
 }
 
 
-<<<<<<< HEAD
-inline UINT8 ay31015_device::get_si()
-=======
 inline uint8_t ay31015_device::get_si()
->>>>>>> upstream/master
 {
 	if (!m_read_si_cb.isnull())
 		m_pins[AY31015_SI] = m_read_si_cb(0) ? 1 : 0;
@@ -287,11 +207,7 @@ inline void ay31015_device::set_so( int data )
 }
 
 
-<<<<<<< HEAD
-inline int ay31015_device::update_status_pin( UINT8 reg_bit, ay31015_output_pin_t pin )
-=======
 inline int ay31015_device::update_status_pin( uint8_t reg_bit, ay31015_output_pin_t pin )
->>>>>>> upstream/master
 {
 	int new_value = (m_status_reg & reg_bit) ? 1 : 0;
 
@@ -328,8 +244,6 @@ void ay31015_device::update_status_pins()
 	}
 }
 
-<<<<<<< HEAD
-=======
 void ay31015_device::device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr)
 {
 	if (id == TIMER_RX)
@@ -337,7 +251,6 @@ void ay31015_device::device_timer(emu_timer &timer, device_timer_id id, int para
 	else if(id == TIMER_TX)
 		tx_process();
 }
->>>>>>> upstream/master
 
 /*************************************************** RECEIVE CONTROLS *************************************************/
 
@@ -346,11 +259,7 @@ void ay31015_device::device_timer(emu_timer &timer, device_timer_id id, int para
  ay31015_rx_process - convert serial to parallel
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-TIMER_CALLBACK_MEMBER( ay31015_device::rx_process )
-=======
 void ay31015_device::rx_process()
->>>>>>> upstream/master
 {
 	switch (m_rx_state)
 	{
@@ -503,15 +412,9 @@ void ay31015_device::rx_process()
  ay31015_tx_process - convert parallel to serial
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-TIMER_CALLBACK_MEMBER( ay31015_device::tx_process )
-{
-	UINT8 t1;
-=======
 void ay31015_device::tx_process()
 {
 	uint8_t t1;
->>>>>>> upstream/master
 	switch (m_tx_state)
 	{
 		case IDLE:
@@ -644,11 +547,7 @@ void ay31015_device::tx_process()
 void ay31015_device::internal_reset()
 {
 	/* total pulses = 16 * data-bits */
-<<<<<<< HEAD
-	UINT8 t1;
-=======
 	uint8_t t1;
->>>>>>> upstream/master
 
 	if (m_control_reg & CONTROL_NB2)
 		t1 = (m_control_reg & CONTROL_NB1) ? 8 : 7;
@@ -673,11 +572,7 @@ void ay31015_device::internal_reset()
 void ay51013_device::internal_reset()
 {
 	/* total pulses = 16 * data-bits */
-<<<<<<< HEAD
-	UINT8 t1;
-=======
 	uint8_t t1;
->>>>>>> upstream/master
 
 	if (m_control_reg & CONTROL_NB2)
 		t1 = (m_control_reg & CONTROL_NB1) ? 8 : 7;
@@ -703,11 +598,7 @@ void ay51013_device::internal_reset()
 
 void ay31015_device::transfer_control_pins()
 {
-<<<<<<< HEAD
-	UINT8 control = 0;
-=======
 	uint8_t control = 0;
->>>>>>> upstream/master
 
 	control |= m_pins[AY31015_NP ] ? CONTROL_NP  : 0;
 	control |= m_pins[AY31015_TSB] ? CONTROL_TSB : 0;
@@ -828,11 +719,7 @@ void ay31015_device::set_transmitter_clock( double new_clock )
  ay31015_get_received_data - return a byte to the computer
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-UINT8 ay31015_device::get_received_data()
-=======
 uint8_t ay31015_device::get_received_data()
->>>>>>> upstream/master
 {
 	return m_rx_buffer;
 }
@@ -841,11 +728,7 @@ uint8_t ay31015_device::get_received_data()
 /*-------------------------------------------------
     ay31015_set_transmit_data - accept a byte to transmit, if able
 -------------------------------------------------*/
-<<<<<<< HEAD
-void ay31015_device::set_transmit_data( UINT8 data )
-=======
 void ay31015_device::set_transmit_data( uint8_t data )
->>>>>>> upstream/master
 {
 	if (m_status_reg & STATUS_TBMT)
 	{

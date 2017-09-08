@@ -15,11 +15,7 @@
 int arcompact_handle00_dasm(DASM_OPS_32)
 {
 	int size = 4;
-<<<<<<< HEAD
-	UINT8 subinstr = (op & 0x00010000) >> 16;
-=======
 	uint8_t subinstr = (op & 0x00010000) >> 16;
->>>>>>> upstream/master
 	op &= ~0x00010000;
 
 	switch (subinstr)
@@ -34,11 +30,7 @@ int arcompact_handle00_dasm(DASM_OPS_32)
 int arcompact_handle01_dasm(DASM_OPS_32)
 {
 	int size = 4;
-<<<<<<< HEAD
-	UINT8 subinstr = (op & 0x00010000) >> 16;
-=======
 	uint8_t subinstr = (op & 0x00010000) >> 16;
->>>>>>> upstream/master
 	op &= ~0x00010000;
 
 	switch (subinstr)
@@ -53,11 +45,7 @@ int arcompact_handle01_dasm(DASM_OPS_32)
 int arcompact_handle01_00_dasm(DASM_OPS_32)
 {
 	int size = 4;
-<<<<<<< HEAD
-	UINT8 subinstr2 = (op & 0x00020000) >> 17;
-=======
 	uint8_t subinstr2 = (op & 0x00020000) >> 17;
->>>>>>> upstream/master
 	op &= ~0x00020000;
 
 	switch (subinstr2)
@@ -73,11 +61,7 @@ int arcompact_handle01_01_dasm(DASM_OPS_32)
 {
 	int size = 4;
 
-<<<<<<< HEAD
-	UINT8 subinstr2 = (op & 0x00000010) >> 4;
-=======
 	uint8_t subinstr2 = (op & 0x00000010) >> 4;
->>>>>>> upstream/master
 	op &= ~0x00000010;
 
 	switch (subinstr2)
@@ -92,11 +76,7 @@ int arcompact_handle01_01_dasm(DASM_OPS_32)
 int arcompact_handle01_01_00_dasm(DASM_OPS_32)
 {
 	int size = 4;
-<<<<<<< HEAD
-	UINT8 subinstr3 = (op & 0x0000000f) >> 0;
-=======
 	uint8_t subinstr3 = (op & 0x0000000f) >> 0;
->>>>>>> upstream/master
 	op &= ~0x0000000f;
 
 	switch (subinstr3)
@@ -125,11 +105,7 @@ int arcompact_handle01_01_00_dasm(DASM_OPS_32)
 int arcompact_handle01_01_01_dasm(DASM_OPS_32) //  Branch on Compare/Bit Test Register-Immediate
 {
 	int size = 4;
-<<<<<<< HEAD
-	UINT8 subinstr3 = (op & 0x0000000f) >> 0;
-=======
 	uint8_t subinstr3 = (op & 0x0000000f) >> 0;
->>>>>>> upstream/master
 	op &= ~0x0000000f;
 
 	switch (subinstr3)
@@ -170,11 +146,7 @@ int arcompact_handle04_dasm(DASM_OPS_32)
 
 	// 00100 bbb 11 iiiiii F BBB CCCCCC 0 QQQQQ   General Operations Conditional Register
 	// 00100 bbb 11 iiiiii F BBB UUUUUU 1 QQQQQ   General Operations Conditional Register (Unsigned 6-bit IMM)
-<<<<<<< HEAD
-	UINT8 subinstr = (op & 0x003f0000) >> 16;
-=======
 	uint8_t subinstr = (op & 0x003f0000) >> 16;
->>>>>>> upstream/master
 	op &= ~0x003f0000;
 
 	switch (subinstr)
@@ -251,11 +223,7 @@ int arcompact_handle04_dasm(DASM_OPS_32)
 int arcompact_handle04_2f_dasm(DASM_OPS_32)
 {
 	int size = 4;
-<<<<<<< HEAD
-	UINT8 subinstr2 = (op & 0x0000003f) >> 0;
-=======
 	uint8_t subinstr2 = (op & 0x0000003f) >> 0;
->>>>>>> upstream/master
 	op &= ~0x0000003f;
 
 	switch (subinstr2)
@@ -333,11 +301,7 @@ int arcompact_handle04_2f_dasm(DASM_OPS_32)
 int arcompact_handle05_2f_dasm(DASM_OPS_32)
 {
 	int size = 4;
-<<<<<<< HEAD
-	UINT8 subinstr2 = (op & 0x0000003f) >> 0;
-=======
 	uint8_t subinstr2 = (op & 0x0000003f) >> 0;
->>>>>>> upstream/master
 	op &= ~0x0000003f;
 
 	switch (subinstr2)
@@ -414,11 +378,7 @@ int arcompact_handle05_2f_dasm(DASM_OPS_32)
 int arcompact_handle04_2f_3f_dasm(DASM_OPS_32)
 {
 	int size = 4;
-<<<<<<< HEAD
-	UINT8 subinstr3 = (op & 0x07000000) >> 24;
-=======
 	uint8_t subinstr3 = (op & 0x07000000) >> 24;
->>>>>>> upstream/master
 	subinstr3 |= ((op & 0x00007000) >> 12) << 3;
 
 	op &= ~0x07007000;
@@ -498,11 +458,7 @@ int arcompact_handle04_2f_3f_dasm(DASM_OPS_32)
 int arcompact_handle05_2f_3f_dasm(DASM_OPS_32) // useless ZOP group, no actual opcodes
 {
 	int size = 4;
-<<<<<<< HEAD
-	UINT8 subinstr3 = (op & 0x07000000) >> 24;
-=======
 	uint8_t subinstr3 = (op & 0x07000000) >> 24;
->>>>>>> upstream/master
 	subinstr3 |= ((op & 0x00007000) >> 12) << 3;
 
 	op &= ~0x07007000;
@@ -583,11 +539,7 @@ int arcompact_handle05_2f_3f_dasm(DASM_OPS_32) // useless ZOP group, no actual o
 int arcompact_handle05_dasm(DASM_OPS_32)
 {
 	int size = 4;
-<<<<<<< HEAD
-	UINT8 subinstr = (op & 0x003f0000) >> 16;
-=======
 	uint8_t subinstr = (op & 0x003f0000) >> 16;
->>>>>>> upstream/master
 	op &= ~0x003f0000;
 
 	switch (subinstr)
@@ -664,11 +616,7 @@ int arcompact_handle05_dasm(DASM_OPS_32)
 int arcompact_handle0c_dasm(DASM_OPS_16)
 {
 	int size = 2;
-<<<<<<< HEAD
-	UINT8 subinstr = (op & 0x0018) >> 3;
-=======
 	uint8_t subinstr = (op & 0x0018) >> 3;
->>>>>>> upstream/master
 	op &= ~0x0018;
 
 	switch (subinstr)
@@ -684,11 +632,7 @@ int arcompact_handle0c_dasm(DASM_OPS_16)
 int arcompact_handle0d_dasm(DASM_OPS_16)
 {
 	int size = 2;
-<<<<<<< HEAD
-	UINT8 subinstr = (op & 0x0018) >> 3;
-=======
 	uint8_t subinstr = (op & 0x0018) >> 3;
->>>>>>> upstream/master
 	op &= ~0x0018;
 
 	switch (subinstr)
@@ -704,11 +648,7 @@ int arcompact_handle0d_dasm(DASM_OPS_16)
 int arcompact_handle0e_dasm(DASM_OPS_16)
 {
 	int size = 2;
-<<<<<<< HEAD
-	UINT8 subinstr = (op & 0x0018) >> 3;
-=======
 	uint8_t subinstr = (op & 0x0018) >> 3;
->>>>>>> upstream/master
 	op &= ~0x0018;
 
 	switch (subinstr)
@@ -726,11 +666,7 @@ int arcompact_handle0f_dasm(DASM_OPS_16)
 	int size = 2;
 	// General Register Instructions (16-bit)
 	// 0111 1bbb ccci iiii
-<<<<<<< HEAD
-	UINT8 subinstr = (op & 0x01f) >> 0;
-=======
 	uint8_t subinstr = (op & 0x01f) >> 0;
->>>>>>> upstream/master
 	op &= ~0x001f;
 
 	switch (subinstr)
@@ -775,11 +711,7 @@ int arcompact_handle0f_dasm(DASM_OPS_16)
 int arcompact_handle0f_00_dasm(DASM_OPS_16)
 {
 	int size = 2;
-<<<<<<< HEAD
-	UINT8 subinstr = (op & 0x00e0) >> 5;
-=======
 	uint8_t subinstr = (op & 0x00e0) >> 5;
->>>>>>> upstream/master
 	op &= ~0x00e0;
 
 	switch (subinstr)
@@ -803,11 +735,7 @@ int arcompact_handle0f_00_07_dasm(DASM_OPS_16)
 	int size = 2;
 	// General Operations w/o Register
 	// 01111 iii 111 00000
-<<<<<<< HEAD
-	UINT8 subinstr3 = (op & 0x0700) >> 8;
-=======
 	uint8_t subinstr3 = (op & 0x0700) >> 8;
->>>>>>> upstream/master
 	op &= ~0x0700;
 
 	switch (subinstr3)
@@ -828,11 +756,7 @@ int arcompact_handle0f_00_07_dasm(DASM_OPS_16)
 int arcompact_handle17_dasm(DASM_OPS_16)
 {
 	int size = 2;
-<<<<<<< HEAD
-	UINT8 subinstr = (op & 0x00e0) >> 5;
-=======
 	uint8_t subinstr = (op & 0x00e0) >> 5;
->>>>>>> upstream/master
 	op &= ~0x00e0;
 
 	switch (subinstr)
@@ -855,11 +779,7 @@ int arcompact_handle18_dasm(DASM_OPS_16)
 	int size = 2;
 	// Stack Pointer Based Instructions (16-bit)
 	// 11000 bbb iii uuuuu
-<<<<<<< HEAD
-	UINT8 subinstr = (op & 0x00e0) >> 5;
-=======
 	uint8_t subinstr = (op & 0x00e0) >> 5;
->>>>>>> upstream/master
 	op &= ~0x00e0;
 
 	switch (subinstr)
@@ -880,11 +800,7 @@ int arcompact_handle18_dasm(DASM_OPS_16)
 int arcompact_handle18_05_dasm(DASM_OPS_16)
 {
 	int size = 2;
-<<<<<<< HEAD
-	UINT8 subinstr2 = (op & 0x0700) >> 8;
-=======
 	uint8_t subinstr2 = (op & 0x0700) >> 8;
->>>>>>> upstream/master
 	op &= ~0x0700;
 
 	switch (subinstr2)
@@ -905,11 +821,7 @@ int arcompact_handle18_05_dasm(DASM_OPS_16)
 int arcompact_handle18_06_dasm(DASM_OPS_16)
 {
 	int size = 2;
-<<<<<<< HEAD
-	UINT8 subinstr2 = (op & 0x001f) >> 0;
-=======
 	uint8_t subinstr2 = (op & 0x001f) >> 0;
->>>>>>> upstream/master
 	op &= ~0x001f;
 
 	switch (subinstr2)
@@ -954,11 +866,7 @@ int arcompact_handle18_06_dasm(DASM_OPS_16)
 int arcompact_handle18_07_dasm(DASM_OPS_16)
 {
 	int size = 2;
-<<<<<<< HEAD
-	UINT8 subinstr2 = (op & 0x001f) >> 0;
-=======
 	uint8_t subinstr2 = (op & 0x001f) >> 0;
->>>>>>> upstream/master
 	op &= ~0x001f;
 
 	switch (subinstr2)
@@ -1003,11 +911,7 @@ int arcompact_handle18_07_dasm(DASM_OPS_16)
 int arcompact_handle19_dasm(DASM_OPS_16)
 {
 	int size = 2;
-<<<<<<< HEAD
-	UINT8 subinstr = (op & 0x0600) >> 9;
-=======
 	uint8_t subinstr = (op & 0x0600) >> 9;
->>>>>>> upstream/master
 	op &= ~0x0600;
 
 	switch (subinstr)
@@ -1023,11 +927,7 @@ int arcompact_handle19_dasm(DASM_OPS_16)
 int arcompact_handle1c_dasm(DASM_OPS_16)
 {
 	int size = 2;
-<<<<<<< HEAD
-	UINT8 subinstr = (op & 0x0080) >> 7;
-=======
 	uint8_t subinstr = (op & 0x0080) >> 7;
->>>>>>> upstream/master
 	op &= ~0x0080;
 
 	switch (subinstr)
@@ -1041,11 +941,7 @@ int arcompact_handle1c_dasm(DASM_OPS_16)
 int arcompact_handle1d_dasm(DASM_OPS_16)
 {
 	int size = 2;
-<<<<<<< HEAD
-	UINT8 subinstr = (op & 0x0080) >> 7;
-=======
 	uint8_t subinstr = (op & 0x0080) >> 7;
->>>>>>> upstream/master
 	op &= ~0x0080;
 
 	switch (subinstr)
@@ -1059,11 +955,7 @@ int arcompact_handle1d_dasm(DASM_OPS_16)
 int arcompact_handle1e_dasm(DASM_OPS_16)
 {
 	int size = 2;
-<<<<<<< HEAD
-	UINT8 subinstr = (op & 0x0600) >> 9;
-=======
 	uint8_t subinstr = (op & 0x0600) >> 9;
->>>>>>> upstream/master
 	op &= ~0x0600;
 
 	switch (subinstr)
@@ -1079,11 +971,7 @@ int arcompact_handle1e_dasm(DASM_OPS_16)
 int arcompact_handle1e_03_dasm(DASM_OPS_16)
 {
 	int size = 2;
-<<<<<<< HEAD
-	UINT8 subinstr2 = (op & 0x01c0) >> 6;
-=======
 	uint8_t subinstr2 = (op & 0x01c0) >> 6;
->>>>>>> upstream/master
 	op &= ~0x01c0;
 
 	switch (subinstr2)

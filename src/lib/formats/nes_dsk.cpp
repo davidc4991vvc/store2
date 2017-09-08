@@ -24,13 +24,8 @@
 
 static FLOPPY_IDENTIFY( nes_dsk_identify )
 {
-<<<<<<< HEAD
-	UINT64 size;
-	UINT8 header[3];
-=======
 	uint64_t size;
 	uint8_t header[3];
->>>>>>> upstream/master
 
 	*vote = 0;
 
@@ -74,12 +69,7 @@ LEGACY_FLOPPY_OPTIONS_START( nes_only )
 		"NES floppy disk image",
 		nes_dsk_identify,
 		nes_dsk_construct,
-<<<<<<< HEAD
-		NULL,
-		NULL
-=======
 		nullptr,
 		nullptr
->>>>>>> upstream/master
 	)
 LEGACY_FLOPPY_OPTIONS_END0

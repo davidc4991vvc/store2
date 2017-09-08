@@ -16,41 +16,25 @@
 
 #include "emu.h"
 #include "includes/mpu4.h"
-<<<<<<< HEAD
-#include "connect4.lh"
-
-
-=======
 
 #include "m4actclb.lh"
 #include "m4actpak.lh"
 #include "m4alladv.lh"
 #include "m4alpha.lh"
 #include "connect4.lh"
->>>>>>> upstream/master
 
 MACHINE_CONFIG_EXTERN( mod2 );
 INPUT_PORTS_EXTERN( mpu4 );
 INPUT_PORTS_EXTERN( mpu4jackpot8tkn );
 
 
-<<<<<<< HEAD
-
-#define GAME_FLAGS (MACHINE_NOT_WORKING|MACHINE_REQUIRES_ARTWORK|MACHINE_MECHANICAL)
-
-=======
->>>>>>> upstream/master
 DRIVER_INIT_MEMBER( mpu4_state, m4_showstring_mod2 )
 {
 	DRIVER_INIT_CALL( m4default );
 
 	// many original barcrest / bwb sets have identification info around here
 	// this helps with sorting
-<<<<<<< HEAD
-	UINT8 *src = memregion( "maincpu" )->base();
-=======
 	uint8_t *src = memregion( "maincpu" )->base();
->>>>>>> upstream/master
 	printf("\ncopyright string:\n");
 	for (int i = 0xffe0; i<0xfff0; i++)
 	{
@@ -319,8 +303,6 @@ ROM_START( m4stakeua )
 	ROM_LOAD( "m400.chr", 0x0000, 0x000048, CRC(8f00f720) SHA1(ea59fa2a3b016a7ae83be3caf863de87ce7aeffa) )
 ROM_END
 
-<<<<<<< HEAD
-=======
 DRIVER_INIT_MEMBER(mpu4_state,m4actpak)
 {
 	//Derived from Action_Pack_(Barcrest)_[C02_800_4jp].gam
@@ -352,7 +334,6 @@ DRIVER_INIT_MEMBER(mpu4_state,m4actpak)
 	//Sample rate 16000
 	//Front door code 0 Cash door code 0
 }
->>>>>>> upstream/master
 
 ROM_START( m4actpak )
 	ROM_REGION( 0x10000, "maincpu", 0 )
@@ -365,8 +346,6 @@ ROM_START( m4actpaka )
 	ROM_LOAD( "action.hex", 0x0000, 0x010000, CRC(c5808b5d) SHA1(577950166c91e7f1ca390ebcf34be2da945c0a5f) )
 ROM_END
 
-<<<<<<< HEAD
-=======
 DRIVER_INIT_MEMBER(mpu4_state,m4alladv)
 {
 	//Derived from All_Cash_Advance_(Barcrest)_[C01_800_4jp].gam
@@ -400,7 +379,6 @@ DRIVER_INIT_MEMBER(mpu4_state,m4alladv)
 	//Front door code 0 Cash door code 0
 }
 
->>>>>>> upstream/master
 ROM_START( m4alladv )
 	ROM_REGION( 0x10000, "maincpu", 0 )
 	ROM_LOAD( "c2a60p1.bin", 0x8000, 0x008000, CRC(6630b4a4) SHA1(e4b35fde196d544b41e1dc9cee94442cc5c7223f) )
@@ -988,8 +966,6 @@ ROM_START( m421 )
 	ROM_LOAD( "twentyone.bin", 0x0000, 0x010000, CRC(243f3bc1) SHA1(141df3dcdd8d70ad26a76ec071e0cd927357ee6e) )
 ROM_END
 
-<<<<<<< HEAD
-=======
 DRIVER_INIT_MEMBER(mpu4_state,m4alpha)
 {
 	//Derived from Alphabet_(Barcrest)_[C03_1024_4jp].gam
@@ -1023,7 +999,6 @@ DRIVER_INIT_MEMBER(mpu4_state,m4alpha)
 	//Front door code 255 Cash door code 255
 }
 
->>>>>>> upstream/master
 ROM_START( m4alpha )
 	ROM_REGION( 0x10000, "maincpu", 0 )
 	ROM_LOAD( "alphabet.hex", 0x6000, 0x00a000, CRC(2bf0d7fd) SHA1(143543f45bfae379233a8c21959618e5ad8034e4) )
@@ -1268,8 +1243,6 @@ ROM_START( m4actbnkb )
 	ROM_LOAD( "abank.hex", 0x6000, 0x00a000, CRC(2cd1a269) SHA1(5ce22b2736844a2de6cda04abdd0fe435391e033) ) // split me
 ROM_END
 
-<<<<<<< HEAD
-=======
 DRIVER_INIT_MEMBER(mpu4_state,m4actclb)
 {
 	//Derived from Action_Club_(Barcrest)_[C03_800_150jp]_[c].gam
@@ -1302,7 +1275,6 @@ DRIVER_INIT_MEMBER(mpu4_state,m4actclb)
 	//Sample rate 16000
 	//Front door code 0 Cash door code 0
 }
->>>>>>> upstream/master
 
 ROM_START( m4actclb )
 	ROM_REGION( 0x10000, "maincpu", 0 )
@@ -1786,11 +1758,7 @@ ROM_START( m4brktak )
 	ROM_LOAD( "b-t v1-0 p2", 0x8000, 0x004000, CRC(7465cc6f) SHA1(f984e41c310bc58d7a668ec9f31c238fbf5de9c6) )
 ROM_END
 
-<<<<<<< HEAD
-
-=======
 #define GAME_FLAGS (MACHINE_NOT_WORKING|MACHINE_REQUIRES_ARTWORK|MACHINE_MECHANICAL)
->>>>>>> upstream/master
 
 GAME(199?, m4rsg        ,0          ,mod2       ,mpu4               , mpu4_state,m4default          ,ROT0,   "Barcrest","Ready Steady Go (Barcrest) (MPU4, Mod 2 type, V1.2)",GAME_FLAGS )
 GAME(199?, m4rsga       ,m4rsg      ,mod2       ,mpu4               , mpu4_state,m4default          ,ROT0,   "Barcrest","Ready Steady Go (Barcrest) (MPU4, Mod 2 type, V1.0)",GAME_FLAGS )
@@ -1820,17 +1788,10 @@ GAME(199?, m4sgrabb     ,m4sgrab    ,mod2       ,mpu4               , mpu4_state
 GAME(199?, m4stakeu     ,0          ,mod2       ,mpu4               , mpu4_state,m4default          ,ROT0,   "Barcrest","Stake Up Club (Barcrest) (MPU4) (SU 4.4)",GAME_FLAGS )
 GAME(199?, m4stakeua    ,m4stakeu   ,mod2       ,mpu4               , mpu4_state,m4default          ,ROT0,   "Barcrest","Stake Up Club (Barcrest) (MPU4) (SU 4.8)",GAME_FLAGS )
 
-<<<<<<< HEAD
-GAME(199?, m4actpak     ,0          ,mod2       ,mpu4               , mpu4_state,m4default          ,ROT0,   "Barcrest","Action Pack (Barcrest) (MPU4) (AP 0.4)",GAME_FLAGS )
-GAME(199?, m4actpaka    ,m4actpak   ,mod2       ,mpu4               , mpu4_state,m4default          ,ROT0,   "Barcrest","Action Pack (Barcrest) (MPU4) (AP 0.5)",GAME_FLAGS )
-
-GAME(199?, m4alladv     ,0          ,mod2       ,mpu4               , mpu4_state,m4default          ,ROT0,   "Barcrest","All Cash Advance (Barcrest) (MPU4) (C2B 6.0)",GAME_FLAGS )
-=======
 GAMEL(199?, m4actpak     ,0          ,mod2       ,mpu4               , mpu4_state,m4actpak           ,ROT0,   "Barcrest","Action Pack (Barcrest) (MPU4) (AP 0.4)",GAME_FLAGS, layout_m4actpak )
 GAMEL(199?, m4actpaka    ,m4actpak   ,mod2       ,mpu4               , mpu4_state,m4actpak           ,ROT0,   "Barcrest","Action Pack (Barcrest) (MPU4) (AP 0.5)",GAME_FLAGS, layout_m4actpak )
 
 GAMEL(199?, m4alladv     ,0          ,mod2       ,mpu4               , mpu4_state,m4alladv           ,ROT0,   "Barcrest","All Cash Advance (Barcrest) (MPU4) (C2B 6.0)",GAME_FLAGS, layout_m4alladv )
->>>>>>> upstream/master
 
 GAME(199?, m4clbdbl     ,0          ,mod2       ,mpu4               , mpu4_state,m4default          ,ROT0,   "Barcrest","Club Double (Barcrest) (MPU4) (CD 1.6)",GAME_FLAGS ) // reel issues
 
@@ -1971,11 +1932,7 @@ GAME(199?, m4tupen      ,0          ,mod2       ,mpu4               , mpu4_state
 
 GAME(199?, m421         ,0          ,mod2       ,mpu4               , mpu4_state,m4default          ,ROT0,   "Barcrest","Twenty One (Barcrest) (MPU4)",GAME_FLAGS ) // reel issues
 
-<<<<<<< HEAD
-GAME(199?, m4alpha      ,0          ,mod2       ,mpu4               , mpu4_state,m4default          ,ROT0,   "Barcrest","Alphabet (Barcrest) [A4B 1.0] (MPU4)",GAME_FLAGS )
-=======
 GAMEL(199?, m4alpha      ,0          ,mod2       ,mpu4               , mpu4_state,m4alpha           ,ROT0,   "Barcrest","Alphabet (Barcrest) [A4B 1.0] (MPU4)",GAME_FLAGS, layout_m4alpha )
->>>>>>> upstream/master
 
 GAME(199?, m4bnknot     ,0          ,mod2       ,mpu4               , mpu4_state,m4default          ,ROT0,   "Barcrest","Bank A Note (Barcrest) [BN 1.0] (MPU4)",GAME_FLAGS )
 
@@ -2046,13 +2003,8 @@ GAME(199?, m4ttak   ,  0,       mod2    ,mpu4, mpu4_state, m4default, ROT0,   "<
 GAME(199?, m4actbnka,m4actbnk   ,mod2       ,mpu4jackpot8tkn    , mpu4_state,m4default          ,ROT0,   "Barcrest","Action Bank (Barcrest) (Mod 2 type, AC3.0) (MPU4)",GAME_FLAGS ) // set jackpot key to 8GBP TOKEN & stake key
 GAME(199?, m4actbnkb,m4actbnk   ,mod2       ,mpu4jackpot8tkn    , mpu4_state,m4default          ,ROT0,   "Barcrest","Action Bank (Barcrest) (Mod 2 type, ACT2.0) (MPU4)",GAME_FLAGS )
 
-<<<<<<< HEAD
-GAME(199?, m4actclb     ,0          ,mod2       ,mpu4               , mpu4_state,m4default          ,ROT0,   "Barcrest","Action Club (Barcrest) (MPU4) (1.9)",GAME_FLAGS ) // set stake to boot
-GAME(199?, m4actclba    ,m4actclb   ,mod2       ,mpu4               , mpu4_state,m4default          ,ROT0,   "Barcrest","Action Club (Barcrest) (MPU4) (1.1)",GAME_FLAGS ) //  ^^
-=======
 GAMEL(199?, m4actclb     ,0          ,mod2       ,mpu4               , mpu4_state,m4actclb          ,ROT0,   "Barcrest","Action Club (Barcrest) (MPU4) (1.9)",GAME_FLAGS, layout_m4actclb ) // set stake to boot
 GAMEL(199?, m4actclba    ,m4actclb   ,mod2       ,mpu4               , mpu4_state,m4actclb          ,ROT0,   "Barcrest","Action Club (Barcrest) (MPU4) (1.1)",GAME_FLAGS, layout_m4actclb ) //  ^^
->>>>>>> upstream/master
 
 GAME(199?, m4bluemn     ,0                  ,mod2       ,mpu4               , mpu4_state,m4default          ,ROT0,   "Barcrest","Blue Moon (Barcrest) (MPU4) (BLU 2.3)",GAME_FLAGS )
 GAME(199?, m4bluemna    ,m4bluemn           ,mod2       ,mpu4               , mpu4_state,m4default          ,ROT0,   "Barcrest","Blue Moon (Barcrest) (MPU4) (BLU 2.1)",GAME_FLAGS )

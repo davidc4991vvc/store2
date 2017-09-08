@@ -5,58 +5,18 @@
  *
  */
 
-<<<<<<< HEAD
-=======
 
->>>>>>> upstream/master
 #include "font_module.h"
 #include "modules/osdmodule.h"
 
 #if defined(OSD_WINDOWS) || defined(SDLMAME_WIN32)
 
-<<<<<<< HEAD
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
-#include <commctrl.h>
-#include <mmsystem.h>
-#include <tchar.h>
-#include <io.h>
-
-=======
->>>>>>> upstream/master
 #include "font_module.h"
 #include "modules/osdmodule.h"
 
 #include "strconv.h"
 #include "corestr.h"
 #include "corealloc.h"
-<<<<<<< HEAD
-#include "fileio.h"
-
-//#define POINT_SIZE 144.0
-#define DEFAULT_FONT_HEIGHT (200)
-
-//-------------------------------------------------
-//  font_open - attempt to "open" a handle to the
-//  font with the given name
-//-------------------------------------------------
-
-class osd_font_windows : public osd_font
-{
-public:
-	osd_font_windows(): m_font(NULL) { }
-	virtual ~osd_font_windows() { }
-
-	virtual bool open(const char *font_path, const char *name, int &height);
-	virtual void close();
-	virtual bool get_bitmap(unicode_char chnum, bitmap_argb32 &bitmap, INT32 &width, INT32 &xoffs, INT32 &yoffs);
-private:
-	HGDIOBJ m_font;
-};
-
-bool osd_font_windows::open(const char *font_path, const char *_name, int &height)
-{
-=======
 
 #include <cstring>
 
@@ -101,7 +61,6 @@ bool osd_font_windows::open(std::string const &font_path, std::string const &_na
 	// don't leak a handle if we already have a font open
 	close();
 
->>>>>>> upstream/master
 	// accept qualifiers from the name
 	std::string name(_name);
 	if (name.compare("default")==0) name = "Tahoma";
@@ -110,11 +69,7 @@ bool osd_font_windows::open(std::string const &font_path, std::string const &_na
 
 	// build a basic LOGFONT description of what we want
 	LOGFONT logfont;
-<<<<<<< HEAD
-	logfont.lfHeight = DEFAULT_FONT_HEIGHT;
-=======
 	logfont.lfHeight = DEFAULT_HEIGHT;
->>>>>>> upstream/master
 	logfont.lfWidth = 0;
 	logfont.lfEscapement = 0;
 	logfont.lfOrientation = 0;
@@ -129,37 +84,13 @@ bool osd_font_windows::open(std::string const &font_path, std::string const &_na
 	logfont.lfPitchAndFamily = DEFAULT_PITCH | FF_DONTCARE;
 
 	// copy in the face name
-<<<<<<< HEAD
-	TCHAR *face = tstring_from_utf8(name.c_str());
-	_tcsncpy(logfont.lfFaceName, face, sizeof(logfont.lfFaceName) / sizeof(TCHAR));
-	logfont.lfFaceName[sizeof(logfont.lfFaceName) / sizeof(TCHAR)-1] = 0;
-	osd_free(face);
-=======
 	osd::text::tstring face = osd::text::to_tstring(name);
 	_tcsncpy(logfont.lfFaceName, face.c_str(), ARRAY_LENGTH(logfont.lfFaceName));
 	logfont.lfFaceName[sizeof(logfont.lfFaceName) / sizeof(TCHAR)-1] = 0;
->>>>>>> upstream/master
 
 	// create the font
 	height = logfont.lfHeight;
 	m_font = CreateFontIndirect(&logfont);
-<<<<<<< HEAD
-	if (m_font == NULL)
-		return false;
-
-	// select it into a temp DC and get the real font name
-	HDC dummyDC = CreateCompatibleDC(NULL);
-	HGDIOBJ oldfont = SelectObject(dummyDC, m_font);
-	TCHAR realname[100];
-	GetTextFace(dummyDC, ARRAY_LENGTH(realname), realname);
-	SelectObject(dummyDC, oldfont);
-	DeleteDC(dummyDC);
-
-	// if it doesn't match our request, fail
-	char *utf = utf8_from_tstring(realname);
-	int result = core_stricmp(utf, name.c_str());
-	osd_free(utf);
-=======
 	if (m_font == nullptr)
 		return false;
 
@@ -180,17 +111,12 @@ bool osd_font_windows::open(std::string const &font_path, std::string const &_na
 	// if it doesn't match our request, fail
 	std::string utf = osd::text::from_tstring(&realname[0]);
 	int result = core_stricmp(utf.c_str(), name.c_str());
->>>>>>> upstream/master
 
 	// if we didn't match, nuke our font and fall back
 	if (result != 0)
 	{
 		DeleteObject(m_font);
-<<<<<<< HEAD
-		m_font = NULL;
-=======
 		m_font = nullptr;
->>>>>>> upstream/master
 		return false;
 	}
 	return true;
@@ -204,15 +130,9 @@ bool osd_font_windows::open(std::string const &font_path, std::string const &_na
 void osd_font_windows::close()
 {
 	// delete the font ojbect
-<<<<<<< HEAD
-	if (m_font != NULL)
-		DeleteObject(m_font);
-
-=======
 	if (m_font != nullptr)
 		DeleteObject(m_font);
 	m_font = nullptr;
->>>>>>> upstream/master
 }
 
 //-------------------------------------------------
@@ -223,17 +143,10 @@ void osd_font_windows::close()
 //  pixel of a black & white font
 //-------------------------------------------------
 
-<<<<<<< HEAD
-bool osd_font_windows::get_bitmap(unicode_char chnum, bitmap_argb32 &bitmap, INT32 &width, INT32 &xoffs, INT32 &yoffs)
-{
-	// create a dummy DC to work with
-	HDC dummyDC = CreateCompatibleDC(NULL);
-=======
 bool osd_font_windows::get_bitmap(char32_t chnum, bitmap_argb32 &bitmap, int32_t &width, int32_t &xoffs, int32_t &yoffs)
 {
 	// create a dummy DC to work with
 	HDC dummyDC = CreateCompatibleDC(nullptr);
->>>>>>> upstream/master
 	HGDIOBJ oldfont = SelectObject(dummyDC, m_font);
 
 	// get the text metrics
@@ -275,11 +188,7 @@ bool osd_font_windows::get_bitmap(char32_t chnum, bitmap_argb32 &bitmap, int32_t
 
 	// create a DIB to render to
 	BYTE *bits;
-<<<<<<< HEAD
-	HBITMAP dib = CreateDIBSection(dummyDC, &info, DIB_RGB_COLORS, reinterpret_cast<VOID **>(&bits), NULL, 0);
-=======
 	HBITMAP dib = CreateDIBSection(dummyDC, &info, DIB_RGB_COLORS, reinterpret_cast<VOID **>(&bits), nullptr, 0);
->>>>>>> upstream/master
 
 	if (dib)
 	{
@@ -290,18 +199,11 @@ bool osd_font_windows::get_bitmap(char32_t chnum, bitmap_argb32 &bitmap, int32_t
 		memset(bits, 0, rowbytes * bmheight);
 
 		// now draw the character
-<<<<<<< HEAD
-		WCHAR tempchar = chnum;
-		SetTextColor(dummyDC, RGB(0xff, 0xff, 0xff));
-		SetBkColor(dummyDC, RGB(0x00, 0x00, 0x00));
-		ExtTextOutW(dummyDC, 50 + abc.abcA, 50, ETO_OPAQUE, NULL, &tempchar, 1, NULL);
-=======
 		char16_t tempchar[UTF16_CHAR_MAX];
 		UINT const count = INT(utf16_from_uchar(tempchar, ARRAY_LENGTH(tempchar), chnum));
 		SetTextColor(dummyDC, RGB(0xff, 0xff, 0xff));
 		SetBkColor(dummyDC, RGB(0x00, 0x00, 0x00));
 		ExtTextOutW(dummyDC, 50 + abc.abcA, 50, ETO_OPAQUE, nullptr, reinterpret_cast<LPCWSTR>(tempchar), count, nullptr);
->>>>>>> upstream/master
 
 		// characters are expected to be full-height
 		rectangle actbounds;
@@ -312,11 +214,7 @@ bool osd_font_windows::get_bitmap(char32_t chnum, bitmap_argb32 &bitmap, int32_t
 		for (actbounds.min_x = 0; actbounds.min_x < rowbytes; actbounds.min_x++)
 		{
 			BYTE *offs = bits + actbounds.min_x;
-<<<<<<< HEAD
-			UINT8 summary = 0;
-=======
 			uint8_t summary = 0;
->>>>>>> upstream/master
 			for (int y = 0; y < bmheight; y++)
 				summary |= offs[y * rowbytes];
 			if (summary != 0)
@@ -337,11 +235,7 @@ bool osd_font_windows::get_bitmap(char32_t chnum, bitmap_argb32 &bitmap, int32_t
 		for (actbounds.max_x = rowbytes - 1; actbounds.max_x >= 0; actbounds.max_x--)
 		{
 			BYTE *offs = bits + actbounds.max_x;
-<<<<<<< HEAD
-			UINT8 summary = 0;
-=======
 			uint8_t summary = 0;
->>>>>>> upstream/master
 			for (int y = 0; y < bmheight; y++)
 				summary |= offs[y * rowbytes];
 			if (summary != 0)
@@ -366,13 +260,8 @@ bool osd_font_windows::get_bitmap(char32_t chnum, bitmap_argb32 &bitmap, int32_t
 			// copy the bits into it
 			for (int y = 0; y < bitmap.height(); y++)
 			{
-<<<<<<< HEAD
-				UINT32 *dstrow = &bitmap.pix32(y);
-				UINT8 *srcrow = &bits[(y + actbounds.min_y) * rowbytes];
-=======
 				uint32_t *dstrow = &bitmap.pix32(y);
 				uint8_t *srcrow = &bits[(y + actbounds.min_y) * rowbytes];
->>>>>>> upstream/master
 				for (int x = 0; x < bitmap.width(); x++)
 				{
 					int effx = x + actbounds.min_x;
@@ -398,23 +287,6 @@ bool osd_font_windows::get_bitmap(char32_t chnum, bitmap_argb32 &bitmap, int32_t
 class font_win : public osd_module, public font_module
 {
 public:
-<<<<<<< HEAD
-	font_win() : osd_module(OSD_FONT_PROVIDER, "win"), font_module()
-	{
-	}
-
-	virtual int init(const osd_options &options) { return 0; }
-
-	osd_font *font_alloc()
-	{
-		return global_alloc(osd_font_windows);
-	}
-
-};
-#else /* SDLMAME_UNIX */
-	MODULE_NOT_SUPPORTED(font_win, OSD_FONT_PROVIDER, "win")
-#endif
-=======
 	font_win() : osd_module(OSD_FONT_PROVIDER, "win"), font_module() { }
 
 	virtual int init(const osd_options &options) override { return 0; }
@@ -460,6 +332,5 @@ bool font_win::get_font_families(std::string const &font_path, std::vector<std::
 MODULE_NOT_SUPPORTED(font_win, OSD_FONT_PROVIDER, "win")
 
 #endif // defined(OSD_WINDOWS) || defined(SDLMAME_WIN32)
->>>>>>> upstream/master
 
 MODULE_DEFINITION(FONT_WINDOWS, font_win)

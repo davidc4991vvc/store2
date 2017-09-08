@@ -4,15 +4,6 @@
 #include "msx_audio_kb.h"
 
 
-<<<<<<< HEAD
-const device_type MSX_AUDIO_KBDC_PORT = &device_creator<msx_audio_kbdc_port_device>;
-
-
-msx_audio_kbdc_port_device::msx_audio_kbdc_port_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, MSX_AUDIO_KBDC_PORT, "MSX Audio keyboard connector port", tag, owner, clock, "msx_audio_kbdc_port", __FILE__),
-	device_slot_interface(mconfig, *this),
-	m_keyboard(NULL)
-=======
 DEFINE_DEVICE_TYPE(MSX_AUDIO_KBDC_PORT, msx_audio_kbdc_port_device, "msx_audio_kbdc_port", "MSX Audio keyboard connector port")
 
 
@@ -20,7 +11,6 @@ msx_audio_kbdc_port_device::msx_audio_kbdc_port_device(const machine_config &mco
 	: device_t(mconfig, MSX_AUDIO_KBDC_PORT, tag, owner, clock)
 	, device_slot_interface(mconfig, *this)
 	, m_keyboard(nullptr)
->>>>>>> upstream/master
 {
 }
 
@@ -50,28 +40,6 @@ READ8_MEMBER(msx_audio_kbdc_port_device::read)
 }
 
 
-<<<<<<< HEAD
-extern const device_type MSX_AUDIO_KB_HXMU901;
-extern const device_type MSX_AUDIO_KB_NMS1160;
-
-
-class msx_hxmu901 : public device_t
-					, public msx_audio_kb_port_interface
-{
-public:
-	msx_hxmu901(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-		: device_t(mconfig, MSX_AUDIO_KB_HXMU901, "Toshiba HXMU901", tag, owner, clock, "hxmu901", __FILE__)
-		, msx_audio_kb_port_interface(mconfig, *this)
-		, m_row(0)
-		, m_keyboard(*this, "KEY")
-	{ };
-
-	virtual ioport_constructor device_input_ports() const;
-
-	virtual DECLARE_READ8_MEMBER(read)
-	{
-		UINT8 result = 0xff;
-=======
 DECLARE_DEVICE_TYPE(MSX_AUDIO_KB_HXMU901, msx_hxmu901_device)
 DECLARE_DEVICE_TYPE(MSX_AUDIO_KB_NMS1160, msx_nms1160_device)
 
@@ -92,7 +60,6 @@ public:
 	virtual DECLARE_READ8_MEMBER(read) override
 	{
 		uint8_t result = 0xff;
->>>>>>> upstream/master
 
 		for (int i = 0; i < 8; i++)
 		{
@@ -104,27 +71,16 @@ public:
 		return result;
 	}
 
-<<<<<<< HEAD
-	virtual DECLARE_WRITE8_MEMBER(write)
-=======
 	virtual DECLARE_WRITE8_MEMBER(write) override
->>>>>>> upstream/master
 	{
 		m_row = data;
 	}
 
 protected:
-<<<<<<< HEAD
-	virtual void device_start() { }
-
-private:
-	UINT8 m_row;
-=======
 	virtual void device_start() override { }
 
 private:
 	uint8_t m_row;
->>>>>>> upstream/master
 	required_ioport_array<8> m_keyboard;
 };
 
@@ -212,34 +168,12 @@ static INPUT_PORTS_START( hxmu901)
 INPUT_PORTS_END
 
 
-<<<<<<< HEAD
-ioport_constructor msx_hxmu901::device_input_ports() const
-=======
 ioport_constructor msx_hxmu901_device::device_input_ports() const
->>>>>>> upstream/master
 {
 	return INPUT_PORTS_NAME( hxmu901 );
 }
 
 
-<<<<<<< HEAD
-class msx_nms1160 : public device_t
-					, public msx_audio_kb_port_interface
-{
-public:
-	msx_nms1160(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-		: device_t(mconfig, MSX_AUDIO_KB_NMS1160, "Philips NMS-1160", tag, owner, clock, "nms1160", __FILE__)
-		, msx_audio_kb_port_interface(mconfig, *this)
-		, m_row(0)
-		, m_keyboard(*this, "KEY")
-	{ };
-
-	virtual ioport_constructor device_input_ports() const;
-
-	virtual DECLARE_READ8_MEMBER(read)
-	{
-		UINT8 result = 0xff;
-=======
 class msx_nms1160_device : public device_t, public msx_audio_kb_port_interface
 {
 public:
@@ -256,7 +190,6 @@ public:
 	virtual DECLARE_READ8_MEMBER(read) override
 	{
 		uint8_t result = 0xff;
->>>>>>> upstream/master
 
 		for (int i = 0; i < 8; i++)
 		{
@@ -268,28 +201,17 @@ public:
 		return result;
 	}
 
-<<<<<<< HEAD
-	virtual DECLARE_WRITE8_MEMBER(write)
-=======
 	virtual DECLARE_WRITE8_MEMBER(write) override
->>>>>>> upstream/master
 	{
 		logerror("msx_nms1160::write %02x\n", data);
 		m_row = data;
 	}
 
 protected:
-<<<<<<< HEAD
-	virtual void device_start() { }
-
-private:
-	UINT8 m_row;
-=======
 	virtual void device_start() override { }
 
 private:
 	uint8_t m_row;
->>>>>>> upstream/master
 	required_ioport_array<8> m_keyboard;
 };
 
@@ -375,24 +297,15 @@ static INPUT_PORTS_START( nms1160 )
 INPUT_PORTS_END
 
 
-<<<<<<< HEAD
-ioport_constructor msx_nms1160::device_input_ports() const
-=======
 ioport_constructor msx_nms1160_device::device_input_ports() const
->>>>>>> upstream/master
 {
 	return INPUT_PORTS_NAME( nms1160 );
 }
 
 
 
-<<<<<<< HEAD
-const device_type MSX_AUDIO_KB_HXMU901 = &device_creator<msx_hxmu901>;
-const device_type MSX_AUDIO_KB_NMS1160 = &device_creator<msx_nms1160>;
-=======
 DEFINE_DEVICE_TYPE(MSX_AUDIO_KB_HXMU901, msx_hxmu901_device, "hxmu901", "Toshiba HXMU901")
 DEFINE_DEVICE_TYPE(MSX_AUDIO_KB_NMS1160, msx_nms1160_device, "nms1160", "Philips NMS-1160")
->>>>>>> upstream/master
 
 
 SLOT_INTERFACE_START( msx_audio_keyboards )

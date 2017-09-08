@@ -520,22 +520,6 @@ Line up the LS32 so pin 7 is in line with Z80 pin 29
 Atach the 2 chips to the top of the Z80 with some glue
 Connect like this....
 
-<<<<<<< HEAD
-LS32 pin 1 tied to Z80 pin 22
-LS32 pin 2 tied to Z80 pin 19
-LS32 pin 3,4 tied together
-LS32 pin 5 tied to Z80 pin 4
-LS32 pin 6 tied to pin 10 LS32
-LS32 pin 7 tied to Z80 pin 29 (GND)
-LS32 pin 8 tied to LS259 pin 14
-LS32 pin 9 tied to Z80 pin 5
-LS32 pins 11, 12, 13 have NC
-LS32 pin 14 tied to Z80 pin 11 (+5V)
-
-LS259 pin 1 tied to Z80 pin 30
-LS259 pin 2 tied to Z80 pin 31
-LS259 pin 3 tied to Z80 pin 32
-=======
 LS32 pin 1 tied to Z80 pin 22 (WR)
 LS32 pin 2 tied to Z80 pin 19 (MREQ)
 LS32 pin 3,4 tied together
@@ -550,20 +534,13 @@ LS32 pin 14 tied to Z80 pin 11 (+5V)
 LS259 pin 1 tied to Z80 pin 30 (A0)
 LS259 pin 2 tied to Z80 pin 31 (A1)
 LS259 pin 3 tied to Z80 pin 32 (A2)
->>>>>>> upstream/master
 LS259 pin 4 to ROM 8 (as above)
 LS259 pins 5, 6, 7 have NC
 LS259 pin 8 tied to Z80 pin 29 (GND)
 LS259 pins 9, 10, 11, 12 have NC
-<<<<<<< HEAD
-LS259 pin 13 tied to Z80 pin 14
-LS259 pin 15 tied to Z80 pin 26
-LS259 pin 16 tied to Z80 pin 11
-=======
 LS259 pin 13 tied to Z80 pin 14 (D0)
 LS259 pin 15 tied to Z80 pin 26 (RESET)
 LS259 pin 16 tied to Z80 pin 11 (+5V)
->>>>>>> upstream/master
 
 
 
@@ -722,10 +699,6 @@ TODO:
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/z80/z80.h"
-#include "cpu/mb88xx/mb88xx.h"
-=======
 #include "includes/bosco.h"
 #include "includes/digdug.h"
 #include "includes/galaga.h"
@@ -735,26 +708,17 @@ TODO:
 
 #include "cpu/mb88xx/mb88xx.h"
 #include "cpu/z80/z80.h"
->>>>>>> upstream/master
 #include "machine/atari_vg.h"
 #include "machine/namco06.h"
 #include "machine/namco50.h"
 #include "machine/namco51.h"
 #include "machine/namco53.h"
-<<<<<<< HEAD
-#include "includes/galaga.h"
-#include "audio/namco52.h"
-#include "machine/rescap.h"
-#include "sound/samples.h"
-#include "audio/namco54.h"
-=======
 #include "machine/rescap.h"
 #include "machine/watchdog.h"
 #include "sound/samples.h"
 
 #include "speaker.h"
 
->>>>>>> upstream/master
 
 #define MASTER_CLOCK (XTAL_18_432MHz)
 
@@ -770,59 +734,6 @@ READ8_MEMBER(galaga_state::bosco_dsw_r)
 	return bit0 | (bit1 << 1);
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER(galaga_state::galaga_flip_screen_w)
-{
-	flip_screen_set(data & 1);
-}
-
-WRITE8_MEMBER(bosco_state::bosco_flip_screen_w)
-{
-	flip_screen_set(~data & 1);
-}
-
-
-WRITE8_MEMBER(galaga_state::bosco_latch_w)
-{
-	switch (offset)
-	{
-		case 0x00:  /* IRQ1 */
-			m_main_irq_mask = data & 1;
-			if (!m_main_irq_mask)
-				m_maincpu->set_input_line(0, CLEAR_LINE);
-			break;
-
-		case 0x01:  /* IRQ2 */
-			m_sub_irq_mask = data & 1;
-			if (!m_sub_irq_mask)
-				m_subcpu->set_input_line(0, CLEAR_LINE);
-			break;
-
-		case 0x02:  /* NMION */
-			m_sub2_nmi_mask = !(data & 1);
-			break;
-
-		case 0x03:  /* RESET */
-			m_subcpu->set_input_line(INPUT_LINE_RESET, (data & 1) ? CLEAR_LINE : ASSERT_LINE);
-			m_subcpu2->set_input_line(INPUT_LINE_RESET, (data & 1) ? CLEAR_LINE : ASSERT_LINE);
-			break;
-
-		case 0x04:  /* n.c. */
-			break;
-
-		case 0x05:  /* MOD 0 (xevious: n.c.) */
-			m_custom_mod = (m_custom_mod & ~0x01) | ((data & 1) << 0);
-			break;
-
-		case 0x06:  /* MOD 1 (xevious: n.c.) */
-			m_custom_mod = (m_custom_mod & ~0x02) | ((data & 1) << 1);
-			break;
-
-		case 0x07:  /* MOD 2 (xevious: n.c.) */
-			m_custom_mod = (m_custom_mod & ~0x04) | ((data & 1) << 2);
-			break;
-	}
-=======
 WRITE_LINE_MEMBER(galaga_state::flip_screen_w)
 {
 	flip_screen_set(state);
@@ -845,42 +756,26 @@ WRITE_LINE_MEMBER(galaga_state::irq2_clear_w)
 WRITE_LINE_MEMBER(galaga_state::nmion_w)
 {
 	m_sub2_nmi_mask = !state;
->>>>>>> upstream/master
 }
 
 CUSTOM_INPUT_MEMBER(digdug_state::shifted_port_r){ return ioport((const char *)param)->read() >> 4; }
 
 WRITE8_MEMBER(galaga_state::out_0)
 {
-<<<<<<< HEAD
-	set_led_status(machine(), 1,data & 1);
-	set_led_status(machine(), 0,data & 2);
-	coin_counter_w(machine(), 1,~data & 4);
-	coin_counter_w(machine(), 0,~data & 8);
-=======
 	output().set_led_value(1,data & 1);
 	output().set_led_value(0,data & 2);
 	machine().bookkeeping().coin_counter_w(1,~data & 4);
 	machine().bookkeeping().coin_counter_w(0,~data & 8);
->>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(galaga_state::out_1)
 {
-<<<<<<< HEAD
-	coin_lockout_global_w(machine(), data & 1);
-=======
 	machine().bookkeeping().coin_lockout_global_w(data & 1);
->>>>>>> upstream/master
 }
 
 READ8_MEMBER(galaga_state::namco_52xx_rom_r)
 {
-<<<<<<< HEAD
-	UINT32 length = memregion("52xx")->bytes();
-=======
 	uint32_t length = memregion("52xx")->bytes();
->>>>>>> upstream/master
 //printf("ROM read %04X\n", offset);
 	if (!(offset & 0x1000))
 		offset = (offset & 0xfff) | 0x0000;
@@ -899,25 +794,12 @@ READ8_MEMBER(galaga_state::namco_52xx_si_r)
 	return 0;
 }
 
-<<<<<<< HEAD
-READ8_MEMBER(galaga_state::custom_mod_r)
-{
-	/* MOD0-2 is connected to K1-3; K0 is left unconnected */
-	return m_custom_mod << 1;
-}
-
-=======
->>>>>>> upstream/master
 TIMER_CALLBACK_MEMBER(galaga_state::cpu3_interrupt_callback)
 {
 	int scanline = param;
 
 	if(m_sub2_nmi_mask)
-<<<<<<< HEAD
-		nmi_line_pulse(m_subcpu2);
-=======
 		nmi_line_pulse(*m_subcpu2);
->>>>>>> upstream/master
 
 	scanline = scanline + 128;
 	if (scanline >= 272)
@@ -932,36 +814,13 @@ MACHINE_START_MEMBER(galaga_state,galaga)
 {
 	/* create the interrupt timer */
 	m_cpu3_interrupt_timer = machine().scheduler().timer_alloc(timer_expired_delegate(FUNC(galaga_state::cpu3_interrupt_callback),this));
-<<<<<<< HEAD
-	m_custom_mod = 0;
-	save_item(NAME(m_custom_mod));
-=======
->>>>>>> upstream/master
 	save_item(NAME(m_main_irq_mask));
 	save_item(NAME(m_sub_irq_mask));
 	save_item(NAME(m_sub2_nmi_mask));
 }
 
-<<<<<<< HEAD
-void galaga_state::bosco_latch_reset()
-{
-	address_space &space = m_maincpu->space(AS_PROGRAM);
-	int i;
-
-	/* Reset all latches */
-	for (i = 0;i < 8;i++)
-		bosco_latch_w(space,i,0);
-}
-
 MACHINE_RESET_MEMBER(galaga_state,galaga)
 {
-	/* Reset all latches */
-	bosco_latch_reset();
-
-=======
-MACHINE_RESET_MEMBER(galaga_state,galaga)
-{
->>>>>>> upstream/master
 	m_cpu3_interrupt_timer->adjust(m_screen->time_until_pos(64), 64);
 }
 
@@ -977,13 +836,8 @@ static ADDRESS_MAP_START( bosco_map, AS_PROGRAM, 8, bosco_state )
 	AM_RANGE(0x0000, 0x3fff) AM_ROM AM_WRITENOP         /* the only area different for each CPU */
 	AM_RANGE(0x6800, 0x6807) AM_READ(bosco_dsw_r)
 	AM_RANGE(0x6800, 0x681f) AM_DEVWRITE("namco", namco_device, pacman_sound_w)
-<<<<<<< HEAD
-	AM_RANGE(0x6820, 0x6827) AM_WRITE(bosco_latch_w)                        /* misc latches */
-	AM_RANGE(0x6830, 0x6830) AM_WRITE(watchdog_reset_w)
-=======
 	AM_RANGE(0x6820, 0x6827) AM_DEVWRITE("misclatch", ls259_device, write_d0)
 	AM_RANGE(0x6830, 0x6830) AM_DEVWRITE("watchdog", watchdog_timer_device, reset_w)
->>>>>>> upstream/master
 	AM_RANGE(0x7000, 0x70ff) AM_DEVREADWRITE("06xx_0", namco_06xx_device, data_r, data_w)
 	AM_RANGE(0x7100, 0x7100) AM_DEVREADWRITE("06xx_0", namco_06xx_device, ctrl_r, ctrl_w)
 	AM_RANGE(0x7800, 0x7fff) AM_RAM AM_SHARE("share1")
@@ -995,12 +849,7 @@ static ADDRESS_MAP_START( bosco_map, AS_PROGRAM, 8, bosco_state )
 	AM_RANGE(0x9820, 0x9820) AM_WRITE(bosco_scrolly_w)
 	AM_RANGE(0x9830, 0x9830) AM_WRITEONLY AM_SHARE("starcontrol")
 	AM_RANGE(0x9840, 0x9840) AM_WRITE(bosco_starclr_w)
-<<<<<<< HEAD
-	AM_RANGE(0x9870, 0x9870) AM_WRITE(bosco_flip_screen_w)
-	AM_RANGE(0x9874, 0x9875) AM_WRITEONLY AM_SHARE("bosco_starblink")
-=======
 	AM_RANGE(0x9870, 0x9877) AM_DEVWRITE("videolatch", ls259_device, write_d0)
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -1008,30 +857,20 @@ static ADDRESS_MAP_START( galaga_map, AS_PROGRAM, 8, galaga_state )
 	AM_RANGE(0x0000, 0x3fff) AM_ROM AM_WRITENOP         /* the only area different for each CPU */
 	AM_RANGE(0x6800, 0x6807) AM_READ(bosco_dsw_r)
 	AM_RANGE(0x6800, 0x681f) AM_DEVWRITE("namco", namco_device, pacman_sound_w)
-<<<<<<< HEAD
-	AM_RANGE(0x6820, 0x6827) AM_WRITE(bosco_latch_w)                        /* misc latches */
-	AM_RANGE(0x6830, 0x6830) AM_WRITE(watchdog_reset_w)
-=======
 	AM_RANGE(0x6820, 0x6827) AM_DEVWRITE("misclatch", ls259_device, write_d0)
 	AM_RANGE(0x6830, 0x6830) AM_DEVWRITE("watchdog", watchdog_timer_device, reset_w)
->>>>>>> upstream/master
 	AM_RANGE(0x7000, 0x70ff) AM_DEVREADWRITE("06xx", namco_06xx_device, data_r, data_w)
 	AM_RANGE(0x7100, 0x7100) AM_DEVREADWRITE("06xx", namco_06xx_device, ctrl_r, ctrl_w)
 	AM_RANGE(0x8000, 0x87ff) AM_RAM_WRITE(galaga_videoram_w) AM_SHARE("videoram")
 	AM_RANGE(0x8800, 0x8bff) AM_RAM AM_SHARE("galaga_ram1")
 	AM_RANGE(0x9000, 0x93ff) AM_RAM AM_SHARE("galaga_ram2")
 	AM_RANGE(0x9800, 0x9bff) AM_RAM AM_SHARE("galaga_ram3")
-<<<<<<< HEAD
-	AM_RANGE(0xa000, 0xa005) AM_WRITEONLY AM_SHARE("starcontrol")
-	AM_RANGE(0xa007, 0xa007) AM_WRITE(galaga_flip_screen_w)
-=======
 	AM_RANGE(0xa000, 0xa007) AM_DEVWRITE("videolatch", ls259_device, write_d0)
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( gatsbee_main_map, AS_PROGRAM, 8, galaga_state )
 	AM_RANGE(0x0000, 0x0007) AM_MIRROR(0x3ff8) AM_DEVWRITE("extralatch", ls259_device, write_d0)
 	AM_IMPORT_FROM(galaga_map)
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -1039,13 +878,8 @@ static ADDRESS_MAP_START( xevious_map, AS_PROGRAM, 8, xevious_state )
 	AM_RANGE(0x0000, 0x3fff) AM_ROM AM_WRITENOP         /* the only area different for each CPU */
 	AM_RANGE(0x6800, 0x6807) AM_READ(bosco_dsw_r)
 	AM_RANGE(0x6800, 0x681f) AM_DEVWRITE("namco", namco_device, pacman_sound_w)
-<<<<<<< HEAD
-	AM_RANGE(0x6820, 0x6827) AM_WRITE(bosco_latch_w)    /* misc latches */
-	AM_RANGE(0x6830, 0x6830) AM_WRITE(watchdog_reset_w)
-=======
 	AM_RANGE(0x6820, 0x6827) AM_DEVWRITE("misclatch", ls259_device, write_d0)
 	AM_RANGE(0x6830, 0x6830) AM_DEVWRITE("watchdog", watchdog_timer_device, reset_w)
->>>>>>> upstream/master
 	AM_RANGE(0x7000, 0x70ff) AM_DEVREADWRITE("06xx", namco_06xx_device, data_r, data_w)
 	AM_RANGE(0x7100, 0x7100) AM_DEVREADWRITE("06xx", namco_06xx_device, ctrl_r, ctrl_w)
 	AM_RANGE(0x7800, 0x7fff) AM_RAM AM_SHARE("share1")                          /* work RAM */
@@ -1064,13 +898,8 @@ ADDRESS_MAP_END
 static ADDRESS_MAP_START( digdug_map, AS_PROGRAM, 8, digdug_state )
 	AM_RANGE(0x0000, 0x3fff) AM_ROM AM_WRITENOP         /* the only area different for each CPU */
 	AM_RANGE(0x6800, 0x681f) AM_DEVWRITE("namco", namco_device, pacman_sound_w)
-<<<<<<< HEAD
-	AM_RANGE(0x6820, 0x6827) AM_WRITE(bosco_latch_w)                        /* misc latches */
-	AM_RANGE(0x6830, 0x6830) AM_WRITE(watchdog_reset_w)
-=======
 	AM_RANGE(0x6820, 0x6827) AM_DEVWRITE("misclatch", ls259_device, write_d0)
 	AM_RANGE(0x6830, 0x6830) AM_DEVWRITE("watchdog", watchdog_timer_device, reset_w)
->>>>>>> upstream/master
 	AM_RANGE(0x7000, 0x70ff) AM_DEVREADWRITE("06xx", namco_06xx_device, data_r, data_w)
 	AM_RANGE(0x7100, 0x7100) AM_DEVREADWRITE("06xx", namco_06xx_device, ctrl_r, ctrl_w)
 	AM_RANGE(0x8000, 0x83ff) AM_RAM_WRITE(digdug_videoram_w) AM_SHARE("videoram") /* tilemap RAM (bottom half of RAM 0 */
@@ -1078,11 +907,7 @@ static ADDRESS_MAP_START( digdug_map, AS_PROGRAM, 8, digdug_state )
 	AM_RANGE(0x8800, 0x8bff) AM_RAM AM_SHARE("digdug_objram")   /* work RAM + sprite registers */
 	AM_RANGE(0x9000, 0x93ff) AM_RAM AM_SHARE("digdug_posram")   /* work RAM + sprite registers */
 	AM_RANGE(0x9800, 0x9bff) AM_RAM AM_SHARE("digdug_flpram")   /* work RAM + sprite registers */
-<<<<<<< HEAD
-	AM_RANGE(0xa000, 0xa007) AM_READNOP AM_WRITE(digdug_PORT_w)      /* video latches (spurious reads when setting latch bits) */
-=======
 	AM_RANGE(0xa000, 0xa007) AM_READNOP AM_DEVWRITE("videolatch", ls259_device, write_d0)   /* video latches (spurious reads when setting latch bits) */
->>>>>>> upstream/master
 	AM_RANGE(0xb800, 0xb83f) AM_DEVREADWRITE("earom", atari_vg_earom_device, read, write)   /* non volatile memory data */
 	AM_RANGE(0xb840, 0xb840) AM_DEVWRITE("earom", atari_vg_earom_device, ctrl_w)                    /* non volatile memory control */
 ADDRESS_MAP_END
@@ -1718,11 +1543,7 @@ static const char *const battles_sample_names[] =
 	"*battles",
 	"explo1",   /* ground target explosion */
 	"explo2",   /* Solvalou explosion */
-<<<<<<< HEAD
-	0   /* end of array */
-=======
 	nullptr   /* end of array */
->>>>>>> upstream/master
 };
 
 INTERRUPT_GEN_MEMBER(galaga_state::main_vblank_irq)
@@ -1737,11 +1558,7 @@ INTERRUPT_GEN_MEMBER(galaga_state::sub_vblank_irq)
 		device.execute().set_input_line(0, ASSERT_LINE);
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( bosco, bosco_state )
-=======
 static MACHINE_CONFIG_START( bosco )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, MASTER_CLOCK/6)    /* 3.072 MHz */
@@ -1755,8 +1572,6 @@ static MACHINE_CONFIG_START( bosco )
 	MCFG_CPU_ADD("sub2", Z80, MASTER_CLOCK/6)   /* 3.072 MHz */
 	MCFG_CPU_PROGRAM_MAP(bosco_map)
 
-<<<<<<< HEAD
-=======
 	MCFG_DEVICE_ADD("misclatch", LS259, 0) // 3C on CPU board
 	MCFG_ADDRESSABLE_LATCH_Q0_OUT_CB(WRITELINE(galaga_state, irq1_clear_w))
 	MCFG_ADDRESSABLE_LATCH_Q1_OUT_CB(WRITELINE(galaga_state, irq2_clear_w))
@@ -1764,7 +1579,6 @@ static MACHINE_CONFIG_START( bosco )
 	MCFG_ADDRESSABLE_LATCH_Q3_OUT_CB(INPUTLINE("sub", INPUT_LINE_RESET)) MCFG_DEVCB_INVERT
 	MCFG_DEVCB_CHAIN_OUTPUT(INPUTLINE("sub2", INPUT_LINE_RESET)) MCFG_DEVCB_INVERT
 
->>>>>>> upstream/master
 	MCFG_NAMCO_50XX_ADD("50xx_1", MASTER_CLOCK/6/2) /* 1.536 MHz */
 	MCFG_NAMCO_50XX_ADD("50xx_2", MASTER_CLOCK/6/2) /* 1.536 MHz */
 	MCFG_NAMCO_51XX_ADD("51xx", MASTER_CLOCK/6/2)      /* 1.536 MHz */
@@ -1803,9 +1617,6 @@ static MACHINE_CONFIG_START( bosco )
 	MCFG_NAMCO_06XX_WRITE_0_CB(DEVWRITE8("50xx_2", namco_50xx_device, write))
 	MCFG_NAMCO_06XX_WRITE_1_CB(DEVWRITE8("52xx", namco_52xx_device, write))
 
-<<<<<<< HEAD
-	MCFG_WATCHDOG_VBLANK_INIT(8)
-=======
 	MCFG_DEVICE_ADD("videolatch", LS259, 0) // 1B on video board
 	MCFG_ADDRESSABLE_LATCH_Q0_OUT_CB(WRITELINE(galaga_state, flip_screen_w)) MCFG_DEVCB_INVERT
 	// Q4-Q5 to 05XX for starfield blink
@@ -1814,7 +1625,6 @@ static MACHINE_CONFIG_START( bosco )
 
 	MCFG_WATCHDOG_ADD("watchdog")
 	MCFG_WATCHDOG_VBLANK_INIT("screen", 8)
->>>>>>> upstream/master
 	MCFG_QUANTUM_TIME(attotime::from_hz(6000))  /* 100 CPU slices per frame - an high value to ensure proper */
 							/* synchronization of the CPUs */
 	MCFG_MACHINE_START_OVERRIDE(bosco_state,galaga)
@@ -1824,11 +1634,7 @@ static MACHINE_CONFIG_START( bosco )
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_RAW_PARAMS(MASTER_CLOCK/3, 384, 0, 288, 264, 16, 224+16)
 	MCFG_SCREEN_UPDATE_DRIVER(bosco_state, screen_update_bosco)
-<<<<<<< HEAD
-	MCFG_SCREEN_VBLANK_DRIVER(bosco_state, screen_eof_bosco)
-=======
 	MCFG_SCREEN_VBLANK_CALLBACK(WRITELINE(bosco_state, screen_vblank_bosco))
->>>>>>> upstream/master
 	MCFG_SCREEN_PALETTE("palette")
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", bosco)
@@ -1850,11 +1656,7 @@ static MACHINE_CONFIG_START( bosco )
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.90)
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( galaga, galaga_state )
-=======
 static MACHINE_CONFIG_START( galaga )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, MASTER_CLOCK/6)    /* 3.072 MHz */
@@ -1868,8 +1670,6 @@ static MACHINE_CONFIG_START( galaga )
 	MCFG_CPU_ADD("sub2", Z80, MASTER_CLOCK/6)   /* 3.072 MHz */
 	MCFG_CPU_PROGRAM_MAP(galaga_map)
 
-<<<<<<< HEAD
-=======
 	MCFG_DEVICE_ADD("misclatch", LS259, 0) // 3C on CPU board
 	MCFG_ADDRESSABLE_LATCH_Q0_OUT_CB(WRITELINE(galaga_state, irq1_clear_w))
 	MCFG_ADDRESSABLE_LATCH_Q1_OUT_CB(WRITELINE(galaga_state, irq2_clear_w))
@@ -1877,7 +1677,6 @@ static MACHINE_CONFIG_START( galaga )
 	MCFG_ADDRESSABLE_LATCH_Q3_OUT_CB(INPUTLINE("sub", INPUT_LINE_RESET)) MCFG_DEVCB_INVERT
 	MCFG_DEVCB_CHAIN_OUTPUT(INPUTLINE("sub2", INPUT_LINE_RESET)) MCFG_DEVCB_INVERT
 
->>>>>>> upstream/master
 	MCFG_NAMCO_51XX_ADD("51xx", MASTER_CLOCK/6/2)      /* 1.536 MHz */
 	MCFG_NAMCO_51XX_INPUT_0_CB(IOPORT("IN0L"))
 	MCFG_NAMCO_51XX_INPUT_1_CB(IOPORT("IN0H"))
@@ -1896,16 +1695,12 @@ static MACHINE_CONFIG_START( galaga )
 	MCFG_NAMCO_06XX_WRITE_0_CB(DEVWRITE8("51xx", namco_51xx_device, write))
 	MCFG_NAMCO_06XX_WRITE_3_CB(DEVWRITE8("54xx", namco_54xx_device, write))
 
-<<<<<<< HEAD
-	MCFG_WATCHDOG_VBLANK_INIT(8)
-=======
 	MCFG_DEVICE_ADD("videolatch", LS259, 0) // 5K on video board
 	// Q0-Q5 to 05XX for starfield control
 	MCFG_ADDRESSABLE_LATCH_Q7_OUT_CB(WRITELINE(galaga_state, flip_screen_w))
 
 	MCFG_WATCHDOG_ADD("watchdog")
 	MCFG_WATCHDOG_VBLANK_INIT("screen", 8)
->>>>>>> upstream/master
 	MCFG_QUANTUM_TIME(attotime::from_hz(6000))  /* 100 CPU slices per frame - an high value to ensure proper */
 							/* synchronization of the CPUs */
 	MCFG_MACHINE_START_OVERRIDE(galaga_state,galaga)
@@ -1915,11 +1710,7 @@ static MACHINE_CONFIG_START( galaga )
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_RAW_PARAMS(MASTER_CLOCK/3, 384, 0, 288, 264, 0, 224)
 	MCFG_SCREEN_UPDATE_DRIVER(galaga_state, screen_update_galaga)
-<<<<<<< HEAD
-	MCFG_SCREEN_VBLANK_DRIVER(galaga_state, screen_eof_galaga)
-=======
 	MCFG_SCREEN_VBLANK_CALLBACK(WRITELINE(galaga_state, screen_vblank_galaga))
->>>>>>> upstream/master
 	MCFG_SCREEN_PALETTE("palette")
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", galaga)
@@ -1961,9 +1752,6 @@ static MACHINE_CONFIG_DERIVED( galagab, galaga )
 	MCFG_DEVICE_REMOVE("discrete")
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( xevious, xevious_state )
-=======
 static MACHINE_CONFIG_DERIVED( gatsbee, galaga )
 	MCFG_CPU_MODIFY("maincpu")
 	MCFG_CPU_PROGRAM_MAP(gatsbee_main_map)
@@ -1973,7 +1761,6 @@ static MACHINE_CONFIG_DERIVED( gatsbee, galaga )
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_START( xevious )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, MASTER_CLOCK/6)    /* 3.072 MHz */
@@ -1987,8 +1774,6 @@ static MACHINE_CONFIG_START( xevious )
 	MCFG_CPU_ADD("sub2", Z80, MASTER_CLOCK/6)   /* 3.072 MHz */
 	MCFG_CPU_PROGRAM_MAP(xevious_map)
 
-<<<<<<< HEAD
-=======
 	MCFG_DEVICE_ADD("misclatch", LS259, 0) // 5K
 	MCFG_ADDRESSABLE_LATCH_Q0_OUT_CB(WRITELINE(galaga_state, irq1_clear_w))
 	MCFG_ADDRESSABLE_LATCH_Q1_OUT_CB(WRITELINE(galaga_state, irq2_clear_w))
@@ -1996,7 +1781,6 @@ static MACHINE_CONFIG_START( xevious )
 	MCFG_ADDRESSABLE_LATCH_Q3_OUT_CB(INPUTLINE("sub", INPUT_LINE_RESET)) MCFG_DEVCB_INVERT
 	MCFG_DEVCB_CHAIN_OUTPUT(INPUTLINE("sub2", INPUT_LINE_RESET)) MCFG_DEVCB_INVERT
 
->>>>>>> upstream/master
 	MCFG_NAMCO_50XX_ADD("50xx", MASTER_CLOCK/6/2)   /* 1.536 MHz */
 
 	MCFG_NAMCO_51XX_ADD("51xx", MASTER_CLOCK/6/2)      /* 1.536 MHz */
@@ -2020,12 +1804,8 @@ static MACHINE_CONFIG_START( xevious )
 	MCFG_NAMCO_06XX_WRITE_2_CB(DEVWRITE8("50xx", namco_50xx_device, write))
 	MCFG_NAMCO_06XX_WRITE_3_CB(DEVWRITE8("54xx", namco_54xx_device, write))
 
-<<<<<<< HEAD
-	MCFG_WATCHDOG_VBLANK_INIT(8)
-=======
 	MCFG_WATCHDOG_ADD("watchdog")
 	MCFG_WATCHDOG_VBLANK_INIT("screen", 8)
->>>>>>> upstream/master
 	MCFG_QUANTUM_TIME(attotime::from_hz(60000)) /* 1000 CPU slices per frame - an high value to ensure proper */
 							/* synchronization of the CPUs */
 	MCFG_MACHINE_START_OVERRIDE(galaga_state,galaga)
@@ -2078,13 +1858,6 @@ static MACHINE_CONFIG_DERIVED( battles, xevious )
 
 	MCFG_MACHINE_RESET_OVERRIDE(xevious_state,battles)
 
-<<<<<<< HEAD
-	/* video hardware */
-	MCFG_PALETTE_MODIFY("palette")
-	MCFG_PALETTE_INIT_OWNER(xevious_state,battles)
-
-=======
->>>>>>> upstream/master
 	/* sound hardware */
 	MCFG_DEVICE_REMOVE("discrete")
 
@@ -2094,11 +1867,7 @@ static MACHINE_CONFIG_DERIVED( battles, xevious )
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.80)
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( digdug, digdug_state )
-=======
 static MACHINE_CONFIG_START( digdug )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, MASTER_CLOCK/6)    /* 3.072 MHz */
@@ -2112,8 +1881,6 @@ static MACHINE_CONFIG_START( digdug )
 	MCFG_CPU_ADD("sub2", Z80, MASTER_CLOCK/6)   /* 3.072 MHz */
 	MCFG_CPU_PROGRAM_MAP(digdug_map)
 
-<<<<<<< HEAD
-=======
 	MCFG_DEVICE_ADD("misclatch", LS259, 0) // 8R
 	MCFG_ADDRESSABLE_LATCH_Q0_OUT_CB(WRITELINE(galaga_state, irq1_clear_w))
 	MCFG_ADDRESSABLE_LATCH_Q1_OUT_CB(WRITELINE(galaga_state, irq2_clear_w))
@@ -2122,7 +1889,6 @@ static MACHINE_CONFIG_START( digdug )
 	MCFG_DEVCB_CHAIN_OUTPUT(INPUTLINE("sub2", INPUT_LINE_RESET)) MCFG_DEVCB_INVERT
 	// Q5-Q7 also used (see below)
 
->>>>>>> upstream/master
 	MCFG_NAMCO_51XX_ADD("51xx", MASTER_CLOCK/6/2)      /* 1.536 MHz */
 	MCFG_NAMCO_51XX_INPUT_0_CB(IOPORT("IN0L"))
 	MCFG_NAMCO_51XX_INPUT_1_CB(IOPORT("IN0H"))
@@ -2132,14 +1898,10 @@ static MACHINE_CONFIG_START( digdug )
 	MCFG_NAMCO_51XX_OUTPUT_1_CB(WRITE8(galaga_state,out_1))
 
 	MCFG_NAMCO_53XX_ADD("53xx", MASTER_CLOCK/6/2)      /* 1.536 MHz */
-<<<<<<< HEAD
-	MCFG_NAMCO_53XX_K_CB(READ8(galaga_state,custom_mod_r))
-=======
 	MCFG_NAMCO_53XX_K_CB(DEVREADLINE("misclatch", ls259_device, q7_r)) MCFG_DEVCB_BIT(3) // MOD 2 = K3
 	MCFG_DEVCB_CHAIN_INPUT(DEVREADLINE("misclatch", ls259_device, q6_r)) MCFG_DEVCB_BIT(2) // MOD 1 = K2
 	MCFG_DEVCB_CHAIN_INPUT(DEVREADLINE("misclatch", ls259_device, q5_r)) MCFG_DEVCB_BIT(1) // MOD 0 = K1
 	// K0 is left unconnected
->>>>>>> upstream/master
 	MCFG_NAMCO_53XX_INPUT_0_CB(IOPORT("DSWA"))
 	MCFG_NAMCO_53XX_INPUT_1_CB(IOPORT("DSWA_HI"))
 	MCFG_NAMCO_53XX_INPUT_2_CB(IOPORT("DSWB"))
@@ -2152,15 +1914,12 @@ static MACHINE_CONFIG_START( digdug )
 	MCFG_NAMCO_06XX_READ_1_CB(DEVREAD8("53xx", namco_53xx_device, read))
 	MCFG_NAMCO_06XX_READ_REQUEST_1_CB(DEVWRITELINE("53xx", namco_53xx_device, read_request))
 
-<<<<<<< HEAD
-=======
 	MCFG_DEVICE_ADD("videolatch", LS259, 0) // 5R
 	MCFG_ADDRESSABLE_LATCH_PARALLEL_OUT_CB(WRITE8(digdug_state, bg_select_w)) MCFG_DEVCB_MASK(0x33)
 	MCFG_ADDRESSABLE_LATCH_Q2_OUT_CB(WRITELINE(digdug_state, tx_color_mode_w))
 	MCFG_ADDRESSABLE_LATCH_Q3_OUT_CB(WRITELINE(digdug_state, bg_disable_w))
 	MCFG_ADDRESSABLE_LATCH_Q7_OUT_CB(WRITELINE(digdug_state, flip_screen_w))
 
->>>>>>> upstream/master
 	MCFG_QUANTUM_TIME(attotime::from_hz(6000))  /* 100 CPU slices per frame - an high value to ensure proper */
 							/* synchronization of the CPUs */
 	MCFG_MACHINE_START_OVERRIDE(galaga_state,galaga)
@@ -2168,11 +1927,8 @@ static MACHINE_CONFIG_START( digdug )
 
 	MCFG_ATARIVGEAROM_ADD("earom")
 
-<<<<<<< HEAD
-=======
 	MCFG_WATCHDOG_ADD("watchdog")
 
->>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_RAW_PARAMS(MASTER_CLOCK/3, 384, 0, 288, 264, 0, 224)
@@ -2810,8 +2566,6 @@ ROM_START( gatsbee )
 	ROM_LOAD( "prom-2.5c",    0x0100, 0x0100, CRC(77245b66) SHA1(0c4d0bee858b97632411c440bea6948a74759746) )    /* timing - not used */
 ROM_END
 
-<<<<<<< HEAD
-=======
 ROM_START( nebulbee )
 	ROM_REGION( 0x10000, "maincpu", 0 )
 	ROM_LOAD( "nebulbee.01",  0x0000, 0x1000, CRC(f405f2c4) SHA1(9249afeffd8df0f24539ea9b4f88c23a6ad58d8c) )
@@ -2845,7 +2599,6 @@ ROM_START( nebulbee )
 	ROM_LOAD( "1d.bin",       0x0000, 0x0100, CRC(86d92b24) SHA1(6bef9102b97c83025a2cf84e89d95f2d44c3d2ed) )
 ROM_END
 
->>>>>>> upstream/master
 /**********************************************************************************************
   Xevious & clones
 **********************************************************************************************/
@@ -2900,11 +2653,7 @@ ROM_START( xevious )
 	ROM_LOAD( "xvi-5.3m",     0x0900, 0x0200, CRC(bf906d82) SHA1(776168a73d3b9f0ce05610acc8a623deae0a572b) ) /* sprite lookup table high bits */
 
 	ROM_REGION( 0x0200, "pals_vidbd", 0) /* PAL's located on the video board */
-<<<<<<< HEAD
-	ROM_LOAD( "xvi-3.1f",     0x0000, 0x0117, CRC(9192d57a) SHA1(5f36db93b6083767f93aa3a0e4bc2d4fc7e27f9c) ) /* N82S153N */
-=======
 	ROM_LOAD( "XVI-3.1F",     0x0000, 0x0117, CRC(9192d57a) SHA1(5f36db93b6083767f93aa3a0e4bc2d4fc7e27f9c) ) /* N82S153N */
->>>>>>> upstream/master
 
 	ROM_REGION( 0x0200, "namco", 0 )    /* sound PROMs */
 	ROM_LOAD( "xvi-2.7n",     0x0000, 0x0100, CRC(550f06bc) SHA1(816a0fafa0b084ac11ae1af70a5186539376fc2a) )
@@ -2959,11 +2708,7 @@ ROM_START( xeviousa )
 	ROM_LOAD( "xvi-5.3m",     0x0900, 0x0200, CRC(bf906d82) SHA1(776168a73d3b9f0ce05610acc8a623deae0a572b) ) /* sprite lookup table high bits */
 
 	ROM_REGION( 0x0200, "pals_vidbd", 0) /* PAL's located on the video board */
-<<<<<<< HEAD
-	ROM_LOAD( "xvi-3.1f",     0x0000, 0x0117, CRC(9192d57a) SHA1(5f36db93b6083767f93aa3a0e4bc2d4fc7e27f9c) ) /* N82S153N - 137294-001*/
-=======
 	ROM_LOAD( "XVI-3.1F",     0x0000, 0x0117, CRC(9192d57a) SHA1(5f36db93b6083767f93aa3a0e4bc2d4fc7e27f9c) ) /* N82S153N - 137294-001*/
->>>>>>> upstream/master
 
 	ROM_REGION( 0x0200, "namco", 0 )    /* sound PROMs */
 	ROM_LOAD( "xvi-2.7n",     0x0000, 0x0100, CRC(550f06bc) SHA1(816a0fafa0b084ac11ae1af70a5186539376fc2a) )
@@ -3011,11 +2756,7 @@ ROM_START( xeviousb )
 	ROM_LOAD( "xvi-5.3m",     0x0900, 0x0200, CRC(bf906d82) SHA1(776168a73d3b9f0ce05610acc8a623deae0a572b) ) /* sprite lookup table high bits */
 
 	ROM_REGION( 0x0200, "pals_vidbd", 0) /* PAL's located on the video board */
-<<<<<<< HEAD
-	ROM_LOAD( "xvi-3.1f",     0x0000, 0x0117, CRC(9192d57a) SHA1(5f36db93b6083767f93aa3a0e4bc2d4fc7e27f9c) ) /* N82S153N - 137294-001*/
-=======
 	ROM_LOAD( "XVI-3.1F",     0x0000, 0x0117, CRC(9192d57a) SHA1(5f36db93b6083767f93aa3a0e4bc2d4fc7e27f9c) ) /* N82S153N - 137294-001*/
->>>>>>> upstream/master
 
 	ROM_REGION( 0x0200, "namco", 0 )    /* sound PROMs */
 	ROM_LOAD( "xvi-2.7n",     0x0000, 0x0100, CRC(550f06bc) SHA1(816a0fafa0b084ac11ae1af70a5186539376fc2a) )
@@ -3066,11 +2807,7 @@ ROM_START( xeviousc )
 	ROM_LOAD( "xvi-5.3m",     0x0900, 0x0200, CRC(bf906d82) SHA1(776168a73d3b9f0ce05610acc8a623deae0a572b) ) /* sprite lookup table high bits */
 
 	ROM_REGION( 0x0200, "pals_vidbd", 0) /* PAL's located on the video board */
-<<<<<<< HEAD
-	ROM_LOAD( "xvi-3.1f",     0x0000, 0x0117, CRC(9192d57a) SHA1(5f36db93b6083767f93aa3a0e4bc2d4fc7e27f9c) ) /* N82S153N - 137294-001*/
-=======
 	ROM_LOAD( "XVI-3.1F",     0x0000, 0x0117, CRC(9192d57a) SHA1(5f36db93b6083767f93aa3a0e4bc2d4fc7e27f9c) ) /* N82S153N - 137294-001*/
->>>>>>> upstream/master
 
 	ROM_REGION( 0x0200, "namco", 0 )    /* sound PROMs */
 	ROM_LOAD( "xvi-2.7n",     0x0000, 0x0100, CRC(550f06bc) SHA1(816a0fafa0b084ac11ae1af70a5186539376fc2a) )
@@ -3180,16 +2917,6 @@ ROM_START( battles )
 	ROM_LOAD( "bg7.b12",     0x1000, 0x2000, CRC(ae3ba9e5) SHA1(49064b25667ffcd81137cd5e800df4b78b182a46) )
 	ROM_LOAD( "bg8.b11",     0x3000, 0x1000, CRC(31e244dd) SHA1(3f7eac12863697a98e1122111801606759e44b2a) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x1400, "proms", 0 )
-	ROM_LOAD( "xvi-8.6a",    0x0000, 0x0100, CRC(5cc2727f) SHA1(0dc1e63a47a4cb0ba75f6f1e0c15e408bb0ee2a1) ) /* palette red component */
-	ROM_LOAD( "xvi-9.6d",    0x0100, 0x0100, CRC(5c8796cc) SHA1(63015e3c0874afc6b1ca032f1ffb8f90562c77c8) ) /* palette green component */
-	ROM_LOAD( "xvi-10.6e",   0x0200, 0x0100, CRC(3cb60975) SHA1(c94d5a5dd4d8a08d6d39c051a4a722581b903f45) ) /* palette blue component */
-	ROM_LOAD( "b_-bpr.bin",  0x0300, 0x0400, CRC(d2d208b1) SHA1(6c8d29912c03ee93759e24085bc66ab738768bcc) ) /* bg tiles lookup table low bits */
-	ROM_LOAD( "b_6bpr.bin",  0x0700, 0x0400, CRC(0260c041) SHA1(1a7516e8b18ffdd9789eec8b834c17b3ba312afe) ) /* bg tiles lookup table high bits */
-	ROM_LOAD( "b_4bpr.bin",  0x0b00, 0x0400, CRC(33764974) SHA1(567b048b8a93e30090ccee4f6aadc0353524d8d1) ) /* sprite lookup table low bits */
-	ROM_LOAD( "b_5bpr.bin",  0x0f00, 0x0400, CRC(43674c7e) SHA1(94c19a9da81839cb1dfde3f11b2fd82ffe45efb9) ) /* sprite lookup table high bits */
-=======
 	ROM_REGION( 0x0b00, "proms", 0 )
 	ROM_LOAD( "xvi-8.6a",    0x0000, 0x0100, CRC(5cc2727f) SHA1(0dc1e63a47a4cb0ba75f6f1e0c15e408bb0ee2a1) ) /* palette red component */
 	ROM_LOAD( "xvi-9.6d",    0x0100, 0x0100, CRC(5c8796cc) SHA1(63015e3c0874afc6b1ca032f1ffb8f90562c77c8) ) /* palette green component */
@@ -3198,15 +2925,12 @@ ROM_START( battles )
 	ROM_LOAD( "b_6bpr.bin",  0x0500, 0x0200, CRC(3a7599f0) SHA1(a4bdf58c190ca16fc7b976c97f41087a61fdb8b8) ) /* bg tiles lookup table high bits */
 	ROM_LOAD( "b_4bpr.bin",  0x0700, 0x0200, CRC(fd8b9d91) SHA1(87ddf0b9d723aabb422d6d416aa9ec6bc246bf34) ) /* sprite lookup table low bits */
 	ROM_LOAD( "b_5bpr.bin",  0x0900, 0x0200, CRC(bf906d82) SHA1(776168a73d3b9f0ce05610acc8a623deae0a572b) ) /* sprite lookup table high bits */
->>>>>>> upstream/master
 
 	ROM_REGION( 0x0200, "namco", 0 )    /* sound PROMs */
 	ROM_LOAD( "xvi-2.7n",    0x0000, 0x0100, CRC(550f06bc) SHA1(816a0fafa0b084ac11ae1af70a5186539376fc2a) )
 	ROM_LOAD( "xvi-1.5n",    0x0100, 0x0100, CRC(77245b66) SHA1(0c4d0bee858b97632411c440bea6948a74759746) )    /* timing - not used */
 ROM_END
 
-<<<<<<< HEAD
-=======
 ROM_START( battles2 )
 	ROM_REGION( 0x10000, "maincpu", 0 ) /* 64k for the first CPU */
 	ROM_LOAD( "bg1.h7",        0x0000, 0x1000, CRC(475d848a) SHA1(44a4abd1e922ba1fd89a5066a5d325f748236366) )
@@ -3264,7 +2988,6 @@ ROM_START( battles2 )
 	ROM_LOAD( "pal10l8_bg.a16", 0x0000, 0x002c, CRC(10ea110e) SHA1(8f165a04a221e6492d4cac0f485927b8caf58160) )
 ROM_END
 
->>>>>>> upstream/master
 ROM_START( sxevious )
 	ROM_REGION( 0x10000, "maincpu", 0 ) /* 64k for the first CPU */
 	ROM_LOAD( "cpu_3p.rom",   0x0000, 0x1000, CRC(1c8d27d5) SHA1(2c41303d8c74acb5840295a4b460a39a9a8e21bb) )
@@ -3684,11 +3407,7 @@ ROM_END
 DRIVER_INIT_MEMBER(galaga_state,galaga)
 {
 	/* swap bytes for flipped character so we can decode them together with normal characters */
-<<<<<<< HEAD
-	UINT8 *rom = memregion("gfx1")->base();
-=======
 	uint8_t *rom = memregion("gfx1")->base();
->>>>>>> upstream/master
 	int i, len = memregion("gfx1")->bytes();
 
 	for (i = 0;i < len;i++)
@@ -3702,25 +3421,10 @@ DRIVER_INIT_MEMBER(galaga_state,galaga)
 	}
 }
 
-<<<<<<< HEAD
-DRIVER_INIT_MEMBER(galaga_state,gatsbee)
-{
-	DRIVER_INIT_CALL(galaga);
-
-	/* Gatsbee has a larger character ROM, we need a handler for banking */
-	m_maincpu->space(AS_PROGRAM).install_write_handler(0x1000, 0x1000, write8_delegate(FUNC(galaga_state::gatsbee_bank_w),this));
-}
-
-
-DRIVER_INIT_MEMBER(xevious_state,xevious)
-{
-	UINT8 *rom;
-=======
 
 DRIVER_INIT_MEMBER(xevious_state,xevious)
 {
 	uint8_t *rom;
->>>>>>> upstream/master
 	int i;
 
 	rom = memregion("gfx3")->base() + 0x5000;
@@ -3731,11 +3435,7 @@ DRIVER_INIT_MEMBER(xevious_state,xevious)
 DRIVER_INIT_MEMBER(xevious_state,xevios)
 {
 	int A;
-<<<<<<< HEAD
-	UINT8 *rom;
-=======
 	uint8_t *rom;
->>>>>>> upstream/master
 
 
 	/* convert one of the sprite ROMs to the format used by Xevious */
@@ -3768,22 +3468,6 @@ DRIVER_INIT_MEMBER(xevious_state,battles)
 
 /* Original Namco hardware, with Namco Customs */
 
-<<<<<<< HEAD
-//    YEAR, NAME,      PARENT,  MACHINE, INPUT,    INIT,    MONITOR,COMPANY,FULLNAME,FLAGS
-GAME( 1981, bosco,     0,       bosco,   bosco, driver_device,    0,       ROT0,   "Namco", "Bosconian (new version)", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_GRAPHICS )
-GAME( 1981, boscoo,    bosco,   bosco,   bosco, driver_device,    0,       ROT0,   "Namco", "Bosconian (old version)", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_GRAPHICS )
-GAME( 1981, boscoo2,   bosco,   bosco,   bosco, driver_device,    0,       ROT0,   "Namco", "Bosconian (older version)", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_GRAPHICS )
-GAME( 1981, boscomd,   bosco,   bosco,   boscomd, driver_device,  0,       ROT0,   "Namco (Midway license)", "Bosconian (Midway, new version)", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_GRAPHICS )
-GAME( 1981, boscomdo,  bosco,   bosco,   boscomd, driver_device,  0,       ROT0,   "Namco (Midway license)", "Bosconian (Midway, old version)", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_GRAPHICS )
-
-GAME( 1981, galaga,    0,       galaga,  galaga, galaga_state,   galaga,  ROT90,  "Namco", "Galaga (Namco rev. B)", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_GRAPHICS )
-GAME( 1981, galagao,   galaga,  galaga,  galaga, galaga_state,   galaga,  ROT90,  "Namco", "Galaga (Namco)", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_GRAPHICS )
-GAME( 1981, galagamw,  galaga,  galaga,  galagamw, galaga_state, galaga,  ROT90,  "Namco (Midway license)", "Galaga (Midway set 1)", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_GRAPHICS )
-GAME( 1981, galagamk,  galaga,  galaga,  galaga, galaga_state,   galaga,  ROT90,  "Namco (Midway license)", "Galaga (Midway set 2)", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_GRAPHICS )
-GAME( 1981, galagamf,  galaga,  galaga,  galaga, galaga_state,   galaga,  ROT90,  "Namco (Midway license)", "Galaga (Midway set 1 with fast shoot hack)", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_GRAPHICS )
-
-GAME( 1982, xevious,   0,       xevious, xevious, xevious_state,  xevious, ROT90,  "Namco", "Xevious (Namco)", MACHINE_SUPPORTS_SAVE )
-=======
 //    YEAR, NAME,      PARENT,  MACHINE, INPUT,    STATE,         INIT,    MONITOR,COMPANY,FULLNAME,FLAGS
 GAME( 1981, bosco,     0,       bosco,   bosco,    bosco_state,   0,       ROT0,   "Namco", "Bosconian (new version)", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_GRAPHICS )
 GAME( 1981, boscoo,    bosco,   bosco,   bosco,    bosco_state,   0,       ROT0,   "Namco", "Bosconian (old version)", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_GRAPHICS )
@@ -3798,30 +3482,12 @@ GAME( 1981, galagamk,  galaga,  galaga,  galaga,   galaga_state,  galaga,  ROT90
 GAME( 1981, galagamf,  galaga,  galaga,  galaga,   galaga_state,  galaga,  ROT90,  "Namco (Midway license)", "Galaga (Midway set 1 with fast shoot hack)", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_GRAPHICS )
 
 GAME( 1982, xevious,   0,       xevious, xevious,  xevious_state, xevious, ROT90,  "Namco", "Xevious (Namco)", MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master
 GAME( 1982, xeviousa,  xevious, xevious, xeviousa, xevious_state, xevious, ROT90,  "Namco (Atari license)", "Xevious (Atari, harder)", MACHINE_SUPPORTS_SAVE )
 GAME( 1982, xeviousb,  xevious, xevious, xeviousb, xevious_state, xevious, ROT90,  "Namco (Atari license)", "Xevious (Atari)", MACHINE_SUPPORTS_SAVE )
 GAME( 1982, xeviousc,  xevious, xevious, xeviousa, xevious_state, xevious, ROT90,  "Namco (Atari license)", "Xevious (Atari, Namco PCB)", MACHINE_SUPPORTS_SAVE )
 GAME( 1984, sxevious,  xevious, xevious, sxevious, xevious_state, xevious, ROT90,  "Namco", "Super Xevious", MACHINE_SUPPORTS_SAVE )
 GAME( 1984, sxeviousj, xevious, xevious, sxevious, xevious_state, xevious, ROT90,  "Namco", "Super Xevious (Japan)", MACHINE_SUPPORTS_SAVE )
 
-<<<<<<< HEAD
-GAME( 1982, digdug,    0,       digdug,  digdug, driver_device,   0,       ROT90,  "Namco", "Dig Dug (rev 2)", MACHINE_SUPPORTS_SAVE )
-GAME( 1982, digdug1,   digdug,  digdug,  digdug, driver_device,   0,       ROT90,  "Namco", "Dig Dug (rev 1)", MACHINE_SUPPORTS_SAVE )
-GAME( 1982, digdugat,  digdug,  digdug,  digdug, driver_device,   0,       ROT90,  "Namco (Atari license)", "Dig Dug (Atari, rev 2)", MACHINE_SUPPORTS_SAVE )
-GAME( 1982, digdugat1, digdug,  digdug,  digdug, driver_device,   0,       ROT90,  "Namco (Atari license)", "Dig Dug (Atari, rev 1)", MACHINE_SUPPORTS_SAVE )
-GAME( 1982, digsid,    digdug,  digdug,  digdug, driver_device,   0,       ROT90,  "Namco (Sidam license)", "Dig Dug (manufactured by Sidam)", MACHINE_SUPPORTS_SAVE )
-
-/* Bootlegs with replacement I/O chips */
-
-GAME( 1981, gallag,    galaga,  galagab, galaga, galaga_state,   galaga,  ROT90,  "bootleg", "Gallag", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_SOUND )
-GAME( 1984, gatsbee,   galaga,  galagab, gatsbee, galaga_state,  gatsbee, ROT90,  "hack", "Gatsbee", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_SOUND )
-
-GAME( 1982, xevios,    xevious, xevious, xevious, xevious_state,  xevios,  ROT90,  "bootleg", "Xevios", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 1982, battles,   xevious, battles, xevious, xevious_state,  battles, ROT90,  "bootleg", "Battles", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-
-GAME( 1982, dzigzag,   digdug,  dzigzag, digdug, driver_device,   0,       ROT90,  "bootleg", "Zig Zag (Dig Dug hardware)", MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1982, digdug,    0,       digdug,  digdug,   digdug_state,  0,       ROT90,  "Namco", "Dig Dug (rev 2)", MACHINE_SUPPORTS_SAVE )
 GAME( 1982, digdug1,   digdug,  digdug,  digdug,   digdug_state,  0,       ROT90,  "Namco", "Dig Dug (rev 1)", MACHINE_SUPPORTS_SAVE )
 GAME( 1982, digdugat,  digdug,  digdug,  digdug,   digdug_state,  0,       ROT90,  "Namco (Atari license)", "Dig Dug (Atari, rev 2)", MACHINE_SUPPORTS_SAVE )
@@ -3839,4 +3505,3 @@ GAME( 1982, battles,   xevious, battles, xevious, xevious_state,  battles, ROT90
 GAME( 1982, battles2,  xevious, xevious, xevious, xevious_state,  xevios,  ROT90,  "bootleg", "Battles (set 2)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
 
 GAME( 1982, dzigzag,   digdug,  dzigzag, digdug,  digdug_state,   0,       ROT90,  "bootleg", "Zig Zag (Dig Dug hardware)", MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

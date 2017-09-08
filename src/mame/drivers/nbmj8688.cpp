@@ -11,32 +11,18 @@
 
 TODO:
 
-<<<<<<< HEAD
-- Inputs slightly wrong for the LCD games. In those games, start 1 begins a
-  2 players game. To start a 1 player game, press flip (X).
-
-=======
->>>>>>> upstream/master
 - Animation in bijokkoy and bijokkog (while DAC playback) is not correct.
   Interrupt problem?
 
 - Sampling rate of some DAC playback in bijokkoy and bijokkog is too high.
   Interrupt problem?
 
-<<<<<<< HEAD
-- Input handling is wrong in crystalg, crystal2 and nightlov.
-
-- Some games display "GFXROM BANK OVER!!" or "GFXROM ADDRESS OVER!!"
-  in Debug build.
-
-=======
 - Some games display "GFXROM BANK OVER!!" or "GFXROM ADDRESS OVER!!"
   in Debug build.
 
 - Increasing the game out rate in kanatuen causes it to fail to boot (hangs at
   black screen).
 
->>>>>>> upstream/master
 - Screen flip is not perfect.
 
 - Barline has wrong NMI enable trigger,causing wrong sample pitch (& sometimes
@@ -45,16 +31,6 @@ TODO:
 ******************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/z80/z80.h"
-#include "sound/dac.h"
-#include "sound/ay8910.h"
-#include "sound/3812intf.h"
-#include "rendlay.h"
-#include "nbmj8688.lh"
-#include "includes/nbmj8688.h"
-#include "machine/nvram.h"
-=======
 #include "includes/nbmj8688.h"
 
 #include "cpu/z80/z80.h"
@@ -68,18 +44,12 @@ TODO:
 #include "speaker.h"
 
 #include "nbmj8688.lh"
->>>>>>> upstream/master
 
 
 DRIVER_INIT_MEMBER(nbmj8688_state,mjcamera)
 {
-<<<<<<< HEAD
-	UINT8 *rom = memregion("voice")->base() + 0x20000;
-	UINT8 *prot = memregion("user1")->base();
-=======
 	uint8_t *rom = memregion("voice")->base() + 0x20000;
 	uint8_t *prot = memregion("user1")->base();
->>>>>>> upstream/master
 	int i;
 
 	/* this is one possible way to rearrange the protection ROM data to get the
@@ -96,11 +66,7 @@ DRIVER_INIT_MEMBER(nbmj8688_state,mjcamera)
 DRIVER_INIT_MEMBER(nbmj8688_state,kanatuen)
 {
 	/* uses the same protection data as mjcamer, but a different check */
-<<<<<<< HEAD
-	UINT8 *rom = memregion("voice")->base() + 0x30000;
-=======
 	uint8_t *rom = memregion("voice")->base() + 0x30000;
->>>>>>> upstream/master
 
 	rom[0x0004] = 0x09;
 	rom[0x0103] = 0x0e;
@@ -112,11 +78,7 @@ DRIVER_INIT_MEMBER(nbmj8688_state,kyuhito)
 {
 #if 1
 	/* uses the same protection data as ????, but a different check */
-<<<<<<< HEAD
-	UINT8 *rom = memregion("maincpu")->base();
-=======
 	uint8_t *rom = memregion("maincpu")->base();
->>>>>>> upstream/master
 
 	rom[0x0149] = 0x00;
 	rom[0x014a] = 0x00;
@@ -126,13 +88,8 @@ DRIVER_INIT_MEMBER(nbmj8688_state,kyuhito)
 
 DRIVER_INIT_MEMBER(nbmj8688_state,idhimitu)
 {
-<<<<<<< HEAD
-	UINT8 *rom = memregion("voice")->base() + 0x20000;
-	UINT8 *prot = memregion("user1")->base();
-=======
 	uint8_t *rom = memregion("voice")->base() + 0x20000;
 	uint8_t *prot = memregion("user1")->base();
->>>>>>> upstream/master
 	int i;
 
 	/* this is one possible way to rearrange the protection ROM data to get the
@@ -148,13 +105,8 @@ DRIVER_INIT_MEMBER(nbmj8688_state,idhimitu)
 
 DRIVER_INIT_MEMBER(nbmj8688_state,kaguya2)
 {
-<<<<<<< HEAD
-	UINT8 *rom = memregion("voice")->base() + 0x20000;
-	UINT8 *prot = memregion("user1")->base();
-=======
 	uint8_t *rom = memregion("voice")->base() + 0x20000;
 	uint8_t *prot = memregion("user1")->base();
->>>>>>> upstream/master
 	int i;
 
 	/* this is one possible way to rearrange the protection ROM data to get the
@@ -186,10 +138,7 @@ static ADDRESS_MAP_START( ojousan_map, AS_PROGRAM, 8, nbmj8688_state )
 ADDRESS_MAP_END
 
 
-<<<<<<< HEAD
-=======
 
->>>>>>> upstream/master
 READ8_MEMBER(nbmj8688_state::ff_r)
 {
 	/* possibly because of a bug, reads from port 0xd0 must return 0xff
@@ -209,11 +158,7 @@ static ADDRESS_MAP_START( secolove_io_map, AS_IO, 8, nbmj8688_state )
 	AM_RANGE(0xb0, 0xb0) AM_DEVREADWRITE("nb1413m3", nb1413m3_device, inputport2_r, sndrombank1_w)
 	AM_RANGE(0xc0, 0xcf) AM_WRITE(clut_w)
 	AM_RANGE(0xd0, 0xd0) AM_READ(ff_r)  // irq ack? watchdog?
-<<<<<<< HEAD
-	AM_RANGE(0xd0, 0xd0) AM_DEVWRITE("dac", dac_device, write_unsigned8)
-=======
 	AM_RANGE(0xd0, 0xd0) AM_DEVWRITE("dac", dac_byte_interface, write)
->>>>>>> upstream/master
 	AM_RANGE(0xe0, 0xe0) AM_WRITE(secolove_romsel_w)
 //  AM_RANGE(0xf0, 0xf0) AM_DEVREAD("nb1413m3", nb1413m3_device, dipsw1_r)
 //  AM_RANGE(0xf1, 0xf1) AM_DEVREAD("nb1413m3", nb1413m3_device, dipsw2_r)
@@ -222,13 +167,8 @@ ADDRESS_MAP_END
 
 WRITE8_MEMBER(nbmj8688_state::barline_output_w)
 {
-<<<<<<< HEAD
-	coin_lockout_w(machine(), 0,~data & 0x80);
-	coin_counter_w(machine(), 0,data & 0x02);
-=======
 	machine().bookkeeping().coin_lockout_w(0,~data & 0x80);
 	machine().bookkeeping().coin_counter_w(0,data & 0x02);
->>>>>>> upstream/master
 }
 
 static ADDRESS_MAP_START( barline_io_map, AS_IO, 8, nbmj8688_state )
@@ -243,11 +183,7 @@ static ADDRESS_MAP_START( barline_io_map, AS_IO, 8, nbmj8688_state )
 	AM_RANGE(0xb0, 0xb0) AM_DEVREAD("nb1413m3", nb1413m3_device, inputport2_r) AM_WRITE(barline_output_w)
 	AM_RANGE(0xc0, 0xcf) AM_WRITE(clut_w)
 	AM_RANGE(0xd0, 0xd0) AM_READ(ff_r)  // irq ack? watchdog?
-<<<<<<< HEAD
-//  AM_RANGE(0xd0, 0xd0) AM_DEVWRITE("dac", dac_device, write_unsigned8) //not used
-=======
 //  AM_RANGE(0xd0, 0xd0) AM_DEVWRITE("dac", dac_byte_interface, write) //not used
->>>>>>> upstream/master
 	AM_RANGE(0xe0, 0xe0) AM_WRITE(secolove_romsel_w)
 	AM_RANGE(0xf0, 0xf0) AM_DEVREAD("nb1413m3", nb1413m3_device, dipsw1_r) AM_WRITE(scrolly_w)
 	AM_RANGE(0xf1, 0xf1) AM_DEVREAD("nb1413m3", nb1413m3_device, dipsw2_r)
@@ -265,11 +201,7 @@ static ADDRESS_MAP_START( crystalg_io_map, AS_IO, 8, nbmj8688_state )
 	AM_RANGE(0xb0, 0xb0) AM_DEVREADWRITE("nb1413m3", nb1413m3_device, inputport2_r, sndrombank1_w)
 	AM_RANGE(0xc0, 0xcf) AM_WRITE(clut_w)
 	AM_RANGE(0xd0, 0xd0) AM_READ(ff_r)  // irq ack? watchdog?
-<<<<<<< HEAD
-	AM_RANGE(0xd0, 0xd0) AM_DEVWRITE("dac", dac_device, write_unsigned8)
-=======
 	AM_RANGE(0xd0, 0xd0) AM_DEVWRITE("dac", dac_byte_interface, write)
->>>>>>> upstream/master
 	AM_RANGE(0xe0, 0xe0) AM_WRITE(crystalg_romsel_w)
 //  AM_RANGE(0xf0, 0xf0) AM_DEVREAD("nb1413m3", nb1413m3_device, dipsw1_r)
 //  AM_RANGE(0xf0, 0xf0) AM_WRITENOP
@@ -289,11 +221,7 @@ static ADDRESS_MAP_START( otonano_io_map, AS_IO, 8, nbmj8688_state )
 	AM_RANGE(0xa0, 0xa0) AM_DEVREADWRITE("nb1413m3", nb1413m3_device, inputport1_r, inputportsel_w)
 	AM_RANGE(0xb0, 0xb0) AM_DEVREADWRITE("nb1413m3", nb1413m3_device, inputport2_r, sndrombank1_w)
 	AM_RANGE(0xd0, 0xd0) AM_READ(ff_r)  // irq ack? watchdog?
-<<<<<<< HEAD
-	AM_RANGE(0xd0, 0xd0) AM_DEVWRITE("dac", dac_device, write_unsigned8)
-=======
 	AM_RANGE(0xd0, 0xd0) AM_DEVWRITE("dac", dac_byte_interface, write)
->>>>>>> upstream/master
 	AM_RANGE(0xe0, 0xe0) AM_WRITE(mjsikaku_gfxflag2_w)
 	AM_RANGE(0xf0, 0xf0) AM_DEVREAD("nb1413m3", nb1413m3_device, dipsw1_r) AM_WRITE(scrolly_w)
 	AM_RANGE(0xf1, 0xf1) AM_DEVREAD("nb1413m3", nb1413m3_device, dipsw2_r)
@@ -313,11 +241,7 @@ static ADDRESS_MAP_START( kaguya_io_map, AS_IO, 8, nbmj8688_state )
 	AM_RANGE(0xa0, 0xa0) AM_DEVREADWRITE("nb1413m3", nb1413m3_device, inputport1_r, inputportsel_w)
 	AM_RANGE(0xb0, 0xb0) AM_DEVREADWRITE("nb1413m3", nb1413m3_device, inputport2_r, sndrombank1_w)
 	AM_RANGE(0xd0, 0xd0) AM_READ(ff_r)  // irq ack? watchdog?
-<<<<<<< HEAD
-	AM_RANGE(0xd0, 0xd0) AM_DEVWRITE("dac", dac_device, write_unsigned8)
-=======
 	AM_RANGE(0xd0, 0xd0) AM_DEVWRITE("dac", dac_byte_interface, write)
->>>>>>> upstream/master
 	AM_RANGE(0xe0, 0xe0) AM_WRITE(mjsikaku_gfxflag2_w)
 	AM_RANGE(0xf0, 0xf0) AM_DEVREAD("nb1413m3", nb1413m3_device, dipsw1_r) AM_WRITE(scrolly_w)
 	AM_RANGE(0xf1, 0xf1) AM_DEVREAD("nb1413m3", nb1413m3_device, dipsw2_r)
@@ -338,11 +262,7 @@ static ADDRESS_MAP_START( iemoto_io_map, AS_IO, 8, nbmj8688_state )
 	AM_RANGE(0xa0, 0xa0) AM_DEVREADWRITE("nb1413m3", nb1413m3_device, inputport1_r, inputportsel_w)
 	AM_RANGE(0xb0, 0xb0) AM_DEVREADWRITE("nb1413m3", nb1413m3_device, inputport2_r, sndrombank1_w)
 	AM_RANGE(0xd0, 0xd0) AM_READ(ff_r)  // irq ack? watchdog?
-<<<<<<< HEAD
-	AM_RANGE(0xd0, 0xd0) AM_DEVWRITE("dac", dac_device, write_unsigned8)
-=======
 	AM_RANGE(0xd0, 0xd0) AM_DEVWRITE("dac", dac_byte_interface, write)
->>>>>>> upstream/master
 	AM_RANGE(0xe0, 0xe0) AM_WRITE(mjsikaku_gfxflag2_w)
 //  AM_RANGE(0xf0, 0xf0) AM_DEVREAD("nb1413m3", nb1413m3_device, dipsw1_r)
 //  AM_RANGE(0xf1, 0xf1) AM_DEVREAD("nb1413m3", nb1413m3_device, dipsw2_r)
@@ -364,11 +284,7 @@ static ADDRESS_MAP_START( seiha_io_map, AS_IO, 8, nbmj8688_state )
 	AM_RANGE(0xa0, 0xa0) AM_DEVREADWRITE("nb1413m3", nb1413m3_device, inputport1_r, inputportsel_w)
 	AM_RANGE(0xb0, 0xb0) AM_DEVREADWRITE("nb1413m3", nb1413m3_device, inputport2_r, sndrombank1_w)
 	AM_RANGE(0xd0, 0xd0) AM_READ(ff_r)  // irq ack? watchdog?
-<<<<<<< HEAD
-	AM_RANGE(0xd0, 0xd0) AM_DEVWRITE("dac", dac_device, write_unsigned8)
-=======
 	AM_RANGE(0xd0, 0xd0) AM_DEVWRITE("dac", dac_byte_interface, write)
->>>>>>> upstream/master
 	AM_RANGE(0xe0, 0xe0) AM_WRITE(mjsikaku_gfxflag2_w)
 //  AM_RANGE(0xf0, 0xf0) AM_DEVREAD("nb1413m3", nb1413m3_device, dipsw1_r)
 //  AM_RANGE(0xf1, 0xf1) AM_DEVREAD("nb1413m3", nb1413m3_device, dipsw2_r)
@@ -388,11 +304,7 @@ static ADDRESS_MAP_START( mjgaiden_io_map, AS_IO, 8, nbmj8688_state )
 	AM_RANGE(0xa0, 0xa0) AM_DEVREADWRITE("nb1413m3", nb1413m3_device, inputport1_r, inputportsel_w)
 	AM_RANGE(0xb0, 0xb0) AM_DEVREADWRITE("nb1413m3", nb1413m3_device, inputport2_r, sndrombank1_w)
 	AM_RANGE(0xd0, 0xd0) AM_READ(ff_r)  // irq ack? watchdog?
-<<<<<<< HEAD
-	AM_RANGE(0xd0, 0xd0) AM_DEVWRITE("dac", dac_device, write_unsigned8)
-=======
 	AM_RANGE(0xd0, 0xd0) AM_DEVWRITE("dac", dac_byte_interface, write)
->>>>>>> upstream/master
 	AM_RANGE(0xe0, 0xe0) AM_WRITE(mjsikaku_gfxflag2_w)
 //  AM_RANGE(0xf0, 0xf0) AM_DEVREAD("nb1413m3", nb1413m3_device, dipsw1_r)
 //  AM_RANGE(0xf1, 0xf1) AM_DEVREAD("nb1413m3", nb1413m3_device, dipsw2_r)
@@ -417,11 +329,7 @@ static ADDRESS_MAP_START( p16bit_LCD_io_map, AS_IO, 8, nbmj8688_state )
 	AM_RANGE(0xb0, 0xb0) AM_DEVREADWRITE("nb1413m3", nb1413m3_device, inputport2_r, sndrombank1_w)
 	AM_RANGE(0xc0, 0xcf) AM_WRITE(clut_w)
 	AM_RANGE(0xd0, 0xd0) AM_READ(ff_r)  // irq ack? watchdog?
-<<<<<<< HEAD
-	AM_RANGE(0xd0, 0xd0) AM_DEVWRITE("dac", dac_device, write_unsigned8)
-=======
 	AM_RANGE(0xd0, 0xd0) AM_DEVWRITE("dac", dac_byte_interface, write)
->>>>>>> upstream/master
 	AM_RANGE(0xe0, 0xe0) AM_WRITE(secolove_romsel_w)
 //  AM_RANGE(0xf0, 0xf0) AM_DEVREAD("nb1413m3", nb1413m3_device, dipsw1_r)
 //  AM_RANGE(0xf1, 0xf1) AM_DEVREAD("nb1413m3", nb1413m3_device, dipsw2_r)
@@ -442,11 +350,7 @@ static ADDRESS_MAP_START( mjsikaku_io_map, AS_IO, 8, nbmj8688_state )
 	AM_RANGE(0xa0, 0xa0) AM_DEVREADWRITE("nb1413m3", nb1413m3_device, inputport1_r, inputportsel_w)
 	AM_RANGE(0xb0, 0xb0) AM_DEVREADWRITE("nb1413m3", nb1413m3_device, inputport2_r, sndrombank1_w)
 	AM_RANGE(0xd0, 0xd0) AM_READ(ff_r)  // irq ack? watchdog?
-<<<<<<< HEAD
-	AM_RANGE(0xd0, 0xd0) AM_DEVWRITE("dac", dac_device, write_unsigned8)
-=======
 	AM_RANGE(0xd0, 0xd0) AM_DEVWRITE("dac", dac_byte_interface, write)
->>>>>>> upstream/master
 	AM_RANGE(0xe0, 0xe0) AM_WRITE(mjsikaku_gfxflag2_w)
 	AM_RANGE(0xf0, 0xf0) AM_DEVREAD("nb1413m3", nb1413m3_device, dipsw1_r)
 	AM_RANGE(0xf1, 0xf1) AM_DEVREAD("nb1413m3", nb1413m3_device, dipsw2_r)
@@ -468,11 +372,7 @@ static ADDRESS_MAP_START( mmsikaku_io_map, AS_IO, 8, nbmj8688_state )
 	AM_RANGE(0xa0, 0xa0) AM_DEVREADWRITE("nb1413m3", nb1413m3_device, inputport1_r, inputportsel_w)
 	AM_RANGE(0xb0, 0xb0) AM_DEVREADWRITE("nb1413m3", nb1413m3_device, inputport2_r, sndrombank1_w)
 	AM_RANGE(0xd0, 0xd0) AM_READ(ff_r)  // irq ack? watchdog?
-<<<<<<< HEAD
-	AM_RANGE(0xd0, 0xd0) AM_DEVWRITE("dac", dac_device, write_unsigned8)
-=======
 	AM_RANGE(0xd0, 0xd0) AM_DEVWRITE("dac", dac_byte_interface, write)
->>>>>>> upstream/master
 	AM_RANGE(0xe0, 0xe0) AM_WRITE(mjsikaku_gfxflag2_w)
 //  AM_RANGE(0xf0, 0xf0) AM_DEVREAD("nb1413m3", nb1413m3_device, dipsw1_r)
 //  AM_RANGE(0xf1, 0xf1) AM_DEVREAD("nb1413m3", nb1413m3_device, dipsw2_r)
@@ -486,11 +386,7 @@ CUSTOM_INPUT_MEMBER( nbmj8688_state::nb1413m3_busyflag_r )
 
 static INPUT_PORTS_START( mjsikaku )
 	PORT_START("DSWA")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x07, 0x07, DEF_STR( Difficulty ) )
-=======
 	PORT_DIPNAME( 0x07, 0x07, DEF_STR( Difficulty ) )       PORT_DIPLOCATION("DSWA:1,2,3")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x07, "1 (Easy)" )
 	PORT_DIPSETTING(    0x06, "2" )
 	PORT_DIPSETTING(    0x05, "3" )
@@ -499,54 +395,6 @@ static INPUT_PORTS_START( mjsikaku )
 	PORT_DIPSETTING(    0x02, "6" )
 	PORT_DIPSETTING(    0x01, "7" )
 	PORT_DIPSETTING(    0x00, "8 (Hard)" )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x08, 0x08, DEF_STR( Coinage ) )
-	PORT_DIPSETTING(    0x08, DEF_STR( 1C_1C ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( 1C_2C ) )
-	PORT_DIPNAME( 0x10, 0x10, "Character Display Test" )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x00, DEF_STR( Demo_Sounds ) )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x00, "Game Sounds" )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, "DIPSW 1-8" )
-	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-
-	PORT_START("DSWB")
-	PORT_DIPNAME( 0x01, 0x01, "DIPSW 2-1" )
-	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x02, 0x02, "DIPSW 2-2" )
-	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x04, 0x04, "DIPSW 2-3" )
-	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x08, 0x08, "DIPSW 2-4" )
-	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x10, "DIPSW 2-5" )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, "DIPSW 2-6" )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x40, "DIPSW 2-7" )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, "DIPSW 2-8" )
-	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-
-	PORT_START("SYSTEM")
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8688_state, nb1413m3_busyflag_r, NULL)    // DRAW BUSY
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )         //
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SERVICE3 )       // MEMORY RESET
-=======
 	PORT_DIPNAME( 0x08, 0x08, DEF_STR( Coinage ) )          PORT_DIPLOCATION("DSWA:4")
 	PORT_DIPSETTING(    0x08, DEF_STR( 1C_1C ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( 1C_2C ) )
@@ -571,7 +419,6 @@ static INPUT_PORTS_START( mjsikaku )
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8688_state, nb1413m3_busyflag_r, nullptr)    // DRAW BUSY
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )         //
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_MEMORY_RESET )   // MEMORY RESET
->>>>>>> upstream/master
 	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_SERVICE2 )       // ANALYZER
 	PORT_SERVICE( 0x10, IP_ACTIVE_LOW )                 // TEST
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_COIN2 )          // COIN2
@@ -582,122 +429,31 @@ static INPUT_PORTS_START( mjsikaku )
 INPUT_PORTS_END
 
 static INPUT_PORTS_START( mmsikaku )
-<<<<<<< HEAD
-#if 1
-	PORT_START("DSWA")
-	PORT_DIPNAME( 0x01, 0x01, "DIPSW 1-1" )
-	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x02, 0x02, "DIPSW 1-2" )
-	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x04, 0x04, "DIPSW 1-3" )
-	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x08, 0x08, "DIPSW 1-4" )
-	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x10, "DIPSW 1-5" )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, "DIPSW 1-6" )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x40, "DIPSW 1-7" )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, "DIPSW 1-8" )
-	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-
-	PORT_START("DSWB")
-	PORT_DIPNAME( 0x01, 0x01, "DIPSW 2-1" )
-	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x02, 0x02, "DIPSW 2-2" )
-	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x04, 0x04, "DIPSW 2-3" )
-	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x08, 0x08, "DIPSW 2-4" )
-	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x10, "DIPSW 2-5" )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, "DIPSW 2-6" )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x40, "DIPSW 2-7" )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, "DIPSW 2-8" )
-	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-#else
-
-	PORT_START("DSWA")
-	PORT_DIPNAME( 0x07, 0x00, "Game Out" )
-	PORT_DIPSETTING(    0x07, "60% (Hard)" )
-=======
 	PORT_START("DSWA")
 	PORT_DIPNAME( 0x07, 0x00, "Game Out Rate" )             PORT_DIPLOCATION("DSWA:1,2,3") // unconfirmed but extremely likely correct
 	PORT_DIPSETTING(    0x07, "60%" )
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x06, "65%" )
 	PORT_DIPSETTING(    0x05, "70%" )
 	PORT_DIPSETTING(    0x04, "75%" )
 	PORT_DIPSETTING(    0x03, "80%" )
 	PORT_DIPSETTING(    0x02, "85%" )
 	PORT_DIPSETTING(    0x01, "90%" )
-<<<<<<< HEAD
-	PORT_DIPSETTING(    0x00, "95% (Easy)" )
-	PORT_DIPNAME( 0x18, 0x18, "Rate Min" )
-=======
 	PORT_DIPSETTING(    0x00, "95%" )
 	PORT_DIPNAME( 0x18, 0x18, "Rate Min" )                  PORT_DIPLOCATION("DSWA:4,5")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x18, "1" )
 	PORT_DIPSETTING(    0x10, "2" )
 	PORT_DIPSETTING(    0x08, "3" )
 	PORT_DIPSETTING(    0x00, "5" )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x60, 0x00, "Rate Max" )
-=======
 	PORT_DIPNAME( 0x60, 0x00, "Rate Max" )                  PORT_DIPLOCATION("DSWA:6,7")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x60, "8" )
 	PORT_DIPSETTING(    0x40, "10" )
 	PORT_DIPSETTING(    0x20, "12" )
 	PORT_DIPSETTING(    0x00, "20" )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x80, 0x00, "Score Pool" )
-=======
 	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )          PORT_DIPLOCATION("DSWA:8") // score pool?
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START("DSWB")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x01, 0x00, "Rate Up" )
-	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x02, 0x00, "Last Chance" )
-	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x04, 0x04, "Character Display Test" )
-	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_BIT( 0xf8, IP_ACTIVE_LOW, IPT_UNUSED )
-#endif
-
-	PORT_START("SYSTEM")
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8688_state, nb1413m3_busyflag_r, NULL)    // DRAW BUSY
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )         //
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SERVICE3 )       // MEMORY RESET
-=======
 	PORT_DIPNAME( 0x01, 0x01, DEF_STR( Unknown ) )          PORT_DIPLOCATION("DSWB:1") // rate up?
 	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
@@ -719,7 +475,6 @@ static INPUT_PORTS_START( mmsikaku )
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8688_state, nb1413m3_busyflag_r, nullptr)    // DRAW BUSY
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_MEMORY_RESET )   // MEMORY RESET
->>>>>>> upstream/master
 	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_SERVICE2 )       // ANALYZER
 	PORT_SERVICE( 0x10, IP_ACTIVE_LOW )                 // TEST
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_COIN2 )          // COIN2
@@ -731,11 +486,7 @@ INPUT_PORTS_END
 
 static INPUT_PORTS_START( otonano )
 	PORT_START("DSWA")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x07, 0x07, DEF_STR( Difficulty ) )
-=======
 	PORT_DIPNAME( 0x07, 0x07, DEF_STR( Difficulty ) )   PORT_DIPLOCATION("SWA:1,2,3")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x07, "1 (Easy)" )
 	PORT_DIPSETTING(    0x06, "2" )
 	PORT_DIPSETTING(    0x05, "3" )
@@ -744,24 +495,6 @@ static INPUT_PORTS_START( otonano )
 	PORT_DIPSETTING(    0x02, "6" )
 	PORT_DIPSETTING(    0x01, "7" )
 	PORT_DIPSETTING(    0x00, "8 (Hard)" )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x08, 0x00, "TSUMIPAI ENCHOU" )
-	PORT_DIPSETTING(    0x08, DEF_STR( No ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( Yes ) )
-	PORT_DIPNAME( 0x10, 0x10, "Last chance needs 1,000points" )
-	PORT_DIPSETTING(    0x10, DEF_STR( No ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( Yes ) )
-	PORT_DIPNAME( 0x20, 0x20, DEF_STR( Coinage ) )
-	PORT_DIPSETTING(    0x20, DEF_STR( 1C_1C ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( 1C_2C ) )
-	PORT_DIPNAME( 0x40, 0x40, "Graphic ROM Test" )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, "Play fee display" )
-	PORT_DIPSETTING(    0x80, "100 Yen" )
-	PORT_DIPSETTING(    0x00, "50 Yen" )
-
-=======
 	PORT_DIPNAME( 0x08, 0x00, "TSUMIPAI ENCHOU" )       PORT_DIPLOCATION("SWA:4")
 	PORT_DIPSETTING(    0x08, DEF_STR( No ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( Yes ) )
@@ -780,46 +513,16 @@ static INPUT_PORTS_START( otonano )
 
 	/* note this is actually unpopulated on the PCB and marked as unused
 	       in the manual */
->>>>>>> upstream/master
 	PORT_START("DSWB")
 	PORT_DIPNAME( 0x01, 0x01, "Character Display Test" )
 	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x02, 0x02, "DIPSW 2-2" )
-	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x04, 0x04, "DIPSW 2-3" )
-	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x08, 0x08, "DIPSW 2-4" )
-	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x10, "DIPSW 2-5" )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, "DIPSW 2-6" )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x40, "DIPSW 2-7" )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, "DIPSW 2-8" )
-	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-
-	PORT_START("SYSTEM")
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8688_state, nb1413m3_busyflag_r, NULL)    // DRAW BUSY
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )         //
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SERVICE3 )       // MEMORY RESET
-=======
 	PORT_BIT( 0xfe, IP_ACTIVE_LOW, IPT_UNUSED )
 
 	PORT_START("SYSTEM")
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8688_state, nb1413m3_busyflag_r, nullptr)    // DRAW BUSY
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )         //
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_MEMORY_RESET )   // MEMORY RESET
->>>>>>> upstream/master
 	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_SERVICE2 )       // ANALYZER
 	PORT_SERVICE( 0x10, IP_ACTIVE_LOW )                 // TEST
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_COIN2 )          // COIN2
@@ -831,11 +534,7 @@ INPUT_PORTS_END
 
 static INPUT_PORTS_START( mjcamera )
 	PORT_START("DSWA")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x07, 0x07, DEF_STR( Difficulty ) )
-=======
 	PORT_DIPNAME( 0x07, 0x07, DEF_STR( Difficulty ) )       PORT_DIPLOCATION("DSWA:1,2,3")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x07, "1 (Easy)" )
 	PORT_DIPSETTING(    0x06, "2" )
 	PORT_DIPSETTING(    0x05, "3" )
@@ -844,54 +543,6 @@ static INPUT_PORTS_START( mjcamera )
 	PORT_DIPSETTING(    0x02, "6" )
 	PORT_DIPSETTING(    0x01, "7" )
 	PORT_DIPSETTING(    0x00, "8 (Hard)" )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x08, 0x08, DEF_STR( Coinage ) )
-	PORT_DIPSETTING(    0x08, DEF_STR( 1C_1C ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( 1C_2C ) )
-	PORT_DIPNAME( 0x10, 0x10, DEF_STR( Flip_Screen ) )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, "DIPSW 1-6" )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x40, "DIPSW 1-7" )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, "Character Display Test" )
-	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-
-	PORT_START("DSWB")
-	PORT_DIPNAME( 0x01, 0x01, "DIPSW 2-1" )
-	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x02, 0x02, "DIPSW 2-2" )
-	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x04, 0x04, "DIPSW 2-3" )
-	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x08, 0x08, "DIPSW 2-4" )
-	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x10, "DIPSW 2-5" )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, "DIPSW 2-6" )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x40, "DIPSW 2-7" )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, "DIPSW 2-8" )
-	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-
-	PORT_START("SYSTEM")
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8688_state, nb1413m3_busyflag_r, NULL)    // DRAW BUSY
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )         //
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SERVICE3 )       // MEMORY RESET
-=======
 	PORT_DIPNAME( 0x08, 0x08, DEF_STR( Coinage ) )          PORT_DIPLOCATION("DSWA:4")
 	PORT_DIPSETTING(    0x08, DEF_STR( 1C_1C ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( 1C_2C ) )
@@ -915,7 +566,6 @@ static INPUT_PORTS_START( mjcamera )
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8688_state, nb1413m3_busyflag_r, nullptr)    // DRAW BUSY
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )         //
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_MEMORY_RESET )   // MEMORY RESET
->>>>>>> upstream/master
 	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_SERVICE2 )       // ANALYZER
 	PORT_SERVICE( 0x10, IP_ACTIVE_LOW )                 // TEST
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_COIN2 )          // COIN2
@@ -926,38 +576,6 @@ static INPUT_PORTS_START( mjcamera )
 INPUT_PORTS_END
 
 static INPUT_PORTS_START( kaguya )
-<<<<<<< HEAD
-	PORT_START("DSWA")
-	PORT_DIPNAME( 0x03, 0x03, DEF_STR( Coinage ) )
-	PORT_DIPSETTING(    0x03, DEF_STR( 1C_1C ) )
-	PORT_DIPSETTING(    0x02, DEF_STR( 1C_2C ) )
-	PORT_DIPSETTING(    0x01, DEF_STR( 1C_5C ) )
-	PORT_DIPSETTING(    0x00, "1 Coin/10 Credits" )
-	// NOTE:Coins counted by pressing service switch
-	PORT_DIPNAME( 0x04, 0x04, "NOTE" )
-	PORT_DIPSETTING(    0x04, "Coin x5" )
-	PORT_DIPSETTING(    0x00, "Coin x10" )
-	PORT_DIPNAME( 0x18, 0x18, "Game Out" )
-	PORT_DIPSETTING(    0x18, "90% (Easy)" )
-	PORT_DIPSETTING(    0x10, "80%" )
-	PORT_DIPSETTING(    0x08, "70%" )
-	PORT_DIPSETTING(    0x00, "60% (Hard)" )
-	PORT_DIPNAME( 0x20, 0x20, "Bonus awarded on" )
-	PORT_DIPSETTING(    0x20, "[over BAIMAN]" )
-	PORT_DIPSETTING(    0x00, "[BAIMAN]" )
-	PORT_DIPNAME( 0x40, 0x40, "Variability of payout rate" )
-	PORT_DIPSETTING(    0x40, "[big]" )
-	PORT_DIPSETTING(    0x00, "[small]" )
-	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Flip_Screen ) )
-	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-
-	PORT_START("DSWB")
-	PORT_DIPNAME( 0x01, 0x00, "Nudity graphic on bet" )
-	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x06, 0x06, "Bet Min" )
-=======
 	// manual has DSWA and DSWB mixed up compared to PCB
 	// PCB is traditional Nichibutsu legacy, A/B match other PCBs
 	// so assumption is manual is incorrect
@@ -967,70 +585,15 @@ static INPUT_PORTS_START( kaguya )
 	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_DIPNAME( 0x06, 0x06, "Bet Min" )                   PORT_DIPLOCATION("DSWA:2,3")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x06, "1" )
 	PORT_DIPSETTING(    0x04, "3" )
 	PORT_DIPSETTING(    0x02, "5" )
 	PORT_DIPSETTING(    0x00, "7" )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x18, 0x00, "Number of extend TSUMO" )
-=======
 	PORT_DIPNAME( 0x18, 0x00, "Number of extend TSUMO" )    PORT_DIPLOCATION("DSWA:4,5")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x18, "0" )
 	PORT_DIPSETTING(    0x10, "2" )
 	PORT_DIPSETTING(    0x08, "3" )
 	PORT_DIPSETTING(    0x00, "4" )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x20, 0x20, "Extend TSUMO needs credit" )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x40, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-
-	PORT_START("SYSTEM")
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8688_state, nb1413m3_busyflag_r, NULL)    // DRAW BUSY
-//  PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )         //
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_SERVICE1 )       //
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SERVICE3 )       // MEMORY RESET
-	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_SERVICE2 )       // ANALYZER
-	PORT_SERVICE( 0x10, IP_ACTIVE_LOW )                 // TEST
-	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_COIN1 )          // COIN1
-	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_OTHER ) PORT_NAME("Credit Clear") PORT_CODE(KEYCODE_4) // CREDIT CLEAR
-	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_COIN2 )          // COIN2
-
-	PORT_INCLUDE( nbmjcontrols )
-INPUT_PORTS_END
-
-static INPUT_PORTS_START( kaguya2 )
-	PORT_START("DSWA")
-	PORT_DIPNAME( 0x01, 0x01, "DIPSW 1-1" )
-	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x02, 0x02, "DIPSW 1-2" )
-	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x04, 0x04, "DIPSW 1-3" )
-	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x08, 0x08, "DIPSW 1-4" )
-	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x10, "DIPSW 1-5" )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, "DIPSW 1-6" )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x40, "DIPSW 1-7" )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, "DIPSW 1-8" )
-=======
 	PORT_DIPNAME( 0x20, 0x20, "Extend TSUMO needs credit" ) PORT_DIPLOCATION("DSWA:6")
 	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
@@ -1038,35 +601,10 @@ static INPUT_PORTS_START( kaguya2 )
 	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unused ) )           PORT_DIPLOCATION("DSWA:8")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START("DSWB")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x01, 0x01, "DIPSW 2-1" )
-	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x02, 0x02, "DIPSW 2-2" )
-	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x04, 0x04, "DIPSW 2-3" )
-	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x08, 0x08, "DIPSW 2-4" )
-	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x10, "DIPSW 2-5" )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, "DIPSW 2-6" )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x40, "DIPSW 2-7" )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Flip_Screen ) )
-=======
 	PORT_DIPNAME( 0x03, 0x03, DEF_STR( Coinage ) )          PORT_DIPLOCATION("DSWB:1,2")
 	PORT_DIPSETTING(    0x03, DEF_STR( 1C_1C ) )
 	PORT_DIPSETTING(    0x02, DEF_STR( 1C_2C ) )
@@ -1088,21 +626,13 @@ static INPUT_PORTS_START( kaguya2 )
 	PORT_DIPSETTING(    0x40, "[big]" )
 	PORT_DIPSETTING(    0x00, "[small]" )
 	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Flip_Screen ) )      PORT_DIPLOCATION("DSWB:8")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START("SYSTEM")
-<<<<<<< HEAD
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8688_state, nb1413m3_busyflag_r, NULL)    // DRAW BUSY
-//  PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_SERVICE1 )
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SERVICE3 )       // MEMORY RESET
-=======
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8688_state, nb1413m3_busyflag_r, nullptr)    // DRAW BUSY
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_SERVICE1 )
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_MEMORY_RESET )   // MEMORY RESET
->>>>>>> upstream/master
 	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_SERVICE2 )       // ANALYZER
 	PORT_SERVICE( 0x10, IP_ACTIVE_LOW )                 // TEST
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_COIN1 )          // COIN1
@@ -1112,32 +642,6 @@ static INPUT_PORTS_START( kaguya2 )
 	PORT_INCLUDE( nbmjcontrols )
 INPUT_PORTS_END
 
-<<<<<<< HEAD
-static INPUT_PORTS_START( kanatuen )
-	PORT_START("DSWA")
-	PORT_DIPNAME( 0x01, 0x01, "DIPSW 1-1" )
-	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x02, 0x02, "DIPSW 1-2" )
-	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x04, 0x04, "DIPSW 1-3" )
-	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x08, 0x08, "Character Display Test" )
-	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x10, "DIPSW 1-5" )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, "DIPSW 1-6" )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x40, "DIPSW 1-7" )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, "DIPSW 1-8" )
-=======
 
 static INPUT_PORTS_START( kanatuen )
 	PORT_START("DSWA")
@@ -1163,35 +667,10 @@ static INPUT_PORTS_START( kanatuen )
 	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_DIPNAME( 0x80, 0x00, "Double Bet" )                PORT_DIPLOCATION("DSWA:8")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START("DSWB")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x01, 0x01, "DIPSW 2-1" )
-	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x02, 0x02, "DIPSW 2-2" )
-	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x04, 0x04, "DIPSW 2-3" )
-	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x08, 0x08, "DIPSW 2-4" )
-	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x10, "DIPSW 2-5" )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, "DIPSW 2-6" )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x40, "DIPSW 2-7" )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, "DIPSW 2-8" )
-=======
 	PORT_DIPNAME( 0x01, 0x00, DEF_STR( Coinage ) )          PORT_DIPLOCATION("DSWB:1")
 	PORT_DIPSETTING(    0x00, DEF_STR( 1C_1C ) )
 	PORT_DIPSETTING(    0x01, DEF_STR( 1C_2C ) )
@@ -1212,22 +691,10 @@ static INPUT_PORTS_START( kanatuen )
 	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )          PORT_DIPLOCATION("DSWB:8")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START("SYSTEM")
-<<<<<<< HEAD
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8688_state, nb1413m3_busyflag_r, NULL)    // DRAW BUSY
-//  PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )         //
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_SERVICE1 )       //
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SERVICE3 )       // MEMORY RESET
-	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_SERVICE2 )       // ANALYZER
-	PORT_SERVICE( 0x10, IP_ACTIVE_LOW )                 // TEST
-	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_COIN1 )          // COIN1
-	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_OTHER ) PORT_NAME("Credit Clear") PORT_CODE(KEYCODE_4) // CREDIT CLEAR
-	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_COIN2 )          // COIN2
-=======
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8688_state, nb1413m3_busyflag_r, nullptr)    // DRAW BUSY
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_MEMORY_RESET )           // MEMORY RESET
@@ -1236,37 +703,12 @@ static INPUT_PORTS_START( kanatuen )
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_COIN1 )                  // COIN1
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_OTHER ) PORT_NAME("Credit Clear") PORT_CODE(KEYCODE_4) // CREDIT CLEAR
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_COIN2 )                  // COIN2
->>>>>>> upstream/master
 
 	PORT_INCLUDE( nbmjcontrols )
 INPUT_PORTS_END
 
 static INPUT_PORTS_START( kyuhito )
 	PORT_START("DSWA")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x01, 0x01, "DIPSW 1-1" )
-	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x02, 0x02, "DIPSW 1-2" )
-	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x04, 0x04, "DIPSW 1-3" )
-	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x08, 0x08, "Character Display Test" )
-	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x10, "DIPSW 1-5" )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, "DIPSW 1-6" )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x40, "DIPSW 1-7" )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, "DIPSW 1-8" )
-=======
 	PORT_DIPNAME( 0x07, 0x07, "Game Out Rate" )             PORT_DIPLOCATION("DSWA:1,2,3")
 	PORT_DIPSETTING(    0x07, "67%" )
 	PORT_DIPSETTING(    0x06, "70%" )
@@ -1289,35 +731,10 @@ static INPUT_PORTS_START( kyuhito )
 	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_DIPNAME( 0x80, 0x00, "Double Bet" )                PORT_DIPLOCATION("DSWA:8")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START("DSWB")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x01, 0x01, "DIPSW 2-1" )
-	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x02, 0x02, "DIPSW 2-2" )
-	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x04, 0x04, "DIPSW 2-3" )
-	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x08, 0x08, "DIPSW 2-4" )
-	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x10, "DIPSW 2-5" )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, "DIPSW 2-6" )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x40, "DIPSW 2-7" )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, "DIPSW 2-8" )
-=======
 	PORT_DIPNAME( 0x01, 0x00, DEF_STR( Coinage ) )          PORT_DIPLOCATION("DSWB:1")
 	PORT_DIPSETTING(    0x00, DEF_STR( 1C_1C ) )
 	PORT_DIPSETTING(    0x01, DEF_STR( 1C_2C ) )
@@ -1338,22 +755,10 @@ static INPUT_PORTS_START( kyuhito )
 	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )          PORT_DIPLOCATION("DSWB:8")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START("SYSTEM")
-<<<<<<< HEAD
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8688_state, nb1413m3_busyflag_r, NULL)    // DRAW BUSY
-//  PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )         //
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_SERVICE1 )       //
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SERVICE3 )       // MEMORY RESET
-	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_SERVICE2 )       // ANALYZER
-	PORT_SERVICE( 0x10, IP_ACTIVE_LOW )                 // TEST
-	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_COIN1 )          // COIN1
-	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_OTHER ) PORT_NAME("Credit Clear") PORT_CODE(KEYCODE_4) // CREDIT CLEAR
-	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_COIN2 )          // COIN2
-=======
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8688_state, nb1413m3_busyflag_r, nullptr)    // DRAW BUSY
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_MEMORY_RESET )           // MEMORY RESET
@@ -1362,37 +767,12 @@ static INPUT_PORTS_START( kyuhito )
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_COIN1 )                  // COIN1
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_OTHER ) PORT_NAME("Credit Clear") PORT_CODE(KEYCODE_4) // CREDIT CLEAR
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_COIN2 )                  // COIN2
->>>>>>> upstream/master
 
 	PORT_INCLUDE( nbmjcontrols )
 INPUT_PORTS_END
 
 static INPUT_PORTS_START( idhimitu )
 	PORT_START("DSWA")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x01, 0x01, "DIPSW 1-1" )
-	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x02, 0x02, "DIPSW 1-2" )
-	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x04, 0x04, "DIPSW 1-3" )
-	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x08, 0x08, "DIPSW 1-4" )
-	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x10, "DIPSW 1-5" )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, "DIPSW 1-6" )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x40, "DIPSW 1-7" )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, "DIPSW 1-8" )
-=======
 	PORT_DIPNAME( 0x07, 0x07, "Game Out Rate" )             PORT_DIPLOCATION("DSWA:1,2,3")
 	PORT_DIPSETTING(    0x00, "55%" )
 	PORT_DIPSETTING(    0x01, "60%" )
@@ -1414,35 +794,10 @@ static INPUT_PORTS_START( idhimitu )
 	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_DIPNAME( 0x80, 0x00, "Last Chance" )               PORT_DIPLOCATION("DSWA:8")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START("DSWB")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x01, 0x01, DEF_STR( Flip_Screen ) )
-	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x02, 0x02, "Character Display Test" )
-	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x04, 0x04, "DIPSW 2-3" )
-	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x08, 0x08, "DIPSW 2-4" )
-	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x10, "DIPSW 2-5" )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, "DIPSW 2-6" )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x40, "DIPSW 2-7" )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, "DIPSW 2-8" )
-=======
 	PORT_DIPNAME( 0x01, 0x01, DEF_STR( Flip_Screen ) )      PORT_DIPLOCATION("DSWB:1")
 	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
@@ -1465,22 +820,10 @@ static INPUT_PORTS_START( idhimitu )
 	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )          PORT_DIPLOCATION("DSWB:8")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START("SYSTEM")
-<<<<<<< HEAD
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8688_state, nb1413m3_busyflag_r, NULL)    // DRAW BUSY
-//  PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )         //
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_SERVICE1 )       //
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SERVICE3 )       // MEMORY RESET
-	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_SERVICE2 )       // ANALYZER
-	PORT_SERVICE( 0x10, IP_ACTIVE_LOW )                 // TEST
-	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_COIN1 )          // COIN1
-	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_OTHER ) PORT_NAME("Credit Clear") PORT_CODE(KEYCODE_4) // CREDIT CLEAR
-	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_COIN2 )          // COIN2
-=======
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8688_state, nb1413m3_busyflag_r, nullptr)    // DRAW BUSY
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_MEMORY_RESET )           // MEMORY RESET
@@ -1489,18 +832,13 @@ static INPUT_PORTS_START( idhimitu )
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_COIN1 )                  // COIN1
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_OTHER ) PORT_NAME("Credit Clear") PORT_CODE(KEYCODE_4) // CREDIT CLEAR
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_COIN2 )                  // COIN2
->>>>>>> upstream/master
 
 	PORT_INCLUDE( nbmjcontrols )
 INPUT_PORTS_END
 
 static INPUT_PORTS_START( secolove )
 	PORT_START("DSWA")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x07, 0x07, DEF_STR( Difficulty ) )
-=======
 	PORT_DIPNAME( 0x07, 0x07, DEF_STR( Difficulty ) )       PORT_DIPLOCATION("DSWA:1,2,3")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x07, "1 (Easy)" )
 	PORT_DIPSETTING(    0x06, "2" )
 	PORT_DIPSETTING(    0x05, "3" )
@@ -1509,21 +847,6 @@ static INPUT_PORTS_START( secolove )
 	PORT_DIPSETTING(    0x02, "6" )
 	PORT_DIPSETTING(    0x01, "7" )
 	PORT_DIPSETTING(    0x00, "8 (Hard)" )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x08, 0x08, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x10, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x00, "Nudity" )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, "Graphic ROM Test" )
-=======
 	PORT_DIPNAME( 0x08, 0x08, DEF_STR( Unused ) )           PORT_DIPLOCATION("DSWA:4")
 	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
@@ -1537,38 +860,15 @@ static INPUT_PORTS_START( secolove )
 	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_DIPNAME( 0x80, 0x80, "Graphic ROM Test" )          PORT_DIPLOCATION("DSWA:8")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START("DSWB")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x03, 0x00, "Number of last chance" )
-=======
 	PORT_DIPNAME( 0x03, 0x00, "Number of last chance" )     PORT_DIPLOCATION("DSWB:1,2")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x03, "0" )
 	PORT_DIPSETTING(    0x02, "3" )
 	PORT_DIPSETTING(    0x01, "5" )
 	PORT_DIPSETTING(    0x00, "10" )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x04, 0x00, "Hanahai" )
-	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x08, 0x00, "Open Reach of CPU" )
-	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x00, "Cancel Hand" )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x00, "Wareme" )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x40, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )
-=======
 	PORT_DIPNAME( 0x04, 0x00, "Hanahai" )                   PORT_DIPLOCATION("DSWB:3")
 	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
@@ -1585,20 +885,13 @@ static INPUT_PORTS_START( secolove )
 	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unused ) )           PORT_DIPLOCATION("DSWB:8")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START("SYSTEM")
-<<<<<<< HEAD
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8688_state, nb1413m3_busyflag_r, NULL)    // DRAW BUSY
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )         //
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SERVICE3 )       // MEMORY RESET
-=======
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8688_state, nb1413m3_busyflag_r, nullptr)    // DRAW BUSY
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )         //
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_MEMORY_RESET )   // MEMORY RESET
->>>>>>> upstream/master
 	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_SERVICE2 )       // ANALYZER
 	PORT_SERVICE( 0x10, IP_ACTIVE_LOW )                 // TEST
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_COIN1 )          // COIN1
@@ -1610,11 +903,7 @@ INPUT_PORTS_END
 
 static INPUT_PORTS_START( barline )
 	PORT_START("DSWA")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x07, 0x07, "Game Rate" )
-=======
 	PORT_DIPNAME( 0x07, 0x07, "Game Rate" )                 PORT_DIPLOCATION("DSWA:1,2,3")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x00, "58%" )
 	PORT_DIPSETTING(    0x01, "64%" )
 	PORT_DIPSETTING(    0x02, "70%" )
@@ -1623,21 +912,6 @@ static INPUT_PORTS_START( barline )
 	PORT_DIPSETTING(    0x05, "80%" )
 	PORT_DIPSETTING(    0x06, "88%" )
 	PORT_DIPSETTING(    0x07, "95%" )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x08, 0x08, "DIPSW 1-4" )
-	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x10, "DIPSW 1-5" )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, "DIPSW 1-6" )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x40, "DIPSW 1-7" )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, "DIPSW 1-8" )
-=======
 	PORT_DIPNAME( 0x08, 0x08, DEF_STR( Unknown ) )          PORT_DIPLOCATION("DSWA:4")
 	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
@@ -1651,26 +925,10 @@ static INPUT_PORTS_START( barline )
 	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )          PORT_DIPLOCATION("DSWA:8")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START("DSWB")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x01, 0x01, "DIPSW 2-1" )
-	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x02, 0x02, "DIPSW 2-2" )
-	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x04, 0x04, "DIPSW 2-3" )
-	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x08, 0x08, "DIPSW 2-4" ) // auto stop reels?
-	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x30, 0x30, "Music" )
-=======
 	PORT_DIPNAME( 0x01, 0x01, DEF_STR( Unknown ) )          PORT_DIPLOCATION("DSWB:1")
 	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
@@ -1684,35 +942,21 @@ static INPUT_PORTS_START( barline )
 	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_DIPNAME( 0x30, 0x00, "Music" )                     PORT_DIPLOCATION("DSWB:5,6")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x00, "Type 1" )
 	PORT_DIPSETTING(    0x10, "Type 2" )
 	PORT_DIPSETTING(    0x20, "Type 3" )
 	PORT_DIPSETTING(    0x30, DEF_STR( Off ) )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x40, 0x40, "DIPSW 2-7" )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, "DIPSW 2-8" )
-=======
 	PORT_DIPNAME( 0x40, 0x40, DEF_STR( Unknown ) )          PORT_DIPLOCATION("DSWB:7")
 	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )          PORT_DIPLOCATION("DSWB:8")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START("SYSTEM")
-<<<<<<< HEAD
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8688_state, nb1413m3_busyflag_r, NULL)    // DRAW BUSY
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )         //
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SERVICE3 )       // MEMORY RESET
-=======
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8688_state, nb1413m3_busyflag_r, nullptr)    // DRAW BUSY
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )         //
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_MEMORY_RESET )   // MEMORY RESET
->>>>>>> upstream/master
 	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_SERVICE2 )       // ANALYZER
 	PORT_SERVICE( 0x10, IP_ACTIVE_LOW )                 // TEST
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_COIN1 )          // COIN1
@@ -1766,11 +1010,7 @@ INPUT_PORTS_END
 
 static INPUT_PORTS_START( citylove )
 	PORT_START("DSWA")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x0f, 0x0f, DEF_STR( Difficulty ) )
-=======
 	PORT_DIPNAME( 0x0f, 0x0f, DEF_STR( Difficulty ) )       PORT_DIPLOCATION("DSWA:1,2,3,4")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x0f, "1 (Easy)" )
 	PORT_DIPSETTING(    0x0e, "2" )
 	PORT_DIPSETTING(    0x0d, "3" )
@@ -1787,54 +1027,24 @@ static INPUT_PORTS_START( citylove )
 	PORT_DIPSETTING(    0x02, "14" )
 	PORT_DIPSETTING(    0x01, "15" )
 	PORT_DIPSETTING(    0x00, "16 (Hard)" )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x30, 0x30, "YAKUMAN cut" )
-=======
 	PORT_DIPNAME( 0x30, 0x30, "YAKUMAN cut" )               PORT_DIPLOCATION("DSWA:5,6")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x30, "10%" )
 	PORT_DIPSETTING(    0x20, "30%" )
 	PORT_DIPSETTING(    0x10, "50%" )
 	PORT_DIPSETTING(    0x00, "90%" )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x40, 0x00, "Nudity" )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )
-=======
 	PORT_DIPNAME( 0x40, 0x00, "Nudity" )                    PORT_DIPLOCATION("DSWA:7")
 	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )          PORT_DIPLOCATION("DSWA:8")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START("DSWB")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x03, 0x00, "Number of last chance" )
-=======
 	PORT_DIPNAME( 0x03, 0x00, "Number of last chance" )     PORT_DIPLOCATION("DSWB:1,2")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x03, "0" )
 	PORT_DIPSETTING(    0x02, "3" )
 	PORT_DIPSETTING(    0x01, "5" )
 	PORT_DIPSETTING(    0x00, "10" )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x04, 0x04, "Hanahai" )
-	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x04, DEF_STR( On ) )
-	PORT_DIPNAME( 0x08, 0x00, "Chonbo" )
-	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x08, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x10, "Open Reach of CPU" )
-	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x10, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, "Open Mode" )
-	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x20, DEF_STR( On ) )
-	PORT_DIPNAME( 0xc0, 0x00, "Cansel Type" )
-=======
 	PORT_DIPNAME( 0x04, 0x04, "Hanahai" )                   PORT_DIPLOCATION("DSWB:3")
 	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x04, DEF_STR( On ) )
@@ -1848,22 +1058,15 @@ static INPUT_PORTS_START( citylove )
 	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x20, DEF_STR( On ) )
 	PORT_DIPNAME( 0xc0, 0x00, "Cansel Type" )               PORT_DIPLOCATION("DSWB:7,8")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0xc0, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x80, "TSUMO 3" )
 	PORT_DIPSETTING(    0x40, "TSUMO 7" )
 	PORT_DIPSETTING(    0x00, "HAIPAI" )
 
 	PORT_START("SYSTEM")
-<<<<<<< HEAD
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8688_state, nb1413m3_busyflag_r, NULL)    // DRAW BUSY
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )         //
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SERVICE3 )       // MEMORY RESET
-=======
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8688_state, nb1413m3_busyflag_r, nullptr)    // DRAW BUSY
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )         //
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_MEMORY_RESET )   // MEMORY RESET
->>>>>>> upstream/master
 	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_SERVICE2 )       // ANALYZER
 	PORT_SERVICE( 0x10, IP_ACTIVE_LOW )                 // TEST
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_COIN1 )          // COIN1
@@ -1874,127 +1077,31 @@ static INPUT_PORTS_START( citylove )
 INPUT_PORTS_END
 
 static INPUT_PORTS_START( mcitylov )
-<<<<<<< HEAD
-#if 1
-	PORT_START("DSWA")
-	PORT_DIPNAME( 0x01, 0x01, "DIPSW 1-1" )
-	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x02, 0x02, "DIPSW 1-2" )
-	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x04, 0x04, "DIPSW 1-3" )
-	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x08, 0x08, "DIPSW 1-4" )
-	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x10, "DIPSW 1-5" )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, "DIPSW 1-6" )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x40, "DIPSW 1-7" )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, "DIPSW 1-8" )
-	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-
-	PORT_START("DSWB")
-	PORT_DIPNAME( 0x01, 0x01, "DIPSW 2-1" )
-	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x02, 0x02, "DIPSW 2-2" )
-	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x04, 0x04, "DIPSW 2-3" )
-	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x08, 0x08, "DIPSW 2-4" )
-	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x10, "DIPSW 2-5" )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, "DIPSW 2-6" )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x40, "DIPSW 2-7" )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, "DIPSW 2-8" )
-	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-#else
-
-	PORT_START("DSWA")
-	PORT_DIPNAME( 0x07, 0x00, "Game Out" )
-	PORT_DIPSETTING(    0x07, "60% (Hard)" )
-=======
 	PORT_START("DSWA")
 	PORT_DIPNAME( 0x07, 0x00, "Game Out Rate" )             PORT_DIPLOCATION("DSWA:1,2,3")
 	PORT_DIPSETTING(    0x07, "60%" )
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x06, "65%" )
 	PORT_DIPSETTING(    0x05, "70%" )
 	PORT_DIPSETTING(    0x04, "75%" )
 	PORT_DIPSETTING(    0x03, "80%" )
 	PORT_DIPSETTING(    0x02, "85%" )
 	PORT_DIPSETTING(    0x01, "90%" )
-<<<<<<< HEAD
-	PORT_DIPSETTING(    0x00, "95% (Easy)" )
-	PORT_DIPNAME( 0x18, 0x18, "Rate Min" )
-=======
 	PORT_DIPSETTING(    0x00, "95%" )
 	PORT_DIPNAME( 0x18, 0x18, "Rate Min" )                  PORT_DIPLOCATION("DSWA:4,5")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x18, "1" )
 	PORT_DIPSETTING(    0x10, "2" )
 	PORT_DIPSETTING(    0x08, "3" )
 	PORT_DIPSETTING(    0x00, "5" )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x60, 0x00, "Rate Max" )
-=======
 	PORT_DIPNAME( 0x60, 0x60, "Rate Max" )                  PORT_DIPLOCATION("DSWA:6,7")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x60, "8" )
 	PORT_DIPSETTING(    0x40, "10" )
 	PORT_DIPSETTING(    0x20, "12" )
 	PORT_DIPSETTING(    0x00, "20" )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x80, 0x00, "Score Pool" )
-=======
 	PORT_DIPNAME( 0x80, 0x80, "Open Reach Mode" )           PORT_DIPLOCATION("DSWA:8")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START("DSWB")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x01, 0x00, "Rate Up" )
-	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x02, 0x00, "Last Chance" )
-	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x04, 0x04, "Character Display Test" )
-	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_BIT( 0xf8, IP_ACTIVE_LOW, IPT_UNUSED )
-#endif
-
-	PORT_START("SYSTEM")
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8688_state, nb1413m3_busyflag_r, NULL)    // DRAW BUSY
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )         //
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SERVICE3 )       // MEMORY RESET
-	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_SERVICE2 )       // ANALYZER
-	PORT_SERVICE( 0x10, IP_ACTIVE_LOW )                 // TEST
-	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_COIN2 )          // COIN2
-	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_OTHER ) PORT_NAME("Credit Clear") PORT_CODE(KEYCODE_4) // CREDIT CLEAR
-	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_COIN1 )          // COIN1
-=======
 	PORT_DIPNAME( 0x03, 0x01, "Number of last chance" )     PORT_DIPLOCATION("DSWB:1,2")
 	PORT_DIPSETTING(    0x03, "0" )
 	PORT_DIPSETTING(    0x02, "3" )
@@ -2027,18 +1134,13 @@ static INPUT_PORTS_START( mcitylov )
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_COIN1 )                  // COIN2
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_OTHER ) PORT_NAME("Credit Clear") PORT_CODE(KEYCODE_4) // CREDIT CLEAR doesn't seem to work?
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNUSED )                  // COIN1 doesn't seem to work?
->>>>>>> upstream/master
 
 	PORT_INCLUDE( nbmjcontrols )
 INPUT_PORTS_END
 
 static INPUT_PORTS_START( seiha )
 	PORT_START("DSWA")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x07, 0x00, DEF_STR( Difficulty ) )
-=======
 	PORT_DIPNAME( 0x07, 0x00, DEF_STR( Difficulty ) )       PORT_DIPLOCATION("DSWA:1,2,3")  // is this correct?
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x07, "1 (Hard)" )
 	PORT_DIPSETTING(    0x06, "2" )
 	PORT_DIPSETTING(    0x05, "3" )
@@ -2047,21 +1149,6 @@ static INPUT_PORTS_START( seiha )
 	PORT_DIPSETTING(    0x02, "6" )
 	PORT_DIPSETTING(    0x01, "7" )
 	PORT_DIPSETTING(    0x00, "8 (Easy)" )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x08, 0x00, "RENCHAN after TENPAIed RYUKYOKU" )
-	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x00, "Change Pai and Mat Color" )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, "Character Display Test" )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x40, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )
-=======
 	PORT_DIPNAME( 0x08, 0x00, "RENCHAN after TENPAIed RYUKYOKU" ) PORT_DIPLOCATION("DSWA:4")
 	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
@@ -2075,47 +1162,10 @@ static INPUT_PORTS_START( seiha )
 	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )          PORT_DIPLOCATION("DSWA:8")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START("DSWB")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x01, 0x01, "DIPSW 2-1" )
-	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x02, 0x02, "DIPSW 2-2" )
-	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x04, 0x04, "DIPSW 2-3" )
-	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x08, 0x08, "DIPSW 2-4" )
-	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x10, "DIPSW 2-5" )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, "DIPSW 2-6" )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x40, "DIPSW 2-7" )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, "DIPSW 2-8" )
-	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-
-	PORT_START("SYSTEM")
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8688_state, nb1413m3_busyflag_r, NULL)    // DRAW BUSY
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )         //
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SERVICE3 )       // MEMORY RESET
-	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_SERVICE2 )       // ANALYZER
-	PORT_SERVICE( 0x10, IP_ACTIVE_LOW )                 // TEST
-	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_COIN2 )          // COIN2
-	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_OTHER ) PORT_NAME("Credit Clear") PORT_CODE(KEYCODE_4) // CREDIT CLEAR
-	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_COIN1 )          // COIN1
-=======
 	PORT_DIPUNKNOWN_DIPLOC( 0x01, 0x01, "DSWB:1" )
 	PORT_DIPUNKNOWN_DIPLOC( 0x02, 0x02, "DSWB:2" )
 	PORT_DIPUNKNOWN_DIPLOC( 0x04, 0x04, "DSWB:3" )
@@ -2134,79 +1184,36 @@ static INPUT_PORTS_START( seiha )
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_COIN2 )                  // COIN2
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_OTHER ) PORT_NAME("Credit Clear") PORT_CODE(KEYCODE_4) // CREDIT CLEAR
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_COIN1 )                  // COIN1
->>>>>>> upstream/master
 
 	PORT_INCLUDE( nbmjcontrols )
 INPUT_PORTS_END
 
 static INPUT_PORTS_START( seiham )
 	PORT_START("DSWA")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x07, 0x00, "Game Out" )
-	PORT_DIPSETTING(    0x07, "60% (Hard)" )
-=======
 	PORT_DIPNAME( 0x07, 0x00, "Game Out Rate" )               PORT_DIPLOCATION("DSWA:1,2,3")
 	PORT_DIPSETTING(    0x07, "60%" )
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x06, "65%" )
 	PORT_DIPSETTING(    0x05, "70%" )
 	PORT_DIPSETTING(    0x04, "75%" )
 	PORT_DIPSETTING(    0x03, "80%" )
 	PORT_DIPSETTING(    0x02, "85%" )
 	PORT_DIPSETTING(    0x01, "90%" )
-<<<<<<< HEAD
-	PORT_DIPSETTING(    0x00, "95% (Easy)" )
-	PORT_DIPNAME( 0x18, 0x18, "Rate Min" )
-=======
 	PORT_DIPSETTING(    0x00, "95%" )
 	PORT_DIPNAME( 0x18, 0x18, "Rate Min" )                    PORT_DIPLOCATION("DSWA:4,5")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x18, "1" )
 	PORT_DIPSETTING(    0x10, "2" )
 	PORT_DIPSETTING(    0x08, "3" )
 	PORT_DIPSETTING(    0x00, "5" )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x60, 0x00, "Rate Max" )
-=======
 	PORT_DIPNAME( 0x60, 0x00, "Rate Max" )                    PORT_DIPLOCATION("DSWA:6,7")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x60, "8" )
 	PORT_DIPSETTING(    0x40, "10" )
 	PORT_DIPSETTING(    0x20, "12" )
 	PORT_DIPSETTING(    0x00, "20" )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x80, 0x00, "Score Pool" )
-=======
 	PORT_DIPNAME( 0x80, 0x00, "Score Pool" )                  PORT_DIPLOCATION("DSWA:8")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START("DSWB")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x01, 0x00, "Rate Up" )
-	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x02, 0x00, "Last Chance" )
-	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x04, 0x04, "Character Display Test" )
-	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x08, 0x08, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x10, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x40, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )
-=======
 	PORT_DIPNAME( 0x01, 0x00, "Rate Up" )                     PORT_DIPLOCATION("DSWB:1")
 	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
@@ -2229,21 +1236,10 @@ static INPUT_PORTS_START( seiham )
 	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )            PORT_DIPLOCATION("DSWB:8")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START("SYSTEM")
-<<<<<<< HEAD
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8688_state, nb1413m3_busyflag_r, NULL)    // DRAW BUSY
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )         //
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SERVICE3 )       // MEMORY RESET
-	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_SERVICE2 )       // ANALYZER
-	PORT_SERVICE( 0x10, IP_ACTIVE_LOW )                 // TEST
-	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_COIN2 )          // COIN2
-	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_OTHER ) PORT_NAME("Credit Clear") PORT_CODE(KEYCODE_4) // CREDIT CLEAR
-	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_COIN1 )          // COIN1
-=======
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8688_state, nb1413m3_busyflag_r, nullptr)    // DRAW BUSY
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_MEMORY_RESET )           // MEMORY RESET
@@ -2252,18 +1248,13 @@ static INPUT_PORTS_START( seiham )
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_COIN2 )                  // COIN2
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_OTHER ) PORT_NAME("Credit Clear") PORT_CODE(KEYCODE_4) // CREDIT CLEAR
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_COIN1 )                  // COIN1
->>>>>>> upstream/master
 
 	PORT_INCLUDE( nbmjcontrols )
 INPUT_PORTS_END
 
 static INPUT_PORTS_START( iemoto )
 	PORT_START("DSWA")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x07, 0x00, DEF_STR( Difficulty ) )
-=======
 	PORT_DIPNAME( 0x07, 0x00, DEF_STR( Difficulty ) )       PORT_DIPLOCATION("DSWA:1,2,3")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x07, "1 (Hard)" )
 	PORT_DIPSETTING(    0x06, "2" )
 	PORT_DIPSETTING(    0x05, "3" )
@@ -2272,21 +1263,6 @@ static INPUT_PORTS_START( iemoto )
 	PORT_DIPSETTING(    0x02, "6" )
 	PORT_DIPSETTING(    0x01, "7" )
 	PORT_DIPSETTING(    0x00, "8 (Easy)" )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x08, 0x00, "RENCHAN after TENPAIed RYUKYOKU" )
-	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x10, "Character Display Test" )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x40, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )
-=======
 	PORT_DIPNAME( 0x08, 0x00, "RENCHAN after TENPAIed RYUKYOKU" ) PORT_DIPLOCATION("DSWA:4")
 	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
@@ -2300,47 +1276,10 @@ static INPUT_PORTS_START( iemoto )
 	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )          PORT_DIPLOCATION("DSWA:8")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START("DSWB")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x01, 0x01, "DIPSW 2-1" )
-	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x02, 0x02, "DIPSW 2-2" )
-	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x04, 0x04, "DIPSW 2-3" )
-	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x08, 0x08, "DIPSW 2-4" )
-	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x10, "DIPSW 2-5" )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, "DIPSW 2-6" )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x40, "DIPSW 2-7" )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, "DIPSW 2-8" )
-	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-
-	PORT_START("SYSTEM")
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8688_state, nb1413m3_busyflag_r, NULL)    // DRAW BUSY
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )         //
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SERVICE3 )       // MEMORY RESET
-	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_SERVICE2 )       // ANALYZER
-	PORT_SERVICE( 0x10, IP_ACTIVE_LOW )                 // TEST
-	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_COIN2 )          // COIN2
-	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_OTHER ) PORT_NAME("Credit Clear") PORT_CODE(KEYCODE_4) // CREDIT CLEAR
-	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_COIN1 )          // COIN1
-=======
 	PORT_DIPUNKNOWN_DIPLOC( 0x01, 0x01, "DSWB:1" )
 	PORT_DIPUNKNOWN_DIPLOC( 0x02, 0x02, "DSWB:2" )
 	PORT_DIPUNKNOWN_DIPLOC( 0x04, 0x04, "DSWB:3" )
@@ -2359,37 +1298,12 @@ static INPUT_PORTS_START( iemoto )
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_COIN2 )                  // COIN2
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_OTHER ) PORT_NAME("Credit Clear") PORT_CODE(KEYCODE_4) // CREDIT CLEAR
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_COIN1 )                  // COIN1
->>>>>>> upstream/master
 
 	PORT_INCLUDE( nbmjcontrols )
 INPUT_PORTS_END
 
 static INPUT_PORTS_START( iemotom )
 	PORT_START("DSWA")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x01, 0x01, "DIPSW 1-1" )
-	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x02, 0x02, "DIPSW 1-2" )
-	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x04, 0x04, "DIPSW 1-3" )
-	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x08, 0x08, "DIPSW 1-4" )
-	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x10, "DIPSW 1-5" )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, "DIPSW 1-6" )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x40, "DIPSW 1-7" )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, "DIPSW 1-8" )
-=======
 	PORT_DIPNAME( 0x07, 0x07, "Game Out Rate" )             PORT_DIPLOCATION("DSWA:1,2,3")
 	PORT_DIPSETTING(    0x07, "60%" )
 	PORT_DIPSETTING(    0x06, "63%" )
@@ -2410,35 +1324,10 @@ static INPUT_PORTS_START( iemotom )
 	PORT_DIPSETTING(    0x20, "12" )
 	PORT_DIPSETTING(    0x00, "20" )
 	PORT_DIPNAME( 0x80, 0x00, "Score Pool" )                PORT_DIPLOCATION("DSWA:8")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START("DSWB")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x01, 0x01, "DIPSW 2-1" )
-	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x02, 0x02, "DIPSW 2-2" )
-	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x04, 0x04, "DIPSW 2-3" )
-	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x08, 0x08, "DIPSW 2-4" )
-	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x10, "DIPSW 2-5" )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, "DIPSW 2-6" )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x40, "DIPSW 2-7" )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, "DIPSW 2-8" )
-=======
 	PORT_DIPNAME( 0x01, 0x00, "Rate Up" )                   PORT_DIPLOCATION("DSWB:1")
 	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
@@ -2461,21 +1350,10 @@ static INPUT_PORTS_START( iemotom )
 	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )          PORT_DIPLOCATION("DSWB:8")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START("SYSTEM")
-<<<<<<< HEAD
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8688_state, nb1413m3_busyflag_r, NULL)    // DRAW BUSY
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )         //
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SERVICE3 )       // MEMORY RESET
-	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_SERVICE2 )       // ANALYZER
-	PORT_SERVICE( 0x10, IP_ACTIVE_LOW )                 // TEST
-	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_COIN2 )          // COIN2
-	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_OTHER ) PORT_NAME("Credit Clear") PORT_CODE(KEYCODE_4) // CREDIT CLEAR
-	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_COIN1 )          // COIN1
-=======
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8688_state, nb1413m3_busyflag_r, nullptr)    // DRAW BUSY
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_MEMORY_RESET )           // MEMORY RESET
@@ -2484,37 +1362,12 @@ static INPUT_PORTS_START( iemotom )
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_COIN2 )                  // COIN2
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_OTHER ) PORT_NAME("Credit Clear") PORT_CODE(KEYCODE_4) // CREDIT CLEAR
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_COIN1 )                  // COIN1
->>>>>>> upstream/master
 
 	PORT_INCLUDE( nbmjcontrols )
 INPUT_PORTS_END
 
 static INPUT_PORTS_START( ryuuha )
 	PORT_START("DSWA")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x01, 0x01, "DIPSW 1-1" )
-	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x02, 0x02, "DIPSW 1-2" )
-	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x04, 0x04, "DIPSW 1-3" )
-	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x08, 0x08, "DIPSW 1-4" )
-	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x10, "DIPSW 1-5" )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, "DIPSW 1-6" )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x40, "DIPSW 1-7" )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, "DIPSW 1-8" )
-=======
 	PORT_DIPNAME( 0x07, 0x07, "Game Out Rate" )             PORT_DIPLOCATION("DSWA:1,2,3")
 	PORT_DIPSETTING(    0x07, "60%" )
 	PORT_DIPSETTING(    0x06, "63%" )
@@ -2536,35 +1389,10 @@ static INPUT_PORTS_START( ryuuha )
 	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_DIPNAME( 0x80, 0x00, "Last Chance" )               PORT_DIPLOCATION("DSWA:8")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START("DSWB")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x01, 0x01, "Character Display Test" )
-	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x02, 0x02, "DIPSW 2-2" )
-	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x04, 0x04, "DIPSW 2-3" )
-	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x08, 0x08, "DIPSW 2-4" )
-	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x10, "DIPSW 2-5" )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, "DIPSW 2-6" )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x40, "DIPSW 2-7" )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, "DIPSW 2-8" )
-=======
 	PORT_DIPNAME( 0x01, 0x01, "Character Display Test" )    PORT_DIPLOCATION("DSWB:1")
 	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
@@ -2587,21 +1415,10 @@ static INPUT_PORTS_START( ryuuha )
 	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )          PORT_DIPLOCATION("DSWB:8")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START("SYSTEM")
-<<<<<<< HEAD
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8688_state, nb1413m3_busyflag_r, NULL)    // DRAW BUSY
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )         //
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SERVICE3 )       // MEMORY RESET
-	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_SERVICE2 )       // ANALYZER
-	PORT_SERVICE( 0x10, IP_ACTIVE_LOW )                 // TEST
-	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_COIN2 )          // COIN2
-	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_OTHER ) PORT_NAME("Credit Clear") PORT_CODE(KEYCODE_4) // CREDIT CLEAR
-	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_COIN1 )          // COIN1
-=======
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8688_state, nb1413m3_busyflag_r, nullptr)    // DRAW BUSY
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_MEMORY_RESET )           // MEMORY RESET
@@ -2610,18 +1427,13 @@ static INPUT_PORTS_START( ryuuha )
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_COIN2 )                  // COIN2
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_OTHER ) PORT_NAME("Credit Clear") PORT_CODE(KEYCODE_4) // CREDIT CLEAR
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_COIN1 )                  // COIN1
->>>>>>> upstream/master
 
 	PORT_INCLUDE( nbmjcontrols )
 INPUT_PORTS_END
 
 static INPUT_PORTS_START( bijokkoy )
 	PORT_START("DSWA")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x07, 0x07, DEF_STR( Difficulty ) )
-=======
 	PORT_DIPNAME( 0x07, 0x07, DEF_STR( Difficulty ) )               PORT_DIPLOCATION("DSWA:1,2,3")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x07, "1 (Easy)" )
 	PORT_DIPSETTING(    0x06, "2" )
 	PORT_DIPSETTING(    0x05, "3" )
@@ -2630,21 +1442,6 @@ static INPUT_PORTS_START( bijokkoy )
 	PORT_DIPSETTING(    0x02, "6" )
 	PORT_DIPSETTING(    0x01, "7" )
 	PORT_DIPSETTING(    0x00, "8 (Hard)" )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x08, 0x08, "2P Simultaneous Play (LCD req'd)" )
-	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x00, DEF_STR( Demo_Sounds ) )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, "See non-Reacher's hand" )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x00, "Kan-Ura" )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, "Character Display Test" )
-=======
 	PORT_DIPNAME( 0x08, 0x08, "2P Simultaneous Play (LCD req'd)" )  PORT_DIPLOCATION("DSWA:4")
 	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
@@ -2658,38 +1455,15 @@ static INPUT_PORTS_START( bijokkoy )
 	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_DIPNAME( 0x80, 0x80, "Character Display Test" )            PORT_DIPLOCATION("DSWA:8")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START("DSWB")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x03, 0x00, "Number of last chance" )
-=======
 	PORT_DIPNAME( 0x03, 0x00, "Number of last chance" )             PORT_DIPLOCATION("DSWB:1,2")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x03, "0" )
 	PORT_DIPSETTING(    0x02, "2" )
 	PORT_DIPSETTING(    0x01, "4" )
 	PORT_DIPSETTING(    0x00, "6" )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x04, 0x00, "Double Tsumo" )
-	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x08, 0x08, "Chonbo" )
-	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x10, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x40, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )
-=======
 	PORT_DIPNAME( 0x04, 0x00, "Double Tsumo" )                      PORT_DIPLOCATION("DSWB:3")
 	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
@@ -2706,23 +1480,10 @@ static INPUT_PORTS_START( bijokkoy )
 	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )                  PORT_DIPLOCATION("DSWB:8")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START("SYSTEM")
-<<<<<<< HEAD
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8688_state, nb1413m3_busyflag_r, NULL)    // DRAW BUSY
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )         //
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SERVICE3 )       // MEMORY RESET
-	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_SERVICE2 )       // ANALYZER
-	PORT_SERVICE( 0x10, IP_ACTIVE_LOW )                 // TEST
-	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_COIN2 )          // COIN2
-	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_OTHER ) PORT_NAME("Credit Clear") PORT_CODE(KEYCODE_4) // CREDIT CLEAR
-	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_COIN1 )          // COIN1
-
-	PORT_INCLUDE( nbmjcontrols )
-=======
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8688_state, nb1413m3_busyflag_r, nullptr)    // DRAW BUSY
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_MEMORY_RESET )           // MEMORY RESET
@@ -2745,16 +1506,11 @@ static INPUT_PORTS_START( bijokkoy )
 
 	PORT_MODIFY("KEY9")
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_START2 ) PORT_NAME("Side 2 1P Start")
->>>>>>> upstream/master
 INPUT_PORTS_END
 
 static INPUT_PORTS_START( bijokkog )
 	PORT_START("DSWA")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x07, 0x07, DEF_STR( Difficulty ) )
-=======
 	PORT_DIPNAME( 0x07, 0x07, DEF_STR( Difficulty ) )               PORT_DIPLOCATION("DSWA:1,2,3")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x07, "1 (Easy)" )
 	PORT_DIPSETTING(    0x06, "2" )
 	PORT_DIPSETTING(    0x05, "3" )
@@ -2763,21 +1519,6 @@ static INPUT_PORTS_START( bijokkog )
 	PORT_DIPSETTING(    0x02, "6" )
 	PORT_DIPSETTING(    0x01, "7" )
 	PORT_DIPSETTING(    0x00, "8 (Hard)" )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x08, 0x08, "2P Simultaneous Play (LCD req'd)" )
-	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x00, DEF_STR( Demo_Sounds ) )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, "See non-Reacher's hand" )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x00, "Kan-Ura" )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, "Bonus Score for Extra Credit" )
-=======
 	PORT_DIPNAME( 0x08, 0x08, "2P Simultaneous Play (LCD req'd)" )  PORT_DIPLOCATION("DSWA:4")
 	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
@@ -2791,32 +1532,15 @@ static INPUT_PORTS_START( bijokkog )
 	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_DIPNAME( 0x80, 0x80, "Bonus Score for Extra Credit" )      PORT_DIPLOCATION("DSWA:8")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START("DSWB")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x03, 0x00, "Number of last chance" )
-=======
 	PORT_DIPNAME( 0x03, 0x00, "Number of last chance" )             PORT_DIPLOCATION("DSWB:1,2")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x03, "0" )
 	PORT_DIPSETTING(    0x02, "2" )
 	PORT_DIPSETTING(    0x01, "4" )
 	PORT_DIPSETTING(    0x00, "6" )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x04, 0x00, "Double Tsumo" )
-	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x08, 0x08, "Chonbo" )
-	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x00, "Cancel Hand" )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x60, 0x60, DEF_STR( Coinage ) )
-=======
 	PORT_DIPNAME( 0x04, 0x00, "Double Tsumo" )                      PORT_DIPLOCATION("DSWB:3")
 	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
@@ -2827,32 +1551,15 @@ static INPUT_PORTS_START( bijokkog )
 	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_DIPNAME( 0x60, 0x60, DEF_STR( Coinage ) )                  PORT_DIPLOCATION("DSWB:6,7")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x00, DEF_STR( 2C_1C ) )
 	PORT_DIPSETTING(    0x60, DEF_STR( 1C_1C ) )
 	PORT_DIPSETTING(    0x40, DEF_STR( 1C_2C ) )
 	PORT_DIPSETTING(    0x20, DEF_STR( 1C_3C ) )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Flip_Screen ) )
-=======
 	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Flip_Screen ) )              PORT_DIPLOCATION("DSWB:8")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START("SYSTEM")
-<<<<<<< HEAD
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8688_state, nb1413m3_busyflag_r, NULL)    // DRAW BUSY
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )         //
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SERVICE3 )       // MEMORY RESET
-	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_SERVICE2 )       // ANALYZER
-	PORT_SERVICE( 0x10, IP_ACTIVE_LOW )                 // TEST
-	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_COIN2 )          // COIN2
-	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_OTHER ) PORT_NAME("Credit Clear") PORT_CODE(KEYCODE_4) // CREDIT CLEAR
-	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_COIN1 )          // COIN1
-
-	PORT_INCLUDE( nbmjcontrols )
-=======
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8688_state, nb1413m3_busyflag_r, nullptr)    // DRAW BUSY
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_MEMORY_RESET )           // MEMORY RESET
@@ -2875,16 +1582,11 @@ static INPUT_PORTS_START( bijokkog )
 
 	PORT_MODIFY("KEY9")
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_START2 ) PORT_NAME("Side 2 1P Start")
->>>>>>> upstream/master
 INPUT_PORTS_END
 
 static INPUT_PORTS_START( housemnq )
 	PORT_START("DSWA")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x07, 0x07, DEF_STR( Difficulty ) )
-=======
 	PORT_DIPNAME( 0x07, 0x07, DEF_STR( Difficulty ) )               PORT_DIPLOCATION("DSWA:1,2,3")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x07, "1 (Easy)" )
 	PORT_DIPSETTING(    0x06, "2" )
 	PORT_DIPSETTING(    0x05, "3" )
@@ -2893,21 +1595,6 @@ static INPUT_PORTS_START( housemnq )
 	PORT_DIPSETTING(    0x02, "6" )
 	PORT_DIPSETTING(    0x01, "7" )
 	PORT_DIPSETTING(    0x00, "8 (Hard)" )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x08, 0x00, "Kan-Ura" )
-	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x10, "Chonbo" )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, "Character Display Test" )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x00, "RENCHAN after TENPAIed RYUKYOKU" )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x00, "See CPU's hand" )
-=======
 	PORT_DIPNAME( 0x08, 0x00, "Kan-Ura" )                           PORT_DIPLOCATION("DSWA:4")
 	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
@@ -2921,41 +1608,20 @@ static INPUT_PORTS_START( housemnq )
 	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_DIPNAME( 0x80, 0x00, "See non-Reacher's hand" )            PORT_DIPLOCATION("DSWA:8")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START("DSWB")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x03, 0x03, "Time" )
-=======
 	PORT_DIPNAME( 0x03, 0x03, "Time" )                              PORT_DIPLOCATION("DSWB:1,2")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x03, "120" )
 	PORT_DIPSETTING(    0x02, "100" )
 	PORT_DIPSETTING(    0x01, "80" )
 	PORT_DIPSETTING(    0x00, "60" )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x0c, 0x0c, "Timer Speed" )
-=======
 	PORT_DIPNAME( 0x0c, 0x0c, "Timer Speed" )                       PORT_DIPLOCATION("DSWB:3,4")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x0c, "1" )
 	PORT_DIPSETTING(    0x08, "2" )
 	PORT_DIPSETTING(    0x04, "3" )
 	PORT_DIPSETTING(    0x00, "4" )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x10, 0x00, DEF_STR( Demo_Sounds ) )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, "Coin Selector" )
-	PORT_DIPSETTING(    0x20, "common" )
-	PORT_DIPSETTING(    0x00, "separate" )
-	PORT_DIPNAME( 0x40, 0x40, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )
-=======
 	PORT_DIPNAME( 0x10, 0x00, DEF_STR( Demo_Sounds ) )              PORT_DIPLOCATION("DSWB:5")
 	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
@@ -2966,23 +1632,10 @@ static INPUT_PORTS_START( housemnq )
 	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )                  PORT_DIPLOCATION("DSWB:8")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START("SYSTEM")
-<<<<<<< HEAD
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8688_state, nb1413m3_busyflag_r, NULL)    // DRAW BUSY
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )         //
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SERVICE3 )       // MEMORY RESET
-	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_SERVICE2 )       // ANALYZER
-	PORT_SERVICE( 0x10, IP_ACTIVE_LOW )                 // TEST
-	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_COIN2 )          // COIN2
-	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_OTHER ) PORT_NAME("Credit Clear") PORT_CODE(KEYCODE_4) // CREDIT CLEAR
-	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_COIN1 )          // COIN1
-
-	PORT_INCLUDE( nbmjcontrols )
-=======
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8688_state, nb1413m3_busyflag_r, nullptr)    // DRAW BUSY
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_MEMORY_RESET )           // MEMORY RESET
@@ -3005,16 +1658,11 @@ static INPUT_PORTS_START( housemnq )
 
 	PORT_MODIFY("KEY9")
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_START2 ) PORT_NAME("Side 2 1P Start")
->>>>>>> upstream/master
 INPUT_PORTS_END
 
 static INPUT_PORTS_START( housemn2 )
 	PORT_START("DSWA")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x07, 0x07, DEF_STR( Difficulty ) )
-=======
 	PORT_DIPNAME( 0x07, 0x07, DEF_STR( Difficulty ) )               PORT_DIPLOCATION("DSWA:1,2,3")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x07, "1 (Easy)" )
 	PORT_DIPSETTING(    0x06, "2" )
 	PORT_DIPSETTING(    0x05, "3" )
@@ -3023,21 +1671,6 @@ static INPUT_PORTS_START( housemn2 )
 	PORT_DIPSETTING(    0x02, "6" )
 	PORT_DIPSETTING(    0x01, "7" )
 	PORT_DIPSETTING(    0x00, "8 (Hard)" )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x08, 0x00, "Kan-Ura" )
-	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x10, "Chonbo" )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, "Character Display Test" )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x00, "RENCHAN after TENPAIed RYUKYOKU" )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x00, "See CPU's hand" )
-=======
 	PORT_DIPNAME( 0x08, 0x00, "Kan-Ura" )                           PORT_DIPLOCATION("DSWA:4")
 	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
@@ -3051,38 +1684,20 @@ static INPUT_PORTS_START( housemn2 )
 	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_DIPNAME( 0x80, 0x00, "See non-Reacher's hand" )            PORT_DIPLOCATION("DSWA:8")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START("DSWB")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x03, 0x03, "Time" )
-=======
 	PORT_DIPNAME( 0x03, 0x03, "Time" )                              PORT_DIPLOCATION("DSWB:1,2")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x03, "120" )
 	PORT_DIPSETTING(    0x02, "100" )
 	PORT_DIPSETTING(    0x01, "80" )
 	PORT_DIPSETTING(    0x00, "60" )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x0c, 0x0c, "Timer Speed" )
-=======
 	PORT_DIPNAME( 0x0c, 0x0c, "Timer Speed" )                       PORT_DIPLOCATION("DSWB:3,4")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x0c, "1" )
 	PORT_DIPSETTING(    0x08, "2" )
 	PORT_DIPSETTING(    0x04, "3" )
 	PORT_DIPSETTING(    0x00, "4" )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x10, 0x00, DEF_STR( Demo_Sounds ) )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, "Coin Selector" )
-	PORT_DIPSETTING(    0x20, "common" )
-	PORT_DIPSETTING(    0x00, "separate" )
-	PORT_DIPNAME( 0xc0, 0xc0, "Character Display Test (manual)" )
-=======
 	PORT_DIPNAME( 0x10, 0x00, DEF_STR( Demo_Sounds ) )              PORT_DIPLOCATION("DSWB:5")
 	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
@@ -3090,25 +1705,12 @@ static INPUT_PORTS_START( housemn2 )
 	PORT_DIPSETTING(    0x20, "common" )
 	PORT_DIPSETTING(    0x00, "separate" )
 	PORT_DIPNAME( 0xc0, 0xc0, "Character Display Test (manual)" )   PORT_DIPLOCATION("DSWB:7,8")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0xc0, DEF_STR( Off ) )
 //  PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 //  PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START("SYSTEM")
-<<<<<<< HEAD
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8688_state, nb1413m3_busyflag_r, NULL)    // DRAW BUSY
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )         //
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SERVICE3 )       // MEMORY RESET
-	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_SERVICE2 )       // ANALYZER
-	PORT_SERVICE( 0x10, IP_ACTIVE_LOW )                 // TEST
-	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_COIN2 )          // COIN2
-	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_OTHER ) PORT_NAME("Credit Clear") PORT_CODE(KEYCODE_4) // CREDIT CLEAR
-	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_COIN1 )          // COIN1
-
-	PORT_INCLUDE( nbmjcontrols )
-=======
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8688_state, nb1413m3_busyflag_r, nullptr)    // DRAW BUSY
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_MEMORY_RESET )           // MEMORY RESET
@@ -3131,16 +1733,11 @@ static INPUT_PORTS_START( housemn2 )
 
 	PORT_MODIFY("KEY9")
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_START2 ) PORT_NAME("Side 2 1P Start")
->>>>>>> upstream/master
 INPUT_PORTS_END
 
 static INPUT_PORTS_START( orangec )
 	PORT_START("DSWA")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x07, 0x07, DEF_STR( Difficulty ) )
-=======
 	PORT_DIPNAME( 0x07, 0x07, DEF_STR( Difficulty ) )       PORT_DIPLOCATION("DSWA:1,2,3")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x07, "1 (Easy)" )
 	PORT_DIPSETTING(    0x06, "2" )
 	PORT_DIPSETTING(    0x05, "3" )
@@ -3149,21 +1746,6 @@ static INPUT_PORTS_START( orangec )
 	PORT_DIPSETTING(    0x02, "6" )
 	PORT_DIPSETTING(    0x01, "7" )
 	PORT_DIPSETTING(    0x00, "8 (Hard)" )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x08, 0x00, "Select Girl" )
-	PORT_DIPSETTING(    0x08, DEF_STR( No ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( Yes ) )
-	PORT_DIPNAME( 0x10, 0x00, "Extend TSUMO" )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, DEF_STR( Coinage ) )
-	PORT_DIPSETTING(    0x20, DEF_STR( 1C_1C ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( 1C_2C ) )
-	PORT_DIPNAME( 0x40, 0x40, "Character Display Test" )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, "DIPSW 1-8" )
-=======
 	PORT_DIPNAME( 0x08, 0x00, "Select Girl" )               PORT_DIPLOCATION("DSWA:4")
 	PORT_DIPSETTING(    0x08, DEF_STR( No ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( Yes ) )
@@ -3177,45 +1759,10 @@ static INPUT_PORTS_START( orangec )
 	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )          PORT_DIPLOCATION("DSWA:8")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START("DSWB")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x01, 0x01, "DIPSW 2-1" )
-	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x02, 0x02, "DIPSW 2-2" )
-	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x04, 0x04, "DIPSW 2-3" )
-	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x08, 0x08, "DIPSW 2-4" )
-	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x10, "DIPSW 2-5" )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, "DIPSW 2-6" )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x40, "DIPSW 2-7" )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, "DIPSW 2-8" )
-	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-
-	PORT_START("SYSTEM")
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8688_state, nb1413m3_busyflag_r, NULL)    // DRAW BUSY
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )         //
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SERVICE3 )       // MEMORY RESET
-	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_SERVICE2 )       // ANALYZER
-	PORT_SERVICE( 0x10, IP_ACTIVE_LOW )                 // TEST
-	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_COIN1 )          // COIN2
-=======
 	PORT_DIPUNKNOWN_DIPLOC( 0x01, 0x01, "DSWB:1" )
 	PORT_DIPUNKNOWN_DIPLOC( 0x02, 0x02, "DSWB:2" )
 	PORT_DIPUNKNOWN_DIPLOC( 0x04, 0x04, "DSWB:3" )
@@ -3232,7 +1779,6 @@ static INPUT_PORTS_START( orangec )
 	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_SERVICE2 ) PORT_TOGGLE   // ANALYZER
 	PORT_SERVICE( 0x10, IP_ACTIVE_LOW )                         // TEST
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_COIN1 )                  // COIN2
->>>>>>> upstream/master
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_UNKNOWN )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_OTHER ) PORT_NAME("Credit Clear") PORT_CODE(KEYCODE_4) // CREDIT CLEAR
 
@@ -3241,30 +1787,6 @@ INPUT_PORTS_END
 
 static INPUT_PORTS_START( orangeci )
 	PORT_START("DSWA")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x01, 0x01, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x02, 0x02, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x04, 0x04, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x08, 0x00, "Select Girl" )
-	PORT_DIPSETTING(    0x08, DEF_STR( No ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( Yes ) )
-	PORT_DIPNAME( 0x10, 0x10, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x40, "Character Display Test" )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )
-=======
 	PORT_DIPNAME( 0x07, 0x07, "Game Out Rate" )             PORT_DIPLOCATION("DSWA:1,2,3")
 	PORT_DIPSETTING(    0x07, "60%" )
 	PORT_DIPSETTING(    0x06, "64%" )
@@ -3287,35 +1809,10 @@ static INPUT_PORTS_START( orangeci )
 	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )          PORT_DIPLOCATION("DSWA:8")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START("DSWB")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x01, 0x01, "DIPSW 2-1" )
-	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x02, 0x02, "DIPSW 2-2" )
-	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x04, 0x04, "DIPSW 2-3" )
-	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x08, 0x08, "DIPSW 2-4" )
-	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x10, "DIPSW 2-5" )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, "DIPSW 2-6" )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x40, "DIPSW 2-7" )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, "DIPSW 2-8" )
-=======
 	PORT_DIPNAME( 0x01, 0x01, DEF_STR( Unknown ) )          PORT_DIPLOCATION("DSWB:1")
 	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
@@ -3337,26 +1834,16 @@ static INPUT_PORTS_START( orangeci )
 	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )          PORT_DIPLOCATION("DSWB:8")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START("SYSTEM")
-<<<<<<< HEAD
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8688_state, nb1413m3_busyflag_r, NULL)    // DRAW BUSY
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )         //
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SERVICE3 )       // MEMORY RESET
-	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_SERVICE2 )       // ANALYZER
-	PORT_SERVICE( 0x10, IP_ACTIVE_LOW )                 // TEST
-	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_COIN1 )          // COIN2
-=======
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8688_state, nb1413m3_busyflag_r, nullptr)    // DRAW BUSY
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_MEMORY_RESET )           // MEMORY RESET
 	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_SERVICE2 ) PORT_TOGGLE   // ANALYZER
 	PORT_SERVICE( 0x10, IP_ACTIVE_LOW )                         // TEST
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_COIN1 )                  // COIN2
->>>>>>> upstream/master
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_UNKNOWN )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_OTHER ) PORT_NAME("Credit Clear") PORT_CODE(KEYCODE_4) // CREDIT CLEAR
 
@@ -3365,30 +1852,6 @@ INPUT_PORTS_END
 
 static INPUT_PORTS_START( vipclub )
 	PORT_START("DSWA")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x01, 0x01, "DIPSW 1-1" )
-	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x02, 0x02, "DIPSW 1-2" )
-	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x04, 0x04, "DIPSW 1-3" )
-	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x08, 0x08, "DIPSW 1-4" )
-	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x10, "DIPSW 1-5" )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, "DIPSW 1-6" )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x40, "Character Display Test" )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, "DIPSW 1-8" )
-=======
 	PORT_DIPNAME( 0x07, 0x07, "Game Out Rate" )             PORT_DIPLOCATION("DSWA:1,2,3")
 	PORT_DIPSETTING(    0x07, "60%" )
 	PORT_DIPSETTING(    0x06, "64%" )
@@ -3411,45 +1874,10 @@ static INPUT_PORTS_START( vipclub )
 	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )          PORT_DIPLOCATION("DSWA:8")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START("DSWB")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x01, 0x01, "DIPSW 2-1" )
-	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x02, 0x02, "DIPSW 2-2" )
-	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x04, 0x04, "DIPSW 2-3" )
-	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x08, 0x08, "DIPSW 2-4" )
-	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x10, "DIPSW 2-5" )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, "DIPSW 2-6" )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x40, "DIPSW 2-7" )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, "DIPSW 2-8" )
-	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-
-	PORT_START("SYSTEM")
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8688_state, nb1413m3_busyflag_r, NULL)    // DRAW BUSY
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )         //
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SERVICE3 )       // MEMORY RESET
-	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_SERVICE2 )       // ANALYZER
-	PORT_SERVICE( 0x10, IP_ACTIVE_LOW )                 // TEST
-	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_COIN1 )          // COIN2
-=======
 	PORT_DIPNAME( 0x01, 0x01, DEF_STR( Unknown ) )          PORT_DIPLOCATION("DSWB:1")
 	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
@@ -3481,7 +1909,6 @@ static INPUT_PORTS_START( vipclub )
 	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_SERVICE2 ) PORT_TOGGLE   // ANALYZER
 	PORT_SERVICE( 0x10, IP_ACTIVE_LOW )                         // TEST
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_COIN1 )                  // COIN2
->>>>>>> upstream/master
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_UNKNOWN )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_OTHER ) PORT_NAME("Credit Clear") PORT_CODE(KEYCODE_4) // CREDIT CLEAR
 
@@ -3490,30 +1917,6 @@ INPUT_PORTS_END
 
 static INPUT_PORTS_START( livegal )
 	PORT_START("DSWA")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x01, 0x01, "DIPSW 1-1" )
-	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x02, 0x02, "DIPSW 1-2" )
-	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x04, 0x04, "DIPSW 1-3" )
-	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x08, 0x08, "DIPSW 1-4" )
-	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x10, "DIPSW 1-5" )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, "DIPSW 1-6" )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x40, "DIPSW 1-7" )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, "DIPSW 1-8" )
-=======
 	PORT_DIPNAME( 0x07, 0x07, "Game Out Rate" )             PORT_DIPLOCATION("DSWA:1,2,3")
 	PORT_DIPSETTING(    0x07, "60%" )
 	PORT_DIPSETTING(    0x06, "65%" )
@@ -3535,35 +1938,10 @@ static INPUT_PORTS_START( livegal )
 	PORT_DIPSETTING(    0x20, "C" )
 	PORT_DIPSETTING(    0x00, "D" )
 	PORT_DIPNAME( 0x80, 0x80, "Last Chance Charge" )        PORT_DIPLOCATION("DSWA:8")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START("DSWB")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x01, 0x01, "DIPSW 2-1" )
-	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x02, 0x02, "DIPSW 2-2" )
-	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x04, 0x04, "DIPSW 2-3" )
-	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x08, 0x08, "DIPSW 2-4" )
-	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x10, "DIPSW 2-5" )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, "DIPSW 2-6" )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x40, "DIPSW 2-7" )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, "DIPSW 2-8" )
-=======
 	PORT_DIPNAME( 0x01, 0x01, DEF_STR( Unknown )  )         PORT_DIPLOCATION("DSWB:1")
 	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
@@ -3584,21 +1962,10 @@ static INPUT_PORTS_START( livegal )
 	PORT_DIPSETTING(    0x40, DEF_STR( 1C_2C ) )
 	PORT_DIPSETTING(    0x60, DEF_STR( 1C_5C ) )
 	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )          PORT_DIPLOCATION("DSWB:8")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START("SYSTEM")
-<<<<<<< HEAD
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8688_state, nb1413m3_busyflag_r, NULL)    // DRAW BUSY
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )         //
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SERVICE3 )       // MEMORY RESET
-	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_SERVICE2 )       // ANALYZER
-	PORT_SERVICE( 0x10, IP_ACTIVE_LOW )                 // TEST
-	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_COIN2 )          // COIN2
-	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_OTHER ) PORT_NAME("Credit Clear") PORT_CODE(KEYCODE_4) // CREDIT CLEAR
-	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_COIN1 )          // COIN1
-=======
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8688_state, nb1413m3_busyflag_r, nullptr)    // DRAW BUSY
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_MEMORY_RESET )           // MEMORY RESET
@@ -3607,23 +1974,10 @@ static INPUT_PORTS_START( livegal )
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_COIN2 )                  // COIN2
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_OTHER ) PORT_NAME("Credit Clear") PORT_CODE(KEYCODE_4) // CREDIT CLEAR
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_COIN1 )                  // COIN1
->>>>>>> upstream/master
 
 	PORT_INCLUDE( nbmjcontrols )
 
 	PORT_MODIFY("KEY0")
-<<<<<<< HEAD
-	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_MAHJONG_FLIP_FLOP ) PORT_NAME("Side 1 P2 Start")
-
-	PORT_MODIFY("KEY4")
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_START1 ) PORT_NAME("Side 1 P1 Start")
-
-	PORT_MODIFY("KEY5")
-	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_MAHJONG_FLIP_FLOP ) PORT_PLAYER(2) PORT_NAME("Side 2 P2 Start")
-
-	PORT_MODIFY("KEY9")
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_START2 ) PORT_NAME("Side 2 P1 Start")
-=======
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_MAHJONG_FLIP_FLOP ) PORT_NAME("Side 1 2P Start / Rate")
 
 	PORT_MODIFY("KEY4")
@@ -3634,16 +1988,11 @@ static INPUT_PORTS_START( livegal )
 
 	PORT_MODIFY("KEY9")
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_START2 ) PORT_NAME("Side 2 1P Start")
->>>>>>> upstream/master
 INPUT_PORTS_END
 
 static INPUT_PORTS_START( ojousan )
 	PORT_START("DSWA")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x07, 0x07, DEF_STR( Difficulty ) )
-=======
 	PORT_DIPNAME( 0x07, 0x07, DEF_STR( Difficulty ) )       PORT_DIPLOCATION("SWA:1,2,3")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x07, "1 (Easy)" )
 	PORT_DIPSETTING(    0x06, "2" )
 	PORT_DIPSETTING(    0x05, "3" )
@@ -3652,54 +2001,6 @@ static INPUT_PORTS_START( ojousan )
 	PORT_DIPSETTING(    0x02, "6" )
 	PORT_DIPSETTING(    0x01, "7" )
 	PORT_DIPSETTING(    0x00, "8 (Hard)" )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x08, 0x00, "RENCHAN after TENPAIed RYUKYOKU" )
-	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x10, "Character Display Test" )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x40, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-
-	PORT_START("DSWB")
-	PORT_DIPNAME( 0x01, 0x01, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x02, 0x02, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x04, 0x04, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x08, 0x08, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x10, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x40, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-
-	PORT_START("SYSTEM")
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8688_state, nb1413m3_busyflag_r, NULL)    // DRAW BUSY
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )         //
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SERVICE3 )       // MEMORY RESET
-=======
 	PORT_DIPNAME( 0x08, 0x00, "RENCHAN after TENPAIed RYUKYOKU" )   PORT_DIPLOCATION("SWA:4")
 	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
@@ -3717,7 +2018,6 @@ static INPUT_PORTS_START( ojousan )
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8688_state, nb1413m3_busyflag_r, nullptr)    // DRAW BUSY
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )         //
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_MEMORY_RESET )   // MEMORY RESET
->>>>>>> upstream/master
 	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_SERVICE2 )       // ANALYZER
 	PORT_SERVICE( 0x10, IP_ACTIVE_LOW )                 // TEST
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_COIN2 )          // COIN2
@@ -3729,30 +2029,6 @@ INPUT_PORTS_END
 
 static INPUT_PORTS_START( ojousanm )
 	PORT_START("DSWA")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x01, 0x01, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x02, 0x02, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x04, 0x04, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x08, 0x08, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x10, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x40, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )
-=======
 	PORT_DIPNAME( 0x07, 0x07, "Game Out Rate" )             PORT_DIPLOCATION("DSWA:1,2,3")
 	PORT_DIPSETTING(    0x07, "60%" )
 	PORT_DIPSETTING(    0x06, "63%" )
@@ -3773,35 +2049,10 @@ static INPUT_PORTS_START( ojousanm )
 	PORT_DIPSETTING(    0x20, "12" )
 	PORT_DIPSETTING(    0x00, "20" )
 	PORT_DIPNAME( 0x80, 0x00, "Score Pool" )                PORT_DIPLOCATION("DSWA:8")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START("DSWB")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x01, 0x01, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x02, 0x02, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x04, 0x04, "Character Display Test" )
-	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x08, 0x08, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x10, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x40, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )
-=======
 	PORT_DIPNAME( 0x01, 0x00, "Rate Up" )                   PORT_DIPLOCATION("DSWB:1")
 	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
@@ -3824,21 +2075,10 @@ static INPUT_PORTS_START( ojousanm )
 	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )          PORT_DIPLOCATION("DSWB:8")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START("SYSTEM")
-<<<<<<< HEAD
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8688_state, nb1413m3_busyflag_r, NULL)    // DRAW BUSY
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )         //
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SERVICE3 )       // MEMORY RESET
-	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_SERVICE2 )       // ANALYZER
-	PORT_SERVICE( 0x10, IP_ACTIVE_LOW )                 // TEST
-	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_COIN2 )          // COIN2
-	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_OTHER ) PORT_NAME("Credit Clear") PORT_CODE(KEYCODE_4) // CREDIT CLEAR
-	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_COIN1 )          // COIN1
-=======
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8688_state, nb1413m3_busyflag_r, nullptr)    // DRAW BUSY
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_MEMORY_RESET )           // MEMORY RESET
@@ -3847,37 +2087,12 @@ static INPUT_PORTS_START( ojousanm )
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_COIN1 )                  // COIN1
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_OTHER ) PORT_NAME("Credit Clear") PORT_CODE(KEYCODE_4) // CREDIT CLEAR
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_SERVICE1 )               // SERVICE
->>>>>>> upstream/master
 
 	PORT_INCLUDE( nbmjcontrols )
 INPUT_PORTS_END
 
 static INPUT_PORTS_START( korinai )
 	PORT_START("DSWA")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x01, 0x01, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x02, 0x02, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x04, 0x04, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x08, 0x08, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x10, "Character Display Test" )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, "Select" )
-	PORT_DIPSETTING(    0x20, DEF_STR( Region ) )
-	PORT_DIPSETTING(    0x00, "Girl" )
-	PORT_DIPNAME( 0x40, 0x40, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )
-=======
 	PORT_DIPNAME( 0x01, 0x01, DEF_STR( Unknown ) )          PORT_DIPLOCATION("DSWA:1")
 	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
@@ -3900,47 +2115,10 @@ static INPUT_PORTS_START( korinai )
 	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )          PORT_DIPLOCATION("DSWA:8")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START("DSWB")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x01, 0x01, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x02, 0x02, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x04, 0x04, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x08, 0x08, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x10, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x40, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-
-	PORT_START("SYSTEM")
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8688_state, nb1413m3_busyflag_r, NULL)    // DRAW BUSY
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )         //
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SERVICE3 )       // MEMORY RESET
-	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_SERVICE2 )       // ANALYZER
-	PORT_SERVICE( 0x10, IP_ACTIVE_LOW )                 // TEST
-	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_COIN2 )          // COIN2
-	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_OTHER ) PORT_NAME("Credit Clear") PORT_CODE(KEYCODE_4) // CREDIT CLEAR
-	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_COIN1 )          // COIN1
-=======
 	PORT_DIPUNKNOWN_DIPLOC( 0x01, 0x01, "DSWB:1" )
 	PORT_DIPUNKNOWN_DIPLOC( 0x02, 0x02, "DSWB:2" )
 	PORT_DIPUNKNOWN_DIPLOC( 0x04, 0x04, "DSWB:3" )
@@ -3959,37 +2137,12 @@ static INPUT_PORTS_START( korinai )
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_COIN1 )                  // COIN1
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_OTHER ) PORT_NAME("Credit Clear") PORT_CODE(KEYCODE_4) // CREDIT CLEAR
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_SERVICE1 )               // SERVICE
->>>>>>> upstream/master
 
 	PORT_INCLUDE( nbmjcontrols )
 INPUT_PORTS_END
 
 static INPUT_PORTS_START( korinaim )
 	PORT_START("DSWA")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x01, 0x01, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x02, 0x02, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x04, 0x04, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x08, 0x08, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x10, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x40, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )
-=======
 	PORT_DIPNAME( 0x07, 0x07, "Game Out Rate" )               PORT_DIPLOCATION("DSWA:1,2,3")
 	PORT_DIPSETTING(    0x07, "60%" )
 	PORT_DIPSETTING(    0x06, "63%" )
@@ -4010,47 +2163,10 @@ static INPUT_PORTS_START( korinaim )
 	PORT_DIPSETTING(    0x20, "12" )
 	PORT_DIPSETTING(    0x00, "20" )
 	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )            PORT_DIPLOCATION("DSWA:8")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START("DSWB")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x01, 0x01, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x02, 0x02, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x04, 0x04, "Character Display Test" )
-	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x08, 0x08, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x10, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x40, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-
-	PORT_START("SYSTEM")
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8688_state, nb1413m3_busyflag_r, NULL)    // DRAW BUSY
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )         //
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SERVICE3 )       // MEMORY RESET
-	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_SERVICE2 )       // ANALYZER
-	PORT_SERVICE( 0x10, IP_ACTIVE_LOW )                 // TEST
-	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_COIN2 )          // COIN2
-	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_OTHER ) PORT_NAME("Credit Clear") PORT_CODE(KEYCODE_4) // CREDIT CLEAR
-	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_COIN1 )          // COIN1
-=======
 	PORT_DIPNAME( 0x01, 0x00, "Double Bet" )                  PORT_DIPLOCATION("DSWB:1")
 	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
@@ -4085,37 +2201,12 @@ static INPUT_PORTS_START( korinaim )
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_COIN1 )                  // COIN1
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_OTHER ) PORT_NAME("Credit Clear") PORT_CODE(KEYCODE_4) // CREDIT CLEAR
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_SERVICE1 )               // SERVICE
->>>>>>> upstream/master
 
 	PORT_INCLUDE( nbmjcontrols )
 INPUT_PORTS_END
 
 static INPUT_PORTS_START( crystalg )
 	PORT_START("DSWA")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x01, 0x01, "DIPSW 1-1" )
-	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x02, 0x02, "DIPSW 1-2" )
-	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x04, 0x04, "DIPSW 1-3" )
-	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x08, 0x08, "DIPSW 1-4" )
-	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x10, "DIPSW 1-5" )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, "DIPSW 1-6" )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x40, "DIPSW 1-7" )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, "DIPSW 1-8" )
-=======
 	PORT_DIPNAME( 0x0f, 0x0d, DEF_STR( Difficulty ) )       PORT_DIPLOCATION("DSWA:1,2,3,4")
 	PORT_DIPSETTING(    0x0d, "1 (Easy)" )
 	PORT_DIPSETTING(    0x0a, "2" )
@@ -4136,47 +2227,10 @@ static INPUT_PORTS_START( crystalg )
 	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )          PORT_DIPLOCATION("DSWA:8")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START("DSWB")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x01, 0x01, "DIPSW 2-1" )
-	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x02, 0x02, "DIPSW 2-2" )
-	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x04, 0x04, "DIPSW 2-3" )
-	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x08, 0x08, "DIPSW 2-4" )
-	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x10, "DIPSW 2-5" )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, "DIPSW 2-6" )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x40, "DIPSW 2-7" )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, "DIPSW 2-8" )
-	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-
-	PORT_START("SYSTEM")
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8688_state, nb1413m3_busyflag_r, NULL)    // DRAW BUSY
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )         //
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SERVICE3 )       // MEMORY RESET
-	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_SERVICE2 )       // ANALYZER
-	PORT_SERVICE( 0x10, IP_ACTIVE_LOW )                 // TEST
-	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_COIN1 )          // COIN1
-	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_OTHER ) PORT_NAME("Credit Clear") PORT_CODE(KEYCODE_4) // CREDIT CLEAR
-	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNUSED )         // OPTION (?)
-=======
 	PORT_DIPUNKNOWN_DIPLOC( 0x01, 0x01, "DSWB:1" )
 	PORT_DIPUNKNOWN_DIPLOC( 0x02, 0x02, "DSWB:2" )
 	PORT_DIPUNKNOWN_DIPLOC( 0x04, 0x04, "DSWB:3" )
@@ -4195,18 +2249,13 @@ static INPUT_PORTS_START( crystalg )
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_COIN1 )                  // COIN1
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_OTHER ) PORT_NAME("Credit Clear") PORT_CODE(KEYCODE_4) // CREDIT CLEAR
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_SERVICE1 )               // SERVICE
->>>>>>> upstream/master
 
 	PORT_INCLUDE( nbmjcontrols )
 INPUT_PORTS_END
 
 static INPUT_PORTS_START( crystal2 )
 	PORT_START("DSWA")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x0f, 0x0d, DEF_STR( Difficulty ) )
-=======
 	PORT_DIPNAME( 0x0f, 0x0d, DEF_STR( Difficulty ) )       PORT_DIPLOCATION("DSWA:1,2,3,4")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x0d, "1 (Easy)" )
 	PORT_DIPSETTING(    0x0a, "2" )
 	PORT_DIPSETTING(    0x09, "3" )
@@ -4216,18 +2265,6 @@ static INPUT_PORTS_START( crystal2 )
 	PORT_DIPSETTING(    0x05, "7" )
 	PORT_DIPSETTING(    0x04, "8" )
 	PORT_DIPSETTING(    0x00, "9 (Hard)" )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x10, 0x10, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x40, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )
-=======
 	PORT_DIPNAME( 0x10, 0x10, DEF_STR( Unknown ) )          PORT_DIPLOCATION("DSWA:5")
 	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
@@ -4238,41 +2275,20 @@ static INPUT_PORTS_START( crystal2 )
 	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )          PORT_DIPLOCATION("DSWA:8")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START("DSWB")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x03, 0x00, "Number of last chance" )
-=======
 	PORT_DIPNAME( 0x03, 0x00, "Number of last chance" )     PORT_DIPLOCATION("DSWB:1,2")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x03, "0" )
 	PORT_DIPSETTING(    0x02, "1" )
 	PORT_DIPSETTING(    0x01, "3" )
 	PORT_DIPSETTING(    0x00, "10" )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x0c, 0x00, "SANGEN Rush" )
-=======
 	PORT_DIPNAME( 0x0c, 0x00, "SANGEN Rush" )               PORT_DIPLOCATION("DSWB:3,4")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x0c, "1" )
 	PORT_DIPSETTING(    0x08, "3" )
 	PORT_DIPSETTING(    0x04, "5" )
 	PORT_DIPSETTING(    0x00, DEF_STR( Infinite ) )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x10, 0x10, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x40, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x00, DEF_STR( Demo_Sounds ) )
-=======
 	PORT_DIPNAME( 0x10, 0x10, DEF_STR( Unknown ) )          PORT_DIPLOCATION("DSWB:5")
 	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
@@ -4283,20 +2299,13 @@ static INPUT_PORTS_START( crystal2 )
 	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_DIPNAME( 0x80, 0x00, DEF_STR( Demo_Sounds ) )      PORT_DIPLOCATION("DSWB:8")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START("SYSTEM")
-<<<<<<< HEAD
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8688_state, nb1413m3_busyflag_r, NULL)    // DRAW BUSY
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )         //
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SERVICE3 )       // MEMORY RESET
-=======
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8688_state, nb1413m3_busyflag_r, nullptr)    // DRAW BUSY
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )         //
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_MEMORY_RESET )   // MEMORY RESET
->>>>>>> upstream/master
 	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_SERVICE2 )       // ANALYZER
 	PORT_SERVICE( 0x10, IP_ACTIVE_LOW )                 // TEST
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_COIN1 )          // COIN1
@@ -4308,30 +2317,6 @@ INPUT_PORTS_END
 
 static INPUT_PORTS_START( apparel )
 	PORT_START("DSWA")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x01, 0x01, "DIPSW 1-1" )
-	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x02, 0x02, "DIPSW 1-2" )
-	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x04, 0x04, "DIPSW 1-3" )
-	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x08, 0x08, "DIPSW 1-4" )
-	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x10, "DIPSW 1-5" )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, "DIPSW 1-6" )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x40, "DIPSW 1-7" )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, "DIPSW 1-8" )
-=======
 	PORT_DIPNAME( 0x07, 0x07, "Game Out Rate" )               PORT_DIPLOCATION("DSWA:1,2,3")
 	PORT_DIPSETTING(    0x07, "60%" )
 	PORT_DIPSETTING(    0x06, "65%" )
@@ -4352,35 +2337,10 @@ static INPUT_PORTS_START( apparel )
 	PORT_DIPSETTING(    0x20, "C" )
 	PORT_DIPSETTING(    0x00, "D" )
 	PORT_DIPNAME( 0x80, 0x00, "Rate Up" )                     PORT_DIPLOCATION("DSWA:8")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START("DSWB")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x01, 0x01, "DIPSW 2-1" )
-	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x02, 0x02, "DIPSW 2-2" )
-	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x04, 0x04, "DIPSW 2-3" )
-	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x08, 0x08, "DIPSW 2-4" )
-	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x10, "DIPSW 2-5" )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, "DIPSW 2-6" )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x40, "DIPSW 2-7" )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, "DIPSW 2-8" )
-=======
 	PORT_DIPNAME( 0x03, 0x02, "Number of last chance" )       PORT_DIPLOCATION("DSWB:1,2")
 	PORT_DIPSETTING(    0x03, "0" )
 	PORT_DIPSETTING(    0x02, "3" )
@@ -4401,21 +2361,10 @@ static INPUT_PORTS_START( apparel )
 	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_DIPNAME( 0x80, 0x80, "Open Reach Mode" )             PORT_DIPLOCATION("DSWB:8")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START("SYSTEM")
-<<<<<<< HEAD
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8688_state, nb1413m3_busyflag_r, NULL)    // DRAW BUSY
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )         //
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SERVICE3 )       // MEMORY RESET
-	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_SERVICE2 )       // ANALYZER
-	PORT_SERVICE( 0x10, IP_ACTIVE_LOW )                 // TEST
-	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_COIN1 )          // COIN1
-	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_OTHER ) PORT_NAME("Credit Clear") PORT_CODE(KEYCODE_4) // CREDIT CLEAR
-	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_SERVICE1 )       // SERVICE
-=======
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8688_state, nb1413m3_busyflag_r, nullptr)    // DRAW BUSY
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_MEMORY_RESET )           // MEMORY RESET
@@ -4424,37 +2373,12 @@ static INPUT_PORTS_START( apparel )
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_COIN1 )                  // COIN1
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_OTHER ) PORT_NAME("Credit Clear") PORT_CODE(KEYCODE_4) // CREDIT CLEAR
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_SERVICE1 )               // SERVICE
->>>>>>> upstream/master
 
 	PORT_INCLUDE( nbmjcontrols )
 INPUT_PORTS_END
 
 static INPUT_PORTS_START( nightlov )
 	PORT_START("DSWA")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x01, 0x01, "DIPSW 1-1" )
-	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x02, 0x02, "DIPSW 1-2" )
-	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x04, 0x04, "DIPSW 1-3" )
-	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x08, 0x08, "DIPSW 1-4" )
-	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x10, "DIPSW 1-5" )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, "DIPSW 1-6" )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x40, "DIPSW 1-7" )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, "DIPSW 1-8" )
-=======
 	PORT_DIPNAME( 0x0f, 0x0f, "Game Out Rate" )         PORT_DIPLOCATION("DSWA:1,2,3,4")
 	PORT_DIPSETTING(    0x00, "50%" )
 	PORT_DIPSETTING(    0x01, "53%" )
@@ -4481,47 +2405,10 @@ static INPUT_PORTS_START( nightlov )
 	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )      PORT_DIPLOCATION("DSWA:8")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START("DSWB")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x01, 0x01, "DIPSW 2-1" )
-	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x02, 0x02, "DIPSW 2-2" )
-	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x04, 0x04, "DIPSW 2-3" )
-	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x08, 0x08, "DIPSW 2-4" )
-	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x10, "DIPSW 2-5" )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, "DIPSW 2-6" )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x40, "DIPSW 2-7" )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, "DIPSW 2-8" )
-	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-
-	PORT_START("SYSTEM")
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nbmj8688_state, nb1413m3_busyflag_r, NULL)    // DRAW BUSY
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )         //
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SERVICE3 )       // MEMORY RESET
-	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_SERVICE2 )       // ANALYZER
-	PORT_SERVICE( 0x10, IP_ACTIVE_LOW )                 // TEST
-	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_COIN1 )          // COIN1
-	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_OTHER ) PORT_NAME("Credit Clear") PORT_CODE(KEYCODE_4) // CREDIT CLEAR
-	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_SERVICE1 )       // SERVICE
-=======
 	PORT_DIPUNKNOWN_DIPLOC( 0x01, 0x01, "DSWB:1" )
 	PORT_DIPUNKNOWN_DIPLOC( 0x02, 0x02, "DSWB:2" )
 	PORT_DIPUNKNOWN_DIPLOC( 0x04, 0x04, "DSWB:3" )
@@ -4540,7 +2427,6 @@ static INPUT_PORTS_START( nightlov )
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_COIN1 )                  // COIN1
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_OTHER ) PORT_NAME("Credit Clear") PORT_CODE(KEYCODE_4) // CREDIT CLEAR
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_SERVICE1 )               // SERVICE
->>>>>>> upstream/master
 
 	PORT_INCLUDE( nbmjcontrols )
 INPUT_PORTS_END
@@ -4556,11 +2442,7 @@ READ8_MEMBER(nbmj8688_state::dipsw2_r)
 	return m_nb1413m3->dipsw2_r(space,offset);
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( NBMJDRV_4096, nbmj8688_state )
-=======
 static MACHINE_CONFIG_START( NBMJDRV_4096 )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, 5000000)   /* 5.00 MHz */
@@ -4584,27 +2466,16 @@ static MACHINE_CONFIG_START( NBMJDRV_4096 )
 	MCFG_VIDEO_START_OVERRIDE(nbmj8688_state,mbmj8688_pure_12bit)
 
 	/* sound hardware */
-<<<<<<< HEAD
-	MCFG_SPEAKER_STANDARD_MONO("mono")
-=======
 	MCFG_SPEAKER_STANDARD_MONO("speaker")
->>>>>>> upstream/master
 
 	MCFG_SOUND_ADD("psg", AY8910, 1250000)
 	MCFG_AY8910_PORT_A_READ_CB(READ8(nbmj8688_state, dipsw1_r))     // DIPSW-A read
 	MCFG_AY8910_PORT_B_READ_CB(READ8(nbmj8688_state, dipsw2_r))     // DIPSW-B read
-<<<<<<< HEAD
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.35)
-
-	MCFG_DAC_ADD("dac")
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.00)
-=======
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.35)
 
 	MCFG_SOUND_ADD("dac", DAC_8BIT_R2R, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.5) // unknown DAC
 	MCFG_DEVICE_ADD("vref", VOLTAGE_REGULATOR, 0) MCFG_VOLTAGE_REGULATOR_OUTPUT(5.0)
 	MCFG_SOUND_ROUTE_EX(0, "dac", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "dac", -1.0, DAC_VREF_NEG_INPUT)
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_DERIVED( NBMJDRV_256, NBMJDRV_4096 )
@@ -4708,16 +2579,10 @@ static MACHINE_CONFIG_DERIVED( barline, mbmj_h12bit )
 	MCFG_NB1413M3_TYPE( NB1413M3_BARLINE )
 
 	MCFG_SOUND_REPLACE("psg", YM3812, 20000000/8)
-<<<<<<< HEAD
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.35)
-
-	MCFG_DEVICE_REMOVE("dac")
-=======
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.35)
 
 	MCFG_DEVICE_REMOVE("dac")
 	MCFG_DEVICE_REMOVE("vref")
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_DERIVED( mbmj_p16bit, NBMJDRV_65536 )
@@ -4731,11 +2596,7 @@ static MACHINE_CONFIG_DERIVED( mbmj_p16bit, NBMJDRV_65536 )
 	MCFG_VIDEO_START_OVERRIDE(nbmj8688_state,mbmj8688_pure_16bit)
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( mbmj_p16bit_LCD, nbmj8688_state )
-=======
 static MACHINE_CONFIG_START( mbmj_p16bit_LCD )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, 5000000)   /* 5.00 MHz */
@@ -4786,27 +2647,16 @@ static MACHINE_CONFIG_START( mbmj_p16bit_LCD )
 	MCFG_VIDEO_START_OVERRIDE(nbmj8688_state,mbmj8688_pure_16bit_LCD)
 
 	/* sound hardware */
-<<<<<<< HEAD
-	MCFG_SPEAKER_STANDARD_MONO("mono")
-=======
 	MCFG_SPEAKER_STANDARD_MONO("speaker")
->>>>>>> upstream/master
 
 	MCFG_SOUND_ADD("psg", AY8910, 1250000)
 	MCFG_AY8910_PORT_A_READ_CB(READ8(nbmj8688_state, dipsw1_r))     // DIPSW-A read
 	MCFG_AY8910_PORT_B_READ_CB(READ8(nbmj8688_state, dipsw2_r))     // DIPSW-B read
-<<<<<<< HEAD
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.35)
-
-	MCFG_DAC_ADD("dac")
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.00)
-=======
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.35)
 
 	MCFG_SOUND_ADD("dac", DAC_8BIT_R2R, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.5) // unknown DAC
 	MCFG_DEVICE_ADD("vref", VOLTAGE_REGULATOR, 0) MCFG_VOLTAGE_REGULATOR_OUTPUT(5.0)
 	MCFG_SOUND_ROUTE_EX(0, "dac", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "dac", -1.0, DAC_VREF_NEG_INPUT)
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_DERIVED( bijokkoy, mbmj_p16bit_LCD )
@@ -4914,8 +2764,6 @@ static MACHINE_CONFIG_DERIVED( ojousanm, ojousan )
 	MCFG_NB1413M3_TYPE( NB1413M3_OJOUSANM )
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-=======
 static MACHINE_CONFIG_DERIVED( swinggal, ojousan )
 
 		MCFG_CPU_MODIFY("maincpu")
@@ -4923,7 +2771,6 @@ static MACHINE_CONFIG_DERIVED( swinggal, ojousan )
 	MCFG_CPU_IO_MAP(iemoto_io_map)
 MACHINE_CONFIG_END
 
->>>>>>> upstream/master
 static MACHINE_CONFIG_DERIVED( iemotom, ojousan )
 
 	MCFG_DEVICE_MODIFY("nb1413m3")
@@ -4998,11 +2845,7 @@ static MACHINE_CONFIG_DERIVED( mjsikaku, NBMJDRV_4096 )
 
 	/* sound hardware */
 	MCFG_SOUND_REPLACE("psg", YM3812, 20000000/8)
-<<<<<<< HEAD
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.70)
-=======
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.7)
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_DERIVED( mmsikaku, NBMJDRV_4096 )
@@ -5453,8 +3296,6 @@ ROM_START( ojousanm )
 	ROM_LOAD( "8.7a", 0x0a0000, 0x20000, CRC(f04c6003) SHA1(2fd81cc1e1f91630ef5767ba20be3fac9e131370) ) // ojousan/8.10a
 ROM_END
 
-<<<<<<< HEAD
-=======
 ROM_START( swinggal )
 		ROM_REGION( 0x10000, "maincpu", 0 ) /* program */
 		ROM_LOAD( "1.4G",    0x00000, 0x08000, CRC(e0e94bb9) SHA1(f514993614376c2175e906eab2776567e0c32f67) )
@@ -5475,7 +3316,6 @@ ROM_START( swinggal )
 		ROM_LOAD( "8.10A",   0x1a0000, 0x20000, CRC(010d353d) SHA1(5ea7fd6f26f6ad484bb6e07e66e8c25d178ac037) )
 ROM_END
 
->>>>>>> upstream/master
 ROM_START( bijokkog )
 	ROM_REGION( 0x10000, "maincpu", 0 ) /* program */
 	ROM_LOAD( "1.4c",    0x00000, 0x08000, CRC(3c28b45c) SHA1(289582f607322b878b4737325498e749f5460586) )
@@ -5937,57 +3777,6 @@ ROM_END
 
 
 /* 8-bit palette */
-<<<<<<< HEAD
-GAME( 1986, crystalg, 0,        crystalg,        crystalg, driver_device,  0,        ROT0, "Nichibutsu", "Crystal Gal (Japan 860512)", MACHINE_SUPPORTS_SAVE )
-GAME( 1986, crystal2, 0,        crystal2,        crystal2, driver_device,  0,        ROT0, "Nichibutsu", "Crystal Gal 2 (Japan 860620)", MACHINE_SUPPORTS_SAVE )
-GAME( 1986, nightlov, 0,        nightlov,        nightlov, driver_device,  0,        ROT0, "Central Denshi", "Night Love (Japan 860705)", MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE )
-GAME( 1986, apparel,  0,        apparel,         apparel,  driver_device,  0,        ROT0, "Central Denshi", "Apparel Night (Japan 860929)", MACHINE_SUPPORTS_SAVE )
-
-/* hybrid 12-bit palette */
-GAME( 1986, citylove, 0,        citylove,        citylove, driver_device,  0,        ROT0, "Nichibutsu", "City Love (Japan 860908)", MACHINE_SUPPORTS_SAVE )
-GAME( 1986, mcitylov, citylove, mcitylov,        mcitylov, driver_device,  0,        ROT0, "Nichibutsu", "City Love [BET] (Japan 860904)", MACHINE_SUPPORTS_SAVE )
-GAME( 1986, secolove, 0,        secolove,        secolove, driver_device,  0,        ROT0, "Nichibutsu", "Second Love (Japan 861201)", MACHINE_SUPPORTS_SAVE )
-GAME( 1988, barline,  0,        barline,         barline,  driver_device,  0,        ROT180, "Nichibutsu", "Barline (Japan?)",  MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-
-/* hybrid 16-bit palette */
-GAME( 1987, seiha,    0,        seiha,           seiha,    driver_device,  0,        ROT0, "Nichibutsu",     "Seiha (Japan 870725)", MACHINE_SUPPORTS_SAVE )
-GAME( 1987, seiham,   seiha,    seiham,          seiham,   driver_device,  0,        ROT0, "Nichibutsu",     "Seiha [BET] (Japan 870723)", MACHINE_SUPPORTS_SAVE )
-GAME( 1987, mjgaiden, 0,        mjgaiden,        ojousan,  driver_device,  0,        ROT0, "Central Denshi", "Mahjong Gaiden [BET] (Japan 870803)", MACHINE_SUPPORTS_SAVE )
-GAME( 1987, iemoto,   0,        iemoto,          iemoto,   driver_device,  0,        ROT0, "Nichibutsu",     "Iemoto (Japan 871020)", MACHINE_SUPPORTS_SAVE )
-GAME( 1987, iemotom,  iemoto,   iemotom,         iemotom,  driver_device,  0,        ROT0, "Nichibutsu",     "Iemoto [BET] (Japan 871118)", MACHINE_SUPPORTS_SAVE )
-GAME( 1987, ryuuha,   iemoto,   ryuuha,          ryuuha,   driver_device,  0,        ROT0, "Central Denshi", "Ryuuha [BET] (Japan 871027)", MACHINE_SUPPORTS_SAVE )
-GAME( 1987, ojousan,  0,        ojousan,         ojousan,  driver_device,  0,        ROT0, "Nichibutsu",     "Ojousan (Japan 871204)", MACHINE_SUPPORTS_SAVE )
-GAME( 1987, ojousanm, ojousan,  ojousanm,        ojousanm, driver_device,  0,        ROT0, "Nichibutsu",     "Ojousan [BET] (Japan 870108)", MACHINE_SUPPORTS_SAVE )
-GAME( 1988, korinai,  0,        korinai,         korinai,  driver_device,  0,        ROT0, "Nichibutsu",     "Mahjong-zukino Korinai Menmen (Japan 880425)", MACHINE_SUPPORTS_SAVE )
-GAME( 1988, korinaim, korinai,  korinaim,        korinaim, driver_device,  0,        ROT0, "Nichibutsu",     "Mahjong-zukino Korinai Menmen [BET] (Japan 880920)", MACHINE_SUPPORTS_SAVE )
-
-/* pure 16-bit palette (+ LCD in some) */
-GAME( 1987, housemnq, 0,        housemnq,        housemnq, driver_device,  0,        ROT0, "Nichibutsu", "House Mannequin (Japan 870217)", MACHINE_SUPPORTS_SAVE )
-GAME( 1987, housemn2, 0,        housemn2,        housemn2, driver_device,  0,        ROT0, "Nichibutsu", "House Mannequin Roppongi Live hen (Japan 870418)", MACHINE_SUPPORTS_SAVE )
-GAME( 1987, livegal,  0,        livegal,         livegal,  driver_device,  0,        ROT0, "Central Denshi", "Live Gal (Japan 870530)", MACHINE_SUPPORTS_SAVE )
-GAME( 1987, bijokkoy, 0,        bijokkoy,        bijokkoy, driver_device,  0,        ROT0, "Nichibutsu", "Bijokko Yume Monogatari (Japan 870925)", MACHINE_SUPPORTS_SAVE )
-GAME( 1988, bijokkog, 0,        bijokkog,        bijokkog, driver_device,  0,        ROT0, "Nichibutsu", "Bijokko Gakuen (Japan 880116)", MACHINE_SUPPORTS_SAVE )
-GAME( 1988, orangec,  0,        orangec,         orangec,  driver_device,  0,        ROT0, "Daiichi Denshi", "Orange Club - Maruhi Kagai Jugyou (Japan 880213)", MACHINE_SUPPORTS_SAVE )
-GAME( 1988, orangeci, orangec,  orangeci,        orangeci, driver_device,  0,        ROT0, "Daiichi Denshi", "Orange Club - Maru-hi Ippatsu Kaihou [BET] (Japan 880221)", MACHINE_SUPPORTS_SAVE )
-GAME( 1988, vipclub,  orangec,  vipclub,         vipclub,  driver_device,  0,        ROT0, "Daiichi Denshi", "Vip Club - Maru-hi Ippatsu Kaihou [BET] (Japan 880310)", MACHINE_SUPPORTS_SAVE )
-
-/* pure 12-bit palette */
-GAME( 1988, kaguya,   0,        kaguya,          kaguya,   driver_device,   0,        ROT0, "Miki Syouji", "Mahjong Kaguyahime [BET] (Japan 880521)", MACHINE_SUPPORTS_SAVE )
-GAME( 1989, kaguya2,  0,        kaguya2,         kaguya2,  nbmj8688_state,  kaguya2,  ROT0, "Miki Syouji", "Mahjong Kaguyahime Sono2 [BET] (Japan 890829)", MACHINE_SUPPORTS_SAVE )
-GAME( 1989, kaguya2f, kaguya2,  kaguya2,         kaguya2,  nbmj8688_state,  kaguya2,  ROT0, "Miki Syouji", "Mahjong Kaguyahime Sono2 Fukkokuban [BET] (Japan 010808)", MACHINE_SUPPORTS_SAVE )
-GAME( 1988, kanatuen, 0,        kanatuen,        kanatuen, nbmj8688_state, kanatuen, ROT0, "Panac", "Kanatsuen no Onna [BET] (Japan 880905)", MACHINE_SUPPORTS_SAVE )
-GAME( 1988, kyuhito,  kanatuen, kyuhito,         kyuhito,  nbmj8688_state,  kyuhito,  ROT0, "Roller Tron", "Kyukyoku no Hito [BET] (Japan 880824)", MACHINE_SUPPORTS_SAVE )
-GAME( 1989, idhimitu, 0,        idhimitu,        idhimitu, nbmj8688_state, idhimitu, ROT0, "Digital Soft", "Idol no Himitsu [BET] (Japan 890304)", MACHINE_SUPPORTS_SAVE )
-
-/* pure 12-bit palette + YM3812 instead of AY-3-8910 */
-GAME( 1988, mjsikaku, 0,        mjsikaku,        mjsikaku, driver_device, 0, ROT0, "Nichibutsu", "Mahjong Shikaku (Japan 880908)", MACHINE_SUPPORTS_SAVE )
-GAME( 1988, mjsikakb, mjsikaku, mjsikaku,        mjsikaku, driver_device, 0, ROT0, "Nichibutsu", "Mahjong Shikaku (Japan 880722)", MACHINE_SUPPORTS_SAVE )
-GAME( 1988, mjsikakc, mjsikaku, mjsikaku,        mjsikaku, driver_device, 0, ROT0, "Nichibutsu", "Mahjong Shikaku (Japan 880806)", MACHINE_SUPPORTS_SAVE )
-GAME( 1988, mjsikakd, mjsikaku, mjsikaku,        mjsikaku, driver_device, 0, ROT0, "Nichibutsu", "Mahjong Shikaku (Japan 880802)", MACHINE_SUPPORTS_SAVE )
-GAME( 1988, mmsikaku, mjsikaku, mmsikaku,        mmsikaku, driver_device, 0, ROT0, "Nichibutsu", "Mahjong Shikaku [BET] (Japan 880929)", MACHINE_SUPPORTS_SAVE )
-GAME( 1988, otonano,  0,        otonano,         otonano,  driver_device, 0,  ROT0, "Apple", "Otona no Mahjong (Japan 880628)", MACHINE_SUPPORTS_SAVE )
-GAME( 1988, mjcamera, 0,        mjcamera,        mjcamera, nbmj8688_state, mjcamera, ROT0, "Miki Syouji", "Mahjong Camera Kozou (set 1) (Japan 881109)", MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1986, crystalg, 0,        crystalg,        crystalg, nbmj8688_state, 0,        ROT0, "Nichibutsu",     "Crystal Gal (Japan 860512)", MACHINE_SUPPORTS_SAVE )
 GAME( 1986, crystal2, 0,        crystal2,        crystal2, nbmj8688_state, 0,        ROT0, "Nichibutsu",     "Crystal Gal 2 (Japan 860620)", MACHINE_SUPPORTS_SAVE )
 GAME( 1986, nightlov, 0,        nightlov,        nightlov, nbmj8688_state, 0,        ROT0, "Central Denshi", "Night Love (Japan 860705)", MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE )
@@ -6038,4 +3827,3 @@ GAME( 1988, mjsikakd, mjsikaku, mjsikaku,        mjsikaku, nbmj8688_state, 0,   
 GAME( 1988, mmsikaku, mjsikaku, mmsikaku,        mmsikaku, nbmj8688_state, 0,        ROT0, "Nichibutsu",     "Mahjong Shikaku [BET] (Japan 880929)", MACHINE_SUPPORTS_SAVE )
 GAME( 1988, otonano,  0,        otonano,         otonano,  nbmj8688_state, 0,        ROT0, "Apple",          "Otona no Mahjong (Japan 880628)", MACHINE_SUPPORTS_SAVE )
 GAME( 1988, mjcamera, 0,        mjcamera,        mjcamera, nbmj8688_state, mjcamera, ROT0, "Miki Syouji",    "Mahjong Camera Kozou (set 1) (Japan 881109)", MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

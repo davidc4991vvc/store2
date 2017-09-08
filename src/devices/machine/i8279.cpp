@@ -74,40 +74,25 @@ that uses this feature.
 
 **********************************************************************/
 
-<<<<<<< HEAD
-#include "i8279.h"
-
-#define LOG 0
-=======
 #include "emu.h"
 #include "i8279.h"
 
 //#define VERBOSE 1
 #include "logmacro.h"
->>>>>>> upstream/master
 
 //**************************************************************************
 //  LIVE DEVICE
 //**************************************************************************
 
 // device type definition
-<<<<<<< HEAD
-const device_type I8279 = &device_creator<i8279_device>;
-=======
 DEFINE_DEVICE_TYPE(I8279, i8279_device, "i8279", "Intel 8279 KDC")
->>>>>>> upstream/master
 
 //-------------------------------------------------
 //  i8279_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-i8279_device::i8279_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, I8279, "8279 KDC", tag, owner, clock, "i8279", __FILE__),
-=======
 i8279_device::i8279_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, I8279, tag, owner, clock),
->>>>>>> upstream/master
 	m_out_irq_cb(*this),
 	m_out_sl_cb(*this),
 	m_out_disp_cb(*this),
@@ -143,11 +128,7 @@ void i8279_device::device_start()
 
 void i8279_device::device_reset()
 {
-<<<<<<< HEAD
-	UINT8 i;
-=======
 	uint8_t i;
->>>>>>> upstream/master
 
 	// startup values are unknown: setting to 0
 	for (i = 2; i < 8; i++) m_cmd[i] = 0;
@@ -178,17 +159,10 @@ void i8279_device::timer_adjust()
 // If this is too long, the sensor mode doesn't work correctly.
 
 #if 0
-<<<<<<< HEAD
-	UINT8 divider = (m_cmd[1]) ? m_cmd[1] : 1;
-	UINT32 new_clock = clock() / divider;
-#else
-	UINT32 new_clock = 2000;
-=======
 	uint8_t divider = (m_cmd[1]) ? m_cmd[1] : 1;
 	uint32_t new_clock = clock() / divider;
 #else
 	uint32_t new_clock = 2000;
->>>>>>> upstream/master
 #endif
 
 	if (m_clock != new_clock)
@@ -203,13 +177,8 @@ void i8279_device::timer_adjust()
 void i8279_device::clear_display()
 {
 	// clear all digits
-<<<<<<< HEAD
-	UINT8 i,patterns[4] = { 0, 0, 0x20, 0xff };
-	UINT8 data = patterns[(m_cmd[6] & 12) >> 2];
-=======
 	uint8_t i,patterns[4] = { 0, 0, 0x20, 0xff };
 	uint8_t data = patterns[(m_cmd[6] & 12) >> 2];
->>>>>>> upstream/master
 
 	// The CD high bit (also done by CA)
 	if (m_cmd[6] & 0x11)
@@ -236,16 +205,6 @@ void i8279_device::set_irq(bool state)
 }
 
 
-<<<<<<< HEAD
-void i8279_device::new_key(UINT8 data, bool skey, bool ckey)
-{
-	UINT8 i, rl, sl;
-	for (i = 0; BIT(data, i); i++);
-	rl = i;
-	if (BIT(m_cmd[0], 0))
-	{
-		for (i = 0; !BIT(data, i); i++);
-=======
 void i8279_device::new_key(uint8_t data, bool skey, bool ckey)
 {
 	uint8_t i, rl, sl;
@@ -254,7 +213,6 @@ void i8279_device::new_key(uint8_t data, bool skey, bool ckey)
 	if (BIT(m_cmd[0], 0))
 	{
 		for (i = 0; !BIT(data, i); i++) {};
->>>>>>> upstream/master
 		sl = i;
 	}
 	else
@@ -264,11 +222,7 @@ void i8279_device::new_key(uint8_t data, bool skey, bool ckey)
 }
 
 
-<<<<<<< HEAD
-void i8279_device::new_fifo(UINT8 data)
-=======
 void i8279_device::new_fifo(uint8_t data)
->>>>>>> upstream/master
 {
 	// see if already overrun
 	if (BIT(m_status, 5))
@@ -284,11 +238,7 @@ void i8279_device::new_fifo(uint8_t data)
 	m_fifo[m_status & 7] = data;
 
 	// bump fifo size & turn off underrun
-<<<<<<< HEAD
-	UINT8 fifo_size = m_status & 7;
-=======
 	uint8_t fifo_size = m_status & 7;
->>>>>>> upstream/master
 	if ((fifo_size)==7)
 		m_status |= 8; // full
 	else
@@ -313,15 +263,9 @@ void i8279_device::timer_mainloop()
 	// bit 3 - number of digits to display
 	// bit 4 - left or right entry
 
-<<<<<<< HEAD
-	UINT8 scanner_mask = BIT(m_cmd[0], 0) ? 15 : BIT(m_cmd[0], 3) ? 15 : 7;
-	bool decoded = BIT(m_cmd[0], 0);
-	UINT8 kbd_type = (m_cmd[0] & 6) >> 1;
-=======
 	uint8_t scanner_mask = BIT(m_cmd[0], 0) ? 15 : BIT(m_cmd[0], 3) ? 15 : 7;
 	bool decoded = BIT(m_cmd[0], 0);
 	uint8_t kbd_type = (m_cmd[0] & 6) >> 1;
->>>>>>> upstream/master
 	bool shift_key = 1;
 	bool ctrl_key = 1;
 	bool strobe_pulse = 0;
@@ -348,17 +292,10 @@ void i8279_device::timer_mainloop()
 
 	if ( !m_in_rl_cb.isnull() )
 	{
-<<<<<<< HEAD
-		UINT8 rl = m_in_rl_cb(0);
-
-		// see if key still down from last time
-		UINT16 key_down = (m_scanner << 8) | rl;
-=======
 		uint8_t rl = m_in_rl_cb(0);
 
 		// see if key still down from last time
 		uint16_t key_down = (m_scanner << 8) | rl;
->>>>>>> upstream/master
 		if (key_down == m_key_down)
 			rl = 0xff;
 		else
@@ -377,17 +314,10 @@ void i8279_device::timer_mainloop()
 					break;
 				case 2:
 					{
-<<<<<<< HEAD
-						UINT8 addr = m_scanner &7;
-
-						if (decoded)
-							for (addr=0; !BIT(m_scanner, addr); addr++);
-=======
 						uint8_t addr = m_scanner &7;
 
 						if (decoded)
 							for (addr=0; !BIT(m_scanner, addr); addr++) {};
->>>>>>> upstream/master
 
 						rl ^= 0xff;     // inverted
 						assert(addr < ARRAY_LENGTH(m_s_ram));
@@ -430,8 +360,6 @@ void i8279_device::timer_mainloop()
 }
 
 
-<<<<<<< HEAD
-=======
 READ8_MEMBER(i8279_device::read)
 {
 	// A0 = control/data select
@@ -439,7 +367,6 @@ READ8_MEMBER(i8279_device::read)
 }
 
 
->>>>>>> upstream/master
 READ8_MEMBER( i8279_device::status_r )
 {
 	return m_status;
@@ -448,29 +375,17 @@ READ8_MEMBER( i8279_device::status_r )
 
 READ8_MEMBER( i8279_device::data_r )
 {
-<<<<<<< HEAD
-	UINT8 i;
-	bool sensor_mode = ((m_cmd[0] & 6)==4);
-	UINT8 data;
-=======
 	uint8_t i;
 	bool sensor_mode = ((m_cmd[0] & 6)==4);
 	uint8_t data;
->>>>>>> upstream/master
 	if (m_read_flag)
 	{
 	// read the display ram
 		data = m_d_ram[m_d_ram_ptr];
 		if (m_autoinc)
-<<<<<<< HEAD
-        {
-			m_d_ram_ptr++;
-        }
-=======
 		{
 			m_d_ram_ptr++;
 		}
->>>>>>> upstream/master
 	}
 	else
 	if (sensor_mode)
@@ -479,15 +394,6 @@ READ8_MEMBER( i8279_device::data_r )
 		assert(m_s_ram_ptr < ARRAY_LENGTH(m_s_ram));
 		data = m_s_ram[m_s_ram_ptr];
 		if (m_autoinc)
-<<<<<<< HEAD
-        {
-			m_s_ram_ptr++;
-        }
-		else
-        {
-			set_irq(0);
-        }
-=======
 		{
 			m_s_ram_ptr++;
 		}
@@ -495,17 +401,12 @@ READ8_MEMBER( i8279_device::data_r )
 		{
 			set_irq(0);
 		}
->>>>>>> upstream/master
 	}
 	else
 	{
 	// read a key from fifo
 		data = m_fifo[0];
-<<<<<<< HEAD
-		UINT8 fifo_size = m_status & 7;
-=======
 		uint8_t fifo_size = m_status & 7;
->>>>>>> upstream/master
 		switch (m_status & 0x38)
 		{
 			case 0x00: // no errors
@@ -540,11 +441,6 @@ READ8_MEMBER( i8279_device::data_r )
 }
 
 
-<<<<<<< HEAD
-WRITE8_MEMBER( i8279_device::cmd_w )
-{//printf("Command: %X=%X ",data>>5,data&31);
-	UINT8 cmd = data >> 5;
-=======
 WRITE8_MEMBER(i8279_device::write)
 {
 	// A0 = control/data select
@@ -558,17 +454,12 @@ WRITE8_MEMBER(i8279_device::write)
 WRITE8_MEMBER( i8279_device::cmd_w )
 {//printf("Command: %X=%X ",data>>5,data&31);
 	uint8_t cmd = data >> 5;
->>>>>>> upstream/master
 	data &= 0x1f;
 	m_cmd[cmd] = data;
 	switch (cmd)
 	{
 		case 0:
-<<<<<<< HEAD
-			if (LOG) logerror("I8279 '%s' kb mode %x, display mode %x\n", tag(), data & 7, (data>>3) & 3);
-=======
 			LOG("I8279 kb mode %x, display mode %x\n", data & 7, (data>>3) & 3);
->>>>>>> upstream/master
 			break;
 		case 1:
 			if (data > 1)
@@ -583,11 +474,7 @@ WRITE8_MEMBER( i8279_device::cmd_w )
 			{
 				m_autoinc = BIT(data, 4);
 				m_s_ram_ptr = data & 7;
-<<<<<<< HEAD
-				if (LOG) logerror("I8279 '%s' selct sensor row %x, AI %d\n", tag(), m_s_ram_ptr, m_autoinc);
-=======
 				LOG("I8279 selct sensor row %x, AI %d\n", m_s_ram_ptr, m_autoinc);
->>>>>>> upstream/master
 			}
 			break;
 		case 3:
@@ -600,11 +487,7 @@ WRITE8_MEMBER( i8279_device::cmd_w )
 			m_autoinc = BIT(data, 4);
 			break;
 		case 6:
-<<<<<<< HEAD
-			if (LOG) logerror("I8279 '%s' clear cmd %x\n", tag(), data);
-=======
 			LOG("I8279 clear cmd %x\n", data);
->>>>>>> upstream/master
 			clear_display();
 			break;
 	}

@@ -1,9 +1,5 @@
 /* zutil.c -- target dependent utility functions for the compression library
-<<<<<<< HEAD
- * Copyright (C) 1995-2005, 2010, 2011, 2012 Jean-loup Gailly.
-=======
  * Copyright (C) 1995-2017 Jean-loup Gailly
->>>>>>> upstream/master
  * For conditions of distribution and use, see copyright notice in zlib.h
  */
 
@@ -14,23 +10,6 @@
 #  include "gzguts.h"
 #endif
 
-<<<<<<< HEAD
-#ifndef NO_DUMMY_DECL
-struct internal_state      {int dummy;}; /* for buggy compilers */
-#endif
-
-z_const char * const z_errmsg[10] = {
-"need dictionary",     /* Z_NEED_DICT       2  */
-"stream end",          /* Z_STREAM_END      1  */
-"",                    /* Z_OK              0  */
-"file error",          /* Z_ERRNO         (-1) */
-"stream error",        /* Z_STREAM_ERROR  (-2) */
-"data error",          /* Z_DATA_ERROR    (-3) */
-"insufficient memory", /* Z_MEM_ERROR     (-4) */
-"buffer error",        /* Z_BUF_ERROR     (-5) */
-"incompatible version",/* Z_VERSION_ERROR (-6) */
-""};
-=======
 z_const char * const z_errmsg[10] = {
     (z_const char *)"need dictionary",     /* Z_NEED_DICT       2  */
     (z_const char *)"stream end",          /* Z_STREAM_END      1  */
@@ -43,7 +22,6 @@ z_const char * const z_errmsg[10] = {
     (z_const char *)"incompatible version",/* Z_VERSION_ERROR (-6) */
     (z_const char *)""
 };
->>>>>>> upstream/master
 
 
 const char * ZEXPORT zlibVersion()
@@ -80,11 +58,7 @@ uLong ZEXPORT zlibCompileFlags()
     case 8:     flags += 2 << 6;        break;
     default:    flags += 3 << 6;
     }
-<<<<<<< HEAD
-#ifdef DEBUG
-=======
 #ifdef ZLIB_DEBUG
->>>>>>> upstream/master
     flags += 1 << 8;
 #endif
 #if defined(ASMV) || defined(ASMINF)
@@ -138,13 +112,8 @@ uLong ZEXPORT zlibCompileFlags()
     return flags;
 }
 
-<<<<<<< HEAD
-#ifdef DEBUG
-
-=======
 #ifdef ZLIB_DEBUG
 #include <stdlib.h>
->>>>>>> upstream/master
 #  ifndef verbose
 #    define verbose 0
 #  endif
@@ -247,17 +216,11 @@ local ptr_table table[MAX_PTR];
 
 voidpf ZLIB_INTERNAL zcalloc (voidpf opaque, unsigned items, unsigned size)
 {
-<<<<<<< HEAD
-    voidpf buf = opaque; /* just to make some compilers happy */
-    ulg bsize = (ulg)items*size;
-
-=======
     voidpf buf;
     ulg bsize = (ulg)items*size;
 
     (void)opaque;
 
->>>>>>> upstream/master
     /* If we allocate less than 65520 bytes, we assume that farmalloc
      * will return a usable pointer which doesn't have to be normalized.
      */
@@ -280,12 +243,9 @@ voidpf ZLIB_INTERNAL zcalloc (voidpf opaque, unsigned items, unsigned size)
 void ZLIB_INTERNAL zcfree (voidpf opaque, voidpf ptr)
 {
     int n;
-<<<<<<< HEAD
-=======
 
     (void)opaque;
 
->>>>>>> upstream/master
     if (*(ush*)&ptr != 0) { /* object < 64K */
         farfree(ptr);
         return;
@@ -301,10 +261,6 @@ void ZLIB_INTERNAL zcfree (voidpf opaque, voidpf ptr)
         next_ptr--;
         return;
     }
-<<<<<<< HEAD
-    ptr = opaque; /* just to make some compilers happy */
-=======
->>>>>>> upstream/master
     Assert(0, "zcfree: ptr not found");
 }
 
@@ -323,21 +279,13 @@ void ZLIB_INTERNAL zcfree (voidpf opaque, voidpf ptr)
 
 voidpf ZLIB_INTERNAL zcalloc (voidpf opaque, uInt items, uInt size)
 {
-<<<<<<< HEAD
-    if (opaque) opaque = 0; /* to make compiler happy */
-=======
     (void)opaque;
->>>>>>> upstream/master
     return _halloc((long)items, size);
 }
 
 void ZLIB_INTERNAL zcfree (voidpf opaque, voidpf ptr)
 {
-<<<<<<< HEAD
-    if (opaque) opaque = 0; /* to make compiler happy */
-=======
     (void)opaque;
->>>>>>> upstream/master
     _hfree(ptr);
 }
 
@@ -359,11 +307,7 @@ voidpf ZLIB_INTERNAL zcalloc (opaque, items, size)
     unsigned items;
     unsigned size;
 {
-<<<<<<< HEAD
-    if (opaque) items += size - size; /* make compiler happy */
-=======
     (void)opaque;
->>>>>>> upstream/master
     return sizeof(uInt) > 2 ? (voidpf)malloc(items * size) :
                               (voidpf)calloc(items, size);
 }
@@ -372,13 +316,8 @@ void ZLIB_INTERNAL zcfree (opaque, ptr)
     voidpf opaque;
     voidpf ptr;
 {
-<<<<<<< HEAD
-    free(ptr);
-    if (opaque) return; /* make compiler happy */
-=======
     (void)opaque;
     free(ptr);
->>>>>>> upstream/master
 }
 
 #endif /* MY_ZCALLOC */

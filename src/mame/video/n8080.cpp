@@ -105,11 +105,7 @@ VIDEO_START_MEMBER(n8080_state,sheriff)
 
 VIDEO_START_MEMBER(n8080_state,helifire)
 {
-<<<<<<< HEAD
-	UINT8 data = 0;
-=======
 	uint8_t data = 0;
->>>>>>> upstream/master
 	int i;
 
 	save_item(NAME(m_helifire_mv));
@@ -132,54 +128,31 @@ VIDEO_START_MEMBER(n8080_state,helifire)
 }
 
 
-<<<<<<< HEAD
-UINT32 n8080_state::screen_update_spacefev(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-{
-	UINT8 mask = flip_screen() ? 0xff : 0x00;
-=======
 uint32_t n8080_state::screen_update_spacefev(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
 	uint8_t mask = flip_screen() ? 0xff : 0x00;
->>>>>>> upstream/master
 
 	int x;
 	int y;
 
-<<<<<<< HEAD
-	const UINT8* pRAM = m_videoram;
-	const UINT8* pPROM = memregion("proms")->base();
-
-	for (y = 0; y < 256; y++)
-	{
-		UINT16* pLine = &bitmap.pix16(y ^ mask);
-=======
 	const uint8_t* pRAM = m_videoram;
 	const uint8_t* pPROM = memregion("proms")->base();
 
 	for (y = 0; y < 256; y++)
 	{
 		uint16_t* pLine = &bitmap.pix16(y ^ mask);
->>>>>>> upstream/master
 
 		for (x = 0; x < 256; x += 8)
 		{
 			int n;
 
-<<<<<<< HEAD
-			UINT8 color = 0;
-=======
 			uint8_t color = 0;
->>>>>>> upstream/master
 
 			if (m_spacefev_red_screen)
 				color = 1;
 			else
 			{
-<<<<<<< HEAD
-				UINT8 val = pPROM[x >> 3];
-=======
 				uint8_t val = pPROM[x >> 3];
->>>>>>> upstream/master
 
 				if ((x >> 3) == 0x06)
 				{
@@ -188,11 +161,7 @@ uint32_t n8080_state::screen_update_spacefev(screen_device &screen, bitmap_ind16
 
 				if ((x >> 3) == 0x1b)
 				{
-<<<<<<< HEAD
-					static const UINT8 ufo_color[] =
-=======
 					static const uint8_t ufo_color[] =
->>>>>>> upstream/master
 					{
 						1, /* red     */
 						2, /* green   */
@@ -228,46 +197,26 @@ uint32_t n8080_state::screen_update_spacefev(screen_device &screen, bitmap_ind16
 }
 
 
-<<<<<<< HEAD
-UINT32 n8080_state::screen_update_sheriff(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-{
-	UINT8 mask = flip_screen() ? 0xff : 0x00;
-
-	const UINT8* pPROM = memregion("proms")->base();
-=======
 uint32_t n8080_state::screen_update_sheriff(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
 	uint8_t mask = flip_screen() ? 0xff : 0x00;
 
 	const uint8_t* pPROM = memregion("proms")->base();
->>>>>>> upstream/master
 
 	int x;
 	int y;
 
-<<<<<<< HEAD
-	const UINT8* pRAM = m_videoram;
-
-	for (y = 0; y < 256; y++)
-	{
-		UINT16* pLine = &bitmap.pix16(y ^ mask);
-=======
 	const uint8_t* pRAM = m_videoram;
 
 	for (y = 0; y < 256; y++)
 	{
 		uint16_t* pLine = &bitmap.pix16(y ^ mask);
->>>>>>> upstream/master
 
 		for (x = 0; x < 256; x += 8)
 		{
 			int n;
 
-<<<<<<< HEAD
-			UINT8 color = pPROM[32 * (y >> 3) + (x >> 3)];
-=======
 			uint8_t color = pPROM[32 * (y >> 3) + (x >> 3)];
->>>>>>> upstream/master
 
 			if (m_sheriff_color_mode == 1 && !(color & 8))
 				color = m_sheriff_color_data ^ 7;
@@ -290,11 +239,7 @@ uint32_t n8080_state::screen_update_sheriff(screen_device &screen, bitmap_ind16 
 }
 
 
-<<<<<<< HEAD
-UINT32 n8080_state::screen_update_helifire(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t n8080_state::screen_update_helifire(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int SUN_BRIGHTNESS = ioport("POT0")->read();
 	int SEA_BRIGHTNESS = ioport("POT1")->read();
@@ -309,11 +254,7 @@ uint32_t n8080_state::screen_update_helifire(screen_device &screen, bitmap_ind16
 
 	for (y = 0; y < 256; y++)
 	{
-<<<<<<< HEAD
-		UINT16* pLine = &bitmap.pix16(y);
-=======
 		uint16_t* pLine = &bitmap.pix16(y);
->>>>>>> upstream/master
 
 		int level = 120 + wave[m_helifire_mv & 7];
 
@@ -397,11 +338,7 @@ uint32_t n8080_state::screen_update_helifire(screen_device &screen, bitmap_ind16
 }
 
 
-<<<<<<< HEAD
-void n8080_state::screen_eof_helifire(screen_device &screen, bool state)
-=======
 WRITE_LINE_MEMBER(n8080_state::screen_vblank_helifire)
->>>>>>> upstream/master
 {
 	// falling edge
 	if (!state)

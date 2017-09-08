@@ -28,24 +28,15 @@ public:
 		m_palette(*this, "palette") { }
 
 	/* memory pointers */
-<<<<<<< HEAD
-	required_shared_ptr<UINT8> m_videoram;
-	required_shared_ptr<UINT8> m_motion;
-=======
 	required_shared_ptr<uint8_t> m_videoram;
 	required_shared_ptr<uint8_t> m_motion;
->>>>>>> upstream/master
 	required_device<discrete_device> m_discrete;
 
 	/* video-related */
 	tilemap_t  *m_bg_tilemap;
 
 	/* misc */
-<<<<<<< HEAD
-	UINT32   m_nmi_on;
-=======
 	uint32_t   m_nmi_on;
->>>>>>> upstream/master
 //  int      m_i256v;
 
 	/* input-related */
@@ -59,25 +50,6 @@ public:
 	int m_last_p1_vert;
 	int m_last_p2_horiz;
 	int m_last_p2_vert;
-<<<<<<< HEAD
-	DECLARE_WRITE8_MEMBER(bsktball_nmion_w);
-	DECLARE_WRITE8_MEMBER(bsktball_ld1_w);
-	DECLARE_WRITE8_MEMBER(bsktball_ld2_w);
-	DECLARE_READ8_MEMBER(bsktball_in0_r);
-	DECLARE_WRITE8_MEMBER(bsktball_led1_w);
-	DECLARE_WRITE8_MEMBER(bsktball_led2_w);
-	DECLARE_WRITE8_MEMBER(bsktball_videoram_w);
-	TILE_GET_INFO_MEMBER(get_bg_tile_info);
-	virtual void machine_start();
-	virtual void machine_reset();
-	virtual void video_start();
-	DECLARE_PALETTE_INIT(bsktball);
-	UINT32 screen_update_bsktball(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	TIMER_DEVICE_CALLBACK_MEMBER(bsktball_scanline);
-	DECLARE_WRITE8_MEMBER(bsktball_bounce_w);
-	DECLARE_WRITE8_MEMBER(bsktball_note_w);
-	DECLARE_WRITE8_MEMBER(bsktball_noise_reset_w);
-=======
 	DECLARE_WRITE_LINE_MEMBER(nmion_w);
 	DECLARE_WRITE_LINE_MEMBER(ld1_w);
 	DECLARE_WRITE_LINE_MEMBER(ld2_w);
@@ -94,7 +66,6 @@ public:
 	TIMER_DEVICE_CALLBACK_MEMBER(bsktball_scanline);
 	DECLARE_WRITE8_MEMBER(bsktball_bounce_w);
 	DECLARE_WRITE8_MEMBER(bsktball_note_w);
->>>>>>> upstream/master
 	void draw_sprites(  bitmap_ind16 &bitmap, const rectangle &cliprect );
 	required_device<cpu_device> m_maincpu;
 	required_device<gfxdecode_device> m_gfxdecode;

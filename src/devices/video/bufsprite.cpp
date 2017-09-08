@@ -17,12 +17,6 @@
 //**************************************************************************
 
 // device type definition
-<<<<<<< HEAD
-extern const device_type BUFFERED_SPRITERAM8 = &device_creator<buffered_spriteram8_device>;
-extern const device_type BUFFERED_SPRITERAM16 = &device_creator<buffered_spriteram16_device>;
-extern const device_type BUFFERED_SPRITERAM32 = &device_creator<buffered_spriteram32_device>;
-extern const device_type BUFFERED_SPRITERAM64 = &device_creator<buffered_spriteram64_device>;
-=======
 DEFINE_DEVICE_TYPE(BUFFERED_SPRITERAM8,  buffered_spriteram8_device,  "buffered_spriteram8",  "Buffered 8-bit Sprite RAM")
 DEFINE_DEVICE_TYPE(BUFFERED_SPRITERAM16, buffered_spriteram16_device, "buffered_spriteram16", "Buffered 16-bit Sprite RAM")
 DEFINE_DEVICE_TYPE(BUFFERED_SPRITERAM32, buffered_spriteram32_device, "buffered_spriteram32", "Buffered 32-bit Sprite RAM")
@@ -79,4 +73,3 @@ buffered_spriteram64_device::buffered_spriteram64_device(const machine_config &m
 	: buffered_spriteram_device<u64>(mconfig, BUFFERED_SPRITERAM64, tag, owner, clock)
 {
 }
->>>>>>> upstream/master

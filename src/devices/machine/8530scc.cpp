@@ -12,11 +12,7 @@
 #include "emu.h"
 #include "8530scc.h"
 
-<<<<<<< HEAD
-const device_type SCC8530 = &device_creator<scc8530_t>;
-=======
 DEFINE_DEVICE_TYPE(SCC8530, scc8530_t, "scc8530l", "Zilog 8530 SCC (legacy)")
->>>>>>> upstream/master
 
 
 /***************************************************************************
@@ -29,14 +25,9 @@ DEFINE_DEVICE_TYPE(SCC8530, scc8530_t, "scc8530l", "Zilog 8530 SCC (legacy)")
     IMPLEMENTATION
 ***************************************************************************/
 
-<<<<<<< HEAD
-scc8530_t::scc8530_t(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-	device_t(mconfig, SCC8530, "Zilog 8530 SCC (Legacy)", tag, owner, clock, "scc8530l", __FILE__), mode(0), reg(0), status(0), IRQV(0), MasterIRQEnable(0), lastIRQStat(0), IRQType(),
-=======
 scc8530_t::scc8530_t(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	device_t(mconfig, SCC8530, tag, owner, clock),
 	mode(0), reg(0), status(0), IRQV(0), MasterIRQEnable(0), lastIRQStat(0), IRQType(),
->>>>>>> upstream/master
 	intrq_cb(*this)
 {
 }
@@ -224,11 +215,7 @@ void scc8530_t::acknowledge()
     scc_getareg
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-UINT8 scc8530_t::getareg()
-=======
 uint8_t scc8530_t::getareg()
->>>>>>> upstream/master
 {
 	/* Not yet implemented */
 	#if LOG_SCC
@@ -237,11 +224,7 @@ uint8_t scc8530_t::getareg()
 
 	if (reg == 0)
 	{
-<<<<<<< HEAD
-		UINT8 rv = 0;
-=======
 		uint8_t rv = 0;
->>>>>>> upstream/master
 
 		Chan *ourCh = &channel[0];
 
@@ -264,11 +247,7 @@ uint8_t scc8530_t::getareg()
     scc_getareg
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-UINT8 scc8530_t::getbreg()
-=======
 uint8_t scc8530_t::getbreg()
->>>>>>> upstream/master
 {
 	#if LOG_SCC
 	printf("SCC: port B reg %i read 0x%02x\n", reg, channel[1].reg_val[reg]);
@@ -276,11 +255,7 @@ uint8_t scc8530_t::getbreg()
 
 	if (reg == 0)
 	{
-<<<<<<< HEAD
-		UINT8 rv = 0;
-=======
 		uint8_t rv = 0;
->>>>>>> upstream/master
 
 		Chan *ourCh = &channel[1];
 
@@ -311,11 +286,7 @@ uint8_t scc8530_t::getbreg()
     scc_putreg
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-void scc8530_t::putreg(int ch, UINT8 data)
-=======
 void scc8530_t::putreg(int ch, uint8_t data)
->>>>>>> upstream/master
 {
 	Chan *pChan = &channel[ch];
 
@@ -447,11 +418,7 @@ void scc8530_t::putreg(int ch, uint8_t data)
     scc8530_get_reg_a
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-UINT8 scc8530_t::get_reg_a(int reg)
-=======
 uint8_t scc8530_t::get_reg_a(int reg)
->>>>>>> upstream/master
 {
 	return channel[0].reg_val[reg];
 }
@@ -462,11 +429,7 @@ uint8_t scc8530_t::get_reg_a(int reg)
     scc8530_get_reg_b
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-UINT8 scc8530_t::get_reg_b(int reg)
-=======
 uint8_t scc8530_t::get_reg_b(int reg)
->>>>>>> upstream/master
 {
 	return channel[1].reg_val[reg];
 }
@@ -477,11 +440,7 @@ uint8_t scc8530_t::get_reg_b(int reg)
     scc8530_set_reg_a
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-void scc8530_t::set_reg_a(int reg, UINT8 data)
-=======
 void scc8530_t::set_reg_a(int reg, uint8_t data)
->>>>>>> upstream/master
 {
 	channel[0].reg_val[reg] = data;
 }
@@ -489,49 +448,16 @@ void scc8530_t::set_reg_a(int reg, uint8_t data)
 
 
 /*-------------------------------------------------
-<<<<<<< HEAD
-    scc8530_set_reg_a
--------------------------------------------------*/
-
-void scc8530_t::set_reg_b(int reg, UINT8 data)
-=======
     scc8530_set_reg_b
 -------------------------------------------------*/
 
 void scc8530_t::set_reg_b(int reg, uint8_t data)
->>>>>>> upstream/master
 {
 	channel[1].reg_val[reg] = data;
 }
 
 
 
-<<<<<<< HEAD
-/*-------------------------------------------------
-    scc8530_r
--------------------------------------------------*/
-
-READ8_MEMBER( scc8530_t::reg_r)
-{
-	UINT8 result = 0;
-
-	offset %= 4;
-
-	switch(offset)
-	{
-		case 0:
-			/* Channel B (Printer Port) Control */
-			if (mode == 1)
-				mode = 0;
-			else
-				reg = 0;
-
-			result = getbreg();
-			break;
-
-		case 1:
-			/* Channel A (Modem Port) Control */
-=======
 //-------------------------------------------------
 //  reg_r - read handler, trampolines into normal
 //  getter
@@ -558,32 +484,17 @@ uint8_t scc8530_t::read_reg(int offset)
 		case 0: /* Channel B (Printer Port) Control */
 		case 1: /* Channel A (Modem Port) Control */
 
->>>>>>> upstream/master
 			if (mode == 1)
 				mode = 0;
 			else
 				reg = 0;
 
-<<<<<<< HEAD
-			result = getareg();
-			break;
-
-		case 2:
-			/* Channel B (Printer Port) Data */
-			result = channel[1].rxData;
-			break;
-
-		case 3:
-			/* Channel A (Modem Port) Data */
-			result = channel[0].rxData;
-=======
 			result = (offset == 0) ? getbreg() : getareg();
 			break;
 
 		case 2: /* Channel B (Printer Port) Data */
 		case 3:/* Channel A (Modem Port) Data */
 			result = channel[offset == 2 ? 1 : 0].rxData;
->>>>>>> upstream/master
 			break;
 	}
 	return result;
@@ -591,24 +502,6 @@ uint8_t scc8530_t::read_reg(int offset)
 
 
 
-<<<<<<< HEAD
-/*-------------------------------------------------
-    scc8530_w
--------------------------------------------------*/
-
-WRITE8_MEMBER( scc8530_t::reg_w )
-{
-	Chan *pChan;
-
-	offset &= 3;
-
-//  printf(" mode %d data %x offset %d  \n", mode, data, offset);
-
-	switch(offset)
-	{
-		case 0:
-			/* Channel B (Printer Port) Control */
-=======
 //-------------------------------------------------
 //  reg_w - write handler, trampolines into normal
 //  setter
@@ -639,7 +532,6 @@ void scc8530_t::write_reg(int offset, uint8_t data)
 		case 1: /* Channel A (Modem Port) Control */
 		{
 			int chan = ((offset == 0) ? 1 : 0);
->>>>>>> upstream/master
 			if (mode == 0)
 			{
 				if((data & 0xf0) == 0)  // not a reset command
@@ -650,98 +542,15 @@ void scc8530_t::write_reg(int offset, uint8_t data)
 				}
 				else if (data == 0x10)
 				{
-<<<<<<< HEAD
-					pChan = &channel[1];
-					// clear ext. interrupts
-					pChan->extIRQPending = 0;
-					pChan->baudIRQPending = 0;
-=======
 					// clear ext. interrupts
 					channel[chan].extIRQPending = 0;
 					channel[chan].baudIRQPending = 0;
->>>>>>> upstream/master
 					updateirqs();
 				}
 			}
 			else
 			{
 				mode = 0;
-<<<<<<< HEAD
-				putreg(1, data);
-			}
-			break;
-
-		case 1:
-			/* Channel A (Modem Port) Control */
-			if (mode == 0)
-			{
-				if((data & 0xf0) == 0)  // not a reset command
-				{
-					mode = 1;
-					reg = data & 0x0f;
-//                  putareg(data & 0xf0);
-				}
-				else if (data == 0x10)
-				{
-					pChan = &channel[0];
-					// clear ext. interrupts
-					pChan->extIRQPending = 0;
-					pChan->baudIRQPending = 0;
-					updateirqs();
-				}
-			}
-			else
-			{
-				mode = 0;
-				putreg(0, data);
-			}
-			break;
-
-		case 2:
-			/* Channel B (Printer Port) Data */
-			pChan = &channel[1];
-
-			if (pChan->txEnable)
-			{
-				pChan->txData = data;
-				// local loopback?
-				if (pChan->reg_val[14] & 0x10)
-				{
-					pChan->rxData = data;
-					pChan->reg_val[0] |= 0x01;  // Rx character available
-				}
-				pChan->reg_val[1] |= 0x01;  // All sent
-				pChan->reg_val[0] |= 0x04;  // Tx empty
-				pChan->txUnderrun = 1;
-				pChan->txIRQPending = 1;
-				updateirqs();
-			}
-			break;
-
-		case 3:
-			/* Channel A (Modem Port) Data */
-			pChan = &channel[0];
-
-			if (pChan->txEnable)
-			{
-				pChan->txData = data;
-				// local loopback?
-				if (pChan->reg_val[14] & 0x10)
-				{
-					pChan->rxData = data;
-					pChan->reg_val[0] |= 0x01;  // Rx character available
-				}
-				pChan->reg_val[1] |= 0x01;  // All sent
-				pChan->reg_val[0] |= 0x04;  // Tx empty
-				pChan->txUnderrun = 1;
-				pChan->txIRQPending = 1;
-				updateirqs();
-			}
-			break;
-	}
-}
-
-=======
 				putreg(chan, data);
 			}
 			break;
@@ -772,7 +581,6 @@ void scc8530_t::write_reg(int offset, uint8_t data)
 }
 
 
->>>>>>> upstream/master
 /*
 
 AppleTalk check:

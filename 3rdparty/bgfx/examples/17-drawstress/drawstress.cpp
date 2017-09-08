@@ -1,11 +1,6 @@
 /*
-<<<<<<< HEAD
- * Copyright 2011-2015 Branimir Karadzic. All rights reserved.
- * License: http://www.opensource.org/licenses/BSD-2-Clause
-=======
  * Copyright 2011-2017 Branimir Karadzic. All rights reserved.
  * License: https://github.com/bkaradzic/bgfx#license-bsd-2-clause
->>>>>>> upstream/master
  */
 
 #include "common.h"
@@ -14,17 +9,12 @@
 #include <bx/uint32_t.h>
 #include "imgui/imgui.h"
 
-<<<<<<< HEAD
-=======
 #include <bgfx/embedded_shader.h>
 
->>>>>>> upstream/master
 // embedded shaders
 #include "vs_drawstress.bin.h"
 #include "fs_drawstress.bin.h"
 
-<<<<<<< HEAD
-=======
 static const bgfx::EmbeddedShader s_embeddedShaders[] =
 {
 	BGFX_EMBEDDED_SHADER(vs_drawstress),
@@ -33,7 +23,6 @@ static const bgfx::EmbeddedShader s_embeddedShaders[] =
 	BGFX_EMBEDDED_SHADER_END()
 };
 
->>>>>>> upstream/master
 struct PosColorVertex
 {
 	float m_x;
@@ -91,20 +80,12 @@ static const int64_t highwm = 1000000/65;
 static const int64_t lowwm  = 1000000/57;
 #endif // BX_PLATFORM_EMSCRIPTEN || BX_PLATFORM_NACL
 
-<<<<<<< HEAD
-class DrawStress : public entry::AppI
-=======
 class ExampleDrawStress : public entry::AppI
->>>>>>> upstream/master
 {
 	void init(int _argc, char** _argv) BX_OVERRIDE
 	{
 		Args args(_argc, _argv);
-<<<<<<< HEAD
-		
-=======
 
->>>>>>> upstream/master
 		m_width  = 1280;
 		m_height = 720;
 		m_debug  = BGFX_DEBUG_TEXT;
@@ -126,11 +107,7 @@ class ExampleDrawStress : public entry::AppI
 		bgfx::reset(m_width, m_height, m_reset);
 
 		const bgfx::Caps* caps = bgfx::getCaps();
-<<<<<<< HEAD
-		m_maxDim = (int32_t)powf(float(caps->maxDrawCalls), 1.0f/3.0f);
-=======
 		m_maxDim = (int32_t)bx::fpow(float(caps->limits.maxDrawCalls), 1.0f/3.0f);
->>>>>>> upstream/master
 
 		// Enable debug text.
 		bgfx::setDebug(m_debug);
@@ -146,46 +123,12 @@ class ExampleDrawStress : public entry::AppI
 		// Create vertex stream declaration.
 		PosColorVertex::init();
 
-<<<<<<< HEAD
-		const bgfx::Memory* vs_drawstress;
-		const bgfx::Memory* fs_drawstress;
-
-		switch (bgfx::getRendererType() )
-		{
-			case bgfx::RendererType::Direct3D9:
-				vs_drawstress = bgfx::makeRef(vs_drawstress_dx9, sizeof(vs_drawstress_dx9) );
-				fs_drawstress = bgfx::makeRef(fs_drawstress_dx9, sizeof(fs_drawstress_dx9) );
-				break;
-
-			case bgfx::RendererType::Direct3D11:
-			case bgfx::RendererType::Direct3D12:
-				vs_drawstress = bgfx::makeRef(vs_drawstress_dx11, sizeof(vs_drawstress_dx11) );
-				fs_drawstress = bgfx::makeRef(fs_drawstress_dx11, sizeof(fs_drawstress_dx11) );
-				break;
-
-			case bgfx::RendererType::Metal:
-				vs_drawstress = bgfx::makeRef(vs_drawstress_mtl, sizeof(vs_drawstress_mtl) );
-				fs_drawstress = bgfx::makeRef(fs_drawstress_mtl, sizeof(fs_drawstress_mtl) );
-				break;
-
-			default:
-				vs_drawstress = bgfx::makeRef(vs_drawstress_glsl, sizeof(vs_drawstress_glsl) );
-				fs_drawstress = bgfx::makeRef(fs_drawstress_glsl, sizeof(fs_drawstress_glsl) );
-				break;
-		}
-
-		// Create program from shaders.
-		m_program = bgfx::createProgram(
-				  bgfx::createShader(vs_drawstress)
-				, bgfx::createShader(fs_drawstress)
-=======
 		bgfx::RendererType::Enum type = bgfx::getRendererType();
 
 		// Create program from shaders.
 		m_program = bgfx::createProgram(
 				  bgfx::createEmbeddedShader(s_embeddedShaders, type, "vs_drawstress")
 				, bgfx::createEmbeddedShader(s_embeddedShaders, type, "fs_drawstress")
->>>>>>> upstream/master
 				, true /* destroy shaders when program is destroyed */
 				);
 
@@ -262,19 +205,11 @@ class ExampleDrawStress : public entry::AppI
 					| (m_mouseState.m_buttons[entry::MouseButton::Right ] ? IMGUI_MBUT_RIGHT  : 0)
 					| (m_mouseState.m_buttons[entry::MouseButton::Middle] ? IMGUI_MBUT_MIDDLE : 0)
 					,  m_mouseState.m_mz
-<<<<<<< HEAD
-					, m_width
-					, m_height
-					);
-
-			imguiBeginScrollArea("Settings", m_width - m_width / 4 - 10, 10, m_width / 4, m_height / 3, &m_scrollArea);
-=======
 					, uint16_t(m_width)
 					, uint16_t(m_height)
 					);
 
 			imguiBeginScrollArea("Settings", m_width - m_width / 4 - 10, 10, m_width / 4, m_height / 2, &m_scrollArea);
->>>>>>> upstream/master
 			imguiSeparatorLine();
 
 			m_transform = imguiChoose(m_transform
@@ -292,8 +227,6 @@ class ExampleDrawStress : public entry::AppI
 			imguiLabel("Draw calls: %d", m_dim*m_dim*m_dim);
 			imguiLabel("Avg Delta Time (1 second) [ms]: %0.4f", m_deltaTimeAvgNs/1000.0f);
 
-<<<<<<< HEAD
-=======
 			imguiSeparatorLine();
 			const bgfx::Stats* stats = bgfx::getStats();
 			imguiLabel("GPU %0.6f [ms]", double(stats->gpuTimeEnd - stats->gpuTimeBegin)*1000.0/stats->gpuTimerFreq);
@@ -301,7 +234,6 @@ class ExampleDrawStress : public entry::AppI
 			imguiLabel("Waiting for render thread %0.6f [ms]", double(stats->waitRender) * toMs);
 			imguiLabel("Waiting for submit thread %0.6f [ms]", double(stats->waitSubmit) * toMs);
 
->>>>>>> upstream/master
 			imguiEndScrollArea();
 			imguiEndFrame();
 
@@ -317,11 +249,7 @@ class ExampleDrawStress : public entry::AppI
 			bgfx::setViewTransform(0, view, proj);
 
 			// Set view 0 default viewport.
-<<<<<<< HEAD
-			bgfx::setViewRect(0, 0, 0, m_width, m_height);
-=======
 			bgfx::setViewRect(0, 0, 0, uint16_t(m_width), uint16_t(m_height) );
->>>>>>> upstream/master
 
 			// This dummy draw call is here to make sure that view 0 is cleared
 			// if no other draw calls are submitted to view 0.
@@ -409,8 +337,4 @@ class ExampleDrawStress : public entry::AppI
 	bgfx::IndexBufferHandle  m_ibh;
 };
 
-<<<<<<< HEAD
-ENTRY_IMPLEMENT_MAIN(DrawStress);
-=======
 ENTRY_IMPLEMENT_MAIN(ExampleDrawStress);
->>>>>>> upstream/master

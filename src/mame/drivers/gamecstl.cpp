@@ -66,18 +66,11 @@
 
 #include "emu.h"
 #include "cpu/i386/i386.h"
-<<<<<<< HEAD
-#include "machine/lpci.h"
-#include "machine/pcshare.h"
-#include "machine/pckeybrd.h"
-#include "machine/idectrl.h"
-=======
 #include "machine/idectrl.h"
 #include "machine/lpci.h"
 #include "machine/pckeybrd.h"
 #include "machine/pcshare.h"
 #include "screen.h"
->>>>>>> upstream/master
 
 
 class gamecstl_state : public pcat_base_state
@@ -89,37 +82,21 @@ public:
 		m_gfxdecode(*this, "gfxdecode"),
 		m_palette(*this, "palette")  { }
 
-<<<<<<< HEAD
-	required_shared_ptr<UINT32> m_cga_ram;
-	required_device<gfxdecode_device> m_gfxdecode;
-	required_device<palette_device> m_palette;
-	UINT32 *m_bios_ram;
-	UINT8 m_mtxc_config_reg[256];
-	UINT8 m_piix4_config_reg[4][256];
-=======
 	required_shared_ptr<uint32_t> m_cga_ram;
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
 	std::unique_ptr<uint32_t[]> m_bios_ram;
 	uint8_t m_mtxc_config_reg[256];
 	uint8_t m_piix4_config_reg[4][256];
->>>>>>> upstream/master
 
 	DECLARE_WRITE32_MEMBER(pnp_config_w);
 	DECLARE_WRITE32_MEMBER(pnp_data_w);
 	DECLARE_WRITE32_MEMBER(bios_ram_w);
 	DECLARE_DRIVER_INIT(gamecstl);
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void machine_reset();
-	virtual void video_start();
-	UINT32 screen_update_gamecstl(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
 	virtual void video_start() override;
 	uint32_t screen_update_gamecstl(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	void draw_char(bitmap_ind16 &bitmap, const rectangle &cliprect, gfx_element *gfx, int ch, int att, int x, int y);
 	void intel82439tx_init();
 };
@@ -143,29 +120,17 @@ void gamecstl_state::video_start()
 void gamecstl_state::draw_char(bitmap_ind16 &bitmap, const rectangle &cliprect, gfx_element *gfx, int ch, int att, int x, int y)
 {
 	int i,j;
-<<<<<<< HEAD
-	const UINT8 *dp;
-=======
 	const uint8_t *dp;
->>>>>>> upstream/master
 	int index = 0;
 	dp = gfx->get_data(ch);
 
 	for (j=y; j < y+8; j++)
 	{
-<<<<<<< HEAD
-		UINT16 *p = &bitmap.pix16(j);
-
-		for (i=x; i < x+8; i++)
-		{
-			UINT8 pen = dp[index++];
-=======
 		uint16_t *p = &bitmap.pix16(j);
 
 		for (i=x; i < x+8; i++)
 		{
 			uint8_t pen = dp[index++];
->>>>>>> upstream/master
 			if (pen)
 				p[i] = gfx->colorbase() + (att & 0xf);
 			else
@@ -174,19 +139,11 @@ void gamecstl_state::draw_char(bitmap_ind16 &bitmap, const rectangle &cliprect, 
 	}
 }
 
-<<<<<<< HEAD
-UINT32 gamecstl_state::screen_update_gamecstl(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-{
-	int i, j;
-	gfx_element *gfx = m_gfxdecode->gfx(0);
-	UINT32 *cga = m_cga_ram;
-=======
 uint32_t gamecstl_state::screen_update_gamecstl(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
 	int i, j;
 	gfx_element *gfx = m_gfxdecode->gfx(0);
 	uint32_t *cga = m_cga_ram;
->>>>>>> upstream/master
 	int index = 0;
 
 	bitmap.fill(0, cliprect);
@@ -210,19 +167,6 @@ uint32_t gamecstl_state::screen_update_gamecstl(screen_device &screen, bitmap_in
 
 // Intel 82439TX System Controller (MTXC)
 
-<<<<<<< HEAD
-static UINT8 mtxc_config_r(device_t *busdevice, device_t *device, int function, int reg)
-{
-	gamecstl_state *state = busdevice->machine().driver_data<gamecstl_state>();
-	printf("MTXC: read %d, %02X\n", function, reg);
-	return state->m_mtxc_config_reg[reg];
-}
-
-static void mtxc_config_w(device_t *busdevice, device_t *device, int function, int reg, UINT8 data)
-{
-	gamecstl_state *state = busdevice->machine().driver_data<gamecstl_state>();
-	printf("%s:MTXC: write %d, %02X, %02X\n", busdevice->machine().describe_context(), function, reg, data);
-=======
 static uint8_t mtxc_config_r(device_t *busdevice, device_t *device, int function, int reg)
 {
 	gamecstl_state *state = busdevice->machine().driver_data<gamecstl_state>();
@@ -234,7 +178,6 @@ static void mtxc_config_w(device_t *busdevice, device_t *device, int function, i
 {
 	gamecstl_state *state = busdevice->machine().driver_data<gamecstl_state>();
 	state->logerror("%s:MTXC: write %d, %02X, %02X\n", busdevice->machine().describe_context(), function, reg, data);
->>>>>>> upstream/master
 
 	switch(reg)
 	{
@@ -242,11 +185,7 @@ static void mtxc_config_w(device_t *busdevice, device_t *device, int function, i
 		{
 			if (data & 0x10)        // enable RAM access to region 0xf0000 - 0xfffff
 			{
-<<<<<<< HEAD
-				state->membank("bank1")->set_base(state->m_bios_ram);
-=======
 				state->membank("bank1")->set_base(state->m_bios_ram.get());
->>>>>>> upstream/master
 			}
 			else                    // disable RAM access (reads go to BIOS ROM)
 			{
@@ -269,15 +208,9 @@ void gamecstl_state::intel82439tx_init()
 	m_mtxc_config_reg[0x65] = 0x02;
 }
 
-<<<<<<< HEAD
-static UINT32 intel82439tx_pci_r(device_t *busdevice, device_t *device, int function, int reg, UINT32 mem_mask)
-{
-	UINT32 r = 0;
-=======
 static uint32_t intel82439tx_pci_r(device_t *busdevice, device_t *device, int function, int reg, uint32_t mem_mask)
 {
 	uint32_t r = 0;
->>>>>>> upstream/master
 	if (ACCESSING_BITS_24_31)
 	{
 		r |= mtxc_config_r(busdevice, device, function, reg + 3) << 24;
@@ -297,11 +230,7 @@ static uint32_t intel82439tx_pci_r(device_t *busdevice, device_t *device, int fu
 	return r;
 }
 
-<<<<<<< HEAD
-static void intel82439tx_pci_w(device_t *busdevice, device_t *device, int function, int reg, UINT32 data, UINT32 mem_mask)
-=======
 static void intel82439tx_pci_w(device_t *busdevice, device_t *device, int function, int reg, uint32_t data, uint32_t mem_mask)
->>>>>>> upstream/master
 {
 	if (ACCESSING_BITS_24_31)
 	{
@@ -323,25 +252,6 @@ static void intel82439tx_pci_w(device_t *busdevice, device_t *device, int functi
 
 // Intel 82371AB PCI-to-ISA / IDE bridge (PIIX4)
 
-<<<<<<< HEAD
-static UINT8 piix4_config_r(device_t *busdevice, device_t *device, int function, int reg)
-{
-	gamecstl_state *state = busdevice->machine().driver_data<gamecstl_state>();
-	printf("PIIX4: read %d, %02X\n", function, reg);
-	return state->m_piix4_config_reg[function][reg];
-}
-
-static void piix4_config_w(device_t *busdevice, device_t *device, int function, int reg, UINT8 data)
-{
-	gamecstl_state *state = busdevice->machine().driver_data<gamecstl_state>();
-	printf("%s:PIIX4: write %d, %02X, %02X\n", busdevice->machine().describe_context(), function, reg, data);
-	state->m_piix4_config_reg[function][reg] = data;
-}
-
-static UINT32 intel82371ab_pci_r(device_t *busdevice, device_t *device, int function, int reg, UINT32 mem_mask)
-{
-	UINT32 r = 0;
-=======
 static uint8_t piix4_config_r(device_t *busdevice, device_t *device, int function, int reg)
 {
 	gamecstl_state *state = busdevice->machine().driver_data<gamecstl_state>();
@@ -359,7 +269,6 @@ static void piix4_config_w(device_t *busdevice, device_t *device, int function, 
 static uint32_t intel82371ab_pci_r(device_t *busdevice, device_t *device, int function, int reg, uint32_t mem_mask)
 {
 	uint32_t r = 0;
->>>>>>> upstream/master
 	if (ACCESSING_BITS_24_31)
 	{
 		r |= piix4_config_r(busdevice, device, function, reg + 3) << 24;
@@ -379,11 +288,7 @@ static uint32_t intel82371ab_pci_r(device_t *busdevice, device_t *device, int fu
 	return r;
 }
 
-<<<<<<< HEAD
-static void intel82371ab_pci_w(device_t *busdevice, device_t *device, int function, int reg, UINT32 data, UINT32 mem_mask)
-=======
 static void intel82371ab_pci_w(device_t *busdevice, device_t *device, int function, int reg, uint32_t data, uint32_t mem_mask)
->>>>>>> upstream/master
 {
 	if (ACCESSING_BITS_24_31)
 	{
@@ -426,11 +331,7 @@ WRITE32_MEMBER(gamecstl_state::bios_ram_w)
 {
 	if (m_mtxc_config_reg[0x59] & 0x20)     // write to RAM if this region is write-enabled
 	{
-<<<<<<< HEAD
-		COMBINE_DATA(m_bios_ram + offset);
-=======
 		COMBINE_DATA(m_bios_ram.get() + offset);
->>>>>>> upstream/master
 	}
 }
 
@@ -527,11 +428,7 @@ void gamecstl_state::machine_reset()
 	membank("bank1")->set_base(memregion("bios")->base() + 0x30000);
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( gamecstl, gamecstl_state )
-=======
 static MACHINE_CONFIG_START( gamecstl )
->>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", PENTIUM3, 200000000)
 	MCFG_CPU_PROGRAM_MAP(gamecstl_map)
@@ -541,17 +438,10 @@ static MACHINE_CONFIG_START( gamecstl )
 	MCFG_FRAGMENT_ADD( pcat_common )
 
 	MCFG_PCI_BUS_LEGACY_ADD("pcibus", 0)
-<<<<<<< HEAD
-	MCFG_PCI_BUS_LEGACY_DEVICE(0, NULL, intel82439tx_pci_r, intel82439tx_pci_w)
-	MCFG_PCI_BUS_LEGACY_DEVICE(7, NULL, intel82371ab_pci_r, intel82371ab_pci_w)
-
-	MCFG_IDE_CONTROLLER_ADD("ide", ata_devices, "hdd", NULL, true)
-=======
 	MCFG_PCI_BUS_LEGACY_DEVICE(0, nullptr, intel82439tx_pci_r, intel82439tx_pci_w)
 	MCFG_PCI_BUS_LEGACY_DEVICE(7, nullptr, intel82371ab_pci_r, intel82371ab_pci_w)
 
 	MCFG_IDE_CONTROLLER_ADD("ide", ata_devices, "hdd", nullptr, true)
->>>>>>> upstream/master
 	MCFG_ATA_INTERFACE_IRQ_HANDLER(DEVWRITELINE("pic8259_2", pic8259_device, ir6_w))
 
 	/* video hardware */
@@ -571,11 +461,7 @@ MACHINE_CONFIG_END
 
 DRIVER_INIT_MEMBER(gamecstl_state,gamecstl)
 {
-<<<<<<< HEAD
-	m_bios_ram = auto_alloc_array(machine(), UINT32, 0x10000/4);
-=======
 	m_bios_ram = std::make_unique<uint32_t[]>(0x10000/4);
->>>>>>> upstream/master
 
 	intel82439tx_init();
 }
@@ -607,9 +493,5 @@ ROM_END
 
 /*****************************************************************************/
 
-<<<<<<< HEAD
-GAME(2002, gamecstl, 0,        gamecstl, gamecstl, gamecstl_state, gamecstl, ROT0, "Cristaltec", "GameCristal", MACHINE_NOT_WORKING | MACHINE_NO_SOUND)
-=======
 GAME(2002, gamecstl, 0,        gamecstl, gamecstl, gamecstl_state, gamecstl, ROT0, "Cristaltec", "GameCristal",                 MACHINE_NOT_WORKING | MACHINE_NO_SOUND)
->>>>>>> upstream/master
 GAME(2002, gamecst2, gamecstl, gamecstl, gamecstl, gamecstl_state, gamecstl, ROT0, "Cristaltec", "GameCristal (version 2.613)", MACHINE_NOT_WORKING | MACHINE_NO_SOUND)

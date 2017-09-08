@@ -2,12 +2,6 @@
 // copyright-holders:Nicola Salmoria
 /***************************************************************************
 
-<<<<<<< HEAD
-tecmo.c
-
-driver by Nicola Salmoria
-
-=======
 tecmo.cpp
 
 driver by Nicola Salmoria
@@ -16,7 +10,6 @@ TODO:
 - raster effect in Gemini Wing THE END ending, needs a side-by-side test with
   a real board and maybe waitstate penalties;
 
->>>>>>> upstream/master
 Notes:
 - btanb: missing drums in backfirt, there isn't any ADPCM / rom that makes
   that to happen (code still tries to writes on that, but it's just nop'ed);
@@ -62,11 +55,6 @@ f80b      ????
 
 ***************************************************************************/
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/z80/z80.h"
-#include "sound/3812intf.h"
-#include "includes/tecmo.h"
-=======
 #include "includes/tecmo.h"
 
 #include "cpu/z80/z80.h"
@@ -74,7 +62,6 @@ f80b      ????
 #include "sound/3526intf.h"
 #include "sound/3812intf.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 WRITE8_MEMBER(tecmo_state::bankswitch_w)
@@ -84,11 +71,7 @@ WRITE8_MEMBER(tecmo_state::bankswitch_w)
 
 WRITE8_MEMBER(tecmo_state::sound_command_w)
 {
-<<<<<<< HEAD
-	soundlatch_byte_w(space, offset, data);
-=======
 	m_soundlatch->write(space, offset, data);
->>>>>>> upstream/master
 	m_soundcpu->set_input_line(INPUT_LINE_NMI,ASSERT_LINE);
 }
 
@@ -110,11 +93,7 @@ WRITE8_MEMBER(tecmo_state::adpcm_end_w)
 
 WRITE8_MEMBER(tecmo_state::adpcm_vol_w)
 {
-<<<<<<< HEAD
-	m_msm->set_volume((data & 0x0f) * 100 / 15);
-=======
 	m_msm->set_output_gain(ALL_OUTPUTS, (data & 15) / 15.0);
->>>>>>> upstream/master
 }
 
 WRITE_LINE_MEMBER(tecmo_state::adpcm_int)
@@ -129,11 +108,7 @@ WRITE_LINE_MEMBER(tecmo_state::adpcm_int)
 	}
 	else
 	{
-<<<<<<< HEAD
-		UINT8 *ROM = memregion("adpcm")->base();
-=======
 		uint8_t *ROM = memregion("adpcm")->base();
->>>>>>> upstream/master
 
 		m_adpcm_data = ROM[m_adpcm_pos++];
 		m_msm->data_w(m_adpcm_data >> 4);
@@ -143,44 +118,28 @@ WRITE_LINE_MEMBER(tecmo_state::adpcm_int)
 /* the 8-bit dipswitches are split across addresses */
 READ8_MEMBER(tecmo_state::dswa_l_r)
 {
-<<<<<<< HEAD
-	UINT8 port = ioport("DSWA")->read();
-=======
 	uint8_t port = ioport("DSWA")->read();
->>>>>>> upstream/master
 	port &= 0x0f;
 	return port;
 }
 
 READ8_MEMBER(tecmo_state::dswa_h_r)
 {
-<<<<<<< HEAD
-	UINT8 port = ioport("DSWA")->read();
-=======
 	uint8_t port = ioport("DSWA")->read();
->>>>>>> upstream/master
 	port &= 0xf0;
 	return port>>4;
 }
 
 READ8_MEMBER(tecmo_state::dswb_l_r)
 {
-<<<<<<< HEAD
-	UINT8 port = ioport("DSWB")->read();
-=======
 	uint8_t port = ioport("DSWB")->read();
->>>>>>> upstream/master
 	port &= 0x0f;
 	return port;
 }
 
 READ8_MEMBER(tecmo_state::dswb_h_r)
 {
-<<<<<<< HEAD
-	UINT8 port = ioport("DSWB")->read();
-=======
 	uint8_t port = ioport("DSWB")->read();
->>>>>>> upstream/master
 	port &= 0xf0;
 	return port>>4;
 }
@@ -211,11 +170,7 @@ static ADDRESS_MAP_START( rygar_map, AS_PROGRAM, 8, tecmo_state )
 	AM_RANGE(0xf806, 0xf806) AM_WRITE(sound_command_w)
 	AM_RANGE(0xf807, 0xf807) AM_WRITE(flipscreen_w)
 	AM_RANGE(0xf808, 0xf808) AM_WRITE(bankswitch_w)
-<<<<<<< HEAD
-	AM_RANGE(0xf80b, 0xf80b) AM_WRITE(watchdog_reset_w)
-=======
 	AM_RANGE(0xf80b, 0xf80b) AM_DEVWRITE("watchdog", watchdog_timer_device, reset_w)
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( gemini_map, AS_PROGRAM, 8, tecmo_state )
@@ -243,11 +198,7 @@ static ADDRESS_MAP_START( gemini_map, AS_PROGRAM, 8, tecmo_state )
 	AM_RANGE(0xf806, 0xf806) AM_WRITE(sound_command_w)
 	AM_RANGE(0xf807, 0xf807) AM_WRITE(flipscreen_w)
 	AM_RANGE(0xf808, 0xf808) AM_WRITE(bankswitch_w)
-<<<<<<< HEAD
-	AM_RANGE(0xf80b, 0xf80b) AM_WRITE(watchdog_reset_w)
-=======
 	AM_RANGE(0xf80b, 0xf80b) AM_DEVWRITE("watchdog", watchdog_timer_device, reset_w)
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( silkworm_map, AS_PROGRAM, 8, tecmo_state )
@@ -282,13 +233,8 @@ ADDRESS_MAP_END
 static ADDRESS_MAP_START( rygar_sound_map, AS_PROGRAM, 8, tecmo_state )
 	AM_RANGE(0x0000, 0x3fff) AM_ROM
 	AM_RANGE(0x4000, 0x47ff) AM_RAM
-<<<<<<< HEAD
-	AM_RANGE(0x8000, 0x8001) AM_DEVWRITE("ymsnd", ym3812_device, write)
-	AM_RANGE(0xc000, 0xc000) AM_READ(soundlatch_byte_r) AM_WRITE(adpcm_start_w)
-=======
 	AM_RANGE(0x8000, 0x8001) AM_DEVWRITE("ymsnd", ym3526_device, write)
 	AM_RANGE(0xc000, 0xc000) AM_DEVREAD("soundlatch", generic_latch_8_device, read) AM_WRITE(adpcm_start_w)
->>>>>>> upstream/master
 	AM_RANGE(0xd000, 0xd000) AM_WRITE(adpcm_end_w)
 	AM_RANGE(0xe000, 0xe000) AM_WRITE(adpcm_vol_w)
 	AM_RANGE(0xf000, 0xf000) AM_WRITE(nmi_ack_w)
@@ -300,11 +246,7 @@ static ADDRESS_MAP_START( tecmo_sound_map, AS_PROGRAM, 8, tecmo_state )
 	AM_RANGE(0x0000, 0x7fff) AM_ROM
 	AM_RANGE(0x8000, 0x87ff) AM_RAM
 	AM_RANGE(0xa000, 0xa001) AM_DEVWRITE("ymsnd", ym3812_device, write)
-<<<<<<< HEAD
-	AM_RANGE(0xc000, 0xc000) AM_READ(soundlatch_byte_r) AM_WRITE(adpcm_start_w)
-=======
 	AM_RANGE(0xc000, 0xc000) AM_DEVREAD("soundlatch", generic_latch_8_device, read) AM_WRITE(adpcm_start_w)
->>>>>>> upstream/master
 	AM_RANGE(0xc400, 0xc400) AM_WRITE(adpcm_end_w)
 	AM_RANGE(0xc800, 0xc800) AM_WRITE(adpcm_vol_w)
 	AM_RANGE(0xcc00, 0xcc00) AM_WRITE(nmi_ack_w)
@@ -427,8 +369,6 @@ static INPUT_PORTS_START( gemini )
 	PORT_BIT( 0x04, IP_ACTIVE_HIGH, IPT_COIN1 )
 	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_COIN2 )
 
-<<<<<<< HEAD
-=======
 	PORT_MODIFY("BUTTONS1")
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_BUTTON2 )
 	PORT_BIT( 0x02, IP_ACTIVE_HIGH, IPT_BUTTON1 )
@@ -441,7 +381,6 @@ static INPUT_PORTS_START( gemini )
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_BUTTON2 ) PORT_COCKTAIL
 	PORT_BIT( 0x02, IP_ACTIVE_HIGH, IPT_BUTTON1 ) PORT_COCKTAIL
 
->>>>>>> upstream/master
 	PORT_MODIFY("DSWA")
 	PORT_DIPNAME( 0x07, 0x00, DEF_STR( Coin_A ) )       PORT_DIPLOCATION("SW1:!1,!2,!3")
 	PORT_DIPSETTING(    0x06, DEF_STR( 2C_1C ) )
@@ -693,11 +632,7 @@ void tecmo_state::machine_reset()
 	m_adpcm_data = -1;
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( rygar, tecmo_state )
-=======
 static MACHINE_CONFIG_START( rygar )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, XTAL_24MHz/4) /* verified on pcb */
@@ -707,20 +642,11 @@ static MACHINE_CONFIG_START( rygar )
 	MCFG_CPU_ADD("soundcpu", Z80, XTAL_4MHz) /* verified on pcb */
 	MCFG_CPU_PROGRAM_MAP(rygar_sound_map)
 
-<<<<<<< HEAD
-	/* video hardware */
-	MCFG_SCREEN_ADD("screen", RASTER)
-	MCFG_SCREEN_REFRESH_RATE(60)
-	MCFG_SCREEN_VBLANK_TIME(ATTOSECONDS_IN_USEC(0)  /* frames per second, vblank duration */)
-	MCFG_SCREEN_SIZE(32*8, 32*8)
-	MCFG_SCREEN_VISIBLE_AREA(0*8, 32*8-1, 2*8, 30*8-1)
-=======
 	MCFG_WATCHDOG_ADD("watchdog")
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_RAW_PARAMS(XTAL_24MHz/4, 384,0,256,264,16,240) // 59.18 Hz
->>>>>>> upstream/master
 	MCFG_SCREEN_UPDATE_DRIVER(tecmo_state, screen_update)
 	MCFG_SCREEN_PALETTE("palette")
 
@@ -734,24 +660,15 @@ static MACHINE_CONFIG_START( rygar )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-	MCFG_SOUND_ADD("ymsnd", YM3812, XTAL_4MHz) /* verified on pcb */
-	MCFG_YM3812_IRQ_HANDLER(INPUTLINE("soundcpu", 0))
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 
 	MCFG_SOUND_ADD("ymsnd", YM3526, XTAL_4MHz) /* verified on pcb */
 	MCFG_YM3526_IRQ_HANDLER(INPUTLINE("soundcpu", 0))
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 
 	MCFG_SOUND_ADD("msm", MSM5205, XTAL_400kHz) /* verified on pcb, even if schematics shows a 384khz resonator */
 	MCFG_MSM5205_VCLK_CB(WRITELINE(tecmo_state, adpcm_int))    /* interrupt function */
-<<<<<<< HEAD
-	MCFG_MSM5205_PRESCALER_SELECTOR(MSM5205_S48_4B)      /* 8KHz               */
-=======
 	MCFG_MSM5205_PRESCALER_SELECTOR(S48_4B)      /* 8KHz               */
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
 MACHINE_CONFIG_END
 
@@ -760,20 +677,12 @@ static MACHINE_CONFIG_DERIVED( gemini, rygar )
 
 	/* basic machine hardware */
 	MCFG_CPU_MODIFY("maincpu")
-<<<<<<< HEAD
-	MCFG_CPU_CLOCK(6000000)
-=======
 	// xtal found on bootleg, to be confirmed on a real board
 	MCFG_CPU_CLOCK(XTAL_8MHz)
->>>>>>> upstream/master
 	MCFG_CPU_PROGRAM_MAP(gemini_map)
 
 	MCFG_CPU_MODIFY("soundcpu")
 	MCFG_CPU_PROGRAM_MAP(tecmo_sound_map)
-<<<<<<< HEAD
-MACHINE_CONFIG_END
-
-=======
 
 	MCFG_SOUND_REPLACE("ymsnd", YM3812, XTAL_4MHz)
 	MCFG_YM3812_IRQ_HANDLER(INPUTLINE("soundcpu", 0))
@@ -785,7 +694,6 @@ static MACHINE_CONFIG_DERIVED( geminib, gemini)
 	MCFG_SCREEN_MODIFY("screen")
 	MCFG_SCREEN_RAW_PARAMS(24180000/4, 384,0,256,264,16,240)
 MACHINE_CONFIG_END
->>>>>>> upstream/master
 
 static MACHINE_CONFIG_DERIVED( silkworm, gemini )
 
@@ -1093,8 +1001,6 @@ ROM_START( silkwormj )
 	ROM_REGION( 0x8000, "adpcm", 0 )    /* ADPCM samples */
 	ROM_LOAD( "silkworm.1",   0x0000, 0x8000, CRC(5b553644) SHA1(5d39d2251094c17f7b732b4861401b3516fce9b1) )
 ROM_END
-<<<<<<< HEAD
-=======
 // 6217A
 // SILKWORM H T737
 // board have Japanese label "ADONO"
@@ -1130,7 +1036,6 @@ ROM_START( silkwormp )
 	ROM_REGION( 0x8000, "adpcm", 0 )    /* ADPCM samples */
 	ROM_LOAD( "silkworm.1",   0x0000, 0x8000, CRC(5b553644) SHA1(5d39d2251094c17f7b732b4861401b3516fce9b1) ) // not dumped
 ROM_END
->>>>>>> upstream/master
 
 /*
 
@@ -1226,9 +1131,6 @@ ROM_START( gemini )
 	ROM_LOAD( "gw01-6a.rom",  0x0000, 0x8000, CRC(d78afa05) SHA1(b02a739b045f5cddf943ce59226ef234463eeebe) )
 ROM_END
 
-<<<<<<< HEAD
-
-=======
 /*
  hsync is 15.742kHz
  vsync is 59.629Hz
@@ -1272,7 +1174,6 @@ ROM_START( geminib )
 	ROM_REGION( 0x8000, "adpcm", 0 )    /* ADPCM samples */
 	ROM_LOAD( "gw01-6a.rom",  0x0000, 0x8000, CRC(d78afa05) SHA1(b02a739b045f5cddf943ce59226ef234463eeebe) )
 ROM_END
->>>>>>> upstream/master
 
 /*
    video_type is used to distinguish Rygar, Silkworm and Gemini Wing.
@@ -1307,16 +1208,6 @@ DRIVER_INIT_MEMBER(tecmo_state,backfirt)
 
 
 
-<<<<<<< HEAD
-GAME( 1986, rygar,     0,        rygar,    rygar, tecmo_state,    rygar,    ROT0,  "Tecmo", "Rygar (US set 1)", MACHINE_SUPPORTS_SAVE )
-GAME( 1986, rygar2,    rygar,    rygar,    rygar, tecmo_state,    rygar,    ROT0,  "Tecmo", "Rygar (US set 2)", MACHINE_SUPPORTS_SAVE )
-GAME( 1986, rygar3,    rygar,    rygar,    rygar, tecmo_state,    rygar,    ROT0,  "Tecmo", "Rygar (US set 3 Old Version)", MACHINE_SUPPORTS_SAVE )
-GAME( 1986, rygarj,    rygar,    rygar,    rygar, tecmo_state,    rygar,    ROT0,  "Tecmo", "Argus no Senshi (Japan)", MACHINE_SUPPORTS_SAVE )
-GAME( 1987, gemini,    0,        gemini,   gemini, tecmo_state,   gemini,   ROT90, "Tecmo", "Gemini Wing (Japan)", MACHINE_SUPPORTS_SAVE ) /* Japan regional warning screen */
-GAME( 1988, silkworm,  0,        silkworm, silkworm, tecmo_state, silkworm, ROT0,  "Tecmo", "Silk Worm (World)", MACHINE_SUPPORTS_SAVE )   /* No regional "Warning, if you are playing ..." screen */
-GAME( 1988, silkwormj, silkworm, silkworm, silkworm, tecmo_state, silkworm, ROT0,  "Tecmo", "Silk Worm (Japan)", MACHINE_SUPPORTS_SAVE )   /* Japan regional warning screen */
-GAME( 1988, backfirt,  0,        backfirt, backfirt, tecmo_state, backfirt, ROT0,  "Tecmo", "Back Fire (Tecmo, bootleg)", MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1986, rygar,     0,        rygar,    rygar,    tecmo_state, rygar,    ROT0,  "Tecmo",   "Rygar (US set 1)",             MACHINE_SUPPORTS_SAVE )
 GAME( 1986, rygar2,    rygar,    rygar,    rygar,    tecmo_state, rygar,    ROT0,  "Tecmo",   "Rygar (US set 2)",             MACHINE_SUPPORTS_SAVE )
 GAME( 1986, rygar3,    rygar,    rygar,    rygar,    tecmo_state, rygar,    ROT0,  "Tecmo",   "Rygar (US set 3 Old Version)", MACHINE_SUPPORTS_SAVE )
@@ -1327,4 +1218,3 @@ GAME( 1988, silkworm,  0,        silkworm, silkworm, tecmo_state, silkworm, ROT0
 GAME( 1988, silkwormj, silkworm, silkworm, silkworm, tecmo_state, silkworm, ROT0,  "Tecmo",   "Silk Worm (Japan)",            MACHINE_SUPPORTS_SAVE ) // Japan regional warning screen
 GAME( 1988, silkwormp, silkworm, silkworm, silkworm, tecmo_state, silkworm, ROT0,  "Tecmo",   "Silk Worm (prototype?)",       MACHINE_SUPPORTS_SAVE )
 GAME( 1988, backfirt,  0,        backfirt, backfirt, tecmo_state, backfirt, ROT0,  "Tecmo",   "Back Fire (Tecmo, bootleg)",   MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

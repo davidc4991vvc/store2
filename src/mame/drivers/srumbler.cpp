@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-// license:???
-=======
 // license:BSD-3-Clause
->>>>>>> upstream/master
 // copyright-holders:Paul Leaman
 /***************************************************************************
 
@@ -17,12 +13,6 @@
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/z80/z80.h"
-#include "cpu/m6809/m6809.h"
-#include "sound/2203intf.h"
-#include "includes/srumbler.h"
-=======
 #include "includes/srumbler.h"
 
 #include "cpu/z80/z80.h"
@@ -31,7 +21,6 @@
 #include "sound/2203intf.h"
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 WRITE8_MEMBER(srumbler_state::bankswitch_w)
@@ -44,13 +33,8 @@ WRITE8_MEMBER(srumbler_state::bankswitch_w)
 	  Note that 5000-8fff can be either ROM or RAM, so we should handle
 	  that as well to be 100% accurate.
 	 */
-<<<<<<< HEAD
-	UINT8 *prom1 = memregion("proms")->base() + (data & 0xf0);
-	UINT8 *prom2 = memregion("proms")->base() + 0x100 + ((data & 0x0f) << 4);
-=======
 	uint8_t *prom1 = memregion("proms")->base() + (data & 0xf0);
 	uint8_t *prom2 = memregion("proms")->base() + 0x100 + ((data & 0x0f) << 4);
->>>>>>> upstream/master
 
 	for (int i = 0x05;i < 0x10;i++)
 	{
@@ -107,11 +91,7 @@ static ADDRESS_MAP_START( srumbler_map, AS_PROGRAM, 8, srumbler_state )
 	AM_RANGE(0x400b, 0x400b) AM_READ_PORT("DSW1")
 	AM_RANGE(0x400c, 0x400c) AM_READ_PORT("DSW2")
 	AM_RANGE(0x400a, 0x400d) AM_WRITE(scroll_w)
-<<<<<<< HEAD
-	AM_RANGE(0x400e, 0x400e) AM_WRITE(soundlatch_byte_w)
-=======
 	AM_RANGE(0x400e, 0x400e) AM_DEVWRITE("soundlatch", generic_latch_8_device, write)
->>>>>>> upstream/master
 	AM_RANGE(0x5000, 0x5fff) AM_ROMBANK("5000") AM_WRITE(foreground_w) AM_SHARE("foregroundram") /* Banked ROM */
 	AM_RANGE(0x6000, 0x6fff) AM_ROMBANK("6000") /* Banked ROM */
 	AM_RANGE(0x6000, 0x6fff) AM_WRITENOP        /* Video RAM 2 ??? (not used) */
@@ -132,11 +112,7 @@ static ADDRESS_MAP_START( srumbler_sound_map, AS_PROGRAM, 8, srumbler_state )
 	AM_RANGE(0x8000, 0x8001) AM_DEVWRITE("ym1", ym2203_device, write)
 	AM_RANGE(0xa000, 0xa001) AM_DEVWRITE("ym2", ym2203_device, write)
 	AM_RANGE(0xc000, 0xc7ff) AM_RAM
-<<<<<<< HEAD
-	AM_RANGE(0xe000, 0xe000) AM_READ(soundlatch_byte_r)
-=======
 	AM_RANGE(0xe000, 0xe000) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -267,11 +243,7 @@ GFXDECODE_END
 
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( srumbler, srumbler_state )
-=======
 static MACHINE_CONFIG_START( srumbler )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6809, 1500000)        /* 1.5 MHz (?) */
@@ -292,11 +264,7 @@ static MACHINE_CONFIG_START( srumbler )
 	MCFG_SCREEN_SIZE(64*8, 32*8)
 	MCFG_SCREEN_VISIBLE_AREA(10*8, (64-10)*8-1, 1*8, 31*8-1 )
 	MCFG_SCREEN_UPDATE_DRIVER(srumbler_state, screen_update)
-<<<<<<< HEAD
-	MCFG_SCREEN_VBLANK_DEVICE("spriteram", buffered_spriteram8_device, vblank_copy_rising)
-=======
 	MCFG_SCREEN_VBLANK_CALLBACK(DEVWRITELINE("spriteram", buffered_spriteram8_device, vblank_copy_rising))
->>>>>>> upstream/master
 	MCFG_SCREEN_PALETTE("palette")
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", srumbler)
@@ -307,11 +275,8 @@ static MACHINE_CONFIG_START( srumbler )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 
->>>>>>> upstream/master
 	MCFG_SOUND_ADD("ym1", YM2203, 4000000)
 	MCFG_SOUND_ROUTE(0, "mono", 0.10)
 	MCFG_SOUND_ROUTE(1, "mono", 0.10)
@@ -507,14 +472,7 @@ ROM_END
 
 
 
-<<<<<<< HEAD
-GAME( 1986, srumbler,  0,        srumbler, srumbler, driver_device, 0, ROT270, "Capcom", "The Speed Rumbler (set 1)", MACHINE_SUPPORTS_SAVE )
-GAME( 1986, srumbler2, srumbler, srumbler, srumbler, driver_device, 0, ROT270, "Capcom", "The Speed Rumbler (set 2)", MACHINE_SUPPORTS_SAVE )
-GAME( 1986, srumbler3, srumbler, srumbler, srumbler, driver_device, 0, ROT270, "Capcom (Tecfri license)", "The Speed Rumbler (set 3)", MACHINE_SUPPORTS_SAVE )
-GAME( 1986, rushcrsh,  srumbler, srumbler, srumbler, driver_device, 0, ROT270, "Capcom", "Rush & Crash (Japan)", MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1986, srumbler,  0,        srumbler, srumbler, srumbler_state, 0, ROT270, "Capcom", "The Speed Rumbler (set 1)", MACHINE_SUPPORTS_SAVE )
 GAME( 1986, srumbler2, srumbler, srumbler, srumbler, srumbler_state, 0, ROT270, "Capcom", "The Speed Rumbler (set 2)", MACHINE_SUPPORTS_SAVE )
 GAME( 1986, srumbler3, srumbler, srumbler, srumbler, srumbler_state, 0, ROT270, "Capcom (Tecfri license)", "The Speed Rumbler (set 3)", MACHINE_SUPPORTS_SAVE )
 GAME( 1986, rushcrsh,  srumbler, srumbler, srumbler, srumbler_state, 0, ROT270, "Capcom", "Rush & Crash (Japan)", MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

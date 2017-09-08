@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 2016-November-??
 
 Version "0.9.4"
@@ -112,7 +110,6 @@ they the state is guaranteed to outlive other threads).
 
 -=-
 
->>>>>>> upstream/master
 2007-August-15 e
 
 Version "0.6-devel"

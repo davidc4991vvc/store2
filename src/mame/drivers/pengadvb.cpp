@@ -22,14 +22,11 @@ AY-3-8910 @ 1.789766MHz [10.7386/6]
 10 position DIPSW
 NOTE! switches 1, 3 & 5 must be ON or the game will not boot.
 
-<<<<<<< HEAD
-=======
 TODO:
 - A timer apparently expires when beating stage 4 (signalled by a long beeping sound).
   Player needs to insert another credit and press start button (?) in order to continue.
   Is this timer supposed to be shown on screen or there are additional 7-LEDs not handled?
 
->>>>>>> upstream/master
 ***************************************************************************/
 
 #include "emu.h"
@@ -38,11 +35,8 @@ TODO:
 #include "sound/ay8910.h"
 #include "machine/i8255.h"
 #include "machine/bankdev.h"
-<<<<<<< HEAD
-=======
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 class pengadvb_state : public driver_device
@@ -57,13 +51,8 @@ public:
 
 	address_map_bank_device *m_page[4];
 	memory_bank *m_bank[4];
-<<<<<<< HEAD
-	UINT8 m_primary_slot_reg;
-	UINT8 m_kb_matrix_row;
-=======
 	uint8_t m_primary_slot_reg;
 	uint8_t m_kb_matrix_row;
->>>>>>> upstream/master
 
 	DECLARE_READ8_MEMBER(mem_r);
 	DECLARE_WRITE8_MEMBER(mem_w);
@@ -75,16 +64,9 @@ public:
 	DECLARE_READ8_MEMBER(pengadvb_ppi_port_b_r);
 	DECLARE_WRITE8_MEMBER(pengadvb_ppi_port_c_w);
 
-<<<<<<< HEAD
-	DECLARE_WRITE_LINE_MEMBER(vdp_interrupt);
-	DECLARE_DRIVER_INIT(pengadvb);
-	virtual void machine_start();
-	virtual void machine_reset();
-=======
 	DECLARE_DRIVER_INIT(pengadvb);
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
->>>>>>> upstream/master
 	void pengadvb_decrypt(const char* region);
 };
 
@@ -148,19 +130,6 @@ ADDRESS_MAP_END
 
 static INPUT_PORTS_START( pengadvb )
 	PORT_START("IN0")
-<<<<<<< HEAD
-	PORT_BIT(0x01, IP_ACTIVE_LOW, IPT_JOYSTICK_UP)
-	PORT_BIT(0x02, IP_ACTIVE_LOW, IPT_JOYSTICK_DOWN)
-	PORT_BIT(0x04, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT)
-	PORT_BIT(0x08, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT)
-	PORT_BIT(0x10, IP_ACTIVE_LOW, IPT_BUTTON1)
-	PORT_BIT(0x20, IP_ACTIVE_LOW, IPT_BUTTON2)
-	PORT_BIT(0xc0, IP_ACTIVE_LOW, IPT_UNUSED)
-
-	PORT_START("IN1")
-	PORT_BIT(0x01, IP_ACTIVE_LOW, IPT_COIN1) PORT_IMPULSE(1)
-	PORT_BIT(0xfe, IP_ACTIVE_LOW, IPT_UNUSED)
-=======
 	PORT_BIT(0x01, IP_ACTIVE_LOW, IPT_JOYSTICK_UP )
 	PORT_BIT(0x02, IP_ACTIVE_LOW, IPT_JOYSTICK_DOWN )
 	PORT_BIT(0x04, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT )
@@ -174,7 +143,6 @@ static INPUT_PORTS_START( pengadvb )
 	// bit 1 is also tested, unknown purpose.
 	PORT_BIT(0x10, IP_ACTIVE_LOW, IPT_START1 )
 	PORT_BIT(0xee, IP_ACTIVE_LOW, IPT_UNUSED )
->>>>>>> upstream/master
 INPUT_PORTS_END
 
 
@@ -229,28 +197,13 @@ WRITE8_MEMBER(pengadvb_state::pengadvb_ppi_port_c_w)
 	m_kb_matrix_row = data & 0x0f;
 }
 
-<<<<<<< HEAD
-/**************************************************************************/
-
-// TMS9928
-WRITE_LINE_MEMBER(pengadvb_state::vdp_interrupt)
-{
-	m_maincpu->set_input_line(0, (state ? ASSERT_LINE : CLEAR_LINE));
-}
-
-=======
->>>>>>> upstream/master
 /***************************************************************************
 
   Machine config(s)
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( pengadvb, pengadvb_state )
-=======
 static MACHINE_CONFIG_START( pengadvb )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, XTAL_10_738635MHz/3)
@@ -293,15 +246,9 @@ static MACHINE_CONFIG_START( pengadvb )
 	MCFG_I8255_OUT_PORTC_CB(WRITE8(pengadvb_state, pengadvb_ppi_port_c_w))
 
 	/* video hardware */
-<<<<<<< HEAD
-	MCFG_DEVICE_ADD("tms9128", TMS9128, XTAL_10_738635MHz / 2)
-	MCFG_TMS9928A_VRAM_SIZE(0x4000)
-	MCFG_TMS9928A_OUT_INT_LINE_CB(WRITELINE(pengadvb_state, vdp_interrupt))
-=======
 	MCFG_DEVICE_ADD("tms9128", TMS9128, XTAL_10_738635MHz/2)
 	MCFG_TMS9928A_VRAM_SIZE(0x4000)
 	MCFG_TMS9928A_OUT_INT_LINE_CB(INPUTLINE("maincpu", INPUT_LINE_IRQ0))
->>>>>>> upstream/master
 	MCFG_TMS9928A_SCREEN_ADD_NTSC( "screen" )
 	MCFG_SCREEN_UPDATE_DEVICE("tms9128", tms9128_device, screen_update)
 
@@ -340,13 +287,8 @@ void pengadvb_state::machine_reset()
 
 void pengadvb_state::pengadvb_decrypt(const char* region)
 {
-<<<<<<< HEAD
-	UINT8 *mem = memregion(region)->base();
-	int memsize = memregion(region)->bytes();
-=======
 	uint8_t *mem = memregion(region)->base();
 	uint32_t memsize = memregion(region)->bytes();
->>>>>>> upstream/master
 
 	// data lines swap
 	for (int i = 0; i < memsize; i++)
@@ -355,11 +297,7 @@ void pengadvb_state::pengadvb_decrypt(const char* region)
 	}
 
 	// address line swap
-<<<<<<< HEAD
-	dynamic_buffer buf(memsize);
-=======
 	std::vector<uint8_t> buf(memsize);
->>>>>>> upstream/master
 	memcpy(&buf[0], mem, memsize);
 	for (int i = 0; i < memsize; i++)
 	{

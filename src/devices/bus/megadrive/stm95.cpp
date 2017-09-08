@@ -15,17 +15,10 @@
 #include "stm95.h"
 
 
-<<<<<<< HEAD
-stm95_eeprom_device::stm95_eeprom_device(running_machine &machine, UINT8 *eeprom) :
-			stm_state(IDLE),
-			stream_pos(0),
-			m_machine(machine)
-=======
 stm95_eeprom_device::stm95_eeprom_device(running_machine &machine, uint8_t *eeprom) :
 	stm_state(IDLE),
 	stream_pos(0),
 	m_machine(machine)
->>>>>>> upstream/master
 {
 	eeprom_data = eeprom;
 	m_machine.save().save_item(latch, "STM95/latch");
@@ -179,21 +172,6 @@ void stm95_eeprom_device::set_sck_line(int state)
 //  md_rom_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const device_type MD_EEPROM_STM95 = &device_creator<md_eeprom_stm95_device>;
-
-
-md_eeprom_stm95_device::md_eeprom_stm95_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source)
-					: device_t(mconfig, type, name, tag, owner, clock, shortname, source),
-					device_md_cart_interface( mconfig, *this ), m_rdcnt(0)
-				{
-}
-
-md_eeprom_stm95_device::md_eeprom_stm95_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: device_t(mconfig, MD_EEPROM_STM95, "MD Cart + EEPROM STM95", tag, owner, clock, "md_eeprom_stm95", __FILE__),
-					device_md_cart_interface( mconfig, *this ), m_rdcnt(0)
-				{
-=======
 DEFINE_DEVICE_TYPE(MD_EEPROM_STM95, md_eeprom_stm95_device, "md_eeprom_stm95", "MD Cart + EEPROM STM95")
 
 
@@ -207,19 +185,13 @@ md_eeprom_stm95_device::md_eeprom_stm95_device(const machine_config &mconfig, de
 md_eeprom_stm95_device::md_eeprom_stm95_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: md_eeprom_stm95_device(mconfig, MD_EEPROM_STM95, tag, owner, clock)
 {
->>>>>>> upstream/master
 }
 
 
 void md_eeprom_stm95_device::device_start()
 {
-<<<<<<< HEAD
-	nvram_alloc(M95320_SIZE);
-	m_stm95.reset(global_alloc(stm95_eeprom_device(machine(), (UINT8*)get_nvram_base())));
-=======
 	nvram_alloc(stm95_eeprom_device::M95320_SIZE);
 	m_stm95 = std::make_unique<stm95_eeprom_device>(machine(), (uint8_t*)get_nvram_base());
->>>>>>> upstream/master
 
 	save_item(NAME(m_rdcnt));
 	save_item(NAME(m_bank));
@@ -243,11 +215,7 @@ READ16_MEMBER(md_eeprom_stm95_device::read)
 	{
 		// ugly hack until we don't know much about game protection
 		// first 3 reads from 15e6 return 0x00000010, then normal 0x00018010 value for crc check
-<<<<<<< HEAD
-		UINT16 res;
-=======
 		uint16_t res;
->>>>>>> upstream/master
 		offset -= 0x0015e6/2;
 		logerror("read 0x15e6 %d\n", m_rdcnt);
 		if (m_rdcnt < 6)
@@ -263,11 +231,7 @@ READ16_MEMBER(md_eeprom_stm95_device::read)
 		return m_rom[offset];
 	else    // last 0x180000 are bankswitched
 	{
-<<<<<<< HEAD
-		UINT8 bank = (offset - 0x280000/2) >> 18;
-=======
 		uint8_t bank = (offset - 0x280000/2) >> 18;
->>>>>>> upstream/master
 		return m_rom[(offset & 0x7ffff/2) + (m_bank[bank] * 0x80000)/2];
 	}
 }

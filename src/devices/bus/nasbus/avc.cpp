@@ -6,31 +6,16 @@
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-#include "avc.h"
-
-=======
 #include "emu.h"
 #include "avc.h"
 
 #include "screen.h"
 
->>>>>>> upstream/master
 
 //**************************************************************************
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type NASCOM_AVC = &device_creator<nascom_avc_device>;
-
-//-------------------------------------------------
-//  machine_config_additions - device-specific
-//  machine configurations
-//-------------------------------------------------
-
-static MACHINE_CONFIG_FRAGMENT( nascom_avc )
-=======
 DEFINE_DEVICE_TYPE(NASCOM_AVC, nascom_avc_device, "nascom_avc", "Nascom Advanced Video Card")
 
 //-------------------------------------------------
@@ -38,7 +23,6 @@ DEFINE_DEVICE_TYPE(NASCOM_AVC, nascom_avc_device, "nascom_avc", "Nascom Advanced
 //-------------------------------------------------
 
 MACHINE_CONFIG_MEMBER( nascom_avc_device::device_add_mconfig )
->>>>>>> upstream/master
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_RAW_PARAMS(16250000, 1024, 0, 768, 320, 0, 256)
 	MCFG_SCREEN_UPDATE_DEVICE("mc6845", mc6845_device, screen_update)
@@ -51,14 +35,6 @@ MACHINE_CONFIG_MEMBER( nascom_avc_device::device_add_mconfig )
 	MCFG_MC6845_UPDATE_ROW_CB(nascom_avc_device, crtc_update_row)
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-machine_config_constructor nascom_avc_device::device_mconfig_additions() const
-{
-	return MACHINE_CONFIG_NAME( nascom_avc );
-}
-
-=======
->>>>>>> upstream/master
 
 //**************************************************************************
 //  LIVE DEVICE
@@ -68,13 +44,8 @@ machine_config_constructor nascom_avc_device::device_mconfig_additions() const
 //  nascom_avc_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-nascom_avc_device::nascom_avc_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-	device_t(mconfig, NASCOM_AVC, "Nascom Advanced Video Card", tag, owner, clock, "nascom_avc", __FILE__),
-=======
 nascom_avc_device::nascom_avc_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	device_t(mconfig, NASCOM_AVC, tag, owner, clock),
->>>>>>> upstream/master
 	device_nasbus_card_interface(mconfig, *this),
 	m_crtc(*this, "mc6845"),
 	m_palette(*this, "palette"),
@@ -105,15 +76,9 @@ void nascom_avc_device::device_start()
 
 void nascom_avc_device::device_reset()
 {
-<<<<<<< HEAD
-	m_nasbus->m_io->install_write_handler(0xb0, 0xb0, write8_delegate(FUNC(mc6845_device::address_w), m_crtc.target()));
-	m_nasbus->m_io->install_readwrite_handler(0xb1, 0xb1, read8_delegate(FUNC(mc6845_device::register_r), m_crtc.target()), write8_delegate(FUNC(mc6845_device::register_w), m_crtc.target()));
-	m_nasbus->m_io->install_write_handler(0xb2, 0xb2, write8_delegate(FUNC(nascom_avc_device::control_w), this));
-=======
 	io_space().install_write_handler(0xb0, 0xb0, write8_delegate(FUNC(mc6845_device::address_w), m_crtc.target()));
 	io_space().install_readwrite_handler(0xb1, 0xb1, read8_delegate(FUNC(mc6845_device::register_r), m_crtc.target()), write8_delegate(FUNC(mc6845_device::register_w), m_crtc.target()));
 	io_space().install_write_handler(0xb2, 0xb2, write8_delegate(FUNC(nascom_avc_device::control_w), this));
->>>>>>> upstream/master
 }
 
 
@@ -165,19 +130,11 @@ WRITE8_MEMBER( nascom_avc_device::control_w )
 	if (((m_control & 0x07) == 0) && (data & 0x07))
 	{
 		m_nasbus->ram_disable_w(0);
-<<<<<<< HEAD
-		m_nasbus->m_program->install_readwrite_handler(0x8000, 0xbfff, read8_delegate(FUNC(nascom_avc_device::vram_r), this), write8_delegate(FUNC(nascom_avc_device::vram_w), this));
-	}
-	else if ((data & 0x07) == 0)
-	{
-		m_nasbus->m_program->unmap_readwrite(0x8000, 0xbfff);
-=======
 		program_space().install_readwrite_handler(0x8000, 0xbfff, read8_delegate(FUNC(nascom_avc_device::vram_r), this), write8_delegate(FUNC(nascom_avc_device::vram_w), this));
 	}
 	else if ((data & 0x07) == 0)
 	{
 		program_space().unmap_readwrite(0x8000, 0xbfff);
->>>>>>> upstream/master
 		m_nasbus->ram_disable_w(1);
 	}
 

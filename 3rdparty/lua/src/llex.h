@@ -1,9 +1,5 @@
 /*
-<<<<<<< HEAD
-** $Id: llex.h,v 1.78 2014/10/29 15:38:24 roberto Exp $
-=======
 ** $Id: llex.h,v 1.79 2016/05/02 14:02:12 roberto Exp $
->>>>>>> upstream/master
 ** Lexical Analyzer
 ** See Copyright Notice in lua.h
 */
@@ -73,10 +69,6 @@ typedef struct LexState {
   struct Dyndata *dyd;  /* dynamic structures used by the parser */
   TString *source;  /* current source name */
   TString *envn;  /* environment variable name */
-<<<<<<< HEAD
-  char decpoint;  /* locale decimal point */
-=======
->>>>>>> upstream/master
 } LexState;
 
 

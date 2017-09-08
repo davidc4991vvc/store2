@@ -29,40 +29,23 @@ public:
 	required_device<tilemap_device> m_playfield_tilemap;
 	required_device<atari_jsa_i_device> m_jsa;
 	required_device<atari_motion_objects_device> m_mob;
-<<<<<<< HEAD
-	required_shared_ptr<UINT16> m_priorityram;
-
-	virtual void update_interrupts();
-	virtual void scanline_update(screen_device &screen, int scanline);
-	DECLARE_WRITE16_MEMBER(blstroid_halt_until_hblank_0_w);
-	DECLARE_READ16_MEMBER(inputs_r);
-=======
 	required_shared_ptr<uint16_t> m_priorityram;
 
 	virtual void update_interrupts() override;
 	virtual void scanline_update(screen_device &screen, int scanline) override;
 	DECLARE_WRITE16_MEMBER(blstroid_halt_until_hblank_0_w);
->>>>>>> upstream/master
 	DECLARE_DRIVER_INIT(blstroid);
 	TILE_GET_INFO_MEMBER(get_playfield_tile_info);
 	DECLARE_MACHINE_START(blstroid);
 	DECLARE_MACHINE_RESET(blstroid);
 	DECLARE_VIDEO_START(blstroid);
-<<<<<<< HEAD
-	UINT32 screen_update_blstroid(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	uint32_t screen_update_blstroid(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 
 	emu_timer *m_irq_off_timer;
 	emu_timer *m_irq_on_timer;
->>>>>>> upstream/master
 
 	static const atari_motion_objects_config s_mob_config;
 
 protected:
-<<<<<<< HEAD
-	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
-=======
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
->>>>>>> upstream/master
 };

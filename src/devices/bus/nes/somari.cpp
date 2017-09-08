@@ -36,19 +36,6 @@
 //  constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const device_type NES_SOMARI = &device_creator<nes_somari_device>;
-
-
-nes_somari_device::nes_somari_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: nes_txrom_device(mconfig, NES_SOMARI, "NES Cart Team Somari PCB", tag, owner, clock, "nes_somari", __FILE__),
-	m_board_mode(0),
-	m_mmc3_mirror_reg(0),
-	m_count(0),
-	m_mmc1_latch(0),
-	m_vrc_mirror_reg(0)
-				{
-=======
 DEFINE_DEVICE_TYPE(NES_SOMARI, nes_somari_device, "nes_somari", "NES Cart Team Somari PCB")
 
 
@@ -60,7 +47,6 @@ nes_somari_device::nes_somari_device(const machine_config &mconfig, const char *
 	, m_mmc1_latch(0)
 	, m_vrc_mirror_reg(0)
 {
->>>>>>> upstream/master
 }
 
 
@@ -209,11 +195,7 @@ WRITE8_MEMBER(nes_somari_device::mmc1_w)
 // MMC3 Mode emulation
 WRITE8_MEMBER(nes_somari_device::mmc3_w)
 {
-<<<<<<< HEAD
-	UINT8 mmc_helper, cmd;
-=======
 	uint8_t mmc_helper, cmd;
->>>>>>> upstream/master
 
 	assert(m_board_mode == 1);
 
@@ -262,11 +244,7 @@ WRITE8_MEMBER(nes_somari_device::mmc3_w)
 // VRC2 Mode emulation
 WRITE8_MEMBER(nes_somari_device::vrc2_w)
 {
-<<<<<<< HEAD
-	UINT8 bank, shift;
-=======
 	uint8_t bank, shift;
->>>>>>> upstream/master
 
 	assert(m_board_mode == 0);
 
@@ -315,11 +293,7 @@ void nes_somari_device::update_prg()
 			break;
 		case SOMARI_MMC3_MODE:
 			{
-<<<<<<< HEAD
-				UINT8 prg_flip = (m_latch & 0x40) ? 2 : 0;
-=======
 				uint8_t prg_flip = (m_latch & 0x40) ? 2 : 0;
->>>>>>> upstream/master
 				prg8_x(0, m_mmc_prg_bank[0 ^ prg_flip]);
 				prg8_x(1, m_mmc_prg_bank[1]);
 				prg8_x(2, m_mmc_prg_bank[2 ^ prg_flip]);
@@ -329,11 +303,7 @@ void nes_somari_device::update_prg()
 		case SOMARI_MMC1_MODE:
 //      case SOMARI_MMC1_MODE_AGAIN:
 			{
-<<<<<<< HEAD
-				UINT8 prg_offset = m_mmc1_reg[1] & 0x10;
-=======
 				uint8_t prg_offset = m_mmc1_reg[1] & 0x10;
->>>>>>> upstream/master
 
 				switch (m_mmc1_reg[0] & 0x0c)
 				{
@@ -365,11 +335,7 @@ void nes_somari_device::update_chr()
 			break;
 		case SOMARI_MMC3_MODE:
 			{
-<<<<<<< HEAD
-				UINT8 chr_page = (m_latch & 0x80) >> 5;
-=======
 				uint8_t chr_page = (m_latch & 0x80) >> 5;
->>>>>>> upstream/master
 				chr1_x(chr_page ^ 0, m_chr_base | ((m_mmc_vrom_bank[0] & ~0x01)), CHRROM);
 				chr1_x(chr_page ^ 1, m_chr_base | ((m_mmc_vrom_bank[0] |  0x01)), CHRROM);
 				chr1_x(chr_page ^ 2, m_chr_base | ((m_mmc_vrom_bank[1] & ~0x01)), CHRROM);

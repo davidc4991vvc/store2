@@ -1,11 +1,6 @@
 #
-<<<<<<< HEAD
-# Copyright 2011-2015 Branimir Karadzic. All rights reserved.
-# License: http://www.opensource.org/licenses/BSD-2-Clause
-=======
 # Copyright 2011-2017 Branimir Karadzic. All rights reserved.
 # License: https://github.com/bkaradzic/bgfx#license-bsd-2-clause
->>>>>>> upstream/master
 #
 
 include ../../../scripts/shader-embeded.mk
@@ -13,9 +8,6 @@ include ../../../scripts/shader-embeded.mk
 droidsans.ttf.h: ../../runtime/font/droidsans.ttf
 	@bin2c -f $(<) -o $(@) -n s_droidSansTtf
 
-<<<<<<< HEAD
-rebuild: droidsans.ttf.h
-=======
 roboto_regular.ttf.h: ../../runtime/font/roboto-regular.ttf
 	@bin2c -f $(<) -o $(@) -n s_robotoRegularTtf
 
@@ -35,5 +27,4 @@ fonts: droidsans.ttf.h \
 	icons_kenney.ttf.h
 
 rebuild: fonts
->>>>>>> upstream/master
 	@make -s --no-print-directory clean all

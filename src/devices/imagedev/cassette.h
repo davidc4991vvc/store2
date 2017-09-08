@@ -8,18 +8,11 @@
 
 *********************************************************************/
 
-<<<<<<< HEAD
-#ifndef CASSETTE_H
-#define CASSETTE_H
-
-#include "formats/cassimg.h"
-=======
 #ifndef MAME_DEVICES_IMAGEDEV_CASSETTE_H
 #define MAME_DEVICES_IMAGEDEV_CASSETTE_H
 
 #include "formats/cassimg.h"
 #include "softlist_dev.h"
->>>>>>> upstream/master
 
 
 enum cassette_state
@@ -54,11 +47,7 @@ class cassette_image_device :   public device_t,
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	cassette_image_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-=======
 	cassette_image_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
->>>>>>> upstream/master
 	virtual ~cassette_image_device();
 
 	static void static_set_formats(device_t &device, const struct CassetteFormat*  const *formats) { downcast<cassette_image_device &>(device).m_formats = formats; }
@@ -67,24 +56,6 @@ public:
 	static void static_set_interface(device_t &device, const char *_interface) { downcast<cassette_image_device &>(device).m_interface = _interface; }
 
 	// image-level overrides
-<<<<<<< HEAD
-	virtual bool call_load();
-	virtual bool call_create(int format_type, option_resolution *format_options);
-	virtual void call_unload();
-	virtual void call_display();
-	virtual bool call_softlist_load(software_list_device &swlist, const char *swname, const rom_entry *start_entry) { return load_software(swlist, swname, start_entry); }
-
-	virtual iodevice_t image_type() const { return IO_CASSETTE; }
-
-	virtual bool is_readable()  const { return 1; }
-	virtual bool is_writeable() const { return 1; }
-	virtual bool is_creatable() const { return 1; }
-	virtual bool must_be_loaded() const { return 0; }
-	virtual bool is_reset_on_load() const { return 0; }
-	virtual const char *image_interface() const { return m_interface; }
-	virtual const char *file_extensions() const { return m_extension_list; }
-	virtual const option_guide *create_option_guide() const { return NULL; }
-=======
 	virtual image_init_result call_load() override;
 	virtual image_init_result call_create(int format_type, util::option_resolution *format_options) override;
 	virtual void call_unload() override;
@@ -100,7 +71,6 @@ public:
 	virtual bool is_reset_on_load() const override { return 0; }
 	virtual const char *image_interface() const override { return m_interface; }
 	virtual const char *file_extensions() const override { return m_extension_list; }
->>>>>>> upstream/master
 
 	// specific implementation
 	cassette_state get_state() { return m_state; }
@@ -124,25 +94,16 @@ protected:
 	void update();
 
 	// device-level overrides
-<<<<<<< HEAD
-	virtual void device_config_complete();
-	virtual void device_start();
-=======
 	virtual void device_config_complete() override;
 	virtual void device_start() override;
 	virtual const bool use_software_list_file_extension_for_filetype() const override { return true; }
 
->>>>>>> upstream/master
 private:
 	cassette_image  *m_cassette;
 	cassette_state  m_state;
 	double          m_position;
 	double          m_position_time;
-<<<<<<< HEAD
-	INT32           m_value;
-=======
 	int32_t           m_value;
->>>>>>> upstream/master
 	int             m_channel;
 	double          m_speed; // speed multiplier for tape speeds other than standard 1.875ips (used in adam driver)
 	int             m_direction; // direction select
@@ -151,15 +112,6 @@ private:
 	const struct CassetteOptions    *m_create_opts;
 	cassette_state                  m_default_state;
 	const char *                    m_interface;
-<<<<<<< HEAD
-};
-
-// device type definition
-extern const device_type CASSETTE;
-
-// device iterator
-typedef device_type_iterator<&device_creator<cassette_image_device>, cassette_image_device> cassette_device_iterator;
-=======
 
 	image_init_result internal_load(bool is_create);
 };
@@ -169,7 +121,6 @@ DECLARE_DEVICE_TYPE(CASSETTE, cassette_image_device)
 
 // device iterator
 typedef device_type_iterator<cassette_image_device> cassette_device_iterator;
->>>>>>> upstream/master
 
 /***************************************************************************
     DEVICE CONFIGURATION MACROS
@@ -192,8 +143,4 @@ typedef device_type_iterator<cassette_image_device> cassette_device_iterator;
 #define MCFG_CASSETTE_INTERFACE(_interface) \
 	cassette_image_device::static_set_interface(*device, _interface);
 
-<<<<<<< HEAD
-#endif /* CASSETTE_H */
-=======
 #endif // MAME_DEVICES_IMAGEDEV_CASSETTE_H
->>>>>>> upstream/master

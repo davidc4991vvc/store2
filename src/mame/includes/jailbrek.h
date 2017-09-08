@@ -27,19 +27,11 @@ public:
 		m_palette(*this, "palette") { }
 
 	/* memory pointers */
-<<<<<<< HEAD
-	required_shared_ptr<UINT8> m_colorram;
-	required_shared_ptr<UINT8> m_videoram;
-	required_shared_ptr<UINT8> m_spriteram;
-	required_shared_ptr<UINT8> m_scroll_x;
-	required_shared_ptr<UINT8> m_scroll_dir;
-=======
 	required_shared_ptr<uint8_t> m_colorram;
 	required_shared_ptr<uint8_t> m_videoram;
 	required_shared_ptr<uint8_t> m_spriteram;
 	required_shared_ptr<uint8_t> m_scroll_x;
 	required_shared_ptr<uint8_t> m_scroll_dir;
->>>>>>> upstream/master
 
 	/* devices */
 	required_device<cpu_device> m_maincpu;
@@ -51,24 +43,6 @@ public:
 	tilemap_t      *m_bg_tilemap;
 
 	/* misc */
-<<<<<<< HEAD
-	UINT8        m_irq_enable;
-	UINT8        m_nmi_enable;
-	DECLARE_WRITE8_MEMBER(ctrl_w);
-	DECLARE_WRITE8_MEMBER(jailbrek_videoram_w);
-	DECLARE_WRITE8_MEMBER(jailbrek_colorram_w);
-	DECLARE_READ8_MEMBER(jailbrek_speech_r);
-	DECLARE_WRITE8_MEMBER(jailbrek_speech_w);
-	DECLARE_DRIVER_INIT(jailbrek);
-	TILE_GET_INFO_MEMBER(get_bg_tile_info);
-	virtual void machine_start();
-	virtual void machine_reset();
-	virtual void video_start();
-	DECLARE_PALETTE_INIT(jailbrek);
-	UINT32 screen_update_jailbrek(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	INTERRUPT_GEN_MEMBER(jb_interrupt);
-	INTERRUPT_GEN_MEMBER(jb_interrupt_nmi);
-=======
 	uint8_t        m_irq_enable;
 	uint8_t        m_nmi_enable;
 	DECLARE_WRITE8_MEMBER(ctrl_w);
@@ -85,6 +59,5 @@ public:
 	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	INTERRUPT_GEN_MEMBER(interrupt);
 	INTERRUPT_GEN_MEMBER(interrupt_nmi);
->>>>>>> upstream/master
 	void draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect );
 };

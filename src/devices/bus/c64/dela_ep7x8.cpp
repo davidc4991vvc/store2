@@ -6,10 +6,7 @@
 
 **********************************************************************/
 
-<<<<<<< HEAD
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #include "dela_ep7x8.h"
 
 
@@ -18,29 +15,6 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type C64_DELA_EP7X8 = &device_creator<c64_dela_ep7x8_cartridge_device>;
-
-
-//-------------------------------------------------
-//  MACHINE_CONFIG_FRAGMENT( c64_dela_ep7x8 )
-//-------------------------------------------------
-
-static MACHINE_CONFIG_FRAGMENT( c64_dela_ep7x8 )
-	MCFG_GENERIC_SOCKET_ADD("rom1", generic_linear_slot, NULL)
-	MCFG_GENERIC_EXTENSIONS("bin,rom")
-	MCFG_GENERIC_SOCKET_ADD("rom2", generic_linear_slot, NULL)
-	MCFG_GENERIC_EXTENSIONS("bin,rom")
-	MCFG_GENERIC_SOCKET_ADD("rom3", generic_linear_slot, NULL)
-	MCFG_GENERIC_EXTENSIONS("bin,rom")
-	MCFG_GENERIC_SOCKET_ADD("rom4", generic_linear_slot, NULL)
-	MCFG_GENERIC_EXTENSIONS("bin,rom")
-	MCFG_GENERIC_SOCKET_ADD("rom5", generic_linear_slot, NULL)
-	MCFG_GENERIC_EXTENSIONS("bin,rom")
-	MCFG_GENERIC_SOCKET_ADD("rom6", generic_linear_slot, NULL)
-	MCFG_GENERIC_EXTENSIONS("bin,rom")
-	MCFG_GENERIC_SOCKET_ADD("rom7", generic_linear_slot, NULL)
-=======
 DEFINE_DEVICE_TYPE(C64_DELA_EP7X8, c64_dela_ep7x8_cartridge_device, "c64_dela_ep7x8", "C64 Dela 7x8KB EPROM cartridge")
 
 
@@ -62,25 +36,10 @@ MACHINE_CONFIG_MEMBER( c64_dela_ep7x8_cartridge_device::device_add_mconfig )
 	MCFG_GENERIC_SOCKET_ADD("rom6", generic_linear_slot, nullptr)
 	MCFG_GENERIC_EXTENSIONS("bin,rom")
 	MCFG_GENERIC_SOCKET_ADD("rom7", generic_linear_slot, nullptr)
->>>>>>> upstream/master
 	MCFG_GENERIC_EXTENSIONS("bin,rom")
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-//-------------------------------------------------
-//  machine_config_additions - device-specific
-//  machine configurations
-//-------------------------------------------------
-
-machine_config_constructor c64_dela_ep7x8_cartridge_device::device_mconfig_additions() const
-{
-	return MACHINE_CONFIG_NAME( c64_dela_ep7x8 );
-}
-
-
-=======
->>>>>>> upstream/master
 //**************************************************************************
 //  LIVE DEVICE
 //**************************************************************************
@@ -89,13 +48,8 @@ machine_config_constructor c64_dela_ep7x8_cartridge_device::device_mconfig_addit
 //  c64_dela_ep7x8_cartridge_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-c64_dela_ep7x8_cartridge_device::c64_dela_ep7x8_cartridge_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-	device_t(mconfig, C64_DELA_EP7X8, "C64 Dela 7x8KB EPROM cartridge", tag, owner, clock, "ep7x8", __FILE__),
-=======
 c64_dela_ep7x8_cartridge_device::c64_dela_ep7x8_cartridge_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	device_t(mconfig, C64_DELA_EP7X8, tag, owner, clock),
->>>>>>> upstream/master
 	device_c64_expansion_card_interface(mconfig, *this),
 	m_eprom1(*this, "rom1"),
 	m_eprom2(*this, "rom2"),
@@ -134,11 +88,7 @@ void c64_dela_ep7x8_cartridge_device::device_reset()
 //  c64_cd_r - cartridge data read
 //-------------------------------------------------
 
-<<<<<<< HEAD
-UINT8 c64_dela_ep7x8_cartridge_device::c64_cd_r(address_space &space, offs_t offset, UINT8 data, int sphi2, int ba, int roml, int romh, int io1, int io2)
-=======
 uint8_t c64_dela_ep7x8_cartridge_device::c64_cd_r(address_space &space, offs_t offset, uint8_t data, int sphi2, int ba, int roml, int romh, int io1, int io2)
->>>>>>> upstream/master
 {
 	if (!roml)
 	{
@@ -162,11 +112,7 @@ uint8_t c64_dela_ep7x8_cartridge_device::c64_cd_r(address_space &space, offs_t o
 //  c64_cd_w - cartridge data write
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void c64_dela_ep7x8_cartridge_device::c64_cd_w(address_space &space, offs_t offset, UINT8 data, int sphi2, int ba, int roml, int romh, int io1, int io2)
-=======
 void c64_dela_ep7x8_cartridge_device::c64_cd_w(address_space &space, offs_t offset, uint8_t data, int sphi2, int ba, int roml, int romh, int io1, int io2)
->>>>>>> upstream/master
 {
 	if (!io1)
 	{

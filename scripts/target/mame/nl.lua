@@ -17,17 +17,12 @@
 --------------------------------------------------
 
 CPUS["Z80"] = true
-<<<<<<< HEAD
---CPUS["M6502"] = true
---CPUS["MCS48"] = true
-=======
 CPUS["M6502"] = true
 CPUS["M6800"] = true
 CPUS["M6803"] = true
 CPUS["M6809"] = true
 CPUS["MCS48"] = true
 CPUS["I8085"] = true
->>>>>>> upstream/master
 --CPUS["MCS51"] = true
 --CPUS["M6800"] = true
 --CPUS["M6809"] = true
@@ -42,28 +37,17 @@ CPUS["I8085"] = true
 
 --SOUNDS["SAMPLES"] = true
 SOUNDS["DAC"] = true
-<<<<<<< HEAD
---SOUNDS["DISCRETE"] = true
-SOUNDS["AY8910"] = true
---SOUNDS["YM2151"] = true
---SOUNDS["ASTROCADE"] = true
---SOUNDS["TMS5220"] = true
-=======
 SOUNDS["DISCRETE"] = true
 SOUNDS["AY8910"] = true
 SOUNDS["MSM5205"] = true
 --SOUNDS["ASTROCADE"] = true
 SOUNDS["TMS5220"] = true
->>>>>>> upstream/master
 --SOUNDS["OKIM6295"] = true
 --SOUNDS["HC55516"] = true
 --SOUNDS["YM3812"] = true
 --SOUNDS["CEM3394"] = true
 --SOUNDS["VOTRAX"] = true
-<<<<<<< HEAD
-=======
 SOUNDS["VOLT_REG"] = true
->>>>>>> upstream/master
 
 --------------------------------------------------
 -- specify available video cores
@@ -76,9 +60,6 @@ VIDEOS["FIXFREQ"] = true
 --------------------------------------------------
 
 MACHINES["NETLIST"] = true
-<<<<<<< HEAD
---MACHINES["6821PIA"] = true
-=======
 MACHINES["Z80DMA"] = true
 MACHINES["GEN_LATCH"] = true
 MACHINES["AY31015"] = true
@@ -92,7 +73,6 @@ MACHINES["6522VIA"] = true
 MACHINES["6821PIA"] = true
 MACHINES["I8255"] = true
 MACHINES["WATCHDOG"] = true
->>>>>>> upstream/master
 --MACHINES["TTL74148"] = true
 --MACHINES["TTL74153"] = true
 --MACHINES["TTL7474"] = true
@@ -121,13 +101,9 @@ function createProjects_mame_nl(_target, _subtarget)
 	targetsubdir(_target .."_" .. _subtarget)
 	kind (LIBTYPE)
 	uuid (os.uuid("drv-mame-nl"))
-<<<<<<< HEAD
-	
-=======
 	addprojectflags()
 	precompiledheaders()
 
->>>>>>> upstream/master
 	includedirs {
 		MAME_DIR .. "src/osd",
 		MAME_DIR .. "src/emu",
@@ -142,11 +118,6 @@ function createProjects_mame_nl(_target, _subtarget)
 
 files{
 	MAME_DIR .. "src/mame/drivers/pong.cpp",
-<<<<<<< HEAD
-	MAME_DIR .. "src/mame/drivers/nl_pong.cpp",
-	MAME_DIR .. "src/mame/drivers/nl_pongd.cpp",
-	MAME_DIR .. "src/mame/drivers/nl_breakout.cpp",
-=======
 	MAME_DIR .. "src/mame/machine/nl_pong.cpp",
 	MAME_DIR .. "src/mame/machine/nl_pong.h",
 	MAME_DIR .. "src/mame/machine/nl_pongd.cpp",
@@ -165,21 +136,15 @@ files{
 	MAME_DIR .. "src/mame/machine/nl_prodigy.h",
 
 	MAME_DIR .. "src/mame/drivers/hazeltin.cpp",
->>>>>>> upstream/master
 
 	MAME_DIR .. "src/mame/drivers/1942.cpp",
 	MAME_DIR .. "src/mame/includes/1942.h",
 	MAME_DIR .. "src/mame/video/1942.cpp",
-<<<<<<< HEAD
-=======
 
->>>>>>> upstream/master
 	MAME_DIR .. "src/mame/drivers/popeye.cpp",
 	MAME_DIR .. "src/mame/includes/popeye.h",
 	MAME_DIR .. "src/mame/video/popeye.cpp",
 
-<<<<<<< HEAD
-=======
 	MAME_DIR .. "src/mame/drivers/mario.cpp",
 	MAME_DIR .. "src/mame/includes/mario.h",
   MAME_DIR .. "src/mame/audio/nl_mario.cpp",
@@ -211,7 +176,6 @@ files{
   MAME_DIR .. "src/mame/includes/zaccaria.h",
   MAME_DIR .. "src/mame/video/zaccaria.cpp",
 
->>>>>>> upstream/master
 }
 end
 

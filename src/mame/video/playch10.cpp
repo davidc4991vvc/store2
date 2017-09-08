@@ -1,25 +1,15 @@
 // license:BSD-3-Clause
 // copyright-holders:Ernesto Corvi,Brad Oliver
 #include "emu.h"
-<<<<<<< HEAD
-#include "video/ppu2c0x.h"
-#include "includes/playch10.h"
-
-=======
 #include "includes/playch10.h"
 #include "video/ppu2c0x.h"
 
 #include "screen.h"
->>>>>>> upstream/master
 
 
 WRITE8_MEMBER(playch10_state::playch10_videoram_w)
 {
-<<<<<<< HEAD
-	UINT8 *videoram = m_videoram;
-=======
 	uint8_t *videoram = m_videoram;
->>>>>>> upstream/master
 	if (m_pc10_sdcs)
 	{
 		videoram[offset] = data;
@@ -29,11 +19,7 @@ WRITE8_MEMBER(playch10_state::playch10_videoram_w)
 
 PALETTE_INIT_MEMBER(playch10_state, playch10)
 {
-<<<<<<< HEAD
-	const UINT8 *color_prom = memregion("proms")->base();
-=======
 	const uint8_t *color_prom = memregion("proms")->base();
->>>>>>> upstream/master
 
 	for (int i = 0; i < 256; i++)
 	{
@@ -81,11 +67,7 @@ void playch10_state::ppu_irq(int *ppu_regs)
 
 TILE_GET_INFO_MEMBER(playch10_state::get_bg_tile_info)
 {
-<<<<<<< HEAD
-	UINT8 *videoram = m_videoram;
-=======
 	uint8_t *videoram = m_videoram;
->>>>>>> upstream/master
 	int offs = tile_index * 2;
 	int code = videoram[offs] + ((videoram[offs + 1] & 0x07) << 8);
 	int color = (videoram[offs + 1] >> 3) & 0x1f;
@@ -95,33 +77,19 @@ TILE_GET_INFO_MEMBER(playch10_state::get_bg_tile_info)
 
 void playch10_state::video_start()
 {
-<<<<<<< HEAD
-	const UINT8 *bios = memregion("maincpu")->base();
-	m_pc10_bios = (bios[3] == 0x2a) ? 1 : 2;
-
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(playch10_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS,
-=======
 	const uint8_t *bios = memregion("maincpu")->base();
 	m_pc10_bios = (bios[3] == 0x2a) ? 1 : 2;
 
 	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(playch10_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS,
->>>>>>> upstream/master
 			8, 8, 32, 32);
 }
 
 VIDEO_START_MEMBER(playch10_state,playch10_hboard)
 {
-<<<<<<< HEAD
-	const UINT8 *bios = memregion("maincpu")->base();
-	m_pc10_bios = (bios[3] == 0x2a) ? 1 : 2;
-
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(playch10_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS,
-=======
 	const uint8_t *bios = memregion("maincpu")->base();
 	m_pc10_bios = (bios[3] == 0x2a) ? 1 : 2;
 
 	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(playch10_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS,
->>>>>>> upstream/master
 			8, 8, 32, 32);
 }
 
@@ -131,11 +99,7 @@ VIDEO_START_MEMBER(playch10_state,playch10_hboard)
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-UINT32 playch10_state::screen_update_playch10_single(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t playch10_state::screen_update_playch10_single(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	rectangle top_monitor = screen.visible_area();
 
@@ -161,11 +125,7 @@ uint32_t playch10_state::screen_update_playch10_single(screen_device &screen, bi
 	return 0;
 }
 
-<<<<<<< HEAD
-UINT32 playch10_state::screen_update_playch10_top(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t playch10_state::screen_update_playch10_top(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	/* Single Monitor version */
 	if (m_pc10_bios != 1)
@@ -180,11 +140,7 @@ uint32_t playch10_state::screen_update_playch10_top(screen_device &screen, bitma
 	return 0;
 }
 
-<<<<<<< HEAD
-UINT32 playch10_state::screen_update_playch10_bottom(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t playch10_state::screen_update_playch10_bottom(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	/* Single Monitor version */
 	if (m_pc10_bios != 1)

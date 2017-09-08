@@ -1,9 +1,5 @@
 // license:BSD-3-Clause
-<<<<<<< HEAD
-// copyright-holders:David Haywood
-=======
 // copyright-holders:David Haywood, Ville Linde, Segher Boessenkool
->>>>>>> upstream/master
 /* Triforce Skeleton
  -- split from Naomi.c
 
@@ -32,26 +28,6 @@ Games on this system include....
 | | 2003 | F-Zero AX (Rev A)                                               | Sega / Amusement Vision / Nintendo  | GDROM | GDT-0004A      | 317-0362-COM | 253-5508-0362 |
 | | 2003 | F-Zero AX (Rev B)                                               | Sega / Amusement Vision / Nintendo  | GDROM | GDT-0004B      | 317-0362-COM | 253-5508-0362 |
 |*| 2003 | F-Zero AX (Rev C)                                               | Sega / Amusement Vision / Nintendo  | GDROM | GDT-0004C      | 317-0362-COM | 253-5508-0362 |
-<<<<<<< HEAD
-|*| 2003 | F-Zero AX (Rev D)                                               | Sega / Amusement Vision / Nintendo  | GDROM | GDT-0004D      | 317-0362-COM | 253-5508-0362 |
-|*| 2003 | F-Zero AX (Rev E)                                               | Sega / Amusement Vision / Nintendo  | GDROM | GDT-0004E      | 317-0362-COM | 253-5508-0362 |
-| | 2003 | The Key Of Avalon: The Wizard Master (server)                   | Sega / Hitmaker                     | GDROM | GDT-0005       |              |               |
-| | 2003 | The Key Of Avalon: The Wizard Master (server) (Rev A)           | Sega / Hitmaker                     | GDROM | GDT-0005A      |              |               |
-| | 2003 | The Key Of Avalon: The Wizard Master (server) (Rev B)           | Sega / Hitmaker                     | GDROM | GDT-0005B      |              |               |
-|*| 2003 | The Key Of Avalon: The Wizard Master (server) (Rev C)           | Sega / Hitmaker                     | GDROM | GDT-0005C      |              |               |
-| | 2003 | The Key Of Avalon: The Wizard Master (server) (Rev D)           | Sega / Hitmaker                     | GDROM | GDT-0005D      |              |               |
-|*| 2003 | The Key Of Avalon: The Wizard Master (server) (Rev E)           | Sega / Hitmaker                     | GDROM | GDT-0005E      |              |               |
-|*| 2003 | The Key Of Avalon: The Wizard Master (server) (Rev F)           | Sega / Hitmaker                     | GDROM | GDT-0005F      |              |               |
-|*| 2003 | The Key Of Avalon: The Wizard Master (server) (Rev G)           | Sega / Hitmaker                     | GDROM | GDT-0005G      |              |               |
-| | 2003 | The Key Of Avalon: The Wizard Master (client)                   | Sega / Hitmaker                     | GDROM | GDT-0006       |              |               |
-| | 2003 | The Key Of Avalon: The Wizard Master (client) (Rev A)           | Sega / Hitmaker                     | GDROM | GDT-0006A      |              |               |
-| | 2003 | The Key Of Avalon: The Wizard Master (client) (Rev B)           | Sega / Hitmaker                     | GDROM | GDT-0006B      |              |               |
-| | 2003 | The Key Of Avalon: The Wizard Master (client) (Rev C)           | Sega / Hitmaker                     | GDROM | GDT-0006C      |              |               |
-| | 2003 | The Key Of Avalon: The Wizard Master (client) (Rev D)           | Sega / Hitmaker                     | GDROM | GDT-0006D      |              |               |
-|*| 2003 | The Key Of Avalon: The Wizard Master (client) (Rev E)           | Sega / Hitmaker                     | GDROM | GDT-0006E      |              |               |
-|*| 2003 | The Key Of Avalon: The Wizard Master (client) (Rev F)           | Sega / Hitmaker                     | GDROM | GDT-0006F      |              |               |
-|*| 2003 | The Key Of Avalon: The Wizard Master (client) (Rev G)           | Sega / Hitmaker                     | GDROM | GDT-0006G      |              |               |
-=======
 | | 2003 | F-Zero AX (Rev D)                                               | Sega / Amusement Vision / Nintendo  | GDROM | GDT-0004D      | 317-0362-COM | 253-5508-0362 |
 |*| 2003 | F-Zero AX (Rev E)                                               | Sega / Amusement Vision / Nintendo  | GDROM | GDT-0004E      | 317-0362-COM | 253-5508-0362 |
 | | 2003 | The Key Of Avalon: The Wizard Master (server)                   | Sega / Hitmaker                     | GDROM | GDT-0005       | 317-0355-JPN | 253-5508-0355J|
@@ -70,22 +46,10 @@ Games on this system include....
 |*| 2003 | The Key Of Avalon: The Wizard Master (client) (Rev E)           | Sega / Hitmaker                     | GDROM | GDT-0006E      | 317-0355-JPN | 253-5508-0355J|
 |*| 2003 | The Key Of Avalon: The Wizard Master (client) (Rev F)           | Sega / Hitmaker                     | GDROM | GDT-0006F      | 317-0355-JPN | 253-5508-0355J|
 |*| 2003 | The Key Of Avalon: The Wizard Master (client) (Rev G)           | Sega / Hitmaker                     | GDROM | GDT-0006G      | 317-0355-JPN | 253-5508-0355J|
->>>>>>> upstream/master
 | | 2003 | Gekitou Pro Yakyuu Mizushima Shinji All Stars                   | Sega / Wow Entertainment            | GDROM | GDT-0008       | 317-0371-JPN |               |
 | | 2003 | Gekitou Pro Yakyuu Mizushima Shinji All Stars (Rev A)           | Sega / Wow Entertainment            | GDROM | GDT-0008A      | 317-0371-JPN |               |
 |*| 2003 | Gekitou Pro Yakyuu Mizushima Shinji All Stars (Rev B)           | Sega / Wow Entertainment            | GDROM | GDT-0008B      | 317-0371-JPN |               |
 |*| 2003 | Gekitou Pro Yakyuu Mizushima Shinji All Stars (Rev C)           | Sega / Wow Entertainment            | GDROM | GDT-0008C      | 317-0371-JPN |               |
-<<<<<<< HEAD
-| | 2003 | The Key Of Avalon 1.10                                          | Sega / Hitmaker                     | GDROM |                |              |               |
-| | 2004 | The Key Of Avalon 1.??: ??? (server)                            | Sega / Hitmaker                     | GDROM | GDT-0009       |              |               |
-|*| 2004 | The Key Of Avalon 1.20: Summon The New Monster (server) (Rev A) | Sega / Hitmaker                     | GDROM | GDT-0009A      |              |               |
-| | 2004 | The Key Of Avalon 1.??: ??? (server) (Rev B)                    | Sega / Hitmaker                     | GDROM | GDT-0009B      |              |               |
-|*| 2004 | The Key Of Avalon 1.30: Chaotic Sabbat (server) (Rev C)         | Sega / Hitmaker                     | GDROM | GDT-0009C      |              |               |
-| | 2004 | The Key Of Avalon 1.??: ??? (client)                            | Sega / Hitmaker                     | GDROM | GDT-0010       |              |               |
-|*| 2004 | The Key Of Avalon 1.20: Summon The New Monster (client) (Rev A) | Sega / Hitmaker                     | GDROM | GDT-0010A      |              |               |
-| | 2004 | The Key Of Avalon 1.??: ??? (client) (Rev B)                    | Sega / Hitmaker                     | GDROM | GDT-0010B      |              |               |
-|*| 2004 | The Key Of Avalon 1.30: Chaotic Sabbat (client) (Rev C)         | Sega / Hitmaker                     | GDROM | GDT-0010C      |              |               |
-=======
 | | 2003 | The Key Of Avalon 1.10                                          | Sega / Hitmaker                     | GDROM |                | 317-0355-JPN | 253-5508-0355J|
 | | 2004 | The Key Of Avalon 1.??: ??? (server)                            | Sega / Hitmaker                     | GDROM | GDT-0009       | 317-0355-JPN | 253-5508-0355J|
 |*| 2004 | The Key Of Avalon 1.20: Summon The New Monster (server) (Rev A) | Sega / Hitmaker                     | GDROM | GDT-0009A      | 317-0355-JPN | 253-5508-0355J|
@@ -95,7 +59,6 @@ Games on this system include....
 |*| 2004 | The Key Of Avalon 1.20: Summon The New Monster (client) (Rev A) | Sega / Hitmaker                     | GDROM | GDT-0010A      | 317-0355-JPN | 253-5508-0355J|
 | | 2004 | The Key Of Avalon 1.??: ??? (client) (Rev B)                    | Sega / Hitmaker                     | GDROM | GDT-0010B      | 317-0355-JPN | 253-5508-0355J|
 |*| 2004 | The Key Of Avalon 1.30: Chaotic Sabbat (client) (Rev C)         | Sega / Hitmaker                     | GDROM | GDT-0010C      | 317-0355-JPN | 253-5508-0355J|
->>>>>>> upstream/master
 |*| 2004 | Firmware Update                                                 | Sega                                | GDROM | GDT-0011       | 317-0371-JPN |               |
 | | 2004 | Virtua Striker 2002 (Export)                                    | Sega                                | GDROM | GDT-0012       |              |               |
 | | 2004 | Virtua Striker 4 (Japan)                                        | Sega                                | GDROM | GDT-0013       | 317-0391-JPN |               |
@@ -104,33 +67,6 @@ Games on this system include....
 | | 2004 | Virtua Striker 4 (Japan) (Rev C)                                | Sega                                | GDROM | GDT-0013C      | 317-0391-JPN |               |
 | | 2004 | Virtua Striker 4 (Japan) (Rev D)                                | Sega                                | GDROM | GDT-0013D      | 317-0391-JPN |               |
 |*| 2004 | Virtua Striker 4 (Japan) (Rev E)                                | Sega                                | GDROM | GDT-0013E      | 317-0391-JPN |               |
-<<<<<<< HEAD
-| | 2004 | Virtua Striker 4 (Export)                                       | Sega                                | GDROM | GDT-0014       |              |               |
-|*| 2004 | Virtua Striker 4 (Export)                                       | Sega                                | GDROM | GDT-0015       | 317-0393-EXP |               |
-| | 2004 | The Key Of Avalon 2: Eutaxy Commandment (server)                | Sega / Hitmaker                     | GDROM | GDT-0016       |              |               |
-| | 2004 | The Key Of Avalon 2: Eutaxy Commandment (client)                | Sega / Hitmaker                     | GDROM | GDT-0017       |              |               |
-| | 2004 | The Key Of Avalon 2: Eutaxy Commandment (client) (Rev A)        | Sega / Hitmaker                     | GDROM | GDT-0017A      |              |               |
-|*| 2004 | The Key Of Avalon 2: Eutaxy Commandment (client) (Rev B)        | Sega / Hitmaker                     | GDROM | GDT-0017B      |              |               |
-| | 2004 | F-Zero AX - Monster Ride Cycraft Edition                        | Sega / Amusement Vision / Nintendo  | GDROM |                |              |               |
-| | 2005 | Donkey Kong Jungle Fever                                        | Namco / Nintendo                    | Cart  |                |              |               |
-|*| 2005 | Mario Kart Arcade GP (Japan, MKA1 Ver.A1)                       | Namco / Nintendo                    | Cart  | 837-14343-4T1  | 317-5109-COM | 253-5509-5109 |
-| | 2005 | The Key Of Avalon 2.5: War of the Key (server)                  | Sega / Hitmaker                     | GDROM | GDT-0019B      |              |               |
-| | 2005 | The Key Of Avalon 2.5: War of the Key (client)                  | Sega / Hitmaker                     | GDROM |                |              |               |
-| | 2006 | Virtua Striker 4 Ver.2006 (Japan)                               | Sega                                | GDROM | GDT-0020       |              |               |
-| | 2006 | Virtua Striker 4 Ver.2006 (Japan) (Rev A)                       | Sega                                | GDROM | GDT-0020A      |              |               |
-| | 2006 | Virtua Striker 4 Ver.2006 (Japan) (Rev B)                       | Sega                                | GDROM | GDT-0020B      |              |               |
-| | 2006 | Virtua Striker 4 Ver.2006 (Japan) (Rev C)                       | Sega                                | GDROM | GDT-0020C      |              |               |
-|*| 2006 | Virtua Striker 4 Ver.2006 (Japan) (Rev D)                       | Sega                                | GDROM | GDT-0020D      |              |               |
-|*| 2006 | Virtua Striker 4 Ver.2006 (Export)                              | Sega                                | GDROM | GDT-0021       | 317-0433-EXP | 253-5508-0433E|
-| | 2006 | Triforce Firmware Update for Compact Flash Box                  | Sega                                | GDROM | GDT-0022       | 317-0567-COM |               |
-|*| 2006 | Triforce Firmware Update for Compact Flash Box (Rev A)          | Sega                                | GDROM | GDT-0022A      | 317-0567-COM |               |
-| | 2006 | Donkey Kong : Banana Kingdom                                    | Namco / Nintendo                    | Cart? |                |              |               |
-|*| 2007 | Mario Kart Arcade GP 2 (Japan, MK21 Ver.A)                      | Namco / Nintendo                    | Cart  | 837-14343-R4S0 | 317-5128-??? | 253-5509-5128 |
-|*| 2007 | Mario Kart Arcade GP 2 (Japan, MK21 Ver.A, alt dump)            | Namco / Nintendo                    | Cart  | 837-14343-R4S0 | 317-5128-??? | 253-5509-5128 |
-+-+------+-----------------------------------------------------------------+-------------------------------------+-------|----------------+--------------+---------------|
-* denotes these games are archived.
-
-=======
 |*| 2004 | Virtua Striker 4 (Export)                                       | Sega                                | GDROM | GDT-0014       | 317-0392-EXP | 253-5508-0392E|
 |*| 2004 | Virtua Striker 4 (Export)                                       | Sega                                | GDROM | GDT-0015       | 317-0393-EXP |               |
 | | 2004 | Virtua Striker 4 (Export)                                       | Sega                                | CF    | MDA-G0016      | 317-0393-EXP |               |
@@ -162,7 +98,6 @@ Games on this system include....
 +-+------+-----------------------------------------------------------------+-------------------------------------+-------|----------------+--------------+---------------|
 * denotes these games are archived.
 ! security PIC is not dumped
->>>>>>> upstream/master
 
 PCB Layouts
 ===========
@@ -510,11 +445,8 @@ Notes:
 #include "emu.h"
 #include "cpu/powerpc/ppc.h"
 #include "machine/naomigd.h"
-<<<<<<< HEAD
-=======
 #include "screen.h"
 
->>>>>>> upstream/master
 
 class triforce_state : public driver_device
 {
@@ -527,15 +459,9 @@ public:
 	DECLARE_WRITE64_MEMBER(gc_pi_w);
 	DECLARE_READ64_MEMBER(gc_exi_r);
 	DECLARE_WRITE64_MEMBER(gc_exi_w);
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void video_start();
-	UINT32 screen_update_triforce(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
-=======
 	virtual void machine_start() override;
 	virtual void video_start() override;
 	uint32_t screen_update_triforce(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	required_device<ppc_device> m_maincpu;
 };
 
@@ -569,11 +495,7 @@ void triforce_state::video_start()
 {
 }
 
-<<<<<<< HEAD
-UINT32 triforce_state::screen_update_triforce(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
-=======
 uint32_t triforce_state::screen_update_triforce(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	return 0;
 }
@@ -582,21 +504,6 @@ static INPUT_PORTS_START( triforce )
 INPUT_PORTS_END
 
 // bootrom descrambler reversed by segher
-<<<<<<< HEAD
-// Copyright 2008 Segher Boessenkool <segher@kernel.crashing.org>
-static void descrambler(UINT8* data, UINT32 size)
-{
-	UINT8 acc = 0;
-	UINT8 nacc = 0;
-
-	UINT16 t = 0x2953;
-	UINT16 u = 0xd9c2;
-	UINT16 v = 0x3ff1;
-
-	UINT8 x = 1;
-
-	for (UINT32 it = 0; it < size;)
-=======
 // Copyright 2008-2017 Segher Boessenkool <segher@kernel.crashing.org>
 static void descrambler(uint8_t* data, uint32_t size)
 {
@@ -610,7 +517,6 @@ static void descrambler(uint8_t* data, uint32_t size)
 	uint8_t x = 1;
 
 	for (uint32_t it = 0; it < size;)
->>>>>>> upstream/master
 	{
 		int t0 = t & 1;
 		int t1 = (t >> 1) & 1;
@@ -656,19 +562,11 @@ void triforce_state::machine_start()
 	/* set conservative DRC options */
 	m_maincpu->ppcdrc_set_options(PPCDRC_COMPATIBLE_OPTIONS);
 
-<<<<<<< HEAD
-	UINT8 *rom = (UINT8*)memregion("maincpu")->base();
-	descrambler(&rom[0x100], 0x1afe00);
-}
-
-static MACHINE_CONFIG_START( triforce_base, triforce_state )
-=======
 	uint8_t *rom = (uint8_t*)memregion("maincpu")->base();
 	descrambler(&rom[0x100], 0x1afe00);
 }
 
 static MACHINE_CONFIG_START( triforce_base )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", PPC603, 64000000) /* Correct CPU is a PowerPC 750 (what Apple called "G3") with paired-single vector instructions added */
@@ -689,11 +587,7 @@ static MACHINE_CONFIG_START( triforce_base )
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_DERIVED( triforcegd, triforce_base )
-<<<<<<< HEAD
-	MCFG_NAOMI_GDROM_BOARD_ADD("rom_board", ":gdrom", ":pic", NULL, NOOP)
-=======
 	MCFG_NAOMI_GDROM_BOARD_ADD("rom_board", ":gdrom", ":pic", nullptr, NOOP)
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
@@ -795,11 +689,7 @@ ROM_START( avalonsc )
 	DISK_IMAGE_READONLY( "gdt-0005c", 0, SHA1(37b848ed131e8357ba57474f7c2aa6ab51b01781) )
 
 	ROM_REGION( 0x50, "pic", ROMREGION_ERASE)
-<<<<<<< HEAD
-	ROM_LOAD("avalon.data", 0x00, 0x50, CRC(6c51e5d6) SHA1(84afef983f1f855fe8722f55baa8ea5121da9369) )
-=======
 	ROM_LOAD("317-0355-jpn.data", 0x00, 0x50, CRC(9b9db9d8) SHA1(60aab36fcfd7a2850b2947effea70e44a06d1f78) )
->>>>>>> upstream/master
 ROM_END
 
 ROM_START( avalonse )
@@ -809,11 +699,7 @@ ROM_START( avalonse )
 	DISK_IMAGE_READONLY( "gdt-0005e", 0, SHA1(a888a045c323f374b53295404262a3bb80a533c0) )
 
 	ROM_REGION( 0x50, "pic", ROMREGION_ERASE)
-<<<<<<< HEAD
-	ROM_LOAD("avalon.data", 0x00, 0x50, CRC(6c51e5d6) SHA1(84afef983f1f855fe8722f55baa8ea5121da9369) )
-=======
 	ROM_LOAD("317-0355-jpn.data", 0x00, 0x50, CRC(9b9db9d8) SHA1(60aab36fcfd7a2850b2947effea70e44a06d1f78) )
->>>>>>> upstream/master
 ROM_END
 
 ROM_START( avalonsf )
@@ -823,11 +709,7 @@ ROM_START( avalonsf )
 	DISK_IMAGE_READONLY( "gdt-0005f", 0, SHA1(3752e406a5542a912f8b1ef48096ed30e7d28279) )
 
 	ROM_REGION( 0x50, "pic", ROMREGION_ERASE)
-<<<<<<< HEAD
-	ROM_LOAD("avalon.data", 0x00, 0x50, CRC(6c51e5d6) SHA1(84afef983f1f855fe8722f55baa8ea5121da9369) )
-=======
 	ROM_LOAD("317-0355-jpn.data", 0x00, 0x50, CRC(9b9db9d8) SHA1(60aab36fcfd7a2850b2947effea70e44a06d1f78) )
->>>>>>> upstream/master
 ROM_END
 
 ROM_START( avalons )
@@ -837,11 +719,7 @@ ROM_START( avalons )
 	DISK_IMAGE_READONLY( "gdt-0005g", 0, SHA1(f2dca7ecd6c07ff098ac91e353ffc3fd843054e3) )
 
 	ROM_REGION( 0x50, "pic", ROMREGION_ERASE)
-<<<<<<< HEAD
-	ROM_LOAD("avalon.data", 0x00, 0x50, CRC(6c51e5d6) SHA1(84afef983f1f855fe8722f55baa8ea5121da9369) )
-=======
 	ROM_LOAD("317-0355-jpn.data", 0x00, 0x50, CRC(9b9db9d8) SHA1(60aab36fcfd7a2850b2947effea70e44a06d1f78) )
->>>>>>> upstream/master
 ROM_END
 
 ROM_START( avalonce )
@@ -851,11 +729,7 @@ ROM_START( avalonce )
 	DISK_IMAGE_READONLY( "gdt-0006e", 0, SHA1(59aeb7d767d390b3ee7f079d3d1a31df3e92773b) )
 
 	ROM_REGION( 0x50, "pic", ROMREGION_ERASE)
-<<<<<<< HEAD
-	ROM_LOAD("avalon.data", 0x00, 0x50, CRC(6c51e5d6) SHA1(84afef983f1f855fe8722f55baa8ea5121da9369) )
-=======
 	ROM_LOAD("317-0355-jpn.data", 0x00, 0x50, CRC(9b9db9d8) SHA1(60aab36fcfd7a2850b2947effea70e44a06d1f78) )
->>>>>>> upstream/master
 ROM_END
 
 ROM_START( avaloncf )
@@ -865,11 +739,7 @@ ROM_START( avaloncf )
 	DISK_IMAGE_READONLY( "gdt-0006f", 0, SHA1(35c98e41095273326ac0c6fe633c3f6e8b328f63) )
 
 	ROM_REGION( 0x50, "pic", ROMREGION_ERASE)
-<<<<<<< HEAD
-	ROM_LOAD("avalon.data", 0x00, 0x50, CRC(6c51e5d6) SHA1(84afef983f1f855fe8722f55baa8ea5121da9369) )
-=======
 	ROM_LOAD("317-0355-jpn.data", 0x00, 0x50, CRC(9b9db9d8) SHA1(60aab36fcfd7a2850b2947effea70e44a06d1f78) )
->>>>>>> upstream/master
 ROM_END
 
 ROM_START( avalonc )
@@ -879,11 +749,7 @@ ROM_START( avalonc )
 	DISK_IMAGE_READONLY( "gdt-0006g", 0, SHA1(96e1db3f395152a62d0b344c350f38306ab1e0ae) )
 
 	ROM_REGION( 0x50, "pic", ROMREGION_ERASE)
-<<<<<<< HEAD
-	ROM_LOAD("avalon.data", 0x00, 0x50, CRC(6c51e5d6) SHA1(84afef983f1f855fe8722f55baa8ea5121da9369) )
-=======
 	ROM_LOAD("317-0355-jpn.data", 0x00, 0x50, CRC(9b9db9d8) SHA1(60aab36fcfd7a2850b2947effea70e44a06d1f78) )
->>>>>>> upstream/master
 ROM_END
 
 ROM_START( gekpuryb )
@@ -913,11 +779,7 @@ ROM_START( avalns12 )
 	DISK_IMAGE_READONLY( "gdt-0009a", 0, SHA1(abeb242cb7f55d003eb7ca6d42dccdb5d8080bf1) )
 
 	ROM_REGION( 0x50, "pic", ROMREGION_ERASE)
-<<<<<<< HEAD
-	ROM_LOAD("avalon.data", 0x00, 0x50, CRC(6c51e5d6) SHA1(84afef983f1f855fe8722f55baa8ea5121da9369) )
-=======
 	ROM_LOAD("317-0355-jpn.data", 0x00, 0x50, CRC(9b9db9d8) SHA1(60aab36fcfd7a2850b2947effea70e44a06d1f78) )
->>>>>>> upstream/master
 ROM_END
 
 ROM_START( avalns13 )
@@ -927,11 +789,7 @@ ROM_START( avalns13 )
 	DISK_IMAGE_READONLY( "gdt-0009c", 0, SHA1(b960815d85e255521fc26bd4a9e4b7e5c4469487) )
 
 	ROM_REGION( 0x50, "pic", ROMREGION_ERASE)
-<<<<<<< HEAD
-	ROM_LOAD("avalon.data", 0x00, 0x50, CRC(6c51e5d6) SHA1(84afef983f1f855fe8722f55baa8ea5121da9369) )
-=======
 	ROM_LOAD("317-0355-jpn.data", 0x00, 0x50, CRC(9b9db9d8) SHA1(60aab36fcfd7a2850b2947effea70e44a06d1f78) )
->>>>>>> upstream/master
 ROM_END
 
 ROM_START( avalnc12 )
@@ -941,11 +799,7 @@ ROM_START( avalnc12 )
 	DISK_IMAGE_READONLY( "gdt-0010a", 0, SHA1(a82f803a2097890c29e44ef30d97ad1fcf550435) )
 
 	ROM_REGION( 0x50, "pic", ROMREGION_ERASE)
-<<<<<<< HEAD
-	ROM_LOAD("avalon.data", 0x00, 0x50, CRC(6c51e5d6) SHA1(84afef983f1f855fe8722f55baa8ea5121da9369) )
-=======
 	ROM_LOAD("317-0355-jpn.data", 0x00, 0x50, CRC(9b9db9d8) SHA1(60aab36fcfd7a2850b2947effea70e44a06d1f78) )
->>>>>>> upstream/master
 ROM_END
 
 /*
@@ -972,22 +826,14 @@ ROM_START( avalnc13 )
 	DISK_IMAGE_READONLY( "gdt-0010c", 0, SHA1(c7a3fdb467ccd03b5b9b9e8e290faabcbbc77546) )
 
 	ROM_REGION( 0x50, "pic", ROMREGION_ERASE)
-<<<<<<< HEAD
-	ROM_LOAD("avalon.data", 0x00, 0x50, CRC(6c51e5d6) SHA1(84afef983f1f855fe8722f55baa8ea5121da9369) )
-=======
 	ROM_LOAD("317-0355-jpn.data", 0x00, 0x50, CRC(9b9db9d8) SHA1(60aab36fcfd7a2850b2947effea70e44a06d1f78) )
->>>>>>> upstream/master
 ROM_END
 
 ROM_START( tfupdate )
 	TRIFORCE_BIOS
 
 	DISK_REGION( "gdrom" )
-<<<<<<< HEAD
-	DISK_IMAGE_READONLY( "gdt-0011", 0, BAD_DUMP SHA1(71bfa8f53d211085c020d54f55eeeabf85212a0b) )
-=======
 	DISK_IMAGE_READONLY( "gdt-0011", 0, SHA1(834e261f2752883ceac0220a0305f9b09c3b5a9b) )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x50, "pic", ROMREGION_ERASE)
 	ROM_LOAD("317-0371-jpn.data", 0x00, 0x50, CRC(08434e5e) SHA1(2121999e851f6f62ab845e6de40849d850ac9d1c) )
@@ -1017,8 +863,6 @@ ROM_START( vs4j )
 	ROM_LOAD("317-0391-jpn.data", 0x00, 0x50, CRC(0f2dbb73) SHA1(7b9d66abe85303b3e26b442a3a63feca1a0edbdb) )
 ROM_END
 
-<<<<<<< HEAD
-=======
 ROM_START( vs4e )
 	TRIFORCE_BIOS
 
@@ -1029,7 +873,6 @@ ROM_START( vs4e )
 	ROM_LOAD("317-0392-exp.pic", 0x00, 0x4000, CRC(c8931261) SHA1(063faea92a987a5b3dc96455494cf5fc13052428) )
 ROM_END
 
->>>>>>> upstream/master
 /*
 Title             VIRTUA STRIKER 4
 Media ID          93B2
@@ -1081,12 +924,6 @@ ROM_START( avalon20 )
 	TRIFORCE_BIOS
 
 	DISK_REGION( "gdrom" )
-<<<<<<< HEAD
-	DISK_IMAGE_READONLY( "gdt-0017b", 0, BAD_DUMP SHA1(e2dd32c322ffcaf38b82275d2721b71bb3dfc1f2) )
-
-	ROM_REGION( 0x50, "pic", ROMREGION_ERASE)
-	ROM_LOAD("gdt-0017b.data", 0x00, 0x50, CRC(32cb46d4) SHA1(a58b9e03d57b317133d9b6c29e42852af8e77559) )
-=======
 	DISK_IMAGE_READONLY( "gdt-0017b", 0, SHA1(22827a78415c967c9b6abff5aa1037e01785a7b3) )
 
 	ROM_REGION( 0x50, "pic", ROMREGION_ERASE)
@@ -1121,24 +958,16 @@ ROM_START( vs42006b )
 
 	ROM_REGION( 0x50, "pic", ROMREGION_ERASE)
 	ROM_LOAD("317-0432-jpn.data", 0x00, 0x50, CRC(e3d13191) SHA1(4255c09aad06eb38c16bdec881897404a3a68b37) )
->>>>>>> upstream/master
 ROM_END
 
 ROM_START( vs42006 )
 	TRIFORCE_BIOS
 
 	DISK_REGION( "gdrom" )
-<<<<<<< HEAD
-	DISK_IMAGE_READONLY( "gdt-0020d", 0, BAD_DUMP SHA1(db256d094b9754d452d7a2b8a370699d21141c1f) )
-
-	ROM_REGION( 0x50, "pic", ROMREGION_ERASE)
-	ROM_LOAD("gdt-0020.data", 0x00, 0x50, CRC(e3d13191) SHA1(4255c09aad06eb38c16bdec881897404a3a68b37) )
-=======
 	DISK_IMAGE_READONLY( "gdt-0020d", 0, SHA1(09000f5b6ef680c603a16ea8028414aec0cc05f2) )
 
 	ROM_REGION( 0x50, "pic", ROMREGION_ERASE)
 	ROM_LOAD("317-0432-jpn.data", 0x00, 0x50, CRC(e3d13191) SHA1(4255c09aad06eb38c16bdec881897404a3a68b37) )
->>>>>>> upstream/master
 ROM_END
 
 /*
@@ -1197,12 +1026,9 @@ ROM_START( mkartagp )
 	ROM_LOAD( "ic6_k9f1208u0b",  0x0c600000, 0x4200000, CRC(26bcfe14) SHA1(893e6b38cccca62037fc01012410d535634f8bc1) )
 	ROM_LOAD( "ic35_k9f1208u0b", 0x10800000, 0x4200000, CRC(9a67892f) SHA1(f2beb56d07a42a01a8cfffbf683d8ec58c8407cc) )
 	ROM_LOAD( "ic45_k9f1208u0b", 0x14c00000, 0x4200000, CRC(274e7b81) SHA1(d97951c19d4ea430e09bc56777d99651a1f888d1) )
-<<<<<<< HEAD
-=======
 
 	ROM_REGION( 0x4000, "pic", ROMREGION_ERASEFF)
 	ROM_LOAD("317-5109-com.pic", 0x00, 0x4000, CRC(b7159fe3) SHA1(886c026ae62651bb5f700dfd6f9ebb2c415c1ae8) )
->>>>>>> upstream/master
 ROM_END
 
 /*
@@ -1218,17 +1044,6 @@ ROM_START( mkartag2 )
 	TRIFORCE_BIOS
 
 	ROM_REGION(0x21200000, "rom_board", 0)
-<<<<<<< HEAD
-	ROM_LOAD( "ic9_mx29lv400cttc.bin", 0x00000000, 0x0080000, CRC(2bb9f1fe) SHA1(935511d93a0ab06436b0674bef90c790c100e0b1) )
-	ROM_LOAD( "ic1_k9f1208u0b.bin",    0x01000000, 0x4200000, CRC(e52f17ef) SHA1(1e007d3136cacb89c396b8261e3978956cc21bdd) )
-	ROM_LOAD( "ic2_k9f1208u0b.bin",    0x04200000, 0x4200000, CRC(8a6a2649) SHA1(fd4318e7fb5020c499e06fdb1996b8d40161b674) )
-	ROM_LOAD( "ic3_k9f1208u0b.bin",    0x08400000, 0x4200000, CRC(8fd44a29) SHA1(9392bc4da6541960a83e9c7b3ab4f36bc5564fb7) )
-	ROM_LOAD( "ic4_k9f1208u0b.bin",    0x0c600000, 0x4200000, CRC(ae3fb198) SHA1(c9c0beb9f6875dbf7ce015454a59481524ef3ef6) )
-	ROM_LOAD( "ic5_k9f1208u0b.bin",    0x10800000, 0x4200000, CRC(e9208514) SHA1(ad0ed3e681cd78a61d7ad3af83db20e364bb47fd) )
-	ROM_LOAD( "ic6_k9f1208u0b.bin",    0x14c00000, 0x4200000, CRC(7363697c) SHA1(997c96d0b41774a24a2e0427a703bc295e784187) )
-	ROM_LOAD( "ic7_k9f1208u0b.bin",    0x18e00000, 0x4200000, CRC(407da1d2) SHA1(c185ebd2f3d8654d8fd394c56ac9bfff7e49f125) )
-	ROM_LOAD( "ic8_k9f1208u0b.bin",    0x1d000000, 0x4200000, CRC(9ab76062) SHA1(36a6317c646da5cf682d46ca438ce05e600bc354) )
-=======
 	// DES encrypted
 	ROM_LOAD16_BYTE( "ic1_k9f1208u0b.bin",    0x00000000, 0x4200000, CRC(e52f17ef) SHA1(1e007d3136cacb89c396b8261e3978956cc21bdd) )
 	ROM_LOAD16_BYTE( "ic2_k9f1208u0b.bin",    0x00000001, 0x4200000, CRC(8a6a2649) SHA1(fd4318e7fb5020c499e06fdb1996b8d40161b674) )
@@ -1243,97 +1058,12 @@ ROM_START( mkartag2 )
 
 	ROM_REGION( 0x4000, "pic", ROMREGION_ERASEFF)
 	ROM_LOAD("317-5128-com.pic", 0x00, 0x4000, CRC(0231b10c) SHA1(e060d74753a39081364e3175ac12e724ad585c33) )
->>>>>>> upstream/master
 ROM_END
 
 ROM_START( mkartag2a )
 	TRIFORCE_BIOS
 
 	ROM_REGION(0x21200000, "rom_board", 0)
-<<<<<<< HEAD
-	ROM_LOAD( "ic9_mx29lv400cttc.bin", 0x00000000, 0x0080000, CRC(ff854fd0) SHA1(0e42aff9a60aacd200b7a29d4d180abdab6a732e) ) // sldh
-	ROM_LOAD( "ic1_k9f1208u0b.bin",    0x01000000, 0x4200000, CRC(c5624816) SHA1(d6f2a2ff9e9e14d857a0ec810521c378ba1fabd5) ) // sldh
-	ROM_LOAD( "ic2_k9f1208u0b.bin",    0x04200000, 0x4200000, CRC(44e59a1f) SHA1(68a8c1178a33e23446980ec84486bc614f830dad) ) // sldh
-	ROM_LOAD( "ic3_k9f1208u0b.bin",    0x08400000, 0x4200000, CRC(6688e7f9) SHA1(7d1e60806c02fd765dd0981e790a698a29050aae) ) // sldh
-	ROM_LOAD( "ic4_k9f1208u0b.bin",    0x0c600000, 0x4200000, CRC(e043eac2) SHA1(0108d940a852ff03e919170957f2bca2c1a88a03) ) // sldh
-	ROM_LOAD( "ic5_k9f1208u0b.bin",    0x10800000, 0x4200000, CRC(20882926) SHA1(c802de32ca24bf4e9fbabf47fed23a91b3d614ac) ) // sldh
-	ROM_LOAD( "ic6_k9f1208u0b.bin",    0x14c00000, 0x4200000, CRC(14171ba4) SHA1(3ddace539cd8a4b53a1ef03238e8404db7dcd85e) ) // sldh
-	ROM_LOAD( "ic7_k9f1208u0b.bin",    0x18e00000, 0x4200000, CRC(bd0199df) SHA1(aafb171e9f5a4c8dc2ef55ba344a0eb310c63467) ) // sldh
-	ROM_LOAD( "ic8_k9f1208u0b.bin",    0x1d000000, 0x4200000, CRC(8ad6c7ae) SHA1(749b99a944f62aefb895a622c029656c69b3c736) ) // sldh
-ROM_END
-
-/* Main board */
-/*Triforce*/GAME( 2002, triforce, 0,        triforcegd,    triforce, driver_device, 0, ROT0, "Sega",                               "Triforce Bios", MACHINE_IS_SKELETON|MACHINE_IS_BIOS_ROOT )
-
-/* GDT-xxxx (Sega GD-ROM games) */
-/* 0001  */ GAME( 2002, vs2002j,  triforce, triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Amusement Vision",            "Virtua Striker 2002 (GDT-0001)", MACHINE_IS_SKELETON )
-/* 0002  */ GAME( 2002, vs2002ex, triforce, triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Amusement Vision",            "Virtua Striker 2002 (GDT-0002)", MACHINE_IS_SKELETON )
-// 0003
-// 0004     GAME( 2003, fzeroaxo, fzeroax,  triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Amusement Vision / Nintendo", "F-Zero AX (GDT-0004)", MACHINE_IS_SKELETON )
-// 0004A    GAME( 2003, fzeroaxa, fzeroax,  triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Amusement Vision / Nintendo", "F-Zero AX (Rev A) (GDT-0004A)", MACHINE_IS_SKELETON )
-// 0004B    GAME( 2003, fzeroaxb, fzeroax,  triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Amusement Vision / Nintendo", "F-Zero AX (Rev B) (GDT-0004B)", MACHINE_IS_SKELETON )
-/* 0004C */ GAME( 2003, fzeroaxc, fzeroax,  triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Amusement Vision / Nintendo", "F-Zero AX (Rev C) (GDT-0004C)", MACHINE_IS_SKELETON )
-// 0004D    GAME( 2003, fzeroaxd, fzeroax,  triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Amusement Vision / Nintendo", "F-Zero AX (Rev D) (GDT-0004D)", MACHINE_IS_SKELETON )
-/* 0004E */ GAME( 2003, fzeroax,  triforce, triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Amusement Vision / Nintendo", "F-Zero AX (Rev E) (GDT-0004E)", MACHINE_IS_SKELETON )
-// 0005     GAME( 2003, avalonso, avalons,  triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon - The Wizard Master (server) (GDT-0005)", MACHINE_IS_SKELETON )
-// 0005A    GAME( 2003, avalonsa, avalons,  triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon - The Wizard Master (server) (Rev A) (GDT-0005A)", MACHINE_IS_SKELETON )
-// 0005B    GAME( 2003, avalonsb, avalons,  triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon - The Wizard Master (server) (Rev B) (GDT-0005B)", MACHINE_IS_SKELETON )
-/* 0005C */ GAME( 2003, avalonsc, avalons,  triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon - The Wizard Master (server) (Rev C) (GDT-0005C)", MACHINE_IS_SKELETON )
-// 0005D    GAME( 2003, avalonsd, avalons,  triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon - The Wizard Master (server) (Rev D) (GDT-0005D)", MACHINE_IS_SKELETON )
-/* 0005E */ GAME( 2003, avalonse, avalons,  triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon - The Wizard Master (server) (Rev E) (GDT-0005E)", MACHINE_IS_SKELETON )
-/* 0005F */ GAME( 2003, avalonsf, avalons,  triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon - The Wizard Master (server) (Rev F) (GDT-0005F)", MACHINE_IS_SKELETON )
-/* 0005G */ GAME( 2003, avalons,  triforce, triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon - The Wizard Master (server) (Rev G) (GDT-0005G)", MACHINE_IS_SKELETON )
-// 0006     GAME( 2003, avalonco, triforce, triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon - The Wizard Master (client) (GDT-0006)", MACHINE_IS_SKELETON )
-// 0006A    GAME( 2003, avalonca, triforce, triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon - The Wizard Master (client) (Rev A) (GDT-0006A)", MACHINE_IS_SKELETON )
-// 0006B    GAME( 2003, avaloncb, triforce, triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon - The Wizard Master (client) (Rev B) (GDT-0006B)", MACHINE_IS_SKELETON )
-// 0006C    GAME( 2003, avaloncc, triforce, triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon - The Wizard Master (client) (Rev C) (GDT-0006C)", MACHINE_IS_SKELETON )
-// 0006D    GAME( 2003, avaloncd, triforce, triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon - The Wizard Master (client) (Rev D) (GDT-0006D)", MACHINE_IS_SKELETON )
-/* 0006E */ GAME( 2003, avalonce, avalonc,  triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon - The Wizard Master (client) (Rev E) (GDT-0006E)", MACHINE_IS_SKELETON )
-/* 0006F */ GAME( 2003, avaloncf, avalonc,  triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon - The Wizard Master (client) (Rev F) (GDT-0006F)", MACHINE_IS_SKELETON )
-/* 0006G */ GAME( 2003, avalonc,  triforce, triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon - The Wizard Master (client) (Rev G) (GDT-0006G)", MACHINE_IS_SKELETON )
-// 0007
-// 0008     GAME( 2003, gekpuryo, gekpurya, triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Wow Entertainment",           "Gekitou Pro Yakyuu Mizushima Shinji All Stars vs. Pro Yakyuu (GDT-0008)", MACHINE_IS_SKELETON )
-// 0008A    GAME( 2003, gekpurya, gekpurya, triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Wow Entertainment",           "Gekitou Pro Yakyuu Mizushima Shinji All Stars vs. Pro Yakyuu (Rev A) (GDT-0008A)", MACHINE_IS_SKELETON )
-/* 0008B */ GAME( 2003, gekpuryb, gekpurya, triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Wow Entertainment",           "Gekitou Pro Yakyuu Mizushima Shinji All Stars vs. Pro Yakyuu (Rev B) (GDT-0008B)", MACHINE_IS_SKELETON )
-/* 0008C */ GAME( 2003, gekpurya, triforce, triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Wow Entertainment",           "Gekitou Pro Yakyuu Mizushima Shinji All Stars vs. Pro Yakyuu (Rev C) (GDT-0008C)", MACHINE_IS_SKELETON )
-// 0009     GAME( 2004, avalns11, avalns13, triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon 1.? - ??? (server) (GDT-0009)", MACHINE_IS_SKELETON )
-/* 0009A */ GAME( 2004, avalns12, avalns13, triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon 1.2 - Summon The New Monsters (server) (Rev A) (GDT-0009A)", MACHINE_IS_SKELETON )
-// 0009B    GAME( 2004, avals13b, avalns13, triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon 1.? - ??? (server) (Rev B) (GDT-0009B)", MACHINE_IS_SKELETON )
-/* 0009C */ GAME( 2004, avalns13, triforce, triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon 1.3 - Chaotic Sabbat (server) (Rev C) (GDT-0009C)", MACHINE_IS_SKELETON )
-// 0010     GAME( 2004, avalnc11, avalnc13, triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon 1.? - ??? (client) (GDT-0010)", MACHINE_IS_SKELETON )
-/* 0010A */ GAME( 2004, avalnc12, avalnc13, triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon 1.2 - Summon The New Monsters (client) (Rev A) (GDT-0010A)", MACHINE_IS_SKELETON )
-// 0010B    GAME( 2004, avalc13b, avalnc13, triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon 1.? - ??? (client) (Rev B) (GDT-0010B)", MACHINE_IS_SKELETON )
-/* 0010C */ GAME( 2004, avalnc13, triforce, triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon 1.3 - Chaotic Sabbat (client) (Rev C) (GDT-0010C)", MACHINE_IS_SKELETON )
-/* 0011  */ GAME( 2004, tfupdate, triforce, triforcegd,    triforce, driver_device, 0, ROT0, "Sega",                               "Triforce DIMM Updater (GDT-0011)", MACHINE_IS_SKELETON )
-// 0012
-// 0013     GAME( 2005, vs4jo,    vs4j,     triforcegd,    triforce, driver_device, 0, ROT0, "Sega",                               "Virtua Striker 4 (Japan) (GDT-0013)", MACHINE_IS_SKELETON )
-// 0013A    GAME( 2005, vs4ja,    vs4j,     triforcegd,    triforce, driver_device, 0, ROT0, "Sega",                               "Virtua Striker 4 (Japan) (Rev A) (GDT-0013A)", MACHINE_IS_SKELETON )
-// 0013B    GAME( 2005, vs4jb,    vs4j,     triforcegd,    triforce, driver_device, 0, ROT0, "Sega",                               "Virtua Striker 4 (Japan) (Rev B) (GDT-0013B)", MACHINE_IS_SKELETON )
-// 0013C    GAME( 2005, vs4jc,    vs4j,     triforcegd,    triforce, driver_device, 0, ROT0, "Sega",                               "Virtua Striker 4 (Japan) (Rev C) (GDT-0013C)", MACHINE_IS_SKELETON )
-// 0013D    GAME( 2005, vs4jd,    vs4j,     triforcegd,    triforce, driver_device, 0, ROT0, "Sega",                               "Virtua Striker 4 (Japan) (Rev D) (GDT-0013D)", MACHINE_IS_SKELETON )
-/* 0013E */ GAME( 2005, vs4j,     triforce, triforcegd,    triforce, driver_device, 0, ROT0, "Sega",                               "Virtua Striker 4 (Japan) (Rev E) (GDT-0013E)", MACHINE_IS_SKELETON )
-// 0014
-/* 0015  */ GAME( 2004, vs4,      triforce, triforcegd,    triforce, driver_device, 0, ROT0, "Sega",                               "Virtua Striker 4 (Export) (GDT-0015)", MACHINE_IS_SKELETON )
-// 0016     GAME( 2004, aval20s,  triforce, triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon 2.0 - Eutaxy and Commandment (server) (GDT-0016)", MACHINE_IS_SKELETON )
-// 0017     GAME( 2004, avalc20o, avalon20, triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon 2.0 - Eutaxy and Commandment (client) (GDT-0017)", MACHINE_IS_SKELETON )
-// 0017A    GAME( 2004, avalc20a, avalon20, triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon 2.0 - Eutaxy and Commandment (client) (Rev A) (GDT-0017A)", MACHINE_IS_SKELETON )
-/* 0017B */ GAME( 2004, avalon20, triforce, triforcegd,    triforce, driver_device, 0, ROT0, "Sega / Hitmaker",                    "The Key Of Avalon 2.0 - Eutaxy and Commandment (client) (Rev B) (GDT-0017B)", MACHINE_IS_SKELETON )
-// 0018
-// 0019
-// 0020     GAME( 2006, vs42k6o,  vs42006,  triforcegd,    triforce, driver_device, 0, ROT0, "Sega",                               "Virtua Striker 4 Ver.2006 (Japan) (GDT-0020)", MACHINE_IS_SKELETON )
-// 0020A    GAME( 2006, vs42k6a,  vs42006,  triforcegd,    triforce, driver_device, 0, ROT0, "Sega",                               "Virtua Striker 4 Ver.2006 (Japan) (Rev A) (GDT-0020A)", MACHINE_IS_SKELETON )
-// 0020B    GAME( 2006, vs42k6b,  vs42006,  triforcegd,    triforce, driver_device, 0, ROT0, "Sega",                               "Virtua Striker 4 Ver.2006 (Japan) (Rev B) (GDT-0020B)", MACHINE_IS_SKELETON )
-// 0020C    GAME( 2006, vs42k6c,  vs42006,  triforcegd,    triforce, driver_device, 0, ROT0, "Sega",                               "Virtua Striker 4 Ver.2006 (Japan) (Rev C) (GDT-0020C)", MACHINE_IS_SKELETON )
-/* 0020D */ GAME( 2006, vs42006,  triforce, triforcegd,    triforce, driver_device, 0, ROT0, "Sega",                               "Virtua Striker 4 Ver.2006 (Japan) (Rev D) (GDT-0020D)", MACHINE_IS_SKELETON )
-/* 0021  */ GAME( 2006, vs42k6ex, triforce, triforcegd,    triforce, driver_device, 0, ROT0, "Sega",                               "Virtua Striker 4 Ver.2006 (Export) (GDT-0021)", MACHINE_IS_SKELETON )
-// 0022     GAME( 2006, tcfboxo,  tcfboxa,  triforcegd,    triforce, driver_device, 0, ROT0, "Sega",                               "Triforce Firmware Update For Compact Flash Box (GDT-0022)", MACHINE_IS_SKELETON )
-/* 0022A */ GAME( 2006, tcfboxa,  triforce, triforcegd,    triforce, driver_device, 0, ROT0, "Sega",                               "Triforce Firmware Update For Compact Flash Box (Rev A) (GDT-0022A)", MACHINE_IS_SKELETON )
-
-// 837-xxxxx (Sega cart games)
-/* 14343-4T1  */ GAME( 2005, mkartagp, triforce, triforce_base, triforce, driver_device, 0, ROT0, "Namco / Nintendo", "Mario Kart Arcade GP (Japan, MKA1 Ver.A1)", MACHINE_IS_SKELETON )
-/* 14343-R4S0 */ GAME( 2007, mkartag2, triforce, triforce_base, triforce, driver_device, 0, ROT0, "Namco / Nintendo", "Mario Kart Arcade GP 2 (Japan, MK21 Ver.A)", MACHINE_IS_SKELETON )
-/* 14343-R4S0 */ GAME( 2007, mkartag2a,mkartag2, triforce_base, triforce, driver_device, 0, ROT0, "Namco / Nintendo", "Mario Kart Arcade GP 2 (Japan, MK21 Ver.A, alt dump)", MACHINE_IS_SKELETON )
-=======
 	// DES encrypted
 	ROM_LOAD16_BYTE( "ic1_k9f1208u0b.bin",    0x00000000, 0x4200000, CRC(c5624816) SHA1(d6f2a2ff9e9e14d857a0ec810521c378ba1fabd5) ) // sldh
 	ROM_LOAD16_BYTE( "ic2_k9f1208u0b.bin",    0x00000001, 0x4200000, CRC(44e59a1f) SHA1(68a8c1178a33e23446980ec84486bc614f830dad) ) // sldh
@@ -1425,4 +1155,3 @@ ROM_END
 /* 14343-4T1  */ GAME( 2005, mkartagp, triforce, triforce_base, triforce, triforce_state, 0, ROT0, "Namco / Nintendo", "Mario Kart Arcade GP (Japan, MKA1 Ver.A1)", MACHINE_IS_SKELETON )
 /* 14343-R4S0 */ GAME( 2007, mkartag2, triforce, triforce_base, triforce, triforce_state, 0, ROT0, "Namco / Nintendo", "Mario Kart Arcade GP 2 (Japan, MK21 Ver.A)", MACHINE_IS_SKELETON )
 /* 14343-R4S0 */ GAME( 2007, mkartag2a,mkartag2, triforce_base, triforce, triforce_state, 0, ROT0, "Namco / Nintendo", "Mario Kart Arcade GP 2 (Japan, MK21 Ver.A, alt dump)", MACHINE_IS_SKELETON )
->>>>>>> upstream/master

@@ -15,16 +15,6 @@
 //  constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const device_type A800_ROM_SPARTADOS = &device_creator<a800_rom_spartados_device>;
-
-
-a800_rom_spartados_device::a800_rom_spartados_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: a800_rom_device(mconfig, A800_ROM_SPARTADOS, "Atari 800 SpartaDOS ROM Carts", tag, owner, clock, "a800_sparta", __FILE__),
-	m_bank(0),
-	m_subslot_enabled(0)
-				{
-=======
 DEFINE_DEVICE_TYPE(A800_ROM_SPARTADOS, a800_rom_spartados_device, "a800_sparta", "Atari 800 SpartaDOS ROM Carts")
 
 
@@ -33,7 +23,6 @@ a800_rom_spartados_device::a800_rom_spartados_device(const machine_config &mconf
 	, m_bank(0)
 	, m_subslot_enabled(0)
 {
->>>>>>> upstream/master
 }
 
 

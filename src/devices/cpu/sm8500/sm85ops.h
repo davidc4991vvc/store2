@@ -80,11 +80,7 @@
 			break; \
 		case 0x40: \
 			s2 = mem_readword( sm8500_b2w[r1 & 0x07] ); \
-<<<<<<< HEAD
-			mem_writeword( sm8500_b2w[r1 & 0x07], s2 + 1 ); \
-=======
 			mem_writeword( sm8500_b2w[r1 & 0x07], s2 + 2 ); \
->>>>>>> upstream/master
 			break; \
 		case 0x80: \
 			s2 = mem_readword( m_PC ); m_PC += 2; \
@@ -93,32 +89,19 @@
 			} \
 			break; \
 		case 0xC0: \
-<<<<<<< HEAD
-			s2 = mem_readword( sm8500_b2w[ r1 & 0x07] ); \
-			mem_writeword( sm8500_b2w[r1 & 0x07], s2 - 1 ); \
-=======
 			s2 = mem_readword( sm8500_b2w[ r1 & 0x07])-2; \
 			mem_writeword( sm8500_b2w[r1 & 0x07], s2 ); \
->>>>>>> upstream/master
 			break; \
 		} \
 		r2 = r1; \
 		r1 = sm8500_b2w[ ( r1 >> 3 ) & 0x07 ];
 
 #define ARG_d8  r1 = mem_readbyte( m_PC++ ); \
-<<<<<<< HEAD
-		s2 = m_PC + ((INT8)r1);
-
-#define ARG_Rbr r1 = mem_readbyte( m_PC++ ); \
-		r2 = mem_readbyte( m_PC++ ); \
-		s2 = m_PC + ((INT8)r2);
-=======
 		s2 = m_PC + ((int8_t)r1);
 
 #define ARG_Rbr r1 = mem_readbyte( m_PC++ ); \
 		r2 = mem_readbyte( m_PC++ ); \
 		s2 = m_PC + ((int8_t)r2);
->>>>>>> upstream/master
 
 #define ARG_ad16    s2 = mem_readword( m_PC ); \
 			m_PC += 2;
@@ -889,11 +872,7 @@ case 0x2A:  /* BBC FFii/i(Rr),#b,d8 - 16,12/14,10 cycles - Flags affected: -----
 	if ( mem_readbyte( s1 ) & s2 ) {
 		mycycles += 10;
 	} else {
-<<<<<<< HEAD
-		m_PC = m_PC + ((INT8)d1);
-=======
 		m_PC = m_PC + ((int8_t)d1);
->>>>>>> upstream/master
 		mycycles += 14;
 	}
 	if ( ( r1 & 0x38 ) == 0 ) {
@@ -903,11 +882,7 @@ case 0x2A:  /* BBC FFii/i(Rr),#b,d8 - 16,12/14,10 cycles - Flags affected: -----
 case 0x2B:  /* BBS FFii/i(Rr),#b,d8 - 16,12/14,10 cycles - Flags affected: -------- */
 	ARG_riBd;
 	if ( mem_readbyte( s1 ) & s2 ) {
-<<<<<<< HEAD
-		m_PC = m_PC + ((INT8)d1);
-=======
 		m_PC = m_PC + ((int8_t)d1);
->>>>>>> upstream/master
 		mycycles += 14;
 	} else {
 		mycycles += 10;
@@ -970,10 +945,7 @@ case 0x31:  /* ADD r,@rr / ADD r,(rr)+ / ADD r,@ww / ADD r,ww(rr) / ADD r,-(rr) 
 case 0x32:  /* SUB r,@rr / SUB r,(rr)+ / SUB r,@ww / SUB r,ww(rr) / SUB r,-(rr) - 8,13,11,15,13 cycles - Flags affected: CZSV1H-- */
 	ARG_rmw;
 	OP_SUB8( mem_readbyte( r1 ), mem_readbyte( s2 ) );
-<<<<<<< HEAD
-=======
 	mem_writebyte( r1, res & 0xFF );
->>>>>>> upstream/master
 	switch( r2 & 0xC0 ) {
 	case 0x00:  mycycles += 8; break;
 	case 0x40:  mycycles += 13; break;
@@ -1175,31 +1147,19 @@ case 0x4B:  /* MOVW RRr,ww - 9 cycles - Flags affected: -------- */
 		mycycles += 9;
 	break;
 case 0x4C:  /* MULT Rrr,Rs - 24 cycles - Flags affected: -Z-0---- */
-<<<<<<< HEAD
-	ARG_RR;
-	res = mem_readword( r1 ) * mem_readbyte( r2 );
-	mem_writeword( r1, res & 0xFFFF );
-=======
 	// operation is not known if r1 is odd, assuming same as even for now
 	ARG_RR;
 	res = mem_readbyte( r1 | 1 ) * mem_readbyte( r2 );
 	mem_writeword( r1 & 0xfe, res & 0xFFFF );
->>>>>>> upstream/master
 	m_PS1 = m_PS1 & ~ ( FLAG_Z | FLAG_V );
 	m_PS1 |= ( ( res & 0xFFFF ) == 0x00 ? FLAG_Z : 0 );
 	mycycles += 24;
 	break;
 case 0x4D:  /* MULT RRr,i - 24 cycles - Flags affected: -Z-0---- */
-<<<<<<< HEAD
-	ARG_iR;
-	res = mem_readbyte( r1 + 1 ) * r2;
-	mem_writeword( r1, res & 0xFFFF );
-=======
 	// operation is not known if r1 is odd, assuming same as even for now
 	ARG_iR;
 	res = mem_readbyte( r1 | 1 ) * r2;
 	mem_writeword( r1 & 0xfe, res & 0xFFFF );
->>>>>>> upstream/master
 	m_PS1 = m_PS1 & ~ ( FLAG_Z | FLAG_V );
 	m_PS1 |= ( ( res & 0xFFFF ) == 0x00 ? FLAG_Z : 0 );
 	mycycles += 24;
@@ -1315,14 +1275,6 @@ case 0x59:  /* Invalid - 2? cycles - Flags affected: --------? */
 	mycycles += 2;
 	break;
 case 0x5A:  /* unk5A - 7,8,12,9,8 cycles */
-<<<<<<< HEAD
-	logerror( "%04X: unk%02x\n", m_PC-1,op );
-/* NOTE: This unknown command is used in the calculator as a compare instruction
-       at 0x493A and 0x4941, we set the flags on the 3rd byte, although its real
-       function remains a mystery */
-	ARG_iR;
-	OP_CMP8( 0, r1 );
-=======
 /* NOTE: This unknown command is used in the game.com calculator, and in a number of carts.
        It appears to compare the contents of the register number contained in the first
        parameter, against a literal in the second parameter.
@@ -1336,7 +1288,6 @@ case 0x5A:  /* unk5A - 7,8,12,9,8 cycles */
 	logerror( "%04X: unk%02x (cmp r%02X->(%02X)->%02X to %02X)\n",
 		m_PC-3,op,r2,s2,mem_readbyte(s2),r1 );
 	OP_CMP8( mem_readbyte(s2), r1 );
->>>>>>> upstream/master
 	mycycles += 7;
 	break;
 case 0x5B:  /* unk5B - 6,7,11,8,7 cycles */
@@ -1356,11 +1307,7 @@ logerror( "%04X: DIV RRr,Rs!\n", m_PC-1 );
 	m_PS1 = m_PS1 & ~ ( FLAG_Z | FLAG_V );
 	s1 = mem_readbyte( r2 + 1 );
 	if ( s1 ) {
-<<<<<<< HEAD
-		UINT16 div = mem_readword( r1 );
-=======
 		uint16_t div = mem_readword( r1 );
->>>>>>> upstream/master
 		res = div / s1;
 		mem_writebyte( r2, div % s1 );
 		mem_writeword( r1, res );

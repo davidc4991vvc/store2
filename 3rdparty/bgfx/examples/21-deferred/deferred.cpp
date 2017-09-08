@@ -1,11 +1,6 @@
 /*
-<<<<<<< HEAD
- * Copyright 2011-2015 Branimir Karadzic. All rights reserved.
- * License: http://www.opensource.org/licenses/BSD-2-Clause
-=======
  * Copyright 2011-2017 Branimir Karadzic. All rights reserved.
  * License: https://github.com/bkaradzic/bgfx#license-bsd-2-clause
->>>>>>> upstream/master
  */
 
 #include "common.h"
@@ -21,10 +16,6 @@
 #define RENDER_PASS_DEBUG_GBUFFER_ID  4
 
 static float s_texelHalf = 0.0f;
-<<<<<<< HEAD
-static bool s_originBottomLeft = false;
-=======
->>>>>>> upstream/master
 
 struct PosNormalTangentTexcoordVertex
 {
@@ -168,11 +159,7 @@ static const uint16_t s_cubeIndices[36] =
 
 void screenSpaceQuad(float _textureWidth, float _textureHeight, float _texelHalf, bool _originBottomLeft, float _width = 1.0f, float _height = 1.0f)
 {
-<<<<<<< HEAD
-	if (bgfx::checkAvailTransientVertexBuffer(3, PosTexCoord0Vertex::ms_decl) )
-=======
 	if (3 == bgfx::getAvailTransientVertexBuffer(3, PosTexCoord0Vertex::ms_decl) )
->>>>>>> upstream/master
 	{
 		bgfx::TransientVertexBuffer vb;
 		bgfx::allocTransientVertexBuffer(&vb, 3, PosTexCoord0Vertex::ms_decl);
@@ -225,20 +212,12 @@ void screenSpaceQuad(float _textureWidth, float _textureHeight, float _texelHalf
 	}
 }
 
-<<<<<<< HEAD
-class Deferred : public entry::AppI
-=======
 class ExampleDeferred : public entry::AppI
->>>>>>> upstream/master
 {
 	void init(int _argc, char** _argv) BX_OVERRIDE
 	{
 		Args args(_argc, _argv);
-<<<<<<< HEAD
-		
-=======
 
->>>>>>> upstream/master
 		m_width  = 1280;
 		m_height = 720;
 		m_debug  = BGFX_DEBUG_TEXT;
@@ -314,17 +293,10 @@ class ExampleDeferred : public entry::AppI
 		m_lineProgram    = loadProgram("vs_deferred_debug_line", "fs_deferred_debug_line");
 
 		// Load diffuse texture.
-<<<<<<< HEAD
-		m_textureColor  = loadTexture("fieldstone-rgba.dds");
-
-		// Load normal texture.
-		m_textureNormal = loadTexture("fieldstone-n.dds");
-=======
 		m_textureColor  = loadTexture("textures/fieldstone-rgba.dds");
 
 		// Load normal texture.
 		m_textureNormal = loadTexture("textures/fieldstone-n.dds");
->>>>>>> upstream/master
 
 		m_gbufferTex[0].idx = bgfx::invalidHandle;
 		m_gbufferTex[1].idx = bgfx::invalidHandle;
@@ -338,10 +310,6 @@ class ExampleDeferred : public entry::AppI
 		m_timeOffset = bx::getHPCounter();
 		const bgfx::RendererType::Enum renderer = bgfx::getRendererType();
 		s_texelHalf = bgfx::RendererType::Direct3D9 == renderer ? 0.5f : 0.0f;
-<<<<<<< HEAD
-		s_originBottomLeft = bgfx::RendererType::OpenGL == renderer || bgfx::RendererType::OpenGLES == renderer;
-=======
->>>>>>> upstream/master
 
 		// Get renderer capabilities info.
 		m_caps = bgfx::getCaps();
@@ -425,11 +393,7 @@ class ExampleDeferred : public entry::AppI
 			bgfx::dbgTextPrintf(0, 2, 0x6f, "Description: MRT rendering and deferred shading.");
 			bgfx::dbgTextPrintf(0, 3, 0x0f, "Frame: % 7.3f[ms]", double(frameTime)*toMs);
 
-<<<<<<< HEAD
-			if (2 > m_caps->maxFBAttachments)
-=======
 			if (2 > m_caps->limits.maxFBAttachments)
->>>>>>> upstream/master
 			{
 				// When multiple render targets (MRT) is not supported by GPU,
 				// implement alternative code path that doesn't use MRT.
@@ -437,11 +401,7 @@ class ExampleDeferred : public entry::AppI
 				bgfx::dbgTextPrintf(0, 5, blink ? 0x1f : 0x01, " MRT not supported by GPU. ");
 
 				// Set view 0 default viewport.
-<<<<<<< HEAD
-				bgfx::setViewRect(0, 0, 0, m_width, m_height);
-=======
 				bgfx::setViewRect(0, 0, 0, uint16_t(m_width), uint16_t(m_height) );
->>>>>>> upstream/master
 
 				// This dummy draw call is here to make sure that view 0 is cleared
 				// if no other draw calls are submitted to view 0.
@@ -472,15 +432,9 @@ class ExampleDeferred : public entry::AppI
 						| BGFX_TEXTURE_U_CLAMP
 						| BGFX_TEXTURE_V_CLAMP
 						;
-<<<<<<< HEAD
-					m_gbufferTex[0] = bgfx::createTexture2D(m_width, m_height, 1, bgfx::TextureFormat::BGRA8, samplerFlags);
-					m_gbufferTex[1] = bgfx::createTexture2D(m_width, m_height, 1, bgfx::TextureFormat::BGRA8, samplerFlags);
-					m_gbufferTex[2] = bgfx::createTexture2D(m_width, m_height, 1, bgfx::TextureFormat::D24,   samplerFlags);
-=======
 					m_gbufferTex[0] = bgfx::createTexture2D(uint16_t(m_width), uint16_t(m_height), false, 1, bgfx::TextureFormat::BGRA8, samplerFlags);
 					m_gbufferTex[1] = bgfx::createTexture2D(uint16_t(m_width), uint16_t(m_height), false, 1, bgfx::TextureFormat::BGRA8, samplerFlags);
 					m_gbufferTex[2] = bgfx::createTexture2D(uint16_t(m_width), uint16_t(m_height), false, 1, bgfx::TextureFormat::D24,   samplerFlags);
->>>>>>> upstream/master
 					m_gbuffer = bgfx::createFrameBuffer(BX_COUNTOF(m_gbufferTex), m_gbufferTex, true);
 
 					if (bgfx::isValid(m_lightBuffer) )
@@ -488,11 +442,7 @@ class ExampleDeferred : public entry::AppI
 						bgfx::destroyFrameBuffer(m_lightBuffer);
 					}
 
-<<<<<<< HEAD
-					m_lightBuffer = bgfx::createFrameBuffer(m_width, m_height, bgfx::TextureFormat::BGRA8, samplerFlags);
-=======
 					m_lightBuffer = bgfx::createFrameBuffer(uint16_t(m_width), uint16_t(m_height), bgfx::TextureFormat::BGRA8, samplerFlags);
->>>>>>> upstream/master
 				}
 
 				imguiBeginFrame(m_mouseState.m_mx
@@ -501,13 +451,8 @@ class ExampleDeferred : public entry::AppI
 						| (m_mouseState.m_buttons[entry::MouseButton::Right ] ? IMGUI_MBUT_RIGHT  : 0)
 						| (m_mouseState.m_buttons[entry::MouseButton::Middle] ? IMGUI_MBUT_MIDDLE : 0)
 						, m_mouseState.m_mz
-<<<<<<< HEAD
-						, m_width
-						, m_height
-=======
 						, uint16_t(m_width)
 						, uint16_t(m_height)
->>>>>>> upstream/master
 						);
 
 				imguiBeginScrollArea("Settings", m_width - m_width / 5 - 10, 10, m_width / 5, m_height / 3, &m_scrollArea);
@@ -545,28 +490,16 @@ class ExampleDeferred : public entry::AppI
 				float vp[16];
 				float invMvp[16];
 				{
-<<<<<<< HEAD
-					bgfx::setViewRect(RENDER_PASS_GEOMETRY_ID,      0, 0, m_width, m_height);
-					bgfx::setViewRect(RENDER_PASS_LIGHT_ID,         0, 0, m_width, m_height);
-					bgfx::setViewRect(RENDER_PASS_COMBINE_ID,       0, 0, m_width, m_height);
-					bgfx::setViewRect(RENDER_PASS_DEBUG_LIGHTS_ID,  0, 0, m_width, m_height);
-					bgfx::setViewRect(RENDER_PASS_DEBUG_GBUFFER_ID, 0, 0, m_width, m_height);
-=======
 					bgfx::setViewRect(RENDER_PASS_GEOMETRY_ID,      0, 0, uint16_t(m_width), uint16_t(m_height) );
 					bgfx::setViewRect(RENDER_PASS_LIGHT_ID,         0, 0, uint16_t(m_width), uint16_t(m_height) );
 					bgfx::setViewRect(RENDER_PASS_COMBINE_ID,       0, 0, uint16_t(m_width), uint16_t(m_height) );
 					bgfx::setViewRect(RENDER_PASS_DEBUG_LIGHTS_ID,  0, 0, uint16_t(m_width), uint16_t(m_height) );
 					bgfx::setViewRect(RENDER_PASS_DEBUG_GBUFFER_ID, 0, 0, uint16_t(m_width), uint16_t(m_height) );
->>>>>>> upstream/master
 
 					bgfx::setViewFrameBuffer(RENDER_PASS_LIGHT_ID, m_lightBuffer);
 
 					float proj[16];
-<<<<<<< HEAD
-					bx::mtxProj(proj, 60.0f, float(m_width)/float(m_height), 0.1f, 100.0f, s_originBottomLeft);
-=======
 					bx::mtxProj(proj, 60.0f, float(m_width)/float(m_height), 0.1f, 100.0f, m_caps->homogeneousDepth);
->>>>>>> upstream/master
 
 					bgfx::setViewFrameBuffer(RENDER_PASS_GEOMETRY_ID, m_gbuffer);
 					bgfx::setViewTransform(RENDER_PASS_GEOMETRY_ID, view, proj);
@@ -638,16 +571,6 @@ class ExampleDeferred : public entry::AppI
 				{
 					Sphere lightPosRadius;
 
-<<<<<<< HEAD
-					float lightTime = time * m_lightAnimationSpeed * (sinf(light/float(m_numLights) * bx::piHalf ) * 0.5f + 0.5f);
-					lightPosRadius.m_center[0] = sinf( ( (lightTime + light*0.47f) + bx::piHalf*1.37f ) )*offset;
-					lightPosRadius.m_center[1] = cosf( ( (lightTime + light*0.69f) + bx::piHalf*1.49f ) )*offset;
-					lightPosRadius.m_center[2] = sinf( ( (lightTime + light*0.37f) + bx::piHalf*1.57f ) )*2.0f;
-					lightPosRadius.m_radius = 2.0f;
-
-					Aabb aabb;
-					sphereToAabb(aabb, lightPosRadius);
-=======
 					float lightTime = time * m_lightAnimationSpeed * (bx::fsin(light/float(m_numLights) * bx::piHalf ) * 0.5f + 0.5f);
 					lightPosRadius.m_center[0] = bx::fsin( ( (lightTime + light*0.47f) + bx::piHalf*1.37f ) )*offset;
 					lightPosRadius.m_center[1] = bx::fcos( ( (lightTime + light*0.69f) + bx::piHalf*1.49f ) )*offset;
@@ -656,7 +579,6 @@ class ExampleDeferred : public entry::AppI
 
 					Aabb aabb;
 					toAabb(aabb, lightPosRadius);
->>>>>>> upstream/master
 
 					float box[8][3] =
 					{
@@ -763,46 +685,27 @@ class ExampleDeferred : public entry::AppI
 						bgfx::setUniform(u_lightRgbInnerR, lightRgbInnerR);
 						bgfx::setUniform(u_mtx, invMvp);
 						const uint16_t scissorHeight = uint16_t(y1-y0);
-<<<<<<< HEAD
-						bgfx::setScissor(uint16_t(x0), m_height-scissorHeight-uint16_t(y0), uint16_t(x1-x0), scissorHeight);
-						bgfx::setTexture(0, s_normal, m_gbuffer, 1);
-						bgfx::setTexture(1, s_depth,  m_gbuffer, 2);
-=======
 						bgfx::setScissor(uint16_t(x0), uint16_t(m_height-scissorHeight-y0), uint16_t(x1-x0), uint16_t(scissorHeight) );
 						bgfx::setTexture(0, s_normal, bgfx::getTexture(m_gbuffer, 1) );
 						bgfx::setTexture(1, s_depth,  bgfx::getTexture(m_gbuffer, 2) );
->>>>>>> upstream/master
 						bgfx::setState(0
 								| BGFX_STATE_RGB_WRITE
 								| BGFX_STATE_ALPHA_WRITE
 								| BGFX_STATE_BLEND_ADD
 								);
-<<<<<<< HEAD
-						screenSpaceQuad( (float)m_width, (float)m_height, s_texelHalf, s_originBottomLeft);
-=======
 						screenSpaceQuad( (float)m_width, (float)m_height, s_texelHalf, m_caps->originBottomLeft);
->>>>>>> upstream/master
 						bgfx::submit(RENDER_PASS_LIGHT_ID, m_lightProgram);
 					}
 				}
 
 				// Combine color and light buffers.
-<<<<<<< HEAD
-				bgfx::setTexture(0, s_albedo, m_gbuffer,     0);
-				bgfx::setTexture(1, s_light,  m_lightBuffer, 0);
-=======
 				bgfx::setTexture(0, s_albedo, bgfx::getTexture(m_gbuffer,     0) );
 				bgfx::setTexture(1, s_light,  bgfx::getTexture(m_lightBuffer, 0) );
->>>>>>> upstream/master
 				bgfx::setState(0
 						| BGFX_STATE_RGB_WRITE
 						| BGFX_STATE_ALPHA_WRITE
 						);
-<<<<<<< HEAD
-				screenSpaceQuad( (float)m_width, (float)m_height, s_texelHalf, s_originBottomLeft);
-=======
 				screenSpaceQuad( (float)m_width, (float)m_height, s_texelHalf, m_caps->originBottomLeft);
->>>>>>> upstream/master
 				bgfx::submit(RENDER_PASS_COMBINE_ID, m_combineProgram);
 
 				if (m_showGBuffer)
@@ -887,8 +790,4 @@ class ExampleDeferred : public entry::AppI
 	int64_t m_timeOffset;
 };
 
-<<<<<<< HEAD
-ENTRY_IMPLEMENT_MAIN(Deferred);
-=======
 ENTRY_IMPLEMENT_MAIN(ExampleDeferred);
->>>>>>> upstream/master

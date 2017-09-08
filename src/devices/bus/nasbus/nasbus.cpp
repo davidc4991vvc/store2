@@ -8,10 +8,7 @@
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #include "nasbus.h"
 
 
@@ -19,30 +16,12 @@
 //  NASBUS SLOT DEVICE
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type NASBUS_SLOT = &device_creator<nasbus_slot_device>;
-=======
 DEFINE_DEVICE_TYPE(NASBUS_SLOT, nasbus_slot_device, "nasbus_slot", "NASBUS Slot")
->>>>>>> upstream/master
 
 //-------------------------------------------------
 //  nasbus_slot_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-nasbus_slot_device::nasbus_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-	device_t(mconfig, NASBUS_SLOT, "NASBUS Slot", tag, owner, clock, "nasbus_slot", __FILE__),
-	device_slot_interface(mconfig, *this),
-	m_nasbus_tag(NULL)
-{
-}
-
-nasbus_slot_device::nasbus_slot_device(const machine_config &mconfig, device_type type, const char *name,
-	const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source) :
-	device_t(mconfig, type, name, tag, owner, clock, shortname, source),
-	device_slot_interface(mconfig, *this),
-	m_nasbus_tag(NULL)
-=======
 nasbus_slot_device::nasbus_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	nasbus_slot_device(mconfig, NASBUS_SLOT, tag, owner, clock)
 {
@@ -52,7 +31,6 @@ nasbus_slot_device::nasbus_slot_device(const machine_config &mconfig, device_typ
 	device_t(mconfig, type, tag, owner, clock),
 	device_slot_interface(mconfig, *this),
 	m_nasbus_tag(nullptr)
->>>>>>> upstream/master
 {
 }
 
@@ -83,27 +61,16 @@ void nasbus_slot_device::device_start()
 //  NASBUS DEVICE
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type NASBUS = &device_creator<nasbus_device>;
-=======
 DEFINE_DEVICE_TYPE(NASBUS, nasbus_device, "nasbus", "NASBUS Backplane")
->>>>>>> upstream/master
 
 //-------------------------------------------------
 //  nasbus_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-nasbus_device::nasbus_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-	device_t(mconfig, NASBUS_SLOT, "NASBUS Backplane", tag, owner, clock, "nasbus", __FILE__),
-	m_program(NULL),
-	m_io(NULL),
-=======
 nasbus_device::nasbus_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	device_t(mconfig, NASBUS, tag, owner, clock),
 	m_program(nullptr),
 	m_io(nullptr),
->>>>>>> upstream/master
 	m_ram_disable_handler(*this)
 {
 }
@@ -177,13 +144,8 @@ WRITE_LINE_MEMBER( nasbus_device::ram_disable_w ) { m_ram_disable_handler(state)
 
 device_nasbus_card_interface::device_nasbus_card_interface(const machine_config &mconfig, device_t &device) :
 	device_slot_card_interface(mconfig, device),
-<<<<<<< HEAD
-	m_next(NULL),
-	m_nasbus(NULL)
-=======
 	m_nasbus(nullptr),
 	m_next(nullptr)
->>>>>>> upstream/master
 {
 }
 

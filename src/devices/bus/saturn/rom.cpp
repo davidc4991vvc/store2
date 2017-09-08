@@ -15,22 +15,6 @@
 //  saturn_rom_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const device_type SATURN_ROM = &device_creator<saturn_rom_device>;
-
-
-saturn_rom_device::saturn_rom_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source)
-					: device_t(mconfig, type, name, tag, owner, clock, shortname, source),
-						device_sat_cart_interface( mconfig, *this )
-{
-}
-
-saturn_rom_device::saturn_rom_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: device_t(mconfig, SATURN_ROM, "Saturn ROM Carts", tag, owner, clock, "sat_rom", __FILE__),
-						device_sat_cart_interface( mconfig, *this )
-{
-	m_cart_type = 0xff; // actually not clear if ROM carts have a type ID like DRAM/BRAM carts
-=======
 DEFINE_DEVICE_TYPE(SATURN_ROM, saturn_rom_device, "sat_rom", "Saturn ROM Carts")
 
 
@@ -43,7 +27,6 @@ saturn_rom_device::saturn_rom_device(const machine_config &mconfig, device_type 
 saturn_rom_device::saturn_rom_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 		: saturn_rom_device(mconfig, SATURN_ROM, tag, owner, clock, 0xff) // actually not clear if ROM carts have a type ID like DRAM/BRAM carts
 {
->>>>>>> upstream/master
 }
 
 

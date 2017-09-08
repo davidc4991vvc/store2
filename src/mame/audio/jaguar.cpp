@@ -270,11 +270,7 @@ WRITE32_MEMBER( jaguar_state::dsp_flags_w )
 		/* see if we're going back to the spin loop */
 		if (!(data & 0x04000) && m_dsp->state_int(JAGUAR_R22) != 0)
 		{
-<<<<<<< HEAD
-			UINT32 r30 = m_dsp->state_int(JAGUAR_R30) & 0xffffff;
-=======
 			uint32_t r30 = m_dsp->state_int(JAGUAR_R30) & 0xffffff;
->>>>>>> upstream/master
 			if (r30 >= 0xf1b124 && r30 <= 0xf1b126)
 				dsp_suspend();
 		}
@@ -338,20 +334,12 @@ WRITE32_MEMBER( jaguar_state::serial_w )
 	{
 		/* right DAC */
 		case 2:
-<<<<<<< HEAD
-			m_dac2->write_signed16((data & 0xffff) ^ 0x8000);
-=======
 			m_rdac->write(data & 0xffff);
->>>>>>> upstream/master
 			break;
 
 		/* left DAC */
 		case 3:
-<<<<<<< HEAD
-			m_dac1->write_signed16((data & 0xffff) ^ 0x8000);
-=======
 			m_ldac->write(data & 0xffff);
->>>>>>> upstream/master
 			break;
 
 		/* frequency register */

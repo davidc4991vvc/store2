@@ -29,21 +29,12 @@
  *****************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/arm/arm.h"
-#include "includes/archimds.h"
-#include "debugger.h"
-
-static const int page_sizes[4] = { 4096, 8192, 16384, 32768 };
-static const UINT32 pixel_rate[4] = { 8000000, 12000000, 16000000, 24000000};
-=======
 #include "includes/archimds.h"
 #include "cpu/arm/arm.h"
 #include "debugger.h"
 
 static const int page_sizes[4] = { 4096, 8192, 16384, 32768 };
 static const uint32_t pixel_rate[4] = { 8000000, 12000000, 16000000, 24000000};
->>>>>>> upstream/master
 
 #define IOC_LOG 0
 
@@ -52,41 +43,20 @@ void archimedes_state::archimedes_request_irq_a(int mask)
 {
 	m_ioc_regs[IRQ_STATUS_A] |= mask;
 
-<<<<<<< HEAD
-	if (m_ioc_regs[IRQ_STATUS_A] & m_ioc_regs[IRQ_MASK_A])
-	{
-		m_maincpu->set_input_line(ARM_IRQ_LINE, ASSERT_LINE);
-	}
-
-	if ((m_ioc_regs[IRQ_STATUS_A] & m_ioc_regs[IRQ_MASK_A]) == 0)
-	{
-		m_maincpu->set_input_line(ARM_IRQ_LINE, CLEAR_LINE);
-	}
-=======
 	if ((m_ioc_regs[IRQ_STATUS_A] & m_ioc_regs[IRQ_MASK_A]) || (m_ioc_regs[IRQ_STATUS_B] & m_ioc_regs[IRQ_MASK_B]))
 		m_maincpu->set_input_line(ARM_IRQ_LINE, ASSERT_LINE);
 	else
 		m_maincpu->set_input_line(ARM_IRQ_LINE, CLEAR_LINE);
->>>>>>> upstream/master
 }
 
 void archimedes_state::archimedes_request_irq_b(int mask)
 {
 	m_ioc_regs[IRQ_STATUS_B] |= mask;
 
-<<<<<<< HEAD
-	if (m_ioc_regs[IRQ_STATUS_B] & m_ioc_regs[IRQ_MASK_B])
-	{
-		generic_pulse_irq_line(m_maincpu, ARM_IRQ_LINE, 1);
-		//m_maincpu->set_input_line(ARM_IRQ_LINE, CLEAR_LINE);
-		//m_maincpu->set_input_line(ARM_IRQ_LINE, ASSERT_LINE);
-	}
-=======
 	if ((m_ioc_regs[IRQ_STATUS_A] & m_ioc_regs[IRQ_MASK_A]) || (m_ioc_regs[IRQ_STATUS_B] & m_ioc_regs[IRQ_MASK_B]))
 		m_maincpu->set_input_line(ARM_IRQ_LINE, ASSERT_LINE);
 	else
 		m_maincpu->set_input_line(ARM_IRQ_LINE, CLEAR_LINE);
->>>>>>> upstream/master
 }
 
 void archimedes_state::archimedes_request_fiq(int mask)
@@ -97,11 +67,7 @@ void archimedes_state::archimedes_request_fiq(int mask)
 
 	if (m_ioc_regs[FIQ_STATUS] & m_ioc_regs[FIQ_MASK])
 	{
-<<<<<<< HEAD
-		generic_pulse_irq_line(m_maincpu, ARM_FIRQ_LINE, 1);
-=======
 		generic_pulse_irq_line(*m_maincpu, ARM_FIRQ_LINE, 1);
->>>>>>> upstream/master
 
 		//m_maincpu->set_input_line(ARM_FIRQ_LINE, CLEAR_LINE);
 		//m_maincpu->set_input_line(ARM_FIRQ_LINE, ASSERT_LINE);
@@ -117,11 +83,7 @@ void archimedes_state::archimedes_clear_irq_a(int mask)
 void archimedes_state::archimedes_clear_irq_b(int mask)
 {
 	m_ioc_regs[IRQ_STATUS_B] &= ~mask;
-<<<<<<< HEAD
-	//archimedes_request_irq_b(0);
-=======
 	archimedes_request_irq_b(0);
->>>>>>> upstream/master
 }
 
 void archimedes_state::archimedes_clear_fiq(int mask)
@@ -147,11 +109,7 @@ void archimedes_state::vidc_vblank()
 	archimedes_request_irq_a(ARCHIMEDES_IRQA_VBL);
 
 	// set up for next vbl
-<<<<<<< HEAD
-	m_vbl_timer->adjust(m_screen->time_until_pos(m_vidc_regs[0xb4]));
-=======
 	m_vbl_timer->adjust(m_screen->time_until_pos(m_vidc_vblank_time));
->>>>>>> upstream/master
 }
 
 /* video DMA */
@@ -161,16 +119,6 @@ void archimedes_state::vidc_vblank()
 void archimedes_state::vidc_video_tick()
 {
 	address_space &space = m_maincpu->space(AS_PROGRAM);
-<<<<<<< HEAD
-	static UINT8 *vram = m_region_vram->base();
-	UINT32 size;
-	UINT32 m_vidc_ccur;
-	UINT32 offset_ptr;
-
-	size = m_vidc_vidend-m_vidc_vidstart+0x10;
-
-	offset_ptr = m_vidc_vidstart+m_vidc_vidinit;
-=======
 	static uint8_t *vram = m_region_vram->base();
 	uint32_t size;
 	uint32_t m_vidc_ccur;
@@ -179,7 +127,6 @@ void archimedes_state::vidc_video_tick()
 	size = (m_vidc_vidend - m_vidc_vidstart + 0x10) & 0x1fffff;
 
 	offset_ptr = m_vidc_vidinit;
->>>>>>> upstream/master
 	if(offset_ptr >= m_vidc_vidend+0x10) // TODO: correct?
 		offset_ptr = m_vidc_vidstart;
 
@@ -201,11 +148,7 @@ void archimedes_state::vidc_video_tick()
 
 	if(m_video_dma_on)
 	{
-<<<<<<< HEAD
-		m_vid_timer->adjust(m_screen->time_until_pos(m_vidc_regs[0xb4]));
-=======
 		m_vid_timer->adjust(m_screen->time_until_pos(m_vidc_vblank_time+1));
->>>>>>> upstream/master
 	}
 	else
 		m_vid_timer->adjust(attotime::never);
@@ -215,17 +158,10 @@ void archimedes_state::vidc_video_tick()
 void archimedes_state::vidc_audio_tick()
 {
 	address_space &space = m_maincpu->space(AS_PROGRAM);
-<<<<<<< HEAD
-	UINT8 ulaw_comp;
-	INT16 res;
-	UINT8 ch;
-	static const INT16 mulawTable[256] =
-=======
 	uint8_t ulaw_comp;
 	int16_t res;
 	uint8_t ch;
 	static const int16_t mulawTable[256] =
->>>>>>> upstream/master
 	{
 		-32124,-31100,-30076,-29052,-28028,-27004,-25980,-24956,
 		-23932,-22908,-21884,-20860,-19836,-18812,-17788,-16764,
@@ -261,49 +197,26 @@ void archimedes_state::vidc_audio_tick()
 		56,    48,    40,    32,    24,    16,     8,     0
 	};
 
-<<<<<<< HEAD
-	for(ch=0;ch<8;ch++)
-	{
-		UINT8 ulaw_temp = (space.read_byte(m_vidc_sndstart+m_vidc_sndcur + ch)) ^ 0xff;
-=======
 	for(ch=0; ch<8; ch++)
 	{
 		uint8_t ulaw_temp = (space.read_byte(m_vidc_sndcur + ch)) ^ 0xff;
->>>>>>> upstream/master
 
 		ulaw_comp = (ulaw_temp>>1) | ((ulaw_temp&1)<<7);
 
 		res = mulawTable[ulaw_comp];
 
-<<<<<<< HEAD
-		m_dac[ch & 7]->write_signed16(res^0x8000);
-=======
 		m_dac[ch & 7]->write(res);
->>>>>>> upstream/master
 	}
 
 	m_vidc_sndcur+=8;
 
-<<<<<<< HEAD
-	if (m_vidc_sndcur >= (m_vidc_sndend-m_vidc_sndstart)+0x10)
-	{
-		m_vidc_sndcur = 0;
-=======
 	if (m_vidc_sndcur >= m_vidc_sndendcur)
 	{
->>>>>>> upstream/master
 		archimedes_request_irq_b(ARCHIMEDES_IRQB_SOUND_EMPTY);
 
 		if(!m_audio_dma_on)
 		{
 			m_snd_timer->adjust(attotime::never);
-<<<<<<< HEAD
-			for(ch=0;ch<8;ch++)
-			{
-				m_dac[ch & 7]->write_signed16(0x8000);
-			}
-		}
-=======
 			for(ch=0; ch<8; ch++)
 			{
 				m_dac[ch & 7]->write(0);
@@ -315,7 +228,6 @@ void archimedes_state::vidc_audio_tick()
 			m_vidc_sndcur = m_vidc_sndstart;
 			m_vidc_sndendcur = m_vidc_sndend;
 		}
->>>>>>> upstream/master
 	}
 }
 
@@ -346,13 +258,10 @@ void archimedes_state::ioc_timer(int param)
 	// all timers always run
 	a310_set_timer(param);
 
-<<<<<<< HEAD
-=======
 	// keep FIQ line ASSERTED if there are active requests
 	if (m_ioc_regs[FIQ_STATUS] & m_ioc_regs[FIQ_MASK])
 		archimedes_request_fiq(0);
 
->>>>>>> upstream/master
 	// but only timers 0 and 1 generate IRQs
 	switch (param)
 	{
@@ -382,21 +291,13 @@ void archimedes_state::archimedes_reset()
 	m_ioc_regs[IRQ_STATUS_B] = 0x00; //set up IL[1] On
 	m_ioc_regs[FIQ_STATUS] = 0x80;   //set up Force FIQ
 	m_ioc_regs[CONTROL] = 0xff;
-<<<<<<< HEAD
-=======
 
 	m_vidc_vblank_time = 10000; // set a stupidly high time so it doesn't fire off
 	m_vbl_timer->adjust(attotime::never);
->>>>>>> upstream/master
 }
 
 void archimedes_state::archimedes_init()
 {
-<<<<<<< HEAD
-	static const char *const dac_names[8] = { "dac0", "dac1", "dac2", "dac3", "dac4", "dac5", "dac6", "dac7" };
-
-=======
->>>>>>> upstream/master
 	m_memc_pagesize = 0;
 
 	m_vbl_timer = timer_alloc(TIMER_VBLANK);
@@ -414,36 +315,18 @@ void archimedes_state::archimedes_init()
 	m_vid_timer = timer_alloc(TIMER_VIDEO);
 	m_snd_timer = timer_alloc(TIMER_AUDIO);
 	m_snd_timer->adjust(attotime::never);
-<<<<<<< HEAD
-
-	for ( int i = 0; i < 8; i++ )
-	{
-		m_dac[i] = machine().device<dac_device>(dac_names[i]);
-	}
-=======
->>>>>>> upstream/master
 }
 
 READ32_MEMBER(archimedes_state::archimedes_memc_logical_r)
 {
-<<<<<<< HEAD
-	UINT32 page, poffs;
-=======
 	uint32_t page, poffs;
->>>>>>> upstream/master
 
 	// are we mapping in the boot ROM?
 	if (m_memc_latchrom)
 	{
-<<<<<<< HEAD
-		UINT32 *rom;
-
-		rom = (UINT32 *)m_region_maincpu->base();
-=======
 		uint32_t *rom;
 
 		rom = (uint32_t *)m_region_maincpu->base();
->>>>>>> upstream/master
 
 		return rom[offset & 0x1fffff];
 	}
@@ -474,11 +357,7 @@ READ32_MEMBER(archimedes_state::archimedes_memc_logical_r)
 
 WRITE32_MEMBER(archimedes_state::archimedes_memc_logical_w)
 {
-<<<<<<< HEAD
-	UINT32 page, poffs;
-=======
 	uint32_t page, poffs;
->>>>>>> upstream/master
 
 	// if the boot ROM is mapped, ignore writes
 	if (m_memc_latchrom)
@@ -507,24 +386,14 @@ WRITE32_MEMBER(archimedes_state::archimedes_memc_logical_w)
 /* Aristocrat Mark 5 - same as normal AA except with Dram emulator */
 READ32_MEMBER(archimedes_state::aristmk5_drame_memc_logical_r)
 {
-<<<<<<< HEAD
-	UINT32 page, poffs;
-=======
 	uint32_t page, poffs;
->>>>>>> upstream/master
 
 	// are we mapping in the boot ROM?
 	if (m_memc_latchrom)
 	{
-<<<<<<< HEAD
-		UINT32 *rom;
-
-		rom = (UINT32 *)m_region_maincpu->base();
-=======
 		uint32_t *rom;
 
 		rom = (uint32_t *)m_region_maincpu->base();
->>>>>>> upstream/master
 
 		return rom[offset & 0x1fffff];
 	}
@@ -566,15 +435,9 @@ READ32_MEMBER(archimedes_state::aristmk5_drame_memc_logical_r)
 
 void archimedes_state::archimedes_driver_init()
 {
-<<<<<<< HEAD
-	m_archimedes_memc_physmem = reinterpret_cast<UINT32 *>(memshare("physicalram")->ptr());
-//  address_space &space = m_maincpu->space(AS_PROGRAM);
-//  space.set_direct_update_handler(direct_update_delegate(FUNC(a310_setopbase), &machine));
-=======
 	m_archimedes_memc_physmem = reinterpret_cast<uint32_t *>(memshare("physicalram")->ptr());
 //  address_space &space = m_maincpu->space(AS_PROGRAM);
 //  space.set_direct_update_handler(direct_update_delegate(&a310_setopbase, &machine));
->>>>>>> upstream/master
 }
 
 static const char *const ioc_regnames[] =
@@ -617,20 +480,12 @@ void archimedes_state::latch_timer_cnt(int tmr)
 {
 	double time = m_timer[tmr]->elapsed().as_double();
 	time *= 2000000.0;  // find out how many 2 MHz ticks have gone by
-<<<<<<< HEAD
-	m_ioc_timerout[tmr] = m_ioc_timercnt[tmr] - (UINT32)time;
-=======
 	m_ioc_timerout[tmr] = m_ioc_timercnt[tmr] - (uint32_t)time;
->>>>>>> upstream/master
 }
 
 bool archimedes_state::check_floppy_ready()
 {
-<<<<<<< HEAD
-	floppy_image_device *floppy = NULL;
-=======
 	floppy_image_device *floppy = nullptr;
->>>>>>> upstream/master
 
 	if(!m_fdc)
 		return false;
@@ -644,11 +499,7 @@ bool archimedes_state::check_floppy_ready()
 	}
 
 	if(floppy)
-<<<<<<< HEAD
-		return floppy->ready_r();
-=======
 		return !floppy->ready_r();
->>>>>>> upstream/master
 
 	return false;
 }
@@ -663,13 +514,8 @@ READ32_MEMBER( archimedes_state::ioc_ctrl_r )
 	{
 		case CONTROL:
 		{
-<<<<<<< HEAD
-			UINT8 i2c_data = 1;
-			UINT8 flyback; //internal name for vblank here
-=======
 			uint8_t i2c_data = 1;
 			uint8_t flyback; //internal name for vblank here
->>>>>>> upstream/master
 			int vert_pos;
 			bool floppy_ready_state;
 
@@ -776,11 +622,7 @@ WRITE32_MEMBER( archimedes_state::ioc_ctrl_w )
 			archimedes_request_irq_a((data & 0x80) ? ARCHIMEDES_IRQA_FORCE : 0);
 
 			if(data & 0x08) //set up the VBLANK timer
-<<<<<<< HEAD
-				m_vbl_timer->adjust(m_screen->time_until_pos(m_vidc_regs[0xb4]));
-=======
 				m_vbl_timer->adjust(m_screen->time_until_pos(m_vidc_vblank_time));
->>>>>>> upstream/master
 
 			break;
 
@@ -871,11 +713,7 @@ WRITE32_MEMBER( archimedes_state::ioc_ctrl_w )
 
 READ32_MEMBER(archimedes_state::archimedes_ioc_r)
 {
-<<<<<<< HEAD
-	UINT32 ioc_addr;
-=======
 	uint32_t ioc_addr;
->>>>>>> upstream/master
 
 	ioc_addr = offset*4;
 
@@ -946,11 +784,7 @@ READ32_MEMBER(archimedes_state::archimedes_ioc_r)
 
 WRITE32_MEMBER(archimedes_state::archimedes_ioc_w)
 {
-<<<<<<< HEAD
-	UINT32 ioc_addr;
-=======
 	uint32_t ioc_addr;
->>>>>>> upstream/master
 
 	ioc_addr = offset*4;
 
@@ -1013,11 +847,7 @@ WRITE32_MEMBER(archimedes_state::archimedes_ioc_w)
 								---- x--- floppy controller reset
 								*/
 								m_fdc->dden_w(BIT(data, 1));
-<<<<<<< HEAD
-								if(data & 8)
-=======
 								if (!(data & 8))
->>>>>>> upstream/master
 									m_fdc->soft_reset();
 								if(data & ~0xa)
 									printf("%02x Latch B\n",data);
@@ -1027,21 +857,12 @@ WRITE32_MEMBER(archimedes_state::archimedes_ioc_w)
 								/*
 								-x-- ---- In Use Control (floppy?)
 								*/
-<<<<<<< HEAD
-								floppy_image_device *floppy = NULL;
-
-								if (!(data & 1)) { m_floppy_select = 0; floppy = m_floppy0->get_device(); }
-								if (!(data & 2)) { m_floppy_select = 1; floppy = m_floppy1->get_device(); }
-								if (!(data & 4)) { m_floppy_select = 2; floppy = NULL; } // floppy 2
-								if (!(data & 8)) { m_floppy_select = 3; floppy = NULL; } // floppy 3
-=======
 								floppy_image_device *floppy = nullptr;
 
 								if (!(data & 1)) { m_floppy_select = 0; floppy = m_floppy0->get_device(); }
 								if (!(data & 2)) { m_floppy_select = 1; floppy = m_floppy1->get_device(); }
 								if (!(data & 4)) { m_floppy_select = 2; floppy = nullptr; } // floppy 2
 								if (!(data & 8)) { m_floppy_select = 3; floppy = nullptr; } // floppy 3
->>>>>>> upstream/master
 
 								m_fdc->set_floppy(floppy);
 
@@ -1085,10 +906,6 @@ void archimedes_state::vidc_dynamic_res_change()
 		*/
 		if((m_vidc_regs[VIDC_HCR] >= m_vidc_regs[VIDC_HBER]) &&
 			(m_vidc_regs[VIDC_HBER] >= m_vidc_regs[VIDC_HBSR]) &&
-<<<<<<< HEAD
-			(m_vidc_regs[VIDC_VCR] >= m_vidc_regs[VIDC_VBER]) &&
-=======
->>>>>>> upstream/master
 			(m_vidc_regs[VIDC_VBER] >= m_vidc_regs[VIDC_VBSR]))
 		{
 			rectangle visarea;
@@ -1099,15 +916,6 @@ void archimedes_state::vidc_dynamic_res_change()
 			visarea.max_x = m_vidc_regs[VIDC_HBER] - m_vidc_regs[VIDC_HBSR] - 1;
 			visarea.max_y = (m_vidc_regs[VIDC_VBER] - m_vidc_regs[VIDC_VBSR]) * (m_vidc_interlace+1);
 
-<<<<<<< HEAD
-			//logerror("Configuring: htotal %d vtotal %d border %d x %d display %d x %d\n",
-			//  m_vidc_regs[VIDC_HCR], m_vidc_regs[VIDC_VCR],
-			//  visarea.max_x, visarea.max_y,
-			//  m_vidc_regs[VIDC_HDER]-m_vidc_regs[VIDC_HDSR],m_vidc_regs[VIDC_VDER]-m_vidc_regs[VIDC_VDSR]+1);
-
-			/* FIXME: pixel clock */
-			refresh = HZ_TO_ATTOSECONDS(pixel_rate[m_vidc_pixel_clk]*2) * m_vidc_regs[VIDC_HCR] * m_vidc_regs[VIDC_VCR];
-=======
 			m_vidc_vblank_time = m_vidc_regs[VIDC_VBER] * (m_vidc_interlace+1);
 			//logerror("Configuring: htotal %d vtotal %d border %d x %d display origin %d x %d vblank = %d\n",
 			//  m_vidc_regs[VIDC_HCR], m_vidc_regs[VIDC_VCR],
@@ -1116,7 +924,6 @@ void archimedes_state::vidc_dynamic_res_change()
 			//  m_vidc_vblank_time);
 
 			refresh = HZ_TO_ATTOSECONDS(pixel_rate[m_vidc_pixel_clk]) * m_vidc_regs[VIDC_HCR] * m_vidc_regs[VIDC_VCR];
->>>>>>> upstream/master
 
 			m_screen->configure(m_vidc_regs[VIDC_HCR], m_vidc_regs[VIDC_VCR] * (m_vidc_interlace+1), visarea, refresh);
 		}
@@ -1125,13 +932,8 @@ void archimedes_state::vidc_dynamic_res_change()
 
 WRITE32_MEMBER(archimedes_state::archimedes_vidc_w)
 {
-<<<<<<< HEAD
-	UINT32 reg = data>>24;
-	UINT32 val = data & 0xffffff;
-=======
 	uint32_t reg = data>>24;
 	uint32_t val = data & 0xffffff;
->>>>>>> upstream/master
 	//#ifdef MAME_DEBUG
 	static const char *const vrnames[] =
 	{
@@ -1187,11 +989,8 @@ WRITE32_MEMBER(archimedes_state::archimedes_vidc_w)
 			}
 		}
 
-<<<<<<< HEAD
-=======
 		// update partials
 		machine().first_screen()->update_partial(machine().first_screen()->vpos());
->>>>>>> upstream/master
 	}
 	else if (reg >= 0x60 && reg <= 0x7c)
 	{
@@ -1210,29 +1009,17 @@ WRITE32_MEMBER(archimedes_state::archimedes_vidc_w)
 			case VIDC_HDSR: m_vidc_regs[VIDC_HDSR] = (val >> 14);   break;
 			case VIDC_HDER: m_vidc_regs[VIDC_HDER] = (val >> 14);   break;
 			case VIDC_HBER: m_vidc_regs[VIDC_HBER] = ((val >> 14)<<1)+1;    break;
-<<<<<<< HEAD
-//          #define VIDC_HCSR       0x98
-//          #define VIDC_HIR        0x9c
-
-			case VIDC_VCR:  m_vidc_regs[VIDC_VCR] = ((val >> 14)<<1)+1; break;
-=======
 			case VIDC_HCSR: m_vidc_regs[VIDC_HCSR] = ((val >> 13) & 0x7ff) + 6; break;
 //          #define VIDC_HIR        0x9c
 
 			case VIDC_VCR:  m_vidc_regs[VIDC_VCR] = ((val >> 14))+1; break;
->>>>>>> upstream/master
 //          #define VIDC_VSWR       0xa4
 			case VIDC_VBSR: m_vidc_regs[VIDC_VBSR] = (val >> 14)+1; break;
 			case VIDC_VDSR: m_vidc_regs[VIDC_VDSR] = (val >> 14)+1; break;
 			case VIDC_VDER: m_vidc_regs[VIDC_VDER] = (val >> 14)+1; break;
 			case VIDC_VBER: m_vidc_regs[VIDC_VBER] = (val >> 14)+1; break;
-<<<<<<< HEAD
-//          #define VIDC_VCSR       0xb8
-//          #define VIDC_VCER       0xbc
-=======
 			case VIDC_VCSR: m_vidc_regs[VIDC_VCSR] = ((val >> 14) & 0x3ff) + 1; break;
 			case VIDC_VCER: m_vidc_regs[VIDC_VCER] = ((val >> 14) & 0x3ff) + 1; break;
->>>>>>> upstream/master
 		}
 
 
@@ -1243,9 +1030,6 @@ WRITE32_MEMBER(archimedes_state::archimedes_vidc_w)
 
 		vidc_dynamic_res_change();
 	}
-<<<<<<< HEAD
-	else if(reg == 0xe0)
-=======
 	else if (reg == 0xc0)
 	{
 		m_vidc_regs[reg] = val & 0xffff;
@@ -1259,7 +1043,6 @@ WRITE32_MEMBER(archimedes_state::archimedes_vidc_w)
 		}
 	}
 	else if (reg == 0xe0)
->>>>>>> upstream/master
 	{
 		m_vidc_bpp_mode = ((val & 0x0c) >> 2);
 		m_vidc_interlace = ((val & 0x40) >> 6);
@@ -1288,11 +1071,7 @@ WRITE32_MEMBER(archimedes_state::archimedes_memc_w)
 		{
 			case 0: /* video init */
 				m_cursor_enabled = false;
-<<<<<<< HEAD
-				m_vidc_vidinit = ((data>>2)&0x7fff)*16;
-=======
 				m_vidc_vidinit = 0x2000000 | ((data>>2)&0x7fff)*16;
->>>>>>> upstream/master
 				//printf("MEMC: VIDINIT %08x\n",m_vidc_vidinit);
 				break;
 
@@ -1307,11 +1086,7 @@ WRITE32_MEMBER(archimedes_state::archimedes_memc_w)
 				break;
 
 			case 3: /* cursor init */
-<<<<<<< HEAD
-				//m_cursor_enabled = true;
-=======
 				m_cursor_enabled = true;
->>>>>>> upstream/master
 				m_vidc_cinit = 0x2000000 | (((data>>2)&0x7fff)*16);
 				//printf("MEMC: CURSOR INIT %08x\n",((data>>2)&0x7fff)*16);
 				break;
@@ -1343,21 +1118,6 @@ WRITE32_MEMBER(archimedes_state::archimedes_memc_w)
 				if ((data>>10)&1)
 				{
 					m_vidc_vidcur = 0;
-<<<<<<< HEAD
-					m_vid_timer->adjust(m_screen->time_until_pos(m_vidc_regs[0xb4]));
-				}
-
-				if ((data>>11)&1)
-				{
-					double sndhz;
-
-					/* FIXME: is the frequency correct? */
-					sndhz = (250000.0 / 2) / (double)((m_vidc_regs[0xc0]&0xff)+2);
-
-					printf("MEMC: Starting audio DMA at %f Hz, buffer from %x to %x\n", sndhz, m_vidc_sndstart, m_vidc_sndend);
-
-					m_snd_timer->adjust(attotime::zero, 0, attotime::from_hz(sndhz));
-=======
 					m_vid_timer->adjust(m_screen->time_until_pos(m_vidc_vblank_time+1));
 				}
 
@@ -1372,7 +1132,6 @@ WRITE32_MEMBER(archimedes_state::archimedes_memc_w)
 
 					m_vidc_sndcur = m_vidc_sndstart;
 					m_vidc_sndendcur = m_vidc_sndend;
->>>>>>> upstream/master
 				}
 
 				break;
@@ -1416,11 +1175,7 @@ The physical page is encoded differently depending on the page size :
 
 WRITE32_MEMBER(archimedes_state::archimedes_memc_page_w)
 {
-<<<<<<< HEAD
-	UINT32 log, phys, memc;
-=======
 	uint32_t log, phys, memc;
->>>>>>> upstream/master
 
 //  perms = (data & 0x300)>>8;
 	log = phys = memc = 0;

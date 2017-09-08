@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-// license:???
-=======
 // license:BSD-3-Clause
->>>>>>> upstream/master
 // copyright-holders:Mike Balfour, Patrick Lawrence, Brad Oliver
 /*************************************************************************
 
@@ -11,10 +7,7 @@
 *************************************************************************/
 
 #include "sound/discrete.h"
-<<<<<<< HEAD
-=======
 #include "screen.h"
->>>>>>> upstream/master
 
 
 /* Discrete Sound Input Nodes */
@@ -42,19 +35,11 @@ public:
 		m_palette(*this, "palette"){ }
 
 	/* video-related */
-<<<<<<< HEAD
-	required_shared_ptr<UINT8> m_alphap1_videoram;
-	required_shared_ptr<UINT8> m_alphap2_videoram;
-	required_shared_ptr<UINT8> m_field_videoram;
-	required_shared_ptr<UINT8> m_spriteram;
-	required_shared_ptr<UINT8> m_scroll_register;
-=======
 	required_shared_ptr<uint8_t> m_alphap1_videoram;
 	required_shared_ptr<uint8_t> m_alphap2_videoram;
 	required_shared_ptr<uint8_t> m_field_videoram;
 	required_shared_ptr<uint8_t> m_spriteram;
 	required_shared_ptr<uint8_t> m_scroll_register;
->>>>>>> upstream/master
 
 	tilemap_t  *m_alpha1_tilemap;
 	tilemap_t  *m_alpha2_tilemap;
@@ -103,16 +88,6 @@ public:
 	TILE_GET_INFO_MEMBER(alpha1_get_tile_info);
 	TILE_GET_INFO_MEMBER(alpha2_get_tile_info);
 	TILE_GET_INFO_MEMBER(field_get_tile_info);
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void machine_reset();
-	virtual void video_start();
-	DECLARE_PALETTE_INIT(atarifb);
-	UINT32 screen_update_atarifb(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	UINT32 screen_update_abaseb(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	UINT32 screen_update_soccer(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	void get_tile_info_common( tile_data &tileinfo, tilemap_memory_index tile_index, UINT8 *alpha_videoram );
-=======
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
 	virtual void video_start() override;
@@ -121,7 +96,6 @@ public:
 	uint32_t screen_update_abaseb(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	uint32_t screen_update_soccer(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	void get_tile_info_common( tile_data &tileinfo, tilemap_memory_index tile_index, uint8_t *alpha_videoram );
->>>>>>> upstream/master
 	void draw_playfield_and_alpha( bitmap_ind16 &bitmap, const rectangle &cliprect, int playfield_x_offset, int playfield_y_offset );
 	void draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect, int gfx, int is_soccer );
 };

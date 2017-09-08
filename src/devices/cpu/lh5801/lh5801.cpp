@@ -15,15 +15,6 @@
  *****************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "debugger.h"
-
-#include "lh5801.h"
-
-#define VERBOSE 0
-
-#define LOG(x)  do { if (VERBOSE) logerror x; } while (0)
-=======
 #include "lh5801.h"
 
 #include "debugger.h"
@@ -32,7 +23,6 @@
 
 #include "logmacro.h"
 
->>>>>>> upstream/master
 
 enum
 {
@@ -73,27 +63,17 @@ enum
 #define H 0x10
 
 
-<<<<<<< HEAD
-const device_type LH5801 = &device_creator<lh5801_cpu_device>;
-
-
-lh5801_cpu_device::lh5801_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: cpu_device(mconfig, LH5801, "LH5801", tag, owner, clock, "lh5801", __FILE__)
-=======
 DEFINE_DEVICE_TYPE(LH5801, lh5801_cpu_device, "lh5801", "LH5801")
 
 
 lh5801_cpu_device::lh5801_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: cpu_device(mconfig, LH5801, tag, owner, clock)
->>>>>>> upstream/master
 	, m_program_config("program", ENDIANNESS_LITTLE, 8, 16, 0)
 	, m_io_config("io", ENDIANNESS_LITTLE, 8, 16, 0)
 	, m_in_func(*this)
 {
 }
 
-<<<<<<< HEAD
-=======
 device_memory_interface::space_config_vector lh5801_cpu_device::memory_space_config() const
 {
 	return space_config_vector {
@@ -101,16 +81,11 @@ device_memory_interface::space_config_vector lh5801_cpu_device::memory_space_con
 		std::make_pair(AS_IO,      &m_io_config)
 	};
 }
->>>>>>> upstream/master
 
 /***************************************************************
  * include the opcode macros, functions and tables
  ***************************************************************/
-<<<<<<< HEAD
-#include "5801tbl.inc"
-=======
 #include "5801tbl.hxx"
->>>>>>> upstream/master
 
 void lh5801_cpu_device::device_start()
 {
@@ -170,29 +145,18 @@ void lh5801_cpu_device::device_start()
 	state_add( LH5801_DP, "DP", m_dp    ).formatstr("%04X");
 
 	state_add(STATE_GENPC,  "GENPC",  m_p.w.l).noshow();
-<<<<<<< HEAD
-=======
 	state_add(STATE_GENPCBASE, "CURPC", m_p.w.l).noshow();
->>>>>>> upstream/master
 	state_add(STATE_GENFLAGS, "GENFLAGS", m_t).noshow().formatstr("%8s");
 
 	m_icountptr = &m_icount;
 }
 
-<<<<<<< HEAD
-void lh5801_cpu_device::state_string_export(const device_state_entry &entry, std::string &str)
-=======
 void lh5801_cpu_device::state_string_export(const device_state_entry &entry, std::string &str) const
->>>>>>> upstream/master
 {
 	switch (entry.index())
 	{
 		case STATE_GENFLAGS:
-<<<<<<< HEAD
-			strprintf(str, "%c%c%c%c%c%c%c%c",
-=======
 			str = string_format("%c%c%c%c%c%c%c%c",
->>>>>>> upstream/master
 				m_t&0x80?'1':'0',
 				m_t&0x40?'1':'0',
 				m_t&0x20?'1':'0',
@@ -292,15 +256,8 @@ void lh5801_cpu_device::execute_set_input(int irqline, int state)
 	}
 }
 
-<<<<<<< HEAD
-offs_t lh5801_cpu_device::disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options)
-{
-	extern CPU_DISASSEMBLE( lh5801 );
-	return CPU_DISASSEMBLE_NAME(lh5801)(this, buffer, pc, oprom, opram, options);
-=======
 offs_t lh5801_cpu_device::disasm_disassemble(std::ostream &stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, uint32_t options)
 {
 	extern CPU_DISASSEMBLE( lh5801 );
 	return CPU_DISASSEMBLE_NAME(lh5801)(this, stream, pc, oprom, opram, options);
->>>>>>> upstream/master
 }

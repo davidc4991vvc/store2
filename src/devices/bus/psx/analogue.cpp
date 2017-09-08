@@ -1,40 +1,5 @@
 // license:BSD-3-Clause
 // copyright-holders:Carl
-<<<<<<< HEAD
-#include "analogue.h"
-
-const device_type PSX_ANALOG_JOYSTICK = &device_creator<psx_analog_joystick_device>;
-const device_type PSX_DUALSHOCK = &device_creator<psx_dualshock_device>;
-
-psx_analog_controller_device::psx_analog_controller_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source) :
-		device_t(mconfig, type, name, tag, owner, clock, shortname, source),
-		device_psx_controller_interface(mconfig, *this),
-		m_type(),
-		m_confmode(false),
-		m_analogmode(false),
-		m_analoglock(false),
-		m_temp(0),
-		m_cmd(0),
-		m_pad0(*this, "PSXPAD0"),
-		m_pad1(*this, "PSXPAD1"),
-		m_rstickx(*this, "PSXRSTICKX"),
-		m_rsticky(*this, "PSXRSTICKY"),
-		m_lstickx(*this, "PSXLSTICKX"),
-		m_lsticky(*this, "PSXLSTICKY")
-{
-}
-
-psx_dualshock_device::psx_dualshock_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-		psx_analog_controller_device(mconfig, PSX_DUALSHOCK, "Playstation Dualshock Pad", tag, owner, clock, "psx_dualshock_pad", __FILE__)
-{
-	m_type = DUALSHOCK;
-}
-
-psx_analog_joystick_device::psx_analog_joystick_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-		psx_analog_controller_device(mconfig, PSX_ANALOG_JOYSTICK, "Playstation Analog Joystick", tag, owner, clock, "psx_analog_joystick", __FILE__)
-{
-	m_type = JOYSTICK;
-=======
 #include "emu.h"
 #include "analogue.h"
 
@@ -67,7 +32,6 @@ psx_dualshock_device::psx_dualshock_device(const machine_config &mconfig, const 
 psx_analog_joystick_device::psx_analog_joystick_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	psx_analog_controller_device(mconfig, PSX_ANALOG_JOYSTICK, tag, owner, clock, model::JOYSTICK)
 {
->>>>>>> upstream/master
 }
 
 void psx_analog_controller_device::device_reset()
@@ -79,24 +43,14 @@ void psx_analog_controller_device::device_reset()
 	m_cmd = 0;
 }
 
-<<<<<<< HEAD
-UINT8 psx_analog_controller_device::pad_data(int count, bool analog)
-{
-	UINT8 data = 0;
-=======
 uint8_t psx_analog_controller_device::pad_data(int count, bool analog)
 {
 	uint8_t data = 0;
->>>>>>> upstream/master
 	switch(count)
 	{
 		case 2:
 			data = m_pad0->read();
-<<<<<<< HEAD
-			if(!analog || (m_type == JOYSTICK))
-=======
 			if (!analog || (m_model == model::JOYSTICK))
->>>>>>> upstream/master
 				data |= 6; // l3/r3
 			break;
 		case 3:
@@ -118,11 +72,7 @@ uint8_t psx_analog_controller_device::pad_data(int count, bool analog)
 	return data;
 }
 
-<<<<<<< HEAD
-bool psx_analog_controller_device::get_pad(int count, UINT8 *odata, UINT8 idata)
-=======
 bool psx_analog_controller_device::get_pad(int count, uint8_t *odata, uint8_t idata)
->>>>>>> upstream/master
 {
 	if(m_confmode)
 	{
@@ -165,11 +115,7 @@ bool psx_analog_controller_device::get_pad(int count, uint8_t *odata, uint8_t id
 						break;
 					case 0x45: // get mode ?
 					{
-<<<<<<< HEAD
-						const UINT8 val[] = { 1, 2, 0, 2, 1, 0 };
-=======
 						const uint8_t val[] = { 1, 2, 0, 2, 1, 0 };
->>>>>>> upstream/master
 						if(count == 4)
 							*odata = m_analogmode;
 						else
@@ -178,11 +124,7 @@ bool psx_analog_controller_device::get_pad(int count, uint8_t *odata, uint8_t id
 					}
 					case 0x46: // query act (vibrate) ?
 					{
-<<<<<<< HEAD
-						const UINT8 val[2][6] = {{ 0, 0, 1, 2, 0, 10 },
-=======
 						const uint8_t val[2][6] = {{ 0, 0, 1, 2, 0, 10 },
->>>>>>> upstream/master
 												{ 0, 0, 1, 1, 1, 14 }};
 						*odata = val[m_temp][count-2];
 						if(count == 3)
@@ -191,11 +133,7 @@ bool psx_analog_controller_device::get_pad(int count, uint8_t *odata, uint8_t id
 					}
 					case 0x47: // query comb (combination?) ?
 					{
-<<<<<<< HEAD
-						const UINT8 val[] = { 0, 0, 2, 0, 1, 0 };
-=======
 						const uint8_t val[] = { 0, 0, 2, 0, 1, 0 };
->>>>>>> upstream/master
 						*odata = val[count-2];
 						break;
 					}
@@ -229,11 +167,7 @@ bool psx_analog_controller_device::get_pad(int count, uint8_t *odata, uint8_t id
 		switch(count)
 		{
 			case 0:
-<<<<<<< HEAD
-				if(m_type == JOYSTICK)
-=======
 				if(m_model == model::JOYSTICK)
->>>>>>> upstream/master
 					*odata = 0x53;
 				else
 					*odata = 0x73;
@@ -320,11 +254,7 @@ static INPUT_PORTS_START( psx_analog_controller )
 	PORT_BIT( 0xff, 0x80, IPT_PADDLE ) PORT_NAME("Left Analog Y") PORT_SENSITIVITY(100)
 
 	PORT_START("PSXMISC")
-<<<<<<< HEAD
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_BUTTON11 ) PORT_NAME("Analog") PORT_TOGGLE PORT_CHANGED_MEMBER(DEVICE_SELF, psx_analog_controller_device, change_mode, 0)
-=======
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_BUTTON11 ) PORT_NAME("Analog") PORT_TOGGLE PORT_CHANGED_MEMBER(DEVICE_SELF, psx_analog_controller_device, change_mode, nullptr)
->>>>>>> upstream/master
 INPUT_PORTS_END
 
 ioport_constructor psx_analog_controller_device::device_input_ports() const

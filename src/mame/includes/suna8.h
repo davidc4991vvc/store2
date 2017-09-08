@@ -1,13 +1,9 @@
 // license:BSD-3-Clause
 // copyright-holders:Luca Elia
-<<<<<<< HEAD
-#include "sound/samples.h"
-=======
 
 #include "machine/gen_latch.h"
 #include "sound/samples.h"
 #include "screen.h"
->>>>>>> upstream/master
 
 #define TILEMAPS 0
 
@@ -26,11 +22,8 @@ public:
 		m_gfxdecode(*this, "gfxdecode"),
 		m_screen(*this, "screen"),
 		m_palette(*this, "palette"),
-<<<<<<< HEAD
-=======
 		m_soundlatch(*this, "soundlatch"),
 		m_soundlatch2(*this, "soundlatch2"),
->>>>>>> upstream/master
 		m_bank0d(*this, "bank0d"),
 		m_bank1(*this, "bank1"),
 		m_bank1d(*this, "bank1d"),
@@ -39,48 +32,21 @@ public:
 		{ }
 
 	required_device<cpu_device> m_maincpu;
-<<<<<<< HEAD
-	optional_shared_ptr<UINT8> m_hardhead_ip;
-	optional_shared_ptr<UINT8> m_spriteram;
-	optional_shared_ptr<UINT8> m_wram;
-	optional_shared_ptr<UINT8> m_banked_paletteram;
-=======
 	optional_shared_ptr<uint8_t> m_hardhead_ip;
 	optional_shared_ptr<uint8_t> m_spriteram;
 	optional_shared_ptr<uint8_t> m_wram;
 	optional_shared_ptr<uint8_t> m_banked_paletteram;
->>>>>>> upstream/master
 	required_device<cpu_device> m_audiocpu;
 	optional_device<samples_device> m_samples;
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<screen_device> m_screen;
 	required_device<palette_device> m_palette;
-<<<<<<< HEAD
-=======
 	required_device<generic_latch_8_device> m_soundlatch;
 	required_device<generic_latch_8_device> m_soundlatch2;
->>>>>>> upstream/master
 	optional_memory_bank m_bank0d;
 	required_memory_bank m_bank1;
 	optional_memory_bank m_bank1d;
 
-<<<<<<< HEAD
-	UINT8 m_rombank;
-	UINT8 m_rombank_latch;
-	UINT8 m_spritebank;
-	UINT8 m_palettebank;
-	UINT8 m_paletteram_enab;
-	UINT8 m_prot2;
-	UINT8 m_prot2_prev;
-
-	UINT8 m_protection_val;
-	UINT8 m_nmi_enable;
-	UINT8 m_spritebank_latch;
-	UINT8 m_write_disable;
-	UINT8 m_prot_opcode_toggle;
-	UINT8 m_remap_sound;
-	UINT8* m_decrypt;
-=======
 	uint8_t m_rombank;
 	uint8_t m_rombank_latch;
 	uint8_t m_spritebank;
@@ -96,7 +62,6 @@ public:
 	uint8_t m_prot_opcode_toggle;
 	uint8_t m_remap_sound;
 	uint8_t* m_decrypt;
->>>>>>> upstream/master
 
 	enum GFXBANK_TYPE_T
 	{
@@ -104,20 +69,12 @@ public:
 		GFXBANK_TYPE_BRICKZN,
 		GFXBANK_TYPE_STARFIGH
 	}   m_gfxbank_type;
-<<<<<<< HEAD
-	UINT8 m_gfxbank;
-=======
 	uint8_t m_gfxbank;
->>>>>>> upstream/master
 
 	bool m_has_text; // has text sprites (older games)
 
 	// samples
-<<<<<<< HEAD
-	INT16 *m_samplebuf;
-=======
 	std::unique_ptr<int16_t[]> m_samplebuf;
->>>>>>> upstream/master
 	int m_sample, m_play;
 	int m_numsamples;
 
@@ -145,10 +102,6 @@ public:
 	DECLARE_WRITE8_MEMBER(brickzn_palbank_w);
 	DECLARE_WRITE8_MEMBER(brickzn_sprbank_w);
 	DECLARE_WRITE8_MEMBER(brickzn_rombank_w);
-<<<<<<< HEAD
-	DECLARE_WRITE8_MEMBER(brickzn_pcm_w);
-=======
->>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(brickzn_banked_paletteram_w);
 	// brickzn (newer sets)
 	DECLARE_WRITE8_MEMBER(brickzn_prot2_w);
@@ -194,10 +147,7 @@ public:
 	DECLARE_DRIVER_INIT(brickznv4);
 	DECLARE_DRIVER_INIT(starfigh);
 	DECLARE_DRIVER_INIT(hardhea2);
-<<<<<<< HEAD
-=======
 	DECLARE_DRIVER_INIT(hardhea2b);
->>>>>>> upstream/master
 	DECLARE_DRIVER_INIT(hardhedb);
 	DECLARE_DRIVER_INIT(sparkman);
 	DECLARE_DRIVER_INIT(brickzn);
@@ -213,12 +163,7 @@ public:
 
 	DECLARE_MACHINE_RESET(brickzn);
 	DECLARE_MACHINE_RESET(hardhea2);
-<<<<<<< HEAD
-	UINT32 screen_update_suna8(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	TIMER_DEVICE_CALLBACK_MEMBER(brickzn_interrupt);
-=======
 	uint32_t screen_update_suna8(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	TIMER_DEVICE_CALLBACK_MEMBER(hardhea2_interrupt);
 
 	// samples
@@ -230,9 +175,5 @@ public:
 
 	void draw_sprites     (screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int start, int end, int which);
 	void draw_text_sprites(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int start, int end, int ypos, bool write_mask);
-<<<<<<< HEAD
-	UINT8 *brickzn_decrypt();
-=======
 	uint8_t *brickzn_decrypt();
->>>>>>> upstream/master
 };

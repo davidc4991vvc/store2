@@ -1,15 +1,5 @@
 // license:BSD-3-Clause
 // copyright-holders:Carl
-<<<<<<< HEAD
-#ifndef I186_H__
-#define I186_H__
-
-#include "emu.h"
-#include "i86.h"
-
-extern const device_type I80186;
-extern const device_type I80188;
-=======
 #ifndef MAME_CPU_I86_I186_H
 #define MAME_CPU_I86_I186_H
 
@@ -19,28 +9,17 @@ extern const device_type I80188;
 
 DECLARE_DEVICE_TYPE(I80186, i80186_cpu_device)
 DECLARE_DEVICE_TYPE(I80188, i80188_cpu_device)
->>>>>>> upstream/master
 
 class i80186_cpu_device : public i8086_common_cpu_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	i80186_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-	i80186_cpu_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source, int data_bus_size);
-
-	template<class _Object> static devcb_base &static_set_read_slave_ack_callback(device_t &device, _Object object) { return downcast<i80186_cpu_device &>(device).m_read_slave_ack_func.set_callback(object); }
-	template<class _Object> static devcb_base &static_set_chip_select_callback(device_t &device, _Object object) { return downcast<i80186_cpu_device &>(device).m_out_chip_select_func.set_callback(object); }
-	template<class _Object> static devcb_base &static_set_tmrout0_handler(device_t &device, _Object object) { return downcast<i80186_cpu_device &>(device).m_out_tmrout0_func.set_callback(object); }
-	template<class _Object> static devcb_base &static_set_tmrout1_handler(device_t &device, _Object object) { return downcast<i80186_cpu_device &>(device).m_out_tmrout1_func.set_callback(object); }
-=======
 	i80186_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	template <class Object> static devcb_base &static_set_read_slave_ack_callback(device_t &device, Object &&cb) { return downcast<i80186_cpu_device &>(device).m_read_slave_ack_func.set_callback(std::forward<Object>(cb)); }
 	template <class Object> static devcb_base &static_set_chip_select_callback(device_t &device, Object &&cb) { return downcast<i80186_cpu_device &>(device).m_out_chip_select_func.set_callback(std::forward<Object>(cb)); }
 	template <class Object> static devcb_base &static_set_tmrout0_handler(device_t &device, Object &&cb) { return downcast<i80186_cpu_device &>(device).m_out_tmrout0_func.set_callback(std::forward<Object>(cb)); }
 	template <class Object> static devcb_base &static_set_tmrout1_handler(device_t &device, Object &&cb) { return downcast<i80186_cpu_device &>(device).m_out_tmrout1_func.set_callback(std::forward<Object>(cb)); }
->>>>>>> upstream/master
 
 	IRQ_CALLBACK_MEMBER(int_callback);
 	DECLARE_WRITE_LINE_MEMBER(drq0_w) { if(state) drq_callback(0); m_dma[0].drq_state = state; }
@@ -53,29 +32,6 @@ public:
 	DECLARE_WRITE_LINE_MEMBER(int3_w) { external_int(3, state); }
 
 	// device_memory_interface overrides
-<<<<<<< HEAD
-	virtual const address_space_config *memory_space_config(address_spacenum spacenum = AS_0) const { return (spacenum == AS_PROGRAM) ? &m_program_config : ( (spacenum == AS_IO) ? &m_io_config : NULL ); }
-
-protected:
-	// device_execute_interface overrides
-	virtual UINT64 execute_clocks_to_cycles(UINT64 clocks) const { return (clocks / 2); }
-	virtual UINT64 execute_cycles_to_clocks(UINT64 cycles) const { return (cycles * 2); }
-	virtual void execute_run();
-	virtual void device_start();
-	virtual void device_reset();
-	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
-	virtual UINT32 execute_input_lines() const { return 1; }
-	virtual UINT8 fetch_op();
-	virtual UINT8 fetch();
-	UINT32 pc() { return m_pc = (m_sregs[CS] << 4) + m_ip; }
-
-	virtual UINT8 read_port_byte(UINT16 port);
-	virtual UINT16 read_port_word(UINT16 port);
-	virtual void write_port_byte(UINT16 port, UINT8 data);
-	virtual void write_port_word(UINT16 port, UINT16 data);
-
-	static const UINT8 m_i80186_timing[200];
-=======
 	virtual space_config_vector memory_space_config() const override;
 
 protected:
@@ -99,16 +55,11 @@ protected:
 	virtual void write_port_word(uint16_t port, uint16_t data) override;
 
 	static const uint8_t m_i80186_timing[200];
->>>>>>> upstream/master
 
 private:
 	void update_interrupt_state();
 	void handle_eoi(int data);
-<<<<<<< HEAD
-	void external_int(UINT16 intno, int state);
-=======
 	void external_int(uint16_t intno, int state);
->>>>>>> upstream/master
 	void internal_timer_sync(int which);
 	void internal_timer_update(int which, int new_count, int new_maxA, int new_maxB, int new_control);
 	void update_dma_control(int which, int new_control);
@@ -119,70 +70,34 @@ private:
 
 	struct mem_state
 	{
-<<<<<<< HEAD
-		UINT16      lower;
-		UINT16      upper;
-		UINT16      middle;
-		UINT16      middle_size;
-		UINT16      peripheral;
-=======
 		uint16_t      lower;
 		uint16_t      upper;
 		uint16_t      middle;
 		uint16_t      middle_size;
 		uint16_t      peripheral;
->>>>>>> upstream/master
 	};
 
 	struct timer_state
 	{
-<<<<<<< HEAD
-		UINT16      control;
-		UINT16      maxA;
-		UINT16      maxB;
-		bool        active_count;
-		UINT16      count;
-=======
 		uint16_t      control;
 		uint16_t      maxA;
 		uint16_t      maxB;
 		bool        active_count;
 		uint16_t      count;
->>>>>>> upstream/master
 		emu_timer   *int_timer;
 	};
 
 	struct dma_state
 	{
 		bool        drq_state;
-<<<<<<< HEAD
-		UINT32      source;
-		UINT32      dest;
-		UINT16      count;
-		UINT16      control;
-=======
 		uint32_t      source;
 		uint32_t      dest;
 		uint16_t      count;
 		uint16_t      control;
->>>>>>> upstream/master
 	};
 
 	struct intr_state
 	{
-<<<<<<< HEAD
-		UINT8       pending;
-		UINT16      ack_mask;
-		UINT16      priority_mask;
-		UINT16      in_service;
-		UINT16      request;
-		UINT16      status;
-		UINT16      poll_status;
-		UINT16      timer;
-		UINT16      dma[2];
-		UINT16      ext[4];
-		UINT8       ext_state;
-=======
 		uint8_t       pending;
 		uint16_t      ack_mask;
 		uint16_t      priority_mask;
@@ -194,7 +109,6 @@ private:
 		uint16_t      dma[2];
 		uint16_t      ext[4];
 		uint8_t       ext_state;
->>>>>>> upstream/master
 	};
 
 	timer_state     m_timer[3];
@@ -206,16 +120,10 @@ private:
 	static const device_timer_id TIMER_INT1 = 1;
 	static const device_timer_id TIMER_INT2 = 2;
 
-<<<<<<< HEAD
-	UINT16 m_reloc;
-
-	address_space_config m_program_config;
-=======
 	uint16_t m_reloc;
 
 	address_space_config m_program_config;
 	address_space_config m_opcodes_config;
->>>>>>> upstream/master
 	address_space_config m_io_config;
 
 	devcb_read8 m_read_slave_ack_func;
@@ -228,11 +136,7 @@ class i80188_cpu_device : public i80186_cpu_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	i80188_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-=======
 	i80188_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
->>>>>>> upstream/master
 };
 
 #define MCFG_80186_IRQ_SLAVE_ACK(_devcb) \
@@ -247,8 +151,4 @@ public:
 #define MCFG_80186_TMROUT1_HANDLER(_devcb) \
 		devcb = &i80186_cpu_device::static_set_tmrout1_handler(*device, DEVCB_##_devcb);
 
-<<<<<<< HEAD
-#endif
-=======
 #endif // MAME_CPU_I86_I186_H
->>>>>>> upstream/master

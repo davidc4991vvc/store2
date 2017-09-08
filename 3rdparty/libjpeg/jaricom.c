@@ -1,26 +1,16 @@
 /*
  * jaricom.c
  *
-<<<<<<< HEAD
- * Developed 1997-2009 by Guido Vollbeding.
-=======
  * Developed 1997-2011 by Guido Vollbeding.
->>>>>>> upstream/master
  * This file is part of the Independent JPEG Group's software.
  * For conditions of distribution and use, see the accompanying README file.
  *
  * This file contains probability estimation tables for common use in
  * arithmetic entropy encoding and decoding routines.
  *
-<<<<<<< HEAD
- * This data represents Table D.2 in the JPEG spec (ISO/IEC IS 10918-1
- * and CCITT Recommendation ITU-T T.81) and Table 24 in the JBIG spec
- * (ISO/IEC IS 11544 and CCITT Recommendation ITU-T T.82).
-=======
  * This data represents Table D.3 in the JPEG spec (D.2 in the draft),
  * ISO/IEC IS 10918-1 and CCITT Recommendation ITU-T T.81, and Table 24
  * in the JBIG spec, ISO/IEC IS 11544 and CCITT Recommendation ITU-T T.82.
->>>>>>> upstream/master
  */
 
 #define JPEG_INTERNALS
@@ -157,11 +147,7 @@ const INT32 jpeg_aritab[113+1] = {
   V( 112, 0x59eb, 112, 111, 1 ),
 /*
  * This last entry is used for fixed probability estimate of 0.5
-<<<<<<< HEAD
- * as recommended in Section 10.3 Table 5 of ITU-T Rec. T.851.
-=======
  * as suggested in Section 10.3 Table 5 of ITU-T Rec. T.851.
->>>>>>> upstream/master
  */
   V( 113, 0x5a1d, 113, 113, 0 )
 };

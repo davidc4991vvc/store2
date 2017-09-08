@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-// license:???
-=======
 // license:BSD-3-Clause
->>>>>>> upstream/master
 // copyright-holders:Derrick Renaud
 /*************************************************************************
 
@@ -18,29 +14,6 @@
 sub sound functions
 ***************************************************************************/
 
-<<<<<<< HEAD
-WRITE8_MEMBER(subs_state::sonar1_w)
-{
-	m_discrete->write(space, SUBS_SONAR1_EN, offset & 0x01);
-}
-
-WRITE8_MEMBER(subs_state::sonar2_w)
-{
-	m_discrete->write(space, SUBS_SONAR2_EN, offset & 0x01);
-}
-
-WRITE8_MEMBER(subs_state::crash_w)
-{
-	m_discrete->write(space, SUBS_CRASH_EN, offset & 0x01);
-}
-
-WRITE8_MEMBER(subs_state::explode_w)
-{
-	m_discrete->write(space, SUBS_EXPLODE_EN, offset & 0x01);
-}
-
-=======
->>>>>>> upstream/master
 WRITE8_MEMBER(subs_state::noise_reset_w)
 {
 	/* Pulse noise reset */

@@ -1,16 +1,9 @@
 // license:BSD-3-Clause
 // copyright-holders:Mariusz Wojcieszek
-<<<<<<< HEAD
-#ifndef _MICROTOUCH_H
-#define _MICROTOUCH_H
-
-#include "emu.h"
-=======
 #ifndef MAME_MACHINE_MICROTCH_H
 #define MAME_MACHINE_MICROTCH_H
 
 #pragma once
->>>>>>> upstream/master
 
 
 class microtouch_device :
@@ -18,34 +11,14 @@ class microtouch_device :
 		public device_serial_interface
 {
 public:
-<<<<<<< HEAD
-	microtouch_device(const machine_config &mconfig, device_type type, const char* name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source);
-	microtouch_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-	template<class _Object> static devcb_base &static_set_stx_callback(device_t &device, _Object object) { return downcast<microtouch_device &>(device).m_out_stx_func.set_callback(object); }
-
-	virtual ioport_constructor device_input_ports() const;
-=======
 	microtouch_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 	template <class Object> static devcb_base &static_set_stx_callback(device_t &device, Object &&cb) { return downcast<microtouch_device &>(device).m_out_stx_func.set_callback(std::forward<Object>(cb)); }
 
 	virtual ioport_constructor device_input_ports() const override;
->>>>>>> upstream/master
 	DECLARE_WRITE_LINE_MEMBER(rx) { device_serial_interface::rx_w(state); }
 	DECLARE_INPUT_CHANGED_MEMBER(touch);
 
 	typedef delegate<int (int *, int *)> touch_cb;
-<<<<<<< HEAD
-	static void static_set_touch_callback(device_t &device, touch_cb object) { downcast<microtouch_device &>(device).m_out_touch_cb = object; }
-protected:
-	virtual void device_start();
-	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
-	virtual void tra_callback();
-	virtual void tra_complete();
-	virtual void rcv_complete();
-private:
-	int check_command( const char* commandtocheck, int command_len, UINT8* command_data );
-	void send_format_table_packet(UINT8 flag, int x, int y);
-=======
 	static void static_set_touch_callback(device_t &device, touch_cb &&object) { downcast<microtouch_device &>(device).m_out_touch_cb = std::move(object); }
 
 protected:
@@ -58,7 +31,6 @@ protected:
 private:
 	int check_command( const char* commandtocheck, int command_len, uint8_t* command_data );
 	void send_format_table_packet(uint8_t flag, int x, int y);
->>>>>>> upstream/master
 	void send_format_decimal_packet(int x, int y);
 	void send_touch_packet();
 
@@ -68,30 +40,19 @@ private:
 		FORMAT_TABLET,
 		FORMAT_DECIMAL
 	};
-<<<<<<< HEAD
-=======
 
->>>>>>> upstream/master
 	enum
 	{
 		MODE_INACTIVE,
 		MODE_STREAM,
 		MODE_POINT
 	};
-<<<<<<< HEAD
-	UINT8       m_rx_buffer[16];
-	int         m_rx_buffer_ptr;
-	UINT8       m_tx_buffer[16];
-	UINT8       m_tx_buffer_num;
-	UINT8       m_tx_buffer_ptr;
-=======
 
 	uint8_t       m_rx_buffer[16];
 	int         m_rx_buffer_ptr;
 	uint8_t       m_tx_buffer[16];
 	uint8_t       m_tx_buffer_num;
 	uint8_t       m_tx_buffer_ptr;
->>>>>>> upstream/master
 	int         m_reset_done;
 	int         m_format;
 	int         m_mode;
@@ -105,30 +66,16 @@ private:
 	required_ioport m_touchy;
 	emu_timer*  m_timer;
 	bool m_output_valid;
-<<<<<<< HEAD
-	UINT8 m_output;
-};
-
-extern const device_type MICROTOUCH;
-=======
 	uint8_t m_output;
 };
 
 DECLARE_DEVICE_TYPE(MICROTOUCH, microtouch_device)
->>>>>>> upstream/master
 
 #define MCFG_MICROTOUCH_ADD(_tag, _clock, _devcb) \
 	MCFG_DEVICE_ADD(_tag, MICROTOUCH, _clock) \
 	devcb = &microtouch_device::static_set_stx_callback(*device, DEVCB_##_devcb);
 
 #define MCFG_MICROTOUCH_TOUCH_CB(_class, _touch_cb) \
-<<<<<<< HEAD
-	microtouch_device::static_set_touch_callback(*device, microtouch_device::touch_cb(FUNC(_class::_touch_cb), (_class *)owner));
-
-
-#endif //_MICROTOUCH_H
-=======
 	microtouch_device::static_set_touch_callback(*device, microtouch_device::touch_cb(&_class::_touch_cb, (_class *)owner));
 
 #endif // MAME_MACHINE_MICROTCH_H
->>>>>>> upstream/master

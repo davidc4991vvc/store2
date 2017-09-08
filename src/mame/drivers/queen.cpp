@@ -43,39 +43,23 @@ public:
 	{
 	}
 
-<<<<<<< HEAD
-	UINT32 *m_bios_ram;
-	UINT32 *m_bios_ext_ram;
-	UINT8 m_mtxc_config_reg[256];
-	UINT8 m_piix4_config_reg[4][256];
-=======
 	std::unique_ptr<uint32_t[]> m_bios_ram;
 	std::unique_ptr<uint32_t[]> m_bios_ext_ram;
 	uint8_t m_mtxc_config_reg[256];
 	uint8_t m_piix4_config_reg[4][256];
->>>>>>> upstream/master
 
 	DECLARE_WRITE32_MEMBER( bios_ext_ram_w );
 
 	DECLARE_WRITE32_MEMBER( bios_ram_w );
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void machine_reset();
-=======
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
->>>>>>> upstream/master
 	void intel82439tx_init();
 };
 
 
 // Intel 82439TX System Controller (MTXC)
 
-<<<<<<< HEAD
-static UINT8 mtxc_config_r(device_t *busdevice, device_t *device, int function, int reg)
-=======
 static uint8_t mtxc_config_r(device_t *busdevice, device_t *device, int function, int reg)
->>>>>>> upstream/master
 {
 	queen_state *state = busdevice->machine().driver_data<queen_state>();
 //  osd_printf_debug("MTXC: read %d, %02X\n", function, reg);
@@ -83,11 +67,7 @@ static uint8_t mtxc_config_r(device_t *busdevice, device_t *device, int function
 	return state->m_mtxc_config_reg[reg];
 }
 
-<<<<<<< HEAD
-static void mtxc_config_w(device_t *busdevice, device_t *device, int function, int reg, UINT8 data)
-=======
 static void mtxc_config_w(device_t *busdevice, device_t *device, int function, int reg, uint8_t data)
->>>>>>> upstream/master
 {
 	queen_state *state = busdevice->machine().driver_data<queen_state>();
 	printf("MTXC: write %d, %02X, %02X\n",  function, reg, data);
@@ -105,19 +85,11 @@ static void mtxc_config_w(device_t *busdevice, device_t *device, int function, i
 	if (reg == 0x63)
 	{
 		if (data & 0x20)        // enable RAM access to region 0xf0000 - 0xfffff
-<<<<<<< HEAD
-			state->membank("bios_bank")->set_base(state->m_bios_ram);
-		else                    // disable RAM access (reads go to BIOS ROM)
-			state->membank("bios_bank")->set_base(state->memregion("bios")->base() + 0x30000);
-		if (data & 0x80)        // enable RAM access to region 0xe0000 - 0xeffff
-			state->membank("bios_ext")->set_base(state->m_bios_ext_ram);
-=======
 			state->membank("bios_bank")->set_base(state->m_bios_ram.get());
 		else                    // disable RAM access (reads go to BIOS ROM)
 			state->membank("bios_bank")->set_base(state->memregion("bios")->base() + 0x30000);
 		if (data & 0x80)        // enable RAM access to region 0xe0000 - 0xeffff
 			state->membank("bios_ext")->set_base(state->m_bios_ext_ram.get());
->>>>>>> upstream/master
 		else
 			state->membank("bios_ext")->set_base(state->memregion("bios")->base() + 0x20000);
 	}
@@ -135,15 +107,9 @@ void queen_state::intel82439tx_init()
 	m_mtxc_config_reg[0x65] = 0x02;
 }
 
-<<<<<<< HEAD
-static UINT32 intel82439tx_pci_r(device_t *busdevice, device_t *device, int function, int reg, UINT32 mem_mask)
-{
-	UINT32 r = 0;
-=======
 static uint32_t intel82439tx_pci_r(device_t *busdevice, device_t *device, int function, int reg, uint32_t mem_mask)
 {
 	uint32_t r = 0;
->>>>>>> upstream/master
 	if (ACCESSING_BITS_24_31)
 	{
 		r |= mtxc_config_r(busdevice, device, function, reg + 3) << 24;
@@ -163,11 +129,7 @@ static uint32_t intel82439tx_pci_r(device_t *busdevice, device_t *device, int fu
 	return r;
 }
 
-<<<<<<< HEAD
-static void intel82439tx_pci_w(device_t *busdevice, device_t *device, int function, int reg, UINT32 data, UINT32 mem_mask)
-=======
 static void intel82439tx_pci_w(device_t *busdevice, device_t *device, int function, int reg, uint32_t data, uint32_t mem_mask)
->>>>>>> upstream/master
 {
 	if (ACCESSING_BITS_24_31)
 	{
@@ -189,11 +151,7 @@ static void intel82439tx_pci_w(device_t *busdevice, device_t *device, int functi
 
 // Intel 82371AB PCI-to-ISA / IDE bridge (PIIX4)
 
-<<<<<<< HEAD
-static UINT8 piix4_config_r(device_t *busdevice, device_t *device, int function, int reg)
-=======
 static uint8_t piix4_config_r(device_t *busdevice, device_t *device, int function, int reg)
->>>>>>> upstream/master
 {
 	if ((function >= 4) && (function <= 7))
 	{
@@ -205,26 +163,16 @@ static uint8_t piix4_config_r(device_t *busdevice, device_t *device, int functio
 	return state->m_piix4_config_reg[function][reg];
 }
 
-<<<<<<< HEAD
-static void piix4_config_w(device_t *busdevice, device_t *device, int function, int reg, UINT8 data)
-=======
 static void piix4_config_w(device_t *busdevice, device_t *device, int function, int reg, uint8_t data)
->>>>>>> upstream/master
 {
 	queen_state *state = busdevice->machine().driver_data<queen_state>();
 //  osd_printf_debug("%s:PIIX4: write %d, %02X, %02X\n", machine.describe_context(), function, reg, data);
 	state->m_piix4_config_reg[function][reg] = data;
 }
 
-<<<<<<< HEAD
-static UINT32 intel82371ab_pci_r(device_t *busdevice, device_t *device, int function, int reg, UINT32 mem_mask)
-{
-	UINT32 r = 0;
-=======
 static uint32_t intel82371ab_pci_r(device_t *busdevice, device_t *device, int function, int reg, uint32_t mem_mask)
 {
 	uint32_t r = 0;
->>>>>>> upstream/master
 	if (ACCESSING_BITS_24_31)
 	{
 		r |= piix4_config_r(busdevice, device, function, reg + 3) << 24;
@@ -244,11 +192,7 @@ static uint32_t intel82371ab_pci_r(device_t *busdevice, device_t *device, int fu
 	return r;
 }
 
-<<<<<<< HEAD
-static void intel82371ab_pci_w(device_t *busdevice, device_t *device, int function, int reg, UINT32 data, UINT32 mem_mask)
-=======
 static void intel82371ab_pci_w(device_t *busdevice, device_t *device, int function, int reg, uint32_t data, uint32_t mem_mask)
->>>>>>> upstream/master
 {
 	if (ACCESSING_BITS_24_31)
 	{
@@ -273,11 +217,7 @@ WRITE32_MEMBER(queen_state::bios_ext_ram_w)
 {
 	if (m_mtxc_config_reg[0x63] & 0x40)     // write to RAM if this region is write-enabled
 	{
-<<<<<<< HEAD
-		COMBINE_DATA(m_bios_ext_ram + offset);
-=======
 		COMBINE_DATA(m_bios_ext_ram.get() + offset);
->>>>>>> upstream/master
 	}
 }
 
@@ -286,11 +226,7 @@ WRITE32_MEMBER(queen_state::bios_ram_w)
 {
 	if (m_mtxc_config_reg[0x63] & 0x10)     // write to RAM if this region is write-enabled
 	{
-<<<<<<< HEAD
-		COMBINE_DATA(m_bios_ram + offset);
-=======
 		COMBINE_DATA(m_bios_ram.get() + offset);
->>>>>>> upstream/master
 	}
 }
 
@@ -320,13 +256,8 @@ ADDRESS_MAP_END
 
 void queen_state::machine_start()
 {
-<<<<<<< HEAD
-	m_bios_ram = auto_alloc_array(machine(), UINT32, 0x10000/4);
-	m_bios_ext_ram = auto_alloc_array(machine(), UINT32, 0x10000/4);
-=======
 	m_bios_ram = std::make_unique<uint32_t[]>(0x10000/4);
 	m_bios_ext_ram = std::make_unique<uint32_t[]>(0x10000/4);
->>>>>>> upstream/master
 
 	intel82439tx_init();
 }
@@ -339,11 +270,7 @@ void queen_state::machine_reset()
 
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( queen, queen_state )
-=======
 static MACHINE_CONFIG_START( queen )
->>>>>>> upstream/master
 	MCFG_CPU_ADD("maincpu", PENTIUM3, 533000000/16) // Celeron or Pentium 3, 533 Mhz
 	MCFG_CPU_PROGRAM_MAP(queen_map)
 	MCFG_CPU_IO_MAP(queen_io)
@@ -352,15 +279,6 @@ static MACHINE_CONFIG_START( queen )
 	MCFG_FRAGMENT_ADD( pcat_common )
 
 	MCFG_PCI_BUS_LEGACY_ADD("pcibus", 0)
-<<<<<<< HEAD
-	MCFG_PCI_BUS_LEGACY_DEVICE(0, NULL, intel82439tx_pci_r, intel82439tx_pci_w)
-	MCFG_PCI_BUS_LEGACY_DEVICE(7, NULL, intel82371ab_pci_r, intel82371ab_pci_w)
-
-	MCFG_IDE_CONTROLLER_ADD("ide", ata_devices, "hdd", NULL, true)
-	MCFG_ATA_INTERFACE_IRQ_HANDLER(DEVWRITELINE("pic8259_2", pic8259_device, ir6_w))
-
-	MCFG_IDE_CONTROLLER_32_ADD("ide2", ata_devices, NULL, NULL, true)
-=======
 	MCFG_PCI_BUS_LEGACY_DEVICE(0, nullptr, intel82439tx_pci_r, intel82439tx_pci_w)
 	MCFG_PCI_BUS_LEGACY_DEVICE(7, nullptr, intel82371ab_pci_r, intel82371ab_pci_w)
 
@@ -368,7 +286,6 @@ static MACHINE_CONFIG_START( queen )
 	MCFG_ATA_INTERFACE_IRQ_HANDLER(DEVWRITELINE("pic8259_2", pic8259_device, ir6_w))
 
 	MCFG_IDE_CONTROLLER_32_ADD("ide2", ata_devices, nullptr, nullptr, true)
->>>>>>> upstream/master
 	MCFG_ATA_INTERFACE_IRQ_HANDLER(DEVWRITELINE("pic8259_2", pic8259_device, ir7_w))
 
 	/* video hardware */
@@ -391,8 +308,4 @@ ROM_START( queen )
 ROM_END
 
 
-<<<<<<< HEAD
-GAME( 2002?, queen,  0,    queen, at_keyboard, driver_device,  0, ROT0, "STG", "Queen?", MACHINE_IS_SKELETON )
-=======
 GAME( 2002?, queen,  0,    queen, at_keyboard, queen_state,  0, ROT0, "STG", "Queen?", MACHINE_IS_SKELETON )
->>>>>>> upstream/master

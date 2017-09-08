@@ -12,13 +12,6 @@
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/z80/z80.h"
-#include "cpu/nec/nec.h"
-#include "sound/2203intf.h"
-#include "sound/flt_vol.h"
-#include "includes/lockon.h"
-=======
 #include "includes/lockon.h"
 
 #include "cpu/nec/nec.h"
@@ -27,7 +20,6 @@
 #include "sound/flt_vol.h"
 #include "speaker.h"
 
->>>>>>> upstream/master
 
 #define V30_GND_ADDR    ((m_ctrl_reg & 0x3) << 16)
 #define V30_OBJ_ADDR    ((m_ctrl_reg & 0x18) << 13)
@@ -144,11 +136,7 @@ WRITE16_MEMBER(lockon_state::inten_w)
 
 WRITE16_MEMBER(lockon_state::emres_w)
 {
-<<<<<<< HEAD
-	machine().watchdog_reset();
-=======
 	m_watchdog->watchdog_reset();
->>>>>>> upstream/master
 	m_main_inten = 0;
 }
 
@@ -438,21 +426,12 @@ WRITE_LINE_MEMBER(lockon_state::ym2203_irq)
 
 WRITE8_MEMBER(lockon_state::ym2203_out_b)
 {
-<<<<<<< HEAD
-	coin_counter_w(machine(), 0, data & 0x80);
-	coin_counter_w(machine(), 1, data & 0x40);
-	coin_counter_w(machine(), 2, data & 0x20);
-
-	/* 'Lock-On' lamp */
-	set_led_status(machine(), 1, !(data & 0x10));
-=======
 	machine().bookkeeping().coin_counter_w(0, data & 0x80);
 	machine().bookkeeping().coin_counter_w(1, data & 0x40);
 	machine().bookkeeping().coin_counter_w(2, data & 0x20);
 
 	/* 'Lock-On' lamp */
 	output().set_led_value(1, !(data & 0x10));
->>>>>>> upstream/master
 }
 
 /*************************************
@@ -501,11 +480,7 @@ void lockon_state::machine_reset()
 	m_main_inten = 0;
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( lockon, lockon_state )
-=======
 static MACHINE_CONFIG_START( lockon )
->>>>>>> upstream/master
 
 	MCFG_CPU_ADD("maincpu", V30, XTAL_16MHz / 2)
 	MCFG_CPU_PROGRAM_MAP(main_v30)
@@ -520,10 +495,7 @@ static MACHINE_CONFIG_START( lockon )
 	MCFG_CPU_PROGRAM_MAP(sound_prg)
 	MCFG_CPU_IO_MAP(sound_io)
 
-<<<<<<< HEAD
-=======
 	MCFG_WATCHDOG_ADD("watchdog")
->>>>>>> upstream/master
 	MCFG_WATCHDOG_TIME_INIT(PERIOD_OF_555_ASTABLE(10000, 4700, 10000e-12) * 4096)
 	MCFG_QUANTUM_TIME(attotime::from_hz(600))
 
@@ -532,11 +504,7 @@ static MACHINE_CONFIG_START( lockon )
 	MCFG_SCREEN_VIDEO_ATTRIBUTES(VIDEO_UPDATE_AFTER_VBLANK)
 	MCFG_SCREEN_RAW_PARAMS(PIXEL_CLOCK, HTOTAL, HBEND, HBSTART, VTOTAL, VBEND, VBSTART)
 	MCFG_SCREEN_UPDATE_DRIVER(lockon_state, screen_update_lockon)
-<<<<<<< HEAD
-	MCFG_SCREEN_VBLANK_DRIVER(lockon_state, screen_eof_lockon)
-=======
 	MCFG_SCREEN_VBLANK_CALLBACK(WRITELINE(lockon_state, screen_vblank_lockon))
->>>>>>> upstream/master
 	MCFG_SCREEN_PALETTE("palette")
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", lockon)
@@ -810,10 +778,5 @@ ROM_END
  *
  *************************************/
 
-<<<<<<< HEAD
-GAME( 1986, lockon,  0,      lockon,  lockon, driver_device,  0, ROT0, "Tatsumi", "Lock-On (rev. E)", MACHINE_SUPPORTS_SAVE )
-GAME( 1986, lockonc, lockon, lockon,  lockone, driver_device, 0, ROT0, "Tatsumi", "Lock-On (rev. C)", MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1986, lockon,  0,      lockon,  lockon,  lockon_state, 0, ROT0, "Tatsumi", "Lock-On (rev. E)", MACHINE_SUPPORTS_SAVE )
 GAME( 1986, lockonc, lockon, lockon,  lockone, lockon_state, 0, ROT0, "Tatsumi", "Lock-On (rev. C)", MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

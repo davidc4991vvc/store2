@@ -10,21 +10,14 @@
 #include "cpu/mcs48/mcs48.h"
 #include "cpu/mcs51/mcs51.h"
 #include "cpu/z80/z80.h"
-<<<<<<< HEAD
-=======
 #include "machine/cxd1095.h"
 #include "machine/gen_latch.h"
->>>>>>> upstream/master
 #include "machine/i8255.h"
 #include "machine/i8243.h"
 #include "machine/nvram.h"
 #include "machine/segaic16.h"
-<<<<<<< HEAD
-#include "sound/2151intf.h"
-=======
 #include "machine/watchdog.h"
 #include "sound/ym2151.h"
->>>>>>> upstream/master
 #include "video/segaic16.h"
 #include "video/sega16sp.h"
 
@@ -45,16 +38,11 @@ public:
 			m_n7751(*this, "n7751"),
 			m_n7751_i8243(*this, "n7751_8243"),
 			m_nvram(*this, "nvram"),
-<<<<<<< HEAD
-			m_segaic16vid(*this, "segaic16vid"),
-			m_sprites(*this, "sprites"),
-=======
 			m_watchdog(*this, "watchdog"),
 			m_segaic16vid(*this, "segaic16vid"),
 			m_soundlatch(*this, "soundlatch"),
 			m_sprites(*this, "sprites"),
 			m_cxdio(*this, "cxdio"),
->>>>>>> upstream/master
 			m_workram(*this, "nvram"),
 			m_sound_decrypted_opcodes(*this, "sound_decrypted_opcodes"),
 			m_video_control(0),
@@ -64,12 +52,8 @@ public:
 			m_last_buttons1(0),
 			m_last_buttons2(0),
 			m_read_port(0),
-<<<<<<< HEAD
-			m_mj_input_num(0)
-=======
 			m_mj_input_num(0),
 			m_mj_inputs(*this, {"MJ0", "MJ1", "MJ2", "MJ3", "MJ4", "MJ5"})
->>>>>>> upstream/master
 	{ }
 
 	// PPI read/write callbacks
@@ -92,10 +76,6 @@ public:
 	DECLARE_READ8_MEMBER( n7751_rom_r );
 	DECLARE_READ8_MEMBER( n7751_p2_r );
 	DECLARE_WRITE8_MEMBER( n7751_p2_w );
-<<<<<<< HEAD
-	DECLARE_READ8_MEMBER( n7751_t1_r );
-=======
->>>>>>> upstream/master
 
 	// I8751 MCU read/write handlers
 	DECLARE_WRITE8_MEMBER( mcu_control_w );
@@ -118,20 +98,12 @@ public:
 	DECLARE_DRIVER_INIT(sdi);
 
 	// video updates
-<<<<<<< HEAD
-	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 
 protected:
 	// internal types
 	typedef delegate<void ()> i8751_sim_delegate;
-<<<<<<< HEAD
-	typedef delegate<void (UINT8, UINT8)> lamp_changed_delegate;
-=======
 	typedef delegate<void (uint8_t, uint8_t)> lamp_changed_delegate;
->>>>>>> upstream/master
 
 	// timer IDs
 	enum
@@ -141,15 +113,9 @@ protected:
 	};
 
 	// driver overrides
-<<<<<<< HEAD
-	virtual void video_start();
-	virtual void machine_reset();
-	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
-=======
 	virtual void video_start() override;
 	virtual void machine_reset() override;
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
->>>>>>> upstream/master
 
 	// I8751 simulations
 	void dumpmtmt_i8751_sim();
@@ -157,19 +123,12 @@ protected:
 
 	// custom I/O handlers
 	DECLARE_READ16_MEMBER( aceattaca_custom_io_r );
-<<<<<<< HEAD
-=======
 	DECLARE_WRITE16_MEMBER( aceattaca_custom_io_w );
->>>>>>> upstream/master
 	DECLARE_READ16_MEMBER( mjleague_custom_io_r );
 	DECLARE_READ16_MEMBER( passsht16a_custom_io_r );
 	DECLARE_READ16_MEMBER( sdi_custom_io_r );
 	DECLARE_READ16_MEMBER( sjryuko_custom_io_r );
-<<<<<<< HEAD
-	void sjryuko_lamp_changed_w(UINT8 changed, UINT8 newval);
-=======
 	void sjryuko_lamp_changed_w(uint8_t changed, uint8_t newval);
->>>>>>> upstream/master
 
 	// devices
 	required_device<m68000_device> m_maincpu;
@@ -180,14 +139,6 @@ protected:
 	optional_device<n7751_device> m_n7751;
 	optional_device<i8243_device> m_n7751_i8243;
 	required_device<nvram_device> m_nvram;
-<<<<<<< HEAD
-	required_device<segaic16_video_device> m_segaic16vid;
-	required_device<sega_sys16a_sprite_device> m_sprites;
-
-	// memory pointers
-	required_shared_ptr<UINT16> m_workram;
-	optional_shared_ptr<UINT8> m_sound_decrypted_opcodes;
-=======
 	required_device<watchdog_timer_device> m_watchdog;
 	required_device<segaic16_video_device> m_segaic16vid;
 	required_device<generic_latch_8_device> m_soundlatch;
@@ -197,7 +148,6 @@ protected:
 	// memory pointers
 	required_shared_ptr<uint16_t> m_workram;
 	optional_shared_ptr<uint8_t> m_sound_decrypted_opcodes;
->>>>>>> upstream/master
 
 	// configuration
 	read16_delegate         m_custom_io_r;
@@ -206,16 +156,6 @@ protected:
 	lamp_changed_delegate   m_lamp_changed_w;
 
 	// internal state
-<<<<<<< HEAD
-	UINT8                   m_video_control;
-	UINT8                   m_mcu_control;
-	UINT8                   m_n7751_command;
-	UINT32                  m_n7751_rom_address;
-	UINT8                   m_last_buttons1;
-	UINT8                   m_last_buttons2;
-	UINT8                   m_read_port;
-	UINT8                   m_mj_input_num;
-=======
 	uint8_t                   m_video_control;
 	uint8_t                   m_mcu_control;
 	uint8_t                   m_n7751_command;
@@ -225,5 +165,4 @@ protected:
 	uint8_t                   m_read_port;
 	uint8_t                   m_mj_input_num;
 	optional_ioport_array<6> m_mj_inputs;
->>>>>>> upstream/master
 };

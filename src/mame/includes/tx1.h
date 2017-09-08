@@ -5,15 +5,12 @@
     TX-1/Buggy Boy hardware
 
 *************************************************************************/
-<<<<<<< HEAD
-=======
 #ifndef MAME_INCLUDES_TX1_H
 #define MAME_INCLUDES_TX1_H
 
 #pragma once
 
 #include "screen.h"
->>>>>>> upstream/master
 
 
 #define TX1_PIXEL_CLOCK     (XTAL_18MHz / 3)
@@ -42,16 +39,6 @@
 
 struct math_t
 {
-<<<<<<< HEAD
-	UINT16  cpulatch;
-	UINT16  promaddr;
-	UINT16  inslatch;
-	UINT32  mux;
-	UINT16  ppshift;
-	UINT32  i0ff;
-	UINT16  retval;
-	UINT16  muxlatch;   // TX-1
-=======
 	uint16_t  cpulatch;
 	uint16_t  promaddr;
 	uint16_t  inslatch;
@@ -60,7 +47,6 @@ struct math_t
 	uint32_t  i0ff;
 	uint16_t  retval;
 	uint16_t  muxlatch;   // TX-1
->>>>>>> upstream/master
 	int     dbgaddr;
 	int     dbgpc;
 };
@@ -70,30 +56,17 @@ struct math_t
 */
 struct sn74s516_t
 {
-<<<<<<< HEAD
-	INT16   X;
-	INT16   Y;
-=======
 	int16_t   X;
 	int16_t   Y;
->>>>>>> upstream/master
 
 	union
 	{
 	#ifdef LSB_FIRST
-<<<<<<< HEAD
-		struct { UINT16 W; INT16 Z; } as16bit;
-	#else
-		struct { INT16 Z; UINT16 W; } as16bit;
-	#endif
-		INT32 ZW32;
-=======
 		struct { uint16_t W; int16_t Z; } as16bit;
 	#else
 		struct { int16_t Z; uint16_t W; } as16bit;
 	#endif
 		int32_t ZW32;
->>>>>>> upstream/master
 	} ZW;
 
 	int     code;
@@ -103,31 +76,6 @@ struct sn74s516_t
 
 struct vregs_t
 {
-<<<<<<< HEAD
-	UINT16  scol;       /* Road colours */
-	UINT32  slock;      /* Scroll lock */
-	UINT8   flags;      /* Road flags */
-
-	UINT32  ba_val;     /* Accumulator */
-	UINT32  ba_inc;
-	UINT32  bank_mode;
-
-	UINT16  h_val;      /* Accumulator */
-	UINT16  h_inc;
-	UINT16  h_init;
-
-	UINT8   slin_val;   /* Accumulator */
-	UINT8   slin_inc;
-
-	/* Buggyboy only */
-	UINT8   wa8;
-	UINT8   wa4;
-
-	UINT16  wave_lfsr;
-	UINT8   sky;
-	UINT16  gas;
-	UINT8   shift;
-=======
 	uint16_t  scol;       /* Road colours */
 	uint32_t  slock;      /* Scroll lock */
 	uint8_t   flags;      /* Road flags */
@@ -151,7 +99,6 @@ struct vregs_t
 	uint8_t   sky;
 	uint16_t  gas;
 	uint8_t   shift;
->>>>>>> upstream/master
 };
 
 
@@ -179,20 +126,6 @@ public:
 	required_device<cpu_device> m_maincpu;
 	required_device<cpu_device> m_mathcpu;
 	required_device<cpu_device> m_audiocpu;
-<<<<<<< HEAD
-	required_shared_ptr<UINT16> m_math_ram;
-	required_shared_ptr<UINT16> m_vram;
-	required_shared_ptr<UINT16> m_objram;
-	required_shared_ptr<UINT16> m_rcram;
-	required_shared_ptr<UINT8> m_z80_ram;
-
-	required_region_ptr<UINT8> m_char_tiles;
-	required_region_ptr<UINT8> m_obj_tiles;
-	required_region_ptr<UINT8> m_road_rom;
-	required_region_ptr<UINT8> m_obj_map;
-	required_region_ptr<UINT8> m_obj_luts;
-	required_region_ptr<UINT8> m_proms;
-=======
 	required_shared_ptr<uint16_t> m_math_ram;
 	required_shared_ptr<uint16_t> m_vram;
 	required_shared_ptr<uint16_t> m_objram;
@@ -205,38 +138,24 @@ public:
 	required_region_ptr<uint8_t> m_obj_map;
 	required_region_ptr<uint8_t> m_obj_luts;
 	required_region_ptr<uint8_t> m_proms;
->>>>>>> upstream/master
 
 	required_device<screen_device> m_screen;
 
 	emu_timer *m_interrupt_timer;
 
-<<<<<<< HEAD
-	UINT8 m_ppi_latch_a;
-	UINT8 m_ppi_latch_b;
-	UINT32 m_ts;
-=======
 	uint8_t m_ppi_latch_a;
 	uint8_t m_ppi_latch_b;
 	uint32_t m_ts;
->>>>>>> upstream/master
 
 
 	math_t m_math;
 	sn74s516_t m_sn74s516;
 
 	vregs_t m_vregs;
-<<<<<<< HEAD
-	UINT8 *m_chr_bmp;
-	UINT8 *m_obj_bmp;
-	UINT8 *m_rod_bmp;
-	bitmap_ind16 *m_bitmap;
-=======
 	std::unique_ptr<uint8_t[]> m_chr_bmp;
 	std::unique_ptr<uint8_t[]> m_obj_bmp;
 	std::unique_ptr<uint8_t[]> m_rod_bmp;
 	std::unique_ptr<bitmap_ind16> m_bitmap;
->>>>>>> upstream/master
 
 	bool m_needs_update;
 
@@ -284,36 +203,6 @@ public:
 	DECLARE_PALETTE_INIT(buggyboy);
 	DECLARE_VIDEO_START(buggybjr);
 
-<<<<<<< HEAD
-	void tx1_draw_char(UINT8 *bitmap);
-	void tx1_draw_road_pixel(int screen, UINT8 *bmpaddr,
-								UINT8 apix[3], UINT8 bpix[3], UINT32 pixnuma, UINT32 pixnumb,
-								UINT8 stl, UINT8 sld, UINT8 selb,
-								UINT8 bnk, UINT8 rorev, UINT8 eb, UINT8 r, UINT8 delr);
-	void tx1_draw_road(UINT8 *bitmap);
-	void tx1_draw_objects(UINT8 *bitmap);
-	void tx1_update_layers();
-	void tx1_combine_layers(bitmap_ind16 &bitmap, int screen);
-
-	void buggyboy_draw_char(UINT8 *bitmap, bool wide);
-	void buggyboy_get_roadpix(int screen, int ls161, UINT8 rva0_6, UINT8 sld, UINT32 *_rorev,
-								UINT8 *rc0, UINT8 *rc1, UINT8 *rc2, UINT8 *rc3);
-	void buggyboy_draw_road(UINT8 *bitmap);
-	void buggybjr_draw_road(UINT8 *bitmap);
-	void buggyboy_draw_objs(UINT8 *bitmap, bool wide);
-	void bb_combine_layers(bitmap_ind16 &bitmap, int screen);
-	void bb_update_layers();
-
-	UINT32 screen_update_tx1_left(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	UINT32 screen_update_tx1_middle(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	UINT32 screen_update_tx1_right(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	UINT32 screen_update_buggyboy_left(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	UINT32 screen_update_buggyboy_middle(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	UINT32 screen_update_buggyboy_right(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	UINT32 screen_update_buggybjr(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	void screen_eof_tx1(screen_device &screen, bool state);
-	void screen_eof_buggyboy(screen_device &screen, bool state);
-=======
 	void tx1_draw_char(uint8_t *bitmap);
 	void tx1_draw_road_pixel(int screen, uint8_t *bmpaddr,
 								uint8_t apix[3], uint8_t bpix[3], uint32_t pixnuma, uint32_t pixnumb,
@@ -342,7 +231,6 @@ public:
 	uint32_t screen_update_buggybjr(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	DECLARE_WRITE_LINE_MEMBER(screen_vblank_tx1);
 	DECLARE_WRITE_LINE_MEMBER(screen_vblank_buggyboy);
->>>>>>> upstream/master
 	INTERRUPT_GEN_MEMBER(z80_irq);
 	TIMER_CALLBACK_MEMBER(interrupt_callback);
 };
@@ -359,19 +247,11 @@ struct pit8253_state
 	union
 	{
 #ifdef LSB_FIRST
-<<<<<<< HEAD
-		struct { UINT8 LSB; UINT8 MSB; } as8bit;
-#else
-		struct { UINT8 MSB; UINT8 LSB; } as8bit;
-#endif
-		UINT16 val;
-=======
 		struct { uint8_t LSB; uint8_t MSB; } as8bit;
 #else
 		struct { uint8_t MSB; uint8_t LSB; } as8bit;
 #endif
 		uint16_t val;
->>>>>>> upstream/master
 	} counts[3];
 
 	int idx[3];
@@ -381,12 +261,7 @@ class tx1_sound_device : public device_t,
 							public device_sound_interface
 {
 public:
-<<<<<<< HEAD
-	tx1_sound_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-	tx1_sound_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source);
-=======
 	tx1_sound_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
->>>>>>> upstream/master
 	~tx1_sound_device() {}
 
 	DECLARE_READ8_MEMBER( pit8253_r );
@@ -395,27 +270,6 @@ public:
 	DECLARE_WRITE8_MEMBER( ay8910_b_w );
 
 protected:
-<<<<<<< HEAD
-	// device-level overrides
-	virtual void device_config_complete();
-	virtual void device_start();
-	virtual void device_reset();
-
-	// sound stream update overrides
-	virtual void sound_stream_update(sound_stream &stream, stream_sample_t **inputs, stream_sample_t **outputs, int samples);
-
-	// internal state
-	sound_stream *m_stream;
-	UINT32 m_freq_to_step;
-	UINT32 m_step0;
-	UINT32 m_step1;
-	UINT32 m_step2;
-
-	pit8253_state m_pit8253;
-
-	UINT8 m_ay_outputa;
-	UINT8 m_ay_outputb;
-=======
 	tx1_sound_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock);
 
 	// device-level overrides
@@ -436,7 +290,6 @@ protected:
 
 	uint8_t m_ay_outputa;
 	uint8_t m_ay_outputb;
->>>>>>> upstream/master
 
 	stream_sample_t m_pit0;
 	stream_sample_t m_pit1;
@@ -454,15 +307,6 @@ protected:
 	int m_noise_lfsrc;
 	int m_noise_lfsrd;
 	int m_noise_counter;
-<<<<<<< HEAD
-	UINT8 m_ym1_outputa;
-	UINT8 m_ym2_outputa;
-	UINT8 m_ym2_outputb;
-	UINT16 m_eng_voltages[16];
-};
-
-extern const device_type TX1;
-=======
 	uint8_t m_ym1_outputa;
 	uint8_t m_ym2_outputa;
 	uint8_t m_ym2_outputb;
@@ -470,16 +314,11 @@ extern const device_type TX1;
 };
 
 DECLARE_DEVICE_TYPE(TX1, tx1_sound_device)
->>>>>>> upstream/master
 
 class buggyboy_sound_device : public tx1_sound_device
 {
 public:
-<<<<<<< HEAD
-	buggyboy_sound_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-=======
 	buggyboy_sound_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
->>>>>>> upstream/master
 
 	DECLARE_WRITE8_MEMBER( ym1_a_w );
 	DECLARE_WRITE8_MEMBER( ym2_a_w );
@@ -487,29 +326,16 @@ public:
 
 protected:
 	// device-level overrides
-<<<<<<< HEAD
-	virtual void device_config_complete();
-	virtual void device_start();
-	virtual void device_reset();
-
-	// sound stream update overrides
-	virtual void sound_stream_update(sound_stream &stream, stream_sample_t **inputs, stream_sample_t **outputs, int samples);
-=======
 	virtual void device_start() override;
 	virtual void device_reset() override;
 
 	// sound stream update overrides
 	virtual void sound_stream_update(sound_stream &stream, stream_sample_t **inputs, stream_sample_t **outputs, int samples) override;
->>>>>>> upstream/master
 
 private:
 	// internal state
 };
 
-<<<<<<< HEAD
-extern const device_type BUGGYBOY;
-=======
 DECLARE_DEVICE_TYPE(BUGGYBOY, buggyboy_sound_device)
 
 #endif // MAME_INCLUDES_TX1_H
->>>>>>> upstream/master

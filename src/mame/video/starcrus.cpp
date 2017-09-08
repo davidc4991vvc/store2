@@ -4,14 +4,9 @@
 /* Ramtek - Star Cruiser */
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "sound/samples.h"
-#include "includes/starcrus.h"
-=======
 #include "includes/starcrus.h"
 #include "sound/samples.h"
 #include "screen.h"
->>>>>>> upstream/master
 
 /* The collision detection techniques use in this driver
    are well explained in the comments in the sprint2 driver */
@@ -27,19 +22,11 @@ WRITE8_MEMBER(starcrus_state::p2_y_w){ m_p2_y = data^0xff; }
 
 void starcrus_state::video_start()
 {
-<<<<<<< HEAD
-	m_ship1_vid = auto_bitmap_ind16_alloc(machine(), 16, 16);
-	m_ship2_vid = auto_bitmap_ind16_alloc(machine(), 16, 16);
-
-	m_proj1_vid = auto_bitmap_ind16_alloc(machine(), 16, 16);
-	m_proj2_vid = auto_bitmap_ind16_alloc(machine(), 16, 16);
-=======
 	m_ship1_vid = std::make_unique<bitmap_ind16>(16, 16);
 	m_ship2_vid = std::make_unique<bitmap_ind16>(16, 16);
 
 	m_proj1_vid = std::make_unique<bitmap_ind16>(16, 16);
 	m_proj2_vid = std::make_unique<bitmap_ind16>(16, 16);
->>>>>>> upstream/master
 
 	save_item(NAME(m_s1_x));
 	save_item(NAME(m_s1_y));
@@ -92,13 +79,8 @@ WRITE8_MEMBER(starcrus_state::ship_parm_1_w)
 WRITE8_MEMBER(starcrus_state::ship_parm_2_w)
 {
 	m_s2_sprite = data&0x1f;
-<<<<<<< HEAD
-	set_led_status(machine(), 2,~data & 0x80);          /* game over lamp */
-	coin_counter_w(machine(), 0, ((data&0x40)>>6)^0x01);    /* coin counter */
-=======
 	output().set_led_value(2,~data & 0x80);          /* game over lamp */
 	machine().bookkeeping().coin_counter_w(0, ((data&0x40)>>6)^0x01);    /* coin counter */
->>>>>>> upstream/master
 	m_engine2_on = ((data&0x20)>>5)^0x01;
 
 	if (m_engine1_on || m_engine2_on)
@@ -433,11 +415,7 @@ int starcrus_state::collision_check_s2p1p2()
 	return 0;
 }
 
-<<<<<<< HEAD
-UINT32 starcrus_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t starcrus_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	bitmap.fill(0, cliprect);
 

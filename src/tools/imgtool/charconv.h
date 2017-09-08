@@ -9,28 +9,6 @@
 ***************************************************************************/
 
 
-<<<<<<< HEAD
-#ifndef __CHARCONV_H__
-#define __CHARCONV_H__
-
-
-/* Supported character sets */
-enum imgtool_charset
-{
-	IMGTOOL_CHARSET_UTF8,
-	IMGTOOL_CHARSET_ISO_8859_1,
-};
-
-
-/* Convert specified charset to UTF-8 */
-char *utf8_from_native(imgtool_charset charset, const char *src);
-
-/* Convert UTF-8 string to specified charset */
-char *native_from_utf8(imgtool_charset charset, const char *src);
-
-
-#endif /* __CHARCONV_H__ */
-=======
 #ifndef IMGTOOL_CHARCONV_H
 #define IMGTOOL_CHARCONV_H
 
@@ -101,4 +79,3 @@ namespace imgtool
 
 
 #endif // IMGTOOL_CHARCONV_H
->>>>>>> upstream/master

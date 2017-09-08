@@ -2,12 +2,6 @@
 
 #include "StdAfx.h"
 
-<<<<<<< HEAD
-#include "Common/IntToString.h"
-
-#include "Windows/FileFind.h"
-#include "Windows/PropVariantConversions.h"
-=======
 #include "../../../../C/CpuArch.h"
 
 #include "../../../Common/IntToString.h"
@@ -15,32 +9,11 @@
 
 #include "../../../Windows/FileIO.h"
 #include "../../../Windows/PropVariantConv.h"
->>>>>>> upstream/master
 
 #include "../../PropID.h"
 
 #include "PropIDUtils.h"
 
-<<<<<<< HEAD
-using namespace NWindows;
-
-void ConvertUInt32ToHex(UInt32 value, wchar_t *s)
-{
-  for (int i = 0; i < 8; i++)
-  {
-    int t = value & 0xF;
-    value >>= 4;
-    s[7 - i] = (wchar_t)((t < 10) ? (L'0' + t) : (L'A' + (t - 10)));
-  }
-  s[8] = L'\0';
-}
-
-static const char g_WinAttrib[17] = "RHS8DAdNTsrCOnE_";
-/*
-0 READONLY
-1 HIDDEN
-3 SYSTEM
-=======
 #define Get16(x) GetUi16(x)
 #define Get32(x) GetUi32(x)
 
@@ -51,7 +24,6 @@ static const char g_WinAttribChars[16 + 1] = "RHS8DAdNTsLCOnE_";
 0 READONLY
 1 HIDDEN
 2 SYSTEM
->>>>>>> upstream/master
 
 4 DIRECTORY
 5 ARCHIVE
@@ -69,27 +41,6 @@ static const char g_WinAttribChars[16 + 1] = "RHS8DAdNTsLCOnE_";
 */
 
 static const char kPosixTypes[16] = { '0', 'p', 'c', '3', 'd', '5', 'b', '7', '-', '9', 'l', 'B', 's', 'D', 'E', 'F' };
-<<<<<<< HEAD
-#define MY_ATTR_CHAR(a, n, c) ((a )& (1 << (n))) ? c : L'-';
-
-UString ConvertPropertyToString(const PROPVARIANT &prop, PROPID propID, bool full)
-{
-  switch(propID)
-  {
-    case kpidCTime:
-    case kpidATime:
-    case kpidMTime:
-    {
-      if (prop.vt != VT_FILETIME)
-        break;
-      FILETIME localFileTime;
-      if ((prop.filetime.dwHighDateTime == 0 &&
-          prop.filetime.dwLowDateTime == 0) ||
-          !::FileTimeToLocalFileTime(&prop.filetime, &localFileTime))
-        return UString();
-      return ConvertFileTimeToString(localFileTime, true, full);
-    }
-=======
 #define MY_ATTR_CHAR(a, n, c) ((a) & (1 << (n))) ? c : '-';
 
 static void ConvertPosixAttribToString(char *s, UInt32 a) throw()
@@ -149,34 +100,18 @@ void ConvertPropertyToShortString(char *dest, const PROPVARIANT &prop, PROPID pr
 
   switch (propID)
   {
->>>>>>> upstream/master
     case kpidCRC:
     {
       if (prop.vt != VT_UI4)
         break;
-<<<<<<< HEAD
-      wchar_t temp[12];
-      ConvertUInt32ToHex(prop.ulVal, temp);
-      return temp;
-=======
       ConvertUInt32ToHex8Digits(prop.ulVal, dest);
       return;
->>>>>>> upstream/master
     }
     case kpidAttrib:
     {
       if (prop.vt != VT_UI4)
         break;
       UInt32 a = prop.ulVal;
-<<<<<<< HEAD
-      wchar_t sz[32];
-      int pos = 0;
-      for (int i = 0; i < 16; i++)
-        if (a & (1 << i) && i != 7)
-          sz[pos++] = g_WinAttrib[i];
-      sz[pos] = '\0';
-      return sz;
-=======
 
       /*
       if ((a & 0x8000) && (a & 0x7FFF) == 0)
@@ -185,42 +120,11 @@ void ConvertPropertyToShortString(char *dest, const PROPVARIANT &prop, PROPID pr
       */
       ConvertWinAttribToString(dest, a);
       return;
->>>>>>> upstream/master
     }
     case kpidPosixAttrib:
     {
       if (prop.vt != VT_UI4)
         break;
-<<<<<<< HEAD
-      UString res;
-      UInt32 a = prop.ulVal;
-      wchar_t temp[16];
-
-      temp[0] = kPosixTypes[(a >> 12) & 0xF];
-      for (int i = 6; i >= 0; i -= 3)
-      {
-        temp[7 - i] = MY_ATTR_CHAR(a, i + 2, L'r');
-        temp[8 - i] = MY_ATTR_CHAR(a, i + 1, L'w');
-        temp[9 - i] = MY_ATTR_CHAR(a, i + 0, L'x');
-      }
-      if ((a & 0x800) != 0) temp[3] = ((a & (1 << 6)) ? 's' : 'S');
-      if ((a & 0x400) != 0) temp[6] = ((a & (1 << 3)) ? 's' : 'S');
-      if ((a & 0x200) != 0) temp[9] = ((a & (1 << 0)) ? 't' : 'T');
-      temp[10] = 0;
-      res = temp;
-
-      a &= ~(UInt32)0xFFFF;
-      if (a != 0)
-      {
-        ConvertUInt32ToHex(a, temp);
-        res = UString(temp) + L' ' + res;
-      }
-      return res;
-    }
-  }
-  return ConvertPropVariantToString(prop);
-}
-=======
       ConvertPosixAttribToString(dest, prop.ulVal);
       return;
     }
@@ -668,4 +572,3 @@ bool ConvertNtReparseToString(const Byte *data, UInt32 size, UString &s)
 }
 
 #endif
->>>>>>> upstream/master

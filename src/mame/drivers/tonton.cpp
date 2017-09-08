@@ -25,18 +25,11 @@
 
 #include "emu.h"
 #include "cpu/z80/z80.h"
-<<<<<<< HEAD
-#include "sound/ay8910.h"
-#include "video/v9938.h"
-#include "machine/ticket.h"
-#include "machine/nvram.h"
-=======
 #include "machine/nvram.h"
 #include "machine/ticket.h"
 #include "sound/ay8910.h"
 #include "video/v9938.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 class tonton_state : public driver_device
 {
@@ -52,14 +45,8 @@ public:
 	DECLARE_WRITE8_MEMBER(tonton_outport_w);
 	DECLARE_WRITE8_MEMBER(ay_aout_w);
 	DECLARE_WRITE8_MEMBER(ay_bout_w);
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void machine_reset();
-	DECLARE_WRITE_LINE_MEMBER(tonton_vdp0_interrupt);
-=======
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
->>>>>>> upstream/master
 	required_device<cpu_device> m_maincpu;
 	required_device<ticket_dispenser_device> m_hopper;
 };
@@ -73,31 +60,13 @@ public:
 
 
 /*************************************************
-<<<<<<< HEAD
-*                Video Hardware                  *
-*************************************************/
-
-WRITE_LINE_MEMBER(tonton_state::tonton_vdp0_interrupt)
-{
-	m_maincpu->set_input_line(0, (state ? HOLD_LINE : CLEAR_LINE));
-}
-
-
-/*************************************************
-=======
->>>>>>> upstream/master
 *          Multi-Purpose Output Port             *
 *************************************************/
 
 WRITE8_MEMBER(tonton_state::tonton_outport_w)
 {
-<<<<<<< HEAD
-	coin_counter_w(machine(), offset, data & 0x01);
-	coin_lockout_global_w(machine(), data & 0x02);  /* Coin Lock */
-=======
 	machine().bookkeeping().coin_counter_w(offset, data & 0x01);
 	machine().bookkeeping().coin_lockout_global_w(data & 0x02);  /* Coin Lock */
->>>>>>> upstream/master
 	m_hopper->write(space, 0, (data & 0x02));    /* Hopper Motor */
 
 //  if(data & 0xfe)
@@ -241,11 +210,7 @@ WRITE8_MEMBER(tonton_state::ay_bout_w)
 *                 Machine Driver                 *
 *************************************************/
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( tonton, tonton_state )
-=======
 static MACHINE_CONFIG_START( tonton )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu",Z80, CPU_CLOCK)  /* Guess. According to other MSX2 based gambling games */
@@ -257,11 +222,7 @@ static MACHINE_CONFIG_START( tonton )
 
 	/* video hardware */
 	MCFG_V9938_ADD("v9938", "screen", VDP_MEM, MAIN_CLOCK)
-<<<<<<< HEAD
-	MCFG_V99X8_INTERRUPT_CALLBACK(WRITELINE(tonton_state,tonton_vdp0_interrupt))
-=======
 	MCFG_V99X8_INTERRUPT_CALLBACK(INPUTLINE("maincpu", 0))
->>>>>>> upstream/master
 	MCFG_V99X8_SCREEN_ADD_NTSC("screen", "v9938", MAIN_CLOCK)
 
 	MCFG_TICKET_DISPENSER_ADD("hopper", attotime::from_msec(HOPPER_PULSE), TICKET_MOTOR_ACTIVE_LOW, TICKET_STATUS_ACTIVE_LOW )
@@ -295,10 +256,5 @@ ROM_START( tonton )
 ROM_END
 
 
-<<<<<<< HEAD
-/*    YEAR  NAME     PARENT  MACHINE  INPUT   STATE          INIT  ROT    COMPANY                   FULLNAME                                 FLAGS  */
-GAME( 199?, tonton,  0,      tonton,  tonton, driver_device, 0,    ROT0, "Success / Taiyo Jidoki", "Waku Waku Doubutsu Land TonTon (Japan)", 0 )
-=======
 //    YEAR  NAME     PARENT  MACHINE  INPUT   STATE         INIT  ROT   COMPANY                   FULLNAME                                  FLAGS
 GAME( 199?, tonton,  0,      tonton,  tonton, tonton_state, 0,    ROT0, "Success / Taiyo Jidoki", "Waku Waku Doubutsu Land TonTon (Japan)", 0 )
->>>>>>> upstream/master

@@ -148,10 +148,7 @@ Fax                  1982  6502   FXL, FLA
 #include "machine/6821pia.h"
 #include "audio/exidy.h"
 #include "includes/exidy.h"
-<<<<<<< HEAD
-=======
 #include "audio/targ.h"
->>>>>>> upstream/master
 
 
 /*************************************
@@ -162,11 +159,7 @@ Fax                  1982  6502   FXL, FLA
 
 CUSTOM_INPUT_MEMBER(exidy_state::teetert_input_r)
 {
-<<<<<<< HEAD
-	UINT8 dial = ioport("DIAL")->read();
-=======
 	uint8_t dial = ioport("DIAL")->read();
->>>>>>> upstream/master
 	int result = 0;
 
 	result = (dial != m_last_dial) << 4;
@@ -407,8 +400,6 @@ static INPUT_PORTS_START( spectar )
 	PORT_BIT( 0x1c, IP_ACTIVE_HIGH, IPT_SPECIAL )
 INPUT_PORTS_END
 
-<<<<<<< HEAD
-=======
 static INPUT_PORTS_START( spectarrf ) // default to Spanish since it's a Spanish bootleg
 	PORT_INCLUDE(spectar)
 
@@ -420,7 +411,6 @@ static INPUT_PORTS_START( spectarrf ) // default to Spanish since it's a Spanish
 	PORT_DIPSETTING(    0x03, DEF_STR( Spanish ) )
 INPUT_PORTS_END
 
->>>>>>> upstream/master
 static INPUT_PORTS_START( rallys )
 	PORT_INCLUDE(spectar)
 
@@ -624,11 +614,7 @@ static INPUT_PORTS_START( teetert )
 	PORT_START("IN0")
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_START1 )
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_START2 )
-<<<<<<< HEAD
-	PORT_BIT( 0x44, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, exidy_state,teetert_input_r, NULL)
-=======
 	PORT_BIT( 0x44, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, exidy_state,teetert_input_r, nullptr)
->>>>>>> upstream/master
 	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_UNKNOWN )
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_BUTTON1 )
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_UNKNOWN )
@@ -828,11 +814,7 @@ MACHINE_START_MEMBER(exidy_state,teetert)
  *
  *************************************/
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( base, exidy_state )
-=======
 static MACHINE_CONFIG_START( base )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6502, EXIDY_CPU_CLOCK)
@@ -1011,14 +993,11 @@ ROM_START( spectar )
 	ROM_REGION( 0x0400, "gfx1", 0 )
 	ROM_LOAD( "hrl11d-2", 0x0000, 0x0400, CRC(c55b645d) SHA1(0c18277939d74e3e1281a7f114a34781d30c2baf) )  /* this is actually not used (all FF) */
 	ROM_CONTINUE(         0x0000, 0x0400 )  /* overwrite with the real one */
-<<<<<<< HEAD
-=======
 
 	ROM_REGION( 0x0140, "proms", 0 ) // were dumped from a bootleg, very probably they are the same, but marked as bad dump for precaution. The 2 6331 match the Targ ones.
 	ROM_LOAD( "prom.5c",  0x0000, 0x0100, BAD_DUMP CRC(9ca2e061) SHA1(4111325b00a1017042d55c59308d41e8333ba627) ) // 6301 according to the Spectar manual
 	ROM_LOAD( "prom.6d",  0x0100, 0x0020, BAD_DUMP CRC(e26f9053) SHA1(eec35b6aa2c2d305418306bf4a1754a0583f109f) ) // 6331 according to the Spectar manual
 	ROM_LOAD( "hrl14h-1", 0x0120, 0x0020, BAD_DUMP CRC(f76b4fcf) SHA1(197e0cc508ffeb5cefa4046bdfb158939d598225) ) // 6331 according to the Spectar manual
->>>>>>> upstream/master
 ROM_END
 
 
@@ -1035,10 +1014,6 @@ ROM_START( spectar1 )
 	ROM_REGION( 0x0400, "gfx1", 0 )
 	ROM_LOAD( "hrl11d-2", 0x0000, 0x0400, CRC(c55b645d) SHA1(0c18277939d74e3e1281a7f114a34781d30c2baf) )  /* this is actually not used (all FF) */
 	ROM_CONTINUE(         0x0000, 0x0400 )  /* overwrite with the real one */
-<<<<<<< HEAD
-ROM_END
-
-=======
 
 	ROM_REGION( 0x0140, "proms", 0 ) // were dumped from a bootleg, very probably they are the same, but marked as bad dump for precaution. The 2 6331 match the Targ ones.
 	ROM_LOAD( "prom.5c",  0x0000, 0x0100, BAD_DUMP CRC(9ca2e061) SHA1(4111325b00a1017042d55c59308d41e8333ba627) ) // 6301 according to the Spectar manual
@@ -1064,7 +1039,6 @@ ROM_START( spectarrf )
 	ROM_LOAD( "prom.6d",  0x0100, 0x0020, CRC(e26f9053) SHA1(eec35b6aa2c2d305418306bf4a1754a0583f109f) )
 	ROM_LOAD( "hrl14h-1", 0x0120, 0x0020, CRC(f76b4fcf) SHA1(197e0cc508ffeb5cefa4046bdfb158939d598225) )
 ROM_END
->>>>>>> upstream/master
 
 ROM_START( rallys )
 	ROM_REGION( 0x10000, "maincpu", 0 )
@@ -1180,8 +1154,6 @@ ROM_START( mtrap )
 
 	ROM_REGION( 0x0800, "gfx1", 0 )
 	ROM_LOAD( "mtl11d.bin",  0x0000, 0x0800, CRC(c6e4d339) SHA1(b091923e4d52e93d7c567afba217a10b2a3735fc) )
-<<<<<<< HEAD
-=======
 
 	ROM_REGION( 0x140, "proms", 0 ) // were dumped from a bootleg, very probably they are the same, but marked as bad dump for precaution. They also match the teetert ones.
 	ROM_LOAD( "74s288.6c",  0x0000, 0x0020, BAD_DUMP CRC(f76b4fcf) SHA1(197e0cc508ffeb5cefa4046bdfb158939d598225) ) // 6331 according to the Mouse Trap manual
@@ -1217,7 +1189,6 @@ ROM_START( mtrap2 )
 	ROM_LOAD( "74s288.6c",  0x0000, 0x0020, BAD_DUMP CRC(f76b4fcf) SHA1(197e0cc508ffeb5cefa4046bdfb158939d598225) ) // 6331 according to the Mouse Trap manual
 	ROM_LOAD( "24s10n.1c",   0x0020, 0x0100, BAD_DUMP CRC(43b35bb7) SHA1(0a0cecea8faff9f3ff4c2ceda0b5b25e8e1cd667) ) // 6301 according to the Mouse Trap manual
 	ROM_LOAD( "74s288.3d",   0x0120, 0x0020, BAD_DUMP CRC(e26f9053) SHA1(eec35b6aa2c2d305418306bf4a1754a0583f109f) ) // 6331 according to the Mouse Trap manual
->>>>>>> upstream/master
 ROM_END
 
 
@@ -1243,14 +1214,11 @@ ROM_START( mtrap3 )
 
 	ROM_REGION( 0x0800, "gfx1", 0 )
 	ROM_LOAD( "mtl11d.bin",  0x0000, 0x0800, CRC(c6e4d339) SHA1(b091923e4d52e93d7c567afba217a10b2a3735fc) )
-<<<<<<< HEAD
-=======
 
 	ROM_REGION( 0x140, "proms", 0 ) // were dumped from a bootleg, very probably they are the same, but marked as bad dump for precaution. They also match the teetert ones.
 	ROM_LOAD( "74s288.6c",  0x0000, 0x0020, BAD_DUMP CRC(f76b4fcf) SHA1(197e0cc508ffeb5cefa4046bdfb158939d598225) ) // 6331 according to the Mouse Trap manual
 	ROM_LOAD( "24s10n.1c",   0x0020, 0x0100, BAD_DUMP CRC(43b35bb7) SHA1(0a0cecea8faff9f3ff4c2ceda0b5b25e8e1cd667) ) // 6301 according to the Mouse Trap manual
 	ROM_LOAD( "74s288.3d",   0x0120, 0x0020, BAD_DUMP CRC(e26f9053) SHA1(eec35b6aa2c2d305418306bf4a1754a0583f109f) ) // 6331 according to the Mouse Trap manual
->>>>>>> upstream/master
 ROM_END
 
 
@@ -1276,14 +1244,11 @@ ROM_START( mtrap4 )
 
 	ROM_REGION( 0x0800, "gfx1", 0 )
 	ROM_LOAD( "mtl11d.bin",   0x0000, 0x0800, CRC(c6e4d339) SHA1(b091923e4d52e93d7c567afba217a10b2a3735fc) )
-<<<<<<< HEAD
-=======
 
 	ROM_REGION( 0x140, "proms", 0 ) // were dumped from a bootleg, very probably they are the same, but marked as bad dump for precaution. They also match the teetert ones.
 	ROM_LOAD( "74s288.6c",  0x0000, 0x0020, BAD_DUMP CRC(f76b4fcf) SHA1(197e0cc508ffeb5cefa4046bdfb158939d598225) ) // 6331 according to the Mouse Trap manual
 	ROM_LOAD( "24s10n.1c",   0x0020, 0x0100, BAD_DUMP CRC(43b35bb7) SHA1(0a0cecea8faff9f3ff4c2ceda0b5b25e8e1cd667) ) // 6301 according to the Mouse Trap manual
 	ROM_LOAD( "74s288.3d",   0x0120, 0x0020, BAD_DUMP CRC(e26f9053) SHA1(eec35b6aa2c2d305418306bf4a1754a0583f109f) ) // 6331 according to the Mouse Trap manual
->>>>>>> upstream/master
 ROM_END
 
 ROM_START( mtrapb )
@@ -1306,10 +1271,6 @@ ROM_START( mtrapb )
 
 	ROM_REGION( 0x0800, "gfx1", 0 )
 	ROM_LOAD( "2516.j6",   0x0000, 0x0800, CRC(c6e4d339) SHA1(b091923e4d52e93d7c567afba217a10b2a3735fc) )
-<<<<<<< HEAD
-ROM_END
-
-=======
 
 	ROM_REGION( 0x140, "proms", 0 ) // were dumped from a bootleg, very probably they are the same, but marked as bad dump for precaution. They also match the teetert ones.
 	ROM_LOAD( "74s288.6c",  0x0000, 0x0020, BAD_DUMP CRC(f76b4fcf) SHA1(197e0cc508ffeb5cefa4046bdfb158939d598225) ) // 6331 according to the Mouse Trap manual
@@ -1350,7 +1311,6 @@ ROM_START( mtrapb2 )
 	ROM_LOAD( "24s10n.1c", 0x0020, 0x0100, CRC(43b35bb7) SHA1(0a0cecea8faff9f3ff4c2ceda0b5b25e8e1cd667) )
 	ROM_LOAD( "74s288.3d", 0x0120, 0x0020, CRC(e26f9053) SHA1(eec35b6aa2c2d305418306bf4a1754a0583f109f) )
 ROM_END
->>>>>>> upstream/master
 
 ROM_START( venture )
 	ROM_REGION( 0x10000, "maincpu", 0 )
@@ -1499,14 +1459,11 @@ ROM_START( teetert )
 
 	ROM_REGION( 0x0800, "gfx1", 0 )
 	ROM_LOAD( "11d-cpu", 0x0000, 0x0800, CRC(0fe70b00) SHA1(6068be263d7a8e6b71af6f4dceec40bb8d246376) )
-<<<<<<< HEAD
-=======
 
 	ROM_REGION( 0x140, "proms", 0 )
 	ROM_LOAD( "tt14h.123",  0x0000, 0x0020, CRC(f76b4fcf) SHA1(197e0cc508ffeb5cefa4046bdfb158939d598225) )
 	ROM_LOAD( "tt5c.129",   0x0020, 0x0100, CRC(43b35bb7) SHA1(0a0cecea8faff9f3ff4c2ceda0b5b25e8e1cd667) )
 	ROM_LOAD( "tt6d.123",   0x0120, 0x0020, CRC(e26f9053) SHA1(eec35b6aa2c2d305418306bf4a1754a0583f109f) )
->>>>>>> upstream/master
 ROM_END
 
 
@@ -1626,11 +1583,7 @@ ROM_END
 
 DRIVER_INIT_MEMBER(exidy_state,sidetrac)
 {
-<<<<<<< HEAD
-	exidy_video_config(0x00, 0x00, FALSE);
-=======
 	exidy_video_config(0x00, 0x00, false);
->>>>>>> upstream/master
 
 	/* hard-coded palette controlled via 8x3 DIP switches on the board */
 	m_color_latch[2] = 0xf8;
@@ -1641,11 +1594,7 @@ DRIVER_INIT_MEMBER(exidy_state,sidetrac)
 
 DRIVER_INIT_MEMBER(exidy_state,targ)
 {
-<<<<<<< HEAD
-	exidy_video_config(0x00, 0x00, FALSE);
-=======
 	exidy_video_config(0x00, 0x00, false);
->>>>>>> upstream/master
 
 	/* hard-coded palette controlled via 8x3 DIP switches on the board */
 	m_color_latch[2] = 0x5c;
@@ -1656,11 +1605,7 @@ DRIVER_INIT_MEMBER(exidy_state,targ)
 
 DRIVER_INIT_MEMBER(exidy_state,spectar)
 {
-<<<<<<< HEAD
-	exidy_video_config(0x00, 0x00, FALSE);
-=======
 	exidy_video_config(0x00, 0x00, false);
->>>>>>> upstream/master
 
 	/* hard-coded palette controlled via 8x3 DIP switches on the board */
 	m_color_latch[2] = 0x58;
@@ -1670,11 +1615,7 @@ DRIVER_INIT_MEMBER(exidy_state,spectar)
 
 DRIVER_INIT_MEMBER(exidy_state,rallys)
 {
-<<<<<<< HEAD
-	exidy_video_config(0x00, 0x00, FALSE);
-=======
 	exidy_video_config(0x00, 0x00, false);
->>>>>>> upstream/master
 
 	/* hard-coded palette controlled via 8x3 DIP switches on the board */
 	m_color_latch[2] = 0x58;
@@ -1684,11 +1625,7 @@ DRIVER_INIT_MEMBER(exidy_state,rallys)
 
 DRIVER_INIT_MEMBER(exidy_state,phantoma)
 {
-<<<<<<< HEAD
-	exidy_video_config(0x00, 0x00, FALSE);
-=======
 	exidy_video_config(0x00, 0x00, false);
->>>>>>> upstream/master
 
 	/* hard-coded palette controlled via 8x3 DIP switches on the board */
 	m_color_latch[2] = 0x58;
@@ -1703,41 +1640,25 @@ DRIVER_INIT_MEMBER(exidy_state,phantoma)
 
 DRIVER_INIT_MEMBER(exidy_state,mtrap)
 {
-<<<<<<< HEAD
-	exidy_video_config(0x14, 0x00, FALSE);
-=======
 	exidy_video_config(0x14, 0x00, false);
->>>>>>> upstream/master
 }
 
 
 DRIVER_INIT_MEMBER(exidy_state,venture)
 {
-<<<<<<< HEAD
-	exidy_video_config(0x04, 0x04, FALSE);
-=======
 	exidy_video_config(0x04, 0x04, false);
->>>>>>> upstream/master
 }
 
 
 DRIVER_INIT_MEMBER(exidy_state,teetert)
 {
-<<<<<<< HEAD
-	exidy_video_config(0x0c, 0x0c, FALSE);
-=======
 	exidy_video_config(0x0c, 0x0c, false);
->>>>>>> upstream/master
 }
 
 
 DRIVER_INIT_MEMBER(exidy_state,pepper2)
 {
-<<<<<<< HEAD
-	exidy_video_config(0x14, 0x04, TRUE);
-=======
 	exidy_video_config(0x14, 0x04, true);
->>>>>>> upstream/master
 }
 
 
@@ -1745,11 +1666,7 @@ DRIVER_INIT_MEMBER(exidy_state,fax)
 {
 	//address_space &space = m_maincpu->space(AS_PROGRAM);
 
-<<<<<<< HEAD
-	exidy_video_config(0x04, 0x04, TRUE);
-=======
 	exidy_video_config(0x04, 0x04, true);
->>>>>>> upstream/master
 
 	membank("bank1")->configure_entries(0, 32, memregion("maincpu")->base() + 0x10000, 0x2000);
 }
@@ -1764,37 +1681,6 @@ DRIVER_INIT_MEMBER(exidy_state,fax)
 
 GAME( 1979, sidetrac, 0,       sidetrac, sidetrac, exidy_state, sidetrac, ROT0, "Exidy",   "Side Trak", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE ) // "Side Track" on title screen, but cabinet/flyers/documentation clearly indicates otherwise, "Side Trak" it is
 
-<<<<<<< HEAD
-GAME( 1980, targ,     0,       targ,     targ, exidy_state,     targ,     ROT0, "Exidy",   "Targ", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 1980, targc,    targ,    targ,     targ, exidy_state,     targ,     ROT0, "Exidy",   "Targ (cocktail?)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-
-GAME( 1980, spectar,  0,       spectar,  spectar, exidy_state,  spectar,  ROT0, "Exidy",   "Spectar (revision 3)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 1980, spectar1, spectar, spectar,  spectar, exidy_state,  spectar,  ROT0, "Exidy",   "Spectar (revision 1?)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 1980, rallys,   spectar, rallys,   rallys, exidy_state,   rallys,   ROT0, "bootleg (Novar)", "Rallys (bootleg of Spectar, set 1)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 1980, rallysa,  spectar, rallys,   rallys, exidy_state,   rallys,   ROT0, "bootleg (Musik Box Brescia)", "Rallys (bootleg of Spectar, set 2)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 1980, panzer,   spectar, rallys,   rallys, exidy_state,   rallys,   ROT0, "bootleg (Proel)", "Panzer (bootleg of Spectar)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 1980, phantoma, spectar, rallys,   phantoma, exidy_state, phantoma, ROT0, "bootleg (Jeutel)", "Phantomas (bootleg of Spectar)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 1980, phantom,  spectar, rallys,   phantoma, exidy_state, phantoma, ROT0, "bootleg (Proel)", "Phantom (bootleg of Spectar)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-
-GAME( 1981, mtrap,    0,       mtrap,    mtrap, exidy_state,    mtrap,    ROT0, "Exidy",   "Mouse Trap (version 5)", MACHINE_SUPPORTS_SAVE )
-GAME( 1981, mtrap3,   mtrap,   mtrap,    mtrap, exidy_state,    mtrap,    ROT0, "Exidy",   "Mouse Trap (version 3)", MACHINE_SUPPORTS_SAVE )
-GAME( 1981, mtrap4,   mtrap,   mtrap,    mtrap, exidy_state,    mtrap,    ROT0, "Exidy",   "Mouse Trap (version 4)", MACHINE_SUPPORTS_SAVE )
-GAME( 1981, mtrapb,   mtrap,   mtrap,    mtrap, exidy_state,    mtrap,    ROT0, "bootleg", "Mouse Trap (bootleg)", MACHINE_SUPPORTS_SAVE )
-
-GAME( 1981, venture,  0,       venture,  venture, exidy_state,  venture,  ROT0, "Exidy",   "Venture (version 5 set 1)", MACHINE_SUPPORTS_SAVE )
-GAME( 1981, venture2, venture, venture,  venture, exidy_state,  venture,  ROT0, "Exidy",   "Venture (version 5 set 2)", MACHINE_SUPPORTS_SAVE )
-GAME( 1981, venture4, venture, venture,  venture, exidy_state,  venture,  ROT0, "Exidy",   "Venture (version 4)", MACHINE_SUPPORTS_SAVE )
-
-GAME( 1982, teetert,  0,       teetert,  teetert, exidy_state,  teetert,  ROT0, "Exidy",   "Teeter Torture (prototype)", MACHINE_SUPPORTS_SAVE )
-
-GAME( 1982, pepper2,  0,       pepper2,  pepper2, exidy_state,  pepper2,  ROT0, "Exidy",   "Pepper II (version 8)", MACHINE_SUPPORTS_SAVE )
-GAME( 1982, pepper27, pepper2, pepper2,  pepper2, exidy_state,  pepper2,  ROT0, "Exidy",   "Pepper II (version 7)", MACHINE_SUPPORTS_SAVE )
-
-GAME( 1982, hardhat,  0,       pepper2,  pepper2, exidy_state,  pepper2,  ROT0, "Exidy",   "Hard Hat", MACHINE_SUPPORTS_SAVE )
-
-GAME( 1983, fax,      0,       fax,      fax, exidy_state,      fax,      ROT0, "Exidy",   "FAX", MACHINE_SUPPORTS_SAVE )
-GAME( 1983, fax2,     fax,     fax,      fax, exidy_state,      fax,      ROT0, "Exidy",   "FAX 2", MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1980, targ,     0,       targ,     targ,     exidy_state, targ,     ROT0, "Exidy",   "Targ", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
 GAME( 1980, targc,    targ,    targ,     targ,     exidy_state, targ,     ROT0, "Exidy",   "Targ (cocktail?)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
 
@@ -1827,4 +1713,3 @@ GAME( 1982, hardhat,  0,       pepper2,  pepper2,  exidy_state, pepper2,  ROT0, 
 
 GAME( 1983, fax,      0,       fax,      fax,      exidy_state, fax,      ROT0, "Exidy",   "FAX", MACHINE_SUPPORTS_SAVE )
 GAME( 1983, fax2,     fax,     fax,      fax,      exidy_state, fax,      ROT0, "Exidy",   "FAX 2", MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

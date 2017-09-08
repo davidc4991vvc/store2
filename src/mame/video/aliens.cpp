@@ -51,11 +51,7 @@ K051960_CB_MEMBER(aliens_state::sprite_callback)
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-UINT32 aliens_state::screen_update_aliens(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t aliens_state::screen_update_aliens(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	m_k052109->tilemap_update();
 

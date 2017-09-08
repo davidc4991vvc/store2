@@ -10,18 +10,12 @@
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "machine/eepromser.h"
-#include "includes/gaelco2.h"
-
-=======
 #include "includes/gaelco2.h"
 
 #include "machine/eepromser.h"
 #include "chd.h"
 
 
->>>>>>> upstream/master
 /***************************************************************************
 
     Split even/odd bytes from ROMs in 16 bit mode to different memory areas
@@ -33,17 +27,10 @@ void gaelco2_state::gaelco2_ROM16_split_gfx(const char *src_reg, const char *dst
 	int i;
 
 	/* get a pointer to the source data */
-<<<<<<< HEAD
-	UINT8 *src = (UINT8 *)memregion(src_reg)->base();
-
-	/* get a pointer to the destination data */
-	UINT8 *dst = (UINT8 *)memregion(dst_reg)->base();
-=======
 	uint8_t *src = (uint8_t *)memregion(src_reg)->base();
 
 	/* get a pointer to the destination data */
 	uint8_t *dst = (uint8_t *)memregion(dst_reg)->base();
->>>>>>> upstream/master
 
 	/* fill destination areas with the proper data */
 	for (i = 0; i < length/2; i++){
@@ -148,8 +135,6 @@ DRIVER_INIT_MEMBER(gaelco2_state,snowboar)
 	gaelco2_ROM16_split_gfx("gfx2", "gfx1", 0x0800000, 0x0400000, 0x0800000, 0x0c00000);
 }
 
-<<<<<<< HEAD
-=======
 
 /***************************************************************************
 
@@ -170,46 +155,12 @@ READ8_MEMBER(gaelco2_state::shareram_r)
 }
 
 
->>>>>>> upstream/master
 /***************************************************************************
 
     Coin counters/lockouts
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-WRITE16_MEMBER(gaelco2_state::gaelco2_coin_w)
-{
-	/* Coin Lockouts */
-	coin_lockout_w(machine(), 0, ~data & 0x01);
-	coin_lockout_w(machine(), 1, ~data & 0x02);
-
-	/* Coin Counters */
-	coin_counter_w(machine(), 0, data & 0x04);
-	coin_counter_w(machine(), 1, data & 0x08);
-}
-
-WRITE16_MEMBER(gaelco2_state::gaelco2_coin2_w)
-{
-	/* coin counters */
-	coin_counter_w(machine(), offset & 0x01,  data & 0x01);
-}
-
-WRITE16_MEMBER(wrally2_state::wrally2_coin_w)
-{
-	/* coin counters */
-	coin_counter_w(machine(), (offset >> 3) & 0x01,  data & 0x01);
-}
-
-WRITE16_MEMBER(gaelco2_state::touchgo_coin_w)
-{
-	if ((offset >> 2) == 0){
-		coin_counter_w(machine(), 0, data & 0x01);
-		coin_counter_w(machine(), 1, data & 0x02);
-		coin_counter_w(machine(), 2, data & 0x04);
-		coin_counter_w(machine(), 3, data & 0x08);
-	}
-=======
 WRITE16_MEMBER(gaelco2_state::wrally2_latch_w)
 {
 	m_mainlatch->write_bit(offset >> 2, BIT(data, 0));
@@ -244,7 +195,6 @@ WRITE16_MEMBER(gaelco2_state::alighunt_coin_w)
 	/* Coin Counters */
 	machine().bookkeeping().coin_counter_w(0, data & 0x04);
 	machine().bookkeeping().coin_counter_w(1, data & 0x08);
->>>>>>> upstream/master
 }
 
 /***************************************************************************
@@ -296,46 +246,11 @@ TIMER_DEVICE_CALLBACK_MEMBER(bang_state::bang_irq)
 
 CUSTOM_INPUT_MEMBER(wrally2_state::wrally2_analog_bit_r)
 {
-<<<<<<< HEAD
-	int which = (FPTR)param;
-=======
 	int which = (uintptr_t)param;
->>>>>>> upstream/master
 	return (m_analog_ports[which] >> 7) & 0x01;
 }
 
 
-<<<<<<< HEAD
-WRITE16_MEMBER(wrally2_state::wrally2_adc_clk)
-{
-	/* a zero/one combo is written here to clock the next analog port bit */
-	if (ACCESSING_BITS_0_7)
-	{
-		if (!(data & 0xff))
-		{
-			m_analog_ports[0] <<= 1;
-			m_analog_ports[1] <<= 1;
-		}
-	}
-	else
-		logerror("%06X:analog_port_clock_w(%02X) = %08X & %08X\n", space.device().safe_pc(), offset, data, mem_mask);
-}
-
-
-WRITE16_MEMBER(wrally2_state::wrally2_adc_cs)
-{
-	/* a zero is written here to read the analog ports, and a one is written when finished */
-	if (ACCESSING_BITS_0_7)
-	{
-		if (!(data & 0xff))
-		{
-			m_analog_ports[0] = m_analog0->read();
-			m_analog_ports[1] = m_analog1->read();
-		}
-	}
-	else
-		logerror("%06X:analog_port_latch_w(%02X) = %08X & %08X\n", space.device().safe_pc(), offset, data, mem_mask);
-=======
 WRITE_LINE_MEMBER(wrally2_state::wrally2_adc_clk)
 {
 	/* a zero/one combo is written here to clock the next analog port bit */
@@ -355,55 +270,10 @@ WRITE_LINE_MEMBER(wrally2_state::wrally2_adc_cs)
 		m_analog_ports[0] = m_analog0->read();
 		m_analog_ports[1] = m_analog1->read();
 	}
->>>>>>> upstream/master
 }
 
 /***************************************************************************
 
-<<<<<<< HEAD
-    EEPROM (93C66)
-
-***************************************************************************/
-
-WRITE16_MEMBER(gaelco2_state::gaelco2_eeprom_cs_w)
-{
-	/* bit 0 is CS (active low) */
-	m_eeprom->cs_write((data & 0x01) ? ASSERT_LINE : CLEAR_LINE);
-}
-
-WRITE16_MEMBER(gaelco2_state::gaelco2_eeprom_sk_w)
-{
-	/* bit 0 is SK (active high) */
-	m_eeprom->clk_write((data & 0x01) ? ASSERT_LINE : CLEAR_LINE);
-}
-
-WRITE16_MEMBER(gaelco2_state::gaelco2_eeprom_data_w)
-{
-	/* bit 0 is EEPROM data (DIN) */
-	m_eeprom->di_write(data & 0x01);
-}
-
-/***************************************************************************
-
-    Protection
-
-***************************************************************************/
-
-
-/*
-    The game writes 2 values and then reads from a memory address.
-    If the read value is wrong, the game can crash in some places.
-    If we always return 0, the game doesn't crash but you can't see
-    the full intro (because it expects 0xffff somewhere).
-
-    The protection handles sound, controls, gameplay and some sprites
-*/
-
-READ16_MEMBER(gaelco2_state::snowboar_protection_r)
-{
-	logerror("%06x: protection read from %04x\n", space.device().safe_pc(), offset*2);
-	return 0x0000;
-=======
     Protection
 
 ***************************************************************************/
@@ -478,18 +348,14 @@ READ16_MEMBER(gaelco2_state::snowboar_protection_r)
 	ret = ((ret & 0xff00) >> 8) | ((ret & 0x00ff) << 8);
 	return ret;
 
->>>>>>> upstream/master
 }
 
 WRITE16_MEMBER(gaelco2_state::snowboar_protection_w)
 {
 	COMBINE_DATA(&m_snowboar_protection[offset]);
-<<<<<<< HEAD
-=======
 
 	snowboard_latch = (snowboard_latch << 16) | data;
 
->>>>>>> upstream/master
 	logerror("%06x: protection write %04x to %04x\n", space.device().safe_pc(), data, offset*2);
 
 }

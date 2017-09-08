@@ -1,12 +1,7 @@
 // license:BSD-3-Clause
 // copyright-holders:Olivier Galibert
-<<<<<<< HEAD
-#ifndef PCI_SMBUS_H
-#define PCI_SMBUS_H
-=======
 #ifndef MAME_MACHINE_PCI_SMBUS_H
 #define MAME_MACHINE_PCI_SMBUS_H
->>>>>>> upstream/master
 
 #include "pci.h"
 
@@ -15,11 +10,7 @@
 
 class smbus_device : public pci_device {
 public:
-<<<<<<< HEAD
-	smbus_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-=======
 	smbus_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
->>>>>>> upstream/master
 
 	DECLARE_READ8_MEMBER  (hst_sts_r);
 	DECLARE_WRITE8_MEMBER (hst_sts_w);
@@ -58,29 +49,12 @@ public:
 	DECLARE_READ8_MEMBER  (notify_dhigh_r);
 
 protected:
-<<<<<<< HEAD
-	virtual void device_start();
-	virtual void device_reset();
-=======
 	virtual void device_start() override;
 	virtual void device_reset() override;
->>>>>>> upstream/master
 
 private:
 	DECLARE_ADDRESS_MAP(map, 32);
 
-<<<<<<< HEAD
-	UINT16 slv_data;
-
-	UINT8 hst_sts, hst_cnt, hst_cmd, xmit_slva, hst_d0, hst_d1;
-	UINT8 host_block_db, pec, rcv_slva, aux_sts, aux_ctl;
-	UINT8 smlink_pin_ctl, smbus_pin_ctl, slv_sts, slv_cmd, notify_daddr, notify_dlow, notify_dhigh;
-};
-
-extern const device_type SMBUS;
-
-#endif
-=======
 	uint16_t slv_data;
 
 	uint8_t hst_sts, hst_cnt, hst_cmd, xmit_slva, hst_d0, hst_d1;
@@ -91,4 +65,3 @@ extern const device_type SMBUS;
 DECLARE_DEVICE_TYPE(SMBUS, smbus_device)
 
 #endif // MAME_MACHINE_PCI_SMBUS_H
->>>>>>> upstream/master

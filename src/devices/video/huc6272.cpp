@@ -1,18 +1,9 @@
 // license:BSD-3-Clause
-<<<<<<< HEAD
-// copyright-holders:Wilbert Pol
-=======
 // copyright-holders:Wilbert Pol, Angelo Salese
->>>>>>> upstream/master
 /***************************************************************************
 
     Hudson/NEC HuC6272 "King" device
 
-<<<<<<< HEAD
-***************************************************************************/
-
-#include "emu.h"
-=======
     TODO:
     - Use NSCSI instead of legacy one!
 
@@ -20,7 +11,6 @@
 
 #include "emu.h"
 
->>>>>>> upstream/master
 #include "video/huc6272.h"
 
 
@@ -30,37 +20,6 @@
 //**************************************************************************
 
 // device type definition
-<<<<<<< HEAD
-const device_type huc6272 = &device_creator<huc6272_device>;
-
-static ADDRESS_MAP_START( huc6272_vram, AS_0, 32, huc6272_device )
-	AM_RANGE(0x000000, 0x0fffff) AM_RAM
-	AM_RANGE(0x100000, 0x1fffff) AM_RAM
-ADDRESS_MAP_END
-
-
-//-------------------------------------------------
-//  memory_space_config - return a description of
-//  any address spaces owned by this device
-//-------------------------------------------------
-
-const address_space_config *huc6272_device::memory_space_config(address_spacenum spacenum) const
-{
-	return (spacenum == AS_0) ? &m_space_config : NULL;
-}
-
-//**************************************************************************
-//  INLINE HELPERS
-//**************************************************************************
-
-//-------------------------------------------------
-//  read_dword - read a dword at the given address
-//-------------------------------------------------
-
-inline UINT32 huc6272_device::read_dword(offs_t address)
-{
-	return space().read_dword(address << 2);
-=======
 DEFINE_DEVICE_TYPE(HUC6272, huc6272_device, "huc6272", "Hudson HuC6272 \"King\"")
 
 static ADDRESS_MAP_START( microprg_map, AS_PROGRAM, 16, huc6272_device )
@@ -105,53 +64,10 @@ huc6272_device::huc6272_device(const machine_config &mconfig, const char *tag, d
 
 void huc6272_device::device_validity_check(validity_checker &valid) const
 {
->>>>>>> upstream/master
 }
 
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  write_dword - write a dword at the given address
-//-------------------------------------------------
-
-inline void huc6272_device::write_dword(offs_t address, UINT32 data)
-{
-	space().write_dword(address << 2, data);
-}
-
-//**************************************************************************
-//  LIVE DEVICE
-//**************************************************************************
-
-//-------------------------------------------------
-//  huc6272_device - constructor
-//-------------------------------------------------
-
-huc6272_device::huc6272_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, huc6272, "huc6272", tag, owner, clock, "huc6272", __FILE__),
-		device_memory_interface(mconfig, *this),
-		m_space_config("videoram", ENDIANNESS_LITTLE, 32, 32, 0, NULL, *ADDRESS_MAP_NAME(huc6272_vram))
-{
-}
-
-
-//-------------------------------------------------
-//  device_validity_check - perform validity checks
-//  on this device
-//-------------------------------------------------
-
-void huc6272_device::device_validity_check(validity_checker &valid) const
-{
-}
-
-
-//-------------------------------------------------
-//  device_start - device-specific startup
-//-------------------------------------------------
-
-void huc6272_device::device_start()
-{
-=======
 //  device_start - device-specific startup
 //-------------------------------------------------
 
@@ -198,20 +114,10 @@ device_memory_interface::space_config_vector huc6272_device::memory_space_config
 inline uint32_t huc6272_device::read_dword(offs_t address)
 {
 	return space(AS_DATA).read_dword(address << 2);
->>>>>>> upstream/master
 }
 
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  device_reset - device-specific reset
-//-------------------------------------------------
-
-void huc6272_device::device_reset()
-{
-}
-
-=======
 //  write_dword - write a dword at the given address
 //-------------------------------------------------
 
@@ -224,7 +130,6 @@ void huc6272_device::write_microprg_data(offs_t address, uint16_t data)
 {
 	space(AS_PROGRAM).write_word(address << 1, data);
 }
->>>>>>> upstream/master
 
 //**************************************************************************
 //  READ/WRITE HANDLERS
@@ -232,11 +137,7 @@ void huc6272_device::write_microprg_data(offs_t address, uint16_t data)
 
 READ32_MEMBER( huc6272_device::read )
 {
-<<<<<<< HEAD
-	UINT32 res = 0;
-=======
 	uint32_t res = 0;
->>>>>>> upstream/master
 
 	if((offset & 1) == 0)
 	{
@@ -257,18 +158,12 @@ READ32_MEMBER( huc6272_device::read )
 		---- ---- ---- ---- ---- ---- -xxx xxxx register read-back
 		*/
 		res = m_register & 0x7f;
-<<<<<<< HEAD
-		res |= (0) << 16;
-=======
 		res |= (m_scsi_ctrl_in->read() & 0xff) << 16;
->>>>>>> upstream/master
 	}
 	else
 	{
 		switch(m_register)
 		{
-<<<<<<< HEAD
-=======
 			case 0x00: // SCSI data in
 				res = m_scsi_data_in->read() & 0xff;
 				break;
@@ -279,7 +174,6 @@ READ32_MEMBER( huc6272_device::read )
 				break;
 
 
->>>>>>> upstream/master
 			/*
 			x--- ---- ---- ---- ----
 			*/
@@ -291,15 +185,9 @@ READ32_MEMBER( huc6272_device::read )
 				res = (m_kram_addr_w & 0x3ffff) | ((m_kram_inc_w & 0x1ff) << 18) | ((m_kram_page_w & 1) << 31);
 				break;
 
-<<<<<<< HEAD
-			case 0x0e:
-				res = read_dword((m_kram_addr_r)|(m_kram_page_r<<18));
-				m_kram_addr_r += (m_kram_inc_r & 0x100) ? ((m_kram_inc_r & 0xff) - 0x100) : (m_kram_inc_r & 0xff);
-=======
 			case 0x0e: // KRAM read data
 				res = read_dword((m_kram_addr_r)|(m_kram_page_r<<18));
 				m_kram_addr_r += (m_kram_inc_r & 0x200) ? ((m_kram_inc_r & 0x1ff) - 0x200) : (m_kram_inc_r & 0x1ff);
->>>>>>> upstream/master
 				break;
 
 			case 0x0f:
@@ -320,16 +208,6 @@ WRITE32_MEMBER( huc6272_device::write )
 	{
 		switch(m_register)
 		{
-<<<<<<< HEAD
-			case 0x09: // DMA addr
-				//printf("%08x DMA ADDR\n",data);
-				break;
-			case 0x0a: // DMA size
-				//printf("%08x DMA SIZE\n",data);
-				break;
-			case 0x0b: // DMA status
-				//printf("%08x DMA STATUS\n",data);
-=======
 			case 0x00: // SCSI data out
 				m_scsi_data_out->write(data & 0xff);
 				break;
@@ -362,32 +240,18 @@ WRITE32_MEMBER( huc6272_device::write )
 			case 0x09: // SCSI DMA start address
 			case 0x0a: // SCSI DMA size
 			case 0x0b: // SCSI DMA control
->>>>>>> upstream/master
 				break;
 			/*
 			---- ---- ---- ---- ----
 			*/
 			case 0x0c: // KRAM load address
 				m_kram_addr_r = (data & 0x0003ffff);
-<<<<<<< HEAD
-				m_kram_inc_r =  (data & 0x07fc0000) >> 18;
-=======
 				m_kram_inc_r =  (data & 0x0ffc0000) >> 18;
->>>>>>> upstream/master
 				m_kram_page_r = (data & 0x80000000) >> 31;
 				break;
 
 			case 0x0d: // KRAM write address
 				m_kram_addr_w = (data & 0x0003ffff);
-<<<<<<< HEAD
-				m_kram_inc_w =  (data & 0x07fc0000) >> 18;
-				m_kram_page_w = (data & 0x80000000) >> 31;
-				break;
-
-			case 0x0e: // KRAM write VRAM
-				write_dword((m_kram_addr_w)|(m_kram_page_w<<18),data); /* TODO: there are some 32-bits accesses during BIOS? */
-				m_kram_addr_w += (m_kram_inc_w & 0x100) ? ((m_kram_inc_w & 0xff) - 0x100) : (m_kram_inc_w & 0xff);
-=======
 				m_kram_inc_w =  (data & 0x0ffc0000) >> 18;
 				m_kram_page_w = (data & 0x80000000) >> 31;
 				break;
@@ -396,7 +260,6 @@ WRITE32_MEMBER( huc6272_device::write )
 				// TODO: handle non-dword cases?
 				write_dword((m_kram_addr_w)|(m_kram_page_w<<18),data);
 				m_kram_addr_w += (m_kram_inc_w & 0x200) ? ((m_kram_inc_w & 0x1ff) - 0x200) : (m_kram_inc_w & 0x1ff);
->>>>>>> upstream/master
 				break;
 
 			/*
@@ -425,22 +288,6 @@ WRITE32_MEMBER( huc6272_device::write )
 			// 1011 - 256 color palette block mode
 			// others - unused/invalid
 			case 0x10:
-<<<<<<< HEAD
-				m_bgmode[0] = data & 0x0f;
-				m_bgmode[1] = ( data >> 4 ) & 0x0f;
-				m_bgmode[2] = ( data >> 8 ) & 0x0f;
-				m_bgmode[3] = ( data >> 12 ) & 0x0f;
-				break;
-
-			case 0x13:
-				m_micro_prg.addr = data & 0xf;
-				break;
-
-			case 0x14:
-				m_micro_prg.data[m_micro_prg.addr] = data & 0xffff;
-				m_micro_prg.addr++;
-				m_micro_prg.addr &= 0xf;
-=======
 				for(int i=0;i<4;i++)
 					m_bg[i].mode = (data >> i*4) & 0x0f;
 
@@ -468,15 +315,10 @@ WRITE32_MEMBER( huc6272_device::write )
 				write_microprg_data(m_micro_prg.index,data & 0xffff);
 				m_micro_prg.index ++;
 				m_micro_prg.index &= 0xf;
->>>>>>> upstream/master
 				break;
 
 			case 0x15:
 				m_micro_prg.ctrl = data & 1;
-<<<<<<< HEAD
-				break;
-
-=======
 
 				break;
 
@@ -530,13 +372,10 @@ WRITE32_MEMBER( huc6272_device::write )
 				break;
 			}
 
->>>>>>> upstream/master
 			//default: printf("%04x %04x %08x\n",m_register,data,mem_mask);
 		}
 	}
 }
-<<<<<<< HEAD
-=======
 
 //-------------------------------------------------
 //  device_add_mconfig - add device configuration
@@ -560,4 +399,3 @@ MACHINE_CONFIG_MEMBER( huc6272_device::device_add_mconfig )
 
 	MCFG_SCSIDEV_ADD("scsi:" SCSI_PORT_DEVICE1, "cdrom", SCSICD, SCSI_ID_1)
 MACHINE_CONFIG_END
->>>>>>> upstream/master

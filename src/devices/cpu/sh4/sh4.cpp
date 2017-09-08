@@ -25,26 +25,17 @@
  *****************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "debugger.h"
-=======
->>>>>>> upstream/master
 #include "sh4.h"
 #include "sh4regs.h"
 #include "sh4comn.h"
 #include "sh3comn.h"
 #include "sh4tmu.h"
 
-<<<<<<< HEAD
-#if SH4_USE_FASTRAM_OPTIMIZATION
-void sh34_base_device::add_fastram(offs_t start, offs_t end, UINT8 readonly, void *base)
-=======
 #include "debugger.h"
 
 
 #if SH4_USE_FASTRAM_OPTIMIZATION
 void sh34_base_device::add_fastram(offs_t start, offs_t end, uint8_t readonly, void *base)
->>>>>>> upstream/master
 {
 	if (m_fastram_select < ARRAY_LENGTH(m_fastram))
 	{
@@ -56,11 +47,7 @@ void sh34_base_device::add_fastram(offs_t start, offs_t end, uint8_t readonly, v
 	}
 }
 #else
-<<<<<<< HEAD
-void sh34_base_device::add_fastram(offs_t start, offs_t end, UINT8 readonly, void *base)
-=======
 void sh34_base_device::add_fastram(offs_t start, offs_t end, uint8_t readonly, void *base)
->>>>>>> upstream/master
 {
 }
 #endif
@@ -70,17 +57,10 @@ CPU_DISASSEMBLE( sh4 );
 CPU_DISASSEMBLE( sh4be );
 
 
-<<<<<<< HEAD
-const device_type SH3LE = &device_creator<sh3_device>;
-const device_type SH3BE = &device_creator<sh3be_device>;
-const device_type SH4LE = &device_creator<sh4_device>;
-const device_type SH4BE = &device_creator<sh4be_device>;
-=======
 DEFINE_DEVICE_TYPE(SH3LE, sh3_device,   "sh3le", "SH-3 (little)")
 DEFINE_DEVICE_TYPE(SH3BE, sh3be_device, "sh3be", "SH-3 (big)")
 DEFINE_DEVICE_TYPE(SH4LE, sh4_device,   "sh4le", "SH-4 (little)")
 DEFINE_DEVICE_TYPE(SH4BE, sh4be_device, "sh4be", "SH-4 (big)")
->>>>>>> upstream/master
 
 
 #if 0
@@ -97,20 +77,6 @@ static ADDRESS_MAP_START( sh4_internal_map, AS_PROGRAM, 64, sh4_base_device )
 	AM_RANGE(0x1C000000, 0x1C000FFF) AM_RAM AM_MIRROR(0x01FFF000)
 	AM_RANGE(0x1E000000, 0x1E000FFF) AM_RAM AM_MIRROR(0x01FFF000)
 	AM_RANGE(0xE0000000, 0xE000003F) AM_RAM AM_MIRROR(0x03FFFFC0) // todo: store queues should be write only on DC's SH4, executing PREFM shouldn't cause an actual memory read access!
-<<<<<<< HEAD
-	AM_RANGE(0xF6000000, 0xF7FFFFFF) AM_READWRITE(sh4_tlb_r,sh4_tlb_w)
-	AM_RANGE(0xFE000000, 0xFFFFFFFF) AM_READWRITE32(sh4_internal_r, sh4_internal_w, U64(0xffffffffffffffff))
-ADDRESS_MAP_END
-
-static ADDRESS_MAP_START( sh3_internal_map, AS_PROGRAM, 64, sh3_base_device )
-	AM_RANGE(SH3_LOWER_REGBASE, SH3_LOWER_REGEND) AM_READWRITE32(sh3_internal_r, sh3_internal_w, U64(0xffffffffffffffff))
-	AM_RANGE(SH3_UPPER_REGBASE, SH3_UPPER_REGEND) AM_READWRITE32(sh3_internal_high_r, sh3_internal_high_w, U64(0xffffffffffffffff))
-ADDRESS_MAP_END
-
-
-sh34_base_device::sh34_base_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, endianness_t endianness, address_map_constructor internal)
-	: cpu_device(mconfig, type, name, tag, owner, clock, shortname, __FILE__)
-=======
 
 	AM_RANGE(0xF6000000, 0xF6FFFFFF) AM_READWRITE(sh4_utlb_address_array_r,sh4_utlb_address_array_w)
 	AM_RANGE(0xF7000000, 0xF77FFFFF) AM_READWRITE(sh4_utlb_data_array1_r,sh4_utlb_data_array1_w)
@@ -127,7 +93,6 @@ ADDRESS_MAP_END
 
 sh34_base_device::sh34_base_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock, endianness_t endianness, address_map_constructor internal)
 	: cpu_device(mconfig, type, tag, owner, clock)
->>>>>>> upstream/master
 	, m_program_config("program", endianness, 64, 32, 0, internal)
 	, m_io_config("io", endianness, 64, 8)
 	, c_md2(0)
@@ -140,10 +105,7 @@ sh34_base_device::sh34_base_device(const machine_config &mconfig, device_type ty
 	, c_md7(0)
 	, c_md8(0)
 	, c_clock(0)
-<<<<<<< HEAD
-=======
 	, m_mmuhack(1)
->>>>>>> upstream/master
 #if SH4_USE_FASTRAM_OPTIMIZATION
 	, m_bigendian(endianness == ENDIANNESS_BIG)
 	, m_byte_xor(m_bigendian ? BYTE8_XOR_BE(0) : BYTE8_XOR_LE(0))
@@ -157,11 +119,6 @@ sh34_base_device::sh34_base_device(const machine_config &mconfig, device_type ty
 #endif
 }
 
-<<<<<<< HEAD
-
-sh3_base_device::sh3_base_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, endianness_t endianness)
-	: sh34_base_device(mconfig, type, name, tag, owner, clock, shortname, endianness, ADDRESS_MAP_NAME(sh3_internal_map))
-=======
 device_memory_interface::space_config_vector sh34_base_device::memory_space_config() const
 {
 	return space_config_vector {
@@ -173,91 +130,42 @@ device_memory_interface::space_config_vector sh34_base_device::memory_space_conf
 
 sh3_base_device::sh3_base_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock, endianness_t endianness)
 	: sh34_base_device(mconfig, type, tag, owner, clock, endianness, ADDRESS_MAP_NAME(sh3_internal_map))
->>>>>>> upstream/master
 {
 	m_cpu_type = CPU_TYPE_SH3;
 }
 
 
-<<<<<<< HEAD
-sh4_base_device::sh4_base_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, endianness_t endianness)
-	: sh34_base_device(mconfig, type, name, tag, owner, clock, shortname, endianness, ADDRESS_MAP_NAME(sh4_internal_map))
-=======
 sh4_base_device::sh4_base_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock, endianness_t endianness)
 	: sh34_base_device(mconfig, type, tag, owner, clock, endianness, ADDRESS_MAP_NAME(sh4_internal_map))
->>>>>>> upstream/master
 {
 	m_cpu_type = CPU_TYPE_SH4;
 }
 
 
-<<<<<<< HEAD
-sh3_device::sh3_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: sh3_base_device(mconfig, SH3LE, "SH-3 (little)", tag, owner, clock, "sh3", ENDIANNESS_LITTLE)
-=======
 sh3_device::sh3_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: sh3_base_device(mconfig, SH3LE, tag, owner, clock, ENDIANNESS_LITTLE)
->>>>>>> upstream/master
 {
 }
 
 
-<<<<<<< HEAD
-sh3be_device::sh3be_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: sh3_base_device(mconfig, SH3BE, "SH-3 (big)", tag, owner, clock, "sh3be", ENDIANNESS_BIG)
-=======
 sh3be_device::sh3be_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: sh3_base_device(mconfig, SH3BE, tag, owner, clock, ENDIANNESS_BIG)
->>>>>>> upstream/master
 {
 }
 
 
-<<<<<<< HEAD
-sh4_device::sh4_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: sh4_base_device(mconfig, SH4LE, "SH-4 (little)", tag, owner, clock, "sh4", ENDIANNESS_LITTLE)
-=======
 sh4_device::sh4_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: sh4_base_device(mconfig, SH4LE, tag, owner, clock, ENDIANNESS_LITTLE)
->>>>>>> upstream/master
 {
 }
 
 
-<<<<<<< HEAD
-sh4be_device::sh4be_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: sh4_base_device(mconfig, SH4BE, "SH-4 (big)", tag, owner, clock, "sh4be", ENDIANNESS_BIG)
-=======
 sh4be_device::sh4be_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: sh4_base_device(mconfig, SH4BE, tag, owner, clock, ENDIANNESS_BIG)
->>>>>>> upstream/master
 {
 }
 
 
-<<<<<<< HEAD
-offs_t sh34_base_device::disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options)
-{
-	extern CPU_DISASSEMBLE( sh4 );
-
-	return CPU_DISASSEMBLE_NAME(sh4)(this, buffer, pc, oprom, opram, options);
-}
-
-
-offs_t sh3be_device::disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options)
-{
-	extern CPU_DISASSEMBLE( sh4be );
-
-	return CPU_DISASSEMBLE_NAME(sh4be)(this, buffer, pc, oprom, opram, options);
-}
-
-
-offs_t sh4be_device::disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options)
-{
-	extern CPU_DISASSEMBLE( sh4be );
-
-	return CPU_DISASSEMBLE_NAME(sh4be)(this, buffer, pc, oprom, opram, options);
-=======
 offs_t sh34_base_device::disasm_disassemble(std::ostream &stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, uint32_t options)
 {
 	extern CPU_DISASSEMBLE( sh4 );
@@ -279,17 +187,10 @@ offs_t sh4be_device::disasm_disassemble(std::ostream &stream, offs_t pc, const u
 	extern CPU_DISASSEMBLE( sh4be );
 
 	return CPU_DISASSEMBLE_NAME(sh4be)(this, stream, pc, oprom, opram, options);
->>>>>>> upstream/master
 }
 
 
 /* Called for unimplemented opcodes */
-<<<<<<< HEAD
-void sh34_base_device::TODO(const UINT16 opcode)
-{
-}
-
-=======
 void sh34_base_device::TODO(const uint16_t opcode)
 {
 }
@@ -325,7 +226,6 @@ void sh4_base_device::LDTLB(const uint16_t opcode)
 	m_utlb[replace].SA = (m_m[PTEA] & 0x00000007) >> 0;
 }
 
->>>>>>> upstream/master
 #if 0
 int sign_of(int n)
 {
@@ -344,11 +244,7 @@ if ((m_fpscr & PR) == 1)
 
 int data_type_of(int n)
 {
-<<<<<<< HEAD
-UINT32 abs;
-=======
 uint32_t abs;
->>>>>>> upstream/master
 
 	abs = m_fr[n] & 0x7fffffff;
 	if ((m_fpscr & PR) == 0) { /* Single-precision */
@@ -408,36 +304,11 @@ uint32_t abs;
 }
 #endif
 
-<<<<<<< HEAD
-inline UINT8 sh34_base_device::RB(offs_t A)
-=======
 inline uint8_t sh34_base_device::RB(offs_t A)
->>>>>>> upstream/master
 {
 	if (A >= 0xe0000000)
 		return m_program->read_byte(A);
 
-<<<<<<< HEAD
-#if SH4_USE_FASTRAM_OPTIMIZATION
-	const offs_t _A = A & AM;
-	for (int ramnum = 0; ramnum < m_fastram_select; ramnum++)
-	{
-		if (_A < m_fastram[ramnum].start || _A > m_fastram[ramnum].end)
-		{
-			continue;
-		}
-		UINT8 *fastbase = (UINT8*)m_fastram[ramnum].base - m_fastram[ramnum].start;
-		return fastbase[_A ^ m_byte_xor];
-	}
-	return m_program->read_byte(_A);
-#else
-	return m_program->read_byte(A & AM);
-#endif
-
-}
-
-inline UINT16 sh34_base_device::RW(offs_t A)
-=======
 	if (A >= 0x80000000) // P1/P2/P3 region
 	{
 #if SH4_USE_FASTRAM_OPTIMIZATION
@@ -472,32 +343,10 @@ inline UINT16 sh34_base_device::RW(offs_t A)
 }
 
 inline uint16_t sh34_base_device::RW(offs_t A)
->>>>>>> upstream/master
 {
 	if (A >= 0xe0000000)
 		return m_program->read_word(A);
 
-<<<<<<< HEAD
-#if SH4_USE_FASTRAM_OPTIMIZATION
-	const offs_t _A = A & AM;
-	for (int ramnum = 0; ramnum < m_fastram_select; ramnum++)
-	{
-		if (_A < m_fastram[ramnum].start || _A > m_fastram[ramnum].end)
-		{
-			continue;
-		}
-		UINT8 *fastbase = (UINT8*)m_fastram[ramnum].base - m_fastram[ramnum].start;
-		return ((UINT16*)fastbase)[(_A ^ m_word_xor) >> 1];
-	}
-	return m_program->read_word(_A);
-#else
-	return m_program->read_word(A & AM);
-#endif
-
-}
-
-inline UINT32 sh34_base_device::RL(offs_t A)
-=======
 	if (A >= 0x80000000) // P1/P2/P3 region
 	{
 #if SH4_USE_FASTRAM_OPTIMIZATION
@@ -532,32 +381,10 @@ inline UINT32 sh34_base_device::RL(offs_t A)
 }
 
 inline uint32_t sh34_base_device::RL(offs_t A)
->>>>>>> upstream/master
 {
 	if (A >= 0xe0000000)
 		return m_program->read_dword(A);
 
-<<<<<<< HEAD
-#if SH4_USE_FASTRAM_OPTIMIZATION
-	const offs_t _A = A & AM;
-	for (int ramnum = 0; ramnum < m_fastram_select; ramnum++)
-	{
-		if (_A < m_fastram[ramnum].start || _A > m_fastram[ramnum].end)
-		{
-			continue;
-		}
-		UINT8 *fastbase = (UINT8*)m_fastram[ramnum].base - m_fastram[ramnum].start;
-		return ((UINT32*)fastbase)[(_A^m_dword_xor) >> 2];
-	}
-	return m_program->read_dword(_A);
-#else
-	return m_program->read_dword(A & AM);
-#endif
-
-}
-
-inline void sh34_base_device::WB(offs_t A, UINT8 V)
-=======
 	if (A >= 0x80000000) // P1/P2/P3 region
 	{
 #if SH4_USE_FASTRAM_OPTIMIZATION
@@ -592,35 +419,12 @@ inline void sh34_base_device::WB(offs_t A, UINT8 V)
 }
 
 inline void sh34_base_device::WB(offs_t A, uint8_t V)
->>>>>>> upstream/master
 {
 	if (A >= 0xe0000000)
 	{
 		m_program->write_byte(A,V);
 		return;
 	}
-<<<<<<< HEAD
-#if SH4_USE_FASTRAM_OPTIMIZATION
-	const offs_t _A = A & AM;
-	for (int ramnum = 0; ramnum < m_fastram_select; ramnum++)
-	{
-		if (m_fastram[ramnum].readonly == TRUE || _A < m_fastram[ramnum].start || _A > m_fastram[ramnum].end)
-		{
-			continue;
-		}
-		UINT8 *fastbase = (UINT8*)m_fastram[ramnum].base - m_fastram[ramnum].start;
-		fastbase[_A ^ m_byte_xor] = V;
-		return;
-	}
-	m_program->write_byte(_A,V);
-#else
-	m_program->write_byte(A & AM,V);
-#endif
-
-}
-
-inline void sh34_base_device::WW(offs_t A, UINT16 V)
-=======
 
 	if (A >= 0x80000000) // P1/P2/P3 region
 	{
@@ -657,35 +461,12 @@ inline void sh34_base_device::WW(offs_t A, UINT16 V)
 }
 
 inline void sh34_base_device::WW(offs_t A, uint16_t V)
->>>>>>> upstream/master
 {
 	if (A >= 0xe0000000)
 	{
 		m_program->write_word(A,V);
 		return;
 	}
-<<<<<<< HEAD
-#if SH4_USE_FASTRAM_OPTIMIZATION
-	const offs_t _A = A & AM;
-	for (int ramnum = 0; ramnum < m_fastram_select; ramnum++)
-	{
-		if (m_fastram[ramnum].readonly == TRUE || _A < m_fastram[ramnum].start || _A > m_fastram[ramnum].end)
-		{
-			continue;
-		}
-		void *fastbase = (UINT8*)m_fastram[ramnum].base - m_fastram[ramnum].start;
-		((UINT16*)fastbase)[(_A ^ m_word_xor) >> 1] = V;
-		return;
-	}
-	m_program->write_word(_A,V);
-#else
-	m_program->write_word(A & AM,V);
-#endif
-
-}
-
-inline void sh34_base_device::WL(offs_t A, UINT32 V)
-=======
 
 	if (A >= 0x80000000) // P1/P2/P3 region
 	{
@@ -722,31 +503,12 @@ inline void sh34_base_device::WL(offs_t A, UINT32 V)
 }
 
 inline void sh34_base_device::WL(offs_t A, uint32_t V)
->>>>>>> upstream/master
 {
 	if (A >= 0xe0000000)
 	{
 		m_program->write_dword(A,V);
 		return;
 	}
-<<<<<<< HEAD
-#if SH4_USE_FASTRAM_OPTIMIZATION
-	const offs_t _A = A & AM;
-	for (int ramnum = 0; ramnum < m_fastram_select; ramnum++)
-	{
-		if (m_fastram[ramnum].readonly == TRUE || _A < m_fastram[ramnum].start || _A > m_fastram[ramnum].end)
-		{
-			continue;
-		}
-		void *fastbase = (UINT8*)m_fastram[ramnum].base - m_fastram[ramnum].start;
-		((UINT32*)fastbase)[(_A ^ m_dword_xor) >> 2] = V;
-		return;
-	}
-	m_program->write_dword(_A,V);
-#else
-	m_program->write_dword(A & AM,V);
-#endif
-=======
 
 	if (A >= 0x80000000) // P1/P2/P3 region
 	{
@@ -780,18 +542,13 @@ inline void sh34_base_device::WL(offs_t A, uint32_t V)
 		}
 	}
 
->>>>>>> upstream/master
 }
 
 /*  code                 cycles  t-bit
  *  0011 nnnn mmmm 1100  1       -
  *  ADD     Rm,Rn
  */
-<<<<<<< HEAD
-inline void sh34_base_device::ADD(const UINT16 opcode)
-=======
 inline void sh34_base_device::ADD(const uint16_t opcode)
->>>>>>> upstream/master
 {
 	m_r[Rn] += m_r[Rm];
 }
@@ -800,32 +557,19 @@ inline void sh34_base_device::ADD(const uint16_t opcode)
  *  0111 nnnn iiii iiii  1       -
  *  ADD     #imm,Rn
  */
-<<<<<<< HEAD
-inline void sh34_base_device::ADDI(const UINT16 opcode)
-{
-	m_r[Rn] += (INT32)(INT16)(INT8)(opcode&0xff);
-=======
 inline void sh34_base_device::ADDI(const uint16_t opcode)
 {
 	m_r[Rn] += (int32_t)(int16_t)(int8_t)(opcode&0xff);
->>>>>>> upstream/master
 }
 
 /*  code                 cycles  t-bit
  *  0011 nnnn mmmm 1110  1       carry
  *  ADDC    Rm,Rn
  */
-<<<<<<< HEAD
-inline void sh34_base_device::ADDC(const UINT16 opcode)
-{
-	UINT32 m = Rm; UINT32 n = Rn;
-	UINT32 tmp0, tmp1;
-=======
 inline void sh34_base_device::ADDC(const uint16_t opcode)
 {
 	uint32_t m = Rm; uint32_t n = Rn;
 	uint32_t tmp0, tmp1;
->>>>>>> upstream/master
 
 	tmp1 = m_r[n] + m_r[m];
 	tmp0 = m_r[n];
@@ -842,18 +586,6 @@ inline void sh34_base_device::ADDC(const uint16_t opcode)
  *  0011 nnnn mmmm 1111  1       overflow
  *  ADDV    Rm,Rn
  */
-<<<<<<< HEAD
-inline void sh34_base_device::ADDV(const UINT16 opcode)
-{
-	UINT32 m = Rm; UINT32 n = Rn;
-	INT32 dest, src, ans;
-
-	if ((INT32) m_r[n] >= 0)
-		dest = 0;
-	else
-		dest = 1;
-	if ((INT32) m_r[m] >= 0)
-=======
 inline void sh34_base_device::ADDV(const uint16_t opcode)
 {
 	uint32_t m = Rm; uint32_t n = Rn;
@@ -864,17 +596,12 @@ inline void sh34_base_device::ADDV(const uint16_t opcode)
 	else
 		dest = 1;
 	if ((int32_t) m_r[m] >= 0)
->>>>>>> upstream/master
 		src = 0;
 	else
 		src = 1;
 	src += dest;
 	m_r[n] += m_r[m];
-<<<<<<< HEAD
-	if ((INT32) m_r[n] >= 0)
-=======
 	if ((int32_t) m_r[n] >= 0)
->>>>>>> upstream/master
 		ans = 0;
 	else
 		ans = 1;
@@ -894,11 +621,7 @@ inline void sh34_base_device::ADDV(const uint16_t opcode)
  *  0010 nnnn mmmm 1001  1       -
  *  AND     Rm,Rn
  */
-<<<<<<< HEAD
-inline void sh34_base_device::AND(const UINT16 opcode)
-=======
 inline void sh34_base_device::AND(const uint16_t opcode)
->>>>>>> upstream/master
 {
 	m_r[Rn] &= m_r[Rm];
 }
@@ -908,11 +631,7 @@ inline void sh34_base_device::AND(const uint16_t opcode)
  *  1100 1001 iiii iiii  1       -
  *  AND     #imm,R0
  */
-<<<<<<< HEAD
-inline void sh34_base_device::ANDI(const UINT16 opcode)
-=======
 inline void sh34_base_device::ANDI(const uint16_t opcode)
->>>>>>> upstream/master
 {
 	m_r[0] &= (opcode&0xff);
 }
@@ -921,15 +640,9 @@ inline void sh34_base_device::ANDI(const uint16_t opcode)
  *  1100 1101 iiii iiii  1       -
  *  AND.B   #imm,@(R0,GBR)
  */
-<<<<<<< HEAD
-inline void sh34_base_device::ANDM(const UINT16 opcode)
-{
-	UINT32 temp;
-=======
 inline void sh34_base_device::ANDM(const uint16_t opcode)
 {
 	uint32_t temp;
->>>>>>> upstream/master
 
 	m_ea = m_gbr + m_r[0];
 	temp = (opcode&0xff) & RB( m_ea );
@@ -941,19 +654,11 @@ inline void sh34_base_device::ANDM(const uint16_t opcode)
  *  1000 1011 dddd dddd  3/1     -
  *  BF      disp8
  */
-<<<<<<< HEAD
-inline void sh34_base_device::BF(const UINT16 opcode)
-{
-	if ((m_sr & T) == 0)
-	{
-		INT32 disp = ((INT32)(opcode&0xff) << 24) >> 24;
-=======
 inline void sh34_base_device::BF(const uint16_t opcode)
 {
 	if ((m_sr & T) == 0)
 	{
 		int32_t disp = ((int32_t)(opcode&0xff) << 24) >> 24;
->>>>>>> upstream/master
 		m_pc = m_ea = m_pc + disp * 2 + 2;
 		m_sh4_icount -= 2;
 	}
@@ -963,22 +668,12 @@ inline void sh34_base_device::BF(const uint16_t opcode)
  *  1000 1111 dddd dddd  3/1     -
  *  BFS     disp8
  */
-<<<<<<< HEAD
-inline void sh34_base_device::BFS(const UINT16 opcode)
-{
-	if ((m_sr & T) == 0)
-	{
-		INT32 disp = ((INT32)(opcode&0xff) << 24) >> 24;
-		m_delay = m_pc;
-		m_pc = m_ea = m_pc + disp * 2 + 2;
-=======
 inline void sh34_base_device::BFS(const uint16_t opcode)
 {
 	if ((m_sr & T) == 0)
 	{
 		int32_t disp = ((int32_t)(opcode&0xff) << 24) >> 24;
 		m_delay = m_ea = m_pc + disp * 2 + 2;
->>>>>>> upstream/master
 		m_sh4_icount--;
 	}
 }
@@ -987,24 +682,14 @@ inline void sh34_base_device::BFS(const uint16_t opcode)
  *  1010 dddd dddd dddd  2       -
  *  BRA     disp12
  */
-<<<<<<< HEAD
-inline void sh34_base_device::BRA(const UINT16 opcode)
-{
-	INT32 disp = ((INT32)(opcode&0xfff) << 20) >> 20;
-=======
 inline void sh34_base_device::BRA(const uint16_t opcode)
 {
 	int32_t disp = ((int32_t)(opcode&0xfff) << 20) >> 20;
->>>>>>> upstream/master
 
 #if BUSY_LOOP_HACKS
 	if (disp == -2)
 	{
-<<<<<<< HEAD
-		UINT32 next_opcode = RW(m_ppc & AM);
-=======
 		uint32_t next_opcode = RW(m_pc & AM);
->>>>>>> upstream/master
 		/* BRA  $
 		 * NOP
 		 */
@@ -1012,12 +697,7 @@ inline void sh34_base_device::BRA(const uint16_t opcode)
 			m_sh4_icount %= 3;   /* cycles for BRA $ and NOP taken (3) */
 	}
 #endif
-<<<<<<< HEAD
-	m_delay = m_pc;
-	m_pc = m_ea = m_pc + disp * 2 + 2;
-=======
 	m_delay = m_ea = m_pc + disp * 2 + 2;
->>>>>>> upstream/master
 	m_sh4_icount--;
 }
 
@@ -1025,16 +705,9 @@ inline void sh34_base_device::BRA(const uint16_t opcode)
  *  0000 mmmm 0010 0011  2       -
  *  BRAF    Rm
  */
-<<<<<<< HEAD
-inline void sh34_base_device::BRAF(const UINT16 opcode)
-{
-	m_delay = m_pc;
-	m_pc += m_r[Rn] + 2;
-=======
 inline void sh34_base_device::BRAF(const uint16_t opcode)
 {
 	m_delay = m_pc + m_r[Rn] + 2;
->>>>>>> upstream/master
 	m_sh4_icount--;
 }
 
@@ -1042,22 +715,12 @@ inline void sh34_base_device::BRAF(const uint16_t opcode)
  *  1011 dddd dddd dddd  2       -
  *  BSR     disp12
  */
-<<<<<<< HEAD
-inline void sh34_base_device::BSR(const UINT16 opcode)
-{
-	INT32 disp = ((INT32)(opcode&0xfff) << 20) >> 20;
-
-	m_pr = m_pc + 2;
-	m_delay = m_pc;
-	m_pc = m_ea = m_pc + disp * 2 + 2;
-=======
 inline void sh34_base_device::BSR(const uint16_t opcode)
 {
 	int32_t disp = ((int32_t)(opcode&0xfff) << 20) >> 20;
 
 	m_pr = m_pc + 2;
 	m_delay = m_ea = m_pc + disp * 2 + 2;
->>>>>>> upstream/master
 	m_sh4_icount--;
 }
 
@@ -1065,18 +728,10 @@ inline void sh34_base_device::BSR(const uint16_t opcode)
  *  0000 mmmm 0000 0011  2       -
  *  BSRF    Rm
  */
-<<<<<<< HEAD
-inline void sh34_base_device::BSRF(const UINT16 opcode)
-{
-	m_pr = m_pc + 2;
-	m_delay = m_pc;
-	m_pc += m_r[Rn] + 2;
-=======
 inline void sh34_base_device::BSRF(const uint16_t opcode)
 {
 	m_pr = m_pc + 2;
 	m_delay = m_pc + m_r[Rn] + 2;
->>>>>>> upstream/master
 	m_sh4_icount--;
 }
 
@@ -1084,19 +739,11 @@ inline void sh34_base_device::BSRF(const uint16_t opcode)
  *  1000 1001 dddd dddd  3/1     -
  *  BT      disp8
  */
-<<<<<<< HEAD
-inline void sh34_base_device::BT(const UINT16 opcode)
-{
-	if ((m_sr & T) != 0)
-	{
-		INT32 disp = ((INT32)(opcode&0xff) << 24) >> 24;
-=======
 inline void sh34_base_device::BT(const uint16_t opcode)
 {
 	if ((m_sr & T) != 0)
 	{
 		int32_t disp = ((int32_t)(opcode&0xff) << 24) >> 24;
->>>>>>> upstream/master
 		m_pc = m_ea = m_pc + disp * 2 + 2;
 		m_sh4_icount -= 2;
 	}
@@ -1106,22 +753,12 @@ inline void sh34_base_device::BT(const uint16_t opcode)
  *  1000 1101 dddd dddd  2/1     -
  *  BTS     disp8
  */
-<<<<<<< HEAD
-inline void sh34_base_device::BTS(const UINT16 opcode)
-{
-	if ((m_sr & T) != 0)
-	{
-		INT32 disp = ((INT32)(opcode&0xff) << 24) >> 24;
-		m_delay = m_pc;
-		m_pc = m_ea = m_pc + disp * 2 + 2;
-=======
 inline void sh34_base_device::BTS(const uint16_t opcode)
 {
 	if ((m_sr & T) != 0)
 	{
 		int32_t disp = ((int32_t)(opcode&0xff) << 24) >> 24;
 		m_delay = m_ea = m_pc + disp * 2 + 2;
->>>>>>> upstream/master
 		m_sh4_icount--;
 	}
 }
@@ -1130,11 +767,7 @@ inline void sh34_base_device::BTS(const uint16_t opcode)
  *  0000 0000 0010 1000  1       -
  *  CLRMAC
  */
-<<<<<<< HEAD
-inline void sh34_base_device::CLRMAC(const UINT16 opcode)
-=======
 inline void sh34_base_device::CLRMAC(const uint16_t opcode)
->>>>>>> upstream/master
 {
 	m_mach = 0;
 	m_macl = 0;
@@ -1144,11 +777,7 @@ inline void sh34_base_device::CLRMAC(const uint16_t opcode)
  *  0000 0000 0000 1000  1       -
  *  CLRT
  */
-<<<<<<< HEAD
-inline void sh34_base_device::CLRT(const UINT16 opcode)
-=======
 inline void sh34_base_device::CLRT(const uint16_t opcode)
->>>>>>> upstream/master
 {
 	m_sr &= ~T;
 }
@@ -1157,11 +786,7 @@ inline void sh34_base_device::CLRT(const uint16_t opcode)
  *  0011 nnnn mmmm 0000  1       comparison result
  *  CMP_EQ  Rm,Rn
  */
-<<<<<<< HEAD
-inline void sh34_base_device::CMPEQ(const UINT16 opcode)
-=======
 inline void sh34_base_device::CMPEQ(const uint16_t opcode)
->>>>>>> upstream/master
 {
 	if (m_r[Rn] == m_r[Rm])
 		m_sr |= T;
@@ -1173,15 +798,9 @@ inline void sh34_base_device::CMPEQ(const uint16_t opcode)
  *  0011 nnnn mmmm 0011  1       comparison result
  *  CMP_GE  Rm,Rn
  */
-<<<<<<< HEAD
-inline void sh34_base_device::CMPGE(const UINT16 opcode)
-{
-	if ((INT32) m_r[Rn] >= (INT32) m_r[Rm])
-=======
 inline void sh34_base_device::CMPGE(const uint16_t opcode)
 {
 	if ((int32_t) m_r[Rn] >= (int32_t) m_r[Rm])
->>>>>>> upstream/master
 		m_sr |= T;
 	else
 		m_sr &= ~T;
@@ -1191,15 +810,9 @@ inline void sh34_base_device::CMPGE(const uint16_t opcode)
  *  0011 nnnn mmmm 0111  1       comparison result
  *  CMP_GT  Rm,Rn
  */
-<<<<<<< HEAD
-inline void sh34_base_device::CMPGT(const UINT16 opcode)
-{
-	if ((INT32) m_r[Rn] > (INT32) m_r[Rm])
-=======
 inline void sh34_base_device::CMPGT(const uint16_t opcode)
 {
 	if ((int32_t) m_r[Rn] > (int32_t) m_r[Rm])
->>>>>>> upstream/master
 		m_sr |= T;
 	else
 		m_sr &= ~T;
@@ -1209,15 +822,9 @@ inline void sh34_base_device::CMPGT(const uint16_t opcode)
  *  0011 nnnn mmmm 0110  1       comparison result
  *  CMP_HI  Rm,Rn
  */
-<<<<<<< HEAD
-inline void sh34_base_device::CMPHI(const UINT16 opcode)
-{
-	if ((UINT32) m_r[Rn] > (UINT32) m_r[Rm])
-=======
 inline void sh34_base_device::CMPHI(const uint16_t opcode)
 {
 	if ((uint32_t) m_r[Rn] > (uint32_t) m_r[Rm])
->>>>>>> upstream/master
 		m_sr |= T;
 	else
 		m_sr &= ~T;
@@ -1227,15 +834,9 @@ inline void sh34_base_device::CMPHI(const uint16_t opcode)
  *  0011 nnnn mmmm 0010  1       comparison result
  *  CMP_HS  Rm,Rn
  */
-<<<<<<< HEAD
-inline void sh34_base_device::CMPHS(const UINT16 opcode)
-{
-	if ((UINT32) m_r[Rn] >= (UINT32) m_r[Rm])
-=======
 inline void sh34_base_device::CMPHS(const uint16_t opcode)
 {
 	if ((uint32_t) m_r[Rn] >= (uint32_t) m_r[Rm])
->>>>>>> upstream/master
 		m_sr |= T;
 	else
 		m_sr &= ~T;
@@ -1246,15 +847,9 @@ inline void sh34_base_device::CMPHS(const uint16_t opcode)
  *  0100 nnnn 0001 0101  1       comparison result
  *  CMP_PL  Rn
  */
-<<<<<<< HEAD
-inline void sh34_base_device::CMPPL(const UINT16 opcode)
-{
-	if ((INT32) m_r[Rn] > 0)
-=======
 inline void sh34_base_device::CMPPL(const uint16_t opcode)
 {
 	if ((int32_t) m_r[Rn] > 0)
->>>>>>> upstream/master
 		m_sr |= T;
 	else
 		m_sr &= ~T;
@@ -1264,15 +859,9 @@ inline void sh34_base_device::CMPPL(const uint16_t opcode)
  *  0100 nnnn 0001 0001  1       comparison result
  *  CMP_PZ  Rn
  */
-<<<<<<< HEAD
-inline void sh34_base_device::CMPPZ(const UINT16 opcode)
-{
-	if ((INT32) m_r[Rn] >= 0)
-=======
 inline void sh34_base_device::CMPPZ(const uint16_t opcode)
 {
 	if ((int32_t) m_r[Rn] >= 0)
->>>>>>> upstream/master
 		m_sr |= T;
 	else
 		m_sr &= ~T;
@@ -1282,17 +871,10 @@ inline void sh34_base_device::CMPPZ(const uint16_t opcode)
  *  0010 nnnn mmmm 1100  1       comparison result
  * CMP_STR  Rm,Rn
  */
-<<<<<<< HEAD
-inline void sh34_base_device::CMPSTR(const UINT16 opcode)
-{
-	UINT32 temp;
-	INT32 HH, HL, LH, LL;
-=======
 inline void sh34_base_device::CMPSTR(const uint16_t opcode)
 {
 	uint32_t temp;
 	int32_t HH, HL, LH, LL;
->>>>>>> upstream/master
 	temp = m_r[Rn] ^ m_r[Rm];
 	HH = (temp >> 24) & 0xff;
 	HL = (temp >> 16) & 0xff;
@@ -1309,15 +891,9 @@ inline void sh34_base_device::CMPSTR(const uint16_t opcode)
  *  1000 1000 iiii iiii  1       comparison result
  *  CMP/EQ #imm,R0
  */
-<<<<<<< HEAD
-inline void sh34_base_device::CMPIM(const UINT16 opcode)
-{
-	UINT32 imm = (UINT32)(INT32)(INT16)(INT8)(opcode&0xff);
-=======
 inline void sh34_base_device::CMPIM(const uint16_t opcode)
 {
 	uint32_t imm = (uint32_t)(int32_t)(int16_t)(int8_t)(opcode&0xff);
->>>>>>> upstream/master
 
 	if (m_r[0] == imm)
 		m_sr |= T;
@@ -1329,15 +905,9 @@ inline void sh34_base_device::CMPIM(const uint16_t opcode)
  *  0010 nnnn mmmm 0111  1       calculation result
  *  DIV0S   Rm,Rn
  */
-<<<<<<< HEAD
-inline void sh34_base_device::DIV0S(const UINT16 opcode)
-{
-	UINT32 m = Rm; UINT32 n = Rn;
-=======
 inline void sh34_base_device::DIV0S(const uint16_t opcode)
 {
 	uint32_t m = Rm; uint32_t n = Rn;
->>>>>>> upstream/master
 
 	if ((m_r[n] & 0x80000000) == 0)
 		m_sr &= ~Q;
@@ -1357,11 +927,7 @@ inline void sh34_base_device::DIV0S(const uint16_t opcode)
  *  0000 0000 0001 1001  1       0
  *  DIV0U
  */
-<<<<<<< HEAD
-inline void sh34_base_device::DIV0U(const UINT16 opcode)
-=======
 inline void sh34_base_device::DIV0U(const uint16_t opcode)
->>>>>>> upstream/master
 {
 	m_sr &= ~(M | Q | T);
 }
@@ -1370,21 +936,12 @@ inline void sh34_base_device::DIV0U(const uint16_t opcode)
  *  0011 nnnn mmmm 0100  1       calculation result
  *  DIV1 Rm,Rn
  */
-<<<<<<< HEAD
-inline void sh34_base_device::DIV1(const UINT16 opcode)
-{
-	UINT32 m = Rm; UINT32 n = Rn;
-
-	UINT32 tmp0;
-	UINT32 old_q;
-=======
 inline void sh34_base_device::DIV1(const uint16_t opcode)
 {
 	uint32_t m = Rm; uint32_t n = Rn;
 
 	uint32_t tmp0;
 	uint32_t old_q;
->>>>>>> upstream/master
 
 	old_q = m_sr & Q;
 	if (0x80000000 & m_r[n])
@@ -1473,18 +1030,6 @@ inline void sh34_base_device::DIV1(const uint16_t opcode)
 }
 
 /*  DMULS.L Rm,Rn */
-<<<<<<< HEAD
-inline void sh34_base_device::DMULS(const UINT16 opcode)
-{
-	UINT32 m = Rm; UINT32 n = Rn;
-
-	UINT32 RnL, RnH, RmL, RmH, Res0, Res1, Res2;
-	UINT32 temp0, temp1, temp2, temp3;
-	INT32 tempm, tempn, fnLmL;
-
-	tempn = (INT32) m_r[n];
-	tempm = (INT32) m_r[m];
-=======
 inline void sh34_base_device::DMULS(const uint16_t opcode)
 {
 	uint32_t m = Rm; uint32_t n = Rn;
@@ -1495,26 +1040,16 @@ inline void sh34_base_device::DMULS(const uint16_t opcode)
 
 	tempn = (int32_t) m_r[n];
 	tempm = (int32_t) m_r[m];
->>>>>>> upstream/master
 	if (tempn < 0)
 		tempn = 0 - tempn;
 	if (tempm < 0)
 		tempm = 0 - tempm;
-<<<<<<< HEAD
-	if ((INT32) (m_r[n] ^ m_r[m]) < 0)
-		fnLmL = -1;
-	else
-		fnLmL = 0;
-	temp1 = (UINT32) tempn;
-	temp2 = (UINT32) tempm;
-=======
 	if ((int32_t) (m_r[n] ^ m_r[m]) < 0)
 		fnLmL = -1;
 	else
 		fnLmL = 0;
 	temp1 = (uint32_t) tempn;
 	temp2 = (uint32_t) tempm;
->>>>>>> upstream/master
 	RnL = temp1 & 0x0000ffff;
 	RnH = (temp1 >> 16) & 0x0000ffff;
 	RmL = temp2 & 0x0000ffff;
@@ -1546,21 +1081,12 @@ inline void sh34_base_device::DMULS(const uint16_t opcode)
 }
 
 /*  DMULU.L Rm,Rn */
-<<<<<<< HEAD
-inline void sh34_base_device::DMULU(const UINT16 opcode)
-{
-	UINT32 m = Rm; UINT32 n = Rn;
-
-	UINT32 RnL, RnH, RmL, RmH, Res0, Res1, Res2;
-	UINT32 temp0, temp1, temp2, temp3;
-=======
 inline void sh34_base_device::DMULU(const uint16_t opcode)
 {
 	uint32_t m = Rm; uint32_t n = Rn;
 
 	uint32_t RnL, RnH, RmL, RmH, Res0, Res1, Res2;
 	uint32_t temp0, temp1, temp2, temp3;
->>>>>>> upstream/master
 
 	RnL = m_r[n] & 0x0000ffff;
 	RnH = (m_r[n] >> 16) & 0x0000ffff;
@@ -1585,15 +1111,9 @@ inline void sh34_base_device::DMULU(const uint16_t opcode)
 }
 
 /*  DT      Rn */
-<<<<<<< HEAD
-inline void sh34_base_device::DT(const UINT16 opcode)
-{
-	UINT32 n = Rn;
-=======
 inline void sh34_base_device::DT(const uint16_t opcode)
 {
 	uint32_t n = Rn;
->>>>>>> upstream/master
 
 	m_r[n]--;
 	if (m_r[n] == 0)
@@ -1602,11 +1122,7 @@ inline void sh34_base_device::DT(const uint16_t opcode)
 		m_sr &= ~T;
 #if BUSY_LOOP_HACKS
 	{
-<<<<<<< HEAD
-		UINT32 next_opcode = RW(m_ppc & AM);
-=======
 		uint32_t next_opcode = RW(m_pc & AM);
->>>>>>> upstream/master
 		/* DT   Rn
 		 * BF   $-2
 		 */
@@ -1623,21 +1139,6 @@ inline void sh34_base_device::DT(const uint16_t opcode)
 }
 
 /*  EXTS.B  Rm,Rn */
-<<<<<<< HEAD
-inline void sh34_base_device::EXTSB(const UINT16 opcode)
-{
-	m_r[Rn] = ((INT32)m_r[Rm] << 24) >> 24;
-}
-
-/*  EXTS.W  Rm,Rn */
-inline void sh34_base_device::EXTSW(const UINT16 opcode)
-{
-	m_r[Rn] = ((INT32)m_r[Rm] << 16) >> 16;
-}
-
-/*  EXTU.B  Rm,Rn */
-inline void sh34_base_device::EXTUB(const UINT16 opcode)
-=======
 inline void sh34_base_device::EXTSB(const uint16_t opcode)
 {
 	m_r[Rn] = ((int32_t)m_r[Rm] << 24) >> 24;
@@ -1651,36 +1152,17 @@ inline void sh34_base_device::EXTSW(const uint16_t opcode)
 
 /*  EXTU.B  Rm,Rn */
 inline void sh34_base_device::EXTUB(const uint16_t opcode)
->>>>>>> upstream/master
 {
 	m_r[Rn] = m_r[Rm] & 0x000000ff;
 }
 
 /*  EXTU.W  Rm,Rn */
-<<<<<<< HEAD
-inline void sh34_base_device::EXTUW(const UINT16 opcode)
-=======
 inline void sh34_base_device::EXTUW(const uint16_t opcode)
->>>>>>> upstream/master
 {
 	m_r[Rn] = m_r[Rm] & 0x0000ffff;
 }
 
 /*  JMP     @Rm */
-<<<<<<< HEAD
-inline void sh34_base_device::JMP(const UINT16 opcode)
-{
-	m_delay = m_pc;
-	m_pc = m_ea = m_r[Rn];
-}
-
-/*  JSR     @Rm */
-inline void sh34_base_device::JSR(const UINT16 opcode)
-{
-	m_delay = m_pc;
-	m_pr = m_pc + 2;
-	m_pc = m_ea = m_r[Rn];
-=======
 inline void sh34_base_device::JMP(const uint16_t opcode)
 {
 	m_delay = m_ea = m_r[Rn];
@@ -1691,21 +1173,14 @@ inline void sh34_base_device::JSR(const uint16_t opcode)
 {
 	m_pr = m_pc + 2;
 	m_delay = m_ea = m_r[Rn];
->>>>>>> upstream/master
 	m_sh4_icount--;
 }
 
 
 /*  LDC     Rm,SR */
-<<<<<<< HEAD
-inline void sh34_base_device::LDCSR(const UINT16 opcode)
-{
-	UINT32 reg;
-=======
 inline void sh34_base_device::LDCSR(const uint16_t opcode)
 {
 	uint32_t reg;
->>>>>>> upstream/master
 
 	reg = m_r[Rn];
 	if ((machine().debug_flags & DEBUG_FLAG_ENABLED) != 0)
@@ -1717,35 +1192,21 @@ inline void sh34_base_device::LDCSR(const uint16_t opcode)
 }
 
 /*  LDC     Rm,GBR */
-<<<<<<< HEAD
-inline void sh34_base_device::LDCGBR(const UINT16 opcode)
-=======
 inline void sh34_base_device::LDCGBR(const uint16_t opcode)
->>>>>>> upstream/master
 {
 	m_gbr = m_r[Rn];
 }
 
 /*  LDC     Rm,VBR */
-<<<<<<< HEAD
-inline void sh34_base_device::LDCVBR(const UINT16 opcode)
-=======
 inline void sh34_base_device::LDCVBR(const uint16_t opcode)
->>>>>>> upstream/master
 {
 	m_vbr = m_r[Rn];
 }
 
 /*  LDC.L   @Rm+,SR */
-<<<<<<< HEAD
-inline void sh34_base_device::LDCMSR(const UINT16 opcode)
-{
-	UINT32 old;
-=======
 inline void sh34_base_device::LDCMSR(const uint16_t opcode)
 {
 	uint32_t old;
->>>>>>> upstream/master
 
 	old = m_sr;
 	m_ea = m_r[Rn];
@@ -1760,11 +1221,7 @@ inline void sh34_base_device::LDCMSR(const uint16_t opcode)
 }
 
 /*  LDC.L   @Rm+,GBR */
-<<<<<<< HEAD
-inline void sh34_base_device::LDCMGBR(const UINT16 opcode)
-=======
 inline void sh34_base_device::LDCMGBR(const uint16_t opcode)
->>>>>>> upstream/master
 {
 	m_ea = m_r[Rn];
 	m_gbr = RL(m_ea );
@@ -1773,11 +1230,7 @@ inline void sh34_base_device::LDCMGBR(const uint16_t opcode)
 }
 
 /*  LDC.L   @Rm+,VBR */
-<<<<<<< HEAD
-inline void sh34_base_device::LDCMVBR(const UINT16 opcode)
-=======
 inline void sh34_base_device::LDCMVBR(const uint16_t opcode)
->>>>>>> upstream/master
 {
 	m_ea = m_r[Rn];
 	m_vbr = RL(m_ea );
@@ -1786,41 +1239,25 @@ inline void sh34_base_device::LDCMVBR(const uint16_t opcode)
 }
 
 /*  LDS     Rm,MACH */
-<<<<<<< HEAD
-inline void sh34_base_device::LDSMACH(const UINT16 opcode)
-=======
 inline void sh34_base_device::LDSMACH(const uint16_t opcode)
->>>>>>> upstream/master
 {
 	m_mach = m_r[Rn];
 }
 
 /*  LDS     Rm,MACL */
-<<<<<<< HEAD
-inline void sh34_base_device::LDSMACL(const UINT16 opcode)
-=======
 inline void sh34_base_device::LDSMACL(const uint16_t opcode)
->>>>>>> upstream/master
 {
 	m_macl = m_r[Rn];
 }
 
 /*  LDS     Rm,PR */
-<<<<<<< HEAD
-inline void sh34_base_device::LDSPR(const UINT16 opcode)
-=======
 inline void sh34_base_device::LDSPR(const uint16_t opcode)
->>>>>>> upstream/master
 {
 	m_pr = m_r[Rn];
 }
 
 /*  LDS.L   @Rm+,MACH */
-<<<<<<< HEAD
-inline void sh34_base_device::LDSMMACH(const UINT16 opcode)
-=======
 inline void sh34_base_device::LDSMMACH(const uint16_t opcode)
->>>>>>> upstream/master
 {
 	m_ea = m_r[Rn];
 	m_mach = RL(m_ea );
@@ -1828,11 +1265,7 @@ inline void sh34_base_device::LDSMMACH(const uint16_t opcode)
 }
 
 /*  LDS.L   @Rm+,MACL */
-<<<<<<< HEAD
-inline void sh34_base_device::LDSMMACL(const UINT16 opcode)
-=======
 inline void sh34_base_device::LDSMMACL(const uint16_t opcode)
->>>>>>> upstream/master
 {
 	m_ea = m_r[Rn];
 	m_macl = RL(m_ea );
@@ -1840,11 +1273,7 @@ inline void sh34_base_device::LDSMMACL(const uint16_t opcode)
 }
 
 /*  LDS.L   @Rm+,PR */
-<<<<<<< HEAD
-inline void sh34_base_device::LDSMPR(const UINT16 opcode)
-=======
 inline void sh34_base_device::LDSMPR(const uint16_t opcode)
->>>>>>> upstream/master
 {
 	m_ea = m_r[Rn];
 	m_pr = RL(m_ea );
@@ -1852,21 +1281,6 @@ inline void sh34_base_device::LDSMPR(const uint16_t opcode)
 }
 
 /*  MAC.L   @Rm+,@Rn+ */
-<<<<<<< HEAD
-inline void sh34_base_device::MAC_L(const UINT16 opcode)
-{
-	UINT32 m = Rm; UINT32 n = Rn;
-
-	UINT32 RnL, RnH, RmL, RmH, Res0, Res1, Res2;
-	UINT32 temp0, temp1, temp2, temp3;
-	INT32 tempm, tempn, fnLmL;
-
-	tempn = (INT32) RL(m_r[n] );
-	m_r[n] += 4;
-	tempm = (INT32) RL(m_r[m] );
-	m_r[m] += 4;
-	if ((INT32) (tempn ^ tempm) < 0)
-=======
 inline void sh34_base_device::MAC_L(const uint16_t opcode)
 {
 	uint32_t m = Rm; uint32_t n = Rn;
@@ -1880,7 +1294,6 @@ inline void sh34_base_device::MAC_L(const uint16_t opcode)
 	tempm = (int32_t) RL(m_r[m] );
 	m_r[m] += 4;
 	if ((int32_t) (tempn ^ tempm) < 0)
->>>>>>> upstream/master
 		fnLmL = -1;
 	else
 		fnLmL = 0;
@@ -1888,13 +1301,8 @@ inline void sh34_base_device::MAC_L(const uint16_t opcode)
 		tempn = 0 - tempn;
 	if (tempm < 0)
 		tempm = 0 - tempm;
-<<<<<<< HEAD
-	temp1 = (UINT32) tempn;
-	temp2 = (UINT32) tempm;
-=======
 	temp1 = (uint32_t) tempn;
 	temp2 = (uint32_t) tempm;
->>>>>>> upstream/master
 	RnL = temp1 & 0x0000ffff;
 	RnH = (temp1 >> 16) & 0x0000ffff;
 	RmL = temp2 & 0x0000ffff;
@@ -1926,20 +1334,12 @@ inline void sh34_base_device::MAC_L(const uint16_t opcode)
 		if (m_macl > Res0)
 			Res2++;
 		Res2 += (m_mach & 0x0000ffff);
-<<<<<<< HEAD
-		if (((INT32) Res2 < 0) && (Res2 < 0xffff8000))
-=======
 		if (((int32_t) Res2 < 0) && (Res2 < 0xffff8000))
->>>>>>> upstream/master
 		{
 			Res2 = 0x00008000;
 			Res0 = 0x00000000;
 		}
-<<<<<<< HEAD
-		else if (((INT32) Res2 > 0) && (Res2 > 0x00007fff))
-=======
 		else if (((int32_t) Res2 > 0) && (Res2 > 0x00007fff))
->>>>>>> upstream/master
 		{
 			Res2 = 0x00007fff;
 			Res0 = 0xffffffff;
@@ -1960,26 +1360,6 @@ inline void sh34_base_device::MAC_L(const uint16_t opcode)
 }
 
 /*  MAC.W   @Rm+,@Rn+ */
-<<<<<<< HEAD
-inline void sh34_base_device::MAC_W(const UINT16 opcode)
-{
-	UINT32 m = Rm; UINT32 n = Rn;
-
-	INT32 tempm, tempn, dest, src, ans;
-	UINT32 templ;
-
-	tempn = (INT32) RW(m_r[n] );
-	m_r[n] += 2;
-	tempm = (INT32) RW(m_r[m] );
-	m_r[m] += 2;
-	templ = m_macl;
-	tempm = ((INT32) (short) tempn * (INT32) (short) tempm);
-	if ((INT32) m_macl >= 0)
-		dest = 0;
-	else
-		dest = 1;
-	if ((INT32) tempm >= 0)
-=======
 inline void sh34_base_device::MAC_W(const uint16_t opcode)
 {
 	uint32_t m = Rm; uint32_t n = Rn;
@@ -1998,7 +1378,6 @@ inline void sh34_base_device::MAC_W(const uint16_t opcode)
 	else
 		dest = 1;
 	if ((int32_t) tempm >= 0)
->>>>>>> upstream/master
 	{
 		src = 0;
 		tempn = 0;
@@ -2010,11 +1389,7 @@ inline void sh34_base_device::MAC_W(const uint16_t opcode)
 	}
 	src += dest;
 	m_macl += tempm;
-<<<<<<< HEAD
-	if ((INT32) m_macl >= 0)
-=======
 	if ((int32_t) m_macl >= 0)
->>>>>>> upstream/master
 		ans = 0;
 	else
 		ans = 1;
@@ -2039,66 +1414,33 @@ inline void sh34_base_device::MAC_W(const uint16_t opcode)
 }
 
 /*  MOV     Rm,Rn */
-<<<<<<< HEAD
-inline void sh34_base_device::MOV(const UINT16 opcode)
-=======
 inline void sh34_base_device::MOV(const uint16_t opcode)
->>>>>>> upstream/master
 {
 	m_r[Rn] = m_r[Rm];
 }
 
 /*  MOV.B   Rm,@Rn */
-<<<<<<< HEAD
-inline void sh34_base_device::MOVBS(const UINT16 opcode)
-=======
 inline void sh34_base_device::MOVBS(const uint16_t opcode)
->>>>>>> upstream/master
 {
 	m_ea = m_r[Rn];
 	WB(m_ea, m_r[Rm] & 0x000000ff);
 }
 
 /*  MOV.W   Rm,@Rn */
-<<<<<<< HEAD
-inline void sh34_base_device::MOVWS(const UINT16 opcode)
-=======
 inline void sh34_base_device::MOVWS(const uint16_t opcode)
->>>>>>> upstream/master
 {
 	m_ea = m_r[Rn];
 	WW(m_ea, m_r[Rm] & 0x0000ffff);
 }
 
 /*  MOV.L   Rm,@Rn */
-<<<<<<< HEAD
-inline void sh34_base_device::MOVLS(const UINT16 opcode)
-=======
 inline void sh34_base_device::MOVLS(const uint16_t opcode)
->>>>>>> upstream/master
 {
 	m_ea = m_r[Rn];
 	WL(m_ea, m_r[Rm] );
 }
 
 /*  MOV.B   @Rm,Rn */
-<<<<<<< HEAD
-inline void sh34_base_device::MOVBL(const UINT16 opcode)
-{
-	m_ea = m_r[Rm];
-	m_r[Rn] = (UINT32)(INT32)(INT16)(INT8) RB( m_ea );
-}
-
-/*  MOV.W   @Rm,Rn */
-inline void sh34_base_device::MOVWL(const UINT16 opcode)
-{
-	m_ea = m_r[Rm];
-	m_r[Rn] = (UINT32)(INT32)(INT16) RW(m_ea );
-}
-
-/*  MOV.L   @Rm,Rn */
-inline void sh34_base_device::MOVLL(const UINT16 opcode)
-=======
 inline void sh34_base_device::MOVBL(const uint16_t opcode)
 {
 	m_ea = m_r[Rm];
@@ -2114,103 +1456,62 @@ inline void sh34_base_device::MOVWL(const uint16_t opcode)
 
 /*  MOV.L   @Rm,Rn */
 inline void sh34_base_device::MOVLL(const uint16_t opcode)
->>>>>>> upstream/master
 {
 	m_ea = m_r[Rm];
 	m_r[Rn] = RL(m_ea );
 }
 
 /*  MOV.B   Rm,@-Rn */
-<<<<<<< HEAD
-inline void sh34_base_device::MOVBM(const UINT16 opcode)
-{
-	UINT32 data = m_r[Rm] & 0x000000ff;
-=======
 inline void sh34_base_device::MOVBM(const uint16_t opcode)
 {
 	uint32_t data = m_r[Rm] & 0x000000ff;
->>>>>>> upstream/master
 
 	m_r[Rn] -= 1;
 	WB(m_r[Rn], data );
 }
 
 /*  MOV.W   Rm,@-Rn */
-<<<<<<< HEAD
-inline void sh34_base_device::MOVWM(const UINT16 opcode)
-{
-	UINT32 data = m_r[Rm] & 0x0000ffff;
-=======
 inline void sh34_base_device::MOVWM(const uint16_t opcode)
 {
 	uint32_t data = m_r[Rm] & 0x0000ffff;
->>>>>>> upstream/master
 
 	m_r[Rn] -= 2;
 	WW(m_r[Rn], data );
 }
 
 /*  MOV.L   Rm,@-Rn */
-<<<<<<< HEAD
-inline void sh34_base_device::MOVLM(const UINT16 opcode)
-{
-	UINT32 data = m_r[Rm];
-=======
 inline void sh34_base_device::MOVLM(const uint16_t opcode)
 {
 	uint32_t data = m_r[Rm];
->>>>>>> upstream/master
 
 	m_r[Rn] -= 4;
 	WL(m_r[Rn], data );
 }
 
 /*  MOV.B   @Rm+,Rn */
-<<<<<<< HEAD
-inline void sh34_base_device::MOVBP(const UINT16 opcode)
-{
-	UINT32 m = Rm; UINT32 n = Rn;
-
-	m_r[n] = (UINT32)(INT32)(INT16)(INT8) RB( m_r[m] );
-=======
 inline void sh34_base_device::MOVBP(const uint16_t opcode)
 {
 	uint32_t m = Rm; uint32_t n = Rn;
 
 	m_r[n] = (uint32_t)(int32_t)(int16_t)(int8_t) RB( m_r[m] );
->>>>>>> upstream/master
 	if (n != m)
 		m_r[m] += 1;
 }
 
 /*  MOV.W   @Rm+,Rn */
-<<<<<<< HEAD
-inline void sh34_base_device::MOVWP(const UINT16 opcode)
-{
-	UINT32 m = Rm; UINT32 n = Rn;
-
-	m_r[n] = (UINT32)(INT32)(INT16) RW(m_r[m] );
-=======
 inline void sh34_base_device::MOVWP(const uint16_t opcode)
 {
 	uint32_t m = Rm; uint32_t n = Rn;
 
 	m_r[n] = (uint32_t)(int32_t)(int16_t) RW(m_r[m] );
->>>>>>> upstream/master
 	if (n != m)
 		m_r[m] += 2;
 }
 
 /*  MOV.L   @Rm+,Rn */
-<<<<<<< HEAD
-inline void sh34_base_device::MOVLP(const UINT16 opcode)
-{
-	UINT32 m = Rm; UINT32 n = Rn;
-=======
 inline void sh34_base_device::MOVLP(const uint16_t opcode)
 {
 	uint32_t m = Rm; uint32_t n = Rn;
->>>>>>> upstream/master
 
 	m_r[n] = RL(m_r[m] );
 	if (n != m)
@@ -2218,56 +1519,27 @@ inline void sh34_base_device::MOVLP(const uint16_t opcode)
 }
 
 /*  MOV.B   Rm,@(R0,Rn) */
-<<<<<<< HEAD
-inline void sh34_base_device::MOVBS0(const UINT16 opcode)
-=======
 inline void sh34_base_device::MOVBS0(const uint16_t opcode)
->>>>>>> upstream/master
 {
 	m_ea = m_r[Rn] + m_r[0];
 	WB(m_ea, m_r[Rm] & 0x000000ff );
 }
 
 /*  MOV.W   Rm,@(R0,Rn) */
-<<<<<<< HEAD
-inline void sh34_base_device::MOVWS0(const UINT16 opcode)
-=======
 inline void sh34_base_device::MOVWS0(const uint16_t opcode)
->>>>>>> upstream/master
 {
 	m_ea = m_r[Rn] + m_r[0];
 	WW(m_ea, m_r[Rm] & 0x0000ffff );
 }
 
 /*  MOV.L   Rm,@(R0,Rn) */
-<<<<<<< HEAD
-inline void sh34_base_device::MOVLS0(const UINT16 opcode)
-=======
 inline void sh34_base_device::MOVLS0(const uint16_t opcode)
->>>>>>> upstream/master
 {
 	m_ea = m_r[Rn] + m_r[0];
 	WL(m_ea, m_r[Rm] );
 }
 
 /*  MOV.B   @(R0,Rm),Rn */
-<<<<<<< HEAD
-inline void sh34_base_device::MOVBL0(const UINT16 opcode)
-{
-	m_ea = m_r[Rm] + m_r[0];
-	m_r[Rn] = (UINT32)(INT32)(INT16)(INT8) RB( m_ea );
-}
-
-/*  MOV.W   @(R0,Rm),Rn */
-inline void sh34_base_device::MOVWL0(const UINT16 opcode)
-{
-	m_ea = m_r[Rm] + m_r[0];
-	m_r[Rn] = (UINT32)(INT32)(INT16) RW(m_ea );
-}
-
-/*  MOV.L   @(R0,Rm),Rn */
-inline void sh34_base_device::MOVLL0(const UINT16 opcode)
-=======
 inline void sh34_base_device::MOVBL0(const uint16_t opcode)
 {
 	m_ea = m_r[Rm] + m_r[0];
@@ -2283,32 +1555,12 @@ inline void sh34_base_device::MOVWL0(const uint16_t opcode)
 
 /*  MOV.L   @(R0,Rm),Rn */
 inline void sh34_base_device::MOVLL0(const uint16_t opcode)
->>>>>>> upstream/master
 {
 	m_ea = m_r[Rm] + m_r[0];
 	m_r[Rn] = RL(m_ea );
 }
 
 /*  MOV     #imm,Rn */
-<<<<<<< HEAD
-inline void sh34_base_device::MOVI(const UINT16 opcode)
-{
-	m_r[Rn] = (UINT32)(INT32)(INT16)(INT8)(opcode&0xff);
-}
-
-/*  MOV.W   @(disp8,PC),Rn */
-inline void sh34_base_device::MOVWI(const UINT16 opcode)
-{
-	UINT32 disp = opcode & 0xff;
-	m_ea = m_pc + disp * 2 + 2;
-	m_r[Rn] = (UINT32)(INT32)(INT16) RW(m_ea );
-}
-
-/*  MOV.L   @(disp8,PC),Rn */
-inline void sh34_base_device::MOVLI(const UINT16 opcode)
-{
-	UINT32 disp = opcode & 0xff;
-=======
 inline void sh34_base_device::MOVI(const uint16_t opcode)
 {
 	m_r[Rn] = (uint32_t)(int32_t)(int16_t)(int8_t)(opcode&0xff);
@@ -2326,33 +1578,11 @@ inline void sh34_base_device::MOVWI(const uint16_t opcode)
 inline void sh34_base_device::MOVLI(const uint16_t opcode)
 {
 	uint32_t disp = opcode & 0xff;
->>>>>>> upstream/master
 	m_ea = ((m_pc + 2) & ~3) + disp * 4;
 	m_r[Rn] = RL(m_ea );
 }
 
 /*  MOV.B   @(disp8,GBR),R0 */
-<<<<<<< HEAD
-inline void sh34_base_device::MOVBLG(const UINT16 opcode)
-{
-	UINT32 disp = opcode & 0xff;
-	m_ea = m_gbr + disp;
-	m_r[0] = (UINT32)(INT32)(INT16)(INT8) RB( m_ea );
-}
-
-/*  MOV.W   @(disp8,GBR),R0 */
-inline void sh34_base_device::MOVWLG(const UINT16 opcode)
-{
-	UINT32 disp = opcode & 0xff;
-	m_ea = m_gbr + disp * 2;
-	m_r[0] = (INT32)(INT16) RW(m_ea );
-}
-
-/*  MOV.L   @(disp8,GBR),R0 */
-inline void sh34_base_device::MOVLLG(const UINT16 opcode)
-{
-	UINT32 disp = opcode & 0xff;
-=======
 inline void sh34_base_device::MOVBLG(const uint16_t opcode)
 {
 	uint32_t disp = opcode & 0xff;
@@ -2372,117 +1602,59 @@ inline void sh34_base_device::MOVWLG(const uint16_t opcode)
 inline void sh34_base_device::MOVLLG(const uint16_t opcode)
 {
 	uint32_t disp = opcode & 0xff;
->>>>>>> upstream/master
 	m_ea = m_gbr + disp * 4;
 	m_r[0] = RL(m_ea );
 }
 
 /*  MOV.B   R0,@(disp8,GBR) */
-<<<<<<< HEAD
-inline void sh34_base_device::MOVBSG(const UINT16 opcode)
-{
-	UINT32 disp = opcode & 0xff;
-=======
 inline void sh34_base_device::MOVBSG(const uint16_t opcode)
 {
 	uint32_t disp = opcode & 0xff;
->>>>>>> upstream/master
 	m_ea = m_gbr + disp;
 	WB(m_ea, m_r[0] & 0x000000ff );
 }
 
 /*  MOV.W   R0,@(disp8,GBR) */
-<<<<<<< HEAD
-inline void sh34_base_device::MOVWSG(const UINT16 opcode)
-{
-	UINT32 disp = opcode & 0xff;
-=======
 inline void sh34_base_device::MOVWSG(const uint16_t opcode)
 {
 	uint32_t disp = opcode & 0xff;
->>>>>>> upstream/master
 	m_ea = m_gbr + disp * 2;
 	WW(m_ea, m_r[0] & 0x0000ffff );
 }
 
 /*  MOV.L   R0,@(disp8,GBR) */
-<<<<<<< HEAD
-inline void sh34_base_device::MOVLSG(const UINT16 opcode)
-{
-	UINT32 disp = opcode & 0xff;
-=======
 inline void sh34_base_device::MOVLSG(const uint16_t opcode)
 {
 	uint32_t disp = opcode & 0xff;
->>>>>>> upstream/master
 	m_ea = m_gbr + disp * 4;
 	WL(m_ea, m_r[0] );
 }
 
 /*  MOV.B   R0,@(disp4,Rm) */
-<<<<<<< HEAD
-inline void sh34_base_device::MOVBS4(const UINT16 opcode)
-{
-	UINT32 disp = opcode & 0x0f;
-=======
 inline void sh34_base_device::MOVBS4(const uint16_t opcode)
 {
 	uint32_t disp = opcode & 0x0f;
->>>>>>> upstream/master
 	m_ea = m_r[Rm] + disp;
 	WB(m_ea, m_r[0] & 0x000000ff );
 }
 
 /*  MOV.W   R0,@(disp4,Rm) */
-<<<<<<< HEAD
-inline void sh34_base_device::MOVWS4(const UINT16 opcode)
-{
-	UINT32 disp = opcode & 0x0f;
-=======
 inline void sh34_base_device::MOVWS4(const uint16_t opcode)
 {
 	uint32_t disp = opcode & 0x0f;
->>>>>>> upstream/master
 	m_ea = m_r[Rm] + disp * 2;
 	WW(m_ea, m_r[0] & 0x0000ffff );
 }
 
 /* MOV.L Rm,@(disp4,Rn) */
-<<<<<<< HEAD
-inline void sh34_base_device::MOVLS4(const UINT16 opcode)
-{
-	UINT32 disp = opcode & 0x0f;
-=======
 inline void sh34_base_device::MOVLS4(const uint16_t opcode)
 {
 	uint32_t disp = opcode & 0x0f;
->>>>>>> upstream/master
 	m_ea = m_r[Rn] + disp * 4;
 	WL(m_ea, m_r[Rm] );
 }
 
 /*  MOV.B   @(disp4,Rm),R0 */
-<<<<<<< HEAD
-inline void sh34_base_device::MOVBL4(const UINT16 opcode)
-{
-	UINT32 disp = opcode & 0x0f;
-	m_ea = m_r[Rm] + disp;
-	m_r[0] = (UINT32)(INT32)(INT16)(INT8) RB( m_ea );
-}
-
-/*  MOV.W   @(disp4,Rm),R0 */
-inline void sh34_base_device::MOVWL4(const UINT16 opcode)
-{
-	UINT32 disp = opcode & 0x0f;
-	m_ea = m_r[Rm] + disp * 2;
-	m_r[0] = (UINT32)(INT32)(INT16) RW(m_ea );
-}
-
-/*  MOV.L   @(disp4,Rm),Rn */
-inline void sh34_base_device::MOVLL4(const UINT16 opcode)
-{
-	UINT32 disp = opcode & 0x0f;
-=======
 inline void sh34_base_device::MOVBL4(const uint16_t opcode)
 {
 	uint32_t disp = opcode & 0x0f;
@@ -2502,62 +1674,32 @@ inline void sh34_base_device::MOVWL4(const uint16_t opcode)
 inline void sh34_base_device::MOVLL4(const uint16_t opcode)
 {
 	uint32_t disp = opcode & 0x0f;
->>>>>>> upstream/master
 	m_ea = m_r[Rm] + disp * 4;
 	m_r[Rn] = RL(m_ea );
 }
 
 /*  MOVA    @(disp8,PC),R0 */
-<<<<<<< HEAD
-inline void sh34_base_device::MOVA(const UINT16 opcode)
-{
-	UINT32 disp = opcode & 0xff;
-=======
 inline void sh34_base_device::MOVA(const uint16_t opcode)
 {
 	uint32_t disp = opcode & 0xff;
->>>>>>> upstream/master
 	m_ea = ((m_pc + 2) & ~3) + disp * 4;
 	m_r[0] = m_ea;
 }
 
 /*  MOVT    Rn */
-<<<<<<< HEAD
-void sh34_base_device::MOVT(const UINT16 opcode)
-=======
 void sh34_base_device::MOVT(const uint16_t opcode)
->>>>>>> upstream/master
 {
 	m_r[Rn] = m_sr & T;
 }
 
 /*  MUL.L   Rm,Rn */
-<<<<<<< HEAD
-inline void sh34_base_device::MULL(const UINT16 opcode)
-=======
 inline void sh34_base_device::MULL(const uint16_t opcode)
->>>>>>> upstream/master
 {
 	m_macl = m_r[Rn] * m_r[Rm];
 	m_sh4_icount--;
 }
 
 /*  MULS    Rm,Rn */
-<<<<<<< HEAD
-inline void sh34_base_device::MULS(const UINT16 opcode)
-{
-	m_macl = (INT16) m_r[Rn] * (INT16) m_r[Rm];
-}
-
-/*  MULU    Rm,Rn */
-inline void sh34_base_device::MULU(const UINT16 opcode)
-{
-	m_macl = (UINT16) m_r[Rn] * (UINT16) m_r[Rm];
-}
-
-/*  NEG     Rm,Rn */
-inline void sh34_base_device::NEG(const UINT16 opcode)
-=======
 inline void sh34_base_device::MULS(const uint16_t opcode)
 {
 	m_macl = (int16_t) m_r[Rn] * (int16_t) m_r[Rm];
@@ -2571,21 +1713,14 @@ inline void sh34_base_device::MULU(const uint16_t opcode)
 
 /*  NEG     Rm,Rn */
 inline void sh34_base_device::NEG(const uint16_t opcode)
->>>>>>> upstream/master
 {
 	m_r[Rn] = 0 - m_r[Rm];
 }
 
 /*  NEGC    Rm,Rn */
-<<<<<<< HEAD
-inline void sh34_base_device::NEGC(const UINT16 opcode)
-{
-	UINT32 temp;
-=======
 inline void sh34_base_device::NEGC(const uint16_t opcode)
 {
 	uint32_t temp;
->>>>>>> upstream/master
 
 	temp = m_r[Rm];
 	m_r[Rn] = -temp - (m_sr & T);
@@ -2596,55 +1731,33 @@ inline void sh34_base_device::NEGC(const uint16_t opcode)
 }
 
 /*  NOP */
-<<<<<<< HEAD
-inline void sh34_base_device::NOP(const UINT16 opcode)
-=======
 inline void sh34_base_device::NOP(const uint16_t opcode)
->>>>>>> upstream/master
 {
 }
 
 /*  NOT     Rm,Rn */
-<<<<<<< HEAD
-inline void sh34_base_device::NOT(const UINT16 opcode)
-=======
 inline void sh34_base_device::NOT(const uint16_t opcode)
->>>>>>> upstream/master
 {
 	m_r[Rn] = ~m_r[Rm];
 }
 
 /*  OR      Rm,Rn */
-<<<<<<< HEAD
-inline void sh34_base_device::OR(const UINT16 opcode)
-=======
 inline void sh34_base_device::OR(const uint16_t opcode)
->>>>>>> upstream/master
 {
 	m_r[Rn] |= m_r[Rm];
 }
 
 /*  OR      #imm,R0 */
-<<<<<<< HEAD
-inline void sh34_base_device::ORI(const UINT16 opcode)
-=======
 inline void sh34_base_device::ORI(const uint16_t opcode)
->>>>>>> upstream/master
 {
 	m_r[0] |= (opcode&0xff);
 	m_sh4_icount -= 2;
 }
 
 /*  OR.B    #imm,@(R0,GBR) */
-<<<<<<< HEAD
-inline void sh34_base_device::ORM(const UINT16 opcode)
-{
-	UINT32 temp;
-=======
 inline void sh34_base_device::ORM(const uint16_t opcode)
 {
 	uint32_t temp;
->>>>>>> upstream/master
 
 	m_ea = m_gbr + m_r[0];
 	temp = RB( m_ea );
@@ -2653,19 +1766,11 @@ inline void sh34_base_device::ORM(const uint16_t opcode)
 }
 
 /*  ROTCL   Rn */
-<<<<<<< HEAD
-inline void sh34_base_device::ROTCL(const UINT16 opcode)
-{
-	UINT32 n = Rn;
-
-	UINT32 temp;
-=======
 inline void sh34_base_device::ROTCL(const uint16_t opcode)
 {
 	uint32_t n = Rn;
 
 	uint32_t temp;
->>>>>>> upstream/master
 
 	temp = (m_r[n] >> 31) & T;
 	m_r[n] = (m_r[n] << 1) | (m_sr & T);
@@ -2673,19 +1778,11 @@ inline void sh34_base_device::ROTCL(const uint16_t opcode)
 }
 
 /*  ROTCR   Rn */
-<<<<<<< HEAD
-inline void sh34_base_device::ROTCR(const UINT16 opcode)
-{
-	UINT32 n = Rn;
-
-	UINT32 temp;
-=======
 inline void sh34_base_device::ROTCR(const uint16_t opcode)
 {
 	uint32_t n = Rn;
 
 	uint32_t temp;
->>>>>>> upstream/master
 	temp = (m_sr & T) << 31;
 	if (m_r[n] & T)
 		m_sr |= T;
@@ -2695,46 +1792,27 @@ inline void sh34_base_device::ROTCR(const uint16_t opcode)
 }
 
 /*  ROTL    Rn */
-<<<<<<< HEAD
-inline void sh34_base_device::ROTL(const UINT16 opcode)
-{
-	UINT32 n = Rn;
-=======
 inline void sh34_base_device::ROTL(const uint16_t opcode)
 {
 	uint32_t n = Rn;
->>>>>>> upstream/master
 
 	m_sr = (m_sr & ~T) | ((m_r[n] >> 31) & T);
 	m_r[n] = (m_r[n] << 1) | (m_r[n] >> 31);
 }
 
 /*  ROTR    Rn */
-<<<<<<< HEAD
-inline void sh34_base_device::ROTR(const UINT16 opcode)
-{
-	UINT32 n = Rn;
-=======
 inline void sh34_base_device::ROTR(const uint16_t opcode)
 {
 	uint32_t n = Rn;
->>>>>>> upstream/master
 
 	m_sr = (m_sr & ~T) | (m_r[n] & T);
 	m_r[n] = (m_r[n] >> 1) | (m_r[n] << 31);
 }
 
 /*  RTE */
-<<<<<<< HEAD
-inline void sh34_base_device::RTE(const UINT16 opcode)
-{
-	m_delay = m_pc;
-	m_pc = m_ea = m_spc;
-=======
 inline void sh34_base_device::RTE(const uint16_t opcode)
 {
 	m_delay = m_ea = m_spc;
->>>>>>> upstream/master
 	if ((machine().debug_flags & DEBUG_FLAG_ENABLED) != 0)
 		sh4_syncronize_register_bank((m_sr & sRB) >> 29);
 	if ((m_ssr & sRB) != (m_sr & sRB))
@@ -2745,59 +1823,28 @@ inline void sh34_base_device::RTE(const uint16_t opcode)
 }
 
 /*  RTS */
-<<<<<<< HEAD
-inline void sh34_base_device::RTS(const UINT16 opcode)
-{
-	m_delay = m_pc;
-	m_pc = m_ea = m_pr;
-=======
 inline void sh34_base_device::RTS(const uint16_t opcode)
 {
 	m_delay = m_ea = m_pr;
->>>>>>> upstream/master
 	m_sh4_icount--;
 }
 
 /*  SETT */
-<<<<<<< HEAD
-inline void sh34_base_device::SETT(const UINT16 opcode)
-=======
 inline void sh34_base_device::SETT(const uint16_t opcode)
->>>>>>> upstream/master
 {
 	m_sr |= T;
 }
 
 /*  SHAL    Rn      (same as SHLL) */
-<<<<<<< HEAD
-inline void sh34_base_device::SHAL(const UINT16 opcode)
-{
-	UINT32 n = Rn;
-=======
 inline void sh34_base_device::SHAL(const uint16_t opcode)
 {
 	uint32_t n = Rn;
->>>>>>> upstream/master
 
 	m_sr = (m_sr & ~T) | ((m_r[n] >> 31) & T);
 	m_r[n] <<= 1;
 }
 
 /*  SHAR    Rn */
-<<<<<<< HEAD
-inline void sh34_base_device::SHAR(const UINT16 opcode)
-{
-	UINT32 n = Rn;
-
-	m_sr = (m_sr & ~T) | (m_r[n] & T);
-	m_r[n] = (UINT32)((INT32)m_r[n] >> 1);
-}
-
-/*  SHLL    Rn      (same as SHAL) */
-inline void sh34_base_device::SHLL(const UINT16 opcode)
-{
-	UINT32 n = Rn;
-=======
 inline void sh34_base_device::SHAR(const uint16_t opcode)
 {
 	uint32_t n = Rn;
@@ -2810,93 +1857,58 @@ inline void sh34_base_device::SHAR(const uint16_t opcode)
 inline void sh34_base_device::SHLL(const uint16_t opcode)
 {
 	uint32_t n = Rn;
->>>>>>> upstream/master
 
 	m_sr = (m_sr & ~T) | ((m_r[n] >> 31) & T);
 	m_r[n] <<= 1;
 }
 
 /*  SHLL2   Rn */
-<<<<<<< HEAD
-inline void sh34_base_device::SHLL2(const UINT16 opcode)
-=======
 inline void sh34_base_device::SHLL2(const uint16_t opcode)
->>>>>>> upstream/master
 {
 	m_r[Rn] <<= 2;
 }
 
 /*  SHLL8   Rn */
-<<<<<<< HEAD
-inline void sh34_base_device::SHLL8(const UINT16 opcode)
-=======
 inline void sh34_base_device::SHLL8(const uint16_t opcode)
->>>>>>> upstream/master
 {
 	m_r[Rn] <<= 8;
 }
 
 /*  SHLL16  Rn */
-<<<<<<< HEAD
-inline void sh34_base_device::SHLL16(const UINT16 opcode)
-=======
 inline void sh34_base_device::SHLL16(const uint16_t opcode)
->>>>>>> upstream/master
 {
 	m_r[Rn] <<= 16;
 }
 
 /*  SHLR    Rn */
-<<<<<<< HEAD
-inline void sh34_base_device::SHLR(const UINT16 opcode)
-{
-	UINT32 n = Rn;
-=======
 inline void sh34_base_device::SHLR(const uint16_t opcode)
 {
 	uint32_t n = Rn;
->>>>>>> upstream/master
 
 	m_sr = (m_sr & ~T) | (m_r[n] & T);
 	m_r[n] >>= 1;
 }
 
 /*  SHLR2   Rn */
-<<<<<<< HEAD
-inline void sh34_base_device::SHLR2(const UINT16 opcode)
-=======
 inline void sh34_base_device::SHLR2(const uint16_t opcode)
->>>>>>> upstream/master
 {
 	m_r[Rn] >>= 2;
 }
 
 /*  SHLR8   Rn */
-<<<<<<< HEAD
-inline void sh34_base_device::SHLR8(const UINT16 opcode)
-=======
 inline void sh34_base_device::SHLR8(const uint16_t opcode)
->>>>>>> upstream/master
 {
 	m_r[Rn] >>= 8;
 }
 
 /*  SHLR16  Rn */
-<<<<<<< HEAD
-inline void sh34_base_device::SHLR16(const UINT16 opcode)
-=======
 inline void sh34_base_device::SHLR16(const uint16_t opcode)
->>>>>>> upstream/master
 {
 	m_r[Rn] >>= 16;
 }
 
 /*  SLEEP */
-<<<<<<< HEAD
-inline void sh34_base_device::SLEEP(const UINT16 opcode)
-=======
 inline void sh34_base_device::SLEEP(const uint16_t opcode)
->>>>>>> upstream/master
 {
 	/* 0 = normal mode */
 	/* 1 = enters into power-down mode */
@@ -2912,45 +1924,27 @@ inline void sh34_base_device::SLEEP(const uint16_t opcode)
 }
 
 /*  STC     SR,Rn */
-<<<<<<< HEAD
-inline void sh34_base_device::STCSR(const UINT16 opcode)
-=======
 inline void sh34_base_device::STCSR(const uint16_t opcode)
->>>>>>> upstream/master
 {
 	m_r[Rn] = m_sr;
 }
 
 /*  STC     GBR,Rn */
-<<<<<<< HEAD
-inline void sh34_base_device::STCGBR(const UINT16 opcode)
-=======
 inline void sh34_base_device::STCGBR(const uint16_t opcode)
->>>>>>> upstream/master
 {
 	m_r[Rn] = m_gbr;
 }
 
 /*  STC     VBR,Rn */
-<<<<<<< HEAD
-inline void sh34_base_device::STCVBR(const UINT16 opcode)
-=======
 inline void sh34_base_device::STCVBR(const uint16_t opcode)
->>>>>>> upstream/master
 {
 	m_r[Rn] = m_vbr;
 }
 
 /*  STC.L   SR,@-Rn */
-<<<<<<< HEAD
-inline void sh34_base_device::STCMSR(const UINT16 opcode)
-{
-	UINT32 n = Rn;
-=======
 inline void sh34_base_device::STCMSR(const uint16_t opcode)
 {
 	uint32_t n = Rn;
->>>>>>> upstream/master
 
 	m_r[n] -= 4;
 	m_ea = m_r[n];
@@ -2959,15 +1953,9 @@ inline void sh34_base_device::STCMSR(const uint16_t opcode)
 }
 
 /*  STC.L   GBR,@-Rn */
-<<<<<<< HEAD
-inline void sh34_base_device::STCMGBR(const UINT16 opcode)
-{
-	UINT32 n = Rn;
-=======
 inline void sh34_base_device::STCMGBR(const uint16_t opcode)
 {
 	uint32_t n = Rn;
->>>>>>> upstream/master
 
 	m_r[n] -= 4;
 	m_ea = m_r[n];
@@ -2976,15 +1964,9 @@ inline void sh34_base_device::STCMGBR(const uint16_t opcode)
 }
 
 /*  STC.L   VBR,@-Rn */
-<<<<<<< HEAD
-inline void sh34_base_device::STCMVBR(const UINT16 opcode)
-{
-	UINT32 n = Rn;
-=======
 inline void sh34_base_device::STCMVBR(const uint16_t opcode)
 {
 	uint32_t n = Rn;
->>>>>>> upstream/master
 
 	m_r[n] -= 4;
 	m_ea = m_r[n];
@@ -2993,45 +1975,27 @@ inline void sh34_base_device::STCMVBR(const uint16_t opcode)
 }
 
 /*  STS     MACH,Rn */
-<<<<<<< HEAD
-inline void sh34_base_device::STSMACH(const UINT16 opcode)
-=======
 inline void sh34_base_device::STSMACH(const uint16_t opcode)
->>>>>>> upstream/master
 {
 	m_r[Rn] = m_mach;
 }
 
 /*  STS     MACL,Rn */
-<<<<<<< HEAD
-inline void sh34_base_device::STSMACL(const UINT16 opcode)
-=======
 inline void sh34_base_device::STSMACL(const uint16_t opcode)
->>>>>>> upstream/master
 {
 	m_r[Rn] = m_macl;
 }
 
 /*  STS     PR,Rn */
-<<<<<<< HEAD
-inline void sh34_base_device::STSPR(const UINT16 opcode)
-=======
 inline void sh34_base_device::STSPR(const uint16_t opcode)
->>>>>>> upstream/master
 {
 	m_r[Rn] = m_pr;
 }
 
 /*  STS.L   MACH,@-Rn */
-<<<<<<< HEAD
-inline void sh34_base_device::STSMMACH(const UINT16 opcode)
-{
-	UINT32 n = Rn;
-=======
 inline void sh34_base_device::STSMMACH(const uint16_t opcode)
 {
 	uint32_t n = Rn;
->>>>>>> upstream/master
 
 	m_r[n] -= 4;
 	m_ea = m_r[n];
@@ -3039,15 +2003,9 @@ inline void sh34_base_device::STSMMACH(const uint16_t opcode)
 }
 
 /*  STS.L   MACL,@-Rn */
-<<<<<<< HEAD
-inline void sh34_base_device::STSMMACL(const UINT16 opcode)
-{
-	UINT32 n = Rn;
-=======
 inline void sh34_base_device::STSMMACL(const uint16_t opcode)
 {
 	uint32_t n = Rn;
->>>>>>> upstream/master
 
 	m_r[n] -= 4;
 	m_ea = m_r[n];
@@ -3055,15 +2013,9 @@ inline void sh34_base_device::STSMMACL(const uint16_t opcode)
 }
 
 /*  STS.L   PR,@-Rn */
-<<<<<<< HEAD
-inline void sh34_base_device::STSMPR(const UINT16 opcode)
-{
-	UINT32 n = Rn;
-=======
 inline void sh34_base_device::STSMPR(const uint16_t opcode)
 {
 	uint32_t n = Rn;
->>>>>>> upstream/master
 
 	m_r[n] -= 4;
 	m_ea = m_r[n];
@@ -3071,29 +2023,17 @@ inline void sh34_base_device::STSMPR(const uint16_t opcode)
 }
 
 /*  SUB     Rm,Rn */
-<<<<<<< HEAD
-inline void sh34_base_device::SUB(const UINT16 opcode)
-=======
 inline void sh34_base_device::SUB(const uint16_t opcode)
->>>>>>> upstream/master
 {
 	m_r[Rn] -= m_r[Rm];
 }
 
 /*  SUBC    Rm,Rn */
-<<<<<<< HEAD
-inline void sh34_base_device::SUBC(const UINT16 opcode)
-{
-	UINT32 m = Rm; UINT32 n = Rn;
-
-	UINT32 tmp0, tmp1;
-=======
 inline void sh34_base_device::SUBC(const uint16_t opcode)
 {
 	uint32_t m = Rm; uint32_t n = Rn;
 
 	uint32_t tmp0, tmp1;
->>>>>>> upstream/master
 
 	tmp1 = m_r[n] - m_r[m];
 	tmp0 = m_r[n];
@@ -3107,19 +2047,6 @@ inline void sh34_base_device::SUBC(const uint16_t opcode)
 }
 
 /*  SUBV    Rm,Rn */
-<<<<<<< HEAD
-inline void sh34_base_device::SUBV(const UINT16 opcode)
-{
-	UINT32 m = Rm; UINT32 n = Rn;
-
-	INT32 dest, src, ans;
-
-	if ((INT32) m_r[n] >= 0)
-		dest = 0;
-	else
-		dest = 1;
-	if ((INT32) m_r[m] >= 0)
-=======
 inline void sh34_base_device::SUBV(const uint16_t opcode)
 {
 	uint32_t m = Rm; uint32_t n = Rn;
@@ -3131,17 +2058,12 @@ inline void sh34_base_device::SUBV(const uint16_t opcode)
 	else
 		dest = 1;
 	if ((int32_t) m_r[m] >= 0)
->>>>>>> upstream/master
 		src = 0;
 	else
 		src = 1;
 	src += dest;
 	m_r[n] -= m_r[m];
-<<<<<<< HEAD
-	if ((INT32) m_r[n] >= 0)
-=======
 	if ((int32_t) m_r[n] >= 0)
->>>>>>> upstream/master
 		ans = 0;
 	else
 		ans = 1;
@@ -3158,19 +2080,11 @@ inline void sh34_base_device::SUBV(const uint16_t opcode)
 }
 
 /*  SWAP.B  Rm,Rn */
-<<<<<<< HEAD
-inline void sh34_base_device::SWAPB(const UINT16 opcode)
-{
-	UINT32 m = Rm; UINT32 n = Rn;
-
-	UINT32 temp0, temp1;
-=======
 inline void sh34_base_device::SWAPB(const uint16_t opcode)
 {
 	uint32_t m = Rm; uint32_t n = Rn;
 
 	uint32_t temp0, temp1;
->>>>>>> upstream/master
 
 	temp0 = m_r[m] & 0xffff0000;
 	temp1 = (m_r[m] & 0x000000ff) << 8;
@@ -3179,38 +2093,22 @@ inline void sh34_base_device::SWAPB(const uint16_t opcode)
 }
 
 /*  SWAP.W  Rm,Rn */
-<<<<<<< HEAD
-inline void sh34_base_device::SWAPW(const UINT16 opcode)
-{
-	UINT32 m = Rm; UINT32 n = Rn;
-
-	UINT32 temp;
-=======
 inline void sh34_base_device::SWAPW(const uint16_t opcode)
 {
 	uint32_t m = Rm; uint32_t n = Rn;
 
 	uint32_t temp;
->>>>>>> upstream/master
 
 	temp = (m_r[m] >> 16) & 0x0000ffff;
 	m_r[n] = (m_r[m] << 16) | temp;
 }
 
 /*  TAS.B   @Rn */
-<<<<<<< HEAD
-inline void sh34_base_device::TAS(const UINT16 opcode)
-{
-	UINT32 n = Rn;
-
-	UINT32 temp;
-=======
 inline void sh34_base_device::TAS(const uint16_t opcode)
 {
 	uint32_t n = Rn;
 
 	uint32_t temp;
->>>>>>> upstream/master
 	m_ea = m_r[n];
 	/* Bus Lock enable */
 	temp = RB( m_ea );
@@ -3225,15 +2123,9 @@ inline void sh34_base_device::TAS(const uint16_t opcode)
 }
 
 /*  TRAPA   #imm */
-<<<<<<< HEAD
-inline void sh34_base_device::TRAPA(const UINT16 opcode)
-{
-	UINT32 imm = opcode & 0xff;
-=======
 inline void sh34_base_device::TRAPA(const uint16_t opcode)
 {
 	uint32_t imm = opcode & 0xff;
->>>>>>> upstream/master
 
 	if (m_cpu_type == CPU_TYPE_SH4)
 	{
@@ -3273,11 +2165,7 @@ inline void sh34_base_device::TRAPA(const uint16_t opcode)
 }
 
 /*  TST     Rm,Rn */
-<<<<<<< HEAD
-inline void sh34_base_device::TST(const UINT16 opcode)
-=======
 inline void sh34_base_device::TST(const uint16_t opcode)
->>>>>>> upstream/master
 {
 	if ((m_r[Rn] & m_r[Rm]) == 0)
 		m_sr |= T;
@@ -3286,15 +2174,9 @@ inline void sh34_base_device::TST(const uint16_t opcode)
 }
 
 /*  TST     #imm,R0 */
-<<<<<<< HEAD
-inline void sh34_base_device::TSTI(const UINT16 opcode)
-{
-	UINT32 imm = opcode & 0xff;
-=======
 inline void sh34_base_device::TSTI(const uint16_t opcode)
 {
 	uint32_t imm = opcode & 0xff;
->>>>>>> upstream/master
 
 	if ((imm & m_r[0]) == 0)
 		m_sr |= T;
@@ -3303,15 +2185,9 @@ inline void sh34_base_device::TSTI(const uint16_t opcode)
 }
 
 /*  TST.B   #imm,@(R0,GBR) */
-<<<<<<< HEAD
-inline void sh34_base_device::TSTM(const UINT16 opcode)
-{
-	UINT32 imm = opcode & 0xff;
-=======
 inline void sh34_base_device::TSTM(const uint16_t opcode)
 {
 	uint32_t imm = opcode & 0xff;
->>>>>>> upstream/master
 
 	m_ea = m_gbr + m_r[0];
 	if ((imm & RB( m_ea )) == 0)
@@ -3322,40 +2198,23 @@ inline void sh34_base_device::TSTM(const uint16_t opcode)
 }
 
 /*  XOR     Rm,Rn */
-<<<<<<< HEAD
-inline void sh34_base_device::XOR(const UINT16 opcode)
-=======
 inline void sh34_base_device::XOR(const uint16_t opcode)
->>>>>>> upstream/master
 {
 	m_r[Rn] ^= m_r[Rm];
 }
 
 /*  XOR     #imm,R0 */
-<<<<<<< HEAD
-inline void sh34_base_device::XORI(const UINT16 opcode)
-{
-	UINT32 imm = opcode & 0xff;
-=======
 inline void sh34_base_device::XORI(const uint16_t opcode)
 {
 	uint32_t imm = opcode & 0xff;
->>>>>>> upstream/master
 	m_r[0] ^= imm;
 }
 
 /*  XOR.B   #imm,@(R0,GBR) */
-<<<<<<< HEAD
-inline void sh34_base_device::XORM(const UINT16 opcode)
-{
-	UINT32 imm = opcode & 0xff;
-	UINT32 temp;
-=======
 inline void sh34_base_device::XORM(const uint16_t opcode)
 {
 	uint32_t imm = opcode & 0xff;
 	uint32_t temp;
->>>>>>> upstream/master
 
 	m_ea = m_gbr + m_r[0];
 	temp = RB( m_ea );
@@ -3365,19 +2224,11 @@ inline void sh34_base_device::XORM(const uint16_t opcode)
 }
 
 /*  XTRCT   Rm,Rn */
-<<<<<<< HEAD
-inline void sh34_base_device::XTRCT(const UINT16 opcode)
-{
-	UINT32 m = Rm; UINT32 n = Rn;
-
-	UINT32 temp;
-=======
 inline void sh34_base_device::XTRCT(const uint16_t opcode)
 {
 	uint32_t m = Rm; uint32_t n = Rn;
 
 	uint32_t temp;
->>>>>>> upstream/master
 
 	temp = (m_r[m] << 16) & 0xffff0000;
 	m_r[n] = (m_r[n] >> 16) & 0x0000ffff;
@@ -3385,89 +2236,53 @@ inline void sh34_base_device::XTRCT(const uint16_t opcode)
 }
 
 /*  STC     SSR,Rn */
-<<<<<<< HEAD
-inline void sh34_base_device::STCSSR(const UINT16 opcode)
-=======
 inline void sh34_base_device::STCSSR(const uint16_t opcode)
->>>>>>> upstream/master
 {
 	m_r[Rn] = m_ssr;
 }
 
 /*  STC     SPC,Rn */
-<<<<<<< HEAD
-inline void sh34_base_device::STCSPC(const UINT16 opcode)
-=======
 inline void sh34_base_device::STCSPC(const uint16_t opcode)
->>>>>>> upstream/master
 {
 	m_r[Rn] = m_spc;
 }
 
 /*  STC     SGR,Rn */
-<<<<<<< HEAD
-inline void sh34_base_device::STCSGR(const UINT16 opcode)
-=======
 inline void sh34_base_device::STCSGR(const uint16_t opcode)
->>>>>>> upstream/master
 {
 	m_r[Rn] = m_sgr;
 }
 
 /*  STS     FPUL,Rn */
-<<<<<<< HEAD
-inline void sh34_base_device::STSFPUL(const UINT16 opcode)
-=======
 inline void sh34_base_device::STSFPUL(const uint16_t opcode)
->>>>>>> upstream/master
 {
 	m_r[Rn] = m_fpul;
 }
 
 /*  STS     FPSCR,Rn */
-<<<<<<< HEAD
-inline void sh34_base_device::STSFPSCR(const UINT16 opcode)
-=======
 inline void sh34_base_device::STSFPSCR(const uint16_t opcode)
->>>>>>> upstream/master
 {
 	m_r[Rn] = m_fpscr & 0x003FFFFF;
 }
 
 /*  STC     DBR,Rn */
-<<<<<<< HEAD
-inline void sh34_base_device::STCDBR(const UINT16 opcode)
-=======
 inline void sh34_base_device::STCDBR(const uint16_t opcode)
->>>>>>> upstream/master
 {
 	m_r[Rn] = m_dbr;
 }
 
 /*  STCRBANK   Rm_BANK,Rn */
-<<<<<<< HEAD
-inline void sh34_base_device::STCRBANK(const UINT16 opcode)
-{
-	UINT32 m = Rm;
-=======
 inline void sh34_base_device::STCRBANK(const uint16_t opcode)
 {
 	uint32_t m = Rm;
->>>>>>> upstream/master
 
 	m_r[Rn] = m_rbnk[m_sr&sRB ? 0 : 1][m & 7];
 }
 
 /*  STCMRBANK   Rm_BANK,@-Rn */
-<<<<<<< HEAD
-inline void sh34_base_device::STCMRBANK(const UINT16 opcode)
-{
-	UINT32 m = Rm; UINT32 n = Rn;
-=======
 inline void sh34_base_device::STCMRBANK(const uint16_t opcode)
 {
 	uint32_t m = Rm; uint32_t n = Rn;
->>>>>>> upstream/master
 
 	m_r[n] -= 4;
 	m_ea = m_r[n];
@@ -3476,44 +2291,26 @@ inline void sh34_base_device::STCMRBANK(const uint16_t opcode)
 }
 
 /*  MOVCA.L     R0,@Rn */
-<<<<<<< HEAD
-inline void sh34_base_device::MOVCAL(const UINT16 opcode)
-=======
 inline void sh34_base_device::MOVCAL(const uint16_t opcode)
->>>>>>> upstream/master
 {
 	m_ea = m_r[Rn];
 	WL(m_ea, m_r[0] );
 }
 
-<<<<<<< HEAD
-inline void sh34_base_device::CLRS(const UINT16 opcode)
-=======
 inline void sh34_base_device::CLRS(const uint16_t opcode)
->>>>>>> upstream/master
 {
 	m_sr &= ~S;
 }
 
-<<<<<<< HEAD
-inline void sh34_base_device::SETS(const UINT16 opcode)
-=======
 inline void sh34_base_device::SETS(const uint16_t opcode)
->>>>>>> upstream/master
 {
 	m_sr |= S;
 }
 
 /*  STS.L   SGR,@-Rn */
-<<<<<<< HEAD
-inline void sh34_base_device::STCMSGR(const UINT16 opcode)
-{
-	UINT32 n = Rn;
-=======
 inline void sh34_base_device::STCMSGR(const uint16_t opcode)
 {
 	uint32_t n = Rn;
->>>>>>> upstream/master
 
 	m_r[n] -= 4;
 	m_ea = m_r[n];
@@ -3521,15 +2318,9 @@ inline void sh34_base_device::STCMSGR(const uint16_t opcode)
 }
 
 /*  STS.L   FPUL,@-Rn */
-<<<<<<< HEAD
-inline void sh34_base_device::STSMFPUL(const UINT16 opcode)
-{
-	UINT32 n = Rn;
-=======
 inline void sh34_base_device::STSMFPUL(const uint16_t opcode)
 {
 	uint32_t n = Rn;
->>>>>>> upstream/master
 
 	m_r[n] -= 4;
 	m_ea = m_r[n];
@@ -3537,15 +2328,9 @@ inline void sh34_base_device::STSMFPUL(const uint16_t opcode)
 }
 
 /*  STS.L   FPSCR,@-Rn */
-<<<<<<< HEAD
-inline void sh34_base_device::STSMFPSCR(const UINT16 opcode)
-{
-	UINT32 n = Rn;
-=======
 inline void sh34_base_device::STSMFPSCR(const uint16_t opcode)
 {
 	uint32_t n = Rn;
->>>>>>> upstream/master
 
 	m_r[n] -= 4;
 	m_ea = m_r[n];
@@ -3553,15 +2338,9 @@ inline void sh34_base_device::STSMFPSCR(const uint16_t opcode)
 }
 
 /*  STC.L   DBR,@-Rn */
-<<<<<<< HEAD
-inline void sh34_base_device::STCMDBR(const UINT16 opcode)
-{
-	UINT32 n = Rn;
-=======
 inline void sh34_base_device::STCMDBR(const uint16_t opcode)
 {
 	uint32_t n = Rn;
->>>>>>> upstream/master
 
 	m_r[n] -= 4;
 	m_ea = m_r[n];
@@ -3569,15 +2348,9 @@ inline void sh34_base_device::STCMDBR(const uint16_t opcode)
 }
 
 /*  STC.L   SSR,@-Rn */
-<<<<<<< HEAD
-inline void sh34_base_device::STCMSSR(const UINT16 opcode)
-{
-	UINT32 n = Rn;
-=======
 inline void sh34_base_device::STCMSSR(const uint16_t opcode)
 {
 	uint32_t n = Rn;
->>>>>>> upstream/master
 
 	m_r[n] -= 4;
 	m_ea = m_r[n];
@@ -3585,15 +2358,9 @@ inline void sh34_base_device::STCMSSR(const uint16_t opcode)
 }
 
 /*  STC.L   SPC,@-Rn */
-<<<<<<< HEAD
-inline void sh34_base_device::STCMSPC(const UINT16 opcode)
-{
-	UINT32 n = Rn;
-=======
 inline void sh34_base_device::STCMSPC(const uint16_t opcode)
 {
 	uint32_t n = Rn;
->>>>>>> upstream/master
 
 	m_r[n] -= 4;
 	m_ea = m_r[n];
@@ -3601,11 +2368,7 @@ inline void sh34_base_device::STCMSPC(const uint16_t opcode)
 }
 
 /*  LDS.L   @Rm+,FPUL */
-<<<<<<< HEAD
-inline void sh34_base_device::LDSMFPUL(const UINT16 opcode)
-=======
 inline void sh34_base_device::LDSMFPUL(const uint16_t opcode)
->>>>>>> upstream/master
 {
 	m_ea = m_r[Rn];
 	m_fpul = RL(m_ea );
@@ -3613,15 +2376,9 @@ inline void sh34_base_device::LDSMFPUL(const uint16_t opcode)
 }
 
 /*  LDS.L   @Rm+,FPSCR */
-<<<<<<< HEAD
-inline void sh34_base_device::LDSMFPSCR(const UINT16 opcode)
-{
-	UINT32 s;
-=======
 inline void sh34_base_device::LDSMFPSCR(const uint16_t opcode)
 {
 	uint32_t s;
->>>>>>> upstream/master
 
 	s = m_fpscr;
 	m_ea = m_r[Rn];
@@ -3639,11 +2396,7 @@ inline void sh34_base_device::LDSMFPSCR(const uint16_t opcode)
 }
 
 /*  LDC.L   @Rm+,DBR */
-<<<<<<< HEAD
-inline void sh34_base_device::LDCMDBR(const UINT16 opcode)
-=======
 inline void sh34_base_device::LDCMDBR(const uint16_t opcode)
->>>>>>> upstream/master
 {
 	m_ea = m_r[Rn];
 	m_dbr = RL(m_ea );
@@ -3651,15 +2404,9 @@ inline void sh34_base_device::LDCMDBR(const uint16_t opcode)
 }
 
 /*  LDC.L   @Rn+,Rm_BANK */
-<<<<<<< HEAD
-inline void sh34_base_device::LDCMRBANK(const UINT16 opcode)
-{
-	UINT32 m = Rm; UINT32 n = Rn;
-=======
 inline void sh34_base_device::LDCMRBANK(const uint16_t opcode)
 {
 	uint32_t m = Rm; uint32_t n = Rn;
->>>>>>> upstream/master
 
 	m_ea = m_r[n];
 	m_rbnk[m_sr&sRB ? 0 : 1][m & 7] = RL(m_ea );
@@ -3667,11 +2414,7 @@ inline void sh34_base_device::LDCMRBANK(const uint16_t opcode)
 }
 
 /*  LDC.L   @Rm+,SSR */
-<<<<<<< HEAD
-inline void sh34_base_device::LDCMSSR(const UINT16 opcode)
-=======
 inline void sh34_base_device::LDCMSSR(const uint16_t opcode)
->>>>>>> upstream/master
 {
 	m_ea = m_r[Rn];
 	m_ssr = RL(m_ea );
@@ -3679,11 +2422,7 @@ inline void sh34_base_device::LDCMSSR(const uint16_t opcode)
 }
 
 /*  LDC.L   @Rm+,SPC */
-<<<<<<< HEAD
-inline void sh34_base_device::LDCMSPC(const UINT16 opcode)
-=======
 inline void sh34_base_device::LDCMSPC(const uint16_t opcode)
->>>>>>> upstream/master
 {
 	m_ea = m_r[Rn];
 	m_spc = RL(m_ea );
@@ -3691,25 +2430,15 @@ inline void sh34_base_device::LDCMSPC(const uint16_t opcode)
 }
 
 /*  LDS     Rm,FPUL */
-<<<<<<< HEAD
-inline void sh34_base_device::LDSFPUL(const UINT16 opcode)
-=======
 inline void sh34_base_device::LDSFPUL(const uint16_t opcode)
->>>>>>> upstream/master
 {
 	m_fpul = m_r[Rn];
 }
 
 /*  LDS     Rm,FPSCR */
-<<<<<<< HEAD
-inline void sh34_base_device::LDSFPSCR(const UINT16 opcode)
-{
-	UINT32 s;
-=======
 inline void sh34_base_device::LDSFPSCR(const uint16_t opcode)
 {
 	uint32_t s;
->>>>>>> upstream/master
 
 	s = m_fpscr;
 	m_fpscr = m_r[Rn] & 0x003FFFFF;
@@ -3724,25 +2453,15 @@ inline void sh34_base_device::LDSFPSCR(const uint16_t opcode)
 }
 
 /*  LDC     Rm,DBR */
-<<<<<<< HEAD
-inline void sh34_base_device::LDCDBR(const UINT16 opcode)
-=======
 inline void sh34_base_device::LDCDBR(const uint16_t opcode)
->>>>>>> upstream/master
 {
 	m_dbr = m_r[Rn];
 }
 
 /*  SHAD    Rm,Rn */
-<<<<<<< HEAD
-inline void sh34_base_device::SHAD(const UINT16 opcode)
-{
-	UINT32 m = Rm; UINT32 n = Rn;
-=======
 inline void sh34_base_device::SHAD(const uint16_t opcode)
 {
 	uint32_t m = Rm; uint32_t n = Rn;
->>>>>>> upstream/master
 
 	if ((m_r[m] & 0x80000000) == 0)
 		m_r[n] = m_r[n] << (m_r[m] & 0x1F);
@@ -3752,15 +2471,6 @@ inline void sh34_base_device::SHAD(const uint16_t opcode)
 		else
 			m_r[n] = 0xFFFFFFFF;
 	} else
-<<<<<<< HEAD
-		m_r[n]=(INT32)m_r[n] >> ((~m_r[m] & 0x1F)+1);
-}
-
-/*  SHLD    Rm,Rn */
-inline void sh34_base_device::SHLD(const UINT16 opcode)
-{
-	UINT32 m = Rm; UINT32 n = Rn;
-=======
 		m_r[n]=(int32_t)m_r[n] >> ((~m_r[m] & 0x1F)+1);
 }
 
@@ -3768,7 +2478,6 @@ inline void sh34_base_device::SHLD(const UINT16 opcode)
 inline void sh34_base_device::SHLD(const uint16_t opcode)
 {
 	uint32_t m = Rm; uint32_t n = Rn;
->>>>>>> upstream/master
 
 	if ((m_r[m] & 0x80000000) == 0)
 		m_r[n] = m_r[n] << (m_r[m] & 0x1F);
@@ -3779,51 +2488,30 @@ inline void sh34_base_device::SHLD(const uint16_t opcode)
 }
 
 /*  LDCRBANK   Rn,Rm_BANK */
-<<<<<<< HEAD
-inline void sh34_base_device::LDCRBANK(const UINT16 opcode)
-{
-	UINT32 m = Rm;
-=======
 inline void sh34_base_device::LDCRBANK(const uint16_t opcode)
 {
 	uint32_t m = Rm;
->>>>>>> upstream/master
 
 	m_rbnk[m_sr&sRB ? 0 : 1][m & 7] = m_r[Rn];
 }
 
 /*  LDC     Rm,SSR */
-<<<<<<< HEAD
-inline void sh34_base_device::LDCSSR(const UINT16 opcode)
-=======
 inline void sh34_base_device::LDCSSR(const uint16_t opcode)
->>>>>>> upstream/master
 {
 	m_ssr = m_r[Rn];
 }
 
 /*  LDC     Rm,SPC */
-<<<<<<< HEAD
-inline void sh34_base_device::LDCSPC(const UINT16 opcode)
-=======
 inline void sh34_base_device::LDCSPC(const uint16_t opcode)
->>>>>>> upstream/master
 {
 	m_spc = m_r[Rn];
 }
 
 /*  PREF     @Rn */
-<<<<<<< HEAD
-inline void sh34_base_device::PREFM(const UINT16 opcode)
-{
-	int a;
-	UINT32 addr,dest,sq;
-=======
 inline void sh34_base_device::PREFM(const uint16_t opcode)
 {
 	int a;
 	uint32_t addr,dest,sq;
->>>>>>> upstream/master
 
 	addr = m_r[Rn]; // address
 	if ((addr >= 0xE0000000) && (addr <= 0xE3FFFFFF))
@@ -3878,63 +2566,12 @@ inline void sh34_base_device::PREFM(const uint16_t opcode)
  *  OPCODE DISPATCHERS
  *****************************************************************************/
 
-<<<<<<< HEAD
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-=======
 // TODO: current SZ=1(64bit) FMOVs correct for SH4 in LE mode only
->>>>>>> upstream/master
 
 /*  FMOV.S  @Rm+,FRn PR=0 SZ=0 1111nnnnmmmm1001 */
 /*  FMOV    @Rm+,DRn PR=0 SZ=1 1111nnn0mmmm1001 */
 /*  FMOV    @Rm+,XDn PR=0 SZ=1 1111nnn1mmmm1001 */
 /*  FMOV    @Rm+,XDn PR=1      1111nnn1mmmm1001 */
-<<<<<<< HEAD
-inline void sh34_base_device::FMOVMRIFR(const UINT16 opcode)
-{
-	UINT32 m = Rm; UINT32 n = Rn;
-
-	if (m_fpu_pr) { /* PR = 1 */
-		n = n & 14;
-		m_ea = m_r[m];
-		m_r[m] += 8;
-		m_xf[n+NATIVE_ENDIAN_VALUE_LE_BE(1,0)] = RL(m_ea );
-		m_xf[n+NATIVE_ENDIAN_VALUE_LE_BE(0,1)] = RL(m_ea+4 );
-	} else {              /* PR = 0 */
-		if (m_fpu_sz) { /* SZ = 1 */
-			if (n & 1) {
-				n = n & 14;
-				m_ea = m_r[m];
-				m_xf[n] = RL(m_ea );
-				m_r[m] += 4;
-				m_xf[n+1] = RL(m_ea+4 );
-				m_r[m] += 4;
-			} else {
-				m_ea = m_r[m];
-				m_fr[n] = RL(m_ea );
-				m_r[m] += 4;
-				m_fr[n+1] = RL(m_ea+4 );
-				m_r[m] += 4;
-			}
-		} else {              /* SZ = 0 */
-			m_ea = m_r[m];
-			m_fr[n] = RL(m_ea );
-			m_r[m] += 4;
-		}
-=======
 inline void sh34_base_device::FMOVMRIFR(const uint16_t opcode)
 {
 	uint32_t m = Rm; uint32_t n = Rn;
@@ -3967,7 +2604,6 @@ inline void sh34_base_device::FMOVMRIFR(const uint16_t opcode)
 #endif
 		m_fr[n] = RL(m_ea );
 		m_r[m] += 4;
->>>>>>> upstream/master
 	}
 }
 
@@ -3975,33 +2611,6 @@ inline void sh34_base_device::FMOVMRIFR(const uint16_t opcode)
 /*  FMOV    DRm,@Rn PR=0 SZ=1 1111nnnnmmm01010 */
 /*  FMOV    XDm,@Rn PR=0 SZ=1 1111nnnnmmm11010 */
 /*  FMOV    XDm,@Rn PR=1      1111nnnnmmm11010 */
-<<<<<<< HEAD
-inline void sh34_base_device::FMOVFRMR(const UINT16 opcode)
-{
-	UINT32 m = Rm; UINT32 n = Rn;
-
-	if (m_fpu_pr) { /* PR = 1 */
-		m= m & 14;
-		m_ea = m_r[n];
-		WL(m_ea,m_xf[m+NATIVE_ENDIAN_VALUE_LE_BE(1,0)] );
-		WL(m_ea+4,m_xf[m+NATIVE_ENDIAN_VALUE_LE_BE(0,1)] );
-	} else {              /* PR = 0 */
-		if (m_fpu_sz) { /* SZ = 1 */
-			if (m & 1) {
-				m= m & 14;
-				m_ea = m_r[n];
-				WL(m_ea,m_xf[m] );
-				WL(m_ea+4,m_xf[m+1] );
-			} else {
-				m_ea = m_r[n];
-				WL(m_ea,m_fr[m] );
-				WL(m_ea+4,m_fr[m+1] );
-			}
-		} else {              /* SZ = 0 */
-			m_ea = m_r[n];
-			WL(m_ea,m_fr[m] );
-		}
-=======
 inline void sh34_base_device::FMOVFRMR(const uint16_t opcode)
 {
 	uint32_t m = Rm; uint32_t n = Rn;
@@ -4029,7 +2638,6 @@ inline void sh34_base_device::FMOVFRMR(const uint16_t opcode)
 		m ^= m_fpu_pr;
 #endif
 		WL(m_ea,m_fr[m] );
->>>>>>> upstream/master
 	}
 }
 
@@ -4037,37 +2645,6 @@ inline void sh34_base_device::FMOVFRMR(const uint16_t opcode)
 /*  FMOV    DRm,@-Rn PR=0 SZ=1 1111nnnnmmm01011 */
 /*  FMOV    XDm,@-Rn PR=0 SZ=1 1111nnnnmmm11011 */
 /*  FMOV    XDm,@-Rn PR=1      1111nnnnmmm11011 */
-<<<<<<< HEAD
-inline void sh34_base_device::FMOVFRMDR(const UINT16 opcode)
-{
-	UINT32 m = Rm; UINT32 n = Rn;
-
-	if (m_fpu_pr) { /* PR = 1 */
-		m= m & 14;
-		m_r[n] -= 8;
-		m_ea = m_r[n];
-		WL(m_ea,m_xf[m+NATIVE_ENDIAN_VALUE_LE_BE(1,0)] );
-		WL(m_ea+4,m_xf[m+NATIVE_ENDIAN_VALUE_LE_BE(0,1)] );
-	} else {              /* PR = 0 */
-		if (m_fpu_sz) { /* SZ = 1 */
-			if (m & 1) {
-				m= m & 14;
-				m_r[n] -= 8;
-				m_ea = m_r[n];
-				WL(m_ea,m_xf[m] );
-				WL(m_ea+4,m_xf[m+1] );
-			} else {
-				m_r[n] -= 8;
-				m_ea = m_r[n];
-				WL(m_ea,m_fr[m] );
-				WL(m_ea+4,m_fr[m+1] );
-			}
-		} else {              /* SZ = 0 */
-			m_r[n] -= 4;
-			m_ea = m_r[n];
-			WL(m_ea,m_fr[m] );
-		}
-=======
 inline void sh34_base_device::FMOVFRMDR(const uint16_t opcode)
 {
 	uint32_t m = Rm; uint32_t n = Rn;
@@ -4098,7 +2675,6 @@ inline void sh34_base_device::FMOVFRMDR(const uint16_t opcode)
 		m ^= m_fpu_pr;
 #endif
 		WL(m_ea,m_fr[m] );
->>>>>>> upstream/master
 	}
 }
 
@@ -4106,33 +2682,6 @@ inline void sh34_base_device::FMOVFRMDR(const uint16_t opcode)
 /*  FMOV    DRm,@(R0,Rn) PR=0 SZ=1 1111nnnnmmm00111 */
 /*  FMOV    XDm,@(R0,Rn) PR=0 SZ=1 1111nnnnmmm10111 */
 /*  FMOV    XDm,@(R0,Rn) PR=1      1111nnnnmmm10111 */
-<<<<<<< HEAD
-inline void sh34_base_device::FMOVFRS0(const UINT16 opcode)
-{
-	UINT32 m = Rm; UINT32 n = Rn;
-
-	if (m_fpu_pr) { /* PR = 1 */
-		m= m & 14;
-		m_ea = m_r[0] + m_r[n];
-		WL(m_ea,m_xf[m+NATIVE_ENDIAN_VALUE_LE_BE(1,0)] );
-		WL(m_ea+4,m_xf[m+NATIVE_ENDIAN_VALUE_LE_BE(0,1)] );
-	} else {              /* PR = 0 */
-		if (m_fpu_sz) { /* SZ = 1 */
-			if (m & 1) {
-				m= m & 14;
-				m_ea = m_r[0] + m_r[n];
-				WL(m_ea,m_xf[m] );
-				WL(m_ea+4,m_xf[m+1] );
-			} else {
-				m_ea = m_r[0] + m_r[n];
-				WL(m_ea,m_fr[m] );
-				WL(m_ea+4,m_fr[m+1] );
-			}
-		} else {              /* SZ = 0 */
-			m_ea = m_r[0] + m_r[n];
-			WL(m_ea,m_fr[m] );
-		}
-=======
 inline void sh34_base_device::FMOVFRS0(const uint16_t opcode)
 {
 	uint32_t m = Rm; uint32_t n = Rn;
@@ -4160,7 +2709,6 @@ inline void sh34_base_device::FMOVFRS0(const uint16_t opcode)
 		m ^= m_fpu_pr;
 #endif
 		WL(m_ea,m_fr[m] );
->>>>>>> upstream/master
 	}
 }
 
@@ -4168,33 +2716,6 @@ inline void sh34_base_device::FMOVFRS0(const uint16_t opcode)
 /*  FMOV    @(R0,Rm),DRn PR=0 SZ=1 1111nnn0mmmm0110 */
 /*  FMOV    @(R0,Rm),XDn PR=0 SZ=1 1111nnn1mmmm0110 */
 /*  FMOV    @(R0,Rm),XDn PR=1      1111nnn1mmmm0110 */
-<<<<<<< HEAD
-inline void sh34_base_device::FMOVS0FR(const UINT16 opcode)
-{
-	UINT32 m = Rm; UINT32 n = Rn;
-
-	if (m_fpu_pr) { /* PR = 1 */
-		n= n & 14;
-		m_ea = m_r[0] + m_r[m];
-		m_xf[n+NATIVE_ENDIAN_VALUE_LE_BE(1,0)] = RL(m_ea );
-		m_xf[n+NATIVE_ENDIAN_VALUE_LE_BE(0,1)] = RL(m_ea+4 );
-	} else {              /* PR = 0 */
-		if (m_fpu_sz) { /* SZ = 1 */
-			if (n & 1) {
-				n= n & 14;
-				m_ea = m_r[0] + m_r[m];
-				m_xf[n] = RL(m_ea );
-				m_xf[n+1] = RL(m_ea+4 );
-			} else {
-				m_ea = m_r[0] + m_r[m];
-				m_fr[n] = RL(m_ea );
-				m_fr[n+1] = RL(m_ea+4 );
-			}
-		} else {              /* SZ = 0 */
-			m_ea = m_r[0] + m_r[m];
-			m_fr[n] = RL(m_ea );
-		}
-=======
 inline void sh34_base_device::FMOVS0FR(const uint16_t opcode)
 {
 	uint32_t m = Rm; uint32_t n = Rn;
@@ -4222,7 +2743,6 @@ inline void sh34_base_device::FMOVS0FR(const uint16_t opcode)
 		n ^= m_fpu_pr;
 #endif
 		m_fr[n] = RL(m_ea );
->>>>>>> upstream/master
 	}
 }
 
@@ -4231,41 +2751,6 @@ inline void sh34_base_device::FMOVS0FR(const uint16_t opcode)
 /*  FMOV    @Rm,XDn PR=0 SZ=1 1111nnn1mmmm1000 */
 /*  FMOV    @Rm,XDn PR=1      1111nnn1mmmm1000 */
 /*  FMOV    @Rm,DRn PR=1      1111nnn0mmmm1000 */
-<<<<<<< HEAD
-inline void sh34_base_device::FMOVMRFR(const UINT16 opcode)
-{
-	UINT32 m = Rm; UINT32 n = Rn;
-
-	if (m_fpu_pr) { /* PR = 1 */
-		if (n & 1) {
-			n= n & 14;
-			m_ea = m_r[m];
-			m_xf[n+NATIVE_ENDIAN_VALUE_LE_BE(1,0)] = RL(m_ea );
-			m_xf[n+NATIVE_ENDIAN_VALUE_LE_BE(0,1)] = RL(m_ea+4 );
-		} else {
-			n= n & 14;
-			m_ea = m_r[m];
-			m_fr[n+NATIVE_ENDIAN_VALUE_LE_BE(1,0)] = RL(m_ea );
-			m_fr[n+NATIVE_ENDIAN_VALUE_LE_BE(0,1)] = RL(m_ea+4 );
-		}
-	} else {              /* PR = 0 */
-		if (m_fpu_sz) { /* SZ = 1 */
-			if (n & 1) {
-				n= n & 14;
-				m_ea = m_r[m];
-				m_xf[n] = RL(m_ea );
-				m_xf[n+1] = RL(m_ea+4 );
-			} else {
-				n= n & 14;
-				m_ea = m_r[m];
-				m_fr[n] = RL(m_ea );
-				m_fr[n+1] = RL(m_ea+4 );
-			}
-		} else {              /* SZ = 0 */
-			m_ea = m_r[m];
-			m_fr[n] = RL(m_ea );
-		}
-=======
 inline void sh34_base_device::FMOVMRFR(const uint16_t opcode)
 {
 	uint32_t m = Rm; uint32_t n = Rn;
@@ -4293,7 +2778,6 @@ inline void sh34_base_device::FMOVMRFR(const uint16_t opcode)
 		n ^= m_fpu_pr;
 #endif
 		m_fr[n] = RL(m_ea );
->>>>>>> upstream/master
 	}
 }
 
@@ -4302,15 +2786,6 @@ inline void sh34_base_device::FMOVMRFR(const uint16_t opcode)
 /*  FMOV    XDm,DRn PR=1      XDm -> DRn 1111nnn0mmm11100 */
 /*  FMOV    DRm,XDn PR=1      DRm -> XDn 1111nnn1mmm01100 */
 /*  FMOV    XDm,XDn PR=1      XDm -> XDn 1111nnn1mmm11100 */
-<<<<<<< HEAD
-inline void sh34_base_device::FMOVFR(const UINT16 opcode)
-{
-	UINT32 m = Rm; UINT32 n = Rn;
-
-	if ((m_fpu_sz == 0) && (m_fpu_pr == 0)) /* SZ = 0 */
-		m_fr[n] = m_fr[m];
-	else { /* SZ = 1 or PR = 1 */
-=======
 inline void sh34_base_device::FMOVFR(const uint16_t opcode)
 {
 	uint32_t m = Rm; uint32_t n = Rn;
@@ -4323,7 +2798,6 @@ inline void sh34_base_device::FMOVFR(const uint16_t opcode)
 		m_fr[n] = m_fr[m];
 	}
 	else { /* SZ = 1 */
->>>>>>> upstream/master
 		if (m & 1) {
 			if (n & 1) {
 				m_xf[n & 14] = m_xf[m & 14];
@@ -4345,29 +2819,6 @@ inline void sh34_base_device::FMOVFR(const uint16_t opcode)
 }
 
 /*  FLDI1  FRn 1111nnnn10011101 */
-<<<<<<< HEAD
-inline void sh34_base_device::FLDI1(const UINT16 opcode)
-{
-	m_fr[Rn] = 0x3F800000;
-}
-
-/*  FLDI0  FRn 1111nnnn10001101 */
-inline void sh34_base_device::FLDI0(const UINT16 opcode)
-{
-	m_fr[Rn] = 0;
-}
-
-/*  FLDS FRm,FPUL 1111mmmm00011101 */
-inline void sh34_base_device:: FLDS(const UINT16 opcode)
-{
-	m_fpul = m_fr[Rn];
-}
-
-/*  FSTS FPUL,FRn 1111nnnn00001101 */
-inline void sh34_base_device:: FSTS(const UINT16 opcode)
-{
-	m_fr[Rn] = m_fpul;
-=======
 inline void sh34_base_device::FLDI1(const uint16_t opcode)
 {
 #ifdef LSB_FIRST
@@ -4405,7 +2856,6 @@ inline void sh34_base_device:: FSTS(const uint16_t opcode)
 #else
 	m_fr[Rn] = m_fpul;
 #endif
->>>>>>> upstream/master
 }
 
 /* FRCHG 1111101111111101 */
@@ -4424,75 +2874,44 @@ void sh34_base_device::FSCHG()
 
 /* FTRC FRm,FPUL PR=0 1111mmmm00111101 */
 /* FTRC DRm,FPUL PR=1 1111mmm000111101 */
-<<<<<<< HEAD
-inline void sh34_base_device::FTRC(const UINT16 opcode)
-{
-	UINT32 n = Rn;
-=======
 inline void sh34_base_device::FTRC(const uint16_t opcode)
 {
 	uint32_t n = Rn;
->>>>>>> upstream/master
 
 	if (m_fpu_pr) { /* PR = 1 */
 		if(n & 1)
 			fatalerror("SH-4: FTRC opcode used with n %d",n);
 
 		n = n & 14;
-<<<<<<< HEAD
-		*((INT32 *)&m_fpul) = (INT32)FP_RFD(n);
-	} else {              /* PR = 0 */
-		/* read m_fr[n] as float -> truncate -> fpul(32) */
-		*((INT32 *)&m_fpul) = (INT32)FP_RFS(n);
-=======
 		*((int32_t *)&m_fpul) = (int32_t)FP_RFD(n);
 	} else {              /* PR = 0 */
 		/* read m_fr[n] as float -> truncate -> fpul(32) */
 		*((int32_t *)&m_fpul) = (int32_t)FP_RFS(n);
->>>>>>> upstream/master
 	}
 }
 
 /* FLOAT FPUL,FRn PR=0 1111nnnn00101101 */
 /* FLOAT FPUL,DRn PR=1 1111nnn000101101 */
-<<<<<<< HEAD
-inline void sh34_base_device::FLOAT(const UINT16 opcode)
-{
-	UINT32 n = Rn;
-=======
 inline void sh34_base_device::FLOAT(const uint16_t opcode)
 {
 	uint32_t n = Rn;
->>>>>>> upstream/master
 
 	if (m_fpu_pr) { /* PR = 1 */
 		if(n & 1)
 			fatalerror("SH-4: FLOAT opcode used with n %d",n);
 
 		n = n & 14;
-<<<<<<< HEAD
-		FP_RFD(n) = (double)*((INT32 *)&m_fpul);
-	} else {              /* PR = 0 */
-		FP_RFS(n) = (float)*((INT32 *)&m_fpul);
-=======
 		FP_RFD(n) = (double)*((int32_t *)&m_fpul);
 	} else {              /* PR = 0 */
 		FP_RFS(n) = (float)*((int32_t *)&m_fpul);
->>>>>>> upstream/master
 	}
 }
 
 /* FNEG FRn PR=0 1111nnnn01001101 */
 /* FNEG DRn PR=1 1111nnn001001101 */
-<<<<<<< HEAD
-inline void sh34_base_device::FNEG(const UINT16 opcode)
-{
-	UINT32 n = Rn;
-=======
 inline void sh34_base_device::FNEG(const uint16_t opcode)
 {
 	uint32_t n = Rn;
->>>>>>> upstream/master
 
 	if (m_fpu_pr) { /* PR = 1 */
 		FP_RFD(n) = -FP_RFD(n);
@@ -4503,15 +2922,9 @@ inline void sh34_base_device::FNEG(const uint16_t opcode)
 
 /* FABS FRn PR=0 1111nnnn01011101 */
 /* FABS DRn PR=1 1111nnn001011101 */
-<<<<<<< HEAD
-inline void sh34_base_device::FABS(const UINT16 opcode)
-{
-	UINT32 n = Rn;
-=======
 inline void sh34_base_device::FABS(const uint16_t opcode)
 {
 	uint32_t n = Rn;
->>>>>>> upstream/master
 
 	if (m_fpu_pr) { /* PR = 1 */
 #ifdef LSB_FIRST
@@ -4528,15 +2941,9 @@ inline void sh34_base_device::FABS(const uint16_t opcode)
 
 /* FCMP/EQ FRm,FRn PR=0 1111nnnnmmmm0100 */
 /* FCMP/EQ DRm,DRn PR=1 1111nnn0mmm00100 */
-<<<<<<< HEAD
-inline void sh34_base_device::FCMP_EQ(const UINT16 opcode)
-{
-	UINT32 m = Rm; UINT32 n = Rn;
-=======
 inline void sh34_base_device::FCMP_EQ(const uint16_t opcode)
 {
 	uint32_t m = Rm; uint32_t n = Rn;
->>>>>>> upstream/master
 
 	if (m_fpu_pr) { /* PR = 1 */
 		n = n & 14;
@@ -4555,15 +2962,9 @@ inline void sh34_base_device::FCMP_EQ(const uint16_t opcode)
 
 /* FCMP/GT FRm,FRn PR=0 1111nnnnmmmm0101 */
 /* FCMP/GT DRm,DRn PR=1 1111nnn0mmm00101 */
-<<<<<<< HEAD
-inline void sh34_base_device::FCMP_GT(const UINT16 opcode)
-{
-	UINT32 m = Rm; UINT32 n = Rn;
-=======
 inline void sh34_base_device::FCMP_GT(const uint16_t opcode)
 {
 	uint32_t m = Rm; uint32_t n = Rn;
->>>>>>> upstream/master
 
 	if (m_fpu_pr) { /* PR = 1 */
 		n = n & 14;
@@ -4581,15 +2982,9 @@ inline void sh34_base_device::FCMP_GT(const uint16_t opcode)
 }
 
 /* FCNVDS DRm,FPUL PR=1 1111mmm010111101 */
-<<<<<<< HEAD
-inline void sh34_base_device::FCNVDS(const UINT16 opcode)
-{
-	UINT32 n = Rn;
-=======
 inline void sh34_base_device::FCNVDS(const uint16_t opcode)
 {
 	uint32_t n = Rn;
->>>>>>> upstream/master
 
 	if (m_fpu_pr) { /* PR = 1 */
 		n = n & 14;
@@ -4600,15 +2995,9 @@ inline void sh34_base_device::FCNVDS(const uint16_t opcode)
 }
 
 /* FCNVSD FPUL, DRn PR=1 1111nnn010101101 */
-<<<<<<< HEAD
-inline void sh34_base_device::FCNVSD(const UINT16 opcode)
-{
-	UINT32 n = Rn;
-=======
 inline void sh34_base_device::FCNVSD(const uint16_t opcode)
 {
 	uint32_t n = Rn;
->>>>>>> upstream/master
 
 	if (m_fpu_pr) { /* PR = 1 */
 		n = n & 14;
@@ -4618,15 +3007,9 @@ inline void sh34_base_device::FCNVSD(const uint16_t opcode)
 
 /* FADD FRm,FRn PR=0 1111nnnnmmmm0000 */
 /* FADD DRm,DRn PR=1 1111nnn0mmm00000 */
-<<<<<<< HEAD
-inline void sh34_base_device::FADD(const UINT16 opcode)
-{
-	UINT32 m = Rm; UINT32 n = Rn;
-=======
 inline void sh34_base_device::FADD(const uint16_t opcode)
 {
 	uint32_t m = Rm; uint32_t n = Rn;
->>>>>>> upstream/master
 
 	if (m_fpu_pr) { /* PR = 1 */
 		n = n & 14;
@@ -4639,15 +3022,9 @@ inline void sh34_base_device::FADD(const uint16_t opcode)
 
 /* FSUB FRm,FRn PR=0 1111nnnnmmmm0001 */
 /* FSUB DRm,DRn PR=1 1111nnn0mmm00001 */
-<<<<<<< HEAD
-inline void sh34_base_device::FSUB(const UINT16 opcode)
-{
-	UINT32 m = Rm; UINT32 n = Rn;
-=======
 inline void sh34_base_device::FSUB(const uint16_t opcode)
 {
 	uint32_t m = Rm; uint32_t n = Rn;
->>>>>>> upstream/master
 
 	if (m_fpu_pr) { /* PR = 1 */
 		n = n & 14;
@@ -4661,15 +3038,9 @@ inline void sh34_base_device::FSUB(const uint16_t opcode)
 
 /* FMUL FRm,FRn PR=0 1111nnnnmmmm0010 */
 /* FMUL DRm,DRn PR=1 1111nnn0mmm00010 */
-<<<<<<< HEAD
-inline void sh34_base_device::FMUL(const UINT16 opcode)
-{
-	UINT32 m = Rm; UINT32 n = Rn;
-=======
 inline void sh34_base_device::FMUL(const uint16_t opcode)
 {
 	uint32_t m = Rm; uint32_t n = Rn;
->>>>>>> upstream/master
 
 	if (m_fpu_pr) { /* PR = 1 */
 		n = n & 14;
@@ -4682,15 +3053,9 @@ inline void sh34_base_device::FMUL(const uint16_t opcode)
 
 /* FDIV FRm,FRn PR=0 1111nnnnmmmm0011 */
 /* FDIV DRm,DRn PR=1 1111nnn0mmm00011 */
-<<<<<<< HEAD
-inline void sh34_base_device::FDIV(const UINT16 opcode)
-{
-	UINT32 m = Rm; UINT32 n = Rn;
-=======
 inline void sh34_base_device::FDIV(const uint16_t opcode)
 {
 	uint32_t m = Rm; uint32_t n = Rn;
->>>>>>> upstream/master
 
 	if (m_fpu_pr) { /* PR = 1 */
 		n = n & 14;
@@ -4706,15 +3071,9 @@ inline void sh34_base_device::FDIV(const uint16_t opcode)
 }
 
 /* FMAC FR0,FRm,FRn PR=0 1111nnnnmmmm1110 */
-<<<<<<< HEAD
-inline void sh34_base_device::FMAC(const UINT16 opcode)
-{
-	UINT32 m = Rm; UINT32 n = Rn;
-=======
 inline void sh34_base_device::FMAC(const uint16_t opcode)
 {
 	uint32_t m = Rm; uint32_t n = Rn;
->>>>>>> upstream/master
 
 	if (m_fpu_pr == 0) { /* PR = 0 */
 		FP_RFS(n) = (FP_RFS(0) * FP_RFS(m)) + FP_RFS(n);
@@ -4723,15 +3082,9 @@ inline void sh34_base_device::FMAC(const uint16_t opcode)
 
 /* FSQRT FRn PR=0 1111nnnn01101101 */
 /* FSQRT DRn PR=1 1111nnnn01101101 */
-<<<<<<< HEAD
-inline void sh34_base_device::FSQRT(const UINT16 opcode)
-{
-	UINT32 n = Rn;
-=======
 inline void sh34_base_device::FSQRT(const uint16_t opcode)
 {
 	uint32_t n = Rn;
->>>>>>> upstream/master
 
 	if (m_fpu_pr) { /* PR = 1 */
 		n = n & 14;
@@ -4746,15 +3099,9 @@ inline void sh34_base_device::FSQRT(const uint16_t opcode)
 }
 
 /* FSRRA FRn PR=0 1111nnnn01111101 */
-<<<<<<< HEAD
-inline void sh34_base_device::FSRRA(const UINT16 opcode)
-{
-	UINT32 n = Rn;
-=======
 inline void sh34_base_device::FSRRA(const uint16_t opcode)
 {
 	uint32_t n = Rn;
->>>>>>> upstream/master
 
 	if (FP_RFS(n) < 0)
 		return;
@@ -4762,15 +3109,9 @@ inline void sh34_base_device::FSRRA(const uint16_t opcode)
 }
 
 /*  FSSCA FPUL,FRn PR=0 1111nnn011111101 */
-<<<<<<< HEAD
-void sh34_base_device::FSSCA(const UINT16 opcode)
-{
-	UINT32 n = Rn;
-=======
 void sh34_base_device::FSSCA(const uint16_t opcode)
 {
 	uint32_t n = Rn;
->>>>>>> upstream/master
 
 	float angle;
 
@@ -4780,19 +3121,11 @@ void sh34_base_device::FSSCA(const uint16_t opcode)
 }
 
 /* FIPR FVm,FVn PR=0 1111nnmm11101101 */
-<<<<<<< HEAD
-inline void sh34_base_device::FIPR(const UINT16 opcode)
-{
-	UINT32 n = Rn;
-
-UINT32 m;
-=======
 inline void sh34_base_device::FIPR(const uint16_t opcode)
 {
 	uint32_t n = Rn;
 
 uint32_t m;
->>>>>>> upstream/master
 float ml[4];
 int a;
 
@@ -4804,15 +3137,9 @@ int a;
 }
 
 /* FTRV XMTRX,FVn PR=0 1111nn0111111101 */
-<<<<<<< HEAD
-void sh34_base_device::FTRV(const UINT16 opcode)
-{
-	UINT32 n = Rn;
-=======
 void sh34_base_device::FTRV(const uint16_t opcode)
 {
 	uint32_t n = Rn;
->>>>>>> upstream/master
 
 int i,j;
 float sum[4];
@@ -4827,11 +3154,7 @@ float sum[4];
 		FP_RFS(n + i) = sum[i];
 }
 
-<<<<<<< HEAD
-inline void sh34_base_device::op1111_0xf13(const UINT16 opcode)
-=======
 inline void sh34_base_device::op1111_0xf13(const uint16_t opcode)
->>>>>>> upstream/master
 {
 	if (opcode & 0x100) {
 			if (opcode & 0x200) {
@@ -4844,11 +3167,7 @@ inline void sh34_base_device::op1111_0xf13(const uint16_t opcode)
 						FRCHG();
 						break;
 					default:
-<<<<<<< HEAD
-						debugger_break(machine());
-=======
 						machine().debug_break();
->>>>>>> upstream/master
 						break;
 				}
 			} else {
@@ -4859,15 +3178,6 @@ inline void sh34_base_device::op1111_0xf13(const uint16_t opcode)
 		}
 }
 
-<<<<<<< HEAD
-void sh34_base_device::dbreak(const UINT16 opcode)
-{
-	debugger_break(machine());
-}
-
-
-inline void sh34_base_device::op1111_0x13(UINT16 opcode)
-=======
 void sh34_base_device::dbreak(const uint16_t opcode)
 {
 	machine().debug_break();
@@ -4875,7 +3185,6 @@ void sh34_base_device::dbreak(const uint16_t opcode)
 
 
 inline void sh34_base_device::op1111_0x13(uint16_t opcode)
->>>>>>> upstream/master
 {
 	switch((opcode >> 4) & 0x0f)
 	{
@@ -4905,10 +3214,6 @@ inline void sh34_base_device::op1111_0x13(uint16_t opcode)
 
 void sh34_base_device::device_reset()
 {
-<<<<<<< HEAD
-	m_ppc = 0;
-=======
->>>>>>> upstream/master
 	m_spc = 0;
 	m_pr = 0;
 	m_sr = 0;
@@ -4986,10 +3291,7 @@ void sh34_base_device::device_reset()
 	m_rtc_timer->adjust(attotime::from_hz(128));
 
 	m_pc = 0xa0000000;
-<<<<<<< HEAD
-=======
 	m_ppc = m_pc & AM;
->>>>>>> upstream/master
 	m_r[15] = RL(4);
 	m_sr = 0x700000f0;
 	m_fpscr = 0x00040001;
@@ -5034,11 +3336,7 @@ void sh4_base_device::device_reset()
 	m_SH4_TCNT2 = 0xffffffff;
 }
 
-<<<<<<< HEAD
-inline void sh34_base_device::execute_one_0000(const UINT16 opcode)
-=======
 inline void sh34_base_device::execute_one_0000(const uint16_t opcode)
->>>>>>> upstream/master
 {
 	switch(opcode & 0xff)
 	{
@@ -5182,11 +3480,7 @@ inline void sh34_base_device::execute_one_0000(const uint16_t opcode)
 		case 0x08:  CLRT(opcode); break;
 		case 0x18:  SETT(opcode); break;
 		case 0x28:  CLRMAC(opcode); break;
-<<<<<<< HEAD
-		case 0x38:  TODO(opcode); break;
-=======
 		case 0x38:  LDTLB(opcode); break;
->>>>>>> upstream/master
 		case 0x48:  CLRS(opcode); break;
 		case 0x58:  SETS(opcode); break;
 		case 0x68:  NOP(opcode); break;
@@ -5194,11 +3488,7 @@ inline void sh34_base_device::execute_one_0000(const uint16_t opcode)
 		case 0x88:  CLRT(opcode); break;
 		case 0x98:  SETT(opcode); break;
 		case 0xa8:  CLRMAC(opcode); break;
-<<<<<<< HEAD
-		case 0xb8:  TODO(opcode); break;
-=======
 		case 0xb8:  LDTLB(opcode); break;
->>>>>>> upstream/master
 		case 0xc8:  CLRS(opcode); break;
 		case 0xd8:  SETS(opcode); break;
 		case 0xe8:  NOP(opcode); break;
@@ -5325,11 +3615,7 @@ inline void sh34_base_device::execute_one_0000(const uint16_t opcode)
 	}
 }
 
-<<<<<<< HEAD
-inline void sh34_base_device::execute_one_4000(const UINT16 opcode)
-=======
 inline void sh34_base_device::execute_one_4000(const uint16_t opcode)
->>>>>>> upstream/master
 {
 	switch(opcode & 0xff)
 	{
@@ -5609,11 +3895,7 @@ inline void sh34_base_device::execute_one_4000(const uint16_t opcode)
 }
 
 
-<<<<<<< HEAD
-inline void sh34_base_device::execute_one(const UINT16 opcode)
-=======
 inline void sh34_base_device::execute_one(const uint16_t opcode)
->>>>>>> upstream/master
 {
 	switch(opcode & 0xf000)
 	{
@@ -5803,39 +4085,6 @@ void sh34_base_device::execute_run()
 
 	do
 	{
-<<<<<<< HEAD
-		if (m_delay)
-		{
-			const UINT16 opcode = m_direct->read_word((UINT32)(m_delay & AM), WORD2_XOR_LE(0));
-
-			debugger_instruction_hook(this, (m_pc-2) & AM);
-
-			m_delay = 0;
-			m_ppc = m_pc;
-
-			execute_one(opcode);
-
-			if (m_test_irq && !m_delay)
-			{
-				sh4_check_pending_irq("mame_sh4_execute");
-			}
-		}
-		else
-		{
-			const UINT16 opcode = m_direct->read_word((UINT32)(m_pc & AM), WORD2_XOR_LE(0));
-
-			debugger_instruction_hook(this, m_pc & AM);
-
-			m_pc += 2;
-			m_ppc = m_pc;
-
-			execute_one(opcode);
-
-			if (m_test_irq && !m_delay)
-			{
-				sh4_check_pending_irq("mame_sh4_execute");
-			}
-=======
 		m_ppc = m_pc & AM;
 		debugger_instruction_hook(this, m_pc & AM);
 
@@ -5857,7 +4106,6 @@ void sh34_base_device::execute_run()
 		if (m_test_irq && !m_delay)
 		{
 			sh4_check_pending_irq("mame_sh4_execute");
->>>>>>> upstream/master
 		}
 
 		m_sh4_icount--;
@@ -5874,42 +4122,6 @@ void sh3be_device::execute_run()
 
 	do
 	{
-<<<<<<< HEAD
-		if (m_delay)
-		{
-			const UINT16 opcode = m_direct->read_word((UINT32)(m_delay & AM), WORD_XOR_LE(6));
-
-			debugger_instruction_hook(this, m_delay & AM);
-
-			m_delay = 0;
-			m_ppc = m_pc;
-
-			execute_one(opcode);
-
-
-			if (m_test_irq && !m_delay)
-			{
-				sh4_check_pending_irq("mame_sh4_execute");
-			}
-
-
-		}
-		else
-		{
-			const UINT16 opcode = m_direct->read_word((UINT32)(m_pc & AM), WORD_XOR_LE(6));
-
-			debugger_instruction_hook(this, m_pc & AM);
-
-			m_pc += 2;
-			m_ppc = m_pc;
-
-			execute_one(opcode);
-
-			if (m_test_irq && !m_delay)
-			{
-				sh4_check_pending_irq("mame_sh4_execute");
-			}
-=======
 		m_ppc = m_pc & AM;
 		debugger_instruction_hook(this, m_pc & AM);
 
@@ -5928,7 +4140,6 @@ void sh3be_device::execute_run()
 		if (m_test_irq && !m_delay)
 		{
 			sh4_check_pending_irq("mame_sh4_execute");
->>>>>>> upstream/master
 		}
 
 		m_sh4_icount--;
@@ -5945,42 +4156,6 @@ void sh4be_device::execute_run()
 
 	do
 	{
-<<<<<<< HEAD
-		if (m_delay)
-		{
-			const UINT16 opcode = m_direct->read_word((UINT32)(m_delay & AM), WORD_XOR_LE(6));
-
-			debugger_instruction_hook(this, m_delay & AM);
-
-			m_delay = 0;
-			m_ppc = m_pc;
-
-			execute_one(opcode);
-
-
-			if (m_test_irq && !m_delay)
-			{
-				sh4_check_pending_irq("mame_sh4_execute");
-			}
-
-
-		}
-		else
-		{
-			const UINT16 opcode = m_direct->read_word((UINT32)(m_pc & AM), WORD_XOR_LE(6));
-
-			debugger_instruction_hook(this, m_pc & AM);
-
-			m_pc += 2;
-			m_ppc = m_pc;
-
-			execute_one(opcode);
-
-			if (m_test_irq && !m_delay)
-			{
-				sh4_check_pending_irq("mame_sh4_execute");
-			}
-=======
 		m_ppc = m_pc & AM;
 		debugger_instruction_hook(this, m_pc & AM);
 
@@ -5999,15 +4174,12 @@ void sh4be_device::execute_run()
 		if (m_test_irq && !m_delay)
 		{
 			sh4_check_pending_irq("mame_sh4_execute");
->>>>>>> upstream/master
 		}
 
 		m_sh4_icount--;
 	} while( m_sh4_icount > 0 );
 }
 
-<<<<<<< HEAD
-=======
 void sh4_base_device::device_start()
 {
 	sh34_base_device::device_start();
@@ -6049,7 +4221,6 @@ void sh4_base_device::device_start()
 
 
 
->>>>>>> upstream/master
 void sh34_base_device::device_start()
 {
 	for (int i=0; i<3; i++)
@@ -6082,11 +4253,7 @@ void sh34_base_device::device_start()
 	m_test_irq = 0;
 
 	save_item(NAME(m_pc));
-<<<<<<< HEAD
-	save_item(NAME(m_r[15]));
-=======
 	save_item(NAME(m_r));
->>>>>>> upstream/master
 	save_item(NAME(m_sr));
 	save_item(NAME(m_pr));
 	save_item(NAME(m_gbr));
@@ -6097,56 +4264,6 @@ void sh34_base_device::device_start()
 	save_item(NAME(m_ssr));
 	save_item(NAME(m_sgr));
 	save_item(NAME(m_fpscr));
-<<<<<<< HEAD
-	save_item(NAME(m_r[ 0]));
-	save_item(NAME(m_r[ 1]));
-	save_item(NAME(m_r[ 2]));
-	save_item(NAME(m_r[ 3]));
-	save_item(NAME(m_r[ 4]));
-	save_item(NAME(m_r[ 5]));
-	save_item(NAME(m_r[ 6]));
-	save_item(NAME(m_r[ 7]));
-	save_item(NAME(m_r[ 8]));
-	save_item(NAME(m_r[ 9]));
-	save_item(NAME(m_r[10]));
-	save_item(NAME(m_r[11]));
-	save_item(NAME(m_r[12]));
-	save_item(NAME(m_r[13]));
-	save_item(NAME(m_r[14]));
-	save_item(NAME(m_fr[ 0]));
-	save_item(NAME(m_fr[ 1]));
-	save_item(NAME(m_fr[ 2]));
-	save_item(NAME(m_fr[ 3]));
-	save_item(NAME(m_fr[ 4]));
-	save_item(NAME(m_fr[ 5]));
-	save_item(NAME(m_fr[ 6]));
-	save_item(NAME(m_fr[ 7]));
-	save_item(NAME(m_fr[ 8]));
-	save_item(NAME(m_fr[ 9]));
-	save_item(NAME(m_fr[10]));
-	save_item(NAME(m_fr[11]));
-	save_item(NAME(m_fr[12]));
-	save_item(NAME(m_fr[13]));
-	save_item(NAME(m_fr[14]));
-	save_item(NAME(m_fr[15]));
-	save_item(NAME(m_xf[ 0]));
-	save_item(NAME(m_xf[ 1]));
-	save_item(NAME(m_xf[ 2]));
-	save_item(NAME(m_xf[ 3]));
-	save_item(NAME(m_xf[ 4]));
-	save_item(NAME(m_xf[ 5]));
-	save_item(NAME(m_xf[ 6]));
-	save_item(NAME(m_xf[ 7]));
-	save_item(NAME(m_xf[ 8]));
-	save_item(NAME(m_xf[ 9]));
-	save_item(NAME(m_xf[10]));
-	save_item(NAME(m_xf[11]));
-	save_item(NAME(m_xf[12]));
-	save_item(NAME(m_xf[13]));
-	save_item(NAME(m_xf[14]));
-	save_item(NAME(m_xf[15]));
-	save_item(NAME(m_ea));
-=======
 	save_item(NAME(m_rbnk));
 	save_item(NAME(m_fr));
 	save_item(NAME(m_xf));
@@ -6155,17 +4272,12 @@ void sh34_base_device::device_start()
 	save_item(NAME(m_cpu_off));
 	save_item(NAME(m_pending_irq));
 	save_item(NAME(m_test_irq));
->>>>>>> upstream/master
 	save_item(NAME(m_fpul));
 	save_item(NAME(m_dbr));
 	save_item(NAME(m_exception_priority));
 	save_item(NAME(m_exception_requesting));
-<<<<<<< HEAD
-
-=======
 	save_item(NAME(m_irq_line_state));
 	save_item(NAME(m_m));
->>>>>>> upstream/master
 	save_item(NAME(m_SH4_TSTR));
 	save_item(NAME(m_SH4_TCNT0));
 	save_item(NAME(m_SH4_TCNT1));
@@ -6178,12 +4290,6 @@ void sh34_base_device::device_start()
 	save_item(NAME(m_SH4_TCOR2));
 	save_item(NAME(m_SH4_TOCR));
 	save_item(NAME(m_SH4_TCPR2));
-<<<<<<< HEAD
-
-	save_item(NAME(m_SH4_IPRA));
-
-	save_item(NAME(m_SH4_IPRC));
-=======
 	save_item(NAME(m_SH4_IPRA));
 	save_item(NAME(m_SH4_IPRC));
 	save_item(NAME(m_SH4_DAR0));
@@ -6224,7 +4330,6 @@ void sh34_base_device::device_start()
 	save_item(NAME(m_sh4_mmu_enabled));
 	save_item(NAME(m_sh3internal_upper));
 	save_item(NAME(m_sh3internal_lower));
->>>>>>> upstream/master
 
 	// Debugger state
 
@@ -6309,13 +4414,8 @@ void sh34_base_device::device_start()
 	state_add(SH4_XF15,           "XF15", m_debugger_temp).callimport().formatstr("%25s");
 
 	state_add(STATE_GENPC, "GENPC", m_debugger_temp).callimport().callexport().noshow();
-<<<<<<< HEAD
-	state_add(STATE_GENSP, "GENSP", m_r[15]).noshow();
-	state_add(STATE_GENPCBASE, "GENPCBASE", m_ppc).noshow();
-=======
 	state_add(STATE_GENPCBASE, "CURPC", m_ppc).noshow();
 	state_add(STATE_GENSP, "GENSP", m_r[15]).noshow();
->>>>>>> upstream/master
 	state_add(STATE_GENFLAGS, "GENFLAGS", m_sr).formatstr("%20s").noshow();
 
 	m_icountptr = &m_sh4_icount;
@@ -6324,15 +4424,9 @@ void sh34_base_device::device_start()
 void sh34_base_device::state_import(const device_state_entry &entry)
 {
 #ifdef LSB_FIRST
-<<<<<<< HEAD
-	UINT8 fpu_xor = m_fpu_pr;
-#else
-	UINT8 fpu_xor = 0;
-=======
 	uint8_t fpu_xor = m_fpu_pr;
 #else
 	uint8_t fpu_xor = 0;
->>>>>>> upstream/master
 #endif
 
 	switch (entry.index())
@@ -6482,20 +4576,6 @@ void sh34_base_device::state_export(const device_state_entry &entry)
 {
 	switch (entry.index())
 	{
-<<<<<<< HEAD
-		case STATE_GENPC:
-			m_debugger_temp = (m_delay) ? (m_delay & AM) : (m_pc & AM);
-			break;
-	}
-}
-
-void sh34_base_device::state_string_export(const device_state_entry &entry, std::string &str)
-{
-#ifdef LSB_FIRST
-	UINT8 fpu_xor = m_fpu_pr;
-#else
-	UINT8 fpu_xor = 0;
-=======
 	case STATE_GENPC:
 		m_debugger_temp = (m_pc & AM);
 		break;
@@ -6508,17 +4588,12 @@ void sh34_base_device::state_string_export(const device_state_entry &entry, std:
 	uint8_t fpu_xor = m_fpu_pr;
 #else
 	uint8_t fpu_xor = 0;
->>>>>>> upstream/master
 #endif
 
 	switch (entry.index())
 	{
 		case STATE_GENFLAGS:
-<<<<<<< HEAD
-			strprintf(str, "%s%s%s%s%c%c%d%c%c",
-=======
 			str = string_format("%s%s%s%s%c%c%d%c%c",
->>>>>>> upstream/master
 					m_sr & MD ? "MD ":"   ",
 					m_sr & sRB ? "RB ":"   ",
 					m_sr & BL ? "BL ":"   ",
@@ -6531,133 +4606,6 @@ void sh34_base_device::state_string_export(const device_state_entry &entry, std:
 			break;
 
 		case SH4_FR0:
-<<<<<<< HEAD
-			strprintf(str, "%08X %f", m_fr[0 ^ fpu_xor], (double)FP_RFS(0 ^ fpu_xor));
-			break;
-
-		case SH4_FR1:
-			strprintf(str, "%08X %f", m_fr[1 ^ fpu_xor], (double)FP_RFS(1 ^ fpu_xor));
-			break;
-
-		case SH4_FR2:
-			strprintf(str, "%08X %f", m_fr[2 ^ fpu_xor], (double)FP_RFS(2 ^ fpu_xor));
-			break;
-
-		case SH4_FR3:
-			strprintf(str, "%08X %f", m_fr[3 ^ fpu_xor], (double)FP_RFS(3 ^ fpu_xor));
-			break;
-
-		case SH4_FR4:
-			strprintf(str, "%08X %f", m_fr[4 ^ fpu_xor], (double)FP_RFS(4 ^ fpu_xor));
-			break;
-
-		case SH4_FR5:
-			strprintf(str, "%08X %f", m_fr[5 ^ fpu_xor], (double)FP_RFS(5 ^ fpu_xor));
-			break;
-
-		case SH4_FR6:
-			strprintf(str, "%08X %f", m_fr[6 ^ fpu_xor], (double)FP_RFS(6 ^ fpu_xor));
-			break;
-
-		case SH4_FR7:
-			strprintf(str, "%08X %f", m_fr[7 ^ fpu_xor], (double)FP_RFS(7 ^ fpu_xor));
-			break;
-
-		case SH4_FR8:
-			strprintf(str, "%08X %f", m_fr[8 ^ fpu_xor], (double)FP_RFS(8 ^ fpu_xor));
-			break;
-
-		case SH4_FR9:
-			strprintf(str, "%08X %f", m_fr[9 ^ fpu_xor], (double)FP_RFS(9 ^ fpu_xor));
-			break;
-
-		case SH4_FR10:
-			strprintf(str, "%08X %f", m_fr[10 ^ fpu_xor], (double)FP_RFS(10 ^ fpu_xor));
-			break;
-
-		case SH4_FR11:
-			strprintf(str, "%08X %f", m_fr[11 ^ fpu_xor], (double)FP_RFS(11 ^ fpu_xor));
-			break;
-
-		case SH4_FR12:
-			strprintf(str, "%08X %f", m_fr[12 ^ fpu_xor], (double)FP_RFS(12 ^ fpu_xor));
-			break;
-
-		case SH4_FR13:
-			strprintf(str, "%08X %f", m_fr[13 ^ fpu_xor], (double)FP_RFS(13 ^ fpu_xor));
-			break;
-
-		case SH4_FR14:
-			strprintf(str, "%08X %f", m_fr[14 ^ fpu_xor], (double)FP_RFS(14 ^ fpu_xor));
-			break;
-
-		case SH4_FR15:
-			strprintf(str, "%08X %f", m_fr[15 ^ fpu_xor], (double)FP_RFS(15 ^ fpu_xor));
-			break;
-
-		case SH4_XF0:
-			strprintf(str, "%08X %f", m_xf[0 ^ fpu_xor], (double)FP_XFS(0 ^ fpu_xor));
-			break;
-
-		case SH4_XF1:
-			strprintf(str, "%08X %f", m_xf[1 ^ fpu_xor], (double)FP_XFS(1 ^ fpu_xor));
-			break;
-
-		case SH4_XF2:
-			strprintf(str, "%08X %f", m_xf[2 ^ fpu_xor], (double)FP_XFS(2 ^ fpu_xor));
-			break;
-
-		case SH4_XF3:
-			strprintf(str, "%08X %f", m_xf[3 ^ fpu_xor], (double)FP_XFS(3 ^ fpu_xor));
-			break;
-
-		case SH4_XF4:
-			strprintf(str, "%08X %f", m_xf[4 ^ fpu_xor], (double)FP_XFS(4 ^ fpu_xor));
-			break;
-
-		case SH4_XF5:
-			strprintf(str, "%08X %f", m_xf[5 ^ fpu_xor], (double)FP_XFS(5 ^ fpu_xor));
-			break;
-
-		case SH4_XF6:
-			strprintf(str, "%08X %f", m_xf[6 ^ fpu_xor], (double)FP_XFS(6 ^ fpu_xor));
-			break;
-
-		case SH4_XF7:
-			strprintf(str, "%08X %f", m_xf[7 ^ fpu_xor], (double)FP_XFS(7 ^ fpu_xor));
-			break;
-
-		case SH4_XF8:
-			strprintf(str, "%08X %f", m_xf[8 ^ fpu_xor], (double)FP_XFS(8 ^ fpu_xor));
-			break;
-
-		case SH4_XF9:
-			strprintf(str, "%08X %f", m_xf[9 ^ fpu_xor], (double)FP_XFS(9 ^ fpu_xor));
-			break;
-
-		case SH4_XF10:
-			strprintf(str, "%08X %f", m_xf[10 ^ fpu_xor], (double)FP_XFS(10 ^ fpu_xor));
-			break;
-
-		case SH4_XF11:
-			strprintf(str, "%08X %f", m_xf[11 ^ fpu_xor], (double)FP_XFS(11 ^ fpu_xor));
-			break;
-
-		case SH4_XF12:
-			strprintf(str, "%08X %f", m_xf[12 ^ fpu_xor], (double)FP_XFS(12 ^ fpu_xor));
-			break;
-
-		case SH4_XF13:
-			strprintf(str, "%08X %f", m_xf[13 ^ fpu_xor], (double)FP_XFS(13 ^ fpu_xor));
-			break;
-
-		case SH4_XF14:
-			strprintf(str, "%08X %f", m_xf[14 ^ fpu_xor], (double)FP_XFS(14 ^ fpu_xor));
-			break;
-
-		case SH4_XF15:
-			strprintf(str, "%08X %f", m_xf[15 ^ fpu_xor], (double)FP_XFS(15 ^ fpu_xor));
-=======
 			str = string_format("%08X %f", m_fr[0 ^ fpu_xor], (double)FP_RFS(0 ^ fpu_xor));
 			break;
 
@@ -6783,7 +4731,6 @@ void sh34_base_device::state_string_export(const device_state_entry &entry, std:
 
 		case SH4_XF15:
 			str = string_format("%08X %f", m_xf[15 ^ fpu_xor], (double)FP_XFS(15 ^ fpu_xor));
->>>>>>> upstream/master
 			break;
 
 	}

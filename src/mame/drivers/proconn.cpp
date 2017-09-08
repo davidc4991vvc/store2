@@ -25,19 +25,6 @@
 
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/z80/z80.h"
-#include "machine/z80pio.h"
-#include "machine/z80ctc.h"
-#include "machine/z80dart.h"
-#include "sound/ay8910.h"
-#include "video/awpvid.h"
-#include "machine/roc10937.h"
-#include "machine/meters.h"
-
-#include "proconn.lh"
-
-=======
 
 #include "cpu/z80/z80.h"
 #include "machine/meters.h"
@@ -53,7 +40,6 @@
 #include "proconn.lh"
 
 
->>>>>>> upstream/master
 class proconn_state : public driver_device
 {
 public:
@@ -68,18 +54,10 @@ public:
 			m_z80pio_5(*this, "z80pio_5"),
 			m_z80ctc(*this, "z80ctc"),
 			m_z80sio(*this, "z80sio"),
-<<<<<<< HEAD
-			m_ay(*this, "aysnd")
-	{ }
-
-	optional_device<s16lf01_t> m_vfd;
-
-=======
 			m_ay(*this, "aysnd"),
 			m_meters(*this, "meters")
 	{ }
 
->>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER( ay_w0 ) { m_ay->address_data_w(space, 0, data); }
 	DECLARE_WRITE8_MEMBER( ay_w1 ) { m_ay->address_data_w(space, 1, data); }
 
@@ -204,10 +182,7 @@ public:
 protected:
 
 	// devices
-<<<<<<< HEAD
-=======
 	optional_device<s16lf01_device> m_vfd;
->>>>>>> upstream/master
 	required_device<cpu_device> m_maincpu;
 	required_device<z80pio_device> m_z80pio_1;
 	required_device<z80pio_device> m_z80pio_2;
@@ -217,19 +192,12 @@ protected:
 	required_device<z80ctc_device> m_z80ctc;
 	required_device<z80dart_device> m_z80sio;
 	required_device<ay8910_device> m_ay;
-<<<<<<< HEAD
-public:
-	int m_meter;
-	DECLARE_DRIVER_INIT(proconn);
-	virtual void machine_reset();
-=======
 	required_device<meters_device> m_meters;
 
 public:
 	int m_meter;
 	DECLARE_DRIVER_INIT(proconn);
 	virtual void machine_reset() override;
->>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(meter_w);
 	DECLARE_WRITE16_MEMBER(serial_transmit);
 	DECLARE_READ16_MEMBER(serial_receive);
@@ -328,20 +296,11 @@ READ16_MEMBER(proconn_state::serial_receive)
 
 WRITE8_MEMBER(proconn_state::meter_w)
 {
-<<<<<<< HEAD
-	int i;
-	for (i=0; i<8; i++)
-	{
-		if ( data & (1 << i) )
-		{
-			MechMtr_update(i, data & (1 << i) );
-=======
 	for (int i=0; i<8; i++)
 	{
 		if ( data & (1 << i) )
 		{
 			m_meters->update(i, data & (1 << i) );
->>>>>>> upstream/master
 			m_meter = data;
 		}
 	}
@@ -351,11 +310,7 @@ static const z80_daisy_config z80_daisy_chain[] =
 {
 	{ "z80ctc" },
 	{ "z80sio" },
-<<<<<<< HEAD
-	{ NULL }
-=======
 	{ nullptr }
->>>>>>> upstream/master
 };
 
 void proconn_state::machine_reset()
@@ -363,15 +318,9 @@ void proconn_state::machine_reset()
 	m_vfd->reset(); // reset display1
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( proconn, proconn_state )
-	MCFG_CPU_ADD("maincpu", Z80, 4000000) /* ?? Mhz */
-	MCFG_CPU_CONFIG(z80_daisy_chain)
-=======
 static MACHINE_CONFIG_START( proconn )
 	MCFG_CPU_ADD("maincpu", Z80, 4000000) /* ?? Mhz */
 	MCFG_Z80_DAISY_CHAIN(z80_daisy_chain)
->>>>>>> upstream/master
 	MCFG_CPU_PROGRAM_MAP(proconn_map)
 	MCFG_CPU_IO_MAP(proconn_portmap)
 	MCFG_S16LF01_ADD("vfd",0)
@@ -434,12 +383,9 @@ static MACHINE_CONFIG_START( proconn )
 	MCFG_SOUND_ADD("aysnd", AY8910, 1000000) /* ?? Mhz */ // YM2149F on PC92?
 	MCFG_AY8910_PORT_B_WRITE_CB(WRITE8(proconn_state, meter_w))
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 0.33)
-<<<<<<< HEAD
-=======
 
 	MCFG_DEVICE_ADD("meters", METERS, 0)
 	MCFG_METERS_NUMBER(8)
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 

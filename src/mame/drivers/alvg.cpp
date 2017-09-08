@@ -18,11 +18,7 @@ protected:
 	required_device<cpu_device> m_maincpu;
 
 	// driver_device overrides
-<<<<<<< HEAD
-	virtual void machine_reset();
-=======
 	virtual void machine_reset() override;
->>>>>>> upstream/master
 public:
 	DECLARE_DRIVER_INIT(alvg);
 };
@@ -45,11 +41,7 @@ DRIVER_INIT_MEMBER(alvg_state,alvg)
 {
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( alvg, alvg_state )
-=======
 static MACHINE_CONFIG_START( alvg )
->>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M65C02, 2000000)
 	MCFG_CPU_PROGRAM_MAP(alvg_map)
@@ -137,8 +129,6 @@ ROM_START(wrldtour2)
 	ROM_COPY("gfx3",0x108000,0x0000,0x8000)
 ROM_END
 
-<<<<<<< HEAD
-=======
 ROM_START(wrldtour3)
 	ROM_REGION(0x10000, "maincpu", 0)
 	ROM_LOAD("cpu03.512", 0x0000, 0x10000, CRC(56dee967) SHA1(f7b1f69d96c72b0cf738bdf45701502f7306a4a0))
@@ -171,7 +161,6 @@ ROM_START(wrldtour3)
 	ROM_COPY("gfx3",0x108000,0x0000,0x8000)
 ROM_END
 
->>>>>>> upstream/master
 /*-------------------------------------------------------------------
 / Dinosaur Eggs
 /-------------------------------------------------------------------*/
@@ -286,8 +275,6 @@ ROM_START(pstlpkr)
 	ROM_RELOAD( 0xc0000, 0x40000)
 ROM_END
 
-<<<<<<< HEAD
-=======
 ROM_START(pstlpkr1)
 	ROM_REGION(0x10000, "maincpu", 0)
 	ROM_LOAD("u2-ddff.512", 0x0000, 0x10000, CRC(83fa0595) SHA1(d6ebb0e63fd964ccaee3979a7fc13b6adf7b837c))
@@ -319,7 +306,6 @@ ROM_START(pstlpkr1)
 	ROM_RELOAD( 0xc0000, 0x40000)
 ROM_END
 
->>>>>>> upstream/master
 /*-------------------------------------------------------------------
 / Punchy The Clown
 /-------------------------------------------------------------------*/
@@ -335,8 +321,6 @@ ROM_START(punchy)
 	ROM_RELOAD(0x000000 + 0xc0000, 0x40000)
 ROM_END
 
-<<<<<<< HEAD
-=======
 ROM_START(punchy3)
 	ROM_REGION(0x10000, "maincpu", 0)
 	ROM_LOAD("epc061.r03", 0x0000, 0x10000, CRC(8e91131c) SHA1(1bf1408e4e512b764048f4847cf8e4b7a0bf824d))
@@ -349,7 +333,6 @@ ROM_START(punchy3)
 	ROM_RELOAD(0x000000 + 0xc0000, 0x40000)
 ROM_END
 
->>>>>>> upstream/master
 /*-------------------------------------------------------------------
 / U.S.A. Football
 /-------------------------------------------------------------------*/
@@ -365,18 +348,6 @@ ROM_START(usafootb)
 	ROM_RELOAD(0x000000 + 0xc0000, 0x40000)
 ROM_END
 
-<<<<<<< HEAD
-
-GAME(1991,  agsoccer,   0,          alvg,   alvg, alvg_state,   alvg,   ROT0,   "Alvin G",              "A.G. Soccer Ball",             MACHINE_IS_SKELETON_MECHANICAL)
-GAME(1992,  wrldtour,   0,          alvg,   alvg, alvg_state,   alvg,   ROT0,   "Alvin G",              "Al's Garage Band Goes On A World Tour",                MACHINE_IS_SKELETON_MECHANICAL)
-GAME(1992,  wrldtour2,  wrldtour,   alvg,   alvg, alvg_state,   alvg,   ROT0,   "Alvin G",              "Al's Garage Band Goes On A World Tour R02b",               MACHINE_IS_SKELETON_MECHANICAL)
-GAME(1993,  usafootb,   0,          alvg,   alvg, alvg_state,   alvg,   ROT0,   "Alvin G",              "U.S.A. Football",              MACHINE_IS_SKELETON_MECHANICAL)
-GAME(1993,  mystcast,   0,          alvg,   alvg, alvg_state,   alvg,   ROT0,   "Alvin G",              "Mystery Castle",               MACHINE_IS_SKELETON_MECHANICAL)
-GAME(1993,  mystcasta,  mystcast,   alvg,   alvg, alvg_state,   alvg,   ROT0,   "Alvin G",              "Mystery Castle (alternate set)",               MACHINE_IS_SKELETON_MECHANICAL)
-GAME(1993,  pstlpkr,    0,          alvg,   alvg, alvg_state,   alvg,   ROT0,   "Alvin G",              "Pistol Poker",             MACHINE_IS_SKELETON_MECHANICAL)
-GAME(1993,  punchy,     0,          alvg,   alvg, alvg_state,   alvg,   ROT0,   "Alvin G",              "Punchy The Clown",             MACHINE_IS_SKELETON_MECHANICAL)
-GAME(1993,  dinoeggs,   0,          alvg,   alvg, alvg_state,   alvg,   ROT0,   "Alvin G",              "Dinosaur Eggs",                MACHINE_IS_SKELETON_MECHANICAL)
-=======
 ROM_START(usafootba)
 	ROM_REGION(0x10000, "maincpu", 0)
 	ROM_LOAD("usa_cpu1.bin", 0x0000, 0x10000, CRC(3b64a6e9) SHA1(65535bc17395416181bafddc61c0fac177eeba2f))
@@ -403,4 +374,3 @@ GAME(1993,  pstlpkr1,   pstlpkr,    alvg,   alvg, alvg_state,   alvg,   ROT0,   
 GAME(1993,  punchy,     0,          alvg,   alvg, alvg_state,   alvg,   ROT0,   "Alvin G",  "Punchy The Clown (R02)",                       MACHINE_IS_SKELETON_MECHANICAL)
 GAME(1993,  punchy3,    punchy,     alvg,   alvg, alvg_state,   alvg,   ROT0,   "Alvin G",  "Punchy The Clown (R03)",                       MACHINE_IS_SKELETON_MECHANICAL)
 GAME(1993,  dinoeggs,   0,          alvg,   alvg, alvg_state,   alvg,   ROT0,   "Alvin G",  "Dinosaur Eggs",                                MACHINE_IS_SKELETON_MECHANICAL)
->>>>>>> upstream/master

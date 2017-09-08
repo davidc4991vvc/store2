@@ -8,20 +8,11 @@
 
 **********************************************************************/
 
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __IMI5000H__
-#define __IMI5000H__
-
-#include "emu.h"
-=======
 #ifndef MAME_BUS_IMI7000_IMI5000H_H
 #define MAME_BUS_IMI7000_IMI5000H_H
 
 #pragma once
 
->>>>>>> upstream/master
 #include "imi7000.h"
 #include "cpu/z80/z80.h"
 #include "cpu/z80/z80daisy.h"
@@ -41,15 +32,6 @@ class imi5000h_device :  public device_t,
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	imi5000h_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// optional information overrides
-	virtual const rom_entry *device_rom_region() const;
-	virtual machine_config_constructor device_mconfig_additions() const;
-	virtual ioport_constructor device_input_ports() const;
-
-=======
 	imi5000h_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 protected:
@@ -63,7 +45,6 @@ protected:
 	virtual ioport_constructor device_input_ports() const override;
 
 private:
->>>>>>> upstream/master
 	DECLARE_WRITE_LINE_MEMBER( ctc_z0_w );
 	DECLARE_WRITE_LINE_MEMBER( ctc_z1_w );
 	DECLARE_WRITE_LINE_MEMBER( ctc_z2_w );
@@ -83,15 +64,6 @@ private:
 	DECLARE_READ8_MEMBER( pio3_pb_r );
 	DECLARE_WRITE8_MEMBER( pio3_pb_w );
 
-<<<<<<< HEAD
-protected:
-	// device-level overrides
-	virtual void device_start();
-	virtual void device_reset();
-
-private:
-=======
->>>>>>> upstream/master
 	enum
 	{
 		LED_FAULT,
@@ -110,13 +82,6 @@ private:
 
 // device type definition
 extern const device_type IMI5000H;
-<<<<<<< HEAD
-
-
-
-#endif
-=======
 DECLARE_DEVICE_TYPE(IMI5000H, imi5000h_device)
 
 #endif // MAME_BUS_IMI7000_IMI5000H_H
->>>>>>> upstream/master

@@ -1,11 +1,7 @@
 // license:BSD-3-Clause
 // copyright-holders:R. Belmont, ElSemi
 #include "namcos2.h"
-<<<<<<< HEAD
-#include "video/c116.h"
-=======
 #include "video/namco_c116.h"
->>>>>>> upstream/master
 
 #define NAMCOFL_HTOTAL      (288)   /* wrong */
 #define NAMCOFL_HBSTART (288)
@@ -30,9 +26,6 @@ public:
 		m_maincpu(*this,"maincpu"),
 		m_mcu(*this,"mcu"),
 		m_c116(*this,"c116"),
-<<<<<<< HEAD
-		m_shareram(*this, "shareram") { }
-=======
 		m_in0(*this, "IN0"),
 		m_in1(*this, "IN1"),
 		m_in2(*this, "IN2"),
@@ -41,18 +34,10 @@ public:
 		m_brake(*this, "BRAKE"),
 		m_wheel(*this, "WHEEL"),
 		m_shareram(*this, "shareram", 32) { }
->>>>>>> upstream/master
 
 	required_device<cpu_device> m_maincpu;
 	required_device<cpu_device> m_mcu;
 	required_device<namco_c116_device> m_c116;
-<<<<<<< HEAD
-	emu_timer *m_raster_interrupt_timer;
-	UINT32 *m_workram;
-	required_shared_ptr<UINT16> m_shareram;
-	UINT8 m_mcu_port6;
-	UINT32 m_sprbank;
-=======
 	required_ioport m_in0;
 	required_ioport m_in1;
 	required_ioport m_in2;
@@ -67,18 +52,12 @@ public:
 	required_shared_ptr<uint16_t> m_shareram;
 	uint8_t m_mcu_port6;
 	uint32_t m_sprbank;
->>>>>>> upstream/master
 
 	DECLARE_READ32_MEMBER(fl_unk1_r);
 	DECLARE_READ32_MEMBER(fl_network_r);
 	DECLARE_READ32_MEMBER(namcofl_sysreg_r);
 	DECLARE_WRITE32_MEMBER(namcofl_sysreg_w);
 	DECLARE_WRITE8_MEMBER(namcofl_c116_w);
-<<<<<<< HEAD
-	DECLARE_READ32_MEMBER(namcofl_share_r);
-	DECLARE_WRITE32_MEMBER(namcofl_share_w);
-=======
->>>>>>> upstream/master
 	DECLARE_WRITE16_MEMBER(mcu_shared_w);
 	DECLARE_READ8_MEMBER(port6_r);
 	DECLARE_WRITE8_MEMBER(port6_w);
@@ -97,11 +76,7 @@ public:
 	DECLARE_MACHINE_START(namcofl);
 	DECLARE_MACHINE_RESET(namcofl);
 	DECLARE_VIDEO_START(namcofl);
-<<<<<<< HEAD
-	UINT32 screen_update_namcofl(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	uint32_t screen_update_namcofl(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	TIMER_CALLBACK_MEMBER(network_interrupt_callback);
 	TIMER_CALLBACK_MEMBER(vblank_interrupt_callback);
 	TIMER_CALLBACK_MEMBER(raster_interrupt_callback);
@@ -109,9 +84,6 @@ public:
 	TIMER_DEVICE_CALLBACK_MEMBER(mcu_irq2_cb);
 	TIMER_DEVICE_CALLBACK_MEMBER(mcu_adc_cb);
 	void common_init();
-<<<<<<< HEAD
-=======
 	int FLobjcode2tile(int code);
 	void TilemapCB(uint16_t code, int *tile, int *mask);
->>>>>>> upstream/master
 };

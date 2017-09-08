@@ -6,11 +6,7 @@ Cyber Tank HW (c) 1987/1988 Coreland Technology
 
 preliminary driver by Angelo Salese & David Haywood
 
-<<<<<<< HEAD
-Maybe it has some correlation with WEC Le Mans HW? (supposely that was originally done by Coreland too)
-=======
 Maybe it has some correlation with WEC Le Mans HW? (supposedly that was originally done by Coreland too)
->>>>>>> upstream/master
 
 TODO:
 - improve sprite zooming
@@ -174,12 +170,6 @@ lev 7 : 0x7c : 0000 07e0 - input device clear?
 *******************************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/z80/z80.h"
-#include "cpu/m68000/m68000.h"
-#include "sound/8950intf.h"
-#include "rendlay.h"
-=======
 #include "cpu/m68000/m68000.h"
 #include "cpu/z80/z80.h"
 #include "machine/gen_latch.h"
@@ -187,7 +177,6 @@ lev 7 : 0x7c : 0000 07e0 - input device clear?
 #include "rendlay.h"
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 class cybertnk_state : public driver_device
@@ -199,10 +188,7 @@ public:
 		m_audiocpu(*this, "audiocpu"),
 		m_gfxdecode(*this, "gfxdecode"),
 		m_palette(*this, "palette"),
-<<<<<<< HEAD
-=======
 		m_soundlatch(*this, "soundlatch"),
->>>>>>> upstream/master
 		m_spr_ram(*this, "spr_ram"),
 		m_tilemap0_vram(*this, "tilemap0_vram"),
 		m_tilemap1_vram(*this, "tilemap1_vram"),
@@ -216,17 +202,6 @@ public:
 	required_device<cpu_device> m_audiocpu;
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
-<<<<<<< HEAD
-
-	required_shared_ptr<UINT16> m_spr_ram;
-	required_shared_ptr<UINT16> m_tilemap0_vram;
-	required_shared_ptr<UINT16> m_tilemap1_vram;
-	required_shared_ptr<UINT16> m_tilemap2_vram;
-	required_shared_ptr<UINT16> m_tilemap0scroll;
-	required_shared_ptr<UINT16> m_tilemap1scroll;
-	required_shared_ptr<UINT16> m_tilemap2scroll;
-	required_shared_ptr<UINT16> m_roadram;
-=======
 	required_device<generic_latch_8_device> m_soundlatch;
 
 	required_shared_ptr<uint16_t> m_spr_ram;
@@ -237,7 +212,6 @@ public:
 	required_shared_ptr<uint16_t> m_tilemap1scroll;
 	required_shared_ptr<uint16_t> m_tilemap2scroll;
 	required_shared_ptr<uint16_t> m_roadram;
->>>>>>> upstream/master
 
 	tilemap_t *m_tilemap0_tilemap;
 	tilemap_t *m_tilemap1_tilemap;
@@ -247,11 +221,7 @@ public:
 	DECLARE_WRITE16_MEMBER(tilemap1_vram_w);
 	DECLARE_WRITE16_MEMBER(tilemap2_vram_w);
 
-<<<<<<< HEAD
-	UINT8 m_mux_data;
-=======
 	uint8_t m_mux_data;
->>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(cybertnk_sound_cmd_w);
 	DECLARE_WRITE8_MEMBER(cybertnk_mux_w);
 	DECLARE_READ8_MEMBER(cybertnk_io_rdy_r);
@@ -262,21 +232,12 @@ public:
 	TILE_GET_INFO_MEMBER(get_tilemap0_tile_info);
 	TILE_GET_INFO_MEMBER(get_tilemap1_tile_info);
 	TILE_GET_INFO_MEMBER(get_tilemap2_tile_info);
-<<<<<<< HEAD
-	virtual void video_start();
-	void draw_road(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int screen_shift, int pri);
-	void draw_sprites(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int screen_shift);
-	UINT32 update_screen(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int screen_shift);
-	UINT32 screen_update_cybertnk_left(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	UINT32 screen_update_cybertnk_right(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	virtual void video_start() override;
 	void draw_road(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int screen_shift, int pri);
 	void draw_sprites(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int screen_shift);
 	uint32_t update_screen(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int screen_shift);
 	uint32_t screen_update_cybertnk_left(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	uint32_t screen_update_cybertnk_right(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 };
 
 /* tile format
@@ -328,15 +289,6 @@ TILE_GET_INFO_MEMBER(cybertnk_state::get_tilemap2_tile_info)
 
 void cybertnk_state::video_start()
 {
-<<<<<<< HEAD
-	m_tilemap0_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(cybertnk_state::get_tilemap0_tile_info),this),TILEMAP_SCAN_ROWS,8,8,128,32);
-	m_tilemap0_tilemap->set_transparent_pen(0);
-
-	m_tilemap1_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(cybertnk_state::get_tilemap1_tile_info),this),TILEMAP_SCAN_ROWS,8,8,128,32);
-	m_tilemap1_tilemap->set_transparent_pen(0);
-
-	m_tilemap2_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(cybertnk_state::get_tilemap2_tile_info),this),TILEMAP_SCAN_ROWS,8,8,128,32);
-=======
 	m_tilemap0_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(cybertnk_state::get_tilemap0_tile_info),this),TILEMAP_SCAN_ROWS,8,8,128,32);
 	m_tilemap0_tilemap->set_transparent_pen(0);
 
@@ -344,7 +296,6 @@ void cybertnk_state::video_start()
 	m_tilemap1_tilemap->set_transparent_pen(0);
 
 	m_tilemap2_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(cybertnk_state::get_tilemap2_tile_info),this),TILEMAP_SCAN_ROWS,8,8,128,32);
->>>>>>> upstream/master
 	m_tilemap2_tilemap->set_transparent_pen(0);
 }
 
@@ -357,15 +308,9 @@ void cybertnk_state::draw_road(screen_device &screen, bitmap_ind16 &bitmap, cons
 
 	for (int i = 0; i < 0x1000/4; i+=4)
 	{
-<<<<<<< HEAD
-		UINT16 param1 = m_roadram[i+2];
-		UINT16 param2 = m_roadram[i+1];
-		UINT16 param3 = m_roadram[i+0];
-=======
 		uint16_t param1 = m_roadram[i+2];
 		uint16_t param2 = m_roadram[i+1];
 		uint16_t param3 = m_roadram[i+0];
->>>>>>> upstream/master
 
 		int col = (param2 & 0x3f);
 
@@ -382,22 +327,14 @@ void cybertnk_state::draw_road(screen_device &screen, bitmap_ind16 &bitmap, cons
 // check if these are similar / the same as weclemans
 void cybertnk_state::draw_sprites(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int screen_shift)
 {
-<<<<<<< HEAD
-	const UINT32 *sprrom = (UINT32*)memregion("spr_gfx")->base();
-=======
 	const uint32_t *sprrom = (uint32_t*)memregion("spr_gfx")->base();
->>>>>>> upstream/master
 	const pen_t *paldata = m_palette->pens();
 
 	int miny = cliprect.min_y;
 	int maxy = cliprect.max_y;
 	int minx = cliprect.min_x;
 	int maxx = cliprect.max_x;
-<<<<<<< HEAD
-	UINT16* dest;
-=======
 	uint16_t* dest;
->>>>>>> upstream/master
 
 	/*
 
@@ -433,11 +370,7 @@ void cybertnk_state::draw_sprites(screen_device &screen, bitmap_ind16 &bitmap, c
 		if (y&0x100) y-=0x200;
 
 
-<<<<<<< HEAD
-		UINT32 spr_offs = (((m_spr_ram[offs+0x0] & 7) << 16) | (m_spr_ram[offs+0x1]));
-=======
 		uint32_t spr_offs = (((m_spr_ram[offs+0x0] & 7) << 16) | (m_spr_ram[offs+0x1]));
->>>>>>> upstream/master
 		int xsize = ((m_spr_ram[offs+0x6] & 0x000f)+1) << 3;
 		int ysize = (m_spr_ram[offs+0x4] & 0x00ff)+1;
 		int fx = (m_spr_ram[offs+0x5] & 0x8000) >> 15;
@@ -479,19 +412,11 @@ void cybertnk_state::draw_sprites(screen_device &screen, bitmap_ind16 &bitmap, c
 
 				for(int xi=start;xi != end;xi+=inc)
 				{ // start x loop
-<<<<<<< HEAD
-					UINT32 color;
-
-					color = sprrom[spr_offs+xi/8];
-
-					UINT16 dot;
-=======
 					uint32_t color;
 
 					color = sprrom[spr_offs+xi/8];
 
 					uint16_t dot;
->>>>>>> upstream/master
 					int x_dec; //helpers
 
 					int shift_pen = 0;
@@ -552,11 +477,7 @@ void cybertnk_state::draw_sprites(screen_device &screen, bitmap_ind16 &bitmap, c
 }
 
 
-<<<<<<< HEAD
-UINT32 cybertnk_state::update_screen(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int screen_shift)
-=======
 uint32_t cybertnk_state::update_screen(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int screen_shift)
->>>>>>> upstream/master
 {
 	m_tilemap0_tilemap->set_scrolldx(screen_shift, screen_shift);
 	m_tilemap1_tilemap->set_scrolldx(screen_shift, screen_shift);
@@ -588,13 +509,8 @@ uint32_t cybertnk_state::update_screen(screen_device &screen, bitmap_ind16 &bitm
 	return 0;
 }
 
-<<<<<<< HEAD
-UINT32 cybertnk_state::screen_update_cybertnk_left(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect){ return update_screen(screen, bitmap, cliprect, 0); }
-UINT32 cybertnk_state::screen_update_cybertnk_right(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect){ return update_screen(screen, bitmap, cliprect, -256); }
-=======
 uint32_t cybertnk_state::screen_update_cybertnk_left(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect){ return update_screen(screen, bitmap, cliprect, 0); }
 uint32_t cybertnk_state::screen_update_cybertnk_right(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect){ return update_screen(screen, bitmap, cliprect, -256); }
->>>>>>> upstream/master
 
 
 WRITE16_MEMBER(cybertnk_state::tilemap0_vram_w)
@@ -625,11 +541,7 @@ WRITE8_MEMBER( cybertnk_state::cybertnk_sound_cmd_w )
 	}
 	else if (offset == 1)
 	{
-<<<<<<< HEAD
-		soundlatch_byte_w(space, offset, data & 0xff);
-=======
 		m_soundlatch->write(space, offset, data & 0xff);
->>>>>>> upstream/master
 		m_audiocpu->set_input_line(0, HOLD_LINE);
 	}
 }
@@ -730,11 +642,7 @@ ADDRESS_MAP_END
 static ADDRESS_MAP_START( sound_mem, AS_PROGRAM, 8, cybertnk_state )
 	AM_RANGE(0x0000, 0x7fff) AM_ROM
 	AM_RANGE(0x8000, 0x9fff) AM_RAM
-<<<<<<< HEAD
-	AM_RANGE(0xa001, 0xa001) AM_READ(soundlatch_byte_r)
-=======
 	AM_RANGE(0xa001, 0xa001) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
->>>>>>> upstream/master
 	AM_RANGE(0xa005, 0xa006) AM_NOP
 	AM_RANGE(0xa000, 0xa001) AM_DEVREADWRITE("ym1", y8950_device, read, write)
 	AM_RANGE(0xc000, 0xc001) AM_DEVREADWRITE("ym2", y8950_device, read, write)
@@ -891,11 +799,7 @@ static const gfx_layout tile_8x8x4 =
 	8*8
 };
 
-<<<<<<< HEAD
-static const UINT32 xoffsets[] = { STEP1024(0,4) };
-=======
 static const uint32_t xoffsets[] = { STEP1024(0,4) };
->>>>>>> upstream/master
 static const gfx_layout roadlayout =
 {
 	1024,1,
@@ -927,11 +831,7 @@ GFXDECODE_END
 */
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( cybertnk, cybertnk_state )
-=======
 static MACHINE_CONFIG_START( cybertnk )
->>>>>>> upstream/master
 	MCFG_CPU_ADD("maincpu", M68000,XTAL_20MHz/2)
 	MCFG_CPU_PROGRAM_MAP(master_mem)
 	MCFG_CPU_VBLANK_INT_DRIVER("lscreen", cybertnk_state,  irq1_line_assert)
@@ -971,11 +871,8 @@ static MACHINE_CONFIG_START( cybertnk )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
-<<<<<<< HEAD
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 
->>>>>>> upstream/master
 	MCFG_SOUND_ADD("ym1", Y8950, XTAL_3_579545MHz)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 1.0)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 1.0)
@@ -1078,11 +975,7 @@ ROM_END
 
 DRIVER_INIT_MEMBER(cybertnk_state,cybertnk)
 {
-<<<<<<< HEAD
-	UINT32 *spr = (UINT32*)memregion("spr_gfx")->base();
-=======
 	uint32_t *spr = (uint32_t*)memregion("spr_gfx")->base();
->>>>>>> upstream/master
 
 	for (int x = 0; x< 0x200000/4;x++)
 	{

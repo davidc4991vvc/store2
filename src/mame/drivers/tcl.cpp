@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-// license:LGPL-2.1+
-=======
 // license:BSD-3-Clause
->>>>>>> upstream/master
 // copyright-holders:Tomasz Slanina
 /*
 Taiwan Chess Legend
@@ -13,10 +9,6 @@ Preliminary driver by Tomasz Slanina
 PCB Layout
 ----------
 
-<<<<<<< HEAD
-
-=======
->>>>>>> upstream/master
 |-----------------------------------------------|
 |  AY8930   DSW5  TCL.1E                        |
 |           DSW4  TCL.3E   TCL.3F  TCL.3H       |
@@ -43,12 +35,7 @@ Notes:
           VSync: 60Hz
           HSync: 15.15kHz
 
-<<<<<<< HEAD
- This appears to be based off a Blue
- Dyna Cherry Master board -- emualted goldstar.c
-=======
  This appears to be based off a Blue Dyna Cherry Master board -- emulated in goldstar.cpp
->>>>>>> upstream/master
  but with extra protection (the sub-board with CPU)
 
 */
@@ -57,11 +44,8 @@ Notes:
 #include "cpu/z80/z80.h"
 #include "machine/i8255.h"
 #include "sound/ay8910.h"
-<<<<<<< HEAD
-=======
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 class tcl_state : public driver_device
@@ -72,13 +56,8 @@ public:
 		m_maincpu(*this, "maincpu") { }
 
 	DECLARE_DRIVER_INIT(tcl);
-<<<<<<< HEAD
-	virtual void video_start();
-	UINT32 screen_update_tcl(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	virtual void video_start() override;
 	uint32_t screen_update_tcl(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	required_device<cpu_device> m_maincpu;
 };
 
@@ -86,11 +65,7 @@ public:
 void tcl_state::video_start()
 {
 }
-<<<<<<< HEAD
-UINT32 tcl_state::screen_update_tcl(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t tcl_state::screen_update_tcl(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	return 0;
 }
@@ -117,15 +92,6 @@ static const gfx_layout charlayout =
 
 static const gfx_layout charlayout2 =
 {
-<<<<<<< HEAD
-	8,8,
-	RGN_FRAC(1,4),
-	4,
-	{ 0, RGN_FRAC(1,4), RGN_FRAC(2,4), RGN_FRAC(3,4)},
-	{ 0, 1, 2, 3, 4, 5, 6, 7 },
-	{ 0*8, 1*8, 2*8, 3*8, 4*8, 5*8, 6*8, 7*8 },
-	8*8
-=======
 	8,32,
 	RGN_FRAC(1,4),
 	4,
@@ -137,23 +103,15 @@ static const gfx_layout charlayout2 =
 		24*8,25*8, 26*8, 27*8, 28*8, 29*8, 30*8, 31*8
 	},
 	32*8
->>>>>>> upstream/master
 };
 
 
 static GFXDECODE_START( tcl )
 	GFXDECODE_ENTRY( "gfx1", 0, charlayout,     0, 16 )
-<<<<<<< HEAD
-	GFXDECODE_ENTRY( "gfx2", 0, charlayout2,     0, 16 ) /* wrong */
-GFXDECODE_END
-
-static MACHINE_CONFIG_START( tcl, tcl_state )
-=======
 	GFXDECODE_ENTRY( "gfx2", 0, charlayout2,  128, 4 )
 GFXDECODE_END
 
 static MACHINE_CONFIG_START( tcl )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80,12000000/4)
@@ -219,15 +177,9 @@ DRIVER_INIT_MEMBER(tcl_state,tcl)
 {
 	/* only the first part is decrypted (and verified)*/
 
-<<<<<<< HEAD
-	UINT8 *dest = memregion("maincpu")->base();
-	int len = memregion("maincpu")->bytes();
-	dynamic_buffer src(len);
-=======
 	uint8_t *dest = memregion("maincpu")->base();
 	int len = memregion("maincpu")->bytes();
 	std::vector<uint8_t> src(len);
->>>>>>> upstream/master
 
 	int i,idx=0;
 	memcpy(&src[0], dest, len);

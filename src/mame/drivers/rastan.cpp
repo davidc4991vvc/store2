@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-// license:???
-=======
 // license:GPL-2.0+
->>>>>>> upstream/master
 // copyright-holders:Jarek Burczynski
 /***************************************************************************
 
@@ -155,18 +151,6 @@ Note: The 'rastsagaa' set's rom numbers were named as RSxx_37 through RSxx_42
       skipping RSxx_41. It's doubtful that Taito would reuse those numbers in
       2 different sets with different data/code. The names have been corrected
       to known files names where the code matched.
-<<<<<<< HEAD
-***************************************************************************/
-
-#include "emu.h"
-#include "cpu/z80/z80.h"
-#include "cpu/m68000/m68000.h"
-#include "includes/taitoipt.h"
-#include "audio/taitosnd.h"
-#include "sound/2151intf.h"
-#include "sound/msm5205.h"
-#include "includes/rastan.h"
-=======
 
 ***************************************************************************/
 
@@ -183,7 +167,6 @@ Note: The 'rastsagaa' set's rom numbers were named as RSxx_37 through RSxx_42
 #include "screen.h"
 #include "speaker.h"
 
->>>>>>> upstream/master
 
 WRITE8_MEMBER(rastan_state::rastan_bankswitch_w)
 {
@@ -193,18 +176,6 @@ WRITE8_MEMBER(rastan_state::rastan_bankswitch_w)
 
 WRITE_LINE_MEMBER(rastan_state::rastan_msm5205_vck)
 {
-<<<<<<< HEAD
-	if (m_adpcm_data != -1)
-	{
-		m_msm->data_w(m_adpcm_data & 0x0f);
-		m_adpcm_data = -1;
-	}
-	else
-	{
-		m_adpcm_data = memregion("adpcm")->base()[m_adpcm_pos];
-		m_adpcm_pos = (m_adpcm_pos + 1) & 0xffff;
-		m_msm->data_w(m_adpcm_data >> 4);
-=======
 	if (!state)
 		return;
 
@@ -215,7 +186,6 @@ WRITE_LINE_MEMBER(rastan_state::rastan_msm5205_vck)
 	{
 		m_adpcm_sel->ba_w(m_adpcm_data[m_adpcm_pos]);
 		m_adpcm_pos = (m_adpcm_pos + 1) & 0xffff;
->>>>>>> upstream/master
 	}
 }
 
@@ -227,10 +197,7 @@ WRITE8_MEMBER(rastan_state::rastan_msm5205_address_w)
 WRITE8_MEMBER(rastan_state::rastan_msm5205_start_w)
 {
 	m_msm->reset_w(0);
-<<<<<<< HEAD
-=======
 	m_adpcm_ff = false;
->>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(rastan_state::rastan_msm5205_stop_w)
@@ -253,11 +220,7 @@ static ADDRESS_MAP_START( rastan_map, AS_PROGRAM, 16, rastan_state )
 	AM_RANGE(0x390006, 0x390007) AM_READ_PORT("SYSTEM")
 	AM_RANGE(0x390008, 0x390009) AM_READ_PORT("DSWA")
 	AM_RANGE(0x39000a, 0x39000b) AM_READ_PORT("DSWB")
-<<<<<<< HEAD
-	AM_RANGE(0x3c0000, 0x3c0001) AM_WRITE(watchdog_reset16_w)
-=======
 	AM_RANGE(0x3c0000, 0x3c0001) AM_DEVWRITE("watchdog", watchdog_timer_device, reset16_w)
->>>>>>> upstream/master
 	AM_RANGE(0x3e0000, 0x3e0001) AM_READNOP AM_DEVWRITE8("tc0140syt", tc0140syt_device, master_port_w, 0x00ff)
 	AM_RANGE(0x3e0002, 0x3e0003) AM_DEVREADWRITE8("tc0140syt", tc0140syt_device, master_comm_r, master_comm_w, 0x00ff)
 	AM_RANGE(0xc00000, 0xc0ffff) AM_DEVREADWRITE("pc080sn", pc080sn_device, word_r, word_w)
@@ -387,11 +350,7 @@ void rastan_state::machine_start()
 	save_item(NAME(m_sprites_flipscreen));
 
 	save_item(NAME(m_adpcm_pos));
-<<<<<<< HEAD
-	save_item(NAME(m_adpcm_data));
-=======
 	save_item(NAME(m_adpcm_ff));
->>>>>>> upstream/master
 }
 
 void rastan_state::machine_reset()
@@ -399,19 +358,11 @@ void rastan_state::machine_reset()
 	m_sprite_ctrl = 0;
 	m_sprites_flipscreen = 0;
 	m_adpcm_pos = 0;
-<<<<<<< HEAD
-	m_adpcm_data = -1;
-}
-
-
-static MACHINE_CONFIG_START( rastan, rastan_state )
-=======
 	m_adpcm_ff = false;
 }
 
 
 static MACHINE_CONFIG_START( rastan )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, XTAL_16MHz/2)   /* verified on pcb */
@@ -423,10 +374,7 @@ static MACHINE_CONFIG_START( rastan )
 
 	MCFG_QUANTUM_TIME(attotime::from_hz(600))   /* 10 CPU slices per frame - enough for the sound CPU to read all commands */
 
-<<<<<<< HEAD
-=======
 	MCFG_WATCHDOG_ADD("watchdog")
->>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
@@ -443,10 +391,6 @@ static MACHINE_CONFIG_START( rastan )
 
 	MCFG_DEVICE_ADD("pc080sn", PC080SN, 0)
 	MCFG_PC080SN_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_PC080SN_PALETTE("palette")
-=======
->>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("pc090oj", PC090OJ, 0)
 	MCFG_PC090OJ_GFX_REGION(1)
@@ -464,18 +408,12 @@ static MACHINE_CONFIG_START( rastan )
 
 	MCFG_SOUND_ADD("msm", MSM5205, XTAL_384kHz) /* verified on pcb */
 	MCFG_MSM5205_VCLK_CB(WRITELINE(rastan_state, rastan_msm5205_vck)) /* VCK function */
-<<<<<<< HEAD
-	MCFG_MSM5205_PRESCALER_SELECTOR(MSM5205_S48_4B)      /* 8 kHz */
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.60)
-
-=======
 	MCFG_MSM5205_PRESCALER_SELECTOR(S48_4B)      /* 8 kHz */
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.60)
 
 	MCFG_DEVICE_ADD("adpcm_sel", LS157, 0)
 	MCFG_74157_OUT_CB(DEVWRITE8("msm", msm5205_device, data_w))
 
->>>>>>> upstream/master
 	MCFG_DEVICE_ADD("tc0140syt", TC0140SYT, 0)
 	MCFG_TC0140SYT_MASTER_CPU("maincpu")
 	MCFG_TC0140SYT_SLAVE_CPU("audiocpu")
@@ -552,8 +490,6 @@ ROM_START( rastana )
 	ROM_LOAD( "b04-20.76", 0x0000, 0x10000, CRC(fd1a34cc) SHA1(b1682959521fa295769207b75cf7d839e9ec95fd) ) /* samples are 4bit ADPCM */
 ROM_END
 
-<<<<<<< HEAD
-=======
 ROM_START( rastanb ) /* Earlier code base, but uses 2 US region roms and shows Taito Corporation Japan instead of Taito America Corporation */
 	ROM_REGION( 0x60000, "maincpu", 0 ) /* 6*64k for 68000 code */
 	ROM_LOAD16_BYTE( "b04-14.19", 0x00000, 0x10000, CRC(a38ac909) SHA1(66d792fee03c6bd87d15060b9d5cae74137c5ebd) ) /* These two are from the US rastanub set below */
@@ -582,7 +518,6 @@ ROM_START( rastanb ) /* Earlier code base, but uses 2 US region roms and shows T
 	ROM_LOAD( "b04-20.76", 0x0000, 0x10000, CRC(fd1a34cc) SHA1(b1682959521fa295769207b75cf7d839e9ec95fd) )
 ROM_END
 
->>>>>>> upstream/master
 /* Byte changes in Rev 1 US sets:
 
  ROM       0x5203  0x520B
@@ -686,8 +621,6 @@ ROM_END
 
 ROM_START( rastsaga )
 	ROM_REGION( 0x60000, "maincpu", 0 ) /* 6*64k for 68000 code */
-<<<<<<< HEAD
-=======
 	ROM_LOAD16_BYTE( "b04-32.19",   0x00000, 0x10000, CRC(1c91dbb1) SHA1(17fc55e8546cc0b847aebd67fb4570a1e9f128f3) )
 	ROM_LOAD16_BYTE( "b04-31.7",    0x00001, 0x10000, CRC(4c62e89e) SHA1(41673a1375a4ff3e59edbb6194915bb2348b70dd) )
 	ROM_LOAD16_BYTE( "b04-34-1.20", 0x20000, 0x10000, CRC(8f54dd19) SHA1(ed9c221ebce3ba76c39dc83fed58acff3028e6c9) )
@@ -716,7 +649,6 @@ ROM_END
 
 ROM_START( rastsagaa )
 	ROM_REGION( 0x60000, "maincpu", 0 ) /* 6*64k for 68000 code */
->>>>>>> upstream/master
 	ROM_LOAD16_BYTE( "b04-14.19",   0x00000, 0x10000, CRC(a38ac909) SHA1(66d792fee03c6bd87d15060b9d5cae74137c5ebd) )
 	ROM_LOAD16_BYTE( "b04-13.7",    0x00001, 0x10000, CRC(bad60872) SHA1(e020f79b3ac3d2abccfcd5d135d2dc49e1335c7d) )
 	ROM_LOAD16_BYTE( "b04-16-1.20", 0x20000, 0x10000, CRC(00b59e60) SHA1(545ab3eb9ef25c532dda5a9eec087665ba0cecc1) )
@@ -743,11 +675,7 @@ ROM_START( rastsagaa )
 	ROM_LOAD( "b04-20.76", 0x0000, 0x10000, CRC(fd1a34cc) SHA1(b1682959521fa295769207b75cf7d839e9ec95fd) )
 ROM_END
 
-<<<<<<< HEAD
-ROM_START( rastsagaa )
-=======
 ROM_START( rastsagab )
->>>>>>> upstream/master
 	ROM_REGION( 0x60000, "maincpu", 0 ) /* 6*64k for 68000 code */
 	ROM_LOAD16_BYTE( "b04-14.19",   0x00000, 0x10000, CRC(a38ac909) SHA1(66d792fee03c6bd87d15060b9d5cae74137c5ebd) ) /* Dumped as "RS19_38.BIN", corrected to B04-14 */
 	ROM_LOAD16_BYTE( "b04-13.7",    0x00001, 0x10000, CRC(bad60872) SHA1(e020f79b3ac3d2abccfcd5d135d2dc49e1335c7d) ) /* Dumped as "RS07_37.BIN", corrected to B04-13 */
@@ -776,17 +704,6 @@ ROM_START( rastsagab )
 ROM_END
 
 /* Newer revised code base */
-<<<<<<< HEAD
-GAME( 1987, rastan,    0,      rastan, rastan, driver_device,   0, ROT0, "Taito Corporation Japan",   "Rastan (World Rev 1)", MACHINE_SUPPORTS_SAVE )
-GAME( 1987, rastana,   rastan, rastan, rastsaga, driver_device, 0, ROT0, "Taito Corporation Japan",   "Rastan (World)", MACHINE_SUPPORTS_SAVE )
-GAME( 1987, rastanu,   rastan, rastan, rastsaga, driver_device, 0, ROT0, "Taito America Corporation", "Rastan (US Rev 1)", MACHINE_SUPPORTS_SAVE )
-GAME( 1987, rastanua,  rastan, rastan, rastsaga, driver_device, 0, ROT0, "Taito America Corporation", "Rastan (US)", MACHINE_SUPPORTS_SAVE )
-
-/* Based on earliest code base */
-GAME( 1987, rastanub,  rastan, rastan, rastsaga, driver_device, 0, ROT0, "Taito America Corporation", "Rastan (US, Earlier code base)", MACHINE_SUPPORTS_SAVE )
-GAME( 1987, rastsaga,  rastan, rastan, rastsaga, driver_device, 0, ROT0, "Taito Corporation",         "Rastan Saga (Japan Rev 1)", MACHINE_SUPPORTS_SAVE )
-GAME( 1987, rastsagaa, rastan, rastan, rastsaga, driver_device, 0, ROT0, "Taito Corporation",         "Rastan Saga (Japan)", MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1987, rastan,    0,      rastan, rastan,   rastan_state, 0, ROT0, "Taito Corporation Japan",   "Rastan (World Rev 1)",      MACHINE_SUPPORTS_SAVE )
 GAME( 1987, rastana,   rastan, rastan, rastsaga, rastan_state, 0, ROT0, "Taito Corporation Japan",   "Rastan (World)",            MACHINE_SUPPORTS_SAVE )
 GAME( 1987, rastanu,   rastan, rastan, rastsaga, rastan_state, 0, ROT0, "Taito America Corporation", "Rastan (US Rev 1)",         MACHINE_SUPPORTS_SAVE )
@@ -798,4 +715,3 @@ GAME( 1987, rastanb,   rastan, rastan, rastsaga, rastan_state, 0, ROT0, "Taito C
 GAME( 1987, rastanub,  rastan, rastan, rastsaga, rastan_state, 0, ROT0, "Taito America Corporation", "Rastan (US, Earlier code base)",               MACHINE_SUPPORTS_SAVE )
 GAME( 1987, rastsagaa, rastan, rastan, rastsaga, rastan_state, 0, ROT0, "Taito Corporation",         "Rastan Saga (Japan Rev 1, Earlier code base)", MACHINE_SUPPORTS_SAVE )
 GAME( 1987, rastsagab, rastan, rastan, rastsaga, rastan_state, 0, ROT0, "Taito Corporation",         "Rastan Saga (Japan, Earlier code base)",       MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

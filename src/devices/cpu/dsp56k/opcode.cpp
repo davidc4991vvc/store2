@@ -1,26 +1,16 @@
 // license:BSD-3-Clause
 // copyright-holders:Andrew Gardner
-<<<<<<< HEAD
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #include <stdio.h>
 
 #include "opcode.h"
 
 namespace DSP56K
 {
-<<<<<<< HEAD
-Opcode::Opcode(UINT16 w0, UINT16 w1) : m_word0(w0)/*, m_word1(w1)*/
-{
-	m_instruction.reset(Instruction::decodeInstruction(this, w0, w1));
-	m_parallelMove.reset(ParallelMove::decodeParallelMove(this, w0, w1));
-=======
 Opcode::Opcode(uint16_t w0, uint16_t w1) : m_word0(w0)/*, m_word1(w1)*/
 {
 	m_instruction = Instruction::decodeInstruction(this, w0, w1);
 	m_parallelMove = ParallelMove::decodeParallelMove(this, w0, w1);
->>>>>>> upstream/master
 }
 
 

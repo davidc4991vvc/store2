@@ -2,11 +2,7 @@
 // copyright-holders:Nicola Salmoria
 /***************************************************************************
 
-<<<<<<< HEAD
-  video.c
-=======
   mrdo.cpp
->>>>>>> upstream/master
 
   Functions to emulate the video hardware of the machine.
 
@@ -50,11 +46,7 @@
 
 PALETTE_INIT_MEMBER(mrdo_state, mrdo)
 {
-<<<<<<< HEAD
-	const UINT8 *color_prom = memregion("proms")->base();
-=======
 	const uint8_t *color_prom = memregion("proms")->base();
->>>>>>> upstream/master
 	int i;
 
 	const int R1 = 150;
@@ -122,11 +114,7 @@ PALETTE_INIT_MEMBER(mrdo_state, mrdo)
 	/* sprites */
 	for (i = 0x100; i < 0x140; i++)
 	{
-<<<<<<< HEAD
-		UINT8 ctabentry = color_prom[(i - 0x100) & 0x1f];
-=======
 		uint8_t ctabentry = color_prom[(i - 0x100) & 0x1f];
->>>>>>> upstream/master
 
 		if ((i - 0x100) & 0x20)
 			ctabentry >>= 4;        /* high 4 bits are for sprite color n + 8 */
@@ -147,11 +135,7 @@ PALETTE_INIT_MEMBER(mrdo_state, mrdo)
 
 TILE_GET_INFO_MEMBER(mrdo_state::get_bg_tile_info)
 {
-<<<<<<< HEAD
-	UINT8 attr = m_bgvideoram[tile_index];
-=======
 	uint8_t attr = m_bgvideoram[tile_index];
->>>>>>> upstream/master
 	SET_TILE_INFO_MEMBER(1,
 			m_bgvideoram[tile_index + 0x400] + ((attr & 0x80) << 1),
 			attr & 0x3f,
@@ -160,11 +144,7 @@ TILE_GET_INFO_MEMBER(mrdo_state::get_bg_tile_info)
 
 TILE_GET_INFO_MEMBER(mrdo_state::get_fg_tile_info)
 {
-<<<<<<< HEAD
-	UINT8 attr = m_fgvideoram[tile_index];
-=======
 	uint8_t attr = m_fgvideoram[tile_index];
->>>>>>> upstream/master
 	SET_TILE_INFO_MEMBER(0,
 			m_fgvideoram[tile_index+0x400] + ((attr & 0x80) << 1),
 			attr & 0x3f,
@@ -181,25 +161,12 @@ TILE_GET_INFO_MEMBER(mrdo_state::get_fg_tile_info)
 
 void mrdo_state::video_start()
 {
-<<<<<<< HEAD
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(mrdo_state::get_bg_tile_info),this),TILEMAP_SCAN_ROWS,8,8,32,32);
-	m_fg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(mrdo_state::get_fg_tile_info),this),TILEMAP_SCAN_ROWS,8,8,32,32);
-=======
 	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(mrdo_state::get_bg_tile_info),this),TILEMAP_SCAN_ROWS,8,8,32,32);
 	m_fg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(mrdo_state::get_fg_tile_info),this),TILEMAP_SCAN_ROWS,8,8,32,32);
->>>>>>> upstream/master
 
 	m_bg_tilemap->set_transparent_pen(0);
 	m_fg_tilemap->set_transparent_pen(0);
 
-<<<<<<< HEAD
-	m_bg_tilemap->set_scrolldx(0, 56);
-	m_fg_tilemap->set_scrolldx(0, 56);
-	m_bg_tilemap->set_scrolldy(0, 6);
-	m_fg_tilemap->set_scrolldy(0, 6);
-
-=======
->>>>>>> upstream/master
 	m_flipscreen = 0;
 
 	save_item(NAME(m_flipscreen));
@@ -260,11 +227,7 @@ WRITE8_MEMBER(mrdo_state::mrdo_flipscreen_w)
 
 void mrdo_state::draw_sprites( bitmap_ind16 &bitmap,const rectangle &cliprect )
 {
-<<<<<<< HEAD
-	UINT8 *spriteram = m_spriteram;
-=======
 	uint8_t *spriteram = m_spriteram;
->>>>>>> upstream/master
 	int offs;
 
 	for (offs = m_spriteram.bytes() - 4; offs >= 0; offs -= 4)
@@ -279,11 +242,7 @@ void mrdo_state::draw_sprites( bitmap_ind16 &bitmap,const rectangle &cliprect )
 	}
 }
 
-<<<<<<< HEAD
-UINT32 mrdo_state::screen_update_mrdo(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t mrdo_state::screen_update_mrdo(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	bitmap.fill(0, cliprect);
 	m_bg_tilemap->draw(screen, bitmap, cliprect, 0, 0);

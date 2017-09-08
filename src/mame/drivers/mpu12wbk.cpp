@@ -205,16 +205,6 @@
 
 *****************************************************************************************/
 
-<<<<<<< HEAD
-
-#define MASTER_CLOCK    XTAL_8MHz
-
-#include "emu.h"
-#include "cpu/m6809/m6809.h"
-#include "video/mc6845.h"
-#include "sound/ay8910.h"
-//#include "machine/nvram.h"
-=======
 #include "emu.h"
 #include "cpu/m6809/m6809.h"
 //#include "machine/nvram.h"
@@ -225,7 +215,6 @@
 
 
 #define MASTER_CLOCK    XTAL_8MHz
->>>>>>> upstream/master
 
 
 class mpu12wbk_state : public driver_device
@@ -238,27 +227,16 @@ public:
 		m_maincpu(*this, "maincpu"),
 		m_gfxdecode(*this, "gfxdecode") { }
 
-<<<<<<< HEAD
-	required_shared_ptr<UINT8> m_videoram;
-	required_shared_ptr<UINT8> m_colorram;
-=======
 	required_shared_ptr<uint8_t> m_videoram;
 	required_shared_ptr<uint8_t> m_colorram;
->>>>>>> upstream/master
 	tilemap_t *m_bg_tilemap;
 	DECLARE_WRITE8_MEMBER(mpu12wbk_videoram_w);
 	DECLARE_WRITE8_MEMBER(mpu12wbk_colorram_w);
 	DECLARE_DRIVER_INIT(mpu12wbk);
 	TILE_GET_INFO_MEMBER(get_bg_tile_info);
-<<<<<<< HEAD
-	virtual void video_start();
-	DECLARE_PALETTE_INIT(mpu12wbk);
-	UINT32 screen_update_mpu12wbk(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	virtual void video_start() override;
 	DECLARE_PALETTE_INIT(mpu12wbk);
 	uint32_t screen_update_mpu12wbk(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	required_device<cpu_device> m_maincpu;
 	required_device<gfxdecode_device> m_gfxdecode;
 };
@@ -301,19 +279,11 @@ TILE_GET_INFO_MEMBER(mpu12wbk_state::get_bg_tile_info)
 
 void mpu12wbk_state::video_start()
 {
-<<<<<<< HEAD
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(mpu12wbk_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
-}
-
-
-UINT32 mpu12wbk_state::screen_update_mpu12wbk(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(mpu12wbk_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
 }
 
 
 uint32_t mpu12wbk_state::screen_update_mpu12wbk(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	m_bg_tilemap->draw(screen, bitmap, cliprect, 0, 0);
 	return 0;
@@ -513,11 +483,7 @@ GFXDECODE_END
 *    Machine Drivers     *
 *************************/
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( mpu12wbk, mpu12wbk_state )
-=======
 static MACHINE_CONFIG_START( mpu12wbk )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6809, MASTER_CLOCK/2)  /* guess */
@@ -594,9 +560,5 @@ DRIVER_INIT_MEMBER(mpu12wbk_state, mpu12wbk)
 *      Game Drivers      *
 *************************/
 
-<<<<<<< HEAD
-/*    YEAR  NAME      PARENT  MACHINE   INPUT     STATE           INIT      ROT    COMPANY             FULLNAME                         FLAGS */
-=======
 //    YEAR  NAME      PARENT  MACHINE   INPUT     STATE           INIT      ROT   COMPANY             FULLNAME                          FLAGS
->>>>>>> upstream/master
 GAME( 1997, fruitstb, 0,      mpu12wbk, mpu12wbk, mpu12wbk_state, mpu12wbk, ROT0, "Webak Elektronik", "Fruit Star Bonus (Ver 8.20PIR)", MACHINE_NO_SOUND | MACHINE_NOT_WORKING )

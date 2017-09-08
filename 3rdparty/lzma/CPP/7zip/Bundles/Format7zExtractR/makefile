@@ -1,19 +1,12 @@
 PROG = 7zxr.dll
 DEF_FILE = ../../Archive/Archive2.def
-<<<<<<< HEAD
-CFLAGS = $(CFLAGS) -I ../../../ \
-=======
 CFLAGS = $(CFLAGS) \
->>>>>>> upstream/master
   -DEXTRACT_ONLY \
   -D_NO_CRYPTO
 
 COMMON_OBJS = \
   $O\CRC.obj \
-<<<<<<< HEAD
-=======
   $O\CrcReg.obj \
->>>>>>> upstream/master
   $O\IntToString.obj \
   $O\NewHandler.obj \
   $O\MyString.obj \
@@ -33,18 +26,11 @@ WIN_OBJS = \
   $O\InBuffer.obj \
   $O\FilterCoder.obj \
   $O\LimitedStreams.obj \
-<<<<<<< HEAD
-  $O\LockedStream.obj \
-=======
->>>>>>> upstream/master
   $O\MethodId.obj \
   $O\MethodProps.obj \
   $O\OutBuffer.obj \
   $O\ProgressUtils.obj \
-<<<<<<< HEAD
-=======
   $O\PropId.obj \
->>>>>>> upstream/master
   $O\StreamBinder.obj \
   $O\StreamObjects.obj \
   $O\StreamUtils.obj \
@@ -56,11 +42,6 @@ AR_OBJS = \
 
 AR_COMMON_OBJS = \
   $O\CoderMixer2.obj \
-<<<<<<< HEAD
-  $O\CoderMixer2MT.obj \
-  $O\CrossThreadProgress.obj \
-=======
->>>>>>> upstream/master
   $O\HandlerOut.obj \
   $O\ItemNameUtils.obj \
   $O\OutStreamWithCRC.obj \
@@ -71,10 +52,6 @@ AR_COMMON_OBJS = \
   $O\7zCompressionMode.obj \
   $O\7zDecode.obj \
   $O\7zExtract.obj \
-<<<<<<< HEAD
-  $O\7zFolderOutStream.obj \
-=======
->>>>>>> upstream/master
   $O\7zHandler.obj \
   $O\7zHeader.obj \
   $O\7zIn.obj \
@@ -88,10 +65,6 @@ COMPRESS_OBJS = \
   $O\Bcj2Register.obj \
   $O\BcjCoder.obj \
   $O\BcjRegister.obj \
-<<<<<<< HEAD
-  $O\BranchCoder.obj \
-=======
->>>>>>> upstream/master
   $O\BranchMisc.obj \
   $O\BranchRegister.obj \
   $O\ByteSwap.obj \
@@ -105,10 +78,7 @@ COMPRESS_OBJS = \
 
 C_OBJS = \
   $O\Alloc.obj \
-<<<<<<< HEAD
-=======
   $O\Bcj2.obj \
->>>>>>> upstream/master
   $O\Bra.obj \
   $O\Bra86.obj \
   $O\BraIA64.obj \
@@ -120,45 +90,4 @@ C_OBJS = \
 
 !include "../../Crc.mak"
 
-<<<<<<< HEAD
-OBJS = \
-  $O\StdAfx.obj \
-  $(CONSOLE_OBJS) \
-  $(COMMON_OBJS) \
-  $(WIN_OBJS) \
-  $(7ZIP_COMMON_OBJS) \
-  $(AR_OBJS) \
-  $(AR_COMMON_OBJS) \
-  $(7Z_OBJS) \
-  $(COMPRESS_OBJS) \
-  $(C_OBJS) \
-  $(ASM_OBJS) \
-  $O\resource.res
-
-
-!include "../../../Build.mak"
-
-$(COMMON_OBJS): ../../../Common/$(*B).cpp
-	$(COMPL)
-$(WIN_OBJS): ../../../Windows/$(*B).cpp
-	$(COMPL)
-$(7ZIP_COMMON_OBJS): ../../Common/$(*B).cpp
-	$(COMPL)
-$(AR_OBJS): ../../Archive/$(*B).cpp
-	$(COMPL)
-$(AR_COMMON_OBJS): ../../Archive/Common/$(*B).cpp
-	$(COMPL)
-
-$(7Z_OBJS): ../../Archive/7z/$(*B).cpp
-	$(COMPL)
-
-$(COMPRESS_OBJS): ../../Compress/$(*B).cpp
-	$(COMPL_O2)
-
-$(C_OBJS): ../../../../C/$(*B).c
-	$(COMPL_O2)
-
-!include "../../Asm.mak"
-=======
 !include "../../7zip.mak"
->>>>>>> upstream/master

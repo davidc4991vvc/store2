@@ -11,11 +11,7 @@
 #include "osdcore.h"
 #include "vbiparse.h"
 #include <math.h>
-<<<<<<< HEAD
-
-=======
 #include <algorithm>
->>>>>>> upstream/master
 
 
 /***************************************************************************
@@ -44,17 +40,10 @@
     code from a line of video data
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-int vbi_parse_manchester_code(const UINT16 *source, int sourcewidth, int sourceshift, int expectedbits, UINT32 *result)
-{
-	UINT8 srcabs[MAX_SOURCE_WIDTH];
-	UINT8 min, max, mid, srcabsval;
-=======
 int vbi_parse_manchester_code(const uint16_t *source, int sourcewidth, int sourceshift, int expectedbits, uint32_t *result)
 {
 	uint8_t srcabs[MAX_SOURCE_WIDTH];
 	uint8_t min, max, mid, srcabsval;
->>>>>>> upstream/master
 	double clock, bestclock;
 	int x, firstedge;
 	int besterr;
@@ -68,15 +57,9 @@ int vbi_parse_manchester_code(const uint16_t *source, int sourcewidth, int sourc
 	max = 0x00;
 	for (x = 0; x < sourcewidth; x++)
 	{
-<<<<<<< HEAD
-		UINT8 rawsrc = source[x] >> sourceshift;
-		min = MIN(min, rawsrc);
-		max = MAX(max, rawsrc);
-=======
 		uint8_t rawsrc = source[x] >> sourceshift;
 		min = std::min(min, rawsrc);
 		max = std::max(max, rawsrc);
->>>>>>> upstream/master
 	}
 
 	/* bail if the line is all black or all white */
@@ -92,11 +75,7 @@ int vbi_parse_manchester_code(const uint16_t *source, int sourcewidth, int sourc
 	srcabsval = (source[0] > mid);
 	for (x = 0; x < sourcewidth; x++)
 	{
-<<<<<<< HEAD
-		UINT8 rawsrc = source[x] >> sourceshift;
-=======
 		uint8_t rawsrc = source[x] >> sourceshift;
->>>>>>> upstream/master
 		if (rawsrc >= max)
 			srcabsval = 1;
 		else if (rawsrc <= min)
@@ -168,21 +147,13 @@ int vbi_parse_manchester_code(const uint16_t *source, int sourcewidth, int sourc
 		/* compute left and right average values */
 		leftavg = 0;
 		for (tx = leftstart; tx <= leftend; tx++)
-<<<<<<< HEAD
-			leftavg += (UINT8)(source[tx] >> sourceshift) - mid;
-=======
 			leftavg += (uint8_t)(source[tx] >> sourceshift) - mid;
->>>>>>> upstream/master
 		leftabs = (leftavg >= 0);
 		leftavg = (leftavg < 0) ? -leftavg : leftavg;
 
 		rightavg = 0;
 		for (tx = rightstart; tx <= rightend; tx++)
-<<<<<<< HEAD
-			rightavg += (UINT8)(source[tx] >> sourceshift) - mid;
-=======
 			rightavg += (uint8_t)(source[tx] >> sourceshift) - mid;
->>>>>>> upstream/master
 		rightabs = (rightavg >= 0);
 		rightavg = (rightavg < 0) ? -rightavg : rightavg;
 
@@ -203,11 +174,7 @@ int vbi_parse_manchester_code(const uint16_t *source, int sourcewidth, int sourc
     flag" from a line of video data
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-int vbi_parse_white_flag(const UINT16 *source, int sourcewidth, int sourceshift)
-=======
 bool vbi_parse_white_flag(const uint16_t *source, int sourcewidth, int sourceshift)
->>>>>>> upstream/master
 {
 	int histo[256] = { 0 };
 	int minval = 0xff;
@@ -220,11 +187,7 @@ bool vbi_parse_white_flag(const uint16_t *source, int sourcewidth, int sourceshi
 	/* compute a histogram of values */
 	for (x = 0; x < sourcewidth; x++)
 	{
-<<<<<<< HEAD
-		UINT8 yval = source[x] >> sourceshift;
-=======
 		uint8_t yval = source[x] >> sourceshift;
->>>>>>> upstream/master
 		histo[yval]++;
 	}
 
@@ -253,11 +216,7 @@ bool vbi_parse_white_flag(const uint16_t *source, int sourcewidth, int sourceshi
 	{
 		if (PRINTF_WHITE_FLAG)
 			printf("White flag NOT detected; threshold too low\n");
-<<<<<<< HEAD
-		return FALSE;
-=======
 		return false;
->>>>>>> upstream/master
 	}
 
 	/*
@@ -281,11 +240,7 @@ bool vbi_parse_white_flag(const uint16_t *source, int sourcewidth, int sourceshi
 		if (histo[x] > histo[peakval])
 			peakval = x;
 
-<<<<<<< HEAD
-	/* return TRUE if it is above the 90% mark */
-=======
 	/* return true if it is above the 90% mark */
->>>>>>> upstream/master
 	result = (peakval > minval + 9 * (maxval - minval) / 10);
 	if (PRINTF_WHITE_FLAG)
 		printf("White flag %s: peak=%02X thresh=%02X\n", result ? "detected" : "NOT detected", peakval, minval + 9 * (maxval - minval) / 10);
@@ -306,11 +261,7 @@ bool vbi_parse_white_flag(const uint16_t *source, int sourcewidth, int sourceshi
 	thresh = minval + 3 * (maxval - minval) / 4;
 	for (x = 0; x < sourcewidth; x++)
 	{
-<<<<<<< HEAD
-		UINT8 yval = source[x] >> sourceshift;
-=======
 		uint8_t yval = source[x] >> sourceshift;
->>>>>>> upstream/master
 		above += (yval >= thresh);
 	}
 	/* if at least 80% of the pixels are above the threshold, we'll call it white */
@@ -325,12 +276,6 @@ bool vbi_parse_white_flag(const uint16_t *source, int sourcewidth, int sourceshi
     frame
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-void vbi_parse_all(const UINT16 *source, int sourcerowpixels, int sourcewidth, int sourceshift, vbi_metadata *vbi)
-{
-	UINT32 bits[2][24];
-	UINT8 bitnum;
-=======
 /**
  * @fn  void vbi_parse_all(const uint16_t *source, int sourcerowpixels, int sourcewidth, int sourceshift, vbi_metadata *vbi)
  *
@@ -347,7 +292,6 @@ void vbi_parse_all(const uint16_t *source, int sourcerowpixels, int sourcewidth,
 {
 	uint32_t bits[2][24];
 	uint8_t bitnum;
->>>>>>> upstream/master
 
 	/* first reset it all */
 	memset(vbi, 0, sizeof(*vbi));
@@ -406,9 +350,6 @@ void vbi_parse_all(const uint16_t *source, int sourcerowpixels, int sourcewidth,
     into a smaller form for storage
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-void vbi_metadata_pack(UINT8 *dest, UINT32 framenum, const vbi_metadata *vbi)
-=======
 /**
  * @fn  void vbi_metadata_pack(uint8_t *dest, uint32_t framenum, const vbi_metadata *vbi)
  *
@@ -420,7 +361,6 @@ void vbi_metadata_pack(UINT8 *dest, UINT32 framenum, const vbi_metadata *vbi)
  */
 
 void vbi_metadata_pack(uint8_t *dest, uint32_t framenum, const vbi_metadata *vbi)
->>>>>>> upstream/master
 {
 	dest[0] = framenum >> 16;
 	dest[1] = framenum >> 8;
@@ -446,11 +386,6 @@ void vbi_metadata_pack(uint8_t *dest, uint32_t framenum, const vbi_metadata *vbi
     from a smaller form into the full structure
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-void vbi_metadata_unpack(vbi_metadata *vbi, UINT32 *framenum, const UINT8 *source)
-{
-	if (framenum != NULL)
-=======
 /**
  * @fn  void vbi_metadata_unpack(vbi_metadata *vbi, uint32_t *framenum, const uint8_t *source)
  *
@@ -464,7 +399,6 @@ void vbi_metadata_unpack(vbi_metadata *vbi, UINT32 *framenum, const UINT8 *sourc
 void vbi_metadata_unpack(vbi_metadata *vbi, uint32_t *framenum, const uint8_t *source)
 {
 	if (framenum != nullptr)
->>>>>>> upstream/master
 		*framenum = (source[0] << 16) | (source[1] << 8) | source[2];
 	vbi->white = source[3];
 	vbi->line16 = (source[4] << 16) | (source[5] << 8) | source[6];

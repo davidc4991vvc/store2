@@ -1,9 +1,6 @@
 // license:BSD-3-Clause
 // copyright-holders:smf
-<<<<<<< HEAD
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #include "atahle.h"
 
 #define VERBOSE                     0
@@ -43,16 +40,9 @@ enum
 #define DEVICE1_PDIAG_TIME                  (attotime::from_msec(2))
 #define DIAGNOSTIC_TIME                     (attotime::from_msec(2))
 
-<<<<<<< HEAD
-ata_hle_device::ata_hle_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock,const char *shortname, const char *source)
-	: device_t(mconfig, type, name, tag, owner, clock, shortname, source),
-	ata_device_interface(mconfig, *this),
-	device_slot_card_interface(mconfig, *this),
-=======
 ata_hle_device::ata_hle_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, type, tag, owner, clock),
 	device_ata_interface(mconfig, *this),
->>>>>>> upstream/master
 	m_buffer_offset(0),
 	m_buffer_size(0),
 	m_error(0),
@@ -221,11 +211,7 @@ void ata_hle_device::process_command()
 		m_status |= IDE_STATUS_ERR;
 		m_error = IDE_ERROR_ABRT;
 		set_irq(ASSERT_LINE);
-<<<<<<< HEAD
-		//debugger_break(device->machine());
-=======
 		//machine().debug_break();
->>>>>>> upstream/master
 		break;
 	}
 }
@@ -340,11 +326,7 @@ bool ata_hle_device::set_features()
 	return false;
 }
 
-<<<<<<< HEAD
-int ata_hle_device::bit_to_mode(UINT16 word)
-=======
 int ata_hle_device::bit_to_mode(uint16_t word)
->>>>>>> upstream/master
 {
 	switch (word>>8)
 	{
@@ -387,17 +369,10 @@ int ata_hle_device::ultra_dma_mode()
 	return bit_to_mode(m_identify_buffer[88]);
 }
 
-<<<<<<< HEAD
-UINT16 ata_hle_device::read_data()
-{
-	/* fetch the correct amount of data */
-	UINT16 result = m_buffer[m_buffer_offset++];
-=======
 uint16_t ata_hle_device::read_data()
 {
 	/* fetch the correct amount of data */
 	uint16_t result = m_buffer[m_buffer_offset++];
->>>>>>> upstream/master
 	if (!m_8bit_data_transfers)
 		result |= m_buffer[m_buffer_offset++] << 8;
 
@@ -411,11 +386,7 @@ uint16_t ata_hle_device::read_data()
 	return result;
 }
 
-<<<<<<< HEAD
-void ata_hle_device::write_data(UINT16 data)
-=======
 void ata_hle_device::write_data(uint16_t data)
->>>>>>> upstream/master
 {
 	/* store the correct amount of data */
 	m_buffer[m_buffer_offset++] = data;
@@ -571,15 +542,9 @@ WRITE_LINE_MEMBER( ata_hle_device::write_pdiag )
 	}
 }
 
-<<<<<<< HEAD
-UINT16 ata_hle_device::read_dma()
-{
-	UINT16 result = 0xffff;
-=======
 uint16_t ata_hle_device::read_dma()
 {
 	uint16_t result = 0xffff;
->>>>>>> upstream/master
 
 	if (device_selected())
 	{
@@ -625,11 +590,7 @@ READ16_MEMBER( ata_hle_device::read_cs0 )
 //  if (offset != IDE_CS0_DATA_RW && offset != IDE_CS0_STATUS_R)
 		LOG(("%s:IDE cs0 read at %X, mem_mask=%d\n", machine().describe_context(), offset, mem_mask));
 
-<<<<<<< HEAD
-	UINT16 result = 0xffff;
-=======
 	uint16_t result = 0xffff;
->>>>>>> upstream/master
 
 	if (device_selected() || m_single_device)
 	{
@@ -747,11 +708,7 @@ READ16_MEMBER( ata_hle_device::read_cs1 )
 //  if (offset != IDE_CS1_ALTERNATE_STATUS_R)
 		LOG(("%s:IDE cs1 read at %X, mem_mask=%d\n", machine().describe_context(), offset, mem_mask));
 
-<<<<<<< HEAD
-	UINT16 result = 0xffff;
-=======
 	uint16_t result = 0xffff;
->>>>>>> upstream/master
 
 	if (device_selected() || m_single_device)
 	{
@@ -811,11 +768,7 @@ READ16_MEMBER( ata_hle_device::read_cs1 )
 	return result;
 }
 
-<<<<<<< HEAD
-void ata_hle_device::write_dma( UINT16 data )
-=======
 void ata_hle_device::write_dma( uint16_t data )
->>>>>>> upstream/master
 {
 	if (device_selected())
 	{
@@ -874,11 +827,7 @@ WRITE16_MEMBER( ata_hle_device::write_cs0 )
 	}
 	else
 	{
-<<<<<<< HEAD
-		UINT8 old;
-=======
 		uint8_t old;
->>>>>>> upstream/master
 
 		switch (offset)
 		{
@@ -903,11 +852,7 @@ WRITE16_MEMBER( ata_hle_device::write_cs0 )
 
 			/* sector count */
 			case IDE_CS0_SECTOR_COUNT_RW:
-<<<<<<< HEAD
-				m_sector_count = data ? data : 256;
-=======
 				m_sector_count = (data & 0xff) ? (data & 0xff) : 0x100;
->>>>>>> upstream/master
 				break;
 
 			/* current sector */
@@ -981,11 +926,7 @@ WRITE16_MEMBER( ata_hle_device::write_cs1 )
 	}
 	else
 	{
-<<<<<<< HEAD
-		UINT8 old;
-=======
 		uint8_t old;
->>>>>>> upstream/master
 
 		switch (offset)
 		{

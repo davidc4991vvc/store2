@@ -1,11 +1,7 @@
 /*
  * transupp.h
  *
-<<<<<<< HEAD
- * Copyright (C) 1997-2009, Thomas G. Lane, Guido Vollbeding.
-=======
  * Copyright (C) 1997-2013, Thomas G. Lane, Guido Vollbeding.
->>>>>>> upstream/master
  * This file is part of the Independent JPEG Group's software.
  * For conditions of distribution and use, see the accompanying README file.
  *
@@ -55,14 +51,6 @@
  *
  * We also offer a lossless-crop option, which discards data outside a given
  * image region but losslessly preserves what is inside.  Like the rotate and
-<<<<<<< HEAD
- * flip transforms, lossless crop is restricted by the JPEG format: the upper
- * left corner of the selected region must fall on an iMCU boundary.  If this
- * does not hold for the given crop parameters, we silently move the upper left
- * corner up and/or left to make it so, simultaneously increasing the region
- * dimensions to keep the lower right crop corner unchanged.  (Thus, the
- * output image covers at least the requested region, but may cover more.)
-=======
  * flip transforms, lossless crop is restricted by the current JPEG format: the
  * upper left corner of the selected region must fall on an iMCU boundary.  If
  * this does not hold for the given crop parameters, we silently move the upper
@@ -73,7 +61,6 @@
  *
  * A complementary lossless-wipe option is provided to discard (gray out) data
  * inside a given image region while losslessly preserving what is outside.
->>>>>>> upstream/master
  *
  * We also provide a lossless-resize option, which is kind of a lossless-crop
  * operation in the DCT coefficient block domain - it discards higher-order
@@ -118,25 +105,12 @@ typedef enum {
 	JXFORM_TRANSVERSE,	/* transpose across UR-to-LL axis */
 	JXFORM_ROT_90,		/* 90-degree clockwise rotation */
 	JXFORM_ROT_180,		/* 180-degree rotation */
-<<<<<<< HEAD
-	JXFORM_ROT_270		/* 270-degree clockwise (or 90 ccw) */
-=======
 	JXFORM_ROT_270,		/* 270-degree clockwise (or 90 ccw) */
 	JXFORM_WIPE		/* wipe */
->>>>>>> upstream/master
 } JXFORM_CODE;
 
 /*
  * Codes for crop parameters, which can individually be unspecified,
-<<<<<<< HEAD
- * positive, or negative.  (Negative width or height makes no sense, though.)
- */
-
-typedef enum {
-	JCROP_UNSET,
-	JCROP_POS,
-	JCROP_NEG
-=======
  * positive or negative for xoffset or yoffset,
  * positive or forced for width or height.
  */
@@ -146,7 +120,6 @@ typedef enum {
         JCROP_POS,
         JCROP_NEG,
         JCROP_FORCE
->>>>>>> upstream/master
 } JCROP_CODE;
 
 /*
@@ -161,25 +134,15 @@ typedef struct {
   boolean perfect;		/* if TRUE, fail if partial MCUs are requested */
   boolean trim;			/* if TRUE, trim partial MCUs as needed */
   boolean force_grayscale;	/* if TRUE, convert color image to grayscale */
-<<<<<<< HEAD
-  boolean crop;			/* if TRUE, crop source image */
-=======
   boolean crop;			/* if TRUE, crop or wipe source image */
->>>>>>> upstream/master
 
   /* Crop parameters: application need not set these unless crop is TRUE.
    * These can be filled in by jtransform_parse_crop_spec().
    */
   JDIMENSION crop_width;	/* Width of selected region */
-<<<<<<< HEAD
-  JCROP_CODE crop_width_set;
-  JDIMENSION crop_height;	/* Height of selected region */
-  JCROP_CODE crop_height_set;
-=======
   JCROP_CODE crop_width_set;	/* (forced disables adjustment) */
   JDIMENSION crop_height;	/* Height of selected region */
   JCROP_CODE crop_height_set;	/* (forced disables adjustment) */
->>>>>>> upstream/master
   JDIMENSION crop_xoffset;	/* X offset of selected region */
   JCROP_CODE crop_xoffset_set;	/* (negative measures from right edge) */
   JDIMENSION crop_yoffset;	/* Y offset of selected region */
@@ -192,11 +155,8 @@ typedef struct {
   JDIMENSION output_height;
   JDIMENSION x_crop_offset;	/* destination crop offsets measured in iMCUs */
   JDIMENSION y_crop_offset;
-<<<<<<< HEAD
-=======
   JDIMENSION drop_width;	/* drop/wipe dimensions measured in iMCUs */
   JDIMENSION drop_height;
->>>>>>> upstream/master
   int iMCU_sample_width;	/* destination iMCU size */
   int iMCU_sample_height;
 } jpeg_transform_info;

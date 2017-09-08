@@ -1,11 +1,6 @@
 /*
-<<<<<<< HEAD
- * Copyright 2011-2015 Branimir Karadzic. All rights reserved.
- * License: http://www.opensource.org/licenses/BSD-2-Clause
-=======
  * Copyright 2011-2017 Branimir Karadzic. All rights reserved.
  * License: https://github.com/bkaradzic/bgfx#license-bsd-2-clause
->>>>>>> upstream/master
  */
 
 #include "bgfx_p.h"
@@ -22,8 +17,6 @@ namespace bgfx { namespace gl
 
 	static void* s_opengles = NULL;
 
-<<<<<<< HEAD
-=======
 	struct SwapChainGL
 	{
 		SwapChainGL(EAGLContext *_context, CAEAGLLayer *_layer)
@@ -159,7 +152,6 @@ namespace bgfx { namespace gl
 		GLint m_height;
 	};
 
->>>>>>> upstream/master
 	void GlContext::create(uint32_t _width, uint32_t _height)
 	{
 		s_opengles = bx::dlopen("/System/Library/Frameworks/OpenGLES.framework/OpenGLES");
@@ -167,11 +159,7 @@ namespace bgfx { namespace gl
 
 		BX_UNUSED(_width, _height);
 		CAEAGLLayer* layer = (CAEAGLLayer*)g_platformData.nwh;
-<<<<<<< HEAD
-		layer.opaque = true;
-=======
 		layer.opaque = [layer.style valueForKey:@"opaque"] == nil ? true : [[layer.style valueForKey:@"opaque"] boolValue];
->>>>>>> upstream/master
 
 		layer.drawableProperties = [NSDictionary dictionaryWithObjectsAndKeys
 										: [NSNumber numberWithBool:false]
@@ -212,9 +200,6 @@ namespace bgfx { namespace gl
 			, glCheckFramebufferStatus(GL_FRAMEBUFFER)
 			);
 
-<<<<<<< HEAD
-		import();
-=======
 		makeCurrent();
 		GL_CHECK(glClearColor(0.0f, 0.0f, 0.0f, 0.0f) );
 		GL_CHECK(glClear(GL_COLOR_BUFFER_BIT) );
@@ -225,7 +210,6 @@ namespace bgfx { namespace gl
 		import();
 
 		g_internalData.context = m_context;
->>>>>>> upstream/master
 	}
 
 	void GlContext::destroy()
@@ -306,20 +290,6 @@ namespace bgfx { namespace gl
 
 	uint64_t GlContext::getCaps() const
 	{
-<<<<<<< HEAD
-		return 0;
-	}
-
-	SwapChainGL* GlContext::createSwapChain(void* /*_nwh*/)
-	{
-		BX_CHECK(false, "Shouldn't be called!");
-		return NULL;
-	}
-
-	void GlContext::destroySwapChain(SwapChainGL*  /*_swapChain*/)
-	{
-		BX_CHECK(false, "Shouldn't be called!");
-=======
 		return BGFX_CAPS_SWAP_CHAIN;
 	}
 
@@ -331,21 +301,10 @@ namespace bgfx { namespace gl
 	void GlContext::destroySwapChain(SwapChainGL* _swapChain)
 	{
 		BX_DELETE(g_allocator, _swapChain);
->>>>>>> upstream/master
 	}
 
 	void GlContext::swap(SwapChainGL* _swapChain)
 	{
-<<<<<<< HEAD
-		BX_CHECK(NULL == _swapChain, "Shouldn't be called!"); BX_UNUSED(_swapChain);
-		GL_CHECK(glBindRenderbuffer(GL_RENDERBUFFER, m_colorRbo) );
-		EAGLContext* context = (EAGLContext*)m_context;
-		[context presentRenderbuffer:GL_RENDERBUFFER];
-	}
-
-	void GlContext::makeCurrent(SwapChainGL* /*_swapChain*/)
-	{
-=======
 		makeCurrent(_swapChain);
 
 		if (NULL == _swapChain)
@@ -376,7 +335,6 @@ namespace bgfx { namespace gl
 				_swapChain->makeCurrent();
 			}
 		}
->>>>>>> upstream/master
 	}
 
 	void GlContext::import()

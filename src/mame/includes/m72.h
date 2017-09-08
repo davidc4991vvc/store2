@@ -8,11 +8,8 @@
 #include "audio/m72.h"
 #include "sound/dac.h"
 #include "machine/pic8259.h"
-<<<<<<< HEAD
-=======
 #include "machine/upd4701.h"
 #include "screen.h"
->>>>>>> upstream/master
 
 #define M81_B_B_JUMPER_J3_S \
 	PORT_START("JumperJ3") \
@@ -48,10 +45,7 @@ public:
 		m_generic_paletteram_16(*this, "paletteram"),
 		m_generic_paletteram2_16(*this, "paletteram2"),
 		m_upd71059c(*this, "upd71059c"),
-<<<<<<< HEAD
-=======
 		m_upd4701(*this, {"upd4701l", "upd4701h"}),
->>>>>>> upstream/master
 		m_fg_source(0),
 		m_bg_source(0),
 		m_m81_b_b_j3(*this, "JumperJ3"),
@@ -62,42 +56,12 @@ public:
 	required_device<cpu_device> m_maincpu;
 	required_device<cpu_device> m_soundcpu;
 	optional_device<cpu_device> m_mcu;
-<<<<<<< HEAD
-	optional_device<dac_device> m_dac;
-=======
 	optional_device<dac_byte_interface> m_dac;
->>>>>>> upstream/master
 	optional_device<m72_audio_device> m_audio;
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<screen_device> m_screen;
 	required_device<palette_device> m_palette;
 
-<<<<<<< HEAD
-	required_shared_ptr<UINT16> m_spriteram;
-	required_shared_ptr<UINT16> m_videoram1;
-	required_shared_ptr<UINT16> m_videoram2;
-	optional_shared_ptr<UINT16> m_m82_rowscrollram;
-	optional_shared_ptr<UINT16> m_spriteram2;
-	optional_shared_ptr<UINT8> m_soundram;
-	required_shared_ptr<UINT16> m_generic_paletteram_16;
-	required_shared_ptr<UINT16> m_generic_paletteram2_16;
-	optional_device<pic8259_device> m_upd71059c;
-
-	UINT16 *m_protection_ram;
-	emu_timer *m_scanline_timer;
-	const UINT8 *m_protection_code;
-	const UINT8 *m_protection_crc;
-	UINT32 m_raster_irq_position;
-	UINT16 *m_buffered_spriteram;
-	tilemap_t *m_fg_tilemap;
-	tilemap_t *m_bg_tilemap;
-	tilemap_t *m_bg_tilemap_large;
-	INT32 m_scrollx1;
-	INT32 m_scrolly1;
-	INT32 m_scrollx2;
-	INT32 m_scrolly2;
-	INT32 m_video_off;
-=======
 	required_shared_ptr<uint16_t> m_spriteram;
 	required_shared_ptr<uint16_t> m_videoram1;
 	required_shared_ptr<uint16_t> m_videoram2;
@@ -123,26 +87,11 @@ public:
 	int32_t m_scrollx2;
 	int32_t m_scrolly2;
 	int32_t m_video_off;
->>>>>>> upstream/master
 
 	int m_fg_source;
 	int m_bg_source;
 	optional_ioport m_m81_b_b_j3;
 
-<<<<<<< HEAD
-	//poundfor specific
-	int m_prev[4];
-	int m_diff[4];
-
-	// majtitle specific
-	int m_m82_rowscroll;
-	UINT16 m_m82_tmcontrol;
-
-	// m72_i8751 specific
-	UINT8 m_mcu_snd_cmd_latch;
-	UINT8 m_mcu_sample_latch;
-	UINT32 m_mcu_sample_addr;
-=======
 	// majtitle specific
 	int m_m82_rowscroll;
 	uint16_t m_m82_tmcontrol;
@@ -151,7 +100,6 @@ public:
 	uint8_t m_mcu_snd_cmd_latch;
 	uint8_t m_mcu_sample_latch;
 	uint32_t m_mcu_sample_addr;
->>>>>>> upstream/master
 
 	// common
 	DECLARE_READ16_MEMBER(palette1_r);
@@ -182,11 +130,7 @@ public:
 	DECLARE_WRITE16_MEMBER(scrolly1_w);
 	DECLARE_WRITE16_MEMBER(scrolly2_w);
 	DECLARE_WRITE16_MEMBER(dmaon_w);
-<<<<<<< HEAD
-	DECLARE_WRITE16_MEMBER(port02_w);
-=======
 	DECLARE_WRITE8_MEMBER(port02_w);
->>>>>>> upstream/master
 	DECLARE_READ16_MEMBER(protection_r);
 	DECLARE_WRITE16_MEMBER(protection_w);
 
@@ -199,13 +143,8 @@ public:
 	DECLARE_WRITE16_MEMBER(airduelm72_sample_trigger_w);
 	DECLARE_WRITE16_MEMBER(dkgenm72_sample_trigger_w);
 	DECLARE_WRITE16_MEMBER(gallop_sample_trigger_w);
-<<<<<<< HEAD
-	DECLARE_READ16_MEMBER(poundfor_trackball_r);
-	DECLARE_WRITE16_MEMBER(rtype2_port02_w);
-=======
 	DECLARE_WRITE8_MEMBER(rtype2_port02_w);
 	DECLARE_WRITE8_MEMBER(poundfor_port02_w);
->>>>>>> upstream/master
 	DECLARE_WRITE16_MEMBER(m82_gfx_ctrl_w);
 	DECLARE_WRITE16_MEMBER(m82_tm_ctrl_w);
 
@@ -217,13 +156,8 @@ public:
 
 	TILEMAP_MAPPER_MEMBER(m82_scan_rows);
 
-<<<<<<< HEAD
-	void machine_start();
-	void machine_reset();
-=======
 	void machine_start() override;
 	void machine_reset() override;
->>>>>>> upstream/master
 	DECLARE_VIDEO_START(m72);
 	DECLARE_VIDEO_START(xmultipl);
 	DECLARE_VIDEO_START(hharry);
@@ -251,29 +185,15 @@ public:
 	TIMER_CALLBACK_MEMBER(delayed_ram16_w);
 
 
-<<<<<<< HEAD
-	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	UINT32 screen_update_m81(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	UINT32 screen_update_m82(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	inline void m72_m81_get_tile_info(tile_data &tileinfo,int tile_index,const UINT16 *vram,int gfxnum);
-	inline void m82_m84_get_tile_info(tile_data &tileinfo,int tile_index,const UINT16 *vram,int gfxnum);
-=======
 	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	uint32_t screen_update_m81(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	uint32_t screen_update_m82(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	inline void m72_m81_get_tile_info(tile_data &tileinfo,int tile_index,const uint16_t *vram,int gfxnum);
 	inline void m82_m84_get_tile_info(tile_data &tileinfo,int tile_index,const uint16_t *vram,int gfxnum);
->>>>>>> upstream/master
 	void register_savestate();
 	inline void changecolor(int color,int r,int g,int b);
 	void draw_sprites(bitmap_ind16 &bitmap,const rectangle &cliprect);
 	void majtitle_draw_sprites(bitmap_ind16 &bitmap,const rectangle &cliprect);
-<<<<<<< HEAD
-	int find_sample(int num);
-	void copy_le(UINT16 *dest, const UINT8 *src, UINT8 bytes);
-	void install_protection_handler(const UINT8 *code,const UINT8 *crc);
-=======
 	void copy_le(uint16_t *dest, const uint8_t *src, uint8_t bytes);
 	void install_protection_handler(const uint8_t *code,const uint8_t *crc);
->>>>>>> upstream/master
 };

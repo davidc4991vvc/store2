@@ -52,18 +52,12 @@ it as ASCII text.
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/m6502/m6502.h"
-#include "sound/ay8910.h"
-#include "includes/btime.h"
-=======
 #include "includes/btime.h"
 
 #include "cpu/m6502/m6502.h"
 #include "sound/ay8910.h"
 #include "speaker.h"
 
->>>>>>> upstream/master
 
 class scregg_state : public btime_state
 {
@@ -263,11 +257,7 @@ MACHINE_RESET_MEMBER(scregg_state,scregg)
 	m_btime_tilemap[3] = 0;
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( dommy, scregg_state )
-=======
 static MACHINE_CONFIG_START( dommy )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6502, XTAL_12MHz/8)
@@ -299,11 +289,7 @@ static MACHINE_CONFIG_START( dommy )
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( scregg, scregg_state )
-=======
 static MACHINE_CONFIG_START( scregg )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6502, XTAL_12MHz/8)
@@ -428,11 +414,7 @@ DRIVER_INIT_MEMBER(scregg_state,rockduck)
 {
 	// rd2.rdh and rd1.rdj are bitswapped, but not rd3.rdg .. are they really from the same board?
 	int x;
-<<<<<<< HEAD
-	UINT8 *src = memregion( "gfx1" )->base();
-=======
 	uint8_t *src = memregion( "gfx1" )->base();
->>>>>>> upstream/master
 
 	for (x = 0x2000; x < 0x6000; x++)
 	{
@@ -442,13 +424,7 @@ DRIVER_INIT_MEMBER(scregg_state,rockduck)
 }
 
 
-<<<<<<< HEAD
-GAME( 1983, dommy,    0,        dommy,  scregg,   driver_device, 0,        ROT270, "Technos Japan", "Dommy", MACHINE_SUPPORTS_SAVE )
-GAME( 1983, scregg,   0,        scregg, scregg,   driver_device, 0,        ROT270, "Technos Japan", "Scrambled Egg", MACHINE_SUPPORTS_SAVE )
-GAME( 1983, eggs,     scregg,   scregg, scregg,   driver_device, 0,        ROT270, "Technos Japan (Universal USA license)", "Eggs (USA)", MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1983, dommy,    0,        dommy,  scregg,   scregg_state,  0,        ROT270, "Technos Japan", "Dommy", MACHINE_SUPPORTS_SAVE )
 GAME( 1983, scregg,   0,        scregg, scregg,   scregg_state,  0,        ROT270, "Technos Japan", "Scrambled Egg", MACHINE_SUPPORTS_SAVE )
 GAME( 1983, eggs,     scregg,   scregg, scregg,   scregg_state,  0,        ROT270, "Technos Japan (Universal USA license)", "Eggs (USA)", MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master
 GAME( 1983, rockduck, 0,        scregg, rockduck, scregg_state,  rockduck, ROT270, "Datel SAS", "Rock Duck (prototype?)", MACHINE_WRONG_COLORS | MACHINE_SUPPORTS_SAVE )

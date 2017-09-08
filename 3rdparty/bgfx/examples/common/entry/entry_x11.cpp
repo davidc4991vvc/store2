@@ -1,52 +1,33 @@
 /*
-<<<<<<< HEAD
- * Copyright 2011-2015 Branimir Karadzic. All rights reserved.
- * License: http://www.opensource.org/licenses/BSD-2-Clause
-=======
  * Copyright 2011-2017 Branimir Karadzic. All rights reserved.
  * License: https://github.com/bkaradzic/bgfx#license-bsd-2-clause
->>>>>>> upstream/master
  */
 
 #include "entry_p.h"
 
-<<<<<<< HEAD
-#if ENTRY_CONFIG_USE_NATIVE && (BX_PLATFORM_FREEBSD || BX_PLATFORM_LINUX || BX_PLATFORM_RPI)
-=======
 #if ENTRY_CONFIG_USE_NATIVE && (BX_PLATFORM_BSD || BX_PLATFORM_LINUX || BX_PLATFORM_RPI)
->>>>>>> upstream/master
 
 #define XK_MISCELLANY
 #define XK_LATIN1
 #include <X11/keysymdef.h>
 #include <X11/Xlib.h> // will include X11 which #defines None... Don't mess with order of includes.
-<<<<<<< HEAD
-#include <bgfx/bgfxplatform.h>
-=======
 #include <X11/Xutil.h>
 #include <bgfx/platform.h>
 
 #include <unistd.h> // syscall
->>>>>>> upstream/master
 
 #undef None
 #include <bx/thread.h>
 #include <bx/os.h>
 #include <bx/handlealloc.h>
-<<<<<<< HEAD
-#include <string.h> // memset
-=======
 #include <bx/mutex.h>
 
->>>>>>> upstream/master
 #include <string>
 
 #include <fcntl.h>
 
 namespace entry
 {
-<<<<<<< HEAD
-=======
 	static const char* s_applicationName  = "BGFX";
 	static const char* s_applicationClass = "bgfx";
 
@@ -62,7 +43,6 @@ namespace entry
 		bgfx::setPlatformData(pd);
 	}
 
->>>>>>> upstream/master
 #define JS_EVENT_BUTTON 0x01 /* button pressed/released */
 #define JS_EVENT_AXIS   0x02 /* joystick moved */
 #define JS_EVENT_INIT   0x80 /* initial state of device */
@@ -100,8 +80,6 @@ namespace entry
 		GamepadAxis::RightZ,
 	};
 
-<<<<<<< HEAD
-=======
 	struct AxisDpadRemap
 	{
 		Key::Enum first;
@@ -119,7 +97,6 @@ namespace entry
 	};
 	BX_STATIC_ASSERT(BX_COUNTOF(s_translateAxis) == BX_COUNTOF(s_axisDpad) );
 
->>>>>>> upstream/master
 	struct Joystick
 	{
 		Joystick()
@@ -131,11 +108,7 @@ namespace entry
 		{
 			m_fd = open("/dev/input/js0", O_RDONLY | O_NONBLOCK);
 
-<<<<<<< HEAD
-			memset(m_value, 0, sizeof(m_value) );
-=======
 			bx::memSet(m_value, 0, sizeof(m_value) );
->>>>>>> upstream/master
 
 			// Deadzone values from xinput.h
 			m_deadzone[GamepadAxis::LeftX ] =
@@ -198,8 +171,6 @@ namespace entry
 					if (filter(axis, &value) )
 					{
 						_eventQueue.postAxisEvent(defaultWindow, handle, axis, value);
-<<<<<<< HEAD
-=======
 
 						if (Key::None != s_axisDpad[axis].first)
 						{
@@ -218,7 +189,6 @@ namespace entry
 							}
 						}
 
->>>>>>> upstream/master
 					}
 				}
 			}
@@ -281,11 +251,7 @@ namespace entry
 			: m_modifiers(Modifier::None)
 			, m_exit(false)
 		{
-<<<<<<< HEAD
-			memset(s_translateKey, 0, sizeof(s_translateKey) );
-=======
 			bx::memSet(s_translateKey, 0, sizeof(s_translateKey) );
->>>>>>> upstream/master
 			initTranslateKey(XK_Escape,       Key::Esc);
 			initTranslateKey(XK_Return,       Key::Return);
 			initTranslateKey(XK_Tab,          Key::Tab);
@@ -387,11 +353,7 @@ namespace entry
 			m_visual = DefaultVisual(m_display, screen);
 			m_root   = RootWindow(m_display, screen);
 
-<<<<<<< HEAD
-			memset(&m_windowAttrs, 0, sizeof(m_windowAttrs) );
-=======
 			bx::memSet(&m_windowAttrs, 0, sizeof(m_windowAttrs) );
->>>>>>> upstream/master
 			m_windowAttrs.background_pixmap = 0;
 			m_windowAttrs.border_pixel = 0;
 			m_windowAttrs.event_mask = 0
@@ -418,11 +380,7 @@ namespace entry
 
 			// Clear window to black.
 			XSetWindowAttributes attr;
-<<<<<<< HEAD
-			memset(&attr, 0, sizeof(attr) );
-=======
 			bx::memSet(&attr, 0, sizeof(attr) );
->>>>>>> upstream/master
 			XChangeWindowAttributes(m_display, m_window[0], CWBackPixel, &attr);
 
 			const char* wmDeleteWindowName = "WM_DELETE_WINDOW";
@@ -431,9 +389,6 @@ namespace entry
 			XSetWMProtocols(m_display, m_window[0], &wmDeleteWindow, 1);
 
 			XMapWindow(m_display, m_window[0]);
-<<<<<<< HEAD
-			XStoreName(m_display, m_window[0], "BGFX");
-=======
 			XStoreName(m_display, m_window[0], s_applicationName);
 
 			XClassHint* hint = XAllocClassHint();
@@ -441,7 +396,6 @@ namespace entry
 			hint->res_class = (char*)s_applicationClass;
 			XSetClassHint(m_display, m_window[0], hint);
 			XFree(hint);
->>>>>>> upstream/master
 
 			XIM im;
 			im = XOpenIM(m_display, NULL, NULL, NULL);
@@ -458,11 +412,7 @@ namespace entry
 					);
 
 			//
-<<<<<<< HEAD
-			bgfx::x11SetDisplayWindow(m_display, m_window[0]);
-=======
 			x11SetDisplayWindow(m_display, m_window[0]);
->>>>>>> upstream/master
 
 			MainThreadEntry mte;
 			mte.m_argc = _argc;
@@ -522,11 +472,7 @@ namespace entry
 									m_eventQueue.postMouseEvent(handle
 										, xbutton.x
 										, xbutton.y
-<<<<<<< HEAD
-										, 0
-=======
 										, m_mz
->>>>>>> upstream/master
 										, mb
 										, event.type == ButtonPress
 										);
@@ -660,11 +606,7 @@ namespace entry
 
 			// Clear window to black.
 			XSetWindowAttributes attr;
-<<<<<<< HEAD
-			memset(&attr, 0, sizeof(attr) );
-=======
 			bx::memSet(&attr, 0, sizeof(attr) );
->>>>>>> upstream/master
 			XChangeWindowAttributes(m_display, window, CWBackPixel, &attr);
 
 			const char* wmDeleteWindowName = "WM_DELETE_WINDOW";
@@ -675,15 +617,12 @@ namespace entry
 			XMapWindow(m_display, window);
 			XStoreName(m_display, window, msg->m_title.c_str() );
 
-<<<<<<< HEAD
-=======
 			XClassHint* hint = XAllocClassHint();
 			hint->res_name  = (char*)msg->m_title.c_str();
 			hint->res_class = (char*)s_applicationClass;
 			XSetClassHint(m_display, window, hint);
 			XFree(hint);
 
->>>>>>> upstream/master
 			m_eventQueue.postSizeEvent(_handle, msg->m_width, msg->m_height);
 
 			union cast
@@ -701,11 +640,7 @@ namespace entry
 
 		WindowHandle findHandle(Window _window)
 		{
-<<<<<<< HEAD
-			bx::LwMutexScope scope(m_lock);
-=======
 			bx::MutexScope scope(m_lock);
->>>>>>> upstream/master
 			for (uint32_t ii = 0, num = m_windowAlloc.getNumHandles(); ii < num; ++ii)
 			{
 				uint16_t idx = m_windowAlloc.getHandleAt(ii);
@@ -728,11 +663,7 @@ namespace entry
 		int32_t m_mz;
 
 		EventQueue m_eventQueue;
-<<<<<<< HEAD
-		bx::LwMutex m_lock;
-=======
 		bx::Mutex m_lock;
->>>>>>> upstream/master
 		bx::HandleAllocT<ENTRY_CONFIG_MAX_WINDOWS> m_windowAlloc;
 
 		int32_t m_depth;
@@ -773,11 +704,7 @@ namespace entry
 
 	WindowHandle createWindow(int32_t _x, int32_t _y, uint32_t _width, uint32_t _height, uint32_t _flags, const char* _title)
 	{
-<<<<<<< HEAD
-		bx::LwMutexScope scope(s_ctx.m_lock);
-=======
 		bx::MutexScope scope(s_ctx.m_lock);
->>>>>>> upstream/master
 		WindowHandle handle = { s_ctx.m_windowAlloc.alloc() };
 
 		if (isValid(handle) )
@@ -803,11 +730,7 @@ namespace entry
 			XUnmapWindow(s_ctx.m_display, s_ctx.m_window[_handle.idx]);
 			XDestroyWindow(s_ctx.m_display, s_ctx.m_window[_handle.idx]);
 
-<<<<<<< HEAD
-			bx::LwMutexScope scope(s_ctx.m_lock);
-=======
 			bx::MutexScope scope(s_ctx.m_lock);
->>>>>>> upstream/master
 			s_ctx.m_windowAlloc.free(_handle.idx);
 		}
 	}
@@ -856,8 +779,4 @@ int main(int _argc, char** _argv)
 	return s_ctx.run(_argc, _argv);
 }
 
-<<<<<<< HEAD
-#endif // ENTRY_CONFIG_USE_NATIVE && (BX_PLATFORM_FREEBSD || BX_PLATFORM_LINUX || BX_PLATFORM_RPI)
-=======
 #endif // ENTRY_CONFIG_USE_NATIVE && (BX_PLATFORM_BSD || BX_PLATFORM_LINUX || BX_PLATFORM_RPI)
->>>>>>> upstream/master

@@ -29,16 +29,6 @@
 //  md_rom_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const device_type MD_ROM_GAMEGENIE = &device_creator<md_rom_ggenie_device>;
-
-
-md_rom_ggenie_device::md_rom_ggenie_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: device_t(mconfig, MD_ROM_GAMEGENIE, "MD Game Genie", tag, owner, clock, "md_ggenie", __FILE__),
-						device_md_cart_interface( mconfig, *this ),
-						m_exp(*this, "subslot"), m_gg_bypass(0), m_reg_enable(0)
-				{
-=======
 DEFINE_DEVICE_TYPE(MD_ROM_GAMEGENIE, md_rom_ggenie_device, "md_ggenie", "MD Game Genie")
 
 
@@ -48,7 +38,6 @@ md_rom_ggenie_device::md_rom_ggenie_device(const machine_config &mconfig, const 
 	, m_exp(*this, "subslot")
 	, m_gg_bypass(0), m_reg_enable(0)
 {
->>>>>>> upstream/master
 }
 
 
@@ -168,12 +157,6 @@ WRITE16_MEMBER(md_rom_ggenie_device::write)
 	}
 }
 
-<<<<<<< HEAD
-//-------------------------------------------------
-//  MACHINE_CONFIG_FRAGMENT( ggenie_slot )
-//-------------------------------------------------
-=======
->>>>>>> upstream/master
 
 static SLOT_INTERFACE_START(ggenie_sub_cart)
 	SLOT_INTERFACE_INTERNAL("rom",  MD_STD_ROM)
@@ -183,23 +166,6 @@ static SLOT_INTERFACE_START(ggenie_sub_cart)
 	SLOT_INTERFACE_INTERNAL("rom_fram",  MD_ROM_FRAM)
 SLOT_INTERFACE_END
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_FRAGMENT( ggenie_slot )
-	MCFG_MD_CARTRIDGE_ADD("subslot", ggenie_sub_cart, NULL)
-	MCFG_MD_CARTRIDGE_NOT_MANDATORY
-MACHINE_CONFIG_END
-
-
-//-------------------------------------------------
-//  machine_config_additions - device-specific
-//  machine configurations
-//-------------------------------------------------
-
-machine_config_constructor md_rom_ggenie_device::device_mconfig_additions() const
-{
-	return MACHINE_CONFIG_NAME( ggenie_slot );
-}
-=======
 
 //-------------------------------------------------
 //  device_add_mconfig - add device configuration
@@ -209,4 +175,3 @@ MACHINE_CONFIG_MEMBER( md_rom_ggenie_device::device_add_mconfig )
 	MCFG_MD_CARTRIDGE_ADD("subslot", ggenie_sub_cart, nullptr)
 	MCFG_MD_CARTRIDGE_NOT_MANDATORY
 MACHINE_CONFIG_END
->>>>>>> upstream/master

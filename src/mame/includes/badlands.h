@@ -14,22 +14,6 @@ class badlands_state : public atarigen_state
 public:
 	badlands_state(const machine_config &mconfig, device_type type, const char *tag)
 		: atarigen_state(mconfig, type, tag),
-<<<<<<< HEAD
-			m_playfield_tilemap(*this, "playfield"),
-			m_mob(*this, "mob") { }
-
-	required_device<tilemap_device> m_playfield_tilemap;
-	required_device<atari_motion_objects_device> m_mob;
-
-	UINT8           m_pedal_value[2];
-
-	UINT8 *         m_bank_base;
-	UINT8 *         m_bank_source_data;
-
-	UINT8           m_playfield_tile_bank;
-	virtual void update_interrupts();
-	virtual void scanline_update(screen_device &screen, int scanline);
-=======
 			m_audiocpu(*this, "audiocpu"),
 			m_soundcomm(*this, "soundcomm"),
 			m_playfield_tilemap(*this, "playfield"),
@@ -49,7 +33,6 @@ public:
 
 	virtual void update_interrupts() override;
 	virtual void scanline_update(screen_device &screen, int scanline) override;
->>>>>>> upstream/master
 	DECLARE_READ16_MEMBER(sound_busy_r);
 	DECLARE_READ16_MEMBER(pedal_0_r);
 	DECLARE_READ16_MEMBER(pedal_1_r);
@@ -62,11 +45,6 @@ public:
 	DECLARE_MACHINE_RESET(badlands);
 	DECLARE_VIDEO_START(badlands);
 	DECLARE_MACHINE_RESET(badlandsb);
-<<<<<<< HEAD
-	UINT32 screen_update_badlands(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	INTERRUPT_GEN_MEMBER(vblank_int);
-	DECLARE_WRITE16_MEMBER( badlands_pf_bank_w );
-=======
 	uint32_t screen_update_badlands(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	INTERRUPT_GEN_MEMBER(vblank_int);
 	TIMER_DEVICE_CALLBACK_MEMBER(sound_scanline);
@@ -75,7 +53,6 @@ public:
 	DECLARE_READ8_MEMBER(bootleg_shared_r);
 	DECLARE_WRITE8_MEMBER(bootleg_shared_w);
 	DECLARE_WRITE8_MEMBER(bootleg_main_irq_w);
->>>>>>> upstream/master
 
 	static const atari_motion_objects_config s_mob_config;
 };

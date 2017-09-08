@@ -70,16 +70,6 @@
  ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/z80/z80.h"
-#include "sound/dac.h"
-#include "sound/ay8910.h"
-#include "includes/route16.h"
-
-
-
-
-=======
 #include "includes/route16.h"
 
 #include "cpu/z80/z80.h"
@@ -89,7 +79,6 @@
 
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 /*************************************
@@ -160,11 +149,7 @@ WRITE8_MEMBER(route16_state::ttmahjng_input_port_matrix_w)
 
 READ8_MEMBER(route16_state::ttmahjng_input_port_matrix_r)
 {
-<<<<<<< HEAD
-	UINT8 ret = 0;
-=======
 	uint8_t ret = 0;
->>>>>>> upstream/master
 
 	switch (m_ttmahjng_port_select)
 	{
@@ -281,11 +266,7 @@ ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( stratvox_cpu2_map, AS_PROGRAM, 8, route16_state )
 	AM_RANGE(0x0000, 0x1fff) AM_ROM
-<<<<<<< HEAD
-	AM_RANGE(0x2800, 0x2800) AM_DEVWRITE("dac", dac_device, write_unsigned8)
-=======
 	AM_RANGE(0x2800, 0x2800) AM_DEVWRITE("dac", dac_byte_interface, write)
->>>>>>> upstream/master
 	AM_RANGE(0x4000, 0x43ff) AM_RAM AM_SHARE("sharedram")
 	AM_RANGE(0x8000, 0xbfff) AM_RAM AM_SHARE("videoram2")
 ADDRESS_MAP_END
@@ -573,11 +554,7 @@ MACHINE_START_MEMBER(route16_state, ttmahjng)
 }
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( route16, route16_state )
-=======
 static MACHINE_CONFIG_START( route16 )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("cpu1", Z80, 2500000)  /* 10MHz / 4 = 2.5MHz */
@@ -599,15 +576,9 @@ static MACHINE_CONFIG_START( route16 )
 	MCFG_PALETTE_ADD_3BIT_RGB("palette")
 
 	/* sound hardware */
-<<<<<<< HEAD
-	MCFG_SPEAKER_STANDARD_MONO("mono")
-	MCFG_SOUND_ADD("ay8910", AY8910, 10000000/8)
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
-=======
 	MCFG_SPEAKER_STANDARD_MONO("speaker")
 	MCFG_SOUND_ADD("ay8910", AY8910, 10000000/8)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.5)
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
@@ -651,18 +622,11 @@ static MACHINE_CONFIG_DERIVED( stratvox, route16 )
 	MCFG_SN76477_MIXER_PARAMS(0, 0, 0)                  // mixer A, B, C
 	MCFG_SN76477_ENVELOPE_PARAMS(0, 0)                  // envelope 1, 2
 	MCFG_SN76477_ENABLE(1)                              // enable
-<<<<<<< HEAD
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
-
-	MCFG_DAC_ADD("dac")
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
-=======
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.5)
 
 	MCFG_SOUND_ADD("dac", DAC_8BIT_R2R, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.25) // unknown DAC
 	MCFG_DEVICE_ADD("vref", VOLTAGE_REGULATOR, 0) MCFG_VOLTAGE_REGULATOR_OUTPUT(5.0)
 	MCFG_SOUND_ROUTE_EX(0, "dac", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "dac", -1.0, DAC_VREF_NEG_INPUT)
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
@@ -707,11 +671,7 @@ MACHINE_CONFIG_END
  *
  *************************************/
 
-<<<<<<< HEAD
- ROM_START( route16 )
-=======
 	ROM_START( route16 )
->>>>>>> upstream/master
 	ROM_REGION( 0x10000, "cpu1", 0 )
 	ROM_LOAD( "tvg54.a0",     0x0000, 0x0800, CRC(aef9ffc1) SHA1(178d23e4963336ded93c13cb17940a4ae98270c5) )
 	ROM_LOAD( "tvg55.a1",     0x0800, 0x0800, CRC(389bc077) SHA1(b0606f6e647e81ceae7148bda96bd4673a51e823) )
@@ -876,8 +836,6 @@ ROM_START( stratvox )
 	ROM_LOAD( "im5623.f12",   0x0100, 0x0100, CRC(08793ef7) SHA1(bfc27aaf25d642cd57c0fbe73ab575853bd5f3ca) ) /* bottom bitmap */
 ROM_END
 
-<<<<<<< HEAD
-=======
 ROM_START( stratvoxa )
 	ROM_REGION( 0x10000, "cpu1", 0 )
 	ROM_LOAD( "sv-1",     0x0000, 0x0800, CRC(bf4d582e) SHA1(456f37e16d037a30dc4c1c460ebf9a248bf1a57c) )
@@ -897,7 +855,6 @@ ROM_START( stratvoxa )
 	ROM_LOAD( "im5623.f12",   0x0100, 0x0100, CRC(08793ef7) SHA1(bfc27aaf25d642cd57c0fbe73ab575853bd5f3ca) ) /* bottom bitmap */
 ROM_END
 
->>>>>>> upstream/master
 ROM_START( stratvoxb )
 	ROM_REGION( 0x10000, "cpu1", 0 )
 	ROM_LOAD( "j0-1",         0x0000, 0x0800, CRC(93c78274) SHA1(d7c8b5a064eaf96bcfd261b9857f06249477f6b8) )
@@ -980,8 +937,6 @@ ROM_START( spacecho2 )
 	ROM_LOAD( "mb7052.6m",    0x0100, 0x0100, CRC(08793ef7) SHA1(bfc27aaf25d642cd57c0fbe73ab575853bd5f3ca) ) /* bottom bitmap */
 ROM_END
 
-<<<<<<< HEAD
-=======
 /*
 Speak & Help
 
@@ -1017,7 +972,6 @@ ROM_START( speakhlp )
 	ROM_LOAD( "prom.6m",      0x0100, 0x0100, CRC(08793ef7) SHA1(bfc27aaf25d642cd57c0fbe73ab575853bd5f3ca) ) /* bottom bitmap */
 ROM_END
 
->>>>>>> upstream/master
 ROM_START( ttmahjng )
 	ROM_REGION( 0x10000, "cpu1", 0 )
 	ROM_LOAD( "ju04",         0x0000, 0x1000, CRC(fe7c693a) SHA1(be0630557e0bcd9ec2e9542cc4a4d947889ec57a) )
@@ -1062,11 +1016,7 @@ READ8_MEMBER(route16_state::routex_prot_read)
 
 DRIVER_INIT_MEMBER(route16_state,route16)
 {
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("cpu1")->base();
-=======
 	uint8_t *ROM = memregion("cpu1")->base();
->>>>>>> upstream/master
 	/* TO DO : Replace these patches with simulation of the protection device */
 
 	/* patch the protection */
@@ -1083,11 +1033,7 @@ DRIVER_INIT_MEMBER(route16_state,route16)
 
 DRIVER_INIT_MEMBER(route16_state,route16c)
 {
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("cpu1")->base();
-=======
 	uint8_t *ROM = memregion("cpu1")->base();
->>>>>>> upstream/master
 	/* Is this actually a bootleg? some of the protection has
 	   been removed */
 
@@ -1102,11 +1048,7 @@ DRIVER_INIT_MEMBER(route16_state,route16c)
 
 DRIVER_INIT_MEMBER(route16_state,route16a)
 {
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("cpu1")->base();
-=======
 	uint8_t *ROM = memregion("cpu1")->base();
->>>>>>> upstream/master
 	/* TO DO : Replace these patches with simulation of the protection device */
 
 	/* patch the protection */
@@ -1135,22 +1077,6 @@ DRIVER_INIT_MEMBER(route16_state,route16a)
  *
  *************************************/
 
-<<<<<<< HEAD
-GAME( 1981, route16,  0,        route16,  route16, route16_state,  route16,  ROT270, "Tehkan / Sun Electronics (Centuri license)", "Route 16 (set 1)", MACHINE_SUPPORTS_SAVE )
-GAME( 1981, route16a, route16,  route16,  route16, route16_state,  route16a, ROT270, "Tehkan / Sun Electronics (Centuri license)", "Route 16 (set 2)", MACHINE_SUPPORTS_SAVE )
-GAME( 1981, route16c, route16,  route16,  route16, route16_state,  route16c, ROT270, "Tehkan / Sun Electronics (Centuri license)", "Route 16 (set 3, bootleg?)", MACHINE_SUPPORTS_SAVE ) // similar to set 1 but with some protection removed?
-GAME( 1981, route16bl,route16,  route16,  route16, driver_device,  0,        ROT270, "bootleg (Leisure and Allied)",               "Route 16 (bootleg)", MACHINE_SUPPORTS_SAVE )
-GAME( 1981, routex,   route16,  routex,   route16, driver_device,  0,        ROT270, "bootleg",                                    "Route X (bootleg)", MACHINE_SUPPORTS_SAVE )
-
-GAME( 1980, speakres, 0,        speakres, speakres, driver_device, 0,        ROT270, "Sun Electronics",                 "Speak & Rescue", MACHINE_SUPPORTS_SAVE )
-GAME( 1980, speakresb,speakres, speakres, speakres, driver_device, 0,        ROT270, "bootleg",                         "Speak & Rescue (bootleg)", MACHINE_SUPPORTS_SAVE )
-GAME( 1980, stratvox, speakres, stratvox, stratvox, driver_device, 0,        ROT270, "Sun Electronics (Taito license)", "Stratovox", MACHINE_SUPPORTS_SAVE )
-GAME( 1980, stratvoxb,speakres, stratvox, stratvox, driver_device, 0,        ROT270, "bootleg",                         "Stratovox (bootleg)", MACHINE_SUPPORTS_SAVE )
-GAME( 1980, spacecho, speakres, spacecho, spacecho, driver_device, 0,        ROT270, "bootleg (Gayton Games)",          "Space Echo (set 1)", MACHINE_SUPPORTS_SAVE )
-GAME( 1980, spacecho2,speakres, spacecho, spacecho, driver_device, 0,        ROT270, "bootleg (Gayton Games)",          "Space Echo (set 2)", MACHINE_SUPPORTS_SAVE )
-
-GAME( 1981, ttmahjng, 0,        ttmahjng, ttmahjng, driver_device, 0,        ROT0,   "Taito", "T.T Mahjong", MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1981, route16,  0,        route16,  route16,  route16_state, route16,  ROT270, "Tehkan / Sun Electronics (Centuri license)", "Route 16 (set 1)", MACHINE_SUPPORTS_SAVE )
 GAME( 1981, route16a, route16,  route16,  route16,  route16_state, route16a, ROT270, "Tehkan / Sun Electronics (Centuri license)", "Route 16 (set 2)", MACHINE_SUPPORTS_SAVE )
 GAME( 1981, route16c, route16,  route16,  route16,  route16_state, route16c, ROT270, "Tehkan / Sun Electronics (Centuri license)", "Route 16 (set 3, bootleg?)", MACHINE_SUPPORTS_SAVE ) // similar to set 1 but with some protection removed?
@@ -1167,4 +1093,3 @@ GAME( 1980, spacecho2,speakres, spacecho, spacecho, route16_state, 0,        ROT
 GAME( 1980, speakhlp, speakres, spacecho, spacecho, route16_state, 0,        ROT270, "bootleg",                         "Speak & Help", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_SOUND )
 
 GAME( 1981, ttmahjng, 0,        ttmahjng, ttmahjng, route16_state, 0,        ROT0,   "Taito", "T.T Mahjong", MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

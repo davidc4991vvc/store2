@@ -59,13 +59,8 @@
 
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/m6502/m6502.h"
-#include "includes/astrof.h"
-=======
 #include "includes/astrof.h"
 #include "cpu/m6502/m6502.h"
->>>>>>> upstream/master
 
 
 #define MASTER_CLOCK        (XTAL_10_595MHz)
@@ -111,11 +106,7 @@ INPUT_CHANGED_MEMBER(astrof_state::coin_inserted)
 {
 	/* coin insertion causes an NMI */
 	m_maincpu->set_input_line(INPUT_LINE_NMI, newval ? ASSERT_LINE : CLEAR_LINE);
-<<<<<<< HEAD
-	coin_counter_w(machine(), 0, newval);
-=======
 	machine().bookkeeping().coin_counter_w(0, newval);
->>>>>>> upstream/master
 }
 
 
@@ -134,11 +125,7 @@ CUSTOM_INPUT_MEMBER(astrof_state::astrof_p1_controls_r)
 
 CUSTOM_INPUT_MEMBER(astrof_state::astrof_p2_controls_r)
 {
-<<<<<<< HEAD
-	UINT32 ret;
-=======
 	uint32_t ret;
->>>>>>> upstream/master
 
 	/* on an upright cabinet, a single set of controls
 	   is connected to both sets of pins on the edge
@@ -154,11 +141,7 @@ CUSTOM_INPUT_MEMBER(astrof_state::astrof_p2_controls_r)
 
 CUSTOM_INPUT_MEMBER(astrof_state::tomahawk_controls_r)
 {
-<<<<<<< HEAD
-	UINT32 ret;
-=======
 	uint32_t ret;
->>>>>>> upstream/master
 
 	/* on a cocktail cabinet, two sets of controls are
 	   multiplexed on a single set of inputs
@@ -187,27 +170,6 @@ CUSTOM_INPUT_MEMBER(astrof_state::tomahawk_controls_r)
 void astrof_state::video_start()
 {
 	/* allocate the color RAM -- half the size of the video RAM as A0 is not connected */
-<<<<<<< HEAD
-	m_colorram = auto_alloc_array(machine(), UINT8, m_videoram.bytes() / 2);
-	save_pointer(NAME(m_colorram), m_videoram.bytes() / 2);
-}
-
-
-rgb_t astrof_state::make_pen( UINT8 data )
-{
-	UINT8 r1_bit = m_red_on ? 0x01 : (data >> 0) & 0x01;
-	UINT8 r2_bit = m_red_on ? 0x01 : (data >> 1) & 0x01;
-	UINT8 g1_bit = (data >> 2) & 0x01;
-	UINT8 g2_bit = (data >> 3) & 0x01;
-	UINT8 b1_bit = (data >> 4) & 0x01;
-	UINT8 b2_bit = (data >> 5) & 0x01;
-
-	/* this is probably not quite right, but I don't have the
-	   knowledge to figure out the actual weights - ZV */
-	UINT8 r = (0xc0 * r1_bit) + (0x3f * r2_bit);
-	UINT8 g = (0xc0 * g1_bit) + (0x3f * g2_bit);
-	UINT8 b = (0xc0 * b1_bit) + (0x3f * b2_bit);
-=======
 	m_colorram = std::make_unique<uint8_t[]>(m_videoram.bytes() / 2);
 	save_pointer(NAME(m_colorram.get()), m_videoram.bytes() / 2);
 }
@@ -227,7 +189,6 @@ rgb_t astrof_state::make_pen( uint8_t data )
 	uint8_t r = (0xc0 * r1_bit) + (0x3f * r2_bit);
 	uint8_t g = (0xc0 * g1_bit) + (0x3f * g2_bit);
 	uint8_t b = (0xc0 * b1_bit) + (0x3f * b2_bit);
->>>>>>> upstream/master
 
 	return rgb_t(r, g, b);
 }
@@ -236,15 +197,9 @@ rgb_t astrof_state::make_pen( uint8_t data )
 void astrof_state::astrof_get_pens( pen_t *pens )
 {
 	offs_t i;
-<<<<<<< HEAD
-	UINT8 bank = (m_astrof_palette_bank ? 0x10 : 0x00);
-	UINT8 config = read_safe(ioport("FAKE"), 0x00);
-	UINT8 *prom = memregion("proms")->base();
-=======
 	uint8_t bank = (m_astrof_palette_bank ? 0x10 : 0x00);
 	uint8_t config = m_fake_port.read_safe(0x00);
 	uint8_t *prom = memregion("proms")->base();
->>>>>>> upstream/master
 
 	/* a common wire hack to the pcb causes the prom halves to be inverted */
 	/* this results in e.g. astrof background being black */
@@ -269,11 +224,7 @@ void astrof_state::astrof_get_pens( pen_t *pens )
 
 	for (i = 0; i < ASTROF_NUM_PENS; i++)
 	{
-<<<<<<< HEAD
-		UINT8 data = prom[bank | i];
-=======
 		uint8_t data = prom[bank | i];
->>>>>>> upstream/master
 		pens[i] = make_pen(data);
 	}
 }
@@ -282,15 +233,6 @@ void astrof_state::astrof_get_pens( pen_t *pens )
 void astrof_state::tomahawk_get_pens( pen_t *pens )
 {
 	offs_t i;
-<<<<<<< HEAD
-	UINT8 *prom = memregion("proms")->base();
-	UINT8 config = read_safe(ioport("FAKE"), 0x00);
-
-	for (i = 0; i < TOMAHAWK_NUM_PENS; i++)
-	{
-		UINT8 data;
-		UINT8 pen;
-=======
 	uint8_t *prom = memregion("proms")->base();
 	uint8_t config = m_fake_port.read_safe(0x00);
 
@@ -298,7 +240,6 @@ void astrof_state::tomahawk_get_pens( pen_t *pens )
 	{
 		uint8_t data;
 		uint8_t pen;
->>>>>>> upstream/master
 
 		/* a common wire hack to the pcb causes the prom halves to be inverted */
 		/* this results in e.g. astrof background being black */
@@ -348,11 +289,7 @@ WRITE8_MEMBER(astrof_state::video_control_1_w)
 	m_flipscreen = ((data >> 0) & 0x01) & ioport("CAB")->read();
 
 	/* this ties to the CLR pin of the shift registers */
-<<<<<<< HEAD
-	m_screen_off = (data & 0x02) ? TRUE : FALSE;
-=======
 	m_screen_off = (data & 0x02) ? true : false;
->>>>>>> upstream/master
 
 	/* D2 - not connected in the schematics, but at one point Astro Fighter sets it to 1 */
 	/* D3-D7 - not connected */
@@ -361,27 +298,16 @@ WRITE8_MEMBER(astrof_state::video_control_1_w)
 }
 
 
-<<<<<<< HEAD
-void astrof_state::astrof_set_video_control_2( UINT8 data )
-=======
 void astrof_state::astrof_set_video_control_2( uint8_t data )
->>>>>>> upstream/master
 {
 	/* D0 - OUT0 - goes to edge conn. pin A10 - was perhaps meant to be a start lamp */
 	/* D1 - OUT1 - goes to edge conn. pin A11 - was perhaps meant to be a start lamp */
 
 	/* D2 - selects one of the two palette banks */
-<<<<<<< HEAD
-	m_astrof_palette_bank = (data & 0x04) ? TRUE : FALSE;
-
-	/* D3 - turns on the red color gun regardless of the value in the color PROM */
-	m_red_on = (data & 0x08) ? TRUE : FALSE;
-=======
 	m_astrof_palette_bank = (data & 0x04) ? true : false;
 
 	/* D3 - turns on the red color gun regardless of the value in the color PROM */
 	m_red_on = (data & 0x08) ? true : false;
->>>>>>> upstream/master
 
 	/* D4-D7 - not connected */
 }
@@ -393,21 +319,13 @@ WRITE8_MEMBER(astrof_state::astrof_video_control_2_w)
 }
 
 
-<<<<<<< HEAD
-void astrof_state::spfghmk2_set_video_control_2( UINT8 data )
-=======
 void astrof_state::spfghmk2_set_video_control_2( uint8_t data )
->>>>>>> upstream/master
 {
 	/* D0 - OUT0 - goes to edge conn. pin A10 - was perhaps meant to be a start lamp */
 	/* D1 - OUT1 - goes to edge conn. pin A11 - was perhaps meant to be a start lamp */
 
 	/* D2 - selects one of the two palette banks */
-<<<<<<< HEAD
-	m_astrof_palette_bank = (data & 0x04) ? TRUE : FALSE;
-=======
 	m_astrof_palette_bank = (data & 0x04) ? true : false;
->>>>>>> upstream/master
 
 	/* D3-D7 - not connected */
 }
@@ -419,22 +337,14 @@ WRITE8_MEMBER(astrof_state::spfghmk2_video_control_2_w)
 }
 
 
-<<<<<<< HEAD
-void astrof_state::tomahawk_set_video_control_2( UINT8 data )
-=======
 void astrof_state::tomahawk_set_video_control_2( uint8_t data )
->>>>>>> upstream/master
 {
 	/* D0 - OUT0 - goes to edge conn. pin A10 - was perhaps meant to be a start lamp */
 	/* D1 - OUT1 - goes to edge conn. pin A11 - was perhaps meant to be a start lamp */
 	/* D2 - not connected */
 
 	/* D3 - turns on the red color gun regardless of the value in the color PROM */
-<<<<<<< HEAD
-	m_red_on = (data & 0x08) ? TRUE : FALSE;
-=======
 	m_red_on = (data & 0x08) ? true : false;
->>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(astrof_state::tomahawk_video_control_2_w)
@@ -450,28 +360,16 @@ void astrof_state::video_update_common( bitmap_rgb32 &bitmap, const rectangle &c
 
 	for (offs = 0; offs < m_videoram.bytes(); offs++)
 	{
-<<<<<<< HEAD
-		UINT8 data;
-		int i;
-
-		UINT8 color = m_colorram[offs >> 1];
-=======
 		uint8_t data;
 		int i;
 
 		uint8_t color = m_colorram[offs >> 1];
->>>>>>> upstream/master
 
 		pen_t back_pen = pens[(color & (num_pens-1)) | 0x00];
 		pen_t fore_pen = pens[(color & (num_pens-1)) | 0x01];
 
-<<<<<<< HEAD
-		UINT8 y = offs;
-		UINT8 x = offs >> 8 << 3;
-=======
 		uint8_t y = offs;
 		uint8_t x = offs >> 8 << 3;
->>>>>>> upstream/master
 
 		if (!m_flipscreen)
 			y = ~y;
@@ -500,11 +398,7 @@ void astrof_state::video_update_common( bitmap_rgb32 &bitmap, const rectangle &c
 }
 
 
-<<<<<<< HEAD
-UINT32 astrof_state::screen_update_astrof(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
-=======
 uint32_t astrof_state::screen_update_astrof(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	pen_t pens[ASTROF_NUM_PENS];
 
@@ -516,11 +410,7 @@ uint32_t astrof_state::screen_update_astrof(screen_device &screen, bitmap_rgb32 
 }
 
 
-<<<<<<< HEAD
-UINT32 astrof_state::screen_update_tomahawk(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
-=======
 uint32_t astrof_state::screen_update_tomahawk(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	pen_t pens[TOMAHAWK_NUM_PENS];
 
@@ -608,11 +498,7 @@ MACHINE_START_MEMBER(astrof_state,spfghmk2)
 
 
 	/* the red background circuit is disabled */
-<<<<<<< HEAD
-	m_red_on = FALSE;
-=======
 	m_red_on = false;
->>>>>>> upstream/master
 
 	/* register for state saving */
 	save_item(NAME(m_flipscreen));
@@ -735,13 +621,8 @@ static INPUT_PORTS_START( astrof )
 	PORT_START("IN")
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_START1 )
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_START2 )
-<<<<<<< HEAD
-	PORT_BIT( 0x1c, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, astrof_state,astrof_p1_controls_r, NULL)
-	PORT_BIT( 0xe0, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, astrof_state,astrof_p2_controls_r, NULL)
-=======
 	PORT_BIT( 0x1c, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, astrof_state,astrof_p1_controls_r, nullptr)
 	PORT_BIT( 0xe0, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, astrof_state,astrof_p2_controls_r, nullptr)
->>>>>>> upstream/master
 
 	PORT_START("P1")
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT ) PORT_2WAY
@@ -795,13 +676,8 @@ static INPUT_PORTS_START( abattle )
 	PORT_START("IN")
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_START1 )
 	PORT_BIT( 0x02, IP_ACTIVE_HIGH, IPT_START2 )
-<<<<<<< HEAD
-	PORT_BIT( 0x1c, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, astrof_state,astrof_p1_controls_r, NULL)
-	PORT_BIT( 0xe0, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, astrof_state,astrof_p2_controls_r, NULL)
-=======
 	PORT_BIT( 0x1c, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, astrof_state,astrof_p1_controls_r, nullptr)
 	PORT_BIT( 0xe0, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, astrof_state,astrof_p2_controls_r, nullptr)
->>>>>>> upstream/master
 
 	PORT_START("P1")
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_JOYSTICK_RIGHT ) PORT_2WAY
@@ -855,13 +731,8 @@ static INPUT_PORTS_START( spfghmk2 )
 	PORT_START("IN")
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_START1 )
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_START2 )
-<<<<<<< HEAD
-	PORT_BIT( 0x1c, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, astrof_state,astrof_p1_controls_r, NULL)
-	PORT_BIT( 0xe0, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, astrof_state,astrof_p2_controls_r, NULL)
-=======
 	PORT_BIT( 0x1c, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, astrof_state,astrof_p1_controls_r, nullptr)
 	PORT_BIT( 0xe0, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, astrof_state,astrof_p2_controls_r, nullptr)
->>>>>>> upstream/master
 
 	PORT_START("P1")
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT ) PORT_2WAY
@@ -911,13 +782,8 @@ static INPUT_PORTS_START( spfghmk22 )
 	PORT_START("IN")
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_START1 )
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_START2 )
-<<<<<<< HEAD
-	PORT_BIT( 0x1c, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, astrof_state,astrof_p1_controls_r, NULL)
-	PORT_BIT( 0xe0, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, astrof_state,astrof_p2_controls_r, NULL)
-=======
 	PORT_BIT( 0x1c, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, astrof_state,astrof_p1_controls_r, nullptr)
 	PORT_BIT( 0xe0, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, astrof_state,astrof_p2_controls_r, nullptr)
->>>>>>> upstream/master
 
 	PORT_START("P1")
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT ) PORT_2WAY
@@ -970,11 +836,7 @@ static INPUT_PORTS_START( tomahawk )
 	PORT_INCLUDE( astrof_common )
 
 	PORT_START("IN")
-<<<<<<< HEAD
-	PORT_BIT( 0x1f, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, astrof_state,tomahawk_controls_r, NULL)
-=======
 	PORT_BIT( 0x1f, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, astrof_state,tomahawk_controls_r, nullptr)
->>>>>>> upstream/master
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_START1 )
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_START2 )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNUSED )
@@ -1048,11 +910,7 @@ INPUT_PORTS_END
  *
  *************************************/
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( base, astrof_state )
-=======
 static MACHINE_CONFIG_START( base )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6502, MAIN_CPU_CLOCK)
@@ -1314,8 +1172,6 @@ ROM_START( acombat3 )
 	ROM_LOAD( "8f-clr.bin",   0x0000, 0x0100, CRC(3bf3ccb0) SHA1(d61d19d38045f42a9adecf295e479fee239bed48) )
 ROM_END
 
-<<<<<<< HEAD
-=======
 ROM_START( acombat4 )
 	ROM_REGION( 0x10000, "maincpu", 0 )
 	ROM_LOAD( "11.bin", 0xd000, 0x0400, CRC(9ba57987) SHA1(becf89b7d474f86839f13f9be5502c91491e8584) )
@@ -1374,7 +1230,6 @@ ROM_START( strfight )
 	ROM_LOAD( "mmi6341-1j.12c", 0x0000, 0x0200, CRC(528034d3) SHA1(29ef9cfe2540f9a1fb9d0184a4c8fd74a4d6e6ba) )
 ROM_END
 
->>>>>>> upstream/master
 ROM_START( sstarbtl )
 	ROM_REGION( 0x10000, "maincpu", 0 )
 	ROM_LOAD( "b.bin",        0xd000, 0x0400, CRC(16ad2bcc) SHA1(e7f55d17ee18afbb045cd0fd8d3ffc0c8300130a) )
@@ -1474,13 +1329,8 @@ ROM_END
 DRIVER_INIT_MEMBER(astrof_state,abattle)
 {
 	/* use the protection PROM to decrypt the ROMs */
-<<<<<<< HEAD
-	UINT8 *rom = memregion("maincpu")->base();
-	UINT8 *prom = memregion("user1")->base();
-=======
 	uint8_t *rom = memregion("maincpu")->base();
 	uint8_t *prom = memregion("user1")->base();
->>>>>>> upstream/master
 	int i;
 
 	for(i = 0xd000; i < 0x10000; i++)
@@ -1494,11 +1344,7 @@ DRIVER_INIT_MEMBER(astrof_state,abattle)
 
 DRIVER_INIT_MEMBER(astrof_state,afire)
 {
-<<<<<<< HEAD
-	UINT8 *rom = memregion("maincpu")->base();
-=======
 	uint8_t *rom = memregion("maincpu")->base();
->>>>>>> upstream/master
 	int i;
 
 	for(i = 0xd000; i < 0x10000; i++)
@@ -1512,11 +1358,7 @@ DRIVER_INIT_MEMBER(astrof_state,afire)
 
 DRIVER_INIT_MEMBER(astrof_state,sstarbtl)
 {
-<<<<<<< HEAD
-	UINT8 *rom = memregion("maincpu")->base();
-=======
 	uint8_t *rom = memregion("maincpu")->base();
->>>>>>> upstream/master
 	int i;
 
 	for(i = 0xd000; i < 0x10000; i++)
@@ -1541,24 +1383,6 @@ DRIVER_INIT_MEMBER(astrof_state,acombat3)
  *
  *************************************/
 
-<<<<<<< HEAD
-GAME( 1979, astrof,   0,        astrof,   astrof, driver_device,  0,       ROT90, "Data East",             "Astro Fighter (set 1)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 1979, astrof2,  astrof,   astrof,   astrof, driver_device,  0,       ROT90, "Data East",             "Astro Fighter (set 2)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 1979, astrof3,  astrof,   astrof,   astrof, driver_device,  0,       ROT90, "Data East",             "Astro Fighter (set 3)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 1979, abattle,  astrof,   abattle,  abattle, astrof_state,  abattle, ROT90, "bootleg? (Sidam)",      "Astro Battle (set 1)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 1979, abattle2, astrof,   abattle,  abattle, astrof_state,  abattle, ROT90, "bootleg? (Sidam)",      "Astro Battle (set 2)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 1979, afire,    astrof,   abattle,  abattle, astrof_state,  afire,   ROT90, "bootleg (Rene Pierre)", "Astro Fire", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 1979, acombat,  astrof,   abattle,  abattle, astrof_state,  afire,   ROT90, "bootleg",               "Astro Combat (newer, CB)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 1979, acombato, astrof,   abattle,  abattle, astrof_state,  afire,   ROT90, "bootleg",               "Astro Combat (older, PZ)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 1979, acombat3, astrof,   abattle,  abattle, astrof_state,  acombat3,ROT90, "bootleg (Proel)",       "Astro Combat (unencrypted)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 1979, sstarbtl, astrof,   abattle,  abattle, astrof_state,  sstarbtl,ROT90, "bootleg",               "Super Star Battle", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-
-GAME( 1979, spfghmk2, 0,        spfghmk2, spfghmk2, driver_device,0,       ROT90, "Data East",            "Space Fighter Mark II (set 1)", MACHINE_NO_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 1979, spfghmk22,spfghmk2, spfghmk2, spfghmk22,driver_device,0,       ROT90, "Data East",            "Space Fighter Mark II (set 2)", MACHINE_NO_SOUND | MACHINE_SUPPORTS_SAVE )
-
-GAME( 1980, tomahawk, 0,        tomahawk, tomahawk, driver_device,0,       ROT90, "Data East",            "Tomahawk 777 (rev 5)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 1980, tomahawk1,tomahawk, tomahawk, tomahawk1,driver_device,0,       ROT90, "Data East",            "Tomahawk 777 (rev 1)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1979, astrof,   0,        astrof,   astrof,   astrof_state,  0,       ROT90, "Data East",             "Astro Fighter (set 1)",         MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
 GAME( 1979, astrof2,  astrof,   astrof,   astrof,   astrof_state,  0,       ROT90, "Data East",             "Astro Fighter (set 2)",         MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
 GAME( 1979, astrof3,  astrof,   astrof,   astrof,   astrof_state,  0,       ROT90, "Data East",             "Astro Fighter (set 3)",         MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
@@ -1577,4 +1401,3 @@ GAME( 1979, spfghmk22,spfghmk2, spfghmk2, spfghmk22,astrof_state,  0,       ROT9
 
 GAME( 1980, tomahawk, 0,        tomahawk, tomahawk, astrof_state,  0,       ROT90, "Data East",             "Tomahawk 777 (rev 5)",          MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
 GAME( 1980, tomahawk1,tomahawk, tomahawk, tomahawk1,astrof_state,  0,       ROT90, "Data East",             "Tomahawk 777 (rev 1)",          MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

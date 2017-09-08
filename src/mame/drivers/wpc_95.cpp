@@ -64,22 +64,14 @@ protected:
 	required_device<cpu_device> maincpu;
 	required_device<dcs_audio_wpc_device> dcs;
 	required_memory_bank rombank;
-<<<<<<< HEAD
-	required_shared_ptr<UINT8> mainram;
-=======
 	required_shared_ptr<uint8_t> mainram;
->>>>>>> upstream/master
 	required_device<nvram_device> nvram;
 	required_device<wpc_pic_device> pic;
 	required_device<wpc_lamp_device> lamp;
 	required_device<wpc_out_device> out;
 
 	// driver_device overrides
-<<<<<<< HEAD
-	virtual void machine_reset();
-=======
 	virtual void machine_reset() override;
->>>>>>> upstream/master
 
 private:
 	static const char *const lamps_afm[64];
@@ -112,17 +104,6 @@ private:
 	static const char *const lamps_ttt[64];
 	static const char *const outputs_ttt[52];
 
-<<<<<<< HEAD
-	UINT8 firq_src, zc;
-	UINT16 rtc_base_day;
-
-	bool serial_clock_state, serial_data1_state, serial_data2_state, serial_enable;
-	int serial_clock_counter;
-	UINT32 serial_out1_state, serial_out2_state;
-
-	bool afm_led_handler(int sid, bool state);
-	static void sc_aux_lamps_handler_update(UINT32 &out, UINT32 mask, bool state, int id);
-=======
 	uint8_t firq_src, zc;
 	uint16_t rtc_base_day;
 
@@ -132,7 +113,6 @@ private:
 
 	bool afm_led_handler(int sid, bool state);
 	void sc_aux_lamps_handler_update(uint32_t &out, uint32_t mask, bool state, int id);
->>>>>>> upstream/master
 	bool sc_aux_lamps_handler(int sid, bool state);
 };
 
@@ -204,15 +184,9 @@ READ8_MEMBER(wpc_95_state::rtc_r)
 	// This may get wonky if the game is running on year change.  Find
 	// something better to do at that time.
 
-<<<<<<< HEAD
-	UINT8 day = (systime.local_time.day - rtc_base_day) & 31;
-	UINT8 hour = systime.local_time.hour;
-	UINT8 min = systime.local_time.minute;
-=======
 	uint8_t day = (systime.local_time.day - rtc_base_day) & 31;
 	uint8_t hour = systime.local_time.hour;
 	uint8_t min = systime.local_time.minute;
->>>>>>> upstream/master
 
 	switch(offset) {
 	case 0:
@@ -231,11 +205,7 @@ READ8_MEMBER(wpc_95_state::firq_src_r)
 
 READ8_MEMBER(wpc_95_state::zc_r)
 {
-<<<<<<< HEAD
-	UINT8 res = zc;
-=======
 	uint8_t res = zc;
->>>>>>> upstream/master
 	zc &= 0x7f;
 	return res;
 }
@@ -288,11 +258,7 @@ void wpc_95_state::machine_reset()
 	mainram[0x1804] = systime.local_time.weekday+1;
 	mainram[0x1805] = 0;
 	mainram[0x1806] = 1;
-<<<<<<< HEAD
-	UINT16 checksum = 0;
-=======
 	uint16_t checksum = 0;
->>>>>>> upstream/master
 	for(int i=0x1800; i<=0x1806; i++)
 		checksum += mainram[i];
 	checksum = ~checksum;
@@ -331,20 +297,12 @@ bool wpc_95_state::afm_led_handler(int sid, bool state)
 	switch(sid) {
 	case 37:
 		if(!serial_clock_state && state) {
-<<<<<<< HEAD
-			UINT16 mask = 1 << serial_clock_counter;
-=======
 			uint16_t mask = 1 << serial_clock_counter;
->>>>>>> upstream/master
 			bool prev_state = serial_out1_state & mask;
 			if(prev_state != serial_data1_state) {
 				char buffer[32];
 				sprintf(buffer, "l:Saucer led %d", serial_clock_counter);
-<<<<<<< HEAD
-				output_set_value(buffer, serial_data1_state);
-=======
 				output().set_value(buffer, serial_data1_state);
->>>>>>> upstream/master
 				if(serial_data1_state)
 					serial_out1_state |= mask;
 				else
@@ -362,19 +320,11 @@ bool wpc_95_state::afm_led_handler(int sid, bool state)
 	return false;
 }
 
-<<<<<<< HEAD
-void wpc_95_state::sc_aux_lamps_handler_update(UINT32 &out, UINT32 mask, bool state, int id)
-{
-	bool prev_state = out & mask;
-	if(prev_state != state) {
-		output_set_value(lamps_sc_extra[id], state);
-=======
 void wpc_95_state::sc_aux_lamps_handler_update(uint32_t &out, uint32_t mask, bool state, int id)
 {
 	bool prev_state = out & mask;
 	if(prev_state != state) {
 		output().set_value(lamps_sc_extra[id], state);
->>>>>>> upstream/master
 		if(state)
 			out |= mask;
 		else
@@ -394,11 +344,7 @@ bool wpc_95_state::sc_aux_lamps_handler(int sid, bool state)
 
 	case 38:
 		if(!serial_clock_state && state && !serial_enable) {
-<<<<<<< HEAD
-			UINT32 mask = 1 << serial_clock_counter;
-=======
 			uint32_t mask = 1 << serial_clock_counter;
->>>>>>> upstream/master
 			sc_aux_lamps_handler_update(serial_out1_state, mask, serial_data1_state, serial_clock_counter);
 			sc_aux_lamps_handler_update(serial_out2_state, mask, serial_data2_state, serial_clock_counter+24);
 			serial_clock_counter++;
@@ -420,13 +366,8 @@ bool wpc_95_state::sc_aux_lamps_handler(int sid, bool state)
 DRIVER_INIT_MEMBER(wpc_95_state, tf95)
 {
 	pic->set_serial("648 123456 12345 123");
-<<<<<<< HEAD
-	lamp->set_names(NULL);
-	out->set_names(NULL);
-=======
 	lamp->set_names(nullptr);
 	out->set_names(nullptr);
->>>>>>> upstream/master
 	init();
 }
 
@@ -435,11 +376,7 @@ DRIVER_INIT_MEMBER(wpc_95_state, afm)
 	pic->set_serial("541 123456 12345 123");
 	lamp->set_names(lamps_afm);
 	out->set_names(outputs_afm);
-<<<<<<< HEAD
-	out->set_handler(wpc_out_device::handler_t(FUNC(wpc_95_state::afm_led_handler), this));
-=======
 	out->set_handler(wpc_out_device::handler_t(&wpc_95_state::afm_led_handler, this));
->>>>>>> upstream/master
 	init();
 }
 
@@ -512,11 +449,7 @@ DRIVER_INIT_MEMBER(wpc_95_state, sc)
 	pic->set_serial("903 123456 12345 123");
 	lamp->set_names(lamps_sc);
 	out->set_names(outputs_sc);
-<<<<<<< HEAD
-	out->set_handler(wpc_out_device::handler_t(FUNC(wpc_95_state::sc_aux_lamps_handler), this));
-=======
 	out->set_handler(wpc_out_device::handler_t(&wpc_95_state::sc_aux_lamps_handler, this));
->>>>>>> upstream/master
 	init();
 }
 
@@ -560,11 +493,7 @@ const char *const wpc_95_state::lamps_afm[64] = {
 	"Attack Mars", "New York, USA", "London, England", "Light lock", "Lock 1", "Pisa, Italy", "Berlin, Germany", "Paris, France",
 	"MARTIA\"N\" target", "MARTI\"A\"N target", "Atomic blaster 1", "Atomic blaster 2", "Atomic blaster 3", "R loop jackpot", "Extra ball", "MART\"I\"AN target",
 	"Capture 1", "Capture 2", "Capture 3", "L loop jackpot", "L loop arrow", "\"M\"ARTIAN target", "M\"A\"RTIAN target", "MA\"R\"TIAN target",
-<<<<<<< HEAD
-	"Shoot again", "Left outlane", "Left return", "Right return", "Right outlane", "Launch button", NULL, "Start button"
-=======
 	"Shoot again", "Left outlane", "Left return", "Right return", "Right outlane", "Launch button", nullptr, "Start button"
->>>>>>> upstream/master
 };
 
 const char *const wpc_95_state::outputs_afm[52] = {
@@ -572,15 +501,9 @@ const char *const wpc_95_state::outputs_afm[52] = {
 	"s:Left slingshot", "s:Right slingshot", "s:Left jet", "s:Bottom jet", "s:Right jet", "s:Right alien lo", "s;Saucer shake", "s:Drop target",
 	"f:R ramp hi (2)", "f:R ramp lo (2)", "f:R side hi (2)", "f:R side lo", "f:Center arrow", "f:Jets", "f:Saucer dome", "m:Motor bank",
 	"f:L ramp L (2)", "f:L ramp R (2)", "f:L side hi (2)", "f:L side lo", "s:R flip power", "s:R flip hold", "s:L flip power", "s:L flip hold",
-<<<<<<< HEAD
-	"s:Right gate", "s:Left gate", "s:Diverter power", "s:Diverter hold", NULL, NULL, "f:Strobe light", NULL,
-	"s:Coin meter",
-	NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
-=======
 	"s:Right gate", "s:Left gate", "s:Diverter power", "s:Diverter hold", nullptr, nullptr, "f:Strobe light", nullptr,
 	"s:Coin meter",
 	nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
->>>>>>> upstream/master
 	"g:Bottom playfield", "g:Middle playfield", "g:Top playfield"
 };
 
@@ -695,19 +618,6 @@ const char *const wpc_95_state::lamps_cc[64] = {
 	"R drop: badguy 4", "R standup (bot)", "R standup (top)", "C rmp: catch train", "C ramp: stop train", "C ramp: save Polly", "C ramp: jackpot", "C ramp: combo",
 	"L rmp: white water", "L rmp: water fall", "L ramp: save Polly", "L ramp: jackpot", "L ramp: combo", "R ret: quick draw", "R out: special", "R gunfight pin",
 	"Star: stampede", "Star: combo", "Star: high noon", "L loop: combo", "L loop: jackpot", "L loop: ride 'em", "L loop: wild ride", "L loop: B Bronco",
-<<<<<<< HEAD
-	"Star: Bart Bros", "Shoot again", "Star: show down", "LC drop: badguy 2", NULL, NULL, NULL, "Start button"
-};
-
-const char *const wpc_95_state::outputs_cc[52] = {
-	"s:Autoplunger", "s:#1 (L) drop tgt", "s:#2 (LC) drop tgt", "s:#3 (RC) drop tgt", "s:#4 (R) drop tgt", "s:Mine popper", NULL, "s:Saloon popper",
-	"s:Through eject", "s:L slingshot", "s:R slingshot", "s:Left jet", "s:Right jet", "s:L gunfight post", "s:R gunfight post", "s:Bottom jet",
-	"s:Mine motor", "f:Mine flasher", "f:Front L flasher", "f:Front R flasher", "s:L loop gate", "s:R loop gate", NULL, "f:Beacon flasher",
-	"f:Mid R flasher", "f:Saloon flasher", "f:Back R flasher", "f:Back L flasher", "s:R flip power", "s:R flip hold", "s:L flip power", "s:L flip hold",
-	"s:Move bart toy", NULL, NULL, "s:Bart toy hat", "s:Train reverse", "s:Train forward", NULL, NULL,
-	"s:Coin meter",
-	NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
-=======
 	"Star: Bart Bros", "Shoot again", "Star: show down", "LC drop: badguy 2", nullptr, nullptr, nullptr, "Start button"
 };
 
@@ -719,7 +629,6 @@ const char *const wpc_95_state::outputs_cc[52] = {
 	"s:Move bart toy", nullptr, nullptr, "s:Bart toy hat", "s:Train reverse", "s:Train forward", nullptr, nullptr,
 	"s:Coin meter",
 	nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
->>>>>>> upstream/master
 	"g:Illum string 1", "g:Illum string 2", "g:Illum string 3"
 };
 
@@ -849,15 +758,9 @@ const char *const wpc_95_state::outputs_cv[52] = {
 	"s:Trough eject", "s:Left sling", "s:Right sling", "s:Upper jet", "s:Lower jet", "s:Left saucer", "s:Right saucer", "s:Lock post",
 	"f:Join flasher", "f:Ring 1 flasher", "f:Ring 2 flasher", "f:Ring 3 flasher", "f:Fl right/BB URT", "s:Motor enable", "f:Jet flasher", "f:Fl right/BB ULeft",
 	"f:FL upper left", "f:Fl URight/BB LLT", "f:Ringmaster FLx2", "f:FL bear/BB LRT", "s:R flip power", "s:R flip hold", "s:L flip power", "s:L flip hold",
-<<<<<<< HEAD
-	"s:Popper", "s:Diverter hold", "s:Ringmaster mgnt", "s:Upper post", "f:Neon", NULL, "s:Motor direction", NULL,
-	NULL,
-	NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
-=======
 	"s:Popper", "s:Diverter hold", "s:Ringmaster mgnt", "s:Upper post", "f:Neon", nullptr, "s:Motor direction", nullptr,
 	nullptr,
 	nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
->>>>>>> upstream/master
 	"g:Playfield right", "g:Playfield middle", "g:Playfield left"
 };
 
@@ -980,15 +883,9 @@ const char *const wpc_95_state::outputs_congo[52] = {
 	"sTrough eject:", "s:Left slingshot", "s:Right slingshot", "s:Left jet", "s:Right jet", "s:Bottom jet", "s:Gorilla left", "s:Gorilla right",
 	"f:Amy flasher", "f:Left ramp fls", "f:2-way popper fls", "f:Skill shot fls", "f:Gray gorilla fls", "s:\"Map\" eject", "s:Left gate", "s:Right gate",
 	"f:Lower right fls", "f:Right ramp fls", "f:Volcano flasher", "f:\"Perimeter def\"", "s:R flip power", "s:R flip hold", "s:L flip power", "s:L flip hold",
-<<<<<<< HEAD
-	"s:Up left post", "s:\"Mystery\" eject", "s:UL flip power", "s:UL flip hold", NULL, NULL, NULL, NULL,
-	"s:Coin meter",
-	NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
-=======
 	"s:Up left post", "s:\"Mystery\" eject", "s:UL flip power", "s:UL flip hold", nullptr, nullptr, nullptr, nullptr,
 	"s:Coin meter",
 	nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
->>>>>>> upstream/master
 	"g:Playfld gorilla", "g:Playfield top", "g:Playfield bottom"
 };
 
@@ -1100,22 +997,6 @@ const char *const wpc_95_state::lamps_jy[64] = {
 	"Right 3 bank top", "Right 3 bank mid", "Right 3 bank bot", "Left bank bot", "Left bank mid", "Left bank top", "Fan", "Bath tub",
 	"Jackpot", "Super jackpot", "Multiball", "Wrecking ball", "Radar adventure", "Jolopy race", "Toilet adventure", "ATC adventure",
 	"Gen bus", "Toast", "Magic bus", "Collect junk", "Coo coo clock", "Television", "Weather vane", "Fish bowl",
-<<<<<<< HEAD
-	"Gen toilet", "Window shopping", "Left recycle", "Left crane HU", "Shoot again", NULL, "Toaster", "Hair dryer",
-	"Propeller", "Outerspace", "DO(G)", "(D)OG", "D(O)G", "Choose junk", "Angel sling", "Bicycles",
-	"Time machine", "Start adventure", "Extra ball", "Toast 2", "Gen sewer", "Toaster gun", "Gen alley", "Devil sling",
-	"Fire works", "Toxic waste", "Lite extra ball", "Free game", "Lite jackpot", "Gen crane", NULL, "Start button"
-};
-
-const char *const wpc_95_state::outputs_jy[52] = {
-	"s:Auto plunger", "s:Refridge popper", "s:Power crane", NULL, "s:Scoop down", "s:Bus diverter", "s:Knocker", NULL,
-	"s:Trough", "s:Left sling", "s:Right sling", NULL, NULL, NULL, "s:Hold crane", "s:Move dog",
-	"f:1 Fl dog face", "f:1 Fl window shop", "f:2 Fl autofire", "f:2 Fl left side", "s:Scoop up", "f:1 Fl under crane", "f:2 Fl back left", "f:2 Fl back rght",
-	"f:1 Fl shooter", "f:2 Fl scoop", "f:1 Fl dog house", "f:2 Fls cars", "s:R flip power", "s:R flip hold", "s:L flip power", "s:L flip hold",
-	NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
-	NULL,
-	NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
-=======
 	"Gen toilet", "Window shopping", "Left recycle", "Left crane HU", "Shoot again", nullptr, "Toaster", "Hair dryer",
 	"Propeller", "Outerspace", "DO(G)", "(D)OG", "D(O)G", "Choose junk", "Angel sling", "Bicycles",
 	"Time machine", "Start adventure", "Extra ball", "Toast 2", "Gen sewer", "Toaster gun", "Gen alley", "Devil sling",
@@ -1130,7 +1011,6 @@ const char *const wpc_95_state::outputs_jy[52] = {
 	nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
 	nullptr,
 	nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
->>>>>>> upstream/master
 	"g:Playfld string 1", "g:Playfld string 2", "g:Logo string"
 };
 
@@ -1253,15 +1133,9 @@ const char *const wpc_95_state::outputs_mm[52] = {
 	"s:Right eject", "s:Left slingshot", "s:Right slingshot", "s:Left jet", "s:Bottom jet", "s:Right jet", "s:Twr divert power", "s:Twr divert hold",
 	"f:L side lo (2)", "f:Left ramp (2)", "f:L side hi (2)", "f:R side hi (2)", "f:Right ramp (2)", "f:Cstl R side (2)", "f:R side lo (2)", "f:Moat (2)",
 	"f:Cstl L side (2)", "s:Tower lock post", "s:Right gate", "s:Left gate", "s:R flip power", "s:R flip hold", "s:L flip power", "s:L flip hold",
-<<<<<<< HEAD
-	"s:L troll power", "s:L troll hold", "s:R troll power", "s:R troll hold", "s:Drawbridge motor", NULL, NULL, NULL,
-	"s:Coin meter",
-	NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
-=======
 	"s:L troll power", "s:L troll hold", "s:R troll power", "s:R troll hold", "s:Drawbridge motor", nullptr, nullptr, nullptr,
 	"s:Coin meter",
 	nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
->>>>>>> upstream/master
 	"g:Bottom playfield", "g:Middle playfield", "g:Top playfield"
 };
 
@@ -1375,24 +1249,11 @@ const char *const wpc_95_state::lamps_mb[64] = {
 	"Left return", "Left outlane", "3/4 moon (2)", "R blue tgt", "L ramp arrow", "L primp", "L warm up", "L gargle",
 	"Guitar", "Drums", "Bass guitar", "Keyboard", "Microphone", "Saxophone", "C loop arrow 3", "C blue tgt",
 	"Creature", "Bride", "Frankenstein", "Mummy", "Wolfman", "Dracula", "Right outlane", "Shoot again",
-<<<<<<< HEAD
-	"L frank arm", "L frank leg", "Frank torso", "Frank head", "R frank leg", "R frank arm", "L loop arrow", NULL,
-=======
 	"L frank arm", "L frank leg", "Frank torso", "Frank head", "R frank leg", "R frank arm", "L loop arrow", nullptr,
->>>>>>> upstream/master
 	"Muck", "Seaweed", "Algae", "Pond scum", "C loop arrow 2", "C loop arrow 1", "Launch button", "Start button"
 };
 
 const char *const wpc_95_state::outputs_mb[52] = {
-<<<<<<< HEAD
-	"s:Auto plunger", "s:Bride post", "s:Mummy coffin", NULL, "s:Left gate", "s:Right gate", NULL, "s:Ramp lock post",
-	"s:Trough eject", "s:Left slignshot", "s:Right slingshot", "s:Left jet", "s:Right jet", "s:Bottom jet", "s:Left eject", "s:Right popper",
-	"f:Wolfman (2)", "f:Bride", "f:Frankenstein (2)", "f:Dracula coffin", "f:Creature (2)", "f:Jets/mummy (2)", "f:Right popper", "f:Frank arrow",
-	"f:Rock CD", "f:Wolfman loop (2)", NULL, NULL, "s:R flip power", "s:R flip hold", "s:L flip power", "s:L flip hold",
-	NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
-	"s:Coin meter",
-	NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
-=======
 	"s:Auto plunger", "s:Bride post", "s:Mummy coffin", nullptr, "s:Left gate", "s:Right gate", nullptr, "s:Ramp lock post",
 	"s:Trough eject", "s:Left slignshot", "s:Right slingshot", "s:Left jet", "s:Right jet", "s:Bottom jet", "s:Left eject", "s:Right popper",
 	"f:Wolfman (2)", "f:Bride", "f:Frankenstein (2)", "f:Dracula coffin", "f:Creature (2)", "f:Jets/mummy (2)", "f:Right popper", "f:Frank arrow",
@@ -1400,7 +1261,6 @@ const char *const wpc_95_state::outputs_mb[52] = {
 	nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
 	"s:Coin meter",
 	nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
->>>>>>> upstream/master
 	"g:Bottom playfield", "g:Top R playfield", "g:Top L playfield"
 };
 
@@ -1528,19 +1388,11 @@ const char *const wpc_95_state::lamps_nbaf[64] = {
 const char *const wpc_95_state::outputs_nbaf[52] = {
 	"s:Autoplunger", "s:", "s:L ramp diverter", "s:R loop diverter", "s:Eject", "s:Loop gate", "s:Backbox flipper", "s:Ball catch mag",
 	"s:Trough eject", "s:Left sling", "s:Right sling", "s:Left jet", "s:Middle jet", "s:Right jet", "s:Pass right 2", "s:Pass left 2",
-<<<<<<< HEAD
-	"f:Eject kickout", "f:Left jet bumper", "f:Upper left", "f:Upper right", NULL, "f:Trophy insert", NULL, "f:Lower left/right",
-	"s:Pass right 1", "s:Pass left 3", "s:Pass right 3", "s:Pass left 4", "s:R flip power", "s:R flip hold", "s:L flip power", "s:L flip hold",
-	"s:Shoot 1", "s:Shoot 2", "s:Shoot 3", "s:Shoot 4", "s:Motor enable", "s:Motor direction", "s:Shot clk enable", "s:Shot clk count",
-	"s:Coin meter",
-	NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
-=======
 	"f:Eject kickout", "f:Left jet bumper", "f:Upper left", "f:Upper right", nullptr, "f:Trophy insert", nullptr, "f:Lower left/right",
 	"s:Pass right 1", "s:Pass left 3", "s:Pass right 3", "s:Pass left 4", "s:R flip power", "s:R flip hold", "s:L flip power", "s:L flip hold",
 	"s:Shoot 1", "s:Shoot 2", "s:Shoot 3", "s:Shoot 4", "s:Motor enable", "s:Motor direction", "s:Shot clk enable", "s:Shot clk count",
 	"s:Coin meter",
 	nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
->>>>>>> upstream/master
 	"g:String 1", "g:String 2", "g:String 3"
 };
 
@@ -1654,15 +1506,9 @@ const char *const wpc_95_state::lamps_ngg[64] = {
 const char *const wpc_95_state::outputs_ngg[52] = {
 	"s:Autofire", "s:Kickback", "s:Clubhouse kicker", "s:Left gofer up", "s:Right gofer up", "s:Jet popper", "s:Left eject", "s:Upper rgt eject",
 	"s:Trough eject", "s:Left slingshot", "s:Right slingshot", "s:Top jet", "s:Middle jet", "s:Bottom jet", "s:Left gofer down", "s:Rgt gofer down",
-<<<<<<< HEAD
-	"f:Jet flash", "f:Lower lft flash", "f:Left spinr flash", "f:Rgt spinr flash", "f:Lower rgt flash", NULL, NULL, "s:Underground pass",
-	"f:Sand trap flash", "f:Wheel flasher", "s:Left ramp down", "s:Right ramp down", "s:R flip power", "s:R flip hold", "s:L flip power", "s:L flip hold",
-	"s:UR flip power", "s:UR flip hold", "s:Ball launch ramp", NULL, "s:Wheel spin CCW", "s:Wheel spin CW", NULL, NULL,
-=======
 	"f:Jet flash", "f:Lower lft flash", "f:Left spinr flash", "f:Rgt spinr flash", "f:Lower rgt flash", nullptr, nullptr, "s:Underground pass",
 	"f:Sand trap flash", "f:Wheel flasher", "s:Left ramp down", "s:Right ramp down", "s:R flip power", "s:R flip hold", "s:L flip power", "s:L flip hold",
 	"s:UR flip power", "s:UR flip hold", "s:Ball launch ramp", nullptr, "s:Wheel spin CCW", "s:Wheel spin CW", nullptr, nullptr,
->>>>>>> upstream/master
 	"c:Coin meter",
 	"f:Upper right 1", "f:Upper right 2", "f:Upper right 3", "f:Upper pf right", "f:Upper pf left", "f:Upper left 3", "f:Upper left 2", "f:Upper left 1",
 	"g:Left side string", "g:Rgt side string", "g:Gofer spotlight"
@@ -1802,15 +1648,9 @@ const char *const wpc_95_state::outputs_sc[52] = {
 	"s:Trough eject", "s:Left slingshot", "s:Right slingshot", "s:Left jet", "s:Right jet", "s:Top jet", "s:Top L 3 bank", "s:Top R 3 bank",
 	"f:Back left", "f:Jets+Bk Rt (2)", "f:Right middle", "f:Right bottom", "f:Left middle", "f:Left bottom", "f:Light rope 1", "f:Light rope 2",
 	"s:Top popper eject", "s:Top light+motor", "s:Bot L 3 bank", "s:Bot R 3 bank", "s:R flip power", "s:R flip hold", "s:L flip power", "s:L flip hold",
-<<<<<<< HEAD
-	"s:UR flip power", "s:UR flip hold", "s:Auto plunger", "s:Lockup release", NULL, NULL, NULL, NULL,
-	NULL,
-	NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
-=======
 	"s:UR flip power", "s:UR flip hold", "s:Auto plunger", "s:Lockup release", nullptr, nullptr, nullptr, nullptr,
 	nullptr,
 	nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
->>>>>>> upstream/master
 	"g:Illum string 1", "g:Aux lamp 1 power", "g:Illum string 3"
 };
 
@@ -1932,11 +1772,7 @@ const char *const wpc_95_state::lamps_ss[64] = {
 	"Ramp item", "Coffin mult item", "Leaper item", "Coffin spotlight", "Shoot again", "Lock lamp", "Left loop center", "Left loop upper",
 	"Laboratory item", "Crate item", "Skull item", "Web award 2", "Web award 3", "Web award 4", "Web award 5", "Web award 6",
 	"Web award 7", "Web award 8", "Web award 9", "Web award 10", "Web award 11", "Web award 12", "Web award 13", "Web award 14",
-<<<<<<< HEAD
-	"Web award 15", "Web award 16", "Web award 1", "Left skull lane", "Enter skull lane", "Right skull lane", NULL, "Start button"
-=======
 	"Web award 15", "Web award 16", "Web award 1", "Left skull lane", "Enter skull lane", "Right skull lane", nullptr, "Start button"
->>>>>>> upstream/master
 };
 
 const char *const wpc_95_state::outputs_ss[52] = {
@@ -1944,15 +1780,9 @@ const char *const wpc_95_state::outputs_ss[52] = {
 	"s:Trough eject", "s:Left sling", "s:Right sling", "s:Center jet", "s:Upper jet", "s:Lower jet", "s:Upper slingshot", "s:Crate post hold",
 	"f:Top jet flasher", "f:Mid jet flasher", "f:Lower jet flash", "f:Playfield bolts", "f:Blue skull fl", "f:U right flasher", "f:Lft ramp flasher", "f:C left flasher",
 	"f:White skull fl", "f:Center TV", "f:U left flasher", "f:C right flasher", "s:R flip power", "s:R flip hold", "s:L flip power", "s:L flip hold",
-<<<<<<< HEAD
-	"s:Lft divert power", "s:Lft divert hold", "f:L left flasher", "f:L right flasher", NULL, NULL, NULL, NULL,
-	NULL,
-	NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
-=======
 	"s:Lft divert power", "s:Lft divert hold", "f:L left flasher", "f:L right flasher", nullptr, nullptr, nullptr, nullptr,
 	nullptr,
 	nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
->>>>>>> upstream/master
 	"g:Upper playfield", "g:Center playfield", "g:Lower playfield"
 };
 
@@ -2077,11 +1907,7 @@ const char *const wpc_95_state::outputs_totan[52] = {
 	"f:Start tale fls", "f:Jet flashers", "f:Top loop flash", "f:Ramp flash", "s:R flip power", "s:R flip hold", "s:L flip power", "s:L flip hold",
 	"s:Left div high", "s:Left div hold", "s:Vanish magnet", "s:Loop post div", "s:", "s:", "s:", "s:",
 	"s:Coin meter",
-<<<<<<< HEAD
-	NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
-=======
 	nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
->>>>>>> upstream/master
 	"g:Illum string 1", "g:Illum string 2", "g:Illum string 3"
 };
 
@@ -2184,11 +2010,7 @@ INPUT_PORTS_END
 const char *const wpc_95_state::lamps_cp[64] = {
 	"Heavy bag cmplt", "Jump rope cmplt", "Speed bag cmplt", "Right jab combo", "Lock", "Rgt start fight", "Right jackpot", "Right jab",
 	"Bout 1", "Bout 2", "Bout 3", "Bout 4", "Jump rope", "Left jab combo", "Cnt start fight", "Left jab",
-<<<<<<< HEAD
-	"Low blue arrow", "Left hook to win", "White arrow", "Thrown towel", "Cntr blue arrow", "Low yellow arrow", "Top yellow arrow", NULL,
-=======
 	"Low blue arrow", "Left hook to win", "White arrow", "Thrown towel", "Cntr blue arrow", "Low yellow arrow", "Top yellow arrow", nullptr,
->>>>>>> upstream/master
 	"Left hook", "Body blow", "Right hook", "Center jackpot", "Left KO boxer", "Hurry up", "Heavy bag", "Right KO boxer",
 	"Jackpots cmplt", "Pub champion", "Won by KO", "Multiballs cmplt", "Training cmplt", "Speed bag", "Left jackpot", "Balcony",
 	"Ultimate chlng", "Poker night", "Extra ball", "Spittn gallery", "Lft start fight", "The corner", "Right return", "Rght second wind",
@@ -2203,11 +2025,7 @@ const char *const wpc_95_state::outputs_cp[52] = {
 	"s:Rope motor", "s:Toggle direction", "s:Motor on/off", "s:Lock pin", "s:R flip power", "s:R flip hold", "s:L flip power", "s:L flip hold",
 	"s:Rope popper", "s:Ramp divertor", "s:Left speed bag", "s:Right speed bag", "s:", "s:", "s:", "s:",
 	"s:Coin meter",
-<<<<<<< HEAD
-	NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
-=======
 	nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
->>>>>>> upstream/master
 	"g:Illum string 1", "g:Illum string 2", "g:Illum string 3"
 };
 
@@ -2315,26 +2133,6 @@ static INPUT_PORTS_START( cp )
 INPUT_PORTS_END
 
 const char *const wpc_95_state::lamps_ttt[64] = {
-<<<<<<< HEAD
-	"Hole \"5\"", "Hole \"6\"", "Hole \"7\"", "Hole \"8\"", "Hole \"9\"", NULL, NULL, NULL,
-	NULL, "Grid \"1\"", "Grid \"2\"", "Grid \"3\"", "Grid \"4\"", "Grid \"5\"", "Grid \"6\"", "Grid \"7\"",
-	"Grid \"8\"", "Grid \"9\"", "Left post", "Right post", "Hole \"1\"", "Hole \"2\"", "Hole \"3\"", "Hole \"4\"",
-	"Back panel 1", "Back panel 2", "Back panel 3", "Back panel 4", "Back panel 5", "Back panel 6", NULL, NULL,
-	"Left sling up", "Left sling low", "Left ret left", "Left ret right", "Right sling up", "Right sling low", "Right ret right", "Right ret left",
-	NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
-	NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
-	NULL, NULL, NULL, NULL, NULL, NULL, NULL, "Start button"
-};
-
-const char *const wpc_95_state::outputs_ttt[52] = {
-	NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
-	"s:Kicker", "f:Fl left post", "f:Fl right post", "f:Fl insert 1", "f:Fl insert 2", "f:Fl insert 3", "f:Fl insert 4", NULL,
-	"f:Left flasher", "f:Right flasher", "f:Fl left sling", "f:Fl left return", "f:Fl back panel 1", "f:Fl back panel 2", "f:Fl back panel 3", NULL,
-	NULL, "s:Ticket lamp", "f:Fl right sling", "f:Fl right return", "s:R flip power", "s:R flip hold", "s:L flip power", "s:L flip hold",
-	"s:R post power", "s:R post hold", "s:L post power", "s:L post hold", NULL, NULL, NULL, NULL,
-	NULL,
-	NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
-=======
 	"Hole \"5\"", "Hole \"6\"", "Hole \"7\"", "Hole \"8\"", "Hole \"9\"", nullptr, nullptr, nullptr,
 	nullptr, "Grid \"1\"", "Grid \"2\"", "Grid \"3\"", "Grid \"4\"", "Grid \"5\"", "Grid \"6\"", "Grid \"7\"",
 	"Grid \"8\"", "Grid \"9\"", "Left post", "Right post", "Hole \"1\"", "Hole \"2\"", "Hole \"3\"", "Hole \"4\"",
@@ -2353,7 +2151,6 @@ const char *const wpc_95_state::outputs_ttt[52] = {
 	"s:R post power", "s:R post hold", "s:L post power", "s:L post hold", nullptr, nullptr, nullptr, nullptr,
 	nullptr,
 	nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
->>>>>>> upstream/master
 	"g:Insert top", "g:Insert middle", "g:Insert bottom"
 };
 
@@ -2446,11 +2243,7 @@ static INPUT_PORTS_START( ttt )
 	PORT_BIT(0x80, IP_ACTIVE_LOW, IPT_OTHER) PORT_NAME("UL Flipper Button")
 INPUT_PORTS_END
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( wpc_95, wpc_95_state )
-=======
 static MACHINE_CONFIG_START( wpc_95 )
->>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6809, XTAL_8MHz/4)
 	MCFG_CPU_PROGRAM_MAP(wpc_95_map)

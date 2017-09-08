@@ -8,18 +8,11 @@
 
 *********************************************************************/
 
-<<<<<<< HEAD
-#ifndef __A1BUS_CFFA__
-#define __A1BUS_CFFA__
-
-#include "emu.h"
-=======
 #ifndef MAME_BUS_A1BUS_A1CFFA_H
 #define MAME_BUS_A1BUS_A1CFFA_H
 
 #pragma once
 
->>>>>>> upstream/master
 #include "a1bus.h"
 #include "machine/ataintf.h"
 
@@ -33,31 +26,12 @@ class a1bus_cffa_device:
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	a1bus_cffa_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-	a1bus_cffa_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source);
-
-	// optional information overrides
-	virtual machine_config_constructor device_mconfig_additions() const;
-	virtual const rom_entry *device_rom_region() const;
-
-	required_device<ata_interface_device> m_ata;
-=======
 	a1bus_cffa_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
->>>>>>> upstream/master
 
 	DECLARE_READ8_MEMBER(cffa_r);
 	DECLARE_WRITE8_MEMBER(cffa_w);
 
 protected:
-<<<<<<< HEAD
-	virtual void device_start();
-	virtual void device_reset();
-
-private:
-	UINT8 *m_rom;
-	UINT16 m_lastdata;
-=======
 	a1bus_cffa_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock);
 
 	virtual void device_start() override;
@@ -71,15 +45,10 @@ private:
 private:
 	uint8_t *m_rom;
 	uint16_t m_lastdata;
->>>>>>> upstream/master
 	bool m_writeprotect;
 };
 
 // device type definition
 extern const device_type A1BUS_CFFA;
 
-<<<<<<< HEAD
-#endif  /* __A1BUS_CFFA__ */
-=======
 #endif  // MAME_BUS_A1BUS_A1CFFA_H
->>>>>>> upstream/master

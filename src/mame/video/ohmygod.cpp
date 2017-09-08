@@ -11,13 +11,8 @@
 
 TILE_GET_INFO_MEMBER(ohmygod_state::get_tile_info)
 {
-<<<<<<< HEAD
-	UINT16 code = m_videoram[2 * tile_index + 1];
-	UINT16 attr = m_videoram[2 * tile_index];
-=======
 	uint16_t code = m_videoram[2 * tile_index + 1];
 	uint16_t attr = m_videoram[2 * tile_index];
->>>>>>> upstream/master
 	SET_TILE_INFO_MEMBER(0,
 			code,
 			(attr & 0x0f00) >> 8,
@@ -34,11 +29,7 @@ TILE_GET_INFO_MEMBER(ohmygod_state::get_tile_info)
 
 void ohmygod_state::video_start()
 {
-<<<<<<< HEAD
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(ohmygod_state::get_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 64, 64);
-=======
 	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(ohmygod_state::get_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 64, 64);
->>>>>>> upstream/master
 }
 
 
@@ -82,21 +73,13 @@ WRITE16_MEMBER(ohmygod_state::ohmygod_scrolly_w)
 
 void ohmygod_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect )
 {
-<<<<<<< HEAD
-	UINT16 *spriteram = m_spriteram;
-=======
 	uint16_t *spriteram = m_spriteram;
->>>>>>> upstream/master
 	int offs;
 
 	for (offs = 0; offs < m_spriteram.bytes() / 4; offs += 4)
 	{
 		int sx, sy, code, color, flipx;
-<<<<<<< HEAD
-		UINT16 *sr;
-=======
 		uint16_t *sr;
->>>>>>> upstream/master
 
 		sr = m_spritebank ? (spriteram + m_spriteram.bytes() / 4) : spriteram;
 
@@ -116,11 +99,7 @@ void ohmygod_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprec
 	}
 }
 
-<<<<<<< HEAD
-UINT32 ohmygod_state::screen_update_ohmygod(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t ohmygod_state::screen_update_ohmygod(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	m_bg_tilemap->draw(screen, bitmap, cliprect, 0, 0);
 	draw_sprites(bitmap, cliprect);

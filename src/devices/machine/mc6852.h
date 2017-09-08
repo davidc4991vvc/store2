@@ -21,20 +21,11 @@
 
 **********************************************************************/
 
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __MC6852__
-#define __MC6852__
-
-#include "emu.h"
-=======
 #ifndef MAME_MACHINE_MC6852_H
 #define MAME_MACHINE_MC6852_H
 
 #pragma once
 
->>>>>>> upstream/master
 #include <queue>
 
 
@@ -74,16 +65,6 @@ class mc6852_device :   public device_t,
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	mc6852_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	static void set_rx_clock(device_t &device, int clock) { downcast<mc6852_device &>(device).m_rx_clock = clock; }
-	static void set_tx_clock(device_t &device, int clock) { downcast<mc6852_device &>(device).m_tx_clock = clock; }
-	template<class _Object> static devcb_base &set_tx_data_wr_callback(device_t &device, _Object object) { return downcast<mc6852_device &>(device).m_write_tx_data.set_callback(object); }
-	template<class _Object> static devcb_base &set_irq_wr_callback(device_t &device, _Object object) { return downcast<mc6852_device &>(device).m_write_irq.set_callback(object); }
-	template<class _Object> static devcb_base &set_sm_dtr_wr_callback(device_t &device, _Object object) { return downcast<mc6852_device &>(device).m_write_sm_dtr.set_callback(object); }
-	template<class _Object> static devcb_base &set_tuf_wr_callback(device_t &device, _Object object) { return downcast<mc6852_device &>(device).m_write_tuf.set_callback(object); }
-=======
 	mc6852_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	static void set_rx_clock(device_t &device, int clock) { downcast<mc6852_device &>(device).m_rx_clock = clock; }
@@ -92,7 +73,6 @@ public:
 	template <class Object> static devcb_base &set_irq_wr_callback(device_t &device, Object &&cb) { return downcast<mc6852_device &>(device).m_write_irq.set_callback(std::forward<Object>(cb)); }
 	template <class Object> static devcb_base &set_sm_dtr_wr_callback(device_t &device, Object &&cb) { return downcast<mc6852_device &>(device).m_write_sm_dtr.set_callback(std::forward<Object>(cb)); }
 	template <class Object> static devcb_base &set_tuf_wr_callback(device_t &device, Object &&cb) { return downcast<mc6852_device &>(device).m_write_tuf.set_callback(std::forward<Object>(cb)); }
->>>>>>> upstream/master
 
 	DECLARE_READ8_MEMBER( read );
 	DECLARE_WRITE8_MEMBER( write );
@@ -108,18 +88,6 @@ public:
 
 protected:
 	// device-level overrides
-<<<<<<< HEAD
-	virtual void device_start();
-	virtual void device_reset();
-	virtual void device_timer(emu_timer &timer, device_timer_id id, int m_param, void *ptr);
-
-	// device_serial_interface overrides
-	virtual void tra_callback();
-	virtual void tra_complete();
-	virtual void rcv_complete();
-
-private:
-=======
 	virtual void device_start() override;
 	virtual void device_reset() override;
 
@@ -180,24 +148,11 @@ private:
 		C3_E_I_SYNC = 0x01
 	};
 
->>>>>>> upstream/master
 	devcb_write_line       m_write_tx_data;
 	devcb_write_line       m_write_irq;
 	devcb_write_line       m_write_sm_dtr;
 	devcb_write_line       m_write_tuf;
 
-<<<<<<< HEAD
-	UINT8 m_status;         // status register
-	UINT8 m_cr[3];          // control registers
-	UINT8 m_scr;            // sync code register
-	UINT8 m_tdr;            // transmit data register
-	UINT8 m_tsr;            // transmit shift register
-	UINT8 m_rdr;            // receive data register
-	UINT8 m_rsr;            // receive shift register
-
-	std::queue<UINT8> m_rx_fifo;
-	std::queue<UINT8> m_tx_fifo;
-=======
 	uint8_t m_status;         // status register
 	uint8_t m_cr[3];          // control registers
 	uint8_t m_scr;            // sync code register
@@ -208,7 +163,6 @@ private:
 
 	std::queue<uint8_t> m_rx_fifo;
 	std::queue<uint8_t> m_tx_fifo;
->>>>>>> upstream/master
 
 	int m_rx_clock;
 	int m_tx_clock;
@@ -220,14 +174,6 @@ private:
 
 
 // device type definition
-<<<<<<< HEAD
-extern const device_type MC6852;
-
-
-
-#endif
-=======
 DECLARE_DEVICE_TYPE(MC6852, mc6852_device)
 
 #endif // MAME_MACHINE_MC6852_H
->>>>>>> upstream/master

@@ -7,10 +7,7 @@
 ***************************************************************************/
 
 #include "machine/eepromser.h"
-<<<<<<< HEAD
-=======
 #include "machine/gen_latch.h"
->>>>>>> upstream/master
 #include "video/decospr.h"
 
 class esd16_state : public driver_device
@@ -30,20 +27,6 @@ public:
 		m_audiocpu(*this, "audiocpu"),
 		m_gfxdecode(*this, "gfxdecode"),
 		m_sprgen(*this, "spritegen"),
-<<<<<<< HEAD
-		m_eeprom(*this, "eeprom")
-		{}
-
-	/* memory pointers */
-	required_shared_ptr<UINT16> m_vram_0;
-	required_shared_ptr<UINT16> m_vram_1;
-	required_shared_ptr<UINT16> m_scroll_0;
-	required_shared_ptr<UINT16> m_scroll_1;
-	required_shared_ptr<UINT16> m_spriteram;
-	required_shared_ptr<UINT16> m_head_layersize;
-	required_shared_ptr<UINT16> m_headpanic_platform_x;
-	required_shared_ptr<UINT16> m_headpanic_platform_y;
-=======
 		m_eeprom(*this, "eeprom"),
 		m_soundlatch(*this, "soundlatch")
 		{}
@@ -57,7 +40,6 @@ public:
 	required_shared_ptr<uint16_t> m_head_layersize;
 	required_shared_ptr<uint16_t> m_headpanic_platform_x;
 	required_shared_ptr<uint16_t> m_headpanic_platform_y;
->>>>>>> upstream/master
 
 	/* video-related */
 	tilemap_t       *m_tilemap_0_16x16;
@@ -73,10 +55,7 @@ public:
 	required_device<gfxdecode_device> m_gfxdecode;
 	optional_device<decospr_device> m_sprgen;
 	optional_device<eeprom_serial_93cxx_device> m_eeprom;
-<<<<<<< HEAD
-=======
 	required_device<generic_latch_8_device> m_soundlatch;
->>>>>>> upstream/master
 
 	DECLARE_WRITE16_MEMBER(esd16_sound_command_w);
 	DECLARE_WRITE16_MEMBER(hedpanic_platform_w);
@@ -92,16 +71,9 @@ public:
 	TILE_GET_INFO_MEMBER(get_tile_info_0_16x16);
 	TILE_GET_INFO_MEMBER(get_tile_info_1);
 	TILE_GET_INFO_MEMBER(get_tile_info_1_16x16);
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void machine_reset();
-	virtual void video_start();
-	UINT32 screen_update_hedpanic(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
 	virtual void video_start() override;
 	uint32_t screen_update_hedpanic(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	DECOSPR_PRIORITY_CB_MEMBER(hedpanic_pri_callback);
 };

@@ -162,12 +162,6 @@ Video sync   6 F   Video sync                 Post   6 F   Post
 // Compiler Directives
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/z80/z80.h"
-#include "includes/taitoipt.h"
-#include "cpu/m6809/m6809.h"
-#include "sound/ay8910.h"
-=======
 #include "includes/taitoipt.h"
 
 #include "cpu/m6809/m6809.h"
@@ -177,7 +171,6 @@ Video sync   6 F   Video sync                 Post   6 F   Post
 #include "screen.h"
 #include "speaker.h"
 
->>>>>>> upstream/master
 
 #define HALLEYS_DEBUG 0
 
@@ -217,10 +210,6 @@ Video sync   6 F   Video sync                 Post   6 F   Post
 #define CLIP_SKIP           (VIS_MINY * SCREEN_WIDTH + VIS_MINX)
 #define CLIP_W              (VIS_MAXX - VIS_MINX + 1)
 #define CLIP_H              (VIS_MAXY - VIS_MINY + 1)
-<<<<<<< HEAD
-#define CLIP_BYTEW          (CLIP_W << 1)
-=======
->>>>>>> upstream/master
 
 
 class halleys_state : public driver_device
@@ -232,25 +221,6 @@ public:
 		m_io_ram(*this, "io_ram"),
 		m_maincpu(*this, "maincpu"),
 		m_audiocpu(*this, "audiocpu"),
-<<<<<<< HEAD
-		m_palette(*this, "palette") { }
-
-	UINT16 *m_render_layer[MAX_LAYERS];
-	UINT8 m_sound_fifo[MAX_SOUNDS];
-	UINT8 *m_gfx_plane02;
-	UINT8 *m_gfx_plane13;
-	UINT8 *m_collision_list;
-	UINT8 *m_scrolly0;
-	UINT8 *m_scrollx0;
-	UINT8 *m_scrolly1;
-	UINT8 *m_scrollx1;
-	UINT32 *m_internal_palette;
-	UINT32 *m_alpha_table;
-	UINT8 *m_cpu1_base;
-	UINT8 *m_gfx1_base;
-	required_shared_ptr<UINT8> m_blitter_ram;
-	required_shared_ptr<UINT8> m_io_ram;
-=======
 		m_palette(*this, "palette"),
 		m_soundlatch(*this, "soundlatch") { }
 
@@ -269,7 +239,6 @@ public:
 	std::unique_ptr<uint8_t[]> m_gfx1_base;
 	required_shared_ptr<uint8_t> m_blitter_ram;
 	required_shared_ptr<uint8_t> m_io_ram;
->>>>>>> upstream/master
 	int m_game_id;
 	int m_blitter_busy;
 	int m_collision_count;
@@ -284,11 +253,7 @@ public:
 	emu_timer *m_blitter_reset_timer;
 	offs_t m_collision_detection;
 	int m_latch_delay;
-<<<<<<< HEAD
-	std::vector<UINT8> m_paletteram;
-=======
 	std::vector<uint8_t> m_paletteram;
->>>>>>> upstream/master
 
 	DECLARE_WRITE8_MEMBER(bgtile_w);
 	DECLARE_READ8_MEMBER(blitter_status_r);
@@ -297,11 +262,6 @@ public:
 	DECLARE_READ8_MEMBER(collision_id_r);
 	DECLARE_READ8_MEMBER(paletteram_r);
 	DECLARE_WRITE8_MEMBER(paletteram_w);
-<<<<<<< HEAD
-	DECLARE_READ8_MEMBER(zero_r);
-	DECLARE_READ8_MEMBER(debug_r);
-=======
->>>>>>> upstream/master
 	DECLARE_READ8_MEMBER(vector_r);
 	DECLARE_WRITE8_MEMBER(firq_ack_w);
 	DECLARE_WRITE8_MEMBER(soundcommand_w);
@@ -312,21 +272,6 @@ public:
 	DECLARE_DRIVER_INIT(halley87);
 	DECLARE_DRIVER_INIT(benberob);
 	DECLARE_DRIVER_INIT(halleys);
-<<<<<<< HEAD
-	virtual void machine_reset();
-	virtual void video_start();
-	DECLARE_PALETTE_INIT(halleys);
-	UINT32 screen_update_halleys(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	UINT32 screen_update_benberob(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	TIMER_CALLBACK_MEMBER(blitter_reset);
-	TIMER_DEVICE_CALLBACK_MEMBER(halleys_scanline);
-	TIMER_DEVICE_CALLBACK_MEMBER(benberob_scanline);
-	void halleys_decode_rgb(UINT32 *r, UINT32 *g, UINT32 *b, int addr, int data);
-	void copy_scroll_op(bitmap_ind16 &bitmap, UINT16 *source, int sx, int sy);
-	void copy_scroll_xp(bitmap_ind16 &bitmap, UINT16 *source, int sx, int sy);
-	void copy_fixed_xp(bitmap_ind16 &bitmap, UINT16 *source);
-	void copy_fixed_2b(bitmap_ind16 &bitmap, UINT16 *source);
-=======
 	virtual void machine_reset() override;
 	virtual void video_start() override;
 	DECLARE_PALETTE_INIT(halleys);
@@ -340,16 +285,12 @@ public:
 	void copy_scroll_xp(bitmap_ind16 &bitmap, uint16_t *source, int sx, int sy);
 	void copy_fixed_xp(bitmap_ind16 &bitmap, uint16_t *source);
 	void copy_fixed_2b(bitmap_ind16 &bitmap, uint16_t *source);
->>>>>>> upstream/master
 	void filter_bitmap(bitmap_ind16 &bitmap, int mask);
 	void init_common();
 	required_device<cpu_device> m_maincpu;
 	required_device<cpu_device> m_audiocpu;
 	required_device<palette_device> m_palette;
-<<<<<<< HEAD
-=======
 	required_device<generic_latch_8_device> m_soundlatch;
->>>>>>> upstream/master
 };
 
 
@@ -424,23 +365,6 @@ void halleys_state::blit(int offset)
 #define XMASK (SCREEN_WIDTH-1)
 #define YMASK (SCREEN_HEIGHT-1)
 
-<<<<<<< HEAD
-	static const UINT8 penxlat[16]={0x03,0x07,0x0b,0x0f,0x02,0x06,0x0a,0x0e,0x01,0x05,0x09,0x0d,0x00,0x04,0x08,0x0c};
-	static const UINT8 rgbmask[16]={0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xfc,0xff,0xff,0xff,0xff,0xff};
-	static const UINT8 tyremap[ 8]={ 0, 5, 9,13,16,20,24,28};
-
-	UINT8 *param, *src_base;
-	UINT16 *dst_base;
-	int stptr, mode, color, code, y, x, h, w, src1, src2;
-	int status, flags, group, command, bank, layer, pen0, pen1;
-	int yclip, xclip, src_yskip, src_xskip, dst_skip, hclip, wclip, src_dy, src_dx;
-	UINT32 *pal_ptr;
-	UINT8 *src1_ptr, *src2_ptr; // esi alias, ebx alias
-	UINT16 *dst_ptr;             // edi alias
-	void *edi;                 // scratch
-	int eax, ebx, ecx, edx;    // scratch
-	UINT16 ax; UINT8 al, ah;      // partial regs
-=======
 	static const uint8_t penxlat[16]={0x03,0x07,0x0b,0x0f,0x02,0x06,0x0a,0x0e,0x01,0x05,0x09,0x0d,0x00,0x04,0x08,0x0c};
 	static const uint8_t rgbmask[16]={0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xfc,0xff,0xff,0xff,0xff,0xff};
 	static const uint8_t tyremap[ 8]={ 0, 5, 9,13,16,20,24,28};
@@ -456,7 +380,6 @@ void halleys_state::blit(int offset)
 	void *edi;                 // scratch
 	int eax, ebx, ecx, edx;    // scratch
 	uint16_t ax; uint8_t al, ah;      // partial regs
->>>>>>> upstream/master
 
 
 	param = m_blitter_ram + offset;
@@ -513,80 +436,6 @@ if (0) {
 	src1 &= 0x3fff;
 	src2 &= 0x3fff;
 	bank = ((code & BANKBIT0) | (color & BANKBIT1)) << 8;
-<<<<<<< HEAD
-	pal_ptr = m_internal_palette;
-
-
-	// the crossroad of fate
-	if (code & BGLAYER || command & 7) goto COMMAND_MODE;
-
-
-	// reject off-screen objects
-	if (flags & MIRROR_Y) { flags |= FLIP_Y; y -= (h - 1); }
-	if (flags & MIRROR_X) { flags |= FLIP_X; x -= (w - 1); }
-	if (y > VIS_MAXY || (y + h) <= VIS_MINY) return;
-	if (x > VIS_MAXX || (x + w) <= VIS_MINX) return;
-
-
-	// clip objects against the visible area
-	yclip = y; xclip = x; hclip = h; wclip = w;
-	src_yskip = src_xskip = 0;
-	if (yclip < VIS_MINY) { src_yskip = VIS_MINY - yclip; yclip = VIS_MINY; hclip -= src_yskip; }
-	if (yclip + hclip > VIS_MAXY+1) { hclip = VIS_MAXY+1 - yclip; }
-	if (xclip < VIS_MINX) { src_xskip = VIS_MINX - xclip; xclip = VIS_MINX; wclip -= src_xskip; }
-	if (xclip + wclip > VIS_MAXX+1) { wclip = VIS_MAXX+1 - xclip; }
-	dst_skip = (yclip << SCREEN_WIDTH_L2) + xclip;
-
-
-	// adjust orientations
-	eax = 0;
-	if (flags & (S1_REV | S2_REV)) { flags ^= FLIP_Y | FLIP_X; eax -= w * h - 8; }
-
-	if (flags & FLIP_Y)
-	{
-		eax += w * (h - 1);
-		src_yskip = -src_yskip;
-		src_dy = (flags & FLIP_X) ? -w + wclip : -w - wclip;
-
-	}
-	else src_dy = (flags & FLIP_X) ? w + wclip : w - wclip;
-
-	if (flags & FLIP_X)
-	{
-		eax += w - 1;
-		src_xskip = -src_xskip;
-		src_dx = -1;
-	}
-	else src_dx = 1;
-
-
-	// calculate entry points and loop constants
-	src1_ptr = m_gfx_plane02 + ((bank + src1)<<3) + eax;
-	src2_ptr = m_gfx_plane13 + ((bank + src2)<<3) + eax;
-
-	if (!(flags & (S1_IDLE | S2_IDLE)))
-	{
-		eax = src_yskip * w + src_xskip;
-		src1_ptr += eax;
-		src2_ptr += eax;
-	}
-	else src_dy = src_dx = 0;
-
-	dst_ptr = m_render_layer[layer] + dst_skip;
-
-
-	// look up pen values and set rendering flags
-	pen0 = code>>3 & 0x10;
-	pen1 = 0;
-	if (command == EFX1) { flags |= BACKMODE; pen0 |= SP_2BACK; }
-	if (src1 == src2)
-	{
-		flags |= SINGLE_PEN;
-		eax = (UINT32)penxlat[color & PENCOLOR];
-		if (eax) pen1 = pen0 + eax;
-	}
-	else if (color & PENCOLOR) flags |= RGB_MASK;
-=======
 	pal_ptr = m_internal_palette.get();
 
 	// the crossroad of fate
@@ -652,7 +501,6 @@ if (0) {
 			if (eax) pen1 = pen0 + eax;
 		}
 		else if (color & PENCOLOR) flags |= RGB_MASK;
->>>>>>> upstream/master
 
 
 //--------------------------------------------------------------------------
@@ -661,90 +509,11 @@ if (0) {
 	eax = wclip<<1; \
 	ecx = hclip; \
 	edi = dst_ptr; \
-<<<<<<< HEAD
-	do { memset((UINT8*)edi, 0, eax); edi = (UINT8*)edi + SCREEN_BYTEWIDTH; } while (--ecx); \
-=======
 	do { memset((uint8_t*)edi, 0, eax); edi = (uint8_t*)edi + SCREEN_BYTEWIDTH; } while (--ecx); \
->>>>>>> upstream/master
 }
 
 //--------------------------------------------------------------------------
 
-<<<<<<< HEAD
-	// multi-pen block or transparent blit
-	if ((flags & (SINGLE_PEN | RGB_MASK | COLOR_ON)) == COLOR_ON)
-	{
-		if (!(flags & IGNORE_0)) BLOCK_WIPE_COMMON
-
-		dst_ptr += wclip;
-		ecx = wclip = -wclip;
-		edx = src_dx;
-
-		if (flags & PPCD_ON) goto COLLISION_MODE;
-
-		al = ah = (UINT8)pen0;
-
-		if (!(flags & BACKMODE))
-		{
-			do {
-				do {
-					al |= *src1_ptr;
-					src1_ptr += edx;
-					al |= *src2_ptr;
-					src2_ptr += edx;
-					if (al & 0xf) { dst_ptr[ecx] = (UINT16)al;  al = ah;}
-				}
-				while (++ecx);
-				ecx = wclip; src1_ptr += src_dy; src2_ptr += src_dy; dst_ptr += SCREEN_WIDTH;
-			}
-			while (--hclip);
-		}
-		else
-		{
-			do {
-				do {
-					al |= *src1_ptr;
-					src1_ptr += edx;
-					al |= *src2_ptr;
-					src2_ptr += edx;
-					if (al & 0xf) { dst_ptr[ecx] = (UINT16)al | SP_2BACK;  al = ah; }
-				}
-				while (++ecx);
-				ecx = wclip; src1_ptr += src_dy; src2_ptr += src_dy; dst_ptr += SCREEN_WIDTH;
-			}
-			while (--hclip);
-		}
-		return;
-
-
-		COLLISION_MODE:
-
-		ax = 0;
-		if (group)
-		{
-			do {
-				do {
-					al = *src1_ptr;
-					src1_ptr += edx;
-					al |= *src2_ptr;
-					src2_ptr += edx;
-					if (al & 0xf) { dst_ptr[ecx] = (UINT16)al | SP_COLLD; } // set collision flag on group one pixels
-				}
-				while (++ecx);
-				ecx = wclip; src1_ptr += src_dy; src2_ptr += src_dy; dst_ptr += SCREEN_WIDTH;
-			}
-			while (--hclip);
-		}
-		else
-		{
-			do {
-				do {
-					al = *src1_ptr;
-					src1_ptr += edx;
-					al |= *src2_ptr;
-					src2_ptr += edx;
-					if (al & 0xf) { ax |= dst_ptr[ecx]; dst_ptr[ecx] = (UINT16)al; } // combine collision flags in ax
-=======
 		// multi-pen block or transparent blit
 		if ((flags & (SINGLE_PEN | RGB_MASK | COLOR_ON)) == COLOR_ON)
 		{
@@ -852,108 +621,16 @@ if (0) {
 					al |= *src2_ptr;
 					src2_ptr += src_dx;
 					if (al & 0xf) { edx = (uint32_t)al;  al = ah;  dst_ptr[ecx] = pal_ptr[edx] & ebx; }
->>>>>>> upstream/master
 				}
 				while (++ecx);
 				ecx = wclip; src1_ptr += src_dy; src2_ptr += src_dy; dst_ptr += SCREEN_WIDTH;
 			}
 			while (--hclip);
-<<<<<<< HEAD
-		}
-
-		// update collision list if object collided with the other group
-		if (status & ACTIVE && ax & SP_COLLD)
-		{
-			m_collision_list[m_collision_count & (MAX_SPRITES-1)] = offset;
-			m_collision_count++;
-
-			#if HALLEYS_DEBUG
-				popmessage("ID:%02x CC:%3d", offset, m_collision_count);
-			#endif
-		}
-
-	} else
-
-//--------------------------------------------------------------------------
-
-	// multi-pen, RGB masked block or transparent blit
-	if ((flags & (RGB_MASK | COLOR_ON)) == RGB_MASK + COLOR_ON)
-	{
-		if (!(flags & IGNORE_0)) BLOCK_WIPE_COMMON
-
-		dst_ptr += wclip;
-		ecx = wclip = -wclip;
-		al = ah = (UINT8)pen0;
-		ebx = rgbmask[color & PENCOLOR] | 0xffffff00;
-
-		do {
-			do {
-				al |= *src1_ptr;
-				src1_ptr += src_dx;
-				al |= *src2_ptr;
-				src2_ptr += src_dx;
-				if (al & 0xf) { edx = (UINT32)al;  al = ah;  dst_ptr[ecx] = pal_ptr[edx] & ebx; }
-			}
-			while (++ecx);
-			ecx = wclip; src1_ptr += src_dy; src2_ptr += src_dy; dst_ptr += SCREEN_WIDTH;
-		}
-		while (--hclip);
-
-	} else
-=======
 		} else
->>>>>>> upstream/master
 
 //--------------------------------------------------------------------------
 
 	// single-pen block or transparent blit
-<<<<<<< HEAD
-	if ((flags & (SINGLE_PEN | COLOR_ON)) == SINGLE_PEN + COLOR_ON)
-	{
-		if (!(flags & IGNORE_0)) BLOCK_WIPE_COMMON
-
-		dst_ptr += wclip;
-		ebx = hclip;
-		ecx = wclip = -wclip;
-		edx = src_dx;
-		ax = (UINT16)pen1;
-
-		do {
-			do {
-				if (*src1_ptr) dst_ptr[ecx] = ax;
-				src1_ptr += edx;
-			}
-			while (++ecx);
-
-			ecx = wclip;
-			src1_ptr += src_dy;
-			dst_ptr  += SCREEN_WIDTH;
-		}
-		while (--ebx);
-
-	} else
-
-//--------------------------------------------------------------------------
-
-	// transparent wipe
-	if ((flags & (IGNORE_0 | COLOR_ON)) == IGNORE_0)
-	{
-		dst_ptr += wclip;
-		wclip = -wclip;
-		ecx = wclip;
-		edx = src_dx;
-
-		if (flags & PPCD_ON && !group)
-		{
-			// preserve collision flags when wiping group zero objects
-			do {
-				do {
-					al = *src1_ptr;
-					ah = *src2_ptr;
-					src1_ptr += edx;
-					src2_ptr += edx;
-					if (al | ah) dst_ptr[ecx] &= SP_COLLD;
-=======
 		if ((flags & (SINGLE_PEN | COLOR_ON)) == SINGLE_PEN + COLOR_ON)
 		{
 			if (!(flags & IGNORE_0)) BLOCK_WIPE_COMMON
@@ -967,59 +644,11 @@ if (0) {
 				do {
 					if (*src1_ptr) dst_ptr[ecx] = ax;
 					src1_ptr += edx;
->>>>>>> upstream/master
 				}
 				while (++ecx);
 
 				ecx = wclip;
 				src1_ptr += src_dy;
-<<<<<<< HEAD
-				src2_ptr += src_dy;
-				dst_ptr  += SCREEN_WIDTH;
-			}
-			while (--hclip);
-		}
-		else
-		{
-			do {
-				do {
-					al = *src1_ptr;
-					ah = *src2_ptr;
-					src1_ptr += edx;
-					src2_ptr += edx;
-					if (al | ah) dst_ptr[ecx] = 0;
-				}
-				while (++ecx);
-
-				ecx = wclip;
-				src1_ptr += src_dy;
-				src2_ptr += src_dy;
-				dst_ptr  += SCREEN_WIDTH;
-			}
-			while (--hclip);
-		}
-
-	} else
-
-//--------------------------------------------------------------------------
-
-	// block wipe
-	if ((flags & (IGNORE_0 | COLOR_ON)) == 0) BLOCK_WIPE_COMMON
-
-//--------------------------------------------------------------------------
-
-	// End of Standard Mode
-	return;
-
-//--------------------------------------------------------------------------
-
-
-COMMAND_MODE:
-
-#define GFX_HI 0x10000
-
-
-=======
 				dst_ptr  += SCREEN_WIDTH;
 			}
 			while (--ebx);
@@ -1092,7 +721,6 @@ COMMAND_MODE:
 
 #define GFX_HI 0x10000
 
->>>>>>> upstream/master
 	// reject illegal blits and adjust parameters
 	if (command)
 	{
@@ -1107,11 +735,7 @@ COMMAND_MODE:
 	if (flags & S1_IDLE) src_dx = 0; else src_dx = 1;
 	if (flags & S1_REV ) src_dx = -src_dx;
 
-<<<<<<< HEAD
-	src_base = m_gfx1_base + bank;
-=======
 	src_base = m_gfx1_base.get() + bank;
->>>>>>> upstream/master
 
 	if (command == STARPASS1 || command == STARPASS2) layer = (layer & 1) + 4;
 	dst_base = m_render_layer[layer];
@@ -1182,21 +806,12 @@ COMMAND_MODE:
 		for (yclip=y+h; y<yclip; y+=16)
 		for (xclip=x+w; x<xclip; x+=16)
 		{
-<<<<<<< HEAD
-			edx = (UINT32)*src2_ptr;
-			src2_ptr++;
-			if (edx)
-			{
-				ax = (UINT16)*(src2_ptr-0x100 -1);
-				ebx = (UINT32)ax;
-=======
 			edx = (uint32_t)*src2_ptr;
 			src2_ptr++;
 			if (edx)
 			{
 				ax = (uint16_t)*(src2_ptr-0x100 -1);
 				ebx = (uint32_t)ax;
->>>>>>> upstream/master
 				ax |= BG_MONO;
 				if (edx & 0x01) {                    dst_base[C2S(x,y,ebx)] = ax; }
 				if (edx & 0x02) { ecx = RORB(ebx,1); dst_base[C2S(x,y,ecx)] = ax; }
@@ -1224,11 +839,7 @@ COMMAND_MODE:
 		edx = SCREEN_WIDTH - x - w;
 		w = -w;
 
-<<<<<<< HEAD
-		ax = (UINT16)(~src_base[src2] & 0xff);
-=======
 		ax = (uint16_t)(~src_base[src2] & 0xff);
->>>>>>> upstream/master
 
 		for (yclip=y+h; y<yclip; y++)
 		{
@@ -1237,20 +848,12 @@ COMMAND_MODE:
 			if (edx < 0)
 			{
 				ecx = edx;
-<<<<<<< HEAD
-				dst_ptr = (UINT16*)edi - edx;
-=======
 				dst_ptr = (uint16_t*)edi - edx;
->>>>>>> upstream/master
 				do { if (dst_ptr[ecx]) dst_ptr[ecx] ^= ax; } while (++ecx);
 				ecx = x - SCREEN_WIDTH;
 			} else ecx = w;
 
-<<<<<<< HEAD
-			dst_ptr = (UINT16*)edi + x - ecx;
-=======
 			dst_ptr = (uint16_t*)edi + x - ecx;
->>>>>>> upstream/master
 			do { if (dst_ptr[ecx]) dst_ptr[ecx] ^= ax; } while (++ecx);
 		}
 
@@ -1272,11 +875,7 @@ COMMAND_MODE:
 		    second pass at the same location with zeroes. In addition the
 		    X and Y values passed to the blitter do not reflect the tiles true
 		    locations. For example, tiles near the top or bottom of the screen
-<<<<<<< HEAD
-		    are positioned resonably close but those in the middle are oddly
-=======
 		    are positioned reasonably close but those in the middle are oddly
->>>>>>> upstream/master
 		    shifted toward either side. The tiles also resemble predefined
 		    patterns but I don't know if there are supposed to be lookup tables
 		    in ROM or hard-wired to the blitter chips.
@@ -1301,11 +900,7 @@ COMMAND_MODE:
 		{
 			dst_ptr += x;
 			do {
-<<<<<<< HEAD
-				ax = (UINT16)src1_ptr[edx];
-=======
 				ax = (uint16_t)src1_ptr[edx];
->>>>>>> upstream/master
 				al = src1_ptr[edx+0x10000];
 				ax |= BG_RGB;
 				if (al & 0x01) *dst_ptr   = ax;
@@ -1324,18 +919,6 @@ COMMAND_MODE:
 			#define WARPMASK ((SCREEN_WIDTH<<1)-1)
 			do {
 				ecx = x & WARPMASK;
-<<<<<<< HEAD
-				ax = (UINT16)src1_ptr[edx];
-				al = src1_ptr[edx+0x10000];
-				ax |= BG_RGB;
-				if (al & 0x01) dst_ptr[ecx] = ax;  ecx++; ecx &= WARPMASK;
-				if (al & 0x02) dst_ptr[ecx] = ax;  ecx++; ecx &= WARPMASK;
-				if (al & 0x04) dst_ptr[ecx] = ax;  ecx++; ecx &= WARPMASK;
-				if (al & 0x08) dst_ptr[ecx] = ax;  ecx++; ecx &= WARPMASK;
-				if (al & 0x10) dst_ptr[ecx] = ax;  ecx++; ecx &= WARPMASK;
-				if (al & 0x20) dst_ptr[ecx] = ax;  ecx++; ecx &= WARPMASK;
-				if (al & 0x40) dst_ptr[ecx] = ax;  ecx++; ecx &= WARPMASK;
-=======
 				ax = (uint16_t)src1_ptr[edx];
 				al = src1_ptr[edx+0x10000];
 				ax |= BG_RGB;
@@ -1353,7 +936,6 @@ COMMAND_MODE:
 				ecx++; ecx &= WARPMASK;
 				if (al & 0x40) dst_ptr[ecx] = ax;
 				ecx++; ecx &= WARPMASK;
->>>>>>> upstream/master
 				if (al & 0x80) dst_ptr[ecx] = ax;
 				dst_ptr += SCREEN_WIDTH;
 			} while (++edx);
@@ -1368,15 +950,9 @@ COMMAND_MODE:
 	if (command == HORIZBAR && flags & COLOR_ON && !(layer & 1))
 	{
 		#define WARP_LINE_COMMON { \
-<<<<<<< HEAD
-			if (ecx & 1) { ecx--; *dst_ptr = (UINT16)eax; dst_ptr++; } \
-			dst_ptr += ecx; ecx = -ecx; \
-			while (ecx) { *(UINT32*)(dst_ptr+ecx) = eax; ecx += 2; } \
-=======
 			if (ecx & 1) { ecx--; *dst_ptr = (uint16_t)eax; dst_ptr++; } \
 			dst_ptr += ecx; ecx = -ecx; \
 			while (ecx) { *(uint32_t*)(dst_ptr+ecx) = eax; ecx += 2; } \
->>>>>>> upstream/master
 		}
 
 		src1_ptr = src_base + src1;
@@ -1404,11 +980,7 @@ COMMAND_MODE:
 
 			for (yclip=y; yclip<hclip; yclip++)
 			{
-<<<<<<< HEAD
-				eax = (UINT32)*src1_ptr;
-=======
 				eax = (uint32_t)*src1_ptr;
->>>>>>> upstream/master
 				src1_ptr += src_dx;
 				if (!eax) continue;
 				eax = eax | (eax<<16) | ((BG_RGB<<16)|BG_RGB);
@@ -1417,28 +989,16 @@ COMMAND_MODE:
 				if (edx > 0)
 				{
 					ecx = edx;
-<<<<<<< HEAD
-					dst_ptr = (UINT16*)edi;
-=======
 					dst_ptr = (uint16_t*)edi;
->>>>>>> upstream/master
 					WARP_LINE_COMMON
 					ecx = SCREEN_WIDTH - xclip;
 				} else ecx = w;
 
-<<<<<<< HEAD
-				dst_ptr = (UINT16*)edi + xclip;
-				WARP_LINE_COMMON
-			}
-
-			edi = src1_ptr; src1_ptr = src2_ptr; src2_ptr = (UINT8*)edi;
-=======
 				dst_ptr = (uint16_t*)edi + xclip;
 				WARP_LINE_COMMON
 			}
 
 			edi = src1_ptr; src1_ptr = src2_ptr; src2_ptr = (uint8_t*)edi;
->>>>>>> upstream/master
 		}
 
 		#undef WARP_LINE_COMMON
@@ -1454,13 +1014,8 @@ COMMAND_MODE:
 WRITE8_MEMBER(halleys_state::bgtile_w)
 {
 	int yskip, xskip, ecx;
-<<<<<<< HEAD
-	UINT16 *edi;
-	UINT16 ax;
-=======
 	uint16_t *edi;
 	uint16_t ax;
->>>>>>> upstream/master
 
 	m_cpu1_base[0x1f00+offset] = data;
 	offset -= 0x18;
@@ -1475,11 +1030,7 @@ WRITE8_MEMBER(halleys_state::bgtile_w)
 
 	edi = m_render_layer[2] + (yskip<<SCREEN_WIDTH_L2) + xskip + (48<<SCREEN_WIDTH_L2);
 	ecx = -(48<<SCREEN_WIDTH_L2);
-<<<<<<< HEAD
-	ax = (UINT16)data | BG_RGB;
-=======
 	ax = (uint16_t)data | BG_RGB;
->>>>>>> upstream/master
 
 	do { edi[ecx] = edi[ecx+1] = edi[ecx+2] = edi[ecx+3] = edi[ecx+4] = ax; } while (ecx += SCREEN_WIDTH);
 }
@@ -1573,17 +1124,10 @@ READ8_MEMBER(halleys_state::collision_id_r)
 
 PALETTE_INIT_MEMBER(halleys_state, halleys)
 {
-<<<<<<< HEAD
-	UINT32 d, r, g, b, i, j, count;
-	// allocate memory for internal palette
-	m_internal_palette = auto_alloc_array(machine(), UINT32, PALETTE_SIZE);
-	UINT32 *pal_ptr = m_internal_palette;
-=======
 	uint32_t d, r, g, b, i, j, count;
 	// allocate memory for internal palette
 	m_internal_palette = std::make_unique<uint32_t[]>(PALETTE_SIZE);
 	uint32_t *pal_ptr = m_internal_palette.get();
->>>>>>> upstream/master
 
 	for (count=0; count<1024; count++)
 	{
@@ -1628,11 +1172,7 @@ PALETTE_INIT_MEMBER(halleys_state, halleys)
 	}
 }
 
-<<<<<<< HEAD
-void halleys_state::halleys_decode_rgb(UINT32 *r, UINT32 *g, UINT32 *b, int addr, int data)
-=======
 void halleys_state::halleys_decode_rgb(uint32_t *r, uint32_t *g, uint32_t *b, int addr, int data)
->>>>>>> upstream/master
 {
 /*
     proms contain:
@@ -1640,13 +1180,8 @@ void halleys_state::halleys_decode_rgb(uint32_t *r, uint32_t *g, uint32_t *b, in
         00 00 00 00 01 61 29 26 0b f5 e2 17 57 fb cf f7
 */
 	int latch1_273, latch2_273;
-<<<<<<< HEAD
-	UINT8 *sram_189;
-	UINT8 *prom_6330;
-=======
 	uint8_t *sram_189;
 	uint8_t *prom_6330;
->>>>>>> upstream/master
 
 	int bit0, bit1, bit2, bit3, bit4;
 
@@ -1689,19 +1224,11 @@ READ8_MEMBER(halleys_state::paletteram_r)
 
 WRITE8_MEMBER(halleys_state::paletteram_w)
 {
-<<<<<<< HEAD
-	UINT32 d, r, g, b, i, j;
-	UINT32 *pal_ptr = m_internal_palette;
-
-	m_paletteram[offset] = data;
-	d = (UINT32)data;
-=======
 	uint32_t d, r, g, b, i, j;
 	uint32_t *pal_ptr = m_internal_palette.get();
 
 	m_paletteram[offset] = data;
 	d = (uint32_t)data;
->>>>>>> upstream/master
 	j = d | BG_RGB;
 	pal_ptr[offset] = j;
 	pal_ptr[offset+SP_2BACK] = j;
@@ -1758,91 +1285,6 @@ void halleys_state::video_start()
 }
 
 
-<<<<<<< HEAD
-void halleys_state::copy_scroll_op(bitmap_ind16 &bitmap, UINT16 *source, int sx, int sy)
-{
-//--------------------------------------------------------------------------
-
-#define OPCOPY_COMMON { \
-	memcpy(edi, esi+sx, rcw); \
-	memcpy((UINT8*)edi+rcw, esi, CLIP_BYTEW-rcw); \
-	esi += SCREEN_WIDTH; \
-	edi += edx; }
-
-//--------------------------------------------------------------------------
-
-	UINT16 *esi, *edi;
-	int rcw, bch, ecx, edx;
-
-	sx = -sx & 0xff;
-	sy = -sy & 0xff;
-
-	if ((rcw = CLIP_W - sx) < 0) rcw = 0; else rcw <<= 1;
-	if ((bch = CLIP_H - sy) < 0) bch = 0;
-
-	esi = source + CLIP_SKIP + (sy << SCREEN_WIDTH_L2);
-	edi = &bitmap.pix16(VIS_MINY, VIS_MINX);
-	edx = bitmap.rowpixels();
-
-	// draw top split
-	for (ecx=bch; ecx; ecx--) OPCOPY_COMMON
-
-	esi = source + CLIP_SKIP;
-
-	// draw bottom split
-	for (ecx=CLIP_H-bch; ecx; ecx--) OPCOPY_COMMON
-
-#undef OPCOPY_COMMON
-}
-
-
-void halleys_state::copy_scroll_xp(bitmap_ind16 &bitmap, UINT16 *source, int sx, int sy)
-{
-//--------------------------------------------------------------------------
-
-#define XCOPY_COMMON \
-	if (ecx) { \
-		if (ecx & 1) { ecx--; ax = *esi; esi++; if (ax) *edi = ax; edi++; } \
-		esi += ecx; edi += ecx; ecx = -ecx; \
-		while (ecx) { \
-			ax = esi[ecx]; \
-			bx = esi[ecx+1]; \
-			if (ax) edi[ecx] = ax; \
-			if (bx) edi[ecx+1] = bx; \
-			ecx += 2; \
-		} \
-	}
-
-//--------------------------------------------------------------------------
-
-#define YCOPY_COMMON { \
-	esi = src_base + sx; ecx = rcw; XCOPY_COMMON \
-	esi = src_base; ecx = CLIP_W - rcw; XCOPY_COMMON \
-	src_base += SCREEN_WIDTH; \
-	edi += dst_adv; \
-}
-
-//--------------------------------------------------------------------------
-
-	int rcw, bch, dst_adv;
-
-	UINT16 *src_base, *esi, *edi;
-	int ecx, edx;
-	UINT16 ax, bx;
-
-	sx = -sx & 0xff;
-	sy = -sy & 0xff;
-
-	if ((rcw = CLIP_W - sx) < 0) rcw = 0;
-	if ((bch = CLIP_H - sy) < 0) bch = 0;
-
-	src_base = source + CLIP_SKIP + (sy << SCREEN_WIDTH_L2);
-	edi = &bitmap.pix16(VIS_MINY, VIS_MINX);
-	dst_adv = bitmap.rowpixels() - CLIP_W;
-
-	// draw top split
-	for (edx=bch; edx; edx--) YCOPY_COMMON
-=======
 void halleys_state::copy_scroll_op(bitmap_ind16 &bitmap, uint16_t *source, int sx, int sy)
 {
 	sx = -sx & 0xff;
@@ -1915,17 +1357,10 @@ void halleys_state::copy_scroll_xp(bitmap_ind16 &bitmap, uint16_t *source, int s
 
 		src_base += SCREEN_WIDTH;
 	}
->>>>>>> upstream/master
 
 	src_base = source + CLIP_SKIP;
 
 	// draw bottom split
-<<<<<<< HEAD
-	for (edx=CLIP_H-bch; edx; edx--) YCOPY_COMMON
-
-#undef XCOPY_COMMON
-#undef YCOPY_COMMON
-=======
 	for (int y = bch; y != CLIP_H; y++) {
 		uint16_t *dest = &bitmap.pix16(VIS_MINY + y, VIS_MINX);
 		const uint16_t *src = src_base + sx;
@@ -1947,105 +1382,10 @@ void halleys_state::copy_scroll_xp(bitmap_ind16 &bitmap, uint16_t *source, int s
 
 		src_base += SCREEN_WIDTH;
 	}
->>>>>>> upstream/master
 }
 
 
 
-<<<<<<< HEAD
-void halleys_state::copy_fixed_xp(bitmap_ind16 &bitmap, UINT16 *source)
-{
-	UINT16 *esi, *edi;
-	int dst_pitch, ecx, edx;
-	UINT16 ax, bx;
-
-	esi = source + CLIP_SKIP + CLIP_W;
-	edi = &bitmap.pix16(VIS_MINY, VIS_MINX + CLIP_W);
-	dst_pitch = bitmap.rowpixels();
-	ecx = -CLIP_W;
-	edx = CLIP_H;
-
-	do {
-		do {
-			ax = esi[ecx];
-			bx = esi[ecx+1];
-			if (ax) edi[ecx  ] = ax; ax = esi[ecx+2];
-			if (bx) edi[ecx+1] = bx; bx = esi[ecx+3];
-			if (ax) edi[ecx+2] = ax; ax = esi[ecx+4];
-			if (bx) edi[ecx+3] = bx; bx = esi[ecx+5];
-			if (ax) edi[ecx+4] = ax; ax = esi[ecx+6];
-			if (bx) edi[ecx+5] = bx; bx = esi[ecx+7];
-			if (ax) edi[ecx+6] = ax;
-			if (bx) edi[ecx+7] = bx;
-		}
-		while (ecx += 8);
-
-		ecx = -CLIP_W;
-		esi += SCREEN_WIDTH;
-		edi += dst_pitch;
-	}
-	while (--edx);
-}
-
-
-void halleys_state::copy_fixed_2b(bitmap_ind16 &bitmap, UINT16 *source)
-{
-	UINT16 *esi, *edi;
-	int dst_pitch, ecx, edx;
-	UINT16 ax, bx;
-
-	esi = source + CLIP_SKIP + CLIP_W;
-	edi = &bitmap.pix16(VIS_MINY, VIS_MINX + CLIP_W);
-	dst_pitch = bitmap.rowpixels();
-	ecx = -CLIP_W;
-	edx = CLIP_H;
-
-	do {
-		do {
-			ax = esi[ecx];
-			bx = esi[ecx+1];
-
-			if (!(ax)) goto SKIP0; if (!(ax&SP_2BACK)) goto DRAW0; if (edi[ecx  ]) goto SKIP0;
-			DRAW0: edi[ecx  ] = ax; SKIP0: ax = esi[ecx+2];
-			if (!(bx)) goto SKIP1; if (!(bx&SP_2BACK)) goto DRAW1; if (edi[ecx+1]) goto SKIP1;
-			DRAW1: edi[ecx+1] = bx; SKIP1: bx = esi[ecx+3];
-
-			if (!(ax)) goto SKIP2; if (!(ax&SP_2BACK)) goto DRAW2; if (edi[ecx+2]) goto SKIP2;
-			DRAW2: edi[ecx+2] = ax; SKIP2: ax = esi[ecx+4];
-			if (!(bx)) goto SKIP3; if (!(bx&SP_2BACK)) goto DRAW3; if (edi[ecx+3]) goto SKIP3;
-			DRAW3: edi[ecx+3] = bx; SKIP3: bx = esi[ecx+5];
-
-			if (!(ax)) goto SKIP4; if (!(ax&SP_2BACK)) goto DRAW4; if (edi[ecx+4]) goto SKIP4;
-			DRAW4: edi[ecx+4] = ax; SKIP4: ax = esi[ecx+6];
-			if (!(bx)) goto SKIP5; if (!(bx&SP_2BACK)) goto DRAW5; if (edi[ecx+5]) goto SKIP5;
-			DRAW5: edi[ecx+5] = bx; SKIP5: bx = esi[ecx+7];
-
-			if (!(ax)) goto SKIP6; if (!(ax&SP_2BACK)) goto DRAW6; if (edi[ecx+6]) goto SKIP6;
-			DRAW6: edi[ecx+6] = ax; SKIP6:
-			if (!(bx)) continue;   if (!(bx&SP_2BACK)) goto DRAW7; if (edi[ecx+7]) continue;
-			DRAW7: edi[ecx+7] = bx;
-		}
-		while (ecx += 8);
-
-		ecx = -CLIP_W;
-		esi += SCREEN_WIDTH;
-		edi += dst_pitch;
-	}
-	while (--edx);
-}
-
-
-void halleys_state::filter_bitmap(bitmap_ind16 &bitmap, int mask)
-{
-	int dst_pitch;
-
-	UINT32 *pal_ptr, *edi;
-	int esi, eax, ebx, ecx, edx;
-
-	pal_ptr = m_internal_palette;
-	esi = mask | 0xffffff00;
-	edi = (UINT32*)&bitmap.pix16(VIS_MINY, VIS_MINX + CLIP_W);
-=======
 void halleys_state::copy_fixed_xp(bitmap_ind16 &bitmap, uint16_t *source)
 {
 	uint16_t *src = source + CLIP_SKIP;
@@ -2089,7 +1429,6 @@ void halleys_state::filter_bitmap(bitmap_ind16 &bitmap, int mask)
 	pal_ptr = m_internal_palette.get();
 	esi = mask | 0xffffff00;
 	edi = (uint32_t*)&bitmap.pix16(VIS_MINY, VIS_MINX + CLIP_W);
->>>>>>> upstream/master
 	dst_pitch = bitmap.rowpixels() >> 1;
 	ecx = -(CLIP_W>>1);
 	edx = CLIP_H;
@@ -2120,11 +1459,7 @@ void halleys_state::filter_bitmap(bitmap_ind16 &bitmap, int mask)
 }
 
 
-<<<<<<< HEAD
-UINT32 halleys_state::screen_update_halleys(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t halleys_state::screen_update_halleys(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int i, j;
 
@@ -2152,11 +1487,7 @@ uint32_t halleys_state::screen_update_halleys(screen_device &screen, bitmap_ind1
 }
 
 
-<<<<<<< HEAD
-UINT32 halleys_state::screen_update_benberob(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t halleys_state::screen_update_benberob(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	if (m_io_ram[0xa0] & 0x80)
 		copy_scroll_op(bitmap, m_render_layer[2], *m_scrollx1, *m_scrolly1);
@@ -2264,11 +1595,7 @@ WRITE8_MEMBER(halleys_state::sndnmi_msk_w)
 WRITE8_MEMBER(halleys_state::soundcommand_w)
 {
 	m_io_ram[0x8a] = data;
-<<<<<<< HEAD
-	soundlatch_byte_w(space,offset,data);
-=======
 	m_soundlatch->write(space,offset,data);
->>>>>>> upstream/master
 	m_audiocpu->set_input_line(INPUT_LINE_NMI, PULSE_LINE);
 }
 
@@ -2336,11 +1663,7 @@ static ADDRESS_MAP_START( sound_map, AS_PROGRAM, 8, halleys_state )
 	AM_RANGE(0x4803, 0x4803) AM_DEVREAD("ay3", ay8910_device, data_r)
 	AM_RANGE(0x4804, 0x4805) AM_DEVWRITE("ay4", ay8910_device, address_data_w)
 	AM_RANGE(0x4805, 0x4805) AM_DEVREAD("ay4", ay8910_device, data_r)
-<<<<<<< HEAD
-	AM_RANGE(0x5000, 0x5000) AM_READ(soundlatch_byte_r)
-=======
 	AM_RANGE(0x5000, 0x5000) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
->>>>>>> upstream/master
 	AM_RANGE(0xe000, 0xefff) AM_ROM // space for diagnostic ROM
 ADDRESS_MAP_END
 
@@ -2596,11 +1919,7 @@ void halleys_state::machine_reset()
 }
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( halleys, halleys_state )
-=======
 static MACHINE_CONFIG_START( halleys )
->>>>>>> upstream/master
 	MCFG_CPU_ADD("maincpu", M6809, XTAL_19_968MHz/12) /* verified on pcb */
 	MCFG_CPU_PROGRAM_MAP(halleys_map)
 	MCFG_TIMER_DRIVER_ADD_SCANLINE("scantimer", halleys_state, halleys_scanline, "screen", 0, 1)
@@ -2626,11 +1945,8 @@ static MACHINE_CONFIG_START( halleys )
 	// sound hardware
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 
->>>>>>> upstream/master
 	MCFG_SOUND_ADD("ay1", AY8910, XTAL_6MHz/4) /* verified on pcb */
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.15)
 
@@ -2803,15 +2119,6 @@ ROM_END
 
 void halleys_state::init_common()
 {
-<<<<<<< HEAD
-	UINT8 *buf, *rom;
-	int addr, i;
-	UINT8 al, ah, dl, dh;
-
-
-	// allocate memory for unpacked graphics
-	buf = auto_alloc_array(machine(), UINT8, 0x100000);
-=======
 	uint8_t *buf, *rom;
 	int addr, i;
 	uint8_t al, ah, dl, dh;
@@ -2819,28 +2126,11 @@ void halleys_state::init_common()
 
 	// allocate memory for unpacked graphics
 	buf = auto_alloc_array(machine(), uint8_t, 0x100000);
->>>>>>> upstream/master
 	m_gfx_plane02 = buf;
 	m_gfx_plane13 = buf + 0x80000;
 
 
 	// allocate memory for render layers
-<<<<<<< HEAD
-	buf = auto_alloc_array(machine(), UINT8, SCREEN_BYTESIZE * MAX_LAYERS);
-	for (i=0; i<MAX_LAYERS; buf+=SCREEN_BYTESIZE, i++) m_render_layer[i] = (UINT16*)buf;
-
-
-	// allocate memory for pre-processed ROMs
-	m_gfx1_base = auto_alloc_array(machine(), UINT8, 0x20000);
-
-
-	// allocate memory for alpha table
-	m_alpha_table = auto_alloc_array(machine(), UINT32, 0x10000);
-
-
-	// allocate memory for hardware collision list
-	m_collision_list = auto_alloc_array(machine(), UINT8, MAX_SPRITES);
-=======
 	buf = auto_alloc_array(machine(), uint8_t, SCREEN_BYTESIZE * MAX_LAYERS);
 	for (i=0; i<MAX_LAYERS; buf+=SCREEN_BYTESIZE, i++) m_render_layer[i] = (uint16_t*)buf;
 
@@ -2855,16 +2145,11 @@ void halleys_state::init_common()
 
 	// allocate memory for hardware collision list
 	m_collision_list = std::make_unique<uint8_t[]>(MAX_SPRITES);
->>>>>>> upstream/master
 
 
 	// decrypt main program ROM
 	rom = m_cpu1_base = memregion("maincpu")->base();
-<<<<<<< HEAD
-	buf = m_gfx1_base;
-=======
 	buf = m_gfx1_base.get();
->>>>>>> upstream/master
 
 	for (i=0; i<0x10000; i++)
 	{
@@ -2938,16 +2223,8 @@ DRIVER_INIT_MEMBER(halleys_state,halley87)
 //**************************************************************************
 // Game Definitions
 
-<<<<<<< HEAD
-GAME( 1984, benberob, 0,       benberob, benberob, halleys_state, benberob,  ROT0,  "Taito", "Ben Bero Beh (Japan)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_COLORS | MACHINE_NO_COCKTAIL )
-GAME( 1986, halleys,  0,       halleys,  halleys, halleys_state,  halleys,   ROT90, "Taito America Corporation (Coin-It license)", "Halley's Comet (US)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_NO_COCKTAIL )
-GAME( 1986, halleysc, halleys, halleys,  halleys, halleys_state,  halleys,   ROT90, "Taito Corporation", "Halley's Comet (Japan, Newer)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_NO_COCKTAIL )
-GAME( 1986, halleycj, halleys, halleys,  halleys, halleys_state,  halleys,   ROT90, "Taito Corporation", "Halley's Comet (Japan, Older)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_NO_COCKTAIL )
-GAME( 1986, halley87, halleys, halleys,  halleys, halleys_state,  halley87,  ROT90, "Taito Corporation", "Halley's Comet '87", MACHINE_IMPERFECT_GRAPHICS | MACHINE_NO_COCKTAIL )
-=======
 GAME( 1984, benberob, 0,       benberob, benberob, halleys_state, benberob,  ROT0,  "Taito",                                       "Ben Bero Beh (Japan)",          MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_COLORS | MACHINE_NO_COCKTAIL )
 GAME( 1986, halleys,  0,       halleys,  halleys,  halleys_state, halleys,   ROT90, "Taito America Corporation (Coin-It license)", "Halley's Comet (US)",           MACHINE_IMPERFECT_GRAPHICS | MACHINE_NO_COCKTAIL )
 GAME( 1986, halleysc, halleys, halleys,  halleys,  halleys_state, halleys,   ROT90, "Taito Corporation",                           "Halley's Comet (Japan, Newer)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_NO_COCKTAIL )
 GAME( 1986, halleycj, halleys, halleys,  halleys,  halleys_state, halleys,   ROT90, "Taito Corporation",                           "Halley's Comet (Japan, Older)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_NO_COCKTAIL )
 GAME( 1986, halley87, halleys, halleys,  halleys,  halleys_state, halley87,  ROT90, "Taito Corporation",                           "Halley's Comet '87",            MACHINE_IMPERFECT_GRAPHICS | MACHINE_NO_COCKTAIL )
->>>>>>> upstream/master

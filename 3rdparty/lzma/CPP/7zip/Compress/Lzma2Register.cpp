@@ -6,20 +6,6 @@
 
 #include "Lzma2Decoder.h"
 
-<<<<<<< HEAD
-static void *CreateCodec() { return (void *)(ICompressCoder *)(new NCompress::NLzma2::CDecoder); }
-#ifndef EXTRACT_ONLY
-#include "Lzma2Encoder.h"
-static void *CreateCodecOut() { return (void *)(ICompressCoder *)(new NCompress::NLzma2::CEncoder);  }
-#else
-#define CreateCodecOut 0
-#endif
-
-static CCodecInfo g_CodecInfo =
-  { CreateCodec, CreateCodecOut, 0x21, L"LZMA2", 1, false };
-
-REGISTER_CODEC(LZMA2)
-=======
 #ifndef EXTRACT_ONLY
 #include "Lzma2Encoder.h"
 #endif
@@ -34,4 +20,3 @@ REGISTER_CODEC_E(LZMA2,
     "LZMA2")
 
 }}
->>>>>>> upstream/master

@@ -8,13 +8,8 @@
 
 *********************************************************************/
 
-<<<<<<< HEAD
-#include "laser128.h"
-#include "includes/apple2.h"
-=======
 #include "emu.h"
 #include "laser128.h"
->>>>>>> upstream/master
 
 /***************************************************************************
     PARAMETERS
@@ -24,61 +19,32 @@
 //  GLOBAL VARIABLES
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type A2BUS_LASER128 = &device_creator<a2bus_laser128_device>;
-
-MACHINE_CONFIG_FRAGMENT( a2laser128 )
-MACHINE_CONFIG_END
-=======
 DEFINE_DEVICE_TYPE(A2BUS_LASER128, a2bus_laser128_device, "a2laser128", "VTech Laser 128 Internal Device")
->>>>>>> upstream/master
 
 /***************************************************************************
     FUNCTION PROTOTYPES
 ***************************************************************************/
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  machine_config_additions - device-specific
-//  machine configurations
-//-------------------------------------------------
-
-machine_config_constructor a2bus_laser128_device::device_mconfig_additions() const
-{
-	return MACHINE_CONFIG_NAME( a2laser128 );
-}
-=======
 //  device_add_mconfig - add device configuration
 //-------------------------------------------------
 
 MACHINE_CONFIG_MEMBER( a2bus_laser128_device::device_add_mconfig )
 MACHINE_CONFIG_END
->>>>>>> upstream/master
 
 //**************************************************************************
 //  LIVE DEVICE
 //**************************************************************************
 
-<<<<<<< HEAD
-a2bus_laser128_device::a2bus_laser128_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source) :
-	device_t(mconfig, type, name, tag, owner, clock, shortname, source),
-=======
 a2bus_laser128_device::a2bus_laser128_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock) :
 	device_t(mconfig, type, tag, owner, clock),
->>>>>>> upstream/master
 	device_a2bus_card_interface(mconfig, *this), m_rom(nullptr), m_slot7_bank(0), m_slot7_ram_bank(0)
 
 {
 }
 
-<<<<<<< HEAD
-a2bus_laser128_device::a2bus_laser128_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-	device_t(mconfig, A2BUS_LASER128, "VTech Laser 128 Internal Device", tag, owner, clock, "a2laser128", __FILE__),
-	device_a2bus_card_interface(mconfig, *this), m_rom(nullptr), m_slot7_bank(0), m_slot7_ram_bank(0)
-=======
 a2bus_laser128_device::a2bus_laser128_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	a2bus_laser128_device(mconfig, A2BUS_LASER128, tag, owner, clock)
->>>>>>> upstream/master
 {
 }
 
@@ -102,37 +68,21 @@ void a2bus_laser128_device::device_reset()
 	m_slot7_ram_bank = 0;
 }
 
-<<<<<<< HEAD
-UINT8 a2bus_laser128_device::read_c0nx(address_space &space, UINT8 offset)
-=======
 uint8_t a2bus_laser128_device::read_c0nx(address_space &space, uint8_t offset)
->>>>>>> upstream/master
 {
 	return 0x00;
 }
 
-<<<<<<< HEAD
-void a2bus_laser128_device::write_c0nx(address_space &space, UINT8 offset, UINT8 data)
-{
-}
-
-UINT8 a2bus_laser128_device::read_cnxx(address_space &space, UINT8 offset)
-=======
 void a2bus_laser128_device::write_c0nx(address_space &space, uint8_t offset, uint8_t data)
 {
 }
 
 uint8_t a2bus_laser128_device::read_cnxx(address_space &space, uint8_t offset)
->>>>>>> upstream/master
 {
 	return m_rom[offset + (m_slot * 0x100) + 0x4000];
 }
 
-<<<<<<< HEAD
-UINT8 a2bus_laser128_device::read_c800(address_space &space, UINT16 offset)
-=======
 uint8_t a2bus_laser128_device::read_c800(address_space &space, uint16_t offset)
->>>>>>> upstream/master
 {
 	switch (m_slot)
 	{
@@ -159,11 +109,7 @@ uint8_t a2bus_laser128_device::read_c800(address_space &space, uint16_t offset)
 	return 0xff;
 }
 
-<<<<<<< HEAD
-void a2bus_laser128_device::write_c800(address_space &space, UINT16 offset, UINT8 data)
-=======
 void a2bus_laser128_device::write_c800(address_space &space, uint16_t offset, uint8_t data)
->>>>>>> upstream/master
 {
 	if ((m_slot == 7) && (offset < 0x400))
 	{

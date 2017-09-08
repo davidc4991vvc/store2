@@ -71,15 +71,9 @@ WRITE8_MEMBER(momoko_state::momoko_flipscreen_w)
 void momoko_state::momoko_draw_bg_pri( bitmap_ind16 &bitmap, int chr, int col, int flipx, int flipy, int x, int y, int pri )
 {
 	int xx, sx, sy, px, py, dot;
-<<<<<<< HEAD
-	UINT32 gfxadr;
-	UINT8 d0, d1;
-	UINT8 *BG_GFX = memregion("gfx2")->base();
-=======
 	uint32_t gfxadr;
 	uint8_t d0, d1;
 	uint8_t *BG_GFX = memregion("gfx2")->base();
->>>>>>> upstream/master
 
 	for (sy = 0; sy < 8; sy++)
 	{
@@ -109,17 +103,6 @@ void momoko_state::momoko_draw_bg_pri( bitmap_ind16 &bitmap, int chr, int col, i
 
 /****************************************************************************/
 
-<<<<<<< HEAD
-UINT32 momoko_state::screen_update_momoko(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-{
-	int x, y, dx, dy, rx, ry, radr, chr, sy, fx, fy, px, py, offs, col, pri, flip ;
-	UINT8 *spriteram = m_spriteram;
-
-	UINT8 *BG_MAP     = memregion("user1")->base();
-	UINT8 *BG_COL_MAP = memregion("user2")->base();
-	UINT8 *FG_MAP     = memregion("user3")->base();
-	UINT8 *TEXT_COLOR = memregion("proms")->base();
-=======
 uint32_t momoko_state::screen_update_momoko(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
 	int x, y, dx, dy, rx, ry, radr, chr, sy, fx, fy, px, py, offs, col, pri, flip ;
@@ -129,7 +112,6 @@ uint32_t momoko_state::screen_update_momoko(screen_device &screen, bitmap_ind16 
 	uint8_t *BG_COL_MAP = memregion("user2")->base();
 	uint8_t *FG_MAP     = memregion("user3")->base();
 	uint8_t *TEXT_COLOR = memregion("proms")->base();
->>>>>>> upstream/master
 
 
 	flip = m_flipscreen ^ (ioport("FAKE")->read() & 0x01);

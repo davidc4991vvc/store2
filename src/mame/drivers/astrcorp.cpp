@@ -39,18 +39,12 @@ To do:
 #include "emu.h"
 #include "cpu/m68000/m68000.h"
 #include "machine/eepromser.h"
-<<<<<<< HEAD
-#include "machine/ticket.h"
-#include "machine/nvram.h"
-#include "sound/okim6295.h"
-=======
 #include "machine/nvram.h"
 #include "machine/ticket.h"
 #include "sound/okim6295.h"
 #include "screen.h"
 #include "speaker.h"
 
->>>>>>> upstream/master
 
 class astrocorp_state : public driver_device
 {
@@ -73,21 +67,12 @@ public:
 	required_device<palette_device> m_palette;
 
 	// memory pointers
-<<<<<<< HEAD
-	required_shared_ptr<UINT16> m_spriteram;
-
-	// video-related
-	bitmap_ind16 m_bitmap;
-	UINT16     m_screen_enable;
-	UINT16     m_draw_sprites;
-=======
 	required_shared_ptr<uint16_t> m_spriteram;
 
 	// video-related
 	bitmap_ind16 m_bitmap;
 	uint16_t     m_screen_enable;
 	uint16_t     m_draw_sprites;
->>>>>>> upstream/master
 	DECLARE_WRITE16_MEMBER(astrocorp_draw_sprites_w);
 	DECLARE_WRITE16_MEMBER(astrocorp_eeprom_w);
 	DECLARE_WRITE16_MEMBER(showhand_outputs_w);
@@ -100,11 +85,7 @@ public:
 	DECLARE_DRIVER_INIT(showhanc);
 	DECLARE_DRIVER_INIT(showhand);
 	DECLARE_VIDEO_START(astrocorp);
-<<<<<<< HEAD
-	UINT32 screen_update_astrocorp(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	uint32_t screen_update_astrocorp(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	TIMER_DEVICE_CALLBACK_MEMBER(skilldrp_scanline);
 	void draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect);
 };
@@ -146,13 +127,8 @@ VIDEO_START_MEMBER(astrocorp_state,astrocorp)
 
 void astrocorp_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
-<<<<<<< HEAD
-	UINT16 *source = m_spriteram;
-	UINT16 *finish = m_spriteram + m_spriteram.bytes() / 2;
-=======
 	uint16_t *source = m_spriteram;
 	uint16_t *finish = m_spriteram + m_spriteram.bytes() / 2;
->>>>>>> upstream/master
 
 	for ( ; source < finish; source += 8 / 2 )
 	{
@@ -196,11 +172,7 @@ void astrocorp_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &clipre
 	}
 }
 
-<<<<<<< HEAD
-UINT32 astrocorp_state::screen_update_astrocorp(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t astrocorp_state::screen_update_astrocorp(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	if (m_screen_enable & 1)
 		copybitmap(bitmap, m_bitmap, 0,0,0,0, cliprect);
@@ -217,13 +189,8 @@ uint32_t astrocorp_state::screen_update_astrocorp(screen_device &screen, bitmap_
 
 WRITE16_MEMBER(astrocorp_state::astrocorp_draw_sprites_w)
 {
-<<<<<<< HEAD
-	UINT16 old = m_draw_sprites;
-	UINT16 now = COMBINE_DATA(&m_draw_sprites);
-=======
 	uint16_t old = m_draw_sprites;
 	uint16_t now = COMBINE_DATA(&m_draw_sprites);
->>>>>>> upstream/master
 
 	if (!old && now)
 		draw_sprites(m_bitmap, m_screen->visible_area());
@@ -241,11 +208,7 @@ WRITE16_MEMBER(astrocorp_state::astrocorp_sound_bank_w)
 {
 	if (ACCESSING_BITS_8_15)
 	{
-<<<<<<< HEAD
-		m_oki->set_bank_base(0x40000 * ((data >> 8) & 1));
-=======
 		m_oki->set_rom_bank((data >> 8) & 1);
->>>>>>> upstream/master
 //      logerror("CPU #0 PC %06X: OKI bank %08X\n", space.device().safe_pc(), data);
 	}
 }
@@ -254,11 +217,7 @@ WRITE16_MEMBER(astrocorp_state::skilldrp_sound_bank_w)
 {
 	if (ACCESSING_BITS_0_7)
 	{
-<<<<<<< HEAD
-		m_oki->set_bank_base(0x40000 * (data & 1));
-=======
 		m_oki->set_rom_bank(data & 1);
->>>>>>> upstream/master
 //      logerror("CPU #0 PC %06X: OKI bank %08X\n", space.device().safe_pc(), data);
 	}
 }
@@ -267,20 +226,6 @@ WRITE16_MEMBER(astrocorp_state::showhand_outputs_w)
 {
 	if (ACCESSING_BITS_0_7)
 	{
-<<<<<<< HEAD
-		coin_counter_w(machine(), 0,    (data & 0x0004));   // coin counter
-		set_led_status(machine(), 0,    (data & 0x0008));   // you win
-		if ((data & 0x0010)) increment_dispensed_tickets(machine(), 1); // coin out
-		set_led_status(machine(), 1,    (data & 0x0020));   // coin/hopper jam
-	}
-	if (ACCESSING_BITS_8_15)
-	{
-		set_led_status(machine(), 2,    (data & 0x0100));   // bet
-		set_led_status(machine(), 3,    (data & 0x0800));   // start
-		set_led_status(machine(), 4,    (data & 0x1000));   // ? select/choose
-		set_led_status(machine(), 5,    (data & 0x2000));   // ? select/choose
-		set_led_status(machine(), 6,    (data & 0x4000));   // look
-=======
 		machine().bookkeeping().coin_counter_w(0,    (data & 0x0004));   // coin counter
 		output().set_led_value(0,    (data & 0x0008));   // you win
 		if ((data & 0x0010)) machine().bookkeeping().increment_dispensed_tickets(1); // coin out
@@ -293,7 +238,6 @@ WRITE16_MEMBER(astrocorp_state::showhand_outputs_w)
 		output().set_led_value(4,    (data & 0x1000));   // ? select/choose
 		output().set_led_value(5,    (data & 0x2000));   // ? select/choose
 		output().set_led_value(6,    (data & 0x4000));   // look
->>>>>>> upstream/master
 	}
 //  popmessage("%04X",data);
 }
@@ -318,41 +262,23 @@ WRITE16_MEMBER(astrocorp_state::skilldrp_outputs_w)
 
 	if (ACCESSING_BITS_0_7)
 	{
-<<<<<<< HEAD
-		coin_counter_w(machine(), 0,    (data & 0x0001));   // key in  |
-		coin_counter_w(machine(), 0,    (data & 0x0002));   // coin in |- manual shows 1 in- and 1 out- counter
-		coin_counter_w(machine(), 1,    (data & 0x0004));   // key out |
-		machine().device<ticket_dispenser_device>("hopper")->write(space, 0, (data & 0x0008)<<4);   // hopper motor?
-		//                                  (data & 0x0010)     // hopper?
-		set_led_status(machine(), 0,    (data & 0x0020));   // error lamp (coin/hopper jam: "call attendant")
-=======
 		machine().bookkeeping().coin_counter_w(0,    (data & 0x0001));   // key in  |
 		machine().bookkeeping().coin_counter_w(0,    (data & 0x0002));   // coin in |- manual shows 1 in- and 1 out- counter
 		machine().bookkeeping().coin_counter_w(1,    (data & 0x0004));   // key out |
 		machine().device<ticket_dispenser_device>("hopper")->write(space, 0, (data & 0x0008)<<4);   // hopper motor?
 		//                                  (data & 0x0010)     // hopper?
 		output().set_led_value(0,    (data & 0x0020));   // error lamp (coin/hopper jam: "call attendant")
->>>>>>> upstream/master
 		machine().device<ticket_dispenser_device>("ticket")->write(space, 0, data & 0x0080);    // ticket motor?
 	}
 	if (ACCESSING_BITS_8_15)
 	{
 		// lamps:
-<<<<<<< HEAD
-		set_led_status(machine(), 1,    (data & 0x0100));   // select
-		set_led_status(machine(), 2,    (data & 0x0400));   // take
-		set_led_status(machine(), 3,    (data & 0x0800));   // bet
-		set_led_status(machine(), 4,    (data & 0x1000));   // start
-		set_led_status(machine(), 5,    (data & 0x4000));   // win / test
-		set_led_status(machine(), 6,    (data & 0x8000));   // ticket?
-=======
 		output().set_led_value(1,    (data & 0x0100));   // select
 		output().set_led_value(2,    (data & 0x0400));   // take
 		output().set_led_value(3,    (data & 0x0800));   // bet
 		output().set_led_value(4,    (data & 0x1000));   // start
 		output().set_led_value(5,    (data & 0x4000));   // win / test
 		output().set_led_value(6,    (data & 0x8000));   // ticket?
->>>>>>> upstream/master
 	}
 
 //  popmessage("%04X",data);
@@ -547,11 +473,7 @@ GFXDECODE_END
                                 Machine Drivers
 ***************************************************************************/
 
-<<<<<<< HEAD
-static const UINT16 showhand_default_eeprom[15] =   {0x0001,0x0007,0x000a,0x0003,0x0000,0x0009,0x0003,0x0000,0x0002,0x0001,0x0000,0x0000,0x0000,0x0000,0x0000};
-=======
 static const uint16_t showhand_default_eeprom[15] =   {0x0001,0x0007,0x000a,0x0003,0x0000,0x0009,0x0003,0x0000,0x0002,0x0001,0x0000,0x0000,0x0000,0x0000,0x0000};
->>>>>>> upstream/master
 
 
 /*
@@ -566,11 +488,7 @@ TODO: understand if later hardware uses different parameters (XTAL is almost sur
 #define ASTROCORP_VBEND 0
 #define ASTROCORP_VBSTART 240
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( showhand, astrocorp_state )
-=======
 static MACHINE_CONFIG_START( showhand )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, XTAL_20MHz / 2)
@@ -600,11 +518,7 @@ static MACHINE_CONFIG_START( showhand )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki", XTAL_20MHz/20, OKIM6295_PIN7_HIGH)
-=======
 	MCFG_OKIM6295_ADD("oki", XTAL_20MHz/20, PIN7_HIGH)
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
 
@@ -626,11 +540,7 @@ TIMER_DEVICE_CALLBACK_MEMBER(astrocorp_state::skilldrp_scanline)
 		m_maincpu->set_input_line(2, HOLD_LINE);
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( skilldrp, astrocorp_state )
-=======
 static MACHINE_CONFIG_START( skilldrp )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, XTAL_24MHz / 2) // JX-1689F1028N GRX586.V5
@@ -662,11 +572,7 @@ static MACHINE_CONFIG_START( skilldrp )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki", XTAL_24MHz/24, OKIM6295_PIN7_HIGH)
-=======
 	MCFG_OKIM6295_ADD("oki", XTAL_24MHz/24, PIN7_HIGH)
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
 
@@ -781,11 +687,7 @@ No specific PCB model or numer....
 
  Astro V02 0022 160pin PQFP ("ASTRO02" silkscreened under chip)
  JX-1689F1028N GRC586.V5 (68K core, has direct connection to program roms)
-<<<<<<< HEAD
- Lattice IspLSI 1016 60LJ socketted FPGA
-=======
  Lattice IspLSI 1016 60LJ socketed FPGA
->>>>>>> upstream/master
  OKI 6295 clone chip (AD-65 or U6295)
 
 EEPROM Atmel 93C46
@@ -856,11 +758,7 @@ No specific PCB model or numer, same as used for Skill Drop but with newer video
 
  Astro V05 0206 160pin PQFP ("ASTRO02" silkscreened under chip)
  JX-1689HP TA5265188 (68K core, has direct connection to program roms)
-<<<<<<< HEAD
- Lattice IspLSI 1016 60LJ socketted FPGA
-=======
  Lattice IspLSI 1016 60LJ socketed FPGA
->>>>>>> upstream/master
  OKI 6295 clone chip (AD-65 or U6295)
 
 EEPROM  Atmel 93C46
@@ -974,11 +872,7 @@ ASTRO M1.2 PCB:
  Astro V06 0430 160pin PQFP ("ASTRO02" silkscreened under chip)
    Boards are known to have either Astro V06 0430 or Astro V07 0610
  Astro V102PX-006 at U10 (68K core, has direct connection to program roms)
-<<<<<<< HEAD
- Astro F02 2005-09-17 socketted FPGA type chip (used for encryption?)
-=======
  Astro F02 2005-09-17 socketed FPGA type chip (used for encryption?)
->>>>>>> upstream/master
  OKI 6295 clone chip (AD-65 or U6295)
 
 RAM:
@@ -1093,11 +987,7 @@ Zoo by Astro
 ASTRO M1.1 PCB:
  Astro V06 0430 160pin PQFP ("ASTRO02" silkscreened under chip)
  Astro V102PX-005 T042652846 at U10 (68K core, has direct connection to program roms)
-<<<<<<< HEAD
- Astro F02 2005-02-18 socketted FPGA type chip (used for encryption?)
-=======
  Astro F02 2005-02-18 socketed FPGA type chip (used for encryption?)
->>>>>>> upstream/master
  OKI 6295 clone chip (AD-65 or U6295)
 
 RAM:
@@ -1289,11 +1179,7 @@ ROM_END
 DRIVER_INIT_MEMBER(astrocorp_state,showhand)
 {
 #if 0
-<<<<<<< HEAD
-	UINT16 *rom = (UINT16*)memregion("maincpu")->base();
-=======
 	uint16_t *rom = (uint16_t*)memregion("maincpu")->base();
->>>>>>> upstream/master
 
 	rom[0x0a1a/2] = 0x6000; // hopper jam
 
@@ -1309,11 +1195,7 @@ DRIVER_INIT_MEMBER(astrocorp_state,showhand)
 DRIVER_INIT_MEMBER(astrocorp_state,showhanc)
 {
 #if 0
-<<<<<<< HEAD
-	UINT16 *rom = (UINT16*)memregion("maincpu")->base();
-=======
 	uint16_t *rom = (uint16_t*)memregion("maincpu")->base();
->>>>>>> upstream/master
 
 	rom[0x14d4/2] = 0x4e71; // enable full test mode
 	rom[0x14d6/2] = 0x4e71; // ""
@@ -1326,13 +1208,8 @@ DRIVER_INIT_MEMBER(astrocorp_state,showhanc)
 DRIVER_INIT_MEMBER(astrocorp_state,astoneag)
 {
 #if 0
-<<<<<<< HEAD
-	UINT16 *rom = (UINT16*)memregion("maincpu")->base();
-	UINT16 x;
-=======
 	uint16_t *rom = (uint16_t*)memregion("maincpu")->base();
 	uint16_t x;
->>>>>>> upstream/master
 	int i;
 
 	for (i = 0x25100/2; i < 0x25200/2; i++)
@@ -1481,19 +1358,6 @@ DRIVER_INIT_MEMBER(astrocorp_state,astoneag)
 
 GAME( 2000,  showhand,  0,        showhand, showhand, astrocorp_state, showhand, ROT0, "Astro Corp.",        "Show Hand (Italy)",                MACHINE_SUPPORTS_SAVE )
 GAME( 2000,  showhanc,  showhand, showhanc, showhanc, astrocorp_state, showhanc, ROT0, "Astro Corp.",        "Wang Pai Dui Jue (China)",         MACHINE_SUPPORTS_SAVE )
-<<<<<<< HEAD
-GAME( 2002,  skilldrp,  0,        skilldrp, skilldrp, driver_device,   0,        ROT0, "Astro Corp.",        "Skill Drop Georgia (Ver. G1.0S)",  MACHINE_SUPPORTS_SAVE )
-GAME( 2003,  speeddrp,  0,        speeddrp, skilldrp, driver_device,   0,        ROT0, "Astro Corp.",        "Speed Drop (Ver. 1.06)",           MACHINE_SUPPORTS_SAVE )
-
-// Encrypted games (not working):
-GAME( 2003?, dinodino,  0,        skilldrp, skilldrp, driver_device,   0,        ROT0, "Astro Corp.",        "Dino Dino",                        MACHINE_NOT_WORKING )
-GAME( 2004?, astoneag,  0,        skilldrp, skilldrp, astrocorp_state, astoneag, ROT0, "Astro Corp.",        "Stone Age (Astro, Ver. ENG.03.A)", MACHINE_NOT_WORKING )
-GAME( 2005?, winbingo,  0,        skilldrp, skilldrp, driver_device,   0,        ROT0, "Astro Corp.",        "Win Win Bingo (set 1)",            MACHINE_NOT_WORKING )
-GAME( 2005?, winbingoa, winbingo, skilldrp, skilldrp, driver_device,   0,        ROT0, "Astro Corp.",        "Win Win Bingo (set 2)",            MACHINE_NOT_WORKING )
-GAME( 2005?, hacher,    winbingo, skilldrp, skilldrp, driver_device,   0,        ROT0, "bootleg (Gametron)", "Hacher (hack of Win Win Bingo)",   MACHINE_NOT_WORKING )
-GAME( 2005?, zoo,       0,        showhand, showhand, driver_device,   0,        ROT0, "Astro Corp.",        "Zoo (Ver. ZO.02.D)",               MACHINE_NOT_WORKING )
-GAME( 2007?, westvent,  0,        skilldrp, skilldrp, driver_device,   0,        ROT0, "Astro Corp.",        "Western Venture (Ver. AA.02.D)",   MACHINE_NOT_WORKING )
-=======
 GAME( 2002,  skilldrp,  0,        skilldrp, skilldrp, astrocorp_state, 0,        ROT0, "Astro Corp.",        "Skill Drop Georgia (Ver. G1.0S)",  MACHINE_SUPPORTS_SAVE )
 GAME( 2003,  speeddrp,  0,        speeddrp, skilldrp, astrocorp_state, 0,        ROT0, "Astro Corp.",        "Speed Drop (Ver. 1.06)",           MACHINE_SUPPORTS_SAVE )
 
@@ -1505,4 +1369,3 @@ GAME( 2005?, winbingoa, winbingo, skilldrp, skilldrp, astrocorp_state, 0,       
 GAME( 2005?, hacher,    winbingo, skilldrp, skilldrp, astrocorp_state, 0,        ROT0, "bootleg (Gametron)", "Hacher (hack of Win Win Bingo)",   MACHINE_NOT_WORKING )
 GAME( 2005?, zoo,       0,        showhand, showhand, astrocorp_state, 0,        ROT0, "Astro Corp.",        "Zoo (Ver. ZO.02.D)",               MACHINE_NOT_WORKING )
 GAME( 2007?, westvent,  0,        skilldrp, skilldrp, astrocorp_state, 0,        ROT0, "Astro Corp.",        "Western Venture (Ver. AA.02.D)",   MACHINE_NOT_WORKING )
->>>>>>> upstream/master

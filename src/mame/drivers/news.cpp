@@ -16,18 +16,12 @@ driver by David Haywood
 */
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/z80/z80.h"
-#include "includes/news.h"
-#include "sound/okim6295.h"
-=======
 #include "includes/news.h"
 
 #include "cpu/z80/z80.h"
 #include "sound/okim6295.h"
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 static ADDRESS_MAP_START( news_map, AS_PROGRAM, 8, news_state )
@@ -134,11 +128,7 @@ void news_state::machine_reset()
 	m_bgpic = 0;
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( news, news_state )
-=======
 static MACHINE_CONFIG_START( news )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80,8000000)         /* ? MHz */
@@ -163,11 +153,7 @@ static MACHINE_CONFIG_START( news )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki", 1056000, OKIM6295_PIN7_HIGH) // clock frequency & pin 7 not verified
-=======
 	MCFG_OKIM6295_ADD("oki", 1056000, PIN7_HIGH) // clock frequency & pin 7 not verified
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
 
@@ -197,10 +183,5 @@ ROM_START( newsa )
 	ROM_LOAD( "virus.1", 0x00000, 0x40000, CRC(41f5935a) SHA1(1566d243f165019660cd4dd69df9f049e0130f15) )
 ROM_END
 
-<<<<<<< HEAD
-GAME( 1993, news,  0,    news, news, driver_device,  0, ROT0, "Poby / Virus", "News (set 1)", MACHINE_SUPPORTS_SAVE )
-GAME( 1993, newsa, news, news, newsa, driver_device, 0, ROT0, "Poby",         "News (set 2)", MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1993, news,  0,    news, news,  news_state, 0, ROT0, "Poby / Virus", "News (set 1)", MACHINE_SUPPORTS_SAVE )
 GAME( 1993, newsa, news, news, newsa, news_state, 0, ROT0, "Poby",         "News (set 2)", MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

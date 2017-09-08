@@ -1,8 +1,5 @@
 // license:BSD-3-Clause
 // copyright-holders:Andrew Gardner
-<<<<<<< HEAD
-#define NO_MEM_TRACKING
-=======
 #include "emu.h"
 #include <QtGui/QClipboard>
 #include <QtGui/QMouseEvent>
@@ -14,7 +11,6 @@
 #include <QtWidgets/QScrollBar>
 #include <QtWidgets/QToolTip>
 #include <QtWidgets/QVBoxLayout>
->>>>>>> upstream/master
 
 #include "memorywindow.h"
 
@@ -24,19 +20,11 @@
 
 
 MemoryWindow::MemoryWindow(running_machine* machine, QWidget* parent) :
-<<<<<<< HEAD
-	WindowQt(machine, NULL)
-{
-	setWindowTitle("Debug: Memory View");
-
-	if (parent != NULL)
-=======
 	WindowQt(machine, nullptr)
 {
 	setWindowTitle("Debug: Memory View");
 
 	if (parent != nullptr)
->>>>>>> upstream/master
 	{
 		QPoint parentPos = parent->pos();
 		setGeometry(parentPos.x()+100, parentPos.y()+100, 800, 400);
@@ -52,21 +40,13 @@ MemoryWindow::MemoryWindow(running_machine* machine, QWidget* parent) :
 
 	// The input edit
 	m_inputEdit = new QLineEdit(topSubFrame);
-<<<<<<< HEAD
-	connect(m_inputEdit, SIGNAL(returnPressed()), this, SLOT(expressionSubmitted()));
-=======
 	connect(m_inputEdit, &QLineEdit::returnPressed, this, &MemoryWindow::expressionSubmitted);
->>>>>>> upstream/master
 
 	// The memory space combo box
 	m_memoryComboBox = new QComboBox(topSubFrame);
 	m_memoryComboBox->setObjectName("memoryregion");
 	m_memoryComboBox->setMinimumWidth(300);
-<<<<<<< HEAD
-	connect(m_memoryComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(memoryRegionChanged(int)));
-=======
 	connect(m_memoryComboBox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &MemoryWindow::memoryRegionChanged);
->>>>>>> upstream/master
 
 	// The main memory window
 	m_memTable = new DebuggerMemView(DVT_MEMORY, m_machine, this);
@@ -89,29 +69,6 @@ MemoryWindow::MemoryWindow(running_machine* machine, QWidget* parent) :
 	//
 	// Menu bars
 	//
-<<<<<<< HEAD
-	// Create a byte-chunk group
-	QActionGroup* chunkGroup = new QActionGroup(this);
-	chunkGroup->setObjectName("chunkgroup");
-	QAction* chunkActOne  = new QAction("1-byte chunks", this);
-	chunkActOne->setObjectName("chunkActOne");
-	QAction* chunkActTwo  = new QAction("2-byte chunks", this);
-	chunkActTwo->setObjectName("chunkActTwo");
-	QAction* chunkActFour = new QAction("4-byte chunks", this);
-	chunkActFour->setObjectName("chunkActFour");
-	chunkActOne->setCheckable(true);
-	chunkActTwo->setCheckable(true);
-	chunkActFour->setCheckable(true);
-	chunkActOne->setActionGroup(chunkGroup);
-	chunkActTwo->setActionGroup(chunkGroup);
-	chunkActFour->setActionGroup(chunkGroup);
-	chunkActOne->setShortcut(QKeySequence("Ctrl+1"));
-	chunkActTwo->setShortcut(QKeySequence("Ctrl+2"));
-	chunkActFour->setShortcut(QKeySequence("Ctrl+4"));
-	chunkActOne->setChecked(true);
-	connect(chunkGroup, SIGNAL(triggered(QAction*)), this, SLOT(chunkChanged(QAction*)));
-
-=======
 
 	// Create a data format group
 	QActionGroup* dataFormat = new QActionGroup(this);
@@ -151,7 +108,6 @@ MemoryWindow::MemoryWindow(running_machine* machine, QWidget* parent) :
 	formatAct32bitFloat->setShortcut(QKeySequence("Ctrl+9"));
 	formatActOne->setChecked(true);
 	connect(dataFormat, &QActionGroup::triggered, this, &MemoryWindow::formatChanged);
->>>>>>> upstream/master
 	// Create a address display group
 	QActionGroup* addressGroup = new QActionGroup(this);
 	addressGroup->setObjectName("addressgroup");
@@ -164,43 +120,26 @@ MemoryWindow::MemoryWindow(running_machine* machine, QWidget* parent) :
 	addressActLogical->setShortcut(QKeySequence("Ctrl+G"));
 	addressActPhysical->setShortcut(QKeySequence("Ctrl+Y"));
 	addressActLogical->setChecked(true);
-<<<<<<< HEAD
-	connect(addressGroup, SIGNAL(triggered(QAction*)), this, SLOT(addressChanged(QAction*)));
-=======
 	connect(addressGroup, &QActionGroup::triggered, this, &MemoryWindow::addressChanged);
->>>>>>> upstream/master
 
 	// Create a reverse view radio
 	QAction* reverseAct = new QAction("Reverse View", this);
 	reverseAct->setObjectName("reverse");
 	reverseAct->setCheckable(true);
 	reverseAct->setShortcut(QKeySequence("Ctrl+R"));
-<<<<<<< HEAD
-	connect(reverseAct, SIGNAL(toggled(bool)), this, SLOT(reverseChanged(bool)));
-=======
 	connect(reverseAct, &QAction::toggled, this, &MemoryWindow::reverseChanged);
->>>>>>> upstream/master
 
 	// Create increase and decrease bytes-per-line actions
 	QAction* increaseBplAct = new QAction("Increase Bytes Per Line", this);
 	QAction* decreaseBplAct = new QAction("Decrease Bytes Per Line", this);
 	increaseBplAct->setShortcut(QKeySequence("Ctrl+P"));
 	decreaseBplAct->setShortcut(QKeySequence("Ctrl+O"));
-<<<<<<< HEAD
-	connect(increaseBplAct, SIGNAL(triggered(bool)), this, SLOT(increaseBytesPerLine(bool)));
-	connect(decreaseBplAct, SIGNAL(triggered(bool)), this, SLOT(decreaseBytesPerLine(bool)));
-
-	// Assemble the options menu
-	QMenu* optionsMenu = menuBar()->addMenu("&Options");
-	optionsMenu->addActions(chunkGroup->actions());
-=======
 	connect(increaseBplAct, &QAction::triggered, this, &MemoryWindow::increaseBytesPerLine);
 	connect(decreaseBplAct, &QAction::triggered, this, &MemoryWindow::decreaseBytesPerLine);
 
 	// Assemble the options menu
 	QMenu* optionsMenu = menuBar()->addMenu("&Options");
 	optionsMenu->addActions(dataFormat->actions());
->>>>>>> upstream/master
 	optionsMenu->addSeparator();
 	optionsMenu->addActions(addressGroup->actions());
 	optionsMenu->addSeparator();
@@ -230,15 +169,6 @@ void MemoryWindow::memoryRegionChanged(int index)
 	m_memTable->view()->set_source(*m_memTable->view()->source_list().find(index));
 	m_memTable->viewport()->update();
 
-<<<<<<< HEAD
-	// Update the chunk size radio buttons to the memory region's default
-	debug_view_memory* memView = downcast<debug_view_memory*>(m_memTable->view());
-	switch(memView->bytes_per_chunk())
-	{
-		case 1: chunkSizeMenuItem("chunkActOne")->setChecked(true); break;
-		case 2: chunkSizeMenuItem("chunkActTwo")->setChecked(true); break;
-		case 4: chunkSizeMenuItem("chunkActFour")->setChecked(true); break;
-=======
 	// Update the data format radio buttons to the memory region's default
 	debug_view_memory* memView = downcast<debug_view_memory*>(m_memTable->view());
 	switch(memView->get_data_format())
@@ -250,7 +180,6 @@ void MemoryWindow::memoryRegionChanged(int index)
 		case 9: dataFormatMenuItem("formatAct32bitFloat")->setChecked(true); break;
 		case 10: dataFormatMenuItem("formatAct64bitFloat")->setChecked(true); break;
 		case 11: dataFormatMenuItem("formatAct80bitFloat")->setChecked(true); break;
->>>>>>> upstream/master
 		default: break;
 	}
 }
@@ -274,26 +203,11 @@ void MemoryWindow::expressionSubmitted()
 }
 
 
-<<<<<<< HEAD
-void MemoryWindow::chunkChanged(QAction* changedTo)
-=======
 void MemoryWindow::formatChanged(QAction* changedTo)
->>>>>>> upstream/master
 {
 	debug_view_memory* memView = downcast<debug_view_memory*>(m_memTable->view());
 	if (changedTo->text() == "1-byte chunks")
 	{
-<<<<<<< HEAD
-		memView->set_bytes_per_chunk(1);
-	}
-	else if (changedTo->text() == "2-byte chunks")
-	{
-		memView->set_bytes_per_chunk(2);
-	}
-	else if (changedTo->text() == "4-byte chunks")
-	{
-		memView->set_bytes_per_chunk(4);
-=======
 		memView->set_data_format(1);
 	}
 	else if (changedTo->text() == "2-byte chunks")
@@ -319,7 +233,6 @@ void MemoryWindow::formatChanged(QAction* changedTo)
 	else if (changedTo->text() == "80 bit floating point")
 	{
 		memView->set_data_format(11);
->>>>>>> upstream/master
 	}
 	m_memTable->viewport()->update();
 }
@@ -366,17 +279,6 @@ void MemoryWindow::decreaseBytesPerLine(bool checked)
 
 void MemoryWindow::populateComboBox()
 {
-<<<<<<< HEAD
-	if (m_memTable == NULL)
-		return;
-
-	m_memoryComboBox->clear();
-	for (const debug_view_source* source = m_memTable->view()->first_source();
-			source != NULL;
-			source = source->next())
-	{
-		m_memoryComboBox->addItem(source->name());
-=======
 	if (m_memTable == nullptr)
 		return;
 
@@ -384,18 +286,13 @@ void MemoryWindow::populateComboBox()
 	for (const debug_view_source &source : m_memTable->view()->source_list())
 	{
 		m_memoryComboBox->addItem(source.name());
->>>>>>> upstream/master
 	}
 }
 
 
 void MemoryWindow::setToCurrentCpu()
 {
-<<<<<<< HEAD
-	device_t* curCpu = debug_cpu_get_visible_cpu(*m_machine);
-=======
 	device_t* curCpu = m_machine->debugger().cpu().get_visible_cpu();
->>>>>>> upstream/master
 	const debug_view_source *source = m_memTable->view()->source_for_device(curCpu);
 	const int listIndex = m_memTable->view()->source_list().indexof(*source);
 	m_memoryComboBox->setCurrentIndex(listIndex);
@@ -403,11 +300,7 @@ void MemoryWindow::setToCurrentCpu()
 
 
 // I have a hard time storing QActions as class members.  This is a substitute.
-<<<<<<< HEAD
-QAction* MemoryWindow::chunkSizeMenuItem(const QString& itemName)
-=======
 QAction* MemoryWindow::dataFormatMenuItem(const QString& itemName)
->>>>>>> upstream/master
 {
 	QList<QMenu*> menus = menuBar()->findChildren<QMenu*>();
 	for (int i = 0; i < menus.length(); i++)
@@ -420,11 +313,7 @@ QAction* MemoryWindow::dataFormatMenuItem(const QString& itemName)
 				return actions[j];
 		}
 	}
-<<<<<<< HEAD
-	return NULL;
-=======
 	return nullptr;
->>>>>>> upstream/master
 }
 
 
@@ -440,11 +329,7 @@ void DebuggerMemView::mousePressEvent(QMouseEvent* event)
 	{
 		QFontMetrics actualFont = fontMetrics();
 		const double fontWidth = actualFont.width(QString(100, '_')) / 100.;
-<<<<<<< HEAD
-		const int fontHeight = MAX(1, actualFont.height());
-=======
 		const int fontHeight = std::max(1, actualFont.height());
->>>>>>> upstream/master
 
 		debug_view_xy topLeft = view()->visible_position();
 		debug_view_xy clickViewPosition;
@@ -462,11 +347,7 @@ void DebuggerMemView::mousePressEvent(QMouseEvent* event)
 			const debug_view_memory_source* source = downcast<const debug_view_memory_source*>(memView->source());
 			address_space* addressSpace = source->space();
 			const int nativeDataWidth = addressSpace->data_width() / 8;
-<<<<<<< HEAD
-			const UINT64 memValue = debug_read_memory(*addressSpace,
-=======
 			const uint64_t memValue = source->device()->machine().debugger().cpu().read_memory(*addressSpace,
->>>>>>> upstream/master
 														addressSpace->address_to_byte(address),
 														nativeDataWidth,
 														true);
@@ -477,11 +358,7 @@ void DebuggerMemView::mousePressEvent(QMouseEvent* event)
 			{
 				// TODO: You can specify a box that the tooltip stays alive within - might be good?
 				const QString addressAndPc = QString("Address %1 written at PC=%2").arg(address, 2, 16).arg(pc, 2, 16);
-<<<<<<< HEAD
-				QToolTip::showText(QCursor::pos(), addressAndPc, NULL);
-=======
 				QToolTip::showText(QCursor::pos(), addressAndPc, nullptr);
->>>>>>> upstream/master
 
 				// Copy the PC into the clipboard as well
 				QClipboard *clipboard = QApplication::clipboard();
@@ -489,11 +366,7 @@ void DebuggerMemView::mousePressEvent(QMouseEvent* event)
 			}
 			else
 			{
-<<<<<<< HEAD
-				QToolTip::showText(QCursor::pos(), "UNKNOWN PC", NULL);
-=======
 				QToolTip::showText(QCursor::pos(), "UNKNOWN PC", nullptr);
->>>>>>> upstream/master
 			}
 		}
 
@@ -522,15 +395,6 @@ void MemoryWindowQtConfig::buildFromQWidget(QWidget* widget)
 	else if (addressGroup->checkedAction()->text() == "Physical Addresses")
 		m_addressMode = 1;
 
-<<<<<<< HEAD
-	QActionGroup* chunkGroup = window->findChild<QActionGroup*>("chunkgroup");
-	if (chunkGroup->checkedAction()->text() == "1-byte chunks")
-		m_chunkSize = 0;
-	else if (chunkGroup->checkedAction()->text() == "2-byte chunks")
-		m_chunkSize = 1;
-	else if (chunkGroup->checkedAction()->text() == "4-byte chunks")
-		m_chunkSize = 2;
-=======
 	QActionGroup* dataFormat = window->findChild<QActionGroup*>("dataformat");
 	if (dataFormat->checkedAction()->text() == "1-byte chunks")
 		m_dataFormat = 0;
@@ -546,7 +410,6 @@ void MemoryWindowQtConfig::buildFromQWidget(QWidget* widget)
 		m_dataFormat = 5;
 	else if (dataFormat->checkedAction()->text() == "80 bit floating point")
 		m_dataFormat = 6;
->>>>>>> upstream/master
 }
 
 
@@ -563,30 +426,6 @@ void MemoryWindowQtConfig::applyToQWidget(QWidget* widget)
 	QActionGroup* addressGroup = window->findChild<QActionGroup*>("addressgroup");
 	addressGroup->actions()[m_addressMode]->trigger();
 
-<<<<<<< HEAD
-	QActionGroup* chunkGroup = window->findChild<QActionGroup*>("chunkgroup");
-	chunkGroup->actions()[m_chunkSize]->trigger();
-}
-
-
-void MemoryWindowQtConfig::addToXmlDataNode(xml_data_node* node) const
-{
-	WindowQtConfig::addToXmlDataNode(node);
-	xml_set_attribute_int(node, "memoryregion", m_memoryRegion);
-	xml_set_attribute_int(node, "reverse", m_reverse);
-	xml_set_attribute_int(node, "addressmode", m_addressMode);
-	xml_set_attribute_int(node, "chunksize", m_chunkSize);
-}
-
-
-void MemoryWindowQtConfig::recoverFromXmlNode(xml_data_node* node)
-{
-	WindowQtConfig::recoverFromXmlNode(node);
-	m_memoryRegion = xml_get_attribute_int(node, "memoryregion", m_memoryRegion);
-	m_reverse = xml_get_attribute_int(node, "reverse", m_reverse);
-	m_addressMode = xml_get_attribute_int(node, "addressmode", m_addressMode);
-	m_chunkSize = xml_get_attribute_int(node, "chunksize", m_chunkSize);
-=======
 	QActionGroup* dataFormat = window->findChild<QActionGroup*>("dataformat");
 	dataFormat->actions()[m_dataFormat]->trigger();
 }
@@ -609,5 +448,4 @@ void MemoryWindowQtConfig::recoverFromXmlNode(util::xml::data_node const &node)
 	m_reverse = node.get_attribute_int("reverse", m_reverse);
 	m_addressMode = node.get_attribute_int("addressmode", m_addressMode);
 	m_dataFormat = node.get_attribute_int("dataformat", m_dataFormat);
->>>>>>> upstream/master
 }

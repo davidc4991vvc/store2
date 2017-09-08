@@ -10,10 +10,7 @@
 
 #include "emu.h"
 #include "includes/rbisland.h"
-<<<<<<< HEAD
-=======
 #include "screen.h"
->>>>>>> upstream/master
 
 /***************************************************************************/
 
@@ -43,11 +40,7 @@ WRITE16_MEMBER(rbisland_state::jumping_spritectrl_w)
 
 /***************************************************************************/
 
-<<<<<<< HEAD
-UINT32 rbisland_state::screen_update_rainbow(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t rbisland_state::screen_update_rainbow(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int layer[2];
 
@@ -89,15 +82,9 @@ VIDEO_START_MEMBER(rbisland_state,jumping)
 }
 
 
-<<<<<<< HEAD
-UINT32 rbisland_state::screen_update_jumping(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-{
-	UINT16 *spriteram = m_spriteram;
-=======
 uint32_t rbisland_state::screen_update_jumping(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
 	uint16_t *spriteram = m_spriteram;
->>>>>>> upstream/master
 	int offs, layer[2];
 	int sprite_colbank = (m_sprite_ctrl & 0xe0) >> 1;
 

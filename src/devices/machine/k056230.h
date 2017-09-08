@@ -6,20 +6,11 @@
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __K056230_H__
-#define __K056230_H__
-
-#include "emu.h"
-=======
 #ifndef MAME_MACHINE_K056230_H
 #define MAME_MACHINE_K056230_H
 
 #pragma once
 
->>>>>>> upstream/master
 
 
 
@@ -40,19 +31,11 @@
 
 // ======================> k056230_device
 
-<<<<<<< HEAD
-class k056230_device :  public device_t
-{
-public:
-	// construction/destruction
-	k056230_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-=======
 class k056230_device : public device_t
 {
 public:
 	// construction/destruction
 	k056230_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
->>>>>>> upstream/master
 
 	static void set_cpu_tag(device_t &device, const char *tag) { downcast<k056230_device &>(device).m_cpu.set_tag(tag); }
 	static void set_thunderh_hack(device_t &device, int thunderh) { downcast<k056230_device &>(device).m_is_thunderh = thunderh; }
@@ -63,24 +46,6 @@ public:
 	DECLARE_READ8_MEMBER(read);
 	DECLARE_WRITE8_MEMBER(write);
 
-<<<<<<< HEAD
-	static TIMER_CALLBACK( network_irq_clear_callback );
-
-protected:
-	// device-level overrides
-	virtual void device_start();
-	virtual void device_reset() { }
-	virtual void device_post_load() { }
-	virtual void device_clock_changed() { }
-
-private:
-
-	void network_irq_clear();
-	int m_is_thunderh;
-
-	required_device<cpu_device> m_cpu;
-	UINT32 m_ram[0x2000];
-=======
 	TIMER_CALLBACK_MEMBER(network_irq_clear);
 
 protected:
@@ -96,17 +61,10 @@ private:
 
 	required_device<cpu_device> m_cpu;
 	uint32_t m_ram[0x2000];
->>>>>>> upstream/master
 };
 
 
 // device type definition
-<<<<<<< HEAD
-extern const device_type K056230;
-
-#endif  /* __K056230_H__ */
-=======
 DECLARE_DEVICE_TYPE(K056230, k056230_device)
 
 #endif // MAME_MACHINE_K056230_H
->>>>>>> upstream/master

@@ -17,15 +17,6 @@
 
 #include "emu.h"
 #include "includes/segahang.h"
-<<<<<<< HEAD
-#include "machine/segaic16.h"
-#include "machine/fd1089.h"
-#include "machine/fd1094.h"
-#include "sound/2203intf.h"
-#include "sound/2151intf.h"
-#include "sound/segapcm.h"
-#include "includes/segaipt.h"
-=======
 #include "includes/segaipt.h"
 
 #include "machine/fd1089.h"
@@ -34,7 +25,6 @@
 #include "sound/ym2151.h"
 #include "sound/segapcm.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 
@@ -42,15 +32,9 @@
 //  CONSTANTS
 //**************************************************************************
 
-<<<<<<< HEAD
-const UINT32 MASTER_CLOCK_25MHz = 25174800;
-const UINT32 MASTER_CLOCK_10MHz = 10000000;
-const UINT32 MASTER_CLOCK_8MHz = 8000000;
-=======
 const uint32_t MASTER_CLOCK_25MHz = 25174800;
 const uint32_t MASTER_CLOCK_10MHz = 10000000;
 const uint32_t MASTER_CLOCK_8MHz = 8000000;
->>>>>>> upstream/master
 
 //**************************************************************************
 //  PPI READ/WRITE CALLBACKS
@@ -86,21 +70,12 @@ WRITE8_MEMBER( segahang_state::video_lamps_w )
 	m_segaic16vid->set_display_enable(data & 0x10);
 
 	// bits 2 & 3: control the lamps
-<<<<<<< HEAD
-	set_led_status(machine(), 1, data & 0x08);
-	set_led_status(machine(), 0, data & 0x04);
-
-	// bits 0 & 1: update coin counters
-	coin_counter_w(machine(), 1, data & 0x02);
-	coin_counter_w(machine(), 0, data & 0x01);
-=======
 	output().set_led_value(1, data & 0x08);
 	output().set_led_value(0, data & 0x04);
 
 	// bits 0 & 1: update coin counters
 	machine().bookkeeping().coin_counter_w(1, data & 0x02);
 	machine().bookkeeping().coin_counter_w(0, data & 0x01);
->>>>>>> upstream/master
 }
 
 
@@ -204,14 +179,7 @@ READ16_MEMBER( segahang_state::hangon_io_r )
 			return m_i8255_2->read(space, offset & 3);
 
 		case 0x3020/2: // ADC0804 data output
-<<<<<<< HEAD
-		{
-			static const char *const adcports[] = { "ADC0", "ADC1", "ADC2", "ADC3" };
-			return read_safe(ioport(adcports[m_adc_select]), 0);
-		}
-=======
 			return m_adc_ports[m_adc_select].read_safe(0);
->>>>>>> upstream/master
 	}
 
 	//logerror("%06X:hangon_io_r - unknown read access to address %04X\n", m_maincpu->pc(), offset * 2);
@@ -269,14 +237,7 @@ READ16_MEMBER( segahang_state::sharrier_io_r )
 			return m_i8255_2->read(space, offset & 3);
 
 		case 0x0030/2: // ADC0804 data output
-<<<<<<< HEAD
-		{
-			static const char *const adcports[] = { "ADC0", "ADC1", "ADC2", "ADC3" };
-			return read_safe(ioport(adcports[m_adc_select]), 0);
-		}
-=======
 			return m_adc_ports[m_adc_select].read_safe(0);
->>>>>>> upstream/master
 	}
 
 	//logerror("%06X:sharrier_io_r - unknown read access to address %04X\n", m_maincpu->pc(), offset * 2);
@@ -340,28 +301,10 @@ READ8_MEMBER( segahang_state::sound_data_r )
 {
 	// assert ACK
 	m_i8255_1->pc6_w(CLEAR_LINE);
-<<<<<<< HEAD
-	return soundlatch_read();
-}
-
-
-//-------------------------------------------------
-//  sound_irq - signal an IRQ to the sound CPU
-//-------------------------------------------------
-
-WRITE_LINE_MEMBER( segahang_state::sound_irq )
-{
-	m_soundcpu->set_input_line(0, state ? ASSERT_LINE : CLEAR_LINE);
-}
-
-
-
-=======
 	return m_soundlatch->read(space, 0);
 }
 
 
->>>>>>> upstream/master
 //**************************************************************************
 //  I8751-RELATED VBLANK INTERRUPT HANDLERS
 //**************************************************************************
@@ -413,11 +356,7 @@ void segahang_state::device_timer(emu_timer &timer, device_timer_id id, int para
 		case TID_INIT_I8751:
 			if (!m_i8751_vblank_hook.isnull())
 				m_mcu->suspend(SUSPEND_REASON_DISABLE, 1);
-<<<<<<< HEAD
-			else if (m_mcu != NULL)
-=======
 			else if (m_mcu != nullptr)
->>>>>>> upstream/master
 				machine().scheduler().boost_interleave(attotime::zero, attotime::from_msec(10));
 			break;
 
@@ -448,11 +387,7 @@ void segahang_state::sharrier_i8751_sim()
 	m_workram[0x0f0/2] = 0;
 
 	// read I/O ports
-<<<<<<< HEAD
-	m_workram[0x492/2] = (ioport("ADC0")->read() << 8) | ioport("ADC1")->read();
-=======
 	m_workram[0x492/2] = (m_adc_ports[0]->read() << 8) | m_adc_ports[1]->read();
->>>>>>> upstream/master
 }
 
 
@@ -475,11 +410,7 @@ static ADDRESS_MAP_START( hangon_map, AS_PROGRAM, 16, segahang_state )
 	AM_RANGE(0xe00000, 0xffffff) AM_READWRITE(hangon_io_r, hangon_io_w)
 ADDRESS_MAP_END
 
-<<<<<<< HEAD
-static ADDRESS_MAP_START( decrypted_opcodes_map, AS_DECRYPTED_OPCODES, 16, segahang_state )
-=======
 static ADDRESS_MAP_START( decrypted_opcodes_map, AS_OPCODES, 16, segahang_state )
->>>>>>> upstream/master
 	ADDRESS_MAP_UNMAP_HIGH
 	AM_RANGE(0x000000, 0x03ffff) AM_ROM AM_SHARE("decrypted_opcodes")
 ADDRESS_MAP_END
@@ -512,11 +443,7 @@ static ADDRESS_MAP_START( sub_map, AS_PROGRAM, 16, segahang_state )
 	AM_RANGE(0x07c000, 0x07ffff) AM_RAM AM_SHARE("subram")
 ADDRESS_MAP_END
 
-<<<<<<< HEAD
-static ADDRESS_MAP_START( fd1094_decrypted_opcodes_map, AS_DECRYPTED_OPCODES, 16, segahang_state )
-=======
 static ADDRESS_MAP_START( fd1094_decrypted_opcodes_map, AS_OPCODES, 16, segahang_state )
->>>>>>> upstream/master
 	AM_RANGE(0x00000, 0xfffff) AM_ROMBANK("fd1094_decrypted_opcodes")
 ADDRESS_MAP_END
 
@@ -819,11 +746,7 @@ GFXDECODE_END
 //  GENERIC MACHINE DRIVERS
 //**************************************************************************
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( shared_base, segahang_state )
-=======
 static MACHINE_CONFIG_START( shared_base )
->>>>>>> upstream/master
 
 	// basic machine hardware
 	MCFG_CPU_ADD("maincpu", M68000, MASTER_CLOCK_25MHz/4)
@@ -836,11 +759,7 @@ static MACHINE_CONFIG_START( shared_base )
 	MCFG_QUANTUM_TIME(attotime::from_hz(6000))
 
 	MCFG_DEVICE_ADD("i8255_1", I8255, 0)
-<<<<<<< HEAD
-	MCFG_I8255_OUT_PORTA_CB(WRITE8(driver_device, soundlatch_byte_w))
-=======
 	MCFG_I8255_OUT_PORTA_CB(DEVWRITE8("soundlatch", generic_latch_8_device, write))
->>>>>>> upstream/master
 	MCFG_I8255_OUT_PORTB_CB(WRITE8(segahang_state, video_lamps_w))
 	MCFG_I8255_OUT_PORTC_CB(WRITE8(segahang_state, tilemap_sound_w))
 
@@ -860,11 +779,8 @@ static MACHINE_CONFIG_START( shared_base )
 	MCFG_SCREEN_RAW_PARAMS(MASTER_CLOCK_25MHz/4, 400, 0, 320, 262, 0, 224)
 	MCFG_SCREEN_UPDATE_DRIVER(segahang_state, screen_update)
 	MCFG_SCREEN_PALETTE("palette")
-<<<<<<< HEAD
-=======
 
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
@@ -905,11 +821,7 @@ static MACHINE_CONFIG_DERIVED( endurord_base, sharrier_base )
 	MCFG_DEVICE_VBLANK_INT_DRIVER("screen", segahang_state, irq4_line_hold)
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_FRAGMENT( sound_board_2203 )
-=======
 static MACHINE_CONFIG_START( sound_board_2203 )
->>>>>>> upstream/master
 
 	// basic machine hardware
 	MCFG_CPU_ADD("soundcpu", Z80, MASTER_CLOCK_8MHz/2)
@@ -920,11 +832,7 @@ static MACHINE_CONFIG_START( sound_board_2203 )
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
 	MCFG_SOUND_ADD("ymsnd", YM2203, MASTER_CLOCK_8MHz/2)
-<<<<<<< HEAD
-	MCFG_YM2203_IRQ_HANDLER(WRITELINE(segahang_state, sound_irq))
-=======
 	MCFG_YM2203_IRQ_HANDLER(INPUTLINE("soundcpu", 0))
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(0, "lspeaker",  0.13)
 	MCFG_SOUND_ROUTE(0, "rspeaker", 0.13)
 	MCFG_SOUND_ROUTE(1, "lspeaker",  0.13)
@@ -941,11 +849,7 @@ static MACHINE_CONFIG_START( sound_board_2203 )
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_FRAGMENT( sound_board_2203x2 )
-=======
 static MACHINE_CONFIG_START( sound_board_2203x2 )
->>>>>>> upstream/master
 
 	// basic machine hardware
 	MCFG_CPU_ADD("soundcpu", Z80, MASTER_CLOCK_8MHz/2)
@@ -956,11 +860,7 @@ static MACHINE_CONFIG_START( sound_board_2203x2 )
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
 	MCFG_SOUND_ADD("ym1", YM2203, MASTER_CLOCK_8MHz/2)
-<<<<<<< HEAD
-	MCFG_YM2203_IRQ_HANDLER(WRITELINE(segahang_state, sound_irq))
-=======
 	MCFG_YM2203_IRQ_HANDLER(INPUTLINE("soundcpu", 0))
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(0, "lspeaker",  0.13)
 	MCFG_SOUND_ROUTE(0, "rspeaker", 0.13)
 	MCFG_SOUND_ROUTE(1, "lspeaker",  0.13)
@@ -987,11 +887,7 @@ static MACHINE_CONFIG_START( sound_board_2203x2 )
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_FRAGMENT( sound_board_2151 )
-=======
 static MACHINE_CONFIG_START( sound_board_2151 )
->>>>>>> upstream/master
 
 	// basic machine hardware
 	MCFG_CPU_ADD("soundcpu", Z80, MASTER_CLOCK_8MHz/2)
@@ -1096,13 +992,8 @@ MACHINE_CONFIG_END
 //*************************************************************************************************************************
 //*************************************************************************************************************************
 //*************************************************************************************************************************
-<<<<<<< HEAD
-//  Hang On (Rev A)
-//  CPU: 68000 (317-????)
-=======
 //  Hang On (Rev A) (stickered "834-5667-01 // HANG ON // REV. A")
 //  CPU: 68000 (317-????, HD68000P8)
->>>>>>> upstream/master
 //
 //   ASSY CPU BD 834-5704-01
 //   ASSY CONTROL BD 834-5668
@@ -1305,9 +1196,6 @@ ROM_START( shangonro )
 
 	ROM_REGION16_BE( 0x00e0000, "sprites", 0 ) // sprites
 	ROM_LOAD16_BYTE( "epr-10675.22", 0x000001, 0x010000, CRC(d6ac012b) SHA1(305023b1a0a9d84cfc081ffc2ad7578b53d562f2) )
-<<<<<<< HEAD
-	ROM_LOAD16_BYTE( "epr-10682.11", 0x000000, 0x010000, CRC(d9d83250) SHA1(f8ca3197edcdf53643a5b335c3c044ddc1310cd4) )
-=======
 	ROM_LOAD16_BYTE( "epr-10682.13", 0x000000, 0x010000, CRC(d9d83250) SHA1(f8ca3197edcdf53643a5b335c3c044ddc1310cd4) )
 	ROM_LOAD16_BYTE( "epr-10676.21", 0x020001, 0x010000, CRC(25ebf2c5) SHA1(abcf673ae4e280417dd9f46d18c0ec7c0e4802ae) )
 	ROM_LOAD16_BYTE( "epr-10683.12", 0x020000, 0x010000, CRC(6365d2e9) SHA1(688e2ba194e859f86cd3486c2575ebae257e975a) )
@@ -1363,7 +1251,6 @@ ROM_START( shangonho )
 	ROM_REGION16_BE( 0x00e0000, "sprites", 0 ) // sprites
 	ROM_LOAD16_BYTE( "epr-10675.22", 0x000001, 0x010000, CRC(d6ac012b) SHA1(305023b1a0a9d84cfc081ffc2ad7578b53d562f2) )
 	ROM_LOAD16_BYTE( "epr-10682.13", 0x000000, 0x010000, CRC(d9d83250) SHA1(f8ca3197edcdf53643a5b335c3c044ddc1310cd4) )
->>>>>>> upstream/master
 	ROM_LOAD16_BYTE( "epr-10676.21", 0x020001, 0x010000, CRC(25ebf2c5) SHA1(abcf673ae4e280417dd9f46d18c0ec7c0e4802ae) )
 	ROM_LOAD16_BYTE( "epr-10683.12", 0x020000, 0x010000, CRC(6365d2e9) SHA1(688e2ba194e859f86cd3486c2575ebae257e975a) )
 	ROM_LOAD16_BYTE( "epr-10677.20", 0x040001, 0x010000, CRC(8a57b8d6) SHA1(df1a31559dd2d1e7c2c9d800bf97526bdf3e84e6) )
@@ -2064,11 +1951,7 @@ ROM_END
 DRIVER_INIT_MEMBER(segahang_state,generic)
 {
 	// point globals to allocated memory regions
-<<<<<<< HEAD
-	m_segaic16road->segaic16_roadram_0 = reinterpret_cast<UINT16 *>(memshare("roadram")->ptr());
-=======
 	m_segaic16road->segaic16_roadram_0 = reinterpret_cast<uint16_t *>(memshare("roadram")->ptr());
->>>>>>> upstream/master
 
 	// save states
 	save_item(NAME(m_adc_select));
@@ -2084,11 +1967,7 @@ DRIVER_INIT_MEMBER(segahang_state,sharrier)
 {
 	DRIVER_INIT_CALL(generic);
 	m_sharrier_video = true;
-<<<<<<< HEAD
-	m_i8751_vblank_hook = i8751_sim_delegate(FUNC(segahang_state::sharrier_i8751_sim), this);
-=======
 	m_i8751_vblank_hook = i8751_sim_delegate(&segahang_state::sharrier_i8751_sim, this);
->>>>>>> upstream/master
 }
 
 DRIVER_INIT_MEMBER(segahang_state,enduror)
@@ -2101,11 +1980,7 @@ DRIVER_INIT_MEMBER(segahang_state,endurobl)
 {
 	DRIVER_INIT_CALL(enduror);
 	// assemble decrypted half of ROM and register it
-<<<<<<< HEAD
-	UINT16 *rom = reinterpret_cast<UINT16 *>(memregion("maincpu")->base());
-=======
 	uint16_t *rom = reinterpret_cast<uint16_t *>(memregion("maincpu")->base());
->>>>>>> upstream/master
 	memcpy(m_decrypted_opcodes + 0x00000/2, rom + 0x30000/2, 0x10000);
 	memcpy(m_decrypted_opcodes + 0x10000/2, rom + 0x10000/2, 0x20000);
 }
@@ -2115,11 +1990,7 @@ DRIVER_INIT_MEMBER(segahang_state,endurob2)
 	DRIVER_INIT_CALL(enduror);
 
 	// assemble decrypted half of ROM and register it
-<<<<<<< HEAD
-	UINT16 *rom = reinterpret_cast<UINT16 *>(memregion("maincpu")->base());
-=======
 	uint16_t *rom = reinterpret_cast<uint16_t *>(memregion("maincpu")->base());
->>>>>>> upstream/master
 	memcpy(m_decrypted_opcodes, rom, 0x30000);
 }
 
@@ -2134,14 +2005,9 @@ GAME( 1985, hangon,    0,        hangon,   hangon,    segahang_state,generic, RO
 GAME( 1985, hangon1,   hangon,   hangon,   hangon,    segahang_state,generic, ROT0,   "Sega", "Hang-On", 0 )
 GAME( 1985, hangon2,   hangon,   hangon,   hangon2,   segahang_state,generic, ROT0,   "Sega", "Hang-On (ride-on)", 0 )
 
-<<<<<<< HEAD
-GAME( 1987, shangonro, shangon,  shangonro,shangonro, segahang_state,generic, ROT0,   "Sega", "Super Hang-On (ride-on, Japan, FD1094 317-0038)", 0 )
-GAME( 1992, shangonrb, shangon,  shangupb, shangupb,  segahang_state,generic, ROT0,   "bootleg", "Super Hang-On (bootleg)", 0 )
-=======
 GAME( 1987, shangonro, shangon,  shangonro,shangonro, segahang_state,generic, ROT0,   "Sega", "Super Hang-On (Hang-On conversion, ride-on, Japan, FD1094 317-0038)", 0 )
 GAME( 1987, shangonho, shangon,  shangonro,shangupb,  segahang_state,generic, ROT0,   "Sega", "Super Hang-On (Hang-On conversion, Japan, FD1094 317-0039)", 0 )
 GAME( 1992, shangonrb, shangon,  shangupb, shangupb,  segahang_state,generic, ROT0,   "bootleg", "Super Hang-On (Hang-On conversion, bootleg)", 0 )
->>>>>>> upstream/master
 
 GAME( 1985, sharrier,  0,        sharrier, sharrier,  segahang_state,sharrier,ROT0,   "Sega", "Space Harrier (Rev A, 8751 315-5163A)", 0 )
 GAME( 1985, sharrier1, sharrier, sharrier, sharrier,  segahang_state,sharrier,ROT0,   "Sega", "Space Harrier (8751 315-5163)", 0 )

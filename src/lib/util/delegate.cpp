@@ -9,13 +9,8 @@
 ***************************************************************************/
 
 #include <assert.h>
-<<<<<<< HEAD
-
-#include "osdcomm.h"
-=======
 #include <cstdint>
 #include <stdio.h>
->>>>>>> upstream/master
 #include "delegate.h"
 
 
@@ -38,25 +33,6 @@ delegate_mfp::raw_mfp_data delegate_mfp::s_null_mfp = { {0 }};
 #if (USE_DELEGATE_TYPE == DELEGATE_TYPE_INTERNAL)
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  delegate_convert_raw - given an object and
-//  an raw function, adjust the object base and
-//  return the actual final code pointer
-//-------------------------------------------------
-
-delegate_generic_function delegate_mfp::convert_to_generic(delegate_generic_class *&object) const
-{
-	// apply the "this" delta to the object first
-	object = reinterpret_cast<delegate_generic_class *>(reinterpret_cast<UINT8 *>(object) + m_this_delta);
-
-	// if the low bit of the vtable index is clear, then it is just a raw function pointer
-	if (!(m_function & 1))
-		return reinterpret_cast<delegate_generic_function>(m_function);
-
-	// otherwise, it is the byte index into the vtable where the actual function lives
-	UINT8 *vtable_base = *reinterpret_cast<UINT8 **>(object);
-	return *reinterpret_cast<delegate_generic_function *>(vtable_base + m_function - 1);
-=======
 //  delegate_convert_raw - given an object and an raw function, adjust the object base
 //  and return the actual final code pointer
 //-------------------------------------------------//
@@ -98,7 +74,6 @@ delegate_generic_function delegate_mfp::convert_to_generic(delegate_generic_clas
 #endif
 	return *reinterpret_cast<delegate_generic_function *>(vtable_base + m_function - 1);
 #endif
->>>>>>> upstream/master
 }
 
 #endif

@@ -22,11 +22,7 @@
 
 static int      data_size;
 
-<<<<<<< HEAD
-static INT16 *rk_emit_level(INT16 *p, int count, int level)
-=======
 static int16_t *rk_emit_level(int16_t *p, int count, int level)
->>>>>>> upstream/master
 {
 	int i;
 
@@ -37,11 +33,7 @@ static int16_t *rk_emit_level(int16_t *p, int count, int level)
 	return p;
 }
 
-<<<<<<< HEAD
-static INT16* rk_output_bit(INT16 *p, UINT8 b,int bitsize)
-=======
 static int16_t* rk_output_bit(int16_t *p, uint8_t b,int bitsize)
->>>>>>> upstream/master
 {
 	if (b)
 	{
@@ -57,11 +49,7 @@ static int16_t* rk_output_bit(int16_t *p, uint8_t b,int bitsize)
 	return p;
 }
 
-<<<<<<< HEAD
-static INT16* rk_output_byte(INT16 *p, UINT8 byte,int bitsize)
-=======
 static int16_t* rk_output_byte(int16_t *p, uint8_t byte,int bitsize)
->>>>>>> upstream/master
 {
 	int i;
 	for (i=7; i>=0; i--)
@@ -71,51 +59,29 @@ static int16_t* rk_output_byte(int16_t *p, uint8_t byte,int bitsize)
 }
 
 
-<<<<<<< HEAD
-static int rk20_cas_to_wav_size( const UINT8 *casdata, int caslen ) {
-=======
 static int rk20_cas_to_wav_size( const uint8_t *casdata, int caslen ) {
->>>>>>> upstream/master
 	data_size = caslen;
 	return  (RK_HEADER_LEN  * 8 * 2 +  8*2 + caslen * 8 * 2) * RK_SIZE_20;
 }
 
-<<<<<<< HEAD
-static int rk22_cas_to_wav_size( const UINT8 *casdata, int caslen ) {
-=======
 static int rk22_cas_to_wav_size( const uint8_t *casdata, int caslen ) {
->>>>>>> upstream/master
 	data_size = caslen;
 	return  (RK_HEADER_LEN  * 8 * 2 +  8*2 + caslen * 8 * 2) * RK_SIZE_22;
 }
 
-<<<<<<< HEAD
-static int rk60_cas_to_wav_size( const UINT8 *casdata, int caslen ) {
-=======
 static int rk60_cas_to_wav_size( const uint8_t *casdata, int caslen ) {
->>>>>>> upstream/master
 	data_size = caslen;
 	return  (RK_HEADER_LEN  * 8 * 2 +  8*2 + caslen * 8 * 2) * RK_SIZE_60;
 }
 
-<<<<<<< HEAD
-static int gam_cas_to_wav_size( const UINT8 *casdata, int caslen ) {
-=======
 static int gam_cas_to_wav_size( const uint8_t *casdata, int caslen ) {
->>>>>>> upstream/master
 	data_size = caslen;
 	return  (RK_HEADER_LEN  * 8 * 2 +  caslen * 8 * 2) * RK_SIZE_20;
 }
 
-<<<<<<< HEAD
-static int rk20_cas_fill_wave( INT16 *buffer, int length, UINT8 *bytes ) {
-	int i;
-	INT16 * p = buffer;
-=======
 static int rk20_cas_fill_wave( int16_t *buffer, int length, uint8_t *bytes ) {
 	int i;
 	int16_t * p = buffer;
->>>>>>> upstream/master
 
 	for (i=0; i<RK_HEADER_LEN; i++) {
 		p = rk_output_byte (p, 0x00, RK_SIZE_20 );
@@ -129,15 +95,9 @@ static int rk20_cas_fill_wave( int16_t *buffer, int length, uint8_t *bytes ) {
 	return p - buffer;
 }
 
-<<<<<<< HEAD
-static int rk22_cas_fill_wave( INT16 *buffer, int length, UINT8 *bytes ) {
-	int i;
-	INT16 * p = buffer;
-=======
 static int rk22_cas_fill_wave( int16_t *buffer, int length, uint8_t *bytes ) {
 	int i;
 	int16_t * p = buffer;
->>>>>>> upstream/master
 
 	for (i=0; i<RK_HEADER_LEN; i++) {
 		p = rk_output_byte (p, 0x00, RK_SIZE_22 );
@@ -151,15 +111,9 @@ static int rk22_cas_fill_wave( int16_t *buffer, int length, uint8_t *bytes ) {
 	return p - buffer;
 }
 
-<<<<<<< HEAD
-static int rk60_cas_fill_wave( INT16 *buffer, int length, UINT8 *bytes ) {
-	int i;
-	INT16 * p = buffer;
-=======
 static int rk60_cas_fill_wave( int16_t *buffer, int length, uint8_t *bytes ) {
 	int i;
 	int16_t * p = buffer;
->>>>>>> upstream/master
 
 	for (i=0; i<RK_HEADER_LEN; i++) {
 		p = rk_output_byte (p, 0x00, RK_SIZE_60 );
@@ -173,15 +127,9 @@ static int rk60_cas_fill_wave( int16_t *buffer, int length, uint8_t *bytes ) {
 	return p - buffer;
 }
 
-<<<<<<< HEAD
-static int gam_cas_fill_wave( INT16 *buffer, int length, UINT8 *bytes ) {
-	int i;
-	INT16 * p = buffer;
-=======
 static int gam_cas_fill_wave( int16_t *buffer, int length, uint8_t *bytes ) {
 	int i;
 	int16_t * p = buffer;
->>>>>>> upstream/master
 
 	for (i=0; i<RK_HEADER_LEN; i++) {
 		p = rk_output_byte (p, 0x00, RK_SIZE_20 );
@@ -203,19 +151,11 @@ static const struct CassetteLegacyWaveFiller rk20_legacy_fill_wave = {
 	0                   /* trailer_samples */
 };
 
-<<<<<<< HEAD
-static casserr_t rk20_cassette_identify( cassette_image *cassette, struct CassetteOptions *opts ) {
-	return cassette_legacy_identify( cassette, opts, &rk20_legacy_fill_wave );
-}
-
-static casserr_t rk20_cassette_load( cassette_image *cassette ) {
-=======
 static cassette_image::error rk20_cassette_identify( cassette_image *cassette, struct CassetteOptions *opts ) {
 	return cassette_legacy_identify( cassette, opts, &rk20_legacy_fill_wave );
 }
 
 static cassette_image::error rk20_cassette_load( cassette_image *cassette ) {
->>>>>>> upstream/master
 	return cassette_legacy_construct( cassette, &rk20_legacy_fill_wave );
 }
 
@@ -229,19 +169,11 @@ static const struct CassetteLegacyWaveFiller rk22_legacy_fill_wave = {
 	0                   /* trailer_samples */
 };
 
-<<<<<<< HEAD
-static casserr_t rk22_cassette_identify( cassette_image *cassette, struct CassetteOptions *opts ) {
-	return cassette_legacy_identify( cassette, opts, &rk22_legacy_fill_wave );
-}
-
-static casserr_t rk22_cassette_load( cassette_image *cassette ) {
-=======
 static cassette_image::error rk22_cassette_identify( cassette_image *cassette, struct CassetteOptions *opts ) {
 	return cassette_legacy_identify( cassette, opts, &rk22_legacy_fill_wave );
 }
 
 static cassette_image::error rk22_cassette_load( cassette_image *cassette ) {
->>>>>>> upstream/master
 	return cassette_legacy_construct( cassette, &rk22_legacy_fill_wave );
 }
 
@@ -255,19 +187,11 @@ static const struct CassetteLegacyWaveFiller gam_legacy_fill_wave = {
 	0                   /* trailer_samples */
 };
 
-<<<<<<< HEAD
-static casserr_t gam_cassette_identify( cassette_image *cassette, struct CassetteOptions *opts ) {
-	return cassette_legacy_identify( cassette, opts, &gam_legacy_fill_wave );
-}
-
-static casserr_t gam_cassette_load( cassette_image *cassette ) {
-=======
 static cassette_image::error gam_cassette_identify( cassette_image *cassette, struct CassetteOptions *opts ) {
 	return cassette_legacy_identify( cassette, opts, &gam_legacy_fill_wave );
 }
 
 static cassette_image::error gam_cassette_load( cassette_image *cassette ) {
->>>>>>> upstream/master
 	return cassette_legacy_construct( cassette, &gam_legacy_fill_wave );
 }
 
@@ -281,19 +205,11 @@ static const struct CassetteLegacyWaveFiller rk60_legacy_fill_wave = {
 	0                   /* trailer_samples */
 };
 
-<<<<<<< HEAD
-static casserr_t rk60_cassette_identify( cassette_image *cassette, struct CassetteOptions *opts ) {
-	return cassette_legacy_identify( cassette, opts, &rk60_legacy_fill_wave );
-}
-
-static casserr_t rk60_cassette_load( cassette_image *cassette ) {
-=======
 static cassette_image::error rk60_cassette_identify( cassette_image *cassette, struct CassetteOptions *opts ) {
 	return cassette_legacy_identify( cassette, opts, &rk60_legacy_fill_wave );
 }
 
 static cassette_image::error rk60_cassette_load( cassette_image *cassette ) {
->>>>>>> upstream/master
 	return cassette_legacy_construct( cassette, &rk60_legacy_fill_wave );
 }
 
@@ -301,99 +217,63 @@ static const struct CassetteFormat rku_cassette_format = {
 	"rku",
 	rk20_cassette_identify,
 	rk20_cassette_load,
-<<<<<<< HEAD
-	NULL
-=======
 	nullptr
->>>>>>> upstream/master
 };
 
 static const struct CassetteFormat rk8_cassette_format = {
 	"rk8",
 	rk60_cassette_identify,
 	rk60_cassette_load,
-<<<<<<< HEAD
-	NULL
-=======
 	nullptr
->>>>>>> upstream/master
 };
 
 static const struct CassetteFormat rks_cassette_format = {
 	"rks",
 	rk20_cassette_identify,
 	rk20_cassette_load,
-<<<<<<< HEAD
-	NULL
-=======
 	nullptr
->>>>>>> upstream/master
 };
 
 static const struct CassetteFormat rko_cassette_format = {
 	"rko",
 	rk20_cassette_identify,
 	rk20_cassette_load,
-<<<<<<< HEAD
-	NULL
-=======
 	nullptr
->>>>>>> upstream/master
 };
 
 static const struct CassetteFormat rkr_cassette_format = {
 	"rk,rkr",
 	rk20_cassette_identify,
 	rk20_cassette_load,
-<<<<<<< HEAD
-	NULL
-=======
 	nullptr
->>>>>>> upstream/master
 };
 
 static const struct CassetteFormat rka_cassette_format = {
 	"rka",
 	rk20_cassette_identify,
 	rk20_cassette_load,
-<<<<<<< HEAD
-	NULL
-=======
 	nullptr
->>>>>>> upstream/master
 };
 
 static const struct CassetteFormat rkm_cassette_format = {
 	"rkm",
 	rk22_cassette_identify,
 	rk22_cassette_load,
-<<<<<<< HEAD
-	NULL
-=======
 	nullptr
->>>>>>> upstream/master
 };
 
 static const struct CassetteFormat rkp_cassette_format = {
 	"rkp",
 	rk20_cassette_identify,
 	rk20_cassette_load,
-<<<<<<< HEAD
-	NULL
-=======
 	nullptr
->>>>>>> upstream/master
 };
 
 static const struct CassetteFormat gam_cassette_format = {
 	"gam,g16,pki",
 	gam_cassette_identify,
 	gam_cassette_load,
-<<<<<<< HEAD
-	NULL
-=======
 	nullptr
->>>>>>> upstream/master
 };
 
 CASSETTE_FORMATLIST_START(rku_cassette_formats)

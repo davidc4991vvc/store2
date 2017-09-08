@@ -1084,11 +1084,7 @@ void domsg(struct Global *global,
     ;
   tp = file ? file->filename : 0;
   Error(global, "%s\"%s\", line %d: %s: ",
-<<<<<<< HEAD
-        MSG_PREFIX, tp, global->infile->fp?global->line:file->line, severity);
-=======
         MSG_PREFIX, tp, global->infile?global->line:(file?file->line:0), severity);
->>>>>>> upstream/master
   if(global->error)
     global->error(global->userdata, ErrorMessage[error], arg);
 #if defined(UNIX)

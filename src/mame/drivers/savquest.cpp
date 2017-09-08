@@ -8,16 +8,12 @@
     Skeleton by R. Belmont
 
     TODO:
-<<<<<<< HEAD
-    - currently asserts by selecting a s3 video bank above 1M (register 0x6a)
-=======
     - currently asserts by selecting a s3 video bank above 1M (register 0x6a)z
 
     - The version is labeled "SQ05" in the filesystem but has the 1999 release year.
       Other components are labeled "v0.5", but the game doesn't boot far enough to see if
       any graphics have version information. There appears to also be a "Savage Quest 2.1" which
       is undumped.
->>>>>>> upstream/master
 
     PCI list:
     Bus no. Device No. Func No. Vendor ID Device ID Device Class          IRQ
@@ -73,15 +69,6 @@ public:
 	{
 	}
 
-<<<<<<< HEAD
-	UINT32 *m_bios_f0000_ram;
-	UINT32 *m_bios_e0000_ram;
-	UINT32 *m_bios_e4000_ram;
-	UINT32 *m_bios_e8000_ram;
-	UINT32 *m_bios_ec000_ram;
-
-	UINT8 *m_smram;
-=======
 	std::unique_ptr<uint32_t[]> m_bios_f0000_ram;
 	std::unique_ptr<uint32_t[]> m_bios_e0000_ram;
 	std::unique_ptr<uint32_t[]> m_bios_e4000_ram;
@@ -89,7 +76,6 @@ public:
 	std::unique_ptr<uint32_t[]> m_bios_ec000_ram;
 
 	std::unique_ptr<uint8_t[]> m_smram;
->>>>>>> upstream/master
 
 	required_device<s3_vga_device> m_vga;
 	required_device<voodoo_2_device> m_voodoo;
@@ -104,16 +90,6 @@ public:
 		HASPSTATE_READ
 	};
 	int m_hasp_passind;
-<<<<<<< HEAD
-	UINT8 m_hasp_tmppass[0x29];
-	UINT8 m_port379;
-	int m_hasp_passmode;
-	int m_hasp_prodind;
-
-	UINT8 m_mtxc_config_reg[256];
-	UINT8 m_piix4_config_reg[8][256];
-	UINT32 m_pci_3dfx_regs[0x40];
-=======
 	uint8_t m_hasp_tmppass[0x29];
 	uint8_t m_port379;
 	int m_hasp_passmode;
@@ -122,7 +98,6 @@ public:
 	uint8_t m_mtxc_config_reg[256];
 	uint8_t m_piix4_config_reg[8][256];
 	uint32_t m_pci_3dfx_regs[0x40];
->>>>>>> upstream/master
 
 	DECLARE_WRITE32_MEMBER( bios_f0000_ram_w );
 	DECLARE_WRITE32_MEMBER( bios_e0000_ram_w );
@@ -144,24 +119,15 @@ protected:
 	// driver_device overrides
 //  virtual void video_start();
 public:
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void machine_reset();
-=======
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
->>>>>>> upstream/master
 	void intel82439tx_init();
 	void vid_3dfx_init();
 };
 
 // Intel 82439TX System Controller (MTXC)
 
-<<<<<<< HEAD
-static UINT8 mtxc_config_r(device_t *busdevice, device_t *device, int function, int reg)
-=======
 static uint8_t mtxc_config_r(device_t *busdevice, device_t *device, int function, int reg)
->>>>>>> upstream/master
 {
 	savquest_state *state = busdevice->machine().driver_data<savquest_state>();
 //  osd_printf_debug("MTXC: read %d, %02X\n", function, reg);
@@ -175,11 +141,7 @@ static uint8_t mtxc_config_r(device_t *busdevice, device_t *device, int function
 	return state->m_mtxc_config_reg[reg];
 }
 
-<<<<<<< HEAD
-static void mtxc_config_w(device_t *busdevice, device_t *device, int function, int reg, UINT8 data)
-=======
 static void mtxc_config_w(device_t *busdevice, device_t *device, int function, int reg, uint8_t data)
->>>>>>> upstream/master
 {
 	savquest_state *state = busdevice->machine().driver_data<savquest_state>();
 //  osd_printf_debug("%s:MXTC: write %d, %02X, %02X\n", machine.describe_context(), function, reg, data);
@@ -191,11 +153,7 @@ static void mtxc_config_w(device_t *busdevice, device_t *device, int function, i
 		{
 			if (data & 0x10)        // enable RAM access to region 0xf0000 - 0xfffff
 			{
-<<<<<<< HEAD
-				state->membank("bios_f0000")->set_base(state->m_bios_f0000_ram);
-=======
 				state->membank("bios_f0000")->set_base(state->m_bios_f0000_ram.get());
->>>>>>> upstream/master
 			}
 			else                    // disable RAM access (reads go to BIOS ROM)
 			{
@@ -208,11 +166,7 @@ static void mtxc_config_w(device_t *busdevice, device_t *device, int function, i
 		{
 			if (data & 0x10)        // enable RAM access to region 0xe4000 - 0xe7fff
 			{
-<<<<<<< HEAD
-				state->membank("bios_e4000")->set_base(state->m_bios_e4000_ram);
-=======
 				state->membank("bios_e4000")->set_base(state->m_bios_e4000_ram.get());
->>>>>>> upstream/master
 			}
 			else                    // disable RAM access (reads go to BIOS ROM)
 			{
@@ -221,11 +175,7 @@ static void mtxc_config_w(device_t *busdevice, device_t *device, int function, i
 
 			if (data & 1)       // enable RAM access to region 0xe0000 - 0xe3fff
 			{
-<<<<<<< HEAD
-				state->membank("bios_e0000")->set_base(state->m_bios_e0000_ram);
-=======
 				state->membank("bios_e0000")->set_base(state->m_bios_e0000_ram.get());
->>>>>>> upstream/master
 			}
 			else                    // disable RAM access (reads go to BIOS ROM)
 			{
@@ -238,11 +188,7 @@ static void mtxc_config_w(device_t *busdevice, device_t *device, int function, i
 		{
 			if (data & 0x10)        // enable RAM access to region 0xec000 - 0xeffff
 			{
-<<<<<<< HEAD
-				state->membank("bios_ec000")->set_base(state->m_bios_ec000_ram);
-=======
 				state->membank("bios_ec000")->set_base(state->m_bios_ec000_ram.get());
->>>>>>> upstream/master
 			}
 			else                    // disable RAM access (reads go to BIOS ROM)
 			{
@@ -251,11 +197,7 @@ static void mtxc_config_w(device_t *busdevice, device_t *device, int function, i
 
 			if (data & 1)       // enable RAM access to region 0xe8000 - 0xebfff
 			{
-<<<<<<< HEAD
-				state->membank("bios_e8000")->set_base(state->m_bios_e8000_ram);
-=======
 				state->membank("bios_e8000")->set_base(state->m_bios_e8000_ram.get());
->>>>>>> upstream/master
 			}
 			else                    // disable RAM access (reads go to BIOS ROM)
 			{
@@ -277,21 +219,12 @@ void savquest_state::intel82439tx_init()
 	m_mtxc_config_reg[0x63] = 0x02;
 	m_mtxc_config_reg[0x64] = 0x02;
 	m_mtxc_config_reg[0x65] = 0x02;
-<<<<<<< HEAD
-	m_smram = auto_alloc_array(machine(), UINT8, 0x20000);
-}
-
-static UINT32 intel82439tx_pci_r(device_t *busdevice, device_t *device, int function, int reg, UINT32 mem_mask)
-{
-	UINT32 r = 0;
-=======
 	m_smram = std::make_unique<uint8_t[]>(0x20000);
 }
 
 static uint32_t intel82439tx_pci_r(device_t *busdevice, device_t *device, int function, int reg, uint32_t mem_mask)
 {
 	uint32_t r = 0;
->>>>>>> upstream/master
 	if (ACCESSING_BITS_24_31)
 	{
 		r |= mtxc_config_r(busdevice, device, function, reg + 3) << 24;
@@ -311,11 +244,7 @@ static uint32_t intel82439tx_pci_r(device_t *busdevice, device_t *device, int fu
 	return r;
 }
 
-<<<<<<< HEAD
-static void intel82439tx_pci_w(device_t *busdevice, device_t *device, int function, int reg, UINT32 data, UINT32 mem_mask)
-=======
 static void intel82439tx_pci_w(device_t *busdevice, device_t *device, int function, int reg, uint32_t data, uint32_t mem_mask)
->>>>>>> upstream/master
 {
 	if (ACCESSING_BITS_24_31)
 	{
@@ -337,11 +266,7 @@ static void intel82439tx_pci_w(device_t *busdevice, device_t *device, int functi
 
 // Intel 82371AB PCI-to-ISA / IDE bridge (PIIX4)
 
-<<<<<<< HEAD
-static UINT8 piix4_config_r(device_t *busdevice, device_t *device, int function, int reg)
-=======
 static uint8_t piix4_config_r(device_t *busdevice, device_t *device, int function, int reg)
->>>>>>> upstream/master
 {
 	savquest_state *state = busdevice->machine().driver_data<savquest_state>();
 //  osd_printf_debug("PIIX4: read %d, %02X\n", function, reg);
@@ -361,26 +286,16 @@ static uint8_t piix4_config_r(device_t *busdevice, device_t *device, int functio
 	return state->m_piix4_config_reg[function][reg];
 }
 
-<<<<<<< HEAD
-static void piix4_config_w(device_t *busdevice, device_t *device, int function, int reg, UINT8 data)
-=======
 static void piix4_config_w(device_t *busdevice, device_t *device, int function, int reg, uint8_t data)
->>>>>>> upstream/master
 {
 	savquest_state *state = busdevice->machine().driver_data<savquest_state>();
 //  osd_printf_debug("%s:PIIX4: write %d, %02X, %02X\n", machine.describe_context(), function, reg, data);
 	state->m_piix4_config_reg[function][reg] = data;
 }
 
-<<<<<<< HEAD
-static UINT32 intel82371ab_pci_r(device_t *busdevice, device_t *device, int function, int reg, UINT32 mem_mask)
-{
-	UINT32 r = 0;
-=======
 static uint32_t intel82371ab_pci_r(device_t *busdevice, device_t *device, int function, int reg, uint32_t mem_mask)
 {
 	uint32_t r = 0;
->>>>>>> upstream/master
 	if (ACCESSING_BITS_24_31)
 	{
 		r |= piix4_config_r(busdevice, device, function, reg + 3) << 24;
@@ -400,11 +315,7 @@ static uint32_t intel82371ab_pci_r(device_t *busdevice, device_t *device, int fu
 	return r;
 }
 
-<<<<<<< HEAD
-static void intel82371ab_pci_w(device_t *busdevice, device_t *device, int function, int reg, UINT32 data, UINT32 mem_mask)
-=======
 static void intel82371ab_pci_w(device_t *busdevice, device_t *device, int function, int reg, uint32_t data, uint32_t mem_mask)
->>>>>>> upstream/master
 {
 	if (ACCESSING_BITS_24_31)
 	{
@@ -430,28 +341,17 @@ void savquest_state::vid_3dfx_init()
 	m_pci_3dfx_regs[0x08 / 4] = 2; // revision ID
 	m_pci_3dfx_regs[0x10 / 4] = 0xff000000;
 	m_pci_3dfx_regs[0x40 / 4] = 0x4000; //INITEN_SECONDARY_REV_ID
-<<<<<<< HEAD
-	voodoo_set_init_enable(m_voodoo, 0x4000); //INITEN_SECONDARY_REV_ID
-}
-
-static UINT32 pci_3dfx_r(device_t *busdevice, device_t *device, int function, int reg, UINT32 mem_mask)
-=======
 	m_voodoo->voodoo_set_init_enable(0x4000); //INITEN_SECONDARY_REV_ID
 }
 
 static uint32_t pci_3dfx_r(device_t *busdevice, device_t *device, int function, int reg, uint32_t mem_mask)
->>>>>>> upstream/master
 {
 //osd_printf_warning("PCI read: %x\n", reg);
 	savquest_state *state = busdevice->machine().driver_data<savquest_state>();
 	return state->m_pci_3dfx_regs[reg / 4];
 }
 
-<<<<<<< HEAD
-static void pci_3dfx_w(device_t *busdevice, device_t *device, int function, int reg, UINT32 data, UINT32 mem_mask)
-=======
 static void pci_3dfx_w(device_t *busdevice, device_t *device, int function, int reg, uint32_t data, uint32_t mem_mask)
->>>>>>> upstream/master
 {
 osd_printf_warning("PCI write: %x %x\n", reg, data);
 
@@ -463,11 +363,7 @@ osd_printf_warning("PCI write: %x %x\n", reg, data);
 	}
 	else if (reg == 0x40)
 	{
-<<<<<<< HEAD
-		voodoo_set_init_enable(state->m_voodoo, data);
-=======
 		state->m_voodoo->voodoo_set_init_enable(data);
->>>>>>> upstream/master
 	}
 	else if (reg == 0x54)
 	{
@@ -483,11 +379,7 @@ WRITE32_MEMBER(savquest_state::bios_f0000_ram_w)
 	#if 1
 	if (m_mtxc_config_reg[0x59] & 0x20)     // write to RAM if this region is write-enabled
 	{
-<<<<<<< HEAD
-		COMBINE_DATA(m_bios_f0000_ram + offset);
-=======
 		COMBINE_DATA(m_bios_f0000_ram.get() + offset);
->>>>>>> upstream/master
 	}
 	#endif
 }
@@ -498,11 +390,7 @@ WRITE32_MEMBER(savquest_state::bios_e0000_ram_w)
 	#if 1
 	if (m_mtxc_config_reg[0x5e] & 2)        // write to RAM if this region is write-enabled
 	{
-<<<<<<< HEAD
-		COMBINE_DATA(m_bios_e0000_ram + offset);
-=======
 		COMBINE_DATA(m_bios_e0000_ram.get() + offset);
->>>>>>> upstream/master
 	}
 	#endif
 }
@@ -513,11 +401,7 @@ WRITE32_MEMBER(savquest_state::bios_e4000_ram_w)
 	#if 1
 	if (m_mtxc_config_reg[0x5e] & 0x20)     // write to RAM if this region is write-enabled
 	{
-<<<<<<< HEAD
-		COMBINE_DATA(m_bios_e4000_ram + offset);
-=======
 		COMBINE_DATA(m_bios_e4000_ram.get() + offset);
->>>>>>> upstream/master
 	}
 	#endif
 }
@@ -528,11 +412,7 @@ WRITE32_MEMBER(savquest_state::bios_e8000_ram_w)
 	#if 1
 	if (m_mtxc_config_reg[0x5f] & 2)        // write to RAM if this region is write-enabled
 	{
-<<<<<<< HEAD
-		COMBINE_DATA(m_bios_e8000_ram + offset);
-=======
 		COMBINE_DATA(m_bios_e8000_ram.get() + offset);
->>>>>>> upstream/master
 	}
 	#endif
 }
@@ -543,22 +423,13 @@ WRITE32_MEMBER(savquest_state::bios_ec000_ram_w)
 	#if 1
 	if (m_mtxc_config_reg[0x5f] & 0x20)     // write to RAM if this region is write-enabled
 	{
-<<<<<<< HEAD
-		COMBINE_DATA(m_bios_ec000_ram + offset);
-=======
 		COMBINE_DATA(m_bios_ec000_ram.get() + offset);
->>>>>>> upstream/master
 	}
 	#endif
 }
 
-<<<<<<< HEAD
-static const UINT8 m_hasp_cmppass[] = {0xc3, 0xd9, 0xd3, 0xfb, 0x9d, 0x89, 0xb9, 0xa1, 0xb3, 0xc1, 0xf1, 0xcd, 0xdf, 0x9d}; /* 0x9d or 0x9e */
-static const UINT8 m_hasp_prodinfo[] = {0x51, 0x4c, 0x52, 0x4d, 0x53, 0x4e, 0x53, 0x4e, 0x53, 0x49, 0x53, 0x48, 0x53, 0x4b, 0x53, 0x4a,
-=======
 static const uint8_t m_hasp_cmppass[] = {0xc3, 0xd9, 0xd3, 0xfb, 0x9d, 0x89, 0xb9, 0xa1, 0xb3, 0xc1, 0xf1, 0xcd, 0xdf, 0x9d}; /* 0x9d or 0x9e */
 static const uint8_t m_hasp_prodinfo[] = {0x51, 0x4c, 0x52, 0x4d, 0x53, 0x4e, 0x53, 0x4e, 0x53, 0x49, 0x53, 0x48, 0x53, 0x4b, 0x53, 0x4a,
->>>>>>> upstream/master
 										0x53, 0x43, 0x53, 0x45, 0x52, 0x46, 0x53, 0x43, 0x53, 0x41, 0xac, 0x40, 0x53, 0xbc, 0x53, 0x42,
 										0x53, 0x57, 0x53, 0x5d, 0x52, 0x5e, 0x53, 0x5b, 0x53, 0x59, 0xac, 0x58, 0x53, 0xa4
 										};
@@ -623,11 +494,7 @@ WRITE8_MEMBER(savquest_state::parallel_port_w)
 {
 	if (!offset)
 	{
-<<<<<<< HEAD
-		UINT8 data8 = (UINT8) (data & 0xff);
-=======
 		uint8_t data8 = (uint8_t) (data & 0xff);
->>>>>>> upstream/master
 
 		/* state machine to determine when password is about to be entered */
 
@@ -907,19 +774,11 @@ INPUT_PORTS_END
 
 void savquest_state::machine_start()
 {
-<<<<<<< HEAD
-	m_bios_f0000_ram = auto_alloc_array(machine(), UINT32, 0x10000/4);
-	m_bios_e0000_ram = auto_alloc_array(machine(), UINT32, 0x4000/4);
-	m_bios_e4000_ram = auto_alloc_array(machine(), UINT32, 0x4000/4);
-	m_bios_e8000_ram = auto_alloc_array(machine(), UINT32, 0x4000/4);
-	m_bios_ec000_ram = auto_alloc_array(machine(), UINT32, 0x4000/4);
-=======
 	m_bios_f0000_ram = std::make_unique<uint32_t[]>(0x10000/4);
 	m_bios_e0000_ram = std::make_unique<uint32_t[]>(0x4000/4);
 	m_bios_e4000_ram = std::make_unique<uint32_t[]>(0x4000/4);
 	m_bios_e8000_ram = std::make_unique<uint32_t[]>(0x4000/4);
 	m_bios_ec000_ram = std::make_unique<uint32_t[]>(0x4000/4);
->>>>>>> upstream/master
 
 	intel82439tx_init();
 	vid_3dfx_init();
@@ -943,11 +802,7 @@ SLOT_INTERFACE_START( savquest_isa16_cards )
 	SLOT_INTERFACE("sb16", ISA16_SOUND_BLASTER_16)
 SLOT_INTERFACE_END
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( savquest, savquest_state )
-=======
 static MACHINE_CONFIG_START( savquest )
->>>>>>> upstream/master
 	MCFG_CPU_ADD("maincpu", PENTIUM2, 450000000) // actually Pentium II 450
 	MCFG_CPU_PROGRAM_MAP(savquest_map)
 	MCFG_CPU_IO_MAP(savquest_io)
@@ -958,16 +813,6 @@ static MACHINE_CONFIG_START( savquest )
 	MCFG_DS12885_ADD("rtc")
 
 	MCFG_PCI_BUS_LEGACY_ADD("pcibus", 0)
-<<<<<<< HEAD
-	MCFG_PCI_BUS_LEGACY_DEVICE(0, NULL, intel82439tx_pci_r, intel82439tx_pci_w)
-	MCFG_PCI_BUS_LEGACY_DEVICE(7, NULL, intel82371ab_pci_r, intel82371ab_pci_w)
-	MCFG_PCI_BUS_LEGACY_DEVICE(13, NULL, pci_3dfx_r, pci_3dfx_w)
-
-	MCFG_IDE_CONTROLLER_32_ADD("ide", ata_devices, "hdd", NULL, true)
-	MCFG_ATA_INTERFACE_IRQ_HANDLER(DEVWRITELINE("pic8259_2", pic8259_device, ir6_w))
-
-	MCFG_IDE_CONTROLLER_32_ADD("ide2", ata_devices, NULL, NULL, true)
-=======
 	MCFG_PCI_BUS_LEGACY_DEVICE(0, nullptr, intel82439tx_pci_r, intel82439tx_pci_w)
 	MCFG_PCI_BUS_LEGACY_DEVICE(7, nullptr, intel82371ab_pci_r, intel82371ab_pci_w)
 	MCFG_PCI_BUS_LEGACY_DEVICE(13, nullptr, pci_3dfx_r, pci_3dfx_w)
@@ -976,7 +821,6 @@ static MACHINE_CONFIG_START( savquest )
 	MCFG_ATA_INTERFACE_IRQ_HANDLER(DEVWRITELINE("pic8259_2", pic8259_device, ir6_w))
 
 	MCFG_IDE_CONTROLLER_32_ADD("ide2", ata_devices, nullptr, nullptr, true)
->>>>>>> upstream/master
 	MCFG_ATA_INTERFACE_IRQ_HANDLER(DEVWRITELINE("pic8259_2", pic8259_device, ir7_w))
 
 	/* sound hardware */
@@ -1011,8 +855,4 @@ ROM_START( savquest )
 ROM_END
 
 
-<<<<<<< HEAD
-GAME(1999, savquest, 0, savquest, savquest, driver_device, 0, ROT0, "Interactive Light", "Savage Quest", MACHINE_IS_SKELETON)
-=======
 GAME(1999, savquest, 0, savquest, savquest, savquest_state, 0, ROT0, "Interactive Light", "Savage Quest", MACHINE_IS_SKELETON)
->>>>>>> upstream/master

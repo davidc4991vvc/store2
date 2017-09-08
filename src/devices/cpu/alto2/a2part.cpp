@@ -5,10 +5,7 @@
  *   Xerox AltoII parity task
  *
  *****************************************************************************/
-<<<<<<< HEAD
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #include "alto2cpu.h"
 
 //! called by the CPU when the parity task becomes active
@@ -20,10 +17,6 @@ void alto2_cpu_device::activate_part()
 //! parity task slots initialization
 void alto2_cpu_device::init_part(int task)
 {
-<<<<<<< HEAD
-	m_active_callback[task] = &alto2_cpu_device::activate_part;
-=======
->>>>>>> upstream/master
 }
 
 void alto2_cpu_device::exit_part()

@@ -1,11 +1,6 @@
 /*
-<<<<<<< HEAD
- * Copyright 2011-2015 Branimir Karadzic. All rights reserved.
- * License: http://www.opensource.org/licenses/BSD-2-Clause
-=======
  * Copyright 2011-2017 Branimir Karadzic. All rights reserved.
  * License: https://github.com/bkaradzic/bgfx#license-bsd-2-clause
->>>>>>> upstream/master
  */
 
 #ifndef BGFX_CONFIG_H_HEADER_GUARD
@@ -24,12 +19,8 @@
 	&& !defined(BGFX_CONFIG_RENDERER_OPENGL) \
 	&& !defined(BGFX_CONFIG_RENDERER_OPENGLES) \
 	&& !defined(BGFX_CONFIG_RENDERER_VULKAN) \
-<<<<<<< HEAD
-	&& !defined(BGFX_CONFIG_RENDERER_NULL)
-=======
 	&& !defined(BGFX_CONFIG_RENDERER_GNM) \
 	&& !defined(BGFX_CONFIG_RENDERER_NOOP)
->>>>>>> upstream/master
 
 #	ifndef BGFX_CONFIG_RENDERER_DIRECT3D9
 #		define BGFX_CONFIG_RENDERER_DIRECT3D9 (0 \
@@ -42,48 +33,27 @@
 #		define BGFX_CONFIG_RENDERER_DIRECT3D11 (0 \
 					|| BX_PLATFORM_WINDOWS \
 					|| BX_PLATFORM_WINRT \
-<<<<<<< HEAD
-=======
 					|| BX_PLATFORM_XBOXONE \
->>>>>>> upstream/master
 					? 1 : 0)
 #	endif // BGFX_CONFIG_RENDERER_DIRECT3D11
 
 #	ifndef BGFX_CONFIG_RENDERER_DIRECT3D12
 #		define BGFX_CONFIG_RENDERER_DIRECT3D12 (0 \
 					|| BX_PLATFORM_WINDOWS \
-<<<<<<< HEAD
-=======
 					|| BX_PLATFORM_XBOXONE \
->>>>>>> upstream/master
 					? 1 : 0)
 #	endif // BGFX_CONFIG_RENDERER_DIRECT3D12
 
 #	ifndef BGFX_CONFIG_RENDERER_METAL
-<<<<<<< HEAD
-#		if BX_PLATFORM_IOS \
-			|| (BX_PLATFORM_OSX \
-				&& defined(MAC_OS_X_VERSION_MAX_ALLOWED) \
-				&& (MAC_OS_X_VERSION_MAX_ALLOWED >= 101100))
-#			define BGFX_CONFIG_RENDERER_METAL 1
-#		else
-#			define BGFX_CONFIG_RENDERER_METAL 0
-#		endif
-=======
 #		define BGFX_CONFIG_RENDERER_METAL (0 \
 					|| (BX_PLATFORM_IOS && BX_CPU_ARM) \
 					|| (BX_PLATFORM_OSX >= 101100) \
 					? 1 : 0)
->>>>>>> upstream/master
 #	endif // BGFX_CONFIG_RENDERER_METAL
 
 #	ifndef BGFX_CONFIG_RENDERER_OPENGL
 #		define BGFX_CONFIG_RENDERER_OPENGL (0 \
-<<<<<<< HEAD
-					|| BX_PLATFORM_FREEBSD \
-=======
 					|| BX_PLATFORM_BSD \
->>>>>>> upstream/master
 					|| BX_PLATFORM_LINUX \
 					|| BX_PLATFORM_OSX \
 					|| BX_PLATFORM_WINDOWS \
@@ -98,28 +68,11 @@
 					|| BX_PLATFORM_NACL \
 					|| BX_PLATFORM_QNX \
 					|| BX_PLATFORM_RPI \
-<<<<<<< HEAD
-=======
 					|| BX_PLATFORM_STEAMLINK \
->>>>>>> upstream/master
 					? 1 : 0)
 #	endif // BGFX_CONFIG_RENDERER_OPENGLES
 
 #	ifndef BGFX_CONFIG_RENDERER_VULKAN
-<<<<<<< HEAD
-#		define BGFX_CONFIG_RENDERER_VULKAN 0
-#	endif // BGFX_CONFIG_RENDERER_VULKAN
-
-#	ifndef BGFX_CONFIG_RENDERER_NULL
-#		define BGFX_CONFIG_RENDERER_NULL (!(0 \
-					|| BGFX_CONFIG_RENDERER_DIRECT3D9 \
-					|| BGFX_CONFIG_RENDERER_DIRECT3D11 \
-					|| BGFX_CONFIG_RENDERER_DIRECT3D12 \
-					|| BGFX_CONFIG_RENDERER_OPENGL \
-					|| BGFX_CONFIG_RENDERER_OPENGLES \
-					? 1 : 0) )
-#	endif // BGFX_CONFIG_RENDERER_NULL
-=======
 #		define BGFX_CONFIG_RENDERER_VULKAN (0 \
 					|| BX_PLATFORM_ANDROID \
 					|| BX_PLATFORM_LINUX \
@@ -145,7 +98,6 @@
 					|| BGFX_CONFIG_RENDERER_GNM \
 					? 1 : 0) )
 #	endif // BGFX_CONFIG_RENDERER_NOOP
->>>>>>> upstream/master
 #else
 #	ifndef BGFX_CONFIG_RENDERER_DIRECT3D9
 #		define BGFX_CONFIG_RENDERER_DIRECT3D9 0
@@ -175,11 +127,6 @@
 #		define BGFX_CONFIG_RENDERER_VULKAN 0
 #	endif // BGFX_CONFIG_RENDERER_VULKAN
 
-<<<<<<< HEAD
-#	ifndef BGFX_CONFIG_RENDERER_NULL
-#		define BGFX_CONFIG_RENDERER_NULL 0
-#	endif // BGFX_CONFIG_RENDERER_NULL
-=======
 #	ifndef BGFX_CONFIG_RENDERER_GNM
 #		define BGFX_CONFIG_RENDERER_GNM 0
 #	endif // BGFX_CONFIG_RENDERER_GNM
@@ -187,7 +134,6 @@
 #	ifndef BGFX_CONFIG_RENDERER_NOOP
 #		define BGFX_CONFIG_RENDERER_NOOP 0
 #	endif // BGFX_CONFIG_RENDERER_NOOP
->>>>>>> upstream/master
 #endif // !defined...
 
 #if BGFX_CONFIG_RENDERER_OPENGL && BGFX_CONFIG_RENDERER_OPENGL < 21
@@ -239,31 +185,11 @@
 #	define BGFX_CONFIG_DEBUG_MTL BGFX_CONFIG_DEBUG
 #endif // BGFX_CONFIG_DEBUG_MTL
 
-<<<<<<< HEAD
-///
-=======
 /// Enable uniform debug checks.
->>>>>>> upstream/master
 #ifndef BGFX_CONFIG_DEBUG_UNIFORM
 #	define BGFX_CONFIG_DEBUG_UNIFORM BGFX_CONFIG_DEBUG
 #endif // BGFX_CONFIG_DEBUG_UNIFORM
 
-<<<<<<< HEAD
-#ifndef BGFX_CONFIG_MULTITHREADED
-#	define BGFX_CONFIG_MULTITHREADED ( (!BGFX_CONFIG_RENDERER_NULL)&&(0 \
-						|| BX_PLATFORM_ANDROID \
-						|| BX_PLATFORM_FREEBSD \
-						|| BX_PLATFORM_LINUX \
-						|| BX_PLATFORM_IOS \
-						|| BX_PLATFORM_NACL \
-						|| BX_PLATFORM_OSX \
-						|| BX_PLATFORM_QNX \
-						|| BX_PLATFORM_RPI \
-						|| BX_PLATFORM_WINDOWS \
-						|| BX_PLATFORM_WINRT \
-						|| BX_PLATFORM_XBOX360 \
-						? 1 : 0) )
-=======
 /// Enable occlusion debug checks.
 #ifndef BGFX_CONFIG_DEBUG_OCCLUSION
 #	define BGFX_CONFIG_DEBUG_OCCLUSION BGFX_CONFIG_DEBUG
@@ -271,7 +197,6 @@
 
 #ifndef BGFX_CONFIG_MULTITHREADED
 #	define BGFX_CONFIG_MULTITHREADED ( (0 == BX_PLATFORM_EMSCRIPTEN) ? 1 : 0)
->>>>>>> upstream/master
 #endif // BGFX_CONFIG_MULTITHREADED
 
 #ifndef BGFX_CONFIG_MAX_DRAW_CALLS
@@ -279,11 +204,7 @@
 #endif // BGFX_CONFIG_MAX_DRAW_CALLS
 
 #ifndef BGFX_CONFIG_MAX_BLIT_ITEMS
-<<<<<<< HEAD
-#	define BGFX_CONFIG_MAX_BLIT_ITEMS 256
-=======
 #	define BGFX_CONFIG_MAX_BLIT_ITEMS (1<<10)
->>>>>>> upstream/master
 #endif // BGFX_CONFIG_MAX_BLIT_ITEMS
 
 #ifndef BGFX_CONFIG_MAX_MATRIX_CACHE
@@ -294,8 +215,6 @@
 #	define BGFX_CONFIG_MAX_RECT_CACHE (4<<10)
 #endif //  BGFX_CONFIG_MAX_RECT_CACHE
 
-<<<<<<< HEAD
-=======
 #ifndef BGFX_CONFIG_SORT_KEY_NUM_BITS_DEPTH
 #	define BGFX_CONFIG_SORT_KEY_NUM_BITS_DEPTH 32
 #endif // BGFX_CONFIG_SORT_KEY_NUM_BITS_DEPTH
@@ -311,7 +230,6 @@
 // Cannot be configured directly. Must must be power of 2.
 #define BGFX_CONFIG_MAX_PROGRAMS (1<<BGFX_CONFIG_SORT_KEY_NUM_BITS_PROGRAM)
 
->>>>>>> upstream/master
 #ifndef BGFX_CONFIG_MAX_VIEWS
 // Do not change. Must be power of 2.
 #	define BGFX_CONFIG_MAX_VIEWS 256
@@ -335,13 +253,10 @@
 #	define BGFX_CONFIG_MAX_VERTEX_BUFFERS (4<<10)
 #endif // BGFX_CONFIG_MAX_VERTEX_BUFFERS
 
-<<<<<<< HEAD
-=======
 #ifndef BGFX_CONFIG_MAX_VERTEX_STREAMS
 #	define BGFX_CONFIG_MAX_VERTEX_STREAMS 1
 #endif // BGFX_CONFIG_MAX_VERTEX_STREAMS
 
->>>>>>> upstream/master
 #ifndef BGFX_CONFIG_MAX_DYNAMIC_INDEX_BUFFERS
 #	define BGFX_CONFIG_MAX_DYNAMIC_INDEX_BUFFERS (4<<10)
 #endif // BGFX_CONFIG_MAX_DYNAMIC_INDEX_BUFFERS
@@ -362,14 +277,6 @@
 #	define BGFX_CONFIG_MAX_SHADERS 512
 #endif // BGFX_CONFIG_MAX_FRAGMENT_SHADERS
 
-<<<<<<< HEAD
-#ifndef BGFX_CONFIG_MAX_PROGRAMS
-// Must be power of 2.
-#	define BGFX_CONFIG_MAX_PROGRAMS 512
-#endif // BGFX_CONFIG_MAX_PROGRAMS
-
-=======
->>>>>>> upstream/master
 #ifndef BGFX_CONFIG_MAX_TEXTURES
 #	define BGFX_CONFIG_MAX_TEXTURES (4<<10)
 #endif // BGFX_CONFIG_MAX_TEXTURES
@@ -379,11 +286,7 @@
 #endif // BGFX_CONFIG_MAX_TEXTURE_SAMPLERS
 
 #ifndef BGFX_CONFIG_MAX_FRAME_BUFFERS
-<<<<<<< HEAD
-#	define BGFX_CONFIG_MAX_FRAME_BUFFERS 64
-=======
 #	define BGFX_CONFIG_MAX_FRAME_BUFFERS 128
->>>>>>> upstream/master
 #endif // BGFX_CONFIG_MAX_FRAME_BUFFERS
 
 #ifndef BGFX_CONFIG_MAX_FRAME_BUFFER_ATTACHMENTS
@@ -394,13 +297,10 @@
 #	define BGFX_CONFIG_MAX_UNIFORMS 512
 #endif // BGFX_CONFIG_MAX_UNIFORMS
 
-<<<<<<< HEAD
-=======
 #ifndef BGFX_CONFIG_MAX_OCCLUSION_QUERIES
 #	define BGFX_CONFIG_MAX_OCCLUSION_QUERIES 256
 #endif // BGFX_CONFIG_MAX_OCCLUSION_QUERIES
 
->>>>>>> upstream/master
 #ifndef BGFX_CONFIG_MAX_COMMAND_BUFFER_SIZE
 #	define BGFX_CONFIG_MAX_COMMAND_BUFFER_SIZE (64<<10)
 #endif // BGFX_CONFIG_MAX_COMMAND_BUFFER_SIZE
@@ -423,8 +323,6 @@
 
 #define BGFX_CONFIG_DRAW_INDIRECT_STRIDE 32
 
-<<<<<<< HEAD
-=======
 #ifndef BGFX_CONFIG_PROFILER_MICROPROFILE
 #	define BGFX_CONFIG_PROFILER_MICROPROFILE 0
 #endif // BGFX_CONFIG_PROFILER_MICROPROFILE
@@ -449,5 +347,4 @@
 #	define BGFX_CONFIG_API_SEMAPHORE_TIMEOUT (-1)
 #endif // BGFX_CONFIG_API_SEMAPHORE_TIMEOUT
 
->>>>>>> upstream/master
 #endif // BGFX_CONFIG_H_HEADER_GUARD

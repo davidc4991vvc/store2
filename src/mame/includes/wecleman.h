@@ -1,15 +1,10 @@
 // license:BSD-3-Clause
 // copyright-holders:Luca Elia
-<<<<<<< HEAD
-#include "sound/k007232.h"
-#include "video/k051316.h"
-=======
 
 #include "machine/gen_latch.h"
 #include "sound/k007232.h"
 #include "video/k051316.h"
 #include "screen.h"
->>>>>>> upstream/master
 
 class wecleman_state : public driver_device
 {
@@ -23,10 +18,7 @@ public:
 		m_txtram(*this, "txtram"),
 		m_spriteram(*this, "spriteram"),
 		m_roadram(*this, "roadram"),
-<<<<<<< HEAD
-=======
 		m_generic_paletteram_16(*this, "paletteram"),
->>>>>>> upstream/master
 		m_maincpu(*this, "maincpu"),
 		m_audiocpu(*this, "audiocpu"),
 		m_subcpu(*this, "sub"),
@@ -39,17 +31,6 @@ public:
 		m_gfxdecode(*this, "gfxdecode"),
 		m_palette(*this, "palette"),
 		m_screen(*this, "screen"),
-<<<<<<< HEAD
-		m_generic_paletteram_16(*this, "paletteram") { }
-
-	optional_shared_ptr<UINT16> m_videostatus;
-	optional_shared_ptr<UINT16> m_protection_ram;
-	required_shared_ptr<UINT16> m_blitter_regs;
-	optional_shared_ptr<UINT16> m_pageram;
-	optional_shared_ptr<UINT16> m_txtram;
-	required_shared_ptr<UINT16> m_spriteram;
-	required_shared_ptr<UINT16> m_roadram;
-=======
 		m_soundlatch(*this, "soundlatch") { }
 
 	optional_shared_ptr<uint16_t> m_videostatus;
@@ -60,7 +41,6 @@ public:
 	required_shared_ptr<uint16_t> m_spriteram;
 	required_shared_ptr<uint16_t> m_roadram;
 	required_shared_ptr<uint16_t> m_generic_paletteram_16;
->>>>>>> upstream/master
 
 	int m_multiply_reg[2];
 	int m_spr_color_offs;
@@ -80,11 +60,7 @@ public:
 	int m_spr_offsx;
 	int m_spr_offsy;
 	int m_spr_count;
-<<<<<<< HEAD
-	UINT16 *m_rgb_half;
-=======
 	uint16_t *m_rgb_half;
->>>>>>> upstream/master
 	int m_cloud_blend;
 	int m_cloud_ds;
 	int m_cloud_visible;
@@ -126,16 +102,6 @@ public:
 	DECLARE_VIDEO_START(wecleman);
 	DECLARE_MACHINE_RESET(hotchase);
 	DECLARE_VIDEO_START(hotchase);
-<<<<<<< HEAD
-	UINT32 screen_update_wecleman(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
-	UINT32 screen_update_hotchase(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	INTERRUPT_GEN_MEMBER(hotchase_sound_timer);
-	TIMER_DEVICE_CALLBACK_MEMBER(wecleman_scanline);
-	TIMER_DEVICE_CALLBACK_MEMBER(hotchase_scanline);
-	void draw_cloud(bitmap_rgb32 &bitmap,gfx_element *gfx,UINT16 *tm_base,int x0,int y0,int xcount,int ycount,int scrollx,int scrolly,int tmw_l2,int tmh_l2,int alpha,int pal_offset);
-	void wecleman_unpack_sprites();
-	void bitswap(UINT8 *src,size_t len,int _14,int _13,int _12,int _11,int _10,int _f,int _e,int _d,int _c,int _b,int _a,int _9,int _8,int _7,int _6,int _5,int _4,int _3,int _2,int _1,int _0);
-=======
 	uint32_t screen_update_wecleman(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
 	uint32_t screen_update_hotchase(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	INTERRUPT_GEN_MEMBER(hotchase_sound_timer);
@@ -144,7 +110,6 @@ public:
 	void draw_cloud(bitmap_rgb32 &bitmap,gfx_element *gfx,uint16_t *tm_base,int x0,int y0,int xcount,int ycount,int scrollx,int scrolly,int tmw_l2,int tmh_l2,int alpha,int pal_offset);
 	void wecleman_unpack_sprites();
 	void bitswap(uint8_t *src,size_t len,int _14,int _13,int _12,int _11,int _10,int _f,int _e,int _d,int _c,int _b,int _a,int _9,int _8,int _7,int _6,int _5,int _4,int _3,int _2,int _1,int _0);
->>>>>>> upstream/master
 	void hotchase_sprite_decode( int num16_banks, int bank_size );
 	void get_sprite_info();
 	void sortsprite(int *idx_array, int *key_array, int size);
@@ -169,9 +134,5 @@ public:
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
 	required_device<screen_device> m_screen;
-<<<<<<< HEAD
-	required_shared_ptr<UINT16> m_generic_paletteram_16;
-=======
 	required_device<generic_latch_8_device> m_soundlatch;
->>>>>>> upstream/master
 };

@@ -1,20 +1,11 @@
 /*
-<<<<<<< HEAD
- * Copyright 2011-2015 Branimir Karadzic. All rights reserved.
- * License: http://www.opensource.org/licenses/BSD-2-Clause
-=======
  * Copyright 2011-2017 Branimir Karadzic. All rights reserved.
  * License: https://github.com/bkaradzic/bgfx#license-bsd-2-clause
->>>>>>> upstream/master
  */
 
 #include "bgfx_p.h"
 
-<<<<<<< HEAD
-#if (BX_PLATFORM_FREEBSD || BX_PLATFORM_LINUX) && (BGFX_CONFIG_RENDERER_OPENGLES || BGFX_CONFIG_RENDERER_OPENGL)
-=======
 #if (BX_PLATFORM_BSD || BX_PLATFORM_LINUX) && (BGFX_CONFIG_RENDERER_OPENGLES || BGFX_CONFIG_RENDERER_OPENGL)
->>>>>>> upstream/master
 #	include "renderer_gl.h"
 
 #	if BGFX_USE_GLX
@@ -164,18 +155,12 @@ namespace bgfx { namespace gl
 			if (NULL != glXCreateContextAttribsARB)
 			{
 				BX_TRACE("Create GL 3.1 context.");
-<<<<<<< HEAD
-=======
 				int32_t flags = BGFX_CONFIG_DEBUG ? GLX_CONTEXT_DEBUG_BIT_ARB : 0;
->>>>>>> upstream/master
 				const int contextAttrs[] =
 				{
 					GLX_CONTEXT_MAJOR_VERSION_ARB, 3,
 					GLX_CONTEXT_MINOR_VERSION_ARB, 1,
-<<<<<<< HEAD
-=======
 					GLX_CONTEXT_FLAGS_ARB, flags,
->>>>>>> upstream/master
 					GLX_CONTEXT_PROFILE_MASK_ARB, GLX_CONTEXT_CORE_PROFILE_BIT_ARB,
 					0,
 				};
@@ -228,11 +213,8 @@ namespace bgfx { namespace gl
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 		glXSwapBuffers( (::Display*)g_platformData.ndt, (::Window)g_platformData.nwh);
-<<<<<<< HEAD
-=======
 
 		g_internalData.context = m_context;
->>>>>>> upstream/master
 	}
 
 	void GlContext::destroy()
@@ -279,10 +261,7 @@ namespace bgfx { namespace gl
 	void GlContext::destroySwapChain(SwapChainGL* _swapChain)
 	{
 		BX_DELETE(g_allocator, _swapChain);
-<<<<<<< HEAD
-=======
 		glXMakeCurrent( (::Display*)g_platformData.ndt, (::Window)g_platformData.nwh, m_context);
->>>>>>> upstream/master
 	}
 
 	void GlContext::swap(SwapChainGL* _swapChain)
@@ -334,8 +313,4 @@ namespace bgfx { namespace gl
 
 #	endif // BGFX_USE_GLX
 
-<<<<<<< HEAD
-#endif // (BX_PLATFORM_FREEBSD || BX_PLATFORM_LINUX) && (BGFX_CONFIG_RENDERER_OPENGLES || BGFX_CONFIG_RENDERER_OPENGL)
-=======
 #endif // (BX_PLATFORM_BSD || BX_PLATFORM_LINUX) && (BGFX_CONFIG_RENDERER_OPENGLES || BGFX_CONFIG_RENDERER_OPENGL)
->>>>>>> upstream/master

@@ -9,28 +9,6 @@
 
 ******************************************************************************/
 
-<<<<<<< HEAD
-1942            // 12/1984 (c) 1984
-1942a           // 12/1984 (c) 1984
-1942abl         // bootleg
-1942b           // 12/1984 (c) 1984
-1942w           // 12/1984 (c) 1984 + Williams Electronics license (c) 1985
-1942p           // prototype
-1942h           // hack (Two Bit Score?)
-popeye          // (c) 1982
-popeyeu         // (c) 1982
-popeyef         // (c) 1982
-popeyebl        // bootleg
-
-// mario
-
-
-// Atari 100% TTL
-pong            // (c) 1972 Atari
-pongd           // (c) 1975 Atari
-pongf           // (c) 1972 Atari
-breakout        // (c) 1976 Atari
-=======
 /* Use CPUs */
 
 // 1942.cpp
@@ -210,4 +188,3 @@ jackrabt                        // (c) 1984
 jackrabt2                       // (c) 1984
 jackrabts                       // (c) 1984
 monymony                        // (c) 1983
->>>>>>> upstream/master

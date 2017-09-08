@@ -2,11 +2,6 @@
 // copyright-holders:Nicola Salmoria
 /***************************************************************************
 
-<<<<<<< HEAD
-TC0220IOC
----------
-A simple I/O interface with integrated watchdog.
-=======
 TC0040IOC
 ---------
 Taito's first custom I/O interface differs a bit from its successors,
@@ -19,7 +14,6 @@ emulated here yet).
 TC0220IOC
 ---------
 A simple I/O interface with integrated watchdog in a 80-pin flat package.
->>>>>>> upstream/master
 It has four address inputs, which would suggest 16 bytes of addressing space,
 but only the first 8 seem to be used.
 
@@ -37,11 +31,7 @@ but only the first 8 seem to be used.
 
 TC0510NIO
 ---------
-<<<<<<< HEAD
-Newer version of the I/O chip
-=======
 Newer QFP100 version of the I/O chip
->>>>>>> upstream/master
 
 000 R  DSWA
 000  W watchdog reset
@@ -69,16 +59,6 @@ Newer version of the I/O chip ?
 
 /***************************************************************************/
 /*                                                                         */
-<<<<<<< HEAD
-/*                              TC0220IOC                                  */
-/*                                                                         */
-/***************************************************************************/
-
-const device_type TC0220IOC = &device_creator<tc0220ioc_device>;
-
-tc0220ioc_device::tc0220ioc_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, TC0220IOC, "Taito TC0220IOC", tag, owner, clock, "tc0220ioc", __FILE__),
-=======
 /*                              TC0040IOC                                  */
 /*                                                                         */
 /***************************************************************************/
@@ -90,15 +70,11 @@ tc0040ioc_device::tc0040ioc_device(const machine_config &mconfig, const char *ta
 	m_regs{ 0, 0, 0, 0, 0, 0, 0, 0 },
 	m_port(0),
 	m_watchdog(*this, "watchdog"),
->>>>>>> upstream/master
 	m_read_0_cb(*this),
 	m_read_1_cb(*this),
 	m_read_2_cb(*this),
 	m_read_3_cb(*this),
-<<<<<<< HEAD
-=======
 	m_write_4_cb(*this),
->>>>>>> upstream/master
 	m_read_7_cb(*this)
 {
 }
@@ -107,20 +83,13 @@ tc0040ioc_device::tc0040ioc_device(const machine_config &mconfig, const char *ta
 //  device_start - device-specific startup
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void tc0220ioc_device::device_start()
-=======
 void tc0040ioc_device::device_start()
->>>>>>> upstream/master
 {
 	m_read_0_cb.resolve_safe(0);
 	m_read_1_cb.resolve_safe(0);
 	m_read_2_cb.resolve_safe(0);
 	m_read_3_cb.resolve_safe(0);
-<<<<<<< HEAD
-=======
 	m_write_4_cb.resolve_safe();
->>>>>>> upstream/master
 	m_read_7_cb.resolve_safe(0);
 
 	save_item(NAME(m_regs));
@@ -131,16 +100,6 @@ void tc0040ioc_device::device_start()
 //  device_reset - device-specific reset
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void tc0220ioc_device::device_reset()
-{
-	m_port = 0;
-
-	for (int i = 0; i < 8; i++)
-		m_regs[i] = 0;
-}
-
-=======
 void tc0040ioc_device::device_reset()
 {
 	m_port = 0;
@@ -157,16 +116,10 @@ MACHINE_CONFIG_MEMBER( tc0040ioc_device::device_add_mconfig )
 	MCFG_WATCHDOG_ADD("watchdog")
 MACHINE_CONFIG_END
 
->>>>>>> upstream/master
 /*****************************************************************************
     DEVICE HANDLERS
 *****************************************************************************/
 
-<<<<<<< HEAD
-READ8_MEMBER( tc0220ioc_device::read )
-{
-	switch (offset)
-=======
 READ8_MEMBER( tc0040ioc_device::read )
 {
 	if (offset & 1)
@@ -203,7 +156,6 @@ WRITE8_MEMBER( tc0040ioc_device::port_w )
 READ8_MEMBER( tc0040ioc_device::portreg_r )
 {
 	switch (m_port)
->>>>>>> upstream/master
 	{
 		case 0x00:
 			return m_read_0_cb(0);
@@ -224,35 +176,11 @@ READ8_MEMBER( tc0040ioc_device::portreg_r )
 			return m_read_7_cb(0);
 
 		default:
-<<<<<<< HEAD
-//logerror("PC %06x: warning - read TC0220IOC address %02x\n",space.device().safe_pc(),offset);
-=======
 //logerror("PC %06x: warning - read TC0040IOC address %02x\n",space.device().safe_pc(),m_port);
->>>>>>> upstream/master
 			return 0xff;
 	}
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER( tc0220ioc_device::write )
-{
-	m_regs[offset] = data;
-	switch (offset)
-	{
-		case 0x00:
-			machine().watchdog_reset();
-			break;
-
-		case 0x04:  /* coin counters and lockout, hi nibble irrelevant */
-
-			coin_lockout_w(machine(), 0, ~data & 0x01);
-			coin_lockout_w(machine(), 1, ~data & 0x02);
-			coin_counter_w(machine(), 0, data & 0x04);
-			coin_counter_w(machine(), 1, data & 0x08);
-
-//if (data & 0xf0)
-//logerror("PC %06x: warning - write %02x to TC0220IOC address %02x\n",space.device().safe_pc(),data,offset);
-=======
 WRITE8_MEMBER( tc0040ioc_device::portreg_w )
 {
 	if (m_port < ARRAY_LENGTH(m_regs))
@@ -264,40 +192,15 @@ WRITE8_MEMBER( tc0040ioc_device::portreg_w )
 
 //if (data & 0xf0)
 //logerror("PC %06x: warning - write %02x to TC0040IOC address %02x\n",space.device().safe_pc(),data,m_port);
->>>>>>> upstream/master
 
 			break;
 
 		default:
-<<<<<<< HEAD
-//logerror("PC %06x: warning - write %02x to TC0220IOC address %02x\n",space.device().safe_pc(),data,offset);
-=======
 //logerror("PC %06x: warning - write %02x to TC0040IOC address %02x\n",space.device().safe_pc(),data,m_port);
->>>>>>> upstream/master
 			break;
 	}
 }
 
-<<<<<<< HEAD
-READ8_MEMBER( tc0220ioc_device::port_r )
-{
-	return m_port;
-}
-
-WRITE8_MEMBER( tc0220ioc_device::port_w )
-{
-	m_port = data;
-}
-
-READ8_MEMBER( tc0220ioc_device::portreg_r )
-{
-	return read(space, m_port);
-}
-
-WRITE8_MEMBER( tc0220ioc_device::portreg_w )
-{
-	write(space, m_port, data);
-=======
 
 /***************************************************************************/
 /*                                                                         */
@@ -413,7 +316,6 @@ WRITE8_MEMBER( tc0220ioc_device::write )
 //logerror("PC %06x: warning - write %02x to TC0220IOC address %02x\n",space.device().safe_pc(),data,offset);
 			break;
 	}
->>>>>>> upstream/master
 }
 
 /***************************************************************************/
@@ -423,27 +325,17 @@ WRITE8_MEMBER( tc0220ioc_device::write )
 /***************************************************************************/
 
 
-<<<<<<< HEAD
-const device_type TC0510NIO = &device_creator<tc0510nio_device>;
-
-tc0510nio_device::tc0510nio_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, TC0510NIO, "Taito TC0510NIO", tag, owner, clock, "tc0510nio", __FILE__),
-=======
 DEFINE_DEVICE_TYPE(TC0510NIO, tc0510nio_device, "tc0510nio", "Taito TC0510NIO")
 
 tc0510nio_device::tc0510nio_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, TC0510NIO, tag, owner, clock),
 	m_watchdog(*this, "watchdog"),
->>>>>>> upstream/master
 	m_read_0_cb(*this),
 	m_read_1_cb(*this),
 	m_read_2_cb(*this),
 	m_read_3_cb(*this),
-<<<<<<< HEAD
-=======
 	m_write_3_cb(*this),
 	m_write_4_cb(*this),
->>>>>>> upstream/master
 	m_read_7_cb(*this)
 {
 }
@@ -458,11 +350,8 @@ void tc0510nio_device::device_start()
 	m_read_1_cb.resolve_safe(0);
 	m_read_2_cb.resolve_safe(0);
 	m_read_3_cb.resolve_safe(0);
-<<<<<<< HEAD
-=======
 	m_write_3_cb.resolve_safe();
 	m_write_4_cb.resolve_safe();
->>>>>>> upstream/master
 	m_read_7_cb.resolve_safe(0);
 
 	save_item(NAME(m_regs));
@@ -474,12 +363,6 @@ void tc0510nio_device::device_start()
 
 void tc0510nio_device::device_reset()
 {
-<<<<<<< HEAD
-	for (int i = 0; i < 8; i++)
-		m_regs[i] = 0;
-}
-
-=======
 	for (auto & elem : m_regs)
 		elem = 0;
 }
@@ -492,7 +375,6 @@ MACHINE_CONFIG_MEMBER( tc0510nio_device::device_add_mconfig )
 	MCFG_WATCHDOG_ADD("watchdog")
 MACHINE_CONFIG_END
 
->>>>>>> upstream/master
 /*****************************************************************************
     DEVICE HANDLERS
 *****************************************************************************/
@@ -532,16 +414,6 @@ WRITE8_MEMBER( tc0510nio_device::write )
 	switch (offset)
 	{
 		case 0x00:
-<<<<<<< HEAD
-			machine().watchdog_reset();
-			break;
-
-		case 0x04:  /* coin counters and lockout */
-			coin_lockout_w(machine(), 0, ~data & 0x01);
-			coin_lockout_w(machine(), 1, ~data & 0x02);
-			coin_counter_w(machine(), 0, data & 0x04);
-			coin_counter_w(machine(), 1, data & 0x08);
-=======
 			m_watchdog->watchdog_reset();
 			break;
 
@@ -551,7 +423,6 @@ WRITE8_MEMBER( tc0510nio_device::write )
 
 		case 0x04:  /* coin counters and lockout */
 			m_write_4_cb(data & 0x0f);
->>>>>>> upstream/master
 			break;
 
 		default:
@@ -595,26 +466,16 @@ WRITE16_MEMBER( tc0510nio_device::halfword_wordswap_w )
 /***************************************************************************/
 
 
-<<<<<<< HEAD
-const device_type TC0640FIO = &device_creator<tc0640fio_device>;
-
-tc0640fio_device::tc0640fio_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, TC0640FIO, "Taito TC0640FIO", tag, owner, clock, "tc0640fio", __FILE__),
-=======
 DEFINE_DEVICE_TYPE(TC0640FIO, tc0640fio_device, "tc0640fio", "Taito TC0640FIO")
 
 tc0640fio_device::tc0640fio_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, TC0640FIO, tag, owner, clock),
 	m_watchdog(*this, "watchdog"),
->>>>>>> upstream/master
 	m_read_0_cb(*this),
 	m_read_1_cb(*this),
 	m_read_2_cb(*this),
 	m_read_3_cb(*this),
-<<<<<<< HEAD
-=======
 	m_write_4_cb(*this),
->>>>>>> upstream/master
 	m_read_7_cb(*this)
 {
 }
@@ -629,10 +490,7 @@ void tc0640fio_device::device_start()
 	m_read_1_cb.resolve_safe(0);
 	m_read_2_cb.resolve_safe(0);
 	m_read_3_cb.resolve_safe(0);
-<<<<<<< HEAD
-=======
 	m_write_4_cb.resolve_safe();
->>>>>>> upstream/master
 	m_read_7_cb.resolve_safe(0);
 
 	save_item(NAME(m_regs));
@@ -644,12 +502,6 @@ void tc0640fio_device::device_start()
 
 void tc0640fio_device::device_reset()
 {
-<<<<<<< HEAD
-	for (int i = 0; i < 8; i++)
-		m_regs[i] = 0;
-}
-
-=======
 	for (auto & elem : m_regs)
 		elem = 0;
 }
@@ -662,7 +514,6 @@ MACHINE_CONFIG_MEMBER( tc0640fio_device::device_add_mconfig )
 	MCFG_WATCHDOG_ADD("watchdog")
 MACHINE_CONFIG_END
 
->>>>>>> upstream/master
 
 /*****************************************************************************
     DEVICE HANDLERS
@@ -702,22 +553,11 @@ WRITE8_MEMBER( tc0640fio_device::write )
 	switch (offset)
 	{
 		case 0x00:
-<<<<<<< HEAD
-			machine().watchdog_reset();
-			break;
-
-		case 0x04:  /* coin counters and lockout */
-			coin_lockout_w(machine(), 0, ~data & 0x01);
-			coin_lockout_w(machine(), 1, ~data & 0x02);
-			coin_counter_w(machine(), 0, data & 0x04);
-			coin_counter_w(machine(), 1, data & 0x08);
-=======
 			m_watchdog->watchdog_reset();
 			break;
 
 		case 0x04:  /* coin counters and lockout */
 			m_write_4_cb(data & 0x0f);
->>>>>>> upstream/master
 			break;
 
 		default:

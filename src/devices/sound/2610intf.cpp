@@ -13,52 +13,6 @@
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-#include "2610intf.h"
-#include "fm.h"
-
-static void psg_set_clock(void *param, int clock)
-{
-	ym2610_device *ym2610 = (ym2610_device *) param;
-	ym2610->ay_set_clock(clock);
-}
-
-static void psg_write(void *param, int address, int data)
-{
-	ym2610_device *ym2610 = (ym2610_device *) param;
-	ym2610->ay8910_write_ym(address, data);
-}
-
-static int psg_read(void *param)
-{
-	ym2610_device *ym2610 = (ym2610_device *) param;
-	return ym2610->ay8910_read_ym();
-}
-
-static void psg_reset(void *param)
-{
-	ym2610_device *ym2610 = (ym2610_device *) param;
-	ym2610->ay8910_reset_ym();
-}
-
-static const ssg_callbacks psgintf =
-{
-	psg_set_clock,
-	psg_write,
-	psg_read,
-	psg_reset
-};
-
-/*------------------------- TM2610 -------------------------------*/
-/* IRQ Handler */
-static void IRQHandler(void *param,int irq)
-{
-	ym2610_device *ym2610 = (ym2610_device *) param;
-	ym2610->_IRQHandler(irq);
-}
-
-void ym2610_device::_IRQHandler(int irq)
-=======
 #include "emu.h"
 #include "2610intf.h"
 #include "fm.h"
@@ -75,7 +29,6 @@ const ssg_callbacks ym2610_device::psgintf =
 };
 
 void ym2610_device::irq_handler(int irq)
->>>>>>> upstream/master
 {
 	if (!m_irq_handler.isnull())
 		m_irq_handler(irq);
@@ -96,17 +49,7 @@ void ym2610_device::device_timer(emu_timer &timer, device_timer_id id, int param
 	}
 }
 
-<<<<<<< HEAD
-static void timer_handler(void *param,int c,int count,int clock)
-{
-	ym2610_device *ym2610 = (ym2610_device *) param;
-	ym2610->_timer_handler(c, count, clock);
-}
-
-void ym2610_device::_timer_handler(int c,int count,int clock)
-=======
 void ym2610_device::timer_handler(int c,int count,int clock)
->>>>>>> upstream/master
 {
 	if( count == 0 )
 	{   /* Reset FM Timer */
@@ -121,21 +64,6 @@ void ym2610_device::timer_handler(int c,int count,int clock)
 	}
 }
 
-<<<<<<< HEAD
-/* update request from fm.c */
-void ym2610_update_request(void *param)
-{
-	ym2610_device *ym2610 = (ym2610_device *) param;
-	ym2610->_ym2610_update_request();
-}
-
-void ym2610_device::_ym2610_update_request()
-{
-	m_stream->update();
-}
-
-=======
->>>>>>> upstream/master
 //-------------------------------------------------
 //  sound_stream_update - handle a stream update
 //-------------------------------------------------
@@ -169,12 +97,6 @@ void ym2610_device::device_start()
 	ay8910_device::device_start();
 
 	int rate = clock()/72;
-<<<<<<< HEAD
-	void *pcmbufa,*pcmbufb;
-	int  pcmsizea,pcmsizeb;
-	std::string name(tag());
-=======
->>>>>>> upstream/master
 
 	m_irq_handler.resolve();
 
@@ -183,26 +105,6 @@ void ym2610_device::device_start()
 	m_timer[1] = timer_alloc(1);
 
 	/* stream system initialize */
-<<<<<<< HEAD
-	m_stream = machine().sound().stream_alloc(*this,0,2,rate, stream_update_delegate(FUNC(ym2610_device::stream_generate),this));
-	/* setup adpcm buffers */
-	pcmbufa  = region()->base();
-	pcmsizea = region()->bytes();
-	name.append(".deltat");
-	pcmbufb = (void *)(machine().root_device().memregion(name.c_str())->base());
-	pcmsizeb = machine().root_device().memregion(name.c_str())->bytes();
-	if (pcmbufb == NULL || pcmsizeb == 0)
-	{
-		pcmbufb = pcmbufa;
-		pcmsizeb = pcmsizea;
-	}
-
-	/**** initialize YM2610 ****/
-	m_chip = ym2610_init(this,this,clock(),rate,
-					pcmbufa,pcmsizea,pcmbufb,pcmsizeb,
-					timer_handler,IRQHandler,&psgintf);
-	assert_always(m_chip != NULL, "Error creating YM2610 chip");
-=======
 	m_stream = machine().sound().stream_alloc(*this,0,2,rate, stream_update_delegate(&ym2610_device::stream_generate,this));
 
 	/* setup adpcm buffers */
@@ -224,7 +126,6 @@ void ym2610_device::device_start()
 					pcmbufa,pcmsizea,pcmbufb,pcmsizeb,
 					&ym2610_device::static_timer_handler,&ym2610_device::static_irq_handler,&psgintf);
 	assert_always(m_chip != nullptr, "Error creating YM2610 chip");
->>>>>>> upstream/master
 }
 
 //-------------------------------------------------
@@ -257,26 +158,6 @@ WRITE8_MEMBER( ym2610_device::write )
 }
 
 
-<<<<<<< HEAD
-const device_type YM2610 = &device_creator<ym2610_device>;
-
-ym2610_device::ym2610_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: ay8910_device(mconfig, YM2610, "YM2610", tag, owner, clock, PSG_TYPE_YM, 1, 0, "ym2610", __FILE__),
-		m_irq_handler(*this)
-{
-}
-
-ym2610_device::ym2610_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source)
-	: ay8910_device(mconfig, type, name, tag, owner, clock, PSG_TYPE_YM, 1, 0, shortname, source),
-		m_irq_handler(*this)
-{
-}
-
-const device_type YM2610B = &device_creator<ym2610b_device>;
-
-ym2610b_device::ym2610b_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: ym2610_device(mconfig, YM2610B, "YM2610B", tag, owner, clock, "ym2610b", __FILE__)
-=======
 DEFINE_DEVICE_TYPE(YM2610, ym2610_device, "ym2610", "YM2610 OPNB")
 
 ym2610_device::ym2610_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
@@ -297,6 +178,5 @@ DEFINE_DEVICE_TYPE(YM2610B, ym2610b_device, "ym2610b", "YM2610B OPNB")
 
 ym2610b_device::ym2610b_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: ym2610_device(mconfig, YM2610B, tag, owner, clock)
->>>>>>> upstream/master
 {
 }

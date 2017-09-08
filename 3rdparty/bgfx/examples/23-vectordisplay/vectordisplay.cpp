@@ -1,10 +1,6 @@
 /*
  * Copyright 2014 Kai Jourdan. All rights reserved.
-<<<<<<< HEAD
- * License: http://www.opensource.org/licenses/BSD-2-Clause
-=======
  * License: https://github.com/bkaradzic/bgfx#license-bsd-2-clause
->>>>>>> upstream/master
  *
  * Based on code from Brian Luczkiewicz
  * https://github.com/blucz/Vector
@@ -37,28 +33,6 @@ const float DEFAULT_BRIGHTNESS = 1.0f;
 const int TEXTURE_SIZE = 64;
 const int HALF_TEXTURE_SIZE = TEXTURE_SIZE / 2;
 
-<<<<<<< HEAD
-struct PosColorUvVertex
-{
-	float m_x;
-	float m_y;
-	float m_z;
-	float m_u;
-	float m_v;
-	uint32_t m_abgr;
-
-	static void init()
-	{
-		ms_decl
-			.begin()
-			.add(bgfx::Attrib::Position,  3, bgfx::AttribType::Float)
-			.add(bgfx::Attrib::TexCoord0, 2, bgfx::AttribType::Float)
-			.add(bgfx::Attrib::Color0,    4, bgfx::AttribType::Uint8, true)
-			.end();
-	}
-	static bgfx::VertexDecl ms_decl;
-};
-=======
 void PosColorUvVertex::init()
 {
 	ms_decl
@@ -69,7 +43,6 @@ void PosColorUvVertex::init()
 		.end();
 }
 
->>>>>>> upstream/master
 bgfx::VertexDecl PosColorUvVertex::ms_decl;
 
 inline float normalizef(float _a)
@@ -83,11 +56,7 @@ VectorDisplay::VectorDisplay(bool _originBottomLeft, float _texelHalf)
 {
 }
 
-<<<<<<< HEAD
-void VectorDisplay::setup(uint16_t _width, uint16_t _height, int _view)
-=======
 void VectorDisplay::setup(uint16_t _width, uint16_t _height, uint8_t _view)
->>>>>>> upstream/master
 {
 	PosColorUvVertex::init();
 
@@ -167,11 +136,7 @@ void VectorDisplay::endFrame()
 	bx::mtxOrtho(proj, 0.0f, (float)m_screenWidth, (float)m_screenHeight, 0.0f, 0.0f, 1000.0f);
 
 	bgfx::setViewRect(m_view, 0, 0, m_screenWidth, m_screenHeight);
-<<<<<<< HEAD
-	bgfx::setViewFrameBuffer(m_view, m_sceneFrameBuffer);              //render all geometry to this framebuffer
-=======
 	bgfx::setViewFrameBuffer(m_view, m_sceneFrameBuffer);
->>>>>>> upstream/master
 	bgfx::setViewTransform(m_view, NULL, proj);
 
 	// advance step
@@ -181,11 +146,7 @@ void VectorDisplay::endFrame()
 
 	bgfx::updateDynamicVertexBuffer(m_vertexBuffers[m_currentDrawStep]
 		, 0
-<<<<<<< HEAD
-		, bgfx::copy(m_points.data(), (uint32_t)m_points.size() * sizeof(point_t) )
-=======
 		, bgfx::copy(m_points.data(), (uint32_t)m_points.size() * sizeof(PosColorUvVertex) )
->>>>>>> upstream/master
 	);
 	m_vertexBuffersSize[m_currentDrawStep] = (uint32_t)m_points.size();
 
@@ -194,11 +155,7 @@ void VectorDisplay::endFrame()
 		int stepi = m_numberDecaySteps - loopvar - 1;
 		int i = (m_currentDrawStep + m_numberDecaySteps - stepi) % m_numberDecaySteps;
 
-<<<<<<< HEAD
-		if (m_vertexBuffersSize[i] != 0)                  //only draw if something is in the buffer
-=======
 		if (m_vertexBuffersSize[i] != 0)
->>>>>>> upstream/master
 		{
 			float alpha;
 			if (stepi == 0)
@@ -211,11 +168,7 @@ void VectorDisplay::endFrame()
 			}
 			else
 			{
-<<<<<<< HEAD
-				alpha = powf(m_decayValue, stepi - 1.0f) * m_initialDecay;
-=======
 				alpha = bx::fpow(m_decayValue, stepi - 1.0f) * m_initialDecay;
->>>>>>> upstream/master
 			}
 
 			float params[4] = { 0.0f, 0.0f, 0.0f, alpha };
@@ -223,11 +176,7 @@ void VectorDisplay::endFrame()
 
 			bgfx::setTexture(0, s_texColor, m_lineTexId);
 
-<<<<<<< HEAD
-			bgfx::setVertexBuffer(m_vertexBuffers[i], m_vertexBuffersSize[i]); // explicitly feed vertex number!
-=======
 			bgfx::setVertexBuffer(m_vertexBuffers[i], 0, m_vertexBuffersSize[i]); // explicitly feed vertex number!
->>>>>>> upstream/master
 
 			bgfx::setState(0
 				| BGFX_STATE_RGB_WRITE
@@ -241,11 +190,7 @@ void VectorDisplay::endFrame()
 		}
 	}
 
-<<<<<<< HEAD
-	int viewCounter = m_view + 1;
-=======
 	uint8_t viewCounter = m_view + 1;
->>>>>>> upstream/master
 
 	bx::mtxOrtho(proj, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 100.0f);
 
@@ -255,22 +200,14 @@ void VectorDisplay::endFrame()
 
 	if (m_brightness > 0)
 	{
-<<<<<<< HEAD
-		bgfx::setTexture(0, s_texColor, m_sceneFrameBuffer);
-=======
 		bgfx::setTexture(0, s_texColor, bgfx::getTexture(m_sceneFrameBuffer) );
->>>>>>> upstream/master
 
 		int npasses = (int)(m_brightness * 4);
 		for (int pass = 0; pass < npasses; pass++)
 		{
 			// render the glow1 texture to the glow0 buffer with horizontal blur
 
-<<<<<<< HEAD
-			bgfx::setViewFrameBuffer(viewCounter, m_glow0FrameBuffer);            //first glow pass
-=======
 			bgfx::setViewFrameBuffer(viewCounter, m_glow0FrameBuffer);
->>>>>>> upstream/master
 			bgfx::setViewRect(viewCounter, 0, 0, m_glowWidth, m_glowHeight);
 			bgfx::setState(0
 				| BGFX_STATE_RGB_WRITE
@@ -287,15 +224,9 @@ void VectorDisplay::endFrame()
 
 			viewCounter++;
 
-<<<<<<< HEAD
-			bgfx::setViewFrameBuffer(viewCounter, m_glow1FrameBuffer);            //second glow pass
-			bgfx::setViewRect(viewCounter, 0, 0, m_glowWidth, m_glowHeight);
-			bgfx::setTexture(0, s_texColor, m_glow0FrameBuffer);
-=======
 			bgfx::setViewFrameBuffer(viewCounter, m_glow1FrameBuffer);
 			bgfx::setViewRect(viewCounter, 0, 0, m_glowWidth, m_glowHeight);
 			bgfx::setTexture(0, s_texColor, bgfx::getTexture(m_glow0FrameBuffer) );
->>>>>>> upstream/master
 
 			bgfx::setViewTransform(viewCounter, NULL, proj);
 			screenSpaceQuad(m_glowWidth, m_glowHeight);
@@ -317,11 +248,7 @@ void VectorDisplay::endFrame()
 			viewCounter++;
 
 			//set for next iteration
-<<<<<<< HEAD
-			bgfx::setTexture(0, s_texColor, m_glow1FrameBuffer);
-=======
 			bgfx::setTexture(0, s_texColor, bgfx::getTexture(m_glow1FrameBuffer) );
->>>>>>> upstream/master
 		}
 	}
 
@@ -330,11 +257,7 @@ void VectorDisplay::endFrame()
 	//now do last pass, combination of blur and normal buffer to screen
 	bgfx::setViewTransform(viewCounter, NULL, proj);
 	bgfx::setViewRect(viewCounter, 0, 0, m_screenWidth, m_screenHeight);
-<<<<<<< HEAD
-	bgfx::setTexture(0, s_texColor, m_sceneFrameBuffer);
-=======
 	bgfx::setTexture(0, s_texColor, bgfx::getTexture(m_sceneFrameBuffer) );
->>>>>>> upstream/master
 	bgfx::setState(0
 		| BGFX_STATE_RGB_WRITE
 		| BGFX_STATE_ALPHA_WRITE
@@ -354,11 +277,7 @@ void VectorDisplay::endFrame()
 		// blend in the glow
 		bgfx::setViewTransform(viewCounter, NULL, proj);
 		bgfx::setViewRect(viewCounter, 0, 0, m_screenWidth, m_screenHeight);
-<<<<<<< HEAD
-		bgfx::setTexture(0, s_texColor, m_glow1FrameBuffer);
-=======
 		bgfx::setTexture(0, s_texColor, bgfx::getTexture(m_glow1FrameBuffer) );
->>>>>>> upstream/master
 		bgfx::setState(0
 			| BGFX_STATE_RGB_WRITE
 			| BGFX_STATE_ALPHA_WRITE
@@ -378,11 +297,7 @@ void VectorDisplay::beginDraw(float _x, float _y)
 {
 	BX_CHECK(0 == m_pendingPoints.size(), "Begin draw on already filled buffer!");
 
-<<<<<<< HEAD
-	pending_point_t point;
-=======
 	PendingPoint point;
->>>>>>> upstream/master
 	point.x = _x * m_drawScale + m_drawOffsetX;
 	point.y = _y * m_drawScale + m_drawOffsetY;
 	m_pendingPoints.push_back(point);
@@ -390,11 +305,7 @@ void VectorDisplay::beginDraw(float _x, float _y)
 
 void VectorDisplay::drawTo(float _x, float _y)
 {
-<<<<<<< HEAD
-	pending_point_t point;
-=======
 	PendingPoint point;
->>>>>>> upstream/master
 	point.x = _x * m_drawScale + m_drawOffsetX;
 	point.y = _y * m_drawScale + m_drawOffsetY;
 	m_pendingPoints.push_back(point);
@@ -410,11 +321,7 @@ void VectorDisplay::endDraw()
 
 	// from the list of points, build a list of lines
 	uint32_t nlines = (uint32_t)m_pendingPoints.size() - 1;
-<<<<<<< HEAD
-	line_t* lines = (line_t*)alloca(nlines * sizeof(line_t) );
-=======
 	Line* lines = (Line*)alloca(nlines * sizeof(Line) );
->>>>>>> upstream/master
 
 	float t = effectiveThickness();
 	int first_last_same = bx::fabsolute(m_pendingPoints[0].x - m_pendingPoints[m_pendingPoints.size() - 1].x) < 0.1
@@ -423,11 +330,7 @@ void VectorDisplay::endDraw()
 	// compute basics
 	for (size_t i = 1; i < m_pendingPoints.size(); i++)
 	{
-<<<<<<< HEAD
-		line_t* line = &lines[i - 1];
-=======
 		Line* line = &lines[i - 1];
->>>>>>> upstream/master
 		line->is_first = i == 1;
 		line->is_last = i == nlines;
 
@@ -436,17 +339,10 @@ void VectorDisplay::endDraw()
 		line->y0 = m_pendingPoints[i - 1].y;
 		line->x1 = m_pendingPoints[i].x;
 		line->y1 = m_pendingPoints[i].y;
-<<<<<<< HEAD
-		line->a = atan2f(line->y1 - line->y0, line->x1 - line->x0); // angle from positive x axis, increasing ccw, [-pi, pi]
-		line->sin_a = sinf(line->a);
-		line->cos_a = cosf(line->a);
-		line->len = sqrtf( (line->x1 - line->x0) * (line->x1 - line->x0) + (line->y1 - line->y0) * (line->y1 - line->y0) );
-=======
 		line->a = bx::fatan2(line->y1 - line->y0, line->x1 - line->x0); // angle from positive x axis, increasing ccw, [-pi, pi]
 		line->sin_a = bx::fsin(line->a);
 		line->cos_a = bx::fcos(line->a);
 		line->len = bx::fsqrt( (line->x1 - line->x0) * (line->x1 - line->x0) + (line->y1 - line->y0) * (line->y1 - line->y0) );
->>>>>>> upstream/master
 
 		// figure out what connections we have
 		line->has_prev = (!line->is_first
@@ -464,11 +360,7 @@ void VectorDisplay::endDraw()
 	// compute adjustments for connected line segments
 	for (size_t i = 0; i < nlines; i++)
 	{
-<<<<<<< HEAD
-		line_t* line = &lines[i], * pline = &lines[(nlines + i - 1) % nlines];
-=======
 		Line* line = &lines[i], * pline = &lines[(nlines + i - 1) % nlines];
->>>>>>> upstream/master
 
 		if (line->has_prev)
 		{
@@ -480,20 +372,12 @@ void VectorDisplay::endDraw()
 			{
 				if (a2pa < pa2a)
 				{
-<<<<<<< HEAD
-					float shorten = t * sinf(a2pa / 2) / cosf(a2pa / 2);
-=======
 					float shorten = t * bx::fsin(a2pa / 2.0f) / bx::fcos(a2pa / 2.0f);
->>>>>>> upstream/master
 					float a = (bx::pi - a2pa) / 2.0f;
 					if (shorten > maxshorten)
 					{
 						line->s0 = pline->s1 = maxshorten;
-<<<<<<< HEAD
-						line->tr0 = pline->tr1 = maxshorten * sinf(a) / cosf(a);
-=======
 						line->tr0 = pline->tr1 = maxshorten * bx::fsin(a) / bx::fcos(a);
->>>>>>> upstream/master
 					}
 					else
 					{
@@ -504,20 +388,12 @@ void VectorDisplay::endDraw()
 				}
 				else
 				{
-<<<<<<< HEAD
-					float shorten = t * sinf(pa2a / 2.0f) / cosf(pa2a / 2.0f);
-=======
 					float shorten = t * bx::fsin(pa2a / 2.0f) / bx::fcos(pa2a / 2.0f);
->>>>>>> upstream/master
 					float a = (bx::pi - pa2a) / 2.0f;
 					if (shorten > maxshorten)
 					{
 						line->s0 = pline->s1 = maxshorten;
-<<<<<<< HEAD
-						line->tl0 = pline->tl1 = maxshorten * sinf(a) / cosf(a);
-=======
 						line->tl0 = pline->tl1 = maxshorten * bx::fsin(a) / bx::fcos(a);
->>>>>>> upstream/master
 					}
 					else
 					{
@@ -542,11 +418,7 @@ void VectorDisplay::endDraw()
 	// compute line geometry
 	for (size_t i = 0; i < nlines; i++)
 	{
-<<<<<<< HEAD
-		line_t* line = &lines[i];
-=======
 		Line* line = &lines[i];
->>>>>>> upstream/master
 
 		// shorten lines if needed
 		line->x0 = line->x0 + line->s0 * line->cos_a;
@@ -604,21 +476,12 @@ void VectorDisplay::drawCircle(float _x, float _y, float _radius, float _steps)
 
 	float step = bx::pi * 2.0f / _steps;
 
-<<<<<<< HEAD
-	beginDraw(_x + _radius * sinf(edgeangle + angadjust),
-	          _y - _radius * cosf(edgeangle + angadjust) );
-	for (edgeangle = 0; edgeangle < 2.0f * bx::pi - 0.001; edgeangle += step)
-	{
-		drawTo(_x + _radius * sinf(edgeangle + step - angadjust),
-		       _y - _radius * cosf(edgeangle + step - angadjust) );
-=======
 	beginDraw(_x + _radius * bx::fsin(edgeangle + angadjust),
 	          _y - _radius * bx::fcos(edgeangle + angadjust) );
 	for (edgeangle = 0; edgeangle < 2.0f * bx::pi - 0.001; edgeangle += step)
 	{
 		drawTo(_x + _radius * bx::fsin(edgeangle + step - angadjust),
 		       _y - _radius * bx::fcos(edgeangle + step - angadjust) );
->>>>>>> upstream/master
 	}
 
 	endDraw();
@@ -628,24 +491,6 @@ void VectorDisplay::drawWheel(float _angle, float _x, float _y, float _radius)
 {
 	float spokeradius = _radius - 2.0f;
 	// draw spokes
-<<<<<<< HEAD
-	drawLine(_x + spokeradius * sinf(_angle),
-	         _y - spokeradius * cosf(_angle),
-	         _x - spokeradius * sinf(_angle),
-	         _y + spokeradius * cosf(_angle) );
-	drawLine(_x + spokeradius * sinf(_angle + bx::pi / 4.0f),
-	         _y - spokeradius * cosf(_angle + bx::pi / 4.0f),
-	         _x - spokeradius * sinf(_angle + bx::pi / 4.0f),
-	         _y + spokeradius * cosf(_angle + bx::pi / 4.0f) );
-	drawLine(_x + spokeradius * sinf(_angle + bx::pi / 2.0f),
-	         _y - spokeradius * cosf(_angle + bx::pi / 2.0f),
-	         _x - spokeradius * sinf(_angle + bx::pi / 2.0f),
-	         _y + spokeradius * cosf(_angle + bx::pi / 2.0f) );
-	drawLine(_x + spokeradius * sinf(_angle + 3.0f * bx::pi / 4.0f),
-	         _y - spokeradius * cosf(_angle + 3.0f * bx::pi / 4.0f),
-	         _x - spokeradius * sinf(_angle + 3.0f * bx::pi / 4.0f),
-	         _y + spokeradius * cosf(_angle + 3.0f * bx::pi / 4.0f) );
-=======
 	drawLine(_x + spokeradius * bx::fsin(_angle),
 	         _y - spokeradius * bx::fcos(_angle),
 	         _x - spokeradius * bx::fsin(_angle),
@@ -662,26 +507,16 @@ void VectorDisplay::drawWheel(float _angle, float _x, float _y, float _radius)
 	         _y - spokeradius * bx::fcos(_angle + 3.0f * bx::pi / 4.0f),
 	         _x - spokeradius * bx::fsin(_angle + 3.0f * bx::pi / 4.0f),
 	         _y + spokeradius * bx::fcos(_angle + 3.0f * bx::pi / 4.0f) );
->>>>>>> upstream/master
 
 	float edgeangle = 0.0f;
 	float angadjust = 0.0f;
 
-<<<<<<< HEAD
-	beginDraw(_x + _radius * sinf(_angle + edgeangle + angadjust),
-	          _y - _radius * cosf(_angle + edgeangle + angadjust) );
-	for (edgeangle = 0; edgeangle < 2.0f * bx::pi - 0.001f; edgeangle += bx::pi / 4.0f)
-	{
-		drawTo(_x + _radius * sinf(_angle + edgeangle + bx::pi / 4.0f - angadjust),
-		       _y - _radius * cosf(_angle + edgeangle + bx::pi / 4.0f - angadjust) );
-=======
 	beginDraw(_x + _radius * bx::fsin(_angle + edgeangle + angadjust),
 	          _y - _radius * bx::fcos(_angle + edgeangle + angadjust) );
 	for (edgeangle = 0; edgeangle < 2.0f * bx::pi - 0.001f; edgeangle += bx::pi / 4.0f)
 	{
 		drawTo(_x + _radius * bx::fsin(_angle + edgeangle + bx::pi / 4.0f - angadjust),
 		       _y - _radius * bx::fcos(_angle + edgeangle + bx::pi / 4.0f - angadjust) );
->>>>>>> upstream/master
 	}
 
 	endDraw();
@@ -747,15 +582,6 @@ void VectorDisplay::setDrawColor(float _r, float _g, float _b, float _a)
 
 void VectorDisplay::appendTexpoint(float _x, float _y, float _u, float _v)
 {
-<<<<<<< HEAD
-	point_t point;
-	point.x = _x;
-	point.y = _y;
-	point.z = 0.0;
-	point.color = (m_drawColorA << 24) | (m_drawColorB << 16) | (m_drawColorG << 8) | m_drawColorR;
-	point.u = _u / TEXTURE_SIZE;
-	point.v = 1.0f - _v / TEXTURE_SIZE;
-=======
 	PosColorUvVertex point;
 	point.m_x = _x;
 	point.m_y = _y;
@@ -763,7 +589,6 @@ void VectorDisplay::appendTexpoint(float _x, float _y, float _u, float _v)
 	point.m_abgr = (m_drawColorA << 24) | (m_drawColorB << 16) | (m_drawColorG << 8) | m_drawColorR;
 	point.m_u = _u / TEXTURE_SIZE;
 	point.m_v = 1.0f - _v / TEXTURE_SIZE;
->>>>>>> upstream/master
 	m_points.push_back(point);
 }
 
@@ -797,15 +622,6 @@ void VectorDisplay::drawFan(float _cx, float _cy, float _pa, float _a, float _t,
 
 	for (i = 1; i <= nsteps; i++)
 	{
-<<<<<<< HEAD
-		appendTexpoint(_cx + _t * sinf(angles[i - 1]), _cy - _t * cosf(angles[i - 1]), _e, (float)HALF_TEXTURE_SIZE);
-		appendTexpoint(_cx, _cy, _s, (float)HALF_TEXTURE_SIZE);
-		appendTexpoint(_cx + _t * sinf(angles[i]), _cy - _t * cosf(angles[i]), _e, (float)HALF_TEXTURE_SIZE);
-	}
-}
-
-void VectorDisplay::drawLines(line_t* _lines, int _numberLines)
-=======
 		appendTexpoint(_cx + _t * bx::fsin(angles[i - 1]), _cy - _t * bx::fcos(angles[i - 1]), _e, (float)HALF_TEXTURE_SIZE);
 		appendTexpoint(_cx, _cy, _s, (float)HALF_TEXTURE_SIZE);
 		appendTexpoint(_cx + _t * bx::fsin(angles[i]), _cy - _t * bx::fcos(angles[i]), _e, (float)HALF_TEXTURE_SIZE);
@@ -813,18 +629,13 @@ void VectorDisplay::drawLines(line_t* _lines, int _numberLines)
 }
 
 void VectorDisplay::drawLines(Line* _lines, int _numberLines)
->>>>>>> upstream/master
 {
 	int i;
 	float t = effectiveThickness();
 
 	for (i = 0; i < _numberLines; i++)
 	{
-<<<<<<< HEAD
-		line_t* line = &_lines[i], * pline = &_lines[(_numberLines + i - 1) % _numberLines];
-=======
 		Line* line = &_lines[i], * pline = &_lines[(_numberLines + i - 1) % _numberLines];
->>>>>>> upstream/master
 
 		if (line->has_prev)     // draw fan for connection to previous
 		{
@@ -930,11 +741,7 @@ void VectorDisplay::getSize(float* _outWidth, float* _outHeight)
 
 void VectorDisplay::screenSpaceQuad(float _textureWidth, float _textureHeight, float _width, float _height)
 {
-<<<<<<< HEAD
-	if (bgfx::checkAvailTransientVertexBuffer(3, PosColorUvVertex::ms_decl) )
-=======
 	if (3 == getAvailTransientVertexBuffer(3, PosColorUvVertex::ms_decl) )
->>>>>>> upstream/master
 	{
 		bgfx::TransientVertexBuffer vb;
 		bgfx::allocTransientVertexBuffer(&vb, 3, PosColorUvVertex::ms_decl);
@@ -1021,11 +828,7 @@ void VectorDisplay::genLinetex()                                    // generate 
 	const bgfx::Memory* mem = bgfx::alloc(TEXTURE_SIZE * TEXTURE_SIZE * 4);
 	unsigned char* texbuf = (unsigned char*)mem->data;
 
-<<<<<<< HEAD
-	memset(texbuf, 0xff, mem->size);
-=======
 	bx::memSet(texbuf, 0xff, mem->size);
->>>>>>> upstream/master
 	int x, y;
 	for (x = 0; x < TEXTURE_SIZE; x++)
 	{
@@ -1035,13 +838,8 @@ void VectorDisplay::genLinetex()                                    // generate 
 				, bx::fsqrt( (float)( (x - HALF_TEXTURE_SIZE) * (x - HALF_TEXTURE_SIZE) + (y - HALF_TEXTURE_SIZE) * (y - HALF_TEXTURE_SIZE) ) ) / (float)HALF_TEXTURE_SIZE
 				);
 
-<<<<<<< HEAD
-			float line = powf(16.0f, -2.0f * distance);
-			float glow = powf( 2.0f, -4.0f * distance) / 10.0f;
-=======
 			float line = bx::fpow(16.0f, -2.0f * distance);
 			float glow = bx::fpow( 2.0f, -4.0f * distance) / 10.0f;
->>>>>>> upstream/master
 			glow = 0;
 			float val = bx::fsaturate(line + glow);
 
@@ -1059,11 +857,7 @@ void VectorDisplay::genLinetex()                                    // generate 
 		| BGFX_TEXTURE_MAG_POINT
 		;
 
-<<<<<<< HEAD
-	m_lineTexId = bgfx::createTexture2D(TEXTURE_SIZE, TEXTURE_SIZE, 1, bgfx::TextureFormat::BGRA8, flags, mem);
-=======
 	m_lineTexId = bgfx::createTexture2D(TEXTURE_SIZE, TEXTURE_SIZE, false, 1, bgfx::TextureFormat::BGRA8, flags, mem);
->>>>>>> upstream/master
 }
 
 static const int8_t simplex[95][112] =

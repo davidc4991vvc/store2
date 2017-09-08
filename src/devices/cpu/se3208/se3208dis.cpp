@@ -7,15 +7,9 @@
 
 static struct
 {
-<<<<<<< HEAD
-	UINT32 PC;
-	UINT32 SR;
-	UINT32 ER;
-=======
 	uint32_t PC;
 	uint32_t SR;
 	uint32_t ER;
->>>>>>> upstream/master
 } Context;
 
 #define FLAG_E      0x0800
@@ -31,50 +25,29 @@ static struct
 #define ZEX16(val)  ((val)&0xFFFF)
 #define SEX(bits,val)   ((val)&(1<<(bits-1))?((val)|(~((1<<bits)-1))):(val&((1<<bits)-1)))
 
-<<<<<<< HEAD
-typedef UINT32 (*_OP)(UINT16 Opcode,char *dst);
-#define INST(a) static UINT32 a(UINT16 Opcode,char *dst)
-=======
 typedef uint32_t (*_OP)(uint16_t Opcode, std::ostream &stream);
 #define INST(a) static uint32_t a(uint16_t Opcode, std::ostream &stream)
->>>>>>> upstream/master
 
 
 INST(INVALIDOP)
 {
-<<<<<<< HEAD
-	sprintf(dst,"INVALID");
-=======
 	util::stream_format(stream, "INVALID");
->>>>>>> upstream/master
 	return 0;
 }
 
 INST(LDB)
 {
-<<<<<<< HEAD
-	UINT32 Offset=EXTRACT(Opcode,0,4);
-	UINT32 Index=EXTRACT(Opcode,5,7);
-	UINT32 SrcDst=EXTRACT(Opcode,8,10);
-=======
 	uint32_t Offset=EXTRACT(Opcode,0,4);
 	uint32_t Index=EXTRACT(Opcode,5,7);
 	uint32_t SrcDst=EXTRACT(Opcode,8,10);
->>>>>>> upstream/master
 
 	if(TESTFLAG(FLAG_E))
 		Offset=(EXTRACT(Context.ER,0,27)<<4)|(Offset&0xf);
 
 	if(Index)
-<<<<<<< HEAD
-		sprintf(dst,"LDB   (%%R%d,0x%x),%%R%d",Index,Offset,SrcDst);
-	else
-		sprintf(dst,"LDB   (0x%x),%%R%d",Index+Offset,SrcDst);
-=======
 		util::stream_format(stream, "LDB   (%%R%d,0x%x),%%R%d",Index,Offset,SrcDst);
 	else
 		util::stream_format(stream, "LDB   (0x%x),%%R%d",Index+Offset,SrcDst);
->>>>>>> upstream/master
 
 	CLRFLAG(FLAG_E);
 	return 0;
@@ -82,29 +55,17 @@ INST(LDB)
 
 INST(STB)
 {
-<<<<<<< HEAD
-	UINT32 Offset=EXTRACT(Opcode,0,4);
-	UINT32 Index=EXTRACT(Opcode,5,7);
-	UINT32 SrcDst=EXTRACT(Opcode,8,10);
-=======
 	uint32_t Offset=EXTRACT(Opcode,0,4);
 	uint32_t Index=EXTRACT(Opcode,5,7);
 	uint32_t SrcDst=EXTRACT(Opcode,8,10);
->>>>>>> upstream/master
 
 	if(TESTFLAG(FLAG_E))
 		Offset=(EXTRACT(Context.ER,0,27)<<4)|(Offset&0xf);
 
 	if(Index)
-<<<<<<< HEAD
-		sprintf(dst,"STB   %%R%d,(%%R%d,0x%x)",SrcDst,Index,Offset);
-	else
-		sprintf(dst,"STB   %%R%d,(0x%x)",SrcDst,Index+Offset);
-=======
 		util::stream_format(stream, "STB   %%R%d,(%%R%d,0x%x)",SrcDst,Index,Offset);
 	else
 		util::stream_format(stream, "STB   %%R%d,(0x%x)",SrcDst,Index+Offset);
->>>>>>> upstream/master
 
 	CLRFLAG(FLAG_E);
 	return 0;
@@ -112,15 +73,9 @@ INST(STB)
 
 INST(LDS)
 {
-<<<<<<< HEAD
-	UINT32 Offset=EXTRACT(Opcode,0,4);
-	UINT32 Index=EXTRACT(Opcode,5,7);
-	UINT32 SrcDst=EXTRACT(Opcode,8,10);
-=======
 	uint32_t Offset=EXTRACT(Opcode,0,4);
 	uint32_t Index=EXTRACT(Opcode,5,7);
 	uint32_t SrcDst=EXTRACT(Opcode,8,10);
->>>>>>> upstream/master
 
 	Offset<<=1;
 
@@ -128,15 +83,9 @@ INST(LDS)
 		Offset=(EXTRACT(Context.ER,0,27)<<4)|(Offset&0xf);
 
 	if(Index)
-<<<<<<< HEAD
-		sprintf(dst,"LDS   (%%R%d,0x%x),%%R%d",Index,Offset,SrcDst);
-	else
-		sprintf(dst,"LDS   (0x%x),%%R%d",Index+Offset,SrcDst);
-=======
 		util::stream_format(stream, "LDS   (%%R%d,0x%x),%%R%d",Index,Offset,SrcDst);
 	else
 		util::stream_format(stream, "LDS   (0x%x),%%R%d",Index+Offset,SrcDst);
->>>>>>> upstream/master
 
 	CLRFLAG(FLAG_E);
 	return 0;
@@ -144,15 +93,9 @@ INST(LDS)
 
 INST(STS)
 {
-<<<<<<< HEAD
-	UINT32 Offset=EXTRACT(Opcode,0,4);
-	UINT32 Index=EXTRACT(Opcode,5,7);
-	UINT32 SrcDst=EXTRACT(Opcode,8,10);
-=======
 	uint32_t Offset=EXTRACT(Opcode,0,4);
 	uint32_t Index=EXTRACT(Opcode,5,7);
 	uint32_t SrcDst=EXTRACT(Opcode,8,10);
->>>>>>> upstream/master
 
 	Offset<<=1;
 
@@ -160,15 +103,9 @@ INST(STS)
 		Offset=(EXTRACT(Context.ER,0,27)<<4)|(Offset&0xf);
 
 	if(Index)
-<<<<<<< HEAD
-		sprintf(dst,"STS   %%R%d,(%%R%d,0x%x)",SrcDst,Index,Offset);
-	else
-		sprintf(dst,"STS   %%R%d,(0x%x)",SrcDst,Index+Offset);
-=======
 		util::stream_format(stream, "STS   %%R%d,(%%R%d,0x%x)",SrcDst,Index,Offset);
 	else
 		util::stream_format(stream, "STS   %%R%d,(0x%x)",SrcDst,Index+Offset);
->>>>>>> upstream/master
 
 	CLRFLAG(FLAG_E);
 	return 0;
@@ -176,15 +113,9 @@ INST(STS)
 
 INST(LD)
 {
-<<<<<<< HEAD
-	UINT32 Offset=EXTRACT(Opcode,0,4);
-	UINT32 Index=EXTRACT(Opcode,5,7);
-	UINT32 SrcDst=EXTRACT(Opcode,8,10);
-=======
 	uint32_t Offset=EXTRACT(Opcode,0,4);
 	uint32_t Index=EXTRACT(Opcode,5,7);
 	uint32_t SrcDst=EXTRACT(Opcode,8,10);
->>>>>>> upstream/master
 
 	Offset<<=2;
 
@@ -192,15 +123,9 @@ INST(LD)
 		Offset=(EXTRACT(Context.ER,0,27)<<4)|(Offset&0xf);
 
 	if(Index)
-<<<<<<< HEAD
-		sprintf(dst,"LD    (%%R%d,0x%x),%%R%d",Index,Offset,SrcDst);
-	else
-		sprintf(dst,"LD    (0x%x),%%R%d",Index+Offset,SrcDst);
-=======
 		util::stream_format(stream, "LD    (%%R%d,0x%x),%%R%d",Index,Offset,SrcDst);
 	else
 		util::stream_format(stream, "LD    (0x%x),%%R%d",Index+Offset,SrcDst);
->>>>>>> upstream/master
 
 	CLRFLAG(FLAG_E);
 	return 0;
@@ -208,15 +133,9 @@ INST(LD)
 
 INST(ST)
 {
-<<<<<<< HEAD
-	UINT32 Offset=EXTRACT(Opcode,0,4);
-	UINT32 Index=EXTRACT(Opcode,5,7);
-	UINT32 SrcDst=EXTRACT(Opcode,8,10);
-=======
 	uint32_t Offset=EXTRACT(Opcode,0,4);
 	uint32_t Index=EXTRACT(Opcode,5,7);
 	uint32_t SrcDst=EXTRACT(Opcode,8,10);
->>>>>>> upstream/master
 
 	Offset<<=2;
 
@@ -224,15 +143,9 @@ INST(ST)
 		Offset=(EXTRACT(Context.ER,0,27)<<4)|(Offset&0xf);
 
 	if(Index)
-<<<<<<< HEAD
-		sprintf(dst,"ST    %%R%d,(%%R%d,0x%x)",SrcDst,Index,Offset);
-	else
-		sprintf(dst,"ST    %%R%d,(0x%x)",SrcDst,Index+Offset);
-=======
 		util::stream_format(stream, "ST    %%R%d,(%%R%d,0x%x)",SrcDst,Index,Offset);
 	else
 		util::stream_format(stream, "ST    %%R%d,(0x%x)",SrcDst,Index+Offset);
->>>>>>> upstream/master
 
 	CLRFLAG(FLAG_E);
 	return 0;
@@ -240,29 +153,17 @@ INST(ST)
 
 INST(LDBU)
 {
-<<<<<<< HEAD
-	UINT32 Offset=EXTRACT(Opcode,0,4);
-	UINT32 Index=EXTRACT(Opcode,5,7);
-	UINT32 SrcDst=EXTRACT(Opcode,8,10);
-=======
 	uint32_t Offset=EXTRACT(Opcode,0,4);
 	uint32_t Index=EXTRACT(Opcode,5,7);
 	uint32_t SrcDst=EXTRACT(Opcode,8,10);
->>>>>>> upstream/master
 
 	if(TESTFLAG(FLAG_E))
 		Offset=(EXTRACT(Context.ER,0,27)<<4)|(Offset&0xf);
 
 	if(Index)
-<<<<<<< HEAD
-		sprintf(dst,"LDBU  (%%R%d,0x%x),%%R%d",Index,Offset,SrcDst);
-	else
-		sprintf(dst,"LDBU  (0x%x),%%R%d",Index+Offset,SrcDst);
-=======
 		util::stream_format(stream, "LDBU  (%%R%d,0x%x),%%R%d",Index,Offset,SrcDst);
 	else
 		util::stream_format(stream, "LDBU  (0x%x),%%R%d",Index+Offset,SrcDst);
->>>>>>> upstream/master
 
 	CLRFLAG(FLAG_E);
 	return 0;
@@ -270,15 +171,9 @@ INST(LDBU)
 
 INST(LDSU)
 {
-<<<<<<< HEAD
-	UINT32 Offset=EXTRACT(Opcode,0,4);
-	UINT32 Index=EXTRACT(Opcode,5,7);
-	UINT32 SrcDst=EXTRACT(Opcode,8,10);
-=======
 	uint32_t Offset=EXTRACT(Opcode,0,4);
 	uint32_t Index=EXTRACT(Opcode,5,7);
 	uint32_t SrcDst=EXTRACT(Opcode,8,10);
->>>>>>> upstream/master
 
 	Offset<<=1;
 
@@ -286,15 +181,9 @@ INST(LDSU)
 		Offset=(EXTRACT(Context.ER,0,27)<<4)|(Offset&0xf);
 
 	if(Index)
-<<<<<<< HEAD
-		sprintf(dst,"LDSU  (%%R%d,0x%x),%%R%d",Index,Offset,SrcDst);
-	else
-		sprintf(dst,"LDSU  (0x%x),%%R%d",Index+Offset,SrcDst);
-=======
 		util::stream_format(stream, "LDSU  (%%R%d,0x%x),%%R%d",Index,Offset,SrcDst);
 	else
 		util::stream_format(stream, "LDSU  (0x%x),%%R%d",Index+Offset,SrcDst);
->>>>>>> upstream/master
 
 	CLRFLAG(FLAG_E);
 	return 0;
@@ -303,24 +192,15 @@ INST(LDSU)
 
 INST(LERI)
 {
-<<<<<<< HEAD
-	UINT32 Imm=EXTRACT(Opcode,0,13);
-=======
 	uint32_t Imm=EXTRACT(Opcode,0,13);
->>>>>>> upstream/master
 
 	if(TESTFLAG(FLAG_E))
 		Context.ER=(EXTRACT(Context.ER,0,17)<<14)|Imm;
 	else
 		Context.ER=SEX(14,Imm);
 
-<<<<<<< HEAD
-	//sprintf(dst,"LERI  0x%x\t\tER=%08X",Imm,Context.ER);
-	sprintf(dst,"LERI  0x%x",Imm/*,Context.ER*/);
-=======
 	//util::stream_format(stream, "LERI  0x%x\t\tER=%08X",Imm,Context.ER);
 	util::stream_format(stream, "LERI  0x%x",Imm/*,Context.ER*/);
->>>>>>> upstream/master
 
 	SETFLAG(FLAG_E);
 	return 0;
@@ -328,24 +208,15 @@ INST(LERI)
 
 INST(LDSP)
 {
-<<<<<<< HEAD
-	UINT32 Offset=EXTRACT(Opcode,0,7);
-	UINT32 SrcDst=EXTRACT(Opcode,8,10);
-=======
 	uint32_t Offset=EXTRACT(Opcode,0,7);
 	uint32_t SrcDst=EXTRACT(Opcode,8,10);
->>>>>>> upstream/master
 
 	Offset<<=2;
 
 	if(TESTFLAG(FLAG_E))
 		Offset=(EXTRACT(Context.ER,0,27)<<4)|(Offset&0xf);
 
-<<<<<<< HEAD
-	sprintf(dst,"LD    (%%SP,0x%x),%%R%d",Offset,SrcDst);
-=======
 	util::stream_format(stream, "LD    (%%SP,0x%x),%%R%d",Offset,SrcDst);
->>>>>>> upstream/master
 
 	CLRFLAG(FLAG_E);
 	return 0;
@@ -353,24 +224,15 @@ INST(LDSP)
 
 INST(STSP)
 {
-<<<<<<< HEAD
-	UINT32 Offset=EXTRACT(Opcode,0,7);
-	UINT32 SrcDst=EXTRACT(Opcode,8,10);
-=======
 	uint32_t Offset=EXTRACT(Opcode,0,7);
 	uint32_t SrcDst=EXTRACT(Opcode,8,10);
->>>>>>> upstream/master
 
 	Offset<<=2;
 
 	if(TESTFLAG(FLAG_E))
 		Offset=(EXTRACT(Context.ER,0,27)<<4)|(Offset&0xf);
 
-<<<<<<< HEAD
-	sprintf(dst,"ST    %%R%d,(%%SP,0x%x)",SrcDst,Offset);
-=======
 	util::stream_format(stream, "ST    %%R%d,(%%SP,0x%x)",SrcDst,Offset);
->>>>>>> upstream/master
 
 	CLRFLAG(FLAG_E);
 	return 0;
@@ -378,11 +240,7 @@ INST(STSP)
 
 INST(PUSH)
 {
-<<<<<<< HEAD
-	UINT32 Set=EXTRACT(Opcode,0,10);
-=======
 	uint32_t Set=EXTRACT(Opcode,0,10);
->>>>>>> upstream/master
 	char str[1024];
 	strcpy(str,"PUSH  ");
 	if(Set&(1<<10))
@@ -408,21 +266,13 @@ INST(PUSH)
 	if(Set&(1<<0))
 		strcat(str,"%R0-");
 	str[strlen(str)-1]=0;
-<<<<<<< HEAD
-	strcpy(dst,str);
-=======
 	stream << str;
->>>>>>> upstream/master
 	return 0;
 }
 
 INST(POP)
 {
-<<<<<<< HEAD
-	UINT32 Set=EXTRACT(Opcode,0,10);
-=======
 	uint32_t Set=EXTRACT(Opcode,0,10);
->>>>>>> upstream/master
 	char str[1024];
 	int Ret=0;
 	strcpy(str,"POP   ");
@@ -455,23 +305,14 @@ INST(POP)
 	str[strlen(str)-1]=0;
 	if(Ret)
 		strcat(str,"\n");
-<<<<<<< HEAD
-	strcpy(dst,str);
-=======
 	stream << str;
->>>>>>> upstream/master
 	return Ret ? DASMFLAG_STEP_OUT : 0;
 }
 
 INST(LEATOSP)
 {
-<<<<<<< HEAD
-	UINT32 Offset=EXTRACT(Opcode,9,12);
-	UINT32 Index=EXTRACT(Opcode,3,5);
-=======
 	uint32_t Offset=EXTRACT(Opcode,9,12);
 	uint32_t Index=EXTRACT(Opcode,3,5);
->>>>>>> upstream/master
 
 	if(TESTFLAG(FLAG_E))
 		Offset=(EXTRACT(Context.ER,0,27)<<4)|(Offset&0xf);
@@ -479,15 +320,9 @@ INST(LEATOSP)
 		Offset=SEX(4,Offset);
 
 	if(Index)
-<<<<<<< HEAD
-		sprintf(dst,"LEA   (%%R%d,0x%x),%%SP",Index,Offset);
-	else
-		sprintf(dst,"LEA   (0x%x),%%SP",Index+Offset);
-=======
 		util::stream_format(stream, "LEA   (%%R%d,0x%x),%%SP",Index,Offset);
 	else
 		util::stream_format(stream, "LEA   (0x%x),%%SP",Index+Offset);
->>>>>>> upstream/master
 
 	CLRFLAG(FLAG_E);
 	return 0;
@@ -495,24 +330,15 @@ INST(LEATOSP)
 
 INST(LEAFROMSP)
 {
-<<<<<<< HEAD
-	UINT32 Offset=EXTRACT(Opcode,9,12);
-	UINT32 Index=EXTRACT(Opcode,3,5);
-=======
 	uint32_t Offset=EXTRACT(Opcode,9,12);
 	uint32_t Index=EXTRACT(Opcode,3,5);
->>>>>>> upstream/master
 
 	if(TESTFLAG(FLAG_E))
 		Offset=(EXTRACT(Context.ER,0,27)<<4)|(Offset&0xf);
 	else
 		Offset=SEX(4,Offset);
 
-<<<<<<< HEAD
-	sprintf(dst,"LEA   (%%SP,0x%x),%%R%d",Offset,Index);
-=======
 	util::stream_format(stream, "LEA   (%%SP,0x%x),%%R%d",Offset,Index);
->>>>>>> upstream/master
 
 	CLRFLAG(FLAG_E);
 	return 0;
@@ -520,11 +346,7 @@ INST(LEAFROMSP)
 
 INST(LEASPTOSP)
 {
-<<<<<<< HEAD
-	UINT32 Offset=EXTRACT(Opcode,0,7);
-=======
 	uint32_t Offset=EXTRACT(Opcode,0,7);
->>>>>>> upstream/master
 
 	Offset<<=2;
 
@@ -534,11 +356,7 @@ INST(LEASPTOSP)
 		Offset=SEX(10,Offset);
 
 
-<<<<<<< HEAD
-	sprintf(dst,"LEA   (%%SP,0x%x),%%SP",Offset);
-=======
 	util::stream_format(stream, "LEA   (%%SP,0x%x),%%SP",Offset);
->>>>>>> upstream/master
 
 	CLRFLAG(FLAG_E);
 	return 0;
@@ -546,15 +364,6 @@ INST(LEASPTOSP)
 
 INST(MOV)
 {
-<<<<<<< HEAD
-	UINT32 Src=EXTRACT(Opcode,3,5);
-	UINT32 Dst=EXTRACT(Opcode,9,11);
-
-	if(Src==0 && Dst==0)
-		sprintf(dst,"NOP");
-	else
-		sprintf(dst,"MOV   %%SR%d,%%DR%d",Src,Dst);
-=======
 	uint32_t Src=EXTRACT(Opcode,3,5);
 	uint32_t Dst=EXTRACT(Opcode,9,11);
 
@@ -562,30 +371,20 @@ INST(MOV)
 		util::stream_format(stream, "NOP");
 	else
 		util::stream_format(stream, "MOV   %%SR%d,%%DR%d",Src,Dst);
->>>>>>> upstream/master
 	return 0;
 }
 
 INST(LDI)
 {
-<<<<<<< HEAD
-	UINT32 Dst=EXTRACT(Opcode,8,10);
-	UINT32 Imm=EXTRACT(Opcode,0,7);
-=======
 	uint32_t Dst=EXTRACT(Opcode,8,10);
 	uint32_t Imm=EXTRACT(Opcode,0,7);
->>>>>>> upstream/master
 
 	if(TESTFLAG(FLAG_E))
 		Imm=(EXTRACT(Context.ER,0,27)<<4)|(Imm&0xf);
 	else
 		Imm=SEX8(Imm);
 
-<<<<<<< HEAD
-	sprintf(dst,"LDI   0x%x,%%R%d",Imm,Dst);
-=======
 	util::stream_format(stream, "LDI   0x%x,%%R%d",Imm,Dst);
->>>>>>> upstream/master
 
 	CLRFLAG(FLAG_E);
 	return 0;
@@ -593,22 +392,13 @@ INST(LDI)
 
 INST(LDBSP)
 {
-<<<<<<< HEAD
-	UINT32 Offset=EXTRACT(Opcode,0,3);
-	UINT32 SrcDst=EXTRACT(Opcode,4,6);
-=======
 	uint32_t Offset=EXTRACT(Opcode,0,3);
 	uint32_t SrcDst=EXTRACT(Opcode,4,6);
->>>>>>> upstream/master
 
 	if(TESTFLAG(FLAG_E))
 		Offset=(EXTRACT(Context.ER,0,27)<<4)|(Offset&0xf);
 
-<<<<<<< HEAD
-	sprintf(dst,"LDB   (%%SP,0x%x),%%R%d",Offset,SrcDst);
-=======
 	util::stream_format(stream, "LDB   (%%SP,0x%x),%%R%d",Offset,SrcDst);
->>>>>>> upstream/master
 
 	CLRFLAG(FLAG_E);
 	return 0;
@@ -616,22 +406,13 @@ INST(LDBSP)
 
 INST(STBSP)
 {
-<<<<<<< HEAD
-	UINT32 Offset=EXTRACT(Opcode,0,3);
-	UINT32 SrcDst=EXTRACT(Opcode,4,6);
-=======
 	uint32_t Offset=EXTRACT(Opcode,0,3);
 	uint32_t SrcDst=EXTRACT(Opcode,4,6);
->>>>>>> upstream/master
 
 	if(TESTFLAG(FLAG_E))
 		Offset=(EXTRACT(Context.ER,0,27)<<4)|(Offset&0xf);
 
-<<<<<<< HEAD
-	sprintf(dst,"STB   %%R%d,(%%SP,0x%x)",SrcDst,Offset);
-=======
 	util::stream_format(stream, "STB   %%R%d,(%%SP,0x%x)",SrcDst,Offset);
->>>>>>> upstream/master
 
 	CLRFLAG(FLAG_E);
 	return 0;
@@ -639,24 +420,15 @@ INST(STBSP)
 
 INST(LDSSP)
 {
-<<<<<<< HEAD
-	UINT32 Offset=EXTRACT(Opcode,0,3);
-	UINT32 SrcDst=EXTRACT(Opcode,4,6);
-=======
 	uint32_t Offset=EXTRACT(Opcode,0,3);
 	uint32_t SrcDst=EXTRACT(Opcode,4,6);
->>>>>>> upstream/master
 
 	Offset<<=1;
 
 	if(TESTFLAG(FLAG_E))
 		Offset=(EXTRACT(Context.ER,0,27)<<4)|(Offset&0xf);
 
-<<<<<<< HEAD
-	sprintf(dst,"LDS   (%%SP,0x%x),%%R%d",Offset,SrcDst);
-=======
 	util::stream_format(stream, "LDS   (%%SP,0x%x),%%R%d",Offset,SrcDst);
->>>>>>> upstream/master
 
 	CLRFLAG(FLAG_E);
 	return 0;
@@ -664,24 +436,15 @@ INST(LDSSP)
 
 INST(STSSP)
 {
-<<<<<<< HEAD
-	UINT32 Offset=EXTRACT(Opcode,0,3);
-	UINT32 SrcDst=EXTRACT(Opcode,4,6);
-=======
 	uint32_t Offset=EXTRACT(Opcode,0,3);
 	uint32_t SrcDst=EXTRACT(Opcode,4,6);
->>>>>>> upstream/master
 
 	Offset<<=1;
 
 	if(TESTFLAG(FLAG_E))
 		Offset=(EXTRACT(Context.ER,0,27)<<4)|(Offset&0xf);
 
-<<<<<<< HEAD
-	sprintf(dst,"STS   %%R%d,(%%SP,0x%x)",SrcDst,Offset);
-=======
 	util::stream_format(stream, "STS   %%R%d,(%%SP,0x%x)",SrcDst,Offset);
->>>>>>> upstream/master
 
 	CLRFLAG(FLAG_E);
 	return 0;
@@ -689,22 +452,13 @@ INST(STSSP)
 
 INST(LDBUSP)
 {
-<<<<<<< HEAD
-	UINT32 Offset=EXTRACT(Opcode,0,3);
-	UINT32 SrcDst=EXTRACT(Opcode,4,6);
-=======
 	uint32_t Offset=EXTRACT(Opcode,0,3);
 	uint32_t SrcDst=EXTRACT(Opcode,4,6);
->>>>>>> upstream/master
 
 	if(TESTFLAG(FLAG_E))
 		Offset=(EXTRACT(Context.ER,0,27)<<4)|(Offset&0xf);
 
-<<<<<<< HEAD
-	sprintf(dst,"LDBU  (%%SP,0x%x),%%R%d",Offset,SrcDst);
-=======
 	util::stream_format(stream, "LDBU  (%%SP,0x%x),%%R%d",Offset,SrcDst);
->>>>>>> upstream/master
 
 	CLRFLAG(FLAG_E);
 	return 0;
@@ -712,24 +466,15 @@ INST(LDBUSP)
 
 INST(LDSUSP)
 {
-<<<<<<< HEAD
-	UINT32 Offset=EXTRACT(Opcode,0,3);
-	UINT32 SrcDst=EXTRACT(Opcode,4,6);
-=======
 	uint32_t Offset=EXTRACT(Opcode,0,3);
 	uint32_t SrcDst=EXTRACT(Opcode,4,6);
->>>>>>> upstream/master
 
 	Offset<<=1;
 
 	if(TESTFLAG(FLAG_E))
 		Offset=(EXTRACT(Context.ER,0,27)<<4)|(Offset&0xf);
 
-<<<<<<< HEAD
-	sprintf(dst,"LDSU  (%%SP,0x%x),%%R%d",Offset,SrcDst);
-=======
 	util::stream_format(stream, "LDSU  (%%SP,0x%x),%%R%d",Offset,SrcDst);
->>>>>>> upstream/master
 
 	CLRFLAG(FLAG_E);
 	return 0;
@@ -737,28 +482,17 @@ INST(LDSUSP)
 
 INST(ADDI)
 {
-<<<<<<< HEAD
-	UINT32 Imm=EXTRACT(Opcode,9,12);
-	UINT32 Src=EXTRACT(Opcode,3,5);
-	UINT32 Dst=EXTRACT(Opcode,0,2);
-	UINT32 Imm2=Imm;
-=======
 	uint32_t Imm=EXTRACT(Opcode,9,12);
 	uint32_t Src=EXTRACT(Opcode,3,5);
 	uint32_t Dst=EXTRACT(Opcode,0,2);
 	uint32_t Imm2=Imm;
->>>>>>> upstream/master
 
 	if(TESTFLAG(FLAG_E))
 		Imm2=(EXTRACT(Context.ER,0,27)<<4)|(Imm2&0xf);
 	else
 		Imm2=SEX(4,Imm2);
 
-<<<<<<< HEAD
-	sprintf(dst,"ADD   %%SR%d,0x%x,%%DR%d",Src,Imm2,Dst/*,Imm2*/);
-=======
 	util::stream_format(stream, "ADD   %%SR%d,0x%x,%%DR%d",Src,Imm2,Dst/*,Imm2*/);
->>>>>>> upstream/master
 
 	CLRFLAG(FLAG_E);
 	return 0;
@@ -766,28 +500,17 @@ INST(ADDI)
 
 INST(SUBI)
 {
-<<<<<<< HEAD
-	UINT32 Imm=EXTRACT(Opcode,9,12);
-	UINT32 Src=EXTRACT(Opcode,3,5);
-	UINT32 Dst=EXTRACT(Opcode,0,2);
-	UINT32 Imm2=Imm;
-=======
 	uint32_t Imm=EXTRACT(Opcode,9,12);
 	uint32_t Src=EXTRACT(Opcode,3,5);
 	uint32_t Dst=EXTRACT(Opcode,0,2);
 	uint32_t Imm2=Imm;
->>>>>>> upstream/master
 
 	if(TESTFLAG(FLAG_E))
 		Imm2=(EXTRACT(Context.ER,0,27)<<4)|(Imm2&0xf);
 	else
 		Imm2=SEX(4,Imm2);
 
-<<<<<<< HEAD
-	sprintf(dst,"SUB   %%SR%d,0x%x,%%DR%d",Src,Imm2,Dst/*,Imm2*/);
-=======
 	util::stream_format(stream, "SUB   %%SR%d,0x%x,%%DR%d",Src,Imm2,Dst/*,Imm2*/);
->>>>>>> upstream/master
 
 	CLRFLAG(FLAG_E);
 
@@ -796,28 +519,17 @@ INST(SUBI)
 
 INST(ADCI)
 {
-<<<<<<< HEAD
-	UINT32 Imm=EXTRACT(Opcode,9,12);
-	UINT32 Src=EXTRACT(Opcode,3,5);
-	UINT32 Dst=EXTRACT(Opcode,0,2);
-	UINT32 Imm2=Imm;
-=======
 	uint32_t Imm=EXTRACT(Opcode,9,12);
 	uint32_t Src=EXTRACT(Opcode,3,5);
 	uint32_t Dst=EXTRACT(Opcode,0,2);
 	uint32_t Imm2=Imm;
->>>>>>> upstream/master
 
 	if(TESTFLAG(FLAG_E))
 		Imm2=(EXTRACT(Context.ER,0,27)<<4)|(Imm2&0xf);
 	else
 		Imm2=SEX(4,Imm2);
 
-<<<<<<< HEAD
-	sprintf(dst,"ADC   %%SR%d,0x%x,%%DR%d",Src,Imm2,Dst/*,Imm2*/);
-=======
 	util::stream_format(stream, "ADC   %%SR%d,0x%x,%%DR%d",Src,Imm2,Dst/*,Imm2*/);
->>>>>>> upstream/master
 
 	CLRFLAG(FLAG_E);
 	return 0;
@@ -825,28 +537,17 @@ INST(ADCI)
 
 INST(SBCI)
 {
-<<<<<<< HEAD
-	UINT32 Imm=EXTRACT(Opcode,9,12);
-	UINT32 Src=EXTRACT(Opcode,3,5);
-	UINT32 Dst=EXTRACT(Opcode,0,2);
-	UINT32 Imm2=Imm;
-=======
 	uint32_t Imm=EXTRACT(Opcode,9,12);
 	uint32_t Src=EXTRACT(Opcode,3,5);
 	uint32_t Dst=EXTRACT(Opcode,0,2);
 	uint32_t Imm2=Imm;
->>>>>>> upstream/master
 
 	if(TESTFLAG(FLAG_E))
 		Imm2=(EXTRACT(Context.ER,0,27)<<4)|(Imm2&0xf);
 	else
 		Imm2=SEX(4,Imm2);
 
-<<<<<<< HEAD
-	sprintf(dst,"SBC   %%SR%d,0x%x,%%DR%d",Src,Imm2,Dst/*,Imm2*/);
-=======
 	util::stream_format(stream, "SBC   %%SR%d,0x%x,%%DR%d",Src,Imm2,Dst/*,Imm2*/);
->>>>>>> upstream/master
 
 	CLRFLAG(FLAG_E);
 	return 0;
@@ -854,28 +555,17 @@ INST(SBCI)
 
 INST(ANDI)
 {
-<<<<<<< HEAD
-	UINT32 Imm=EXTRACT(Opcode,9,12);
-	UINT32 Src=EXTRACT(Opcode,3,5);
-	UINT32 Dst=EXTRACT(Opcode,0,2);
-	UINT32 Imm2=Imm;
-=======
 	uint32_t Imm=EXTRACT(Opcode,9,12);
 	uint32_t Src=EXTRACT(Opcode,3,5);
 	uint32_t Dst=EXTRACT(Opcode,0,2);
 	uint32_t Imm2=Imm;
->>>>>>> upstream/master
 
 	if(TESTFLAG(FLAG_E))
 		Imm2=(EXTRACT(Context.ER,0,27)<<4)|(Imm2&0xf);
 	else
 		Imm2=SEX(4,Imm2);
 
-<<<<<<< HEAD
-	sprintf(dst,"AND   %%SR%d,0x%x,%%DR%d",Src,Imm2,Dst/*,Imm2*/);
-=======
 	util::stream_format(stream, "AND   %%SR%d,0x%x,%%DR%d",Src,Imm2,Dst/*,Imm2*/);
->>>>>>> upstream/master
 
 	CLRFLAG(FLAG_E);
 	return 0;
@@ -883,28 +573,17 @@ INST(ANDI)
 
 INST(ORI)
 {
-<<<<<<< HEAD
-	UINT32 Imm=EXTRACT(Opcode,9,12);
-	UINT32 Src=EXTRACT(Opcode,3,5);
-	UINT32 Dst=EXTRACT(Opcode,0,2);
-	UINT32 Imm2=Imm;
-=======
 	uint32_t Imm=EXTRACT(Opcode,9,12);
 	uint32_t Src=EXTRACT(Opcode,3,5);
 	uint32_t Dst=EXTRACT(Opcode,0,2);
 	uint32_t Imm2=Imm;
->>>>>>> upstream/master
 
 	if(TESTFLAG(FLAG_E))
 		Imm2=(EXTRACT(Context.ER,0,27)<<4)|(Imm2&0xf);
 	else
 		Imm2=SEX(4,Imm2);
 
-<<<<<<< HEAD
-	sprintf(dst,"OR    %%SR%d,0x%x,%%DR%d",Src,Imm2,Dst/*,Imm2*/);
-=======
 	util::stream_format(stream, "OR    %%SR%d,0x%x,%%DR%d",Src,Imm2,Dst/*,Imm2*/);
->>>>>>> upstream/master
 
 	CLRFLAG(FLAG_E);
 	return 0;
@@ -912,28 +591,17 @@ INST(ORI)
 
 INST(XORI)
 {
-<<<<<<< HEAD
-	UINT32 Imm=EXTRACT(Opcode,9,12);
-	UINT32 Src=EXTRACT(Opcode,3,5);
-	UINT32 Dst=EXTRACT(Opcode,0,2);
-	UINT32 Imm2=Imm;
-=======
 	uint32_t Imm=EXTRACT(Opcode,9,12);
 	uint32_t Src=EXTRACT(Opcode,3,5);
 	uint32_t Dst=EXTRACT(Opcode,0,2);
 	uint32_t Imm2=Imm;
->>>>>>> upstream/master
 
 	if(TESTFLAG(FLAG_E))
 		Imm2=(EXTRACT(Context.ER,0,27)<<4)|(Imm2&0xf);
 	else
 		Imm2=SEX(4,Imm2);
 
-<<<<<<< HEAD
-	sprintf(dst,"XOR   %%SR%d,0x%x,%%DR%d",Src,Imm2,Dst/*,Imm2*/);
-=======
 	util::stream_format(stream, "XOR   %%SR%d,0x%x,%%DR%d",Src,Imm2,Dst/*,Imm2*/);
->>>>>>> upstream/master
 
 	CLRFLAG(FLAG_E);
 	return 0;
@@ -941,26 +609,16 @@ INST(XORI)
 
 INST(CMPI)
 {
-<<<<<<< HEAD
-	UINT32 Imm=EXTRACT(Opcode,9,12);
-	UINT32 Src=EXTRACT(Opcode,3,5);
-	UINT32 Imm2=Imm;
-=======
 	uint32_t Imm=EXTRACT(Opcode,9,12);
 	uint32_t Src=EXTRACT(Opcode,3,5);
 	uint32_t Imm2=Imm;
->>>>>>> upstream/master
 
 	if(TESTFLAG(FLAG_E))
 		Imm2=(EXTRACT(Context.ER,0,27)<<4)|(Imm2&0xf);
 	else
 		Imm2=SEX(4,Imm2);
 
-<<<<<<< HEAD
-	sprintf(dst,"CMP   %%SR%d,0x%x",Src,Imm2/*,Imm2*/);
-=======
 	util::stream_format(stream, "CMP   %%SR%d,0x%x",Src,Imm2/*,Imm2*/);
->>>>>>> upstream/master
 
 	CLRFLAG(FLAG_E);
 	return 0;
@@ -968,26 +626,16 @@ INST(CMPI)
 
 INST(TSTI)
 {
-<<<<<<< HEAD
-		UINT32 Imm=EXTRACT(Opcode,9,12);
-	UINT32 Src=EXTRACT(Opcode,3,5);
-	UINT32 Imm2=Imm;
-=======
 		uint32_t Imm=EXTRACT(Opcode,9,12);
 	uint32_t Src=EXTRACT(Opcode,3,5);
 	uint32_t Imm2=Imm;
->>>>>>> upstream/master
 
 	if(TESTFLAG(FLAG_E))
 		Imm2=(EXTRACT(Context.ER,0,27)<<4)|(Imm2&0xf);
 	else
 		Imm2=SEX(4,Imm2);
 
-<<<<<<< HEAD
-	sprintf(dst,"TST   %%SR%d,0x%x",Src,Imm2/*,Imm2*/);
-=======
 	util::stream_format(stream, "TST   %%SR%d,0x%x",Src,Imm2/*,Imm2*/);
->>>>>>> upstream/master
 
 	CLRFLAG(FLAG_E);
 	return 0;
@@ -995,177 +643,99 @@ INST(TSTI)
 
 INST(ADD)
 {
-<<<<<<< HEAD
-	UINT32 Src2=EXTRACT(Opcode,9,11);
-	UINT32 Src1=EXTRACT(Opcode,3,5);
-	UINT32 Dst=EXTRACT(Opcode,0,2);
-
-	sprintf(dst,"ADD   %%SR%d,%%SR%d,%%DR%d",Src1,Src2,Dst);
-=======
 	uint32_t Src2=EXTRACT(Opcode,9,11);
 	uint32_t Src1=EXTRACT(Opcode,3,5);
 	uint32_t Dst=EXTRACT(Opcode,0,2);
 
 	util::stream_format(stream, "ADD   %%SR%d,%%SR%d,%%DR%d",Src1,Src2,Dst);
->>>>>>> upstream/master
 	return 0;
 }
 
 INST(SUB)
 {
-<<<<<<< HEAD
-	UINT32 Src2=EXTRACT(Opcode,9,11);
-	UINT32 Src1=EXTRACT(Opcode,3,5);
-	UINT32 Dst=EXTRACT(Opcode,0,2);
-
-	sprintf(dst,"SUB   %%SR%d,%%SR%d,%%DR%d",Src1,Src2,Dst);
-=======
 	uint32_t Src2=EXTRACT(Opcode,9,11);
 	uint32_t Src1=EXTRACT(Opcode,3,5);
 	uint32_t Dst=EXTRACT(Opcode,0,2);
 
 	util::stream_format(stream, "SUB   %%SR%d,%%SR%d,%%DR%d",Src1,Src2,Dst);
->>>>>>> upstream/master
 	return 0;
 }
 
 INST(ADC)
 {
-<<<<<<< HEAD
-	UINT32 Src2=EXTRACT(Opcode,9,11);
-	UINT32 Src1=EXTRACT(Opcode,3,5);
-	UINT32 Dst=EXTRACT(Opcode,0,2);
-
-	sprintf(dst,"ADC   %%SR%d,%%SR%d,%%DR%d",Src1,Src2,Dst);
-=======
 	uint32_t Src2=EXTRACT(Opcode,9,11);
 	uint32_t Src1=EXTRACT(Opcode,3,5);
 	uint32_t Dst=EXTRACT(Opcode,0,2);
 
 	util::stream_format(stream, "ADC   %%SR%d,%%SR%d,%%DR%d",Src1,Src2,Dst);
->>>>>>> upstream/master
 	return 0;
 }
 
 INST(SBC)
 {
-<<<<<<< HEAD
-	UINT32 Src2=EXTRACT(Opcode,9,11);
-	UINT32 Src1=EXTRACT(Opcode,3,5);
-	UINT32 Dst=EXTRACT(Opcode,0,2);
-
-	sprintf(dst,"SBC   %%SR%d,%%SR%d,%%DR%d",Src1,Src2,Dst);
-=======
 	uint32_t Src2=EXTRACT(Opcode,9,11);
 	uint32_t Src1=EXTRACT(Opcode,3,5);
 	uint32_t Dst=EXTRACT(Opcode,0,2);
 
 	util::stream_format(stream, "SBC   %%SR%d,%%SR%d,%%DR%d",Src1,Src2,Dst);
->>>>>>> upstream/master
 	return 0;
 }
 
 INST(AND)
 {
-<<<<<<< HEAD
-	UINT32 Src2=EXTRACT(Opcode,9,11);
-	UINT32 Src1=EXTRACT(Opcode,3,5);
-	UINT32 Dst=EXTRACT(Opcode,0,2);
-
-	sprintf(dst,"AND   %%SR%d,%%SR%d,%%DR%d",Src1,Src2,Dst);
-=======
 	uint32_t Src2=EXTRACT(Opcode,9,11);
 	uint32_t Src1=EXTRACT(Opcode,3,5);
 	uint32_t Dst=EXTRACT(Opcode,0,2);
 
 	util::stream_format(stream, "AND   %%SR%d,%%SR%d,%%DR%d",Src1,Src2,Dst);
->>>>>>> upstream/master
 	return 0;
 }
 
 INST(OR)
 {
-<<<<<<< HEAD
-	UINT32 Src2=EXTRACT(Opcode,9,11);
-	UINT32 Src1=EXTRACT(Opcode,3,5);
-	UINT32 Dst=EXTRACT(Opcode,0,2);
-
-	sprintf(dst,"OR    %%SR%d,%%SR%d,%%DR%d",Src1,Src2,Dst);
-=======
 	uint32_t Src2=EXTRACT(Opcode,9,11);
 	uint32_t Src1=EXTRACT(Opcode,3,5);
 	uint32_t Dst=EXTRACT(Opcode,0,2);
 
 	util::stream_format(stream, "OR    %%SR%d,%%SR%d,%%DR%d",Src1,Src2,Dst);
->>>>>>> upstream/master
 	return 0;
 }
 
 INST(XOR)
 {
-<<<<<<< HEAD
-	UINT32 Src2=EXTRACT(Opcode,9,11);
-	UINT32 Src1=EXTRACT(Opcode,3,5);
-	UINT32 Dst=EXTRACT(Opcode,0,2);
-
-	sprintf(dst,"XOR   %%SR%d,%%SR%d,%%DR%d",Src1,Src2,Dst);
-=======
 	uint32_t Src2=EXTRACT(Opcode,9,11);
 	uint32_t Src1=EXTRACT(Opcode,3,5);
 	uint32_t Dst=EXTRACT(Opcode,0,2);
 
 	util::stream_format(stream, "XOR   %%SR%d,%%SR%d,%%DR%d",Src1,Src2,Dst);
->>>>>>> upstream/master
 	return 0;
 }
 
 INST(CMP)
 {
-<<<<<<< HEAD
-	UINT32 Src2=EXTRACT(Opcode,9,11);
-	UINT32 Src1=EXTRACT(Opcode,3,5);
-
-	sprintf(dst,"CMP   %%SR%d,%%SR%d",Src1,Src2);
-=======
 	uint32_t Src2=EXTRACT(Opcode,9,11);
 	uint32_t Src1=EXTRACT(Opcode,3,5);
 
 	util::stream_format(stream, "CMP   %%SR%d,%%SR%d",Src1,Src2);
->>>>>>> upstream/master
 	return 0;
 }
 
 INST(TST)
 {
-<<<<<<< HEAD
-	UINT32 Src2=EXTRACT(Opcode,9,11);
-	UINT32 Src1=EXTRACT(Opcode,3,5);
-
-	sprintf(dst,"TST   %%SR%d,%%SR%d",Src1,Src2);
-=======
 	uint32_t Src2=EXTRACT(Opcode,9,11);
 	uint32_t Src1=EXTRACT(Opcode,3,5);
 
 	util::stream_format(stream, "TST   %%SR%d,%%SR%d",Src1,Src2);
->>>>>>> upstream/master
 	return 0;
 }
 
 INST(MULS)
 {
-<<<<<<< HEAD
-	UINT32 Src2=EXTRACT(Opcode,6,8);
-	UINT32 Src1=EXTRACT(Opcode,3,5);
-	UINT32 Dst=EXTRACT(Opcode,0,2);
-
-	sprintf(dst,"MUL   %%SR%d,%%SR%d,%%DR%d",Src1,Src2,Dst);
-=======
 	uint32_t Src2=EXTRACT(Opcode,6,8);
 	uint32_t Src1=EXTRACT(Opcode,3,5);
 	uint32_t Dst=EXTRACT(Opcode,0,2);
 
 	util::stream_format(stream, "MUL   %%SR%d,%%SR%d,%%DR%d",Src1,Src2,Dst);
->>>>>>> upstream/master
 
 	CLRFLAG(FLAG_E);
 	return 0;
@@ -1173,40 +743,24 @@ INST(MULS)
 
 INST(NEG)
 {
-<<<<<<< HEAD
-	UINT32 Dst=EXTRACT(Opcode,9,11);
-	UINT32 Src=EXTRACT(Opcode,3,5);
-
-	sprintf(dst,"NEG   %%SR%d,%%DR%d",Src,Dst);
-=======
 	uint32_t Dst=EXTRACT(Opcode,9,11);
 	uint32_t Src=EXTRACT(Opcode,3,5);
 
 	util::stream_format(stream, "NEG   %%SR%d,%%DR%d",Src,Dst);
->>>>>>> upstream/master
 	return 0;
 }
 
 INST(CALL)
 {
-<<<<<<< HEAD
-	UINT32 Offset=EXTRACT(Opcode,0,7);
-	UINT32 Offset2;
-=======
 	uint32_t Offset=EXTRACT(Opcode,0,7);
 	uint32_t Offset2;
->>>>>>> upstream/master
 
 	if(TESTFLAG(FLAG_E))
 		Offset2=(EXTRACT(Context.ER,0,22)<<8)|Offset;
 	else
 		Offset2=SEX(8,Offset);
 	Offset2<<=1;
-<<<<<<< HEAD
-	sprintf(dst,"CALL  0x%x",Context.PC+2+Offset2);
-=======
 	util::stream_format(stream, "CALL  0x%x",Context.PC+2+Offset2);
->>>>>>> upstream/master
 
 	CLRFLAG(FLAG_E);
 	return DASMFLAG_STEP_OVER;
@@ -1214,24 +768,15 @@ INST(CALL)
 
 INST(JV)
 {
-<<<<<<< HEAD
-	UINT32 Offset=EXTRACT(Opcode,0,7);
-	UINT32 Offset2;
-=======
 	uint32_t Offset=EXTRACT(Opcode,0,7);
 	uint32_t Offset2;
->>>>>>> upstream/master
 
 	if(TESTFLAG(FLAG_E))
 		Offset2=(EXTRACT(Context.ER,0,22)<<8)|Offset;
 	else
 		Offset2=SEX(8,Offset);
 	Offset2<<=1;
-<<<<<<< HEAD
-	sprintf(dst,"JV    0x%x",Context.PC+2+Offset2);
-=======
 	util::stream_format(stream, "JV    0x%x",Context.PC+2+Offset2);
->>>>>>> upstream/master
 
 	CLRFLAG(FLAG_E);
 	return 0;
@@ -1239,24 +784,15 @@ INST(JV)
 
 INST(JNV)
 {
-<<<<<<< HEAD
-	UINT32 Offset=EXTRACT(Opcode,0,7);
-	UINT32 Offset2;
-=======
 	uint32_t Offset=EXTRACT(Opcode,0,7);
 	uint32_t Offset2;
->>>>>>> upstream/master
 
 	if(TESTFLAG(FLAG_E))
 		Offset2=(EXTRACT(Context.ER,0,22)<<8)|Offset;
 	else
 		Offset2=SEX(8,Offset);
 	Offset2<<=1;
-<<<<<<< HEAD
-	sprintf(dst,"JNV   0x%x",Context.PC+2+Offset2);
-=======
 	util::stream_format(stream, "JNV   0x%x",Context.PC+2+Offset2);
->>>>>>> upstream/master
 
 	CLRFLAG(FLAG_E);
 	return 0;
@@ -1264,24 +800,15 @@ INST(JNV)
 
 INST(JC)
 {
-<<<<<<< HEAD
-	UINT32 Offset=EXTRACT(Opcode,0,7);
-	UINT32 Offset2;
-=======
 	uint32_t Offset=EXTRACT(Opcode,0,7);
 	uint32_t Offset2;
->>>>>>> upstream/master
 
 	if(TESTFLAG(FLAG_E))
 		Offset2=(EXTRACT(Context.ER,0,22)<<8)|Offset;
 	else
 		Offset2=SEX(8,Offset);
 	Offset2<<=1;
-<<<<<<< HEAD
-	sprintf(dst,"JC    0x%x",Context.PC+2+Offset2);
-=======
 	util::stream_format(stream, "JC    0x%x",Context.PC+2+Offset2);
->>>>>>> upstream/master
 
 	CLRFLAG(FLAG_E);
 	return 0;
@@ -1289,24 +816,15 @@ INST(JC)
 
 INST(JNC)
 {
-<<<<<<< HEAD
-	UINT32 Offset=EXTRACT(Opcode,0,7);
-	UINT32 Offset2;
-=======
 	uint32_t Offset=EXTRACT(Opcode,0,7);
 	uint32_t Offset2;
->>>>>>> upstream/master
 
 	if(TESTFLAG(FLAG_E))
 		Offset2=(EXTRACT(Context.ER,0,22)<<8)|Offset;
 	else
 		Offset2=SEX(8,Offset);
 	Offset2<<=1;
-<<<<<<< HEAD
-	sprintf(dst,"JNC   0x%x",Context.PC+2+Offset2);
-=======
 	util::stream_format(stream, "JNC   0x%x",Context.PC+2+Offset2);
->>>>>>> upstream/master
 
 	CLRFLAG(FLAG_E);
 	return 0;
@@ -1314,24 +832,15 @@ INST(JNC)
 
 INST(JP)
 {
-<<<<<<< HEAD
-	UINT32 Offset=EXTRACT(Opcode,0,7);
-	UINT32 Offset2;
-=======
 	uint32_t Offset=EXTRACT(Opcode,0,7);
 	uint32_t Offset2;
->>>>>>> upstream/master
 
 	if(TESTFLAG(FLAG_E))
 		Offset2=(EXTRACT(Context.ER,0,22)<<8)|Offset;
 	else
 		Offset2=SEX(8,Offset);
 	Offset2<<=1;
-<<<<<<< HEAD
-	sprintf(dst,"JP    0x%x",Context.PC+2+Offset2);
-=======
 	util::stream_format(stream, "JP    0x%x",Context.PC+2+Offset2);
->>>>>>> upstream/master
 
 	CLRFLAG(FLAG_E);
 	return 0;
@@ -1339,24 +848,15 @@ INST(JP)
 
 INST(JM)
 {
-<<<<<<< HEAD
-	UINT32 Offset=EXTRACT(Opcode,0,7);
-	UINT32 Offset2;
-=======
 	uint32_t Offset=EXTRACT(Opcode,0,7);
 	uint32_t Offset2;
->>>>>>> upstream/master
 
 	if(TESTFLAG(FLAG_E))
 		Offset2=(EXTRACT(Context.ER,0,22)<<8)|Offset;
 	else
 		Offset2=SEX(8,Offset);
 	Offset2<<=1;
-<<<<<<< HEAD
-	sprintf(dst,"JM    0x%x",Context.PC+2+Offset2);
-=======
 	util::stream_format(stream, "JM    0x%x",Context.PC+2+Offset2);
->>>>>>> upstream/master
 
 	CLRFLAG(FLAG_E);
 	return 0;
@@ -1364,24 +864,15 @@ INST(JM)
 
 INST(JNZ)
 {
-<<<<<<< HEAD
-	UINT32 Offset=EXTRACT(Opcode,0,7);
-	UINT32 Offset2;
-=======
 	uint32_t Offset=EXTRACT(Opcode,0,7);
 	uint32_t Offset2;
->>>>>>> upstream/master
 
 	if(TESTFLAG(FLAG_E))
 		Offset2=(EXTRACT(Context.ER,0,22)<<8)|Offset;
 	else
 		Offset2=SEX(8,Offset);
 	Offset2<<=1;
-<<<<<<< HEAD
-	sprintf(dst,"JNZ   0x%x",Context.PC+2+Offset2);
-=======
 	util::stream_format(stream, "JNZ   0x%x",Context.PC+2+Offset2);
->>>>>>> upstream/master
 
 	CLRFLAG(FLAG_E);
 	return 0;
@@ -1389,24 +880,15 @@ INST(JNZ)
 
 INST(JZ)
 {
-<<<<<<< HEAD
-	UINT32 Offset=EXTRACT(Opcode,0,7);
-	UINT32 Offset2;
-=======
 	uint32_t Offset=EXTRACT(Opcode,0,7);
 	uint32_t Offset2;
->>>>>>> upstream/master
 
 	if(TESTFLAG(FLAG_E))
 		Offset2=(EXTRACT(Context.ER,0,22)<<8)|Offset;
 	else
 		Offset2=SEX(8,Offset);
 	Offset2<<=1;
-<<<<<<< HEAD
-	sprintf(dst,"JZ    0x%x",Context.PC+2+Offset2);
-=======
 	util::stream_format(stream, "JZ    0x%x",Context.PC+2+Offset2);
->>>>>>> upstream/master
 
 	CLRFLAG(FLAG_E);
 	return 0;
@@ -1414,24 +896,15 @@ INST(JZ)
 
 INST(JGE)
 {
-<<<<<<< HEAD
-	UINT32 Offset=EXTRACT(Opcode,0,7);
-	UINT32 Offset2;
-=======
 	uint32_t Offset=EXTRACT(Opcode,0,7);
 	uint32_t Offset2;
->>>>>>> upstream/master
 
 	if(TESTFLAG(FLAG_E))
 		Offset2=(EXTRACT(Context.ER,0,22)<<8)|Offset;
 	else
 		Offset2=SEX(8,Offset);
 	Offset2<<=1;
-<<<<<<< HEAD
-	sprintf(dst,"JGE   0x%x",Context.PC+2+Offset2);
-=======
 	util::stream_format(stream, "JGE   0x%x",Context.PC+2+Offset2);
->>>>>>> upstream/master
 
 	CLRFLAG(FLAG_E);
 	return 0;
@@ -1439,24 +912,15 @@ INST(JGE)
 
 INST(JLE)
 {
-<<<<<<< HEAD
-	UINT32 Offset=EXTRACT(Opcode,0,7);
-	UINT32 Offset2;
-=======
 	uint32_t Offset=EXTRACT(Opcode,0,7);
 	uint32_t Offset2;
->>>>>>> upstream/master
 
 	if(TESTFLAG(FLAG_E))
 		Offset2=(EXTRACT(Context.ER,0,22)<<8)|Offset;
 	else
 		Offset2=SEX(8,Offset);
 	Offset2<<=1;
-<<<<<<< HEAD
-	sprintf(dst,"JLE   0x%x",Context.PC+2+Offset2);
-=======
 	util::stream_format(stream, "JLE   0x%x",Context.PC+2+Offset2);
->>>>>>> upstream/master
 
 	CLRFLAG(FLAG_E);
 	return 0;
@@ -1464,24 +928,15 @@ INST(JLE)
 
 INST(JHI)
 {
-<<<<<<< HEAD
-	UINT32 Offset=EXTRACT(Opcode,0,7);
-	UINT32 Offset2;
-=======
 	uint32_t Offset=EXTRACT(Opcode,0,7);
 	uint32_t Offset2;
->>>>>>> upstream/master
 
 	if(TESTFLAG(FLAG_E))
 		Offset2=(EXTRACT(Context.ER,0,22)<<8)|Offset;
 	else
 		Offset2=SEX(8,Offset);
 	Offset2<<=1;
-<<<<<<< HEAD
-	sprintf(dst,"JHI   0x%x",Context.PC+2+Offset2);
-=======
 	util::stream_format(stream, "JHI   0x%x",Context.PC+2+Offset2);
->>>>>>> upstream/master
 
 	CLRFLAG(FLAG_E);
 	return 0;
@@ -1489,24 +944,15 @@ INST(JHI)
 
 INST(JLS)
 {
-<<<<<<< HEAD
-	UINT32 Offset=EXTRACT(Opcode,0,7);
-	UINT32 Offset2;
-=======
 	uint32_t Offset=EXTRACT(Opcode,0,7);
 	uint32_t Offset2;
->>>>>>> upstream/master
 
 	if(TESTFLAG(FLAG_E))
 		Offset2=(EXTRACT(Context.ER,0,22)<<8)|Offset;
 	else
 		Offset2=SEX(8,Offset);
 	Offset2<<=1;
-<<<<<<< HEAD
-	sprintf(dst,"JLS   0x%x",Context.PC+2+Offset2);
-=======
 	util::stream_format(stream, "JLS   0x%x",Context.PC+2+Offset2);
->>>>>>> upstream/master
 
 	CLRFLAG(FLAG_E);
 	return 0;
@@ -1514,24 +960,15 @@ INST(JLS)
 
 INST(JGT)
 {
-<<<<<<< HEAD
-	UINT32 Offset=EXTRACT(Opcode,0,7);
-	UINT32 Offset2;
-=======
 	uint32_t Offset=EXTRACT(Opcode,0,7);
 	uint32_t Offset2;
->>>>>>> upstream/master
 
 	if(TESTFLAG(FLAG_E))
 		Offset2=(EXTRACT(Context.ER,0,22)<<8)|Offset;
 	else
 		Offset2=SEX(8,Offset);
 	Offset2<<=1;
-<<<<<<< HEAD
-	sprintf(dst,"JGT   0x%x",Context.PC+2+Offset2);
-=======
 	util::stream_format(stream, "JGT   0x%x",Context.PC+2+Offset2);
->>>>>>> upstream/master
 
 	CLRFLAG(FLAG_E);
 	return 0;
@@ -1539,24 +976,15 @@ INST(JGT)
 
 INST(JLT)
 {
-<<<<<<< HEAD
-	UINT32 Offset=EXTRACT(Opcode,0,7);
-	UINT32 Offset2;
-=======
 	uint32_t Offset=EXTRACT(Opcode,0,7);
 	uint32_t Offset2;
->>>>>>> upstream/master
 
 	if(TESTFLAG(FLAG_E))
 		Offset2=(EXTRACT(Context.ER,0,22)<<8)|Offset;
 	else
 		Offset2=SEX(8,Offset);
 	Offset2<<=1;
-<<<<<<< HEAD
-	sprintf(dst,"JLT   0x%x",Context.PC+2+Offset2);
-=======
 	util::stream_format(stream, "JLT   0x%x",Context.PC+2+Offset2);
->>>>>>> upstream/master
 
 	CLRFLAG(FLAG_E);
 	return 0;
@@ -1566,24 +994,15 @@ INST(JLT)
 
 INST(JMP)
 {
-<<<<<<< HEAD
-	UINT32 Offset=EXTRACT(Opcode,0,7);
-	UINT32 Offset2;
-=======
 	uint32_t Offset=EXTRACT(Opcode,0,7);
 	uint32_t Offset2;
->>>>>>> upstream/master
 
 	if(TESTFLAG(FLAG_E))
 		Offset2=(EXTRACT(Context.ER,0,22)<<8)|Offset;
 	else
 		Offset2=SEX(8,Offset);
 	Offset2<<=1;
-<<<<<<< HEAD
-	sprintf(dst,"JMP   0x%x",Context.PC+2+Offset2);
-=======
 	util::stream_format(stream, "JMP   0x%x",Context.PC+2+Offset2);
->>>>>>> upstream/master
 
 	CLRFLAG(FLAG_E);
 	return 0;
@@ -1591,15 +1010,9 @@ INST(JMP)
 
 INST(JR)
 {
-<<<<<<< HEAD
-	UINT32 Src=EXTRACT(Opcode,0,3);
-
-	sprintf(dst,"JR    %%R%d",Src);
-=======
 	uint32_t Src=EXTRACT(Opcode,0,3);
 
 	util::stream_format(stream, "JR    %%R%d",Src);
->>>>>>> upstream/master
 
 	CLRFLAG(FLAG_E);
 	return 0;
@@ -1607,15 +1020,9 @@ INST(JR)
 
 INST(CALLR)
 {
-<<<<<<< HEAD
-	UINT32 Src=EXTRACT(Opcode,0,3);
-
-	sprintf(dst,"CALLR %%R%d",Src);
-=======
 	uint32_t Src=EXTRACT(Opcode,0,3);
 
 	util::stream_format(stream, "CALLR %%R%d",Src);
->>>>>>> upstream/master
 
 	CLRFLAG(FLAG_E);
 	return DASMFLAG_STEP_OVER;
@@ -1623,17 +1030,6 @@ INST(CALLR)
 
 INST(ASR)
 {
-<<<<<<< HEAD
-	UINT32 CS=Opcode&(1<<10);
-	UINT32 Dst=EXTRACT(Opcode,0,2);
-	UINT32 Imm=EXTRACT(Opcode,5,9);
-	UINT32 Cnt=EXTRACT(Opcode,5,7);
-
-	if(CS)
-		sprintf(dst,"ASR   %%R%d,%%R%d",Cnt,Dst);
-	else
-		sprintf(dst,"ASR   %x,%%R%d",Imm,Dst);
-=======
 	uint32_t CS=Opcode&(1<<10);
 	uint32_t Dst=EXTRACT(Opcode,0,2);
 	uint32_t Imm=EXTRACT(Opcode,5,9);
@@ -1643,7 +1039,6 @@ INST(ASR)
 		util::stream_format(stream, "ASR   %%R%d,%%R%d",Cnt,Dst);
 	else
 		util::stream_format(stream, "ASR   %x,%%R%d",Imm,Dst);
->>>>>>> upstream/master
 
 	CLRFLAG(FLAG_E);
 	return 0;
@@ -1651,17 +1046,6 @@ INST(ASR)
 
 INST(LSR)
 {
-<<<<<<< HEAD
-	UINT32 CS=Opcode&(1<<10);
-	UINT32 Dst=EXTRACT(Opcode,0,2);
-	UINT32 Imm=EXTRACT(Opcode,5,9);
-	UINT32 Cnt=EXTRACT(Opcode,5,7);
-
-	if(CS)
-		sprintf(dst,"LSR   %%R%d,%%R%d",Cnt,Dst);
-	else
-		sprintf(dst,"LSR   %x,%%R%d",Imm,Dst);
-=======
 	uint32_t CS=Opcode&(1<<10);
 	uint32_t Dst=EXTRACT(Opcode,0,2);
 	uint32_t Imm=EXTRACT(Opcode,5,9);
@@ -1671,7 +1055,6 @@ INST(LSR)
 		util::stream_format(stream, "LSR   %%R%d,%%R%d",Cnt,Dst);
 	else
 		util::stream_format(stream, "LSR   %x,%%R%d",Imm,Dst);
->>>>>>> upstream/master
 
 	CLRFLAG(FLAG_E);
 	return 0;
@@ -1679,17 +1062,6 @@ INST(LSR)
 
 INST(ASL)
 {
-<<<<<<< HEAD
-	UINT32 CS=Opcode&(1<<10);
-	UINT32 Dst=EXTRACT(Opcode,0,2);
-	UINT32 Imm=EXTRACT(Opcode,5,9);
-	UINT32 Cnt=EXTRACT(Opcode,5,7);
-
-	if(CS)
-		sprintf(dst,"ASL   %%R%d,%%R%d",Cnt,Dst);
-	else
-		sprintf(dst,"ASL   %x,%%R%d",Imm,Dst);
-=======
 	uint32_t CS=Opcode&(1<<10);
 	uint32_t Dst=EXTRACT(Opcode,0,2);
 	uint32_t Imm=EXTRACT(Opcode,5,9);
@@ -1699,7 +1071,6 @@ INST(ASL)
 		util::stream_format(stream, "ASL   %%R%d,%%R%d",Cnt,Dst);
 	else
 		util::stream_format(stream, "ASL   %x,%%R%d",Imm,Dst);
->>>>>>> upstream/master
 
 	CLRFLAG(FLAG_E);
 	return 0;
@@ -1707,15 +1078,9 @@ INST(ASL)
 
 INST(EXTB)
 {
-<<<<<<< HEAD
-	UINT32 Dst=EXTRACT(Opcode,0,3);
-
-	sprintf(dst,"EXTB  %%R%d",Dst);
-=======
 	uint32_t Dst=EXTRACT(Opcode,0,3);
 
 	util::stream_format(stream, "EXTB  %%R%d",Dst);
->>>>>>> upstream/master
 
 	CLRFLAG(FLAG_E);
 	return 0;
@@ -1723,15 +1088,9 @@ INST(EXTB)
 
 INST(EXTS)
 {
-<<<<<<< HEAD
-	UINT32 Dst=EXTRACT(Opcode,0,3);
-
-	sprintf(dst,"EXTS  %%R%d",Dst);
-=======
 	uint32_t Dst=EXTRACT(Opcode,0,3);
 
 	util::stream_format(stream, "EXTS  %%R%d",Dst);
->>>>>>> upstream/master
 
 	CLRFLAG(FLAG_E);
 	return 0;
@@ -1739,85 +1098,46 @@ INST(EXTS)
 
 INST(SET)
 {
-<<<<<<< HEAD
-	UINT32 Imm=EXTRACT(Opcode,0,3);
-
-	sprintf(dst,"SET   0x%x",Imm);
-=======
 	uint32_t Imm=EXTRACT(Opcode,0,3);
 
 	util::stream_format(stream, "SET   0x%x",Imm);
->>>>>>> upstream/master
 	return 0;
 }
 
 INST(CLR)
 {
-<<<<<<< HEAD
-	UINT32 Imm=EXTRACT(Opcode,0,3);
-
-	sprintf(dst,"CLR   0x%x",Imm);
-=======
 	uint32_t Imm=EXTRACT(Opcode,0,3);
 
 	util::stream_format(stream, "CLR   0x%x",Imm);
->>>>>>> upstream/master
 	return 0;
 }
 
 INST(SWI)
 {
-<<<<<<< HEAD
-	UINT32 Imm=EXTRACT(Opcode,0,3);
-
-	sprintf(dst,"SWI   0x%x",Imm);
-=======
 	uint32_t Imm=EXTRACT(Opcode,0,3);
 
 	util::stream_format(stream, "SWI   0x%x",Imm);
->>>>>>> upstream/master
 	return 0;
 }
 
 INST(HALT)
 {
-<<<<<<< HEAD
-	UINT32 Imm=EXTRACT(Opcode,0,3);
-
-	sprintf(dst,"HALT  0x%x",Imm);
-=======
 	uint32_t Imm=EXTRACT(Opcode,0,3);
 
 	util::stream_format(stream, "HALT  0x%x",Imm);
->>>>>>> upstream/master
 	return 0;
 }
 
 INST(MVTC)
 {
-<<<<<<< HEAD
-	UINT32 Imm=EXTRACT(Opcode,0,3);
-
-	sprintf(dst,"MVTC  %%R0,%%CR%d",Imm);
-=======
 	uint32_t Imm=EXTRACT(Opcode,0,3);
 
 	util::stream_format(stream, "MVTC  %%R0,%%CR%d",Imm);
->>>>>>> upstream/master
 	return 0;
 }
 
 INST(MVFC)
 {
-<<<<<<< HEAD
-	UINT32 Imm=EXTRACT(Opcode,0,3);
-
-	sprintf(dst,"MVFC  %%CR0%d,%%R0",Imm);
-	return 0;
-}
-
-static _OP DecodeOp(UINT16 Opcode)
-=======
 	uint32_t Imm=EXTRACT(Opcode,0,3);
 
 	util::stream_format(stream, "MVFC  %%CR0%d,%%R0",Imm);
@@ -1825,17 +1145,12 @@ static _OP DecodeOp(UINT16 Opcode)
 }
 
 static _OP DecodeOp(uint16_t Opcode)
->>>>>>> upstream/master
 {
 	switch(EXTRACT(Opcode,14,15))
 	{
 		case 0x0:
 			{
-<<<<<<< HEAD
-				UINT8 Op=EXTRACT(Opcode,11,13);
-=======
 				uint8_t Op=EXTRACT(Opcode,11,13);
->>>>>>> upstream/master
 				switch(Op)
 				{
 					case 0x0:
@@ -2085,24 +1400,14 @@ static _OP DecodeOp(uint16_t Opcode)
 }
 
 
-<<<<<<< HEAD
-CPU_DISASSEMBLE( se3208 )
-{
-	UINT16 Opcode;
-=======
 CPU_DISASSEMBLE(se3208)
 {
 	uint16_t Opcode;
->>>>>>> upstream/master
 
 	CLRFLAG(FLAG_E);
 	Context.ER=0;
 
 	Context.PC=pc;
 	Opcode=oprom[0] | (oprom[1] << 8);
-<<<<<<< HEAD
-	return 2 | ((*DecodeOp(Opcode))(Opcode,buffer)) | DASMFLAG_SUPPORTED;
-=======
 	return 2 | ((*DecodeOp(Opcode))(Opcode, stream)) | DASMFLAG_SUPPORTED;
->>>>>>> upstream/master
 }

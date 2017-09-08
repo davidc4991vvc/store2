@@ -20,12 +20,6 @@
 
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/m68000/m68000.h"
-#include "sound/okim6295.h"
-#include "includes/klax.h"
-
-=======
 #include "includes/klax.h"
 
 #include "cpu/m68000/m68000.h"
@@ -35,7 +29,6 @@
 #include "sound/okim6295.h"
 #include "sound/msm5205.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 /*************************************
@@ -53,13 +46,8 @@ void klax_state::update_interrupts()
 void klax_state::scanline_update(screen_device &screen, int scanline)
 {
 	/* generate 32V signals */
-<<<<<<< HEAD
-	if ((scanline & 32) == 0 && !(ioport("P1")->read() & 0x800))
-		scanline_int_gen(m_maincpu);
-=======
 	if ((scanline & 32) == 0 && !(m_p1->read() & 0x800))
 		scanline_int_gen(*m_maincpu);
->>>>>>> upstream/master
 }
 
 
@@ -93,21 +81,12 @@ MACHINE_RESET_MEMBER(klax_state,klax)
 
 static ADDRESS_MAP_START( klax_map, AS_PROGRAM, 16, klax_state )
 	AM_RANGE(0x000000, 0x03ffff) AM_ROM
-<<<<<<< HEAD
-	AM_RANGE(0x0e0000, 0x0e0fff) AM_DEVREADWRITE8("eeprom", atari_eeprom_device, read, write, 0x00ff)
-	AM_RANGE(0x1f0000, 0x1fffff) AM_DEVWRITE("eeprom", atari_eeprom_device, unlock_write)
-	AM_RANGE(0x260000, 0x260001) AM_READ_PORT("P1") AM_WRITE(klax_latch_w)
-	AM_RANGE(0x260002, 0x260003) AM_READ_PORT("P2")
-	AM_RANGE(0x270000, 0x270001) AM_DEVREADWRITE8("oki", okim6295_device, read, write, 0x00ff)
-	AM_RANGE(0x2e0000, 0x2e0001) AM_WRITE(watchdog_reset16_w)
-=======
 	AM_RANGE(0x0e0000, 0x0e0fff) AM_DEVREADWRITE8("eeprom", eeprom_parallel_28xx_device, read, write, 0x00ff)
 	AM_RANGE(0x1f0000, 0x1fffff) AM_DEVWRITE("eeprom", eeprom_parallel_28xx_device, unlock_write)
 	AM_RANGE(0x260000, 0x260001) AM_READ_PORT("P1") AM_WRITE(klax_latch_w)
 	AM_RANGE(0x260002, 0x260003) AM_READ_PORT("P2")
 	AM_RANGE(0x270000, 0x270001) AM_DEVREADWRITE8("oki", okim6295_device, read, write, 0x00ff)
 	AM_RANGE(0x2e0000, 0x2e0001) AM_DEVWRITE("watchdog", watchdog_timer_device, reset16_w)
->>>>>>> upstream/master
 	AM_RANGE(0x360000, 0x360001) AM_WRITE(interrupt_ack_w)
 	AM_RANGE(0x3e0000, 0x3e07ff) AM_DEVREADWRITE8("palette", palette_device, read, write, 0xff00) AM_SHARE("palette")
 	AM_RANGE(0x3f0000, 0x3f0f7f) AM_RAM_DEVWRITE("playfield", tilemap_device, write) AM_SHARE("playfield")
@@ -117,9 +96,6 @@ static ADDRESS_MAP_START( klax_map, AS_PROGRAM, 16, klax_state )
 	AM_RANGE(0x3f2800, 0x3f3fff) AM_RAM
 ADDRESS_MAP_END
 
-<<<<<<< HEAD
-
-=======
 static ADDRESS_MAP_START( klax2bl_map, AS_PROGRAM, 16, klax_state )
 	AM_RANGE(0x000000, 0x03ffff) AM_ROM
 	AM_RANGE(0x0e0000, 0x0e0fff) AM_DEVREADWRITE8("eeprom", eeprom_parallel_28xx_device, read, write, 0x00ff)
@@ -136,7 +112,6 @@ static ADDRESS_MAP_START( klax2bl_map, AS_PROGRAM, 16, klax_state )
 	AM_RANGE(0x3f2000, 0x3f27ff) AM_RAM AM_SHARE("mob")
 	AM_RANGE(0x3f2800, 0x3f3fff) AM_RAM
 ADDRESS_MAP_END
->>>>>>> upstream/master
 
 /*************************************
  *
@@ -152,34 +127,20 @@ static INPUT_PORTS_START( klax )
 	PORT_BIT( 0x0100, IP_ACTIVE_LOW, IPT_BUTTON1 ) PORT_PLAYER(1)
 	PORT_BIT( 0x0600, IP_ACTIVE_LOW, IPT_UNUSED )
 	PORT_BIT( 0x0800, IP_ACTIVE_HIGH, IPT_CUSTOM ) PORT_VBLANK("screen")
-<<<<<<< HEAD
-	PORT_BIT( 0x1000, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT ) PORT_PLAYER(1)
-	PORT_BIT( 0x2000, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT ) PORT_PLAYER(1)
-	PORT_BIT( 0x4000, IP_ACTIVE_LOW, IPT_JOYSTICK_DOWN ) PORT_PLAYER(1)
-	PORT_BIT( 0x8000, IP_ACTIVE_LOW, IPT_JOYSTICK_UP ) PORT_PLAYER(1)
-=======
 	PORT_BIT( 0x1000, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT ) PORT_4WAY PORT_PLAYER(1)
 	PORT_BIT( 0x2000, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT ) PORT_4WAY PORT_PLAYER(1)
 	PORT_BIT( 0x4000, IP_ACTIVE_LOW, IPT_JOYSTICK_DOWN ) PORT_4WAY PORT_PLAYER(1)
 	PORT_BIT( 0x8000, IP_ACTIVE_LOW, IPT_JOYSTICK_UP ) PORT_4WAY PORT_PLAYER(1)
->>>>>>> upstream/master
 
 	PORT_START("P2")
 	PORT_BIT( 0x00ff, IP_ACTIVE_LOW, IPT_UNUSED )
 	PORT_BIT( 0x0100, IP_ACTIVE_LOW, IPT_BUTTON1 ) PORT_PLAYER(2)
 	PORT_BIT( 0x0600, IP_ACTIVE_LOW, IPT_UNUSED )
 	PORT_SERVICE( 0x0800, IP_ACTIVE_LOW )
-<<<<<<< HEAD
-	PORT_BIT( 0x1000, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT ) PORT_PLAYER(2)
-	PORT_BIT( 0x2000, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT ) PORT_PLAYER(2)
-	PORT_BIT( 0x4000, IP_ACTIVE_LOW, IPT_JOYSTICK_DOWN ) PORT_PLAYER(2)
-	PORT_BIT( 0x8000, IP_ACTIVE_LOW, IPT_JOYSTICK_UP ) PORT_PLAYER(2)
-=======
 	PORT_BIT( 0x1000, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT ) PORT_4WAY PORT_PLAYER(2)
 	PORT_BIT( 0x2000, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT ) PORT_4WAY PORT_PLAYER(2)
 	PORT_BIT( 0x4000, IP_ACTIVE_LOW, IPT_JOYSTICK_DOWN ) PORT_4WAY PORT_PLAYER(2)
 	PORT_BIT( 0x8000, IP_ACTIVE_LOW, IPT_JOYSTICK_UP ) PORT_4WAY PORT_PLAYER(2)
->>>>>>> upstream/master
 INPUT_PORTS_END
 
 
@@ -207,8 +168,6 @@ static GFXDECODE_START( klax )
 	GFXDECODE_ENTRY( "gfx2", 0, pfmolayout,    0, 16 )      /* sprites & playfield */
 GFXDECODE_END
 
-<<<<<<< HEAD
-=======
 static const gfx_layout bootleg_layout =
 {
 	8,8,
@@ -224,7 +183,6 @@ static GFXDECODE_START( klax2bl )
 	GFXDECODE_ENTRY( "gfx1", 0, bootleg_layout,  256, 16 )      /* sprites & playfield */
 	GFXDECODE_ENTRY( "gfx2", 0, pfmolayout,    0, 16 )      /* sprites & playfield */
 GFXDECODE_END
->>>>>>> upstream/master
 
 
 /*************************************
@@ -233,11 +191,7 @@ GFXDECODE_END
  *
  *************************************/
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( klax, klax_state )
-=======
 static MACHINE_CONFIG_START( klax )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, ATARI_CLOCK_14MHz/2)
@@ -246,14 +200,10 @@ static MACHINE_CONFIG_START( klax )
 
 	MCFG_MACHINE_RESET_OVERRIDE(klax_state,klax)
 
-<<<<<<< HEAD
-	MCFG_ATARI_EEPROM_2816_ADD("eeprom")
-=======
 	MCFG_EEPROM_2816_ADD("eeprom")
 	MCFG_EEPROM_28XX_LOCK_AFTER_WRITE(true)
 
 	MCFG_WATCHDOG_ADD("watchdog")
->>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", klax)
@@ -278,13 +228,6 @@ static MACHINE_CONFIG_START( klax )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki", ATARI_CLOCK_14MHz/4/4, OKIM6295_PIN7_HIGH)
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
-MACHINE_CONFIG_END
-
-
-=======
 	MCFG_OKIM6295_ADD("oki", ATARI_CLOCK_14MHz/4/4, PIN7_HIGH)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
@@ -311,7 +254,6 @@ static MACHINE_CONFIG_DERIVED( klax2bl, klax )
 //  MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.25)
 
 MACHINE_CONFIG_END
->>>>>>> upstream/master
 
 /*************************************
  *
@@ -378,8 +320,6 @@ ROM_START( klax2 )
 	ROM_LOAD( "136075-1004.6w.bin",  0x0000, 0x0117, CRC(6cd3270d) SHA1(84854b5beee539a80fc94f6e4637aa1c2543a1cb) )
 ROM_END
 
-<<<<<<< HEAD
-=======
 ROM_START( klax2bl ) // derived from 'klax2' set
 	ROM_REGION( 0x40000, "maincpu", 0 ) /* 4*64k for 68000 code */
 	ROM_LOAD16_BYTE( "6.bin", 0x00000, 0x10000, CRC(3cfd2748) SHA1(165c446bab9df6517746451d056330386cb5212c) )
@@ -402,7 +342,6 @@ ROM_START( klax2bl ) // derived from 'klax2' set
 	ROM_LOAD( "8.bin", 0x10000, 0x10000, CRC(36764bbc) SHA1(5762996a327b5f7f93f42dad7eccb6297b3e4c0b) )
 ROM_END
 
->>>>>>> upstream/master
 
 ROM_START( klax3 )
 	ROM_REGION( 0x40000, "maincpu", 0 ) /* 4*64k for 68000 code */
@@ -501,13 +440,6 @@ ROM_END
  *
  *************************************/
 
-<<<<<<< HEAD
-GAME( 1989, klax,  0,    klax, klax, driver_device, 0, ROT0, "Atari Games", "Klax (set 1)", 0 )
-GAME( 1989, klax2, klax, klax, klax, driver_device, 0, ROT0, "Atari Games", "Klax (set 2)", 0 )
-GAME( 1989, klax3, klax, klax, klax, driver_device, 0, ROT0, "Atari Games", "Klax (set 3)", 0 )
-GAME( 1989, klaxj, klax, klax, klax, driver_device, 0, ROT0, "Atari Games", "Klax (Japan)", 0 )
-GAME( 1989, klaxd, klax, klax, klax, driver_device, 0, ROT0, "Atari Games", "Klax (Germany)", 0 )
-=======
 GAME( 1989, klax,  0,    klax, klax, klax_state, 0, ROT0, "Atari Games", "Klax (set 1)", 0 )
 GAME( 1989, klax2, klax, klax, klax, klax_state, 0, ROT0, "Atari Games", "Klax (set 2)", 0 )
 GAME( 1989, klax3, klax, klax, klax, klax_state, 0, ROT0, "Atari Games", "Klax (set 3)", 0 )
@@ -515,4 +447,3 @@ GAME( 1989, klaxj, klax, klax, klax, klax_state, 0, ROT0, "Atari Games", "Klax (
 GAME( 1989, klaxd, klax, klax, klax, klax_state, 0, ROT0, "Atari Games", "Klax (Germany)", 0 )
 
 GAME( 1989, klax2bl, klax, klax2bl, klax, klax_state, 0, ROT0, "bootleg", "Klax (set 2, bootleg)", MACHINE_NOT_WORKING )
->>>>>>> upstream/master

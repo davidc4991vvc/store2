@@ -39,18 +39,9 @@
 #include "emu.h"
 #include "machine/r10788.h"
 
-<<<<<<< HEAD
-#define VERBOSE 0
-#if VERBOSE
-#define LOG(x) logerror x
-#else
-#define LOG(x)
-#endif
-=======
 //#define VERBOSE 1
 #include "logmacro.h"
 
->>>>>>> upstream/master
 
 /*************************************
  *
@@ -58,15 +49,6 @@
  *
  *************************************/
 
-<<<<<<< HEAD
-const device_type R10788 = &device_creator<r10788_device>;
-
-r10788_device::r10788_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, R10788, "Rockwell 10788", tag, owner, clock, "r10788", __FILE__),
-		m_ktr(0), m_kts(0), m_kla(0), m_klb(0), m_mask_a(15), m_mask_b(15), m_ker(0),
-		m_io_counter(0), m_scan_counter(0),
-		m_display(*this)
-=======
 DEFINE_DEVICE_TYPE(R10788, r10788_device, "r10788", "Rockwell 10788 KDC")
 
 r10788_device::r10788_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
@@ -74,7 +56,6 @@ r10788_device::r10788_device(const machine_config &mconfig, const char *tag, dev
 	, m_ktr(0), m_kts(0), m_kla(0), m_klb(0), m_mask_a(15), m_mask_b(15), m_ker(0)
 	, m_io_counter(0), m_scan_counter(0)
 	, m_display(*this)
->>>>>>> upstream/master
 {
 }
 
@@ -127,29 +108,17 @@ void r10788_device::device_reset()
  */
 void r10788_device::device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr)
 {
-<<<<<<< HEAD
-	UINT8 data;
-=======
 	uint8_t data;
->>>>>>> upstream/master
 	switch (id)
 	{
 		case TIMER_DISPLAY:
 			data = (m_reg[0][m_scan_counter] & m_mask_a) +
 					16 * (m_reg[1][m_scan_counter] & m_mask_b);
-<<<<<<< HEAD
-			LOG(("%s: scan counter:%2d data:%02x\n", __FUNCTION__, m_scan_counter, data));
-			m_display(m_scan_counter, data, 0xff);
-			break;
-		default:
-			LOG(("%s: invalid timer id:%d\n", __FUNCTION__, id));
-=======
 			LOG("%s: scan counter:%2d data:%02x\n", __FUNCTION__, m_scan_counter, data);
 			m_display(m_scan_counter, data, 0xff);
 			break;
 		default:
 			LOG("%s: invalid timer id:%d\n", __FUNCTION__, id);
->>>>>>> upstream/master
 	}
 	m_scan_counter = (m_scan_counter + 1) % 16;
 }
@@ -172,17 +141,6 @@ WRITE8_MEMBER( r10788_device::io_w )
 	switch (offset)
 	{
 		case KTR:  // Transfer Keyboard Return
-<<<<<<< HEAD
-			LOG(("%s: KTR data:%02x\n", __FUNCTION__, data));
-			m_ktr = data;
-			break;
-		case KTS:  // Transfer Keyboard Strobe
-			LOG(("%s: KTS data:%02x\n", __FUNCTION__, data));
-			m_kts = data;
-			break;
-		case KLA:  // Load Display Register A
-			LOG(("%s: KLA [%2d] data:%02x\n", __FUNCTION__, m_io_counter, data));
-=======
 			LOG("%s: KTR data:%02x\n", __FUNCTION__, data);
 			m_ktr = data;
 			break;
@@ -192,51 +150,30 @@ WRITE8_MEMBER( r10788_device::io_w )
 			break;
 		case KLA:  // Load Display Register A
 			LOG("%s: KLA [%2d] data:%02x\n", __FUNCTION__, m_io_counter, data);
->>>>>>> upstream/master
 			m_kla = data;
 			m_reg[0][m_io_counter] = m_kla;
 			break;
 		case KLB:  // Load Display Register B
-<<<<<<< HEAD
-			LOG(("%s: KLB [%2d] data:%02x\n", __FUNCTION__, m_io_counter, data));
-=======
 			LOG("%s: KLB [%2d] data:%02x\n", __FUNCTION__, m_io_counter, data);
->>>>>>> upstream/master
 			m_klb = data;
 			m_reg[1][m_io_counter] = m_kla;
 			break;
 		case KDN:  // Turn On Display
-<<<<<<< HEAD
-			LOG(("%s: KDN data:%02x\n", __FUNCTION__, data));
-=======
 			LOG("%s: KDN data:%02x\n", __FUNCTION__, data);
->>>>>>> upstream/master
 			m_mask_a = 15;
 			m_mask_b = 15;
 			break;
 		case KAF:  // Turn Off A
-<<<<<<< HEAD
-			LOG(("%s: KAF data:%02x\n", __FUNCTION__, data));
-=======
 			LOG("%s: KAF data:%02x\n", __FUNCTION__, data);
->>>>>>> upstream/master
 			m_mask_a = 0;
 			m_mask_b &= ~3;
 			break;
 		case KBF:  // Turn Off B
-<<<<<<< HEAD
-			LOG(("%s: KBF data:%02x\n", __FUNCTION__, data));
-			m_mask_b &= ~12;
-			break;
-		case KER:  // Reset Keyboard Error
-			LOG(("%s: KER data:%02x\n", __FUNCTION__, data));
-=======
 			LOG("%s: KBF data:%02x\n", __FUNCTION__, data);
 			m_mask_b &= ~12;
 			break;
 		case KER:  // Reset Keyboard Error
 			LOG("%s: KER data:%02x\n", __FUNCTION__, data);
->>>>>>> upstream/master
 			m_ker = 10;
 			break;
 	}
@@ -246,62 +183,30 @@ WRITE8_MEMBER( r10788_device::io_w )
 READ8_MEMBER( r10788_device::io_r )
 {
 	assert(offset < 16);
-<<<<<<< HEAD
-	UINT8 data = 0xf;
-=======
 	uint8_t data = 0xf;
->>>>>>> upstream/master
 	switch (offset)
 	{
 		case KTR:  // Transfer Keyboard Return
 			data = m_ktr;
-<<<<<<< HEAD
-			LOG(("%s: KTR data:%02x\n", __FUNCTION__, data));
-			break;
-		case KTS:  // Transfer Keyboard Strobe
-			data = m_kts;
-			LOG(("%s: KTS data:%02x\n", __FUNCTION__, data));
-=======
 			LOG("%s: KTR data:%02x\n", __FUNCTION__, data);
 			break;
 		case KTS:  // Transfer Keyboard Strobe
 			data = m_kts;
 			LOG("%s: KTS data:%02x\n", __FUNCTION__, data);
->>>>>>> upstream/master
 			break;
 		case KLA:  // Load Display Register A
 			m_kla = m_reg[0][m_io_counter];
 			data = m_kla;
-<<<<<<< HEAD
-			LOG(("%s: KLA [%2d] data:%02x\n", __FUNCTION__, m_io_counter, data));
-=======
 			LOG("%s: KLA [%2d] data:%02x\n", __FUNCTION__, m_io_counter, data);
->>>>>>> upstream/master
 			break;
 		case KLB:  // Load Display Register B
 			m_klb = m_reg[1][m_io_counter];
 			data = m_klb;
-<<<<<<< HEAD
-			LOG(("%s: KLB [%2d] data:%02x\n", __FUNCTION__, m_io_counter, data));
-=======
 			LOG("%s: KLB [%2d] data:%02x\n", __FUNCTION__, m_io_counter, data);
->>>>>>> upstream/master
 			// FIXME: does it automagically increment at KLB write?
 			m_io_counter = (m_io_counter + 1) % 16;
 			break;
 		case KDN:  // Turn On Display
-<<<<<<< HEAD
-			LOG(("%s: KDN data:%02x\n", __FUNCTION__, data));
-			break;
-		case KAF:  // Turn Off A
-			LOG(("%s: KAF data:%02x\n", __FUNCTION__, data));
-			break;
-		case KBF:  // Turn Off B
-			LOG(("%s: KBF data:%02x\n", __FUNCTION__, data));
-			break;
-		case KER:  // Reset Keyboard Error
-			LOG(("%s: KER data:%02x\n", __FUNCTION__, data));
-=======
 			LOG("%s: KDN data:%02x\n", __FUNCTION__, data);
 			break;
 		case KAF:  // Turn Off A
@@ -312,7 +217,6 @@ READ8_MEMBER( r10788_device::io_r )
 			break;
 		case KER:  // Reset Keyboard Error
 			LOG("%s: KER data:%02x\n", __FUNCTION__, data);
->>>>>>> upstream/master
 			break;
 	}
 	return data;

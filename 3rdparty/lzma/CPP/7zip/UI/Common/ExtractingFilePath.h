@@ -3,14 +3,6 @@
 #ifndef __EXTRACTING_FILE_PATH_H
 #define __EXTRACTING_FILE_PATH_H
 
-<<<<<<< HEAD
-#include "Common/MyString.h"
-
-UString MakePathNameFromParts(const UStringVector &parts);
-void MakeCorrectPath(UStringVector &pathParts);
-UString GetCorrectFsPath(const UString &path);
-UString GetCorrectFullFsPath(const UString &path);
-=======
 #include "../../../Common/MyString.h"
 
 #ifdef _WIN32
@@ -23,6 +15,5 @@ UString Get_Correct_FsFile_Name(const UString &name);
 void Correct_FsPath(bool absIsAllowed, UStringVector &parts, bool isDir);
 
 UString MakePathFromParts(const UStringVector &parts);
->>>>>>> upstream/master
 
 #endif

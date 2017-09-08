@@ -1,14 +1,11 @@
 [bgfx](https://github.com/bkaradzic/bgfx) - Cross-platform rendering library
 ============================================================================
 
-<<<<<<< HEAD
-=======
 [![Build Status](https://travis-ci.org/bkaradzic/bgfx.svg?branch=master)](https://travis-ci.org/bkaradzic/bgfx)
 [![Build status](https://ci.appveyor.com/api/projects/status/ipa3ojgeaet1oko5?svg=true)](https://ci.appveyor.com/project/bkaradzic/bgfx)
 [![License](https://img.shields.io/badge/license-BSD--2%20clause-blue.svg)](https://bkaradzic.github.io/bgfx/license.html)
 [![Join the chat at https://gitter.im/bkaradzic/bgfx](https://badges.gitter.im/bkaradzic/bgfx.svg)](https://gitter.im/bkaradzic/bgfx)
 
->>>>>>> upstream/master
 [What is it?](https://bkaradzic.github.io/bgfx/overview.html)
 -------------------------------------------------------------
 
@@ -26,18 +23,11 @@ Supported rendering backends:
  * OpenGL ES 2
  * OpenGL ES 3.1
  * WebGL 1.0
-<<<<<<< HEAD
-
-Supported HMD:
-
- * OculusVR (0.4.2+)
-=======
  * WebGL 2.0
 
 Supported HMD:
 
  * OculusVR (1.3.0)
->>>>>>> upstream/master
 
 Supported platforms:
 
@@ -45,32 +35,20 @@ Supported platforms:
  * asm.js/Emscripten (1.25.0)
  * FreeBSD
  * iOS (iPhone, iPad, AppleTV)
-<<<<<<< HEAD
- * Linux ![](https://tc27.draster.com/app/rest/builds/buildType:(id:Bgfx_Linux)/statusIcon)
-=======
  * Linux
->>>>>>> upstream/master
  * MIPS Creator CI20
  * Native Client (PPAPI 37+, ARM, x86, x64, PNaCl)
  * OSX (10.9+)
  * RaspberryPi
-<<<<<<< HEAD
- * Windows (XP, Vista, 7, 8, 10) ![](https://tc27.draster.com/app/rest/builds/buildType:(id:Bgfx_Windows)/statusIcon)
-=======
  * SteamLink
  * Windows (XP, Vista, 7, 8, 10)
->>>>>>> upstream/master
  * WinRT (WinPhone 8.0+)
 
 Supported compilers:
 
  * Clang 3.3 and above
  * GCC 4.6 and above
-<<<<<<< HEAD
- * vs2008 and above
-=======
  * VS2012 and above
->>>>>>> upstream/master
 
 Languages:
 
@@ -78,14 +56,6 @@ Languages:
  * [C#/VB/F# language API bindings](https://github.com/MikePopoloski/SharpBgfx)
  * [D language API bindings](https://github.com/DerelictOrg/DerelictBgfx)
  * [Go language API bindings](https://github.com/james4k/go-bgfx)
-<<<<<<< HEAD
- * [Java language API bindings](https://github.com/enleeten/twilight-bgfx)
-
-Build status
-------------
-
-https://tc27.draster.com/guestAuth/overview.html
-=======
  * [Haskell language API bindings](https://github.com/haskell-game/bgfx)
  * [Lightweight Java Game Library 3 bindings](https://github.com/LWJGL/lwjgl3)
  * [Lua language API bindings](https://github.com/excessive/lua-bgfx)
@@ -108,15 +78,10 @@ https://tc27.draster.com/guestAuth/overview.html
 
 [Tools](https://bkaradzic.github.io/bgfx/tools.html)
 ----------------------------------------------------
->>>>>>> upstream/master
 
 Who is using it?
 ----------------
 
-<<<<<<< HEAD
-http://airmech.com/ AirMech is a free-to-play futuristic action real-time
-strategy video game developed and published by Carbon Games.
-=======
 ## Airmech
 
 http://airmech.com/ AirMech is a free-to-play futuristic action real-time
@@ -124,22 +89,10 @@ strategy video game developed and published by Carbon Games.
 ![airmech](https://www.mobygames.com/images/shots/l/830630-airmech-playstation-4-screenshot-blue-bar-on-your-mech-indicates.jpg)
 
 ## cmftStudio
->>>>>>> upstream/master
 
 https://github.com/dariomanesku/cmftStudio cmftStudio - cubemap filtering tool.  
 ![cmftStudio](https://github.com/dariomanesku/cmftStudio/raw/master/screenshots/cmftStudio_small.jpg)
 
-<<<<<<< HEAD
-https://github.com/taylor001/crown Crown is a general purpose data-driven game
-engine, written from scratch with a minimalistic and data-oriented design
-philosophy in mind.
-
-https://github.com/emoon/ProDBG - ProDBG is a new debugger under development
-that will support a variety of targets and operating systems. Currently it's in
-very early development and primary focusing on Mac as primary target. This is
-how it currently looks.  
-![ProDBG_screenshot](https://raw.githubusercontent.com/emoon/ProDBG/master/data/screens/mac_screenshot.png)
-=======
 ## Crown
 
 https://github.com/taylor001/crown Crown is a general purpose data-driven game
@@ -148,17 +101,13 @@ philosophy in mind.
 ![Crown screenshot](https://raw.githubusercontent.com/taylor001/crown/master/docs/shots/level-editor.png)
 
 ## Offroad Legends 2
->>>>>>> upstream/master
 
 http://www.dogbytegames.com/ Dogbyte Games is an indie mobile developer studio
 focusing on racing games.  
 ![ios](http://www.dogbytegames.com/bgfx/offroadlegends2_bgfx_ipad2.jpg)
 
-<<<<<<< HEAD
-=======
 ## Torque6
 
->>>>>>> upstream/master
 https://github.com/andr3wmac/Torque6 Torque 6 is an MIT licensed 3D engine
 loosely based on Torque2D. Being neither Torque2D or Torque3D it is the 6th
 derivative of the original Torque Engine.
@@ -166,32 +115,12 @@ derivative of the original Torque Engine.
 " target="_blank"><img src="http://img.youtube.com/vi/p4LTM_QGK34/0.jpg" 
 alt="Torque 6 Material Editor" width="640" height="480" border="0" /></a>
 
-<<<<<<< HEAD
-=======
 ## twinkle
 
->>>>>>> upstream/master
 https://github.com/cgbystrom/twinkle GPU-accelerated UI framework powered by
 JavaScript for desktop/mobile apps. Idea is to combine the fast workflow and
 deployment model of web with the performance of native code and GPU acceleration.
 
-<<<<<<< HEAD
-https://github.com/nem0/LumixEngine LumixEngine is a MIT licensed 3D engine.
-The main goal is performance and Unity-like usability.  
-![LumixEngine screenshot](https://cloud.githubusercontent.com/assets/153526/10109455/450c51be-63c7-11e5-9c87-96d9d00efe02.png)
-
-[Building](https://bkaradzic.github.io/bgfx/build.html)
--------------------------------------------------------
-
-[Examples](https://bkaradzic.github.io/bgfx/examples.html)
-----------------------------------------------------------
-
-[API Reference](https://bkaradzic.github.io/bgfx/bgfx.html)
------------------------------------------------------------
-
-[Tools](https://bkaradzic.github.io/bgfx/tools.html)
-----------------------------------------------------
-=======
 ## Lumix Engine
 
 https://github.com/nem0/LumixEngine LumixEngine is a MIT licensed 3D engine.
@@ -307,7 +236,6 @@ https://github.com/fragworks/frag - FRAG is a game creation framework being
 developed using the Nim programming language, and is currently in pre-alpha
 status. The immediate development focus for FRAG is supporting the creation of
 2D desktop games.
->>>>>>> upstream/master
 
 [License (BSD 2-clause)](https://bkaradzic.github.io/bgfx/license.html)
 -----------------------------------------------------------------------
@@ -316,11 +244,7 @@ status. The immediate development focus for FRAG is supporting the creation of
 <img align="right" src="http://opensource.org/trademarks/opensource/OSI-Approved-License-100x137.png">
 </a>
 
-<<<<<<< HEAD
-	Copyright 2010-2015 Branimir Karadzic. All rights reserved.
-=======
 	Copyright 2010-2017 Branimir Karadzic. All rights reserved.
->>>>>>> upstream/master
 	
 	https://github.com/bkaradzic/bgfx
 	

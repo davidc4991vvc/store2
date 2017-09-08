@@ -1,18 +1,11 @@
 // license:BSD-3-Clause
 // copyright-holders:David Haywood
 /* */
-<<<<<<< HEAD
-
-#pragma once
-#ifndef __K055555_H__
-#define __K055555_H__
-=======
 #ifndef MAME_MACHINE_K055555_H
 #define MAME_MACHINE_K055555_H
 
 #pragma once
 
->>>>>>> upstream/master
 
 #define MCFG_K055555_ADD(_tag) \
 	MCFG_DEVICE_ADD(_tag, K055555, 0)
@@ -88,17 +81,10 @@
 class k055555_device : public device_t
 {
 public:
-<<<<<<< HEAD
-	k055555_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-	~k055555_device() { }
-
-	void K055555_write_reg(UINT8 regnum, UINT8 regdat);
-=======
 	k055555_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 	~k055555_device() { }
 
 	void K055555_write_reg(uint8_t regnum, uint8_t regdat);
->>>>>>> upstream/master
 
 	DECLARE_WRITE16_MEMBER( K055555_word_w );
 	DECLARE_WRITE32_MEMBER( K055555_long_w );
@@ -108,20 +94,6 @@ public:
 
 protected:
 	// device-level overrides
-<<<<<<< HEAD
-	virtual void device_config_complete();
-	virtual void device_start();
-	virtual void device_reset();
-
-private:
-	UINT8   m_regs[128];
-};
-
-extern const device_type K055555;
-
-
-#endif
-=======
 	virtual void device_start() override;
 	virtual void device_reset() override;
 
@@ -133,4 +105,3 @@ DECLARE_DEVICE_TYPE(K055555, k055555_device)
 
 
 #endif // MAME_MACHINE_K055555_H
->>>>>>> upstream/master

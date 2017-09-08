@@ -1,11 +1,7 @@
 #ifndef PA_ENDIANNESS_H
 #define PA_ENDIANNESS_H
 /*
-<<<<<<< HEAD
- * $Id: pa_endianness.h 1324 2008-01-27 02:03:30Z bjornroche $
-=======
  * $Id$
->>>>>>> upstream/master
  * Portable Audio I/O Library current platform endianness macros
  *
  * Based on the Open Source API proposed by Ross Bencina

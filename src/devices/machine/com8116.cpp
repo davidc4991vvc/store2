@@ -6,23 +6,11 @@
 
 **********************************************************************/
 
-<<<<<<< HEAD
-#include "com8116.h"
-
-
-
-//**************************************************************************
-//  MACROS / CONSTANTS
-//**************************************************************************
-
-#define LOG 0
-=======
 #include "emu.h"
 #include "com8116.h"
 
 //#define VERBOSE 1
 #include "logmacro.h"
->>>>>>> upstream/master
 
 
 
@@ -31,21 +19,6 @@
 //**************************************************************************
 
 // device type definition
-<<<<<<< HEAD
-const device_type COM8116 = &device_creator<com8116_device>;
-
-
-const int com8116_device::divisors_16X_5_0688MHz[] =
-	{ 6336, 4224, 2880, 2355, 2112, 1056, 528, 264, 176, 158, 132, 88, 66, 44, 33, 16 };
-
-const int com8116_device::divisors_16X_4_9152MHz[] =
-	{ 6144, 4096, 2793, 2284, 2048, 1024, 512, 256, 171, 154, 128, 85, 64, 43, 32, 16 };
-
-const int com8116_device::divisors_32X_5_0688MHz[] =
-	{ 3168, 2112, 1440, 1177, 1056, 792, 528, 264, 132, 88, 66, 44, 33, 22, 16, 8 };
-
-
-=======
 DEFINE_DEVICE_TYPE(COM8116, com8116_device, "com8116", "COM8116 Dual BRG")
 
 // Parts with T after the number do not have an internal oscillator and require an external clock source
@@ -101,7 +74,6 @@ const int com8116_device::divisors_16X_4_9152MHz_SY2661_1[] =
 // baud rates are 45.5, 50, 75, 110, 134.5, 150, 300, 600, 1200, 1800, 2000, 2400, 4800, 9600, 19200, 38400
 const int com8116_device::divisors_16X_4_9152MHz_SY2661_2[] =
 	{ 6752, 6144, 4096, 2793, 2284, 2048, 1024, 512, 256, 171, 154, 128, 64, 32, 16, 8 };
->>>>>>> upstream/master
 
 //**************************************************************************
 //  LIVE DEVICE
@@ -111,13 +83,8 @@ const int com8116_device::divisors_16X_4_9152MHz_SY2661_2[] =
 //  com8116_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-com8116_device::com8116_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-	device_t(mconfig, COM8116, "COM8116", tag, owner, clock, "com8116", __FILE__),
-=======
 com8116_device::com8116_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	device_t(mconfig, COM8116, tag, owner, clock),
->>>>>>> upstream/master
 	m_fx4_handler(*this),
 	m_fr_handler(*this),
 	m_ft_handler(*this)
@@ -194,20 +161,12 @@ void com8116_device::device_timer(emu_timer &timer, device_timer_id id, int para
 //  str_w -
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void com8116_device::str_w(UINT8 data)
-=======
 void com8116_device::str_w(uint8_t data)
->>>>>>> upstream/master
 {
 	int fr_divider = data & 0x0f;
 	int fr_clock = clock() / m_fr_divisors[fr_divider];
 
-<<<<<<< HEAD
-	if (LOG) logerror("COM8116 '%s' Receiver Divisor Select %01x: %u (%u Hz)\n", tag(), data & 0x0f, m_fr_divisors[fr_divider], fr_clock);
-=======
 	LOG("COM8116 Receiver Divisor Select %01x: %u (%u Hz)\n", data & 0x0f, m_fr_divisors[fr_divider], fr_clock);
->>>>>>> upstream/master
 
 	m_fr_timer->adjust(attotime::from_nsec(3500), 0, attotime::from_hz(fr_clock * 2));
 }
@@ -222,20 +181,12 @@ WRITE8_MEMBER( com8116_device::str_w )
 //  stt_w -
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void com8116_device::stt_w(UINT8 data)
-=======
 void com8116_device::stt_w(uint8_t data)
->>>>>>> upstream/master
 {
 	int ft_divider = data & 0x0f;
 	int ft_clock = clock() / m_ft_divisors[ft_divider];
 
-<<<<<<< HEAD
-	if (LOG) logerror("COM8116 '%s' Transmitter Divisor Select %01x: %u (%u Hz)\n", tag(), data & 0x0f, m_ft_divisors[ft_divider], ft_clock);
-=======
 	LOG("COM8116 Transmitter Divisor Select %01x: %u (%u Hz)\n", data & 0x0f, m_ft_divisors[ft_divider], ft_clock);
->>>>>>> upstream/master
 
 	m_ft_timer->adjust(attotime::from_nsec(3500), 0, attotime::from_hz(ft_clock * 2));
 }

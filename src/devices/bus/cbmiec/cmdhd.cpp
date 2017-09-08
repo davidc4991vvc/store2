@@ -6,13 +6,9 @@
 
 **********************************************************************/
 
-<<<<<<< HEAD
-#include "cmdhd.h"
-=======
 #include "emu.h"
 #include "cmdhd.h"
 #include "machine/msm6242.h"
->>>>>>> upstream/master
 
 
 
@@ -33,11 +29,7 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type CMD_HD = &device_creator<cmd_hd_device>;
-=======
 DEFINE_DEVICE_TYPE(CMD_HD, cmd_hd_device, "cmdhd", "CMD HD")
->>>>>>> upstream/master
 
 
 //-------------------------------------------------
@@ -59,11 +51,7 @@ ROM_END
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const rom_entry *cmd_hd_device::device_rom_region() const
-=======
 const tiny_rom_entry *cmd_hd_device::device_rom_region() const
->>>>>>> upstream/master
 {
 	return ROM_NAME( cmd_hd );
 }
@@ -79,58 +67,29 @@ static ADDRESS_MAP_START( cmd_hd_mem, AS_PROGRAM, 8, cmd_hd_device )
 	AM_RANGE(0x8000, 0x800f) AM_MIRROR(0x1f0) AM_DEVREADWRITE(M6522_1_TAG, via6522_device, read, write)
 	AM_RANGE(0x8400, 0x840f) AM_MIRROR(0x1f0) AM_DEVREADWRITE(M6522_2_TAG, via6522_device, read, write)
 	AM_RANGE(0x8800, 0x8803) AM_MIRROR(0x1fc) AM_DEVREADWRITE(I8255A_TAG, i8255_device, read, write)
-<<<<<<< HEAD
-	AM_RANGE(0x8c00, 0x8c0f) AM_MIRROR(0x1f0) //AM_DEVREADWRITE(RTC72421A_TAG, rtc72421a_device, read, write)
-=======
 	AM_RANGE(0x8c00, 0x8c0f) AM_MIRROR(0x1f0) AM_DEVREADWRITE(RTC72421A_TAG, rtc72421_device, read, write)
->>>>>>> upstream/master
 	AM_RANGE(0x8f00, 0x8f00) AM_MIRROR(0xff) AM_WRITE(led_w)
 ADDRESS_MAP_END
 
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  MACHINE_DRIVER( cmd_hd )
-//-------------------------------------------------
-
-static MACHINE_CONFIG_FRAGMENT( cmd_hd )
-=======
 //  device_add_mconfig - add device configuration
 //-------------------------------------------------
 
 MACHINE_CONFIG_MEMBER( cmd_hd_device::device_add_mconfig )
->>>>>>> upstream/master
 	MCFG_CPU_ADD(M6502_TAG, M6502, 2000000)
 	MCFG_CPU_PROGRAM_MAP(cmd_hd_mem)
 
 	MCFG_DEVICE_ADD(M6522_1_TAG, VIA6522, 2000000)
 	MCFG_DEVICE_ADD(M6522_2_TAG, VIA6522, 2000000)
 	MCFG_DEVICE_ADD(I8255A_TAG, I8255A, 0)
-<<<<<<< HEAD
-	//MCFG_RTC72421A_ADD(RTC72421A_TAG)
-=======
 	MCFG_DEVICE_ADD(RTC72421A_TAG, RTC72421, XTAL_32_768kHz)
->>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD(SCSIBUS_TAG, SCSI_PORT, 0)
 	MCFG_SCSIDEV_ADD(SCSIBUS_TAG ":" SCSI_PORT_DEVICE1, "harddisk", SCSIHD, SCSI_ID_0)
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-//-------------------------------------------------
-//  machine_config_additions - device-specific
-//  machine configurations
-//-------------------------------------------------
-
-machine_config_constructor cmd_hd_device::device_mconfig_additions() const
-{
-	return MACHINE_CONFIG_NAME( cmd_hd );
-}
-
-
-=======
->>>>>>> upstream/master
 
 //**************************************************************************
 //  LIVE DEVICE
@@ -140,13 +99,8 @@ machine_config_constructor cmd_hd_device::device_mconfig_additions() const
 //  cmd_hd_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-cmd_hd_device::cmd_hd_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, CMD_HD, "HD", tag, owner, clock, "cmdhd", __FILE__),
-=======
 cmd_hd_device::cmd_hd_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, CMD_HD, tag, owner, clock),
->>>>>>> upstream/master
 		device_cbm_iec_interface(mconfig, *this),
 		m_maincpu(*this, M6502_TAG),
 		m_scsibus(*this, SCSIBUS_TAG)

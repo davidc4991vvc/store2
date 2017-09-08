@@ -20,11 +20,7 @@
 
 TILE_GET_INFO_MEMBER(atarig1_state::get_alpha_tile_info)
 {
-<<<<<<< HEAD
-	UINT16 data = tilemap.basemem_read(tile_index);
-=======
 	uint16_t data = m_alpha_tilemap->basemem_read(tile_index);
->>>>>>> upstream/master
 	int code = data & 0xfff;
 	int color = (data >> 12) & 0x0f;
 	int opaque = data & 0x8000;
@@ -34,11 +30,7 @@ TILE_GET_INFO_MEMBER(atarig1_state::get_alpha_tile_info)
 
 TILE_GET_INFO_MEMBER(atarig1_state::get_playfield_tile_info)
 {
-<<<<<<< HEAD
-	UINT16 data = tilemap.basemem_read(tile_index);
-=======
 	uint16_t data = m_playfield_tilemap->basemem_read(tile_index);
->>>>>>> upstream/master
 	int code = (m_playfield_tile_bank << 12) | (data & 0xfff);
 	int color = (data >> 12) & 7;
 	SET_TILE_INFO_MEMBER(0, code, color, (data >> 15) & 1);
@@ -85,20 +77,12 @@ void atarig1_state::scanline_update(screen_device &screen, int scanline)
 	int offset = (scanline / 8) * 64 + 48;
 	if (offset >= 0x800)
 		return;
-<<<<<<< HEAD
-	screen.update_partial(MAX(scanline - 1, 0));
-=======
 	screen.update_partial(std::max(scanline - 1, 0));
->>>>>>> upstream/master
 
 	/* update the playfield scrolls */
 	for (i = 0; i < 8; i++)
 	{
-<<<<<<< HEAD
-		UINT16 word;
-=======
 		uint16_t word;
->>>>>>> upstream/master
 
 		/* first word controls horizontal scroll */
 		word = m_alpha_tilemap->basemem_read(offset++);
@@ -107,11 +91,7 @@ void atarig1_state::scanline_update(screen_device &screen, int scanline)
 			int newscroll = ((word >> 6) + m_pfscroll_xoffset) & 0x1ff;
 			if (newscroll != m_playfield_xscroll)
 			{
-<<<<<<< HEAD
-				screen.update_partial(MAX(scanline + i - 1, 0));
-=======
 				screen.update_partial(std::max(scanline + i - 1, 0));
->>>>>>> upstream/master
 				m_playfield_tilemap->set_scrollx(0, newscroll);
 				m_playfield_xscroll = newscroll;
 			}
@@ -125,21 +105,13 @@ void atarig1_state::scanline_update(screen_device &screen, int scanline)
 			int newbank = word & 7;
 			if (newscroll != m_playfield_yscroll)
 			{
-<<<<<<< HEAD
-				screen.update_partial(MAX(scanline + i - 1, 0));
-=======
 				screen.update_partial(std::max(scanline + i - 1, 0));
->>>>>>> upstream/master
 				m_playfield_tilemap->set_scrolly(0, newscroll);
 				m_playfield_yscroll = newscroll;
 			}
 			if (newbank != m_playfield_tile_bank)
 			{
-<<<<<<< HEAD
-				screen.update_partial(MAX(scanline + i - 1, 0));
-=======
 				screen.update_partial(std::max(scanline + i - 1, 0));
->>>>>>> upstream/master
 				m_playfield_tilemap->mark_all_dirty();
 				m_playfield_tile_bank = newbank;
 			}
@@ -155,11 +127,7 @@ void atarig1_state::scanline_update(screen_device &screen, int scanline)
  *
  *************************************/
 
-<<<<<<< HEAD
-UINT32 atarig1_state::screen_update_atarig1(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t atarig1_state::screen_update_atarig1(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	/* draw the playfield */
 	m_playfield_tilemap->draw(screen, bitmap, cliprect, 0, 0);

@@ -78,11 +78,7 @@ WRITE16_MEMBER(m107_state::vram_w)
 
 WRITE16_MEMBER(m107_state::control_w)
 {
-<<<<<<< HEAD
-	UINT16 old = m_control[offset];
-=======
 	uint16_t old = m_control[offset];
->>>>>>> upstream/master
 	pf_layer_info *layer;
 
 	COMBINE_DATA(&m_control[offset]);
@@ -117,10 +113,7 @@ WRITE16_MEMBER(m107_state::control_w)
 
 		case 0x1e:
 			m_raster_irq_position = m_control[offset] - 128;
-<<<<<<< HEAD
-=======
 			m_upd71059c->ir2_w(0);
->>>>>>> upstream/master
 			break;
 	}
 }
@@ -136,11 +129,7 @@ void m107_state::video_start()
 		pf_layer_info *layer = &m_pf_layer[laynum];
 
 		/* allocate a tilemaps per layer */
-<<<<<<< HEAD
-		layer->tmap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(m107_state::get_pf_tile_info),this), TILEMAP_SCAN_ROWS,  8,8, 64,64);
-=======
 		layer->tmap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(m107_state::get_pf_tile_info),this), TILEMAP_SCAN_ROWS,  8,8, 64,64);
->>>>>>> upstream/master
 
 		/* set the user data to point to the layer */
 		layer->tmap->set_user_data(&m_pf_layer[laynum]);
@@ -154,20 +143,12 @@ void m107_state::video_start()
 			layer->tmap->set_transparent_pen(0);
 	}
 
-<<<<<<< HEAD
-	m_buffered_spriteram = auto_alloc_array_clear(machine(), UINT16, 0x1000/2);
-=======
 	m_buffered_spriteram = make_unique_clear<uint16_t[]>(0x1000/2);
->>>>>>> upstream/master
 
 	save_item(NAME(m_sprite_display));
 	save_item(NAME(m_raster_irq_position));
 	save_item(NAME(m_control));
-<<<<<<< HEAD
-	save_pointer(NAME(m_buffered_spriteram), 0x1000/2);
-=======
 	save_pointer(NAME(m_buffered_spriteram.get()), 0x1000/2);
->>>>>>> upstream/master
 
 	for (int i = 0; i < 4; i++)
 	{
@@ -179,15 +160,9 @@ void m107_state::video_start()
 
 void m107_state::draw_sprites(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
-<<<<<<< HEAD
-	UINT16 *spriteram = m_buffered_spriteram;
-	int offs;
-	UINT8 *rom = memregion("user1")->base();
-=======
 	uint16_t *spriteram = m_buffered_spriteram.get();
 	int offs;
 	uint8_t *rom = m_user1_ptr;
->>>>>>> upstream/master
 
 	for (offs = 0;offs < 0x800;offs += 4)
 	{
@@ -243,12 +218,9 @@ void m107_state::draw_sprites(screen_device &screen, bitmap_ind16 &bitmap, const
 		{
 			int rom_offs = sprite*8;
 
-<<<<<<< HEAD
-=======
 			if (!rom)
 				return;
 
->>>>>>> upstream/master
 			if (rom[rom_offs+1] || rom[rom_offs+3] || rom[rom_offs+5] || rom[rom_offs+7])
 			{
 				while (rom_offs < 0x40000)  /* safety check */
@@ -331,11 +303,7 @@ void m107_state::update_scroll_positions()
 
 		if (m_control[0x08 + laynum] & 0x01) //used by World PK Soccer goal scrolling and Fire Barrel sea wave effect (stage 2) / canyon parallax effect (stage 6)
 		{
-<<<<<<< HEAD
-			const UINT16 *scrolldata = m_vram_data + (0xe000 + 0x200 * laynum) / 2;
-=======
 			const uint16_t *scrolldata = m_vram_data + (0xe000 + 0x200 * laynum) / 2;
->>>>>>> upstream/master
 
 			layer->tmap->set_scroll_rows(512);
 			for (i = 0; i < 512; i++)
@@ -365,11 +333,7 @@ void m107_state::tilemap_draw(screen_device &screen, bitmap_ind16 &bitmap, const
 	{
 		for (line = cliprect.min_y; line <= cliprect.max_y;line++)
 		{
-<<<<<<< HEAD
-			const UINT16 *scrolldata = m_vram_data + (0xe800 + 0x200 * laynum) / 2;
-=======
 			const uint16_t *scrolldata = m_vram_data + (0xe800 + 0x200 * laynum) / 2;
->>>>>>> upstream/master
 			clip.min_y = clip.max_y = line;
 
 			m_pf_layer[laynum].tmap->set_scrollx(0,  m_control[1 + 2 * laynum]);
@@ -421,21 +385,13 @@ WRITE16_MEMBER(m107_state::spritebuffer_w)
 //      logerror("%04x: buffered spriteram\n",space.device().safe_pc());
 		m_sprite_display    = (!(data & 0x1000));
 
-<<<<<<< HEAD
-		memcpy(m_buffered_spriteram, m_spriteram, 0x1000);
-=======
 		memcpy(m_buffered_spriteram.get(), m_spriteram, 0x1000);
->>>>>>> upstream/master
 	}
 }
 
 /*****************************************************************************/
 
-<<<<<<< HEAD
-UINT32 m107_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t m107_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	update_scroll_positions();
 	screenrefresh(screen, bitmap, cliprect);

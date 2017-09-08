@@ -101,11 +101,6 @@
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/z80/z80.h"
-#include "includes/pacman.h"
-
-=======
 #include "includes/pacman.h"
 
 #include "cpu/z80/z80.h"
@@ -113,7 +108,6 @@
 #include "screen.h"
 #include "speaker.h"
 
->>>>>>> upstream/master
 
 class jrpacman_state : public pacman_state
 {
@@ -121,11 +115,7 @@ public:
 	jrpacman_state(const machine_config &mconfig, device_type type, const char *tag)
 		: pacman_state(mconfig, type, tag) { }
 	DECLARE_WRITE8_MEMBER(jrpacman_interrupt_vector_w);
-<<<<<<< HEAD
-	DECLARE_WRITE8_MEMBER(irq_mask_w);
-=======
 	DECLARE_WRITE_LINE_MEMBER(irq_mask_w);
->>>>>>> upstream/master
 	DECLARE_DRIVER_INIT(jrpacman);
 	INTERRUPT_GEN_MEMBER(vblank_irq);
 };
@@ -138,15 +128,9 @@ WRITE8_MEMBER(jrpacman_state::jrpacman_interrupt_vector_w)
 	m_maincpu->set_input_line(0, CLEAR_LINE);
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER(jrpacman_state::irq_mask_w)
-{
-	m_irq_mask = data & 1;
-=======
 WRITE_LINE_MEMBER(jrpacman_state::irq_mask_w)
 {
 	m_irq_mask = state;
->>>>>>> upstream/master
 }
 
 /*************************************
@@ -161,22 +145,6 @@ static ADDRESS_MAP_START( main_map, AS_PROGRAM, 8, jrpacman_state )
 	AM_RANGE(0x4800, 0x4fef) AM_RAM
 	AM_RANGE(0x4ff0, 0x4fff) AM_RAM AM_SHARE("spriteram")
 	AM_RANGE(0x5000, 0x503f) AM_READ_PORT("P1")
-<<<<<<< HEAD
-	AM_RANGE(0x5000, 0x5000) AM_WRITE(irq_mask_w)
-	AM_RANGE(0x5001, 0x5001) AM_DEVWRITE("namco", namco_device, pacman_sound_enable_w)
-	AM_RANGE(0x5003, 0x5003) AM_WRITE(pacman_flipscreen_w)
-	AM_RANGE(0x5040, 0x507f) AM_READ_PORT("P2")
-	AM_RANGE(0x5040, 0x505f) AM_DEVWRITE("namco", namco_device, pacman_sound_w)
-	AM_RANGE(0x5060, 0x506f) AM_WRITEONLY AM_SHARE("spriteram2")
-	AM_RANGE(0x5070, 0x5070) AM_WRITE(pengo_palettebank_w)
-	AM_RANGE(0x5071, 0x5071) AM_WRITE(pengo_colortablebank_w)
-	AM_RANGE(0x5073, 0x5073) AM_WRITE(jrpacman_bgpriority_w)
-	AM_RANGE(0x5074, 0x5074) AM_WRITE(jrpacman_charbank_w)
-	AM_RANGE(0x5075, 0x5075) AM_WRITE(jrpacman_spritebank_w)
-	AM_RANGE(0x5080, 0x50bf) AM_READ_PORT("DSW")
-	AM_RANGE(0x5080, 0x5080) AM_WRITE(jrpacman_scroll_w)
-	AM_RANGE(0x50c0, 0x50c0) AM_WRITENOP
-=======
 	AM_RANGE(0x5000, 0x5007) AM_DEVWRITE("latch1", ls259_device, write_d0)
 	AM_RANGE(0x5040, 0x507f) AM_READ_PORT("P2")
 	AM_RANGE(0x5040, 0x505f) AM_DEVWRITE("namco", namco_device, pacman_sound_w)
@@ -185,7 +153,6 @@ static ADDRESS_MAP_START( main_map, AS_PROGRAM, 8, jrpacman_state )
 	AM_RANGE(0x5080, 0x50bf) AM_READ_PORT("DSW")
 	AM_RANGE(0x5080, 0x5080) AM_WRITE(jrpacman_scroll_w)
 	AM_RANGE(0x50c0, 0x50c0) AM_DEVWRITE("watchdog", watchdog_timer_device, reset_w)
->>>>>>> upstream/master
 	AM_RANGE(0x8000, 0xdfff) AM_ROM
 ADDRESS_MAP_END
 
@@ -303,11 +270,7 @@ INTERRUPT_GEN_MEMBER(jrpacman_state::vblank_irq)
 		device.execute().set_input_line(0, HOLD_LINE);
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( jrpacman, jrpacman_state )
-=======
 static MACHINE_CONFIG_START( jrpacman )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, 18432000/6)    /* 3.072 MHz */
@@ -315,8 +278,6 @@ static MACHINE_CONFIG_START( jrpacman )
 	MCFG_CPU_IO_MAP(port_map)
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", jrpacman_state,  vblank_irq)
 
-<<<<<<< HEAD
-=======
 	MCFG_DEVICE_ADD("latch1", LS259, 0) // 5P
 	MCFG_ADDRESSABLE_LATCH_Q0_OUT_CB(WRITELINE(jrpacman_state, irq_mask_w))
 	MCFG_ADDRESSABLE_LATCH_Q1_OUT_CB(DEVWRITELINE("namco", namco_device, pacman_sound_enable_w))
@@ -332,7 +293,6 @@ static MACHINE_CONFIG_START( jrpacman )
 
 	MCFG_WATCHDOG_ADD("watchdog")
 
->>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE(60.606060)
@@ -453,11 +413,7 @@ DRIVER_INIT_MEMBER(jrpacman_state,jrpacman)
 		{ 0,0 }
 	};
 
-<<<<<<< HEAD
-	UINT8 *RAM = memregion("maincpu")->base();
-=======
 	uint8_t *RAM = memregion("maincpu")->base();
->>>>>>> upstream/master
 	int i, j, A;
 
 	for (i = A = 0; table[i].count; i++)

@@ -27,10 +27,6 @@ public:
 		m_tc0110pcr_1(*this, "tc0110pcr_1"),
 		m_tc0110pcr_2(*this, "tc0110pcr_2"),
 		m_tc0110pcr_3(*this, "tc0110pcr_3"),
-<<<<<<< HEAD
-		m_tc0220ioc(*this, "tc0220ioc"),
-=======
->>>>>>> upstream/master
 		m_2610_1l(*this, "2610.1.l"),
 		m_2610_1r(*this, "2610.1.r"),
 		m_2610_2l(*this, "2610.2.l"),
@@ -49,10 +45,6 @@ public:
 	required_device<tc0110pcr_device> m_tc0110pcr_1;
 	required_device<tc0110pcr_device> m_tc0110pcr_2;
 	required_device<tc0110pcr_device> m_tc0110pcr_3;
-<<<<<<< HEAD
-	required_device<tc0220ioc_device> m_tc0220ioc;
-=======
->>>>>>> upstream/master
 	required_device<filter_volume_device> m_2610_1l;
 	required_device<filter_volume_device> m_2610_1r;
 	required_device<filter_volume_device> m_2610_2l;
@@ -61,14 +53,6 @@ public:
 	required_device<palette_device> m_palette;
 
 	/* memory pointers */
-<<<<<<< HEAD
-	required_shared_ptr<UINT16> m_spriteram;
-
-	/* misc */
-	UINT16     m_cpua_ctrl;
-	int        m_pandata[4];
-
-=======
 	required_shared_ptr<uint16_t> m_spriteram;
 
 	/* misc */
@@ -76,7 +60,6 @@ public:
 	int        m_pandata[4];
 
 	DECLARE_WRITE8_MEMBER(coin_control_w);
->>>>>>> upstream/master
 	DECLARE_WRITE16_MEMBER(cpua_ctrl_w);
 	DECLARE_WRITE8_MEMBER(sound_bankswitch_w);
 	DECLARE_WRITE16_MEMBER(sound_w);
@@ -84,18 +67,6 @@ public:
 	DECLARE_WRITE8_MEMBER(pancontrol_w);
 	DECLARE_WRITE16_MEMBER(tc0100scn_triple_screen_w);
 
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void machine_reset();
-
-	UINT32 screen_update_left(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	UINT32 screen_update_middle(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	UINT32 screen_update_right(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	void postload();
-	void draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect, int primask, int x_offs, int y_offs );
-	void parse_control(  );
-	UINT32 update_screen(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int xoffs, tc0100scn_device *tc0100scn);
-=======
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
 
@@ -106,5 +77,4 @@ public:
 	void draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect, int primask, int x_offs, int y_offs );
 	void parse_control(  );
 	uint32_t update_screen(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int xoffs, tc0100scn_device *tc0100scn);
->>>>>>> upstream/master
 };

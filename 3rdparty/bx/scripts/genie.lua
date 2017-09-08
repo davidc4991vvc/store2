@@ -1,10 +1,4 @@
 --
-<<<<<<< HEAD
--- Copyright 2010-2015 Branimir Karadzic. All rights reserved.
--- License: http://www.opensource.org/licenses/BSD-2-Clause
---
-
-=======
 -- Copyright 2010-2017 Branimir Karadzic. All rights reserved.
 -- License: https://github.com/bkaradzic/bx#license-bsd-2-clause
 --
@@ -19,7 +13,6 @@ newoption {
 	description = "Enable build without CRT.",
 }
 
->>>>>>> upstream/master
 solution "bx"
 	configurations {
 		"Debug",
@@ -38,13 +31,6 @@ BX_DIR = path.getabsolute("..")
 local BX_BUILD_DIR = path.join(BX_DIR, ".build")
 local BX_THIRD_PARTY_DIR = path.join(BX_DIR, "3rdparty")
 
-<<<<<<< HEAD
-defines {
-	"BX_CONFIG_ENABLE_MSVC_LEVEL4_WARNINGS=1"
-}
-
-=======
->>>>>>> upstream/master
 dofile "toolchain.lua"
 toolchain(BX_BUILD_DIR, BX_THIRD_PARTY_DIR)
 
@@ -52,10 +38,6 @@ function copyLib()
 end
 
 dofile "bx.lua"
-<<<<<<< HEAD
-dofile "unittest++.lua"
-=======
->>>>>>> upstream/master
 dofile "bin2c.lua"
 
 project "bx.test"
@@ -69,24 +51,6 @@ project "bx.test"
 
 	includedirs {
 		path.join(BX_DIR, "include"),
-<<<<<<< HEAD
-		path.join(BX_THIRD_PARTY_DIR, "UnitTest++/src"),
-	}
-
-	links {
-		"UnitTest++",
-	}
-
-	files {
-		path.join(BX_DIR, "tests/**.cpp"),
-		path.join(BX_DIR, "tests/**.H"),
-	}
-
-	configuration { "vs*" }
-
-	configuration { "android*" }
-		kind "ConsoleApp"
-=======
 		BX_THIRD_PARTY_DIR,
 	}
 
@@ -165,17 +129,12 @@ project "bx.bench"
 		}
 
 	configuration { "android*" }
->>>>>>> upstream/master
 		targetextension ".so"
 		linkoptions {
 			"-shared",
 		}
 
 	configuration { "nacl or nacl-arm" }
-<<<<<<< HEAD
-		kind "ConsoleApp"
-=======
->>>>>>> upstream/master
 		targetextension ".nexe"
 		links {
 			"ppapi",
@@ -183,10 +142,6 @@ project "bx.bench"
 		}
 
 	configuration { "pnacl" }
-<<<<<<< HEAD
-		kind "ConsoleApp"
-=======
->>>>>>> upstream/master
 		targetextension ".pexe"
 		links {
 			"ppapi",

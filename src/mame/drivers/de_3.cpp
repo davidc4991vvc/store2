@@ -59,20 +59,11 @@ public:
 	DECLARE_WRITE8_MEMBER(lamp1_w) { };
 	//DECLARE_WRITE_LINE_MEMBER(ym2151_irq_w);
 	//DECLARE_WRITE_LINE_MEMBER(msm5205_irq_w);
-<<<<<<< HEAD
-	DECLARE_WRITE_LINE_MEMBER(pia_irq);
-=======
->>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(sol2_w) { }; // solenoids 8-15
 	DECLARE_WRITE8_MEMBER(sol3_w);
 	DECLARE_WRITE8_MEMBER(sound_w);
 	DECLARE_WRITE8_MEMBER(dac_w) { };
 	DECLARE_WRITE_LINE_MEMBER(pia21_ca2_w);
-<<<<<<< HEAD
-	DECLARE_INPUT_CHANGED_MEMBER(main_nmi);
-	DECLARE_INPUT_CHANGED_MEMBER(audio_nmi);
-=======
->>>>>>> upstream/master
 	DECLARE_READ8_MEMBER(dmd_status_r);
 
 //  DECLARE_READ8_MEMBER(sound_latch_r);
@@ -89,18 +80,6 @@ public:
 protected:
 
 	// driver_device overrides
-<<<<<<< HEAD
-	virtual void machine_reset();
-private:
-//  UINT32 m_segment1;
-//  UINT32 m_segment2;
-	UINT8 m_strobe;
-	UINT8 m_kbdrow;
-	UINT8 m_diag;
-	bool m_ca1;
-	bool m_irq_active;
-	UINT8 m_sound_data;
-=======
 	virtual void machine_reset() override;
 private:
 //  uint32_t m_segment1;
@@ -110,7 +89,6 @@ private:
 	uint8_t m_diag;
 	bool m_ca1;
 	uint8_t m_sound_data;
->>>>>>> upstream/master
 
 public:
 	DECLARE_DRIVER_INIT(de_3);
@@ -217,19 +195,11 @@ WRITE8_MEMBER( de_3_state::lamp0_w )
 // 6821 PIA at 0x2800
 WRITE8_MEMBER( de_3_state::dig0_w )
 {
-<<<<<<< HEAD
-//  static const UINT8 patterns[16] = { 0x3f, 0x06, 0x5b, 0x4f, 0x66, 0x6d, 0x7c, 0x07, 0x7f, 0x67, 0x58, 0x4c, 0x62, 0x69, 0x78, 0 }; // 7447
-//  data &= 0x7f;
-//  m_strobe = data & 15;
-//  m_diag = (data & 0x70) >> 4;
-//  output_set_digit_value(60, patterns[data>>4]); // diag digit
-=======
 //  static const uint8_t patterns[16] = { 0x3f, 0x06, 0x5b, 0x4f, 0x66, 0x6d, 0x7c, 0x07, 0x7f, 0x67, 0x58, 0x4c, 0x62, 0x69, 0x78, 0 }; // 7447
 //  data &= 0x7f;
 //  m_strobe = data & 15;
 //  m_diag = (data & 0x70) >> 4;
 //  output().set_digit_value(60, patterns[data>>4]); // diag digit
->>>>>>> upstream/master
 //  m_segment1 = 0;
 //  m_segment2 = 0;
 }
@@ -241,26 +211,16 @@ WRITE8_MEMBER( de_3_state::dig1_w )
 //  if ((m_segment2 & 0x70000) == 0x30000)
 //  {
 //      if(m_is_alpha3)  // Alphanumeric type 2 uses 7 segment LEDs on the bottom row, type 3 uses 14 segment LEDs
-<<<<<<< HEAD
-//          output_set_digit_value(m_strobe+16, BITSWAP16(m_segment2, 7, 15, 12, 10, 8, 14, 13, 9, 11, 6, 5, 4, 3, 2, 1, 0));
-//      else
-//          output_set_digit_value(m_strobe+16, BITSWAP16(m_segment2, 11, 15, 12, 10, 8, 14, 13, 9, 7, 6, 5, 4, 3, 2, 1, 0));
-=======
 //          output().set_digit_value(m_strobe+16, BITSWAP16(m_segment2, 7, 15, 12, 10, 8, 14, 13, 9, 11, 6, 5, 4, 3, 2, 1, 0));
 //      else
 //          output().set_digit_value(m_strobe+16, BITSWAP16(m_segment2, 11, 15, 12, 10, 8, 14, 13, 9, 7, 6, 5, 4, 3, 2, 1, 0));
->>>>>>> upstream/master
 //      m_segment2 |= 0x40000;
 //  }
 }
 
 READ8_MEMBER( de_3_state::pia28_w7_r )
 {
-<<<<<<< HEAD
-	UINT8 ret = 0x80;
-=======
 	uint8_t ret = 0x80;
->>>>>>> upstream/master
 
 	ret |= m_strobe;
 	ret |= m_diag << 4;
@@ -286,11 +246,7 @@ WRITE8_MEMBER( de_3_state::pia2c_pa_w )
 //  m_segment1 |= 0x10000;
 //  if ((m_segment1 & 0x70000) == 0x30000)
 //  {
-<<<<<<< HEAD
-//      output_set_digit_value(m_strobe, BITSWAP16(m_segment1, 7, 15, 12, 10, 8, 14, 13, 9, 11, 6, 5, 4, 3, 2, 1, 0));
-=======
 //      output().set_digit_value(m_strobe, BITSWAP16(m_segment1, 7, 15, 12, 10, 8, 14, 13, 9, 11, 6, 5, 4, 3, 2, 1, 0));
->>>>>>> upstream/master
 //      m_segment1 |= 0x40000;
 //  }
 }
@@ -322,11 +278,7 @@ WRITE8_MEMBER( de_3_state::pia2c_pb_w )
 //  m_segment1 |= 0x20000;
 //  if ((m_segment1 & 0x70000) == 0x30000)
 //  {
-<<<<<<< HEAD
-//      output_set_digit_value(m_strobe, BITSWAP16(m_segment1, 7, 15, 12, 10, 8, 14, 13, 9, 11, 6, 5, 4, 3, 2, 1, 0));
-=======
 //      output().set_digit_value(m_strobe, BITSWAP16(m_segment1, 7, 15, 12, 10, 8, 14, 13, 9, 11, 6, 5, 4, 3, 2, 1, 0));
->>>>>>> upstream/master
 //      m_segment1 |= 0x40000;
 //  }
 }
@@ -360,11 +312,7 @@ WRITE8_MEMBER( de_3_state::pia34_pa_w )
 //  m_segment2 |= 0x10000;
 //  if ((m_segment2 & 0x70000) == 0x30000)
 //  {
-<<<<<<< HEAD
-//      output_set_digit_value(m_strobe+16, BITSWAP16(m_segment2, 7, 15, 12, 10, 8, 14, 13, 9, 11, 6, 5, 4, 3, 2, 1, 0));
-=======
 //      output().set_digit_value(m_strobe+16, BITSWAP16(m_segment2, 7, 15, 12, 10, 8, 14, 13, 9, 11, 6, 5, 4, 3, 2, 1, 0));
->>>>>>> upstream/master
 //      m_segment2 |= 0x40000;
 //  }
 }
@@ -384,11 +332,7 @@ READ8_MEMBER( de_3_state::dmd_status_r )
 
 READ8_MEMBER(de_3_state::display_r)
 {
-<<<<<<< HEAD
-	UINT8 ret = 0x00;
-=======
 	uint8_t ret = 0x00;
->>>>>>> upstream/master
 
 	switch(offset)
 	{
@@ -447,11 +391,7 @@ DRIVER_INIT_MEMBER(de_3_state,de_3)
 {
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( de_3, de_3_state )
-=======
 static MACHINE_CONFIG_START( de_3 )
->>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_DECOCPU_TYPE3_ADD("decocpu",XTAL_8MHz / 2, ":maincpu")
 	MCFG_DECOCPU_DISPLAY(READ8(de_3_state,display_r),WRITE8(de_3_state,display_w))
@@ -633,8 +573,6 @@ ROM_START(gnr_300)
 	ROM_LOAD("gnru37.snd", 0x180000, 0x80000, CRC(4930e1f2) SHA1(1569d0c7fea1af008acbdc492c3677ace7d1897a))
 ROM_END
 
-<<<<<<< HEAD
-=======
 ROM_START(gnr_300f)
 	ROM_REGION(0x10000, "maincpu", 0)
 	ROM_LOAD("gnrcpuf.300", 0x0000, 0x10000, CRC(7f9006b2) SHA1(429d90fa27ea39176b94d1293a313ec3d1033dbc))
@@ -665,7 +603,6 @@ ROM_START(gnr_300d)
 	ROM_LOAD("gnru37.snd", 0x180000, 0x80000, CRC(4930e1f2) SHA1(1569d0c7fea1af008acbdc492c3677ace7d1897a))
 ROM_END
 
->>>>>>> upstream/master
 /*-------------------------------------------------------------
 / Hook - CPU Rev 3 /DMD  Type 1 128K Rom - CPU Rom
 /------------------------------------------------------------*/
@@ -697,8 +634,6 @@ ROM_START(hook_401)
 	ROM_LOAD("hook-voi.u21", 0x040000, 0x40000, CRC(b5c275e2) SHA1(ff51c2007132a1310ac53b5ab2a4af7d0ab15948))
 ROM_END
 
-<<<<<<< HEAD
-=======
 ROM_START(hook_401p)
 	ROM_REGION(0x10000, "maincpu", 0)
 	ROM_LOAD("hokcpua.401", 0x0000, 0x10000, CRC(20223298) SHA1(a8063765db947b059eadaad6654ed0c5cad9198d))
@@ -713,7 +648,6 @@ ROM_START(hook_401p)
 	ROM_LOAD("hook-voi_p.u21", 0x040000, 0x40000, CRC(04775416) SHA1(5675aea39b76178ff476b0f627223a1c75a3d6b7))
 ROM_END
 
->>>>>>> upstream/master
 ROM_START(hook_404)
 	ROM_REGION(0x10000, "maincpu", 0)
 	ROM_LOAD("hokcpua.404", 0x0000, 0x10000, CRC(53357d8b) SHA1(4e8f5f4376418fbac782065c602da82acab06ef3))
@@ -844,8 +778,6 @@ ROM_END
 
 ROM_START(lw3_207)
 	ROM_REGION(0x10000, "maincpu", 0)
-<<<<<<< HEAD
-=======
 	ROM_LOAD("lw3ugc5.207", 0x0000, 0x10000, CRC(edca3e08) SHA1(6c9714a2021acc8c0965f96a1af8b33c87a1708d))
 	ROM_REGION(0x10000, "cpu3", ROMREGION_ERASEFF)
 	ROM_REGION(0x80000, "gfx3", 0)
@@ -860,7 +792,6 @@ ROM_END
 
 ROM_START(lw3_207c)
 	ROM_REGION(0x10000, "maincpu", 0)
->>>>>>> upstream/master
 	ROM_LOAD("lw3gc5.207", 0x0000, 0x10000, CRC(27aeaea9) SHA1(f8c40cbc37edac20187ac880be281dd45d8ad614))
 	ROM_REGION(0x10000, "cpu3", ROMREGION_ERASEFF)
 	ROM_REGION(0x80000, "gfx3", 0)
@@ -887,8 +818,6 @@ ROM_START(lw3_205)
 	ROM_LOAD("lw3u21.dat", 0x040000, 0x40000, CRC(82bed051) SHA1(49ddc4190762d9b473fda270e0d6d88a4422d5d7))
 ROM_END
 
-<<<<<<< HEAD
-=======
 ROM_START(lw3_203)
 	ROM_REGION(0x10000, "maincpu", 0)
 	ROM_LOAD("lw3cpuu.203", 0x0000, 0x10000, CRC(0cfa38d4) SHA1(11d2e101a574c2dfec49ec701f480173b84c842e))
@@ -903,7 +832,6 @@ ROM_START(lw3_203)
 	ROM_LOAD("lw3u21.dat", 0x040000, 0x40000, CRC(82bed051) SHA1(49ddc4190762d9b473fda270e0d6d88a4422d5d7))
 ROM_END
 
->>>>>>> upstream/master
 ROM_START(lw3_200)
 	ROM_REGION(0x10000, "maincpu", 0)
 	ROM_LOAD("lw3cpu.200", 0x0000, 0x10000, CRC(ddb6e7a7) SHA1(d48309e1984ef9a7682dfde190cf457632044657))
@@ -963,8 +891,6 @@ ROM_START(trek_120)
 	ROM_LOAD("trek.u21", 0x040000, 0x40000, CRC(6107b004) SHA1(1f9bed9b06d5b19fbc0cc0bef2e493eb1a3f1aa4))
 ROM_END
 
-<<<<<<< HEAD
-=======
 ROM_START(trek_117)
 	ROM_REGION(0x10000, "maincpu", 0)
 	ROM_LOAD("trekcpu.117", 0x0000, 0x10000, CRC(534ebb09) SHA1(96f343fcc7b0f39e0a8ec7df47cea433ad2c9119))
@@ -979,7 +905,6 @@ ROM_START(trek_117)
 	ROM_LOAD("trek.u21", 0x040000, 0x40000, CRC(6107b004) SHA1(1f9bed9b06d5b19fbc0cc0bef2e493eb1a3f1aa4))
 ROM_END
 
->>>>>>> upstream/master
 ROM_START(trek_110)
 	ROM_REGION(0x10000, "maincpu", 0)
 	ROM_LOAD("trekcpu.110", 0x0000, 0x10000, CRC(06e0f87b) SHA1(989d70e067cd322351768550549a4e2c8923132c))
@@ -1011,8 +936,6 @@ ROM_END
 /*-------------------------------------------------------------
 / Star Wars - CPU Rev 3 /DMD  Type 2 512K Rom - 64K CPU Rom
 /------------------------------------------------------------*/
-<<<<<<< HEAD
-=======
 ROM_START(stwr_106)
 	ROM_REGION(0x10000, "maincpu", 0)
 	ROM_LOAD("starcpua.106", 0x0000, 0x10000, CRC(35d3cfd9) SHA1(14d8960f3657d7cd977b0a749e995aadb3fd4c7c))
@@ -1039,7 +962,6 @@ ROM_START(stwr_106s)
 	ROM_LOAD("s-wars.u21", 0x080000, 0x40000, CRC(7b08fdf1) SHA1(489d21a10e97e886f948d81dedd7f8de3acecd2b))
 ROM_END
 
->>>>>>> upstream/master
 ROM_START(stwr_104)
 	ROM_REGION(0x10000, "maincpu", 0)
 	ROM_LOAD("starcpua.104", 0x0000, 0x10000, CRC(12b87cfa) SHA1(12e0ab52f6784beefce8291d29b8aff01b2f2818))
@@ -1204,8 +1126,6 @@ ROM_START(tmnt_104)
 	ROM_LOAD("tmntf4.rom", 0x20000, 0x20000, CRC(6c38cd84) SHA1(bbe8797fe1622cb8f0842c4d7159760fed080880))
 ROM_END
 
-<<<<<<< HEAD
-=======
 ROM_START(tmnt_104g)
 	ROM_REGION(0x10000, "maincpu", 0)
 	ROM_LOAD("tmntb5a.104", 0x4000, 0x4000, CRC(f508eeee) SHA1(5e67fde49f6e7d5d563645df9036d5691be076cf))
@@ -1222,7 +1142,6 @@ ROM_START(tmnt_104g)
 	ROM_LOAD("tmntf4.rom", 0x20000, 0x20000, CRC(6c38cd84) SHA1(bbe8797fe1622cb8f0842c4d7159760fed080880))
 ROM_END
 
->>>>>>> upstream/master
 ROM_START(tmnt_103)
 	ROM_REGION(0x10000, "maincpu", 0)
 	ROM_LOAD("tmntb5.103", 0x4000, 0x4000, CRC(fcc6c5b0) SHA1(062bbc93de0f8bb1921da4d756a13923f23cf5d9))
@@ -1272,8 +1191,6 @@ ROM_START(tomy_h30)
 	ROM_LOAD("tommysnd.u37", 0x180000, 0x80000, CRC(46180085) SHA1(f761c27532180de313f23b41f02341783be8938b))
 ROM_END
 
-<<<<<<< HEAD
-=======
 ROM_START(tomy_102)
 	ROM_REGION(0x10000, "maincpu", 0)
 	ROM_LOAD("tomcpua.102", 0x0000, 0x10000, CRC(e470b78e) SHA1(9d358e9d87469cdefb5c373f16c51774bbd390ea))
@@ -1289,7 +1206,6 @@ ROM_START(tomy_102)
 	ROM_LOAD("tommysnd.u37", 0x180000, 0x80000, CRC(46180085) SHA1(f761c27532180de313f23b41f02341783be8938b))
 ROM_END
 
->>>>>>> upstream/master
 /*-------------------------------------------------------------
 / WWF Royal Rumble - CPU Rev 3b /DMD  Type 2 512K Rom - 64K CPU Rom
 /------------------------------------------------------------*/
@@ -1331,16 +1247,11 @@ GAME(1991,  btmn_g13,       btmn_103,   de_3_dmd1,   de_3, de_3_state,   de_3,  
 GAME(1991,  btmn_106,       btmn_103,   de_3_dmd1,   de_3, de_3_state,   de_3,   ROT0,   "Data East",    "Batman (1.06)",                                                MACHINE_IS_SKELETON_MECHANICAL)
 GAME(1991,  ckpt_a17,       0,          de_3_dmd1,   de_3, de_3_state,   de_3,   ROT0,   "Data East",    "Checkpoint (1.7)",                                             MACHINE_IS_SKELETON_MECHANICAL)
 GAME(1994,  gnr_300,        0,          de_3_dmd2,   de_3, de_3_state,   de_3,   ROT0,   "Data East",    "Guns N Roses (3.00)",                                          MACHINE_IS_SKELETON_MECHANICAL)
-<<<<<<< HEAD
-GAME(1992,  hook_408,       0,          de_3_dmd1,   de_3, de_3_state,   de_3,   ROT0,   "Data East",    "Hook (4.08)",                                                  MACHINE_IS_SKELETON_MECHANICAL)
-GAME(1992,  hook_401,       hook_408,   de_3_dmd1,   de_3, de_3_state,   de_3,   ROT0,   "Data East",    "Hook (4.01)",                                                  MACHINE_IS_SKELETON_MECHANICAL)
-=======
 GAME(1994,  gnr_300f,       gnr_300,    de_3_dmd2,   de_3, de_3_state,   de_3,   ROT0,   "Data East",    "Guns N Roses (3.00 French)",                                   MACHINE_IS_SKELETON_MECHANICAL)
 GAME(1994,  gnr_300d,       gnr_300,    de_3_dmd2,   de_3, de_3_state,   de_3,   ROT0,   "Data East",    "Guns N Roses (3.00 Dutch)",                                    MACHINE_IS_SKELETON_MECHANICAL)
 GAME(1992,  hook_408,       0,          de_3_dmd1,   de_3, de_3_state,   de_3,   ROT0,   "Data East",    "Hook (4.08)",                                                  MACHINE_IS_SKELETON_MECHANICAL)
 GAME(1992,  hook_401,       hook_408,   de_3_dmd1,   de_3, de_3_state,   de_3,   ROT0,   "Data East",    "Hook (4.01)",                                                  MACHINE_IS_SKELETON_MECHANICAL)
 GAME(1992,  hook_401p,      hook_408,   de_3_dmd1,   de_3, de_3_state,   de_3,   ROT0,   "Data East",    "Hook (4.01 with prototype sound)",                             MACHINE_IS_SKELETON_MECHANICAL)
->>>>>>> upstream/master
 GAME(1992,  hook_404,       hook_408,   de_3_dmd1,   de_3, de_3_state,   de_3,   ROT0,   "Data East",    "Hook (4.04)",                      MACHINE_IS_SKELETON_MECHANICAL)
 GAME(1993,  jupk_513,       0,          de_3_dmd2,   de_3, de_3_state,   de_3,   ROT0,   "Data East",    "Jurassic Park (5.13)",             MACHINE_IS_SKELETON_MECHANICAL)
 GAME(1993,  jupk_501,       jupk_513,   de_3_dmd2,   de_3, de_3_state,   de_3,   ROT0,   "Data East",    "Jurassic Park (5.01)",             MACHINE_IS_SKELETON_MECHANICAL)
@@ -1350,29 +1261,14 @@ GAME(1993,  lah_l104,       lah_112,    de_3_dmd2,   de_3, de_3_state,   de_3,  
 GAME(1993,  lah_l108,       lah_112,    de_3_dmd2,   de_3, de_3_state,   de_3,   ROT0,   "Data East",    "Last Action Hero (1.08 Spain)",    MACHINE_IS_SKELETON_MECHANICAL)
 GAME(1993,  lah_110,        lah_112,    de_3_dmd2,   de_3, de_3_state,   de_3,   ROT0,   "Data East",    "Last Action Hero (1.10)",          MACHINE_IS_SKELETON_MECHANICAL)
 GAME(1992,  lw3_208,        0,          de_3_dmd2,   de_3, de_3_state,   de_3,   ROT0,   "Data East",    "Lethal Weapon 3 (2.08)",           MACHINE_IS_SKELETON_MECHANICAL)
-<<<<<<< HEAD
-GAME(1992,  lw3_207,        lw3_208,    de_3_dmd2,   de_3, de_3_state,   de_3,   ROT0,   "Data East",    "Lethal Weapon 3 (2.07 Canada)",    MACHINE_IS_SKELETON_MECHANICAL)
-GAME(1992,  lw3_205,        lw3_208,    de_3_dmd2,   de_3, de_3_state,   de_3,   ROT0,   "Data East",    "Lethal Weapon 3 (2.05)",           MACHINE_IS_SKELETON_MECHANICAL)
-=======
 GAME(1992,  lw3_207,        lw3_208,    de_3_dmd2,   de_3, de_3_state,   de_3,   ROT0,   "Data East",    "Lethal Weapon 3 (2.07)",           MACHINE_IS_SKELETON_MECHANICAL)
 GAME(1992,  lw3_207c,       lw3_208,    de_3_dmd2,   de_3, de_3_state,   de_3,   ROT0,   "Data East",    "Lethal Weapon 3 (2.07 Canada)",    MACHINE_IS_SKELETON_MECHANICAL)
 GAME(1992,  lw3_205,        lw3_208,    de_3_dmd2,   de_3, de_3_state,   de_3,   ROT0,   "Data East",    "Lethal Weapon 3 (2.05)",           MACHINE_IS_SKELETON_MECHANICAL)
 GAME(1992,  lw3_203,        lw3_208,    de_3_dmd2,   de_3, de_3_state,   de_3,   ROT0,   "Data East",    "Lethal Weapon 3 (2.03)",           MACHINE_IS_SKELETON_MECHANICAL)
->>>>>>> upstream/master
 GAME(1992,  lw3_200,        lw3_208,    de_3_dmd2,   de_3, de_3_state,   de_3,   ROT0,   "Data East",    "Lethal Weapon 3 (2.00)",           MACHINE_IS_SKELETON_MECHANICAL)
 GAME(1992,  trek_201,       0,          de_3_dmd1,   de_3, de_3_state,   de_3,   ROT0,   "Data East",    "Star Trek 25th Anniversary (2.01)",                MACHINE_IS_SKELETON_MECHANICAL)
 GAME(1992,  trek_200,       trek_201,   de_3_dmd1,   de_3, de_3_state,   de_3,   ROT0,   "Data East",    "Star Trek 25th Anniversary (2.00)",                MACHINE_IS_SKELETON_MECHANICAL)
 GAME(1992,  trek_120,       trek_201,   de_3_dmd1,   de_3, de_3_state,   de_3,   ROT0,   "Data East",    "Star Trek 25th Anniversary (1.20)",                MACHINE_IS_SKELETON_MECHANICAL)
-<<<<<<< HEAD
-GAME(1992,  trek_110,       trek_201,   de_3_dmd1,   de_3, de_3_state,   de_3,   ROT0,   "Data East",    "Star Trek 25th Anniversary (1.10)",                MACHINE_IS_SKELETON_MECHANICAL)
-GAME(1992,  trek_11a,       trek_201,   de_3_dmd1,   de_3, de_3_state,   de_3,   ROT0,   "Data East",    "Star Trek 25th Anniversary (1.10 Alpha Display)",  MACHINE_IS_SKELETON_MECHANICAL)
-GAME(1992,  stwr_104,       0,          de_3_dmd2,   de_3, de_3_state,   de_3,   ROT0,   "Data East",    "Star Wars (1.04)",             MACHINE_IS_SKELETON_MECHANICAL)
-GAME(1992,  stwr_103,       stwr_104,   de_3_dmd2,   de_3, de_3_state,   de_3,   ROT0,   "Data East",    "Star Wars (1.03)",             MACHINE_IS_SKELETON_MECHANICAL)
-GAME(1992,  stwr_g11,       stwr_104,   de_3_dmd2,   de_3, de_3_state,   de_3,   ROT0,   "Data East",    "Star Wars (1.01 Germany)",     MACHINE_IS_SKELETON_MECHANICAL)
-GAME(1992,  stwr_a14,       stwr_104,   de_3_dmd2,   de_3, de_3_state,   de_3,   ROT0,   "Data East",    "Star Wars (Display Rev.1.04)", MACHINE_IS_SKELETON_MECHANICAL)
-GAME(1992,  stwr_102,       stwr_104,   de_3_dmd2,   de_3, de_3_state,   de_3,   ROT0,   "Data East",    "Star Wars (1.02)",             MACHINE_IS_SKELETON_MECHANICAL)
-GAME(1992,  stwr_e12,       stwr_104,   de_3_dmd2,   de_3, de_3_state,   de_3,   ROT0,   "Data East",    "Star Wars (1.02 England)",     MACHINE_IS_SKELETON_MECHANICAL)
-=======
 GAME(1992,  trek_117,       trek_201,   de_3_dmd1,   de_3, de_3_state,   de_3,   ROT0,   "Data East",    "Star Trek 25th Anniversary (1.17)",                MACHINE_IS_SKELETON_MECHANICAL)
 GAME(1992,  trek_110,       trek_201,   de_3_dmd1,   de_3, de_3_state,   de_3,   ROT0,   "Data East",    "Star Trek 25th Anniversary (1.10)",                MACHINE_IS_SKELETON_MECHANICAL)
 GAME(1992,  trek_11a,       trek_201,   de_3_dmd1,   de_3, de_3_state,   de_3,   ROT0,   "Data East",    "Star Trek 25th Anniversary (1.10 Alpha Display)",  MACHINE_IS_SKELETON_MECHANICAL)
@@ -1384,23 +1280,16 @@ GAME(1992,  stwr_g11,       stwr_106,   de_3_dmd2,   de_3, de_3_state,   de_3,  
 GAME(1992,  stwr_a14,       stwr_106,   de_3_dmd2,   de_3, de_3_state,   de_3,   ROT0,   "Data East",    "Star Wars (Display Rev.1.04)",    MACHINE_IS_SKELETON_MECHANICAL)
 GAME(1992,  stwr_102,       stwr_106,   de_3_dmd2,   de_3, de_3_state,   de_3,   ROT0,   "Data East",    "Star Wars (1.02)",                MACHINE_IS_SKELETON_MECHANICAL)
 GAME(1992,  stwr_e12,       stwr_106,   de_3_dmd2,   de_3, de_3_state,   de_3,   ROT0,   "Data East",    "Star Wars (1.02 England)",        MACHINE_IS_SKELETON_MECHANICAL)
->>>>>>> upstream/master
 GAME(1993,  tftc_303,       0,          de_3_dmd2,   de_3, de_3_state,   de_3,   ROT0,   "Data East",    "Tales From the Crypt (3.03)",              MACHINE_IS_SKELETON_MECHANICAL)
 GAME(1993,  tftc_302,       tftc_303,   de_3_dmd2,   de_3, de_3_state,   de_3,   ROT0,   "Data East",    "Tales From the Crypt (3.02 Dutch)",                MACHINE_IS_SKELETON_MECHANICAL)
 GAME(1993,  tftc_300,       tftc_303,   de_3_dmd2,   de_3, de_3_state,   de_3,   ROT0,   "Data East",    "Tales From the Crypt (3.00)",              MACHINE_IS_SKELETON_MECHANICAL)
 GAME(1993,  tftc_200,       tftc_303,   de_3_dmd2,   de_3, de_3_state,   de_3,   ROT0,   "Data East",    "Tales From the Crypt (2.00)",              MACHINE_IS_SKELETON_MECHANICAL)
 GAME(1993,  tftc_104,       tftc_303,   de_3_dmd2,   de_3, de_3_state,   de_3,   ROT0,   "Data East",    "Tales From the Crypt (1.04 Spain)",        MACHINE_IS_SKELETON_MECHANICAL)
 GAME(1991,  tmnt_104,       0,          de_3_dmd1,   de_3, de_3_state,   de_3,   ROT0,   "Data East",    "Teenage Mutant Ninja Turtles (1.04)",      MACHINE_IS_SKELETON_MECHANICAL)
-<<<<<<< HEAD
-GAME(1991,  tmnt_103,       tmnt_104,   de_3_dmd1,   de_3, de_3_state,   de_3,   ROT0,   "Data East",    "Teenage Mutant Ninja Turtles (1.03)",      MACHINE_IS_SKELETON_MECHANICAL)
-GAME(1994,  tomy_400,       0,          de_3_dmd2,   de_3, de_3_state,   de_3,   ROT0,   "Data East",    "The Who's Tommy Pinball Wizard (4.00)",                MACHINE_IS_SKELETON_MECHANICAL)
-GAME(1994,  tomy_h30,       tomy_400,   de_3_dmd2,   de_3, de_3_state,   de_3,   ROT0,   "Data East",    "The Who's Tommy Pinball Wizard (3.00, The Netherlands)", MACHINE_IS_SKELETON_MECHANICAL)
-=======
 GAME(1991,  tmnt_104g,      tmnt_104,   de_3_dmd1,   de_3, de_3_state,   de_3,   ROT0,   "Data East",    "Teenage Mutant Ninja Turtles (1.04) Germany",      MACHINE_IS_SKELETON_MECHANICAL)
 GAME(1991,  tmnt_103,       tmnt_104,   de_3_dmd1,   de_3, de_3_state,   de_3,   ROT0,   "Data East",    "Teenage Mutant Ninja Turtles (1.03)",      MACHINE_IS_SKELETON_MECHANICAL)
 GAME(1994,  tomy_400,       0,          de_3_dmd2,   de_3, de_3_state,   de_3,   ROT0,   "Data East",    "The Who's Tommy Pinball Wizard (4.00)",                MACHINE_IS_SKELETON_MECHANICAL)
 GAME(1994,  tomy_h30,       tomy_400,   de_3_dmd2,   de_3, de_3_state,   de_3,   ROT0,   "Data East",    "The Who's Tommy Pinball Wizard (3.00, The Netherlands)", MACHINE_IS_SKELETON_MECHANICAL)
 GAME(1994,  tomy_102,       tomy_400,   de_3_dmd2,   de_3, de_3_state,   de_3,   ROT0,   "Data East",    "The Who's Tommy Pinball Wizard (1.02)",                MACHINE_IS_SKELETON_MECHANICAL)
->>>>>>> upstream/master
 GAME(1994,  wwfr_106,       0,          de_3_dmd2,   de_3, de_3_state,   de_3,   ROT0,   "Data East",    "WWF Royal Rumble (1.06)",              MACHINE_IS_SKELETON_MECHANICAL)
 GAME(1994,  wwfr_103,       wwfr_106,   de_3_dmd2,   de_3, de_3_state,   de_3,   ROT0,   "Data East",    "WWF Royal Rumble (1.03)",              MACHINE_IS_SKELETON_MECHANICAL)

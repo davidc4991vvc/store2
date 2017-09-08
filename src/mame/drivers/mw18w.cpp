@@ -18,10 +18,7 @@ To diagnose game, turn on service mode and:
 
 #include "emu.h"
 #include "cpu/z80/z80.h"
-<<<<<<< HEAD
-=======
 #include "machine/watchdog.h"
->>>>>>> upstream/master
 
 #include "18w.lh"
 
@@ -59,11 +56,7 @@ WRITE8_MEMBER(mw18w_state::mw18w_sound0_w)
 	// d5: crash sound
 	// d6-d7: brake sound
 
-<<<<<<< HEAD
-	coin_counter_w(machine(), 0, data & 1);
-=======
 	machine().bookkeeping().coin_counter_w(0, data & 1);
->>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(mw18w_state::mw18w_sound1_w)
@@ -72,11 +65,7 @@ WRITE8_MEMBER(mw18w_state::mw18w_sound1_w)
 	// d6: bell sound
 	// d7: backdrop lamp dim control
 
-<<<<<<< HEAD
-	output_set_lamp_value(80, data >> 7 & 1);
-=======
 	output().set_lamp_value(80, data >> 7 & 1);
->>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(mw18w_state::mw18w_lamps_w)
@@ -89,11 +78,7 @@ WRITE8_MEMBER(mw18w_state::mw18w_lamps_w)
 
 	// refresh lamp status
 	for (int i = 0; i < 5; i++)
-<<<<<<< HEAD
-		output_set_lamp_value(col * 10 + i, rows >> i & 1);
-=======
 		output().set_lamp_value(col * 10 + i, rows >> i & 1);
->>>>>>> upstream/master
 
 	/* lamps info:
 
@@ -153,20 +138,12 @@ WRITE8_MEMBER(mw18w_state::mw18w_lamps_w)
 WRITE8_MEMBER(mw18w_state::mw18w_led_display_w)
 {
 	// d0-3: 7448 (BCD to LED segment)
-<<<<<<< HEAD
-	const UINT8 _7448_map[16] =
-=======
 	const uint8_t _7448_map[16] =
->>>>>>> upstream/master
 		{ 0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7c,0x07,0x7f,0x67,0x58,0x4c,0x62,0x69,0x78,0x00 };
 
 	// d4-7: 7442 (BCD to decimal) -> pick digit panel
 	if ((data & 0xf0) > 0x90) return;
-<<<<<<< HEAD
-	output_set_digit_value(data >> 4, _7448_map[data & 0xf]);
-=======
 	output().set_digit_value(data >> 4, _7448_map[data & 0xf]);
->>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(mw18w_state::mw18w_irq0_clear_w)
@@ -195,11 +172,7 @@ static ADDRESS_MAP_START( mw18w_portmap, AS_IO, 8, mw18w_state )
 	AM_RANGE(0x02, 0x02) AM_READ_PORT("IN2") AM_WRITE(mw18w_lamps_w)
 	AM_RANGE(0x03, 0x03) AM_READ_PORT("DSW") AM_WRITE(mw18w_led_display_w)
 	AM_RANGE(0x04, 0x04) AM_READ_PORT("IN4")
-<<<<<<< HEAD
-	AM_RANGE(0x06, 0x06) AM_WRITE(watchdog_reset_w)
-=======
 	AM_RANGE(0x06, 0x06) AM_DEVWRITE("watchdog", watchdog_timer_device, reset_w)
->>>>>>> upstream/master
 	AM_RANGE(0x07, 0x07) AM_WRITE(mw18w_irq0_clear_w)
 ADDRESS_MAP_END
 
@@ -232,11 +205,7 @@ static INPUT_PORTS_START( mw18w )
 	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_UNKNOWN ) // left/right sw.
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_UNUSED )
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_UNUSED )
-<<<<<<< HEAD
-	PORT_BIT( 0xc0, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, mw18w_state, mw18w_sensors_r, NULL)
-=======
 	PORT_BIT( 0xc0, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, mw18w_state, mw18w_sensors_r, nullptr)
->>>>>>> upstream/master
 
 	PORT_START("IN1")
 	PORT_BIT( 0x1f, 0x00, IPT_PEDAL ) PORT_REMAP_TABLE(mw18w_controller_table + 0x20) PORT_SENSITIVITY(100) PORT_KEYDELTA(1) PORT_NAME("Gas Pedal")
@@ -296,11 +265,7 @@ INPUT_PORTS_END
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( mw18w, mw18w_state )
-=======
 static MACHINE_CONFIG_START( mw18w )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, XTAL_19_968MHz/8)
@@ -308,11 +273,8 @@ static MACHINE_CONFIG_START( mw18w )
 	MCFG_CPU_PROGRAM_MAP(mw18w_map)
 	MCFG_CPU_IO_MAP(mw18w_portmap)
 
-<<<<<<< HEAD
-=======
 	MCFG_WATCHDOG_ADD("watchdog")
 
->>>>>>> upstream/master
 	/* no video! */
 
 	/* sound hardware */
@@ -344,10 +306,5 @@ ROM_START( 18w2 )
 ROM_END
 
 
-<<<<<<< HEAD
-GAMEL( 1979, 18w,  0,   mw18w, mw18w, driver_device, 0, ROT0, "Midway", "18 Wheeler (set 1)", MACHINE_NO_SOUND | MACHINE_NOT_WORKING | MACHINE_MECHANICAL, layout_18w )
-GAMEL( 1979, 18w2, 18w, mw18w, mw18w, driver_device, 0, ROT0, "Midway", "18 Wheeler (set 2)", MACHINE_NO_SOUND | MACHINE_NOT_WORKING | MACHINE_MECHANICAL, layout_18w )
-=======
 GAMEL( 1979, 18w,  0,   mw18w, mw18w, mw18w_state, 0, ROT0, "Midway", "18 Wheeler (set 1)", MACHINE_NO_SOUND | MACHINE_NOT_WORKING | MACHINE_MECHANICAL, layout_18w )
 GAMEL( 1979, 18w2, 18w, mw18w, mw18w, mw18w_state, 0, ROT0, "Midway", "18 Wheeler (set 2)", MACHINE_NO_SOUND | MACHINE_NOT_WORKING | MACHINE_MECHANICAL, layout_18w )
->>>>>>> upstream/master

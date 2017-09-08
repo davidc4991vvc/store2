@@ -221,22 +221,6 @@ enum
 };
 
 
-<<<<<<< HEAD
-const device_type I8031 = &device_creator<i8031_device>;
-const device_type I8032 = &device_creator<i8032_device>;
-const device_type I8051 = &device_creator<i8051_device>;
-const device_type I8751 = &device_creator<i8751_device>;
-const device_type I8052 = &device_creator<i8052_device>;
-const device_type I8752 = &device_creator<i8752_device>;
-const device_type I80C31 = &device_creator<i80c31_device>;
-const device_type I80C51 = &device_creator<i80c51_device>;
-const device_type I87C51 = &device_creator<i87c51_device>;
-const device_type I80C32 = &device_creator<i80c32_device>;
-const device_type I80C52 = &device_creator<i80c52_device>;
-const device_type I87C52 = &device_creator<i87c52_device>;
-const device_type AT89C4051 = &device_creator<at89c4051_device>;
-const device_type DS5002FP = &device_creator<ds5002fp_device>;
-=======
 DEFINE_DEVICE_TYPE(I8031, i8031_device, "i8031", "I8031")
 DEFINE_DEVICE_TYPE(I8032, i8032_device, "i8032", "I8032")
 DEFINE_DEVICE_TYPE(I8051, i8051_device, "i8051", "I8051")
@@ -251,7 +235,6 @@ DEFINE_DEVICE_TYPE(I80C52, i80c52_device, "i80c52", "I80C52")
 DEFINE_DEVICE_TYPE(I87C52, i87c52_device, "i87c52", "I87C52")
 DEFINE_DEVICE_TYPE(AT89C4051, at89c4051_device, "at89c4051", "AT89C4051")
 DEFINE_DEVICE_TYPE(DS5002FP, ds5002fp_device, "ds5002fp", "DS5002FP")
->>>>>>> upstream/master
 
 
 /***************************************************************************
@@ -267,24 +250,6 @@ static ADDRESS_MAP_START(program_13bit, AS_PROGRAM, 8, mcs51_cpu_device)
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START(data_7bit, AS_DATA, 8, mcs51_cpu_device)
-<<<<<<< HEAD
-	AM_RANGE(0x0000, 0x007f) AM_RAM
-	AM_RANGE(0x0100, 0x01ff) AM_RAM /* SFR */
-ADDRESS_MAP_END
-
-static ADDRESS_MAP_START(data_8bit, AS_DATA, 8, mcs51_cpu_device)
-	AM_RANGE(0x0000, 0x00ff) AM_RAM
-	AM_RANGE(0x0100, 0x01ff) AM_RAM /* SFR */
-ADDRESS_MAP_END
-
-
-mcs51_cpu_device::mcs51_cpu_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, int program_width, int data_width, UINT8 features)
-	: cpu_device(mconfig, type, name, tag, owner, clock, shortname, __FILE__)
-	, m_program_config("program", ENDIANNESS_LITTLE, 8, 16, 0
-		, ( ( program_width == 12 ) ? ADDRESS_MAP_NAME(program_12bit) : ( ( program_width == 13 ) ? ADDRESS_MAP_NAME(program_13bit) : NULL ) ))
-	, m_data_config("data", ENDIANNESS_LITTLE, 8, 9, 0
-		, ( ( data_width == 7 ) ? ADDRESS_MAP_NAME(data_7bit) : ( ( data_width == 8 ) ? ADDRESS_MAP_NAME(data_8bit) : NULL ) ))
-=======
 	AM_RANGE(0x0000, 0x007f) AM_RAM AM_SHARE("scratchpad")
 	AM_RANGE(0x0100, 0x01ff) AM_RAM AM_SHARE("sfr_ram") /* SFR */
 ADDRESS_MAP_END
@@ -302,19 +267,15 @@ mcs51_cpu_device::mcs51_cpu_device(const machine_config &mconfig, device_type ty
 			(program_width == 12) ? ADDRESS_MAP_NAME(program_12bit) : (program_width == 13) ? ADDRESS_MAP_NAME(program_13bit) : nullptr)
 	, m_data_config("data", ENDIANNESS_LITTLE, 8, 9, 0,
 			 (data_width == 7) ? ADDRESS_MAP_NAME(data_7bit) : (data_width == 8) ? ADDRESS_MAP_NAME(data_8bit) : nullptr )
->>>>>>> upstream/master
 	, m_io_config("io", ENDIANNESS_LITTLE, 8, 18, 0)
 	, m_pc(0)
 	, m_features(features)
 	, m_ram_mask( (data_width == 8) ? 0xFF : 0x7F )
 	, m_num_interrupts(5)
-<<<<<<< HEAD
-=======
 	, m_sfr_ram(*this, "sfr_ram")
 	, m_scratchpad(*this, "scratchpad")
 	, m_serial_tx_cb(*this)
 	, m_serial_rx_cb(*this)
->>>>>>> upstream/master
 	, m_rtemp(0)
 {
 	m_ds5002fp.mcon = 0;
@@ -323,30 +284,6 @@ mcs51_cpu_device::mcs51_cpu_device(const machine_config &mconfig, device_type ty
 
 	/* default to standard cmos interfacing */
 
-<<<<<<< HEAD
-	for (int i=0; i < ARRAY_LENGTH(m_forced_inputs); i++)
-		m_forced_inputs[i] = 0;
-}
-
-
-i8031_device::i8031_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: mcs51_cpu_device(mconfig, I8031, "I8031", tag, owner, clock, "i8031", 0, 7)
-{
-}
-
-i8051_device::i8051_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: mcs51_cpu_device(mconfig, I8051, "I8051", tag, owner, clock, "i8051", 12, 7)
-{
-}
-
-i8751_device::i8751_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: mcs51_cpu_device(mconfig, I8751, "I8751", tag, owner, clock, "i8751", 12, 7)
-{
-}
-
-i8052_device::i8052_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, int program_width, int data_width, UINT8 features)
-	: mcs51_cpu_device(mconfig, type, name, tag, owner, clock, shortname, program_width, data_width, features | FEATURE_I8052)
-=======
 	for (auto & elem : m_forced_inputs)
 		elem = 0;
 }
@@ -369,46 +306,10 @@ i8751_device::i8751_device(const machine_config &mconfig, const char *tag, devic
 
 i8052_device::i8052_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock, int program_width, int data_width, uint8_t features)
 	: mcs51_cpu_device(mconfig, type, tag, owner, clock, program_width, data_width, features | FEATURE_I8052)
->>>>>>> upstream/master
 {
 	m_num_interrupts = 6;
 }
 
-<<<<<<< HEAD
-i8052_device::i8052_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: mcs51_cpu_device(mconfig, I8052, "I8052", tag, owner, clock, "i8052", 13, 8, FEATURE_I8052)
-{
-	m_num_interrupts = 6;
-}
-
-i8032_device::i8032_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: i8052_device(mconfig, I8032, "I8032", tag, owner, clock, "i8032", 0, 8)
-{
-}
-
-i8752_device::i8752_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: i8052_device(mconfig, I8752, "I8752", tag, owner, clock, "i8752", 13, 8)
-{
-}
-
-i80c31_device::i80c31_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: i8052_device(mconfig, I80C31, "I80C31", tag, owner, clock, "i80c31", 0, 7)
-{
-}
-
-i80c51_device::i80c51_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, int program_width, int data_width, UINT8 features)
-	: mcs51_cpu_device(mconfig, type, name, tag, owner, clock, shortname, program_width, data_width, features | FEATURE_CMOS)
-{
-}
-
-i80c51_device::i80c51_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: mcs51_cpu_device(mconfig, I80C51, "I80C51", tag, owner, clock, "i80c51", 12, 7)
-{
-}
-
-i87c51_device::i87c51_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: i80c51_device(mconfig, I87C51, "I87C51", tag, owner, clock, "i87c51", 12, 7)
-=======
 i8052_device::i8052_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: i8052_device(mconfig, I8052, tag, owner, clock, 13, 8)
 {
@@ -441,25 +342,10 @@ i80c51_device::i80c51_device(const machine_config &mconfig, const char *tag, dev
 
 i87c51_device::i87c51_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: i80c51_device(mconfig, I87C51, tag, owner, clock, 12, 7)
->>>>>>> upstream/master
 {
 }
 
 
-<<<<<<< HEAD
-i80c52_device::i80c52_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, int program_width, int data_width, UINT8 features)
-	: i8052_device(mconfig, type, name, tag, owner, clock, shortname, program_width, data_width, features | FEATURE_I80C52 | FEATURE_CMOS)
-{
-}
-
-i80c52_device::i80c52_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: i8052_device(mconfig, I80C52, "I80C52", tag, owner, clock, "i80C52", 13, 8, FEATURE_I80C52 | FEATURE_CMOS)
-{
-}
-
-i80c32_device::i80c32_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: i80c52_device(mconfig, I80C32, "I80C32", tag, owner, clock, "i80c32", 0, 8)
-=======
 i80c52_device::i80c52_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock, int program_width, int data_width, uint8_t features)
 	: i8052_device(mconfig, type, tag, owner, clock, program_width, data_width, features | FEATURE_I80C52 | FEATURE_CMOS)
 {
@@ -472,26 +358,10 @@ i80c52_device::i80c52_device(const machine_config &mconfig, const char *tag, dev
 
 i80c32_device::i80c32_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: i80c52_device(mconfig, I80C32, tag, owner, clock, 0, 8)
->>>>>>> upstream/master
 {
 }
 
 
-<<<<<<< HEAD
-i87c52_device::i87c52_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: i80c52_device(mconfig, I87C52, "I87C52", tag, owner, clock, "i87c52", 13, 8)
-{
-}
-
-at89c4051_device::at89c4051_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: i80c51_device(mconfig, AT89C4051, "AT89C4051", tag, owner, clock, "at89c4051", 12, 7)
-{
-}
-
-ds5002fp_device::ds5002fp_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: mcs51_cpu_device(mconfig, DS5002FP, "DS5002FP", tag, owner, clock, "ds5002fp", 12, 7, FEATURE_DS5002FP | FEATURE_CMOS)
-{
-=======
 i87c52_device::i87c52_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: i80c52_device(mconfig, I87C52, tag, owner, clock, 13, 8)
 {
@@ -517,7 +387,6 @@ device_memory_interface::space_config_vector mcs51_cpu_device::memory_space_conf
 		std::make_pair(AS_DATA,    &m_data_config),
 		std::make_pair(AS_IO,      &m_io_config)
 	};
->>>>>>> upstream/master
 }
 
 
@@ -530,17 +399,10 @@ device_memory_interface::space_config_vector mcs51_cpu_device::memory_space_conf
 #define ROP_ARG(pc)     m_direct->read_byte(pc)
 
 /* Read a byte from External Code Memory (Usually Program Rom(s) Space) */
-<<<<<<< HEAD
-#define CODEMEM_R(a)    (UINT8)m_program->read_byte(a)
-
-/* Read/Write a byte from/to External Data Memory (Usually RAM or other I/O) */
-#define DATAMEM_R(a)    (UINT8)m_io->read_byte(a)
-=======
 #define CODEMEM_R(a)    (uint8_t)m_program->read_byte(a)
 
 /* Read/Write a byte from/to External Data Memory (Usually RAM or other I/O) */
 #define DATAMEM_R(a)    (uint8_t)m_io->read_byte(a)
->>>>>>> upstream/master
 #define DATAMEM_W(a,v)  m_io->write_byte(a, v)
 
 /* Read/Write a byte from/to the Internal RAM */
@@ -550,13 +412,8 @@ device_memory_interface::space_config_vector mcs51_cpu_device::memory_space_conf
 
 /* Read/Write a byte from/to the Internal RAM indirectly */
 /* (called from indirect addressing)                     */
-<<<<<<< HEAD
-UINT8 mcs51_cpu_device::iram_iread(offs_t a) { return (a <= m_ram_mask) ? m_data->read_byte(a) : 0xff; }
-void mcs51_cpu_device::iram_iwrite(offs_t a, UINT8 d) { if (a <= m_ram_mask) m_data->write_byte(a, d); }
-=======
 uint8_t mcs51_cpu_device::iram_iread(offs_t a) { return (a <= m_ram_mask) ? m_data->read_byte(a) : 0xff; }
 void mcs51_cpu_device::iram_iwrite(offs_t a, uint8_t d) { if (a <= m_ram_mask) m_data->write_byte(a, d); }
->>>>>>> upstream/master
 
 #define IRAM_IR(a)      iram_iread(a)
 #define IRAM_IW(a, d)   iram_iwrite(a, d)
@@ -570,11 +427,7 @@ void mcs51_cpu_device::iram_iwrite(offs_t a, uint8_t d) { if (a <= m_ram_mask) m
 #define BIT_W(a,v)      bit_address_w(a, v)
 
 /* Input/Output a byte from given I/O port */
-<<<<<<< HEAD
-#define IN(port)        ((UINT8)m_io->read_byte(port))
-=======
 #define IN(port)        ((uint8_t)m_io->read_byte(port))
->>>>>>> upstream/master
 #define OUT(port,value) m_io->write_byte(port,value)
 
 
@@ -595,17 +448,10 @@ void mcs51_cpu_device::iram_iwrite(offs_t a, uint8_t d) { if (a <= m_ram_mask) m
 #define ACC         SFR_A(ADDR_ACC)
 #define PSW         SFR_A(ADDR_PSW)
 
-<<<<<<< HEAD
-#define P0          ((const UINT8) SFR_A(ADDR_P0))
-#define P1          ((const UINT8) SFR_A(ADDR_P1))
-#define P2          ((const UINT8) SFR_A(ADDR_P2))
-#define P3          ((const UINT8) SFR_A(ADDR_P3))
-=======
 #define P0          ((const uint8_t) SFR_A(ADDR_P0))
 #define P1          ((const uint8_t) SFR_A(ADDR_P1))
 #define P2          ((const uint8_t) SFR_A(ADDR_P2))
 #define P3          ((const uint8_t) SFR_A(ADDR_P3))
->>>>>>> upstream/master
 
 #define SP          SFR_A(ADDR_SP)
 #define DPL         SFR_A(ADDR_DPL)
@@ -623,11 +469,7 @@ void mcs51_cpu_device::iram_iwrite(offs_t a, uint8_t d) { if (a <= m_ram_mask) m
 #define B           SFR_A(ADDR_B)
 #define SBUF        SFR_A(ADDR_SBUF)
 
-<<<<<<< HEAD
-#define R_REG(r)    m_internal_ram[(r) | (PSW & 0x18)]
-=======
 #define R_REG(r)    m_scratchpad[(r) | (PSW & 0x18)]
->>>>>>> upstream/master
 #define DPTR        ((DPH<<8) | DPL)
 
 /* 8052 Only registers */
@@ -686,11 +528,7 @@ void mcs51_cpu_device::iram_iwrite(offs_t a, uint8_t d) { if (a <= m_ram_mask) m
 #define SET_SBUF(v) SET_SFR_A(ADDR_SBUF, v)
 
 /* No actions triggered on write */
-<<<<<<< HEAD
-#define SET_REG(r, v)   do { m_internal_ram[(r) | (PSW & 0x18)] = (v); } while (0)
-=======
 #define SET_REG(r, v)   do { m_scratchpad[(r) | (PSW & 0x18)] = (v); } while (0)
->>>>>>> upstream/master
 
 #define SET_DPTR(n)     do { DPH = ((n) >> 8) & 0xff; DPL = (n) & 0xff; } while (0)
 
@@ -904,21 +742,9 @@ void mcs51_cpu_device::clear_current_irq()
 	LOG(("New: %d %02x\n", m_cur_irq_prio, m_irq_active));
 }
 
-<<<<<<< HEAD
-UINT8 mcs51_cpu_device::r_acc() { return SFR_A(ADDR_ACC); }
-
-UINT8 mcs51_cpu_device::r_psw() { return SFR_A(ADDR_PSW); }
-
-void mcs51_cpu_device::update_ptrs()
-{
-	m_internal_ram = (UINT8 *)m_data->get_write_ptr(0x00);
-	m_sfr_ram = (UINT8 *)m_data->get_write_ptr(0x100);
-}
-=======
 uint8_t mcs51_cpu_device::r_acc() { return SFR_A(ADDR_ACC); }
 
 uint8_t mcs51_cpu_device::r_psw() { return SFR_A(ADDR_PSW); }
->>>>>>> upstream/master
 
 
 /* Generate an external ram address for read/writing using indirect addressing mode */
@@ -955,15 +781,9 @@ uint8_t mcs51_cpu_device::r_psw() { return SFR_A(ADDR_PSW); }
 offs_t mcs51_cpu_device::external_ram_iaddr(offs_t offset, offs_t mem_mask)
 {
 	/* Memory Range (RG1 and RG0 @ MCON and RPCTL registers) */
-<<<<<<< HEAD
-	static const UINT16 ds5002fp_ranges[4] = { 0x1fff, 0x3fff, 0x7fff, 0xffff };
-	/* Memory Partition Table (RG1 & RG0 @ MCON & RPCTL registers) */
-	static const UINT32 ds5002fp_partitions[16] = {
-=======
 	static const uint16_t ds5002fp_ranges[4] = { 0x1fff, 0x3fff, 0x7fff, 0xffff };
 	/* Memory Partition Table (RG1 & RG0 @ MCON & RPCTL registers) */
 	static const uint32_t ds5002fp_partitions[16] = {
->>>>>>> upstream/master
 		0x0000, 0x1000, 0x2000, 0x3000, 0x4000, 0x5000, 0x6000,  0x7000,
 		0x8000, 0x9000, 0xa000, 0xb000, 0xc000, 0xd000, 0xe000, 0x10000 };
 
@@ -988,20 +808,12 @@ offs_t mcs51_cpu_device::external_ram_iaddr(offs_t offset, offs_t mem_mask)
 
 /* Internal ram read/write */
 
-<<<<<<< HEAD
-UINT8 mcs51_cpu_device::iram_read(size_t offset)
-=======
 uint8_t mcs51_cpu_device::iram_read(size_t offset)
->>>>>>> upstream/master
 {
 	return (((offset) < 0x80) ? m_data->read_byte(offset) : sfr_read(offset));
 }
 
-<<<<<<< HEAD
-void mcs51_cpu_device::iram_write(size_t offset, UINT8 data)
-=======
 void mcs51_cpu_device::iram_write(size_t offset, uint8_t data)
->>>>>>> upstream/master
 {
 	if ((offset) < 0x80)
 		m_data->write_byte(offset, data);
@@ -1012,11 +824,7 @@ void mcs51_cpu_device::iram_write(size_t offset, uint8_t data)
 /*Push the current PC to the stack*/
 void mcs51_cpu_device::push_pc()
 {
-<<<<<<< HEAD
-	UINT8 tmpSP = SP+1;                     //Grab and Increment Stack Pointer
-=======
 	uint8_t tmpSP = SP+1;                     //Grab and Increment Stack Pointer
->>>>>>> upstream/master
 	IRAM_IW(tmpSP, (PC & 0xff));                //Store low byte of PC to Internal Ram (Use IRAM_IW to store stack above 128 bytes)
 	tmpSP++;                                    // ""
 	SP = tmpSP;                             // ""
@@ -1026,11 +834,7 @@ void mcs51_cpu_device::push_pc()
 /*Pop the current PC off the stack and into the pc*/
 void mcs51_cpu_device::pop_pc()
 {
-<<<<<<< HEAD
-	UINT8 tmpSP = SP;                           //Grab Stack Pointer
-=======
 	uint8_t tmpSP = SP;                           //Grab Stack Pointer
->>>>>>> upstream/master
 	PC = (IRAM_IR(tmpSP--) & 0xff) << 8;        //Store hi byte to PC (must use IRAM_IR to access stack pointing above 128 bytes)
 	PC = PC | IRAM_IR(tmpSP--);                 //Store lo byte to PC (must use IRAM_IR to access stack pointing above 128 bytes)
 	SP = tmpSP;                             //Decrement Stack Pointer
@@ -1040,15 +844,9 @@ void mcs51_cpu_device::pop_pc()
 void mcs51_cpu_device::set_parity()
 {
 	//This flag will be set when the accumulator contains an odd # of bits set..
-<<<<<<< HEAD
-	UINT8 p = 0;
-	int i;
-	UINT8 a = ACC;
-=======
 	uint8_t p = 0;
 	int i;
 	uint8_t a = ACC;
->>>>>>> upstream/master
 
 	for (i=0; i<8; i++) {       //Test for each of the 8 bits in the ACC!
 		p ^= (a & 1);
@@ -1058,17 +856,10 @@ void mcs51_cpu_device::set_parity()
 	SET_P(p & 1);
 }
 
-<<<<<<< HEAD
-UINT8 mcs51_cpu_device::bit_address_r(UINT8 offset)
-{
-	UINT8   word;
-	UINT8   mask;
-=======
 uint8_t mcs51_cpu_device::bit_address_r(uint8_t offset)
 {
 	uint8_t   word;
 	uint8_t   mask;
->>>>>>> upstream/master
 	int bit_pos;
 	int distance;   /* distance between bit addressable words */
 					/* 1 for normal bits, 8 for sfr bit addresses */
@@ -1092,21 +883,12 @@ uint8_t mcs51_cpu_device::bit_address_r(uint8_t offset)
 }
 
 
-<<<<<<< HEAD
-void mcs51_cpu_device::bit_address_w(UINT8 offset, UINT8 bit)
-{
-	int word;
-	UINT8   mask;
-	int bit_pos;
-	UINT8   result;
-=======
 void mcs51_cpu_device::bit_address_w(uint8_t offset, uint8_t bit)
 {
 	int word;
 	uint8_t   mask;
 	int bit_pos;
 	uint8_t   result;
->>>>>>> upstream/master
 	int distance;
 
 	/* User defined bit addresses 0x20-0x2f (values are 0x0-0x7f) */
@@ -1133,17 +915,10 @@ void mcs51_cpu_device::bit_address_w(uint8_t offset, uint8_t bit)
 	}
 }
 
-<<<<<<< HEAD
-void mcs51_cpu_device::do_add_flags(UINT8 a, UINT8 data, UINT8 c)
-{
-	UINT16 result = a+data+c;
-	INT16 result1 = (INT8)a+(INT8)data+c;
-=======
 void mcs51_cpu_device::do_add_flags(uint8_t a, uint8_t data, uint8_t c)
 {
 	uint16_t result = a+data+c;
 	int16_t result1 = (int8_t)a+(int8_t)data+c;
->>>>>>> upstream/master
 
 	SET_CY((result & 0x100) >> 8);
 	result = (a&0x0f)+(data&0x0f)+c;
@@ -1151,17 +926,10 @@ void mcs51_cpu_device::do_add_flags(uint8_t a, uint8_t data, uint8_t c)
 	SET_OV(result1 < -128 || result1 > 127);
 }
 
-<<<<<<< HEAD
-void mcs51_cpu_device::do_sub_flags(UINT8 a, UINT8 data, UINT8 c)
-{
-	UINT16 result = a-(data+c);
-	INT16 result1 = (INT8)a-(INT8)(data+c);
-=======
 void mcs51_cpu_device::do_sub_flags(uint8_t a, uint8_t data, uint8_t c)
 {
 	uint16_t result = a-(data+c);
 	int16_t result1 = (int8_t)a-(int8_t)(data+c);
->>>>>>> upstream/master
 
 	SET_CY((result & 0x100) >> 8);
 	result = (a&0x0f)-((data&0x0f)+c);
@@ -1211,12 +979,7 @@ void mcs51_cpu_device::transmit_receive(int source)
 			m_uart.bits_to_send--;
 			if(m_uart.bits_to_send == 0) {
 				//Call the callback function
-<<<<<<< HEAD
-				if(!m_serial_tx_callback.isnull())
-					m_serial_tx_callback(*m_io, 0, m_uart.data_out, 0xff);
-=======
 				m_serial_tx_cb(*m_io, 0, m_uart.data_out, 0xff);
->>>>>>> upstream/master
 				//Set Interrupt Flag
 				SET_TI(1);
 			}
@@ -1234,12 +997,7 @@ void mcs51_cpu_device::transmit_receive(int source)
 			{
 				int data = 0;
 				//Call our callball function to retrieve the data
-<<<<<<< HEAD
-				if(!m_serial_rx_callback.isnull())
-					data = m_serial_rx_callback(*m_io, 0, 0xff);
-=======
 				data = m_serial_rx_cb(*m_io, 0, 0xff);
->>>>>>> upstream/master
 				LOG(("RX Deliver %d\n", data));
 				SET_SBUF(data);
 				//Flag the IRQ
@@ -1254,19 +1012,11 @@ void mcs51_cpu_device::transmit_receive(int source)
 void mcs51_cpu_device::update_timer_t0(int cycles)
 {
 	int mode = (GET_M0_1<<1) | GET_M0_0;
-<<<<<<< HEAD
-	UINT32 count = 0;
-
-	if (GET_TR0)
-	{
-		UINT32 delta;
-=======
 	uint32_t count;
 
 	if (GET_TR0)
 	{
 		uint32_t delta;
->>>>>>> upstream/master
 
 		/* counter / external input */
 		delta = GET_CT0 ? m_t0_cnt : cycles;
@@ -1296,11 +1046,7 @@ void mcs51_cpu_device::update_timer_t0(int cycles)
 				TL0 = count & 0xff;
 				break;
 			case 2:         /* 8 Bit Autoreload */
-<<<<<<< HEAD
-				count = ((UINT32) TL0) + delta;
-=======
 				count = ((uint32_t) TL0) + delta;
->>>>>>> upstream/master
 				if ( count & 0xffffff00 )               /* Check for overflow */
 				{
 					SET_TF0(1);
@@ -1311,11 +1057,7 @@ void mcs51_cpu_device::update_timer_t0(int cycles)
 				break;
 			case 3:
 				/* Split Timer 1 */
-<<<<<<< HEAD
-				count = ((UINT32) TL0) + delta;
-=======
 				count = ((uint32_t) TL0) + delta;
->>>>>>> upstream/master
 				if ( count & 0xffffff00 )               /* Check for overflow */
 					SET_TF0(1);
 				TL0 = count & 0xff;                     /* Update new values of the counter */
@@ -1328,11 +1070,7 @@ void mcs51_cpu_device::update_timer_t0(int cycles)
 		{
 		case 3:
 			/* Split Timer 2 */
-<<<<<<< HEAD
-			count = ((UINT32) TH0) + cycles;            /* No gate control or counting !*/
-=======
 			count = ((uint32_t) TH0) + cycles;            /* No gate control or counting !*/
->>>>>>> upstream/master
 			if ( count & 0xffffff00 )               /* Check for overflow */
 				SET_TF1(1);
 			TH0 = count & 0xff;                     /* Update new values of the counter */
@@ -1359,27 +1097,16 @@ switching it into or out of Mode 3 or it can be assigned as a baud rate generato
 
 void mcs51_cpu_device::update_timer_t1(int cycles)
 {
-<<<<<<< HEAD
-	UINT8 mode = (GET_M1_1<<1) | GET_M1_0;
-	UINT8 mode_0 = (GET_M0_1<<1) | GET_M0_0;
-	UINT32 count = 0;
-=======
 	uint8_t mode = (GET_M1_1<<1) | GET_M1_0;
 	uint8_t mode_0 = (GET_M0_1<<1) | GET_M0_0;
 	uint32_t count;
->>>>>>> upstream/master
 
 	if (mode_0 != 3)
 	{
 		if (GET_TR1)
 		{
-<<<<<<< HEAD
-			UINT32 delta;
-			UINT32 overflow = 0;
-=======
 			uint32_t delta;
 			uint32_t overflow = 0;
->>>>>>> upstream/master
 
 			/* counter / external input */
 			delta = GET_CT1 ? m_t1_cnt : cycles;
@@ -1407,11 +1134,7 @@ void mcs51_cpu_device::update_timer_t1(int cycles)
 					TL1 = count & 0xff;
 					break;
 				case 2:         /* 8 Bit Autoreload */
-<<<<<<< HEAD
-					count = ((UINT32) TL1) + delta;
-=======
 					count = ((uint32_t) TL1) + delta;
->>>>>>> upstream/master
 					overflow = count & 0xffffff00; /* Check for overflow */
 					if ( overflow )
 					{
@@ -1433,13 +1156,8 @@ void mcs51_cpu_device::update_timer_t1(int cycles)
 	}
 	else
 	{
-<<<<<<< HEAD
-		UINT32 delta;
-		UINT32 overflow = 0;
-=======
 		uint32_t delta;
 		uint32_t overflow = 0;
->>>>>>> upstream/master
 
 		delta =  cycles;
 		/* taken, reset */
@@ -1460,11 +1178,7 @@ void mcs51_cpu_device::update_timer_t1(int cycles)
 				TL1 = count & 0xff;
 				break;
 			case 2:         /* 8 Bit Autoreload */
-<<<<<<< HEAD
-				count = ((UINT32) TL1) + delta;
-=======
 				count = ((uint32_t) TL1) + delta;
->>>>>>> upstream/master
 				overflow = count & 0xffffff00; /* Check for overflow */
 				if ( overflow )
 				{
@@ -1491,11 +1205,7 @@ void mcs51_cpu_device::update_timer_t2(int cycles)
 		int mode = ((GET_TCLK | GET_RCLK) << 1) | GET_CP;
 		int delta = GET_CT2 ? m_t2_cnt : (mode & 2) ? cycles * (12/2) : cycles;
 
-<<<<<<< HEAD
-		UINT32 count = ((TH2<<8) | TL2) + delta;
-=======
 		uint32_t count = ((TH2<<8) | TL2) + delta;
->>>>>>> upstream/master
 		m_t2_cnt = 0;
 
 		switch (mode)
@@ -1558,11 +1268,7 @@ void mcs51_cpu_device::update_timers(int cycles)
 //Set up to transmit data out of serial port
 //NOTE: Enable Serial Port Interrupt bit is NOT required to send/receive data!
 
-<<<<<<< HEAD
-void mcs51_cpu_device::serial_transmit(UINT8 data)
-=======
 void mcs51_cpu_device::serial_transmit(uint8_t data)
->>>>>>> upstream/master
 {
 	int mode = (GET_SM0<<1) | GET_SM1;
 
@@ -1617,54 +1323,24 @@ void mcs51_cpu_device::update_serial(int cycles)
 }
 
 /* Check and update status of serial port */
-<<<<<<< HEAD
-void mcs51_cpu_device::update_irq_prio(UINT8 ipl, UINT8 iph)
-=======
 void mcs51_cpu_device::update_irq_prio(uint8_t ipl, uint8_t iph)
->>>>>>> upstream/master
 {
 	int i;
 	for (i=0; i<8; i++)
 		m_irq_prio[i] = ((ipl >> i) & 1) | (((iph >>i ) & 1) << 1);
 }
 
-<<<<<<< HEAD
-/***************************************************************************
-    CALLBACKS - TODO: Remove
-***************************************************************************/
-
-
-void mcs51_cpu_device::i8051_set_serial_tx_callback(write8_delegate tx_func)
-{
-	m_serial_tx_callback = tx_func;
-}
-
-void mcs51_cpu_device::i8051_set_serial_rx_callback(read8_delegate rx_func)
-{
-	m_serial_rx_callback = rx_func;
-}
-=======
->>>>>>> upstream/master
 
 /***************************************************************************
     OPCODES
 ***************************************************************************/
 
-<<<<<<< HEAD
-#define OPHANDLER( _name ) void mcs51_cpu_device::_name (UINT8 r)
-
-#include "mcs51ops.inc"
-
-
-void mcs51_cpu_device::execute_op(UINT8 op)
-=======
 #define OPHANDLER( _name ) void mcs51_cpu_device::_name (uint8_t r)
 
 #include "mcs51ops.hxx"
 
 
 void mcs51_cpu_device::execute_op(uint8_t op)
->>>>>>> upstream/master
 {
 	if (m_recalc_parity)
 	{
@@ -1990,11 +1666,7 @@ void mcs51_cpu_device::execute_op(uint8_t op)
 ***************************************************************************/
 
 /* # of oscilations each opcode requires*/
-<<<<<<< HEAD
-const UINT8 mcs51_cpu_device::mcs51_cycles[256] = {
-=======
 const uint8_t mcs51_cpu_device::mcs51_cycles[256] = {
->>>>>>> upstream/master
 	1,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,
 	2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,
 	2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,
@@ -2032,17 +1704,10 @@ const uint8_t mcs51_cpu_device::mcs51_cycles[256] = {
  **********************************************************************************/
 void mcs51_cpu_device::check_irqs()
 {
-<<<<<<< HEAD
-	UINT8 ints = (GET_IE0 | (GET_TF0<<1) | (GET_IE1<<2) | (GET_TF1<<3)
-			| ((GET_RI|GET_TI)<<4));
-	UINT8 int_vec = 0;
-	UINT8 int_mask = 0;
-=======
 	uint8_t ints = (GET_IE0 | (GET_TF0<<1) | (GET_IE1<<2) | (GET_TF1<<3)
 			| ((GET_RI|GET_TI)<<4));
 	uint8_t int_vec = 0;
 	uint8_t int_mask;
->>>>>>> upstream/master
 	int priority_request = -1;
 	int i;
 
@@ -2186,15 +1851,9 @@ void mcs51_cpu_device::execute_set_input(int irqline, int state)
 	 * for at least one cycle (12 states)
 	 *
 	 */
-<<<<<<< HEAD
-	UINT32 new_state = (m_last_line_state & ~(1 << irqline)) | ((state != CLEAR_LINE) << irqline);
-	/* detect 0->1 transistions */
-	UINT32 tr_state = (~m_last_line_state) & new_state;
-=======
 	uint32_t new_state = (m_last_line_state & ~(1 << irqline)) | ((state != CLEAR_LINE) << irqline);
 	/* detect 0->1 transitions */
 	uint32_t tr_state = (~m_last_line_state) & new_state;
->>>>>>> upstream/master
 
 	switch( irqline )
 	{
@@ -2297,13 +1956,7 @@ void mcs51_cpu_device::execute_set_input(int irqline, int state)
 /* Execute cycles - returns number of cycles actually run */
 void mcs51_cpu_device::execute_run()
 {
-<<<<<<< HEAD
-	UINT8 op;
-
-	update_ptrs();
-=======
 	uint8_t op;
->>>>>>> upstream/master
 
 	/* external interrupts may have been set since we last checked */
 	m_inst_cycles = 0;
@@ -2366,11 +2019,7 @@ void mcs51_cpu_device::execute_run()
  * MCS51/8051 Section
  ****************************************************************************/
 
-<<<<<<< HEAD
-void mcs51_cpu_device::sfr_write(size_t offset, UINT8 data)
-=======
 void mcs51_cpu_device::sfr_write(size_t offset, uint8_t data)
->>>>>>> upstream/master
 {
 	/* update register */
 	assert(offset >= 0x80 && offset <= 0xff);
@@ -2402,22 +2051,14 @@ void mcs51_cpu_device::sfr_write(size_t offset, uint8_t data)
 		case ADDR_SCON:
 			break;
 		default:
-<<<<<<< HEAD
-			LOG(("mcs51 '%s': attemping to write to an invalid/non-implemented SFR address: %x at 0x%04x, data=%x\n", tag(), (UINT32)offset,PC,data));
-=======
 			LOG(("mcs51 '%s': attemping to write to an invalid/non-implemented SFR address: %x at 0x%04x, data=%x\n", tag(), (uint32_t)offset,PC,data));
->>>>>>> upstream/master
 			/* no write in this case according to manual */
 			return;
 	}
 	m_data->write_byte((size_t)offset | 0x100, data);
 }
 
-<<<<<<< HEAD
-UINT8 mcs51_cpu_device::sfr_read(size_t offset)
-=======
 uint8_t mcs51_cpu_device::sfr_read(size_t offset)
->>>>>>> upstream/master
 {
 	assert(offset >= 0x80 && offset <= 0xff);
 
@@ -2450,11 +2091,7 @@ uint8_t mcs51_cpu_device::sfr_read(size_t offset)
 			return m_data->read_byte((size_t) offset | 0x100);
 		/* Illegal or non-implemented sfr */
 		default:
-<<<<<<< HEAD
-			LOG(("mcs51 '%s': attemping to read an invalid/non-implemented SFR address: %x at 0x%04x\n", tag(), (UINT32)offset,PC));
-=======
 			LOG(("mcs51 '%s': attemping to read an invalid/non-implemented SFR address: %x at 0x%04x\n", tag(), (uint32_t)offset,PC));
->>>>>>> upstream/master
 			/* according to the manual, the read may return random bits */
 			return 0xff;
 	}
@@ -2468,13 +2105,8 @@ void mcs51_cpu_device::device_start()
 	m_data = &space(AS_DATA);
 	m_io = &space(AS_IO);
 
-<<<<<<< HEAD
-	/* ensure these pointers are set before get_info is called */
-	update_ptrs();
-=======
 	m_serial_rx_cb.resolve_safe(0);
 	m_serial_tx_cb.resolve_safe();
->>>>>>> upstream/master
 
 	/* Save states */
 
@@ -2519,10 +2151,7 @@ void mcs51_cpu_device::device_start()
 	state_add( MCS51_RB,  "RB", m_rtemp).mask(0x03).callimport().callexport().formatstr("%02X");
 
 	state_add( STATE_GENPC, "GENPC", m_pc ).noshow();
-<<<<<<< HEAD
-=======
 	state_add( STATE_GENPCBASE, "CURPC", m_pc ).noshow();
->>>>>>> upstream/master
 	state_add( STATE_GENFLAGS, "GENFLAGS", m_rtemp).formatstr("%8s").noshow();
 
 	m_icountptr = &m_icount;
@@ -2577,20 +2206,12 @@ void mcs51_cpu_device::state_export(const device_state_entry &entry)
 	}
 }
 
-<<<<<<< HEAD
-void mcs51_cpu_device::state_string_export(const device_state_entry &entry, std::string &str)
-=======
 void mcs51_cpu_device::state_string_export(const device_state_entry &entry, std::string &str) const
->>>>>>> upstream/master
 {
 	switch (entry.index())
 	{
 		case STATE_GENFLAGS:
-<<<<<<< HEAD
-			strprintf(str,"%c%c%c%c%c%c%c%c",
-=======
 			str = string_format("%c%c%c%c%c%c%c%c",
->>>>>>> upstream/master
 				PSW & 0x80 ? 'C':'.',
 				PSW & 0x40 ? 'A':'.',
 				PSW & 0x20 ? 'F':'.',
@@ -2606,11 +2227,6 @@ void mcs51_cpu_device::state_string_export(const device_state_entry &entry, std:
 /* Reset registers to the initial values */
 void mcs51_cpu_device::device_reset()
 {
-<<<<<<< HEAD
-	update_ptrs();
-
-=======
->>>>>>> upstream/master
 	m_last_line_state = 0;
 	m_t0_cnt = 0;
 	m_t1_cnt = 0;
@@ -2669,19 +2285,11 @@ void mcs51_cpu_device::device_reset()
 	{
 		// set initial values (some of them are set using the bootstrap loader)
 		PCON = 0;
-<<<<<<< HEAD
-		MCON = m_ds5002fp.mcon & 0xfb;
-		RPCTL = m_ds5002fp.rpctl & 0x01;
-		RPS = 0;
-		RNR = 0;
-		CRCR = m_ds5002fp.crc & 0xf0;
-=======
 		MCON = m_sfr_ram[ADDR_MCON-0x80];
 		RPCTL = m_sfr_ram[ADDR_RPCTL-0x80];
 		RPS = 0;
 		RNR = 0;
 		CRCR = m_sfr_ram[ADDR_CRCR-0x80];
->>>>>>> upstream/master
 		CRCL = 0;
 		CRCH = 0;
 		TA = 0;
@@ -2707,11 +2315,7 @@ void mcs51_cpu_device::device_reset()
  * 8052 Section
  ****************************************************************************/
 
-<<<<<<< HEAD
-void i8052_device::sfr_write(size_t offset, UINT8 data)
-=======
 void i8052_device::sfr_write(size_t offset, uint8_t data)
->>>>>>> upstream/master
 {
 	switch (offset)
 	{
@@ -2729,11 +2333,7 @@ void i8052_device::sfr_write(size_t offset, uint8_t data)
 	}
 }
 
-<<<<<<< HEAD
-UINT8 i8052_device::sfr_read(size_t offset)
-=======
 uint8_t i8052_device::sfr_read(size_t offset)
->>>>>>> upstream/master
 {
 	switch (offset)
 	{
@@ -2754,11 +2354,7 @@ uint8_t i8052_device::sfr_read(size_t offset)
  * 80C52 Section
  ****************************************************************************/
 
-<<<<<<< HEAD
-void i80c52_device::sfr_write(size_t offset, UINT8 data)
-=======
 void i80c52_device::sfr_write(size_t offset, uint8_t data)
->>>>>>> upstream/master
 {
 	switch (offset)
 	{
@@ -2780,11 +2376,7 @@ void i80c52_device::sfr_write(size_t offset, uint8_t data)
 	m_data->write_byte((size_t) offset | 0x100, data);
 }
 
-<<<<<<< HEAD
-UINT8 i80c52_device::sfr_read(size_t offset)
-=======
 uint8_t i80c52_device::sfr_read(size_t offset)
->>>>>>> upstream/master
 {
 	switch (offset)
 	{
@@ -2807,15 +2399,9 @@ uint8_t i80c52_device::sfr_read(size_t offset)
 #define DS5_LOGW(a, d)  LOG(("ds5002fp '%s': write to  " # a " register at 0x%04x, data=%x\n", tag(), PC, d))
 #define DS5_LOGR(a, d)  LOG(("ds5002fp '%s': read from " # a " register at 0x%04x\n", tag(), PC))
 
-<<<<<<< HEAD
-UINT8 mcs51_cpu_device::ds5002fp_protected(size_t offset, UINT8 data, UINT8 ta_mask, UINT8 mask)
-{
-	UINT8 is_timed_access;
-=======
 uint8_t mcs51_cpu_device::ds5002fp_protected(size_t offset, uint8_t data, uint8_t ta_mask, uint8_t mask)
 {
 	uint8_t is_timed_access;
->>>>>>> upstream/master
 
 	is_timed_access = (m_ds5002fp.ta_window > 0) && (TA == 0x55);
 	if (is_timed_access)
@@ -2826,11 +2412,7 @@ uint8_t mcs51_cpu_device::ds5002fp_protected(size_t offset, uint8_t data, uint8_
 	return (m_sfr_ram[offset] & (~mask)) | (data & mask);
 }
 
-<<<<<<< HEAD
-void ds5002fp_device::sfr_write(size_t offset, UINT8 data)
-=======
 void ds5002fp_device::sfr_write(size_t offset, uint8_t data)
->>>>>>> upstream/master
 {
 	switch (offset)
 	{
@@ -2859,11 +2441,7 @@ void ds5002fp_device::sfr_write(size_t offset, uint8_t data)
 	m_data->write_byte((size_t) offset | 0x100, data);
 }
 
-<<<<<<< HEAD
-UINT8 ds5002fp_device::sfr_read(size_t offset)
-=======
 uint8_t ds5002fp_device::sfr_read(size_t offset)
->>>>>>> upstream/master
 {
 	switch (offset)
 	{
@@ -2873,11 +2451,7 @@ uint8_t ds5002fp_device::sfr_read(size_t offset)
 		case ADDR_MCON:     DS5_LOGR(MCON, data);       break;
 		case ADDR_TA:       DS5_LOGR(TA, data);         break;
 		case ADDR_RNR:      DS5_LOGR(RNR, data);        break;
-<<<<<<< HEAD
-		case ADDR_RPCTL:    DS5_LOGR(RPCTL, data);      break;
-=======
 		case ADDR_RPCTL:    DS5_LOGR(RPCTL, data); return 0x80; break; /* touchgo stalls unless bit 7 is set, why? documentation is unclear */
->>>>>>> upstream/master
 		case ADDR_RPS:      DS5_LOGR(RPS, data);        break;
 		case ADDR_PCON:
 			SET_PFW(0);     /* reset PFW flag */
@@ -2888,48 +2462,6 @@ uint8_t ds5002fp_device::sfr_read(size_t offset)
 	return m_data->read_byte((size_t) offset | 0x100);
 }
 
-<<<<<<< HEAD
-
-offs_t mcs51_cpu_device::disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options)
-{
-	extern CPU_DISASSEMBLE( i8051 );
-	return CPU_DISASSEMBLE_NAME(i8051)(this, buffer, pc, oprom, opram, options);
-}
-
-
-offs_t i8052_device::disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options)
-{
-	extern CPU_DISASSEMBLE( i8052 );
-	return CPU_DISASSEMBLE_NAME(i8052)(this, buffer, pc, oprom, opram, options);
-}
-
-
-offs_t i80c31_device::disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options)
-{
-	extern CPU_DISASSEMBLE( i80c51 );
-	return CPU_DISASSEMBLE_NAME(i80c51)(this, buffer, pc, oprom, opram, options);
-}
-
-
-offs_t i80c51_device::disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options)
-{
-	extern CPU_DISASSEMBLE( i80c51 );
-	return CPU_DISASSEMBLE_NAME(i80c51)(this, buffer, pc, oprom, opram, options);
-}
-
-
-offs_t i80c52_device::disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options)
-{
-	extern CPU_DISASSEMBLE( i80c52 );
-	return CPU_DISASSEMBLE_NAME(i80c52)(this, buffer, pc, oprom, opram, options);
-}
-
-
-offs_t ds5002fp_device::disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options)
-{
-	extern CPU_DISASSEMBLE( ds5002fp );
-	return CPU_DISASSEMBLE_NAME(ds5002fp)(this, buffer, pc, oprom, opram, options);
-=======
 /*
 Documentation states that having the battery connected "maintains the internal scratchpad RAM" and "certain SFRs"
 (although it isn't clear exactly which SFRs except for those explicitly mentioned)
@@ -3015,5 +2547,4 @@ offs_t ds5002fp_device::disasm_disassemble(std::ostream &stream, offs_t pc, cons
 {
 	extern CPU_DISASSEMBLE( ds5002fp );
 	return CPU_DISASSEMBLE_NAME(ds5002fp)(this, stream, pc, oprom, opram, options);
->>>>>>> upstream/master
 }

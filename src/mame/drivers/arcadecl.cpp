@@ -69,12 +69,6 @@
 
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/m68000/m68000.h"
-#include "sound/okim6295.h"
-#include "video/atarimo.h"
-#include "includes/arcadecl.h"
-=======
 #include "includes/arcadecl.h"
 #include "cpu/m68000/m68000.h"
 #include "machine/eeprompar.h"
@@ -82,7 +76,6 @@
 #include "sound/okim6295.h"
 #include "video/atarimo.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 #define MASTER_CLOCK        XTAL_14_31818MHz
@@ -104,11 +97,7 @@ void arcadecl_state::scanline_update(screen_device &screen, int scanline)
 {
 	/* generate 32V signals */
 	if ((scanline & 32) == 0)
-<<<<<<< HEAD
-		scanline_int_gen(m_maincpu);
-=======
 		scanline_int_gen(*m_maincpu);
->>>>>>> upstream/master
 }
 
 
@@ -144,13 +133,8 @@ WRITE16_MEMBER(arcadecl_state::latch_w)
 	/* lower byte being modified? */
 	if (ACCESSING_BITS_0_7)
 	{
-<<<<<<< HEAD
-		m_oki->set_bank_base((data & 0x80) ? 0x40000 : 0x00000);
-		set_oki6295_volume((data & 0x001f) * 100 / 0x1f);
-=======
 		m_oki->set_rom_bank((data >> 7) & 1);
 		m_oki->set_output_gain(ALL_OUTPUTS, (data & 0x001f) / 31.0f);
->>>>>>> upstream/master
 	}
 }
 
@@ -178,19 +162,11 @@ static ADDRESS_MAP_START( main_map, AS_PROGRAM, 16, arcadecl_state )
 	AM_RANGE(0x640024, 0x640025) AM_READ_PORT("TRACKX1")
 	AM_RANGE(0x640026, 0x640027) AM_READ_PORT("TRACKY1")
 	AM_RANGE(0x640040, 0x64004f) AM_WRITE(latch_w)
-<<<<<<< HEAD
-	AM_RANGE(0x640060, 0x64006f) AM_DEVWRITE("eeprom", atari_eeprom_device, unlock_write)
-	AM_RANGE(0x641000, 0x641fff) AM_DEVREADWRITE8("eeprom", atari_eeprom_device, read, write, 0x00ff)
-	AM_RANGE(0x642000, 0x642001) AM_DEVREADWRITE8("oki", okim6295_device, read, write, 0xff00)
-	AM_RANGE(0x646000, 0x646fff) AM_WRITE(scanline_int_ack_w)
-	AM_RANGE(0x647000, 0x647fff) AM_WRITE(watchdog_reset16_w)
-=======
 	AM_RANGE(0x640060, 0x64006f) AM_DEVWRITE("eeprom", eeprom_parallel_28xx_device, unlock_write)
 	AM_RANGE(0x641000, 0x641fff) AM_DEVREADWRITE8("eeprom", eeprom_parallel_28xx_device, read, write, 0x00ff)
 	AM_RANGE(0x642000, 0x642001) AM_DEVREADWRITE8("oki", okim6295_device, read, write, 0xff00)
 	AM_RANGE(0x646000, 0x646fff) AM_WRITE(scanline_int_ack_w)
 	AM_RANGE(0x647000, 0x647fff) AM_DEVWRITE("watchdog", watchdog_timer_device, reset16_w)
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -342,11 +318,7 @@ GFXDECODE_END
  *
  *************************************/
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( arcadecl, arcadecl_state )
-=======
 static MACHINE_CONFIG_START( arcadecl )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, MASTER_CLOCK)
@@ -354,15 +326,11 @@ static MACHINE_CONFIG_START( arcadecl )
 	MCFG_DEVICE_VBLANK_INT_DRIVER("screen", atarigen_state, video_int_gen)
 
 	MCFG_MACHINE_RESET_OVERRIDE(arcadecl_state,arcadecl)
-<<<<<<< HEAD
-	MCFG_ATARI_EEPROM_2804_ADD("eeprom")
-=======
 
 	MCFG_EEPROM_2804_ADD("eeprom")
 	MCFG_EEPROM_28XX_LOCK_AFTER_WRITE(true)
 
 	MCFG_WATCHDOG_ADD("watchdog")
->>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", arcadecl)
@@ -386,11 +354,7 @@ static MACHINE_CONFIG_START( arcadecl )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki", MASTER_CLOCK/4/3, OKIM6295_PIN7_LOW)
-=======
 	MCFG_OKIM6295_ADD("oki", MASTER_CLOCK/4/3, PIN7_LOW)
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
 
@@ -439,10 +403,5 @@ ROM_END
  *
  *************************************/
 
-<<<<<<< HEAD
-GAME( 1992, arcadecl, 0, arcadecl, arcadecl, driver_device, 0, ROT0, "Atari Games", "Arcade Classics (prototype)", MACHINE_SUPPORTS_SAVE )
-GAME( 1992, sparkz,   0, sparkz,   sparkz,   driver_device, 0, ROT0, "Atari Games", "Sparkz (prototype)", MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1992, arcadecl, 0, arcadecl, arcadecl, arcadecl_state, 0, ROT0, "Atari Games", "Arcade Classics (prototype)", MACHINE_SUPPORTS_SAVE )
 GAME( 1992, sparkz,   0, sparkz,   sparkz,   arcadecl_state, 0, ROT0, "Atari Games", "Sparkz (prototype)",          MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

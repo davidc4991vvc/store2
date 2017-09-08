@@ -8,15 +8,10 @@
 
 *********************************************************************/
 
-<<<<<<< HEAD
-#ifndef NCR5380N_H
-#define NCR5380N_H
-=======
 #ifndef MAME_MACHINE_NCR5380N_H
 #define MAME_MACHINE_NCR5380N_H
 
 #pragma once
->>>>>>> upstream/master
 
 #include "machine/nscsi_bus.h"
 
@@ -29,19 +24,11 @@
 class ncr5380n_device : public nscsi_device
 {
 public:
-<<<<<<< HEAD
-	ncr5380n_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// static configuration helpers
-	template<class _Object> static devcb_base &set_irq_handler(device_t &device, _Object object) { return downcast<ncr5380n_device &>(device).m_irq_handler.set_callback(object); }
-	template<class _Object> static devcb_base &set_drq_handler(device_t &device, _Object object) { return downcast<ncr5380n_device &>(device).m_drq_handler.set_callback(object); }
-=======
 	ncr5380n_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	// static configuration helpers
 	template <class Object> static devcb_base &set_irq_handler(device_t &device, Object &&cb) { return downcast<ncr5380n_device &>(device).m_irq_handler.set_callback(std::forward<Object>(cb)); }
 	template <class Object> static devcb_base &set_drq_handler(device_t &device, Object &&cb) { return downcast<ncr5380n_device &>(device).m_drq_handler.set_callback(std::forward<Object>(cb)); }
->>>>>>> upstream/master
 
 	DECLARE_ADDRESS_MAP(map, 8);
 
@@ -65,17 +52,6 @@ public:
 	DECLARE_READ8_MEMBER(read);
 	DECLARE_WRITE8_MEMBER(write);
 
-<<<<<<< HEAD
-	virtual void scsi_ctrl_changed();
-
-	UINT8 dma_r();
-	void dma_w(UINT8 val);
-
-protected:
-	virtual void device_start();
-	virtual void device_reset();
-	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
-=======
 	virtual void scsi_ctrl_changed() override;
 
 	uint8_t dma_r();
@@ -85,7 +61,6 @@ protected:
 	virtual void device_start() override;
 	virtual void device_reset() override;
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
->>>>>>> upstream/master
 
 private:
 	enum { MODE_D, MODE_T, MODE_I };
@@ -216,17 +191,10 @@ private:
 
 	emu_timer *tm;
 
-<<<<<<< HEAD
-	UINT8 status, istatus, m_mode, m_outdata, m_busstatus, m_dmalatch;
-	UINT8 m_icommand, m_tcommand;
-	UINT8 clock_conv, sync_offset, sync_period, bus_id, select_timeout, seq;
-	UINT16 tcount;
-=======
 	uint8_t status, istatus, m_mode, m_outdata, m_busstatus, m_dmalatch;
 	uint8_t m_icommand, m_tcommand;
 	uint8_t clock_conv, sync_offset, sync_period, bus_id, select_timeout, seq;
 	uint16_t tcount;
->>>>>>> upstream/master
 	int mode;
 	int state/*, xfr_phase*/;
 
@@ -256,12 +224,6 @@ private:
 	devcb_write_line m_drq_handler;
 };
 
-<<<<<<< HEAD
-extern const device_type NCR5380N;
-
-#endif
-=======
 DECLARE_DEVICE_TYPE(NCR5380N, ncr5380n_device)
 
 #endif // MAME_MACHINE_NCR5380N_H
->>>>>>> upstream/master

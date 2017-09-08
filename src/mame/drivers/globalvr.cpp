@@ -84,11 +84,7 @@ static INPUT_PORTS_START( globalvr )
 INPUT_PORTS_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( globalvr, globalvr_state )
-=======
 static MACHINE_CONFIG_START( globalvr )
->>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", PENTIUM, 100000000)      /* ? MHz */
 	MCFG_CPU_PROGRAM_MAP(globalvr_map)
@@ -138,29 +134,6 @@ ROM_START( bhead2k3 )
 	DISK_IMAGE_READONLY( "beachhead2003desertwar_5-27-2003", 0, SHA1(fed23a6496836050eb1d4f69b91da09adbd9d973) )
 ROM_END
 
-<<<<<<< HEAD
-ROM_START( nfsug )
-	DISK_REGION( "ide:0:hdd:image" )
-	DISK_IMAGE_READONLY( "nfsug1_1-disc1", 0, SHA1(25a9f0606ac3909bd7c4f3f3a59c6782e3c84712) )
-
-	DISK_REGION( "drive_1" )
-	DISK_IMAGE_READONLY( "nfsug1_1-disc2", 0, SHA1(5b0be45eb3fcd27ba513baca1da633f9e9a4c5ef) )
-ROM_END
-
-
-/* OS/Global VR specific Setup Installers */
-GAME( 2002, hyperv2,   0, globalvr, globalvr, driver_device, 0, ROT0, "Global VR", "Hyper V2 (Global VR) Install - 06/12/02", MACHINE_IS_SKELETON )
-GAME( 2001, hyperv2a,  0, globalvr, globalvr, driver_device, 0, ROT0, "Global VR", "Hyper V2 (Global VR) Install - 09/30/01", MACHINE_IS_SKELETON )
-GAME( 2001, gvrxpsys,  0, globalvr, globalvr, driver_device, 0, ROT0, "Global VR", "Global VR XP OS Install - 09/30/01", MACHINE_IS_SKELETON )
-GAME( 2002, gvrxpsup,  0, globalvr, globalvr, driver_device, 0, ROT0, "Global VR", "Global VR XP OS Update/Install - 06/11/02", MACHINE_IS_SKELETON )
-
-/* Game Installer CDs */
-GAME( 2000, bhead2k,   0, globalvr, globalvr, driver_device, 0, ROT0, "Global VR", "Beach Head 2000 Install - 05/27/03", MACHINE_IS_SKELETON )
-GAME( 2000, bhead2ka,  0, globalvr, globalvr, driver_device, 0, ROT0, "Global VR", "Beach Head 2000 Install - 09/16/01", MACHINE_IS_SKELETON )
-GAME( 2002, bhead2k2,  0, globalvr, globalvr, driver_device, 0, ROT0, "Global VR", "Beach Head 2002 Install - 05/27/03", MACHINE_IS_SKELETON )
-GAME( 2003, bhead2k3,  0, globalvr, globalvr, driver_device, 0, ROT0, "Global VR", "Beach Head 2003 Desert War Install - 05/27/03", MACHINE_IS_SKELETON )
-GAME( 2005, nfsug,     0, globalvr, globalvr, driver_device, 0, ROT0, "Global VR", "Need For Speed: Underground Install (2 Discs) (v1.1)", MACHINE_IS_SKELETON )
-=======
 ROM_START( nfs )
 	DISK_REGION( "drive_1" )
 	DISK_IMAGE_READONLY( "NEED FOR SPEED DISK 1 VERSION 1.0.1 Rev B", 0, SHA1(799017103c46712534e4bd9c04695fb8241a7ba4) )
@@ -209,4 +182,3 @@ GAME( 2003, bhead2k3,  0, globalvr, globalvr, globalvr_state, 0, ROT0, "Global V
 GAME( 2003, nfs,       0, globalvr, globalvr, globalvr_state, 0, ROT0, "Global VR", "Need for Speed - 4 Cab Link (2 Discs) (v1.0.1 Rev B)", MACHINE_IS_SKELETON )
 GAME( 2004, nfsgt,     0, globalvr, globalvr, globalvr_state, 0, ROT0, "Global VR", "Need for Speed GT (Hard Drive+2 Discs) (v1.1.0 Rev C)",MACHINE_IS_SKELETON )
 GAME( 2005, nfsug,     0, globalvr, globalvr, globalvr_state, 0, ROT0, "Global VR", "Need For Speed: Underground Install (2 Discs) (v1.1)", MACHINE_IS_SKELETON )
->>>>>>> upstream/master

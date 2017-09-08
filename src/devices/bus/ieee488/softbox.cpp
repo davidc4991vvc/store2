@@ -14,10 +14,7 @@
 */
 
 
-<<<<<<< HEAD
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #include "softbox.h"
 
 
@@ -39,11 +36,7 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type SOFTBOX = &device_creator<softbox_device>;
-=======
 DEFINE_DEVICE_TYPE(SOFTBOX, softbox_device, "pet_softbox", "SSE SoftBox")
->>>>>>> upstream/master
 
 
 //-------------------------------------------------
@@ -69,11 +62,7 @@ ROM_END
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const rom_entry *softbox_device::device_rom_region() const
-=======
 const tiny_rom_entry *softbox_device::device_rom_region() const
->>>>>>> upstream/master
 {
 	return ROM_NAME( softbox );
 }
@@ -100,11 +89,7 @@ static ADDRESS_MAP_START( softbox_io, AS_IO, 8, softbox_device )
 	AM_RANGE(0x0c, 0x0c) AM_WRITE(dbrg_w)
 	AM_RANGE(0x10, 0x13) AM_DEVREADWRITE(I8255_0_TAG, i8255_device, read, write)
 	AM_RANGE(0x14, 0x17) AM_DEVREADWRITE(I8255_1_TAG, i8255_device, read, write)
-<<<<<<< HEAD
-	AM_RANGE(0x18, 0x18) AM_DEVREADWRITE(CORVUS_HDC_TAG, corvus_hdc_t, read, write)
-=======
 	AM_RANGE(0x18, 0x18) AM_DEVREADWRITE(CORVUS_HDC_TAG, corvus_hdc_device, read, write)
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -144,11 +129,7 @@ READ8_MEMBER( softbox_device::ppi1_pa_r )
 
 	*/
 
-<<<<<<< HEAD
-	UINT8 data = 0;
-=======
 	uint8_t data = 0;
->>>>>>> upstream/master
 
 	data |= !m_bus->atn_r();
 	data |= !m_bus->dav_r() << 1;
@@ -206,19 +187,11 @@ READ8_MEMBER( softbox_device::ppi1_pc_r )
 
 	*/
 
-<<<<<<< HEAD
-	UINT8 status = m_hdc->status_r(space, 0);
-	UINT8 data = 0;
-
-	data |= (status & CONTROLLER_BUSY) ? 0 : 0x10;
-	data |= (status & CONTROLLER_DIRECTION) ? 0 : 0x20;
-=======
 	uint8_t status = m_hdc->status_r(space, 0);
 	uint8_t data = 0;
 
 	data |= (status & corvus_hdc_device::CONTROLLER_BUSY) ? 0 : 0x10;
 	data |= (status & corvus_hdc_device::CONTROLLER_DIRECTION) ? 0 : 0x20;
->>>>>>> upstream/master
 
 	return data;
 }
@@ -240,15 +213,9 @@ WRITE8_MEMBER( softbox_device::ppi1_pc_w )
 
 	*/
 
-<<<<<<< HEAD
-	output_set_led_value(LED_A, !BIT(data, 0));
-	output_set_led_value(LED_B, !BIT(data, 1));
-	output_set_led_value(LED_READY, !BIT(data, 2));
-=======
 	machine().output().set_led_value(LED_A, !BIT(data, 0));
 	machine().output().set_led_value(LED_B, !BIT(data, 1));
 	machine().output().set_led_value(LED_READY, !BIT(data, 2));
->>>>>>> upstream/master
 }
 
 static DEVICE_INPUT_DEFAULTS_START( terminal )
@@ -262,17 +229,10 @@ DEVICE_INPUT_DEFAULTS_END
 
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  MACHINE_CONFIG_FRAGMENT( softbox )
-//-------------------------------------------------
-
-static MACHINE_CONFIG_FRAGMENT( softbox )
-=======
 //  device_add_mconfig - add device configuration
 //-------------------------------------------------
 
 MACHINE_CONFIG_MEMBER( softbox_device::device_add_mconfig )
->>>>>>> upstream/master
 	// basic machine hardware
 	MCFG_CPU_ADD(Z80_TAG, Z80, XTAL_8MHz/2)
 	MCFG_CPU_PROGRAM_MAP(softbox_mem)
@@ -284,11 +244,7 @@ MACHINE_CONFIG_MEMBER( softbox_device::device_add_mconfig )
 	MCFG_I8251_DTR_HANDLER(DEVWRITELINE(RS232_TAG, rs232_port_device, write_dtr))
 	MCFG_I8251_RTS_HANDLER(DEVWRITELINE(RS232_TAG, rs232_port_device, write_rts))
 
-<<<<<<< HEAD
-	MCFG_RS232_PORT_ADD(RS232_TAG, default_rs232_devices, NULL)
-=======
 	MCFG_RS232_PORT_ADD(RS232_TAG, default_rs232_devices, nullptr)
->>>>>>> upstream/master
 	MCFG_RS232_RXD_HANDLER(DEVWRITELINE(I8251_TAG, i8251_device, write_rxd))
 	MCFG_RS232_DSR_HANDLER(DEVWRITELINE(I8251_TAG, i8251_device, write_dsr))
 	MCFG_DEVICE_CARD_DEVICE_INPUT_DEFAULTS("terminal", terminal)
@@ -317,29 +273,11 @@ MACHINE_CONFIG_MEMBER( softbox_device::device_add_mconfig )
 	MCFG_HARDDISK_INTERFACE("corvus_hdd")
 	MCFG_HARDDISK_ADD("harddisk4")
 	MCFG_HARDDISK_INTERFACE("corvus_hdd")
-<<<<<<< HEAD
-	//MCFG_IMI7000_BUS_ADD("imi5000h", NULL, NULL, NULL)
-=======
 	//MCFG_IMI7000_BUS_ADD("imi5000h", nullptr, nullptr, nullptr)
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  machine_config_additions - device-specific
-//  machine configurations
-//-------------------------------------------------
-
-machine_config_constructor softbox_device::device_mconfig_additions() const
-{
-	return MACHINE_CONFIG_NAME( softbox );
-}
-
-
-//-------------------------------------------------
-=======
->>>>>>> upstream/master
 //  INPUT_PORTS( softbox )
 //-------------------------------------------------
 
@@ -378,14 +316,6 @@ ioport_constructor softbox_device::device_input_ports() const
 //  softbox_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-softbox_device::softbox_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, SOFTBOX, "PET SoftBox", tag, owner, clock, "pet_softbox", __FILE__),
-		device_ieee488_interface(mconfig, *this),
-		m_maincpu(*this, Z80_TAG),
-		m_dbrg(*this, COM8116_TAG),
-		m_hdc(*this, CORVUS_HDC_TAG), m_ifc(0)
-=======
 softbox_device::softbox_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, SOFTBOX, tag, owner, clock)
 	, device_ieee488_interface(mconfig, *this)
@@ -393,7 +323,6 @@ softbox_device::softbox_device(const machine_config &mconfig, const char *tag, d
 	, m_dbrg(*this, COM8116_TAG)
 	, m_hdc(*this, CORVUS_HDC_TAG)
 	, m_ifc(0)
->>>>>>> upstream/master
 {
 }
 

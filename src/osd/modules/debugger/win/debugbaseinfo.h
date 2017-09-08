@@ -11,10 +11,6 @@
 
 #include "debugwin.h"
 
-<<<<<<< HEAD
-#include "emu.h"
-=======
->>>>>>> upstream/master
 
 
 class debugbase_info

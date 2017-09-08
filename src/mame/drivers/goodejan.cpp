@@ -14,11 +14,7 @@ ToDo:
  Some sprite flickers on attract mode
  totmejan: Are the "dots" behind the girls in attract mode correct?
 
-<<<<<<< HEAD
-PCB Layout
-=======
 Tottemo E Jong PCB Layout
->>>>>>> upstream/master
 
 |---------------------------------------------------------------|
 |LA4460  YM3812  M6295  E-JAN.U0911 6116        Z80A 7.15909MHz |
@@ -35,11 +31,7 @@ Tottemo E Jong PCB Layout
 |                           TC110G21AF                          |
 |           82S135.U083                 PAL   6264              |
 |                                                               |
-<<<<<<< HEAD
-|  DSW     DSW                                                  |
-=======
 |  DSW     DSW     SEI0220BP                                    |
->>>>>>> upstream/master
 |                                              62256     62256  |
 |  E-JAN.U078                PAL                                |
 |                                                               |
@@ -57,11 +49,8 @@ Notes:
       VSync - 60Hz
       HSync - 15.38kHz
 
-<<<<<<< HEAD
-=======
 Good E Jong has SEI0211 instead of SEI0210, but PCB layout is otherwise identical.
 
->>>>>>> upstream/master
 
 Diagnostic Menu:
     Press and keep P1 Start and Reset
@@ -82,12 +71,6 @@ Secret menu hack [totmejan only] (I couldn't find official way to enter, so it's
 *******************************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/nec/nec.h"
-#include "audio/seibu.h"
-#include "sound/3812intf.h"
-#include "video/seibu_crtc.h"
-=======
 #include "audio/seibu.h"
 
 #include "cpu/nec/nec.h"
@@ -96,7 +79,6 @@ Secret menu hack [totmejan only] (I couldn't find official way to enter, so it's
 #include "video/seibu_crtc.h"
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 class goodejan_state : public driver_device
@@ -117,36 +99,21 @@ public:
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
 
-<<<<<<< HEAD
-	required_shared_ptr<UINT16> m_sc0_vram;
-	required_shared_ptr<UINT16> m_sc1_vram;
-	required_shared_ptr<UINT16> m_sc2_vram;
-	required_shared_ptr<UINT16> m_sc3_vram;
-	required_shared_ptr<UINT16> m_spriteram16;
-=======
 	required_shared_ptr<uint16_t> m_sc0_vram;
 	required_shared_ptr<uint16_t> m_sc1_vram;
 	required_shared_ptr<uint16_t> m_sc2_vram;
 	required_shared_ptr<uint16_t> m_sc3_vram;
 	required_shared_ptr<uint16_t> m_spriteram16;
->>>>>>> upstream/master
 
 	tilemap_t *m_sc0_tilemap;
 	tilemap_t *m_sc1_tilemap;
 	tilemap_t *m_sc2_tilemap;
 	tilemap_t *m_sc3_tilemap;
 
-<<<<<<< HEAD
-	UINT16 m_mux_data;
-	UINT16 m_seibucrtc_sc0bank;
-	UINT16 m_layer_en;
-	UINT16 m_scrollram[6];
-=======
 	uint16_t m_mux_data;
 	uint16_t m_seibucrtc_sc0bank;
 	uint16_t m_layer_en;
 	uint16_t m_scrollram[6];
->>>>>>> upstream/master
 
 	DECLARE_WRITE16_MEMBER(gfxbank_w);
 	DECLARE_READ16_MEMBER(mahjong_panel_r);
@@ -165,17 +132,10 @@ public:
 
 	INTERRUPT_GEN_MEMBER(irq);
 
-<<<<<<< HEAD
-	void seibucrtc_sc0bank_w(UINT16 data);
-	void draw_sprites(bitmap_ind16 &bitmap,const rectangle &cliprect,int pri);
-	virtual void video_start();
-	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	void seibucrtc_sc0bank_w(uint16_t data);
 	void draw_sprites(bitmap_ind16 &bitmap,const rectangle &cliprect,int pri);
 	virtual void video_start() override;
 	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 };
 
 /*******************************
@@ -309,11 +269,7 @@ WRITE16_MEMBER( goodejan_state::seibucrtc_sc3vram_w )
 	m_sc3_tilemap->mark_tile_dirty(offset);
 }
 
-<<<<<<< HEAD
-void goodejan_state::seibucrtc_sc0bank_w(UINT16 data)
-=======
 void goodejan_state::seibucrtc_sc0bank_w(uint16_t data)
->>>>>>> upstream/master
 {
 	m_seibucrtc_sc0bank = data & 1;
 	m_sc0_tilemap->mark_all_dirty();
@@ -397,17 +353,10 @@ void goodejan_state::draw_sprites(bitmap_ind16 &bitmap,const rectangle &cliprect
 
 void goodejan_state::video_start()
 {
-<<<<<<< HEAD
-	m_sc0_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(goodejan_state::seibucrtc_sc0_tile_info),this),TILEMAP_SCAN_ROWS,16,16,32,32);
-	m_sc2_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(goodejan_state::seibucrtc_sc2_tile_info),this),TILEMAP_SCAN_ROWS,16,16,32,32);
-	m_sc1_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(goodejan_state::seibucrtc_sc1_tile_info),this),TILEMAP_SCAN_ROWS,16,16,32,32);
-	m_sc3_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(goodejan_state::seibucrtc_sc3_tile_info),this),TILEMAP_SCAN_ROWS,8,8,32,32);
-=======
 	m_sc0_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(goodejan_state::seibucrtc_sc0_tile_info),this),TILEMAP_SCAN_ROWS,16,16,32,32);
 	m_sc2_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(goodejan_state::seibucrtc_sc2_tile_info),this),TILEMAP_SCAN_ROWS,16,16,32,32);
 	m_sc1_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(goodejan_state::seibucrtc_sc1_tile_info),this),TILEMAP_SCAN_ROWS,16,16,32,32);
 	m_sc3_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(goodejan_state::seibucrtc_sc3_tile_info),this),TILEMAP_SCAN_ROWS,8,8,32,32);
->>>>>>> upstream/master
 
 	m_sc2_tilemap->set_transparent_pen(15);
 	m_sc1_tilemap->set_transparent_pen(15);
@@ -421,11 +370,7 @@ void goodejan_state::video_start()
 	save_item(NAME(m_scrollram));
 }
 
-<<<<<<< HEAD
-UINT32 goodejan_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t goodejan_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	bitmap.fill(m_palette->pen(0x7ff), cliprect); //black pen
 
@@ -464,11 +409,7 @@ WRITE16_MEMBER(goodejan_state::gfxbank_w)
 /* Multiplexer device for the mahjong panel */
 READ16_MEMBER(goodejan_state::mahjong_panel_r)
 {
-<<<<<<< HEAD
-	UINT16 ret;
-=======
 	uint16_t ret;
->>>>>>> upstream/master
 	ret = 0xffff;
 
 	switch(m_mux_data)
@@ -509,11 +450,7 @@ static ADDRESS_MAP_START( common_io_map, AS_IO, 16, goodejan_state )
 	AM_RANGE(0xc000, 0xc001) AM_READ_PORT("DSW1")
 	AM_RANGE(0xc002, 0xc003) AM_READ(mahjong_panel_r)
 	AM_RANGE(0xc004, 0xc005) AM_READ_PORT("DSW2") // switches
-<<<<<<< HEAD
-	AM_RANGE(0xd000, 0xd00f) AM_DEVREADWRITE("seibu_sound", seibu_sound_device, main_word_r, main_word_w)
-=======
 	AM_RANGE(0xd000, 0xd00f) AM_DEVREADWRITE8("seibu_sound", seibu_sound_device, main_r, main_w, 0x00ff)
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( totmejan_io_map, AS_IO, 16, goodejan_state )
@@ -522,11 +459,7 @@ static ADDRESS_MAP_START( totmejan_io_map, AS_IO, 16, goodejan_state )
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( goodejan_io_map, AS_IO, 16, goodejan_state )
-<<<<<<< HEAD
-	AM_RANGE(0x8000, 0x807f) AM_DEVREADWRITE("crtc", seibu_crtc_device, read_xor, write_xor)
-=======
 	AM_RANGE(0x8000, 0x807f) AM_DEVREADWRITE_MOD("crtc", seibu_crtc_device, read, write, xor<0x20>)
->>>>>>> upstream/master
 	AM_IMPORT_FROM(common_io_map)
 ADDRESS_MAP_END
 
@@ -697,11 +630,7 @@ WRITE16_MEMBER( goodejan_state::layer_scroll_w )
 
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( goodejan, goodejan_state )
-=======
 static MACHINE_CONFIG_START( goodejan )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", V30, GOODEJAN_MHZ2/2)
@@ -709,12 +638,8 @@ static MACHINE_CONFIG_START( goodejan )
 	MCFG_CPU_IO_MAP(goodejan_io_map)
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", goodejan_state, irq)
 
-<<<<<<< HEAD
-	SEIBU_SOUND_SYSTEM_CPU(GOODEJAN_MHZ1/2)
-=======
 	MCFG_CPU_ADD("audiocpu", Z80, GOODEJAN_MHZ1/2)
 	MCFG_CPU_PROGRAM_MAP(seibu_sound_map)
->>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
@@ -734,9 +659,6 @@ static MACHINE_CONFIG_START( goodejan )
 	MCFG_PALETTE_FORMAT(xxxxBBBBGGGGRRRR)
 
 	/* sound hardware */
-<<<<<<< HEAD
-	SEIBU_SOUND_SYSTEM_YM3812_INTERFACE(GOODEJAN_MHZ1/2,GOODEJAN_MHZ2/16)
-=======
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
 	MCFG_SOUND_ADD("ymsnd", YM3812, GOODEJAN_MHZ1/2)
@@ -751,7 +673,6 @@ static MACHINE_CONFIG_START( goodejan )
 	MCFG_SEIBU_SOUND_ROMBANK("seibu_bank1")
 	MCFG_SEIBU_SOUND_YM_READ_CB(DEVREAD8("ymsnd", ym3812_device, read))
 	MCFG_SEIBU_SOUND_YM_WRITE_CB(DEVWRITE8("ymsnd", ym3812_device, write))
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_DERIVED( totmejan, goodejan )
@@ -767,11 +688,7 @@ ROM_START( totmejan )
 	ROM_REGION( 0x20000, "audiocpu", 0 ) /* 64k code for sound Z80 */
 	ROM_LOAD( "5.1016", 0x000000, 0x08000,  CRC(8bfdb304) SHA1(454fd84eb7d9338f0b5f8de0ffae541d17b958d5) )
 	ROM_CONTINUE(             0x010000, 0x08000 )
-<<<<<<< HEAD
-	ROM_COPY( "audiocpu", 0, 0x018000, 0x08000 )
-=======
 	ROM_COPY( "audiocpu", 0x0000, 0x018000, 0x08000 )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x080000, "spr_gfx", 0 )
 	ROM_LOAD( "e-jan.078", 0x000000, 0x080000, CRC(ff9ee9d8) SHA1(5e49e9a666630ca9867ee96b9d2b8d6f503b25df) )
@@ -791,11 +708,7 @@ ROM_START( totmejan )
 	ROM_REGION( 0x80000, "oki", 0 )  /* ADPCM samples */
 	ROM_LOAD( "e-jan.0911", 0x00000, 0x80000, CRC(a7fb93c2) SHA1(c2e1300f142032c087c96e1a785af28a6d678947) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x200, "user1", 0 ) /* not used */
-=======
 	ROM_REGION( 0x100, "proms", 0 ) /* not used */
->>>>>>> upstream/master
 	ROM_LOAD( "fmj08.083", 0x000, 0x100, CRC(9657b7ad) SHA1(e9b469c2b3534593f7fe0ea19cbbf93b55957e42) )
 ROM_END
 
@@ -807,11 +720,7 @@ ROM_START( goodejan )
 	ROM_REGION( 0x20000, "audiocpu", 0 ) /* 64k code for sound Z80 */
 	ROM_LOAD( "5.1016", 0x000000, 0x08000,  CRC(732e9eae) SHA1(d306610f08630708bbbb97d71e9ed4d7e027579a) )
 	ROM_CONTINUE(             0x010000, 0x08000 )
-<<<<<<< HEAD
-	ROM_COPY( "audiocpu", 0, 0x018000, 0x08000 )
-=======
 	ROM_COPY( "audiocpu", 0x0000, 0x018000, 0x08000 )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x080000, "spr_gfx", 0 )
 	ROM_LOAD( "e_jan2obj.078", 0x000000, 0x080000, CRC(0f892ef2) SHA1(188ae43db1c48fb6870aa45c64718e901831499b) )
@@ -831,11 +740,7 @@ ROM_START( goodejan )
 	ROM_REGION( 0x80000, "oki", 0 )  /* ADPCM samples */
 	ROM_LOAD( "e-jan.911", 0x00000, 0x80000, CRC(6d2cbc35) SHA1(61f47e2a94b8877906224f46d8301a26a0b9e55f) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x200, "user1", 0 ) /* not used */
-=======
 	ROM_REGION( 0x100, "proms", 0 ) /* not used */
->>>>>>> upstream/master
 	ROM_LOAD( "fmj08.083", 0x000, 0x100, CRC(9657b7ad) SHA1(e9b469c2b3534593f7fe0ea19cbbf93b55957e42) )
 ROM_END
 
@@ -847,11 +752,7 @@ ROM_START( goodejana )
 	ROM_REGION( 0x20000, "audiocpu", 0 ) /* 64k code for sound Z80 */
 	ROM_LOAD( "5.1016", 0x000000, 0x08000,  CRC(732e9eae) SHA1(d306610f08630708bbbb97d71e9ed4d7e027579a) )
 	ROM_CONTINUE(             0x010000, 0x08000 )
-<<<<<<< HEAD
-	ROM_COPY( "audiocpu", 0, 0x018000, 0x08000 )
-=======
 	ROM_COPY( "audiocpu", 0x0000, 0x018000, 0x08000 )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x080000, "spr_gfx", 0 )
 	ROM_LOAD( "e_jan2obj.078", 0x000000, 0x080000, CRC(0f892ef2) SHA1(188ae43db1c48fb6870aa45c64718e901831499b) )
@@ -871,15 +772,6 @@ ROM_START( goodejana )
 	ROM_REGION( 0x80000, "oki", 0 )  /* ADPCM samples */
 	ROM_LOAD( "e-jan.911", 0x00000, 0x80000, CRC(6d2cbc35) SHA1(61f47e2a94b8877906224f46d8301a26a0b9e55f) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x200, "user1", 0 ) /* not used */
-	ROM_LOAD( "fmj08.083", 0x000, 0x100, CRC(9657b7ad) SHA1(e9b469c2b3534593f7fe0ea19cbbf93b55957e42) )
-ROM_END
-
-GAME( 1991, totmejan, 0,        totmejan, goodejan, driver_device, 0, ROT0, "Seibu Kaihatsu (Tecmo license)", "Tottemo E Jong", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
-GAME( 1991, goodejan, 0,        goodejan, goodejan, driver_device, 0, ROT0, "Seibu Kaihatsu (Tecmo license)", "Good E Jong -Kachinuki Mahjong Syoukin Oh!!- (set 1)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
-GAME( 1991, goodejana,goodejan, goodejan, goodejan, driver_device, 0, ROT0, "Seibu Kaihatsu (Tecmo license)", "Good E Jong -Kachinuki Mahjong Syoukin Oh!!- (set 2)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
-=======
 	ROM_REGION( 0x100, "proms", 0 ) /* not used */
 	ROM_LOAD( "fmj08.083", 0x000, 0x100, CRC(9657b7ad) SHA1(e9b469c2b3534593f7fe0ea19cbbf93b55957e42) )
 ROM_END
@@ -887,4 +779,3 @@ ROM_END
 GAME( 1991, totmejan, 0,        totmejan, goodejan, goodejan_state, 0, ROT0, "Seibu Kaihatsu (Tecmo license)", "Tottemo E Jong",                                       MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
 GAME( 1991, goodejan, 0,        goodejan, goodejan, goodejan_state, 0, ROT0, "Seibu Kaihatsu (Tecmo license)", "Good E Jong -Kachinuki Mahjong Syoukin Oh!!- (set 1)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
 GAME( 1991, goodejana,goodejan, goodejan, goodejan, goodejan_state, 0, ROT0, "Seibu Kaihatsu (Tecmo license)", "Good E Jong -Kachinuki Mahjong Syoukin Oh!!- (set 2)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

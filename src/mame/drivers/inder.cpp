@@ -28,17 +28,6 @@
 
 ********************************************************************************************************/
 
-<<<<<<< HEAD
-#include "machine/genpin.h"
-#include "cpu/z80/z80.h"
-#include "machine/i8255.h"
-#include "sound/sn76496.h"
-#include "sound/ay8910.h"
-#include "sound/msm5205.h"
-#include "machine/7474.h"
-#include "inder.lh"
-
-=======
 #include "emu.h"
 #include "machine/genpin.h"
 
@@ -54,7 +43,6 @@
 #include "inder.lh"
 
 
->>>>>>> upstream/master
 class inder_state : public genpin_class
 {
 public:
@@ -67,12 +55,8 @@ public:
 		, m_7a(*this, "7a")
 		, m_9a(*this, "9a")
 		, m_9b(*this, "9b")
-<<<<<<< HEAD
-		, m_switches(*this, "SW")
-=======
 		, m_13(*this, "13")
 		, m_switches(*this, "SW.%u", 0)
->>>>>>> upstream/master
 	{ }
 
 	DECLARE_READ8_MEMBER(ppic_r);
@@ -93,28 +77,12 @@ public:
 	DECLARE_WRITE8_MEMBER(sndcmd_lapbylap_w);
 	DECLARE_WRITE8_MEMBER(lamp_w) { };
 	DECLARE_WRITE8_MEMBER(disp_w);
-<<<<<<< HEAD
-	DECLARE_WRITE_LINE_MEMBER(vck_w);
-=======
->>>>>>> upstream/master
 	DECLARE_WRITE_LINE_MEMBER(qc7a_w);
 	DECLARE_WRITE_LINE_MEMBER(q9a_w);
 	DECLARE_WRITE_LINE_MEMBER(qc9b_w);
 	DECLARE_DRIVER_INIT(inder);
 	DECLARE_DRIVER_INIT(inder1);
 private:
-<<<<<<< HEAD
-	bool m_pc0;
-	UINT8 m_game;
-	UINT8 m_portc;
-	UINT8 m_row;
-	UINT8 m_segment[8];
-	UINT8 m_sndcmd;
-	UINT8 m_sndbank;
-	UINT32 m_sound_addr;
-	UINT8 *m_p_speech;
-	virtual void machine_reset();
-=======
 	void update_mus();
 	bool m_pc0;
 	uint8_t m_game;
@@ -126,7 +94,6 @@ private:
 	uint32_t m_sound_addr;
 	uint8_t *m_p_speech;
 	virtual void machine_reset() override;
->>>>>>> upstream/master
 	required_device<cpu_device> m_maincpu;
 	optional_device<cpu_device> m_audiocpu;
 	optional_device<sn76489_device> m_sn;
@@ -134,10 +101,7 @@ private:
 	optional_device<ttl7474_device> m_7a;
 	optional_device<ttl7474_device> m_9a;
 	optional_device<ttl7474_device> m_9b;
-<<<<<<< HEAD
-=======
 	optional_device<hct157_device> m_13;
->>>>>>> upstream/master
 	required_ioport_array<11> m_switches;
 };
 
@@ -1181,24 +1145,6 @@ WRITE8_MEMBER( inder_state::sol_brvteam_w )
 {
 	if ((data & 0xee) && BIT(data, 4)) // solenoid selected & activated
 	{
-<<<<<<< HEAD
-		if BIT(data, 1)
-			m_samples->start(0, 7); // left sling near bumpers "canon izq"
-
-		if BIT(data, 2)
-			m_samples->start(1, 7); // right sling near bumpers "canon der"
-
-		if BIT(data, 3)
-			m_samples->start(0, 5); // outhole
-
-		if BIT(data, 5)
-			m_samples->start(2, 0); // left bumper
-
-		if BIT(data, 6)
-			m_samples->start(3, 0); // right bumper
-
-		if BIT(data, 7)
-=======
 		if (BIT(data, 1))
 			m_samples->start(0, 7); // left sling near bumpers "canon izq"
 
@@ -1215,7 +1161,6 @@ WRITE8_MEMBER( inder_state::sol_brvteam_w )
 			m_samples->start(3, 0); // right bumper
 
 		if (BIT(data, 7))
->>>>>>> upstream/master
 			m_samples->start(4, 0); // middle bumper
 	}
 }
@@ -1225,18 +1170,6 @@ WRITE8_MEMBER( inder_state::sol_canasta_w )
 {
 	if ((data & 0xee) && BIT(data, 4)) // solenoid selected & activated
 	{
-<<<<<<< HEAD
-		if BIT(data, 3)
-			m_samples->start(0, 5); // outhole
-
-		if BIT(data, 5)
-			m_samples->start(2, 0); // left bumper
-
-		if BIT(data, 6)
-			m_samples->start(3, 0); // right bumper
-
-		if BIT(data, 7)
-=======
 		if (BIT(data, 3))
 			m_samples->start(0, 5); // outhole
 
@@ -1247,18 +1180,13 @@ WRITE8_MEMBER( inder_state::sol_canasta_w )
 			m_samples->start(3, 0); // right bumper
 
 		if (BIT(data, 7))
->>>>>>> upstream/master
 			m_samples->start(4, 0); // middle bumper
 	}
 }
 
 WRITE8_MEMBER( inder_state::disp_w )
 {
-<<<<<<< HEAD
-	UINT8 i;
-=======
 	uint8_t i;
->>>>>>> upstream/master
 	if (offset < 8)
 		m_segment[offset] = data;
 	else
@@ -1267,24 +1195,15 @@ WRITE8_MEMBER( inder_state::disp_w )
 	{
 		offset = (offset >> 3) & 7;
 		for (i = 0; i < 5; i++)
-<<<<<<< HEAD
-			output_set_digit_value(i*10+offset, m_segment[i]);
-=======
 			output().set_digit_value(i*10+offset, m_segment[i]);
->>>>>>> upstream/master
 	}
 }
 
 WRITE8_MEMBER( inder_state::ppi60a_w )
 {
 	if (data)
-<<<<<<< HEAD
-		for (UINT8 i = 0; i < 8; i++)
-			if BIT(data, i)
-=======
 		for (uint8_t i = 0; i < 8; i++)
 			if (BIT(data, i))
->>>>>>> upstream/master
 				m_row = i;
 }
 
@@ -1292,38 +1211,23 @@ WRITE8_MEMBER( inder_state::ppi60a_w )
 WRITE8_MEMBER( inder_state::ppi60b_w )
 {
 	if (data & 7)
-<<<<<<< HEAD
-		for (UINT8 i = 0; i < 3; i++)
-			if BIT(data, i)
-=======
 		for (uint8_t i = 0; i < 3; i++)
 			if (BIT(data, i))
->>>>>>> upstream/master
 				m_row = i+8;
 }
 
 WRITE8_MEMBER( inder_state::ppi64c_w )
 {
-<<<<<<< HEAD
-	UINT8 i;
-	data &= 15;
-	if BIT(data, 3) // 8 to 15
-=======
 	uint8_t i;
 	data &= 15;
 	if (BIT(data, 3)) // 8 to 15)
->>>>>>> upstream/master
 	{
 		data ^= 15; // now 7 to 0
 		for (i = 0; i < 5; i++)
 		{
 			if ((m_game==1) && (i == 4))  // mundial,clown,250cc,atleta have credit and ball displays swapped
 				data ^= 4;
-<<<<<<< HEAD
-			output_set_digit_value(i*10+data, m_segment[i]);
-=======
 			output().set_digit_value(i*10+data, m_segment[i]);
->>>>>>> upstream/master
 		}
 	}
 }
@@ -1331,35 +1235,11 @@ WRITE8_MEMBER( inder_state::ppi64c_w )
 WRITE8_MEMBER( inder_state::sndbank_w )
 {
 	m_sndbank = data;
-<<<<<<< HEAD
-	UINT8 i;
-=======
 	uint8_t i;
->>>>>>> upstream/master
 	// look for last rom enabled
 	for (i = 0; i < 4; i++)
 		if (!(BIT(data, i)))
 			m_sound_addr = (m_sound_addr & 0x0ffff) | (i << 16);
-<<<<<<< HEAD
-}
-
-WRITE_LINE_MEMBER( inder_state::vck_w )
-{
-	m_9a->clock_w(0);
-	m_9b->clock_w(0);
-	m_9a->clock_w(1);
-	m_9b->clock_w(1);
-
-	if ((m_sound_addr < 0x40000) && (m_sndbank != 0xff))
-	{
-		if (!m_pc0)
-			m_msm->data_w(m_p_speech[m_sound_addr] & 15);
-		else
-			m_msm->data_w(m_p_speech[m_sound_addr] >> 4);
-	}
-	else
-		m_msm->data_w(0);
-=======
 	update_mus();
 }
 
@@ -1369,7 +1249,6 @@ void inder_state::update_mus()
 		m_13->ba_w(m_p_speech[m_sound_addr]);
 	else
 		m_13->ba_w(0);
->>>>>>> upstream/master
 }
 
 WRITE_LINE_MEMBER( inder_state::qc7a_w )
@@ -1388,10 +1267,7 @@ WRITE_LINE_MEMBER( inder_state::qc9b_w )
 {
 	m_9a->d_w(state);
 	m_9b->d_w(state);
-<<<<<<< HEAD
-=======
 	m_13->select_w(state);
->>>>>>> upstream/master
 }
 
 READ8_MEMBER( inder_state::ppic_r )
@@ -1402,30 +1278,20 @@ READ8_MEMBER( inder_state::ppic_r )
 WRITE8_MEMBER( inder_state::ppia_w )
 {
 	m_sound_addr = (m_sound_addr & 0x3ff00) | data;
-<<<<<<< HEAD
-=======
 	update_mus();
->>>>>>> upstream/master
 }
 
 WRITE8_MEMBER( inder_state::ppib_w )
 {
 	m_sound_addr = (m_sound_addr & 0x300ff) | (data << 8);
-<<<<<<< HEAD
-=======
 	update_mus();
->>>>>>> upstream/master
 }
 
 WRITE8_MEMBER( inder_state::ppic_w )
 {
 	// pc4 - READY line back to cpu board, but not used
 	if (BIT(data, 5) != BIT(m_portc, 5))
-<<<<<<< HEAD
-		m_msm->set_prescaler_selector(m_msm, BIT(data, 5) ? MSM5205_S48_4B : MSM5205_S96_4B); // S1 pin
-=======
 		m_msm->set_prescaler_selector(*m_msm, BIT(data, 5) ? msm5205_device::S48_4B : msm5205_device::S96_4B); // S1 pin
->>>>>>> upstream/master
 	m_7a->clock_w(BIT(data, 6));
 	m_7a->preset_w(!BIT(data, 7));
 	m_9a->preset_w(!BIT(data, 7));
@@ -1438,26 +1304,17 @@ void inder_state::machine_reset()
 	m_sound_addr = 0;
 	m_sndbank = 0xff;
 	m_row = 0;
-<<<<<<< HEAD
-	if (m_7a)
-		m_7a->clear_w(1);
-=======
 	if (m_7a.found())
 	{
 		m_7a->clear_w(1);
 		update_mus();
 	}
->>>>>>> upstream/master
 }
 
 DRIVER_INIT_MEMBER( inder_state, inder )
 {
 	m_p_speech = memregion("speech")->base();
-<<<<<<< HEAD
-	if (m_7a)
-=======
 	if (m_7a.found())
->>>>>>> upstream/master
 	{
 		m_7a->d_w(0);
 		m_7a->clear_w(0);
@@ -1469,11 +1326,7 @@ DRIVER_INIT_MEMBER( inder_state, inder )
 DRIVER_INIT_MEMBER( inder_state, inder1 )
 {
 	m_p_speech = memregion("speech")->base();
-<<<<<<< HEAD
-	if (m_7a)
-=======
 	if (m_7a.found())
->>>>>>> upstream/master
 	{
 		m_7a->d_w(0);
 		m_7a->clear_w(0);
@@ -1482,11 +1335,7 @@ DRIVER_INIT_MEMBER( inder_state, inder1 )
 	m_game = 1;
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( brvteam, inder_state )
-=======
 static MACHINE_CONFIG_START( brvteam )
->>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, XTAL_5MHz / 2)
 	MCFG_CPU_PROGRAM_MAP(brvteam_map)
@@ -1504,11 +1353,7 @@ static MACHINE_CONFIG_START( brvteam )
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "snvol", 2.0)
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( canasta, inder_state )
-=======
 static MACHINE_CONFIG_START( canasta )
->>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, XTAL_5MHz / 2)
 	MCFG_CPU_PROGRAM_MAP(canasta_map)
@@ -1526,11 +1371,7 @@ static MACHINE_CONFIG_START( canasta )
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "ayvol", 1.0)
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( lapbylap, inder_state )
-=======
 static MACHINE_CONFIG_START( lapbylap )
->>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, XTAL_5MHz / 2)
 	MCFG_CPU_PROGRAM_MAP(lapbylap_map)
@@ -1554,11 +1395,7 @@ static MACHINE_CONFIG_START( lapbylap )
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "ayvol", 1.0)
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( inder, inder_state )
-=======
 static MACHINE_CONFIG_START( inder )
->>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, XTAL_5MHz / 2)
 	MCFG_CPU_PROGRAM_MAP(inder_map)
@@ -1576,15 +1413,10 @@ static MACHINE_CONFIG_START( inder )
 	MCFG_FRAGMENT_ADD( genpin_audio )
 	MCFG_SPEAKER_STANDARD_MONO("msmvol")
 	MCFG_SOUND_ADD("msm", MSM5205, XTAL_384kHz)
-<<<<<<< HEAD
-	MCFG_MSM5205_VCLK_CB(WRITELINE(inder_state, vck_w))
-	MCFG_MSM5205_PRESCALER_SELECTOR(MSM5205_S48_4B)      /* 4KHz 4-bit */
-=======
 	MCFG_MSM5205_VCK_CALLBACK(DEVWRITELINE("9a", ttl7474_device, clock_w))
 	MCFG_DEVCB_CHAIN_OUTPUT(DEVWRITELINE("9b", ttl7474_device, clock_w)) // order of writes is sensitive
 
 	MCFG_MSM5205_PRESCALER_SELECTOR(S48_4B)      /* 4KHz 4-bit */
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "msmvol", 1.0)
 
 	/* Devices */
@@ -1631,13 +1463,6 @@ static MACHINE_CONFIG_START( inder )
 	MCFG_DEVICE_ADD("7a", TTL7474, 0)
 	MCFG_7474_COMP_OUTPUT_CB(WRITELINE(inder_state, qc7a_w))
 
-<<<<<<< HEAD
-	MCFG_DEVICE_ADD("9a", TTL7474, 0)
-	MCFG_7474_OUTPUT_CB(WRITELINE(inder_state, q9a_w))
-
-	MCFG_DEVICE_ADD("9b", TTL7474, 0)
-	MCFG_7474_COMP_OUTPUT_CB(WRITELINE(inder_state, qc9b_w))
-=======
 	MCFG_DEVICE_ADD("9a", TTL7474, 0) // HCT74
 	MCFG_7474_OUTPUT_CB(WRITELINE(inder_state, q9a_w))
 
@@ -1646,7 +1471,6 @@ static MACHINE_CONFIG_START( inder )
 
 	MCFG_DEVICE_ADD("13", HCT157, 0)
 	MCFG_74157_OUT_CB(DEVWRITE8("msm", msm5205_device, data_w))
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
@@ -1802,32 +1626,11 @@ ROM_START(metalman)
 
 	ROM_REGION(0x80000, "user2", 0)
 	ROM_LOAD("sound_m2.bin", 0x00000, 0x20000, CRC(349df1fe) SHA1(47e7ddbdc398396e40bb5340e5edcb8baf06c255))
-<<<<<<< HEAD
-	ROM_LOAD("sound_m3.bin", 0x40000, 0x20000, CRC(4d9f5ed2) SHA1(bc6b7c70369c25eddddac5304497f30cee7675d4))
-=======
 	ROM_LOAD("sound_m3.bin", 0x40000, 0x20000, CRC(15ef1866) SHA1(4ffa3b29bf3c30a9a5bc622adde16a1a13833b22))
->>>>>>> upstream/master
 ROM_END
 
 
 // old cpu board, 6 digits, sn76489
-<<<<<<< HEAD
-GAME(1985,  brvteam,    0,    brvteam,  brvteam,  driver_device, 0,    ROT0, "Inder", "Brave Team",         MACHINE_MECHANICAL)
-
-// old cpu board, 7 digits, ay8910
-GAME(1986,  canasta,    0,    canasta,  canasta,  driver_device, 0,    ROT0, "Inder", "Canasta '86'",       MACHINE_MECHANICAL)
-
-// old cpu board, 7 digits, sound cpu with 2x ay8910
-GAME(1986,  lapbylap,   0,    lapbylap, lapbylap, driver_device, 0,    ROT0, "Inder", "Lap By Lap",         MACHINE_MECHANICAL)
-
-// new cpu board, sound board with msm5205
-GAME(1987,  pinmoonl,   0,    inder,    pinmoonl, inder_state, inder,  ROT0, "Inder", "Moon Light (Inder)", MACHINE_MECHANICAL)
-GAME(1988,  pinclown,   0,    inder,    pinclown, inder_state, inder1, ROT0, "Inder", "Clown (Inder)",      MACHINE_MECHANICAL)
-GAME(1989,  corsario,   0,    inder,    corsario, inder_state, inder1, ROT0, "Inder", "Corsario",           MACHINE_MECHANICAL)
-GAME(1990,  mundial,    0,    inder,    mundial,  inder_state, inder1, ROT0, "Inder", "Mundial 90",         MACHINE_MECHANICAL)
-GAME(1991,  atleta,     0,    inder,    atleta,   inder_state, inder1, ROT0, "Inder", "Atleta",             MACHINE_MECHANICAL)
-GAME(1992,  ind250cc,   0,    inder,    ind250cc, inder_state, inder1, ROT0, "Inder", "250 CC",             MACHINE_MECHANICAL)
-=======
 GAME(1985,  brvteam,    0,    brvteam,  brvteam,  inder_state, 0,      ROT0, "Inder", "Brave Team",         MACHINE_MECHANICAL | MACHINE_NOT_WORKING )
 
 // old cpu board, 7 digits, ay8910
@@ -1843,7 +1646,6 @@ GAME(1989,  corsario,   0,    inder,    corsario, inder_state, inder1, ROT0, "In
 GAME(1990,  mundial,    0,    inder,    mundial,  inder_state, inder1, ROT0, "Inder", "Mundial 90",         MACHINE_MECHANICAL | MACHINE_NOT_WORKING )
 GAME(1991,  atleta,     0,    inder,    atleta,   inder_state, inder1, ROT0, "Inder", "Atleta",             MACHINE_MECHANICAL | MACHINE_NOT_WORKING )
 GAME(1992,  ind250cc,   0,    inder,    ind250cc, inder_state, inder1, ROT0, "Inder", "250 CC",             MACHINE_MECHANICAL | MACHINE_NOT_WORKING )
->>>>>>> upstream/master
 
 // new cpu board, later revision of msm5205 sound board
 GAME(1992,  metalman,   0,    inder,    metalman, inder_state, inder,  ROT0, "Inder", "Metal Man",          MACHINE_IS_SKELETON_MECHANICAL)

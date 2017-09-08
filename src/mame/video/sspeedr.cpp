@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-// license:???
-=======
 // license:BSD-3-Clause
->>>>>>> upstream/master
 // copyright-holders:Stefan Jokisch
 /***************************************************************************
 
@@ -88,11 +84,7 @@ WRITE8_MEMBER(sspeedr_state::sspeedr_track_ice_w)
 
 void sspeedr_state::draw_track(bitmap_ind16 &bitmap)
 {
-<<<<<<< HEAD
-	const UINT8* p = memregion("gfx3")->base();
-=======
 	const uint8_t* p = memregion("gfx3")->base();
->>>>>>> upstream/master
 
 	int x;
 	int y;
@@ -180,11 +172,7 @@ void sspeedr_state::draw_track(bitmap_ind16 &bitmap)
 
 void sspeedr_state::draw_drones(bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
-<<<<<<< HEAD
-	static const UINT8 code[6] =
-=======
 	static const uint8_t code[6] =
->>>>>>> upstream/master
 	{
 		0xf, 0x4, 0x3, 0x9, 0x7, 0xc
 	};
@@ -256,11 +244,7 @@ void sspeedr_state::video_start()
 }
 
 
-<<<<<<< HEAD
-UINT32 sspeedr_state::screen_update_sspeedr(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t sspeedr_state::screen_update_sspeedr(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	draw_track(bitmap);
 	draw_drones(bitmap, cliprect);
@@ -269,11 +253,7 @@ uint32_t sspeedr_state::screen_update_sspeedr(screen_device &screen, bitmap_ind1
 }
 
 
-<<<<<<< HEAD
-void sspeedr_state::screen_eof_sspeedr(screen_device &screen, bool state)
-=======
 WRITE_LINE_MEMBER(sspeedr_state::screen_vblank_sspeedr)
->>>>>>> upstream/master
 {
 	// rising edge
 	if (state)

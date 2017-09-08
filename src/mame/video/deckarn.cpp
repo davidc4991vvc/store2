@@ -12,22 +12,12 @@ void deco_karnovsprites_device::set_gfx_region(device_t &device, int region)
 	dev.m_gfxregion = region;
 }
 
-<<<<<<< HEAD
-const device_type DECO_KARNOVSPRITES = &device_creator<deco_karnovsprites_device>;
-
-deco_karnovsprites_device::deco_karnovsprites_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, DECO_KARNOVSPRITES, "DECO Karnov Sprites", tag, owner, clock, "deco_karnovsprites", __FILE__),
-		m_gfxregion(0),
-		m_gfxdecode(*this),
-		m_palette(*this)
-=======
 DEFINE_DEVICE_TYPE(DECO_KARNOVSPRITES, deco_karnovsprites_device, "deco_karnovsprites", "DECO Karnov Sprites")
 
 deco_karnovsprites_device::deco_karnovsprites_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, DECO_KARNOVSPRITES, tag, owner, clock)
 	, m_gfxregion(0)
 	, m_gfxdecode(*this, finder_base::DUMMY_TAG)
->>>>>>> upstream/master
 {
 }
 
@@ -49,11 +39,7 @@ void deco_karnovsprites_device::device_reset()
 {
 }
 
-<<<<<<< HEAD
-void deco_karnovsprites_device::draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect, UINT16* spriteram, int size, int priority )
-=======
 void deco_karnovsprites_device::draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect, uint16_t* spriteram, int size, int priority )
->>>>>>> upstream/master
 {
 	int offs;
 
@@ -125,16 +111,3 @@ void deco_karnovsprites_device::draw_sprites( bitmap_ind16 &bitmap, const rectan
 				colour,fx,fy,x,y+16,0);
 	}
 }
-<<<<<<< HEAD
-
-//-------------------------------------------------
-//  static_set_palette_tag: Set the tag of the
-//  palette device
-//-------------------------------------------------
-
-void deco_karnovsprites_device::static_set_palette_tag(device_t &device, const char *tag)
-{
-	downcast<deco_karnovsprites_device &>(device).m_palette.set_tag(tag);
-}
-=======
->>>>>>> upstream/master

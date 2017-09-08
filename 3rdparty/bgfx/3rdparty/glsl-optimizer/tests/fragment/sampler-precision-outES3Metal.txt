@@ -1,8 +1,5 @@
 #include <metal_stdlib>
-<<<<<<< HEAD
-=======
 #pragma clang diagnostic ignored "-Wparentheses-equality"
->>>>>>> upstream/master
 using namespace metal;
 struct xlatMtlShaderInput {
   float4 varUV;
@@ -21,23 +18,6 @@ fragment xlatMtlShaderOutput xlatMtlMain (xlatMtlShaderInput _mtl_i [[stage_in]]
   ,   texturecube<float> cubehigh [[texture(5)]], sampler _mtlsmp_cubehigh [[sampler(5)]])
 {
   xlatMtlShaderOutput _mtl_o;
-<<<<<<< HEAD
-  half4 c_1;
-  half4 tmpvar_2;
-  tmpvar_2 = texlow.sample(_mtlsmp_texlow, (float2)(_mtl_i.varUV.xy));
-  c_1 = tmpvar_2;
-  c_1 = (c_1 + texmed.sample(_mtlsmp_texmed, (float2)(_mtl_i.varUV.xy)));
-  float4 tmpvar_3;
-  tmpvar_3 = texhigh.sample(_mtlsmp_texhigh, (float2)(_mtl_i.varUV.xy));
-  c_1 = half4(((float4)c_1 + tmpvar_3));
-  half4 tmpvar_4;
-  tmpvar_4 = cubelow.sample(_mtlsmp_cubelow, (float3)(_mtl_i.varUV.xyz));
-  c_1 = (c_1 + tmpvar_4);
-  c_1 = (c_1 + cubemed.sample(_mtlsmp_cubemed, (float3)(_mtl_i.varUV.xyz)));
-  float4 tmpvar_5;
-  tmpvar_5 = cubehigh.sample(_mtlsmp_cubehigh, (float3)(_mtl_i.varUV.xyz));
-  c_1 = half4(((float4)c_1 + tmpvar_5));
-=======
   half4 c_1 = 0;
   half4 tmpvar_2 = 0;
   tmpvar_2 = texlow.sample(_mtlsmp_texlow, (float2)(_mtl_i.varUV.xy));
@@ -53,7 +33,6 @@ fragment xlatMtlShaderOutput xlatMtlMain (xlatMtlShaderInput _mtl_i [[stage_in]]
   float4 tmpvar_5 = 0;
   tmpvar_5 = cubehigh.sample(_mtlsmp_cubehigh, (float3)(_mtl_i.varUV.xyz));
   c_1 = half4(((float4)(c_1) + tmpvar_5));
->>>>>>> upstream/master
   _mtl_o._fragData = c_1;
   return _mtl_o;
 }

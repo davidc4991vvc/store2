@@ -2,41 +2,12 @@
 // copyright-holders:Peter Trauner
 #include "emu.h"
 #include "sidvoice.h"
-<<<<<<< HEAD
-=======
 
->>>>>>> upstream/master
 #include "sid.h"
 #include "sidenvel.h"
 #include "sidw6581.h"
 #include "sidw8580.h"
 
-<<<<<<< HEAD
-static UINT8 triangleTable[4096];
-static UINT8 sawtoothTable[4096];
-static UINT8 squareTable[2*4096];
-static const UINT8* waveform30;
-static const UINT8* waveform50;
-static const UINT8* waveform60;
-static const UINT8* waveform70;
-#if defined(LARGE_NOISE_TABLE)
-	static UINT8 noiseTableMSB[1<<8];
-	static UINT8 noiseTableLSB[1L<<16];
-#else
-	static UINT8 noiseTableMSB[1<<8];
-	static UINT8 noiseTableMID[1<<8];
-	static UINT8 noiseTableLSB[1<<8];
-#endif
-
-static INT8* ampMod1x8;
-
-static const UINT32 noiseSeed = 0x7ffff8;
-
-void sidInitMixerEngine(running_machine &machine)
-{
-	UINT16 uk;
-	INT32 si, sj    ;
-=======
 #include "sound/mos6581.h"
 
 
@@ -65,37 +36,24 @@ void sidInitMixerEngine(running_machine &machine)
 {
 	uint16_t uk;
 	int32_t si, sj    ;
->>>>>>> upstream/master
 
 	/* 8-bit volume modulation tables. */
 	float filterAmpl = 0.7f;
 
-<<<<<<< HEAD
-	ampMod1x8=auto_alloc_array(machine, INT8, 256*256);
-=======
 	ampMod1x8=std::make_unique<int8_t[]>(256*256);
->>>>>>> upstream/master
 
 	uk = 0;
 	for ( si = 0; si < 256; si++ )
 	{
 		for ( sj = -128; sj < 128; sj++, uk++ )
 		{
-<<<<<<< HEAD
-			ampMod1x8[uk] = (INT8)(((si*sj)/255)*filterAmpl);
-=======
 			ampMod1x8[uk] = (int8_t)(((si*sj)/255)*filterAmpl);
->>>>>>> upstream/master
 		}
 	}
 
 }
 
-<<<<<<< HEAD
-INLINE void waveAdvance(sidOperator* pVoice)
-=======
 static inline void waveAdvance(sidOperator* pVoice)
->>>>>>> upstream/master
 {
 #if defined(DIRECT_FIXPOINT)
 	pVoice->waveStep.l += pVoice->waveStepAdd.l;
@@ -109,11 +67,7 @@ static inline void waveAdvance(sidOperator* pVoice)
 #endif
 }
 
-<<<<<<< HEAD
-INLINE void noiseAdvance(sidOperator* pVoice)
-=======
 static inline void noiseAdvance(sidOperator* pVoice)
->>>>>>> upstream/master
 {
 	pVoice->noiseStep += pVoice->noiseStepAdd;
 	if (pVoice->noiseStep >= (1L<<20))
@@ -141,15 +95,9 @@ static inline void noiseAdvance(sidOperator* pVoice)
 	}
 }
 
-<<<<<<< HEAD
-INLINE void noiseAdvanceHp(sidOperator* pVoice)
-{
-	UINT32 tmp = pVoice->noiseStepAdd;
-=======
 static inline void noiseAdvanceHp(sidOperator* pVoice)
 {
 	uint32_t tmp = pVoice->noiseStepAdd;
->>>>>>> upstream/master
 	while (tmp >= (1L<<20))
 	{
 		tmp -= (1L<<20);
@@ -269,11 +217,7 @@ static void sidMode80hp(sidOperator* pVoice)  {
 
 static void sidModeLock(sidOperator* pVoice)
 {
-<<<<<<< HEAD
-	pVoice->noiseIsLocked = TRUE;
-=======
 	pVoice->noiseIsLocked = true;
->>>>>>> upstream/master
 	pVoice->output = (pVoice->filtIO-0x80);
 	waveAdvance(pVoice);
 }
@@ -335,63 +279,7 @@ static void sidMode74(sidOperator* pVoice)  {
 /* */
 /* */
 
-<<<<<<< HEAD
-INLINE void waveCalcCycleLen(sidOperator* pVoice)
-{
-#if defined(DIRECT_FIXPOINT)
-	pVoice->cycleAddLen.w[HI] = 0;
-	pVoice->cycleAddLen.l += pVoice->cycleLen.l;
-	pVoice->cycleLenCount = pVoice->cycleAddLen.w[HI];
-#else
-	pVoice->cycleAddLenPnt += pVoice->cycleLenPnt;
-	pVoice->cycleLenCount = pVoice->cycleLen;
-	if ( pVoice->cycleAddLenPnt > 65535 ) pVoice->cycleLenCount++;
-	pVoice->cycleAddLenPnt &= 0xFFFF;
-#endif
-	/* If we keep the value cycleLen between 1 <= x <= 65535, */
-	/* the following check is not required. */
-/*  if ( pVoice->cycleLenCount == 0 ) */
-/*  { */
-/*#if defined(DIRECT_FIXPOINT) */
-/*      pVoice->waveStep.l = 0; */
-/*#else */
-/*      pVoice->waveStep = (pVoice->waveStepPnt = 0); */
-/*#endif */
-/*      pVoice->cycleLenCount = 0; */
-/*  } */
-/*  else */
-	{
-#if defined(DIRECT_FIXPOINT)
-		register UINT16 diff = pVoice->cycleLenCount - pVoice->cycleLen.w[HI];
-#else
-		register UINT16 diff = pVoice->cycleLenCount - pVoice->cycleLen;
-#endif
-		if ( pVoice->wavePre[diff].len != pVoice->cycleLenCount )
-		{
-			pVoice->wavePre[diff].len = pVoice->cycleLenCount;
-#if defined(DIRECT_FIXPOINT)
-			pVoice->wavePre[diff].stp = (pVoice->waveStepAdd.l = (4096UL*65536UL) / pVoice->cycleLenCount);
-#else
-			pVoice->wavePre[diff].stp = (pVoice->waveStepAdd = 4096UL / pVoice->cycleLenCount);
-			pVoice->wavePre[diff].pnt = (pVoice->waveStepAddPnt = ((4096UL % pVoice->cycleLenCount) * 65536UL) / pVoice->cycleLenCount);
-#endif
-		}
-		else
-		{
-#if defined(DIRECT_FIXPOINT)
-			pVoice->waveStepAdd.l = pVoice->wavePre[diff].stp;
-#else
-			pVoice->waveStepAdd = pVoice->wavePre[diff].stp;
-			pVoice->waveStepAddPnt = pVoice->wavePre[diff].pnt;
-#endif
-		}
-	}  /* see above (opening bracket) */
-}
-
-INLINE void waveCalcFilter(sidOperator* pVoice)
-=======
 static inline void waveCalcFilter(sidOperator* pVoice)
->>>>>>> upstream/master
 {
 	if ( pVoice->filtEnabled )
 	{
@@ -404,11 +292,7 @@ static inline void waveCalcFilter(sidOperator* pVoice)
 				tmp = (float)pVoice->filtIO - pVoice->filtLow;
 				tmp -= pVoice->filtRef * pVoice->sid->filter.ResDy;
 				pVoice->filtRef += ( tmp * (pVoice->sid->filter.Dy) );
-<<<<<<< HEAD
-				pVoice->filtIO = (INT8)(pVoice->filtRef-pVoice->filtLow/4);
-=======
 				pVoice->filtIO = (int8_t)(pVoice->filtRef-pVoice->filtLow/4);
->>>>>>> upstream/master
 			}
 			else if (pVoice->sid->filter.Type == 0x40)
 			{
@@ -422,11 +306,7 @@ static inline void waveCalcFilter(sidOperator* pVoice)
 					tmp2 = -128;
 				if (tmp2 > 127)
 					tmp2 = 127;
-<<<<<<< HEAD
-				pVoice->filtIO = (INT8)tmp2;
-=======
 				pVoice->filtIO = (int8_t)tmp2;
->>>>>>> upstream/master
 			}
 			else
 			{
@@ -441,25 +321,6 @@ static inline void waveCalcFilter(sidOperator* pVoice)
 
 				if ( pVoice->sid->filter.Type == 0x10 )
 				{
-<<<<<<< HEAD
-					pVoice->filtIO = (INT8)pVoice->filtLow;
-				}
-				else if ( pVoice->sid->filter.Type == 0x30 )
-				{
-					pVoice->filtIO = (INT8)pVoice->filtLow;
-				}
-				else if ( pVoice->sid->filter.Type == 0x50 )
-				{
-					pVoice->filtIO = (INT8)(sample - (tmp >> 1));
-				}
-				else if ( pVoice->sid->filter.Type == 0x60 )
-				{
-					pVoice->filtIO = (INT8)tmp;
-				}
-				else if ( pVoice->sid->filter.Type == 0x70 )
-				{
-					pVoice->filtIO = (INT8)(sample - (tmp >> 1));
-=======
 					pVoice->filtIO = (int8_t)pVoice->filtLow;
 				}
 				else if ( pVoice->sid->filter.Type == 0x30 )
@@ -477,7 +338,6 @@ static inline void waveCalcFilter(sidOperator* pVoice)
 				else if ( pVoice->sid->filter.Type == 0x70 )
 				{
 					pVoice->filtIO = (int8_t)(sample - (tmp >> 1));
->>>>>>> upstream/master
 				}
 			}
 		}
@@ -488,48 +348,14 @@ static inline void waveCalcFilter(sidOperator* pVoice)
 	}
 }
 
-<<<<<<< HEAD
-static INT8 waveCalcMute(sidOperator* pVoice)
-=======
 static int8_t waveCalcMute(sidOperator* pVoice)
->>>>>>> upstream/master
 {
 	(*pVoice->ADSRproc)(pVoice);  /* just process envelope */
 	return pVoice->filtIO;//&pVoice->outputMask;
 }
 
 
-<<<<<<< HEAD
-INT8 sidWaveCalcNormal(sidOperator* pVoice)
-{
-	if ( pVoice->cycleLenCount <= 0 )
-	{
-		waveCalcCycleLen(pVoice);
-		if (( pVoice->SIDctrl & 0x40 ) == 0x40 )
-		{
-			pVoice->pulseIndex = pVoice->newPulseIndex;
-			if ( pVoice->pulseIndex > 2048 )
-			{
-#if defined(DIRECT_FIXPOINT)
-				pVoice->waveStep.w[HI] = 0;
-#else
-				pVoice->waveStep = 0;
-#endif
-			}
-		}
-	}
-	(*pVoice->waveProc)(pVoice);
-	pVoice->filtIO = ampMod1x8[(*pVoice->ADSRproc)(pVoice)|pVoice->output];
-//  pVoice->filtIO = pVoice->sid->masterVolume; // test for digi sound
-	waveCalcFilter(pVoice);
-	return pVoice->filtIO;//&pVoice->outputMask;
-}
-
-
-static INT8 waveCalcRangeCheck(sidOperator* pVoice)
-=======
 static int8_t waveCalcRangeCheck(sidOperator* pVoice)
->>>>>>> upstream/master
 {
 #if defined(DIRECT_FIXPOINT)
 	pVoice->waveStepOld = pVoice->waveStep.w[HI];
@@ -543,11 +369,7 @@ static int8_t waveCalcRangeCheck(sidOperator* pVoice)
 	{
 		/* Next step switch back to normal calculation. */
 		pVoice->cycleLenCount = 0;
-<<<<<<< HEAD
-		pVoice->outProc = &sidWaveCalcNormal;
-=======
 		pVoice->outProc = &sidOperator::wave_calc_normal;
->>>>>>> upstream/master
 #if defined(DIRECT_FIXPOINT)
 				pVoice->waveStep.w[HI] = 4095;
 #else
@@ -559,60 +381,6 @@ static int8_t waveCalcRangeCheck(sidOperator* pVoice)
 	return pVoice->filtIO;//&pVoice->outputMask;
 }
 
-<<<<<<< HEAD
-/* -------------------------------------------------- Operator frame set-up 1 */
-
-void sidEmuSet(sidOperator* pVoice)
-{
-	UINT8 enveTemp, newWave, oldWave;
-	UINT8 ADtemp;
-	UINT8 SRtemp;
-	UINT8 tmpSusVol;
-
-	pVoice->SIDfreq = pVoice->reg[0]|(pVoice->reg[1]<<8);
-
-	pVoice->SIDpulseWidth = (pVoice->reg[2]|(pVoice->reg[3]<<8)) & 0x0FFF;
-	pVoice->newPulseIndex = 4096 - pVoice->SIDpulseWidth;
-#if defined(DIRECT_FIXPOINT)
-	if ( ((pVoice->waveStep.w[HI] + pVoice->pulseIndex) >= 0x1000)
-		&& ((pVoice->waveStep.w[HI] + pVoice->newPulseIndex) >= 0x1000) )
-	{
-		pVoice->pulseIndex = pVoice->newPulseIndex;
-	}
-	else if ( ((pVoice->waveStep.w[HI] + pVoice->pulseIndex) < 0x1000)
-			&& ((pVoice->waveStep.w[HI] + pVoice->newPulseIndex) < 0x1000) )
-	{
-		pVoice->pulseIndex = pVoice->newPulseIndex;
-	}
-#else
-	if ( ((pVoice->waveStep + pVoice->pulseIndex) >= 0x1000)
-		&& ((pVoice->waveStep + pVoice->newPulseIndex) >= 0x1000) )
-	{
-		pVoice->pulseIndex = pVoice->newPulseIndex;
-	}
-	else if ( ((pVoice->waveStep + pVoice->pulseIndex) < 0x1000)
-			&& ((pVoice->waveStep + pVoice->newPulseIndex) < 0x1000) )
-	{
-		pVoice->pulseIndex = pVoice->newPulseIndex;
-	}
-#endif
-
-
-	oldWave = pVoice->SIDctrl;
-	enveTemp = pVoice->ADSRctrl;
-	pVoice->SIDctrl = (newWave = pVoice->reg[4]|(pVoice->reg[5]<<8));
-
-	if (( newWave & 1 ) ==0 )
-	{
-		if (( oldWave & 1 ) !=0 )
-			enveTemp = ENVE_STARTRELEASE;
-/*      else if ( pVoice->gateOnCtrl ) */
-/*      { */
-/*          enveTemp = ENVE_STARTSHORTATTACK; */
-/*      } */
-	}
-	else if ( /*pVoice->gateOffCtrl || */((oldWave&1)==0) )
-=======
 /* MOS-8580, MOS-6581 (no 70) */
 static ptr2sidVoidFunc sidModeNormalTable[16] =
 {
@@ -723,217 +491,10 @@ void sidOperator::set()
 #endif
 	}
 	else if (/*gateOffCtrl || */!(oldWave & 1))
->>>>>>> upstream/master
 	{
 		enveTemp = ENVE_STARTATTACK;
 	}
 
-<<<<<<< HEAD
-	if ((( oldWave ^ newWave ) & 0xF0 ) != 0 )
-	{
-		pVoice->cycleLenCount = 0;
-	}
-
-	ADtemp = pVoice->reg[5];
-	SRtemp = pVoice->reg[6];
-	if ( pVoice->SIDAD != ADtemp )
-	{
-		enveTemp |= ENVE_ALTER;
-	}
-	else if ( pVoice->SIDSR != SRtemp )
-	{
-		enveTemp |= ENVE_ALTER;
-	}
-	pVoice->SIDAD = ADtemp;
-	pVoice->SIDSR = SRtemp;
-	tmpSusVol = masterVolumeLevels[SRtemp >> 4];
-	if (pVoice->ADSRctrl != ENVE_SUSTAIN)  /* !!! */
-	{
-		pVoice->enveSusVol = tmpSusVol;
-	}
-	else
-	{
-		if ( pVoice->enveSusVol > pVoice->enveVol )
-			pVoice->enveSusVol = 0;
-		else
-			pVoice->enveSusVol = tmpSusVol;
-	}
-
-	pVoice->ADSRproc = enveModeTable[enveTemp>>1];  /* shifting out the KEY-bit */
-	pVoice->ADSRctrl = enveTemp & (255-ENVE_ALTER-1);
-
-	pVoice->filtEnabled = pVoice->sid->filter.Enabled &&
-		((pVoice->sid->reg[0x17] & pVoice->filtVoiceMask)!=0);
-}
-
-/* -------------------------------------------------- Operator frame set-up 2 */
-
-/* MOS-8580, MOS-6581 (no 70) */
-static ptr2sidVoidFunc sidModeNormalTable[16] =
-{
-	sidMode00, sidMode10, sidMode20, sidMode30, sidMode40, sidMode50, sidMode60, sidMode70,
-	sidMode80, sidModeLock, sidModeLock, sidModeLock, sidModeLock, sidModeLock, sidModeLock, sidModeLock
-};
-
-/* MOS-8580, MOS-6581 (no 74) */
-static ptr2sidVoidFunc sidModeRingTable[16] =
-{
-	sidMode00, sidMode14, sidMode00, sidMode34, sidMode00, sidMode54, sidMode00, sidMode74,
-	sidModeLock, sidModeLock, sidModeLock, sidModeLock, sidModeLock, sidModeLock, sidModeLock, sidModeLock
-};
-
-void sidClearOperator( sidOperator* pVoice )
-{
-	pVoice->SIDfreq = 0;
-	pVoice->SIDctrl = 0;
-	pVoice->SIDAD = 0;
-	pVoice->SIDSR = 0;
-
-	pVoice->sync = FALSE;
-
-	pVoice->pulseIndex = (pVoice->newPulseIndex = (pVoice->SIDpulseWidth = 0));
-	pVoice->curSIDfreq = (pVoice->curNoiseFreq = 0);
-
-	pVoice->output = (pVoice->noiseOutput = 0);
-	pVoice->filtIO = 0;
-
-	pVoice->filtEnabled = FALSE;
-	pVoice->filtLow = (pVoice->filtRef = 0);
-
-	pVoice->cycleLenCount = 0;
-#if defined(DIRECT_FIXPOINT)
-	pVoice->cycleLen.l = (pVoice->cycleAddLen.l = 0);
-#else
-	pVoice->cycleLen = (pVoice->cycleLenPnt = 0);
-	pVoice->cycleAddLenPnt = 0;
-#endif
-
-	pVoice->outProc = waveCalcMute;
-
-#if defined(DIRECT_FIXPOINT)
-	pVoice->waveStepAdd.l = (pVoice->waveStep.l = 0);
-	pVoice->wavePre[0].len = (pVoice->wavePre[0].stp = 0);
-	pVoice->wavePre[1].len = (pVoice->wavePre[1].stp = 0);
-#else
-	pVoice->waveStepAdd = (pVoice->waveStepAddPnt = 0);
-	pVoice->waveStep = (pVoice->waveStepPnt = 0);
-	pVoice->wavePre[0].len = 0;
-	pVoice->wavePre[0].stp = (pVoice->wavePre[0].pnt = 0);
-	pVoice->wavePre[1].len = 0;
-	pVoice->wavePre[1].stp = (pVoice->wavePre[1].pnt = 0);
-#endif
-	pVoice->waveStepOld = 0;
-
-#if defined(DIRECT_FIXPOINT)
-	pVoice->noiseReg.l = noiseSeed;
-#else
-	pVoice->noiseReg = noiseSeed;
-#endif
-	pVoice->noiseStepAdd = (pVoice->noiseStep = 0);
-	pVoice->noiseIsLocked = FALSE;
-}
-
-void sidEmuSet2(sidOperator* pVoice)
-{
-	pVoice->outProc = &sidWaveCalcNormal;
-	pVoice->sync = FALSE;
-
-	if ( (pVoice->SIDfreq < 16) || ((pVoice->SIDctrl & 8) != 0) )
-//    if ( /*(pVoice->SIDfreq < 16) || */((pVoice->SIDctrl & 8) != 0) )
-	{
-	pVoice->outProc = waveCalcMute;
-	if (pVoice->SIDfreq == 0)
-	{
-#if defined(DIRECT_FIXPOINT)
-		pVoice->cycleLen.l = (pVoice->cycleAddLen.l = 0);
-		pVoice->waveStep.l = 0;
-#else
-		pVoice->cycleLen = (pVoice->cycleLenPnt = 0);
-		pVoice->cycleAddLenPnt = 0;
-		pVoice->waveStep = 0;
-		pVoice->waveStepPnt = 0;
-#endif
-		pVoice->curSIDfreq = (pVoice->curNoiseFreq = 0);
-		pVoice->noiseStepAdd = 0;
-		pVoice->cycleLenCount = 0;
-	}
-	if ((pVoice->SIDctrl & 8) != 0)
-	{
-		if (pVoice->noiseIsLocked)
-		{
-		pVoice->noiseIsLocked = FALSE;
-#if defined(DIRECT_FIXPOINT)
-		pVoice->noiseReg.l = noiseSeed;
-#else
-		pVoice->noiseReg = noiseSeed;
-#endif
-		}
-	}
-	}
-	else
-	{
-	if ( pVoice->curSIDfreq != pVoice->SIDfreq )
-	{
-		pVoice->curSIDfreq = pVoice->SIDfreq;
-		/* We keep the value cycleLen between 1 <= x <= 65535. */
-		/* This makes a range-check in waveCalcCycleLen() unrequired. */
-#if defined(DIRECT_FIXPOINT)
-		pVoice->cycleLen.l = ((pVoice->sid->PCMsid << 12) / pVoice->SIDfreq) << 4;
-		if (pVoice->cycleLenCount > 0)
-		{
-		waveCalcCycleLen(pVoice);
-		pVoice->outProc = &waveCalcRangeCheck;
-		}
-#else
-		pVoice->cycleLen = pVoice->sid->PCMsid / pVoice->SIDfreq;
-		pVoice->cycleLenPnt = (( pVoice->sid->PCMsid % pVoice->SIDfreq ) * 65536UL ) / pVoice->SIDfreq;
-		if (pVoice->cycleLenCount > 0)
-		{
-		waveCalcCycleLen(pVoice);
-		pVoice->outProc = &waveCalcRangeCheck;
-		}
-#endif
-	}
-
-	if ((( pVoice->SIDctrl & 0x80 ) == 0x80 ) && ( pVoice->curNoiseFreq != pVoice->SIDfreq ))
-	{
-		pVoice->curNoiseFreq = pVoice->SIDfreq;
-		pVoice->noiseStepAdd = (pVoice->sid->PCMsidNoise * pVoice->SIDfreq) >> 8;
-		if (pVoice->noiseStepAdd >= (1L<<21))
-		sidModeNormalTable[8] = sidMode80hp;
-		else
-		sidModeNormalTable[8] = sidMode80;
-	}
-
-	if (( pVoice->SIDctrl & 2 ) != 0 )
-	{
-		if ( ( pVoice->modulator->SIDfreq == 0 ) || (( pVoice->modulator->SIDctrl & 8 ) != 0 ) )
-		{
-		;
-		}
-		else if ( (( pVoice->carrier->SIDctrl & 2 ) != 0 ) &&
-				( pVoice->modulator->SIDfreq >= ( pVoice->SIDfreq << 1 )) )
-		{
-		;
-		}
-		else
-		{
-		pVoice->sync = TRUE;
-		}
-	}
-
-	if ((( pVoice->SIDctrl & 0x14 ) == 0x14 ) && ( pVoice->modulator->SIDfreq != 0 ))
-		pVoice->waveProc = sidModeRingTable[pVoice->SIDctrl >> 4];
-	else
-		pVoice->waveProc = sidModeNormalTable[pVoice->SIDctrl >> 4];
-	}
-}
-
-void sidInitWaveformTables(int type)
-{
-	int i,j;
-	UINT16 k;
-=======
 	if ((oldWave ^ newWave) & 0xF0)
 		cycleLenCount = 0;
 
@@ -1143,7 +704,6 @@ void sidInitWaveformTables(int type)
 {
 	int i,j;
 	uint16_t k;
->>>>>>> upstream/master
 
 	k = 0;
 	for ( i = 0; i < 256; i++ )
@@ -1196,17 +756,10 @@ void sidInitWaveformTables(int type)
 
 	{
 #if defined(LARGE_NOISE_TABLE)
-<<<<<<< HEAD
-	UINT32 ni;
-	for (ni = 0; ni < sizeof(noiseTableLSB); ni++)
-	{
-		noiseTableLSB[ni] = (UINT8)
-=======
 	uint32_t ni;
 	for (ni = 0; ni < sizeof(noiseTableLSB); ni++)
 	{
 		noiseTableLSB[ni] = (uint8_t)
->>>>>>> upstream/master
 			(((ni >> (13-4)) & 0x10) |
 				((ni >> (11-3)) & 0x08) |
 				((ni >> (7-2)) & 0x04) |
@@ -1215,48 +768,29 @@ void sidInitWaveformTables(int type)
 	}
 	for (ni = 0; ni < sizeof(noiseTableMSB); ni++)
 	{
-<<<<<<< HEAD
-		noiseTableMSB[ni] = (UINT8)
-=======
 		noiseTableMSB[ni] = (uint8_t)
->>>>>>> upstream/master
 			(((ni << (7-(22-16))) & 0x80) |
 				((ni << (6-(20-16))) & 0x40) |
 				((ni << (5-(16-16))) & 0x20));
 	}
 #else
-<<<<<<< HEAD
-	UINT32 ni;
-	for (ni = 0; ni < sizeof(noiseTableLSB); ni++)
-	{
-		noiseTableLSB[ni] = (UINT8)
-=======
 	uint32_t ni;
 	for (ni = 0; ni < sizeof(noiseTableLSB); ni++)
 	{
 		noiseTableLSB[ni] = (uint8_t)
->>>>>>> upstream/master
 			(((ni >> (7-2)) & 0x04) |
 				((ni >> (4-1)) & 0x02) |
 				((ni >> (2-0)) & 0x01));
 	}
 	for (ni = 0; ni < sizeof(noiseTableMID); ni++)
 	{
-<<<<<<< HEAD
-		noiseTableMID[ni] = (UINT8)
-=======
 		noiseTableMID[ni] = (uint8_t)
->>>>>>> upstream/master
 			(((ni >> (13-8-4)) & 0x10) |
 				((ni << (3-(11-8))) & 0x08));
 	}
 	for (ni = 0; ni < sizeof(noiseTableMSB); ni++)
 	{
-<<<<<<< HEAD
-		noiseTableMSB[ni] = (UINT8)
-=======
 		noiseTableMSB[ni] = (uint8_t)
->>>>>>> upstream/master
 			(((ni << (7-(22-16))) & 0x80) |
 				((ni << (6-(20-16))) & 0x40) |
 				((ni << (5-(16-16))) & 0x20));

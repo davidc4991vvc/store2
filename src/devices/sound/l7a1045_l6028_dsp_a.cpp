@@ -89,11 +89,7 @@
 
 
 // device type definition
-<<<<<<< HEAD
-const device_type L7A1045 = &device_creator<l7a1045_sound_device>;
-=======
 DEFINE_DEVICE_TYPE(L7A1045, l7a1045_sound_device, "l7a1045", "L7A1045 L6028 DSP-A")
->>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -104,22 +100,12 @@ DEFINE_DEVICE_TYPE(L7A1045, l7a1045_sound_device, "l7a1045", "L7A1045 L6028 DSP-
 //  l7a1045_sound_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-l7a1045_sound_device::l7a1045_sound_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, L7A1045, "L7A1045 L6028 DSP-A", tag, owner, clock, "l7a1045_custom", __FILE__),
-		device_sound_interface(mconfig, *this),
-		m_stream(NULL),
-		m_key(0),
-		m_rom(NULL),
-		m_rom_size(0)
-=======
 l7a1045_sound_device::l7a1045_sound_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, L7A1045, tag, owner, clock),
 		device_sound_interface(mconfig, *this),
 		m_stream(nullptr),
 		m_key(0),
 		m_rom(*this, DEVICE_SELF)
->>>>>>> upstream/master
 {
 }
 
@@ -132,12 +118,6 @@ void l7a1045_sound_device::device_start()
 {
 	/* Allocate the stream */
 	m_stream = stream_alloc(0, 2, 66150); //clock() / 384);
-<<<<<<< HEAD
-
-	m_rom = m_region->base();
-	m_rom_size = m_region->bytes();
-=======
->>>>>>> upstream/master
 }
 
 
@@ -157,19 +137,6 @@ void l7a1045_sound_device::sound_stream_update(sound_stream &stream, stream_samp
 		{
 			l7a1045_voice *vptr = &m_voice[i];
 
-<<<<<<< HEAD
-			UINT32 start = vptr->start;
-			UINT32 end = vptr->end;
-			UINT32 step  = 0x400;
-
-			UINT32 pos = vptr->pos;
-			UINT32 frac = vptr->frac;
-
-			for (int j = 0; j < samples; j++)
-			{
-				INT32 sample;
-				UINT8 data;
-=======
 			uint32_t start = vptr->start;
 			uint32_t end = vptr->end;
 			uint32_t step  = 0x400;
@@ -181,7 +148,6 @@ void l7a1045_sound_device::sound_stream_update(sound_stream &stream, stream_samp
 			{
 				int32_t sample;
 				uint8_t data;
->>>>>>> upstream/master
 
 				pos += (frac >> 12);
 				frac &= 0xfff;
@@ -201,13 +167,8 @@ void l7a1045_sound_device::sound_stream_update(sound_stream &stream, stream_samp
 				}
 
 
-<<<<<<< HEAD
-				data = m_rom[(start + pos) & (m_rom_size-1)];
-				sample = ((INT8)(data & 0xfc)) << (3 - (data & 3));
-=======
 				data = m_rom[(start + pos) & m_rom.mask()];
 				sample = ((int8_t)(data & 0xfc)) << (3 - (data & 3));
->>>>>>> upstream/master
 				frac += step;
 
 				outputs[0][j] += ((sample * vptr->l_volume) >> 9);
@@ -287,11 +248,7 @@ WRITE16_MEMBER(l7a1045_sound_device::sound_data_w)
 			vptr->start |= (m_audiodat[m_audioregister][m_audiochannel].dat[1] & 0xffff) << (4);
 			vptr->start |= (m_audiodat[m_audioregister][m_audiochannel].dat[0] & 0xf000) >> (12);
 
-<<<<<<< HEAD
-			vptr->start &= m_rom_size - 1;
-=======
 			vptr->start &= m_rom.mask();
->>>>>>> upstream/master
 
 			break;
 		case 0x01:
@@ -306,11 +263,7 @@ WRITE16_MEMBER(l7a1045_sound_device::sound_data_w)
 				vptr->end += vptr->start;
 				vptr->mode = false;
 				// hopefully it'll never happen? Maybe assert here?
-<<<<<<< HEAD
-				vptr->end &= m_rom_size - 1;
-=======
 				vptr->end &= m_rom.mask();
->>>>>>> upstream/master
 
 			}
 			else // absolute
@@ -320,11 +273,7 @@ WRITE16_MEMBER(l7a1045_sound_device::sound_data_w)
 				vptr->end |= (m_audiodat[m_audioregister][m_audiochannel].dat[0] & 0xf000) >> (12);
 				vptr->mode = true;
 
-<<<<<<< HEAD
-				vptr->end &= m_rom_size - 1;
-=======
 				vptr->end &= m_rom.mask();
->>>>>>> upstream/master
 			}
 
 			break;
@@ -346,24 +295,15 @@ WRITE16_MEMBER(l7a1045_sound_device::sound_data_w)
 READ16_MEMBER(l7a1045_sound_device::sound_data_r)
 {
 	//printf("%04x (%04x %04x)\n",offset,m_audioregister,m_audiochannel);
-<<<<<<< HEAD
-	//debugger_break(machine());
-=======
 	//machine().debug_break();
->>>>>>> upstream/master
 	l7a1045_voice *vptr = &m_voice[m_audiochannel];
 
 	switch(m_audioregister)
 	{
 		case 0x00:
 		{
-<<<<<<< HEAD
-			UINT32 current_addr;
-			UINT16 res;
-=======
 			uint32_t current_addr;
 			uint16_t res;
->>>>>>> upstream/master
 
 			current_addr = vptr->start + vptr->pos;
 			if(offset == 0)
@@ -386,11 +326,7 @@ WRITE16_MEMBER(l7a1045_sound_device::sound_status_w)
 	{
 		l7a1045_voice *vptr = &m_voice[m_audiochannel];
 
-<<<<<<< HEAD
-		#if 0
-=======
 #if 0
->>>>>>> upstream/master
 		if(vptr->start != 0)
 		{
 		printf("%08x START\n",vptr->start);
@@ -399,11 +335,7 @@ WRITE16_MEMBER(l7a1045_sound_device::sound_status_w)
 		for(int i=0;i<0x10;i++)
 			printf("%02x (%02x) = %04x%04x%04x\n",m_audiochannel,i,m_audiodat[i][m_audiochannel].dat[2],m_audiodat[i][m_audiochannel].dat[1],m_audiodat[i][m_audiochannel].dat[0]);
 		}
-<<<<<<< HEAD
-		#endif
-=======
 #endif
->>>>>>> upstream/master
 
 		vptr->frac = 0;
 		vptr->pos = 0;

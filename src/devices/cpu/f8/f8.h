@@ -7,17 +7,6 @@
  *
  *****************************************************************************/
 
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __F8_H__
-#define _F8_H
-
-
-enum
-{
-	F8_PC0=1, F8_PC1, F8_DC0, F8_DC1, F8_W, F8_A, F8_IS,
-=======
 #ifndef MAME_CPU_F8_F8_H
 #define MAME_CPU_F8_F8_H
 
@@ -36,7 +25,6 @@ protected:
 	enum
 	{
 		F8_PC0=1, F8_PC1, F8_DC0, F8_DC1, F8_W, F8_A, F8_IS,
->>>>>>> upstream/master
 		F8_J, F8_HU, F8_HL, F8_KU, F8_KL, F8_QU, F8_QL,
 
 		F8_R0, F8_R1, F8_R2, F8_R3, F8_R4, F8_R5, F8_R6, F8_R7, F8_R8,
@@ -46,40 +34,6 @@ protected:
 		F8_R40, F8_R41, F8_R42, F8_R43, F8_R44, F8_R45, F8_R46, F8_R47,
 		F8_R48, F8_R49, F8_R50, F8_R51, F8_R52, F8_R53, F8_R54, F8_R55,
 		F8_R56, F8_R57, F8_R58, F8_R59, F8_R60, F8_R61, F8_R62, F8_R63
-<<<<<<< HEAD
-};
-
-#define F8_INPUT_LINE_INT_REQ   1
-
-class f8_cpu_device :  public cpu_device
-{
-public:
-	// construction/destruction
-	f8_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-protected:
-	// device-level overrides
-	virtual void device_start();
-	virtual void device_reset();
-
-	// device_execute_interface overrides
-	virtual UINT32 execute_min_cycles() const { return 1; }
-	virtual UINT32 execute_max_cycles() const { return 7; }
-	virtual UINT32 execute_input_lines() const { return 1; }
-	virtual void execute_run();
-	virtual void execute_set_input(int inputnum, int state);
-
-	// device_memory_interface overrides
-	virtual const address_space_config *memory_space_config(address_spacenum spacenum = AS_0) const { return (spacenum == AS_PROGRAM) ? &m_program_config : ( (spacenum == AS_IO) ? &m_io_config : NULL ); }
-
-	// device_state_interface overrides
-	void state_string_export(const device_state_entry &entry, std::string &str);
-
-	// device_disasm_interface overrides
-	virtual UINT32 disasm_min_opcode_bytes() const { return 1; }
-	virtual UINT32 disasm_max_opcode_bytes() const { return 3; }
-	virtual offs_t disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options);
-=======
 	};
 
 	// device-level overrides
@@ -103,24 +57,11 @@ protected:
 	virtual uint32_t disasm_min_opcode_bytes() const override { return 1; }
 	virtual uint32_t disasm_max_opcode_bytes() const override { return 3; }
 	virtual offs_t disasm_disassemble(std::ostream &stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, uint32_t options) override;
->>>>>>> upstream/master
 
 private:
 	address_space_config m_program_config;
 	address_space_config m_io_config;
 
-<<<<<<< HEAD
-	UINT16  m_pc0;    /* program counter 0 */
-	UINT16  m_pc1;    /* program counter 1 */
-	UINT16  m_dc0;    /* data counter 0 */
-	UINT16  m_dc1;    /* data counter 1 */
-	UINT8   m_a;      /* accumulator */
-	UINT8   m_w;      /* processor status */
-	UINT8   m_is;     /* scratchpad pointer */
-	UINT8   m_dbus;   /* data bus value */
-	UINT16  m_io;     /* last I/O address */
-	UINT16  m_irq_vector;
-=======
 	uint16_t  m_pc0;    /* program counter 0 */
 	uint16_t  m_pc1;    /* program counter 1 */
 	uint16_t  m_dc0;    /* data counter 0 */
@@ -131,20 +72,10 @@ private:
 	uint8_t   m_dbus;   /* data bus value */
 	uint16_t  m_io;     /* last I/O address */
 	uint16_t  m_irq_vector;
->>>>>>> upstream/master
 	address_space *m_program;
 	direct_read_data *m_direct;
 	address_space *m_iospace;
 	int m_icount;
-<<<<<<< HEAD
-	UINT8   m_r[64];  /* scratchpad RAM */
-	int     m_irq_request;
-
-	/* timer shifter polynome values (will be used for timer interrupts) */
-	UINT8 timer_shifter[256];
-
-	UINT16 m_pc; // For the debugger
-=======
 	uint8_t   m_r[64];  /* scratchpad RAM */
 	int     m_irq_request;
 
@@ -152,7 +83,6 @@ private:
 	uint8_t timer_shifter[256];
 
 	uint16_t m_pc; // For the debugger
->>>>>>> upstream/master
 
 	void ROMC_00(int insttim);
 	void ROMC_01();
@@ -281,13 +211,6 @@ private:
 };
 
 
-<<<<<<< HEAD
-extern const device_type F8;
-
-
-#endif /* __F8_H__ */
-=======
 DECLARE_DEVICE_TYPE(F8, f8_cpu_device)
 
 #endif // MAME_CPU_F8_F8_H
->>>>>>> upstream/master

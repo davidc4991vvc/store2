@@ -24,18 +24,12 @@
 
 #include "emu.h"
 #include "cpu/z80/z80.h"
-<<<<<<< HEAD
-#include "sound/2203intf.h"
-#include "sound/msm5205.h"
-#include "machine/i8255.h"
-=======
 #include "machine/i8255.h"
 #include "sound/2203intf.h"
 #include "sound/msm5205.h"
 #include "screen.h"
 #include "speaker.h"
 
->>>>>>> upstream/master
 
 class suprgolf_state : public driver_device
 {
@@ -53,24 +47,6 @@ public:
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
 
-<<<<<<< HEAD
-	required_shared_ptr<UINT8> m_videoram;
-
-	tilemap_t *m_tilemap;
-	UINT8 *m_paletteram;
-	UINT8 *m_bg_vram;
-	UINT16 *m_bg_fb;
-	UINT16 *m_fg_fb;
-	UINT8 m_rom_bank;
-	UINT8 m_bg_bank;
-	UINT8 m_vreg_bank;
-	UINT8 m_msm5205next;
-	UINT8 m_msm_nmi_mask;
-	UINT8 m_vreg_pen;
-	UINT8 m_palette_switch;
-	UINT8 m_bg_vreg_test;
-	UINT8 m_toggle;
-=======
 	required_shared_ptr<uint8_t> m_videoram;
 
 	tilemap_t *m_tilemap;
@@ -87,7 +63,6 @@ public:
 	uint8_t m_palette_switch;
 	uint8_t m_bg_vreg_test;
 	uint8_t m_toggle;
->>>>>>> upstream/master
 
 	DECLARE_READ8_MEMBER(videoram_r);
 	DECLARE_WRITE8_MEMBER(videoram_w);
@@ -110,19 +85,11 @@ public:
 	TILE_GET_INFO_MEMBER(get_tile_info);
 
 	DECLARE_DRIVER_INIT(suprgolf);
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void machine_reset();
-	virtual void video_start();
-
-	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
 	virtual void video_start() override;
 
 	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 };
 
 TILE_GET_INFO_MEMBER(suprgolf_state::get_tile_info)
@@ -138,19 +105,11 @@ TILE_GET_INFO_MEMBER(suprgolf_state::get_tile_info)
 
 void suprgolf_state::video_start()
 {
-<<<<<<< HEAD
-	m_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(suprgolf_state::get_tile_info),this),TILEMAP_SCAN_ROWS,8,8,32,32 );
-	m_paletteram = auto_alloc_array(machine(), UINT8, 0x1000);
-	m_bg_vram = auto_alloc_array(machine(), UINT8, 0x2000*0x20);
-	m_bg_fb = auto_alloc_array(machine(), UINT16, 0x2000*0x20);
-	m_fg_fb = auto_alloc_array(machine(), UINT16, 0x2000*0x20);
-=======
 	m_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(suprgolf_state::get_tile_info),this),TILEMAP_SCAN_ROWS,8,8,32,32 );
 	m_paletteram = std::make_unique<uint8_t[]>(0x1000);
 	m_bg_vram = std::make_unique<uint8_t[]>(0x2000*0x20);
 	m_bg_fb = std::make_unique<uint16_t[]>(0x2000*0x20);
 	m_fg_fb = std::make_unique<uint16_t[]>(0x2000*0x20);
->>>>>>> upstream/master
 
 	m_tilemap->set_transparent_pen(15);
 
@@ -159,15 +118,6 @@ void suprgolf_state::video_start()
 	save_item(NAME(m_vreg_pen));
 	save_item(NAME(m_palette_switch));
 	save_item(NAME(m_bg_vreg_test));
-<<<<<<< HEAD
-	save_pointer(NAME(m_paletteram), 0x1000);
-	save_pointer(NAME(m_bg_vram), 0x2000*0x20);
-	save_pointer(NAME(m_bg_fb), 0x2000*0x20);
-	save_pointer(NAME(m_fg_fb), 0x2000*0x20);
-}
-
-UINT32 suprgolf_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 	save_pointer(NAME(m_paletteram.get()), 0x1000);
 	save_pointer(NAME(m_bg_vram.get()), 0x2000*0x20);
 	save_pointer(NAME(m_bg_fb.get()), 0x2000*0x20);
@@ -175,7 +125,6 @@ UINT32 suprgolf_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap
 }
 
 uint32_t suprgolf_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int x,y,count,color;
 	bitmap.fill(m_palette->black_pen(), cliprect);
@@ -276,13 +225,8 @@ READ8_MEMBER(suprgolf_state::bg_vram_r)
 
 WRITE8_MEMBER(suprgolf_state::bg_vram_w)
 {
-<<<<<<< HEAD
-	UINT8 hi_nibble,lo_nibble;
-	UINT8 hi_dirty_dot,lo_dirty_dot; // helpers
-=======
 	uint8_t hi_nibble,lo_nibble;
 	uint8_t hi_dirty_dot,lo_dirty_dot; // helpers
->>>>>>> upstream/master
 
 	hi_nibble = data & 0xf0;
 	lo_nibble = data & 0x0f;
@@ -373,11 +317,7 @@ WRITE8_MEMBER(suprgolf_state::rom2_bank_select_w)
 
 READ8_MEMBER(suprgolf_state::pedal_extra_bits_r)
 {
-<<<<<<< HEAD
-	UINT8 p1_sht_sw,p2_sht_sw;
-=======
 	uint8_t p1_sht_sw,p2_sht_sw;
->>>>>>> upstream/master
 
 	p1_sht_sw = (ioport("P1_RELEASE")->read() & 0x80)>>7;
 	p2_sht_sw = (ioport("P2_RELEASE")->read() & 0x80)>>6;
@@ -546,11 +486,7 @@ void suprgolf_state::machine_reset()
 
 #define MASTER_CLOCK XTAL_12MHz
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( suprgolf, suprgolf_state )
-=======
 static MACHINE_CONFIG_START( suprgolf )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80,MASTER_CLOCK/2) /* guess */
@@ -595,12 +531,6 @@ static MACHINE_CONFIG_START( suprgolf )
 
 	MCFG_SOUND_ADD("msm", MSM5205, XTAL_384kHz) /* guess */
 	MCFG_MSM5205_VCLK_CB(WRITELINE(suprgolf_state, adpcm_int))      /* interrupt function */
-<<<<<<< HEAD
-	MCFG_MSM5205_PRESCALER_SELECTOR(MSM5205_S48_4B)  /* 4KHz 4-bit */
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
-MACHINE_CONFIG_END
-
-=======
 	MCFG_MSM5205_PRESCALER_SELECTOR(S48_4B)  /* 4KHz 4-bit */
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
@@ -639,7 +569,6 @@ ROM_START( suprgolf )
 	ROM_LOAD( "CG18.IC2",  0x60000, 0x10000, CRC(36edd88e) SHA1(374c95721198a88831d6f7e0b71d05e2f8465271) )
 ROM_END
 
->>>>>>> upstream/master
 /*
 ----------------------
 CG24     6K        CONN BD
@@ -668,11 +597,7 @@ CG22     7G         "
 CG23     7F         "
 */
 
-<<<<<<< HEAD
-ROM_START( suprgolf )
-=======
 ROM_START( suprgolfj )
->>>>>>> upstream/master
 	ROM_REGION( 0x10000, "maincpu", 0 )
 	ROM_LOAD( "cg24.6k",0x000000, 0x08000, CRC(de548044) SHA1(f96b4cfcfca4dffabfaf205eb903cbc70972626b) )
 
@@ -741,22 +666,13 @@ ROM_END
 
 DRIVER_INIT_MEMBER(suprgolf_state,suprgolf)
 {
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("user2")->base();
-=======
 	uint8_t *ROM = memregion("user2")->base();
->>>>>>> upstream/master
 
 	ROM[0x74f4-0x4000] = 0x00;
 	ROM[0x74f5-0x4000] = 0x00;
 	ROM[0x6d72+(0x4000*3)-0x4000] = 0x20; //patch ROM check
 }
 
-<<<<<<< HEAD
-GAME( 1989, suprgolf,  0,         suprgolf,  suprgolf, suprgolf_state,  suprgolf, ROT0, "Nasco", "Super Crowns Golf (Japan)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
-GAME( 1989, albatross, suprgolf,  suprgolf,  suprgolf, driver_device,  0,        ROT0, "Nasco", "Albatross (US Prototype?)", MACHINE_NOT_WORKING | MACHINE_IMPERFECT_GRAPHICS | MACHINE_NO_COCKTAIL| MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1989, suprgolf,  0,         suprgolf,  suprgolf, suprgolf_state, 0,        ROT0, "Nasco", "Super Crowns Golf (World)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
 GAME( 1989, suprgolfj, suprgolf,  suprgolf,  suprgolf, suprgolf_state, suprgolf, ROT0, "Nasco", "Super Crowns Golf (Japan)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
 GAME( 1989, albatross, suprgolf,  suprgolf,  suprgolf, suprgolf_state, 0,        ROT0, "Nasco", "Albatross (US Prototype?)", MACHINE_NOT_WORKING | MACHINE_IMPERFECT_GRAPHICS | MACHINE_NO_COCKTAIL| MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

@@ -9,15 +9,10 @@
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-#ifndef __H8_TIMER16_H__
-#define __H8_TIMER16_H__
-=======
 #ifndef MAME_CPU_H8_H8_TIMER16_H
 #define MAME_CPU_H8_H8_TIMER16_H
 
 #pragma once
->>>>>>> upstream/master
 
 #include "h8.h"
 #include "h8_intc.h"
@@ -80,12 +75,7 @@ public:
 	};
 
 
-<<<<<<< HEAD
-	h8_timer16_channel_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-	h8_timer16_channel_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source);
-=======
 	h8_timer16_channel_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
->>>>>>> upstream/master
 
 	void set_info(int tgr_count, int tbr_count, const char *intc, int irq_base);
 
@@ -99,11 +89,6 @@ public:
 	DECLARE_WRITE8_MEMBER(tier_w);
 	DECLARE_READ8_MEMBER(tsr_r);
 	DECLARE_WRITE8_MEMBER(tsr_w);
-<<<<<<< HEAD
-	DECLARE_READ8_MEMBER(tocr_r);
-	DECLARE_WRITE8_MEMBER(tocr_w);
-=======
->>>>>>> upstream/master
 	DECLARE_READ16_MEMBER(tcnt_r);
 	DECLARE_WRITE16_MEMBER(tcnt_w);
 	DECLARE_READ16_MEMBER(tgr_r);
@@ -111,19 +96,11 @@ public:
 	DECLARE_READ16_MEMBER(tbr_r);
 	DECLARE_WRITE16_MEMBER(tbr_w);
 
-<<<<<<< HEAD
-	UINT64 internal_update(UINT64 current_time);
-	void set_ier(UINT8 value);
-	void set_enable(bool enable);
-	void tisr_w(int offset, UINT8 data);
-	UINT8 tisr_r(int offset) const;
-=======
 	uint64_t internal_update(uint64_t current_time);
 	void set_ier(uint8_t value);
 	void set_enable(bool enable);
 	void tisr_w(int offset, uint8_t data);
 	uint8_t tisr_r(int offset) const;
->>>>>>> upstream/master
 
 protected:
 	required_device<h8_device> cpu;
@@ -131,29 +108,6 @@ protected:
 	h8_intc_device *intc;
 	const char *chain_tag, *intc_tag;
 	int interrupt[6];
-<<<<<<< HEAD
-	UINT8 tier_mask;
-
-	int tgr_count, tbr_count;
-	int tgr_clearing;
-	UINT8 tcr, tier, ier, isr;
-	int clock_type, clock_divider;
-	UINT16 tcnt, tgr[6];
-	UINT64 last_clock_update, event_time;
-	UINT32 phase, counter_cycle;
-	bool counter_incrementing;
-	bool channel_active;
-
-	virtual void device_start();
-	virtual void device_reset();
-
-	void update_counter(UINT64 cur_time = 0);
-	void recalc_event(UINT64 cur_time = 0);
-	virtual void tcr_update();
-	virtual void tier_update();
-	virtual void isr_update(UINT8 value);
-	virtual UINT8 isr_to_sr() const;
-=======
 	uint8_t tier_mask;
 
 	int tgr_count, tbr_count;
@@ -177,77 +131,45 @@ protected:
 	virtual void tier_update();
 	virtual void isr_update(uint8_t value);
 	virtual uint8_t isr_to_sr() const;
->>>>>>> upstream/master
 };
 
 class h8h_timer16_channel_device : public h8_timer16_channel_device {
 public:
-<<<<<<< HEAD
-	h8h_timer16_channel_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-=======
 	h8h_timer16_channel_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
->>>>>>> upstream/master
 	virtual ~h8h_timer16_channel_device();
 
 	void set_info(int tgr_count, int tbr_count, const char *intc, int irq_base);
 
 protected:
-<<<<<<< HEAD
-	virtual void tcr_update();
-	virtual void tier_update();
-	virtual void isr_update(UINT8 value);
-	virtual UINT8 isr_to_sr() const;
-=======
 	virtual void tcr_update() override;
 	virtual void tier_update() override;
 	virtual void isr_update(uint8_t value) override;
 	virtual uint8_t isr_to_sr() const override;
->>>>>>> upstream/master
 };
 
 class h8s_timer16_channel_device : public h8_timer16_channel_device {
 public:
-<<<<<<< HEAD
-	h8s_timer16_channel_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-	virtual ~h8s_timer16_channel_device();
-
-	void set_info(int tgr_count, UINT8 _tier_mask, const char *intc, int irq_base,
-=======
 	h8s_timer16_channel_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 	virtual ~h8s_timer16_channel_device();
 
 	void set_info(int tgr_count, uint8_t _tier_mask, const char *intc, int irq_base,
->>>>>>> upstream/master
 					int t0, int t1, int t2, int t3, int t4, int t5, int t6, int t7);
 	void set_chain(const char *chain_tag);
 
 protected:
 	int count_types[8];
 
-<<<<<<< HEAD
-	virtual void tcr_update();
-	virtual void tier_update();
-	virtual void isr_update(UINT8 value);
-	virtual UINT8 isr_to_sr() const;
-=======
 	virtual void tcr_update() override;
 	virtual void tier_update() override;
 	virtual void isr_update(uint8_t value) override;
 	virtual uint8_t isr_to_sr() const override;
->>>>>>> upstream/master
 };
 
 class h8_timer16_device : public device_t {
 public:
-<<<<<<< HEAD
-	h8_timer16_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	void set_info(int timer_count, UINT8 default_tstr);
-=======
 	h8_timer16_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	void set_info(int timer_count, uint8_t default_tstr);
->>>>>>> upstream/master
 
 	DECLARE_READ8_MEMBER(tstr_r);
 	DECLARE_WRITE8_MEMBER(tstr_w);
@@ -271,21 +193,6 @@ protected:
 	required_device<h8_device> cpu;
 	h8_timer16_channel_device *timer_channel[6];
 	int timer_count;
-<<<<<<< HEAD
-	UINT8 default_tstr;
-	UINT8 tstr;
-
-	virtual void device_start();
-	virtual void device_reset();
-};
-
-extern const device_type H8_TIMER16;
-extern const device_type H8_TIMER16_CHANNEL;
-extern const device_type H8H_TIMER16_CHANNEL;
-extern const device_type H8S_TIMER16_CHANNEL;
-
-#endif
-=======
 	uint8_t default_tstr;
 	uint8_t tstr;
 
@@ -299,4 +206,3 @@ DECLARE_DEVICE_TYPE(H8H_TIMER16_CHANNEL, h8h_timer16_channel_device)
 DECLARE_DEVICE_TYPE(H8S_TIMER16_CHANNEL, h8s_timer16_channel_device)
 
 #endif // MAME_CPU_H8_H8_TIMER16_H
->>>>>>> upstream/master

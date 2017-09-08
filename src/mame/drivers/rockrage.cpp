@@ -50,14 +50,6 @@ Notes:
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/m6809/m6809.h"
-#include "cpu/m6809/hd6309.h"
-#include "sound/2151intf.h"
-#include "includes/rockrage.h"
-#include "includes/konamipt.h"
-
-=======
 #include "includes/rockrage.h"
 #include "includes/konamipt.h"
 
@@ -68,7 +60,6 @@ Notes:
 #include "screen.h"
 #include "speaker.h"
 
->>>>>>> upstream/master
 
 INTERRUPT_GEN_MEMBER(rockrage_state::rockrage_interrupt)
 {
@@ -82,24 +73,15 @@ WRITE8_MEMBER(rockrage_state::rockrage_bankswitch_w)
 	m_rombank->set_entry((data & 0x70) >> 4);
 
 	/* bits 0 & 1 = coin counters */
-<<<<<<< HEAD
-	coin_counter_w(machine(), 0,data & 0x01);
-	coin_counter_w(machine(), 1,data & 0x02);
-=======
 	machine().bookkeeping().coin_counter_w(0,data & 0x01);
 	machine().bookkeeping().coin_counter_w(1,data & 0x02);
->>>>>>> upstream/master
 
 	/* other bits unknown */
 }
 
 WRITE8_MEMBER(rockrage_state::rockrage_sh_irqtrigger_w)
 {
-<<<<<<< HEAD
-	soundlatch_byte_w(space, offset, data);
-=======
 	m_soundlatch->write(space, offset, data);
->>>>>>> upstream/master
 	m_audiocpu->set_input_line(M6809_IRQ_LINE, HOLD_LINE);
 }
 
@@ -127,11 +109,7 @@ static ADDRESS_MAP_START( rockrage_map, AS_PROGRAM, 8, rockrage_state )
 	AM_RANGE(0x2e03, 0x2e03) AM_READ_PORT("DSW2")
 	AM_RANGE(0x2e40, 0x2e40) AM_READ_PORT("DSW1")
 	AM_RANGE(0x2e80, 0x2e80) AM_WRITE(rockrage_sh_irqtrigger_w)                 /* cause interrupt on audio CPU */
-<<<<<<< HEAD
-	AM_RANGE(0x2ec0, 0x2ec0) AM_WRITE(watchdog_reset_w)                         /* watchdog reset */
-=======
 	AM_RANGE(0x2ec0, 0x2ec0) AM_DEVWRITE("watchdog", watchdog_timer_device, reset_w)
->>>>>>> upstream/master
 	AM_RANGE(0x2f00, 0x2f00) AM_WRITE(rockrage_vreg_w)                          /* ??? */
 	AM_RANGE(0x2f40, 0x2f40) AM_WRITE(rockrage_bankswitch_w)                    /* bankswitch control */
 	AM_RANGE(0x4000, 0x5fff) AM_RAM                                             /* RAM */
@@ -143,24 +121,17 @@ static ADDRESS_MAP_START( rockrage_sound_map, AS_PROGRAM, 8, rockrage_state )
 	AM_RANGE(0x2000, 0x2000) AM_DEVWRITE("vlm", vlm5030_device, data_w)              /* VLM5030 */
 	AM_RANGE(0x3000, 0x3000) AM_READ(rockrage_VLM5030_busy_r)           /* VLM5030 */
 	AM_RANGE(0x4000, 0x4000) AM_WRITE(rockrage_speech_w)                /* VLM5030 */
-<<<<<<< HEAD
-	AM_RANGE(0x5000, 0x5000) AM_READ(soundlatch_byte_r)                             /* soundlatch_byte_r */
-=======
 	AM_RANGE(0x5000, 0x5000) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
->>>>>>> upstream/master
 	AM_RANGE(0x6000, 0x6001) AM_DEVREADWRITE("ymsnd", ym2151_device,read,write)         /* YM 2151 */
 	AM_RANGE(0x7000, 0x77ff) AM_RAM                                             /* RAM */
 	AM_RANGE(0x8000, 0xffff) AM_ROM                                             /* ROM */
 ADDRESS_MAP_END
 
-<<<<<<< HEAD
-=======
 static ADDRESS_MAP_START( rockrage_vlm_map, 0, 8, rockrage_state )
 	ADDRESS_MAP_GLOBAL_MASK(0x7fff)
 	AM_RANGE(0x0000, 0x7fff) AM_ROM
 ADDRESS_MAP_END
 
->>>>>>> upstream/master
 /***************************************************************************
 
     Input Ports
@@ -262,11 +233,7 @@ GFXDECODE_END
 
 void rockrage_state::machine_start()
 {
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("maincpu")->base();
-=======
 	uint8_t *ROM = memregion("maincpu")->base();
->>>>>>> upstream/master
 
 	m_rombank->configure_entries(0, 8, &ROM[0x10000], 0x2000);
 
@@ -278,11 +245,7 @@ void rockrage_state::machine_reset()
 	m_vreg = 0;
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( rockrage, rockrage_state )
-=======
 static MACHINE_CONFIG_START( rockrage )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", HD6309, 3000000*4)      /* 24MHz/8 */
@@ -292,10 +255,7 @@ static MACHINE_CONFIG_START( rockrage )
 	MCFG_CPU_ADD("audiocpu", M6809, 1500000)        /* 24MHz/16 */
 	MCFG_CPU_PROGRAM_MAP(rockrage_sound_map)
 
-<<<<<<< HEAD
-=======
 	MCFG_WATCHDOG_ADD("watchdog")
->>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
@@ -326,20 +286,14 @@ static MACHINE_CONFIG_START( rockrage )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
-<<<<<<< HEAD
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 
->>>>>>> upstream/master
 	MCFG_YM2151_ADD("ymsnd", 3579545)
 	MCFG_SOUND_ROUTE(0, "lspeaker", 0.60)
 	MCFG_SOUND_ROUTE(1, "rspeaker", 0.60)
 
 	MCFG_SOUND_ADD("vlm", VLM5030, 3579545)
-<<<<<<< HEAD
-=======
 	MCFG_DEVICE_ADDRESS_MAP(0, rockrage_vlm_map)
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 0.60)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 0.60)
 MACHINE_CONFIG_END
@@ -437,12 +391,6 @@ ROM_END
 ***************************************************************************/
 
 //    YEAR, NAME,      PARENT,   MACHINE,  INPUT,    INIT,MONITOR,COMPANY,FULLNAME,FLAGS
-<<<<<<< HEAD
-GAME( 1986, rockrage,  0,        rockrage, rockrage, driver_device, 0,   ROT0,   "Konami", "Rock'n Rage (World)", MACHINE_SUPPORTS_SAVE )
-GAME( 1986, rockragea, rockrage, rockrage, rockrage, driver_device, 0,   ROT0,   "Konami", "Rock'n Rage (prototype?)", MACHINE_SUPPORTS_SAVE )
-GAME( 1986, rockragej, rockrage, rockrage, rockrage, driver_device, 0,   ROT0,   "Konami", "Koi no Hotrock (Japan)", MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1986, rockrage,  0,        rockrage, rockrage, rockrage_state, 0,   ROT0,   "Konami", "Rock'n Rage (World)", MACHINE_SUPPORTS_SAVE )
 GAME( 1986, rockragea, rockrage, rockrage, rockrage, rockrage_state, 0,   ROT0,   "Konami", "Rock'n Rage (prototype?)", MACHINE_SUPPORTS_SAVE )
 GAME( 1986, rockragej, rockrage, rockrage, rockrage, rockrage_state, 0,   ROT0,   "Konami", "Koi no Hotrock (Japan)", MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

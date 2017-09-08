@@ -1,9 +1,6 @@
 // license:BSD-3-Clause
 // copyright-holders:Bryan McPhail, David Graves
-<<<<<<< HEAD
-=======
 // thanks-to:Richard Bush
->>>>>>> upstream/master
 /****************************************************************************
 
     Super Chase                         (c) 1992 Taito
@@ -44,15 +41,6 @@
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/m68000/m68000.h"
-#include "machine/eepromser.h"
-#include "sound/es5506.h"
-#include "audio/taito_en.h"
-
-#include "superchs.lh"
-#include "includes/superchs.h"
-=======
 #include "includes/superchs.h"
 #include "audio/taito_en.h"
 #include "machine/taitoio.h"
@@ -63,7 +51,6 @@
 #include "screen.h"
 
 #include "superchs.lh"
->>>>>>> upstream/master
 
 
 /*********************************************************************/
@@ -112,89 +99,20 @@ WRITE32_MEMBER(superchs_state::cpua_ctrl_w)
 	}
 }
 
-<<<<<<< HEAD
-READ32_MEMBER(superchs_state::superchs_input_r)
-{
-	switch (offset)
-	{
-		case 0x00:
-			return ioport("INPUTS")->read();
-
-		case 0x01:
-			return m_coin_word<<16;
-	}
-
-	return 0xffffffff;
-}
-
-WRITE32_MEMBER(superchs_state::superchs_input_w)
-{
-	#if 0
-	{
-	char t[64];
-	COMBINE_DATA(&m_mem[offset]);
-	sprintf(t,"%08x %08x",m_mem[0],m_mem[1]);
-	//popmessage(t);
-	}
-	#endif
-
-	switch (offset)
-	{
-		case 0x00:
-		{
-			if (ACCESSING_BITS_24_31)   /* $300000 is watchdog */
-			{
-				machine().watchdog_reset();
-			}
-
-			if (ACCESSING_BITS_0_7)
-			{
-				m_eeprom->clk_write((data & 0x20) ? ASSERT_LINE : CLEAR_LINE);
-				m_eeprom->di_write((data & 0x40) >> 6);
-				m_eeprom->cs_write((data & 0x10) ? ASSERT_LINE : CLEAR_LINE);
-				return;
-			}
-
-			return;
-		}
-
-		/* there are 'vibration' control bits somewhere! */
-
-		case 0x01:
-		{
-			if (ACCESSING_BITS_24_31)
-			{
-				coin_lockout_w(machine(), 0,~data & 0x01000000);
-				coin_lockout_w(machine(), 1,~data & 0x02000000);
-				coin_counter_w(machine(), 0, data & 0x04000000);
-				coin_counter_w(machine(), 1, data & 0x08000000);
-				m_coin_word=(data >> 16) &0xffff;
-			}
-		}
-	}
-=======
 WRITE8_MEMBER(superchs_state::coin_word_w)
 {
 	machine().bookkeeping().coin_lockout_w(0,~data & 0x01);
 	machine().bookkeeping().coin_lockout_w(1,~data & 0x02);
 	machine().bookkeeping().coin_counter_w(0, data & 0x04);
 	machine().bookkeeping().coin_counter_w(1, data & 0x08);
->>>>>>> upstream/master
 }
 
 READ32_MEMBER(superchs_state::superchs_stick_r)
 {
-<<<<<<< HEAD
-	UINT8 b0 = ioport("UNKNOWN")->read();
-	UINT8 b1 = ((ioport("SOUND")->read() * 255) / 100) ^ 0xff; // 00 = full, ff = silent
-	UINT8 b2 = ioport("ACCEL")->read() ^ 0xff;
-	UINT8 b3 = ioport("WHEEL")->read();
-=======
 	uint8_t b0 = ioport("UNKNOWN")->read();
 	uint8_t b1 = ((ioport("SOUND")->read() * 255) / 100) ^ 0xff; // 00 = full, ff = silent
 	uint8_t b2 = ioport("ACCEL")->read() ^ 0xff;
 	uint8_t b3 = ioport("WHEEL")->read();
->>>>>>> upstream/master
 
 	return b3 << 24 | b2 << 16 | b1 << 8 | b0;
 }
@@ -221,13 +139,8 @@ static ADDRESS_MAP_START( superchs_map, AS_PROGRAM, 32, superchs_state )
 	AM_RANGE(0x200000, 0x20ffff) AM_RAM AM_SHARE("shared_ram")
 	AM_RANGE(0x240000, 0x240003) AM_WRITE(cpua_ctrl_w)
 	AM_RANGE(0x280000, 0x287fff) AM_RAM_DEVWRITE("palette", palette_device, write) AM_SHARE("palette")
-<<<<<<< HEAD
-	AM_RANGE(0x2c0000, 0x2c07ff) AM_RAM AM_SHARE("snd_shared")
-	AM_RANGE(0x300000, 0x300007) AM_READWRITE(superchs_input_r, superchs_input_w)   /* eerom etc. */
-=======
 	AM_RANGE(0x2c0000, 0x2c07ff) AM_DEVREADWRITE8("taito_en:dpram", mb8421_device, left_r, left_w, 0xffffffff)
 	AM_RANGE(0x300000, 0x300007) AM_DEVREADWRITE8("tc0510nio", tc0510nio_device, read, write, 0xffffffff)
->>>>>>> upstream/master
 	AM_RANGE(0x340000, 0x340003) AM_READWRITE(superchs_stick_r, superchs_stick_w)   /* stick int request */
 ADDRESS_MAP_END
 
@@ -251,44 +164,6 @@ ADDRESS_MAP_END
 /***********************************************************/
 
 static INPUT_PORTS_START( superchs )
-<<<<<<< HEAD
-	PORT_START("INPUTS")
-	PORT_BIT( 0x00000001, IP_ACTIVE_LOW,  IPT_UNKNOWN )
-	PORT_BIT( 0x00000002, IP_ACTIVE_LOW,  IPT_UNKNOWN )
-	PORT_BIT( 0x00000004, IP_ACTIVE_LOW,  IPT_UNKNOWN )
-	PORT_BIT( 0x00000008, IP_ACTIVE_LOW,  IPT_UNKNOWN )
-	PORT_BIT( 0x00000010, IP_ACTIVE_LOW,  IPT_UNKNOWN )
-	PORT_BIT( 0x00000020, IP_ACTIVE_LOW,  IPT_UNKNOWN )
-	PORT_BIT( 0x00000040, IP_ACTIVE_LOW,  IPT_UNKNOWN )
-	PORT_BIT( 0x00000080, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_READ_LINE_DEVICE_MEMBER("eeprom", eeprom_serial_93cxx_device, do_read) /* reserved for EEROM */
-	PORT_BIT( 0x00000100, IP_ACTIVE_LOW,  IPT_SERVICE2 ) PORT_NAME("Seat Center")   /* seat center (cockpit only) */
-	PORT_BIT( 0x00000200, IP_ACTIVE_LOW,  IPT_UNKNOWN )
-	PORT_BIT( 0x00000400, IP_ACTIVE_LOW,  IPT_UNKNOWN )
-	PORT_BIT( 0x00000800, IP_ACTIVE_LOW,  IPT_UNKNOWN )
-	PORT_BIT( 0x00001000, IP_ACTIVE_LOW,  IPT_BUTTON3 ) PORT_NAME("Nitro")
-	PORT_BIT( 0x00002000, IP_ACTIVE_LOW,  IPT_BUTTON4 ) PORT_NAME("Shifter") PORT_TOGGLE
-	PORT_BIT( 0x00004000, IP_ACTIVE_LOW,  IPT_BUTTON2 ) PORT_NAME("Brake Switch")   /* upright doesn't have brake? */
-	PORT_BIT( 0x00008000, IP_ACTIVE_LOW,  IPT_START1 )
-
-	PORT_BIT( 0x00010000, IP_ACTIVE_LOW,  IPT_UNKNOWN )
-	PORT_BIT( 0x00020000, IP_ACTIVE_LOW,  IPT_UNKNOWN )
-	PORT_BIT( 0x00040000, IP_ACTIVE_LOW,  IPT_UNKNOWN )
-	PORT_DIPNAME( 0x00080000, 0x00, "Freeze Screen" )
-	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00080000, DEF_STR( On ) )
-	PORT_SERVICE_NO_TOGGLE( 0x00100000, IP_ACTIVE_LOW )
-	PORT_BIT( 0x00200000, IP_ACTIVE_LOW,  IPT_SERVICE1 )
-	PORT_BIT( 0x00400000, IP_ACTIVE_LOW,  IPT_COIN2 )
-	PORT_BIT( 0x00800000, IP_ACTIVE_LOW,  IPT_COIN1 )
-	PORT_BIT( 0x01000000, IP_ACTIVE_LOW,  IPT_UNKNOWN )
-	PORT_BIT( 0x02000000, IP_ACTIVE_LOW,  IPT_UNKNOWN )
-	PORT_BIT( 0x04000000, IP_ACTIVE_LOW,  IPT_UNKNOWN )
-	PORT_BIT( 0x08000000, IP_ACTIVE_LOW,  IPT_UNKNOWN )
-	PORT_BIT( 0x10000000, IP_ACTIVE_LOW,  IPT_UNKNOWN )
-	PORT_BIT( 0x20000000, IP_ACTIVE_LOW,  IPT_UNKNOWN )
-	PORT_BIT( 0x40000000, IP_ACTIVE_LOW,  IPT_UNKNOWN )
-	PORT_BIT( 0x80000000, IP_ACTIVE_LOW,  IPT_UNKNOWN )
-=======
 	PORT_START("COINS")
 	PORT_BIT( 0x01, IP_ACTIVE_LOW,  IPT_UNKNOWN )
 	PORT_BIT( 0x02, IP_ACTIVE_LOW,  IPT_UNKNOWN )
@@ -310,7 +185,6 @@ static INPUT_PORTS_START( superchs )
 	PORT_BIT( 0x20, IP_ACTIVE_LOW,  IPT_BUTTON4 ) PORT_NAME("Shifter") PORT_TOGGLE
 	PORT_BIT( 0x40, IP_ACTIVE_LOW,  IPT_BUTTON2 ) PORT_NAME("Brake Switch")   /* upright doesn't have brake? */
 	PORT_BIT( 0x80, IP_ACTIVE_LOW,  IPT_START1 )
->>>>>>> upstream/master
 
 	// 4 analog ports
 	PORT_START("WHEEL")
@@ -363,11 +237,7 @@ GFXDECODE_END
                  MACHINE DRIVERS
 ***********************************************************/
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( superchs, superchs_state )
-=======
 static MACHINE_CONFIG_START( superchs )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68EC020, XTAL_40MHz/2) /* 20MHz - verified */
@@ -382,8 +252,6 @@ static MACHINE_CONFIG_START( superchs )
 
 	MCFG_EEPROM_SERIAL_93C46_ADD("eeprom")
 
-<<<<<<< HEAD
-=======
 	MCFG_DEVICE_ADD("tc0510nio", TC0510NIO, 0)
 	MCFG_TC0510NIO_READ_1_CB(IOPORT("COINS"))
 	MCFG_TC0510NIO_READ_2_CB(IOPORT("SWITCHES"))
@@ -394,7 +262,6 @@ static MACHINE_CONFIG_START( superchs )
 	MCFG_TC0510NIO_WRITE_4_CB(WRITE8(superchs_state, coin_word_w))
 	// there are 'vibration' control bits somewhere!
 
->>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE(60)
@@ -414,16 +281,9 @@ static MACHINE_CONFIG_START( superchs )
 	MCFG_TC0480SCP_OFFSETS(0x20, 0x08)
 	MCFG_TC0480SCP_OFFSETS_TX(-1, 0)
 	MCFG_TC0480SCP_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_TC0480SCP_PALETTE("palette")
-
-	/* sound hardware */
-	MCFG_FRAGMENT_ADD(taito_en_sound)
-=======
 
 	/* sound hardware */
 	MCFG_DEVICE_ADD("taito_en", TAITO_EN, 0)
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_DERIVED( chase3, superchs )
@@ -442,11 +302,7 @@ ROM_START( superchs )
 	ROM_LOAD32_BYTE( "d46-33+.ic23", 0x00002, 0x40000, CRC(3094bcd0) SHA1(b6779b81a3ebec440a9359868dc43fc3a631ee11) ) /* Actually labeled D46 33* */
 	ROM_LOAD32_BYTE( "d46-32+.ic21", 0x00003, 0x40000, CRC(4fbeb335) SHA1(430cb753f3a12ab0412e82aef99e6e93b83050d6) ) /* Actually labeled D46 32* */
 
-<<<<<<< HEAD
-	ROM_REGION( 0x140000, "audiocpu", 0 )   /* Sound cpu */
-=======
 	ROM_REGION( 0x140000, "taito_en:audiocpu", 0 )   /* Sound cpu */
->>>>>>> upstream/master
 	ROM_LOAD16_BYTE( "d46-37.ic8", 0x100000, 0x20000, CRC(60b51b91) SHA1(0d0b017808e0a3bdabe8ef5a726bbe16428db06b) )
 	ROM_LOAD16_BYTE( "d46-36.ic7", 0x100001, 0x20000, CRC(8f7aa276) SHA1(b3e330e33099d3cbf4cdc43063119b041e9eea3a) )
 
@@ -496,11 +352,7 @@ ROM_START( superchsu )
 	ROM_LOAD32_BYTE( "d46-33+.ic23", 0x00002, 0x40000, CRC(3094bcd0) SHA1(b6779b81a3ebec440a9359868dc43fc3a631ee11) ) /* Actually labeled D46 33* */
 	ROM_LOAD32_BYTE( "d46-31+.ic21", 0x00003, 0x40000, CRC(38b983a3) SHA1(c4859cecc2f3506b7090c462cecd3e4eaabe85aa) ) /* Actually labeled D46 31* */
 
-<<<<<<< HEAD
-	ROM_REGION( 0x140000, "audiocpu", 0 )   /* Sound cpu */
-=======
 	ROM_REGION( 0x140000, "taito_en:audiocpu", 0 )   /* Sound cpu */
->>>>>>> upstream/master
 	ROM_LOAD16_BYTE( "d46-37.ic8", 0x100000, 0x20000, CRC(60b51b91) SHA1(0d0b017808e0a3bdabe8ef5a726bbe16428db06b) )
 	ROM_LOAD16_BYTE( "d46-36.ic7", 0x100001, 0x20000, CRC(8f7aa276) SHA1(b3e330e33099d3cbf4cdc43063119b041e9eea3a) )
 
@@ -550,11 +402,7 @@ ROM_START( superchsj )
 	ROM_LOAD32_BYTE( "d46-26+.ic23", 0x00002, 0x40000, CRC(2aaba1b0) SHA1(13ceaa678bd671c5c88cac35e8a021a180728a69) ) /* Actually labeled D46 26* */
 	ROM_LOAD32_BYTE( "d46-25+.ic21", 0x00003, 0x40000, CRC(4241e97a) SHA1(e3e361080e3ebc098805310d41b3afe7f14ff8b4) ) /* Actually labeled D46 25* */
 
-<<<<<<< HEAD
-	ROM_REGION( 0x140000, "audiocpu", 0 )   /* Sound cpu */
-=======
 	ROM_REGION( 0x140000, "taito_en:audiocpu", 0 )   /* Sound cpu */
->>>>>>> upstream/master
 	ROM_LOAD16_BYTE( "d46-30.ic8", 0x100000, 0x20000, CRC(88f8a421) SHA1(4fd0885d398b1b0e127d7462926d1630a635e305) )
 	ROM_LOAD16_BYTE( "d46-29.ic7", 0x100001, 0x20000, CRC(04501fa5) SHA1(dfbafc34df8ab0fcaefb5ca4c3143977020b7e58) )
 
@@ -599,20 +447,6 @@ ROM_END
 
 ROM_START( superchsp )
 	ROM_REGION( 0x200000, "maincpu", 0 )    /* 2048K for 68020 code (CPU A) */
-<<<<<<< HEAD
-	ROM_LOAD32_BYTE( "ic21 ffd1.bin", 0x00003, 0x40000, CRC(7a8199ac) SHA1(ab5e9dd34e17ebdbe1b091b9be12b47914164582) )
-	ROM_LOAD32_BYTE( "ic23 5935.bin", 0x00002, 0x40000, CRC(2b262660) SHA1(36c772d7dab4a635db9acc7a2cd657a7964ce8e4) )
-	ROM_LOAD32_BYTE( "ic25 a56c.bin", 0x00001, 0x40000, CRC(553ebaa9) SHA1(cfa544cb147218c3b3d9be313d83350bed34b348) )
-	ROM_LOAD32_BYTE( "ic27 1a46.bin", 0x00000, 0x40000, CRC(544e34c0) SHA1(57039063fa547e650fc66baf132988fb23ba0565) )
-
-	ROM_REGION( 0x140000, "audiocpu", 0 )   /* Sound cpu */
-	ROM_LOAD16_BYTE( "sound ic7 lower.bin", 0x100001, 0x20000, CRC(e70902cc) SHA1(ee3d31c4e2c92c4a338d08d379cb80f42f8fa9cf) )
-	ROM_LOAD16_BYTE( "sound ic8 upper.bin", 0x100000, 0x20000, CRC(86eea635) SHA1(49615a152c215e1f940ab16be3b0f1120822969c) )
-
-	ROM_REGION( 0x80000, "sub", 0 ) /* 256K for 68000 code (CPU B) */
-	ROM_LOAD16_BYTE( "ic112 3a05.bin", 0x00001, 0x40000, CRC(f95a477d) SHA1(c3ad1987ecd1f48084fba08687bd75ae804342b3) )
-	ROM_LOAD16_BYTE( "ic127 ae27.bin", 0x00000, 0x40000, CRC(8c8cd2a1) SHA1(178ab2df0ea7371ce275d38051643ea19ba88047) )
-=======
 	ROM_LOAD32_BYTE( "ic21_ffd1.bin", 0x00003, 0x40000, CRC(7a8199ac) SHA1(ab5e9dd34e17ebdbe1b091b9be12b47914164582) )
 	ROM_LOAD32_BYTE( "ic23_5935.bin", 0x00002, 0x40000, CRC(2b262660) SHA1(36c772d7dab4a635db9acc7a2cd657a7964ce8e4) )
 	ROM_LOAD32_BYTE( "ic25_a56c.bin", 0x00001, 0x40000, CRC(553ebaa9) SHA1(cfa544cb147218c3b3d9be313d83350bed34b348) )
@@ -625,7 +459,6 @@ ROM_START( superchsp )
 	ROM_REGION( 0x80000, "sub", 0 ) /* 256K for 68000 code (CPU B) */
 	ROM_LOAD16_BYTE( "ic112_3a05.bin", 0x00001, 0x40000, CRC(f95a477d) SHA1(c3ad1987ecd1f48084fba08687bd75ae804342b3) )
 	ROM_LOAD16_BYTE( "ic127_ae27.bin", 0x00000, 0x40000, CRC(8c8cd2a1) SHA1(178ab2df0ea7371ce275d38051643ea19ba88047) )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x200000, "gfx1", 0 ) /* SCR 16x16 tiles */
 	ROM_LOAD32_BYTE( "0scn.ic9",    0x00000, 0x080000, CRC(d54e80ec) SHA1(83460cf97b0da8523486ede5bd504710c790b1a6) )
@@ -669,8 +502,6 @@ ROM_START( superchsp )
 	ROM_LOAD( "chase3_defaults.nv", 0x0000, 0x0080, CRC(4b37c69f) SHA1(5c8567441ca12c120c157cb3339165586d4c7ce9 ) )
 ROM_END
 
-<<<<<<< HEAD
-=======
 ROM_START( superchsp2 )
 	ROM_REGION( 0x200000, "maincpu", 0 )    /* 2048K for 68020 code (CPU A) */
 	ROM_LOAD32_BYTE( "ic21_4355.ic21", 0x00003, 0x40000, CRC(c02a3a6f) SHA1(d7a201f0b2cde1823e215d0f21a27b8d041726bf) )
@@ -733,7 +564,6 @@ ROM_START( superchsp2 )
 	ROM_LOAD( "chase3_defaults.nv", 0x0000, 0x0080, CRC(4b37c69f) SHA1(5c8567441ca12c120c157cb3339165586d4c7ce9 ) )
 ROM_END
 
->>>>>>> upstream/master
 
 
 READ32_MEMBER(superchs_state::main_cycle_r)
@@ -759,15 +589,8 @@ DRIVER_INIT_MEMBER(superchs_state,superchs)
 	m_subcpu->space(AS_PROGRAM).install_read_handler(0x80000a, 0x80000b, read16_delegate(FUNC(superchs_state::sub_cycle_r),this));
 }
 
-<<<<<<< HEAD
-GAMEL( 1992, superchs,         0, superchs, superchs, superchs_state, superchs, ROT0,               "Taito Corporation Japan",   "Super Chase - Criminal Termination (World)", 0, layout_superchs )
-GAMEL( 1992, superchsu, superchs, superchs, superchs, superchs_state, superchs, ROT0,               "Taito America Corporation", "Super Chase - Criminal Termination (US)",    0, layout_superchs )
-GAMEL( 1992, superchsj, superchs, superchs, superchs, superchs_state, superchs, ROT0,               "Taito Corporation",         "Super Chase - Criminal Termination (Japan)", 0, layout_superchs )
-GAMEL( 1992, superchsp, superchs, chase3,   superchs, driver_device,  0,        ORIENTATION_FLIP_X, "Taito Corporation",         "Super Chase - Criminal Termination (1992/10/26 20:24:29 CHASE 3 VER 1.1, prototype)", 0, layout_superchs ) // has CHASE 3 as the internal description
-=======
 GAMEL( 1992, superchs,         0, superchs, superchs, superchs_state, superchs, ROT0,               "Taito Corporation Japan",   "Super Chase - Criminal Termination (World)", 0, layout_superchs ) // 1993/02/16 11:39:36 SUPER CHASE VER 1.2O
 GAMEL( 1992, superchsu, superchs, superchs, superchs, superchs_state, superchs, ROT0,               "Taito America Corporation", "Super Chase - Criminal Termination (US)",    0, layout_superchs ) // 1993/02/16 11:39:36 SUPER CHASE VER 1.2A
 GAMEL( 1992, superchsj, superchs, superchs, superchs, superchs_state, superchs, ROT0,               "Taito Corporation",         "Super Chase - Criminal Termination (Japan)", 0, layout_superchs ) // 1993/02/16 11:29:18 SUPER CHASE VER 1.2J
 GAMEL( 1992, superchsp, superchs, chase3,   superchs, superchs_state, 0,        ORIENTATION_FLIP_X, "Taito Corporation",         "Super Chase - Criminal Termination (1992/10/26 20:24:29 CHASE 3 VER 1.1, prototype)", 0, layout_superchs ) // has CHASE 3 as the internal description
 GAMEL( 1992, superchsp2,superchs, chase3,   superchs, superchs_state, 0,        ORIENTATION_FLIP_X, "Taito Corporation",         "Super Chase - Criminal Termination (1992/01/18 18:29:18 CHASE 3 VER 1.3O, prototype)", 0, layout_superchs )
->>>>>>> upstream/master

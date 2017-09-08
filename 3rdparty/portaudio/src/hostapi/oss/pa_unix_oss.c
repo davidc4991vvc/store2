@@ -1,9 +1,5 @@
 /*
-<<<<<<< HEAD
- * $Id: pa_unix_oss.c 1894 2013-06-08 19:30:41Z gineera $
-=======
  * $Id$
->>>>>>> upstream/master
  * PortAudio Portable Real-Time Audio Library
  * Latest Version at: http://www.portaudio.com
  * OSS implementation by:

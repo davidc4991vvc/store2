@@ -20,12 +20,8 @@ Volfied (c) 1989 Taito Corporation
 
     OSC: 32MHz, 26.686MHz & 20MHz
 
-<<<<<<< HEAD
-TC0030CMD is a custom Z80 with embedded 8K ram + 8k rom (20MHz OSC is next to chip, 20MHz/4 = 5MHz(?))
-=======
 TC0030CMD is a hybrid package ASIC containing NEC D78C11
 (with 4k internal ROM) + 8k EPROM + 8k DRAM + logic.
->>>>>>> upstream/master
 
 Stephh's notes (based on the game M68000 code and some tests) :
 
@@ -39,11 +35,7 @@ Stephh's notes (based on the game M68000 code and some tests) :
   - These 3 games are 100% the same, only region differs !
   - Coinage relies on the region (code at 0x00666a) :
       * 0x0001 (Japan) uses TAITO_COINAGE_JAPAN_OLD
-<<<<<<< HEAD
-      * 0x0002 (US) uses slighlty different TAITO_COINAGE_US :
-=======
       * 0x0002 (US) uses slightly different TAITO_COINAGE_US :
->>>>>>> upstream/master
         in fact, as there is no possibility to continue a game,
         what are used to be "Continue Price" Dip Switches are unused
       * 0x0003 (World) uses TAITO_COINAGE_WORLD
@@ -53,20 +45,6 @@ Stephh's notes (based on the game M68000 code and some tests) :
 
 ********************************************************************/
 
-<<<<<<< HEAD
-/* Define clocks based on actual OSC on the PCB */
-
-#define CPU_CLOCK           (XTAL_32MHz / 4)        /* 8 MHz clock for 68000 */
-#define SOUND_CPU_CLOCK     (XTAL_32MHz / 8)        /* 4 MHz clock for Z80 sound CPU */
-
-#include "emu.h"
-#include "cpu/z80/z80.h"
-#include "cpu/m68000/m68000.h"
-#include "includes/taitoipt.h"
-#include "audio/taitosnd.h"
-#include "sound/2203intf.h"
-#include "includes/volfied.h"
-=======
 #include "emu.h"
 #include "includes/volfied.h"
 #include "includes/taitoipt.h"
@@ -82,7 +60,6 @@ Stephh's notes (based on the game M68000 code and some tests) :
 
 #define CPU_CLOCK           (XTAL_32MHz / 4)        /* 8 MHz clock for 68000 */
 #define SOUND_CPU_CLOCK     (XTAL_32MHz / 8)        /* 4 MHz clock for Z80 sound CPU */
->>>>>>> upstream/master
 
 
 /***********************************************************
@@ -94,18 +71,6 @@ static ADDRESS_MAP_START( main_map, AS_PROGRAM, 16, volfied_state )
 	AM_RANGE(0x080000, 0x0fffff) AM_ROM     /* tiles   */
 	AM_RANGE(0x100000, 0x103fff) AM_RAM     /* main    */
 	AM_RANGE(0x200000, 0x203fff) AM_DEVREADWRITE("pc090oj", pc090oj_device, word_r, word_w)
-<<<<<<< HEAD
-	AM_RANGE(0x400000, 0x47ffff) AM_READWRITE(volfied_video_ram_r, volfied_video_ram_w)
-	AM_RANGE(0x500000, 0x503fff) AM_RAM_DEVWRITE("palette", palette_device, write) AM_SHARE("palette")
-	AM_RANGE(0x600000, 0x600001) AM_WRITE(volfied_video_mask_w)
-	AM_RANGE(0x700000, 0x700001) AM_WRITE(volfied_sprite_ctrl_w)
-	AM_RANGE(0xd00000, 0xd00001) AM_READWRITE(volfied_video_ctrl_r, volfied_video_ctrl_w)
-	AM_RANGE(0xe00000, 0xe00001) AM_DEVWRITE8("tc0140syt", tc0140syt_device, master_port_w, 0x00ff)
-	AM_RANGE(0xe00002, 0xe00003) AM_DEVREADWRITE8("tc0140syt", tc0140syt_device, master_comm_r, master_comm_w, 0x00ff)
-	AM_RANGE(0xf00000, 0xf007ff) AM_READWRITE(volfied_cchip_ram_r, volfied_cchip_ram_w)
-	AM_RANGE(0xf00802, 0xf00803) AM_READWRITE(volfied_cchip_ctrl_r, volfied_cchip_ctrl_w)
-	AM_RANGE(0xf00c00, 0xf00c01) AM_WRITE(volfied_cchip_bank_w)
-=======
 	AM_RANGE(0x400000, 0x47ffff) AM_READWRITE(video_ram_r, video_ram_w)
 	AM_RANGE(0x500000, 0x503fff) AM_RAM_DEVWRITE("palette", palette_device, write) AM_SHARE("palette")
 	AM_RANGE(0x600000, 0x600001) AM_WRITE(video_mask_w)
@@ -116,7 +81,6 @@ static ADDRESS_MAP_START( main_map, AS_PROGRAM, 16, volfied_state )
 	AM_RANGE(0xf00000, 0xf007ff) AM_READWRITE(cchip_ram_r, cchip_ram_w)
 	AM_RANGE(0xf00802, 0xf00803) AM_READWRITE(cchip_ctrl_r, cchip_ctrl_w)
 	AM_RANGE(0xf00c00, 0xf00c01) AM_WRITE(cchip_bank_w)
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( z80_map, AS_PROGRAM, 8, volfied_state )
@@ -241,46 +205,21 @@ static GFXDECODE_START( volfied )
 GFXDECODE_END
 
 
-<<<<<<< HEAD
-/**************************************************************
-                YM2203 (SOUND)
-**************************************************************/
-
-/* handler called by the YM2203 emulator when the internal timers cause an IRQ */
-
-WRITE_LINE_MEMBER(volfied_state::irqhandler)
-{
-	m_audiocpu->set_input_line(0, state ? ASSERT_LINE : CLEAR_LINE);
-}
-
-=======
->>>>>>> upstream/master
 /***********************************************************
                 MACHINE DRIVERS
 ***********************************************************/
 
 void volfied_state::machine_start()
 {
-<<<<<<< HEAD
-	volfied_cchip_init();
-=======
 	cchip_init();
->>>>>>> upstream/master
 }
 
 void volfied_state::machine_reset()
 {
-<<<<<<< HEAD
-	volfied_cchip_reset();
-}
-
-static MACHINE_CONFIG_START( volfied, volfied_state )
-=======
 	cchip_reset();
 }
 
 static MACHINE_CONFIG_START( volfied )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, CPU_CLOCK)   /* 8MHz */
@@ -290,11 +229,8 @@ static MACHINE_CONFIG_START( volfied )
 	MCFG_CPU_ADD("audiocpu", Z80, SOUND_CPU_CLOCK)   /* 4MHz sound CPU, required to run the game */
 	MCFG_CPU_PROGRAM_MAP(z80_map)
 
-<<<<<<< HEAD
-=======
 	MCFG_TAITO_CCHIP_ADD("cchip", XTAL_12MHz/2) /* ? MHz */
 
->>>>>>> upstream/master
 	MCFG_QUANTUM_TIME(attotime::from_hz(1200))
 
 
@@ -304,11 +240,7 @@ static MACHINE_CONFIG_START( volfied )
 	MCFG_SCREEN_VBLANK_TIME(ATTOSECONDS_IN_USEC(0))
 	MCFG_SCREEN_SIZE(320, 256)
 	MCFG_SCREEN_VISIBLE_AREA(0, 319, 8, 247)
-<<<<<<< HEAD
-	MCFG_SCREEN_UPDATE_DRIVER(volfied_state, screen_update_volfied)
-=======
 	MCFG_SCREEN_UPDATE_DRIVER(volfied_state, screen_update)
->>>>>>> upstream/master
 	MCFG_SCREEN_PALETTE("palette")
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", volfied)
@@ -323,11 +255,7 @@ static MACHINE_CONFIG_START( volfied )
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
 	MCFG_SOUND_ADD("ymsnd", YM2203, 4000000)
-<<<<<<< HEAD
-	MCFG_YM2203_IRQ_HANDLER(WRITELINE(volfied_state, irqhandler))
-=======
 	MCFG_YM2203_IRQ_HANDLER(INPUTLINE("audiocpu", 0))
->>>>>>> upstream/master
 	MCFG_AY8910_PORT_A_READ_CB(IOPORT("DSWA"))
 	MCFG_AY8910_PORT_B_READ_CB(IOPORT("DSWB"))
 	MCFG_SOUND_ROUTE(0, "mono", 0.15)
@@ -356,12 +284,9 @@ ROM_START( volfied )
 	ROM_LOAD16_BYTE( "c04-19.6",    0xc0000, 0x20000, CRC(231493ae) SHA1(2658e6556fd0e75ddd0f0b8628cfa5237c187a06) )
 	ROM_LOAD16_BYTE( "c04-21.8",    0xc0001, 0x20000, CRC(8598d38e) SHA1(4ec1b819586b50e2f6aff2aaa5e3b06704b9bec2) )
 
-<<<<<<< HEAD
-=======
 	ROM_REGION( 0x2000, "cchip:cchip_eprom", 0 )
 	ROM_LOAD( "cchip_c04-23",            0x0000, 0x2000, NO_DUMP )
 
->>>>>>> upstream/master
 	ROM_REGION( 0xc0000, "gfx1", 0 )    /* sprites 16x16 */
 	ROM_LOAD16_BYTE( "c04-16.2",   0x00000, 0x20000, CRC(8c2476ef) SHA1(972ddc8e47a669f1aeca67d02b4a0bed867ddb7d) )
 	ROM_LOAD16_BYTE( "c04-18.4",   0x00001, 0x20000, CRC(7665212c) SHA1(b816ac2a95ee273aaf90991f53766d7f0d5d9238) )
@@ -391,12 +316,9 @@ ROM_START( volfiedo )
 	ROM_LOAD16_BYTE( "c04-19.6",  0xc0000, 0x20000, CRC(231493ae) SHA1(2658e6556fd0e75ddd0f0b8628cfa5237c187a06) )
 	ROM_LOAD16_BYTE( "c04-21.8",  0xc0001, 0x20000, CRC(8598d38e) SHA1(4ec1b819586b50e2f6aff2aaa5e3b06704b9bec2) )
 
-<<<<<<< HEAD
-=======
 	ROM_REGION( 0x2000, "cchip:cchip_eprom", 0 )
 	ROM_LOAD( "cchip_c04-23",            0x0000, 0x2000, NO_DUMP )
 
->>>>>>> upstream/master
 	ROM_REGION( 0xc0000, "gfx1", 0 )    /* sprites 16x16 */
 	ROM_LOAD16_BYTE( "c04-16.2",  0x00000, 0x20000, CRC(8c2476ef) SHA1(972ddc8e47a669f1aeca67d02b4a0bed867ddb7d) )
 	ROM_LOAD16_BYTE( "c04-18.4",  0x00001, 0x20000, CRC(7665212c) SHA1(b816ac2a95ee273aaf90991f53766d7f0d5d9238) )
@@ -426,12 +348,9 @@ ROM_START( volfiedu )
 	ROM_LOAD16_BYTE( "c04-19.6",    0xc0000, 0x20000, CRC(231493ae) SHA1(2658e6556fd0e75ddd0f0b8628cfa5237c187a06) )
 	ROM_LOAD16_BYTE( "c04-21.8",    0xc0001, 0x20000, CRC(8598d38e) SHA1(4ec1b819586b50e2f6aff2aaa5e3b06704b9bec2) )
 
-<<<<<<< HEAD
-=======
 	ROM_REGION( 0x2000, "cchip:cchip_eprom", 0 )
 	ROM_LOAD( "cchip_c04-23",            0x0000, 0x2000, NO_DUMP )
 
->>>>>>> upstream/master
 	ROM_REGION( 0xc0000, "gfx1", 0 )    /* sprites 16x16 */
 	ROM_LOAD16_BYTE( "c04-16.2",   0x00000, 0x20000, CRC(8c2476ef) SHA1(972ddc8e47a669f1aeca67d02b4a0bed867ddb7d) )
 	ROM_LOAD16_BYTE( "c04-18.4",   0x00001, 0x20000, CRC(7665212c) SHA1(b816ac2a95ee273aaf90991f53766d7f0d5d9238) )
@@ -461,12 +380,9 @@ ROM_START( volfieduo )
 	ROM_LOAD16_BYTE( "c04-19.6",  0xc0000, 0x20000, CRC(231493ae) SHA1(2658e6556fd0e75ddd0f0b8628cfa5237c187a06) )
 	ROM_LOAD16_BYTE( "c04-21.8",  0xc0001, 0x20000, CRC(8598d38e) SHA1(4ec1b819586b50e2f6aff2aaa5e3b06704b9bec2) )
 
-<<<<<<< HEAD
-=======
 	ROM_REGION( 0x2000, "cchip:cchip_eprom", 0 )
 	ROM_LOAD( "cchip_c04-23",            0x0000, 0x2000, NO_DUMP )
 
->>>>>>> upstream/master
 	ROM_REGION( 0xc0000, "gfx1", 0 )    /* sprites 16x16 */
 	ROM_LOAD16_BYTE( "c04-16.2",  0x00000, 0x20000, CRC(8c2476ef) SHA1(972ddc8e47a669f1aeca67d02b4a0bed867ddb7d) )
 	ROM_LOAD16_BYTE( "c04-18.4",  0x00001, 0x20000, CRC(7665212c) SHA1(b816ac2a95ee273aaf90991f53766d7f0d5d9238) )
@@ -496,12 +412,9 @@ ROM_START( volfiedj )
 	ROM_LOAD16_BYTE( "c04-19.6",    0xc0000, 0x20000, CRC(231493ae) SHA1(2658e6556fd0e75ddd0f0b8628cfa5237c187a06) )
 	ROM_LOAD16_BYTE( "c04-21.8",    0xc0001, 0x20000, CRC(8598d38e) SHA1(4ec1b819586b50e2f6aff2aaa5e3b06704b9bec2) )
 
-<<<<<<< HEAD
-=======
 	ROM_REGION( 0x2000, "cchip:cchip_eprom", 0 )
 	ROM_LOAD( "cchip_c04-23",            0x0000, 0x2000, NO_DUMP )
 
->>>>>>> upstream/master
 	ROM_REGION( 0xc0000, "gfx1", 0 )    /* sprites 16x16 */
 	ROM_LOAD16_BYTE( "c04-16.2",   0x00000, 0x20000, CRC(8c2476ef) SHA1(972ddc8e47a669f1aeca67d02b4a0bed867ddb7d) )
 	ROM_LOAD16_BYTE( "c04-18.4",   0x00001, 0x20000, CRC(7665212c) SHA1(b816ac2a95ee273aaf90991f53766d7f0d5d9238) )
@@ -531,12 +444,9 @@ ROM_START( volfiedjo )
 	ROM_LOAD16_BYTE( "c04-19.6",  0xc0000, 0x20000, CRC(231493ae) SHA1(2658e6556fd0e75ddd0f0b8628cfa5237c187a06) )
 	ROM_LOAD16_BYTE( "c04-21.8",  0xc0001, 0x20000, CRC(8598d38e) SHA1(4ec1b819586b50e2f6aff2aaa5e3b06704b9bec2) )
 
-<<<<<<< HEAD
-=======
 	ROM_REGION( 0x2000, "cchip:cchip_eprom", 0 )
 	ROM_LOAD( "cchip_c04-23",            0x0000, 0x2000, NO_DUMP )
 
->>>>>>> upstream/master
 	ROM_REGION( 0xc0000, "gfx1", 0 )    /* sprites 16x16 */
 	ROM_LOAD16_BYTE( "c04-16.2",  0x00000, 0x20000, CRC(8c2476ef) SHA1(972ddc8e47a669f1aeca67d02b4a0bed867ddb7d) )
 	ROM_LOAD16_BYTE( "c04-18.4",  0x00001, 0x20000, CRC(7665212c) SHA1(b816ac2a95ee273aaf90991f53766d7f0d5d9238) )
@@ -556,18 +466,9 @@ ROM_START( volfiedjo )
 ROM_END
 
 
-<<<<<<< HEAD
-GAME( 1989, volfied,   0,       volfied, volfied, driver_device,  0, ROT270, "Taito Corporation Japan",   "Volfied (World, revision 1)", MACHINE_SUPPORTS_SAVE )
-GAME( 1989, volfiedu,  volfied, volfied, volfiedu, driver_device, 0, ROT270, "Taito America Corporation", "Volfied (US, revision 1)", MACHINE_SUPPORTS_SAVE )
-GAME( 1989, volfiedj,  volfied, volfied, volfiedj, driver_device, 0, ROT270, "Taito Corporation",         "Volfied (Japan, revision 1)", MACHINE_SUPPORTS_SAVE )
-GAME( 1989, volfiedo,  volfied, volfied, volfiedj, driver_device, 0, ROT270, "Taito Corporation Japan",   "Volfied (World)", MACHINE_SUPPORTS_SAVE )
-GAME( 1989, volfieduo, volfied, volfied, volfiedj, driver_device, 0, ROT270, "Taito America Corporation", "Volfied (US)", MACHINE_SUPPORTS_SAVE )
-GAME( 1989, volfiedjo, volfied, volfied, volfiedj, driver_device, 0, ROT270, "Taito Corporation",         "Volfied (Japan)", MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1989, volfied,   0,       volfied, volfied,  volfied_state, 0, ROT270, "Taito Corporation Japan",   "Volfied (World, revision 1)", MACHINE_SUPPORTS_SAVE )
 GAME( 1989, volfiedu,  volfied, volfied, volfiedu, volfied_state, 0, ROT270, "Taito America Corporation", "Volfied (US, revision 1)",    MACHINE_SUPPORTS_SAVE )
 GAME( 1989, volfiedj,  volfied, volfied, volfiedj, volfied_state, 0, ROT270, "Taito Corporation",         "Volfied (Japan, revision 1)", MACHINE_SUPPORTS_SAVE )
 GAME( 1989, volfiedo,  volfied, volfied, volfiedj, volfied_state, 0, ROT270, "Taito Corporation Japan",   "Volfied (World)",             MACHINE_SUPPORTS_SAVE )
 GAME( 1989, volfieduo, volfied, volfied, volfiedj, volfied_state, 0, ROT270, "Taito America Corporation", "Volfied (US)",                MACHINE_SUPPORTS_SAVE )
 GAME( 1989, volfiedjo, volfied, volfied, volfiedj, volfied_state, 0, ROT270, "Taito Corporation",         "Volfied (Japan)",             MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

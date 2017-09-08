@@ -2,14 +2,6 @@
 // copyright-holders:Carl
 // psx multitap emulation
 
-<<<<<<< HEAD
-#include "multitap.h"
-
-const device_type PSX_MULTITAP = &device_creator<psx_multitap_device>;
-
-psx_multitap_device::psx_multitap_device(const machine_config& mconfig, const char* tag, device_t* owner, UINT32 clock) :
-	device_t(mconfig, PSX_MULTITAP, "Playstation Multitap", tag, owner, clock, "psx_multitap", __FILE__),
-=======
 #include "emu.h"
 #include "multitap.h"
 
@@ -17,7 +9,6 @@ DEFINE_DEVICE_TYPE(PSX_MULTITAP, psx_multitap_device, "psx_multitap", "Playstati
 
 psx_multitap_device::psx_multitap_device(const machine_config& mconfig, const char* tag, device_t* owner, uint32_t clock) :
 	device_t(mconfig, PSX_MULTITAP, tag, owner, clock),
->>>>>>> upstream/master
 	device_psx_controller_interface(mconfig, *this),
 	m_activeport(0),
 	m_singlemode(false),
@@ -30,26 +21,6 @@ psx_multitap_device::psx_multitap_device(const machine_config& mconfig, const ch
 {
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_FRAGMENT( psx_multitap )
-	MCFG_PSX_CTRL_PORT_ADD("a", psx_controllers_nomulti, "digital_pad")
-	MCFG_PSX_CTRL_PORT_ADD("b", psx_controllers_nomulti, NULL)
-	MCFG_PSX_CTRL_PORT_ADD("c", psx_controllers_nomulti, NULL)
-	MCFG_PSX_CTRL_PORT_ADD("d", psx_controllers_nomulti, NULL)
-MACHINE_CONFIG_END
-
-machine_config_constructor psx_multitap_device::device_mconfig_additions() const
-{
-	return MACHINE_CONFIG_NAME( psx_multitap );
-}
-
-void psx_multitap_device::device_start()
-{
-	m_porta->setup_ack_cb(psx_controller_port_device::void_cb(FUNC(psx_multitap_device::ack), this));
-	m_portb->setup_ack_cb(psx_controller_port_device::void_cb(FUNC(psx_multitap_device::ack), this));
-	m_portc->setup_ack_cb(psx_controller_port_device::void_cb(FUNC(psx_multitap_device::ack), this));
-	m_portd->setup_ack_cb(psx_controller_port_device::void_cb(FUNC(psx_multitap_device::ack), this));
-=======
 MACHINE_CONFIG_MEMBER( psx_multitap_device::device_add_mconfig )
 	MCFG_PSX_CTRL_PORT_ADD("a", psx_controllers_nomulti, "digital_pad")
 	MCFG_PSX_CTRL_PORT_ADD("b", psx_controllers_nomulti, nullptr)
@@ -63,7 +34,6 @@ void psx_multitap_device::device_start()
 	m_portb->setup_ack_cb(psx_controller_port_device::void_cb(&psx_multitap_device::ack, this));
 	m_portc->setup_ack_cb(psx_controller_port_device::void_cb(&psx_multitap_device::ack, this));
 	m_portd->setup_ack_cb(psx_controller_port_device::void_cb(&psx_multitap_device::ack, this));
->>>>>>> upstream/master
 	m_nextmode = false;
 
 	save_item(NAME(m_activeport));
@@ -261,11 +231,7 @@ void psx_multitap_device::do_pad()
 		m_count++;
 }
 
-<<<<<<< HEAD
-bool psx_multitap_device::get_pad(int count, UINT8 *odata, UINT8 idata)
-=======
 bool psx_multitap_device::get_pad(int count, uint8_t *odata, uint8_t idata)
->>>>>>> upstream/master
 {
 	if(!count)
 		*odata = 0x80;

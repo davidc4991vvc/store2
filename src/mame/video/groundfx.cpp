@@ -2,20 +2,13 @@
 // copyright-holders:Bryan McPhail, David Graves
 #include "emu.h"
 #include "includes/groundfx.h"
-<<<<<<< HEAD
-=======
 #include "screen.h"
->>>>>>> upstream/master
 
 /******************************************************************/
 
 void groundfx_state::video_start()
 {
-<<<<<<< HEAD
-	m_spritelist = auto_alloc_array(machine(), struct gfx_tempsprite, 0x4000);
-=======
 	m_spritelist = std::make_unique<gfx_tempsprite[]>(0x4000);
->>>>>>> upstream/master
 
 	/* Hack */
 	m_hack_cliprect.set(69, 250, 24 + 5, 24 + 44);
@@ -70,13 +63,8 @@ Heavy use is made of sprite zooming.
 
 void groundfx_state::draw_sprites(screen_device &screen, bitmap_ind16 &bitmap,const rectangle &cliprect,int do_hack,int x_offs,int y_offs)
 {
-<<<<<<< HEAD
-	UINT32 *spriteram32 = m_spriteram;
-	UINT16 *spritemap = (UINT16 *)memregion("user1")->base();
-=======
 	uint32_t *spriteram32 = m_spriteram;
 	uint16_t *spritemap = (uint16_t *)memregion("user1")->base();
->>>>>>> upstream/master
 	int offs, data, tilenum, color, flipx, flipy;
 	int x, y, priority, dblsize, curx, cury;
 	int sprites_flipscreen = 0;
@@ -87,11 +75,7 @@ void groundfx_state::draw_sprites(screen_device &screen, bitmap_ind16 &bitmap,co
 
 	/* pdrawgfx() needs us to draw sprites front to back, so we have to build a list
 	   while processing sprite ram and then draw them all at the end */
-<<<<<<< HEAD
-	struct gfx_tempsprite *sprite_ptr = m_spritelist;
-=======
 	struct gfx_tempsprite *sprite_ptr = m_spritelist.get();
->>>>>>> upstream/master
 
 	for (offs = (m_spriteram.bytes()/4-4);offs >= 0;offs -= 4)
 	{
@@ -186,13 +170,8 @@ void groundfx_state::draw_sprites(screen_device &screen, bitmap_ind16 &bitmap,co
 		}
 	}
 
-<<<<<<< HEAD
-	/* this happens only if primsks != NULL */
-	while (sprite_ptr != m_spritelist)
-=======
 	/* this happens only if primsks != nullptr */
 	while (sprite_ptr != m_spritelist.get())
->>>>>>> upstream/master
 	{
 		const rectangle *clipper;
 
@@ -217,21 +196,12 @@ void groundfx_state::draw_sprites(screen_device &screen, bitmap_ind16 &bitmap,co
                 SCREEN REFRESH
 **************************************************************/
 
-<<<<<<< HEAD
-UINT32 groundfx_state::screen_update_groundfx(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-{
-	address_space &space = machine().driver_data()->generic_space();
-	UINT8 layer[5];
-	UINT8 scclayer[3];
-	UINT16 priority;
-=======
 uint32_t groundfx_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
 	address_space &space = machine().dummy_space();
 	uint8_t layer[5];
 	uint8_t scclayer[3];
 	uint16_t priority;
->>>>>>> upstream/master
 
 	m_tc0100scn->tilemap_update();
 	m_tc0480scp->tilemap_update();

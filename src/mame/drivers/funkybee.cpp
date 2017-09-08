@@ -74,11 +74,6 @@ Stephh's notes (based on the games Z80 code and some tests) :
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/z80/z80.h"
-#include "sound/ay8910.h"
-#include "includes/funkybee.h"
-=======
 #include "includes/funkybee.h"
 
 #include "cpu/z80/z80.h"
@@ -86,20 +81,10 @@ Stephh's notes (based on the games Z80 code and some tests) :
 #include "sound/ay8910.h"
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 READ8_MEMBER(funkybee_state::funkybee_input_port_0_r)
 {
-<<<<<<< HEAD
-	watchdog_reset_r(space, 0);
-	return ioport("IN0")->read();
-}
-
-WRITE8_MEMBER(funkybee_state::funkybee_coin_counter_w)
-{
-	coin_counter_w(machine(), offset, data);
-=======
 	m_watchdog->reset_r(space, 0);
 	return ioport("IN0")->read();
 }
@@ -112,7 +97,6 @@ WRITE_LINE_MEMBER(funkybee_state::coin_counter_1_w)
 WRITE_LINE_MEMBER(funkybee_state::coin_counter_2_w)
 {
 	machine().bookkeeping().coin_counter_w(1, state);
->>>>>>> upstream/master
 }
 
 static ADDRESS_MAP_START( funkybee_map, AS_PROGRAM, 8, funkybee_state )
@@ -121,17 +105,9 @@ static ADDRESS_MAP_START( funkybee_map, AS_PROGRAM, 8, funkybee_state )
 	AM_RANGE(0xa000, 0xbfff) AM_RAM_WRITE(funkybee_videoram_w) AM_SHARE("videoram")
 	AM_RANGE(0xc000, 0xdfff) AM_RAM_WRITE(funkybee_colorram_w) AM_SHARE("colorram")
 	AM_RANGE(0xe000, 0xe000) AM_WRITE(funkybee_scroll_w)
-<<<<<<< HEAD
-	AM_RANGE(0xe800, 0xe800) AM_WRITE(funkybee_flipscreen_w)
-	AM_RANGE(0xe802, 0xe803) AM_WRITE(funkybee_coin_counter_w)
-	AM_RANGE(0xe805, 0xe805) AM_WRITE(funkybee_gfx_bank_w)
-	AM_RANGE(0xf000, 0xf000) AM_READNOP /* IRQ Ack */
-	AM_RANGE(0xf800, 0xf800) AM_READWRITE(funkybee_input_port_0_r, watchdog_reset_w)
-=======
 	AM_RANGE(0xe800, 0xe807) AM_DEVWRITE("mainlatch", ls259_device, write_d0)
 	AM_RANGE(0xf000, 0xf000) AM_READNOP /* IRQ Ack */
 	AM_RANGE(0xf800, 0xf800) AM_READ(funkybee_input_port_0_r) AM_DEVWRITE("watchdog", watchdog_timer_device, reset_w)
->>>>>>> upstream/master
 	AM_RANGE(0xf801, 0xf801) AM_READ_PORT("IN1")
 	AM_RANGE(0xf802, 0xf802) AM_READ_PORT("IN2")
 ADDRESS_MAP_END
@@ -303,22 +279,11 @@ GFXDECODE_END
 void funkybee_state::machine_start()
 {
 	save_item(NAME(m_gfx_bank));
-<<<<<<< HEAD
-}
-
-void funkybee_state::machine_reset()
-{
-	m_gfx_bank = 0;
-}
-
-static MACHINE_CONFIG_START( funkybee, funkybee_state )
-=======
 
 	m_gfx_bank = 0;
 }
 
 static MACHINE_CONFIG_START( funkybee )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, 3072000)   /* 3.072 MHz */
@@ -326,8 +291,6 @@ static MACHINE_CONFIG_START( funkybee )
 	MCFG_CPU_IO_MAP(io_map)
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", funkybee_state,  irq0_line_hold)
 
-<<<<<<< HEAD
-=======
 	MCFG_DEVICE_ADD("mainlatch", LS259, 0)
 	MCFG_ADDRESSABLE_LATCH_Q0_OUT_CB(WRITELINE(funkybee_state, flipscreen_w))
 	MCFG_ADDRESSABLE_LATCH_Q2_OUT_CB(WRITELINE(funkybee_state, coin_counter_1_w))
@@ -335,7 +298,6 @@ static MACHINE_CONFIG_START( funkybee )
 	MCFG_ADDRESSABLE_LATCH_Q5_OUT_CB(WRITELINE(funkybee_state, gfx_bank_w))
 
 	MCFG_WATCHDOG_ADD("watchdog")
->>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
@@ -353,11 +315,7 @@ static MACHINE_CONFIG_START( funkybee )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-	MCFG_SOUND_ADD("aysnd", AY8910, 1500000)
-=======
 	MCFG_SOUND_ADD("aysnd", AY8912, 1500000) // AY-3-8912 verified for Sky Lancer
->>>>>>> upstream/master
 	MCFG_AY8910_PORT_A_READ_CB(IOPORT("DSW"))
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
 MACHINE_CONFIG_END
@@ -468,14 +426,7 @@ ROM_START( skylancre )
 	ROM_LOAD( "18s030.1a",     0x0000, 0x0020, CRC(e645bacb) SHA1(5f4c299c4cf165fd229731c0e5799a34892bf28e) )
 ROM_END
 
-<<<<<<< HEAD
-GAME( 1982, funkybee,  0,        funkybee, funkybee, driver_device, 0, ROT90, "Orca",                           "Funky Bee",                            MACHINE_SUPPORTS_SAVE )
-GAME( 1982, funkybeeb, funkybee, funkybee, funkybeeb, driver_device,0, ROT90, "bootleg",                        "Funky Bee (bootleg, harder)",          MACHINE_SUPPORTS_SAVE )
-GAME( 1983, skylancr,  0,        funkybee, skylancr, driver_device, 0, ROT90, "Orca",                           "Sky Lancer",                           MACHINE_SUPPORTS_SAVE )
-GAME( 1983, skylancre, skylancr, funkybee, skylancre, driver_device,0, ROT90, "Orca (Esco Trading Co license)", "Sky Lancer (Esco Trading Co license)", MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1982, funkybee,  0,        funkybee, funkybee,  funkybee_state, 0, ROT90, "Orca",                           "Funky Bee",                            MACHINE_SUPPORTS_SAVE )
 GAME( 1982, funkybeeb, funkybee, funkybee, funkybeeb, funkybee_state, 0, ROT90, "bootleg",                        "Funky Bee (bootleg, harder)",          MACHINE_SUPPORTS_SAVE )
 GAME( 1983, skylancr,  0,        funkybee, skylancr,  funkybee_state, 0, ROT90, "Orca",                           "Sky Lancer",                           MACHINE_SUPPORTS_SAVE )
 GAME( 1983, skylancre, skylancr, funkybee, skylancre, funkybee_state, 0, ROT90, "Orca (Esco Trading Co license)", "Sky Lancer (Esco Trading Co license)", MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

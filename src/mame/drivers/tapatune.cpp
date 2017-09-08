@@ -41,11 +41,8 @@
 #include "machine/ticket.h"
 #include "sound/bsmt2000.h"
 #include "video/mc6845.h"
-<<<<<<< HEAD
-=======
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 /*************************************
@@ -68,26 +65,6 @@ public:
 	optional_device<cpu_device> m_videocpu;
 	required_device<bsmt2000_device> m_bsmt;
 
-<<<<<<< HEAD
-	optional_shared_ptr<UINT16> m_videoram;
-
-	UINT8   m_paletteram[0x300];
-	UINT16  m_palette_write_addr;
-	rgb_t   m_pens[0x100];
-	UINT8   m_controls_mux;
-	UINT8   m_z80_to_68k_index;
-	UINT8   m_z80_to_68k_data;
-	UINT8   m_68k_to_z80_index;
-	UINT8   m_68k_to_z80_data;
-	UINT8   m_z80_data_available;
-	UINT8   m_68k_data_available;
-	UINT8   m_bsmt_data_l;
-	UINT8   m_bsmt_data_h;
-	bool    m_bsmt_reset;
-
-	virtual void machine_start();
-	virtual void machine_reset();
-=======
 	optional_shared_ptr<uint16_t> m_videoram;
 
 	uint8_t   m_paletteram[0x300];
@@ -106,7 +83,6 @@ public:
 
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
->>>>>>> upstream/master
 
 	DECLARE_WRITE_LINE_MEMBER(crtc_vsync);
 
@@ -175,11 +151,7 @@ void tapatune_state::machine_reset()
 MC6845_BEGIN_UPDATE( tapatune_state::crtc_begin_update )
 {
 	// Create the pens
-<<<<<<< HEAD
-	for (UINT32 i = 0; i < 0x100; i++)
-=======
 	for (uint32_t i = 0; i < 0x100; i++)
->>>>>>> upstream/master
 	{
 		int r = m_paletteram[3 * i + 0];
 		int g = m_paletteram[3 * i + 1];
@@ -196,16 +168,6 @@ MC6845_BEGIN_UPDATE( tapatune_state::crtc_begin_update )
 
 MC6845_UPDATE_ROW( tapatune_state::crtc_update_row )
 {
-<<<<<<< HEAD
-	UINT32 *dest = &bitmap.pix32(y);
-	offs_t offs = (ma*2 + ra*0x40)*4;
-
-	UINT8 *videoram = reinterpret_cast<UINT8 *>(m_videoram.target());
-
-	for (UINT32 x = 0; x < x_count*4; x++)
-	{
-		UINT8 pix = videoram[BYTE_XOR_BE(offs + x)];
-=======
 	uint32_t *dest = &bitmap.pix32(y);
 	offs_t offs = (ma*2 + ra*0x40)*4;
 
@@ -214,7 +176,6 @@ MC6845_UPDATE_ROW( tapatune_state::crtc_update_row )
 	for (uint32_t x = 0; x < x_count*4; x++)
 	{
 		uint8_t pix = videoram[BYTE_XOR_BE(offs + x)];
->>>>>>> upstream/master
 		dest[2*x] = m_pens[((pix >> 4) & 0x0f)];
 		dest[2*x + 1] = m_pens[(pix & 0x0f)];
 	}
@@ -253,11 +214,7 @@ WRITE_LINE_MEMBER(tapatune_state::crtc_vsync)
 READ16_MEMBER(tapatune_state::read_from_z80)
 {
 	m_z80_data_available = 0;
-<<<<<<< HEAD
-	return ((UINT16)m_z80_to_68k_data << 8) | (m_z80_to_68k_index);
-=======
 	return ((uint16_t)m_z80_to_68k_data << 8) | (m_z80_to_68k_index);
->>>>>>> upstream/master
 }
 
 
@@ -552,11 +509,7 @@ INPUT_PORTS_END
  *
  *************************************/
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( tapatune_base, tapatune_state )
-=======
 static MACHINE_CONFIG_START( tapatune_base )
->>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, XTAL_24MHz / 4)
 	MCFG_CPU_PROGRAM_MAP(maincpu_map)
@@ -675,16 +628,8 @@ ROM_END
  *
  *************************************/
 
-<<<<<<< HEAD
-GAME(1994, tapatune, 0, tapatune,      tapatune, driver_device, 0, ROT0, "Moloney Manufacturing Inc. / Creative Electronics and Software", "Tap a Tune", MACHINE_SUPPORTS_SAVE )
-
-// below appear to be mechanical games with the same Z80 board as the above
-GAME(1994, srockbwl, 0, tapatune_base, tapatune, driver_device, 0, ROT0, "Bromley",                                                        "Super Rock and Bowl (V1.1)", MACHINE_IS_SKELETON_MECHANICAL | MACHINE_SUPPORTS_SAVE )
-GAME(199?, smartoss, 0, tapatune_base, tapatune, driver_device, 0, ROT0, "Smart Industries / Creative Electronics and Software",           "Smart Toss 'em / Smartball (Ver 2.0)", MACHINE_IS_SKELETON_MECHANICAL | MACHINE_SUPPORTS_SAVE )
-=======
 GAME(1994, tapatune, 0, tapatune,      tapatune, tapatune_state, 0, ROT0, "Moloney Manufacturing Inc. / Creative Electronics and Software", "Tap a Tune", MACHINE_SUPPORTS_SAVE )
 
 // below appear to be mechanical games with the same Z80 board as the above
 GAME(1994, srockbwl, 0, tapatune_base, tapatune, tapatune_state, 0, ROT0, "Bromley",                                                        "Super Rock and Bowl (V1.1)", MACHINE_IS_SKELETON_MECHANICAL | MACHINE_SUPPORTS_SAVE )
 GAME(199?, smartoss, 0, tapatune_base, tapatune, tapatune_state, 0, ROT0, "Smart Industries / Creative Electronics and Software",           "Smart Toss 'em / Smartball (Ver 2.0)", MACHINE_IS_SKELETON_MECHANICAL | MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

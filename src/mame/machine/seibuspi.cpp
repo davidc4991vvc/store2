@@ -4,37 +4,9 @@
 #include "emu.h"
 #include "machine/seibuspi.h"
 
-<<<<<<< HEAD
-/**************************************************************************
-
-Tile encryption
----------------
-
-The tile graphics encryption uses the same algorithm in all games, with
-different keys for the SPI, RISE10 and RISE11 custom chips.
-
-- Take 24 bits of gfx data (used to decrypt 4 pixels at 6 bpp) and perform
-  a bit permutation on them (the permutation is the same in all games).
-- Take the low 12 bits of the tile code and add a 24-bit number (KEY1) to it.
-- Add the two 24-bit numbers resulting from the above steps, but with a
-  catch: while performing the sum, some bits generate carry as usual, other
-  bits don't, depending on a 24-bit key (KEY2). Note that the carry generated
-  by bit 23 (if enabled) wraps around to bit 0.
-- XOR the result with a 24-bit number (KEY3).
-
-The decryption is actually programmable; the games write the key to the
-custom IC on startup!! (writes to 000414)
-
-**************************************************************************/
-
-// add two numbers generating carry from one bit to the next only if
-// the corresponding bit in carry_mask is 1
-static UINT32 partial_carry_sum(UINT32 add1,UINT32 add2,UINT32 carry_mask,int bits)
-=======
 // add two numbers generating carry from one bit to the next only if
 // the corresponding bit in carry_mask is 1
 static uint32_t partial_carry_sum(uint32_t add1,uint32_t add2,uint32_t carry_mask,int bits)
->>>>>>> upstream/master
 {
 	int i,res,carry;
 
@@ -60,141 +32,23 @@ static uint32_t partial_carry_sum(uint32_t add1,uint32_t add2,uint32_t carry_mas
 	return res;
 }
 
-<<<<<<< HEAD
-UINT32 partial_carry_sum32(UINT32 add1,UINT32 add2,UINT32 carry_mask)
-=======
 uint32_t partial_carry_sum32(uint32_t add1,uint32_t add2,uint32_t carry_mask)
->>>>>>> upstream/master
 {
 	return partial_carry_sum(add1,add2,carry_mask,32);
 }
 
-<<<<<<< HEAD
-static UINT32 partial_carry_sum24(UINT32 add1,UINT32 add2,UINT32 carry_mask)
-=======
 uint32_t partial_carry_sum24(uint32_t add1,uint32_t add2,uint32_t carry_mask)
->>>>>>> upstream/master
 {
 	return partial_carry_sum(add1,add2,carry_mask,24);
 }
 
-<<<<<<< HEAD
-static UINT32 partial_carry_sum16(UINT32 add1,UINT32 add2,UINT32 carry_mask)
-=======
 static uint32_t partial_carry_sum16(uint32_t add1,uint32_t add2,uint32_t carry_mask)
->>>>>>> upstream/master
 {
 	return partial_carry_sum(add1,add2,carry_mask,16);
 }
 
 
 
-<<<<<<< HEAD
-static UINT32 decrypt_tile(UINT32 val, int tileno, UINT32 key1, UINT32 key2, UINT32 key3)
-{
-	val = BITSWAP24(val, 18,19,9,5, 10,17,16,20, 21,22,6,11, 15,14,4,23, 0,1,7,8, 13,12,3,2);
-
-	return partial_carry_sum24( val, tileno + key1, key2 ) ^ key3;
-}
-
-static void decrypt_text(UINT8 *rom, UINT32 key1, UINT32 key2, UINT32 key3)
-{
-	int i;
-	for(i=0; i<0x10000; i++)
-	{
-		UINT32 w;
-
-		w = (rom[(i*3) + 0] << 16) | (rom[(i*3) + 1] << 8) | (rom[(i*3) +2]);
-
-		w = decrypt_tile(w, i >> 4, key1, key2, key3);
-
-		rom[(i*3) + 0] = (w >> 16) & 0xff;
-		rom[(i*3) + 1] = (w >> 8) & 0xff;
-		rom[(i*3) + 2] = w & 0xff;
-	}
-}
-
-static void decrypt_bg(UINT8 *rom, int size, UINT32 key1, UINT32 key2, UINT32 key3)
-{
-	int i,j;
-	for(j=0; j<size; j+=0xc0000)
-	{
-		for(i=0; i<0x40000; i++)
-		{
-			UINT32 w;
-
-			w = (rom[j + (i*3) + 0] << 16) | (rom[j + (i*3) + 1] << 8) | (rom[j + (i*3) + 2]);
-
-			w = decrypt_tile(w, i >> 6, key1, key2, key3);
-
-			rom[j + (i*3) + 0] = (w >> 16) & 0xff;
-			rom[j + (i*3) + 1] = (w >> 8) & 0xff;
-			rom[j + (i*3) + 2] = w & 0xff;
-		}
-	}
-}
-
-/******************************************************************************************
-cpu #0 (PC=0033B2EB): unmapped program memory dword write to 00000414 = 00000000 & 0000FFFF
-cpu #0 (PC=0033B2EB): unmapped program memory dword write to 00000414 = 0000DF5B & 0000FFFF
-cpu #0 (PC=0033B2EB): unmapped program memory dword write to 00000414 = 000078CF & 0000FFFF
-cpu #0 (PC=0033B2EB): unmapped program memory dword write to 00000414 = 00001377 & 0000FFFF
-cpu #0 (PC=0033B2EB): unmapped program memory dword write to 00000414 = 00002538 & 0000FFFF
-cpu #0 (PC=0033B2EB): unmapped program memory dword write to 00000414 = 00004535 & 0000FFFF
-cpu #0 (PC=0033B2EB): unmapped program memory dword write to 00000414 = 06DC0000 & FFFF0000
-******************************************************************************************/
-
-void seibuspi_text_decrypt(UINT8 *rom)
-{
-	decrypt_text( rom, 0x5a3845, 0x77cf5b, 0x1378df);
-}
-
-void seibuspi_bg_decrypt(UINT8 *rom, int size)
-{
-	decrypt_bg( rom, size, 0x5a3845, 0x77cf5b, 0x1378df);
-}
-
-/******************************************************************************************
-cpu #0 (PC=002A097D): unmapped program memory dword write to 00000414 = 00000001 & 0000FFFF
-cpu #0 (PC=002A097D): unmapped program memory dword write to 00000414 = 0000DCF8 & 0000FFFF
-cpu #0 (PC=002A097D): unmapped program memory dword write to 00000414 = 00007AE2 & 0000FFFF
-cpu #0 (PC=002A097D): unmapped program memory dword write to 00000414 = 0000154D & 0000FFFF
-cpu #0 (PC=002A097D): unmapped program memory dword write to 00000414 = 00001731 & 0000FFFF
-cpu #0 (PC=002A097D): unmapped program memory dword write to 00000414 = 0000466B & 0000FFFF
-cpu #0 (PC=002A097D): unmapped program memory dword write to 00000414 = 3EDC0000 & FFFF0000
-******************************************************************************************/
-
-/* RISE10 (Raiden Fighters 2) */
-void seibuspi_rise10_text_decrypt(UINT8 *rom)
-{
-	decrypt_text( rom, 0x823146, 0x4de2f8, 0x157adc);
-}
-
-void seibuspi_rise10_bg_decrypt(UINT8 *rom, int size)
-{
-	decrypt_bg( rom, size, 0x823146, 0x4de2f8, 0x157adc);
-}
-
-/******************************************************************************************
-cpu #0 (PC=002C40F9): unmapped program memory dword write to 00000414 = 00000001 & 0000FFFF
-cpu #0 (PC=002C40F9): unmapped program memory dword write to 00000414 = 00006630 & 0000FFFF
-cpu #0 (PC=002C40F9): unmapped program memory dword write to 00000414 = 0000B685 & 0000FFFF
-cpu #0 (PC=002C40F9): unmapped program memory dword write to 00000414 = 0000CCFE & 0000FFFF
-cpu #0 (PC=002C40F9): unmapped program memory dword write to 00000414 = 000032A7 & 0000FFFF
-cpu #0 (PC=002C40F9): unmapped program memory dword write to 00000414 = 0000547C & 0000FFFF
-cpu #0 (PC=002C40F9): unmapped program memory dword write to 00000414 = 3EDC0000 & FFFF0000
-******************************************************************************************/
-
-/* RISE11 (Raiden Fighters Jet) */
-void seibuspi_rise11_text_decrypt(UINT8 *rom)
-{
-	decrypt_text( rom, 0xaea754, 0xfe8530, 0xccb666);
-}
-
-void seibuspi_rise11_bg_decrypt(UINT8 *rom, int size)
-{
-	decrypt_bg( rom, size, 0xaea754, 0xfe8530, 0xccb666);
-=======
 #if 0
 key tables: table[n] is the column of bit n
 cpu #0 (PC=0033C2F5): unmapped program memory dword write to 00000530 = 0000xxxx & FFFFFFFF (256 times, see key_table[])
@@ -446,19 +300,11 @@ void seibuspi_sprite_decrypt(uint8_t *src, int rom_size)
 		src[2*i+2*rom_size+0] = plane1;
 		src[2*i+2*rom_size+1] = plane0;
 	}
->>>>>>> upstream/master
 }
 
 
 
 
-<<<<<<< HEAD
-
-
-
-
-=======
->>>>>>> upstream/master
 /******************************************************************************************
 
 rdft2
@@ -482,17 +328,10 @@ CPU 'main' (PC=002A0709): unmapped program memory dword write to 0000054C = 0000
 
 ******************************************************************************************/
 
-<<<<<<< HEAD
-static void sprite_reorder(UINT8 *buffer)
-{
-	int j;
-	UINT8 temp[64];
-=======
 static void sprite_reorder(uint8_t *buffer)
 {
 	int j;
 	uint8_t temp[64];
->>>>>>> upstream/master
 	for( j=0; j < 16; j++ ) {
 		temp[2*(j*2)+0] = buffer[2*j+0];
 		temp[2*(j*2)+1] = buffer[2*j+1];
@@ -502,21 +341,13 @@ static void sprite_reorder(uint8_t *buffer)
 	memcpy(buffer, temp, 64);
 }
 
-<<<<<<< HEAD
-void seibuspi_rise10_sprite_decrypt(UINT8 *rom, int size)
-=======
 void seibuspi_rise10_sprite_decrypt(uint8_t *rom, int size)
->>>>>>> upstream/master
 {
 	int i;
 
 	for (i = 0; i < size/2; i++)
 	{
-<<<<<<< HEAD
-		UINT32 plane54,plane3210;
-=======
 		uint32_t plane54,plane3210;
->>>>>>> upstream/master
 
 		plane54 = rom[0*size+2*i] + (rom[0*size+2*i+1] << 8);
 		plane3210 = BITSWAP32(
@@ -593,25 +424,15 @@ CPU 'main' (PC=00021C74): unmapped program memory dword write to 0601004C = 0300
 ******************************************************************************************/
 
 
-<<<<<<< HEAD
-static void seibuspi_rise11_sprite_decrypt(UINT8 *rom, int size,
-	UINT32 k1, UINT32 k2, UINT32 k3, UINT32 k4, UINT32 k5, int feversoc_kludge)
-=======
 static void seibuspi_rise11_sprite_decrypt(uint8_t *rom, int size,
 	uint32_t k1, uint32_t k2, uint32_t k3, uint32_t k4, uint32_t k5, int feversoc_kludge)
->>>>>>> upstream/master
 {
 	int i;
 
 	for (i = 0; i < size/2; i++)
 	{
-<<<<<<< HEAD
-		UINT16 b1,b2,b3;
-		UINT32 plane543,plane210;
-=======
 		uint16_t b1,b2,b3;
 		uint32_t plane543,plane210;
->>>>>>> upstream/master
 
 		b1 = rom[0*size+2*i] + (rom[0*size+2*i+1] << 8);
 		b2 = rom[1*size+2*i] + (rom[1*size+2*i+1] << 8);
@@ -689,21 +510,13 @@ static void seibuspi_rise11_sprite_decrypt(uint8_t *rom, int size,
 }
 
 
-<<<<<<< HEAD
-void seibuspi_rise11_sprite_decrypt_rfjet(UINT8 *rom, int size)
-=======
 void seibuspi_rise11_sprite_decrypt_rfjet(uint8_t *rom, int size)
->>>>>>> upstream/master
 {
 	seibuspi_rise11_sprite_decrypt(rom, size, 0xabcb64, 0x55aadd, 0xab6a4c, 0xd6375b, 0x8bf23b, 0);
 }
 
 
-<<<<<<< HEAD
-void seibuspi_rise11_sprite_decrypt_feversoc(UINT8 *rom, int size)
-=======
 void seibuspi_rise11_sprite_decrypt_feversoc(uint8_t *rom, int size)
->>>>>>> upstream/master
 {
 	seibuspi_rise11_sprite_decrypt(rom, size, 0x9df5b2, 0x9ae999, 0x4a32e9, 0x968bd5, 0x1d97ac, 1);
 }

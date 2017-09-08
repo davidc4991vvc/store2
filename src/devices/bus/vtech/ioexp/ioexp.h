@@ -24,20 +24,11 @@
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __VTECH_IOEXP_H__
-#define __VTECH_IOEXP_H__
-
-#include "emu.h"
-=======
 #ifndef MAME_BUS_VTECH_IOEXP_IOEXP_H
 #define MAME_BUS_VTECH_IOEXP_IOEXP_H
 
 #pragma once
 
->>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -45,56 +36,14 @@
 //**************************************************************************
 
 #define MCFG_IOEXP_SLOT_ADD(_tag) \
-<<<<<<< HEAD
-	MCFG_DEVICE_ADD(_tag, IOEXP_SLOT, 0) \
-	MCFG_DEVICE_SLOT_INTERFACE(ioexp_slot_carts, NULL, false)
-=======
 	MCFG_DEVICE_ADD(_tag, VTECH_IOEXP_SLOT, 0) \
 	MCFG_DEVICE_SLOT_INTERFACE(vtech_ioexp_slot_carts, nullptr, false)
->>>>>>> upstream/master
 
 
 //**************************************************************************
 //  TYPE DEFINITIONS
 //**************************************************************************
 
-<<<<<<< HEAD
-class device_ioexp_interface;
-
-class ioexp_slot_device : public device_t, public device_slot_interface
-{
-public:
-	// construction/destruction
-	ioexp_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-	virtual ~ioexp_slot_device();
-
-	void set_io_space(address_space *io);
-
-	address_space *m_io;
-
-protected:
-	// device-level overrides
-	virtual void device_start();
-	virtual void device_reset();
-
-	device_ioexp_interface *m_cart;
-};
-
-// class representing interface-specific live ioexp device
-class device_ioexp_interface : public device_slot_card_interface
-{
-public:
-	// construction/destruction
-	device_ioexp_interface(const machine_config &mconfig, device_t &device);
-	virtual ~device_ioexp_interface();
-
-protected:
-	ioexp_slot_device *m_slot;
-};
-
-// device type definition
-extern const device_type IOEXP_SLOT;
-=======
 class device_vtech_ioexp_interface;
 
 class vtech_ioexp_slot_device : public device_t, public device_slot_interface
@@ -134,13 +83,8 @@ protected:
 
 // device type definition
 DECLARE_DEVICE_TYPE(VTECH_IOEXP_SLOT, vtech_ioexp_slot_device)
->>>>>>> upstream/master
 
 // include here so drivers don't need to
 #include "carts.h"
 
-<<<<<<< HEAD
-#endif // __VTECH_IOEXP_H__
-=======
 #endif // MAME_BUS_VTECH_IOEXP_IOEXP_H
->>>>>>> upstream/master

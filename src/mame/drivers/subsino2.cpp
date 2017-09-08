@@ -12,20 +12,6 @@ There is RAM for 512 scroll values (line scroll). Video RAM is mirrored on multi
 One peculiarity is that video RAM access is split into high and low byte. The former is mapped
 in program space, the latter in I/O space.
 
-<<<<<<< HEAD
--------------------------------------------------------------------------------------------------------------
-Year  Game            CPU         Sound            Custom                            Other
--------------------------------------------------------------------------------------------------------------
-1996  Magic Train     HD647180*   U6295            SS9601, SS9602                    HM86171 RAMDAC, Battery
-1996  Water-Nymph     HD647180*   U6295            SS9601, SS9602                    HM86171 RAMDAC, Battery
-1998  Express Card    AM188-EM    M6295            SS9601, SS9802, SS9803            HM86171 RAMDAC, Battery
-1998  Ying Hua Lian   AM188-EM    M6295 + YM3812?  SS9601, SS9602                    HM86171 RAMDAC, Battery
-1999  Bishou Jan      H8/3044     SS9904?          SS9601, SS9802, SS9803            HM86171 RAMDAC, Battery
-1999  X-Train         AM188-EM    M6295            SS9601, SS9802, SS9803            HM86171 RAMDAC, Battery
-2006  X-Plan          AM188-EM    M6295            SS9601, SS9802, SS9803            HM86171 RAMDAC, Battery
--------------------------------------------------------------------------------------------------------------
-*SS9600
-=======
 ----------------------------------------------------------------------------------------------------------------
 Year  Game                CPU         Sound            Custom                            Other
 ----------------------------------------------------------------------------------------------------------------
@@ -40,22 +26,15 @@ Year  Game                CPU         Sound            Custom                   
 2006  X-Plan              AM188-EM    M6295            SS9601, SS9802, SS9803            HM86171 RAMDAC, Battery
 ----------------------------------------------------------------------------------------------------------------
 *SS9600   **SS9689
->>>>>>> upstream/master
 
 To do:
 
 - Implement serial communication (used for protection).
-<<<<<<< HEAD
-- saklove, xplan: remove IRQ hacks (when an AM188-EM core will be available).
-- bishjan, saklove: game is sometimes too fast (can bishjan read the VBLANK state? saklove and xplan can).
-- bishjan: add sound (does it send sound commands to another device? SS9904?).
-=======
 - Add sound to SS9804/SS9904 games.
 - ptrain: missing scroll in race screens.
 - humlan: empty reels when bonus image should scroll in via L0 scroll. The image (crown/fruits) is at y > 0x100 in the tilemap.
 - saklove, xplan: remove IRQ hacks (when an AM188-EM core will be available).
 - bishjan, new2001, humlan, saklove: game is sometimes too fast (can bishjan read the VBLANK state? saklove and xplan can).
->>>>>>> upstream/master
 - xtrain: it runs faster than a video from the real thing. It doesn't use vblank irqs (but reads the vblank bit).
 - mtrain: implement hopper. Double up does not work?
 
@@ -65,13 +44,6 @@ To do:
 #include "cpu/h8/h83048.h"
 #include "cpu/i86/i186.h"
 #include "cpu/z180/z180.h"
-<<<<<<< HEAD
-#include "sound/3812intf.h"
-#include "sound/okim6295.h"
-#include "machine/nvram.h"
-#include "machine/subsino.h"
-#include "machine/ticket.h"
-=======
 #include "machine/nvram.h"
 #include "machine/subsino.h"
 #include "machine/ticket.h"
@@ -80,7 +52,6 @@ To do:
 #include "video/ramdac.h"
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 enum tilesize_t
@@ -100,15 +71,9 @@ enum vram_t
 // Layers
 struct layer_t
 {
-<<<<<<< HEAD
-	UINT8 *videorams[2];
-
-	UINT8 *scrollrams[2];
-=======
 	std::unique_ptr<uint8_t[]> videorams[2];
 
 	std::unique_ptr<uint8_t[]> scrollrams[2];
->>>>>>> upstream/master
 	int scroll_x;
 	int scroll_y;
 
@@ -130,23 +95,6 @@ public:
 		m_screen(*this, "screen"),
 		m_palette(*this, "palette") { }
 
-<<<<<<< HEAD
-	UINT8 *m_hm86171_colorram;
-	layer_t m_layers[2];
-	UINT8 m_ss9601_byte_lo;
-	UINT8 m_ss9601_byte_lo2;
-	UINT8 *m_ss9601_reelrams[2];
-	rectangle m_ss9601_reelrects[3];
-	UINT8 m_ss9601_scrollctrl;
-	UINT8 m_ss9601_tilesize;
-	UINT8 m_ss9601_disable;
-	int m_hm86171_offs;
-	UINT8 m_dsw_mask;
-	optional_shared_ptr<UINT16> m_outputs16;
-	optional_shared_ptr<UINT8> m_outputs;
-	UINT16 m_bishjan_sel;
-	UINT16 m_bishjan_input;
-=======
 	layer_t m_layers[2];
 	uint8_t m_ss9601_byte_lo;
 	uint8_t m_ss9601_byte_lo2;
@@ -160,7 +108,6 @@ public:
 	optional_shared_ptr<uint8_t> m_outputs;
 	uint16_t m_bishjan_sound;
 	uint16_t m_bishjan_input;
->>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(ss9601_byte_lo_w);
 	DECLARE_WRITE8_MEMBER(ss9601_byte_lo2_w);
 	DECLARE_WRITE8_MEMBER(ss9601_videoram_0_hi_w);
@@ -192,28 +139,17 @@ public:
 	DECLARE_READ8_MEMBER(ss9601_scrollram_1_hi_r);
 	DECLARE_READ8_MEMBER(ss9601_scrollram_1_lo_r);
 	DECLARE_WRITE8_MEMBER(ss9601_disable_w);
-<<<<<<< HEAD
-	DECLARE_WRITE8_MEMBER(hm86171_colorram_w);
-=======
->>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(dsw_mask_w);
 	DECLARE_READ8_MEMBER(dsw_r);
 	DECLARE_READ8_MEMBER(vblank_bit2_r);
 	DECLARE_READ8_MEMBER(vblank_bit6_r);
-<<<<<<< HEAD
-	DECLARE_WRITE16_MEMBER(bishjan_sel_w);
-=======
 	DECLARE_WRITE16_MEMBER(bishjan_sound_w);
->>>>>>> upstream/master
 	DECLARE_READ16_MEMBER(bishjan_serial_r);
 	DECLARE_WRITE16_MEMBER(bishjan_input_w);
 	DECLARE_READ16_MEMBER(bishjan_input_r);
 	DECLARE_WRITE16_MEMBER(bishjan_outputs_w);
-<<<<<<< HEAD
-=======
 	DECLARE_WRITE16_MEMBER(new2001_outputs_w);
 	DECLARE_WRITE16_MEMBER(humlan_outputs_w);
->>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(expcard_outputs_w);
 	DECLARE_WRITE8_MEMBER(mtrain_outputs_w);
 	DECLARE_WRITE8_MEMBER(mtrain_videoram_w);
@@ -225,32 +161,19 @@ public:
 	DECLARE_WRITE8_MEMBER(oki_bank_bit0_w);
 	DECLARE_WRITE8_MEMBER(oki_bank_bit4_w);
 	DECLARE_DRIVER_INIT(bishjan);
-<<<<<<< HEAD
-=======
 	DECLARE_DRIVER_INIT(new2001);
 	DECLARE_DRIVER_INIT(humlan);
->>>>>>> upstream/master
 	DECLARE_DRIVER_INIT(xtrain);
 	DECLARE_DRIVER_INIT(expcard);
 	DECLARE_DRIVER_INIT(wtrnymph);
 	DECLARE_DRIVER_INIT(mtrain);
 	DECLARE_DRIVER_INIT(saklove);
 	DECLARE_DRIVER_INIT(xplan);
-<<<<<<< HEAD
-	TILE_GET_INFO_MEMBER(ss9601_get_tile_info_0);
-	TILE_GET_INFO_MEMBER(ss9601_get_tile_info_1);
-	DECLARE_VIDEO_START(subsino2);
-	DECLARE_VIDEO_START(mtrain);
-	DECLARE_VIDEO_START(xtrain);
-	UINT32 screen_update_subsino2(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	TIMER_DEVICE_CALLBACK_MEMBER(h8_timer_irq);
-=======
 	DECLARE_DRIVER_INIT(ptrain);
 	TILE_GET_INFO_MEMBER(ss9601_get_tile_info_0);
 	TILE_GET_INFO_MEMBER(ss9601_get_tile_info_1);
 	DECLARE_VIDEO_START(subsino2);
 	uint32_t screen_update_subsino2(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	INTERRUPT_GEN_MEMBER(am188em_int0_irq);
 	required_device<cpu_device> m_maincpu;
 	optional_device<okim6295_device> m_oki;
@@ -271,11 +194,7 @@ private:
 inline void subsino2_state::ss9601_get_tile_info(layer_t *l, tile_data &tileinfo, tilemap_memory_index tile_index)
 {
 	int addr;
-<<<<<<< HEAD
-	UINT16 offs;
-=======
 	uint16_t offs;
->>>>>>> upstream/master
 	switch (l->tilesize)
 	{
 		default:
@@ -309,11 +228,7 @@ WRITE8_MEMBER(subsino2_state::ss9601_byte_lo2_w)
 }
 
 
-<<<<<<< HEAD
-INLINE void ss9601_videoram_w(layer_t *l, vram_t vram, address_space &space, offs_t offset, UINT8 data)
-=======
 static inline void ss9601_videoram_w(layer_t *l, vram_t vram, address_space &space, offs_t offset, uint8_t data)
->>>>>>> upstream/master
 {
 	l->videorams[vram][offset] = data;
 
@@ -537,23 +452,6 @@ WRITE8_MEMBER(subsino2_state::ss9601_tilesize_w)
 	m_ss9601_tilesize = data;
 
 	tilesize_t sizes[2];
-<<<<<<< HEAD
-	switch (data)
-	{
-		case 0x00:
-			sizes[0] = TILE_8x8;
-			sizes[1] = TILE_8x8;
-			break;
-
-		case 0x40:
-			sizes[0] = TILE_8x32;
-			sizes[1] = TILE_8x8;
-			break;
-
-		case 0x70:
-			sizes[0] = TILE_64x32;
-			sizes[1] = TILE_8x8;
-=======
 	switch ((data&0xf0)>>4)
 	{
 		case 0x0:
@@ -566,20 +464,10 @@ WRITE8_MEMBER(subsino2_state::ss9601_tilesize_w)
 
 		case 0x7:
 			sizes[0] = TILE_64x32;
->>>>>>> upstream/master
 			break;
 
 		default:
 			sizes[0] = TILE_8x8;
-<<<<<<< HEAD
-			sizes[1] = TILE_8x8;
-
-			logerror("%s: warning, unknown tilesize = %02x\n", machine().describe_context(), data);
-			popmessage("UNKNOWN TILESIZE %02X", data);
-			break;
-	}
-
-=======
 
 			logerror("%s: warning, layer 0 unknown tilesize = %02x\n", machine().describe_context(), data);
 			popmessage("layer 0 UNKNOWN TILESIZE %02X", data);
@@ -609,7 +497,6 @@ WRITE8_MEMBER(subsino2_state::ss9601_tilesize_w)
 	}
 
 
->>>>>>> upstream/master
 	for (int i = 0; i < 2; i++)
 	{
 		layer_t *l = &m_layers[i];
@@ -716,19 +603,10 @@ WRITE8_MEMBER(subsino2_state::ss9601_disable_w)
 
 VIDEO_START_MEMBER(subsino2_state,subsino2)
 {
-<<<<<<< HEAD
-	m_hm86171_colorram = auto_alloc_array(machine(), UINT8, 256*3);
-
-	// SS9601 Regs:
-
-	m_ss9601_tilesize       =   TILE_8x8;
-	m_ss9601_scrollctrl =   0xfd;   // not written by mtrain, default to reels on
-=======
 	// SS9601 Regs:
 
 	m_ss9601_tilesize       =   TILE_8x8;
 	m_ss9601_scrollctrl     =   0xfd;   // not written by mtrain, default to reels on
->>>>>>> upstream/master
 	m_ss9601_disable        =   0x00;
 
 	// SS9601 Layers:
@@ -737,11 +615,7 @@ VIDEO_START_MEMBER(subsino2_state,subsino2)
 	{
 		layer_t *l = &m_layers[i];
 
-<<<<<<< HEAD
-		l->tmap = &machine().tilemap().create(m_gfxdecode, i ?
-=======
 		l->tmap = &machine().tilemap().create(*m_gfxdecode, i ?
->>>>>>> upstream/master
 												tilemap_get_info_delegate(FUNC(subsino2_state::ss9601_get_tile_info_1),this) :
 												tilemap_get_info_delegate(FUNC(subsino2_state::ss9601_get_tile_info_0),this),
 												TILEMAP_SCAN_ROWS, 8,8, 0x80,0x40);
@@ -751,15 +625,6 @@ VIDEO_START_MEMBER(subsino2_state,subsino2)
 		// line scroll
 		l->tmap->set_scroll_rows(0x200);
 
-<<<<<<< HEAD
-		l->videorams[VRAM_HI] = auto_alloc_array(machine(), UINT8, 0x80 * 0x40);
-		l->videorams[VRAM_LO] = auto_alloc_array(machine(), UINT8, 0x80 * 0x40);
-
-		l->scrollrams[VRAM_HI] = auto_alloc_array(machine(), UINT8, 0x200);
-		l->scrollrams[VRAM_LO] = auto_alloc_array(machine(), UINT8, 0x200);
-		memset(l->scrollrams[VRAM_HI], 0, 0x200);
-		memset(l->scrollrams[VRAM_LO], 0, 0x200);
-=======
 		l->videorams[VRAM_HI] = std::make_unique<uint8_t[]>(0x80 * 0x40);
 		l->videorams[VRAM_LO] = std::make_unique<uint8_t[]>(0x80 * 0x40);
 
@@ -767,27 +632,15 @@ VIDEO_START_MEMBER(subsino2_state,subsino2)
 		l->scrollrams[VRAM_LO] = std::make_unique<uint8_t[]>(0x200);
 		memset(l->scrollrams[VRAM_HI].get(), 0, 0x200);
 		memset(l->scrollrams[VRAM_LO].get(), 0, 0x200);
->>>>>>> upstream/master
 	}
 
 	// SS9601 Reels:
 
-<<<<<<< HEAD
-	m_ss9601_reelrams[VRAM_HI] = auto_alloc_array(machine(), UINT8, 0x2000);
-	m_ss9601_reelrams[VRAM_LO] = auto_alloc_array(machine(), UINT8, 0x2000);
-	memset(m_ss9601_reelrams[VRAM_HI], 0, 0x2000);
-	memset(m_ss9601_reelrams[VRAM_LO], 0, 0x2000);
-	m_ss9601_reelrects[0].set(0, 0, 0x00*8, 0x09*8-1);
-	m_ss9601_reelrects[1].set(0, 0, 0x09*8, 0x10*8-1);
-	m_ss9601_reelrects[2].set(0, 0, 0x10*8, 256-16-1);
-
-=======
 	m_ss9601_reelrams[VRAM_HI] = std::make_unique<uint8_t[]>(0x2000);
 	m_ss9601_reelrams[VRAM_LO] = std::make_unique<uint8_t[]>(0x2000);
 	memset(m_ss9601_reelrams[VRAM_HI].get(), 0, 0x2000);
 	memset(m_ss9601_reelrams[VRAM_LO].get(), 0, 0x2000);
 	m_reelbitmap = std::make_unique<bitmap_ind16>(0x80*8, 0x40*8);
->>>>>>> upstream/master
 /*
     save_pointer(NAME(m_ss9601_reelrams[VRAM_HI]), 0x2000);
     save_pointer(NAME(m_ss9601_reelrams[VRAM_LO]), 0x2000);
@@ -800,24 +653,7 @@ VIDEO_START_MEMBER(subsino2_state,subsino2)
 */
 }
 
-<<<<<<< HEAD
-VIDEO_START_MEMBER(subsino2_state,mtrain)
-{
-	VIDEO_START_CALL_MEMBER( subsino2 );
-}
-
-VIDEO_START_MEMBER(subsino2_state,xtrain)
-{
-	VIDEO_START_CALL_MEMBER( subsino2 );
-	m_ss9601_reelrects[0].set(0, 0, 0x00*8, 0x08*8-1);
-	m_ss9601_reelrects[1].set(0, 0, 0x08*8, 0x18*8-1);
-	m_ss9601_reelrects[2].set(0, 0, 0x18*8, 256-16-1);
-}
-
-UINT32 subsino2_state::screen_update_subsino2(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t subsino2_state::screen_update_subsino2(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int layers_ctrl = ~m_ss9601_disable;
 	int y;
@@ -846,11 +682,8 @@ uint32_t subsino2_state::screen_update_subsino2(screen_device &screen, bitmap_in
 		case 0x07:
 			mask_y[0] = ~(8-1);
 			break;
-<<<<<<< HEAD
-=======
 //      case 0x7f:  // ptrain
 //          break;
->>>>>>> upstream/master
 		case 0xfd:
 			l0_reel = true;
 			break;
@@ -867,11 +700,7 @@ uint32_t subsino2_state::screen_update_subsino2(screen_device &screen, bitmap_in
 
 		// line scroll
 
-<<<<<<< HEAD
-		UINT16 scroll_dx = 0;
-=======
 		uint16_t scroll_dx = 0;
->>>>>>> upstream/master
 		for (y = 0; y < 0x200; y++)
 		{
 			if (mask_y[i])
@@ -892,24 +721,6 @@ uint32_t subsino2_state::screen_update_subsino2(screen_device &screen, bitmap_in
 			l->tmap->set_scroll_rows(1);
 			l->tmap->set_scroll_cols(1);
 
-<<<<<<< HEAD
-			for (int r = 0; r < 3; r++)
-			{
-				rectangle visible = m_ss9601_reelrects[r];
-
-				for (int x = 0; x < 0x40; x++)
-				{
-					visible.min_x = 8 * x;
-					visible.max_x = 8 * (x+1) - 1;
-
-					int reeladdr = (visible.min_y / 0x10) * 0x80 + x;
-					UINT16 reelscroll = (m_ss9601_reelrams[VRAM_HI][reeladdr] << 8) + m_ss9601_reelrams[VRAM_LO][reeladdr];
-
-					l->tmap->set_scrollx(0, (reelscroll >> 9) * 8 + l->scroll_x - visible.min_x);
-
-					// wrap around at half tilemap (0x100)
-					int reelscroll_y = (reelscroll & 0x100) + ((reelscroll + l->scroll_y - visible.min_y/0x10*0x10 + 1) & 0xff);
-=======
 			for (int y = 0; y < 0x20/4; y++)
 			{
 				for (int x = 0; x < 0x80; x++)
@@ -927,7 +738,6 @@ uint32_t subsino2_state::screen_update_subsino2(screen_device &screen, bitmap_in
 
 					// wrap around at half tilemap (0x100)
 					int reelscroll_y = (reelscroll & 0x100) + ((reelscroll - visible.min_y) & 0xff);
->>>>>>> upstream/master
 					int reelwrap_y = 0x100 - (reelscroll_y & 0xff);
 
 					rectangle tmp = visible;
@@ -938,11 +748,7 @@ uint32_t subsino2_state::screen_update_subsino2(screen_device &screen, bitmap_in
 						if ( reelwrap_y-1 <= visible.max_y )
 							tmp.max_y = reelwrap_y-1;
 						l->tmap->set_scrolly(0, reelscroll_y);
-<<<<<<< HEAD
-						l->tmap->draw(screen, bitmap, tmp, 0, 0);
-=======
 						l->tmap->draw(screen, *m_reelbitmap, tmp, TILEMAP_DRAW_OPAQUE);
->>>>>>> upstream/master
 						tmp.max_y = visible.max_y;
 					}
 
@@ -952,22 +758,15 @@ uint32_t subsino2_state::screen_update_subsino2(screen_device &screen, bitmap_in
 						if ( reelwrap_y >= visible.min_y )
 							tmp.min_y = reelwrap_y;
 						l->tmap->set_scrolly(0, -((reelwrap_y &0xff) | (reelscroll_y & 0x100)));
-<<<<<<< HEAD
-						l->tmap->draw(screen, bitmap, tmp, 0, 0);
-=======
 						l->tmap->draw(screen, *m_reelbitmap, tmp, TILEMAP_DRAW_OPAQUE);
->>>>>>> upstream/master
 						tmp.min_y = visible.min_y;
 					}
 				}
 			}
-<<<<<<< HEAD
-=======
 
 			int32_t sx = -l->scroll_x;
 			int32_t sy = -(l->scroll_y + 1);
 			copyscrollbitmap(bitmap, *m_reelbitmap, 1, &sx, 1, &sy, cliprect);
->>>>>>> upstream/master
 		}
 		else
 		{
@@ -983,42 +782,6 @@ uint32_t subsino2_state::screen_update_subsino2(screen_device &screen, bitmap_in
 }
 
 /***************************************************************************
-<<<<<<< HEAD
-                Palette: HMC HM86171 VGA 256 colour RAMDAC
-***************************************************************************/
-
-
-WRITE8_MEMBER(subsino2_state::hm86171_colorram_w)
-{
-	switch (offset)
-	{
-		case 0:
-			m_hm86171_offs = data * 3;
-			break;
-
-		case 1:
-			m_hm86171_colorram[m_hm86171_offs] = data;
-			m_palette->set_pen_color(m_hm86171_offs/3,
-				pal6bit(m_hm86171_colorram[(m_hm86171_offs/3)*3+0]),
-				pal6bit(m_hm86171_colorram[(m_hm86171_offs/3)*3+1]),
-				pal6bit(m_hm86171_colorram[(m_hm86171_offs/3)*3+2])
-			);
-			m_hm86171_offs = (m_hm86171_offs+1) % (256*3);
-			break;
-
-		case 2:
-			// ff?
-			break;
-
-		case 3:
-			break;
-	}
-}
-
-
-/***************************************************************************
-=======
->>>>>>> upstream/master
                                 Input / Output
 ***************************************************************************/
 
@@ -1048,21 +811,13 @@ READ8_MEMBER(subsino2_state::vblank_bit6_r)
 WRITE8_MEMBER(subsino2_state::oki_bank_bit0_w)
 {
 	// it writes 0x32 or 0x33
-<<<<<<< HEAD
-	m_oki->set_bank_base((data & 1) * 0x40000);
-=======
 	m_oki->set_rom_bank(data & 1);
->>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(subsino2_state::oki_bank_bit4_w)
 {
 	// it writes 0x23 or 0x33
-<<<<<<< HEAD
-	m_oki->set_bank_base(((data >> 4) & 1) * 0x40000);
-=======
 	m_oki->set_rom_bank((data >> 4) & 1);
->>>>>>> upstream/master
 }
 
 INTERRUPT_GEN_MEMBER(subsino2_state::am188em_int0_irq)
@@ -1079,12 +834,7 @@ INTERRUPT_GEN_MEMBER(subsino2_state::am188em_int0_irq)
                                 Bishou Jan
 ***************************************************************************/
 
-<<<<<<< HEAD
-
-WRITE16_MEMBER(subsino2_state::bishjan_sel_w)
-=======
 WRITE16_MEMBER(subsino2_state::bishjan_sound_w)
->>>>>>> upstream/master
 {
 	/*
 	    sound writes in service mode:
@@ -1092,25 +842,15 @@ WRITE16_MEMBER(subsino2_state::bishjan_sound_w)
 	    02 89 04 0v (v = voice = 0..3)
 	*/
 	if (ACCESSING_BITS_8_15)
-<<<<<<< HEAD
-		m_bishjan_sel = data >> 8;
-=======
 		m_bishjan_sound = data >> 8;
->>>>>>> upstream/master
 }
 
 READ16_MEMBER(subsino2_state::bishjan_serial_r)
 {
 	return
-<<<<<<< HEAD
-		(machine().rand() & 0x9800) |   // bit 7 - serial communication
-		(((m_bishjan_sel==0x12) ? 0x40:0x00) << 8) |
-//      (machine.rand() & 0xff);
-=======
 		(machine().rand() & 0x9800) |                     // bit 7 - serial communication
 		(((m_bishjan_sound == 0x12) ? 0x40:0x00) << 8) |  // bit 6 - sound communication
 //      (machine().rand() & 0xff);
->>>>>>> upstream/master
 //      (((m_screen->frame_number()%60)==0)?0x18:0x00);
 		0x18;
 }
@@ -1124,22 +864,14 @@ WRITE16_MEMBER(subsino2_state::bishjan_input_w)
 READ16_MEMBER(subsino2_state::bishjan_input_r)
 {
 	int i;
-<<<<<<< HEAD
-	UINT16 res = 0xff;
-=======
 	uint16_t res = 0xff;
->>>>>>> upstream/master
 	static const char *const port[] = { "KEYB_0", "KEYB_1", "KEYB_2", "KEYB_3", "KEYB_4" };
 
 	for (i = 0; i < 5; i++)
 		if (m_bishjan_input & (1 << i))
 			res = ioport(port[i])->read();
 
-<<<<<<< HEAD
-	return  (res << 8) |                                    // high byte
-=======
 	return  (res << 8) |                    // high byte
->>>>>>> upstream/master
 			ioport("SYSTEM")->read() |      // low byte
 			(machine().device<ticket_dispenser_device>("hopper")->read(space, 0) ? 0x00 : 0x04) // bit 2: hopper sensor
 	;
@@ -1147,11 +879,7 @@ READ16_MEMBER(subsino2_state::bishjan_input_r)
 
 WRITE16_MEMBER(subsino2_state::bishjan_outputs_w)
 {
-<<<<<<< HEAD
-	m_outputs16[offset] = data;
-=======
 	COMBINE_DATA( &m_outputs16[offset] );
->>>>>>> upstream/master
 
 	switch (offset)
 	{
@@ -1160,11 +888,7 @@ WRITE16_MEMBER(subsino2_state::bishjan_outputs_w)
 			{
 				// coin out         data & 0x01;
 				machine().device<ticket_dispenser_device>("hopper")->write(space, 0, (data & 0x0002) ? 0x80 : 0);   // hopper
-<<<<<<< HEAD
-				coin_counter_w(machine(), 0,    data & 0x0010 );
-=======
 				machine().bookkeeping().coin_counter_w(0,    data & 0x0010 );
->>>>>>> upstream/master
 			}
 			break;
 	}
@@ -1204,25 +928,15 @@ static ADDRESS_MAP_START( bishjan_map, AS_PROGRAM, 16, subsino2_state )
 	AM_RANGE( 0x436000, 0x436fff ) AM_WRITE8(ss9601_reelram_hi_lo_w, 0xffff )
 	AM_RANGE( 0x437000, 0x4371ff ) AM_WRITE8(ss9601_scrollram_0_hi_lo_w, 0xffff )
 
-<<<<<<< HEAD
-	AM_RANGE( 0x600000, 0x600001 ) AM_READNOP AM_WRITE(bishjan_sel_w )
-	AM_RANGE( 0x600040, 0x600041 ) AM_WRITE8(ss9601_scrollctrl_w, 0xff00 )
-	AM_RANGE( 0x600060, 0x600063 ) AM_WRITE8(hm86171_colorram_w, 0xffff )
-=======
 	AM_RANGE( 0x600000, 0x600001 ) AM_READNOP AM_WRITE(bishjan_sound_w )
 	AM_RANGE( 0x600040, 0x600041 ) AM_WRITE8(ss9601_scrollctrl_w, 0xff00 )
 	AM_RANGE( 0x600060, 0x600061 ) AM_DEVWRITE8("ramdac", ramdac_device, index_w, 0xff00)
 	AM_RANGE( 0x600060, 0x600061 ) AM_DEVWRITE8("ramdac", ramdac_device, pal_w, 0x00ff)
 	AM_RANGE( 0x600062, 0x600063 ) AM_DEVWRITE8("ramdac", ramdac_device, mask_w, 0xff00)
->>>>>>> upstream/master
 	AM_RANGE( 0x600080, 0x600081 ) AM_WRITE8(ss9601_tilesize_w, 0xff00 )
 	AM_RANGE( 0x6000a0, 0x6000a1 ) AM_WRITE8(ss9601_byte_lo_w, 0xff00 )
 
 	AM_RANGE( 0xa0001e, 0xa0001f ) AM_WRITE8(ss9601_disable_w, 0x00ff )
-<<<<<<< HEAD
-
-=======
->>>>>>> upstream/master
 	AM_RANGE( 0xa00020, 0xa00025 ) AM_WRITE8(ss9601_scroll_w, 0xffff )
 
 	AM_RANGE( 0xc00000, 0xc00001 ) AM_READ_PORT("DSW")                              // SW1
@@ -1232,8 +946,6 @@ static ADDRESS_MAP_START( bishjan_map, AS_PROGRAM, 16, subsino2_state )
 	AM_RANGE( 0xc00008, 0xc00009 ) AM_READ_PORT("RESET") AM_WRITE(bishjan_outputs_w ) AM_SHARE("outputs16")
 ADDRESS_MAP_END
 
-<<<<<<< HEAD
-=======
 static ADDRESS_MAP_START( ramdac_map, 0, 8, subsino2_state )
 	AM_RANGE(0x000, 0x3ff) AM_DEVREADWRITE("ramdac", ramdac_device, ramdac_pal_r, ramdac_rgb666_w)
 ADDRESS_MAP_END
@@ -1367,7 +1079,6 @@ static ADDRESS_MAP_START( humlan_map, AS_PROGRAM, 16, subsino2_state )
 	AM_IMPORT_FROM(new2001_base_map)
 ADDRESS_MAP_END
 
->>>>>>> upstream/master
 /***************************************************************************
                        Express Card / Top Card
 ***************************************************************************/
@@ -1383,23 +1094,6 @@ WRITE8_MEMBER(subsino2_state::expcard_outputs_w)
 			break;
 
 		case 1: // C
-<<<<<<< HEAD
-			set_led_status(machine(), 0,    data & 0x02);   // raise
-			break;
-
-		case 2: // B
-			set_led_status(machine(), 1,    data & 0x04);   // hold 4 / small & hold 5 / big ?
-			set_led_status(machine(), 2,    data & 0x08);   // hold 1 / bet
-			set_led_status(machine(), 3,    data & 0x10);   // hold 2 / take ?
-			set_led_status(machine(), 4,    data & 0x20);   // hold 3 / double up ?
-			break;
-
-		case 3: // A
-			coin_counter_w(machine(), 0,    data & 0x01 );  // coin in
-			coin_counter_w(machine(), 1,    data & 0x02 );  // key in
-
-			set_led_status(machine(), 5,    data & 0x10);   // start
-=======
 			output().set_led_value(0,    data & 0x02);   // raise
 			break;
 
@@ -1415,7 +1109,6 @@ WRITE8_MEMBER(subsino2_state::expcard_outputs_w)
 			machine().bookkeeping().coin_counter_w(1,    data & 0x02 );  // key in
 
 			output().set_led_value(5,    data & 0x10);   // start
->>>>>>> upstream/master
 			break;
 	}
 
@@ -1433,20 +1126,6 @@ WRITE8_MEMBER(subsino2_state::mtrain_outputs_w)
 	switch (offset)
 	{
 		case 0:
-<<<<<<< HEAD
-			coin_counter_w(machine(), 0,    data & 0x01 );  // key in
-			coin_counter_w(machine(), 1,    data & 0x02 );  // coin in
-			coin_counter_w(machine(), 2,    data & 0x10 );  // pay out
-//          coin_counter_w(machine(), 3,   data & 0x20 );  // hopper motor
-			break;
-
-		case 1:
-			set_led_status(machine(), 0,    data & 0x01);   // stop reel?
-			set_led_status(machine(), 1,    data & 0x02);   // stop reel? (double or take)
-			set_led_status(machine(), 2,    data & 0x04);   // start all
-			set_led_status(machine(), 3,    data & 0x08);   // bet / stop all
-			set_led_status(machine(), 4,    data & 0x20);   // stop reel? (double or take)
-=======
 			machine().bookkeeping().coin_counter_w(0,    data & 0x01 );  // key in
 			machine().bookkeeping().coin_counter_w(1,    data & 0x02 );  // coin in
 			machine().bookkeeping().coin_counter_w(2,    data & 0x10 );  // pay out
@@ -1459,7 +1138,6 @@ WRITE8_MEMBER(subsino2_state::mtrain_outputs_w)
 			output().set_led_value(2,    data & 0x04);   // start all
 			output().set_led_value(3,    data & 0x08);   // bet / stop all
 			output().set_led_value(4,    data & 0x20);   // stop reel? (double or take)
->>>>>>> upstream/master
 			break;
 
 		case 2:
@@ -1554,13 +1232,9 @@ static ADDRESS_MAP_START( mtrain_map, AS_PROGRAM, 8, subsino2_state )
 
 	AM_RANGE( 0x09158, 0x0915e ) AM_READ(mtrain_prot_r )
 
-<<<<<<< HEAD
-	AM_RANGE( 0x09160, 0x09163 ) AM_WRITE(hm86171_colorram_w )
-=======
 	AM_RANGE( 0x09160, 0x09160 ) AM_DEVWRITE("ramdac", ramdac_device, index_w)
 	AM_RANGE( 0x09161, 0x09161 ) AM_DEVWRITE("ramdac", ramdac_device, pal_w)
 	AM_RANGE( 0x09162, 0x09162 ) AM_DEVWRITE("ramdac", ramdac_device, mask_w)
->>>>>>> upstream/master
 	AM_RANGE( 0x09164, 0x09164 ) AM_DEVREADWRITE("oki", okim6295_device, read, write)
 	AM_RANGE( 0x09168, 0x09168 ) AM_WRITE(mtrain_tilesize_w )
 
@@ -1584,13 +1258,8 @@ WRITE8_MEMBER(subsino2_state::saklove_outputs_w)
 	switch (offset)
 	{
 		case 0:
-<<<<<<< HEAD
-			coin_counter_w(machine(), 0,    data & 0x01 );  // coin in
-			coin_counter_w(machine(), 1,    data & 0x02 );  // key in
-=======
 			machine().bookkeeping().coin_counter_w(0,    data & 0x01 );  // coin in
 			machine().bookkeeping().coin_counter_w(1,    data & 0x02 );  // key in
->>>>>>> upstream/master
 			break;
 
 		case 1:
@@ -1638,13 +1307,9 @@ static ADDRESS_MAP_START( saklove_io, AS_IO, 8, subsino2_state )
 	AM_RANGE(0x0020, 0x0020) AM_DEVREADWRITE("oki", okim6295_device, read, write)
 	AM_RANGE(0x0040, 0x0041) AM_DEVWRITE("ymsnd", ym3812_device, write)
 
-<<<<<<< HEAD
-	AM_RANGE(0x0060, 0x0063) AM_WRITE(hm86171_colorram_w )
-=======
 	AM_RANGE(0x0060, 0x0060) AM_DEVWRITE("ramdac", ramdac_device, index_w)
 	AM_RANGE(0x0061, 0x0061) AM_DEVWRITE("ramdac", ramdac_device, pal_w)
 	AM_RANGE(0x0062, 0x0062) AM_DEVWRITE("ramdac", ramdac_device, mask_w)
->>>>>>> upstream/master
 
 	AM_RANGE(0x0080, 0x0080) AM_WRITE(ss9601_tilesize_w )
 	AM_RANGE(0x00a0, 0x00a0) AM_WRITE(ss9601_byte_lo_w )
@@ -1679,24 +1344,6 @@ WRITE8_MEMBER(subsino2_state::xplan_outputs_w)
 			break;
 
 		case 1:
-<<<<<<< HEAD
-			set_led_status(machine(), 0,    data & 0x02);   // raise
-			break;
-
-		case 2: // B
-			set_led_status(machine(), 1,    data & 0x04);   // hold 1 / big ?
-			set_led_status(machine(), 2,    data & 0x08);   // hold 5 / bet
-			set_led_status(machine(), 3,    data & 0x10);   // hold 4 ?
-			set_led_status(machine(), 4,    data & 0x20);   // hold 2 / double up
-			set_led_status(machine(), 5,    data & 0x40);   // hold 3 / small ?
-			break;
-
-		case 3: // A
-			coin_counter_w(machine(), 0,    data & 0x01 );
-			coin_counter_w(machine(), 1,    data & 0x02 );
-
-			set_led_status(machine(), 6,    data & 0x10);   // start / take
-=======
 			output().set_led_value(0,    data & 0x02);   // raise
 			break;
 
@@ -1713,7 +1360,6 @@ WRITE8_MEMBER(subsino2_state::xplan_outputs_w)
 			machine().bookkeeping().coin_counter_w(1,    data & 0x02 );
 
 			output().set_led_value(6,    data & 0x10);   // start / take
->>>>>>> upstream/master
 			break;
 	}
 
@@ -1761,14 +1407,10 @@ static ADDRESS_MAP_START( xplan_io, AS_IO, 8, subsino2_state )
 
 	AM_RANGE(0x0040, 0x0040) AM_WRITE(ss9601_scrollctrl_w )
 
-<<<<<<< HEAD
-	AM_RANGE(0x0060, 0x0063) AM_WRITE(hm86171_colorram_w )
-=======
 	AM_RANGE(0x0060, 0x0060) AM_DEVWRITE("ramdac", ramdac_device, index_w)
 	AM_RANGE(0x0061, 0x0061) AM_DEVWRITE("ramdac", ramdac_device, pal_w)
 	AM_RANGE(0x0062, 0x0062) AM_DEVWRITE("ramdac", ramdac_device, mask_w)
 
->>>>>>> upstream/master
 	AM_RANGE(0x0080, 0x0080) AM_WRITE(ss9601_tilesize_w )
 	AM_RANGE(0x00a0, 0x00a0) AM_WRITE(ss9601_byte_lo_w )
 
@@ -1804,25 +1446,6 @@ WRITE8_MEMBER(subsino2_state::xtrain_outputs_w)
 			break;
 
 		case 1: // C
-<<<<<<< HEAD
-			set_led_status(machine(), 0,    data & 0x02);   // re-double
-			set_led_status(machine(), 1,    data & 0x04);   // half double
-			break;
-
-		case 2: // B
-			set_led_status(machine(), 2,    data & 0x02);   // hold 3 / small
-			set_led_status(machine(), 3,    data & 0x04);   // hold 2 / big
-			set_led_status(machine(), 4,    data & 0x08);   // bet
-			set_led_status(machine(), 5,    data & 0x10);   // hold1 / take
-			set_led_status(machine(), 6,    data & 0x20);   // double up
-			break;
-
-		case 3: // A
-			coin_counter_w(machine(), 0,    data & 0x01 );  // coin in
-			coin_counter_w(machine(), 1,    data & 0x02 );  // key in
-
-			set_led_status(machine(), 7,    data & 0x10);   // start
-=======
 			output().set_led_value(0,    data & 0x02);   // re-double
 			output().set_led_value(1,    data & 0x04);   // half double
 			break;
@@ -1840,7 +1463,6 @@ WRITE8_MEMBER(subsino2_state::xtrain_outputs_w)
 			machine().bookkeeping().coin_counter_w(1,    data & 0x02 );  // key in
 
 			output().set_led_value(7,    data & 0x10);   // start
->>>>>>> upstream/master
 			break;
 	}
 
@@ -1895,32 +1517,6 @@ static INPUT_PORTS_START( bishjan )
 	PORT_BIT( 0x0004, IP_ACTIVE_LOW, IPT_OTHER ) PORT_NAME("Reset") PORT_CODE(KEYCODE_F1)
 
 	PORT_START("DSW")   // SW1
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x0001, 0x0001, DEF_STR( Controls ) )
-	PORT_DIPSETTING(      0x0001, "Keyboard" )
-	PORT_DIPSETTING(      0x0000, DEF_STR( Joystick ) )
-	PORT_DIPNAME( 0x0002, 0x0002, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(      0x0002, DEF_STR( Off ) )
-	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
-	PORT_DIPNAME( 0x0004, 0x0004, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(      0x0004, DEF_STR( Off ) )
-	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
-	PORT_DIPNAME( 0x0008, 0x0008, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(      0x0008, DEF_STR( Off ) )
-	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
-	PORT_DIPNAME( 0x0010, 0x0010, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(      0x0010, DEF_STR( Off ) )
-	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
-	PORT_DIPNAME( 0x0020, 0x0020, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(      0x0020, DEF_STR( Off ) )
-	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
-	PORT_DIPNAME( 0x0040, 0x0040, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(      0x0040, DEF_STR( Off ) )
-	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
-	PORT_DIPNAME( 0x0080, 0x0080, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(      0x0080, DEF_STR( Off ) )
-	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
-=======
 	PORT_DIPNAME( 0x0001, 0x0001, DEF_STR( Controls ) )      PORT_DIPLOCATION("SW1:1")
 	PORT_DIPSETTING(      0x0001, "Keyboard" )
 	PORT_DIPSETTING(      0x0000, DEF_STR( Joystick ) )
@@ -1931,7 +1527,6 @@ static INPUT_PORTS_START( bishjan )
 	PORT_DIPUNKNOWN_DIPLOC( 0x20, 0x20, "SW1:6" )
 	PORT_DIPUNKNOWN_DIPLOC( 0x40, 0x40, "SW1:7" )
 	PORT_DIPUNKNOWN_DIPLOC( 0x80, 0x80, "SW1:8" )
->>>>>>> upstream/master
 
 	PORT_START("JOY")   // IN C
 	PORT_BIT( 0x0001, IP_ACTIVE_LOW, IPT_START1         ) PORT_NAME("1 Player Start (Joy Mode)")    // start (joy)
@@ -1958,11 +1553,7 @@ static INPUT_PORTS_START( bishjan )
 	PORT_BIT( 0x0002, IP_ACTIVE_LOW, IPT_MAHJONG_E      )   // e
 	PORT_BIT( 0x0004, IP_ACTIVE_LOW, IPT_MAHJONG_I      )   // i
 	PORT_BIT( 0x0008, IP_ACTIVE_LOW, IPT_MAHJONG_M      )   // m
-<<<<<<< HEAD
-	PORT_BIT( 0x0010, IP_ACTIVE_LOW, IPT_UNKNOWN        )   // i2
-=======
 	PORT_BIT( 0x0010, IP_ACTIVE_LOW, IPT_MAHJONG_KAN    )   // i2 (kan)
->>>>>>> upstream/master
 	PORT_BIT( 0x0020, IP_ACTIVE_LOW, IPT_START1         )   // b2 (start)
 	PORT_BIT( 0x0040, IP_ACTIVE_LOW, IPT_UNKNOWN        )
 	PORT_BIT( 0x0080, IP_ACTIVE_LOW, IPT_UNKNOWN        )
@@ -1972,11 +1563,7 @@ static INPUT_PORTS_START( bishjan )
 	PORT_BIT( 0x0002, IP_ACTIVE_LOW, IPT_MAHJONG_F      )   // f
 	PORT_BIT( 0x0004, IP_ACTIVE_LOW, IPT_MAHJONG_J      )   // j
 	PORT_BIT( 0x0008, IP_ACTIVE_LOW, IPT_MAHJONG_N      )   // n
-<<<<<<< HEAD
-	PORT_BIT( 0x0010, IP_ACTIVE_LOW, IPT_UNKNOWN        )   // l2
-=======
 	PORT_BIT( 0x0010, IP_ACTIVE_LOW, IPT_MAHJONG_REACH  )   // l2 (reach)
->>>>>>> upstream/master
 	PORT_BIT( 0x0020, IP_ACTIVE_LOW, IPT_MAHJONG_BET    )   // c2 (bet)
 	PORT_BIT( 0x0040, IP_ACTIVE_LOW, IPT_UNKNOWN        )
 	PORT_BIT( 0x0080, IP_ACTIVE_LOW, IPT_UNKNOWN        )
@@ -1985,11 +1572,7 @@ static INPUT_PORTS_START( bishjan )
 	PORT_BIT( 0x0001, IP_ACTIVE_LOW, IPT_MAHJONG_C      )   // c
 	PORT_BIT( 0x0002, IP_ACTIVE_LOW, IPT_MAHJONG_G      )   // g
 	PORT_BIT( 0x0004, IP_ACTIVE_LOW, IPT_MAHJONG_K      )   // k
-<<<<<<< HEAD
-	PORT_BIT( 0x0008, IP_ACTIVE_LOW, IPT_UNKNOWN        )   // k2
-=======
 	PORT_BIT( 0x0008, IP_ACTIVE_LOW, IPT_MAHJONG_CHI    )   // k2 (chi)
->>>>>>> upstream/master
 	PORT_BIT( 0x0010, IP_ACTIVE_LOW, IPT_UNKNOWN        )   // m2
 	PORT_BIT( 0x0020, IP_ACTIVE_LOW, IPT_UNKNOWN        )
 	PORT_BIT( 0x0040, IP_ACTIVE_LOW, IPT_UNKNOWN        )
@@ -1999,11 +1582,7 @@ static INPUT_PORTS_START( bishjan )
 	PORT_BIT( 0x0001, IP_ACTIVE_LOW, IPT_MAHJONG_D      )   // d
 	PORT_BIT( 0x0002, IP_ACTIVE_LOW, IPT_MAHJONG_H      )   // h
 	PORT_BIT( 0x0004, IP_ACTIVE_LOW, IPT_MAHJONG_L      )   // l
-<<<<<<< HEAD
-	PORT_BIT( 0x0008, IP_ACTIVE_LOW, IPT_UNKNOWN        )   // j2
-=======
 	PORT_BIT( 0x0008, IP_ACTIVE_LOW, IPT_MAHJONG_PON    )   // j2 (pon)
->>>>>>> upstream/master
 	PORT_BIT( 0x0010, IP_ACTIVE_LOW, IPT_UNKNOWN        )
 	PORT_BIT( 0x0020, IP_ACTIVE_LOW, IPT_UNKNOWN        )
 	PORT_BIT( 0x0040, IP_ACTIVE_LOW, IPT_UNKNOWN        )
@@ -2021,8 +1600,6 @@ static INPUT_PORTS_START( bishjan )
 INPUT_PORTS_END
 
 /***************************************************************************
-<<<<<<< HEAD
-=======
                                   New 2001
 ***************************************************************************/
 
@@ -2120,7 +1697,6 @@ static INPUT_PORTS_START( humlan )
 INPUT_PORTS_END
 
 /***************************************************************************
->>>>>>> upstream/master
                        Express Card / Top Card
 ***************************************************************************/
 
@@ -2754,17 +2330,10 @@ INPUT_PORTS_END
                                 Bishou Jan
 ***************************************************************************/
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( bishjan, subsino2_state )
-	MCFG_CPU_ADD("maincpu", H83044, XTAL_44_1MHz / 3)
-	MCFG_CPU_PROGRAM_MAP( bishjan_map )
-	MCFG_CPU_VBLANK_INT_DRIVER("screen", subsino2_state,  irq0_line_hold)
-=======
 static MACHINE_CONFIG_START( bishjan )
 	MCFG_CPU_ADD("maincpu", H83044, XTAL_44_1MHz / 3)
 	MCFG_CPU_PROGRAM_MAP( bishjan_map )
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", subsino2_state, irq0_line_hold)
->>>>>>> upstream/master
 
 	MCFG_NVRAM_ADD_0FILL("nvram")
 	MCFG_TICKET_DISPENSER_ADD("hopper", attotime::from_msec(200), TICKET_MOTOR_ACTIVE_HIGH, TICKET_STATUS_ACTIVE_LOW)
@@ -2780,12 +2349,6 @@ static MACHINE_CONFIG_START( bishjan )
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", ss9601 )
 	MCFG_PALETTE_ADD( "palette", 256 )
 
-<<<<<<< HEAD
-	MCFG_VIDEO_START_OVERRIDE(subsino2_state, subsino2 )
-
-	// sound hardware
-	// SS9904?
-=======
 	MCFG_RAMDAC_ADD("ramdac", ramdac_map, "palette") // HMC HM86171 VGA 256 colour RAMDAC
 
 	MCFG_VIDEO_START_OVERRIDE(subsino2_state, subsino2 )
@@ -2810,18 +2373,13 @@ static MACHINE_CONFIG_DERIVED( humlan, bishjan )
 
 	// sound hardware
 	// SS9804
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 /***************************************************************************
                                 Magic Train
 ***************************************************************************/
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( mtrain, subsino2_state )
-=======
 static MACHINE_CONFIG_START( mtrain )
->>>>>>> upstream/master
 	MCFG_CPU_ADD("maincpu", Z180, XTAL_12MHz / 8)   /* Unknown clock */
 	MCFG_CPU_PROGRAM_MAP( mtrain_map )
 	MCFG_CPU_IO_MAP( mtrain_io )
@@ -2840,22 +2398,14 @@ static MACHINE_CONFIG_START( mtrain )
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", ss9601 )
 	MCFG_PALETTE_ADD( "palette", 256 )
 
-<<<<<<< HEAD
-	MCFG_VIDEO_START_OVERRIDE(subsino2_state, mtrain )
-=======
 	MCFG_RAMDAC_ADD("ramdac", ramdac_map, "palette") // HMC HM86171 VGA 256 colour RAMDAC
 
 	MCFG_VIDEO_START_OVERRIDE(subsino2_state, subsino2 )
->>>>>>> upstream/master
 
 	// sound hardware
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki", XTAL_8_4672MHz / 8, OKIM6295_PIN7_HIGH)    // probably
-=======
 	MCFG_OKIM6295_ADD("oki", XTAL_8_4672MHz / 8, PIN7_HIGH)    // probably
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
 
@@ -2863,11 +2413,7 @@ MACHINE_CONFIG_END
                           Sakura Love - Ying Hua Lian
 ***************************************************************************/
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( saklove, subsino2_state )
-=======
 static MACHINE_CONFIG_START( saklove )
->>>>>>> upstream/master
 	MCFG_CPU_ADD("maincpu", I80188, XTAL_20MHz*2 )    // !! AMD AM188-EM !!
 	MCFG_CPU_PROGRAM_MAP( saklove_map )
 	MCFG_CPU_IO_MAP( saklove_io )
@@ -2886,21 +2432,14 @@ static MACHINE_CONFIG_START( saklove )
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", ss9601 )
 	MCFG_PALETTE_ADD( "palette", 256 )
 
-<<<<<<< HEAD
-=======
 	MCFG_RAMDAC_ADD("ramdac", ramdac_map, "palette") // HMC HM86171 VGA 256 colour RAMDAC
 
->>>>>>> upstream/master
 	MCFG_VIDEO_START_OVERRIDE(subsino2_state, subsino2 )
 
 	// sound hardware
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki", XTAL_8_4672MHz / 8, OKIM6295_PIN7_HIGH)
-=======
 	MCFG_OKIM6295_ADD("oki", XTAL_8_4672MHz / 8, PIN7_HIGH)
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.80)
 
 	MCFG_SOUND_ADD("ymsnd", YM3812, XTAL_12MHz / 4) // ? chip and clock unknown
@@ -2911,19 +2450,11 @@ MACHINE_CONFIG_END
                                 X-Plan
 ***************************************************************************/
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( xplan, subsino2_state )
-	MCFG_CPU_ADD("maincpu", I80188, XTAL_20MHz*2 )    // !! AMD AM188-EM !!
-	MCFG_CPU_PROGRAM_MAP( xplan_map )
-	MCFG_CPU_IO_MAP( xplan_io )
-	MCFG_CPU_VBLANK_INT_DRIVER("screen", subsino2_state,  am188em_int0_irq)
-=======
 static MACHINE_CONFIG_START( xplan )
 	MCFG_CPU_ADD("maincpu", I80188, XTAL_20MHz*2 )    // !! AMD AM188-EM !!
 	MCFG_CPU_PROGRAM_MAP( xplan_map )
 	MCFG_CPU_IO_MAP( xplan_io )
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", subsino2_state, am188em_int0_irq)
->>>>>>> upstream/master
 
 	MCFG_NVRAM_ADD_0FILL("nvram")
 
@@ -2939,32 +2470,20 @@ static MACHINE_CONFIG_START( xplan )
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", ss9601 )
 	MCFG_PALETTE_ADD( "palette", 256 )
 
-<<<<<<< HEAD
-=======
 	MCFG_RAMDAC_ADD("ramdac", ramdac_map, "palette") // HMC HM86171 VGA 256 colour RAMDAC
 
->>>>>>> upstream/master
 	MCFG_VIDEO_START_OVERRIDE(subsino2_state, subsino2 )
 
 	// sound hardware
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki", XTAL_8_4672MHz / 8, OKIM6295_PIN7_HIGH)    // probably
-=======
 	MCFG_OKIM6295_ADD("oki", XTAL_8_4672MHz / 8, PIN7_HIGH)    // probably
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_DERIVED( xtrain, xplan )
 	MCFG_CPU_MODIFY("maincpu")
 	MCFG_CPU_IO_MAP(xtrain_io)
-<<<<<<< HEAD
-
-	MCFG_VIDEO_START_OVERRIDE(subsino2_state, xtrain )
-=======
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_DERIVED( expcard, xplan )
@@ -3024,11 +2543,7 @@ Notes:
 ***************************************************************************/
 
 ROM_START( bishjan )
-<<<<<<< HEAD
-	ROM_REGION( 0x100000, "maincpu", 0 )    // H8/3044
-=======
 	ROM_REGION( 0x80000, "maincpu", 0 )    // H8/3044
->>>>>>> upstream/master
 	ROM_LOAD( "1-v203.u21", 0x000000, 0x080000, CRC(1f891d48) SHA1(0b6a5aa8b781ba8fc133289790419aa8ea21c400) )
 
 	ROM_REGION( 0x400000, "tilemap", 0 )
@@ -3037,30 +2552,18 @@ ROM_START( bishjan )
 	ROM_LOAD32_BYTE( "5-v201.u27", 0x000002, 0x100000, CRC(85067d40) SHA1(3ecf7851311a77a0dfca90775fcbf6faabe9c2ab) )
 	ROM_LOAD32_BYTE( "6-v201.u28", 0x000003, 0x100000, CRC(430bd9d7) SHA1(dadf5a7eb90cf2dc20f97dbf20a4b6c8e7734fb1) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x100000, "samples", 0 )    // SS9904?
-=======
 	ROM_REGION( 0x100000, "samples", 0 )    // SS9904
->>>>>>> upstream/master
 	ROM_LOAD( "2-v201.u9", 0x000000, 0x100000, CRC(ea42764d) SHA1(13fe1cd30e474f4b092949c440068e9ddca79976) )
 ROM_END
 
 DRIVER_INIT_MEMBER(subsino2_state,bishjan)
 {
-<<<<<<< HEAD
-	UINT16 *rom = (UINT16*)memregion("maincpu")->base();
-=======
 	uint16_t *rom = (uint16_t*)memregion("maincpu")->base();
->>>>>>> upstream/master
 
 	// patch serial protection test (it always enters test mode on boot otherwise)
 	rom[0x042EA/2] = 0x4008;
 
 	// rts -> rte
-<<<<<<< HEAD
-	rom[0x33386/2] = 0x5670;
-	rom[0x0CC5C/2] = 0x5670;
-=======
 	rom[0x33386/2] = 0x5670; // IRQ 0
 	rom[0x0CC5C/2] = 0x5670; // IRQ 8
 }
@@ -3173,7 +2676,6 @@ DRIVER_INIT_MEMBER(subsino2_state,humlan)
 	// rts -> rte
 	rom[0x38B4/2] = 0x5670; // IRQ 8
 	rom[0x3A08/2] = 0x5670; // IRQ 0
->>>>>>> upstream/master
 }
 
 /***************************************************************************
@@ -3230,11 +2732,7 @@ ROM_END
 
 DRIVER_INIT_MEMBER(subsino2_state,expcard)
 {
-<<<<<<< HEAD
-	UINT8 *rom = memregion("maincpu")->base();
-=======
 	uint8_t *rom = memregion("maincpu")->base();
->>>>>>> upstream/master
 
 	// patch protection test (it always enters test mode on boot otherwise)
 	rom[0xed4dc-0xc0000] = 0xeb;
@@ -3332,11 +2830,7 @@ DRIVER_INIT_MEMBER(subsino2_state,mtrain)
 	subsino_decrypt(machine(), crsbingo_bitswaps, crsbingo_xors, 0x8000);
 
 	// patch serial protection test (it always enters test mode on boot otherwise)
-<<<<<<< HEAD
-	UINT8 *rom = memregion("maincpu")->base();
-=======
 	uint8_t *rom = memregion("maincpu")->base();
->>>>>>> upstream/master
 	rom[0x0cec] = 0x18;
 	rom[0xb037] = 0x18;
 
@@ -3390,11 +2884,7 @@ ROM_END
 
 DRIVER_INIT_MEMBER(subsino2_state,saklove)
 {
-<<<<<<< HEAD
-	UINT8 *rom = memregion("maincpu")->base();
-=======
 	uint8_t *rom = memregion("maincpu")->base();
->>>>>>> upstream/master
 
 	// patch serial protection test (it always enters test mode on boot otherwise)
 	rom[0x0e029] = 0xeb;
@@ -3454,11 +2944,7 @@ ROM_END
 
 DRIVER_INIT_MEMBER(subsino2_state,xplan)
 {
-<<<<<<< HEAD
-	UINT8 *rom = memregion("maincpu")->base();
-=======
 	uint8_t *rom = memregion("maincpu")->base();
->>>>>>> upstream/master
 
 	// patch protection test (it always enters test mode on boot otherwise)
 	rom[0xeded9-0xc0000] = 0xeb;
@@ -3518,11 +3004,7 @@ ROM_END
 
 DRIVER_INIT_MEMBER(subsino2_state,xtrain)
 {
-<<<<<<< HEAD
-	UINT8 *rom = memregion("maincpu")->base();
-=======
 	uint8_t *rom = memregion("maincpu")->base();
->>>>>>> upstream/master
 
 	// patch protection test (it always enters test mode on boot otherwise)
 	rom[0xe190f-0xc0000] = 0xeb;
@@ -3530,8 +3012,6 @@ DRIVER_INIT_MEMBER(subsino2_state,xtrain)
 
 /***************************************************************************
 
-<<<<<<< HEAD
-=======
 Panda Train (Novamatic 1.7)
 (c) 1999 Subsino
 
@@ -3595,7 +3075,6 @@ DRIVER_INIT_MEMBER(subsino2_state,ptrain)
 
 /***************************************************************************
 
->>>>>>> upstream/master
 Water-Nymph (Ver. 1.4)
 (c) 1996 Subsino
 
@@ -3633,26 +3112,13 @@ DRIVER_INIT_MEMBER(subsino2_state,wtrnymph)
 	subsino_decrypt(machine(), victor5_bitswaps, victor5_xors, 0x8000);
 
 	// patch serial protection test (it always enters test mode on boot otherwise)
-<<<<<<< HEAD
-	UINT8 *rom = memregion("maincpu")->base();
-=======
 	uint8_t *rom = memregion("maincpu")->base();
->>>>>>> upstream/master
 	rom[0x0d79] = 0x18;
 	rom[0xc1cf] = 0x18;
 	rom[0xc2a9] = 0x18;
 	rom[0xc2d7] = 0x18;
 }
 
-<<<<<<< HEAD
-GAME( 1996, mtrain,   0,        mtrain,   mtrain, subsino2_state,   mtrain,   ROT0, "Subsino",        "Magic Train (Ver. 1.31)",              0 )
-GAME( 1996, wtrnymph, 0,        mtrain,   wtrnymph, subsino2_state, wtrnymph, ROT0, "Subsino",        "Water-Nymph (Ver. 1.4)",               0 )
-GAME( 1998, expcard,  0,        expcard,  expcard, subsino2_state,  expcard,  ROT0, "American Alpha", "Express Card / Top Card (Ver. 1.5)",   0 )
-GAME( 1998, saklove,  0,        saklove,  saklove, subsino2_state,  saklove,  ROT0, "Subsino",        "Ying Hua Lian 2.0 (China, Ver. 1.02)", 0 )
-GAME( 1999, xtrain,   0,        xtrain,   xtrain, subsino2_state,   xtrain,   ROT0, "Subsino",        "X-Train (Ver. 1.3)",                   0 )
-GAME( 1999, bishjan,  0,        bishjan,  bishjan, subsino2_state,  bishjan,  ROT0, "Subsino",        "Bishou Jan (Japan, Ver. 2.03)",        MACHINE_NO_SOUND )
-GAME( 2006, xplan,    0,        xplan,    xplan, subsino2_state,    xplan,    ROT0, "Subsino",        "X-Plan (Ver. 1.01)",                   0 )
-=======
 GAME( 1996, mtrain,   0,        mtrain,   mtrain,   subsino2_state, mtrain,   ROT0, "Subsino",                   "Magic Train (Ver. 1.31)",               0 )
 GAME( 1996, wtrnymph, 0,        mtrain,   wtrnymph, subsino2_state, wtrnymph, ROT0, "Subsino",                   "Water-Nymph (Ver. 1.4)",                0 )
 GAME( 1998, expcard,  0,        expcard,  expcard,  subsino2_state, expcard,  ROT0, "American Alpha",            "Express Card / Top Card (Ver. 1.5)",    0 )
@@ -3663,4 +3129,3 @@ GAME( 1999, bishjan,  0,        bishjan,  bishjan,  subsino2_state, bishjan,  RO
 GAME( 2000, new2001,  0,        new2001,  new2001,  subsino2_state, new2001,  ROT0, "Subsino",                   "New 2001 (Italy, Ver. 200N)",           MACHINE_NO_SOUND )
 GAME( 2006, xplan,    0,        xplan,    xplan,    subsino2_state, xplan,    ROT0, "Subsino",                   "X-Plan (Ver. 101)",                     0 )
 GAME( 2001, humlan,   0,        humlan,   humlan,   subsino2_state, humlan,   ROT0, "Subsino (Truemax license)", "Humlan's Lyckohjul (Sweden, Ver. 402)", MACHINE_NO_SOUND | MACHINE_IMPERFECT_GRAPHICS )
->>>>>>> upstream/master

@@ -84,14 +84,6 @@
                       = Shift(c[n-1, 6])^Shift(c[n-1, 7])
 */
 
-<<<<<<< HEAD
-#include "cat702.h"
-
-const device_type CAT702 = &device_creator<cat702_device>;
-
-cat702_device::cat702_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-	device_t(mconfig, CAT702, "CAT702", tag, owner, clock, "cat702", __FILE__),
-=======
 #include "emu.h"
 #include "cat702.h"
 
@@ -100,15 +92,12 @@ DEFINE_DEVICE_TYPE(CAT702, cat702_device, "cat702", "CAT702")
 cat702_device::cat702_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	device_t(mconfig, CAT702, tag, owner, clock),
 	m_region(*this, DEVICE_SELF),
->>>>>>> upstream/master
 	m_dataout_handler(*this)
 {
 }
 
 void cat702_device::device_start()
 {
-<<<<<<< HEAD
-=======
 	memset(m_transform, 0xff, sizeof(m_transform));
 
 	if (!m_region.found())
@@ -124,7 +113,6 @@ void cat702_device::device_start()
 		memcpy(m_transform, m_region->base(), sizeof(m_transform));
 	}
 
->>>>>>> upstream/master
 	m_dataout_handler.resolve_safe();
 
 	save_item(NAME(m_select));
@@ -137,17 +125,10 @@ void cat702_device::device_start()
 // Given the value for x7..x0 and linear transform coefficients a7..a0
 // compute the value of the transform
 #if 0
-<<<<<<< HEAD
-static int c_linear(UINT8 x, UINT8 a)
-{
-	int i;
-	UINT8 r;
-=======
 static int c_linear(uint8_t x, uint8_t a)
 {
 	int i;
 	uint8_t r;
->>>>>>> upstream/master
 	x &= a;
 	r = 0;
 	for(i=0; i<8; i++)
@@ -158,20 +139,12 @@ static int c_linear(uint8_t x, uint8_t a)
 #endif
 
 // Derive the sbox xor mask for a given input and select bit
-<<<<<<< HEAD
-UINT8 cat702_device::compute_sbox_coef(int sel, int bit)
-=======
 uint8_t cat702_device::compute_sbox_coef(int sel, int bit)
->>>>>>> upstream/master
 {
 	if(!sel)
 		return m_transform[bit];
 
-<<<<<<< HEAD
-	UINT8 r = compute_sbox_coef((sel-1) & 7, (bit-1) & 7);
-=======
 	uint8_t r = compute_sbox_coef((sel-1) & 7, (bit-1) & 7);
->>>>>>> upstream/master
 	r = (r << 1)|(((r >> 7)^(r >> 6)) & 1);
 	if(bit != 7)
 		return r;
@@ -183,11 +156,7 @@ uint8_t cat702_device::compute_sbox_coef(int sel, int bit)
 void cat702_device::apply_bit_sbox(int sel)
 {
 	int i;
-<<<<<<< HEAD
-	UINT8 r = 0;
-=======
 	uint8_t r = 0;
->>>>>>> upstream/master
 	for(i=0; i<8; i++)
 		if(m_state & (1<<i))
 			r ^= compute_sbox_coef(sel, i);
@@ -196,17 +165,10 @@ void cat702_device::apply_bit_sbox(int sel)
 }
 
 // Apply a sbox
-<<<<<<< HEAD
-void cat702_device::apply_sbox(const UINT8 *sbox)
-{
-	int i;
-	UINT8 r = 0;
-=======
 void cat702_device::apply_sbox(const uint8_t *sbox)
 {
 	int i;
 	uint8_t r = 0;
->>>>>>> upstream/master
 	for(i=0; i<8; i++)
 		if(m_state & (1<<i))
 			r ^= sbox[i];
@@ -214,14 +176,6 @@ void cat702_device::apply_sbox(const uint8_t *sbox)
 	m_state = r;
 }
 
-<<<<<<< HEAD
-void cat702_device::init(const UINT8 *transform)
-{
-	m_transform = transform;
-}
-
-=======
->>>>>>> upstream/master
 WRITE_LINE_MEMBER(cat702_device::write_select)
 {
 	if (m_select != state)
@@ -242,11 +196,7 @@ WRITE_LINE_MEMBER(cat702_device::write_select)
 
 WRITE_LINE_MEMBER(cat702_device::write_clock)
 {
-<<<<<<< HEAD
-	static const UINT8 initial_sbox[8] = { 0xff, 0xfe, 0xfc, 0xf8, 0xf0, 0xe0, 0xc0, 0x7f };
-=======
 	static const uint8_t initial_sbox[8] = { 0xff, 0xfe, 0xfc, 0xf8, 0xf0, 0xe0, 0xc0, 0x7f };
->>>>>>> upstream/master
 
 	if (!state && m_clock && !m_select)
 	{

@@ -35,11 +35,7 @@ static INPUT_PORTS_START( haze )
 INPUT_PORTS_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( haze, haze_state )
-=======
 static MACHINE_CONFIG_START( haze )
->>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80,2000000)         /* ? MHz */
 	MCFG_CPU_PROGRAM_MAP(haze_map)
@@ -53,8 +49,4 @@ ROM_START( hg_frd )
 ROM_END
 
 
-<<<<<<< HEAD
-GAME( 198?,  hg_frd,  0,  haze,  haze, driver_device,  0,  ROT0,  "Hazel Grove",    "Fruit Deuce (Hazel Grove)",     MACHINE_IS_SKELETON_MECHANICAL)
-=======
 GAME( 198?,  hg_frd,  0,  haze,  haze, haze_state,  0,  ROT0,  "Hazel Grove",    "Fruit Deuce (Hazel Grove)",     MACHINE_IS_SKELETON_MECHANICAL)
->>>>>>> upstream/master

@@ -1,17 +1,10 @@
 // license:BSD-3-Clause
 // copyright-holders:Dan Boris
-<<<<<<< HEAD
-#ifndef __ATARI_MARIA__
-#define __ATARI_MARIA__
-
-#include "emu.h"
-=======
 #ifndef MAME_VIDEO_MARIA_H
 #define MAME_VIDEO_MARIA_H
 
 #pragma once
 
->>>>>>> upstream/master
 
 // ======================> atari_maria_device
 
@@ -19,11 +12,7 @@ class atari_maria_device :  public device_t
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	atari_maria_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-=======
 	atari_maria_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
->>>>>>> upstream/master
 
 	static void set_cpu_tag(device_t &device, const char *tag) { downcast<atari_maria_device &>(device).m_cpu_tag = tag; }
 
@@ -33,21 +22,12 @@ public:
 	DECLARE_READ8_MEMBER(read);
 	DECLARE_WRITE8_MEMBER(write);
 
-<<<<<<< HEAD
-	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-
-protected:
-	// device-level overrides
-	virtual void device_start();
-	virtual void device_reset();
-=======
 	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 
 protected:
 	// device-level overrides
 	virtual void device_start() override;
 	virtual void device_reset() override;
->>>>>>> upstream/master
 
 private:
 
@@ -74,11 +54,7 @@ private:
 
 	void draw_scanline();
 	int is_holey(unsigned int addr);
-<<<<<<< HEAD
-	int write_line_ram(int addr, UINT8 offset, int pal);
-=======
 	int write_line_ram(int addr, uint8_t offset, int pal);
->>>>>>> upstream/master
 
 	const char *m_cpu_tag;
 	cpu_device *m_cpu;  // CPU whose space(AS_PROGRAM) serves as DMA source
@@ -87,19 +63,11 @@ private:
 
 
 // device type definition
-<<<<<<< HEAD
-extern const device_type ATARI_MARIA;
-=======
 DECLARE_DEVICE_TYPE(ATARI_MARIA, atari_maria_device)
->>>>>>> upstream/master
 
 
 #define MCFG_MARIA_DMACPU(_tag) \
 	atari_maria_device::set_cpu_tag(*device, _tag);
 
 
-<<<<<<< HEAD
-#endif
-=======
 #endif // MAME_VIDEO_MARIA_H
->>>>>>> upstream/master

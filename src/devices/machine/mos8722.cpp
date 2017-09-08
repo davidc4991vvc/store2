@@ -6,28 +6,19 @@
 
 **********************************************************************/
 
-<<<<<<< HEAD
-#include "mos8722.h"
-
-=======
 #include "emu.h"
 #include "mos8722.h"
 
 //#define VERBOSE 1
 #include "logmacro.h"
 
->>>>>>> upstream/master
 
 
 //**************************************************************************
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type MOS8722 = &device_creator<mos8722_device>;
-=======
 DEFINE_DEVICE_TYPE(MOS8722, mos8722_device, "mos8722", "MOS 8722 MMU")
->>>>>>> upstream/master
 
 
 
@@ -35,12 +26,6 @@ DEFINE_DEVICE_TYPE(MOS8722, mos8722_device, "mos8722", "MOS 8722 MMU")
 //  MACROS / CONSTANTS
 //**************************************************************************
 
-<<<<<<< HEAD
-#define LOG 0
-
-
-=======
->>>>>>> upstream/master
 #define CR_IO           BIT(m_reg[CR], 0)
 #define CR_ROM_LO       BIT(m_reg[CR], 1)
 #define CR_ROM_MID      ((m_reg[CR] >> 2) & 0x03)
@@ -84,13 +69,8 @@ static const offs_t RCR_TOP_ADDRESS[4] =    { 0xf000, 0xf000, 0xe000, 0xc000 };
 //  mos8722_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-mos8722_device::mos8722_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-	device_t(mconfig, MOS8722, "MOS8722", tag, owner, clock, "mos8722", __FILE__),
-=======
 mos8722_device::mos8722_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	device_t(mconfig, MOS8722, tag, owner, clock),
->>>>>>> upstream/master
 	m_write_z80en(*this),
 	m_write_fsdir(*this),
 	m_read_game(*this),
@@ -121,15 +101,9 @@ void mos8722_device::device_start()
 
 void mos8722_device::device_reset()
 {
-<<<<<<< HEAD
-	for (int i = 0; i < 16; i++)
-	{
-		m_reg[i] = 0;
-=======
 	for (auto & elem : m_reg)
 	{
 		elem = 0;
->>>>>>> upstream/master
 	}
 
 	m_reg[P1L] = 0x01;
@@ -146,11 +120,7 @@ void mos8722_device::device_reset()
 //  read - register read
 //-------------------------------------------------
 
-<<<<<<< HEAD
-UINT8 mos8722_device::read(offs_t offset, UINT8 data)
-=======
 uint8_t mos8722_device::read(offs_t offset, uint8_t data)
->>>>>>> upstream/master
 {
 	if (MCR_C64) return data;
 
@@ -207,11 +177,7 @@ WRITE8_MEMBER( mos8722_device::write )
 
 	if (!CR_IO && offset >= 0xd500 && offset < 0xd50c)
 	{
-<<<<<<< HEAD
-		if (LOG) logerror("MOS8722 '%s' Write %01x : %02x\n", tag(), offset & 0x0f, data);
-=======
 		LOG("MOS8722 Write %01x : %02x\n", offset & 0x0f, data);
->>>>>>> upstream/master
 
 		switch (offset & 0x0f)
 		{
@@ -266,11 +232,7 @@ WRITE8_MEMBER( mos8722_device::write )
 	}
 	else if (offset >= 0xff00 && offset < 0xff05)
 	{
-<<<<<<< HEAD
-		if (LOG) logerror("MOS8722 '%s' Write %01x : %02x\n", tag(), offset & 0x0f, data);
-=======
 		LOG("MOS8722 Write %01x : %02x\n", offset & 0x0f, data);
->>>>>>> upstream/master
 
 		switch (offset & 0x0f)
 		{

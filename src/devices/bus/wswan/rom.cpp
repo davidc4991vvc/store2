@@ -21,15 +21,6 @@ enum
 //  ws_rom_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const device_type WS_ROM_STD = &device_creator<ws_rom_device>;
-const device_type WS_ROM_SRAM = &device_creator<ws_rom_sram_device>;
-const device_type WS_ROM_EEPROM = &device_creator<ws_rom_eeprom_device>;
-
-
-ws_rom_device::ws_rom_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source) :
-	device_t(mconfig, type, name, tag, owner, clock, shortname, source),
-=======
 DEFINE_DEVICE_TYPE(WS_ROM_STD,    ws_rom_device,        "ws_rom",    "Wonderswan Standard Carts")
 DEFINE_DEVICE_TYPE(WS_ROM_SRAM,   ws_rom_sram_device,   "ws_sram",   "Wonderswan Carts w/SRAM")
 DEFINE_DEVICE_TYPE(WS_ROM_EEPROM, ws_rom_eeprom_device, "ws_eeprom", "Wonderswan Carts w/EEPROM")
@@ -37,7 +28,6 @@ DEFINE_DEVICE_TYPE(WS_ROM_EEPROM, ws_rom_eeprom_device, "ws_eeprom", "Wonderswan
 
 ws_rom_device::ws_rom_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock) :
 	device_t(mconfig, type, tag, owner, clock),
->>>>>>> upstream/master
 	device_ws_cart_interface(mconfig, *this),
 	m_base20(0),
 	m_base30(0),
@@ -55,36 +45,6 @@ ws_rom_device::ws_rom_device(const machine_config &mconfig, device_type type, co
 {
 }
 
-<<<<<<< HEAD
-ws_rom_device::ws_rom_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: device_t(mconfig, WS_ROM_STD, "Wonderswan Standard Carts", tag, owner, clock, "ws_rom", __FILE__),
-						device_ws_cart_interface( mconfig, *this ), m_base20(0),
-	m_base30(0),
-	m_base40(0),
-	m_rtc_setting(0),
-	m_rtc_year(0),
-	m_rtc_month(0),
-	m_rtc_day(0),
-	m_rtc_day_of_week(0),
-	m_rtc_hour(0),
-	m_rtc_minute(0),
-	m_rtc_second(0),
-	m_rtc_index(0),
-	rtc_timer(nullptr)
-				{
-}
-
-ws_rom_sram_device::ws_rom_sram_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: ws_rom_device(mconfig, WS_ROM_SRAM, "Wonderswan Carts w/SRAM", tag, owner, clock, "ws_sram", __FILE__), m_nvram_base(0)
-				{
-}
-
-
-ws_rom_eeprom_device::ws_rom_eeprom_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: ws_rom_device(mconfig, WS_ROM_EEPROM, "Wonderswan Carts w/EEPROM", tag, owner, clock, "ws_eeprom", __FILE__), m_eeprom_mode(0),
-	m_eeprom_address(0), m_eeprom_command(0), m_eeprom_start(0), m_eeprom_write_enabled(0)
-				{
-=======
 ws_rom_device::ws_rom_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	ws_rom_device(mconfig, WS_ROM_STD, tag, owner, clock)
 {
@@ -101,7 +61,6 @@ ws_rom_eeprom_device::ws_rom_eeprom_device(const machine_config &mconfig, const 
 	ws_rom_device(mconfig, WS_ROM_EEPROM, tag, owner, clock),
 	m_eeprom_mode(0), m_eeprom_address(0), m_eeprom_command(0), m_eeprom_start(0), m_eeprom_write_enabled(0)
 {
->>>>>>> upstream/master
 }
 
 
@@ -267,11 +226,7 @@ READ8_MEMBER(ws_rom_device::read_rom40)
 
 READ8_MEMBER(ws_rom_device::read_io)
 {
-<<<<<<< HEAD
-	UINT8 value = m_io_regs[offset];
-=======
 	uint8_t value = m_io_regs[offset];
->>>>>>> upstream/master
 
 	switch (offset)
 	{
@@ -414,11 +369,7 @@ WRITE8_MEMBER(ws_rom_sram_device::write_io)
 
 READ8_MEMBER(ws_rom_eeprom_device::read_io)
 {
-<<<<<<< HEAD
-	UINT8 value = m_io_regs[offset];
-=======
 	uint8_t value = m_io_regs[offset];
->>>>>>> upstream/master
 
 	switch (offset)
 	{
@@ -442,22 +393,6 @@ WRITE8_MEMBER(ws_rom_eeprom_device::write_io)
 	switch (offset)
 	{
 		case 0x06:  /* EEPROM address lower bits port/EEPROM address and command port
-<<<<<<< HEAD
-                     1KBit EEPROM:
-                     Bit 0-5 - EEPROM address bit 1-6
-                     Bit 6-7 - Command
-                     00 - Extended command address bit 4-5:
-                     00 - Write disable
-                     01 - Write all
-                     10 - Erase all
-                     11 - Write enable
-                     01 - Write
-                     10 - Read
-                     11 - Erase
-                     16KBit EEPROM:
-                     Bit 0-7 - EEPROM address bit 1-8
-                     */
-=======
 		             1KBit EEPROM:
 		             Bit 0-5 - EEPROM address bit 1-6
 		             Bit 6-7 - Command
@@ -472,7 +407,6 @@ WRITE8_MEMBER(ws_rom_eeprom_device::write_io)
 		             16KBit EEPROM:
 		             Bit 0-7 - EEPROM address bit 1-8
 		             */
->>>>>>> upstream/master
 			switch (m_eeprom_mode)
 			{
 				case EEPROM_1K:
@@ -494,25 +428,6 @@ WRITE8_MEMBER(ws_rom_eeprom_device::write_io)
 			break;
 
 		case 0x07:  /* EEPROM higher bits/command bits port
-<<<<<<< HEAD
-                     1KBit EEPROM:
-                     Bit 0   - Start
-                     Bit 1-7 - Unknown
-                     16KBit EEPROM:
-                     Bit 0-1 - EEPROM address bit 9-10
-                     Bit 2-3 - Command
-                     00 - Extended command address bit 0-1:
-                     00 - Write disable
-                     01 - Write all
-                     10 - Erase all
-                     11 - Write enable
-                     01 - Write
-                     10 - Read
-                     11 - Erase
-                     Bit 4   - Start
-                     Bit 5-7 - Unknown
-                     */
-=======
 		             1KBit EEPROM:
 		             Bit 0   - Start
 		             Bit 1-7 - Unknown
@@ -530,7 +445,6 @@ WRITE8_MEMBER(ws_rom_eeprom_device::write_io)
 		             Bit 4   - Start
 		             Bit 5-7 - Unknown
 		             */
->>>>>>> upstream/master
 			switch (m_eeprom_mode)
 			{
 				case EEPROM_1K:
@@ -560,16 +474,6 @@ WRITE8_MEMBER(ws_rom_eeprom_device::write_io)
 			break;
 
 		case 0x08:  /* EEPROM command
-<<<<<<< HEAD
-                     Bit 0   - Read complete (read only)
-                     Bit 1   - Write complete (read only)
-                     Bit 2-3 - Unknown
-                     Bit 4   - Read
-                     Bit 5   - Write
-                     Bit 6   - Protect
-                     Bit 7   - Initialize
-                     */
-=======
 		             Bit 0   - Read complete (read only)
 		             Bit 1   - Write complete (read only)
 		             Bit 2-3 - Unknown
@@ -578,7 +482,6 @@ WRITE8_MEMBER(ws_rom_eeprom_device::write_io)
 		             Bit 6   - Protect
 		             Bit 7   - Initialize
 		             */
->>>>>>> upstream/master
 			if (data & 0x80)    // Initialize
 				logerror("Unsupported EEPROM command 'Initialize'\n");
 

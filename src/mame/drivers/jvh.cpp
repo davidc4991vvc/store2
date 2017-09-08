@@ -24,11 +24,7 @@ protected:
 	required_device<cpu_device> m_maincpu;
 
 	// driver_device overrides
-<<<<<<< HEAD
-	virtual void machine_reset();
-=======
 	virtual void machine_reset() override;
->>>>>>> upstream/master
 public:
 	DECLARE_DRIVER_INIT(jvh);
 };
@@ -110,22 +106,14 @@ DRIVER_INIT_MEMBER(jvh_state,jvh)
 {
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( jvh, jvh_state )
-=======
 static MACHINE_CONFIG_START( jvh )
->>>>>>> upstream/master
 	// CPU TMS9980A; no line connections
 	MCFG_TMS99xx_ADD("maincpu", TMS9980A, 1000000, jvh_map, escape_io)
 	MCFG_CPU_ADD("cpu2", M6800, 1000000)
 	MCFG_CPU_PROGRAM_MAP(jvh_sub_map)
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( jvh2, jvh_state )
-=======
 static MACHINE_CONFIG_START( jvh2 )
->>>>>>> upstream/master
 	// CPU TMS9980At; no line connections
 	MCFG_TMS99xx_ADD("maincpu", TMS9980A, 1000000, jvh_map, movmastr_io)
 	MCFG_CPU_ADD("cpu2", M6800, 1000000)

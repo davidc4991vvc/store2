@@ -1,9 +1,3 @@
-<<<<<<< HEAD
-// license:???
-// copyright-holders:Jarek Burczynski
-#include "machine/buggychl.h"
-#include "sound/msm5232.h"
-=======
 // license:GPL-2.0+
 // copyright-holders:Jarek Burczynski
 
@@ -11,7 +5,6 @@
 #include "machine/gen_latch.h"
 #include "sound/msm5232.h"
 
->>>>>>> upstream/master
 /* Disabled because the mcu dump is currently unavailable. -AS */
 //#define USE_MCU
 
@@ -29,15 +22,6 @@ public:
 		m_bmcu(*this, "bmcu"),
 		m_msm(*this, "msm"),
 		m_gfxdecode(*this, "gfxdecode"),
-<<<<<<< HEAD
-		m_palette(*this, "palette") { }
-
-	/* memory pointers */
-	required_shared_ptr<UINT8> m_spriteram;
-	required_shared_ptr<UINT8> m_videoram;
-	required_shared_ptr<UINT8> m_videoram3;
-	required_shared_ptr<UINT8> m_videoram2;
-=======
 		m_palette(*this, "palette"),
 		m_soundlatch(*this, "soundlatch") { }
 
@@ -46,7 +30,6 @@ public:
 	required_shared_ptr<uint8_t> m_videoram;
 	required_shared_ptr<uint8_t> m_videoram3;
 	required_shared_ptr<uint8_t> m_videoram2;
->>>>>>> upstream/master
 
 	/* video-related */
 	bitmap_ind16    *m_tmp_bitmap1;
@@ -62,17 +45,6 @@ public:
 
 	/* fake mcu (in msisaac.c) */
 #ifndef USE_MCU
-<<<<<<< HEAD
-	UINT8       m_mcu_val;
-	UINT8       m_direction;
-#endif
-
-	int         m_vol_ctrl[16];
-	UINT8       m_snd_ctrl0;
-	UINT8       m_snd_ctrl1;
-	UINT8       m_snd_ctrl2;
-	UINT8       m_snd_ctrl3;
-=======
 	uint8_t       m_mcu_val;
 	uint8_t       m_direction;
 #endif
@@ -82,32 +54,19 @@ public:
 	uint8_t       m_snd_ctrl1;
 	uint8_t       m_snd_ctrl2;
 	uint8_t       m_snd_ctrl3;
->>>>>>> upstream/master
 
 	/* devices */
 	required_device<cpu_device> m_audiocpu;
 	required_device<cpu_device> m_maincpu;
-<<<<<<< HEAD
-	optional_device<buggychl_mcu_device> m_bmcu;
-	required_device<msm5232_device> m_msm;
-	required_device<gfxdecode_device> m_gfxdecode;
-	required_device<palette_device> m_palette;
-=======
 	optional_device<taito68705_mcu_device> m_bmcu;
 	required_device<msm5232_device> m_msm;
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
 	required_device<generic_latch_8_device> m_soundlatch;
->>>>>>> upstream/master
 
 	DECLARE_WRITE8_MEMBER(sound_command_w);
 	DECLARE_WRITE8_MEMBER(nmi_disable_w);
 	DECLARE_WRITE8_MEMBER(nmi_enable_w);
-<<<<<<< HEAD
-	DECLARE_WRITE8_MEMBER(flip_screen_w);
-	DECLARE_WRITE8_MEMBER(msisaac_coin_counter_w);
-=======
->>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(ms_unknown_w);
 	DECLARE_READ8_MEMBER(msisaac_mcu_r);
 	DECLARE_READ8_MEMBER(msisaac_mcu_status_r);
@@ -119,10 +78,6 @@ public:
 	DECLARE_WRITE8_MEMBER(msisaac_bg2_scrollx_w);
 	DECLARE_WRITE8_MEMBER(msisaac_bg_scrolly_w);
 	DECLARE_WRITE8_MEMBER(msisaac_bg_scrollx_w);
-<<<<<<< HEAD
-	DECLARE_WRITE8_MEMBER(msisaac_textbank1_w);
-=======
->>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(msisaac_bg2_textbank_w);
 	DECLARE_WRITE8_MEMBER(msisaac_bg_videoram_w);
 	DECLARE_WRITE8_MEMBER(msisaac_bg2_videoram_w);
@@ -131,19 +86,11 @@ public:
 	TILE_GET_INFO_MEMBER(get_fg_tile_info);
 	TILE_GET_INFO_MEMBER(get_bg_tile_info);
 	TILE_GET_INFO_MEMBER(get_bg2_tile_info);
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void machine_reset();
-	virtual void video_start();
-	DECLARE_MACHINE_RESET(ta7630);
-	UINT32 screen_update_msisaac(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
 	virtual void video_start() override;
 	DECLARE_MACHINE_RESET(ta7630);
 	uint32_t screen_update_msisaac(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	TIMER_CALLBACK_MEMBER(nmi_callback);
 	void draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect );
 };

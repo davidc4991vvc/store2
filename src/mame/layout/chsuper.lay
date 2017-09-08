@@ -2,17 +2,10 @@
 <mamelayout version="2">
 
 <!--
-<<<<<<< HEAD
-		Champion Super realistic control panel
-		with clickable button.lamps + coin in.
-
-		Written by Roberto Fresca.
-=======
         Champion Super realistic control panel
         with clickable button.lamps + coin in.
 
         Written by Roberto Fresca.
->>>>>>> upstream/master
 -->
 
 <!-- define button-lamps -->

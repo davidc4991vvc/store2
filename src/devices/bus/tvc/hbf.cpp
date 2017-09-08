@@ -22,15 +22,6 @@ static SLOT_INTERFACE_START( tvc_hbf_floppies )
 	SLOT_INTERFACE( "525qd", FLOPPY_525_QD )
 SLOT_INTERFACE_END
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_FRAGMENT(tvc_hbf)
-	MCFG_FD1793_ADD("fdc", XTAL_16MHz / 16)
-	MCFG_FLOPPY_DRIVE_ADD("fdc:0", tvc_hbf_floppies, "525qd", tvc_hbf_device::floppy_formats)
-	MCFG_FLOPPY_DRIVE_ADD("fdc:1", tvc_hbf_floppies, "525qd", tvc_hbf_device::floppy_formats)
-MACHINE_CONFIG_END
-
-=======
->>>>>>> upstream/master
 ROM_START( tvc_hbf )
 	ROM_REGION(0x4000, "hbf", 0)
 	ROM_DEFAULT_BIOS("basic")
@@ -51,11 +42,7 @@ ROM_END
 //  GLOBAL VARIABLES
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type TVC_HBF = &device_creator<tvc_hbf_device>;
-=======
 DEFINE_DEVICE_TYPE(TVC_HBF, tvc_hbf_device, "tvc_hbf", "HBF floppy interface")
->>>>>>> upstream/master
 
 //**************************************************************************
 //  LIVE DEVICE
@@ -65,19 +52,11 @@ DEFINE_DEVICE_TYPE(TVC_HBF, tvc_hbf_device, "tvc_hbf", "HBF floppy interface")
 //  tvc_hbf_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-tvc_hbf_device::tvc_hbf_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-		: device_t(mconfig, TVC_HBF, "HBF floppy interface", tag, owner, clock, "tvc_hbf", __FILE__),
-		device_tvcexp_interface( mconfig, *this ),
-		m_fdc(*this, "fdc"), m_rom(nullptr), m_ram(nullptr), m_rom_bank(0)
-	{
-=======
 tvc_hbf_device::tvc_hbf_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, TVC_HBF, tag, owner, clock),
 	device_tvcexp_interface( mconfig, *this ),
 	m_fdc(*this, "fdc"), m_rom(nullptr), m_ram(nullptr), m_rom_bank(0)
 {
->>>>>>> upstream/master
 }
 
 
@@ -101,15 +80,6 @@ void tvc_hbf_device::device_reset()
 }
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  device_mconfig_additions
-//-------------------------------------------------
-
-machine_config_constructor tvc_hbf_device::device_mconfig_additions() const
-{
-	return MACHINE_CONFIG_NAME( tvc_hbf );
-}
-=======
 //  device_add_mconfig
 //-------------------------------------------------
 
@@ -119,17 +89,12 @@ MACHINE_CONFIG_MEMBER(tvc_hbf_device::device_add_mconfig)
 	MCFG_FLOPPY_DRIVE_ADD("fdc:1", tvc_hbf_floppies, "525qd", tvc_hbf_device::floppy_formats)
 MACHINE_CONFIG_END
 
->>>>>>> upstream/master
 
 //-------------------------------------------------
 //  device_rom_region
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const rom_entry *tvc_hbf_device::device_rom_region() const
-=======
 const tiny_rom_entry *tvc_hbf_device::device_rom_region() const
->>>>>>> upstream/master
 {
 	return ROM_NAME( tvc_hbf );
 }
@@ -192,11 +157,7 @@ WRITE8_MEMBER(tvc_hbf_device::io_write)
 			// bit 5     DDEN
 			// bit 6     floppy motor
 			// bit 7     side select
-<<<<<<< HEAD
-			floppy_image_device *floppy = NULL;
-=======
 			floppy_image_device *floppy = nullptr;
->>>>>>> upstream/master
 
 			if (BIT(data, 0)) floppy = subdevice<floppy_connector>("fdc:0")->get_device();
 			if (BIT(data, 1)) floppy = subdevice<floppy_connector>("fdc:1")->get_device();

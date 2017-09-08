@@ -46,11 +46,7 @@ static const char *const em_name[] =
 };
 
 // number of bits per opcode parameter
-<<<<<<< HEAD
-static const UINT8 em_bits[] =
-=======
 static const uint8_t em_bits[] =
->>>>>>> upstream/master
 {
 	0,
 	0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -68,11 +64,7 @@ static const uint8_t em_bits[] =
 #define _OVER DASMFLAG_STEP_OVER
 #define _OUT  DASMFLAG_STEP_OUT
 
-<<<<<<< HEAD
-static const UINT32 em_flags[] =
-=======
 static const uint32_t em_flags[] =
->>>>>>> upstream/master
 {
 	0,
 	0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -91,11 +83,7 @@ static const uint32_t em_flags[] =
 
 // M58846 disasm
 
-<<<<<<< HEAD
-static const UINT8 m58846_opmap[0xc0] =
-=======
 static const uint8_t m58846_opmap[0xc0] =
->>>>>>> upstream/master
 {
 //  0        1        2        3        4        5        6        7        8        9        A        B        C        D        E        F
 	em_NOP,  em_BA,   em_INY,  em_DEY,  em_DI,   em_EI,   em_RU,   em_SU,   0,       em_TABE, em_AM,   em_OSE,  em_TYA,  0,       0,       em_CMA,  // 0x
@@ -114,18 +102,10 @@ static const uint8_t m58846_opmap[0xc0] =
 
 CPU_DISASSEMBLE(m58846)
 {
-<<<<<<< HEAD
-	UINT16 op = (oprom[0] | oprom[1] << 8) & 0x1ff;
-	char *dst = buffer;
-
-	// get opcode
-	UINT8 instr;
-=======
 	uint16_t op = (oprom[0] | oprom[1] << 8) & 0x1ff;
 
 	// get opcode
 	uint8_t instr;
->>>>>>> upstream/master
 	if (op >= 0x180)
 		instr = em_B;
 	else if (op >= 0x100)
@@ -135,34 +115,14 @@ CPU_DISASSEMBLE(m58846)
 	else
 		instr = m58846_opmap[op];
 
-<<<<<<< HEAD
-	dst += sprintf(dst, "%-6s", em_name[instr]);
-
-	// get immediate param
-	UINT8 bits = em_bits[instr];
-=======
 	util::stream_format(stream, "%-6s", em_name[instr]);
 
 	// get immediate param
 	uint8_t bits = em_bits[instr];
->>>>>>> upstream/master
 
 	// special case for LXY x,y
 	if (instr == em_LXY)
 	{
-<<<<<<< HEAD
-		UINT8 x = op >> 4 & 3;
-		UINT8 y = op & 0xf;
-		dst += sprintf(dst, " %d,%d", x, y);
-	}
-	else if (bits > 0)
-	{
-		UINT8 param = op & ((1 << bits) - 1);
-		if (bits > 4)
-			dst += sprintf(dst, " $%02X", param);
-		else
-			dst += sprintf(dst, " %d", param);
-=======
 		uint8_t x = op >> 4 & 3;
 		uint8_t y = op & 0xf;
 		util::stream_format(stream, " %d,%d", x, y);
@@ -174,7 +134,6 @@ CPU_DISASSEMBLE(m58846)
 			util::stream_format(stream, " $%02X", param);
 		else
 			util::stream_format(stream, " %d", param);
->>>>>>> upstream/master
 	}
 
 	return 1 | em_flags[instr] | DASMFLAG_SUPPORTED;

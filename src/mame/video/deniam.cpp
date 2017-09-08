@@ -2,10 +2,7 @@
 // copyright-holders:Nicola Salmoria
 #include "emu.h"
 #include "includes/deniam.h"
-<<<<<<< HEAD
-=======
 #include "screen.h"
->>>>>>> upstream/master
 
 
 void deniam_state::deniam_common_init(  )
@@ -66,11 +63,7 @@ TILEMAP_MAPPER_MEMBER(deniam_state::scan_pages)
 TILE_GET_INFO_MEMBER(deniam_state::get_bg_tile_info)
 {
 	int page = tile_index >> 11;
-<<<<<<< HEAD
-	UINT16 attr = m_videoram[m_bg_page[page] * 0x0800 + (tile_index & 0x7ff)];
-=======
 	uint16_t attr = m_videoram[m_bg_page[page] * 0x0800 + (tile_index & 0x7ff)];
->>>>>>> upstream/master
 	SET_TILE_INFO_MEMBER(0,
 			attr,
 			(attr & 0x1fc0) >> 6,
@@ -80,11 +73,7 @@ TILE_GET_INFO_MEMBER(deniam_state::get_bg_tile_info)
 TILE_GET_INFO_MEMBER(deniam_state::get_fg_tile_info)
 {
 	int page = tile_index >> 11;
-<<<<<<< HEAD
-	UINT16 attr = m_videoram[m_fg_page[page] * 0x0800 + (tile_index & 0x7ff)];
-=======
 	uint16_t attr = m_videoram[m_fg_page[page] * 0x0800 + (tile_index & 0x7ff)];
->>>>>>> upstream/master
 	SET_TILE_INFO_MEMBER(0,
 			attr,
 			(attr & 0x1fc0) >> 6,
@@ -93,11 +82,7 @@ TILE_GET_INFO_MEMBER(deniam_state::get_fg_tile_info)
 
 TILE_GET_INFO_MEMBER(deniam_state::get_tx_tile_info)
 {
-<<<<<<< HEAD
-	UINT16 attr = m_textram[tile_index];
-=======
 	uint16_t attr = m_textram[tile_index];
->>>>>>> upstream/master
 	SET_TILE_INFO_MEMBER(0,
 			attr & 0xf1ff,
 			(attr & 0x0e00) >> 9,
@@ -114,15 +99,9 @@ TILE_GET_INFO_MEMBER(deniam_state::get_tx_tile_info)
 
 void deniam_state::video_start()
 {
-<<<<<<< HEAD
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(deniam_state::get_bg_tile_info),this), tilemap_mapper_delegate(FUNC(deniam_state::scan_pages),this), 8, 8, 128, 64);
-	m_fg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(deniam_state::get_fg_tile_info),this), tilemap_mapper_delegate(FUNC(deniam_state::scan_pages),this), 8, 8, 128, 64);
-	m_tx_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(deniam_state::get_tx_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 64, 32);
-=======
 	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(deniam_state::get_bg_tile_info),this), tilemap_mapper_delegate(FUNC(deniam_state::scan_pages),this), 8, 8, 128, 64);
 	m_fg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(deniam_state::get_fg_tile_info),this), tilemap_mapper_delegate(FUNC(deniam_state::scan_pages),this), 8, 8, 128, 64);
 	m_tx_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(deniam_state::get_tx_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 64, 32);
->>>>>>> upstream/master
 
 	m_fg_tilemap->set_transparent_pen(0);
 	m_tx_tilemap->set_transparent_pen(0);
@@ -181,11 +160,7 @@ WRITE16_MEMBER(deniam_state::deniam_coinctrl_w)
 	COMBINE_DATA(&m_coinctrl);
 
 	/* bit 0 is coin counter */
-<<<<<<< HEAD
-	coin_counter_w(machine(), 0, m_coinctrl & 0x01);
-=======
 	machine().bookkeeping().coin_counter_w(0, m_coinctrl & 0x01);
->>>>>>> upstream/master
 
 	/* bit 6 is display enable (0 freezes screen) */
 	m_display_enable = m_coinctrl & 0x20;
@@ -228,20 +203,12 @@ WRITE16_MEMBER(deniam_state::deniam_coinctrl_w)
 void deniam_state::draw_sprites( screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect )
 {
 	int offs;
-<<<<<<< HEAD
-	UINT8 *gfx = memregion("gfx2")->base();
-=======
 	uint8_t *gfx = memregion("gfx2")->base();
->>>>>>> upstream/master
 
 	for (offs = m_spriteram.bytes() / 2 - 8; offs >= 0; offs -= 8)
 	{
 		int sx, starty, endy, x, y, start, color, width, flipx, primask;
-<<<<<<< HEAD
-		UINT8 *rom = gfx;
-=======
 		uint8_t *rom = gfx;
->>>>>>> upstream/master
 
 		sx = (m_spriteram[offs + 1] & 0x01ff) + 16 * 8 - 1;
 		if (sx >= 512) sx -= 512;
@@ -389,11 +356,7 @@ void deniam_state::set_fg_page( int page, int value )
 	}
 }
 
-<<<<<<< HEAD
-UINT32 deniam_state::screen_update_deniam(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t deniam_state::screen_update_deniam(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int bg_scrollx, bg_scrolly, fg_scrollx, fg_scrolly;
 	int page;

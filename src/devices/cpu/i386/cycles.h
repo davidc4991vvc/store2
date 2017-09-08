@@ -333,10 +333,6 @@ enum X86_CYCLES
 };
 
 
-<<<<<<< HEAD
-#define X86_NUM_CPUS        4
-=======
->>>>>>> upstream/master
 #define CPU_CYCLES_I386         0
 #define CPU_CYCLES_I486         1
 #define CPU_CYCLES_PENTIUM      2
@@ -346,11 +342,7 @@ enum X86_CYCLES
 struct X86_CYCLE_TABLE
 {
 	X86_CYCLES op;
-<<<<<<< HEAD
-	UINT8 cpu_cycles[X86_NUM_CPUS][2];
-=======
 	uint8_t cpu_cycles[X86_NUM_CPUS][2];
->>>>>>> upstream/master
 };
 
 static const X86_CYCLE_TABLE x86_cycle_table[] =

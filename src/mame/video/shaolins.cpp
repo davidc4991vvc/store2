@@ -30,11 +30,7 @@
 ***************************************************************************/
 PALETTE_INIT_MEMBER(shaolins_state, shaolins)
 {
-<<<<<<< HEAD
-	const UINT8 *color_prom = memregion("proms")->base();
-=======
 	const uint8_t *color_prom = memregion("proms")->base();
->>>>>>> upstream/master
 	static const int resistances[4] = { 2200, 1000, 470, 220 };
 	double rweights[4], gweights[4], bweights[4];
 	int i;
@@ -86,11 +82,7 @@ PALETTE_INIT_MEMBER(shaolins_state, shaolins)
 
 		for (j = 0; j < 8; j++)
 		{
-<<<<<<< HEAD
-			UINT8 ctabentry = (j << 5) | ((~i & 0x100) >> 4) | (color_prom[i] & 0x0f);
-=======
 			uint8_t ctabentry = (j << 5) | ((~i & 0x100) >> 4) | (color_prom[i] & 0x0f);
->>>>>>> upstream/master
 			palette.set_pen_indirect(((i & 0x100) << 3) | (j << 8) | (i & 0xff), ctabentry);
 		}
 	}
@@ -146,11 +138,7 @@ TILE_GET_INFO_MEMBER(shaolins_state::get_bg_tile_info)
 
 void shaolins_state::video_start()
 {
-<<<<<<< HEAD
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(shaolins_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS,
-=======
 	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(shaolins_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS,
->>>>>>> upstream/master
 			8, 8, 32, 32);
 
 	m_bg_tilemap->set_scroll_cols(32);
@@ -189,11 +177,7 @@ void shaolins_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprec
 	}
 }
 
-<<<<<<< HEAD
-UINT32 shaolins_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t shaolins_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	m_bg_tilemap->draw(screen, bitmap, cliprect, 0, 0);
 	draw_sprites(bitmap, cliprect);

@@ -173,10 +173,7 @@ Check gticlub.c for details on the bottom board.
 #include "machine/adc083x.h"
 #include "machine/k056230.h"
 #include "machine/eepromser.h"
-<<<<<<< HEAD
-=======
 #include "machine/watchdog.h"
->>>>>>> upstream/master
 #include "sound/k056800.h"
 #include "sound/k054539.h"
 #include "video/k001604.h"
@@ -184,10 +181,7 @@ Check gticlub.c for details on the bottom board.
 #include "video/k001006.h"
 #include "video/k054156_k054157_k056832.h"
 #include "video/konami_helper.h"
-<<<<<<< HEAD
-=======
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 class zr107_state : public driver_device
@@ -198,10 +192,7 @@ public:
 		m_maincpu(*this, "maincpu"),
 		m_audiocpu(*this, "audiocpu"),
 		m_dsp(*this, "dsp"),
-<<<<<<< HEAD
-=======
 		m_watchdog(*this, "watchdog"),
->>>>>>> upstream/master
 		m_k001604(*this, "k001604"),
 		m_k056800(*this, "k056800"),
 		m_k056832(*this, "k056832"),
@@ -226,37 +217,17 @@ public:
 
 	required_device<ppc_device> m_maincpu;
 	required_device<cpu_device> m_audiocpu;
-<<<<<<< HEAD
-	required_device<cpu_device> m_dsp;
-	optional_device<k001604_device> m_k001604;
-	required_device<k056800_device> m_k056800;
-	optional_device<k056832_device> m_k056832;
-	optional_shared_ptr<UINT32> m_workram;
-=======
 	required_device<adsp21062_device> m_dsp;
 	required_device<watchdog_timer_device> m_watchdog;
 	optional_device<k001604_device> m_k001604;
 	required_device<k056800_device> m_k056800;
 	optional_device<k056832_device> m_k056832;
 	optional_shared_ptr<uint32_t> m_workram;
->>>>>>> upstream/master
 	required_ioport m_in0, m_in1, m_in2, m_in3, m_in4, m_out4, m_eepromout, m_analog1, m_analog2, m_analog3;
 	required_device<palette_device> m_palette;
 	optional_device<k001005_device> m_k001005;
 	optional_device<k001006_device> m_k001006_1;
 	optional_device<k001006_device> m_k001006_2;
-<<<<<<< HEAD
-	required_shared_ptr<UINT32> m_generic_paletteram_32;
-	required_device<konppc_device> m_konppc;
-
-	UINT32 *m_sharc_dataram;
-	UINT8 m_led_reg0;
-	UINT8 m_led_reg1;
-	int m_ccu_vcth;
-	int m_ccu_vctl;
-	UINT8 m_sound_ctrl;
-	UINT8 m_sound_intck;
-=======
 	required_shared_ptr<uint32_t> m_generic_paletteram_32;
 	required_device<konppc_device> m_konppc;
 
@@ -267,7 +238,6 @@ public:
 	int m_ccu_vctl;
 	uint8_t m_sound_ctrl;
 	uint8_t m_sound_intck;
->>>>>>> upstream/master
 
 	DECLARE_WRITE32_MEMBER(paletteram32_w);
 	DECLARE_READ8_MEMBER(sysreg_r);
@@ -284,26 +254,16 @@ public:
 	DECLARE_DRIVER_INIT(jetwave);
 	DECLARE_VIDEO_START(zr107);
 	DECLARE_VIDEO_START(jetwave);
-<<<<<<< HEAD
-	UINT32 screen_update_zr107(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
-	UINT32 screen_update_jetwave(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
-=======
 	uint32_t screen_update_zr107(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
 	uint32_t screen_update_jetwave(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	INTERRUPT_GEN_MEMBER(zr107_vblank);
 	WRITE_LINE_MEMBER(k054539_irq_gen);
 	ADC083X_INPUT_CB(adc0838_callback);
 	K056832_CB_MEMBER(tile_callback);
 
 protected:
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void machine_reset();
-=======
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
->>>>>>> upstream/master
 };
 
 
@@ -315,11 +275,7 @@ VIDEO_START_MEMBER(zr107_state,jetwave)
 }
 
 
-<<<<<<< HEAD
-UINT32 zr107_state::screen_update_jetwave(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
-=======
 uint32_t zr107_state::screen_update_jetwave(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	bitmap.fill(m_palette->pen(0), cliprect);
 
@@ -366,11 +322,7 @@ VIDEO_START_MEMBER(zr107_state,zr107)
 	m_k056832->set_layer_offs(7, -29, -27);
 }
 
-<<<<<<< HEAD
-UINT32 zr107_state::screen_update_zr107(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
-=======
 uint32_t zr107_state::screen_update_zr107(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	bitmap.fill(m_palette->pen(0), cliprect);
 
@@ -389,11 +341,7 @@ uint32_t zr107_state::screen_update_zr107(screen_device &screen, bitmap_rgb32 &b
 
 READ8_MEMBER(zr107_state::sysreg_r)
 {
-<<<<<<< HEAD
-	UINT32 r = 0;
-=======
 	uint32_t r = 0;
->>>>>>> upstream/master
 
 	switch (offset)
 	{
@@ -475,11 +423,7 @@ WRITE8_MEMBER(zr107_state::sysreg_w)
 			    0x01 = AFE
 			*/
 			if (data & 0x01)
-<<<<<<< HEAD
-				machine().watchdog_reset();
-=======
 				m_watchdog->watchdog_reset();
->>>>>>> upstream/master
 			break;
 
 	}
@@ -487,11 +431,7 @@ WRITE8_MEMBER(zr107_state::sysreg_w)
 
 READ32_MEMBER(zr107_state::ccu_r)
 {
-<<<<<<< HEAD
-	UINT32 r = 0;
-=======
 	uint32_t r = 0;
->>>>>>> upstream/master
 	switch (offset)
 	{
 		case 0x1c/4:
@@ -526,11 +466,7 @@ void zr107_state::machine_start()
 	m_maincpu->ppcdrc_set_options(PPCDRC_COMPATIBLE_OPTIONS);
 
 	/* configure fast RAM regions for DRC */
-<<<<<<< HEAD
-	m_maincpu->ppcdrc_add_fastram(0x00000000, 0x000fffff, FALSE, m_workram);
-=======
 	m_maincpu->ppcdrc_add_fastram(0x00000000, 0x000fffff, false, m_workram);
->>>>>>> upstream/master
 }
 
 static ADDRESS_MAP_START( zr107_map, AS_PROGRAM, 32, zr107_state )
@@ -561,25 +497,6 @@ WRITE32_MEMBER(zr107_state::jetwave_palette_w)
 }
 
 static ADDRESS_MAP_START( jetwave_map, AS_PROGRAM, 32, zr107_state )
-<<<<<<< HEAD
-	AM_RANGE(0x00000000, 0x000fffff) AM_MIRROR(0x80000000) AM_RAM       /* Work RAM */
-	AM_RANGE(0x74000000, 0x740000ff) AM_MIRROR(0x80000000) AM_DEVREADWRITE("k001604", k001604_device, reg_r, reg_w)
-	AM_RANGE(0x74010000, 0x7401ffff) AM_MIRROR(0x80000000) AM_RAM_WRITE(jetwave_palette_w) AM_SHARE("paletteram")
-	AM_RANGE(0x74020000, 0x7403ffff) AM_MIRROR(0x80000000) AM_DEVREADWRITE("k001604", k001604_device, tile_r, tile_w)
-	AM_RANGE(0x74040000, 0x7407ffff) AM_MIRROR(0x80000000) AM_DEVREADWRITE("k001604", k001604_device, char_r, char_w)
-	AM_RANGE(0x78000000, 0x7800ffff) AM_MIRROR(0x80000000) AM_DEVREADWRITE("konppc", konppc_device, cgboard_dsp_shared_r_ppc, cgboard_dsp_shared_w_ppc)      /* 21N 21K 23N 23K */
-	AM_RANGE(0x78010000, 0x7801ffff) AM_MIRROR(0x80000000) AM_DEVWRITE("konppc", konppc_device, cgboard_dsp_shared_w_ppc)
-	AM_RANGE(0x78040000, 0x7804000f) AM_MIRROR(0x80000000) AM_DEVREADWRITE("k001006_1", k001006_device, read, write)
-	AM_RANGE(0x78080000, 0x7808000f) AM_MIRROR(0x80000000) AM_DEVREADWRITE("k001006_2", k001006_device, read, write)
-	AM_RANGE(0x780c0000, 0x780c0007) AM_MIRROR(0x80000000) AM_DEVREADWRITE("konppc", konppc_device, cgboard_dsp_comm_r_ppc, cgboard_dsp_comm_w_ppc)
-	AM_RANGE(0x7e000000, 0x7e003fff) AM_MIRROR(0x80000000) AM_READWRITE8(sysreg_r, sysreg_w, 0xffffffff)
-	AM_RANGE(0x7e008000, 0x7e009fff) AM_MIRROR(0x80000000) AM_DEVREADWRITE8("k056230", k056230_device, read, write, 0xffffffff)             /* LANC registers */
-	AM_RANGE(0x7e00a000, 0x7e00bfff) AM_MIRROR(0x80000000) AM_DEVREADWRITE("k056230", k056230_device, lanc_ram_r, lanc_ram_w)    /* LANC Buffer RAM (27E) */
-	AM_RANGE(0x7e00c000, 0x7e00c00f) AM_MIRROR(0x80000000) AM_DEVREADWRITE8("k056800", k056800_device, host_r, host_w, 0xffffffff)
-	AM_RANGE(0x7f000000, 0x7f3fffff) AM_MIRROR(0x80000000) AM_ROM AM_REGION("user2", 0)
-	AM_RANGE(0x7f800000, 0x7f9fffff) AM_MIRROR(0x80000000) AM_ROM AM_SHARE("share2")
-	AM_RANGE(0x7fe00000, 0x7fffffff) AM_MIRROR(0x80000000) AM_ROM AM_REGION("user1", 0) AM_SHARE("share2")  /* Program ROM */
-=======
 	AM_RANGE(0x00000000, 0x000fffff) AM_RAM       /* Work RAM */
 	AM_RANGE(0x74000000, 0x740000ff) AM_DEVREADWRITE("k001604", k001604_device, reg_r, reg_w)
 	AM_RANGE(0x74010000, 0x7401ffff) AM_RAM_WRITE(jetwave_palette_w) AM_SHARE("paletteram")
@@ -597,7 +514,6 @@ static ADDRESS_MAP_START( jetwave_map, AS_PROGRAM, 32, zr107_state )
 	AM_RANGE(0x7f000000, 0x7f3fffff) AM_ROM AM_REGION("user2", 0)
 	AM_RANGE(0x7f800000, 0x7f9fffff) AM_ROM AM_SHARE("share2")
 	AM_RANGE(0x7fe00000, 0x7fffffff) AM_ROM AM_REGION("user1", 0) AM_SHARE("share2")  /* Program ROM */
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -840,11 +756,7 @@ void zr107_state::machine_reset()
 	m_dsp->set_input_line(INPUT_LINE_RESET, ASSERT_LINE);
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( zr107, zr107_state )
-=======
 static MACHINE_CONFIG_START( zr107 )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", PPC403GA, XTAL_64MHz/2)   /* PowerPC 403GA 32MHz */
@@ -865,11 +777,8 @@ static MACHINE_CONFIG_START( zr107 )
 	MCFG_DEVICE_ADD("k056230", K056230, 0)
 	MCFG_K056230_CPU("maincpu")
 
-<<<<<<< HEAD
-=======
 	MCFG_WATCHDOG_ADD("watchdog")
 
->>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE(60)
@@ -881,18 +790,9 @@ static MACHINE_CONFIG_START( zr107 )
 
 	MCFG_VIDEO_START_OVERRIDE(zr107_state,zr107)
 
-<<<<<<< HEAD
-	MCFG_GFXDECODE_ADD("gfxdecode", "palette", empty)
-
-	MCFG_DEVICE_ADD("k056832", K056832, 0)
-	MCFG_K056832_CB(zr107_state, tile_callback)
-	MCFG_K056832_CONFIG("gfx2", 1, K056832_BPP_8, 1, 0, "none")
-	MCFG_K056832_GFXDECODE("gfxdecode")
-=======
 	MCFG_DEVICE_ADD("k056832", K056832, 0)
 	MCFG_K056832_CB(zr107_state, tile_callback)
 	MCFG_K056832_CONFIG("gfx2", K056832_BPP_8, 1, 0, "none")
->>>>>>> upstream/master
 	MCFG_K056832_PALETTE("palette")
 
 	MCFG_DEVICE_ADD("k001005", K001005, 0)
@@ -923,19 +823,11 @@ static MACHINE_CONFIG_START( zr107 )
 
 	MCFG_DEVICE_ADD("konppc", KONPPC, 0)
 	MCFG_KONPPC_CGBOARD_NUMBER(1)
-<<<<<<< HEAD
-	MCFG_KONPPC_CGBOARD_TYPE(CGBOARD_TYPE_ZR107)
-MACHINE_CONFIG_END
-
-
-static MACHINE_CONFIG_START( jetwave, zr107_state )
-=======
 	MCFG_KONPPC_CGBOARD_TYPE(ZR107)
 MACHINE_CONFIG_END
 
 
 static MACHINE_CONFIG_START( jetwave )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", PPC403GA, XTAL_64MHz/2)   /* PowerPC 403GA 32MHz */
@@ -956,11 +848,8 @@ static MACHINE_CONFIG_START( jetwave )
 	MCFG_DEVICE_ADD("k056230", K056230, 0)
 	MCFG_K056230_CPU("maincpu")
 
-<<<<<<< HEAD
-=======
 	MCFG_WATCHDOG_ADD("watchdog")
 
->>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE(60)
@@ -972,23 +861,11 @@ static MACHINE_CONFIG_START( jetwave )
 
 	MCFG_VIDEO_START_OVERRIDE(zr107_state,jetwave)
 
-<<<<<<< HEAD
-	MCFG_GFXDECODE_ADD("gfxdecode", "palette", empty)
-
 	MCFG_DEVICE_ADD("k001604", K001604, 0)
-	MCFG_K001604_GFX_INDEX1(0)
-	MCFG_K001604_GFX_INDEX2(1)
-=======
-	MCFG_DEVICE_ADD("k001604", K001604, 0)
->>>>>>> upstream/master
 	MCFG_K001604_LAYER_SIZE(0)
 	MCFG_K001604_ROZ_SIZE(0)
 	MCFG_K001604_TXT_OFFSET(0)
 	MCFG_K001604_ROZ_OFFSET(16384)
-<<<<<<< HEAD
-	MCFG_K001604_GFXDECODE("gfxdecode")
-=======
->>>>>>> upstream/master
 	MCFG_K001604_PALETTE("palette")
 
 	MCFG_DEVICE_ADD("k001005", K001005, 0)
@@ -1025,28 +902,18 @@ static MACHINE_CONFIG_START( jetwave )
 
 	MCFG_DEVICE_ADD("konppc", KONPPC, 0)
 	MCFG_KONPPC_CGBOARD_NUMBER(1)
-<<<<<<< HEAD
-	MCFG_KONPPC_CGBOARD_TYPE(CGBOARD_TYPE_GTICLUB)
-=======
 	MCFG_KONPPC_CGBOARD_TYPE(GTICLUB)
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 /*****************************************************************************/
 
 DRIVER_INIT_MEMBER(zr107_state,common)
 {
-<<<<<<< HEAD
-	m_sharc_dataram = auto_alloc_array(machine(), UINT32, 0x100000/4);
-	m_led_reg0 = m_led_reg1 = 0x7f;
-	m_ccu_vcth = m_ccu_vctl = 0;
-=======
 	m_sharc_dataram = std::make_unique<uint32_t[]>(0x100000/4);
 	m_led_reg0 = m_led_reg1 = 0x7f;
 	m_ccu_vcth = m_ccu_vctl = 0;
 
 	m_dsp->enable_recompiler();
->>>>>>> upstream/master
 }
 
 DRIVER_INIT_MEMBER(zr107_state,zr107)

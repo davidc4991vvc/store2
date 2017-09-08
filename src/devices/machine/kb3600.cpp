@@ -15,23 +15,11 @@
 
 */
 
-<<<<<<< HEAD
-#include "kb3600.h"
-
-
-
-//**************************************************************************
-//  MACROS / CONSTANTS
-//**************************************************************************
-
-#define LOG 0
-=======
 #include "emu.h"
 #include "kb3600.h"
 
 //#define VERBOSE 1
 #include "logmacro.h"
->>>>>>> upstream/master
 
 
 
@@ -40,11 +28,7 @@
 //**************************************************************************
 
 // devices
-<<<<<<< HEAD
-const device_type AY3600 = &device_creator<ay3600_device>;
-=======
 DEFINE_DEVICE_TYPE(AY3600, ay3600_device, "ay3600", "AY-5-3600 Keyboard Encoder")
->>>>>>> upstream/master
 
 //**************************************************************************
 //  LIVE DEVICE
@@ -54,13 +38,8 @@ DEFINE_DEVICE_TYPE(AY3600, ay3600_device, "ay3600", "AY-5-3600 Keyboard Encoder"
 //  ay3600_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-ay3600_device::ay3600_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, AY3600, "AY-5-3600", tag, owner, clock, "ay3600", __FILE__),
-=======
 ay3600_device::ay3600_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, AY3600, tag, owner, clock),
->>>>>>> upstream/master
 	m_read_x0(*this),
 	m_read_x1(*this),
 	m_read_x2(*this),
@@ -75,15 +54,9 @@ ay3600_device::ay3600_device(const machine_config &mconfig, const char *tag, dev
 	m_write_data_ready(*this),
 	m_write_ako(*this)
 {
-<<<<<<< HEAD
-	for (int i = 0; i < 9; i++)
-	{
-		m_x_mask[i] = 0;
-=======
 	for (auto & elem : m_x_mask)
 	{
 		elem = 0;
->>>>>>> upstream/master
 	}
 }
 
@@ -139,11 +112,7 @@ void ay3600_device::device_timer(emu_timer &timer, device_timer_id id, int param
 
 	for (int x = 0; x < 9; x++)
 	{
-<<<<<<< HEAD
-		UINT16 data = 0;
-=======
 		uint16_t data = 0;
->>>>>>> upstream/master
 
 		switch(x)
 		{
@@ -218,15 +187,9 @@ void ay3600_device::device_timer(emu_timer &timer, device_timer_id id, int param
 //  b_r -
 //-------------------------------------------------
 
-<<<<<<< HEAD
-UINT16 ay3600_device::b_r()
-{
-	UINT16 data = m_b;
-=======
 uint16_t ay3600_device::b_r()
 {
 	uint16_t data = m_b;
->>>>>>> upstream/master
 
 	m_write_data_ready(0);
 

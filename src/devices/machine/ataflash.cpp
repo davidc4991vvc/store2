@@ -1,26 +1,5 @@
 // license:BSD-3-Clause
 // copyright-holders:smf
-<<<<<<< HEAD
-#include "ataflash.h"
-
-#define IDE_COMMAND_TAITO_GNET_UNLOCK_1     0xfe
-#define IDE_COMMAND_TAITO_GNET_UNLOCK_2     0xfc
-#define IDE_COMMAND_TAITO_GNET_UNLOCK_3     0x0f
-
-const device_type ATA_FLASH_PCCARD = &device_creator<ata_flash_pccard_device>;
-
-ata_flash_pccard_device::ata_flash_pccard_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-	ide_hdd_device(mconfig, ATA_FLASH_PCCARD, "ATA Flash PCCARD", tag, owner, clock, "ataflash", __FILE__), m_gnetreadlock(0), m_locked(0)
-{
-}
-
-void ata_flash_pccard_device::device_start()
-{
-	ide_hdd_device::device_start();
-
-	save_item(NAME(m_locked));
-	save_item(NAME(m_gnetreadlock));
-=======
 #include "emu.h"
 #include "ataflash.h"
 
@@ -34,29 +13,12 @@ ata_flash_pccard_device::ata_flash_pccard_device(const machine_config &mconfig, 
 ata_flash_pccard_device::ata_flash_pccard_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock)
 	: ide_hdd_device(mconfig, type, tag, owner, clock)
 {
->>>>>>> upstream/master
 }
 
 void ata_flash_pccard_device::device_reset()
 {
 	ide_hdd_device::device_reset();
 
-<<<<<<< HEAD
-	UINT32 metalength;
-	memset(m_key, 0, sizeof(m_key));
-	memset(m_cis, 0xff, 512);
-
-	if (m_handle != NULL)
-	{
-		m_handle->read_metadata(PCMCIA_CIS_METADATA_TAG, 0, m_cis, 512, metalength);
-
-		if (m_handle->read_metadata(HARD_DISK_KEY_METADATA_TAG, 0, m_key, 5, metalength) == CHDERR_NONE)
-		{
-			m_locked = 0x1ff;
-			m_gnetreadlock = 1;
-		}
-	}
-=======
 	uint32_t metalength;
 	memset(m_cis, 0xff, 512);
 
@@ -68,7 +30,6 @@ void ata_flash_pccard_device::device_reset()
 	m_configuration_option = 0;
 	m_configuration_and_status = 0;
 	m_pin_replacement = 0x002e;
->>>>>>> upstream/master
 }
 
 READ16_MEMBER( ata_flash_pccard_device::read_memory )
@@ -103,39 +64,6 @@ WRITE16_MEMBER( ata_flash_pccard_device::write_memory )
 
 READ16_MEMBER( ata_flash_pccard_device::read_reg )
 {
-<<<<<<< HEAD
-	if(offset < 0x100)
-		return m_cis[offset];
-
-	switch(offset)
-	{
-	case 0x100:
-		return 0x0041;
-
-	case 0x101:
-		return 0x0080;
-
-	case 0x102:
-		return 0x002e;
-
-	case 0x201:
-		return m_gnetreadlock;
-
-	default:
-		return 0;
-	}
-}
-
-WRITE16_MEMBER( ata_flash_pccard_device::write_reg )
-{
-	if(offset >= 0x280 && offset <= 0x288 && m_handle != NULL)
-	{
-		UINT8 v = data;
-		int pos = offset - 0x280;
-		UINT8 k = pos < sizeof(m_key) ? m_key[pos] : 0;
-
-		if(v == k)
-=======
 	switch (offset)
 	{
 	case 0x100:
@@ -239,7 +167,6 @@ WRITE16_MEMBER(taito_pccard1_device::write_reg)
 
 		// TODO: find out if unlocking the key then using an incorrect key will re-lock the card.
 		if (v == k)
->>>>>>> upstream/master
 		{
 			m_locked &= ~(1 << pos);
 		}
@@ -248,21 +175,6 @@ WRITE16_MEMBER(taito_pccard1_device::write_reg)
 			m_locked |= 1 << pos;
 		}
 
-<<<<<<< HEAD
-		if (!m_locked)
-		{
-			m_gnetreadlock = 0;
-		}
-	}
-}
-
-bool ata_flash_pccard_device::is_ready()
-{
-	return !m_gnetreadlock;
-}
-
-void ata_flash_pccard_device::process_command()
-=======
 		// logerror("unlock %d %02x %04x\n", pos, data, m_locked);
 	}
 	else
@@ -325,7 +237,6 @@ void taito_pccard2_device::device_reset()
 }
 
 void taito_pccard2_device::process_command()
->>>>>>> upstream/master
 {
 	m_buffer_size = IDE_DISK_SECTOR_SIZE;
 
@@ -338,11 +249,7 @@ void taito_pccard2_device::process_command()
 		m_status |= IDE_STATUS_DRDY;
 
 		set_irq(ASSERT_LINE);
-<<<<<<< HEAD
-		break;
-=======
 		return;
->>>>>>> upstream/master
 
 	case IDE_COMMAND_TAITO_GNET_UNLOCK_2:
 		//LOGPRINT(("IDE GNET Unlock 2\n"));
@@ -351,48 +258,14 @@ void taito_pccard2_device::process_command()
 		m_status |= IDE_STATUS_DRQ;
 
 		set_irq(ASSERT_LINE);
-<<<<<<< HEAD
-		break;
-
-	case IDE_COMMAND_TAITO_GNET_UNLOCK_3:
-		//LOGPRINT(("IDE GNET Unlock 3\n"));
-
-		/* key check */
-		if (m_feature == m_key[0] && m_sector_count == m_key[1] && m_sector_number == m_key[2] && m_cylinder_low == m_key[3] && m_cylinder_high == m_key[4])
-		{
-			m_gnetreadlock = 0;
-		}
-		else
-		{
-			m_status &= ~IDE_STATUS_DRDY;
-		}
-
-		set_irq(ASSERT_LINE);
-		break;
-
-	default:
-		if (m_gnetreadlock)
-=======
 		return;
 
 	default:
 		if (m_locked)
->>>>>>> upstream/master
 		{
 			m_status |= IDE_STATUS_ERR;
 			m_error = IDE_ERROR_NONE;
 			m_status &= ~IDE_STATUS_DRDY;
-<<<<<<< HEAD
-			break;
-		}
-
-		ide_hdd_device::process_command();
-		break;
-	}
-}
-
-void ata_flash_pccard_device::process_buffer()
-=======
 			return;
 		}
 		break;
@@ -402,45 +275,22 @@ void ata_flash_pccard_device::process_buffer()
 }
 
 void taito_pccard2_device::process_buffer()
->>>>>>> upstream/master
 {
 	if (m_command == IDE_COMMAND_TAITO_GNET_UNLOCK_2)
 	{
 		int i, bad = 0;
 
-<<<<<<< HEAD
-		for (i=0; !bad && i<512; i++)
-			bad = ((i < 2 || i >= 7) && m_buffer[i]) || ((i >= 2 && i < 7) && m_buffer[i] != m_key[i-2]);
-
-		if (bad)
-		{
-=======
 		for (i = 0; !bad && i<512; i++)
 			bad = ((i < 2 || i >= 7) && m_buffer[i]) || ((i >= 2 && i < 7) && m_buffer[i] != m_key[i - 2]);
 
 		if (bad)
 		{
 			// TODO: find out if unlocking the key then using an incorrect key will re-lock the card.
->>>>>>> upstream/master
 			m_status |= IDE_STATUS_ERR;
 			m_error = IDE_ERROR_NONE;
 		}
 		else
 		{
-<<<<<<< HEAD
-			m_gnetreadlock= 0;
-		}
-	}
-	else
-	{
-		ide_hdd_device::process_buffer();
-	}
-}
-
-attotime ata_flash_pccard_device::seek_time()
-{
-	return attotime::zero;
-=======
 			m_locked = false;
 		}
 
@@ -525,5 +375,4 @@ void taito_compact_flash_device::process_command()
 bool taito_compact_flash_device::is_ready()
 {
 	return !m_locked;
->>>>>>> upstream/master
 }

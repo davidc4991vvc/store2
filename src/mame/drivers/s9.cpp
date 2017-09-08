@@ -31,16 +31,6 @@ ToDo:
 
 *****************************************************************************************/
 
-<<<<<<< HEAD
-
-#include "machine/genpin.h"
-#include "cpu/m6800/m6800.h"
-#include "machine/6821pia.h"
-#include "sound/hc55516.h"
-#include "sound/dac.h"
-#include "s9.lh"
-
-=======
 #include "emu.h"
 #include "cpu/m6800/m6800.h"
 #include "machine/6821pia.h"
@@ -51,7 +41,6 @@ ToDo:
 #include "speaker.h"
 
 #include "s9.lh"
->>>>>>> upstream/master
 
 class s9_state : public genpin_class
 {
@@ -60,10 +49,6 @@ public:
 		: genpin_class(mconfig, type, tag)
 		, m_maincpu(*this, "maincpu")
 		, m_audiocpu(*this, "audiocpu")
-<<<<<<< HEAD
-		, m_dac(*this, "dac")
-=======
->>>>>>> upstream/master
 		, m_hc55516(*this, "hc55516")
 		, m_pias(*this, "pias")
 		, m_pia21(*this, "pia21")
@@ -72,11 +57,7 @@ public:
 		, m_pia30(*this, "pia30")
 	{ }
 
-<<<<<<< HEAD
-	DECLARE_READ8_MEMBER(dac_r);
-=======
 	DECLARE_READ8_MEMBER(sound_r);
->>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(dig0_w);
 	DECLARE_WRITE8_MEMBER(dig1_w);
 	DECLARE_WRITE8_MEMBER(lamp0_w) { };
@@ -84,10 +65,6 @@ public:
 	DECLARE_WRITE8_MEMBER(sol2_w) { }; // solenoids 8-15
 	DECLARE_WRITE8_MEMBER(sol3_w) { }; // solenoids 0-7
 	DECLARE_WRITE8_MEMBER(sound_w);
-<<<<<<< HEAD
-	DECLARE_READ8_MEMBER(dips_r);
-=======
->>>>>>> upstream/master
 	DECLARE_READ8_MEMBER(switch_r);
 	DECLARE_WRITE8_MEMBER(switch_w);
 	DECLARE_READ_LINE_MEMBER(pia21_ca1_r);
@@ -102,18 +79,6 @@ public:
 	DECLARE_MACHINE_RESET(s9);
 	DECLARE_DRIVER_INIT(s9);
 private:
-<<<<<<< HEAD
-	UINT8 m_sound_data;
-	UINT8 m_strobe;
-	UINT8 m_kbdrow;
-	bool m_data_ok;
-	emu_timer* m_irq_timer;
-	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
-	static const device_timer_id TIMER_IRQ = 0;
-	required_device<cpu_device> m_maincpu;
-	required_device<cpu_device> m_audiocpu;
-	required_device<dac_device> m_dac;
-=======
 	uint8_t m_sound_data;
 	uint8_t m_strobe;
 	uint8_t m_kbdrow;
@@ -123,7 +88,6 @@ private:
 	static const device_timer_id TIMER_IRQ = 0;
 	required_device<cpu_device> m_maincpu;
 	required_device<cpu_device> m_audiocpu;
->>>>>>> upstream/master
 	required_device<hc55516_device> m_hc55516;
 	required_device<pia6821_device> m_pias;
 	required_device<pia6821_device> m_pia21;
@@ -263,36 +227,20 @@ WRITE_LINE_MEMBER( s9_state::pia21_ca2_w )
 
 WRITE8_MEMBER( s9_state::dig0_w )
 {
-<<<<<<< HEAD
-	static const UINT8 patterns[16] = { 0x3f, 0x06, 0x5b, 0x4f, 0x66, 0x6d, 0x7c, 0x07, 0x7f, 0x67, 0x58, 0x4c, 0x62, 0x69, 0x78, 0 }; // 7447
-	data &= 0x7f;
-	m_strobe = data & 15;
-	m_data_ok = true;
-	output_set_digit_value(60, patterns[data>>4]); // diag digit
-=======
 	static const uint8_t patterns[16] = { 0x3f, 0x06, 0x5b, 0x4f, 0x66, 0x6d, 0x7c, 0x07, 0x7f, 0x67, 0x58, 0x4c, 0x62, 0x69, 0x78, 0 }; // 7447
 	data &= 0x7f;
 	m_strobe = data & 15;
 	m_data_ok = true;
 	output().set_digit_value(60, patterns[data>>4]); // diag digit
->>>>>>> upstream/master
 }
 
 WRITE8_MEMBER( s9_state::dig1_w )
 {
-<<<<<<< HEAD
-	static const UINT8 patterns[16] = { 0x3f, 0x06, 0x5b, 0x4f, 0x66, 0x6d, 0x7c, 0x07, 0x7f, 0x67, 0, 0, 0, 0, 0, 0 }; // MC14558
-	if (m_data_ok)
-	{
-		output_set_digit_value(m_strobe+16, patterns[data&15]);
-		output_set_digit_value(m_strobe, patterns[data>>4]);
-=======
 	static const uint8_t patterns[16] = { 0x3f, 0x06, 0x5b, 0x4f, 0x66, 0x6d, 0x7c, 0x07, 0x7f, 0x67, 0, 0, 0, 0, 0, 0 }; // MC14558
 	if (m_data_ok)
 	{
 		output().set_digit_value(m_strobe+16, patterns[data&15]);
 		output().set_digit_value(m_strobe, patterns[data>>4]);
->>>>>>> upstream/master
 	}
 	m_data_ok = false;
 }
@@ -309,11 +257,7 @@ WRITE8_MEMBER( s9_state::switch_w )
 	m_kbdrow = data;
 }
 
-<<<<<<< HEAD
-READ8_MEMBER( s9_state::dac_r )
-=======
 READ8_MEMBER( s9_state::sound_r )
->>>>>>> upstream/master
 {
 	return m_sound_data;
 }
@@ -340,22 +284,14 @@ void s9_state::device_timer(emu_timer &timer, device_timer_id id, int param, voi
 	case TIMER_IRQ:
 		if(param == 1)
 		{
-<<<<<<< HEAD
-			m_maincpu->set_input_line(M6800_IRQ_LINE,ASSERT_LINE);
-=======
 			m_maincpu->set_input_line(M6808_IRQ_LINE, ASSERT_LINE);
->>>>>>> upstream/master
 			m_irq_timer->adjust(attotime::from_ticks(32,1e6),0);
 			m_pia28->ca1_w(BIT(ioport("DIAGS")->read(), 2));  // Advance
 			m_pia28->cb1_w(BIT(ioport("DIAGS")->read(), 3));  // Up/Down
 		}
 		else
 		{
-<<<<<<< HEAD
-			m_maincpu->set_input_line(M6800_IRQ_LINE,CLEAR_LINE);
-=======
 			m_maincpu->set_input_line(M6808_IRQ_LINE, CLEAR_LINE);
->>>>>>> upstream/master
 			m_irq_timer->adjust(attotime::from_ticks(980,1e6),1);
 			m_pia28->ca1_w(1);
 			m_pia28->cb1_w(1);
@@ -374,11 +310,7 @@ DRIVER_INIT_MEMBER( s9_state, s9 )
 	m_irq_timer->adjust(attotime::from_ticks(980,1e6),1);
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( s9, s9_state )
-=======
 static MACHINE_CONFIG_START( s9 )
->>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6808, XTAL_4MHz)
 	MCFG_CPU_PROGRAM_MAP(s9_main_map)
@@ -392,11 +324,7 @@ static MACHINE_CONFIG_START( s9 )
 
 	/* Devices */
 	MCFG_DEVICE_ADD("pia21", PIA6821, 0)
-<<<<<<< HEAD
-	MCFG_PIA_READPA_HANDLER(READ8(s9_state, dac_r))
-=======
 	MCFG_PIA_READPA_HANDLER(READ8(s9_state, sound_r))
->>>>>>> upstream/master
 	MCFG_PIA_READCA1_HANDLER(READLINE(s9_state, pia21_ca1_r))
 	MCFG_PIA_WRITEPA_HANDLER(WRITE8(s9_state, sound_w))
 	MCFG_PIA_WRITEPB_HANDLER(WRITE8(s9_state, sol2_w))
@@ -431,38 +359,23 @@ static MACHINE_CONFIG_START( s9 )
 	/* Add the soundcard */
 	MCFG_CPU_ADD("audiocpu", M6808, XTAL_4MHz)
 	MCFG_CPU_PROGRAM_MAP(s9_audio_map)
-<<<<<<< HEAD
-	MCFG_SPEAKER_STANDARD_MONO("mono")
-	MCFG_SOUND_ADD("dac", DAC, 0)
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.00)
-=======
 
 	MCFG_SPEAKER_STANDARD_MONO("speaker")
 	MCFG_SOUND_ADD("dac", MC1408, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.5)
 	MCFG_DEVICE_ADD("vref", VOLTAGE_REGULATOR, 0) MCFG_VOLTAGE_REGULATOR_OUTPUT(5.0)
 	MCFG_SOUND_ROUTE_EX(0, "dac", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "dac", -1.0, DAC_VREF_NEG_INPUT)
 
->>>>>>> upstream/master
 	MCFG_SPEAKER_STANDARD_MONO("speech")
 	MCFG_SOUND_ADD("hc55516", HC55516, 0)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speech", 1.00)
 
 	MCFG_DEVICE_ADD("pias", PIA6821, 0)
-<<<<<<< HEAD
-	MCFG_PIA_READPA_HANDLER(READ8(s9_state, dac_r))
-	MCFG_PIA_WRITEPB_HANDLER(DEVWRITE8("dac", dac_device, write_unsigned8))
-	MCFG_PIA_CA2_HANDLER(DEVWRITELINE("hc55516", hc55516_device, clock_w))
-	MCFG_PIA_CB2_HANDLER(DEVWRITELINE("hc55516", hc55516_device, digit_w))
-	MCFG_PIA_IRQA_HANDLER(DEVWRITELINE("audiocpu", m6808_cpu_device, irq_line))
-	MCFG_PIA_IRQB_HANDLER(DEVWRITELINE("audiocpu", m6808_cpu_device, irq_line))
-=======
 	MCFG_PIA_READPA_HANDLER(READ8(s9_state, sound_r))
 	MCFG_PIA_WRITEPB_HANDLER(DEVWRITE8("dac", dac_byte_interface, write))
 	MCFG_PIA_CA2_HANDLER(DEVWRITELINE("hc55516", hc55516_device, clock_w))
 	MCFG_PIA_CB2_HANDLER(DEVWRITELINE("hc55516", hc55516_device, digit_w))
 	MCFG_PIA_IRQA_HANDLER(INPUTLINE("audiocpu", M6808_IRQ_LINE))
 	MCFG_PIA_IRQB_HANDLER(INPUTLINE("audiocpu", M6808_IRQ_LINE))
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 /*-----------------------------
@@ -511,10 +424,7 @@ ROM_END
 / Space Shuttle (S9) 12/84 (#535)
 /----------------------------------*/
 ROM_START(sshtl_l7)
-<<<<<<< HEAD
-=======
 	// Spanish licensed version by Stargame is identical to this set
->>>>>>> upstream/master
 	ROM_REGION(0x4000, "roms", 0)
 	ROM_LOAD("cpu_u20.128", 0x0000, 0x4000, CRC(848ad54c) SHA1(4e4ce5fb970da37706472f94a27fd912e1ecb1a0))
 
@@ -525,8 +435,6 @@ ROM_START(sshtl_l7)
 	ROM_LOAD("cpu_u49.128", 0x4000, 0x4000, CRC(8050ae27) SHA1(e3f5e9398f61b075620ecd075617a8dac3c07d0e))
 ROM_END
 
-<<<<<<< HEAD
-=======
 ROM_START(sshtl_l3)
 	ROM_REGION(0x4000, "roms", 0)
 	ROM_LOAD("cpu_u20.l3", 0x0000, 0x4000, CRC(dc5f08e0) SHA1(67869c1db4e1f49f38588978d4ed32fe7d62e2d6))
@@ -538,7 +446,6 @@ ROM_START(sshtl_l3)
 	ROM_LOAD("cpu_u49.128", 0x4000, 0x4000, CRC(8050ae27) SHA1(e3f5e9398f61b075620ecd075617a8dac3c07d0e))
 ROM_END
 
->>>>>>> upstream/master
 /*-------------------------
 / Comet (S9) 06/85 (#540)
 /--------------------------*/
@@ -603,17 +510,6 @@ ROM_START(alcat_l7)
 ROM_END
 
 
-<<<<<<< HEAD
-GAME( 1983, ratrc_l1, 0,        s9, s9, s9_state, s9, ROT0, "Williams", "Rat Race (L-1)", MACHINE_MECHANICAL | MACHINE_NOT_WORKING)
-GAME( 1985, sorcr_l1, sorcr_l2, s9, s9, s9_state, s9, ROT0, "Williams", "Sorcerer (L-1)", MACHINE_MECHANICAL )
-GAME( 1985, sorcr_l2, 0,        s9, s9, s9_state, s9, ROT0, "Williams", "Sorcerer (L-2)", MACHINE_MECHANICAL )
-GAME( 1984, sshtl_l7, 0,        s9, s9, s9_state, s9, ROT0, "Williams", "Space Shuttle (L-7)", MACHINE_MECHANICAL )
-GAME( 1985, comet_l4, comet_l5, s9, s9, s9_state, s9, ROT0, "Williams", "Comet (L-4)", MACHINE_MECHANICAL)
-GAME( 1985, comet_l5, 0,        s9, s9, s9_state, s9, ROT0, "Williams", "Comet (L-5)", MACHINE_MECHANICAL)
-GAME( 1984, szone_l5, 0,        s9, s9, s9_state, s9, ROT0, "Williams", "Strike Zone (Shuffle) (L-5)", MACHINE_MECHANICAL | MACHINE_NOT_WORKING)
-GAME( 1984, szone_l2, szone_l5, s9, s9, s9_state, s9, ROT0, "Williams", "Strike Zone (Shuffle) (L-2)", MACHINE_MECHANICAL | MACHINE_NOT_WORKING)
-GAME( 1985, alcat_l7, 0,        s9, s9, s9_state, s9, ROT0, "Williams", "Alley Cats (Shuffle) (L-7)", MACHINE_MECHANICAL | MACHINE_NOT_WORKING | MACHINE_NO_SOUND)
-=======
 GAME( 1983, ratrc_l1, 0,        s9, s9, s9_state, s9, ROT0, "Williams", "Rat Race (L-1)",              MACHINE_MECHANICAL | MACHINE_NOT_WORKING)
 GAME( 1985, sorcr_l1, sorcr_l2, s9, s9, s9_state, s9, ROT0, "Williams", "Sorcerer (L-1)",              MACHINE_MECHANICAL | MACHINE_NOT_WORKING )
 GAME( 1985, sorcr_l2, 0,        s9, s9, s9_state, s9, ROT0, "Williams", "Sorcerer (L-2)",              MACHINE_MECHANICAL | MACHINE_NOT_WORKING )
@@ -624,4 +520,3 @@ GAME( 1985, comet_l5, 0,        s9, s9, s9_state, s9, ROT0, "Williams", "Comet (
 GAME( 1984, szone_l5, 0,        s9, s9, s9_state, s9, ROT0, "Williams", "Strike Zone (Shuffle) (L-5)", MACHINE_MECHANICAL | MACHINE_NOT_WORKING)
 GAME( 1984, szone_l2, szone_l5, s9, s9, s9_state, s9, ROT0, "Williams", "Strike Zone (Shuffle) (L-2)", MACHINE_MECHANICAL | MACHINE_NOT_WORKING)
 GAME( 1985, alcat_l7, 0,        s9, s9, s9_state, s9, ROT0, "Williams", "Alley Cats (Shuffle) (L-7)",  MACHINE_MECHANICAL | MACHINE_NOT_WORKING | MACHINE_NO_SOUND)
->>>>>>> upstream/master

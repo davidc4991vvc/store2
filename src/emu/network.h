@@ -7,16 +7,6 @@
     Core network interface functions and definitions.
 ***************************************************************************/
 
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __NETWORK_H__
-#define __NETWORK_H__
-
-void network_init(running_machine &machine);
-
-#endif /* __NETWORK_H__ */
-=======
 #ifndef MAME_EMU_NETWORK_H
 #define MAME_EMU_NETWORK_H
 
@@ -41,4 +31,3 @@ private:
 };
 
 #endif // MAME_EMU_NETWORK_H
->>>>>>> upstream/master

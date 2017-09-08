@@ -33,11 +33,7 @@
 //  GLOBAL VARIABLES
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type A78_CART_SLOT = &device_creator<a78_cart_slot_device>;
-=======
 DEFINE_DEVICE_TYPE(A78_CART_SLOT, a78_cart_slot_device, "a78_cart_slot", "Atari 7800 Cartridge Slot")
->>>>>>> upstream/master
 
 
 //-------------------------------------------------
@@ -46,11 +42,7 @@ DEFINE_DEVICE_TYPE(A78_CART_SLOT, a78_cart_slot_device, "a78_cart_slot", "Atari 
 
 device_a78_cart_interface::device_a78_cart_interface (const machine_config &mconfig, device_t &device)
 	: device_slot_card_interface(mconfig, device),
-<<<<<<< HEAD
-		m_rom(NULL),
-=======
 		m_rom(nullptr),
->>>>>>> upstream/master
 		m_rom_size(0),
 		m_base_rom(0x8000),
 		m_bank_mask(0)
@@ -70,15 +62,9 @@ device_a78_cart_interface::~device_a78_cart_interface ()
 //  rom_alloc - alloc the space for the cart
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void device_a78_cart_interface::rom_alloc(UINT32 size, const char *tag)
-{
-	if (m_rom == NULL)
-=======
 void device_a78_cart_interface::rom_alloc(uint32_t size, const char *tag)
 {
 	if (m_rom == nullptr)
->>>>>>> upstream/master
 	{
 		m_rom = device().machine().memory().region_alloc(std::string(tag).append(A78SLOT_ROM_REGION_TAG).c_str(), size, 1, ENDIANNESS_LITTLE)->base();
 		m_rom_size = size;
@@ -100,11 +86,7 @@ void device_a78_cart_interface::rom_alloc(uint32_t size, const char *tag)
 //  ram_alloc - alloc the space for the on-cart RAM
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void device_a78_cart_interface::ram_alloc(UINT32 size)
-=======
 void device_a78_cart_interface::ram_alloc(uint32_t size)
->>>>>>> upstream/master
 {
 	m_ram.resize(size);
 	device().save_item(NAME(m_ram));
@@ -115,11 +97,7 @@ void device_a78_cart_interface::ram_alloc(uint32_t size)
 //  ram_alloc - alloc the space for the on-cart RAM
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void device_a78_cart_interface::nvram_alloc(UINT32 size)
-=======
 void device_a78_cart_interface::nvram_alloc(uint32_t size)
->>>>>>> upstream/master
 {
 	m_nvram.resize(size);
 	device().save_item(NAME(m_nvram));
@@ -134,19 +112,12 @@ void device_a78_cart_interface::nvram_alloc(uint32_t size)
 //-------------------------------------------------
 //  a78_cart_slot_device - constructor
 //-------------------------------------------------
-<<<<<<< HEAD
-a78_cart_slot_device::a78_cart_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-						device_t(mconfig, A78_CART_SLOT, "Atari 7800 Cartridge Slot", tag, owner, clock, "a78_cart_slot", __FILE__),
-						device_image_interface(mconfig, *this),
-						device_slot_interface(mconfig, *this), m_cart(nullptr), m_type(0), m_stick_type(0)
-=======
 a78_cart_slot_device::a78_cart_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, A78_CART_SLOT, tag, owner, clock)
 	, device_image_interface(mconfig, *this)
 	, device_slot_interface(mconfig, *this)
 	, m_cart(nullptr)
 	, m_type(0)
->>>>>>> upstream/master
 {
 }
 
@@ -168,32 +139,13 @@ void a78_cart_slot_device::device_start()
 	m_cart = dynamic_cast<device_a78_cart_interface  *>(get_card_device());
 }
 
-<<<<<<< HEAD
-//-------------------------------------------------
-//  device_config_complete - perform any
-//  operations now that the configuration is
-//  complete
-//-------------------------------------------------
-
-void a78_cart_slot_device::device_config_complete()
-{
-	// set brief and instance name
-	update_names();
-}
-
-=======
->>>>>>> upstream/master
 
 
 /*-------------------------------------------------
  call load
  -------------------------------------------------*/
 
-<<<<<<< HEAD
-int a78_cart_slot_device::validate_header(int head, bool log)
-=======
 int a78_cart_slot_device::validate_header(int head, bool log) const
->>>>>>> upstream/master
 {
 	switch (head & 0x3d)
 	{
@@ -313,11 +265,7 @@ int a78_cart_slot_device::validate_header(int head, bool log) const
 	{
 		if (log)
 		{
-<<<<<<< HEAD
-			osd_printf_info("Unsupported mapper, please contact MESSdevs (Header 0x%X)\n", head);
-=======
 			osd_printf_info("Unsupported mapper, please contact MAMEdevs (Header 0x%X)\n", head);
->>>>>>> upstream/master
 			osd_printf_info("Disabling special bits\n");
 		}
 		head &= 0x00ff;
@@ -348,10 +296,7 @@ static const a78_slot slot_list[] =
 	{ A78_TYPE3,      "a78_sg_pokey" },
 	{ A78_TYPE6,      "a78_sg_ram" },
 	{ A78_TYPEA,      "a78_sg9" },
-<<<<<<< HEAD
-=======
 	{ A78_TYPE8,      "a78_mram" },
->>>>>>> upstream/master
 	{ A78_ABSOLUTE,   "a78_abs" },
 	{ A78_ACTIVISION, "a78_act" },
 	{ A78_HSC,        "a78_hsc" },
@@ -368,17 +313,10 @@ static const a78_slot slot_list[] =
 
 static int a78_get_pcb_id(const char *slot)
 {
-<<<<<<< HEAD
-	for (int i = 0; i < ARRAY_LENGTH(slot_list); i++)
-	{
-		if (!core_stricmp(slot_list[i].slot_option, slot))
-			return slot_list[i].pcb_id;
-=======
 	for (auto & elem : slot_list)
 	{
 		if (!core_stricmp(elem.slot_option, slot))
 			return elem.pcb_id;
->>>>>>> upstream/master
 	}
 
 	return 0;
@@ -386,35 +324,15 @@ static int a78_get_pcb_id(const char *slot)
 
 static const char *a78_get_slot(int type)
 {
-<<<<<<< HEAD
-	for (int i = 0; i < ARRAY_LENGTH(slot_list); i++)
-	{
-		if (slot_list[i].pcb_id == type)
-			return slot_list[i].slot_option;
-=======
 	for (auto & elem : slot_list)
 	{
 		if (elem.pcb_id == type)
 			return elem.slot_option;
->>>>>>> upstream/master
 	}
 
 	return "a78_rom";
 }
 
-<<<<<<< HEAD
-bool a78_cart_slot_device::call_load()
-{
-	if (m_cart)
-	{
-		UINT32 len;
-
-		if (software_entry() != NULL)
-		{
-			const char *pcb_name;
-			bool has_ram = get_software_region("ram") ? TRUE : FALSE;
-			bool has_nvram = get_software_region("nvram") ? TRUE : FALSE;
-=======
 image_init_result a78_cart_slot_device::call_load()
 {
 	if (m_cart)
@@ -426,17 +344,12 @@ image_init_result a78_cart_slot_device::call_load()
 			const char *pcb_name;
 			bool has_ram = get_software_region("ram") ? true : false;
 			bool has_nvram = get_software_region("nvram") ? true : false;
->>>>>>> upstream/master
 			len = get_software_region_length("rom");
 
 			m_cart->rom_alloc(len, tag());
 			memcpy(m_cart->get_rom_base(), get_software_region("rom"), len);
 
-<<<<<<< HEAD
-			if ((pcb_name = get_feature("slot")) != NULL)
-=======
 			if ((pcb_name = get_feature("slot")) != nullptr)
->>>>>>> upstream/master
 				m_type = a78_get_pcb_id(pcb_name);
 			else
 				m_type = A78_TYPE0;
@@ -456,13 +369,8 @@ image_init_result a78_cart_slot_device::call_load()
 			char head[128];
 			fread(head, 128);
 
-<<<<<<< HEAD
-			if (verify_header((char *)head) == IMAGE_VERIFY_FAIL)
-				return IMAGE_INIT_FAIL;
-=======
 			if (verify_header((char *)head) != image_verify_result::PASS)
 				return image_init_result::FAIL;
->>>>>>> upstream/master
 
 			len = (head[49] << 24) | (head[50] << 16) | (head[51] << 8) | head[52];
 			if (len + 128 > length())
@@ -472,11 +380,7 @@ image_init_result a78_cart_slot_device::call_load()
 			}
 
 			// let's try to auto-fix some common errors in the header
-<<<<<<< HEAD
-			mapper = validate_header((head[53] << 8) | head[54], TRUE);
-=======
 			mapper = validate_header((head[53] << 8) | head[54], true);
->>>>>>> upstream/master
 
 			switch (mapper & 0x2e)
 			{
@@ -501,11 +405,7 @@ image_init_result a78_cart_slot_device::call_load()
 					break;
 			}
 
-<<<<<<< HEAD
-			// check if cart has a POKEY at $0450 (typically a VersaBoard variant)!
-=======
 			// check if cart has a POKEY at $0450 (typically a VersaBoard variant)
->>>>>>> upstream/master
 			if (mapper & 0x40)
 			{
 				if (m_type != A78_TYPE2)
@@ -520,34 +420,22 @@ image_init_result a78_cart_slot_device::call_load()
 				m_type = A78_ACTIVISION;
 			else if ((mapper & 0xff00) == 0x0200)
 				m_type = A78_ABSOLUTE;
-<<<<<<< HEAD
-=======
 			// (for now) mirror ram implies no bankswitch format is used
 			else if ((mapper & 0x0080) == 0x0080)
 				m_type = A78_TYPE8;
 
->>>>>>> upstream/master
 
 			logerror("Cart type: 0x%x\n", m_type);
 
 			if (head[58] == 1)
 			{
-<<<<<<< HEAD
-				osd_printf_info("This cart support external NVRAM savings, using HSC.\n");
-=======
 				osd_printf_info("This cart supports external NVRAM using HSC.\n");
->>>>>>> upstream/master
 				osd_printf_info("Run it with the High Score Cart mounted to exploit this feature.\n");
 			}
 			else if (head[58] == 2)
 			{
-<<<<<<< HEAD
-				osd_printf_info("This cart support external NVRAM savings, using SaveKey.\n");
-				osd_printf_info("This is not supported in MESS currently.\n");
-=======
 				osd_printf_info("This cart supports external NVRAM using SaveKey.\n");
 				osd_printf_info("This is not supported in MAME currently.\n");
->>>>>>> upstream/master
 			}
 
 			if (head[63])
@@ -556,20 +444,12 @@ image_init_result a78_cart_slot_device::call_load()
 				osd_printf_info("Run it through the expansion to exploit this feature.\n");
 			}
 
-<<<<<<< HEAD
-			internal_header_logging((UINT8 *)head, length());
-=======
 			internal_header_logging((uint8_t *)head, length());
->>>>>>> upstream/master
 
 			m_cart->rom_alloc(len, tag());
 			fread(m_cart->get_rom_base(), len);
 
-<<<<<<< HEAD
-			if (m_type == A78_TYPE6)
-=======
 			if (m_type == A78_TYPE6 || m_type == A78_TYPE8)
->>>>>>> upstream/master
 				m_cart->ram_alloc(0x4000);
 			if (m_type == A78_MEGACART || (m_type >= A78_VERSABOARD && m_type <= A78_VERSA_POK450))
 				m_cart->ram_alloc(0x8000);
@@ -584,20 +464,7 @@ image_init_result a78_cart_slot_device::call_load()
 
 		//printf("Type: %s\n", a78_get_slot(m_type));
 	}
-<<<<<<< HEAD
-	return IMAGE_INIT_PASS;
-}
-
-
-void a78_partialhash(hash_collection &dest, const unsigned char *data,
-						unsigned long length, const char *functions)
-{
-	if (length <= 128)
-		return;
-	dest.compute(&data[128], length - 128, functions);
-=======
 	return image_init_result::PASS;
->>>>>>> upstream/master
 }
 
 
@@ -614,47 +481,22 @@ void a78_cart_slot_device::call_unload()
 
 
 /*-------------------------------------------------
-<<<<<<< HEAD
- call softlist load
- -------------------------------------------------*/
-
-bool a78_cart_slot_device::call_softlist_load(software_list_device &swlist, const char *swname, const rom_entry *start_entry)
-{
-	load_software_part_region(*this, swlist, swname, start_entry);
-	return TRUE;
-}
-
-/*-------------------------------------------------
-=======
->>>>>>> upstream/master
  verify_header - check the image (from fullpath)
  has an admissible header
  -------------------------------------------------*/
 
-<<<<<<< HEAD
-int a78_cart_slot_device::verify_header(char *header)
-=======
 image_verify_result a78_cart_slot_device::verify_header(char *header)
->>>>>>> upstream/master
 {
 	const char *magic = "ATARI7800";
 
 	if (strncmp(magic, header + 1, 9))
 	{
 		logerror("Not a valid A7800 image\n");
-<<<<<<< HEAD
-		return IMAGE_VERIFY_FAIL;
-	}
-
-	logerror("returning ID_OK\n");
-	return IMAGE_VERIFY_PASS;
-=======
 		return image_verify_result::FAIL;
 	}
 
 	logerror("returning ID_OK\n");
 	return image_verify_result::PASS;
->>>>>>> upstream/master
 }
 
 
@@ -662,21 +504,6 @@ image_verify_result a78_cart_slot_device::verify_header(char *header)
  get default card software
  -------------------------------------------------*/
 
-<<<<<<< HEAD
-void a78_cart_slot_device::get_default_card_software(std::string &result)
-{
-	if (open_image_file(mconfig().options()))
-	{
-		const char *slot_string = "a78_rom";
-		dynamic_buffer head(128);
-		int type = A78_TYPE0, mapper;
-
-		// Load and check the header
-		core_fread(m_file, &head[0], 128);
-
-		// let's try to auto-fix some common errors in the header
-		mapper = validate_header((head[53] << 8) | head[54], FALSE);
-=======
 std::string a78_cart_slot_device::get_default_card_software(get_default_card_software_hook &hook) const
 {
 	if (hook.image_file())
@@ -690,7 +517,6 @@ std::string a78_cart_slot_device::get_default_card_software(get_default_card_sof
 
 		// let's try to auto-fix some common errors in the header
 		mapper = validate_header((head[53] << 8) | head[54], false);
->>>>>>> upstream/master
 
 		switch (mapper & 0x2e)
 		{
@@ -708,11 +534,7 @@ std::string a78_cart_slot_device::get_default_card_software(get_default_card_sof
 				break;
 			case 0x0022:
 			case 0x0026:
-<<<<<<< HEAD
-				if (core_fsize(m_file) > 0x40000)
-=======
 				if (hook.image_file()->size() > 0x40000)
->>>>>>> upstream/master
 					type = A78_MEGACART;
 				else
 					type = A78_VERSABOARD;
@@ -734,28 +556,16 @@ std::string a78_cart_slot_device::get_default_card_software(get_default_card_sof
 			type = A78_ACTIVISION;
 		else if ((mapper & 0xff00) == 0x0200)
 			type = A78_ABSOLUTE;
-<<<<<<< HEAD
-=======
 		else if ((mapper & 0x0080) == 0x0080)
 			type = A78_TYPE8;
->>>>>>> upstream/master
 
 		logerror("Cart type: %x\n", type);
 		slot_string = a78_get_slot(type);
 
-<<<<<<< HEAD
-		clear();
-
-		result.assign(slot_string);
-	}
-	else
-		software_get_default_slot(result, "a78_rom");
-=======
 		return std::string(slot_string);
 	}
 	else
 		return software_get_default_slot("a78_rom");
->>>>>>> upstream/master
 }
 
 
@@ -873,10 +683,7 @@ WRITE8_MEMBER(a78_cart_slot_device::write_40xx)
 
  [*] Cart type:
 
-<<<<<<< HEAD
-=======
  (byte 54)
->>>>>>> upstream/master
  bit 0-7 - Hardware "flags"
  bit 0 [0x01] - POKEY at $4000
  bit 1 [0x02] - SuperCart bank switched
@@ -884,25 +691,6 @@ WRITE8_MEMBER(a78_cart_slot_device::write_40xx)
  bit 3 [0x08] - bank 0 of 144K ROM at $4000
  bit 4 [0x10] - bank 6 at $4000
  bit 5 [0x20] - banked RAM at $4000
-<<<<<<< HEAD
-
- bit 8-15 - Special values
- 0 = Normal cart
- 1 = Absolute (F18 Hornet)
- 2 = Activision (Double Dragon & Rampage)
- 3 = POKEY at $0450
-
- -------------------------------------------------*/
-
-void a78_cart_slot_device::internal_header_logging(UINT8 *header, UINT32 len)
-{
-	char head_title[35];
-	UINT32 head_length = (header[49] << 24) | (header[50] << 16) | (header[51] << 8) | header[52];
-	UINT16 head_mapper = (header[53] << 8) | header[54];
-	UINT8 head_ctrl1 = header[55];
-	UINT8 head_ctrl2 = header[56];
-	UINT8 head_ispal = header[57];
-=======
  bit 6 [0x40] - POKEY at $0450
  bit 7 [0x80] - Mirror RAM at $4000
 
@@ -920,7 +708,6 @@ void a78_cart_slot_device::internal_header_logging(uint8_t *header, uint32_t len
 	uint8_t head_ctrl1 = header[55];
 	uint8_t head_ctrl2 = header[56];
 	uint8_t head_ispal = header[57];
->>>>>>> upstream/master
 	std::string cart_mapper, ctrl1, ctrl2;
 	memcpy(head_title, header + 0x11, 0x20);
 
@@ -950,12 +737,9 @@ void a78_cart_slot_device::internal_header_logging(uint8_t *header, uint32_t len
 		case 0x0020:
 			cart_mapper.assign("SuperCart Bankswitch + 32K RAM");
 			break;
-<<<<<<< HEAD
-=======
 		case 0x0080:
 			cart_mapper.assign("No Bankswitch + Mirror RAM");
 			break;
->>>>>>> upstream/master
 		case 0x0100:
 			cart_mapper.assign("Activision Bankswitch");
 			break;
@@ -1013,11 +797,8 @@ void a78_cart_slot_device::internal_header_logging(uint8_t *header, uint32_t len
 	logerror( "\t\tbank0 at $4000:  %s\n", BIT(head_mapper, 3) ? "Yes" : "No");
 	logerror( "\t\tbank6 at $4000:  %s\n", BIT(head_mapper, 4) ? "Yes" : "No");
 	logerror( "\t\tbanked RAM:      %s\n", BIT(head_mapper, 5) ? "Yes" : "No");
-<<<<<<< HEAD
-=======
 	logerror( "\t\tPOKEY at $450:   %s\n", BIT(head_mapper, 6) ? "Yes" : "No");
 	logerror( "\t\tmRAM at $4000:   %s\n", BIT(head_mapper, 7) ? "Yes" : "No");
->>>>>>> upstream/master
 	logerror( "\t\tSpecial:         %s ", (head_mapper & 0xff00) ? "Yes" : "No");
 	if (head_mapper & 0xff00)
 	{

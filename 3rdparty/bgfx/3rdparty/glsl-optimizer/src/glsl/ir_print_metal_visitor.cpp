@@ -99,10 +99,7 @@ struct metal_print_context
 	, inoutStr(ralloc_strdup(buffer, ""))
 	, uniformStr(ralloc_strdup(buffer, ""))
 	, paramsStr(ralloc_strdup(buffer, ""))
-<<<<<<< HEAD
-=======
 	, typedeclStr(ralloc_strdup(buffer, ""))
->>>>>>> upstream/master
 	, writingParams(false)
 	, matrixCastsDone(false)
 	, matrixConstructorsDone(false)
@@ -121,10 +118,7 @@ struct metal_print_context
 	string_buffer inoutStr;
 	string_buffer uniformStr;
 	string_buffer paramsStr;
-<<<<<<< HEAD
-=======
 	string_buffer typedeclStr;
->>>>>>> upstream/master
 	bool writingParams;
 	bool matrixCastsDone;
 	bool matrixConstructorsDone;
@@ -275,14 +269,10 @@ _mesa_print_ir_metal(exec_list *instructions,
 			if (var->data.mode == ir_var_shader_inout)
 				strOut = &ctx.inoutStr;
 		}
-<<<<<<< HEAD
-
-=======
 		
 		if (ir->ir_type == ir_type_typedecl) {
 			strOut = &ctx.typedeclStr;
 		}
->>>>>>> upstream/master
 
 		ir_print_metal_visitor v (ctx, *strOut, &gtracker, mode, state);
 		v.loopstate = ls;
@@ -308,11 +298,8 @@ _mesa_print_ir_metal(exec_list *instructions,
 	ctx.uniformStr.asprintf_append("};\n");
 
 	// emit global array/struct constants
-<<<<<<< HEAD
-=======
 	
 	ctx.prefixStr.asprintf_append("%s", ctx.typedeclStr.c_str());
->>>>>>> upstream/master
 	foreach_in_list_safe(gconst_entry_metal, node, &gtracker.global_constants)
 	{
 		ir_constant* c = node->ir;
@@ -690,8 +677,6 @@ void ir_print_metal_visitor::visit(ir_variable *ir)
 		buffer.asprintf_append (" = ");
 		visit (ir->constant_value);
 	}
-<<<<<<< HEAD
-=======
 
 	if ((ir->data.mode == ir_var_auto || ir->data.mode == ir_var_temporary) && (ir->type->matrix_columns == 1)) {
 		switch (ir->type->base_type) {
@@ -706,7 +691,6 @@ void ir_print_metal_visitor::visit(ir_variable *ir)
 				break;
 		}
 	}
->>>>>>> upstream/master
 }
 
 
@@ -1057,9 +1041,6 @@ void ir_print_metal_visitor::visit(ir_expression *ir)
 			const bool halfCast = (arg_prec == glsl_precision_medium || arg_prec == glsl_precision_low);
 			buffer.asprintf_append (halfCast ? "((half)1.0/(" : "(1.0/(");
 		} else {
-<<<<<<< HEAD
-			buffer.asprintf_append ("%s(", operator_glsl_strs[ir->operation]);
-=======
 			switch(ir->operation) {
 				case ir_unop_dFdy:
 				case ir_unop_dFdy_coarse:
@@ -1071,7 +1052,6 @@ void ir_print_metal_visitor::visit(ir_expression *ir)
 					buffer.asprintf_append ("%s(", operator_glsl_strs[ir->operation]);
 					break;
 			}
->>>>>>> upstream/master
 		}
 		if (ir->operands[0])
 			ir->operands[0]->accept(this);
@@ -1144,16 +1124,10 @@ void ir_print_metal_visitor::visit(ir_expression *ir)
 			else if (op0cast)
 			{
 				print_cast (buffer, arg_prec, ir->operands[0]);
-<<<<<<< HEAD
-			}
-			ir->operands[0]->accept(this);
-			if (op0castTo1)
-=======
 				buffer.asprintf_append ("(");
 			}
 			ir->operands[0]->accept(this);
 			if (op0castTo1 || op0cast)
->>>>>>> upstream/master
 			{
 				buffer.asprintf_append (")");
 			}
@@ -1172,16 +1146,10 @@ void ir_print_metal_visitor::visit(ir_expression *ir)
 			else if (op1cast)
 			{
 				print_cast (buffer, arg_prec, ir->operands[1]);
-<<<<<<< HEAD
-			}
-			ir->operands[1]->accept(this);
-			if (op1castTo0)
-=======
 				buffer.asprintf_append ("(");
 			}
 			ir->operands[1]->accept(this);
 			if (op1castTo0 || op1cast)
->>>>>>> upstream/master
 			{
 				buffer.asprintf_append (")");
 			}
@@ -1262,26 +1230,17 @@ static void print_texture_uv (ir_print_metal_visitor* vis, ir_texture* ir, bool 
 	}
 	else if (is_shadow)
 	{
-<<<<<<< HEAD
-=======
 		// Note that on metal sample_compare works differently than shadow2DEXT on GLES:
 		// it does not clamp neither the pixel value nor compare value to the [0.0, 1.0] range. To
 		// preserve same behavior we're clamping the argument explicitly.
->>>>>>> upstream/master
 		if (!is_proj)
 		{
 			// regular shadow
 			vis->buffer.asprintf_append (uv_dim == 4 ? "(float3)(" : "(float2)(");
 			ir->coordinate->accept(vis);
-<<<<<<< HEAD
-			vis->buffer.asprintf_append (uv_dim == 4 ? ").xyz, (" : ").xy, (float)(");
-			ir->coordinate->accept(vis);
-			vis->buffer.asprintf_append (uv_dim == 4 ? ").w" : ").z");
-=======
 			vis->buffer.asprintf_append (uv_dim == 4 ? ").xyz, (" : ").xy, saturate((float)(");
 			ir->coordinate->accept(vis);
 			vis->buffer.asprintf_append (uv_dim == 4 ? ").w" : ").z)");
->>>>>>> upstream/master
 		}
 		else
 		{
@@ -1290,27 +1249,17 @@ static void print_texture_uv (ir_print_metal_visitor* vis, ir_texture* ir, bool 
 			ir->coordinate->accept(vis);
 			vis->buffer.asprintf_append (").xy / (float)(");
 			ir->coordinate->accept(vis);
-<<<<<<< HEAD
-			vis->buffer.asprintf_append (").w, (float)(");
-			ir->coordinate->accept(vis);
-			vis->buffer.asprintf_append (").z / (float)(");
-			ir->coordinate->accept(vis);
-			vis->buffer.asprintf_append (").w");
-=======
 			vis->buffer.asprintf_append (").w, saturate((float)(");
 			ir->coordinate->accept(vis);
 			vis->buffer.asprintf_append (").z / (float)(");
 			ir->coordinate->accept(vis);
 			vis->buffer.asprintf_append (").w)");
->>>>>>> upstream/master
 		}
 	}
 }
 
 void ir_print_metal_visitor::visit(ir_texture *ir)
 {
-<<<<<<< HEAD
-=======
 	if (ir->op == ir_txs)
 	{
 		ir->sampler->accept(this);
@@ -1323,7 +1272,6 @@ void ir_print_metal_visitor::visit(ir_texture *ir)
 		buffer.asprintf_append (")");
 		return;
 	}
->>>>>>> upstream/master
 	glsl_sampler_dim sampler_dim = (glsl_sampler_dim)ir->sampler->type->sampler_dimensionality;
 	const bool is_shadow = ir->sampler->type->sampler_shadow;
 	const bool is_array = ir->sampler->type->sampler_array;
@@ -1334,15 +1282,12 @@ void ir_print_metal_visitor::visit(ir_texture *ir)
 		sampler_uv_dim += 1;
 	const bool is_proj = (uv_dim > sampler_uv_dim) && !is_array;
 
-<<<<<<< HEAD
-=======
     // Construct as the expected return type of shadow2D as sample_compare returns a scalar
     if (is_shadow)
     {
         buffer.asprintf_append("float4(");
     }
 
->>>>>>> upstream/master
 	// texture name & call to sample
 	ir->sampler->accept(this);
 	if (is_shadow)
@@ -1350,11 +1295,7 @@ void ir_print_metal_visitor::visit(ir_texture *ir)
 		// For shadow sampling, Metal right now needs a hardcoded sampler state :|
 		if (!ctx.shadowSamplerDone)
 		{
-<<<<<<< HEAD
-			ctx.prefixStr.asprintf_append("constexpr sampler _mtl_xl_shadow_sampler(address::clamp_to_edge, filter::linear, compare_func::less);\n");
-=======
 			ctx.prefixStr.asprintf_append("constexpr sampler _mtl_xl_shadow_sampler(address::clamp_to_edge, filter::linear, compare_func::less_equal);\n");
->>>>>>> upstream/master
 			ctx.shadowSamplerDone = true;
 		}
 		buffer.asprintf_append (".sample_compare(_mtl_xl_shadow_sampler");
@@ -1410,15 +1351,12 @@ void ir_print_metal_visitor::visit(ir_texture *ir)
 	//@TODO: pixel offsets
 
 	buffer.asprintf_append (")");
-<<<<<<< HEAD
-=======
 	
     // Close float4 cast
     if (is_shadow)
     {
         buffer.asprintf_append(")");
     }
->>>>>>> upstream/master
 }
 
 
@@ -2080,11 +2018,7 @@ ir_print_metal_visitor::visit(ir_typedecl_statement *ir)
 		buffer.asprintf_append ("  ");
 		//if (state->es_shader)
 		//	buffer.asprintf_append ("%s", get_precision_string(s->fields.structure[j].precision)); //@TODO
-<<<<<<< HEAD
-		print_type(buffer, ir, s->fields.structure[j].type, false);
-=======
 		print_type_precision(buffer, s->fields.structure[j].type, s->fields.structure[j].precision, false);
->>>>>>> upstream/master
 		buffer.asprintf_append (" %s", s->fields.structure[j].name);
 		print_type_post(buffer, s->fields.structure[j].type, false);
 		buffer.asprintf_append (";\n");

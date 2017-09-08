@@ -29,21 +29,12 @@
     CONSTANTS
 ***************************************************************************/
 
-<<<<<<< HEAD
-/* these defines specify the maximum size of different types of Unicode
- * character encodings */
-#define UTF8_CHAR_MAX   6
-#define UTF16_CHAR_MAX  2
-
-/* these are UTF-8 encoded strings for common characters */
-=======
 // these defines specify the maximum size of different types of Unicode
 // character encodings
 #define UTF8_CHAR_MAX   6
 #define UTF16_CHAR_MAX  2
 
 // these are UTF-8 encoded strings for common characters
->>>>>>> upstream/master
 #define UTF8_NBSP               "\xc2\xa0"          /* non-breaking space */
 
 #define UTF8_MULTIPLY           "\xc3\x97"          /* multiplication sign */
@@ -69,59 +60,20 @@
 #define o_UMLAUT                "\xc3\xb6"          /* small o with an umlaut */
 #define u_UMLAUT                "\xc3\xbc"          /* small u with an umlaut */
 #define e_ACUTE                 "\xc3\xa9"          /* small e with an acute */
-<<<<<<< HEAD
-=======
 #define n_TILDE                 "\xc3\xb1"          /* small n with a tilde */
->>>>>>> upstream/master
 
 #define A_RING                  "\xc3\x85"          /* capital A with a ring */
 #define A_UMLAUT                "\xc3\x84"          /* capital A with an umlaut */
 #define O_UMLAUT                "\xc3\x96"          /* capital O with an umlaut */
 #define U_UMLAUT                "\xc3\x9c"          /* capital U with an umlaut */
 #define E_ACUTE                 "\xc3\x89"          /* capital E with an acute */
-<<<<<<< HEAD
-=======
 #define N_TILDE                 "\xc3\x91"          /* capital N with a tilde */
->>>>>>> upstream/master
 
 #define UTF8_LEFT               "\xe2\x86\x90"      /* cursor left */
 #define UTF8_RIGHT              "\xe2\x86\x92"      /* cursor right */
 #define UTF8_UP                 "\xe2\x86\x91"      /* cursor up */
 #define UTF8_DOWN               "\xe2\x86\x93"      /* cursor down */
 
-<<<<<<< HEAD
-
-
-/***************************************************************************
-    TYPE DEFINITIONS
-***************************************************************************/
-
-typedef UINT16 utf16_char;
-typedef UINT32 unicode_char;
-
-
-
-/***************************************************************************
-    FUNCTION PROTOTYPES
-***************************************************************************/
-
-/* tests to see if a unicode char is a valid code point */
-int uchar_isvalid(unicode_char uchar);
-
-/* converting strings to 32-bit Unicode chars */
-int uchar_from_utf8(unicode_char *uchar, const char *utf8char, size_t count);
-int uchar_from_utf16(unicode_char *uchar, const utf16_char *utf16char, size_t count);
-int uchar_from_utf16f(unicode_char *uchar, const utf16_char *utf16char, size_t count);
-
-/* converting 32-bit Unicode chars to strings */
-int utf8_from_uchar(char *utf8string, size_t count, unicode_char uchar);
-int utf16_from_uchar(utf16_char *utf16string, size_t count, unicode_char uchar);
-int utf16f_from_uchar(utf16_char *utf16string, size_t count, unicode_char uchar);
-
-/* misc UTF-8 helpers */
-const char *utf8_previous_char(const char *utf8string);
-int utf8_is_valid_string(const char *utf8string);
-=======
 enum class unicode_normalization_form { C, D, KC, KD };
 
 
@@ -166,7 +118,6 @@ char32_t uchar_tolower(char32_t ch);
 // misc UTF-8 helpers
 const char *utf8_previous_char(const char *utf8string);
 bool utf8_is_valid_string(const char *utf8string);
->>>>>>> upstream/master
 
 
 

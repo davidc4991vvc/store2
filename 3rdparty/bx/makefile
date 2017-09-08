@@ -1,26 +1,4 @@
 #
-<<<<<<< HEAD
-# Copyright 2011-2015 Branimir Karadzic. All rights reserved.
-# License: http://www.opensource.org/licenses/BSD-2-Clause
-#
-
-UNAME := $(shell uname)
-ifeq ($(UNAME),$(filter $(UNAME),Linux Darwin))
-ifeq ($(UNAME),$(filter $(UNAME),Darwin))
-OS=darwin
-else
-OS=linux
-endif
-else
-OS=windows
-endif
-
-GENIE=../bx/tools/bin/$(OS)/genie
-
-all:
-	$(GENIE) vs2008
-	$(GENIE) vs2010
-=======
 # Copyright 2011-2017 Branimir Karadzic. All rights reserved.
 # License: https://github.com/bkaradzic/bgfx#license-bsd-2-clause
 #
@@ -28,7 +6,6 @@ all:
 GENIE=../bx/tools/bin/$(OS)/genie
 
 all:
->>>>>>> upstream/master
 	$(GENIE) vs2012
 	$(GENIE) vs2013
 	$(GENIE) --gcc=android-arm gmake
@@ -104,24 +81,6 @@ mingw-clang-release64: .build/projects/gmake-mingw-clang
 	make -R -C .build/projects/gmake-mingw-clang config=release64
 mingw-clang: mingw-clang-debug32 mingw-clang-release32 mingw-clang-debug64 mingw-clang-release64
 
-<<<<<<< HEAD
-.build/projects/vs2008:
-	$(GENIE) vs2008
-vs2008-debug32:
-	devenv .build/projects/vs2008/bgfx.sln /Build "Debug|Win32"
-vs2008-release32:
-	devenv .build/projects/vs2008/bgfx.sln /Build "Release|Win32"
-vs2008-debug64:
-	devenv .build/projects/vs2008/bgfx.sln /Build "Debug|x64"
-vs2008-release64:
-	devenv .build/projects/vs2008/bgfx.sln /Build "Release|x64"
-vs2008: vs2008-debug32 vs2008-release32 vs2008-debug64 vs2008-release64
-
-.build/projects/vs2010:
-	$(GENIE) vs2010
-
-=======
->>>>>>> upstream/master
 .build/projects/vs2012:
 	$(GENIE) vs2012
 
@@ -198,21 +157,14 @@ docs:
 clean:
 	@echo Cleaning...
 	-@rm -rf .build
-<<<<<<< HEAD
-=======
 	@mkdir .build
->>>>>>> upstream/master
 
 ###
 
 SILENT ?= @
 
 UNAME := $(shell uname)
-<<<<<<< HEAD
-ifeq ($(UNAME),$(filter $(UNAME),Linux Darwin))
-=======
 ifeq ($(UNAME),$(filter $(UNAME),Linux GNU Darwin))
->>>>>>> upstream/master
 ifeq ($(UNAME),$(filter $(UNAME),Darwin))
 OS=darwin
 BUILD_PROJECT_DIR=gmake-osx
@@ -234,15 +186,6 @@ BUILD_TOOLS_CONFIG=release32
 EXE=.exe
 endif
 
-<<<<<<< HEAD
-.build/$(BUILD_OUTPUT_DIR)/bin/bin2cRelease$(EXE): .build/projects/$(BUILD_PROJECT_DIR)
-	$(SILENT) make -C .build/projects/$(BUILD_PROJECT_DIR) -f bin2c.make config=$(BUILD_TOOLS_CONFIG)
-
-tools/bin/$(OS)/bin2c$(EXE): .build/$(BUILD_OUTPUT_DIR)/bin/bin2cRelease$(EXE)
-	$(SILENT) cp $(<) $(@)
-
-tools: tools/bin/$(OS)/bin2c$(EXE)
-=======
 .build/osx64_clang/bin/bin2cRelease: .build/projects/gmake-osx
 	$(SILENT) make -C .build/projects/gmake-osx bin2c config=$(BUILD_TOOLS_CONFIG)
 
@@ -269,4 +212,3 @@ dist: tools/bin/darwin/bin2c tools/bin/linux/bin2c tools/bin/windows/bin2c.exe
 	$(SILENT) make -C .build/projects/$(BUILD_PROJECT_DIR) bx.test config=$(BUILD_TOOLS_CONFIG)
 
 test: .build/$(BUILD_OUTPUT_DIR)/bin/bx.testRelease$(EXE)
->>>>>>> upstream/master

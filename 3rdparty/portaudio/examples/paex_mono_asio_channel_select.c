@@ -5,11 +5,7 @@
 	@author Phil Burk <philburk@softsynth.com>
 */
 /*
-<<<<<<< HEAD
- * $Id: paex_mono_asio_channel_select.c 1756 2011-09-08 06:09:29Z philburk $
-=======
  * $Id$
->>>>>>> upstream/master
  *
  * Authors:
  *    Ross Bencina <rossb@audiomulch.com>

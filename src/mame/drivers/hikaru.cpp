@@ -383,17 +383,10 @@ Notes:
 
 #include "emu.h"
 #include "cpu/sh4/sh4.h"
-<<<<<<< HEAD
-
-#define CPU_CLOCK (200000000)
-									/* MD2 MD1 MD0 MD6 MD4 MD3 MD5 MD7 MD8 */
-//static const struct sh4_config sh4cpu_config = {  1,  0,  1,  0,  0,  0,  1,  1,  0, CPU_CLOCK };
-=======
 #include "screen.h"
 
 
 #define CPU_CLOCK (200000000)
->>>>>>> upstream/master
 
 class hikaru_state : public driver_device
 {
@@ -401,13 +394,8 @@ public:
 	hikaru_state(const machine_config &mconfig, device_type type, const char *tag)
 		: driver_device(mconfig, type, tag),
 		m_maincpu(*this, "maincpu") { }
-<<<<<<< HEAD
-	virtual void video_start();
-	UINT32 screen_update_hikaru(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
-=======
 	virtual void video_start() override;
 	uint32_t screen_update_hikaru(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	required_device<cpu_device> m_maincpu;
 };
 
@@ -415,11 +403,7 @@ void hikaru_state::video_start()
 {
 }
 
-<<<<<<< HEAD
-UINT32 hikaru_state::screen_update_hikaru(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
-=======
 uint32_t hikaru_state::screen_update_hikaru(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	return 0;
 }
@@ -497,12 +481,6 @@ static ADDRESS_MAP_START( hikaru_map_slave, AS_PROGRAM, 64, hikaru_state )
 ADDRESS_MAP_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( hikaru, hikaru_state )
-	/* basic machine hardware */
-	MCFG_CPU_ADD("maincpu", SH4LE, CPU_CLOCK)
-//  MCFG_CPU_CONFIG(sh4cpu_config)
-=======
 static MACHINE_CONFIG_START( hikaru )
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", SH4LE, CPU_CLOCK)
@@ -516,7 +494,6 @@ static MACHINE_CONFIG_START( hikaru )
 //  MCFG_SH4_MD7(1)
 //  MCFG_SH4_MD8(0)
 //  MCFG_SH4_CLOCK(CPU_CLOCK)
->>>>>>> upstream/master
 	MCFG_CPU_PROGRAM_MAP(hikaru_map)
 //  MCFG_CPU_IO_MAP(hikaru_port)
 //  MCFG_CPU_VBLANK_INT("screen", hikaru,vblank)
@@ -541,10 +518,6 @@ static MACHINE_CONFIG_START( hikaru )
 
 //  MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 //  MCFG_SOUND_ADD("aica", AICA, 0)
-<<<<<<< HEAD
-//  MCFG_SOUND_CONFIG(aica_config)
-=======
->>>>>>> upstream/master
 //  MCFG_SOUND_ROUTE(0, "lspeaker", 2.0)
 //  MCFG_SOUND_ROUTE(0, "rspeaker", 2.0)
 MACHINE_CONFIG_END
@@ -611,8 +584,6 @@ ROM_START( airtrix )
 	ROM_PARAMETER( ":rom_board:segam2crypt:key", "291b02c7" )
 ROM_END
 
-<<<<<<< HEAD
-=======
 ROM_START( airtrixo )
 	ROM_REGION( 0x200000, "maincpu", 0)
 	HIKARU_BIOS
@@ -636,7 +607,6 @@ ROM_START( airtrixo )
 	ROM_PARAMETER( ":rom_board:segam2crypt:key", "291b02c7" )
 ROM_END
 
->>>>>>> upstream/master
 
 ROM_START( pharrier )
 	ROM_REGION( 0x200000, "maincpu", 0)
@@ -675,11 +645,7 @@ ROM_START( pharrier )
 	ROM_PARAMETER( ":rom_board:segam2crypt:key", "2912c68a" )
 ROM_END
 
-<<<<<<< HEAD
-ROM_START( podrace )
-=======
 ROM_START( swracer )
->>>>>>> upstream/master
 	ROM_REGION( 0x200000, "maincpu", 0)
 	HIKARU_BIOS
 
@@ -803,9 +769,6 @@ ROM_START( sgnascar )
 	ROM_LOAD32_WORD( "mpr-23480.ic33", 0xe000000, 0x1000000, CRC(f517b8b3) SHA1(c04740adb612473c4c9f8186e7e93d2f73d1bb1a) )
 	ROM_LOAD32_WORD( "mpr-23484.ic34", 0xe000002, 0x1000000, CRC(2ebe1aa1) SHA1(16b39f7422da1a334dde27169c2949e1d95bddb3) )
 
-<<<<<<< HEAD
-	// 317-0283-COM Actel A54SX32
-=======
 	// 834-14125 317-0283-COM Actel A54SX32
 	// ID 0x4252
 	ROM_PARAMETER( ":rom_board:key", "56dedf33" )
@@ -839,19 +802,10 @@ ROM_START( sgnascaro )
 	ROM_LOAD32_WORD( "mpr-23484.ic34", 0xe000002, 0x1000000, CRC(2ebe1aa1) SHA1(16b39f7422da1a334dde27169c2949e1d95bddb3) )
 
 	// 834-14125 317-0283-COM Actel A54SX32
->>>>>>> upstream/master
 	// ID 0x4252
 	ROM_PARAMETER( ":rom_board:key", "56dedf33" )
 ROM_END
 
-<<<<<<< HEAD
-GAME( 2000, hikaru,   0,        hikaru,   hikaru, driver_device,   0, ROT0, "Sega",            "Hikaru Bios", MACHINE_NO_SOUND|MACHINE_NOT_WORKING|MACHINE_IS_BIOS_ROOT )
-GAME( 1999, braveff,  hikaru,   hikaru,   hikaru, driver_device,   0, ROT0, "Sega",            "Brave Fire Fighters", MACHINE_NO_SOUND|MACHINE_NOT_WORKING )
-GAME( 2000, airtrix,  hikaru,   hikaru,   hikaru, driver_device,   0, ROT0, "Sega",            "Air Trix", MACHINE_NO_SOUND|MACHINE_NOT_WORKING )
-GAME( 2000, sgnascar, hikaru,   hikaru,   hikaru, driver_device,   0, ROT0, "Sega / Electronic Arts", "NASCAR Racing", MACHINE_NO_SOUND|MACHINE_NOT_WORKING )
-GAME( 2001, pharrier, hikaru,   hikaru,   hikaru, driver_device,   0, ROT0, "Sega",            "Planet Harriers", MACHINE_NO_SOUND|MACHINE_NOT_WORKING )
-GAME( 2001, podrace,  hikaru,   hikaru,   hikaru, driver_device,   0, ROT0, "Sega",            "Star Wars Pod Racer", MACHINE_NO_SOUND|MACHINE_NOT_WORKING )
-=======
 GAME( 2000, hikaru,   0,        hikaru,   hikaru, hikaru_state,   0, ROT0, "Sega",            "Hikaru Bios", MACHINE_NO_SOUND|MACHINE_NOT_WORKING|MACHINE_IS_BIOS_ROOT )
 GAME( 1999, braveff,  hikaru,   hikaru,   hikaru, hikaru_state,   0, ROT0, "Sega",            "Brave Firefighters", MACHINE_NO_SOUND|MACHINE_NOT_WORKING )
 GAME( 2000, airtrix,  hikaru,   hikaru,   hikaru, hikaru_state,   0, ROT0, "Sega",            "Air Trix (Rev A)", MACHINE_NO_SOUND|MACHINE_NOT_WORKING )
@@ -860,4 +814,3 @@ GAME( 2000, sgnascar, hikaru,   hikaru,   hikaru, hikaru_state,   0, ROT0, "Sega
 GAME( 2000, sgnascaro,sgnascar, hikaru,   hikaru, hikaru_state,   0, ROT0, "Sega / Electronic Arts", "NASCAR Racing (original)", MACHINE_NO_SOUND|MACHINE_NOT_WORKING )
 GAME( 2000, pharrier, hikaru,   hikaru,   hikaru, hikaru_state,   0, ROT0, "Sega",            "Planet Harriers (Rev A)", MACHINE_NO_SOUND|MACHINE_NOT_WORKING )
 GAME( 2000, swracer,  hikaru,   hikaru,   hikaru, hikaru_state,   0, ROT0, "Sega",            "Star Wars: Racer Arcade", MACHINE_NO_SOUND|MACHINE_NOT_WORKING )
->>>>>>> upstream/master

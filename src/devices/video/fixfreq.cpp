@@ -16,20 +16,9 @@
 #include "emu.h"
 #include "fixfreq.h"
 
-<<<<<<< HEAD
-/***************************************************************************
-
-    Local variables
-
-***************************************************************************/
-
-//#define VERBOSE_OUT(x) printf x
-#define VERBOSE_OUT(x)
-=======
 //#define VERBOSE 1
 #include "logmacro.h"
 
->>>>>>> upstream/master
 
 /***************************************************************************
 
@@ -37,20 +26,12 @@
 
 ***************************************************************************/
 // device type definition
-<<<<<<< HEAD
-const device_type FIXFREQ = &device_creator<fixedfreq_device>;
-
-fixedfreq_device::fixedfreq_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source)
-	: device_t(mconfig, type, name, tag, owner, clock, shortname, source),
-		device_video_interface(mconfig, *this, false), m_htotal(0), m_vtotal(0), m_vid(0), m_last_x(0), m_last_y(0), m_cur_bm(0),
-=======
 DEFINE_DEVICE_TYPE(FIXFREQ, fixedfreq_device, "fixfreq", "Fixed-Frequency Monochrome Monitor")
 
 fixedfreq_device::fixedfreq_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, type, tag, owner, clock),
 		device_video_interface(mconfig, *this, false),
 		m_htotal(0), m_vtotal(0), m_vid(0), m_last_x(0), m_last_y(0), m_cur_bm(0),
->>>>>>> upstream/master
 		// default to NTSC "704x480@30i"
 		m_monitor_clock(13500000),
 		m_hvisible(704),
@@ -63,28 +44,6 @@ fixedfreq_device::fixedfreq_device(const machine_config &mconfig, device_type ty
 		m_vbackporch(525),
 		m_fieldcount(2),
 		m_sync_threshold(0.3),
-<<<<<<< HEAD
-		m_gain(1.0 / 3.7), m_vint(0), m_int_trig(0), m_mult(0), m_sig_vsync(0), m_sig_composite(0), m_sig_field(0)
-{
-}
-
-fixedfreq_device::fixedfreq_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, FIXFREQ, "Fixed Frequency Monochrome Monitor", tag, owner, clock, "fixfreq", __FILE__),
-		device_video_interface(mconfig, *this, false),
-		// default to NTSC "704x480@30i"
-		m_monitor_clock(13500000),
-		m_hvisible(704),
-		m_hfrontporch(728),
-		m_hsync(791),
-		m_hbackporch(858),
-		m_vvisible(480),
-		m_vfrontporch(486),
-		m_vsync(492),
-		m_vbackporch(525),
-		m_fieldcount(2),
-		m_sync_threshold(0.3),
-		m_gain(1.0 / 3.7)
-=======
 		m_gain(1.0 / 3.7),
 		m_vint(0), m_int_trig(0), m_mult(0), m_sig_vsync(0), m_sig_composite(0), m_sig_field(0)
 {
@@ -92,7 +51,6 @@ fixedfreq_device::fixedfreq_device(const machine_config &mconfig, const char *ta
 
 fixedfreq_device::fixedfreq_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: fixedfreq_device(mconfig, FIXFREQ, tag, owner, clock)
->>>>>>> upstream/master
 {
 }
 
@@ -122,13 +80,8 @@ void fixedfreq_device::device_start()
 	m_sig_composite = 0;
 	m_sig_field = 0;
 
-<<<<<<< HEAD
-	m_bitmap[0] = NULL;
-	m_bitmap[1] = NULL;
-=======
 	m_bitmap[0] = nullptr;
 	m_bitmap[1] = nullptr;
->>>>>>> upstream/master
 	//m_vblank_timer = machine().scheduler().timer_alloc(timer_expired_delegate(FUNC(vga_device::vblank_timer_cb),this));
 	recompute_parameters(false);
 
@@ -178,17 +131,10 @@ void fixedfreq_device::recompute_parameters(bool postload)
 {
 	bool needs_realloc = (m_htotal != m_hbackporch) && (m_vtotal != m_vbackporch);
 
-<<<<<<< HEAD
-	if (m_bitmap[0] != NULL || needs_realloc)
-		auto_free(machine(), m_bitmap[0]);
-	if (m_bitmap[1] != NULL || needs_realloc)
-		auto_free(machine(), m_bitmap[0]);
-=======
 	if (m_bitmap[0] != nullptr || needs_realloc)
 		m_bitmap[0] = nullptr;
 	if (m_bitmap[1] != nullptr || needs_realloc)
 		m_bitmap[1] = nullptr;
->>>>>>> upstream/master
 
 	m_htotal = m_hbackporch;
 	m_vtotal = m_vbackporch;
@@ -197,17 +143,10 @@ void fixedfreq_device::recompute_parameters(bool postload)
 
 	m_int_trig = (exp(- 3.0/(3.0+3.0))) - exp(-1.0);
 	m_mult = (double) (m_monitor_clock) / (double) m_htotal * 1.0; // / (3.0 + 3.0);
-<<<<<<< HEAD
-	VERBOSE_OUT(("trigger %f with len %f\n", m_int_trig, 1e6 / m_mult));
-
-	m_bitmap[0] = auto_bitmap_rgb32_alloc(machine(),m_htotal, m_vtotal);
-	m_bitmap[1] = auto_bitmap_rgb32_alloc(machine(),m_htotal, m_vtotal);
-=======
 	LOG("trigger %f with len %f\n", m_int_trig, 1e6 / m_mult);
 
 	m_bitmap[0] = std::make_unique<bitmap_rgb32>(m_htotal, m_vtotal);
 	m_bitmap[1] = std::make_unique<bitmap_rgb32>(m_htotal, m_vtotal);
->>>>>>> upstream/master
 
 	rectangle visarea(
 			m_hbackporch - m_hfrontporch,
@@ -255,11 +194,7 @@ int fixedfreq_device::sync_separator(const attotime &time, double newval)
 	{
 		m_sig_field = last_comp;   /* force false-progressive */
 		m_sig_field = (m_sig_field ^ 1) ^ last_comp;   /* if there is no field switch, auto switch */
-<<<<<<< HEAD
-		VERBOSE_OUT(("Field: %d\n", m_sig_field));
-=======
 		LOG("Field: %d\n", m_sig_field);
->>>>>>> upstream/master
 	}
 	if (!last_comp && m_sig_composite)
 	{
@@ -274,11 +209,7 @@ int fixedfreq_device::sync_separator(const attotime &time, double newval)
 	return ret;
 }
 
-<<<<<<< HEAD
-UINT32 fixedfreq_device::screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
-=======
 uint32_t fixedfreq_device::screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	copybitmap(bitmap, *m_bitmap[!m_cur_bm], 0, 0, 0, 0, cliprect);
 
@@ -287,11 +218,7 @@ uint32_t fixedfreq_device::screen_update(screen_device &screen, bitmap_rgb32 &bi
 
 NETDEV_ANALOG_CALLBACK_MEMBER(fixedfreq_device::update_vid)
 {
-<<<<<<< HEAD
-	bitmap_rgb32 *bm = m_bitmap[m_cur_bm];
-=======
 	bitmap_rgb32 *bm = m_bitmap[m_cur_bm].get();
->>>>>>> upstream/master
 	const int has_fields = (m_fieldcount > 1) ? 1: 0;
 
 	int pixels = round((time - m_line_time).as_double() / m_clock_period.as_double());
@@ -322,28 +249,16 @@ NETDEV_ANALOG_CALLBACK_MEMBER(fixedfreq_device::update_vid)
 	}
 	if (sync & 1)
 	{
-<<<<<<< HEAD
-		VERBOSE_OUT(("VSYNC %d %d\n", pixels, m_last_y + m_sig_field));
-	}
-	if (sync & 2)
-	{
-		VERBOSE_OUT(("HSYNC up %d\n", pixels));
-=======
 		LOG("VSYNC %d %d\n", pixels, m_last_y + m_sig_field);
 	}
 	if (sync & 2)
 	{
 		LOG("HSYNC up %d\n", pixels);
->>>>>>> upstream/master
 		//if (m_last_y == 27) printf("HSYNC up %d %d\n", m_last_y, pixels);
 	}
 	if (sync & 4)
 	{
-<<<<<<< HEAD
-		VERBOSE_OUT(("HSYNC down %f %d %f\n", time.as_double()* 1e6, pixels, m_vid));
-=======
 		LOG("HSYNC down %f %d %f\n", time.as_double()* 1e6, pixels, m_vid);
->>>>>>> upstream/master
 	}
 
 	if (sync & 1)

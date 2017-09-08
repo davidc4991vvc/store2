@@ -14,19 +14,11 @@
  *****************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "debugger.h"
-#include "cp1610.h"
-
-
-const device_type CP1610 = &device_creator<cp1610_cpu_device>;
-=======
 #include "cp1610.h"
 #include "debugger.h"
 
 
 DEFINE_DEVICE_TYPE(CP1610, cp1610_cpu_device, "cp1610", "GI CP1610")
->>>>>>> upstream/master
 
 
 #define S  0x80
@@ -204,11 +196,7 @@ void cp1610_cpu_device::cp1610_comr(int n)
  ***************************************************/
 void cp1610_cpu_device::cp1610_negr(int n)
 {
-<<<<<<< HEAD
-	UINT32 temp;
-=======
 	uint32_t temp;
->>>>>>> upstream/master
 	CLR_SZOC;
 	temp = (m_r[n] ^ 0xffff) + 1;
 	SET_COV(0,temp,1);
@@ -223,11 +211,7 @@ void cp1610_cpu_device::cp1610_negr(int n)
  ***************************************************/
 void cp1610_cpu_device::cp1610_adcr(int n)
 {
-<<<<<<< HEAD
-	UINT16 offset = 0;
-=======
 	uint16_t offset = 0;
->>>>>>> upstream/master
 	if (m_flags & C)
 		offset = 1;
 	CLR_SZOC;
@@ -282,11 +266,7 @@ void cp1610_cpu_device::cp1610_rswd(int n)
  ***************************************************/
 void cp1610_cpu_device::cp1610_swap(int r)
 {
-<<<<<<< HEAD
-	UINT8 temp;
-=======
 	uint8_t temp;
->>>>>>> upstream/master
 	m_mask_interrupts = 1;
 	CLR_SZ;
 	temp = m_r[r] >> 8;
@@ -306,11 +286,7 @@ void cp1610_cpu_device::cp1610_swap(int r)
 void cp1610_cpu_device::cp1610_dswap(int r)
 {
 	/* This instruction was not officially supported by GI */
-<<<<<<< HEAD
-	UINT16 temp;
-=======
 	uint16_t temp;
->>>>>>> upstream/master
 	m_mask_interrupts = 1;
 	CLR_SZ;
 	temp = m_r[r] & 0xff;
@@ -355,11 +331,7 @@ void cp1610_cpu_device::cp1610_sll_2(int r)
  ***************************************************/
 void cp1610_cpu_device::cp1610_rlc_1(int r)
 {
-<<<<<<< HEAD
-	UINT16 offset = 0;
-=======
 	uint16_t offset = 0;
->>>>>>> upstream/master
 	m_mask_interrupts = 1;
 	if (m_flags & C)
 		offset = 1;
@@ -377,11 +349,7 @@ void cp1610_cpu_device::cp1610_rlc_1(int r)
  ***************************************************/
 void cp1610_cpu_device::cp1610_rlc_2(int r)
 {
-<<<<<<< HEAD
-	UINT16 offset = 0;
-=======
 	uint16_t offset = 0;
->>>>>>> upstream/master
 	m_mask_interrupts = 1;
 	switch(m_flags & (C | OV))
 	{
@@ -484,11 +452,7 @@ void cp1610_cpu_device::cp1610_sar_1(int r)
 {
 	m_mask_interrupts = 1;
 	CLR_SZ;
-<<<<<<< HEAD
-	m_r[r] = (UINT16)(((INT16)(m_r[r])) >> 1);
-=======
 	m_r[r] = (uint16_t)(((int16_t)(m_r[r])) >> 1);
->>>>>>> upstream/master
 	SET_SZ(m_r[r]);
 	/* S flag is set on bit 7 not bit 15 */
 	m_flags &= ~S;
@@ -505,11 +469,7 @@ void cp1610_cpu_device::cp1610_sar_2(int r)
 {
 	m_mask_interrupts = 1;
 	CLR_SZ;
-<<<<<<< HEAD
-	m_r[r] = (UINT16)(((INT16)(m_r[r])) >> 2);
-=======
 	m_r[r] = (uint16_t)(((int16_t)(m_r[r])) >> 2);
->>>>>>> upstream/master
 	SET_SZ(m_r[r]);
 	/* S flag is set on bit 7 not bit 15 */
 	m_flags &= ~S;
@@ -524,11 +484,7 @@ void cp1610_cpu_device::cp1610_sar_2(int r)
  ***************************************************/
 void cp1610_cpu_device::cp1610_rrc_1(int r)
 {
-<<<<<<< HEAD
-	UINT16 offset = 0;
-=======
 	uint16_t offset = 0;
->>>>>>> upstream/master
 	m_mask_interrupts = 1;
 	if (m_flags & C)
 		offset = 0x8000;
@@ -551,11 +507,7 @@ void cp1610_cpu_device::cp1610_rrc_1(int r)
  ***************************************************/
 void cp1610_cpu_device::cp1610_rrc_2(int r)
 {
-<<<<<<< HEAD
-	UINT16 offset = 0;
-=======
 	uint16_t offset = 0;
->>>>>>> upstream/master
 	m_mask_interrupts = 1;
 	if (m_flags & C)
 		offset |= 0x4000;
@@ -586,11 +538,7 @@ void cp1610_cpu_device::cp1610_sarc_1(int r)
 	CLR_SZC;
 	if (m_r[r] & 1)
 		m_flags |= C;
-<<<<<<< HEAD
-	m_r[r] = (UINT16)(((INT16)m_r[r]) >> 1);
-=======
 	m_r[r] = (uint16_t)(((int16_t)m_r[r]) >> 1);
->>>>>>> upstream/master
 	SET_SZ(m_r[r]);
 	/* S flag is set on bit 7 not bit 15 */
 	m_flags &= ~S;
@@ -611,11 +559,7 @@ void cp1610_cpu_device::cp1610_sarc_2(int r)
 		m_flags |= C;
 	if (m_r[r] & 2)
 		m_flags |= OV;
-<<<<<<< HEAD
-	m_r[r] = (UINT16)(((INT16)m_r[r]) >> 2);
-=======
 	m_r[r] = (uint16_t)(((int16_t)m_r[r]) >> 2);
->>>>>>> upstream/master
 	SET_SZ(m_r[r]);
 	/* S flag is set on bit 7 not bit 15 */
 	m_flags &= ~S;
@@ -671,11 +615,7 @@ void cp1610_cpu_device::cp1610_addr(int s, int d)
 void cp1610_cpu_device::cp1610_subr(int s, int d)
 {
 	CLR_SZOC;
-<<<<<<< HEAD
-	SET_COV(m_r[d],(UINT32)((m_r[s]^0xffff)+1),1);
-=======
 	SET_COV(m_r[d],(uint32_t)((m_r[s]^0xffff)+1),1);
->>>>>>> upstream/master
 	m_r[d] -= m_r[s];
 	SET_SZ(m_r[d]);
 	m_icount -= 6;
@@ -687,15 +627,9 @@ void cp1610_cpu_device::cp1610_subr(int s, int d)
  ***************************************************/
 void cp1610_cpu_device::cp1610_cmpr(int s, int d)
 {
-<<<<<<< HEAD
-	UINT16 temp;
-	CLR_SZOC;
-	SET_COV(m_r[d],(UINT32)((m_r[s]^0xffff)+1),1);
-=======
 	uint16_t temp;
 	CLR_SZOC;
 	SET_COV(m_r[d],(uint32_t)((m_r[s]^0xffff)+1),1);
->>>>>>> upstream/master
 	temp = m_r[d] - m_r[s];
 	SET_SZ(temp);
 	m_icount -= 6;
@@ -743,11 +677,7 @@ void cp1610_cpu_device::cp1610_clrr(int d)
  ***************************************************/
 void cp1610_cpu_device::cp1610_b(int dir)
 {
-<<<<<<< HEAD
-	UINT16 offset = cp1610_readop(m_r[7]);
-=======
 	uint16_t offset = cp1610_readop(m_r[7]);
->>>>>>> upstream/master
 	m_r[7]++;
 	m_r[7] += (offset ^ dir);
 	m_icount -= 9;
@@ -770,11 +700,7 @@ void cp1610_cpu_device::cp1610_nopp(int dir)
  ***************************************************/
 void cp1610_cpu_device::cp1610_bc(int dir)
 {
-<<<<<<< HEAD
-	UINT16 offset = cp1610_readop(m_r[7]);
-=======
 	uint16_t offset = cp1610_readop(m_r[7]);
->>>>>>> upstream/master
 	m_r[7]++;
 	if (m_flags & C)
 	{
@@ -793,11 +719,7 @@ void cp1610_cpu_device::cp1610_bc(int dir)
  ***************************************************/
 void cp1610_cpu_device::cp1610_bnc(int dir)
 {
-<<<<<<< HEAD
-	UINT16 offset = cp1610_readop(m_r[7]);
-=======
 	uint16_t offset = cp1610_readop(m_r[7]);
->>>>>>> upstream/master
 	m_r[7]++;
 	if (!(m_flags & C))
 	{
@@ -816,11 +738,7 @@ void cp1610_cpu_device::cp1610_bnc(int dir)
  ***************************************************/
 void cp1610_cpu_device::cp1610_bov(int dir)
 {
-<<<<<<< HEAD
-	UINT16 offset = cp1610_readop(m_r[7]);
-=======
 	uint16_t offset = cp1610_readop(m_r[7]);
->>>>>>> upstream/master
 	m_r[7]++;
 	if (m_flags & OV)
 	{
@@ -839,11 +757,7 @@ void cp1610_cpu_device::cp1610_bov(int dir)
  ***************************************************/
 void cp1610_cpu_device::cp1610_bnov(int dir)
 {
-<<<<<<< HEAD
-	UINT16 offset = cp1610_readop(m_r[7]);
-=======
 	uint16_t offset = cp1610_readop(m_r[7]);
->>>>>>> upstream/master
 	m_r[7]++;
 	if (!(m_flags & OV))
 	{
@@ -862,11 +776,7 @@ void cp1610_cpu_device::cp1610_bnov(int dir)
  ***************************************************/
 void cp1610_cpu_device::cp1610_bpl(int dir)
 {
-<<<<<<< HEAD
-	UINT16 offset = cp1610_readop(m_r[7]);
-=======
 	uint16_t offset = cp1610_readop(m_r[7]);
->>>>>>> upstream/master
 	m_r[7]++;
 	if (!(m_flags & S))
 	{
@@ -885,11 +795,7 @@ void cp1610_cpu_device::cp1610_bpl(int dir)
  ***************************************************/
 void cp1610_cpu_device::cp1610_bmi(int dir)
 {
-<<<<<<< HEAD
-	UINT16 offset = cp1610_readop(m_r[7]);
-=======
 	uint16_t offset = cp1610_readop(m_r[7]);
->>>>>>> upstream/master
 	m_r[7]++;
 	if (m_flags & S)
 	{
@@ -908,11 +814,7 @@ void cp1610_cpu_device::cp1610_bmi(int dir)
  ***************************************************/
 void cp1610_cpu_device::cp1610_bze(int dir)
 {
-<<<<<<< HEAD
-	UINT16 offset = cp1610_readop(m_r[7]);
-=======
 	uint16_t offset = cp1610_readop(m_r[7]);
->>>>>>> upstream/master
 	m_r[7]++;
 	if (m_flags & Z)
 	{
@@ -931,11 +833,7 @@ void cp1610_cpu_device::cp1610_bze(int dir)
  ***************************************************/
 void cp1610_cpu_device::cp1610_bnze(int dir)
 {
-<<<<<<< HEAD
-	UINT16 offset = cp1610_readop(m_r[7]);
-=======
 	uint16_t offset = cp1610_readop(m_r[7]);
->>>>>>> upstream/master
 	m_r[7]++;
 	if (!(m_flags & Z))
 	{
@@ -956,11 +854,7 @@ void cp1610_cpu_device::cp1610_blt(int dir)
 {
 	int condition1 = 0;
 	int condition2 = 0;
-<<<<<<< HEAD
-	UINT16 offset = cp1610_readop(m_r[7]);
-=======
 	uint16_t offset = cp1610_readop(m_r[7]);
->>>>>>> upstream/master
 	m_r[7]++;
 	if (m_flags & S) condition1 = 1;
 	if (m_flags & OV) condition2 = 1;
@@ -983,11 +877,7 @@ void cp1610_cpu_device::cp1610_bge(int dir)
 {
 	int condition1 = 0;
 	int condition2 = 0;
-<<<<<<< HEAD
-	UINT16 offset = cp1610_readop(m_r[7]);
-=======
 	uint16_t offset = cp1610_readop(m_r[7]);
->>>>>>> upstream/master
 	m_r[7]++;
 	if (m_flags & S) condition1 = 1;
 	if (m_flags & OV) condition2 = 1;
@@ -1010,11 +900,7 @@ void cp1610_cpu_device::cp1610_ble(int dir)
 {
 	int condition1 = 0;
 	int condition2 = 0;
-<<<<<<< HEAD
-	UINT16 offset = cp1610_readop(m_r[7]);
-=======
 	uint16_t offset = cp1610_readop(m_r[7]);
->>>>>>> upstream/master
 	m_r[7]++;
 	if (m_flags & S) condition1 = 1;
 	if (m_flags & OV) condition2 = 1;
@@ -1037,11 +923,7 @@ void cp1610_cpu_device::cp1610_bgt(int dir)
 {
 	int condition1 = 0;
 	int condition2 = 0;
-<<<<<<< HEAD
-	UINT16 offset = cp1610_readop(m_r[7]);
-=======
 	uint16_t offset = cp1610_readop(m_r[7]);
->>>>>>> upstream/master
 	m_r[7]++;
 	if (m_flags & S) condition1 = 1;
 	if (m_flags & OV) condition2 = 1;
@@ -1064,11 +946,7 @@ void cp1610_cpu_device::cp1610_busc(int dir)
 {
 	int condition1 = 0;
 	int condition2 = 0;
-<<<<<<< HEAD
-	UINT16 offset = cp1610_readop(m_r[7]);
-=======
 	uint16_t offset = cp1610_readop(m_r[7]);
->>>>>>> upstream/master
 	m_r[7]++;
 	if (m_flags & C) condition1 = 1;
 	if (m_flags & S) condition2 = 1;
@@ -1091,11 +969,7 @@ void cp1610_cpu_device::cp1610_besc(int dir)
 {
 	int condition1 = 0;
 	int condition2 = 0;
-<<<<<<< HEAD
-	UINT16 offset = cp1610_readop(m_r[7]);
-=======
 	uint16_t offset = cp1610_readop(m_r[7]);
->>>>>>> upstream/master
 	m_r[7]++;
 	if (m_flags & C) condition1 = 1;
 	if (m_flags & S) condition2 = 1;
@@ -1116,11 +990,7 @@ void cp1610_cpu_device::cp1610_besc(int dir)
  ***************************************************/
 	void cp1610_cpu_device::cp1610_bext(int ext, int dir)
 {
-<<<<<<< HEAD
-	UINT16 offset = cp1610_readop(m_r[7]);
-=======
 	uint16_t offset = cp1610_readop(m_r[7]);
->>>>>>> upstream/master
 	m_r[7]++;
 
 	if (m_read_bext(ext))
@@ -1140,11 +1010,7 @@ void cp1610_cpu_device::cp1610_besc(int dir)
  ***************************************************/
 void cp1610_cpu_device::cp1610_mvo(int s)
 {
-<<<<<<< HEAD
-	UINT16 addr;
-=======
 	uint16_t addr;
->>>>>>> upstream/master
 	m_mask_interrupts = 1;
 	addr = cp1610_readop(m_r[7]);
 	m_r[7]++;
@@ -1193,11 +1059,7 @@ void cp1610_cpu_device::cp1610_mvoi(int s)
  ***************************************************/
 void cp1610_cpu_device::cp1610_mvi(int d)
 {
-<<<<<<< HEAD
-	UINT16 addr = cp1610_readop(m_r[7]);
-=======
 	uint16_t addr = cp1610_readop(m_r[7]);
->>>>>>> upstream/master
 	m_r[7]++;
 	m_r[d] = cp1610_readmem16(addr);
 	m_icount -= 10;
@@ -1219,11 +1081,7 @@ void cp1610_cpu_device::cp1610_mviat(int m, int d)
  ***************************************************/
 void cp1610_cpu_device::cp1610_mviat_i(int m, int d)
 {
-<<<<<<< HEAD
-	UINT16 temp = cp1610_readmem16(m_r[m]);
-=======
 	uint16_t temp = cp1610_readmem16(m_r[m]);
->>>>>>> upstream/master
 	m_r[m]++;
 	m_r[d] = temp;
 	m_icount -= 8;
@@ -1246,11 +1104,7 @@ void cp1610_cpu_device::cp1610_pulr(int d)
  ***************************************************/
 void cp1610_cpu_device::cp1610_mvii(int d)
 {
-<<<<<<< HEAD
-	UINT16 temp = cp1610_readop(m_r[7]);
-=======
 	uint16_t temp = cp1610_readop(m_r[7]);
->>>>>>> upstream/master
 	m_r[7]++;
 	m_r[d] = temp;
 	m_icount -= 8;
@@ -1262,13 +1116,8 @@ void cp1610_cpu_device::cp1610_mvii(int d)
  ***************************************************/
 void cp1610_cpu_device::cp1610_add(int d)
 {
-<<<<<<< HEAD
-	UINT16 addr = cp1610_readop(m_r[7]);
-	UINT16 data = cp1610_readmem16(addr);
-=======
 	uint16_t addr = cp1610_readop(m_r[7]);
 	uint16_t data = cp1610_readmem16(addr);
->>>>>>> upstream/master
 	m_r[7]++;
 	CLR_SZOC;
 	SET_COV(m_r[d],data,0);
@@ -1283,11 +1132,7 @@ void cp1610_cpu_device::cp1610_add(int d)
  ***************************************************/
 void cp1610_cpu_device::cp1610_addat(int m, int d)
 {
-<<<<<<< HEAD
-	UINT16 data = cp1610_readmem16(m_r[m]);
-=======
 	uint16_t data = cp1610_readmem16(m_r[m]);
->>>>>>> upstream/master
 	CLR_SZOC;
 	SET_COV(m_r[d],data,0);
 	m_r[d] += data;
@@ -1301,11 +1146,7 @@ void cp1610_cpu_device::cp1610_addat(int m, int d)
  ***************************************************/
 void cp1610_cpu_device::cp1610_addat_i(int m, int d)
 {
-<<<<<<< HEAD
-	UINT16 data = cp1610_readmem16(m_r[m]);
-=======
 	uint16_t data = cp1610_readmem16(m_r[m]);
->>>>>>> upstream/master
 	m_r[m]++;
 	CLR_SZOC;
 	SET_COV(m_r[d],data,0);
@@ -1320,11 +1161,7 @@ void cp1610_cpu_device::cp1610_addat_i(int m, int d)
  ***************************************************/
 void cp1610_cpu_device::cp1610_addat_d(int m, int d)
 {
-<<<<<<< HEAD
-	UINT16 data;
-=======
 	uint16_t data;
->>>>>>> upstream/master
 	m_r[m]--;
 	data = cp1610_readmem16(m_r[m]);
 	CLR_SZOC;
@@ -1340,11 +1177,7 @@ void cp1610_cpu_device::cp1610_addat_d(int m, int d)
  ***************************************************/
 void cp1610_cpu_device::cp1610_addi(int d)
 {
-<<<<<<< HEAD
-	UINT16 data;
-=======
 	uint16_t data;
->>>>>>> upstream/master
 	data = cp1610_readop(m_r[7]);
 	m_r[7]++;
 	CLR_SZOC;
@@ -1360,13 +1193,8 @@ void cp1610_cpu_device::cp1610_addi(int d)
  ***************************************************/
 void cp1610_cpu_device::cp1610_sub(int d)
 {
-<<<<<<< HEAD
-	UINT16 addr = cp1610_readop(m_r[7]);
-	UINT32 data = cp1610_readmem16(addr);
-=======
 	uint16_t addr = cp1610_readop(m_r[7]);
 	uint32_t data = cp1610_readmem16(addr);
->>>>>>> upstream/master
 	m_r[7]++;
 	CLR_SZOC;
 	data = (data ^ 0xffff) + 1;
@@ -1383,11 +1211,7 @@ void cp1610_cpu_device::cp1610_sub(int d)
  ***************************************************/
 void cp1610_cpu_device::cp1610_subat(int m, int d)
 {
-<<<<<<< HEAD
-	UINT32 data = cp1610_readmem16(m_r[m]);
-=======
 	uint32_t data = cp1610_readmem16(m_r[m]);
->>>>>>> upstream/master
 	CLR_SZOC;
 	data = (data ^ 0xffff) + 1;
 	SET_COV(m_r[d],data,1);
@@ -1403,11 +1227,7 @@ void cp1610_cpu_device::cp1610_subat(int m, int d)
  ***************************************************/
 void cp1610_cpu_device::cp1610_subat_i(int m, int d)
 {
-<<<<<<< HEAD
-	UINT32 data = cp1610_readmem16(m_r[m]);
-=======
 	uint32_t data = cp1610_readmem16(m_r[m]);
->>>>>>> upstream/master
 	m_r[m]++;
 	CLR_SZOC;
 	data = (data ^ 0xffff) + 1;
@@ -1424,11 +1244,7 @@ void cp1610_cpu_device::cp1610_subat_i(int m, int d)
  ***************************************************/
 void cp1610_cpu_device::cp1610_subat_d(int m, int d)
 {
-<<<<<<< HEAD
-	UINT32 data;
-=======
 	uint32_t data;
->>>>>>> upstream/master
 	m_r[m]--;
 	data = cp1610_readmem16(m_r[m]);
 	CLR_SZOC;
@@ -1446,11 +1262,7 @@ void cp1610_cpu_device::cp1610_subat_d(int m, int d)
  ***************************************************/
 void cp1610_cpu_device::cp1610_subi(int d)
 {
-<<<<<<< HEAD
-	UINT32 data;
-=======
 	uint32_t data;
->>>>>>> upstream/master
 	data = cp1610_readop(m_r[7]);
 	m_r[7]++;
 	data = (data ^ 0xffff) + 1;
@@ -1468,15 +1280,9 @@ void cp1610_cpu_device::cp1610_subi(int d)
  ***************************************************/
 void cp1610_cpu_device::cp1610_cmp(int d)
 {
-<<<<<<< HEAD
-	UINT16 addr = cp1610_readop(m_r[7]);
-	UINT32 data = cp1610_readmem16(addr);
-	UINT16 res;
-=======
 	uint16_t addr = cp1610_readop(m_r[7]);
 	uint32_t data = cp1610_readmem16(addr);
 	uint16_t res;
->>>>>>> upstream/master
 	m_r[7]++;
 	CLR_SZOC;
 	data = (data ^ 0xffff) + 1;
@@ -1493,13 +1299,8 @@ void cp1610_cpu_device::cp1610_cmp(int d)
  ***************************************************/
 void cp1610_cpu_device::cp1610_cmpat(int m, int d)
 {
-<<<<<<< HEAD
-	UINT32 data = cp1610_readmem16(m_r[m]);
-	UINT16 res;
-=======
 	uint32_t data = cp1610_readmem16(m_r[m]);
 	uint16_t res;
->>>>>>> upstream/master
 	CLR_SZOC;
 	data = (data ^ 0xffff) + 1;
 	SET_COV(m_r[d],data,1);
@@ -1515,13 +1316,8 @@ void cp1610_cpu_device::cp1610_cmpat(int m, int d)
  ***************************************************/
 void cp1610_cpu_device::cp1610_cmpat_i(int m, int d)
 {
-<<<<<<< HEAD
-	UINT32 data = cp1610_readmem16(m_r[m]);
-	UINT16 res;
-=======
 	uint32_t data = cp1610_readmem16(m_r[m]);
 	uint16_t res;
->>>>>>> upstream/master
 	m_r[m]++;
 	CLR_SZOC;
 	data = (data ^ 0xffff) + 1;
@@ -1538,13 +1334,8 @@ void cp1610_cpu_device::cp1610_cmpat_i(int m, int d)
  ***************************************************/
 void cp1610_cpu_device::cp1610_cmpat_d(int m, int d)
 {
-<<<<<<< HEAD
-	UINT32 data;
-	UINT16 res;
-=======
 	uint32_t data;
 	uint16_t res;
->>>>>>> upstream/master
 	m_r[m]--;
 	data = cp1610_readmem16(m_r[m]);
 	CLR_SZOC;
@@ -1562,13 +1353,8 @@ void cp1610_cpu_device::cp1610_cmpat_d(int m, int d)
  ***************************************************/
 void cp1610_cpu_device::cp1610_cmpi(int d)
 {
-<<<<<<< HEAD
-	UINT32 data;
-	UINT16 res;
-=======
 	uint32_t data;
 	uint16_t res;
->>>>>>> upstream/master
 	data = cp1610_readop(m_r[7]);
 	m_r[7]++;
 	data = (data ^ 0xffff) + 1;
@@ -1586,13 +1372,8 @@ void cp1610_cpu_device::cp1610_cmpi(int d)
  ***************************************************/
 void cp1610_cpu_device::cp1610_and(int d)
 {
-<<<<<<< HEAD
-	UINT16 addr = cp1610_readop(m_r[7]);
-	UINT16 data = cp1610_readmem16(addr);
-=======
 	uint16_t addr = cp1610_readop(m_r[7]);
 	uint16_t data = cp1610_readmem16(addr);
->>>>>>> upstream/master
 	m_r[7]++;
 	CLR_SZ;
 	m_r[d] &= data;
@@ -1606,11 +1387,7 @@ void cp1610_cpu_device::cp1610_and(int d)
  ***************************************************/
 void cp1610_cpu_device::cp1610_andat(int m, int d)
 {
-<<<<<<< HEAD
-	UINT16 data = cp1610_readmem16(m_r[m]);
-=======
 	uint16_t data = cp1610_readmem16(m_r[m]);
->>>>>>> upstream/master
 	CLR_SZ;
 	m_r[d] &= data;
 	SET_SZ(m_r[d]);
@@ -1623,11 +1400,7 @@ void cp1610_cpu_device::cp1610_andat(int m, int d)
  ***************************************************/
 void cp1610_cpu_device::cp1610_andat_i(int m, int d)
 {
-<<<<<<< HEAD
-	UINT16 data = cp1610_readmem16(m_r[m]);
-=======
 	uint16_t data = cp1610_readmem16(m_r[m]);
->>>>>>> upstream/master
 	m_r[m]++;
 	CLR_SZ;
 	m_r[d] &= data;
@@ -1641,11 +1414,7 @@ void cp1610_cpu_device::cp1610_andat_i(int m, int d)
  ***************************************************/
 void cp1610_cpu_device::cp1610_andat_d(int m, int d)
 {
-<<<<<<< HEAD
-	UINT16 data;
-=======
 	uint16_t data;
->>>>>>> upstream/master
 	m_r[m]--;
 	data = cp1610_readmem16(m_r[m]);
 	CLR_SZ;
@@ -1660,11 +1429,7 @@ void cp1610_cpu_device::cp1610_andat_d(int m, int d)
  ***************************************************/
 void cp1610_cpu_device::cp1610_andi(int d)
 {
-<<<<<<< HEAD
-	UINT16 data;
-=======
 	uint16_t data;
->>>>>>> upstream/master
 	data = cp1610_readop(m_r[7]);
 	m_r[7]++;
 	CLR_SZ;
@@ -1679,13 +1444,8 @@ void cp1610_cpu_device::cp1610_andi(int d)
  ***************************************************/
 void cp1610_cpu_device::cp1610_xor(int d)
 {
-<<<<<<< HEAD
-	UINT16 addr = cp1610_readop(m_r[7]);
-	UINT16 data = cp1610_readmem16(addr);
-=======
 	uint16_t addr = cp1610_readop(m_r[7]);
 	uint16_t data = cp1610_readmem16(addr);
->>>>>>> upstream/master
 	m_r[7]++;
 	CLR_SZ;
 	m_r[d] ^= data;
@@ -1699,11 +1459,7 @@ void cp1610_cpu_device::cp1610_xor(int d)
  ***************************************************/
 void cp1610_cpu_device::cp1610_xorat(int m, int d)
 {
-<<<<<<< HEAD
-	UINT16 data = cp1610_readmem16(m_r[m]);
-=======
 	uint16_t data = cp1610_readmem16(m_r[m]);
->>>>>>> upstream/master
 	CLR_SZ;
 	m_r[d] ^= data;
 	SET_SZ(m_r[d]);
@@ -1716,11 +1472,7 @@ void cp1610_cpu_device::cp1610_xorat(int m, int d)
  ***************************************************/
 void cp1610_cpu_device::cp1610_xorat_i(int m, int d)
 {
-<<<<<<< HEAD
-	UINT16 data = cp1610_readmem16(m_r[m]);
-=======
 	uint16_t data = cp1610_readmem16(m_r[m]);
->>>>>>> upstream/master
 	m_r[m]++;
 	CLR_SZ;
 	m_r[d] ^= data;
@@ -1734,11 +1486,7 @@ void cp1610_cpu_device::cp1610_xorat_i(int m, int d)
  ***************************************************/
 void cp1610_cpu_device::cp1610_xorat_d(int m, int d)
 {
-<<<<<<< HEAD
-	UINT16 data;
-=======
 	uint16_t data;
->>>>>>> upstream/master
 	m_r[m]--;
 	data = cp1610_readmem16(m_r[m]);
 	CLR_SZ;
@@ -1753,11 +1501,7 @@ void cp1610_cpu_device::cp1610_xorat_d(int m, int d)
  ***************************************************/
 void cp1610_cpu_device::cp1610_xori(int d)
 {
-<<<<<<< HEAD
-	UINT16 data;
-=======
 	uint16_t data;
->>>>>>> upstream/master
 	data = cp1610_readop(m_r[7]);
 	m_r[7]++;
 	CLR_SZ;
@@ -1783,11 +1527,7 @@ void cp1610_cpu_device::cp1610_sdbd_mviat(int r, int d)
  ***************************************************/
 void cp1610_cpu_device::cp1610_sdbd_mviat_i(int r, int d)
 {
-<<<<<<< HEAD
-	UINT16 temp;
-=======
 	uint16_t temp;
->>>>>>> upstream/master
 	temp = cp1610_readmem16(m_r[r]) & 0xff;
 	m_r[r]++;
 	m_r[d] = temp;
@@ -1816,11 +1556,7 @@ void cp1610_cpu_device::cp1610_sdbd_mviat_d(int r, int d)
  ************************************************************************/
 void cp1610_cpu_device::cp1610_sdbd_mvii(int d)
 {
-<<<<<<< HEAD
-	UINT16 addr;
-=======
 	uint16_t addr;
->>>>>>> upstream/master
 	addr = cp1610_readop(m_r[7]) & 0xff;
 	m_r[7]++;
 	addr |= (cp1610_readop(m_r[7]) << 8);
@@ -1835,11 +1571,7 @@ void cp1610_cpu_device::cp1610_sdbd_mvii(int d)
  ***************************************************/
 void cp1610_cpu_device::cp1610_sdbd_addat(int r, int d)
 {
-<<<<<<< HEAD
-	UINT16 temp;
-=======
 	uint16_t temp;
->>>>>>> upstream/master
 	CLR_SZOC;
 	temp = cp1610_readmem16(m_r[r]) & 0xff;
 	temp |= (cp1610_readmem16(m_r[r]) << 8);
@@ -1855,11 +1587,7 @@ void cp1610_cpu_device::cp1610_sdbd_addat(int r, int d)
  ***************************************************/
 void cp1610_cpu_device::cp1610_sdbd_addat_i(int r, int d)
 {
-<<<<<<< HEAD
-	UINT16 temp;
-=======
 	uint16_t temp;
->>>>>>> upstream/master
 	CLR_SZOC;
 	temp = cp1610_readmem16(m_r[r]) & 0xff;
 	m_r[r]++;
@@ -1877,11 +1605,7 @@ void cp1610_cpu_device::cp1610_sdbd_addat_i(int r, int d)
  ***************************************************/
 void cp1610_cpu_device::cp1610_sdbd_addat_d(int r, int d)
 {
-<<<<<<< HEAD
-	UINT16 temp;
-=======
 	uint16_t temp;
->>>>>>> upstream/master
 	CLR_SZOC;
 	m_r[r]--;
 	temp = cp1610_readmem16(m_r[r]) & 0xff;
@@ -1899,13 +1623,8 @@ void cp1610_cpu_device::cp1610_sdbd_addat_d(int r, int d)
  ************************************************************************/
 void cp1610_cpu_device::cp1610_sdbd_addi(int d)
 {
-<<<<<<< HEAD
-	UINT16 addr;
-	UINT16 temp;
-=======
 	uint16_t addr;
 	uint16_t temp;
->>>>>>> upstream/master
 	CLR_SZOC;
 	addr = cp1610_readop(m_r[7]) & 0xff;
 	m_r[7]++;
@@ -1924,11 +1643,7 @@ void cp1610_cpu_device::cp1610_sdbd_addi(int d)
  ***************************************************/
 void cp1610_cpu_device::cp1610_sdbd_subat(int r, int d)
 {
-<<<<<<< HEAD
-	UINT32 temp;
-=======
 	uint32_t temp;
->>>>>>> upstream/master
 	CLR_SZOC;
 	temp = cp1610_readmem16(m_r[r]) & 0xff;
 	temp |= (cp1610_readmem16(m_r[r]) << 8);
@@ -1946,11 +1661,7 @@ void cp1610_cpu_device::cp1610_sdbd_subat(int r, int d)
  ***************************************************/
 void cp1610_cpu_device::cp1610_sdbd_subat_i(int r, int d)
 {
-<<<<<<< HEAD
-	UINT32 temp;
-=======
 	uint32_t temp;
->>>>>>> upstream/master
 	CLR_SZOC;
 	temp = cp1610_readmem16(m_r[r]) & 0xff;
 	m_r[r]++;
@@ -1970,11 +1681,7 @@ void cp1610_cpu_device::cp1610_sdbd_subat_i(int r, int d)
  ***************************************************/
 void cp1610_cpu_device::cp1610_sdbd_subat_d(int r, int d)
 {
-<<<<<<< HEAD
-	UINT32 temp;
-=======
 	uint32_t temp;
->>>>>>> upstream/master
 	CLR_SZOC;
 	m_r[r]--;
 	temp = cp1610_readmem16(m_r[r]) & 0xff;
@@ -1994,13 +1701,8 @@ void cp1610_cpu_device::cp1610_sdbd_subat_d(int r, int d)
  ************************************************************************/
 void cp1610_cpu_device::cp1610_sdbd_subi(int d)
 {
-<<<<<<< HEAD
-	UINT16 addr;
-	UINT32 temp;
-=======
 	uint16_t addr;
 	uint32_t temp;
->>>>>>> upstream/master
 	CLR_SZOC;
 	addr = cp1610_readop(m_r[7]) & 0xff;
 	m_r[7]++;
@@ -2021,13 +1723,8 @@ void cp1610_cpu_device::cp1610_sdbd_subi(int d)
  ***************************************************/
 void cp1610_cpu_device::cp1610_sdbd_cmpat(int r, int d)
 {
-<<<<<<< HEAD
-	UINT32 temp;
-	UINT16 temp2;
-=======
 	uint32_t temp;
 	uint16_t temp2;
->>>>>>> upstream/master
 	CLR_SZOC;
 	temp = cp1610_readmem16(m_r[r]) & 0xff;
 	temp |= (cp1610_readmem16(m_r[r]) << 8);
@@ -2045,13 +1742,8 @@ void cp1610_cpu_device::cp1610_sdbd_cmpat(int r, int d)
  ***************************************************/
 void cp1610_cpu_device::cp1610_sdbd_cmpat_i(int r, int d)
 {
-<<<<<<< HEAD
-	UINT32 temp;
-	UINT16 temp2;
-=======
 	uint32_t temp;
 	uint16_t temp2;
->>>>>>> upstream/master
 	CLR_SZOC;
 	temp = cp1610_readmem16(m_r[r]) & 0xff;
 	m_r[r]++;
@@ -2071,13 +1763,8 @@ void cp1610_cpu_device::cp1610_sdbd_cmpat_i(int r, int d)
  ***************************************************/
 void cp1610_cpu_device::cp1610_sdbd_cmpat_d(int r, int d)
 {
-<<<<<<< HEAD
-	UINT32 temp;
-	UINT16 temp2;
-=======
 	uint32_t temp;
 	uint16_t temp2;
->>>>>>> upstream/master
 	CLR_SZOC;
 	m_r[r]--;
 	temp = cp1610_readmem16(m_r[r]) & 0xff;
@@ -2097,15 +1784,9 @@ void cp1610_cpu_device::cp1610_sdbd_cmpat_d(int r, int d)
  ************************************************************************/
 void cp1610_cpu_device::cp1610_sdbd_cmpi(int d)
 {
-<<<<<<< HEAD
-	UINT16 addr;
-	UINT32 temp;
-	UINT16 temp2;
-=======
 	uint16_t addr;
 	uint32_t temp;
 	uint16_t temp2;
->>>>>>> upstream/master
 	CLR_SZOC;
 	addr = cp1610_readop(m_r[7]) & 0xff;
 	m_r[7]++;
@@ -2126,11 +1807,7 @@ void cp1610_cpu_device::cp1610_sdbd_cmpi(int d)
  ***************************************************/
 void cp1610_cpu_device::cp1610_sdbd_andat(int r, int d)
 {
-<<<<<<< HEAD
-	UINT16 temp;
-=======
 	uint16_t temp;
->>>>>>> upstream/master
 	CLR_SZ;
 	temp = cp1610_readmem16(m_r[r]) & 0xff;
 	temp |= (cp1610_readmem16(m_r[r]) << 8);
@@ -2145,11 +1822,7 @@ void cp1610_cpu_device::cp1610_sdbd_andat(int r, int d)
  ***************************************************/
 void cp1610_cpu_device::cp1610_sdbd_andat_i(int r, int d)
 {
-<<<<<<< HEAD
-	UINT16 temp;
-=======
 	uint16_t temp;
->>>>>>> upstream/master
 	CLR_SZ;
 	temp = cp1610_readmem16(m_r[r]) & 0xff;
 	m_r[r]++;
@@ -2166,11 +1839,7 @@ void cp1610_cpu_device::cp1610_sdbd_andat_i(int r, int d)
  ***************************************************/
 void cp1610_cpu_device::cp1610_sdbd_andat_d(int r, int d)
 {
-<<<<<<< HEAD
-	UINT16 temp;
-=======
 	uint16_t temp;
->>>>>>> upstream/master
 	CLR_SZ;
 	m_r[r]--;
 	temp = cp1610_readmem16(m_r[r]) & 0xff;
@@ -2187,11 +1856,7 @@ void cp1610_cpu_device::cp1610_sdbd_andat_d(int r, int d)
  ************************************************************************/
 void cp1610_cpu_device::cp1610_sdbd_andi(int d)
 {
-<<<<<<< HEAD
-	UINT16 addr;
-=======
 	uint16_t addr;
->>>>>>> upstream/master
 	CLR_SZ;
 	addr = cp1610_readop(m_r[7]) & 0xff;
 	m_r[7]++;
@@ -2208,11 +1873,7 @@ void cp1610_cpu_device::cp1610_sdbd_andi(int d)
  ***************************************************/
 void cp1610_cpu_device::cp1610_sdbd_xorat(int r, int d)
 {
-<<<<<<< HEAD
-	UINT16 temp;
-=======
 	uint16_t temp;
->>>>>>> upstream/master
 	CLR_SZ;
 	temp = cp1610_readmem16(m_r[r]) & 0xff;
 	temp |= (cp1610_readmem16(m_r[r]) << 8);
@@ -2227,11 +1888,7 @@ void cp1610_cpu_device::cp1610_sdbd_xorat(int r, int d)
  ***************************************************/
 void cp1610_cpu_device::cp1610_sdbd_xorat_i(int r, int d)
 {
-<<<<<<< HEAD
-	UINT16 temp;
-=======
 	uint16_t temp;
->>>>>>> upstream/master
 	CLR_SZ;
 	temp = cp1610_readmem16(m_r[r]) & 0xff;
 	m_r[r]++;
@@ -2248,11 +1905,7 @@ void cp1610_cpu_device::cp1610_sdbd_xorat_i(int r, int d)
  ***************************************************/
 void cp1610_cpu_device::cp1610_sdbd_xorat_d(int r, int d)
 {
-<<<<<<< HEAD
-	UINT16 temp;
-=======
 	uint16_t temp;
->>>>>>> upstream/master
 	CLR_SZ;
 	m_r[r]--;
 	temp = cp1610_readmem16(m_r[r]) & 0xff;
@@ -2269,11 +1922,7 @@ void cp1610_cpu_device::cp1610_sdbd_xorat_d(int r, int d)
  ************************************************************************/
 void cp1610_cpu_device::cp1610_sdbd_xori(int d)
 {
-<<<<<<< HEAD
-	UINT16 addr;
-=======
 	uint16_t addr;
->>>>>>> upstream/master
 	CLR_SZ;
 	addr = cp1610_readop(m_r[7]) & 0xff;
 	m_r[7]++;
@@ -2288,11 +1937,7 @@ void cp1610_cpu_device::cp1610_sdbd_xori(int d)
  *  S Z C OV b baa aaa a00  x xxx xxa aaa aaa aaa
  *  - - - -  JSR R1bb, ADDR
  ***************************************************/
-<<<<<<< HEAD
-void cp1610_cpu_device::cp1610_jsr(int r, UINT16 addr)
-=======
 void cp1610_cpu_device::cp1610_jsr(int r, uint16_t addr)
->>>>>>> upstream/master
 {
 	m_r[r] = m_r[7];
 	m_r[7] = addr;
@@ -2302,11 +1947,7 @@ void cp1610_cpu_device::cp1610_jsr(int r, uint16_t addr)
  *  S Z C OV b baa aaa a01  x xxx xxa aaa aaa aaa
  *  - - - -  JSRE R1bb, ADDR
  ***************************************************/
-<<<<<<< HEAD
-void cp1610_cpu_device::cp1610_jsre(int r, UINT16 addr)
-=======
 void cp1610_cpu_device::cp1610_jsre(int r, uint16_t addr)
->>>>>>> upstream/master
 {
 	m_r[r] = m_r[7];
 	m_r[7] = addr;
@@ -2317,11 +1958,7 @@ void cp1610_cpu_device::cp1610_jsre(int r, uint16_t addr)
  *  S Z C OV b baa aaa a10  x xxx xxa aaa aaa aaa
  *  - - - -  JSRD R1bb, ADDR
  ***************************************************/
-<<<<<<< HEAD
-void cp1610_cpu_device::cp1610_jsrd(int r, UINT16 addr)
-=======
 void cp1610_cpu_device::cp1610_jsrd(int r, uint16_t addr)
->>>>>>> upstream/master
 {
 	m_r[r] = m_r[7];
 	m_r[7] = addr;
@@ -2332,11 +1969,7 @@ void cp1610_cpu_device::cp1610_jsrd(int r, uint16_t addr)
  *  S Z C OV 1 1aa aaa a00  x xxx xxa aaa aaa aaa
  *  - - - -  J ADDR
  ***************************************************/
-<<<<<<< HEAD
-void cp1610_cpu_device::cp1610_j(UINT16 addr)
-=======
 void cp1610_cpu_device::cp1610_j(uint16_t addr)
->>>>>>> upstream/master
 {
 	m_r[7] = addr;
 }
@@ -2345,11 +1978,7 @@ void cp1610_cpu_device::cp1610_j(uint16_t addr)
  *  S Z C OV 1 1aa aaa a01  x xxx xxa aaa aaa aaa
  *  - - - -  JE ADDR
  ***************************************************/
-<<<<<<< HEAD
-void cp1610_cpu_device::cp1610_je(UINT16 addr)
-=======
 void cp1610_cpu_device::cp1610_je(uint16_t addr)
->>>>>>> upstream/master
 {
 	m_r[7] = addr;
 	m_intr_enabled = 1;
@@ -2359,11 +1988,7 @@ void cp1610_cpu_device::cp1610_je(uint16_t addr)
  *  S Z C OV 1 1aa aaa a10  x xxx xxa aaa aaa aaa
  *  - - - -  JD ADDR
  ***************************************************/
-<<<<<<< HEAD
-void cp1610_cpu_device::cp1610_jd(UINT16 addr)
-=======
 void cp1610_cpu_device::cp1610_jd(uint16_t addr)
->>>>>>> upstream/master
 {
 	m_r[7] = addr;
 	m_intr_enabled = 0;
@@ -2371,11 +1996,7 @@ void cp1610_cpu_device::cp1610_jd(uint16_t addr)
 
 void cp1610_cpu_device::cp1610_do_sdbd()
 {
-<<<<<<< HEAD
-	UINT16 sdbdtype, dest;
-=======
 	uint16_t sdbdtype, dest;
->>>>>>> upstream/master
 
 	/* Even though SDBD is uninterruptable, we don't need to set the mask bit,
 	 * because we already treat the SDBD prefixed instructions as uninterruptable
@@ -2456,11 +2077,7 @@ void cp1610_cpu_device::cp1610_do_sdbd()
 
 void cp1610_cpu_device::cp1610_do_jumps()
 {
-<<<<<<< HEAD
-	UINT16 jumptype, arg1, arg2, addr;
-=======
 	uint16_t jumptype, arg1, arg2, addr;
->>>>>>> upstream/master
 
 	arg1 = cp1610_readop(m_r[7]);
 	m_r[7]++;
@@ -2501,11 +2118,7 @@ void cp1610_cpu_device::cp1610_do_jumps()
 /* Execute cycles */
 void cp1610_cpu_device::execute_run()
 {
-<<<<<<< HEAD
-	UINT16 opcode;
-=======
 	uint16_t opcode;
->>>>>>> upstream/master
 
 	do
 	{
@@ -3746,12 +3359,8 @@ void cp1610_cpu_device::device_start()
 	state_add( CP1610_R5, "R5", m_r[5] ).formatstr("%04X");
 	state_add( CP1610_R6, "R6", m_r[6] ).formatstr("%04X");
 	state_add( CP1610_R7, "R7", m_r[7] ).formatstr("%04X");
-<<<<<<< HEAD
-	state_add( STATE_GENPC, "curpc", m_r[7] ).noshow();
-=======
 	state_add( STATE_GENPC, "GENPC", m_r[7] ).noshow();
 	state_add( STATE_GENPCBASE, "CURPC", m_r[7]).noshow();
->>>>>>> upstream/master
 	state_add( STATE_GENFLAGS, "GENFLAGS", m_flags ).noshow();
 
 	m_icountptr = &m_icount;
@@ -3785,22 +3394,13 @@ void cp1610_cpu_device::execute_set_input(int irqline, int state)
 }
 
 
-<<<<<<< HEAD
-cp1610_cpu_device::cp1610_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: cpu_device(mconfig, CP1610, "CP1610", tag, owner, clock, "cp1610", __FILE__)
-=======
 cp1610_cpu_device::cp1610_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: cpu_device(mconfig, CP1610, tag, owner, clock)
->>>>>>> upstream/master
 	, m_program_config("program", ENDIANNESS_BIG, 16, 16, -1)
 	, m_read_bext(*this)
 {
 }
 
-<<<<<<< HEAD
-
-void cp1610_cpu_device::state_string_export(const device_state_entry &entry, std::string &str)
-=======
 device_memory_interface::space_config_vector cp1610_cpu_device::memory_space_config() const
 {
 	return space_config_vector {
@@ -3809,16 +3409,11 @@ device_memory_interface::space_config_vector cp1610_cpu_device::memory_space_con
 }
 
 void cp1610_cpu_device::state_string_export(const device_state_entry &entry, std::string &str) const
->>>>>>> upstream/master
 {
 	switch (entry.index())
 	{
 		case STATE_GENFLAGS:
-<<<<<<< HEAD
-			strprintf(str, "%c%c%c%c",
-=======
 			str = string_format("%c%c%c%c",
->>>>>>> upstream/master
 				m_flags & 0x80 ? 'S':'.',
 				m_flags & 0x40 ? 'Z':'.',
 				m_flags & 0x20 ? 'V':'.',
@@ -3828,15 +3423,8 @@ void cp1610_cpu_device::state_string_export(const device_state_entry &entry, std
 }
 
 
-<<<<<<< HEAD
-offs_t cp1610_cpu_device::disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options)
-{
-	extern CPU_DISASSEMBLE( cp1610 );
-	return CPU_DISASSEMBLE_NAME(cp1610)(this, buffer, pc, oprom, opram, options);
-=======
 offs_t cp1610_cpu_device::disasm_disassemble(std::ostream &stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, uint32_t options)
 {
 	extern CPU_DISASSEMBLE( cp1610 );
 	return CPU_DISASSEMBLE_NAME(cp1610)(this, stream, pc, oprom, opram, options);
->>>>>>> upstream/master
 }

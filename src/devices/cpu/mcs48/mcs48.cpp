@@ -1,12 +1,6 @@
 // license:BSD-3-Clause
 // copyright-holders:Mirko Buffoni
 /*
-<<<<<<< HEAD
-EA pin - defined by architecture, must implement:
-   1 means external access, bypassing internal ROM
-   reimplement as a push, not a pull
-T0 output clock
-=======
     TODO:
     - EA pin - defined by architecture, must implement:
       1 means external access, bypassing internal ROM
@@ -14,7 +8,6 @@ T0 output clock
     - T0 output clock
     - get rid of i/o addressmap, use devcb for mcu pins
     - add CMOS devices, 1 new opcode(01 HALT)
->>>>>>> upstream/master
 */
 
 /***************************************************************************
@@ -25,10 +18,6 @@ T0 output clock
 
     Copyright Mirko Buffoni
     Based on the original work Copyright Dan Boris, an 8048 emulator
-<<<<<<< HEAD
-    You are not allowed to distribute this software commercially
-=======
->>>>>>> upstream/master
 
 ****************************************************************************
 
@@ -139,19 +128,6 @@ T0 output clock
 #define ram_r(a)        m_data->read_byte(a)
 #define ram_w(a,V)      m_data->write_byte(a, V)
 
-<<<<<<< HEAD
-/* ports are mapped to AS_IO */
-#define ext_r(a)        m_io->read_byte(a)
-#define ext_w(a,V)      m_io->write_byte(a, V)
-#define port_r(a)       m_io->read_byte(MCS48_PORT_P0 + a)
-#define port_w(a,V)     m_io->write_byte(MCS48_PORT_P0 + a, V)
-#define test_r(a)       m_io->read_byte(MCS48_PORT_T0 + a)
-#define test_w(a,V)     m_io->write_byte(MCS48_PORT_T0 + a, V)
-#define bus_r()         m_io->read_byte(MCS48_PORT_BUS)
-#define bus_w(V)        m_io->write_byte(MCS48_PORT_BUS, V)
-#define ea_r()          m_io->read_byte(MCS48_PORT_EA)
-#define prog_w(V)       m_io->write_byte(MCS48_PORT_PROG, V)
-=======
 /* ports are mapped to AS_IO and callbacks */
 #define ext_r(a)        m_io->read_byte(a)
 #define ext_w(a,V)      m_io->write_byte(a, V)
@@ -162,7 +138,6 @@ T0 output clock
 #define bus_r()         m_bus_in_cb()
 #define bus_w(V)        m_bus_out_cb(V)
 #define prog_w(V)       m_prog_out_cb(V)
->>>>>>> upstream/master
 
 /* r0-r7 map to memory via the regptr */
 #define R0              m_regptr[0]
@@ -176,27 +151,6 @@ T0 output clock
 
 
 
-<<<<<<< HEAD
-const device_type I8021 = &device_creator<i8021_device>;
-const device_type I8022 = &device_creator<i8022_device>;
-const device_type I8035 = &device_creator<i8035_device>;
-const device_type I8048 = &device_creator<i8048_device>;
-const device_type I8648 = &device_creator<i8648_device>;
-const device_type I8748 = &device_creator<i8748_device>;
-const device_type I8039 = &device_creator<i8039_device>;
-const device_type I8049 = &device_creator<i8049_device>;
-const device_type I8749 = &device_creator<i8749_device>;
-const device_type I8040 = &device_creator<i8040_device>;
-const device_type I8050 = &device_creator<i8050_device>;
-const device_type I8041 = &device_creator<i8041_device>;
-const device_type I8741 = &device_creator<i8741_device>;
-const device_type I8042 = &device_creator<i8042_device>;
-const device_type I8242 = &device_creator<i8242_device>;
-const device_type I8742 = &device_creator<i8742_device>;
-const device_type MB8884 = &device_creator<mb8884_device>;
-const device_type N7751 = &device_creator<n7751_device>;
-const device_type M58715 = &device_creator<m58715_device>;
-=======
 DEFINE_DEVICE_TYPE(I8021, i8021_device, "i8021", "I8021")
 DEFINE_DEVICE_TYPE(I8022, i8022_device, "i8022", "I8022")
 DEFINE_DEVICE_TYPE(I8035, i8035_device, "i8035", "I8035")
@@ -216,7 +170,6 @@ DEFINE_DEVICE_TYPE(I8742, i8742_device, "i8742", "I8742")
 DEFINE_DEVICE_TYPE(MB8884, mb8884_device, "mb8884", "MB8884")
 DEFINE_DEVICE_TYPE(N7751, n7751_device, "n7751", "N7751")
 DEFINE_DEVICE_TYPE(M58715, m58715_device, "m58715", "M58715")
->>>>>>> upstream/master
 
 
 /***************************************************************************
@@ -249,15 +202,6 @@ static ADDRESS_MAP_START(data_8bit, AS_DATA, 8, mcs48_cpu_device)
 ADDRESS_MAP_END
 
 
-<<<<<<< HEAD
-mcs48_cpu_device::mcs48_cpu_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, int rom_size, int ram_size, UINT8 feature_mask)
-	: cpu_device(mconfig, type, name, tag, owner, clock, shortname, __FILE__)
-	, m_program_config("program", ENDIANNESS_LITTLE, 8, 12, 0
-		, ( ( rom_size == 1024 ) ? ADDRESS_MAP_NAME(program_10bit) : ( ( rom_size == 2048 ) ? ADDRESS_MAP_NAME(program_11bit) : ( ( rom_size == 4096 ) ? ADDRESS_MAP_NAME(program_12bit) : NULL ) ) ))
-	, m_data_config("data", ENDIANNESS_LITTLE, 8, ( ( ram_size == 64 ) ? 6 : ( ( ram_size == 128 ) ? 7 : 8 ) ), 0
-		, ( ( ram_size == 64 ) ? ADDRESS_MAP_NAME(data_6bit) : ( ( ram_size == 128 ) ? ADDRESS_MAP_NAME(data_7bit) : ADDRESS_MAP_NAME(data_8bit) ) ))
-	, m_io_config("io", ENDIANNESS_LITTLE, 8, 9, 0)
-=======
 mcs48_cpu_device::mcs48_cpu_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock, int rom_size, int ram_size, uint8_t feature_mask)
 	: cpu_device(mconfig, type, tag, owner, clock)
 	, m_program_config("program", ENDIANNESS_LITTLE, 8, 12, 0
@@ -272,7 +216,6 @@ mcs48_cpu_device::mcs48_cpu_device(const machine_config &mconfig, device_type ty
 	, m_test_in_cb{{*this}, {*this}}
 	, m_t0_clk_func()
 	, m_prog_out_cb(*this)
->>>>>>> upstream/master
 	, m_psw(0)
 	, m_feature_mask(feature_mask)
 	, m_int_rom_size(rom_size)
@@ -289,120 +232,6 @@ mcs48_cpu_device::mcs48_cpu_device(const machine_config &mconfig, device_type ty
 	}
 }
 
-<<<<<<< HEAD
-i8021_device::i8021_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: mcs48_cpu_device(mconfig, I8021, "I8021", tag, owner, clock, "i8021", 1024, 64)
-{
-}
-
-i8022_device::i8022_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: mcs48_cpu_device(mconfig, I8022, "I8022", tag, owner, clock, "i8022", 2048, 128)
-{
-}
-
-i8035_device::i8035_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: mcs48_cpu_device(mconfig, I8035, "I8035", tag, owner, clock, "i8035", 0, 64)
-{
-}
-
-i8048_device::i8048_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: mcs48_cpu_device(mconfig, I8048, "I8048", tag, owner, clock, "i8048", 1024, 64)
-{
-}
-
-i8648_device::i8648_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: mcs48_cpu_device(mconfig, I8648, "I8648", tag, owner, clock, "i8648", 1024, 64)
-{
-}
-
-i8748_device::i8748_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: mcs48_cpu_device(mconfig, I8748, "I8748", tag, owner, clock, "i8748", 1024, 64)
-{
-}
-
-i8039_device::i8039_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: mcs48_cpu_device(mconfig, I8039, "I8039", tag, owner, clock, "i8039", 0, 128)
-{
-}
-
-i8049_device::i8049_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: mcs48_cpu_device(mconfig, I8049, "I8049", tag, owner, clock, "i8049", 2048, 128)
-{
-}
-
-i8749_device::i8749_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: mcs48_cpu_device(mconfig, I8749, "I8749", tag, owner, clock, "i8749", 2048, 128)
-{
-}
-
-i8040_device::i8040_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: mcs48_cpu_device(mconfig, I8040, "I8040", tag, owner, clock, "i8040", 0, 256)
-{
-}
-
-i8050_device::i8050_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: mcs48_cpu_device(mconfig, I8050, "I8050", tag, owner, clock, "i8050", 4096, 256)
-{
-}
-
-mb8884_device::mb8884_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: mcs48_cpu_device(mconfig, MB8884, "MB8884", tag, owner, clock, "mb8884", 0, 64)
-{
-}
-
-n7751_device::n7751_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: mcs48_cpu_device(mconfig, N7751, "N7751", tag, owner, clock, "n7751", 1024, 64)
-{
-}
-
-m58715_device::m58715_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: mcs48_cpu_device(mconfig, M58715, "M58715", tag, owner, clock, "m58715", 2048, 128)
-{
-}
-
-upi41_cpu_device::upi41_cpu_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, int rom_size, int ram_size)
-	: mcs48_cpu_device(mconfig, type, name, tag, owner, clock, shortname, rom_size, ram_size, UPI41_FEATURE)
-{
-}
-
-i8041_device::i8041_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: upi41_cpu_device(mconfig, I8041, "I8041", tag, owner, clock, "i8041", 1024, 128)
-{
-}
-
-i8741_device::i8741_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: upi41_cpu_device(mconfig, I8741, "I8741", tag, owner, clock, "i8741", 1024, 128)
-{
-}
-
-i8042_device::i8042_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: upi41_cpu_device(mconfig, I8042, "I8042", tag, owner, clock, "i8042", 2048, 256)
-{
-}
-
-i8242_device::i8242_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: upi41_cpu_device(mconfig, I8242, "I8242", tag, owner, clock, "i8242", 2048, 256)
-{
-}
-
-i8742_device::i8742_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: upi41_cpu_device(mconfig, I8742, "I8742", tag, owner, clock, "i8742", 2048, 256)
-{
-}
-
-
-offs_t mcs48_cpu_device::disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options)
-{
-	extern CPU_DISASSEMBLE( mcs48 );
-	return CPU_DISASSEMBLE_NAME(mcs48)(this, buffer, pc, oprom, opram, options);
-}
-
-
-offs_t upi41_cpu_device::disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options)
-{
-	extern CPU_DISASSEMBLE( upi41 );
-	return CPU_DISASSEMBLE_NAME(upi41)(this, buffer, pc, oprom, opram, options);
-=======
 i8021_device::i8021_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: mcs48_cpu_device(mconfig, I8021, tag, owner, clock, 1024, 64)
 {
@@ -523,7 +352,6 @@ offs_t upi41_cpu_device::disasm_disassemble(std::ostream &stream, offs_t pc, con
 {
 	extern CPU_DISASSEMBLE( upi41 );
 	return CPU_DISASSEMBLE_NAME(upi41)(this, stream, pc, oprom, opram, options);
->>>>>>> upstream/master
 }
 
 /***************************************************************************
@@ -534,11 +362,7 @@ offs_t upi41_cpu_device::disasm_disassemble(std::ostream &stream, offs_t pc, con
     opcode_fetch - fetch an opcode byte
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-UINT8 mcs48_cpu_device::opcode_fetch()
-=======
 uint8_t mcs48_cpu_device::opcode_fetch()
->>>>>>> upstream/master
 {
 	return m_direct->read_byte(m_pc++);
 }
@@ -549,11 +373,7 @@ uint8_t mcs48_cpu_device::opcode_fetch()
     byte
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-UINT8 mcs48_cpu_device::argument_fetch()
-=======
 uint8_t mcs48_cpu_device::argument_fetch()
->>>>>>> upstream/master
 {
 	return m_direct->read_byte(m_pc++);
 }
@@ -566,11 +386,7 @@ uint8_t mcs48_cpu_device::argument_fetch()
 
 void mcs48_cpu_device::update_regptr()
 {
-<<<<<<< HEAD
-	m_regptr = (UINT8 *)m_data->get_write_ptr((m_psw & B_FLAG) ? 24 : 0);
-=======
 	m_regptr = (uint8_t *)m_data->get_write_ptr((m_psw & B_FLAG) ? 24 : 0);
->>>>>>> upstream/master
 }
 
 
@@ -581,11 +397,7 @@ void mcs48_cpu_device::update_regptr()
 
 void mcs48_cpu_device::push_pc_psw()
 {
-<<<<<<< HEAD
-	UINT8 sp = m_psw & 0x07;
-=======
 	uint8_t sp = m_psw & 0x07;
->>>>>>> upstream/master
 	ram_w(8 + 2*sp, m_pc);
 	ram_w(9 + 2*sp, ((m_pc >> 8) & 0x0f) | (m_psw & 0xf0));
 	m_psw = (m_psw & 0xf8) | ((sp + 1) & 0x07);
@@ -599,11 +411,7 @@ void mcs48_cpu_device::push_pc_psw()
 
 void mcs48_cpu_device::pull_pc_psw()
 {
-<<<<<<< HEAD
-	UINT8 sp = (m_psw - 1) & 0x07;
-=======
 	uint8_t sp = (m_psw - 1) & 0x07;
->>>>>>> upstream/master
 	m_pc = ram_r(8 + 2*sp);
 	m_pc |= ram_r(9 + 2*sp) << 8;
 	m_psw = ((m_pc >> 8) & 0xf0) | 0x08 | sp;
@@ -619,11 +427,7 @@ void mcs48_cpu_device::pull_pc_psw()
 
 void mcs48_cpu_device::pull_pc()
 {
-<<<<<<< HEAD
-	UINT8 sp = (m_psw - 1) & 0x07;
-=======
 	uint8_t sp = (m_psw - 1) & 0x07;
->>>>>>> upstream/master
 	m_pc = ram_r(8 + 2*sp);
 	m_pc |= ram_r(9 + 2*sp) << 8;
 	m_pc &= 0xfff;
@@ -636,17 +440,10 @@ void mcs48_cpu_device::pull_pc()
     instruction
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-void mcs48_cpu_device::execute_add(UINT8 dat)
-{
-	UINT16 temp = m_a + dat;
-	UINT16 temp4 = (m_a & 0x0f) + (dat & 0x0f);
-=======
 void mcs48_cpu_device::execute_add(uint8_t dat)
 {
 	uint16_t temp = m_a + dat;
 	uint16_t temp4 = (m_a & 0x0f) + (dat & 0x0f);
->>>>>>> upstream/master
 
 	m_psw &= ~(C_FLAG | A_FLAG);
 	m_psw |= (temp4 << 2) & A_FLAG;
@@ -660,19 +457,11 @@ void mcs48_cpu_device::execute_add(uint8_t dat)
     instruction
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-void mcs48_cpu_device::execute_addc(UINT8 dat)
-{
-	UINT8 carryin = (m_psw & C_FLAG) >> 7;
-	UINT16 temp = m_a + dat + carryin;
-	UINT16 temp4 = (m_a & 0x0f) + (dat & 0x0f) + carryin;
-=======
 void mcs48_cpu_device::execute_addc(uint8_t dat)
 {
 	uint8_t carryin = (m_psw & C_FLAG) >> 7;
 	uint16_t temp = m_a + dat + carryin;
 	uint16_t temp4 = (m_a & 0x0f) + (dat & 0x0f) + carryin;
->>>>>>> upstream/master
 
 	m_psw &= ~(C_FLAG | A_FLAG);
 	m_psw |= (temp4 << 2) & A_FLAG;
@@ -686,15 +475,9 @@ void mcs48_cpu_device::execute_addc(uint8_t dat)
     instruction
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-void mcs48_cpu_device::execute_jmp(UINT16 address)
-{
-	UINT16 a11 = (m_irq_in_progress) ? 0 : m_a11;
-=======
 void mcs48_cpu_device::execute_jmp(uint16_t address)
 {
 	uint16_t a11 = (m_irq_in_progress) ? 0 : m_a11;
->>>>>>> upstream/master
 	m_pc = address | a11;
 }
 
@@ -704,11 +487,7 @@ void mcs48_cpu_device::execute_jmp(uint16_t address)
     instruction
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-void mcs48_cpu_device::execute_call(UINT16 address)
-=======
 void mcs48_cpu_device::execute_call(uint16_t address)
->>>>>>> upstream/master
 {
 	push_pc_psw();
 	execute_jmp(address);
@@ -720,15 +499,9 @@ void mcs48_cpu_device::execute_call(uint16_t address)
     conditional jump instruction
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-void mcs48_cpu_device::execute_jcc(UINT8 result)
-{
-	UINT8 offset = argument_fetch();
-=======
 void mcs48_cpu_device::execute_jcc(uint8_t result)
 {
 	uint8_t offset = argument_fetch();
->>>>>>> upstream/master
 	if (result != 0)
 		m_pc = ((m_pc - 1) & 0xf00) | offset;
 }
@@ -739,15 +512,9 @@ void mcs48_cpu_device::execute_jcc(uint8_t result)
     code can directly affect
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-UINT8 mcs48_cpu_device::p2_mask()
-{
-	UINT8 result = 0xff;
-=======
 uint8_t mcs48_cpu_device::p2_mask()
 {
 	uint8_t result = 0xff;
->>>>>>> upstream/master
 	if ((m_feature_mask & UPI41_FEATURE) == 0)
 		return result;
 	if (m_flags_enabled)
@@ -763,27 +530,16 @@ uint8_t mcs48_cpu_device::p2_mask()
     the 8243 expander chip
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-void mcs48_cpu_device::expander_operation(UINT8 operation, UINT8 port)
-{
-	/* put opcode/data on low 4 bits of P2 */
-	port_w(2, m_p2 = (m_p2 & 0xf0) | (operation << 2) | (port & 3));
-=======
 void mcs48_cpu_device::expander_operation(expander_op operation, uint8_t port)
 {
 	/* put opcode/data on low 4 bits of P2 */
 	port_w(2, m_p2 = (m_p2 & 0xf0) | (uint8_t(operation) << 2) | (port & 3));
->>>>>>> upstream/master
 
 	/* generate high-to-low transition on PROG line */
 	prog_w(0);
 
 	/* put data on low 4 bits of P2 */
-<<<<<<< HEAD
-	if (operation != 0)
-=======
 	if (operation != EXPANDER_OP_READ)
->>>>>>> upstream/master
 		port_w(2, m_p2 = (m_p2 & 0xf0) | (m_a & 0x0f));
 	else
 		m_a = port_r(2) | 0x0f;
@@ -849,17 +605,10 @@ OPHANDLER( anl_a_n )        { m_a &= argument_fetch(); return 2; }
 OPHANDLER( anl_bus_n )      { bus_w(bus_r() & argument_fetch()); return 2; }
 OPHANDLER( anl_p1_n )       { port_w(1, m_p1 &= argument_fetch()); return 2; }
 OPHANDLER( anl_p2_n )       { port_w(2, m_p2 &= argument_fetch() | ~p2_mask()); return 2; }
-<<<<<<< HEAD
-OPHANDLER( anld_p4_a )      { expander_operation(MCS48_EXPANDER_OP_AND, 4); return 2; }
-OPHANDLER( anld_p5_a )      { expander_operation(MCS48_EXPANDER_OP_AND, 5); return 2; }
-OPHANDLER( anld_p6_a )      { expander_operation(MCS48_EXPANDER_OP_AND, 6); return 2; }
-OPHANDLER( anld_p7_a )      { expander_operation(MCS48_EXPANDER_OP_AND, 7); return 2; }
-=======
 OPHANDLER( anld_p4_a )      { expander_operation(EXPANDER_OP_AND, 4); return 2; }
 OPHANDLER( anld_p5_a )      { expander_operation(EXPANDER_OP_AND, 5); return 2; }
 OPHANDLER( anld_p6_a )      { expander_operation(EXPANDER_OP_AND, 6); return 2; }
 OPHANDLER( anld_p7_a )      { expander_operation(EXPANDER_OP_AND, 7); return 2; }
->>>>>>> upstream/master
 
 OPHANDLER( call_0 )         { execute_call(argument_fetch() | 0x000); return 2; }
 OPHANDLER( call_1 )         { execute_call(argument_fetch() | 0x100); return 2; }
@@ -908,13 +657,8 @@ OPHANDLER( dec_r5 )         { R5--; return 1; }
 OPHANDLER( dec_r6 )         { R6--; return 1; }
 OPHANDLER( dec_r7 )         { R7--; return 1; }
 
-<<<<<<< HEAD
-OPHANDLER( dis_i )          { m_xirq_enabled = FALSE; return 1; }
-OPHANDLER( dis_tcnti )      { m_tirq_enabled = FALSE; m_timer_overflow = FALSE; return 1; }
-=======
 OPHANDLER( dis_i )          { m_xirq_enabled = false; return 1; }
 OPHANDLER( dis_tcnti )      { m_tirq_enabled = false; m_timer_overflow = false; return 1; }
->>>>>>> upstream/master
 
 OPHANDLER( djnz_r0 )        { execute_jcc(--R0 != 0); return 2; }
 OPHANDLER( djnz_r1 )        { execute_jcc(--R1 != 0); return 2; }
@@ -925,15 +669,6 @@ OPHANDLER( djnz_r5 )        { execute_jcc(--R5 != 0); return 2; }
 OPHANDLER( djnz_r6 )        { execute_jcc(--R6 != 0); return 2; }
 OPHANDLER( djnz_r7 )        { execute_jcc(--R7 != 0); return 2; }
 
-<<<<<<< HEAD
-OPHANDLER( en_i )           { m_xirq_enabled = TRUE; return 1 + check_irqs(); }
-OPHANDLER( en_tcnti )       { m_tirq_enabled = TRUE; return 1 + check_irqs(); }
-OPHANDLER( en_dma )         { m_dma_enabled = TRUE; port_w(2, m_p2); return 1; }
-OPHANDLER( en_flags )       { m_flags_enabled = TRUE; port_w(2, m_p2); return 1; }
-OPHANDLER( ent0_clk )
-{
-	logerror("MCS-48 PC:%04X - Unimplemented opcode = %02x\n", m_pc - 1, program_r(m_pc - 1));
-=======
 OPHANDLER( en_i )           { m_xirq_enabled = true; return 1 + check_irqs(); }
 OPHANDLER( en_tcnti )       { m_tirq_enabled = true; return 1 + check_irqs(); }
 OPHANDLER( en_dma )         { m_dma_enabled = true; port_w(2, m_p2); return 1; }
@@ -944,7 +679,6 @@ OPHANDLER( ent0_clk )
 		m_t0_clk_func(clock() / 3);
 	else
 		logerror("T0 clock enabled\n");
->>>>>>> upstream/master
 	return 1;
 }
 
@@ -995,11 +729,7 @@ OPHANDLER( jnt_0 )          { execute_jcc(test_r(0) == 0); return 2; }
 OPHANDLER( jnt_1 )          { execute_jcc(test_r(1) == 0); return 2; }
 OPHANDLER( jnz )            { execute_jcc(m_a != 0); return 2; }
 OPHANDLER( jobf )           { execute_jcc((m_sts & STS_OBF) != 0); return 2; }
-<<<<<<< HEAD
-OPHANDLER( jtf )            { execute_jcc(m_timer_flag); m_timer_flag = FALSE; return 2; }
-=======
 OPHANDLER( jtf )            { execute_jcc(m_timer_flag); m_timer_flag = false; return 2; }
->>>>>>> upstream/master
 OPHANDLER( jt_0 )           { execute_jcc(test_r(0) != 0); return 2; }
 OPHANDLER( jt_1 )           { execute_jcc(test_r(1) != 0); return 2; }
 OPHANDLER( jz )             { execute_jcc(m_a == 0); return 2; }
@@ -1052,16 +782,6 @@ OPHANDLER( mov_xr1_a )      { ram_w(R1, m_a); return 1; }
 OPHANDLER( mov_xr0_n )      { ram_w(R0, argument_fetch()); return 2; }
 OPHANDLER( mov_xr1_n )      { ram_w(R1, argument_fetch()); return 2; }
 
-<<<<<<< HEAD
-OPHANDLER( movd_a_p4 )      { expander_operation(MCS48_EXPANDER_OP_READ, 4); return 2; }
-OPHANDLER( movd_a_p5 )      { expander_operation(MCS48_EXPANDER_OP_READ, 5); return 2; }
-OPHANDLER( movd_a_p6 )      { expander_operation(MCS48_EXPANDER_OP_READ, 6); return 2; }
-OPHANDLER( movd_a_p7 )      { expander_operation(MCS48_EXPANDER_OP_READ, 7); return 2; }
-OPHANDLER( movd_p4_a )      { expander_operation(MCS48_EXPANDER_OP_WRITE, 4); return 2; }
-OPHANDLER( movd_p5_a )      { expander_operation(MCS48_EXPANDER_OP_WRITE, 5); return 2; }
-OPHANDLER( movd_p6_a )      { expander_operation(MCS48_EXPANDER_OP_WRITE, 6); return 2; }
-OPHANDLER( movd_p7_a )      { expander_operation(MCS48_EXPANDER_OP_WRITE, 7); return 2; }
-=======
 OPHANDLER( movd_a_p4 )      { expander_operation(EXPANDER_OP_READ, 4); return 2; }
 OPHANDLER( movd_a_p5 )      { expander_operation(EXPANDER_OP_READ, 5); return 2; }
 OPHANDLER( movd_a_p6 )      { expander_operation(EXPANDER_OP_READ, 6); return 2; }
@@ -1070,7 +790,6 @@ OPHANDLER( movd_p4_a )      { expander_operation(EXPANDER_OP_WRITE, 4); return 2
 OPHANDLER( movd_p5_a )      { expander_operation(EXPANDER_OP_WRITE, 5); return 2; }
 OPHANDLER( movd_p6_a )      { expander_operation(EXPANDER_OP_WRITE, 6); return 2; }
 OPHANDLER( movd_p7_a )      { expander_operation(EXPANDER_OP_WRITE, 7); return 2; }
->>>>>>> upstream/master
 
 OPHANDLER( movp_a_xa )      { m_a = program_r((m_pc & 0xf00) | m_a); return 2; }
 OPHANDLER( movp3_a_xa )     { m_a = program_r(0x300 | m_a); return 2; }
@@ -1097,16 +816,6 @@ OPHANDLER( orl_a_n )        { m_a |= argument_fetch(); return 2; }
 OPHANDLER( orl_bus_n )      { bus_w(bus_r() | argument_fetch()); return 2; }
 OPHANDLER( orl_p1_n )       { port_w(1, m_p1 |= argument_fetch()); return 2; }
 OPHANDLER( orl_p2_n )       { port_w(2, m_p2 |= argument_fetch() & p2_mask()); return 2; }
-<<<<<<< HEAD
-OPHANDLER( orld_p4_a )      { expander_operation(MCS48_EXPANDER_OP_OR, 4); return 2; }
-OPHANDLER( orld_p5_a )      { expander_operation(MCS48_EXPANDER_OP_OR, 5); return 2; }
-OPHANDLER( orld_p6_a )      { expander_operation(MCS48_EXPANDER_OP_OR, 6); return 2; }
-OPHANDLER( orld_p7_a )      { expander_operation(MCS48_EXPANDER_OP_OR, 7); return 2; }
-
-OPHANDLER( outl_bus_a )     { bus_w(m_a); return 2; }
-OPHANDLER( outl_p1_a )      { port_w(1, m_p1 = m_a); return 2; }
-OPHANDLER( outl_p2_a )      { UINT8 mask = p2_mask(); port_w(2, m_p2 = (m_p2 & ~mask) | (m_a & mask)); return 2; }
-=======
 OPHANDLER( orld_p4_a )      { expander_operation(EXPANDER_OP_OR, 4); return 2; }
 OPHANDLER( orld_p5_a )      { expander_operation(EXPANDER_OP_OR, 5); return 2; }
 OPHANDLER( orld_p6_a )      { expander_operation(EXPANDER_OP_OR, 6); return 2; }
@@ -1115,7 +824,6 @@ OPHANDLER( orld_p7_a )      { expander_operation(EXPANDER_OP_OR, 7); return 2; }
 OPHANDLER( outl_bus_a )     { bus_w(m_a); return 2; }
 OPHANDLER( outl_p1_a )      { port_w(1, m_p1 = m_a); return 2; }
 OPHANDLER( outl_p2_a )      { uint8_t mask = p2_mask(); port_w(2, m_p2 = (m_p2 & ~mask) | (m_a & mask)); return 2; }
->>>>>>> upstream/master
 OPHANDLER( out_dbb_a )
 {
 	/* copy to the DBBO and update the bit in STS */
@@ -1135,26 +843,15 @@ OPHANDLER( retr )
 	pull_pc_psw();
 
 	/* implicitly clear the IRQ in progress flip flop and re-check interrupts */
-<<<<<<< HEAD
-	m_irq_in_progress = FALSE;
-=======
 	m_irq_in_progress = false;
->>>>>>> upstream/master
 	return 2 + check_irqs();
 }
 
 OPHANDLER( rl_a )           { m_a = (m_a << 1) | (m_a >> 7); return 1; }
-<<<<<<< HEAD
-OPHANDLER( rlc_a )          { UINT8 newc = m_a & C_FLAG; m_a = (m_a << 1) | (m_psw >> 7); m_psw = (m_psw & ~C_FLAG) | newc; return 1; }
-
-OPHANDLER( rr_a )           { m_a = (m_a >> 1) | (m_a << 7); return 1; }
-OPHANDLER( rrc_a )          { UINT8 newc = (m_a << 7) & C_FLAG; m_a = (m_a >> 1) | (m_psw & C_FLAG); m_psw = (m_psw & ~C_FLAG) | newc; return 1; }
-=======
 OPHANDLER( rlc_a )          { uint8_t newc = m_a & C_FLAG; m_a = (m_a << 1) | (m_psw >> 7); m_psw = (m_psw & ~C_FLAG) | newc; return 1; }
 
 OPHANDLER( rr_a )           { m_a = (m_a >> 1) | (m_a << 7); return 1; }
 OPHANDLER( rrc_a )          { uint8_t newc = (m_a << 7) & C_FLAG; m_a = (m_a >> 1) | (m_psw & C_FLAG); m_psw = (m_psw & ~C_FLAG) | newc; return 1; }
->>>>>>> upstream/master
 
 OPHANDLER( sel_mb0 )        { m_a11 = 0x000; return 1; }
 OPHANDLER( sel_mb1 )        { m_a11 = 0x800; return 1; }
@@ -1169,21 +866,6 @@ OPHANDLER( strt_t )         { m_timecount_enabled = TIMER_ENABLED; m_prescaler =
 
 OPHANDLER( swap_a )         { m_a = (m_a << 4) | (m_a >> 4); return 1; }
 
-<<<<<<< HEAD
-OPHANDLER( xch_a_r0 )       { UINT8 tmp = m_a; m_a = R0; R0 = tmp; return 1; }
-OPHANDLER( xch_a_r1 )       { UINT8 tmp = m_a; m_a = R1; R1 = tmp; return 1; }
-OPHANDLER( xch_a_r2 )       { UINT8 tmp = m_a; m_a = R2; R2 = tmp; return 1; }
-OPHANDLER( xch_a_r3 )       { UINT8 tmp = m_a; m_a = R3; R3 = tmp; return 1; }
-OPHANDLER( xch_a_r4 )       { UINT8 tmp = m_a; m_a = R4; R4 = tmp; return 1; }
-OPHANDLER( xch_a_r5 )       { UINT8 tmp = m_a; m_a = R5; R5 = tmp; return 1; }
-OPHANDLER( xch_a_r6 )       { UINT8 tmp = m_a; m_a = R6; R6 = tmp; return 1; }
-OPHANDLER( xch_a_r7 )       { UINT8 tmp = m_a; m_a = R7; R7 = tmp; return 1; }
-OPHANDLER( xch_a_xr0 )      { UINT8 tmp = m_a; m_a = ram_r(R0); ram_w(R0, tmp); return 1; }
-OPHANDLER( xch_a_xr1 )      { UINT8 tmp = m_a; m_a = ram_r(R1); ram_w(R1, tmp); return 1; }
-
-OPHANDLER( xchd_a_xr0 )     { UINT8 oldram = ram_r(R0); ram_w(R0, (oldram & 0xf0) | (m_a & 0x0f)); m_a = (m_a & 0xf0) | (oldram & 0x0f); return 1; }
-OPHANDLER( xchd_a_xr1 )     { UINT8 oldram = ram_r(R1); ram_w(R1, (oldram & 0xf0) | (m_a & 0x0f)); m_a = (m_a & 0xf0) | (oldram & 0x0f); return 1; }
-=======
 OPHANDLER( xch_a_r0 )       { uint8_t tmp = m_a; m_a = R0; R0 = tmp; return 1; }
 OPHANDLER( xch_a_r1 )       { uint8_t tmp = m_a; m_a = R1; R1 = tmp; return 1; }
 OPHANDLER( xch_a_r2 )       { uint8_t tmp = m_a; m_a = R2; R2 = tmp; return 1; }
@@ -1197,7 +879,6 @@ OPHANDLER( xch_a_xr1 )      { uint8_t tmp = m_a; m_a = ram_r(R1); ram_w(R1, tmp)
 
 OPHANDLER( xchd_a_xr0 )     { uint8_t oldram = ram_r(R0); ram_w(R0, (oldram & 0xf0) | (m_a & 0x0f)); m_a = (m_a & 0xf0) | (oldram & 0x0f); return 1; }
 OPHANDLER( xchd_a_xr1 )     { uint8_t oldram = ram_r(R1); ram_w(R1, (oldram & 0xf0) | (m_a & 0x0f)); m_a = (m_a & 0xf0) | (oldram & 0x0f); return 1; }
->>>>>>> upstream/master
 
 OPHANDLER( xrl_a_r0 )       { m_a ^= R0; return 1; }
 OPHANDLER( xrl_a_r1 )       { m_a ^= R1; return 1; }
@@ -1276,8 +957,6 @@ const mcs48_cpu_device::mcs48_ophandler mcs48_cpu_device::s_opcode_table[256]=
     INITIALIZATION/RESET
 ***************************************************************************/
 
-<<<<<<< HEAD
-=======
 void mcs48_cpu_device::device_config_complete()
 {
 	m_t0_clk_func.bind_relative_to(*owner());
@@ -1285,7 +964,6 @@ void mcs48_cpu_device::device_config_complete()
 		m_t0_clk_func(clock() / 3);
 }
 
->>>>>>> upstream/master
 /*-------------------------------------------------
     mcs48_init - generic MCS-48 initialization
 -------------------------------------------------*/
@@ -1313,8 +991,6 @@ void mcs48_cpu_device::device_start()
 	m_data = &space(AS_DATA);
 	m_io = &space(AS_IO);
 
-<<<<<<< HEAD
-=======
 	// resolve callbacks
 	for (auto &cb : m_port_in_cb)
 		cb.resolve_safe(0xff);
@@ -1326,16 +1002,11 @@ void mcs48_cpu_device::device_start()
 		cb.resolve_safe(0);
 	m_prog_out_cb.resolve_safe();
 
->>>>>>> upstream/master
 	/* set up the state table */
 	{
 		state_add(MCS48_PC,        "PC",        m_pc).mask(0xfff);
 		state_add(STATE_GENPC,     "GENPC",     m_pc).mask(0xfff).noshow();
-<<<<<<< HEAD
-		state_add(STATE_GENPCBASE, "GENPCBASE", m_prevpc).mask(0xfff).noshow();
-=======
 		state_add(STATE_GENPCBASE, "CURPC",     m_prevpc).mask(0xfff).noshow();
->>>>>>> upstream/master
 		state_add(STATE_GENSP,     "GENSP",     m_psw).mask(0x7).noshow();
 		state_add(STATE_GENFLAGS,  "GENFLAGS",  m_psw).noshow().formatstr("%10s");
 		state_add(MCS48_A,         "A",         m_a);
@@ -1344,15 +1015,8 @@ void mcs48_cpu_device::device_start()
 		state_add(MCS48_P1,        "P1",        m_p1);
 		state_add(MCS48_P2,        "P2",        m_p2);
 
-<<<<<<< HEAD
-		std::string tempstr;
-		for (int regnum = 0; regnum < 8; regnum++) {
-			strprintf(tempstr, "R%d", regnum);
-			state_add(MCS48_R0 + regnum, tempstr.c_str(), m_rtemp).callimport().callexport();
-=======
 		for (int regnum = 0; regnum < 8; regnum++) {
 			state_add(MCS48_R0 + regnum, string_format("R%d", regnum).c_str(), m_rtemp).callimport().callexport();
->>>>>>> upstream/master
 		}
 		state_add(MCS48_EA,        "EA",        m_ea).mask(0x1);
 
@@ -1410,19 +1074,6 @@ void mcs48_cpu_device::device_reset()
 	m_p2 = 0xff;
 	port_w(1, m_p1);
 	port_w(2, m_p2);
-<<<<<<< HEAD
-	m_tirq_enabled = FALSE;
-	m_xirq_enabled = FALSE;
-	m_timecount_enabled = 0;
-	m_timer_flag = FALSE;
-	m_sts = 0;
-	m_flags_enabled = FALSE;
-	m_dma_enabled = FALSE;
-
-	/* confirmed from interrupt logic description */
-	m_irq_in_progress = FALSE;
-	m_timer_overflow = FALSE;
-=======
 	m_tirq_enabled = false;
 	m_xirq_enabled = false;
 	m_timecount_enabled = 0;
@@ -1436,7 +1087,6 @@ void mcs48_cpu_device::device_reset()
 	/* confirmed from interrupt logic description */
 	m_irq_in_progress = false;
 	m_timer_overflow = false;
->>>>>>> upstream/master
 }
 
 
@@ -1458,11 +1108,7 @@ int mcs48_cpu_device::check_irqs()
 	/* external interrupts take priority */
 	if ((m_irq_state || (m_sts & STS_IBF) != 0) && m_xirq_enabled)
 	{
-<<<<<<< HEAD
-		m_irq_in_progress = TRUE;
-=======
 		m_irq_in_progress = true;
->>>>>>> upstream/master
 
 		/* transfer to location 0x03 */
 		push_pc_psw();
@@ -1476,22 +1122,14 @@ int mcs48_cpu_device::check_irqs()
 	/* timer overflow interrupts follow */
 	if (m_timer_overflow && m_tirq_enabled)
 	{
-<<<<<<< HEAD
-		m_irq_in_progress = TRUE;
-=======
 		m_irq_in_progress = true;
->>>>>>> upstream/master
 
 		/* transfer to location 0x07 */
 		push_pc_psw();
 		m_pc = 0x07;
 
 		/* timer overflow flip-flop is reset once taken */
-<<<<<<< HEAD
-		m_timer_overflow = FALSE;
-=======
 		m_timer_overflow = false;
->>>>>>> upstream/master
 		return 2;
 	}
 	return 0;
@@ -1505,20 +1143,12 @@ int mcs48_cpu_device::check_irqs()
 
 void mcs48_cpu_device::burn_cycles(int count)
 {
-<<<<<<< HEAD
-	int timerover = FALSE;
-=======
 	int timerover = false;
->>>>>>> upstream/master
 
 	/* if the timer is enabled, accumulate prescaler cycles */
 	if (m_timecount_enabled & TIMER_ENABLED)
 	{
-<<<<<<< HEAD
-		UINT8 oldtimer = m_timer;
-=======
 		uint8_t oldtimer = m_timer;
->>>>>>> upstream/master
 		m_prescaler += count;
 		m_timer += m_prescaler >> 5;
 		m_prescaler &= 0x1f;
@@ -1537,20 +1167,12 @@ void mcs48_cpu_device::burn_cycles(int count)
 	/* if either source caused a timer overflow, set the flags and check IRQs */
 	if (timerover)
 	{
-<<<<<<< HEAD
-		m_timer_flag = TRUE;
-=======
 		m_timer_flag = true;
->>>>>>> upstream/master
 
 		/* according to the docs, if an overflow occurs with interrupts disabled, the overflow is not stored */
 		if (m_tirq_enabled)
 		{
-<<<<<<< HEAD
-			m_timer_overflow = TRUE;
-=======
 			m_timer_overflow = true;
->>>>>>> upstream/master
 			check_irqs();
 		}
 	}
@@ -1630,13 +1252,8 @@ READ8_MEMBER( upi41_cpu_device::upi41_master_r )
 
 TIMER_CALLBACK_MEMBER( upi41_cpu_device::master_callback )
 {
-<<<<<<< HEAD
-	UINT8 a0 = (param >> 8) & 1;
-	UINT8 data = param;
-=======
 	uint8_t a0 = (param >> 8) & 1;
 	uint8_t data = param;
->>>>>>> upstream/master
 
 	/* data always goes to the input buffer */
 	m_dbbi = data;
@@ -1662,8 +1279,6 @@ WRITE8_MEMBER( upi41_cpu_device::upi41_master_w )
 }
 
 
-<<<<<<< HEAD
-=======
 READ8_MEMBER(mcs48_cpu_device::p1_r)
 {
 	return m_p1;
@@ -1674,7 +1289,6 @@ READ8_MEMBER(mcs48_cpu_device::p2_r)
 	return m_p2;
 }
 
->>>>>>> upstream/master
 
 /***************************************************************************
     GENERAL CONTEXT ACCESS
@@ -1731,20 +1345,12 @@ void mcs48_cpu_device::state_export(const device_state_entry &entry)
 	}
 }
 
-<<<<<<< HEAD
-void mcs48_cpu_device::state_string_export(const device_state_entry &entry, std::string &str)
-=======
 void mcs48_cpu_device::state_string_export(const device_state_entry &entry, std::string &str) const
->>>>>>> upstream/master
 {
 	switch (entry.index())
 	{
 		case STATE_GENFLAGS:
-<<<<<<< HEAD
-			strprintf(str, "%c%c %c%c%c%c%c%c%c%c",
-=======
 			str = string_format("%c%c %c%c%c%c%c%c%c%c",
->>>>>>> upstream/master
 				m_irq_state ? 'I':'.',
 				m_a11       ? 'M':'.',
 				m_psw & 0x80 ? 'C':'.',

@@ -122,25 +122,13 @@ Notes:
 */
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cdrom.h"
-#include "cpu/psx/psx.h"
-#include "video/psx.h"
-=======
 #include "bus/scsi/scsi.h"
 #include "bus/scsi/scsicd.h"
 #include "cpu/psx/psx.h"
->>>>>>> upstream/master
 #include "machine/am53cf96.h"
 #include "machine/eepromser.h"
 #include "machine/intelfsh.h"
 #include "machine/mb89371.h"
-<<<<<<< HEAD
-#include "bus/scsi/scsi.h"
-#include "bus/scsi/scsicd.h"
-#include "sound/spu.h"
-#include "sound/cdda.h"
-=======
 #include "machine/ram.h"
 #include "sound/cdda.h"
 #include "sound/spu.h"
@@ -148,7 +136,6 @@ Notes:
 #include "speaker.h"
 #include "cdrom.h"
 
->>>>>>> upstream/master
 
 class konamigv_state : public driver_device
 {
@@ -169,35 +156,15 @@ public:
 	DECLARE_READ16_MEMBER(tokimeki_serial_r);
 	DECLARE_WRITE16_MEMBER(tokimeki_serial_w);
 	DECLARE_DRIVER_INIT(simpbowl);
-<<<<<<< HEAD
-	void scsi_dma_read( UINT32 *p_n_psxram, UINT32 n_address, INT32 n_size );
-	void scsi_dma_write( UINT32 *p_n_psxram, UINT32 n_address, INT32 n_size );
-
-protected:
-	virtual void driver_start();
-=======
 	void scsi_dma_read( uint32_t *p_n_psxram, uint32_t n_address, int32_t n_size );
 	void scsi_dma_write( uint32_t *p_n_psxram, uint32_t n_address, int32_t n_size );
 
 protected:
 	virtual void driver_start() override;
->>>>>>> upstream/master
 
 private:
 	required_device<am53cf96_device> m_am53cf96;
 
-<<<<<<< HEAD
-	UINT32 m_flash_address;
-
-	UINT16 m_trackball_prev[ 2 ];
-	UINT16 m_trackball_data[ 2 ];
-	UINT16 m_btc_trackball_prev[ 4 ];
-	UINT16 m_btc_trackball_data[ 4 ];
-
-	fujitsu_29f016a_device *m_flash8[4];
-
-	UINT8 m_sector_buffer[ 4096 ];
-=======
 	uint32_t m_flash_address;
 
 	uint16_t m_trackball_prev[ 2 ];
@@ -208,7 +175,6 @@ private:
 	fujitsu_29f016a_device *m_flash8[4];
 
 	uint8_t m_sector_buffer[ 4096 ];
->>>>>>> upstream/master
 	required_device<cpu_device> m_maincpu;
 };
 
@@ -260,15 +226,9 @@ ADDRESS_MAP_END
 
 /* SCSI */
 
-<<<<<<< HEAD
-void konamigv_state::scsi_dma_read( UINT32 *p_n_psxram, UINT32 n_address, INT32 n_size )
-{
-	UINT8 *sector_buffer = m_sector_buffer;
-=======
 void konamigv_state::scsi_dma_read( uint32_t *p_n_psxram, uint32_t n_address, int32_t n_size )
 {
 	uint8_t *sector_buffer = m_sector_buffer;
->>>>>>> upstream/master
 	int i;
 	int n_this;
 
@@ -310,15 +270,9 @@ void konamigv_state::scsi_dma_read( uint32_t *p_n_psxram, uint32_t n_address, in
 	}
 }
 
-<<<<<<< HEAD
-void konamigv_state::scsi_dma_write( UINT32 *p_n_psxram, UINT32 n_address, INT32 n_size )
-{
-	UINT8 *sector_buffer = m_sector_buffer;
-=======
 void konamigv_state::scsi_dma_write( uint32_t *p_n_psxram, uint32_t n_address, int32_t n_size )
 {
 	uint8_t *sector_buffer = m_sector_buffer;
->>>>>>> upstream/master
 	int i;
 	int n_this;
 
@@ -360,21 +314,13 @@ void konamigv_state::driver_start()
 	save_item(NAME(m_btc_trackball_data));
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_FRAGMENT( cdrom_config )
-=======
 static MACHINE_CONFIG_START( cdrom_config )
->>>>>>> upstream/master
 	MCFG_DEVICE_MODIFY( "cdda" )
 	MCFG_SOUND_ROUTE( 0, "^^^^lspeaker", 1.0 )
 	MCFG_SOUND_ROUTE( 1, "^^^^rspeaker", 1.0 )
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( konamigv, konamigv_state )
-=======
 static MACHINE_CONFIG_START( konamigv )
->>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_CPU_ADD( "maincpu", CXD8530BQ, XTAL_67_7376MHz )
 	MCFG_CPU_PROGRAM_MAP( konamigv_map )
@@ -382,13 +328,8 @@ static MACHINE_CONFIG_START( konamigv )
 	MCFG_RAM_MODIFY("maincpu:ram")
 	MCFG_RAM_DEFAULT_SIZE("2M")
 
-<<<<<<< HEAD
-	MCFG_PSX_DMA_CHANNEL_READ( "maincpu", 5, psx_dma_read_delegate( FUNC( konamigv_state::scsi_dma_read ), (konamigv_state *) owner ) )
-	MCFG_PSX_DMA_CHANNEL_WRITE( "maincpu", 5, psx_dma_write_delegate( FUNC( konamigv_state::scsi_dma_write ), (konamigv_state *) owner ) )
-=======
 	MCFG_PSX_DMA_CHANNEL_READ( "maincpu", 5, psxdma_device::read_delegate(&konamigv_state::scsi_dma_read, (konamigv_state *) owner ) )
 	MCFG_PSX_DMA_CHANNEL_WRITE( "maincpu", 5, psxdma_device::write_delegate(&konamigv_state::scsi_dma_write, (konamigv_state *) owner ) )
->>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("mb89371", MB89371, 0)
 	MCFG_EEPROM_SERIAL_93C46_ADD("eeprom")
@@ -538,11 +479,7 @@ READ16_MEMBER(konamigv_state::trackball_r)
 
 		for( int axis = 0; axis < 2; axis++ )
 		{
-<<<<<<< HEAD
-			UINT16 value = ioport(axisnames[axis])->read();
-=======
 			uint16_t value = ioport(axisnames[axis])->read();
->>>>>>> upstream/master
 			m_trackball_data[ axis ] = value - m_trackball_prev[ axis ];
 			m_trackball_prev[ axis ] = value;
 		}
@@ -602,11 +539,7 @@ READ16_MEMBER(konamigv_state::btc_trackball_r)
 
 		for( int axis = 0; axis < 4; axis++ )
 		{
-<<<<<<< HEAD
-			UINT16 value = ioport(axisnames[axis])->read();
-=======
 			uint16_t value = ioport(axisnames[axis])->read();
->>>>>>> upstream/master
 			m_btc_trackball_data[ axis ] = value - m_btc_trackball_prev[ axis ];
 			m_btc_trackball_prev[ axis ] = value;
 		}
@@ -740,8 +673,6 @@ static INPUT_PORTS_START( kdeadeye )
 
 INPUT_PORTS_END
 
-<<<<<<< HEAD
-=======
 /* Wedding Rhapsody */
 
 static INPUT_PORTS_START( weddingr )
@@ -766,7 +697,6 @@ static INPUT_PORTS_START( weddingr )
 
 INPUT_PORTS_END
 
->>>>>>> upstream/master
 #define GV_BIOS \
 	ROM_REGION32_LE( 0x080000, "maincpu:rom", 0 ) \
 	ROM_LOAD( "999a01.7e",   0x0000000, 0x080000, CRC(ad498d2d) SHA1(02a82a2fe1fba0404517c3602324bfa64e23e478) )
@@ -918,23 +848,6 @@ ROM_START( tmoshspa )
 ROM_END
 
 /* BIOS placeholder */
-<<<<<<< HEAD
-GAME( 1995, konamigv, 0,        konamigv, konamigv, driver_device,  0,        ROT0, "Konami", "Baby Phoenix/GV System", MACHINE_IS_BIOS_ROOT )
-
-GAME( 1996, powyak96, konamigv, konamigv, konamigv, driver_device,  0,        ROT0, "Konami", "Jikkyou Powerful Pro Yakyuu '96 (GV017 Japan 1.03)", MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_GRAPHICS )
-GAME( 1996, hyperath, konamigv, konamigv, konamigv, driver_device,  0,        ROT0, "Konami", "Hyper Athlete (GV021 Japan 1.00)", MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_GRAPHICS )
-GAME( 1996, lacrazyc, konamigv, konamigv, konamigv, driver_device,  0,        ROT0, "Konami", "Let's Attack Crazy Cross (GV027 Asia 1.10)", MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_GRAPHICS )
-GAME( 1996, susume,   lacrazyc, konamigv, konamigv, driver_device,  0,        ROT0, "Konami", "Susume! Taisen Puzzle-Dama (GV027 Japan 1.20)", MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_GRAPHICS )
-GAME( 1996, btchamp,  konamigv, btchamp,  btchamp,  driver_device,  0,        ROT0, "Konami", "Beat the Champ (GV053 UAA01)", MACHINE_NOT_WORKING | MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_GRAPHICS )
-GAME( 1996, kdeadeye, konamigv, kdeadeye, kdeadeye, driver_device,  0,        ROT0, "Konami", "Dead Eye (GV054 UAA01)", MACHINE_NOT_WORKING | MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_GRAPHICS )
-GAME( 1997, weddingr, konamigv, konamigv, konamigv, driver_device,  0,        ROT0, "Konami", "Wedding Rhapsody (GX624 JAA)", MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_GRAPHICS )
-GAME( 1997, tmosh,    konamigv, tmosh,    konamigv, driver_device,  0,        ROT0, "Konami", "Tokimeki Memorial Oshiete Your Heart (GQ673 JAA)", MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_GRAPHICS | MACHINE_NOT_WORKING )
-GAME( 1997, tmoshs,   konamigv, tmosh,    konamigv, driver_device,  0,        ROT0, "Konami", "Tokimeki Memorial Oshiete Your Heart Seal Version (GE755 JAA)", MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_GRAPHICS | MACHINE_NOT_WORKING )
-GAME( 1997, tmoshsp,  konamigv, tmosh,    konamigv, driver_device,  0,        ROT0, "Konami", "Tokimeki Memorial Oshiete Your Heart Seal Version Plus (GE756 JAB)", MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_GRAPHICS | MACHINE_NOT_WORKING )
-GAME( 1997, tmoshspa, tmoshsp,  tmosh,    konamigv, driver_device,  0,        ROT0, "Konami", "Tokimeki Memorial Oshiete Your Heart Seal Version Plus (GE756 JAA)", MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_GRAPHICS | MACHINE_NOT_WORKING )
-GAME( 1998, nagano98, konamigv, konamigv, konamigv, driver_device,  0,        ROT0, "Konami", "Nagano Winter Olympics '98 (GX720 EAA)", MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE)
-GAME( 1998, naganoj,  nagano98, konamigv, konamigv, driver_device,  0,        ROT0, "Konami", "Hyper Olympic in Nagano (GX720 JAA)", MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE)
-=======
 GAME( 1995, konamigv, 0,        konamigv, konamigv, konamigv_state, 0,        ROT0, "Konami", "Baby Phoenix/GV System", MACHINE_IS_BIOS_ROOT )
 
 GAME( 1996, powyak96, konamigv, konamigv, konamigv, konamigv_state, 0,        ROT0, "Konami", "Jikkyou Powerful Pro Yakyuu '96 (GV017 Japan 1.03)", MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_GRAPHICS )
@@ -950,5 +863,4 @@ GAME( 1997, tmoshsp,  konamigv, tmosh,    konamigv, konamigv_state, 0,        RO
 GAME( 1997, tmoshspa, tmoshsp,  tmosh,    konamigv, konamigv_state, 0,        ROT0, "Konami", "Tokimeki Memorial Oshiete Your Heart Seal Version Plus (GE756 JAA)", MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_GRAPHICS | MACHINE_NOT_WORKING )
 GAME( 1998, nagano98, konamigv, konamigv, konamigv, konamigv_state, 0,        ROT0, "Konami", "Nagano Winter Olympics '98 (GX720 EAA)", MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE)
 GAME( 1998, naganoj,  nagano98, konamigv, konamigv, konamigv_state, 0,        ROT0, "Konami", "Hyper Olympic in Nagano (GX720 JAA)", MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE)
->>>>>>> upstream/master
 GAME( 2000, simpbowl, konamigv, simpbowl, simpbowl, konamigv_state, simpbowl, ROT0, "Konami", "Simpsons Bowling (GQ829 UAA)", MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE)

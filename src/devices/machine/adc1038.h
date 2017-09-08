@@ -9,25 +9,16 @@
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-#ifndef __ADC1038_H__
-#define __ADC1038_H__
-=======
 #ifndef MAME_MACHINE_ADC1038_H
 #define MAME_MACHINE_ADC1038_H
 
 #pragma once
 
->>>>>>> upstream/master
 
 /***************************************************************************
     TYPE DEFINITIONS
 ***************************************************************************/
 
-<<<<<<< HEAD
-typedef device_delegate<int (int input)> adc1038_input_delegate;
-=======
->>>>>>> upstream/master
 #define ADC1038_INPUT_CB(name)  int name(int input)
 
 /***************************************************************************
@@ -37,18 +28,11 @@ typedef device_delegate<int (int input)> adc1038_input_delegate;
 class adc1038_device : public device_t
 {
 public:
-<<<<<<< HEAD
-	adc1038_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-	~adc1038_device() {}
-
-	static void set_input_callback(device_t &device, adc1038_input_delegate callback) { downcast<adc1038_device &>(device).m_input_cb = callback; }
-=======
 	typedef device_delegate<int (int input)> input_delegate;
 
 	adc1038_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	static void set_input_callback(device_t &device, input_delegate &&callback) { downcast<adc1038_device &>(device).m_input_cb = std::move(callback); }
->>>>>>> upstream/master
 	static void set_gti_club_hack(device_t &device, int hack) { downcast<adc1038_device &>(device).m_gticlub_hack = hack; }
 
 	DECLARE_READ_LINE_MEMBER( do_read );
@@ -58,13 +42,8 @@ public:
 
 protected:
 	// device-level overrides
-<<<<<<< HEAD
-	virtual void device_start();
-	virtual void device_reset();
-=======
 	virtual void device_start() override;
 	virtual void device_reset() override;
->>>>>>> upstream/master
 
 private:
 	// internal state
@@ -77,16 +56,6 @@ private:
 	int m_sars;
 
 	int m_gticlub_hack;
-<<<<<<< HEAD
-	adc1038_input_delegate       m_input_cb;
-};
-
-extern const device_type ADC1038;
-
-
-#define MCFG_ADC1038_INPUT_CB(_class, _method) \
-	adc1038_device::set_input_callback(*device, adc1038_input_delegate(&_class::_method, #_class "::" #_method, downcast<_class *>(owner)));
-=======
 	input_delegate m_input_cb;
 };
 
@@ -95,14 +64,8 @@ DECLARE_DEVICE_TYPE(ADC1038, adc1038_device)
 
 #define MCFG_ADC1038_INPUT_CB(_class, _method) \
 	adc1038_device::set_input_callback(*device, adc1038_device::input_delegate(&_class::_method, #_class "::" #_method, downcast<_class *>(owner)));
->>>>>>> upstream/master
 
 #define MCFG_ADC1038_GTIHACK(_hack) \
 	adc1038_device::set_gti_club_hack(*device, _hack);
 
-<<<<<<< HEAD
-
-#endif  /* __ADC1038_H__ */
-=======
 #endif // MAME_MACHINE_ADC1038_H
->>>>>>> upstream/master

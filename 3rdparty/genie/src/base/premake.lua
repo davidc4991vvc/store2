@@ -4,11 +4,8 @@
 -- Copyright (c) 2002-2009 Jason Perkins and the Premake project
 --
 
-<<<<<<< HEAD
-=======
 	premake._filelevelconfig = false
 	premake._checkgenerate = true
->>>>>>> upstream/master
 
 --
 -- Open a file for output, and call a function to actually do the writing.
@@ -26,22 +23,6 @@
 
 	function premake.generate(obj, filename, callback)
 		filename = premake.project.getfilename(obj, filename)
-<<<<<<< HEAD
-		printf("Generating %s...", filename)
-
-		local f, err = io.open(filename, "wb")
-		if (not f) then
-			error(err, 0)
-		end
-
-		io.output(f)
-		callback(obj)
-		f:close()
-	end
-
-
--- 
-=======
 
 		if (premake._checkgenerate) then
 			io.capture()
@@ -97,7 +78,6 @@
 
 
 --
->>>>>>> upstream/master
 -- Finds a valid premake build file in the specified directory
 -- Used by both the main genie process, and include commands
 --
@@ -133,8 +113,4 @@
 		end
 
 		return nil, nil
-<<<<<<< HEAD
 	end
-=======
-	end
->>>>>>> upstream/master

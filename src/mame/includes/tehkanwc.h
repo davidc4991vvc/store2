@@ -1,10 +1,7 @@
 // license:BSD-3-Clause
 // copyright-holders:Ernesto Corvi, Roberto Fresca
-<<<<<<< HEAD
-=======
 
 #include "machine/gen_latch.h"
->>>>>>> upstream/master
 #include "sound/msm5205.h"
 
 class tehkanwc_state : public driver_device
@@ -23,11 +20,8 @@ public:
 		m_msm(*this, "msm"),
 		m_gfxdecode(*this, "gfxdecode"),
 		m_palette(*this, "palette"),
-<<<<<<< HEAD
-=======
 		m_soundlatch(*this, "soundlatch"),
 		m_soundlatch2(*this, "soundlatch2"),
->>>>>>> upstream/master
 		m_videoram(*this, "videoram"),
 		m_colorram(*this, "colorram"),
 		m_videoram2(*this, "videoram2"),
@@ -39,13 +33,6 @@ public:
 	required_device<msm5205_device> m_msm;
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
-<<<<<<< HEAD
-
-	required_shared_ptr<UINT8> m_videoram;
-	required_shared_ptr<UINT8> m_colorram;
-	required_shared_ptr<UINT8> m_videoram2;
-	required_shared_ptr<UINT8> m_spriteram;
-=======
 	required_device<generic_latch_8_device> m_soundlatch;
 	required_device<generic_latch_8_device> m_soundlatch2;
 
@@ -53,26 +40,17 @@ public:
 	required_shared_ptr<uint8_t> m_colorram;
 	required_shared_ptr<uint8_t> m_videoram2;
 	required_shared_ptr<uint8_t> m_spriteram;
->>>>>>> upstream/master
 
 	int m_track0[2];
 	int m_track1[2];
 	int m_msm_data_offs;
 	int m_toggle;
-<<<<<<< HEAD
-	UINT8 m_scroll_x[2];
-	UINT8 m_led0;
-	UINT8 m_led1;
-	tilemap_t *m_bg_tilemap;
-	tilemap_t *m_fg_tilemap;
-=======
 	uint8_t m_scroll_x[2];
 	uint8_t m_led0;
 	uint8_t m_led1;
 	tilemap_t *m_bg_tilemap;
 	tilemap_t *m_fg_tilemap;
 	emu_timer *m_reset_timer;
->>>>>>> upstream/master
 
 	DECLARE_WRITE8_MEMBER(sub_cpu_halt_w);
 	DECLARE_READ8_MEMBER(track_0_r);
@@ -101,17 +79,6 @@ public:
 	TILE_GET_INFO_MEMBER(get_fg_tile_info);
 
 	DECLARE_DRIVER_INIT(teedoff);
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void video_start();
-
-	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	void gridiron_draw_led(bitmap_ind16 &bitmap, const rectangle &cliprect, UINT8 led,int player);
-	void draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect);
-
-protected:
-	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
-=======
 	virtual void machine_start() override;
 	virtual void video_start() override;
 
@@ -121,5 +88,4 @@ protected:
 
 protected:
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
->>>>>>> upstream/master
 };

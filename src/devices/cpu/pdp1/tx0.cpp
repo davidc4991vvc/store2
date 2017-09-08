@@ -11,13 +11,8 @@
 */
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "debugger.h"
-#include "tx0.h"
-=======
 #include "tx0.h"
 #include "debugger.h"
->>>>>>> upstream/master
 
 #define LOG 0
 #define LOG_EXTRA 0
@@ -45,19 +40,6 @@
 #define INCREMENT_PC_8KW    (PC = (PC+1) & ADDRESS_MASK_8KW)
 
 
-<<<<<<< HEAD
-const device_type TX0_8KW  = &device_creator<tx0_8kw_device>;
-const device_type TX0_64KW = &device_creator<tx0_64kw_device>;
-
-
-tx0_device::tx0_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source, int addr_bits, int address_mask, int ir_mask)
-	: cpu_device(mconfig, type, name, tag, owner, clock, shortname, source)
-	, m_program_config("program", ENDIANNESS_BIG, 32, addr_bits , -2), m_mbr(0), m_ac(0), m_mar(0), m_pc(0), m_ir(0), m_lr(0), m_xr(0), m_pf(0), m_tbr(0), m_tac(0), m_cm_sel(0),
-	m_lr_sel(0), m_gbl_cm_sel(0), m_stop_cyc0(0), m_stop_cyc1(0), m_run(0), m_rim(0), m_cycle(0), m_ioh(0), m_ios(0), m_rim_step(0)
-		, m_address_mask(address_mask)
-	, m_ir_mask(ir_mask), m_icount(0), m_program(nullptr)
-		, m_cpy_handler(*this)
-=======
 DEFINE_DEVICE_TYPE(TX0_8KW,  tx0_8kw_device,  "tx0_8kw_cpu",  "TX-0 8KW")
 DEFINE_DEVICE_TYPE(TX0_64KW, tx0_64kw_device, "tx0_64kw_cpu", "TX-0 64KW")
 
@@ -69,7 +51,6 @@ tx0_device::tx0_device(const machine_config &mconfig, device_type type, const ch
 	, m_address_mask(address_mask)
 	, m_ir_mask(ir_mask), m_icount(0), m_program(nullptr)
 	, m_cpy_handler(*this)
->>>>>>> upstream/master
 	, m_r1l_handler(*this)
 	, m_dis_handler(*this)
 	, m_r3l_handler(*this)
@@ -80,28 +61,15 @@ tx0_device::tx0_device(const machine_config &mconfig, device_type type, const ch
 	, m_sel_handler(*this)
 	, m_io_reset_callback(*this)
 {
-<<<<<<< HEAD
-	m_is_octal = true;
-}
-
-tx0_8kw_device::tx0_8kw_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: tx0_device(mconfig, TX0_8KW, "TX-0 8KW", tag, owner, clock, "tx0_8w_cpu", __FILE__, 13, ADDRESS_MASK_8KW, 037)
-=======
 	m_program_config.m_is_octal = true;
 }
 
 tx0_8kw_device::tx0_8kw_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: tx0_device(mconfig, TX0_8KW, tag, owner, clock, 13, ADDRESS_MASK_8KW, 037)
->>>>>>> upstream/master
 {
 }
 
 
-<<<<<<< HEAD
-tx0_64kw_device::tx0_64kw_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: tx0_device(mconfig, TX0_64KW, "TX-0 64KW", tag, owner, clock, "tx0_64kw_cpu", __FILE__, 16, ADDRESS_MASK_64KW, 03)
-{
-=======
 tx0_64kw_device::tx0_64kw_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: tx0_device(mconfig, TX0_64KW, tag, owner, clock, 16, ADDRESS_MASK_64KW, 03)
 {
@@ -112,7 +80,6 @@ device_memory_interface::space_config_vector tx0_device::memory_space_config() c
 	return space_config_vector {
 		std::make_pair(AS_PROGRAM, &m_program_config)
 	};
->>>>>>> upstream/master
 }
 
 
@@ -156,15 +123,9 @@ void tx0_device::device_start()
 	m_pf = 0;
 	m_tbr = 0;
 	m_tac = 0;
-<<<<<<< HEAD
-	for ( int i = 0; i < 16; i++ )
-	{
-		m_tss[i] = 0;
-=======
 	for (auto & elem : m_tss)
 	{
 		elem = 0;
->>>>>>> upstream/master
 	}
 	m_cm_sel = 0;
 	m_lr_sel = 0;
@@ -255,10 +216,7 @@ void tx0_device::device_start()
 	state_add( TX0_IOS,        "IOS",      m_ios        ).mask(1)             .formatstr("%1X");
 
 	state_add(STATE_GENPC, "GENPC", m_pc).formatstr("0%06O").noshow();
-<<<<<<< HEAD
-=======
 	state_add(STATE_GENPCBASE, "CURPC", m_pc).formatstr("0%06O").noshow();
->>>>>>> upstream/master
 	state_add(STATE_GENFLAGS, "GENFLAGS",  m_ir).noshow();
 
 	m_icountptr = &m_icount;
@@ -515,11 +473,7 @@ void tx0_64kw_device::execute_instruction_64kw()
 			{
 				PC = MAR & ADDRESS_MASK_64KW;
 				m_cycle = 0;    /* instruction only takes one cycle if branch
-<<<<<<< HEAD
-                                    is taken */
-=======
 				                    is taken */
->>>>>>> upstream/master
 			}
 			break;
 
@@ -650,20 +604,6 @@ void tx0_64kw_device::execute_instruction_64kw()
 
 			if (MAR & 0000010)
 			{   /* (1.7) CRY = Partial add the 18 digits of the AC to the
-<<<<<<< HEAD
-                    corresponding 18 digits of the carry.
-
-                    To determine what the 18 digits of the carry are, use the
-                    following rule:
-
-                    "Grouping the AC and MBR digits into pairs and proceeding from
-                    right to left, assign the carry digit of the next pair to a one
-                    if in the present pair MBR = 1 and AC = 0 or if in the present
-                    pair AC = 1 and carry 1.
-
-                    (Note: the 0th digit pair determines the 17th pair's carry
-                    digit)" */
-=======
 			        corresponding 18 digits of the carry.
 
 			        To determine what the 18 digits of the carry are, use the
@@ -676,7 +616,6 @@ void tx0_64kw_device::execute_instruction_64kw()
 
 			        (Note: the 0th digit pair determines the 17th pair's carry
 			        digit)" */
->>>>>>> upstream/master
 				AC ^= MBR;
 
 				AC = AC + MBR;
@@ -735,11 +674,7 @@ void tx0_8kw_device::execute_instruction_8kw()
 			{
 				PC = MAR & 0017777;
 				m_cycle = 0;    /* instruction only takes one cycle if branch
-<<<<<<< HEAD
-                                    is taken */
-=======
 				                    is taken */
->>>>>>> upstream/master
 			}
 			break;
 
@@ -748,11 +683,7 @@ void tx0_8kw_device::execute_instruction_8kw()
 			{
 				PC = MAR & 0017777;
 				m_cycle = 0;    /* instruction only takes one cycle if branch
-<<<<<<< HEAD
-                                    is taken */
-=======
 				                    is taken */
->>>>>>> upstream/master
 			}
 			break;
 
@@ -760,11 +691,7 @@ void tx0_8kw_device::execute_instruction_8kw()
 			XR = PC;
 			PC = MAR & 0017777;
 			m_cycle = 0;    /* instruction only takes one cycle if branch
-<<<<<<< HEAD
-                                is taken */
-=======
 			                    is taken */
->>>>>>> upstream/master
 			break;
 
 		case 19:    /* Transfer and IndeX */
@@ -776,11 +703,7 @@ void tx0_8kw_device::execute_instruction_8kw()
 					XR--;
 				PC = MAR & 0017777;
 				m_cycle = 0;    /* instruction only takes one cycle if branch
-<<<<<<< HEAD
-                                    is taken */
-=======
 				                    is taken */
->>>>>>> upstream/master
 			}
 			break;
 
@@ -789,11 +712,7 @@ void tx0_8kw_device::execute_instruction_8kw()
 		case 20:    /* TRAnsfer */
 			PC = MAR & 0017777;
 			m_cycle = 0;    /* instruction only takes one cycle if branch
-<<<<<<< HEAD
-                                is taken */
-=======
 			                    is taken */
->>>>>>> upstream/master
 			break;
 
 		case 22:    /* Transfer on external LeVel */
@@ -801,11 +720,7 @@ void tx0_8kw_device::execute_instruction_8kw()
 			{
 			    PC = MAR & 0017777;
 			    m_cycle = 0;*/  /* instruction only takes one cycle if branch
-<<<<<<< HEAD
-                                    is taken */
-=======
 				                    is taken */
->>>>>>> upstream/master
 			/*}*/
 			break;
 
@@ -1008,13 +923,8 @@ void tx0_8kw_device::execute_instruction_8kw()
 			{   /* Normal operate class instruction */
 				if (((IR & 001) == 00) && ((MAR & 017000) == 003000))
 				{   /* (1.1) PEN = set ac bit 0 from light PEN ff, and ac bit 1 from
-<<<<<<< HEAD
-                        light gun ff.  (ffs contain one if pen or gun saw displayed
-                        point.)  Then clear both light pen and light gun ffs */
-=======
 				        light gun ff.  (ffs contain one if pen or gun saw displayed
 				        point.)  Then clear both light pen and light gun ffs */
->>>>>>> upstream/master
 					/*AC = (AC & 0177777) |?...;*/
 					/*... = 0;*/
 				}
@@ -1083,20 +993,12 @@ void tx0_8kw_device::execute_instruction_8kw()
 					switch (MAR & 0000300)
 					{
 					case 0000000:   /* (1.6) CYR = CYcle ac contents Right one binary
-<<<<<<< HEAD
-                                        position (AC(17) -> AC(0)) */
-=======
 					                    position (AC(17) -> AC(0)) */
->>>>>>> upstream/master
 						AC = (AC >> 1) | ((AC & 1) << 17);
 						break;
 
 					case 0000200:   /* (1.6) CYcle ac contents Right one binary
-<<<<<<< HEAD
-                                        position (AC(0) unchanged) */
-=======
 					                    position (AC(0) unchanged) */
->>>>>>> upstream/master
 						AC = (AC >> 1) | (AC & 0400000);
 						break;
 
@@ -1113,11 +1015,7 @@ void tx0_8kw_device::execute_instruction_8kw()
 
 				if (MAR & 0000010)
 				{   /* (1.7?) CRY = Partial ADd the 18 digits of the AC to the
-<<<<<<< HEAD
-                        corresponding 18 digits of the carry. */
-=======
 				        corresponding 18 digits of the carry. */
->>>>>>> upstream/master
 					AC ^= MBR;
 
 					AC = AC + MBR;
@@ -1177,19 +1075,6 @@ void tx0_device::io_complete()
 }
 
 
-<<<<<<< HEAD
-offs_t tx0_8kw_device::disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options)
-{
-	extern CPU_DISASSEMBLE( tx0_8kw );
-	return CPU_DISASSEMBLE_NAME(tx0_8kw)(this, buffer, pc, oprom, opram, options);
-}
-
-
-offs_t tx0_64kw_device::disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options)
-{
-	extern CPU_DISASSEMBLE( tx0_64kw );
-	return CPU_DISASSEMBLE_NAME(tx0_64kw)(this, buffer, pc, oprom, opram, options);
-=======
 offs_t tx0_8kw_device::disasm_disassemble(std::ostream &stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, uint32_t options)
 {
 	extern CPU_DISASSEMBLE( tx0_8kw );
@@ -1201,5 +1086,4 @@ offs_t tx0_64kw_device::disasm_disassemble(std::ostream &stream, offs_t pc, cons
 {
 	extern CPU_DISASSEMBLE( tx0_64kw );
 	return CPU_DISASSEMBLE_NAME(tx0_64kw)(this, stream, pc, oprom, opram, options);
->>>>>>> upstream/master
 }

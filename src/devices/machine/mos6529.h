@@ -19,20 +19,11 @@
 
 **********************************************************************/
 
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __MOS6529__
-#define __MOS6529__
-
-#include "emu.h"
-=======
 #ifndef MAME_MACHINE_MOS6529_H
 #define MAME_MACHINE_MOS6529_H
 
 #pragma once
 
->>>>>>> upstream/master
 
 
 
@@ -75,18 +66,6 @@ class mos6529_device :  public device_t
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	mos6529_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	template<class _Object> static devcb_base &set_p0_handler(device_t &device, _Object object) { return downcast<mos6529_device &>(device).m_p0_handler.set_callback(object); }
-	template<class _Object> static devcb_base &set_p1_handler(device_t &device, _Object object) { return downcast<mos6529_device &>(device).m_p1_handler.set_callback(object); }
-	template<class _Object> static devcb_base &set_p2_handler(device_t &device, _Object object) { return downcast<mos6529_device &>(device).m_p2_handler.set_callback(object); }
-	template<class _Object> static devcb_base &set_p3_handler(device_t &device, _Object object) { return downcast<mos6529_device &>(device).m_p3_handler.set_callback(object); }
-	template<class _Object> static devcb_base &set_p4_handler(device_t &device, _Object object) { return downcast<mos6529_device &>(device).m_p4_handler.set_callback(object); }
-	template<class _Object> static devcb_base &set_p5_handler(device_t &device, _Object object) { return downcast<mos6529_device &>(device).m_p5_handler.set_callback(object); }
-	template<class _Object> static devcb_base &set_p6_handler(device_t &device, _Object object) { return downcast<mos6529_device &>(device).m_p6_handler.set_callback(object); }
-	template<class _Object> static devcb_base &set_p7_handler(device_t &device, _Object object) { return downcast<mos6529_device &>(device).m_p7_handler.set_callback(object); }
-=======
 	mos6529_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	template <class Object> static devcb_base &set_p0_handler(device_t &device, Object &&cb) { return downcast<mos6529_device &>(device).m_p0_handler.set_callback(std::forward<Object>(cb)); }
@@ -97,7 +76,6 @@ public:
 	template <class Object> static devcb_base &set_p5_handler(device_t &device, Object &&cb) { return downcast<mos6529_device &>(device).m_p5_handler.set_callback(std::forward<Object>(cb)); }
 	template <class Object> static devcb_base &set_p6_handler(device_t &device, Object &&cb) { return downcast<mos6529_device &>(device).m_p6_handler.set_callback(std::forward<Object>(cb)); }
 	template <class Object> static devcb_base &set_p7_handler(device_t &device, Object &&cb) { return downcast<mos6529_device &>(device).m_p7_handler.set_callback(std::forward<Object>(cb)); }
->>>>>>> upstream/master
 
 	DECLARE_READ8_MEMBER( read );
 	DECLARE_WRITE8_MEMBER( write );
@@ -113,15 +91,9 @@ public:
 
 protected:
 	// device-level overrides
-<<<<<<< HEAD
-	virtual void device_start();
-
-	UINT8 m_input;
-=======
 	virtual void device_start() override;
 
 	uint8_t m_input;
->>>>>>> upstream/master
 
 	devcb_write_line m_p0_handler;
 	devcb_write_line m_p1_handler;
@@ -137,8 +109,4 @@ protected:
 // device type definition
 extern const device_type MOS6529;
 
-<<<<<<< HEAD
-#endif
-=======
 #endif // MAME_MACHINE_MOS6529_H
->>>>>>> upstream/master

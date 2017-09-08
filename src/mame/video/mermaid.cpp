@@ -6,11 +6,7 @@
 
 PALETTE_INIT_MEMBER(mermaid_state, mermaid)
 {
-<<<<<<< HEAD
-	const UINT8 *color_prom = memregion("proms")->base();
-=======
 	const uint8_t *color_prom = memregion("proms")->base();
->>>>>>> upstream/master
 	int i;
 
 	for (i = 0; i < 0x40; i++)
@@ -38,11 +34,7 @@ PALETTE_INIT_MEMBER(mermaid_state, mermaid)
 
 PALETTE_INIT_MEMBER(mermaid_state,rougien)
 {
-<<<<<<< HEAD
-	const UINT8 *color_prom = memregion("proms")->base();
-=======
 	const uint8_t *color_prom = memregion("proms")->base();
->>>>>>> upstream/master
 	int i;
 
 	for (i = 0; i < 0x40; i++)
@@ -87,16 +79,6 @@ WRITE8_MEMBER(mermaid_state::mermaid_colorram_w)
 	m_fg_tilemap->mark_tile_dirty(offset);
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER(mermaid_state::mermaid_flip_screen_x_w)
-{
-	flip_screen_x_set(data & 0x01);
-}
-
-WRITE8_MEMBER(mermaid_state::mermaid_flip_screen_y_w)
-{
-	flip_screen_y_set(data & 0x01);
-=======
 WRITE_LINE_MEMBER(mermaid_state::flip_screen_x_w)
 {
 	flip_screen_x_set(state);
@@ -105,7 +87,6 @@ WRITE_LINE_MEMBER(mermaid_state::flip_screen_x_w)
 WRITE_LINE_MEMBER(mermaid_state::flip_screen_y_w)
 {
 	flip_screen_y_set(state);
->>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(mermaid_state::mermaid_bg_scroll_w)
@@ -120,16 +101,6 @@ WRITE8_MEMBER(mermaid_state::mermaid_fg_scroll_w)
 	m_fg_tilemap->set_scrolly(offset, data);
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER(mermaid_state::rougien_gfxbankswitch1_w)
-{
-	m_rougien_gfxbank1 = data & 0x01;
-}
-
-WRITE8_MEMBER(mermaid_state::rougien_gfxbankswitch2_w)
-{
-	m_rougien_gfxbank2 = data & 0x01;
-=======
 WRITE_LINE_MEMBER(mermaid_state::rougien_gfxbankswitch1_w)
 {
 	m_rougien_gfxbank1 = state;
@@ -138,7 +109,6 @@ WRITE_LINE_MEMBER(mermaid_state::rougien_gfxbankswitch1_w)
 WRITE_LINE_MEMBER(mermaid_state::rougien_gfxbankswitch2_w)
 {
 	m_rougien_gfxbank2 = state;
->>>>>>> upstream/master
 }
 
 READ8_MEMBER(mermaid_state::mermaid_collision_r)
@@ -193,17 +163,10 @@ TILE_GET_INFO_MEMBER(mermaid_state::get_fg_tile_info)
 
 void mermaid_state::video_start()
 {
-<<<<<<< HEAD
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(mermaid_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
-	m_bg_tilemap->set_scroll_cols(32);
-
-	m_fg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(mermaid_state::get_fg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
-=======
 	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(mermaid_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
 	m_bg_tilemap->set_scroll_cols(32);
 
 	m_fg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(mermaid_state::get_fg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
->>>>>>> upstream/master
 	m_fg_tilemap->set_scroll_cols(32);
 	m_fg_tilemap->set_transparent_pen(0);
 
@@ -216,11 +179,7 @@ void mermaid_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprec
 	const rectangle spritevisiblearea(0 * 8, 26 * 8 - 1, 2 * 8, 30 * 8 - 1);
 	const rectangle flip_spritevisiblearea(6 * 8, 31 * 8 - 1, 2 * 8, 30 * 8 - 1);
 
-<<<<<<< HEAD
-	UINT8 *spriteram = m_spriteram;
-=======
 	uint8_t *spriteram = m_spriteram;
->>>>>>> upstream/master
 	int offs;
 
 	for (offs = m_spriteram.bytes() - 4; offs >= 0; offs -= 4)
@@ -256,11 +215,7 @@ void mermaid_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprec
 	}
 }
 
-<<<<<<< HEAD
-UINT32 mermaid_state::screen_update_mermaid(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t mermaid_state::screen_update_mermaid(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	m_bg_tilemap->draw(screen, bitmap, cliprect, 0, 0);
 	m_fg_tilemap->draw(screen, bitmap, cliprect, 0, 0);
@@ -268,15 +223,9 @@ uint32_t mermaid_state::screen_update_mermaid(screen_device &screen, bitmap_ind1
 	return 0;
 }
 
-<<<<<<< HEAD
-UINT8 mermaid_state::collision_check( rectangle& rect )
-{
-	UINT8 data = 0;
-=======
 uint8_t mermaid_state::collision_check( rectangle& rect )
 {
 	uint8_t data = 0;
->>>>>>> upstream/master
 
 	int x;
 	int y;
@@ -284,13 +233,8 @@ uint8_t mermaid_state::collision_check( rectangle& rect )
 	for (y = rect.min_y; y <= rect.max_y; y++)
 		for (x = rect.min_x; x <= rect.max_x; x++)
 		{
-<<<<<<< HEAD
-			UINT16 a = m_palette->pen_indirect(m_helper.pix16(y, x)) & 0x3f;
-			UINT16 b = m_palette->pen_indirect(m_helper2.pix16(y, x)) & 0x3f;
-=======
 			uint16_t a = m_palette->pen_indirect(m_helper.pix16(y, x)) & 0x3f;
 			uint16_t b = m_palette->pen_indirect(m_helper2.pix16(y, x)) & 0x3f;
->>>>>>> upstream/master
 
 			if (b)
 				if (a)
@@ -300,21 +244,13 @@ uint8_t mermaid_state::collision_check( rectangle& rect )
 	return data;
 }
 
-<<<<<<< HEAD
-void mermaid_state::screen_eof_mermaid(screen_device &screen, bool state)
-=======
 WRITE_LINE_MEMBER(mermaid_state::screen_vblank_mermaid)
->>>>>>> upstream/master
 {
 	// rising edge
 	if (state)
 	{
 		const rectangle &visarea = m_screen->visible_area();
-<<<<<<< HEAD
-		UINT8 *spriteram = m_spriteram;
-=======
 		uint8_t *spriteram = m_spriteram;
->>>>>>> upstream/master
 
 		int offs, offs2;
 
@@ -368,11 +304,7 @@ WRITE_LINE_MEMBER(mermaid_state::screen_vblank_mermaid)
 			m_helper.fill(0, rect);
 			m_helper2.fill(0, rect);
 
-<<<<<<< HEAD
-			m_bg_tilemap->draw(screen, m_helper, rect, 0, 0);
-=======
 			m_bg_tilemap->draw(*m_screen, m_helper, rect, 0, 0);
->>>>>>> upstream/master
 
 			m_gfxdecode->gfx(1)->transpen(m_helper2,rect, code, 0, flipx, flipy, sx, sy, 0);
 
@@ -383,11 +315,7 @@ WRITE_LINE_MEMBER(mermaid_state::screen_vblank_mermaid)
 			m_helper.fill(0, rect);
 			m_helper2.fill(0, rect);
 
-<<<<<<< HEAD
-			m_fg_tilemap->draw(screen, m_helper, rect, 0, 0);
-=======
 			m_fg_tilemap->draw(*m_screen, m_helper, rect, 0, 0);
->>>>>>> upstream/master
 
 			m_gfxdecode->gfx(1)->transpen(m_helper2,rect, code, 0, flipx, flipy, sx, sy, 0);
 

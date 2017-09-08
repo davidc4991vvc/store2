@@ -1,9 +1,5 @@
 /* Xz.h - Xz interface
-<<<<<<< HEAD
-2011-01-09 : Igor Pavlov : Public domain */
-=======
 2015-05-01 : Igor Pavlov : Public domain */
->>>>>>> upstream/master
 
 #ifndef __XZ_H
 #define __XZ_H
@@ -63,13 +59,8 @@ SRes XzBlock_ReadHeader(CXzBlock *p, ISeqInStream *inStream, Bool *isIndex, UInt
 #define XZ_SIG_SIZE 6
 #define XZ_FOOTER_SIG_SIZE 2
 
-<<<<<<< HEAD
-extern Byte XZ_SIG[XZ_SIG_SIZE];
-extern Byte XZ_FOOTER_SIG[XZ_FOOTER_SIG_SIZE];
-=======
 extern const Byte XZ_SIG[XZ_SIG_SIZE];
 extern const Byte XZ_FOOTER_SIG[XZ_FOOTER_SIG_SIZE];
->>>>>>> upstream/master
 
 #define XZ_STREAM_FLAGS_SIZE 2
 #define XZ_STREAM_CRC_SIZE 4
@@ -85,21 +76,13 @@ extern const Byte XZ_FOOTER_SIG[XZ_FOOTER_SIG_SIZE];
 
 typedef struct
 {
-<<<<<<< HEAD
-  int mode;
-=======
   unsigned mode;
->>>>>>> upstream/master
   UInt32 crc;
   UInt64 crc64;
   CSha256 sha;
 } CXzCheck;
 
-<<<<<<< HEAD
-void XzCheck_Init(CXzCheck *p, int mode);
-=======
 void XzCheck_Init(CXzCheck *p, unsigned mode);
->>>>>>> upstream/master
 void XzCheck_Update(CXzCheck *p, const void *data, size_t size);
 int XzCheck_Final(CXzCheck *p, Byte *digest);
 
@@ -180,11 +163,7 @@ typedef struct
 {
   ISzAlloc *alloc;
   Byte *buf;
-<<<<<<< HEAD
-  int numCoders;
-=======
   unsigned numCoders;
->>>>>>> upstream/master
   int finished[MIXCODER_NUM_FILTERS_MAX - 1];
   size_t pos[MIXCODER_NUM_FILTERS_MAX - 1];
   size_t size[MIXCODER_NUM_FILTERS_MAX - 1];
@@ -195,11 +174,7 @@ typedef struct
 void MixCoder_Construct(CMixCoder *p, ISzAlloc *alloc);
 void MixCoder_Free(CMixCoder *p);
 void MixCoder_Init(CMixCoder *p);
-<<<<<<< HEAD
-SRes MixCoder_SetFromMethod(CMixCoder *p, int coderIndex, UInt64 methodId);
-=======
 SRes MixCoder_SetFromMethod(CMixCoder *p, unsigned coderIndex, UInt64 methodId);
->>>>>>> upstream/master
 SRes MixCoder_Code(CMixCoder *p, Byte *dest, SizeT *destLen,
     const Byte *src, SizeT *srcLen, int srcWasFinished,
     ECoderFinishMode finishMode, ECoderStatus *status);
@@ -234,13 +209,9 @@ typedef struct
   UInt64 indexPos;
   UInt64 padSize;
 
-<<<<<<< HEAD
-  UInt64 numStreams;
-=======
   UInt64 numStartedStreams;
   UInt64 numFinishedStreams;
   UInt64 numTotalBlocks;
->>>>>>> upstream/master
 
   UInt32 crc;
   CMixCoder decoder;
@@ -258,13 +229,8 @@ void XzUnpacker_Free(CXzUnpacker *p);
 /*
 finishMode:
   It has meaning only if the decoding reaches output limit (*destLen).
-<<<<<<< HEAD
-  LZMA_FINISH_ANY - use smallest number of input bytes
-  LZMA_FINISH_END - read EndOfStream marker after decoding
-=======
   CODER_FINISH_ANY - use smallest number of input bytes
   CODER_FINISH_END - read EndOfStream marker after decoding
->>>>>>> upstream/master
 
 Returns:
   SZ_OK
@@ -272,12 +238,6 @@ Returns:
       CODER_STATUS_NOT_FINISHED,
       CODER_STATUS_NEEDS_MORE_INPUT - maybe there are more xz streams,
                                       call XzUnpacker_IsStreamWasFinished to check that current stream was finished
-<<<<<<< HEAD
-  SZ_ERROR_DATA - Data error
-  SZ_ERROR_MEM  - Memory allocation error
-  SZ_ERROR_UNSUPPORTED - Unsupported properties
-  SZ_ERROR_INPUT_EOF - It needs more bytes in input buffer (src).
-=======
   SZ_ERROR_MEM  - Memory allocation error
   SZ_ERROR_DATA - Data error
   SZ_ERROR_UNSUPPORTED - Unsupported method or method properties
@@ -291,22 +251,15 @@ Returns:
     It's possible to get that error, if xz stream was finished and the stream
     contains some another data. In that case you can call XzUnpacker_GetExtraSize()
     function to get real size of xz stream.
->>>>>>> upstream/master
 */
 
 
 SRes XzUnpacker_Code(CXzUnpacker *p, Byte *dest, SizeT *destLen,
-<<<<<<< HEAD
-    const Byte *src, SizeT *srcLen, /* int srcWasFinished, */ int finishMode,
-=======
     const Byte *src, SizeT *srcLen, ECoderFinishMode finishMode,
->>>>>>> upstream/master
     ECoderStatus *status);
 
 Bool XzUnpacker_IsStreamWasFinished(CXzUnpacker *p);
 
-<<<<<<< HEAD
-=======
 /*
 Call XzUnpacker_GetExtraSize after XzUnpacker_Code function to detect real size of
 xz stream in two cases:
@@ -317,7 +270,6 @@ XzUnpacker_Code() returns:
 
 UInt64 XzUnpacker_GetExtraSize(CXzUnpacker *p);
 
->>>>>>> upstream/master
 EXTERN_C_END
 
 #endif

@@ -1,9 +1,5 @@
 /*
-<<<<<<< HEAD
-** $Id: llimits.h,v 1.125 2014/12/19 13:30:23 roberto Exp $
-=======
 ** $Id: llimits.h,v 1.141 2015/11/19 19:16:22 roberto Exp $
->>>>>>> upstream/master
 ** Limits, basic types, and some other 'installation-dependent' definitions
 ** See Copyright Notice in lua.h
 */
@@ -56,19 +52,11 @@ typedef unsigned char lu_byte;
 
 
 /*
-<<<<<<< HEAD
-** conversion of pointer to integer:
-** this is for hashing only; there is no problem if the integer
-** cannot hold the whole pointer value
-*/
-#define point2int(p)	((unsigned int)((size_t)(p) & UINT_MAX))
-=======
 ** conversion of pointer to unsigned integer:
 ** this is for hashing only; there is no problem if the integer
 ** cannot hold the whole pointer value
 */
 #define point2uint(p)	((unsigned int)((size_t)(p) & UINT_MAX))
->>>>>>> upstream/master
 
 
 
@@ -76,9 +64,6 @@ typedef unsigned char lu_byte;
 #if defined(LUAI_USER_ALIGNMENT_T)
 typedef LUAI_USER_ALIGNMENT_T L_Umaxalign;
 #else
-<<<<<<< HEAD
-typedef union { double u; void *s; lua_Integer i; long l; } L_Umaxalign;
-=======
 typedef union {
   lua_Number n;
   double u;
@@ -86,7 +71,6 @@ typedef union {
   lua_Integer i;
   long l;
 } L_Umaxalign;
->>>>>>> upstream/master
 #endif
 
 
@@ -100,11 +84,7 @@ typedef LUAI_UACINT l_uacInt;
 #if defined(lua_assert)
 #define check_exp(c,e)		(lua_assert(c), (e))
 /* to avoid problems with conditions too long */
-<<<<<<< HEAD
-#define lua_longassert(c)	{ if (!(c)) lua_assert(0); }
-=======
 #define lua_longassert(c)	((c) ? (void)0 : lua_assert(0))
->>>>>>> upstream/master
 #else
 #define lua_assert(c)		((void)0)
 #define check_exp(c,e)		(e)
@@ -114,24 +94,6 @@ typedef LUAI_UACINT l_uacInt;
 /*
 ** assertion for checking API calls
 */
-<<<<<<< HEAD
-#if defined(LUA_USE_APICHECK)
-#include <assert.h>
-#define luai_apicheck(e)	assert(e)
-#else
-#define luai_apicheck(e)	lua_assert(e)
-#endif
-
-
-#define api_check(e,msg)	luai_apicheck((e) && msg)
-
-
-#if !defined(UNUSED)
-#define UNUSED(x)	((void)(x))	/* to avoid warnings */
-#endif
-
-
-=======
 #if !defined(luai_apicheck)
 #define luai_apicheck(l,e)	lua_assert(e)
 #endif
@@ -146,7 +108,6 @@ typedef LUAI_UACINT l_uacInt;
 
 
 /* type casts (a macro highlights casts in the code) */
->>>>>>> upstream/master
 #define cast(t, exp)	((t)(exp))
 
 #define cast_void(i)	cast(void, (i))
@@ -192,14 +153,6 @@ typedef LUAI_UACINT l_uacInt;
 #define LUAI_MAXCCALLS		200
 #endif
 
-<<<<<<< HEAD
-/*
-** maximum number of upvalues in a closure (both C and Lua). (Value
-** must fit in an unsigned char.)
-*/
-#define MAXUPVAL	UCHAR_MAX
-=======
->>>>>>> upstream/master
 
 
 /*
@@ -214,12 +167,6 @@ typedef unsigned long Instruction;
 
 
 
-<<<<<<< HEAD
-
-/* minimum size for the string table (must be power of 2) */
-#if !defined(MINSTRTABSIZE)
-#define MINSTRTABSIZE	64	/* minimum size for "predefined" strings */
-=======
 /*
 ** Maximum length for short strings, that is, strings that are
 ** internalized. (Cannot be smaller than reserved words or tags for
@@ -250,7 +197,6 @@ typedef unsigned long Instruction;
 #if !defined(STRCACHE_N)
 #define STRCACHE_N		53
 #define STRCACHE_M		2
->>>>>>> upstream/master
 #endif
 
 
@@ -260,25 +206,19 @@ typedef unsigned long Instruction;
 #endif
 
 
-<<<<<<< HEAD
-=======
 /*
 ** macros that are executed whenever program enters the Lua core
 ** ('lua_lock') and leaves the core ('lua_unlock')
 */
->>>>>>> upstream/master
 #if !defined(lua_lock)
 #define lua_lock(L)	((void) 0)
 #define lua_unlock(L)	((void) 0)
 #endif
 
-<<<<<<< HEAD
-=======
 /*
 ** macro executed during Lua functions at points where the
 ** function can yield.
 */
->>>>>>> upstream/master
 #if !defined(luai_threadyield)
 #define luai_threadyield(L)	{lua_unlock(L); lua_lock(L);}
 #endif
@@ -316,22 +256,6 @@ typedef unsigned long Instruction;
 
 
 /*
-<<<<<<< HEAD
-** macro to control inclusion of some hard tests on stack reallocation
-*/
-#if !defined(HARDSTACKTESTS)
-#define condmovestack(L)	((void)0)
-#else
-/* realloc stack keeping its size */
-#define condmovestack(L)	luaD_reallocstack((L), (L)->stacksize)
-#endif
-
-#if !defined(HARDMEMTESTS)
-#define condchangemem(L)	condmovestack(L)
-#else
-#define condchangemem(L)  \
-	((void)(!(G(L)->gcrunning) || (luaC_fullgc(L, 0), 1)))
-=======
 ** The luai_num* macros define the primitive operations over numbers.
 */
 
@@ -394,7 +318,6 @@ typedef unsigned long Instruction;
 #else
 #define condchangemem(L,pre,pos)  \
 	{ if (G(L)->gcrunning) { pre; luaC_fullgc(L, 0); pos; } }
->>>>>>> upstream/master
 #endif
 
 #endif

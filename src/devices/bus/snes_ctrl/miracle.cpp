@@ -9,10 +9,7 @@
 
 **********************************************************************/
 
-<<<<<<< HEAD
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #include "miracle.h"
 
 #define MIRACLE_MIDI_WAITING 0
@@ -23,31 +20,16 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type SNES_MIRACLE = &device_creator<snes_miracle_device>;
-
-
-MACHINE_CONFIG_FRAGMENT( snes_miracle )
-=======
 DEFINE_DEVICE_TYPE(SNES_MIRACLE, snes_miracle_device, "snes_miracle", "Miracle Piano SNES Cable")
 
 
 MACHINE_CONFIG_MEMBER( snes_miracle_device::device_add_mconfig )
->>>>>>> upstream/master
 	MCFG_MIDI_PORT_ADD("mdin", midiin_slot, "midiin")
 	MCFG_MIDI_RX_HANDLER(WRITELINE(snes_miracle_device, rx_w))
 
 	MCFG_MIDI_PORT_ADD("mdout", midiout_slot, "midiout")
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-machine_config_constructor snes_miracle_device::device_mconfig_additions() const
-{
-	return MACHINE_CONFIG_NAME( snes_miracle );
-}
-
-=======
->>>>>>> upstream/master
 
 //-------------------------------------------------
 //  device_timer - handler timer events
@@ -59,13 +41,6 @@ void snes_miracle_device::device_timer(emu_timer &timer, device_timer_id id, int
 	{
 		m_strobe_clock++;
 	}
-<<<<<<< HEAD
-	else
-	{
-		device_serial_interface::device_timer(timer, id, param, ptr);
-	}
-=======
->>>>>>> upstream/master
 }
 
 //**************************************************************************
@@ -76,14 +51,6 @@ void snes_miracle_device::device_timer(emu_timer &timer, device_timer_id id, int
 //  snes_miracle_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-snes_miracle_device::snes_miracle_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-					device_t(mconfig, SNES_MIRACLE, "Miracle Piano SNES Cable", tag, owner, clock, "snes_miracle", __FILE__),
-					device_serial_interface(mconfig, *this),
-					device_snes_control_port_interface(mconfig, *this),
-					m_midiin(*this, "mdin"),
-					m_midiout(*this, "mdout"), strobe_timer(nullptr), m_strobe_on(0), m_midi_mode(0), m_sent_bits(0), m_strobe_clock(0),
-=======
 snes_miracle_device::snes_miracle_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	device_t(mconfig, SNES_MIRACLE, tag, owner, clock),
 	device_serial_interface(mconfig, *this),
@@ -92,7 +59,6 @@ snes_miracle_device::snes_miracle_device(const machine_config &mconfig, const ch
 	m_midiout(*this, "mdout"),
 	strobe_timer(nullptr),
 	m_strobe_on(0), m_midi_mode(0), m_sent_bits(0), m_strobe_clock(0),
->>>>>>> upstream/master
 	m_data_sent(0), m_xmit_read(0), m_xmit_write(0), m_recv_read(0), m_recv_write(0), m_tx_busy(false), m_read_status(false), m_status_bit(false)
 {
 }
@@ -135,15 +101,9 @@ void snes_miracle_device::device_reset()
 	m_tx_busy = false;
 }
 
-<<<<<<< HEAD
-UINT8 snes_miracle_device::read_pin4()
-{
-	UINT8 ret = 0;
-=======
 uint8_t snes_miracle_device::read_pin4()
 {
 	uint8_t ret = 0;
->>>>>>> upstream/master
 
 	if (m_midi_mode == MIRACLE_MIDI_RECEIVE)
 	{
@@ -162,20 +122,12 @@ uint8_t snes_miracle_device::read_pin4()
 	return ret;
 }
 
-<<<<<<< HEAD
-void snes_miracle_device::write_pin6(UINT8 data)
-=======
 void snes_miracle_device::write_pin6(uint8_t data)
->>>>>>> upstream/master
 {
 //  printf("%02x to pin6\n", data);
 }
 
-<<<<<<< HEAD
-void snes_miracle_device::write_strobe(UINT8 data)
-=======
 void snes_miracle_device::write_strobe(uint8_t data)
->>>>>>> upstream/master
 {
 //  printf("%02x to strobe\n", data);
 
@@ -265,11 +217,7 @@ void snes_miracle_device::write_strobe(uint8_t data)
 void snes_miracle_device::rcv_complete()    // Rx completed receiving byte
 {
 	receive_register_extract();
-<<<<<<< HEAD
-	UINT8 rcv = get_received_char();
-=======
 	uint8_t rcv = get_received_char();
->>>>>>> upstream/master
 
 //  printf("Got %02x -> [%d]\n", rcv, m_recv_write);
 	m_recvring[m_recv_write++] = rcv;
@@ -298,21 +246,13 @@ void snes_miracle_device::tra_complete()    // Tx completed sending byte
 
 void snes_miracle_device::tra_callback()    // Tx send bit
 {
-<<<<<<< HEAD
-	UINT8 bit = transmit_register_get_data_bit();
-=======
 	uint8_t bit = transmit_register_get_data_bit();
->>>>>>> upstream/master
 
 	// send this to midi out
 	m_midiout->write_txd(bit);
 }
 
-<<<<<<< HEAD
-void snes_miracle_device::xmit_char(UINT8 data)
-=======
 void snes_miracle_device::xmit_char(uint8_t data)
->>>>>>> upstream/master
 {
 	// if tx is busy it'll pick this up automatically when it completes
 	// if not, send now!

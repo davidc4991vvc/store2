@@ -1,13 +1,5 @@
 // RegisterCodec.h
 
-<<<<<<< HEAD
-#ifndef __REGISTERCODEC_H
-#define __REGISTERCODEC_H
-
-#include "../Common/MethodId.h"
-
-typedef void * (*CreateCodecP)();
-=======
 #ifndef __REGISTER_CODEC_H
 #define __REGISTER_CODEC_H
 
@@ -17,22 +9,11 @@ typedef void * (*CreateCodecP)();
 
 typedef void * (*CreateCodecP)();
 
->>>>>>> upstream/master
 struct CCodecInfo
 {
   CreateCodecP CreateDecoder;
   CreateCodecP CreateEncoder;
   CMethodId Id;
-<<<<<<< HEAD
-  const wchar_t *Name;
-  UInt32 NumInStreams;
-  bool IsFilter;
-};
-
-void RegisterCodec(const CCodecInfo *codecInfo);
-
-#define REGISTER_CODEC_NAME(x) CRegisterCodec ## x
-=======
   const char *Name;
   UInt32 NumStreams;
   bool IsFilter;
@@ -46,20 +27,11 @@ void RegisterCodec(const CCodecInfo *codecInfo) throw();
 
 #define REGISTER_CODEC_NAME(x) CRegisterCodec ## x
 #define REGISTER_CODEC_VAR static const CCodecInfo g_CodecInfo =
->>>>>>> upstream/master
 
 #define REGISTER_CODEC(x) struct REGISTER_CODEC_NAME(x) { \
     REGISTER_CODEC_NAME(x)() { RegisterCodec(&g_CodecInfo); }}; \
     static REGISTER_CODEC_NAME(x) g_RegisterCodec;
 
-<<<<<<< HEAD
-#define REGISTER_CODECS_NAME(x) CRegisterCodecs ## x
-#define REGISTER_CODECS(x) struct REGISTER_CODECS_NAME(x) { \
-    REGISTER_CODECS_NAME(x)() { for (int i = 0; i < sizeof(g_CodecsInfo) / sizeof(g_CodecsInfo[0]); i++) \
-    RegisterCodec(&g_CodecsInfo[i]); }}; \
-    static REGISTER_CODECS_NAME(x) g_RegisterCodecs;
-
-=======
 
 #define REGISTER_CODECS_NAME(x) CRegisterCodecs ## x
 #define REGISTER_CODECS_VAR static const CCodecInfo g_CodecsInfo[] =
@@ -131,5 +103,4 @@ void RegisterHasher(const CHasherInfo *hasher) throw();
     struct REGISTER_HASHER_NAME(cls) { REGISTER_HASHER_NAME(cls)() { RegisterHasher(&g_HasherInfo); }}; \
     static REGISTER_HASHER_NAME(cls) g_RegisterHasher;
 
->>>>>>> upstream/master
 #endif

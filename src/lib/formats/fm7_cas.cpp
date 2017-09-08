@@ -13,15 +13,9 @@
 
 static int cas_size;
 
-<<<<<<< HEAD
-static int fm7_fill_wave(INT16* buffer, UINT8 high, UINT8 low, int sample_pos)
-{
-	UINT16 data = (high << 8) + low;
-=======
 static int fm7_fill_wave(int16_t* buffer, uint8_t high, uint8_t low, int sample_pos)
 {
 	uint16_t data = (high << 8) + low;
->>>>>>> upstream/master
 	int sample_count = 0;
 	int x = 0;
 	int count = (data & 0x7fff);
@@ -47,11 +41,7 @@ static int fm7_fill_wave(int16_t* buffer, uint8_t high, uint8_t low, int sample_
 	return sample_count;
 }
 
-<<<<<<< HEAD
-static int fm7_handle_t77(INT16* buffer, const UINT8* casdata)
-=======
 static int fm7_handle_t77(int16_t* buffer, const uint8_t* casdata)
->>>>>>> upstream/master
 {
 	int sample_count = 0;
 	int data_pos = 16;
@@ -71,29 +61,17 @@ static int fm7_handle_t77(int16_t* buffer, const uint8_t* casdata)
 /*******************************************************************
    Calculate the number of samples needed for this tape image
 ********************************************************************/
-<<<<<<< HEAD
-static int fm7_cas_to_wav_size (const UINT8 *casdata, int caslen)
-{
-	cas_size = caslen;
-
-	return fm7_handle_t77(NULL,casdata);
-=======
 static int fm7_cas_to_wav_size (const uint8_t *casdata, int caslen)
 {
 	cas_size = caslen;
 
 	return fm7_handle_t77(nullptr,casdata);
->>>>>>> upstream/master
 }
 
 /*******************************************************************
    Generate samples for the tape image
 ********************************************************************/
-<<<<<<< HEAD
-static int fm7_cas_fill_wave(INT16 *buffer, int sample_count, UINT8 *bytes)
-=======
 static int fm7_cas_fill_wave(int16_t *buffer, int sample_count, uint8_t *bytes)
->>>>>>> upstream/master
 {
 	return fm7_handle_t77(buffer,bytes);
 }
@@ -109,22 +87,14 @@ static const struct CassetteLegacyWaveFiller fm7_legacy_fill_wave =
 	0                                       /* trailer_samples */
 };
 
-<<<<<<< HEAD
-static casserr_t fm7_cas_identify(cassette_image *cassette, struct CassetteOptions *opts)
-=======
 static cassette_image::error fm7_cas_identify(cassette_image *cassette, struct CassetteOptions *opts)
->>>>>>> upstream/master
 {
 	return cassette_legacy_identify(cassette, opts, &fm7_legacy_fill_wave);
 }
 
 
 
-<<<<<<< HEAD
-static casserr_t fm7_cas_load(cassette_image *cassette)
-=======
 static cassette_image::error fm7_cas_load(cassette_image *cassette)
->>>>>>> upstream/master
 {
 	return cassette_legacy_construct(cassette, &fm7_legacy_fill_wave);
 }
@@ -134,11 +104,7 @@ static const struct CassetteFormat fm7_cassette_format = {
 	"t77",
 	fm7_cas_identify,
 	fm7_cas_load,
-<<<<<<< HEAD
-	NULL
-=======
 	nullptr
->>>>>>> upstream/master
 };
 
 CASSETTE_FORMATLIST_START(fm7_cassette_formats)

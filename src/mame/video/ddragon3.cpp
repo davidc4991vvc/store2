@@ -46,11 +46,7 @@ READ16_MEMBER(ddragon3_state::ddragon3_scroll_r)
 
 TILE_GET_INFO_MEMBER(ddragon3_state::get_bg_tile_info)
 {
-<<<<<<< HEAD
-	UINT16 attr = m_bg_videoram[tile_index];
-=======
 	uint16_t attr = m_bg_videoram[tile_index];
->>>>>>> upstream/master
 	int code = (attr & 0x0fff) | ((m_bg_tilebase & 0x01) << 12);
 	int color = ((attr & 0xf000) >> 12);
 
@@ -74,11 +70,7 @@ WRITE16_MEMBER(ddragon3_state::ddragon3_bg_videoram_w)
 
 TILE_GET_INFO_MEMBER(ddragon3_state::get_fg_tile_info)
 {
-<<<<<<< HEAD
-	UINT16 *tilebase;
-=======
 	uint16_t *tilebase;
->>>>>>> upstream/master
 	int tileno,colbank;
 
 	tilebase =  &m_fg_videoram[tile_index*2];
@@ -106,11 +98,7 @@ WRITE16_MEMBER(ddragon3_state::ddragon3_fg_videoram_w)
 
 TILE_GET_INFO_MEMBER(wwfwfest_state::get_fg0_tile_info)
 {
-<<<<<<< HEAD
-	UINT16 *tilebase;
-=======
 	uint16_t *tilebase;
->>>>>>> upstream/master
 	int tileno;
 	int colbank;
 	tilebase =  &m_fg0_videoram[tile_index*2];
@@ -136,13 +124,8 @@ void ddragon3_state::video_start()
 {
 	save_item(NAME(m_pri));
 
-<<<<<<< HEAD
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(ddragon3_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 16, 16, 32, 32);
-	m_fg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(ddragon3_state::get_fg_tile_info),this), TILEMAP_SCAN_ROWS, 16, 16, 32, 32);
-=======
 	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(ddragon3_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 16, 16, 32, 32);
 	m_fg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(ddragon3_state::get_fg_tile_info),this), TILEMAP_SCAN_ROWS, 16, 16, 32, 32);
->>>>>>> upstream/master
 
 	m_bg_tilemap->set_transparent_pen(0);
 	m_fg_tilemap->set_transparent_pen(0);
@@ -156,11 +139,7 @@ void wwfwfest_state::video_start()
 	ddragon3_state::video_start();
 
 
-<<<<<<< HEAD
-	m_fg0_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(wwfwfest_state::get_fg0_tile_info),this),TILEMAP_SCAN_ROWS, 8, 8,64,32);
-=======
 	m_fg0_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(wwfwfest_state::get_fg0_tile_info),this),TILEMAP_SCAN_ROWS, 8, 8,64,32);
->>>>>>> upstream/master
 	m_fg0_tilemap->set_transparent_pen(0);
 
 }
@@ -197,19 +176,11 @@ void ddragon3_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprec
 	  other bits unused
 	*/
 
-<<<<<<< HEAD
-	UINT16 *buffered_spriteram16 = m_spriteram->buffer();
-	int length = m_spriteram->bytes();
-	gfx_element *gfx = m_gfxdecode->gfx(2);
-	UINT16 *source = buffered_spriteram16;
-	UINT16 *finish = source + length/2;
-=======
 	uint16_t *buffered_spriteram16 = m_spriteram->buffer();
 	int length = m_spriteram->bytes();
 	gfx_element *gfx = m_gfxdecode->gfx(2);
 	uint16_t *source = buffered_spriteram16;
 	uint16_t *finish = source + length/2;
->>>>>>> upstream/master
 
 	while( source<finish )
 	{
@@ -264,11 +235,7 @@ void ddragon3_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprec
 
 
 
-<<<<<<< HEAD
-UINT32 ddragon3_state::screen_update_ddragon3(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t ddragon3_state::screen_update_ddragon3(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	m_bg_tilemap->set_scrollx(0, m_bg_scrollx);
 	m_bg_tilemap->set_scrolly(0, m_bg_scrolly);
@@ -296,11 +263,7 @@ uint32_t ddragon3_state::screen_update_ddragon3(screen_device &screen, bitmap_in
 	return 0;
 }
 
-<<<<<<< HEAD
-UINT32 ddragon3_state::screen_update_ctribe(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t ddragon3_state::screen_update_ctribe(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	m_bg_tilemap->set_scrollx(0, m_bg_scrollx);
 	m_bg_tilemap->set_scrolly(0, m_bg_scrolly);
@@ -323,11 +286,7 @@ uint32_t ddragon3_state::screen_update_ctribe(screen_device &screen, bitmap_ind1
 }
 
 
-<<<<<<< HEAD
-UINT32 wwfwfest_state::screen_update_wwfwfest(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t wwfwfest_state::screen_update_wwfwfest(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	if (m_pri == 0x78) {
 		m_fg_tilemap->set_scrolly(0, m_fg_scrolly  );

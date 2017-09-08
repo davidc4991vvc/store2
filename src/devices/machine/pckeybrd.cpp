@@ -20,10 +20,7 @@
 
 #include "emu.h"
 #include "pckeybrd.h"
-<<<<<<< HEAD
-=======
 #include "natkeyboard.h"
->>>>>>> upstream/master
 
 /* AT keyboard documentation comes from www.beyondlogic.org and HelpPC documentation */
 
@@ -212,11 +209,7 @@ const at_keyboard_device::extended_keyboard_code at_keyboard_device::m_extended_
 	/* print screen */
 	{
 		"\xe0\x12\xe0\x7c",
-<<<<<<< HEAD
-		0, /* I don't know the break sequence */
-=======
 		nullptr, /* I don't know the break sequence */
->>>>>>> upstream/master
 
 	},
 	/* right alt */
@@ -277,45 +270,11 @@ const at_keyboard_device::extended_keyboard_code at_keyboard_device::m_extended_
 	/* pause */
 	{
 		"\xe1\x14\x77\xe1\xf0\x14\xf0\x77",
-<<<<<<< HEAD
-		0, /*?? I don't know the break sequence */
-=======
 		nullptr, /*?? I don't know the break sequence */
->>>>>>> upstream/master
 	}
 
 };
 
-<<<<<<< HEAD
-const device_type PC_KEYB = &device_creator<pc_keyboard_device>;
-const device_type AT_KEYB = &device_creator<at_keyboard_device>;
-
-pc_keyboard_device::pc_keyboard_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-	device_t(mconfig, PC_KEYB, "PC Keyboard", tag, owner, clock, "pc_keyb", __FILE__),
-	m_type(KEYBOARD_TYPE_PC),
-	m_ioport_0(*this, ":pc_keyboard_0"),
-	m_ioport_1(*this, ":pc_keyboard_1"),
-	m_ioport_2(*this, ":pc_keyboard_2"),
-	m_ioport_3(*this, ":pc_keyboard_3"),
-	m_ioport_4(*this, ":pc_keyboard_4"),
-	m_ioport_5(*this, ":pc_keyboard_5"),
-	m_ioport_6(*this, ":pc_keyboard_6"),
-	m_ioport_7(*this, ":pc_keyboard_7"),
-	m_out_keypress_func(*this)
-{
-}
-
-pc_keyboard_device::pc_keyboard_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source) :
-	device_t(mconfig, type, name, tag, owner, clock, shortname, source),
-	m_ioport_0(*this, ":pc_keyboard_0"),
-	m_ioport_1(*this, ":pc_keyboard_1"),
-	m_ioport_2(*this, ":pc_keyboard_2"),
-	m_ioport_3(*this, ":pc_keyboard_3"),
-	m_ioport_4(*this, ":pc_keyboard_4"),
-	m_ioport_5(*this, ":pc_keyboard_5"),
-	m_ioport_6(*this, ":pc_keyboard_6"),
-	m_ioport_7(*this, ":pc_keyboard_7"),
-=======
 DEFINE_DEVICE_TYPE(PC_KEYB, pc_keyboard_device, "pc_keyb", "PC Keyboard")
 DEFINE_DEVICE_TYPE(AT_KEYB, at_keyboard_device, "at_keyb", "AT Keyboard")
 
@@ -328,24 +287,15 @@ pc_keyboard_device::pc_keyboard_device(const machine_config &mconfig, const char
 pc_keyboard_device::pc_keyboard_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock) :
 	device_t(mconfig, type, tag, owner, clock),
 	m_ioport(*this, ":pc_keyboard_%u", 0),
->>>>>>> upstream/master
 	m_out_keypress_func(*this)
 {
 }
 
-<<<<<<< HEAD
-at_keyboard_device::at_keyboard_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-	pc_keyboard_device(mconfig, AT_KEYB, "AT Keyboard", tag, owner, clock, "at_keyb", __FILE__),
-	m_scan_code_set(1)
-{
-	m_type = KEYBOARD_TYPE_AT;
-=======
 at_keyboard_device::at_keyboard_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	pc_keyboard_device(mconfig, AT_KEYB, tag, owner, clock),
 	m_scan_code_set(1)
 {
 	m_type = KEYBOARD_TYPE::AT;
->>>>>>> upstream/master
 }
 
 
@@ -370,15 +320,9 @@ void pc_keyboard_device::device_start()
 	memset(m_make, 0, sizeof(m_make));
 
 	machine().ioport().natkeyboard().configure(
-<<<<<<< HEAD
-		ioport_queue_chars_delegate(FUNC(pc_keyboard_device::queue_chars), this),
-		ioport_accept_char_delegate(FUNC(pc_keyboard_device::accept_char), this),
-		ioport_charqueue_empty_delegate(FUNC(pc_keyboard_device::charqueue_empty), this));
-=======
 		ioport_queue_chars_delegate(&pc_keyboard_device::queue_chars, this),
 		ioport_accept_char_delegate(&pc_keyboard_device::accept_char, this),
 		ioport_charqueue_empty_delegate(&pc_keyboard_device::charqueue_empty, this));
->>>>>>> upstream/master
 
 	m_out_keypress_func.resolve_safe();
 	m_keyboard_timer = timer_alloc();
@@ -398,15 +342,9 @@ void pc_keyboard_device::device_reset()
 	m_numlock = 0;
 	m_on = true;
 	/* set default led state */
-<<<<<<< HEAD
-	set_led_status(machine(), 2, 0);
-	set_led_status(machine(), 0, 0);
-	set_led_status(machine(), 1, 0);
-=======
 	machine().output().set_led_value(2, 0);
 	machine().output().set_led_value(0, 0);
 	machine().output().set_led_value(1, 0);
->>>>>>> upstream/master
 
 	m_head = m_tail = 0;
 	queue_insert(0xaa);
@@ -423,11 +361,7 @@ WRITE_LINE_MEMBER(pc_keyboard_device::enable)
 {
 	if(state && !m_on)
 	{
-<<<<<<< HEAD
-		if(m_type == KEYBOARD_TYPE_PC)
-=======
 		if(m_type == KEYBOARD_TYPE::PC)
->>>>>>> upstream/master
 			reset();
 		else
 			m_keyboard_timer->adjust(attotime::from_msec(5), 0, attotime::from_hz(60));
@@ -439,11 +373,7 @@ WRITE_LINE_MEMBER(pc_keyboard_device::enable)
 }
 
 /* insert a code into the buffer */
-<<<<<<< HEAD
-void pc_keyboard_device::queue_insert(UINT8 data)
-=======
 void pc_keyboard_device::queue_insert(uint8_t data)
->>>>>>> upstream/master
 {
 	if (LOG_KEYBOARD)
 		logerror("keyboard queueing %.2x\n",data);
@@ -476,11 +406,7 @@ void pc_keyboard_device::standard_scancode_insert(int our_code, int pressed)
 /* add codes for standard keys */
 void at_keyboard_device::standard_scancode_insert(int our_code, int pressed)
 {
-<<<<<<< HEAD
-	int scancode = our_code;
-=======
 	int scancode;
->>>>>>> upstream/master
 
 	switch (m_scan_code_set)
 	{
@@ -581,54 +507,12 @@ void at_keyboard_device::helper(const char *codes)
  *  scan keys and stuff make/break codes
  **************************************************************************/
 
-<<<<<<< HEAD
-UINT32 pc_keyboard_device::readport(int port)
-{
-	UINT32 result = 0;
-	switch(port)
-	{
-		case 0:
-			if(m_ioport_0)
-				result = m_ioport_0->read();
-			break;
-		case 1:
-			if(m_ioport_1)
-				result = m_ioport_1->read();
-			break;
-		case 2:
-			if(m_ioport_2)
-				result = m_ioport_2->read();
-			break;
-		case 3:
-			if(m_ioport_3)
-				result = m_ioport_3->read();
-			break;
-		case 4:
-			if(m_ioport_4)
-				result = m_ioport_4->read();
-			break;
-		case 5:
-			if(m_ioport_5)
-				result = m_ioport_5->read();
-			break;
-		case 6:
-			if(m_ioport_6)
-				result = m_ioport_6->read();
-			break;
-		case 7:
-			if(m_ioport_7)
-				result = m_ioport_7->read();
-			break;
-	}
-	return result;
-=======
 uint32_t pc_keyboard_device::readport(int port)
 {
 	if ((m_ioport.size() > port) && m_ioport[port].found())
 		return m_ioport[port]->read();
 	else
 		return 0;
->>>>>>> upstream/master
 }
 
 void pc_keyboard_device::polling(void)
@@ -681,11 +565,7 @@ void pc_keyboard_device::polling(void)
 			}
 		}
 
-<<<<<<< HEAD
-		if(m_type != KEYBOARD_TYPE_PC)
-=======
 		if(m_type != KEYBOARD_TYPE::PC)
->>>>>>> upstream/master
 		{
 			/* extended scan-codes */
 			for( i = 0x60; i < 0x70; i++  )
@@ -835,11 +715,7 @@ WRITE8_MEMBER(at_keyboard_device::write)
 				queue_insert(0xfa);
 
 				/* send keyboard code */
-<<<<<<< HEAD
-				if (m_type == KEYBOARD_TYPE_MF2) {
-=======
 				if (m_type == KEYBOARD_TYPE::MF2) {
->>>>>>> upstream/master
 					queue_insert(0xab);
 					queue_insert(0x41);
 				}
@@ -908,15 +784,9 @@ WRITE8_MEMBER(at_keyboard_device::write)
 
 				/* led's in same order as my keyboard leds. */
 				/* num lock, caps lock, scroll lock */
-<<<<<<< HEAD
-				set_led_status(machine(), 2, (data & 0x01));
-				set_led_status(machine(), 0, ((data & 0x02)>>1));
-				set_led_status(machine(), 1, ((data & 0x04)>>2));
-=======
 				machine().output().set_led_value(2, (data & 0x01));
 				machine().output().set_led_value(0, ((data & 0x02)>>1));
 				machine().output().set_led_value(1, ((data & 0x04)>>2));
->>>>>>> upstream/master
 
 			}
 			break;
@@ -974,15 +844,9 @@ WRITE8_MEMBER(at_keyboard_device::write)
   unicode_char_to_at_keycode
 ***************************************************************************/
 
-<<<<<<< HEAD
-UINT8 pc_keyboard_device::unicode_char_to_at_keycode(unicode_char ch)
-{
-	UINT8 b;
-=======
 uint8_t pc_keyboard_device::unicode_char_to_at_keycode(char32_t ch)
 {
 	uint8_t b;
->>>>>>> upstream/master
 	switch(ch)
 	{
 		case '\033':                    b = 1;      break;
@@ -1121,17 +985,10 @@ uint8_t pc_keyboard_device::unicode_char_to_at_keycode(char32_t ch)
   queue_chars
 ***************************************************************************/
 
-<<<<<<< HEAD
-int pc_keyboard_device::queue_chars(const unicode_char *text, size_t text_len)
-{
-	int i;
-	UINT8 b;
-=======
 int pc_keyboard_device::queue_chars(const char32_t *text, size_t text_len)
 {
 	int i;
 	uint8_t b;
->>>>>>> upstream/master
 
 	for (i = 0; (i < text_len) && ((queue_size()) + 4 < sizeof(m_queue)); i++)
 	{
@@ -1387,11 +1244,7 @@ INPUT_PORTS_END
   Inputx stuff
 ***************************************************************************/
 
-<<<<<<< HEAD
-bool pc_keyboard_device::accept_char(unicode_char ch)
-=======
 bool pc_keyboard_device::accept_char(char32_t ch)
->>>>>>> upstream/master
 {
 	return unicode_char_to_at_keycode(ch) != 0;
 }

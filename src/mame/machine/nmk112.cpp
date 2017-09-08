@@ -17,17 +17,6 @@
 
 
 
-<<<<<<< HEAD
-const device_type NMK112 = &device_creator<nmk112_device>;
-
-nmk112_device::nmk112_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, NMK112, "NMK112", tag, owner, clock, "nmk112", __FILE__),
-		m_page_mask(0xff),
-		m_tag0(NULL),
-		m_tag1(NULL),
-		m_rom0(NULL),
-		m_rom1(NULL),
-=======
 DEFINE_DEVICE_TYPE(NMK112, nmk112_device, "nmk112", "NMK112")
 
 nmk112_device::nmk112_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
@@ -37,7 +26,6 @@ nmk112_device::nmk112_device(const machine_config &mconfig, const char *tag, dev
 		m_tag1(nullptr),
 		m_rom0(nullptr),
 		m_rom1(nullptr),
->>>>>>> upstream/master
 		m_size0(0),
 		m_size1(0)
 {
@@ -83,11 +71,7 @@ void nmk112_device::do_bankswitch( int offset, int data )
 	int banknum = offset & 3;
 	int paged = (m_page_mask & (1 << chip));
 
-<<<<<<< HEAD
-	UINT8 *rom = chip ? m_rom1 : m_rom0;
-=======
 	uint8_t *rom = chip ? m_rom1 : m_rom0;
->>>>>>> upstream/master
 	int size = chip ? m_size1 : m_size0;
 
 	m_current_bank[offset] = data;

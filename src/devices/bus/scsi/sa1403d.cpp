@@ -6,10 +6,7 @@
 
 **********************************************************************/
 
-<<<<<<< HEAD
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #include "sa1403d.h"
 
 
@@ -18,11 +15,7 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type SA1403D = &device_creator<sa1403d_device>;
-=======
 DEFINE_DEVICE_TYPE(SA1403D, sa1403d_device, "sa1403d", "Shugart SA1403D")
->>>>>>> upstream/master
 
 
 //-------------------------------------------------
@@ -54,47 +47,22 @@ ROM_END
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const rom_entry *sa1403d_device::device_rom_region() const
-=======
 const tiny_rom_entry *sa1403d_device::device_rom_region() const
->>>>>>> upstream/master
 {
 	return ROM_NAME( sa1403d );
 }
 
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  MACHINE_DRIVER( sa1403d )
-//-------------------------------------------------
-
-static MACHINE_CONFIG_FRAGMENT( sa1403d )
-=======
 //  device_add_mconfig - add device configuration
 //-------------------------------------------------
 
 MACHINE_CONFIG_MEMBER( sa1403d_device::device_add_mconfig )
->>>>>>> upstream/master
 	MCFG_HARDDISK_ADD("image")
 MACHINE_CONFIG_END
 
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  machine_config_additions - device-specific
-//  machine configurations
-//-------------------------------------------------
-
-machine_config_constructor sa1403d_device::device_mconfig_additions() const
-{
-	return MACHINE_CONFIG_NAME( sa1403d );
-}
-
-
-//-------------------------------------------------
-=======
->>>>>>> upstream/master
 //  INPUT_PORTS( sa1403d )
 //-------------------------------------------------
 
@@ -144,13 +112,8 @@ ioport_constructor sa1403d_device::device_input_ports() const
 //  sa1403d_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-sa1403d_device::sa1403d_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: scsihd_device(mconfig, SA1403D, "Shugart SA1403D", tag, owner, clock, "sa1403d", __FILE__)
-=======
 sa1403d_device::sa1403d_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: scsihd_device(mconfig, SA1403D, tag, owner, clock)
->>>>>>> upstream/master
 {
 }
 
@@ -164,11 +127,7 @@ void sa1403d_device::ExecCommand()
 	}
 }
 
-<<<<<<< HEAD
-void sa1403d_device::WriteData( UINT8 *data, int dataLength )
-=======
 void sa1403d_device::WriteData( uint8_t *data, int dataLength )
->>>>>>> upstream/master
 {
 	switch( command[ 0 ] )
 	{

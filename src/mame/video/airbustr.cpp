@@ -33,46 +33,27 @@
 
 **************************************************************************/
 #include "emu.h"
-<<<<<<< HEAD
-#include "video/kan_pand.h"
-#include "includes/airbustr.h"
-
-WRITE8_MEMBER(airbustr_state::airbustr_videoram_w)
-=======
 #include "includes/airbustr.h"
 
 WRITE8_MEMBER(airbustr_state::videoram_w)
->>>>>>> upstream/master
 {
 	m_videoram[offset] = data;
 	m_bg_tilemap->mark_tile_dirty(offset);
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER(airbustr_state::airbustr_colorram_w)
-=======
 WRITE8_MEMBER(airbustr_state::colorram_w)
->>>>>>> upstream/master
 {
 	m_colorram[offset] = data;
 	m_bg_tilemap->mark_tile_dirty(offset);
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER(airbustr_state::airbustr_videoram2_w)
-=======
 WRITE8_MEMBER(airbustr_state::videoram2_w)
->>>>>>> upstream/master
 {
 	m_videoram2[offset] = data;
 	m_fg_tilemap->mark_tile_dirty(offset);
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER(airbustr_state::airbustr_colorram2_w)
-=======
 WRITE8_MEMBER(airbustr_state::colorram2_w)
->>>>>>> upstream/master
 {
 	m_colorram2[offset] = data;
 	m_fg_tilemap->mark_tile_dirty(offset);
@@ -90,11 +71,7 @@ WRITE8_MEMBER(airbustr_state::colorram2_w)
             Bg Y    Bg X    Fg Y    Fg X    <-Scroll High Bits (complemented!)
 */
 
-<<<<<<< HEAD
-WRITE8_MEMBER(airbustr_state::airbustr_scrollregs_w)
-=======
 WRITE8_MEMBER(airbustr_state::scrollregs_w)
->>>>>>> upstream/master
 {
 	switch (offset)     // offset 0 <-> port 4
 	{
@@ -133,13 +110,8 @@ TILE_GET_INFO_MEMBER(airbustr_state::get_bg_tile_info)
 
 void airbustr_state::video_start()
 {
-<<<<<<< HEAD
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(airbustr_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 16, 16, 32, 32);
-	m_fg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(airbustr_state::get_fg_tile_info),this), TILEMAP_SCAN_ROWS, 16, 16, 32, 32);
-=======
 	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(airbustr_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 16, 16, 32, 32);
 	m_fg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(airbustr_state::get_fg_tile_info),this), TILEMAP_SCAN_ROWS, 16, 16, 32, 32);
->>>>>>> upstream/master
 
 	m_screen->register_screen_bitmap(m_sprites_bitmap);
 	m_fg_tilemap->set_transparent_pen(0);
@@ -153,11 +125,7 @@ void airbustr_state::video_start()
 }
 
 
-<<<<<<< HEAD
-UINT32 airbustr_state::screen_update_airbustr(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t airbustr_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	m_bg_tilemap->draw(screen, bitmap, cliprect, 0, 0);
 	m_fg_tilemap->draw(screen, bitmap, cliprect, 0, 0);
@@ -168,11 +136,7 @@ uint32_t airbustr_state::screen_update(screen_device &screen, bitmap_ind16 &bitm
 	return 0;
 }
 
-<<<<<<< HEAD
-void airbustr_state::screen_eof_airbustr(screen_device &screen, bool state)
-=======
 WRITE_LINE_MEMBER(airbustr_state::screen_vblank)
->>>>>>> upstream/master
 {
 	// rising edge
 	if (state)

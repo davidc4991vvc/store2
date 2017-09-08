@@ -18,19 +18,11 @@ static floperr_t basicdsk_read_sector(floppy_image_legacy *floppy, int head, int
 static floperr_t basicdsk_write_sector(floppy_image_legacy *floppy, int head, int track, int sector, const void *buffer, size_t buflen, int ddam);
 static floperr_t basicdsk_read_indexed_sector(floppy_image_legacy *floppy, int head, int track, int sector, void *buffer, size_t buflen);
 static floperr_t basicdsk_write_indexed_sector(floppy_image_legacy *floppy, int head, int track, int sector, const void *buffer, size_t buflen, int ddam);
-<<<<<<< HEAD
-static floperr_t basicdsk_get_sector_length(floppy_image_legacy *floppy, int head, int track, int sector, UINT32 *sector_length);
-static floperr_t basicdsk_get_indexed_sector_info(floppy_image_legacy *floppy, int head, int track, int sector_index, int *cylinder, int *side, int *sector, UINT32 *sector_length, unsigned long *flags);
-static int basicdsk_get_heads_per_disk(floppy_image_legacy *floppy);
-static int basicdsk_get_tracks_per_disk(floppy_image_legacy *floppy);
-static floperr_t basicdsk_format_track(floppy_image_legacy *floppy, int head, int track, option_resolution *params);
-=======
 static floperr_t basicdsk_get_sector_length(floppy_image_legacy *floppy, int head, int track, int sector, uint32_t *sector_length);
 static floperr_t basicdsk_get_indexed_sector_info(floppy_image_legacy *floppy, int head, int track, int sector_index, int *cylinder, int *side, int *sector, uint32_t *sector_length, unsigned long *flags);
 static int basicdsk_get_heads_per_disk(floppy_image_legacy *floppy);
 static int basicdsk_get_tracks_per_disk(floppy_image_legacy *floppy);
 static floperr_t basicdsk_format_track(floppy_image_legacy *floppy, int head, int track, util::option_resolution *params);
->>>>>>> upstream/master
 
 
 
@@ -85,17 +77,10 @@ floperr_t basicdsk_construct(floppy_image_legacy *floppy, const struct basicdsk_
 
 
 
-<<<<<<< HEAD
-static floperr_t get_offset(floppy_image_legacy *floppy, int head, int track, int sector, int sector_is_index, UINT64 *offset)
-{
-	const struct basicdsk_geometry *geom;
-	UINT64 offs;
-=======
 static floperr_t get_offset(floppy_image_legacy *floppy, int head, int track, int sector, bool sector_is_index, uint64_t *offset)
 {
 	const struct basicdsk_geometry *geom;
 	uint64_t offs;
->>>>>>> upstream/master
 
 	geom = get_geometry(floppy);
 
@@ -144,15 +129,9 @@ static int internal_basicdsk_translate_sector_interleave(floppy_image_legacy *fl
 
 
 
-<<<<<<< HEAD
-static floperr_t internal_basicdsk_read_sector(floppy_image_legacy *floppy, int head, int track, int sector, int sector_is_index, void *buffer, size_t buflen)
-{
-	UINT64 offset;
-=======
 static floperr_t internal_basicdsk_read_sector(floppy_image_legacy *floppy, int head, int track, int sector, bool sector_is_index, void *buffer, size_t buflen)
 {
 	uint64_t offset;
->>>>>>> upstream/master
 	floperr_t err;
 
 	err = get_offset(floppy, head, track, sector, sector_is_index, &offset);
@@ -164,15 +143,9 @@ static floperr_t internal_basicdsk_read_sector(floppy_image_legacy *floppy, int 
 
 
 
-<<<<<<< HEAD
-static floperr_t internal_basicdsk_write_sector(floppy_image_legacy *floppy, int head, int track, int sector, int sector_is_index, const void *buffer, size_t buflen, int ddam)
-{
-	UINT64 offset;
-=======
 static floperr_t internal_basicdsk_write_sector(floppy_image_legacy *floppy, int head, int track, int sector, bool sector_is_index, const void *buffer, size_t buflen, int ddam)
 {
 	uint64_t offset;
->>>>>>> upstream/master
 	floperr_t err;
 
 	err = get_offset(floppy, head, track, sector, sector_is_index, &offset);
@@ -187,51 +160,26 @@ static floperr_t internal_basicdsk_write_sector(floppy_image_legacy *floppy, int
 
 static floperr_t basicdsk_read_sector(floppy_image_legacy *floppy, int head, int track, int sector, void *buffer, size_t buflen)
 {
-<<<<<<< HEAD
-	return internal_basicdsk_read_sector(floppy, head, track, sector, FALSE, buffer, buflen);
-=======
 	return internal_basicdsk_read_sector(floppy, head, track, sector, false, buffer, buflen);
->>>>>>> upstream/master
 }
 
 static floperr_t basicdsk_write_sector(floppy_image_legacy *floppy, int head, int track, int sector, const void *buffer, size_t buflen, int ddam)
 {
-<<<<<<< HEAD
-	return internal_basicdsk_write_sector(floppy, head, track, sector, FALSE, buffer, buflen, ddam);
-=======
 	return internal_basicdsk_write_sector(floppy, head, track, sector, false, buffer, buflen, ddam);
->>>>>>> upstream/master
 }
 
 static floperr_t basicdsk_read_indexed_sector(floppy_image_legacy *floppy, int head, int track, int sector, void *buffer, size_t buflen)
 {
-<<<<<<< HEAD
-	return internal_basicdsk_read_sector(floppy, head, track, sector, TRUE, buffer, buflen);
-=======
 	return internal_basicdsk_read_sector(floppy, head, track, sector, true, buffer, buflen);
->>>>>>> upstream/master
 }
 
 static floperr_t basicdsk_write_indexed_sector(floppy_image_legacy *floppy, int head, int track, int sector, const void *buffer, size_t buflen, int ddam)
 {
-<<<<<<< HEAD
-	return internal_basicdsk_write_sector(floppy, head, track, sector, TRUE, buffer, buflen, ddam);
-=======
 	return internal_basicdsk_write_sector(floppy, head, track, sector, true, buffer, buflen, ddam);
->>>>>>> upstream/master
 }
 
 
 
-<<<<<<< HEAD
-static floperr_t basicdsk_format_track(floppy_image_legacy *floppy, int head, int track, option_resolution *params)
-{
-	floperr_t err = FLOPPY_ERROR_SUCCESS;
-	UINT8 local_buffer[512];
-	void *alloc_buffer = NULL;
-	void *buffer;
-	UINT32 sector_length;
-=======
 static floperr_t basicdsk_format_track(floppy_image_legacy *floppy, int head, int track, util::option_resolution *params)
 {
 	floperr_t err = FLOPPY_ERROR_SUCCESS;
@@ -239,7 +187,6 @@ static floperr_t basicdsk_format_track(floppy_image_legacy *floppy, int head, in
 	void *alloc_buffer = nullptr;
 	void *buffer;
 	uint32_t sector_length;
->>>>>>> upstream/master
 	int sector;
 	const struct basicdsk_geometry *geometry;
 
@@ -259,11 +206,7 @@ static floperr_t basicdsk_format_track(floppy_image_legacy *floppy, int head, in
 	}
 	else
 	{
-<<<<<<< HEAD
-		alloc_buffer = NULL;
-=======
 		alloc_buffer = nullptr;
->>>>>>> upstream/master
 		buffer = local_buffer;
 	}
 
@@ -298,19 +241,11 @@ static int basicdsk_get_tracks_per_disk(floppy_image_legacy *floppy)
 
 
 
-<<<<<<< HEAD
-static floperr_t basicdsk_get_sector_length(floppy_image_legacy *floppy, int head, int track, int sector, UINT32 *sector_length)
-{
-	floperr_t err;
-
-	err = get_offset(floppy, head, track, sector, FALSE, NULL);
-=======
 static floperr_t basicdsk_get_sector_length(floppy_image_legacy *floppy, int head, int track, int sector, uint32_t *sector_length)
 {
 	floperr_t err;
 
 	err = get_offset(floppy, head, track, sector, false, nullptr);
->>>>>>> upstream/master
 	if (err)
 		return err;
 
@@ -321,11 +256,7 @@ static floperr_t basicdsk_get_sector_length(floppy_image_legacy *floppy, int hea
 
 
 
-<<<<<<< HEAD
-static floperr_t basicdsk_get_indexed_sector_info(floppy_image_legacy *floppy, int head, int track, int sector_index, int *cylinder, int *side, int *sector, UINT32 *sector_length, unsigned long *flags)
-=======
 static floperr_t basicdsk_get_indexed_sector_info(floppy_image_legacy *floppy, int head, int track, int sector_index, int *cylinder, int *side, int *sector, uint32_t *sector_length, unsigned long *flags)
->>>>>>> upstream/master
 {
 	const struct basicdsk_geometry *geom = get_geometry(floppy);
 
@@ -357,26 +288,6 @@ static floperr_t basicdsk_get_indexed_sector_info(floppy_image_legacy *floppy, i
 
 static void basicdsk_default_geometry(const struct FloppyFormat *format, struct basicdsk_geometry *geometry)
 {
-<<<<<<< HEAD
-	optreserr_t err;
-	int sector_length;
-	memset(geometry, 0, sizeof(*geometry));
-
-	err = option_resolution_getdefault(format->param_guidelines, PARAM_HEADS,           &geometry->heads);
-	assert(!err);
-	err = option_resolution_getdefault(format->param_guidelines, PARAM_TRACKS,          &geometry->tracks);
-	assert(!err);
-	err = option_resolution_getdefault(format->param_guidelines, PARAM_SECTORS,         &geometry->sectors);
-	assert(!err);
-	err = option_resolution_getdefault(format->param_guidelines, PARAM_FIRST_SECTOR_ID, &geometry->first_sector_id);
-	assert(!err);
-	err = option_resolution_getdefault(format->param_guidelines, PARAM_INTERLEAVE,      &geometry->interleave);
-	if (err!=0) {
-		geometry->interleave = 1;
-	}
-	err = option_resolution_getdefault(format->param_guidelines, PARAM_SECTOR_LENGTH,   &sector_length);
-	assert(!err);
-=======
 	int sector_length;
 	memset(geometry, 0, sizeof(*geometry));
 
@@ -394,7 +305,6 @@ static void basicdsk_default_geometry(const struct FloppyFormat *format, struct 
 	}
 	err = util::option_resolution::get_default(format->param_guidelines, PARAM_SECTOR_LENGTH,   &sector_length);
 	assert(err == util::option_resolution::error::SUCCESS);
->>>>>>> upstream/master
 	geometry->sector_length = sector_length;
 
 	if (geometry->interleave > 1)
@@ -428,11 +338,7 @@ FLOPPY_CONSTRUCT(basicdsk_construct_default)
 
 FLOPPY_IDENTIFY(basicdsk_identify_default)
 {
-<<<<<<< HEAD
-	UINT64 expected_size;
-=======
 	uint64_t expected_size;
->>>>>>> upstream/master
 	struct basicdsk_geometry geometry;
 
 	basicdsk_default_geometry(format, &geometry);

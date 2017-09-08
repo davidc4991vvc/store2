@@ -46,11 +46,7 @@
 
 PALETTE_INIT_MEMBER(matmania_state, matmania)
 {
-<<<<<<< HEAD
-	const UINT8 *color_prom = memregion("proms")->base();
-=======
 	const uint8_t *color_prom = memregion("proms")->base();
->>>>>>> upstream/master
 
 	for (int i = 0; i < 64; i++)
 	{
@@ -124,26 +120,15 @@ void matmania_state::video_start()
 	int height = m_screen->height();
 
 	/* Mat Mania has a virtual screen twice as large as the visible screen */
-<<<<<<< HEAD
-	m_tmpbitmap  = auto_bitmap_ind16_alloc(machine(), width, 2 * height);
-	m_tmpbitmap2 = auto_bitmap_ind16_alloc(machine(), width, 2 * height);
-=======
 	m_tmpbitmap  = std::make_unique<bitmap_ind16>(width, 2 * height);
 	m_tmpbitmap2 = std::make_unique<bitmap_ind16>(width, 2 * height);
->>>>>>> upstream/master
 }
 
 
 
-<<<<<<< HEAD
-UINT32 matmania_state::screen_update_matmania(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-{
-	UINT8 *spriteram = m_spriteram;
-=======
 uint32_t matmania_state::screen_update_matmania(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
 	uint8_t *spriteram = m_spriteram;
->>>>>>> upstream/master
 	int offs;
 
 
@@ -177,15 +162,9 @@ uint32_t matmania_state::screen_update_matmania(screen_device &screen, bitmap_in
 	{
 		int scrolly = -*m_scroll;
 		if (m_pageselect[0] & 0x01) // maniach sets 0x20 sometimes, which must have a different meaning
-<<<<<<< HEAD
-			copyscrollbitmap(bitmap, *m_tmpbitmap2, 0, 0, 1, &scrolly, cliprect);
-		else
-			copyscrollbitmap(bitmap, *m_tmpbitmap, 0, 0, 1, &scrolly, cliprect);
-=======
 			copyscrollbitmap(bitmap, *m_tmpbitmap2, 0, nullptr, 1, &scrolly, cliprect);
 		else
 			copyscrollbitmap(bitmap, *m_tmpbitmap, 0, nullptr, 1, &scrolly, cliprect);
->>>>>>> upstream/master
 	}
 
 
@@ -218,15 +197,9 @@ uint32_t matmania_state::screen_update_matmania(screen_device &screen, bitmap_in
 	return 0;
 }
 
-<<<<<<< HEAD
-UINT32 matmania_state::screen_update_maniach(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-{
-	UINT8 *spriteram = m_spriteram;
-=======
 uint32_t matmania_state::screen_update_maniach(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
 	uint8_t *spriteram = m_spriteram;
->>>>>>> upstream/master
 	int offs;
 
 
@@ -262,15 +235,9 @@ uint32_t matmania_state::screen_update_maniach(screen_device &screen, bitmap_ind
 		int scrolly = -*m_scroll;
 
 		if (m_pageselect[0] & 0x01) // this sets 0x20 sometimes, which must have a different meaning
-<<<<<<< HEAD
-			copyscrollbitmap(bitmap, *m_tmpbitmap2, 0, 0, 1, &scrolly, cliprect);
-		else
-			copyscrollbitmap(bitmap, *m_tmpbitmap, 0, 0, 1, &scrolly, cliprect);
-=======
 			copyscrollbitmap(bitmap, *m_tmpbitmap2, 0, nullptr, 1, &scrolly, cliprect);
 		else
 			copyscrollbitmap(bitmap, *m_tmpbitmap, 0, nullptr, 1, &scrolly, cliprect);
->>>>>>> upstream/master
 	}
 
 

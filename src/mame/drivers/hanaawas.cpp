@@ -28,11 +28,6 @@
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/z80/z80.h"
-#include "sound/ay8910.h"
-#include "includes/hanaawas.h"
-=======
 #include "includes/hanaawas.h"
 
 #include "cpu/z80/z80.h"
@@ -40,26 +35,10 @@
 #include "screen.h"
 #include "speaker.h"
 
->>>>>>> upstream/master
 
 READ8_MEMBER(hanaawas_state::hanaawas_input_port_0_r)
 {
 	int i, ordinal = 0;
-<<<<<<< HEAD
-	UINT16 buttons = 0;
-
-	switch (m_mux)
-	{
-	case 1: /* start buttons */
-		buttons = ioport("START")->read();
-		break;
-	case 2: /* player 1 buttons */
-		buttons = ioport("P1")->read();
-		break;
-	case 4: /* player 2 buttons */
-		buttons = ioport("P2")->read();
-		break;
-=======
 	uint16_t buttons = 0;
 
 	// TODO: key matrix seems identical to speedatk.cpp, needs merging
@@ -87,7 +66,6 @@ READ8_MEMBER(hanaawas_state::hanaawas_input_port_0_r)
 		case 4: /* player 2 buttons */
 			buttons = ioport("P2")->read();
 			break;
->>>>>>> upstream/master
 	}
 
 
@@ -102,11 +80,7 @@ READ8_MEMBER(hanaawas_state::hanaawas_input_port_0_r)
 		}
 	}
 
-<<<<<<< HEAD
-	return (ioport("IN0")->read() & 0xf0) | ordinal;
-=======
 	return ordinal;
->>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(hanaawas_state::hanaawas_inputs_mux_w)
@@ -114,8 +88,6 @@ WRITE8_MEMBER(hanaawas_state::hanaawas_inputs_mux_w)
 	m_mux = data;
 }
 
-<<<<<<< HEAD
-=======
 WRITE8_MEMBER(hanaawas_state::irq_ack_w)
 {
 	m_maincpu->set_input_line(0,CLEAR_LINE);
@@ -127,7 +99,6 @@ WRITE8_MEMBER(hanaawas_state::key_matrix_status_w)
 		m_coin_settings = data & 0xf;
 }
 
->>>>>>> upstream/master
 static ADDRESS_MAP_START( hanaawas_map, AS_PROGRAM, 8, hanaawas_state )
 	AM_RANGE(0x0000, 0x2fff) AM_ROM
 	AM_RANGE(0x4000, 0x4fff) AM_ROM
@@ -135,30 +106,13 @@ static ADDRESS_MAP_START( hanaawas_map, AS_PROGRAM, 8, hanaawas_state )
 	AM_RANGE(0x8000, 0x83ff) AM_RAM_WRITE(hanaawas_videoram_w) AM_SHARE("videoram")
 	AM_RANGE(0x8400, 0x87ff) AM_RAM_WRITE(hanaawas_colorram_w) AM_SHARE("colorram")
 	AM_RANGE(0x8800, 0x8bff) AM_RAM
-<<<<<<< HEAD
-=======
 	AM_RANGE(0xb000, 0xb000) AM_WRITE(irq_ack_w)
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
 static ADDRESS_MAP_START( io_map, AS_IO, 8, hanaawas_state )
 	ADDRESS_MAP_GLOBAL_MASK(0xff)
 	AM_RANGE(0x00, 0x00) AM_READWRITE(hanaawas_input_port_0_r, hanaawas_inputs_mux_w)
-<<<<<<< HEAD
-	AM_RANGE(0x01, 0x01) AM_READNOP /* it must return 0 */
-	AM_RANGE(0x10, 0x10) AM_DEVREAD("aysnd", ay8910_device, data_r)
-	AM_RANGE(0x10, 0x11) AM_DEVWRITE("aysnd", ay8910_device, address_data_w)
-ADDRESS_MAP_END
-
-static INPUT_PORTS_START( hanaawas )
-	PORT_START("IN0")
-	PORT_BIT( 0x0f, IP_ACTIVE_HIGH, IPT_SPECIAL )
-	PORT_BIT( 0x10, IP_ACTIVE_HIGH, IPT_UNKNOWN )
-	PORT_BIT( 0x20, IP_ACTIVE_HIGH, IPT_UNKNOWN )
-	PORT_BIT( 0x40, IP_ACTIVE_HIGH, IPT_UNKNOWN )
-	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_COIN1 ) PORT_IMPULSE(1)
-=======
 	AM_RANGE(0x01, 0x01) AM_READNOP AM_WRITE(key_matrix_status_w) /* r bit 1: status ready, presumably of the input mux device / w = configure device? */
 	AM_RANGE(0x10, 0x10) AM_DEVREAD("aysnd", ay8910_device, data_r)
 	AM_RANGE(0x10, 0x11) AM_DEVWRITE("aysnd", ay8910_device, address_data_w)
@@ -169,7 +123,6 @@ static INPUT_PORTS_START( hanaawas )
 	PORT_START("COINS")
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_COIN1 ) PORT_IMPULSE(1)
 	PORT_BIT( 0x02, IP_ACTIVE_HIGH, IPT_COIN2 ) PORT_IMPULSE(1)
->>>>>>> upstream/master
 
 	PORT_START("DSW")
 	PORT_DIPNAME( 0x01, 0x00, DEF_STR( Unknown ) )
@@ -251,11 +204,8 @@ GFXDECODE_END
 void hanaawas_state::machine_start()
 {
 	save_item(NAME(m_mux));
-<<<<<<< HEAD
-=======
 	save_item(NAME(m_coin_settings));
 	save_item(NAME(m_coin_impulse));
->>>>>>> upstream/master
 }
 
 void hanaawas_state::machine_reset()
@@ -263,21 +213,13 @@ void hanaawas_state::machine_reset()
 	m_mux = 0;
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( hanaawas, hanaawas_state )
-=======
 static MACHINE_CONFIG_START( hanaawas )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80,18432000/6) /* 3.072 MHz ??? */
 	MCFG_CPU_PROGRAM_MAP(hanaawas_map)
 	MCFG_CPU_IO_MAP(io_map)
-<<<<<<< HEAD
-	MCFG_CPU_VBLANK_INT_DRIVER("screen", hanaawas_state,  irq0_line_hold)
-=======
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", hanaawas_state,  irq0_line_assert)
->>>>>>> upstream/master
 
 
 	/* video hardware */
@@ -330,8 +272,4 @@ ROM_START( hanaawas )
 ROM_END
 
 
-<<<<<<< HEAD
-GAME( 1982, hanaawas, 0, hanaawas, hanaawas, driver_device, 0, ROT0, "Seta Kikaku, Ltd.", "Hana Awase", MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1982, hanaawas, 0, hanaawas, hanaawas, hanaawas_state, 0, ROT0, "Seta Kikaku, Ltd.", "Hana Awase", MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

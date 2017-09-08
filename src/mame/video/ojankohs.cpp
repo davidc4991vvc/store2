@@ -21,11 +21,7 @@
 
 PALETTE_INIT_MEMBER(ojankohs_state,ojankoy)
 {
-<<<<<<< HEAD
-	const UINT8 *color_prom = memregion("proms")->base();
-=======
 	const uint8_t *color_prom = memregion("proms")->base();
->>>>>>> upstream/master
 	int i;
 	int bit0, bit1, bit2, bit3, bit4, r, g, b;
 
@@ -190,11 +186,7 @@ TILE_GET_INFO_MEMBER(ojankohs_state::ojankoy_get_tile_info)
 void ojankohs_state::ojankoc_flipscreen( address_space &space, int data )
 {
 	int x, y;
-<<<<<<< HEAD
-	UINT8 color1, color2;
-=======
 	uint8_t color1, color2;
->>>>>>> upstream/master
 
 	m_flipscreen = BIT(data, 7);
 
@@ -223,13 +215,8 @@ void ojankohs_state::ojankoc_flipscreen( address_space &space, int data )
 WRITE8_MEMBER(ojankohs_state::ojankoc_videoram_w)
 {
 	int i;
-<<<<<<< HEAD
-	UINT8 x, y, xx, px, py ;
-	UINT8 color, color1, color2;
-=======
 	uint8_t x, y, xx, px, py ;
 	uint8_t color, color1, color2;
->>>>>>> upstream/master
 
 	m_videoram[offset] = data;
 
@@ -270,30 +257,17 @@ WRITE8_MEMBER(ojankohs_state::ojankoc_videoram_w)
 
 VIDEO_START_MEMBER(ojankohs_state,ojankohs)
 {
-<<<<<<< HEAD
-	m_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(ojankohs_state::ojankohs_get_tile_info),this), TILEMAP_SCAN_ROWS,  8, 4, 64, 64);
-//  m_videoram = auto_alloc_array(machine(), UINT8, 0x1000);
-//  m_colorram = auto_alloc_array(machine(), UINT8, 0x1000);
-//  m_paletteram = auto_alloc_array(machine(), UINT8, 0x800);
-=======
 	m_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(ojankohs_state::ojankohs_get_tile_info),this), TILEMAP_SCAN_ROWS,  8, 4, 64, 64);
 //  m_videoram = std::make_unique<uint8_t[]>(0x1000);
 //  m_colorram = std::make_unique<uint8_t[]>(0x1000);
 //  m_paletteram = std::make_unique<uint8_t[]>(0x800);
->>>>>>> upstream/master
 }
 
 VIDEO_START_MEMBER(ojankohs_state,ojankoy)
 {
-<<<<<<< HEAD
-	m_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(ojankohs_state::ojankoy_get_tile_info),this), TILEMAP_SCAN_ROWS,  8, 4, 64, 64);
-//  m_videoram = auto_alloc_array(machine(), UINT8, 0x2000);
-//  m_colorram = auto_alloc_array(machine(), UINT8, 0x1000);
-=======
 	m_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(ojankohs_state::ojankoy_get_tile_info),this), TILEMAP_SCAN_ROWS,  8, 4, 64, 64);
 //  m_videoram = std::make_unique<uint8_t[]>(0x2000);
 //  m_colorram = std::make_unique<uint8_t[]>(0x1000);
->>>>>>> upstream/master
 }
 
 VIDEO_START_MEMBER(ojankohs_state,ojankoc)
@@ -312,11 +286,7 @@ VIDEO_START_MEMBER(ojankohs_state,ojankoc)
 
 ******************************************************************************/
 
-<<<<<<< HEAD
-UINT32 ojankohs_state::screen_update_ojankohs(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t ojankohs_state::screen_update_ojankohs(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	m_tilemap->set_scrollx(0, m_scrollx);
 	m_tilemap->set_scrolly(0, m_scrolly);
@@ -325,11 +295,7 @@ uint32_t ojankohs_state::screen_update_ojankohs(screen_device &screen, bitmap_in
 	return 0;
 }
 
-<<<<<<< HEAD
-UINT32 ojankohs_state::screen_update_ojankoc(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t ojankohs_state::screen_update_ojankoc(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int offs;
 

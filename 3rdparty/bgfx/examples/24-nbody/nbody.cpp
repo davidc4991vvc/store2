@@ -1,10 +1,6 @@
 /*
 * Copyright 2014 Stanlo Slasinski. All rights reserved.
-<<<<<<< HEAD
-* License: http://www.opensource.org/licenses/BSD-2-Clause
-=======
 * License: https://github.com/bkaradzic/bgfx#license-bsd-2-clause
->>>>>>> upstream/master
 */
 
 #include "common.h"
@@ -216,11 +212,7 @@ int _main_(int _argc, char** _argv)
 			}
 
 			// Set view 0 default viewport.
-<<<<<<< HEAD
-			bgfx::setViewRect(0, 0, 0, width, height);
-=======
 			bgfx::setViewRect(0, 0, 0, uint16_t(width), uint16_t(height) );
->>>>>>> upstream/master
 
 			// Use debug font to print information about this example.
 			bgfx::dbgTextClear();
@@ -233,13 +225,8 @@ int _main_(int _argc, char** _argv)
 					| (mouseState.m_buttons[entry::MouseButton::Right ] ? IMGUI_MBUT_RIGHT  : 0)
 					| (mouseState.m_buttons[entry::MouseButton::Middle] ? IMGUI_MBUT_MIDDLE : 0)
 					, mouseState.m_mz
-<<<<<<< HEAD
-					, width
-					, height
-=======
 					, uint16_t(width)
 					, uint16_t(height)
->>>>>>> upstream/master
 					);
 			imguiBeginScrollArea("Settings", width - width / 4 - 10, 10, width / 4, 500, &scrollArea);
 			imguiSlider("Random seed", u_paramsData.baseSeed, 0, 100);
@@ -298,11 +285,7 @@ int _main_(int _argc, char** _argv)
 			}
 			else
 			{
-<<<<<<< HEAD
-				bgfx::dispatch(0, updateInstancesProgram, u_paramsData.dispatchSize, 1, 1);
-=======
 				bgfx::dispatch(0, updateInstancesProgram, uint16_t(u_paramsData.dispatchSize), 1, 1);
->>>>>>> upstream/master
 			}
 
 			bx::xchg(currPositionBuffer0, currPositionBuffer1);
@@ -322,15 +305,7 @@ int _main_(int _argc, char** _argv)
 
 				float tmp[16];
 				bx::mtxMul(tmp, view, viewHead);
-<<<<<<< HEAD
-
-				float proj[16];
-				bx::mtxProj(proj, hmd->eye[0].fov, 0.1f, 10000.0f);
-
-				bgfx::setViewTransform(0, tmp, proj);
-=======
 				bgfx::setViewTransform(0, tmp, hmd->eye[0].projection, BGFX_VIEW_STEREO, hmd->eye[1].projection);
->>>>>>> upstream/master
 
 				// Set view 0 default viewport.
 				//
@@ -341,19 +316,11 @@ int _main_(int _argc, char** _argv)
 			else
 			{
 				float proj[16];
-<<<<<<< HEAD
-				bx::mtxProj(proj, 90.0f, float(width)/float(height), 0.1f, 10000.0f);
-				bgfx::setViewTransform(0, view, proj);
-
-				// Set view 0 default viewport.
-				bgfx::setViewRect(0, 0, 0, width, height);
-=======
 				bx::mtxProj(proj, 90.0f, float(width)/float(height), 0.1f, 10000.0f, bgfx::getCaps()->homogeneousDepth);
 				bgfx::setViewTransform(0, view, proj);
 
 				// Set view 0 default viewport.
 				bgfx::setViewRect(0, 0, 0, uint16_t(width), uint16_t(height) );
->>>>>>> upstream/master
 			}
 
 			// Set vertex and index buffer.
@@ -415,11 +382,7 @@ int _main_(int _argc, char** _argv)
 			int64_t now = bx::getHPCounter();
 			float time = (float)( (now - timeOffset)/double(bx::getHPFrequency() ) );
 
-<<<<<<< HEAD
-			bgfx::setViewRect(0, 0, 0, width, height);
-=======
 			bgfx::setViewRect(0, 0, 0, uint16_t(width), uint16_t(height));
->>>>>>> upstream/master
 
 			bgfx::dbgTextClear();
 			bgfx::dbgTextPrintf(0, 1, 0x4f, "bgfx/examples/24-nbody");

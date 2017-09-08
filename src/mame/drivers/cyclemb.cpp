@@ -72,11 +72,6 @@ Dumped by Chack'n
 ****************************************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/z80/z80.h"
-#include "sound/2203intf.h"
-#include "machine/tait8741.h"
-=======
 #include "machine/tait8741.h"
 
 #include "cpu/z80/z80.h"
@@ -84,7 +79,6 @@ Dumped by Chack'n
 #include "sound/2203intf.h"
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 class cyclemb_state : public driver_device
@@ -96,10 +90,7 @@ public:
 		m_audiocpu(*this, "audiocpu"),
 		m_gfxdecode(*this, "gfxdecode"),
 		m_palette(*this, "palette"),
-<<<<<<< HEAD
-=======
 		m_soundlatch(*this, "soundlatch"),
->>>>>>> upstream/master
 		m_vram(*this, "vram"),
 		m_cram(*this, "cram"),
 		m_obj1_ram(*this, "obj1_ram"),
@@ -111,25 +102,6 @@ public:
 	required_device<cpu_device> m_audiocpu;
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
-<<<<<<< HEAD
-
-	required_shared_ptr<UINT8> m_vram;
-	required_shared_ptr<UINT8> m_cram;
-	required_shared_ptr<UINT8> m_obj1_ram;
-	required_shared_ptr<UINT8> m_obj2_ram;
-	required_shared_ptr<UINT8> m_obj3_ram;
-
-	struct
-	{
-		UINT8 rxd;
-		UINT8 txd;
-		UINT8 rst;
-		UINT8 state;
-		UINT8 packet_type;
-	} m_mcu[2];
-
-	UINT16 m_dsw_pc_hack;
-=======
 	required_device<generic_latch_8_device> m_soundlatch;
 
 	required_shared_ptr<uint8_t> m_vram;
@@ -148,7 +120,6 @@ public:
 	} m_mcu[2];
 
 	uint16_t m_dsw_pc_hack;
->>>>>>> upstream/master
 
 	DECLARE_WRITE8_MEMBER(cyclemb_bankswitch_w);
 //  DECLARE_READ8_MEMBER(mcu_status_r);
@@ -159,21 +130,12 @@ public:
 
 	DECLARE_DRIVER_INIT(skydest);
 	DECLARE_DRIVER_INIT(cyclemb);
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void machine_reset();
-	DECLARE_PALETTE_INIT(cyclemb);
-
-	UINT32 screen_update_cyclemb(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	UINT32 screen_update_skydest(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
 	DECLARE_PALETTE_INIT(cyclemb);
 
 	uint32_t screen_update_cyclemb(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	uint32_t screen_update_skydest(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	void cyclemb_draw_tilemap(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	void cyclemb_draw_sprites(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	void skydest_draw_tilemap(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
@@ -185,11 +147,7 @@ public:
 
 PALETTE_INIT_MEMBER(cyclemb_state, cyclemb)
 {
-<<<<<<< HEAD
-	const UINT8 *color_prom = memregion("proms")->base();
-=======
 	const uint8_t *color_prom = memregion("proms")->base();
->>>>>>> upstream/master
 	int i,r,g,b,val;
 	int bit0,bit1,bit2;
 
@@ -266,15 +224,9 @@ void cyclemb_state::cyclemb_draw_tilemap(screen_device &screen, bitmap_ind16 &bi
 	*/
 void cyclemb_state::cyclemb_draw_sprites(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
-<<<<<<< HEAD
-	UINT8 col,fx,fy,region;
-	UINT16 spr_offs,i;
-	INT16 x,y;
-=======
 	uint8_t col,fx,fy,region;
 	uint16_t spr_offs,i;
 	int16_t x,y;
->>>>>>> upstream/master
 
 	/*
 	0x3b-0x3c-0x3d tire (0x13 0x00 / 0x17 0x00 )
@@ -372,15 +324,9 @@ void cyclemb_state::skydest_draw_tilemap(screen_device &screen, bitmap_ind16 &bi
 
 void cyclemb_state::skydest_draw_sprites(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
-<<<<<<< HEAD
-	UINT8 col,fx,fy,region;
-	UINT16 spr_offs,i;
-	INT16 x,y;
-=======
 	uint8_t col,fx,fy,region;
 	uint16_t spr_offs,i;
 	int16_t x,y;
->>>>>>> upstream/master
 
 //  popmessage("%d %d",m_obj2_ram[0x0d], 0xf1 - m_obj2_ram[0x0c+1] + 68);
 
@@ -392,11 +338,7 @@ void cyclemb_state::skydest_draw_sprites(screen_device &screen, bitmap_ind16 &bi
 		if(m_obj3_ram[i+1] & 1)
 			x |= 0x100;
 
-<<<<<<< HEAD
-			x = 0x138 - x;
-=======
 		x = 0x138 - x;
->>>>>>> upstream/master
 
 		spr_offs = (m_obj1_ram[i+0]);
 		spr_offs += ((m_obj3_ram[i+0] & 3) << 8);
@@ -422,22 +364,14 @@ void cyclemb_state::skydest_draw_sprites(screen_device &screen, bitmap_ind16 &bi
 	}
 }
 
-<<<<<<< HEAD
-UINT32 cyclemb_state::screen_update_cyclemb(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t cyclemb_state::screen_update_cyclemb(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	cyclemb_draw_tilemap(screen,bitmap,cliprect);
 	cyclemb_draw_sprites(screen,bitmap,cliprect);
 	return 0;
 }
 
-<<<<<<< HEAD
-UINT32 cyclemb_state::screen_update_skydest(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t cyclemb_state::screen_update_skydest(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	bitmap.fill(0, cliprect);
 
@@ -454,11 +388,7 @@ WRITE8_MEMBER(cyclemb_state::cyclemb_bankswitch_w)
 #if 0
 WRITE8_MEMBER(cyclemb_state::sound_cmd_w)
 {
-<<<<<<< HEAD
-	soundlatch_byte_w(space, 0, data & 0xff);
-=======
 	m_soundlatch->write(space, 0, data & 0xff);
->>>>>>> upstream/master
 	m_audiocpu->set_input_line(0, HOLD_LINE);
 }
 #endif
@@ -472,11 +402,7 @@ READ8_MEMBER(cyclemb_state::mcu_status_r)
 
 WRITE8_MEMBER(cyclemb_state::sound_cmd_w)//actually ciom
 {
-<<<<<<< HEAD
-	soundlatch_byte_w(space, 0, data & 0xff);
-=======
 	m_soundlatch->write(space, 0, data & 0xff);
->>>>>>> upstream/master
 	m_audiocpu->set_input_line(0, HOLD_LINE);
 }
 #endif
@@ -507,11 +433,7 @@ READ8_MEMBER( cyclemb_state::skydest_i8741_0_r )
 	}
 	else
 	{
-<<<<<<< HEAD
-		UINT8 i,pt;
-=======
 		uint8_t i,pt;
->>>>>>> upstream/master
 
 		//printf("%04x\n",m_maincpu->pc());
 
@@ -673,11 +595,7 @@ ADDRESS_MAP_END
 static ADDRESS_MAP_START( cyclemb_sound_io, AS_IO, 8, cyclemb_state )
 	ADDRESS_MAP_GLOBAL_MASK(0xff)
 	AM_RANGE(0x00, 0x01) AM_DEVREADWRITE("ymsnd", ym2203_device, read, write)
-<<<<<<< HEAD
-	AM_RANGE(0x40, 0x40) AM_READ(soundlatch_byte_r) AM_WRITE(soundlatch2_byte_w)
-=======
 	AM_RANGE(0x40, 0x40) AM_DEVREAD("soundlatch", generic_latch_8_device, read) AM_DEVWRITE("soundlatch2", generic_latch_8_device, write)
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -999,11 +917,7 @@ static GFXDECODE_START( cyclemb )
 	GFXDECODE_ENTRY( "sprite_data", 0, spritelayout_32x32,    0x00, 0x40 )
 GFXDECODE_END
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( cyclemb, cyclemb_state )
-=======
 static MACHINE_CONFIG_START( cyclemb )
->>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, XTAL_18MHz/3) // Z8400BPS
 	MCFG_CPU_PROGRAM_MAP(cyclemb_map)
@@ -1030,13 +944,10 @@ static MACHINE_CONFIG_START( cyclemb )
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
-<<<<<<< HEAD
-=======
 
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch2")
 
->>>>>>> upstream/master
 	MCFG_SOUND_ADD("ymsnd", YM2203, XTAL_18MHz/12)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
 MACHINE_CONFIG_END
@@ -1141,9 +1052,5 @@ DRIVER_INIT_MEMBER(cyclemb_state,skydest)
 	m_dsw_pc_hack = 0x554;
 }
 
-<<<<<<< HEAD
-GAME( 1984, cyclemb,  0,   cyclemb,  cyclemb, cyclemb_state,  cyclemb, ROT0, "Taito Corporation", "Cycle Maabou (Japan)", MACHINE_NO_COCKTAIL | MACHINE_NO_SOUND | MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1984, cyclemb,  0,   cyclemb,  cyclemb, cyclemb_state,  cyclemb, ROT0, "Taito Corporation", "Cycle Maabou (Japan)",  MACHINE_NO_COCKTAIL | MACHINE_NO_SOUND | MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master
 GAME( 1985, skydest,  0,   skydest,  skydest, cyclemb_state,  skydest, ROT0, "Taito Corporation", "Sky Destroyer (Japan)", MACHINE_NO_COCKTAIL | MACHINE_NO_SOUND | MACHINE_SUPPORTS_SAVE )

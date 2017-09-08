@@ -12,17 +12,6 @@
 /*                                                                         */
 /***************************************************************************/
 
-<<<<<<< HEAD
-const device_type K001006 = &device_creator<k001006_device>;
-
-k001006_device::k001006_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, K001006, "K001006 Texel Unit", tag, owner, clock, "k001006", __FILE__),
-	m_pal_ram(NULL),
-	m_unknown_ram(NULL),
-	m_addr(0),
-	m_device_sel(0),
-	m_palette(NULL),
-=======
 DEFINE_DEVICE_TYPE(K001006, k001006_device, "k001006", "K001006 Texel Unit")
 
 k001006_device::k001006_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
@@ -32,44 +21,16 @@ k001006_device::k001006_device(const machine_config &mconfig, const char *tag, d
 	m_addr(0),
 	m_device_sel(0),
 	m_palette(nullptr), m_gfx_region(nullptr), m_gfxrom(nullptr),
->>>>>>> upstream/master
 	m_tex_layout(0)
 {
 }
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  device_config_complete - perform any
-//  operations now that the configuration is
-//  complete
-//-------------------------------------------------
-
-void k001006_device::device_config_complete()
-{
-}
-
-//-------------------------------------------------
-=======
->>>>>>> upstream/master
 //  device_start - device-specific startup
 //-------------------------------------------------
 
 void k001006_device::device_start()
 {
-<<<<<<< HEAD
-	m_pal_ram = auto_alloc_array_clear(machine(), UINT16, 0x800);
-	m_unknown_ram = auto_alloc_array_clear(machine(), UINT16, 0x1000);
-	m_palette = auto_alloc_array_clear(machine(), UINT32, 0x800);
-
-	m_gfxrom = machine().root_device().memregion(m_gfx_region)->base();
-	m_texrom = auto_alloc_array(machine(), UINT8, 0x800000);
-
-	preprocess_texture_data(m_texrom, m_gfxrom, 0x800000, m_tex_layout);
-
-	save_pointer(NAME(m_pal_ram), 0x800*sizeof(UINT16));
-	save_pointer(NAME(m_unknown_ram), 0x1000*sizeof(UINT16));
-	save_pointer(NAME(m_palette), 0x800*sizeof(UINT32));
-=======
 	m_pal_ram = make_unique_clear<uint16_t[]>(0x800);
 	m_unknown_ram = make_unique_clear<uint16_t[]>(0x1000);
 	m_palette = make_unique_clear<uint32_t[]>(0x800);
@@ -82,7 +43,6 @@ void k001006_device::device_start()
 	save_pointer(NAME(m_pal_ram.get()), 0x800*sizeof(uint16_t));
 	save_pointer(NAME(m_unknown_ram.get()), 0x1000*sizeof(uint16_t));
 	save_pointer(NAME(m_palette.get()), 0x800*sizeof(uint32_t));
->>>>>>> upstream/master
 	save_item(NAME(m_device_sel));
 	save_item(NAME(m_addr));
 }
@@ -95,11 +55,7 @@ void k001006_device::device_reset()
 {
 	m_addr = 0;
 	m_device_sel = 0;
-<<<<<<< HEAD
-	memset(m_palette, 0, 0x800*sizeof(UINT32));
-=======
 	memset(m_palette.get(), 0, 0x800*sizeof(uint32_t));
->>>>>>> upstream/master
 }
 
 /*****************************************************************************
@@ -114,20 +70,12 @@ READ32_MEMBER( k001006_device::read )
 		{
 			case 0x0b:      // CG Board ROM read
 			{
-<<<<<<< HEAD
-				UINT16 *rom = (UINT16*)space.machine().root_device().memregion(m_gfx_region)->base();
-=======
 				uint16_t *rom = (uint16_t*)space.machine().root_device().memregion(m_gfx_region)->base();
->>>>>>> upstream/master
 				return rom[m_addr / 2] << 16;
 			}
 			case 0x0d:      // Palette RAM read
 			{
-<<<<<<< HEAD
-				UINT32 addr = m_addr;
-=======
 				uint32_t addr = m_addr;
->>>>>>> upstream/master
 
 				m_addr += 2;
 				return m_pal_ram[addr >> 1];
@@ -158,11 +106,7 @@ WRITE32_MEMBER( k001006_device::write )
 			case 0xd:   // Palette RAM write
 			{
 				int r, g, b, a;
-<<<<<<< HEAD
-				UINT32 index = m_addr;
-=======
 				uint32_t index = m_addr;
->>>>>>> upstream/master
 
 				m_pal_ram[index >> 1] = data & 0xffff;
 
@@ -199,25 +143,15 @@ WRITE32_MEMBER( k001006_device::write )
 	}
 }
 
-<<<<<<< HEAD
-UINT32 k001006_device::fetch_texel(int page, int pal_index, int u, int v)
-{
-	UINT8 *tex = m_texrom + page;
-=======
 uint32_t k001006_device::fetch_texel(int page, int pal_index, int u, int v)
 {
 	uint8_t *tex = m_texrom.get() + page;
->>>>>>> upstream/master
 	int texel = tex[((v & 0x1ff) * 512) + (u & 0x1ff)];
 	return m_palette[pal_index + texel];
 }
 
 
-<<<<<<< HEAD
-void k001006_device::preprocess_texture_data(UINT8 *dst, UINT8 *src, int length, int layout)
-=======
 void k001006_device::preprocess_texture_data(uint8_t *dst, uint8_t *src, int length, int layout)
->>>>>>> upstream/master
 {
 	static const int decode_x_gti[8] = {  0, 16, 2, 18, 4, 20, 6, 22 };
 	static const int decode_y_gti[16] = {  0, 8, 32, 40, 1, 9, 33, 41, 64, 72, 96, 104, 65, 73, 97, 105 };
@@ -227,11 +161,7 @@ void k001006_device::preprocess_texture_data(uint8_t *dst, uint8_t *src, int len
 
 	int index;
 	int i, x, y;
-<<<<<<< HEAD
-	UINT8 temp[0x40000];
-=======
 	uint8_t temp[0x40000];
->>>>>>> upstream/master
 
 	const int *decode_x;
 	const int *decode_y;
@@ -265,11 +195,7 @@ void k001006_device::preprocess_texture_data(uint8_t *dst, uint8_t *src, int len
 			{
 				for (x=0; x < 8; x++)
 				{
-<<<<<<< HEAD
-					UINT8 pixel = src[offset + decode_y[y] + decode_x[x]];
-=======
 					uint8_t pixel = src[offset + decode_y[y] + decode_x[x]];
->>>>>>> upstream/master
 
 					temp[((ty+y) * 512) + (tx+x)] = pixel;
 				}

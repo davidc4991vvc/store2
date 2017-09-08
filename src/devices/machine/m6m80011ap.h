@@ -1,24 +1,10 @@
 // license:BSD-3-Clause
 // copyright-holders:Angelo Salese
-<<<<<<< HEAD
-/***************************************************************************
-
-Template for skeleton device
-
-***************************************************************************/
-
-#pragma once
-
-#ifndef __M6M80011APDEV_H__
-#define __M6M80011APDEV_H__
-
-=======
 #ifndef MAME_MACHINE_M6M80011AP_H
 #define MAME_MACHINE_M6M80011AP_H
 
 #pragma once
 
->>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -33,20 +19,6 @@ Template for skeleton device
 //  TYPE DEFINITIONS
 //**************************************************************************
 
-<<<<<<< HEAD
-enum eeprom_cmd_t
-{
-	EEPROM_GET_CMD = 0,
-	EEPROM_READ,
-	EEPROM_WRITE,
-	EEPROM_WRITE_ENABLE,
-	EEPROM_WRITE_DISABLE,
-	EEPROM_STATUS_OUTPUT
-};
-
-
-=======
->>>>>>> upstream/master
 // ======================> m6m80011ap_device
 
 class m6m80011ap_device :   public device_t,
@@ -54,11 +26,7 @@ class m6m80011ap_device :   public device_t,
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	m6m80011ap_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-=======
 	m6m80011ap_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
->>>>>>> upstream/master
 
 	// I/O operations
 	DECLARE_READ_LINE_MEMBER( read_bit );
@@ -69,28 +37,6 @@ public:
 
 protected:
 	// device-level overrides
-<<<<<<< HEAD
-	virtual void device_validity_check(validity_checker &valid) const;
-	virtual void device_start();
-	virtual void device_reset();
-
-	virtual void nvram_default();
-	virtual void nvram_read(emu_file &file);
-	virtual void nvram_write(emu_file &file);
-
-private:
-	UINT8 m_latch;
-	UINT8 m_reset_line;
-	UINT8 m_cmd_stream_pos;
-	UINT32 m_current_cmd;
-	UINT8 m_read_latch;
-	UINT8 m_current_addr;
-	UINT8 m_eeprom_we;
-
-	eeprom_cmd_t m_eeprom_state;
-	UINT16 m_eeprom_data[0x80];
-
-=======
 	virtual void device_validity_check(validity_checker &valid) const override;
 	virtual void device_start() override;
 	virtual void device_reset() override;
@@ -120,25 +66,10 @@ private:
 
 	eeprom_cmd_t m_eeprom_state;
 	uint16_t m_eeprom_data[0x80];
->>>>>>> upstream/master
 };
 
 
 // device type definition
-<<<<<<< HEAD
-extern const device_type M6M80011AP;
-
-
-
-//**************************************************************************
-//  GLOBAL VARIABLES
-//**************************************************************************
-
-
-
-#endif
-=======
 DECLARE_DEVICE_TYPE(M6M80011AP, m6m80011ap_device)
 
 #endif // MAME_MACHINE_M6M80011AP_H
->>>>>>> upstream/master

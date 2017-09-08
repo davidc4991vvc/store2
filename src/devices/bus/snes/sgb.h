@@ -1,14 +1,9 @@
 // license:BSD-3-Clause
 // copyright-holders:Fabio Priuli
-<<<<<<< HEAD
-#ifndef __SNS_SGB_H
-#define __SNS_SGB_H
-=======
 #ifndef MAME_BUS_SNES_SGB_H
 #define MAME_BUS_SNES_SGB_H
 
 #pragma once
->>>>>>> upstream/master
 
 #include "snes_slot.h"
 #include "rom.h"
@@ -18,11 +13,7 @@
 #include "bus/gameboy/rom.h"
 #include "bus/gameboy/mbc.h"
 #include "video/gb_lcd.h"
-<<<<<<< HEAD
-#include "audio/gb.h"
-=======
 #include "sound/gb.h"
->>>>>>> upstream/master
 
 
 // ======================> sns_rom_sgb_device
@@ -30,27 +21,11 @@
 class sns_rom_sgb_device : public sns_rom_device
 {
 public:
-<<<<<<< HEAD
-	// construction/destruction
-	sns_rom_sgb_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// device-level overrides
-	virtual void device_start();
-	virtual void device_reset();
-	virtual machine_config_constructor device_mconfig_additions() const;
-
-	// reading and writing
-	virtual DECLARE_READ8_MEMBER(read_l);
-	virtual DECLARE_READ8_MEMBER(read_h);
-	virtual DECLARE_READ8_MEMBER(chip_read);
-	virtual DECLARE_WRITE8_MEMBER(chip_write);
-=======
 	// reading and writing
 	virtual DECLARE_READ8_MEMBER(read_l) override;
 	virtual DECLARE_READ8_MEMBER(read_h) override;
 	virtual DECLARE_READ8_MEMBER(chip_read) override;
 	virtual DECLARE_WRITE8_MEMBER(chip_write) override;
->>>>>>> upstream/master
 
 	virtual DECLARE_READ8_MEMBER(gb_cart_r);
 	virtual DECLARE_WRITE8_MEMBER(gb_bank_w);
@@ -64,39 +39,6 @@ public:
 	virtual DECLARE_WRITE8_MEMBER(gb_ie_w);
 	virtual DECLARE_WRITE8_MEMBER(gb_timer_callback);
 
-<<<<<<< HEAD
-	required_device<lr35902_cpu_device> m_gb_cpu;
-	required_device<gameboy_sound_device> m_gb_snd;
-	required_device<sgb_lcd_device> m_gb_lcd;
-	required_device<gb_cart_slot_device> m_cartslot;
-
-	void lcd_render(UINT32 *source);
-
-	// ICD2 regs
-	UINT8 m_sgb_ly;
-	UINT8 m_sgb_row;
-	UINT8 m_vram;
-	UINT8 m_port;
-	UINT8 m_joy1, m_joy2, m_joy3, m_joy4;
-	UINT8 m_joy_pckt[16];
-	UINT16 m_vram_offs;
-	UINT8 m_mlt_req;
-
-	UINT32 m_lcd_buffer[4 * 160 * 8];
-	UINT16 m_lcd_output[320];
-	UINT16 m_lcd_row;
-
-	// input bits
-	int m_packetsize;
-	UINT8 m_packet_data[64][16];
-};
-
-
-// device type definition
-extern const device_type SNS_LOROM_SUPERGB;
-
-#endif
-=======
 protected:
 	// construction/destruction
 	sns_rom_sgb_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock);
@@ -165,4 +107,3 @@ DECLARE_DEVICE_TYPE(SNS_LOROM_SUPERGB,  sns_rom_sgb1_device)
 DECLARE_DEVICE_TYPE(SNS_LOROM_SUPERGB2, sns_rom_sgb2_device)
 
 #endif // MAME_BUS_SNES_SGB_H
->>>>>>> upstream/master

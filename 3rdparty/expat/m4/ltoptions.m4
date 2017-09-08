@@ -326,11 +326,6 @@ dnl AC_DEFUN([AM_DISABLE_FAST_INSTALL], [])
 # MODE is either `yes' or `no'.  If omitted, it defaults to `both'.
 m4_define([_LT_WITH_PIC],
 [AC_ARG_WITH([pic],
-<<<<<<< HEAD
-    [AS_HELP_STRING([--with-pic],
-	[try to use only PIC/non-PIC objects @<:@default=use both@:>@])],
-    [pic_mode="$withval"],
-=======
     [AS_HELP_STRING([--with-pic@<:@=PKGS@:>@],
 	[try to use only PIC/non-PIC objects @<:@default=use both@:>@])],
     [lt_p=${PACKAGE-default}
@@ -349,7 +344,6 @@ m4_define([_LT_WITH_PIC],
       IFS="$lt_save_ifs"
       ;;
     esac],
->>>>>>> upstream/master
     [pic_mode=default])
 
 test -z "$pic_mode" && pic_mode=m4_default([$1], [default])

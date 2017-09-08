@@ -2,11 +2,7 @@
 // copyright-holders:Manuel Abadia
 /***************************************************************************
 
-<<<<<<< HEAD
-  machine.c
-=======
   ajax.cpp
->>>>>>> upstream/master
 
   Functions to emulate general aspects of the machine (RAM, ROM, interrupts,
   I/O ports)
@@ -20,11 +16,7 @@
 
 #include "includes/ajax.h"
 
-<<<<<<< HEAD
-/*  ajax_bankswitch_w:
-=======
 /*  bankswitch_w:
->>>>>>> upstream/master
     Handled by the LS273 Octal +ve edge trigger D-type Flip-flop with Reset at H11:
 
     Bit Description
@@ -41,11 +33,7 @@
     (*) The Coin Counters are handled by the Konami Custom 051550
 */
 
-<<<<<<< HEAD
-WRITE8_MEMBER(ajax_state::ajax_bankswitch_w)
-=======
 WRITE8_MEMBER(ajax_state::bankswitch_w)
->>>>>>> upstream/master
 {
 	int bank = 0;
 
@@ -54,30 +42,18 @@ WRITE8_MEMBER(ajax_state::bankswitch_w)
 		bank += 4;
 
 	/* coin counters */
-<<<<<<< HEAD
-	coin_counter_w(machine(), 0, data & 0x20);
-	coin_counter_w(machine(), 1, data & 0x40);
-=======
 	machine().bookkeeping().coin_counter_w(0, data & 0x20);
 	machine().bookkeeping().coin_counter_w(1, data & 0x40);
->>>>>>> upstream/master
 
 	/* priority */
 	m_priority = data & 0x08;
 
 	/* bank # (ROMS N11 and N12) */
 	bank += (data & 0x07);
-<<<<<<< HEAD
-	membank("bank2")->set_entry(bank);
-}
-
-/*  ajax_lamps_w:
-=======
 	membank("mainbank")->set_entry(bank);
 }
 
 /*  lamps_w:
->>>>>>> upstream/master
     Handled by the LS273 Octal +ve edge trigger D-type Flip-flop with Reset at B9:
 
     Bit Description
@@ -101,18 +77,6 @@ WRITE8_MEMBER(ajax_state::bankswitch_w)
         LS393       C20         Dual -ve edge trigger 4-bit Binary Ripple Counter with Resets
 */
 
-<<<<<<< HEAD
-WRITE8_MEMBER(ajax_state::ajax_lamps_w)
-{
-	set_led_status(machine(), 1, data & 0x02);  /* super weapon lamp */
-	set_led_status(machine(), 2, data & 0x04);  /* power up lamps */
-	set_led_status(machine(), 5, data & 0x04);  /* power up lamps */
-	set_led_status(machine(), 0, data & 0x20);  /* start lamp */
-	set_led_status(machine(), 3, data & 0x40);  /* game over lamps */
-	set_led_status(machine(), 6, data & 0x40);  /* game over lamps */
-	set_led_status(machine(), 4, data & 0x80);  /* game over lamps */
-	set_led_status(machine(), 7, data & 0x80);  /* game over lamps */
-=======
 WRITE8_MEMBER(ajax_state::lamps_w)
 {
 	output().set_led_value(1, data & 0x02);  /* super weapon lamp */
@@ -123,7 +87,6 @@ WRITE8_MEMBER(ajax_state::lamps_w)
 	output().set_led_value(6, data & 0x40);  /* game over lamps */
 	output().set_led_value(4, data & 0x80);  /* game over lamps */
 	output().set_led_value(7, data & 0x80);  /* game over lamps */
->>>>>>> upstream/master
 }
 
 /*  ajax_ls138_f10:
@@ -143,11 +106,7 @@ WRITE8_MEMBER(ajax_state::lamps_w)
     0x01c0  (r) MIO2            Enables DIPSW #3 reading
 */
 
-<<<<<<< HEAD
-READ8_MEMBER(ajax_state::ajax_ls138_f10_r)
-=======
 READ8_MEMBER(ajax_state::ls138_f10_r)
->>>>>>> upstream/master
 {
 	int data = 0, index;
 	static const char *const portnames[] = { "SYSTEM", "P1", "DSW1", "DSW2" };
@@ -175,21 +134,13 @@ READ8_MEMBER(ajax_state::ls138_f10_r)
 	return data;
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER(ajax_state::ajax_ls138_f10_w)
-=======
 WRITE8_MEMBER(ajax_state::ls138_f10_w)
->>>>>>> upstream/master
 {
 	switch ((offset & 0x01c0) >> 6)
 	{
 		case 0x00:  /* NSFIRQ + AFR */
 			if (offset)
-<<<<<<< HEAD
-				watchdog_reset_w(space, 0, data);
-=======
 				m_watchdog->reset_w(space, 0, data);
->>>>>>> upstream/master
 			else{
 				if (m_firq_enable)  /* Cause interrupt on slave CPU */
 					m_subcpu->set_input_line(M6809_FIRQ_LINE, HOLD_LINE);
@@ -199,15 +150,6 @@ WRITE8_MEMBER(ajax_state::ls138_f10_w)
 			m_audiocpu->set_input_line(0, HOLD_LINE);
 			break;
 		case 0x02:  /* Sound command number */
-<<<<<<< HEAD
-			soundlatch_byte_w(space, offset, data);
-			break;
-		case 0x03:  /* Bankswitch + coin counters + priority*/
-			ajax_bankswitch_w(space, 0, data);
-			break;
-		case 0x05:  /* Lamps + Joystick vibration + Control panel quaking */
-			ajax_lamps_w(space, 0, data);
-=======
 			m_soundlatch->write(space, offset, data);
 			break;
 		case 0x03:  /* Bankswitch + coin counters + priority*/
@@ -215,7 +157,6 @@ WRITE8_MEMBER(ajax_state::ls138_f10_w)
 			break;
 		case 0x05:  /* Lamps + Joystick vibration + Control panel quaking */
 			lamps_w(space, 0, data);
->>>>>>> upstream/master
 			break;
 
 		default:
@@ -223,11 +164,7 @@ WRITE8_MEMBER(ajax_state::ls138_f10_w)
 	}
 }
 
-<<<<<<< HEAD
-/*  ajax_bankswitch_w_2:
-=======
 /*  bankswitch_w_2:
->>>>>>> upstream/master
     Handled by the LS273 Octal +ve edge trigger D-type Flip-flop with Reset at K14:
 
     Bit Description
@@ -242,11 +179,7 @@ WRITE8_MEMBER(ajax_state::ls138_f10_w)
     0   SRB0    /
 */
 
-<<<<<<< HEAD
-WRITE8_MEMBER(ajax_state::ajax_bankswitch_2_w)
-=======
 WRITE8_MEMBER(ajax_state::bankswitch_2_w)
->>>>>>> upstream/master
 {
 	/* enable char ROM reading through the video RAM */
 	m_k052109->set_rmrd_line((data & 0x40) ? ASSERT_LINE : CLEAR_LINE);
@@ -258,32 +191,17 @@ WRITE8_MEMBER(ajax_state::bankswitch_2_w)
 	m_firq_enable = data & 0x10;
 
 	/* bank # (ROMS G16 and I16) */
-<<<<<<< HEAD
-	membank("bank1")->set_entry(data & 0x0f);
-=======
 	membank("subbank")->set_entry(data & 0x0f);
->>>>>>> upstream/master
 }
 
 void ajax_state::machine_start()
 {
-<<<<<<< HEAD
-	UINT8 *MAIN = memregion("maincpu")->base();
-	UINT8 *SUB  = memregion("sub")->base();
-
-	membank("bank1")->configure_entries(0,  9,  &SUB[0x10000], 0x2000);
-	membank("bank2")->configure_entries(0, 12, &MAIN[0x10000], 0x2000);
-
-	membank("bank1")->set_entry(0);
-	membank("bank2")->set_entry(0);
-=======
 	uint8_t *MAIN = memregion("maincpu")->base();
 	uint8_t *SUB  = memregion("sub")->base();
 
 	membank("mainbank")->configure_entries(0, 4, &MAIN[0x00000], 0x2000);
 	membank("mainbank")->configure_entries(4, 8, &MAIN[0x10000], 0x2000);
 	membank("subbank")->configure_entries(0,  9,  &SUB[0x00000], 0x2000);
->>>>>>> upstream/master
 
 	save_item(NAME(m_priority));
 	save_item(NAME(m_firq_enable));

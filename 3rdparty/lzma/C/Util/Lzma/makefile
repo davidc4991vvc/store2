@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-MY_STATIC_LINK=1
-=======
 # MY_STATIC_LINK=1
->>>>>>> upstream/master
 PROG = LZMAc.exe
 
 CFLAGS = $(CFLAGS) \

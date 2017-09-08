@@ -61,16 +61,10 @@ memory map:
 #include "k051960.h"
 
 #define VERBOSE 0
-<<<<<<< HEAD
-#define LOG(x) do { if (VERBOSE) logerror x; } while (0)
-
-const device_type K051960 = &device_creator<k051960_device>;
-=======
 #include "logmacro.h"
 
 
 DEFINE_DEVICE_TYPE(K051960, k051960_device, "k051960", "K051960 Sprite Generator")
->>>>>>> upstream/master
 
 const gfx_layout k051960_device::spritelayout =
 {
@@ -132,24 +126,6 @@ GFXDECODE_MEMBER( k051960_device::gfxinfo_gradius3 )
 GFXDECODE_END
 
 
-<<<<<<< HEAD
-k051960_device::k051960_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, K051960, "K051960 Sprite Generator", tag, owner, clock, "k051960", __FILE__),
-	device_gfx_interface(mconfig, *this, gfxinfo),
-	m_ram(NULL),
-	m_sprite_rom(NULL),
-	m_sprite_size(0),
-	m_screen_tag(NULL),
-	m_screen(NULL),
-	m_scanline_timer(NULL),
-	m_irq_handler(*this),
-	m_firq_handler(*this),
-	m_nmi_handler(*this),
-	m_romoffset(0),
-	m_spriteflip(0),
-	m_readroms(0),
-	m_nmi_enabled(0)
-=======
 k051960_device::k051960_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, K051960, tag, owner, clock)
 	, device_gfx_interface(mconfig, *this, gfxinfo)
@@ -164,7 +140,6 @@ k051960_device::k051960_device(const machine_config &mconfig, const char *tag, d
 	, m_spriteflip(0)
 	, m_readroms(0)
 	, m_nmi_enabled(0)
->>>>>>> upstream/master
 {
 }
 
@@ -195,17 +170,10 @@ void k051960_device::set_plane_order(device_t &device, int order)
 //  set_screen_tag - set screen we are attached to
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void k051960_device::set_screen_tag(device_t &device, device_t *owner, const char *tag)
-{
-	k051960_device &dev = dynamic_cast<k051960_device &>(device);
-	dev.m_screen_tag = tag;
-=======
 void k051960_device::set_screen_tag(device_t &device, const char *tag)
 {
 	k051960_device &dev = dynamic_cast<k051960_device &>(device);
 	dev.m_screen.set_tag(tag);
->>>>>>> upstream/master
 }
 
 //-------------------------------------------------
@@ -215,33 +183,15 @@ void k051960_device::set_screen_tag(device_t &device, const char *tag)
 void k051960_device::device_start()
 {
 	// make sure our screen is started
-<<<<<<< HEAD
-	m_screen = m_owner->subdevice<screen_device>(m_screen_tag);
-	if (!m_screen->started())
-		throw device_missing_dependencies();
-=======
 	if (!m_screen->started())
 		throw device_missing_dependencies();
 	if (!palette().device().started())
 		throw device_missing_dependencies();
->>>>>>> upstream/master
 
 	// allocate scanline timer and start at first scanline
 	m_scanline_timer = machine().scheduler().timer_alloc(timer_expired_delegate(FUNC(k051960_device::scanline_callback), this));
 	m_scanline_timer->adjust(m_screen->time_until_pos(0));
 
-<<<<<<< HEAD
-	m_sprite_rom = region()->base();
-	m_sprite_size = region()->bytes();
-
-	decode_gfx();
-	m_gfx[0]->set_colors(m_palette->entries() / m_gfx[0]->depth());
-
-	if (VERBOSE && !(m_palette->shadows_enabled()))
-		popmessage("driver should use VIDEO_HAS_SHADOWS");
-
-	m_ram = auto_alloc_array_clear(machine(), UINT8, 0x400);
-=======
 	decode_gfx();
 	gfx(0)->set_colors(palette().entries() / gfx(0)->depth());
 
@@ -249,7 +199,6 @@ void k051960_device::device_start()
 		popmessage("driver should use VIDEO_HAS_SHADOWS");
 
 	m_ram = make_unique_clear<uint8_t[]>(0x400);
->>>>>>> upstream/master
 
 	// bind callbacks
 	m_k051960_cb.bind_relative_to(*owner());
@@ -265,11 +214,7 @@ void k051960_device::device_start()
 	save_item(NAME(m_readroms));
 	save_item(NAME(m_nmi_enabled));
 	save_item(NAME(m_spriterombank));
-<<<<<<< HEAD
-	save_pointer(NAME(m_ram), 0x400);
-=======
 	save_pointer(NAME(m_ram.get()), 0x400);
->>>>>>> upstream/master
 }
 
 //-------------------------------------------------
@@ -296,11 +241,7 @@ void k051960_device::device_reset()
 TIMER_CALLBACK_MEMBER( k051960_device::scanline_callback )
 {
 	// range 0..255
-<<<<<<< HEAD
-	UINT8 y = m_screen->vpos();
-=======
 	uint8_t y = m_screen->vpos();
->>>>>>> upstream/master
 
 	// 32v
 	if ((y % 32 == 0) && m_nmi_enabled)
@@ -327,11 +268,7 @@ int k051960_device::k051960_fetchromdata( int byte )
 	m_k051960_cb(&code, &color, &pri, &shadow);
 
 	addr = (code << 7) | (off1 << 2) | byte;
-<<<<<<< HEAD
-	addr &= m_sprite_size - 1;
-=======
 	addr &= m_sprite_rom.mask();
->>>>>>> upstream/master
 
 //  popmessage("%s: addr %06x", machine().describe_context(), addr);
 
@@ -446,11 +383,7 @@ void k051960_device::k051960_sprites_draw( bitmap_ind16 &bitmap, const rectangle
 #define NUM_SPRITES 128
 	int offs, pri_code;
 	int sortedlist[NUM_SPRITES];
-<<<<<<< HEAD
-	UINT8 drawmode_table[256];
-=======
 	uint8_t drawmode_table[256];
->>>>>>> upstream/master
 
 	memset(drawmode_table, DRAWMODE_SOURCE, sizeof(drawmode_table));
 	drawmode_table[0] = DRAWMODE_NONE;
@@ -530,11 +463,7 @@ void k051960_device::k051960_sprites_draw( bitmap_ind16 &bitmap, const rectangle
 			flipy = !flipy;
 		}
 
-<<<<<<< HEAD
-		drawmode_table[m_gfx[0]->granularity() - 1] = shadow ? DRAWMODE_SHADOW : DRAWMODE_SOURCE;
-=======
 		drawmode_table[gfx(0)->granularity() - 1] = shadow ? DRAWMODE_SHADOW : DRAWMODE_SOURCE;
->>>>>>> upstream/master
 
 		if (zoomx == 0x10000 && zoomy == 0x10000)
 		{
@@ -560,22 +489,14 @@ void k051960_device::k051960_sprites_draw( bitmap_ind16 &bitmap, const rectangle
 						c += yoffset[y];
 
 					if (max_priority == -1)
-<<<<<<< HEAD
-						m_gfx[0]->prio_transtable(bitmap,cliprect,
-=======
 						gfx(0)->prio_transtable(bitmap,cliprect,
->>>>>>> upstream/master
 								c,color,
 								flipx,flipy,
 								sx & 0x1ff,sy,
 								priority_bitmap,pri,
 								drawmode_table);
 					else
-<<<<<<< HEAD
-						m_gfx[0]->transtable(bitmap,cliprect,
-=======
 						gfx(0)->transtable(bitmap,cliprect,
->>>>>>> upstream/master
 								c,color,
 								flipx,flipy,
 								sx & 0x1ff,sy,
@@ -609,11 +530,7 @@ void k051960_device::k051960_sprites_draw( bitmap_ind16 &bitmap, const rectangle
 						c += yoffset[y];
 
 					if (max_priority == -1)
-<<<<<<< HEAD
-						m_gfx[0]->prio_zoom_transtable(bitmap,cliprect,
-=======
 						gfx(0)->prio_zoom_transtable(bitmap,cliprect,
->>>>>>> upstream/master
 								c,color,
 								flipx,flipy,
 								sx & 0x1ff,sy,
@@ -621,11 +538,7 @@ void k051960_device::k051960_sprites_draw( bitmap_ind16 &bitmap, const rectangle
 								priority_bitmap,pri,
 								drawmode_table);
 					else
-<<<<<<< HEAD
-						m_gfx[0]->zoom_transtable(bitmap,cliprect,
-=======
 						gfx(0)->zoom_transtable(bitmap,cliprect,
->>>>>>> upstream/master
 								c,color,
 								flipx,flipy,
 								sx & 0x1ff,sy,

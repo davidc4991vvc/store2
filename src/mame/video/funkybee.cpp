@@ -13,11 +13,7 @@
 
 PALETTE_INIT_MEMBER(funkybee_state, funkybee)
 {
-<<<<<<< HEAD
-	const UINT8 *color_prom = memregion("proms")->base();
-=======
 	const uint8_t *color_prom = memregion("proms")->base();
->>>>>>> upstream/master
 	int i;
 
 	/* first, the character/sprite palette */
@@ -58,20 +54,10 @@ WRITE8_MEMBER(funkybee_state::funkybee_colorram_w)
 	m_bg_tilemap->mark_tile_dirty(offset);
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER(funkybee_state::funkybee_gfx_bank_w)
-{
-	if (m_gfx_bank != (data & 0x01))
-	{
-		m_gfx_bank = data & 0x01;
-		machine().tilemap().mark_all_dirty();
-	}
-=======
 WRITE_LINE_MEMBER(funkybee_state::gfx_bank_w)
 {
 	m_gfx_bank = state;
 	machine().tilemap().mark_all_dirty();
->>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(funkybee_state::funkybee_scroll_w)
@@ -79,15 +65,9 @@ WRITE8_MEMBER(funkybee_state::funkybee_scroll_w)
 	m_bg_tilemap->set_scrollx(0, flip_screen() ? -data : data);
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER(funkybee_state::funkybee_flipscreen_w)
-{
-	flip_screen_set(data & 0x01);
-=======
 WRITE_LINE_MEMBER(funkybee_state::flipscreen_w)
 {
 	flip_screen_set(state);
->>>>>>> upstream/master
 }
 
 TILE_GET_INFO_MEMBER(funkybee_state::get_bg_tile_info)
@@ -106,11 +86,7 @@ TILEMAP_MAPPER_MEMBER(funkybee_state::funkybee_tilemap_scan)
 
 void funkybee_state::video_start()
 {
-<<<<<<< HEAD
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(funkybee_state::get_bg_tile_info),this), tilemap_mapper_delegate(FUNC(funkybee_state::funkybee_tilemap_scan),this), 8, 8, 32, 32);
-=======
 	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(funkybee_state::get_bg_tile_info),this), tilemap_mapper_delegate(FUNC(funkybee_state::funkybee_tilemap_scan),this), 8, 8, 32, 32);
->>>>>>> upstream/master
 }
 
 void funkybee_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect )
@@ -176,11 +152,7 @@ void funkybee_state::draw_columns( bitmap_ind16 &bitmap, const rectangle &clipre
 	}
 }
 
-<<<<<<< HEAD
-UINT32 funkybee_state::screen_update_funkybee(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t funkybee_state::screen_update_funkybee(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	m_bg_tilemap->draw(screen, bitmap, cliprect, 0, 0);
 	draw_sprites(bitmap, cliprect);

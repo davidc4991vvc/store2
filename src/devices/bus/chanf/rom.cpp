@@ -23,51 +23,6 @@
 //  chanf_rom_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const device_type CHANF_ROM_STD = &device_creator<chanf_rom_device>;
-const device_type CHANF_ROM_MAZE = &device_creator<chanf_maze_device>;
-const device_type CHANF_ROM_HANGMAN = &device_creator<chanf_hangman_device>;
-const device_type CHANF_ROM_CHESS = &device_creator<chanf_chess_device>;
-const device_type CHANF_ROM_MULTI_OLD = &device_creator<chanf_multi_old_device>;
-const device_type CHANF_ROM_MULTI_FINAL = &device_creator<chanf_multi_final_device>;
-
-
-chanf_rom_device::chanf_rom_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source)
-					: device_t(mconfig, type, name, tag, owner, clock, shortname, source),
-						device_channelf_cart_interface( mconfig, *this ), m_addr_latch(0), m_addr(0), m_read_write(0), m_data0(0)
-				{
-}
-
-chanf_rom_device::chanf_rom_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: device_t(mconfig, CHANF_ROM_STD, "Channel F Standard Carts", tag, owner, clock, "chanf_rom", __FILE__),
-						device_channelf_cart_interface( mconfig, *this ), m_addr_latch(0), m_addr(0), m_read_write(0), m_data0(0)
-				{
-}
-
-chanf_maze_device::chanf_maze_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: chanf_rom_device(mconfig, CHANF_ROM_MAZE, "Channel F Maze Cart", tag, owner, clock, "chanf_maze", __FILE__)
-{
-}
-
-chanf_hangman_device::chanf_hangman_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: chanf_rom_device(mconfig, CHANF_ROM_HANGMAN, "Channel F Hangman Cart", tag, owner, clock, "chanf_hang", __FILE__)
-{
-}
-
-chanf_chess_device::chanf_chess_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: chanf_rom_device(mconfig, CHANF_ROM_CHESS, "Channel F Chess Cart", tag, owner, clock, "chanf_chess", __FILE__)
-{
-}
-
-chanf_multi_old_device::chanf_multi_old_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: chanf_rom_device(mconfig, CHANF_ROM_MULTI_OLD, "Channel F Multigame (Earlier Version) Cart", tag, owner, clock, "chanf_multi_old", __FILE__), m_base_bank(0)
-				{
-}
-
-chanf_multi_final_device::chanf_multi_final_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: chanf_rom_device(mconfig, CHANF_ROM_MULTI_FINAL, "Channel F Multigame (Final Version) Cart", tag, owner, clock, "chanf_multi_fin", __FILE__), m_base_bank(0), m_half_bank(0)
-				{
-=======
 DEFINE_DEVICE_TYPE(CHANF_ROM_STD,         chanf_rom_device,         "chanf_rom",       "Channel F Standard Carts")
 DEFINE_DEVICE_TYPE(CHANF_ROM_MAZE,        chanf_maze_device,        "chanf_maze",      "Channel F Maze Cart")
 DEFINE_DEVICE_TYPE(CHANF_ROM_HANGMAN,     chanf_hangman_device,     "chanf_hang",      "Channel F Hangman Cart")
@@ -111,7 +66,6 @@ chanf_multi_old_device::chanf_multi_old_device(const machine_config &mconfig, co
 chanf_multi_final_device::chanf_multi_final_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: chanf_rom_device(mconfig, CHANF_ROM_MULTI_FINAL, tag, owner, clock), m_base_bank(0), m_half_bank(0)
 {
->>>>>>> upstream/master
 }
 
 
@@ -200,11 +154,7 @@ READ8_MEMBER(chanf_rom_device::read_rom)
 }
 
 // These are shared among Maze & Hangman cart types (not directly used by base chanf_rom_device)
-<<<<<<< HEAD
-UINT8 chanf_rom_device::common_read_2102(UINT32 offset)
-=======
 uint8_t chanf_rom_device::common_read_2102(uint32_t offset)
->>>>>>> upstream/master
 {
 	if (offset == 0)
 	{
@@ -221,11 +171,7 @@ uint8_t chanf_rom_device::common_read_2102(uint32_t offset)
 		return m_latch[1];
 }
 
-<<<<<<< HEAD
-void chanf_rom_device::common_write_2102(UINT32 offset, UINT8 data)
-=======
 void chanf_rom_device::common_write_2102(uint32_t offset, uint8_t data)
->>>>>>> upstream/master
 {
 	if (offset == 0)
 	{
@@ -246,21 +192,13 @@ void chanf_rom_device::common_write_2102(uint32_t offset, uint8_t data)
 		m_latch[1] = data;
 		// all bits but 2,3 come from this write, but they are shuffled
 		// notice that data is 8bits, so when swapping bit8 & bit9 are always 0!
-<<<<<<< HEAD
-		m_addr_latch = (m_addr_latch & 0x0c) | (BITSWAP16((UINT16) data, 15, 14, 13, 12, 11, 10, 7, 6, 5, 3, 2, 1, 9, 8, 4, 0));
-=======
 		m_addr_latch = (m_addr_latch & 0x0c) | (BITSWAP16((uint16_t) data, 15, 14, 13, 12, 11, 10, 7, 6, 5, 3, 2, 1, 9, 8, 4, 0));
->>>>>>> upstream/master
 	}
 }
 
 
 // These are shared among Schach & Multigame cart types (not directly used by base chanf_rom_device)
-<<<<<<< HEAD
-UINT8 chanf_rom_device::common_read_3853(UINT32 offset)
-=======
 uint8_t chanf_rom_device::common_read_3853(uint32_t offset)
->>>>>>> upstream/master
 {
 	if (offset < m_ram.size())
 		return m_ram[offset];
@@ -268,11 +206,7 @@ uint8_t chanf_rom_device::common_read_3853(uint32_t offset)
 		return 0xff;
 }
 
-<<<<<<< HEAD
-void chanf_rom_device::common_write_3853(UINT32 offset, UINT8 data)
-=======
 void chanf_rom_device::common_write_3853(uint32_t offset, uint8_t data)
->>>>>>> upstream/master
 {
 	if (offset < m_ram.size())
 		m_ram[offset] = data;

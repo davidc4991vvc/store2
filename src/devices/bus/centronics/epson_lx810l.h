@@ -5,30 +5,18 @@
  *
  */
 
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __EPSON_LX810L__
-#define __EPSON_LX810L__
-
-#include "emu.h"
-=======
 #ifndef MAME_BUS_CENTRONICS_EPSON_LX810L_H
 #define MAME_BUS_CENTRONICS_EPSON_LX810L_H
 
 #pragma once
 
->>>>>>> upstream/master
 #include "ctronics.h"
 #include "cpu/upd7810/upd7810.h"
 #include "machine/e05a30.h"
 #include "machine/eepromser.h"
 #include "machine/steppers.h"
 #include "sound/dac.h"
-<<<<<<< HEAD
-=======
 #include "screen.h"
->>>>>>> upstream/master
 
 
 /* The printer starts printing at x offset 44 and stops printing at x
@@ -45,26 +33,6 @@
 //  TYPE DEFINITIONS
 //**************************************************************************
 
-<<<<<<< HEAD
-// ======================> epson_lx810l_t
-
-class epson_lx810l_t : public device_t,
-						public device_centronics_peripheral_interface
-{
-public:
-	// construction/destruction
-	epson_lx810l_t(const machine_config &mconfig, const char *tag,
-					device_t *owner, UINT32 clock);
-	epson_lx810l_t(const machine_config &mconfig, device_type type,
-					const char *name, const char *tag, device_t *owner,
-					UINT32 clock, const char *shortname, const char *source);
-
-	// optional information overrides
-	virtual const rom_entry *device_rom_region() const;
-	virtual machine_config_constructor device_mconfig_additions() const;
-	virtual ioport_constructor device_input_ports() const;
-
-=======
 // ======================> epson_lx810l_device
 
 class epson_lx810l_device : public device_t, public device_centronics_peripheral_interface
@@ -109,7 +77,6 @@ protected:
 	virtual ioport_constructor device_input_ports() const override;
 
 private:
->>>>>>> upstream/master
 	DECLARE_READ8_MEMBER(porta_r);
 	DECLARE_WRITE8_MEMBER(porta_w);
 	DECLARE_READ8_MEMBER(portb_r);
@@ -119,10 +86,6 @@ private:
 
 	/* Extended Timer Output */
 	DECLARE_WRITE_LINE_MEMBER(co0_w);
-<<<<<<< HEAD
-	DECLARE_WRITE_LINE_MEMBER(co1_w);
-=======
->>>>>>> upstream/master
 
 	/* ADC */
 	DECLARE_READ8_MEMBER(an0_r);
@@ -134,12 +97,6 @@ private:
 	DECLARE_READ8_MEMBER(an6_r);
 	DECLARE_READ8_MEMBER(an7_r);
 
-<<<<<<< HEAD
-	/* fake memory I/O to get past memory reset check */
-	DECLARE_READ8_MEMBER(fakemem_r);
-	DECLARE_WRITE8_MEMBER(fakemem_w);
-=======
->>>>>>> upstream/master
 
 	/* GATE ARRAY */
 	DECLARE_WRITE16_MEMBER(printhead);
@@ -147,99 +104,42 @@ private:
 	DECLARE_WRITE8_MEMBER(cr_stepper);
 	DECLARE_WRITE_LINE_MEMBER(e05a30_ready);
 
-<<<<<<< HEAD
-	/* Centronics stuff */
-	virtual DECLARE_WRITE_LINE_MEMBER( input_strobe ) { if (m_e05a30) m_e05a30->centronics_input_strobe(state); }
-	virtual DECLARE_WRITE_LINE_MEMBER( input_data0 ) { if (m_e05a30) m_e05a30->centronics_input_data0(state); }
-	virtual DECLARE_WRITE_LINE_MEMBER( input_data1 ) { if (m_e05a30) m_e05a30->centronics_input_data1(state); }
-	virtual DECLARE_WRITE_LINE_MEMBER( input_data2 ) { if (m_e05a30) m_e05a30->centronics_input_data2(state); }
-	virtual DECLARE_WRITE_LINE_MEMBER( input_data3 ) { if (m_e05a30) m_e05a30->centronics_input_data3(state); }
-	virtual DECLARE_WRITE_LINE_MEMBER( input_data4 ) { if (m_e05a30) m_e05a30->centronics_input_data4(state); }
-	virtual DECLARE_WRITE_LINE_MEMBER( input_data5 ) { if (m_e05a30) m_e05a30->centronics_input_data5(state); }
-	virtual DECLARE_WRITE_LINE_MEMBER( input_data6 ) { if (m_e05a30) m_e05a30->centronics_input_data6(state); }
-	virtual DECLARE_WRITE_LINE_MEMBER( input_data7 ) { if (m_e05a30) m_e05a30->centronics_input_data7(state); }
-=======
->>>>>>> upstream/master
 	DECLARE_WRITE_LINE_MEMBER(e05a30_centronics_ack) { output_ack(state); }
 	DECLARE_WRITE_LINE_MEMBER(e05a30_centronics_busy) { output_busy(state); }
 	DECLARE_WRITE_LINE_MEMBER(e05a30_centronics_perror) { output_perror(state); }
 	DECLARE_WRITE_LINE_MEMBER(e05a30_centronics_fault) { output_fault(state); }
 	DECLARE_WRITE_LINE_MEMBER(e05a30_centronics_select) { output_select(state); }
 
-<<<<<<< HEAD
-	/* Panel buttons */
-	DECLARE_INPUT_CHANGED_MEMBER(online_sw);
-
-	/* Video hardware (simulates paper) */
-	UINT32 screen_update_lx810l(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
-#define uabs(x) ((x) > 0 ? (x) : -(x))
-	unsigned int bitmap_line(int i) { return ((uabs(m_pf_pos_abs) / 6) + i) % m_bitmap.height(); }
-
-protected:
-	// device-level overrides
-	virtual void device_start();
-	virtual void device_reset();
-	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
-
-private:
-=======
 	/* Video hardware (simulates paper) */
 	uint32_t screen_update_lx810l(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
 
->>>>>>> upstream/master
 	required_device<cpu_device> m_maincpu;
 	required_device<stepper_device> m_pf_stepper;
 	required_device<stepper_device> m_cr_stepper;
 	required_device<eeprom_serial_93cxx_device> m_eeprom;
-<<<<<<< HEAD
-	required_device<dac_device> m_dac;
-=======
->>>>>>> upstream/master
 	required_device<e05a30_device> m_e05a30;
 	required_device<screen_device> m_screen;
 
 	int m_93c06_clk;
 	int m_93c06_cs;
-<<<<<<< HEAD
-	UINT16 m_printhead;
-=======
 	uint16_t m_printhead;
->>>>>>> upstream/master
 	int m_pf_pos_abs;
 	int m_cr_pos_abs;
 	int m_real_cr_pos;
 	int m_real_cr_steps;
 	int m_real_cr_dir; /* 1 is going right, -1 is going left */
-<<<<<<< HEAD
-	UINT8 m_fakemem;
-=======
 	uint8_t m_fakemem;
->>>>>>> upstream/master
 	bitmap_rgb32 m_bitmap;
 
 	enum {
 		TIMER_CR
 	};
-<<<<<<< HEAD
-=======
 
 	emu_timer *m_cr_timer;
->>>>>>> upstream/master
 };
 
 // ======================> epson_ap2000_t
 
-<<<<<<< HEAD
-class epson_ap2000_t : public epson_lx810l_t
-{
-public:
-	// construction/destruction
-	epson_ap2000_t(const machine_config &mconfig, const char *tag,
-					device_t *owner, UINT32 clock);
-
-	// optional information overrides
-	virtual const rom_entry *device_rom_region() const;
-=======
 class epson_ap2000_device : public epson_lx810l_device
 {
 public:
@@ -249,19 +149,11 @@ public:
 
 	// optional information overrides
 	virtual const tiny_rom_entry *device_rom_region() const override;
->>>>>>> upstream/master
 };
 
 
 // device type definition
-<<<<<<< HEAD
-extern const device_type EPSON_LX810L;
-extern const device_type EPSON_AP2000;
-
-#endif
-=======
 DECLARE_DEVICE_TYPE(EPSON_LX810L, epson_lx810l_device)
 DECLARE_DEVICE_TYPE(EPSON_AP2000, epson_ap2000_device)
 
 #endif // MAME_BUS_CENTRONICS_EPSON_LX810L_H
->>>>>>> upstream/master

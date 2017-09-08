@@ -24,11 +24,7 @@ TILE_GET_INFO_MEMBER(himesiki_state::get_bg_tile_info)
 
 void himesiki_state::video_start()
 {
-<<<<<<< HEAD
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(himesiki_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 64, 32);
-=======
 	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(himesiki_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 64, 32);
->>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(himesiki_state::himesiki_bg_ram_w)
@@ -42,36 +38,19 @@ WRITE8_MEMBER(himesiki_state::himesiki_scrollx_w)
 	m_scrollx[offset] = data;
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER(himesiki_state::himesiki_flip_w)
-{
-	m_flipscreen = data & 0xc0;
-	flip_screen_set(m_flipscreen);
-
-	if (data & 0x3f)
-		logerror("p08_w %02x\n",data);
-=======
 WRITE8_MEMBER(himesiki_state::himesiki_scrolly_w)
 {
 	m_scrolly = data;
->>>>>>> upstream/master
 }
 
 void himesiki_state::himesiki_draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect )
 {
-<<<<<<< HEAD
-	UINT8 *spriteram = m_spriteram;
-	int offs;
-
-	for (offs = 0x100; offs < 0x160; offs += 4)
-=======
 	uint8_t *spriteram;
 	int offs;
 
 	// these sprites are from the ET-P103A board (himesiki only)
 	spriteram = m_spriteram_p103a;
 	for (offs = 0x00; offs < 0x60; offs += 4)
->>>>>>> upstream/master
 	{
 		int attr = spriteram[offs + 1];
 		int code = spriteram[offs + 0] | (attr & 3) << 8;
@@ -87,11 +66,7 @@ void himesiki_state::himesiki_draw_sprites( bitmap_ind16 &bitmap, const rectangl
 
 		if (m_flipscreen)
 		{
-<<<<<<< HEAD
-			y = (y + 33) & 0xff;
-=======
 			y = (y - 31) & 0xff;
->>>>>>> upstream/master
 			x = 224 - x;
 			fx ^= 4;
 			fy = 1;
@@ -103,13 +78,6 @@ void himesiki_state::himesiki_draw_sprites( bitmap_ind16 &bitmap, const rectangl
 				y -= 0x100;
 		}
 
-<<<<<<< HEAD
-		m_gfxdecode->gfx(1)->transpen(bitmap,cliprect, code, col, fx, fy, x, y, 15);
-	}
-
-	for (offs = 0; offs < 0x100; offs += 4)
-	{
-=======
 		m_gfxdecode->gfx(2)->transpen(bitmap,cliprect, code, col, fx, fy, x, y, 15);
 	}
 
@@ -124,7 +92,6 @@ void himesiki_state::himesiki_draw_sprites( bitmap_ind16 &bitmap, const rectangl
 			(spriteram[offs + 3] == 0x00))
 				continue;
 
->>>>>>> upstream/master
 		int attr = spriteram[offs + 1];
 		int code = spriteram[offs + 0] | (attr & 7) << 8;
 		int x = spriteram[offs + 3] | (attr & 8) << 5;
@@ -138,11 +105,7 @@ void himesiki_state::himesiki_draw_sprites( bitmap_ind16 &bitmap, const rectangl
 
 		if (m_flipscreen)
 		{
-<<<<<<< HEAD
-			y += 49;
-=======
 			y = (y - 15) &0xff;
->>>>>>> upstream/master
 			x = 240 - x;
 			f = 1;
 		}
@@ -153,16 +116,6 @@ void himesiki_state::himesiki_draw_sprites( bitmap_ind16 &bitmap, const rectangl
 		if (y > 0xf0)
 			y -= 0x100;
 
-<<<<<<< HEAD
-		m_gfxdecode->gfx(2)->transpen(bitmap,cliprect, code, col, f, f, x, y, 15);
-	}
-}
-
-UINT32 himesiki_state::screen_update_himesiki(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-{
-	int x = -(m_scrollx[0] << 8 | m_scrollx[1]) & 0x1ff;
-	m_bg_tilemap->set_scrolldx(x, x);
-=======
 		m_gfxdecode->gfx(1)->transpen(bitmap,cliprect, code, col, f, f, x, y, 15);
 	}
 }
@@ -172,7 +125,6 @@ uint32_t himesiki_state::screen_update_himesiki(screen_device &screen, bitmap_in
 	int x = -(m_scrollx[0] << 8 | m_scrollx[1]) & 0x1ff;
 	m_bg_tilemap->set_scrolldx(x, x);
 	m_bg_tilemap->set_scrolldy(-m_scrolly, -m_scrolly-64);
->>>>>>> upstream/master
 
 	m_bg_tilemap->draw(screen, bitmap, cliprect, TILEMAP_DRAW_OPAQUE, 0);
 	himesiki_draw_sprites(bitmap, cliprect);

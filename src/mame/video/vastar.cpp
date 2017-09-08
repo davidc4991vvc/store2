@@ -60,15 +60,9 @@ TILE_GET_INFO_MEMBER(vastar_state::get_bg2_tile_info)
 
 void vastar_state::video_start()
 {
-<<<<<<< HEAD
-	m_fg_tilemap  = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(vastar_state::get_fg_tile_info),this), TILEMAP_SCAN_ROWS,8,8,32,32);
-	m_bg1_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(vastar_state::get_bg1_tile_info),this),TILEMAP_SCAN_ROWS,8,8,32,32);
-	m_bg2_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(vastar_state::get_bg2_tile_info),this),TILEMAP_SCAN_ROWS,8,8,32,32);
-=======
 	m_fg_tilemap  = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(vastar_state::get_fg_tile_info),this), TILEMAP_SCAN_ROWS,8,8,32,32);
 	m_bg1_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(vastar_state::get_bg1_tile_info),this),TILEMAP_SCAN_ROWS,8,8,32,32);
 	m_bg2_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(vastar_state::get_bg2_tile_info),this),TILEMAP_SCAN_ROWS,8,8,32,32);
->>>>>>> upstream/master
 
 	m_fg_tilemap->set_transparent_pen(0);
 	m_bg1_tilemap->set_transparent_pen(0);
@@ -169,11 +163,7 @@ void vastar_state::draw_sprites(bitmap_ind16 &bitmap,const rectangle &cliprect)
 	}
 }
 
-<<<<<<< HEAD
-UINT32 vastar_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t vastar_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	for (int i = 0;i < 32;i++)
 	{

@@ -5,10 +5,6 @@
  *   Xerox AltoII display horizontal task
  *
  *****************************************************************************/
-<<<<<<< HEAD
-#include "alto2cpu.h"
-
-=======
 #include "emu.h"
 #include "alto2cpu.h"
 
@@ -58,7 +54,6 @@
  *      SLC←L, :DHT;
  */
 
->>>>>>> upstream/master
 /**
  * @brief f1_dht_block early: disable the display word task
  */
@@ -80,11 +75,7 @@ void alto2_cpu_device::f1_early_dht_block()
  */
 void alto2_cpu_device::f2_late_dht_setmode()
 {
-<<<<<<< HEAD
-	UINT16 r = X_RDBITS(m_bus,16,0,0);
-=======
 	uint16_t r = X_RDBITS(m_bus,16,0,0);
->>>>>>> upstream/master
 	m_dsp.setmode = m_bus;
 	LOG((this,LOG_DHT,2,"    SETMODE<- BUS (%#o), branch on BUS[0] (%#o | %#o)\n", m_bus, m_next2, r));
 	m_next2 |= r;
@@ -105,13 +96,6 @@ void alto2_cpu_device::activate_dht()
  */
 void alto2_cpu_device::init_dht(int task)
 {
-<<<<<<< HEAD
-	set_f1(task, f1_block,          &alto2_cpu_device::f1_early_dht_block, 0);
-	set_f2(task, f2_dht_evenfield,  0, &alto2_cpu_device::f2_late_evenfield);
-	set_f2(task, f2_dht_setmode,    0, &alto2_cpu_device::f2_late_dht_setmode);
-	m_active_callback[task] = &alto2_cpu_device::activate_dht;
-=======
->>>>>>> upstream/master
 }
 
 void alto2_cpu_device::exit_dht()

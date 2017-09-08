@@ -15,13 +15,6 @@
 
 #include "osdcore.h"
 #include "corestr.h"
-<<<<<<< HEAD
-#include <string>
-#include "md5.h"
-#include "sha1.h"
-
-
-=======
 #include "md5.h"
 #include "sha1.h"
 
@@ -30,7 +23,6 @@
 
 
 namespace util {
->>>>>>> upstream/master
 //**************************************************************************
 //  TYPE DEFINITIONS
 //**************************************************************************
@@ -43,17 +35,10 @@ struct sha1_t
 {
 	bool operator==(const sha1_t &rhs) const { return memcmp(m_raw, rhs.m_raw, sizeof(m_raw)) == 0; }
 	bool operator!=(const sha1_t &rhs) const { return memcmp(m_raw, rhs.m_raw, sizeof(m_raw)) != 0; }
-<<<<<<< HEAD
-	operator UINT8 *() { return m_raw; }
-	bool from_string(const char *string, int length = -1);
-	const char *as_string(std::string &buffer) const;
-	UINT8 m_raw[20];
-=======
 	operator uint8_t *() { return m_raw; }
 	bool from_string(const char *string, int length = -1);
 	std::string as_string() const;
 	uint8_t m_raw[20];
->>>>>>> upstream/master
 	static const sha1_t null;
 };
 
@@ -68,11 +53,7 @@ public:
 	void reset() { sha1_init(&m_context); }
 
 	// append data
-<<<<<<< HEAD
-	void append(const void *data, UINT32 length) { sha1_update(&m_context, length, reinterpret_cast<const UINT8 *>(data)); }
-=======
 	void append(const void *data, uint32_t length) { sha1_update(&m_context, length, reinterpret_cast<const uint8_t *>(data)); }
->>>>>>> upstream/master
 
 	// finalize and compute the final digest
 	sha1_t finish()
@@ -84,11 +65,7 @@ public:
 	}
 
 	// static wrapper to just get the digest from a block
-<<<<<<< HEAD
-	static sha1_t simple(const void *data, UINT32 length)
-=======
 	static sha1_t simple(const void *data, uint32_t length)
->>>>>>> upstream/master
 	{
 		sha1_creator creator;
 		creator.append(data, length);
@@ -109,17 +86,10 @@ struct md5_t
 {
 	bool operator==(const md5_t &rhs) const { return memcmp(m_raw, rhs.m_raw, sizeof(m_raw)) == 0; }
 	bool operator!=(const md5_t &rhs) const { return memcmp(m_raw, rhs.m_raw, sizeof(m_raw)) != 0; }
-<<<<<<< HEAD
-	operator UINT8 *() { return m_raw; }
-	bool from_string(const char *string, int length = -1);
-	const char *as_string(std::string &buffer) const;
-	UINT8 m_raw[16];
-=======
 	operator uint8_t *() { return m_raw; }
 	bool from_string(const char *string, int length = -1);
 	std::string as_string() const;
 	uint8_t m_raw[16];
->>>>>>> upstream/master
 	static const md5_t null;
 };
 
@@ -134,11 +104,7 @@ public:
 	void reset() { MD5Init(&m_context); }
 
 	// append data
-<<<<<<< HEAD
-	void append(const void *data, UINT32 length) { MD5Update(&m_context, reinterpret_cast<const unsigned char *>(data), length); }
-=======
 	void append(const void *data, uint32_t length) { MD5Update(&m_context, reinterpret_cast<const unsigned char *>(data), length); }
->>>>>>> upstream/master
 
 	// finalize and compute the final digest
 	md5_t finish()
@@ -149,11 +115,7 @@ public:
 	}
 
 	// static wrapper to just get the digest from a block
-<<<<<<< HEAD
-	static md5_t simple(const void *data, UINT32 length)
-=======
 	static md5_t simple(const void *data, uint32_t length)
->>>>>>> upstream/master
 	{
 		md5_creator creator;
 		creator.append(data, length);
@@ -172,15 +134,6 @@ protected:
 // final digest
 struct crc32_t
 {
-<<<<<<< HEAD
-	bool operator==(const crc32_t &rhs) const { return m_raw == rhs.m_raw; }
-	bool operator!=(const crc32_t &rhs) const { return m_raw != rhs.m_raw; }
-	crc32_t &operator=(const UINT32 crc) { m_raw = crc; return *this; }
-	operator UINT32() const { return m_raw; }
-	bool from_string(const char *string, int length = -1);
-	const char *as_string(std::string &buffer) const;
-	UINT32 m_raw;
-=======
 	crc32_t() { }
 	constexpr crc32_t(const crc32_t &rhs) = default;
 	constexpr crc32_t(const uint32_t crc) : m_raw(crc) { }
@@ -198,7 +151,6 @@ struct crc32_t
 
 	uint32_t m_raw;
 
->>>>>>> upstream/master
 	static const crc32_t null;
 };
 
@@ -213,21 +165,13 @@ public:
 	void reset() { m_accum.m_raw = 0; }
 
 	// append data
-<<<<<<< HEAD
-	void append(const void *data, UINT32 length);
-=======
 	void append(const void *data, uint32_t length);
->>>>>>> upstream/master
 
 	// finalize and compute the final digest
 	crc32_t finish() { return m_accum; }
 
 	// static wrapper to just get the digest from a block
-<<<<<<< HEAD
-	static crc32_t simple(const void *data, UINT32 length)
-=======
 	static crc32_t simple(const void *data, uint32_t length)
->>>>>>> upstream/master
 	{
 		crc32_creator creator;
 		creator.append(data, length);
@@ -246,15 +190,6 @@ protected:
 // final digest
 struct crc16_t
 {
-<<<<<<< HEAD
-	bool operator==(const crc16_t &rhs) const { return m_raw == rhs.m_raw; }
-	bool operator!=(const crc16_t &rhs) const { return m_raw != rhs.m_raw; }
-	crc16_t &operator=(const UINT16 crc) { m_raw = crc; return *this; }
-	operator UINT16() const { return m_raw; }
-	bool from_string(const char *string, int length = -1);
-	const char *as_string(std::string &buffer) const;
-	UINT16 m_raw;
-=======
 	crc16_t() { }
 	constexpr crc16_t(const crc16_t &rhs) = default;
 	constexpr crc16_t(const uint16_t crc) : m_raw(crc) { }
@@ -272,7 +207,6 @@ struct crc16_t
 
 	uint16_t m_raw;
 
->>>>>>> upstream/master
 	static const crc16_t null;
 };
 
@@ -287,21 +221,13 @@ public:
 	void reset() { m_accum.m_raw = 0xffff; }
 
 	// append data
-<<<<<<< HEAD
-	void append(const void *data, UINT32 length);
-=======
 	void append(const void *data, uint32_t length);
->>>>>>> upstream/master
 
 	// finalize and compute the final digest
 	crc16_t finish() { return m_accum; }
 
 	// static wrapper to just get the digest from a block
-<<<<<<< HEAD
-	static crc16_t simple(const void *data, UINT32 length)
-=======
 	static crc16_t simple(const void *data, uint32_t length)
->>>>>>> upstream/master
 	{
 		crc16_creator creator;
 		creator.append(data, length);
@@ -314,8 +240,6 @@ protected:
 };
 
 
-<<<<<<< HEAD
-=======
 } // namespace util
 
 namespace std {
@@ -336,5 +260,4 @@ template <> struct hash<::util::crc16_t>
 
 } // namespace std
 
->>>>>>> upstream/master
 #endif // __HASHING_H__

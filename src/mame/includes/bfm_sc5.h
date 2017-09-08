@@ -1,11 +1,7 @@
 // license:BSD-3-Clause
 // copyright-holders:David Haywood
 #include "cpu/m68000/m68000.h"
-<<<<<<< HEAD
-#include "includes/bfm_sc45.h"
-=======
 #include "includes/bfm_sc4.h"
->>>>>>> upstream/master
 
 class bfm_sc5_state : public bfm_sc45_state
 {

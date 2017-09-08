@@ -37,22 +37,15 @@ lev 7 : 0x7c : 0000 0000 - x
 */
 
 #include "emu.h"
-<<<<<<< HEAD
-=======
 #include "includes/kickgoal.h"
 
->>>>>>> upstream/master
 #include "cpu/m68000/m68000.h"
 #include "cpu/pic16c5x/pic16c5x.h"
 #include "machine/eepromser.h"
 #include "sound/okim6295.h"
-<<<<<<< HEAD
-#include "includes/kickgoal.h"
-=======
 #include "screen.h"
 #include "speaker.h"
 
->>>>>>> upstream/master
 
 /**************************************************************************
    This table converts commands sent from the main CPU, into sample numbers
@@ -66,11 +59,7 @@ lev 7 : 0x7c : 0000 0000 - x
 */
 
 #ifdef UNUSED_DEFINITION
-<<<<<<< HEAD
-static const UINT8 kickgoal_cmd_snd[128] =
-=======
 static const uint8_t kickgoal_cmd_snd[128] =
->>>>>>> upstream/master
 {
 /*00*/  0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
 /*08*/  0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x70, 0x71,
@@ -228,17 +217,10 @@ WRITE16_MEMBER(kickgoal_state::actionhw_snd_w)
 
 	switch (data)
 	{
-<<<<<<< HEAD
-		case 0xfc:  m_oki->set_bank_base((0 * 0x40000)); break;
-		case 0xfd:  m_oki->set_bank_base((2 * 0x40000)); break;
-		case 0xfe:  m_oki->set_bank_base((1 * 0x40000)); break;
-		case 0xff:  m_oki->set_bank_base((3 * 0x40000)); break;
-=======
 		case 0xfc:  m_oki->set_rom_bank(0); break;
 		case 0xfd:  m_oki->set_rom_bank(2); break;
 		case 0xfe:  m_oki->set_rom_bank(1); break;
 		case 0xff:  m_oki->set_rom_bank(3); break;
->>>>>>> upstream/master
 		case 0x78:
 				m_oki->write_command(data);
 				m_snd_sam[0] = 00; m_snd_sam[1]= 00; m_snd_sam[2] = 00; m_snd_sam[3] = 00;
@@ -357,11 +339,7 @@ INTERRUPT_GEN_MEMBER(kickgoal_state::kickgoal_interrupt)
 			if (m_m6295_bank == 0x03)
 				m_m6295_bank = 0x00;
 			popmessage("Changing Bank to %02x", m_m6295_bank);
-<<<<<<< HEAD
-			m_adpcm->set_bank_base(((m_m6295_bank) * 0x40000));
-=======
 			m_adpcm->set_rom_bank(m_m6295_bank);
->>>>>>> upstream/master
 
 			if (m_m6295_key_delay == 0xffff)
 				m_m6295_key_delay = 0x00;
@@ -380,11 +358,7 @@ INTERRUPT_GEN_MEMBER(kickgoal_state::kickgoal_interrupt)
 			if (m_m6295_bank == 0x03)
 				m_m6295_bank = 0x02;
 			popmessage("Changing Bank to %02x", m_m6295_bank);
-<<<<<<< HEAD
-			m_adpcm->set_bank_base(((m_m6295_bank) * 0x40000));
-=======
 			m_adpcm->set_rom_bank(m_m6295_bank);
->>>>>>> upstream/master
 
 			if (m_m6295_key_delay == 0xffff)
 				m_m6295_key_delay = 0x00;
@@ -400,19 +374,11 @@ INTERRUPT_GEN_MEMBER(kickgoal_state::kickgoal_interrupt)
 		{
 			m_m6295_comm += 1;
 			m_m6295_comm &= 0x7f;
-<<<<<<< HEAD
-			if (m_m6295_comm == 0x00) { m_adpcm->set_bank_base((0 * 0x40000)); m_m6295_bank = 0; }
-			if (m_m6295_comm == 0x60) { m_adpcm->set_bank_base((0 * 0x40000)); m_m6295_bank = 0; }
-			if (m_m6295_comm == 0x65) { m_adpcm->set_bank_base((1 * 0x40000)); m_m6295_bank = 1; }
-			if (m_m6295_comm == 0x69) { m_adpcm->set_bank_base((2 * 0x40000)); m_m6295_bank = 2; }
-			if (m_m6295_comm == 0x70) { m_adpcm->set_bank_base((1 * 0x40000)); m_m6295_bank = 1; }
-=======
 			if (m_m6295_comm == 0x00) { m_adpcm->set_rom_bank(0); m_m6295_bank = 0; }
 			if (m_m6295_comm == 0x60) { m_adpcm->set_rom_bank(0); m_m6295_bank = 0; }
 			if (m_m6295_comm == 0x65) { m_adpcm->set_rom_bank(1); m_m6295_bank = 1; }
 			if (m_m6295_comm == 0x69) { m_adpcm->set_rom_bank(2); m_m6295_bank = 2; }
 			if (m_m6295_comm == 0x70) { m_adpcm->set_rom_bank(1); m_m6295_bank = 1; }
->>>>>>> upstream/master
 			popmessage("Sound test command %02x on Bank %02x", m_m6295_comm, m_m6295_bank);
 
 			if (m_m6295_key_delay == 0xffff)
@@ -429,19 +395,11 @@ INTERRUPT_GEN_MEMBER(kickgoal_state::kickgoal_interrupt)
 		{
 			m_m6295_comm -= 1;
 			m_m6295_comm &= 0x7f;
-<<<<<<< HEAD
-			if (m_m6295_comm == 0x2b) { m_adpcm->set_bank_base((0 * 0x40000)); m_m6295_bank = 0; }
-			if (m_m6295_comm == 0x64) { m_adpcm->set_bank_base((0 * 0x40000)); m_m6295_bank = 0; }
-			if (m_m6295_comm == 0x68) { m_adpcm->set_bank_base((1 * 0x40000)); m_m6295_bank = 1; }
-			if (m_m6295_comm == 0x6c) { m_adpcm->set_bank_base((2 * 0x40000)); m_m6295_bank = 2; }
-			if (m_m6295_comm == 0x76) { m_adpcm->set_bank_base((1 * 0x40000)); m_m6295_bank = 1; }
-=======
 			if (m_m6295_comm == 0x2b) { m_adpcm->set_rom_bank(0); m_m6295_bank = 0; }
 			if (m_m6295_comm == 0x64) { m_adpcm->set_rom_bank(0); m_m6295_bank = 0; }
 			if (m_m6295_comm == 0x68) { m_adpcm->set_rom_bank(1); m_m6295_bank = 1; }
 			if (m_m6295_comm == 0x6c) { m_adpcm->set_rom_bank(2); m_m6295_bank = 2; }
 			if (m_m6295_comm == 0x76) { m_adpcm->set_rom_bank(1); m_m6295_bank = 1; }
->>>>>>> upstream/master
 			popmessage("Sound test command %02x on Bank %02x", m_m6295_comm, m_m6295_bank);
 
 			if (m_m6295_key_delay == 0xffff)
@@ -476,11 +434,7 @@ INTERRUPT_GEN_MEMBER(kickgoal_state::kickgoal_interrupt)
 }
 
 
-<<<<<<< HEAD
-static const UINT16 kickgoal_default_eeprom_type1[64] = {
-=======
 static const uint16_t kickgoal_default_eeprom_type1[64] = {
->>>>>>> upstream/master
 	0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000,
 	0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000,
 	0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000,
@@ -530,11 +484,7 @@ static ADDRESS_MAP_START( kickgoal_program_map, AS_PROGRAM, 16, kickgoal_state )
 /// AM_RANGE(0x30001e, 0x30001f) AM_WRITE(kickgoal_snd_w)
 	AM_RANGE(0x800000, 0x800001) AM_READ_PORT("P1_P2")
 	AM_RANGE(0x800002, 0x800003) AM_READ_PORT("SYSTEM")
-<<<<<<< HEAD
-/// AM_RANGE(0x800004, 0x800005) AM_WRITE(soundlatch_word_w)
-=======
 /// AM_RANGE(0x800004, 0x800005) AM_DEVWRITE("soundlatch", generic_latch_16_device, write)
->>>>>>> upstream/master
 	AM_RANGE(0x800004, 0x800005) AM_WRITE(actionhw_snd_w)
 	AM_RANGE(0x900000, 0x900005) AM_WRITE(kickgoal_eeprom_w)
 	AM_RANGE(0x900006, 0x900007) AM_READ(kickgoal_eeprom_r)
@@ -678,11 +628,7 @@ void kickgoal_state::machine_reset()
 	m_m6295_key_delay = 0;
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( kickgoal, kickgoal_state )
-=======
 static MACHINE_CONFIG_START( kickgoal )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, 12000000)   /* 12 MHz */
@@ -691,11 +637,7 @@ static MACHINE_CONFIG_START( kickgoal )
 	MCFG_CPU_PERIODIC_INT_DRIVER(kickgoal_state, kickgoal_interrupt,  240)
 
 	MCFG_CPU_ADD("audiocpu", PIC16C57, 12000000/4)  /* 3MHz ? */
-<<<<<<< HEAD
-	MCFG_DEVICE_DISABLE()   /* Disables since the internal rom isn't dumped */
-=======
 	MCFG_DEVICE_DISABLE()   /* Disabled since the internal rom isn't dumped */
->>>>>>> upstream/master
 	/* Program and Data Maps are internal to the MCU */
 
 	MCFG_EEPROM_SERIAL_93C46_ADD("eeprom")
@@ -718,13 +660,6 @@ static MACHINE_CONFIG_START( kickgoal )
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki", 12000000/8, OKIM6295_PIN7_LOW)
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.80)
-MACHINE_CONFIG_END
-
-static MACHINE_CONFIG_START( actionhw, kickgoal_state )
-=======
 
 	//MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 
@@ -733,7 +668,6 @@ static MACHINE_CONFIG_START( actionhw, kickgoal_state )
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_START( actionhw )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, XTAL_12MHz) /* verified on pcb */
@@ -741,11 +675,7 @@ static MACHINE_CONFIG_START( actionhw )
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", kickgoal_state,  irq6_line_hold)
 
 	MCFG_CPU_ADD("audiocpu", PIC16C57, XTAL_12MHz/3)    /* verified on pcb */
-<<<<<<< HEAD
-	MCFG_DEVICE_DISABLE() /* Disables since the internal rom isn't dumped */
-=======
 	MCFG_DEVICE_DISABLE() /* Disabled since the internal rom isn't dumped */
->>>>>>> upstream/master
 	/* Program and Data Maps are internal to the MCU */
 
 	MCFG_EEPROM_SERIAL_93C46_ADD("eeprom")
@@ -768,14 +698,10 @@ static MACHINE_CONFIG_START( actionhw )
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki", XTAL_12MHz/12, OKIM6295_PIN7_HIGH) /* verified on pcb */
-=======
 
 	//MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 
 	MCFG_OKIM6295_ADD("oki", XTAL_12MHz/12, PIN7_HIGH) /* verified on pcb */
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.80)
 MACHINE_CONFIG_END
 
@@ -804,15 +730,9 @@ ROM_START( kickgoal )
 	ROM_LOAD( "ic13",        0x00000, 0x40000, BAD_DUMP CRC(c6cb56e9) SHA1(835773b3f0647d3c553180bcf10e57ad44d68353) ) // BAD ADDRESS LINES (mask=010000)
 	ROM_CONTINUE(            0x60000, 0x20000 )
 	ROM_CONTINUE(            0xa0000, 0x20000 )
-<<<<<<< HEAD
-	ROM_COPY( "oki", 0x00000, 0x40000, 0x20000)
-	ROM_COPY( "oki", 0x00000, 0x80000, 0x20000)
-	ROM_COPY( "oki", 0x00000, 0xc0000, 0x20000)
-=======
 	ROM_COPY( "oki", 0x000000, 0x40000, 0x20000)
 	ROM_COPY( "oki", 0x000000, 0x80000, 0x20000)
 	ROM_COPY( "oki", 0x000000, 0xc0000, 0x20000)
->>>>>>> upstream/master
 ROM_END
 
 ROM_START( actionhw )
@@ -840,15 +760,9 @@ ROM_START( actionhw )
 	ROM_LOAD( "3.ic13",      0x00000, 0x40000, CRC(b8f6705d) SHA1(55116e14aba6dac7334e26f704b3e6b0b9f856c2) )
 	ROM_CONTINUE(            0x60000, 0x20000 )
 	ROM_CONTINUE(            0xa0000, 0x20000 )
-<<<<<<< HEAD
-	ROM_COPY( "oki", 0x00000, 0x40000, 0x20000)
-	ROM_COPY( "oki", 0x00000, 0x80000, 0x20000)
-	ROM_COPY( "oki", 0x00000, 0xc0000, 0x20000) /* Last bank used in Test Mode */
-=======
 	ROM_COPY( "oki", 0x000000, 0x40000, 0x20000)
 	ROM_COPY( "oki", 0x000000, 0x80000, 0x20000)
 	ROM_COPY( "oki", 0x000000, 0xc0000, 0x20000) /* Last bank used in Test Mode */
->>>>>>> upstream/master
 ROM_END
 
 /* GAME drivers **************************************************************/
@@ -856,11 +770,7 @@ ROM_END
 DRIVER_INIT_MEMBER(kickgoal_state,kickgoal)
 {
 #if 0 /* we should find a real fix instead  */
-<<<<<<< HEAD
-	UINT16 *rom = (UINT16 *)memregion("maincpu")->base();
-=======
 	uint16_t *rom = (uint16_t *)memregion("maincpu")->base();
->>>>>>> upstream/master
 
 	/* fix "bug" that prevents game from writing to EEPROM */
 	rom[0x12b0/2] = 0x0001;
@@ -868,10 +778,5 @@ DRIVER_INIT_MEMBER(kickgoal_state,kickgoal)
 }
 
 
-<<<<<<< HEAD
-GAME( 1995, kickgoal,0, kickgoal, kickgoal, kickgoal_state, kickgoal, ROT0, "TCH", "Kick Goal", MACHINE_NO_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 1995, actionhw,0, actionhw, kickgoal, kickgoal_state, kickgoal, ROT0, "TCH", "Action Hollywood", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1995, kickgoal, 0, kickgoal, kickgoal, kickgoal_state, kickgoal, ROT0, "TCH", "Kick Goal",        MACHINE_NO_SOUND | MACHINE_SUPPORTS_SAVE )
 GAME( 1995, actionhw, 0, actionhw, kickgoal, kickgoal_state, kickgoal, ROT0, "TCH", "Action Hollywood", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

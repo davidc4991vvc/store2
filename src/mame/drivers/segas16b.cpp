@@ -870,19 +870,12 @@ S11 S13 S15 S17  |EPR12194 -        -        -        EPR12195 -        -       
 
 #include "emu.h"
 #include "includes/segas16b.h"
-<<<<<<< HEAD
-#include "machine/segaic16.h"
-#include "machine/mc8123.h"
-#include "includes/segaipt.h"
-
-=======
 #include "includes/segaipt.h"
 
 #include "machine/mc8123.h"
 #include "sound/okim6295.h"
 #include "speaker.h"
 
->>>>>>> upstream/master
 
 //**************************************************************************
 //  CONSTANTS
@@ -907,11 +900,7 @@ S11 S13 S15 S17  |EPR12194 -        -        -        EPR12195 -        -       
 
 
 
-<<<<<<< HEAD
-void segas16b_state::memory_mapper(sega_315_5195_mapper_device &mapper, UINT8 index)
-=======
 void segas16b_state::memory_mapper(sega_315_5195_mapper_device &mapper, uint8_t index)
->>>>>>> upstream/master
 {
 	switch (index)
 	{
@@ -983,11 +972,7 @@ void segas16b_state::memory_mapper(sega_315_5195_mapper_device &mapper, uint8_t 
 //  memory mapper chip
 //-------------------------------------------------
 
-<<<<<<< HEAD
-UINT8 segas16b_state::mapper_sound_r()
-=======
 uint8_t segas16b_state::mapper_sound_r()
->>>>>>> upstream/master
 {
 	return 0;
 }
@@ -998,18 +983,11 @@ uint8_t segas16b_state::mapper_sound_r()
 //  memory mapper chip
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void segas16b_state::mapper_sound_w(UINT8 data)
-{
-	soundlatch_write(data & 0xff);
-	if (m_soundcpu != NULL)
-=======
 void segas16b_state::mapper_sound_w(uint8_t data)
 {
 	if (m_soundlatch != nullptr)
 		m_soundlatch->write(m_soundcpu->space(AS_PROGRAM), 0, data & 0xff);
 	if (m_soundcpu != nullptr)
->>>>>>> upstream/master
 		m_soundcpu->set_input_line(0, HOLD_LINE);
 }
 
@@ -1152,15 +1130,6 @@ WRITE16_MEMBER( segas16b_state::standard_io_w )
 			//  D0 : Output to coin counter 1
 			//
 			m_segaic16vid->tilemap_set_flip(0, data & 0x40);
-<<<<<<< HEAD
-			m_sprites->set_flip(data & 0x40);
-			if (!m_disable_screen_blanking)
-				m_segaic16vid->set_display_enable(data & 0x20);
-			set_led_status(machine(), 1, data & 0x08);
-			set_led_status(machine(), 0, data & 0x04);
-			coin_counter_w(machine(), 1, data & 0x02);
-			coin_counter_w(machine(), 0, data & 0x01);
-=======
 			if (m_sprites.found())
 				m_sprites->set_flip(data & 0x40);
 			if (!m_disable_screen_blanking)
@@ -1169,7 +1138,6 @@ WRITE16_MEMBER( segas16b_state::standard_io_w )
 			output().set_led_value(0, data & 0x04);
 			machine().bookkeeping().coin_counter_w(1, data & 0x02);
 			machine().bookkeeping().coin_counter_w(0, data & 0x01);
->>>>>>> upstream/master
 			return;
 	}
 	logerror("%06X:standard_io_w - unknown write access to address %04X = %04X & %04X\n", space.device().safe_pc(), offset * 2, data, mem_mask);
@@ -1319,11 +1287,7 @@ INTERRUPT_GEN_MEMBER( segas16b_state::i8751_main_cpu_vblank )
 void segas16b_state::machine_reset()
 {
 	// if we have a hard-coded mapping configuration, set it now
-<<<<<<< HEAD
-	if (m_i8751_initial_config != NULL)
-=======
 	if (m_i8751_initial_config != nullptr)
->>>>>>> upstream/master
 		m_mapper->configure_explicit(m_i8751_initial_config);
 
 	// queue up a timer to either boost interleave or disable the MCU
@@ -1333,13 +1297,6 @@ void segas16b_state::machine_reset()
 	m_segaic16vid->tilemap_reset(*m_screen);
 
 	// configure sprite banks
-<<<<<<< HEAD
-	static const UINT8 default_banklist[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
-	static const UINT8 alternate_banklist[] = { 0,255,255,255, 255,255,255,3, 255,255,255,2, 255,1,0,255 };
-	const UINT8 *banklist = (m_romboard == ROM_BOARD_171_5358 || m_romboard == ROM_BOARD_171_5358_SMALL) ? alternate_banklist : default_banklist;
-	for (int banknum = 0; banknum < 16; banknum++)
-		m_sprites->set_bank(banknum, banklist[banknum]);
-=======
 	if (m_sprites.found())
 	{
 		static const uint8_t default_banklist[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
@@ -1348,7 +1305,6 @@ void segas16b_state::machine_reset()
 		for (int banknum = 0; banknum < 16; banknum++)
 			m_sprites->set_bank(banknum, banklist[banknum]);
 	}
->>>>>>> upstream/master
 }
 
 
@@ -1364,11 +1320,7 @@ void segas16b_state::device_timer(emu_timer &timer, device_timer_id id, int para
 		case TID_INIT_I8751:
 			if (!m_i8751_vblank_hook.isnull())
 				m_mcu->suspend(SUSPEND_REASON_DISABLE, 1);
-<<<<<<< HEAD
-			else if (m_mcu != NULL)
-=======
 			else if (m_mcu != nullptr)
->>>>>>> upstream/master
 				machine().scheduler().boost_interleave(attotime::zero, attotime::from_msec(10));
 			break;
 
@@ -1394,23 +1346,13 @@ void segas16b_state::device_timer(emu_timer &timer, device_timer_id id, int para
 //  from Altered Beast
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void segas16b_state::altbeast_common_i8751_sim(offs_t soundoffs, offs_t inputoffs)
-=======
 void segas16b_state::altbeast_common_i8751_sim(offs_t soundoffs, offs_t inputoffs, int alt_bank)
->>>>>>> upstream/master
 {
 	// signal a VBLANK to the main CPU
 	m_maincpu->set_input_line(4, HOLD_LINE);
 
 	// set tile banks
 	address_space &space = m_maincpu->space(AS_PROGRAM);
-<<<<<<< HEAD
-	rom_5704_bank_w(space, 1, m_workram[0x3094/2] & 0x00ff, 0x00ff);
-
-	// process any new sound data
-	UINT16 temp = m_workram[soundoffs];
-=======
 	int bank = m_workram[0x3094 / 2] & 0x00ff;
 	// alt_bank is used for the alt rom loading (where there are space between the ROMs)
 	// alternatively the rom loading could be changed, but the loading is correct for the non-mcu .b14/.a14 type
@@ -1421,7 +1363,6 @@ void segas16b_state::altbeast_common_i8751_sim(offs_t soundoffs, offs_t inputoff
 
 	// process any new sound data
 	uint16_t temp = m_workram[soundoffs];
->>>>>>> upstream/master
 	if ((temp & 0xff00) != 0x0000)
 	{
 		m_mapper->write(space, 0x03, temp >> 8);
@@ -1434,28 +1375,14 @@ void segas16b_state::altbeast_common_i8751_sim(offs_t soundoffs, offs_t inputoff
 
 void segas16b_state::altbeasj_i8751_sim()
 {
-<<<<<<< HEAD
-	altbeast_common_i8751_sim(0x30d4/2, 0x30d0/2);
-=======
 	altbeast_common_i8751_sim(0x30d4/2, 0x30d0/2, 1);
->>>>>>> upstream/master
 }
 
 void segas16b_state::altbeas5_i8751_sim()
 {
-<<<<<<< HEAD
-	altbeast_common_i8751_sim(0x3098/2, 0x3096/2);
-}
-
-void segas16b_state::altbeast_i8751_sim()
-{
-	altbeast_common_i8751_sim(0x30c4/2, 0x30c2/2);
-}
-=======
 	altbeast_common_i8751_sim(0x3098/2, 0x3096/2, 1);
 }
 
->>>>>>> upstream/master
 
 
 //-------------------------------------------------
@@ -1469,11 +1396,7 @@ void segas16b_state::ddux_i8751_sim()
 	m_maincpu->set_input_line(4, HOLD_LINE);
 
 	// process any new sound data
-<<<<<<< HEAD
-	UINT16 temp = m_workram[0x0bd0/2];
-=======
 	uint16_t temp = m_workram[0x0bd0/2];
->>>>>>> upstream/master
 	if ((temp & 0xff00) != 0x0000)
 	{
 		address_space &space = m_maincpu->space(AS_PROGRAM);
@@ -1482,44 +1405,6 @@ void segas16b_state::ddux_i8751_sim()
 	}
 }
 
-<<<<<<< HEAD
-
-//-------------------------------------------------
-//  goldnaxe_i8751_sim - simulate the I8751
-//  from Golden Axe
-//-------------------------------------------------
-
-void segas16b_state::goldnaxe_i8751_sim()
-{
-	// signal a VBLANK to the main CPU
-	m_maincpu->set_input_line(4, HOLD_LINE);
-
-	// they periodically clear the data at 2cd8,2cda,2cdc,2cde and expect the MCU to fill it in
-	if (m_workram[0x2cd8/2] == 0 && m_workram[0x2cda/2] == 0 && m_workram[0x2cdc/2] == 0 && m_workram[0x2cde/2] == 0)
-	{
-		m_workram[0x2cd8/2] = 0x048c;
-		m_workram[0x2cda/2] = 0x159d;
-		m_workram[0x2cdc/2] = 0x26ae;
-		m_workram[0x2cde/2] = 0x37bf;
-	}
-
-	// process any new sound data
-	UINT16 temp = m_workram[0x2cfc/2];
-	if ((temp & 0xff00) != 0x0000)
-	{
-		address_space &space = m_maincpu->space(AS_PROGRAM);
-		m_mapper->write(space, 0x03, temp >> 8);
-		m_workram[0x2cfc/2] = temp & 0x00ff;
-	}
-
-	// read inputs
-	m_workram[0x2cd0/2] = (ioport("P1")->read() << 8) | ioport("P2")->read();
-	m_workram[0x2c96/2] = ioport("SERVICE")->read() << 8;
-}
-
-
-=======
->>>>>>> upstream/master
 //-------------------------------------------------
 //  tturf_i8751_sim - simulate the I8751
 //  from Tough Turf
@@ -1527,11 +1412,7 @@ void segas16b_state::goldnaxe_i8751_sim()
 
 void segas16b_state::tturf_i8751_sim()
 {
-<<<<<<< HEAD
-	UINT16 temp;
-=======
 	uint16_t temp;
->>>>>>> upstream/master
 
 	// signal a VBLANK to the main CPU
 	m_maincpu->set_input_line(4, HOLD_LINE);
@@ -1563,11 +1444,7 @@ void segas16b_state::wb3_i8751_sim()
 	m_maincpu->set_input_line(4, HOLD_LINE);
 
 	// process any new sound data
-<<<<<<< HEAD
-	UINT16 temp = m_workram[0x0008/2];
-=======
 	uint16_t temp = m_workram[0x0008/2];
->>>>>>> upstream/master
 	if ((temp & 0x00ff) != 0x0000)
 	{
 		address_space &space = m_maincpu->space(AS_PROGRAM);
@@ -1608,31 +1485,20 @@ READ16_MEMBER( segas16b_state::aceattac_custom_io_r )
 			break;
 
 		case 0x3000/2:
-<<<<<<< HEAD
-=======
 			if (BIT(offset, 4))
 				return m_cxdio->read(space, offset & 0x0f);
 			else // TODO: use uPD4701A device
->>>>>>> upstream/master
 			switch (offset & 0x1b)
 			{
 				case 0x00: return ioport("TRACKX1")->read() & 0xff;
 				case 0x01: return (ioport("TRACKX1")->read() >> 8 & 0x0f) | (ioport("HANDY1")->read() << 4 & 0xf0);
 				case 0x02: return ioport("TRACKY1")->read();
 				case 0x03: return ioport("TRACKY1")->read() >> 8 & 0x0f;
-<<<<<<< HEAD
-				case 0x10: return ioport("HANDX1")->read();
-=======
->>>>>>> upstream/master
 
 				case 0x08: return ioport("TRACKX2")->read() & 0xff;
 				case 0x09: return (ioport("TRACKX2")->read() >> 8 & 0x0f) | (ioport("HANDY2")->read() << 4 & 0xf0);
 				case 0x0a: return ioport("TRACKY2")->read();
 				case 0x0b: return ioport("TRACKY2")->read() >> 8 & 0xff;
-<<<<<<< HEAD
-				case 0x11: return ioport("HANDX2")->read();
-=======
->>>>>>> upstream/master
 			}
 			break;
 	}
@@ -1640,8 +1506,6 @@ READ16_MEMBER( segas16b_state::aceattac_custom_io_r )
 	return standard_io_r(space, offset, mem_mask);
 }
 
-<<<<<<< HEAD
-=======
 WRITE16_MEMBER( segas16b_state::aceattac_custom_io_w )
 {
 	switch (offset & (0x3000/2))
@@ -1656,7 +1520,6 @@ WRITE16_MEMBER( segas16b_state::aceattac_custom_io_w )
 	}
 	standard_io_w(space, offset, data, mem_mask);
 }
->>>>>>> upstream/master
 
 
 //-------------------------------------------------
@@ -1693,11 +1556,7 @@ READ16_MEMBER( segas16b_state::dunkshot_custom_io_r )
 
 READ16_MEMBER( segas16b_state::hwchamp_custom_io_r )
 {
-<<<<<<< HEAD
-	UINT16 result;
-=======
 	uint16_t result;
->>>>>>> upstream/master
 
 	switch (offset & (0x3000/2))
 	{
@@ -1716,19 +1575,12 @@ READ16_MEMBER( segas16b_state::hwchamp_custom_io_r )
 
 WRITE16_MEMBER( segas16b_state::hwchamp_custom_io_w )
 {
-<<<<<<< HEAD
-	static const char *const portname[4] = { "MONITOR", "LEFT", "RIGHT", "DUMMY" };
-=======
->>>>>>> upstream/master
 	switch (offset & (0x3000/2))
 	{
 		case 0x3000/2:
 			switch (offset & 0x30/2)
 			{
 				case 0x20/2:
-<<<<<<< HEAD
-					m_hwc_input_value = read_safe(ioport(portname[offset & 3]), 0xff);
-=======
 					switch (offset & 3)
 					{
 						case 0:
@@ -1747,22 +1599,15 @@ WRITE16_MEMBER( segas16b_state::hwchamp_custom_io_w )
 							m_hwc_input_value = 0xff;
 							break;
 					}
->>>>>>> upstream/master
 					break;
 
 				case 0x30/2:
 					// bit 4 is GONG
 			//      if (data & 0x10) popmessage("GONG");
 					// are the following really lamps?
-<<<<<<< HEAD
-			//      set_led_status(space.machine(), 1,data & 0x20);
-			//      set_led_status(space.machine(), 2,data & 0x40);
-			//      set_led_status(space.machine(), 3,data & 0x80);
-=======
 			//      output().set_led_value(1,data & 0x20);
 			//      output().set_led_value(2,data & 0x40);
 			//      output().set_led_value(3,data & 0x80);
->>>>>>> upstream/master
 					break;
 			}
 			break;
@@ -1824,31 +1669,18 @@ READ16_MEMBER( segas16b_state::sdi_custom_io_r )
 
 READ16_MEMBER( segas16b_state::sjryuko_custom_io_r )
 {
-<<<<<<< HEAD
-	static const char *const portname[] = { "MJ0", "MJ1", "MJ2", "MJ3", "MJ4", "MJ5" };
-
-=======
->>>>>>> upstream/master
 	switch (offset & (0x3000/2))
 	{
 		case 0x1000/2:
 			switch (offset & 3)
 			{
 				case 1:
-<<<<<<< HEAD
-					if (read_safe(ioport(portname[m_mj_input_num]), 0xff) != 0xff)
-=======
 					if (m_mj_inputs[m_mj_input_num].read_safe(0xff) != 0xff)
->>>>>>> upstream/master
 						return 0xff & ~(1 << m_mj_input_num);
 					return 0xff;
 
 				case 2:
-<<<<<<< HEAD
-					return read_safe(ioport(portname[m_mj_input_num]), 0xff);
-=======
 					return m_mj_inputs[m_mj_input_num].read_safe(0xff);
->>>>>>> upstream/master
 			}
 			break;
 	}
@@ -1888,11 +1720,7 @@ static ADDRESS_MAP_START( system16b_map, AS_PROGRAM, 16, segas16b_state )
 	AM_RANGE(0x500000, 0x503fff) AM_RAM AM_SHARE("workram")
 ADDRESS_MAP_END
 
-<<<<<<< HEAD
-static ADDRESS_MAP_START( decrypted_opcodes_map, AS_DECRYPTED_OPCODES, 16, segas16b_state )
-=======
 static ADDRESS_MAP_START( decrypted_opcodes_map, AS_OPCODES, 16, segas16b_state )
->>>>>>> upstream/master
 	AM_RANGE(0x00000, 0xfffff) AM_ROMBANK("fd1094_decrypted_opcodes")
 ADDRESS_MAP_END
 
@@ -1922,17 +1750,11 @@ static ADDRESS_MAP_START( system16b_bootleg_map, AS_PROGRAM, 16, segas16b_state 
 	AM_RANGE(0xffc000, 0xffffff) AM_RAM AM_SHARE("workram")
 ADDRESS_MAP_END
 
-<<<<<<< HEAD
-static ADDRESS_MAP_START( decrypted_opcodes_map_x, AS_DECRYPTED_OPCODES, 16, segas16b_state )
-=======
 static ADDRESS_MAP_START( decrypted_opcodes_map_x, AS_OPCODES, 16, segas16b_state )
->>>>>>> upstream/master
 	ADDRESS_MAP_UNMAP_HIGH
 	AM_RANGE(0x000000, 0x03ffff) AM_ROM AM_SHARE("decrypted_opcodes")
 ADDRESS_MAP_END
 
-<<<<<<< HEAD
-=======
 
 static ADDRESS_MAP_START( lockonph_map, AS_PROGRAM, 16, segas16b_state )
 	// this still appears to have a mapper device, does the hardware use it? should we move this to all be configured by it?
@@ -1992,7 +1814,6 @@ static ADDRESS_MAP_START( fpointbl_sound_map, AS_PROGRAM, 8, segas16b_state )
 ADDRESS_MAP_END
 
 
->>>>>>> upstream/master
 READ16_MEMBER(segas16b_state::bootleg_custom_io_r)
 {
 	return m_custom_io_r(space, offset, mem_mask);
@@ -2012,19 +1833,11 @@ static ADDRESS_MAP_START( sound_map, AS_PROGRAM, 8, segas16b_state )
 	ADDRESS_MAP_UNMAP_HIGH
 	AM_RANGE(0x0000, 0x7fff) AM_ROM
 	AM_RANGE(0x8000, 0xdfff) AM_ROMBANK("soundbank")
-<<<<<<< HEAD
-	AM_RANGE(0xe800, 0xe800) AM_READ(soundlatch_byte_r)
-	AM_RANGE(0xf800, 0xffff) AM_RAM
-ADDRESS_MAP_END
-
-static ADDRESS_MAP_START( sound_decrypted_opcodes_map, AS_DECRYPTED_OPCODES, 8, segas16b_state )
-=======
 	AM_RANGE(0xe800, 0xe800) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
 	AM_RANGE(0xf800, 0xffff) AM_RAM
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( sound_decrypted_opcodes_map, AS_OPCODES, 8, segas16b_state )
->>>>>>> upstream/master
 	ADDRESS_MAP_UNMAP_HIGH
 	AM_RANGE(0x0000, 0x7fff) AM_ROM AM_SHARE("sound_decrypted_opcodes")
 	AM_RANGE(0x8000, 0xdfff) AM_ROMBANK("soundbank")
@@ -2036,11 +1849,6 @@ static ADDRESS_MAP_START( sound_portmap, AS_IO, 8, segas16b_state )
 	AM_RANGE(0x00, 0x01) AM_MIRROR(0x3e) AM_DEVREADWRITE("ym2151", ym2151_device, read, write)
 	AM_RANGE(0x40, 0x40) AM_MIRROR(0x3f) AM_WRITE(upd7759_control_w)
 	AM_RANGE(0x80, 0x80) AM_MIRROR(0x3f) AM_READ(upd7759_status_r) AM_DEVWRITE("upd", upd7759_device, port_w)
-<<<<<<< HEAD
-	AM_RANGE(0xc0, 0xc0) AM_MIRROR(0x3f) AM_READ(soundlatch_byte_r)
-ADDRESS_MAP_END
-
-=======
 	AM_RANGE(0xc0, 0xc0) AM_MIRROR(0x3f) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
 ADDRESS_MAP_END
 
@@ -2058,19 +1866,12 @@ static ADDRESS_MAP_START( lockonph_sound_iomap, AS_IO, 8, segas16b_state )
 	AM_RANGE(0x80, 0x80) AM_DEVREADWRITE("oki", okim6295_device, read, write)
 	AM_RANGE(0xc0, 0xc0) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
 ADDRESS_MAP_END
->>>>>>> upstream/master
 
 
 //**************************************************************************
 //  I8751 MCU ADDRESS MAPS
 //**************************************************************************
 
-<<<<<<< HEAD
-static ADDRESS_MAP_START( mcu_io_map, AS_IO, 8, segas16b_state )
-	ADDRESS_MAP_UNMAP_HIGH
-	AM_RANGE(0x0000, 0x001f) AM_MIRROR(0xff00) AM_DEVREADWRITE("mapper", sega_315_5195_mapper_device, read, write)
-	AM_RANGE(MCS51_PORT_P1, MCS51_PORT_P1) AM_READ_PORT("SERVICE")
-=======
 WRITE8_MEMBER(segas16b_state::spin_68k_w)
 {
 	// this is probably a hack but otherwise the 68k and i8751 end up fighting
@@ -2083,7 +1884,6 @@ static ADDRESS_MAP_START( mcu_io_map, AS_IO, 8, segas16b_state )
 	ADDRESS_MAP_UNMAP_HIGH
 	AM_RANGE(0x0000, 0x001f) AM_MIRROR(0xff00) AM_DEVREADWRITE("mapper", sega_315_5195_mapper_device, read, write)
 	AM_RANGE(MCS51_PORT_P1, MCS51_PORT_P1) AM_READ_PORT("SERVICE") AM_WRITE(spin_68k_w)
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -2572,48 +2372,15 @@ static INPUT_PORTS_START( eswat )
 	PORT_DIPSETTING(    0x80, "4" )
 INPUT_PORTS_END
 
-<<<<<<< HEAD
-=======
 static const ioport_value exctleag_table[6] =
 {
 	0x07, 0x06, 0x04, 0x05, 0x01, 0x03
 };
->>>>>>> upstream/master
 
 static INPUT_PORTS_START( exctleag )
 	PORT_INCLUDE( system16b_generic )
 
 	PORT_MODIFY("P1")
-<<<<<<< HEAD
-	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_BUTTON1 ) PORT_PLAYER(1)     // BANT0
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_BUTTON2 ) PORT_PLAYER(1)     // BANT1
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_BUTTON3 ) PORT_PLAYER(1)     // BANT2
-	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_BUTTON4 ) PORT_PLAYER(1)     // SWING0
-	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_BUTTON5 ) PORT_PLAYER(1)     // SWING1
-	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_BUTTON6 ) PORT_PLAYER(1)     // LOW
-	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_BUTTON7 ) PORT_PLAYER(1)     // MID
-	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_BUTTON8 ) PORT_PLAYER(1)     // HI
-
-	PORT_MODIFY("UNUSED")
-	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_BUTTON9 ) PORT_PLAYER(1)     // CHASE
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_BUTTON10 ) PORT_PLAYER(1)    // CHANGE
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_BUTTON11 ) PORT_PLAYER(1)    // SELECT
-	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_UNUSED )
-	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_BUTTON9 ) PORT_PLAYER(2)     // CHASE
-	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_BUTTON10 ) PORT_PLAYER(2)    // CHANGE
-	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_BUTTON11 ) PORT_PLAYER(2)    // SELECT
-	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNUSED )
-
-	PORT_MODIFY("P2")
-	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_BUTTON1 ) PORT_PLAYER(2)     // BANT0
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_BUTTON2 ) PORT_PLAYER(2)     // BANT1
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_BUTTON3 ) PORT_PLAYER(2)     // BANT2
-	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_BUTTON4 ) PORT_PLAYER(2)     // SWING0
-	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_BUTTON5 ) PORT_PLAYER(2)     // SWING1
-	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_BUTTON6 ) PORT_PLAYER(2)     // LOW
-	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_BUTTON7 ) PORT_PLAYER(2)     // MID
-	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_BUTTON8 ) PORT_PLAYER(2)     // HI
-=======
 	PORT_BIT( 0x07, 0x00, IPT_POSITIONAL_V ) PORT_POSITIONS(6) PORT_REMAP_TABLE(exctleag_table) PORT_SENSITIVITY(5) PORT_KEYDELTA(10) PORT_CENTERDELTA(0) PORT_PLAYER(1) PORT_NAME("P1 Bant Position")
 	PORT_BIT( 0x18, 0x00, IPT_POSITIONAL_V ) PORT_POSITIONS(4) PORT_REMAP_TABLE(exctleag_table) PORT_SENSITIVITY(5) PORT_KEYDELTA(5) PORT_CENTERDELTA(5) PORT_PLAYER(1) PORT_NAME("P1 Swing Power")
 	PORT_BIT( 0xe0, 0x00, IPT_POSITIONAL_V ) PORT_POSITIONS(6) PORT_REMAP_TABLE(exctleag_table) PORT_SENSITIVITY(5) PORT_KEYDELTA(10) PORT_CENTERDELTA(0) PORT_PLAYER(1) PORT_NAME("P1 Swing Position")
@@ -2632,7 +2399,6 @@ static INPUT_PORTS_START( exctleag )
 	PORT_BIT( 0x07, 0x00, IPT_POSITIONAL_V ) PORT_POSITIONS(6) PORT_REMAP_TABLE(exctleag_table) PORT_SENSITIVITY(5) PORT_KEYDELTA(10) PORT_CENTERDELTA(0) PORT_PLAYER(2) PORT_NAME("P2 Bant Position")
 	PORT_BIT( 0x18, 0x00, IPT_POSITIONAL_V ) PORT_POSITIONS(4) PORT_REMAP_TABLE(exctleag_table) PORT_SENSITIVITY(5) PORT_KEYDELTA(5) PORT_CENTERDELTA(5) PORT_PLAYER(2) PORT_NAME("P2 Swing Power")
 	PORT_BIT( 0xe0, 0x00, IPT_POSITIONAL_V ) PORT_POSITIONS(6) PORT_REMAP_TABLE(exctleag_table) PORT_SENSITIVITY(5) PORT_KEYDELTA(10) PORT_CENTERDELTA(0) PORT_PLAYER(2) PORT_NAME("P2 Swing Position")
->>>>>>> upstream/master
 
 	PORT_MODIFY("DSW2")
 	PORT_DIPNAME( 0x01, 0x00, DEF_STR( Demo_Sounds ) ) PORT_DIPLOCATION("SW2:1")
@@ -2704,8 +2470,6 @@ static INPUT_PORTS_START( fpoint )
 INPUT_PORTS_END
 
 
-<<<<<<< HEAD
-=======
 
 static INPUT_PORTS_START( fpointbl )
 	PORT_START("SERVICE")
@@ -2796,7 +2560,6 @@ static INPUT_PORTS_START( fpointbl )
 INPUT_PORTS_END
 
 
->>>>>>> upstream/master
 static INPUT_PORTS_START( goldnaxe )
 	PORT_INCLUDE( system16b_generic )
 
@@ -3709,10 +3472,6 @@ static INPUT_PORTS_START( snapper )
 	PORT_START("DSW1")  // DUMMY
 INPUT_PORTS_END
 
-<<<<<<< HEAD
-
-
-=======
 static INPUT_PORTS_START( lockonph )
 	PORT_START("P1")
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_BUTTON1 )
@@ -3801,7 +3560,6 @@ static INPUT_PORTS_START( lockonph )
 	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
 INPUT_PORTS_END
 
->>>>>>> upstream/master
 //**************************************************************************
 //  GRAPHICS DECODING
 //**************************************************************************
@@ -3810,23 +3568,15 @@ static GFXDECODE_START( segas16b )
 	GFXDECODE_ENTRY( "gfx1", 0, gfx_8x8x3_planar,   0, 1024 )
 GFXDECODE_END
 
-<<<<<<< HEAD
-
-=======
 static GFXDECODE_START( lockonph )
 	GFXDECODE_ENTRY( "gfx1", 0, gfx_8x8x4_planar,   0, 1024 )
 GFXDECODE_END
->>>>>>> upstream/master
 
 //**************************************************************************
 //  GENERIC MACHINE DRIVERS
 //**************************************************************************
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( system16b, segas16b_state )
-=======
 static MACHINE_CONFIG_START( system16b )
->>>>>>> upstream/master
 
 	// basic machine hardware
 	MCFG_CPU_ADD("maincpu", M68000, MASTER_CLOCK_10MHz)
@@ -3857,11 +3607,8 @@ static MACHINE_CONFIG_START( system16b )
 	// sound hardware
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 
->>>>>>> upstream/master
 	MCFG_YM2151_ADD("ym2151", MASTER_CLOCK_8MHz/2)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.43)
 
@@ -3871,13 +3618,9 @@ static MACHINE_CONFIG_START( system16b )
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_DERIVED( system16b_mc8123, system16b )
-<<<<<<< HEAD
-	MCFG_CPU_MODIFY("soundcpu")
-=======
 	MCFG_CPU_REPLACE("soundcpu", MC8123, MASTER_CLOCK_10MHz/2)
 	MCFG_CPU_PROGRAM_MAP(sound_map)
 	MCFG_CPU_IO_MAP(sound_portmap)
->>>>>>> upstream/master
 	MCFG_CPU_DECRYPTED_OPCODES_MAP(sound_decrypted_opcodes_map)
 MACHINE_CONFIG_END
 
@@ -3900,8 +3643,6 @@ static MACHINE_CONFIG_DERIVED( system16b_fd1094, system16b )
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", segas16b_state, irq4_line_hold)
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-=======
 static MACHINE_CONFIG_DERIVED( aceattacb_fd1094, system16b_fd1094 )
 	// 834-6602 I/O board
 	MCFG_DEVICE_ADD("upd4701a1", UPD4701A, 0)
@@ -3911,7 +3652,6 @@ static MACHINE_CONFIG_DERIVED( aceattacb_fd1094, system16b_fd1094 )
 	MCFG_CXD1095_IN_PORTB_CB(IOPORT("HANDX2"))
 MACHINE_CONFIG_END
 
->>>>>>> upstream/master
 
 static MACHINE_CONFIG_DERIVED( system16b_i8751, system16b )
 	MCFG_CPU_MODIFY("maincpu")
@@ -3924,11 +3664,7 @@ MACHINE_CONFIG_END
 
 // same as the above, but with custom Sega ICs
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_FRAGMENT( rom_5797_fragment )
-=======
 static MACHINE_CONFIG_START( rom_5797_fragment )
->>>>>>> upstream/master
 	MCFG_SEGA_315_5248_MULTIPLIER_ADD("multiplier")
 	MCFG_SEGA_315_5250_COMPARE_TIMER_ADD("cmptimer_1")
 	MCFG_SEGA_315_5250_COMPARE_TIMER_ADD("cmptimer_2")
@@ -3954,8 +3690,6 @@ static MACHINE_CONFIG_DERIVED( system16b_split, system16b )
 	MCFG_DEVICE_REMOVE("mapper")
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-=======
 void segas16b_state::tilemap_16b_fpointbl_fill_latch(int i, uint16_t* latched_pageselect, uint16_t* latched_yscroll, uint16_t* latched_xscroll, uint16_t* textram)
 {
 	// grab the page regsisters from where the bootleg stores them instead, then convert them to the format the original video emulation code expects
@@ -4049,7 +3783,6 @@ static MACHINE_CONFIG_START( lockonph )
 
 MACHINE_CONFIG_END
 
->>>>>>> upstream/master
 
 //**************************************************************************
 //  GAME-SPECIFIC MACHINE DRIVERS
@@ -4059,15 +3792,10 @@ static MACHINE_CONFIG_DERIVED( atomicp, system16b ) // 10MHz CPU Clock verified
 
 	// basic machine hardware
 	MCFG_DEVICE_REMOVE("soundcpu")
-<<<<<<< HEAD
-
-	// sound hardware
-=======
 	MCFG_DEVICE_REMOVE("sprites")
 
 	// sound hardware
 	MCFG_DEVICE_REMOVE("soundlatch")
->>>>>>> upstream/master
 	MCFG_DEVICE_REMOVE("ym2151")
 	MCFG_SOUND_ADD("ym2413", YM2413, XTAL_20MHz/4) // 20MHz OSC divided by 4 (verified)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
@@ -4250,11 +3978,7 @@ ROM_START( aliensyn7 )
 	ROM_LOAD( "epr-10725.a9",  0x20000, 0x8000, CRC(6a50e08f) SHA1(d34b2ccadb8b07d5ad99cab5c5b5b79642c65574) )
 	ROM_LOAD( "epr-10726.a10", 0x30000, 0x8000, CRC(d50b7736) SHA1(b1f8e3b0cf2ffee5382098100cfabe21b383cd51) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x2000, "mcu", 0 ) // MC8123 key
-=======
 	ROM_REGION( 0x2000, "soundcpu:key", 0 ) // MC8123 key
->>>>>>> upstream/master
 	ROM_LOAD( "317-00xx.key",  0x0000, 0x2000, CRC(76b370cd) SHA1(996a4a24dec085caf93cbe614d3b0888379c91dd) )
 ROM_END
 
@@ -4336,11 +4060,7 @@ ROM_START( altbeast )
 	ROM_LOAD( "opr-11673.a12", 0x30000, 0x20000, CRC(400c4a36) SHA1(de4bdfa91734410e0a7f6a16bf8336db172f458a) )
 
 	ROM_REGION( 0x1000, "mcu", 0 )  // Intel i8751 protection MCU
-<<<<<<< HEAD
-	ROM_LOAD( "317-0078.c2", 0x00000, 0x1000, NO_DUMP )
-=======
 	ROM_LOAD( "317-0078.c2", 0x00000, 0x1000, CRC(8101925f) SHA1(a45d772ebe2fd1a577a6ccac8c6c76bb622258bb) )
->>>>>>> upstream/master
 ROM_END
 
 //*************************************************************************************************************************
@@ -4550,11 +4270,7 @@ ROM_START( altbeast4 )
 	ROM_LOAD( "opr-11672.a11", 0x10000, 0x20000, CRC(bbd7f460) SHA1(bbc5c2219cb3a827d84062b19affd9780da2a3cf) )
 	ROM_LOAD( "opr-11673.a12", 0x30000, 0x20000, CRC(400c4a36) SHA1(de4bdfa91734410e0a7f6a16bf8336db172f458a) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x2000, "mcu", 0 ) // MC8123 key
-=======
 	ROM_REGION( 0x2000, "soundcpu:key", 0 ) // MC8123 key
->>>>>>> upstream/master
 	ROM_LOAD( "317-0066.key",  0x0000, 0x2000, CRC(ed85a054) SHA1(dcc84ec077a8a489f45abfd2bf4a9ba377da28a5) )
 ROM_END
 
@@ -4670,11 +4386,7 @@ ROM_START( altbeast2 )
 	ROM_LOAD( "opr-11672.a11", 0x10000, 0x20000, CRC(bbd7f460) SHA1(bbc5c2219cb3a827d84062b19affd9780da2a3cf) )
 	ROM_LOAD( "opr-11673.a12", 0x30000, 0x20000, CRC(400c4a36) SHA1(de4bdfa91734410e0a7f6a16bf8336db172f458a) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x2000, "mcu", 0 ) // MC8123 key
-=======
 	ROM_REGION( 0x2000, "soundcpu:key", 0 ) // MC8123 key
->>>>>>> upstream/master
 	ROM_LOAD( "317-0066.key",  0x0000, 0x2000, CRC(ed85a054) SHA1(dcc84ec077a8a489f45abfd2bf4a9ba377da28a5) )
 ROM_END
 
@@ -4758,8 +4470,6 @@ ROM_START( snapper )
 	ROM_LOAD( "snap5.r05",  0x10000, 0x8000, CRC(378e08eb) SHA1(f2c10bd9e885c185ac2d0d51d907ceca1f21dd7a) )
 ROM_END
 
-<<<<<<< HEAD
-=======
 //*************************************************************************************************************************
 //*************************************************************************************************************************
 //*************************************************************************************************************************
@@ -4795,7 +4505,6 @@ ROM_START( lockonph )
 ROM_END
 
 
->>>>>>> upstream/master
 
 //*************************************************************************************************************************
 //*************************************************************************************************************************
@@ -6333,8 +6042,6 @@ ROM_START( fpointd )
 	ROM_LOAD( "epr-12592.a10", 0x0000, 0x8000, CRC(9a8c11bb) SHA1(399f8e9bdd7aaa4d25817fa9cd4bbf413e5baebe) )
 ROM_END
 
-<<<<<<< HEAD
-=======
 // Datsu bootlegs
 ROM_START( fpointbl )
 	ROM_REGION( 0x0c0000, "maincpu", 0 ) /* 68000 code */
@@ -6382,7 +6089,6 @@ ROM_START( fpointbj )
 	ROM_LOAD( "fpointbj_gal20v8.bin", 0x0400, 0x019d, NO_DUMP ) /* Protected */
 ROM_END
 
->>>>>>> upstream/master
 //*************************************************************************************************************************
 //  Flash Point, Sega System 16B
 //  CPU: FD1094 (317-0127A)
@@ -6483,23 +6189,15 @@ ROM_START( goldnaxe )
 	ROM_LOAD( "mpr-12384.ic6", 0x10000, 0x20000, CRC(6218d8e7) SHA1(5a745c750efb4a61716f99befb7ed14cc84e9973) )
 
 	ROM_REGION( 0x1000, "mcu", 0 )  // Intel i8751 protection MCU
-<<<<<<< HEAD
-	ROM_LOAD( "317-0123a.c2", 0x00000, 0x1000, NO_DUMP )
-=======
 	ROM_LOAD( "317-0123a.c2", 0x00000, 0x1000, CRC(cf19e7d4) SHA1(51356ae7f278c04aed6dfe4572e8a32a82859d71) )
->>>>>>> upstream/master
 ROM_END
 
 //*************************************************************************************************************************
 //  Golden Axe, Sega System 16B
 //  CPU: FD1094 (317-0122)
 //  ROM Board type: 171-5797
-<<<<<<< HEAD
-//  Sega ID# for ROM board: 834-7002-06
-=======
 //  Sega game ID: 833-7001-06 GOLDEN AXE
 //     ROM board: 834-7002-06
->>>>>>> upstream/master
 //
 ROM_START( goldnaxeu )
 	ROM_REGION( 0x80000, "maincpu", 0 ) // 68000 code
@@ -6743,11 +6441,7 @@ ROM_START( goldnaxe2 )
 	ROM_LOAD( "mpr-12384.a11", 0x10000, 0x20000, CRC(6218d8e7) SHA1(5a745c750efb4a61716f99befb7ed14cc84e9973) )
 
 	ROM_REGION( 0x1000, "mcu", 0 )  // Intel i8751 protection MCU
-<<<<<<< HEAD
-	ROM_LOAD( "317-0112.c2", 0x00000, 0x1000, NO_DUMP )
-=======
 	ROM_LOAD( "317-0112.c2", 0x00000, 0x1000, CRC(bda31044) SHA1(79ba41ac0768c1a55faad2f768120f15bcde4b90) )
->>>>>>> upstream/master
 ROM_END
 
 //*************************************************************************************************************************
@@ -7345,11 +7039,7 @@ ROM_START( cencourt )
 	ROM_LOAD( "epr-a-10.a10", 0x30000, 0x08000, CRC(10263746) SHA1(1f981fb185c6a9795208ecdcfba36cf892a99ed5) ) // == epr-11860.a10
 	ROM_LOAD( "epr-a-11.a11", 0x40000, 0x08000, CRC(38b54a71) SHA1(68ec4ef5b115844214ff2213be1ce6678904fbd2) ) // == epr-11861.a11
 
-<<<<<<< HEAD
-	ROM_REGION( 0x2000, "mcu", 0 ) // MC8123 key
-=======
 	ROM_REGION( 0x2000, "soundcpu:key", 0 ) // MC8123 key
->>>>>>> upstream/master
 	ROM_LOAD( "mc-8123b_center_court.key",  0x0000, 0x2000, CRC(2be5c90b) SHA1(e98d989237f2b001950b876efdb21c1507162830) ) // No official 317-xxxx number
 ROM_END
 
@@ -7781,11 +7471,7 @@ ROM_START( shinobi4 )
 	ROM_LOAD( "epr-11377.a10", 0x00000, 0x08000, CRC(0fb6af34) SHA1(ae9da18bd2db317ed96c5f642f90cc1eba60ba99) ) // MC8123B (317-0054) encrypted version of epr-11361.a10 above
 	ROM_LOAD( "epr-11362.a11", 0x10000, 0x20000, CRC(256af749) SHA1(041bd007ea7708c6d69f07865828b9bd17a139f5) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x2000, "mcu", 0 ) // MC8123 key
-=======
 	ROM_REGION( 0x2000, "soundcpu:key", 0 ) // MC8123 key
->>>>>>> upstream/master
 	ROM_LOAD( "317-0054.key",  0x0000, 0x2000, CRC(39fd4535) SHA1(93bbb139d2d5acc6a1e338d92077e79a5e880b2e) )
 ROM_END
 
@@ -7823,11 +7509,7 @@ ROM_START( shinobi3 )
 	ROM_LOAD( "epr-11288.a8", 0x10000, 0x8000, CRC(c8df8460) SHA1(0aeb41a493df155edb5f600f53ec43b798927dff) )
 	ROM_LOAD( "epr-11289.a9", 0x20000, 0x8000, CRC(e5a4cf30) SHA1(d1982da7a550c11ab2253f5d64ac6ab847da0a04) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x2000, "mcu", 0 ) // MC8123 key
-=======
 	ROM_REGION( 0x2000, "soundcpu:key", 0 ) // MC8123 key
->>>>>>> upstream/master
 	ROM_LOAD( "317-0054.key",  0x0000, 0x2000, CRC(39fd4535) SHA1(93bbb139d2d5acc6a1e338d92077e79a5e880b2e) )
 ROM_END
 
@@ -7903,10 +7585,7 @@ ROM_END
 //  Sonic Boom, Sega System 16B
 //  CPU: FD1094 (317-0053)
 //  ROM Board type: 171-5358
-<<<<<<< HEAD
-=======
 //  Sega ID# for ROM board: 834-6532-01
->>>>>>> upstream/master
 //
 //  Pos.   Silk        Type        Part                Pos.   Silk        Type        Part
 //
@@ -8251,8 +7930,6 @@ ROM_END
 //*************************************************************************************************************************
 //*************************************************************************************************************************
 //*************************************************************************************************************************
-<<<<<<< HEAD
-=======
 //  Waku Waku Ultraman Racing, Sega System 16B
 //  CPU: 68000
 //  ROM Board type: 171-5797
@@ -8291,7 +7968,6 @@ ROM_END
 //*************************************************************************************************************************
 //*************************************************************************************************************************
 //*************************************************************************************************************************
->>>>>>> upstream/master
 //  Tough Turf, Sega System 16B
 //  CPU: 68000 + i8751 (317-0104, 317-0100 also known to be exist)
 //  ROM Board type: 171-5704
@@ -8405,11 +8081,8 @@ ROM_END
 //  Wonder Boy III, Sega System 16B
 //  CPU: FD1094 (317-0087)
 //  ROM Board type: 171-5704
-<<<<<<< HEAD
-=======
 // Sega ID# for Game Nunmber: 833-6851-01  MONSTER LAIR
 // Sega ID# for ROM board: 834-6854-01
->>>>>>> upstream/master
 //
 ROM_START( wb34 )
 	ROM_REGION( 0x40000, "maincpu", 0 ) // 68000 code
@@ -8522,10 +8195,7 @@ ROM_END
 //  Wonder Boy III, Sega System 16B
 //  CPU: FD1094 (317-0085)
 //  ROM Board type: 171-5358
-<<<<<<< HEAD
-=======
 // Sega ID# for ROM board: 834-6854
->>>>>>> upstream/master
 //
 //  Pos.   Silk        Type        Part                Pos.   Silk        Type        Part
 //  A1     EPR-12198   27C512      68000 program       B1     EPR-12190   27C512      Sprite data
@@ -8951,8 +8621,6 @@ DRIVER_INIT_MEMBER(segas16b_state,generic_korean)
 	emu_timer *timer = timer_alloc(TID_ATOMICP_SOUND_IRQ);
 	timer->adjust(attotime::from_hz(10000), 0, attotime::from_hz(10000));
 }
-<<<<<<< HEAD
-=======
 DRIVER_INIT_MEMBER(segas16b_state, lockonph)
 {
 	init_generic(ROM_BOARD_KOREAN);
@@ -8970,7 +8638,6 @@ DRIVER_INIT_MEMBER(segas16b_state, generic_bootleg)
 	m_disable_screen_blanking = true;
 	m_segaic16vid->m_display_enable = 1;
 }
->>>>>>> upstream/master
 
 
 //-------------------------------------------------
@@ -8981,79 +8648,45 @@ DRIVER_INIT_MEMBER(segas16b_state,aceattac_5358)
 {
 	DRIVER_INIT_CALL(generic_5358);
 	m_custom_io_r = read16_delegate(FUNC(segas16b_state::aceattac_custom_io_r), this);
-<<<<<<< HEAD
-=======
 	m_custom_io_w = write16_delegate(FUNC(segas16b_state::aceattac_custom_io_w), this);
->>>>>>> upstream/master
 }
 
 DRIVER_INIT_MEMBER(segas16b_state,aliensyn7_5358_small)
 {
 	DRIVER_INIT_CALL(generic_5358_small);
-<<<<<<< HEAD
-	mc8123_decode(memregion("soundcpu")->base(), m_sound_decrypted_opcodes, memregion("mcu")->base(), 0x8000);
-}
-
-DRIVER_INIT_MEMBER(segas16b_state,altbeast_5521)
-{
-	DRIVER_INIT_CALL(generic_5521);
-	m_i8751_vblank_hook = i8751_sim_delegate(FUNC(segas16b_state::altbeast_i8751_sim), this);
-}
-=======
 	downcast<mc8123_device &>(*m_soundcpu).decode(memregion("soundcpu")->base(), m_sound_decrypted_opcodes, 0x8000);
 }
 
->>>>>>> upstream/master
 
 DRIVER_INIT_MEMBER(segas16b_state,altbeasj_5521)
 {
 	DRIVER_INIT_CALL(generic_5521);
-<<<<<<< HEAD
-	m_i8751_vblank_hook = i8751_sim_delegate(FUNC(segas16b_state::altbeasj_i8751_sim), this);
-=======
 	m_i8751_vblank_hook = i8751_sim_delegate(&segas16b_state::altbeasj_i8751_sim, this);
->>>>>>> upstream/master
 }
 
 DRIVER_INIT_MEMBER(segas16b_state,altbeas5_5521)
 {
 	DRIVER_INIT_CALL(generic_5521);
-<<<<<<< HEAD
-	m_i8751_vblank_hook = i8751_sim_delegate(FUNC(segas16b_state::altbeas5_i8751_sim), this);
-=======
 	m_i8751_vblank_hook = i8751_sim_delegate(&segas16b_state::altbeas5_i8751_sim, this);
->>>>>>> upstream/master
 }
 
 DRIVER_INIT_MEMBER(segas16b_state,altbeas4_5521)
 {
 	DRIVER_INIT_CALL(generic_5521);
-<<<<<<< HEAD
-	mc8123_decode(memregion("soundcpu")->base(), m_sound_decrypted_opcodes, memregion("mcu")->base(), 0x8000);
-=======
 	downcast<mc8123_device &>(*m_soundcpu).decode(memregion("soundcpu")->base(), m_sound_decrypted_opcodes, 0x8000);
->>>>>>> upstream/master
 }
 
 DRIVER_INIT_MEMBER(segas16b_state,ddux_5704)
 {
 	DRIVER_INIT_CALL(generic_5704);
-<<<<<<< HEAD
-	m_i8751_vblank_hook = i8751_sim_delegate(FUNC(segas16b_state::ddux_i8751_sim), this);
-=======
 	m_i8751_vblank_hook = i8751_sim_delegate(&segas16b_state::ddux_i8751_sim, this);
->>>>>>> upstream/master
 }
 
 DRIVER_INIT_MEMBER(segas16b_state,dunkshot_5358_small)
 {
 	DRIVER_INIT_CALL(generic_5358_small);
 	m_custom_io_r = read16_delegate(FUNC(segas16b_state::dunkshot_custom_io_r), this);
-<<<<<<< HEAD
-	m_tilemap_type = SEGAIC16_TILEMAP_16B_ALT;
-=======
 	m_tilemap_type = segaic16_video_device::TILEMAP_16B_ALT;
->>>>>>> upstream/master
 }
 
 DRIVER_INIT_MEMBER(segas16b_state,exctleag_5358)
@@ -9062,29 +8695,6 @@ DRIVER_INIT_MEMBER(segas16b_state,exctleag_5358)
 	m_custom_io_r = read16_delegate(FUNC(segas16b_state::sdi_custom_io_r), this);
 }
 
-<<<<<<< HEAD
-DRIVER_INIT_MEMBER(segas16b_state,goldnaxe_5704)
-{
-	DRIVER_INIT_CALL(generic_5704);
-	m_i8751_vblank_hook = i8751_sim_delegate(FUNC(segas16b_state::goldnaxe_i8751_sim), this);
-
-	static const UINT8 memory_control_5704[0x10] =
-		{ 0x02,0x00, 0x02,0x08, 0x00,0x1f, 0x00,0xff, 0x00,0x20, 0x01,0x10, 0x00,0x14, 0x00,0xc4 };
-	m_i8751_initial_config = memory_control_5704;
-}
-
-DRIVER_INIT_MEMBER(segas16b_state,goldnaxe_5797)
-{
-	DRIVER_INIT_CALL(generic_5797);
-	m_i8751_vblank_hook = i8751_sim_delegate(FUNC(segas16b_state::goldnaxe_i8751_sim), this);
-
-	static const UINT8 memory_control_5797[0x10] =
-		{ 0x02,0x00, 0x00,0x1f, 0x00,0x1e, 0x00,0xff, 0x00,0x20, 0x01,0x10, 0x00,0x14, 0x00,0xc4 };
-	m_i8751_initial_config = memory_control_5797;
-}
-
-=======
->>>>>>> upstream/master
 DRIVER_INIT_MEMBER(segas16b_state,hwchamp_5521)
 {
 	DRIVER_INIT_CALL(generic_5521);
@@ -9101,11 +8711,7 @@ DRIVER_INIT_MEMBER(segas16b_state,passshtj_5358)
 DRIVER_INIT_MEMBER(segas16b_state,cencourt_5358)
 {
 	DRIVER_INIT_CALL(passshtj_5358);
-<<<<<<< HEAD
-	mc8123_decode(memregion("soundcpu")->base(), m_sound_decrypted_opcodes, memregion("mcu")->base(), 0x8000);
-=======
 	downcast<mc8123_device &>(*m_soundcpu).decode(memregion("soundcpu")->base(), m_sound_decrypted_opcodes, 0x8000);
->>>>>>> upstream/master
 }
 
 DRIVER_INIT_MEMBER(segas16b_state,sdi_5358_small)
@@ -9113,17 +8719,11 @@ DRIVER_INIT_MEMBER(segas16b_state,sdi_5358_small)
 	DRIVER_INIT_CALL(generic_5358_small);
 	m_custom_io_r = read16_delegate(FUNC(segas16b_state::sdi_custom_io_r), this);
 
-<<<<<<< HEAD
-	UINT8 *rom = memregion("maincpux")->base();
-	if (rom)
-		memcpy(m_decrypted_opcodes, rom, 0x30000);
-=======
 	if (memregion("maincpux") != nullptr)
 	{
 		uint8_t *rom = memregion("maincpux")->base();
 		memcpy(m_decrypted_opcodes, rom, 0x30000);
 	}
->>>>>>> upstream/master
 }
 
 
@@ -9136,21 +8736,13 @@ DRIVER_INIT_MEMBER(segas16b_state,defense_5358_small)
 DRIVER_INIT_MEMBER(segas16b_state,shinobi4_5521)
 {
 	DRIVER_INIT_CALL(generic_5521);
-<<<<<<< HEAD
-	mc8123_decode(memregion("soundcpu")->base(), m_sound_decrypted_opcodes, memregion("mcu")->base(), 0x8000);
-=======
 	downcast<mc8123_device &>(*m_soundcpu).decode(memregion("soundcpu")->base(), m_sound_decrypted_opcodes, 0x8000);
->>>>>>> upstream/master
 }
 
 DRIVER_INIT_MEMBER(segas16b_state,shinobi3_5358)
 {
 	DRIVER_INIT_CALL(generic_5358);
-<<<<<<< HEAD
-	mc8123_decode(memregion("soundcpu")->base(), m_sound_decrypted_opcodes, memregion("mcu")->base(), 0x8000);
-=======
 	downcast<mc8123_device &>(*m_soundcpu).decode(memregion("soundcpu")->base(), m_sound_decrypted_opcodes, 0x8000);
->>>>>>> upstream/master
 }
 
 DRIVER_INIT_MEMBER(segas16b_state,sjryuko_5358_small)
@@ -9158,41 +8750,25 @@ DRIVER_INIT_MEMBER(segas16b_state,sjryuko_5358_small)
 	DRIVER_INIT_CALL(generic_5358_small);
 	m_custom_io_r = read16_delegate(FUNC(segas16b_state::sjryuko_custom_io_r), this);
 	m_custom_io_w = write16_delegate(FUNC(segas16b_state::sjryuko_custom_io_w), this);
-<<<<<<< HEAD
-	m_tilemap_type = SEGAIC16_TILEMAP_16B_ALT;
-=======
 	m_tilemap_type = segaic16_video_device::TILEMAP_16B_ALT;
->>>>>>> upstream/master
 }
 
 DRIVER_INIT_MEMBER(segas16b_state,timescan_5358_small)
 {
 	DRIVER_INIT_CALL(generic_5358_small);
-<<<<<<< HEAD
-	m_tilemap_type = SEGAIC16_TILEMAP_16B_ALT;
-=======
 	m_tilemap_type = segaic16_video_device::TILEMAP_16B_ALT;
->>>>>>> upstream/master
 }
 
 DRIVER_INIT_MEMBER(segas16b_state,tturf_5704)
 {
 	DRIVER_INIT_CALL(generic_5704);
-<<<<<<< HEAD
-	m_i8751_vblank_hook = i8751_sim_delegate(FUNC(segas16b_state::tturf_i8751_sim), this);
-=======
 	m_i8751_vblank_hook = i8751_sim_delegate(&segas16b_state::tturf_i8751_sim, this);
->>>>>>> upstream/master
 }
 
 DRIVER_INIT_MEMBER(segas16b_state,wb3_5704)
 {
 	DRIVER_INIT_CALL(generic_5704);
-<<<<<<< HEAD
-	m_i8751_vblank_hook = i8751_sim_delegate(FUNC(segas16b_state::wb3_i8751_sim), this);
-=======
 	m_i8751_vblank_hook = i8751_sim_delegate(&segas16b_state::wb3_i8751_sim, this);
->>>>>>> upstream/master
 }
 
 DRIVER_INIT_MEMBER(segas16b_state,snapper)
@@ -9208,22 +8784,14 @@ DRIVER_INIT_MEMBER(segas16b_state,snapper)
 //**************************************************************************
 
 //    YEAR, NAME,       PARENT,   MACHINE,             INPUT,    INIT,               MONITOR,COMPANY,FULLNAME,FLAGS
-<<<<<<< HEAD
-GAME( 1988, aceattac,   0,        system16b_fd1094,    aceattac, segas16b_state,aceattac_5358,      ROT270,   "Sega", "Ace Attacker (FD1094 317-0059)", 0 )
-=======
 GAME( 1988, aceattac,   0,        aceattacb_fd1094,    aceattac, segas16b_state,aceattac_5358,      ROT270,   "Sega", "Ace Attacker (FD1094 317-0059)", 0 )
->>>>>>> upstream/master
 
 GAME( 1987, aliensyn,   0,        system16b,           aliensyn, segas16b_state,generic_5358_small, ROT0,   "Sega", "Alien Syndrome (set 4, System 16B, unprotected)", 0 )
 GAME( 1987, aliensyn7,  aliensyn, system16b_mc8123,    aliensyn, segas16b_state,aliensyn7_5358_small, ROT0,  "Sega", "Alien Syndrome (set 7, System 16B, MC-8123B 317-00xx)", 0 )
 GAME( 1987, aliensyn3,  aliensyn, system16b_fd1089a,   aliensyn, segas16b_state,generic_5358_small, ROT0,   "Sega", "Alien Syndrome (set 3, System 16B, FD1089A 317-0033)", 0 )
 GAME( 1987, aliensynj,  aliensyn, system16b_fd1089a,   aliensynj,segas16b_state,generic_5358_small, ROT0,   "Sega", "Alien Syndrome (set 6, Japan, new, System 16B, FD1089A 317-0033)", 0 )
 
-<<<<<<< HEAD
-GAME( 1988, altbeast,   0,        system16b_i8751,     altbeast, segas16b_state,altbeast_5521,      ROT0,   "Sega", "Altered Beast (set 8) (8751 317-0078)", 0 )
-=======
 GAME( 1988, altbeast,   0,        system16b_i8751,     altbeast, segas16b_state,generic_5521,       ROT0,   "Sega", "Altered Beast (set 8) (8751 317-0078)", 0 )
->>>>>>> upstream/master
 GAME( 1988, altbeastj,  altbeast, system16b_i8751,     altbeast, segas16b_state,altbeasj_5521,      ROT0,   "Sega", "Juuouki (set 7, Japan) (8751 317-0077)", 0 )
 GAME( 1988, altbeast6,  altbeast, system16b_i8751,     altbeast, segas16b_state,altbeas5_5521,      ROT0,   "Sega", "Altered Beast (set 6) (8751 317-0076)", 0 )
 GAME( 1988, altbeast5,  altbeast, system16b_fd1094,    altbeast, segas16b_state,generic_5521,       ROT0,   "Sega", "Altered Beast (set 5) (FD1094 317-0069)", 0 )
@@ -9267,19 +8835,11 @@ GAME( 1988, exctleag,   0,        system16b_fd1094,    exctleag, segas16b_state,
 GAME( 1989, fpoint,     0,        system16b_fd1094,    fpoint,   segas16b_state,generic_5358,       ROT0,   "Sega", "Flash Point (set 2, Japan) (FD1094 317-0127A)", 0 )
 GAME( 1989, fpoint1,    fpoint,   system16b_fd1094,    fpoint,   segas16b_state,generic_5704,       ROT0,   "Sega", "Flash Point (set 1, Japan) (FD1094 317-0127A)", 0 )
 
-<<<<<<< HEAD
-GAME( 1989, goldnaxe,   0,        system16b_i8751_5797,goldnaxe, segas16b_state,goldnaxe_5797,      ROT0,   "Sega", "Golden Axe (set 6, US) (8751 317-123A)", 0 )
-GAME( 1989, goldnaxeu,  goldnaxe, system16b_fd1094_5797,goldnaxe,segas16b_state,generic_5797,       ROT0,   "Sega", "Golden Axe (set 5, US) (FD1094 317-0122)", 0 )
-GAME( 1989, goldnaxej,  goldnaxe, system16b_fd1094,    goldnaxe, segas16b_state,generic_5704,       ROT0,   "Sega", "Golden Axe (set 4, Japan) (FD1094 317-0121)", 0 )
-GAME( 1989, goldnaxe3,  goldnaxe, system16b_fd1094,    goldnaxe, segas16b_state,generic_5704,       ROT0,   "Sega", "Golden Axe (set 3, World) (FD1094 317-0120)", 0)
-GAME( 1989, goldnaxe2,  goldnaxe, system16b_i8751,     goldnaxe, segas16b_state,goldnaxe_5704,      ROT0,   "Sega", "Golden Axe (set 2, US) (8751 317-0112)", 0 )
-=======
 GAME( 1989, goldnaxe,   0,        system16b_i8751_5797,goldnaxe, segas16b_state,generic_5797,       ROT0,   "Sega", "Golden Axe (set 6, US) (8751 317-123A)", 0 )
 GAME( 1989, goldnaxeu,  goldnaxe, system16b_fd1094_5797,goldnaxe,segas16b_state,generic_5797,       ROT0,   "Sega", "Golden Axe (set 5, US) (FD1094 317-0122)", 0 )
 GAME( 1989, goldnaxej,  goldnaxe, system16b_fd1094,    goldnaxe, segas16b_state,generic_5704,       ROT0,   "Sega", "Golden Axe (set 4, Japan) (FD1094 317-0121)", 0 )
 GAME( 1989, goldnaxe3,  goldnaxe, system16b_fd1094,    goldnaxe, segas16b_state,generic_5704,       ROT0,   "Sega", "Golden Axe (set 3, World) (FD1094 317-0120)", 0)
 GAME( 1989, goldnaxe2,  goldnaxe, system16b_i8751,     goldnaxe, segas16b_state,generic_5704,       ROT0,   "Sega", "Golden Axe (set 2, US) (8751 317-0112)", 0 )
->>>>>>> upstream/master
 GAME( 1989, goldnaxe1,  goldnaxe, system16b_fd1094_5797,goldnaxe,segas16b_state,generic_5797,       ROT0,   "Sega", "Golden Axe (set 1, World) (FD1094 317-0110)", 0 )
 
 GAME( 1987, hwchamp,    0,        system16b,           hwchamp,  segas16b_state,hwchamp_5521,       ROT0,   "Sega", "Heavyweight Champ", 0 )
@@ -9322,11 +8882,8 @@ GAME( 1994, toryumon,   0,        system16b_5797,      toryumon, segas16b_state,
 GAME( 1989, tturf,      0,        system16b_i8751,     tturf,    segas16b_state,tturf_5704,         ROT0,   "Sega / Sunsoft", "Tough Turf (set 2, Japan) (8751 317-0104)", 0 )
 GAME( 1989, tturfu,     tturf,    system16b_i8751,     tturf,    segas16b_state,generic_5358,       ROT0,   "Sega / Sunsoft", "Tough Turf (set 1, US) (8751 317-0099)", 0)
 
-<<<<<<< HEAD
-=======
 GAME( 1996, ultracin,   0,        system16b_5797, system16b_generic, segas16b_state, generic_5797,  ROT0,   "Sega", "Waku Waku Ultraman Racing", 0 )
 
->>>>>>> upstream/master
 GAME( 1988, wb3,        0,        system16b_i8751,     wb3,      segas16b_state,wb3_5704,           ROT0,   "Sega / Westone", "Wonder Boy III - Monster Lair (set 6, World, System 16B) (8751 317-0098)", 0 )
 GAME( 1988, wb34,       wb3,      system16b_fd1094,    wb3,      segas16b_state,generic_5704,       ROT0,   "Sega / Westone", "Wonder Boy III - Monster Lair (set 4, Japan, System 16B) (FD1094 317-0087)", 0 )
 GAME( 1988, wb33,       wb3,      system16b_fd1094,    wb3,      segas16b_state,generic_5704,       ROT0,   "Sega / Westone", "Wonder Boy III - Monster Lair (set 3, World, System 16B) (FD1094 317-0089)", 0 )
@@ -9346,11 +8903,8 @@ GAME( 2008, fantzoneta, fantzone, system16b,           fantzoneta,segas16b_state
 // Custom Korean Board - these probably belong with the bootlegs...
 GAME( 1990, atomicp,    0,        atomicp,             atomicp,  segas16b_state,generic_korean,     ROT0,   "Philko", "Atomic Point (Korea)", 0) // korean clone board..
 GAME( 1990, snapper,    0,        atomicp,             snapper,  segas16b_state,snapper,            ROT0,   "Philko", "Snapper (Korea)", 0) // korean clone board..
-<<<<<<< HEAD
-=======
 // board marked 'System 4' and has Philko custom chip - various hw changes (4bpp tiles for example)
 GAME( 1991, lockonph,   0,        lockonph,            lockonph, segas16b_state,lockonph,           ROT0,   "Philko", "Lock On (Philko)", MACHINE_IMPERFECT_SOUND ) // Copyright not shown in game, but has 'PHILKO' in the startup warning and tiles / PCB.  1991 is the name entry for the lowest high score.  Clipping issues on left edge in attract look like original game bugs.
->>>>>>> upstream/master
 
 // decrypted bootleg / 'suicide repair' sets
 
@@ -9423,14 +8977,11 @@ GAME( 1987, sdibl4,      sdi,      system16b_split,           sdi,      segas16b
 GAME( 1987, sdibl5,      sdi,      system16b_split,           sdi,      segas16b_state,sdi_5358_small,     ROT0,   "bootleg", "SDI - Strategic Defense Initiative (bootleg, set 4)", 0 )
 GAME( 1987, sdibl6,      sdi,      system16b_split,           sdi,      segas16b_state,sdi_5358_small,     ROT0,   "bootleg", "SDI - Strategic Defense Initiative (bootleg, set 5)", 0 )
 
-<<<<<<< HEAD
-=======
 // bootlegs with modified hardware
 GAME( 1989, fpointbl,    fpoint,    fpointbl,    fpointbl, segas16b_state,  generic_bootleg,   ROT0,   "bootleg (Datsu)", "Flash Point (World, bootleg)", 0 )
 GAME( 1989, fpointbj,    fpoint,    fpointbl,    fpointbl, segas16b_state,  generic_bootleg,   ROT0,   "bootleg (Datsu)", "Flash Point (Japan, bootleg)", 0 )
 
 
->>>>>>> upstream/master
 
 // ISG 'Selection Master' Type 2006 hardware
 
@@ -9476,21 +9027,13 @@ WRITE16_MEMBER( isgsm_state::cart_addr_low_w )
 READ16_MEMBER( isgsm_state::cart_data_r )
 {
 	int size = memregion("gamecart_rgn")->bytes();
-<<<<<<< HEAD
-	UINT8 *rgn = memregion("gamecart_rgn")->base();
-=======
 	uint8_t *rgn = memregion("gamecart_rgn")->base();
->>>>>>> upstream/master
 	return rgn[(++m_cart_addr & (size - 1)) ^ 1] ^ m_read_xor;
 }
 
 WRITE16_MEMBER( isgsm_state::data_w )
 {
-<<<<<<< HEAD
-	UINT8 *dest = 0;
-=======
 	uint8_t *dest = nullptr;
->>>>>>> upstream/master
 
 	// m_data_type
 	// rrrp o?dd
@@ -9581,11 +9124,7 @@ WRITE16_MEMBER( isgsm_state::data_w )
 
 		for (int i = 0; i < bytes_to_write; i++)
 		{
-<<<<<<< HEAD
-			UINT8 byte = 0;
-=======
 			uint8_t byte = 0;
->>>>>>> upstream/master
 
 			if (m_data_mode & 0x8)
 			{
@@ -9665,20 +9204,12 @@ WRITE16_MEMBER( isgsm_state::cart_security_high_w )
 	m_security_latch = data;
 }
 
-<<<<<<< HEAD
-UINT32 isgsm_state::shinfz_security(UINT32 input)
-=======
 uint32_t isgsm_state::shinfz_security(uint32_t input)
->>>>>>> upstream/master
 {
 	return BITSWAP32(input, 19, 20, 25, 26, 15, 0, 16, 2, 8, 9, 13, 14, 31, 21, 7, 18, 11, 30, 22, 17, 3, 4, 12, 28, 29, 5, 27, 10, 23, 24, 1, 6);
 }
 
-<<<<<<< HEAD
-UINT32 isgsm_state::tetrbx_security(UINT32 input)
-=======
 uint32_t isgsm_state::tetrbx_security(uint32_t input)
->>>>>>> upstream/master
 {
 	// no bitswap on this cart? just returns what was written
 	return input;
@@ -9870,25 +9401,16 @@ void isgsm_state::machine_reset()
 	m_segaic16vid->tilemap_reset(*m_screen);
 
 	// configure sprite banks
-<<<<<<< HEAD
-	for (int i = 0; i < 16; i++)
-		m_sprites->set_bank(i, i);
-=======
 	if (m_sprites.found())
 		for (int i = 0; i < 16; i++)
 			m_sprites->set_bank(i, i);
->>>>>>> upstream/master
 
 	membank(ISGSM_MAIN_BANK)->set_base(memregion("bios")->base());
 	m_maincpu->reset();
 }
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_DERIVED_CLASS( isgsm, system16b, isgsm_state )
-=======
 static MACHINE_CONFIG_DERIVED( isgsm, system16b )
->>>>>>> upstream/master
 	// basic machine hardware
 
 	MCFG_DEVICE_REMOVE("maincpu")
@@ -9905,13 +9427,8 @@ DRIVER_INIT_MEMBER(isgsm_state,isgsm)
 	DRIVER_INIT_CALL(generic_5521);
 
 	// decrypt the bios...
-<<<<<<< HEAD
-	std::vector<UINT16> temp(0x20000/2);
-	UINT16 *rom = (UINT16 *)memregion("bios")->base();
-=======
 	std::vector<uint16_t> temp(0x20000/2);
 	uint16_t *rom = (uint16_t *)memregion("bios")->base();
->>>>>>> upstream/master
 	for (int addr = 0; addr < 0x20000/2; addr++)
 		temp[addr ^ 0x4127] = BITSWAP16(rom[addr], 6, 14, 4, 2, 12, 10, 8, 0, 1, 9, 11, 13, 3, 5, 7, 15);
 	memcpy(rom, &temp[0], 0x20000);
@@ -9921,46 +9438,28 @@ DRIVER_INIT_MEMBER(isgsm_state,shinfz)
 {
 	init_isgsm();
 
-<<<<<<< HEAD
-	std::vector<UINT16> temp(0x200000/2);
-	UINT16 *rom = (UINT16 *)memregion("gamecart_rgn")->base();
-=======
 	std::vector<uint16_t> temp(0x200000/2);
 	uint16_t *rom = (uint16_t *)memregion("gamecart_rgn")->base();
->>>>>>> upstream/master
 	for (int addr = 0; addr < 0x200000/2; addr++)
 		temp[addr ^ 0x68956] = BITSWAP16(rom[addr], 8, 4, 12, 3, 6, 7, 1, 0, 15, 11, 5, 14, 10, 2, 9, 13);
 	memcpy(rom, &temp[0], 0x200000);
 
 	m_read_xor = 0x66;
-<<<<<<< HEAD
-	m_security_callback = security_callback_delegate(FUNC(isgsm_state::shinfz_security), this);
-=======
 	m_security_callback = security_callback_delegate(&isgsm_state::shinfz_security, this);
->>>>>>> upstream/master
 }
 
 DRIVER_INIT_MEMBER(isgsm_state,tetrbx)
 {
 	init_isgsm();
 
-<<<<<<< HEAD
-	std::vector<UINT16> temp(0x80000/2);
-	UINT16 *rom = (UINT16 *)memregion("gamecart_rgn")->base();
-=======
 	std::vector<uint16_t> temp(0x80000/2);
 	uint16_t *rom = (uint16_t *)memregion("gamecart_rgn")->base();
->>>>>>> upstream/master
 	for (int addr = 0; addr < 0x80000/2; addr++)
 		temp[addr ^ 0x2A6E6] = BITSWAP16(rom[addr], 4, 0, 12, 5, 7, 3, 1, 14, 10, 11, 9, 6, 15, 2, 13, 8);
 	memcpy(rom, &temp[0], 0x80000);
 
 	m_read_xor = 0x73;
-<<<<<<< HEAD
-	m_security_callback = security_callback_delegate(FUNC(isgsm_state::tetrbx_security), this);
-=======
 	m_security_callback = security_callback_delegate(&isgsm_state::tetrbx_security, this);
->>>>>>> upstream/master
 }
 
 

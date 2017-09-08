@@ -166,16 +166,10 @@ Notes:
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/m68000/m68000.h"
-#include "includes/namcona1.h"
-#include "machine/namcomcu.h"
-=======
 #include "includes/namcona1.h"
 #include "cpu/m68000/m68000.h"
 #include "machine/namcomcu.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 #define MASTER_CLOCK    XTAL_50_113MHz
 
@@ -194,11 +188,7 @@ void namcona1_state::simulate_mcu()
  */
 void namcona1_state::write_version_info()
 {
-<<<<<<< HEAD
-	static const UINT16 source[0x8] =
-=======
 	static const uint16_t source[0x8] =
->>>>>>> upstream/master
 	{ /* "NSA-BIOS ver"... */
 		0x534e,0x2d41,0x4942,0x534f,0x7620,0x7265,0x2e31,0x3133
 	};
@@ -277,11 +267,7 @@ READ16_MEMBER(namcona1_state::custom_key_r)
 		if( offset==4 ) m_keyval = 0;
 		if( offset==3 )
 		{
-<<<<<<< HEAD
-			UINT16 res;
-=======
 			uint16_t res;
->>>>>>> upstream/master
 			res = BITSWAP16(m_keyval, 22,26,31,23,18,20,16,30,24,21,25,19,17,29,28,27);
 
 			m_keyval >>= 1;
@@ -310,15 +296,9 @@ WRITE16_MEMBER(namcona1_state::custom_key_w)
 
 /***************************************************************/
 
-<<<<<<< HEAD
-int namcona1_state::transfer_dword( UINT32 dest, UINT32 source )
-{
-	UINT16 data;
-=======
 int namcona1_state::transfer_dword( uint32_t dest, uint32_t source )
 {
 	uint16_t data;
->>>>>>> upstream/master
 	address_space &space = m_maincpu->space(AS_PROGRAM);
 
 	if( source>=0x400000 && source<0xc00000 )
@@ -446,13 +426,8 @@ void namcona1_state::blit()
 	int gfxbank = m_vreg[0x6];
 
 	/* dest and source are provided as dword offsets */
-<<<<<<< HEAD
-	UINT32 src_baseaddr = 2*(0xffffff&((m_vreg[0x7]<<16)|m_vreg[0x8]));
-	UINT32 dst_baseaddr = 2*(0xffffff&((m_vreg[0x9]<<16)|m_vreg[0xa]));
-=======
 	uint32_t src_baseaddr = 2*(0xffffff&((m_vreg[0x7]<<16)|m_vreg[0x8]));
 	uint32_t dst_baseaddr = 2*(0xffffff&((m_vreg[0x9]<<16)|m_vreg[0xa]));
->>>>>>> upstream/master
 
 	int num_bytes = m_vreg[0xb];
 
@@ -596,11 +571,7 @@ ADDRESS_MAP_END
 
 READ16_MEMBER(namcona1_state::na1mcu_shared_r)
 {
-<<<<<<< HEAD
-	UINT16 data = FLIPENDIAN_INT16(m_workram[offset]);
-=======
 	uint16_t data = flipendian_int16(m_workram[offset]);
->>>>>>> upstream/master
 
 #if 0
 	if (offset >= 0x70000/2)
@@ -613,13 +584,8 @@ READ16_MEMBER(namcona1_state::na1mcu_shared_r)
 
 WRITE16_MEMBER(namcona1_state::na1mcu_shared_w)
 {
-<<<<<<< HEAD
-	mem_mask = FLIPENDIAN_INT16(mem_mask);
-	data = FLIPENDIAN_INT16(data);
-=======
 	mem_mask = flipendian_int16(mem_mask);
 	data = flipendian_int16(data);
->>>>>>> upstream/master
 
 	COMBINE_DATA(&m_workram[offset]);
 }
@@ -697,11 +663,6 @@ WRITE8_MEMBER(namcona1_state::port6_w)
 	m_mcu_port6 = data;
 }
 
-<<<<<<< HEAD
-IOPORT_ARRAY_MEMBER(namcona1_state::muxed_inputs) { "P4", "DSW", "P1", "P2" };
-
-=======
->>>>>>> upstream/master
 READ8_MEMBER(namcona1_state::port7_r)
 {
 	if ((m_mcu_port6 & 0x80) == 0)
@@ -728,13 +689,8 @@ WRITE8_MEMBER(namcona1_state::port8_w)
 
 void namcona1_state::machine_start()
 {
-<<<<<<< HEAD
-	m_prgrom = (UINT16 *)memregion("maincpu")->base();
-	m_maskrom = (UINT16 *)memregion("maskrom")->base();
-=======
 	m_prgrom = (uint16_t *)memregion("maincpu")->base();
 	m_maskrom = (uint16_t *)memregion("maskrom")->base();
->>>>>>> upstream/master
 	m_mEnableInterrupts = 0;
 	m_c140->set_base(m_workram);
 
@@ -766,13 +722,8 @@ void namcona1_state::machine_reset()
 // bit 7 => port 7
 READ8_MEMBER(namcona1_state::portana_r)
 {
-<<<<<<< HEAD
-	static const UINT8 bitnum[8] = { 0x40, 0x20, 0x10, 0x01, 0x02, 0x04, 0x08, 0x80 };
-	UINT8 port = m_io_p3->read();
-=======
 	static const uint8_t bitnum[8] = { 0x40, 0x20, 0x10, 0x01, 0x02, 0x04, 0x08, 0x80 };
 	uint8_t port = m_io_p3->read();
->>>>>>> upstream/master
 
 	return (port & bitnum[offset>>1]) ? 0xff : 0x00;
 }
@@ -940,11 +891,7 @@ static const gfx_layout shape_layout =
 static GFXDECODE_START( namcona1 )
 	GFXDECODE_RAM( "cgram", 0, cg_layout_8bpp, 0, 0x2000/256 )
 	GFXDECODE_RAM( "cgram", 0, cg_layout_4bpp, 0, 0x2000/16  )
-<<<<<<< HEAD
-	GFXDECODE_RAM(  NULL,   0, shape_layout,   0, 0x2000/2   )
-=======
 	GFXDECODE_RAM(  nullptr,   0, shape_layout,   0, 0x2000/2   )
->>>>>>> upstream/master
 GFXDECODE_END
 
 /***************************************************************************/
@@ -983,11 +930,7 @@ TIMER_DEVICE_CALLBACK_MEMBER(namcona1_state::interrupt)
 }
 
 /* cropped at sides */
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( namcona1, namcona1_state )
-=======
 static MACHINE_CONFIG_START( namcona1 )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, MASTER_CLOCK/4)
@@ -1005,11 +948,7 @@ static MACHINE_CONFIG_START( namcona1 )
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE(60)
 	MCFG_SCREEN_VBLANK_TIME(ATTOSECONDS_IN_USEC(2500) /* not accurate */)
-<<<<<<< HEAD
-	MCFG_SCREEN_SIZE(38*8, 32*8)
-=======
 	MCFG_SCREEN_SIZE(40*8, 32*8)
->>>>>>> upstream/master
 	MCFG_SCREEN_VISIBLE_AREA(8, 38*8-1-8, 4*8, 32*8-1)
 	MCFG_SCREEN_UPDATE_DRIVER(namcona1_state, screen_update)
 	MCFG_SCREEN_PALETTE("palette")
@@ -1023,11 +962,7 @@ static MACHINE_CONFIG_START( namcona1 )
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
 	MCFG_C140_ADD("c140", 44100)
-<<<<<<< HEAD
-	MCFG_C140_BANK_TYPE(C140_TYPE_ASIC219)
-=======
 	MCFG_C140_BANK_TYPE(ASIC219)
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(0, "rspeaker", 1.00)
 	MCFG_SOUND_ROUTE(1, "lspeaker", 1.00)
 MACHINE_CONFIG_END
@@ -1053,8 +988,6 @@ static MACHINE_CONFIG_DERIVED( namcona2, namcona1 )
 	MCFG_CPU_IO_MAP( namcona1_mcu_io_map)
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-=======
 static MACHINE_CONFIG_DERIVED( namcona2w, namcona2 )
 
 	/* video hardware */
@@ -1062,7 +995,6 @@ static MACHINE_CONFIG_DERIVED( namcona2w, namcona2 )
 	MCFG_SCREEN_VISIBLE_AREA(0, 38*8-1-0, 4*8, 32*8-1)
 MACHINE_CONFIG_END
 
->>>>>>> upstream/master
 
 DRIVER_INIT_MEMBER(namcona1_state,bkrtmaq)   { m_gametype = NAMCO_BKRTMAQ; }
 DRIVER_INIT_MEMBER(namcona1_state,cgangpzl)  { m_gametype = NAMCO_CGANGPZL; }
@@ -1383,30 +1315,6 @@ ROM_START( xday2 )
 ROM_END
 
 // NA-1 (C69 MCU)
-<<<<<<< HEAD
-GAME( 1992, bkrtmaq,    0,        namcona1w, namcona1_quiz, namcona1_state,bkrtmaq,  ROT0, "Namco", "Bakuretsu Quiz Ma-Q Dai Bouken (Japan)", MACHINE_SUPPORTS_SAVE )
-GAME( 1992, cgangpzl,   0,        namcona1w, namcona1_joy, namcona1_state, cgangpzl, ROT0, "Namco", "Cosmo Gang the Puzzle (US)", MACHINE_SUPPORTS_SAVE )
-GAME( 1992, cgangpzlj,  cgangpzl, namcona1w, namcona1_joy, namcona1_state, cgangpzl, ROT0, "Namco", "Cosmo Gang the Puzzle (Japan)", MACHINE_SUPPORTS_SAVE )
-GAME( 1992, exvania,    0,        namcona1,  namcona1_joy, namcona1_state, exbania,  ROT0, "Namco", "Exvania (World)", MACHINE_SUPPORTS_SAVE )
-GAME( 1992, exvaniaj,   exvania,  namcona1,  namcona1_joy, namcona1_state, exbania,  ROT0, "Namco", "Exvania (Japan)", MACHINE_SUPPORTS_SAVE )
-GAME( 1992, fghtatck,   0,        namcona1,  namcona1_joy, namcona1_state, fa,       ROT90,"Namco", "Fighter & Attacker (US)", MACHINE_SUPPORTS_SAVE )
-GAME( 1992, fa,         fghtatck, namcona1,  namcona1_joy, namcona1_state, fa,       ROT90,"Namco", "F/A (Japan)", MACHINE_SUPPORTS_SAVE )
-GAME( 1992, swcourt,    0,        namcona1w, namcona1_joy, namcona1_state, swcourt,  ROT0, "Namco", "Super World Court (World)", MACHINE_SUPPORTS_SAVE )
-GAME( 1992, swcourtj,   swcourt,  namcona1w, namcona1_joy, namcona1_state, swcourt,  ROT0, "Namco", "Super World Court (Japan)", MACHINE_SUPPORTS_SAVE )
-GAME( 1993, emeraldaj,  emeralda, namcona1w, namcona1_joy, namcona1_state, emeraldj, ROT0, "Namco", "Emeraldia (Japan Version B)", MACHINE_SUPPORTS_SAVE ) /* Parent is below on NA-2 Hardware */
-GAME( 1993, emeraldaja, emeralda, namcona1w, namcona1_joy, namcona1_state, emeraldj, ROT0, "Namco", "Emeraldia (Japan)", MACHINE_SUPPORTS_SAVE ) /* Parent is below on NA-2 Hardware */
-GAME( 1993, tinklpit,   0,        namcona1w, namcona1_joy, namcona1_state, tinklpit, ROT0, "Namco", "Tinkle Pit (Japan)", MACHINE_SUPPORTS_SAVE )
-
-// NA-2 (C70 MCU)
-GAME( 1992, knckhead,   0,        namcona2,  namcona1_joy, namcona1_state, knckhead, ROT0, "Namco", "Knuckle Heads (World)", MACHINE_SUPPORTS_SAVE )
-GAME( 1992, knckheadj,  knckhead, namcona2,  namcona1_joy, namcona1_state, knckhead, ROT0, "Namco", "Knuckle Heads (Japan)", MACHINE_SUPPORTS_SAVE )
-GAME( 1992, knckheadjp, knckhead, namcona2,  namcona1_joy, namcona1_state, knckhead, ROT0, "Namco", "Knuckle Heads (Japan, Prototype?)", MACHINE_SUPPORTS_SAVE )
-GAME( 1993, emeralda,   0,        namcona2,  namcona1_joy, namcona1_state, emeralda, ROT0, "Namco", "Emeraldia (World)", MACHINE_SUPPORTS_SAVE )
-GAME( 1993, numanath,   0,        namcona2,  namcona1_joy, namcona1_state, numanath, ROT0, "Namco", "Numan Athletics (World)", MACHINE_SUPPORTS_SAVE )
-GAME( 1993, numanathj,  numanath, namcona2,  namcona1_joy, namcona1_state, numanath, ROT0, "Namco", "Numan Athletics (Japan)", MACHINE_SUPPORTS_SAVE )
-GAME( 1993, quiztou,    0,        namcona2,  namcona1_quiz, namcona1_state,quiztou,  ROT0, "Namco", "Nettou! Gekitou! Quiztou!! (Japan)", MACHINE_SUPPORTS_SAVE )
-GAME( 1995, xday2,      0,        namcona2,  namcona1_joy, namcona1_state, xday2,    ROT0, "Namco", "X-Day 2 (Japan)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1992, bkrtmaq,    0,        namcona1w, namcona1_quiz, namcona1_state, bkrtmaq,  ROT0, "Namco", "Bakuretsu Quiz Ma-Q Dai Bouken (Japan)", MACHINE_SUPPORTS_SAVE )
 GAME( 1992, cgangpzl,   0,        namcona1w, namcona1_joy,  namcona1_state, cgangpzl, ROT0, "Namco", "Cosmo Gang the Puzzle (US)", MACHINE_SUPPORTS_SAVE )
 GAME( 1992, cgangpzlj,  cgangpzl, namcona1w, namcona1_joy,  namcona1_state, cgangpzl, ROT0, "Namco", "Cosmo Gang the Puzzle (Japan)", MACHINE_SUPPORTS_SAVE )
@@ -1429,4 +1337,3 @@ GAME( 1993, numanath,   0,        namcona2,  namcona1_joy,  namcona1_state, numa
 GAME( 1993, numanathj,  numanath, namcona2,  namcona1_joy,  namcona1_state, numanath, ROT0, "Namco", "Numan Athletics (Japan)", MACHINE_SUPPORTS_SAVE )
 GAME( 1993, quiztou,    0,        namcona2,  namcona1_quiz, namcona1_state, quiztou,  ROT0, "Namco", "Nettou! Gekitou! Quiztou!! (Japan)", MACHINE_SUPPORTS_SAVE )
 GAME( 1995, xday2,      0,        namcona2,  namcona1_joy,  namcona1_state, xday2,    ROT0, "Namco", "X-Day 2 (Japan)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

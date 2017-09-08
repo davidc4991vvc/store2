@@ -1,25 +1,15 @@
 // PropID.h
 
-<<<<<<< HEAD
-#ifndef __7ZIP_PROPID_H
-#define __7ZIP_PROPID_H
-=======
 #ifndef __7ZIP_PROP_ID_H
 #define __7ZIP_PROP_ID_H
 
 #include "../Common/MyTypes.h"
->>>>>>> upstream/master
 
 enum
 {
   kpidNoProperty = 0,
-<<<<<<< HEAD
-  kpidMainSubfile = 1,
-  kpidHandlerItemIndex = 2,
-=======
   kpidMainSubfile,
   kpidHandlerItemIndex,
->>>>>>> upstream/master
   kpidPath,
   kpidName,
   kpidExtension,
@@ -71,18 +61,6 @@ enum
   kpidCreatorApp,
   kpidSectorSize,
   kpidPosixAttrib,
-<<<<<<< HEAD
-  kpidLink,
-  kpidError,
-
-  kpidTotalSize = 0x1100,
-  kpidFreeSpace,
-  kpidClusterSize,
-  kpidVolumeName,
-
-  kpidLocalName = 0x1200,
-  kpidProvider,
-=======
   kpidSymLink,
   kpidError,
   kpidTotalSize,
@@ -127,13 +105,10 @@ enum
   kpidCopyLink,
 
   kpid_NUM_DEFINED,
->>>>>>> upstream/master
 
   kpidUserDefined = 0x10000
 };
 
-<<<<<<< HEAD
-=======
 extern const Byte k7z_PROPID_To_VARTYPE[kpid_NUM_DEFINED]; // VARTYPE
 
 const UInt32 kpv_ErrorFlags_IsNotArc              = 1 << 0;
@@ -149,5 +124,4 @@ const UInt32 kpv_ErrorFlags_DataError             = 1 << 9;
 const UInt32 kpv_ErrorFlags_CrcError              = 1 << 10;
 // const UInt32 kpv_ErrorFlags_Unsupported           = 1 << 11;
 
->>>>>>> upstream/master
 #endif

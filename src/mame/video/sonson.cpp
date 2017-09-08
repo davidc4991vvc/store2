@@ -43,11 +43,7 @@
 
 PALETTE_INIT_MEMBER(sonson_state, sonson)
 {
-<<<<<<< HEAD
-	const UINT8 *color_prom = memregion("proms")->base();
-=======
 	const uint8_t *color_prom = memregion("proms")->base();
->>>>>>> upstream/master
 	int i;
 
 	/* create a lookup table for the palette */
@@ -86,22 +82,14 @@ PALETTE_INIT_MEMBER(sonson_state, sonson)
 	/* characters use colors 0-0x0f */
 	for (i = 0; i < 0x100; i++)
 	{
-<<<<<<< HEAD
-		UINT8 ctabentry = color_prom[i] & 0x0f;
-=======
 		uint8_t ctabentry = color_prom[i] & 0x0f;
->>>>>>> upstream/master
 		palette.set_pen_indirect(i, ctabentry);
 	}
 
 	/* sprites use colors 0x10-0x1f */
 	for (i = 0x100; i < 0x200; i++)
 	{
-<<<<<<< HEAD
-		UINT8 ctabentry = (color_prom[i] & 0x0f) | 0x10;
-=======
 		uint8_t ctabentry = (color_prom[i] & 0x0f) | 0x10;
->>>>>>> upstream/master
 		palette.set_pen_indirect(i, ctabentry);
 	}
 }
@@ -126,15 +114,9 @@ WRITE8_MEMBER(sonson_state::sonson_scrollx_w)
 		m_bg_tilemap->set_scrollx(row, data);
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER(sonson_state::sonson_flipscreen_w)
-{
-	flip_screen_set(~data & 0x01);
-=======
 WRITE_LINE_MEMBER(sonson_state::flipscreen_w)
 {
 	flip_screen_set(!state);
->>>>>>> upstream/master
 }
 
 TILE_GET_INFO_MEMBER(sonson_state::get_bg_tile_info)
@@ -148,21 +130,13 @@ TILE_GET_INFO_MEMBER(sonson_state::get_bg_tile_info)
 
 void sonson_state::video_start()
 {
-<<<<<<< HEAD
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(sonson_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
-=======
 	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(sonson_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
->>>>>>> upstream/master
 	m_bg_tilemap->set_scroll_rows(32);
 }
 
 void sonson_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect )
 {
-<<<<<<< HEAD
-	UINT8 *spriteram = m_spriteram;
-=======
 	uint8_t *spriteram = m_spriteram;
->>>>>>> upstream/master
 	int offs;
 
 	for (offs = m_spriteram.bytes() - 4; offs >= 0; offs -= 4)
@@ -194,11 +168,7 @@ void sonson_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect
 	}
 }
 
-<<<<<<< HEAD
-UINT32 sonson_state::screen_update_sonson(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t sonson_state::screen_update_sonson(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	m_bg_tilemap->draw(screen, bitmap, cliprect, 0, 0);
 	draw_sprites(bitmap, cliprect);

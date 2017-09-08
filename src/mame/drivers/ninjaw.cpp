@@ -1,9 +1,6 @@
 // license:BSD-3-Clause
 // copyright-holders:David Graves
-<<<<<<< HEAD
-=======
 // thanks-to:Richard Bush
->>>>>>> upstream/master
 /***************************************************************************
 
 Taito Triple Screen Games
@@ -319,15 +316,6 @@ rumbling on a subwoofer in the cabinet.)
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/z80/z80.h"
-#include "cpu/m68000/m68000.h"
-#include "sound/2610intf.h"
-#include "includes/taitoipt.h"
-#include "includes/ninjaw.h"
-
-extern const char layout_darius[];
-=======
 #include "includes/ninjaw.h"
 #include "includes/taitoipt.h"
 
@@ -338,7 +326,6 @@ extern const char layout_darius[];
 #include "speaker.h"
 
 #include "ninjaw.lh"
->>>>>>> upstream/master
 
 void ninjaw_state::parse_control(  )   /* assumes Z80 sandwiched between 68Ks */
 {
@@ -361,8 +348,6 @@ WRITE16_MEMBER(ninjaw_state::cpua_ctrl_w)
 }
 
 
-<<<<<<< HEAD
-=======
 WRITE8_MEMBER(ninjaw_state::coin_control_w)
 {
 	machine().bookkeeping().coin_lockout_w(0, ~data & 0x01);
@@ -372,7 +357,6 @@ WRITE8_MEMBER(ninjaw_state::coin_control_w)
 }
 
 
->>>>>>> upstream/master
 /*****************************************
             SOUND
 *****************************************/
@@ -408,11 +392,7 @@ READ16_MEMBER(ninjaw_state::sound_r)
 
 WRITE8_MEMBER(ninjaw_state::pancontrol_w)
 {
-<<<<<<< HEAD
-	filter_volume_device *flt = NULL;
-=======
 	filter_volume_device *flt = nullptr;
->>>>>>> upstream/master
 	offset &= 3;
 
 	switch (offset)
@@ -443,12 +423,7 @@ WRITE16_MEMBER(ninjaw_state::tc0100scn_triple_screen_w)
 static ADDRESS_MAP_START( ninjaw_master_map, AS_PROGRAM, 16, ninjaw_state )
 	AM_RANGE(0x000000, 0x0bffff) AM_ROM
 	AM_RANGE(0x0c0000, 0x0cffff) AM_RAM                                                     /* main ram */
-<<<<<<< HEAD
-	AM_RANGE(0x200000, 0x200001) AM_DEVREADWRITE8("tc0220ioc", tc0220ioc_device, portreg_r, portreg_w, 0x00ff)
-	AM_RANGE(0x200002, 0x200003) AM_DEVREADWRITE8("tc0220ioc", tc0220ioc_device, port_r, port_w, 0x00ff)
-=======
 	AM_RANGE(0x200000, 0x200003) AM_DEVREADWRITE8("tc0040ioc", tc0040ioc_device, read, write, 0x00ff)
->>>>>>> upstream/master
 	AM_RANGE(0x210000, 0x210001) AM_WRITE(cpua_ctrl_w)
 	AM_RANGE(0x220000, 0x220003) AM_READWRITE(sound_r,sound_w)
 	AM_RANGE(0x240000, 0x24ffff) AM_RAM AM_SHARE("share1")
@@ -470,12 +445,7 @@ ADDRESS_MAP_END
 static ADDRESS_MAP_START( ninjaw_slave_map, AS_PROGRAM, 16, ninjaw_state )
 	AM_RANGE(0x000000, 0x05ffff) AM_ROM
 	AM_RANGE(0x080000, 0x08ffff) AM_RAM /* main ram */
-<<<<<<< HEAD
-	AM_RANGE(0x200000, 0x200001) AM_DEVREADWRITE8("tc0220ioc", tc0220ioc_device, portreg_r, portreg_w, 0x00ff)
-	AM_RANGE(0x200002, 0x200003) AM_DEVREADWRITE8("tc0220ioc", tc0220ioc_device, port_r, port_w, 0x00ff)
-=======
 	AM_RANGE(0x200000, 0x200003) AM_DEVREADWRITE8("tc0040ioc", tc0040ioc_device, read, write, 0x00ff)
->>>>>>> upstream/master
 	AM_RANGE(0x240000, 0x24ffff) AM_RAM AM_SHARE("share1")
 	AM_RANGE(0x260000, 0x263fff) AM_RAM AM_SHARE("spriteram")
 	AM_RANGE(0x280000, 0x293fff) AM_DEVREAD("tc0100scn_1", tc0100scn_device, word_r) AM_WRITE(tc0100scn_triple_screen_w) /* tilemaps (1st screen/all screens) */
@@ -487,12 +457,7 @@ ADDRESS_MAP_END
 static ADDRESS_MAP_START( darius2_master_map, AS_PROGRAM, 16, ninjaw_state )
 	AM_RANGE(0x000000, 0x0bffff) AM_ROM
 	AM_RANGE(0x0c0000, 0x0cffff) AM_RAM                         /* main ram */
-<<<<<<< HEAD
-	AM_RANGE(0x200000, 0x200001) AM_DEVREADWRITE8("tc0220ioc", tc0220ioc_device, portreg_r, portreg_w, 0x00ff)
-	AM_RANGE(0x200002, 0x200003) AM_DEVREADWRITE8("tc0220ioc", tc0220ioc_device, port_r, port_w, 0x00ff)
-=======
 	AM_RANGE(0x200000, 0x200003) AM_DEVREADWRITE8("tc0040ioc", tc0040ioc_device, read, write, 0x00ff)
->>>>>>> upstream/master
 	AM_RANGE(0x210000, 0x210001) AM_WRITE(cpua_ctrl_w)
 	AM_RANGE(0x220000, 0x220003) AM_READWRITE(sound_r,sound_w)
 	AM_RANGE(0x240000, 0x24ffff) AM_RAM AM_SHARE("share1")
@@ -511,12 +476,7 @@ ADDRESS_MAP_END
 static ADDRESS_MAP_START( darius2_slave_map, AS_PROGRAM, 16, ninjaw_state )
 	AM_RANGE(0x000000, 0x05ffff) AM_ROM
 	AM_RANGE(0x080000, 0x08ffff) AM_RAM                                                     /* main ram */
-<<<<<<< HEAD
-	AM_RANGE(0x200000, 0x200001) AM_DEVREADWRITE8("tc0220ioc", tc0220ioc_device, portreg_r, portreg_w, 0x00ff)
-	AM_RANGE(0x200002, 0x200003) AM_DEVREADWRITE8("tc0220ioc", tc0220ioc_device, port_r, port_w, 0x00ff)
-=======
 	AM_RANGE(0x200000, 0x200003) AM_DEVREADWRITE8("tc0040ioc", tc0040ioc_device, read, write, 0x00ff)
->>>>>>> upstream/master
 	AM_RANGE(0x240000, 0x24ffff) AM_RAM AM_SHARE("share1")
 	AM_RANGE(0x260000, 0x263fff) AM_RAM AM_SHARE("spriteram")
 	AM_RANGE(0x280000, 0x293fff) AM_DEVREAD("tc0100scn_1", tc0100scn_device, word_r) AM_WRITE(tc0100scn_triple_screen_w) /* tilemaps (1st screen/all screens) */
@@ -680,11 +640,7 @@ class subwoofer_device : public device_t,
 									public device_sound_interface
 {
 public:
-<<<<<<< HEAD
-	subwoofer_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-=======
 	subwoofer_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
->>>>>>> upstream/master
 	~subwoofer_device() {}
 
 protected:
@@ -701,15 +657,9 @@ private:
 
 extern const device_type SUBWOOFER;
 
-<<<<<<< HEAD
-const device_type SUBWOOFER = &device_creator<subwoofer_device>;
-
-subwoofer_device::subwoofer_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-=======
 const device_type SUBWOOFER = device_creator<subwoofer_device>;
 
 subwoofer_device::subwoofer_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
->>>>>>> upstream/master
 	: device_t(mconfig, SUBWOOFER, "Subwoofer", tag, owner, clock),
 		device_sound_interface(mconfig, *this)
 {
@@ -778,11 +728,7 @@ void ninjaw_state::machine_reset()
 	machine().sound().system_enable(true);  /* mixer enabled */
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( ninjaw, ninjaw_state )
-=======
 static MACHINE_CONFIG_START( ninjaw )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000,16000000/2)  /* 8 MHz ? */
@@ -796,16 +742,6 @@ static MACHINE_CONFIG_START( ninjaw )
 	MCFG_CPU_PROGRAM_MAP(ninjaw_slave_map)
 	MCFG_CPU_VBLANK_INT_DRIVER("lscreen", ninjaw_state,  irq4_line_hold)
 
-<<<<<<< HEAD
-	MCFG_QUANTUM_TIME(attotime::from_hz(6000))  /* CPU slices */
-
-	MCFG_DEVICE_ADD("tc0220ioc", TC0220IOC, 0)
-	MCFG_TC0220IOC_READ_0_CB(IOPORT("DSWA"))
-	MCFG_TC0220IOC_READ_1_CB(IOPORT("DSWB"))
-	MCFG_TC0220IOC_READ_2_CB(IOPORT("IN0"))
-	MCFG_TC0220IOC_READ_3_CB(IOPORT("IN1"))
-	MCFG_TC0220IOC_READ_7_CB(IOPORT("IN2"))
-=======
 	// TODO: if CPUs are unsynched then seldomly stages loads up with no enemies
 	//       Let's use a better timer (was 6000 before) based off actual CPU timing.
 	//       Might as well bump the divider in case the bug still occurs before resorting to perfect CPU.
@@ -819,7 +755,6 @@ static MACHINE_CONFIG_START( ninjaw )
 	MCFG_TC0040IOC_READ_3_CB(IOPORT("IN1"))
 	MCFG_TC0040IOC_WRITE_4_CB(WRITE8(ninjaw_state, coin_control_w))
 	MCFG_TC0040IOC_READ_7_CB(IOPORT("IN2"))
->>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", ninjaw)
@@ -827,11 +762,7 @@ static MACHINE_CONFIG_START( ninjaw )
 	MCFG_PALETTE_ADD("palette2", 4096)
 	MCFG_PALETTE_ADD("palette3", 4096)
 
-<<<<<<< HEAD
-	MCFG_DEFAULT_LAYOUT(layout_darius)
-=======
 	MCFG_DEFAULT_LAYOUT(layout_ninjaw)
->>>>>>> upstream/master
 
 	MCFG_SCREEN_ADD("lscreen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE(60)
@@ -922,11 +853,7 @@ static MACHINE_CONFIG_START( ninjaw )
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( darius2, ninjaw_state )
-=======
 static MACHINE_CONFIG_START( darius2 )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000,16000000/2)  /* 8 MHz ? */
@@ -940,16 +867,6 @@ static MACHINE_CONFIG_START( darius2 )
 	MCFG_CPU_PROGRAM_MAP(darius2_slave_map)
 	MCFG_CPU_VBLANK_INT_DRIVER("lscreen", ninjaw_state,  irq4_line_hold)
 
-<<<<<<< HEAD
-	MCFG_QUANTUM_TIME(attotime::from_hz(6000))  /* CPU slices */
-
-	MCFG_DEVICE_ADD("tc0220ioc", TC0220IOC, 0)
-	MCFG_TC0220IOC_READ_0_CB(IOPORT("DSWA"))
-	MCFG_TC0220IOC_READ_1_CB(IOPORT("DSWB"))
-	MCFG_TC0220IOC_READ_2_CB(IOPORT("IN0"))
-	MCFG_TC0220IOC_READ_3_CB(IOPORT("IN1"))
-	MCFG_TC0220IOC_READ_7_CB(IOPORT("IN2"))
-=======
 	MCFG_QUANTUM_TIME(attotime::from_hz(16000000/1024))  /* CPU slices */
 	//MCFG_QUANTUM_PERFECT_CPU("maincpu")
 
@@ -960,7 +877,6 @@ static MACHINE_CONFIG_START( darius2 )
 	MCFG_TC0040IOC_READ_3_CB(IOPORT("IN1"))
 	MCFG_TC0040IOC_WRITE_4_CB(WRITE8(ninjaw_state, coin_control_w))
 	MCFG_TC0040IOC_READ_7_CB(IOPORT("IN2"))
->>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", ninjaw)
@@ -968,11 +884,7 @@ static MACHINE_CONFIG_START( darius2 )
 	MCFG_PALETTE_ADD("palette2", 4096)
 	MCFG_PALETTE_ADD("palette3", 4096)
 
-<<<<<<< HEAD
-	MCFG_DEFAULT_LAYOUT(layout_darius)
-=======
 	MCFG_DEFAULT_LAYOUT(layout_ninjaw)
->>>>>>> upstream/master
 
 	MCFG_SCREEN_ADD("lscreen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE(60)
@@ -1069,10 +981,6 @@ MACHINE_CONFIG_END
 
 ROM_START( ninjaw )
 	ROM_REGION( 0xc0000, "maincpu", 0 ) /* 256K for 68000 CPUA code */
-<<<<<<< HEAD
-	ROM_LOAD16_BYTE( "b31_45.35", 0x00000, 0x10000, CRC(107902c3) SHA1(026f71a918059e3374ae262304a2ee1270f5c5bd) )
-	ROM_LOAD16_BYTE( "b31_47.32", 0x00001, 0x10000, CRC(bd536b1e) SHA1(39c86cbb3a33fc77a0141b5648a1aca862e0a5fd) )
-=======
 	ROM_LOAD16_BYTE( "b31_45.35", 0x00000, 0x10000, CRC(107902c3) SHA1(026f71a918059e3374ae262304a2ee1270f5c5bd) ) /* For these 2 roms:   Revised code base compared to the Japanese set below? */
 	ROM_LOAD16_BYTE( "b31_47.32", 0x00001, 0x10000, CRC(bd536b1e) SHA1(39c86cbb3a33fc77a0141b5648a1aca862e0a5fd) ) /* For these 2 roms:   higher rom numbers seem to indicate that is the case  */
 	ROM_LOAD16_BYTE( "b31_29.34", 0x20000, 0x10000, CRC(f2941a37) SHA1(cf1f231d9caddc903116a8b654f49181ca459697) )
@@ -1130,7 +1038,6 @@ ROM_START( ninjaw1 )
 	ROM_REGION( 0xc0000, "maincpu", 0 ) /* 256K for 68000 CPUA code */
 	ROM_LOAD16_BYTE( "b31_30.35", 0x00000, 0x10000, CRC(056edd9f) SHA1(8922cede80b31ce0f7a00c8cab13d835464c6058) ) /* For these 2 roms:  Same code base as the Japanese set below */
 	ROM_LOAD16_BYTE( "b31_43.32", 0x00001, 0x10000, CRC(56ae37a6) SHA1(ddd5be455682df2c63721facee813be652863aa5) ) /* For these 2 roms:  original Taito rom, 1 byte region change */
->>>>>>> upstream/master
 	ROM_LOAD16_BYTE( "b31_29.34", 0x20000, 0x10000, CRC(f2941a37) SHA1(cf1f231d9caddc903116a8b654f49181ca459697) )
 	ROM_LOAD16_BYTE( "b31_27.31", 0x20001, 0x10000, CRC(2f3ff642) SHA1(7d6775b51d96b459b163d8fde2385b0e3f5242ca) )
 
@@ -1184,13 +1091,8 @@ ROM_END
 
 ROM_START( ninjawu )
 	ROM_REGION( 0xc0000, "maincpu", 0 ) /* 256K for 68000 CPUA code */
-<<<<<<< HEAD
-	ROM_LOAD16_BYTE( "b31_49.35", 0x00000, 0x10000, CRC(d38b6391) SHA1(4711e059531566b779e95619c47621fdbfba2e56) )
-	ROM_LOAD16_BYTE( "b31_48.32", 0x00001, 0x10000, CRC(4b5bb3d8) SHA1(b0e2059e0fe682ef8152690d93392bdd4fda8149) )
-=======
 	ROM_LOAD16_BYTE( "b31_49.35", 0x00000, 0x10000, CRC(d38b6391) SHA1(4711e059531566b779e95619c47621fdbfba2e56) ) /* For these 2 roms:   Revised code base compared to the Japanese set below? */
 	ROM_LOAD16_BYTE( "b31_48.32", 0x00001, 0x10000, CRC(4b5bb3d8) SHA1(b0e2059e0fe682ef8152690d93392bdd4fda8149) ) /* For these 2 roms:   higher rom numbers seem to indicate that is the case  */
->>>>>>> upstream/master
 	ROM_LOAD16_BYTE( "b31_29.34", 0x20000, 0x10000, CRC(f2941a37) SHA1(cf1f231d9caddc903116a8b654f49181ca459697) )
 	ROM_LOAD16_BYTE( "b31_27.31", 0x20001, 0x10000, CRC(2f3ff642) SHA1(7d6775b51d96b459b163d8fde2385b0e3f5242ca) )
 
@@ -1342,17 +1244,9 @@ ROM_END
 
 /* Working Games */
 
-<<<<<<< HEAD
-//    YEAR, NAME,    PARENT, MACHINE, INPUT,   INIT,MONITOR,COMPANY,FULLNAME,FLAGS
-GAME( 1987, ninjaw,  0,      ninjaw,  ninjaw, driver_device,  0,   ROT0,   "Taito Corporation Japan",   "The Ninja Warriors (World)", MACHINE_SUPPORTS_SAVE )
-GAME( 1987, ninjawj, ninjaw, ninjaw,  ninjawj, driver_device, 0,   ROT0,   "Taito Corporation",         "The Ninja Warriors (Japan)", MACHINE_SUPPORTS_SAVE )
-GAME( 1987, ninjawu, ninjaw, ninjaw,  ninjaw, driver_device,  0,   ROT0,   "Taito Corporation America (licensed to Romstar)", "The Ninja Warriors (US)", MACHINE_SUPPORTS_SAVE ) /* Uses same coinage as World, see notes */
-GAME( 1989, darius2, 0,      darius2, darius2, driver_device, 0,   ROT0,   "Taito Corporation",         "Darius II (triple screen) (Japan)", MACHINE_SUPPORTS_SAVE )
-=======
 //    YEAR, NAME,     PARENT, MACHINE, INPUT,   STATE         INIT,MONITOR,COMPANY,                     FULLNAME,FLAGS
 GAME( 1987, ninjaw,   0,      ninjaw,  ninjaw,  ninjaw_state, 0,   ROT0,   "Taito Corporation Japan",   "The Ninja Warriors (World, later version)", MACHINE_SUPPORTS_SAVE )
 GAME( 1987, ninjaw1,  ninjaw, ninjaw,  ninjaw,  ninjaw_state, 0,   ROT0,   "Taito Corporation Japan",   "The Ninja Warriors (World, earlier version)", MACHINE_SUPPORTS_SAVE )
 GAME( 1987, ninjawj,  ninjaw, ninjaw,  ninjawj, ninjaw_state, 0,   ROT0,   "Taito Corporation",         "The Ninja Warriors (Japan)", MACHINE_SUPPORTS_SAVE )
 GAME( 1987, ninjawu,  ninjaw, ninjaw,  ninjawj, ninjaw_state, 0,   ROT0,   "Taito Corporation America (licensed to Romstar)", "The Ninja Warriors (US, Romstar license)", MACHINE_SUPPORTS_SAVE ) /* Uses same coinage as World, see notes */
 GAME( 1989, darius2,  0,      darius2, darius2, ninjaw_state, 0,   ROT0,   "Taito Corporation",         "Darius II (triple screen) (Japan)", MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

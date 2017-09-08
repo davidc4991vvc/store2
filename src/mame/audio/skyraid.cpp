@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-// license:???
-=======
 // license:BSD-3-Clause
->>>>>>> upstream/master
 // copyright-holders:Derrick Renaud
 /************************************************************************
  * skyraid Sound System Analog emulation
@@ -252,11 +248,7 @@ DISCRETE_SOUND_START( skyraid )
 	/************************************************
 	 * Missle sound
 	 ************************************************/
-<<<<<<< HEAD
-	DISCRETE_CUSTOM5(NODE_40, skyraid_missle_custom_charge, SKYRAID_MISSILE_EN, SKYRAID_R12, SKYRAID_R14, SKYRAID_R13, SKYRAID_C44, NULL)
-=======
 	DISCRETE_CUSTOM5(NODE_40, skyraid_missle_custom_charge, SKYRAID_MISSILE_EN, SKYRAID_R12, SKYRAID_R14, SKYRAID_R13, SKYRAID_C44, nullptr)
->>>>>>> upstream/master
 	DISCRETE_566(NODE_41,                   /* IC K6, pin 3 */
 		NODE_40,                            /* VMOD */
 		SKYRAID_R16, SKYRAID_C45,
@@ -305,11 +297,7 @@ WRITE8_MEMBER(skyraid_state::skyraid_sound_w)
 	m_discrete->write(space, SKYRAID_PLANE_SWEEP_EN, data & 0x01);
 	m_discrete->write(space, SKYRAID_MISSILE_EN, data & 0x02);
 	m_discrete->write(space, SKYRAID_EXPLOSION_EN, data & 0x04);
-<<<<<<< HEAD
-	set_led_status(machine(), 0, !(data & 0x08));
-=======
 	output().set_led_value(0, !(data & 0x08));
->>>>>>> upstream/master
 	m_discrete->write(space, SKYRAID_PLANE_ON_EN, data & 0x10);
 	m_discrete->write(space, SKYRAID_ATTRACT_EN, data & 0x20);
 }

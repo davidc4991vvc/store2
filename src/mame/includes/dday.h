@@ -5,11 +5,8 @@
     D-Day
 
 *************************************************************************/
-<<<<<<< HEAD
-=======
 #include "screen.h"
 #include "sound/ay8910.h"
->>>>>>> upstream/master
 
 
 class dday_state : public driver_device
@@ -24,15 +21,6 @@ public:
 		m_maincpu(*this, "maincpu"),
 		m_gfxdecode(*this, "gfxdecode"),
 		m_screen(*this, "screen"),
-<<<<<<< HEAD
-		m_palette(*this, "palette") { }
-
-	/* memory pointers */
-	required_shared_ptr<UINT8> m_textvideoram;
-	required_shared_ptr<UINT8> m_fgvideoram;
-	required_shared_ptr<UINT8> m_bgvideoram;
-	required_shared_ptr<UINT8> m_colorram;
-=======
 		m_palette(*this, "palette"),
 		m_ay1(*this, "ay1") { }
 
@@ -41,7 +29,6 @@ public:
 	required_shared_ptr<uint8_t> m_fgvideoram;
 	required_shared_ptr<uint8_t> m_bgvideoram;
 	required_shared_ptr<uint8_t> m_colorram;
->>>>>>> upstream/master
 
 	/* video-related */
 	tilemap_t        *m_fg_tilemap;
@@ -53,15 +40,9 @@ public:
 	int            m_sl_image;
 	int            m_sl_enable;
 	int            m_timer_value;
-<<<<<<< HEAD
-
-	/* devices */
-	device_t *m_ay1;
-=======
 	emu_timer *m_countdown_timer;
 
 	/* devices */
->>>>>>> upstream/master
 	DECLARE_READ8_MEMBER(dday_countdown_timer_r);
 	DECLARE_WRITE8_MEMBER(dday_bgvideoram_w);
 	DECLARE_WRITE8_MEMBER(dday_fgvideoram_w);
@@ -74,27 +55,16 @@ public:
 	TILE_GET_INFO_MEMBER(get_fg_tile_info);
 	TILE_GET_INFO_MEMBER(get_text_tile_info);
 	TILE_GET_INFO_MEMBER(get_sl_tile_info);
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void machine_reset();
-	virtual void video_start();
-	DECLARE_PALETTE_INIT(dday);
-	UINT32 screen_update_dday(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
 	virtual void video_start() override;
 	DECLARE_PALETTE_INIT(dday);
 	uint32_t screen_update_dday(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	TIMER_CALLBACK_MEMBER(countdown_timer_callback);
 	void start_countdown_timer();
 	required_device<cpu_device> m_maincpu;
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<screen_device> m_screen;
 	required_device<palette_device> m_palette;
-<<<<<<< HEAD
-=======
 	required_device<ay8910_device> m_ay1;
->>>>>>> upstream/master
 };

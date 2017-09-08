@@ -37,15 +37,9 @@ bool pasti_format::supports_save() const
 	return false;
 }
 
-<<<<<<< HEAD
-int pasti_format::identify(io_generic *io, UINT32 form_factor)
-{
-	UINT8 h[16];
-=======
 int pasti_format::identify(io_generic *io, uint32_t form_factor)
 {
 	uint8_t h[16];
->>>>>>> upstream/master
 	io_generic_read(io, h, 0, 16);
 
 	if(!memcmp(h, "RSY\0\3\0", 6) &&
@@ -55,11 +49,7 @@ int pasti_format::identify(io_generic *io, uint32_t form_factor)
 	return 0;
 }
 
-<<<<<<< HEAD
-static void hexdump(const UINT8 *d, int s)
-=======
 static void hexdump(const uint8_t *d, int s)
->>>>>>> upstream/master
 {
 	for(int i=0; i<s; i+=32) {
 		printf("%04x:", i);
@@ -69,21 +59,12 @@ static void hexdump(const uint8_t *d, int s)
 	}
 }
 
-<<<<<<< HEAD
-bool pasti_format::load(io_generic *io, UINT32 form_factor, floppy_image *image)
-{
-	UINT8 fh[16];
-	io_generic_read(io, fh, 0, 16);
-
-	dynamic_buffer raw_track;
-=======
 bool pasti_format::load(io_generic *io, uint32_t form_factor, floppy_image *image)
 {
 	uint8_t fh[16];
 	io_generic_read(io, fh, 0, 16);
 
 	std::vector<uint8_t> raw_track;
->>>>>>> upstream/master
 
 	int tracks = fh[10];
 	int heads = 1+(tracks >= 160);
@@ -95,11 +76,7 @@ bool pasti_format::load(io_generic *io, uint32_t form_factor, floppy_image *imag
 
 	for(int track=0; track < tracks; track++) {
 		for(int head=0; head < heads; head++) {
-<<<<<<< HEAD
-			UINT8 th[16];
-=======
 			uint8_t th[16];
->>>>>>> upstream/master
 			io_generic_read(io, th, pos, 16);
 			int entry_len = th[0] | (th[1] << 8) | (th[2] << 16) | (th[3] << 24);
 			int fuzz_len  = th[4] | (th[5] << 8) | (th[6] << 16) | (th[7] << 24);
@@ -113,15 +90,9 @@ bool pasti_format::load(io_generic *io, uint32_t form_factor, floppy_image *imag
 
 			io_generic_read(io, &raw_track[0], pos+16, entry_len-16);
 
-<<<<<<< HEAD
-			UINT8 *fuzz = fuzz_len ? &raw_track[16*sect] : 0;
-			UINT8 *bdata = fuzz ? fuzz+fuzz_len : &raw_track[16*sect];
-			UINT8 *tdata = bdata;
-=======
 			uint8_t *fuzz = fuzz_len ? &raw_track[16*sect] : nullptr;
 			uint8_t *bdata = fuzz ? fuzz+fuzz_len : &raw_track[16*sect];
 			uint8_t *tdata = bdata;
->>>>>>> upstream/master
 
 			int syncpos = -1;
 			if(flags & 0x0080) {
@@ -134,11 +105,7 @@ bool pasti_format::load(io_generic *io, uint32_t form_factor, floppy_image *imag
 				tsize = tdata[0] | (tdata[1] << 8);
 				tdata += 2;
 			} else
-<<<<<<< HEAD
-				tdata = 0;
-=======
 				tdata = nullptr;
->>>>>>> upstream/master
 
 			if(0) {
 				printf("Track %2d.%d: el=%d fl=%d sect=%d flags=%04x tlen=%d/%d tnum=%d flags2=%02x sync=%x\n",
@@ -159,22 +126,14 @@ bool pasti_format::load(io_generic *io, uint32_t form_factor, floppy_image *imag
 			}
 
 			for(int s=0; s<sect; s++) {
-<<<<<<< HEAD
-				UINT8 *sh = &raw_track[16*s];
-=======
 				uint8_t *sh = &raw_track[16*s];
->>>>>>> upstream/master
 				int s_off   = sh[0] | (sh[1] << 8) | (sh[2] << 16) | (sh[3] << 24);
 				int s_pos   = sh[4] | (sh[5] << 8);
 				int s_time  = sh[6] | (sh[7] << 8);
 				int s_flags = sh[14] | (sh[15] << 8);
 
 				obs.sectors[s].data       = bdata + s_off;
-<<<<<<< HEAD
-				obs.sectors[s].fuzzy_mask = 0;
-=======
 				obs.sectors[s].fuzzy_mask = nullptr;
->>>>>>> upstream/master
 				memcpy(obs.sectors[s].id, sh+8, 6);
 				obs.sectors[s].time_ratio = s_time ? s_time / 16384.0 : 1;
 				obs.sectors[s].position   = s_pos/8-12;
@@ -211,20 +170,12 @@ void pasti_format::wd_generate_track_from_observations(int track, int head, flop
 		wd_generate_track_from_sectors_and_track(track, head, image, obs);
 }
 
-<<<<<<< HEAD
-void pasti_format::wd_generate_unsynced_gap(std::vector<UINT32> &track, const wd_obs &obs, int tstart, int tend, UINT32 cell_size)
-=======
 void pasti_format::wd_generate_unsynced_gap(std::vector<uint32_t> &track, const wd_obs &obs, int tstart, int tend, uint32_t cell_size)
->>>>>>> upstream/master
 {
 	for(int i=tstart; i != tend;) {
 		unsigned char v = obs.track_data[i];
 		int j;
-<<<<<<< HEAD
-		for(j=i+1; j != tend && obs.track_data[j] == v; j++);
-=======
 		for(j=i+1; j != tend && obs.track_data[j] == v; j++) {};
->>>>>>> upstream/master
 		int size = j-i;
 		if(size < 4) {
 			mfm_w(track, 8, v, cell_size);
@@ -245,11 +196,7 @@ void pasti_format::wd_generate_unsynced_gap(std::vector<uint32_t> &track, const 
 	}
 }
 
-<<<<<<< HEAD
-void pasti_format::wd_generate_synced_gap(std::vector<UINT32> &track, const wd_obs &obs, int tstart, int tend, UINT32 cell_size)
-=======
 void pasti_format::wd_generate_synced_gap(std::vector<uint32_t> &track, const wd_obs &obs, int tstart, int tend, uint32_t cell_size)
->>>>>>> upstream/master
 {
 	for(int i = tstart; i != tend; i++) {
 		unsigned char v = obs.track_data[i];
@@ -267,11 +214,7 @@ void pasti_format::wd_generate_synced_gap(std::vector<uint32_t> &track, const wd
 	}
 }
 
-<<<<<<< HEAD
-void pasti_format::wd_generate_gap(std::vector<UINT32> &track, const wd_obs &obs, int tstart, int tend, bool synced, UINT32 cell_size_start, UINT32 cell_size_end)
-=======
 void pasti_format::wd_generate_gap(std::vector<uint32_t> &track, const wd_obs &obs, int tstart, int tend, bool synced, uint32_t cell_size_start, uint32_t cell_size_end)
->>>>>>> upstream/master
 {
 	unsigned int spos = track.size();
 	if(!synced) {
@@ -288,17 +231,10 @@ void pasti_format::wd_generate_gap(std::vector<uint32_t> &track, const wd_obs &o
 		wd_generate_synced_gap(track, obs, tstart, tend, cell_size_start);
 
 	if(cell_size_end != cell_size_start) {
-<<<<<<< HEAD
-		INT32 total_size = 0;
-		for(unsigned int i=spos; i != track.size(); i++)
-			total_size += track[i] & floppy_image::TIME_MASK;
-		INT64 cur_size = 0;
-=======
 		int32_t total_size = 0;
 		for(unsigned int i=spos; i != track.size(); i++)
 			total_size += track[i] & floppy_image::TIME_MASK;
 		int64_t cur_size = 0;
->>>>>>> upstream/master
 		for(unsigned int i=spos; i != track.size(); i++) {
 			cur_size += track[i] & floppy_image::TIME_MASK;
 			track[i] = (track[i] & floppy_image::MG_MASK) |
@@ -307,11 +243,7 @@ void pasti_format::wd_generate_gap(std::vector<uint32_t> &track, const wd_obs &o
 	}
 }
 
-<<<<<<< HEAD
-void pasti_format::wd_generate_sector_header(std::vector<UINT32> &track, const wd_obs &obs, int sector, int tstart, UINT32 cell_size)
-=======
 void pasti_format::wd_generate_sector_header(std::vector<uint32_t> &track, const wd_obs &obs, int sector, int tstart, uint32_t cell_size)
->>>>>>> upstream/master
 {
 	raw_w(track, 16, 0x4489, cell_size);
 	raw_w(track, 16, 0x4489, cell_size);
@@ -321,11 +253,7 @@ void pasti_format::wd_generate_sector_header(std::vector<uint32_t> &track, const
 		mfm_w(track, 8, obs.sectors[sector].id[i], cell_size);
 }
 
-<<<<<<< HEAD
-void pasti_format::wd_generate_sector_data(std::vector<UINT32> &track, const wd_obs &obs, int sector, int tstart, UINT32 cell_size)
-=======
 void pasti_format::wd_generate_sector_data(std::vector<uint32_t> &track, const wd_obs &obs, int sector, int tstart, uint32_t cell_size)
->>>>>>> upstream/master
 {
 	const wd_sect &s = obs.sectors[sector];
 	raw_w(track, 16, 0x4489, cell_size);
@@ -334,11 +262,7 @@ void pasti_format::wd_generate_sector_data(std::vector<uint32_t> &track, const w
 	mfm_w(track, 8, obs.track_data[tstart+3], cell_size);
 	for(int i=0; i<128 << (s.id[3] & 3); i++)
 		mfm_w(track, 8, s.data[i], cell_size);
-<<<<<<< HEAD
-	UINT16 crc = calc_crc_ccitt(track, track.size() - (2048 << (s.id[3] & 3)) - 16*4, track.size());
-=======
 	uint16_t crc = calc_crc_ccitt(track, track.size() - (2048 << (s.id[3] & 3)) - 16*4, track.size());
->>>>>>> upstream/master
 	mfm_w(track, 8, crc >> 8, cell_size);
 	mfm_w(track, 8, crc, cell_size);
 }
@@ -347,11 +271,7 @@ void pasti_format::wd_generate_track_from_sectors_and_track(int track, int head,
 {
 	if(0)
 		printf("Track %d head %d sectors %d\n", track, head, obs.sector_count);
-<<<<<<< HEAD
-	std::vector<UINT32> trackbuf;
-=======
 	std::vector<uint32_t> trackbuf;
->>>>>>> upstream/master
 
 	wd_sect_info sect_infos[256];
 
@@ -386,11 +306,7 @@ void pasti_format::wd_generate_track_from_sectors_and_track(int track, int head,
 			return;
 		}
 
-<<<<<<< HEAD
-		UINT32 cell_size = UINT32(obs.sectors[0].time_ratio * 1000+0.5);
-=======
 		uint32_t cell_size = uint32_t(obs.sectors[0].time_ratio * 1000+0.5);
->>>>>>> upstream/master
 		wd_generate_gap(trackbuf, obs, 0, sect_infos[0].hstart, false, cell_size, cell_size);
 
 		for(int i=0; i != obs.sector_count; i++) {
@@ -402,11 +318,7 @@ void pasti_format::wd_generate_track_from_sectors_and_track(int track, int head,
 				}
 			}
 
-<<<<<<< HEAD
-			UINT32 ncell_size =  UINT32(obs.sectors[i+1 != obs.sector_count ? i+1 : 0].time_ratio * 1000+0.5);
-=======
 			uint32_t ncell_size =  uint32_t(obs.sectors[i+1 != obs.sector_count ? i+1 : 0].time_ratio * 1000+0.5);
->>>>>>> upstream/master
 
 			wd_generate_sector_header(trackbuf, obs, i, s->hstart, cell_size);
 
@@ -449,11 +361,7 @@ void pasti_format::wd_generate_track_from_sectors_only(int track, int head, flop
 		}
 	}
 
-<<<<<<< HEAD
-	std::vector<UINT32> tdata;
-=======
 	std::vector<uint32_t> tdata;
->>>>>>> upstream/master
 	for(int i=0; i != obs.sector_count; i++) {
 		const wd_sect &s = obs.sectors[i];
 		if(i+1 != obs.sector_count && obs.sectors[i+1].position < s.position+10+44+4+(128 << (s.id[3] & 3))) {
@@ -499,11 +407,7 @@ void pasti_format::wd_generate_track_from_sectors_only(int track, int head, flop
 		mfm_w(tdata, 8, 0xfb);
 		for(int j=0; j<128 << (s.id[3] & 3); j++)
 			mfm_w(tdata, 8, s.data[j]);
-<<<<<<< HEAD
-		UINT16 crc = calc_crc_ccitt(tdata, tdata.size() - (2048 << (s.id[3] & 3)) - 16*4, tdata.size());
-=======
 		uint16_t crc = calc_crc_ccitt(tdata, tdata.size() - (2048 << (s.id[3] & 3)) - 16*4, tdata.size());
->>>>>>> upstream/master
 		mfm_w(tdata, 8, crc >> 8);
 		mfm_w(tdata, 8, crc);
 	}
@@ -515,15 +419,9 @@ void pasti_format::wd_generate_track_from_sectors_only(int track, int head, flop
 	generate_track_from_levels(track, head, tdata, 0, image);
 }
 
-<<<<<<< HEAD
-UINT16 pasti_format::byte_to_mfm(UINT8 data, bool context)
-{
-	static const UINT8 expand[32] = {
-=======
 uint16_t pasti_format::byte_to_mfm(uint8_t data, bool context)
 {
 	static const uint8_t expand[32] = {
->>>>>>> upstream/master
 		0xaa, 0xa9, 0xa4, 0xa5, 0x92, 0x91, 0x94, 0x95, 0x4a, 0x49, 0x44, 0x45, 0x52, 0x51, 0x54, 0x55,
 		0x2a, 0x29, 0x24, 0x25, 0x12, 0x11, 0x14, 0x15, 0x4a, 0x49, 0x44, 0x45, 0x52, 0x51, 0x54, 0x55,
 	};
@@ -531,17 +429,6 @@ uint16_t pasti_format::byte_to_mfm(uint8_t data, bool context)
 	return (expand[(data >> 4) | (context ? 16 : 0)] << 8) | expand[data & 0x1f];
 }
 
-<<<<<<< HEAD
-void pasti_format::match_mfm_data(wd_obs &obs, int tpos, const UINT8 *data, int size, UINT8 context, int &bcount, int &tend, bool &synced)
-{
-	UINT16 shift = byte_to_mfm(context, true);
-	int bc = 0;
-	int bc_phase = 0;
-	int bi = 0;
-	UINT8 dbyte = 0;
-	bool ds_phase = false;
-	UINT16 inshift = byte_to_mfm(data[bi++], shift & 1);
-=======
 void pasti_format::match_mfm_data(wd_obs &obs, int tpos, const uint8_t *data, int size, uint8_t context, int &bcount, int &tend, bool &synced)
 {
 	uint16_t shift = byte_to_mfm(context, true);
@@ -551,7 +438,6 @@ void pasti_format::match_mfm_data(wd_obs &obs, int tpos, const uint8_t *data, in
 	uint8_t dbyte = 0;
 	bool ds_phase = false;
 	uint16_t inshift = byte_to_mfm(data[bi++], shift & 1);
->>>>>>> upstream/master
 	synced = false;
 	for(;;) {
 		int bit = (inshift >> (15-bc)) & 1;
@@ -588,11 +474,7 @@ void pasti_format::match_mfm_data(wd_obs &obs, int tpos, const uint8_t *data, in
 	}
 }
 
-<<<<<<< HEAD
-void pasti_format::match_raw_data(wd_obs &obs, int tpos, const UINT8 *data, int size, UINT8 context, int &bcount, int &tend)
-=======
 void pasti_format::match_raw_data(wd_obs &obs, int tpos, const uint8_t *data, int size, uint8_t context, int &bcount, int &tend)
->>>>>>> upstream/master
 {
 	tend = tpos;
 	for(bcount=0; bcount != size; bcount++) {
@@ -604,15 +486,9 @@ void pasti_format::match_raw_data(wd_obs &obs, int tpos, const uint8_t *data, in
 	}
 }
 
-<<<<<<< HEAD
-UINT16 pasti_format::calc_crc(const UINT8 *data, int size, UINT16 crc1)
-{
-	UINT32 crc = crc1;
-=======
 uint16_t pasti_format::calc_crc(const uint8_t *data, int size, uint16_t crc1)
 {
 	uint32_t crc = crc1;
->>>>>>> upstream/master
 	for(int i=0; i<size; i++) {
 		crc = (crc << 8) ^ (*data++ << 16);
 		if(crc & 0x800000) crc ^= 0x881080;
@@ -638,11 +514,7 @@ void pasti_format::map_sectors_in_track(wd_obs &obs, wd_sect_info *sect_infos)
 		sect_infos[i].dsynced = false;
 	}
 
-<<<<<<< HEAD
-	const UINT8 *tdata = obs.track_data;
-=======
 	const uint8_t *tdata = obs.track_data;
->>>>>>> upstream/master
 	int tsize = obs.track_size;
 
 	for(int i=0; i != tsize; i++)
@@ -650,11 +522,7 @@ void pasti_format::map_sectors_in_track(wd_obs &obs, wd_sect_info *sect_infos)
 			tdata[(i+1) % tsize] == 0xa1 &&
 			(tdata[(i+2) % tsize] == 0xfe ||
 			tdata[(i+2) % tsize] == 0xff)) {
-<<<<<<< HEAD
-			UINT8 hbyte = tdata[(i+2) % tsize];
-=======
 			uint8_t hbyte = tdata[(i+2) % tsize];
->>>>>>> upstream/master
 			int hpos = (i+3) % tsize;
 			int j;
 			bool synced = false;
@@ -707,11 +575,7 @@ void pasti_format::map_sectors_in_track(wd_obs &obs, wd_sect_info *sect_infos)
 					}
 				if(dpos != -1) {
 					int bcount2, tend2;
-<<<<<<< HEAD
-					UINT8 dhbyte = tdata[(dpos+tsize-1) % tsize];
-=======
 					uint8_t dhbyte = tdata[(dpos+tsize-1) % tsize];
->>>>>>> upstream/master
 					int ssize = 128 << (obs.sectors[j].id[3] & 3);
 					match_mfm_data(obs, dpos, obs.sectors[j].data, ssize, dhbyte, bcount, tend, synced);
 					if(bcount < ssize) {
@@ -723,11 +587,7 @@ void pasti_format::map_sectors_in_track(wd_obs &obs, wd_sect_info *sect_infos)
 								synced = true;
 						}
 					}
-<<<<<<< HEAD
-					UINT16 crc = calc_crc(obs.sectors[j].data, ssize, calc_crc(tdata+((dpos+tsize-1) % tsize), 1, 0xcdb4));
-=======
 					uint16_t crc = calc_crc(obs.sectors[j].data, ssize, calc_crc(tdata+((dpos+tsize-1) % tsize), 1, 0xcdb4));
->>>>>>> upstream/master
 					if(synced && tdata[tend] == (crc >> 8) && tdata[(tend+1) % tsize] == (crc & 0xff)) {
 						tend = (tend+2) % tsize;
 						bcount += 2;

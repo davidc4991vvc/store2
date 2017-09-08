@@ -17,20 +17,13 @@
 
     tms99000 is the successor to both ti9900 and ti990/10.  It supports
     privileges, and has a coprocessor interface which enables the use of an
-<<<<<<< HEAD
-    external memory mapper.  Additionnally,  it can use a Macrostore ROM to
-=======
     external memory mapper.  Additionally,  it can use a Macrostore ROM to
->>>>>>> upstream/master
     emulate additional instructions.
 
     **** This is WORK IN PROGRESS ****
 */
 
-<<<<<<< HEAD
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #include "ti990_10.h"
 
 /*
@@ -49,21 +42,12 @@
     twice their number. Accordingly, the TMS9900 has a CRU bitmask 0x0fff.
 ****************************************************************************/
 
-<<<<<<< HEAD
-ti990_10_device::ti990_10_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: cpu_device(mconfig, TI990_10, "TI990/10 CPU", tag, owner, clock, "ti990_10_cpu",  __FILE__),
-		m_program_config("program", ENDIANNESS_BIG, 16, 16),
-		m_io_config("cru", ENDIANNESS_BIG, 8, 12),
-		m_prgspace(NULL),
-		m_cru(NULL)
-=======
 ti990_10_device::ti990_10_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: cpu_device(mconfig, TI990_10, tag, owner, clock),
 		m_program_config("program", ENDIANNESS_BIG, 16, 21),
 		m_io_config("cru", ENDIANNESS_BIG, 8, 12),
 		m_prgspace(nullptr),
 		m_cru(nullptr)
->>>>>>> upstream/master
 {
 }
 
@@ -79,12 +63,8 @@ void ti990_10_device::device_start()
 	// set our instruction counter
 	m_icountptr = &m_icount;
 
-<<<<<<< HEAD
-	state_add(STATE_GENPC, "curpc", PC).formatstr("%4s").noshow();
-=======
 	state_add(STATE_GENPC, "GENPC", PC).formatstr("%4s").noshow();
 	state_add(STATE_GENPCBASE, "CURPC", PC).formatstr("%4s").noshow();
->>>>>>> upstream/master
 	state_add(STATE_GENFLAGS, "status", m_state_any).callimport().callexport().formatstr("%16s").noshow();
 }
 
@@ -103,28 +83,12 @@ void ti990_10_device::device_reset()
 	if (TRACE_EMU) logerror("ti990_10: Device reset by emulator\n");
 }
 
-<<<<<<< HEAD
-const address_space_config *ti990_10_device::memory_space_config(address_spacenum spacenum) const
-{
-	switch (spacenum)
-	{
-	case AS_PROGRAM:
-		return &m_program_config;
-
-	case AS_IO:
-		return &m_io_config;
-
-	default:
-		return NULL;
-	}
-=======
 device_memory_interface::space_config_vector ti990_10_device::memory_space_config() const
 {
 	return space_config_vector {
 		std::make_pair(AS_PROGRAM, &m_program_config),
 		std::make_pair(AS_IO,      &m_io_config)
 	};
->>>>>>> upstream/master
 }
 
 void ti990_10_device::execute_run()
@@ -142,63 +106,34 @@ void ti990_10_device::execute_set_input(int irqline, int state)
 
 // ==========================================================================
 
-<<<<<<< HEAD
-UINT32 ti990_10_device::execute_min_cycles() const
-=======
 uint32_t ti990_10_device::execute_min_cycles() const
->>>>>>> upstream/master
 {
 	return 2;
 }
 
 // TODO: Compute this value, just a wild guess for the average
-<<<<<<< HEAD
-UINT32 ti990_10_device::execute_max_cycles() const
-=======
 uint32_t ti990_10_device::execute_max_cycles() const
->>>>>>> upstream/master
 {
 	return 10;
 }
 
-<<<<<<< HEAD
-UINT32 ti990_10_device::execute_input_lines() const
-=======
 uint32_t ti990_10_device::execute_input_lines() const
->>>>>>> upstream/master
 {
 	return 2;
 }
 
 // device_disasm_interface overrides
-<<<<<<< HEAD
-UINT32 ti990_10_device::disasm_min_opcode_bytes() const
-=======
 uint32_t ti990_10_device::disasm_min_opcode_bytes() const
->>>>>>> upstream/master
 {
 	return 2;
 }
 
-<<<<<<< HEAD
-UINT32 ti990_10_device::disasm_max_opcode_bytes() const
-=======
 uint32_t ti990_10_device::disasm_max_opcode_bytes() const
->>>>>>> upstream/master
 {
 	return 6;
 }
 
 // TODO: check 9900dasm
-<<<<<<< HEAD
-offs_t ti990_10_device::disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options)
-{
-	extern CPU_DISASSEMBLE( tms9900 );
-	return CPU_DISASSEMBLE_NAME(tms9900)(this, buffer, pc, oprom, opram, options);
-}
-
-const device_type TI990_10 = &device_creator<ti990_10_device>;
-=======
 offs_t ti990_10_device::disasm_disassemble(std::ostream &stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, uint32_t options)
 {
 	extern CPU_DISASSEMBLE( tms9900 );
@@ -206,4 +141,3 @@ offs_t ti990_10_device::disasm_disassemble(std::ostream &stream, offs_t pc, cons
 }
 
 DEFINE_DEVICE_TYPE(TI990_10, ti990_10_device, "ti990_10_cpu", "TI990/10 CPU")
->>>>>>> upstream/master

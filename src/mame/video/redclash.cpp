@@ -9,12 +9,8 @@
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "includes/ladybug.h"
-=======
 #include "includes/redclash.h"
 #include "video/resnet.h"
->>>>>>> upstream/master
 
 /***************************************************************************
 
@@ -25,15 +21,9 @@
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-PALETTE_INIT_MEMBER(ladybug_state,redclash)
-{
-	const UINT8 *color_prom = memregion("proms")->base();
-=======
 PALETTE_INIT_MEMBER(redclash_state,redclash)
 {
 	const uint8_t *color_prom = memregion("proms")->base();
->>>>>>> upstream/master
 	int i;
 
 	/* create a lookup table for the palette */
@@ -89,22 +79,14 @@ PALETTE_INIT_MEMBER(redclash_state,redclash)
 	/* characters */
 	for (i = 0; i < 0x20; i++)
 	{
-<<<<<<< HEAD
-		UINT8 ctabentry = ((i << 3) & 0x18) | ((i >> 2) & 0x07);
-=======
 		uint8_t ctabentry = ((i << 3) & 0x18) | ((i >> 2) & 0x07);
->>>>>>> upstream/master
 		palette.set_pen_indirect(i, ctabentry);
 	}
 
 	/* sprites */
 	for (i = 0x20; i < 0x40; i++)
 	{
-<<<<<<< HEAD
-		UINT8 ctabentry = color_prom[(i - 0x20) >> 1];
-=======
 		uint8_t ctabentry = color_prom[(i - 0x20) >> 1];
->>>>>>> upstream/master
 
 		ctabentry = BITSWAP8((color_prom[i - 0x20] >> 0) & 0x0f, 7,6,5,4,0,1,2,3);
 		palette.set_pen_indirect(i + 0x00, ctabentry);
@@ -118,9 +100,6 @@ PALETTE_INIT_MEMBER(redclash_state,redclash)
 		palette.set_pen_indirect(i, (i - 0x60) + 0x20);
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER( ladybug_state::redclash_videoram_w )
-=======
 PALETTE_INIT_MEMBER(redclash_state,sraider)
 {
 	const uint8_t *color_prom = memregion("proms")->base();
@@ -161,17 +140,12 @@ PALETTE_INIT_MEMBER(redclash_state,sraider)
 
 
 WRITE8_MEMBER( redclash_state::redclash_videoram_w )
->>>>>>> upstream/master
 {
 	m_videoram[offset] = data;
 	m_fg_tilemap->mark_tile_dirty(offset);
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER( ladybug_state::redclash_gfxbank_w )
-=======
 WRITE8_MEMBER( redclash_state::redclash_gfxbank_w )
->>>>>>> upstream/master
 {
 	if (m_gfxbank != (data & 0x01))
 	{
@@ -180,11 +154,7 @@ WRITE8_MEMBER( redclash_state::redclash_gfxbank_w )
 	}
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER( ladybug_state::redclash_flipscreen_w )
-=======
 WRITE8_MEMBER( redclash_state::redclash_flipscreen_w )
->>>>>>> upstream/master
 {
 	flip_screen_set(data & 0x01);
 }
@@ -200,50 +170,30 @@ star_speed:
 6 = backwards medium
 7 = backwards fast
 */
-<<<<<<< HEAD
-WRITE8_MEMBER( ladybug_state::redclash_star0_w )
-=======
 WRITE8_MEMBER( redclash_state::redclash_star0_w )
->>>>>>> upstream/master
 {
 	m_star_speed = (m_star_speed & ~1) | ((data & 1) << 0);
 	redclash_set_stars_speed(m_star_speed);
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER( ladybug_state::redclash_star1_w )
-=======
 WRITE8_MEMBER( redclash_state::redclash_star1_w )
->>>>>>> upstream/master
 {
 	m_star_speed = (m_star_speed & ~2) | ((data & 1) << 1);
 	redclash_set_stars_speed(m_star_speed);
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER( ladybug_state::redclash_star2_w )
-=======
 WRITE8_MEMBER( redclash_state::redclash_star2_w )
->>>>>>> upstream/master
 {
 	m_star_speed = (m_star_speed & ~4) | ((data & 1) << 2);
 	redclash_set_stars_speed( m_star_speed);
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER( ladybug_state::redclash_star_reset_w )
-=======
 WRITE8_MEMBER( redclash_state::redclash_star_reset_w )
->>>>>>> upstream/master
 {
 	redclash_set_stars_enable(1);
 }
 
-<<<<<<< HEAD
-TILE_GET_INFO_MEMBER(ladybug_state::get_fg_tile_info)
-=======
 TILE_GET_INFO_MEMBER(redclash_state::get_fg_tile_info)
->>>>>>> upstream/master
 {
 	int code = m_videoram[tile_index];
 	int color = (m_videoram[tile_index] & 0x70) >> 4; // ??
@@ -251,17 +201,6 @@ TILE_GET_INFO_MEMBER(redclash_state::get_fg_tile_info)
 	SET_TILE_INFO_MEMBER(0, code, color, 0);
 }
 
-<<<<<<< HEAD
-VIDEO_START_MEMBER(ladybug_state,redclash)
-{
-	m_fg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(ladybug_state::get_fg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
-	m_fg_tilemap->set_transparent_pen(0);
-}
-
-void ladybug_state::redclash_draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect )
-{
-	UINT8 *spriteram = m_spriteram;
-=======
 VIDEO_START_MEMBER(redclash_state,redclash)
 {
 	m_fg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(redclash_state::get_fg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
@@ -271,7 +210,6 @@ VIDEO_START_MEMBER(redclash_state,redclash)
 void redclash_state::redclash_draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect )
 {
 	uint8_t *spriteram = m_spriteram;
->>>>>>> upstream/master
 	int i, offs;
 
 	for (offs = m_spriteram.bytes() - 0x20; offs >= 0; offs -= 0x20)
@@ -352,11 +290,7 @@ void redclash_state::redclash_draw_sprites( bitmap_ind16 &bitmap, const rectangl
 	}
 }
 
-<<<<<<< HEAD
-void ladybug_state::redclash_draw_bullets( bitmap_ind16 &bitmap, const rectangle &cliprect )
-=======
 void redclash_state::redclash_draw_bullets( bitmap_ind16 &bitmap, const rectangle &cliprect )
->>>>>>> upstream/master
 {
 	int offs;
 
@@ -390,11 +324,7 @@ void redclash_state::redclash_draw_bullets( bitmap_ind16 &bitmap, const rectangl
  */
 
 /* This line can reset the LFSR to zero and disables the star generator */
-<<<<<<< HEAD
-void ladybug_state::redclash_set_stars_enable(UINT8 on)
-=======
 void redclash_state::redclash_set_stars_enable(uint8_t on)
->>>>>>> upstream/master
 {
 	if ((m_stars_enable == 0) && (on == 1))
 	{
@@ -405,15 +335,9 @@ void redclash_state::redclash_set_stars_enable(uint8_t on)
 }
 
 /* This sets up which starfield to draw and the offset, */
-<<<<<<< HEAD
-/* To be called from screen_eof_*() */
-
-void ladybug_state::redclash_update_stars_state()
-=======
 /* To be called from screen_vblank_*() */
 
 void redclash_state::redclash_update_stars_state()
->>>>>>> upstream/master
 {
 	if (m_stars_enable == 0)
 		return;
@@ -444,11 +368,7 @@ void redclash_state::redclash_update_stars_state()
  * 7 right/up fast     (+5/2 pix per frame)
  */
 
-<<<<<<< HEAD
-void ladybug_state::redclash_set_stars_speed(UINT8 speed )
-=======
 void redclash_state::redclash_set_stars_speed(uint8_t speed )
->>>>>>> upstream/master
 {
 	m_stars_speed = speed;
 }
@@ -458,21 +378,12 @@ void redclash_state::redclash_set_stars_speed(uint8_t speed )
 /* Space Raider doesn't use the Va bit, and it is also set up to */
 /* window the stars to a certain x range */
 
-<<<<<<< HEAD
-void ladybug_state::redclash_draw_stars(bitmap_ind16 &bitmap, const rectangle &cliprect, UINT8 palette_offset, UINT8 sraider, UINT8 firstx, UINT8 lastx )
-{
-	int i;
-	UINT8 tempbit, feedback, star_color, xloc, yloc;
-	UINT32 state;
-	UINT8 hcond, vcond;
-=======
 void redclash_state::redclash_draw_stars(bitmap_ind16 &bitmap, const rectangle &cliprect, uint8_t palette_offset, uint8_t sraider, uint8_t firstx, uint8_t lastx )
 {
 	int i;
 	uint8_t tempbit, feedback, star_color, xloc, yloc;
 	uint32_t state;
 	uint8_t hcond, vcond;
->>>>>>> upstream/master
 
 	if (m_stars_enable == 0)
 		return;
@@ -524,22 +435,14 @@ void redclash_state::redclash_draw_stars(bitmap_ind16 &bitmap, const rectangle &
 	}
 }
 
-<<<<<<< HEAD
-void ladybug_state::screen_eof_redclash(screen_device &screen, bool state)
-=======
 WRITE_LINE_MEMBER(redclash_state::screen_vblank_redclash)
->>>>>>> upstream/master
 {
 	// falling edge
 	if (!state)
 		redclash_update_stars_state();
 }
 
-<<<<<<< HEAD
-UINT32 ladybug_state::screen_update_redclash(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t redclash_state::screen_update_redclash(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	bitmap.fill(m_palette->black_pen(), cliprect);
 	redclash_draw_stars(bitmap, cliprect, 0x60, 0, 0x00, 0xff);
@@ -548,8 +451,6 @@ uint32_t redclash_state::screen_update_redclash(screen_device &screen, bitmap_in
 	m_fg_tilemap->draw(screen, bitmap, cliprect, 0, 0);
 	return 0;
 }
-<<<<<<< HEAD
-=======
 
 WRITE8_MEMBER(redclash_state::sraider_io_w)
 {
@@ -653,4 +554,3 @@ uint32_t redclash_state::screen_update_sraider(screen_device &screen, bitmap_ind
 
 	return 0;
 }
->>>>>>> upstream/master

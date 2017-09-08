@@ -22,13 +22,8 @@ int core_stricmp(const char *s1, const char *s2)
 {
 	for (;;)
 	{
-<<<<<<< HEAD
-		int c1 = tolower((UINT8)*s1++);
-		int c2 = tolower((UINT8)*s2++);
-=======
 		int c1 = tolower((uint8_t)*s1++);
 		int c2 = tolower((uint8_t)*s2++);
->>>>>>> upstream/master
 		if (c1 == 0 || c1 != c2)
 			return c1 - c2;
 	}
@@ -44,13 +39,8 @@ int core_strnicmp(const char *s1, const char *s2, size_t n)
 	size_t i;
 	for (i = 0; i < n; i++)
 	{
-<<<<<<< HEAD
-		int c1 = tolower((UINT8)*s1++);
-		int c2 = tolower((UINT8)*s2++);
-=======
 		int c1 = tolower((uint8_t)*s1++);
 		int c2 = tolower((uint8_t)*s2++);
->>>>>>> upstream/master
 		if (c1 == 0 || c1 != c2)
 			return c1 - c2;
 	}
@@ -117,118 +107,6 @@ int core_strwildcmp(const char *sp1, const char *sp2)
 	return core_stricmp(s1, s2);
 }
 
-<<<<<<< HEAD
-
-/*-------------------------------------------------
-    core_strdup - string duplication via osd_malloc
--------------------------------------------------*/
-
-char *core_strdup(const char *str)
-{
-	char *cpy = NULL;
-	if (str != NULL)
-	{
-		cpy = (char *)osd_malloc_array(strlen(str) + 1);
-		if (cpy != NULL)
-			strcpy(cpy, str);
-	}
-	return cpy;
-}
-
-#ifdef DRIVER_SWITCH
-/*-------------------------------------------------
-    core_strtrim - for get individual driver name
--------------------------------------------------*/
-
-char *core_strtrim(const char *str)
-{
-	const char *start = str;
-	int len;
-	char *s;
-
-	/* strip spaces, move to corestr.c */
-	while (isspace(*start))
-		start++;
-
-	for (len = strlen(start); len > 0; len--)
-		if (!isspace(start[len - 1]))
-			break;
-
-	s = (char *)osd_malloc(len + 1);
-	strncpy(s, start, len);
-	s[len] = '\0';
-
-	return s;
-}
-#endif /* DRIVER_SWITCH */
-
-/*-------------------------------------------------
-    core_i64_hex_format - i64 format printf helper
--------------------------------------------------*/
-
-char *core_i64_hex_format(UINT64 value, UINT8 mindigits)
-{
-	static char buffer[16][64];
-	// TODO: this can overflow - e.g. when a lot of unmapped writes are logged
-	static int index;
-	char *bufbase = &buffer[index++ % 16][0];
-	char *bufptr = bufbase;
-	INT8 curdigit;
-
-	for (curdigit = 15; curdigit >= 0; curdigit--)
-	{
-		int nibble = (value >> (curdigit * 4)) & 0xf;
-		if (nibble != 0 || curdigit < mindigits)
-		{
-			mindigits = curdigit;
-			*bufptr++ = "0123456789ABCDEF"[nibble];
-		}
-	}
-	if (bufptr == bufbase)
-		*bufptr++ = '0';
-	*bufptr = 0;
-
-	return bufbase;
-}
-
-/*-------------------------------------------------
-    core_i64_oct_format - i64 format printf helper
--------------------------------------------------*/
-
-char *core_i64_oct_format(UINT64 value, UINT8 mindigits)
-{
-	static char buffer[22][64];
-	// TODO: this can overflow
-	static int index;
-	char *bufbase = &buffer[index++ % 22][0];
-	char *bufptr = bufbase;
-	INT8 curdigit;
-
-	for (curdigit = 21; curdigit >= 0; curdigit--)
-	{
-		int octdigit = (value >> (curdigit * 3)) & 0x7;
-		if (octdigit != 0 || curdigit < mindigits)
-		{
-			mindigits = curdigit;
-			*bufptr++ = "01234567"[octdigit];
-		}
-	}
-	if (bufptr == bufbase)
-		*bufptr++ = '0';
-	*bufptr = 0;
-
-	return bufbase;
-}
-
-/*-------------------------------------------------
-    core_i64_format - i64 format printf helper
--------------------------------------------------*/
-
-char *core_i64_format(UINT64 value, UINT8 mindigits, bool is_octal)
-{
-	return is_octal ? core_i64_oct_format(value,mindigits) : core_i64_hex_format(value,mindigits);
-}
-=======
 bool core_iswildstr(const char *sp)
 {
 	for ( ; sp && *sp; sp++)
@@ -256,7 +134,6 @@ char *core_strdup(const char *str)
 	return cpy;
 }
 
->>>>>>> upstream/master
 
 /*-------------------------------------------------
     std::string helpers
@@ -264,39 +141,6 @@ char *core_strdup(const char *str)
 
 #include <algorithm>
 
-<<<<<<< HEAD
-int strvprintf(std::string &str, const char *format, va_list args)
-{
-	char tempbuf[4096];
-	int result = vsprintf(tempbuf, format, args);
-
-	// set the result
-	str.assign(tempbuf);
-	return result;
-}
-
-int strprintf(std::string &str, const char *format, ...)
-{
-	va_list ap;
-	va_start(ap, format);
-	int retVal = strvprintf(str, format, ap);
-	va_end(ap);
-	return retVal;
-}
-
-std::string strformat(std::string &str, const char *format, ...)
-{
-	std::string retVal;
-	va_list ap;
-	va_start(ap, format);
-	strvprintf(str, format, ap);
-	va_end(ap);
-	retVal.assign(str);
-	return retVal;
-}
-
-=======
->>>>>>> upstream/master
 int strcatvprintf(std::string &str, const char *format, va_list args)
 {
 	char tempbuf[4096];
@@ -307,18 +151,6 @@ int strcatvprintf(std::string &str, const char *format, va_list args)
 	return result;
 }
 
-<<<<<<< HEAD
-int strcatprintf(std::string &str, const char *format, ...)
-{
-	va_list ap;
-	va_start(ap, format);
-	int retVal = strcatvprintf(str, format, ap);
-	va_end(ap);
-	return retVal;
-}
-
-=======
->>>>>>> upstream/master
 void strdelchr(std::string& str, char chr)
 {
 	for (size_t i = 0; i < str.length(); i++)
@@ -333,35 +165,6 @@ void strdelchr(std::string& str, char chr)
 
 void strreplacechr(std::string& str, char ch, char newch)
 {
-<<<<<<< HEAD
-	for (size_t i = 0; i < str.length(); i++)
-	{
-		if (str[i] == ch) str[i] = newch;
-	}
-}
-
-std::string strtrimspace(std::string& str)
-{
-	int start = 0;
-	for (size_t i = 0; i < str.length(); i++)
-	{
-		if (!isspace(UINT8(str[i])))  break;
-		start++;
-	}
-	int end = str.length();
-	if (end > 0)
-	{
-		for (size_t i = str.length() - 1; i > 0; i--)
-		{
-			if (!isspace(UINT8(str[i]))) break;
-			end--;
-		}
-	}
-	str = str.substr(start, end-start);
-	return str;
-}
-
-=======
 	for (auto & elem : str)
 	{
 		if (elem == ch) elem = newch;
@@ -403,15 +206,12 @@ std::string strtrimrightspace(std::string& str)
 	return internal_strtrimspace(str, true);
 }
 
->>>>>>> upstream/master
 std::string strmakeupper(std::string& str)
 {
 	std::transform(str.begin(), str.end(), str.begin(), ::toupper);
 	return str;
 }
 
-<<<<<<< HEAD
-=======
 /**
  * @fn  std::string strmakelower(std::string& str)
  *
@@ -422,15 +222,12 @@ std::string strmakeupper(std::string& str)
  * @return  A std::string.
  */
 
->>>>>>> upstream/master
 std::string strmakelower(std::string& str)
 {
 	std::transform(str.begin(), str.end(), str.begin(), ::tolower);
 	return str;
 }
 
-<<<<<<< HEAD
-=======
 /**
  * @fn  int strreplace(std::string &str, const std::string& search, const std::string& replace)
  *
@@ -443,7 +240,6 @@ std::string strmakelower(std::string& str)
  * @return  An int.
  */
 
->>>>>>> upstream/master
 int strreplace(std::string &str, const std::string& search, const std::string& replace)
 {
 	int searchlen = search.length();
@@ -456,8 +252,4 @@ int strreplace(std::string &str, const std::string& search, const std::string& r
 		str.erase(curindex, searchlen).insert(curindex, replace);
 	}
 	return matches;
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> upstream/master

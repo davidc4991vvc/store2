@@ -7,14 +7,6 @@
 
     Emulation by Bryan McPhail, mish@tendril.co.uk
 
-<<<<<<< HEAD
-    This board is a modified PC-Engine PCB, differences from PC-Engine console:
-
-    Input ports are different (2 dips, 2 joysticks, 1 coin port)
-    _Interface_ to palette chip is different, palette data is the same.
-    Extra sound chips, and extra processor to drive them.
-    Twice as much VRAM.
-=======
     This board is based on the Hudson HuC6280 and Huc6270 IC's used in
     the NEC PC-Engine.
 
@@ -24,14 +16,11 @@
     palette data is the same.
     Extra sound chips (YM2203 & Oki M5205), and extra HuC6280 processor to drive them.
     Twice as much VRAM (128kb).
->>>>>>> upstream/master
 
     Todo:
     - There seems to be a bug with a stuck note from the YM2203 FM channel
       at the start of scene 3 and near the ending when your characters are
       flying over a forest in a helicopter.
-<<<<<<< HEAD
-=======
       This is verified to NOT happen on real hardware - Guru
 
 **********************************************************************
@@ -100,23 +89,15 @@ Notes:
      RCDM-I1 - Custom Ceramic Resistor Array
        VSync - 59.12246Hz   \
        HSync - 15.60838kHz  / measured on pins 25/26 of the HuC6270
->>>>>>> upstream/master
 
 **********************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/h6280/h6280.h"
-#include "sound/2203intf.h"
-#include "sound/c6280.h"
-#include "includes/battlera.h"
-=======
 #include "includes/battlera.h"
 #include "cpu/h6280/h6280.h"
 #include "sound/2203intf.h"
 #include "sound/c6280.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 void battlera_state::machine_start()
@@ -132,11 +113,7 @@ WRITE8_MEMBER(battlera_state::sound_w)
 {
 	if (offset == 0)
 	{
-<<<<<<< HEAD
-		soundlatch_byte_w(space,0,data);
-=======
 		m_soundlatch->write(space, 0, data);
->>>>>>> upstream/master
 		m_audiocpu->set_input_line(0, HOLD_LINE);
 	}
 }
@@ -211,11 +188,7 @@ static ADDRESS_MAP_START( sound_map, AS_PROGRAM, 8, battlera_state )
 	AM_RANGE(0x080000, 0x080001) AM_WRITE(adpcm_data_w)
 	AM_RANGE(0x1fe800, 0x1fe80f) AM_DEVWRITE("c6280", c6280_device, c6280_w)
 	AM_RANGE(0x1f0000, 0x1f1fff) AM_RAMBANK("bank7") /* Main ram */
-<<<<<<< HEAD
-	AM_RANGE(0x1ff000, 0x1ff001) AM_READ(soundlatch_byte_r) AM_WRITE(adpcm_reset_w)
-=======
 	AM_RANGE(0x1ff000, 0x1ff001) AM_DEVREAD("soundlatch", generic_latch_8_device, read) AM_WRITE(adpcm_reset_w)
->>>>>>> upstream/master
 	AM_RANGE(0x1ff400, 0x1ff403) AM_DEVWRITE("audiocpu", h6280_device, irq_status_w)
 ADDRESS_MAP_END
 
@@ -288,22 +261,14 @@ INPUT_PORTS_END
 
 /******************************************************************************/
 
-<<<<<<< HEAD
-UINT32 battlera_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t battlera_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	m_huc6260->video_update( bitmap, cliprect );
 	return 0;
 }
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( battlera, battlera_state )
-=======
 static MACHINE_CONFIG_START( battlera )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", H6280,21477200/3)
@@ -315,11 +280,7 @@ static MACHINE_CONFIG_START( battlera )
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
-<<<<<<< HEAD
-	MCFG_SCREEN_RAW_PARAMS(MAIN_CLOCK, HUC6260_WPF, 64, 64 + 1024 + 64, HUC6260_LPF, 18, 18 + 242)
-=======
 	MCFG_SCREEN_RAW_PARAMS(MAIN_CLOCK, huc6260_device::WPF, 64, 64 + 1024 + 64, huc6260_device::LPF, 18, 18 + 242)
->>>>>>> upstream/master
 	MCFG_SCREEN_UPDATE_DRIVER( battlera_state, screen_update )
 	MCFG_SCREEN_PALETTE("huc6260:palette")
 
@@ -334,24 +295,6 @@ static MACHINE_CONFIG_START( battlera )
 	MCFG_HUC6270_IRQ_CHANGED_CB(INPUTLINE("maincpu", 0))
 
 	/* sound hardware */
-<<<<<<< HEAD
-	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
-
-	MCFG_SOUND_ADD("ymsnd", YM2203, 12000000 / 8)
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 0.40)
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 0.40)
-
-	MCFG_SOUND_ADD("msm", MSM5205, 384000)
-	MCFG_MSM5205_VCLK_CB(WRITELINE(battlera_state, adpcm_int)) /* interrupt function */
-	MCFG_MSM5205_PRESCALER_SELECTOR(MSM5205_S48_4B)      /* 8KHz            */
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 0.85)
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 0.85)
-
-	MCFG_SOUND_ADD("c6280", C6280, 21477270/6)
-	MCFG_C6280_CPU("audiocpu")
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 0.60)
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 0.60)
-=======
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
@@ -367,7 +310,6 @@ static MACHINE_CONFIG_START( battlera )
 	MCFG_SOUND_ADD("c6280", C6280, 21477270/6)
 	MCFG_C6280_CPU("audiocpu")
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.60)
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 /******************************************************************************/
@@ -430,12 +372,6 @@ ROM_END
 
 /******************************************************************************/
 
-<<<<<<< HEAD
-GAME( 1988, battlera, 0,        battlera, battlera, driver_device,  0,   ROT0, "Data East Corporation", "Battle Rangers (World)", MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
-GAME( 1988, bldwolf,  battlera, battlera, battlera, driver_device,  0,   ROT0, "Data East USA", "Bloody Wolf (US)", MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
-GAME( 1988, bldwolfj, battlera, battlera, battlera, driver_device,  0,   ROT0, "Data East Corporation", "Narazumono Sentoubutai Bloody Wolf (Japan)", MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1988, battlera, 0,        battlera, battlera, battlera_state,  0,   ROT0, "Data East Corporation", "Battle Rangers (World)",                     MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
 GAME( 1988, bldwolf,  battlera, battlera, battlera, battlera_state,  0,   ROT0, "Data East USA",         "Bloody Wolf (US)",                           MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
 GAME( 1988, bldwolfj, battlera, battlera, battlera, battlera_state,  0,   ROT0, "Data East Corporation", "Narazumono Sentoubutai Bloody Wolf (Japan)", MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

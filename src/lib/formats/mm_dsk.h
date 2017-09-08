@@ -17,15 +17,9 @@ class mm1_format : public upd765_format {
 public:
 	mm1_format();
 
-<<<<<<< HEAD
-	virtual const char *name() const;
-	virtual const char *description() const;
-	virtual const char *extensions() const;
-=======
 	virtual const char *name() const override;
 	virtual const char *description() const override;
 	virtual const char *extensions() const override;
->>>>>>> upstream/master
 
 private:
 	static const format formats[];
@@ -35,15 +29,9 @@ class mm2_format : public upd765_format {
 public:
 	mm2_format();
 
-<<<<<<< HEAD
-	virtual const char *name() const;
-	virtual const char *description() const;
-	virtual const char *extensions() const;
-=======
 	virtual const char *name() const override;
 	virtual const char *description() const override;
 	virtual const char *extensions() const override;
->>>>>>> upstream/master
 
 private:
 	static const format formats[];

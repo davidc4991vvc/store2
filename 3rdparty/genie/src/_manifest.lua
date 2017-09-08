@@ -26,28 +26,6 @@
 		"base/api.lua",
 		"base/cmdline.lua",
 		"base/inspect.lua",
-<<<<<<< HEAD
-		"tools/dotnet.lua",
-		"tools/gcc.lua",
-		"tools/msc.lua",
-		"tools/ow.lua",
-		"tools/snc.lua",
-		"base/validate.lua",
-		"base/help.lua",
-		"base/premake.lua",
-
-		-- CodeBlocks action
-		"actions/codeblocks/_codeblocks.lua",
-		"actions/codeblocks/codeblocks_workspace.lua",
-		"actions/codeblocks/codeblocks_cbp.lua",
-
-		-- CodeLite action
-		"actions/codelite/_codelite.lua",
-		"actions/codelite/codelite_workspace.lua",
-		"actions/codelite/codelite_project.lua",
-
-		-- CodeLite action
-=======
 		"base/profiler.lua",
 		"tools/dotnet.lua",
 		"tools/gcc.lua",
@@ -64,7 +42,6 @@
 		"base/set.lua",
 
 		-- CMake action
->>>>>>> upstream/master
 		"actions/cmake/_cmake.lua",
 		"actions/cmake/cmake_workspace.lua",
 		"actions/cmake/cmake_project.lua",
@@ -74,21 +51,6 @@
 		"actions/make/make_solution.lua",
 		"actions/make/make_cpp.lua",
 		"actions/make/make_csharp.lua",
-<<<<<<< HEAD
-
-		-- Visual Studio actions
-		"actions/vstudio/_vstudio.lua",
-		"actions/vstudio/vs200x_vcproj.lua",
-		"actions/vstudio/vs200x_vcproj_user.lua",
-		"actions/vstudio/vs2005_solution.lua",
-		"actions/vstudio/vs2005_csproj.lua",
-		"actions/vstudio/vs2005_csproj_user.lua",
-		"actions/vstudio/vs2010_vcxproj.lua",
-		"actions/vstudio/vs2010_vcxproj_filters.lua",
-		"actions/vstudio/vs2012.lua",
-		"actions/vstudio/vs2013.lua",
-		"actions/vstudio/vs2015.lua",
-=======
 		"actions/make/make_vala.lua",
 		"actions/make/make_swift.lua",
 
@@ -102,7 +64,6 @@
 		"actions/vstudio/vs2013.lua",
 		"actions/vstudio/vs2015.lua",
 		"actions/vstudio/vs2017.lua",
->>>>>>> upstream/master
 
 		-- Xcode action
 		"actions/xcode/_xcode.lua",
@@ -112,10 +73,6 @@
 		-- Xcode4 action
 		"actions/xcode/xcode4_workspace.lua",
 
-<<<<<<< HEAD
-		-- Clean action
-		"actions/clean/_clean.lua",
-=======
 		-- Xcode6 action
 		"actions/xcode/xcode6_project.lua",
 		"actions/xcode/xcode6_config.lua",
@@ -138,5 +95,4 @@
 		"actions/qbs/qbs_base.lua",
 		"actions/qbs/qbs_solution.lua",
 		"actions/qbs/qbs_cpp.lua",
->>>>>>> upstream/master
 	}

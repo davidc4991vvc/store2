@@ -23,31 +23,6 @@
 //  DEBUGGERY
 //**************************************************************************
 
-<<<<<<< HEAD
-#define DEBUG_LOG           1
-#define DEBUG_LEVEL         0
-
-#if DEBUG_LOG
-	#define VERBOSE_LOG(machine, level, ...)        verbose_log(machine, level, __VA_ARGS__)
-#else
-	#define VERBOSE_LOG(machine, level, ...)
-#endif
-
-static void ATTR_PRINTF(3,4) verbose_log(running_machine &machine, int level, const char* format, ...)
-{
-	if (level <= DEBUG_LEVEL)
-	{
-		char buffer[32768];
-		va_list v;
-
-		va_start(v, format);
-		vsprintf(buffer, format, v);
-		va_end(v);
-
-		printf("53C7XX (%s): %s", machine.describe_context(), buffer);
-	}
-}
-=======
 #define LOG_UNHANDLED       (1U << 0)
 #define LOG_HOST            (1U << 1)
 #define LOG_STATE           (1U << 2)
@@ -100,30 +75,20 @@ static void ATTR_PRINTF(3,4) verbose_log(running_machine &machine, int level, co
 #define DSTAT_SSI           0x08
 #define DSTAT_ABRT          0x10
 #define DSTAT_DFE           0x80
->>>>>>> upstream/master
 
 
 //**************************************************************************
 //  LIVE DEVICE
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type NCR53C7XX = &device_creator<ncr53c7xx_device>;
-=======
 DEFINE_DEVICE_TYPE(NCR53C7XX, ncr53c7xx_device, "ncr537xx", "NCR 53C7xx SCSI")
->>>>>>> upstream/master
 
 //-------------------------------------------------
 //  ncr53c7xx_device - constructor/destructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-ncr53c7xx_device::ncr53c7xx_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	:   nscsi_device(mconfig, NCR53C7XX, "53C7xx SCSI", tag, owner, clock, "ncr537xx", __FILE__),
-=======
 ncr53c7xx_device::ncr53c7xx_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	:   nscsi_device(mconfig, NCR53C7XX, tag, owner, clock),
->>>>>>> upstream/master
 		device_execute_interface(mconfig, *this),
 		m_icount(0),
 		m_irq_handler(*this),
@@ -249,15 +214,9 @@ void ncr53c7xx_device::device_reset()
 
 READ32_MEMBER( ncr53c7xx_device::read )
 {
-<<<<<<< HEAD
-	VERBOSE_LOG(machine(), 1, "REG R: [%x] (%08X)\n", offset, mem_mask);
-
-	UINT32 ret = 0;
-=======
 	LOGMASKED(LOG_HOST, "%s: REG R: [%x] (%08X)\n", machine().describe_context(), offset, mem_mask);
 
 	uint32_t ret = 0;
->>>>>>> upstream/master
 
 	switch (offset)
 	{
@@ -484,11 +443,7 @@ READ32_MEMBER( ncr53c7xx_device::read )
 
 		default:
 		{
-<<<<<<< HEAD
-			VERBOSE_LOG(machine(), 0, "Unhandled register access");
-=======
 			LOGMASKED(LOG_UNHANDLED, "%s: Unhandled register access", machine().describe_context());
->>>>>>> upstream/master
 		}
 	}
 
@@ -502,11 +457,7 @@ READ32_MEMBER( ncr53c7xx_device::read )
 
 WRITE32_MEMBER( ncr53c7xx_device::write )
 {
-<<<<<<< HEAD
-	VERBOSE_LOG(machine(), 1, "REG W: [%x] (%08X) %x\n", offset, mem_mask, data);
-=======
 	LOGMASKED(LOG_HOST, "%s: REG W: [%x] (%08X) %x\n", offset, mem_mask, data, machine().describe_context());
->>>>>>> upstream/master
 
 	switch (offset)
 	{
@@ -705,11 +656,7 @@ WRITE32_MEMBER( ncr53c7xx_device::write )
 
 		default:
 		{
-<<<<<<< HEAD
-			VERBOSE_LOG(machine(), 0, "Unhandled register access");
-=======
 			LOGMASKED(LOG_UNHANDLED, "%s: Unhandled register access", machine().describe_context());
->>>>>>> upstream/master
 		}
 	}
 }
@@ -744,11 +691,7 @@ void ncr53c7xx_device::update_irqs()
 
 void ncr53c7xx_device::set_scsi_state(int state)
 {
-<<<<<<< HEAD
-	VERBOSE_LOG(machine(), 2, "SCSI state change: %x to %x\n", m_scsi_state, state);
-=======
 	LOGMASKED(LOG_STATE, "SCSI state change: %x to %x\n", m_scsi_state, state);
->>>>>>> upstream/master
 
 	m_scsi_state = state;
 }
@@ -786,11 +729,7 @@ void ncr53c7xx_device::send_byte()
 
 	set_scsi_state( (m_scsi_state & STATE_MASK) | (SEND_WAIT_SETTLE << SUB_SHIFT) );
 
-<<<<<<< HEAD
-	UINT32 data = m_host_read(m_dnad & ~3, 0xffffffff);
-=======
 	uint32_t data = m_host_read(m_dnad & ~3, 0xffffffff);
->>>>>>> upstream/master
 	data = data >> ((m_dnad & 3) * 8) & 0xff;
 
 	++m_dnad;
@@ -832,17 +771,10 @@ void ncr53c7xx_device::device_timer(emu_timer &timer, device_timer_id id, int pa
 
 void ncr53c7xx_device::step(bool timeout)
 {
-<<<<<<< HEAD
-	UINT32 ctrl = scsi_bus->ctrl_r();
-	UINT32 data = scsi_bus->data_r();
-
-	VERBOSE_LOG(machine(), 2, "Step: CTRL:%x DATA:%x (%d.%d) Timeout:%d\n", ctrl, data, m_scsi_state & STATE_MASK, m_scsi_state >> SUB_SHIFT, timeout);
-=======
 	uint32_t ctrl = scsi_bus->ctrl_r();
 	uint32_t data = scsi_bus->data_r();
 
 	LOGMASKED(LOG_STATE, "Step: CTRL:%x DATA:%x (%d.%d) Timeout:%d\n", ctrl, data, m_scsi_state & STATE_MASK, m_scsi_state >> SUB_SHIFT, timeout);
->>>>>>> upstream/master
 
 	// Check for disconnect from target
 	if (!(m_scntl[0] & SCNTL0_TRG) && m_connected && !(ctrl & S_BSY))
@@ -951,11 +883,7 @@ void ncr53c7xx_device::step(bool timeout)
 			if (((m_scntl[0] >> SCNTL0_ARB_SHIFT) & SCNTL0_ARB_MASK) == 3)
 			{
 				int win;
-<<<<<<< HEAD
-				for (win = 7; win >=0 && !(data & (1 << win)); win--);
-=======
 				for (win = 7; win >=0 && !(data & (1 << win)); win--) {};
->>>>>>> upstream/master
 
 				if ((1 << win) != m_scid)
 				{
@@ -1159,13 +1087,8 @@ void ncr53c7xx_device::step(bool timeout)
 			{
 				m_last_data = scsi_bus->data_r();
 
-<<<<<<< HEAD
-				UINT32 shift = (8 * (m_dnad & 3));
-				UINT32 mem_mask = 0xff << shift;
-=======
 				uint32_t shift = (8 * (m_dnad & 3));
 				uint32_t mem_mask = 0xff << shift;
->>>>>>> upstream/master
 				m_host_write(m_dnad & ~3, data << shift, mem_mask);
 
 				++m_dnad;
@@ -1244,11 +1167,7 @@ void ncr53c7xx_device::execute_run()
 				m_finished = false;
 
 				// Fetch the instruction
-<<<<<<< HEAD
-				UINT32 inst = m_host_read(m_dsp, 0xffffffff);
-=======
 				uint32_t inst = m_host_read(m_dsp, 0xffffffff);
->>>>>>> upstream/master
 
 				m_dcmd = inst >> 24;
 				m_dbc = inst & 0xffffff;
@@ -1275,11 +1194,7 @@ void ncr53c7xx_device::execute_run()
 						illegal();
 				}
 
-<<<<<<< HEAD
-				VERBOSE_LOG(machine(), 3, "%s", disassemble_scripts());
-=======
 				LOGMASKED(LOG_SCRIPTS, "%s", disassemble_scripts());
->>>>>>> upstream/master
 				break;
 			}
 
@@ -1501,11 +1416,7 @@ void ncr53c7xx_device::bm_i_wmov()
 		{
 			if (m_dbc == 0)
 			{
-<<<<<<< HEAD
-				VERBOSE_LOG(machine(), 0, "DBC should not be 0\n");
-=======
 				LOGMASKED(LOG_UNHANDLED, "DBC should not be 0\n");
->>>>>>> upstream/master
 				illegal();
 			}
 
@@ -1652,11 +1563,7 @@ void ncr53c7xx_device::io_i_waitreselect()
 
 void ncr53c7xx_device::io_i_set()
 {
-<<<<<<< HEAD
-	UINT32 mask = 0;
-=======
 	uint32_t mask = 0;
->>>>>>> upstream/master
 
 	if (m_dbc & (1 << 3))
 		mask |= S_ATN;
@@ -1676,11 +1583,7 @@ void ncr53c7xx_device::io_i_set()
 
 void ncr53c7xx_device::io_i_clear()
 {
-<<<<<<< HEAD
-	UINT32 mask = 0;
-=======
 	uint32_t mask = 0;
->>>>>>> upstream/master
 
 	if (m_dbc & (1 << 3))
 		mask |= S_ATN;

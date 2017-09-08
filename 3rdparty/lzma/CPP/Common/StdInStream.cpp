@@ -8,15 +8,6 @@
 #include "StringConvert.h"
 #include "UTFConvert.h"
 
-<<<<<<< HEAD
-#ifdef _MSC_VER
-// "was declared deprecated" disabling
-#pragma warning(disable : 4996 )
-#endif
-
-static const char kIllegalChar = '\0';
-=======
->>>>>>> upstream/master
 static const char kNewLineChar = '\n';
 
 static const char *kEOFMessage = "Unexpected end of input stream";
@@ -29,11 +20,7 @@ extern int g_CodePage;
 
 CStdInStream g_StdIn(stdin);
 
-<<<<<<< HEAD
-bool CStdInStream::Open(LPCTSTR fileName)
-=======
 bool CStdInStream::Open(LPCTSTR fileName) throw()
->>>>>>> upstream/master
 {
   Close();
   _stream = _tfopen(fileName, kFileOpenMode);
@@ -41,11 +28,7 @@ bool CStdInStream::Open(LPCTSTR fileName) throw()
   return _streamIsOpen;
 }
 
-<<<<<<< HEAD
-bool CStdInStream::Close()
-=======
 bool CStdInStream::Close() throw()
->>>>>>> upstream/master
 {
   if (!_streamIsOpen)
     return true;
@@ -53,14 +36,6 @@ bool CStdInStream::Close() throw()
   return !_streamIsOpen;
 }
 
-<<<<<<< HEAD
-CStdInStream::~CStdInStream()
-{
-  Close();
-}
-
-=======
->>>>>>> upstream/master
 AString CStdInStream::ScanStringUntilNewLine(bool allowEOF)
 {
   AString s;
@@ -73,13 +48,8 @@ AString CStdInStream::ScanStringUntilNewLine(bool allowEOF)
         break;
       throw kEOFMessage;
     }
-<<<<<<< HEAD
-    char c = char(intChar);
-    if (c == kIllegalChar)
-=======
     char c = (char)intChar;
     if (c == 0)
->>>>>>> upstream/master
       throw kIllegalCharMessage;
     if (c == kNewLineChar)
       break;
@@ -107,17 +77,10 @@ void CStdInStream::ReadToString(AString &resultString)
   resultString.Empty();
   int c;
   while ((c = GetChar()) != EOF)
-<<<<<<< HEAD
-    resultString += char(c);
-}
-
-bool CStdInStream::Eof()
-=======
     resultString += (char)c;
 }
 
 bool CStdInStream::Eof() throw()
->>>>>>> upstream/master
 {
   return (feof(_stream) != 0);
 }
@@ -129,8 +92,3 @@ int CStdInStream::GetChar()
     throw kReadErrorMessage;
   return c;
 }
-<<<<<<< HEAD
-
-
-=======
->>>>>>> upstream/master

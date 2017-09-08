@@ -5,13 +5,6 @@
  *
  */
 
-<<<<<<< HEAD
-#include "solver/nld_solver.h"
-#include "analog/nld_bjt.h"
-#include "nl_setup.h"
-
-NETLIB_NAMESPACE_DEVICES_START()
-=======
 #include "../solver/nld_solver.h"
 #include "nlid_twoterm.h"
 #include "../nl_setup.h"
@@ -22,7 +15,6 @@ namespace netlist
 {
 	namespace analog
 	{
->>>>>>> upstream/master
 
 class diode
 {
@@ -40,15 +32,9 @@ public:
 		m_VT = 0.0258 * n;
 		m_VT_inv = 1.0 / m_VT;
 	}
-<<<<<<< HEAD
-	nl_double I(const nl_double V) const { return m_Is * nl_math::exp(V * m_VT_inv) - m_Is; }
-	nl_double g(const nl_double V) const { return m_Is * m_VT_inv * nl_math::exp(V * m_VT_inv); }
-	nl_double V(const nl_double I) const { return nl_math::e_log1p(I / m_Is) * m_VT; } // log1p(x)=log(1.0 + x)
-=======
 	nl_double I(const nl_double V) const { return m_Is * std::exp(V * m_VT_inv) - m_Is; }
 	nl_double g(const nl_double V) const { return m_Is * m_VT_inv * std::exp(V * m_VT_inv); }
 	nl_double V(const nl_double I) const { return std::log1p(I / m_Is) * m_VT; } // log1p(x)=log(1.0 + x)
->>>>>>> upstream/master
 	nl_double gI(const nl_double I) const { return m_VT_inv * (I + m_Is); }
 
 private:
@@ -57,62 +43,6 @@ private:
 	nl_double m_VT_inv;
 };
 
-<<<<<<< HEAD
-
-
-// ----------------------------------------------------------------------------------------
-// nld_Q
-// ----------------------------------------------------------------------------------------
-
-NETLIB_NAME(Q)::NETLIB_NAME(Q)(const family_t afamily)
-: device_t(afamily)
-, m_qtype(BJT_NPN) { }
-
-NETLIB_NAME(Q)::~NETLIB_NAME(Q)()
-{
-}
-
-
-NETLIB_START(Q)
-{
-	register_param("MODEL", m_model, "");
-}
-
-NETLIB_RESET(Q)
-{
-}
-
-NETLIB_UPDATE(Q)
-{
-//    netlist().solver()->schedule1();
-}
-
-// ----------------------------------------------------------------------------------------
-// nld_QBJT_switch
-// ----------------------------------------------------------------------------------------
-
-NETLIB_START(QBJT_switch)
-{
-	NETLIB_NAME(Q)::start();
-
-	register_terminal("B", m_RB.m_P);
-	register_terminal("E", m_RB.m_N);
-	register_terminal("C", m_RC.m_P);
-	register_terminal("_E1", m_RC.m_N);
-
-	register_terminal("_B1", m_BC_dummy.m_P);
-	register_terminal("_C1", m_BC_dummy.m_N);
-
-	connect_late(m_RB.m_N, m_RC.m_N);
-
-	connect_late(m_RB.m_P, m_BC_dummy.m_P);
-	connect_late(m_RC.m_P, m_BC_dummy.m_N);
-
-	save(NLNAME(m_state_on));
-
-}
-
-=======
 // -----------------------------------------------------------------------------
 // nld_Q - Base classes
 // -----------------------------------------------------------------------------
@@ -363,7 +293,6 @@ NETLIB_UPDATE(Q)
 // ----------------------------------------------------------------------------------------
 
 
->>>>>>> upstream/master
 NETLIB_RESET(QBJT_switch)
 {
 	NETLIB_NAME(Q)::reset();
@@ -380,33 +309,19 @@ NETLIB_RESET(QBJT_switch)
 NETLIB_UPDATE(QBJT_switch)
 {
 	if (!m_RB.m_P.net().isRailNet())
-<<<<<<< HEAD
-		m_RB.m_P.schedule_solve();   // Basis
-	else if (!m_RB.m_N.net().isRailNet())
-		m_RB.m_N.schedule_solve();   // Emitter
-	else if (!m_RC.m_P.net().isRailNet())
-		m_RC.m_P.schedule_solve();   // Collector
-=======
 		m_RB.m_P.solve_now();   // Basis
 	else if (!m_RB.m_N.net().isRailNet())
 		m_RB.m_N.solve_now();   // Emitter
 	else if (!m_RC.m_P.net().isRailNet())
 		m_RC.m_P.solve_now();   // Collector
->>>>>>> upstream/master
 }
 
 
 NETLIB_UPDATE_PARAM(QBJT_switch)
 {
-<<<<<<< HEAD
-	nl_double IS = m_model.model_value("IS");
-	nl_double BF = m_model.model_value("BF");
-	nl_double NF = m_model.model_value("NF");
-=======
 	nl_double IS = m_model.m_IS;
 	nl_double BF = m_model.m_BF;
 	nl_double NF = m_model.m_NF;
->>>>>>> upstream/master
 	//nl_double VJE = m_model.dValue("VJE", 0.75);
 
 	set_qtype((m_model.model_type() == "NPN") ? BJT_NPN : BJT_PNP);
@@ -435,11 +350,7 @@ NETLIB_UPDATE_TERMINALS(QBJT_switch)
 {
 	const nl_double m = (is_qtype( BJT_NPN) ? 1 : -1);
 
-<<<<<<< HEAD
-	const int new_state = (m_RB.deltaV() * m > m_V ) ? 1 : 0;
-=======
 	const unsigned new_state = (m_RB.deltaV() * m > m_V ) ? 1 : 0;
->>>>>>> upstream/master
 	if (m_state_on ^ new_state)
 	{
 		const nl_double gb = new_state ? m_gB : netlist().gmin();
@@ -448,11 +359,6 @@ NETLIB_UPDATE_TERMINALS(QBJT_switch)
 
 		m_RB.set(gb, v,   0.0);
 		m_RC.set(gc, 0.0, 0.0);
-<<<<<<< HEAD
-		//m_RB.update_dev();
-		//m_RC.update_dev();
-=======
->>>>>>> upstream/master
 		m_state_on = new_state;
 	}
 }
@@ -462,47 +368,15 @@ NETLIB_UPDATE_TERMINALS(QBJT_switch)
 // nld_Q - Ebers Moll
 // ----------------------------------------------------------------------------------------
 
-<<<<<<< HEAD
-NETLIB_START(QBJT_EB)
-{
-	NETLIB_NAME(Q)::start();
-
-	register_terminal("E", m_D_EB.m_P);   // Cathode
-	register_terminal("B", m_D_EB.m_N);   // Anode
-
-	register_terminal("C", m_D_CB.m_P);   // Cathode
-	register_terminal("_B1", m_D_CB.m_N); // Anode
-
-	register_terminal("_E1", m_D_EC.m_P);
-	register_terminal("_C1", m_D_EC.m_N);
-
-	connect_late(m_D_EB.m_P, m_D_EC.m_P);
-	connect_late(m_D_EB.m_N, m_D_CB.m_N);
-	connect_late(m_D_CB.m_P, m_D_EC.m_N);
-
-	m_gD_BE.save("m_D_BE", *this);
-	m_gD_BC.save("m_D_BC", *this);
-
-}
-=======
->>>>>>> upstream/master
 
 NETLIB_UPDATE(QBJT_EB)
 {
 	if (!m_D_EB.m_P.net().isRailNet())
-<<<<<<< HEAD
-		m_D_EB.m_P.schedule_solve();   // Basis
-	else if (!m_D_EB.m_N.net().isRailNet())
-		m_D_EB.m_N.schedule_solve();   // Emitter
-	else
-		m_D_CB.m_N.schedule_solve();   // Collector
-=======
 		m_D_EB.m_P.solve_now();   // Basis
 	else if (!m_D_EB.m_N.net().isRailNet())
 		m_D_EB.m_N.solve_now();   // Emitter
 	else
 		m_D_CB.m_N.solve_now();   // Collector
->>>>>>> upstream/master
 }
 
 NETLIB_RESET(QBJT_EB)
@@ -526,36 +400,22 @@ NETLIB_UPDATE_TERMINALS(QBJT_EB)
 	const nl_double Ie = (sIe + gee * m_gD_BE.Vd() - gec * m_gD_BC.Vd()) * polarity;
 	const nl_double Ic = (sIc - gce * m_gD_BE.Vd() + gcc * m_gD_BC.Vd()) * polarity;
 
-<<<<<<< HEAD
-	m_D_EB.set_mat(gee, gec - gee, gce - gee, gee - gec, Ie, -Ie);
-	m_D_CB.set_mat(gcc, gce - gcc, gec - gcc, gcc - gce, Ic, -Ic);
-	m_D_EC.set_mat( 0,    -gec,      -gce,        0,       0,   0);
-=======
 	m_D_EB.set_mat(      gee, gec - gee,  -Ie,
 				   gce - gee, gee - gec,   Ie);
 	m_D_CB.set_mat(      gcc, gce - gcc,  -Ic,
 				   gec - gcc, gcc - gce,   Ic);
 	m_D_EC.set_mat(        0,      -gec,    0,
 						-gce,         0,    0);
->>>>>>> upstream/master
 }
 
 
 NETLIB_UPDATE_PARAM(QBJT_EB)
 {
-<<<<<<< HEAD
-	nl_double IS = m_model.model_value("IS");
-	nl_double BF = m_model.model_value("BF");
-	nl_double NF = m_model.model_value("NF");
-	nl_double BR = m_model.model_value("BR");
-	nl_double NR = m_model.model_value("NR");
-=======
 	nl_double IS = m_model.m_IS;
 	nl_double BF = m_model.m_BF;
 	nl_double NF = m_model.m_NF;
 	nl_double BR = m_model.m_BR;
 	nl_double NR = m_model.m_NR;
->>>>>>> upstream/master
 	//nl_double VJE = m_model.dValue("VJE", 0.75);
 
 	set_qtype((m_model.model_type() == "NPN") ? BJT_NPN : BJT_PNP);
@@ -567,9 +427,6 @@ NETLIB_UPDATE_PARAM(QBJT_EB)
 	m_gD_BC.set_param(IS / m_alpha_r, NR, netlist().gmin());
 }
 
-<<<<<<< HEAD
-NETLIB_NAMESPACE_DEVICES_END()
-=======
 	} //namespace analog
 
 	namespace devices {
@@ -578,4 +435,3 @@ NETLIB_NAMESPACE_DEVICES_END()
 	}
 
 } // namespace netlist
->>>>>>> upstream/master

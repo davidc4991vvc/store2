@@ -1,27 +1,17 @@
 /*
-<<<<<<< HEAD
- * Copyright 2011-2015 Branimir Karadzic. All rights reserved.
- * License: http://www.opensource.org/licenses/BSD-2-Clause
-=======
  * Copyright 2011-2017 Branimir Karadzic. All rights reserved.
  * License: https://github.com/bkaradzic/bgfx#license-bsd-2-clause
->>>>>>> upstream/master
  */
 
 #include "common.h"
 #include "bgfx_utils.h"
 
-<<<<<<< HEAD
-=======
 #include <bgfx/embedded_shader.h>
 
->>>>>>> upstream/master
 // embedded shaders
 #include "vs_metaballs.bin.h"
 #include "fs_metaballs.bin.h"
 
-<<<<<<< HEAD
-=======
 static const bgfx::EmbeddedShader s_embeddedShaders[] =
 {
 	BGFX_EMBEDDED_SHADER(vs_metaballs),
@@ -30,7 +20,6 @@ static const bgfx::EmbeddedShader s_embeddedShaders[] =
 	BGFX_EMBEDDED_SHADER_END()
 };
 
->>>>>>> upstream/master
 struct PosNormalColorVertex
 {
 	float m_pos[3];
@@ -382,11 +371,7 @@ float vertLerp(float* __restrict _result, float _iso, uint32_t _idx0, float _v0,
 	const float* __restrict edge0 = s_cube[_idx0];
 	const float* __restrict edge1 = s_cube[_idx1];
 
-<<<<<<< HEAD
-	if (fabsf(_iso-_v1) < 0.00001f)
-=======
 	if (bx::fabsolute(_iso-_v1) < 0.00001f)
->>>>>>> upstream/master
 	{
 		_result[0] = edge1[0];
 		_result[1] = edge1[1];
@@ -394,13 +379,8 @@ float vertLerp(float* __restrict _result, float _iso, uint32_t _idx0, float _v0,
 		return 1.0f;
 	}
 
-<<<<<<< HEAD
-	if (fabsf(_iso-_v0) < 0.00001f
-	||  fabsf(_v0-_v1) < 0.00001f)
-=======
 	if (bx::fabsolute(_iso-_v0) < 0.00001f
 	||  bx::fabsolute(_v0-_v1) < 0.00001f)
->>>>>>> upstream/master
 	{
 		_result[0] = edge0[0];
 		_result[1] = edge0[1];
@@ -492,28 +472,16 @@ uint32_t triangulate(uint8_t* _result, uint32_t _stride, const float* __restrict
 
 #define DIMS 32
 
-<<<<<<< HEAD
-class Metaballs : public entry::AppI
-=======
 class ExampleMetaballs : public entry::AppI
->>>>>>> upstream/master
 {
 	void init(int _argc, char** _argv) BX_OVERRIDE
 	{
 		Args args(_argc, _argv);
-<<<<<<< HEAD
-		
-		m_width = 1280;
-		m_height = 720;
-		m_debug = BGFX_DEBUG_TEXT;
-		m_reset = BGFX_RESET_VSYNC;
-=======
 
 		m_width  = 1280;
 		m_height = 720;
 		m_debug  = BGFX_DEBUG_TEXT;
 		m_reset  = BGFX_RESET_VSYNC;
->>>>>>> upstream/master
 
 		bgfx::init(args.m_type, args.m_pciId);
 		bgfx::reset(m_width, m_height, m_reset);
@@ -532,42 +500,10 @@ class ExampleMetaballs : public entry::AppI
 		// Create vertex stream declaration.
 		PosNormalColorVertex::init();
 
-<<<<<<< HEAD
-		const bgfx::Memory* vs_metaballs;
-		const bgfx::Memory* fs_metaballs;
-
-		switch (bgfx::getRendererType() )
-		{
-			case bgfx::RendererType::Direct3D9:
-				vs_metaballs = bgfx::makeRef(vs_metaballs_dx9, sizeof(vs_metaballs_dx9) );
-				fs_metaballs = bgfx::makeRef(fs_metaballs_dx9, sizeof(fs_metaballs_dx9) );
-				break;
-
-			case bgfx::RendererType::Direct3D11:
-			case bgfx::RendererType::Direct3D12:
-				vs_metaballs = bgfx::makeRef(vs_metaballs_dx11, sizeof(vs_metaballs_dx11) );
-				fs_metaballs = bgfx::makeRef(fs_metaballs_dx11, sizeof(fs_metaballs_dx11) );
-				break;
-
-			case bgfx::RendererType::Metal:
-				vs_metaballs = bgfx::makeRef(vs_metaballs_mtl, sizeof(vs_metaballs_mtl) );
-				fs_metaballs = bgfx::makeRef(fs_metaballs_mtl, sizeof(fs_metaballs_mtl) );
-				break;
-
-			default:
-				vs_metaballs = bgfx::makeRef(vs_metaballs_glsl, sizeof(vs_metaballs_glsl) );
-				fs_metaballs = bgfx::makeRef(fs_metaballs_glsl, sizeof(fs_metaballs_glsl) );
-				break;
-		}
-
-		bgfx::ShaderHandle vsh = bgfx::createShader(vs_metaballs);
-		bgfx::ShaderHandle fsh = bgfx::createShader(fs_metaballs);
-=======
 		bgfx::RendererType::Enum type = bgfx::getRendererType();
 
 		bgfx::ShaderHandle vsh = bgfx::createEmbeddedShader(s_embeddedShaders, type, "vs_metaballs");
 		bgfx::ShaderHandle fsh = bgfx::createEmbeddedShader(s_embeddedShaders, type, "fs_metaballs");
->>>>>>> upstream/master
 
 		// Create program from shaders.
 		m_program = bgfx::createProgram(vsh, fsh, true /* destroy shaders when program is destroyed */);
@@ -598,11 +534,7 @@ class ExampleMetaballs : public entry::AppI
 		if (!entry::processEvents(m_width, m_height, m_debug, m_reset) )
 		{
 			// Set view 0 default viewport.
-<<<<<<< HEAD
-			bgfx::setViewRect(0, 0, 0, m_width, m_height);
-=======
 			bgfx::setViewRect(0, 0, 0, uint16_t(m_width), uint16_t(m_height) );
->>>>>>> upstream/master
 
 			// This dummy draw call is here to make sure that view 0 is cleared
 			// if no other draw calls are submitted to view 0.
@@ -630,15 +562,7 @@ class ExampleMetaballs : public entry::AppI
 			{
 				float view[16];
 				bx::mtxQuatTranslationHMD(view, hmd->eye[0].rotation, eye);
-<<<<<<< HEAD
-
-				float proj[16];
-				bx::mtxProj(proj, hmd->eye[0].fov, 0.1f, 100.0f);
-
-				bgfx::setViewTransform(0, view, proj);
-=======
 				bgfx::setViewTransform(0, view, hmd->eye[0].projection, BGFX_VIEW_STEREO, hmd->eye[1].projection);
->>>>>>> upstream/master
 
 				// Set view 0 default viewport.
 				//
@@ -652,19 +576,11 @@ class ExampleMetaballs : public entry::AppI
 				bx::mtxLookAt(view, eye, at);
 
 				float proj[16];
-<<<<<<< HEAD
-				bx::mtxProj(proj, 60.0f, float(m_width)/float(m_height), 0.1f, 100.0f);
-				bgfx::setViewTransform(0, view, proj);
-
-				// Set view 0 default viewport.
-				bgfx::setViewRect(0, 0, 0, m_width, m_height);
-=======
 				bx::mtxProj(proj, 60.0f, float(m_width)/float(m_height), 0.1f, 100.0f, bgfx::getCaps()->homogeneousDepth);
 				bgfx::setViewTransform(0, view, proj);
 
 				// Set view 0 default viewport.
 				bgfx::setViewRect(0, 0, 0, uint16_t(m_width), uint16_t(m_height) );
->>>>>>> upstream/master
 			}
 
 			// Stats.
@@ -682,17 +598,10 @@ class ExampleMetaballs : public entry::AppI
 			float sphere[numSpheres][4];
 			for (uint32_t ii = 0; ii < numSpheres; ++ii)
 			{
-<<<<<<< HEAD
-				sphere[ii][0] = sinf(time*(ii*0.21f)+ii*0.37f) * (DIMS * 0.5f - 8.0f);
-				sphere[ii][1] = sinf(time*(ii*0.37f)+ii*0.67f) * (DIMS * 0.5f - 8.0f);
-				sphere[ii][2] = cosf(time*(ii*0.11f)+ii*0.13f) * (DIMS * 0.5f - 8.0f);
-				sphere[ii][3] = 1.0f/(2.0f + (sinf(time*(ii*0.13f) )*0.5f+0.5f)*2.0f);
-=======
 				sphere[ii][0] = bx::fsin(time*(ii*0.21f)+ii*0.37f) * (DIMS * 0.5f - 8.0f);
 				sphere[ii][1] = bx::fsin(time*(ii*0.37f)+ii*0.67f) * (DIMS * 0.5f - 8.0f);
 				sphere[ii][2] = bx::fcos(time*(ii*0.11f)+ii*0.13f) * (DIMS * 0.5f - 8.0f);
 				sphere[ii][3] = 1.0f/(2.0f + (bx::fsin(time*(ii*0.13f) )*0.5f+0.5f)*2.0f);
->>>>>>> upstream/master
 			}
 
 			profUpdate = bx::getHPCounter();
@@ -850,13 +759,6 @@ class ExampleMetaballs : public entry::AppI
 
 	Grid* m_grid;
 	int64_t m_timeOffset;
-<<<<<<< HEAD
-
-};
-
-ENTRY_IMPLEMENT_MAIN(Metaballs);
-=======
 };
 
 ENTRY_IMPLEMENT_MAIN(ExampleMetaballs);
->>>>>>> upstream/master

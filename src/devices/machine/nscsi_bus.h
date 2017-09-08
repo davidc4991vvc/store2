@@ -1,17 +1,10 @@
 // license:BSD-3-Clause
 // copyright-holders:Olivier Galibert
-<<<<<<< HEAD
-#ifndef __NSCSI_BUS_H__
-#define __NSCSI_BUS_H__
-
-#include "emu.h"
-=======
 #ifndef MAME_MACHINE_NSCSI_BUS_H
 #define MAME_MACHINE_NSCSI_BUS_H
 
 #pragma once
 
->>>>>>> upstream/master
 
 #define MCFG_NSCSI_BUS_ADD(_tag)        \
 	MCFG_DEVICE_ADD(_tag, NSCSI_BUS, 0)
@@ -25,21 +18,6 @@ class nscsi_device;
 class nscsi_bus_device : public device_t
 {
 public:
-<<<<<<< HEAD
-	nscsi_bus_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	void ctrl_w(int refid, UINT32 lines, UINT32 mask);
-	void data_w(int refid, UINT32 lines);
-	void ctrl_wait(int refid, UINT32 lines, UINT32 mask);
-
-	UINT32 ctrl_r() const;
-	UINT32 data_r() const;
-
-protected:
-	virtual void device_start();
-	virtual void device_reset();
-	virtual void device_config_complete();
-=======
 	nscsi_bus_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	void ctrl_w(int refid, uint32_t lines, uint32_t mask);
@@ -53,28 +31,18 @@ protected:
 	virtual void device_start() override;
 	virtual void device_reset() override;
 	virtual void device_config_complete() override;
->>>>>>> upstream/master
 
 private:
 	struct dev_t {
 		nscsi_device *dev;
-<<<<<<< HEAD
-		UINT32 ctrl, wait_ctrl;
-		UINT32 data;
-=======
 		uint32_t ctrl, wait_ctrl;
 		uint32_t data;
->>>>>>> upstream/master
 	};
 
 	dev_t dev[16];
 	int devcnt;
 
-<<<<<<< HEAD
-	UINT32 data, ctrl;
-=======
 	uint32_t data, ctrl;
->>>>>>> upstream/master
 
 	void regen_data();
 	void regen_ctrl(int refid);
@@ -84,28 +52,16 @@ class nscsi_connector: public device_t,
 						public device_slot_interface
 {
 public:
-<<<<<<< HEAD
-	nscsi_connector(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-=======
 	nscsi_connector(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
->>>>>>> upstream/master
 	virtual ~nscsi_connector();
 
 	nscsi_device *get_device();
 
 protected:
-<<<<<<< HEAD
-	virtual void device_start();
-};
-
-class nscsi_device : public device_t,
-						public device_slot_card_interface
-=======
 	virtual void device_start() override;
 };
 
 class nscsi_device : public device_t, public device_slot_card_interface
->>>>>>> upstream/master
 {
 public:
 	// Here because the biggest users are the devices, not the bus
@@ -130,18 +86,6 @@ public:
 		S_PHASE_MASK     = S_MSG|S_CTL|S_INP
 	};
 
-<<<<<<< HEAD
-	nscsi_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source);
-
-	void connect_to_bus(nscsi_bus_device *bus, int refid, int default_scsi_id);
-	virtual void scsi_ctrl_changed();
-protected:
-	int scsi_id;
-	int scsi_refid;
-	nscsi_bus_device *scsi_bus;
-
-	virtual void device_start();
-=======
 	void connect_to_bus(nscsi_bus_device *bus, int refid, int default_scsi_id);
 	virtual void scsi_ctrl_changed();
 
@@ -153,19 +97,12 @@ protected:
 	int scsi_id;
 	int scsi_refid;
 	nscsi_bus_device *scsi_bus;
->>>>>>> upstream/master
 };
 
 class nscsi_full_device : public nscsi_device
 {
 public:
-<<<<<<< HEAD
-	nscsi_full_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source);
-
-	virtual void scsi_ctrl_changed();
-=======
 	virtual void scsi_ctrl_changed() override;
->>>>>>> upstream/master
 protected:
 	enum { SCSI_TIMER = 100 };
 
@@ -334,38 +271,16 @@ protected:
 		SBUF_SENSE
 	};
 
-<<<<<<< HEAD
-	UINT8 scsi_cmdbuf[4096], scsi_sense_buffer[8];
-	int scsi_cmdsize;
-	UINT8 scsi_identify;
-
-	virtual void device_start();
-	virtual void device_reset();
-	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
-=======
 	using nscsi_device::nscsi_device;
 
 	virtual void device_start() override;
 	virtual void device_reset() override;
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
->>>>>>> upstream/master
 
 	virtual void scsi_message();
 	virtual void scsi_command();
 
 	void scsi_unknown_command();
-<<<<<<< HEAD
-	void scsi_status_complete(UINT8 st);
-	void scsi_data_in(int buf, int size);
-	void scsi_data_out(int buf, int size);
-
-	void sense(bool deferred, UINT8 key);
-	int get_lun(int def = 0);
-	void bad_lun();
-
-	virtual UINT8 scsi_get_data(int buf, int offset);
-	virtual void scsi_put_data(int buf, int offset, UINT8 data);
-=======
 	void scsi_status_complete(uint8_t st);
 	void scsi_data_in(int buf, int size);
 	void scsi_data_out(int buf, int size);
@@ -376,7 +291,6 @@ protected:
 
 	virtual uint8_t scsi_get_data(int buf, int offset);
 	virtual void scsi_put_data(int buf, int offset, uint8_t data);
->>>>>>> upstream/master
 
 	// Default delays:
 
@@ -440,13 +354,10 @@ protected:
 	// Fast negation period (30ns)
 	virtual attotime scsi_fast_negation_period();
 
-<<<<<<< HEAD
-=======
 	uint8_t scsi_cmdbuf[4096], scsi_sense_buffer[8];
 	int scsi_cmdsize;
 	uint8_t scsi_identify;
 
->>>>>>> upstream/master
 private:
 	enum {
 		IDLE
@@ -506,24 +417,13 @@ private:
 
 	void step(bool timeout);
 	void target_recv_byte();
-<<<<<<< HEAD
-	void target_send_byte(UINT8 val);
-=======
 	void target_send_byte(uint8_t val);
->>>>>>> upstream/master
 	void target_send_buffer_byte();
 	bool command_done();
 };
 
 
-<<<<<<< HEAD
-extern const device_type NSCSI_BUS;
-extern const device_type NSCSI_CONNECTOR;
-
-#endif
-=======
 DECLARE_DEVICE_TYPE(NSCSI_BUS,       nscsi_bus_device)
 DECLARE_DEVICE_TYPE(NSCSI_CONNECTOR, nscsi_connector)
 
 #endif // MAME_MACHINE_NSCSI_BUS_H
->>>>>>> upstream/master

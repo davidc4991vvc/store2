@@ -10,20 +10,10 @@
 
   Games running on this hardware:
 
-<<<<<<< HEAD
-  * Joker's Wild (B52 system, set 1),        199?, Sigma.
-  * Joker's Wild (B52 system, set 2),        199?, Sigma.
-  * Joker's Wild (B52 system, Harrah's GFX), 199?, Sigma.
-
-
-  The HD63484 ACRTC support is a bit hacky and incomplete,
-  due to its preliminary emulation state.
-=======
   * Joker's Wild (B52 system, BP55114-V1104, Ver.054NMV),               199?, Sigma.
   * Joker's Wild (B52 system, BP55114-V1104, Ver.054NMV, Harrah's GFX), 199?, Sigma.
   * Joker's Wild (B52 system, WP02001-054, Ver.031WM),                  199?, Sigma.
   * Super 8 Ways FC (DB98103-011, Fruit combination),                   1989, Sigma.
->>>>>>> upstream/master
 
 
 *******************************************************************************
@@ -128,26 +118,10 @@
 
 *******************************************************************************/
 
-<<<<<<< HEAD
-
-#define MAIN_CLOCK  XTAL_18MHz
-#define SEC_CLOCK   XTAL_8MHz
-#define AUX_CLOCK   XTAL_3_579545MHz
-
-=======
->>>>>>> upstream/master
 #include "emu.h"
 #include "cpu/m6809/m6809.h"
 #include "machine/6840ptm.h"
 #include "machine/6850acia.h"
-<<<<<<< HEAD
-#include "machine/nvram.h"
-#include "sound/3812intf.h"
-#include "video/h63484.h"
-
-#include "sigmab52.lh"
-
-=======
 #include "machine/gen_latch.h"
 #include "machine/nvram.h"
 #include "sound/3812intf.h"
@@ -162,7 +136,6 @@
 #define SEC_CLOCK   XTAL_8MHz
 #define AUX_CLOCK   XTAL_3_579545MHz
 
->>>>>>> upstream/master
 class sigmab52_state : public driver_device
 {
 public:
@@ -193,32 +166,19 @@ public:
 	DECLARE_INPUT_CHANGED_MEMBER(coin_drop_start);
 	DECLARE_WRITE_LINE_MEMBER(ptm2_irq);
 	void audiocpu_irq_update();
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void machine_reset();
-=======
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
->>>>>>> upstream/master
 
 	required_device<cpu_device> m_maincpu;
 	required_device<cpu_device> m_audiocpu;
 	required_device<ptm6840_device> m_6840ptm_2;
 	required_device<palette_device> m_palette;
 	required_memory_bank m_bank1;
-<<<<<<< HEAD
-	required_region_ptr<UINT8> m_prom;
-	required_ioport m_in0;
-
-	UINT64      m_coin_start_cycles;
-	UINT64      m_hopper_start_cycles;
-=======
 	required_region_ptr<uint8_t> m_prom;
 	required_ioport m_in0;
 
 	uint64_t      m_coin_start_cycles;
 	uint64_t      m_hopper_start_cycles;
->>>>>>> upstream/master
 	int         m_audiocpu_cmd_irq;
 };
 
@@ -249,11 +209,7 @@ READ8_MEMBER(sigmab52_state::unk_f760_r)
 
 READ8_MEMBER(sigmab52_state::in0_r)
 {
-<<<<<<< HEAD
-	UINT8 data = 0xff;
-=======
 	uint8_t data = 0xff;
->>>>>>> upstream/master
 
 	// if the hopper is active simulate the coin-out sensor
 	if (m_hopper_start_cycles)
@@ -281,11 +237,7 @@ READ8_MEMBER(sigmab52_state::in0_r)
 			m_coin_start_cycles = 0;
 	}
 
-<<<<<<< HEAD
-	UINT16 in0 = m_in0->read();
-=======
 	uint16_t in0 = m_in0->read();
->>>>>>> upstream/master
 	for(int i=0; i<16; i++)
 		if (!BIT(in0, i))
 		{
@@ -308,38 +260,22 @@ WRITE8_MEMBER(sigmab52_state::hopper_w)
 
 WRITE8_MEMBER(sigmab52_state::lamps1_w)
 {
-<<<<<<< HEAD
-	output_set_lamp_value(offset, data & 1);
-=======
 	output().set_lamp_value(offset, data & 1);
->>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(sigmab52_state::lamps2_w)
 {
-<<<<<<< HEAD
-	output_set_lamp_value(6 + offset, data & 1);
-=======
 	output().set_lamp_value(6 + offset, data & 1);
->>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(sigmab52_state::tower_lamps_w)
 {
-<<<<<<< HEAD
-	output_set_indexed_value("towerlamp", offset, data & 1);
-=======
 	output().set_indexed_value("towerlamp", offset, data & 1);
->>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(sigmab52_state::coin_enable_w)
 {
-<<<<<<< HEAD
-	coin_lockout_w(machine(), 0, data & 0x01 ? 0 : 1);
-=======
 	machine().bookkeeping().coin_lockout_w(0, data & 0x01 ? 0 : 1);
->>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(sigmab52_state::audiocpu_cmd_irq_w)
@@ -363,11 +299,7 @@ WRITE8_MEMBER(sigmab52_state::palette_bank_w)
 
 	for (int i = 0; i<m_palette->entries(); i++)
 	{
-<<<<<<< HEAD
-		UINT8 d = m_prom[(bank << 4) | i];
-=======
 		uint8_t d = m_prom[(bank << 4) | i];
->>>>>>> upstream/master
 		m_palette->set_pen_color(i, pal3bit(d >> 5), pal3bit(d >> 2), pal2bit(d >> 0));
 	}
 }
@@ -387,13 +319,8 @@ static ADDRESS_MAP_START( jwildb52_map, AS_PROGRAM, 8, sigmab52_state )
 
 	AM_RANGE(0xf720, 0xf727) AM_DEVREADWRITE("6840ptm_1", ptm6840_device, read, write)
 
-<<<<<<< HEAD
-	AM_RANGE(0xf730, 0xf730) AM_DEVREADWRITE("hd63484", h63484_device, status_r, address_w)
-	AM_RANGE(0xf731, 0xf731) AM_DEVREADWRITE("hd63484", h63484_device, data_r, data_w)
-=======
 	AM_RANGE(0xf730, 0xf730) AM_DEVREADWRITE("hd63484", hd63484_device, status_r, address_w)
 	AM_RANGE(0xf731, 0xf731) AM_DEVREADWRITE("hd63484", hd63484_device, data_r, data_w)
->>>>>>> upstream/master
 
 	AM_RANGE(0xf740, 0xf740) AM_READ(in0_r)
 	AM_RANGE(0xf741, 0xf741) AM_READ_PORT("IN1")
@@ -410,11 +337,7 @@ static ADDRESS_MAP_START( jwildb52_map, AS_PROGRAM, 8, sigmab52_state )
 //  AM_RANGE(0xf770, 0xf77f)  Bill validator
 
 	AM_RANGE(0xf780, 0xf780) AM_WRITE(audiocpu_cmd_irq_w)
-<<<<<<< HEAD
-	AM_RANGE(0xf790, 0xf790) AM_WRITE(soundlatch_byte_w)
-=======
 	AM_RANGE(0xf790, 0xf790) AM_DEVWRITE("soundlatch", generic_latch_8_device, write)
->>>>>>> upstream/master
 
 	AM_RANGE(0xf7b0, 0xf7b0) AM_WRITE(coin_enable_w)
 	AM_RANGE(0xf7d5, 0xf7d5) AM_WRITE(hopper_w)
@@ -440,11 +363,7 @@ static ADDRESS_MAP_START( sound_prog_map, AS_PROGRAM, 8, sigmab52_state )
 	AM_RANGE(0x0000, 0x1fff) AM_RAM
 	AM_RANGE(0x6020, 0x6027) AM_DEVREADWRITE("6840ptm_2", ptm6840_device, read, write)
 	AM_RANGE(0x6030, 0x6030) AM_WRITE(audiocpu_irq_ack_w)
-<<<<<<< HEAD
-	AM_RANGE(0x6050, 0x6050) AM_READ(soundlatch_byte_r)
-=======
 	AM_RANGE(0x6050, 0x6050) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
->>>>>>> upstream/master
 	AM_RANGE(0x6060, 0x6061) AM_DEVREADWRITE("ymsnd", ym3812_device, read, write)
 	AM_RANGE(0x8000, 0xffff) AM_ROM AM_REGION("audiocpu", 0)
 ADDRESS_MAP_END
@@ -454,11 +373,7 @@ ADDRESS_MAP_END
 
 */
 
-<<<<<<< HEAD
-static ADDRESS_MAP_START( jwildb52_hd63484_map, AS_0, 16, sigmab52_state )
-=======
 static ADDRESS_MAP_START( jwildb52_hd63484_map, 0, 16, sigmab52_state )
->>>>>>> upstream/master
 	AM_RANGE(0x00000, 0x1ffff) AM_RAM
 	AM_RANGE(0x20000, 0x3ffff) AM_ROM AM_REGION("gfx1", 0)
 ADDRESS_MAP_END
@@ -535,11 +450,7 @@ static INPUT_PORTS_START( jwildb52 )
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_UNKNOWN ) PORT_CODE(KEYCODE_7_PAD)
 	PORT_BIT( 0x20, IP_ACTIVE_HIGH, IPT_OTHER ) PORT_NAME("V Door")
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_UNKNOWN ) PORT_CODE(KEYCODE_8_PAD)
-<<<<<<< HEAD
-	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_COIN1 ) PORT_CHANGED_MEMBER(DEVICE_SELF, sigmab52_state, coin_drop_start, NULL)
-=======
 	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_COIN1 ) PORT_CHANGED_MEMBER(DEVICE_SELF, sigmab52_state, coin_drop_start, nullptr)
->>>>>>> upstream/master
 
 	PORT_START("DSW1")
 	PORT_DIPNAME( 0x01, 0x01, "DSW1-1" )        PORT_DIPLOCATION("SW1:1")
@@ -664,11 +575,7 @@ void sigmab52_state::machine_reset()
 *    Machine Drivers     *
 *************************/
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( jwildb52, sigmab52_state )
-=======
 static MACHINE_CONFIG_START( jwildb52 )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6809, MAIN_CLOCK/9)    /* 2 MHz */
@@ -677,19 +584,10 @@ static MACHINE_CONFIG_START( jwildb52 )
 	MCFG_CPU_ADD("audiocpu", M6809, MAIN_CLOCK/9)   /* 2 MHz */
 	MCFG_CPU_PROGRAM_MAP(sound_prog_map)
 
-<<<<<<< HEAD
-	MCFG_DEVICE_ADD("6840ptm_1", PTM6840, 0)
-	MCFG_PTM6840_INTERNAL_CLOCK(MAIN_CLOCK/9)       // FIXME
-	MCFG_PTM6840_IRQ_CB(INPUTLINE("maincpu", M6809_IRQ_LINE))
-
-	MCFG_DEVICE_ADD("6840ptm_2", PTM6840, 0)
-	MCFG_PTM6840_INTERNAL_CLOCK(MAIN_CLOCK/18)      // FIXME
-=======
 	MCFG_DEVICE_ADD("6840ptm_1", PTM6840, MAIN_CLOCK/9) // FIXME
 	MCFG_PTM6840_IRQ_CB(INPUTLINE("maincpu", M6809_IRQ_LINE))
 
 	MCFG_DEVICE_ADD("6840ptm_2", PTM6840, MAIN_CLOCK/18) // FIXME
->>>>>>> upstream/master
 	MCFG_PTM6840_IRQ_CB(WRITELINE(sigmab52_state, ptm2_irq))
 
 	MCFG_NVRAM_ADD_NO_FILL("nvram")
@@ -699,28 +597,18 @@ static MACHINE_CONFIG_START( jwildb52 )
 	MCFG_SCREEN_VBLANK_TIME(ATTOSECONDS_IN_USEC(0))
 	MCFG_SCREEN_SIZE(1024, 1024)
 	MCFG_SCREEN_VISIBLE_AREA(0, 544-1, 0, 436-1)
-<<<<<<< HEAD
-	MCFG_SCREEN_UPDATE_DEVICE("hd63484", h63484_device, update_screen)
-	MCFG_SCREEN_PALETTE("palette")
-
-	MCFG_H63484_ADD("hd63484", SEC_CLOCK, jwildb52_hd63484_map)
-=======
 	MCFG_SCREEN_UPDATE_DEVICE("hd63484", hd63484_device, update_screen)
 	MCFG_SCREEN_PALETTE("palette")
 
 	MCFG_HD63484_ADD("hd63484", SEC_CLOCK, jwildb52_hd63484_map)
->>>>>>> upstream/master
 
 	MCFG_PALETTE_ADD("palette", 16)
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
-<<<<<<< HEAD
-=======
 
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 
->>>>>>> upstream/master
 	MCFG_SOUND_ADD("ymsnd", YM3812, AUX_CLOCK)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 
@@ -731,17 +619,12 @@ MACHINE_CONFIG_END
 *        Rom Load        *
 *************************/
 
-<<<<<<< HEAD
-ROM_START( jwildb52 )
-	ROM_REGION( 0x10000, "maincpu", 0 )
-=======
 /* Joker's Wild
    BP55114-V1104, Ver.054NMV
    Modern cards set. Normal cardsback.
 */
 ROM_START( jwildb52 )
 	ROM_REGION( 0x10000, "maincpu", 0 )  // BP55114-V1104, Ver.054NMV
->>>>>>> upstream/master
 	ROM_LOAD( "poker.ic95", 0x00000, 0x10000, CRC(07eb9007) SHA1(ee814c40c6d8c9ea9e5246cae0cfa2c30f2976ed) )
 
 	ROM_REGION16_BE( 0x40000, "gfx1", 0 )
@@ -758,46 +641,6 @@ ROM_START( jwildb52 )
 ROM_END
 
 
-<<<<<<< HEAD
-ROM_START( jwildb52a )
-	ROM_REGION( 0x10000, "maincpu", 0 )
-	ROM_LOAD( "sigm_wrk.bin", 0x00000, 0x10000, CRC(15c83c6c) SHA1(7a05bd94ea8b1ad051fbe6580a6550d4bb47dd15) )
-
-	ROM_REGION16_BE( 0x40000, "gfx1", 0 )
-	ROM_LOAD32_BYTE( "c-1416-1.ic45", 0x00003, 0x10000, CRC(02a0b517) SHA1(5a0818a174683f791ca885bfdfd7555616c80758) )
-	ROM_LOAD32_BYTE( "c-1416-2.ic46", 0x00001, 0x10000, CRC(3196e486) SHA1(2d264e518083ff05d1a1eb7f8e1649feb70349e7) )
-	ROM_LOAD32_BYTE( "c-1416-3.ic47", 0x00000, 0x10000, CRC(1c9a2939) SHA1(e18fdf9a656687db47ac00700e7721c3d8e800c5) )
-	ROM_LOAD32_BYTE( "c-1416-4.ic48", 0x00002, 0x10000, CRC(7bd8bf78) SHA1(ddacbb75df14a343e69949dcaa14ce1a7ec8407a) )
-
-	/* No sound dumps. Using the ones from parent set for now... */
-
-	ROM_REGION( 0x8000, "audiocpu", 0 )
-	ROM_LOAD( "sound-01-00.43", 0x0000, 0x8000, BAD_DUMP CRC(2712d44c) SHA1(295526b27676cd97cbf111d47305d63c2b3ea50d) )
-
-	ROM_REGION( 0x0100, "proms", 0 )
-	ROM_LOAD( "mb7118.41", 0x0000, 0x0100, BAD_DUMP CRC(b362f9e2) SHA1(3963b40389ed6584e4cd96ab48849552857d99af) )
-ROM_END
-
-
-ROM_START( jwildb52h )
-	ROM_REGION( 0x10000, "maincpu", 0 )
-	ROM_LOAD( "jokers_wild_ver_xxx.ic95", 0x00000, 0x10000, CRC(07eb9007) SHA1(ee814c40c6d8c9ea9e5246cae0cfa2c30f2976ed) )
-
-	ROM_REGION16_BE( 0x40000, "gfx1", 0 )
-	ROM_LOAD32_BYTE( "2006-1_harrahs.ic45", 0x00003, 0x10000, CRC(6e6871dc) SHA1(5dfc99c808c06ec34838324181988d4550c1ed1a) )
-	ROM_LOAD32_BYTE( "2006-2_harrahs.ic46", 0x00001, 0x10000, CRC(1039c62d) SHA1(11f0dbcbbff5f6e9028a0305f7e16a0654be40d4) )
-	ROM_LOAD32_BYTE( "2006-3_harrahs.ic47", 0x00000, 0x10000, CRC(d66af95a) SHA1(70bba1aeea9221541b82642045ce8ecf26e1d08c) )
-	ROM_LOAD32_BYTE( "2006-4_harrahs.ic48", 0x00002, 0x10000, CRC(2bf196cb) SHA1(686ca0dd84c48f51efee5349ea3db65531dd4a52) )
-
-	ROM_REGION( 0x8000, "audiocpu", 0 )
-	ROM_LOAD( "poker-01-00.43", 0x0000, 0x8000, CRC(2712d44c) SHA1(295526b27676cd97cbf111d47305d63c2b3ea50d) )
-
-	ROM_REGION( 0x0100, "proms", 0 )
-	ROM_LOAD( "mb7118.41", 0x0000, 0x0100, CRC(b362f9e2) SHA1(3963b40389ed6584e4cd96ab48849552857d99af) )
-ROM_END
-
-
-=======
 /* Joker's Wild
    BP55114-V1104, Ver.054NMV
    Modern cards set. Harrah's cardsback.
@@ -848,7 +691,6 @@ ROM_END
    Fruit combination.
    DB98103-011.
 */
->>>>>>> upstream/master
 ROM_START( s8waysfc )
 	ROM_REGION( 0x10000, "maincpu", 0 )
 	ROM_LOAD( "dv98103.011", 0x00000, 0x10000, CRC(416190a1) SHA1(e2738644efc6c2adcea2470b482f3f818ed9af8d) )
@@ -873,11 +715,7 @@ ROM_END
 *      Driver Init       *
 *************************/
 
-<<<<<<< HEAD
-DRIVER_INIT_MEMBER(sigmab52_state,jwildb52)
-=======
 DRIVER_INIT_MEMBER(sigmab52_state, jwildb52)
->>>>>>> upstream/master
 {
 }
 
@@ -886,16 +724,8 @@ DRIVER_INIT_MEMBER(sigmab52_state, jwildb52)
 *      Game Drivers      *
 *************************/
 
-<<<<<<< HEAD
-/*    YEAR  NAME       PARENT    MACHINE   INPUT     INIT      ROT    COMPANY  FULLNAME                                  FLAGS */
-GAMEL( 199?, jwildb52,  0,        jwildb52, jwildb52, sigmab52_state, jwildb52, ROT0, "Sigma", "Joker's Wild (B52 system, set 1)",        MACHINE_NOT_WORKING, layout_sigmab52 )
-GAMEL( 199?, jwildb52a, jwildb52, jwildb52, jwildb52, sigmab52_state, jwildb52, ROT0, "Sigma", "Joker's Wild (B52 system, set 2)",        MACHINE_NOT_WORKING, layout_sigmab52 )
-GAMEL( 199?, jwildb52h, jwildb52, jwildb52, jwildb52, sigmab52_state, jwildb52, ROT0, "Sigma", "Joker's Wild (B52 system, Harrah's GFX)", MACHINE_NOT_WORKING, layout_sigmab52 )
-GAME ( 199?, s8waysfc,  0,        jwildb52, s8waysfc, sigmab52_state, jwildb52, ROT0, "Sigma", "Super 8 Ways FC (Fruit combination)",     MACHINE_NOT_WORKING )
-=======
 /*     YEAR  NAME       PARENT    MACHINE   INPUT     STATE           INIT      ROT    COMPANY  FULLNAME                                                             FLAGS */
 GAMEL( 199?, jwildb52,  0,        jwildb52, jwildb52, sigmab52_state, jwildb52, ROT0, "Sigma", "Joker's Wild (B52 system, BP55114-V1104, Ver.054NMV)",               MACHINE_NOT_WORKING, layout_sigmab52 )
 GAMEL( 199?, jwildb52h, jwildb52, jwildb52, jwildb52, sigmab52_state, jwildb52, ROT0, "Sigma", "Joker's Wild (B52 system, BP55114-V1104, Ver.054NMV, Harrah's GFX)", MACHINE_NOT_WORKING, layout_sigmab52 )
 GAMEL( 199?, jwildb52a, jwildb52, jwildb52, jwildb52, sigmab52_state, jwildb52, ROT0, "Sigma", "Joker's Wild (B52 system, WP02001-054, Ver.031WM)",                  MACHINE_NOT_WORKING, layout_sigmab52 )
 GAME ( 1989, s8waysfc,  0,        jwildb52, s8waysfc, sigmab52_state, jwildb52, ROT0, "Sigma", "Super 8 Ways FC (DB98103-011, Fruit combination)",                   MACHINE_NOT_WORKING )
->>>>>>> upstream/master

@@ -351,16 +351,11 @@ Super Missile Attack Board Layout
 
 #include "emu.h"
 #include "cpu/m6502/m6502.h"
-<<<<<<< HEAD
-#include "sound/pokey.h"
-
-=======
 #include "machine/watchdog.h"
 #include "sound/pokey.h"
 #include "sound/ay8910.h"
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 class missile_state : public driver_device
 {
@@ -369,10 +364,7 @@ public:
 		: driver_device(mconfig, type, tag),
 		m_maincpu(*this,"maincpu"),
 		m_videoram(*this, "videoram"),
-<<<<<<< HEAD
-=======
 		m_watchdog(*this, "watchdog"),
->>>>>>> upstream/master
 		m_pokey(*this, "pokey"),
 		m_in0(*this, "IN0"),
 		m_in1(*this, "IN1"),
@@ -387,14 +379,9 @@ public:
 	{ }
 
 	required_device<m6502_device> m_maincpu;
-<<<<<<< HEAD
-	required_shared_ptr<UINT8> m_videoram;
-	required_device<pokey_device> m_pokey;
-=======
 	required_shared_ptr<uint8_t> m_videoram;
 	required_device<watchdog_timer_device> m_watchdog;
 	optional_device<pokey_device> m_pokey;
->>>>>>> upstream/master
 	required_ioport m_in0;
 	required_ioport m_in1;
 	required_ioport m_r10;
@@ -406,26 +393,6 @@ public:
 	required_device<screen_device> m_screen;
 	required_device<palette_device> m_palette;
 
-<<<<<<< HEAD
-	const UINT8 *m_mainrom;
-	const UINT8 *m_writeprom;
-	emu_timer *m_irq_timer;
-	emu_timer *m_cpu_timer;
-	UINT8 m_irq_state;
-	UINT8 m_ctrld;
-	UINT8 m_flipscreen;
-	UINT64 m_madsel_lastcycles;
-
-	DECLARE_WRITE8_MEMBER(missile_w);
-	DECLARE_READ8_MEMBER(missile_r);
-	DECLARE_CUSTOM_INPUT_MEMBER(get_vblank);
-	DECLARE_DIRECT_UPDATE_MEMBER(missile_direct_handler);
-	DECLARE_DRIVER_INIT(missilem);
-	DECLARE_DRIVER_INIT(suprmatk);
-	virtual void machine_start();
-	virtual void machine_reset();
-	UINT32 screen_update_missile(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	const uint8_t *m_mainrom;
 	const uint8_t *m_writeprom;
 	emu_timer *m_irq_timer;
@@ -445,20 +412,14 @@ public:
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
 	uint32_t screen_update_missile(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 
 	inline int scanline_to_v(int scanline);
 	inline int v_to_scanline(int v);
 	inline void schedule_next_irq(int curv);
 	inline bool get_madsel();
 	inline offs_t get_bit3_addr(offs_t pixaddr);
-<<<<<<< HEAD
-	void write_vram(address_space &space, offs_t address, UINT8 data);
-	UINT8 read_vram(address_space &space, offs_t address);
-=======
 	void write_vram(address_space &space, offs_t address, uint8_t data);
 	uint8_t read_vram(address_space &space, offs_t address);
->>>>>>> upstream/master
 
 	TIMER_CALLBACK_MEMBER(clock_irq);
 	TIMER_CALLBACK_MEMBER(adjust_cpu_speed);
@@ -632,21 +593,12 @@ offs_t missile_state::get_bit3_addr(offs_t pixaddr)
 }
 
 
-<<<<<<< HEAD
-void missile_state::write_vram(address_space &space, offs_t address, UINT8 data)
-{
-	static const UINT8 data_lookup[4] = { 0x00, 0x0f, 0xf0, 0xff };
-	offs_t vramaddr;
-	UINT8 vramdata;
-	UINT8 vrammask;
-=======
 void missile_state::write_vram(address_space &space, offs_t address, uint8_t data)
 {
 	static const uint8_t data_lookup[4] = { 0x00, 0x0f, 0xf0, 0xff };
 	offs_t vramaddr;
 	uint8_t vramdata;
 	uint8_t vrammask;
->>>>>>> upstream/master
 
 	/* basic 2 bit VRAM writes go to addr >> 2 */
 	/* data comes from bits 6 and 7 */
@@ -671,21 +623,12 @@ void missile_state::write_vram(address_space &space, offs_t address, uint8_t dat
 }
 
 
-<<<<<<< HEAD
-UINT8 missile_state::read_vram(address_space &space, offs_t address)
-{
-	offs_t vramaddr;
-	UINT8 vramdata;
-	UINT8 vrammask;
-	UINT8 result = 0xff;
-=======
 uint8_t missile_state::read_vram(address_space &space, offs_t address)
 {
 	offs_t vramaddr;
 	uint8_t vramdata;
 	uint8_t vrammask;
 	uint8_t result = 0xff;
->>>>>>> upstream/master
 
 	/* basic 2 bit VRAM reads go to addr >> 2 */
 	/* data goes to bits 6 and 7 */
@@ -722,33 +665,19 @@ uint8_t missile_state::read_vram(address_space &space, offs_t address)
  *
  *************************************/
 
-<<<<<<< HEAD
-UINT32 missile_state::screen_update_missile(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-{
-	UINT8 *videoram = m_videoram;
-=======
 uint32_t missile_state::screen_update_missile(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
 	uint8_t *videoram = m_videoram;
->>>>>>> upstream/master
 	int x, y;
 
 	/* draw the bitmap to the screen, looping over Y */
 	for (y = cliprect.min_y; y <= cliprect.max_y; y++)
 	{
-<<<<<<< HEAD
-		UINT16 *dst = &bitmap.pix16(y);
-
-		int effy = m_flipscreen ? ((256+24 - y) & 0xff) : y;
-		UINT8 *src = &videoram[effy * 64];
-		UINT8 *src3 = NULL;
-=======
 		uint16_t *dst = &bitmap.pix16(y);
 
 		int effy = m_flipscreen ? ((256+24 - y) & 0xff) : y;
 		uint8_t *src = &videoram[effy * 64];
 		uint8_t *src3 = nullptr;
->>>>>>> upstream/master
 
 		/* compute the base of the 3rd pixel row */
 		if (effy >= 224)
@@ -757,19 +686,11 @@ uint32_t missile_state::screen_update_missile(screen_device &screen, bitmap_ind1
 		/* loop over X */
 		for (x = cliprect.min_x; x <= cliprect.max_x; x++)
 		{
-<<<<<<< HEAD
-			UINT8 pix = src[x / 4] >> (x & 3);
-			pix = ((pix >> 2) & 4) | ((pix << 1) & 2);
-
-			/* if we're in the lower region, get the 3rd bit */
-			if (src3 != NULL)
-=======
 			uint8_t pix = src[x / 4] >> (x & 3);
 			pix = ((pix >> 2) & 4) | ((pix << 1) & 2);
 
 			/* if we're in the lower region, get the 3rd bit */
 			if (src3 != nullptr)
->>>>>>> upstream/master
 				pix |= (src3[(x / 8) * 2] >> (x & 7)) & 1;
 
 			dst[x] = pix;
@@ -788,11 +709,6 @@ uint32_t missile_state::screen_update_missile(screen_device &screen, bitmap_ind1
 
 WRITE8_MEMBER(missile_state::missile_w)
 {
-<<<<<<< HEAD
-	UINT8 *videoram = m_videoram;
-
-=======
->>>>>>> upstream/master
 	/* if this is a MADSEL cycle, write to video RAM */
 	if (get_madsel())
 	{
@@ -805,40 +721,24 @@ WRITE8_MEMBER(missile_state::missile_w)
 
 	/* RAM */
 	if (offset < 0x4000)
-<<<<<<< HEAD
-		videoram[offset] = data;
-=======
 		m_videoram[offset] = data;
->>>>>>> upstream/master
 
 	/* POKEY */
 	else if (offset < 0x4800)
 	{
-<<<<<<< HEAD
-		m_pokey->write(m_maincpu->space(), offset, data, 0xff);
-=======
 		if (m_pokey.found())
 			m_pokey->write(space, offset, data, 0xff);
->>>>>>> upstream/master
 	}
 
 	/* OUT0 */
 	else if (offset < 0x4900)
 	{
 		m_flipscreen = ~data & 0x40;
-<<<<<<< HEAD
-		coin_counter_w(machine(), 0, data & 0x20);
-		coin_counter_w(machine(), 1, data & 0x10);
-		coin_counter_w(machine(), 2, data & 0x08);
-		set_led_status(machine(), 1, ~data & 0x04);
-		set_led_status(machine(), 0, ~data & 0x02);
-=======
 		machine().bookkeeping().coin_counter_w(0, data & 0x20);
 		machine().bookkeeping().coin_counter_w(1, data & 0x10);
 		machine().bookkeeping().coin_counter_w(2, data & 0x08);
 		output().set_led_value(1, ~data & 0x04);
 		output().set_led_value(0, ~data & 0x02);
->>>>>>> upstream/master
 		m_ctrld = data & 1;
 	}
 
@@ -848,11 +748,7 @@ WRITE8_MEMBER(missile_state::missile_w)
 
 	/* watchdog */
 	else if (offset >= 0x4c00 && offset < 0x4d00)
-<<<<<<< HEAD
-		machine().watchdog_reset();
-=======
 		m_watchdog->watchdog_reset();
->>>>>>> upstream/master
 
 	/* interrupt ack */
 	else if (offset >= 0x4d00 && offset < 0x4e00)
@@ -872,12 +768,7 @@ WRITE8_MEMBER(missile_state::missile_w)
 
 READ8_MEMBER(missile_state::missile_r)
 {
-<<<<<<< HEAD
-	UINT8 *videoram = m_videoram;
-	UINT8 result = 0xff;
-=======
 	uint8_t result = 0xff;
->>>>>>> upstream/master
 
 	/* if this is a MADSEL cycle, read from video RAM */
 	if (get_madsel())
@@ -888,11 +779,7 @@ READ8_MEMBER(missile_state::missile_r)
 
 	/* RAM */
 	if (offset < 0x4000)
-<<<<<<< HEAD
-		result = videoram[offset];
-=======
 		result = m_videoram[offset];
->>>>>>> upstream/master
 
 	/* ROM */
 	else if (offset >= 0x5000)
@@ -900,14 +787,10 @@ READ8_MEMBER(missile_state::missile_r)
 
 	/* POKEY */
 	else if (offset < 0x4800)
-<<<<<<< HEAD
-		result = m_pokey->read(m_maincpu->space(), offset & 0x0f, 0xff);
-=======
 	{
 		if (m_pokey.found())
 			result = m_pokey->read(space, offset & 0x0f, 0xff);
 	}
->>>>>>> upstream/master
 
 	/* IN0 */
 	else if (offset < 0x4900)
@@ -944,8 +827,6 @@ READ8_MEMBER(missile_state::missile_r)
 }
 
 
-<<<<<<< HEAD
-=======
 WRITE8_MEMBER(missile_state::bootleg_w)
 {
 	/* if this is a MADSEL cycle, write to video RAM */
@@ -1052,7 +933,6 @@ READ8_MEMBER(missile_state::bootleg_r)
 	return result;
 }
 
->>>>>>> upstream/master
 
 /*************************************
  *
@@ -1065,14 +945,10 @@ static ADDRESS_MAP_START( main_map, AS_PROGRAM, 8, missile_state )
 	AM_RANGE(0x0000, 0xffff) AM_READWRITE(missile_r, missile_w) AM_SHARE("videoram")
 ADDRESS_MAP_END
 
-<<<<<<< HEAD
-
-=======
 /* adjusted from the above to get the bootlegs to boot */
 static ADDRESS_MAP_START( bootleg_main_map, AS_PROGRAM, 8, missile_state )
 	AM_RANGE(0x0000, 0xffff) AM_READWRITE(bootleg_r, bootleg_w) AM_SHARE("videoram")
 ADDRESS_MAP_END
->>>>>>> upstream/master
 
 /*************************************
  *
@@ -1098,11 +974,7 @@ static INPUT_PORTS_START( missile )
 	PORT_BIT( 0x18, IP_ACTIVE_HIGH, IPT_SPECIAL )
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_TILT )
 	PORT_SERVICE( 0x40, IP_ACTIVE_LOW )
-<<<<<<< HEAD
-	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, missile_state,get_vblank, NULL)
-=======
 	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, missile_state,get_vblank, nullptr)
->>>>>>> upstream/master
 
 	PORT_START("R10")   /* IN2 */
 	PORT_DIPNAME( 0x03, 0x00, DEF_STR( Coinage ) ) PORT_DIPLOCATION("R10:1,2")
@@ -1166,8 +1038,6 @@ static INPUT_PORTS_START( missile )
 INPUT_PORTS_END
 
 
-<<<<<<< HEAD
-=======
 static INPUT_PORTS_START( missileb )
 
 	PORT_INCLUDE(missile)
@@ -1176,7 +1046,6 @@ static INPUT_PORTS_START( missileb )
 	PORT_SERVICE( 0x40, IP_ACTIVE_HIGH )
 INPUT_PORTS_END
 
->>>>>>> upstream/master
 static INPUT_PORTS_START( suprmatk )
 	PORT_START("IN0")   /* IN0 */
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_BUTTON3 ) PORT_COCKTAIL
@@ -1195,11 +1064,7 @@ static INPUT_PORTS_START( suprmatk )
 	PORT_BIT( 0x18, IP_ACTIVE_HIGH, IPT_SPECIAL )
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_TILT )
 	PORT_SERVICE( 0x40, IP_ACTIVE_LOW )
-<<<<<<< HEAD
-	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, missile_state,get_vblank, NULL)
-=======
 	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, missile_state,get_vblank, nullptr)
->>>>>>> upstream/master
 
 	PORT_START("R10")   /* IN2 */
 	PORT_DIPNAME( 0x03, 0x00, DEF_STR( Coinage ) ) PORT_DIPLOCATION("R10:1,2")
@@ -1269,22 +1134,14 @@ INPUT_PORTS_END
  *
  *************************************/
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( missile, missile_state )
-=======
 static MACHINE_CONFIG_START( missile )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6502, MASTER_CLOCK/8)
 	MCFG_CPU_PROGRAM_MAP(main_map)
 
-<<<<<<< HEAD
-	MCFG_WATCHDOG_VBLANK_INIT(8)
-=======
 	MCFG_WATCHDOG_ADD("watchdog")
 	MCFG_WATCHDOG_VBLANK_INIT("screen", 8)
->>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_PALETTE_ADD("palette", 8)
@@ -1304,8 +1161,6 @@ static MACHINE_CONFIG_START( missile )
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-=======
 static MACHINE_CONFIG_DERIVED( missilea, missile )
 
 	MCFG_DEVICE_REMOVE("pokey")
@@ -1320,7 +1175,6 @@ static MACHINE_CONFIG_DERIVED( missileb, missilea )
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.75)
 
 MACHINE_CONFIG_END
->>>>>>> upstream/master
 
 
 /*************************************
@@ -1370,10 +1224,6 @@ ROM_START( missile1 )
 	ROM_LOAD( "035826-01.l6", 0x0000, 0x0020, CRC(86a22140) SHA1(2beebf7855e29849ada1823eae031fc98220bc43) )
 ROM_END
 
-<<<<<<< HEAD
-
-=======
->>>>>>> upstream/master
 ROM_START( suprmatk )
 	ROM_REGION( 0x9000, "maincpu", 0 ) /* ROM's located on the enhancement board */
 	ROM_LOAD( "035820-02.c1", 0x5000, 0x0800, CRC(7a62ce6a) SHA1(9a39978138dc28fdefe193bfae1b226391e471db) )
@@ -1485,9 +1335,6 @@ ROM_START( mcombats ) /* bootleg (Sidam) @ $ */
 	ROM_LOAD( "mmi6331.6f",   0x0000, 0x0020, CRC(86a22140) SHA1(2beebf7855e29849ada1823eae031fc98220bc43) )
 ROM_END
 
-<<<<<<< HEAD
-
-=======
 /*
 CPUs
 QTY     Type    clock   position    function
@@ -1529,7 +1376,6 @@ ROM_START( missilea )
 	ROM_REGION( 0x0020, "proms", 0 )
 	ROM_LOAD( "dm74s288n.6l", 0x0000, 0x0020, CRC(86a22140) SHA1(2beebf7855e29849ada1823eae031fc98220bc43) )
 ROM_END
->>>>>>> upstream/master
 
 
 /*************************************
@@ -1541,11 +1387,7 @@ ROM_END
 DRIVER_INIT_MEMBER(missile_state,suprmatk)
 {
 	int i;
-<<<<<<< HEAD
-	UINT8 *rom = memregion("maincpu")->base();
-=======
 	uint8_t *rom = memregion("maincpu")->base();
->>>>>>> upstream/master
 
 	for (i = 0; i < 0x40; i++)
 	{
@@ -1618,13 +1460,8 @@ DRIVER_INIT_MEMBER(missile_state,suprmatk)
 
 DRIVER_INIT_MEMBER(missile_state,missilem)
 {
-<<<<<<< HEAD
-	UINT8 *src = memregion("user1")->base();
-	UINT8 *dest = memregion("maincpu")->base();
-=======
 	uint8_t *src = memregion("user1")->base();
 	uint8_t *dest = memregion("maincpu")->base();
->>>>>>> upstream/master
 
 	// decrypt rom and put in maincpu region (result looks correct, but is untested)
 	for (int i = 0; i < 0x10000; i++)
@@ -1648,19 +1485,6 @@ DRIVER_INIT_MEMBER(missile_state,missilem)
  *
  *************************************/
 
-<<<<<<< HEAD
-GAME( 1980, missile,  0,       missile, missile, driver_device,         0, ROT0, "Atari", "Missile Command (rev 3)", MACHINE_SUPPORTS_SAVE )
-GAME( 1980, missile2, missile, missile, missile, driver_device,         0, ROT0, "Atari", "Missile Command (rev 2)", MACHINE_SUPPORTS_SAVE )
-GAME( 1980, missile1, missile, missile, missile, driver_device,         0, ROT0, "Atari", "Missile Command (rev 1)", MACHINE_SUPPORTS_SAVE )
-GAME( 1981, suprmatk, missile, missile, suprmatk, missile_state, suprmatk, ROT0, "Atari / General Computer Corporation", "Super Missile Attack (for rev 1)", MACHINE_SUPPORTS_SAVE )
-GAME( 1981, suprmatkd,missile, missile, suprmatk, driver_device,        0, ROT0, "Atari / General Computer Corporation", "Super Missile Attack (not encrypted)", MACHINE_SUPPORTS_SAVE )
-
-/* the bootlegs are on different hardware and don't work */
-GAME( 1980, mcombat,  missile, missile, missile, driver_device,         0, ROT0, "bootleg (Videotron)", "Missile Combat (Videotron bootleg, set 1)", MACHINE_NOT_WORKING )
-GAME( 1980, mcombata, missile, missile, missile, driver_device,         0, ROT0, "bootleg (Videotron)", "Missile Combat (Videotron bootleg, set 2)", MACHINE_NOT_WORKING )
-GAME( 1980, mcombats, missile, missile, missile, driver_device,         0, ROT0, "bootleg (Sidam)", "Missile Combat (Sidam bootleg)", MACHINE_NOT_WORKING )
-GAME( 2005, missilem, missile, missile, missile, missile_state,  missilem, ROT0, "hack (Braze Technologies)", "Missile Command Multigame", MACHINE_NOT_WORKING )
-=======
 GAME( 1980, missile,  0,       missile, missile,  missile_state,        0, ROT0, "Atari", "Missile Command (rev 3)", MACHINE_SUPPORTS_SAVE )
 GAME( 1980, missile2, missile, missile, missile,  missile_state,        0, ROT0, "Atari", "Missile Command (rev 2)", MACHINE_SUPPORTS_SAVE )
 GAME( 1980, missile1, missile, missile, missile,  missile_state,        0, ROT0, "Atari", "Missile Command (rev 1)", MACHINE_SUPPORTS_SAVE )
@@ -1675,4 +1499,3 @@ GAME( 1980, mcombat,  missile, missileb, missileb, missile_state,        0, ROT0
 GAME( 1980, mcombata, missile, missileb, missileb, missile_state,        0, ROT0, "bootleg (Videotron)", "Missile Combat (Videotron bootleg, set 2)", MACHINE_NOT_WORKING )
 GAME( 1980, mcombats, missile, missileb, missileb, missile_state,        0, ROT0, "bootleg (Sidam)", "Missile Combat (Sidam bootleg)", MACHINE_NOT_WORKING )
 GAME( 2005, missilem, missile, missilea, missileb, missile_state, missilem, ROT0, "hack (Braze Technologies)", "Missile Command Multigame", MACHINE_NOT_WORKING )
->>>>>>> upstream/master

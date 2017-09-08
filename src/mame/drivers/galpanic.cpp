@@ -7,22 +7,13 @@ Gals Panic       1990 Kaneko
 driver by Nicola Salmoria
 
 The version of Gals Panic in this driver is the one using the PANDORA chip
-<<<<<<< HEAD
-for sprites, other boardsets use a different sprite chip, see expro02.c
-=======
 for sprites, other boardsets use a different sprite chip, see expro02.cpp
->>>>>>> upstream/master
 
 
 Notes about Gals Panic:
 -----------------------
-<<<<<<< HEAD
-The current ROM set is strange because two ROMs overlap two others replacing
-the program.
-=======
 The current unprotected ROM set is strange because two ROMs overlap two others
 replacing the program.
->>>>>>> upstream/master
 
 It's definitely a Kaneko boardset, but it could very well be they converted
 some other game to run Gals Panic, because there's some ROMs piggybacked
@@ -61,11 +52,7 @@ Stephh's additional notes :
       * In this version, there is a "Coin Mode" Dip Switch, but no
         "Character Test" Dip Switch.
       * Area 0xe00000-0xe00014 is a "calculator" area. I've tried to
-<<<<<<< HEAD
-        simulate it (see machine/kaneko_hit.c) by comparing the code
-=======
         simulate it (see machine/kaneko_hit.cpp) by comparing the code
->>>>>>> upstream/master
         with the other set. I don't know if there are some other unmapped
         reads, but the game seems to run fine with what I've done.
       * When you press the "Tilt" button, the game enters in an endless
@@ -79,17 +66,6 @@ Stephh's additional notes :
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/m68000/m68000.h"
-#include "includes/kaneko16.h"
-#include "sound/okim6295.h"
-#include "video/kan_pand.h"
-#include "machine/kaneko_hit.h"
-#include "includes/galpanic.h"
-#include "includes/galpnipt.h"
-
-void galpanic_state::screen_eof_galpanic(screen_device &screen, bool state)
-=======
 #include "includes/galpanic.h"
 #include "includes/galpnipt.h"
 
@@ -107,7 +83,6 @@ void galpanic_state::machine_start()
 }
 
 WRITE_LINE_MEMBER(galpanic_state::screen_vblank)
->>>>>>> upstream/master
 {
 	// rising edge
 	if (state)
@@ -116,11 +91,7 @@ WRITE_LINE_MEMBER(galpanic_state::screen_vblank)
 	}
 }
 
-<<<<<<< HEAD
-TIMER_DEVICE_CALLBACK_MEMBER(galpanic_state::galpanic_scanline)
-=======
 TIMER_DEVICE_CALLBACK_MEMBER(galpanic_state::scanline)
->>>>>>> upstream/master
 {
 	int scanline = param;
 
@@ -135,21 +106,11 @@ TIMER_DEVICE_CALLBACK_MEMBER(galpanic_state::scanline)
 
 
 
-<<<<<<< HEAD
-WRITE16_MEMBER(galpanic_state::galpanic_6295_bankswitch_w)
-{
-	if (ACCESSING_BITS_8_15)
-	{
-		UINT8 *rom = memregion("oki")->base();
-
-		memcpy(&rom[0x30000],&rom[0x40000 + ((data >> 8) & 0x0f) * 0x10000],0x10000);
-=======
 WRITE16_MEMBER(galpanic_state::m6295_bankswitch_w)
 {
 	if (ACCESSING_BITS_8_15)
 	{
 		membank("okibank")->set_entry((data >> 8) & 0x0f);
->>>>>>> upstream/master
 
 		// used before title screen
 		m_pandora->set_clear_bitmap((data & 0x8000)>>15);
@@ -158,17 +119,6 @@ WRITE16_MEMBER(galpanic_state::m6295_bankswitch_w)
 
 
 
-<<<<<<< HEAD
-WRITE16_MEMBER(galpanic_state::galpanic_coin_w)
-{
-	if (ACCESSING_BITS_8_15)
-	{
-		coin_counter_w(machine(), 0, data & 0x100);
-		coin_counter_w(machine(), 1, data & 0x200);
-
-		coin_lockout_w(machine(), 0, ~data & 0x400);
-		coin_lockout_w(machine(), 1, ~data & 0x800);
-=======
 WRITE16_MEMBER(galpanic_state::coin_w)
 {
 	if (ACCESSING_BITS_8_15)
@@ -178,7 +128,6 @@ WRITE16_MEMBER(galpanic_state::coin_w)
 
 		machine().bookkeeping().coin_lockout_w(0, ~data & 0x400);
 		machine().bookkeeping().coin_lockout_w(1, ~data & 0x800);
->>>>>>> upstream/master
 	}
 }
 
@@ -188,28 +137,13 @@ static ADDRESS_MAP_START( galpanic_map, AS_PROGRAM, 16, galpanic_state )
 	AM_RANGE(0x000000, 0x3fffff) AM_ROM
 	AM_RANGE(0x400000, 0x400001) AM_DEVREADWRITE8("oki", okim6295_device, read, write, 0x00ff)
 	AM_RANGE(0x500000, 0x51ffff) AM_RAM AM_SHARE("fgvideoram")
-<<<<<<< HEAD
-	AM_RANGE(0x520000, 0x53ffff) AM_RAM_WRITE(galpanic_bgvideoram_w) AM_SHARE("bgvideoram")  /* + work RAM */
-=======
 	AM_RANGE(0x520000, 0x53ffff) AM_RAM_WRITE(bgvideoram_w) AM_SHARE("bgvideoram")  /* + work RAM */
->>>>>>> upstream/master
 	AM_RANGE(0x600000, 0x6007ff) AM_RAM_DEVWRITE("palette", palette_device, write) AM_SHARE("palette")  /* 1024 colors, but only 512 seem to be used */
 	AM_RANGE(0x700000, 0x701fff) AM_DEVREADWRITE("pandora", kaneko_pandora_device, spriteram_LSB_r, spriteram_LSB_w)
 	AM_RANGE(0x702000, 0x704fff) AM_RAM
 	AM_RANGE(0x800000, 0x800001) AM_READ_PORT("DSW1")
 	AM_RANGE(0x800002, 0x800003) AM_READ_PORT("DSW2")
 	AM_RANGE(0x800004, 0x800005) AM_READ_PORT("SYSTEM")
-<<<<<<< HEAD
-	AM_RANGE(0x900000, 0x900001) AM_WRITE(galpanic_6295_bankswitch_w)
-	AM_RANGE(0xa00000, 0xa00001) AM_WRITE(galpanic_coin_w)  /* coin counters */
-	AM_RANGE(0xb00000, 0xb00001) AM_WRITENOP    /* ??? */
-	AM_RANGE(0xc00000, 0xc00001) AM_WRITENOP    /* ??? */
-	AM_RANGE(0xd00000, 0xd00001) AM_WRITENOP    /* ??? */
-	AM_RANGE(0xe00000, 0xe00015) AM_DEVREADWRITE("calc1_mcu", kaneko_hit_device, kaneko_hit_r,kaneko_hit_w)
-ADDRESS_MAP_END
-
-
-=======
 	AM_RANGE(0x900000, 0x900001) AM_WRITE(m6295_bankswitch_w)
 	AM_RANGE(0xa00000, 0xa00001) AM_WRITE(coin_w)  /* coin counters */
 	AM_RANGE(0xb00000, 0xb00001) AM_WRITENOP    /* ??? */
@@ -226,7 +160,6 @@ static ADDRESS_MAP_START( galpanic_oki_map, 0, 8, galpanic_state )
 	AM_RANGE(0x00000, 0x2ffff) AM_ROM
 	AM_RANGE(0x30000, 0x3ffff) AM_ROMBANK("okibank")
 ADDRESS_MAP_END
->>>>>>> upstream/master
 
 
 static INPUT_PORTS_START( galpanic )
@@ -296,22 +229,14 @@ static GFXDECODE_START( galpanic )
 GFXDECODE_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( galpanic, galpanic_state )
-=======
 static MACHINE_CONFIG_START( galpanic )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, XTAL_12MHz) /* verified on pcb */
 	MCFG_CPU_PROGRAM_MAP(galpanic_map)
-<<<<<<< HEAD
-	MCFG_TIMER_DRIVER_ADD_SCANLINE("scantimer", galpanic_state, galpanic_scanline, "screen", 0, 1)
-=======
 	MCFG_TIMER_DRIVER_ADD_SCANLINE("scantimer", galpanic_state, scanline, "screen", 0, 1)
 
 	MCFG_WATCHDOG_ADD("watchdog")
->>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
@@ -319,13 +244,8 @@ static MACHINE_CONFIG_START( galpanic )
 	MCFG_SCREEN_VBLANK_TIME(ATTOSECONDS_IN_USEC(0)  /* frames per second, vblank duration */)
 	MCFG_SCREEN_SIZE(256, 256)
 	MCFG_SCREEN_VISIBLE_AREA(0, 256-1, 0, 224-1)
-<<<<<<< HEAD
-	MCFG_SCREEN_UPDATE_DRIVER(galpanic_state, screen_update_galpanic)
-	MCFG_SCREEN_VBLANK_DRIVER(galpanic_state, screen_eof_galpanic)
-=======
 	MCFG_SCREEN_UPDATE_DRIVER(galpanic_state, screen_update)
 	MCFG_SCREEN_VBLANK_CALLBACK(WRITELINE(galpanic_state, screen_vblank))
->>>>>>> upstream/master
 	MCFG_SCREEN_PALETTE("palette")
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", galpanic)
@@ -336,36 +256,17 @@ static MACHINE_CONFIG_START( galpanic )
 	MCFG_DEVICE_ADD("pandora", KANEKO_PANDORA, 0)
 	MCFG_KANEKO_PANDORA_OFFSETS(0, -16)
 	MCFG_KANEKO_PANDORA_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_KANEKO_PANDORA_PALETTE("palette")
-
-	MCFG_DEVICE_ADD("calc1_mcu", KANEKO_HIT, 0)
-	kaneko_hit_device::set_type(*device, 0);
-
-	MCFG_VIDEO_START_OVERRIDE(galpanic_state,galpanic)
-=======
->>>>>>> upstream/master
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki", XTAL_12MHz/6, OKIM6295_PIN7_LOW) /* verified on pcb */
-=======
 	MCFG_OKIM6295_ADD("oki", XTAL_12MHz/6, PIN7_LOW) /* verified on pcb */
 	MCFG_DEVICE_ADDRESS_MAP(0, galpanic_oki_map)
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
 
 
 static MACHINE_CONFIG_DERIVED( galpanica, galpanic )
-<<<<<<< HEAD
-
-	/* basic machine hardware */
-
-	/* arm watchdog */
-=======
 	MCFG_CPU_MODIFY("maincpu")
 	MCFG_CPU_PROGRAM_MAP(galpanica_map)
 
@@ -375,7 +276,6 @@ static MACHINE_CONFIG_DERIVED( galpanica, galpanic )
 
 	/* arm watchdog */
 	MCFG_WATCHDOG_MODIFY("watchdog")
->>>>>>> upstream/master
 	MCFG_WATCHDOG_TIME_INIT(attotime::from_seconds(3))  /* a guess, and certainly wrong */
 MACHINE_CONFIG_END
 
@@ -402,18 +302,10 @@ ROM_START( galpanic ) /* PAMERA-04 PCB with the PAMERA-SUB daughter card and unp
 	ROM_REGION( 0x100000, "gfx1", 0 )   /* sprites */
 	ROM_LOAD( "pm006e.67",    0x000000, 0x100000, CRC(57aec037) SHA1(e6ba095b6892d4dcd76ba3343a97dd98ae29dc24) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x140000, "oki", 0 )    /* OKIM6295 samples */
-	/* 00000-2ffff is fixed, 30000-3ffff is bank switched from all the ROMs */
-	ROM_LOAD( "pm008e.l",     0x00000, 0x80000, CRC(d9379ba8) SHA1(5ae7c743319b1a12f2b101a9f0f8fe0728ed1476) )
-	ROM_RELOAD(               0x40000, 0x80000 )
-	ROM_LOAD( "pm007e.u",     0xc0000, 0x80000, CRC(c7ed7950) SHA1(133258b058d3c562208d0d00b9fac71202647c32) )
-=======
 	ROM_REGION( 0x100000, "oki", 0 )    /* OKIM6295 samples */
 	/* 00000-2ffff is fixed, 30000-3ffff is bank switched from all the ROMs */
 	ROM_LOAD( "pm008e.l",     0x00000, 0x80000, CRC(d9379ba8) SHA1(5ae7c743319b1a12f2b101a9f0f8fe0728ed1476) )
 	ROM_LOAD( "pm007e.u",     0x80000, 0x80000, CRC(c7ed7950) SHA1(133258b058d3c562208d0d00b9fac71202647c32) )
->>>>>>> upstream/master
 ROM_END
 
 ROM_START( galpanica ) /* PAMERA-04 PCB with the CALC1 MCU used */
@@ -430,17 +322,6 @@ ROM_START( galpanica ) /* PAMERA-04 PCB with the CALC1 MCU used */
 	ROM_REGION( 0x100000, "gfx1", 0 )   /* sprites */
 	ROM_LOAD( "pm006e.67",    0x000000, 0x100000, CRC(57aec037) SHA1(e6ba095b6892d4dcd76ba3343a97dd98ae29dc24) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x140000, "oki", 0 )    /* OKIM6295 samples */
-	/* 00000-2ffff is fixed, 30000-3ffff is bank switched from all the ROMs */
-	ROM_LOAD( "pm008e.l",     0x00000, 0x80000, CRC(d9379ba8) SHA1(5ae7c743319b1a12f2b101a9f0f8fe0728ed1476) )
-	ROM_RELOAD(               0x40000, 0x80000 )
-	ROM_LOAD( "pm007e.u",     0xc0000, 0x80000, CRC(c7ed7950) SHA1(133258b058d3c562208d0d00b9fac71202647c32) )
-ROM_END
-
-GAME( 1990, galpanic, 0,        galpanic, galpanic,  driver_device, 0, ROT90, "Kaneko",                   "Gals Panic (Unprotected)", MACHINE_NO_COCKTAIL )
-GAME( 1990, galpanica,galpanic, galpanica,galpanica, driver_device, 0, ROT90, "Kaneko",                   "Gals Panic (MCU Protected)", MACHINE_NO_COCKTAIL )
-=======
 	ROM_REGION( 0x100000, "oki", 0 )    /* OKIM6295 samples */
 	/* 00000-2ffff is fixed, 30000-3ffff is bank switched from all the ROMs */
 	ROM_LOAD( "pm008e.l",     0x00000, 0x80000, CRC(d9379ba8) SHA1(5ae7c743319b1a12f2b101a9f0f8fe0728ed1476) )
@@ -470,4 +351,3 @@ ROM_END
 GAME( 1990, galpanic,  0,        galpanic,  galpanic,  galpanic_state, 0, ROT90, "Kaneko", "Gals Panic (Unprotected)",          MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
 GAME( 1990, galpanica, galpanic, galpanica, galpanica, galpanic_state, 0, ROT90, "Kaneko", "Gals Panic (MCU Protected, set 1)", MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
 GAME( 1990, galpanicb, galpanic, galpanica, galpanica, galpanic_state, 0, ROT90, "Kaneko", "Gals Panic (MCU Protected, set 2)", MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

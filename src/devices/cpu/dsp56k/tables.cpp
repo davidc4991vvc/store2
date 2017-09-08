@@ -1,9 +1,6 @@
 // license:BSD-3-Clause
 // copyright-holders:Andrew Gardner
-<<<<<<< HEAD
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -16,11 +13,7 @@ namespace DSP56K
 /******************/
 /* Table decoding */
 /******************/
-<<<<<<< HEAD
-bfShift decode_BBB_table(UINT16 BBB)
-=======
 bfShift decode_BBB_table(uint16_t BBB)
->>>>>>> upstream/master
 {
 	switch(BBB)
 	{
@@ -32,11 +25,7 @@ bfShift decode_BBB_table(uint16_t BBB)
 	return BBB_INVALID;
 }
 
-<<<<<<< HEAD
-void decode_cccc_table(const UINT16 cccc, op_mnem& mnemonic)
-=======
 void decode_cccc_table(const uint16_t cccc, op_mnem& mnemonic)
->>>>>>> upstream/master
 {
 	switch (cccc)
 	{
@@ -79,11 +68,7 @@ void decode_cccc_table(const uint16_t cccc, op_mnem& mnemonic)
 // NEW //   }
 }
 
-<<<<<<< HEAD
-void decode_DDDDD_table(const UINT16 DDDDD, reg_id& SD)
-=======
 void decode_DDDDD_table(const uint16_t DDDDD, reg_id& SD)
->>>>>>> upstream/master
 {
 	switch(DDDDD)
 	{
@@ -123,11 +108,7 @@ void decode_DDDDD_table(const uint16_t DDDDD, reg_id& SD)
 	}
 }
 
-<<<<<<< HEAD
-void decode_DD_table(const UINT16 DD, reg_id& SD)
-=======
 void decode_DD_table(const uint16_t DD, reg_id& SD)
->>>>>>> upstream/master
 {
 	switch (DD)
 	{
@@ -138,15 +119,9 @@ void decode_DD_table(const uint16_t DD, reg_id& SD)
 	}
 }
 
-<<<<<<< HEAD
-void decode_DDF_table(const UINT16 DD, const UINT16 F, reg_id& S, reg_id& D)
-{
-	const UINT16 switchVal = (DD << 1) | F;
-=======
 void decode_DDF_table(const uint16_t DD, const uint16_t F, reg_id& S, reg_id& D)
 {
 	const uint16_t switchVal = (DD << 1) | F;
->>>>>>> upstream/master
 
 	switch (switchVal)
 	{
@@ -161,11 +136,7 @@ void decode_DDF_table(const uint16_t DD, const uint16_t F, reg_id& S, reg_id& D)
 	}
 }
 
-<<<<<<< HEAD
-void decode_EE_table(const UINT16 EE, reg_id& D)
-=======
 void decode_EE_table(const uint16_t EE, reg_id& D)
->>>>>>> upstream/master
 {
 	switch(EE)
 	{
@@ -175,11 +146,7 @@ void decode_EE_table(const uint16_t EE, reg_id& D)
 	}
 }
 
-<<<<<<< HEAD
-void decode_F_table(const UINT16 F, reg_id& SD)
-=======
 void decode_F_table(const uint16_t F, reg_id& SD)
->>>>>>> upstream/master
 {
 	switch(F)
 	{
@@ -188,15 +155,9 @@ void decode_F_table(const uint16_t F, reg_id& SD)
 	}
 }
 
-<<<<<<< HEAD
-void decode_h0hF_table(const UINT16 h0h, UINT16 F, reg_id& S, reg_id& D)
-{
-	const UINT16 switchVal = (h0h << 1) | F;
-=======
 void decode_h0hF_table(const uint16_t h0h, uint16_t F, reg_id& S, reg_id& D)
 {
 	const uint16_t switchVal = (h0h << 1) | F;
->>>>>>> upstream/master
 
 	switch (switchVal)
 	{
@@ -211,11 +172,7 @@ void decode_h0hF_table(const uint16_t h0h, uint16_t F, reg_id& S, reg_id& D)
 	}
 }
 
-<<<<<<< HEAD
-void decode_HH_table(const UINT16 HH, reg_id& SD)
-=======
 void decode_HH_table(const uint16_t HH, reg_id& SD)
->>>>>>> upstream/master
 {
 	switch(HH)
 	{
@@ -226,11 +183,7 @@ void decode_HH_table(const uint16_t HH, reg_id& SD)
 	}
 }
 
-<<<<<<< HEAD
-void decode_HHH_table(const UINT16 HHH, reg_id& SD)
-=======
 void decode_HHH_table(const uint16_t HHH, reg_id& SD)
->>>>>>> upstream/master
 {
 	switch(HHH)
 	{
@@ -245,11 +198,7 @@ void decode_HHH_table(const uint16_t HHH, reg_id& SD)
 	}
 }
 
-<<<<<<< HEAD
-void decode_IIIIx_table(const UINT16 IIII, const UINT16 x, reg_id& S, reg_id& D)
-=======
 void decode_IIIIx_table(const uint16_t IIII, const uint16_t x, reg_id& S, reg_id& D)
->>>>>>> upstream/master
 {
 	S = D = iINVALID;
 	switch(IIII)
@@ -273,15 +222,9 @@ void decode_IIIIx_table(const uint16_t IIII, const uint16_t x, reg_id& S, reg_id
 	}
 }
 
-<<<<<<< HEAD
-void decode_JJJF_table(const UINT16 JJJ, const UINT16 F, reg_id& S, reg_id& D)
-{
-	const UINT16 switchVal = (JJJ << 1) | F;
-=======
 void decode_JJJF_table(const uint16_t JJJ, const uint16_t F, reg_id& S, reg_id& D)
 {
 	const uint16_t switchVal = (JJJ << 1) | F;
->>>>>>> upstream/master
 
 	switch(switchVal)
 	{
@@ -304,15 +247,9 @@ void decode_JJJF_table(const uint16_t JJJ, const uint16_t F, reg_id& S, reg_id& 
 	}
 }
 
-<<<<<<< HEAD
-void decode_JJF_table(const UINT16 JJ, const UINT16 F, reg_id& S, reg_id& D)
-{
-	const UINT16 switchVal = (JJ << 1) | F;
-=======
 void decode_JJF_table(const uint16_t JJ, const uint16_t F, reg_id& S, reg_id& D)
 {
 	const uint16_t switchVal = (JJ << 1) | F;
->>>>>>> upstream/master
 
 	switch (switchVal)
 	{
@@ -327,15 +264,9 @@ void decode_JJF_table(const uint16_t JJ, const uint16_t F, reg_id& S, reg_id& D)
 	}
 }
 
-<<<<<<< HEAD
-void decode_JF_table(const UINT16 J, const UINT16 F, reg_id& S, reg_id& D)
-{
-	const UINT16 switchVal = (J << 1) | F;
-=======
 void decode_JF_table(const uint16_t J, const uint16_t F, reg_id& S, reg_id& D)
 {
 	const uint16_t switchVal = (J << 1) | F;
->>>>>>> upstream/master
 
 	switch(switchVal)
 	{
@@ -346,11 +277,7 @@ void decode_JF_table(const uint16_t J, const uint16_t F, reg_id& S, reg_id& D)
 	}
 }
 
-<<<<<<< HEAD
-// NEW // void decode_k_table(UINT16 k, char *Dnot)
-=======
 // NEW // void decode_k_table(uint16_t k, char *Dnot)
->>>>>>> upstream/master
 // NEW // {
 // NEW //   switch(k)
 // NEW //   {
@@ -359,11 +286,7 @@ void decode_JF_table(const uint16_t J, const uint16_t F, reg_id& S, reg_id& D)
 // NEW //   }
 // NEW // }
 
-<<<<<<< HEAD
-void decode_kSign_table(const UINT16 k, std::string& plusMinus)
-=======
 void decode_kSign_table(const uint16_t k, std::string& plusMinus)
->>>>>>> upstream/master
 {
 	switch(k)
 	{
@@ -372,11 +295,7 @@ void decode_kSign_table(const uint16_t k, std::string& plusMinus)
 	}
 }
 
-<<<<<<< HEAD
-void decode_KKK_table(const UINT16 KKK, reg_id& D1, reg_id& D2)
-=======
 void decode_KKK_table(const uint16_t KKK, reg_id& D1, reg_id& D2)
->>>>>>> upstream/master
 {
 	switch(KKK)
 	{
@@ -391,11 +310,7 @@ void decode_KKK_table(const uint16_t KKK, reg_id& D1, reg_id& D2)
 	}
 }
 
-<<<<<<< HEAD
-void decode_NN_table(UINT16 NN, reg_id& ret)
-=======
 void decode_NN_table(uint16_t NN, reg_id& ret)
->>>>>>> upstream/master
 {
 	switch(NN)
 	{
@@ -406,11 +321,7 @@ void decode_NN_table(uint16_t NN, reg_id& ret)
 	}
 }
 
-<<<<<<< HEAD
-void decode_TT_table(UINT16 TT, reg_id& ret)
-=======
 void decode_TT_table(uint16_t TT, reg_id& ret)
->>>>>>> upstream/master
 {
 	switch(TT)
 	{
@@ -421,15 +332,9 @@ void decode_TT_table(uint16_t TT, reg_id& ret)
 	}
 }
 
-<<<<<<< HEAD
-void decode_QQF_table(const UINT16 QQ, const UINT16 F, reg_id& S1, reg_id& S2, reg_id& D)
-{
-	const UINT16 switchVal = (QQ << 1) | F;
-=======
 void decode_QQF_table(const uint16_t QQ, const uint16_t F, reg_id& S1, reg_id& S2, reg_id& D)
 {
 	const uint16_t switchVal = (QQ << 1) | F;
->>>>>>> upstream/master
 
 	switch(switchVal)
 	{
@@ -444,15 +349,9 @@ void decode_QQF_table(const uint16_t QQ, const uint16_t F, reg_id& S1, reg_id& S
 	}
 }
 
-<<<<<<< HEAD
-void decode_QQF_special_table(const UINT16 QQ, const UINT16 F, reg_id& S1, reg_id& S2, reg_id& D)
-{
-	const UINT16 switchVal = (QQ << 1) | F;
-=======
 void decode_QQF_special_table(const uint16_t QQ, const uint16_t F, reg_id& S1, reg_id& S2, reg_id& D)
 {
 	const uint16_t switchVal = (QQ << 1) | F;
->>>>>>> upstream/master
 
 	switch(switchVal)
 	{
@@ -467,15 +366,9 @@ void decode_QQF_special_table(const uint16_t QQ, const uint16_t F, reg_id& S1, r
 	}
 }
 
-<<<<<<< HEAD
-void decode_QQQF_table(const UINT16 QQQ, const UINT16 F, reg_id& S1, reg_id& S2, reg_id& D)
-{
-	const UINT16 switchVal = (QQQ << 1) | F;
-=======
 void decode_QQQF_table(const uint16_t QQQ, const uint16_t F, reg_id& S1, reg_id& S2, reg_id& D)
 {
 	const uint16_t switchVal = (QQQ << 1) | F;
->>>>>>> upstream/master
 
 	switch(switchVal)
 	{
@@ -498,11 +391,7 @@ void decode_QQQF_table(const uint16_t QQQ, const uint16_t F, reg_id& S1, reg_id&
 	}
 }
 
-<<<<<<< HEAD
-void decode_RR_table(UINT16 RR, reg_id& ret)
-=======
 void decode_RR_table(uint16_t RR, reg_id& ret)
->>>>>>> upstream/master
 {
 	switch(RR)
 	{
@@ -513,11 +402,7 @@ void decode_RR_table(uint16_t RR, reg_id& ret)
 	}
 }
 
-<<<<<<< HEAD
-void decode_rr_table(UINT16 rr, reg_id& ret)
-=======
 void decode_rr_table(uint16_t rr, reg_id& ret)
->>>>>>> upstream/master
 {
 	switch(rr)
 	{
@@ -528,11 +413,7 @@ void decode_rr_table(uint16_t rr, reg_id& ret)
 	}
 }
 
-<<<<<<< HEAD
-void decode_s_table(const UINT16 s, op_mnem& arithmetic)
-=======
 void decode_s_table(const uint16_t s, op_mnem& arithmetic)
->>>>>>> upstream/master
 {
 	switch(s)
 	{
@@ -541,11 +422,7 @@ void decode_s_table(const uint16_t s, op_mnem& arithmetic)
 	}
 }
 
-<<<<<<< HEAD
-void decode_ss_table(const UINT16 ss, op_mnem& arithmetic)
-=======
 void decode_ss_table(const uint16_t ss, op_mnem& arithmetic)
->>>>>>> upstream/master
 {
 	switch(ss)
 	{
@@ -557,15 +434,9 @@ void decode_ss_table(const uint16_t ss, op_mnem& arithmetic)
 	}
 }
 
-<<<<<<< HEAD
-void decode_uuuuF_table(const UINT16 uuuu, const UINT16 F, std::string& arg, reg_id& S, reg_id& D)
-{
-	const UINT16 switchVal = (uuuu << 1) | F;
-=======
 void decode_uuuuF_table(const uint16_t uuuu, const uint16_t F, std::string& arg, reg_id& S, reg_id& D)
 {
 	const uint16_t switchVal = (uuuu << 1) | F;
->>>>>>> upstream/master
 
 	//D = "sub?";
 	//S = "add";
@@ -605,11 +476,7 @@ void decode_uuuuF_table(const uint16_t uuuu, const uint16_t F, std::string& arg,
 	}
 }
 
-<<<<<<< HEAD
-void decode_Z_table(const UINT16 Z, std::string& ea)
-=======
 void decode_Z_table(const uint16_t Z, std::string& ea)
->>>>>>> upstream/master
 {
 	/* This is fixed as per the Family Manual errata addendum */
 	switch(Z)
@@ -619,11 +486,7 @@ void decode_Z_table(const uint16_t Z, std::string& ea)
 	}
 }
 
-<<<<<<< HEAD
-void assemble_ea_from_m_table(const UINT16 m, const int n, std::string& ea)
-=======
 void assemble_ea_from_m_table(const uint16_t m, const int n, std::string& ea)
->>>>>>> upstream/master
 {
 	char temp[32];
 	switch(m)
@@ -634,11 +497,7 @@ void assemble_ea_from_m_table(const uint16_t m, const int n, std::string& ea)
 	ea = temp;
 }
 
-<<<<<<< HEAD
-void assemble_eas_from_mm_table(UINT16 mm, int n1, int n2, std::string& ea1, std::string& ea2)
-=======
 void assemble_eas_from_mm_table(uint16_t mm, int n1, int n2, std::string& ea1, std::string& ea2)
->>>>>>> upstream/master
 {
 	char temp1[32];
 	char temp2[32];
@@ -657,11 +516,7 @@ void assemble_eas_from_mm_table(uint16_t mm, int n1, int n2, std::string& ea1, s
 	ea2 = temp2;
 }
 
-<<<<<<< HEAD
-void assemble_ea_from_MM_table(UINT16 MM, int n, std::string& ea)
-=======
 void assemble_ea_from_MM_table(uint16_t MM, int n, std::string& ea)
->>>>>>> upstream/master
 {
 	char temp[32];
 	switch(MM)
@@ -674,11 +529,7 @@ void assemble_ea_from_MM_table(uint16_t MM, int n, std::string& ea)
 	ea = temp;
 }
 
-<<<<<<< HEAD
-void assemble_ea_from_q_table(UINT16 q, int n, std::string& ea)
-=======
 void assemble_ea_from_q_table(uint16_t q, int n, std::string& ea)
->>>>>>> upstream/master
 {
 	char temp[32];
 	switch(q)
@@ -689,11 +540,7 @@ void assemble_ea_from_q_table(uint16_t q, int n, std::string& ea)
 	ea = temp;
 }
 
-<<<<<<< HEAD
-void assemble_ea_from_t_table(UINT16 t, UINT16 val, std::string& ea)
-=======
 void assemble_ea_from_t_table(uint16_t t, uint16_t val, std::string& ea)
->>>>>>> upstream/master
 {
 	char temp[32];
 	switch(t)
@@ -706,11 +553,7 @@ void assemble_ea_from_t_table(uint16_t t, uint16_t val, std::string& ea)
 	ea = temp;
 }
 
-<<<<<<< HEAD
-void assemble_ea_from_z_table(UINT16 z, int n, std::string& ea)
-=======
 void assemble_ea_from_z_table(uint16_t z, int n, std::string& ea)
->>>>>>> upstream/master
 {
 	char temp[32];
 	switch(z)
@@ -721,11 +564,7 @@ void assemble_ea_from_z_table(uint16_t z, int n, std::string& ea)
 	ea = temp;
 }
 
-<<<<<<< HEAD
-void assemble_D_from_P_table(UINT16 P, UINT16 ppppp, std::string& D)
-=======
 void assemble_D_from_P_table(uint16_t P, uint16_t ppppp, std::string& D)
->>>>>>> upstream/master
 {
 	char temp[32];
 	std::string fullAddy;    /* Convert Short Absolute Address to full 16-bit */
@@ -745,11 +584,7 @@ void assemble_D_from_P_table(uint16_t P, uint16_t ppppp, std::string& D)
 	D = temp;
 }
 
-<<<<<<< HEAD
-void assemble_arguments_from_W_table(UINT16 W, char ma, const reg_id& SD, const std::string& ea,
-=======
 void assemble_arguments_from_W_table(uint16_t W, char ma, const reg_id& SD, const std::string& ea,
->>>>>>> upstream/master
 	std::string& source, std::string& destination)
 {
 	char temp[32];
@@ -761,11 +596,7 @@ void assemble_arguments_from_W_table(uint16_t W, char ma, const reg_id& SD, cons
 	}
 }
 
-<<<<<<< HEAD
-void assemble_arguments_from_W_table(UINT16 W, char ma, const std::string& SD, const std::string& ea,
-=======
 void assemble_arguments_from_W_table(uint16_t W, char ma, const std::string& SD, const std::string& ea,
->>>>>>> upstream/master
 	std::string& source, std::string& destination)
 {
 	char temp[32];
@@ -777,15 +608,9 @@ void assemble_arguments_from_W_table(uint16_t W, char ma, const std::string& SD,
 	}
 }
 
-<<<<<<< HEAD
-void assemble_reg_from_W_table(UINT16 W, char ma, const reg_id& SD, const INT8 xx, std::string& S, std::string& D)
-{
-	UINT8 abs_xx;
-=======
 void assemble_reg_from_W_table(uint16_t W, char ma, const reg_id& SD, const int8_t xx, std::string& S, std::string& D)
 {
 	uint8_t abs_xx;
->>>>>>> upstream/master
 	char temp[32];
 	char operation[32];
 
@@ -805,34 +630,17 @@ void assemble_reg_from_W_table(uint16_t W, char ma, const reg_id& SD, const int8
 	}
 }
 
-<<<<<<< HEAD
-void assemble_address_from_IO_short_address(UINT16 pp, std::string& ea)
-{
-	char temp[32];
-
-	UINT16 fullAddy = 0xffe0;
-=======
 void assemble_address_from_IO_short_address(uint16_t pp, std::string& ea)
 {
 	char temp[32];
 
 	uint16_t fullAddy = 0xffe0;
->>>>>>> upstream/master
 	fullAddy |= pp;
 
 	sprintf(temp, "%.04x", fullAddy);
 	ea = temp;
 }
 
-<<<<<<< HEAD
-INT8 get_6_bit_signed_value(UINT16 bits)
-{
-	UINT16 fullAddy = bits;
-	if (fullAddy & 0x0020)
-		fullAddy |= 0xffc0;
-
-	return (INT8)fullAddy;
-=======
 int8_t get_6_bit_signed_value(uint16_t bits)
 {
 	uint16_t fullAddy = bits;
@@ -840,7 +648,6 @@ int8_t get_6_bit_signed_value(uint16_t bits)
 		fullAddy |= 0xffc0;
 
 	return (int8_t)fullAddy;
->>>>>>> upstream/master
 }
 
 
@@ -848,21 +655,12 @@ int8_t get_6_bit_signed_value(uint16_t bits)
 /* HELPER FUNCTIONS */
 /********************/
 
-<<<<<<< HEAD
-UINT16 dsp56k_op_maskn(UINT16 cur, UINT16 mask)
-{
-	int i;
-
-	UINT16 retVal = (cur & mask);
-	UINT16 temp = 0x0000;
-=======
 uint16_t dsp56k_op_maskn(uint16_t cur, uint16_t mask)
 {
 	int i;
 
 	uint16_t retVal = (cur & mask);
 	uint16_t temp = 0x0000;
->>>>>>> upstream/master
 	int offsetCount = 0;
 
 	/* Shift everything right, eliminating 'whitespace'... */
@@ -897,11 +695,7 @@ bool registerOverlap(const reg_id& r0, const size_t bmd, const reg_id& r1)
 	return false;
 }
 
-<<<<<<< HEAD
-UINT16 regValue16(dsp56k_core* cpustate, const reg_id& reg)
-=======
 uint16_t regValue16(dsp56k_core* cpustate, const reg_id& reg)
->>>>>>> upstream/master
 {
 	if (reg == iX0) return X0;
 	if (reg == iX1) return X1;
@@ -932,11 +726,7 @@ uint16_t regValue16(dsp56k_core* cpustate, const reg_id& reg)
 	return 0xdead;
 }
 
-<<<<<<< HEAD
-void setReg16(dsp56k_core* cpustate, const UINT16& value, const reg_id& reg)
-=======
 void setReg16(dsp56k_core* cpustate, const uint16_t& value, const reg_id& reg)
->>>>>>> upstream/master
 {
 	if (reg == iX0) X0 = value;
 	if (reg == iX1) X1 = value;
@@ -1087,11 +877,7 @@ reg_id stringAsRegID(const std::string& str)
 	return iINVALID;
 }
 
-<<<<<<< HEAD
-UINT8 regIDAsNum(const reg_id& regId)
-=======
 uint8_t regIDAsNum(const reg_id& regId)
->>>>>>> upstream/master
 {
 	if (regId == iR0) return 0;
 	if (regId == iR1) return 1;

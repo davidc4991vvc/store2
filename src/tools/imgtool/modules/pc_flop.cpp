@@ -17,19 +17,6 @@
 #define FAT_SECLEN              512
 
 
-<<<<<<< HEAD
-static imgtoolerr_t fat_image_create(imgtool_image *image, imgtool_stream *stream, option_resolution *opts)
-{
-	imgtoolerr_t err;
-	UINT32 tracks, heads, sectors;
-	UINT8 buffer[FAT_SECLEN];
-	imgtool_class imgclass = { fat_get_info };
-	imgtoolerr_t (*fat_partition_create)(imgtool_image *image, UINT64 first_block, UINT64 block_count);
-
-	tracks = option_resolution_lookup_int(opts, 'T');
-	heads = option_resolution_lookup_int(opts, 'H');
-	sectors = option_resolution_lookup_int(opts, 'S');
-=======
 static imgtoolerr_t fat_image_create(imgtool::image &image, imgtool::stream::ptr &&stream, util::option_resolution *opts)
 {
 	imgtoolerr_t err;
@@ -41,38 +28,23 @@ static imgtoolerr_t fat_image_create(imgtool::image &image, imgtool::stream::ptr
 	tracks = opts->lookup_int('T');
 	heads = opts->lookup_int('H');
 	sectors = opts->lookup_int('S');
->>>>>>> upstream/master
 
 	/* set up just enough of a boot sector to specify geometry */
 	memset(buffer, 0, sizeof(buffer));
 	place_integer_le(buffer, 24, 2, sectors);
 	place_integer_le(buffer, 26, 2, heads);
-<<<<<<< HEAD
-	place_integer_le(buffer, 19, 2, (UINT16) (((UINT64) tracks * heads * sectors) >> 0));
-	place_integer_le(buffer, 32, 4, (UINT16) (((UINT64) tracks * heads * sectors) >> 16));
-	err = imgtool_image_write_block(image, 0, buffer);
-=======
 	place_integer_le(buffer, 19, 2, (uint16_t) (((uint64_t) tracks * heads * sectors) >> 0));
 	place_integer_le(buffer, 32, 4, (uint16_t) (((uint64_t) tracks * heads * sectors) >> 16));
 	err = image.write_block(0, buffer);
->>>>>>> upstream/master
 	if (err)
 		goto done;
 
 	/* load fat_partition_create */
-<<<<<<< HEAD
-	fat_partition_create = (imgtoolerr_t (*)(imgtool_image *, UINT64, UINT64))
-		imgtool_get_info_fct(&imgclass, IMGTOOLINFO_PTR_CREATE_PARTITION);
-
-	/* actually create the partition */
-	err = fat_partition_create(image, 0, ((UINT64) tracks) * heads * sectors);
-=======
 	fat_partition_create = (imgtoolerr_t (*)(imgtool::image &, uint64_t, uint64_t))
 		imgtool_get_info_fct(&imgclass, IMGTOOLINFO_PTR_CREATE_PARTITION);
 
 	/* actually create the partition */
 	err = fat_partition_create(image, 0, ((uint64_t) tracks) * heads * sectors);
->>>>>>> upstream/master
 	if (err)
 		goto done;
 
@@ -82,15 +54,6 @@ done:
 
 
 
-<<<<<<< HEAD
-static imgtoolerr_t fat_image_get_geometry(imgtool_image *image, UINT32 *tracks, UINT32 *heads, UINT32 *sectors)
-{
-	imgtoolerr_t err;
-	UINT64 total_sectors;
-	UINT8 buffer[FAT_SECLEN];
-
-	err = imgtool_image_read_block(image, 0, buffer);
-=======
 static imgtoolerr_t fat_image_get_geometry(imgtool::image &image, uint32_t *tracks, uint32_t *heads, uint32_t *sectors)
 {
 	imgtoolerr_t err;
@@ -98,7 +61,6 @@ static imgtoolerr_t fat_image_get_geometry(imgtool::image &image, uint32_t *trac
 	uint8_t buffer[FAT_SECLEN];
 
 	err = image.read_block(0, buffer);
->>>>>>> upstream/master
 	if (err)
 		return err;
 
@@ -113,19 +75,11 @@ static imgtoolerr_t fat_image_get_geometry(imgtool::image &image, uint32_t *trac
 
 
 
-<<<<<<< HEAD
-static imgtoolerr_t fat_get_sector_position(imgtool_image *image, UINT32 sector_index,
-	UINT32 *track, UINT32 *head, UINT32 *sector)
-{
-	imgtoolerr_t err;
-	UINT32 tracks, heads, sectors;
-=======
 static imgtoolerr_t fat_get_sector_position(imgtool::image &image, uint32_t sector_index,
 	uint32_t *track, uint32_t *head, uint32_t *sector)
 {
 	imgtoolerr_t err;
 	uint32_t tracks, heads, sectors;
->>>>>>> upstream/master
 
 	if (sector_index == 0)
 	{
@@ -136,11 +90,7 @@ static imgtoolerr_t fat_get_sector_position(imgtool::image &image, uint32_t sect
 	}
 	else
 	{
-<<<<<<< HEAD
-		err = imgtool_image_get_geometry(image, &tracks, &heads, &sectors);
-=======
 		err = image.get_geometry(&tracks, &heads, &sectors);
->>>>>>> upstream/master
 		if (err)
 			return err;
 
@@ -153,16 +103,6 @@ static imgtoolerr_t fat_get_sector_position(imgtool::image &image, uint32_t sect
 
 
 
-<<<<<<< HEAD
-static imgtoolerr_t fat_image_readblock(imgtool_image *image, void *buffer, UINT64 block)
-{
-	imgtoolerr_t err;
-	floperr_t ferr;
-	UINT32 track, head, sector;
-	UINT32 block_size;
-
-	err = imgtool_image_get_block_size(image, &block_size);
-=======
 static imgtoolerr_t fat_image_readblock(imgtool::image &image, void *buffer, uint64_t block)
 {
 	imgtoolerr_t err;
@@ -171,7 +111,6 @@ static imgtoolerr_t fat_image_readblock(imgtool::image &image, void *buffer, uin
 	uint32_t block_size;
 
 	err = image.get_block_size(block_size);
->>>>>>> upstream/master
 	if (err)
 		return err;
 
@@ -187,16 +126,6 @@ static imgtoolerr_t fat_image_readblock(imgtool::image &image, void *buffer, uin
 
 
 
-<<<<<<< HEAD
-static imgtoolerr_t fat_image_writeblock(imgtool_image *image, const void *buffer, UINT64 block)
-{
-	imgtoolerr_t err;
-	floperr_t ferr;
-	UINT32 track, head, sector;
-	UINT32 block_size;
-
-	err = imgtool_image_get_block_size(image, &block_size);
-=======
 static imgtoolerr_t fat_image_writeblock(imgtool::image &image, const void *buffer, uint64_t block)
 {
 	imgtoolerr_t err;
@@ -205,7 +134,6 @@ static imgtoolerr_t fat_image_writeblock(imgtool::image &image, const void *buff
 	uint32_t block_size;
 
 	err = image.get_block_size(block_size);
->>>>>>> upstream/master
 	if (err)
 		return err;
 
@@ -221,11 +149,7 @@ static imgtoolerr_t fat_image_writeblock(imgtool::image &image, const void *buff
 
 
 
-<<<<<<< HEAD
-void pc_floppy_get_info(const imgtool_class *imgclass, UINT32 state, union imgtoolinfo *info)
-=======
 void pc_floppy_get_info(const imgtool_class *imgclass, uint32_t state, union imgtoolinfo *info)
->>>>>>> upstream/master
 {
 	switch(state)
 	{

@@ -39,38 +39,6 @@
 //  constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const device_type NES_GS2015 = &device_creator<nes_gs2015_device>;
-const device_type NES_GS2004 = &device_creator<nes_gs2004_device>;
-const device_type NES_GS2013 = &device_creator<nes_gs2013_device>;
-const device_type NES_TF9IN1 = &device_creator<nes_tf9_device>;
-const device_type NES_3DBLOCK = &device_creator<nes_3dblock_device>;
-
-
-nes_gs2015_device::nes_gs2015_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: nes_nrom_device(mconfig, NES_GS2015, "NES Cart RCM GS-2015 PCB", tag, owner, clock, "nes_gs2015", __FILE__)
-{
-}
-
-nes_gs2004_device::nes_gs2004_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: nes_nrom_device(mconfig, NES_GS2004, "NES Cart RCM GS-2004 PCB", tag, owner, clock, "nes_gs2004", __FILE__)
-{
-}
-
-nes_gs2013_device::nes_gs2013_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: nes_nrom_device(mconfig, NES_GS2013, "NES Cart RCM GS-2013 PCB", tag, owner, clock, "nes_gs2013", __FILE__)
-{
-}
-
-nes_tf9_device::nes_tf9_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: nes_nrom_device(mconfig, NES_TF9IN1, "NES Cart RCM Tetris Family 9 in 1 PCB", tag, owner, clock, "nes_tetrisfam", __FILE__)
-{
-}
-
-nes_3dblock_device::nes_3dblock_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: nes_nrom_device(mconfig, NES_3DBLOCK, "NES Cart RCM 3D Block PCB", tag, owner, clock, "nes_3dblock", __FILE__), m_irq_count(0)
-				{
-=======
 DEFINE_DEVICE_TYPE(NES_GS2015,  nes_gs2015_device,  "nes_g2015",     "NES Cart RCM GS-2015 PCB")
 DEFINE_DEVICE_TYPE(NES_GS2004,  nes_gs2004_device,  "nes_g2004",     "NES Cart RCM GS-2004 PCB")
 DEFINE_DEVICE_TYPE(NES_GS2013,  nes_gs2013_device,  "nes_g2013",     "NES Cart RCM GS-2013 PCB")
@@ -101,7 +69,6 @@ nes_tf9_device::nes_tf9_device(const machine_config &mconfig, const char *tag, d
 nes_3dblock_device::nes_3dblock_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: nes_nrom_device(mconfig, NES_3DBLOCK, tag, owner, clock), m_irq_count(0)
 {
->>>>>>> upstream/master
 }
 
 

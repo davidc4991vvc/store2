@@ -91,13 +91,6 @@ Are the OKI M6295 clocks from Heavy Smash are correct at least for the Mitchell 
 */
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "includes/decocrpt.h"
-#include "cpu/arm/arm.h"
-#include "includes/simpl156.h"
-#include "machine/eepromser.h"
-#include "sound/okim6295.h"
-=======
 #include "includes/simpl156.h"
 
 #include "machine/decocrpt.h"
@@ -108,7 +101,6 @@ Are the OKI M6295 clocks from Heavy Smash are correct at least for the Mitchell 
 #include "screen.h"
 #include "speaker.h"
 
->>>>>>> upstream/master
 
 static INPUT_PORTS_START( simpl156 )
 	PORT_START("IN0")
@@ -140,8 +132,6 @@ static INPUT_PORTS_START( simpl156 )
 	PORT_BIT( 0xffff0000, IP_ACTIVE_LOW, IPT_UNUSED )
 INPUT_PORTS_END
 
-<<<<<<< HEAD
-=======
 static INPUT_PORTS_START( magdrop )
 	PORT_INCLUDE(simpl156)
 
@@ -158,7 +148,6 @@ static INPUT_PORTS_START( magdrop )
 	PORT_BIT( 0x4000, IP_ACTIVE_LOW, IPT_BUTTON3 ) PORT_PLAYER(2) PORT_OPTIONAL // not used in gameplay
 INPUT_PORTS_END
 
->>>>>>> upstream/master
 
 WRITE32_MEMBER(simpl156_state::simpl156_eeprom_w)
 {
@@ -166,11 +155,7 @@ WRITE32_MEMBER(simpl156_state::simpl156_eeprom_w)
 
 	//okibank = data & 0x07;
 
-<<<<<<< HEAD
-	m_okimusic->set_bank_base(0x40000 * (data & 0x7));
-=======
 	m_okimusic->set_rom_bank(data & 0x7);
->>>>>>> upstream/master
 
 	m_eeprom->clk_write(BIT(data, 5) ? ASSERT_LINE : CLEAR_LINE);
 	m_eeprom->di_write(BIT(data, 4));
@@ -411,11 +396,7 @@ DECOSPR_PRIORITY_CB_MEMBER(simpl156_state::pri_callback)
 }
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( chainrec, simpl156_state )
-=======
 static MACHINE_CONFIG_START( chainrec )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", ARM, 28000000 /* /4 */) /*DE156*/ /* 7.000 MHz */ /* measured at 7.. seems to need 28? */
@@ -453,26 +434,11 @@ static MACHINE_CONFIG_START( chainrec )
 	MCFG_DECO16IC_PF12_8X8_BANK(0)
 	MCFG_DECO16IC_PF12_16X16_BANK(1)
 	MCFG_DECO16IC_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_DECO16IC_PALETTE("palette")
-=======
->>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("spritegen", DECO_SPRITE, 0)
 	MCFG_DECO_SPRITE_GFX_REGION(2)
 	MCFG_DECO_SPRITE_PRIORITY_CB(simpl156_state, pri_callback)
 	MCFG_DECO_SPRITE_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_DECO_SPRITE_PALETTE("palette")
-
-	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
-
-	MCFG_OKIM6295_ADD("okisfx", 32220000/32, OKIM6295_PIN7_HIGH)
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 0.6)
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 0.6)
-
-	MCFG_OKIM6295_ADD("okimusic", 32220000/16, OKIM6295_PIN7_HIGH)
-=======
 
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
@@ -481,7 +447,6 @@ static MACHINE_CONFIG_START( chainrec )
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 0.6)
 
 	MCFG_OKIM6295_ADD("okimusic", 32220000/16, PIN7_HIGH)
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 0.2)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 0.2)
 MACHINE_CONFIG_END
@@ -513,11 +478,7 @@ static MACHINE_CONFIG_DERIVED( mitchell156, chainrec )
 	MCFG_CPU_MODIFY("maincpu")
 	MCFG_CPU_PROGRAM_MAP(mitchell156_map)
 
-<<<<<<< HEAD
-	MCFG_OKIM6295_REPLACE("okimusic", 32220000/32, OKIM6295_PIN7_HIGH)
-=======
 	MCFG_OKIM6295_REPLACE("okimusic", 32220000/32, PIN7_HIGH)
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 0.2)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 0.2)
 MACHINE_CONFIG_END
@@ -543,11 +504,7 @@ This is a higher quality bootleg made with genuine DECO chips/parts.
 |      93C45  05.u29            |
 +-------------------------------+
 
-<<<<<<< HEAD
-All roms are socketted eproms, no labels, just a number in pencel.
-=======
 All roms are socketed eproms, no labels, just a number in pencel.
->>>>>>> upstream/master
 
 05.u29  27c4096
 01.u8l  27c4096
@@ -1080,28 +1037,16 @@ ROM_END
 
 DRIVER_INIT_MEMBER(simpl156_state,simpl156)
 {
-<<<<<<< HEAD
-	UINT8 *rom = memregion("okimusic")->base();
-	int length = memregion("okimusic")->bytes();
-	dynamic_buffer buf1(length);
-
-	UINT32 x;
-=======
 	uint8_t *rom = memregion("okimusic")->base();
 	int length = memregion("okimusic")->bytes();
 	std::vector<uint8_t> buf1(length);
 
 	uint32_t x;
->>>>>>> upstream/master
 
 	/* hmm low address line goes to banking chip instead? */
 	for (x = 0; x < length; x++)
 	{
-<<<<<<< HEAD
-		UINT32 addr;
-=======
 		uint32_t addr;
->>>>>>> upstream/master
 
 		addr = BITSWAP24 (x,23,22,21,0, 20,
 							19,18,17,16,
@@ -1192,15 +1137,9 @@ DRIVER_INIT_MEMBER(simpl156_state,osman)
 GAME( 1994, joemacr,  0,        joemacr,     simpl156, simpl156_state, joemacr,  ROT0, "Data East", "Joe & Mac Returns (World, Version 1.1, 1994.05.27)", MACHINE_SUPPORTS_SAVE ) /* bootleg board with genuine DECO parts */
 GAME( 1994, joemacra, joemacr,  joemacr,     simpl156, simpl156_state, joemacr,  ROT0, "Data East", "Joe & Mac Returns (World, Version 1.0, 1994.05.19)", MACHINE_SUPPORTS_SAVE )
 GAME( 1994, joemacrj, joemacr,  joemacr,     simpl156, simpl156_state, joemacr,  ROT0, "Data East", "Joe & Mac Returns (Japan, Version 1.2, 1994.06.06)", MACHINE_SUPPORTS_SAVE )
-<<<<<<< HEAD
-GAME( 1995, chainrec, 0,        chainrec,    simpl156, simpl156_state, chainrec, ROT0, "Data East", "Chain Reaction (World, Version 2.2, 1995.09.25)", MACHINE_SUPPORTS_SAVE )
-GAME( 1995, magdrop,  chainrec, magdrop,     simpl156, simpl156_state, chainrec, ROT0, "Data East", "Magical Drop (Japan, Version 1.1, 1995.06.21)", MACHINE_SUPPORTS_SAVE )
-GAME( 1995, magdropp, chainrec, magdropp,    simpl156, simpl156_state, chainrec, ROT0, "Data East", "Magical Drop Plus 1 (Japan, Version 2.1, 1995.09.12)", MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1995, chainrec, 0,        chainrec,    magdrop,  simpl156_state, chainrec, ROT0, "Data East", "Chain Reaction (World, Version 2.2, 1995.09.25)", MACHINE_SUPPORTS_SAVE )
 GAME( 1995, magdrop,  chainrec, magdrop,     magdrop,  simpl156_state, chainrec, ROT0, "Data East", "Magical Drop (Japan, Version 1.1, 1995.06.21)", MACHINE_SUPPORTS_SAVE )
 GAME( 1995, magdropp, chainrec, magdropp,    magdrop,  simpl156_state, chainrec, ROT0, "Data East", "Magical Drop Plus 1 (Japan, Version 2.1, 1995.09.12)", MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master
 
 /* Mitchell games running on the DEC-22VO / MT5601-0 PCB */
 GAME( 1995, charlien, 0,        mitchell156, simpl156, simpl156_state, charlien, ROT0,  "Mitchell", "Charlie Ninja" , MACHINE_SUPPORTS_SAVE ) /* language in service mode */

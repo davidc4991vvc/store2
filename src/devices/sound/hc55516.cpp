@@ -23,34 +23,6 @@
 
 
 
-<<<<<<< HEAD
-const device_type HC55516 = &device_creator<hc55516_device>;
-
-hc55516_device::hc55516_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, HC55516, "HC-55516", tag, owner, clock, "hc55516", __FILE__),
-		device_sound_interface(mconfig, *this),
-		m_channel(NULL),
-		m_active_clock_hi(0),
-		m_shiftreg_mask(0),
-		m_last_clock_state(0),
-		m_digit(0),
-		m_new_digit(0),
-		m_shiftreg(0),
-		m_curr_sample(0),
-		m_next_sample(0),
-		m_update_count(0),
-		m_filter(0),
-		m_integrator(0),
-		m_charge(0),
-		m_decay(0),
-		m_leak(0)
-{
-}
-hc55516_device::hc55516_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source)
-	: device_t(mconfig, type, name, tag, owner, clock, shortname, source),
-		device_sound_interface(mconfig, *this),
-		m_channel(NULL),
-=======
 DEFINE_DEVICE_TYPE(HC55516, hc55516_device, "hc55516", "HC-55516")
 
 hc55516_device::hc55516_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
@@ -62,7 +34,6 @@ hc55516_device::hc55516_device(const machine_config &mconfig, device_type type, 
 	: device_t(mconfig, type, tag, owner, clock),
 		device_sound_interface(mconfig, *this),
 		m_channel(nullptr),
->>>>>>> upstream/master
 		m_active_clock_hi(0),
 		m_shiftreg_mask(0),
 		m_last_clock_state(0),
@@ -81,29 +52,12 @@ hc55516_device::hc55516_device(const machine_config &mconfig, device_type type, 
 }
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  device_config_complete - perform any
-//  operations now that the configuration is
-//  complete
-//-------------------------------------------------
-
-void hc55516_device::device_config_complete()
-{
-}
-
-//-------------------------------------------------
-=======
->>>>>>> upstream/master
 //  device_start - device-specific startup
 //-------------------------------------------------
 
 void hc55516_device::device_start()
 {
-<<<<<<< HEAD
-	start_common(0x07, TRUE);
-=======
 	start_common(0x07, true);
->>>>>>> upstream/master
 }
 
 //-------------------------------------------------
@@ -115,17 +69,10 @@ void hc55516_device::device_reset()
 	m_last_clock_state = 0;
 }
 
-<<<<<<< HEAD
-const device_type MC3417 = &device_creator<mc3417_device>;
-
-mc3417_device::mc3417_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: hc55516_device(mconfig, MC3417, "MC3417", tag, owner, clock, "mc3417", __FILE__)
-=======
 DEFINE_DEVICE_TYPE(MC3417, mc3417_device, "mc3417", "MC3417")
 
 mc3417_device::mc3417_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: hc55516_device(mconfig, MC3417, tag, owner, clock)
->>>>>>> upstream/master
 {
 }
 
@@ -135,16 +82,6 @@ mc3417_device::mc3417_device(const machine_config &mconfig, const char *tag, dev
 
 void mc3417_device::device_start()
 {
-<<<<<<< HEAD
-	start_common(0x07, FALSE);
-}
-
-
-const device_type MC3418 = &device_creator<mc3418_device>;
-
-mc3418_device::mc3418_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: hc55516_device(mconfig, MC3418, "MC3418", tag, owner, clock, "mc3418", __FILE__)
-=======
 	start_common(0x07, false);
 }
 
@@ -153,7 +90,6 @@ DEFINE_DEVICE_TYPE(MC3418, mc3418_device, "mc3418", "MC3418")
 
 mc3418_device::mc3418_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: hc55516_device(mconfig, MC3418, tag, owner, clock)
->>>>>>> upstream/master
 {
 }
 
@@ -163,19 +99,11 @@ mc3418_device::mc3418_device(const machine_config &mconfig, const char *tag, dev
 
 void mc3418_device::device_start()
 {
-<<<<<<< HEAD
-	start_common(0x0f, FALSE);
-}
-
-
-void hc55516_device::start_common(UINT8 _shiftreg_mask, int _active_clock_hi)
-=======
 	start_common(0x0f, false);
 }
 
 
 void hc55516_device::start_common(uint8_t _shiftreg_mask, int _active_clock_hi)
->>>>>>> upstream/master
 {
 	/* compute the fixed charge, decay, and leak time constants */
 	m_charge = pow(exp(-1.0), 1.0 / (FILTER_CHARGE_TC * 16000.0));
@@ -215,11 +143,7 @@ inline int hc55516_device::is_active_clock_transition(int clock_state)
 
 inline int hc55516_device::current_clock_state()
 {
-<<<<<<< HEAD
-	return ((UINT64)m_update_count * clock() * 2 / SAMPLE_RATE) & 0x01;
-=======
 	return ((uint64_t)m_update_count * clock() * 2 / SAMPLE_RATE) & 0x01;
->>>>>>> upstream/master
 }
 
 
@@ -271,11 +195,7 @@ void hc55516_device::process_digit()
 
 void hc55516_device::clock_w(int state)
 {
-<<<<<<< HEAD
-	UINT8 clock_state = state ? TRUE : FALSE;
-=======
 	uint8_t clock_state = state ? true : false;
->>>>>>> upstream/master
 
 	/* only makes sense for setups with a software driven clock */
 	assert(!is_external_oscillator());
@@ -328,11 +248,7 @@ void hc55516_device::sound_stream_update(sound_stream &stream, stream_sample_t *
 {
 	stream_sample_t *buffer = outputs[0];
 	int i;
-<<<<<<< HEAD
-	INT32 sample, slope;
-=======
 	int32_t sample, slope;
->>>>>>> upstream/master
 
 	/* zero-length? bail */
 	if (samples == 0)
@@ -351,11 +267,7 @@ void hc55516_device::sound_stream_update(sound_stream &stream, stream_sample_t *
 
 	/* compute the interpolation slope */
 	sample = m_curr_sample;
-<<<<<<< HEAD
-	slope = ((INT32)m_next_sample - sample) / samples;
-=======
 	slope = ((int32_t)m_next_sample - sample) / samples;
->>>>>>> upstream/master
 	m_curr_sample = m_next_sample;
 
 	if (is_external_oscillator())
@@ -363,11 +275,7 @@ void hc55516_device::sound_stream_update(sound_stream &stream, stream_sample_t *
 		/* external oscillator */
 		for (i = 0; i < samples; i++, sample += slope)
 		{
-<<<<<<< HEAD
-			UINT8 clock_state;
-=======
 			uint8_t clock_state;
->>>>>>> upstream/master
 
 			*buffer++ = sample;
 

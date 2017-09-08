@@ -2,20 +2,12 @@
 // copyright-holders:David Haywood
 /* MPU4 games by 'Empire' */
 
-<<<<<<< HEAD
-
-=======
->>>>>>> upstream/master
 #include "emu.h"
 #include "includes/mpu4.h"
 
 MACHINE_CONFIG_EXTERN( mod4oki );
 INPUT_PORTS_EXTERN( mpu4 );
 
-<<<<<<< HEAD
-#define GAME_FLAGS (MACHINE_NOT_WORKING|MACHINE_REQUIRES_ARTWORK|MACHINE_MECHANICAL)
-
-=======
 #include "m4apachg.lh"
 
 DRIVER_INIT_MEMBER(mpu4_state,m4apachg)
@@ -51,7 +43,6 @@ DRIVER_INIT_MEMBER(mpu4_state,m4apachg)
 	//Sample rate 16000
 	//Front door code 0 Cash door code 0
 }
->>>>>>> upstream/master
 
 ROM_START( m4apachg )
 	ROM_REGION( 0x020000, "maincpu", 0 )
@@ -864,25 +855,13 @@ ROM_START( m4jne )
 ROM_END
 
 
-<<<<<<< HEAD
-=======
 #define GAME_FLAGS (MACHINE_NOT_WORKING|MACHINE_REQUIRES_ARTWORK|MACHINE_MECHANICAL)
->>>>>>> upstream/master
 
 
 /* Empire
    most of these boot (after a single reset to initialize)
    but have broken text, need to check VFD emulation */
 
-<<<<<<< HEAD
-GAME(199?, m4apachg,  0,        mod4oki, mpu4, mpu4_state, m4default, ROT0,   "Empire","Apache Gold (Empire) (MPU4, set 1)",   GAME_FLAGS|MACHINE_NO_SOUND )
-GAME(199?, m4apachga, m4apachg, mod4oki, mpu4, mpu4_state, m4default, ROT0,   "Empire","Apache Gold (Empire) (MPU4, set 2)",   GAME_FLAGS|MACHINE_NO_SOUND )
-GAME(199?, m4apachgb, m4apachg, mod4oki, mpu4, mpu4_state, m4default, ROT0,   "Empire","Apache Gold (Empire) (MPU4, set 3)",   GAME_FLAGS|MACHINE_NO_SOUND )
-GAME(199?, m4apachgc, m4apachg, mod4oki, mpu4, mpu4_state, m4default, ROT0,   "Empire","Apache Gold (Empire) (MPU4, set 4)",   GAME_FLAGS|MACHINE_NO_SOUND )
-GAME(199?, m4apachgd, m4apachg, mod4oki, mpu4, mpu4_state, m4default, ROT0,   "Empire","Apache Gold (Empire) (MPU4, set 5)",   GAME_FLAGS|MACHINE_NO_SOUND )
-GAME(199?, m4apachge, m4apachg, mod4oki, mpu4, mpu4_state, m4default, ROT0,   "Empire","Apache Gold (Empire) (MPU4, set 6)",   GAME_FLAGS|MACHINE_NO_SOUND )
-GAME(199?, m4apachgf, m4apachg, mod4oki, mpu4, mpu4_state, m4default, ROT0,   "Empire","Apache Gold (Empire) (MPU4, set 7)",   GAME_FLAGS|MACHINE_NO_SOUND )
-=======
 GAMEL(199?, m4apachg,  0,        mod4oki, mpu4, mpu4_state, m4apachg, ROT0,   "Empire","Apache Gold (Empire) (MPU4, set 1)",   GAME_FLAGS|MACHINE_NO_SOUND, layout_m4apachg )
 GAMEL(199?, m4apachga, m4apachg, mod4oki, mpu4, mpu4_state, m4apachg, ROT0,   "Empire","Apache Gold (Empire) (MPU4, set 2)",   GAME_FLAGS|MACHINE_NO_SOUND, layout_m4apachg )
 GAMEL(199?, m4apachgb, m4apachg, mod4oki, mpu4, mpu4_state, m4apachg, ROT0,   "Empire","Apache Gold (Empire) (MPU4, set 3)",   GAME_FLAGS|MACHINE_NO_SOUND, layout_m4apachg )
@@ -891,7 +870,6 @@ GAMEL(199?, m4apachgd, m4apachg, mod4oki, mpu4, mpu4_state, m4apachg, ROT0,   "E
 GAMEL(199?, m4apachge, m4apachg, mod4oki, mpu4, mpu4_state, m4apachg, ROT0,   "Empire","Apache Gold (Empire) (MPU4, set 6)",   GAME_FLAGS|MACHINE_NO_SOUND, layout_m4apachg )
 GAMEL(199?, m4apachgf, m4apachg, mod4oki, mpu4, mpu4_state, m4apachg, ROT0,   "Empire","Apache Gold (Empire) (MPU4, set 7)",   GAME_FLAGS|MACHINE_NO_SOUND, layout_m4apachg )
 
->>>>>>> upstream/master
 GAME(199?, m4bangrs,  0,        mod4oki, mpu4, mpu4_state, m4default, ROT0,   "Empire","Bangers 'n' Cash (Empire) (MPU4, set 1)",   GAME_FLAGS|MACHINE_NO_SOUND )
 GAME(199?, m4bangrsa, m4bangrs, mod4oki, mpu4, mpu4_state, m4default, ROT0,   "Empire","Bangers 'n' Cash (Empire) (MPU4, set 2)",   GAME_FLAGS|MACHINE_NO_SOUND )
 GAME(199?, m4bangrsb, m4bangrs, mod4oki, mpu4, mpu4_state, m4default, ROT0,   "Empire","Bangers 'n' Cash (Empire) (MPU4, set 3)",   GAME_FLAGS|MACHINE_NO_SOUND )

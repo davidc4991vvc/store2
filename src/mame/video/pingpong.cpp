@@ -34,11 +34,7 @@
 ***************************************************************************/
 PALETTE_INIT_MEMBER(pingpong_state, pingpong)
 {
-<<<<<<< HEAD
-	const UINT8 *color_prom = memregion("proms")->base();
-=======
 	const uint8_t *color_prom = memregion("proms")->base();
->>>>>>> upstream/master
 	int i;
 
 	/* create a lookup table for the palette */
@@ -74,22 +70,14 @@ PALETTE_INIT_MEMBER(pingpong_state, pingpong)
 	/* characters */
 	for (i = 0; i < 0x100; i++)
 	{
-<<<<<<< HEAD
-		UINT8 ctabentry = (color_prom[i] & 0x0f) | 0x10;
-=======
 		uint8_t ctabentry = (color_prom[i] & 0x0f) | 0x10;
->>>>>>> upstream/master
 		palette.set_pen_indirect(i, ctabentry);
 	}
 
 	/* sprites */
 	for (i = 0x100; i < 0x200; i++)
 	{
-<<<<<<< HEAD
-		UINT8 ctabentry = BITSWAP8(color_prom[i],7,6,5,4,0,1,2,3);
-=======
 		uint8_t ctabentry = BITSWAP8(color_prom[i],7,6,5,4,0,1,2,3);
->>>>>>> upstream/master
 		palette.set_pen_indirect(i, ctabentry);
 	}
 }
@@ -118,11 +106,7 @@ TILE_GET_INFO_MEMBER(pingpong_state::get_bg_tile_info)
 
 void pingpong_state::video_start()
 {
-<<<<<<< HEAD
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(pingpong_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
-=======
 	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(pingpong_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
->>>>>>> upstream/master
 }
 
 void pingpong_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect )
@@ -132,11 +116,7 @@ void pingpong_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprec
 	/* the characters at the top and bottom of the screen. */
 	const rectangle spritevisiblearea(0*8, 32*8-1, 4*8, 29*8-1);
 
-<<<<<<< HEAD
-	UINT8 *spriteram = m_spriteram;
-=======
 	uint8_t *spriteram = m_spriteram;
->>>>>>> upstream/master
 	int offs;
 
 	for (offs = m_spriteram.bytes() - 4;offs >= 0;offs -= 4)
@@ -161,11 +141,7 @@ void pingpong_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprec
 	}
 }
 
-<<<<<<< HEAD
-UINT32 pingpong_state::screen_update_pingpong(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t pingpong_state::screen_update_pingpong(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	m_bg_tilemap->draw(screen, bitmap, cliprect, 0, 0);
 	draw_sprites(bitmap, cliprect);

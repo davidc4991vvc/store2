@@ -26,16 +26,6 @@ $c088-$c095 player tiles
 *******************************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/z80/z80.h"
-#include "cpu/m6800/m6800.h"
-#include "sound/ay8910.h"
-#include "sound/hc55516.h"
-#include "sound/msm5205.h"
-#include "video/resnet.h"
-#include "machine/nvram.h"
-
-=======
 #include "cpu/m6800/m6800.h"
 #include "cpu/z80/z80.h"
 #include "machine/gen_latch.h"
@@ -47,7 +37,6 @@ $c088-$c095 player tiles
 #include "video/resnet.h"
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 #define MASTER_CLOCK    XTAL_19_968MHz
 
@@ -55,15 +44,6 @@ class jangou_state : public driver_device
 {
 public:
 	jangou_state(const machine_config &mconfig, device_type type, const char *tag)
-<<<<<<< HEAD
-		: driver_device(mconfig, type, tag),
-		m_cpu_0(*this, "cpu0"),
-		m_cpu_1(*this, "cpu1"),
-		m_nsc(*this, "nsc"),
-		m_msm(*this, "msm"),
-		m_cvsd(*this, "cvsd"),
-		m_palette(*this, "palette") { }
-=======
 		: driver_device(mconfig, type, tag)
 		, m_cpu_0(*this, "cpu0")
 		, m_cpu_1(*this, "cpu1")
@@ -75,23 +55,10 @@ public:
 		, m_soundlatch(*this, "soundlatch")
 	{
 	}
->>>>>>> upstream/master
 
 	/* sound-related */
 	// Jangou CVSD Sound
 	emu_timer    *m_cvsd_bit_timer;
-<<<<<<< HEAD
-	UINT8        m_cvsd_shiftreg;
-	int          m_cvsd_shift_cnt;
-	// Jangou Lady ADPCM Sound
-	UINT8        m_adpcm_byte;
-	int          m_msm5205_vclk_toggle;
-
-	/* misc */
-	UINT8        m_mux_data;
-	UINT8        m_nsc_latch;
-	UINT8        m_z80_latch;
-=======
 	uint8_t        m_cvsd_shiftreg;
 	int          m_cvsd_shift_cnt;
 	// Jangou Lady ADPCM Sound
@@ -102,7 +69,6 @@ public:
 	uint8_t        m_mux_data;
 	uint8_t        m_nsc_latch;
 	uint8_t        m_z80_latch;
->>>>>>> upstream/master
 
 	/* devices */
 	required_device<cpu_device> m_cpu_0;
@@ -111,20 +77,10 @@ public:
 	optional_device<msm5205_device> m_msm;
 	optional_device<hc55516_device> m_cvsd;
 	required_device<palette_device> m_palette;
-<<<<<<< HEAD
-
-	/* video-related */
-	UINT8        m_pen_data[0x10];
-	UINT8        m_blit_data[6];
-	UINT8        m_blit_buffer[256 * 256];
-	DECLARE_WRITE8_MEMBER(blitter_process_w);
-	DECLARE_WRITE8_MEMBER(blit_vregs_w);
-=======
 	required_device<jangou_blitter_device> m_blitter;
 	optional_device<generic_latch_8_device> m_soundlatch;
 
 	/* video-related */
->>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(mux_w);
 	DECLARE_WRITE8_MEMBER(output_w);
 	DECLARE_WRITE8_MEMBER(sound_latch_w);
@@ -140,33 +96,19 @@ public:
 	DECLARE_READ8_MEMBER(input_system_r);
 	DECLARE_DRIVER_INIT(jngolady);
 	DECLARE_DRIVER_INIT(luckygrl);
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void machine_reset();
-	virtual void video_start();
-=======
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
 	virtual void video_start() override;
->>>>>>> upstream/master
 	DECLARE_PALETTE_INIT(jangou);
 	DECLARE_MACHINE_START(jngolady);
 	DECLARE_MACHINE_RESET(jngolady);
 	DECLARE_MACHINE_START(common);
 	DECLARE_MACHINE_RESET(common);
-<<<<<<< HEAD
-	UINT32 screen_update_jangou(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	TIMER_CALLBACK_MEMBER(cvsd_bit_timer_callback);
-	UINT8 jangou_gfx_nibble( UINT16 niboffset );
-	void plot_jangou_gfx_pixel( UINT8 pix, int x, int y );
-	DECLARE_WRITE_LINE_MEMBER(jngolady_vclk_cb);
-=======
 	uint32_t screen_update_jangou(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	TIMER_CALLBACK_MEMBER(cvsd_bit_timer_callback);
 	DECLARE_WRITE_LINE_MEMBER(jngolady_vclk_cb);
 
 	std::unique_ptr<bitmap_ind16> m_tmp_bitmap;
->>>>>>> upstream/master
 };
 
 
@@ -179,11 +121,7 @@ public:
 /* guess: use the same resistor values as Crazy Climber (needs checking on the real HW) */
 PALETTE_INIT_MEMBER(jangou_state, jangou)
 {
-<<<<<<< HEAD
-	const UINT8 *color_prom = memregion("proms")->base();
-=======
 	const uint8_t *color_prom = memregion("proms")->base();
->>>>>>> upstream/master
 	static const int resistances_rg[3] = { 1000, 470, 220 };
 	static const int resistances_b [2] = { 470, 220 };
 	double weights_rg[3], weights_b[2];
@@ -193,11 +131,7 @@ PALETTE_INIT_MEMBER(jangou_state, jangou)
 	compute_resistor_weights(0, 255, -1.0,
 			3, resistances_rg, weights_rg, 0, 0,
 			2, resistances_b,  weights_b,  0, 0,
-<<<<<<< HEAD
-			0, 0, 0, 0, 0);
-=======
 			0, nullptr, nullptr, 0, 0);
->>>>>>> upstream/master
 
 	for (i = 0;i < palette.entries(); i++)
 	{
@@ -227,142 +161,30 @@ PALETTE_INIT_MEMBER(jangou_state, jangou)
 
 void jangou_state::video_start()
 {
-<<<<<<< HEAD
-	save_item(NAME(m_blit_buffer));
-}
-
-UINT32 jangou_state::screen_update_jangou(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 	m_tmp_bitmap = std::make_unique<bitmap_ind16>(256, 256);
 }
 
 uint32_t jangou_state::screen_update_jangou(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int x, y;
 
 	for (y = cliprect.min_y; y <= cliprect.max_y; ++y)
 	{
-<<<<<<< HEAD
-		UINT8 *src = &m_blit_buffer[y * 512 / 2 + cliprect.min_x];
-		UINT16 *dst = &bitmap.pix16(y, cliprect.min_x);
-
-		for (x = cliprect.min_x; x <= cliprect.max_x; x += 2)
-		{
-			UINT32 srcpix = *src++;
-=======
 		const uint8_t *src = &m_blitter->blit_buffer(y, cliprect.min_x);
 		uint16_t *dst = &m_tmp_bitmap->pix16(y, cliprect.min_x);
 
 		for (x = cliprect.min_x; x <= cliprect.max_x; x += 2)
 		{
 			uint32_t srcpix = *src++;
->>>>>>> upstream/master
 			*dst++ = m_palette->pen(srcpix & 0xf);
 			*dst++ = m_palette->pen((srcpix >> 4) & 0xf);
 		}
 	}
-<<<<<<< HEAD
-
-	return 0;
-}
-
-/*
-Blitter Memory Map:
-
-src lo word[$12]
-src hi word[$13]
-x [$14]
-y [$15]
-h [$16]
-w [$17]
-*/
-
-UINT8 jangou_state::jangou_gfx_nibble( UINT16 niboffset )
-{
-	const UINT8 *const blit_rom = memregion("gfx")->base();
-
-	if (niboffset & 1)
-		return (blit_rom[(niboffset >> 1) & 0xffff] & 0xf0) >> 4;
-	else
-		return (blit_rom[(niboffset >> 1) & 0xffff] & 0x0f);
-}
-
-void jangou_state::plot_jangou_gfx_pixel( UINT8 pix, int x, int y )
-{
-	if (y < 0 || y >= 512)
-		return;
-	if (x < 0 || x >= 512)
-		return;
-
-	if (x & 1)
-		m_blit_buffer[(y * 256) + (x >> 1)] = (m_blit_buffer[(y * 256) + (x >> 1)] & 0x0f) | ((pix << 4) & 0xf0);
-	else
-		m_blit_buffer[(y * 256) + (x >> 1)] = (m_blit_buffer[(y * 256) + (x >> 1)] & 0xf0) | (pix & 0x0f);
-}
-
-WRITE8_MEMBER(jangou_state::blitter_process_w)
-{
-	int src, x, y, h, w, flipx;
-	m_blit_data[offset] = data;
-
-	if (offset == 5)
-	{
-		int count = 0;
-		int xcount, ycount;
-
-		/* printf("%02x %02x %02x %02x %02x %02x\n", m_blit_data[0], m_blit_data[1], m_blit_data[2],
-		            m_blit_data[3], m_blit_data[4], m_blit_data[5]); */
-		w = (m_blit_data[4] & 0xff) + 1;
-		h = (m_blit_data[5] & 0xff) + 1;
-		src = ((m_blit_data[1] << 8)|(m_blit_data[0] << 0));
-		x = (m_blit_data[2] & 0xff);
-		y = (m_blit_data[3] & 0xff);
-
-		// lowest bit of src controls flipping / draw direction?
-		flipx = (m_blit_data[0] & 1);
-
-		if (!flipx)
-			src += (w * h) - 1;
-		else
-			src -= (w * h) - 1;
-
-		for (ycount = 0; ycount < h; ycount++)
-		{
-			for(xcount = 0; xcount < w; xcount++)
-			{
-				int drawx = (x + xcount) & 0xff;
-				int drawy = (y + ycount) & 0xff;
-				UINT8 dat = jangou_gfx_nibble(src + count);
-				UINT8 cur_pen_hi = m_pen_data[(dat & 0xf0) >> 4];
-				UINT8 cur_pen_lo = m_pen_data[(dat & 0x0f) >> 0];
-
-				dat = cur_pen_lo | (cur_pen_hi << 4);
-
-				if ((dat & 0xff) != 0)
-					plot_jangou_gfx_pixel(dat, drawx, drawy);
-
-				if (!flipx)
-					count--;
-				else
-					count++;
-			}
-		}
-	}
-}
-
-/* What is the bit 5 (0x20) for?*/
-WRITE8_MEMBER(jangou_state::blit_vregs_w)
-{
-	//  printf("%02x %02x\n", offset, data);
-	m_pen_data[offset] = data & 0xf;
-=======
 	//void copybitmap(bitmap_rgb32 &dest, const bitmap_rgb32 &src, int flipx, int flipy, int32_t destx, int32_t desty, const rectangle &cliprect)
 
 	copybitmap(bitmap, *m_tmp_bitmap, flip_screen(), flip_screen(),0,0, cliprect);
 
 	return 0;
->>>>>>> upstream/master
 }
 
 /*************************************
@@ -379,24 +201,14 @@ WRITE8_MEMBER(jangou_state::mux_w)
 WRITE8_MEMBER(jangou_state::output_w)
 {
 	/*
-<<<<<<< HEAD
-	--x- ---- ? (polls between high and low in irq routine,probably signals the vblank routine)
-=======
 	--x- ---- ? (polls between high and low in irq routine, most likely irq mask)
->>>>>>> upstream/master
 	---- -x-- flip screen
 	---- ---x coin counter
 	*/
 //  printf("%02x\n", data);
-<<<<<<< HEAD
-	coin_counter_w(machine(), 0, data & 0x01);
-//  flip_screen_set(data & 0x04);
-//  coin_lockout_w(machine(), 0, ~data & 0x20);
-=======
 	machine().bookkeeping().coin_counter_w(0, data & 0x01);
 	flip_screen_set(data & 0x04);
 //  machine().bookkeeping().coin_lockout_w(0, ~data & 0x20);
->>>>>>> upstream/master
 }
 
 READ8_MEMBER(jangou_state::input_mux_r)
@@ -428,22 +240,14 @@ READ8_MEMBER(jangou_state::input_system_r)
 
 WRITE8_MEMBER(jangou_state::sound_latch_w)
 {
-<<<<<<< HEAD
-	soundlatch_byte_w(space, 0, data & 0xff);
-=======
 	m_soundlatch->write(space, 0, data & 0xff);
->>>>>>> upstream/master
 	m_cpu_1->set_input_line(INPUT_LINE_NMI, ASSERT_LINE);
 }
 
 READ8_MEMBER(jangou_state::sound_latch_r)
 {
 	m_cpu_1->set_input_line(INPUT_LINE_NMI, CLEAR_LINE);
-<<<<<<< HEAD
-	return soundlatch_byte_r(space, 0);
-=======
 	return m_soundlatch->read(space, 0);
->>>>>>> upstream/master
 }
 
 /* Jangou HC-55516 CVSD */
@@ -527,18 +331,10 @@ static ADDRESS_MAP_START( cpu0_io, AS_IO, 8, jangou_state )
 	ADDRESS_MAP_GLOBAL_MASK(0xff)
 	AM_RANGE(0x01,0x01) AM_DEVREAD("aysnd", ay8910_device, data_r)
 	AM_RANGE(0x02,0x03) AM_DEVWRITE("aysnd", ay8910_device, data_address_w)
-<<<<<<< HEAD
-	AM_RANGE(0x10,0x10) AM_READ_PORT("DSW") //dsw + blitter busy flag
-	AM_RANGE(0x10,0x10) AM_WRITE(output_w)
-	AM_RANGE(0x11,0x11) AM_WRITE(mux_w)
-	AM_RANGE(0x12,0x17) AM_WRITE(blitter_process_w)
-	AM_RANGE(0x20,0x2f) AM_WRITE(blit_vregs_w)
-=======
 	AM_RANGE(0x10,0x10) AM_READ_PORT("DSW") AM_WRITE(output_w) //dsw + blitter busy flag
 	AM_RANGE(0x11,0x11) AM_WRITE(mux_w)
 	AM_RANGE(0x12,0x17) AM_DEVICE("blitter",jangou_blitter_device, blit_v1_regs)
 	AM_RANGE(0x20,0x2f) AM_DEVWRITE("blitter",jangou_blitter_device, vregs_w)
->>>>>>> upstream/master
 	AM_RANGE(0x30,0x30) AM_WRITENOP //? polls 0x03 continuously
 	AM_RANGE(0x31,0x31) AM_WRITE(sound_latch_w)
 ADDRESS_MAP_END
@@ -608,13 +404,8 @@ static ADDRESS_MAP_START( cntrygrl_cpu0_io, AS_IO, 8, jangou_state )
 	AM_RANGE(0x10,0x10) AM_READ_PORT("DSW") //dsw + blitter busy flag
 	AM_RANGE(0x10,0x10) AM_WRITE(output_w)
 	AM_RANGE(0x11,0x11) AM_WRITE(mux_w)
-<<<<<<< HEAD
-	AM_RANGE(0x12,0x17) AM_WRITE(blitter_process_w)
-	AM_RANGE(0x20,0x2f) AM_WRITE(blit_vregs_w )
-=======
 	AM_RANGE(0x12,0x17) AM_DEVICE("blitter",jangou_blitter_device, blit_v1_regs)
 	AM_RANGE(0x20,0x2f) AM_DEVWRITE("blitter",jangou_blitter_device, vregs_w)
->>>>>>> upstream/master
 	AM_RANGE(0x30,0x30) AM_WRITENOP //? polls 0x03 continuously
 //  AM_RANGE(0x31,0x31) AM_WRITE(sound_latch_w)
 ADDRESS_MAP_END
@@ -638,13 +429,8 @@ static ADDRESS_MAP_START( roylcrdn_cpu0_io, AS_IO, 8, jangou_state )
 	AM_RANGE(0x10,0x10) AM_WRITENOP                 /* Writes continuosly 0's in attract mode, and 1's in game */
 	AM_RANGE(0x11,0x11) AM_WRITE(mux_w)
 	AM_RANGE(0x13,0x13) AM_READNOP                  /* Often reads bit7 with unknown purposes */
-<<<<<<< HEAD
-	AM_RANGE(0x12,0x17) AM_WRITE(blitter_process_w)
-	AM_RANGE(0x20,0x2f) AM_WRITE(blit_vregs_w)
-=======
 	AM_RANGE(0x12,0x17) AM_DEVICE("blitter",jangou_blitter_device, blit_v1_regs)
 	AM_RANGE(0x20,0x2f) AM_DEVWRITE("blitter",jangou_blitter_device, vregs_w)
->>>>>>> upstream/master
 	AM_RANGE(0x30,0x30) AM_WRITENOP                 /* Seems to write 0x10 on each sound event */
 ADDRESS_MAP_END
 
@@ -724,28 +510,6 @@ static INPUT_PORTS_START( jangou )
 
 	/* there's a bank of 6 dip-switches in there*/
 	PORT_START("DSW")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x01, 0x01, DEF_STR( Unknown ) ) PORT_DIPLOCATION("SW1:1")
-	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x02, 0x02, DEF_STR( Unknown ) ) PORT_DIPLOCATION("SW1:2")
-	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x04, 0x04, DEF_STR( Unknown ) ) PORT_DIPLOCATION("SW1:3")
-	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x08, 0x08, DEF_STR( Unknown ) ) PORT_DIPLOCATION("SW1:4")
-	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x10, DEF_STR( Unknown ) ) PORT_DIPLOCATION("SW1:5")
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, DEF_STR( Unknown ) ) PORT_DIPLOCATION("SW1:6")
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_BIT( 0x40, IP_ACTIVE_HIGH, IPT_CUSTOM ) PORT_VBLANK("screen") // guess
-	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNKNOWN ) // blitter busy flag
-=======
 	PORT_DIPNAME( 0x03, 0x03, DEF_STR( Difficulty ) ) PORT_DIPLOCATION("SW1:1,2")
 	PORT_DIPSETTING(    0x03, DEF_STR( Easy ) )
 	PORT_DIPSETTING(    0x01, DEF_STR( Normal ) )
@@ -765,7 +529,6 @@ static INPUT_PORTS_START( jangou )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_BIT( 0x40, IP_ACTIVE_HIGH, IPT_CUSTOM ) PORT_VBLANK("screen") // guess
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_SPECIAL ) PORT_READ_LINE_DEVICE_MEMBER("blitter", jangou_blitter_device, status_r)
->>>>>>> upstream/master
 INPUT_PORTS_END
 
 static INPUT_PORTS_START( macha )
@@ -826,11 +589,7 @@ static INPUT_PORTS_START( macha )
 	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_BIT( 0x40, IP_ACTIVE_HIGH, IPT_CUSTOM ) PORT_VBLANK("screen") // guess
-<<<<<<< HEAD
-	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNKNOWN ) // blitter busy flag
-=======
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_SPECIAL ) PORT_READ_LINE_DEVICE_MEMBER("blitter", jangou_blitter_device, status_r)
->>>>>>> upstream/master
 INPUT_PORTS_END
 
 
@@ -915,11 +674,7 @@ static INPUT_PORTS_START( cntrygrl )
 	PORT_DIPNAME( 0x40, 0x40, "Coin B setting"  )  PORT_DIPLOCATION("SW1:7")
 	PORT_DIPSETTING(    0x40, DEF_STR( 1C_5C ) )
 	PORT_DIPSETTING(    0x00, "1 Coin / 10 Credits"  )
-<<<<<<< HEAD
-	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNKNOWN ) // blitter busy flag
-=======
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_SPECIAL ) PORT_READ_LINE_DEVICE_MEMBER("blitter", jangou_blitter_device, status_r)
->>>>>>> upstream/master
 
 	PORT_START("IN_NOMUX")
 	PORT_BIT( 0xff, IP_ACTIVE_LOW, IPT_UNUSED )
@@ -941,28 +696,6 @@ static INPUT_PORTS_START( jngolady )
 
 	/* 6 or 7 dip-switches here? bit 6 seems used as vblank.*/
 	PORT_MODIFY("DSW")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x01, 0x01, DEF_STR( Unknown ) )  PORT_DIPLOCATION("SW1:1")
-	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x02, 0x02, DEF_STR( Unknown ) ) PORT_DIPLOCATION("SW1:2")
-	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x04, 0x04, DEF_STR( Unknown ) ) PORT_DIPLOCATION("SW1:3")
-	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x08, 0x08, DEF_STR( Unknown ) ) PORT_DIPLOCATION("SW1:4")
-	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x10, DEF_STR( Unknown ) ) PORT_DIPLOCATION("SW1:5")
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, DEF_STR( Unknown ) ) PORT_DIPLOCATION("SW1:6")
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_BIT( 0x40, IP_ACTIVE_HIGH, IPT_CUSTOM ) PORT_VBLANK("screen")
-	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNKNOWN ) //blitter busy flag
-=======
 	PORT_DIPNAME( 0x03, 0x03, DEF_STR( Difficulty ) )  PORT_DIPLOCATION("SW1:1,2")
 	PORT_DIPSETTING(    0x03, DEF_STR( Easy ) )
 	PORT_DIPSETTING(    0x01, DEF_STR( Medium ) )
@@ -982,7 +715,6 @@ static INPUT_PORTS_START( jngolady )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_BIT( 0x40, IP_ACTIVE_HIGH, IPT_CUSTOM ) PORT_VBLANK("screen")
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_SPECIAL ) PORT_READ_LINE_DEVICE_MEMBER("blitter", jangou_blitter_device, status_r)
->>>>>>> upstream/master
 INPUT_PORTS_END
 
 static INPUT_PORTS_START( roylcrdn )
@@ -1033,48 +765,16 @@ static INPUT_PORTS_START( roylcrdn )
 	PORT_START("SYSTEM")
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_UNUSED )                                                                 /* Spare 2 */
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_COIN2 )                                      PORT_NAME("Note In")        /* Note In */
-<<<<<<< HEAD
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SERVICE ) PORT_TOGGLE  PORT_CODE(KEYCODE_9)  PORT_NAME("Memory Reset")   /* Memory Reset */
-	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_SERVICE ) PORT_TOGGLE  PORT_CODE(KEYCODE_0)  PORT_NAME("Analyzer")       /* Analyzer */
-	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_SERVICE ) PORT_TOGGLE  PORT_CODE(KEYCODE_F2) PORT_NAME("Test Mode")      /* Test Mode */
-=======
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_MEMORY_RESET ) PORT_TOGGLE  PORT_CODE(KEYCODE_9)                         /* Memory Reset */
 	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_SERVICE ) PORT_TOGGLE  PORT_CODE(KEYCODE_0)  PORT_NAME("Analyzer")       /* Analyzer */
 	PORT_SERVICE( 0x10, IP_ACTIVE_LOW )                                                                         /* Test Mode */
->>>>>>> upstream/master
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_COIN1 )                                      PORT_NAME("Coin In")        /* Coin In */
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_GAMBLE_KEYOUT )                              PORT_NAME("Credit Clear")   /* Credit Clear */
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNUSED )                                                                 /* Spare 1 */
 
-<<<<<<< HEAD
-	PORT_START("DSW")   /* Not a real DSW on PCB */
-	PORT_DIPNAME( 0x01, 0x01, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x02, 0x02, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x04, 0x04, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x08, 0x08, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x10, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x40, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNKNOWN )    /* blitter busy flag */
-=======
 	PORT_START("DSW")
 	PORT_BIT( 0x7f, IP_ACTIVE_LOW, IPT_UNKNOWN )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_SPECIAL ) PORT_READ_LINE_DEVICE_MEMBER("blitter", jangou_blitter_device, status_r)
->>>>>>> upstream/master
 
 	PORT_START("IN_NOMUX")
 	PORT_BIT( 0xff, IP_ACTIVE_LOW, IPT_UNUSED )
@@ -1089,11 +789,6 @@ INPUT_PORTS_END
 
 MACHINE_START_MEMBER(jangou_state,common)
 {
-<<<<<<< HEAD
-	save_item(NAME(m_pen_data));
-	save_item(NAME(m_blit_data));
-=======
->>>>>>> upstream/master
 	save_item(NAME(m_mux_data));
 }
 
@@ -1121,19 +816,7 @@ MACHINE_START_MEMBER(jangou_state,jngolady)
 
 MACHINE_RESET_MEMBER(jangou_state,common)
 {
-<<<<<<< HEAD
-	int i;
-
 	m_mux_data = 0;
-
-	for (i = 0; i < 6; i++)
-		m_blit_data[i] = 0;
-
-	for (i = 0; i < 16; i++)
-		m_pen_data[i] = 0;
-=======
-	m_mux_data = 0;
->>>>>>> upstream/master
 }
 
 void jangou_state::machine_reset()
@@ -1155,11 +838,7 @@ MACHINE_RESET_MEMBER(jangou_state,jngolady)
 }
 
 /* Note: All frequencies and dividers are unverified */
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( jangou, jangou_state )
-=======
 static MACHINE_CONFIG_START( jangou )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("cpu0", Z80, MASTER_CLOCK / 8)
@@ -1171,22 +850,11 @@ static MACHINE_CONFIG_START( jangou )
 	MCFG_CPU_PROGRAM_MAP(cpu1_map)
 	MCFG_CPU_IO_MAP(cpu1_io)
 
-<<<<<<< HEAD
-
-	/* video hardware */
-
-	MCFG_SCREEN_ADD("screen", RASTER)
-	MCFG_SCREEN_REFRESH_RATE(60)
-	MCFG_SCREEN_VBLANK_TIME(ATTOSECONDS_IN_USEC(2500)) //not accurate
-	MCFG_SCREEN_SIZE(256, 256)
-	MCFG_SCREEN_VISIBLE_AREA(0, 256-1, 16, 240-1)
-=======
 	MCFG_JANGOU_BLITTER_ADD("blitter", MASTER_CLOCK/4)
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_RAW_PARAMS(MASTER_CLOCK/4,320,0,256,264,16,240) // assume same as nightgal.cpp
->>>>>>> upstream/master
 	MCFG_SCREEN_UPDATE_DRIVER(jangou_state, screen_update_jangou)
 	MCFG_SCREEN_PALETTE("palette")
 
@@ -1196,11 +864,8 @@ static MACHINE_CONFIG_START( jangou )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 
->>>>>>> upstream/master
 	MCFG_SOUND_ADD("aysnd", AY8910, MASTER_CLOCK / 16)
 	MCFG_AY8910_PORT_A_READ_CB(READ8(jangou_state, input_mux_r))
 	MCFG_AY8910_PORT_B_READ_CB(READ8(jangou_state, input_system_r))
@@ -1232,11 +897,7 @@ static MACHINE_CONFIG_DERIVED( jngolady, jangou )
 
 	MCFG_SOUND_ADD("msm", MSM5205, XTAL_400kHz)
 	MCFG_MSM5205_VCLK_CB(WRITELINE(jangou_state, jngolady_vclk_cb))
-<<<<<<< HEAD
-	MCFG_MSM5205_PRESCALER_SELECTOR(MSM5205_S96_4B)
-=======
 	MCFG_MSM5205_PRESCALER_SELECTOR(S96_4B)
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.80)
 MACHINE_CONFIG_END
 
@@ -1255,10 +916,7 @@ static MACHINE_CONFIG_DERIVED( cntrygrl, jangou )
 
 	/* sound hardware */
 	MCFG_DEVICE_REMOVE("cvsd")
-<<<<<<< HEAD
-=======
 	MCFG_DEVICE_REMOVE("soundlatch")
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_DERIVED( roylcrdn, jangou )
@@ -1278,10 +936,7 @@ static MACHINE_CONFIG_DERIVED( roylcrdn, jangou )
 
 	/* sound hardware */
 	MCFG_DEVICE_REMOVE("cvsd")
-<<<<<<< HEAD
-=======
 	MCFG_DEVICE_REMOVE("soundlatch")
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
@@ -1519,11 +1174,7 @@ ROM_START( roylcrdn )
 	ROM_LOAD( "prg.p2",     0x1000, 0x1000, CRC(7e10259d) SHA1(d1279922a8c2475c3c73d9960b0a728c0ef851fb) )
 	ROM_LOAD( "prg.p3",     0x2000, 0x1000, CRC(06ef7073) SHA1(d3f990d710629b23daec76cd7ad6ccc7e066e710) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x20000, "gfx", 0 )
-=======
 	ROM_REGION( 0x10000, "gfx", 0 )
->>>>>>> upstream/master
 	ROM_LOAD( "chrgen.cr1", 0x0000, 0x1000, CRC(935d0e1c) SHA1(0d5b067f6931585c8138b211cf73e5f585af8101) )
 	ROM_LOAD( "chrgen.cr2", 0x1000, 0x1000, CRC(4429362e) SHA1(0bbb6dedf919e0453be2db6343827c5787d139f3) )
 	ROM_LOAD( "chrgen.cr3", 0x2000, 0x1000, CRC(dc059cc9) SHA1(3041e83b9a265adfe4e1da889ae6a18593de0894) )
@@ -1539,11 +1190,7 @@ ROM_START( luckygrl )
 	ROM_LOAD( "7.9f", 0x01000, 0x01000, CRC(14a44d23) SHA1(4f84a8f986a8fd9d5ac0636be1bb036c3b2746c2) )
 	ROM_LOAD( "6.9e", 0x02000, 0x01000, CRC(06850aa8) SHA1(c23cb6b7b26d5586b1a095dee88228d1613ae7d0) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x80000, "gfx", 0 )
-=======
 	ROM_REGION( 0x10000, "gfx", 0 )
->>>>>>> upstream/master
 	ROM_LOAD( "1.5r",      0x00000, 0x2000, CRC(fb429678) SHA1(00e37e90550d9190d06977a5f5ed75b691750cc1) )
 	ROM_LOAD( "piggy2.5r", 0x02000, 0x2000, CRC(a3919845) SHA1(45fffe34b7a29ecf8c8feb4152b5c7330ea3ad83) )
 	ROM_LOAD( "3.5n",      0x04000, 0x2000, CRC(130cfb89) SHA1(86b2a2142675cbd69d7cccab9b00f4c8863cdcbc) )
@@ -1575,11 +1222,7 @@ DRIVER_INIT_MEMBER(jangou_state,luckygrl)
 {
 	// this is WRONG
 	int A;
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("cpu0")->base();
-=======
 	uint8_t *ROM = memregion("cpu0")->base();
->>>>>>> upstream/master
 
 	unsigned char patn1[32] = {
 		0x00, 0xA0, 0x00, 0xA0, 0x00, 0xA0, 0x00, 0xA0, 0x00, 0xA0, 0x00, 0xA0, 0x00, 0xA0, 0x00, 0xA0,
@@ -1593,11 +1236,7 @@ DRIVER_INIT_MEMBER(jangou_state,luckygrl)
 
 	for (A = 0; A < 0x3000; A++)
 	{
-<<<<<<< HEAD
-		UINT8 dat = ROM[A];
-=======
 		uint8_t dat = ROM[A];
->>>>>>> upstream/master
 		if (A&0x100) dat = dat ^ patn2[A & 0x1f];
 		else dat = dat ^ patn1[A & 0x1f];
 
@@ -1628,15 +1267,6 @@ DRIVER_INIT_MEMBER(jangou_state,luckygrl)
  *
  *************************************/
 
-<<<<<<< HEAD
-GAME( 1983,  jangou,     0,        jangou,   jangou, driver_device,    0,        ROT0, "Nichibutsu",     "Jangou [BET] (Japan)", MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
-GAME( 1983,  macha,      0,        jangou,   macha, driver_device,     0,        ROT0, "Logitec",        "Monoshiri Quiz Osyaberi Macha (Japan)", MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
-GAME( 1984,  jngolady,   0,        jngolady, jngolady, jangou_state,  jngolady, ROT0, "Nichibutsu",     "Jangou Lady (Japan)", MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
-GAME( 1984,  cntrygrl,   0,        cntrygrl, cntrygrl, driver_device,  0,        ROT0, "Royal Denshi",   "Country Girl (Japan set 1)",  MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
-GAME( 1984,  cntrygrla,  cntrygrl, cntrygrl, cntrygrl, driver_device,  0,        ROT0, "Nichibutsu",     "Country Girl (Japan set 2)",  MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
-GAME( 1984,  fruitbun,   cntrygrl, cntrygrl, cntrygrl, driver_device,  0,        ROT0, "Nichibutsu",     "Fruits & Bunny (World?)",  MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
-GAME( 1985,  roylcrdn,   0,        roylcrdn, roylcrdn, driver_device,  0,        ROT0, "Nichibutsu",     "Royal Card (Nichibutsu)", MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1983,  jangou,     0,        jangou,   jangou,   jangou_state,  0,        ROT0, "Nichibutsu",     "Jangou [BET] (Japan)", MACHINE_SUPPORTS_SAVE )
 GAME( 1983,  macha,      0,        jangou,   macha,    jangou_state,  0,        ROT0, "Logitec",        "Monoshiri Quiz Osyaberi Macha (Japan)", MACHINE_SUPPORTS_SAVE )
 GAME( 1984,  jngolady,   0,        jngolady, jngolady, jangou_state,  jngolady, ROT0, "Nichibutsu",     "Jangou Lady (Japan)", MACHINE_SUPPORTS_SAVE )
@@ -1644,7 +1274,6 @@ GAME( 1984,  cntrygrl,   0,        cntrygrl, cntrygrl, jangou_state,  0,        
 GAME( 1984,  cntrygrla,  cntrygrl, cntrygrl, cntrygrl, jangou_state,  0,        ROT0, "Nichibutsu",     "Country Girl (Japan set 2)",  MACHINE_SUPPORTS_SAVE )
 GAME( 1984,  fruitbun,   cntrygrl, cntrygrl, cntrygrl, jangou_state,  0,        ROT0, "Nichibutsu",     "Fruits & Bunny (World?)",  MACHINE_SUPPORTS_SAVE )
 GAME( 1985,  roylcrdn,   0,        roylcrdn, roylcrdn, jangou_state,  0,        ROT0, "Nichibutsu",     "Royal Card (Nichibutsu)", MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master
 
 /* The following might not run there... */
 GAME( 1984?, luckygrl,   0,        cntrygrl, cntrygrl, jangou_state,  luckygrl, ROT0, "Wing Co., Ltd.", "Lucky Girl? (Wing)", MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE )

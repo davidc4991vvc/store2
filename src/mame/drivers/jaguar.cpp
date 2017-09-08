@@ -333,24 +333,6 @@ Notes:
 
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/m68000/m68000.h"
-#include "cpu/mips/r3000.h"
-#include "cpu/jaguar/jaguar.h"
-#include "machine/vt83c461.h"
-#include "sound/dac.h"
-#include "includes/jaguar.h"
-#include "emuopts.h"
-#include "imagedev/snapquik.h"
-#include "sound/dac.h"
-#include "machine/eepromser.h"
-#include "sound/cdda.h"
-#include "cdrom.h"
-#include "imagedev/chd_cd.h"
-#include "bus/generic/slot.h"
-#include "bus/generic/carts.h"
-#include "softlist.h"
-=======
 #include "includes/jaguar.h"
 
 #include "bus/generic/slot.h"
@@ -369,7 +351,6 @@ Notes:
 #include "cdrom.h"
 #include "softlist.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 #define COJAG_CLOCK         XTAL_52MHz
 #define R3000_CLOCK         XTAL_40MHz
@@ -391,32 +372,17 @@ IRQ_CALLBACK_MEMBER(jaguar_state::jaguar_irq_callback)
 /// HACK: Maximum force requests data but doesn't transfer it all before issuing another command.
 /// According to the ATA specification this is not allowed, more investigation is required.
 
-<<<<<<< HEAD
-#include "machine/idehd.h"
-
-extern const device_type COJAG_HARDDISK;
-=======
 DECLARE_DEVICE_TYPE(COJAG_HARDDISK, cojag_hdd)
->>>>>>> upstream/master
 
 class cojag_hdd : public ide_hdd_device
 {
 public:
-<<<<<<< HEAD
-	cojag_hdd(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-		: ide_hdd_device(mconfig, COJAG_HARDDISK, "HDD CoJag", tag, owner, clock, "cojag_hdd", __FILE__)
-	{
-	}
-
-	virtual DECLARE_WRITE16_MEMBER(write_cs0)
-=======
 	cojag_hdd(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 		: ide_hdd_device(mconfig, COJAG_HARDDISK, tag, owner, clock)
 	{
 	}
 
 	virtual DECLARE_WRITE16_MEMBER(write_cs0) override
->>>>>>> upstream/master
 	{
 		// the first write is to the device head register
 		if( offset == 6 && (m_status & IDE_STATUS_DRQ))
@@ -428,11 +394,7 @@ public:
 	}
 };
 
-<<<<<<< HEAD
-const device_type COJAG_HARDDISK = &device_creator<cojag_hdd>;
-=======
 DEFINE_DEVICE_TYPE(COJAG_HARDDISK, cojag_hdd, "cojag_hdd", "HDD CoJag")
->>>>>>> upstream/master
 
 SLOT_INTERFACE_START(cojag_devices)
 	SLOT_INTERFACE("hdd", COJAG_HARDDISK)
@@ -465,16 +427,10 @@ void jaguar_state::machine_reset()
 	}
 
 	/* configure banks for gfx/sound ROMs */
-<<<<<<< HEAD
-	UINT8 *romboard = memregion("romboard")->base();
-	if (romboard != NULL)
-	{
-=======
 	if (m_romboard_region != nullptr)
 	{
 		uint8_t *romboard = m_romboard_region->base();
 
->>>>>>> upstream/master
 		/* graphics banks */
 		if (m_is_r3000)
 		{
@@ -522,48 +478,23 @@ void jaguar_state::machine_reset()
 *
 ********************************************************************/
 /*
-<<<<<<< HEAD
-emu_file jaguar_state::*jaguar_nvram_fopen( UINT32 openflags)
-{
-    device_image_interface *image = dynamic_cast<device_image_interface *>(machine().device("cart"));
-    file_error filerr;
-=======
 emu_file jaguar_state::*jaguar_nvram_fopen( uint32_t openflags)
 {
     device_image_interface *image = dynamic_cast<device_image_interface *>(machine().device("cart"));
     osd_file::error filerr;
->>>>>>> upstream/master
     emu_file *file;
     if (image->exists())
     {
         std::string fname(machine().system().name, PATH_SEPARATOR, image->basename_noext(), ".nv");
         filerr = mame_fopen( SEARCHPATH_NVRAM, fname, openflags, &file);
-<<<<<<< HEAD
-        return (filerr == FILERR_NONE) ? file : NULL;
-    }
-    else
-        return NULL;
-=======
         return (filerr == osd_file::error::NONE) ? file : nullptr;
     }
     else
         return nullptr;
->>>>>>> upstream/master
 }
 
 void jaguar_state::jaguar_nvram_load()
 {
-<<<<<<< HEAD
-    emu_file *nvram_file = NULL;
-    device_t *device;
-
-    for (device = machine().m_devicelist.first(); device != NULL; device = device->next())
-    {
-        device_nvram_func nvram = (device_nvram_func)device->get_config_fct(DEVINFO_FCT_NVRAM);
-        if (nvram != NULL)
-        {
-            if (nvram_file == NULL)
-=======
     emu_file *nvram_file = nullptr;
     device_t *device;
 
@@ -573,33 +504,17 @@ void jaguar_state::jaguar_nvram_load()
         if (nvram != nullptr)
         {
             if (nvram_file == nullptr)
->>>>>>> upstream/master
                 nvram_file = jaguar_nvram_fopen(machine, OPEN_FLAG_READ);
             (*nvram)(device, nvram_file, 0);
         }
     }
-<<<<<<< HEAD
-    if (nvram_file != NULL)
-=======
     if (nvram_file != nullptr)
->>>>>>> upstream/master
         mame_fclose(nvram_file);
 }
 
 
 void jaguar_state::jaguar_nvram_save()
 {
-<<<<<<< HEAD
-    emu_file *nvram_file = NULL;
-    device_t *device;
-
-    for (device = machine().m_devicelist.first(); device != NULL; device = device->next())
-    {
-        device_nvram_func nvram = (device_nvram_func)device->get_config_fct(DEVINFO_FCT_NVRAM);
-        if (nvram != NULL)
-        {
-            if (nvram_file == NULL)
-=======
     emu_file *nvram_file = nullptr;
     device_t *device;
 
@@ -609,7 +524,6 @@ void jaguar_state::jaguar_nvram_save()
         if (nvram != nullptr)
         {
             if (nvram_file == nullptr)
->>>>>>> upstream/master
                 nvram_file = jaguar_nvram_fopen(machine, OPEN_FLAG_WRITE | OPEN_FLAG_CREATE | OPEN_FLAG_CREATE_PATHS);
             // check nvram_file to avoid crash when no image is mounted or cannot be created
             if (nvram_file)
@@ -617,11 +531,7 @@ void jaguar_state::jaguar_nvram_save()
         }
     }
 
-<<<<<<< HEAD
-    if (nvram_file != NULL)
-=======
     if (nvram_file != nullptr)
->>>>>>> upstream/master
         mame_fclose(nvram_file);
 }
 
@@ -708,11 +618,7 @@ WRITE32_MEMBER(jaguar_state::misc_control_w)
 	}
 
 	/* adjust banking */
-<<<<<<< HEAD
-	if (memregion("romboard")->base())
-=======
 	if (m_romboard_region != nullptr)
->>>>>>> upstream/master
 	{
 		membank("mainsndbank")->set_entry((data >> 1) & 7);
 		membank("dspsndbank")->set_entry((data >> 1) & 7);
@@ -770,13 +676,8 @@ WRITE32_MEMBER(jaguar_state::dspctrl_w)
 
 READ32_MEMBER(jaguar_state::joystick_r)
 {
-<<<<<<< HEAD
-	UINT16 joystick_result = 0xfffe;
-	UINT16 joybuts_result = 0xffef;
-=======
 	uint16_t joystick_result = 0xfffe;
 	uint16_t joybuts_result = 0xffef;
->>>>>>> upstream/master
 	int i;
 	static const char *const keynames[2][8] =
 	{
@@ -876,19 +777,12 @@ WRITE32_MEMBER(jaguar_state::latch_w)
 	logerror("%08X:latch_w(%X)\n", space.device().safe_pcbase(), data);
 
 	/* adjust banking */
-<<<<<<< HEAD
-	if (memregion("romboard")->base())
-	{
-		if (m_is_r3000)
-			membank("maingfxbank")->set_entry(data & 1);
-=======
 	if (m_romboard_region != nullptr)
 	{
 		if (m_is_r3000)
 		{
 			membank("maingfxbank")->set_entry(data & 1);
 		}
->>>>>>> upstream/master
 		membank("gpugfxbank")->set_entry(data & 1);
 	}
 }
@@ -1018,11 +912,7 @@ READ32_MEMBER(jaguar_state::gpu_jump_r)
 
 READ32_MEMBER(jaguar_state::cojagr3k_main_speedup_r)
 {
-<<<<<<< HEAD
-	UINT64 curcycles = m_maincpu->total_cycles();
-=======
 	uint64_t curcycles = m_maincpu->total_cycles();
->>>>>>> upstream/master
 
 	/* if it's been less than main_speedup_max_cycles cycles since the last time */
 	if (curcycles - m_main_speedup_last_cycles < m_main_speedup_max_cycles)
@@ -1096,11 +986,7 @@ READ32_MEMBER(jaguar_state::main_gpu_wait_r)
 
 WRITE32_MEMBER(jaguar_state::area51_main_speedup_w)
 {
-<<<<<<< HEAD
-	UINT64 curcycles = m_maincpu->total_cycles();
-=======
 	uint64_t curcycles = m_maincpu->total_cycles();
->>>>>>> upstream/master
 
 	/* store the data */
 	COMBINE_DATA(m_main_speedup);
@@ -1134,11 +1020,7 @@ WRITE32_MEMBER(jaguar_state::area51_main_speedup_w)
 
 WRITE32_MEMBER(jaguar_state::area51mx_main_speedup_w)
 {
-<<<<<<< HEAD
-	UINT64 curcycles = m_maincpu->total_cycles();
-=======
 	uint64_t curcycles = m_maincpu->total_cycles();
->>>>>>> upstream/master
 
 	/* store the data */
 	COMBINE_DATA(&m_main_speedup[offset]);
@@ -1336,11 +1218,7 @@ WRITE32_MEMBER(jaguar_state::butch_regs_w)
 			switch((m_butch_regs[offset] & 0xff00) >> 8)
 			{
 				case 0x03: // Read TOC
-<<<<<<< HEAD
-					UINT32 msf;
-=======
 					uint32_t msf;
->>>>>>> upstream/master
 
 					if(m_butch_regs[offset] & 0xff) // Multi Session CD, TODO
 					{
@@ -1370,11 +1248,7 @@ WRITE32_MEMBER(jaguar_state::butch_regs_w)
 					break;
 				case 0x14: // Read Long TOC
 					{
-<<<<<<< HEAD
-						UINT32 msf;
-=======
 						uint32_t msf;
->>>>>>> upstream/master
 						int ntrks = cdrom_get_last_track(m_cd_file);
 
 						for(int i=0;i<ntrks;i++)
@@ -1468,15 +1342,9 @@ static ADDRESS_MAP_START( r3000_map, AS_PROGRAM, 32, jaguar_state )
 	AM_RANGE(0x04f1b000, 0x04f1cfff) AM_RAM AM_SHARE("dspram")
 
 	AM_RANGE(0x06000000, 0x06000003) AM_READWRITE(misc_control_r, misc_control_w)
-<<<<<<< HEAD
-	AM_RANGE(0x10000000, 0x1007ffff) AM_RAM
-	AM_RANGE(0x12000000, 0x120fffff) AM_RAM     // tested in self-test only?
-	AM_RANGE(0x14000004, 0x14000007) AM_WRITE(watchdog_reset32_w)
-=======
 	AM_RANGE(0x10000000, 0x1007ffff) AM_RAM AM_SHARE("mainram")
 	AM_RANGE(0x12000000, 0x120fffff) AM_RAM AM_SHARE("mainram2")    // tested in self-test only?
 	AM_RANGE(0x14000004, 0x14000007) AM_DEVWRITE("watchdog", watchdog_timer_device, reset32_w)
->>>>>>> upstream/master
 	AM_RANGE(0x16000000, 0x16000003) AM_WRITE(eeprom_enable_w)
 	AM_RANGE(0x18000000, 0x18001fff) AM_READWRITE(eeprom_data_r, eeprom_data_w) AM_SHARE("nvram")
 	AM_RANGE(0x1fc00000, 0x1fdfffff) AM_ROM AM_REGION("maincpu", 0) AM_SHARE("rom")
@@ -1486,15 +1354,9 @@ ADDRESS_MAP_END
 static ADDRESS_MAP_START( m68020_map, AS_PROGRAM, 32, jaguar_state )
 	AM_RANGE(0x000000, 0x7fffff) AM_RAM AM_SHARE("sharedram")
 	AM_RANGE(0x800000, 0x9fffff) AM_ROM AM_REGION("maincpu", 0) AM_SHARE("rom")
-<<<<<<< HEAD
-	AM_RANGE(0xa00000, 0xa1ffff) AM_RAM
-	AM_RANGE(0xa20000, 0xa21fff) AM_READWRITE(eeprom_data_r, eeprom_data_w) AM_SHARE("nvram")
-	AM_RANGE(0xa30000, 0xa30003) AM_WRITE(watchdog_reset32_w)
-=======
 	AM_RANGE(0xa00000, 0xa1ffff) AM_RAM AM_SHARE("mainram")
 	AM_RANGE(0xa20000, 0xa21fff) AM_READWRITE(eeprom_data_r, eeprom_data_w) AM_SHARE("nvram")
 	AM_RANGE(0xa30000, 0xa30003) AM_DEVWRITE("watchdog", watchdog_timer_device, reset32_w)
->>>>>>> upstream/master
 	AM_RANGE(0xa40000, 0xa40003) AM_WRITE(eeprom_enable_w)
 	AM_RANGE(0xb70000, 0xb70003) AM_READWRITE(misc_control_r, misc_control_w)
 	AM_RANGE(0xc00000, 0xdfffff) AM_ROMBANK("mainsndbank")
@@ -1939,11 +1801,7 @@ INPUT_PORTS_END
  *
  *************************************/
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( cojagr3k, jaguar_state )
-=======
 static MACHINE_CONFIG_START( cojagr3k )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", R3041, R3000_CLOCK)
@@ -1960,13 +1818,9 @@ static MACHINE_CONFIG_START( cojagr3k )
 
 	MCFG_NVRAM_ADD_1FILL("nvram")
 
-<<<<<<< HEAD
-	MCFG_VT83C461_ADD("ide", cojag_devices, "hdd", NULL, true)
-=======
 	MCFG_WATCHDOG_ADD("watchdog")
 
 	MCFG_VT83C461_ADD("ide", cojag_devices, "hdd", nullptr, true)
->>>>>>> upstream/master
 	MCFG_ATA_INTERFACE_IRQ_HANDLER(WRITELINE(jaguar_state, external_int))
 
 	/* video hardware */
@@ -1977,29 +1831,16 @@ static MACHINE_CONFIG_START( cojagr3k )
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
-<<<<<<< HEAD
-
-	MCFG_DAC_ADD("dac1")
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 1.0)
-
-	MCFG_DAC_ADD("dac2")
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 1.0)
-=======
 	MCFG_SOUND_ADD("ldac", DAC_16BIT_R2R_TWOS_COMPLEMENT, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 1.0) // unknown DAC
 	MCFG_SOUND_ADD("rdac", DAC_16BIT_R2R_TWOS_COMPLEMENT, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 1.0) // unknown DAC
 	MCFG_DEVICE_ADD("vref", VOLTAGE_REGULATOR, 0) MCFG_VOLTAGE_REGULATOR_OUTPUT(5.0)
 	MCFG_SOUND_ROUTE_EX(0, "ldac", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "ldac", -1.0, DAC_VREF_NEG_INPUT)
 	MCFG_SOUND_ROUTE_EX(0, "rdac", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "rdac", -1.0, DAC_VREF_NEG_INPUT)
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_DERIVED( cojagr3k_rom, cojagr3k )
 	MCFG_DEVICE_MODIFY("ide:0")
-<<<<<<< HEAD
-	MCFG_SLOT_DEFAULT_OPTION(NULL)
-=======
 	MCFG_SLOT_DEFAULT_OPTION(nullptr)
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_DERIVED( cojag68k, cojagr3k )
@@ -2010,11 +1851,7 @@ static MACHINE_CONFIG_DERIVED( cojag68k, cojagr3k )
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( jaguar, jaguar_state )
-=======
 static MACHINE_CONFIG_START( jaguar )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, JAGUAR_CLOCK/2)
@@ -2039,18 +1876,11 @@ static MACHINE_CONFIG_START( jaguar )
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
-<<<<<<< HEAD
-	MCFG_DAC_ADD("dac1")
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 1.0)
-	MCFG_DAC_ADD("dac2")
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 1.0)
-=======
 	MCFG_SOUND_ADD("ldac", DAC_16BIT_R2R_TWOS_COMPLEMENT, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 1.0) // unknown DAC
 	MCFG_SOUND_ADD("rdac", DAC_16BIT_R2R_TWOS_COMPLEMENT, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 1.0) // unknown DAC
 	MCFG_DEVICE_ADD("vref", VOLTAGE_REGULATOR, 0) MCFG_VOLTAGE_REGULATOR_OUTPUT(5.0)
 	MCFG_SOUND_ROUTE_EX(0, "ldac", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "ldac", -1.0, DAC_VREF_NEG_INPUT)
 	MCFG_SOUND_ROUTE_EX(0, "rdac", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "rdac", -1.0, DAC_VREF_NEG_INPUT)
->>>>>>> upstream/master
 
 	/* quickload */
 	MCFG_QUICKLOAD_ADD("quickload", jaguar_state, jaguar, "abs,bin,cof,jag,prg", 2)
@@ -2088,18 +1918,11 @@ MACHINE_CONFIG_END
  *
  *************************************/
 
-<<<<<<< HEAD
-void jaguar_state::fix_endian( UINT32 addr, UINT32 size )
-{
-	UINT8 j[4], *ram = memregion("maincpu")->base();
-	UINT32 i;
-=======
 void jaguar_state::fix_endian( uint32_t addr, uint32_t size )
 {
 	uint8_t j[4];
 	uint8_t *ram = memregion("maincpu")->base();
 	uint32_t i;
->>>>>>> upstream/master
 	size += addr;
 	logerror("File Loaded to address range %X to %X\n",addr,size-1);
 	for (i = addr; i < size; i+=4)
@@ -2156,20 +1979,12 @@ QUICKLOAD_LOAD_MEMBER( jaguar_state, jaguar )
 	return quickload(image, file_type, quickload_size);
 }
 
-<<<<<<< HEAD
-int jaguar_state::quickload(device_image_interface &image, const char *file_type, int quickload_size)
-=======
 image_init_result jaguar_state::quickload(device_image_interface &image, const char *file_type, int quickload_size)
->>>>>>> upstream/master
 {
 	offs_t quickload_begin = 0x4000, start = quickload_begin, skip = 0;
 
 	memset(m_shared_ram, 0, 0x200000);
-<<<<<<< HEAD
-	quickload_size = MIN(quickload_size, 0x200000 - quickload_begin);
-=======
 	quickload_size = std::min(quickload_size, int(0x200000 - quickload_begin));
->>>>>>> upstream/master
 
 	image.fread( &memregion("maincpu")->base()[quickload_begin], quickload_size);
 
@@ -2185,11 +2000,7 @@ image_init_result jaguar_state::quickload(device_image_interface &image, const c
 	else    /* PRG */
 	if (((m_shared_ram[0x1000] & 0xffff0000) == 0x601A0000) && (m_shared_ram[0x1007] == 0x4A414752))
 	{
-<<<<<<< HEAD
-		UINT32 type = m_shared_ram[0x1008] >> 16;
-=======
 		uint32_t type = m_shared_ram[0x1008] >> 16;
->>>>>>> upstream/master
 		start = ((m_shared_ram[0x1008] & 0xffff) << 16) | (m_shared_ram[0x1009] >> 16);
 		skip = 28;
 		if (type == 2) skip = 42;
@@ -2207,19 +2018,11 @@ image_init_result jaguar_state::quickload(device_image_interface &image, const c
 		skip = 96;
 
 	else    /* ABS binary */
-<<<<<<< HEAD
-	if (!core_stricmp(image.filetype(), "abs"))
-		start = 0xc000;
-
-	else    /* JAG binary */
-	if (!core_stricmp(image.filetype(), "jag"))
-=======
 	if (image.is_filetype("abs"))
 		start = 0xc000;
 
 	else    /* JAG binary */
 	if (image.is_filetype("jag"))
->>>>>>> upstream/master
 		start = 0x5000;
 
 
@@ -2241,11 +2044,7 @@ image_init_result jaguar_state::quickload(device_image_interface &image, const c
 	/* Transfer control to image */
 	m_maincpu->set_pc(quickload_begin);
 	m_shared_ram[1]=quickload_begin;
-<<<<<<< HEAD
-	return IMAGE_INIT_PASS;
-=======
 	return image_init_result::PASS;
->>>>>>> upstream/master
 }
 
 void jaguar_state::cart_start()
@@ -2257,24 +2056,14 @@ void jaguar_state::cart_start()
 
 DEVICE_IMAGE_LOAD_MEMBER( jaguar_state, jaguar_cart )
 {
-<<<<<<< HEAD
-	UINT32 size, load_offset = 0;
-
-	if (image.software_entry() == NULL)
-=======
 	uint32_t size, load_offset = 0;
 
 	if (!image.loaded_through_softlist())
->>>>>>> upstream/master
 	{
 		size = image.length();
 
 		/* .rom files load & run at 802000 */
-<<<<<<< HEAD
-		if (!core_stricmp(image.filetype(), "rom"))
-=======
 		if (image.is_filetype("rom"))
->>>>>>> upstream/master
 		{
 			load_offset = 0x2000;             // fix load address
 			m_cart_base[0x101] = 0x802000;    // fix exec address
@@ -2300,11 +2089,7 @@ DEVICE_IMAGE_LOAD_MEMBER( jaguar_state, jaguar_cart )
 
 	/* Transfer control to the bios */
 	m_maincpu->set_pc(m_rom_base[1]);
-<<<<<<< HEAD
-	return IMAGE_INIT_PASS;
-=======
 	return image_init_result::PASS;
->>>>>>> upstream/master
 }
 
 /*************************************
@@ -2351,17 +2136,10 @@ ROM_END
 
 ROM_START( area51t ) /* 68020 based, Area51 Time Warner License  Date: Oct 17, 1996 */
 	ROM_REGION( 0x200000, "maincpu", 0 )    /* 2MB for 68020 code */
-<<<<<<< HEAD
-	ROM_LOAD32_BYTE( "136105-0003-q_h.3h", 0x00000, 0x80000, CRC(0681f398) SHA1(9e96db5a4ff90800685a5b95f8d758d211d3b982) )
-	ROM_LOAD32_BYTE( "136105-0002-q_p.3p", 0x00001, 0x80000, CRC(f76cfc68) SHA1(01a781b42b61279e09e0cb1d924e2a3e0df44591) )
-	ROM_LOAD32_BYTE( "136105-0001-q_m.3m", 0x00002, 0x80000, CRC(f422b4a8) SHA1(f95ef428be18adafae65e35f412eb03dcdaf7ed4) )
-	ROM_LOAD32_BYTE( "136105-0000-q_k.3k", 0x00003, 0x80000, CRC(1fb2f2b5) SHA1(cbed65463dd93eaf945750a9dc3a123d1c6bda42) )
-=======
 	ROM_LOAD32_BYTE( "136105-0003-q_h.3h", 0x00000, 0x80000, CRC(0681f398) SHA1(9e96db5a4ff90800685a5b95f8d758d211d3b982) ) /* Also found labeled as AREA51, 68K, D2FF, 3H, 11/20/96 (each item on a seperate line) */
 	ROM_LOAD32_BYTE( "136105-0002-q_p.3p", 0x00001, 0x80000, CRC(f76cfc68) SHA1(01a781b42b61279e09e0cb1d924e2a3e0df44591) ) /* Also found labeled as AREA51, 68K, 69FE, 3P, 11/20/96 (each item on a seperate line) */
 	ROM_LOAD32_BYTE( "136105-0001-q_m.3m", 0x00002, 0x80000, CRC(f422b4a8) SHA1(f95ef428be18adafae65e35f412eb03dcdaf7ed4) ) /* Also found labeled as AREA51, 68K, FCFD, 3M, 11/20/96 (each item on a seperate line) */
 	ROM_LOAD32_BYTE( "136105-0000-q_k.3k", 0x00003, 0x80000, CRC(1fb2f2b5) SHA1(cbed65463dd93eaf945750a9dc3a123d1c6bda42) ) /* Also found labeled as AREA51, 68K, 65FC, 3K, 11/20/96 (each item on a seperate line) */
->>>>>>> upstream/master
 
 	ROM_REGION16_BE( 0x1000, "waverom", 0 )
 	ROM_LOAD16_WORD("jagwave.rom", 0x0000, 0x1000, CRC(7a25ee5b) SHA1(58117e11fd6478c521fbd3fdbe157f39567552f0) )
@@ -2753,11 +2531,7 @@ ROM_END
  *
  *************************************/
 
-<<<<<<< HEAD
-void jaguar_state::cojag_common_init(UINT16 gpu_jump_offs, UINT16 spin_pc)
-=======
 void jaguar_state::cojag_common_init(uint16_t gpu_jump_offs, uint16_t spin_pc)
->>>>>>> upstream/master
 {
 	m_is_cojag = true;
 	m_is_jagcd = false;
@@ -2788,12 +2562,8 @@ DRIVER_INIT_MEMBER(jaguar_state,area51a)
 
 #if ENABLE_SPEEDUP_HACKS
 	/* install speedup for main CPU */
-<<<<<<< HEAD
-	m_main_speedup = m_maincpu->space(AS_PROGRAM).install_write_handler(0xa02030, 0xa02033, write32_delegate(FUNC(jaguar_state::area51_main_speedup_w),this));
-=======
 	m_maincpu->space(AS_PROGRAM).install_write_handler(0xa02030, 0xa02033, write32_delegate(FUNC(jaguar_state::area51_main_speedup_w),this));
 	m_main_speedup = m_mainram + 0x2030/4;
->>>>>>> upstream/master
 #endif
 }
 
@@ -2802,19 +2572,11 @@ DRIVER_INIT_MEMBER(jaguar_state,area51)
 {
 	m_hacks_enabled = true;
 	cojag_common_init(0x0c0, 0x09e);
-<<<<<<< HEAD
-
-#if ENABLE_SPEEDUP_HACKS
-	/* install speedup for main CPU */
-	m_main_speedup_max_cycles = 120;
-	m_main_speedup = m_maincpu->space(AS_PROGRAM).install_read_handler(0x100062e8, 0x100062eb, read32_delegate(FUNC(jaguar_state::cojagr3k_main_speedup_r),this));
-=======
 #if ENABLE_SPEEDUP_HACKS
 	/* install speedup for main CPU */
 	m_main_speedup_max_cycles = 120;
 	m_maincpu->space(AS_PROGRAM).install_read_handler(0x100062e8, 0x100062eb, read32_delegate(FUNC(jaguar_state::cojagr3k_main_speedup_r),this));
 	m_main_speedup = m_mainram + 0x62e8/4;
->>>>>>> upstream/master
 #endif
 }
 
@@ -2829,12 +2591,8 @@ DRIVER_INIT_MEMBER(jaguar_state,maxforce)
 #if ENABLE_SPEEDUP_HACKS
 	/* install speedup for main CPU */
 	m_main_speedup_max_cycles = 120;
-<<<<<<< HEAD
-	m_main_speedup = m_maincpu->space(AS_PROGRAM).install_read_handler(0x1000865c, 0x1000865f, read32_delegate(FUNC(jaguar_state::cojagr3k_main_speedup_r),this));
-=======
 	m_maincpu->space(AS_PROGRAM).install_read_handler(0x1000865c, 0x1000865f, read32_delegate(FUNC(jaguar_state::cojagr3k_main_speedup_r),this));
 	m_main_speedup = m_mainram + 0x865c/4;
->>>>>>> upstream/master
 #endif
 }
 
@@ -2849,12 +2607,8 @@ DRIVER_INIT_MEMBER(jaguar_state,area51mx)
 
 #if ENABLE_SPEEDUP_HACKS
 	/* install speedup for main CPU */
-<<<<<<< HEAD
-	m_main_speedup = m_maincpu->space(AS_PROGRAM).install_write_handler(0xa19550, 0xa19557, write32_delegate(FUNC(jaguar_state::area51mx_main_speedup_w),this));
-=======
 	m_maincpu->space(AS_PROGRAM).install_write_handler(0xa19550, 0xa19557, write32_delegate(FUNC(jaguar_state::area51mx_main_speedup_w),this));
 	m_main_speedup = m_mainram + 0x19550/4;
->>>>>>> upstream/master
 #endif
 }
 
@@ -2870,12 +2624,8 @@ DRIVER_INIT_MEMBER(jaguar_state,a51mxr3k)
 #if ENABLE_SPEEDUP_HACKS
 	/* install speedup for main CPU */
 	m_main_speedup_max_cycles = 120;
-<<<<<<< HEAD
-	m_main_speedup = m_maincpu->space(AS_PROGRAM).install_read_handler(0x10006f0c, 0x10006f0f, read32_delegate(FUNC(jaguar_state::cojagr3k_main_speedup_r),this));
-=======
 	m_maincpu->space(AS_PROGRAM).install_read_handler(0x10006f0c, 0x10006f0f, read32_delegate(FUNC(jaguar_state::cojagr3k_main_speedup_r),this));
 	m_main_speedup = m_mainram + 0x6f0c/4;
->>>>>>> upstream/master
 #endif
 }
 
@@ -2888,12 +2638,8 @@ DRIVER_INIT_MEMBER(jaguar_state,fishfren)
 #if ENABLE_SPEEDUP_HACKS
 	/* install speedup for main CPU */
 	m_main_speedup_max_cycles = 200;
-<<<<<<< HEAD
-	m_main_speedup = m_maincpu->space(AS_PROGRAM).install_read_handler(0x10021b60, 0x10021b63, read32_delegate(FUNC(jaguar_state::cojagr3k_main_speedup_r),this));
-=======
 	m_maincpu->space(AS_PROGRAM).install_read_handler(0x10021b60, 0x10021b63, read32_delegate(FUNC(jaguar_state::cojagr3k_main_speedup_r),this));
 	m_main_speedup = m_mainram + 0x21b60/4;
->>>>>>> upstream/master
 #endif
 }
 
@@ -2905,18 +2651,12 @@ void jaguar_state::init_freeze_common(offs_t main_speedup_addr)
 #if ENABLE_SPEEDUP_HACKS
 	/* install speedup for main CPU */
 	m_main_speedup_max_cycles = 200;
-<<<<<<< HEAD
-	if (main_speedup_addr != 0)
-		m_main_speedup = m_maincpu->space(AS_PROGRAM).install_read_handler(main_speedup_addr, main_speedup_addr + 3, read32_delegate(FUNC(jaguar_state::cojagr3k_main_speedup_r), this));
-	m_main_gpu_wait = m_maincpu->space(AS_PROGRAM).install_read_handler(0x0400d900, 0x0400d900 + 3, read32_delegate(FUNC(jaguar_state::main_gpu_wait_r), this));
-=======
 	if (main_speedup_addr != 0) {
 		m_maincpu->space(AS_PROGRAM).install_read_handler(main_speedup_addr, main_speedup_addr + 3, read32_delegate(FUNC(jaguar_state::cojagr3k_main_speedup_r), this));
 		m_main_speedup = m_mainram + (main_speedup_addr - 0x10000000)/4;
 	}
 	m_maincpu->space(AS_PROGRAM).install_read_handler(0x0400d900, 0x0400d900 + 3, read32_delegate(FUNC(jaguar_state::main_gpu_wait_r), this));
 	m_main_gpu_wait = m_shared_ram + 0xd900/4;
->>>>>>> upstream/master
 #endif
 }
 
@@ -2935,13 +2675,9 @@ DRIVER_INIT_MEMBER(jaguar_state,vcircle)
 #if ENABLE_SPEEDUP_HACKS
 	/* install speedup for main CPU */
 	m_main_speedup_max_cycles = 50;
-<<<<<<< HEAD
-	m_main_speedup = m_maincpu->space(AS_PROGRAM).install_read_handler(0x12005b34, 0x12005b37, read32_delegate(FUNC(jaguar_state::cojagr3k_main_speedup_r),this));
-=======
 	m_maincpu->space(AS_PROGRAM).install_read_handler(0x12005b34, 0x12005b37, read32_delegate(FUNC(jaguar_state::cojagr3k_main_speedup_r),this));
 	m_main_speedup = m_mainram + 0x5b34/4;
 	m_main_speedup = m_mainram2 + 0x5b34/4;
->>>>>>> upstream/master
 #endif
 }
 

@@ -1,9 +1,5 @@
 // license:BSD-3-Clause
-<<<<<<< HEAD
-// copyright-holders:Steve Ellenoff,Jarek Parchanski
-=======
 // copyright-holders:Steve Ellenoff,Jarek Parchanski,Vas Crabb
->>>>>>> upstream/master
 /*
     Great Swordsman (Taito) 1984
     Joshi Volleyball (Taito) 1983
@@ -13,15 +9,9 @@ TODO:
 -joshi volleyball
    -The incomplete graphic
    -The implementation of DAC sound ?
-<<<<<<< HEAD
-   -MCU code DUMP and emulation
-   -The true interrupt circuit of SUB CPU
-   -unknown ROM (BANK ROM of sub-cpu ? )
-=======
    -MCU hookup is incomplete
    -The true interrupt circuit of SUB CPU
    -unknown ROM (BANK ROM of sub-cpu ?)
->>>>>>> upstream/master
 
 Credits:
 - Steve Ellenoff: Original emulation and Mame driver
@@ -118,19 +108,11 @@ data / ay8910-#0 read
 81 ay8910-#1 read port
 
 write:
-<<<<<<< HEAD
-60 ay8910-#0 controll port
-61 ay8910-#0 data port
-80 ay8910-#1 controll port
-81 ay8910-#1 data port
-   ay8910-A  : NMI controll ?
-=======
 60 ay8910-#0 control port
 61 ay8910-#0 data port
 80 ay8910-#1 control port
 81 ay8910-#1 data port
    ay8910-A  : NMI control ?
->>>>>>> upstream/master
 a0 unknown
 e0 unknown (watch dog?)
 
@@ -162,12 +144,6 @@ reg: 0->1 (main->2nd) /     : (1->0) 2nd->main :
 ******************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/z80/z80.h"
-#include "machine/tait8741.h"
-#include "sound/msm5205.h"
-#include "includes/gsword.h"
-=======
 #include "includes/gsword.h"
 
 #include "cpu/mcs48/mcs48.h"
@@ -177,7 +153,6 @@ reg: 0->1 (main->2nd) /     : (1->0) 2nd->main :
 #include "screen.h"
 #include "speaker.h"
 
->>>>>>> upstream/master
 
 
 #if 0
@@ -194,9 +169,6 @@ int gsword_state::coins_in(void)
 }
 #endif
 
-<<<<<<< HEAD
-#include "cpu/z80/z80.h"
-=======
 void gsword_state_base::machine_start()
 {
 	save_item(NAME(m_fake8910_0));
@@ -226,30 +198,19 @@ READ8_MEMBER(gsword_state_base::fake_1_r)
 {
 	return m_fake8910_1+1;
 }
->>>>>>> upstream/master
 
 
 /* CPU 2 memory hack */
 /* (402E) timeout upcount must be under 0AH                         */
 /* (4004,4005) clear down counter , if (4004,4005)==0 then (402E)=0 */
-<<<<<<< HEAD
-READ8_MEMBER(gsword_state::gsword_hack_r)
-{
-	UINT8 data = m_cpu2_ram[offset + 4];
-=======
 READ8_MEMBER(gsword_state::hack_r)
 {
 	u8 const data = m_cpu2_ram[offset + 4];
->>>>>>> upstream/master
 
 	/*if(offset==1)osd_printf_debug("CNT %02X%02X\n",m_cpu2_ram[5],m_cpu2_ram[4]); */
 
 	/* speedup timeout count down */
-<<<<<<< HEAD
-	if(m_protect_hack)
-=======
 	if (m_protect_hack)
->>>>>>> upstream/master
 	{
 		switch(offset)
 		{
@@ -260,9 +221,6 @@ READ8_MEMBER(gsword_state::hack_r)
 	return data;
 }
 
-<<<<<<< HEAD
-READ8_MEMBER(gsword_state::gsword_8741_2_r )
-=======
 WRITE8_MEMBER(gsword_state::nmi_set_w)
 {
 /*  osd_printf_debug("AY write %02X\n",data);*/
@@ -312,7 +270,6 @@ WRITE8_MEMBER(gsword_state::adpcm_data_w)
 }
 
 READ8_MEMBER(gsword_state::i8741_2_r )
->>>>>>> upstream/master
 {
 	switch (offset)
 	{
@@ -329,11 +286,7 @@ READ8_MEMBER(gsword_state::i8741_2_r )
 	return 0;
 }
 
-<<<<<<< HEAD
-READ8_MEMBER(gsword_state::gsword_8741_3_r )
-=======
 READ8_MEMBER(gsword_state::i8741_3_r )
->>>>>>> upstream/master
 {
 	switch (offset)
 	{
@@ -349,14 +302,6 @@ READ8_MEMBER(gsword_state::i8741_3_r )
 	return 0;
 }
 
-<<<<<<< HEAD
-void gsword_state::machine_start()
-{
-	save_item(NAME(m_fake8910_0));
-	save_item(NAME(m_fake8910_1));
-	save_item(NAME(m_nmi_enable));
-	save_item(NAME(m_protect_hack));
-=======
 INTERRUPT_GEN_MEMBER(gsword_state::sound_interrupt)
 {
 	if (m_nmi_enable)
@@ -399,96 +344,10 @@ void gsword_state::machine_start()
 
 	save_item(NAME(m_protect_hack));
 	save_item(NAME(m_nmi_enable));
->>>>>>> upstream/master
 }
 
 void gsword_state::machine_reset()
 {
-<<<<<<< HEAD
-	m_coins = 0;
-
-	/* snd CPU mask NMI during reset phase */
-	m_nmi_enable   = 0;
-	m_protect_hack = 0;
-}
-
-INTERRUPT_GEN_MEMBER(gsword_state::gsword_snd_interrupt)
-{
-	if(m_nmi_enable)
-		device.execute().set_input_line(INPUT_LINE_NMI, PULSE_LINE);
-}
-
-WRITE8_MEMBER(gsword_state::nmi_set_w)
-{
-/*  osd_printf_debug("AY write %02X\n",data);*/
-
-	m_protect_hack = (data&0x80) ? 0 : 1;
-#if 0
-	/* An actual circuit isn't known. */
-	/* write ff,02,ff,fe, 17 x 0d,0f */
-	m_nmi_enable = ((data>>7) & (data&1) &1) == 0;
-
-
-#else
-	switch(data)
-	{
-	case 0xff:
-		m_nmi_enable = 0; /* NMI must be disabled */
-		break;
-	case 0x02:
-		m_nmi_enable = 0; /* ANY */
-		break;
-	case 0x0d:
-		m_nmi_enable = 1;
-		break;
-	case 0x0f:
-		m_nmi_enable = 1; /* NMI must be enabled */
-		break;
-	case 0xfe:
-		m_nmi_enable = 1; /* NMI must be enabled */
-		break;
-	}
-	/* bit1= nmi disable , for ram check */
-	logerror("NMI controll %02x\n",data);
-#endif
-}
-
-WRITE8_MEMBER(gsword_state::ay8910_control_port_0_w)
-{
-	m_ay0->address_w(space,offset,data);
-	m_fake8910_0 = data;
-}
-WRITE8_MEMBER(gsword_state::ay8910_control_port_1_w)
-{
-	m_ay1->address_w(space,offset,data);
-	m_fake8910_1 = data;
-}
-
-READ8_MEMBER(gsword_state::fake_0_r)
-{
-	return m_fake8910_0+1;
-}
-READ8_MEMBER(gsword_state::fake_1_r)
-{
-	return m_fake8910_1+1;
-}
-
-WRITE8_MEMBER(gsword_state::gsword_adpcm_data_w)
-{
-	m_msm->data_w (data & 0x0f); /* bit 0..3 */
-	m_msm->reset_w(BIT(data, 5)); /* bit 5    */
-	m_msm->vclk_w(BIT(data, 4));  /* bit 4    */
-}
-
-WRITE8_MEMBER(gsword_state::adpcm_soundcommand_w)
-{
-	soundlatch_byte_w(space, 0, data);
-	m_audiocpu->set_input_line(INPUT_LINE_NMI, PULSE_LINE);
-}
-
-
-static ADDRESS_MAP_START( cpu1_map, AS_PROGRAM , 8, gsword_state )
-=======
 	gsword_state_base::machine_reset();
 
 	m_protect_hack = false;
@@ -597,7 +456,6 @@ void josvolly_state::machine_reset()
 
 
 static ADDRESS_MAP_START( cpu1_map, AS_PROGRAM , 8, gsword_state_base )
->>>>>>> upstream/master
 	AM_RANGE(0x0000, 0x8fff) AM_ROM
 	AM_RANGE(0x9000, 0x9fff) AM_RAM
 	AM_RANGE(0xa000, 0xa37f) AM_RAM
@@ -611,32 +469,16 @@ static ADDRESS_MAP_START( cpu1_map, AS_PROGRAM , 8, gsword_state_base )
 	AM_RANGE(0xb000, 0xb7ff) AM_RAM_WRITE(videoram_w) AM_SHARE("videoram")
 ADDRESS_MAP_END
 
-<<<<<<< HEAD
-=======
 
->>>>>>> upstream/master
 static ADDRESS_MAP_START( cpu1_io_map, AS_IO, 8, gsword_state )
 	ADDRESS_MAP_GLOBAL_MASK(0xff)
 	AM_RANGE(0x7e, 0x7f) AM_DEVREADWRITE("taito8741", taito8741_4pack_device, read_0, write_0)
 ADDRESS_MAP_END
 
-<<<<<<< HEAD
-static ADDRESS_MAP_START( josvolly_cpu1_io_map, AS_IO, 8, gsword_state )
-	ADDRESS_MAP_GLOBAL_MASK(0xff)
-	AM_RANGE(0x7e, 0x7f) AM_DEVREADWRITE("josvolly_8741", josvolly8741_4pack_device, read_0, write_0)
-ADDRESS_MAP_END
-
-//
-static ADDRESS_MAP_START( cpu2_map, AS_PROGRAM, 8, gsword_state )
-	AM_RANGE(0x0000, 0x3fff) AM_ROM
-	AM_RANGE(0x4000, 0x43ff) AM_RAM AM_SHARE("cpu2_ram")
-	AM_RANGE(0x6000, 0x6000) AM_WRITE(adpcm_soundcommand_w)
-=======
 static ADDRESS_MAP_START( cpu2_map, AS_PROGRAM, 8, gsword_state )
 	AM_RANGE(0x0000, 0x3fff) AM_ROM
 	AM_RANGE(0x4000, 0x43ff) AM_RAM AM_SHARE("cpu2_ram")
 	AM_RANGE(0x6000, 0x6000) AM_WRITE(sound_command_w)
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( cpu2_io_map, AS_IO, 8, gsword_state )
@@ -648,37 +490,6 @@ static ADDRESS_MAP_START( cpu2_io_map, AS_IO, 8, gsword_state )
 	AM_RANGE(0x61, 0x61) AM_DEVREADWRITE("ay1", ay8910_device, data_r, data_w)
 	AM_RANGE(0x80, 0x80) AM_READWRITE(fake_1_r, ay8910_control_port_1_w)
 	AM_RANGE(0x81, 0x81) AM_DEVREADWRITE("ay2", ay8910_device, data_r, data_w)
-<<<<<<< HEAD
-//
-	AM_RANGE(0xe0, 0xe0) AM_READNOP /* ?? */
-	AM_RANGE(0xa0, 0xa0) AM_WRITENOP /* ?? */
-	AM_RANGE(0xe0, 0xe0) AM_WRITENOP /* watch dog ?*/
-ADDRESS_MAP_END
-
-//
-
-static ADDRESS_MAP_START( cpu3_map, AS_PROGRAM, 8, gsword_state )
-	AM_RANGE(0x0000, 0x7fff) AM_ROM
-	AM_RANGE(0x8000, 0x8000) AM_WRITE(gsword_adpcm_data_w)
-	AM_RANGE(0xa000, 0xa000) AM_READ(soundlatch_byte_r)
-ADDRESS_MAP_END
-
-
-static ADDRESS_MAP_START( josvolly_cpu2_map, AS_PROGRAM, 8, gsword_state )
-	AM_RANGE(0x0000, 0x3fff) AM_ROM
-	AM_RANGE(0x4000, 0x43ff) AM_RAM AM_SHARE("cpu2_ram")
-
-	/* 8000 to 8003 looks MCU */
-	AM_RANGE(0x8000, 0x8000) AM_READ_PORT("IN1")    // 1PL
-	AM_RANGE(0x8001, 0x8001) AM_READ_PORT("IN2")    // 2PL / ACK
-	AM_RANGE(0x8002, 0x8002) AM_READ_PORT("IN0")    // START
-
-//  AM_RANGE(0x6000, 0x6000) AM_WRITE(adpcm_soundcommand_w)
-	AM_RANGE(0xA000, 0xA001) AM_DEVREADWRITE("josvolly_8741", josvolly8741_4pack_device, read_1, write_1)
-ADDRESS_MAP_END
-
-static ADDRESS_MAP_START( josvolly_cpu2_io_map, AS_IO, 8, gsword_state )
-=======
 
 	AM_RANGE(0xe0, 0xe0) AM_READNOP /* ?? */
 	AM_RANGE(0xa0, 0xa0) AM_WRITENOP /* ?? */
@@ -709,26 +520,17 @@ static ADDRESS_MAP_START( josvolly_cpu2_map, AS_PROGRAM, 8, josvolly_state )
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( josvolly_cpu2_io_map, AS_IO, 8, josvolly_state )
->>>>>>> upstream/master
 	ADDRESS_MAP_GLOBAL_MASK(0xff)
 	AM_RANGE(0x00, 0x00) AM_READWRITE(fake_0_r, ay8910_control_port_0_w)
 	AM_RANGE(0x01, 0x01) AM_DEVREADWRITE("ay1", ay8910_device, data_r, data_w)
 	AM_RANGE(0x40, 0x40) AM_READWRITE(fake_1_r, ay8910_control_port_1_w)
 	AM_RANGE(0x41, 0x41) AM_DEVREADWRITE("ay2", ay8910_device, data_r, data_w)
 
-<<<<<<< HEAD
-	AM_RANGE(0x81, 0x81) AM_DEVWRITE("josvolly_8741", josvolly8741_4pack_device, nmi_enable_w)
-	AM_RANGE(0xC1, 0xC1) AM_NOP // irq clear
-
-ADDRESS_MAP_END
-
-=======
 	AM_RANGE(0x81, 0x81) AM_WRITE(cpu2_nmi_enable_w);
 	AM_RANGE(0xC1, 0xC1) AM_WRITE(cpu2_irq_clear_w);
 ADDRESS_MAP_END
 
 
->>>>>>> upstream/master
 static INPUT_PORTS_START( gsword )
 	PORT_START("IN0")       /* IN0 (8741-2 port1?) */
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_START1 )
@@ -875,38 +677,6 @@ static INPUT_PORTS_START( josvolly )
 	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_UNKNOWN )
 
 	PORT_START("DSW1")      /* DSW1 */
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x0c, 0x00, "DIP1-0c(982E)" )
-	PORT_DIPSETTING(    0x0c, "0" )
-	PORT_DIPSETTING(    0x08, "1" )
-	PORT_DIPSETTING(    0x00, "2" )
-	PORT_DIPSETTING(    0x0c, "3" )
-	PORT_DIPNAME( 0x30, 0x00, "DIP1-30(982A)" )
-	PORT_DIPSETTING(    0x30, "96H" )
-	PORT_DIPSETTING(    0x20, "78H" )
-	PORT_DIPSETTING(    0x10, "5AH" )
-	PORT_DIPSETTING(    0x00, "3CH" )
-	PORT_DIPNAME( 0x40, 0x40, "TEST_MODE" )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, "DIP1-80(982C)" )
-	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x80, DEF_STR( On ) )
-
-	PORT_START("DSW2")      /* DSW2 */
-//  PORT_DIPNAME( 0x01, 0x00, "DSW2-0" )
-//  PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
-//  PORT_DIPSETTING(    0x01, DEF_STR( On ) )
-//  PORT_DIPNAME( 0x02, 0x00, "DSW2-1($9831)" )
-//  PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
-//  PORT_DIPSETTING(    0x02, DEF_STR( On ) )
-	PORT_DIPNAME( 0x0C, 0x0C, DEF_STR( Coin_A ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( 5C_1C ) )
-	PORT_DIPSETTING(    0x08, DEF_STR( 4C_1C ) )
-	PORT_DIPSETTING(    0x04, DEF_STR( 2C_1C ) )
-	PORT_DIPSETTING(    0x0C, DEF_STR( 1C_1C ) )
-	PORT_DIPNAME( 0x30, 0x30, DEF_STR( Coin_B ) )
-=======
 	PORT_DIPNAME( 0x01, 0x01, DEF_STR( Unused ) )   PORT_DIPLOCATION("DIPSW1:1")
 	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
@@ -943,17 +713,10 @@ static INPUT_PORTS_START( josvolly )
 	PORT_DIPSETTING(    0x04, DEF_STR( 2C_1C ) )
 	PORT_DIPSETTING(    0x0c, DEF_STR( 1C_1C ) )
 	PORT_DIPNAME( 0x30, 0x30, DEF_STR( Coin_B ) )   PORT_DIPLOCATION("DIPSW2:4,3")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x30, DEF_STR( 1C_1C ) )
 	PORT_DIPSETTING(    0x10, DEF_STR( 1C_2C ) )
 	PORT_DIPSETTING(    0x20, DEF_STR( 1C_4C ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( 1C_5C ) )
-<<<<<<< HEAD
-//  PORT_BIT( 0x40, IP_ACTIVE_HIGH, IPT_UNKNOWN )
-//  PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_UNKNOWN )
-INPUT_PORTS_END
-
-=======
 	PORT_DIPNAME( 0x40, 0x40, "9827" )              PORT_DIPLOCATION("DIPSW2:2")
 	PORT_DIPSETTING(    0x40, "1" )
 	PORT_DIPSETTING(    0x00, "3" )
@@ -963,7 +726,6 @@ INPUT_PORTS_END
 INPUT_PORTS_END
 
 
->>>>>>> upstream/master
 static const gfx_layout gsword_text =
 {
 	8,8,    /* 8x8 characters */
@@ -1012,11 +774,7 @@ static GFXDECODE_START( gsword )
 GFXDECODE_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( gsword, gsword_state )
-=======
 static MACHINE_CONFIG_START( gsword )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, XTAL_18MHz/6) /* verified on pcb */
@@ -1027,11 +785,7 @@ static MACHINE_CONFIG_START( gsword )
 	MCFG_CPU_ADD("sub", Z80, XTAL_18MHz/6) /* verified on pcb */
 	MCFG_CPU_PROGRAM_MAP(cpu2_map)
 	MCFG_CPU_IO_MAP(cpu2_io_map)
-<<<<<<< HEAD
-	MCFG_CPU_PERIODIC_INT_DRIVER(gsword_state, gsword_snd_interrupt, 4*60)
-=======
 	MCFG_CPU_PERIODIC_INT_DRIVER(gsword_state, sound_interrupt, 4*60)
->>>>>>> upstream/master
 
 	MCFG_CPU_ADD("audiocpu", Z80, XTAL_18MHz/6) /* verified on pcb */
 	MCFG_CPU_PROGRAM_MAP(cpu3_map)
@@ -1041,11 +795,7 @@ static MACHINE_CONFIG_START( gsword )
 	MCFG_TAITO8741_ADD("taito8741")
 	MCFG_TAITO8741_MODES(TAITO8741_MASTER,TAITO8741_SLAVE,TAITO8741_PORT,TAITO8741_PORT)
 	MCFG_TAITO8741_CONNECT(1,0,0,0)
-<<<<<<< HEAD
-	MCFG_TAITO8741_PORT_HANDLERS(IOPORT("DSW2"),IOPORT("DSW1"),READ8(gsword_state,gsword_8741_2_r),READ8(gsword_state,gsword_8741_3_r))
-=======
 	MCFG_TAITO8741_PORT_HANDLERS(IOPORT("DSW2"),IOPORT("DSW1"),READ8(gsword_state,i8741_2_r),READ8(gsword_state,i8741_3_r))
->>>>>>> upstream/master
 #if 1
 	/* to MCU timeout champbbj */
 	MCFG_QUANTUM_TIME(attotime::from_hz(6000))
@@ -1068,11 +818,8 @@ static MACHINE_CONFIG_START( gsword )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 
->>>>>>> upstream/master
 	MCFG_SOUND_ADD("ay1", AY8910, XTAL_18MHz/12) /* verified on pcb */
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.30)
 
@@ -1081,19 +828,6 @@ static MACHINE_CONFIG_START( gsword )
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.30)
 
 	MCFG_SOUND_ADD("msm", MSM5205, XTAL_400kHz) /* verified on pcb */
-<<<<<<< HEAD
-	MCFG_MSM5205_PRESCALER_SELECTOR(MSM5205_SEX_4B)  /* vclk input mode    */
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.60)
-MACHINE_CONFIG_END
-
-static MACHINE_CONFIG_START( josvolly, gsword_state )
-
-	/* basic machine hardware */
-	MCFG_CPU_ADD("maincpu", Z80, 18000000/6) /* ? */
-	MCFG_CPU_PROGRAM_MAP(cpu1_map)
-	MCFG_CPU_IO_MAP(josvolly_cpu1_io_map)
-	MCFG_CPU_PERIODIC_INT_DRIVER(gsword_state, irq0_line_hold, 2*60)
-=======
 	MCFG_MSM5205_PRESCALER_SELECTOR(SEX_4B)  /* vclk input mode    */
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.60)
 MACHINE_CONFIG_END
@@ -1105,18 +839,10 @@ static MACHINE_CONFIG_START( josvolly )
 	MCFG_CPU_PROGRAM_MAP(cpu1_map)
 	MCFG_CPU_IO_MAP(josvolly_cpu1_io_map)
 	MCFG_CPU_PERIODIC_INT_DRIVER(josvolly_state, irq0_line_hold, 2*60)
->>>>>>> upstream/master
 
 	MCFG_CPU_ADD("audiocpu", Z80, 12000000/4) /* ? */
 	MCFG_CPU_PROGRAM_MAP(josvolly_cpu2_map)
 	MCFG_CPU_IO_MAP(josvolly_cpu2_io_map)
-<<<<<<< HEAD
-	MCFG_CPU_VBLANK_INT_DRIVER("screen", gsword_state,  irq0_line_hold)
-
-	MCFG_JOSVOLLY8741_ADD("josvolly_8741")
-	MCFG_JOSVOLLY8741_CONNECT(1,0,0,0)
-	MCFG_JOSVOLLY8741_PORT_HANDLERS(IOPORT("DSW1"),IOPORT("DSW2"),IOPORT("DSW1"),IOPORT("DSW2"))
-=======
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", josvolly_state, irq0_line_assert)
 
 	MCFG_DEVICE_ADD("mcu1", I8741, 18000000/2) /* ? */
@@ -1141,7 +867,6 @@ static MACHINE_CONFIG_START( josvolly )
 
 	// the second MCU polls the first MCU's outputs, so it needs tight sync
 	MCFG_QUANTUM_PERFECT_CPU("mcu2")
->>>>>>> upstream/master
 
 
 	/* video hardware */
@@ -1150,21 +875,13 @@ static MACHINE_CONFIG_START( josvolly )
 	MCFG_SCREEN_VBLANK_TIME(ATTOSECONDS_IN_USEC(2500) /* not accurate */)
 	MCFG_SCREEN_SIZE(32*8, 32*8)
 	MCFG_SCREEN_VISIBLE_AREA(0*8, 32*8-1, 2*8, 30*8-1)
-<<<<<<< HEAD
-	MCFG_SCREEN_UPDATE_DRIVER(gsword_state, screen_update_gsword)
-=======
 	MCFG_SCREEN_UPDATE_DRIVER(josvolly_state, screen_update_gsword)
->>>>>>> upstream/master
 	MCFG_SCREEN_PALETTE("palette")
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", gsword)
 	MCFG_PALETTE_ADD("palette", 64*4+64*4)
 	MCFG_PALETTE_INDIRECT_ENTRIES(256)
-<<<<<<< HEAD
-	MCFG_PALETTE_INIT_OWNER(gsword_state,josvolly)
-=======
 	MCFG_PALETTE_INIT_OWNER(josvolly_state, josvolly)
->>>>>>> upstream/master
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
@@ -1173,10 +890,6 @@ static MACHINE_CONFIG_START( josvolly )
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.30)
 
 	MCFG_SOUND_ADD("ay2", AY8910, 1500000)
-<<<<<<< HEAD
-	MCFG_AY8910_PORT_A_WRITE_CB(WRITE8(gsword_state, nmi_set_w)) /* portA write */
-=======
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.30)
 
 #if 0
@@ -1300,20 +1013,12 @@ ROM_START( josvolly )
 	ROM_REGION( 0x04000, "user1", 0 )   /* music data and samples - not sure where it's mapped */
 	ROM_LOAD( "aa0-14.4j",    0x0000, 0x2000, CRC(436fe91f) SHA1(feb29501090c6db911e13ce6e9935ba004b0ce7e) )
 
-<<<<<<< HEAD
-	// there are other undumped chips on this, not sure how many
-	// not hooked up yet
-	ROM_REGION( 0x400, "mcu", 0 )
-	ROM_LOAD( "aa003.bin",    0x0000, 0x400, CRC(68b399d9) SHA1(053482d12c2b714c23fc80ad0589a2afd258a5a6) )
-
-=======
 	ROM_REGION( 0x400, "mcu1", 0 )
 	ROM_LOAD( "aa003.bin",    0x0000, 0x400, CRC(68b399d9) SHA1(053482d12c2b714c23fc80ad0589a2afd258a5a6) )
 
 	ROM_REGION( 0x400, "mcu2", 0 )
 	ROM_LOAD( "aa008.bin",    0x0000, 0x400, CRC(68b399d9) SHA1(053482d12c2b714c23fc80ad0589a2afd258a5a6) BAD_DUMP )
 
->>>>>>> upstream/master
 	ROM_REGION( 0x4000, "gfx1", 0 )
 	ROM_LOAD( "aa0-10.9n",    0x0000, 0x2000, CRC(207c4f42) SHA1(4cf2922d55cfc9e68cc07c3252ea3b5619b8aca5) )    /* tiles */
 	ROM_LOAD( "aa1-11.9p",    0x2000, 0x1000, CRC(c130464a) SHA1(9d23577b8aaaffeefff3d8f93668d1b2bd0ba3d9) )
@@ -1336,42 +1041,7 @@ ROM_START( josvolly )
 	ROM_LOAD( "005.3h",       0x0440, 0x0020, CRC(e8d6dec0) SHA1(d15cba9a4b24255d41046b15c2409391ab13ce95) )    /* address decoder? not used */
 ROM_END
 
-<<<<<<< HEAD
-DRIVER_INIT_MEMBER(gsword_state,gsword)
-{
-#if 0
-	UINT8 *ROM2 = memregion("sub")->base();
-	ROM2[0x1da] = 0xc3; /* patch for rom self check */
-
-	ROM2[0x71e] = 0;    /* patch for sound protection or time out function */
-	ROM2[0x71f] = 0;
-#endif
-#if 1
-	/* hack for sound protection or time out function */
-	m_subcpu->space(AS_PROGRAM).install_read_handler(0x4004, 0x4005, read8_delegate(FUNC(gsword_state::gsword_hack_r),this));
-#endif
-}
-
-DRIVER_INIT_MEMBER(gsword_state,gsword2)
-{
-#if 0
-	UINT8 *ROM2 = memregion("sub")->base();
-
-	ROM2[0x1da] = 0xc3; /* patch for rom self check */
-	ROM2[0x726] = 0;    /* patch for sound protection or time out function */
-	ROM2[0x727] = 0;
-#endif
-#if 1
-	/* hack for sound protection or time out function */
-	m_subcpu->space(AS_PROGRAM).install_read_handler(0x4004, 0x4005, read8_delegate(FUNC(gsword_state::gsword_hack_r),this));
-#endif
-}
-
-
-GAME( 1983, josvolly, 0,      josvolly, josvolly, driver_device,  0,       ROT90, "Allumer / Taito Corporation", "Joshi Volleyball", MACHINE_UNEMULATED_PROTECTION | MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-=======
 
 GAME( 1983, josvolly, 0,      josvolly, josvolly, josvolly_state, 0,       ROT90, "Allumer / Taito Corporation", "Joshi Volleyball",         MACHINE_NOT_WORKING | MACHINE_UNEMULATED_PROTECTION | MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master
 GAME( 1984, gsword,   0,      gsword,   gsword,   gsword_state,   gsword,  ROT0,  "Allumer / Taito Corporation", "Great Swordsman (World?)", MACHINE_SUPPORTS_SAVE )
 GAME( 1984, gsword2,  gsword, gsword,   gsword,   gsword_state,   gsword2, ROT0,  "Allumer / Taito Corporation", "Great Swordsman (Japan?)", MACHINE_SUPPORTS_SAVE )

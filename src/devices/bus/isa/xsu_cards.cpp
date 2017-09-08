@@ -6,11 +6,6 @@
 
 **********************************************************************/
 
-<<<<<<< HEAD
-#include "isa_cards.h"
-#include "xsu_cards.h"
-
-=======
 #include "emu.h"
 #include "xsu_cards.h"
 
@@ -35,15 +30,11 @@
 #include "xtide.h"
 
 
->>>>>>> upstream/master
 SLOT_INTERFACE_START( p1_isa8_cards )
 	SLOT_INTERFACE("rom", P1_ROM)       // B003
 	SLOT_INTERFACE("fdc", P1_FDC)       // B504
 	SLOT_INTERFACE("hdc", P1_HDC)       // B942
-<<<<<<< HEAD
-=======
 	SLOT_INTERFACE("p1sound", P1_SOUND)    // B623
->>>>>>> upstream/master
 /*
     SLOT_INTERFACE("comlpt", P1_COMLPT) // B620
     SLOT_INTERFACE("joy", P1_JOY)       // B621

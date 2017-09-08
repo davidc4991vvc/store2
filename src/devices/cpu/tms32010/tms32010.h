@@ -4,35 +4,12 @@
 	*                 Texas Instruments TMS32010 DSP Emulator                  *
 	*                                                                          *
 	*                  Copyright Tony La Porta                                 *
-<<<<<<< HEAD
-	*      You are not allowed to distribute this software commercially.       *
-	*                      Written for the MAME project.                       *
-	*                                                                          *
-=======
->>>>>>> upstream/master
 	*                                                                          *
 	*      Note :  This is a word based microcontroller, with addressing       *
 	*              architecture based on the Harvard addressing scheme.        *
 	*                                                                          *
 	\**************************************************************************/
 
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __TMS32010_H__
-#define __TMS32010_H__
-
-
-
-
-/****************************************************************************
- * Use this in the I/O port address fields of your driver for the BIO pin
- * i.e,
- *  AM_RANGE(TMS32010_BIO, TMS32010_BIO) AM_READ(twincobr_bio_line_r)
- */
-
-#define TMS32010_BIO            0x10        /* BIO input */
-=======
 #ifndef MAME_CPU_TMS32010_TMS32010_H
 #define MAME_CPU_TMS32010_TMS32010_H
 
@@ -42,7 +19,6 @@
 
 #define MCFG_TMS32010_BIO_IN_CB(_devcb) \
 	devcb = &tms32010_device::set_bio_in_cb(*device, DEVCB_##_devcb); /* BIO input  */
->>>>>>> upstream/master
 
 
 #define TMS32010_INT_PENDING    0x80000000
@@ -66,35 +42,6 @@ class tms32010_device : public cpu_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	tms32010_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-	tms32010_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source, int addr_mask);
-
-protected:
-	// device-level overrides
-	virtual void device_start();
-	virtual void device_reset();
-
-	// device_execute_interface overrides
-	virtual UINT32 execute_min_cycles() const { return 1; }
-	virtual UINT32 execute_max_cycles() const { return 3; }
-	virtual UINT32 execute_input_lines() const { return 1; }
-	virtual void execute_run();
-	virtual void execute_set_input(int inputnum, int state);
-	virtual UINT64 execute_clocks_to_cycles(UINT64 clocks) const { return (clocks + 4 - 1) / 4; }
-	virtual UINT64 execute_cycles_to_clocks(UINT64 cycles) const { return (cycles * 4); }
-
-	// device_memory_interface overrides
-	virtual const address_space_config *memory_space_config(address_spacenum spacenum = AS_0) const { return (spacenum == AS_PROGRAM) ? &m_program_config : ( (spacenum == AS_IO) ? &m_io_config : ( (spacenum == AS_DATA) ? &m_data_config : NULL ) ); }
-
-	// device_state_interface overrides
-	void state_string_export(const device_state_entry &entry, std::string &str);
-
-	// device_disasm_interface overrides
-	virtual UINT32 disasm_min_opcode_bytes() const { return 2; }
-	virtual UINT32 disasm_max_opcode_bytes() const { return 4; }
-	virtual offs_t disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options);
-=======
 	tms32010_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	// static configuration helpers
@@ -126,43 +73,24 @@ protected:
 	virtual uint32_t disasm_min_opcode_bytes() const override { return 2; }
 	virtual uint32_t disasm_max_opcode_bytes() const override { return 4; }
 	virtual offs_t disasm_disassemble(std::ostream &stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, uint32_t options) override;
->>>>>>> upstream/master
 
 private:
 	address_space_config m_program_config;
 	address_space_config m_data_config;
 	address_space_config m_io_config;
 
-<<<<<<< HEAD
-	typedef void ( tms32010_device::*opcode_func ) ();
-	struct tms32010_opcode
-	{
-		UINT8       cycles;
-=======
 	devcb_read_line m_bio_in;
 
 	typedef void ( tms32010_device::*opcode_func ) ();
 	struct tms32010_opcode
 	{
 		uint8_t       cycles;
->>>>>>> upstream/master
 		opcode_func function;
 	};
 	static const tms32010_opcode s_opcode_main[256];
 	static const tms32010_opcode s_opcode_7F[32];
 
 	/******************** CPU Internal Registers *******************/
-<<<<<<< HEAD
-	UINT16  m_PC;
-	UINT16  m_PREVPC;     /* previous program counter */
-	UINT16  m_STR;
-	PAIR    m_ACC;
-	PAIR    m_ALU;
-	PAIR    m_Preg;
-	UINT16  m_Treg;
-	UINT16  m_AR[2];
-	UINT16  m_STACK[4];
-=======
 	uint16_t  m_PC;
 	uint16_t  m_PREVPC;     /* previous program counter */
 	uint16_t  m_STR;
@@ -172,17 +100,12 @@ private:
 	uint16_t  m_Treg;
 	uint16_t  m_AR[2];
 	uint16_t  m_STACK[4];
->>>>>>> upstream/master
 
 	PAIR    m_opcode;
 	int     m_INTF;       /* Pending Interrupt flag */
 	int     m_icount;
 	PAIR    m_oldacc;
-<<<<<<< HEAD
-	UINT16  m_memaccess;
-=======
 	uint16_t  m_memaccess;
->>>>>>> upstream/master
 	int     m_addr_mask;
 
 	address_space *m_program;
@@ -190,20 +113,6 @@ private:
 	address_space *m_data;
 	address_space *m_io;
 
-<<<<<<< HEAD
-	inline void CLR(UINT16 flag);
-	inline void SET_FLAG(UINT16 flag);
-	inline void CALCULATE_ADD_OVERFLOW(INT32 addval);
-	inline void CALCULATE_SUB_OVERFLOW(INT32 subval);
-	inline UINT16 POP_STACK();
-	inline void PUSH_STACK(UINT16 data);
-	inline void UPDATE_AR();
-	inline void UPDATE_ARP();
-	inline void getdata(UINT8 shift,UINT8 signext);
-	inline void putdata(UINT16 data);
-	inline void putdata_sar(UINT8 data);
-	inline void putdata_sst(UINT16 data);
-=======
 	inline void CLR(uint16_t flag);
 	inline void SET_FLAG(uint16_t flag);
 	inline void CALCULATE_ADD_OVERFLOW(int32_t addval);
@@ -216,7 +125,6 @@ private:
 	inline void putdata(uint16_t data);
 	inline void putdata_sar(uint8_t data);
 	inline void putdata_sst(uint16_t data);
->>>>>>> upstream/master
 	void opcodes_7F();
 	void illegal();
 	void abst();
@@ -283,10 +191,6 @@ private:
 	void zals();
 	inline int add_branch_cycle();
 	int Ext_IRQ();
-<<<<<<< HEAD
-
-=======
->>>>>>> upstream/master
 };
 
 
@@ -294,11 +198,7 @@ class tms32015_device : public tms32010_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	tms32015_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-=======
 	tms32015_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
->>>>>>> upstream/master
 };
 
 
@@ -306,18 +206,6 @@ class tms32016_device : public tms32010_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	tms32016_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-};
-
-
-extern const device_type TMS32010;
-extern const device_type TMS32015;
-extern const device_type TMS32016;
-
-
-#endif  /* __TMS32010_H__ */
-=======
 	tms32016_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 };
 
@@ -328,4 +216,3 @@ DECLARE_DEVICE_TYPE(TMS32016, tms32016_device)
 
 
 #endif // MAME_CPU_TMS32010_TMS32010_H
->>>>>>> upstream/master

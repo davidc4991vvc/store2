@@ -42,10 +42,7 @@
 #define VS2008_SAL_COMPAT
 // BK - SAL compatibility for VS2008
 
-<<<<<<< HEAD
-=======
 #if _MSC_VER < 1600
->>>>>>> upstream/master
 #define DEFINE_ENUM_FLAG_OPERATORS(ENUMTYPE) \
 			extern "C++" { \
 				inline ENUMTYPE operator |  (ENUMTYPE  _a, ENUMTYPE _b) { return  ENUMTYPE   ( ( (int)  _a) |  ( (int)_b) ); } \
@@ -56,10 +53,7 @@
 				inline ENUMTYPE operator ^  (ENUMTYPE  _a, ENUMTYPE _b) { return  ENUMTYPE   ( ( (int)  _a) ^  ( (int)_b) ); } \
 				inline ENUMTYPE operator ^= (ENUMTYPE &_a, ENUMTYPE _b) { return (ENUMTYPE &)( ( (int &)_a) ^= ( (int)_b) ); } \
 			}
-<<<<<<< HEAD
-=======
 #endif // _MSC_VER < 1600
->>>>>>> upstream/master
 
 #undef _Out_
 #define _Out_
@@ -79,10 +73,7 @@
 #define _Out_writes_bytes_opt_(size)
 #define _Out_writes_bytes_to_(size,count)
 #define _Outptr_
-<<<<<<< HEAD
-=======
 #define _Outptr_opt_
->>>>>>> upstream/master
 #define _Outptr_opt_result_maybenull_
 #define _Outptr_opt_result_bytebuffer_(size)
 #define _Outptr_result_maybenull_

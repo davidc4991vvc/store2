@@ -18,16 +18,6 @@ class g64_format : public floppy_image_format_t {
 public:
 	g64_format();
 
-<<<<<<< HEAD
-	virtual int identify(io_generic *io, UINT32 form_factor);
-	virtual bool load(io_generic *io, UINT32 form_factor, floppy_image *image);
-	virtual bool save(io_generic *io, floppy_image *image);
-
-	virtual const char *name() const;
-	virtual const char *description() const;
-	virtual const char *extensions() const;
-	virtual bool supports_save() const { return true; }
-=======
 	virtual int identify(io_generic *io, uint32_t form_factor) override;
 	virtual bool load(io_generic *io, uint32_t form_factor, floppy_image *image) override;
 	virtual bool save(io_generic *io, floppy_image *image) override;
@@ -36,7 +26,6 @@ public:
 	virtual const char *description() const override;
 	virtual const char *extensions() const override;
 	virtual bool supports_save() const override { return true; }
->>>>>>> upstream/master
 
 protected:
 	enum
@@ -54,15 +43,9 @@ protected:
 		TRACK_COUNT = 84
 	};
 
-<<<<<<< HEAD
-	static const UINT32 c1541_cell_size[];
-
-	int generate_bitstream(int track, int head, int speed_zone, UINT8 *trackbuf, int &track_size, floppy_image *image);
-=======
 	static const uint32_t c1541_cell_size[];
 
 	int generate_bitstream(int track, int head, int speed_zone, uint8_t *trackbuf, int &track_size, floppy_image *image);
->>>>>>> upstream/master
 };
 
 extern const floppy_format_type FLOPPY_G64_FORMAT;

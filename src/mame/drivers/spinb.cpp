@@ -30,14 +30,6 @@ ToDo:
 
 ****************************************************************************************************/
 
-<<<<<<< HEAD
-#include "machine/genpin.h"
-#include "cpu/z80/z80.h"
-#include "cpu/mcs51/mcs51.h"
-#include "machine/i8255.h"
-#include "sound/msm5205.h"
-#include "machine/7474.h"
-=======
 #include "emu.h"
 #include "machine/genpin.h"
 
@@ -51,7 +43,6 @@ ToDo:
 #include "screen.h"
 #include "speaker.h"
 
->>>>>>> upstream/master
 
 class spinb_state : public genpin_class
 {
@@ -66,13 +57,9 @@ public:
 		, m_msm_m(*this, "msm_m")
 		, m_ic5a(*this, "ic5a")
 		, m_ic5m(*this, "ic5m")
-<<<<<<< HEAD
-		, m_switches(*this, "SW")
-=======
 		, m_ic14a(*this, "ic14a")
 		, m_ic14m(*this, "ic14m")
 		, m_switches(*this, "SW.%u", 0)
->>>>>>> upstream/master
 	{ }
 
 	DECLARE_WRITE8_MEMBER(p1_w);
@@ -102,41 +89,10 @@ public:
 	DECLARE_WRITE8_MEMBER(disp_w);
 	DECLARE_WRITE_LINE_MEMBER(ic5a_w);
 	DECLARE_WRITE_LINE_MEMBER(ic5m_w);
-<<<<<<< HEAD
-	DECLARE_WRITE_LINE_MEMBER(vck_a_w);
-	DECLARE_WRITE_LINE_MEMBER(vck_m_w);
-=======
->>>>>>> upstream/master
 	DECLARE_DRIVER_INIT(game0);
 	DECLARE_DRIVER_INIT(game1);
 	DECLARE_DRIVER_INIT(game2);
 	DECLARE_PALETTE_INIT(spinb);
-<<<<<<< HEAD
-	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-private:
-	bool m_pc0a;
-	bool m_pc0m;
-	UINT8 m_game;
-	UINT8 m_portc_a;
-	UINT8 m_portc_m;
-	UINT8 m_row;
-	UINT8 m_p3;
-	UINT8 m_p32;
-	UINT8 m_dmdcmd;
-	UINT8 m_dmdbank;
-	UINT8 m_dmdextaddr;
-	UINT8 m_dmdram[0x2000];
-	UINT8 m_sndcmd;
-	UINT8 m_sndbank_a;
-	UINT8 m_sndbank_m;
-	UINT32 m_sound_addr_a;
-	UINT32 m_sound_addr_m;
-	UINT8 *m_p_audio;
-	UINT8 *m_p_music;
-	UINT8 *m_p_dmdcpu;
-	virtual void machine_reset();
-	virtual void machine_start();
-=======
 	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 private:
 	bool m_pc0a;
@@ -163,7 +119,6 @@ private:
 	virtual void machine_start() override;
 	void update_sound_a();
 	void update_sound_m();
->>>>>>> upstream/master
 	required_device<cpu_device> m_maincpu;
 	required_device<cpu_device> m_audiocpu;
 	required_device<cpu_device> m_musiccpu;
@@ -172,11 +127,8 @@ private:
 	required_device<msm5205_device> m_msm_m;
 	required_device<ttl7474_device> m_ic5a;
 	required_device<ttl7474_device> m_ic5m;
-<<<<<<< HEAD
-=======
 	required_device<hc157_device> m_ic14a;
 	required_device<hc157_device> m_ic14m;
->>>>>>> upstream/master
 	required_ioport_array<11> m_switches;
 };
 
@@ -437,13 +389,8 @@ WRITE8_MEMBER( spinb_state::disp_w )
 WRITE8_MEMBER( spinb_state::ppi60a_w )
 {
 	if (data)
-<<<<<<< HEAD
-		for (UINT8 i = 0; i < 8; i++)
-			if BIT(data, i)
-=======
 		for (uint8_t i = 0; i < 8; i++)
 			if (BIT(data, i))
->>>>>>> upstream/master
 				m_row = i;
 }
 
@@ -451,13 +398,8 @@ WRITE8_MEMBER( spinb_state::ppi60a_w )
 WRITE8_MEMBER( spinb_state::ppi60b_w )
 {
 	if (data & 7)
-<<<<<<< HEAD
-		for (UINT8 i = 0; i < 3; i++)
-			if BIT(data, i)
-=======
 		for (uint8_t i = 0; i < 3; i++)
 			if (BIT(data, i))
->>>>>>> upstream/master
 				m_row = i+8;
 }
 
@@ -472,21 +414,12 @@ WRITE8_MEMBER( spinb_state::sndbank_a_w )
 
 	if (!BIT(data, 6))
 		m_sound_addr_a |= (1<<19);
-<<<<<<< HEAD
-	else
-	if (!BIT(data, 5))
-		m_sound_addr_a |= (2<<19);
-	else
-	if BIT(data, 7)
-		m_sndbank_a = 0xff;
-=======
 	else if (!BIT(data, 5))
 		m_sound_addr_a |= (2<<19);
 	else if (BIT(data, 7))
 		m_sndbank_a = 0xff;
 
 	update_sound_a();
->>>>>>> upstream/master
 }
 
 WRITE8_MEMBER( spinb_state::sndbank_m_w )
@@ -496,46 +429,6 @@ WRITE8_MEMBER( spinb_state::sndbank_m_w )
 
 	if (!BIT(data, 6))
 		m_sound_addr_m |= (1<<19);
-<<<<<<< HEAD
-	else
-	if (!BIT(data, 5))
-		m_sound_addr_m |= (2<<19);
-	else
-	if BIT(data, 7)
-		m_sndbank_m = 0xff;
-}
-
-WRITE_LINE_MEMBER( spinb_state::vck_a_w )
-{
-	m_ic5a->clock_w(0);
-	m_ic5a->clock_w(1);
-
-	if (m_sndbank_a != 0xff)
-	{
-		if (!m_pc0a)
-			m_msm_a->data_w(m_p_audio[m_sound_addr_a] & 15);
-		else
-			m_msm_a->data_w(m_p_audio[m_sound_addr_a] >> 4);
-	}
-	else
-		m_msm_a->data_w(0);
-}
-
-WRITE_LINE_MEMBER( spinb_state::vck_m_w )
-{
-	m_ic5m->clock_w(0);
-	m_ic5m->clock_w(1);
-
-	if (m_sndbank_m != 0xff)
-	{
-		if (!m_pc0m)
-			m_msm_m->data_w(m_p_music[m_sound_addr_m] & 15);
-		else
-			m_msm_m->data_w(m_p_music[m_sound_addr_m] >> 4);
-	}
-	else
-		m_msm_m->data_w(0);
-=======
 	else if (!BIT(data, 5))
 		m_sound_addr_m |= (2<<19);
 	else if (BIT(data, 7))
@@ -558,27 +451,20 @@ void spinb_state::update_sound_m()
 		m_ic14m->ba_w(m_p_music[m_sound_addr_m]);
 	else
 		m_ic14m->ba_w(0);
->>>>>>> upstream/master
 }
 
 WRITE_LINE_MEMBER( spinb_state::ic5a_w )
 {
 	m_pc0a = state;
 	m_ic5a->d_w(state);
-<<<<<<< HEAD
-=======
 	m_ic14a->select_w(state);
->>>>>>> upstream/master
 }
 
 WRITE_LINE_MEMBER( spinb_state::ic5m_w )
 {
 	m_pc0m = state;
 	m_ic5m->d_w(state);
-<<<<<<< HEAD
-=======
 	m_ic14m->select_w(state);
->>>>>>> upstream/master
 }
 
 READ8_MEMBER( spinb_state::ppia_c_r )
@@ -594,48 +480,31 @@ READ8_MEMBER( spinb_state::ppim_c_r )
 WRITE8_MEMBER( spinb_state::ppia_b_w )
 {
 	m_sound_addr_a = (m_sound_addr_a & 0xffff00) | data;
-<<<<<<< HEAD
-=======
 	update_sound_a();
->>>>>>> upstream/master
 }
 
 WRITE8_MEMBER( spinb_state::ppim_b_w )
 {
 	m_sound_addr_m = (m_sound_addr_m & 0xffff00) | data;
-<<<<<<< HEAD
-=======
 	update_sound_m();
->>>>>>> upstream/master
 }
 
 WRITE8_MEMBER( spinb_state::ppia_a_w )
 {
 	m_sound_addr_a = (m_sound_addr_a & 0xff00ff) | (data << 8);
-<<<<<<< HEAD
-=======
 	update_sound_a();
->>>>>>> upstream/master
 }
 
 WRITE8_MEMBER( spinb_state::ppim_a_w )
 {
 	m_sound_addr_m = (m_sound_addr_m & 0xff00ff) | (data << 8);
-<<<<<<< HEAD
-=======
 	update_sound_m();
->>>>>>> upstream/master
 }
 
 WRITE8_MEMBER( spinb_state::ppia_c_w )
 {
 	// pc4 - READY line back to cpu board, but not used
-<<<<<<< HEAD
-	if (BIT(data, 5) != BIT(m_portc_a, 5))
-		m_msm_a->set_prescaler_selector(m_msm_a, BIT(data, 5) ? MSM5205_S48_4B : MSM5205_S96_4B); // S1 pin
-=======
 	m_msm_a->s1_w(BIT(data, 5));
->>>>>>> upstream/master
 	m_msm_a->reset_w(BIT(data, 6));
 	m_ic5a->clear_w(!BIT(data, 6));
 	m_portc_a = data & 0xfe;
@@ -644,12 +513,7 @@ WRITE8_MEMBER( spinb_state::ppia_c_w )
 WRITE8_MEMBER( spinb_state::ppim_c_w )
 {
 	// pc4 - READY line back to cpu board, but not used
-<<<<<<< HEAD
-	if (BIT(data, 5) != BIT(m_portc_m, 5))
-		m_msm_m->set_prescaler_selector(m_msm_m, BIT(data, 5) ? MSM5205_S48_4B : MSM5205_S96_4B); // S1 pin
-=======
 	m_msm_m->s1_w(BIT(data, 5));
->>>>>>> upstream/master
 	m_msm_m->reset_w(BIT(data, 6));
 	m_ic5m->clear_w(!BIT(data, 6));
 	m_portc_m = data & 0xfe;
@@ -662,11 +526,8 @@ void spinb_state::machine_reset()
 	m_sndbank_a = 0xff;
 	m_sndbank_m = 0xff;
 	m_row = 0;
-<<<<<<< HEAD
-=======
 	update_sound_a();
 	update_sound_m();
->>>>>>> upstream/master
 }
 
 void spinb_state::machine_start()
@@ -704,17 +565,10 @@ PALETTE_INIT_MEMBER( spinb_state, spinb )
 	palette.set_pen_color(2, rgb_t(0x7c, 0x55, 0x00));
 }
 
-<<<<<<< HEAD
-UINT32 spinb_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-{
-	UINT8 y,gfx,gfx1;
-	UINT16 sy=0,ma,x;
-=======
 uint32_t spinb_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
 	uint8_t y,gfx,gfx1;
 	uint16_t sy=0,ma,x;
->>>>>>> upstream/master
 	address_space &internal = m_dmdcpu->space(AS_DATA);
 	ma = internal.read_byte(0x05) << 8; // find where display memory is
 
@@ -725,11 +579,7 @@ uint32_t spinb_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap,
 
 		for(y=0; y<32; y++)
 		{
-<<<<<<< HEAD
-			UINT16 *p = &bitmap.pix16(sy++);
-=======
 			uint16_t *p = &bitmap.pix16(sy++);
->>>>>>> upstream/master
 			for(x = 0; x < 16; x++)
 			{
 				gfx = m_dmdram[ma+0x200];
@@ -752,11 +602,7 @@ uint32_t spinb_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap,
 
 		for(y=0; y<32; y++)
 		{
-<<<<<<< HEAD
-			UINT16 *p = &bitmap.pix16(sy++);
-=======
 			uint16_t *p = &bitmap.pix16(sy++);
->>>>>>> upstream/master
 			for(x = 0; x < 16; x++)
 			{
 				gfx = m_dmdram[ma++];
@@ -775,11 +621,7 @@ uint32_t spinb_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap,
 	return 0;
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( spinb, spinb_state )
-=======
 static MACHINE_CONFIG_START( spinb )
->>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, XTAL_5MHz / 2)
 	MCFG_CPU_PROGRAM_MAP(spinb_map)
@@ -809,15 +651,6 @@ static MACHINE_CONFIG_START( spinb )
 	MCFG_FRAGMENT_ADD( genpin_audio )
 	MCFG_SPEAKER_STANDARD_MONO("msmavol")
 	MCFG_SOUND_ADD("msm_a", MSM5205, XTAL_384kHz)
-<<<<<<< HEAD
-	MCFG_MSM5205_VCLK_CB(WRITELINE(spinb_state, vck_a_w))
-	MCFG_MSM5205_PRESCALER_SELECTOR(MSM5205_S48_4B)      /* 4KHz 4-bit */
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "msmavol", 1.0)
-	MCFG_SPEAKER_STANDARD_MONO("msmmvol")
-	MCFG_SOUND_ADD("msm_m", MSM5205, XTAL_384kHz)
-	MCFG_MSM5205_VCLK_CB(WRITELINE(spinb_state, vck_m_w))
-	MCFG_MSM5205_PRESCALER_SELECTOR(MSM5205_S48_4B)      /* 4KHz 4-bit */
-=======
 	MCFG_MSM5205_VCK_CALLBACK(DEVWRITELINE("ic5a", ttl7474_device, clock_w))
 	MCFG_MSM5205_PRESCALER_SELECTOR(S48_4B)      /* 4KHz 4-bit */
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "msmavol", 1.0)
@@ -825,7 +658,6 @@ static MACHINE_CONFIG_START( spinb )
 	MCFG_SOUND_ADD("msm_m", MSM5205, XTAL_384kHz)
 	MCFG_MSM5205_VCK_CALLBACK(DEVWRITELINE("ic5m", ttl7474_device, clock_w))
 	MCFG_MSM5205_PRESCALER_SELECTOR(S48_4B)      /* 4KHz 4-bit */
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "msmmvol", 1.0)
 
 	/* Devices */
@@ -876,13 +708,6 @@ static MACHINE_CONFIG_START( spinb )
 	MCFG_DEVICE_ADD("ic5a", TTL7474, 0)
 	MCFG_7474_COMP_OUTPUT_CB(WRITELINE(spinb_state, ic5a_w))
 
-<<<<<<< HEAD
-	MCFG_DEVICE_ADD("ic5m", TTL7474, 0)
-	MCFG_7474_COMP_OUTPUT_CB(WRITELINE(spinb_state, ic5m_w))
-MACHINE_CONFIG_END
-
-static MACHINE_CONFIG_DERIVED( vrnwrld, spinb )
-=======
 	MCFG_DEVICE_ADD("ic14a", HC157, 0) // actually IC15 on Jolly Park
 	MCFG_74157_OUT_CB(DEVWRITE8("msm_a", msm5205_device, data_w))
 
@@ -905,7 +730,6 @@ static MACHINE_CONFIG_DERIVED( jolypark, spinb )
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_DERIVED( vrnwrld, jolypark )
->>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_CPU_MODIFY("maincpu")
 	MCFG_CPU_PROGRAM_MAP(vrnwrld_map)
@@ -1042,16 +866,8 @@ ROM_START(vrnwrld)
 	ROM_LOAD("vws7ic27.rom", 0x100000, 0x80000, CRC(7335b29c) SHA1(4de6de09f069feecbad2e5ef50032e8d381ff9b1))
 ROM_END
 
-<<<<<<< HEAD
-GAME(1993, bushido,   0,       spinb,   spinb, spinb_state,  game0,  ROT0,  "Inder/Spinball", "Bushido (set 1)", MACHINE_IS_SKELETON_MECHANICAL)
-GAME(1993, bushidoa,  bushido, spinb,   spinb, spinb_state,  game0,  ROT0,  "Inder/Spinball", "Bushido (set 2)", MACHINE_IS_SKELETON_MECHANICAL)
-GAME(1995, mach2,     0,       spinb,   spinb, spinb_state,  game0,  ROT0,  "Spinball",       "Mach 2",          MACHINE_IS_SKELETON_MECHANICAL)
-GAME(1996, jolypark,  0,       spinb,   spinb, spinb_state,  game1,  ROT0,  "Spinball",       "Jolly Park",      MACHINE_IS_SKELETON_MECHANICAL)
-GAME(1996, vrnwrld,   0,       vrnwrld, spinb, spinb_state,  game2,  ROT0,  "Spinball",       "Verne's World",   MACHINE_IS_SKELETON_MECHANICAL)
-=======
 GAME(1993, bushido,   0,       spinb,    spinb, spinb_state, game0,  ROT0,  "Inder/Spinball", "Bushido (set 1)", MACHINE_IS_SKELETON_MECHANICAL)
 GAME(1993, bushidoa,  bushido, spinb,    spinb, spinb_state, game0,  ROT0,  "Inder/Spinball", "Bushido (set 2)", MACHINE_IS_SKELETON_MECHANICAL)
 GAME(1995, mach2,     0,       spinb,    spinb, spinb_state, game0,  ROT0,  "Spinball",       "Mach 2",          MACHINE_IS_SKELETON_MECHANICAL)
 GAME(1996, jolypark,  0,       jolypark, spinb, spinb_state, game1,  ROT0,  "Spinball",       "Jolly Park",      MACHINE_IS_SKELETON_MECHANICAL)
 GAME(1996, vrnwrld,   0,       vrnwrld,  spinb, spinb_state, game2,  ROT0,  "Spinball",       "Verne's World",   MACHINE_IS_SKELETON_MECHANICAL)
->>>>>>> upstream/master

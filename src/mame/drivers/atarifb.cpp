@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-// license:???
-=======
 // license:BSD-3-Clause
->>>>>>> upstream/master
 // copyright-holders:Mike Balfour, Patrick Lawrence, Brad Oliver
 /***************************************************************************
 
@@ -109,17 +105,11 @@
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/m6502/m6502.h"
-#include "includes/atarifb.h"
-#include "sound/discrete.h"
-=======
 #include "includes/atarifb.h"
 #include "cpu/m6502/m6502.h"
 #include "machine/watchdog.h"
 #include "sound/discrete.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 #include "atarifb.lh"
 #include "atarifb4.lh"
@@ -175,11 +165,7 @@ static ADDRESS_MAP_START( atarifb_map, AS_PROGRAM, 8, atarifb_state )
 	AM_RANGE(0x3000, 0x3000) AM_NOP /* Interrupt Acknowledge */
 	AM_RANGE(0x4000, 0x4000) AM_READ(atarifb_in0_r)
 	AM_RANGE(0x4002, 0x4002) AM_READ(atarifb_in2_r)
-<<<<<<< HEAD
-	AM_RANGE(0x5000, 0x5000) AM_WRITE(watchdog_reset_w)
-=======
 	AM_RANGE(0x5000, 0x5000) AM_DEVWRITE("watchdog", watchdog_timer_device, reset_w)
->>>>>>> upstream/master
 	AM_RANGE(0x6000, 0x7fff) AM_ROM
 ADDRESS_MAP_END
 
@@ -200,11 +186,7 @@ static ADDRESS_MAP_START( atarifb4_map, AS_PROGRAM, 8, atarifb_state )
 	AM_RANGE(0x4000, 0x4000) AM_READ(atarifb4_in0_r)
 	AM_RANGE(0x4001, 0x4001) AM_READ_PORT("EXTRA")
 	AM_RANGE(0x4002, 0x4002) AM_READ(atarifb4_in2_r)
-<<<<<<< HEAD
-	AM_RANGE(0x5000, 0x5000) AM_WRITE(watchdog_reset_w)
-=======
 	AM_RANGE(0x5000, 0x5000) AM_DEVWRITE("watchdog", watchdog_timer_device, reset_w)
->>>>>>> upstream/master
 	AM_RANGE(0x6000, 0x7fff) AM_ROM
 ADDRESS_MAP_END
 
@@ -224,11 +206,7 @@ static ADDRESS_MAP_START( abaseb_map, AS_PROGRAM, 8, atarifb_state )
 	AM_RANGE(0x3000, 0x3000) AM_NOP /* Interrupt Acknowledge */
 	AM_RANGE(0x4000, 0x4000) AM_READ(atarifb_in0_r)
 	AM_RANGE(0x4002, 0x4002) AM_READ(atarifb_in2_r)
-<<<<<<< HEAD
-	AM_RANGE(0x5000, 0x5000) AM_WRITE(watchdog_reset_w)
-=======
 	AM_RANGE(0x5000, 0x5000) AM_DEVWRITE("watchdog", watchdog_timer_device, reset_w)
->>>>>>> upstream/master
 	AM_RANGE(0x6000, 0x7fff) AM_ROM
 ADDRESS_MAP_END
 
@@ -245,11 +223,7 @@ static ADDRESS_MAP_START( soccer_map, AS_PROGRAM, 8, atarifb_state )
 	AM_RANGE(0x1001, 0x1001) AM_WRITE(soccer_out1_w) /* OUT 1 */
 	AM_RANGE(0x1002, 0x1002) AM_WRITE(soccer_out2_w) /* OUT 2 */
 	AM_RANGE(0x1004, 0x1004) AM_WRITENOP /* Interrupt Acknowledge */
-<<<<<<< HEAD
-	AM_RANGE(0x1005, 0x1005) AM_WRITE(watchdog_reset_w)
-=======
 	AM_RANGE(0x1005, 0x1005) AM_DEVWRITE("watchdog", watchdog_timer_device, reset_w)
->>>>>>> upstream/master
 	AM_RANGE(0x1800, 0x1800) AM_READ(atarifb4_in0_r)
 	AM_RANGE(0x1801, 0x1801) AM_READ_PORT("EXTRA")
 	AM_RANGE(0x1802, 0x1802) AM_READ(atarifb4_in2_r)
@@ -576,21 +550,14 @@ void atarifb_state::machine_reset()
 	m_counter_y_in2b = 0;
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( atarifb, atarifb_state )
-=======
 static MACHINE_CONFIG_START( atarifb )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6502, 750000)
 	MCFG_CPU_PROGRAM_MAP(atarifb_map)
 	MCFG_CPU_PERIODIC_INT_DRIVER(atarifb_state, irq0_line_hold, 4*60)
 
-<<<<<<< HEAD
-=======
 	MCFG_WATCHDOG_ADD("watchdog")
->>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
@@ -823,15 +790,6 @@ ROM_END
  *************************************/
 
 /*     YEAR  NAME      PARENT   MACHINE   INPUT */
-<<<<<<< HEAD
-GAMEL( 1978, atarifb,  0,       atarifb,  atarifb, driver_device,  0, ROT0, "Atari", "Atari Football (revision 2)", MACHINE_SUPPORTS_SAVE, layout_atarifb )
-GAMEL( 1978, atarifb1, atarifb, atarifb,  atarifb, driver_device,  0, ROT0, "Atari", "Atari Football (revision 1)", MACHINE_SUPPORTS_SAVE, layout_atarifb )
-GAMEL( 1978, atarifb2, atarifb, atarifb,  atarifb, driver_device,  0, ROT0, "Atari", "Atari Football II", MACHINE_SUPPORTS_SAVE, layout_atarifb )
-GAMEL( 1979, atarifb4, atarifb, atarifb4, atarifb4, driver_device, 0, ROT0, "Atari", "Atari Football (4 players)", MACHINE_SUPPORTS_SAVE, layout_atarifb4 )
-GAMEL( 1979, abaseb,   0,       abaseb,   abaseb, driver_device,   0, ROT0, "Atari", "Atari Baseball (set 1)", MACHINE_SUPPORTS_SAVE, layout_abaseb )
-GAMEL( 1979, abaseb2,  abaseb,  abaseb,   abaseb, driver_device,   0, ROT0, "Atari", "Atari Baseball (set 2)", MACHINE_SUPPORTS_SAVE, layout_abaseb )
-GAME ( 1980, soccer,   0,       soccer,   soccer, driver_device,   0, ROT0, "Atari", "Atari Soccer", MACHINE_SUPPORTS_SAVE )
-=======
 GAMEL( 1978, atarifb,  0,       atarifb,  atarifb,  atarifb_state, 0, ROT0, "Atari", "Atari Football (revision 2)", MACHINE_SUPPORTS_SAVE, layout_atarifb )
 GAMEL( 1978, atarifb1, atarifb, atarifb,  atarifb,  atarifb_state, 0, ROT0, "Atari", "Atari Football (revision 1)", MACHINE_SUPPORTS_SAVE, layout_atarifb )
 GAMEL( 1978, atarifb2, atarifb, atarifb,  atarifb,  atarifb_state, 0, ROT0, "Atari", "Atari Football II", MACHINE_SUPPORTS_SAVE, layout_atarifb )
@@ -839,4 +797,3 @@ GAMEL( 1979, atarifb4, atarifb, atarifb4, atarifb4, atarifb_state, 0, ROT0, "Ata
 GAMEL( 1979, abaseb,   0,       abaseb,   abaseb,   atarifb_state, 0, ROT0, "Atari", "Atari Baseball (set 1)", MACHINE_SUPPORTS_SAVE, layout_abaseb )
 GAMEL( 1979, abaseb2,  abaseb,  abaseb,   abaseb,   atarifb_state, 0, ROT0, "Atari", "Atari Baseball (set 2)", MACHINE_SUPPORTS_SAVE, layout_abaseb )
 GAME ( 1980, soccer,   0,       soccer,   soccer,   atarifb_state, 0, ROT0, "Atari", "Atari Soccer", MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

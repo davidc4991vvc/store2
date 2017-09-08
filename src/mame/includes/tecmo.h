@@ -1,15 +1,10 @@
 // license:BSD-3-Clause
 // copyright-holders:Nicola Salmoria
-<<<<<<< HEAD
-#include "sound/msm5205.h"
-#include "video/tecmo_spr.h"
-=======
 
 #include "machine/gen_latch.h"
 #include "sound/msm5205.h"
 #include "video/tecmo_spr.h"
 #include "screen.h"
->>>>>>> upstream/master
 
 class tecmo_state : public driver_device
 {
@@ -19,17 +14,11 @@ public:
 		m_maincpu(*this, "maincpu"),
 		m_soundcpu(*this, "soundcpu"),
 		m_msm(*this, "msm"),
-<<<<<<< HEAD
-		m_gfxdecode(*this, "gfxdecode"),
-		m_palette(*this, "palette"),
-		m_sprgen(*this, "spritegen"),
-=======
 		m_screen(*this, "screen"),
 		m_gfxdecode(*this, "gfxdecode"),
 		m_palette(*this, "palette"),
 		m_sprgen(*this, "spritegen"),
 		m_soundlatch(*this, "soundlatch"),
->>>>>>> upstream/master
 		m_txvideoram(*this, "txvideoram"),
 		m_fgvideoram(*this, "fgvideoram"),
 		m_bgvideoram(*this, "bgvideoram"),
@@ -38,16 +27,6 @@ public:
 	required_device<cpu_device> m_maincpu;
 	required_device<cpu_device> m_soundcpu;
 	optional_device<msm5205_device> m_msm;
-<<<<<<< HEAD
-	required_device<gfxdecode_device> m_gfxdecode;
-	required_device<palette_device> m_palette;
-	required_device<tecmo_spr_device> m_sprgen;
-
-	required_shared_ptr<UINT8> m_txvideoram;
-	required_shared_ptr<UINT8> m_fgvideoram;
-	required_shared_ptr<UINT8> m_bgvideoram;
-	required_shared_ptr<UINT8> m_spriteram;
-=======
 	required_device<screen_device> m_screen;
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
@@ -58,18 +37,12 @@ public:
 	required_shared_ptr<uint8_t> m_fgvideoram;
 	required_shared_ptr<uint8_t> m_bgvideoram;
 	required_shared_ptr<uint8_t> m_spriteram;
->>>>>>> upstream/master
 
 	tilemap_t *m_tx_tilemap;
 	tilemap_t *m_fg_tilemap;
 	tilemap_t *m_bg_tilemap;
-<<<<<<< HEAD
-	UINT8 m_fgscroll[3];
-	UINT8 m_bgscroll[3];
-=======
 	uint8_t m_fgscroll[3];
 	uint8_t m_bgscroll[3];
->>>>>>> upstream/master
 	int m_adpcm_pos;
 	int m_adpcm_end;
 	int m_adpcm_data;
@@ -104,18 +77,9 @@ public:
 	TILE_GET_INFO_MEMBER(gemini_get_fg_tile_info);
 	TILE_GET_INFO_MEMBER(get_tx_tile_info);
 
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void machine_reset();
-	virtual void video_start();
-
-	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	void draw_sprites(screen_device &screen, bitmap_ind16 &bitmap,const rectangle &cliprect);
-=======
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
 	virtual void video_start() override;
 
 	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 };

@@ -1,11 +1,6 @@
 /*
-<<<<<<< HEAD
- * Copyright 2011-2015 Branimir Karadzic. All rights reserved.
- * License: http://www.opensource.org/licenses/BSD-2-Clause
-=======
  * Copyright 2011-2017 Branimir Karadzic. All rights reserved.
  * License: https://github.com/bkaradzic/bgfx#license-bsd-2-clause
->>>>>>> upstream/master
  */
 
 //
@@ -78,11 +73,7 @@ static char* cpToUTF8(int cp, char* str)
 		case 4: str[3] = 0x80 | (cp & 0x3f); cp = cp >> 6; cp |= 0x10000;
 		case 3: str[2] = 0x80 | (cp & 0x3f); cp = cp >> 6; cp |= 0x800;
 		case 2: str[1] = 0x80 | (cp & 0x3f); cp = cp >> 6; cp |= 0xc0;
-<<<<<<< HEAD
-		case 1: str[0] = cp;
-=======
 		case 1: str[0] = char(cp);
->>>>>>> upstream/master
 	}
 	return str;
 }
@@ -579,11 +570,7 @@ void drawThumbnails(struct NVGcontext* vg, float x, float y, float w, float h, c
 			ix = -(iw-thumb)*0.5f;
 			iy = 0;
 		}
-<<<<<<< HEAD
-		imgPaint = nvgImagePattern(vg, tx+ix, ty+iy, iw,ih, 0.0f/180.0f*NVG_PI, images[i], 0);
-=======
 		imgPaint = nvgImagePattern(vg, tx+ix, ty+iy, iw,ih, 0.0f/180.0f*NVG_PI, images[i], 1.0f);
->>>>>>> upstream/master
 		nvgBeginPath(vg);
 		nvgRoundedRect(vg, tx,ty, thumb,thumb, 5);
 		nvgFillPaint(vg, imgPaint);
@@ -959,11 +946,7 @@ int loadDemoData(struct NVGcontext* vg, struct DemoData* data)
 		char file[128];
 		bx::snprintf(file, 128, "images/image%d.jpg", ii+1);
 		data->images[ii] = nvgCreateImage(vg, file, 0);
-<<<<<<< HEAD
-		if (data->images[ii] == bgfx::invalidHandle)
-=======
 		if (data->images[ii] == 0)
->>>>>>> upstream/master
 		{
 			printf("Could not load %s.\n", file);
 			return -1;
@@ -1218,85 +1201,6 @@ void renderDemo(struct NVGcontext* vg, float mx, float my, float width, float he
 	nvgRestore(vg);
 }
 
-<<<<<<< HEAD
-int _main_(int _argc, char** _argv)
-{
-	Args args(_argc, _argv);
-
-	uint32_t width = 1280;
-	uint32_t height = 720;
-	uint32_t debug = BGFX_DEBUG_TEXT;
-	uint32_t reset = BGFX_RESET_VSYNC;
-
-	bgfx::init(args.m_type, args.m_pciId);
-	bgfx::reset(width, height, reset);
-
-	// Enable debug text.
-	bgfx::setDebug(debug);
-
-	// Set view 0 clear state.
-	bgfx::setViewClear(0
-		, BGFX_CLEAR_COLOR|BGFX_CLEAR_DEPTH
-		, 0x303030ff
-		, 1.0f
-		, 0
-		);
-
-	imguiCreate();
-
-	NVGcontext* nvg = nvgCreate(1, 0);
-	bgfx::setViewSeq(0, true);
-
-	DemoData data;
-	loadDemoData(nvg, &data);
-
-	bndSetFont(nvgCreateFont(nvg, "droidsans", "font/droidsans.ttf") );
-	bndSetIconImage(nvgCreateImage(nvg, "images/blender_icons16.png", 0) );
-
-	int64_t timeOffset = bx::getHPCounter();
-
-	entry::MouseState mouseState;
-	while (!entry::processEvents(width, height, debug, reset, &mouseState) )
-	{
-		int64_t now = bx::getHPCounter();
-		const double freq = double(bx::getHPFrequency() );
-		float time = (float)( (now-timeOffset)/freq);
-
-		// Set view 0 default viewport.
-		bgfx::setViewRect(0, 0, 0, width, height);
-
-		// This dummy draw call is here to make sure that view 0 is cleared
-		// if no other draw calls are submitted to view 0.
-		bgfx::touch(0);
-
-		// Use debug font to print information about this example.
-		bgfx::dbgTextClear();
-		bgfx::dbgTextPrintf(0, 1, 0x4f, "bgfx/examples/20-nanovg");
-		bgfx::dbgTextPrintf(0, 2, 0x6f, "Description: NanoVG is small antialiased vector graphics rendering library.");
-
-		nvgBeginFrame(nvg, width, height, 1.0f);
-
-		renderDemo(nvg, float(mouseState.m_mx), float(mouseState.m_my), float(width), float(height), time, 0, &data);
-
-		nvgEndFrame(nvg);
-
-		// Advance to next frame. Rendering thread will be kicked to
-		// process submitted rendering primitives.
-		bgfx::frame();
-	}
-
-	freeDemoData(nvg, &data);
-
-	nvgDelete(nvg);
-
-	imguiDestroy();
-
-	// Shutdown bgfx.
-	bgfx::shutdown();
-
-	return 0;
-}
-=======
 class ExampleNanoVG : public entry::AppI
 {
 	void init(int _argc, char** _argv) BX_OVERRIDE
@@ -1399,4 +1303,3 @@ class ExampleNanoVG : public entry::AppI
 };
 
 ENTRY_IMPLEMENT_MAIN(ExampleNanoVG);
->>>>>>> upstream/master

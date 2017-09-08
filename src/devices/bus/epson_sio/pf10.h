@@ -8,17 +8,6 @@
 
 **********************************************************************/
 
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __PF10_H__
-#define __PF10_H__
-
-#include "emu.h"
-#include "cpu/m6800/m6800.h"
-#include "machine/upd765.h"
-#include "epson_sio.h"
-=======
 #ifndef MAME_BUS_EPSON_SIO_PF10_H
 #define MAME_BUS_EPSON_SIO_PF10_H
 
@@ -27,7 +16,6 @@
 #include "epson_sio.h"
 #include "cpu/m6800/m6801.h"
 #include "machine/upd765.h"
->>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -39,15 +27,7 @@ class epson_pf10_device : public device_t,
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	epson_pf10_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// optional information overrides
-	virtual const rom_entry *device_rom_region() const;
-	virtual machine_config_constructor device_mconfig_additions() const;
-=======
 	epson_pf10_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
->>>>>>> upstream/master
 
 	// floppy disk controller
 	DECLARE_READ8_MEMBER( fdc_r );
@@ -60,8 +40,6 @@ public:
 	DECLARE_READ8_MEMBER( port2_r );
 	DECLARE_WRITE8_MEMBER( port2_w );
 
-<<<<<<< HEAD
-=======
 protected:
 	// device-level overrides
 	virtual void device_start() override;
@@ -77,7 +55,6 @@ protected:
 	virtual void pout_w(int level) override;
 
 private:
->>>>>>> upstream/master
 	// serial output from main cpu
 	DECLARE_WRITE_LINE_MEMBER( hd6303_tx_w );
 
@@ -85,21 +62,7 @@ private:
 	DECLARE_WRITE_LINE_MEMBER( rxc_w );
 	DECLARE_WRITE_LINE_MEMBER( pinc_w );
 
-<<<<<<< HEAD
-protected:
-	// device-level overrides
-	virtual void device_start();
-	virtual void device_reset();
-	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
 
-	// device_epson_sio_interface overrides
-	virtual void tx_w(int level);
-	virtual void pout_w(int level);
-
-private:
-=======
-
->>>>>>> upstream/master
 	required_device<hd6303y_cpu_device> m_cpu;
 	required_device<upd765a_device> m_fdc;
 	required_device<epson_sio_device> m_sio_output;
@@ -109,13 +72,8 @@ private:
 
 	emu_timer *m_timer;
 
-<<<<<<< HEAD
-	UINT8 m_port1;
-	UINT8 m_port2;
-=======
 	uint8_t m_port1;
 	uint8_t m_port2;
->>>>>>> upstream/master
 
 	int m_rxc;
 	int m_hd6303_tx;
@@ -137,14 +95,7 @@ private:
 
 
 // device type definition
-<<<<<<< HEAD
-extern const device_type EPSON_PF10;
-
-
-#endif // __PF10_H__
-=======
 DECLARE_DEVICE_TYPE(EPSON_PF10, epson_pf10_device)
 
 
 #endif // MAME_BUS_EPSON_SIO_PF10_H
->>>>>>> upstream/master

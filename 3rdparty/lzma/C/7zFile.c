@@ -1,11 +1,8 @@
 /* 7zFile.c -- File IO
 2009-11-24 : Igor Pavlov : Public domain */
 
-<<<<<<< HEAD
-=======
 #include "Precomp.h"
 
->>>>>>> upstream/master
 #include "7zFile.h"
 
 #ifndef USE_WINDOWS_FILE

@@ -8,20 +8,11 @@
 
 **********************************************************************/
 
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __DS2404_H__
-#define __DS2404_H__
-
-#include "emu.h"
-=======
 #ifndef MAME_MACHINE_DS2404_H
 #define MAME_MACHINE_DS2404_H
 
 #pragma once
 
->>>>>>> upstream/master
 
 
 
@@ -30,11 +21,7 @@
 ***************************************************************************/
 
 #define MCFG_DS2404_ADD(_tag, _ref_year, _ref_month, _ref_day) \
-<<<<<<< HEAD
-	MCFG_DEVICE_ADD(_tag, DS2404, 0) \
-=======
 	MCFG_DEVICE_ADD(_tag, DS2404, XTAL_32_768kHz) \
->>>>>>> upstream/master
 	MCFG_DS2404_REF_YEAR(_ref_year) \
 	MCFG_DS2404_REF_MONTH(_ref_month) \
 	MCFG_DS2404_REF_DAY(_ref_day)
@@ -56,19 +43,6 @@
 
 // ======================> ds2404_device
 
-<<<<<<< HEAD
-class ds2404_device :  public device_t,
-						public device_nvram_interface
-{
-public:
-	// construction/destruction
-	ds2404_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// inline configuration helpers
-	static void static_set_ref_year(device_t &device, UINT32 m_ref_year);
-	static void static_set_ref_month(device_t &device, UINT8 m_ref_month);
-	static void static_set_ref_day(device_t &device, UINT8 m_ref_day);
-=======
 class ds2404_device : public device_t, public device_nvram_interface
 {
 public:
@@ -79,7 +53,6 @@ public:
 	static void static_set_ref_year(device_t &device, uint32_t m_ref_year);
 	static void static_set_ref_month(device_t &device, uint8_t m_ref_month);
 	static void static_set_ref_day(device_t &device, uint8_t m_ref_day);
->>>>>>> upstream/master
 
 	/* 1-wire interface reset  */
 	DECLARE_WRITE8_MEMBER(ds2404_1w_reset_w);
@@ -93,27 +66,6 @@ public:
 
 protected:
 	// device-level overrides
-<<<<<<< HEAD
-	virtual void device_start();
-	virtual void device_reset() { }
-	virtual void device_post_load() { }
-	virtual void device_clock_changed() { }
-
-	// device_nvram_interface overrides
-	virtual void nvram_default();
-	virtual void nvram_read(emu_file &file);
-	virtual void nvram_write(emu_file &file);
-
-	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
-
-private:
-
-	void ds2404_rom_cmd(UINT8 cmd);
-	void ds2404_cmd(UINT8 cmd);
-
-	UINT8 ds2404_readmem();
-	void ds2404_writemem(UINT8 value);
-=======
 	virtual void device_start() override;
 	virtual void device_reset() override { }
 	virtual void device_post_load() override { }
@@ -132,7 +84,6 @@ private:
 
 	uint8_t ds2404_readmem();
 	void ds2404_writemem(uint8_t value);
->>>>>>> upstream/master
 
 	enum DS2404_STATE
 	{
@@ -151,20 +102,6 @@ private:
 	emu_timer *m_tick_timer;
 
 	// configuration state
-<<<<<<< HEAD
-	UINT32  m_ref_year;
-	UINT8   m_ref_month;
-	UINT8   m_ref_day;
-
-	UINT16 m_address;
-	UINT16 m_offset;
-	UINT16 m_end_offset;
-	UINT8 m_a1;
-	UINT8 m_a2;
-	UINT8 m_sram[512];  /* 4096 bits */
-	UINT8 m_ram[32];    /* scratchpad ram, 256 bits */
-	UINT8 m_rtc[5];     /* 40-bit RTC counter */
-=======
 	uint32_t  m_ref_year;
 	uint8_t   m_ref_month;
 	uint8_t   m_ref_day;
@@ -177,20 +114,12 @@ private:
 	uint8_t m_sram[512];  /* 4096 bits */
 	uint8_t m_ram[32];    /* scratchpad ram, 256 bits */
 	uint8_t m_rtc[5];     /* 40-bit RTC counter */
->>>>>>> upstream/master
 	DS2404_STATE m_state[8];
 	int m_state_ptr;
 };
 
 
 // device type definition
-<<<<<<< HEAD
-extern const device_type DS2404;
-
-
-#endif /* __DS2404_H__ */
-=======
 DECLARE_DEVICE_TYPE(DS2404, ds2404_device)
 
 #endif // MAME_MACHINE_DS2404_H
->>>>>>> upstream/master

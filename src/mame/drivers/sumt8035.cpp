@@ -32,12 +32,7 @@ protected:
 
 
 static ADDRESS_MAP_START( sumt_map, AS_PROGRAM, 8, sumt8035_state )
-<<<<<<< HEAD
-	AM_RANGE(0x0000, 0x1fff) AM_ROM
-	AM_RANGE(0x2000, 0x23ff) AM_RAM//poss wrong
-=======
 	AM_RANGE(0x0000, 0x0fff) AM_ROM
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -238,11 +233,7 @@ static INPUT_PORTS_START( summit )
 INPUT_PORTS_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( summit, sumt8035_state )
-=======
 static MACHINE_CONFIG_START( summit )
->>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu",I8035,5000000)
 	MCFG_CPU_PROGRAM_MAP(sumt_map)
@@ -264,10 +255,5 @@ ROM_START( sm_ultng )
 ROM_END
 
 
-<<<<<<< HEAD
-GAME( 1981, sm_ngacc,  0,    summit, summit, driver_device,  0, ROT270, "Summit Coin", "Nudge Accumulator (Summit Coin)", MACHINE_IS_SKELETON_MECHANICAL )
-GAME( 1981, sm_ultng,  0,    summit, summit, driver_device,  0, ROT270, "Summit Coin", "Ultimate Nudge (Summit Coin)", MACHINE_IS_SKELETON_MECHANICAL )
-=======
 GAME( 1981, sm_ngacc,  0,    summit, summit, sumt8035_state,  0, ROT270, "Summit Coin", "Nudge Accumulator (Summit Coin)", MACHINE_IS_SKELETON_MECHANICAL )
 GAME( 1981, sm_ultng,  0,    summit, summit, sumt8035_state,  0, ROT270, "Summit Coin", "Ultimate Nudge (Summit Coin)",    MACHINE_IS_SKELETON_MECHANICAL )
->>>>>>> upstream/master

@@ -17,16 +17,6 @@
 //****************************************************************************
 
 // device type definition
-<<<<<<< HEAD
-const device_type SEGA_HANGON_SPRITES = &device_creator<sega_hangon_sprite_device>;
-const device_type SEGA_SHARRIER_SPRITES = &device_creator<sega_sharrier_sprite_device>;
-const device_type SEGA_OUTRUN_SPRITES = &device_creator<sega_outrun_sprite_device>;
-const device_type SEGA_SYS16A_SPRITES = &device_creator<sega_sys16a_sprite_device>;
-const device_type BOOTLEG_SYS16A_SPRITES = &device_creator<bootleg_sys16a_sprite_device>;
-const device_type SEGA_SYS16B_SPRITES = &device_creator<sega_sys16b_sprite_device>;
-const device_type SEGA_XBOARD_SPRITES = &device_creator<sega_xboard_sprite_device>;
-const device_type SEGA_YBOARD_SPRITES = &device_creator<sega_yboard_sprite_device>;
-=======
 DEFINE_DEVICE_TYPE(SEGA_HANGON_SPRITES,    sega_hangon_sprite_device,    "sega_hangon_sprite",    "Sega Custom Sprites (Hang On)")
 DEFINE_DEVICE_TYPE(SEGA_SHARRIER_SPRITES,  sega_sharrier_sprite_device,  "sega_sharrier_sprite",  "Sega Custom Sprites (Space Harrier)")
 DEFINE_DEVICE_TYPE(SEGA_OUTRUN_SPRITES,    sega_outrun_sprite_device,    "sega_outrun_sprite",    "Sega Custom Sprites (Out Run)")
@@ -35,7 +25,6 @@ DEFINE_DEVICE_TYPE(BOOTLEG_SYS16A_SPRITES, bootleg_sys16a_sprite_device, "bootle
 DEFINE_DEVICE_TYPE(SEGA_SYS16B_SPRITES,    sega_sys16b_sprite_device,    "sega_sys16b_sprite",    "Sega System 16B Sprites")
 DEFINE_DEVICE_TYPE(SEGA_XBOARD_SPRITES,    sega_xboard_sprite_device,    "sega_xboard_sprite",    "Sega X-Board Sprites")
 DEFINE_DEVICE_TYPE(SEGA_YBOARD_SPRITES,    sega_yboard_sprite_device,    "sega_yboard_sprite",    "Sega Y-Board Sprites")
->>>>>>> upstream/master
 
 
 
@@ -47,15 +36,9 @@ DEFINE_DEVICE_TYPE(SEGA_YBOARD_SPRITES,    sega_yboard_sprite_device,    "sega_y
 //  sega_16bit_sprite_device -- core constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-sega_16bit_sprite_device::sega_16bit_sprite_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, const char *shortname, const char *source)
-	: sprite16_device_ind16(mconfig, type, name, tag, owner, shortname, source),
-		m_flip(false)
-=======
 sega_16bit_sprite_device::sega_16bit_sprite_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner)
 	: sprite16_device_ind16(mconfig, type, tag, owner)
 	, m_flip(false)
->>>>>>> upstream/master
 {
 	// default to 1:1 bank mapping
 	for (int bank = 0; bank < ARRAY_LENGTH(m_bank); bank++)
@@ -84,22 +67,13 @@ void sega_16bit_sprite_device::device_start()
 
 WRITE16_MEMBER( sega_16bit_sprite_device::draw_write )
 {
-<<<<<<< HEAD
-	UINT32 *src = reinterpret_cast<UINT32 *>(spriteram());
-	UINT32 *dst = reinterpret_cast<UINT32 *>(buffer());
-=======
 	uint32_t *src = reinterpret_cast<uint32_t *>(spriteram());
 	uint32_t *dst = reinterpret_cast<uint32_t *>(buffer());
->>>>>>> upstream/master
 
 	// swap the halves of the sprite RAM
 	for (int i = 0; i < spriteram_bytes()/4; i++)
 	{
-<<<<<<< HEAD
-		UINT32 temp = *src;
-=======
 		uint32_t temp = *src;
->>>>>>> upstream/master
 		*src++ = *dst;
 		*dst++ = temp;
 	}
@@ -120,14 +94,9 @@ WRITE16_MEMBER( sega_16bit_sprite_device::draw_write )
 //  sega_hangon_sprite_device -- constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-sega_hangon_sprite_device::sega_hangon_sprite_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: sega_16bit_sprite_device(mconfig, SEGA_HANGON_SPRITES, "Sega Custom Sprites (Hang On)", tag, owner, "sega_hangon_sprite", __FILE__)
-=======
 sega_hangon_sprite_device::sega_hangon_sprite_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: sega_16bit_sprite_device(mconfig, SEGA_HANGON_SPRITES, tag, owner)
 	, m_sprite_region_ptr(*this, DEVICE_SELF)
->>>>>>> upstream/master
 {
 	set_local_origin(189, -1);
 }
@@ -173,19 +142,11 @@ void sega_hangon_sprite_device::draw(bitmap_ind16 &bitmap, const rectangle &clip
 	//
 
 	// render the sprites in order
-<<<<<<< HEAD
-	const UINT16 *spritebase = reinterpret_cast<const UINT16 *>(region()->base());
-	UINT8 numbanks = region()->bytes() / 0x10000;
-	const UINT8 *zoom = memregion("zoom")->base();
-	UINT16 *ramend = spriteram() + spriteram_elements();
-	for (UINT16 *data = spriteram(); data < ramend; data += 8)
-=======
 	const uint16_t *spritebase = &m_sprite_region_ptr[0];
 	uint8_t numbanks = m_sprite_region_ptr.bytes() / 0x10000;
 	const uint8_t *zoom = memregion("zoom")->base();
 	uint16_t *ramend = spriteram() + spriteram_elements();
 	for (uint16_t *data = spriteram(); data < ramend; data += 8)
->>>>>>> upstream/master
 	{
 		// fetch the bottom; stop when we get something out of range
 		int bottom  = data[0] >> 8;
@@ -196,13 +157,8 @@ void sega_hangon_sprite_device::draw(bitmap_ind16 &bitmap, const rectangle &clip
 		int top     = data[0] & 0xff;
 		int bank    = m_bank[(data[1] >> 12) & 0xf];
 		int xpos    = data[1] & 0x1ff;
-<<<<<<< HEAD
-		int pitch   = INT16(data[2]);
-		UINT16 addr = data[3];
-=======
 		int pitch   = int16_t(data[2]);
 		uint16_t addr = data[3];
->>>>>>> upstream/master
 		int colpri  = (((data[4] >> 8) & 0x3f) << 4) | (((data[4] >> 0) & 0x3) << 10);
 		int vzoom   = (data[4] >> 2) & 0x3f;
 		int hzoom   = vzoom << 1;
@@ -217,11 +173,7 @@ void sega_hangon_sprite_device::draw(bitmap_ind16 &bitmap, const rectangle &clip
 		// clamp to within the memory region size
 		if (numbanks)
 			bank %= numbanks;
-<<<<<<< HEAD
-		const UINT16 *spritedata = spritebase + 0x8000 * bank;
-=======
 		const uint16_t *spritedata = spritebase + 0x8000 * bank;
->>>>>>> upstream/master
 
 		// determine the starting zoom address and mask
 		int zaddr = (vzoom & 0x38) << 5;
@@ -244,11 +196,7 @@ void sega_hangon_sprite_device::draw(bitmap_ind16 &bitmap, const rectangle &clip
 			// skip drawing if not within the cliprect
 			if (y >= cliprect.min_y && y <= cliprect.max_y)
 			{
-<<<<<<< HEAD
-				UINT16 *dest = &bitmap.pix(y);
-=======
 				uint16_t *dest = &bitmap.pix(y);
->>>>>>> upstream/master
 				int xacc = 0x00;
 				int x;
 
@@ -263,11 +211,7 @@ void sega_hangon_sprite_device::draw(bitmap_ind16 &bitmap, const rectangle &clip
 					data[7] = addr - 1;
 					for (x = xpos; x <= cliprect.max_x; )
 					{
-<<<<<<< HEAD
-						UINT16 pixels = spritedata[++data[7] & 0x7fff];
-=======
 						uint16_t pixels = spritedata[++data[7] & 0x7fff];
->>>>>>> upstream/master
 
 						// draw four pixels
 						int pix;
@@ -289,11 +233,7 @@ void sega_hangon_sprite_device::draw(bitmap_ind16 &bitmap, const rectangle &clip
 					data[7] = addr + 1;
 					for (x = xpos; x <= cliprect.max_x; )
 					{
-<<<<<<< HEAD
-						UINT16 pixels = spritedata[--data[7] & 0x7fff];
-=======
 						uint16_t pixels = spritedata[--data[7] & 0x7fff];
->>>>>>> upstream/master
 
 						// draw four pixels
 						int pix;
@@ -331,14 +271,9 @@ void sega_hangon_sprite_device::draw(bitmap_ind16 &bitmap, const rectangle &clip
 //  sega_sharrier_sprite_device -- constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-sega_sharrier_sprite_device::sega_sharrier_sprite_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: sega_16bit_sprite_device(mconfig, SEGA_SHARRIER_SPRITES, "Sega Custom Sprites (Space Harrier)", tag, owner, "sega_sharrier_sprite", __FILE__)
-=======
 sega_sharrier_sprite_device::sega_sharrier_sprite_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: sega_16bit_sprite_device(mconfig, SEGA_SHARRIER_SPRITES, tag, owner)
 	, m_sprite_region_ptr(*this, DEVICE_SELF)
->>>>>>> upstream/master
 {
 	set_local_origin(189, -1);
 }
@@ -387,19 +322,11 @@ void sega_sharrier_sprite_device::draw(bitmap_ind16 &bitmap, const rectangle &cl
 	//
 
 	// render the sprites in order
-<<<<<<< HEAD
-	const UINT32 *spritebase = reinterpret_cast<const UINT32 *>(region()->base());
-	UINT8 numbanks = region()->bytes() / 0x20000;
-	const UINT8 *zoom = memregion("zoom")->base();
-	UINT16 *ramend = spriteram() + spriteram_elements();
-	for (UINT16 *data = spriteram(); data < ramend; data += 8)
-=======
 	const uint32_t *spritebase = &m_sprite_region_ptr[0];
 	uint8_t numbanks = m_sprite_region_ptr.bytes() / 0x20000;
 	const uint8_t *zoom = memregion("zoom")->base();
 	uint16_t *ramend = spriteram() + spriteram_elements();
 	for (uint16_t *data = spriteram(); data < ramend; data += 8)
->>>>>>> upstream/master
 	{
 		// fetch the bottom; stop when we get something out of range
 		int bottom  = data[0] >> 8;
@@ -411,13 +338,8 @@ void sega_sharrier_sprite_device::draw(bitmap_ind16 &bitmap, const rectangle &cl
 		int bank    = m_bank[(data[1] >> 12) & 0x7];
 		int xpos    = data[1] & 0x1ff;
 		int colpri  = ((data[2] >> 8) & 0xff) << 4;
-<<<<<<< HEAD
-		int pitch   = INT16(data[2] << 9) >> 9;
-		UINT16 addr = data[3];
-=======
 		int pitch   = int16_t(data[2] << 9) >> 9;
 		uint16_t addr = data[3];
->>>>>>> upstream/master
 		int hzoom   = ((data[4] >> 8) & 0x3f) << 1;
 		int vzoom   = (data[4] >> 0) & 0x3f;
 
@@ -431,11 +353,7 @@ void sega_sharrier_sprite_device::draw(bitmap_ind16 &bitmap, const rectangle &cl
 		// clamp to within the memory region size
 		if (numbanks)
 			bank %= numbanks;
-<<<<<<< HEAD
-		const UINT32 *spritedata = spritebase + 0x8000 * bank;
-=======
 		const uint32_t *spritedata = spritebase + 0x8000 * bank;
->>>>>>> upstream/master
 
 		// determine the starting zoom address and mask
 		int zaddr = (vzoom & 0x38) << 5;
@@ -458,11 +376,7 @@ void sega_sharrier_sprite_device::draw(bitmap_ind16 &bitmap, const rectangle &cl
 			// skip drawing if not within the cliprect
 			if (y >= cliprect.min_y && y <= cliprect.max_y)
 			{
-<<<<<<< HEAD
-				UINT16 *dest = &bitmap.pix(y);
-=======
 				uint16_t *dest = &bitmap.pix(y);
->>>>>>> upstream/master
 				int xacc = 0x00;
 				int x;
 
@@ -477,11 +391,7 @@ void sega_sharrier_sprite_device::draw(bitmap_ind16 &bitmap, const rectangle &cl
 					data[7] = addr - 1;
 					for (x = xpos; x <= cliprect.max_x; )
 					{
-<<<<<<< HEAD
-						UINT32 pixels = spritedata[++data[7] & 0x7fff];
-=======
 						uint32_t pixels = spritedata[++data[7] & 0x7fff];
->>>>>>> upstream/master
 
 						// draw 8 pixels
 						int pix;
@@ -507,11 +417,7 @@ void sega_sharrier_sprite_device::draw(bitmap_ind16 &bitmap, const rectangle &cl
 					data[7] = addr + 1;
 					for (x = xpos; x <= cliprect.max_x; )
 					{
-<<<<<<< HEAD
-						UINT32 pixels = spritedata[--data[7] & 0x7fff];
-=======
 						uint32_t pixels = spritedata[--data[7] & 0x7fff];
->>>>>>> upstream/master
 
 						// draw 8 pixels
 						int pix;
@@ -553,14 +459,9 @@ void sega_sharrier_sprite_device::draw(bitmap_ind16 &bitmap, const rectangle &cl
 //  sega_sys16a_sprite_device -- constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-sega_sys16a_sprite_device::sega_sys16a_sprite_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: sega_16bit_sprite_device(mconfig, SEGA_SYS16A_SPRITES, "Sega System 16A Sprites", tag, owner, "sega_sys16a_sprite", __FILE__)
-=======
 sega_sys16a_sprite_device::sega_sys16a_sprite_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: sega_16bit_sprite_device(mconfig, SEGA_SYS16A_SPRITES, tag, owner)
 	, m_sprite_region_ptr(*this, DEVICE_SELF)
->>>>>>> upstream/master
 {
 	set_local_origin(189, -1, -189, -1);
 }
@@ -605,17 +506,10 @@ void sega_sys16a_sprite_device::draw(bitmap_ind16 &bitmap, const rectangle &clip
 	//
 
 	// render the sprites in order
-<<<<<<< HEAD
-	const UINT16 *spritebase = reinterpret_cast<const UINT16 *>(region()->base());
-	UINT8 numbanks = region()->bytes() / 0x10000;
-	UINT16 *ramend = spriteram() + spriteram_elements();
-	for (UINT16 *data = spriteram(); data < ramend; data += 8)
-=======
 	const uint16_t *spritebase = &m_sprite_region_ptr[0];
 	uint8_t numbanks = m_sprite_region_ptr.bytes() / 0x10000;
 	uint16_t *ramend = spriteram() + spriteram_elements();
 	for (uint16_t *data = spriteram(); data < ramend; data += 8)
->>>>>>> upstream/master
 	{
 		// fetch the bottom; stop when we get something out of range
 		int bottom  = data[0] >> 8;
@@ -625,13 +519,8 @@ void sega_sys16a_sprite_device::draw(bitmap_ind16 &bitmap, const rectangle &clip
 		// extract remaining parameters
 		int top     = data[0] & 0xff;
 		int xpos    = data[1] & 0x1ff;
-<<<<<<< HEAD
-		int pitch   = INT16(data[2]);
-		UINT16 addr = data[3];
-=======
 		int pitch   = int16_t(data[2]);
 		uint16_t addr = data[3];
->>>>>>> upstream/master
 		int colpri  = (((data[4] >> 8) & 0x3f) << 4) | (((data[4] >> 0) & 0x3) << 10);
 		int bank    = m_bank[(data[4] >> 4) & 0x7];
 
@@ -645,11 +534,7 @@ void sega_sys16a_sprite_device::draw(bitmap_ind16 &bitmap, const rectangle &clip
 		// clamp to within the memory region size
 		if (numbanks)
 			bank %= numbanks;
-<<<<<<< HEAD
-		const UINT16 *spritedata = spritebase + 0x8000 * bank;
-=======
 		const uint16_t *spritedata = spritebase + 0x8000 * bank;
->>>>>>> upstream/master
 
 		// adjust positions for screen flipping
 		int xdelta = 1;
@@ -680,11 +565,7 @@ void sega_sys16a_sprite_device::draw(bitmap_ind16 &bitmap, const rectangle &clip
 			// skip drawing if not within the cliprect
 			if (y >= cliprect.min_y && y <= cliprect.max_y)
 			{
-<<<<<<< HEAD
-				UINT16 *dest = &bitmap.pix(y);
-=======
 				uint16_t *dest = &bitmap.pix(y);
->>>>>>> upstream/master
 				int x;
 
 				// note that the System 16A sprites have a design flaw that allows the address
@@ -698,11 +579,7 @@ void sega_sys16a_sprite_device::draw(bitmap_ind16 &bitmap, const rectangle &clip
 					data[7] = addr - 1;
 					for (x = xpos; ((xpos - x) & 0x1ff) != 1; )
 					{
-<<<<<<< HEAD
-						UINT16 pixels = spritedata[++data[7] & 0x7fff];
-=======
 						uint16_t pixels = spritedata[++data[7] & 0x7fff];
->>>>>>> upstream/master
 
 						// draw four pixels
 						int pix;
@@ -724,11 +601,7 @@ void sega_sys16a_sprite_device::draw(bitmap_ind16 &bitmap, const rectangle &clip
 					data[7] = addr + 1;
 					for (x = xpos; ((xpos - x) & 0x1ff) != 1; )
 					{
-<<<<<<< HEAD
-						UINT16 pixels = spritedata[--data[7] & 0x7fff];
-=======
 						uint16_t pixels = spritedata[--data[7] & 0x7fff];
->>>>>>> upstream/master
 
 						// draw four pixels
 						int pix;
@@ -766,14 +639,9 @@ void sega_sys16a_sprite_device::draw(bitmap_ind16 &bitmap, const rectangle &clip
 //  bootleg_sys16a_sprite_device -- constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-bootleg_sys16a_sprite_device::bootleg_sys16a_sprite_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: sega_16bit_sprite_device(mconfig, BOOTLEG_SYS16A_SPRITES, "Sega System 16A Sprites (Bootleg)", tag, owner, "bootleg_sys16a_sprite", __FILE__)
-=======
 bootleg_sys16a_sprite_device::bootleg_sys16a_sprite_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: sega_16bit_sprite_device(mconfig, BOOTLEG_SYS16A_SPRITES, tag, owner)
 	, m_sprite_region_ptr(*this, DEVICE_SELF)
->>>>>>> upstream/master
 {
 	m_addrmap[0] = 0;
 	m_addrmap[1] = 1;
@@ -792,11 +660,7 @@ bootleg_sys16a_sprite_device::bootleg_sys16a_sprite_device(const machine_config 
 //  remapping
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void bootleg_sys16a_sprite_device::static_set_remap(device_t &device, UINT8 offs0, UINT8 offs1, UINT8 offs2, UINT8 offs3, UINT8 offs4, UINT8 offs5, UINT8 offs6, UINT8 offs7)
-=======
 void bootleg_sys16a_sprite_device::static_set_remap(device_t &device, uint8_t offs0, uint8_t offs1, uint8_t offs2, uint8_t offs3, uint8_t offs4, uint8_t offs5, uint8_t offs6, uint8_t offs7)
->>>>>>> upstream/master
 {
 	bootleg_sys16a_sprite_device &target = downcast<bootleg_sys16a_sprite_device &>(device);
 	target.m_addrmap[0] = offs0;
@@ -829,17 +693,10 @@ void bootleg_sys16a_sprite_device::draw(bitmap_ind16 &bitmap, const rectangle &c
 	//
 
 	// render the sprites in order
-<<<<<<< HEAD
-	const UINT16 *spritebase = reinterpret_cast<const UINT16 *>(region()->base());
-	UINT8 numbanks = region()->bytes() / 0x10000;
-	UINT16 *ramend = spriteram() + spriteram_elements();
-	for (UINT16 *data = spriteram(); data < ramend; data += 8)
-=======
 	const uint16_t *spritebase = &m_sprite_region_ptr[0];
 	uint8_t numbanks = m_sprite_region_ptr.bytes() / 0x10000;
 	uint16_t *ramend = spriteram() + spriteram_elements();
 	for (uint16_t *data = spriteram(); data < ramend; data += 8)
->>>>>>> upstream/master
 	{
 		// fetch the bottom; stop when we get something out of range
 		int bottom  = data[m_addrmap[0]] >> 8;
@@ -849,22 +706,13 @@ void bootleg_sys16a_sprite_device::draw(bitmap_ind16 &bitmap, const rectangle &c
 		// extract remaining parameters
 		int top     = data[m_addrmap[0]] & 0xff;
 		int xpos    = data[m_addrmap[1]] & 0x1ff;
-<<<<<<< HEAD
-		int pitch   = INT16(data[m_addrmap[2]]);
-		UINT16 addr = data[m_addrmap[3]];
-=======
 		int pitch   = int16_t(data[m_addrmap[2]]);
 		uint16_t addr = data[m_addrmap[3]];
->>>>>>> upstream/master
 		int colpri  = (((data[m_addrmap[4]] >> 8) & 0x3f) << 4) | (((data[m_addrmap[4]] >> 0) & 0x3) << 10);
 		int bank    = m_bank[(data[m_addrmap[4]] >> 4) & 0x7];
 
 		// initialize the end address to the start address
-<<<<<<< HEAD
-		UINT16 &data7 = data[m_addrmap[7]];
-=======
 		uint16_t &data7 = data[m_addrmap[7]];
->>>>>>> upstream/master
 		data7 = addr;
 
 		// if top greater than/equal to bottom, or invalid bank, punt
@@ -874,11 +722,7 @@ void bootleg_sys16a_sprite_device::draw(bitmap_ind16 &bitmap, const rectangle &c
 		// clamp to within the memory region size
 		if (numbanks)
 			bank %= numbanks;
-<<<<<<< HEAD
-		const UINT16 *spritedata = spritebase + 0x8000 * bank;
-=======
 		const uint16_t *spritedata = spritebase + 0x8000 * bank;
->>>>>>> upstream/master
 
 		// adjust positions for screen flipping
 		int xdelta = 1;
@@ -906,11 +750,7 @@ void bootleg_sys16a_sprite_device::draw(bitmap_ind16 &bitmap, const rectangle &c
 			// skip drawing if not within the cliprect
 			if (y >= cliprect.min_y && y <= cliprect.max_y)
 			{
-<<<<<<< HEAD
-				UINT16 *dest = &bitmap.pix(y);
-=======
 				uint16_t *dest = &bitmap.pix(y);
->>>>>>> upstream/master
 				int x;
 
 				// note that the System 16A sprites have a design flaw that allows the address
@@ -924,11 +764,7 @@ void bootleg_sys16a_sprite_device::draw(bitmap_ind16 &bitmap, const rectangle &c
 					data7 = addr - 1;
 					for (x = xpos; ((xpos - x) & 0x1ff) != 1; )
 					{
-<<<<<<< HEAD
-						UINT16 pixels = spritedata[++data7 & 0x7fff];
-=======
 						uint16_t pixels = spritedata[++data7 & 0x7fff];
->>>>>>> upstream/master
 
 						// draw four pixels
 						int pix;
@@ -950,11 +786,7 @@ void bootleg_sys16a_sprite_device::draw(bitmap_ind16 &bitmap, const rectangle &c
 					data7 = addr + 1;
 					for (x = xpos; ((xpos - x) & 0x1ff) != 1; )
 					{
-<<<<<<< HEAD
-						UINT16 pixels = spritedata[--data7 & 0x7fff];
-=======
 						uint16_t pixels = spritedata[--data7 & 0x7fff];
->>>>>>> upstream/master
 
 						// draw four pixels
 						int pix;
@@ -996,14 +828,9 @@ void bootleg_sys16a_sprite_device::draw(bitmap_ind16 &bitmap, const rectangle &c
 //  sega_sys16b_sprite_device -- constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-sega_sys16b_sprite_device::sega_sys16b_sprite_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: sega_16bit_sprite_device(mconfig, SEGA_SYS16B_SPRITES, "Sega System 16B Sprites", tag, owner, "sega_16bit_sprite", __FILE__)
-=======
 sega_sys16b_sprite_device::sega_sys16b_sprite_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: sega_16bit_sprite_device(mconfig, SEGA_SYS16B_SPRITES, tag, owner)
 	, m_sprite_region_ptr(*this, DEVICE_SELF)
->>>>>>> upstream/master
 {
 	set_local_origin(184, 0x00, -184, 0);
 }
@@ -1046,17 +873,10 @@ void sega_sys16b_sprite_device::draw(bitmap_ind16 &bitmap, const rectangle &clip
 	//
 
 	// render the sprites in order
-<<<<<<< HEAD
-	const UINT16 *spritebase = reinterpret_cast<const UINT16 *>(region()->base());
-	UINT8 numbanks = region()->bytes() / 0x20000;
-	UINT16 *ramend = spriteram() + spriteram_elements();
-	for (UINT16 *data = spriteram(); data < ramend; data += 8)
-=======
 	const uint16_t *spritebase = &m_sprite_region_ptr[0];
 	uint8_t numbanks = m_sprite_region_ptr.bytes() / 0x20000;
 	uint16_t *ramend = spriteram() + spriteram_elements();
 	for (uint16_t *data = spriteram(); data < ramend; data += 8)
->>>>>>> upstream/master
 	{
 		// stop when we hit the end of sprite list
 		if (data[2] & 0x8000)
@@ -1068,22 +888,13 @@ void sega_sys16b_sprite_device::draw(bitmap_ind16 &bitmap, const rectangle &clip
 		int xpos    = data[1] & 0x1ff;
 		int hide    = data[2] & 0x4000;
 		int flip    = data[2] & 0x100;
-<<<<<<< HEAD
-		int pitch   = INT8(data[2] & 0xff);
-		UINT16 addr = data[3];
-=======
 		int pitch   = int8_t(data[2] & 0xff);
 		uint16_t addr = data[3];
->>>>>>> upstream/master
 		int bank    = m_bank[(data[4] >> 8) & 0xf];
 		int colpri  = ((data[4] & 0xff) << 4) | (((data[1] >> 9) & 0xf) << 12);
 		int vzoom   = (data[5] >> 5) & 0x1f;
 		int hzoom   = data[5] & 0x1f;
-<<<<<<< HEAD
-		const UINT16 *spritedata;
-=======
 		const uint16_t *spritedata;
->>>>>>> upstream/master
 
 		xpos &= 0x1ff;
 
@@ -1139,11 +950,7 @@ void sega_sys16b_sprite_device::draw(bitmap_ind16 &bitmap, const rectangle &clip
 			// skip drawing if not within the cliprect
 			if (y >= cliprect.min_y && y <= cliprect.max_y)
 			{
-<<<<<<< HEAD
-				UINT16 *dest = &bitmap.pix(y);
-=======
 				uint16_t *dest = &bitmap.pix(y);
->>>>>>> upstream/master
 				int x;
 
 				// compute the initial X zoom accumulator; this is verified on the real PCB
@@ -1156,11 +963,7 @@ void sega_sys16b_sprite_device::draw(bitmap_ind16 &bitmap, const rectangle &clip
 					data[7] = addr - 1;
 					for (x = xpos; ((xpos - x) & 0x1ff) != 1; )
 					{
-<<<<<<< HEAD
-						UINT16 pixels = spritedata[++data[7]];
-=======
 						uint16_t pixels = spritedata[++data[7]];
->>>>>>> upstream/master
 
 						// draw four pixels
 						int pix;
@@ -1182,11 +985,7 @@ void sega_sys16b_sprite_device::draw(bitmap_ind16 &bitmap, const rectangle &clip
 					data[7] = addr + 1;
 					for (x = xpos; ((xpos - x) & 0x1ff) != 1; )
 					{
-<<<<<<< HEAD
-						UINT16 pixels = spritedata[--data[7]];
-=======
 						uint16_t pixels = spritedata[--data[7]];
->>>>>>> upstream/master
 
 						// draw four pixels
 						int pix;
@@ -1225,20 +1024,6 @@ void sega_sys16b_sprite_device::draw(bitmap_ind16 &bitmap, const rectangle &clip
 //  sega_outrun_sprite_device -- constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-sega_outrun_sprite_device::sega_outrun_sprite_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: sega_16bit_sprite_device(mconfig, SEGA_OUTRUN_SPRITES, "Sega Custom Sprites (Out Run)", tag, owner, "sega_outrun_sprite", __FILE__),
-		m_is_xboard(false)
-{
-	set_local_origin(189, 0x00);
-}
-
-sega_outrun_sprite_device::sega_outrun_sprite_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock, bool xboard_variant, const char *shortname, const char *source)
-	: sega_16bit_sprite_device(mconfig, SEGA_XBOARD_SPRITES, "Sega X-Board Sprites", tag, owner, shortname, source),
-		m_is_xboard(true)
-{
-	set_local_origin(190, 0x00);
-=======
 sega_outrun_sprite_device::sega_outrun_sprite_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: sega_outrun_sprite_device(mconfig, SEGA_OUTRUN_SPRITES, tag, owner, clock, false)
 {
@@ -1250,7 +1035,6 @@ sega_outrun_sprite_device::sega_outrun_sprite_device(const machine_config &mconf
 	, m_sprite_region_ptr(*this, DEVICE_SELF)
 {
 	set_local_origin(xboard_variant ? 190 : 189, 0x00);
->>>>>>> upstream/master
 }
 
 
@@ -1258,13 +1042,8 @@ sega_outrun_sprite_device::sega_outrun_sprite_device(const machine_config &mconf
 //  sega_xboard_sprite_device -- constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-sega_xboard_sprite_device::sega_xboard_sprite_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: sega_outrun_sprite_device(mconfig, tag, owner, clock, true, "sega_xboard_sprite", __FILE__)
-=======
 sega_xboard_sprite_device::sega_xboard_sprite_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: sega_outrun_sprite_device(mconfig, SEGA_XBOARD_SPRITES, tag, owner, clock, true)
->>>>>>> upstream/master
 {
 }
 
@@ -1314,17 +1093,10 @@ void sega_outrun_sprite_device::draw(bitmap_ind16 &bitmap, const rectangle &clip
 	set_origin(m_xoffs, m_yoffs);
 
 	// render the sprites in order
-<<<<<<< HEAD
-	const UINT32 *spritebase = reinterpret_cast<const UINT32 *>(region()->base());
-	UINT8 numbanks = region()->bytes() / 0x40000;
-	UINT16 *ramend = buffer() + spriteram_elements();
-	for (UINT16 *data = buffer(); data < ramend; data += 8)
-=======
 	const uint32_t *spritebase = &m_sprite_region_ptr[0];
 	uint8_t numbanks = m_sprite_region_ptr.bytes() / 0x40000;
 	uint16_t *ramend = buffer() + spriteram_elements();
 	for (uint16_t *data = buffer(); data < ramend; data += 8)
->>>>>>> upstream/master
 	{
 		// stop when we hit the end of sprite list
 		if (data[0] & 0x8000)
@@ -1334,13 +1106,8 @@ void sega_outrun_sprite_device::draw(bitmap_ind16 &bitmap, const rectangle &clip
 		int hide    = (data[0] & 0x5000);
 		int bank    = (data[0] >> 9) & 7;
 		int top     = (data[0] & 0x1ff) - 0x100;
-<<<<<<< HEAD
-		UINT16 addr = data[1];
-		int pitch   = INT16((data[2] >> 1) | ((data[4] & 0x1000) << 3)) >> 8;
-=======
 		uint16_t addr = data[1];
 		int pitch   = int16_t((data[2] >> 1) | ((data[4] & 0x1000) << 3)) >> 8;
->>>>>>> upstream/master
 		int xpos    = data[2] & 0x1ff;
 		int vzoom   = data[3] & 0x7ff;
 		int ydelta  = (data[4] & 0x8000) ? 1 : -1;
@@ -1366,11 +1133,7 @@ void sega_outrun_sprite_device::draw(bitmap_ind16 &bitmap, const rectangle &clip
 		// clamp to within the memory region size
 		if (numbanks)
 			bank %= numbanks;
-<<<<<<< HEAD
-		const UINT32 *spritedata = spritebase + 0x10000 * bank;
-=======
 		const uint32_t *spritedata = spritebase + 0x10000 * bank;
->>>>>>> upstream/master
 
 		// clamp to a maximum of 8x (not 100% confirmed)
 		if (vzoom < 0x40) vzoom = 0x40;
@@ -1388,11 +1151,7 @@ void sega_outrun_sprite_device::draw(bitmap_ind16 &bitmap, const rectangle &clip
 			// skip drawing if not within the cliprect
 			if (y >= cliprect.min_y && y <= cliprect.max_y)
 			{
-<<<<<<< HEAD
-				UINT16 *dest = &bitmap.pix(y);
-=======
 				uint16_t *dest = &bitmap.pix(y);
->>>>>>> upstream/master
 				int xacc = 0;
 				int x;
 
@@ -1403,11 +1162,7 @@ void sega_outrun_sprite_device::draw(bitmap_ind16 &bitmap, const rectangle &clip
 					data[7] = addr - 1;
 					for (x = xpos; (xdelta > 0 && x <= cliprect.max_x) || (xdelta < 0 && x >= cliprect.min_x); )
 					{
-<<<<<<< HEAD
-						UINT32 pixels = spritedata[++data[7]];
-=======
 						uint32_t pixels = spritedata[++data[7]];
->>>>>>> upstream/master
 
 						// draw four pixels
 						int pix;
@@ -1433,11 +1188,7 @@ void sega_outrun_sprite_device::draw(bitmap_ind16 &bitmap, const rectangle &clip
 					data[7] = addr + 1;
 					for (x = xpos; (xdelta > 0 && x <= cliprect.max_x) || (xdelta < 0 && x >= cliprect.min_x); )
 					{
-<<<<<<< HEAD
-						UINT32 pixels = spritedata[--data[7]];
-=======
 						uint32_t pixels = spritedata[--data[7]];
->>>>>>> upstream/master
 
 						// draw four pixels
 						int pix;
@@ -1485,14 +1236,9 @@ void sega_outrun_sprite_device::draw(bitmap_ind16 &bitmap, const rectangle &clip
 //  sega_yboard_sprite_device -- constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-sega_yboard_sprite_device::sega_yboard_sprite_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: sega_16bit_sprite_device(mconfig, SEGA_YBOARD_SPRITES, "Sega Y-Board Sprites", tag, owner, "sega_yboard_sprite", __FILE__)
-=======
 sega_yboard_sprite_device::sega_yboard_sprite_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: sega_16bit_sprite_device(mconfig, SEGA_YBOARD_SPRITES, tag, owner)
 	, m_sprite_region_ptr(*this, DEVICE_SELF)
->>>>>>> upstream/master
 {
 	set_local_origin(0x600, 0x600);
 }
@@ -1540,30 +1286,6 @@ void sega_yboard_sprite_device::draw(bitmap_ind16 &bitmap, const rectangle &clip
 	set_origin(m_xoffs, m_yoffs);
 
 	// clear out any scanlines we might be using
-<<<<<<< HEAD
-	const UINT16 *rotatebase = m_segaic16_rotate[0].buffer ? m_segaic16_rotate[0].buffer : m_segaic16_rotate[0].rotateram;
-	rotatebase -= yorigin();
-	for (int y = cliprect.min_y; y <= cliprect.max_y; y++)
-		if (!(rotatebase[y & ~1] & 0xc000))
-			memset(&bitmap.pix(y, cliprect.min_x), 0xff, cliprect.width() * sizeof(UINT16));
-
-	// reset the visited list
-	UINT8 visited[0x1000];
-	memset(visited, 0, sizeof(visited));
-
-	// render the sprites in order
-	const UINT64 *spritebase = reinterpret_cast<const UINT64 *>(region()->base());
-	UINT8 numbanks = region()->bytes() / 0x80000;
-	int next = 0;
-	for (UINT16 *data = spriteram(); !(data[0] & 0x8000) && !visited[next]; data = spriteram() + next * 8)
-	{
-		int hide    = (data[0] & 0x5000);
-		const UINT16 *indirect = spriteram() + ((data[0] & 0x7ff) << 4);
-		int bank    = ((data[1] >> 8) & 0x10) | ((data[2] >> 12) & 0x0f);
-		int xpos    = data[1] & 0xfff;
-		int top     = data[2] & 0xfff;
-		UINT16 addr = data[3];
-=======
 	const uint16_t *rotatebase = m_segaic16_rotate[0].buffer ? m_segaic16_rotate[0].buffer.get() : m_segaic16_rotate[0].rotateram;
 	rotatebase -= yorigin();
 	for (int y = cliprect.min_y; y <= cliprect.max_y; y++)
@@ -1586,18 +1308,13 @@ void sega_yboard_sprite_device::draw(bitmap_ind16 &bitmap, const rectangle &clip
 		int xpos    = data[1] & 0xfff;
 		int top     = data[2] & 0xfff;
 		uint16_t addr = data[3];
->>>>>>> upstream/master
 		int height  = data[4];
 		int ydelta  = (data[5] & 0x4000) ? 1 : -1;
 		int flip    = (~data[5] >> 13) & 1;
 		int xdelta  = (data[5] & 0x1000) ? 1 : -1;
 		int zoom    = data[5] & 0x7ff;
 		int colpri  = (data[6] << 1) & 0xfe00;
-<<<<<<< HEAD
-		int pitch   = INT8(data[6]);
-=======
 		int pitch   = int8_t(data[6]);
->>>>>>> upstream/master
 
 		// note that we've visited this entry and get the offset of the next one
 		visited[next] = 1;
@@ -1610,11 +1327,7 @@ void sega_yboard_sprite_device::draw(bitmap_ind16 &bitmap, const rectangle &clip
 		// clamp to within the memory region size
 		if (numbanks)
 			bank %= numbanks;
-<<<<<<< HEAD
-		const UINT64 *spritedata = spritebase + 0x10000 * bank;
-=======
 		const uint64_t *spritedata = spritebase + 0x10000 * bank;
->>>>>>> upstream/master
 
 		// clamp to a maximum of 8x (not 100% confirmed)
 		if (zoom == 0) zoom = 1;
@@ -1631,11 +1344,7 @@ void sega_yboard_sprite_device::draw(bitmap_ind16 &bitmap, const rectangle &clip
 			// skip drawing if not within the cliprect
 			if (y >= cliprect.min_y && y <= cliprect.max_y)
 			{
-<<<<<<< HEAD
-				UINT16 *dest = &bitmap.pix(y);
-=======
 				uint16_t *dest = &bitmap.pix(y);
->>>>>>> upstream/master
 				int minx = rotatebase[y & ~1];
 				int maxx = rotatebase[y |  1];
 				int xacc = 0;
@@ -1662,17 +1371,10 @@ void sega_yboard_sprite_device::draw(bitmap_ind16 &bitmap, const rectangle &clip
 					if (!flip)
 					{
 						// start at the word before because we preincrement below
-<<<<<<< HEAD
-						UINT16 offs = addr - 1;
-						for (x = xpos; (xdelta > 0 && x <= maxx) || (xdelta < 0 && x >= minx); )
-						{
-							UINT64 pixels = spritedata[++offs];
-=======
 						uint16_t offs = addr - 1;
 						for (x = xpos; (xdelta > 0 && x <= maxx) || (xdelta < 0 && x >= minx); )
 						{
 							uint64_t pixels = spritedata[++offs];
->>>>>>> upstream/master
 
 							// draw 16 pixels
 							int pix, ind;
@@ -1703,17 +1405,10 @@ void sega_yboard_sprite_device::draw(bitmap_ind16 &bitmap, const rectangle &clip
 					else
 					{
 						// start at the word after because we predecrement below
-<<<<<<< HEAD
-						UINT16 offs = addr + 1;
-						for (x = xpos; (xdelta > 0 && x <= maxx) || (xdelta < 0 && x >= minx); )
-						{
-							UINT64 pixels = spritedata[--offs];
-=======
 						uint16_t offs = addr + 1;
 						for (x = xpos; (xdelta > 0 && x <= maxx) || (xdelta < 0 && x >= minx); )
 						{
 							uint64_t pixels = spritedata[--offs];
->>>>>>> upstream/master
 
 							// draw 16 pixels
 							int pix, ind;

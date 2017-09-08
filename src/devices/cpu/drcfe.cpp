@@ -23,11 +23,7 @@
 //  CONSTANTS
 //**************************************************************************
 
-<<<<<<< HEAD
-const UINT32 MAX_STACK_DEPTH = 100;
-=======
 const uint32_t MAX_STACK_DEPTH = 100;
->>>>>>> upstream/master
 
 
 
@@ -52,22 +48,14 @@ struct pc_stack_entry
 //  drc_frontend - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-drc_frontend::drc_frontend(device_t &cpu, UINT32 window_start, UINT32 window_end, UINT32 max_sequence)
-=======
 drc_frontend::drc_frontend(device_t &cpu, uint32_t window_start, uint32_t window_end, uint32_t max_sequence)
->>>>>>> upstream/master
 	: m_window_start(window_start),
 		m_window_end(window_end),
 		m_max_sequence(max_sequence),
 		m_cpudevice(downcast<cpu_device &>(cpu)),
 		m_program(m_cpudevice.space(AS_PROGRAM)),
 		m_pageshift(m_cpudevice.space_config(AS_PROGRAM)->m_page_shift),
-<<<<<<< HEAD
-		m_desc_array(window_end + window_start + 2, 0)
-=======
 		m_desc_array(window_end + window_start + 2, nullptr)
->>>>>>> upstream/master
 {
 }
 
@@ -102,23 +90,14 @@ const opcode_desc *drc_frontend::describe_code(offs_t startpc)
 	pcstackptr++;
 
 	// loop while we still have a stack
-<<<<<<< HEAD
-	offs_t minpc = startpc - MIN(m_window_start, startpc);
-	offs_t maxpc = startpc + MIN(m_window_end, 0xffffffff - startpc);
-=======
 	offs_t minpc = startpc - std::min(m_window_start, startpc);
 	offs_t maxpc = startpc + std::min(m_window_end, 0xffffffff - startpc);
->>>>>>> upstream/master
 	while (pcstackptr != &pcstack[0])
 	{
 		// if we've already hit this PC, just mark it a branch target and continue
 		pc_stack_entry *curstack = --pcstackptr;
 		opcode_desc *curdesc = m_desc_array[curstack->targetpc - minpc];
-<<<<<<< HEAD
-		if (curdesc != NULL)
-=======
 		if (curdesc != nullptr)
->>>>>>> upstream/master
 		{
 			curdesc->flags |= OPFLAG_IS_BRANCH_TARGET;
 
@@ -131,11 +110,7 @@ const opcode_desc *drc_frontend::describe_code(offs_t startpc)
 		}
 
 		// loop until we exit the block
-<<<<<<< HEAD
-		for (offs_t curpc = curstack->targetpc; curpc >= minpc && curpc < maxpc && m_desc_array[curpc - minpc] == NULL; curpc += m_desc_array[curpc - minpc]->length)
-=======
 		for (offs_t curpc = curstack->targetpc; curpc >= minpc && curpc < maxpc && m_desc_array[curpc - minpc] == nullptr; curpc += m_desc_array[curpc - minpc]->length)
->>>>>>> upstream/master
 		{
 			// allocate a new description and describe this instruction
 			m_desc_array[curpc - minpc] = curdesc = describe_one(curpc, curdesc);
@@ -181,21 +156,12 @@ const opcode_desc *drc_frontend::describe_code(offs_t startpc)
 //  slots of branches as well
 //-------------------------------------------------
 
-<<<<<<< HEAD
-opcode_desc *drc_frontend::describe_one(offs_t curpc, const opcode_desc *prevdesc)
-{
-	// initialize the description
-	opcode_desc *desc = m_desc_allocator.alloc();
-	desc->m_next = NULL;
-	desc->branch = NULL;
-=======
 opcode_desc *drc_frontend::describe_one(offs_t curpc, const opcode_desc *prevdesc, bool in_delay_slot)
 {
 	// initialize the description
 	opcode_desc *desc = m_desc_allocator.alloc();
 	desc->m_next = nullptr;
 	desc->branch = nullptr;
->>>>>>> upstream/master
 	desc->delay.reset();
 	desc->pc = curpc;
 	desc->physpc = curpc;
@@ -204,14 +170,10 @@ opcode_desc *drc_frontend::describe_one(offs_t curpc, const opcode_desc *prevdes
 	desc->length = 0;
 	desc->delayslots = 0;
 	desc->skipslots = 0;
-<<<<<<< HEAD
-	desc->flags = 0;
-=======
 	// set the delay slot flag
 	desc->flags = in_delay_slot ? OPFLAG_IN_DELAY_SLOT : 0;
 	desc->userflags = 0;
 	desc->userdata0 = 0;
->>>>>>> upstream/master
 	desc->cycles = 0;
 	memset(desc->regin, 0x00, sizeof(desc->regin));
 	memset(desc->regout, 0x00, sizeof(desc->regout));
@@ -236,14 +198,6 @@ opcode_desc *drc_frontend::describe_one(offs_t curpc, const opcode_desc *prevdes
 	{
 		// iterate over slots and describe them
 		offs_t delaypc = curpc + desc->length;
-<<<<<<< HEAD
-		opcode_desc *prev = desc;
-		for (UINT8 slotnum = 0; slotnum < desc->delayslots; slotnum++)
-		{
-			// recursively describe the next instruction
-			opcode_desc *delaydesc = describe_one(delaypc, prev);
-			if (delaydesc == NULL)
-=======
 		// If this is a delay slot it is the true branch fork and the pc should be the previous branch target
 		if (desc->flags & OPFLAG_IN_DELAY_SLOT) {
 			if (prevdesc->targetpc != BRANCH_TARGET_DYNAMIC) {
@@ -259,17 +213,11 @@ opcode_desc *drc_frontend::describe_one(offs_t curpc, const opcode_desc *prevdes
 			// recursively describe the next instruction
 			opcode_desc *delaydesc = describe_one(delaypc, prev, true);
 			if (delaydesc == nullptr)
->>>>>>> upstream/master
 				break;
 			desc->delay.append(*delaydesc);
 			prev = desc;
 
-<<<<<<< HEAD
-			// set the delay slot flag and a pointer back to the original branch
-			delaydesc->flags |= OPFLAG_IN_DELAY_SLOT;
-=======
 			// set a pointer back to the original branch
->>>>>>> upstream/master
 			delaydesc->branch = desc;
 
 			// stop if we hit a page fault
@@ -289,39 +237,23 @@ opcode_desc *drc_frontend::describe_one(offs_t curpc, const opcode_desc *prevdes
 //  of instructions
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void drc_frontend::build_sequence(int start, int end, UINT32 endflag)
-=======
 void drc_frontend::build_sequence(int start, int end, uint32_t endflag)
->>>>>>> upstream/master
 {
 	// iterate in order from start to end, picking up all non-NULL instructions
 	int consecutive = 0;
 	int seqstart = -1;
 	int skipsleft = 0;
 	for (int descnum = start; descnum < end; descnum++)
-<<<<<<< HEAD
-		if (m_desc_array[descnum] != NULL)
-=======
 		if (m_desc_array[descnum] != nullptr)
->>>>>>> upstream/master
 		{
 			// determine the next instruction, taking skips into account
 			opcode_desc *curdesc = m_desc_array[descnum];
 			int nextdescnum = descnum + curdesc->length;
-<<<<<<< HEAD
-			opcode_desc *nextdesc = (nextdescnum < end) ? m_desc_array[nextdescnum] : NULL;
-			for (UINT8 skipnum = 0; skipnum < curdesc->skipslots && nextdesc != NULL; skipnum++)
-			{
-				nextdescnum = nextdescnum + nextdesc->length;
-				nextdesc = (nextdescnum < end) ? m_desc_array[nextdescnum] : NULL;
-=======
 			opcode_desc *nextdesc = (nextdescnum < end) ? m_desc_array[nextdescnum] : nullptr;
 			for (uint8_t skipnum = 0; skipnum < curdesc->skipslots && nextdesc != nullptr; skipnum++)
 			{
 				nextdescnum = nextdescnum + nextdesc->length;
 				nextdesc = (nextdescnum < end) ? m_desc_array[nextdescnum] : nullptr;
->>>>>>> upstream/master
 			}
 
 			// start a new sequence if we aren't already in the middle of one
@@ -333,11 +265,7 @@ void drc_frontend::build_sequence(int start, int end, uint32_t endflag)
 			}
 
 			// if we are the last instruction, indicate end-of-sequence and redispatch
-<<<<<<< HEAD
-			if (nextdesc == NULL)
-=======
 			if (nextdesc == nullptr)
->>>>>>> upstream/master
 			{
 				curdesc->flags |= OPFLAG_END_SEQUENCE;
 				if (endflag != OPFLAG_RETURN_TO_START || nextdescnum == end)
@@ -349,19 +277,11 @@ void drc_frontend::build_sequence(int start, int end, uint32_t endflag)
 			{
 				// if there are instructions between us and the next instruction, we must end our sequence here
 				int scandescnum;
-<<<<<<< HEAD
-				opcode_desc *scandesc = NULL;
-				for (scandescnum = descnum + 1; scandescnum < end; scandescnum++)
-				{
-					scandesc = m_desc_array[scandescnum];
-					if (scandesc != NULL || scandesc == nextdesc)
-=======
 				opcode_desc *scandesc = nullptr;
 				for (scandescnum = descnum + 1; scandescnum < end; scandescnum++)
 				{
 					scandesc = m_desc_array[scandescnum];
 					if (scandesc != nullptr || scandesc == nextdesc)
->>>>>>> upstream/master
 						break;
 				}
 				if (scandesc != nextdesc)
@@ -382,17 +302,10 @@ void drc_frontend::build_sequence(int start, int end, uint32_t endflag)
 			if (curdesc->flags & OPFLAG_END_SEQUENCE)
 			{
 				// figure out which registers we *must* generate, assuming at the end all must be
-<<<<<<< HEAD
-				UINT32 reqmask[4] = { 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff };
-				if (seqstart != -1)
-					for (int backdesc = descnum; backdesc != seqstart - 1; backdesc--)
-						if (m_desc_array[backdesc] != NULL)
-=======
 				uint32_t reqmask[4] = { 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff };
 				if (seqstart != -1)
 					for (int backdesc = descnum; backdesc != seqstart - 1; backdesc--)
 						if (m_desc_array[backdesc] != nullptr)
->>>>>>> upstream/master
 							accumulate_required_backwards(*m_desc_array[backdesc], reqmask);
 
 				// reset the register states
@@ -429,17 +342,10 @@ void drc_frontend::build_sequence(int start, int end, uint32_t endflag)
 //  walking in a backwards direction
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void drc_frontend::accumulate_required_backwards(opcode_desc &desc, UINT32 *reqmask)
-{
-	// recursively handle delay slots
-	if (desc.delay.first() != NULL)
-=======
 void drc_frontend::accumulate_required_backwards(opcode_desc &desc, uint32_t *reqmask)
 {
 	// recursively handle delay slots
 	if (desc.delay.first() != nullptr)
->>>>>>> upstream/master
 		accumulate_required_backwards(*desc.delay.first(), reqmask);
 
 	// if this is a branch, we have to reset our requests
@@ -475,11 +381,7 @@ void drc_frontend::accumulate_required_backwards(opcode_desc &desc, uint32_t *re
 void drc_frontend::release_descriptions()
 {
 	// release all delay slots first
-<<<<<<< HEAD
-	for (opcode_desc *curdesc = m_desc_live_list.first(); curdesc != NULL; curdesc = curdesc->next())
-=======
 	for (opcode_desc *curdesc = m_desc_live_list.first(); curdesc != nullptr; curdesc = curdesc->next())
->>>>>>> upstream/master
 		m_desc_allocator.reclaim_all(curdesc->delay);
 
 	// reclaim all the descriptors

@@ -42,10 +42,7 @@ ToDo:
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #include "machine/genpin.h"
 #include "cpu/m6502/m6504.h"
 #include "machine/mos6530.h"
@@ -88,19 +85,6 @@ public:
 	DECLARE_WRITE_LINE_MEMBER(ic8_cb2_w);
 	TIMER_DEVICE_CALLBACK_MEMBER(timer_a);
 private:
-<<<<<<< HEAD
-	UINT32 m_player_score[6];
-	UINT8 m_display;
-	UINT8 m_bit_counter;
-	bool m_disp_data;
-	UINT8 m_ic5a;
-	UINT8 m_ic6a0;
-	UINT8 m_ic6a1;
-	UINT8 m_ic6a2;
-	UINT8 m_ic6b4;
-	UINT8 m_ic6b7;
-	virtual void machine_reset();
-=======
 	uint32_t m_player_score[6];
 	uint8_t m_display;
 	uint8_t m_bit_counter;
@@ -112,7 +96,6 @@ private:
 	uint8_t m_ic6b4;
 	uint8_t m_ic6b7;
 	virtual void machine_reset() override;
->>>>>>> upstream/master
 	required_device<m6504_device> m_maincpu;
 	required_device<pia6821_device> m_ic1;
 	required_device<pia6821_device> m_ic2;
@@ -400,11 +383,7 @@ WRITE_LINE_MEMBER( allied_state::ic2_cb2_w )
 	if ((m_display) && (!state))
 	{
 		m_bit_counter++;
-<<<<<<< HEAD
-		if BIT(m_bit_counter, 0)
-=======
 		if (BIT(m_bit_counter, 0))
->>>>>>> upstream/master
 			m_player_score[m_display-1] = (m_player_score[m_display-1] << 1) | m_disp_data;
 		if (m_bit_counter == 15)
 			m_bit_counter = 0;
@@ -424,39 +403,12 @@ READ8_MEMBER( allied_state::ic4_a_r )
 
 WRITE8_MEMBER( allied_state::ic4_b_w )
 {
-<<<<<<< HEAD
-	static const UINT8 patterns[16] = { 0x3f, 0x06, 0x5b, 0x4f, 0x66, 0x6d, 0x7c, 0x07, 0x7f, 0x67, 0x58, 0x4c, 0x62, 0x69, 0x78, 0 }; // 7446A
-	UINT8 segment, i;
-=======
 	static const uint8_t patterns[16] = { 0x3f, 0x06, 0x5b, 0x4f, 0x66, 0x6d, 0x7c, 0x07, 0x7f, 0x67, 0x58, 0x4c, 0x62, 0x69, 0x78, 0 }; // 7446A
 	uint8_t segment, i;
->>>>>>> upstream/master
 	for (i = 0; i < 4; i++)
 	{
 		if (!BIT(data, i+4))
 		{
-<<<<<<< HEAD
-			output_set_digit_value(i*10, patterns[0]);
-			segment = (m_player_score[i] >> 0) & 15;
-			output_set_digit_value(i*10+1, patterns[segment]);
-			segment = (m_player_score[i] >> 4) & 15;
-			output_set_digit_value(i*10+2, patterns[segment]);
-			segment = (m_player_score[i] >> 8) & 15;
-			output_set_digit_value(i*10+3, patterns[segment]);
-			segment = (m_player_score[i] >> 12) & 15;
-			output_set_digit_value(i*10+4, patterns[segment]);
-			segment = (m_player_score[i] >> 16) & 15;
-			output_set_digit_value(i*10+5, patterns[segment]);
-		}
-		else
-		{
-			output_set_digit_value(i*10, 0);
-			output_set_digit_value(i*10+1, 0);
-			output_set_digit_value(i*10+2, 0);
-			output_set_digit_value(i*10+3, 0);
-			output_set_digit_value(i*10+4, 0);
-			output_set_digit_value(i*10+5, 0);
-=======
 			output().set_digit_value(i*10, patterns[0]);
 			segment = (m_player_score[i] >> 0) & 15;
 			output().set_digit_value(i*10+1, patterns[segment]);
@@ -477,21 +429,14 @@ WRITE8_MEMBER( allied_state::ic4_b_w )
 			output().set_digit_value(i*10+3, 0);
 			output().set_digit_value(i*10+4, 0);
 			output().set_digit_value(i*10+5, 0);
->>>>>>> upstream/master
 		}
 	}
 
 	// doesn't seem to be a strobe for the credits display
 	segment = (m_player_score[4] >> 0) & 15;
-<<<<<<< HEAD
-	output_set_digit_value(40, patterns[segment]);
-	segment = (m_player_score[4] >> 4) & 15;
-	output_set_digit_value(41, patterns[segment]);
-=======
 	output().set_digit_value(40, patterns[segment]);
 	segment = (m_player_score[4] >> 4) & 15;
 	output().set_digit_value(41, patterns[segment]);
->>>>>>> upstream/master
 
 // PB0-3 - player 1-4 LED - to do
 }
@@ -625,21 +570,12 @@ WRITE8_MEMBER( allied_state::ic8_a_w )
 // PB0-4 = ball 1-5 LED; PB5 = shoot again lamp
 WRITE8_MEMBER( allied_state::ic8_b_w )
 {
-<<<<<<< HEAD
-	output_set_value("led1", !BIT(data, 0));
-	output_set_value("led2", !BIT(data, 1));
-	output_set_value("led3", !BIT(data, 2));
-	output_set_value("led4", !BIT(data, 3));
-	output_set_value("led5", !BIT(data, 4));
-	output_set_value("led6", !BIT(data, 5));
-=======
 	output().set_value("led1", !BIT(data, 0));
 	output().set_value("led2", !BIT(data, 1));
 	output().set_value("led3", !BIT(data, 2));
 	output().set_value("led4", !BIT(data, 3));
 	output().set_value("led5", !BIT(data, 4));
 	output().set_value("led6", !BIT(data, 5));
->>>>>>> upstream/master
 }
 
 // this line not emulated in PinMAME, maybe it isn't needed
@@ -651,11 +587,7 @@ WRITE_LINE_MEMBER( allied_state::ic8_cb2_w )
 
 TIMER_DEVICE_CALLBACK_MEMBER( allied_state::timer_a )
 {
-<<<<<<< HEAD
-	UINT8 data = ioport("X6A")->read();
-=======
 	uint8_t data = ioport("X6A")->read();
->>>>>>> upstream/master
 
 	m_ic8->ca1_w(BIT(data, 4));
 	m_ic8->cb1_w(BIT(data, 5));
@@ -673,17 +605,10 @@ void allied_state::machine_reset()
 	m_ic6a2 = 0;
 	m_ic6b4 = 0;
 	m_ic6b7 = 0;
-<<<<<<< HEAD
-	output_set_value("led0", 1);  //1=off
-}
-
-static MACHINE_CONFIG_START( allied, allied_state )
-=======
 	output().set_value("led0", 1);  //1=off
 }
 
 static MACHINE_CONFIG_START( allied )
->>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6504, 3572549/4)
 	MCFG_CPU_PROGRAM_MAP(allied_map)
@@ -702,13 +627,8 @@ static MACHINE_CONFIG_START( allied )
 	MCFG_PIA_WRITEPB_HANDLER(WRITE8(allied_state, ic1_b_w))
 	//MCFG_PIA_CA2_HANDLER(WRITELINE(allied_state, ic1_ca2_w))
 	//MCFG_PIA_CB2_HANDLER(WRITELINE(allied_state, ic1_cb2_w))
-<<<<<<< HEAD
-	MCFG_PIA_IRQA_HANDLER(DEVWRITELINE("maincpu", m6504_device, irq_line))
-	MCFG_PIA_IRQB_HANDLER(DEVWRITELINE("maincpu", m6504_device, irq_line))
-=======
 	MCFG_PIA_IRQA_HANDLER(INPUTLINE("maincpu", M6504_IRQ_LINE))
 	MCFG_PIA_IRQB_HANDLER(INPUTLINE("maincpu", M6504_IRQ_LINE))
->>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("ic2", PIA6821, 0)
 	MCFG_PIA_READPA_HANDLER(READ8(allied_state, ic2_a_r))
@@ -717,13 +637,8 @@ static MACHINE_CONFIG_START( allied )
 	MCFG_PIA_WRITEPB_HANDLER(WRITE8(allied_state, ic2_b_w))
 	//MCFG_PIA_CA2_HANDLER(WRITELINE(allied_state, ic2_ca2_w))
 	MCFG_PIA_CB2_HANDLER(WRITELINE(allied_state, ic2_cb2_w))
-<<<<<<< HEAD
-	MCFG_PIA_IRQA_HANDLER(DEVWRITELINE("maincpu", m6504_device, irq_line))
-	MCFG_PIA_IRQB_HANDLER(DEVWRITELINE("maincpu", m6504_device, irq_line))
-=======
 	MCFG_PIA_IRQA_HANDLER(INPUTLINE("maincpu", M6504_IRQ_LINE))
 	MCFG_PIA_IRQB_HANDLER(INPUTLINE("maincpu", M6504_IRQ_LINE))
->>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("ic4", PIA6821, 0)
 	MCFG_PIA_READPA_HANDLER(READ8(allied_state, ic4_a_r))
@@ -732,13 +647,8 @@ static MACHINE_CONFIG_START( allied )
 	MCFG_PIA_WRITEPB_HANDLER(WRITE8(allied_state, ic4_b_w))
 	//MCFG_PIA_CA2_HANDLER(WRITELINE(allied_state, ic4_ca2_w))
 	MCFG_PIA_CB2_HANDLER(WRITELINE(allied_state, ic4_cb2_w))
-<<<<<<< HEAD
-	MCFG_PIA_IRQA_HANDLER(DEVWRITELINE("maincpu", m6504_device, irq_line))
-	MCFG_PIA_IRQB_HANDLER(DEVWRITELINE("maincpu", m6504_device, irq_line))
-=======
 	MCFG_PIA_IRQA_HANDLER(INPUTLINE("maincpu", M6504_IRQ_LINE))
 	MCFG_PIA_IRQB_HANDLER(INPUTLINE("maincpu", M6504_IRQ_LINE))
->>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("ic7", PIA6821, 0)
 	MCFG_PIA_READPA_HANDLER(READ8(allied_state, ic7_a_r))
@@ -747,13 +657,8 @@ static MACHINE_CONFIG_START( allied )
 	MCFG_PIA_WRITEPB_HANDLER(WRITE8(allied_state, ic7_b_w))
 	//MCFG_PIA_CA2_HANDLER(WRITELINE(allied_state, ic7_ca2_w))
 	//MCFG_PIA_CB2_HANDLER(WRITELINE(allied_state, ic7_cb2_w))
-<<<<<<< HEAD
-	MCFG_PIA_IRQA_HANDLER(DEVWRITELINE("maincpu", m6504_device, irq_line))
-	MCFG_PIA_IRQB_HANDLER(DEVWRITELINE("maincpu", m6504_device, irq_line))
-=======
 	MCFG_PIA_IRQA_HANDLER(INPUTLINE("maincpu", M6504_IRQ_LINE))
 	MCFG_PIA_IRQB_HANDLER(INPUTLINE("maincpu", M6504_IRQ_LINE))
->>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("ic8", PIA6821, 0)
 	//MCFG_PIA_READPA_HANDLER(READ8(allied_state, ic8_a_r))
@@ -762,13 +667,8 @@ static MACHINE_CONFIG_START( allied )
 	MCFG_PIA_WRITEPB_HANDLER(WRITE8(allied_state, ic8_b_w))
 	//MCFG_PIA_CA2_HANDLER(WRITELINE(allied_state, ic8_ca2_w))
 	MCFG_PIA_CB2_HANDLER(WRITELINE(allied_state, ic8_cb2_w))
-<<<<<<< HEAD
-	MCFG_PIA_IRQA_HANDLER(DEVWRITELINE("maincpu", m6504_device, irq_line))
-	MCFG_PIA_IRQB_HANDLER(DEVWRITELINE("maincpu", m6504_device, irq_line))
-=======
 	MCFG_PIA_IRQA_HANDLER(INPUTLINE("maincpu", M6504_IRQ_LINE))
 	MCFG_PIA_IRQB_HANDLER(INPUTLINE("maincpu", M6504_IRQ_LINE))
->>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("ic3", MOS6530, 3572549/4) // unknown where the ram and i/o is located
 	MCFG_MOS6530_OUT_PB_CB(WRITE8(allied_state, ic3_b_w))
@@ -809,20 +709,6 @@ ROM_END
 #define rom_starshot    rom_allied
 
 
-<<<<<<< HEAD
-GAME(1977,  allied,     0,          allied, allied, driver_device, 0, ROT0, "Allied Leisure", "Allied System", MACHINE_IS_BIOS_ROOT)
-GAME(1977,  suprpick,   allied,     allied, allied, driver_device, 0, ROT0, "Allied Leisure", "Super Picker", MACHINE_MECHANICAL)
-GAME(1977,  royclark,   allied,     allied, allied, driver_device, 0, ROT0, "Fascination Int.", "Roy Clark - The Entertainer", MACHINE_MECHANICAL)
-GAME(1977,  thndbolt,   allied,     allied, allied, driver_device, 0, ROT0, "Allied Leisure", "Thunderbolt", MACHINE_MECHANICAL)
-GAME(1978,  hoedown,    allied,     allied, allied, driver_device, 0, ROT0, "Allied Leisure", "Hoe Down", MACHINE_MECHANICAL)
-GAME(1978,  takefive,   allied,     allied, allied, driver_device, 0, ROT0, "Allied Leisure", "Take Five", MACHINE_MECHANICAL)
-GAME(1978,  heartspd,   allied,     allied, allied, driver_device, 0, ROT0, "Allied Leisure", "Hearts & Spades", MACHINE_MECHANICAL)
-GAME(1978,  foathens,   allied,     allied, allied, driver_device, 0, ROT0, "Allied Leisure", "Flame of Athens", MACHINE_MECHANICAL)
-GAME(1979,  disco79,    allied,     allied, allied, driver_device, 0, ROT0, "Allied Leisure", "Disco '79", MACHINE_MECHANICAL)
-GAME(1979,  erosone,    allied,     allied, allied, driver_device, 0, ROT0, "Fascination Int.", "Eros One", MACHINE_MECHANICAL)
-GAME(1979,  circa33,    allied,     allied, allied, driver_device, 0, ROT0, "Fascination Int.", "Circa 1933", MACHINE_MECHANICAL)
-GAME(1979,  starshot,   allied,     allied, allied, driver_device, 0, ROT0, "Allied Leisure", "Star Shooter", MACHINE_MECHANICAL)
-=======
 GAME(1977,  allied,     0,          allied, allied, allied_state, 0, ROT0, "Allied Leisure",   "Allied System",               MACHINE_IS_BIOS_ROOT | MACHINE_NOT_WORKING )
 GAME(1977,  suprpick,   allied,     allied, allied, allied_state, 0, ROT0, "Allied Leisure",   "Super Picker",                MACHINE_MECHANICAL | MACHINE_NOT_WORKING )
 GAME(1977,  royclark,   allied,     allied, allied, allied_state, 0, ROT0, "Fascination Int.", "Roy Clark - The Entertainer", MACHINE_MECHANICAL | MACHINE_NOT_WORKING )
@@ -835,4 +721,3 @@ GAME(1979,  disco79,    allied,     allied, allied, allied_state, 0, ROT0, "Alli
 GAME(1979,  erosone,    allied,     allied, allied, allied_state, 0, ROT0, "Fascination Int.", "Eros One",                    MACHINE_MECHANICAL | MACHINE_NOT_WORKING )
 GAME(1979,  circa33,    allied,     allied, allied, allied_state, 0, ROT0, "Fascination Int.", "Circa 1933",                  MACHINE_MECHANICAL | MACHINE_NOT_WORKING )
 GAME(1979,  starshot,   allied,     allied, allied, allied_state, 0, ROT0, "Allied Leisure",   "Star Shooter",                MACHINE_MECHANICAL | MACHINE_NOT_WORKING )
->>>>>>> upstream/master

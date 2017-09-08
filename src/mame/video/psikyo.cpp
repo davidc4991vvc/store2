@@ -75,11 +75,7 @@ Offset:
 
 TILE_GET_INFO_MEMBER(psikyo_state::get_tile_info_0)
 {
-<<<<<<< HEAD
-	UINT16 code = ((UINT16 *)m_vram_0.target())[BYTE_XOR_BE(tile_index)];
-=======
 	uint16_t code = ((uint16_t *)m_vram_0.target())[BYTE_XOR_BE(tile_index)];
->>>>>>> upstream/master
 	SET_TILE_INFO_MEMBER(1,
 			(code & 0x1fff) + 0x2000 * m_tilemap_0_bank,
 			(code >> 13) & 7,
@@ -88,11 +84,7 @@ TILE_GET_INFO_MEMBER(psikyo_state::get_tile_info_0)
 
 TILE_GET_INFO_MEMBER(psikyo_state::get_tile_info_1)
 {
-<<<<<<< HEAD
-	UINT16 code = ((UINT16 *)m_vram_1.target())[BYTE_XOR_BE(tile_index)];
-=======
 	uint16_t code = ((uint16_t *)m_vram_1.target())[BYTE_XOR_BE(tile_index)];
->>>>>>> upstream/master
 	SET_TILE_INFO_MEMBER(1,
 			(code & 0x1fff) + 0x2000 * m_tilemap_1_bank,
 			((code >> 13) & 7) + 0x40, // So we only have to decode the gfx once.
@@ -166,20 +158,6 @@ VIDEO_START_MEMBER(psikyo_state,psikyo)
 	/* The Hardware is Capable of Changing the Dimensions of the Tilemaps, its safer to create
 	   the various sized tilemaps now as opposed to later */
 
-<<<<<<< HEAD
-	m_tilemap_0_size0 = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(psikyo_state::get_tile_info_0),this), TILEMAP_SCAN_ROWS, 16, 16, 0x20, 0x80);
-	m_tilemap_0_size1 = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(psikyo_state::get_tile_info_0),this), TILEMAP_SCAN_ROWS, 16, 16, 0x40, 0x40);
-	m_tilemap_0_size2 = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(psikyo_state::get_tile_info_0),this), TILEMAP_SCAN_ROWS, 16, 16, 0x80, 0x20);
-	m_tilemap_0_size3 = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(psikyo_state::get_tile_info_0),this), TILEMAP_SCAN_ROWS, 16, 16, 0x100, 0x10);
-
-	m_tilemap_1_size0 = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(psikyo_state::get_tile_info_1),this), TILEMAP_SCAN_ROWS, 16, 16, 0x20, 0x80);
-	m_tilemap_1_size1 = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(psikyo_state::get_tile_info_1),this), TILEMAP_SCAN_ROWS, 16, 16, 0x40, 0x40);
-	m_tilemap_1_size2 = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(psikyo_state::get_tile_info_1),this), TILEMAP_SCAN_ROWS, 16, 16, 0x80, 0x20);
-	m_tilemap_1_size3 = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(psikyo_state::get_tile_info_1),this), TILEMAP_SCAN_ROWS, 16, 16, 0x100, 0x10);
-
-	m_spritebuf1 = auto_alloc_array(machine(), UINT32, 0x2000 / 4);
-	m_spritebuf2 = auto_alloc_array(machine(), UINT32, 0x2000 / 4);
-=======
 	m_tilemap_0_size0 = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(psikyo_state::get_tile_info_0),this), TILEMAP_SCAN_ROWS, 16, 16, 0x20, 0x80);
 	m_tilemap_0_size1 = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(psikyo_state::get_tile_info_0),this), TILEMAP_SCAN_ROWS, 16, 16, 0x40, 0x40);
 	m_tilemap_0_size2 = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(psikyo_state::get_tile_info_0),this), TILEMAP_SCAN_ROWS, 16, 16, 0x80, 0x20);
@@ -192,7 +170,6 @@ VIDEO_START_MEMBER(psikyo_state,psikyo)
 
 	m_spritebuf1 = std::make_unique<uint32_t[]>(0x2000 / 4);
 	m_spritebuf2 = std::make_unique<uint32_t[]>(0x2000 / 4);
->>>>>>> upstream/master
 
 	m_tilemap_0_size0->set_scroll_rows(0x80 * 16);  // line scrolling
 	m_tilemap_0_size0->set_scroll_cols(1);
@@ -218,13 +195,8 @@ VIDEO_START_MEMBER(psikyo_state,psikyo)
 	m_tilemap_1_size3->set_scroll_rows(0x10 * 16);  // line scrolling
 	m_tilemap_1_size3->set_scroll_cols(1);
 
-<<<<<<< HEAD
-	save_pointer(NAME(m_spritebuf1), 0x2000 / 4);
-	save_pointer(NAME(m_spritebuf2), 0x2000 / 4);
-=======
 	save_pointer(NAME(m_spritebuf1.get()), 0x2000 / 4);
 	save_pointer(NAME(m_spritebuf2.get()), 0x2000 / 4);
->>>>>>> upstream/master
 }
 
 VIDEO_START_MEMBER(psikyo_state,sngkace)
@@ -286,13 +258,8 @@ void psikyo_state::draw_sprites( screen_device &screen, bitmap_ind16 &bitmap, co
 	/* tile layers 0 & 1 have priorities 1 & 2 */
 	static const int pri[] = { 0, 0xfc, 0xff, 0xff };
 	int offs;
-<<<<<<< HEAD
-	UINT16 *spritelist = (UINT16 *)(m_spritebuf2 + 0x1800 / 4);
-	UINT8 *TILES = memregion("spritelut")->base();    // Sprites LUT
-=======
 	uint16_t *spritelist = (uint16_t *)(m_spritebuf2.get() + 0x1800 / 4);
 	uint8_t *TILES = memregion("spritelut")->base();    // Sprites LUT
->>>>>>> upstream/master
 	int TILES_LEN = memregion("spritelut")->bytes();
 
 	int width = m_screen->width();
@@ -304,11 +271,7 @@ void psikyo_state::draw_sprites( screen_device &screen, bitmap_ind16 &bitmap, co
 	/* Look for "end of sprites" marker in the sprites list */
 	for (offs = 0/2 ; offs < (0x800 - 2)/2 ; offs += 2/2)   // skip last "sprite"
 	{
-<<<<<<< HEAD
-		UINT16 sprite = spritelist[BYTE_XOR_BE(offs)];
-=======
 		uint16_t sprite = spritelist[BYTE_XOR_BE(offs)];
->>>>>>> upstream/master
 		if (sprite == 0xffff)
 			break;
 	}
@@ -318,11 +281,7 @@ void psikyo_state::draw_sprites( screen_device &screen, bitmap_ind16 &bitmap, co
 	//  fprintf(stderr, "\n");
 	for ( ; offs >= 0/2 ; offs -= 2/2)
 	{
-<<<<<<< HEAD
-		UINT32 *source;
-=======
 		uint32_t *source;
->>>>>>> upstream/master
 		int sprite;
 
 		int x, y, attr, code, flipx, flipy, nx, ny, zoomx, zoomy;
@@ -416,13 +375,8 @@ void psikyo_state::draw_sprites_bootleg( screen_device &screen, bitmap_ind16 &bi
 	/* tile layers 0 & 1 have priorities 1 & 2 */
 	static const int pri[] = { 0, 0xfc, 0xff, 0xff };
 	int offs;
-<<<<<<< HEAD
-	UINT16 *spritelist = (UINT16 *)(m_spritebuf2 + 0x1800 / 4);
-	UINT8 *TILES = memregion("spritelut")->base();    // Sprites LUT
-=======
 	uint16_t *spritelist = (uint16_t *)(m_spritebuf2.get()+ 0x1800 / 4);
 	uint8_t *TILES = memregion("spritelut")->base();    // Sprites LUT
->>>>>>> upstream/master
 	int TILES_LEN = memregion("spritelut")->bytes();
 
 	int width = m_screen->width();
@@ -435,11 +389,7 @@ void psikyo_state::draw_sprites_bootleg( screen_device &screen, bitmap_ind16 &bi
 	/* Look for "end of sprites" marker in the sprites list */
 	for (offs = 0/2 ; offs < (0x800 - 2)/2 ; offs += 2/2)   // skip last "sprite"
 	{
-<<<<<<< HEAD
-		UINT16 sprite = spritelist[BYTE_XOR_BE(offs)];
-=======
 		uint16_t sprite = spritelist[BYTE_XOR_BE(offs)];
->>>>>>> upstream/master
 		if (sprite == 0xffff)
 			break;
 	}
@@ -449,11 +399,7 @@ void psikyo_state::draw_sprites_bootleg( screen_device &screen, bitmap_ind16 &bi
 	//  fprintf(stderr, "\n");
 	for ( ; offs >= 0/2 ; offs -= 2/2)
 	{
-<<<<<<< HEAD
-		UINT32 *source;
-=======
 		uint32_t *source;
->>>>>>> upstream/master
 		int sprite;
 
 		int x, y, attr, code, flipx, flipy, nx, ny, zoomx, zoomy;
@@ -560,19 +506,6 @@ int psikyo_state::tilemap_width( int size )
 		return 0x10 * 16;
 }
 
-<<<<<<< HEAD
-UINT32 psikyo_state::screen_update_psikyo(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-{
-	int i, layers_ctrl = -1;
-
-	UINT32 tm0size, tm1size;
-
-	UINT32 layer0_scrollx, layer0_scrolly;
-	UINT32 layer1_scrollx, layer1_scrolly;
-	UINT32 layer0_ctrl = m_vregs[0x412 / 4];
-	UINT32 layer1_ctrl = m_vregs[0x416 / 4];
-	UINT32 spr_ctrl = m_spritebuf2[0x1ffe / 4];
-=======
 uint32_t psikyo_state::screen_update_psikyo(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
 	int i, layers_ctrl = -1;
@@ -584,7 +517,6 @@ uint32_t psikyo_state::screen_update_psikyo(screen_device &screen, bitmap_ind16 
 	uint32_t layer0_ctrl = m_vregs[0x412 / 4];
 	uint32_t layer1_ctrl = m_vregs[0x416 / 4];
 	uint32_t spr_ctrl = m_spritebuf2[0x1ffe / 4];
->>>>>>> upstream/master
 
 	tilemap_t *tmptilemap0, *tmptilemap1;
 
@@ -684,17 +616,10 @@ uint32_t psikyo_state::screen_update_psikyo(screen_device &screen, bitmap_ind16 
 		{
 			if (layer0_ctrl & 0x0200)
 				/* per-tile rowscroll */
-<<<<<<< HEAD
-				x0 = ((UINT16 *)m_vregs.target())[BYTE_XOR_BE(0x000/2 + i/16)];
-			else
-				/* per-line rowscroll */
-				x0 = ((UINT16 *)m_vregs.target())[BYTE_XOR_BE(0x000/2 + i)];
-=======
 				x0 = ((uint16_t *)m_vregs.target())[BYTE_XOR_BE(0x000/2 + i/16)];
 			else
 				/* per-line rowscroll */
 				x0 = ((uint16_t *)m_vregs.target())[BYTE_XOR_BE(0x000/2 + i)];
->>>>>>> upstream/master
 		}
 
 
@@ -708,17 +633,10 @@ uint32_t psikyo_state::screen_update_psikyo(screen_device &screen, bitmap_ind16 
 		{
 			if (layer1_ctrl & 0x0200)
 				/* per-tile rowscroll */
-<<<<<<< HEAD
-				x1 = ((UINT16 *)m_vregs.target())[BYTE_XOR_BE(0x200/2 + i/16)];
-			else
-				/* per-line rowscroll */
-				x1 = ((UINT16 *)m_vregs.target())[BYTE_XOR_BE(0x200/2 + i)];
-=======
 				x1 = ((uint16_t *)m_vregs.target())[BYTE_XOR_BE(0x200/2 + i/16)];
 			else
 				/* per-line rowscroll */
 				x1 = ((uint16_t *)m_vregs.target())[BYTE_XOR_BE(0x200/2 + i)];
->>>>>>> upstream/master
 		}
 
 
@@ -761,19 +679,6 @@ uint32_t psikyo_state::screen_update_psikyo(screen_device &screen, bitmap_ind16 
 
 */
 
-<<<<<<< HEAD
-UINT32 psikyo_state::screen_update_psikyo_bootleg(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-{
-	int i, layers_ctrl = -1;
-
-	UINT32 tm0size, tm1size;
-
-	UINT32 layer0_scrollx, layer0_scrolly;
-	UINT32 layer1_scrollx, layer1_scrolly;
-	UINT32 layer0_ctrl = m_vregs[0x412 / 4];
-	UINT32 layer1_ctrl = m_vregs[0x416 / 4];
-	UINT32 spr_ctrl = m_spritebuf2[0x1ffe / 4];
-=======
 uint32_t psikyo_state::screen_update_psikyo_bootleg(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
 	int i, layers_ctrl = -1;
@@ -785,7 +690,6 @@ uint32_t psikyo_state::screen_update_psikyo_bootleg(screen_device &screen, bitma
 	uint32_t layer0_ctrl = m_vregs[0x412 / 4];
 	uint32_t layer1_ctrl = m_vregs[0x416 / 4];
 	uint32_t spr_ctrl = m_spritebuf2[0x1ffe / 4];
->>>>>>> upstream/master
 
 	tilemap_t *tmptilemap0, *tmptilemap1;
 
@@ -885,17 +789,10 @@ uint32_t psikyo_state::screen_update_psikyo_bootleg(screen_device &screen, bitma
 		{
 			if (layer0_ctrl & 0x0200)
 				/* per-tile rowscroll */
-<<<<<<< HEAD
-				x0 = ((UINT16 *)m_vregs.target())[BYTE_XOR_BE(0x000/2 + i/16)];
-			else
-				/* per-line rowscroll */
-				x0 = ((UINT16 *)m_vregs.target())[BYTE_XOR_BE(0x000/2 + i)];
-=======
 				x0 = ((uint16_t *)m_vregs.target())[BYTE_XOR_BE(0x000/2 + i/16)];
 			else
 				/* per-line rowscroll */
 				x0 = ((uint16_t *)m_vregs.target())[BYTE_XOR_BE(0x000/2 + i)];
->>>>>>> upstream/master
 		}
 
 
@@ -909,17 +806,10 @@ uint32_t psikyo_state::screen_update_psikyo_bootleg(screen_device &screen, bitma
 		{
 			if (layer1_ctrl & 0x0200)
 				/* per-tile rowscroll */
-<<<<<<< HEAD
-				x1 = ((UINT16 *)m_vregs.target())[BYTE_XOR_BE(0x200/2 + i/16)];
-			else
-				/* per-line rowscroll */
-				x1 = ((UINT16 *)m_vregs.target())[BYTE_XOR_BE(0x200/2 + i)];
-=======
 				x1 = ((uint16_t *)m_vregs.target())[BYTE_XOR_BE(0x200/2 + i/16)];
 			else
 				/* per-line rowscroll */
 				x1 = ((uint16_t *)m_vregs.target())[BYTE_XOR_BE(0x200/2 + i)];
->>>>>>> upstream/master
 		}
 
 
@@ -955,21 +845,12 @@ uint32_t psikyo_state::screen_update_psikyo_bootleg(screen_device &screen, bitma
 }
 
 
-<<<<<<< HEAD
-void psikyo_state::screen_eof_psikyo(screen_device &screen, bool state)
-=======
 WRITE_LINE_MEMBER(psikyo_state::screen_vblank_psikyo)
->>>>>>> upstream/master
 {
 	// rising edge
 	if (state)
 	{
-<<<<<<< HEAD
-		memcpy(m_spritebuf2, m_spritebuf1, 0x2000);
-		memcpy(m_spritebuf1, m_spriteram, 0x2000);
-=======
 		memcpy(m_spritebuf2.get(), m_spritebuf1.get(), 0x2000);
 		memcpy(m_spritebuf1.get(), m_spriteram, 0x2000);
->>>>>>> upstream/master
 	}
 }

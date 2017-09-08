@@ -34,19 +34,12 @@
 
 #include "emu.h"
 #include "cpu/z80/z80.h"
-<<<<<<< HEAD
-#include "sound/dac.h"
-#include "sound/msm5205.h"
-#include "sound/ay8910.h"
-#include "video/resnet.h"
-=======
 #include "machine/gen_latch.h"
 #include "sound/msm5205.h"
 #include "sound/ay8910.h"
 #include "video/resnet.h"
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 class dacholer_state : public driver_device
 {
@@ -55,14 +48,6 @@ public:
 		: driver_device(mconfig, type, tag),
 		m_maincpu(*this,"maincpu"),
 		m_audiocpu(*this,"audiocpu"),
-<<<<<<< HEAD
-		m_bgvideoram(*this, "bgvideoram"),
-		m_fgvideoram(*this, "fgvideoram"),
-		m_spriteram(*this, "spriteram"),
-		m_msm(*this, "msm"),
-		m_gfxdecode(*this, "gfxdecode"),
-		m_palette(*this, "palette") { }
-=======
 		m_msm(*this, "msm"),
 		m_gfxdecode(*this, "gfxdecode"),
 		m_palette(*this, "palette"),
@@ -70,21 +55,10 @@ public:
 		m_bgvideoram(*this, "bgvideoram"),
 		m_fgvideoram(*this, "fgvideoram"),
 		m_spriteram(*this, "spriteram") { }
->>>>>>> upstream/master
 
 	/* devices */
 	required_device<cpu_device> m_maincpu;
 	required_device<cpu_device> m_audiocpu;
-<<<<<<< HEAD
-	/* memory pointers */
-	required_shared_ptr<UINT8> m_bgvideoram;
-	required_shared_ptr<UINT8> m_fgvideoram;
-	required_shared_ptr<UINT8> m_spriteram;
-
-	optional_device<msm5205_device> m_msm;
-	required_device<gfxdecode_device> m_gfxdecode;
-	required_device<palette_device> m_palette;
-=======
 	optional_device<msm5205_device> m_msm;
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
@@ -94,32 +68,20 @@ public:
 	required_shared_ptr<uint8_t> m_bgvideoram;
 	required_shared_ptr<uint8_t> m_fgvideoram;
 	required_shared_ptr<uint8_t> m_spriteram;
->>>>>>> upstream/master
 
 	/* video-related */
 	tilemap_t  *m_bg_tilemap;
 	tilemap_t  *m_fg_tilemap;
 	int      m_bg_bank;
-<<<<<<< HEAD
-	UINT8    m_scroll_x;
-	UINT8    m_scroll_y;
-=======
 	uint8_t    m_scroll_x;
 	uint8_t    m_scroll_y;
->>>>>>> upstream/master
 
 	/* sound-related */
 	int m_msm_data;
 	int m_msm_toggle;
-<<<<<<< HEAD
-	UINT8 m_snd_interrupt_enable;
-	UINT8 m_music_interrupt_enable;
-	UINT8 m_snd_ack;
-=======
 	uint8_t m_snd_interrupt_enable;
 	uint8_t m_music_interrupt_enable;
 	uint8_t m_snd_ack;
->>>>>>> upstream/master
 
 	DECLARE_WRITE8_MEMBER(bg_scroll_x_w);
 	DECLARE_WRITE8_MEMBER(bg_scroll_y_w);
@@ -136,19 +98,11 @@ public:
 	DECLARE_CUSTOM_INPUT_MEMBER(snd_ack_r);
 	TILE_GET_INFO_MEMBER(get_bg_tile_info);
 	TILE_GET_INFO_MEMBER(get_fg_tile_info);
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void machine_reset();
-	virtual void video_start();
-	DECLARE_PALETTE_INIT(dacholer);
-	UINT32 screen_update_dacholer(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
 	virtual void video_start() override;
 	DECLARE_PALETTE_INIT(dacholer);
 	uint32_t screen_update_dacholer(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	INTERRUPT_GEN_MEMBER(sound_irq);
 	void draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect );
 	DECLARE_WRITE_LINE_MEMBER(adpcm_int);
@@ -166,13 +120,8 @@ TILE_GET_INFO_MEMBER(dacholer_state::get_fg_tile_info)
 
 void dacholer_state::video_start()
 {
-<<<<<<< HEAD
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(dacholer_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
-	m_fg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(dacholer_state::get_fg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
-=======
 	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(dacholer_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
 	m_fg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(dacholer_state::get_fg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
->>>>>>> upstream/master
 
 	m_fg_tilemap->set_transparent_pen(0);
 }
@@ -218,11 +167,7 @@ void dacholer_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &clipre
 	}
 }
 
-<<<<<<< HEAD
-UINT32 dacholer_state::screen_update_dacholer(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t dacholer_state::screen_update_dacholer(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	if (flip_screen())
 	{
@@ -267,28 +212,16 @@ WRITE8_MEMBER(dacholer_state::bg_bank_w)
 
 WRITE8_MEMBER(dacholer_state::coins_w)
 {
-<<<<<<< HEAD
-	coin_counter_w(machine(), 0, data & 1);
-	coin_counter_w(machine(), 1, data & 2);
-
-	set_led_status(machine(), 0, data & 4);
-	set_led_status(machine(), 1, data & 8);
-=======
 	machine().bookkeeping().coin_counter_w(0, data & 1);
 	machine().bookkeeping().coin_counter_w(1, data & 2);
 
 	output().set_led_value(0, data & 4);
 	output().set_led_value(1, data & 8);
->>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(dacholer_state::snd_w)
 {
-<<<<<<< HEAD
-	soundlatch_byte_w(space, offset, data);
-=======
 	m_soundlatch->write(space, offset, data);
->>>>>>> upstream/master
 	m_audiocpu->set_input_line(INPUT_LINE_NMI, PULSE_LINE);
 }
 
@@ -369,11 +302,7 @@ WRITE8_MEMBER(dacholer_state::music_irq_w)
 
 static ADDRESS_MAP_START( snd_io_map, AS_IO, 8, dacholer_state )
 	ADDRESS_MAP_GLOBAL_MASK(0xff)
-<<<<<<< HEAD
-	AM_RANGE(0x00, 0x00) AM_READWRITE(soundlatch_byte_r, soundlatch_clear_byte_w )
-=======
 	AM_RANGE(0x00, 0x00) AM_DEVREADWRITE("soundlatch", generic_latch_8_device, read, clear_w)
->>>>>>> upstream/master
 	AM_RANGE(0x04, 0x04) AM_WRITE(music_irq_w)
 	AM_RANGE(0x08, 0x08) AM_WRITE(snd_irq_w)
 	AM_RANGE(0x0c, 0x0c) AM_WRITE(snd_ack_w)
@@ -385,11 +314,7 @@ ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( itaten_snd_io_map, AS_IO, 8, dacholer_state )
 	ADDRESS_MAP_GLOBAL_MASK(0xff)
-<<<<<<< HEAD
-	AM_RANGE(0x00, 0x00) AM_READWRITE(soundlatch_byte_r, soundlatch_clear_byte_w )
-=======
 	AM_RANGE(0x00, 0x00) AM_DEVREADWRITE("soundlatch", generic_latch_8_device, read, clear_w)
->>>>>>> upstream/master
 	AM_RANGE(0x86, 0x87) AM_DEVWRITE("ay1", ay8910_device, data_address_w)
 	AM_RANGE(0x8a, 0x8b) AM_DEVWRITE("ay2", ay8910_device, data_address_w)
 	AM_RANGE(0x8e, 0x8f) AM_DEVWRITE("ay3", ay8910_device, data_address_w)
@@ -438,11 +363,7 @@ static INPUT_PORTS_START( dacholer )
 	PORT_DIPSETTING(    0x04, DEF_STR( 5C_1C ) )
 	PORT_DIPSETTING(    0x08, DEF_STR( 4C_1C ) )
 	PORT_DIPSETTING(    0x0c, DEF_STR( 1C_1C ) )
-<<<<<<< HEAD
-	PORT_BIT( 0x10, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, dacholer_state,snd_ack_r, NULL)
-=======
 	PORT_BIT( 0x10, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, dacholer_state,snd_ack_r, nullptr)
->>>>>>> upstream/master
 
 	PORT_START("DSWB")
 	PORT_DIPNAME( 0x03, 0x03, DEF_STR( Lives ) )            /* table at 0x0a9c */
@@ -688,11 +609,7 @@ void dacholer_state::machine_reset()
 /* guess: use the same resistor values as Crazy Climber (needs checking on the real HW) */
 PALETTE_INIT_MEMBER(dacholer_state, dacholer)
 {
-<<<<<<< HEAD
-	const UINT8 *color_prom = memregion("proms")->base();
-=======
 	const uint8_t *color_prom = memregion("proms")->base();
->>>>>>> upstream/master
 	static const int resistances_rg[3] = { 1000, 470, 220 };
 	static const int resistances_b [2] = { 470, 220 };
 	double weights_rg[3], weights_b[2];
@@ -702,11 +619,7 @@ PALETTE_INIT_MEMBER(dacholer_state, dacholer)
 	compute_resistor_weights(0, 255, -1.0,
 			3, resistances_rg, weights_rg, 0, 0,
 			2, resistances_b,  weights_b,  0, 0,
-<<<<<<< HEAD
-			0, 0, 0, 0, 0);
-=======
 			0, nullptr, nullptr, 0, 0);
->>>>>>> upstream/master
 
 	for (i = 0;i < palette.entries(); i++)
 	{
@@ -735,11 +648,7 @@ PALETTE_INIT_MEMBER(dacholer_state, dacholer)
 }
 
 /* note: clocks are taken from itaten sound reference recording */
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( dacholer, dacholer_state )
-=======
 static MACHINE_CONFIG_START( dacholer )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, XTAL_16MHz/4)  /* ? */
@@ -770,11 +679,8 @@ static MACHINE_CONFIG_START( dacholer )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 
->>>>>>> upstream/master
 	MCFG_SOUND_ADD("ay1", AY8910, XTAL_19_968MHz/16)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.15)
 
@@ -786,11 +692,7 @@ static MACHINE_CONFIG_START( dacholer )
 
 	MCFG_SOUND_ADD("msm", MSM5205, XTAL_384kHz)
 	MCFG_MSM5205_VCLK_CB(WRITELINE(dacholer_state, adpcm_int))          /* interrupt function */
-<<<<<<< HEAD
-	MCFG_MSM5205_PRESCALER_SELECTOR(MSM5205_S96_4B)  /* 1 / 96 = 3906.25Hz playback  - guess */
-=======
 	MCFG_MSM5205_PRESCALER_SELECTOR(S96_4B)  /* 1 / 96 = 3906.25Hz playback  - guess */
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.30)
 MACHINE_CONFIG_END
 
@@ -945,12 +847,6 @@ ROM_START( itaten )
 ROM_END
 
 
-<<<<<<< HEAD
-GAME( 1983, dacholer, 0, dacholer, dacholer, driver_device, 0, ROT0, "Nichibutsu",         "Dacholer",               MACHINE_WRONG_COLORS | MACHINE_SUPPORTS_SAVE )
-GAME( 1983, kickboy,  0, dacholer, kickboy, driver_device,  0, ROT0, "Nichibutsu",         "Kick Boy",               MACHINE_SUPPORTS_SAVE )
-GAME( 1984, itaten,   0, itaten,   itaten, driver_device,   0, ROT0, "Nichibutsu / Alice", "Itazura Tenshi (Japan)", MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1983, dacholer, 0, dacholer, dacholer, dacholer_state, 0, ROT0, "Nichibutsu",         "Dacholer",               MACHINE_WRONG_COLORS | MACHINE_SUPPORTS_SAVE )
 GAME( 1983, kickboy,  0, dacholer, kickboy,  dacholer_state, 0, ROT0, "Nichibutsu",         "Kick Boy",               MACHINE_SUPPORTS_SAVE )
 GAME( 1984, itaten,   0, itaten,   itaten,   dacholer_state, 0, ROT0, "Nichibutsu / Alice", "Itazura Tenshi (Japan)", MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

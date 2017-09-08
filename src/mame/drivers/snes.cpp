@@ -27,29 +27,19 @@
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "audio/snes_snd.h"
-#include "cpu/spc700/spc700.h"
-#include "includes/snes.h"
-=======
 #include "includes/snes.h"
 #include "audio/snes_snd.h"
 
 #include "cpu/spc700/spc700.h"
->>>>>>> upstream/master
 #include "machine/snescx4.h"
 
 #include "bus/snes/snes_slot.h"
 #include "bus/snes/snes_carts.h"
 #include "bus/snes_ctrl/ctrl.h"
-<<<<<<< HEAD
-#include "softlist.h"
-=======
 
 #include "softlist.h"
 #include "speaker.h"
 
->>>>>>> upstream/master
 
 class snes_console_state : public snes_state
 {
@@ -100,24 +90,10 @@ public:
 
 	DECLARE_READ8_MEMBER( spc_ram_100_r );
 	DECLARE_WRITE8_MEMBER( spc_ram_100_w );
-<<<<<<< HEAD
-	TIMER_CALLBACK_MEMBER( lightgun_tick );
-=======
->>>>>>> upstream/master
 
 	// input related
 	SNESCTRL_ONSCREEN_CB(onscreen_cb);
 	SNESCTRL_GUNLATCH_CB(gun_latch_cb);
-<<<<<<< HEAD
-	virtual DECLARE_WRITE8_MEMBER(io_read);
-	virtual UINT8 oldjoy1_read(int latched);
-	virtual UINT8 oldjoy2_read(int latched);
-	virtual void write_joy_latch(UINT8 data);
-	virtual void wrio_write(UINT8 data);
-
-	virtual void machine_start();
-	virtual void machine_reset();
-=======
 	virtual DECLARE_WRITE8_MEMBER(io_read) override;
 	virtual uint8_t oldjoy1_read(int latched) override;
 	virtual uint8_t oldjoy2_read(int latched) override;
@@ -126,7 +102,6 @@ public:
 
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
->>>>>>> upstream/master
 	int m_type;
 	required_device<snes_control_port_device> m_ctrl1;
 	required_device<snes_control_port_device> m_ctrl2;
@@ -167,11 +142,7 @@ WRITE8_MEMBER(snes_console_state::spc_ram_100_w )
 
 READ8_MEMBER( snes_console_state::snes20_hi_r )
 {
-<<<<<<< HEAD
-	UINT16 address = offset & 0xffff;
-=======
 	uint16_t address = offset & 0xffff;
->>>>>>> upstream/master
 
 	// take care of add-on IO
 	if ((m_cartslot->get_type() == SNES_ST010 || m_cartslot->get_type() == SNES_ST011)
@@ -228,11 +199,7 @@ READ8_MEMBER( snes_console_state::snes20_hi_r )
 
 WRITE8_MEMBER( snes_console_state::snes20_hi_w )
 {
-<<<<<<< HEAD
-	UINT16 address = offset & 0xffff;
-=======
 	uint16_t address = offset & 0xffff;
->>>>>>> upstream/master
 
 	// take care of add-on IO
 	if ((m_cartslot->get_type() == SNES_ST010 || m_cartslot->get_type() == SNES_ST011)
@@ -270,11 +237,7 @@ WRITE8_MEMBER( snes_console_state::snes20_hi_w )
 
 READ8_MEMBER( snes_console_state::snes20_lo_r )
 {
-<<<<<<< HEAD
-	UINT16 address = offset & 0xffff;
-=======
 	uint16_t address = offset & 0xffff;
->>>>>>> upstream/master
 
 	// take care of add-on IO
 	if ((m_cartslot->get_type() == SNES_ST010 /*|| m_cartslot->get_type() == SNES_ST011*/) // why does this break moritash?
@@ -346,11 +309,7 @@ WRITE8_MEMBER( snes_console_state::snes20_lo_w )
 
 READ8_MEMBER( snes_console_state::snes21_lo_r )
 {
-<<<<<<< HEAD
-	UINT16 address = offset & 0xffff;
-=======
 	uint16_t address = offset & 0xffff;
->>>>>>> upstream/master
 
 	if (offset < 0x400000 && address < 0x8000)
 	{
@@ -384,11 +343,7 @@ READ8_MEMBER( snes_console_state::snes21_lo_r )
 
 WRITE8_MEMBER( snes_console_state::snes21_lo_w )
 {
-<<<<<<< HEAD
-	UINT16 address = offset & 0xffff;
-=======
 	uint16_t address = offset & 0xffff;
->>>>>>> upstream/master
 	if (offset < 0x400000 && address < 0x8000)
 	{
 		if (address < 0x2000)
@@ -416,11 +371,7 @@ WRITE8_MEMBER( snes_console_state::snes21_lo_w )
 
 READ8_MEMBER( snes_console_state::snes21_hi_r )
 {
-<<<<<<< HEAD
-	UINT16 address = offset & 0xffff;
-=======
 	uint16_t address = offset & 0xffff;
->>>>>>> upstream/master
 
 	if (offset < 0x400000 && address < 0x8000)
 	{
@@ -454,11 +405,7 @@ READ8_MEMBER( snes_console_state::snes21_hi_r )
 
 WRITE8_MEMBER( snes_console_state::snes21_hi_w )
 {
-<<<<<<< HEAD
-	UINT16 address = offset & 0xffff;
-=======
 	uint16_t address = offset & 0xffff;
->>>>>>> upstream/master
 	if (offset < 0x400000 && address < 0x8000)
 	{
 		if (address < 0x2000)
@@ -490,11 +437,7 @@ WRITE8_MEMBER( snes_console_state::snes21_hi_w )
 
 READ8_MEMBER( snes_console_state::snessfx_hi_r )
 {
-<<<<<<< HEAD
-	UINT16 address = offset & 0xffff;
-=======
 	uint16_t address = offset & 0xffff;
->>>>>>> upstream/master
 
 	if (offset < 0x400000)
 	{
@@ -520,11 +463,7 @@ READ8_MEMBER( snes_console_state::snessfx_hi_r )
 
 READ8_MEMBER( snes_console_state::snessfx_lo_r )
 {
-<<<<<<< HEAD
-	UINT16 address = offset & 0xffff;
-=======
 	uint16_t address = offset & 0xffff;
->>>>>>> upstream/master
 
 	if (offset < 0x400000)
 	{
@@ -550,11 +489,7 @@ READ8_MEMBER( snes_console_state::snessfx_lo_r )
 
 WRITE8_MEMBER( snes_console_state::snessfx_hi_w )
 {
-<<<<<<< HEAD
-	UINT16 address = offset & 0xffff;
-=======
 	uint16_t address = offset & 0xffff;
->>>>>>> upstream/master
 	if (offset < 0x400000)
 	{
 		if (address < 0x2000)
@@ -584,11 +519,7 @@ WRITE8_MEMBER( snes_console_state::snessfx_lo_w )
 
 READ8_MEMBER( snes_console_state::snessa1_hi_r )
 {
-<<<<<<< HEAD
-	UINT16 address = offset & 0xffff;
-=======
 	uint16_t address = offset & 0xffff;
->>>>>>> upstream/master
 
 	if (offset < 0x400000)
 	{
@@ -614,11 +545,7 @@ READ8_MEMBER( snes_console_state::snessa1_hi_r )
 
 READ8_MEMBER( snes_console_state::snessa1_lo_r )
 {
-<<<<<<< HEAD
-	UINT16 address = offset & 0xffff;
-=======
 	uint16_t address = offset & 0xffff;
->>>>>>> upstream/master
 
 	if (offset < 0x400000)
 	{
@@ -646,11 +573,7 @@ READ8_MEMBER( snes_console_state::snessa1_lo_r )
 
 WRITE8_MEMBER( snes_console_state::snessa1_hi_w )
 {
-<<<<<<< HEAD
-	UINT16 address = offset & 0xffff;
-=======
 	uint16_t address = offset & 0xffff;
->>>>>>> upstream/master
 	if (offset < 0x400000)
 	{
 		if (address < 0x2000)
@@ -683,11 +606,7 @@ WRITE8_MEMBER( snes_console_state::snessa1_lo_w )
 
 READ8_MEMBER( snes_console_state::snes7110_hi_r )
 {
-<<<<<<< HEAD
-	UINT16 address = offset & 0xffff;
-=======
 	uint16_t address = offset & 0xffff;
->>>>>>> upstream/master
 
 	if (offset < 0x400000)
 	{
@@ -695,11 +614,7 @@ READ8_MEMBER( snes_console_state::snes7110_hi_r )
 			return space.read_byte(0x7e0000 + address);
 		else if (address < 0x6000)
 		{
-<<<<<<< HEAD
-			UINT16 limit = (m_cartslot->get_type() == SNES_SPC7110_RTC) ? 0x4843 : 0x4840;
-=======
 			uint16_t limit = (m_cartslot->get_type() == SNES_SPC7110_RTC) ? 0x4843 : 0x4840;
->>>>>>> upstream/master
 			if (address >= 0x4800 && address < limit)
 				return m_cartslot->chip_read(space, address);
 
@@ -720,11 +635,7 @@ READ8_MEMBER( snes_console_state::snes7110_hi_r )
 
 READ8_MEMBER( snes_console_state::snes7110_lo_r )
 {
-<<<<<<< HEAD
-	UINT16 address = offset & 0xffff;
-=======
 	uint16_t address = offset & 0xffff;
->>>>>>> upstream/master
 
 	if (offset < 0x400000)
 	{
@@ -732,11 +643,7 @@ READ8_MEMBER( snes_console_state::snes7110_lo_r )
 			return space.read_byte(0x7e0000 + address);
 		else if (address < 0x6000)
 		{
-<<<<<<< HEAD
-			UINT16 limit = (m_cartslot->get_type() == SNES_SPC7110_RTC) ? 0x4843 : 0x4840;
-=======
 			uint16_t limit = (m_cartslot->get_type() == SNES_SPC7110_RTC) ? 0x4843 : 0x4840;
->>>>>>> upstream/master
 			if (address >= 0x4800 && address < limit)
 				return m_cartslot->chip_read(space, address);
 
@@ -765,22 +672,14 @@ WRITE8_MEMBER( snes_console_state::snes7110_hi_w )
 
 WRITE8_MEMBER( snes_console_state::snes7110_lo_w )
 {
-<<<<<<< HEAD
-	UINT16 address = offset & 0xffff;
-=======
 	uint16_t address = offset & 0xffff;
->>>>>>> upstream/master
 	if (offset < 0x400000)
 	{
 		if (address < 0x2000)
 			space.write_byte(0x7e0000 + address, data);
 		else if (address < 0x6000)
 		{
-<<<<<<< HEAD
-			UINT16 limit = (m_cartslot->get_type() == SNES_SPC7110_RTC) ? 0x4843 : 0x4840;
-=======
 			uint16_t limit = (m_cartslot->get_type() == SNES_SPC7110_RTC) ? 0x4843 : 0x4840;
->>>>>>> upstream/master
 			if (address >= 0x4800 && address < limit)
 			{
 				m_cartslot->chip_write(space, address, data);
@@ -805,11 +704,7 @@ WRITE8_MEMBER( snes_console_state::snes7110_lo_w )
 
 READ8_MEMBER( snes_console_state::snessdd1_lo_r )
 {
-<<<<<<< HEAD
-	UINT16 address = offset & 0xffff;
-=======
 	uint16_t address = offset & 0xffff;
->>>>>>> upstream/master
 
 	if (offset < 0x400000)
 	{
@@ -848,11 +743,7 @@ WRITE8_MEMBER( snes_console_state::snessdd1_lo_w )
 
 WRITE8_MEMBER( snes_console_state::snessdd1_hi_w )
 {
-<<<<<<< HEAD
-	UINT16 address = offset & 0xffff;
-=======
 	uint16_t address = offset & 0xffff;
->>>>>>> upstream/master
 	if (offset < 0x400000)
 	{
 		if (address < 0x2000)
@@ -883,11 +774,7 @@ WRITE8_MEMBER( snes_console_state::snessdd1_hi_w )
 
 READ8_MEMBER( snes_console_state::snesbsx_hi_r )
 {
-<<<<<<< HEAD
-	UINT16 address = offset & 0xffff;
-=======
 	uint16_t address = offset & 0xffff;
->>>>>>> upstream/master
 
 	if (offset < 0x400000)
 	{
@@ -916,11 +803,7 @@ READ8_MEMBER( snes_console_state::snesbsx_hi_r )
 
 WRITE8_MEMBER( snes_console_state::snesbsx_hi_w )
 {
-<<<<<<< HEAD
-	UINT16 address = offset & 0xffff;
-=======
 	uint16_t address = offset & 0xffff;
->>>>>>> upstream/master
 	if (offset < 0x400000)
 	{
 		if (address < 0x2000)
@@ -952,11 +835,7 @@ WRITE8_MEMBER( snes_console_state::snesbsx_hi_w )
 
 READ8_MEMBER( snes_console_state::snesbsx_lo_r )
 {
-<<<<<<< HEAD
-	UINT16 address = offset & 0xffff;
-=======
 	uint16_t address = offset & 0xffff;
->>>>>>> upstream/master
 
 	if (offset < 0x400000)
 	{
@@ -995,11 +874,7 @@ WRITE8_MEMBER( snes_console_state::snesbsx_lo_w )
 
 READ8_MEMBER( snes_console_state::snessgb_hi_r )
 {
-<<<<<<< HEAD
-	UINT16 address = offset & 0xffff;
-=======
 	uint16_t address = offset & 0xffff;
->>>>>>> upstream/master
 
 	if (offset < 0x400000)
 	{
@@ -1025,11 +900,7 @@ READ8_MEMBER( snes_console_state::snessgb_lo_r )
 
 WRITE8_MEMBER( snes_console_state::snessgb_hi_w )
 {
-<<<<<<< HEAD
-	UINT16 address = offset & 0xffff;
-=======
 	uint16_t address = offset & 0xffff;
->>>>>>> upstream/master
 	if (offset < 0x400000)
 	{
 		if (address < 0x2000)
@@ -1052,11 +923,7 @@ WRITE8_MEMBER( snes_console_state::snessgb_lo_w )
 
 READ8_MEMBER( snes_console_state::pfest94_hi_r )
 {
-<<<<<<< HEAD
-	UINT16 address = offset & 0xffff;
-=======
 	uint16_t address = offset & 0xffff;
->>>>>>> upstream/master
 
 	if (offset < 0x400000)
 	{
@@ -1083,11 +950,7 @@ READ8_MEMBER( snes_console_state::pfest94_hi_r )
 
 WRITE8_MEMBER( snes_console_state::pfest94_hi_w )
 {
-<<<<<<< HEAD
-	UINT16 address = offset & 0xffff;
-=======
 	uint16_t address = offset & 0xffff;
->>>>>>> upstream/master
 	if (offset < 0x400000)
 	{
 		if (address < 0x2000)
@@ -1108,11 +971,7 @@ WRITE8_MEMBER( snes_console_state::pfest94_hi_w )
 
 READ8_MEMBER( snes_console_state::pfest94_lo_r )
 {
-<<<<<<< HEAD
-	UINT16 address = offset & 0xffff;
-=======
 	uint16_t address = offset & 0xffff;
->>>>>>> upstream/master
 
 	if (offset < 0x400000)
 	{
@@ -1240,11 +1099,7 @@ WRITE8_MEMBER(snes_console_state::io_read)
 	// is automatic reading on? if so, read 16bits from oldjoy1/2
 	if (SNES_CPU_REG(NMITIMEN) & 1)
 	{
-<<<<<<< HEAD
-		UINT16 joy1 = 0, joy2 = 0, joy3 = 0, joy4 = 0;
-=======
 		uint16_t joy1 = 0, joy2 = 0, joy3 = 0, joy4 = 0;
->>>>>>> upstream/master
 		m_ctrl1->port_poll();
 		m_ctrl2->port_poll();
 
@@ -1267,49 +1122,29 @@ WRITE8_MEMBER(snes_console_state::io_read)
 	}
 }
 
-<<<<<<< HEAD
-UINT8 snes_console_state::oldjoy1_read(int latched)
-{
-	UINT8 ret = 0;
-=======
 uint8_t snes_console_state::oldjoy1_read(int latched)
 {
 	uint8_t ret = 0;
->>>>>>> upstream/master
 	ret |= m_ctrl1->read_pin4();
 	ret |= (m_ctrl1->read_pin5() << 1);
 	return ret;
 }
 
-<<<<<<< HEAD
-UINT8 snes_console_state::oldjoy2_read(int latched)
-{
-	UINT8 ret = 0;
-=======
 uint8_t snes_console_state::oldjoy2_read(int latched)
 {
 	uint8_t ret = 0;
->>>>>>> upstream/master
 	ret |= m_ctrl2->read_pin4();
 	ret |= (m_ctrl2->read_pin5() << 1);
 	return ret;
 }
 
-<<<<<<< HEAD
-void snes_console_state::write_joy_latch(UINT8 data)
-=======
 void snes_console_state::write_joy_latch(uint8_t data)
->>>>>>> upstream/master
 {
 	m_ctrl1->write_strobe(data);
 	m_ctrl2->write_strobe(data);
 }
 
-<<<<<<< HEAD
-void snes_console_state::wrio_write(UINT8 data)
-=======
 void snes_console_state::wrio_write(uint8_t data)
->>>>>>> upstream/master
 {
 	if (!(SNES_CPU_REG(WRIO) & 0x80) && (data & 0x80))
 	{
@@ -1332,13 +1167,8 @@ SNESCTRL_GUNLATCH_CB(snes_console_state::gun_latch_cb)
 
 	if (y < 0)
 		y = 0;
-<<<<<<< HEAD
-	if (y > (m_ppu->m_beam.last_visible_line - 1))
-		y = m_ppu->m_beam.last_visible_line - 1;
-=======
 	if (y > (m_ppu->last_visible_line() - 1))
 		y = m_ppu->last_visible_line() - 1;
->>>>>>> upstream/master
 
 //  m_ppu->set_latch_hv(x, y);  // it would be more accurate to write twice to WRIO register, first with bit7 = 0 and then with bit7 = 1
 	m_ppu->set_latch_hv(m_ppu->current_x(), m_ppu->current_y());
@@ -1348,11 +1178,7 @@ SNESCTRL_ONSCREEN_CB(snes_console_state::onscreen_cb)
 {
 	// these are the theoretical boundaries, but we currently are always onscreen due to the
 	// way IPT_LIGHTGUNs work... investigate more on this!
-<<<<<<< HEAD
-	if (x < 0 || x >= SNES_SCR_WIDTH || y < 0 || y >= m_ppu->m_beam.last_visible_line)
-=======
 	if (x < 0 || x >= SNES_SCR_WIDTH || y < 0 || y >= m_ppu->last_visible_line())
->>>>>>> upstream/master
 		return false;
 	else
 		return true;
@@ -1399,22 +1225,6 @@ void snes_console_state::machine_start()
 				m_maincpu->set_5a22_map();
 				break;
 			case SNES_DSP:
-<<<<<<< HEAD
-				m_maincpu->space(AS_PROGRAM).install_read_handler(0x208000, 0x20ffff, 0, 0x9f0000, read8_delegate(FUNC(base_sns_cart_slot_device::chip_read),(base_sns_cart_slot_device*)m_cartslot));
-				m_maincpu->space(AS_PROGRAM).install_write_handler(0x208000, 0x20ffff, 0, 0x9f0000, write8_delegate(FUNC(base_sns_cart_slot_device::chip_write),(base_sns_cart_slot_device*)m_cartslot));
-				break;
-			case SNES_DSP_2MB:
-				m_maincpu->space(AS_PROGRAM).install_read_handler(0x600000, 0x607fff, 0, 0x8f0000, read8_delegate(FUNC(base_sns_cart_slot_device::chip_read),(base_sns_cart_slot_device*)m_cartslot));
-				m_maincpu->space(AS_PROGRAM).install_write_handler(0x600000, 0x607fff, 0, 0x8f0000, write8_delegate(FUNC(base_sns_cart_slot_device::chip_write),(base_sns_cart_slot_device*)m_cartslot));
-				break;
-			case SNES_DSP4:
-				m_maincpu->space(AS_PROGRAM).install_read_handler(0x308000, 0x30ffff, 0, 0x8f0000, read8_delegate(FUNC(base_sns_cart_slot_device::chip_read),(base_sns_cart_slot_device*)m_cartslot));
-				m_maincpu->space(AS_PROGRAM).install_write_handler(0x308000, 0x30ffff, 0, 0x8f0000, write8_delegate(FUNC(base_sns_cart_slot_device::chip_write),(base_sns_cart_slot_device*)m_cartslot));
-				break;
-			case SNES_OBC1:
-				m_maincpu->space(AS_PROGRAM).install_read_handler(0x006000, 0x007fff, 0, 0xbf0000, read8_delegate(FUNC(base_sns_cart_slot_device::chip_read),(base_sns_cart_slot_device*)m_cartslot));
-				m_maincpu->space(AS_PROGRAM).install_write_handler(0x006000, 0x007fff, 0, 0xbf0000, write8_delegate(FUNC(base_sns_cart_slot_device::chip_write),(base_sns_cart_slot_device*)m_cartslot));
-=======
 				m_maincpu->space(AS_PROGRAM).install_read_handler(0x208000, 0x20ffff, 0, 0x9f0000, 0, read8_delegate(FUNC(base_sns_cart_slot_device::chip_read),(base_sns_cart_slot_device*)m_cartslot));
 				m_maincpu->space(AS_PROGRAM).install_write_handler(0x208000, 0x20ffff, 0, 0x9f0000, 0, write8_delegate(FUNC(base_sns_cart_slot_device::chip_write),(base_sns_cart_slot_device*)m_cartslot));
 				break;
@@ -1429,7 +1239,6 @@ void snes_console_state::machine_start()
 			case SNES_OBC1:
 				m_maincpu->space(AS_PROGRAM).install_read_handler(0x006000, 0x007fff, 0, 0xbf0000, 0, read8_delegate(FUNC(base_sns_cart_slot_device::chip_read),(base_sns_cart_slot_device*)m_cartslot));
 				m_maincpu->space(AS_PROGRAM).install_write_handler(0x006000, 0x007fff, 0, 0xbf0000, 0, write8_delegate(FUNC(base_sns_cart_slot_device::chip_write),(base_sns_cart_slot_device*)m_cartslot));
->>>>>>> upstream/master
 				break;
 			case SNES_SFX:
 				m_maincpu->space(AS_PROGRAM).install_readwrite_handler(0x000000, 0x7dffff, read8_delegate(FUNC(snes_console_state::snessfx_lo_r),this), write8_delegate(FUNC(snes_console_state::snessfx_lo_w),this));
@@ -1456,25 +1265,15 @@ void snes_console_state::machine_start()
 			case SNES_DSP_MODE21:
 				m_maincpu->space(AS_PROGRAM).install_readwrite_handler(0x000000, 0x7dffff, read8_delegate(FUNC(snes_console_state::snes21_lo_r),this), write8_delegate(FUNC(snes_console_state::snes21_lo_w),this));
 				m_maincpu->space(AS_PROGRAM).install_readwrite_handler(0x800000, 0xffffff, read8_delegate(FUNC(snes_console_state::snes21_hi_r),this), write8_delegate(FUNC(snes_console_state::snes21_hi_w),this));
-<<<<<<< HEAD
-				m_maincpu->space(AS_PROGRAM).install_read_handler(0x006000, 0x007fff, 0, 0x9f0000, read8_delegate(FUNC(base_sns_cart_slot_device::chip_read),(base_sns_cart_slot_device*)m_cartslot));
-				m_maincpu->space(AS_PROGRAM).install_write_handler(0x006000, 0x007fff, 0, 0x9f0000, write8_delegate(FUNC(base_sns_cart_slot_device::chip_write),(base_sns_cart_slot_device*)m_cartslot));
-=======
 				m_maincpu->space(AS_PROGRAM).install_read_handler(0x006000, 0x007fff, 0, 0x9f0000, 0, read8_delegate(FUNC(base_sns_cart_slot_device::chip_read),(base_sns_cart_slot_device*)m_cartslot));
 				m_maincpu->space(AS_PROGRAM).install_write_handler(0x006000, 0x007fff, 0, 0x9f0000, 0, write8_delegate(FUNC(base_sns_cart_slot_device::chip_write),(base_sns_cart_slot_device*)m_cartslot));
->>>>>>> upstream/master
 				m_maincpu->set_5a22_map();
 				break;
 			case SNES_SRTC:
 				m_maincpu->space(AS_PROGRAM).install_readwrite_handler(0x000000, 0x7dffff, read8_delegate(FUNC(snes_console_state::snes21_lo_r),this), write8_delegate(FUNC(snes_console_state::snes21_lo_w),this));
 				m_maincpu->space(AS_PROGRAM).install_readwrite_handler(0x800000, 0xffffff, read8_delegate(FUNC(snes_console_state::snes21_hi_r),this), write8_delegate(FUNC(snes_console_state::snes21_hi_w),this));
-<<<<<<< HEAD
-				m_maincpu->space(AS_PROGRAM).install_read_handler(0x002800, 0x002800, 0, 0xbf0000, read8_delegate(FUNC(base_sns_cart_slot_device::chip_read),(base_sns_cart_slot_device*)m_cartslot));
-				m_maincpu->space(AS_PROGRAM).install_write_handler(0x002801, 0x002801, 0, 0xbf0000, write8_delegate(FUNC(base_sns_cart_slot_device::chip_write),(base_sns_cart_slot_device*)m_cartslot));
-=======
 				m_maincpu->space(AS_PROGRAM).install_read_handler(0x002800, 0x002800, 0, 0xbf0000, 0, read8_delegate(FUNC(base_sns_cart_slot_device::chip_read),(base_sns_cart_slot_device*)m_cartslot));
 				m_maincpu->space(AS_PROGRAM).install_write_handler(0x002801, 0x002801, 0, 0xbf0000, 0, write8_delegate(FUNC(base_sns_cart_slot_device::chip_write),(base_sns_cart_slot_device*)m_cartslot));
->>>>>>> upstream/master
 				m_maincpu->set_5a22_map();
 				break;
 			case SNES_SPC7110:
@@ -1490,21 +1289,12 @@ void snes_console_state::machine_start()
 				break;
 			// pirate 'mappers'
 			case SNES_POKEMON:
-<<<<<<< HEAD
-				m_maincpu->space(AS_PROGRAM).install_read_handler(0x800000, 0x80ffff, 0, 0x780000, read8_delegate(FUNC(base_sns_cart_slot_device::chip_read),(base_sns_cart_slot_device*)m_cartslot));
-				m_maincpu->space(AS_PROGRAM).install_write_handler(0x800000, 0x80ffff, 0, 0x780000, write8_delegate(FUNC(base_sns_cart_slot_device::chip_write),(base_sns_cart_slot_device*)m_cartslot));
-				break;
-			case SNES_TEKKEN2:
-				m_maincpu->space(AS_PROGRAM).install_read_handler(0x808000, 0x8087ff, 0, 0x3f0000, read8_delegate(FUNC(base_sns_cart_slot_device::chip_read),(base_sns_cart_slot_device*)m_cartslot));
-				m_maincpu->space(AS_PROGRAM).install_write_handler(0x808000, 0x8087ff, 0, 0x3f0000, write8_delegate(FUNC(base_sns_cart_slot_device::chip_write),(base_sns_cart_slot_device*)m_cartslot));
-=======
 				m_maincpu->space(AS_PROGRAM).install_read_handler(0x800000, 0x80ffff, 0, 0x780000, 0, read8_delegate(FUNC(base_sns_cart_slot_device::chip_read),(base_sns_cart_slot_device*)m_cartslot));
 				m_maincpu->space(AS_PROGRAM).install_write_handler(0x800000, 0x80ffff, 0, 0x780000, 0, write8_delegate(FUNC(base_sns_cart_slot_device::chip_write),(base_sns_cart_slot_device*)m_cartslot));
 				break;
 			case SNES_TEKKEN2:
 				m_maincpu->space(AS_PROGRAM).install_read_handler(0x808000, 0x8087ff, 0, 0x3f0000, 0, read8_delegate(FUNC(base_sns_cart_slot_device::chip_read),(base_sns_cart_slot_device*)m_cartslot));
 				m_maincpu->space(AS_PROGRAM).install_write_handler(0x808000, 0x8087ff, 0, 0x3f0000, 0, write8_delegate(FUNC(base_sns_cart_slot_device::chip_write),(base_sns_cart_slot_device*)m_cartslot));
->>>>>>> upstream/master
 				break;
 			case SNES_MCPIR1:
 			case SNES_MCPIR2:
@@ -1515,22 +1305,13 @@ void snes_console_state::machine_start()
 				break;
 			case SNES_SOULBLAD:
 				// reads from xxx0-xxx3in range [80-bf] return a fixed sequence of 4bits; reads in range [c0-ff] return open bus
-<<<<<<< HEAD
-				m_maincpu->space(AS_PROGRAM).install_read_handler(0x808000, 0x808003, 0, 0x3f7ff0, read8_delegate(FUNC(base_sns_cart_slot_device::chip_read),(base_sns_cart_slot_device*)m_cartslot));
-=======
 				m_maincpu->space(AS_PROGRAM).install_read_handler(0x808000, 0x808003, 0, 0x3f7ff0, 0, read8_delegate(FUNC(base_sns_cart_slot_device::chip_read),(base_sns_cart_slot_device*)m_cartslot));
->>>>>>> upstream/master
 				m_maincpu->space(AS_PROGRAM).install_read_handler(0xc00000, 0xffffff, read8_delegate(FUNC(snes_console_state::snes_open_bus_r),this));
 				break;
 			case SNES_BUGS:
 			case SNES_BANANA:
-<<<<<<< HEAD
-//              m_maincpu->space(AS_PROGRAM).install_read_handler(0x808000, 0x80ffff, 0, 0x780000, read8_delegate(FUNC(base_sns_cart_slot_device::chip_read),(base_sns_cart_slot_device*)m_cartslot));
-//              m_maincpu->space(AS_PROGRAM).install_write_handler(0x808000, 0x80ffff, 0, 0x780000, write8_delegate(FUNC(base_sns_cart_slot_device::chip_write),(base_sns_cart_slot_device*)m_cartslot));
-=======
 //              m_maincpu->space(AS_PROGRAM).install_read_handler(0x808000, 0x80ffff, 0, 0x780000, 0, read8_delegate(FUNC(base_sns_cart_slot_device::chip_read),(base_sns_cart_slot_device*)m_cartslot));
 //              m_maincpu->space(AS_PROGRAM).install_write_handler(0x808000, 0x80ffff, 0, 0x780000, 0, write8_delegate(FUNC(base_sns_cart_slot_device::chip_write),(base_sns_cart_slot_device*)m_cartslot));
->>>>>>> upstream/master
 //              m_maincpu->set_5a22_map();
 				break;
 		}
@@ -1544,11 +1325,7 @@ void snes_console_state::machine_reset()
 }
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( snes, snes_console_state )
-=======
 static MACHINE_CONFIG_START( snes )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", _5A22, MCLK_NTSC)   /* 2.68 MHz, also 3.58 MHz */
@@ -1581,11 +1358,7 @@ static MACHINE_CONFIG_START( snes )
 	MCFG_SOUND_ROUTE(0, "lspeaker", 1.00)
 	MCFG_SOUND_ROUTE(1, "rspeaker", 1.00)
 
-<<<<<<< HEAD
-	MCFG_SNS_CARTRIDGE_ADD("snsslot", snes_cart, NULL)
-=======
 	MCFG_SNS_CARTRIDGE_ADD("snsslot", snes_cart, nullptr)
->>>>>>> upstream/master
 	MCFG_SOFTWARE_LIST_ADD("cart_list","snes")
 	MCFG_SOFTWARE_LIST_ADD("bsx_list","snes_bspack")
 	MCFG_SOFTWARE_LIST_ADD("st_list","snes_strom")
@@ -1622,12 +1395,6 @@ ROM_END
  *
  *************************************/
 
-<<<<<<< HEAD
-/*    YEAR  NAME       PARENT  COMPAT MACHINE    INPUT                 INIT  COMPANY     FULLNAME                                      FLAGS */
-CONS( 1989, snes,      0,      0,     snes,      snes, driver_device,  0,    "Nintendo", "Super Nintendo Entertainment System / Super Famicom (NTSC)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-CONS( 1991, snespal,   snes,   0,     snespal,   snes, driver_device,  0,    "Nintendo", "Super Nintendo Entertainment System (PAL)",  MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-=======
 /*    YEAR  NAME       PARENT  COMPAT MACHINE    INPUT STATE                INIT  COMPANY     FULLNAME                                      FLAGS */
 CONS( 1989, snes,      0,      0,     snes,      snes, snes_console_state,  0,    "Nintendo", "Super Nintendo Entertainment System / Super Famicom (NTSC)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
 CONS( 1991, snespal,   snes,   0,     snespal,   snes, snes_console_state,  0,    "Nintendo", "Super Nintendo Entertainment System (PAL)",  MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

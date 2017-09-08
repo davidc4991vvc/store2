@@ -6,23 +6,11 @@
 
 **********************************************************************/
 
-<<<<<<< HEAD
-#include "mm74c922.h"
-
-
-
-//**************************************************************************
-//  MACROS / CONSTANTS
-//**************************************************************************
-
-#define LOG 1
-=======
 #include "emu.h"
 #include "mm74c922.h"
 
 //#define VERBOSE 1
 #include "logmacro.h"
->>>>>>> upstream/master
 
 
 
@@ -30,13 +18,8 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type MM74C922 = &device_creator<mm74c922_device>;
-const device_type MM74C923 = &device_creator<mm74c922_device>;
-=======
 DEFINE_DEVICE_TYPE(MM74C922, mm74c922_device, "mm74c922", "MM74C923 16/20-Key Encoder")
 const device_type MM74C923 = MM74C922;
->>>>>>> upstream/master
 
 
 
@@ -49,13 +32,8 @@ const device_type MM74C923 = MM74C922;
 //  mm74c922_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-mm74c922_device::mm74c922_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-	device_t(mconfig, MM74C922, "MM74C922", tag, owner, clock, "mm74c922", __FILE__),
-=======
 mm74c922_device::mm74c922_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	device_t(mconfig, MM74C922, tag, owner, clock),
->>>>>>> upstream/master
 	m_write_da(*this),
 	m_read_x1(*this),
 	m_read_x2(*this),
@@ -119,15 +97,9 @@ void mm74c922_device::device_timer(emu_timer &timer, device_timer_id id, int par
 //  read -
 //-------------------------------------------------
 
-<<<<<<< HEAD
-UINT8 mm74c922_device::read()
-{
-	if (LOG) logerror("MM74C922 '%s' Data Read: %02x\n", tag(), m_data);
-=======
 uint8_t mm74c922_device::read()
 {
 	LOG("MM74C922 Data Read: %02x\n", m_data);
->>>>>>> upstream/master
 
 	return m_data;
 }
@@ -143,11 +115,7 @@ void mm74c922_device::change_output_lines()
 	{
 		m_da = m_next_da;
 
-<<<<<<< HEAD
-		if (LOG) logerror("MM74C922 '%s' Data Available: %u\n", tag(), m_da);
-=======
 		LOG("MM74C922 Data Available: %u\n", m_da);
->>>>>>> upstream/master
 
 		m_write_da(m_da);
 	}
@@ -174,11 +142,7 @@ void mm74c922_device::clock_scan_counters()
 
 void mm74c922_device::detect_keypress()
 {
-<<<<<<< HEAD
-	UINT8 data = 0xff;
-=======
 	uint8_t data = 0xff;
->>>>>>> upstream/master
 
 	switch (m_x)
 	{
@@ -198,11 +162,7 @@ void mm74c922_device::detect_keypress()
 			m_next_da = 0;
 			m_data = 0xff; // high-Z
 
-<<<<<<< HEAD
-			if (LOG) logerror("MM74C922 '%s' Key Released\n", tag());
-=======
 			LOG("MM74C922 Key Released\n");
->>>>>>> upstream/master
 		}
 	}
 	else
@@ -218,11 +178,7 @@ void mm74c922_device::detect_keypress()
 
 				m_data = (y << 2) | m_x;
 
-<<<<<<< HEAD
-				if (LOG) logerror("MM74C922 '%s' Key Depressed: X %u Y %u = %02x\n", tag(), m_x, y, m_data);
-=======
 				LOG("MM74C922 Key Depressed: X %u Y %u = %02x\n", m_x, y, m_data);
->>>>>>> upstream/master
 				return;
 			}
 		}

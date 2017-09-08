@@ -9,10 +9,7 @@ Real Mahjong Haihai Seichouhen     (c)1986 Visco
 CPU:    Z80
 Sound:  AY-3-8910
         M5205
-<<<<<<< HEAD
-=======
 NVRAM:  NEC D449C
->>>>>>> upstream/master
 OSC:    20.000MHz
 
 driver by Nicola Salmoria
@@ -25,12 +22,6 @@ TODO:
   deviously delayed to a later part of the game).
   In themj the checks are patched out, maybe it's a bootleg?
 
-<<<<<<< HEAD
-- there probably is an area of NVRAM, because credits don't go away after
-  a reset.
-
-=======
->>>>>>> upstream/master
 - some unknown reads and writes.
 
 - visible area uncertain.
@@ -39,16 +30,11 @@ TODO:
 
 #include "emu.h"
 #include "cpu/z80/z80.h"
-<<<<<<< HEAD
-#include "sound/ay8910.h"
-#include "sound/msm5205.h"
-=======
 #include "machine/nvram.h"
 #include "sound/ay8910.h"
 #include "sound/msm5205.h"
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 class rmhaihai_state : public driver_device
@@ -66,25 +52,15 @@ public:
 	required_device<msm5205_device> m_msm;
 	required_device<gfxdecode_device> m_gfxdecode;
 
-<<<<<<< HEAD
-	required_shared_ptr<UINT8> m_colorram;
-	required_shared_ptr<UINT8> m_videoram;
-=======
 	required_shared_ptr<uint8_t> m_colorram;
 	required_shared_ptr<uint8_t> m_videoram;
->>>>>>> upstream/master
 
 	tilemap_t *m_bg_tilemap;
 	int m_keyboard_cmd;
 	int m_gfxbank;
 
-<<<<<<< HEAD
-	DECLARE_WRITE8_MEMBER(rmhaihai_videoram_w);
-	DECLARE_WRITE8_MEMBER(rmhaihai_colorram_w);
-=======
 	DECLARE_WRITE8_MEMBER(videoram_w);
 	DECLARE_WRITE8_MEMBER(colorram_w);
->>>>>>> upstream/master
 	DECLARE_READ8_MEMBER(keyboard_r);
 	DECLARE_WRITE8_MEMBER(keyboard_w);
 	DECLARE_READ8_MEMBER(samples_r);
@@ -93,40 +69,24 @@ public:
 	DECLARE_WRITE8_MEMBER(adpcm_w);
 
 	DECLARE_DRIVER_INIT(rmhaihai);
-<<<<<<< HEAD
-	virtual void video_start();
-	DECLARE_MACHINE_START(themj);
-	DECLARE_MACHINE_RESET(themj);
-
-	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	virtual void video_start() override;
 	DECLARE_MACHINE_START(themj);
 	DECLARE_MACHINE_RESET(themj);
 
 	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 
 	TILE_GET_INFO_MEMBER(get_bg_tile_info);
 };
 
 
 
-<<<<<<< HEAD
-WRITE8_MEMBER(rmhaihai_state::rmhaihai_videoram_w)
-=======
 WRITE8_MEMBER(rmhaihai_state::videoram_w)
->>>>>>> upstream/master
 {
 	m_videoram[offset] = data;
 	m_bg_tilemap->mark_tile_dirty(offset);
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER(rmhaihai_state::rmhaihai_colorram_w)
-=======
 WRITE8_MEMBER(rmhaihai_state::colorram_w)
->>>>>>> upstream/master
 {
 	m_colorram[offset] = data;
 	m_bg_tilemap->mark_tile_dirty(offset);
@@ -143,22 +103,14 @@ TILE_GET_INFO_MEMBER(rmhaihai_state::get_bg_tile_info)
 
 void rmhaihai_state::video_start()
 {
-<<<<<<< HEAD
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(rmhaihai_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS,
-=======
 	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(rmhaihai_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS,
->>>>>>> upstream/master
 		8, 8, 64, 32);
 
 	save_item(NAME(m_keyboard_cmd));
 	save_item(NAME(m_gfxbank));
 }
 
-<<<<<<< HEAD
-UINT32 rmhaihai_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t rmhaihai_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	m_bg_tilemap->draw(screen, bitmap, cliprect, 0, 0);
 	return 0;
@@ -166,11 +118,7 @@ uint32_t rmhaihai_state::screen_update(screen_device &screen, bitmap_ind16 &bitm
 
 
 
-<<<<<<< HEAD
-
-=======
 // TODO: this device is shared with Speed Attack
->>>>>>> upstream/master
 READ8_MEMBER(rmhaihai_state::keyboard_r)
 {
 	static const char *const keynames[] = { "KEY0", "KEY1" };
@@ -179,10 +127,7 @@ READ8_MEMBER(rmhaihai_state::keyboard_r)
 	switch(space.device().safe_pc())
 	{
 		/* read keyboard */
-<<<<<<< HEAD
-=======
 		case 0x0280:
->>>>>>> upstream/master
 		case 0x0aba:    // rmhaihai, rmhaisei
 		case 0x0b2a:    // rmhaihib
 		case 0x0ab4:    // rmhaijin
@@ -197,10 +142,7 @@ READ8_MEMBER(rmhaihai_state::keyboard_r)
 			if (ioport("KEY1")->read() & 0x8000) return 0x80;   // coin
 			return 0;
 		}
-<<<<<<< HEAD
-=======
 		case 0x02aa:
->>>>>>> upstream/master
 		case 0x5c7b:    // rmhaihai, rmhaisei, rmhaijin
 		case 0x5950:    // rmhaihib
 		case 0x5bf3:    // themj, but the test is NOPed out!
@@ -253,13 +195,8 @@ WRITE8_MEMBER(rmhaihai_state::ctrl_w)
 
 	// (data & 0x02) is switched on and off in service mode
 
-<<<<<<< HEAD
-	coin_lockout_w(machine(), 0, ~data & 0x04);
-	coin_counter_w(machine(), 0, data & 0x08);
-=======
 	machine().bookkeeping().coin_lockout_w(0, ~data & 0x04);
 	machine().bookkeeping().coin_counter_w(0, data & 0x08);
->>>>>>> upstream/master
 
 	// (data & 0x10) is medal in service mode
 
@@ -289,15 +226,9 @@ MACHINE_RESET_MEMBER(rmhaihai_state,themj)
 
 static ADDRESS_MAP_START( rmhaihai_map, AS_PROGRAM, 8, rmhaihai_state )
 	AM_RANGE(0x0000, 0x9fff) AM_ROM
-<<<<<<< HEAD
-	AM_RANGE(0xa000, 0xa7ff) AM_RAM
-	AM_RANGE(0xa800, 0xafff) AM_RAM_WRITE(rmhaihai_colorram_w) AM_SHARE("colorram")
-	AM_RANGE(0xb000, 0xb7ff) AM_RAM_WRITE(rmhaihai_videoram_w) AM_SHARE("videoram")
-=======
 	AM_RANGE(0xa000, 0xa7ff) AM_RAM AM_SHARE("nvram")
 	AM_RANGE(0xa800, 0xafff) AM_RAM_WRITE(colorram_w) AM_SHARE("colorram")
 	AM_RANGE(0xb000, 0xb7ff) AM_RAM_WRITE(videoram_w) AM_SHARE("videoram")
->>>>>>> upstream/master
 	AM_RANGE(0xb83c, 0xb83c) AM_WRITENOP    // ??
 	AM_RANGE(0xbc00, 0xbc00) AM_WRITENOP    // ??
 	AM_RANGE(0xc000, 0xdfff) AM_ROM
@@ -321,13 +252,8 @@ static ADDRESS_MAP_START( themj_map, AS_PROGRAM, 8, rmhaihai_state )
 	AM_RANGE(0x0000, 0x7fff) AM_ROM
 	AM_RANGE(0x8000, 0x9fff) AM_ROMBANK("bank1")
 	AM_RANGE(0xa000, 0xa7ff) AM_RAM
-<<<<<<< HEAD
-	AM_RANGE(0xa800, 0xafff) AM_RAM_WRITE(rmhaihai_colorram_w) AM_SHARE("colorram")
-	AM_RANGE(0xb000, 0xb7ff) AM_RAM_WRITE(rmhaihai_videoram_w) AM_SHARE("videoram")
-=======
 	AM_RANGE(0xa800, 0xafff) AM_RAM_WRITE(colorram_w) AM_SHARE("colorram")
 	AM_RANGE(0xb000, 0xb7ff) AM_RAM_WRITE(videoram_w) AM_SHARE("videoram")
->>>>>>> upstream/master
 	AM_RANGE(0xc000, 0xdfff) AM_ROMBANK("bank2")
 	AM_RANGE(0xe000, 0xffff) AM_ROM
 ADDRESS_MAP_END
@@ -545,11 +471,7 @@ static GFXDECODE_START( themj )
 GFXDECODE_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( rmhaihai, rmhaihai_state )
-=======
 static MACHINE_CONFIG_START( rmhaihai )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu",Z80,20000000/4)  /* 5 MHz ??? */
@@ -557,11 +479,8 @@ static MACHINE_CONFIG_START( rmhaihai )
 	MCFG_CPU_IO_MAP(rmhaihai_io_map)
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", rmhaihai_state,  irq0_line_hold)
 
-<<<<<<< HEAD
-=======
 	MCFG_NVRAM_ADD_0FILL("nvram")
 
->>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE(60)
@@ -573,11 +492,7 @@ static MACHINE_CONFIG_START( rmhaihai )
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", rmhaihai)
 
-<<<<<<< HEAD
-	MCFG_PALETTE_ADD_RRRRGGGGBBBB_PROMS("palette", 0x100)
-=======
 	MCFG_PALETTE_ADD_RRRRGGGGBBBB_PROMS("palette", "proms", 0x100)
->>>>>>> upstream/master
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
@@ -588,11 +503,7 @@ static MACHINE_CONFIG_START( rmhaihai )
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.30)
 
 	MCFG_SOUND_ADD("msm", MSM5205, 500000)
-<<<<<<< HEAD
-	MCFG_MSM5205_PRESCALER_SELECTOR(MSM5205_SEX_4B)
-=======
 	MCFG_MSM5205_PRESCALER_SELECTOR(SEX_4B)
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
 
@@ -617,11 +528,8 @@ static MACHINE_CONFIG_DERIVED( themj, rmhaihai )
 	MCFG_MACHINE_START_OVERRIDE(rmhaihai_state,themj)
 	MCFG_MACHINE_RESET_OVERRIDE(rmhaihai_state,themj)
 
-<<<<<<< HEAD
-=======
 	MCFG_DEVICE_REMOVE("nvram")
 
->>>>>>> upstream/master
 	/* video hardware */
 	MCFG_GFXDECODE_MODIFY("gfxdecode", themj)
 	MCFG_PALETTE_MODIFY("palette")
@@ -663,8 +571,6 @@ ROM_START( rmhaihai )
 	ROM_LOAD( "s0-1.5g",      0x00000, 0x8000, CRC(65e55b7e) SHA1(3852fb3b37eccdcddff05d8ef4a742fcb8b63473) )
 ROM_END
 
-<<<<<<< HEAD
-=======
 ROM_START( rmhaihai2 )
 	ROM_REGION( 0x10000, "maincpu", 0 )
 	ROM_LOAD( "s2_6.11g",     0x00000, 0x2000, CRC(cb962e27) SHA1(ac51b76f9b9cdbfd4a42eace645343adb7a84ff8) )
@@ -692,7 +598,6 @@ ROM_START( rmhaihai2 )
 	ROM_LOAD( "s0-1.5g",      0x00000, 0x8000, CRC(65e55b7e) SHA1(3852fb3b37eccdcddff05d8ef4a742fcb8b63473) )
 ROM_END
 
->>>>>>> upstream/master
 ROM_START( rmhaihib )
 	ROM_REGION( 0x10000, "maincpu", 0 )
 	ROM_LOAD( "s-30-6.11g",   0x00000,  0x2000, CRC(f3e13cc8) SHA1(7eb9b17ea9efb5b2891ec40a9ff9744e84c0511c) )
@@ -805,11 +710,7 @@ ROM_END
 
 DRIVER_INIT_MEMBER(rmhaihai_state,rmhaihai)
 {
-<<<<<<< HEAD
-	UINT8 *rom = memregion("gfx1")->base();
-=======
 	uint8_t *rom = memregion("gfx1")->base();
->>>>>>> upstream/master
 	int size = memregion("gfx1")->bytes();
 	int a,b;
 
@@ -829,17 +730,9 @@ DRIVER_INIT_MEMBER(rmhaihai_state,rmhaihai)
 }
 
 
-<<<<<<< HEAD
-GAME( 1985, rmhaihai, 0,        rmhaihai, rmhaihai, rmhaihai_state, rmhaihai, ROT0, "Alba",  "Real Mahjong Haihai (Japan)", MACHINE_SUPPORTS_SAVE )
-GAME( 1985, rmhaihib, rmhaihai, rmhaihai, rmhaihib, rmhaihai_state, rmhaihai, ROT0, "Alba",  "Real Mahjong Haihai [BET] (Japan)", MACHINE_SUPPORTS_SAVE )
-GAME( 1986, rmhaijin, 0,        rmhaihai, rmhaihai, rmhaihai_state, rmhaihai, ROT0, "Alba",  "Real Mahjong Haihai Jinji Idou Hen (Japan)", MACHINE_SUPPORTS_SAVE )
-GAME( 1986, rmhaisei, 0,        rmhaisei, rmhaihai, rmhaihai_state, rmhaihai, ROT0, "Visco", "Real Mahjong Haihai Seichouhen (Japan)", MACHINE_SUPPORTS_SAVE )
-GAME( 1987, themj,    0,        themj,    rmhaihai, rmhaihai_state, rmhaihai, ROT0, "Visco", "The Mah-jong (Japan)", MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1985, rmhaihai,  0,        rmhaihai, rmhaihai, rmhaihai_state, rmhaihai, ROT0, "Alba",  "Real Mahjong Haihai (Japan, newer)", MACHINE_SUPPORTS_SAVE ) // writes Homedata in NVRAM
 GAME( 1985, rmhaihai2, rmhaihai, rmhaihai, rmhaihai, rmhaihai_state, rmhaihai, ROT0, "Alba",  "Real Mahjong Haihai (Japan, older)", MACHINE_SUPPORTS_SAVE )
 GAME( 1985, rmhaihib,  rmhaihai, rmhaihai, rmhaihib, rmhaihai_state, rmhaihai, ROT0, "Alba",  "Real Mahjong Haihai [BET] (Japan)", MACHINE_SUPPORTS_SAVE )
 GAME( 1986, rmhaijin,  0,        rmhaihai, rmhaihai, rmhaihai_state, rmhaihai, ROT0, "Alba",  "Real Mahjong Haihai Jinji Idou Hen (Japan)", MACHINE_SUPPORTS_SAVE )
 GAME( 1986, rmhaisei,  0,        rmhaisei, rmhaihai, rmhaihai_state, rmhaihai, ROT0, "Visco", "Real Mahjong Haihai Seichouhen (Japan)", MACHINE_SUPPORTS_SAVE )
 GAME( 1987, themj,     0,        themj,    rmhaihai, rmhaihai_state, rmhaihai, ROT0, "Visco", "The Mah-jong (Japan)", MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

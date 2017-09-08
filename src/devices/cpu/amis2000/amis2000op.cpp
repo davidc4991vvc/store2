@@ -3,26 +3,12 @@
 
 // AMI S2000 opcode handlers
 
-<<<<<<< HEAD
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #include "amis2000.h"
 
 
 // internal helpers
 
-<<<<<<< HEAD
-inline UINT8 amis2000_base_device::ram_r()
-{
-	UINT16 address = m_bu << 4 | m_bl;
-	return m_data->read_byte(address) & 0xf;
-}
-
-inline void amis2000_base_device::ram_w(UINT8 data)
-{
-	UINT16 address = m_bu << 4 | m_bl;
-=======
 inline u8 amis2000_base_device::ram_r()
 {
 	u16 address = m_bu << 4 | m_bl;
@@ -32,7 +18,6 @@ inline u8 amis2000_base_device::ram_r()
 inline void amis2000_base_device::ram_w(u8 data)
 {
 	u16 address = m_bu << 4 | m_bl;
->>>>>>> upstream/master
 	m_data->write_byte(address, data & 0xf);
 }
 
@@ -65,11 +50,7 @@ void amis2000_base_device::op_lai()
 	// note: only execute the first one in a sequence of LAI
 	if ((m_prev_op & 0xf0) != (m_op & 0xf0))
 	{
-<<<<<<< HEAD
-		UINT8 param = m_op & 0x0f;
-=======
 		u8 param = m_op & 0x0f;
->>>>>>> upstream/master
 		m_acc = param;
 		m_ki_mask = param;
 	}
@@ -90,11 +71,7 @@ void amis2000_base_device::op_lae()
 void amis2000_base_device::op_xab()
 {
 	// XAB: exchange ACC with BL
-<<<<<<< HEAD
-	UINT8 old_acc = m_acc;
-=======
 	u8 old_acc = m_acc;
->>>>>>> upstream/master
 	m_acc = m_bl;
 	m_bl = old_acc;
 }
@@ -102,11 +79,7 @@ void amis2000_base_device::op_xab()
 void amis2000_base_device::op_xabu()
 {
 	// XABU: exchange ACC with BU
-<<<<<<< HEAD
-	UINT8 old_acc = m_acc;
-=======
 	u8 old_acc = m_acc;
->>>>>>> upstream/master
 	m_acc = (m_acc & ~m_bu_mask) | (m_bu & m_bu_mask);
 	m_bu = old_acc & m_bu_mask;
 }
@@ -114,11 +87,7 @@ void amis2000_base_device::op_xabu()
 void amis2000_base_device::op_xae()
 {
 	// XAE: exchange ACC with E
-<<<<<<< HEAD
-	UINT8 old_acc = m_acc;
-=======
 	u8 old_acc = m_acc;
->>>>>>> upstream/master
 	m_acc = m_e;
 	m_e = old_acc;
 }
@@ -129,11 +98,7 @@ void amis2000_base_device::op_lbe()
 	// note: only execute the first one in a sequence of LB*
 	if ((m_prev_op & 0xf0) != (m_op & 0xf0))
 	{
-<<<<<<< HEAD
-		UINT8 param = m_op & 0x03;
-=======
 		u8 param = m_op & 0x03;
->>>>>>> upstream/master
 		m_bu = param & m_bu_mask;
 		m_bl = m_e;
 	}
@@ -145,11 +110,7 @@ void amis2000_base_device::op_lbep()
 	// note: only execute the first one in a sequence of LB*
 	if ((m_prev_op & 0xf0) != (m_op & 0xf0))
 	{
-<<<<<<< HEAD
-		UINT8 param = m_op & 0x03;
-=======
 		u8 param = m_op & 0x03;
->>>>>>> upstream/master
 		m_bu = param & m_bu_mask;
 		m_bl = (m_e + 1) & 0xf;
 	}
@@ -161,11 +122,7 @@ void amis2000_base_device::op_lbz()
 	// note: only execute the first one in a sequence of LB*
 	if ((m_prev_op & 0xf0) != (m_op & 0xf0))
 	{
-<<<<<<< HEAD
-		UINT8 param = m_op & 0x03;
-=======
 		u8 param = m_op & 0x03;
->>>>>>> upstream/master
 		m_bu = param & m_bu_mask;
 		m_bl = 0;
 	}
@@ -177,11 +134,7 @@ void amis2000_base_device::op_lbf()
 	// note: only execute the first one in a sequence of LB*
 	if ((m_prev_op & 0xf0) != (m_op & 0xf0))
 	{
-<<<<<<< HEAD
-		UINT8 param = m_op & 0x03;
-=======
 		u8 param = m_op & 0x03;
->>>>>>> upstream/master
 		m_bu = param & m_bu_mask;
 		m_bl = 0xf;
 	}
@@ -194,28 +147,17 @@ void amis2000_base_device::op_lam()
 {
 	// LAM _Y: load ACC with RAM, xor BU with _Y
 	m_acc = ram_r();
-<<<<<<< HEAD
-	UINT8 param = ~m_op & 0x03;
-=======
 	u8 param = ~m_op & 0x03;
->>>>>>> upstream/master
 	m_bu ^= (param & m_bu_mask);
 }
 
 void amis2000_base_device::op_xc()
 {
 	// XC _Y: exchange ACC with RAM, xor BU with _Y
-<<<<<<< HEAD
-	UINT8 old_acc = m_acc;
-	m_acc = ram_r();
-	ram_w(old_acc);
-	UINT8 param = ~m_op & 0x03;
-=======
 	u8 old_acc = m_acc;
 	m_acc = ram_r();
 	ram_w(old_acc);
 	u8 param = ~m_op & 0x03;
->>>>>>> upstream/master
 	m_bu ^= (param & m_bu_mask);
 }
 
@@ -238,22 +180,14 @@ void amis2000_base_device::op_xcd()
 void amis2000_base_device::op_stm()
 {
 	// STM Z: set RAM bit Z
-<<<<<<< HEAD
-	UINT8 param = 1 << (m_op & 0x03);
-=======
 	u8 param = 1 << (m_op & 0x03);
->>>>>>> upstream/master
 	ram_w(ram_r() | param);
 }
 
 void amis2000_base_device::op_rsm()
 {
 	// RSM Z: reset RAM bit Z
-<<<<<<< HEAD
-	UINT8 param = 1 << (m_op & 0x03);
-=======
 	u8 param = 1 << (m_op & 0x03);
->>>>>>> upstream/master
 	ram_w(ram_r() & ~param);
 }
 
@@ -263,11 +197,7 @@ void amis2000_base_device::op_rsm()
 void amis2000_base_device::op_inp()
 {
 	// INP: input D-pins to ACC and RAM
-<<<<<<< HEAD
-	UINT8 in = m_d_active ? m_d : m_read_d(0, 0xff);
-=======
 	u8 in = m_d_active ? m_d : m_read_d(0, 0xff);
->>>>>>> upstream/master
 	m_acc = in & 0xf;
 	ram_w(in >> 4 & 0xf);
 }
@@ -288,20 +218,12 @@ void amis2000_base_device::op_disb()
 void amis2000_base_device::op_disn()
 {
 	// DISN: set D-latch to ACC+carry via on-die segment decoder
-<<<<<<< HEAD
-	static const UINT8 lut_segment_decoder[0x10] =
-=======
 	static const u8 lut_segment_decoder[0x10] =
->>>>>>> upstream/master
 	{
 		// 0-F digits in bit order [DP]abcdefg
 		0x7e, 0x30, 0x6d, 0x79, 0x33, 0x5b, 0x5f, 0x70, 0x7f, 0x7b, 0x77, 0x1f, 0x4e, 0x3d, 0x4f, 0x47
 	};
-<<<<<<< HEAD
-	const UINT8 *ptr = (m_7seg_table != NULL) ? m_7seg_table : lut_segment_decoder;
-=======
 	const u8 *ptr = (m_7seg_table != nullptr) ? m_7seg_table : lut_segment_decoder;
->>>>>>> upstream/master
 	m_d = ptr[m_acc] | (m_carry ? 0x80 : 0x00);
 	d_latch_out(true);
 }
@@ -380,11 +302,7 @@ void amis2000_base_device::op_eur()
 void amis2000_base_device::op_pp()
 {
 	// PP _X: prepare page/bank with _X
-<<<<<<< HEAD
-	UINT8 param = ~m_op & 0x0f;
-=======
 	u8 param = ~m_op & 0x0f;
->>>>>>> upstream/master
 	if ((m_prev_op & 0xf0) != (m_op & 0xf0))
 		m_ppr = param;
 	else
@@ -394,13 +312,8 @@ void amis2000_base_device::op_pp()
 void amis2000_base_device::op_jmp()
 {
 	// JMP X: jump to X(+PP)
-<<<<<<< HEAD
-	UINT16 mask = 0x3f;
-	UINT16 param = m_op & mask;
-=======
 	u16 mask = 0x3f;
 	u16 param = m_op & mask;
->>>>>>> upstream/master
 
 	// if previous opcode was PP, change PC high bits too
 	if ((m_prev_op & 0xf0) == 0x60)
@@ -459,11 +372,7 @@ void amis2000_base_device::op_szc()
 void amis2000_base_device::op_szm()
 {
 	// SZM Z: skip next on zero RAM bit Z
-<<<<<<< HEAD
-	UINT8 param = 1 << (m_op & 0x03);
-=======
 	u8 param = 1 << (m_op & 0x03);
->>>>>>> upstream/master
 	m_skip = !(ram_r() & param);
 }
 
@@ -524,11 +433,7 @@ void amis2000_base_device::op_adcs()
 void amis2000_base_device::op_adis()
 {
 	// ADIS X: add X to ACC, skip next on not carry
-<<<<<<< HEAD
-	UINT8 param = m_op & 0x0f;
-=======
 	u8 param = m_op & 0x0f;
->>>>>>> upstream/master
 	m_acc += param;
 	m_skip = !(m_acc & 0x10);
 	m_acc &= 0xf;

@@ -13,10 +13,7 @@
 
 #include "emu.h"
 #include "cpu/z80/z80.h"
-<<<<<<< HEAD
-=======
 #include "screen.h"
->>>>>>> upstream/master
 
 
 class tgtpanic_state : public driver_device
@@ -31,17 +28,6 @@ public:
 	required_device<cpu_device> m_maincpu;
 	required_device<screen_device> m_screen;
 
-<<<<<<< HEAD
-	required_shared_ptr<UINT8> m_ram;
-
-	UINT8 m_color;
-
-	DECLARE_WRITE8_MEMBER(color_w);
-
-	virtual void machine_start();
-
-	UINT32 screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
-=======
 	required_shared_ptr<uint8_t> m_ram;
 
 	uint8_t m_color;
@@ -51,7 +37,6 @@ public:
 	virtual void machine_start() override;
 
 	uint32_t screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 };
 
 
@@ -66,19 +51,11 @@ void tgtpanic_state::machine_start()
  *
  *************************************/
 
-<<<<<<< HEAD
-UINT32 tgtpanic_state::screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
-{
-	UINT32 colors[4];
-	UINT32 offs;
-	UINT32 x, y;
-=======
 uint32_t tgtpanic_state::screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
 {
 	uint32_t colors[4];
 	uint32_t offs;
 	uint32_t x, y;
->>>>>>> upstream/master
 
 	colors[0] = 0;
 	colors[1] = 0xffffffff;
@@ -87,11 +64,7 @@ uint32_t tgtpanic_state::screen_update(screen_device &screen, bitmap_rgb32 &bitm
 
 	for (offs = 0; offs < 0x2000; ++offs)
 	{
-<<<<<<< HEAD
-		UINT8 val = m_ram[offs];
-=======
 		uint8_t val = m_ram[offs];
->>>>>>> upstream/master
 
 		y = (offs & 0x7f) << 1;
 		x = (offs >> 7) << 2;
@@ -173,11 +146,7 @@ INPUT_PORTS_END
  *
  *************************************/
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( tgtpanic, tgtpanic_state )
-=======
 static MACHINE_CONFIG_START( tgtpanic )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, XTAL_4MHz)
@@ -213,8 +182,4 @@ ROM_END
  *
  *************************************/
 
-<<<<<<< HEAD
-GAME( 1996, tgtpanic, 0, tgtpanic, tgtpanic, driver_device, 0, ROT0, "Konami", "Target Panic", MACHINE_NO_SOUND_HW | MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1996, tgtpanic, 0, tgtpanic, tgtpanic, tgtpanic_state, 0, ROT0, "Konami", "Target Panic", MACHINE_NO_SOUND_HW | MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

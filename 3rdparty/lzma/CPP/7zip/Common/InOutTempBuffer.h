@@ -10,15 +10,6 @@
 
 class CInOutTempBuffer
 {
-<<<<<<< HEAD
-  NWindows::NFile::NDirectory::CTempFile _tempFile;
-  NWindows::NFile::NIO::COutFile _outFile;
-  Byte *_buf;
-  UInt32 _bufPos;
-  bool _tempFileCreated;
-  UInt64 _size;
-  UInt32 _crc;
-=======
   NWindows::NFile::NDir::CTempFile _tempFile;
   NWindows::NFile::NIO::COutFile _outFile;
   Byte *_buf;
@@ -26,7 +17,6 @@ class CInOutTempBuffer
   UInt64 _size;
   UInt32 _crc;
   bool _tempFileCreated;
->>>>>>> upstream/master
 
   bool WriteToFile(const void *data, UInt32 size);
 public:
@@ -41,10 +31,7 @@ public:
   UInt64 GetDataSize() const { return _size; }
 };
 
-<<<<<<< HEAD
-=======
 /*
->>>>>>> upstream/master
 class CSequentialOutTempBufferImp:
   public ISequentialOutStream,
   public CMyUnknownImp
@@ -56,9 +43,6 @@ public:
 
   STDMETHOD(Write)(const void *data, UInt32 size, UInt32 *processedSize);
 };
-<<<<<<< HEAD
-=======
 */
->>>>>>> upstream/master
 
 #endif

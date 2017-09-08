@@ -40,13 +40,8 @@
 /*************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "debugger.h"
-#include "lr35902.h"
-=======
 #include "lr35902.h"
 #include "debugger.h"
->>>>>>> upstream/master
 
 /* Flag bit definitions */
 enum lr35902_flag
@@ -65,19 +60,11 @@ enum lr35902_flag
 //  LR35902 DEVICE
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type LR35902 = &device_creator<lr35902_cpu_device>;
-
-
-lr35902_cpu_device::lr35902_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: cpu_device(mconfig, LR35902, "LR35902", tag, owner, clock, "lr35902", __FILE__)
-=======
 DEFINE_DEVICE_TYPE(LR35902, lr35902_cpu_device, "lr35902", "LR35902")
 
 
 lr35902_cpu_device::lr35902_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: cpu_device(mconfig, LR35902, tag, owner, clock)
->>>>>>> upstream/master
 	, m_program_config("program", ENDIANNESS_LITTLE, 8, 16, 0)
 	, m_A(0)
 	, m_F(0)
@@ -93,84 +80,54 @@ lr35902_cpu_device::lr35902_cpu_device(const machine_config &mconfig, const char
 	, m_IF(0)
 	, m_enable(0)
 	, m_has_halt_bug(false)
-<<<<<<< HEAD
-=======
 	, m_entering_halt(false)
->>>>>>> upstream/master
 	, m_timer_func(*this)
 	, m_incdec16_func(*this)
 {
 }
 
-<<<<<<< HEAD
-=======
 device_memory_interface::space_config_vector lr35902_cpu_device::memory_space_config() const
 {
 	return space_config_vector {
 		std::make_pair(AS_PROGRAM, &m_program_config)
 	};
 }
->>>>>>> upstream/master
 
 /****************************************************************************/
 /* Memory functions                                                         */
 /****************************************************************************/
 
-<<<<<<< HEAD
-inline void lr35902_cpu_device::cycles_passed(UINT8 cycles)
-=======
 inline void lr35902_cpu_device::cycles_passed(uint8_t cycles)
->>>>>>> upstream/master
 {
 	m_icount -= cycles / m_gb_speed;
 	m_timer_func( cycles );
 }
 
 
-<<<<<<< HEAD
-inline UINT8 lr35902_cpu_device::mem_read_byte( UINT16 addr )
-{
-	UINT8 data = m_program->read_byte( addr );
-=======
 inline uint8_t lr35902_cpu_device::mem_read_byte( uint16_t addr )
 {
 	uint8_t data = m_program->read_byte( addr );
->>>>>>> upstream/master
 	cycles_passed( 4 );
 	return data;
 }
 
 
-<<<<<<< HEAD
-inline void lr35902_cpu_device::mem_write_byte( UINT16 addr, UINT8 data )
-=======
 inline void lr35902_cpu_device::mem_write_byte( uint16_t addr, uint8_t data )
->>>>>>> upstream/master
 {
 	m_program->write_byte( addr, data );
 	cycles_passed( 4 );
 }
 
 
-<<<<<<< HEAD
-inline UINT16 lr35902_cpu_device::mem_read_word( UINT16 addr )
-{
-	UINT16 data = mem_read_byte( addr );
-=======
 inline uint16_t lr35902_cpu_device::mem_read_word( uint16_t addr )
 {
 	uint16_t data = mem_read_byte( addr );
->>>>>>> upstream/master
 	data |= ( mem_read_byte( addr + 1 ) << 8 );
 	return data;
 }
 
 
-<<<<<<< HEAD
-inline void lr35902_cpu_device::mem_write_word( UINT16 addr, UINT16 data )
-=======
 inline void lr35902_cpu_device::mem_write_word( uint16_t addr, uint16_t data )
->>>>>>> upstream/master
 {
 	mem_write_byte( addr, data & 0xFF );
 	mem_write_byte( addr + 1, data >> 8 );
@@ -206,11 +163,7 @@ void lr35902_cpu_device::device_start()
 	save_item(NAME(m_gb_speed));
 	save_item(NAME(m_gb_speed_change_pending));
 	save_item(NAME(m_enable));
-<<<<<<< HEAD
-	save_item(NAME(m_handle_halt_bug));
-=======
 	save_item(NAME(m_entering_halt));
->>>>>>> upstream/master
 
 	// Register state for debugger
 	state_add( LR35902_PC, "PC", m_PC ).callimport().callexport().formatstr("%04X");
@@ -227,40 +180,24 @@ void lr35902_cpu_device::device_start()
 	state_add( LR35902_IE, "IE", m_IE ).callimport().callexport().formatstr("%02X");
 	state_add( LR35902_IF, "IF", m_IF ).callimport().callexport().formatstr("%02X");
 
-<<<<<<< HEAD
-	state_add(STATE_GENPC, "curpc", m_PC).callimport().callexport().formatstr("%8s").noshow();
-=======
 	state_add(STATE_GENPC, "GENPC", m_PC).formatstr("%8s").noshow();
 	state_add(STATE_GENPCBASE, "CURPC", m_PC).formatstr("%8s").noshow();
->>>>>>> upstream/master
 	state_add(STATE_GENFLAGS, "GENFLAGS",  m_F).mask(0xf0).formatstr("%8s").noshow();
 
 	m_icountptr = &m_icount;
 }
 
 
-<<<<<<< HEAD
-void lr35902_cpu_device::state_string_export(const device_state_entry &entry, std::string &str)
-=======
 void lr35902_cpu_device::state_string_export(const device_state_entry &entry, std::string &str) const
->>>>>>> upstream/master
 {
 	switch (entry.index())
 	{
 		case LR35902_SPEED:
-<<<<<<< HEAD
-			strprintf(str, "%02X", 0x7E | ((m_gb_speed - 1) << 7) | m_gb_speed_change_pending);
-			break;
-
-		case STATE_GENFLAGS:
-			strprintf(str, "%c%c%c%c",
-=======
 			str = string_format("%02X", 0x7E | ((m_gb_speed - 1) << 7) | m_gb_speed_change_pending);
 			break;
 
 		case STATE_GENFLAGS:
 			str = string_format("%c%c%c%c",
->>>>>>> upstream/master
 				m_F & FLAG_Z   ? 'Z' : '.',
 				m_F & FLAG_N   ? 'N' : '.',
 				m_F & FLAG_H   ? 'H' : '.',
@@ -288,19 +225,6 @@ void lr35902_cpu_device::device_reset()
 	m_IF = 0;
 
 	m_execution_state = 0;
-<<<<<<< HEAD
-	m_handle_halt_bug = false;
-	m_handle_ei_delay = false;
-	m_gb_speed_change_pending = 0;
-	m_gb_speed = 1;
-}
-
-
-offs_t lr35902_cpu_device::disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options)
-{
-	extern CPU_DISASSEMBLE( lr35902 );
-	return CPU_DISASSEMBLE_NAME(lr35902)(this, buffer, pc, oprom, opram, options);
-=======
 	m_handle_ei_delay = false;
 	m_gb_speed_change_pending = 0;
 	m_gb_speed = 1;
@@ -312,17 +236,12 @@ offs_t lr35902_cpu_device::disasm_disassemble(std::ostream &stream, offs_t pc, c
 {
 	extern CPU_DISASSEMBLE( lr35902 );
 	return CPU_DISASSEMBLE_NAME(lr35902)(this, stream, pc, oprom, opram, options);
->>>>>>> upstream/master
 }
 
 
 void lr35902_cpu_device::check_interrupts()
 {
-<<<<<<< HEAD
-	UINT8 irq = m_IE & m_IF;
-=======
 	uint8_t irq = m_IE & m_IF;
->>>>>>> upstream/master
 
 	/* Interrupts should be taken after the first instruction after an EI instruction */
 	if (m_handle_ei_delay) {
@@ -342,10 +261,7 @@ void lr35902_cpu_device::check_interrupts()
 		   logerror("LR35902 Interrupt IRQ $%02X\n", irq);
 		*/
 
-<<<<<<< HEAD
-=======
 		bool was_halted = (m_enable & HALTED);
->>>>>>> upstream/master
 		for( ; irqline < 5; irqline++ )
 		{
 			if( irq & (1<<irqline) )
@@ -354,19 +270,6 @@ void lr35902_cpu_device::check_interrupts()
 				{
 					m_enable &= ~HALTED;
 					m_PC++;
-<<<<<<< HEAD
-					if ( m_has_halt_bug ) {
-						if ( ! ( m_enable & IME ) ) {
-							/* Old cpu core (dmg/mgb/sgb) */
-							m_handle_halt_bug = true;
-						}
-					} else {
-						/* New cpu core (cgb/agb/ags) */
-						/* Adjust for internal syncing with video core */
-						/* This feature needs more investigation */
-						if ( irqline < 2 ) {
-							cycles_passed( 4 );
-=======
 					// In general there seems to be a 4 cycle delay to leave the halt state; except when the
 					// trigger is caused by the VBlank interrupt (on DMG/MGB/SGB?/SGB2?).
 					//
@@ -403,7 +306,6 @@ void lr35902_cpu_device::check_interrupts()
 						if (!(m_enable & IME) && !m_entering_halt)
 						{
 							cycles_passed(4);
->>>>>>> upstream/master
 						}
 					}
 				}
@@ -415,12 +317,9 @@ void lr35902_cpu_device::check_interrupts()
 					mem_write_word( m_SP, m_PC );
 					m_PC = 0x40 + irqline * 8;
 					/*logerror("LR35902 Interrupt PC $%04X\n", m_PC );*/
-<<<<<<< HEAD
-=======
 					if (was_halted) {
 						m_op = mem_read_byte( m_PC );
 					}
->>>>>>> upstream/master
 					return;
 				}
 			}
@@ -436,34 +335,6 @@ void lr35902_cpu_device::execute_run()
 {
 	do
 	{
-<<<<<<< HEAD
-		if ( m_execution_state ) {
-			UINT8   x;
-			/* Execute instruction */
-			switch( m_op ) {
-#include "opc_main.inc"
-				default:
-					// actually this should lock up the cpu!
-					logerror("LR35902: Illegal opcode $%02X @ %04X\n", m_op, m_PC);
-					break;
-			}
-		} else {
-			/* Fetch and count cycles */
-			check_interrupts();
-			debugger_instruction_hook(this, m_PC);
-			if ( m_enable & HALTED ) {
-				cycles_passed( 4 );
-				m_execution_state = 1;
-			} else {
-				m_op = mem_read_byte( m_PC++ );
-				if ( m_handle_halt_bug ) {
-					m_PC--;
-					m_handle_halt_bug = false;
-				}
-			}
-		}
-		m_execution_state ^= 1;
-=======
 		if (m_dma_cycles_to_burn > 0)
 		{
 			if (m_dma_cycles_to_burn < 4)
@@ -508,7 +379,6 @@ void lr35902_cpu_device::execute_run()
 			}
 			m_execution_state ^= 1;
 		}
->>>>>>> upstream/master
 	} while (m_icount > 0);
 }
 
@@ -527,21 +397,13 @@ void lr35902_cpu_device::execute_set_input( int inptnum, int state )
 }
 
 
-<<<<<<< HEAD
-UINT8 lr35902_cpu_device::get_speed()
-=======
 uint8_t lr35902_cpu_device::get_speed()
->>>>>>> upstream/master
 {
 	return 0x7E | ( ( m_gb_speed - 1 ) << 7 ) | m_gb_speed_change_pending;
 }
 
 
-<<<<<<< HEAD
-void lr35902_cpu_device::set_speed( UINT8 speed_request )
-=======
 void lr35902_cpu_device::set_speed( uint8_t speed_request )
->>>>>>> upstream/master
 {
 	m_gb_speed_change_pending = speed_request & 0x01;
 }

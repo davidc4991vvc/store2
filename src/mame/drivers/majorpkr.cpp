@@ -1,9 +1,6 @@
 // license:BSD-3-Clause
 // copyright-holders:Roberto Fresca
-<<<<<<< HEAD
-=======
 // thanks-to:Tomasz Slanina, Rob Ragon
->>>>>>> upstream/master
 /**********************************************************************************
 
   Major Poker / Major Joker
@@ -21,22 +18,6 @@
 
   1x Z80 @ 6 MHz. (main CPU)
 
-<<<<<<< HEAD
-  1x M6295 @ 1.5 MHz. (4 channel mixing ADPCM voice synthesis). Pin7 high.
-
-  1x 6845 (CRT Controller) @ 750 kHz.
-          Hs 15625 Hz
-          Vs 52.786 Hz
-
-  2x MB8464 (Video?)8kx8
-  1x MB8416 (NVRAM) 2Kx8
-  1x MB8464 (?) 8kx8
-
-  2x 27C040 (Roms P1 & P2) (GFX ROMs).
-  2x 27C010 (Roms 3 & 4) (GFX ROMs).
-  1x 27C020 (Rom 5) (sound)
-  1x 27C512 (Rom 6) (program)
-=======
   1x OKI M6295 @ 1.5 MHz. (4 channel mixing ADPCM voice synthesis). Pin7 high.
 
   1x Hitachi HD6845 (CRT Controller) @ 750 kHz.
@@ -53,18 +34,14 @@
   2x 27C010 (Roms 3 & 4) (GFX ROMs).
   1x 27C020 (Rom 5) (4-bit ADPCM samples)
   1x 27C512 (Rom 6) (main program)
->>>>>>> upstream/master
 
   1x Xtal @ 12 MHz.
 
   4x 8 DIP switches banks.
   2x switches (SW1, SW2).
 
-<<<<<<< HEAD
-=======
   1x 2x6-pin male connector. (jumper1)
 
->>>>>>> upstream/master
   1x 2x10-pin edge connector.
   1x 2x22-pin edge connector.
 
@@ -472,22 +449,6 @@
 
 **********************************************************************************/
 
-<<<<<<< HEAD
-#define MASTER_CLOCK    XTAL_12MHz
-#define CPU_CLOCK       (MASTER_CLOCK / 2)  /* 6 MHz, measured */
-#define OKI_CLOCK       (MASTER_CLOCK / 8)  /* 1.5 MHz, measured */
-#define CRTC_CLOCK      (MASTER_CLOCK / 16) /* 750 kHz, measured */
-
-#include "emu.h"
-#include "cpu/z80/z80.h"
-#include "video/mc6845.h"
-#include "sound/okim6295.h"
-#include "machine/bankdev.h"
-#include "machine/nvram.h"
-#include "majorpkr.lh"
-
-
-=======
 #include "emu.h"
 
 #include "cpu/z80/z80.h"
@@ -508,7 +469,6 @@
 #define CRTC_CLOCK      (MASTER_CLOCK / 16)  // 750 kHz, measured.
 
 
->>>>>>> upstream/master
 class majorpkr_state : public driver_device
 {
 public:
@@ -526,13 +486,8 @@ public:
 	required_device<address_map_bank_device> m_vram_bank;
 
 	required_memory_bank m_rom_bank;
-<<<<<<< HEAD
-	required_shared_ptr<UINT8> m_fg_vram;
-	required_shared_ptr<UINT8> m_bg_vram;
-=======
 	required_shared_ptr<uint8_t> m_fg_vram;
 	required_shared_ptr<uint8_t> m_bg_vram;
->>>>>>> upstream/master
 
 	tilemap_t    *m_bg_tilemap, *m_fg_tilemap;
 
@@ -554,13 +509,8 @@ public:
 	DECLARE_DRIVER_INIT(majorpkr);
 	TILE_GET_INFO_MEMBER(bg_get_tile_info);
 	TILE_GET_INFO_MEMBER(fg_get_tile_info);
-<<<<<<< HEAD
-	virtual void video_start();
-	UINT32 screen_update_majorpkr(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	virtual void video_start() override;
 	uint32_t screen_update_majorpkr(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 };
 
 
@@ -591,22 +541,13 @@ TILE_GET_INFO_MEMBER(majorpkr_state::fg_get_tile_info)
 
 void majorpkr_state::video_start()
 {
-<<<<<<< HEAD
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(majorpkr_state::bg_get_tile_info),this), TILEMAP_SCAN_ROWS, 16, 8, 36, 28);
-	m_fg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(majorpkr_state::fg_get_tile_info),this), TILEMAP_SCAN_ROWS, 16, 8, 36, 28);
-=======
 	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(majorpkr_state::bg_get_tile_info),this), TILEMAP_SCAN_ROWS, 16, 8, 36, 28);
 	m_fg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(majorpkr_state::fg_get_tile_info),this), TILEMAP_SCAN_ROWS, 16, 8, 36, 28);
->>>>>>> upstream/master
 	m_fg_tilemap->set_transparent_pen(0);
 }
 
 
-<<<<<<< HEAD
-UINT32 majorpkr_state::screen_update_majorpkr(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t majorpkr_state::screen_update_majorpkr(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	m_bg_tilemap->draw(screen, bitmap, cliprect, 0);
 	m_fg_tilemap->draw(screen, bitmap, cliprect, 0);
@@ -684,21 +625,12 @@ WRITE8_MEMBER(majorpkr_state::vidreg_w)
 
 READ8_MEMBER(majorpkr_state::mux_port_r)
 {
-<<<<<<< HEAD
-	switch( (m_mux_data & 0xf0) )       /* 00-10-20-30-0F-1F-2F-3F */
-	{
-		case 0x00: return ioport("DSW1")->read();   /* confirmed */
-		case 0x10: return ioport("DSW2")->read();   /* confirmed */
-		case 0x20: return ioport("DSW3")->read();   /* confirmed */
-		case 0x30: return ioport("DSW4")->read();   /* confirmed */
-=======
 	switch( (m_mux_data & 0xf0) )       // 00-10-20-30-0F-1F-2F-3F.
 	{
 		case 0x00: return ioport("DSW1")->read();   // confirmed.
 		case 0x10: return ioport("DSW2")->read();   // confirmed.
 		case 0x20: return ioport("DSW3")->read();   // confirmed.
 		case 0x30: return ioport("DSW4")->read();   // confirmed.
->>>>>>> upstream/master
 	}
 
 	return 0xff;
@@ -718,11 +650,7 @@ READ8_MEMBER(majorpkr_state::mux_port2_r)
 
 WRITE8_MEMBER(majorpkr_state::mux_sel_w)
 {
-<<<<<<< HEAD
-	m_mux_data = data;  /* 00-10-20-30-0F-1F-2F-3F */
-=======
 	m_mux_data = data;  // 00-10-20-30-0F-1F-2F-3F.
->>>>>>> upstream/master
 }
 
 
@@ -745,15 +673,6 @@ WRITE8_MEMBER(majorpkr_state::lamps_a_w)
     -x-- ----   Small lamp.
     x--- ----   Unknown.
 */
-<<<<<<< HEAD
-	output_set_lamp_value(0, (data) & 1);       /* Lamp 0: Hold 1 */
-	output_set_lamp_value(1, (data >> 1) & 1);  /* Lamp 1: Hold 2 */
-	output_set_lamp_value(2, (data >> 2) & 1);  /* Lamp 2: Hold 3 */
-	output_set_lamp_value(3, (data >> 3) & 1);  /* Lamp 3: Hold 4 */
-	output_set_lamp_value(4, (data >> 4) & 1);  /* Lamp 4: Hold 5 */
-	output_set_lamp_value(5, (data >> 5) & 1);  /* Lamp 5: Big or Small (need identification) */
-	output_set_lamp_value(6, (data >> 6) & 1);  /* Lamp 6: Big or Small (need identification) */
-=======
 	output().set_lamp_value(0, (data) & 1);       // Lamp 0: Hold 1.
 	output().set_lamp_value(1, (data >> 1) & 1);  // Lamp 1: Hold 2.
 	output().set_lamp_value(2, (data >> 2) & 1);  // Lamp 2: Hold 3.
@@ -761,7 +680,6 @@ WRITE8_MEMBER(majorpkr_state::lamps_a_w)
 	output().set_lamp_value(4, (data >> 4) & 1);  // Lamp 4: Hold 5.
 	output().set_lamp_value(5, (data >> 5) & 1);  // Lamp 5: Big or Small (need identification).
 	output().set_lamp_value(6, (data >> 6) & 1);  // Lamp 6: Big or Small (need identification).
->>>>>>> upstream/master
 
 	if (data & 0x80)
 		logerror("Lamps A: Write to 13h: %02x\n", data);
@@ -781,21 +699,12 @@ WRITE8_MEMBER(majorpkr_state::lamps_b_w)
     --x- ----   Fever lamp.
     xx-- ----   Unknown.
 */
-<<<<<<< HEAD
-	output_set_lamp_value(7, (data) & 1);       /* Lamp 7: Bet */
-	output_set_lamp_value(8, (data >> 1) & 1);  /* Lamp 8: Draw */
-	output_set_lamp_value(9, (data >> 2) & 1);  /* Lamp 9: Cancel */
-	output_set_lamp_value(10, (data >> 3) & 1); /* Lamp 10: Take */
-	output_set_lamp_value(11, (data >> 4) & 1); /* Lamp 11: D-UP */
-	output_set_lamp_value(12, (data >> 5) & 1); /* Lamp 12: Fever */
-=======
 	output().set_lamp_value(7, (data) & 1);        // Lamp 7: Bet.
 	output().set_lamp_value(8, (data >> 1) & 1);   // Lamp 8: Draw.
 	output().set_lamp_value(9, (data >> 2) & 1);   // Lamp 9: Cancel.
 	output().set_lamp_value(10, (data >> 3) & 1);  // Lamp 10: Take.
 	output().set_lamp_value(11, (data >> 4) & 1);  // Lamp 11: D-UP.
 	output().set_lamp_value(12, (data >> 5) & 1);  // Lamp 12: Fever.
->>>>>>> upstream/master
 
 	if (data & 0xc0)
 		logerror("Lamps B: Write to 14h: %02x\n", data);
@@ -814,17 +723,10 @@ WRITE8_MEMBER(majorpkr_state::pulses_w)
     ---x ----   Watchdog? (constant writes).
     xxx- ----   Unknown.
 */
-<<<<<<< HEAD
-	coin_counter_w(machine(), 3, data & 0x01);      /* Credits Out (all) */
-	coin_counter_w(machine(), 2, data & 0x02);      /* Credits 3 */
-	coin_counter_w(machine(), 0, data & 0x04);      /* Credits 1 */
-	coin_counter_w(machine(), 1, data & 0x08);      /* Credits 2 */
-=======
 	machine().bookkeeping().coin_counter_w(3, data & 0x01);  // Credits Out (all).
 	machine().bookkeeping().coin_counter_w(2, data & 0x02);  // Credits 3.
 	machine().bookkeeping().coin_counter_w(0, data & 0x04);  // Credits 1.
 	machine().bookkeeping().coin_counter_w(1, data & 0x08);  // Credits 2.
->>>>>>> upstream/master
 
 	if (data & 0xe0)
 		logerror("Pulse: Write to 10h: %02x\n", data);
@@ -880,18 +782,6 @@ static ADDRESS_MAP_START( portmap, AS_IO, 8, majorpkr_state )
 	AM_RANGE(0x01, 0x01) AM_WRITE(palette_bank_w)
 	AM_RANGE(0x02, 0x02) AM_WRITE(vram_bank_w)
 
-<<<<<<< HEAD
-	AM_RANGE(0x10, 0x10) AM_READ(mux_port2_r)   /* muxed set of controls */
-	AM_RANGE(0x10, 0x10) AM_WRITE(pulses_w)     /* kind of watchdog on bit4... mech counters on bits 0-1-2-3 */
-	AM_RANGE(0x11, 0x11) AM_READ_PORT("IN1")
-	AM_RANGE(0x11, 0x11) AM_WRITE(mux_sel_w)    /* multiplexer selector */
-	AM_RANGE(0x12, 0x12) AM_READ_PORT("IN2")
-	AM_RANGE(0x12, 0x12) AM_WRITE(vidreg_w)     /* video registers: normal or up down screen */
-	AM_RANGE(0x13, 0x13) AM_READ(mux_port_r)    /* all 4 DIP switches banks multiplexed */
-	AM_RANGE(0x13, 0x13) AM_WRITE(lamps_a_w)    /* lamps a out */
-	AM_RANGE(0x14, 0x14) AM_READ_PORT("TEST")   /* "freeze" switch */
-	AM_RANGE(0x14, 0x14) AM_WRITE(lamps_b_w)    /* lamps b out */
-=======
 	AM_RANGE(0x10, 0x10) AM_READ(mux_port2_r)   // muxed set of controls.
 	AM_RANGE(0x10, 0x10) AM_WRITE(pulses_w)     // kind of watchdog on bit4... mech counters on bits 0-1-2-3.
 	AM_RANGE(0x11, 0x11) AM_READ_PORT("IN1")
@@ -902,17 +792,12 @@ static ADDRESS_MAP_START( portmap, AS_IO, 8, majorpkr_state )
 	AM_RANGE(0x13, 0x13) AM_WRITE(lamps_a_w)    // lamps a out.
 	AM_RANGE(0x14, 0x14) AM_READ_PORT("TEST")   // "freeze" switch.
 	AM_RANGE(0x14, 0x14) AM_WRITE(lamps_b_w)    // lamps b out.
->>>>>>> upstream/master
 
 	AM_RANGE(0x30, 0x30) AM_DEVWRITE("crtc", mc6845_device, address_w)
 	AM_RANGE(0x31, 0x31) AM_DEVREADWRITE("crtc", mc6845_device, register_r, register_w)
 
 	AM_RANGE(0x50, 0x50) AM_DEVREADWRITE("oki", okim6295_device, read, write)
-<<<<<<< HEAD
-	AM_RANGE(0x60, 0x60) AM_WRITENOP    /* leftover from a PSG SN76489/96? */
-=======
 	AM_RANGE(0x60, 0x60) AM_WRITENOP    // leftover from a PSG SN76489/96?...
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -1100,21 +985,12 @@ GFXDECODE_END
 *    Machine Drivers     *
 *************************/
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( majorpkr, majorpkr_state )
-	/* basic machine hardware */
-	MCFG_CPU_ADD("maincpu", Z80, CPU_CLOCK) /* 6 MHz */
-	MCFG_CPU_PROGRAM_MAP(map)
-	MCFG_CPU_IO_MAP(portmap)
-	MCFG_CPU_VBLANK_INT_DRIVER("screen", majorpkr_state,  irq0_line_hold)
-=======
 static MACHINE_CONFIG_START( majorpkr )
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, CPU_CLOCK)  // 6 MHz.
 	MCFG_CPU_PROGRAM_MAP(map)
 	MCFG_CPU_IO_MAP(portmap)
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", majorpkr_state, irq0_line_hold)
->>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("palette_bank", ADDRESS_MAP_BANK, 0)
 	MCFG_DEVICE_PROGRAM_MAP(palettebanks)
@@ -1134,11 +1010,7 @@ static MACHINE_CONFIG_START( majorpkr )
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
-<<<<<<< HEAD
-	MCFG_SCREEN_RAW_PARAMS(CRTC_CLOCK*16, (47+1)*16, 0, (36*16)-16, (36+1)*8, 0, (28*8)) /* from CRTC registers */
-=======
 	MCFG_SCREEN_RAW_PARAMS(CRTC_CLOCK*16, (47+1)*16, 0, (36*16)-16, (36+1)*8, 0, (28*8))  // from CRTC registers.
->>>>>>> upstream/master
 	MCFG_SCREEN_UPDATE_DRIVER(majorpkr_state, screen_update_majorpkr)
 	MCFG_SCREEN_PALETTE("palette")
 
@@ -1147,24 +1019,14 @@ static MACHINE_CONFIG_START( majorpkr )
 	MCFG_PALETTE_ADD("palette", 0x100 * 16)
 	MCFG_PALETTE_FORMAT(xGGGGGRRRRRBBBBB)
 
-<<<<<<< HEAD
-	MCFG_MC6845_ADD("crtc", MC6845, "screen", CRTC_CLOCK) /* verified */
-	MCFG_MC6845_SHOW_BORDER_AREA(false)
-	MCFG_MC6845_VISAREA_ADJUST(0,-16,0,0)
-=======
 	MCFG_MC6845_ADD("crtc", MC6845, "screen", CRTC_CLOCK)  // verified.
 	MCFG_MC6845_SHOW_BORDER_AREA(false)
 	MCFG_MC6845_VISAREA_ADJUST(0, -16, 0, 0)
->>>>>>> upstream/master
 	MCFG_MC6845_CHAR_WIDTH(16)
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki", OKI_CLOCK, OKIM6295_PIN7_HIGH) /* clock frequency & pin 7 verified */
-=======
 	MCFG_OKIM6295_ADD("oki", OKI_CLOCK, PIN7_HIGH)  // clock frequency & pin 7 verified.
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
 
@@ -1173,15 +1035,6 @@ MACHINE_CONFIG_END
 *        Rom Load        *
 *************************/
 
-<<<<<<< HEAD
-ROM_START( majorpkr )
-	ROM_REGION( 0x10000, "maincpu", 0 )
-	ROM_LOAD( "6_27c512_823b.bin", 0x00000, 0x10000, CRC(a3d5475e) SHA1(cb41508b55da8b8c658a2f2ccc6ebda09db29040)  )
-
-	ROM_REGION( 0x100000, "bg_gfx", 0 )
-	ROM_LOAD( "p1_27c040_7d3b.bin", 0x00000, 0x80000, CRC(67299eff) SHA1(34d3d8baf08dea495b699dd63272b445e2acb42d) )
-	ROM_LOAD( "p2_27c040_6039.bin", 0x80000, 0x80000, CRC(2d68b177) SHA1(01c934e0383991f2208b915cc5015463a8b6a8fd) )
-=======
 /*
   Major Poker.
   Original PAL System game.
@@ -1193,7 +1046,6 @@ ROM_START( majorpkr )
 	ROM_REGION( 0x100000, "bg_gfx", 0 )
 	ROM_LOAD( "1_27c040_7d3b.bin", 0x00000, 0x80000, CRC(67299eff) SHA1(34d3d8baf08dea495b699dd63272b445e2acb42d) )
 	ROM_LOAD( "2_27c040_6039.bin", 0x80000, 0x80000, CRC(2d68b177) SHA1(01c934e0383991f2208b915cc5015463a8b6a8fd) )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x40000, "fg_gfx", 0 )
 	ROM_LOAD( "3_27c010_af18.bin", 0x00000, 0x20000, CRC(54452bb8) SHA1(9d13c17b85dd0185ba64fc6f90425e0c75363960) )
@@ -1201,11 +1053,6 @@ ROM_START( majorpkr )
 
 	ROM_REGION( 0x40000, "oki", 0 )
 	ROM_LOAD( "5_27c020_8630.bin", 0x00000, 0x40000, CRC(4843858e) SHA1(27629829cf7753d7801a6eb42bb77ca2a467bebd) )
-<<<<<<< HEAD
-ROM_END
-
-
-=======
 
 	ROM_REGION( 0x1000, "plds1", 0 )  // from protection box.
 	ROM_LOAD( "u1_box_palce16v8h.bin",  0x0000, 0x0117, NO_DUMP )  // need to be extracted from the box and cracked...
@@ -1321,20 +1168,13 @@ ROM_END
 
 
 
->>>>>>> upstream/master
 /*************************
 *      Driver Init       *
 *************************/
 
-<<<<<<< HEAD
-DRIVER_INIT_MEMBER(majorpkr_state,majorpkr)
-{
-	UINT8 * ROM = (UINT8 *)memregion("maincpu")->base();
-=======
 DRIVER_INIT_MEMBER(majorpkr_state, majorpkr)
 {
 	uint8_t * ROM = (uint8_t *)memregion("maincpu")->base();
->>>>>>> upstream/master
 	m_rom_bank->configure_entries(0, 4, &ROM[0xe000], 0x800);
 }
 
@@ -1343,14 +1183,9 @@ DRIVER_INIT_MEMBER(majorpkr_state, majorpkr)
 *      Game Drivers      *
 *************************/
 
-<<<<<<< HEAD
-/*     YEAR  NAME      PARENT  MACHINE   INPUT     INIT      ROT    COMPANY       FULLNAME             FLAGS  LAYOUT */
-GAMEL( 1994, majorpkr, 0,      majorpkr, majorpkr, majorpkr_state, majorpkr, ROT0, "PAL System", "Major Poker (v2.0)", 0,     layout_majorpkr )
-=======
 /*     YEAR  NAME       PARENT    MACHINE   INPUT     STATE           INIT      ROT    COMPANY                             FULLNAME                                         FLAGS  LAYOUT */
 GAMEL( 1994, majorpkr,  0,        majorpkr, majorpkr, majorpkr_state, majorpkr, ROT0, "PAL System",                       "Major Poker (set 1, v2.0)",                      0,     layout_majorpkr )
 GAMEL( 1994, majorpkra, majorpkr, majorpkr, majorpkr, majorpkr_state, majorpkr, ROT0, "PAL System / Micro Manufacturing", "Major Poker (set 2, Micro Manufacturing intro)", 0,     layout_majorpkr )
 GAMEL( 1994, majorpkrb, majorpkr, majorpkr, majorpkr, majorpkr_state, majorpkr, ROT0, "PAL System / Micro Manufacturing", "Major Poker (set 3, Micro Manufacturing intro)", 0,     layout_majorpkr )
 GAMEL( 1994, majorpkrc, majorpkr, majorpkr, majorpkr, majorpkr_state, majorpkr, ROT0, "PAL System / Micro Manufacturing", "Major Poker (set 4, Micro Manufacturing intro)", 0,     layout_majorpkr )
 GAMEL( 1994, luckypkr,  majorpkr, majorpkr, majorpkr, majorpkr_state, majorpkr, ROT0, "bootleg",                          "Lucky Poker (bootleg/hack of Major Poker)",      0,     layout_majorpkr )
->>>>>>> upstream/master

@@ -1,13 +1,8 @@
 // license:BSD-3-Clause
 // copyright-holders:Zsolt Vasvari
-<<<<<<< HEAD
-#include "emu.h"
-#include "cpu/z80/z80.h"
-=======
 
 #include "cpu/z80/z80.h"
 #include "machine/gen_latch.h"
->>>>>>> upstream/master
 
 class zodiack_state : public driver_device
 {
@@ -16,23 +11,14 @@ public:
 		: driver_device(mconfig, type, tag),
 			m_maincpu(*this, "maincpu"),
 			m_audiocpu(*this, "audiocpu"),
-<<<<<<< HEAD
-=======
 			m_gfxdecode(*this, "gfxdecode"),
 			m_palette(*this, "palette"),
 			m_soundlatch(*this, "soundlatch"),
->>>>>>> upstream/master
 			m_videoram(*this, "videoram"),
 			m_videoram_2(*this, "videoram_2"),
 			m_attributeram(*this, "attributeram"),
 			m_spriteram(*this, "spriteram"),
-<<<<<<< HEAD
-			m_bulletsram(*this, "bulletsram"),
-			m_gfxdecode(*this, "gfxdecode"),
-			m_palette(*this, "palette")
-=======
 			m_bulletsram(*this, "bulletsram")
->>>>>>> upstream/master
 	{ }
 
 	// in drivers/zodiack.c
@@ -53,18 +39,6 @@ public:
 	// devices
 	required_device<z80_device> m_maincpu;
 	required_device<z80_device> m_audiocpu;
-<<<<<<< HEAD
-
-	// shared pointers
-	required_shared_ptr<UINT8> m_videoram;
-	required_shared_ptr<UINT8> m_videoram_2;
-	required_shared_ptr<UINT8> m_attributeram;
-	required_shared_ptr<UINT8> m_spriteram;
-	required_shared_ptr<UINT8> m_bulletsram;
-
-	required_device<gfxdecode_device> m_gfxdecode;
-	required_device<palette_device> m_palette;
-=======
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
 	required_device<generic_latch_8_device> m_soundlatch;
@@ -75,22 +49,10 @@ public:
 	required_shared_ptr<uint8_t> m_attributeram;
 	required_shared_ptr<uint8_t> m_spriteram;
 	required_shared_ptr<uint8_t> m_bulletsram;
->>>>>>> upstream/master
 
 	// state
 	tilemap_t *m_bg_tilemap;
 	tilemap_t *m_fg_tilemap;
-<<<<<<< HEAD
-	UINT8 m_main_nmi_enabled;
-	UINT8 m_sound_nmi_enabled;
-	bool m_percuss_hardware;
-
-	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-
-	virtual void machine_start();
-	virtual void machine_reset();
-	virtual void video_start();
-=======
 	uint8_t m_main_nmi_enabled;
 	uint8_t m_sound_nmi_enabled;
 	bool m_percuss_hardware;
@@ -100,7 +62,6 @@ public:
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
 	virtual void video_start() override;
->>>>>>> upstream/master
 
 	DECLARE_DRIVER_INIT(zodiack);
 	DECLARE_DRIVER_INIT(percuss);

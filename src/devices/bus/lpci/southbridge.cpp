@@ -7,11 +7,6 @@
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/i386/i386.h"
-#include "southbridge.h"
-#include "bus/pc_kbd/keyboards.h"
-=======
 #include "southbridge.h"
 
 #include "bus/isa/com.h"
@@ -20,7 +15,6 @@
 #include "bus/pc_kbd/keyboards.h"
 #include "cpu/i386/i386.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 static SLOT_INTERFACE_START(pc_isa_onboard)
@@ -29,16 +23,12 @@ static SLOT_INTERFACE_START(pc_isa_onboard)
 	SLOT_INTERFACE("fdcsmc", ISA8_FDC_SMC)
 SLOT_INTERFACE_END
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_FRAGMENT( southbridge )
-=======
 
 //-------------------------------------------------
 //  device_add_mconfig - add device configuration
 //-------------------------------------------------
 
 MACHINE_CONFIG_MEMBER( southbridge_device::device_add_mconfig )
->>>>>>> upstream/master
 	MCFG_DEVICE_ADD("pit8254", PIT8254, 0)
 	MCFG_PIT8253_CLK0(4772720/4) /* heartbeat IRQ */
 	MCFG_PIT8253_OUT0_HANDLER(WRITELINE(southbridge_device, at_pit8254_out0_changed))
@@ -81,11 +71,7 @@ MACHINE_CONFIG_MEMBER( southbridge_device::device_add_mconfig )
 	MCFG_I8237_OUT_DACK_3_CB(WRITELINE(southbridge_device, pc_dack7_w))
 
 	MCFG_PIC8259_ADD( "pic8259_master", INPUTLINE(":maincpu", 0), VCC, READ8(southbridge_device, get_slave_ack) )
-<<<<<<< HEAD
-	MCFG_PIC8259_ADD( "pic8259_slave", DEVWRITELINE("pic8259_master", pic8259_device, ir2_w), GND, NULL )
-=======
 	MCFG_PIC8259_ADD( "pic8259_slave", DEVWRITELINE("pic8259_master", pic8259_device, ir2_w), GND, NOOP)
->>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("keybc", AT_KEYBOARD_CONTROLLER, XTAL_12MHz)
 	MCFG_AT_KEYBOARD_CONTROLLER_SYSTEM_RESET_CB(INPUTLINE(":maincpu", INPUT_LINE_RESET))
@@ -102,19 +88,11 @@ MACHINE_CONFIG_MEMBER( southbridge_device::device_add_mconfig )
 	MCFG_MC146818_IRQ_HANDLER(DEVWRITELINE("pic8259_slave", pic8259_device, ir0_w))
 	MCFG_MC146818_CENTURY_INDEX(0x32)
 
-<<<<<<< HEAD
-	MCFG_BUS_MASTER_IDE_CONTROLLER_ADD("ide", ata_devices, "hdd", NULL, false)
-	MCFG_ATA_INTERFACE_IRQ_HANDLER(DEVWRITELINE("pic8259_slave", pic8259_device, ir6_w))
-	MCFG_BUS_MASTER_IDE_CONTROLLER_SPACE(":maincpu", AS_PROGRAM)
-
-	MCFG_BUS_MASTER_IDE_CONTROLLER_ADD("ide2", ata_devices, "cdrom", NULL, false)
-=======
 	MCFG_BUS_MASTER_IDE_CONTROLLER_ADD("ide", ata_devices, "hdd", nullptr, false)
 	MCFG_ATA_INTERFACE_IRQ_HANDLER(DEVWRITELINE("pic8259_slave", pic8259_device, ir6_w))
 	MCFG_BUS_MASTER_IDE_CONTROLLER_SPACE(":maincpu", AS_PROGRAM)
 
 	MCFG_BUS_MASTER_IDE_CONTROLLER_ADD("ide2", ata_devices, "cdrom", nullptr, false)
->>>>>>> upstream/master
 	MCFG_ATA_INTERFACE_IRQ_HANDLER(DEVWRITELINE("pic8259_slave", pic8259_device, ir7_w))
 	MCFG_BUS_MASTER_IDE_CONTROLLER_SPACE(":maincpu", AS_PROGRAM)
 
@@ -149,23 +127,8 @@ MACHINE_CONFIG_MEMBER( southbridge_device::device_add_mconfig )
 	MCFG_ISA16_SLOT_ADD("isabus","board3", pc_isa_onboard, "lpt", true)
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-//-------------------------------------------------
-//  machine_config_additions - device-specific
-//  machine configurations
-//-------------------------------------------------
-
-machine_config_constructor southbridge_device::device_mconfig_additions() const
-{
-	return MACHINE_CONFIG_NAME( southbridge );
-}
-
-southbridge_device::southbridge_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source)
-	: device_t(mconfig, type, name, tag, owner, clock, shortname, source),
-=======
 southbridge_device::southbridge_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, type, tag, owner, clock),
->>>>>>> upstream/master
 	m_maincpu(*this, ":maincpu"),
 	m_pic8259_master(*this, "pic8259_master"),
 	m_pic8259_slave(*this, "pic8259_slave"),
@@ -190,38 +153,22 @@ southbridge_device::southbridge_device(const machine_config &mconfig, device_typ
 /// HACK: the memory system cannot cope with mixing the  8 bit device map from the fdc with a 32 bit handler
 READ8_MEMBER(southbridge_device::ide_read_cs1_r)
 {
-<<<<<<< HEAD
-	return m_ide->read_cs1(space, 1, (UINT32) 0xff0000) >> 16;
-=======
 	return m_ide->read_cs1(space, 1, (uint32_t) 0xff0000) >> 16;
->>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(southbridge_device::ide_write_cs1_w)
 {
-<<<<<<< HEAD
-	m_ide->write_cs1(space, 1, (UINT32) data << 16, (UINT32) 0xff0000);
-=======
 	m_ide->write_cs1(space, 1, (uint32_t) data << 16, (uint32_t) 0xff0000);
->>>>>>> upstream/master
 }
 
 READ8_MEMBER(southbridge_device::ide2_read_cs1_r)
 {
-<<<<<<< HEAD
-	return m_ide2->read_cs1(space, 1, (UINT32) 0xff0000) >> 16;
-=======
 	return m_ide2->read_cs1(space, 1, (uint32_t) 0xff0000) >> 16;
->>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(southbridge_device::ide2_write_cs1_w)
 {
-<<<<<<< HEAD
-	m_ide2->write_cs1(space, 1, (UINT32) data << 16, (UINT32) 0xff0000);
-=======
 	m_ide2->write_cs1(space, 1, (uint32_t) data << 16, (uint32_t) 0xff0000);
->>>>>>> upstream/master
 }
 
 //-------------------------------------------------
@@ -235,12 +182,8 @@ void southbridge_device::device_start()
 	spaceio.install_readwrite_handler(0x0000, 0x001f, read8_delegate(FUNC(am9517a_device::read),&(*m_dma8237_1)), write8_delegate(FUNC(am9517a_device::write),&(*m_dma8237_1)), 0xffffffff);
 	spaceio.install_readwrite_handler(0x0020, 0x003f, read8_delegate(FUNC(pic8259_device::read),&(*m_pic8259_master)), write8_delegate(FUNC(pic8259_device::write),&(*m_pic8259_master)), 0xffffffff);
 	spaceio.install_readwrite_handler(0x0040, 0x005f, read8_delegate(FUNC(pit8254_device::read),&(*m_pit8254)), write8_delegate(FUNC(pit8254_device::write),&(*m_pit8254)), 0xffffffff);
-<<<<<<< HEAD
-	spaceio.install_readwrite_handler(0x0060, 0x0063, read8_delegate(FUNC(southbridge_device::at_keybc_r),this), write8_delegate(FUNC(southbridge_device::at_keybc_w),this), 0xffffffff);
-=======
 	spaceio.install_readwrite_handler(0x0060, 0x0063, read8_delegate(FUNC(at_keyboard_controller_device::data_r), &(*m_keybc)), write8_delegate(FUNC(at_keyboard_controller_device::data_w), &(*m_keybc)), 0x000000ff);
 	spaceio.install_readwrite_handler(0x0060, 0x0063, read8_delegate(FUNC(southbridge_device::at_portb_r), this), write8_delegate(FUNC(southbridge_device::at_portb_w), this), 0x0000ff00);
->>>>>>> upstream/master
 	spaceio.install_readwrite_handler(0x0064, 0x0067, read8_delegate(FUNC(at_keyboard_controller_device::status_r),&(*m_keybc)), write8_delegate(FUNC(at_keyboard_controller_device::command_w),&(*m_keybc)), 0xffffffff);
 	spaceio.install_readwrite_handler(0x0070, 0x007f, read8_delegate(FUNC(ds12885_device::read),&(*m_ds12885)), write8_delegate(FUNC(ds12885_device::write),&(*m_ds12885)), 0xffffffff);
 	spaceio.install_readwrite_handler(0x0080, 0x009f, read8_delegate(FUNC(southbridge_device::at_page8_r),this), write8_delegate(FUNC(southbridge_device::at_page8_w),this), 0xffffffff);
@@ -290,11 +233,7 @@ READ8_MEMBER( southbridge_device::get_slave_ack )
  *
  *************************************************************************/
 
-<<<<<<< HEAD
-void southbridge_device::at_speaker_set_spkrdata(UINT8 data)
-=======
 void southbridge_device::at_speaker_set_spkrdata(uint8_t data)
->>>>>>> upstream/master
 {
 	m_at_spkrdata = data ? 1 : 0;
 	m_speaker->level_w(m_at_spkrdata & m_pit_out2);
@@ -334,11 +273,7 @@ WRITE_LINE_MEMBER( southbridge_device::at_pit8254_out2_changed )
 
 READ8_MEMBER( southbridge_device::at_page8_r )
 {
-<<<<<<< HEAD
-	UINT8 data = m_at_pages[offset % 0x10];
-=======
 	uint8_t data = m_at_pages[offset % 0x10];
->>>>>>> upstream/master
 
 	switch(offset % 8)
 	{
@@ -363,11 +298,8 @@ WRITE8_MEMBER( southbridge_device::at_page8_w )
 {
 	m_at_pages[offset % 0x10] = data;
 
-<<<<<<< HEAD
-=======
 	if (offset == 0)
 		port80_debug_write(data);
->>>>>>> upstream/master
 	switch(offset % 8)
 	{
 	case 1:
@@ -399,13 +331,8 @@ READ8_MEMBER(southbridge_device::pc_dma_read_byte)
 	address_space& prog_space = m_maincpu->space(AS_PROGRAM); // get the right address space
 	if(m_dma_channel == -1)
 		return 0xff;
-<<<<<<< HEAD
-	UINT8 result;
-	offs_t page_offset = (((offs_t) m_dma_offset[0][m_dma_channel]) << 16) & 0xFF0000;
-=======
 	uint8_t result;
 	offs_t page_offset = ((offs_t) m_dma_offset[0][m_dma_channel]) << 16;
->>>>>>> upstream/master
 
 	result = prog_space.read_byte(page_offset + offset);
 	return result;
@@ -417,11 +344,7 @@ WRITE8_MEMBER(southbridge_device::pc_dma_write_byte)
 	address_space& prog_space = m_maincpu->space(AS_PROGRAM); // get the right address space
 	if(m_dma_channel == -1)
 		return;
-<<<<<<< HEAD
-	offs_t page_offset = (((offs_t) m_dma_offset[0][m_dma_channel]) << 16) & 0xFF0000;
-=======
 	offs_t page_offset = ((offs_t) m_dma_offset[0][m_dma_channel]) << 16;
->>>>>>> upstream/master
 
 	prog_space.write_byte(page_offset + offset, data);
 }
@@ -432,17 +355,10 @@ READ8_MEMBER(southbridge_device::pc_dma_read_word)
 	address_space& prog_space = m_maincpu->space(AS_PROGRAM); // get the right address space
 	if(m_dma_channel == -1)
 		return 0xff;
-<<<<<<< HEAD
-	UINT16 result;
-	offs_t page_offset = (((offs_t) m_dma_offset[1][m_dma_channel & 3]) << 16) & 0xFE0000;
-
-	result = prog_space.read_word(page_offset + ( offset << 1 ) );
-=======
 	uint16_t result;
 	offs_t page_offset = ((offs_t) m_dma_offset[1][m_dma_channel & 3]) << 16;
 
 	result = prog_space.read_word((page_offset & 0xfe0000) | (offset << 1));
->>>>>>> upstream/master
 	m_dma_high_byte = result & 0xFF00;
 
 	return result & 0xFF;
@@ -454,15 +370,9 @@ WRITE8_MEMBER(southbridge_device::pc_dma_write_word)
 	address_space& prog_space = m_maincpu->space(AS_PROGRAM); // get the right address space
 	if(m_dma_channel == -1)
 		return;
-<<<<<<< HEAD
-	offs_t page_offset = (((offs_t) m_dma_offset[1][m_dma_channel & 3]) << 16) & 0xFE0000;
-
-	prog_space.write_word(page_offset + ( offset << 1 ), m_dma_high_byte | data);
-=======
 	offs_t page_offset = ((offs_t) m_dma_offset[1][m_dma_channel & 3]) << 16;
 
 	prog_space.write_word((page_offset & 0xfe0000) | (offset << 1), m_dma_high_byte | data);
->>>>>>> upstream/master
 }
 
 
@@ -516,11 +426,7 @@ WRITE_LINE_MEMBER( southbridge_device::pc_dack7_w ) { pc_select_dma_channel(7, s
 
 READ8_MEMBER( southbridge_device::at_portb_r )
 {
-<<<<<<< HEAD
-	UINT8 data = m_at_speaker;
-=======
 	uint8_t data = m_at_speaker;
->>>>>>> upstream/master
 	data &= ~0xd0; /* AT BIOS don't likes this being set */
 
 	/* 0x10 is the dram refresh line bit on the 5170, just a timer here, 15.085us. */
@@ -553,30 +459,6 @@ WRITE8_MEMBER( southbridge_device::at_dma8237_2_w )
 	m_dma8237_2->write( space, offset / 2, data);
 }
 
-<<<<<<< HEAD
-READ8_MEMBER( southbridge_device::at_keybc_r )
-{
-	switch (offset)
-	{
-	case 0: return m_keybc->data_r(space, 0);
-	case 1: return at_portb_r(space, 0);
-	}
-
-	return 0xff;
-}
-
-WRITE8_MEMBER( southbridge_device::at_keybc_w )
-{
-	switch (offset)
-	{
-	case 0: m_keybc->data_w(space, 0, data); break;
-	case 1: at_portb_w(space, 0, data); break;
-	}
-}
-
-
-=======
->>>>>>> upstream/master
 WRITE8_MEMBER( southbridge_device::write_rtc )
 {
 	if (offset==0) {

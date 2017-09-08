@@ -12,10 +12,7 @@
 
 #include "emu.h"
 #include "cpu/t11/t11.h"
-<<<<<<< HEAD
-=======
 #include "screen.h"
->>>>>>> upstream/master
 
 
 #define MAX_POINTS 2048
@@ -28,20 +25,6 @@ public:
 		m_maincpu(*this, "maincpu"),
 		m_palette(*this, "palette")  { }
 
-<<<<<<< HEAD
-	UINT16 m_clk;
-
-	UINT16 m_x;
-	UINT16 m_y;
-
-	INT16 m_mq;
-	INT16 m_ac;
-
-	struct
-	{
-		UINT16 x;
-		UINT16 y;
-=======
 	uint16_t m_clk;
 
 	uint16_t m_x;
@@ -54,7 +37,6 @@ public:
 	{
 		uint16_t x;
 		uint16_t y;
->>>>>>> upstream/master
 	} m_point_work_list[MAX_POINTS], m_point_display_list[MAX_POINTS];
 
 	int m_point_work_list_index;
@@ -68,13 +50,8 @@ public:
 	DECLARE_WRITE16_MEMBER(y_w);
 	DECLARE_WRITE16_MEMBER(clk_w);
 	DECLARE_DRIVER_INIT(galaxygame);
-<<<<<<< HEAD
-	virtual void machine_reset();
-	UINT32 screen_update_galaxygame(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	virtual void machine_reset() override;
 	uint32_t screen_update_galaxygame(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	INTERRUPT_GEN_MEMBER(galaxygame_irq);
 	IRQ_CALLBACK_MEMBER(galaxygame_irq_callback);
 	required_device<cpu_device> m_maincpu;
@@ -89,11 +66,7 @@ public:
 
 READ16_MEMBER(galaxygame_state::ke_r)
 {
-<<<<<<< HEAD
-	UINT16 ret;
-=======
 	uint16_t ret;
->>>>>>> upstream/master
 
 	switch( offset )
 	{
@@ -125,15 +98,9 @@ WRITE16_MEMBER(galaxygame_state::ke_w)
 			{
 				if ( data != 0 )
 				{
-<<<<<<< HEAD
-					INT32 dividend = (INT32)((UINT32)((UINT16)m_ac << 16) | (UINT16)(m_mq));
-					m_mq = dividend / (INT16)data;
-					m_ac = dividend % (INT16)data;
-=======
 					int32_t dividend = (int32_t)((uint32_t)((uint16_t)m_ac << 16) | (uint16_t)(m_mq));
 					m_mq = dividend / (int16_t)data;
 					m_ac = dividend % (int16_t)data;
->>>>>>> upstream/master
 				}
 				else
 				{
@@ -143,17 +110,10 @@ WRITE16_MEMBER(galaxygame_state::ke_w)
 			}
 			break;
 		case 1: // AC
-<<<<<<< HEAD
-			m_ac = (INT16)data;
-			break;
-		case 2: // MQ
-			m_mq = (INT16)data;
-=======
 			m_ac = (int16_t)data;
 			break;
 		case 2: // MQ
 			m_mq = (int16_t)data;
->>>>>>> upstream/master
 			if (m_mq < 0)
 			{
 				m_ac = -1;
@@ -165,11 +125,7 @@ WRITE16_MEMBER(galaxygame_state::ke_w)
 			break;
 		case 3: // X
 			{
-<<<<<<< HEAD
-				INT32 mulres = (INT32)m_mq*(INT32)(INT16)data;
-=======
 				int32_t mulres = (int32_t)m_mq*(int32_t)(int16_t)data;
->>>>>>> upstream/master
 				m_ac = mulres >> 16;
 				m_mq = mulres & 0xffff;
 			}
@@ -177,11 +133,7 @@ WRITE16_MEMBER(galaxygame_state::ke_w)
 		case 6: // LSH
 			{
 				data &= 63;
-<<<<<<< HEAD
-				INT32 val = (INT32)((UINT32)((UINT16)m_ac << 16) | (UINT16)(m_mq));
-=======
 				int32_t val = (int32_t)((uint32_t)((uint16_t)m_ac << 16) | (uint16_t)(m_mq));
->>>>>>> upstream/master
 				if ( data < 32 )
 				{
 					val = val << data;
@@ -197,11 +149,7 @@ WRITE16_MEMBER(galaxygame_state::ke_w)
 		case 7: // ASH
 			{
 				data &= 63;
-<<<<<<< HEAD
-				INT32 val = (INT32)((UINT32)((UINT16)m_ac << 16) | (UINT16)(m_mq));
-=======
 				int32_t val = (int32_t)((uint32_t)((uint16_t)m_ac << 16) | (uint16_t)(m_mq));
->>>>>>> upstream/master
 				if ( data < 32 )
 				{
 					val = val << data;
@@ -227,11 +175,7 @@ WRITE16_MEMBER(galaxygame_state::ke_w)
  *
  *************************************/
 
-<<<<<<< HEAD
-UINT32 galaxygame_state::screen_update_galaxygame(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t galaxygame_state::screen_update_galaxygame(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	bitmap.fill(m_palette->black_pen(), cliprect);
 	for (int i = 0; i < m_point_display_list_index; i++ )
@@ -374,11 +318,7 @@ void galaxygame_state::machine_reset()
 	m_interrupt = 0;
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( galaxygame, galaxygame_state )
-=======
 static MACHINE_CONFIG_START( galaxygame )
->>>>>>> upstream/master
 
 	MCFG_CPU_ADD("maincpu", T11, 3000000 )
 	MCFG_CPU_PROGRAM_MAP(galaxygame_map)
@@ -395,11 +335,7 @@ static MACHINE_CONFIG_START( galaxygame )
 	MCFG_SCREEN_UPDATE_DRIVER(galaxygame_state, screen_update_galaxygame)
 	MCFG_SCREEN_PALETTE("palette")
 
-<<<<<<< HEAD
-	MCFG_PALETTE_ADD_BLACK_AND_WHITE("palette")
-=======
 	MCFG_PALETTE_ADD_MONOCHROME("palette")
->>>>>>> upstream/master
 
 MACHINE_CONFIG_END
 
@@ -416,11 +352,7 @@ ROM_END
  *
  *************************************/
 
-<<<<<<< HEAD
-static UINT8 read_uint16(UINT16 *pval, int pos, const UINT8* line, int linelen)
-=======
 static uint8_t read_uint16(uint16_t *pval, int pos, const uint8_t* line, int linelen)
->>>>>>> upstream/master
 {
 	int i;
 
@@ -438,11 +370,7 @@ static uint8_t read_uint16(uint16_t *pval, int pos, const uint8_t* line, int lin
 	return 1;
 }
 
-<<<<<<< HEAD
-static UINT8 read_uint8(UINT8 *pval, int pos, const UINT8* line, int linelen)
-=======
 static uint8_t read_uint8(uint8_t *pval, int pos, const uint8_t* line, int linelen)
->>>>>>> upstream/master
 {
 	int i;
 
@@ -463,15 +391,6 @@ static uint8_t read_uint8(uint8_t *pval, int pos, const uint8_t* line, int linel
 DRIVER_INIT_MEMBER(galaxygame_state,galaxygame)
 {
 	address_space &main = m_maincpu->space(AS_PROGRAM);
-<<<<<<< HEAD
-	UINT8 *code = memregion("code")->base();
-
-	int filepos = 0, linepos, linelen;
-	UINT8 line[256];
-	UINT16 address;
-	UINT16 val;
-	UINT8 val8;
-=======
 	uint8_t *code = memregion("code")->base();
 
 	int filepos = 0, linepos, linelen;
@@ -479,7 +398,6 @@ DRIVER_INIT_MEMBER(galaxygame_state,galaxygame)
 	uint16_t address;
 	uint16_t val;
 	uint8_t val8;
->>>>>>> upstream/master
 
 	//load lst file
 	while( code[filepos] != 0 )

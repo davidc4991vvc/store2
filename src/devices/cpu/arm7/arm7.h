@@ -18,17 +18,10 @@
 
  ******************************************************************************/
 
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __ARM7_H__
-#define __ARM7_H__
-=======
 #ifndef MAME_CPU_ARM7_ARM7_H
 #define MAME_CPU_ARM7_ARM7_H
 
 #pragma once
->>>>>>> upstream/master
 
 #include "cpu/drcfe.h"
 #include "cpu/drcuml.h"
@@ -57,45 +50,6 @@ class arm7_cpu_device : public cpu_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	arm7_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-	arm7_cpu_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source, UINT8 archRev, UINT8 archFlags, endianness_t endianness = ENDIANNESS_LITTLE);
-
-protected:
-	// device-level overrides
-	virtual void device_start();
-	virtual void device_reset();
-
-	// device_execute_interface overrides
-	virtual UINT32 execute_min_cycles() const { return 3; }
-	virtual UINT32 execute_max_cycles() const { return 4; }
-	virtual UINT32 execute_input_lines() const { return 4; } /* There are actually only 2 input lines: we use 3 variants of the ABORT line while there is only 1 real one */
-	virtual void execute_run();
-	virtual void execute_set_input(int inputnum, int state);
-
-	// device_memory_interface overrides
-	virtual const address_space_config *memory_space_config(address_spacenum spacenum = AS_0) const { return (spacenum == AS_PROGRAM) ? &m_program_config : NULL; }
-	virtual bool memory_translate(address_spacenum spacenum, int intention, offs_t &address);
-
-	// device_state_interface overrides
-	virtual void state_export(const device_state_entry &entry);
-	void state_string_export(const device_state_entry &entry, std::string &str);
-
-	// device_disasm_interface overrides
-	virtual UINT32 disasm_min_opcode_bytes() const { return 2; }
-	virtual UINT32 disasm_max_opcode_bytes() const { return 4; }
-	virtual offs_t disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options);
-
-	address_space_config m_program_config;
-
-	UINT32 m_r[/*NUM_REGS*/37];
-	UINT32 m_pendingIrq;
-	UINT32 m_pendingFiq;
-	UINT32 m_pendingAbtD;
-	UINT32 m_pendingAbtP;
-	UINT32 m_pendingUnd;
-	UINT32 m_pendingSwi;
-=======
 	arm7_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 protected:
@@ -181,73 +135,12 @@ protected:
 	bool m_pendingUnd;
 	bool m_pendingSwi;
 	bool m_pending_interrupt;
->>>>>>> upstream/master
 	int m_icount;
 	endianness_t m_endian;
 	address_space *m_program;
 	direct_read_data *m_direct;
 
 	/* Coprocessor Registers */
-<<<<<<< HEAD
-	UINT32 m_control;
-	UINT32 m_tlbBase;
-	UINT32 m_faultStatus[2];
-	UINT32 m_faultAddress;
-	UINT32 m_fcsePID;
-	UINT32 m_domainAccessControl;
-
-	UINT8 m_archRev;          // ARM architecture revision (3, 4, and 5 are valid)
-	UINT8 m_archFlags;        // architecture flags
-
-//#if ARM7_MMU_ENABLE_HACK
-//  UINT32 mmu_enable_addr; // workaround for "MMU is enabled when PA != VA" problem
-//#endif
-
-	UINT32 m_copro_id;
-
-	// For debugger
-	UINT32 m_pc;
-
-	INT64 saturate_qbit_overflow(INT64 res);
-	void SwitchMode(UINT32 cpsr_mode_val);
-	UINT32 decodeShift(UINT32 insn, UINT32 *pCarry);
-	int loadInc(UINT32 pat, UINT32 rbv, UINT32 s, int mode);
-	int loadDec(UINT32 pat, UINT32 rbv, UINT32 s, int mode);
-	int storeInc(UINT32 pat, UINT32 rbv, int mode);
-	int storeDec(UINT32 pat, UINT32 rbv, int mode);
-	void HandleCoProcDO(UINT32 insn);
-	void HandleCoProcRT(UINT32 insn);
-	void HandleCoProcDT(UINT32 insn);
-	void HandleBranch(UINT32 insn);
-	void HandleMemSingle(UINT32 insn);
-	void HandleHalfWordDT(UINT32 insn);
-	void HandleSwap(UINT32 insn);
-	void HandlePSRTransfer(UINT32 insn);
-	void HandleALU(UINT32 insn);
-	void HandleMul(UINT32 insn);
-	void HandleSMulLong(UINT32 insn);
-	void HandleUMulLong(UINT32 insn);
-	void HandleMemBlock(UINT32 insn);
-	void arm7ops_0123(UINT32 insn);
-	void arm7ops_4567(UINT32 insn);
-	void arm7ops_89(UINT32 insn);
-	void arm7ops_ab(UINT32 insn);
-	void arm7ops_cd(UINT32 insn);
-	void arm7ops_e(UINT32 insn);
-	void arm7ops_f(UINT32 insn);
-	void set_cpsr(UINT32 val);
-	bool arm7_tlb_translate(offs_t &addr, int flags);
-	UINT32 arm7_tlb_get_first_level_descriptor( UINT32 vaddr );
-	UINT32 arm7_tlb_get_second_level_descriptor( UINT32 granularity, UINT32 first_desc, UINT32 vaddr );
-	int detect_fault(int permission, int ap, int flags);
-	void arm7_check_irq_state();
-	void arm7_cpu_write32(UINT32 addr, UINT32 data);
-	void arm7_cpu_write16(UINT32 addr, UINT16 data);
-	void arm7_cpu_write8(UINT32 addr, UINT8 data);
-	UINT32 arm7_cpu_read32(UINT32 addr);
-	UINT16 arm7_cpu_read16(UINT32 addr);
-	UINT8 arm7_cpu_read8(UINT32 addr);
-=======
 	uint32_t m_control;
 	uint32_t m_tlbBase;
 	uint32_t m_tlb_base_mask;
@@ -319,123 +212,11 @@ protected:
 	uint32_t arm7_cpu_read32(uint32_t addr);
 	uint16_t arm7_cpu_read16(uint32_t addr);
 	uint8_t arm7_cpu_read8(uint32_t addr);
->>>>>>> upstream/master
 
 	// Coprocessor support
 	DECLARE_WRITE32_MEMBER( arm7_do_callback );
 	DECLARE_READ32_MEMBER( arm7_rt_r_callback );
 	DECLARE_WRITE32_MEMBER( arm7_rt_w_callback );
-<<<<<<< HEAD
-	void arm7_dt_r_callback(UINT32 insn, UINT32 *prn);
-	void arm7_dt_w_callback(UINT32 insn, UINT32 *prn);
-
-	void tg00_0(UINT32 pc, UINT32 insn);
-	void tg00_1(UINT32 pc, UINT32 insn);
-	void tg01_0(UINT32 pc, UINT32 insn);
-	void tg01_10(UINT32 pc, UINT32 insn);
-	void tg01_11(UINT32 pc, UINT32 insn);
-	void tg01_12(UINT32 pc, UINT32 insn);
-	void tg01_13(UINT32 pc, UINT32 insn);
-	void tg02_0(UINT32 pc, UINT32 insn);
-	void tg02_1(UINT32 pc, UINT32 insn);
-	void tg03_0(UINT32 pc, UINT32 insn);
-	void tg03_1(UINT32 pc, UINT32 insn);
-	void tg04_00_00(UINT32 pc, UINT32 insn);
-	void tg04_00_01(UINT32 pc, UINT32 insn);
-	void tg04_00_02(UINT32 pc, UINT32 insn);
-	void tg04_00_03(UINT32 pc, UINT32 insn);
-	void tg04_00_04(UINT32 pc, UINT32 insn);
-	void tg04_00_05(UINT32 pc, UINT32 insn);
-	void tg04_00_06(UINT32 pc, UINT32 insn);
-	void tg04_00_07(UINT32 pc, UINT32 insn);
-	void tg04_00_08(UINT32 pc, UINT32 insn);
-	void tg04_00_09(UINT32 pc, UINT32 insn);
-	void tg04_00_0a(UINT32 pc, UINT32 insn);
-	void tg04_00_0b(UINT32 pc, UINT32 insn);
-	void tg04_00_0c(UINT32 pc, UINT32 insn);
-	void tg04_00_0d(UINT32 pc, UINT32 insn);
-	void tg04_00_0e(UINT32 pc, UINT32 insn);
-	void tg04_00_0f(UINT32 pc, UINT32 insn);
-	void tg04_01_00(UINT32 pc, UINT32 insn);
-	void tg04_01_01(UINT32 pc, UINT32 insn);
-	void tg04_01_02(UINT32 pc, UINT32 insn);
-	void tg04_01_03(UINT32 pc, UINT32 insn);
-	void tg04_01_10(UINT32 pc, UINT32 insn);
-	void tg04_01_11(UINT32 pc, UINT32 insn);
-	void tg04_01_12(UINT32 pc, UINT32 insn);
-	void tg04_01_13(UINT32 pc, UINT32 insn);
-	void tg04_01_20(UINT32 pc, UINT32 insn);
-	void tg04_01_21(UINT32 pc, UINT32 insn);
-	void tg04_01_22(UINT32 pc, UINT32 insn);
-	void tg04_01_23(UINT32 pc, UINT32 insn);
-	void tg04_01_30(UINT32 pc, UINT32 insn);
-	void tg04_01_31(UINT32 pc, UINT32 insn);
-	void tg04_01_32(UINT32 pc, UINT32 insn);
-	void tg04_01_33(UINT32 pc, UINT32 insn);
-	void tg04_0203(UINT32 pc, UINT32 insn);
-	void tg05_0(UINT32 pc, UINT32 insn);
-	void tg05_1(UINT32 pc, UINT32 insn);
-	void tg05_2(UINT32 pc, UINT32 insn);
-	void tg05_3(UINT32 pc, UINT32 insn);
-	void tg05_4(UINT32 pc, UINT32 insn);
-	void tg05_5(UINT32 pc, UINT32 insn);
-	void tg05_6(UINT32 pc, UINT32 insn);
-	void tg05_7(UINT32 pc, UINT32 insn);
-	void tg06_0(UINT32 pc, UINT32 insn);
-	void tg06_1(UINT32 pc, UINT32 insn);
-	void tg07_0(UINT32 pc, UINT32 insn);
-	void tg07_1(UINT32 pc, UINT32 insn);
-	void tg08_0(UINT32 pc, UINT32 insn);
-	void tg08_1(UINT32 pc, UINT32 insn);
-	void tg09_0(UINT32 pc, UINT32 insn);
-	void tg09_1(UINT32 pc, UINT32 insn);
-	void tg0a_0(UINT32 pc, UINT32 insn);
-	void tg0a_1(UINT32 pc, UINT32 insn);
-	void tg0b_0(UINT32 pc, UINT32 insn);
-	void tg0b_1(UINT32 pc, UINT32 insn);
-	void tg0b_2(UINT32 pc, UINT32 insn);
-	void tg0b_3(UINT32 pc, UINT32 insn);
-	void tg0b_4(UINT32 pc, UINT32 insn);
-	void tg0b_5(UINT32 pc, UINT32 insn);
-	void tg0b_6(UINT32 pc, UINT32 insn);
-	void tg0b_7(UINT32 pc, UINT32 insn);
-	void tg0b_8(UINT32 pc, UINT32 insn);
-	void tg0b_9(UINT32 pc, UINT32 insn);
-	void tg0b_a(UINT32 pc, UINT32 insn);
-	void tg0b_b(UINT32 pc, UINT32 insn);
-	void tg0b_c(UINT32 pc, UINT32 insn);
-	void tg0b_d(UINT32 pc, UINT32 insn);
-	void tg0b_e(UINT32 pc, UINT32 insn);
-	void tg0b_f(UINT32 pc, UINT32 insn);
-	void tg0c_0(UINT32 pc, UINT32 insn);
-	void tg0c_1(UINT32 pc, UINT32 insn);
-	void tg0d_0(UINT32 pc, UINT32 insn);
-	void tg0d_1(UINT32 pc, UINT32 insn);
-	void tg0d_2(UINT32 pc, UINT32 insn);
-	void tg0d_3(UINT32 pc, UINT32 insn);
-	void tg0d_4(UINT32 pc, UINT32 insn);
-	void tg0d_5(UINT32 pc, UINT32 insn);
-	void tg0d_6(UINT32 pc, UINT32 insn);
-	void tg0d_7(UINT32 pc, UINT32 insn);
-	void tg0d_8(UINT32 pc, UINT32 insn);
-	void tg0d_9(UINT32 pc, UINT32 insn);
-	void tg0d_a(UINT32 pc, UINT32 insn);
-	void tg0d_b(UINT32 pc, UINT32 insn);
-	void tg0d_c(UINT32 pc, UINT32 insn);
-	void tg0d_d(UINT32 pc, UINT32 insn);
-	void tg0d_e(UINT32 pc, UINT32 insn);
-	void tg0d_f(UINT32 pc, UINT32 insn);
-	void tg0e_0(UINT32 pc, UINT32 insn);
-	void tg0e_1(UINT32 pc, UINT32 insn);
-	void tg0f_0(UINT32 pc, UINT32 insn);
-	void tg0f_1(UINT32 pc, UINT32 insn);
-
-	typedef void ( arm7_cpu_device::*arm7thumb_ophandler ) (UINT32, UINT32);
-	static const arm7thumb_ophandler thumb_handler[0x40*0x10];
-
-	typedef void ( arm7_cpu_device::*arm7ops_ophandler )(UINT32);
-	static const arm7ops_ophandler ops_handler[0x10];
-=======
 	void arm7_dt_r_callback(uint32_t insn, uint32_t *prn);
 	void arm7_dt_w_callback(uint32_t insn, uint32_t *prn);
 
@@ -545,7 +326,6 @@ protected:
 
 	typedef void ( arm7_cpu_device::*arm7ops_ophandler )(uint32_t);
 	static const arm7ops_ophandler ops_handler[0x20];
->>>>>>> upstream/master
 
 	//
 	// DRC
@@ -556,39 +336,23 @@ protected:
 	{
 		offs_t              start;                      /* start of the RAM block */
 		offs_t              end;                        /* end of the RAM block */
-<<<<<<< HEAD
-		UINT8               readonly;                   /* TRUE if read-only */
-=======
 		bool                readonly;                   /* true if read-only */
->>>>>>> upstream/master
 		void *              base;                       /* base in memory where the RAM lives */
 	};
 
 	struct hotspot_info
 	{
-<<<<<<< HEAD
-		UINT32             pc;
-		UINT32             opcode;
-		UINT32             cycles;
-=======
 		uint32_t             pc;
 		uint32_t             opcode;
 		uint32_t             cycles;
->>>>>>> upstream/master
 	};
 
 	/* internal compiler state */
 	struct compiler_state
 	{
-<<<<<<< HEAD
-		UINT32              cycles;                     /* accumulated cycles */
-		UINT8               checkints;                  /* need to check interrupts before next instruction */
-		UINT8               checksoftints;              /* need to check software interrupts before next instruction */
-=======
 		uint32_t              cycles;                     /* accumulated cycles */
 		uint8_t               checkints;                  /* need to check interrupts before next instruction */
 		uint8_t               checksoftints;              /* need to check software interrupts before next instruction */
->>>>>>> upstream/master
 		uml::code_label  labelnum;                   /* index for local labels */
 	};
 
@@ -599,20 +363,6 @@ protected:
 		drc_cache *         cache;                      /* pointer to the DRC code cache */
 		drcuml_state *      drcuml;                     /* DRC UML generator state */
 		//arm7_frontend *     drcfe;                      /* pointer to the DRC front-end state */
-<<<<<<< HEAD
-		UINT32              drcoptions;                 /* configurable DRC options */
-
-		/* internal stuff */
-		UINT8               cache_dirty;                /* true if we need to flush the cache */
-		UINT32              jmpdest;                    /* destination jump target */
-
-		/* parameters for subroutines */
-		UINT64              numcycles;                  /* return value from gettotalcycles */
-		UINT32              mode;                       /* current global mode */
-		const char *        format;                     /* format string for print_debug */
-		UINT32              arg0;                       /* print_debug argument 1 */
-		UINT32              arg1;                       /* print_debug argument 2 */
-=======
 		uint32_t              drcoptions;                 /* configurable DRC options */
 
 		/* internal stuff */
@@ -625,7 +375,6 @@ protected:
 		const char *        format;                     /* format string for print_debug */
 		uint32_t              arg0;                       /* print_debug argument 1 */
 		uint32_t              arg1;                       /* print_debug argument 2 */
->>>>>>> upstream/master
 
 		/* register mappings */
 		uml::parameter   regmap[/*NUM_REGS*/37];               /* parameter to register mappings for all 16 integer registers */
@@ -645,19 +394,11 @@ protected:
 		uml::code_handle *   write32;                    /* write word */
 
 		/* fast RAM */
-<<<<<<< HEAD
-		UINT32              fastram_select;
-		fast_ram_info       fastram[ARM7_MAX_FASTRAM];
-
-		/* hotspots */
-		UINT32              hotspot_select;
-=======
 		uint32_t              fastram_select;
 		fast_ram_info       fastram[ARM7_MAX_FASTRAM];
 
 		/* hotspots */
 		uint32_t              hotspot_select;
->>>>>>> upstream/master
 		hotspot_info        hotspot[ARM7_MAX_HOTSPOTS];
 	} m_impstate;
 
@@ -765,29 +506,18 @@ protected:
 	void drctg0f_0(drcuml_block *block, compiler_state *compiler, const opcode_desc *desc);
 	void drctg0f_1(drcuml_block *block, compiler_state *compiler, const opcode_desc *desc); /* BL */
 
-<<<<<<< HEAD
-=======
 	void update_reg_ptr();
 	const int* m_reg_group;
->>>>>>> upstream/master
 	void load_fast_iregs(drcuml_block *block);
 	void save_fast_iregs(drcuml_block *block);
 	void arm7_drc_init();
 	void arm7_drc_exit();
 	void execute_run_drc();
-<<<<<<< HEAD
-	void arm7drc_set_options(UINT32 options);
-	void arm7drc_add_fastram(offs_t start, offs_t end, UINT8 readonly, void *base);
-	void arm7drc_add_hotspot(offs_t pc, UINT32 opcode, UINT32 cycles);
-	void code_flush_cache();
-	void code_compile_block(UINT8 mode, offs_t pc);
-=======
 	void arm7drc_set_options(uint32_t options);
 	void arm7drc_add_fastram(offs_t start, offs_t end, uint8_t readonly, void *base);
 	void arm7drc_add_hotspot(offs_t pc, uint32_t opcode, uint32_t cycles);
 	void code_flush_cache();
 	void code_compile_block(uint8_t mode, offs_t pc);
->>>>>>> upstream/master
 	void cfunc_get_cycles();
 	void cfunc_unimplemented();
 	void static_generate_entry_point();
@@ -800,22 +530,6 @@ protected:
 	void generate_update_cycles(drcuml_block *block, compiler_state *compiler, uml::parameter param);
 	void generate_checksum_block(drcuml_block *block, compiler_state *compiler, const opcode_desc *seqhead, const opcode_desc *seqlast);
 	void generate_sequence_instruction(drcuml_block *block, compiler_state *compiler, const opcode_desc *desc);
-<<<<<<< HEAD
-	void generate_delay_slot_and_branch(drcuml_block *block, compiler_state *compiler, const opcode_desc *desc, UINT8 linkreg);
-
-	typedef bool ( arm7_cpu_device::*drcarm7ops_ophandler)(drcuml_block*, compiler_state*, const opcode_desc*, UINT32);
-	static const drcarm7ops_ophandler drcops_handler[0x10];
-
-	void saturate_qbit_overflow(drcuml_block *block);
-	bool drcarm7ops_0123(drcuml_block *block, compiler_state *compiler, const opcode_desc *desc, UINT32 op);
-	bool drcarm7ops_4567(drcuml_block *block, compiler_state *compiler, const opcode_desc *desc, UINT32 op);
-	bool drcarm7ops_89(drcuml_block *block, compiler_state *compiler, const opcode_desc *desc, UINT32 op);
-	bool drcarm7ops_ab(drcuml_block *block, compiler_state *compiler, const opcode_desc *desc, UINT32 op);
-	bool drcarm7ops_cd(drcuml_block *block, compiler_state *compiler, const opcode_desc *desc, UINT32 op);
-	bool drcarm7ops_e(drcuml_block *block, compiler_state *compiler, const opcode_desc *desc, UINT32 op);
-	bool drcarm7ops_f(drcuml_block *block, compiler_state *compiler, const opcode_desc *desc, UINT32 op);
-	int generate_opcode(drcuml_block *block, compiler_state *compiler, const opcode_desc *desc);
-=======
 	void generate_delay_slot_and_branch(drcuml_block *block, compiler_state *compiler, const opcode_desc *desc, uint8_t linkreg);
 
 	typedef bool ( arm7_cpu_device::*drcarm7ops_ophandler)(drcuml_block*, compiler_state*, const opcode_desc*, uint32_t);
@@ -830,7 +544,6 @@ protected:
 	bool drcarm7ops_e(drcuml_block *block, compiler_state *compiler, const opcode_desc *desc, uint32_t op);
 	bool drcarm7ops_f(drcuml_block *block, compiler_state *compiler, const opcode_desc *desc, uint32_t op);
 	bool generate_opcode(drcuml_block *block, compiler_state *compiler, const opcode_desc *desc);
->>>>>>> upstream/master
 
 };
 
@@ -839,12 +552,7 @@ class arm7_be_cpu_device : public arm7_cpu_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	arm7_be_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-=======
 	arm7_be_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
->>>>>>> upstream/master
 };
 
 
@@ -852,12 +560,7 @@ class arm7500_cpu_device : public arm7_cpu_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	arm7500_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-=======
 	arm7500_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
->>>>>>> upstream/master
 };
 
 
@@ -865,19 +568,6 @@ class arm9_cpu_device : public arm7_cpu_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	arm9_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-};
-
-
-class arm920t_cpu_device : public arm7_cpu_device
-{
-public:
-	// construction/destruction
-	arm920t_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-=======
 	arm9_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 protected:
@@ -898,7 +588,6 @@ class arm946es_cpu_device : public arm9_cpu_device
 public:
 	// construction/destruction
 	arm946es_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
->>>>>>> upstream/master
 };
 
 
@@ -906,12 +595,7 @@ class pxa255_cpu_device : public arm7_cpu_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	pxa255_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-=======
 	pxa255_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
->>>>>>> upstream/master
 };
 
 
@@ -919,22 +603,6 @@ class sa1110_cpu_device : public arm7_cpu_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	sa1110_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-};
-
-
-extern const device_type ARM7;
-extern const device_type ARM7_BE;
-extern const device_type ARM7500;
-extern const device_type ARM9;
-extern const device_type ARM920T;
-extern const device_type PXA255;
-extern const device_type SA1110;
-
-#endif /* __ARM7_H__ */
-=======
 	sa1110_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 };
 
@@ -949,4 +617,3 @@ DECLARE_DEVICE_TYPE(PXA255,   pxa255_cpu_device)
 DECLARE_DEVICE_TYPE(SA1110,   sa1110_cpu_device)
 
 #endif // MAME_CPU_ARM7_ARM7_H
->>>>>>> upstream/master

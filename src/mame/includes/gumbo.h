@@ -17,13 +17,8 @@ public:
 		m_gfxdecode(*this, "gfxdecode") { }
 
 	/* memory pointers */
-<<<<<<< HEAD
-	required_shared_ptr<UINT16> m_bg_videoram;
-	required_shared_ptr<UINT16> m_fg_videoram;
-=======
 	required_shared_ptr<uint16_t> m_bg_videoram;
 	required_shared_ptr<uint16_t> m_fg_videoram;
->>>>>>> upstream/master
 
 	/* video-related */
 	tilemap_t    *m_bg_tilemap;
@@ -32,13 +27,8 @@ public:
 	DECLARE_WRITE16_MEMBER(gumbo_fg_videoram_w);
 	TILE_GET_INFO_MEMBER(get_gumbo_bg_tile_info);
 	TILE_GET_INFO_MEMBER(get_gumbo_fg_tile_info);
-<<<<<<< HEAD
-	virtual void video_start();
-	UINT32 screen_update_gumbo(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	virtual void video_start() override;
 	uint32_t screen_update_gumbo(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	required_device<cpu_device> m_maincpu;
 	required_device<gfxdecode_device> m_gfxdecode;
 };

@@ -26,11 +26,7 @@ Ports:
 20      R   DSW #2
 40      R   Input Ports Player 1
 60      R   Input Ports Player 2
-<<<<<<< HEAD
-80       W  Sound Commnand
-=======
 80       W  Sound Command
->>>>>>> upstream/master
 c0       W  Flip Screen
 c1       W  ???
 c2-c4    W  ???
@@ -85,11 +81,7 @@ Stephh's notes (based on the games Z80 code and some tests) :
   - Press START1 while in "test mode" to cycle through different screens
     (colors, Dip Switches, Inputs)
   - When "Freeze" Dip Switch is ON, press START1 to freeze and START2 to unfreeze.
-<<<<<<< HEAD
-    This setting (as well as others) must be defined before reseting the games.
-=======
     This setting (as well as others) must be defined before resetting the games.
->>>>>>> upstream/master
   - "Test mode" crashes when trying to display "Difficult" ("Hard") because the full string
     is 15 bytes long while other string are 14, so the 15th "char" is NOT 0x00 :
       * 0xd49f : mask (0x30)
@@ -103,11 +95,7 @@ Stephh's notes (based on the games Z80 code and some tests) :
   - Press START1 while in "test mode" to cycle through different screens
     (colors, Dip Switches, Inputs)
   - When "Freeze" Dip Switch is ON, press START1 to freeze and START2 to unfreeze.
-<<<<<<< HEAD
-    This setting (as well as others) must be defined before reseting the games.
-=======
     This setting (as well as others) must be defined before resetting the games.
->>>>>>> upstream/master
 
 2a) 'trckydoc'
 
@@ -135,18 +123,6 @@ Stephh's notes (based on the games Z80 code and some tests) :
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/z80/z80.h"
-#include "sound/3812intf.h"
-#include "includes/sauro.h"
-#include "machine/nvram.h"
-
-
-WRITE8_MEMBER(sauro_state::sauro_sound_command_w)
-{
-	data |= 0x80;
-	soundlatch_byte_w(space, offset, data);
-=======
 #include "includes/sauro.h"
 
 #include "cpu/z80/z80.h"
@@ -167,33 +143,10 @@ WRITE8_MEMBER(sauro_state::sauro_sound_command_w)
 {
 	data |= 0x80;
 	m_soundlatch->write(space, offset, data);
->>>>>>> upstream/master
 }
 
 READ8_MEMBER(sauro_state::sauro_sound_command_r)
 {
-<<<<<<< HEAD
-	int ret = soundlatch_byte_r(space, offset);
-	soundlatch_clear_byte_w(space, offset, 0);
-	return ret;
-}
-
-WRITE8_MEMBER(sauro_state::coin1_w)
-{
-	coin_counter_w(machine(), 0, data);
-	coin_counter_w(machine(), 0, 0); // to get the coin counter working in sauro, as it doesn't write 0
-}
-
-WRITE8_MEMBER(sauro_state::coin2_w)
-{
-	coin_counter_w(machine(), 1, data);
-	coin_counter_w(machine(), 1, 0); // to get the coin counter working in sauro, as it doesn't write 0
-}
-
-WRITE8_MEMBER(sauro_state::flip_screen_w)
-{
-	flip_screen_set(data);
-=======
 	int ret = m_soundlatch->read(space, offset);
 	m_soundlatch->clear_w(space, offset, 0);
 	return ret;
@@ -225,7 +178,6 @@ WRITE_LINE_MEMBER(sauro_state::coin2_w)
 WRITE_LINE_MEMBER(sauro_state::flip_screen_w)
 {
 	flip_screen_set(state);
->>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(sauro_state::adpcm_w)
@@ -252,25 +204,8 @@ static ADDRESS_MAP_START( sauro_io_map, AS_IO, 8, sauro_state )
 	AM_RANGE(0x80, 0x80) AM_WRITE(sauro_sound_command_w)
 	AM_RANGE(0xa0, 0xa0) AM_WRITE(scroll_bg_w)
 	AM_RANGE(0xa1, 0xa1) AM_WRITE(sauro_scroll_fg_w)
-<<<<<<< HEAD
-	AM_RANGE(0xc0, 0xc0) AM_WRITE(flip_screen_w)
-	AM_RANGE(0xc2, 0xc2) AM_WRITENOP        /* coin reset */
-	AM_RANGE(0xc3, 0xc3) AM_WRITE(coin1_w)
-	AM_RANGE(0xc4, 0xc4) AM_WRITENOP        /* coin reset */
-	AM_RANGE(0xc5, 0xc5) AM_WRITE(coin2_w)
-	AM_RANGE(0xc6, 0xc7) AM_WRITENOP        /* same as 0x80 - verified with debugger */
-	AM_RANGE(0xc8, 0xc8) AM_WRITENOP        /* written every int: 0 written at end   of isr */
-	AM_RANGE(0xc9, 0xc9) AM_WRITENOP        /* written every int: 1 written at start of isr */
-	AM_RANGE(0xca, 0xcb) AM_WRITE(sauro_palette_bank_w) /* 1 written upon death, cleared 2 vblanks later */
-														/* Sequence 3,2,1 written during intro screen */
-	AM_RANGE(0xcc, 0xcc) AM_WRITENOP        /* same as 0xca */
-	AM_RANGE(0xcd, 0xcd) AM_WRITENOP        /* same as 0xcb */
-	AM_RANGE(0xce, 0xce) AM_WRITENOP        /* only written at startup */
-	AM_RANGE(0xe0, 0xe0) AM_WRITE(watchdog_reset_w)
-=======
 	AM_RANGE(0xc0, 0xcf) AM_DEVWRITE("mainlatch", ls259_device, write_a0)
 	AM_RANGE(0xe0, 0xe0) AM_DEVWRITE("watchdog", watchdog_timer_device, reset_w)
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( sauro_sound_map, AS_PROGRAM, 8, sauro_state )
@@ -284,8 +219,6 @@ static ADDRESS_MAP_START( sauro_sound_map, AS_PROGRAM, 8, sauro_state )
 ADDRESS_MAP_END
 
 
-<<<<<<< HEAD
-=======
 static ADDRESS_MAP_START( saurob_sound_map, AS_PROGRAM, 8, sauro_state )
 	AM_RANGE(0x0000, 0x7fff) AM_ROM
 	AM_RANGE(0x8000, 0x87ff) AM_RAM
@@ -297,7 +230,6 @@ static ADDRESS_MAP_START( saurob_sound_map, AS_PROGRAM, 8, sauro_state )
 ADDRESS_MAP_END
 
 
->>>>>>> upstream/master
 static ADDRESS_MAP_START( trckydoc_map, AS_PROGRAM, 8, sauro_state )
 	AM_RANGE(0x0000, 0xdfff) AM_ROM
 	AM_RANGE(0xe000, 0xe7ff) AM_RAM AM_SHARE("nvram")
@@ -309,20 +241,9 @@ static ADDRESS_MAP_START( trckydoc_map, AS_PROGRAM, 8, sauro_state )
 	AM_RANGE(0xf810, 0xf810) AM_READ_PORT("P1")
 	AM_RANGE(0xf818, 0xf818) AM_READ_PORT("P2")
 	AM_RANGE(0xf820, 0xf821) AM_DEVWRITE("ymsnd", ym3812_device, write)
-<<<<<<< HEAD
-	AM_RANGE(0xf828, 0xf828) AM_READ(watchdog_reset_r)
-	AM_RANGE(0xf830, 0xf830) AM_WRITE(scroll_bg_w)
-	AM_RANGE(0xf838, 0xf838) AM_WRITENOP                /* only written at startup */
-	AM_RANGE(0xf839, 0xf839) AM_WRITE(flip_screen_w)
-	AM_RANGE(0xf83a, 0xf83a) AM_WRITE(coin1_w)
-	AM_RANGE(0xf83b, 0xf83b) AM_WRITE(coin2_w)
-	AM_RANGE(0xf83c, 0xf83c) AM_WRITE(watchdog_reset_w)
-	AM_RANGE(0xf83f, 0xf83f) AM_WRITENOP                /* only written at startup */
-=======
 	AM_RANGE(0xf828, 0xf828) AM_DEVREAD("watchdog", watchdog_timer_device, reset_r)
 	AM_RANGE(0xf830, 0xf830) AM_WRITE(scroll_bg_w)
 	AM_RANGE(0xf838, 0xf83f) AM_DEVWRITE("mainlatch", ls259_device, write_d0)
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -405,8 +326,6 @@ static INPUT_PORTS_START( trckydoca )
 INPUT_PORTS_END
 
 
-<<<<<<< HEAD
-=======
 static INPUT_PORTS_START( saurob )
 	PORT_START("P1")
 	PORT_BIT( 0x01, IP_ACTIVE_LOW,  IPT_BUTTON1 )
@@ -472,7 +391,6 @@ static INPUT_PORTS_START( saurob )
 INPUT_PORTS_END
 
 
->>>>>>> upstream/master
 static const gfx_layout charlayout =
 {
 	8,8,    /* 8*8 chars */
@@ -524,16 +442,6 @@ static GFXDECODE_START( trckydoc )
 GFXDECODE_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( tecfri, sauro_state )
-
-	/* basic machine hardware */
-	MCFG_CPU_ADD("maincpu", Z80, XTAL_20MHz/4)       /* verified on pcb */
-	MCFG_CPU_VBLANK_INT_DRIVER("screen", sauro_state,  irq0_line_hold)
-
-	MCFG_NVRAM_ADD_1FILL("nvram")
-
-=======
 static MACHINE_CONFIG_START( tecfri )
 
 	/* basic machine hardware */
@@ -546,7 +454,6 @@ static MACHINE_CONFIG_START( tecfri )
 
 	MCFG_WATCHDOG_ADD("watchdog")
 
->>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE(55.72)   /* verified on pcb */
@@ -554,14 +461,9 @@ static MACHINE_CONFIG_START( tecfri )
 	MCFG_SCREEN_SIZE(32 * 8, 32 * 8)
 	MCFG_SCREEN_VISIBLE_AREA(1 * 8, 31 * 8 - 1, 2 * 8, 30 * 8 - 1)
 	MCFG_SCREEN_PALETTE("palette")
-<<<<<<< HEAD
-
-	MCFG_PALETTE_ADD_RRRRGGGGBBBB_PROMS("palette", 1024)
-=======
 	MCFG_SCREEN_VBLANK_CALLBACK(WRITELINE(sauro_state, vblank_irq))
 
 	MCFG_PALETTE_ADD_RRRRGGGGBBBB_PROMS("palette", "proms", 1024)
->>>>>>> upstream/master
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
@@ -576,14 +478,11 @@ static MACHINE_CONFIG_DERIVED( trckydoc, tecfri )
 	MCFG_CPU_MODIFY("maincpu")
 	MCFG_CPU_PROGRAM_MAP(trckydoc_map)
 
-<<<<<<< HEAD
-=======
 	MCFG_DEVICE_MODIFY("mainlatch")
 	MCFG_ADDRESSABLE_LATCH_Q1_OUT_CB(WRITELINE(sauro_state, flip_screen_w))
 	MCFG_ADDRESSABLE_LATCH_Q2_OUT_CB(WRITELINE(sauro_state, coin1_w))
 	MCFG_ADDRESSABLE_LATCH_Q3_OUT_CB(WRITELINE(sauro_state, coin2_w))
 
->>>>>>> upstream/master
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", trckydoc)
 
 	MCFG_VIDEO_START_OVERRIDE(sauro_state,trckydoc)
@@ -598,8 +497,6 @@ static MACHINE_CONFIG_DERIVED( sauro, tecfri )
 	MCFG_CPU_PROGRAM_MAP(sauro_map)
 	MCFG_CPU_IO_MAP(sauro_io_map)
 
-<<<<<<< HEAD
-=======
 	MCFG_DEVICE_MODIFY("mainlatch") // Z3
 	MCFG_ADDRESSABLE_LATCH_Q0_OUT_CB(WRITELINE(sauro_state, flip_screen_w))
 	MCFG_ADDRESSABLE_LATCH_Q1_OUT_CB(WRITELINE(sauro_state, coin1_w))
@@ -608,7 +505,6 @@ static MACHINE_CONFIG_DERIVED( sauro, tecfri )
 	MCFG_ADDRESSABLE_LATCH_Q5_OUT_CB(WRITELINE(sauro_state, sauro_palette_bank0_w))
 	MCFG_ADDRESSABLE_LATCH_Q6_OUT_CB(WRITELINE(sauro_state, sauro_palette_bank1_w))
 
->>>>>>> upstream/master
 	MCFG_CPU_ADD("audiocpu", Z80, 4000000)  // 4 MHz?
 	MCFG_CPU_PROGRAM_MAP(sauro_sound_map)
 	MCFG_CPU_PERIODIC_INT_DRIVER(sauro_state, irq0_line_hold,  8*60) // ?
@@ -619,18 +515,13 @@ static MACHINE_CONFIG_DERIVED( sauro, tecfri )
 	MCFG_SCREEN_MODIFY("screen")
 	MCFG_SCREEN_UPDATE_DRIVER(sauro_state, screen_update_sauro)
 
-<<<<<<< HEAD
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 
->>>>>>> upstream/master
 	MCFG_SOUND_ADD("speech", SP0256, 3120000)
 	MCFG_SP0256_DATA_REQUEST_CB(INPUTLINE("audiocpu", INPUT_LINE_NMI))
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-=======
 static MACHINE_CONFIG_DERIVED( saurob, sauro )
 
 	MCFG_CPU_MODIFY("audiocpu")
@@ -641,7 +532,6 @@ static MACHINE_CONFIG_DERIVED( saurob, sauro )
 
 MACHINE_CONFIG_END
 
->>>>>>> upstream/master
 /***************************************************************************
 
   Game driver(s)
@@ -745,8 +635,6 @@ ROM_START( saurorr ) // all roms have original Tecfri stickers
 ROM_END
 
 
-<<<<<<< HEAD
-=======
 /*
 Sauro (bootleg)
 
@@ -794,7 +682,6 @@ ROM_START( saurob )
 ROM_END
 
 
->>>>>>> upstream/master
 ROM_START( trckydoc )
 	ROM_REGION( 0x10000, "maincpu", 0 )
 	ROM_LOAD( "trckydoc.d9",  0x0000,  0x8000, CRC(c6242fc3) SHA1(c8a6f6abe8b51061a113ed75fead0479df68ec40) )
@@ -848,28 +735,16 @@ DRIVER_INIT_MEMBER(sauro_state,tecfri)
 	/* This game doesn't like all memory to be initialized to zero, it won't
 	   initialize the high scores */
 
-<<<<<<< HEAD
-	UINT8 *RAM = memregion("maincpu")->base();
-=======
 	uint8_t *RAM = memregion("maincpu")->base();
->>>>>>> upstream/master
 
 	memset(&RAM[0xe000], 0, 0x100);
 	RAM[0xe000] = 1;
 }
 
-<<<<<<< HEAD
-GAME( 1987, sauro,    0,        sauro,    tecfri, sauro_state,    tecfri, ROT0, "Tecfri",                                "Sauro", MACHINE_SUPPORTS_SAVE )
-GAME( 1987, saurop,   sauro,    sauro,    tecfri, sauro_state,    tecfri, ROT0, "Tecfri (Philko license)",               "Sauro (Philko license)", MACHINE_SUPPORTS_SAVE )
-GAME( 1987, saurorr,  sauro,    sauro,    tecfri, sauro_state,    tecfri, ROT0, "Tecfri (Recreativos Real S.A. license)","Sauro (Recreativos Real S.A. license)", MACHINE_SUPPORTS_SAVE )
-
-GAME( 1987, trckydoc, 0,        trckydoc, tecfri, sauro_state,    tecfri, ROT0, "Tecfri", "Tricky Doc (set 1)", MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1987, sauro,    0,        sauro,    tecfri,    sauro_state, tecfri, ROT0, "Tecfri",                                "Sauro", MACHINE_SUPPORTS_SAVE )
 GAME( 1987, saurop,   sauro,    sauro,    tecfri,    sauro_state, tecfri, ROT0, "Tecfri (Philko license)",               "Sauro (Philko license)", MACHINE_SUPPORTS_SAVE )
 GAME( 1987, saurorr,  sauro,    sauro,    tecfri,    sauro_state, tecfri, ROT0, "Tecfri (Recreativos Real S.A. license)","Sauro (Recreativos Real S.A. license)", MACHINE_SUPPORTS_SAVE )
 GAME( 1987, saurob,   sauro,    saurob,   saurob,    sauro_state, tecfri, ROT0, "bootleg",                               "Sauro (bootleg)", MACHINE_SUPPORTS_SAVE )
 
 GAME( 1987, trckydoc, 0,        trckydoc, tecfri,    sauro_state, tecfri, ROT0, "Tecfri", "Tricky Doc (set 1)", MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master
 GAME( 1987, trckydoca,trckydoc, trckydoc, trckydoca, sauro_state, tecfri, ROT0, "Tecfri", "Tricky Doc (set 2)", MACHINE_SUPPORTS_SAVE )

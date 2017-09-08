@@ -1,23 +1,14 @@
 // license:BSD-3-Clause
 // copyright-holders:Olivier Galibert
-<<<<<<< HEAD
-#ifndef __FDC_PLL_H__
-#define __FDC_PLL_H__
-=======
 #ifndef MAME_MACHINE_FDC_PLL_H
 #define MAME_MACHINE_FDC_PLL_H
 
 #pragma once
->>>>>>> upstream/master
 
 /*
  * Generic pll class for floppy controllers with analog plls
  */
 
-<<<<<<< HEAD
-#include "emu.h"
-=======
->>>>>>> upstream/master
 #include "imagedev/floppy.h"
 
 class fdc_pll_t {
@@ -31,13 +22,9 @@ public:
 
 	void set_clock(const attotime &period);
 	void reset(const attotime &when);
-<<<<<<< HEAD
-	int get_next_bit(attotime &tm, floppy_image_device *floppy, const attotime &limit);
-=======
 	void read_reset(const attotime &when);
 	int get_next_bit(attotime &tm, floppy_image_device *floppy, const attotime &limit);
 	int feed_read_data(attotime &tm, const attotime& edge, const attotime &limit);
->>>>>>> upstream/master
 	bool write_next_bit(bool bit, attotime &tm, floppy_image_device *floppy, const attotime &limit);
 	void start_writing(const attotime &tm);
 	void commit(floppy_image_device *floppy, const attotime &tm);
@@ -46,8 +33,4 @@ public:
 	std::string tts(attotime tm);
 };
 
-<<<<<<< HEAD
-#endif
-=======
 #endif // MAME_MACHINE_FDC_PLL_H
->>>>>>> upstream/master

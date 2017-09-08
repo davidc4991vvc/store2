@@ -1,14 +1,9 @@
 // license:BSD-3-Clause
 // copyright-holders:Carl
-<<<<<<< HEAD
-#ifndef PSXANALOG_H_
-#define PSXANALOG_H_
-=======
 #ifndef MAME_BUS_PSX_ANALOGUE_H
 #define MAME_BUS_PSX_ANALOGUE_H
 
 #pragma once
->>>>>>> upstream/master
 
 #include "ctlrport.h"
 
@@ -19,22 +14,6 @@ class psx_analog_controller_device :    public device_t,
 										public device_psx_controller_interface
 {
 public:
-<<<<<<< HEAD
-	psx_analog_controller_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source);
-
-	virtual ioport_constructor device_input_ports() const;
-	DECLARE_INPUT_CHANGED_MEMBER(change_mode);
-protected:
-	virtual void device_reset();
-	virtual void device_start() {}
-	enum {
-		JOYSTICK,
-		DUALSHOCK
-	} m_type;
-private:
-	virtual bool get_pad(int count, UINT8 *odata, UINT8 idata);
-	UINT8 pad_data(int count, bool analog);
-=======
 	virtual ioport_constructor device_input_ports() const override;
 	DECLARE_INPUT_CHANGED_MEMBER(change_mode);
 protected:
@@ -50,19 +29,13 @@ private:
 	uint8_t pad_data(int count, bool analog);
 
 	const model m_model;
->>>>>>> upstream/master
 
 	bool m_confmode;
 	bool m_analogmode;
 	bool m_analoglock;
 
-<<<<<<< HEAD
-	UINT8 m_temp;
-	UINT8 m_cmd;
-=======
 	uint8_t m_temp;
 	uint8_t m_cmd;
->>>>>>> upstream/master
 
 	required_ioport m_pad0;
 	required_ioport m_pad1;
@@ -75,24 +48,13 @@ private:
 class psx_dualshock_device : public psx_analog_controller_device
 {
 public:
-<<<<<<< HEAD
-	psx_dualshock_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-=======
 	psx_dualshock_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
->>>>>>> upstream/master
 };
 
 class psx_analog_joystick_device : public psx_analog_controller_device
 {
 public:
-<<<<<<< HEAD
-	psx_analog_joystick_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-};
-
-#endif /* PSXANALOG_H_ */
-=======
 	psx_analog_joystick_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 };
 
 #endif // MAME_BUS_PSX_ANALOGUE_H
->>>>>>> upstream/master

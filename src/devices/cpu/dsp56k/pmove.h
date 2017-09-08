@@ -3,10 +3,6 @@
 #ifndef __DSP56K_PARALLEL_MOVE_H__
 #define __DSP56K_PARALLEL_MOVE_H__
 
-<<<<<<< HEAD
-#include "emu.h"
-=======
->>>>>>> upstream/master
 #include "opcode.h"
 #include "tables.h"
 
@@ -23,19 +19,11 @@ public:
 	ParallelMove(const Opcode* oco) : m_valid(false), m_oco(oco) { }
 	virtual ~ParallelMove() {}
 
-<<<<<<< HEAD
-	virtual bool decode(const UINT16 word0, const UINT16 word1) = 0;
-	virtual void disassemble(std::string& retString) const = 0;
-	virtual void evaluate() = 0;
-
-	static ParallelMove* decodeParallelMove(const Opcode* opc, const UINT16 word0, const UINT16 word1);
-=======
 	virtual bool decode(const uint16_t word0, const uint16_t word1) = 0;
 	virtual void disassemble(std::string& retString) const = 0;
 	virtual void evaluate() = 0;
 
 	static std::unique_ptr<ParallelMove> decodeParallelMove(const Opcode* opc, const uint16_t word0, const uint16_t word1);
->>>>>>> upstream/master
 
 	bool valid() const { return m_valid; }
 
@@ -58,19 +46,11 @@ protected:
 class XMemoryDataMove: public ParallelMove
 {
 public:
-<<<<<<< HEAD
-	XMemoryDataMove(const Opcode* oco, const UINT16 word0, const UINT16 word1) : ParallelMove(oco)
-	{
-		m_valid = decode(word0, word1);
-	}
-	bool decode(const UINT16 word0, const UINT16 word1)
-=======
 	XMemoryDataMove(const Opcode* oco, const uint16_t word0, const uint16_t word1) : ParallelMove(oco)
 	{
 		m_valid = decode(word0, word1);
 	}
 	bool decode(const uint16_t word0, const uint16_t word1) override
->>>>>>> upstream/master
 	{
 		reg_id r;
 		decode_RR_table(BITSn(word0,0x3000), r);
@@ -90,19 +70,11 @@ public:
 
 		return true;
 	}
-<<<<<<< HEAD
-	void disassemble(std::string& retString) const
-	{
-		retString = m_source + "," + m_destination;
-	}
-	void evaluate() {}
-=======
 	void disassemble(std::string& retString) const override
 	{
 		retString = m_source + "," + m_destination;
 	}
 	void evaluate() override {}
->>>>>>> upstream/master
 
 private:
 	std::string m_source;
@@ -114,19 +86,11 @@ private:
 class XMemoryDataMove_2: public ParallelMove
 {
 public:
-<<<<<<< HEAD
-	XMemoryDataMove_2(const Opcode* oco, const UINT16 word0, const UINT16 word1) : ParallelMove(oco)
-	{
-		m_valid = decode(word0, word1);
-	}
-	bool decode(const UINT16 word0, const UINT16 word1)
-=======
 	XMemoryDataMove_2(const Opcode* oco, const uint16_t word0, const uint16_t word1) : ParallelMove(oco)
 	{
 		m_valid = decode(word0, word1);
 	}
 	bool decode(const uint16_t word0, const uint16_t word1) override
->>>>>>> upstream/master
 	{
 		std::string ea;
 		if (opDestination() == iB)
@@ -148,19 +112,11 @@ public:
 
 		return true;
 	}
-<<<<<<< HEAD
-	void disassemble(std::string& retString) const
-	{
-		retString = m_source + "," + m_destination;
-	}
-	void evaluate() {}
-=======
 	void disassemble(std::string& retString) const override
 	{
 		retString = m_source + "," + m_destination;
 	}
 	void evaluate() override {}
->>>>>>> upstream/master
 
 private:
 	std::string m_source;
@@ -172,19 +128,11 @@ private:
 class DualXMemoryDataRead: public ParallelMove
 {
 public:
-<<<<<<< HEAD
-	DualXMemoryDataRead(const Opcode* oco, const UINT16 word0, const UINT16 word1) : ParallelMove(oco)
-	{
-		m_valid = decode(word0, word1);
-	}
-	bool decode(const UINT16 word0, const UINT16 word1)
-=======
 	DualXMemoryDataRead(const Opcode* oco, const uint16_t word0, const uint16_t word1) : ParallelMove(oco)
 	{
 		m_valid = decode(word0, word1);
 	}
 	bool decode(const uint16_t word0, const uint16_t word1) override
->>>>>>> upstream/master
 	{
 		reg_id r;
 		reg_id D1;
@@ -218,19 +166,11 @@ public:
 
 		return true;
 	}
-<<<<<<< HEAD
-	void disassemble(std::string& retString) const
-	{
-		retString = parallelMove + " " + parallelMove2;
-	}
-	void evaluate() {}
-=======
 	void disassemble(std::string& retString) const override
 	{
 		retString = parallelMove + " " + parallelMove2;
 	}
 	void evaluate() override {}
->>>>>>> upstream/master
 
 private:
 	std::string parallelMove;
@@ -242,19 +182,11 @@ private:
 class RegisterToRegisterDataMove: public ParallelMove
 {
 public:
-<<<<<<< HEAD
-	RegisterToRegisterDataMove(const Opcode* oco, const UINT16 word0, const UINT16 word1) : ParallelMove(oco)
-	{
-		m_valid = decode(word0, word1);
-	}
-	bool decode(const UINT16 word0, const UINT16 word1)
-=======
 	RegisterToRegisterDataMove(const Opcode* oco, const uint16_t word0, const uint16_t word1) : ParallelMove(oco)
 	{
 		m_valid = decode(word0, word1);
 	}
 	bool decode(const uint16_t word0, const uint16_t word1) override
->>>>>>> upstream/master
 	{
 		decode_IIIIx_table(BITSn(word0,0x0f00), BITSn(word0,0x0008),
 							m_source, m_destination);
@@ -281,11 +213,7 @@ public:
 
 		return true;
 	}
-<<<<<<< HEAD
-	void disassemble(std::string& retString) const
-=======
 	void disassemble(std::string& retString) const override
->>>>>>> upstream/master
 	{
 		// (?,?) is a parallel nop
 		if (m_source == iWEIRD && m_destination == iWEIRD)
@@ -293,11 +221,7 @@ public:
 		else
 			retString = regIdAsString(m_source) + "," + regIdAsString(m_destination);
 	}
-<<<<<<< HEAD
-	void evaluate() {}
-=======
 	void evaluate() override {}
->>>>>>> upstream/master
 
 private:
 	reg_id m_source;
@@ -309,21 +233,13 @@ private:
 class XMemoryDataWriteAndRegisterDataMove: public ParallelMove
 {
 public:
-<<<<<<< HEAD
-	XMemoryDataWriteAndRegisterDataMove(const Opcode* oco, const UINT16 word0, const UINT16 word1) : ParallelMove(oco)
-=======
 	XMemoryDataWriteAndRegisterDataMove(const Opcode* oco, const uint16_t word0, const uint16_t word1) : ParallelMove(oco)
->>>>>>> upstream/master
 	{
 		pms = "";
 		pms2 = "";
 		m_valid = decode(word0, word1);
 	}
-<<<<<<< HEAD
-	bool decode(const UINT16 word0, const UINT16 word1)
-=======
 	bool decode(const uint16_t word0, const uint16_t word1) override
->>>>>>> upstream/master
 	{
 		reg_id r;
 		reg_id S;
@@ -344,19 +260,11 @@ public:
 		pms2 = parallel_move_str2;
 		return true;
 	}
-<<<<<<< HEAD
-	void disassemble(std::string& retString) const
-	{
-		retString = pms + " " + pms2;
-	}
-	void evaluate() {}
-=======
 	void disassemble(std::string& retString) const override
 	{
 		retString = pms + " " + pms2;
 	}
 	void evaluate() override {}
->>>>>>> upstream/master
 
 private:
 	std::string pms;    // TODO
@@ -368,20 +276,12 @@ private:
 class AddressRegisterUpdate: public ParallelMove
 {
 public:
-<<<<<<< HEAD
-	AddressRegisterUpdate(const Opcode* oco, const UINT16 word0, const UINT16 word1) : ParallelMove(oco)
-=======
 	AddressRegisterUpdate(const Opcode* oco, const uint16_t word0, const uint16_t word1) : ParallelMove(oco)
->>>>>>> upstream/master
 	{
 		m_ea = "";
 		m_valid = decode(word0, word1);
 	}
-<<<<<<< HEAD
-	bool decode(const UINT16 word0, const UINT16 word1)
-=======
 	bool decode(const uint16_t word0, const uint16_t word1) override
->>>>>>> upstream/master
 	{
 		reg_id r;
 		decode_RR_table(BITSn(word0,0x0300), r);
@@ -389,19 +289,11 @@ public:
 
 		return true;
 	}
-<<<<<<< HEAD
-	void disassemble(std::string& retString) const
-	{
-		retString = m_ea;
-	}
-	void evaluate() {}
-=======
 	void disassemble(std::string& retString) const override
 	{
 		retString = m_ea;
 	}
 	void evaluate() override {}
->>>>>>> upstream/master
 
 private:
 	std::string m_ea;
@@ -412,25 +304,15 @@ private:
 class XMemoryDataMoveWithShortDisplacement: public ParallelMove
 {
 public:
-<<<<<<< HEAD
-	XMemoryDataMoveWithShortDisplacement(const Opcode* oco, const UINT16 word0, const UINT16 word1) : ParallelMove(oco)
-=======
 	XMemoryDataMoveWithShortDisplacement(const Opcode* oco, const uint16_t word0, const uint16_t word1) : ParallelMove(oco)
->>>>>>> upstream/master
 	{
 		m_source = "";
 		m_destination = "";
 		m_valid = decode(word0, word1);
 	}
-<<<<<<< HEAD
-	bool decode(const UINT16 word0, const UINT16 word1)
-	{
-		INT8 b;
-=======
 	bool decode(const uint16_t word0, const uint16_t word1) override
 	{
 		int8_t b;
->>>>>>> upstream/master
 		reg_id SD;
 		b = (char)(word0 & 0x00ff);
 		decode_HHH_table(BITSn(word1,0x0e00), SD);
@@ -438,19 +320,11 @@ public:
 
 		return true;
 	}
-<<<<<<< HEAD
-	void disassemble(std::string& retString) const
-	{
-		retString = m_source + "," + m_destination;
-	}
-	void evaluate() {}
-=======
 	void disassemble(std::string& retString) const override
 	{
 		retString = m_source + "," + m_destination;
 	}
 	void evaluate() override {}
->>>>>>> upstream/master
 
 private:
 	std::string m_source;

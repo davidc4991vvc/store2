@@ -1,16 +1,5 @@
 // license:BSD-3-Clause
 // copyright-holders:Wilbert Pol
-<<<<<<< HEAD
-#ifndef __MSX_SLOT_CARTRIDGE_H
-#define __MSX_SLOT_CARTRIDGE_H
-
-#include "slot.h"
-#include "bus/msx_cart/cartridge.h"
-
-
-extern const device_type MSX_SLOT_CARTRIDGE;
-extern const device_type MSX_SLOT_YAMAHA_EXPANSION;
-=======
 #ifndef MAME_BUS_MSX_SLOT_CARTRIDGE_H
 #define MAME_BUS_MSX_SLOT_CARTRIDGE_H
 
@@ -23,16 +12,11 @@ extern const device_type MSX_SLOT_YAMAHA_EXPANSION;
 
 DECLARE_DEVICE_TYPE(MSX_SLOT_CARTRIDGE,        msx_slot_cartridge_device)
 DECLARE_DEVICE_TYPE(MSX_SLOT_YAMAHA_EXPANSION, msx_slot_yamaha_expansion_device)
->>>>>>> upstream/master
 
 
 #define MCFG_MSX_SLOT_CARTRIDGE_ADD(_tag, _devcb) \
 	MCFG_DEVICE_ADD(_tag, MSX_SLOT_CARTRIDGE, 0) \
-<<<<<<< HEAD
-	MCFG_DEVICE_SLOT_INTERFACE(msx_cart, NULL, false) \
-=======
 	MCFG_DEVICE_SLOT_INTERFACE(msx_cart, nullptr, false) \
->>>>>>> upstream/master
 	devcb = &msx_slot_cartridge_device::set_irq_handler(*device, DEVCB_##_devcb);
 
 
@@ -49,38 +33,6 @@ class msx_slot_cartridge_device : public device_t
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	msx_slot_cartridge_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source);
-	msx_slot_cartridge_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// static configuration helpers
-	template<class _Object> static devcb_base &set_irq_handler(device_t &device, _Object object) { return downcast<msx_slot_cartridge_device &>(device).m_irq_handler.set_callback(object); }
-
-	// device-level overrides
-	virtual void device_start();
-	virtual void device_config_complete() { update_names(MSX_SLOT_CARTRIDGE, "cartridge", "cart"); }
-
-	// image-level overrides
-	virtual bool call_load();
-	virtual void call_unload();
-	virtual bool call_softlist_load(software_list_device &swlist, const char *swname, const rom_entry *start_entry);
-	virtual iodevice_t image_type() const { return IO_CARTSLOT; }
-	virtual bool is_readable()  const { return true; }
-	virtual bool is_writeable() const { return false; }
-	virtual bool is_creatable() const { return false; }
-	virtual bool must_be_loaded() const { return false; }
-	virtual bool is_reset_on_load() const { return true; }
-	virtual const option_guide *create_option_guide() const { return NULL; }
-	virtual const char *image_interface() const { return "msx_cart"; }
-	virtual const char *file_extensions() const { return "mx1,bin,rom"; }
-
-	// slot interface overrides
-	virtual void get_default_card_software(std::string &result);
-
-	// msx_internal_slot-level overrides
-	virtual DECLARE_READ8_MEMBER(read);
-	virtual DECLARE_WRITE8_MEMBER(write);
-=======
 	msx_slot_cartridge_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	// static configuration helpers
@@ -107,17 +59,10 @@ public:
 	// msx_internal_slot-level overrides
 	virtual DECLARE_READ8_MEMBER(read) override;
 	virtual DECLARE_WRITE8_MEMBER(write) override;
->>>>>>> upstream/master
 
 	DECLARE_WRITE_LINE_MEMBER(irq_out);
 
 protected:
-<<<<<<< HEAD
-	devcb_write_line m_irq_handler;
-	msx_cart_interface *m_cartridge;
-
-	int get_cart_type(UINT8 *rom, UINT32 length);
-=======
 	msx_slot_cartridge_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock);
 
 	// device-level overrides
@@ -127,7 +72,6 @@ protected:
 	msx_cart_interface *m_cartridge;
 
 	static int get_cart_type(const uint8_t *rom, uint32_t length);
->>>>>>> upstream/master
 };
 
 
@@ -135,18 +79,6 @@ class msx_slot_yamaha_expansion_device : public msx_slot_cartridge_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	msx_slot_yamaha_expansion_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	virtual void device_start();
-	virtual void device_config_complete() { update_names(MSX_SLOT_YAMAHA_EXPANSION, "cartridge60pin", "cart60p"); }
-
-	virtual const char *image_interface() const { return "msx_yamaha_60pin"; }
-};
-
-
-#endif
-=======
 	msx_slot_yamaha_expansion_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	virtual const char *image_interface() const override { return "msx_yamaha_60pin"; }
@@ -159,4 +91,3 @@ protected:
 
 
 #endif // MAME_BUS_MSX_SLOT_CARTRIDGE_H
->>>>>>> upstream/master

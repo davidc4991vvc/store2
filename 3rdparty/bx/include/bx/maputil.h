@@ -1,11 +1,6 @@
 /*
-<<<<<<< HEAD
- * Copyright 2010-2015 Branimir Karadzic. All rights reserved.
- * License: http://www.opensource.org/licenses/BSD-2-Clause
-=======
  * Copyright 2010-2017 Branimir Karadzic. All rights reserved.
  * License: https://github.com/bkaradzic/bx#license-bsd-2-clause
->>>>>>> upstream/master
  */
 
 #ifndef BX_MAPUTIL_H_HEADER_GUARD
@@ -29,8 +24,6 @@ namespace bx
 		typename MapType::value_type pair(_key, _value);
 		return _map.insert(it, pair);
 	}
-<<<<<<< HEAD
-=======
 
 	template<typename MapType>
 	bool mapRemove(MapType& _map, const typename MapType::value_type::first_type& _first)
@@ -60,7 +53,6 @@ namespace bx
 		return false;
 	}
 
->>>>>>> upstream/master
 } // namespace bx
 
 #endif // BX_MAPUTIL_H_HEADER_GUARD

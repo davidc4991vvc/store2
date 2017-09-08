@@ -22,17 +22,10 @@
     scale factor
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-void rgbaint_t::blend(const rgbaint_t& color2, UINT8 color1scale)
-{
-	INT32 scale1 = (INT32)color1scale;
-	INT32 scale2 = 256 - scale1;
-=======
 void rgbaint_t::blend(const rgbaint_t& color2, u8 color1scale)
 {
 	s32 scale1 = s32(color1scale);
 	s32 scale2 = 256 - scale1;
->>>>>>> upstream/master
 
 	m_a = (m_a * scale1 + color2.m_a * scale2) >> 8;
 	m_r = (m_r * scale1 + color2.m_r * scale2) >> 8;
@@ -51,11 +44,7 @@ void rgbaint_t::blend(const rgbaint_t& color2, u8 color1scale)
     per channel, and clamp to byte values
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-void rgbaint_t::scale_imm_and_clamp(INT32 scale)
-=======
 void rgbaint_t::scale_imm_and_clamp(s32 scale)
->>>>>>> upstream/master
 {
 	m_a = (m_a * scale) >> 8;
 	m_r = (m_r * scale) >> 8;
@@ -65,17 +54,10 @@ void rgbaint_t::scale_imm_and_clamp(s32 scale)
 	m_r |= (m_r & 0x00800000) ? 0xff000000 : 0;
 	m_g |= (m_g & 0x00800000) ? 0xff000000 : 0;
 	m_b |= (m_b & 0x00800000) ? 0xff000000 : 0;
-<<<<<<< HEAD
-	if ((UINT32)m_a > 255) { m_a = (m_a < 0) ? 0 : 255; }
-	if ((UINT32)m_r > 255) { m_r = (m_r < 0) ? 0 : 255; }
-	if ((UINT32)m_g > 255) { m_g = (m_g < 0) ? 0 : 255; }
-	if ((UINT32)m_b > 255) { m_b = (m_b < 0) ? 0 : 255; }
-=======
 	if (u32(m_a) > 255) { m_a = (m_a < 0) ? 0 : 255; }
 	if (u32(m_r) > 255) { m_r = (m_r < 0) ? 0 : 255; }
 	if (u32(m_g) > 255) { m_g = (m_g < 0) ? 0 : 255; }
 	if (u32(m_b) > 255) { m_b = (m_b < 0) ? 0 : 255; }
->>>>>>> upstream/master
 }
 
 void rgbaint_t::scale_and_clamp(const rgbaint_t& scale)
@@ -88,16 +70,6 @@ void rgbaint_t::scale_and_clamp(const rgbaint_t& scale)
 	m_r |= (m_r & 0x00800000) ? 0xff000000 : 0;
 	m_g |= (m_g & 0x00800000) ? 0xff000000 : 0;
 	m_b |= (m_b & 0x00800000) ? 0xff000000 : 0;
-<<<<<<< HEAD
-	if ((UINT32)m_a > 255) { m_a = (m_a < 0) ? 0 : 255; }
-	if ((UINT32)m_r > 255) { m_r = (m_r < 0) ? 0 : 255; }
-	if ((UINT32)m_g > 255) { m_g = (m_g < 0) ? 0 : 255; }
-	if ((UINT32)m_b > 255) { m_b = (m_b < 0) ? 0 : 255; }
-}
-
-
-void rgbaint_t::scale_imm_add_and_clamp(INT32 scale, const rgbaint_t& other)
-=======
 	if (u32(m_a) > 255) { m_a = (m_a < 0) ? 0 : 255; }
 	if (u32(m_r) > 255) { m_r = (m_r < 0) ? 0 : 255; }
 	if (u32(m_g) > 255) { m_g = (m_g < 0) ? 0 : 255; }
@@ -106,7 +78,6 @@ void rgbaint_t::scale_imm_add_and_clamp(INT32 scale, const rgbaint_t& other)
 
 
 void rgbaint_t::scale_imm_add_and_clamp(s32 scale, const rgbaint_t& other)
->>>>>>> upstream/master
 {
 	m_a = (m_a * scale) >> 8;
 	m_r = (m_r * scale) >> 8;
@@ -120,17 +91,10 @@ void rgbaint_t::scale_imm_add_and_clamp(s32 scale, const rgbaint_t& other)
 	m_r += other.m_r;
 	m_g += other.m_g;
 	m_b += other.m_b;
-<<<<<<< HEAD
-	if ((UINT32)m_a > 255) { m_a = (m_a < 0) ? 0 : 255; }
-	if ((UINT32)m_r > 255) { m_r = (m_r < 0) ? 0 : 255; }
-	if ((UINT32)m_g > 255) { m_g = (m_g < 0) ? 0 : 255; }
-	if ((UINT32)m_b > 255) { m_b = (m_b < 0) ? 0 : 255; }
-=======
 	if (u32(m_a) > 255) { m_a = (m_a < 0) ? 0 : 255; }
 	if (u32(m_r) > 255) { m_r = (m_r < 0) ? 0 : 255; }
 	if (u32(m_g) > 255) { m_g = (m_g < 0) ? 0 : 255; }
 	if (u32(m_b) > 255) { m_b = (m_b < 0) ? 0 : 255; }
->>>>>>> upstream/master
 }
 
 void rgbaint_t::scale_add_and_clamp(const rgbaint_t& scale, const rgbaint_t& other)
@@ -147,17 +111,10 @@ void rgbaint_t::scale_add_and_clamp(const rgbaint_t& scale, const rgbaint_t& oth
 	m_r += other.m_r;
 	m_g += other.m_g;
 	m_b += other.m_b;
-<<<<<<< HEAD
-	if ((UINT32)m_a > 255) { m_a = (m_a < 0) ? 0 : 255; }
-	if ((UINT32)m_r > 255) { m_r = (m_r < 0) ? 0 : 255; }
-	if ((UINT32)m_g > 255) { m_g = (m_g < 0) ? 0 : 255; }
-	if ((UINT32)m_b > 255) { m_b = (m_b < 0) ? 0 : 255; }
-=======
 	if (u32(m_a) > 255) { m_a = (m_a < 0) ? 0 : 255; }
 	if (u32(m_r) > 255) { m_r = (m_r < 0) ? 0 : 255; }
 	if (u32(m_g) > 255) { m_g = (m_g < 0) ? 0 : 255; }
 	if (u32(m_b) > 255) { m_b = (m_b < 0) ? 0 : 255; }
->>>>>>> upstream/master
 }
 
 void rgbaint_t::scale2_add_and_clamp(const rgbaint_t& scale, const rgbaint_t& other, const rgbaint_t& scale2)
@@ -170,17 +127,10 @@ void rgbaint_t::scale2_add_and_clamp(const rgbaint_t& scale, const rgbaint_t& ot
 	m_r |= (m_r & 0x00800000) ? 0xff000000 : 0;
 	m_g |= (m_g & 0x00800000) ? 0xff000000 : 0;
 	m_b |= (m_b & 0x00800000) ? 0xff000000 : 0;
-<<<<<<< HEAD
-	if ((UINT32)m_a > 255) { m_a = (m_a < 0) ? 0 : 255; }
-	if ((UINT32)m_r > 255) { m_r = (m_r < 0) ? 0 : 255; }
-	if ((UINT32)m_g > 255) { m_g = (m_g < 0) ? 0 : 255; }
-	if ((UINT32)m_b > 255) { m_b = (m_b < 0) ? 0 : 255; }
-=======
 	if (u32(m_a) > 255) { m_a = (m_a < 0) ? 0 : 255; }
 	if (u32(m_r) > 255) { m_r = (m_r < 0) ? 0 : 255; }
 	if (u32(m_g) > 255) { m_g = (m_g < 0) ? 0 : 255; }
 	if (u32(m_b) > 255) { m_b = (m_b < 0) ? 0 : 255; }
->>>>>>> upstream/master
 }
 
 #endif // !defined(__ALTIVEC__)

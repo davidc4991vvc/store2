@@ -5,10 +5,7 @@
  *
  */
 
-<<<<<<< HEAD
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #include "k573msu.h"
 
 /*
@@ -75,13 +72,8 @@
 
 */
 
-<<<<<<< HEAD
-k573msu_device::k573msu_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-	device_t(mconfig, KONAMI_573_MULTI_SESSION_UNIT, "Konami 573 Multi Session Unit", tag, owner, clock, "k573msu", __FILE__)
-=======
 k573msu_device::k573msu_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	device_t(mconfig, KONAMI_573_MULTI_SESSION_UNIT, tag, owner, clock)
->>>>>>> upstream/master
 {
 }
 
@@ -97,17 +89,9 @@ ROM_START( k573msu )
 	ROM_LOAD( "m48t58y.6t",   0x000000, 0x002000, CRC(609ef020) SHA1(71b87c8b25b9613b4d4511c53d0a3a3aacf1499d) )
 ROM_END
 
-<<<<<<< HEAD
-const rom_entry *k573msu_device::device_rom_region() const
-=======
 const tiny_rom_entry *k573msu_device::device_rom_region() const
->>>>>>> upstream/master
 {
 	return ROM_NAME( k573msu );
 }
 
-<<<<<<< HEAD
-const device_type KONAMI_573_MULTI_SESSION_UNIT = &device_creator<k573msu_device>;
-=======
 DEFINE_DEVICE_TYPE(KONAMI_573_MULTI_SESSION_UNIT, k573msu_device, "k573msu", "Konami 573 Multi Session Unit")
->>>>>>> upstream/master

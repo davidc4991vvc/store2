@@ -9,9 +9,6 @@
 
   The 'FX' board is filled with 'FU' roms except for the 4 program roms,
   both boards have 'export' stickers which usually indicates a World version.
-<<<<<<< HEAD
-  Maybe one is a UK or European version.
-=======
   Maybe one is a UK or European version.  Some boards exist with 'FU-1' roms
   which are binary identical to the FX roms.
 
@@ -20,7 +17,6 @@
   THEIR SOLDIERS ARE ARMED WITH THE ADVANCED AND BIZARRE WEAPONS
   -> THEIR SOLDIERS ARE ARMED WITH THE MOST ADVANCED AND BIZARRE WEAPONS.
   etc
->>>>>>> upstream/master
 
   DE-0333-3 PCB
 
@@ -43,14 +39,6 @@
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/m68000/m68000.h"
-#include "cpu/h6280/h6280.h"
-#include "includes/cbuster.h"
-#include "sound/2203intf.h"
-#include "sound/2151intf.h"
-#include "sound/okim6295.h"
-=======
 #include "includes/cbuster.h"
 
 #include "cpu/m68000/m68000.h"
@@ -61,7 +49,6 @@
 #include "screen.h"
 #include "speaker.h"
 
->>>>>>> upstream/master
 
 WRITE16_MEMBER(cbuster_state::twocrude_control_w)
 {
@@ -77,33 +64,12 @@ WRITE16_MEMBER(cbuster_state::twocrude_control_w)
 		return;
 
 	case 2: /* Sound CPU write */
-<<<<<<< HEAD
-		soundlatch_byte_w(space, 0, data & 0xff);
-=======
 		m_soundlatch->write(space, 0, data & 0xff);
->>>>>>> upstream/master
 		m_audiocpu->set_input_line(0, HOLD_LINE);
 		return;
 
 	case 4: /* Protection, maybe this is a PAL on the board?
 
-<<<<<<< HEAD
-            80046 is level number
-            stop at stage and enter.
-            see also 8216..
-
-                9a 00 = pf4 over pf3 (normal) (level 0)
-                9a f1 =  (level 1 - water), pf3 over ALL sprites + pf4
-                9a 80 = pf3 over pf4 (Level 2 - copter)
-                9a 40 = pf3 over ALL sprites + pf4 (snow) level 3
-                9a c0 = doesn't matter?
-                9a ff = pf 3 over pf4
-
-            I can't find a priority register, I assume it's tied to the
-            protection?!
-
-        */
-=======
 	        80046 is level number
 	        stop at stage and enter.
 	        see also 8216..
@@ -119,7 +85,6 @@ WRITE16_MEMBER(cbuster_state::twocrude_control_w)
 	        protection?!
 
 	    */
->>>>>>> upstream/master
 		if ((data & 0xffff) == 0x9a00) m_prot = 0;
 		if ((data & 0xffff) == 0xaa)   m_prot = 0x74;
 		if ((data & 0xffff) == 0x0200) m_prot = 0x63 << 8;
@@ -179,13 +144,8 @@ static ADDRESS_MAP_START( twocrude_map, AS_PROGRAM, 16, cbuster_state )
 	AM_RANGE(0x0b4000, 0x0b4001) AM_WRITENOP
 	AM_RANGE(0x0b5000, 0x0b500f) AM_DEVWRITE("tilegen1", deco16ic_device, pf_control_w)
 	AM_RANGE(0x0b6000, 0x0b600f) AM_DEVWRITE("tilegen2", deco16ic_device, pf_control_w)
-<<<<<<< HEAD
-	AM_RANGE(0x0b8000, 0x0b8fff) AM_RAM_DEVWRITE("palette", palette_device, write) AM_SHARE("palette")
-	AM_RANGE(0x0b9000, 0x0b9fff) AM_RAM_DEVWRITE("palette", palette_device, write_ext) AM_SHARE("palette_ext")
-=======
 	AM_RANGE(0x0b8000, 0x0b8fff) AM_RAM_WRITE(cbuster_palette_w) AM_SHARE("palette")
 	AM_RANGE(0x0b9000, 0x0b9fff) AM_RAM_WRITE(cbuster_palette_ext_w) AM_SHARE("palette_ext")
->>>>>>> upstream/master
 	AM_RANGE(0x0bc000, 0x0bc00f) AM_READWRITE(twocrude_control_r, twocrude_control_w)
 ADDRESS_MAP_END
 
@@ -199,11 +159,7 @@ static ADDRESS_MAP_START( sound_map, AS_PROGRAM, 8, cbuster_state )
 	AM_RANGE(0x110000, 0x110001) AM_DEVREADWRITE("ym2", ym2151_device, read, write)
 	AM_RANGE(0x120000, 0x120001) AM_DEVREADWRITE("oki1", okim6295_device, read, write)
 	AM_RANGE(0x130000, 0x130001) AM_DEVREADWRITE("oki2", okim6295_device, read, write)
-<<<<<<< HEAD
-	AM_RANGE(0x140000, 0x140001) AM_READ(soundlatch_byte_r)
-=======
 	AM_RANGE(0x140000, 0x140001) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
->>>>>>> upstream/master
 	AM_RANGE(0x1f0000, 0x1f1fff) AM_RAMBANK("bank8")
 	AM_RANGE(0x1fec00, 0x1fec01) AM_DEVWRITE("audiocpu", h6280_device, timer_w)
 	AM_RANGE(0x1ff400, 0x1ff403) AM_DEVWRITE("audiocpu", h6280_device, irq_status_w)
@@ -349,11 +305,7 @@ void cbuster_state::machine_reset()
 	m_pri = 0;
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( twocrude, cbuster_state )
-=======
 static MACHINE_CONFIG_START( twocrude )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, XTAL_24MHz/2) /* Custom chip 59 @ 12MHz Verified */
@@ -390,10 +342,6 @@ static MACHINE_CONFIG_START( twocrude )
 	MCFG_DECO16IC_PF12_8X8_BANK(0)
 	MCFG_DECO16IC_PF12_16X16_BANK(1)
 	MCFG_DECO16IC_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_DECO16IC_PALETTE("palette")
-=======
->>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("tilegen2", DECO16IC, 0)
 	MCFG_DECO16IC_SPLIT(0)
@@ -409,30 +357,18 @@ static MACHINE_CONFIG_START( twocrude )
 	MCFG_DECO16IC_PF12_8X8_BANK(0)
 	MCFG_DECO16IC_PF12_16X16_BANK(2)
 	MCFG_DECO16IC_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_DECO16IC_PALETTE("palette")
-=======
->>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("spritegen", DECO_SPRITE, 0)
 	MCFG_DECO_SPRITE_GFX_REGION(3)
 	MCFG_DECO_SPRITE_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_DECO_SPRITE_PALETTE("palette")
-=======
->>>>>>> upstream/master
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-	MCFG_SOUND_ADD("ym1", YM2203, XTAL_32_22MHz/24) /* 1.3425MHz Verified */
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 
 	// YM2203_PITCH_HACK - Pitch is too low at 1.3425MHz (see also stfight.cpp)
 	MCFG_SOUND_ADD("ym1", YM2203, XTAL_32_22MHz/24 * 3) /* 1.3425MHz Verified */
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.60)
 
 	MCFG_YM2151_ADD("ym2", XTAL_32_22MHz/9) /* 3.58MHz Verified */
@@ -440,17 +376,10 @@ static MACHINE_CONFIG_START( twocrude )
 	MCFG_SOUND_ROUTE(0, "mono", 0.45)
 	MCFG_SOUND_ROUTE(1, "mono", 0.45)
 
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki1", XTAL_32_22MHz/32, OKIM6295_PIN7_HIGH) /* 1.0068MHz Verified */
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.75)
-
-	MCFG_OKIM6295_ADD("oki2", XTAL_32_22MHz/16, OKIM6295_PIN7_HIGH) /* 2.01375MHz Verified */
-=======
 	MCFG_OKIM6295_ADD("oki1", XTAL_32_22MHz/32, PIN7_HIGH) /* 1.0068MHz Verified */
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.75)
 
 	MCFG_OKIM6295_ADD("oki2", XTAL_32_22MHz/16, PIN7_HIGH) /* 2.01375MHz Verified */
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.60)
 MACHINE_CONFIG_END
 
@@ -458,13 +387,8 @@ MACHINE_CONFIG_END
 
 ROM_START( cbuster )
 	ROM_REGION( 0x80000, "maincpu", 0 ) /* 68000 code */
-<<<<<<< HEAD
-	ROM_LOAD16_BYTE( "fx01.7l", 0x00000, 0x20000, CRC(ddae6d83) SHA1(ce3fed1393b71821730fb8d87869a89c8e07c456) )
-	ROM_LOAD16_BYTE( "fx00.4l", 0x00001, 0x20000, CRC(5bc2c0de) SHA1(fa9c357ae4a5c814b7113df3b2f12982077f3e6b) )
-=======
 	ROM_LOAD16_BYTE( "fx01.7l", 0x00000, 0x20000, CRC(ddae6d83) SHA1(ce3fed1393b71821730fb8d87869a89c8e07c456) ) // Same data exists with label fu01-1
 	ROM_LOAD16_BYTE( "fx00.4l", 0x00001, 0x20000, CRC(5bc2c0de) SHA1(fa9c357ae4a5c814b7113df3b2f12982077f3e6b) ) // Same data exists with label fu00-1
->>>>>>> upstream/master
 	ROM_LOAD16_BYTE( "fx03.9l", 0x40000, 0x20000, CRC(c3d65bf9) SHA1(99dd650fd4b427bca25a0776fbd6221f93504106) )
 	ROM_LOAD16_BYTE( "fx02.6l", 0x40001, 0x20000, CRC(b875266b) SHA1(a76f8e061392e17394a3f975584823ad39e0097e) )
 
@@ -663,13 +587,8 @@ ROM_END
 
 DRIVER_INIT_MEMBER(cbuster_state,twocrude)
 {
-<<<<<<< HEAD
-	UINT8 *RAM = memregion("maincpu")->base();
-	UINT8 *PTR;
-=======
 	uint8_t *RAM = memregion("maincpu")->base();
 	uint8_t *PTR;
->>>>>>> upstream/master
 	int i, j;
 
 	/* Main cpu decrypt */

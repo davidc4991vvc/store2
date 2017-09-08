@@ -59,11 +59,6 @@ Known issues:
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/m6502/m6502.h"
-#include "sound/samples.h"
-#include "includes/tankbatt.h"
-=======
 #include "includes/tankbatt.h"
 
 #include "cpu/m6502/m6502.h"
@@ -71,7 +66,6 @@ Known issues:
 #include "sound/samples.h"
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 void tankbatt_state::machine_start()
@@ -80,11 +74,6 @@ void tankbatt_state::machine_start()
 	save_item(NAME(m_sound_enable));
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER(tankbatt_state::led_w)
-{
-	set_led_status(machine(), offset,data & 1);
-=======
 WRITE_LINE_MEMBER(tankbatt_state::led0_w)
 {
 	machine().output().set_led_value(0, state);
@@ -93,7 +82,6 @@ WRITE_LINE_MEMBER(tankbatt_state::led0_w)
 WRITE_LINE_MEMBER(tankbatt_state::led1_w)
 {
 	machine().output().set_led_value(1, state);
->>>>>>> upstream/master
 }
 
 READ8_MEMBER(tankbatt_state::in0_r)
@@ -120,25 +108,6 @@ READ8_MEMBER(tankbatt_state::dsw_r)
 	return ((val << (7 - offset)) & 0x80);
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER(tankbatt_state::interrupt_enable_w)
-{
-	m_nmi_enable = !data;
-	m_sound_enable = !data;
-
-	/* hack - turn off the engine noise if the normal game nmi's are disabled */
-	if (data) m_samples->stop(2);
-}
-
-WRITE8_MEMBER(tankbatt_state::demo_interrupt_enable_w)
-{
-	m_nmi_enable = data;
-}
-
-WRITE8_MEMBER(tankbatt_state::sh_expl_w)
-{
-	if (m_sound_enable)
-=======
 WRITE_LINE_MEMBER(tankbatt_state::interrupt_enable_w)
 {
 	m_nmi_enable = !state;
@@ -156,25 +125,16 @@ WRITE_LINE_MEMBER(tankbatt_state::demo_interrupt_enable_w)
 WRITE_LINE_MEMBER(tankbatt_state::sh_expl_w)
 {
 	if (state) // rising edge
->>>>>>> upstream/master
 	{
 		m_samples->start(1, 3);
 	}
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER(tankbatt_state::sh_engine_w)
-{
-	if (m_sound_enable)
-	{
-		if (data)
-=======
 WRITE_LINE_MEMBER(tankbatt_state::sh_engine_w)
 {
 	if (m_sound_enable)
 	{
 		if (state)
->>>>>>> upstream/master
 			m_samples->start(2, 2, true);
 		else
 			m_samples->start(2, 1, true);
@@ -182,15 +142,9 @@ WRITE_LINE_MEMBER(tankbatt_state::sh_engine_w)
 	else m_samples->stop(2);
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER(tankbatt_state::sh_fire_w)
-{
-	if (m_sound_enable)
-=======
 WRITE_LINE_MEMBER(tankbatt_state::sh_fire_w)
 {
 	if (state) // rising edge
->>>>>>> upstream/master
 	{
 		m_samples->start(0, 0);
 	}
@@ -202,18 +156,6 @@ WRITE8_MEMBER(tankbatt_state::irq_ack_w)
 	m_maincpu->set_input_line(0, CLEAR_LINE);
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER(tankbatt_state::coincounter_w)
-{
-	coin_counter_w(machine(), 0,data & 1);
-	coin_counter_w(machine(), 1,data & 1);
-}
-
-WRITE8_MEMBER(tankbatt_state::coinlockout_w)
-{
-	coin_lockout_w(machine(), 0,data & 1);
-	coin_lockout_w(machine(), 1,data & 1);
-=======
 WRITE_LINE_MEMBER(tankbatt_state::coincounter_w)
 {
 	machine().bookkeeping().coin_counter_w(0, state);
@@ -223,7 +165,6 @@ WRITE_LINE_MEMBER(tankbatt_state::coinlockout_w)
 {
 	machine().bookkeeping().coin_lockout_w(0, state);
 	machine().bookkeeping().coin_lockout_w(1, state);
->>>>>>> upstream/master
 }
 
 static ADDRESS_MAP_START( main_map, AS_PROGRAM, 8, tankbatt_state )
@@ -231,23 +172,8 @@ static ADDRESS_MAP_START( main_map, AS_PROGRAM, 8, tankbatt_state )
 	AM_RANGE(0x0010, 0x01ff) AM_RAM
 	AM_RANGE(0x0200, 0x07ff) AM_RAM
 	AM_RANGE(0x0800, 0x0bff) AM_RAM_WRITE(videoram_w) AM_SHARE("videoram")
-<<<<<<< HEAD
-	AM_RANGE(0x0c00, 0x0c07) AM_READ(in0_r)
-	AM_RANGE(0x0c00, 0x0c01) AM_WRITE(led_w)
-	AM_RANGE(0x0c02, 0x0c02) AM_WRITE(coincounter_w)
-	AM_RANGE(0x0c03, 0x0c03) AM_WRITE(coinlockout_w)
-	AM_RANGE(0x0c08, 0x0c0f) AM_READ(in1_r)
-	AM_RANGE(0x0c08, 0x0c08) AM_WRITENOP //coin counter mirror?
-	AM_RANGE(0x0c0a, 0x0c0a) AM_WRITE(interrupt_enable_w)
-	AM_RANGE(0x0c0b, 0x0c0b) AM_WRITE(sh_engine_w)
-	AM_RANGE(0x0c0c, 0x0c0c) AM_WRITE(sh_fire_w)
-	AM_RANGE(0x0c0d, 0x0c0d) AM_WRITE(sh_expl_w) // bit 7 == led for the start 2 button
-	AM_RANGE(0x0c0e, 0x0c0e) AM_WRITENOP //bit 7 == led for the start 1 button
-	AM_RANGE(0x0c0f, 0x0c0f) AM_WRITE(demo_interrupt_enable_w)
-=======
 	AM_RANGE(0x0c00, 0x0c07) AM_READ(in0_r) AM_DEVWRITE("outlatch", cd4099_device, write_d0)
 	AM_RANGE(0x0c08, 0x0c0f) AM_READ(in1_r) AM_DEVWRITE("mainlatch", cd4099_device, write_d0)
->>>>>>> upstream/master
 	AM_RANGE(0x0c10, 0x0c10) AM_WRITE(irq_ack_w)
 	AM_RANGE(0x0c18, 0x0c1f) AM_READ(dsw_r)
 	AM_RANGE(0x0c18, 0x0c18) AM_WRITENOP    /* watchdog ?? */
@@ -347,27 +273,17 @@ static const char *const tankbatt_sample_names[] =
 	"engine1",
 	"engine2",
 	"explode1",
-<<<<<<< HEAD
-	0   /* end of array */
-};
-
-
-static MACHINE_CONFIG_START( tankbatt, tankbatt_state )
-=======
 	nullptr   /* end of array */
 };
 
 
 static MACHINE_CONFIG_START( tankbatt )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6502, 1000000) /* 1 MHz ???? */
 	MCFG_CPU_PROGRAM_MAP(main_map)
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", tankbatt_state,  interrupt)
 
-<<<<<<< HEAD
-=======
 	MCFG_DEVICE_ADD("mainlatch", CD4099, 0) // latches at 4H and 5H (are the empty 4J and 5J locations for LS259 substitution?)
 	MCFG_ADDRESSABLE_LATCH_Q0_OUT_CB(NOOP) //coin counter mirror?
 	MCFG_ADDRESSABLE_LATCH_Q2_OUT_CB(WRITELINE(tankbatt_state, interrupt_enable_w))
@@ -383,7 +299,6 @@ static MACHINE_CONFIG_START( tankbatt )
 	MCFG_ADDRESSABLE_LATCH_Q2_OUT_CB(WRITELINE(tankbatt_state, coincounter_w))
 	MCFG_ADDRESSABLE_LATCH_Q3_OUT_CB(WRITELINE(tankbatt_state, coinlockout_w))
 
->>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE(60)
@@ -443,10 +358,5 @@ ROM_START( tankbattb ) /* board with "NAMCO" removed from gfx1 rom, otherwise id
 	ROM_LOAD( "bct1-1.l3", 0x0000, 0x0100, CRC(d17518bc) SHA1(f3b0deffa586808bc59e9a24ec1699c54ebe84cc) ) // dm74s287n.3l
 ROM_END
 
-<<<<<<< HEAD
-GAME( 1980, tankbatt,  0,        tankbatt, tankbatt, driver_device, 0, ROT90, "Namco",   "Tank Battalion", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 1980, tankbattb, tankbatt, tankbatt, tankbatt, driver_device, 0, ROT90, "bootleg", "Tank Battalion (bootleg)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1980, tankbatt,  0,        tankbatt, tankbatt, tankbatt_state, 0, ROT90, "Namco",   "Tank Battalion", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
 GAME( 1980, tankbattb, tankbatt, tankbatt, tankbatt, tankbatt_state, 0, ROT90, "bootleg", "Tank Battalion (bootleg)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

@@ -20,11 +20,7 @@
 		description     = "Generate Microsoft Visual Studio 2013 project files",
 		os              = "windows",
 
-<<<<<<< HEAD
-		valid_kinds     = { "ConsoleApp", "WindowedApp", "StaticLib", "SharedLib" },
-=======
 		valid_kinds     = { "ConsoleApp", "WindowedApp", "StaticLib", "SharedLib", "Bundle" },
->>>>>>> upstream/master
 
 		valid_languages = { "C", "C++", "C#"},
 
@@ -48,11 +44,7 @@
 				premake.generate(prj, "%%.vcxproj.filters", vstudio.vc2010.generate_filters)
 
 				if premake.vstudio.needAppxManifest then
-<<<<<<< HEAD
-					premake.generate(prj, "%%.appxmanifest", premake.vs2010_appxmanifest)
-=======
 					premake.generate(prj, "%%/Package.appxmanifest", premake.vs2010_appxmanifest)
->>>>>>> upstream/master
 				end
 			end
 		end,
@@ -66,10 +58,7 @@
 			solutionVersion = "12",
 			targetFramework = "4.5",
 			toolsVersion    = "12.0",
-<<<<<<< HEAD
-=======
 			supports64bitEditContinue = false,
 			intDirAbsolute  = false,
->>>>>>> upstream/master
 		}
 	}

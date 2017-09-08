@@ -13,17 +13,11 @@
 -- expat library objects
 --------------------------------------------------
 
-<<<<<<< HEAD
-if _OPTIONS["with-bundled-expat"] then
-=======
 if not _OPTIONS["with-system-expat"] then
->>>>>>> upstream/master
 project "expat"
 	uuid "f4cd40b1-c37c-452d-9785-640f26f0bf54"
 	kind "StaticLib"
 
-<<<<<<< HEAD
-=======
 	-- fake out the enough of expat_config.h to get by
 	defines {
 		"HAVE_MEMMOVE",
@@ -52,7 +46,6 @@ else
 	}
 end
 
->>>>>>> upstream/master
 	configuration { "vs*" }
 		buildoptions {
 			"/wd4100", -- warning C4100: 'xxx' : unreferenced formal parameter
@@ -61,15 +54,6 @@ end
 		}
 if _OPTIONS["vs"]=="intel-15" then
 		buildoptions {
-<<<<<<< HEAD
-			"/Qwd111",  			-- remark #111: statement is unreachable
-			"/Qwd1879", 			-- warning #1879: unimplemented pragma ignored
-			"/Qwd2557", 			-- remark #2557: comparison between signed and unsigned operands
-			"/Qwd869",  			-- remark #869: parameter "xxx" was never referenced
-		}
-end
-	configuration { "vs2015" }
-=======
 			"/Qwd111",              -- remark #111: statement is unreachable
 			"/Qwd1879",             -- warning #1879: unimplemented pragma ignored
 			"/Qwd2557",             -- remark #2557: comparison between signed and unsigned operands
@@ -77,16 +61,11 @@ end
 		}
 end
 	configuration { "vs201*" }
->>>>>>> upstream/master
 		buildoptions {
 			"/wd4456", -- warning C4456: declaration of 'xxx' hides previous local declaration
 		}
 	configuration { }
-<<<<<<< HEAD
-		
-=======
 
->>>>>>> upstream/master
 	files {
 		MAME_DIR .. "3rdparty/expat/lib/xmlparse.c",
 		MAME_DIR .. "3rdparty/expat/lib/xmlrole.c",
@@ -94,11 +73,7 @@ end
 	}
 else
 links {
-<<<<<<< HEAD
-	"expat",
-=======
 	ext_lib("expat"),
->>>>>>> upstream/master
 }
 end
 
@@ -106,17 +81,11 @@ end
 -- zlib library objects
 --------------------------------------------------
 
-<<<<<<< HEAD
-if _OPTIONS["with-bundled-zlib"] then
-=======
 if not _OPTIONS["with-system-zlib"] then
->>>>>>> upstream/master
 project "zlib"
 	uuid "3d78bd2a-2bd0-4449-8087-42ddfaef7ec9"
 	kind "StaticLib"
 
-<<<<<<< HEAD
-=======
 	local version = str_to_version(_OPTIONS["gcc_version"])
 	if _OPTIONS["gcc"]~=nil and ((string.find(_OPTIONS["gcc"], "clang") or string.find(_OPTIONS["gcc"], "asmjs") or string.find(_OPTIONS["gcc"], "android"))) then
 		configuration { "gmake or ninja" }
@@ -127,7 +96,6 @@ project "zlib"
 		end
 	end
 
->>>>>>> upstream/master
 	configuration { "vs*" }
 		buildoptions {
 			"/wd4131", -- warning C4131: 'xxx' : uses old-style declarator
@@ -136,13 +104,8 @@ project "zlib"
 		}
 if _OPTIONS["vs"]=="intel-15" then
 		buildoptions {
-<<<<<<< HEAD
-			"/Qwd111",  			-- remark #111: statement is unreachable
-			"/Qwd280",  			-- remark #280: selector expression is constant
-=======
 			"/Qwd111",              -- remark #111: statement is unreachable
 			"/Qwd280",              -- remark #280: selector expression is constant
->>>>>>> upstream/master
 		}
 end
 	configuration "Debug"
@@ -150,11 +113,7 @@ end
 			"verbose=-1",
 		}
 
-<<<<<<< HEAD
-	configuration { "gmake" }
-=======
 	configuration { "gmake or ninja" }
->>>>>>> upstream/master
 		buildoptions_c {
 			"-Wno-strict-prototypes",
 		}
@@ -179,22 +138,14 @@ end
 	}
 else
 links {
-<<<<<<< HEAD
-	"z",
-=======
 	ext_lib("zlib"),
->>>>>>> upstream/master
 }
 end
 
 --------------------------------------------------
 -- SoftFloat library objects
 --------------------------------------------------
-<<<<<<< HEAD
-	
-=======
 
->>>>>>> upstream/master
 project "softfloat"
 	uuid "04fbf89e-4761-4cf2-8a12-64500cf0c5c5"
 	kind "StaticLib"
@@ -206,13 +157,6 @@ project "softfloat"
 	includedirs {
 		MAME_DIR .. "src/osd",
 	}
-<<<<<<< HEAD
-if _OPTIONS["vs"]=="intel-15" then
-		buildoptions {
-			"/Qwd2557", 			-- remark #2557: comparison between signed and unsigned operands
-		}
-end	
-=======
 	configuration { "vs*" }
 		buildoptions {
 			"/wd4244", -- warning C4244: 'argument' : conversion from 'xxx' to 'xxx', possible loss of data
@@ -226,7 +170,6 @@ if _OPTIONS["vs"]=="intel-15" then
 end
 	configuration { }
 
->>>>>>> upstream/master
 	files {
 		MAME_DIR .. "3rdparty/softfloat/softfloat.c",
 		MAME_DIR .. "3rdparty/softfloat/fsincos.c",
@@ -237,32 +180,19 @@ end
 -- libJPEG library objects
 --------------------------------------------------
 
-<<<<<<< HEAD
-if _OPTIONS["with-bundled-jpeg"] then
-=======
 if not _OPTIONS["with-system-jpeg"] then
->>>>>>> upstream/master
 project "jpeg"
 	uuid "447c6800-dcfd-4c48-b72a-a8223bb409ca"
 	kind "StaticLib"
 
 	configuration { "vs*" }
 		buildoptions {
-<<<<<<< HEAD
-			"/wd4100", -- warning C4100: 'xxx' : unreferenced formal parameter	
-=======
 			"/wd4100", -- warning C4100: 'xxx' : unreferenced formal parameter
->>>>>>> upstream/master
 			"/wd4127", -- warning C4127: conditional expression is constant
 			"/wd4244", -- warning C4244: 'argument' : conversion from 'xxx' to 'xxx', possible loss of data
 		}
 if _OPTIONS["vs"]=="intel-15" then
 		buildoptions {
-<<<<<<< HEAD
-			"/Qwd869",  			-- remark #869: parameter "xxx" was never referenced
-		}
-end	
-=======
 			"/Qwd869",              -- remark #869: parameter "xxx" was never referenced
 		}
 end
@@ -271,7 +201,6 @@ end
 		defines {
 			"NO_GETENV"
 		}
->>>>>>> upstream/master
 
 	configuration { }
 
@@ -325,11 +254,7 @@ end
 	}
 else
 links {
-<<<<<<< HEAD
-	"jpeg",
-=======
 	ext_lib("jpeg"),
->>>>>>> upstream/master
 }
 end
 
@@ -337,11 +262,7 @@ end
 -- libflac library objects
 --------------------------------------------------
 
-<<<<<<< HEAD
-if _OPTIONS["with-bundled-flac"] then
-=======
 if not _OPTIONS["with-system-flac"] then
->>>>>>> upstream/master
 project "flac"
 	uuid "b6fc19e8-073a-4541-bb7b-d24b548d424a"
 	kind "StaticLib"
@@ -350,26 +271,11 @@ project "flac"
 		buildoptions {
 			"/wd4127", -- warning C4127: conditional expression is constant
 			"/wd4244", -- warning C4244: 'argument' : conversion from 'xxx' to 'xxx', possible loss of data
-<<<<<<< HEAD
-			"/wd4100", -- warning C4100: 'xxx' : unreferenced formal parameter	
-=======
 			"/wd4100", -- warning C4100: 'xxx' : unreferenced formal parameter
->>>>>>> upstream/master
 			"/wd4702", -- warning C4702: unreachable code
 		}
 if _OPTIONS["vs"]=="intel-15" then
 		buildoptions {
-<<<<<<< HEAD
-			"/Qwd111",  			-- remark #111: statement is unreachable
-			"/Qwd177",  			-- remark #177: function "xxx" was declared but never referenced
-			"/Qwd181",  			-- remark #181: argument of type "UINT32={unsigned int}" is incompatible with format "%d", expecting argument of type "int"
-			"/Qwd188",  			-- error #188: enumerated type mixed with another type
-			"/Qwd869",  			-- remark #869: parameter "xxx" was never referenced
-		}
-end	
-
-	configuration { "vs2015" }
-=======
 			"/Qwd111",              -- remark #111: statement is unreachable
 			"/Qwd177",              -- remark #177: function "xxx" was declared but never referenced
 			"/Qwd181",              -- remark #181: argument of type "UINT32={unsigned int}" is incompatible with format "%d", expecting argument of type "int"
@@ -384,7 +290,6 @@ end
 		}
 
 	configuration { "vs201*" }
->>>>>>> upstream/master
 		buildoptions {
 			"/wd4456", -- warning C4456: declaration of 'xxx' hides previous local declaration
 		}
@@ -399,21 +304,11 @@ end
 			"HAVE_CONFIG_H=1",
 		}
 
-<<<<<<< HEAD
-	configuration { "gmake"}
-=======
 	configuration { "gmake or ninja" }
->>>>>>> upstream/master
 		buildoptions_c {
 			"-Wno-unused-function",
 			"-O0",
 		}
-<<<<<<< HEAD
-	if _OPTIONS["gcc"]~=nil and string.find(_OPTIONS["gcc"], "clang") then
-		buildoptions {
-			"-Wno-enum-conversion",
-		}
-=======
 	if _OPTIONS["gcc"]~=nil and (string.find(_OPTIONS["gcc"], "clang") or string.find(_OPTIONS["gcc"], "android")) then
 		buildoptions {
 			"-Wno-enum-conversion",
@@ -423,7 +318,6 @@ end
 				"-Wno-unknown-attributes",
 			}
 		end
->>>>>>> upstream/master
 	end
 	configuration { }
 
@@ -451,11 +345,7 @@ end
 	}
 else
 links {
-<<<<<<< HEAD
-	"FLAC",
-=======
 	ext_lib("flac"),
->>>>>>> upstream/master
 }
 end
 
@@ -467,8 +357,6 @@ project "7z"
 	uuid "ad573d62-e76a-4b11-ae34-5110a6789a42"
 	kind "StaticLib"
 
-<<<<<<< HEAD
-=======
 	configuration { "gmake or ninja" }
 		buildoptions_c {
 			"-Wno-undef",
@@ -480,37 +368,25 @@ project "7z"
 			"-Wno-strict-prototypes",
 		}
 
->>>>>>> upstream/master
 	configuration { "vs*" }
 		buildoptions {
 			"/wd4100", -- warning C4100: 'xxx' : unreferenced formal parameter
 		}
 if _OPTIONS["vs"]=="intel-15" then
 		buildoptions {
-<<<<<<< HEAD
-			"/Qwd869",  			-- remark #869: parameter "xxx" was never referenced
-		}
-end
-	configuration { "vs2015" }
-=======
 			"/Qwd869",              -- remark #869: parameter "xxx" was never referenced
 		}
 end
 	configuration { "vs201*" }
->>>>>>> upstream/master
 		buildoptions {
 			"/wd4456", -- warning C4456: declaration of 'xxx' hides previous local declaration
 			"/wd4457", -- warning C4457: declaration of 'xxx' hides function parameter
 		}
-<<<<<<< HEAD
-		
-=======
 	configuration { "winstore*" }
 		forcedincludes {
 			MAME_DIR .. "src/osd/uwp/uwpcompat.h"
 		}
 
->>>>>>> upstream/master
 	configuration { }
 		defines {
 			"_7ZIP_PPMD_SUPPPORT",
@@ -518,31 +394,13 @@ end
 		}
 
 	files {
-<<<<<<< HEAD
-=======
 			MAME_DIR .. "3rdparty/lzma/C/7zAlloc.c",
 			MAME_DIR .. "3rdparty/lzma/C/7zArcIn.c",
->>>>>>> upstream/master
 			MAME_DIR .. "3rdparty/lzma/C/7zBuf.c",
 			MAME_DIR .. "3rdparty/lzma/C/7zBuf2.c",
 			MAME_DIR .. "3rdparty/lzma/C/7zCrc.c",
 			MAME_DIR .. "3rdparty/lzma/C/7zCrcOpt.c",
 			MAME_DIR .. "3rdparty/lzma/C/7zDec.c",
-<<<<<<< HEAD
-			MAME_DIR .. "3rdparty/lzma/C/7zIn.c",
-			MAME_DIR .. "3rdparty/lzma/C/CpuArch.c",
-			MAME_DIR .. "3rdparty/lzma/C/LzmaDec.c",
-			MAME_DIR .. "3rdparty/lzma/C/Lzma2Dec.c",
-			MAME_DIR .. "3rdparty/lzma/C/LzmaEnc.c",
-			MAME_DIR .. "3rdparty/lzma/C/Lzma2Enc.c",
-			MAME_DIR .. "3rdparty/lzma/C/LzFind.c",
-			MAME_DIR .. "3rdparty/lzma/C/Bra.c",
-			MAME_DIR .. "3rdparty/lzma/C/Bra86.c",
-			MAME_DIR .. "3rdparty/lzma/C/Bcj2.c",
-			MAME_DIR .. "3rdparty/lzma/C/Ppmd7.c",
-			MAME_DIR .. "3rdparty/lzma/C/Ppmd7Dec.c",
-			MAME_DIR .. "3rdparty/lzma/C/7zStream.c",
-=======
 			MAME_DIR .. "3rdparty/lzma/C/7zFile.c",
 			MAME_DIR .. "3rdparty/lzma/C/7zStream.c",
 			MAME_DIR .. "3rdparty/lzma/C/Aes.c",
@@ -578,35 +436,19 @@ end
 			-- MAME_DIR .. "3rdparty/lzma/C/XzDec.c",
 			-- MAME_DIR .. "3rdparty/lzma/C/XzEnc.c",
 			-- MAME_DIR .. "3rdparty/lzma/C/XzIn.c",
->>>>>>> upstream/master
 		}
 
 --------------------------------------------------
 -- LUA library objects
 --------------------------------------------------
-<<<<<<< HEAD
-
-if _OPTIONS["with-bundled-lua"] then
-=======
 if (STANDALONE~=true) then
 
 if not _OPTIONS["with-system-lua"] then
->>>>>>> upstream/master
 project "lua"
 	uuid "d9e2eed1-f1ab-4737-a6ac-863700b1a5a9"
 	kind "StaticLib"
 
 	-- uncomment the options below to
-<<<<<<< HEAD
-	-- compile using c++. Do the same 
-	-- in lsqlite3.
-	-- In addition comment out the "extern "C""
-	-- in lua.hpp and do the same in luaengine.c line 47
-	--options {
-	--	"ForceCPP",
-	--}
-
-=======
 	-- compile using c++. Do the same
 	-- in lualibs.
 	-- In addition comment out the "extern "C""
@@ -620,7 +462,6 @@ project "lua"
 			"-Wno-bad-function-cast"
 		}
 
->>>>>>> upstream/master
 	configuration { "vs*" }
 		buildoptions {
 			"/wd4244", -- warning C4244: 'argument' : conversion from 'xxx' to 'xxx', possible loss of data
@@ -632,13 +473,6 @@ if _OPTIONS["vs"]=="intel-15" then
 			"/Qwd592", -- error #592: variable "xxx" is used before its value is set
 		}
 end
-<<<<<<< HEAD
-	configuration { }
-		defines {
-			"LUA_COMPAT_ALL",
-		}
-	if not (_OPTIONS["targetos"]=="windows") and not (_OPTIONS["targetos"]=="asmjs") then
-=======
 
 	configuration { "winstore*" }
 		forcedincludes {
@@ -652,7 +486,6 @@ end
 			"LUA_COMPAT_5_2",
 		}
 	if not (_OPTIONS["targetos"]=="windows") and not (_OPTIONS["targetos"]=="asmjs") and not (_OPTIONS["targetos"]=="pnacl") then
->>>>>>> upstream/master
 		defines {
 			"LUA_USE_POSIX",
 		}
@@ -662,11 +495,7 @@ end
 			"LUA_32BITS",
 		}
 	end
-<<<<<<< HEAD
-	
-=======
 
->>>>>>> upstream/master
 	configuration { }
 
 	includedirs {
@@ -710,31 +539,11 @@ end
 	}
 else
 links {
-<<<<<<< HEAD
-	"lua",
-=======
 	ext_lib("lua"),
->>>>>>> upstream/master
 }
 end
 
 --------------------------------------------------
-<<<<<<< HEAD
--- sqlite3 lua library objects
---------------------------------------------------
-	
-project "lsqlite3"
-	uuid "1d84edab-94cf-48fb-83ee-b75bc697660e"
-	kind "StaticLib"
-
-	-- options {
-	--	"ForceCPP",
-	-- }
-
-	configuration { "vs*" }
-		buildoptions {
-			"/wd4244", -- warning C4244: 'argument' : conversion from 'xxx' to 'xxx', possible loss of data
-=======
 -- small lua library objects
 --------------------------------------------------
 
@@ -753,7 +562,6 @@ project "lualibs"
 	configuration { "pnacl"}
 		buildoptions {
 			"-Wno-char-subscripts",
->>>>>>> upstream/master
 		}
 
 	configuration { }
@@ -764,43 +572,6 @@ project "lualibs"
 	includedirs {
 		MAME_DIR .. "3rdparty",
 	}
-<<<<<<< HEAD
-	if _OPTIONS["with-bundled-lua"] then
-		includedirs {
-			MAME_DIR .. "3rdparty/lua/src",
-		}
-	end
-
-	files {
-		MAME_DIR .. "3rdparty/lsqlite3/lsqlite3.c",
-	}
-
---------------------------------------------------
--- jsoncpp library objects
---------------------------------------------------
-
-project "jsoncpp"
-	uuid "ae023ff3-d712-4e54-adc5-3b56a148650f"
-	kind "StaticLib"
-
-	configuration { "vs2015" }
-		buildoptions {
-			"/wd4456", -- warning C4456: declaration of 'xxx' hides previous local declaration
-	}
-	
-	configuration { }
-
-	includedirs {
-		MAME_DIR .. "3rdparty/jsoncpp/include",
-	}
-
-	files {
-		MAME_DIR .. "3rdparty/jsoncpp/src/lib_json/json_reader.cpp",
-		MAME_DIR .. "3rdparty/jsoncpp/src/lib_json/json_value.cpp",
-		MAME_DIR .. "3rdparty/jsoncpp/src/lib_json/json_writer.cpp",
-		
-	}
-=======
 if (_OPTIONS["osd"] ~= "uwp") then
 	includedirs {
 		MAME_DIR .. "3rdparty/linenoise",
@@ -833,54 +604,11 @@ else
 		MAME_DIR .. "3rdparty/lua-linenoise/linenoise.c",
 	}
 end
->>>>>>> upstream/master
 
 --------------------------------------------------
 -- SQLite3 library objects
 --------------------------------------------------
 
-<<<<<<< HEAD
-if _OPTIONS["with-bundled-sqlite3"] then
-project "sqllite3"
-	uuid "5cb3d495-57ed-461c-81e5-80dc0857517d"
-	kind "StaticLib"
-
-	configuration { "vs*" }
-		buildoptions {
-			"/wd4244", -- warning C4244: 'argument' : conversion from 'xxx' to 'xxx', possible loss of data
-			"/wd4127", -- warning C4127: conditional expression is constant
-			"/wd4232", -- warning C4232: nonstandard extension used : 'xxx' : address of dllimport 'xxx' is not static, identity not guaranteed
-			"/wd4100", -- warning C4100: 'xxx' : unreferenced formal parameter
-			"/wd4706", -- warning C4706: assignment within conditional expression
-		}
-if _OPTIONS["vs"]=="intel-15" then
-		buildoptions {
-			"/Qwd869",  			-- remark #869: parameter "xxx" was never referenced
-			"/Qwd2557", 			-- remark #2557: comparison between signed and unsigned operands
-		}
-end
-
-	configuration { "vs2015" }
-		buildoptions {
-			"/wd4456", -- warning C4456: declaration of 'xxx' hides previous local declaration
-		}
-	
-	
-	configuration { "gmake" }
-		buildoptions_c {
-			"-Wno-bad-function-cast",
-			"-Wno-undef",
-		}
-	
-	local version = str_to_version(_OPTIONS["gcc_version"])
-	if _OPTIONS["gcc"]~=nil and not string.find(_OPTIONS["gcc"], "clang") then
-		if (version >= 40800) then
-			buildoptions_c {
-				"-Wno-array-bounds",
-			}
-		end
-	end
-=======
 if not _OPTIONS["with-system-sqlite3"] then
 project "sqlite3"
 	uuid "5cb3d495-57ed-461c-81e5-80dc0857517d"
@@ -902,7 +630,6 @@ end
 		defines {
 			"SQLITE_OS_WINRT",
 		}
->>>>>>> upstream/master
 
 	configuration { }
 
@@ -911,27 +638,16 @@ end
 	}
 else
 links {
-<<<<<<< HEAD
-	"sqlite3",
-}
-end
-
-=======
 	ext_lib("sqlite3"),
 }
 end
 
 end
->>>>>>> upstream/master
 --------------------------------------------------
 -- portmidi library objects
 --------------------------------------------------
 if _OPTIONS["NO_USE_MIDI"]~="1" then
-<<<<<<< HEAD
-if _OPTIONS["with-bundled-portmidi"] then
-=======
 if not _OPTIONS["with-system-portmidi"] then
->>>>>>> upstream/master
 project "portmidi"
 	uuid "587f2da6-3274-4a65-86a2-f13ea315bb98"
 	kind "StaticLib"
@@ -940,11 +656,7 @@ project "portmidi"
 		MAME_DIR .. "3rdparty/portmidi/pm_common",
 		MAME_DIR .. "3rdparty/portmidi/porttime",
 	}
-<<<<<<< HEAD
-		
-=======
 
->>>>>>> upstream/master
 	configuration { "vs*" }
 		buildoptions {
 			"/wd4100", -- warning C4100: 'xxx' : unreferenced formal parameter
@@ -954,20 +666,6 @@ project "portmidi"
 		}
 if _OPTIONS["vs"]=="intel-15" then
 		buildoptions {
-<<<<<<< HEAD
-			"/Qwd188",  			-- error #188: enumerated type mixed with another type
-			"/Qwd344",  			-- remark #344: typedef name has already been declared (with same type)
-			"/Qwd869",  			-- remark #869: parameter "xxx" was never referenced
-			"/Qwd2557", 			-- remark #2557: comparison between signed and unsigned operands
-		}
-end
-
-	configuration { "vs2015" }
-		buildoptions {
-			"/wd4456", -- warning C4456: declaration of 'xxx' hides previous local declaration
-		}
-	
-=======
 			"/Qwd188",              -- error #188: enumerated type mixed with another type
 			"/Qwd344",              -- remark #344: typedef name has already been declared (with same type)
 			"/Qwd869",              -- remark #869: parameter "xxx" was never referenced
@@ -980,7 +678,6 @@ end
 			"/wd4456", -- warning C4456: declaration of 'xxx' hides previous local declaration
 		}
 
->>>>>>> upstream/master
 	configuration { "linux*" }
 		defines {
 			"PMALSA=1",
@@ -1029,17 +726,6 @@ end
 	end
 else
 links {
-<<<<<<< HEAD
-	"portmidi",
-}
-end
-end	
---------------------------------------------------
--- BGFX library objects
---------------------------------------------------
-	
-if (USE_BGFX == 1) then
-=======
 	ext_lib("portmidi"),
 }
 end
@@ -1119,7 +805,6 @@ project "bx"
 -- BGFX library objects
 --------------------------------------------------
 
->>>>>>> upstream/master
 project "bgfx"
 	uuid "d3e7e119-35cf-4f4f-aba0-d3bdcd1b879a"
 	kind "StaticLib"
@@ -1129,15 +814,6 @@ project "bgfx"
 			"/wd4324", -- warning C4324: 'xxx' : structure was padded due to __declspec(align())
 			"/wd4244", -- warning C4244: 'argument' : conversion from 'xxx' to 'xxx', possible loss of data
 			"/wd4611", -- warning C4611: interaction between '_setjmp' and C++ object destruction is non-portable
-<<<<<<< HEAD
-			"/wd4310", -- warning C4310: cast truncates constant value			
-		}
-if _OPTIONS["vs"]=="intel-15" then
-		buildoptions {
-			"/Qwd906",  			-- message #906: effect of this "#pragma pack" directive is local to function "xxx"
-			"/Qwd1879", 			-- warning #1879: unimplemented pragma ignored
-			"/Qwd82",   			-- remark #82: storage class is not first
-=======
 			"/wd4310", -- warning C4310: cast truncates constant value
 		}
 if _OPTIONS["vs"]=="intel-15" then
@@ -1145,21 +821,10 @@ if _OPTIONS["vs"]=="intel-15" then
 			"/Qwd906",              -- message #906: effect of this "#pragma pack" directive is local to function "xxx"
 			"/Qwd1879",             -- warning #1879: unimplemented pragma ignored
 			"/Qwd82",               -- remark #82: storage class is not first
->>>>>>> upstream/master
 		}
 end
 	configuration { }
 
-<<<<<<< HEAD
-	includedirs {		
-		MAME_DIR .. "3rdparty/bgfx/include",
-		MAME_DIR .. "3rdparty/bgfx/3rdparty",
-		MAME_DIR .. "3rdparty/bx/include",
-		MAME_DIR .. "3rdparty/bgfx/3rdparty/khronos",
-		MAME_DIR .. "3rdparty/bgfx/3rdparty/dxsdk/include",
-	}
-
-=======
 	includedirs {
 		MAME_DIR .. "3rdparty/bgfx/include",
 		MAME_DIR .. "3rdparty/bgfx/3rdparty",
@@ -1177,7 +842,6 @@ end
 			"-Wno-macro-redefined",
 		}
 
->>>>>>> upstream/master
 	configuration { "vs*" }
 		includedirs {
 			MAME_DIR .. "3rdparty/bx/include/compat/msvc",
@@ -1186,26 +850,12 @@ end
 		includedirs {
 			MAME_DIR .. "3rdparty/bx/include/compat/mingw",
 		}
-<<<<<<< HEAD
-if _OPTIONS["CPP11"]~="1" then		
-		defines {
-			"nullptr=NULL" -- not used but needed for C++11 code
-		}
-end
-
-	configuration { "osx*" }
-		includedirs {
-			MAME_DIR .. "3rdparty/bx/include/compat/osx",
-		}
-		
-=======
 
 	configuration { "osx* or xcode4" }
 		includedirs {
 			MAME_DIR .. "3rdparty/bx/include/compat/osx",
 		}
 
->>>>>>> upstream/master
 	configuration { "freebsd" }
 		includedirs {
 			MAME_DIR .. "3rdparty/bx/include/compat/freebsd",
@@ -1216,18 +866,6 @@ end
 			MAME_DIR .. "3rdparty/bx/include/compat/freebsd",
 		}
 
-<<<<<<< HEAD
-	configuration { "gmake" }
-		buildoptions {		
-			"-Wno-uninitialized",
-			"-Wno-unused-function",
-		}
-			
-	configuration { }
-
-	if _OPTIONS["targetos"]=="windows" then
-		local version = str_to_version(_OPTIONS["gcc_version"])
-=======
 	configuration { "gmake or ninja" }
 		buildoptions {
 			"-Wno-uninitialized",
@@ -1257,17 +895,10 @@ end
 	end
 
 	if _OPTIONS["targetos"]=="windows" then
->>>>>>> upstream/master
 		if _OPTIONS["gcc"]~=nil and string.find(_OPTIONS["gcc"], "clang") then
 			buildoptions {
 				"-Wno-unknown-attributes",
 				"-Wno-missing-braces",
-<<<<<<< HEAD
-			}
-		end
-	end
-	
-=======
 				"-Wno-int-to-pointer-cast",
 			}
 		end
@@ -1284,15 +915,11 @@ end
 		end
 	end
 
->>>>>>> upstream/master
 	defines {
 		"__STDC_LIMIT_MACROS",
 		"__STDC_FORMAT_MACROS",
 		"__STDC_CONSTANT_MACROS",
-<<<<<<< HEAD
-=======
 		"BGFX_CONFIG_MAX_FRAME_BUFFERS=128",
->>>>>>> upstream/master
 	}
 	files {
 		MAME_DIR .. "3rdparty/bgfx/src/bgfx.cpp",
@@ -1301,37 +928,13 @@ end
 		MAME_DIR .. "3rdparty/bgfx/src/glcontext_ppapi.cpp",
 		MAME_DIR .. "3rdparty/bgfx/src/glcontext_wgl.cpp",
 		MAME_DIR .. "3rdparty/bgfx/src/image.cpp",
-<<<<<<< HEAD
-		MAME_DIR .. "3rdparty/bgfx/src/ovr.cpp",
-=======
 		MAME_DIR .. "3rdparty/bgfx/src/hmd.cpp",
 		MAME_DIR .. "3rdparty/bgfx/src/hmd_ovr.cpp",
 		MAME_DIR .. "3rdparty/bgfx/src/hmd_openvr.cpp",
->>>>>>> upstream/master
 		MAME_DIR .. "3rdparty/bgfx/src/renderer_d3d12.cpp",
 		MAME_DIR .. "3rdparty/bgfx/src/renderer_d3d11.cpp",
 		MAME_DIR .. "3rdparty/bgfx/src/renderer_d3d9.cpp",
 		MAME_DIR .. "3rdparty/bgfx/src/renderer_gl.cpp",
-<<<<<<< HEAD
-		MAME_DIR .. "3rdparty/bgfx/src/renderer_null.cpp",
-		MAME_DIR .. "3rdparty/bgfx/src/renderer_vk.cpp",
-		MAME_DIR .. "3rdparty/bgfx/src/renderdoc.cpp",
-		MAME_DIR .. "3rdparty/bgfx/src/shader_dxbc.cpp",
-		MAME_DIR .. "3rdparty/bgfx/src/shader_dx9bc.cpp",
-		MAME_DIR .. "3rdparty/bgfx/src/shader_spirv.cpp",
-		MAME_DIR .. "3rdparty/bgfx/src/vertexdecl.cpp",
-		MAME_DIR .. "3rdparty/bgfx/examples/common/bgfx_utils.cpp",
-		MAME_DIR .. "3rdparty/bgfx/examples/common/bounds.cpp",
-		MAME_DIR .. "3rdparty/bgfx/examples/common/camera.cpp",
-		MAME_DIR .. "3rdparty/bgfx/examples/common/cube_atlas.cpp",
-		MAME_DIR .. "3rdparty/bgfx/examples/common/font/font_manager.cpp",
-		MAME_DIR .. "3rdparty/bgfx/examples/common/font/text_buffer_manager.cpp",
-		MAME_DIR .. "3rdparty/bgfx/examples/common/font/text_metrics.cpp",
-		MAME_DIR .. "3rdparty/bgfx/examples/common/font/utf8.cpp",
-		--MAME_DIR .. "3rdparty/bgfx/examples/common/imgui/imgui.cpp",
-		MAME_DIR .. "3rdparty/bgfx/examples/common/nanovg/nanovg.cpp",
-		MAME_DIR .. "3rdparty/bgfx/examples/common/nanovg/nanovg_bgfx.cpp",
-=======
 		MAME_DIR .. "3rdparty/bgfx/src/renderer_gnm.cpp",
 		MAME_DIR .. "3rdparty/bgfx/src/renderer_noop.cpp",
 		MAME_DIR .. "3rdparty/bgfx/src/renderer_vk.cpp",
@@ -1348,7 +951,6 @@ end
 		MAME_DIR .. "3rdparty/bgfx/examples/common/nanovg/nanovg_bgfx.cpp",
 		MAME_DIR .. "3rdparty/bgfx/3rdparty/ocornut-imgui/imgui.cpp",
 		MAME_DIR .. "3rdparty/bgfx/3rdparty/ocornut-imgui/imgui_draw.cpp",
->>>>>>> upstream/master
 	}
 	if _OPTIONS["targetos"]=="macosx" then
 		files {
@@ -1357,49 +959,25 @@ end
 			MAME_DIR .. "3rdparty/bgfx/src/renderer_mtl.mm",
 		}
 	end
-<<<<<<< HEAD
-end
-=======
->>>>>>> upstream/master
 
 --------------------------------------------------
 -- PortAudio library objects
 --------------------------------------------------
-<<<<<<< HEAD
-
-if _OPTIONS["with-bundled-portaudio"] then
-=======
 if _OPTIONS["NO_USE_PORTAUDIO"]~="1" then
 if not _OPTIONS["with-system-portaudio"] then
->>>>>>> upstream/master
 project "portaudio"
 	uuid "0755c5f5-eccf-47f3-98a9-df67018a94d4"
 	kind "StaticLib"
 
 	configuration { "vs*" }
 		buildoptions {
-<<<<<<< HEAD
-			"/wd4245", -- warning C4245: 'conversion' : conversion from 'type1' to 'type2', signed/unsigned mismatch			
-=======
 			"/wd4245", -- warning C4245: 'conversion' : conversion from 'type1' to 'type2', signed/unsigned mismatch
->>>>>>> upstream/master
 			"/wd4244", -- warning C4244: 'argument' : conversion from 'xxx' to 'xxx', possible loss of data
 			"/wd4100", -- warning C4100: 'xxx' : unreferenced formal parameter
 			"/wd4389", -- warning C4389: 'operator' : signed/unsigned mismatch
 			"/wd4189", -- warning C4189: 'xxx' : local variable is initialized but not referenced
 			"/wd4127", -- warning C4127: conditional expression is constant
 		}
-<<<<<<< HEAD
-if _OPTIONS["vs"]=="intel-15" then
-		buildoptions {
-			"/Qwd869",  			-- remark #869: parameter "xxx" was never referenced
-			"/Qwd1478", 			-- warning #1478: function "xxx" (declared at line yyy of "zzz") was declared deprecated
-			"/Qwd2544", 			-- message #2544: empty dependent statement in if-statement
-			"/Qwd1879", 			-- warning #1879: unimplemented pragma ignored
-		}
-end
-	configuration { "vs2015" }
-=======
 	if _OPTIONS["vs"]=="intel-15" then
 		buildoptions {
 			"/Qwd869",              -- remark #869: parameter "xxx" was never referenced
@@ -1409,16 +987,11 @@ end
 		}
 	end
 	configuration { "vs2015*" }
->>>>>>> upstream/master
 		buildoptions {
 			"/wd4456", -- warning C4456: declaration of 'xxx' hides previous local declaration
 		}
 
-<<<<<<< HEAD
-	configuration { "gmake" }
-=======
 	configuration { "gmake or ninja" }
->>>>>>> upstream/master
 		buildoptions_c {
 			"-Wno-strict-prototypes",
 			"-Wno-bad-function-cast",
@@ -1430,15 +1003,9 @@ end
 			"-Wno-unknown-pragmas",
 		}
 
-<<<<<<< HEAD
-	local version = str_to_version(_OPTIONS["gcc_version"])	
-	if (_OPTIONS["gcc"]~=nil) then
-		if string.find(_OPTIONS["gcc"], "clang") then
-=======
 	local version = str_to_version(_OPTIONS["gcc_version"])
 	if (_OPTIONS["gcc"]~=nil) then
 		if string.find(_OPTIONS["gcc"], "clang") or string.find(_OPTIONS["gcc"], "android") then
->>>>>>> upstream/master
 			buildoptions_c {
 				"-Wno-unknown-warning-option",
 				"-Wno-absolute-value",
@@ -1452,11 +1019,8 @@ end
 					"-Wno-unused-but-set-variable",
 					"-Wno-maybe-uninitialized",
 					"-Wno-sometimes-uninitialized",
-<<<<<<< HEAD
-=======
 					"-w",
 					"-Wno-incompatible-pointer-types-discards-qualifiers",
->>>>>>> upstream/master
 				}
 			end
 		end
@@ -1465,14 +1029,9 @@ end
 		buildoptions {
 			"/wd4204", -- warning C4204: nonstandard extension used : non-constant aggregate initializer
 			"/wd4701", -- warning C4701: potentially uninitialized local variable 'xxx' used
-<<<<<<< HEAD
-		}
-		
-=======
 			"/wd4057", -- warning C4057: 'function': 'xxx' differs in indirection to slightly different base types from 'xxx'
 		}
 
->>>>>>> upstream/master
 	configuration { }
 
 	includedirs {
@@ -1496,36 +1055,14 @@ end
 	if _OPTIONS["targetos"]=="windows" then
 		defines {
 			"PA_USE_DS=1",
-<<<<<<< HEAD
-			"PA_USE_WDMKS=1",
-			"PA_USE_WMME=1",
-		}	
-=======
 			"PA_USE_WASAPI=1",
 			"PA_USE_WDMKS=1",
 			"PA_USE_WMME=1",
 		}
->>>>>>> upstream/master
 		includedirs {
 			MAME_DIR .. "3rdparty/portaudio/src/os/win",
 		}
 
-<<<<<<< HEAD
-		configuration { }			
-		files {	
-			MAME_DIR .. "3rdparty/portaudio/src/os/win/pa_win_util.c",
-			MAME_DIR .. "3rdparty/portaudio/src/os/win/pa_win_waveformat.c",
-			MAME_DIR .. "3rdparty/portaudio/src/os/win/pa_win_hostapis.c",
-			MAME_DIR .. "3rdparty/portaudio/src/os/win/pa_win_wdmks_utils.c",
-			MAME_DIR .. "3rdparty/portaudio/src/os/win/pa_win_coinitialize.c",
-			MAME_DIR .. "3rdparty/portaudio/src/hostapi/dsound/pa_win_ds.c",
-			MAME_DIR .. "3rdparty/portaudio/src/hostapi/dsound/pa_win_ds_dynlink.c",
-			MAME_DIR .. "3rdparty/portaudio/src/hostapi/wdmks/pa_win_wdmks.c",
-			MAME_DIR .. "3rdparty/portaudio/src/common/pa_ringbuffer.c",
-			MAME_DIR .. "3rdparty/portaudio/src/hostapi/wmme/pa_win_wmme.c",
-		}
-		
-=======
 		configuration { "mingw*" }
 		includedirs {
 			MAME_DIR .. "3rdparty/portaudio/src/hostapi/wasapi/mingw-include",
@@ -1546,99 +1083,37 @@ end
 			MAME_DIR .. "3rdparty/portaudio/src/common/pa_ringbuffer.c",
 		}
 
->>>>>>> upstream/master
 	end
 	if _OPTIONS["targetos"]=="linux" then
 		defines {
 			"PA_USE_ALSA=1",
 			"PA_USE_OSS=1",
 			"HAVE_LINUX_SOUNDCARD_H",
-<<<<<<< HEAD
-		}	
-		includedirs {
-			MAME_DIR .. "3rdparty/portaudio/src/os/unix",
-		}
-		files {	
-=======
 		}
 		includedirs {
 			MAME_DIR .. "3rdparty/portaudio/src/os/unix",
 		}
 		files {
->>>>>>> upstream/master
 			MAME_DIR .. "3rdparty/portaudio/src/os/unix/pa_unix_hostapis.c",
 			MAME_DIR .. "3rdparty/portaudio/src/os/unix/pa_unix_util.c",
 			MAME_DIR .. "3rdparty/portaudio/src/hostapi/alsa/pa_linux_alsa.c",
 			MAME_DIR .. "3rdparty/portaudio/src/hostapi/oss/pa_unix_oss.c",
-<<<<<<< HEAD
-		}		
-=======
 		}
->>>>>>> upstream/master
 	end
 	if _OPTIONS["targetos"]=="macosx" then
 		defines {
 			"PA_USE_COREAUDIO=1",
-<<<<<<< HEAD
-		}	
-		includedirs {
-			MAME_DIR .. "3rdparty/portaudio/src/os/unix",
-		}
-		files {	
-=======
 		}
 		includedirs {
 			MAME_DIR .. "3rdparty/portaudio/src/os/unix",
 		}
 		files {
->>>>>>> upstream/master
 			MAME_DIR .. "3rdparty/portaudio/src/os/unix/pa_unix_hostapis.c",
 			MAME_DIR .. "3rdparty/portaudio/src/os/unix/pa_unix_util.c",
 			MAME_DIR .. "3rdparty/portaudio/src/hostapi/coreaudio/pa_mac_core.c",
 			MAME_DIR .. "3rdparty/portaudio/src/hostapi/coreaudio/pa_mac_core_utilities.c",
 			MAME_DIR .. "3rdparty/portaudio/src/hostapi/coreaudio/pa_mac_core_blocking.c",
 			MAME_DIR .. "3rdparty/portaudio/src/common/pa_ringbuffer.c",
-<<<<<<< HEAD
-		}		
-	end
-	
-else
-links {
-	"portaudio",
-}
-end
-		
---------------------------------------------------
--- GoogleTest library objects
---------------------------------------------------
-
-project "gtest"
-	uuid "fa306a8d-fb10-4d4a-9d2e-fdb9076407b4"
-	kind "StaticLib"
-
-	configuration { "gmake" }
-		buildoptions {
-			"-Wno-undef",
-			"-Wno-unused-variable",
-		}
-
-	configuration { "vs*" }
-if _OPTIONS["vs"]=="intel-15" then
-		buildoptions {
-			"/Qwd1195", 			-- error #1195: conversion from integer to smaller pointer
-		}
-end
-
-	configuration { }
-
-	includedirs {
-		MAME_DIR .. "3rdparty/googletest/googletest/include",
-		MAME_DIR .. "3rdparty/googletest/googletest",
-	}	
-	files {		
-		MAME_DIR .. "3rdparty/googletest/googletest/src/gtest-all.cc",
-	}
-=======
 		}
 	end
 
@@ -2224,4 +1699,3 @@ links {
 }
 end
 
->>>>>>> upstream/master

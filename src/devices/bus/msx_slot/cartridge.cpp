@@ -29,46 +29,23 @@ enum
 };
 
 
-<<<<<<< HEAD
-const device_type MSX_SLOT_CARTRIDGE = &device_creator<msx_slot_cartridge_device>;
-const device_type MSX_SLOT_YAMAHA_EXPANSION = &device_creator<msx_slot_yamaha_expansion_device>;
-
-
-msx_slot_cartridge_device::msx_slot_cartridge_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, MSX_SLOT_CARTRIDGE, "MSX Cartridge slot", tag, owner, clock, "msx_slot_cartridge", __FILE__)
-	, device_image_interface(mconfig, *this)
-	, device_slot_interface(mconfig, *this)
-	, msx_internal_slot_interface()
-	, m_irq_handler(*this)
-	, m_cartridge(NULL)
-=======
 DEFINE_DEVICE_TYPE(MSX_SLOT_CARTRIDGE,        msx_slot_cartridge_device,        "msx_slot_cartridge",        "MSX Cartridge slot")
 DEFINE_DEVICE_TYPE(MSX_SLOT_YAMAHA_EXPANSION, msx_slot_yamaha_expansion_device, "msx_slot_yamaha_expansion", "MSX Yamaha Expansion slot")
 
 
 msx_slot_cartridge_device::msx_slot_cartridge_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: msx_slot_cartridge_device(mconfig, MSX_SLOT_CARTRIDGE, tag, owner, clock)
->>>>>>> upstream/master
 {
 }
 
 
-<<<<<<< HEAD
-msx_slot_cartridge_device::msx_slot_cartridge_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source)
-	: device_t(mconfig, type, name, tag, owner, clock, shortname, source)
-=======
 msx_slot_cartridge_device::msx_slot_cartridge_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, type, tag, owner, clock)
->>>>>>> upstream/master
 	, device_image_interface(mconfig, *this)
 	, device_slot_interface(mconfig, *this)
 	, msx_internal_slot_interface()
 	, m_irq_handler(*this)
-<<<<<<< HEAD
-	, m_cartridge(NULL)
-=======
 	, m_cartridge(nullptr)
->>>>>>> upstream/master
 {
 }
 
@@ -103,17 +80,10 @@ static const struct
 
 static const char *msx_cart_get_slot_option(int type)
 {
-<<<<<<< HEAD
-	for (int i = 0; i < ARRAY_LENGTH(slot_list); i++)
-	{
-		if (slot_list[i].pcb_id == type)
-			return slot_list[i].slot_option;
-=======
 	for (auto & elem : slot_list)
 	{
 		if (elem.pcb_id == type)
 			return elem.slot_option;
->>>>>>> upstream/master
 	}
 
 	return slot_list[0].slot_option;
@@ -127,15 +97,6 @@ void msx_slot_cartridge_device::device_start()
 }
 
 
-<<<<<<< HEAD
-bool msx_slot_cartridge_device::call_load()
-{
-	if ( m_cartridge )
-	{
-		if ( software_entry() )
-		{
-			UINT32 length;
-=======
 image_init_result msx_slot_cartridge_device::call_load()
 {
 	if ( m_cartridge )
@@ -143,18 +104,13 @@ image_init_result msx_slot_cartridge_device::call_load()
 		if (loaded_through_softlist())
 		{
 			uint32_t length;
->>>>>>> upstream/master
 
 			// Allocate and copy rom contents
 			length = get_software_region_length("rom");
 			m_cartridge->rom_alloc( length );
 			if (length > 0)
 			{
-<<<<<<< HEAD
-				UINT8 *rom_base = m_cartridge->get_rom_base();
-=======
 				uint8_t *rom_base = m_cartridge->get_rom_base();
->>>>>>> upstream/master
 				memcpy(rom_base, get_software_region("rom"), length);
 			}
 
@@ -163,11 +119,7 @@ image_init_result msx_slot_cartridge_device::call_load()
 			m_cartridge->rom_vlm5030_alloc(length);
 			if (length > 0)
 			{
-<<<<<<< HEAD
-				UINT8 *rom_base = m_cartridge->get_rom_vlm5030_base();
-=======
 				uint8_t *rom_base = m_cartridge->get_rom_vlm5030_base();
->>>>>>> upstream/master
 				memcpy(rom_base, get_software_region("vlm5030"), length);
 			}
 
@@ -181,17 +133,10 @@ image_init_result msx_slot_cartridge_device::call_load()
 		}
 		else
 		{
-<<<<<<< HEAD
-			UINT32 length = this->length();
-
-			// determine how much space to allocate
-			UINT32 length_aligned = 0x10000;
-=======
 			uint32_t length = this->length();
 
 			// determine how much space to allocate
 			uint32_t length_aligned = 0x10000;
->>>>>>> upstream/master
 
 			if (length <= 0x2000)
 				length_aligned = 0x2000;
@@ -214,11 +159,7 @@ image_init_result msx_slot_cartridge_device::call_load()
 			if (fread(m_cartridge->get_rom_base(), length) != length)
 			{
 				seterror(IMAGE_ERROR_UNSPECIFIED, "Unable to fully read file");
-<<<<<<< HEAD
-				return IMAGE_INIT_FAIL;
-=======
 				return image_init_result::FAIL;
->>>>>>> upstream/master
 			}
 
 			// Check if there's some mapper related
@@ -236,11 +177,7 @@ image_init_result msx_slot_cartridge_device::call_load()
 			battery_load(m_cartridge->get_sram_base(), m_cartridge->get_sram_size(), 0x00);
 		}
 	}
-<<<<<<< HEAD
-	return IMAGE_INIT_PASS;
-=======
 	return image_init_result::PASS;
->>>>>>> upstream/master
 }
 
 
@@ -256,27 +193,13 @@ void msx_slot_cartridge_device::call_unload()
 }
 
 
-<<<<<<< HEAD
-bool msx_slot_cartridge_device::call_softlist_load(software_list_device &swlist, const char *swname, const rom_entry *start_entry)
-{
-	load_software_part_region(*this, swlist, swname, start_entry);
-	return true;
-}
-
-
-=======
->>>>>>> upstream/master
 WRITE_LINE_MEMBER(msx_slot_cartridge_device::irq_out)
 {
 	m_irq_handler(state);
 }
 
 
-<<<<<<< HEAD
-int msx_slot_cartridge_device::get_cart_type(UINT8 *rom, UINT32 length)
-=======
 int msx_slot_cartridge_device::get_cart_type(const uint8_t *rom, uint32_t length)
->>>>>>> upstream/master
 {
 	if (length < 0x2000)
 	{
@@ -332,11 +255,7 @@ int msx_slot_cartridge_device::get_cart_type(const uint8_t *rom, uint32_t length
 		}
 	}
 
-<<<<<<< HEAD
-	if (MAX (kon4, kon5) > MAX (asc8, asc16) )
-=======
 	if (std::max(kon4, kon5) > std::max(asc8, asc16))
->>>>>>> upstream/master
 	{
 		return (kon5 > kon4) ? KONAMI_SCC : KONAMI;
 	}
@@ -347,15 +266,6 @@ int msx_slot_cartridge_device::get_cart_type(const uint8_t *rom, uint32_t length
 }
 
 
-<<<<<<< HEAD
-void msx_slot_cartridge_device::get_default_card_software(std::string &result)
-{
-	if (open_image_file(mconfig().options()))
-	{
-		const char *slot_string = "nomapper";
-		UINT32 length = core_fsize(m_file);
-		dynamic_buffer rom(length);
-=======
 std::string msx_slot_cartridge_device::get_default_card_software(get_default_card_software_hook &hook) const
 {
 	if (hook.image_file())
@@ -363,16 +273,11 @@ std::string msx_slot_cartridge_device::get_default_card_software(get_default_car
 		const char *slot_string = "nomapper";
 		uint32_t length = hook.image_file()->size();
 		std::vector<uint8_t> rom(length);
->>>>>>> upstream/master
 		int type = NOMAPPER;
 
 		// Check if there's some mapper related information in the hashfiles
 		std::string extrainfo;
-<<<<<<< HEAD
-		if (hashfile_extrainfo(*this, extrainfo))
-=======
 		if (hook.hashfile_extrainfo(extrainfo))
->>>>>>> upstream/master
 		{
 			int extrainfo_type = -1;
 			if (1 == sscanf(extrainfo.c_str(), "%d", &extrainfo_type))
@@ -398,19 +303,11 @@ std::string msx_slot_cartridge_device::get_default_card_software(get_default_car
 					{ 17, KOREAN_126IN1 }
 				};
 
-<<<<<<< HEAD
-				for (int i = 0; i < ARRAY_LENGTH(extrainfo_map); i++)
-				{
-					if (extrainfo_map[i].extrainfo == extrainfo_type)
-					{
-						type = extrainfo_map[i].mapper;
-=======
 				for (auto & elem : extrainfo_map)
 				{
 					if (elem.extrainfo == extrainfo_type)
 					{
 						type = elem.mapper;
->>>>>>> upstream/master
 					}
 				}
 			}
@@ -419,11 +316,7 @@ std::string msx_slot_cartridge_device::get_default_card_software(get_default_car
 		if (type == NOMAPPER)
 		{
 			// Not identified through hashfile, try automatic detection
-<<<<<<< HEAD
-			core_fread(m_file, &rom[0], length);
-=======
 			hook.image_file()->read(&rom[0], length);
->>>>>>> upstream/master
 			type = get_cart_type(&rom[0], length);
 		}
 
@@ -432,16 +325,9 @@ std::string msx_slot_cartridge_device::get_default_card_software(get_default_car
 			slot_string = msx_cart_get_slot_option(type);
 		}
 
-<<<<<<< HEAD
-		result.assign(slot_string);
-		return;
-	}
-	software_get_default_slot(result, "nomapper");
-=======
 		return std::string(slot_string);
 	}
 	return software_get_default_slot("nomapper");
->>>>>>> upstream/master
 }
 
 
@@ -466,13 +352,8 @@ WRITE8_MEMBER(msx_slot_cartridge_device::write)
 
 
 
-<<<<<<< HEAD
-msx_slot_yamaha_expansion_device::msx_slot_yamaha_expansion_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: msx_slot_cartridge_device(mconfig, MSX_SLOT_YAMAHA_EXPANSION, "MSX Yamaha Expansion slot", tag, owner, clock, "msx_slot_yamaha_expansion", __FILE__)
-=======
 msx_slot_yamaha_expansion_device::msx_slot_yamaha_expansion_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: msx_slot_cartridge_device(mconfig, MSX_SLOT_YAMAHA_EXPANSION, tag, owner, clock)
->>>>>>> upstream/master
 {
 }
 

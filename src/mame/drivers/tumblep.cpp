@@ -42,15 +42,6 @@ Stephh's notes (based on the games M68000 code and some tests) :
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/m68000/m68000.h"
-#include "cpu/h6280/h6280.h"
-#include "includes/decocrpt.h"
-#include "sound/2151intf.h"
-#include "sound/3812intf.h"
-#include "sound/okim6295.h"
-#include "includes/tumblep.h"
-=======
 #include "includes/tumblep.h"
 
 #include "cpu/m68000/m68000.h"
@@ -61,7 +52,6 @@ Stephh's notes (based on the games M68000 code and some tests) :
 #include "sound/okim6295.h"
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 #define TUMBLEP_HACK    0
@@ -84,22 +74,14 @@ READ16_MEMBER(tumblep_state::tumblep_prot_r)
 
 WRITE16_MEMBER(tumblep_state::tumblep_sound_w)
 {
-<<<<<<< HEAD
-	soundlatch_byte_w(space, 0, data & 0xff);
-=======
 	m_soundlatch->write(space, 0, data & 0xff);
->>>>>>> upstream/master
 	m_audiocpu->set_input_line(0, HOLD_LINE);
 }
 
 #ifdef UNUSED_FUNCTION
 WRITE16_MEMBER(tumblep_state::jumppop_sound_w)
 {
-<<<<<<< HEAD
-	soundlatch_byte_w(space, 0, data & 0xff);
-=======
 	m_soundlatch->write(space, 0, data & 0xff);
->>>>>>> upstream/master
 	m_audiocpu->set_input_line(ASSERT_LINE );
 }
 #endif
@@ -155,11 +137,7 @@ static ADDRESS_MAP_START( sound_map, AS_PROGRAM, 8, tumblep_state )
 	AM_RANGE(0x110000, 0x110001) AM_DEVREADWRITE("ymsnd", ym2151_device, read, write)
 	AM_RANGE(0x120000, 0x120001) AM_DEVREADWRITE("oki", okim6295_device, read, write)
 	AM_RANGE(0x130000, 0x130001) AM_NOP /* This board only has 1 oki chip */
-<<<<<<< HEAD
-	AM_RANGE(0x140000, 0x140001) AM_READ(soundlatch_byte_r)
-=======
 	AM_RANGE(0x140000, 0x140001) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
->>>>>>> upstream/master
 	AM_RANGE(0x1f0000, 0x1f1fff) AM_RAMBANK("bank8")
 	AM_RANGE(0x1fec00, 0x1fec01) AM_DEVWRITE("audiocpu", h6280_device, timer_w)
 	AM_RANGE(0x1ff400, 0x1ff403) AM_DEVWRITE("audiocpu", h6280_device, irq_status_w)
@@ -302,11 +280,7 @@ void tumblep_state::machine_start()
 {
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( tumblep, tumblep_state )
-=======
 static MACHINE_CONFIG_START( tumblep )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, 14000000)
@@ -342,37 +316,22 @@ static MACHINE_CONFIG_START( tumblep )
 	MCFG_DECO16IC_PF12_8X8_BANK(0)
 	MCFG_DECO16IC_PF12_16X16_BANK(1)
 	MCFG_DECO16IC_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_DECO16IC_PALETTE("palette")
-=======
->>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("spritegen", DECO_SPRITE, 0)
 	MCFG_DECO_SPRITE_GFX_REGION(2)
 	MCFG_DECO_SPRITE_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_DECO_SPRITE_PALETTE("palette")
-=======
->>>>>>> upstream/master
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
-<<<<<<< HEAD
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 
->>>>>>> upstream/master
 	MCFG_YM2151_ADD("ymsnd", 32220000/9)
 	MCFG_YM2151_IRQ_HANDLER(INPUTLINE("audiocpu", 1)) /* IRQ 2 */
 	MCFG_SOUND_ROUTE(0, "lspeaker", 0.45)
 	MCFG_SOUND_ROUTE(1, "rspeaker", 0.45)
 
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki", 1023924, OKIM6295_PIN7_HIGH) // clock frequency & pin 7 not verified
-=======
 	MCFG_OKIM6295_ADD("oki", 1023924, PIN7_HIGH) // clock frequency & pin 7 not verified
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 0.50)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 0.50)
 MACHINE_CONFIG_END
@@ -420,17 +379,10 @@ ROM_END
 /******************************************************************************/
 
 #if TUMBLEP_HACK
-<<<<<<< HEAD
-void ::tumblep_patch_code(UINT16 offset)
-{
-	/* A hack which enables all Dip Switches effects */
-	UINT16 *RAM = (UINT16 *)memregion("maincpu")->base();
-=======
 void ::tumblep_patch_code(uint16_t offset)
 {
 	/* A hack which enables all Dip Switches effects */
 	uint16_t *RAM = (uint16_t *)memregion("maincpu")->base();
->>>>>>> upstream/master
 	RAM[(offset + 0)/2] = 0x0240;
 	RAM[(offset + 2)/2] = 0xffff;   // andi.w  #$f3ff, D0
 }

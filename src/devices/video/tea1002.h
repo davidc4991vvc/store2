@@ -19,20 +19,11 @@
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __TEA1002_H__
-#define __TEA1002_H__
-
-#include "emu.h"
-=======
 #ifndef MAME_VIDEO_TEA1002_H
 #define MAME_VIDEO_TEA1002_H
 
 #pragma once
 
->>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -53,21 +44,13 @@ class tea1002_device : public device_t
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	tea1002_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-=======
 	tea1002_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
->>>>>>> upstream/master
 
 	rgb_t color(int index);
 
 protected:
 	// device_t overrides
-<<<<<<< HEAD
-	virtual void device_start();
-=======
 	virtual void device_start() override;
->>>>>>> upstream/master
 
 private:
 	static const int m_tint = -6; // what is this based on?
@@ -78,11 +61,6 @@ private:
 
 // device type definition
 extern const device_type TEA1002;
-<<<<<<< HEAD
-
-#endif // __TEA1002_H__
-=======
 DECLARE_DEVICE_TYPE(TEA1002, tea1002_device)
 
 #endif // MAME_VIDEO_TEA1002_H
->>>>>>> upstream/master

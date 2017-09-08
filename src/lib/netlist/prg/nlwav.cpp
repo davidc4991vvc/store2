@@ -1,50 +1,3 @@
-<<<<<<< HEAD
-#include <cstdio>
-#include <cstring>
-#include "plib/poptions.h"
-#include "plib/pstring.h"
-#include "plib/plists.h"
-#include "plib/pstream.h"
-#include "nl_setup.h"
-
-class nlwav_options_t : public poptions
-{
-public:
-	nlwav_options_t() :
-		poptions(),
-#if 0
-		opt_ttr ("t", "time_to_run", 1.0,     "time to run the emulation (seconds)", this),
-		opt_name("n", "name",        "",      "netlist in file to run; default is first one", this),
-		opt_logs("l", "logs",        "",      "colon separated list of terminals to log", this),
-		opt_file("f", "file",        "-",     "file to process (default is stdin)", this),
-		opt_type("y", "type",        "spice", "spice:eagle", "type of file to be converted: spice,eagle", this),
-		opt_cmd ("c", "cmd",         "run",   "run|convert|listdevices", this),
-		opt_inp( "i", "input",       "",      "input file to process (default is none)", this),
-#endif
-		opt_inp( "i", "input",       "",      "input file", this),
-		opt_out( "o", "output",      "",      "output file", this),
-		opt_amp( "a", "amp",    10000.0,      "amplification after mean correction", this),
-		opt_verb("v", "verbose",              "be verbose - this produces lots of output", this),
-		opt_quiet("q", "quiet",               "be quiet - no warnings", this),
-		opt_help("h", "help",                 "display help", this)
-	{}
-#if 0
-	poption_double opt_ttr;
-	poption_str    opt_name;
-	poption_str    opt_logs;
-	poption_str    opt_file;
-	poption_str_limit opt_type;
-	poption_str    opt_cmd;
-#endif
-	poption_str    opt_inp;
-	poption_str    opt_out;
-	poption_double opt_amp;
-	poption_bool   opt_verb;
-	poption_bool   opt_quiet;
-	poption_bool   opt_help;
-};
-
-=======
 // license:GPL-2.0+
 // copyright-holders:Couriersud
 #include <cstring>
@@ -97,19 +50,12 @@ private:
  * finishes the ongoing recording, it writes the correct values for RIFF lenth
  * and data chunk length to the file.
  */
->>>>>>> upstream/master
 /* http://de.wikipedia.org/wiki/RIFF_WAVE */
 class wav_t
 {
 public:
-<<<<<<< HEAD
-	wav_t(postream &strm, unsigned sr) : m_f(strm)
-	{
-//      m_f = strm;
-=======
 	wav_t(plib::postream &strm, unsigned sr) : m_f(strm)
 	{
->>>>>>> upstream/master
 		initialize(sr);
 		m_f.write(&m_fh, sizeof(m_fh));
 		m_f.write(&m_fmt, sizeof(m_fmt));
@@ -117,9 +63,6 @@ public:
 	}
 	~wav_t()
 	{
-<<<<<<< HEAD
-		close();
-=======
 		if (m_f.seekable())
 		{
 			m_fh.filelen = m_data.len + sizeof(m_data) + sizeof(m_fh) + sizeof(m_fmt) - 8;
@@ -130,7 +73,6 @@ public:
 			//data.len = fmt.block_align * n;
 			m_f.write(&m_data, sizeof(m_data));
 		}
->>>>>>> upstream/master
 	}
 
 	unsigned channels() { return m_fmt.channels; }
@@ -139,27 +81,6 @@ public:
 	void write_sample(int sample)
 	{
 		m_data.len += m_fmt.block_align;
-<<<<<<< HEAD
-		short ps = sample; /* 16 bit sample, FIXME: powerpc? */
-		m_f.write(&ps, sizeof(ps));
-	}
-
-	void close()
-	{
-		m_f.seek(0);
-		m_f.write(&m_fh, sizeof(m_fh));
-		m_f.write(&m_fmt, sizeof(m_fmt));
-
-		//data.len = fmt.block_align * n;
-		m_f.write(&m_data, sizeof(m_data));
-	}
-private:
-	struct riff_chunk_t
-	{
-		char        group_id[4];
-		unsigned    filelen;
-		char        rifftype[4];
-=======
 		int16_t ps = static_cast<int16_t>(sample); /* 16 bit sample, FIXME: Endianess? */
 		m_f.write(&ps, sizeof(ps));
 	}
@@ -170,21 +91,10 @@ private:
 		uint8_t    group_id[4];
 		uint32_t   filelen;
 		uint8_t    rifftype[4];
->>>>>>> upstream/master
 	};
 
 	struct riff_format_t
 	{
-<<<<<<< HEAD
-		char        signature[4];
-		unsigned    fmt_length;
-		short       format_tag;
-		short       channels;
-		unsigned    sample_rate;
-		unsigned    bytes_per_second;
-		short       block_align;
-		short       bits_sample;
-=======
 		uint8_t             signature[4];
 		uint32_t            fmt_length;
 		uint16_t            format_tag;
@@ -193,36 +103,22 @@ private:
 		uint32_t            bytes_per_second;
 		uint16_t            block_align;
 		uint16_t            bits_sample;
->>>>>>> upstream/master
 	};
 
 	struct riff_data_t
 	{
-<<<<<<< HEAD
-		char        signature[4];
-		unsigned    len;
-=======
 		uint8_t     signature[4];
 		uint32_t    len;
->>>>>>> upstream/master
 		// data follows
 	};
 
 	void initialize(unsigned sr)
 	{
-<<<<<<< HEAD
-		std::strncpy(m_fh.group_id, "RIFF", 4);
-		m_fh.filelen = 0; // Fixme
-		std::strncpy(m_fh.rifftype, "WAVE", 4);
-
-		std::strncpy(m_fmt.signature, "fmt ", 4);
-=======
 		std::memcpy(m_fh.group_id, "RIFF", 4);
 		m_fh.filelen = 0x0; // Fixme
 		std::memcpy(m_fh.rifftype, "WAVE", 4);
 
 		std::memcpy(m_fmt.signature, "fmt ", 4);
->>>>>>> upstream/master
 		m_fmt.fmt_length = 16;
 		m_fmt.format_tag = 0x0001; //PCM
 		m_fmt.channels = 1;
@@ -231,15 +127,10 @@ private:
 		m_fmt.block_align = m_fmt.channels * ((m_fmt.bits_sample + 7) / 8);
 		m_fmt.bytes_per_second = m_fmt.sample_rate * m_fmt.block_align;
 
-<<<<<<< HEAD
-		std::strncpy(m_data.signature, "data", 4);
-		m_data.len = m_fmt.bytes_per_second * 2 * 0;
-=======
 		std::memcpy(m_data.signature, "data", 4);
 		//m_data.len = m_fmt.bytes_per_second * 2 * 0;
 		/* force "play" to play and warn about eof instead of being silent */
 		m_data.len = (m_f.seekable() ? 0 : 0xffffffff);
->>>>>>> upstream/master
 
 	}
 
@@ -247,29 +138,6 @@ private:
 	riff_format_t m_fmt;
 	riff_data_t m_data;
 
-<<<<<<< HEAD
-	postream &m_f;
-
-};
-
-void convert(nlwav_options_t &opts)
-{
-	pofilestream fo(opts.opt_out());
-	if (fo.bad())
-	{
-		throw netlist::fatalerror_e("Error opening output file: " + opts.opt_out());
-	}
-	wav_t wo(fo, 48000);
-
-	pifilestream fin(opts.opt_inp());
-	if (fin.bad())
-		throw netlist::fatalerror_e("Error opening input file: " + opts.opt_inp());
-
-	double dt = 1.0 / (double) wo.sample_rate();
-	double ct = dt;
-	//double mean = 2.4;
-	double amp = opts.opt_amp();
-=======
 	plib::postream &m_f;
 
 };
@@ -387,7 +255,6 @@ void nlwav_app::convert(long sample_rate)
 	double ct = dt;
 	//double mean = 2.4;
 	double amp = opt_amp();
->>>>>>> upstream/master
 	double mean = 0.0;
 	double means = 0.0;
 	double cursam = 0.0;
@@ -399,19 +266,11 @@ void nlwav_app::convert(long sample_rate)
 	//short sample = 0;
 	pstring line;
 
-<<<<<<< HEAD
-	while(fin.readline(line))
-	{
-#if 1
-		float t = 0.0; float v = 0.0;
-		sscanf(line.cstr(), "%f %f", &t, &v);
-=======
 	while(reader.readline(line))
 	{
 #if 1
 		double t = 0.0; double v = 0.0;
 		sscanf(line.c_str(), "%lf %lf", &t, &v);
->>>>>>> upstream/master
 		while (t >= ct)
 		{
 			outsam += (ct - lt) * cursam;
@@ -423,20 +282,12 @@ void nlwav_app::convert(long sample_rate)
 				minsam = std::min(minsam, outsam);
 				n++;
 				//mean = means / (double) n;
-<<<<<<< HEAD
-				mean += 5.0 / (double) wo.sample_rate() * (outsam - mean);
-=======
 				mean += 5.0 / static_cast<double>(wo->sample_rate()) * (outsam - mean);
->>>>>>> upstream/master
 			}
 			outsam = (outsam - mean) * amp;
 			outsam = std::max(-32000.0, outsam);
 			outsam = std::min(32000.0, outsam);
-<<<<<<< HEAD
-			wo.write_sample((int) outsam);
-=======
 			wo->write_sample(static_cast<int>(outsam));
->>>>>>> upstream/master
 			outsam = 0.0;
 			lt = ct;
 			ct += dt;
@@ -465,58 +316,6 @@ void nlwav_app::convert(long sample_rate)
 		//printf("%f %f\n", t, v);
 #endif
 	}
-<<<<<<< HEAD
-	printf("Mean (low freq filter): %f\n", mean);
-	printf("Mean (static):          %f\n", means / (double) n);
-	printf("Amp + %f\n", 32000.0 / (maxsam- mean));
-	printf("Amp - %f\n", -32000.0 / (minsam- mean));
-	wo.close();
-	fo.close();
-	fin.close();
-
-}
-
-void usage(nlwav_options_t &opts)
-{
-	fprintf(stderr,
-		"Usage:\n"
-		"  nltool -help\n"
-		"  nltool [options]\n"
-		"\n"
-		"Where:\n"
-	);
-	fprintf(stderr, "%s\n", opts.help().cstr());
-}
-
-
-int main(int argc, char *argv[])
-{
-#if (!PSTANDALONE)
-	track_memory(true);
-	{
-#endif
-	nlwav_options_t opts;
-	int ret;
-
-	if ((ret = opts.parse(argc, argv)) != argc)
-	{
-		fprintf(stderr, "Error parsing %s\n", argv[ret]);
-		usage(opts);
-		return 1;
-	}
-
-	if (opts.opt_help())
-	{
-		usage(opts);
-		return 1;
-	}
-
-	convert(opts);
-#if (!PSTANDALONE)
-	}
-	dump_unfreed_mem();
-#endif
-=======
 	plib::pfree(wo);
 	if (opt_inp() != "-")
 		plib::pfree(fin);
@@ -592,16 +391,12 @@ int nlwav_app::execute()
 		convert1(opt_rate());
 	else
 		convert(opt_rate());
->>>>>>> upstream/master
 
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
 PMAIN(nlwav_app)
 
->>>>>>> upstream/master
 /*
 Der Daten-Abschnitt enth??lt die Abtastwerte:
 Offset  L??nge  Inhalt  Beschreibung

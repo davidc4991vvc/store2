@@ -1,19 +1,11 @@
-<<<<<<< HEAD
-// license:LGPL-2.1+
-=======
 // license:BSD-3-Clause
->>>>>>> upstream/master
 // copyright-holders:Tomasz Slanina
 /*
 
 Witch / Pinball Champ '95
 
 
-<<<<<<< HEAD
-            Witch: press F1 to initialize NVRAM
-=======
             Witch: press F1 (Memory Reset) to initialize NVRAM
->>>>>>> upstream/master
 
 Pinball Champ '95: Seems to be a simple mod with the following differences:
                    -The title screen is changed
@@ -119,10 +111,6 @@ Sound
     Mapped @0x8010-0x8016
     Had to patch es8712.c to start playing on 0x8016 write and to prevent continuous looping.
     There's a test on bit1 at offset 0 (0x8010), so this may be a "read status" kind of port.
-<<<<<<< HEAD
-    For now reading at 8010 always reports ready.
-=======
->>>>>>> upstream/master
 
 
 Ports
@@ -162,11 +150,7 @@ Memory
             -CPU2's SP is set to 0xf080 on reset
         we may suppose that this memory range (0xf000-0xf0ff) is shared too.
 
-<<<<<<< HEAD
-        Moreover, range 0xf100-0xf17f is checked after reset without prior initialization and
-=======
         Moreover, range 0xf100-0xf1ff is checked after reset without prior initialization and
->>>>>>> upstream/master
         is being reset ONLY by changing a particular port bit whose modification ends up with
         a soft reboot. This looks like a good candidate for an NVRAM segment.
         Whether CPU2 can access the NVRAM or not is still a mystery considering that it never
@@ -235,8 +219,6 @@ TODO :
     - Hook up the OKI M5202
 */
 
-<<<<<<< HEAD
-=======
 #include "emu.h"
 
 #include "cpu/z80/z80.h"
@@ -250,22 +232,12 @@ TODO :
 #include "speaker.h"
 
 
->>>>>>> upstream/master
 #define MAIN_CLOCK        XTAL_12MHz
 #define CPU_CLOCK         MAIN_CLOCK / 4
 #define YM2203_CLOCK      MAIN_CLOCK / 4
 #define ES8712_CLOCK      8000              // 8Khz, it's the only clock for sure (pin13) it come from pin14 of M5205.
 
-<<<<<<< HEAD
-
-#include "emu.h"
-#include "cpu/z80/z80.h"
-#include "sound/es8712.h"
-#include "sound/2203intf.h"
-#include "machine/nvram.h"
-=======
 #define HOPPER_PULSE      50          // time between hopper pulses in milliseconds (not right for attendant pay)
->>>>>>> upstream/master
 
 
 class witch_state : public driver_device
@@ -281,14 +253,10 @@ public:
 		m_gfx1_vram(*this, "gfx1_vram"),
 		m_gfx1_cram(*this, "gfx1_cram"),
 		m_sprite_ram(*this, "sprite_ram"),
-<<<<<<< HEAD
-		m_palette(*this, "palette")  { }
-=======
 		m_palette(*this, "palette"),
 		m_hopper(*this, "hopper")
 	{
 	}
->>>>>>> upstream/master
 
 	tilemap_t *m_gfx0a_tilemap;
 	tilemap_t *m_gfx0b_tilemap;
@@ -298,23 +266,6 @@ public:
 	required_device<cpu_device> m_subcpu;
 	required_device<gfxdecode_device> m_gfxdecode;
 
-<<<<<<< HEAD
-	required_shared_ptr<UINT8> m_gfx0_vram;
-	required_shared_ptr<UINT8> m_gfx0_cram;
-	required_shared_ptr<UINT8> m_gfx1_vram;
-	required_shared_ptr<UINT8> m_gfx1_cram;
-	required_shared_ptr<UINT8> m_sprite_ram;
-	required_device<palette_device> m_palette;
-
-	int m_scrollx;
-	int m_scrolly;
-	UINT8 m_reg_a002;
-	int m_bank;
-	DECLARE_WRITE8_MEMBER(gfx0_vram_w);
-	DECLARE_WRITE8_MEMBER(gfx0_cram_w);
-	DECLARE_READ8_MEMBER(gfx0_vram_r);
-	DECLARE_READ8_MEMBER(gfx0_cram_r);
-=======
 	required_shared_ptr<uint8_t> m_gfx0_vram;
 	required_shared_ptr<uint8_t> m_gfx0_cram;
 	required_shared_ptr<uint8_t> m_gfx1_vram;
@@ -330,39 +281,25 @@ public:
 	uint8_t m_motor_active;
 	DECLARE_WRITE8_MEMBER(gfx0_vram_w);
 	DECLARE_WRITE8_MEMBER(gfx0_cram_w);
->>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(gfx1_vram_w);
 	DECLARE_WRITE8_MEMBER(gfx1_cram_w);
 	DECLARE_READ8_MEMBER(gfx1_vram_r);
 	DECLARE_READ8_MEMBER(gfx1_cram_r);
-<<<<<<< HEAD
-	DECLARE_READ8_MEMBER(read_a00x);
-	DECLARE_WRITE8_MEMBER(write_a00x);
-	DECLARE_READ8_MEMBER(prot_read_700x);
-	DECLARE_READ8_MEMBER(read_8010);
-=======
 	DECLARE_READ8_MEMBER(read_a000);
 	DECLARE_WRITE8_MEMBER(write_a002);
 	DECLARE_WRITE8_MEMBER(write_a006);
 	DECLARE_WRITE8_MEMBER(write_a008);
 	DECLARE_READ8_MEMBER(prot_read_700x);
->>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(xscroll_w);
 	DECLARE_WRITE8_MEMBER(yscroll_w);
 	DECLARE_DRIVER_INIT(witch);
 	TILE_GET_INFO_MEMBER(get_gfx0b_tile_info);
 	TILE_GET_INFO_MEMBER(get_gfx0a_tile_info);
 	TILE_GET_INFO_MEMBER(get_gfx1_tile_info);
-<<<<<<< HEAD
-	virtual void video_start();
-	UINT32 screen_update_witch(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	void draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	virtual void video_start() override;
 	uint32_t screen_update_witch(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	void draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect);
 	virtual void machine_reset() override;
->>>>>>> upstream/master
 };
 
 
@@ -429,18 +366,6 @@ WRITE8_MEMBER(witch_state::gfx0_cram_w)
 	m_gfx0a_tilemap->mark_tile_dirty(offset);
 	m_gfx0b_tilemap->mark_tile_dirty(offset);
 }
-<<<<<<< HEAD
-READ8_MEMBER(witch_state::gfx0_vram_r)
-{
-	return m_gfx0_vram[offset];
-}
-
-READ8_MEMBER(witch_state::gfx0_cram_r)
-{
-	return m_gfx0_cram[offset];
-}
-=======
->>>>>>> upstream/master
 
 #define FIX_OFFSET() do { \
 	offset=(((offset + ((m_scrolly & 0xf8) << 2) ) & 0x3e0)+((offset + (m_scrollx >> 3) ) & 0x1f)+32)&0x3ff; } while(0)
@@ -470,28 +395,10 @@ READ8_MEMBER(witch_state::gfx1_cram_r)
 	return m_gfx1_cram[offset];
 }
 
-<<<<<<< HEAD
-READ8_MEMBER(witch_state::read_a00x)
-{
-	switch(offset)
-	{
-		case 0x02: return m_reg_a002;
-		case 0x04: return ioport("A004")->read();
-		case 0x05: return ioport("A005")->read();
-		case 0x0c: return ioport("SERVICE")->read();    // stats / reset
-		case 0x0e: return ioport("A00E")->read();       // coin/reset
-	}
-
-	if(offset == 0x00) //muxed with A002?
-	{
-		switch(m_reg_a002 & 0x3f)
-		{
-=======
 READ8_MEMBER(witch_state::read_a000)
 {
 	switch (m_reg_a002 & 0x3f)
 	{
->>>>>>> upstream/master
 		case 0x3b:
 			return ioport("UNK")->read();   //bet10 / pay out
 		case 0x3e:
@@ -500,40 +407,6 @@ READ8_MEMBER(witch_state::read_a000)
 			return ioport("A005")->read();
 		default:
 			logerror("A000 read with mux=0x%02x\n", m_reg_a002 & 0x3f);
-<<<<<<< HEAD
-		}
-	}
-	return 0xff;
-}
-
-WRITE8_MEMBER(witch_state::write_a00x)
-{
-	switch(offset)
-	{
-		case 0x02: //A002 bit 7&6 = m_bank ????
-		{
-			int newbank;
-			m_reg_a002 = data;
-			newbank = (data>>6)&3;
-
-			if(newbank != m_bank)
-			{
-				UINT8 *ROM = memregion("maincpu")->base();
-				m_bank = newbank;
-				ROM = &ROM[0x10000+0x8000 * newbank + UNBANKED_SIZE];
-				membank("bank1")->set_base(ROM);
-			}
-		}
-		break;
-
-		case 0x06: // bit 1 = coin lockout/counter ?
-		break;
-
-		case 0x08: //A008
-			space.device().execute().set_input_line(0,CLEAR_LINE);
-		break;
-	}
-=======
 			return 0xff;
 	}
 }
@@ -563,7 +436,6 @@ WRITE8_MEMBER(witch_state::write_a006)
 WRITE8_MEMBER(witch_state::write_a008)
 {
 	space.device().execute().set_input_line(0, CLEAR_LINE);
->>>>>>> upstream/master
 }
 
 READ8_MEMBER(witch_state::prot_read_700x)
@@ -591,15 +463,6 @@ READ8_MEMBER(witch_state::prot_read_700x)
 	return memregion("sub")->base()[0x7000+offset];
 }
 
-<<<<<<< HEAD
-/*
- * Status from ES8712?
- * BIT1 is zero when no sample is playing?
- */
-READ8_MEMBER(witch_state::read_8010){   return 0x00; }
-
-=======
->>>>>>> upstream/master
 WRITE8_MEMBER(witch_state::xscroll_w)
 {
 	m_scrollx=data;
@@ -614,11 +477,6 @@ static ADDRESS_MAP_START( map_main, AS_PROGRAM, 8, witch_state )
 	AM_RANGE(UNBANKED_SIZE, 0x7fff) AM_ROMBANK("bank1")
 	AM_RANGE(0x8000, 0x8001) AM_DEVREADWRITE("ym1", ym2203_device, read, write)
 	AM_RANGE(0x8008, 0x8009) AM_DEVREADWRITE("ym2", ym2203_device, read, write)
-<<<<<<< HEAD
-	AM_RANGE(0xa000, 0xa00f) AM_READWRITE(read_a00x, write_a00x)
-	AM_RANGE(0xc000, 0xc3ff) AM_READWRITE(gfx0_vram_r, gfx0_vram_w) AM_SHARE("gfx0_vram")
-	AM_RANGE(0xc400, 0xc7ff) AM_READWRITE(gfx0_cram_r, gfx0_cram_w) AM_SHARE("gfx0_cram")
-=======
 	AM_RANGE(0xa000, 0xa003) AM_DEVREADWRITE("ppi1", i8255_device, read, write)
 	AM_RANGE(0xa004, 0xa007) AM_DEVREADWRITE("ppi2", i8255_device, read, write)
 	AM_RANGE(0xa008, 0xa008) AM_WRITE(write_a008)
@@ -626,20 +484,14 @@ static ADDRESS_MAP_START( map_main, AS_PROGRAM, 8, witch_state )
 	AM_RANGE(0xa00e, 0xa00e) AM_READ_PORT("COINS")      // coins/attendant keys
 	AM_RANGE(0xc000, 0xc3ff) AM_RAM AM_WRITE(gfx0_vram_w) AM_SHARE("gfx0_vram")
 	AM_RANGE(0xc400, 0xc7ff) AM_RAM AM_WRITE(gfx0_cram_w) AM_SHARE("gfx0_cram")
->>>>>>> upstream/master
 	AM_RANGE(0xc800, 0xcbff) AM_READWRITE(gfx1_vram_r, gfx1_vram_w) AM_SHARE("gfx1_vram")
 	AM_RANGE(0xcc00, 0xcfff) AM_READWRITE(gfx1_cram_r, gfx1_cram_w) AM_SHARE("gfx1_cram")
 	AM_RANGE(0xd000, 0xdfff) AM_RAM AM_SHARE("sprite_ram")
 	AM_RANGE(0xe000, 0xe7ff) AM_RAM_DEVWRITE("palette", palette_device, write) AM_SHARE("palette")
 	AM_RANGE(0xe800, 0xefff) AM_RAM_DEVWRITE("palette", palette_device, write_ext) AM_SHARE("palette_ext")
 	AM_RANGE(0xf000, 0xf0ff) AM_RAM AM_SHARE("share1")
-<<<<<<< HEAD
-	AM_RANGE(0xf100, 0xf17f) AM_RAM AM_SHARE("nvram")
-	AM_RANGE(0xf180, 0xffff) AM_RAM AM_SHARE("share2")
-=======
 	AM_RANGE(0xf100, 0xf1ff) AM_RAM AM_SHARE("nvram")
 	AM_RANGE(0xf200, 0xffff) AM_RAM AM_SHARE("share2")
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -647,88 +499,6 @@ static ADDRESS_MAP_START( map_sub, AS_PROGRAM, 8, witch_state )
 	AM_RANGE(0x0000, 0x7fff) AM_ROM
 	AM_RANGE(0x8000, 0x8001) AM_DEVREADWRITE("ym1", ym2203_device, read, write)
 	AM_RANGE(0x8008, 0x8009) AM_DEVREADWRITE("ym2", ym2203_device, read, write)
-<<<<<<< HEAD
-	AM_RANGE(0x8010, 0x8016) AM_READ(read_8010) AM_DEVWRITE("essnd", es8712_device, es8712_w)
-	AM_RANGE(0xa000, 0xa00f) AM_READWRITE(read_a00x, write_a00x)
-	AM_RANGE(0xf000, 0xf0ff) AM_RAM AM_SHARE("share1")
-	AM_RANGE(0xf180, 0xffff) AM_RAM AM_SHARE("share2")
-ADDRESS_MAP_END
-
-static INPUT_PORTS_START( witch )
-	PORT_START("SERVICE")   /* DSW */
-	PORT_DIPNAME( 0x01, 0x01, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x02, 0x02, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x04, 0x04, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_SERVICE1 ) PORT_NAME("NVRAM Init") PORT_CODE(KEYCODE_F1)
-	PORT_DIPNAME( 0x10, 0x10, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_SERVICE2 ) PORT_NAME("Stats")
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-
-	PORT_START("A00E")  /* DSW */
-	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_COIN3 ) PORT_NAME("Key In")
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_COIN2 )
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SERVICE1 ) PORT_NAME("Reset ?")
-	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_COIN1 )
-	PORT_DIPNAME( 0x10, 0x10, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x40, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-
-	PORT_START("UNK")   /* Not a DSW */
-	PORT_DIPNAME( 0x01, 0x01, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x02, 0x02, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x04, 0x04, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x08, 0x08, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x10, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x40, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-
-	PORT_START("INPUTS")    /* Inputs */
-	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_BUTTON1 ) PORT_NAME("Left Flipper")
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_BUTTON5 ) PORT_NAME("Big")
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_BUTTON6 ) PORT_NAME("Small")
-	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_BUTTON3 ) PORT_NAME("Take")
-	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_BUTTON4 ) PORT_NAME("Double Up")
-	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_START1 )
-	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_START2 ) PORT_NAME("Bet")
-=======
 	AM_RANGE(0x8010, 0x8016) AM_DEVREADWRITE("essnd", es8712_device, read, write)
 	AM_RANGE(0xa000, 0xa003) AM_DEVREADWRITE("ppi1", i8255_device, read, write)
 	AM_RANGE(0xa004, 0xa007) AM_DEVREADWRITE("ppi2", i8255_device, read, write)
@@ -767,7 +537,6 @@ static INPUT_PORTS_START( witch )
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_GAMBLE_D_UP )
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_START1 )
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_GAMBLE_BET )
->>>>>>> upstream/master
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_BUTTON2 ) PORT_NAME("Right Flipper")
 
 /*
@@ -777,11 +546,7 @@ F180 kkkbbppp ; Read onPORT 0xA005
  kkk  = KEY IN  | 1-10 ; 1-20 ; 1-40 ; 1-50 ; 1-100 ; 1-200 ; 1-250 ; 1-500
 */
 	PORT_START("A005")  /* DSW "SW2" */
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x07, 0x07, "PAY OUT" )   PORT_DIPLOCATION("SW2:1,2,3")
-=======
 	PORT_DIPNAME( 0x07, 0x07, "Pay Out" )   PORT_DIPLOCATION("SW2:1,2,3")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x07, "60" )
 	PORT_DIPSETTING(    0x06, "65" )
 	PORT_DIPSETTING(    0x05, "70" )
@@ -790,20 +555,12 @@ F180 kkkbbppp ; Read onPORT 0xA005
 	PORT_DIPSETTING(    0x02, "85" )
 	PORT_DIPSETTING(    0x01, "90" )
 	PORT_DIPSETTING(    0x00, "95" )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x18, 0x00, "MAX BET" )   PORT_DIPLOCATION("SW2:4,5")
-=======
 	PORT_DIPNAME( 0x18, 0x00, "Max Bet" )   PORT_DIPLOCATION("SW2:4,5")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x18, "20" )
 	PORT_DIPSETTING(    0x10, "30" )
 	PORT_DIPSETTING(    0x08, "40" )
 	PORT_DIPSETTING(    0x00, "60" )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0xe0, 0xe0, "KEY IN" )    PORT_DIPLOCATION("SW2:6,7,8")
-=======
 	PORT_DIPNAME( 0xe0, 0xe0, "Key In" )    PORT_DIPLOCATION("SW2:6,7,8")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0xE0, "1-10"  )
 	PORT_DIPSETTING(    0xC0, "1-20"  )
 	PORT_DIPSETTING(    0xA0, "1-40"  )
@@ -818,21 +575,13 @@ F180 kkkbbppp ; Read onPORT 0xA005
  cccc = COIN IN1 | 1-1 ; 1-2 ; 1-3 ; 1-4 ; 1-5 ; 1-6 ; 1-7 ; 1-8 ; 1-9 ; 1-10 ; 1-15 ; 1-20 ; 1-25 ; 1-30 ; 1-40 ; 1-50
 */
 	PORT_START("A004")  /* DSW "SW3" Switches 2-4 not defined in manual */
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x01, 0x00, "DOUBLE UP" )     PORT_DIPLOCATION("SW3:1")
-=======
 	PORT_DIPNAME( 0x01, 0x00, "Double Up" )     PORT_DIPLOCATION("SW3:1")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x01, DEF_STR( Off  ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_DIPUNUSED_DIPLOC( 0x02, 0x02, "SW3:2" )
 	PORT_DIPUNUSED_DIPLOC( 0x04, 0x04, "SW3:3" )
 	PORT_DIPUNUSED_DIPLOC( 0x08, 0x08, "SW3:4" )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0xf0, 0xf0, "COIN IN1" )      PORT_DIPLOCATION("SW3:5,6,7,8")
-=======
 	PORT_DIPNAME( 0xf0, 0xf0, "Coin In 1" )     PORT_DIPLOCATION("SW3:5,6,7,8")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0xf0, "1-1" )
 	PORT_DIPSETTING(    0xe0, "1-2" )
 	PORT_DIPSETTING(    0xd0, "1-3" )
@@ -858,11 +607,7 @@ F180 kkkbbppp ; Read onPORT 0xA005
  s    = DEMO SOUND | ON ; OFF
 */
 	PORT_START("YM_PortA")  /* DSW "SW4" */
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x0f, 0x0f, "COIN IN2" )      PORT_DIPLOCATION("SW4:1,2,3,4")
-=======
 	PORT_DIPNAME( 0x0f, 0x0f, "Coin In 2" )     PORT_DIPLOCATION("SW4:1,2,3,4")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x0f, "1-1" )
 	PORT_DIPSETTING(    0x0e, "1-2" )
 	PORT_DIPSETTING(    0x0d, "1-3" )
@@ -879,26 +624,15 @@ F180 kkkbbppp ; Read onPORT 0xA005
 	PORT_DIPSETTING(    0x02, "5-1" )
 	PORT_DIPSETTING(    0x01, "6-1" )
 	PORT_DIPSETTING(    0x00, "10-1" )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x10, 0x00, "PAYOUT SWITCH" ) PORT_DIPLOCATION("SW4:5")
-	PORT_DIPSETTING(    0x10, DEF_STR( Off  ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x60, 0x00, "TIME" )      PORT_DIPLOCATION("SW4:6,7")
-=======
 	PORT_DIPNAME( 0x10, 0x00, "Payout Switch" ) PORT_DIPLOCATION("SW4:5")
 	PORT_DIPSETTING(    0x10, DEF_STR( Off  ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_DIPNAME( 0x60, 0x00, "Time" )      PORT_DIPLOCATION("SW4:6,7")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x60, "40" )
 	PORT_DIPSETTING(    0x40, "45" )
 	PORT_DIPSETTING(    0x20, "50" )
 	PORT_DIPSETTING(    0x00, "55" )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x80, 0x00, "DEMO SOUND" )    PORT_DIPLOCATION("SW4:8")
-=======
 	PORT_DIPNAME( 0x80, 0x00, DEF_STR( Demo_Sounds ) ) PORT_DIPLOCATION("SW4:8")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x80, DEF_STR( Off  ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
@@ -909,26 +643,15 @@ F180 kkkbbppp ; Read onPORT 0xA005
  h    = HOPPER ACTIVE | LOW ; HIGH
 */
 	PORT_START("YM_PortB")  /* DSW "SW5" Switches 5, 6 & 8 undefined in manual */
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x01, 0x01, "AUTO BET" )      PORT_DIPLOCATION("SW5:1")
-	PORT_DIPSETTING(    0x01, DEF_STR( Off  ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x06, 0x06, "GAME LIMIT" )    PORT_DIPLOCATION("SW5:2,3")
-=======
 	PORT_DIPNAME( 0x01, 0x01, "Auto Bet" )      PORT_DIPLOCATION("SW5:1")
 	PORT_DIPSETTING(    0x01, DEF_STR( Off  ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_DIPNAME( 0x06, 0x06, "Game Limit" )    PORT_DIPLOCATION("SW5:2,3")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x06, "500" )
 	PORT_DIPSETTING(    0x04, "1000" )
 	PORT_DIPSETTING(    0x02, "5000" )
 	PORT_DIPSETTING(    0x00, "990000" ) /* 10000 as defined in the Excellent System version manual */
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x08, 0x08, "HOPPER" )        PORT_DIPLOCATION("SW5:4")
-=======
 	PORT_DIPNAME( 0x08, 0x08, "Hopper Active" ) PORT_DIPLOCATION("SW5:4")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x08, DEF_STR(Low) )
 	PORT_DIPSETTING(    0x00, DEF_STR(High) )
 	PORT_DIPUNUSED_DIPLOC( 0x10, 0x10, "SW5:5" )
@@ -957,29 +680,20 @@ GFXDECODE_END
 
 void witch_state::video_start()
 {
-<<<<<<< HEAD
-	m_gfx0a_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(witch_state::get_gfx0a_tile_info),this),TILEMAP_SCAN_ROWS,8,8,32,32);
-	m_gfx0b_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(witch_state::get_gfx0b_tile_info),this),TILEMAP_SCAN_ROWS,8,8,32,32);
-	m_gfx1_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(witch_state::get_gfx1_tile_info),this),TILEMAP_SCAN_ROWS,8,8,32,32);
-=======
 	m_gfx0a_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(witch_state::get_gfx0a_tile_info),this),TILEMAP_SCAN_ROWS,8,8,32,32);
 	m_gfx0b_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(witch_state::get_gfx0b_tile_info),this),TILEMAP_SCAN_ROWS,8,8,32,32);
 	m_gfx1_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(witch_state::get_gfx1_tile_info),this),TILEMAP_SCAN_ROWS,8,8,32,32);
->>>>>>> upstream/master
 
 	m_gfx0a_tilemap->set_transparent_pen(0);
 	m_gfx0b_tilemap->set_transparent_pen(0);
 	m_gfx0a_tilemap->set_palette_offset(0x100);
 	m_gfx0b_tilemap->set_palette_offset(0x100);
 	m_gfx1_tilemap->set_palette_offset(0x200);
-<<<<<<< HEAD
-=======
 
 	save_item(NAME(m_scrollx));
 	save_item(NAME(m_scrolly));
 	save_item(NAME(m_reg_a002));
 	save_item(NAME(m_motor_active));
->>>>>>> upstream/master
 }
 
 void witch_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect)
@@ -1027,11 +741,7 @@ void witch_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect)
 
 }
 
-<<<<<<< HEAD
-UINT32 witch_state::screen_update_witch(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t witch_state::screen_update_witch(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	m_gfx1_tilemap->set_scrollx(0, m_scrollx-7 ); //offset to have it aligned with the sprites
 	m_gfx1_tilemap->set_scrolly(0, m_scrolly+8 );
@@ -1045,9 +755,6 @@ uint32_t witch_state::screen_update_witch(screen_device &screen, bitmap_ind16 &b
 	return 0;
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( witch, witch_state )
-=======
 void witch_state::machine_reset()
 {
 	// Keep track of the "Hopper Active" DSW value because the program will use it
@@ -1055,7 +762,6 @@ void witch_state::machine_reset()
 }
 
 static MACHINE_CONFIG_START( witch )
->>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, CPU_CLOCK)    /* 3 MHz */
 	MCFG_CPU_PROGRAM_MAP(map_main)
@@ -1070,8 +776,6 @@ static MACHINE_CONFIG_START( witch )
 
 	MCFG_NVRAM_ADD_0FILL("nvram")
 
-<<<<<<< HEAD
-=======
 	MCFG_TICKET_DISPENSER_ADD("hopper", attotime::from_msec(HOPPER_PULSE), TICKET_MOTOR_ACTIVE_HIGH, TICKET_STATUS_ACTIVE_HIGH)
 
 	// 82C255 (actual chip on PCB) is equivalent to two 8255s
@@ -1085,7 +789,6 @@ static MACHINE_CONFIG_START( witch )
 	MCFG_I8255_IN_PORTB_CB(IOPORT("A005"))
 	MCFG_I8255_OUT_PORTC_CB(WRITE8(witch_state, write_a006))
 
->>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE(60)
@@ -1207,19 +910,6 @@ ROM_END
 
 DRIVER_INIT_MEMBER(witch_state,witch)
 {
-<<<<<<< HEAD
-	UINT8 *ROM = (UINT8 *)memregion("maincpu")->base();
-	membank("bank1")->set_base(&ROM[0x10000+UNBANKED_SIZE]);
-
-	m_subcpu->space(AS_PROGRAM).install_read_handler(0x7000, 0x700f, read8_delegate(FUNC(witch_state::prot_read_700x), this));
-	m_bank = -1;
-}
-
-GAME( 1992, witch,    0,     witch, witch, witch_state, witch, ROT0, "Excellent System",     "Witch",                0 )
-GAME( 1992, witchb,   witch, witch, witch, witch_state, witch, ROT0, "Excellent System",     "Witch (With ranking)", 0 )
-GAME( 1992, witchs,   witch, witch, witch, witch_state, witch, ROT0, "Sega / Vic Tokai",     "Witch (Sega License)", 0 )
-GAME( 1995, pbchmp95, witch, witch, witch, witch_state, witch, ROT0, "Veltmeijer Automaten", "Pinball Champ '95",    0 )
-=======
 	membank("bank1")->configure_entries(0, 4, memregion("maincpu")->base() + 0x10000 + UNBANKED_SIZE, 0x8000);
 	membank("bank1")->set_entry(0);
 
@@ -1230,4 +920,3 @@ GAME( 1992, witch,    0,     witch, witch, witch_state, witch, ROT0, "Excellent 
 GAME( 1992, witchb,   witch, witch, witch, witch_state, witch, ROT0, "Excellent System",     "Witch (With ranking)", MACHINE_SUPPORTS_SAVE )
 GAME( 1992, witchs,   witch, witch, witch, witch_state, witch, ROT0, "Sega / Vic Tokai",     "Witch (Sega License)", MACHINE_SUPPORTS_SAVE )
 GAME( 1995, pbchmp95, witch, witch, witch, witch_state, witch, ROT0, "Veltmeijer Automaten", "Pinball Champ '95",    MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

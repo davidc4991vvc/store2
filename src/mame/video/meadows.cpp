@@ -22,11 +22,7 @@
 
 TILE_GET_INFO_MEMBER(meadows_state::get_tile_info)
 {
-<<<<<<< HEAD
-	UINT8 *videoram = m_videoram;
-=======
 	uint8_t *videoram = m_videoram;
->>>>>>> upstream/master
 	SET_TILE_INFO_MEMBER(0, videoram[tile_index] & 0x7f, 0, 0);
 }
 
@@ -40,11 +36,7 @@ TILE_GET_INFO_MEMBER(meadows_state::get_tile_info)
 
 void meadows_state::video_start()
 {
-<<<<<<< HEAD
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(meadows_state::get_tile_info),this), TILEMAP_SCAN_ROWS,  8,8, 32,30);
-=======
 	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(meadows_state::get_tile_info),this), TILEMAP_SCAN_ROWS,  8,8, 32,30);
->>>>>>> upstream/master
 }
 
 
@@ -57,11 +49,7 @@ void meadows_state::video_start()
 
 WRITE8_MEMBER(meadows_state::meadows_videoram_w)
 {
-<<<<<<< HEAD
-	UINT8 *videoram = m_videoram;
-=======
 	uint8_t *videoram = m_videoram;
->>>>>>> upstream/master
 	videoram[offset] = data;
 	m_bg_tilemap->mark_tile_dirty(offset);
 }
@@ -91,11 +79,7 @@ WRITE8_MEMBER(meadows_state::meadows_spriteram_w)
 
 void meadows_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &clip)
 {
-<<<<<<< HEAD
-	UINT8 *spriteram = m_spriteram;
-=======
 	uint8_t *spriteram = m_spriteram;
->>>>>>> upstream/master
 	int i;
 
 	for (i = 0; i < 4; i++)
@@ -119,11 +103,7 @@ void meadows_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &clip)
  *
  *************************************/
 
-<<<<<<< HEAD
-UINT32 meadows_state::screen_update_meadows(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t meadows_state::screen_update_meadows(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	/* draw the background */
 	m_bg_tilemap->draw(screen, bitmap, cliprect, 0, 0);

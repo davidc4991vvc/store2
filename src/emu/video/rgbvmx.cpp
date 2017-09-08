@@ -17,23 +17,17 @@
     TABLES
 ***************************************************************************/
 
-<<<<<<< HEAD
-=======
 #ifdef __LITTLE_ENDIAN__
 const rgbaint_t::VECU8  rgbaint_t::alpha_perm   = {  0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 28, 29, 30, 31 };
 const rgbaint_t::VECU8  rgbaint_t::red_perm     = {  0,  1,  2,  3,  4,  5,  6,  7, 28, 29, 30, 31, 12, 13, 14, 15 };
 const rgbaint_t::VECU8  rgbaint_t::green_perm   = {  0,  1,  2,  3, 28, 29, 30, 31,  8,  9, 10, 11, 12, 13, 14, 15 };
 const rgbaint_t::VECU8  rgbaint_t::blue_perm    = { 28, 29, 30, 31,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15 };
 #else
->>>>>>> upstream/master
 const rgbaint_t::VECU8  rgbaint_t::alpha_perm   = { 16, 17, 18, 19,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15 };
 const rgbaint_t::VECU8  rgbaint_t::red_perm     = {  0,  1,  2,  3, 16, 17, 18, 19,  8,  9, 10, 11, 12, 13, 14, 15 };
 const rgbaint_t::VECU8  rgbaint_t::green_perm   = {  0,  1,  2,  3,  4,  5,  6,  7, 16, 17, 18, 19, 12, 13, 14, 15 };
 const rgbaint_t::VECU8  rgbaint_t::blue_perm    = {  0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 16, 17, 18, 19 };
-<<<<<<< HEAD
-=======
 #endif
->>>>>>> upstream/master
 const rgbaint_t::VECS16 rgbaint_t::scale_table[256] = {
 	{   0, 256,   0, 256,   0, 256,   0, 256 }, {   1, 255,   1, 255,   1, 255,   1, 255 },
 	{   2, 254,   2, 254,   2, 254,   2, 254 }, {   3, 253,   3, 253,   3, 253,   3, 253 },
@@ -170,23 +164,12 @@ const rgbaint_t::VECS16 rgbaint_t::scale_table[256] = {
     HIGHER LEVEL OPERATIONS
 ***************************************************************************/
 
-<<<<<<< HEAD
-void rgbaint_t::blend(const rgbaint_t& other, UINT8 factor)
-=======
 void rgbaint_t::blend(const rgbaint_t& other, u8 factor)
->>>>>>> upstream/master
 {
 	const VECU32 shift = vec_splat_u32(-16);
 	const VECS32 scale1 = { factor, factor, factor, factor };
 	const VECS32 scale2 = { 0x100 - factor, 0x100 - factor, 0x100 - factor, 0x100 - factor, };
 
-<<<<<<< HEAD
-	VECU32 temp = vec_msum((VECU16)m_value, (VECU16)vec_rl(scale1, shift), vec_splat_u32(0));
-	temp = vec_msum((VECU16)other.m_value, (VECU16)vec_rl(scale2, shift), temp);
-
-	m_value = vec_msum((VECU16)m_value, (VECU16)scale1, vec_mulo((VECU16)other.m_value, (VECU16)scale2));
-	m_value = vec_add(vec_sl(temp, shift), (VECU32)m_value);
-=======
 	VECU32 temp = vec_msum(VECU16(m_value), VECU16(vec_rl(scale1, shift)), vec_splat_u32(0));
 	temp = vec_msum(VECU16(other.m_value), VECU16(vec_rl(scale2, shift)), temp);
 
@@ -196,7 +179,6 @@ void rgbaint_t::blend(const rgbaint_t& other, u8 factor)
 	m_value = VECS32(vec_msum(VECU16(m_value), VECU16(scale1), vec_mulo(VECU16(other.m_value), VECU16(scale2))));
 #endif
 	m_value = VECS32(vec_add(vec_sl(temp, shift), VECU32(m_value)));
->>>>>>> upstream/master
 	sra_imm(8);
 }
 
@@ -207,11 +189,7 @@ void rgbaint_t::scale_and_clamp(const rgbaint_t& scale)
 	clamp_to_uint8();
 }
 
-<<<<<<< HEAD
-void rgbaint_t::scale_imm_and_clamp(const INT32 scale)
-=======
 void rgbaint_t::scale_imm_and_clamp(const s32 scale)
->>>>>>> upstream/master
 {
 	mul_imm(scale);
 	sra_imm(8);

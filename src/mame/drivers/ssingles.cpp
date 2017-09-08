@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-// license:LGPL-2.1+
-=======
 // license:BSD-3-Clause
->>>>>>> upstream/master
 // copyright-holders:Tomasz Slanina
 /*
  'Swinging Singles' US distribution by Ent. Ent. Ltd
@@ -154,11 +150,8 @@ Dumped by Chack'n
 #include "cpu/z80/z80.h"
 #include "sound/ay8910.h"
 #include "video/mc6845.h"
-<<<<<<< HEAD
-=======
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 #define NUM_PENS (4*8)
 #define VMEM_SIZE 0x100
@@ -170,21 +163,12 @@ public:
 		: driver_device(mconfig, type, tag),
 		m_maincpu(*this, "maincpu") { }
 
-<<<<<<< HEAD
-	UINT8 m_videoram[VMEM_SIZE];
-	UINT8 m_colorram[VMEM_SIZE];
-	UINT8 m_prot_data;
-	pen_t m_pens[NUM_PENS];
-
-	UINT8 m_atamanot_prot_state;
-=======
 	uint8_t m_videoram[VMEM_SIZE];
 	uint8_t m_colorram[VMEM_SIZE];
 	uint8_t m_prot_data;
 	pen_t m_pens[NUM_PENS];
 
 	uint8_t m_atamanot_prot_state;
->>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(ssingles_videoram_w);
 	DECLARE_WRITE8_MEMBER(ssingles_colorram_w);
 	DECLARE_READ8_MEMBER(c000_r);
@@ -194,11 +178,7 @@ public:
 	DECLARE_WRITE8_MEMBER(atamanot_prot_w);
 	DECLARE_CUSTOM_INPUT_MEMBER(controls_r);
 	DECLARE_DRIVER_INIT(ssingles);
-<<<<<<< HEAD
-	virtual void video_start();
-=======
 	virtual void video_start() override;
->>>>>>> upstream/master
 	INTERRUPT_GEN_MEMBER(atamanot_irq);
 	MC6845_UPDATE_ROW(ssingles_update_row);
 	MC6845_UPDATE_ROW(atamanot_update_row);
@@ -206,11 +186,7 @@ public:
 };
 
 //fake palette
-<<<<<<< HEAD
-static const UINT8 ssingles_colors[NUM_PENS*3]=
-=======
 static const uint8_t ssingles_colors[NUM_PENS*3]=
->>>>>>> upstream/master
 {
 	0x00,0x00,0x00, 0xff,0xff,0xff, 0xff,0x00,0x00, 0x80,0x00,0x00,
 	0x00,0x00,0x00, 0xf0,0xf0,0xf0, 0xff,0xff,0x00, 0x40,0x40,0x40,
@@ -224,17 +200,10 @@ static const uint8_t ssingles_colors[NUM_PENS*3]=
 
 MC6845_UPDATE_ROW( ssingles_state::ssingles_update_row )
 {
-<<<<<<< HEAD
-	UINT32 tile_address;
-	UINT16 cell, palette;
-	UINT8 b0, b1;
-	const UINT8 *gfx = memregion("gfx1")->base();
-=======
 	uint32_t tile_address;
 	uint16_t cell, palette;
 	uint8_t b0, b1;
 	const uint8_t *gfx = memregion("gfx1")->base();
->>>>>>> upstream/master
 
 	for (int cx = 0; cx < x_count; ++cx)
 	{
@@ -267,17 +236,10 @@ MC6845_UPDATE_ROW( ssingles_state::ssingles_update_row )
 
 MC6845_UPDATE_ROW( ssingles_state::atamanot_update_row )
 {
-<<<<<<< HEAD
-	UINT32 tile_address;
-	UINT16 cell, palette;
-	UINT8 b0, b1;
-	const UINT8 *gfx = memregion("gfx1")->base();
-=======
 	uint32_t tile_address;
 	uint16_t cell, palette;
 	uint8_t b0, b1;
 	const uint8_t *gfx = memregion("gfx1")->base();
->>>>>>> upstream/master
 
 	for (int cx = 0; cx < x_count; ++cx)
 	{
@@ -311,22 +273,14 @@ MC6845_UPDATE_ROW( ssingles_state::atamanot_update_row )
 
 WRITE8_MEMBER(ssingles_state::ssingles_videoram_w)
 {
-<<<<<<< HEAD
-	UINT8 *vram = memregion("vram")->base();
-=======
 	uint8_t *vram = memregion("vram")->base();
->>>>>>> upstream/master
 	vram[offset] = data;
 	m_videoram[offset]=data;
 }
 
 WRITE8_MEMBER(ssingles_state::ssingles_colorram_w)
 {
-<<<<<<< HEAD
-	UINT8 *cram = memregion("cram")->base();
-=======
 	uint8_t *cram = memregion("cram")->base();
->>>>>>> upstream/master
 	cram[offset] = data;
 	m_colorram[offset]=data;
 }
@@ -462,11 +416,7 @@ static INPUT_PORTS_START( ssingles )
 	PORT_START("INPUTS")
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_COIN1 )
 	PORT_BIT( 0x02, IP_ACTIVE_HIGH, IPT_UNKNOWN ) //must be LOW
-<<<<<<< HEAD
-	PORT_BIT( 0x1c, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, ssingles_state,controls_r, NULL)
-=======
 	PORT_BIT( 0x1c, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, ssingles_state,controls_r, nullptr)
->>>>>>> upstream/master
 	PORT_BIT( 0x20, IP_ACTIVE_HIGH, IPT_BUTTON4 )
 	PORT_BIT( 0x40, IP_ACTIVE_HIGH, IPT_BUTTON2 )
 	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_BUTTON3 )
@@ -586,11 +536,7 @@ static GFXDECODE_START( atamanot )
 	GFXDECODE_ENTRY( "kanji_lc", 0, layout_8x16,     0, 8 )
 GFXDECODE_END
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( ssingles, ssingles_state )
-=======
 static MACHINE_CONFIG_START( ssingles )
->>>>>>> upstream/master
 
 	MCFG_CPU_ADD("maincpu", Z80,4000000)         /* ? MHz */
 	MCFG_CPU_PROGRAM_MAP(ssingles_map)

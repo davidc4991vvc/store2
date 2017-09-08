@@ -356,8 +356,6 @@ Donkey Kong Notes
     Not only did the eprom fix the ladder bug, but it also changed
     the copyright screen to read "(C)1981 Nintendo of America".
 
-<<<<<<< HEAD
-=======
     --------------------------------------------------------------
 
     Nintendo Service Department Bulletin # TKG-06         10-04-82
@@ -380,7 +378,6 @@ Donkey Kong Notes
     your distributor is out, they can get immediate shipment from
     our factory.
 
->>>>>>> upstream/master
 
     D2K Jumpman returns Notes
     =========================
@@ -404,17 +401,6 @@ Donkey Kong Notes
     Hopefully confirmation and information will come along later which confirms
     this is a legitimate Nintendo Kit.
 
-<<<<<<< HEAD
-***************************************************************************/
-
-#include "emu.h"
-#include "cpu/z80/z80.h"
-#include "cpu/s2650/s2650.h"
-#include "cpu/m6502/m6502.h"
-#include "includes/dkong.h"
-#include "machine/eepromser.h"
-
-=======
     This is probably "Speed-up Kit #2" mentioned above, but this still needs to be
     confirmed.
 
@@ -429,7 +415,6 @@ Donkey Kong Notes
 #include "machine/eepromser.h"
 
 
->>>>>>> upstream/master
 /*************************************
  *
  *  Defines
@@ -481,22 +466,13 @@ MACHINE_START_MEMBER(dkong_state,dkong2b)
 {
 	m_hardware_type = HARDWARE_TKG04;
 
-<<<<<<< HEAD
-	m_snd_rom = memregion("soundcpu")->base();
-
-=======
->>>>>>> upstream/master
 	save_item(NAME(m_decrypt_counter));
 	save_item(NAME(m_dma_latch));
 }
 
 MACHINE_START_MEMBER(dkong_state,s2650)
 {
-<<<<<<< HEAD
-	UINT8   *p = memregion("user1")->base();
-=======
 	uint8_t   *p = memregion("user1")->base();
->>>>>>> upstream/master
 	const char *game_name = machine().system().name;
 	int i;
 
@@ -553,11 +529,7 @@ MACHINE_RESET_MEMBER(dkong_state,dkong)
 
 MACHINE_RESET_MEMBER(dkong_state,strtheat)
 {
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("maincpu")->base();
-=======
 	uint8_t *ROM = memregion("maincpu")->base();
->>>>>>> upstream/master
 
 	MACHINE_RESET_CALL_MEMBER(dkong);
 
@@ -569,11 +541,7 @@ MACHINE_RESET_MEMBER(dkong_state,strtheat)
 
 MACHINE_RESET_MEMBER(dkong_state,drakton)
 {
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("maincpu")->base();
-=======
 	uint8_t *ROM = memregion("maincpu")->base();
->>>>>>> upstream/master
 
 	MACHINE_RESET_CALL_MEMBER(dkong);
 
@@ -635,11 +603,7 @@ WRITE8_MEMBER(dkong_state::p8257_ctl_w)
 
 WRITE8_MEMBER(dkong_state::dkong3_coin_counter_w)
 {
-<<<<<<< HEAD
-	coin_counter_w(machine(), offset, data & 0x01);
-=======
 	machine().bookkeeping().coin_counter_w(offset, data & 0x01);
->>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(dkong_state::p8257_drq_w)
@@ -653,19 +617,11 @@ WRITE8_MEMBER(dkong_state::p8257_drq_w)
 READ8_MEMBER(dkong_state::dkong_in2_r)
 {
 	/* mcu status (sound feedback) is inverted bit4 from port B (8039) */
-<<<<<<< HEAD
-	UINT8 mcustatus = m_dev_vp2->bit4_q_r(space, 0);
-	UINT8 r;
-
-	r = (ioport("IN2")->read() & 0xBF) | (mcustatus << 6);
-	coin_counter_w(machine(), offset, r >> 7);
-=======
 	uint8_t mcustatus = m_dev_vp2->bit4_q_r();
 	uint8_t r;
 
 	r = (ioport("IN2")->read() & 0xBF) | (mcustatus << 6);
 	machine().bookkeeping().coin_counter_w(offset, r >> 7);
->>>>>>> upstream/master
 	if (r & 0x10)
 		r = (r & ~0x10) | 0x80; /* service ==> coin */
 	return r;
@@ -675,17 +631,10 @@ READ8_MEMBER(dkong_state::dkongjr_in2_r)
 {
 	/* dkongjr does not have the mcu line connected */
 
-<<<<<<< HEAD
-	UINT8 r;
-
-	r = (ioport("IN2")->read() & 0xBF) | 0x40;
-	coin_counter_w(machine(), offset, r >> 7);
-=======
 	uint8_t r;
 
 	r = (ioport("IN2")->read() & 0xBF) | 0x40;
 	machine().bookkeeping().coin_counter_w(offset, r >> 7);
->>>>>>> upstream/master
 	if (r & 0x10)
 		r = (r & ~0x10) | 0x80; /* service ==> coin */
 	return r;
@@ -862,11 +811,7 @@ static ADDRESS_MAP_START( dkong_map, AS_PROGRAM, 8, dkong_state )
 	AM_RANGE(0x7000, 0x73ff) AM_RAM AM_SHARE("sprite_ram") /* sprite set 1 */
 	AM_RANGE(0x7400, 0x77ff) AM_RAM_WRITE(dkong_videoram_w) AM_SHARE("video_ram")
 	AM_RANGE(0x7800, 0x780f) AM_DEVREADWRITE("dma8257", i8257_device, read, write)   /* P8257 control registers */
-<<<<<<< HEAD
-	AM_RANGE(0x7c00, 0x7c00) AM_READ_PORT("IN0") AM_LATCH8_WRITE("ls175.3d")    /* IN0, sound CPU intf */
-=======
 	AM_RANGE(0x7c00, 0x7c00) AM_READ_PORT("IN0") AM_DEVWRITE("ls175.3d", latch8_device, write)    /* IN0, sound CPU intf */
->>>>>>> upstream/master
 	AM_RANGE(0x7c80, 0x7c80) AM_READ_PORT("IN1") AM_WRITE(radarscp_grid_color_w)/* IN1 */
 
 	AM_RANGE(0x7d00, 0x7d00) AM_READ(dkong_in2_r)                               /* IN2 */
@@ -889,11 +834,7 @@ static ADDRESS_MAP_START( dkongjr_map, AS_PROGRAM, 8, dkong_state )
 	AM_RANGE(0x7400, 0x77ff) AM_RAM_WRITE(dkong_videoram_w) AM_SHARE("video_ram")
 	AM_RANGE(0x7800, 0x780f) AM_DEVREADWRITE("dma8257", i8257_device, read, write)   /* P8257 control registers */
 
-<<<<<<< HEAD
-	AM_RANGE(0x7c00, 0x7c00) AM_READ_PORT("IN0") AM_LATCH8_WRITE("ls174.3d")    /* IN0, sound interface */
-=======
 	AM_RANGE(0x7c00, 0x7c00) AM_READ_PORT("IN0") AM_DEVWRITE("ls174.3d", latch8_device, write)    /* IN0, sound interface */
->>>>>>> upstream/master
 
 	AM_RANGE(0x7c80, 0x7c80) AM_READ_PORT("IN1") AM_WRITE(dkongjr_gfxbank_w)
 	AM_RANGE(0x7c80, 0x7c87) AM_DEVWRITE("ls259.4h", latch8_device, bit0_w)     /* latch for sound and signals above */
@@ -920,15 +861,9 @@ static ADDRESS_MAP_START( dkong3_map, AS_PROGRAM, 8, dkong_state )
 	AM_RANGE(0x6800, 0x6fff) AM_RAM
 	AM_RANGE(0x7000, 0x73ff) AM_RAM AM_SHARE("sprite_ram") /* sprite set 1 */
 	AM_RANGE(0x7400, 0x77ff) AM_RAM_WRITE(dkong_videoram_w) AM_SHARE("video_ram")
-<<<<<<< HEAD
-	AM_RANGE(0x7c00, 0x7c00) AM_READ_PORT("IN0")  AM_LATCH8_WRITE("latch1")
-	AM_RANGE(0x7c80, 0x7c80) AM_READ_PORT("IN1")  AM_LATCH8_WRITE("latch2")
-	AM_RANGE(0x7d00, 0x7d00) AM_READ_PORT("DSW0") AM_LATCH8_WRITE("latch3")
-=======
 	AM_RANGE(0x7c00, 0x7c00) AM_READ_PORT("IN0")  AM_DEVWRITE("latch1", latch8_device, write)
 	AM_RANGE(0x7c80, 0x7c80) AM_READ_PORT("IN1")  AM_DEVWRITE("latch2", latch8_device, write)
 	AM_RANGE(0x7d00, 0x7d00) AM_READ_PORT("DSW0") AM_DEVWRITE("latch3", latch8_device, write)
->>>>>>> upstream/master
 	AM_RANGE(0x7d80, 0x7d80) AM_READ_PORT("DSW1") AM_WRITE(dkong3_2a03_reset_w)
 	AM_RANGE(0x7e80, 0x7e80) AM_WRITE(dkong3_coin_counter_w)
 	AM_RANGE(0x7e81, 0x7e81) AM_WRITE(dkong3_gfxbank_w)
@@ -983,13 +918,9 @@ ADDRESS_MAP_END
 static ADDRESS_MAP_START( s2650_io_map, AS_IO, 8, dkong_state )
 	AM_RANGE(0x00, 0x00) AM_READ(s2650_port0_r)
 	AM_RANGE(0x01, 0x01) AM_READ(s2650_port1_r)
-<<<<<<< HEAD
-	AM_RANGE(S2650_SENSE_PORT, S2650_SENSE_PORT) AM_READ_PORT("SENSE")
-=======
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( s2650_data_map, AS_DATA, 8, dkong_state )
->>>>>>> upstream/master
 	AM_RANGE(S2650_DATA_PORT, S2650_DATA_PORT) AM_WRITE(s2650_data_w)
 ADDRESS_MAP_END
 
@@ -1310,12 +1241,6 @@ static INPUT_PORTS_START( hunchbkd )
 	PORT_DIPSETTING(    0x08, "40000" )
 	PORT_DIPSETTING(    0x0c, "80000" )
 
-<<<<<<< HEAD
-	PORT_START("SENSE") /* Sense */
-	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_CUSTOM ) PORT_VBLANK("screen")
-
-=======
->>>>>>> upstream/master
 	PORT_INCLUDE( dkong_config )
 INPUT_PORTS_END
 
@@ -1357,12 +1282,6 @@ static INPUT_PORTS_START( shootgal )
 	PORT_DIPSETTING(    0x40, DEF_STR( On ) )
 	PORT_SERVICE( 0x80, IP_ACTIVE_HIGH )
 
-<<<<<<< HEAD
-	PORT_START("SENSE") /* Sense */
-	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_CUSTOM ) PORT_VBLANK("screen")
-
-=======
->>>>>>> upstream/master
 	PORT_INCLUDE( dkong_config )
 INPUT_PORTS_END
 
@@ -1393,12 +1312,6 @@ static INPUT_PORTS_START( sbdk )
 	PORT_DIPUNKNOWN_DIPLOC( 0x04, 0x00, "SW1:!3" )
 	PORT_DIPUNKNOWN_DIPLOC( 0x08, 0x00, "SW1:!4" )
 
-<<<<<<< HEAD
-	PORT_START("SENSE") /* Sense */
-	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_CUSTOM ) PORT_VBLANK("screen")
-
-=======
->>>>>>> upstream/master
 	PORT_INCLUDE( dkong_config )
 INPUT_PORTS_END
 
@@ -1415,12 +1328,6 @@ static INPUT_PORTS_START( herbiedk )
 	PORT_DIPUNKNOWN_DIPLOC( 0x04, 0x00, "SW1:!3" )
 	PORT_DIPUNKNOWN_DIPLOC( 0x08, 0x00, "SW1:!4" )
 
-<<<<<<< HEAD
-	PORT_START("SENSE") /* Sense */
-	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_CUSTOM ) PORT_VBLANK("screen")
-
-=======
->>>>>>> upstream/master
 	PORT_INCLUDE( dkong_config )
 INPUT_PORTS_END
 
@@ -1452,12 +1359,6 @@ static INPUT_PORTS_START( herodk )
 	PORT_DIPSETTING(    0x08, "2" )
 	PORT_DIPSETTING(    0x0c, "3" )
 
-<<<<<<< HEAD
-	PORT_START("SENSE") /* Sense */
-	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_CUSTOM ) PORT_VBLANK("screen")
-
-=======
->>>>>>> upstream/master
 	PORT_INCLUDE( dkong_config )
 INPUT_PORTS_END
 
@@ -1553,12 +1454,6 @@ static INPUT_PORTS_START( spclforc )
 	PORT_DIPSETTING(    0x80, DEF_STR( 1C_3C ) )
 	PORT_DIPSETTING(    0xc0, DEF_STR( 1C_4C ) )
 
-<<<<<<< HEAD
-	PORT_START("SENSE") /* Sense */
-	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_CUSTOM ) PORT_VBLANK("screen")
-
-=======
->>>>>>> upstream/master
 	PORT_INCLUDE( dkong_config )
 INPUT_PORTS_END
 
@@ -1589,12 +1484,6 @@ static INPUT_PORTS_START( 8ballact )
 	PORT_DIPSETTING(    0x60, DEF_STR( 1C_4C ) )
 	PORT_DIPUNUSED_DIPLOC( 0x80, 0x80, "SW1:!8" )
 
-<<<<<<< HEAD
-	PORT_START("SENSE") /* Sense */
-	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_CUSTOM ) PORT_VBLANK("screen")
-
-=======
->>>>>>> upstream/master
 	PORT_INCLUDE( dkong_config )
 INPUT_PORTS_END
 
@@ -1753,21 +1642,12 @@ WRITE8_MEMBER(dkong_state::braze_eeprom_w)
 	m_eeprom->clk_write(data & 0x02 ? ASSERT_LINE : CLEAR_LINE);
 }
 
-<<<<<<< HEAD
-void dkong_state::braze_decrypt_rom(UINT8 *dest)
-{
-	UINT8 oldbyte,newbyte;
-	UINT8 *ROM;
-	UINT32 mem;
-	UINT32 newmem;
-=======
 void dkong_state::braze_decrypt_rom(uint8_t *dest)
 {
 	uint8_t oldbyte,newbyte;
 	uint8_t *ROM;
 	uint32_t mem;
 	uint32_t newmem;
->>>>>>> upstream/master
 
 	ROM = memregion("braze")->base();
 
@@ -1805,11 +1685,7 @@ WRITE_LINE_MEMBER(dkong_state::busreq_w )
 		m_dma8257->hlda_w(state);
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( dkong_base, dkong_state )
-=======
 static MACHINE_CONFIG_START( dkong_base )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, CLOCK_1H)
@@ -1881,11 +1757,7 @@ static MACHINE_CONFIG_DERIVED( braze, dkong2b )
 	MCFG_EEPROM_SERIAL_93C46_8BIT_ADD("eeprom")
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( dkong3, dkong_state )
-=======
 static MACHINE_CONFIG_START( dkong3 )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, XTAL_8MHz / 2) /* verified in schematics */
@@ -1955,13 +1827,9 @@ static MACHINE_CONFIG_DERIVED( s2650, dkong2b )
 	MCFG_CPU_REPLACE("maincpu", S2650, CLOCK_1H / 2)    /* ??? */
 	MCFG_CPU_PROGRAM_MAP(s2650_map)
 	MCFG_CPU_IO_MAP(s2650_io_map)
-<<<<<<< HEAD
-	MCFG_S2650_FLAG_HANDLER(WRITELINE(dkong_state, s2650_fo_w))
-=======
 	MCFG_CPU_DATA_MAP(s2650_data_map)
 	MCFG_S2650_SENSE_INPUT(DEVREADLINE("screen", screen_device, vblank))
 	MCFG_S2650_FLAG_OUTPUT(WRITELINE(dkong_state, s2650_fo_w))
->>>>>>> upstream/master
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", dkong_state,  s2650_interrupt)
 
 	MCFG_DEVICE_MODIFY("dma8257")
@@ -1971,16 +1839,12 @@ static MACHINE_CONFIG_DERIVED( s2650, dkong2b )
 	MCFG_MACHINE_START_OVERRIDE(dkong_state,s2650)
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_DERIVED( spclforc, s2650 )
-=======
 static MACHINE_CONFIG_DERIVED( herbiedk, s2650 )
 	MCFG_CPU_MODIFY("maincpu")
 	MCFG_S2650_SENSE_INPUT(DEVREADLINE("screen", screen_device, vblank)) MCFG_DEVCB_INVERT // ???
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_DERIVED( spclforc, herbiedk )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_DEVICE_REMOVE("soundcpu")
@@ -2029,11 +1893,7 @@ MACHINE_CONFIG_END
  *
  *************************************/
 
-<<<<<<< HEAD
-ROM_START( radarscp )
-=======
 ROM_START( radarscp ) /* unclear which boardset this comes from; there existed a 5 pcb stack with trs-03 (no voice) sound board on top, and a 4 board as well as a 2 board pcb stack */
->>>>>>> upstream/master
 	ROM_REGION( 0x10000, "maincpu", 0 )
 	ROM_LOAD( "trs2c5fc",     0x0000, 0x1000, CRC(40949e0d) SHA1(94717b9d027600e25b863e89900df41325875961) )
 	ROM_LOAD( "trs2c5gc",     0x1000, 0x1000, CRC(afa8c49f) SHA1(25880e9dcf2dc8862f7f3c38687f01dfe2424293) )
@@ -2066,11 +1926,7 @@ ROM_START( radarscp ) /* unclear which boardset this comes from; there existed a
 	ROM_LOAD( "rs2-v.1hc",    0x0200, 0x0100, CRC(1b828315) SHA1(00c9f8c5ae86b68d38c66f9071b5f1ef421c1005) ) /* character color codes on a per-column basis */
 ROM_END
 
-<<<<<<< HEAD
-ROM_START( radarscp1 )
-=======
 ROM_START( radarscp1 ) /* TRS01 5-pcb stack with TRS01 "Voice" pcb on top containing the sound cpu and the m58817 speech chip and the m58819 speech serial rom emulator chip */
->>>>>>> upstream/master
 	ROM_REGION( 0x10000, "maincpu", 0 )
 	ROM_LOAD( "trs01_5f",     0x0000, 0x1000, CRC(40949e0d) SHA1(94717b9d027600e25b863e89900df41325875961) )
 	ROM_LOAD( "trs01_5g",     0x1000, 0x1000, CRC(afa8c49f) SHA1(25880e9dcf2dc8862f7f3c38687f01dfe2424293) )
@@ -2079,20 +1935,12 @@ ROM_START( radarscp1 ) /* TRS01 5-pcb stack with TRS01 "Voice" pcb on top contai
 	/* space for diagnostic ROM */
 
 	ROM_REGION( 0x1800, "soundcpu", 0 ) /* sound */
-<<<<<<< HEAD
-	ROM_LOAD( "trs015aa.bin", 0x0000, 0x0800, CRC(5166554c) SHA1(00bf501ca448929f6187598da6fdbc1ea488745a) )
-=======
 	ROM_LOAD( "trs-s__5a.5a", 0x0000, 0x0800, CRC(5166554c) SHA1(00bf501ca448929f6187598da6fdbc1ea488745a) ) // 5A on the 'voice' board on top of the 5-pcb stack; eprom label is "TRS-S ['S' overstrikes a '1'] // 5A [stamped '8' or 'a' in red ink]"
->>>>>>> upstream/master
 	ROM_RELOAD(               0x0800, 0x0800 )
 	ROM_FILL(                 0x1000, 0x0800, 0xFF )
 
 	ROM_REGION( 0x0800, "m58819", 0 )  /* speech rom */
-<<<<<<< HEAD
-	ROM_LOAD( "trs014ha.bin",      0x0000, 0x0800, CRC(d1f1b48c) SHA1(ee5584368d2e9f7bde271f5004585b53f5ff5c3f) ) /* speech rom */
-=======
 	ROM_LOAD( "trs-s__4h.4h",      0x0000, 0x0800, CRC(d1f1b48c) SHA1(ee5584368d2e9f7bde271f5004585b53f5ff5c3f) ) // 4H on the 'voice' board on top of the 5-pcb stack; eprom label is "TRS-S ['S' overstrikes a '1'] // 4H [stamped '8' or 'a' in red ink]"
->>>>>>> upstream/master
 
 	ROM_REGION( 0x1000, "gfx1", 0 )
 	ROM_LOAD( "trs01v3f",     0x0000, 0x0800, CRC(f095330e) SHA1(dd3de744f28ff108630d3336bd246d3323fa34af) )
@@ -2711,8 +2559,6 @@ ROM_START( dkingjr )
 	ROM_LOAD( "mb7051.8j",  0x0300, 0x0020, CRC(a5a6f2ca) SHA1(5507fb6f5c8845c4421c2996e9f76c818d987623) )   /* unknown */
 ROM_END
 
-<<<<<<< HEAD
-=======
 
 ROM_START( maguila )
 	ROM_REGION( 0x10000, "maincpu", 0 )
@@ -2757,7 +2603,6 @@ ROM_START( maguila )
 	ROM_LOAD( "8j_82s123.8j",  0x0300, 0x0020, CRC(a5a6f2ca) SHA1(5507fb6f5c8845c4421c2996e9f76c818d987623) )   /* unknown */
 ROM_END
 
->>>>>>> upstream/master
 ROM_START( pestplce )
 	ROM_REGION( 0x10000, "maincpu", 0 )
 	ROM_LOAD( "pest.1p",      0x0000, 0x1000, CRC(80d50721) SHA1(9c0e7571b1664dce741595a2d13dc9d7709b35a9) )
@@ -3386,17 +3231,10 @@ ROM_END
  *
  *************************************/
 
-<<<<<<< HEAD
-void dkong_state::drakton_decrypt_rom(UINT8 mod, int offs, int *bs)
-{
-	UINT8 oldbyte,newbyte;
-	UINT8 *ROM;
-=======
 void dkong_state::drakton_decrypt_rom(uint8_t mod, int offs, int *bs)
 {
 	uint8_t oldbyte,newbyte;
 	uint8_t *ROM;
->>>>>>> upstream/master
 	int mem;
 
 	ROM = memregion("maincpu")->base();
@@ -3425,11 +3263,7 @@ void dkong_state::drakton_decrypt_rom(uint8_t mod, int offs, int *bs)
 DRIVER_INIT_MEMBER(dkong_state,herodk)
 {
 	int A;
-<<<<<<< HEAD
-	UINT8 *rom = memregion("maincpu")->base();
-=======
 	uint8_t *rom = memregion("maincpu")->base();
->>>>>>> upstream/master
 
 	/* swap data lines D3 and D4 */
 	for (A = 0;A < 0x8000;A++)
@@ -3494,16 +3328,9 @@ DRIVER_INIT_MEMBER(dkong_state,strtheat)
 
 DRIVER_INIT_MEMBER(dkong_state,dkongx)
 {
-<<<<<<< HEAD
-	UINT8 *decrypted;
-	address_space &space = m_maincpu->space(AS_PROGRAM);
-
-	decrypted = auto_alloc_array(machine(), UINT8, 0x10000);
-=======
 	address_space &space = m_maincpu->space(AS_PROGRAM);
 
 	m_decrypted = std::make_unique<uint8_t[]>(0x10000);
->>>>>>> upstream/master
 
 	m_maincpu->space(AS_PROGRAM).install_read_bank(0x0000, 0x5fff, "bank1" );
 	m_maincpu->space(AS_PROGRAM).install_read_bank(0x8000, 0xffff, "bank2" );
@@ -3513,29 +3340,17 @@ DRIVER_INIT_MEMBER(dkong_state,dkongx)
 	space.install_read_handler(0xc800, 0xc800, read8_delegate(FUNC(dkong_state::braze_eeprom_r),this));
 	space.install_write_handler(0xc800, 0xc800, write8_delegate(FUNC(dkong_state::braze_eeprom_w),this));
 
-<<<<<<< HEAD
-	braze_decrypt_rom(decrypted);
-
-	membank("bank1")->configure_entries(0, 2, &decrypted[0], 0x8000);
-	membank("bank1")->set_entry(0);
-	membank("bank2")->configure_entries(0, 2, &decrypted[0], 0x8000);
-=======
 	braze_decrypt_rom(m_decrypted.get());
 
 	membank("bank1")->configure_entries(0, 2, m_decrypted.get(), 0x8000);
 	membank("bank1")->set_entry(0);
 	membank("bank2")->configure_entries(0, 2, m_decrypted.get(), 0x8000);
->>>>>>> upstream/master
 	membank("bank2")->set_entry(0);
 }
 
 DRIVER_INIT_MEMBER(dkong_state,dkingjr)
 {
-<<<<<<< HEAD
-	UINT8 *prom = memregion("proms")->base();
-=======
 	uint8_t *prom = memregion("proms")->base();
->>>>>>> upstream/master
 	for( int i=0; i<0x200; ++i)
 	{
 		prom[i]^=0xff; // invert color data
@@ -3551,54 +3366,6 @@ DRIVER_INIT_MEMBER(dkong_state,dkingjr)
  *
  *************************************/
 
-<<<<<<< HEAD
-GAME( 1980, radarscp,  0,        radarscp,  radarscp, driver_device, 0,        ROT90,  "Nintendo", "Radar Scope", MACHINE_SUPPORTS_SAVE )
-GAME( 1980, radarscp1, radarscp, radarscp1, radarscp, driver_device, 0,        ROT90,  "Nintendo", "Radar Scope (TRS01)", MACHINE_SUPPORTS_SAVE )
-
-GAME( 1981, dkong,     0,        dkong2b,   dkong,    driver_device, 0,        ROT90,  "Nintendo of America", "Donkey Kong (US set 1)", MACHINE_SUPPORTS_SAVE )
-GAME( 1981, dkonghrd,  dkong,    dkong2b,   dkong,    driver_device, 0,        ROT90,  "Nintendo of America", "Donkey Kong (hard kit)", MACHINE_SUPPORTS_SAVE ) // not sure if original or bootleg (see notes on top of driver file)
-GAME( 1981, dkongo,    dkong,    dkong2b,   dkong,    driver_device, 0,        ROT90,  "Nintendo", "Donkey Kong (US set 2)", MACHINE_SUPPORTS_SAVE )
-GAME( 1981, dkongj,    dkong,    dkong2b,   dkong,    driver_device, 0,        ROT90,  "Nintendo", "Donkey Kong (Japan set 1)", MACHINE_SUPPORTS_SAVE )
-GAME( 1981, dkongjo,   dkong,    dkong2b,   dkong,    driver_device, 0,        ROT90,  "Nintendo", "Donkey Kong (Japan set 2)", MACHINE_SUPPORTS_SAVE )
-GAME( 1981, dkongjo1,  dkong,    dkong2b,   dkong,    driver_device, 0,        ROT90,  "Nintendo", "Donkey Kong (Japan set 3)", MACHINE_SUPPORTS_SAVE )
-
-GAME( 2004, dkongf,    dkong,    dkong2b,   dkongf,   driver_device, 0,        ROT90,  "hack (Jeff Kulczycki)", "Donkey Kong Foundry (hack)", MACHINE_SUPPORTS_SAVE ) /* from Jeff's Romhack */
-GAME( 2006, dkongx,    dkong,    braze,     dkongx,   dkong_state,   dkongx,   ROT90,  "hack (Braze Technologies)", "Donkey Kong II: Jumpman Returns (hack, V1.2)", MACHINE_SUPPORTS_SAVE )
-GAME( 2006, dkongx11,  dkong,    braze,     dkongx,   dkong_state,   dkongx,   ROT90,  "hack (Braze Technologies)", "Donkey Kong II: Jumpman Returns (hack, V1.1)", MACHINE_SUPPORTS_SAVE )
-GAME( 2013, dkongpe,   dkong,    dkong2b,   dkong,    driver_device, 0,        ROT90,  "hack (Clay Cowgill and Mike Mika)", "Donkey Kong: Pauline Edition Rev 5 (2013-04-22)", MACHINE_SUPPORTS_SAVE )
-
-GAME( 1982, dkongjr,   0,        dkongjr,   dkongjr,  driver_device, 0,        ROT90,  "Nintendo of America", "Donkey Kong Junior (US set F-2)", MACHINE_SUPPORTS_SAVE )
-GAME( 1982, dkongjrj,  dkongjr,  dkongjr,   dkongjr,  driver_device, 0,        ROT90,  "Nintendo", "Donkey Kong Jr. (Japan)", MACHINE_SUPPORTS_SAVE )
-GAME( 1982, dkongjnrj, dkongjr,  dkongjr,   dkongjr,  driver_device, 0,        ROT90,  "Nintendo", "Donkey Kong Junior (Japan?)", MACHINE_SUPPORTS_SAVE )
-GAME( 1982, dkongjrb,  dkongjr,  dkongjr,   dkongjr,  driver_device, 0,        ROT90,  "bootleg", "Donkey Kong Jr. (bootleg)", MACHINE_SUPPORTS_SAVE )
-GAME( 1982, dkongjre,  dkongjr,  dkongjr,   dkongjr,  driver_device, 0,        ROT90,  "Nintendo of America", "Donkey Kong Junior (E kit)", MACHINE_SUPPORTS_SAVE )
-GAME( 1982, dkongjrpb, dkongjr,  dkongjr,   dkongjr,  driver_device, 0,        ROT90,  "bootleg", "Donkey Kong Junior (P kit, bootleg)", MACHINE_SUPPORTS_SAVE ) // definitely not issued by Nintendo
-GAME( 1982, jrking,    dkongjr,  dkongjr,   dkongjr,  driver_device, 0,        ROT90,  "bootleg", "Junior King (bootleg of Donkey Kong Jr.)", MACHINE_SUPPORTS_SAVE )
-GAME( 1982, dkingjr,   dkongjr,  dkongjr,   dkongjr,  dkong_state,   dkingjr,  ROT90,  "bootleg", "Donkey King Jr. (bootleg of Donkey Kong Jr.)", MACHINE_SUPPORTS_SAVE )
-
-GAME( 1983, dkong3,    0,        dkong3,    dkong3,   driver_device, 0,        ROT90,  "Nintendo of America", "Donkey Kong 3 (US)", MACHINE_SUPPORTS_SAVE )
-GAME( 1983, dkong3j,   dkong3,   dkong3,    dkong3,   driver_device, 0,        ROT90,  "Nintendo", "Donkey Kong 3 (Japan)", MACHINE_SUPPORTS_SAVE )
-GAME( 1984, dkong3b,   dkong3,   dkong3b,   dkong3b,  driver_device, 0,        ROT90,  "bootleg", "Donkey Kong 3 (bootleg on Donkey Kong Jr. hardware)", MACHINE_SUPPORTS_SAVE )
-
-GAME( 1983, pestplce,  mario,    pestplce,  pestplce, driver_device, 0,        ROT180, "bootleg", "Pest Place", MACHINE_WRONG_COLORS | MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-
-/* 2650 based */
-GAME( 1984, herbiedk,  huncholy, s2650,     herbiedk, driver_device, 0,        ROT90,  "Century Electronics / Seatongrove Ltd", "Herbie at the Olympics (DK conversion)", MACHINE_SUPPORTS_SAVE )
-GAME( 1983, hunchbkd,  hunchbak, s2650,     hunchbkd, driver_device, 0,        ROT90,  "Century Electronics", "Hunchback (DK conversion)", MACHINE_SUPPORTS_SAVE )
-GAME( 1984, sbdk,      superbik, s2650,     sbdk,     driver_device, 0,        ROT90,  "Century Electronics", "Super Bike (DK conversion)", MACHINE_SUPPORTS_SAVE )
-GAME( 1984, herodk,    hero,     s2650,     herodk,   dkong_state,   herodk,   ROT90,  "Seatongrove Ltd (Crown license)", "Hero in the Castle of Doom (DK conversion)", MACHINE_SUPPORTS_SAVE )
-GAME( 1984, herodku,   hero,     s2650,     herodk,   driver_device, 0,        ROT90,  "Seatongrove Ltd (Crown license)", "Hero in the Castle of Doom (DK conversion not encrypted)", MACHINE_SUPPORTS_SAVE )
-GAME( 1984, 8ballact,  0,        s2650,     8ballact, driver_device, 0,        ROT90,  "Seatongrove Ltd (Magic Electronics USA license)", "Eight Ball Action (DK conversion)", MACHINE_SUPPORTS_SAVE )
-GAME( 1984, 8ballact2, 8ballact, s2650,     8ballact, driver_device, 0,        ROT90,  "Seatongrove Ltd (Magic Electronics USA license)", "Eight Ball Action (DKJr conversion)", MACHINE_SUPPORTS_SAVE )
-GAME( 1984, shootgal,  0,        s2650,     shootgal, driver_device, 0,        ROT180, "Seatongrove Ltd (Zaccaria license)", "Shooting Gallery", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 1985, spclforc,  0,        spclforc,  spclforc, driver_device, 0,        ROT90,  "Senko Industries (Magic Electronics Inc. license)", "Special Forces", MACHINE_NO_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 1985, spcfrcii,  0,        spclforc,  spclforc, driver_device, 0,        ROT90,  "Senko Industries (Magic Electronics Inc. license)", "Special Forces II", MACHINE_NO_SOUND | MACHINE_SUPPORTS_SAVE )
-
-/* EPOS */
-GAME( 1984, drakton,   0,        drakton,   drakton,  dkong_state,   drakton,  ROT90,  "Epos Corporation", "Drakton (DK conversion)", MACHINE_SUPPORTS_SAVE )
-GAME( 1984, drktnjr,   drakton,  drktnjr,   drakton,  dkong_state,   drakton,  ROT90,  "Epos Corporation", "Drakton (DKJr conversion)", MACHINE_SUPPORTS_SAVE )
-GAME( 1985, strtheat,  0,        strtheat,  strtheat, dkong_state,   strtheat, ROT90,  "Epos Corporation", "Street Heat", MACHINE_SUPPORTS_SAVE ) // distributed by Cardinal Amusements Products (a division of Epos Corporation)
-=======
 GAME( 1980, radarscp,  0,        radarscp,  radarscp, dkong_state, 0,        ROT90,  "Nintendo", "Radar Scope",         MACHINE_SUPPORTS_SAVE )
 GAME( 1980, radarscp1, radarscp, radarscp1, radarscp, dkong_state, 0,        ROT90,  "Nintendo", "Radar Scope (TRS01)", MACHINE_SUPPORTS_SAVE )
 
@@ -3646,4 +3413,3 @@ GAME( 1985, spcfrcii,  0,        spclforc,  spclforc, dkong_state, 0,        ROT
 GAME( 1984, drakton,   0,        drakton,   drakton,  dkong_state, drakton,  ROT90,  "Epos Corporation", "Drakton (DK conversion)",   MACHINE_SUPPORTS_SAVE )
 GAME( 1984, drktnjr,   drakton,  drktnjr,   drakton,  dkong_state, drakton,  ROT90,  "Epos Corporation", "Drakton (DKJr conversion)", MACHINE_SUPPORTS_SAVE )
 GAME( 1985, strtheat,  0,        strtheat,  strtheat, dkong_state, strtheat, ROT90,  "Epos Corporation", "Street Heat",               MACHINE_SUPPORTS_SAVE ) // distributed by Cardinal Amusements Products (a division of Epos Corporation)
->>>>>>> upstream/master

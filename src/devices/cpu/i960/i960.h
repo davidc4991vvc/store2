@@ -1,16 +1,9 @@
 // license:BSD-3-Clause
 // copyright-holders:Farfetch'd, R. Belmont
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __I960_H__
-#define __I960_H__
-=======
 #ifndef MAME_CPU_I960_I960_H
 #define MAME_CPU_I960_I960_H
 
 #pragma once
->>>>>>> upstream/master
 
 
 enum
@@ -70,21 +63,11 @@ enum
 };
 
 
-<<<<<<< HEAD
-enum { I960_RCACHE_SIZE = 4 };
-
-
-=======
->>>>>>> upstream/master
 class i960_cpu_device :  public cpu_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	i960_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-=======
 	i960_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
->>>>>>> upstream/master
 
 	// call from any read/write handler for a memory area that can't be bursted
 	// on the real hardware (e.g. Model 2's interrupt control registers)
@@ -93,30 +76,6 @@ public:
 	void i960_stall() { m_IP = m_PIP; }
 
 protected:
-<<<<<<< HEAD
-	// device-level overrides
-	virtual void device_start();
-	virtual void device_reset();
-
-	// device_execute_interface overrides
-	virtual UINT32 execute_min_cycles() const { return 1; } /* ???? TODO: Exact timing unknown */
-	virtual UINT32 execute_max_cycles() const { return 1; } /* ???? TODO: Exact timing unknown */
-	virtual UINT32 execute_input_lines() const { return 4; }
-	virtual UINT32 execute_default_irq_vector() const { return 0xffffffff; }
-	virtual void execute_run();
-	virtual void execute_set_input(int inputnum, int state);
-
-	// device_memory_interface overrides
-	virtual const address_space_config *memory_space_config(address_spacenum spacenum = AS_0) const { return (spacenum == AS_PROGRAM) ? &m_program_config : NULL; }
-
-	// device_state_interface overrides
-	void state_string_export(const device_state_entry &entry, std::string &str);
-
-	// device_disasm_interface overrides
-	virtual UINT32 disasm_min_opcode_bytes() const { return 4; }
-	virtual UINT32 disasm_max_opcode_bytes() const { return 8; }
-	virtual offs_t disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options);
-=======
 	enum { I960_RCACHE_SIZE = 4 };
 
 	// device-level overrides
@@ -141,29 +100,10 @@ protected:
 	virtual uint32_t disasm_min_opcode_bytes() const override { return 4; }
 	virtual uint32_t disasm_max_opcode_bytes() const override { return 8; }
 	virtual offs_t disasm_disassemble(std::ostream &stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, uint32_t options) override;
->>>>>>> upstream/master
 
 private:
 	address_space_config m_program_config;
 
-<<<<<<< HEAD
-	UINT32 m_r[0x20];
-	UINT32 m_rcache[I960_RCACHE_SIZE][0x10];
-	UINT32 m_rcache_frame_addr[I960_RCACHE_SIZE];
-	// rcache_pos = how deep in the stack we are.  0-(I960_RCACHE_SIZE-1) means in-cache.
-	// I960_RCACHE_SIZE or greater means out of cache, must save to memory.
-	INT32 m_rcache_pos;
-
-	double m_fp[4];
-
-	UINT32 m_SAT;
-	UINT32 m_PRCB;
-	UINT32 m_PC;
-	UINT32 m_AC;
-	UINT32 m_IP;
-	UINT32 m_PIP;
-	UINT32 m_ICR;
-=======
 	uint32_t m_r[0x20];
 	uint32_t m_rcache[I960_RCACHE_SIZE][0x10];
 	uint32_t m_rcache_frame_addr[I960_RCACHE_SIZE];
@@ -180,7 +120,6 @@ private:
 	uint32_t m_IP;
 	uint32_t m_PIP;
 	uint32_t m_ICR;
->>>>>>> upstream/master
 	int m_bursting;
 
 	int m_immediate_irq;
@@ -192,42 +131,6 @@ private:
 
 	int m_icount;
 
-<<<<<<< HEAD
-	UINT32 i960_read_dword_unaligned(UINT32 address);
-	UINT16 i960_read_word_unaligned(UINT32 address);
-	void i960_write_dword_unaligned(UINT32 address, UINT32 data);
-	void i960_write_word_unaligned(UINT32 address, UINT16 data);
-	void send_iac(UINT32 adr);
-	UINT32 get_ea(UINT32 opcode);
-	UINT32 get_1_ri(UINT32 opcode);
-	UINT32 get_2_ri(UINT32 opcode);
-	UINT64 get_2_ri64(UINT32 opcode);
-	void set_ri(UINT32 opcode, UINT32 val);
-	void set_ri2(UINT32 opcode, UINT32 val, UINT32 val2);
-	void set_ri64(UINT32 opcode, UINT64 val);
-	double get_1_rif(UINT32 opcode);
-	double get_2_rif(UINT32 opcode);
-	void set_rif(UINT32 opcode, double val);
-	double get_1_rifl(UINT32 opcode);
-	double get_2_rifl(UINT32 opcode);
-	void set_rifl(UINT32 opcode, double val);
-	UINT32 get_1_ci(UINT32 opcode);
-	UINT32 get_2_ci(UINT32 opcode);
-	UINT32 get_disp(UINT32 opcode);
-	UINT32 get_disp_s(UINT32 opcode);
-	void cmp_s(INT32 v1, INT32 v2);
-	void cmp_u(UINT32 v1, UINT32 v2);
-	void concmp_s(INT32 v1, INT32 v2);
-	void concmp_u(UINT32 v1, UINT32 v2);
-	void cmp_d(double v1, double v2);
-	void bxx(UINT32 opcode, int mask);
-	void bxx_s(UINT32 opcode, int mask);
-	void test(UINT32 opcode, int mask);
-	void execute_op(UINT32 opcode);
-	void take_interrupt(int vector, int lvl);
-	void check_irqs();
-	void do_call(UINT32 adr, int type, UINT32 stack);
-=======
 	uint32_t i960_read_dword_unaligned(uint32_t address);
 	uint16_t i960_read_word_unaligned(uint32_t address);
 	void i960_write_dword_unaligned(uint32_t address, uint32_t data);
@@ -263,19 +166,11 @@ private:
 	void take_interrupt(int vector, int lvl);
 	void check_irqs();
 	void do_call(uint32_t adr, int type, uint32_t stack);
->>>>>>> upstream/master
 	void do_ret_0();
 	void do_ret();
 };
 
 
-<<<<<<< HEAD
-extern const device_type I960;
-
-
-#endif /* __I960_H__ */
-=======
 DECLARE_DEVICE_TYPE(I960, i960_cpu_device)
 
 #endif // MAME_CPU_I960_I960_H
->>>>>>> upstream/master

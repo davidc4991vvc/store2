@@ -4,10 +4,6 @@
 #define __WINDOWS_FILE_FIND_H
 
 #include "../Common/MyString.h"
-<<<<<<< HEAD
-#include "../Common/Types.h"
-=======
->>>>>>> upstream/master
 #include "Defs.h"
 
 namespace NWindows {
@@ -28,21 +24,13 @@ namespace NAttributes
 class CFileInfoBase
 {
   bool MatchesMask(UINT32 mask) const { return ((Attrib & mask) != 0); }
-<<<<<<< HEAD
-protected:
-  void Clear();
-=======
->>>>>>> upstream/master
 public:
   UInt64 Size;
   FILETIME CTime;
   FILETIME ATime;
   FILETIME MTime;
   DWORD Attrib;
-<<<<<<< HEAD
-=======
   bool IsAltStream;
->>>>>>> upstream/master
   bool IsDevice;
 
   /*
@@ -53,14 +41,11 @@ public:
   #endif
   */
 
-<<<<<<< HEAD
-=======
   CFileInfoBase() { ClearBase(); }
   void ClearBase() throw();
 
   void SetAsDir() { Attrib = FILE_ATTRIBUTE_DIRECTORY; }
 
->>>>>>> upstream/master
   bool IsArchived() const { return MatchesMask(FILE_ATTRIBUTE_ARCHIVE); }
   bool IsCompressed() const { return MatchesMask(FILE_ATTRIBUTE_COMPRESSED); }
   bool IsDir() const { return MatchesMask(FILE_ATTRIBUTE_DIRECTORY); }
@@ -78,26 +63,6 @@ public:
 struct CFileInfo: public CFileInfoBase
 {
   FString Name;
-<<<<<<< HEAD
-
-  bool IsDots() const;
-  bool Find(CFSTR wildcard);
-};
-
-class CFindFile
-{
-  friend class CEnumerator;
-  HANDLE _handle;
-public:
-  bool IsHandleAllocated() const { return _handle != INVALID_HANDLE_VALUE; }
-  CFindFile(): _handle(INVALID_HANDLE_VALUE) {}
-  ~CFindFile() { Close(); }
-  bool FindFirst(CFSTR wildcard, CFileInfo &fileInfo);
-  bool FindNext(CFileInfo &fileInfo);
-  bool Close();
-};
-
-=======
   #if defined(_WIN32) && !defined(UNDER_CE)
   // FString ShortName;
   #endif
@@ -156,16 +121,12 @@ public:
 
 #endif
 
->>>>>>> upstream/master
 bool DoesFileExist(CFSTR name);
 bool DoesDirExist(CFSTR name);
 bool DoesFileOrDirExist(CFSTR name);
 
-<<<<<<< HEAD
-=======
 DWORD GetFileAttrib(CFSTR path);
 
->>>>>>> upstream/master
 class CEnumerator
 {
   CFindFile _findFile;
@@ -186,11 +147,7 @@ public:
   bool IsHandleAllocated() const { return _handle != INVALID_HANDLE_VALUE && _handle != 0; }
   CFindChangeNotification(): _handle(INVALID_HANDLE_VALUE) {}
   ~CFindChangeNotification() { Close(); }
-<<<<<<< HEAD
-  bool Close();
-=======
   bool Close() throw();
->>>>>>> upstream/master
   HANDLE FindFirst(CFSTR pathName, bool watchSubtree, DWORD notifyFilter);
   bool FindNext() { return BOOLToBool(::FindNextChangeNotification(_handle)); }
 };

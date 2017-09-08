@@ -7,18 +7,6 @@
  *
  **********************************************************************************************/
 
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __ES5510_H__
-#define __ES5510_H__
-
-#include "emu.h"
-
-class es5510_device : public cpu_device {
-public:
-	es5510_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-=======
 #ifndef MAME_CPU_ES5510_ES5510_H
 #define MAME_CPU_ES5510_ES5510_H
 
@@ -28,18 +16,12 @@ public:
 class es5510_device : public cpu_device {
 public:
 	es5510_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
->>>>>>> upstream/master
 
 	DECLARE_READ8_MEMBER(host_r);
 	DECLARE_WRITE8_MEMBER(host_w);
 
-<<<<<<< HEAD
-	INT16 ser_r(int offset);
-	void ser_w(int offset, INT16 data);
-=======
 	int16_t ser_r(int offset);
 	void ser_w(int offset, int16_t data);
->>>>>>> upstream/master
 
 	enum line_t {
 		ES5510_HALT = 0
@@ -92,16 +74,6 @@ public:
 	static const ram_control_t RAM_CONTROL[8];
 
 	struct alu_t {
-<<<<<<< HEAD
-		UINT8 aReg;
-		UINT8 bReg;
-		op_src_dst_t src;
-		op_src_dst_t dst;
-		UINT8 op;
-		INT32 aValue;
-		INT32 bValue;
-		INT32 result;
-=======
 		uint8_t aReg;
 		uint8_t bReg;
 		op_src_dst_t src;
@@ -110,23 +82,11 @@ public:
 		int32_t aValue;
 		int32_t bValue;
 		int32_t result;
->>>>>>> upstream/master
 		bool update_ccr;
 		bool write_result;
 	};
 
 	struct mulacc_t {
-<<<<<<< HEAD
-		UINT8 cReg;
-		UINT8 dReg;
-		op_src_dst_t src;
-		op_src_dst_t dst;
-		bool accumulate;
-		INT32 cValue;
-		INT32 dValue;
-		INT64 product;
-		INT64 result;
-=======
 		uint8_t cReg;
 		uint8_t dReg;
 		op_src_dst_t src;
@@ -136,16 +96,11 @@ public:
 		int32_t dValue;
 		int64_t product;
 		int64_t result;
->>>>>>> upstream/master
 		bool write_result;
 	};
 
 	struct ram_t {
-<<<<<<< HEAD
-		INT32 address;     // up to 20 bits, left-justified within the right 24 bits of the 32-bit word
-=======
 		int32_t address;     // up to 20 bits, left-justified within the right 24 bits of the 32-bit word
->>>>>>> upstream/master
 		bool io;           // I/O space, rather than delay line memory
 		ram_cycle_t cycle; // cycle type
 	};
@@ -158,32 +113,6 @@ public:
 	void list_program(void(p)(const char *, ...));
 
 	// for testing purposes
-<<<<<<< HEAD
-	UINT64 &_instr(int pc) { return instr[pc % 160]; }
-	INT16 &_dram(int addr) { return dram[addr & 0xfffff]; }
-
-	// publicly visible for testing purposes
-	INT32 read_reg(UINT8 reg);
-	void write_reg(UINT8 reg, INT32 value);
-	void write_to_dol(INT32 value);
-
-protected:
-	virtual void device_start();
-	virtual void device_reset();
-	virtual const address_space_config *memory_space_config(address_spacenum spacenum = AS_0) const;
-	virtual UINT64 execute_clocks_to_cycles(UINT64 clocks) const;
-	virtual UINT64 execute_cycles_to_clocks(UINT64 cycles) const;
-	virtual UINT32 execute_min_cycles() const;
-	virtual UINT32 execute_max_cycles() const;
-	virtual UINT32 execute_input_lines() const;
-	virtual void execute_run();
-	virtual UINT32 disasm_min_opcode_bytes() const;
-	virtual UINT32 disasm_max_opcode_bytes() const;
-	virtual offs_t disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options);
-	virtual void execute_set_input(int linenum, int state);
-
-	INT32 alu_operation(UINT8 op, INT32 aValue, INT32 bValue, UINT8 &flags);
-=======
 	uint64_t &_instr(int pc) { return instr[pc % 160]; }
 	int16_t &_dram(int addr) { return dram[addr & 0xfffff]; }
 
@@ -208,54 +137,11 @@ protected:
 	virtual void execute_set_input(int linenum, int state) override;
 
 	int32_t alu_operation(uint8_t op, int32_t aValue, int32_t bValue, uint8_t &flags);
->>>>>>> upstream/master
 	void alu_operation_end();
 
 private:
 	int icount;
 	bool halt_asserted;
-<<<<<<< HEAD
-	UINT8 pc;
-	state_t state;
-	INT32 gpr[0xc0];     // 24 bits, right justified
-	INT16 ser0r;
-	INT16 ser0l;
-	INT16 ser1r;
-	INT16 ser1l;
-	INT16 ser2r;
-	INT16 ser2l;
-	INT16 ser3r;
-	INT16 ser3l;
-	INT64 machl;        // 48 bits, right justified and sign extended
-	bool mac_overflow;  // whether reading the MAC register should return a saturated replacement value
-	INT32 dil;
-	INT32 memsiz;
-	INT32 memmask;
-	INT32 memincrement;
-	INT8 memshift;
-	INT32 dlength;
-	INT32 abase;
-	INT32 bbase;
-	INT32 dbase;
-	INT32 sigreg;
-	int mulshift;
-	INT8 ccr;           // really, 5 bits, left justified
-	INT8 cmr;           // really, 6 bits, left justified
-	INT32 dol[2];
-	int dol_count;
-
-	UINT64 instr[160];    // 48 bits, right justified
-	INT16 dram[1<<20];   // there are up to 20 address bits (at least 16 expected), left justified within the 24 bits of a gpr or dadr; we preallocate all of it.
-
-	// latch registers for host interaction
-	INT32  dol_latch;     // 24 bits
-	INT32  dil_latch;     // 24 bits
-	UINT32 dadr_latch;    // 24 bits
-	INT32  gpr_latch;     // 24 bits, holding up to 20 address bits, left justified
-	UINT64 instr_latch;   // 48 bits, right justified
-	UINT8  ram_sel;       // effectively a boolean
-	UINT8  host_control;  //
-=======
 	uint8_t pc;
 	state_t state;
 	int32_t gpr[0xc0];     // 24 bits, right justified
@@ -296,7 +182,6 @@ private:
 	uint64_t instr_latch;   // 48 bits, right justified
 	uint8_t  ram_sel;       // effectively a boolean
 	uint8_t  host_control;  //
->>>>>>> upstream/master
 
 	// currently executing instruction(s)
 	alu_t alu;
@@ -304,12 +189,6 @@ private:
 	ram_t ram, ram_p, ram_pp; // ram operations for cycles N, N-1 and N-2
 };
 
-<<<<<<< HEAD
-extern const device_type ES5510;
-
-#endif // __ES5510_H__
-=======
 DECLARE_DEVICE_TYPE(ES5510, es5510_device)
 
 #endif // MAME_CPU_ES5510_ES5510_H
->>>>>>> upstream/master

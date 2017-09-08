@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-// license:???
-=======
 // license:BSD-3-Clause
->>>>>>> upstream/master
 // copyright-holders:Grull Osgo
 /************************************************************************************
 
@@ -35,10 +31,6 @@ Additional CD-ROM games: "99 Bottles of Beer"
 
 #include "emu.h"
 #include "cpu/i386/i386.h"
-<<<<<<< HEAD
-#include "machine/cr589.h"
-=======
->>>>>>> upstream/master
 //#include "machine/i82371sb.h"
 //#include "machine/i82439tx.h"
 #include "machine/lpci.h"
@@ -52,11 +44,7 @@ public:
 	gammagic_state(const machine_config &mconfig, device_type type, const char *tag)
 		: pcat_base_state(mconfig, type, tag) { }
 
-<<<<<<< HEAD
-	virtual void machine_start();
-=======
 	virtual void machine_start() override;
->>>>>>> upstream/master
 };
 
 // Memory is mostly handled by the chipset
@@ -134,11 +122,7 @@ void gammagic_state::machine_start()
 {
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( gammagic, gammagic_state )
-=======
 static MACHINE_CONFIG_START( gammagic )
->>>>>>> upstream/master
 	MCFG_CPU_ADD("maincpu", PENTIUM, 133000000) // Intel Pentium 133
 	MCFG_CPU_PROGRAM_MAP(gammagic_map)
 	MCFG_CPU_IO_MAP(gammagic_io)
@@ -197,12 +181,6 @@ ROM_END
 *      Game Drivers      *
 *************************/
 
-<<<<<<< HEAD
-/*     YEAR NAME       PARENT    MACHINE   INPUT                     INIT       ROT   COMPANY             FULLNAME              FLAGS           */
-GAME( 1999, gammagic,  0,        gammagic, gammagic, driver_device,  0,         ROT0, "Bally Gaming Co.", "Game Magic",         MACHINE_IS_SKELETON )
-GAME( 1999, 99bottles, gammagic, gammagic, gammagic, driver_device,  0,         ROT0, "Bally Gaming Co.", "99 Bottles of Beer", MACHINE_IS_SKELETON )
-=======
 //    YEAR  NAME       PARENT    MACHINE   INPUT     STATE           INIT       ROT   COMPANY             FULLNAME              FLAGS
 GAME( 1999, gammagic,  0,        gammagic, gammagic, gammagic_state, 0,         ROT0, "Bally Gaming Co.", "Game Magic",         MACHINE_IS_SKELETON )
 GAME( 1999, 99bottles, gammagic, gammagic, gammagic, gammagic_state, 0,         ROT0, "Bally Gaming Co.", "99 Bottles of Beer", MACHINE_IS_SKELETON )
->>>>>>> upstream/master

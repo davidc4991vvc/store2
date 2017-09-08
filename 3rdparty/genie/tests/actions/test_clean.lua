@@ -147,8 +147,6 @@
 	end
 
 
-<<<<<<< HEAD
-=======
 	function T.clean.CppBundleFiles()
 		prj = project "MyProject"
 		language "C++"
@@ -161,7 +159,6 @@
 	end
 
 
->>>>>>> upstream/master
 	function T.clean.CppStaticLibFiles()
 		prj = project "MyProject"
 		language "C++"

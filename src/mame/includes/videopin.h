@@ -7,10 +7,7 @@
 *************************************************************************/
 
 #include "sound/discrete.h"
-<<<<<<< HEAD
-=======
 #include "screen.h"
->>>>>>> upstream/master
 
 /* Discrete Sound Input Nodes */
 #define VIDEOPIN_OCTAVE_DATA    NODE_01
@@ -44,21 +41,12 @@ public:
 	required_device<screen_device> m_screen;
 	required_device<palette_device> m_palette;
 
-<<<<<<< HEAD
-	required_shared_ptr<UINT8> m_video_ram;
-
-	attotime m_time_pushed;
-	attotime m_time_released;
-	UINT8 m_prev;
-	UINT8 m_mask;
-=======
 	required_shared_ptr<uint8_t> m_video_ram;
 
 	attotime m_time_pushed;
 	attotime m_time_released;
 	uint8_t m_prev;
 	uint8_t m_mask;
->>>>>>> upstream/master
 	int m_ball_x;
 	int m_ball_y;
 	tilemap_t* m_bg_tilemap;
@@ -75,30 +63,18 @@ public:
 	TILEMAP_MAPPER_MEMBER(get_memory_offset);
 	TILE_GET_INFO_MEMBER(get_tile_info);
 
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void machine_reset();
-	virtual void video_start();
-
-	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
 	virtual void video_start() override;
 
 	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 
 	TIMER_CALLBACK_MEMBER(interrupt_callback);
 	void update_plunger();
 	double calc_plunger_pos();
 
 protected:
-<<<<<<< HEAD
-	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
-=======
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
->>>>>>> upstream/master
 };
 
 /*----------- defined in audio/videopin.c -----------*/

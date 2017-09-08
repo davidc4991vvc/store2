@@ -10,11 +10,7 @@
 #include "v25.h"
 #include "v25priv.h"
 
-<<<<<<< HEAD
-UINT8 v25_common_device::read_irqcontrol(int /*INTSOURCES*/ source, UINT8 priority)
-=======
 uint8_t v25_common_device::read_irqcontrol(int /*INTSOURCES*/ source, uint8_t priority)
->>>>>>> upstream/master
 {
 	return  (((m_pending_irq & source)     ? 0x80 : 0x00)
 			| ((m_unmasked_irq & source)   ? 0x00 : 0x40)
@@ -22,49 +18,28 @@ uint8_t v25_common_device::read_irqcontrol(int /*INTSOURCES*/ source, uint8_t pr
 			| priority);
 }
 
-<<<<<<< HEAD
-UINT8 v25_common_device::read_sfr(unsigned o)
-{
-	UINT8 ret;
-=======
 uint8_t v25_common_device::read_sfr(unsigned o)
 {
 	uint8_t ret;
->>>>>>> upstream/master
 
 	switch(o)
 	{
 		case 0x00: /* P0 */
-<<<<<<< HEAD
-			ret = m_io->read_byte(V25_PORT_P0);
-			break;
-		case 0x08: /* P1 */
-			/* P1 is combined with the interrupt lines */
-			ret = ((m_io->read_byte(V25_PORT_P1) & 0xF0)
-=======
 			ret = m_p0_in();
 			break;
 		case 0x08: /* P1 */
 			/* P1 is combined with the interrupt lines */
 			ret = ((m_p1_in() & 0xF0)
->>>>>>> upstream/master
 					| (m_nmi_state     ? 0x00 : 0x01)
 					| (m_intp_state[0] ? 0x00 : 0x02)
 					| (m_intp_state[1] ? 0x00 : 0x04)
 					| (m_intp_state[2] ? 0x00 : 0x08));
 			break;
 		case 0x10: /* P2 */
-<<<<<<< HEAD
-			ret = m_io->read_byte(V25_PORT_P2);
-			break;
-		case 0x38: /* PT */
-			ret = m_io->read_byte(V25_PORT_PT);
-=======
 			ret = m_p2_in();
 			break;
 		case 0x38: /* PT */
 			ret = m_pt_in();
->>>>>>> upstream/master
 			break;
 		case 0x4C: /* EXIC0 */
 			ret = read_irqcontrol(INTP0, m_priority_intp);
@@ -134,15 +109,9 @@ uint8_t v25_common_device::read_sfr(unsigned o)
 	return ret;
 }
 
-<<<<<<< HEAD
-UINT16 v25_common_device::read_sfr_word(unsigned o)
-{
-	UINT16 ret;
-=======
 uint16_t v25_common_device::read_sfr_word(unsigned o)
 {
 	uint16_t ret;
->>>>>>> upstream/master
 
 	switch(o)
 	{
@@ -168,11 +137,7 @@ uint16_t v25_common_device::read_sfr_word(unsigned o)
 	return ret;
 }
 
-<<<<<<< HEAD
-void v25_common_device::write_irqcontrol(int /*INTSOURCES*/ source, UINT8 d)
-=======
 void v25_common_device::write_irqcontrol(int /*INTSOURCES*/ source, uint8_t d)
->>>>>>> upstream/master
 {
 	if(d & 0x80)
 		m_pending_irq |= source;
@@ -193,11 +158,7 @@ void v25_common_device::write_irqcontrol(int /*INTSOURCES*/ source, uint8_t d)
 		m_bankswitch_irq &= ~source;
 }
 
-<<<<<<< HEAD
-void v25_common_device::write_sfr(unsigned o, UINT8 d)
-=======
 void v25_common_device::write_sfr(unsigned o, uint8_t d)
->>>>>>> upstream/master
 {
 	int tmp;
 	attotime time;
@@ -208,16 +169,6 @@ void v25_common_device::write_sfr(unsigned o, uint8_t d)
 	switch(o)
 	{
 		case 0x00: /* P0 */
-<<<<<<< HEAD
-			m_io->write_byte(V25_PORT_P0, d);
-			break;
-		case 0x08: /* P1 */
-			/* only the upper four bits of P1 can be used as output */
-			m_io->write_byte(V25_PORT_P1, d & 0xF0);
-			break;
-		case 0x10: /* P2 */
-			m_io->write_byte(V25_PORT_P2, d);
-=======
 			m_p0_out(d);
 			break;
 		case 0x08: /* P1 */
@@ -226,7 +177,6 @@ void v25_common_device::write_sfr(unsigned o, uint8_t d)
 			break;
 		case 0x10: /* P2 */
 			m_p2_out(d);
->>>>>>> upstream/master
 			break;
 		case 0x4C: /* EXIC0 */
 			write_irqcontrol(INTP0, d);
@@ -334,11 +284,7 @@ void v25_common_device::write_sfr(unsigned o, uint8_t d)
 	}
 }
 
-<<<<<<< HEAD
-void v25_common_device::write_sfr_word(unsigned o, UINT16 d)
-=======
 void v25_common_device::write_sfr_word(unsigned o, uint16_t d)
->>>>>>> upstream/master
 {
 	switch(o)
 	{
@@ -360,11 +306,7 @@ void v25_common_device::write_sfr_word(unsigned o, uint16_t d)
 	}
 }
 
-<<<<<<< HEAD
-UINT8 v25_common_device::v25_read_byte(unsigned a)
-=======
 uint8_t v25_common_device::v25_read_byte(unsigned a)
->>>>>>> upstream/master
 {
 	if((a & 0xFFE00) == m_IDB || a == 0xFFFFF)
 	{
@@ -380,11 +322,7 @@ uint8_t v25_common_device::v25_read_byte(unsigned a)
 	return m_program->read_byte(a);
 }
 
-<<<<<<< HEAD
-UINT16 v25_common_device::v25_read_word(unsigned a)
-=======
 uint16_t v25_common_device::v25_read_word(unsigned a)
->>>>>>> upstream/master
 {
 	if( a & 1 )
 		return (v25_read_byte(a) | (v25_read_byte(a + 1) << 8));
@@ -406,11 +344,7 @@ uint16_t v25_common_device::v25_read_word(unsigned a)
 	return m_program->read_word(a);
 }
 
-<<<<<<< HEAD
-void v25_common_device::v25_write_byte(unsigned a, UINT8 d)
-=======
 void v25_common_device::v25_write_byte(unsigned a, uint8_t d)
->>>>>>> upstream/master
 {
 	if((a & 0xFFE00) == m_IDB || a == 0xFFFFF)
 	{
@@ -432,11 +366,7 @@ void v25_common_device::v25_write_byte(unsigned a, uint8_t d)
 	m_program->write_byte(a, d);
 }
 
-<<<<<<< HEAD
-void v25_common_device::v25_write_word(unsigned a, UINT16 d)
-=======
 void v25_common_device::v25_write_word(unsigned a, uint16_t d)
->>>>>>> upstream/master
 {
 	if( a & 1 )
 	{

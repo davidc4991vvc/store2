@@ -240,11 +240,7 @@ complete set of waveforms is repeated R times.
 
 // Quantized intensity values, first index is the volume, second the
 // intensity (positive half only, real value goes -8..7)
-<<<<<<< HEAD
-static const short pcm_levels[8][8] = {
-=======
 static constexpr short pcm_levels[8][8] = {
->>>>>>> upstream/master
 	{  473,  945,  1418,  1890,  2363,  2835,  3308,  3781 },
 	{  655, 1310,  1966,  2621,  3276,  3931,  4586,  5242 },
 	{  925, 1851,  2776,  3702,  4627,  5553,  6478,  7404 },
@@ -255,33 +251,16 @@ static constexpr short pcm_levels[8][8] = {
 	{ 4095, 8190, 12285, 16380, 20475, 24570, 28665, 32760 },
 };
 
-<<<<<<< HEAD
-static const int delta1[16] = { -4, -4, -1, -1, -2, -2, 0, 0, 0, 0, 2, 2, 1, 1, 4, 4 };
-static const int delta2[16] = { 0, -1, -2, -3, 1, 0, -1, -2, 2, 1, 0, -1, 3, 2, 1, 0 };
-
-// Frequency quantizations, values are in units of 128us.
-static const int pitch_vals[32] = {
-=======
 static constexpr int delta1[16] = { -4, -4, -1, -1, -2, -2, 0, 0, 0, 0, 2, 2, 1, 1, 4, 4 };
 static constexpr int delta2[16] = { 0, -1, -2, -3, 1, 0, -1, -2, 2, 1, 0, -1, 3, 2, 1, 0 };
 
 // Frequency quantizations, values are in units of 128us.
 static constexpr int pitch_vals[32] = {
->>>>>>> upstream/master
 	97, 95, 92, 89, 87, 84, 82, 80, 77, 75, 73, 71, 69, 67, 65, 63,
 	61, 60, 58, 56, 55, 53, 52, 50, 49, 48, 46, 45, 43, 42, 41, 40
 };
 
 
-<<<<<<< HEAD
-const device_type DIGITALKER = &device_creator<digitalker_device>;
-
-digitalker_device::digitalker_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, DIGITALKER, "Digitalker", tag, owner, clock, "digitalker", __FILE__),
-		device_sound_interface(mconfig, *this),
-		m_rom(NULL),
-		m_stream(NULL),
-=======
 DEFINE_DEVICE_TYPE(DIGITALKER, digitalker_device, "digitalker", "MM54104 Digitalker")
 
 digitalker_device::digitalker_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
@@ -289,7 +268,6 @@ digitalker_device::digitalker_device(const machine_config &mconfig, const char *
 		device_sound_interface(mconfig, *this),
 		m_rom(*this, DEVICE_SELF),
 		m_stream(nullptr),
->>>>>>> upstream/master
 		m_data(0),
 		m_cs(0),
 		m_cms(0),
@@ -314,15 +292,9 @@ digitalker_device::digitalker_device(const machine_config &mconfig, const char *
 }
 
 
-<<<<<<< HEAD
-void digitalker_device::digitalker_write(UINT8 *adr, UINT8 vol, INT8 dac)
-{
-	INT16 v;
-=======
 void digitalker_device::digitalker_write(uint8_t *adr, uint8_t vol, int8_t dac)
 {
 	int16_t v;
->>>>>>> upstream/master
 	dac &= 15;
 	if(dac >= 9)
 		v = -pcm_levels[vol][15-dac];
@@ -333,11 +305,7 @@ void digitalker_device::digitalker_write(uint8_t *adr, uint8_t vol, int8_t dac)
 	m_dac[(*adr)++] = v;
 }
 
-<<<<<<< HEAD
-UINT8 digitalker_device::digitalker_pitch_next(UINT8 val, UINT8 prev, int step)
-=======
 uint8_t digitalker_device::digitalker_pitch_next(uint8_t val, uint8_t prev, int step)
->>>>>>> upstream/master
 {
 	int delta, nv;
 
@@ -355,20 +323,12 @@ uint8_t digitalker_device::digitalker_pitch_next(uint8_t val, uint8_t prev, int 
 	return nv;
 }
 
-<<<<<<< HEAD
-void digitalker_device::digitalker_set_intr(UINT8 intr)
-=======
 void digitalker_device::digitalker_set_intr(uint8_t intr)
->>>>>>> upstream/master
 {
 	m_intr = intr;
 }
 
-<<<<<<< HEAD
-void digitalker_device::digitalker_start_command(UINT8 cmd)
-=======
 void digitalker_device::digitalker_start_command(uint8_t cmd)
->>>>>>> upstream/master
 {
 	m_bpos = ((m_rom[cmd*2] << 8) | m_rom[cmd*2+1]) & 0x3fff;
 	m_cur_segment = m_segments = m_cur_repeat = m_repeats = 0;
@@ -379,15 +339,6 @@ void digitalker_device::digitalker_start_command(uint8_t cmd)
 
 void digitalker_device::digitalker_step_mode_0()
 {
-<<<<<<< HEAD
-	INT8 dac = 0;
-	int i, k, l;
-	UINT8 wpos = 0;
-	UINT8 h = m_rom[m_apos];
-	UINT16 bits = 0x80;
-	UINT8 vol = h >> 5;
-	UINT8 pitch_id = m_cur_segment ? digitalker_pitch_next(h, m_prev_pitch, m_cur_repeat) : h & 0x1f;
-=======
 	int8_t dac = 0;
 	int i, k, l;
 	uint8_t wpos = 0;
@@ -395,7 +346,6 @@ void digitalker_device::digitalker_step_mode_0()
 	uint16_t bits = 0x80;
 	uint8_t vol = h >> 5;
 	uint8_t pitch_id = m_cur_segment ? digitalker_pitch_next(h, m_prev_pitch, m_cur_repeat) : h & 0x1f;
->>>>>>> upstream/master
 
 	m_pitch = pitch_vals[pitch_id];
 
@@ -442,15 +392,6 @@ void digitalker_device::digitalker_step_mode_1()
 
 void digitalker_device::digitalker_step_mode_2()
 {
-<<<<<<< HEAD
-	INT8 dac = 0;
-	int k, l;
-	UINT8 wpos=0;
-	UINT8 h = m_rom[m_apos];
-	UINT16 bits = 0x80;
-	UINT8 vol = h >> 5;
-	UINT8 pitch_id = m_cur_segment ? digitalker_pitch_next(h, m_prev_pitch, m_cur_repeat) : h & 0x1f;
-=======
 	int8_t dac = 0;
 	int k, l;
 	uint8_t wpos=0;
@@ -458,7 +399,6 @@ void digitalker_device::digitalker_step_mode_2()
 	uint16_t bits = 0x80;
 	uint8_t vol = h >> 5;
 	uint8_t pitch_id = m_cur_segment ? digitalker_pitch_next(h, m_prev_pitch, m_cur_repeat) : h & 0x1f;
->>>>>>> upstream/master
 
 	m_pitch = pitch_vals[pitch_id];
 
@@ -516,17 +456,10 @@ void digitalker_device::digitalker_step_mode_2()
 
 void digitalker_device::digitalker_step_mode_3()
 {
-<<<<<<< HEAD
-	UINT8 h = m_rom[m_apos];
-	UINT8 vol = h >> 5;
-	UINT16 bits;
-	UINT8 dac, apos, wpos;
-=======
 	uint8_t h = m_rom[m_apos];
 	uint8_t vol = h >> 5;
 	uint16_t bits;
 	uint8_t dac, apos, wpos;
->>>>>>> upstream/master
 	int k, l;
 
 	m_pitch = pitch_vals[h & 0x1f];
@@ -564,15 +497,9 @@ void digitalker_device::digitalker_step()
 		if(m_stop_after == 0 && m_bpos == 0xffff)
 			return;
 		if(m_stop_after == 0) {
-<<<<<<< HEAD
-			UINT8 v1 = m_rom[m_bpos++];
-			UINT8 v2 = m_rom[m_bpos++];
-			UINT8 v3 = m_rom[m_bpos++];
-=======
 			uint8_t v1 = m_rom[m_bpos++];
 			uint8_t v2 = m_rom[m_bpos++];
 			uint8_t v3 = m_rom[m_bpos++];
->>>>>>> upstream/master
 			m_apos = v2 | ((v3 << 8) & 0x3f00);
 			m_segments = (v1 & 15) + 1;
 			m_repeats = ((v1 >> 4) & 7) + 1;
@@ -658,11 +585,7 @@ void digitalker_device::sound_stream_update(sound_stream &stream, stream_sample_
 
 void digitalker_device::digitalker_cs_w(int line)
 {
-<<<<<<< HEAD
-	UINT8 cs = line == ASSERT_LINE ? 1 : 0;
-=======
 	uint8_t cs = line == ASSERT_LINE ? 1 : 0;
->>>>>>> upstream/master
 	if(cs == m_cs)
 		return;
 	m_cs = cs;
@@ -683,11 +606,7 @@ void digitalker_device::digitalker_cms_w(int line)
 
 void digitalker_device::digitalker_wr_w(int line)
 {
-<<<<<<< HEAD
-	UINT8 wr = line == ASSERT_LINE ? 1 : 0;
-=======
 	uint8_t wr = line == ASSERT_LINE ? 1 : 0;
->>>>>>> upstream/master
 	if(wr == m_wr)
 		return;
 	m_wr = wr;
@@ -736,10 +655,6 @@ void digitalker_device::digitalker_register_for_save()
 
 void digitalker_device::device_start()
 {
-<<<<<<< HEAD
-	m_rom = m_region->base();
-=======
->>>>>>> upstream/master
 	m_stream = stream_alloc(0, 1, clock()/4);
 	m_dac_index = 128;
 	m_data = 0xff;

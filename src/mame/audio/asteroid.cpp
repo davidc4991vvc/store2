@@ -1,9 +1,5 @@
 // license:BSD-3-Clause
-<<<<<<< HEAD
-// copyright-holders:Brad Oliver, Bernd Wiebelt, Allard van der Bas
-=======
 // copyright-holders:K.Wilkins
->>>>>>> upstream/master
 /*****************************************************************************
  *
  * Asteroids Analog Sound system interface
@@ -11,14 +7,9 @@
  *****************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "sound/discrete.h"
-#include "includes/asteroid.h"
-=======
 #include "includes/asteroid.h"
 #include "machine/74259.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 /************************************************************************/
 /* Asteroids Sound System Analog emulation by K.Wilkins Nov 2000        */
@@ -80,11 +71,7 @@ static const discrete_555_cc_desc asteroid_thump_555cc =
 #define ASTEROID_EXPLODE_SND        NODE_26
 #define ASTEROID_THRUST_SND         NODE_27
 
-<<<<<<< HEAD
-DISCRETE_SOUND_START(asteroid)
-=======
 static DISCRETE_SOUND_START(asteroid)
->>>>>>> upstream/master
 	/************************************************/
 	/* Asteroid Effects Relataive Gain Table        */
 	/*                                              */
@@ -230,11 +217,7 @@ static DISCRETE_SOUND_START(asteroid)
 DISCRETE_SOUND_END
 
 
-<<<<<<< HEAD
-DISCRETE_SOUND_START(astdelux)
-=======
 static DISCRETE_SOUND_START(astdelux)
->>>>>>> upstream/master
 	/************************************************/
 	/* Asteroid delux sound hardware is mostly done */
 	/* in the Pokey chip except for the thrust and  */
@@ -326,26 +309,10 @@ WRITE8_MEMBER(asteroid_state::asteroid_thump_w)
 	m_discrete->write(space, ASTEROID_THUMP_DATA, data & 0x0f);
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER(asteroid_state::asteroid_sounds_w)
-{
-	m_discrete->write(space, NODE_RELATIVE(ASTEROID_SAUCER_SND_EN, offset), data & 0x80);
-}
-
-WRITE8_MEMBER(asteroid_state::astdelux_sounds_w)
-{
-	/* Only ever activates the thrusters in Astdelux */
-	m_discrete->write(space, ASTEROID_THRUST_EN, data & 0x80);
-}
-
-=======
->>>>>>> upstream/master
 WRITE8_MEMBER(asteroid_state::asteroid_noise_reset_w)
 {
 	m_discrete->write(space, ASTEROID_NOISE_RESET, 0);
 }
-<<<<<<< HEAD
-=======
 
 
 MACHINE_CONFIG_START(asteroid_sound)
@@ -375,4 +342,3 @@ MACHINE_CONFIG_START(astdelux_sound)
 	MCFG_DEVICE_ADD("audiolatch", LS259, 0) // M10
 	MCFG_ADDRESSABLE_LATCH_Q3_OUT_CB(DEVWRITELINE("discrete", discrete_device, write_line<ASTEROID_THRUST_EN>))
 MACHINE_CONFIG_END
->>>>>>> upstream/master

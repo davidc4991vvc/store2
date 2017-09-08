@@ -9,20 +9,11 @@
 
 **********************************************************************/
 
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __TIKI100_BUS__
-#define __TIKI100_BUS__
-
-#include "emu.h"
-=======
 #ifndef MAME_BUS_TIKI100_EXP_H
 #define MAME_BUS_TIKI100_EXP_H
 
 #pragma once
 
->>>>>>> upstream/master
 #include "cpu/z80/z80daisy.h"
 
 
@@ -48,21 +39,6 @@
 
 
 #define MCFG_TIKI100_BUS_IRQ_CALLBACK(_write) \
-<<<<<<< HEAD
-	devcb = &tiki100_bus_t::set_irq_wr_callback(*device, DEVCB_##_write);
-
-#define MCFG_TIKI100_BUS_NMI_CALLBACK(_write) \
-	devcb = &tiki100_bus_t::set_nmi_wr_callback(*device, DEVCB_##_write);
-
-#define MCFG_TIKI100_BUS_BUSRQ_CALLBACK(_write) \
-	devcb = &tiki100_bus_t::set_busrq_wr_callback(*device, DEVCB_##_write);
-
-#define MCFG_TIKI100_BUS_IN_MREQ_CALLBACK(_read) \
-	devcb = &tiki100_bus_t::set_mrq_rd_callback(*device, DEVCB_##_read);
-
-#define MCFG_TIKI100_BUS_OUT_MREQ_CALLBACK(_write) \
-	devcb = &tiki100_bus_t::set_mrq_wr_callback(*device, DEVCB_##_write);
-=======
 	devcb = &tiki100_bus_device::set_irq_wr_callback(*device, DEVCB_##_write);
 
 #define MCFG_TIKI100_BUS_NMI_CALLBACK(_write) \
@@ -76,7 +52,6 @@
 
 #define MCFG_TIKI100_BUS_OUT_MREQ_CALLBACK(_write) \
 	devcb = &tiki100_bus_device::set_mrq_wr_callback(*device, DEVCB_##_write);
->>>>>>> upstream/master
 
 
 
@@ -84,43 +59,16 @@
 //  TYPE DEFINITIONS
 //**************************************************************************
 
-<<<<<<< HEAD
-// ======================> tiki100_bus_slot_t
-
-class tiki100_bus_t;
-class tiki100_bus_slot_t;
-=======
 // ======================> tiki100_bus_slot_device
 
 class tiki100_bus_device;
 class tiki100_bus_slot_device;
->>>>>>> upstream/master
 
 
 // ======================> device_tiki100bus_card_interface
 
 class device_tiki100bus_card_interface : public device_slot_card_interface
 {
-<<<<<<< HEAD
-	friend class tiki100_bus_t;
-
-public:
-	// construction/destruction
-	device_tiki100bus_card_interface(const machine_config &mconfig, device_t &device);
-	virtual ~device_tiki100bus_card_interface() { }
-
-	device_tiki100bus_card_interface *next() const { return m_next; }
-
-	// memory access
-	virtual UINT8 mrq_r(address_space &space, offs_t offset, UINT8 data, bool &mdis) { mdis = 1; return data; };
-	virtual void mrq_w(address_space &space, offs_t offset, UINT8 data) { };
-
-	// I/O access
-	virtual UINT8 iorq_r(address_space &space, offs_t offset, UINT8 data) { return data; };
-	virtual void iorq_w(address_space &space, offs_t offset, UINT8 data) { };
-
-	virtual void busak_w(int state) { m_busak = state; };
-=======
 	friend class tiki100_bus_device;
 	template <class ElementType> friend class simple_list;
 
@@ -136,19 +84,12 @@ public:
 	virtual void iorq_w(address_space &space, offs_t offset, uint8_t data) { }
 
 	virtual void busak_w(int state) { m_busak = state; }
->>>>>>> upstream/master
 
 	// Z80 daisy chain
 	virtual int z80daisy_irq_state() { return 0; }
 	virtual int z80daisy_irq_ack() { return 0; }
 	virtual void z80daisy_irq_reti() { }
 
-<<<<<<< HEAD
-	tiki100_bus_t  *m_bus;
-	tiki100_bus_slot_t *m_slot;
-	int m_busak;
-
-=======
 protected:
 	// construction/destruction
 	device_tiki100bus_card_interface(const machine_config &mconfig, device_t &device);
@@ -158,41 +99,18 @@ protected:
 	int m_busak;
 
 private:
->>>>>>> upstream/master
 	device_tiki100bus_card_interface *m_next;
 };
 
 
-<<<<<<< HEAD
-// ======================> tiki100_bus_slot_t
-
-class tiki100_bus_slot_t : public device_t,
-=======
 // ======================> tiki100_bus_slot_device
 
 class tiki100_bus_slot_device : public device_t,
->>>>>>> upstream/master
 							public device_slot_interface,
 							public device_z80daisy_interface
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	tiki100_bus_slot_t(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// device-level overrides
-	virtual void device_start();
-
-protected:
-	// device_z80daisy_interface overrides
-	virtual int z80daisy_irq_state() { return get_card_device() ? m_card->z80daisy_irq_state() : 0; }
-	virtual int z80daisy_irq_ack() { return get_card_device() ? m_card->z80daisy_irq_ack() : 0; }
-	virtual void z80daisy_irq_reti() { if (get_card_device()) m_card->z80daisy_irq_reti(); }
-
-private:
-	// configuration
-	tiki100_bus_t  *m_bus;
-=======
 	tiki100_bus_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	// device-level overrides
@@ -207,31 +125,11 @@ protected:
 private:
 	// configuration
 	tiki100_bus_device  *m_bus;
->>>>>>> upstream/master
 	device_tiki100bus_card_interface *m_card;
 };
 
 
 // device type definition
-<<<<<<< HEAD
-extern const device_type TIKI100_BUS_SLOT;
-
-
-// ======================> tiki100_bus_t
-
-class tiki100_bus_t : public device_t
-{
-public:
-	// construction/destruction
-	tiki100_bus_t(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-	~tiki100_bus_t() { m_device_list.detach_all(); }
-
-	template<class _Object> static devcb_base &set_irq_wr_callback(device_t &device, _Object object) { return downcast<tiki100_bus_t &>(device).m_irq_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_nmi_wr_callback(device_t &device, _Object object) { return downcast<tiki100_bus_t &>(device).m_nmi_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_busrq_wr_callback(device_t &device, _Object object) { return downcast<tiki100_bus_t &>(device).m_busrq_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_mrq_rd_callback(device_t &device, _Object object) { return downcast<tiki100_bus_t &>(device).m_in_mrq_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_mrq_wr_callback(device_t &device, _Object object) { return downcast<tiki100_bus_t &>(device).m_out_mrq_cb.set_callback(object); }
-=======
 DECLARE_DEVICE_TYPE(TIKI100_BUS_SLOT, tiki100_bus_slot_device)
 
 
@@ -249,22 +147,14 @@ public:
 	template <class Object> static devcb_base &set_busrq_wr_callback(device_t &device, Object &&cb) { return downcast<tiki100_bus_device &>(device).m_busrq_cb.set_callback(std::forward<Object>(cb)); }
 	template <class Object> static devcb_base &set_mrq_rd_callback(device_t &device, Object &&cb) { return downcast<tiki100_bus_device &>(device).m_in_mrq_cb.set_callback(std::forward<Object>(cb)); }
 	template <class Object> static devcb_base &set_mrq_wr_callback(device_t &device, Object &&cb) { return downcast<tiki100_bus_device &>(device).m_out_mrq_cb.set_callback(std::forward<Object>(cb)); }
->>>>>>> upstream/master
 
 	void add_card(device_tiki100bus_card_interface *card);
 
 	// computer interface
-<<<<<<< HEAD
-	UINT8 mrq_r(address_space &space, offs_t offset, UINT8 data, bool &mdis);
-	DECLARE_WRITE8_MEMBER( mrq_w );
-
-	UINT8 iorq_r(address_space &space, offs_t offset, UINT8 data);
-=======
 	uint8_t mrq_r(address_space &space, offs_t offset, uint8_t data, bool &mdis);
 	DECLARE_WRITE8_MEMBER( mrq_w );
 
 	uint8_t iorq_r(address_space &space, offs_t offset, uint8_t data);
->>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER( iorq_w );
 
 	DECLARE_WRITE_LINE_MEMBER( busak_w );
@@ -278,11 +168,7 @@ public:
 
 protected:
 	// device-level overrides
-<<<<<<< HEAD
-	virtual void device_start();
-=======
 	virtual void device_start() override;
->>>>>>> upstream/master
 
 private:
 	devcb_write_line   m_irq_cb;
@@ -296,21 +182,10 @@ private:
 
 
 // device type definition
-<<<<<<< HEAD
-extern const device_type TIKI100_BUS;
-
-=======
 DECLARE_DEVICE_TYPE(TIKI100_BUS, tiki100_bus_device)
->>>>>>> upstream/master
 
 
 
 SLOT_INTERFACE_EXTERN( tiki100_cards );
 
-<<<<<<< HEAD
-
-
-#endif
-=======
 #endif // MAME_BUS_TIKI100_EXP_H
->>>>>>> upstream/master

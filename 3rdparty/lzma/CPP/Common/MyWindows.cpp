@@ -4,59 +4,13 @@
 
 #ifndef _WIN32
 
-<<<<<<< HEAD
-#include "MyWindows.h"
-#include "Types.h"
-#include <malloc.h>
-=======
 #include <stdlib.h>
 
 #include "MyWindows.h"
->>>>>>> upstream/master
 
 static inline void *AllocateForBSTR(size_t cb) { return ::malloc(cb); }
 static inline void FreeForBSTR(void *pv) { ::free(pv);}
 
-<<<<<<< HEAD
-static UINT MyStringLen(const wchar_t *s)
-{
-  UINT i;
-  for (i = 0; s[i] != '\0'; i++);
-  return i;
-}
-
-BSTR SysAllocStringByteLen(LPCSTR psz, UINT len)
-{
-  int realLen = len + sizeof(UINT) + sizeof(OLECHAR) + sizeof(OLECHAR);
-  void *p = AllocateForBSTR(realLen);
-  if (p == 0)
-    return 0;
-  *(UINT *)p = len;
-  BSTR bstr = (BSTR)((UINT *)p + 1);
-  if (psz)
-  {
-    memmove(bstr, psz, len);
-    Byte *pb = ((Byte *)bstr) + len;
-    for (unsigned i = 0; i < sizeof(OLECHAR) * 2; i++)
-      pb[i] = 0;
-  }
-  return bstr;
-}
-
-BSTR SysAllocString(const OLECHAR *sz)
-{
-  if (sz == 0)
-    return 0;
-  UINT strLen = MyStringLen(sz);
-  UINT len = (strLen + 1) * sizeof(OLECHAR);
-  void *p = AllocateForBSTR(len + sizeof(UINT));
-  if (p == 0)
-    return 0;
-  *(UINT *)p = strLen;
-  BSTR bstr = (BSTR)((UINT *)p + 1);
-  memmove(bstr, sz, len);
-  return bstr;
-=======
 /* Win32 uses DWORD (32-bit) type to store size of string before (OLECHAR *) string.
   We must select CBstrSizeType for another systems (not Win32):
 
@@ -125,47 +79,29 @@ BSTR SysAllocString(const OLECHAR *s)
   while (*s2 != 0)
     s2++;
   return SysAllocStringLen(s, (UINT)(s2 - s));
->>>>>>> upstream/master
 }
 
 void SysFreeString(BSTR bstr)
 {
-<<<<<<< HEAD
-  if (bstr != 0)
-    FreeForBSTR((UINT *)bstr - 1);
-=======
   if (bstr)
     FreeForBSTR((CBstrSizeType *)bstr - 1);
->>>>>>> upstream/master
 }
 
 UINT SysStringByteLen(BSTR bstr)
 {
-<<<<<<< HEAD
-  if (bstr == 0)
-    return 0;
-  return *((UINT *)bstr - 1);
-=======
   if (!bstr)
     return 0;
   return *((CBstrSizeType *)bstr - 1);
->>>>>>> upstream/master
 }
 
 UINT SysStringLen(BSTR bstr)
 {
-<<<<<<< HEAD
-  return SysStringByteLen(bstr) / sizeof(OLECHAR);
-}
-
-=======
   if (!bstr)
     return 0;
   return *((CBstrSizeType *)bstr - 1) / sizeof(OLECHAR);
 }
 
 
->>>>>>> upstream/master
 HRESULT VariantClear(VARIANTARG *prop)
 {
   if (prop->vt == VT_BSTR)
@@ -174,11 +110,7 @@ HRESULT VariantClear(VARIANTARG *prop)
   return S_OK;
 }
 
-<<<<<<< HEAD
-HRESULT VariantCopy(VARIANTARG *dest, VARIANTARG *src)
-=======
 HRESULT VariantCopy(VARIANTARG *dest, const VARIANTARG *src)
->>>>>>> upstream/master
 {
   HRESULT res = ::VariantClear(dest);
   if (res != S_OK)
@@ -187,11 +119,7 @@ HRESULT VariantCopy(VARIANTARG *dest, const VARIANTARG *src)
   {
     dest->bstrVal = SysAllocStringByteLen((LPCSTR)src->bstrVal,
         SysStringByteLen(src->bstrVal));
-<<<<<<< HEAD
-    if (dest->bstrVal == 0)
-=======
     if (!dest->bstrVal)
->>>>>>> upstream/master
       return E_OUTOFMEMORY;
     dest->vt = VT_BSTR;
   }

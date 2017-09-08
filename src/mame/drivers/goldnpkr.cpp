@@ -12,10 +12,7 @@
 
   * Golden Poker Double Up (Big Boy),                 1981, Bonanza Enterprises, Ltd.
   * Golden Poker Double Up (Mini Boy),                1981, Bonanza Enterprises, Ltd.
-<<<<<<< HEAD
-=======
   * Golden Poker Double Up (bootleg),                 198?, Bootleg.
->>>>>>> upstream/master
   * Videotron Poker (cards selector, set 1),          198?, Unknown.
   * Videotron Poker (cards selector, set 2),          198?, Unknown.
   * Videotron Poker (normal controls),                198?, Unknown.
@@ -27,12 +24,8 @@
   * Jack Potten's Poker (set 6),                      198?, Bootleg.
   * Jack Potten's Poker (set 7, Royale GFX),          198?, Bootleg.
   * Jack Potten's Poker (set 8, Australian),          198?, Bootleg.
-<<<<<<< HEAD
-  * Good Luck,                                        198?, Unknown.
-=======
   * Jack Potten's Poker (set 9, 'just 4 fun'),        198?, Bootleg.
   * Jack Potten's Poker (set 10, ICP-1 PCB),          198?, Bootleg.
->>>>>>> upstream/master
   * Jack Potten's Poker (NGold, set 1),               198?, Unknown.
   * Jack Potten's Poker (NGold, set 2),               198?, Unknown.
   * Jack Potten's Poker (NGold, set 3),               198?, Unknown.
@@ -58,11 +51,8 @@
   * Buena Suerte (Spanish, set 20),                   1991, Unknown.
   * Buena Suerte (Spanish, set 21),                   1991, Unknown.
   * Buena Suerte (Spanish, set 22),                   1991, Unknown.
-<<<<<<< HEAD
-=======
   * Buena Suerte (Spanish/Portuguese, set 23),        1991, Unknown.
   * Good Luck,                                        198?, Unknown.
->>>>>>> upstream/master
   * Falcons Wild - World Wide Poker,                  1983, Falcon.
   * Falcons Wild - World Wide Poker (VK set 1),       1990, Video Klein.
   * Falcons Wild - World Wide Poker (VK set 2),       1990, Video Klein.
@@ -110,10 +100,6 @@
   * Witch Up & Down (Export, 6T/12T ver 1.02),        1998, Video Klein.
   * Witch Strike (Export, 6T/12T ver 1.01A),          1992, Video Klein.
   * Witch Strike (Export, 6T/12T ver 1.01B),          1992, Video Klein.
-<<<<<<< HEAD
-  * Witch Jackpot (Export, 6T/12T ver 0.25),          1992-1996, Video Klein.
-=======
->>>>>>> upstream/master
   * Witch Jack (Export, 6T/12T ver 0.40),             1992-1996, Video Klein.
   * Witch Jack (Export, 6T/12T ver 0.40T),            1992-1996, Video Klein.
   * Witch Jack (Export, 6T/12T ver 0.62),             1992-1996, Video Klein.
@@ -124,20 +110,12 @@
   * Witch Jack (Export, 6T/12T ver 0.87),             1992-1996, Video Klein.
   * Witch Jack (Export, 6T/12T ver 0.87-88),          1992-1996, Video Klein.
   * Witch Jack (Export, 6T/12T ver 0.87-89),          1992-1996, Video Klein.
-<<<<<<< HEAD
-  * PlayMan Poker (German),                           1981, PM / Beck Elektronik.
-  * Super Loco 93 (Spanish, set 1),                   1993, Unknown.
-  * Super Loco 93 (Spanish, set 2),                   1993, Unknown.
-  * Royale (set 1),                                   198?, Unknown.
-  * Royale (set 2),                                   198?, Unknown.
-=======
   * Witch Jackpot (Export, 6T/12T ver 0.25),          1992-1996, Video Klein.
   * PlayMan Poker (German),                           1981, PM / Beck Elektronik.
   * Royale (set 1),                                   198?, Unknown.
   * Royale (set 2),                                   198?, Unknown.
   * Super Loco 93 (Spanish, set 1),                   1993, Unknown.
   * Super Loco 93 (Spanish, set 2),                   1993, Unknown.
->>>>>>> upstream/master
   * Maverik,                                          198?, Unknown.
   * Brasil 86,                                        1986, Unknown.
   * Brasil 87,                                        1987, Unknown.
@@ -157,14 +135,10 @@
   * Bonne Chance! (Golden Poker prequel HW, set 2),   198?, Unknown.
   * Mundial/Mondial (Italian/French),                 1987, Unknown.
   * Super 98 (3-hands, ICP-1),                        199?, Unknown.
-<<<<<<< HEAD
-
-=======
   * unknown animal-themed game (bottom),              199?, Unknown.
   * unknown animal-themed game (top),                 199?, Unknown.
   * Mega Double Poker (conversion kit, set 1),        1990, Blitz System Inc.
   * Mega Double Poker (conversion kit, set 2),        1990, Blitz System Inc.
->>>>>>> upstream/master
 
 ************************************************************************************
 
@@ -645,8 +619,6 @@
 
 ************************************************************************************
 
-<<<<<<< HEAD
-=======
   Mega Double Poker is distributed as standalone PCB, or as upgrade kit for
   modified Golden Poker boards.
 
@@ -841,7 +813,6 @@
 
 ************************************************************************************
 
->>>>>>> upstream/master
 
   -----------------------------------------------
   ***  Memory Map (pmpoker/goldnpkr hardware) ***
@@ -1297,22 +1268,6 @@
 
 ************************************************************************************/
 
-<<<<<<< HEAD
-
-#define MASTER_CLOCK    XTAL_10MHz
-#define CPU_CLOCK       (MASTER_CLOCK/16)
-
-#include "emu.h"
-#include "cpu/m6502/m6502.h"
-#include "video/mc6845.h"
-#include "machine/6821pia.h"
-#include "sound/discrete.h"
-#include "machine/nvram.h"
-
-/* Extra CPUs, MCUs, devices, etc... */
-#include "cpu/z80/z80.h"
-#include "sound/ay8910.h"
-=======
 #include "emu.h"
 
 #include "cpu/m6502/m6502.h"
@@ -1328,20 +1283,16 @@
 
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 #include "pmpoker.lh"
 #include "goldnpkr.lh"
 #include "upndown.lh"
 
 
-<<<<<<< HEAD
-=======
 #define MASTER_CLOCK    XTAL_10MHz
 #define CPU_CLOCK       (MASTER_CLOCK/16)
 
 
->>>>>>> upstream/master
 class goldnpkr_state : public driver_device
 {
 public:
@@ -1354,14 +1305,6 @@ public:
 		m_gfxdecode(*this, "gfxdecode"),
 		m_palette(*this, "palette")  { }
 
-<<<<<<< HEAD
-	required_shared_ptr<UINT8> m_videoram;
-	required_shared_ptr<UINT8> m_colorram;
-	tilemap_t *m_bg_tilemap;
-	UINT8 m_mux_data;
-	UINT8 m_pia0_PA_data;
-=======
->>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(goldnpkr_videoram_w);
 	DECLARE_WRITE8_MEMBER(goldnpkr_colorram_w);
 	DECLARE_READ8_MEMBER(goldnpkr_mux_port_r);
@@ -1401,33 +1344,23 @@ public:
 	DECLARE_DRIVER_INIT(bchancep);
 	TILE_GET_INFO_MEMBER(get_bg_tile_info);
 	TILE_GET_INFO_MEMBER(wcrdxtnd_get_bg_tile_info);
-<<<<<<< HEAD
-	virtual void video_start();
-=======
 	virtual void video_start() override;
->>>>>>> upstream/master
 	DECLARE_PALETTE_INIT(goldnpkr);
 	DECLARE_PALETTE_INIT(witchcrd);
 	DECLARE_VIDEO_START(wcrdxtnd);
 	DECLARE_PALETTE_INIT(wcrdxtnd);
 	DECLARE_MACHINE_START(mondial);
 	DECLARE_MACHINE_RESET(mondial);
-<<<<<<< HEAD
-	UINT32 screen_update_goldnpkr(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	uint32_t screen_update_goldnpkr(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 
 protected:
 	required_shared_ptr<uint8_t> m_videoram;
 	required_shared_ptr<uint8_t> m_colorram;
 
->>>>>>> upstream/master
 	required_device<cpu_device> m_maincpu;
 	optional_device<discrete_device> m_discrete;
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
-<<<<<<< HEAD
-=======
 
 	tilemap_t *m_bg_tilemap;
 	uint8_t m_mux_data;
@@ -1458,7 +1391,6 @@ public:
 	DECLARE_WRITE8_MEMBER(mcu_command_w);
 	DECLARE_WRITE8_MEMBER(mcu_portb_w);
 	DECLARE_WRITE8_MEMBER(mcu_portc_w);
->>>>>>> upstream/master
 };
 
 
@@ -1517,26 +1449,15 @@ TILE_GET_INFO_MEMBER(goldnpkr_state::wcrdxtnd_get_bg_tile_info)
 
 void goldnpkr_state::video_start()
 {
-<<<<<<< HEAD
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(goldnpkr_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
-=======
 	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(goldnpkr_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
->>>>>>> upstream/master
 }
 
 VIDEO_START_MEMBER(goldnpkr_state,wcrdxtnd)
 {
-<<<<<<< HEAD
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(goldnpkr_state::wcrdxtnd_get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
-}
-
-UINT32 goldnpkr_state::screen_update_goldnpkr(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(goldnpkr_state::wcrdxtnd_get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
 }
 
 uint32_t goldnpkr_state::screen_update_goldnpkr(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	m_bg_tilemap->draw(screen, bitmap, cliprect, 0, 0);
 	return 0;
@@ -1544,11 +1465,7 @@ uint32_t goldnpkr_state::screen_update_goldnpkr(screen_device &screen, bitmap_in
 
 PALETTE_INIT_MEMBER(goldnpkr_state, goldnpkr)
 {
-<<<<<<< HEAD
-	const UINT8 *color_prom = memregion("proms")->base();
-=======
 	const uint8_t *color_prom = memregion("proms")->base();
->>>>>>> upstream/master
 /*  prom bits
     7654 3210
     ---- ---x   red component.
@@ -1560,11 +1477,7 @@ PALETTE_INIT_MEMBER(goldnpkr_state, goldnpkr)
 	int i;
 
 	/* 0000IBGR */
-<<<<<<< HEAD
-	if (color_prom == 0) return;
-=======
 	if (color_prom == nullptr) return;
->>>>>>> upstream/master
 
 	for (i = 0;i < palette.entries();i++)
 	{
@@ -1596,11 +1509,7 @@ PALETTE_INIT_MEMBER(goldnpkr_state, goldnpkr)
 
 PALETTE_INIT_MEMBER(goldnpkr_state,witchcrd)
 {
-<<<<<<< HEAD
-	const UINT8 *color_prom = memregion("proms")->base();
-=======
 	const uint8_t *color_prom = memregion("proms")->base();
->>>>>>> upstream/master
 /*
     This hardware has a feature called BLUE KILLER.
     Using the original intensity line, the PCB has a bridge
@@ -1620,11 +1529,7 @@ PALETTE_INIT_MEMBER(goldnpkr_state,witchcrd)
 
 	/* 0000KBGR */
 
-<<<<<<< HEAD
-	if (color_prom == 0) return;
-=======
 	if (color_prom == nullptr) return;
->>>>>>> upstream/master
 
 	for (i = 0;i < palette.entries();i++)
 	{
@@ -1652,11 +1557,7 @@ PALETTE_INIT_MEMBER(goldnpkr_state,witchcrd)
 
 PALETTE_INIT_MEMBER(goldnpkr_state,wcrdxtnd)
 {
-<<<<<<< HEAD
-	const UINT8 *color_prom = memregion("proms")->base();
-=======
 	const uint8_t *color_prom = memregion("proms")->base();
->>>>>>> upstream/master
 /*
     Using the original intensity line, the PCB has a bridge
     that allow (as default) turn the background dark blue.
@@ -1672,11 +1573,7 @@ PALETTE_INIT_MEMBER(goldnpkr_state,wcrdxtnd)
 
 	/* 0000KBGR */
 
-<<<<<<< HEAD
-	if (color_prom == 0) return;
-=======
 	if (color_prom == nullptr) return;
->>>>>>> upstream/master
 
 	for (i = 0;i < palette.entries();i++)
 	{
@@ -1735,11 +1632,7 @@ READ8_MEMBER(goldnpkr_state::goldnpkr_mux_port_r)
 
 READ8_MEMBER(goldnpkr_state::pottnpkr_mux_port_r)
 {
-<<<<<<< HEAD
-	UINT8 pa_0_4 = 0xff, pa_7;  /* Temporary place holder for bits 0 to 4 & 7 */
-=======
 	uint8_t pa_0_4 = 0xff, pa_7;  /* Temporary place holder for bits 0 to 4 & 7 */
->>>>>>> upstream/master
 
 	switch( m_mux_data & 0xf0 )     /* bits 4-7 */
 	{
@@ -1768,11 +1661,7 @@ WRITE8_MEMBER(goldnpkr_state::mux_port_w)
 
 /* Demuxing ay8910 data/address from Falcon board, PIA portA out */
 
-<<<<<<< HEAD
-UINT8 wcfalcon_flag = 0;
-=======
 uint8_t wcfalcon_flag = 0;
->>>>>>> upstream/master
 
 WRITE8_MEMBER(goldnpkr_state::wcfalcon_snd_w)
 {
@@ -1849,17 +1738,6 @@ WRITE8_MEMBER(goldnpkr_state::lamps_a_w)
 */
 	data = data ^ 0xff;
 
-<<<<<<< HEAD
-	output_set_lamp_value(0, (data) & 1);         /* Lamp 0 */
-	output_set_lamp_value(1, (data >> 1) & 1);    /* Lamp 1 */
-	output_set_lamp_value(2, (data >> 2) & 1);    /* Lamp 2 */
-	output_set_lamp_value(3, (data >> 3) & 1);    /* Lamp 3 */
-	output_set_lamp_value(4, (data >> 4) & 1);    /* Lamp 4 */
-
-	coin_counter_w(machine(), 0, data & 0x40);  /* counter1 */
-	coin_counter_w(machine(), 1, data & 0x80);  /* counter2 */
-	coin_counter_w(machine(), 2, data & 0x20);  /* counter3 */
-=======
 	output().set_lamp_value(0, (data) & 1);         /* Lamp 0 */
 	output().set_lamp_value(1, (data >> 1) & 1);    /* Lamp 1 */
 	output().set_lamp_value(2, (data >> 2) & 1);    /* Lamp 2 */
@@ -1869,7 +1747,6 @@ WRITE8_MEMBER(goldnpkr_state::lamps_a_w)
 	machine().bookkeeping().coin_counter_w(0, data & 0x40);  /* counter1 */
 	machine().bookkeeping().coin_counter_w(1, data & 0x80);  /* counter2 */
 	machine().bookkeeping().coin_counter_w(2, data & 0x20);  /* counter3 */
->>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(goldnpkr_state::sound_w)
@@ -2045,11 +1922,7 @@ static ADDRESS_MAP_START( wildcrdb_map, AS_PROGRAM, 8, goldnpkr_state )
 	AM_RANGE(0x2100, 0x2100) AM_DEVWRITE("crtc", mc6845_device, address_w)
 	AM_RANGE(0x2101, 0x2101) AM_DEVREADWRITE("crtc", mc6845_device, register_r, register_w)
 	AM_RANGE(0x2800, 0x2fff) AM_RAM
-<<<<<<< HEAD
-	AM_RANGE(0x3000, 0xffff) AM_ROM
-=======
 	AM_RANGE(0x3000, 0x7fff) AM_ROM
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( wildcrdb_mcu_map, AS_PROGRAM, 8, goldnpkr_state )
@@ -4112,8 +3985,6 @@ static INPUT_PORTS_START( geniea )
 INPUT_PORTS_END
 
 
-<<<<<<< HEAD
-=======
 static INPUT_PORTS_START( bsuertev )
 	/* Multiplexed - 4x5bits */
 	PORT_INCLUDE( bsuerte )
@@ -4180,7 +4051,6 @@ INPUT_PORTS_END
 
 
 
->>>>>>> upstream/master
 /*********************************************
 *              Graphics Layouts              *
 *********************************************/
@@ -4367,21 +4237,13 @@ DISCRETE_SOUND_END
 
 MACHINE_START_MEMBER(goldnpkr_state, mondial)
 {
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("maincpu")->base();
-=======
 	uint8_t *ROM = memregion("maincpu")->base();
->>>>>>> upstream/master
 	membank("bank1")->configure_entries(0, 2, &ROM[0], 0x4000);
 }
 
 MACHINE_RESET_MEMBER(goldnpkr_state, mondial)
 {
-<<<<<<< HEAD
-	UINT8 seldsw = (ioport("SELDSW")->read() );
-=======
 	uint8_t seldsw = (ioport("SELDSW")->read() );
->>>>>>> upstream/master
 	popmessage("ROM Bank: %02X", seldsw);
 
 	membank("bank1")->set_entry(seldsw);
@@ -4391,11 +4253,7 @@ MACHINE_RESET_MEMBER(goldnpkr_state, mondial)
 *              Machine Drivers               *
 *********************************************/
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( goldnpkr_base, goldnpkr_state )
-=======
 static MACHINE_CONFIG_START( goldnpkr_base )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6502, CPU_CLOCK)
@@ -4670,8 +4528,6 @@ MACHINE_CONFIG_END
 
 
 /*********************************************
-<<<<<<< HEAD
-=======
 *                Blitz System                *
 *********************************************/
 
@@ -4845,7 +4701,6 @@ MACHINE_CONFIG_END
 
 
 /*********************************************
->>>>>>> upstream/master
 *                  Rom Load                  *
 *********************************************/
 
@@ -4866,11 +4721,7 @@ ROM_START( goldnpkr )
 	ROM_LOAD( "ups39_12a.bin",  0x0000, 0x8000, CRC(216b45fb) SHA1(fbfcd98cc39b2e791cceb845b166ff697f584add) )
 
 	ROM_REGION( 0x6000, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_FILL(               0x0000, 0x4000, 0 ) /* filling the R-G bitplanes */
-=======
 	ROM_FILL(               0x0000, 0x4000, 0x0000 ) /* filling the R-G bitplanes */
->>>>>>> upstream/master
 	ROM_LOAD( "u38_5a.bin", 0x4000, 0x2000, CRC(32705e1d) SHA1(84f9305af38179985e0224ae2ea54c01dfef6e12) )    /* text layer */
 
 	ROM_REGION( 0x6000, "gfx2", 0 )
@@ -4892,11 +4743,7 @@ ROM_START( goldnpkb )
 	ROM_LOAD( "ups31h.12a", 0x0000, 0x8000, CRC(bee5b07a) SHA1(5da60292ecbbedd963c273eac2a1fb88ad66ada8) )
 
 	ROM_REGION( 0x6000, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_FILL(               0x0000, 0x4000, 0 ) /* filling the R-G bitplanes */
-=======
 	ROM_FILL(               0x0000, 0x4000, 0x0000 ) /* filling the R-G bitplanes */
->>>>>>> upstream/master
 	ROM_LOAD( "u38_5a.bin", 0x4000, 0x2000, CRC(32705e1d) SHA1(84f9305af38179985e0224ae2ea54c01dfef6e12) )    /* text layer */
 
 	ROM_REGION( 0x6000, "gfx2", 0 )
@@ -4908,8 +4755,6 @@ ROM_START( goldnpkb )
 	ROM_LOAD( "tbp24s10n.7d",       0x0000, 0x0100, CRC(7f31066b) SHA1(15420780ec6b2870fc4539ec3afe4f0c58eedf12) )
 ROM_END
 
-<<<<<<< HEAD
-=======
 /*
   Unknown Golden Poker.
 
@@ -4938,7 +4783,6 @@ ROM_START( goldnpkc )
 ROM_END
 
 
->>>>>>> upstream/master
 /*  Videotron Poker.
     Alternative controls set, with cards selector...
 */
@@ -4948,11 +4792,7 @@ ROM_START( videtron )
 	ROM_LOAD( "5.bin", 0x6000, 0x2000, CRC(395fbc5c) SHA1(f742d7a9312828997a4323ac2b957048687fbed2) )
 
 	ROM_REGION( 0x3000, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_FILL(          0x0000, 0x2000, 0 ) /* filling the R-G bitplanes */
-=======
 	ROM_FILL(          0x0000, 0x2000, 0x0000 ) /* filling the R-G bitplanes */
->>>>>>> upstream/master
 	ROM_LOAD( "3.bin", 0x2000, 0x0800, CRC(23e83e89) SHA1(0c6352d46e3dfe176b0e970dd163e2bc01246890) )    /* text layer */
 
 	ROM_REGION( 0x1800, "gfx2", 0 )
@@ -4971,11 +4811,7 @@ ROM_START( videtron2 )
 	ROM_LOAD( "6.bin", 0x7000, 0x1000, CRC(490c7304) SHA1(1a6c6112571fd0e35b640ed58f66582a2d99c58b) )
 
 	ROM_REGION( 0x3000, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_FILL(          0x0000, 0x2000, 0 ) /* filling the R-G bitplanes */
-=======
 	ROM_FILL(          0x0000, 0x2000, 0x0000 ) /* filling the R-G bitplanes */
->>>>>>> upstream/master
 	ROM_LOAD( "3.bin", 0x2000, 0x0800, CRC(23e83e89) SHA1(0c6352d46e3dfe176b0e970dd163e2bc01246890) )    /* text layer */
 
 	ROM_REGION( 0x1800, "gfx2", 0 )
@@ -4997,11 +4833,7 @@ ROM_START( videtrna )
 	ROM_LOAD( "videotron_poker.prg", 0x6000, 0x2000, CRC(960dcb61) SHA1(a7da40383b0149d21156b461c144d345603d747a) )
 
 	ROM_REGION( 0x3000, "gfx1", 0 ) /* taken from videtron */
-<<<<<<< HEAD
-	ROM_FILL(          0x0000, 0x2000, 0 ) /* filling the R-G bitplanes */
-=======
 	ROM_FILL(          0x0000, 0x2000, 0x0000 ) /* filling the R-G bitplanes */
->>>>>>> upstream/master
 	ROM_LOAD( "3.bin", 0x2000, 0x0800, BAD_DUMP CRC(23e83e89) SHA1(0c6352d46e3dfe176b0e970dd163e2bc01246890) )    /* text layer */
 
 	ROM_REGION( 0x1800, "gfx2", 0 ) /* taken from videtron */
@@ -5029,11 +4861,7 @@ ROM_START( pottnpkr )   /* Golden Poker style game. Code is intended to start at
 	ROM_LOAD( "ic14_4.bin", 0x3000, 0x1000, CRC(86a03aab) SHA1(0c4e8699b9fc9943de1fa0a364e043b3878636dc) )
 
 	ROM_REGION( 0x3000, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_FILL(               0x0000, 0x2000, 0 ) /* filling the R-G bitplanes */
-=======
 	ROM_FILL(               0x0000, 0x2000, 0x0000 ) /* filling the R-G bitplanes */
->>>>>>> upstream/master
 	ROM_LOAD( "ic7_0.bin",  0x2000, 0x1000, CRC(1090e7f0) SHA1(26a7fc8853debb9a759811d7fee39410614c3895) )    /* text layer */
 
 	ROM_REGION( 0x3000, "gfx2", 0 )
@@ -5051,11 +4879,7 @@ ROM_START( potnpkra )    /* a Coinmaster game?... seems to be a hack */
 	ROM_LOAD( "vp-6.bin",   0x3000, 0x1000, CRC(94f82fc1) SHA1(ce95fc429f5389eea45fec877bac992fa7ba2b3c) )
 
 	ROM_REGION( 0x1800, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_FILL(               0x0000, 0x1000, 0 ) /* filling the R-G bitplanes */
-=======
 	ROM_FILL(               0x0000, 0x1000, 0x0000 ) /* filling the R-G bitplanes */
->>>>>>> upstream/master
 	ROM_LOAD( "vp-4.bin",   0x1000, 0x0800, CRC(2c53493f) SHA1(9e71db51499294bb4b16e7d8013e5daf6f1f9d18) )    /* text layer */
 
 	ROM_REGION( 0x1800, "gfx2", 0 )
@@ -5084,11 +4908,7 @@ ROM_START( potnpkrb )
 	ROM_LOAD( "517.17a",    0x3000, 0x1000, CRC(75a72877) SHA1(9df8fd2c98526d20aa0fa056a7b71b5c5fb5206b) )
 
 	ROM_REGION( 0x1800, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_FILL(               0x0000, 0x1000, 0 ) /* filling the R-G bitplanes */
-=======
 	ROM_FILL(               0x0000, 0x1000, 0x0000 ) /* filling the R-G bitplanes */
->>>>>>> upstream/master
 	ROM_LOAD( "517.8a",     0x1000, 0x0800, CRC(2c53493f) SHA1(9e71db51499294bb4b16e7d8013e5daf6f1f9d18) )    /* text layer */
 
 	ROM_REGION( 0x1800, "gfx2", 0 )
@@ -5118,11 +4938,7 @@ ROM_START( potnpkrc )
 	ROM_LOAD( "pottpok6.bin",   0x3000, 0x1000, CRC(53237873) SHA1(b640cb3db2513784c8d2d8983a17352276c11e07) )
 
 	ROM_REGION( 0x1800, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_FILL(                   0x0000, 0x1000, 0 ) /* filling the R-G bitplanes */
-=======
 	ROM_FILL(                   0x0000, 0x1000, 0x0000 ) /* filling the R-G bitplanes */
->>>>>>> upstream/master
 	ROM_LOAD( "pottpok1.bin",   0x1000, 0x0800, CRC(2c53493f) SHA1(9e71db51499294bb4b16e7d8013e5daf6f1f9d18) )    /* text layer */
 
 	ROM_REGION( 0x1800, "gfx2", 0 )
@@ -5140,11 +4956,7 @@ ROM_START( potnpkrd )
 	ROM_LOAD( "pot6.bin",   0x3000, 0x1000, CRC(53237873) SHA1(b640cb3db2513784c8d2d8983a17352276c11e07) )
 
 	ROM_REGION( 0x3000, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_FILL(               0x0000, 0x2000, 0 ) /* filling the R-G bitplanes */
-=======
 	ROM_FILL(               0x0000, 0x2000, 0x0000 ) /* filling the R-G bitplanes */
->>>>>>> upstream/master
 	ROM_LOAD( "pot34.bin",  0x2000, 0x1000, CRC(52fd35d2) SHA1(ad8bf8c222ceb2e9b3b6d9033866867f1977c65f) )    /* text layer */
 
 	ROM_REGION( 0x3000, "gfx2", 0 )
@@ -5162,11 +4974,7 @@ ROM_START( potnpkre )
 	ROM_LOAD( "g_luck_b.bin",   0x3000, 0x1000, CRC(7e848e5e) SHA1(45461cfcce06f6240562761d26ba7fdb7ef4986b) )
 
 	ROM_REGION( 0x3000, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_FILL(               0x0000, 0x2000, 0 ) /* filling the R-G bitplanes */
-=======
 	ROM_FILL(               0x0000, 0x2000, 0x0000 ) /* filling the R-G bitplanes */
->>>>>>> upstream/master
 	ROM_LOAD( "ic7_0.bin",  0x2000, 0x1000, CRC(1090e7f0) SHA1(26a7fc8853debb9a759811d7fee39410614c3895) )    /* text layer */
 
 	ROM_REGION( 0x3000, "gfx2", 0 )
@@ -5195,11 +5003,7 @@ ROM_START( potnpkrf )
 	ROM_LOAD( "prg.bin",    0x4000, 0x4000, CRC(d7a932a2) SHA1(c940ea90378a631c217a09c4a9e73c382acaa48d) )
 
 	ROM_REGION( 0x3000, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_FILL(           0x0000, 0x2000, 0 ) /* filling the R-G bitplanes */
-=======
 	ROM_FILL(           0x0000, 0x2000, 0x0000 ) /* filling the R-G bitplanes */
->>>>>>> upstream/master
 	ROM_LOAD( "3.bin",  0x2000, 0x0800, CRC(23e83e89) SHA1(0c6352d46e3dfe176b0e970dd163e2bc01246890) )    /* text layer */
 
 	ROM_REGION( 0x1800, "gfx2", 0 )
@@ -5220,11 +5024,7 @@ ROM_START( potnpkrg )
 	ROM_LOAD( "unknown.17a", 0x3000, 0x1000, CRC(1a9cfbf9) SHA1(47b3767dbcb016ae9ba4437d8f2790681553a5b0) )
 
 	ROM_REGION( 0x1800, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_FILL(           0x0000, 0x1000, 0 ) /* filling the R-G bitplanes */
-=======
 	ROM_FILL(           0x0000, 0x1000, 0x0000 ) /* filling the R-G bitplanes */
->>>>>>> upstream/master
 	ROM_LOAD( "unknown1.bin",  0x1000, 0x0800, CRC(2c53493f) SHA1(9e71db51499294bb4b16e7d8013e5daf6f1f9d18) )    /* char ROM */
 
 	ROM_REGION( 0x1800, "gfx2", 0 )
@@ -5246,11 +5046,7 @@ ROM_START( potnpkrh )
 
 	/* Backcard logo is different, showing 'FR'. The rest matches the common char gfx */
 	ROM_REGION( 0x1800, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_FILL(                  0x0000, 0x1000, 0 ) /* filling the R-G bitplanes */
-=======
 	ROM_FILL(                  0x0000, 0x1000, 0x0000 ) /* filling the R-G bitplanes */
->>>>>>> upstream/master
 	ROM_LOAD( "unk_2716.8a",   0x1000, 0x0800, CRC(a138afa6) SHA1(80c6d11086f78e36dfc01c15b23e70667fcf17fc) )    /* char ROM */
 
 	/* Backplane at 5a has two bits different against the common cards gfx
@@ -5264,8 +5060,6 @@ ROM_START( potnpkrh )
 	ROM_LOAD( "bprom.bin",    0x0000, 0x0100, BAD_DUMP CRC(7f31066b) SHA1(15420780ec6b2870fc4539ec3afe4f0c58eedf12) ) /* PROM dump needed */
 ROM_END
 
-<<<<<<< HEAD
-=======
 /* Potten's Poker bootleg set
    PCB ICP-1 (no encrypted).
 
@@ -5292,18 +5086,13 @@ ROM_START( potnpkri )
 	ROM_REGION( 0x0100, "proms", 0 )
 	ROM_LOAD( "prom.9c",    0x0000, 0x0100, CRC(7f31066b) SHA1(15420780ec6b2870fc4539ec3afe4f0c58eedf12) ) /* PROM dump OK */
 ROM_END
->>>>>>> upstream/master
 
 ROM_START( goodluck )
 	ROM_REGION( 0x10000, "maincpu", 0 )
 	ROM_LOAD( "goodluck_glh6b.bin", 0x0000, 0x8000, CRC(2cfa4a2c) SHA1(720e2900f3a0ef2632aa201a63b5eba0570e6aa3) )
 
 	ROM_REGION( 0x3000, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_FILL(           0x0000, 0x2000, 0 ) /* filling the R-G bitplanes */
-=======
 	ROM_FILL(           0x0000, 0x2000, 0x0000 ) /* filling the R-G bitplanes */
->>>>>>> upstream/master
 	ROM_LOAD( "4.bin",  0x2000, 0x1000, CRC(41924d13) SHA1(8ab69b6efdc20858960fa5df669470ba90b5f8d7) )    /* text layer */
 
 	ROM_REGION( 0x3000, "gfx2", 0 )
@@ -5334,11 +5123,7 @@ ROM_START( ngold )
 	ROM_LOAD( "ngold_2a.17a",   0x3000, 0x1000, CRC(9d07f0fc) SHA1(493b2e778342e1d6b7753902b714c5478bd22bd5) )
 
 	ROM_REGION( 0x1800, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_FILL(           0x0000, 0x1000, 0 ) /* filling the R-G bitplanes */
-=======
 	ROM_FILL(           0x0000, 0x1000, 0x0000 ) /* filling the R-G bitplanes */
->>>>>>> upstream/master
 	ROM_LOAD( "4.8a",   0x1000, 0x0800, CRC(f54c6f43) SHA1(fe66542b95259c10f7954d52d1bd5747ce99df42) )    /* char ROM */
 
 	ROM_REGION( 0x1800, "gfx2", 0 )
@@ -5356,11 +5141,7 @@ ROM_START( ngolda )
 	ROM_LOAD( "2a.bin", 0x3000, 0x1000, CRC(9d07f0fc) SHA1(493b2e778342e1d6b7753902b714c5478bd22bd5) )
 
 	ROM_REGION( 0x1800, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_FILL(           0x0000, 0x1000, 0 ) /* filling the R-G bitplanes */
-=======
 	ROM_FILL(           0x0000, 0x1000, 0x0000 ) /* filling the R-G bitplanes */
->>>>>>> upstream/master
 	ROM_LOAD( "4.8a",   0x1000, 0x0800, CRC(f54c6f43) SHA1(fe66542b95259c10f7954d52d1bd5747ce99df42) )    /* char ROM */
 
 	ROM_REGION( 0x1800, "gfx2", 0 )
@@ -5378,11 +5159,7 @@ ROM_START( ngoldb )
 	ROM_LOAD( "pkr_2.bin",  0x3000, 0x1000, CRC(de03a57d) SHA1(db696a892497ead7aa4ed2c600ba819c3b41a082) )
 
 	ROM_REGION( 0x1800, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_FILL(           0x0000, 0x1000, 0 ) /* filling the R-G bitplanes */
-=======
 	ROM_FILL(           0x0000, 0x1000, 0x0000 ) /* filling the R-G bitplanes */
->>>>>>> upstream/master
 	ROM_LOAD( "0.bin",  0x1000, 0x0800, CRC(f54c6f43) SHA1(fe66542b95259c10f7954d52d1bd5747ce99df42) )    /* char ROM */
 
 	ROM_REGION( 0x1800, "gfx2", 0 )
@@ -5408,11 +5185,7 @@ ROM_START( bsuerte )
 	ROM_LOAD( "bs_chica.256",   0x0000, 0x8000, CRC(2e92b72b) SHA1(6c90fb265f2cb7ec40ddb0553b5b7fedfa89339c) )
 
 	ROM_REGION( 0x3000, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_FILL(               0x0000, 0x2000, 0 ) /* filling the R-G bitplanes */
-=======
 	ROM_FILL(               0x0000, 0x2000, 0x0000 ) /* filling the R-G bitplanes */
->>>>>>> upstream/master
 	ROM_LOAD( "u38.bin",    0x2000, 0x1000, CRC(0a159dfa) SHA1(0a9c8e6177b36831b365917a10042aac3383983d) )    /* text layer */
 
 	ROM_REGION( 0x3000, "gfx2", 0 )
@@ -5429,11 +5202,7 @@ ROM_START( bsuertea )
 	ROM_LOAD( "ups39_12a.bin",  0x0000, 0x8000, CRC(e6b661b7) SHA1(b265f6814a168034d24bc1c25f67ece131281bc2) )
 
 	ROM_REGION( 0x3000, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_FILL(               0x0000, 0x2000, 0 ) /* filling the R-G bitplanes */
-=======
 	ROM_FILL(               0x0000, 0x2000, 0x0000 ) /* filling the R-G bitplanes */
->>>>>>> upstream/master
 	ROM_LOAD( "u38.bin",    0x2000, 0x1000, CRC(0a159dfa) SHA1(0a9c8e6177b36831b365917a10042aac3383983d) )    /* text layer */
 
 	ROM_REGION( 0x3000, "gfx2", 0 )
@@ -5450,11 +5219,7 @@ ROM_START( bsuerteb )
 	ROM_LOAD( "bsrapida.128",   0x4000, 0x4000, CRC(a2c633fa) SHA1(7cda3f56e6bd8e6bfc36a68c16d2e63d76d4dac3) )
 
 	ROM_REGION( 0x3000, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_FILL(               0x0000, 0x2000, 0 ) /* filling the R-G bitplanes */
-=======
 	ROM_FILL(               0x0000, 0x2000, 0x0000 ) /* filling the R-G bitplanes */
->>>>>>> upstream/master
 	ROM_LOAD( "u38.bin",    0x2000, 0x1000, CRC(0a159dfa) SHA1(0a9c8e6177b36831b365917a10042aac3383983d) )    /* text layer */
 
 	ROM_REGION( 0x3000, "gfx2", 0 )
@@ -5471,11 +5236,7 @@ ROM_START( bsuertec )
 	ROM_LOAD( "x10d4esp.16c",   0x0000, 0x8000, CRC(0606bab4) SHA1(624b0cef1a23a4e7ba2d2d256f30f73b1e455fa7) )
 
 	ROM_REGION( 0x3000, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_FILL(               0x0000, 0x2000, 0 ) /* filling the R-G bitplanes */
-=======
 	ROM_FILL(               0x0000, 0x2000, 0x0000 ) /* filling the R-G bitplanes */
->>>>>>> upstream/master
 	ROM_LOAD( "u38.bin",    0x2000, 0x1000, CRC(0a159dfa) SHA1(0a9c8e6177b36831b365917a10042aac3383983d) )    /* text layer */
 
 	ROM_REGION( 0x3000, "gfx2", 0 )
@@ -5492,11 +5253,7 @@ ROM_START( bsuerted )
 	ROM_LOAD( "x10d4fix.bin",   0x0000, 0x8000, CRC(c5ecc419) SHA1(5538a1336b877d1780d9a0c5595b02e9b22ee17d) )
 
 	ROM_REGION( 0x3000, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_FILL(               0x0000, 0x2000, 0 ) /* filling the R-G bitplanes */
-=======
 	ROM_FILL(               0x0000, 0x2000, 0x0000 ) /* filling the R-G bitplanes */
->>>>>>> upstream/master
 	ROM_LOAD( "u38.bin",    0x2000, 0x1000, CRC(0a159dfa) SHA1(0a9c8e6177b36831b365917a10042aac3383983d) )    /* text layer */
 
 	ROM_REGION( 0x3000, "gfx2", 0 )
@@ -5513,11 +5270,7 @@ ROM_START( bsuertee )
 	ROM_LOAD( "x10bb26.bin",    0x0000, 0x8000, CRC(57011385) SHA1(3cbfdb8dd261aa8ce27441326f0916640b13b67a) )
 
 	ROM_REGION( 0x3000, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_FILL(               0x0000, 0x2000, 0 ) /* filling the R-G bitplanes */
-=======
 	ROM_FILL(               0x0000, 0x2000, 0x0000 ) /* filling the R-G bitplanes */
->>>>>>> upstream/master
 	ROM_LOAD( "u38.bin",    0x2000, 0x1000, CRC(0a159dfa) SHA1(0a9c8e6177b36831b365917a10042aac3383983d) )    /* text layer */
 
 	ROM_REGION( 0x3000, "gfx2", 0 )
@@ -5534,11 +5287,7 @@ ROM_START( bsuertef )
 	ROM_LOAD( "bscat.256",  0x0000, 0x8000, CRC(944accd3) SHA1(f1ed149b9dafe9cdf3745b9344f2ce1814027005) )
 
 	ROM_REGION( 0x3000, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_FILL(               0x0000, 0x2000, 0 ) /* filling the R-G bitplanes */
-=======
 	ROM_FILL(               0x0000, 0x2000, 0x0000 ) /* filling the R-G bitplanes */
->>>>>>> upstream/master
 	ROM_LOAD( "u38.bin",    0x2000, 0x1000, CRC(0a159dfa) SHA1(0a9c8e6177b36831b365917a10042aac3383983d) )    /* text layer */
 
 	ROM_REGION( 0x3000, "gfx2", 0 )
@@ -5555,11 +5304,7 @@ ROM_START( bsuerteg )
 	ROM_LOAD( "bsjc.256",   0x0000, 0x8000, CRC(3a824d96) SHA1(1eb2b4630be10131416ff84213aa858a072896ac) )
 
 	ROM_REGION( 0x3000, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_FILL(               0x0000, 0x2000, 0 ) /* filling the R-G bitplanes */
-=======
 	ROM_FILL(               0x0000, 0x2000, 0x0000 ) /* filling the R-G bitplanes */
->>>>>>> upstream/master
 	ROM_LOAD( "u38.bin",    0x2000, 0x1000, CRC(0a159dfa) SHA1(0a9c8e6177b36831b365917a10042aac3383983d) )    /* text layer */
 
 	ROM_REGION( 0x3000, "gfx2", 0 )
@@ -5576,11 +5321,7 @@ ROM_START( bsuerteh )
 	ROM_LOAD( "jc603d.256", 0x0000, 0x8000, CRC(25df69e5) SHA1(54d2798437b61bd0e1919fb62daf24ed9df42678) )
 
 	ROM_REGION( 0x3000, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_FILL(               0x0000, 0x2000, 0 ) /* filling the R-G bitplanes */
-=======
 	ROM_FILL(               0x0000, 0x2000, 0x0000 ) /* filling the R-G bitplanes */
->>>>>>> upstream/master
 	ROM_LOAD( "u38.bin",    0x2000, 0x1000, CRC(0a159dfa) SHA1(0a9c8e6177b36831b365917a10042aac3383983d) )    /* text layer */
 
 	ROM_REGION( 0x3000, "gfx2", 0 )
@@ -5597,11 +5338,7 @@ ROM_START( bsuertei )
 	ROM_LOAD( "mcs.256",    0x0000, 0x8000, CRC(5c944e9d) SHA1(e394f8a32f4ebe622c0d0c30db5cb9d6d70b2126) )
 
 	ROM_REGION( 0x3000, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_FILL(               0x0000, 0x2000, 0 ) /* filling the R-G bitplanes */
-=======
 	ROM_FILL(               0x0000, 0x2000, 0x0000 ) /* filling the R-G bitplanes */
->>>>>>> upstream/master
 	ROM_LOAD( "u38.bin",    0x2000, 0x1000, CRC(0a159dfa) SHA1(0a9c8e6177b36831b365917a10042aac3383983d) )    /* text layer */
 
 	ROM_REGION( 0x3000, "gfx2", 0 )
@@ -5618,11 +5355,7 @@ ROM_START( bsuertej )
 	ROM_LOAD( "bsgemini.256",   0x0000, 0x8000, CRC(883f94d0) SHA1(30ff337ed2f454f74dfa354c14a8ab422284d279) )
 
 	ROM_REGION( 0x3000, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_FILL(               0x0000, 0x2000, 0 ) /* filling the R-G bitplanes */
-=======
 	ROM_FILL(               0x0000, 0x2000, 0x0000 ) /* filling the R-G bitplanes */
->>>>>>> upstream/master
 	ROM_LOAD( "u38.bin",    0x2000, 0x1000, CRC(0a159dfa) SHA1(0a9c8e6177b36831b365917a10042aac3383983d) )    /* text layer */
 
 	ROM_REGION( 0x3000, "gfx2", 0 )
@@ -5639,11 +5372,7 @@ ROM_START( bsuertek )
 	ROM_LOAD( "bsindarg.128",   0x4000, 0x4000, CRC(a9aaff1a) SHA1(13c9fbd0e9a04f42ded4dda0bb8a850de65cc671) )
 
 	ROM_REGION( 0x3000, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_FILL(               0x0000, 0x2000, 0 ) /* filling the R-G bitplanes */
-=======
 	ROM_FILL(               0x0000, 0x2000, 0x0000 ) /* filling the R-G bitplanes */
->>>>>>> upstream/master
 	ROM_LOAD( "u38.bin",    0x2000, 0x1000, CRC(0a159dfa) SHA1(0a9c8e6177b36831b365917a10042aac3383983d) )    /* text layer */
 
 	ROM_REGION( 0x3000, "gfx2", 0 )
@@ -5660,11 +5389,7 @@ ROM_START( bsuertel )
 	ROM_LOAD( "bslacer.128",    0x4000, 0x4000, CRC(edc254f4) SHA1(20e5543e59bfd67a0afec7cbeeb7000f6bba6c69) )
 
 	ROM_REGION( 0x3000, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_FILL(               0x0000, 0x2000, 0 ) /* filling the R-G bitplanes */
-=======
 	ROM_FILL(               0x0000, 0x2000, 0x0000 ) /* filling the R-G bitplanes */
->>>>>>> upstream/master
 	ROM_LOAD( "u38.bin",    0x2000, 0x1000, CRC(0a159dfa) SHA1(0a9c8e6177b36831b365917a10042aac3383983d) )    /* text layer */
 
 	ROM_REGION( 0x3000, "gfx2", 0 )
@@ -5681,11 +5406,7 @@ ROM_START( bsuertem )
 	ROM_LOAD( "bslacer.256",    0x0000, 0x8000, CRC(9f8a899a) SHA1(a1f3d0635b309d4734289b7ff48eceda69dfd3d0) )
 
 	ROM_REGION( 0x3000, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_FILL(               0x0000, 0x2000, 0 ) /* filling the R-G bitplanes */
-=======
 	ROM_FILL(               0x0000, 0x2000, 0x0000 ) /* filling the R-G bitplanes */
->>>>>>> upstream/master
 	ROM_LOAD( "u38.bin",    0x2000, 0x1000, CRC(0a159dfa) SHA1(0a9c8e6177b36831b365917a10042aac3383983d) )    /* text layer */
 
 	ROM_REGION( 0x3000, "gfx2", 0 )
@@ -5697,25 +5418,6 @@ ROM_START( bsuertem )
 	ROM_LOAD( "82s129.9c",      0x0000, 0x0100, CRC(7f31066b) SHA1(15420780ec6b2870fc4539ec3afe4f0c58eedf12) ) /* PROM dump needed */
 ROM_END
 
-<<<<<<< HEAD
-ROM_START( bsuerten )
-	ROM_REGION( 0x10000, "maincpu", 0 ) /* bs_x10.128: BS normal, fast. */
-	ROM_LOAD( "bs_x10.128", 0x4000, 0x4000, CRC(2549ceeb) SHA1(8c17849c7e9c138c35df584cdc0eabf536edb3d9) )
-
-	ROM_REGION( 0x3000, "gfx1", 0 )
-	ROM_FILL(               0x0000, 0x2000, 0 ) /* filling the R-G bitplanes */
-	ROM_LOAD( "u38.bin",    0x2000, 0x1000, CRC(0a159dfa) SHA1(0a9c8e6177b36831b365917a10042aac3383983d) )    /* text layer */
-
-	ROM_REGION( 0x3000, "gfx2", 0 )
-	ROM_LOAD( "7.bin",  0x0000, 0x1000, CRC(28ecfaea) SHA1(19d73ed0fdb5a873447b46e250ad6e71abe257cd) )    /* cards deck gfx, bitplane1 */
-	ROM_LOAD( "6.bin",  0x1000, 0x1000, CRC(eeec8862) SHA1(ae03aba1bd43c3ffd140f76770fc1c8cf89ea115) )    /* cards deck gfx, bitplane2 */
-	ROM_LOAD( "5.bin",  0x2000, 0x1000, CRC(2712f297) SHA1(d3cc1469d07c3febbbe4a645cd6bdb57e09cf504) )    /* cards deck gfx, bitplane3 */
-
-	ROM_REGION( 0x0100, "proms", 0 )
-	ROM_LOAD( "82s129.9c",      0x0000, 0x0100, CRC(7f31066b) SHA1(15420780ec6b2870fc4539ec3afe4f0c58eedf12) ) /* PROM dump needed */
-ROM_END
-
-=======
 /*
   Buena Suerte.
 
@@ -5830,17 +5532,12 @@ ROM_START( bsuerten )
 ROM_END
 
 
->>>>>>> upstream/master
 ROM_START( bsuerteo )
 	ROM_REGION( 0x10000, "maincpu", 0 ) /* bs_x10.256: BS normal, fast, set 2*/
 	ROM_LOAD( "bs_x10.256", 0x0000, 0x8000, CRC(ad3427a6) SHA1(d0a954c86c0a4354b5cea4140b8da7a10f66337a) )
 
 	ROM_REGION( 0x3000, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_FILL(               0x0000, 0x2000, 0 ) /* filling the R-G bitplanes */
-=======
 	ROM_FILL(               0x0000, 0x2000, 0x0000 ) /* filling the R-G bitplanes */
->>>>>>> upstream/master
 	ROM_LOAD( "u38.bin",    0x2000, 0x1000, CRC(0a159dfa) SHA1(0a9c8e6177b36831b365917a10042aac3383983d) )    /* text layer */
 
 	ROM_REGION( 0x3000, "gfx2", 0 )
@@ -5857,11 +5554,7 @@ ROM_START( bsuertep )
 	ROM_LOAD( "bs_p.128",   0x4000, 0x4000, CRC(9503cfef) SHA1(f3246621bb9dff3d357d4c99f7075509899ed05f) )
 
 	ROM_REGION( 0x3000, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_FILL(               0x0000, 0x2000, 0 ) /* filling the R-G bitplanes */
-=======
 	ROM_FILL(               0x0000, 0x2000, 0x0000 ) /* filling the R-G bitplanes */
->>>>>>> upstream/master
 	ROM_LOAD( "u38.bin",    0x2000, 0x1000, CRC(0a159dfa) SHA1(0a9c8e6177b36831b365917a10042aac3383983d) )    /* text layer */
 
 	ROM_REGION( 0x3000, "gfx2", 0 )
@@ -5878,11 +5571,7 @@ ROM_START( bsuerteq )
 	ROM_LOAD( "bs_r4.128",  0x4000, 0x4000, CRC(22841e2f) SHA1(d547aa6ddb82aff0d87eeb9bae67281d22dc50d5) )
 
 	ROM_REGION( 0x3000, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_FILL(               0x0000, 0x2000, 0 ) /* filling the R-G bitplanes */
-=======
 	ROM_FILL(               0x0000, 0x2000, 0x0000 ) /* filling the R-G bitplanes */
->>>>>>> upstream/master
 	ROM_LOAD( "u38.bin",    0x2000, 0x1000, CRC(0a159dfa) SHA1(0a9c8e6177b36831b365917a10042aac3383983d) )    /* text layer */
 
 	ROM_REGION( 0x3000, "gfx2", 0 )
@@ -5899,11 +5588,7 @@ ROM_START( bsuerter )
 	ROM_LOAD( "bs_100.128", 0x4000, 0x4000, CRC(1d3104e5) SHA1(9c0f00725270aa4d28b5a539431311bdca2f864a) )
 
 	ROM_REGION( 0x3000, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_FILL(               0x0000, 0x2000, 0 ) /* filling the R-G bitplanes */
-=======
 	ROM_FILL(               0x0000, 0x2000, 0x0000 ) /* filling the R-G bitplanes */
->>>>>>> upstream/master
 	ROM_LOAD( "u38.bin",    0x2000, 0x1000, CRC(0a159dfa) SHA1(0a9c8e6177b36831b365917a10042aac3383983d) )    /* text layer */
 
 	ROM_REGION( 0x3000, "gfx2", 0 )
@@ -5920,11 +5605,7 @@ ROM_START( bsuertes )
 	ROM_LOAD( "bs_50.128",  0x4000, 0x4000, CRC(8c2e43ca) SHA1(3e3f0848964f4ee6f47ddcf2220ebd06d771eebf) )
 
 	ROM_REGION( 0x3000, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_FILL(               0x0000, 0x2000, 0 ) /* filling the R-G bitplanes */
-=======
 	ROM_FILL(               0x0000, 0x2000, 0x0000 ) /* filling the R-G bitplanes */
->>>>>>> upstream/master
 	ROM_LOAD( "u38.bin",    0x2000, 0x1000, CRC(0a159dfa) SHA1(0a9c8e6177b36831b365917a10042aac3383983d) )    /* text layer */
 
 	ROM_REGION( 0x3000, "gfx2", 0 )
@@ -5941,11 +5622,7 @@ ROM_START( bsuertet )
 	ROM_LOAD( "bs_c.128",   0x4000, 0x4000, CRC(8b605bdf) SHA1(a933149999937f44cb62a3b34ab55ac4b5a50f72) )
 
 	ROM_REGION( 0x3000, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_FILL(               0x0000, 0x2000, 0 ) /* filling the R-G bitplanes */
-=======
 	ROM_FILL(               0x0000, 0x2000, 0x0000 ) /* filling the R-G bitplanes */
->>>>>>> upstream/master
 	ROM_LOAD( "u38.bin",    0x2000, 0x1000, CRC(0a159dfa) SHA1(0a9c8e6177b36831b365917a10042aac3383983d) )    /* text layer */
 
 	ROM_REGION( 0x3000, "gfx2", 0 )
@@ -5962,11 +5639,7 @@ ROM_START( bsuerteu )
 	ROM_LOAD( "bs_origi.bin",   0x0000, 0x8000, CRC(63a1ba65) SHA1(2354461ec7ad75f7ff2699e89d40517463157aaa) )
 
 	ROM_REGION( 0x3000, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_FILL(               0x0000, 0x2000, 0 ) /* filling the R-G bitplanes */
-=======
 	ROM_FILL(               0x0000, 0x2000, 0x0000 ) /* filling the R-G bitplanes */
->>>>>>> upstream/master
 	ROM_LOAD( "u38.bin",    0x2000, 0x1000, CRC(0a159dfa) SHA1(0a9c8e6177b36831b365917a10042aac3383983d) )    /* text layer */
 
 	ROM_REGION( 0x3000, "gfx2", 0 )
@@ -5978,8 +5651,6 @@ ROM_START( bsuerteu )
 	ROM_LOAD( "82s129.9c",      0x0000, 0x0100, CRC(7f31066b) SHA1(15420780ec6b2870fc4539ec3afe4f0c58eedf12) ) /* PROM dump needed */
 ROM_END
 
-<<<<<<< HEAD
-=======
 /*
   Buena Suerte.
 
@@ -6025,7 +5696,6 @@ ROM_START( bsuertev )
 	ROM_LOAD( "n82s129an.9c", 0x0000, 0x0100, CRC(7f31066b) SHA1(15420780ec6b2870fc4539ec3afe4f0c58eedf12) )  // PROM dump verified.
 ROM_END
 
->>>>>>> upstream/master
 
 /**************************************** VIDEO KLEIN SETS ****************************************/
 
@@ -6040,11 +5710,7 @@ ROM_END
 	ROM_LOAD( "epoxy_27128.bin",    0x4000, 0x4000, CRC(48186272) SHA1(d211bfa89404a292e6d0f0169ed11e1e74a361d9) )  /* epoxy block program ROM */
 
 	ROM_REGION( 0x3000, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_FILL(                   0x0000, 0x2000, 0 ) /* filling the R-G bitplanes */
-=======
 	ROM_FILL(                   0x0000, 0x2000, 0x0000 ) /* filling the R-G bitplanes */
->>>>>>> upstream/master
 	ROM_LOAD( "wc4.7a", 0x2000, 0x0800, CRC(6a392b10) SHA1(9f36ae2e5a9a8741c6687e9c875d7b45999d9d6d) )    /* text layer */
 	ROM_LOAD( "wc4.7a", 0x2800, 0x0800, CRC(6a392b10) SHA1(9f36ae2e5a9a8741c6687e9c875d7b45999d9d6d) )    /* text layer */
 
@@ -6066,11 +5732,7 @@ ROM_START( witchcda )
 	ROM_LOAD( "w_card.256", 0x0000, 0x8000, CRC(63a471f8) SHA1(96a2140e2da0050e7865a6662f707cf024130832) )
 
 	ROM_REGION( 0x3000, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_FILL(                   0x0000, 0x2000, 0 ) /* filling the R-G bitplanes */
-=======
 	ROM_FILL(                   0x0000, 0x2000, 0x0000 ) /* filling the R-G bitplanes */
->>>>>>> upstream/master
 	ROM_LOAD( "bs_4_wcspa.032", 0x2000, 0x1000, CRC(4e520c7a) SHA1(1de3ac4a150160c15f453b0d3f9d3cd3178bfedd) )    /* text layer */
 
 	ROM_REGION( 0x3000, "gfx2", 0 )
@@ -6090,11 +5752,7 @@ ROM_START( witchcdb )
 	ROM_LOAD( "w_card.128", 0x4000, 0x4000, CRC(11ecac96) SHA1(717709b31f3dfa09be321c14fbf0e95d492ad2f2) )
 
 	ROM_REGION( 0x3000, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_FILL(                   0x0000, 0x2000, 0 ) /* filling the R-G bitplanes */
-=======
 	ROM_FILL(                   0x0000, 0x2000, 0x0000 ) /* filling the R-G bitplanes */
->>>>>>> upstream/master
 	ROM_LOAD( "bs_4_wcspa.032", 0x2000, 0x1000, CRC(4e520c7a) SHA1(1de3ac4a150160c15f453b0d3f9d3cd3178bfedd) )    /* text layer */
 
 	ROM_REGION( 0x3000, "gfx2", 0 )
@@ -6114,11 +5772,7 @@ ROM_START( witchcdc )
 	ROM_LOAD( "wc_sbruj.256",   0x0000, 0x8000, CRC(5689ae41) SHA1(c7a624ec881204137489b147ce66cc9a9900650a) )
 
 	ROM_REGION( 0x3000, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_FILL(                   0x0000, 0x2000, 0 ) /* filling the R-G bitplanes */
-=======
 	ROM_FILL(                   0x0000, 0x2000, 0x0000 ) /* filling the R-G bitplanes */
->>>>>>> upstream/master
 	ROM_LOAD( "bs_4_wc.032",    0x2000, 0x1000, CRC(41924d13) SHA1(8ab69b6efdc20858960fa5df669470ba90b5f8d7) )    /* text layer */
 
 	ROM_REGION( 0x3000, "gfx2", 0 )
@@ -6144,11 +5798,7 @@ ROM_START( witchcdd )
 	ROM_LOAD( "12a.bin",    0x0000, 0x8000, CRC(a5c1186a) SHA1(b6c662bf489fbcccc3063ce55c957e630ba96ccb) )
 
 	ROM_REGION( 0x6000, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_FILL(                   0x0000, 0x4000, 0 ) /* filling the R-G bitplanes */
-=======
 	ROM_FILL(                   0x0000, 0x4000, 0x00000 ) /* filling the R-G bitplanes */
->>>>>>> upstream/master
 	ROM_LOAD( "ce-3-tvg.bin",   0x4000, 0x2000, CRC(54b51497) SHA1(8c3a74377fde8c7c5a6b277a9c1e717e6bdd98f8) )    /* text layer */
 
 	ROM_REGION( 0x6000, "gfx2", 0 )
@@ -6175,11 +5825,7 @@ ROM_END
 	ROM_LOAD( "wc4.a7", 0x3000, 0x1000, CRC(d3694522) SHA1(0f66ff2dd5c7ac9bf91fa9f48eb9f356572e814c) )
 
 	ROM_REGION( 0x1800, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_FILL(                   0x0000, 0x1000, 0 ) /* filling the R-G bitplanes */
-=======
 	ROM_FILL(                   0x0000, 0x1000, 0x00000 ) /* filling the R-G bitplanes */
->>>>>>> upstream/master
 	ROM_COPY( "temp",   0x3800, 0x1000, 0x0800 )    /* 0800-0fff of wc4.a7 - charset */
 
 	ROM_REGION( 0x1800, "gfx2", 0 ) /* 2nd half of each ROM */
@@ -6205,11 +5851,7 @@ ROM_START( witchcdf )
 	ROM_LOAD( "$27.bin",    0x7000, 0x1000, CRC(e6f9c973) SHA1(f209d13d1565160bc2c05c6c4fce73d14a9a56ab) )
 
 	ROM_REGION( 0x3000, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_FILL(               0x0000, 0x2000, 0 ) /* filling the R-G bitplanes */
-=======
 	ROM_FILL(               0x0000, 0x2000, 0x0000 ) /* filling the R-G bitplanes */
->>>>>>> upstream/master
 	ROM_LOAD( "$14.bin",    0x2000, 0x1000, CRC(19b68bec) SHA1(b8ef17ba5545e2f104cd2783e5f1c97c400fcbbc) )    /* text layer */
 
 	ROM_REGION( 0x3000, "gfx2", 0 )
@@ -6241,15 +5883,6 @@ ROM_START( witchcdg )
 
 	ROM_REGION( 0x3000, "gfx2", 0 )
 	ROM_LOAD( "3.b5",   0x0000, 0x0800, CRC(f2f94661) SHA1(f37f7c0dff680fd02897dae64e13e297d0fdb3e7) )    /* cards deck gfx, bitplane1 */
-<<<<<<< HEAD
-	ROM_FILL(           0x0800, 0x0800, 0 ) /* filling the bitplane */
-	ROM_LOAD( "2.b3",   0x1000, 0x0800, CRC(6bbb1e2d) SHA1(51ee282219bf84218886ad11a24bc6a8e7337527) )    /* cards deck gfx, bitplane2 */
-	ROM_FILL(           0x1800, 0x0800, 0 ) /* filling the bitplane */
-	ROM_LOAD( "1.b1",   0x2000, 0x1000, CRC(8a17d1a7) SHA1(488e4eae287b05923bd6b378574e91cfe49d8c24) )    /* cards deck gfx, bitplane3 */
-
-	ROM_REGION( 0x3000, "gfx1", 0 )
-	ROM_FILL(           0x0000, 0x2000, 0 ) /* filling the R-G bitplanes */
-=======
 	ROM_FILL(           0x0800, 0x0800, 0x00000 ) /* filling the bitplane */
 	ROM_LOAD( "2.b3",   0x1000, 0x0800, CRC(6bbb1e2d) SHA1(51ee282219bf84218886ad11a24bc6a8e7337527) )    /* cards deck gfx, bitplane2 */
 	ROM_FILL(           0x1800, 0x0800, 0x00000 ) /* filling the bitplane */
@@ -6257,7 +5890,6 @@ ROM_START( witchcdg )
 
 	ROM_REGION( 0x3000, "gfx1", 0 )
 	ROM_FILL(           0x0000, 0x2000, 0x00000 ) /* filling the R-G bitplanes */
->>>>>>> upstream/master
 	ROM_COPY( "gfx2",   0x2800, 0x2000, 0x0800 )    /* srctag, srcoffs, offset, length */
 
 	ROM_REGION( 0x0100, "proms", 0 )
@@ -6279,11 +5911,7 @@ ROM_START( witchcdh )
 	ROM_LOAD( "prog3000.a12",   0x0000, 0x8000, CRC(a5c1186a) SHA1(b6c662bf489fbcccc3063ce55c957e630ba96ccb) )
 
 	ROM_REGION( 0x6000, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_FILL(               0x0000, 0x4000, 0 ) /* filling the R-G bitplanes */
-=======
 	ROM_FILL(               0x0000, 0x4000, 0x00000 ) /* filling the R-G bitplanes */
->>>>>>> upstream/master
 	ROM_LOAD( "wc3050.a5",  0x4000, 0x2000, CRC(6f35b9c4) SHA1(df86687164f18f2bfe71e73cccd28fe4117e748c) )    /* text layer, alt gfx */
 
 	ROM_REGION( 0x6000, "gfx2", 0 )
@@ -6332,11 +5960,7 @@ ROM_START( witchcdi )
 	ROM_LOAD( "04.a12", 0x0000, 0x8000, CRC(0f662e02) SHA1(71d7344f63c11082beb4fb4eeb20b04780a9b14c) )
 
 	ROM_REGION( 0x6000, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_FILL(                   0x0000, 0x4000, 0 ) /* filling the R-G bitplanes */
-=======
 	ROM_FILL(                   0x0000, 0x4000, 0x0000 ) /* filling the R-G bitplanes */
->>>>>>> upstream/master
 	ROM_LOAD( "03.a5",  0x4000, 0x2000, CRC(f181e5aa) SHA1(44a7696bd223effbc7542142a0c3c623c628071d) )    /* text layer */
 
 	ROM_REGION( 0x6000, "gfx2", 0 )
@@ -6362,15 +5986,6 @@ ROM_START( witchgme )
 
 	ROM_REGION( 0x3000, "gfx2", 0 )
 	ROM_LOAD( "1.2a",   0x0000, 0x0800, CRC(f2f94661) SHA1(f37f7c0dff680fd02897dae64e13e297d0fdb3e7) )  /* cards deck gfx, bitplane1 */
-<<<<<<< HEAD
-	ROM_FILL(           0x0800, 0x0800, 0 ) /* filling the bitplane */
-	ROM_LOAD( "2.4a",   0x1000, 0x0800, CRC(6bbb1e2d) SHA1(51ee282219bf84218886ad11a24bc6a8e7337527) )  /* cards deck gfx, bitplane2 */
-	ROM_FILL(           0x1800, 0x0800, 0 ) /* filling the bitplane */
-	ROM_LOAD( "3.5a",   0x2000, 0x1000, CRC(8a17d1a7) SHA1(488e4eae287b05923bd6b378574e91cfe49d8c24) )  /* text layer */
-
-	ROM_REGION( 0x3000, "gfx1", 0 )
-	ROM_FILL(           0x0000, 0x2000, 0 ) /* filling the R-G bitplanes */
-=======
 	ROM_FILL(           0x0800, 0x0800, 0x0000 ) /* filling the bitplane */
 	ROM_LOAD( "2.4a",   0x1000, 0x0800, CRC(6bbb1e2d) SHA1(51ee282219bf84218886ad11a24bc6a8e7337527) )  /* cards deck gfx, bitplane2 */
 	ROM_FILL(           0x1800, 0x0800, 0x0000 ) /* filling the bitplane */
@@ -6378,7 +5993,6 @@ ROM_START( witchgme )
 
 	ROM_REGION( 0x3000, "gfx1", 0 )
 	ROM_FILL(           0x0000, 0x2000, 0x0000 ) /* filling the R-G bitplanes */
->>>>>>> upstream/master
 	ROM_COPY( "gfx2",   0x2800, 0x2000, 0x0800 )    /* srctag, srcoffs, offset, length */
 
 	ROM_REGION( 0x0100, "proms", 0 )
@@ -6397,11 +6011,7 @@ ROM_END
 	ROM_LOAD( "wc_epoxy.bin",   0x0000, 0x8000, CRC(33f1acd9) SHA1(2facb3d807b5b2a2978e567d0c1106c0a027621a) )  /* epoxy block program ROM */
 
 	ROM_REGION( 0x3000, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_FILL(            0x0000, 0x2000, 0 ) /* filling the R-G bitplanes */
-=======
 	ROM_FILL(            0x0000, 0x2000, 0x0000 ) /* filling the R-G bitplanes */
->>>>>>> upstream/master
 	ROM_LOAD( "wc4.7a",  0x2000, 0x1000, BAD_DUMP CRC(3bf07c44) SHA1(f6e859b142b7d4585b89ca609d8bc85c84fe2b09) )    /* text chars, corrupt */ // sldh
 	ROM_COPY( "gfx1",    0x2800, 0x2000, 0x0800 )   /* srctag, srcoffs, offset, length */
 
@@ -6435,11 +6045,7 @@ ROM_START( witchjol )
 	ROM_LOAD( "i.2a",   0x08000, 0x2000, CRC(d467f6e2) SHA1(6aaf4cdfb76f5efeeee45635fea120711483648e) )
 
 	ROM_REGION( 0x1800, "gfx0", 0 )
-<<<<<<< HEAD
-	ROM_FILL(           0x0000, 0x1000, 0 )         /* filling bitplanes */
-=======
 	ROM_FILL(           0x0000, 0x1000, 0x0000 )         /* filling bitplanes */
->>>>>>> upstream/master
 	ROM_COPY( "temp",   0x0000, 0x1000, 0x0800 )    /* 0000-07ff of iii.5a - char rom, bitplane 3 */
 
 	ROM_REGION( 0x1800, "gfx1", 0 )
@@ -6544,11 +6150,7 @@ ROM_START( wldwitch )
 	ROM_LOAD( "01.a1",  0x08000, 0x8000, CRC(6d644987) SHA1(26243abe051f3266e2d1743ec599d4e8bbb692e4) )
 
 	ROM_REGION( 0x1800, "gfx0", 0 )
-<<<<<<< HEAD
-	ROM_FILL(           0x0000, 0x1000, 0 )         /* filling bitplanes */
-=======
 	ROM_FILL(           0x0000, 0x1000, 0x0000 )         /* filling bitplanes */
->>>>>>> upstream/master
 	ROM_COPY( "temp",   0x0000, 0x1000, 0x0800 )    /* 0000-07ff of 03.a3 - char rom, bitplane 3 */
 
 	ROM_REGION( 0x1800, "gfx1", 0 )
@@ -6644,11 +6246,7 @@ ROM_START( wldwitcha )
 	ROM_LOAD( "01.a1",  0x08000, 0x8000, CRC(6d644987) SHA1(26243abe051f3266e2d1743ec599d4e8bbb692e4) )
 
 	ROM_REGION( 0x1800, "gfx0", 0 )
-<<<<<<< HEAD
-	ROM_FILL(           0x0000, 0x1000, 0 )         /* filling bitplanes */
-=======
 	ROM_FILL(           0x0000, 0x1000, 0x0000 )         /* filling bitplanes */
->>>>>>> upstream/master
 	ROM_COPY( "temp",   0x0000, 0x1000, 0x0800 )    /* 0000-07ff of 03.a3 - char rom, bitplane 3 */
 
 	ROM_REGION( 0x1800, "gfx1", 0 )
@@ -6744,11 +6342,7 @@ ROM_START( wldwitchb )
 	ROM_LOAD( "01.a1",  0x08000, 0x8000, CRC(6d644987) SHA1(26243abe051f3266e2d1743ec599d4e8bbb692e4) )
 
 	ROM_REGION( 0x1800, "gfx0", 0 )
-<<<<<<< HEAD
-	ROM_FILL(           0x0000, 0x1000, 0 )         /* filling bitplanes */
-=======
 	ROM_FILL(           0x0000, 0x1000, 0x0000 )         /* filling bitplanes */
->>>>>>> upstream/master
 	ROM_COPY( "temp",   0x0000, 0x1000, 0x0800 )    /* 0000-07ff of 03.a3 - char rom, bitplane 3 */
 
 	ROM_REGION( 0x1800, "gfx1", 0 )
@@ -6844,11 +6438,7 @@ ROM_START( wldwitchc )
 	ROM_LOAD( "01.a1",  0x08000, 0x8000, CRC(6d644987) SHA1(26243abe051f3266e2d1743ec599d4e8bbb692e4) )
 
 	ROM_REGION( 0x1800, "gfx0", 0 )
-<<<<<<< HEAD
-	ROM_FILL(           0x0000, 0x1000, 0 )         /* filling bitplanes */
-=======
 	ROM_FILL(           0x0000, 0x1000, 0x0000 )         /* filling bitplanes */
->>>>>>> upstream/master
 	ROM_COPY( "temp",   0x0000, 0x1000, 0x0800 )    /* 0000-07ff of 03.a3 - char rom, bitplane 3 */
 
 	ROM_REGION( 0x1800, "gfx1", 0 )
@@ -6944,11 +6534,7 @@ ROM_START( wldwitchd )
 	ROM_LOAD( "01.a1",  0x08000, 0x8000, CRC(6d644987) SHA1(26243abe051f3266e2d1743ec599d4e8bbb692e4) )
 
 	ROM_REGION( 0x1800, "gfx0", 0 )
-<<<<<<< HEAD
-	ROM_FILL(           0x0000, 0x1000, 0 )         /* filling bitplanes */
-=======
 	ROM_FILL(           0x0000, 0x1000, 0x0000 )         /* filling bitplanes */
->>>>>>> upstream/master
 	ROM_COPY( "temp",   0x0000, 0x1000, 0x0800 )    /* 0000-07ff of 03.a3 - char rom, bitplane 3 */
 
 	ROM_REGION( 0x1800, "gfx1", 0 )
@@ -7044,11 +6630,7 @@ ROM_START( wldwitche )
 	ROM_LOAD( "01.a1",  0x08000, 0x8000, CRC(6d644987) SHA1(26243abe051f3266e2d1743ec599d4e8bbb692e4) )
 
 	ROM_REGION( 0x1800, "gfx0", 0 )
-<<<<<<< HEAD
-	ROM_FILL(           0x0000, 0x1000, 0 )         /* filling bitplanes */
-=======
 	ROM_FILL(           0x0000, 0x1000, 0x0000 )         /* filling bitplanes */
->>>>>>> upstream/master
 	ROM_COPY( "temp",   0x0000, 0x1000, 0x0800 )    /* 0000-07ff of 03.a3 - char rom, bitplane 3 */
 
 	ROM_REGION( 0x1800, "gfx1", 0 )
@@ -7144,11 +6726,7 @@ ROM_START( wldwitchf )
 	ROM_LOAD( "01.a1",  0x08000, 0x8000, CRC(6d644987) SHA1(26243abe051f3266e2d1743ec599d4e8bbb692e4) )
 
 	ROM_REGION( 0x1800, "gfx0", 0 )
-<<<<<<< HEAD
-	ROM_FILL(           0x0000, 0x1000, 0 )         /* filling bitplanes */
-=======
 	ROM_FILL(           0x0000, 0x1000, 0x0000 )         /* filling bitplanes */
->>>>>>> upstream/master
 	ROM_COPY( "temp",   0x0000, 0x1000, 0x0800 )    /* 0000-07ff of 03.a3 - char rom, bitplane 3 */
 
 	ROM_REGION( 0x1800, "gfx1", 0 )
@@ -7244,11 +6822,7 @@ ROM_START( wldwitchg )
 	ROM_LOAD( "01.a1",  0x08000, 0x8000, CRC(6d644987) SHA1(26243abe051f3266e2d1743ec599d4e8bbb692e4) )
 
 	ROM_REGION( 0x1800, "gfx0", 0 )
-<<<<<<< HEAD
-	ROM_FILL(           0x0000, 0x1000, 0 )         /* filling bitplanes */
-=======
 	ROM_FILL(           0x0000, 0x1000, 0x0000 )         /* filling bitplanes */
->>>>>>> upstream/master
 	ROM_COPY( "temp",   0x0000, 0x1000, 0x0800 )    /* 0000-07ff of 03.a3 - char rom, bitplane 3 */
 
 	ROM_REGION( 0x1800, "gfx1", 0 )
@@ -7344,11 +6918,7 @@ ROM_START( wldwitchh )
 	ROM_LOAD( "01.a1",  0x08000, 0x8000, CRC(6d644987) SHA1(26243abe051f3266e2d1743ec599d4e8bbb692e4) )
 
 	ROM_REGION( 0x1800, "gfx0", 0 )
-<<<<<<< HEAD
-	ROM_FILL(           0x0000, 0x1000, 0 )         /* filling bitplanes */
-=======
 	ROM_FILL(           0x0000, 0x1000, 0x0000 )         /* filling bitplanes */
->>>>>>> upstream/master
 	ROM_COPY( "temp",   0x0000, 0x1000, 0x0800 )    /* 0000-07ff of 03.a3 - char rom, bitplane 3 */
 
 	ROM_REGION( 0x1800, "gfx1", 0 )
@@ -7444,11 +7014,7 @@ ROM_START( wldwitchi )
 	ROM_LOAD( "01.a1",  0x08000, 0x8000, CRC(6d644987) SHA1(26243abe051f3266e2d1743ec599d4e8bbb692e4) )
 
 	ROM_REGION( 0x1800, "gfx0", 0 )
-<<<<<<< HEAD
-	ROM_FILL(           0x0000, 0x1000, 0 )         /* filling bitplanes */
-=======
 	ROM_FILL(           0x0000, 0x1000, 0x0000 )         /* filling bitplanes */
->>>>>>> upstream/master
 	ROM_COPY( "temp",   0x0000, 0x1000, 0x0800 )    /* 0000-07ff of 03.a3 - char rom, bitplane 3 */
 
 	ROM_REGION( 0x1800, "gfx1", 0 )
@@ -7544,11 +7110,7 @@ ROM_START( wldwitchj )
 	ROM_LOAD( "01.a1",  0x08000, 0x8000, CRC(6d644987) SHA1(26243abe051f3266e2d1743ec599d4e8bbb692e4) )
 
 	ROM_REGION( 0x1800, "gfx0", 0 )
-<<<<<<< HEAD
-	ROM_FILL(           0x0000, 0x1000, 0 )         /* filling bitplanes */
-=======
 	ROM_FILL(           0x0000, 0x1000, 0x0000 )         /* filling bitplanes */
->>>>>>> upstream/master
 	ROM_COPY( "temp",   0x0000, 0x1000, 0x0800 )    /* 0000-07ff of 03.a3 - char rom, bitplane 3 */
 
 	ROM_REGION( 0x1800, "gfx1", 0 )
@@ -7644,11 +7206,7 @@ ROM_START( wldwitchk )
 	ROM_LOAD( "01.a1",  0x08000, 0x8000, CRC(6d644987) SHA1(26243abe051f3266e2d1743ec599d4e8bbb692e4) )
 
 	ROM_REGION( 0x1800, "gfx0", 0 )
-<<<<<<< HEAD
-	ROM_FILL(           0x0000, 0x1000, 0 )         /* filling bitplanes */
-=======
 	ROM_FILL(           0x0000, 0x1000, 0x0000 )         /* filling bitplanes */
->>>>>>> upstream/master
 	ROM_COPY( "temp",   0x0000, 0x1000, 0x0800 )    /* 0000-07ff of 03.a3 - char rom, bitplane 3 */
 
 	ROM_REGION( 0x1800, "gfx1", 0 )
@@ -7744,11 +7302,7 @@ ROM_START( wldwitchl )
 	ROM_LOAD( "01.a1",  0x08000, 0x8000, CRC(6d644987) SHA1(26243abe051f3266e2d1743ec599d4e8bbb692e4) )
 
 	ROM_REGION( 0x1800, "gfx0", 0 )
-<<<<<<< HEAD
-	ROM_FILL(           0x0000, 0x1000, 0 )         /* filling bitplanes */
-=======
 	ROM_FILL(           0x0000, 0x1000, 0x0000 )         /* filling bitplanes */
->>>>>>> upstream/master
 	ROM_COPY( "temp",   0x0000, 0x1000, 0x0800 )    /* 0000-07ff of 03.a3 - char rom, bitplane 3 */
 
 	ROM_REGION( 0x1800, "gfx1", 0 )
@@ -7844,11 +7398,7 @@ ROM_START( wldwitchm )
 	ROM_LOAD( "01.a1",  0x08000, 0x8000, CRC(6d644987) SHA1(26243abe051f3266e2d1743ec599d4e8bbb692e4) )
 
 	ROM_REGION( 0x1800, "gfx0", 0 )
-<<<<<<< HEAD
-	ROM_FILL(           0x0000, 0x1000, 0 )         /* filling bitplanes */
-=======
 	ROM_FILL(           0x0000, 0x1000, 0x0000 )         /* filling bitplanes */
->>>>>>> upstream/master
 	ROM_COPY( "temp",   0x0000, 0x1000, 0x0800 )    /* 0000-07ff of 03.a3 - char rom, bitplane 3 */
 
 	ROM_REGION( 0x1800, "gfx1", 0 )
@@ -7944,11 +7494,7 @@ ROM_START( wldwitchn )
 	ROM_LOAD( "01.a1",  0x08000, 0x8000, CRC(6d644987) SHA1(26243abe051f3266e2d1743ec599d4e8bbb692e4) )
 
 	ROM_REGION( 0x1800, "gfx0", 0 )
-<<<<<<< HEAD
-	ROM_FILL(           0x0000, 0x1000, 0 )         /* filling bitplanes */
-=======
 	ROM_FILL(           0x0000, 0x1000, 0x0000 )         /* filling bitplanes */
->>>>>>> upstream/master
 	ROM_COPY( "temp",   0x0000, 0x1000, 0x0800 )    /* 0000-07ff of 03.a3 - char rom, bitplane 3 */
 
 	ROM_REGION( 0x1800, "gfx1", 0 )
@@ -8044,11 +7590,7 @@ ROM_START( wldwitcho )
 	ROM_LOAD( "01.a1",  0x08000, 0x8000, CRC(6d644987) SHA1(26243abe051f3266e2d1743ec599d4e8bbb692e4) )
 
 	ROM_REGION( 0x1800, "gfx0", 0 )
-<<<<<<< HEAD
-	ROM_FILL(           0x0000, 0x1000, 0 )         /* filling bitplanes */
-=======
 	ROM_FILL(           0x0000, 0x1000, 0x0000 )         /* filling bitplanes */
->>>>>>> upstream/master
 	ROM_COPY( "temp",   0x0000, 0x1000, 0x0800 )    /* 0000-07ff of 03.a3 - char rom, bitplane 3 */
 
 	ROM_REGION( 0x1800, "gfx1", 0 )
@@ -8144,11 +7686,7 @@ ROM_START( wldwitchp )
 	ROM_LOAD( "01.a1",  0x08000, 0x8000, CRC(6d644987) SHA1(26243abe051f3266e2d1743ec599d4e8bbb692e4) )
 
 	ROM_REGION( 0x1800, "gfx0", 0 )
-<<<<<<< HEAD
-	ROM_FILL(           0x0000, 0x1000, 0 )         /* filling bitplanes */
-=======
 	ROM_FILL(           0x0000, 0x1000, 0x0000 )         /* filling bitplanes */
->>>>>>> upstream/master
 	ROM_COPY( "temp",   0x0000, 0x1000, 0x0800 )    /* 0000-07ff of 03.a3 - char rom, bitplane 3 */
 
 	ROM_REGION( 0x1800, "gfx1", 0 )
@@ -8244,11 +7782,7 @@ ROM_START( wldwitchq )
 	ROM_LOAD( "01.a1",  0x08000, 0x8000, CRC(6d644987) SHA1(26243abe051f3266e2d1743ec599d4e8bbb692e4) )
 
 	ROM_REGION( 0x1800, "gfx0", 0 )
-<<<<<<< HEAD
-	ROM_FILL(           0x0000, 0x1000, 0 )         /* filling bitplanes */
-=======
 	ROM_FILL(           0x0000, 0x1000, 0x0000 )         /* filling bitplanes */
->>>>>>> upstream/master
 	ROM_COPY( "temp",   0x0000, 0x1000, 0x0800 )    /* 0000-07ff of 03.a3 - char rom, bitplane 3 */
 
 	ROM_REGION( 0x1800, "gfx1", 0 )
@@ -8344,11 +7878,7 @@ ROM_START( wldwitchr )
 	ROM_LOAD( "01.a1",  0x08000, 0x8000, CRC(6d644987) SHA1(26243abe051f3266e2d1743ec599d4e8bbb692e4) )
 
 	ROM_REGION( 0x1800, "gfx0", 0 )
-<<<<<<< HEAD
-	ROM_FILL(           0x0000, 0x1000, 0 )         /* filling bitplanes */
-=======
 	ROM_FILL(           0x0000, 0x1000, 0x0000 )         /* filling bitplanes */
->>>>>>> upstream/master
 	ROM_COPY( "temp",   0x0000, 0x1000, 0x0800 )    /* 0000-07ff of 03.a3 - char rom, bitplane 3 */
 
 	ROM_REGION( 0x1800, "gfx1", 0 )
@@ -8444,11 +7974,7 @@ ROM_START( wldwitchs )
 	ROM_LOAD( "01.a1",  0x08000, 0x8000, CRC(6d644987) SHA1(26243abe051f3266e2d1743ec599d4e8bbb692e4) )
 
 	ROM_REGION( 0x1800, "gfx0", 0 )
-<<<<<<< HEAD
-	ROM_FILL(           0x0000, 0x1000, 0 )         /* filling bitplanes */
-=======
 	ROM_FILL(           0x0000, 0x1000, 0x0000 )         /* filling bitplanes */
->>>>>>> upstream/master
 	ROM_COPY( "temp",   0x0000, 0x1000, 0x0800 )    /* 0000-07ff of 03.a3 - char rom, bitplane 3 */
 
 	ROM_REGION( 0x1800, "gfx1", 0 )
@@ -8544,11 +8070,7 @@ ROM_START( wldwitcht )
 	ROM_LOAD( "01.a1",  0x08000, 0x8000, CRC(6d644987) SHA1(26243abe051f3266e2d1743ec599d4e8bbb692e4) )
 
 	ROM_REGION( 0x1800, "gfx0", 0 )
-<<<<<<< HEAD
-	ROM_FILL(           0x0000, 0x1000, 0 )         /* filling bitplanes */
-=======
 	ROM_FILL(           0x0000, 0x1000, 0x0000 )         /* filling bitplanes */
->>>>>>> upstream/master
 	ROM_COPY( "temp",   0x0000, 0x1000, 0x0800 )    /* 0000-07ff of 03.a3 - char rom, bitplane 3 */
 
 	ROM_REGION( 0x1800, "gfx1", 0 )
@@ -8644,11 +8166,7 @@ ROM_START( wldwitchu )
 	ROM_LOAD( "01.a1",  0x08000, 0x8000, CRC(6d644987) SHA1(26243abe051f3266e2d1743ec599d4e8bbb692e4) )
 
 	ROM_REGION( 0x1800, "gfx0", 0 )
-<<<<<<< HEAD
-	ROM_FILL(           0x0000, 0x1000, 0 )         /* filling bitplanes */
-=======
 	ROM_FILL(           0x0000, 0x1000, 0x0000 )         /* filling bitplanes */
->>>>>>> upstream/master
 	ROM_COPY( "temp",   0x0000, 0x1000, 0x0800 )    /* 0000-07ff of 03.a3 - char rom, bitplane 3 */
 
 	ROM_REGION( 0x1800, "gfx1", 0 )
@@ -8744,11 +8262,7 @@ ROM_START( wldwitchv )
 	ROM_LOAD( "01.a1",  0x08000, 0x8000, CRC(6d644987) SHA1(26243abe051f3266e2d1743ec599d4e8bbb692e4) )
 
 	ROM_REGION( 0x1800, "gfx0", 0 )
-<<<<<<< HEAD
-	ROM_FILL(           0x0000, 0x1000, 0 )         /* filling bitplanes */
-=======
 	ROM_FILL(           0x0000, 0x1000, 0x0000 )         /* filling bitplanes */
->>>>>>> upstream/master
 	ROM_COPY( "temp",   0x0000, 0x1000, 0x0800 )    /* 0000-07ff of 03.a3 - char rom, bitplane 3 */
 
 	ROM_REGION( 0x1800, "gfx1", 0 )
@@ -8854,11 +8368,7 @@ ROM_START( wupndown )   /* Witch Up & Down (Export, 6T/12T ver 1.02) */
 	ROM_LOAD( "updown3.bin",    0x10000, 0x8000, CRC(905c3224) SHA1(6356f2bd8a1f8952b186dc6f9ed1705d1e918a64) )
 
 	ROM_REGION( 0x1800, "gfx0", 0 )
-<<<<<<< HEAD
-	ROM_FILL(           0x0000, 0x1000, 0 )         /* filling bitplanes */
-=======
 	ROM_FILL(           0x0000, 0x1000, 0x0000 )         /* filling bitplanes */
->>>>>>> upstream/master
 	ROM_COPY( "temp",   0x0000, 0x1000, 0x0800 )    /* 0000-07ff of updown1.bin - char rom, bitplane 3 */
 
 	ROM_REGION( 0x1800, "gfx1", 0 )
@@ -8951,11 +8461,7 @@ ROM_START( wupndowna )  /* Witch Up & Down (Export, 6T/12T ver 0.99, set 1) */
 	ROM_LOAD( "updown3.bin",    0x10000, 0x8000, CRC(905c3224) SHA1(6356f2bd8a1f8952b186dc6f9ed1705d1e918a64) )
 
 	ROM_REGION( 0x1800, "gfx0", 0 )
-<<<<<<< HEAD
-	ROM_FILL(           0x0000, 0x1000, 0 )         /* filling bitplanes */
-=======
 	ROM_FILL(           0x0000, 0x1000, 0x0000 )         /* filling bitplanes */
->>>>>>> upstream/master
 	ROM_COPY( "temp",   0x0000, 0x1000, 0x0800 )    /* 0000-07ff of updown1.bin - char rom, bitplane 3 */
 
 	ROM_REGION( 0x1800, "gfx1", 0 )
@@ -9048,11 +8554,7 @@ ROM_START( wupndownb )  /* Witch Up & Down (Export, 6T/12T ver 0.99, set 2) */
 	ROM_LOAD( "updown3.bin",    0x10000, 0x8000, CRC(905c3224) SHA1(6356f2bd8a1f8952b186dc6f9ed1705d1e918a64) )
 
 	ROM_REGION( 0x1800, "gfx0", 0 )
-<<<<<<< HEAD
-	ROM_FILL(           0x0000, 0x1000, 0 )         /* filling bitplanes */
-=======
 	ROM_FILL(           0x0000, 0x1000, 0x0000 )         /* filling bitplanes */
->>>>>>> upstream/master
 	ROM_COPY( "temp",   0x0000, 0x1000, 0x0800 )    /* 0000-07ff of updown1.bin - char rom, bitplane 3 */
 
 	ROM_REGION( 0x1800, "gfx1", 0 )
@@ -9145,11 +8647,7 @@ ROM_START( wupndownc )  /* Witch Up & Down (Export, 6T/12T ver 0.99, set 3) */
 	ROM_LOAD( "updown3.bin",    0x10000, 0x8000, CRC(905c3224) SHA1(6356f2bd8a1f8952b186dc6f9ed1705d1e918a64) )
 
 	ROM_REGION( 0x1800, "gfx0", 0 )
-<<<<<<< HEAD
-	ROM_FILL(           0x0000, 0x1000, 0 )         /* filling bitplanes */
-=======
 	ROM_FILL(           0x0000, 0x1000, 0x0000 )         /* filling bitplanes */
->>>>>>> upstream/master
 	ROM_COPY( "temp",   0x0000, 0x1000, 0x0800 )    /* 0000-07ff of updown1.bin - char rom, bitplane 3 */
 
 	ROM_REGION( 0x1800, "gfx1", 0 )
@@ -9242,11 +8740,7 @@ ROM_START( wupndownd )  /* Witch Up & Down (Export, 6T/12T ver 0.99T) */
 	ROM_LOAD( "updown3.bin",    0x10000, 0x8000, CRC(905c3224) SHA1(6356f2bd8a1f8952b186dc6f9ed1705d1e918a64) )
 
 	ROM_REGION( 0x1800, "gfx0", 0 )
-<<<<<<< HEAD
-	ROM_FILL(           0x0000, 0x1000, 0 )         /* filling bitplanes */
-=======
 	ROM_FILL(           0x0000, 0x1000, 0x0000 )         /* filling bitplanes */
->>>>>>> upstream/master
 	ROM_COPY( "temp",   0x0000, 0x1000, 0x0800 )    /* 0000-07ff of updown1.bin - char rom, bitplane 3 */
 
 	ROM_REGION( 0x1800, "gfx1", 0 )
@@ -9348,11 +8842,7 @@ ROM_START( wstrike )    /* Witch Strike (Export, 6T/12T ver 1.01A) */
 	ROM_LOAD( "wsrom3.bin", 0x10000, 0x8000, CRC(62692e92) SHA1(534a64abba4dabefa2fa1d2dfed0dc8a00d95156) )
 
 	ROM_REGION( 0x1800, "gfx0", 0 )
-<<<<<<< HEAD
-	ROM_FILL(           0x0000, 0x1000, 0 )         /* filling bitplanes */
-=======
 	ROM_FILL(           0x0000, 0x1000, 0x0000 )         /* filling bitplanes */
->>>>>>> upstream/master
 	ROM_COPY( "temp",   0x0000, 0x1000, 0x0800 )    /* 0000-07ff of wsrom1.bin - char rom (placed ok), bitplane 3 */
 
 	ROM_REGION( 0x1800, "gfx1", 0 )
@@ -9445,11 +8935,7 @@ ROM_START( wstrikea )   /* Witch Strike (Export, 6T/12T ver 1.01B) */
 	ROM_LOAD( "wsrom3.bin", 0x10000, 0x8000, CRC(62692e92) SHA1(534a64abba4dabefa2fa1d2dfed0dc8a00d95156) )
 
 	ROM_REGION( 0x1800, "gfx0", 0 )
-<<<<<<< HEAD
-	ROM_FILL(           0x0000, 0x1000, 0 )         /* filling bitplanes */
-=======
 	ROM_FILL(           0x0000, 0x1000, 0x0000 )         /* filling bitplanes */
->>>>>>> upstream/master
 	ROM_COPY( "temp",   0x0000, 0x1000, 0x0800 )    /* 0000-07ff of wsrom1.bin - char rom (placed ok), bitplane 3 */
 
 	ROM_REGION( 0x1800, "gfx1", 0 )
@@ -9549,11 +9035,7 @@ ROM_START( wtchjack )   /* Witch Jack 0.87-89 / 1996-10-08, GFX OK */
 	ROM_LOAD( "wj5x5_3zs.bin",  0x10000, 0x8000, CRC(708e1d7f) SHA1(518312fd0bc24d7895eae0cfa9dbad99e1adf67c) )
 
 	ROM_REGION( 0x1800, "gfx0", 0 )
-<<<<<<< HEAD
-	ROM_FILL(           0x0000, 0x1000, 0 )         /* filling bitplanes */
-=======
 	ROM_FILL(           0x0000, 0x1000, 0x0000 )         /* filling bitplanes */
->>>>>>> upstream/master
 	ROM_COPY( "temp",   0x0000, 0x1000, 0x0800 )    /* 0000-07ff of rom1.bin - char rom (placed ok), bitplane 3 */
 
 	ROM_REGION( 0x1800, "gfx1", 0 )
@@ -9646,11 +9128,7 @@ ROM_START( wtchjacka )  /* Witch Jack 0.87-88 / 1996-10-02, GFX OK */
 	ROM_LOAD( "wj5x5_3zs.bin",  0x10000, 0x8000, CRC(708e1d7f) SHA1(518312fd0bc24d7895eae0cfa9dbad99e1adf67c) )
 
 	ROM_REGION( 0x1800, "gfx0", 0 )
-<<<<<<< HEAD
-	ROM_FILL(           0x0000, 0x1000, 0 )         /* filling bitplanes */
-=======
 	ROM_FILL(           0x0000, 0x1000, 0x0000 )         /* filling bitplanes */
->>>>>>> upstream/master
 	ROM_COPY( "temp",   0x0000, 0x1000, 0x0800 )    /* 0000-07ff of rom1.bin - char rom (placed ok), bitplane 3 */
 
 	ROM_REGION( 0x1800, "gfx1", 0 )
@@ -9743,11 +9221,7 @@ ROM_START( wtchjackb )  /* Witch Jack 0.87 / 1996-07-16, GFX OK */
 	ROM_LOAD( "wj5x5_3zs.bin",  0x10000, 0x8000, CRC(708e1d7f) SHA1(518312fd0bc24d7895eae0cfa9dbad99e1adf67c) )
 
 	ROM_REGION( 0x1800, "gfx0", 0 )
-<<<<<<< HEAD
-	ROM_FILL(           0x0000, 0x1000, 0 )         /* filling bitplanes */
-=======
 	ROM_FILL(           0x0000, 0x1000, 0x0000 )         /* filling bitplanes */
->>>>>>> upstream/master
 	ROM_COPY( "temp",   0x0000, 0x1000, 0x0800 )    /* 0000-07ff of rom1.bin - char rom (placed ok), bitplane 3 */
 
 	ROM_REGION( 0x1800, "gfx1", 0 )
@@ -9840,11 +9314,7 @@ ROM_START( wtchjackc )  /* Witch Jack 0.70S / 1996-03-26 */
 	ROM_LOAD( "wj5x5_3zs.bin",  0x10000, 0x8000, BAD_DUMP CRC(708e1d7f) SHA1(518312fd0bc24d7895eae0cfa9dbad99e1adf67c) )
 
 	ROM_REGION( 0x1800, "gfx0", 0 )
-<<<<<<< HEAD
-	ROM_FILL(           0x0000, 0x1000, 0 )         /* filling bitplanes */
-=======
 	ROM_FILL(           0x0000, 0x1000, 0x0000 )         /* filling bitplanes */
->>>>>>> upstream/master
 	ROM_COPY( "temp",   0x0000, 0x1000, 0x0800 )    /* 0000-07ff of rom1.bin - char rom (placed ok), bitplane 3 */
 
 	ROM_REGION( 0x1800, "gfx1", 0 )
@@ -9937,11 +9407,7 @@ ROM_START( wtchjackd )  /* Witch Jack 0.70P / 1996-03-26 */
 	ROM_LOAD( "wj5x5_3zs.bin",  0x10000, 0x8000, BAD_DUMP CRC(708e1d7f) SHA1(518312fd0bc24d7895eae0cfa9dbad99e1adf67c) )
 
 	ROM_REGION( 0x1800, "gfx0", 0 )
-<<<<<<< HEAD
-	ROM_FILL(           0x0000, 0x1000, 0 )         /* filling bitplanes */
-=======
 	ROM_FILL(           0x0000, 0x1000, 0x0000 )         /* filling bitplanes */
->>>>>>> upstream/master
 	ROM_COPY( "temp",   0x0000, 0x1000, 0x0800 )    /* 0000-07ff of rom1.bin - char rom (placed ok), bitplane 3 */
 
 	ROM_REGION( 0x1800, "gfx1", 0 )
@@ -10034,11 +9500,7 @@ ROM_START( wtchjacke )  /* Witch Jack 0.65 / 1995-10-19 */
 	ROM_LOAD( "wj5x5_3zs.bin",  0x10000, 0x8000, BAD_DUMP CRC(708e1d7f) SHA1(518312fd0bc24d7895eae0cfa9dbad99e1adf67c) )
 
 	ROM_REGION( 0x1800, "gfx0", 0 )
-<<<<<<< HEAD
-	ROM_FILL(           0x0000, 0x1000, 0 )         /* filling bitplanes */
-=======
 	ROM_FILL(           0x0000, 0x1000, 0x0000 )         /* filling bitplanes */
->>>>>>> upstream/master
 	ROM_COPY( "temp",   0x0000, 0x1000, 0x0800 )    /* 0000-07ff of rom1.bin - char rom (placed ok), bitplane 3 */
 
 	ROM_REGION( 0x1800, "gfx1", 0 )
@@ -10131,11 +9593,7 @@ ROM_START( wtchjackf )  /* Witch Jack 0.64 / 1995-09-13 */
 	ROM_LOAD( "wj5x5_3zs.bin",  0x10000, 0x8000, BAD_DUMP CRC(708e1d7f) SHA1(518312fd0bc24d7895eae0cfa9dbad99e1adf67c) )
 
 	ROM_REGION( 0x1800, "gfx0", 0 )
-<<<<<<< HEAD
-	ROM_FILL(           0x0000, 0x1000, 0 )         /* filling bitplanes */
-=======
 	ROM_FILL(           0x0000, 0x1000, 0x0000 )         /* filling bitplanes */
->>>>>>> upstream/master
 	ROM_COPY( "temp",   0x0000, 0x1000, 0x0800 )    /* 0000-07ff of rom1.bin - char rom (placed ok), bitplane 3 */
 
 	ROM_REGION( 0x1800, "gfx1", 0 )
@@ -10228,11 +9686,7 @@ ROM_START( wtchjackg )  /* Witch Jack 0.62 / 1995-08-02 */
 	ROM_LOAD( "wj5x5_3zs.bin",  0x10000, 0x8000, BAD_DUMP CRC(708e1d7f) SHA1(518312fd0bc24d7895eae0cfa9dbad99e1adf67c) )
 
 	ROM_REGION( 0x1800, "gfx0", 0 )
-<<<<<<< HEAD
-	ROM_FILL(           0x0000, 0x1000, 0 )         /* filling bitplanes */
-=======
 	ROM_FILL(           0x0000, 0x1000, 0x0000 )         /* filling bitplanes */
->>>>>>> upstream/master
 	ROM_COPY( "temp",   0x0000, 0x1000, 0x0800 )    /* 0000-07ff of rom1.bin - char rom (placed ok), bitplane 3 */
 
 	ROM_REGION( 0x1800, "gfx1", 0 )
@@ -10325,11 +9779,7 @@ ROM_START( wtchjackh )  /* Witch Jack 0.40T / 1995-02-27, Not Working */
 	ROM_LOAD( "wj5x5_3zs.bin",  0x10000, 0x8000, BAD_DUMP CRC(708e1d7f) SHA1(518312fd0bc24d7895eae0cfa9dbad99e1adf67c) )
 
 	ROM_REGION( 0x1800, "gfx0", 0 )
-<<<<<<< HEAD
-	ROM_FILL(           0x0000, 0x1000, 0 )         /* filling bitplanes */
-=======
 	ROM_FILL(           0x0000, 0x1000, 0x0000 )         /* filling bitplanes */
->>>>>>> upstream/master
 	ROM_COPY( "temp",   0x0000, 0x1000, 0x0800 )    /* 0000-07ff of rom1.bin - char rom (placed ok), bitplane 3 */
 
 	ROM_REGION( 0x1800, "gfx1", 0 )
@@ -10422,11 +9872,7 @@ ROM_START( wtchjacki )  /* Witch Jack 0.40 / 1995-02-27 */
 	ROM_LOAD( "wj5x5_3zs.bin",  0x10000, 0x8000, BAD_DUMP CRC(708e1d7f) SHA1(518312fd0bc24d7895eae0cfa9dbad99e1adf67c) )
 
 	ROM_REGION( 0x1800, "gfx0", 0 )
-<<<<<<< HEAD
-	ROM_FILL(           0x0000, 0x1000, 0 )         /* filling bitplanes */
-=======
 	ROM_FILL(           0x0000, 0x1000, 0x0000 )         /* filling bitplanes */
->>>>>>> upstream/master
 	ROM_COPY( "temp",   0x0000, 0x1000, 0x0800 )    /* 0000-07ff of rom1.bin - char rom (placed ok), bitplane 3 */
 
 	ROM_REGION( 0x1800, "gfx1", 0 )
@@ -10519,11 +9965,7 @@ ROM_START( wtchjackj )  /* Witch Jackpot 0.25 / 1994-11-24 */
 	ROM_LOAD( "wj5x5_3zs.bin",  0x10000, 0x8000, BAD_DUMP CRC(708e1d7f) SHA1(518312fd0bc24d7895eae0cfa9dbad99e1adf67c) )
 
 	ROM_REGION( 0x1800, "gfx0", 0 )
-<<<<<<< HEAD
-	ROM_FILL(           0x0000, 0x1000, 0 )         /* filling bitplanes */
-=======
 	ROM_FILL(           0x0000, 0x1000, 0x0000 )         /* filling bitplanes */
->>>>>>> upstream/master
 	ROM_COPY( "temp",   0x0000, 0x1000, 0x0800 )    /* 0000-07ff of rom1.bin - char rom (placed ok), bitplane 3 */
 
 	ROM_REGION( 0x1800, "gfx1", 0 )
@@ -10634,11 +10076,7 @@ ROM_START( falcnwld )
 	ROM_LOAD( "fw3.5a", 0x4000, 0x2000, BAD_DUMP CRC(98edfc82) SHA1(e3dd597245b55c3bc6ea86acf80ee024ca28f564) )  /* text layer + cards deck gfx, bitplane3 */
 
 	ROM_REGION( 0x1800, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_FILL(           0x0000, 0x1000, 0 )         /* filling bitplanes */
-=======
 	ROM_FILL(           0x0000, 0x1000, 0x0000 )         /* filling bitplanes */
->>>>>>> upstream/master
 	ROM_COPY( "temp",   0x4000, 0x1000, 0x0800 )    /* first quarter of fw3.5a */
 
 	ROM_REGION( 0x1800, "gfx2", 0 )
@@ -10664,11 +10102,7 @@ ROM_START( falcnwlda )
 	ROM_RELOAD(                 0x8000, 0x8000 )
 
 	ROM_REGION( 0x1800, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_FILL(           0x0000, 0x1000, 0 ) /* filling bitplanes */
-=======
 	ROM_FILL(           0x0000, 0x1000, 0x0000 ) /* filling bitplanes */
->>>>>>> upstream/master
 	ROM_LOAD( "fw4.7a", 0x1000, 0x0800, CRC(f0517b0d) SHA1(474bcf429f2539ff1f3d7d32d259c5973ccb0234) )  /* chars gfx */
 
 	ROM_REGION( 0x1800, "gfx2", 0 )
@@ -10687,11 +10121,7 @@ ROM_START( falcnwldb )
 	ROM_RELOAD(                         0x8000, 0x8000 )
 
 	ROM_REGION( 0x1800, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_FILL(           0x0000, 0x1000, 0 ) /* filling bitplanes */
-=======
 	ROM_FILL(           0x0000, 0x1000, 0x0000 ) /* filling bitplanes */
->>>>>>> upstream/master
 	ROM_LOAD( "fw4.7a", 0x1000, 0x0800, CRC(f0517b0d) SHA1(474bcf429f2539ff1f3d7d32d259c5973ccb0234) )  /* chars gfx */
 
 	ROM_REGION( 0x1800, "gfx2", 0 )
@@ -10737,11 +10167,7 @@ ROM_START( falcnwldc )
 	ROM_LOAD( "3.b4",   0x1800, 0x0800, CRC(d9246780) SHA1(4ceb24131ec6208b742ba80373201aa53c50732d) )
 
 	ROM_REGION( 0x1800, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_FILL(           0x0000, 0x1000, 0 )         /* filling bitplanes */
-=======
 	ROM_FILL(           0x0000, 0x1000, 0x0000 )         /* filling bitplanes */
->>>>>>> upstream/master
 	ROM_COPY( "temp",   0x0800, 0x1000, 0x0800 )    /* second half of 1.b1 */
 
 	ROM_REGION( 0x1800, "gfx2", 0 )
@@ -10764,11 +10190,7 @@ ROM_START( pmpoker )
 	ROM_LOAD( "2-7.bin",    0x7000, 0x1000, CRC(a9ab972e) SHA1(477441b7ff3acae3a5d5a3e4c2a428e0b3121534) )
 
 	ROM_REGION( 0x1800, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_FILL(               0x0000, 0x1000, 0 ) /* filling the R-G bitplanes */
-=======
 	ROM_FILL(               0x0000, 0x1000, 0x0000 ) /* filling the R-G bitplanes */
->>>>>>> upstream/master
 	ROM_LOAD( "1-4.bin",    0x1000, 0x0800, CRC(62b9f90d) SHA1(39c61a01225027572fdb75543bb6a78ed74bb2fb) )    /* text layer */
 
 	ROM_REGION( 0x1800, "gfx2", 0 )
@@ -10785,11 +10207,7 @@ ROM_START( royale )
 	ROM_LOAD( "royalex.bin",    0x4000, 0x4000, CRC(ef370617) SHA1(0fc5679e9787aeea3bc592b36efcaa20e859f912) )
 
 	ROM_REGION( 0x3000, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_FILL(                   0x0000, 0x2000, 0 ) /* filling the R-G bitplanes */
-=======
 	ROM_FILL(                   0x0000, 0x2000, 0x0000 ) /* filling the R-G bitplanes */
->>>>>>> upstream/master
 	ROM_LOAD( "royalechr.bin",  0x2000, 0x1000, CRC(b1f2cbb8) SHA1(8f4930038f2e21ca90b213c35b45ed14d8fad6fb) )    /* text layer */
 
 	ROM_REGION( 0x1800, "gfx2", 0 )
@@ -10806,11 +10224,7 @@ ROM_START( royalea )
 	ROM_LOAD( "royal.256",  0x0000, 0x8000, CRC(9d7fdb79) SHA1(05cae00bca0f6ae696c69f531cb0fa2104ff696a) )
 
 	ROM_REGION( 0x3000, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_FILL(                   0x0000, 0x2000, 0 ) /* filling the R-G bitplanes */
-=======
 	ROM_FILL(                   0x0000, 0x2000, 0x0000 ) /* filling the R-G bitplanes */
->>>>>>> upstream/master
 	ROM_LOAD( "royalechr.bin",  0x2000, 0x1000, CRC(b1f2cbb8) SHA1(8f4930038f2e21ca90b213c35b45ed14d8fad6fb) )    /* text layer */
 
 	ROM_REGION( 0x1800, "gfx2", 0 )
@@ -10827,11 +10241,7 @@ ROM_START( sloco93 )
 	ROM_LOAD( "locoloco.128",   0x4000, 0x4000, CRC(f626a770) SHA1(afbd33b3f65b8a781c716a3d6e5447aa817d856c) )
 
 	ROM_REGION( 0x3000, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_FILL(                   0x0000, 0x2000, 0 ) /* filling the R-G bitplanes */
-=======
 	ROM_FILL(                   0x0000, 0x2000, 0x0000 ) /* filling the R-G bitplanes */
->>>>>>> upstream/master
 	ROM_LOAD( "confloco.032",   0x2000, 0x1000, CRC(b86f219c) SHA1(3f655a96bcf597a271a4eaaa0acbf8dd70fcdae9) )    /* text layer */
 
 	ROM_REGION( 0x3000, "gfx2", 0 )
@@ -10848,11 +10258,7 @@ ROM_START( sloco93a )
 	ROM_LOAD( "locoloco.256",   0x0000, 0x8000, CRC(ab037b0b) SHA1(16f811daaed5bf7b72549db85755c5274dfee310) )
 
 	ROM_REGION( 0x3000, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_FILL(                   0x0000, 0x2000, 0 ) /* filling the R-G bitplanes */
-=======
 	ROM_FILL(                   0x0000, 0x2000, 0x0000 ) /* filling the R-G bitplanes */
->>>>>>> upstream/master
 	ROM_LOAD( "confloco.032",   0x2000, 0x1000, CRC(b86f219c) SHA1(3f655a96bcf597a271a4eaaa0acbf8dd70fcdae9) )    /* text layer */
 
 	ROM_REGION( 0x3000, "gfx2", 0 )
@@ -10875,11 +10281,7 @@ ROM_START( maverik )
 	ROM_LOAD( "maverik.bin",    0x0000, 0x8000, CRC(65a986e9) SHA1(2e825d3fb2346036357af0e12d3a75b5ef6cfd0d) )
 
 	ROM_REGION( 0x3000, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_FILL(           0x0000, 0x2000, 0 ) /* filling the R-G bitplanes */
-=======
 	ROM_FILL(           0x0000, 0x2000, 0x0000 ) /* filling the R-G bitplanes */
->>>>>>> upstream/master
 	ROM_LOAD( "4s.bin", 0x2000, 0x1000, CRC(0ac197eb) SHA1(fdf2b134c662f3c4d4a19d93a82d130ba643ace8) )    /* text layer */
 
 	ROM_REGION( 0x3000, "gfx2", 0 )
@@ -10901,11 +10303,7 @@ ROM_START( brasil86 )
 	ROM_LOAD( "brasil86.128",   0x4000, 0x4000, CRC(0e88b434) SHA1(80f921c277f4253c29ee80e9cfb046ade1f66300) )
 
 	ROM_REGION( 0x3000, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_FILL(           0x0000, 0x2000, 0 ) /* filling the R-G bitplanes */
-=======
 	ROM_FILL(           0x0000, 0x2000, 0x0000 ) /* filling the R-G bitplanes */
->>>>>>> upstream/master
 	ROM_LOAD( "4s.bin", 0x2000, 0x1000, CRC(0ac197eb) SHA1(fdf2b134c662f3c4d4a19d93a82d130ba643ace8) )    /* text layer */
 
 	ROM_REGION( 0x3000, "gfx2", 0 )
@@ -10922,11 +10320,7 @@ ROM_START( brasil87 )
 	ROM_LOAD( "brasil87.128",   0x4000, 0x4000, CRC(6cfdaea9) SHA1(0704e61c1c573e99e130c22787b529ac5544c631) )
 
 	ROM_REGION( 0x3000, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_FILL(           0x0000, 0x2000, 0 ) /* filling the R-G bitplanes */
-=======
 	ROM_FILL(           0x0000, 0x2000, 0x0000 ) /* filling the R-G bitplanes */
->>>>>>> upstream/master
 	ROM_LOAD( "4s.bin", 0x2000, 0x1000, CRC(0ac197eb) SHA1(fdf2b134c662f3c4d4a19d93a82d130ba643ace8) )    /* text layer */
 
 	ROM_REGION( 0x3000, "gfx2", 0 )
@@ -10943,11 +10337,7 @@ ROM_START( brasil89 )
 	ROM_LOAD( "brasil89.128",   0x4000, 0x4000, CRC(9030e0db) SHA1(d073ed0ddd3e5df6a3387e10e05ca34bc491eb35) )
 
 	ROM_REGION( 0x3000, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_FILL(           0x0000, 0x2000, 0 ) /* filling the R-G bitplanes */
-=======
 	ROM_FILL(           0x0000, 0x2000, 0x0000 ) /* filling the R-G bitplanes */
->>>>>>> upstream/master
 	ROM_LOAD( "4s.bin", 0x2000, 0x1000, CRC(0ac197eb) SHA1(fdf2b134c662f3c4d4a19d93a82d130ba643ace8) )    /* text layer */
 
 	ROM_REGION( 0x3000, "gfx2", 0 )
@@ -10964,11 +10354,7 @@ ROM_START( brasil89a )
 	ROM_LOAD( "brasil89a.128",  0x4000, 0x4000, CRC(41a93a99) SHA1(70eeaddbdd9d3a587d1330b81d21d881ab0a8c91) )
 
 	ROM_REGION( 0x3000, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_FILL(           0x0000, 0x2000, 0 ) /* filling the R-G bitplanes */
-=======
 	ROM_FILL(           0x0000, 0x2000, 0x0000 ) /* filling the R-G bitplanes */
->>>>>>> upstream/master
 	ROM_LOAD( "4s.bin", 0x2000, 0x1000, CRC(0ac197eb) SHA1(fdf2b134c662f3c4d4a19d93a82d130ba643ace8) )    /* text layer */
 
 	ROM_REGION( 0x3000, "gfx2", 0 )
@@ -10985,11 +10371,7 @@ ROM_START( brasil93 )
 	ROM_LOAD( "brasil93.128",   0x4000, 0x4000, CRC(cc25909f) SHA1(635184022bcb8936c396cb9fcfa6367fcae906fb) )
 
 	ROM_REGION( 0x3000, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_FILL(           0x0000, 0x2000, 0 ) /* filling the R-G bitplanes */
-=======
 	ROM_FILL(           0x0000, 0x2000, 0x0000 ) /* filling the R-G bitplanes */
->>>>>>> upstream/master
 	ROM_LOAD( "4s.bin", 0x2000, 0x1000, CRC(0ac197eb) SHA1(fdf2b134c662f3c4d4a19d93a82d130ba643ace8) )    /* text layer */
 
 	ROM_REGION( 0x3000, "gfx2", 0 )
@@ -11006,11 +10388,7 @@ ROM_START( poker91 )
 	ROM_LOAD( "bs_pok91.bin",   0x0000, 0x8000, CRC(90c88b45) SHA1(9b5842075ece5f96a6869d7a8c874dee2b2abde2) )
 
 	ROM_REGION( 0x3000, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_FILL(           0x0000, 0x2000, 0 ) /* filling the R-G bitplanes */
-=======
 	ROM_FILL(           0x0000, 0x2000, 0x0000 ) /* filling the R-G bitplanes */
->>>>>>> upstream/master
 	ROM_LOAD( "4s.bin", 0x2000, 0x1000, CRC(0ac197eb) SHA1(fdf2b134c662f3c4d4a19d93a82d130ba643ace8) )    /* text layer */
 
 	ROM_REGION( 0x3000, "gfx2", 0 )
@@ -11055,11 +10433,7 @@ ROM_START( genie )
 	ROM_LOAD( "3m.17a", 0x3000, 0x1000, CRC(9d67f5c9) SHA1(d3bc13ce07a7b1713544756d7723dd0bcd59cd1a) )
 
 	ROM_REGION( 0x1800, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_FILL(           0x0000, 0x1000, 0 ) /* filling the R-G bitplanes */
-=======
 	ROM_FILL(           0x0000, 0x1000, 0x0000 ) /* filling the R-G bitplanes */
->>>>>>> upstream/master
 	ROM_LOAD( "4.8a",   0x1000, 0x0800, CRC(1cdd1db9) SHA1(1940c6654b4a892abc3e4557666d341f407ac54f) )  /* chars gfx */
 
 	ROM_REGION( 0x1800, "gfx2", 0 )
@@ -11083,11 +10457,7 @@ ROM_START( geniea )
 	ROM_LOAD( "2732.15a", 0x7000, 0x1000, CRC(7137aa06) SHA1(1a2af7dfe41e54fc9c3b4e641319d1a504e84a18) )
 
 	ROM_REGION( 0x3000, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_FILL(               0x0000, 0x2000, 0 ) /* filling the R-G bitplanes */
-=======
 	ROM_FILL(               0x0000, 0x2000, 0x0000 ) /* filling the R-G bitplanes */
->>>>>>> upstream/master
 	ROM_LOAD( "2732.9a",    0x2000, 0x1000, BAD_DUMP CRC(ffb7bca3) SHA1(b58175c0342f963cb42a04195e296db952e071b6) )    /* chars + bitplane3 */
 
 	ROM_REGION( 0x1800, "gfx2", 0 )
@@ -11106,18 +10476,12 @@ ROM_END
   1983.
 
   6502 CPU
-<<<<<<< HEAD
-  2*6821 ios
-  mc6845 video chip
-  10mhz (?) xtal
-=======
   2*6821 PIAs
   MC6845 CRTC
   10mhz xtal.
 
   PCB is similar to Prodel, with internal PSU and
   30x2 edge connector.
->>>>>>> upstream/master
 
   There are French strings related to the game, so maybe is
   a leftover, or maybe there is a unknown way to switch the
@@ -11131,11 +10495,7 @@ ROM_START( silverga )
 	ROM_LOAD( "55", 0x6000, 0x2000, CRC(aad57b3c) SHA1(9508026c1a7b227a70d89ad2f7245e75a615b932) )
 
 	ROM_REGION( 0x3000, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_FILL(           0x0000, 0x2000, 0 ) /* filling the R-G bitplanes */
-=======
 	ROM_FILL(           0x0000, 0x2000, 0x0000 ) /* filling the R-G bitplanes */
->>>>>>> upstream/master
 	ROM_LOAD( "13",     0x2000, 0x1000, CRC(98b8cb4f) SHA1(420ea544a41e24478a8eb1c7076f4569607d0379) )    /* text layer */
 
 	ROM_REGION( 0x1800, "gfx2", 0 )
@@ -11177,11 +10537,7 @@ ROM_START( caspoker )
 	ROM_LOAD( "237.bin",    0x7000, 0x1000, CRC(b411d0c4) SHA1(0617cd312026da78a171fc23f4788393d70371cf) )
 
 	ROM_REGION( 0x1800, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_FILL(               0x0000, 0x1000, 0 ) /* filling the R-G bitplanes */
-=======
 	ROM_FILL(               0x0000, 0x1000, 0x0000 ) /* filling the R-G bitplanes */
->>>>>>> upstream/master
 	ROM_LOAD( "054.bin",    0x1000, 0x0800, CRC(7b401a09) SHA1(affb90a52761c36be7c67f7606f3f982f6dc724e) )    /* text chars */
 	ROM_IGNORE(                     0x0800) /* identical halves, discarding the 2nd half */
 
@@ -11218,11 +10574,7 @@ ROM_START( superdbl )
 	ROM_LOAD( "8",    0x3000, 0x1000, CRC(157332c2) SHA1(3c66200c49641b9d876c5fa134dd2f0e80136beb) )
 
 	ROM_REGION( 0x1800, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_FILL(                 0x0000, 0x1000, 0 ) /* filling the R-G bitplanes */
-=======
 	ROM_FILL(                 0x0000, 0x1000, 0x0000 ) /* filling the R-G bitplanes */
->>>>>>> upstream/master
 	ROM_LOAD( "4",    0x1000, 0x0800, CRC(1e1d4e33) SHA1(22831984489fdf712ca616c1af3c874a5b12b522) )    /* text layer */
 
 	ROM_REGION( 0x1800, "gfx2", 0 )
@@ -11252,11 +10604,7 @@ ROM_START( pokerdub )
 	ROM_LOAD( "unknown.17a",    0x3000, 0x1000, NO_DUMP )
 
 	ROM_REGION( 0x1800, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_FILL(           0x0000, 0x1000, 0 ) /* filling the R-G bitplanes */
-=======
 	ROM_FILL(           0x0000, 0x1000, 0x0000 ) /* filling the R-G bitplanes */
->>>>>>> upstream/master
 	ROM_LOAD( "4.8a",   0x1000, 0x0800, CRC(1e1d4e33) SHA1(22831984489fdf712ca616c1af3c874a5b12b522) )    /* char ROM (cracked title) */
 
 	ROM_REGION( 0x1800, "gfx2", 0 )
@@ -11287,11 +10635,7 @@ ROM_START( pokerduc )
 	ROM_LOAD( "d",  0x7000, 0x1000, CRC(c48096ed) SHA1(279ba433369c7dc9cd902a19200e889eea45d115) )
 
 	ROM_REGION( 0x1800, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_FILL(           0x0000, 0x1000, 0 ) /* filling the R-G bitplanes */
-=======
 	ROM_FILL(           0x0000, 0x1000, 0x0000 ) /* filling the R-G bitplanes */
->>>>>>> upstream/master
 	ROM_LOAD( "a.8a",   0x1000, 0x0800, CRC(c70a3e49) SHA1(eb2f15b344f4dec5f05701415848c854bb27aaa3) )    /* char ROM (cracked title) */
 
 	ROM_REGION( 0x1800, "gfx2", 0 )
@@ -11332,11 +10676,7 @@ ROM_START( bchancep )   /* Bonne Chance! with PIAs 6821 */
 //  ROM_LOAD( "ups39_12a.bin",  0x0000, 0x8000, CRC(216b45fb) SHA1(fbfcd98cc39b2e791cceb845b166ff697f584add) )
 
 	ROM_REGION( 0x1800, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_FILL(            0x0000, 0x1000, 0 ) /* filling the R-G bitplanes */
-=======
 	ROM_FILL(            0x0000, 0x1000, 0x0000 ) /* filling the R-G bitplanes */
->>>>>>> upstream/master
 	ROM_COPY( "gfx",     0x2000, 0x1000, 0x0800 )                                                           /* text layer and cards logo */
 
 	ROM_REGION( 0x1800, "gfx2", 0 )
@@ -11353,11 +10693,7 @@ ROM_START( bchanceq )
 	ROM_LOAD( "pok4-5.014",  0x4000, 0x4000, CRC(92f1f515) SHA1(f79ab453458f71d7e62e895d04a2d6161dbf2aad) )
 
 	ROM_REGION( 0x1800, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_FILL(           0x0000, 0x1000, 0 ) /* filling the R-G bitplanes */
-=======
 	ROM_FILL(           0x0000, 0x1000, 0x0000 ) /* filling the R-G bitplanes */
->>>>>>> upstream/master
 	ROM_LOAD( "pok3.014",  0x1000, 0x0800, CRC(fb00e263) SHA1(879660bc3a3eb3d41f80741b157cdefaa7bd9a18) )    /* char ROM, different cardback logo */
 
 	ROM_REGION( 0x1800, "gfx2", 0 )
@@ -11410,19 +10746,11 @@ ROM_START( pokermon )
 	ROM_LOAD( "3m.bin",  0x10000, 0x8000, CRC(b2237068) SHA1(ece4f089776bbd5224c63c6a41a2e86a5e89d0c5) )
 
 	ROM_REGION( 0x1800, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_FILL(                 0x0000, 0x1000, 0 )   /* filling the R-G bitplanes */
-	ROM_COPY( "gfx", 0x14800, 0x1000, 0x0800 )      /* text, numbers and soccer ball tiles */
-
-	ROM_REGION( 0x1800, "gfx2", 0 )
-	ROM_COPY( "gfx", 0x00000, 0x0000, 0x0800 )  /* soccer player gfx, bitplane 1 */
-=======
 	ROM_FILL(                 0x0000, 0x1000, 0x0000 )   /* filling the R-G bitplanes */
 	ROM_COPY( "gfx", 0x14800, 0x1000, 0x0800 )      /* text, numbers and soccer ball tiles */
 
 	ROM_REGION( 0x1800, "gfx2", 0 )
 	ROM_COPY( "gfx", 0x0000, 0x0000, 0x0800 )  /* soccer player gfx, bitplane 1 */
->>>>>>> upstream/master
 	ROM_COPY( "gfx", 0x08000, 0x0800, 0x0800 )  /* soccer player gfx, bitplane 2 */
 	ROM_COPY( "gfx", 0x12000, 0x1000, 0x0800 )  /* soccer player gfx, bitplane 3 */
 
@@ -11440,11 +10768,7 @@ ROM_START( pokersis )
 	ROM_LOAD( "gs3.bin",  0x10000, 0x8000, CRC(12c37991) SHA1(e63a0504e697daddcdfcf90b2a136c4180a431a7) )
 
 	ROM_REGION( 0x1800, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_FILL(                 0x0000, 0x1000, 0 )   /* filling the R-G bitplanes */
-=======
 	ROM_FILL(                 0x0000, 0x1000, 0x0000 )   /* filling the R-G bitplanes */
->>>>>>> upstream/master
 	ROM_COPY( "gfx", 0x14800, 0x1000, 0x0800 )      /* text and suppossed 1bpp gfx */
 
 	ROM_REGION( 0x1800, "gfx2", 0 )
@@ -11468,11 +10792,7 @@ ROM_START( super98 )
 	ROM_LOAD( "27c256.17a",   0x0000, 0x8000, CRC(dfa319c5) SHA1(e1b2ef40350ee1f40272604cbe33b245210de003) )
 
 	ROM_REGION( 0x3000, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_FILL(               0x0000, 0x2000, 0 ) /* filling the R-G bitplanes */
-=======
 	ROM_FILL(               0x0000, 0x2000, 0x0000 ) /* filling the R-G bitplanes */
->>>>>>> upstream/master
 	ROM_LOAD( "2732.9a",    0x2000, 0x1000, CRC(9a478c39) SHA1(614171fa3184f6ceb663d5650d05fac4d4025c9f) )    /* char ROM */
 
 	ROM_REGION( 0x3000, "gfx2", 0 )
@@ -11484,8 +10804,6 @@ ROM_START( super98 )
 	ROM_LOAD( "bipolar_prom.bin",  0x0000, 0x0100, BAD_DUMP CRC(7f31066b) SHA1(15420780ec6b2870fc4539ec3afe4f0c58eedf12) ) /* PROM dump needed */
 ROM_END
 
-<<<<<<< HEAD
-=======
 /*-------------------------------------------------------------------------
 
    Unknown animals themed banked game.
@@ -11651,7 +10969,6 @@ ROM_START( megadpkrb )
 	ROM_LOAD( "m3-7611-5.7d",   0x0000, 0x0100, CRC(7f31066b) SHA1(15420780ec6b2870fc4539ec3afe4f0c58eedf12) )
 ROM_END
 
->>>>>>> upstream/master
 
 /*********************************************
 *                Driver Init                 *
@@ -11717,11 +11034,7 @@ DRIVER_INIT_MEMBER(goldnpkr_state, flcnw)
 {
 	/* Attempt to decrypt the MCU program (we're sooo close!) */
 
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("mcu")->base();
-=======
 	uint8_t *ROM = memregion("mcu")->base();
->>>>>>> upstream/master
 	int size = memregion("mcu")->bytes();
 	int start = 0x0000;
 	int i;
@@ -11740,11 +11053,7 @@ DRIVER_INIT_MEMBER(goldnpkr_state, vkdlsa)
 	   after compare with Dallas TK data
 	*/
 
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("maincpu")->base();
-=======
 	uint8_t *ROM = memregion("maincpu")->base();
->>>>>>> upstream/master
 
 	ROM[0xe097] = 0xea;
 	ROM[0xe098] = 0xea;
@@ -11756,11 +11065,7 @@ DRIVER_INIT_MEMBER(goldnpkr_state, vkdlsb)
 	   after compare with Dallas TK data
 	*/
 
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("maincpu")->base();
-=======
 	uint8_t *ROM = memregion("maincpu")->base();
->>>>>>> upstream/master
 
 	ROM[0xe87b] = 0xea;
 	ROM[0xe87c] = 0xea;
@@ -11772,11 +11077,7 @@ DRIVER_INIT_MEMBER(goldnpkr_state, vkdlsc)
 	   after compare with Dallas TK data
 	*/
 
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("maincpu")->base();
-=======
 	uint8_t *ROM = memregion("maincpu")->base();
->>>>>>> upstream/master
 
 	ROM[0x453a] = 0xea;
 	ROM[0x453b] = 0xea;
@@ -11788,11 +11089,7 @@ DRIVER_INIT_MEMBER(goldnpkr_state, vkdlsww)
 	   after compare with Dallas TK data
 	*/
 
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("maincpu")->base();
-=======
 	uint8_t *ROM = memregion("maincpu")->base();
->>>>>>> upstream/master
 
 	ROM[0xf2c9] = 0xea;
 	ROM[0xf2ca] = 0xea;
@@ -11804,11 +11101,7 @@ DRIVER_INIT_MEMBER(goldnpkr_state, vkdlswwa)
 	   after compare with Dallas TK data
 	*/
 
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("maincpu")->base();
-=======
 	uint8_t *ROM = memregion("maincpu")->base();
->>>>>>> upstream/master
 
 	ROM[0xdf80] = 0xea;
 	ROM[0xdf81] = 0xea;
@@ -11820,11 +11113,7 @@ DRIVER_INIT_MEMBER(goldnpkr_state, vkdlswwc)
 	   after compare with Dallas TK data
 	*/
 
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("maincpu")->base();
-=======
 	uint8_t *ROM = memregion("maincpu")->base();
->>>>>>> upstream/master
 
 	ROM[0xe42f] = 0xea;
 	ROM[0xe430] = 0xea;
@@ -11836,11 +11125,7 @@ DRIVER_INIT_MEMBER(goldnpkr_state, vkdlswwd)
 	   after compare with Dallas TK data
 	*/
 
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("maincpu")->base();
-=======
 	uint8_t *ROM = memregion("maincpu")->base();
->>>>>>> upstream/master
 
 	ROM[0xe442] = 0xea;
 	ROM[0xe443] = 0xea;
@@ -11852,11 +11137,7 @@ DRIVER_INIT_MEMBER(goldnpkr_state, vkdlswwh)
 	   after compare with Dallas TK data
 	*/
 
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("maincpu")->base();
-=======
 	uint8_t *ROM = memregion("maincpu")->base();
->>>>>>> upstream/master
 
 	ROM[0xe4d5] = 0xea;
 	ROM[0xe4d6] = 0xea;
@@ -11868,11 +11149,7 @@ DRIVER_INIT_MEMBER(goldnpkr_state, vkdlswwl)
 	   after compare with Dallas TK data
 	*/
 
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("maincpu")->base();
-=======
 	uint8_t *ROM = memregion("maincpu")->base();
->>>>>>> upstream/master
 
 	ROM[0xe87c] = 0xea;
 	ROM[0xe87d] = 0xea;
@@ -11884,11 +11161,7 @@ DRIVER_INIT_MEMBER(goldnpkr_state, vkdlswwo)
 	   after compare with Dallas TK data
 	*/
 
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("maincpu")->base();
-=======
 	uint8_t *ROM = memregion("maincpu")->base();
->>>>>>> upstream/master
 
 	ROM[0xe7d5] = 0xea;
 	ROM[0xe7d6] = 0xea;
@@ -11900,11 +11173,7 @@ DRIVER_INIT_MEMBER(goldnpkr_state, vkdlswwp)
 	   after compare with Dallas TK data
 	*/
 
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("maincpu")->base();
-=======
 	uint8_t *ROM = memregion("maincpu")->base();
->>>>>>> upstream/master
 
 	ROM[0xe7d9] = 0xea;
 	ROM[0xe7da] = 0xea;
@@ -11916,11 +11185,7 @@ DRIVER_INIT_MEMBER(goldnpkr_state, vkdlswwr)
 	   after compare with Dallas TK data
 	*/
 
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("maincpu")->base();
-=======
 	uint8_t *ROM = memregion("maincpu")->base();
->>>>>>> upstream/master
 
 	ROM[0xe7f7] = 0xea;
 	ROM[0xe7f8] = 0xea;
@@ -11932,11 +11197,7 @@ DRIVER_INIT_MEMBER(goldnpkr_state, vkdlswws)
 	   after compare with Dallas TK data
 	*/
 
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("maincpu")->base();
-=======
 	uint8_t *ROM = memregion("maincpu")->base();
->>>>>>> upstream/master
 
 	ROM[0xe8a5] = 0xea;
 	ROM[0xe8a6] = 0xea;
@@ -11948,11 +11209,7 @@ DRIVER_INIT_MEMBER(goldnpkr_state, vkdlswwt)
 	   after compare with Dallas TK data
 	*/
 
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("maincpu")->base();
-=======
 	uint8_t *ROM = memregion("maincpu")->base();
->>>>>>> upstream/master
 
 	ROM[0xe955] = 0xea;
 	ROM[0xe956] = 0xea;
@@ -11964,11 +11221,7 @@ DRIVER_INIT_MEMBER(goldnpkr_state, vkdlswwu)
 	   after compare with Dallas TK data
 	*/
 
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("maincpu")->base();
-=======
 	uint8_t *ROM = memregion("maincpu")->base();
->>>>>>> upstream/master
 
 	ROM[0xee6b] = 0xea;
 	ROM[0xee6c] = 0xea;
@@ -11980,11 +11233,7 @@ DRIVER_INIT_MEMBER(goldnpkr_state, vkdlswwv)
 	   after compare with Dallas TK data
 	*/
 
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("maincpu")->base();
-=======
 	uint8_t *ROM = memregion("maincpu")->base();
->>>>>>> upstream/master
 
 	ROM[0xf052] = 0xea;
 	ROM[0xf053] = 0xea;
@@ -12032,11 +11281,7 @@ DRIVER_INIT_MEMBER(goldnpkr_state, icp1db)
 {
 /*
     int i;
-<<<<<<< HEAD
-    UINT8 *ROM = memregion("maincpu")->base();
-=======
     uint8_t *ROM = memregion("maincpu")->base();
->>>>>>> upstream/master
 
     unsigned char rawData[256] = {
         0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFB, 0xFB, 0xFB, 0xFB, 0xFB, 0xFB, 0xFB, 0xFB,
@@ -12109,11 +11354,7 @@ DRIVER_INIT_MEMBER(goldnpkr_state, wstrike)
 	   after compare with a string inside the Dallas TK RAM
 	*/
 
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("maincpu")->base();
-=======
 	uint8_t *ROM = memregion("maincpu")->base();
->>>>>>> upstream/master
 
 	ROM[0xf2e1] = 0xea;
 	ROM[0xf2e2] = 0xea;
@@ -12124,11 +11365,7 @@ DRIVER_INIT_MEMBER(goldnpkr_state, bchancep)
 {
 	/* Attempt to invert the color data from the bipolar PROM */
 
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("proms")->base();
-=======
 	uint8_t *ROM = memregion("proms")->base();
->>>>>>> upstream/master
 	int size = memregion("proms")->bytes();
 	int start = 0x0000;
 	int i;
@@ -12145,80 +11382,6 @@ DRIVER_INIT_MEMBER(goldnpkr_state, bchancep)
 *                Game Drivers                *
 *********************************************/
 
-<<<<<<< HEAD
-/*     YEAR  NAME       PARENT    MACHINE   INPUT     STATE           INIT      ROT      COMPANY                     FULLNAME                                  FLAGS             LAYOUT  */
-GAMEL( 1981, goldnpkr,  0,        goldnpkr, goldnpkr, driver_device,  0,        ROT0,   "Bonanza Enterprises, Ltd", "Golden Poker Double Up (Big Boy)",        0,                layout_goldnpkr )
-GAMEL( 1981, goldnpkb,  goldnpkr, goldnpkr, goldnpkr, driver_device,  0,        ROT0,   "Bonanza Enterprises, Ltd", "Golden Poker Double Up (Mini Boy)",       0,                layout_goldnpkr )
-
-GAMEL( 198?, videtron,  0,        goldnpkr, videtron, driver_device,  0,        ROT0,   "<unknown>",                "Videotron Poker (cards selector, set 1)", 0,                layout_goldnpkr )
-GAMEL( 198?, videtron2, videtron, goldnpkr, videtron, driver_device,  0,        ROT0,   "<unknown>",                "Videotron Poker (cards selector, set 2)", 0,                layout_goldnpkr )
-GAMEL( 198?, videtrna,  videtron, goldnpkr, goldnpkr, driver_device,  0,        ROT0,   "<unknown>",                "Videotron Poker (normal controls)",       0,                layout_goldnpkr )
-
-GAMEL( 198?, pottnpkr,  0,        pottnpkr, pottnpkr, driver_device,  0,        ROT0,   "bootleg",                  "Jack Potten's Poker (set 1)",             0,                layout_goldnpkr )
-GAMEL( 198?, potnpkra,  pottnpkr, pottnpkr, potnpkra, driver_device,  0,        ROT0,   "bootleg",                  "Jack Potten's Poker (set 2)",             0,                layout_goldnpkr )
-GAMEL( 198?, potnpkrb,  pottnpkr, pottnpkr, pottnpkr, driver_device,  0,        ROT0,   "bootleg",                  "Jack Potten's Poker (set 3)",             0,                layout_goldnpkr )
-GAMEL( 198?, potnpkrc,  pottnpkr, pottnpkr, potnpkrc, driver_device,  0,        ROT0,   "bootleg",                  "Jack Potten's Poker (set 4)",             0,                layout_goldnpkr )
-GAMEL( 198?, potnpkrd,  pottnpkr, pottnpkr, potnpkrc, driver_device,  0,        ROT0,   "bootleg",                  "Jack Potten's Poker (set 5)",             0,                layout_goldnpkr )
-GAMEL( 198?, potnpkre,  pottnpkr, pottnpkr, pottnpkr, driver_device,  0,        ROT0,   "bootleg",                  "Jack Potten's Poker (set 6)",             0,                layout_goldnpkr )
-GAMEL( 198?, potnpkrf,  pottnpkr, goldnpkr, goldnpkr, driver_device,  0,        ROT0,   "bootleg",                  "Jack Potten's Poker (set 7, Royale GFX)", 0,                layout_goldnpkr )
-GAMEL( 198?, potnpkrg,  pottnpkr, pottnpkr, potnpkra, driver_device,  0,        ROT0,   "bootleg",                  "Jack Potten's Poker (set 8, Australian)", 0,                layout_goldnpkr )
-GAMEL( 198?, potnpkrh,  pottnpkr, pottnpkr, goldnpkr, driver_device,  0,        ROT0,   "bootleg",                  "Jack Potten's Poker (set 9, 'just 4 fun')", 0,              layout_goldnpkr )
-GAMEL( 198?, ngold,     pottnpkr, pottnpkr, ngold,    driver_device,  0,        ROT0,   "<unknown>",                "Jack Potten's Poker (NGold, set 1)",      0,                layout_goldnpkr )
-GAMEL( 198?, ngolda,    pottnpkr, pottnpkr, ngold,    driver_device,  0,        ROT0,   "<unknown>",                "Jack Potten's Poker (NGold, set 2)",      0,                layout_goldnpkr )
-GAMEL( 198?, ngoldb,    pottnpkr, pottnpkr, ngoldb,   driver_device,  0,        ROT0,   "<unknown>",                "Jack Potten's Poker (NGold, set 3)",      0,                layout_goldnpkr )
-
-GAMEL( 1990, bsuerte,   0,        witchcrd, bsuerte,  driver_device,  0,        ROT0,   "<unknown>",                "Buena Suerte (Spanish, set 1)",           0,                layout_goldnpkr )
-GAMEL( 1991, bsuertea,  bsuerte,  witchcrd, bsuerte,  driver_device,  0,        ROT0,   "<unknown>",                "Buena Suerte (Spanish, set 2)",           0,                layout_goldnpkr )
-GAMEL( 1991, bsuerteb,  bsuerte,  witchcrd, bsuerte,  driver_device,  0,        ROT0,   "<unknown>",                "Buena Suerte (Spanish, set 3)",           0,                layout_goldnpkr )
-GAMEL( 1991, bsuertec,  bsuerte,  witchcrd, bsuerte,  driver_device,  0,        ROT0,   "<unknown>",                "Buena Suerte (Spanish, set 4)",           0,                layout_goldnpkr )
-GAMEL( 1991, bsuerted,  bsuerte,  witchcrd, bsuerte,  driver_device,  0,        ROT0,   "<unknown>",                "Buena Suerte (Spanish, set 5)",           0,                layout_goldnpkr )
-GAMEL( 1991, bsuertee,  bsuerte,  witchcrd, bsuerte,  driver_device,  0,        ROT0,   "<unknown>",                "Buena Suerte (Spanish, set 6)",           0,                layout_goldnpkr )
-GAMEL( 1991, bsuertef,  bsuerte,  witchcrd, bsuerte,  driver_device,  0,        ROT0,   "<unknown>",                "Buena Suerte (Spanish, set 7)",           0,                layout_goldnpkr )
-GAME(  1991, bsuerteg,  bsuerte,  witchcrd, bsuertew, driver_device,  0,        ROT0,   "<unknown>",                "Buena Suerte (Spanish, set 8)",           0 )
-GAME(  1991, bsuerteh,  bsuerte,  witchcrd, bsuertew, driver_device,  0,        ROT0,   "<unknown>",                "Buena Suerte (Spanish, set 9)",           0 )
-GAMEL( 1991, bsuertei,  bsuerte,  witchcrd, bsuerte,  driver_device,  0,        ROT0,   "<unknown>",                "Buena Suerte (Spanish, set 10)",          0,                layout_goldnpkr )
-GAMEL( 1991, bsuertej,  bsuerte,  witchcrd, bsuerte,  driver_device,  0,        ROT0,   "<unknown>",                "Buena Suerte (Spanish, set 11)",          0,                layout_goldnpkr )
-GAMEL( 1991, bsuertek,  bsuerte,  witchcrd, bsuerte,  driver_device,  0,        ROT0,   "<unknown>",                "Buena Suerte (Spanish, set 12)",          0,                layout_goldnpkr )
-GAMEL( 1991, bsuertel,  bsuerte,  witchcrd, bsuerte,  driver_device,  0,        ROT0,   "<unknown>",                "Buena Suerte (Spanish, set 13)",          0,                layout_goldnpkr )
-GAMEL( 1991, bsuertem,  bsuerte,  witchcrd, bsuerte,  driver_device,  0,        ROT0,   "<unknown>",                "Buena Suerte (Spanish, set 14)",          0,                layout_goldnpkr )
-GAMEL( 1991, bsuerten,  bsuerte,  witchcrd, bsuerte,  driver_device,  0,        ROT0,   "<unknown>",                "Buena Suerte (Spanish, set 15)",          0,                layout_goldnpkr )
-GAMEL( 1991, bsuerteo,  bsuerte,  witchcrd, bsuerte,  driver_device,  0,        ROT0,   "<unknown>",                "Buena Suerte (Spanish, set 16)",          0,                layout_goldnpkr )
-GAMEL( 1991, bsuertep,  bsuerte,  witchcrd, bsuerte,  driver_device,  0,        ROT0,   "<unknown>",                "Buena Suerte (Spanish, set 17)",          0,                layout_goldnpkr )
-GAMEL( 1991, bsuerteq,  bsuerte,  witchcrd, bsuerte,  driver_device,  0,        ROT0,   "<unknown>",                "Buena Suerte (Spanish, set 18)",          0,                layout_goldnpkr )
-GAMEL( 1991, bsuerter,  bsuerte,  witchcrd, bsuerte,  driver_device,  0,        ROT0,   "<unknown>",                "Buena Suerte (Spanish, set 19)",          0,                layout_goldnpkr )
-GAMEL( 1991, bsuertes,  bsuerte,  witchcrd, bsuerte,  driver_device,  0,        ROT0,   "<unknown>",                "Buena Suerte (Spanish, set 20)",          0,                layout_goldnpkr )
-GAMEL( 1991, bsuertet,  bsuerte,  witchcrd, bsuerte,  driver_device,  0,        ROT0,   "<unknown>",                "Buena Suerte (Spanish, set 21)",          0,                layout_goldnpkr )
-GAMEL( 1991, bsuerteu,  bsuerte,  witchcrd, bsuerte,  driver_device,  0,        ROT0,   "<unknown>",                "Buena Suerte (Spanish, set 22)",          0,                layout_goldnpkr )
-GAMEL( 1991, goodluck,  bsuerte,  witchcrd, goodluck, driver_device,  0,        ROT0,   "<unknown>",                "Good Luck",                               0,                layout_goldnpkr )
-
-GAMEL( 1991, falcnwld,  0,        wildcard, wildcard, driver_device,  0,        ROT0,   "TVG",                      "Falcons Wild - Wild Card 1991 (TVG)",     0,                layout_goldnpkr )
-GAMEL( 1990, falcnwlda, falcnwld, wildcard, wildcard, driver_device,  0,        ROT0,   "Video Klein",              "Falcons Wild - World Wide Poker (Video Klein, set 1)", 0,   layout_goldnpkr )
-GAMEL( 1990, falcnwldb, falcnwld, wildcard, wildcard, driver_device,  0,        ROT0,   "Video Klein",              "Falcons Wild - World Wide Poker (Video Klein, set 2)", 0,   layout_goldnpkr )
-GAME(  1983, falcnwldc, falcnwld, wildcrdb, wildcard, goldnpkr_state, flcnw,    ROT0,   "Falcon",                   "Falcons Wild - World Wide Poker (Falcon original)",    MACHINE_NOT_WORKING )
-
-GAMEL( 1991, witchcrd,  0,        witchcrd, witchcrd, goldnpkr_state, vkdlsc,   ROT0,   "Video Klein?",             "Witch Card (Video Klein CPU box, set 1)", 0,                layout_goldnpkr )
-GAME(  1991, witchcda,  witchcrd, witchcrd, witchcda, driver_device,  0,        ROT0,   "<unknown>",                "Witch Card (Spanish, witch game, set 1)", 0 )
-GAME(  1991, witchcdb,  witchcrd, witchcrd, witchcda, driver_device,  0,        ROT0,   "<unknown>",                "Witch Card (Spanish, witch game, set 2)", 0 )
-GAME(  1991, witchcdc,  witchcrd, witchcrd, witchcdc, driver_device,  0,        ROT0,   "<unknown>",                "Witch Card (English, no witch game)",     0 )
-GAMEL( 1994, witchcdd,  witchcrd, witchcrd, witchcdd, driver_device,  0,        ROT0,   "Proma",                    "Witch Card (German, WC3050, set 1 )",     0,                layout_goldnpkr )
-GAMEL( 1991, witchcde,  witchcrd, witchcrd, witchcrd, goldnpkr_state, vkdlsc,   ROT0,   "Video Klein",              "Witch Card (Video Klein CPU box, set 2)", 0,                layout_goldnpkr )
-GAMEL( 1985, witchcdf,  witchcrd, witchcrd, witchcdf, driver_device,  0,        ROT0,   "PM / Beck Elektronik",     "Witch Card (English, witch game, lamps)", 0,                layout_goldnpkr )
-GAMEL( 199?, witchcdg,  witchcrd, wcfalcon, witchcrd, driver_device,  0,        ROT0,   "Falcon",                   "Witch Card (Falcon, enhanced sound)",     0,                layout_goldnpkr )
-GAMEL( 1994, witchcdh,  witchcrd, witchcrd, witchcdd, driver_device,  0,        ROT0,   "Proma",                    "Witch Card (German, WC3050, set 2 )",     0,                layout_goldnpkr )
-GAMEL( 1994, witchcdi,  witchcrd, witchcrd, witchcdd, driver_device,  0,        ROT0,   "Proma",                    "Witch Card (German, WC3050, 27-4-94)",    0,                layout_goldnpkr )
-
-GAMEL( 1991, witchgme,  0,        witchcrd, witchcrd, driver_device,  0,        ROT0,   "Video Klein",              "Witch Game (Video Klein, set 1)",         0,                layout_goldnpkr )
-GAMEL( 1997, witchcdk,  witchgme, witchcrd, witchcrd, driver_device,  0,        ROT0,   "Video Klein",              "Witch Game (Video Klein, set 2)",         MACHINE_NOT_WORKING, layout_goldnpkr )
-
-GAMEL( 1994, witchjol,  0,        wcrdxtnd, witchjol, goldnpkr_state, vkdlsa,   ROT0,   "Video Klein",              "Jolli Witch (Export, 6T/12T ver 1.57D)",  0,                layout_goldnpkr )
-
-GAMEL( 2001, wldwitch,  0,        wcrdxtnd, wldwitch, goldnpkr_state, vkdlsww,  ROT0,   "Video Klein",              "Wild Witch (Export, 6T/12T ver 1.84A)",       0,                   layout_goldnpkr )  /* Ver 184A, 2001-09-12 */
-GAMEL( 1992, wldwitcha, wldwitch, wcrdxtnd, wldwitch, goldnpkr_state, vkdlswwa, ROT0,   "Video Klein",              "Wild Witch (Export, 6T/12T ver 1.57-SP)",     0,                   layout_goldnpkr )  /* Ver 157-SP, 1992-12-25 */
-GAMEL( 1992, wldwitchb, wldwitch, wcrdxtnd, wldwitch, driver_device,  0,        ROT0,   "Video Klein",              "Wild Witch (Export, 6T/12T ver 1.57-TE)",     MACHINE_NOT_WORKING, layout_goldnpkr )  /* Ver 157-TE, 1992-12-25 */
-GAMEL( 1994, wldwitchc, wldwitch, wcrdxtnd, wldwitch, goldnpkr_state, vkdlswwc, ROT0,   "Video Klein",              "Wild Witch (Export, 6T/12T ver 1.62A)",       0,                   layout_goldnpkr )  /* Ver 162A, 1994-04-26 */
-GAMEL( 1994, wldwitchd, wldwitch, wcrdxtnd, wldwitch, goldnpkr_state, vkdlswwd, ROT0,   "Video Klein",              "Wild Witch (Export, 6T/12T ver 1.62B)",       0,                   layout_goldnpkr )  /* Ver 162B, 1994-04-26 */
-GAMEL( 1994, wldwitche, wldwitch, wcrdxtnd, wldwitch, driver_device,  0,        ROT0,   "Video Klein",              "Wild Witch (Export, 6T/12T ver 1.62A-F)",     MACHINE_NOT_WORKING, layout_goldnpkr )  /* Ver 162A-F, 1994-04-26 */
-=======
 //     YEAR  NAME       PARENT    MACHINE   INPUT     STATE           INIT      ROT     COMPANY                     FULLNAME                                      FLAGS             LAYOUT
 GAMEL( 1981, goldnpkr,  0,        goldnpkr, goldnpkr, goldnpkr_state, 0,        ROT0,   "Bonanza Enterprises, Ltd", "Golden Poker Double Up (Big Boy)",           0,                layout_goldnpkr )
 GAMEL( 1981, goldnpkb,  goldnpkr, goldnpkr, goldnpkr, goldnpkr_state, 0,        ROT0,   "Bonanza Enterprises, Ltd", "Golden Poker Double Up (Mini Boy)",          0,                layout_goldnpkr )
@@ -12294,7 +11457,6 @@ GAMEL( 1992, wldwitchb, wldwitch, wcrdxtnd, wldwitch, goldnpkr_state, 0,        
 GAMEL( 1994, wldwitchc, wldwitch, wcrdxtnd, wldwitch, goldnpkr_state, vkdlswwc, ROT0,   "Video Klein",              "Wild Witch (Export, 6T/12T ver 1.62A)",       0,                   layout_goldnpkr )  /* Ver 162A, 1994-04-26 */
 GAMEL( 1994, wldwitchd, wldwitch, wcrdxtnd, wldwitch, goldnpkr_state, vkdlswwd, ROT0,   "Video Klein",              "Wild Witch (Export, 6T/12T ver 1.62B)",       0,                   layout_goldnpkr )  /* Ver 162B, 1994-04-26 */
 GAMEL( 1994, wldwitche, wldwitch, wcrdxtnd, wldwitch, goldnpkr_state, 0,        ROT0,   "Video Klein",              "Wild Witch (Export, 6T/12T ver 1.62A-F)",     MACHINE_NOT_WORKING, layout_goldnpkr )  /* Ver 162A-F, 1994-04-26 */
->>>>>>> upstream/master
 GAMEL( 1994, wldwitchf, wldwitch, wcrdxtnd, wldwitch, goldnpkr_state, vkdlswwc, ROT0,   "Video Klein",              "Wild Witch (Export, 6T/12T ver 1.62A alt)",   0,                   layout_goldnpkr )  /* Ver 162A alt, 1994-11-03 */
 GAMEL( 1994, wldwitchg, wldwitch, wcrdxtnd, wldwitch, goldnpkr_state, vkdlswwd, ROT0,   "Video Klein",              "Wild Witch (Export, 6T/12T ver 1.62B alt)",   0,                   layout_goldnpkr )  /* Ver 162B alt, 1994-11-03 */
 GAMEL( 1995, wldwitchh, wldwitch, wcrdxtnd, wldwitch, goldnpkr_state, vkdlswwh, ROT0,   "Video Klein",              "Wild Witch (Export, 6T/12T ver 1.65A)",       0,                   layout_goldnpkr )  /* Ver 165A, 1995-11-16 */
@@ -12313,36 +11475,15 @@ GAMEL( 1999, wldwitcht, wldwitch, wcrdxtnd, wldwitch, goldnpkr_state, vkdlswwt, 
 GAMEL( 2000, wldwitchu, wldwitch, wcrdxtnd, wldwitch, goldnpkr_state, vkdlswwu, ROT0,   "Video Klein",              "Wild Witch (Export, 6T/12T ver 1.79A)",       0,                   layout_goldnpkr )  /* Ver 179A, 2000-05-10 */
 GAMEL( 2001, wldwitchv, wldwitch, wcrdxtnd, wldwitch, goldnpkr_state, vkdlswwv, ROT0,   "Video Klein",              "Wild Witch (Export, 6T/12T ver 1.83A)",       0,                   layout_goldnpkr )  /* Ver 183A, 2001-06-13 */
 
-<<<<<<< HEAD
-GAMEL( 1998, wupndown,  0,        wcrdxtnd, wupndown, driver_device,  0,        ROT0,   "Video Klein",              "Witch Up & Down (Export, 6T/12T ver 1.02)",        0,           layout_upndown )    /* Ver 1.02, 1998-10-26 */
-GAMEL( 1998, wupndowna, wupndown, wcrdxtnd, wupndown, driver_device,  0,        ROT0,   "Video Klein",              "Witch Up & Down (Export, 6T/12T ver 0.99, set 1)", 0,           layout_upndown )    /* Ver 0.99, 1998-04-09 */
-GAMEL( 1998, wupndownb, wupndown, wcrdxtnd, wupndown, driver_device,  0,        ROT0,   "Video Klein",              "Witch Up & Down (Export, 6T/12T ver 0.99, set 2)", 0,           layout_upndown )    /* Ver 0.99, 1998-03-23 */
-GAMEL( 1998, wupndownc, wupndown, wcrdxtnd, wupndown, driver_device,  0,        ROT0,   "Video Klein",              "Witch Up & Down (Export, 6T/12T ver 0.99, set 3)", 0,           layout_upndown )    /* Ver 0.99 alt, 1998-05-11 */
-GAMEL( 1998, wupndownd, wupndown, wcrdxtnd, wupndown, driver_device,  0,        ROT0,   "Video Klein",              "Witch Up & Down (Export, 6T/12T ver 0.99T)",       0,           layout_upndown )    /* Ver 0.99T, 1998-03-23 */
-=======
 GAMEL( 1998, wupndown,  0,        wcrdxtnd, wupndown, goldnpkr_state, 0,        ROT0,   "Video Klein",              "Witch Up & Down (Export, 6T/12T ver 1.02)",        0,           layout_upndown )    /* Ver 1.02, 1998-10-26 */
 GAMEL( 1998, wupndowna, wupndown, wcrdxtnd, wupndown, goldnpkr_state, 0,        ROT0,   "Video Klein",              "Witch Up & Down (Export, 6T/12T ver 0.99, set 1)", 0,           layout_upndown )    /* Ver 0.99, 1998-04-09 */
 GAMEL( 1998, wupndownb, wupndown, wcrdxtnd, wupndown, goldnpkr_state, 0,        ROT0,   "Video Klein",              "Witch Up & Down (Export, 6T/12T ver 0.99, set 2)", 0,           layout_upndown )    /* Ver 0.99, 1998-03-23 */
 GAMEL( 1998, wupndownc, wupndown, wcrdxtnd, wupndown, goldnpkr_state, 0,        ROT0,   "Video Klein",              "Witch Up & Down (Export, 6T/12T ver 0.99, set 3)", 0,           layout_upndown )    /* Ver 0.99 alt, 1998-05-11 */
 GAMEL( 1998, wupndownd, wupndown, wcrdxtnd, wupndown, goldnpkr_state, 0,        ROT0,   "Video Klein",              "Witch Up & Down (Export, 6T/12T ver 0.99T)",       0,           layout_upndown )    /* Ver 0.99T, 1998-03-23 */
->>>>>>> upstream/master
 
 GAMEL( 1992, wstrike,   0,        wcrdxtnd, wstrike,  goldnpkr_state, wstrike,  ROT0,   "Video Klein",              "Witch Strike (Export, 6T/12T ver 1.01A)",     0,                layout_goldnpkr )
 GAMEL( 1992, wstrikea,  wstrike,  wcrdxtnd, wstrike,  goldnpkr_state, wstrike,  ROT0,   "Video Klein",              "Witch Strike (Export, 6T/12T ver 1.01B)",     0,                layout_goldnpkr )
 
-<<<<<<< HEAD
-GAMEL( 1996, wtchjack,  0,        wcrdxtnd, wtchjack, driver_device,  0,        ROT0,   "Video Klein",              "Witch Jack (Export, 6T/12T ver 0.87-89)", 0,                          layout_goldnpkr )    /* Ver 0.87-89 / 1996-10-08 GFX OK */
-GAMEL( 1996, wtchjacka, wtchjack, wcrdxtnd, wtchjack, driver_device,  0,        ROT0,   "Video Klein",              "Witch Jack (Export, 6T/12T ver 0.87-88)", 0,                          layout_goldnpkr )    /* Ver 0.87-88 / 1996-10-02, GFX OK */
-GAMEL( 1996, wtchjackb, wtchjack, wcrdxtnd, wtchjack, driver_device,  0,        ROT0,   "Video Klein",              "Witch Jack (Export, 6T/12T ver 0.87)",    0,                          layout_goldnpkr )    /* Ver 0.87 / 1996-07-16, GFX OK */
-GAMEL( 1996, wtchjackc, wtchjack, wcrdxtnd, wtchjack, driver_device,  0,        ROT0,   "Video Klein",              "Witch Jack (Export, 6T/12T ver 0.70S)",   MACHINE_IMPERFECT_GRAPHICS, layout_goldnpkr )    /* Ver 0.70S / 1996-03-26 */
-GAMEL( 1996, wtchjackd, wtchjack, wcrdxtnd, wtchjack, driver_device,  0,        ROT0,   "Video Klein",              "Witch Jack (Export, 6T/12T ver 0.70P)",   MACHINE_IMPERFECT_GRAPHICS, layout_goldnpkr )    /* Ver 0.70P / 1996-03-26 */
-GAMEL( 1995, wtchjacke, wtchjack, wcrdxtnd, wtchjack, driver_device,  0,        ROT0,   "Video Klein",              "Witch Jack (Export, 6T/12T ver 0.65)",    MACHINE_IMPERFECT_GRAPHICS, layout_goldnpkr )    /* Ver 0.65 / 1995-10-19 */
-GAMEL( 1995, wtchjackf, wtchjack, wcrdxtnd, wtchjack, driver_device,  0,        ROT0,   "Video Klein",              "Witch Jack (Export, 6T/12T ver 0.64)",    MACHINE_IMPERFECT_GRAPHICS, layout_goldnpkr )    /* Ver 0.64 / 1995-09-13 */
-GAMEL( 1995, wtchjackg, wtchjack, wcrdxtnd, wtchjack, driver_device,  0,        ROT0,   "Video Klein",              "Witch Jack (Export, 6T/12T ver 0.62)",    MACHINE_IMPERFECT_GRAPHICS, layout_goldnpkr )    /* Ver 0.62 / 1995-08-02 */
-GAMEL( 1995, wtchjackh, wtchjack, wcrdxtnd, wtchjack, driver_device,  0,        ROT0,   "Video Klein",              "Witch Jack (Export, 6T/12T ver 0.40T)",   MACHINE_NOT_WORKING,        layout_goldnpkr )    /* Ver 0.40T / 1995-02-27 */
-GAMEL( 1995, wtchjacki, wtchjack, wcrdxtnd, wtchjack, driver_device,  0,        ROT0,   "Video Klein",              "Witch Jack (Export, 6T/12T ver 0.40)",    MACHINE_IMPERFECT_GRAPHICS, layout_goldnpkr )    /* Ver 0.40 / 1995-02-27 */
-GAMEL( 1994, wtchjackj, wtchjack, wcrdxtnd, wtchjack, driver_device,  0,        ROT0,   "Video Klein",              "Witch Jackpot (Export, 6T/12T ver 0.25)", MACHINE_IMPERFECT_GRAPHICS, layout_goldnpkr )    /* Ver 0.25 / 1994-11-24 */
-=======
 GAMEL( 1996, wtchjack,  0,        wcrdxtnd, wtchjack, goldnpkr_state, 0,        ROT0,   "Video Klein",              "Witch Jack (Export, 6T/12T ver 0.87-89)", 0,                          layout_goldnpkr )    /* Ver 0.87-89 / 1996-10-08 GFX OK */
 GAMEL( 1996, wtchjacka, wtchjack, wcrdxtnd, wtchjack, goldnpkr_state, 0,        ROT0,   "Video Klein",              "Witch Jack (Export, 6T/12T ver 0.87-88)", 0,                          layout_goldnpkr )    /* Ver 0.87-88 / 1996-10-02, GFX OK */
 GAMEL( 1996, wtchjackb, wtchjack, wcrdxtnd, wtchjack, goldnpkr_state, 0,        ROT0,   "Video Klein",              "Witch Jack (Export, 6T/12T ver 0.87)",    0,                          layout_goldnpkr )    /* Ver 0.87 / 1996-07-16, GFX OK */
@@ -12354,40 +11495,10 @@ GAMEL( 1995, wtchjackg, wtchjack, wcrdxtnd, wtchjack, goldnpkr_state, 0,        
 GAMEL( 1995, wtchjackh, wtchjack, wcrdxtnd, wtchjack, goldnpkr_state, 0,        ROT0,   "Video Klein",              "Witch Jack (Export, 6T/12T ver 0.40T)",   MACHINE_NOT_WORKING,        layout_goldnpkr )    /* Ver 0.40T / 1995-02-27 */
 GAMEL( 1995, wtchjacki, wtchjack, wcrdxtnd, wtchjack, goldnpkr_state, 0,        ROT0,   "Video Klein",              "Witch Jack (Export, 6T/12T ver 0.40)",    MACHINE_IMPERFECT_GRAPHICS, layout_goldnpkr )    /* Ver 0.40 / 1995-02-27 */
 GAMEL( 1994, wtchjackj, wtchjack, wcrdxtnd, wtchjack, goldnpkr_state, 0,        ROT0,   "Video Klein",              "Witch Jackpot (Export, 6T/12T ver 0.25)", MACHINE_IMPERFECT_GRAPHICS, layout_goldnpkr )    /* Ver 0.25 / 1994-11-24 */
->>>>>>> upstream/master
 
 /*************************************** OTHER SETS ***************************************/
 
 /*     YEAR  NAME       PARENT    MACHINE   INPUT     STATE           INIT      ROT      COMPANY                     FULLNAME                                  FLAGS             LAYOUT  */
-<<<<<<< HEAD
-GAMEL( 1981, pmpoker,   0,        goldnpkr, pmpoker,  driver_device,  0,        ROT0,   "PM / Beck Elektronik",     "PlayMan Poker (German)",                  0,                layout_pmpoker  )
-GAMEL( 198?, royale,    0,        goldnpkr, goldnpkr, driver_device,  0,        ROT0,   "<unknown>",                "Royale (set 1)",                          0,                layout_goldnpkr )
-GAMEL( 198?, royalea,   royale,   goldnpkr, goldnpkr, driver_device,  0,        ROT0,   "<unknown>",                "Royale (set 2)",                          0,                layout_goldnpkr )
-GAME(  1993, sloco93,   0,        witchcrd, sloco93,  driver_device,  0,        ROT0,   "<unknown>",                "Super Loco 93 (Spanish, set 1)",          0 )
-GAME(  1993, sloco93a,  sloco93,  witchcrd, sloco93,  driver_device,  0,        ROT0,   "<unknown>",                "Super Loco 93 (Spanish, set 2)",          0 )
-GAME(  198?, maverik,   0,        witchcrd, bsuerte,  driver_device,  0,        ROT0,   "<unknown>",                "Maverik",                                 0 )
-GAMEL( 1986, brasil86,  0,        witchcrd, bsuerte,  driver_device,  0,        ROT0,   "<unknown>",                "Brasil 86",                               0,                layout_goldnpkr )
-GAMEL( 1987, brasil87,  0,        witchcrd, bsuerte,  driver_device,  0,        ROT0,   "<unknown>",                "Brasil 87",                               0,                layout_goldnpkr )
-GAMEL( 1989, brasil89,  0,        witchcrd, bsuerte,  driver_device,  0,        ROT0,   "<unknown>",                "Brasil 89 (set 1)",                       0,                layout_goldnpkr )
-GAMEL( 1989, brasil89a, brasil89, witchcrd, bsuerte,  driver_device,  0,        ROT0,   "<unknown>",                "Brasil 89 (set 2)",                       0,                layout_goldnpkr )
-GAME(  1993, brasil93,  0,        witchcrd, bsuerte,  driver_device,  0,        ROT0,   "<unknown>",                "Brasil 93",                               0 )              // no lamps
-GAME(  1991, poker91,   0,        witchcrd, poker91,  driver_device,  0,        ROT0,   "<unknown>",                "Poker 91",                                0 )
-GAME(  198?, genie,     0,        genie,    genie,    driver_device,  0,        ROT0,   "Video Fun Games Ltd.",     "Genie (ICP-1, set 1)",                    0 )
-GAME(  198?, geniea,    genie,    geniea,   geniea,   driver_device,  0,        ROT0,   "<unknown>",                "Genie (ICP-1, set 2)",                    0 )
-GAMEL( 1983, silverga,  0,        goldnpkr, goldnpkr, driver_device,  0,        ROT0,   "<unknown>",                "Silver Game",                             0,                layout_goldnpkr )
-GAME(  1987, caspoker,  0,        goldnpkr, caspoker, driver_device,  0,        ROT0,   "PM / Beck Elektronik",     "Casino Poker (Ver PM86LO-35-5, German)",  MACHINE_IMPERFECT_COLORS )
-
-GAMEL( 198?, superdbl,  pottnpkr, goldnpkr, goldnpkr, driver_device,  0,        ROT0,   "Karateco",                 "Super Double (French)",                   0,                layout_goldnpkr )
-GAME(  198?, pokerdub,  0,        pottnpkr, goldnpkr, driver_device,  0,        ROT0,   "<unknown>",                "unknown French poker game",               MACHINE_NOT_WORKING )   // lacks of 2nd program ROM.
-GAME(  198?, pokerduc,  0,        goldnpkr, goldnpkr, goldnpkr_state, icp1db,   ROT0,   "<unknown>",                "unknown encrypted poker game",            MACHINE_NOT_WORKING )   // encrypted.
-GAME(  198?, pokersis,  0,        bchancep, goldnpkr, driver_device,  0,        ROT0,   "Sisteme France",           "unknown Sisteme France Poker",            MACHINE_NOT_WORKING )   // fix banking (4 prgs?)...
-
-GAMEL( 198?, bchancep,  0,        bchancep, goldnpkr, goldnpkr_state, bchancep, ROT0,   "<unknown>",                "Bonne Chance! (Golden Poker prequel HW, set 1)", MACHINE_NOT_WORKING, layout_goldnpkr )
-GAMEL( 198?, bchanceq,  0,        goldnpkr, goldnpkr, driver_device,  0,        ROT0,   "<unknown>",                "Bonne Chance! (Golden Poker prequel HW, set 2)", MACHINE_NOT_WORKING, layout_goldnpkr )
-
-GAME(  1987, pokermon,  0,        mondial,  mondial,  driver_device,  0,        ROT0,   "<unknown>",                "Mundial/Mondial (Italian/French)",        0 )                  // banked selectable program
-GAME(  1998, super98,   bsuerte,  witchcrd, super98,  driver_device,  0,        ROT0,   "<unknown>",                "Super 98 (3-hands, ICP-1)",               MACHINE_NOT_WORKING )  // program checks zeropage registers for changes...
-=======
 GAMEL( 1981, pmpoker,   0,        goldnpkr, pmpoker,  goldnpkr_state, 0,        ROT0,   "PM / Beck Elektronik",     "PlayMan Poker (German)",                  0,                layout_pmpoker  )
 GAMEL( 198?, royale,    0,        goldnpkr, goldnpkr, goldnpkr_state, 0,        ROT0,   "<unknown>",                "Royale (set 1)",                          0,                layout_goldnpkr )
 GAMEL( 198?, royalea,   royale,   goldnpkr, goldnpkr, goldnpkr_state, 0,        ROT0,   "<unknown>",                "Royale (set 2)",                          0,                layout_goldnpkr )
@@ -12421,4 +11532,3 @@ GAME(  198?, animpkra,  animpkr,  pottnpkr, goldnpkr, goldnpkr_state, 0,        
 
 GAME(  1990, megadpkr,  0,        megadpkr, megadpkr, blitz_state,    0,        ROT0,   "Blitz System",             "Mega Double Poker (conversion kit, version 2.3 MD)", 0 )
 GAME(  1990, megadpkrb, megadpkr, megadpkr, megadpkr, blitz_state,    0,        ROT0,   "Blitz System",             "Mega Double Poker (conversion kit, version 2.1 MD)", 0 ) // may need an extra reset to work the first time
->>>>>>> upstream/master

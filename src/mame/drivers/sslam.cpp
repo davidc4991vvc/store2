@@ -83,18 +83,12 @@ Notes:
 
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/m68000/m68000.h"
-#include "cpu/mcs51/mcs51.h"
-#include "includes/sslam.h"
-=======
 #include "includes/sslam.h"
 
 #include "cpu/m68000/m68000.h"
 #include "cpu/mcs51/mcs51.h"
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 #define oki_time_base 0x08
@@ -111,11 +105,7 @@ Notes:
    The sequencing of the music tracks are handled in the second table below.
 */
 
-<<<<<<< HEAD
-static const UINT8 sslam_snd_cmd[64] =
-=======
 static const uint8_t sslam_snd_cmd[64] =
->>>>>>> upstream/master
 {
 /*00*/  0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
 /*08*/  0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x70, 0x71,
@@ -138,11 +128,7 @@ static const uint8_t sslam_snd_cmd[64] =
      If the last byte is 0xff, the track should loop by restarting at the first column sample
 */
 
-<<<<<<< HEAD
-static const UINT8 sslam_snd_loop[8][19] =
-=======
 static const uint8_t sslam_snd_loop[8][19] =
->>>>>>> upstream/master
 {
 /*NA*/  { 0x00, 0x00 }, /* Not a loop - just a parking position for stopping track playback */
 /*60*/  { 0x60, 0x60, 0x61, 0x61, 0x60, 0x60, 0x61, 0x62, 0xff },
@@ -334,21 +320,13 @@ WRITE8_MEMBER(sslam_state::sslam_snd_w)
 		else if (m_sound >= 0x70) {
 			/* These vocals are in bank 1, but a bug in the actual MCU doesn't set the bank */
 //          if (m_snd_bank != 1)
-<<<<<<< HEAD
-//          m_oki->set_bank_base((1 * 0x40000));
-=======
 //          m_oki->set_rom_bank(1);
->>>>>>> upstream/master
 //          sslam_snd_bank = 1;
 			sslam_play(0, m_sound);
 		}
 		else if (m_sound >= 0x69) {
 			if (m_snd_bank != 2)
-<<<<<<< HEAD
-				m_oki->set_bank_base(2 * 0x40000);
-=======
 				m_oki->set_rom_bank(2);
->>>>>>> upstream/master
 			m_snd_bank = 2;
 			switch (m_sound)
 			{
@@ -361,22 +339,14 @@ WRITE8_MEMBER(sslam_state::sslam_snd_w)
 		}
 		else if (m_sound >= 0x65) {
 			if (m_snd_bank != 1)
-<<<<<<< HEAD
-				m_oki->set_bank_base(1 * 0x40000);
-=======
 				m_oki->set_rom_bank(1);
->>>>>>> upstream/master
 			m_snd_bank = 1;
 			m_melody = 4;
 			sslam_play(m_melody, m_sound);
 		}
 		else if (m_sound >= 0x60) {
 			if (m_snd_bank != 0)
-<<<<<<< HEAD
-				m_oki->set_bank_base(0 * 0x40000);
-=======
 				m_oki->set_rom_bank(0);
->>>>>>> upstream/master
 			m_snd_bank = 0;
 			switch (m_sound)
 			{
@@ -397,11 +367,7 @@ WRITE8_MEMBER(sslam_state::sslam_snd_w)
 
 WRITE16_MEMBER(sslam_state::powerbls_sound_w)
 {
-<<<<<<< HEAD
-	soundlatch_byte_w(space, 0, data & 0xff);
-=======
 	m_soundlatch->write(space, 0, data & 0xff);
->>>>>>> upstream/master
 	m_audiocpu->set_input_line(MCS51_INT1_LINE, HOLD_LINE);
 }
 
@@ -457,17 +423,10 @@ ADDRESS_MAP_END
 
 READ8_MEMBER(sslam_state::playmark_snd_command_r)
 {
-<<<<<<< HEAD
-	UINT8 data = 0;
-
-	if ((m_oki_control & 0x38) == 0x30) {
-		data = soundlatch_byte_r(space,0);
-=======
 	uint8_t data = 0;
 
 	if ((m_oki_control & 0x38) == 0x30) {
 		data = m_soundlatch->read(space,0);
->>>>>>> upstream/master
 	}
 	else if ((m_oki_control & 0x38) == 0x28) {
 		data = (m_oki->read(space,0) & 0x0f);
@@ -490,11 +449,7 @@ WRITE8_MEMBER(sslam_state::playmark_snd_control_w)
 		if (m_oki_bank != ((data & 3) - 1))
 		{
 			m_oki_bank = (data & 3) - 1;
-<<<<<<< HEAD
-			m_oki->set_bank_base(0x40000 * m_oki_bank);
-=======
 			m_oki->set_rom_bank(m_oki_bank);
->>>>>>> upstream/master
 		}
 	}
 
@@ -739,11 +694,7 @@ GFXDECODE_END
 
 /* Machine Driver */
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( sslam, sslam_state )
-=======
 static MACHINE_CONFIG_START( sslam )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, 12000000)   /* 12 MHz */
@@ -771,19 +722,11 @@ static MACHINE_CONFIG_START( sslam )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki", 1000000, OKIM6295_PIN7_HIGH)
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.80)
-MACHINE_CONFIG_END
-
-static MACHINE_CONFIG_START( powerbls, sslam_state )
-=======
 	MCFG_OKIM6295_ADD("oki", 1000000, PIN7_HIGH)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.80)
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_START( powerbls )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, 12000000)   /* 12 MHz */
@@ -811,48 +754,6 @@ static MACHINE_CONFIG_START( powerbls )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki", 1000000, OKIM6295_PIN7_HIGH)   /* verified on original PCB */
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.80)
-MACHINE_CONFIG_END
-
-/* maybe one dump is bad .. which? -> 2nd set was verified good from 2 pcbs */
-
-ROM_START( sslam )
-	ROM_REGION( 0x1000000, "maincpu", ROMREGION_ERASE00 ) /* 68000 Code */
-	ROM_LOAD16_BYTE( "2.u67", 0x00000, 0x80000, CRC(1ce52917) SHA1(b9b1d14ea44c248ce6e615c5c553c0d485c1302b) )
-	ROM_RELOAD ( 0x100000, 0x80000 )
-	ROM_RELOAD ( 0x200000, 0x80000 )
-	ROM_RELOAD ( 0x300000, 0x80000 )
-	ROM_RELOAD ( 0x400000, 0x80000 )
-	ROM_RELOAD ( 0x500000, 0x80000 )
-	ROM_RELOAD ( 0x600000, 0x80000 )
-	ROM_RELOAD ( 0x700000, 0x80000 )
-	ROM_RELOAD ( 0x800000, 0x80000 )
-	ROM_RELOAD ( 0x900000, 0x80000 )
-	ROM_RELOAD ( 0xa00000, 0x80000 )
-	ROM_RELOAD ( 0xb00000, 0x80000 )
-	ROM_RELOAD ( 0xc00000, 0x80000 )
-	ROM_RELOAD ( 0xd00000, 0x80000 )
-	ROM_RELOAD ( 0xe00000, 0x80000 )
-	ROM_RELOAD ( 0xf00000, 0x80000 )
-	ROM_LOAD16_BYTE( "it_22.bin", 0x00001, 0x80000, CRC(51c56828) SHA1(d71d64b0268c156456bed64b4c13b98181fa3e0f) )
-	ROM_RELOAD ( 0x100001, 0x80000 )
-	ROM_RELOAD ( 0x200001, 0x80000 )
-	ROM_RELOAD ( 0x300001, 0x80000 )
-	ROM_RELOAD ( 0x400001, 0x80000 )
-	ROM_RELOAD ( 0x500001, 0x80000 )
-	ROM_RELOAD ( 0x600001, 0x80000 )
-	ROM_RELOAD ( 0x700001, 0x80000 )
-	ROM_RELOAD ( 0x800001, 0x80000 )
-	ROM_RELOAD ( 0x900001, 0x80000 )
-	ROM_RELOAD ( 0xa00001, 0x80000 )
-	ROM_RELOAD ( 0xb00001, 0x80000 )
-	ROM_RELOAD ( 0xc00001, 0x80000 )
-	ROM_RELOAD ( 0xd00001, 0x80000 )
-	ROM_RELOAD ( 0xe00001, 0x80000 )
-	ROM_RELOAD ( 0xf00001, 0x80000 )
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 
 	MCFG_OKIM6295_ADD("oki", 1000000, PIN7_HIGH)   /* verified on original PCB */
@@ -886,7 +787,6 @@ ROM_START( sslam ) // verified on 2 PCBs
 	ROM_RELOAD_SSLAM(0x100000)
 	ROM_LOAD16_BYTE( "1.u56", 0x00001, 0x80000,  CRC(59bec8ae) SHA1(2d53213a1d335184384b2138d18d496b602dc3fb) )
 	ROM_RELOAD_SSLAM(0x100001)
->>>>>>> upstream/master
 
 	ROM_REGION( 0x1000, "audiocpu", 0 )
 	ROM_LOAD( "s87c751.bin",  0x0000, 0x0800, NO_DUMP )
@@ -909,46 +809,6 @@ ROM_START( sslam ) // verified on 2 PCBs
 	ROM_LOAD( "3.u13",       0x00000, 0x40000, CRC(d0a9245f) SHA1(2e840cdd7bdfe7c6f986daf88576de0559597499) )
 	ROM_CONTINUE(            0x60000, 0x20000 )
 	ROM_CONTINUE(            0xa0000, 0x20000 )
-<<<<<<< HEAD
-	ROM_COPY( "oki", 0x00000, 0x40000, 0x20000)
-	ROM_COPY( "oki", 0x00000, 0x80000, 0x20000)
-ROM_END
-
-ROM_START( sslama )
-	ROM_REGION( 0x1000000, "maincpu", ROMREGION_ERASE00 ) /* 68000 Code */
-	ROM_LOAD16_BYTE( "2.u67", 0x00000, 0x80000, CRC(1ce52917) SHA1(b9b1d14ea44c248ce6e615c5c553c0d485c1302b) )
-	ROM_RELOAD ( 0x100000, 0x80000 )
-	ROM_RELOAD ( 0x200000, 0x80000 )
-	ROM_RELOAD ( 0x300000, 0x80000 )
-	ROM_RELOAD ( 0x400000, 0x80000 )
-	ROM_RELOAD ( 0x500000, 0x80000 )
-	ROM_RELOAD ( 0x600000, 0x80000 )
-	ROM_RELOAD ( 0x700000, 0x80000 )
-	ROM_RELOAD ( 0x800000, 0x80000 )
-	ROM_RELOAD ( 0x900000, 0x80000 )
-	ROM_RELOAD ( 0xa00000, 0x80000 )
-	ROM_RELOAD ( 0xb00000, 0x80000 )
-	ROM_RELOAD ( 0xc00000, 0x80000 )
-	ROM_RELOAD ( 0xd00000, 0x80000 )
-	ROM_RELOAD ( 0xe00000, 0x80000 )
-	ROM_RELOAD ( 0xf00000, 0x80000 )
-	ROM_LOAD16_BYTE( "1.u56", 0x00001, 0x80000,  CRC(59bec8ae) SHA1(2d53213a1d335184384b2138d18d496b602dc3fb) )
-	ROM_RELOAD ( 0x100001, 0x80000 )
-	ROM_RELOAD ( 0x200001, 0x80000 )
-	ROM_RELOAD ( 0x300001, 0x80000 )
-	ROM_RELOAD ( 0x400001, 0x80000 )
-	ROM_RELOAD ( 0x500001, 0x80000 )
-	ROM_RELOAD ( 0x600001, 0x80000 )
-	ROM_RELOAD ( 0x700001, 0x80000 )
-	ROM_RELOAD ( 0x800001, 0x80000 )
-	ROM_RELOAD ( 0x900001, 0x80000 )
-	ROM_RELOAD ( 0xa00001, 0x80000 )
-	ROM_RELOAD ( 0xb00001, 0x80000 )
-	ROM_RELOAD ( 0xc00001, 0x80000 )
-	ROM_RELOAD ( 0xd00001, 0x80000 )
-	ROM_RELOAD ( 0xe00001, 0x80000 )
-	ROM_RELOAD ( 0xf00001, 0x80000 )
-=======
 	ROM_COPY( "oki", 0x00000,0x40000, 0x20000)
 	ROM_COPY( "oki", 0x00000,0x80000, 0x20000)
 ROM_END
@@ -960,7 +820,6 @@ ROM_START( sslama ) // this might be a bad dump, the ONLY difference vs. the par
 	ROM_LOAD16_BYTE( "it_22.bin", 0x00001, 0x80000, CRC(51c56828) SHA1(d71d64b0268c156456bed64b4c13b98181fa3e0f) )
 	ROM_RELOAD_SSLAM(0x100001)
 
->>>>>>> upstream/master
 
 	ROM_REGION( 0x1000, "audiocpu", 0 )
 	ROM_LOAD( "s87c751.bin",  0x0000, 0x0800, NO_DUMP )
@@ -983,12 +842,6 @@ ROM_START( sslama ) // this might be a bad dump, the ONLY difference vs. the par
 	ROM_LOAD( "3.u13",       0x00000, 0x40000, CRC(d0a9245f) SHA1(2e840cdd7bdfe7c6f986daf88576de0559597499) )
 	ROM_CONTINUE(            0x60000, 0x20000 )
 	ROM_CONTINUE(            0xa0000, 0x20000 )
-<<<<<<< HEAD
-	ROM_COPY( "oki", 0x00000, 0x40000, 0x20000)
-	ROM_COPY( "oki", 0x00000, 0x80000, 0x20000)
-ROM_END
-
-=======
 	ROM_COPY( "oki", 0x00000,0x40000, 0x20000)
 	ROM_COPY( "oki", 0x00000,0x80000, 0x20000)
 ROM_END
@@ -1030,7 +883,6 @@ ROM_START( sslamb )
 ROM_END
 
 
->>>>>>> upstream/master
 // it's a conversion for a sslam pcb
 ROM_START( powerbals )
 	ROM_REGION( 0x80000, "maincpu", 0 ) /* 68000 Code */
@@ -1058,13 +910,8 @@ ROM_START( powerbals )
 	ROM_LOAD( "20.i013",     0x00000, 0x40000, CRC(12776dbc) SHA1(9ab9930fd581296642834d2cb4ba65264a588af3) )
 	ROM_CONTINUE(            0x60000, 0x20000 )
 	ROM_CONTINUE(            0xa0000, 0x20000 )
-<<<<<<< HEAD
-	ROM_COPY( "oki", 0x00000, 0x40000, 0x20000)
-	ROM_COPY( "oki", 0x00000, 0x80000, 0x20000)
-=======
 	ROM_COPY( "oki", 0x00000,0x40000, 0x20000)
 	ROM_COPY( "oki", 0x00000,0x80000, 0x20000)
->>>>>>> upstream/master
 ROM_END
 
 DRIVER_INIT_MEMBER(sslam_state,sslam)
@@ -1089,12 +936,7 @@ DRIVER_INIT_MEMBER(sslam_state,powerbls)
 }
 
 
-<<<<<<< HEAD
-GAME( 1993, sslam,    0,        sslam,    sslam, sslam_state,    sslam,    ROT0, "Playmark", "Super Slam (set 1)", MACHINE_SUPPORTS_SAVE )
-GAME( 1993, sslama,   sslam,    sslam,    sslam, sslam_state,    sslam,    ROT0, "Playmark", "Super Slam (set 2)", MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1993, sslam,    0,        sslam,    sslam,    sslam_state, sslam,    ROT0, "Playmark", "Super Slam (set 1)",                  MACHINE_SUPPORTS_SAVE )
 GAME( 1993, sslama,   sslam,    sslam,    sslam,    sslam_state, sslam,    ROT0, "Playmark", "Super Slam (set 2)",                  MACHINE_SUPPORTS_SAVE )
 GAME( 1993, sslamb,   sslam,    sslam,    sslam,    sslam_state, sslam,    ROT0, "Playmark", "Super Slam (set 3)",                  MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master
 GAME( 1994, powerbals,powerbal, powerbls, powerbls, sslam_state, powerbls, ROT0, "Playmark", "Power Balls (Super Slam conversion)", MACHINE_SUPPORTS_SAVE )

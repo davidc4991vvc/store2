@@ -189,13 +189,6 @@ Board contains only 29 ROMs and not much else.
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/m68000/m68000.h"
-#include "machine/eepromser.h"
-#include "sound/es5506.h"
-#include "audio/taito_en.h"
-#include "includes/undrfire.h"
-=======
 #include "includes/undrfire.h"
 #include "audio/taito_en.h"
 
@@ -205,7 +198,6 @@ Board contains only 29 ROMs and not much else.
 #include "machine/watchdog.h"
 #include "sound/es5506.h"
 #include "screen.h"
->>>>>>> upstream/master
 
 #include "cbombers.lh"
 
@@ -222,11 +214,7 @@ void undrfire_state::device_timer(emu_timer &timer, device_timer_id id, int para
 		m_maincpu->set_input_line(5, HOLD_LINE);
 		break;
 	default:
-<<<<<<< HEAD
-		assert_always(FALSE, "Unknown id in undrfire_state::device_timer");
-=======
 		assert_always(false, "Unknown id in undrfire_state::device_timer");
->>>>>>> upstream/master
 	}
 }
 
@@ -235,76 +223,17 @@ void undrfire_state::device_timer(emu_timer &timer, device_timer_id id, int para
             GAME INPUTS
 **********************************************************/
 
-<<<<<<< HEAD
-CUSTOM_INPUT_MEMBER(undrfire_state::frame_counter_r)
-=======
 READ_LINE_MEMBER(undrfire_state::frame_counter_r)
->>>>>>> upstream/master
 {
 	return m_frame_counter;
 }
 
-<<<<<<< HEAD
-READ32_MEMBER(undrfire_state::undrfire_input_r)
-{
-	switch (offset)
-	{
-		case 0x00:
-		{
-			return ioport("INPUTS")->read();
-		}
-
-		case 0x01:
-		{
-			return ioport("SYSTEM")->read() | (m_coin_word << 16);
-		}
-	}
-
-	return 0xffffffff;
-}
-
-WRITE32_MEMBER(undrfire_state::undrfire_input_w)
-{
-	switch (offset)
-	{
-		case 0x00:
-		{
-			if (ACCESSING_BITS_24_31)   /* $500000 is watchdog */
-			{
-				machine().watchdog_reset();
-			}
-
-			if (ACCESSING_BITS_0_7)
-			{
-				m_eeprom->clk_write((data & 0x20) ? ASSERT_LINE : CLEAR_LINE);
-				m_eeprom->di_write((data & 0x40) >> 6);
-				m_eeprom->cs_write((data & 0x10) ? ASSERT_LINE : CLEAR_LINE);
-				return;
-			}
-
-			return;
-		}
-
-		case 0x01:
-		{
-			if (ACCESSING_BITS_24_31)
-			{
-				coin_lockout_w(machine(), 0,~data & 0x01000000);
-				coin_lockout_w(machine(), 1,~data & 0x02000000);
-				coin_counter_w(machine(), 0, data & 0x04000000);
-				coin_counter_w(machine(), 1, data & 0x08000000);
-				m_coin_word = (data >> 16) &0xffff;
-			}
-		}
-	}
-=======
 WRITE8_MEMBER(undrfire_state::coin_word_w)
 {
 	machine().bookkeeping().coin_lockout_w(0,~data & 0x01);
 	machine().bookkeeping().coin_lockout_w(1,~data & 0x02);
 	machine().bookkeeping().coin_counter_w(0, data & 0x04);
 	machine().bookkeeping().coin_counter_w(1, data & 0x08);
->>>>>>> upstream/master
 }
 
 
@@ -427,17 +356,10 @@ WRITE32_MEMBER(undrfire_state::motor_control_w)
 
 	if (ACCESSING_BITS_8_15)
 	{
-<<<<<<< HEAD
-		output_set_value("P1_lamp_start", (data >> 12) & 1 ); //p1 start
-		output_set_value("P2_lamp_start", (data >> 13) & 1 ); //p2 start
-		output_set_value("P1_gun_recoil", (data >> 14) & 1 ); //p1 recoil
-		output_set_value("P2_gun_recoil", (data >> 15) & 1 ); //p2 recoil
-=======
 		output().set_value("P1_lamp_start", (data >> 12) & 1 ); //p1 start
 		output().set_value("P2_lamp_start", (data >> 13) & 1 ); //p2 start
 		output().set_value("P1_gun_recoil", (data >> 14) & 1 ); //p1 recoil
 		output().set_value("P2_gun_recoil", (data >> 15) & 1 ); //p2 recoil
->>>>>>> upstream/master
 	}
 }
 
@@ -447,15 +369,6 @@ WRITE32_MEMBER(undrfire_state::cbombers_cpua_ctrl_w)
     ........ ..xxxxxx   Lamp 1-6 enables
     ........ .x......   Vibration
 */
-<<<<<<< HEAD
-	output_set_value("Lamp_1", data & 1 );
-	output_set_value("Lamp_2", (data >> 1) & 1 );
-	output_set_value("Lamp_3", (data >> 2) & 1 );
-	output_set_value("Lamp_4", (data >> 3) & 1 );
-	output_set_value("Lamp_5", (data >> 4) & 1 );
-	output_set_value("Lamp_6", (data >> 5) & 1 );
-	output_set_value("Wheel_vibration", (data >> 6) & 1 );
-=======
 	output().set_value("Lamp_1", data & 1 );
 	output().set_value("Lamp_2", (data >> 1) & 1 );
 	output().set_value("Lamp_3", (data >> 2) & 1 );
@@ -463,7 +376,6 @@ WRITE32_MEMBER(undrfire_state::cbombers_cpua_ctrl_w)
 	output().set_value("Lamp_5", (data >> 4) & 1 );
 	output().set_value("Lamp_6", (data >> 5) & 1 );
 	output().set_value("Wheel_vibration", (data >> 6) & 1 );
->>>>>>> upstream/master
 
 	m_subcpu->set_input_line(INPUT_LINE_RESET, (data & 0x1000) ? CLEAR_LINE : ASSERT_LINE);
 }
@@ -494,15 +406,9 @@ static ADDRESS_MAP_START( undrfire_map, AS_PROGRAM, 32, undrfire_state )
 //  AM_RANGE(0x304000, 0x304003) AM_RAM // debugging - doesn't change ???
 //  AM_RANGE(0x304400, 0x304403) AM_RAM // debugging - doesn't change ???
 	AM_RANGE(0x400000, 0x400003) AM_WRITE(motor_control_w)      /* gun vibration */
-<<<<<<< HEAD
-	AM_RANGE(0x500000, 0x500007) AM_READWRITE(undrfire_input_r, undrfire_input_w)       /* eerom etc. */
-	AM_RANGE(0x600000, 0x600007) AM_READWRITE(unknown_hardware_r, unknown_int_req_w)    /* int request for unknown hardware */
-	AM_RANGE(0x700000, 0x7007ff) AM_RAM AM_SHARE("snd_shared")
-=======
 	AM_RANGE(0x500000, 0x500007) AM_DEVREADWRITE8("tc0510nio", tc0510nio_device, read, write, 0xffffffff)
 	AM_RANGE(0x600000, 0x600007) AM_READWRITE(unknown_hardware_r, unknown_int_req_w)    /* int request for unknown hardware */
 	AM_RANGE(0x700000, 0x7007ff) AM_DEVREADWRITE8("taito_en:dpram", mb8421_device, left_r, left_w, 0xffffffff)
->>>>>>> upstream/master
 	AM_RANGE(0x800000, 0x80ffff) AM_DEVREADWRITE("tc0480scp", tc0480scp_device, long_r, long_w)        /* tilemaps */
 	AM_RANGE(0x830000, 0x83002f) AM_DEVREADWRITE("tc0480scp", tc0480scp_device, ctrl_long_r, ctrl_long_w)
 	AM_RANGE(0x900000, 0x90ffff) AM_DEVREADWRITE("tc0100scn", tc0100scn_device, long_r, long_w)        /* 6bpp tilemaps */
@@ -519,15 +425,9 @@ static ADDRESS_MAP_START( cbombers_cpua_map, AS_PROGRAM, 32, undrfire_state )
 	AM_RANGE(0x200000, 0x21ffff) AM_RAM
 	AM_RANGE(0x300000, 0x303fff) AM_RAM AM_SHARE("spriteram")
 	AM_RANGE(0x400000, 0x400003) AM_WRITE(cbombers_cpua_ctrl_w)
-<<<<<<< HEAD
-	AM_RANGE(0x500000, 0x500007) AM_READWRITE(undrfire_input_r, undrfire_input_w)
-	AM_RANGE(0x600000, 0x600007) AM_READ(cbombers_adc_r) AM_WRITE8(cbombers_adc_w,0xffffffff)
-	AM_RANGE(0x700000, 0x7007ff) AM_RAM AM_SHARE("snd_shared")
-=======
 	AM_RANGE(0x500000, 0x500007) AM_DEVREADWRITE8("tc0510nio", tc0510nio_device, read, write, 0xffffffff)
 	AM_RANGE(0x600000, 0x600007) AM_READ(cbombers_adc_r) AM_WRITE8(cbombers_adc_w,0xffffffff)
 	AM_RANGE(0x700000, 0x7007ff) AM_DEVREADWRITE8("taito_en:dpram", mb8421_device, left_r, left_w, 0xffffffff)
->>>>>>> upstream/master
 	AM_RANGE(0x800000, 0x80ffff) AM_DEVREADWRITE("tc0480scp", tc0480scp_device, long_r, long_w)        /* tilemaps */
 	AM_RANGE(0x830000, 0x83002f) AM_DEVREADWRITE("tc0480scp", tc0480scp_device, ctrl_long_r, ctrl_long_w)
 	AM_RANGE(0x900000, 0x90ffff) AM_DEVREADWRITE("tc0100scn", tc0100scn_device, long_r, long_w)        /* 6bpp tilemaps */
@@ -553,42 +453,6 @@ ADDRESS_MAP_END
 ***********************************************************/
 
 static INPUT_PORTS_START( undrfire )
-<<<<<<< HEAD
-	PORT_START("INPUTS")
-	PORT_BIT( 0x00000001, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, undrfire_state,frame_counter_r, NULL)   /* Frame counter */
-	PORT_BIT( 0x00000002, IP_ACTIVE_LOW,  IPT_UNKNOWN )
-	PORT_BIT( 0x00000004, IP_ACTIVE_LOW,  IPT_UNKNOWN )
-	PORT_BIT( 0x00000008, IP_ACTIVE_LOW,  IPT_UNKNOWN )
-	PORT_BIT( 0x00000010, IP_ACTIVE_LOW,  IPT_UNKNOWN )
-	PORT_BIT( 0x00000020, IP_ACTIVE_LOW,  IPT_UNKNOWN )
-	PORT_BIT( 0x00000040, IP_ACTIVE_LOW,  IPT_UNKNOWN )
-	PORT_BIT( 0x00000080, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_READ_LINE_DEVICE_MEMBER("eeprom", eeprom_serial_93cxx_device, do_read) /* reserved for EEROM */
-	PORT_BIT( 0x00000100, IP_ACTIVE_LOW,  IPT_UNKNOWN )
-	PORT_BIT( 0x00000200, IP_ACTIVE_LOW,  IPT_UNKNOWN )
-	PORT_BIT( 0x00000400, IP_ACTIVE_LOW,  IPT_UNKNOWN )
-	PORT_BIT( 0x00000800, IP_ACTIVE_LOW,  IPT_UNKNOWN )
-	PORT_BIT( 0x00001000, IP_ACTIVE_LOW,  IPT_START1 )
-	PORT_BIT( 0x00002000, IP_ACTIVE_LOW,  IPT_START2 )
-	PORT_BIT( 0x00004000, IP_ACTIVE_LOW,  IPT_UNKNOWN )
-	PORT_BIT( 0x00008000, IP_ACTIVE_LOW,  IPT_UNKNOWN )
-
-	PORT_BIT( 0x00010000, IP_ACTIVE_LOW,  IPT_UNKNOWN )
-	PORT_BIT( 0x00020000, IP_ACTIVE_LOW,  IPT_UNKNOWN )
-	PORT_BIT( 0x00040000, IP_ACTIVE_LOW,  IPT_UNKNOWN )
-	PORT_BIT( 0x00080000, IP_ACTIVE_HIGH, IPT_BUTTON3 ) PORT_PLAYER(1)  /* ? where is freeze input */
-	PORT_BIT( 0x00100000, IP_ACTIVE_LOW,  IPT_BUTTON1 ) PORT_PLAYER(1)
-	PORT_BIT( 0x00200000, IP_ACTIVE_LOW,  IPT_BUTTON2 ) PORT_PLAYER(1)
-	PORT_BIT( 0x00400000, IP_ACTIVE_LOW,  IPT_BUTTON1 ) PORT_PLAYER(2)
-	PORT_BIT( 0x00800000, IP_ACTIVE_LOW,  IPT_BUTTON2 ) PORT_PLAYER(2)
-	PORT_BIT( 0x01000000, IP_ACTIVE_LOW,  IPT_UNKNOWN )
-	PORT_BIT( 0x02000000, IP_ACTIVE_LOW,  IPT_UNKNOWN )
-	PORT_BIT( 0x04000000, IP_ACTIVE_LOW,  IPT_UNKNOWN )
-	PORT_BIT( 0x08000000, IP_ACTIVE_LOW,  IPT_UNKNOWN )
-	PORT_BIT( 0x10000000, IP_ACTIVE_LOW,  IPT_UNKNOWN )
-	PORT_BIT( 0x20000000, IP_ACTIVE_LOW,  IPT_UNKNOWN )
-	PORT_BIT( 0x40000000, IP_ACTIVE_LOW,  IPT_UNKNOWN )
-	PORT_BIT( 0x80000000, IP_ACTIVE_LOW,  IPT_UNKNOWN )
-=======
 	PORT_START("INPUTS0")
 	PORT_BIT( 0x01, IP_ACTIVE_LOW,  IPT_UNKNOWN )
 	PORT_BIT( 0x02, IP_ACTIVE_LOW,  IPT_UNKNOWN )
@@ -618,7 +482,6 @@ static INPUT_PORTS_START( undrfire )
 	PORT_BIT( 0x20, IP_ACTIVE_LOW,  IPT_START2 )
 	PORT_BIT( 0x40, IP_ACTIVE_LOW,  IPT_UNKNOWN )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW,  IPT_UNKNOWN )
->>>>>>> upstream/master
 
 	PORT_START("SYSTEM")
 	PORT_SERVICE_NO_TOGGLE(0x01, IP_ACTIVE_LOW)
@@ -653,42 +516,6 @@ INPUT_PORTS_END
 
 
 static INPUT_PORTS_START( cbombers )
-<<<<<<< HEAD
-	PORT_START("INPUTS")
-	PORT_BIT( 0x00000001, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, undrfire_state,frame_counter_r, NULL)   /* Frame counter */
-	PORT_BIT( 0x00000002, IP_ACTIVE_LOW,  IPT_UNKNOWN )
-	PORT_BIT( 0x00000004, IP_ACTIVE_LOW,  IPT_UNKNOWN )
-	PORT_BIT( 0x00000008, IP_ACTIVE_LOW,  IPT_UNKNOWN )
-	PORT_BIT( 0x00000010, IP_ACTIVE_LOW,  IPT_UNKNOWN )
-	PORT_BIT( 0x00000020, IP_ACTIVE_LOW,  IPT_UNKNOWN )
-	PORT_BIT( 0x00000040, IP_ACTIVE_LOW,  IPT_UNKNOWN )
-	PORT_BIT( 0x00000080, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_READ_LINE_DEVICE_MEMBER("eeprom", eeprom_serial_93cxx_device, do_read) /* reserved for EEROM */
-	PORT_BIT( 0x00000100, IP_ACTIVE_LOW,  IPT_UNKNOWN )
-	PORT_BIT( 0x00000200, IP_ACTIVE_LOW,  IPT_UNKNOWN )
-	PORT_BIT( 0x00000400, IP_ACTIVE_LOW,  IPT_UNKNOWN )
-	PORT_BIT( 0x00000800, IP_ACTIVE_LOW,  IPT_UNKNOWN )
-	PORT_BIT( 0x00001000, IP_ACTIVE_LOW,  IPT_START1 )
-	PORT_BIT( 0x00002000, IP_ACTIVE_LOW,  IPT_START2 )
-	PORT_BIT( 0x00004000, IP_ACTIVE_LOW,  IPT_UNKNOWN )
-	PORT_BIT( 0x00008000, IP_ACTIVE_LOW,  IPT_UNKNOWN )
-
-	PORT_BIT( 0x00010000, IP_ACTIVE_LOW,  IPT_UNKNOWN )
-	PORT_BIT( 0x00020000, IP_ACTIVE_LOW,  IPT_UNKNOWN )
-	PORT_BIT( 0x00040000, IP_ACTIVE_LOW,  IPT_UNKNOWN )
-	PORT_BIT( 0x00080000, IP_ACTIVE_HIGH, IPT_BUTTON5 ) /* ? where is freeze input */
-	PORT_BIT( 0x00100000, IP_ACTIVE_LOW,  IPT_UNKNOWN )
-	PORT_BIT( 0x00200000, IP_ACTIVE_LOW,  IPT_UNKNOWN )
-	PORT_BIT( 0x00400000, IP_ACTIVE_LOW,  IPT_UNKNOWN )
-	PORT_BIT( 0x00800000, IP_ACTIVE_LOW,  IPT_UNKNOWN )
-	PORT_BIT( 0x01000000, IP_ACTIVE_LOW,  IPT_BUTTON4 ) PORT_NAME("Gear Shift") PORT_TOGGLE
-	PORT_BIT( 0x02000000, IP_ACTIVE_LOW,  IPT_BUTTON3 ) PORT_NAME("Nitro")
-	PORT_BIT( 0x04000000, IP_ACTIVE_LOW,  IPT_BUTTON1 ) PORT_NAME("Accelerator")
-	PORT_BIT( 0x08000000, IP_ACTIVE_LOW,  IPT_BUTTON2 ) PORT_NAME("Brake")
-	PORT_BIT( 0x10000000, IP_ACTIVE_LOW,  IPT_UNKNOWN )
-	PORT_BIT( 0x20000000, IP_ACTIVE_LOW,  IPT_UNKNOWN )
-	PORT_BIT( 0x40000000, IP_ACTIVE_LOW,  IPT_UNKNOWN )
-	PORT_BIT( 0x80000000, IP_ACTIVE_LOW,  IPT_UNKNOWN )
-=======
 	PORT_START("INPUTS0")
 	PORT_BIT( 0x01, IP_ACTIVE_LOW,  IPT_BUTTON4 ) PORT_NAME("Gear Shift") PORT_TOGGLE
 	PORT_BIT( 0x02, IP_ACTIVE_LOW,  IPT_BUTTON3 ) PORT_NAME("Nitro")
@@ -718,7 +545,6 @@ static INPUT_PORTS_START( cbombers )
 	PORT_BIT( 0x20, IP_ACTIVE_LOW,  IPT_START2 )
 	PORT_BIT( 0x40, IP_ACTIVE_LOW,  IPT_UNKNOWN )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW,  IPT_UNKNOWN )
->>>>>>> upstream/master
 
 	PORT_START("SYSTEM")
 	PORT_SERVICE_NO_TOGGLE(0x01, IP_ACTIVE_LOW)
@@ -795,11 +621,7 @@ INTERRUPT_GEN_MEMBER(undrfire_state::undrfire_interrupt)
 	device.execute().set_input_line(4, HOLD_LINE);
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( undrfire, undrfire_state )
-=======
 static MACHINE_CONFIG_START( undrfire )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68EC020, XTAL_40MHz/2) /* 20 MHz - NOT verified */
@@ -808,8 +630,6 @@ static MACHINE_CONFIG_START( undrfire )
 
 	MCFG_EEPROM_SERIAL_93C46_ADD("eeprom")
 
-<<<<<<< HEAD
-=======
 	MCFG_DEVICE_ADD("tc0510nio", TC0510NIO, 0)
 	MCFG_TC0510NIO_READ_0_CB(IOPORT("INPUTS0"))
 	MCFG_TC0510NIO_READ_1_CB(IOPORT("INPUTS1"))
@@ -822,7 +642,6 @@ static MACHINE_CONFIG_START( undrfire )
 	MCFG_TC0510NIO_WRITE_4_CB(WRITE8(undrfire_state, coin_word_w))
 	MCFG_TC0510NIO_READ_7_CB(IOPORT("SYSTEM"))
 
->>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE(60)
@@ -849,16 +668,6 @@ static MACHINE_CONFIG_START( undrfire )
 	MCFG_TC0480SCP_OFFSETS(0x24, 0)
 	MCFG_TC0480SCP_OFFSETS_TX(-1, 0)
 	MCFG_TC0480SCP_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_TC0480SCP_PALETTE("palette")
-
-	/* sound hardware */
-	MCFG_FRAGMENT_ADD(taito_en_sound)
-MACHINE_CONFIG_END
-
-
-static MACHINE_CONFIG_START( cbombers, undrfire_state )
-=======
 
 	/* sound hardware */
 	MCFG_DEVICE_ADD("taito_en", TAITO_EN, 0)
@@ -866,7 +675,6 @@ MACHINE_CONFIG_END
 
 
 static MACHINE_CONFIG_START( cbombers )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68EC020, XTAL_40MHz/2) /* 20 MHz - NOT verified */
@@ -881,8 +689,6 @@ static MACHINE_CONFIG_START( cbombers )
 
 	MCFG_EEPROM_SERIAL_93C46_ADD("eeprom")
 
-<<<<<<< HEAD
-=======
 	MCFG_DEVICE_ADD("tc0510nio", TC0510NIO, 0)
 	MCFG_TC0510NIO_READ_0_CB(IOPORT("INPUTS0"))
 	MCFG_TC0510NIO_READ_1_CB(IOPORT("INPUTS1"))
@@ -895,7 +701,6 @@ static MACHINE_CONFIG_START( cbombers )
 	MCFG_TC0510NIO_WRITE_4_CB(WRITE8(undrfire_state, coin_word_w))
 	MCFG_TC0510NIO_READ_7_CB(IOPORT("SYSTEM"))
 
->>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE(60)
@@ -923,16 +728,9 @@ static MACHINE_CONFIG_START( cbombers )
 	MCFG_TC0480SCP_OFFSETS_TX(-1, 0)
 	MCFG_TC0480SCP_COL_BASE(4096)
 	MCFG_TC0480SCP_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_TC0480SCP_PALETTE("palette")
-
-	/* sound hardware */
-	MCFG_FRAGMENT_ADD(taito_en_sound)
-=======
 
 	/* sound hardware */
 	MCFG_DEVICE_ADD("taito_en", TAITO_EN, 0)
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
@@ -947,11 +745,7 @@ ROM_START( undrfire )
 	ROM_LOAD32_BYTE( "d67-17", 0x00002, 0x80000, CRC(34e030b7) SHA1(62c270c817199a56e647ea74849fe5c07717ac18) )
 	ROM_LOAD32_BYTE( "d67-23", 0x00003, 0x80000, CRC(28e84e0a) SHA1(74c73c6df07d33ef4c0a29f8c1ee1a33eee922da) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x140000, "audiocpu", 0 )
-=======
 	ROM_REGION( 0x140000, "taito_en:audiocpu", 0 )
->>>>>>> upstream/master
 	ROM_LOAD16_BYTE( "d67-20", 0x100000, 0x20000,  CRC(974ebf69) SHA1(8a5de503c514bf0da0c956e2dfdf0cfb83ea1f72) )
 	ROM_LOAD16_BYTE( "d67-21", 0x100001, 0x20000,  CRC(8fc6046f) SHA1(28522ce5c5900f74d3faa86710256a7201b32500) )
 
@@ -970,11 +764,7 @@ ROM_START( undrfire )
 	ROM_LOAD16_BYTE( "d67-10", 0x000000, 0x100000, CRC(d79e6ce9) SHA1(8b38302971816d599cdaa3279cb6395441373c6f) )   /* PIV 8x8 tiles, 6bpp */
 	ROM_LOAD16_BYTE( "d67-11", 0x000001, 0x100000, CRC(7a401bb3) SHA1(47257a6a4b37ec1ceb4e974b776ee3ea30db06fa) )
 	ROM_LOAD       ( "d67-12", 0x300000, 0x100000, CRC(67b16fec) SHA1(af0f9f50516331780ef6cfab1e12a23edf87daa7) )
-<<<<<<< HEAD
-	ROM_FILL       (           0x200000, 0x100000, 0 )
-=======
 	ROM_FILL       (           0x200000, 0x100000, 0x00 )
->>>>>>> upstream/master
 
 	ROM_REGION16_LE( 0x80000, "user1", 0 )
 	ROM_LOAD16_WORD( "d67-13", 0x00000,  0x80000,  CRC(42e7690d) SHA1(5f00f3f814653733bf9a5cb010675799de02fa76) )   /* STY, spritemap */
@@ -995,11 +785,7 @@ ROM_START( undrfireu )
 	ROM_LOAD32_BYTE( "d67-17", 0x00002, 0x80000, CRC(34e030b7) SHA1(62c270c817199a56e647ea74849fe5c07717ac18) )
 	ROM_LOAD32_BYTE( "d67-22", 0x00003, 0x80000, CRC(5fef7e9c) SHA1(03a6ea0715ce8705d74550186b22940f8a49c088) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x140000, "audiocpu", 0 )
-=======
 	ROM_REGION( 0x140000, "taito_en:audiocpu", 0 )
->>>>>>> upstream/master
 	ROM_LOAD16_BYTE( "d67-20", 0x100000, 0x20000,  CRC(974ebf69) SHA1(8a5de503c514bf0da0c956e2dfdf0cfb83ea1f72) )
 	ROM_LOAD16_BYTE( "d67-21", 0x100001, 0x20000,  CRC(8fc6046f) SHA1(28522ce5c5900f74d3faa86710256a7201b32500) )
 
@@ -1018,11 +804,7 @@ ROM_START( undrfireu )
 	ROM_LOAD16_BYTE( "d67-10", 0x000000, 0x100000, CRC(d79e6ce9) SHA1(8b38302971816d599cdaa3279cb6395441373c6f) )   /* PIV 8x8 tiles, 6bpp */
 	ROM_LOAD16_BYTE( "d67-11", 0x000001, 0x100000, CRC(7a401bb3) SHA1(47257a6a4b37ec1ceb4e974b776ee3ea30db06fa) )
 	ROM_LOAD       ( "d67-12", 0x300000, 0x100000, CRC(67b16fec) SHA1(af0f9f50516331780ef6cfab1e12a23edf87daa7) )
-<<<<<<< HEAD
-	ROM_FILL       (           0x200000, 0x100000, 0 )
-=======
 	ROM_FILL       (           0x200000, 0x100000, 0x00 )
->>>>>>> upstream/master
 
 	ROM_REGION16_LE( 0x80000, "user1", 0 )
 	ROM_LOAD16_WORD( "d67-13", 0x00000,  0x80000,  CRC(42e7690d) SHA1(5f00f3f814653733bf9a5cb010675799de02fa76) )   /* STY, spritemap */
@@ -1042,11 +824,7 @@ ROM_START( undrfirej )
 	ROM_LOAD32_BYTE( "d67-17", 0x00002, 0x80000, CRC(34e030b7) SHA1(62c270c817199a56e647ea74849fe5c07717ac18) )
 	ROM_LOAD32_BYTE( "d67-16", 0x00003, 0x80000, CRC(c6e62f26) SHA1(6a430916f829a4b0240ccf8477dcbb1f39a26e90) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x140000, "audiocpu", 0 )
-=======
 	ROM_REGION( 0x140000, "taito_en:audiocpu", 0 )
->>>>>>> upstream/master
 	ROM_LOAD16_BYTE( "d67-20", 0x100000, 0x20000,  CRC(974ebf69) SHA1(8a5de503c514bf0da0c956e2dfdf0cfb83ea1f72) )
 	ROM_LOAD16_BYTE( "d67-21", 0x100001, 0x20000,  CRC(8fc6046f) SHA1(28522ce5c5900f74d3faa86710256a7201b32500) )
 
@@ -1065,11 +843,7 @@ ROM_START( undrfirej )
 	ROM_LOAD16_BYTE( "d67-10", 0x000000, 0x100000, CRC(d79e6ce9) SHA1(8b38302971816d599cdaa3279cb6395441373c6f) )   /* PIV 8x8 tiles, 6bpp */
 	ROM_LOAD16_BYTE( "d67-11", 0x000001, 0x100000, CRC(7a401bb3) SHA1(47257a6a4b37ec1ceb4e974b776ee3ea30db06fa) )
 	ROM_LOAD       ( "d67-12", 0x300000, 0x100000, CRC(67b16fec) SHA1(af0f9f50516331780ef6cfab1e12a23edf87daa7) )
-<<<<<<< HEAD
-	ROM_FILL       (           0x200000, 0x100000, 0 )
-=======
 	ROM_FILL       (           0x200000, 0x100000, 0x00 )
->>>>>>> upstream/master
 
 	ROM_REGION16_LE( 0x80000, "user1", 0 )
 	ROM_LOAD16_WORD( "d67-13", 0x00000,  0x80000,  CRC(42e7690d) SHA1(5f00f3f814653733bf9a5cb010675799de02fa76) )   /* STY, spritemap */
@@ -1089,11 +863,7 @@ ROM_START( cbombers )
 	ROM_LOAD32_BYTE( "d83_40.ic3",  0x00002, 0x80000, CRC(b05f59ea) SHA1(e46a31737f44be2a3d478b8010fe0d6383290e03) )
 	ROM_LOAD32_BYTE( "d83_38.ic16", 0x00003, 0x80000, CRC(0a10616c) SHA1(c9cfc8c870f8a989f004d2db4f6fb76e5b7b7f9b) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x140000, "audiocpu", 0 )   /* Sound cpu */
-=======
 	ROM_REGION( 0x140000, "taito_en:audiocpu", 0 )   /* Sound cpu */
->>>>>>> upstream/master
 	ROM_LOAD16_BYTE( "d83_26.ic37", 0x100000, 0x20000, CRC(4f49b484) SHA1(96daa3cb7fa4aae3aedc91ec27d85945311dfcc9) )
 	ROM_LOAD16_BYTE( "d83_27.ic38", 0x100001, 0x20000, CRC(2aa1a237) SHA1(b809f75bbbbb4eb5d0df725aaa31aae8a6fba552) )
 
@@ -1121,11 +891,7 @@ ROM_START( cbombers )
 	ROM_LOAD16_BYTE( "d83_16.ic19", 0x000000, 0x100000, CRC(d364cf1e) SHA1(ee43f50edf50ec840acfb98b1314140ee9693839) )
 	ROM_LOAD16_BYTE( "d83_17.ic5",  0x000001, 0x100000, CRC(0ffe737c) SHA1(5923a4edf9d0c8339f793840c2bdc691e2c651e6) )
 	ROM_LOAD       ( "d83_18.ic6",  0x300000, 0x100000, CRC(87979155) SHA1(0ffafa970f9f9c98f8938104b97e63d2b5757804) )
-<<<<<<< HEAD
-	ROM_FILL       (                0x200000, 0x100000, 0 )
-=======
 	ROM_FILL       (                0x200000, 0x100000, 0x00 )
->>>>>>> upstream/master
 
 	ROM_REGION16_LE( 0x80000, "user1", 0 )
 	ROM_LOAD16_BYTE( "d83_31.ic10", 0x000001, 0x40000, CRC(85c37961) SHA1(15ea5c4904d910575e984e146c8941dff913d45f) )
@@ -1151,11 +917,7 @@ ROM_START( cbombersj )
 	ROM_LOAD32_BYTE( "d83_35.ic3",  0x00002, 0x80000, CRC(b0379b1e) SHA1(fc398f5f67d1347b594563a3703db4c0e01d5dff) )
 	ROM_LOAD32_BYTE( "d83_33.ic16", 0x00003, 0x80000, CRC(72fb42a7) SHA1(7c0b02be604b8b90c444a973962d4b29a5b8b047) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x140000, "audiocpu", 0 )   /* Sound cpu */
-=======
 	ROM_REGION( 0x140000, "taito_en:audiocpu", 0 )   /* Sound cpu */
->>>>>>> upstream/master
 	ROM_LOAD16_BYTE( "d83_26.ic37", 0x100000, 0x20000, CRC(4f49b484) SHA1(96daa3cb7fa4aae3aedc91ec27d85945311dfcc9) )
 	ROM_LOAD16_BYTE( "d83_27.ic38", 0x100001, 0x20000, CRC(2aa1a237) SHA1(b809f75bbbbb4eb5d0df725aaa31aae8a6fba552) )
 
@@ -1183,11 +945,7 @@ ROM_START( cbombersj )
 	ROM_LOAD16_BYTE( "d83_16.ic19", 0x000000, 0x100000, CRC(d364cf1e) SHA1(ee43f50edf50ec840acfb98b1314140ee9693839) )
 	ROM_LOAD16_BYTE( "d83_17.ic5",  0x000001, 0x100000, CRC(0ffe737c) SHA1(5923a4edf9d0c8339f793840c2bdc691e2c651e6) )
 	ROM_LOAD       ( "d83_18.ic6",  0x300000, 0x100000, CRC(87979155) SHA1(0ffafa970f9f9c98f8938104b97e63d2b5757804) )
-<<<<<<< HEAD
-	ROM_FILL       (                0x200000, 0x100000, 0 )
-=======
 	ROM_FILL       (                0x200000, 0x100000, 0x00 )
->>>>>>> upstream/master
 
 	ROM_REGION16_LE( 0x80000, "user1", 0 )
 	ROM_LOAD16_BYTE( "d83_31.ic10", 0x000001, 0x40000, CRC(85c37961) SHA1(15ea5c4904d910575e984e146c8941dff913d45f) )
@@ -1215,11 +973,7 @@ ROM_START( cbombersp )
 	ROM_LOAD32_BYTE( "lh.bin",  0x00002, 0x80000, CRC(77ad9acb) SHA1(73bc156c377d42e7c752d71686ca5ad3dc506053) )
 	ROM_LOAD32_BYTE( "ll.bin",  0x00003, 0x80000, CRC(54c060a5) SHA1(7623eb418734d2adc4e913b5a99d4caeb857b3ac) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x140000, "audiocpu", 0 )   // Sound cpu
-=======
 	ROM_REGION( 0x140000, "taito_en:audiocpu", 0 )   // Sound cpu
->>>>>>> upstream/master
 	ROM_LOAD16_BYTE( "ic47_eprg_h_up_c5c5.bin", 0x100000, 0x20000, CRC(cb0d11b1) SHA1(0ac192f31f531defe088ed899aadbaa0798df4d6) )
 	ROM_LOAD16_BYTE( "ic46_eprg_l_low_d5e.bin", 0x100001, 0x20000, CRC(567ae215) SHA1(32d40d1c24e014ffb52a81df4a0d5adb20f0048c) )
 
@@ -1276,19 +1030,11 @@ ROM_START( cbombersp )
 	ROM_LOAD16_BYTE( "ic44_scc1.bin",  0x000001, 0x080000, CRC(868d0d3d) SHA1(29251d545548856296b5ae32a96f2eeef2418dc4) )
 	ROM_LOAD16_BYTE( "ic43_scc4.bin",  0x000000, 0x080000, CRC(2f170ee4) SHA1(2b8f07186c9f7589e1af131b8c377443a29bd149) )
 	ROM_LOAD       ( "ic45_5cc2.bin",  0x300000, 0x080000, CRC(7ae48d63) SHA1(2a8b291f0a683ed5b0c39d221737956b6fc72fa5) )
-<<<<<<< HEAD
-	ROM_FILL       (                   0x200000, 0x080000, 0 )
-	ROM_LOAD16_BYTE( "ic58_f357.bin",  0x100001, 0x080000, CRC(16486967) SHA1(c2fd6c9f21232656b52ab589ac61f94aa728524e) )
-	ROM_LOAD16_BYTE( "ic57_1a62.bin",  0x100000, 0x080000, CRC(afd45e35) SHA1(6d7c0729c7d2b204473679b97923130e289f429d) )
-	ROM_LOAD       ( "ic59_7cce.bin",  0x380000, 0x080000, CRC(ee762199) SHA1(d56e96feeedba8b77f8f18cb380d2902ca3f1e50) )
-	ROM_FILL       (                   0x280000, 0x080000, 0 )
-=======
 	ROM_FILL       (                   0x200000, 0x080000, 0x00 )
 	ROM_LOAD16_BYTE( "ic58_f357.bin",  0x100001, 0x080000, CRC(16486967) SHA1(c2fd6c9f21232656b52ab589ac61f94aa728524e) )
 	ROM_LOAD16_BYTE( "ic57_1a62.bin",  0x100000, 0x080000, CRC(afd45e35) SHA1(6d7c0729c7d2b204473679b97923130e289f429d) )
 	ROM_LOAD       ( "ic59_7cce.bin",  0x380000, 0x080000, CRC(ee762199) SHA1(d56e96feeedba8b77f8f18cb380d2902ca3f1e50) )
 	ROM_FILL       (                   0x280000, 0x080000, 0x00 )
->>>>>>> upstream/master
 
 	ROM_REGION16_LE( 0x80000, "user1", 0 )
 	ROM_LOAD16_BYTE( "st8_ic2.bin", 0x000001, 0x40000, CRC(d74254d8) SHA1(f4a4f9d95f70edf74d937be067d6a9f68a955ea7) )
@@ -1319,13 +1065,8 @@ ROM_END
 
 DRIVER_INIT_MEMBER(undrfire_state,undrfire)
 {
-<<<<<<< HEAD
-	UINT32 offset,i;
-	UINT8 *gfx = memregion("gfx3")->base();
-=======
 	uint32_t offset,i;
 	uint8_t *gfx = memregion("gfx3")->base();
->>>>>>> upstream/master
 	int size=memregion("gfx3")->bytes();
 	int data;
 
@@ -1353,13 +1094,8 @@ DRIVER_INIT_MEMBER(undrfire_state,undrfire)
 
 DRIVER_INIT_MEMBER(undrfire_state,cbombers)
 {
-<<<<<<< HEAD
-	UINT32 offset,i;
-	UINT8 *gfx = memregion("gfx3")->base();
-=======
 	uint32_t offset,i;
 	uint8_t *gfx = memregion("gfx3")->base();
->>>>>>> upstream/master
 	int size=memregion("gfx3")->bytes();
 	int data;
 
@@ -1387,18 +1123,9 @@ DRIVER_INIT_MEMBER(undrfire_state,cbombers)
 
 
 
-<<<<<<< HEAD
-GAME( 1993, undrfire,  0,        undrfire, undrfire, undrfire_state, undrfire, ROT0, "Taito Corporation Japan",   "Under Fire (World)", 0 )
-GAME( 1993, undrfireu, undrfire, undrfire, undrfire, undrfire_state, undrfire, ROT0, "Taito America Corporation", "Under Fire (US)", 0 )
-GAME( 1993, undrfirej, undrfire, undrfire, undrfire, undrfire_state, undrfire, ROT0, "Taito Corporation",         "Under Fire (Japan)", 0 )
-GAMEL(1994, cbombers,  0,        cbombers, cbombers, undrfire_state, cbombers, ROT0, "Taito Corporation Japan",   "Chase Bombers (World)", MACHINE_IMPERFECT_GRAPHICS, layout_cbombers )
-GAMEL(1994, cbombersj, cbombers, cbombers, cbombers, undrfire_state, cbombers, ROT0, "Taito Corporation",         "Chase Bombers (Japan)", MACHINE_IMPERFECT_GRAPHICS, layout_cbombers )
-GAMEL(1994, cbombersp, cbombers, cbombers, cbombers, undrfire_state, cbombers, ROT0, "Taito Corporation",         "Chase Bombers (Japan Prototype)", MACHINE_IMPERFECT_GRAPHICS, layout_cbombers )
-=======
 GAME( 1993, undrfire,  0,        undrfire, undrfire, undrfire_state, undrfire, ROT0, "Taito Corporation Japan",   "Under Fire (World)",              0 )
 GAME( 1993, undrfireu, undrfire, undrfire, undrfire, undrfire_state, undrfire, ROT0, "Taito America Corporation", "Under Fire (US)",                 0 )
 GAME( 1993, undrfirej, undrfire, undrfire, undrfire, undrfire_state, undrfire, ROT0, "Taito Corporation",         "Under Fire (Japan)",              0 )
 GAMEL(1994, cbombers,  0,        cbombers, cbombers, undrfire_state, cbombers, ROT0, "Taito Corporation Japan",   "Chase Bombers (World)",           MACHINE_IMPERFECT_GRAPHICS | MACHINE_NODEVICE_LAN, layout_cbombers )
 GAMEL(1994, cbombersj, cbombers, cbombers, cbombers, undrfire_state, cbombers, ROT0, "Taito Corporation",         "Chase Bombers (Japan)",           MACHINE_IMPERFECT_GRAPHICS | MACHINE_NODEVICE_LAN, layout_cbombers )
 GAMEL(1994, cbombersp, cbombers, cbombers, cbombers, undrfire_state, cbombers, ROT0, "Taito Corporation",         "Chase Bombers (Japan Prototype)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_NODEVICE_LAN, layout_cbombers )
->>>>>>> upstream/master

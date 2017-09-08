@@ -14,11 +14,7 @@ todo - convert to tilemap
 WRITE8_MEMBER(funybubl_state::funybubl_paldatawrite)
 {
 	int colchanged ;
-<<<<<<< HEAD
-	UINT32 coldat;
-=======
 	uint32_t coldat;
->>>>>>> upstream/master
 
 	m_paletteram[offset] = data;
 	colchanged = offset >> 2;
@@ -35,13 +31,8 @@ void funybubl_state::video_start()
 
 void funybubl_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect )
 {
-<<<<<<< HEAD
-	UINT8 *source = &m_banked_vram[0x2000 - 0x20];
-	UINT8 *finish = source - 0x1000;
-=======
 	uint8_t *source = &m_banked_vram[0x2000 - 0x20];
 	uint8_t *finish = source - 0x1000;
->>>>>>> upstream/master
 
 	while (source > finish)
 	{
@@ -82,11 +73,7 @@ void funybubl_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &clipre
 }
 
 
-<<<<<<< HEAD
-UINT32 funybubl_state::screen_update_funybubl(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t funybubl_state::screen_update_funybubl(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int x, y, offs;
 	offs = 0;

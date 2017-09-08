@@ -8,19 +8,12 @@
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-#ifndef __VOODOO_H__
-#define __VOODOO_H__
-=======
 #ifndef MAME_VIDEO_VOODOO_H
 #define MAME_VIDEO_VOODOO_H
->>>>>>> upstream/master
 
 #pragma once
 
 
-<<<<<<< HEAD
-=======
 #include "video/polylgcy.h"
 #include "video/rgbutil.h"
 
@@ -1393,7 +1386,6 @@ union voodoo_reg
 
 
 
->>>>>>> upstream/master
 
 /***************************************************************************
     CONSTANTS
@@ -1436,82 +1428,38 @@ enum
 #define MCFG_VOODOO_STALL_CB(_devcb) \
 	devcb = &voodoo_device::static_set_stall_callback(*device, DEVCB_##_devcb);
 
-<<<<<<< HEAD
-=======
 #define MCFG_VOODOO_PCIINT_CB(_devcb) \
 	devcb = &voodoo_device::static_set_pciint_callback(*device, DEVCB_##_devcb);
->>>>>>> upstream/master
 
 /***************************************************************************
     FUNCTION PROTOTYPES
 ***************************************************************************/
 
-<<<<<<< HEAD
-int voodoo_update(device_t *device, bitmap_rgb32 &bitmap, const rectangle &cliprect);
-int voodoo_get_type(device_t *device);
-int voodoo_is_stalled(device_t *device);
-void voodoo_set_init_enable(device_t *device, UINT32 newval);
-
-=======
->>>>>>> upstream/master
 /* ----- device interface ----- */
 
 class voodoo_device : public device_t
 {
 public:
-<<<<<<< HEAD
-	voodoo_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source);
 	~voodoo_device();
 
-
-=======
-	~voodoo_device();
-
->>>>>>> upstream/master
 	static void static_set_fbmem(device_t &device, int value) { downcast<voodoo_device &>(device).m_fbmem = value; }
 	static void static_set_tmumem(device_t &device, int value1, int value2) { downcast<voodoo_device &>(device).m_tmumem0 = value1; downcast<voodoo_device &>(device).m_tmumem1 = value2; }
 	static void static_set_screen_tag(device_t &device, const char *tag) { downcast<voodoo_device &>(device).m_screen = tag; }
 	static void static_set_cpu_tag(device_t &device, const char *tag) { downcast<voodoo_device &>(device).m_cputag = tag; }
-<<<<<<< HEAD
-	template<class _Object> static devcb_base &static_set_vblank_callback(device_t &device, _Object object) { return downcast<voodoo_device &>(device).m_vblank.set_callback(object); }
-	template<class _Object> static devcb_base &static_set_stall_callback(device_t &device, _Object object)  { return downcast<voodoo_device &>(device).m_stall.set_callback(object); }
-=======
 	template <class Object> static devcb_base &static_set_vblank_callback(device_t &device, Object &&cb) { return downcast<voodoo_device &>(device).m_vblank.set_callback(std::forward<Object>(cb)); }
 	template <class Object> static devcb_base &static_set_stall_callback(device_t &device, Object &&cb)  { return downcast<voodoo_device &>(device).m_stall.set_callback(std::forward<Object>(cb)); }
 	template <class Object> static devcb_base &static_set_pciint_callback(device_t &device, Object &&cb) { return downcast<voodoo_device &>(device).m_pciint.set_callback(std::forward<Object>(cb)); }
->>>>>>> upstream/master
 
 	DECLARE_READ32_MEMBER( voodoo_r );
 	DECLARE_WRITE32_MEMBER( voodoo_w );
 
-<<<<<<< HEAD
-	// access to legacy token
-	struct voodoo_state *token() const { assert(m_token != NULL); return m_token; }
-	void common_start_voodoo(UINT8 type);
-
-	UINT8               m_fbmem;
-	UINT8               m_tmumem0;
-	UINT8               m_tmumem1;
-=======
 	uint8_t               m_fbmem;
 	uint8_t               m_tmumem0;
 	uint8_t               m_tmumem1;
->>>>>>> upstream/master
 	const char *        m_screen;
 	const char *        m_cputag;
 	devcb_write_line   m_vblank;
 	devcb_write_line   m_stall;
-<<<<<<< HEAD
-
-protected:
-	// device-level overrides
-	virtual void device_config_complete();
-	virtual void device_stop();
-	virtual void device_reset();
-private:
-	// internal state
-	struct voodoo_state *m_token;
-=======
 	// This is for internally generated PCI interrupts in Voodoo3
 	devcb_write_line   m_pciint;
 
@@ -1934,52 +1882,26 @@ public:
 	bool                send_config;
 	uint32_t              tmu_config;
 
->>>>>>> upstream/master
 };
 
 class voodoo_1_device : public voodoo_device
 {
 public:
-<<<<<<< HEAD
-	voodoo_1_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-protected:
-	// device-level overrides
-	virtual void device_start();
-};
-
-extern const device_type VOODOO_1;
-=======
 	voodoo_1_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 };
 
->>>>>>> upstream/master
 
 class voodoo_2_device : public voodoo_device
 {
 public:
-<<<<<<< HEAD
-	voodoo_2_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-protected:
-	// device-level overrides
-	virtual void device_start();
-};
-
-extern const device_type VOODOO_2;
-=======
 	voodoo_2_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 };
 
->>>>>>> upstream/master
 
 class voodoo_banshee_device : public voodoo_device
 {
 public:
-<<<<<<< HEAD
-	voodoo_banshee_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-	voodoo_banshee_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source);
-=======
 	voodoo_banshee_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
->>>>>>> upstream/master
 
 	DECLARE_READ32_MEMBER( banshee_r );
 	DECLARE_WRITE32_MEMBER( banshee_w );
@@ -1988,19 +1910,6 @@ public:
 	DECLARE_READ32_MEMBER( banshee_io_r );
 	DECLARE_WRITE32_MEMBER( banshee_io_w );
 	DECLARE_READ32_MEMBER( banshee_rom_r );
-<<<<<<< HEAD
-
-protected:
-	// device-level overrides
-	virtual void device_start();
-	DECLARE_READ32_MEMBER( banshee_agp_r );
-	DECLARE_WRITE32_MEMBER( banshee_agp_w );
-	DECLARE_READ8_MEMBER( banshee_vga_r );
-	DECLARE_WRITE8_MEMBER( banshee_vga_w );
-};
-
-extern const device_type VOODOO_BANSHEE;
-=======
 	DECLARE_READ8_MEMBER(banshee_vga_r);
 	DECLARE_WRITE8_MEMBER(banshee_vga_w);
 
@@ -2012,22 +1921,10 @@ protected:
 	DECLARE_WRITE32_MEMBER( banshee_agp_w );
 };
 
->>>>>>> upstream/master
 
 class voodoo_3_device : public voodoo_banshee_device
 {
 public:
-<<<<<<< HEAD
-	voodoo_3_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-protected:
-	// device-level overrides
-	virtual void device_start();
-};
-
-extern const device_type VOODOO_3;
-
-#endif
-=======
 	voodoo_3_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 };
 
@@ -2038,4 +1935,3 @@ DECLARE_DEVICE_TYPE(VOODOO_BANSHEE, voodoo_banshee_device)
 DECLARE_DEVICE_TYPE(VOODOO_3,       voodoo_3_device)
 
 #endif // MAME_VIDEO_VOODOO_H
->>>>>>> upstream/master

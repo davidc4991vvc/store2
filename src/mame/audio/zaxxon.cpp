@@ -88,17 +88,6 @@ static const char *const zaxxon_sample_names[] =
 	"20",   /* 9 - Alarm 3 (low fuel) */
 	"05",   /* 10 - initial background noise */
 	"04",   /* 11 - looped asteroid noise */
-<<<<<<< HEAD
-	0
-};
-
-
-MACHINE_CONFIG_FRAGMENT( zaxxon_samples )
-	MCFG_SOUND_ADD("samples", SAMPLES, 0)
-	MCFG_SAMPLES_CHANNELS(12)
-	MCFG_SAMPLES_NAMES(zaxxon_sample_names)
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.25)
-=======
 	nullptr
 };
 
@@ -108,7 +97,6 @@ MACHINE_CONFIG_START( zaxxon_samples )
 	MCFG_SAMPLES_CHANNELS(12)
 	MCFG_SAMPLES_NAMES(zaxxon_sample_names)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.25)
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
@@ -121,11 +109,7 @@ MACHINE_CONFIG_END
 
 WRITE8_MEMBER(zaxxon_state::zaxxon_sound_a_w)
 {
-<<<<<<< HEAD
-	UINT8 diff = data ^ m_sound_state[0];
-=======
 	uint8_t diff = data ^ m_sound_state[0];
->>>>>>> upstream/master
 	m_sound_state[0] = data;
 
 	/* PLAYER SHIP A/B: volume */
@@ -159,11 +143,7 @@ WRITE8_MEMBER(zaxxon_state::zaxxon_sound_a_w)
 
 WRITE8_MEMBER(zaxxon_state::zaxxon_sound_b_w)
 {
-<<<<<<< HEAD
-	UINT8 diff = data ^ m_sound_state[1];
-=======
 	uint8_t diff = data ^ m_sound_state[1];
->>>>>>> upstream/master
 	m_sound_state[1] = data;
 
 	/* S-EXP: channel 4 */
@@ -179,11 +159,7 @@ WRITE8_MEMBER(zaxxon_state::zaxxon_sound_b_w)
 
 WRITE8_MEMBER(zaxxon_state::zaxxon_sound_c_w)
 {
-<<<<<<< HEAD
-	UINT8 diff = data ^ m_sound_state[2];
-=======
 	uint8_t diff = data ^ m_sound_state[2];
->>>>>>> upstream/master
 	m_sound_state[2] = data;
 
 	/* SHOT: channel 7 */
@@ -212,17 +188,6 @@ static const char *const congo_sample_names[] =
 	"congal",   /* 2 */
 	"congah",   /* 3 */
 	"rim",      /* 4 */
-<<<<<<< HEAD
-	0
-};
-
-
-MACHINE_CONFIG_FRAGMENT( congo_samples )
-	MCFG_SOUND_ADD("samples", SAMPLES, 0)
-	MCFG_SAMPLES_CHANNELS(5)
-	MCFG_SAMPLES_NAMES(congo_sample_names)
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.25)
-=======
 	nullptr
 };
 
@@ -232,7 +197,6 @@ MACHINE_CONFIG_START( congo_samples )
 	MCFG_SAMPLES_CHANNELS(5)
 	MCFG_SAMPLES_NAMES(congo_sample_names)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.25)
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
@@ -245,11 +209,7 @@ MACHINE_CONFIG_END
 
 WRITE8_MEMBER(zaxxon_state::congo_sound_b_w)
 {
-<<<<<<< HEAD
-	UINT8 diff = data ^ m_sound_state[1];
-=======
 	uint8_t diff = data ^ m_sound_state[1];
->>>>>>> upstream/master
 	m_sound_state[1] = data;
 
 	/* bit 7 = mute */
@@ -261,11 +221,7 @@ WRITE8_MEMBER(zaxxon_state::congo_sound_b_w)
 
 WRITE8_MEMBER(zaxxon_state::congo_sound_c_w)
 {
-<<<<<<< HEAD
-	UINT8 diff = data ^ m_sound_state[2];
-=======
 	uint8_t diff = data ^ m_sound_state[2];
->>>>>>> upstream/master
 	m_sound_state[2] = data;
 
 	/* BASS DRUM: channel 1 */

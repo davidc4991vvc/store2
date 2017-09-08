@@ -8,15 +8,6 @@
  *
  *************************************************************************/
 
-<<<<<<< HEAD
-#include "pc_joy.h"
-#include "pc_joy_sw.h"
-
-const device_type PC_JOY = &device_creator<pc_joy_device>;
-
-pc_joy_device::pc_joy_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-	device_t(mconfig, PC_JOY, "PC joystick port", tag, owner, clock, "pc_joy", __FILE__),
-=======
 #include "emu.h"
 #include "pc_joy.h"
 #include "pc_joy_sw.h"
@@ -25,7 +16,6 @@ DEFINE_DEVICE_TYPE(PC_JOY, pc_joy_device, "pc_joy", "PC joystick port")
 
 pc_joy_device::pc_joy_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	device_t(mconfig, PC_JOY, tag, owner, clock),
->>>>>>> upstream/master
 	device_slot_interface(mconfig, *this),
 	m_dev(nullptr)
 {
@@ -33,11 +23,7 @@ pc_joy_device::pc_joy_device(const machine_config &mconfig, const char *tag, dev
 
 READ8_MEMBER ( pc_joy_device::joy_port_r )
 {
-<<<<<<< HEAD
-	int delta = ((machine().time() - m_stime) * 256 * 1000).seconds();
-=======
 	int delta = ((machine().time() - m_stime) * 256 * 2325).seconds();
->>>>>>> upstream/master
 
 	if(!m_dev)
 		return 0xf0;
@@ -48,11 +34,8 @@ READ8_MEMBER ( pc_joy_device::joy_port_r )
 WRITE8_MEMBER ( pc_joy_device::joy_port_w )
 {
 	m_stime = machine().time();
-<<<<<<< HEAD
-=======
 	if(!m_dev)
 		return;
->>>>>>> upstream/master
 	m_dev->port_write();
 }
 
@@ -95,17 +78,10 @@ ioport_constructor pc_basic_joy_device::device_input_ports() const
 	return INPUT_PORTS_NAME( pc_joystick );
 }
 
-<<<<<<< HEAD
-const device_type PC_BASIC_JOY = &device_creator<pc_basic_joy_device>;
-
-pc_basic_joy_device::pc_basic_joy_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-	device_t(mconfig, PC_BASIC_JOY, "PC basic joystick", tag, owner, clock, "basic_joy", __FILE__),
-=======
 DEFINE_DEVICE_TYPE(PC_BASIC_JOY, pc_basic_joy_device, "pc_basic_joy", "PC basic joystick")
 
 pc_basic_joy_device::pc_basic_joy_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	device_t(mconfig, PC_BASIC_JOY, tag, owner, clock),
->>>>>>> upstream/master
 	device_pc_joy_interface(mconfig, *this),
 	m_btn(*this, "btn"),
 	m_x1(*this, "x1"),

@@ -1,9 +1,5 @@
 /*
-<<<<<<< HEAD
-** $Id: ltable.c,v 2.100 2015/01/05 13:52:37 roberto Exp $
-=======
 ** $Id: ltable.c,v 2.118 2016/11/07 12:38:35 roberto Exp $
->>>>>>> upstream/master
 ** Lua tables (hash)
 ** See Copyright Notice in lua.h
 */
@@ -18,13 +14,8 @@
 ** Implementation of tables (aka arrays, objects, or hash tables).
 ** Tables keep its elements in two parts: an array part and a hash part.
 ** Non-negative integer keys are all candidates to be kept in the array
-<<<<<<< HEAD
-** part. The actual size of the array is the largest 'n' such that at
-** least half the slots between 0 and n are in use.
-=======
 ** part. The actual size of the array is the largest 'n' such that
 ** more than half the slots between 1 and n are in use.
->>>>>>> upstream/master
 ** Hash uses a mix of chained scatter table with Brent's variation.
 ** A main invariant of these tables is that, if an element is not
 ** in its main position (i.e. the 'original' position that its hash gives
@@ -32,13 +23,7 @@
 ** Hence even when the load factor reaches 100%, performance remains good.
 */
 
-<<<<<<< HEAD
-#include <float.h>
 #include <math.h>
-#include <string.h>
-=======
-#include <math.h>
->>>>>>> upstream/master
 #include <limits.h>
 
 #include "lua.h"
@@ -84,20 +69,11 @@
 #define hashmod(t,n)	(gnode(t, ((n) % ((sizenode(t)-1)|1))))
 
 
-<<<<<<< HEAD
-#define hashpointer(t,p)	hashmod(t, point2int(p))
-=======
 #define hashpointer(t,p)	hashmod(t, point2uint(p))
->>>>>>> upstream/master
 
 
 #define dummynode		(&dummynode_)
 
-<<<<<<< HEAD
-#define isdummy(n)		((n) == dummynode)
-
-=======
->>>>>>> upstream/master
 static const Node dummynode_ = {
   {NILCONSTANT},  /* value */
   {{NILCONSTANT, 0}}  /* key */
@@ -105,33 +81,6 @@ static const Node dummynode_ = {
 
 
 /*
-<<<<<<< HEAD
-** Checks whether a float has a value representable as a lua_Integer
-** (and does the conversion if so)
-*/
-static int numisinteger (lua_Number x, lua_Integer *p) {
-  if ((x) == l_floor(x))  /* integral value? */
-    return lua_numbertointeger(x, p);  /* try as an integer */
-  else return 0;
-}
-
-
-/*
-** hash for floating-point numbers
-*/
-static Node *hashfloat (const Table *t, lua_Number n) {
-  int i;
-  n = l_mathop(frexp)(n, &i) * cast_num(INT_MAX - DBL_MAX_EXP);
-  i += cast_int(n);
-  if (i < 0) {
-    if (cast(unsigned int, i) == 0u - i)  /* use unsigned to avoid overflows */
-      i = 0;  /* handle INT_MIN */
-    i = -i;  /* must be a positive value */
-  }
-  return hashmod(t, i);
-}
-
-=======
 ** Hash for floating-point numbers.
 ** The main computation should be just
 **     n = frexp(n, &i); return (n * INT_MAX) + i
@@ -159,7 +108,6 @@ static int l_hashfloat (lua_Number n) {
   }
 }
 #endif
->>>>>>> upstream/master
 
 
 /*
@@ -171,25 +119,11 @@ static Node *mainposition (const Table *t, const TValue *key) {
     case LUA_TNUMINT:
       return hashint(t, ivalue(key));
     case LUA_TNUMFLT:
-<<<<<<< HEAD
-      return hashfloat(t, fltvalue(key));
-    case LUA_TSHRSTR:
-      return hashstr(t, tsvalue(key));
-    case LUA_TLNGSTR: {
-      TString *s = tsvalue(key);
-      if (s->extra == 0) {  /* no hash? */
-        s->hash = luaS_hash(getstr(s), s->len, s->hash);
-        s->extra = 1;  /* now it has its hash */
-      }
-      return hashstr(t, tsvalue(key));
-    }
-=======
       return hashmod(t, l_hashfloat(fltvalue(key)));
     case LUA_TSHRSTR:
       return hashstr(t, tsvalue(key));
     case LUA_TLNGSTR:
       return hashpow2(t, luaS_hashlongstr(tsvalue(key)));
->>>>>>> upstream/master
     case LUA_TBOOLEAN:
       return hashboolean(t, bvalue(key));
     case LUA_TLIGHTUSERDATA:
@@ -197,10 +131,7 @@ static Node *mainposition (const Table *t, const TValue *key) {
     case LUA_TLCF:
       return hashpointer(t, fvalue(key));
     default:
-<<<<<<< HEAD
-=======
       lua_assert(!ttisdeadkey(key));
->>>>>>> upstream/master
       return hashpointer(t, gcvalue(key));
   }
 }
@@ -281,30 +212,6 @@ int luaH_next (lua_State *L, Table *t, StkId key) {
 /*
 ** Compute the optimal size for the array part of table 't'. 'nums' is a
 ** "count array" where 'nums[i]' is the number of integers in the table
-<<<<<<< HEAD
-** between 2^(i - 1) + 1 and 2^i. Put in '*narray' the optimal size, and
-** return the number of elements that will go to that part.
-*/
-static unsigned int computesizes (unsigned int nums[], unsigned int *narray) {
-  int i;
-  unsigned int twotoi;  /* 2^i */
-  unsigned int a = 0;  /* number of elements smaller than 2^i */
-  unsigned int na = 0;  /* number of elements to go to array part */
-  unsigned int n = 0;  /* optimal size for array part */
-  for (i = 0, twotoi = 1; twotoi/2 < *narray; i++, twotoi *= 2) {
-    if (nums[i] > 0) {
-      a += nums[i];
-      if (a > twotoi/2) {  /* more than half elements present? */
-        n = twotoi;  /* optimal size (till now) */
-        na = a;  /* all elements up to 'n' will go to array part */
-      }
-    }
-    if (a == *narray) break;  /* all elements already counted */
-  }
-  *narray = n;
-  lua_assert(*narray/2 <= na && na <= *narray);
-  return na;
-=======
 ** between 2^(i - 1) + 1 and 2^i. 'pna' enters with the total number of
 ** integer keys in the table and leaves with the number of keys that
 ** will go to the array part; return the optimal size.
@@ -328,7 +235,6 @@ static unsigned int computesizes (unsigned int nums[], unsigned int *pna) {
   lua_assert((optimal == 0 || optimal / 2 < na) && na <= optimal);
   *pna = na;
   return optimal;
->>>>>>> upstream/master
 }
 
 
@@ -343,14 +249,11 @@ static int countint (const TValue *key, unsigned int *nums) {
 }
 
 
-<<<<<<< HEAD
-=======
 /*
 ** Count keys in array part of table 't': Fill 'nums[i]' with
 ** number of keys that will go into corresponding slice and return
 ** total number of non-nil keys.
 */
->>>>>>> upstream/master
 static unsigned int numusearray (const Table *t, unsigned int *nums) {
   int lg;
   unsigned int ttlg;  /* 2^lg */
@@ -377,12 +280,7 @@ static unsigned int numusearray (const Table *t, unsigned int *nums) {
 }
 
 
-<<<<<<< HEAD
-static int numusehash (const Table *t, unsigned int *nums,
-                       unsigned int *pnasize) {
-=======
 static int numusehash (const Table *t, unsigned int *nums, unsigned int *pna) {
->>>>>>> upstream/master
   int totaluse = 0;  /* total number of elements */
   int ause = 0;  /* elements added to 'nums' (can go to array part) */
   int i = sizenode(t);
@@ -393,11 +291,7 @@ static int numusehash (const Table *t, unsigned int *nums, unsigned int *pna) {
       totaluse++;
     }
   }
-<<<<<<< HEAD
-  *pnasize += ause;
-=======
   *pna += ause;
->>>>>>> upstream/master
   return totaluse;
 }
 
@@ -412,16 +306,6 @@ static void setarrayvector (lua_State *L, Table *t, unsigned int size) {
 
 
 static void setnodevector (lua_State *L, Table *t, unsigned int size) {
-<<<<<<< HEAD
-  int lsize;
-  if (size == 0) {  /* no elements to hash part? */
-    t->node = cast(Node *, dummynode);  /* use common 'dummynode' */
-    lsize = 0;
-  }
-  else {
-    int i;
-    lsize = luaO_ceillog2(size);
-=======
   if (size == 0) {  /* no elements to hash part? */
     t->node = cast(Node *, dummynode);  /* use common 'dummynode' */
     t->lsizenode = 0;
@@ -430,7 +314,6 @@ static void setnodevector (lua_State *L, Table *t, unsigned int size) {
   else {
     int i;
     int lsize = luaO_ceillog2(size);
->>>>>>> upstream/master
     if (lsize > MAXHBITS)
       luaG_runerror(L, "table overflow");
     size = twoto(lsize);
@@ -441,15 +324,9 @@ static void setnodevector (lua_State *L, Table *t, unsigned int size) {
       setnilvalue(wgkey(n));
       setnilvalue(gval(n));
     }
-<<<<<<< HEAD
-  }
-  t->lsizenode = cast_byte(lsize);
-  t->lastfree = gnode(t, size);  /* all positions are free */
-=======
     t->lsizenode = cast_byte(lsize);
     t->lastfree = gnode(t, size);  /* all positions are free */
   }
->>>>>>> upstream/master
 }
 
 
@@ -458,11 +335,7 @@ void luaH_resize (lua_State *L, Table *t, unsigned int nasize,
   unsigned int i;
   int j;
   unsigned int oldasize = t->sizearray;
-<<<<<<< HEAD
-  int oldhsize = t->lsizenode;
-=======
   int oldhsize = allocsizenode(t);
->>>>>>> upstream/master
   Node *nold = t->node;  /* save old hash ... */
   if (nasize > oldasize)  /* array part must grow? */
     setarrayvector(L, t, nasize);
@@ -479,11 +352,7 @@ void luaH_resize (lua_State *L, Table *t, unsigned int nasize,
     luaM_reallocvector(L, t->array, oldasize, nasize, TValue);
   }
   /* re-insert elements from hash part */
-<<<<<<< HEAD
-  for (j = twoto(oldhsize) - 1; j >= 0; j--) {
-=======
   for (j = oldhsize - 1; j >= 0; j--) {
->>>>>>> upstream/master
     Node *old = nold + j;
     if (!ttisnil(gval(old))) {
       /* doesn't need barrier/invalidate cache, as entry was
@@ -491,22 +360,13 @@ void luaH_resize (lua_State *L, Table *t, unsigned int nasize,
       setobjt2t(L, luaH_set(L, t, gkey(old)), gval(old));
     }
   }
-<<<<<<< HEAD
-  if (!isdummy(nold))
-    luaM_freearray(L, nold, cast(size_t, twoto(oldhsize))); /* free old array */
-=======
   if (oldhsize > 0)  /* not the dummy node? */
     luaM_freearray(L, nold, cast(size_t, oldhsize)); /* free old hash */
->>>>>>> upstream/master
 }
 
 
 void luaH_resizearray (lua_State *L, Table *t, unsigned int nasize) {
-<<<<<<< HEAD
-  int nsize = isdummy(t->node) ? 0 : sizenode(t);
-=======
   int nsize = allocsizenode(t);
->>>>>>> upstream/master
   luaH_resize(L, t, nasize, nsize);
 }
 
@@ -514,28 +374,12 @@ void luaH_resizearray (lua_State *L, Table *t, unsigned int nasize) {
 ** nums[i] = number of keys 'k' where 2^(i - 1) < k <= 2^i
 */
 static void rehash (lua_State *L, Table *t, const TValue *ek) {
-<<<<<<< HEAD
-  unsigned int nasize, na;
-=======
   unsigned int asize;  /* optimal size for array part */
   unsigned int na;  /* number of keys in the array part */
->>>>>>> upstream/master
   unsigned int nums[MAXABITS + 1];
   int i;
   int totaluse;
   for (i = 0; i <= MAXABITS; i++) nums[i] = 0;  /* reset counts */
-<<<<<<< HEAD
-  nasize = numusearray(t, nums);  /* count keys in array part */
-  totaluse = nasize;  /* all those keys are integer keys */
-  totaluse += numusehash(t, nums, &nasize);  /* count keys in hash part */
-  /* count extra key */
-  nasize += countint(ek, nums);
-  totaluse++;
-  /* compute new size for array part */
-  na = computesizes(nums, &nasize);
-  /* resize the table to new computed sizes */
-  luaH_resize(L, t, nasize, totaluse - na);
-=======
   na = numusearray(t, nums);  /* count keys in array part */
   totaluse = na;  /* all those keys are integer keys */
   totaluse += numusehash(t, nums, &na);  /* count keys in hash part */
@@ -546,7 +390,6 @@ static void rehash (lua_State *L, Table *t, const TValue *ek) {
   asize = computesizes(nums, &na);
   /* resize the table to new computed sizes */
   luaH_resize(L, t, asize, totaluse - na);
->>>>>>> upstream/master
 }
 
 
@@ -569,11 +412,7 @@ Table *luaH_new (lua_State *L) {
 
 
 void luaH_free (lua_State *L, Table *t) {
-<<<<<<< HEAD
-  if (!isdummy(t->node))
-=======
   if (!isdummy(t))
->>>>>>> upstream/master
     luaM_freearray(L, t->node, cast(size_t, sizenode(t)));
   luaM_freearray(L, t->array, t->sizearray);
   luaM_free(L, t);
@@ -581,19 +420,12 @@ void luaH_free (lua_State *L, Table *t) {
 
 
 static Node *getfreepos (Table *t) {
-<<<<<<< HEAD
-  while (t->lastfree > t->node) {
-    t->lastfree--;
-    if (ttisnil(gkey(t->lastfree)))
-      return t->lastfree;
-=======
   if (!isdummy(t)) {
     while (t->lastfree > t->node) {
       t->lastfree--;
       if (ttisnil(gkey(t->lastfree)))
         return t->lastfree;
     }
->>>>>>> upstream/master
   }
   return NULL;  /* could not find a free place */
 }
@@ -612,19 +444,6 @@ TValue *luaH_newkey (lua_State *L, Table *t, const TValue *key) {
   TValue aux;
   if (ttisnil(key)) luaG_runerror(L, "table index is nil");
   else if (ttisfloat(key)) {
-<<<<<<< HEAD
-    lua_Number n = fltvalue(key);
-    lua_Integer k;
-    if (luai_numisnan(n))
-      luaG_runerror(L, "table index is NaN");
-    if (numisinteger(n, &k)) {  /* index is int? */
-      setivalue(&aux, k);
-      key = &aux;  /* insert it as an integer */
-    }
-  }
-  mp = mainposition(t, key);
-  if (!ttisnil(gval(mp)) || isdummy(mp)) {  /* main position is taken? */
-=======
     lua_Integer k;
     if (luaV_tointeger(key, &k, 0)) {  /* does index fit in an integer? */
       setivalue(&aux, k);
@@ -635,22 +454,14 @@ TValue *luaH_newkey (lua_State *L, Table *t, const TValue *key) {
   }
   mp = mainposition(t, key);
   if (!ttisnil(gval(mp)) || isdummy(t)) {  /* main position is taken? */
->>>>>>> upstream/master
     Node *othern;
     Node *f = getfreepos(t);  /* get a free place */
     if (f == NULL) {  /* cannot find a free place? */
       rehash(L, t, key);  /* grow table */
-<<<<<<< HEAD
-      /* whatever called 'newkey' takes care of TM cache and GC barrier */
-      return luaH_set(L, t, key);  /* insert key into grown table */
-    }
-    lua_assert(!isdummy(f));
-=======
       /* whatever called 'newkey' takes care of TM cache */
       return luaH_set(L, t, key);  /* insert key into grown table */
     }
     lua_assert(!isdummy(t));
->>>>>>> upstream/master
     othern = mainposition(t, gkey(mp));
     if (othern != mp) {  /* is colliding node out of its main position? */
       /* yes; move colliding node into free position */
@@ -685,11 +496,7 @@ TValue *luaH_newkey (lua_State *L, Table *t, const TValue *key) {
 */
 const TValue *luaH_getint (Table *t, lua_Integer key) {
   /* (1 <= key && key <= t->sizearray) */
-<<<<<<< HEAD
-  if (l_castS2U(key - 1) < t->sizearray)
-=======
   if (l_castS2U(key) - 1 < t->sizearray)
->>>>>>> upstream/master
     return &t->array[key - 1];
   else {
     Node *n = hashint(t, key);
@@ -701,11 +508,7 @@ const TValue *luaH_getint (Table *t, lua_Integer key) {
         if (nx == 0) break;
         n += nx;
       }
-<<<<<<< HEAD
-    };
-=======
     }
->>>>>>> upstream/master
     return luaO_nilobject;
   }
 }
@@ -714,11 +517,7 @@ const TValue *luaH_getint (Table *t, lua_Integer key) {
 /*
 ** search function for short strings
 */
-<<<<<<< HEAD
-const TValue *luaH_getstr (Table *t, TString *key) {
-=======
 const TValue *luaH_getshortstr (Table *t, TString *key) {
->>>>>>> upstream/master
   Node *n = hashstr(t, key);
   lua_assert(key->tt == LUA_TSHRSTR);
   for (;;) {  /* check whether 'key' is somewhere in the chain */
@@ -727,13 +526,6 @@ const TValue *luaH_getshortstr (Table *t, TString *key) {
       return gval(n);  /* that's it */
     else {
       int nx = gnext(n);
-<<<<<<< HEAD
-      if (nx == 0) break;
-      n += nx;
-    }
-  };
-  return luaO_nilobject;
-=======
       if (nx == 0)
         return luaO_nilobject;  /* not found */
       n += nx;
@@ -769,7 +561,6 @@ const TValue *luaH_getstr (Table *t, TString *key) {
     setsvalue(cast(lua_State *, NULL), &ko, key);
     return getgeneric(t, &ko);
   }
->>>>>>> upstream/master
 }
 
 
@@ -778,41 +569,17 @@ const TValue *luaH_getstr (Table *t, TString *key) {
 */
 const TValue *luaH_get (Table *t, const TValue *key) {
   switch (ttype(key)) {
-<<<<<<< HEAD
-    case LUA_TSHRSTR: return luaH_getstr(t, tsvalue(key));
-=======
     case LUA_TSHRSTR: return luaH_getshortstr(t, tsvalue(key));
->>>>>>> upstream/master
     case LUA_TNUMINT: return luaH_getint(t, ivalue(key));
     case LUA_TNIL: return luaO_nilobject;
     case LUA_TNUMFLT: {
       lua_Integer k;
-<<<<<<< HEAD
-      if (numisinteger(fltvalue(key), &k)) /* index is int? */
-        return luaH_getint(t, k);  /* use specialized version */
-      /* else go through */
-    }
-    default: {
-      Node *n = mainposition(t, key);
-      for (;;) {  /* check whether 'key' is somewhere in the chain */
-        if (luaV_rawequalobj(gkey(n), key))
-          return gval(n);  /* that's it */
-        else {
-          int nx = gnext(n);
-          if (nx == 0) break;
-          n += nx;
-        }
-      };
-      return luaO_nilobject;
-    }
-=======
       if (luaV_tointeger(key, &k, 0)) /* index is int? */
         return luaH_getint(t, k);  /* use specialized version */
       /* else... */
     }  /* FALLTHROUGH */
     default:
       return getgeneric(t, key);
->>>>>>> upstream/master
   }
 }
 
@@ -884,11 +651,7 @@ int luaH_getn (Table *t) {
     return i;
   }
   /* else must find a boundary in hash part */
-<<<<<<< HEAD
-  else if (isdummy(t->node))  /* hash part is empty? */
-=======
   else if (isdummy(t))  /* hash part is empty? */
->>>>>>> upstream/master
     return j;  /* that is easy... */
   else return unbound_search(t, j);
 }
@@ -901,10 +664,6 @@ Node *luaH_mainposition (const Table *t, const TValue *key) {
   return mainposition(t, key);
 }
 
-<<<<<<< HEAD
-int luaH_isdummy (Node *n) { return isdummy(n); }
-=======
 int luaH_isdummy (const Table *t) { return isdummy(t); }
->>>>>>> upstream/master
 
 #endif

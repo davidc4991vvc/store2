@@ -60,11 +60,7 @@ TILE_GET_INFO_MEMBER(drmicro_state::get_bg2_tile_info)
 
 PALETTE_INIT_MEMBER(drmicro_state, drmicro)
 {
-<<<<<<< HEAD
-	const UINT8 *color_prom = memregion("proms")->base();
-=======
 	const uint8_t *color_prom = memregion("proms")->base();
->>>>>>> upstream/master
 	int i;
 
 	/* create a lookup table for the palette */
@@ -99,39 +95,23 @@ PALETTE_INIT_MEMBER(drmicro_state, drmicro)
 
 	for (i = 0; i < 0x200; i++)
 	{
-<<<<<<< HEAD
-		UINT8 ctabentry = color_prom[i] & 0x0f;
-=======
 		uint8_t ctabentry = color_prom[i] & 0x0f;
->>>>>>> upstream/master
 		palette.set_pen_indirect(i, ctabentry);
 	}
 }
 
 void drmicro_state::video_start()
 {
-<<<<<<< HEAD
-	m_videoram = auto_alloc_array(machine(), UINT8, 0x1000);
-	save_pointer(NAME(m_videoram), 0x1000);
-
-	m_bg1 = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(drmicro_state::get_bg1_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
-	m_bg2 = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(drmicro_state::get_bg2_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
-=======
 	m_videoram = std::make_unique<uint8_t[]>(0x1000);
 	save_pointer(NAME(m_videoram.get()), 0x1000);
 
 	m_bg1 = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(drmicro_state::get_bg1_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
 	m_bg2 = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(drmicro_state::get_bg2_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
->>>>>>> upstream/master
 
 	m_bg2->set_transparent_pen(0);
 }
 
-<<<<<<< HEAD
-UINT32 drmicro_state::screen_update_drmicro(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t drmicro_state::screen_update_drmicro(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int offs, adr, g;
 	int chr, col, attr;

@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-// license:???
-=======
 // license:BSD-3-Clause
->>>>>>> upstream/master
 // copyright-holders:Stefan Jokisch
 /***************************************************************************
 
@@ -48,53 +44,6 @@ PALETTE_INIT_MEMBER(wolfpack_state, wolfpack)
 }
 
 
-<<<<<<< HEAD
-WRITE8_MEMBER(wolfpack_state::wolfpack_ship_size_w)
-{
-	m_ship_size = data;
-}
-WRITE8_MEMBER(wolfpack_state::wolfpack_video_invert_w)
-{
-	m_video_invert = data & 1;
-}
-WRITE8_MEMBER(wolfpack_state::wolfpack_ship_reflect_w)
-{
-	m_ship_reflect = data & 1;
-}
-WRITE8_MEMBER(wolfpack_state::wolfpack_pt_pos_select_w)
-{
-	m_pt_pos_select = data & 1;
-}
-WRITE8_MEMBER(wolfpack_state::wolfpack_pt_horz_w)
-{
-	m_pt_horz = data;
-}
-WRITE8_MEMBER(wolfpack_state::wolfpack_pt_pic_w)
-{
-	m_pt_pic = data & 0x3f;
-}
-WRITE8_MEMBER(wolfpack_state::wolfpack_ship_h_w)
-{
-	m_ship_h = data;
-}
-WRITE8_MEMBER(wolfpack_state::wolfpack_torpedo_pic_w)
-{
-	m_torpedo_pic = data;
-}
-WRITE8_MEMBER(wolfpack_state::wolfpack_ship_h_precess_w)
-{
-	m_ship_h_precess = data & 0x3f;
-}
-WRITE8_MEMBER(wolfpack_state::wolfpack_ship_pic_w)
-{
-	m_ship_pic = data & 0x0f;
-}
-WRITE8_MEMBER(wolfpack_state::wolfpack_torpedo_h_w)
-{
-	m_torpedo_h = data;
-}
-WRITE8_MEMBER(wolfpack_state::wolfpack_torpedo_v_w)
-=======
 WRITE8_MEMBER(wolfpack_state::ship_size_w)
 {
 	m_ship_size = data;
@@ -140,7 +89,6 @@ WRITE8_MEMBER(wolfpack_state::torpedo_h_w)
 	m_torpedo_h = data;
 }
 WRITE8_MEMBER(wolfpack_state::torpedo_v_w)
->>>>>>> upstream/master
 {
 	m_torpedo_v = data;
 }
@@ -148,26 +96,6 @@ WRITE8_MEMBER(wolfpack_state::torpedo_v_w)
 
 void wolfpack_state::video_start()
 {
-<<<<<<< HEAD
-	UINT16 val = 0;
-
-	int i;
-
-	m_LFSR = auto_alloc_array(machine(), UINT8, 0x8000);
-
-	m_screen->register_screen_bitmap(m_helper);
-
-	for (i = 0; i < 0x8000; i++)
-	{
-		int bit = (val >> 0x0) ^ (val >> 0xe) ^ 1;
-
-		val = (val << 1) | (bit & 1);
-
-		m_LFSR[i] = (val & 0xc00) == 0xc00;
-	}
-
-	m_current_index = 0x80;
-=======
 	m_screen->register_screen_bitmap(m_helper);
 
 	m_LFSR = std::make_unique<uint8_t []>(0x8000);
@@ -194,17 +122,12 @@ void wolfpack_state::video_start()
 	save_item(NAME(m_ship_pic));
 	save_item(NAME(m_torpedo_h));
 	save_item(NAME(m_torpedo_v));
->>>>>>> upstream/master
 }
 
 
 void wolfpack_state::draw_ship(bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
-<<<<<<< HEAD
-	static const UINT32 scaler[] =
-=======
 	static const uint32_t scaler[] =
->>>>>>> upstream/master
 	{
 		0x00000, 0x00500, 0x00a00, 0x01000,
 		0x01000, 0x01200, 0x01500, 0x01800,
@@ -281,11 +204,7 @@ void wolfpack_state::draw_pt(bitmap_ind16 &bitmap, const rectangle &cliprect)
 		rect.max_x = 255;
 
 
-<<<<<<< HEAD
-		m_gfxdecode->gfx(2)->transpen(bitmap,rect,
-=======
 	m_gfxdecode->gfx(2)->transpen(bitmap,rect,
->>>>>>> upstream/master
 		m_pt_pic,
 		0,
 		0, 0,
@@ -293,11 +212,7 @@ void wolfpack_state::draw_pt(bitmap_ind16 &bitmap, const rectangle &cliprect)
 		m_pt_pos_select ? 0x70 : 0xA0, 0);
 
 
-<<<<<<< HEAD
-		m_gfxdecode->gfx(2)->transpen(bitmap,rect,
-=======
 	m_gfxdecode->gfx(2)->transpen(bitmap,rect,
->>>>>>> upstream/master
 		m_pt_pic,
 		0,
 		0, 0,
@@ -318,11 +233,7 @@ void wolfpack_state::draw_water(palette_device &palette, bitmap_ind16 &bitmap, c
 
 	for (y = rect.min_y; y <= rect.max_y; y++)
 	{
-<<<<<<< HEAD
-		UINT16* p = &bitmap.pix16(y);
-=======
 		uint16_t* p = &bitmap.pix16(y);
->>>>>>> upstream/master
 
 		for (x = rect.min_x; x <= rect.max_x; x++)
 			p[x] = palette.pen_indirect(p[x]) | 0x08;
@@ -330,20 +241,12 @@ void wolfpack_state::draw_water(palette_device &palette, bitmap_ind16 &bitmap, c
 }
 
 
-<<<<<<< HEAD
-UINT32 wolfpack_state::screen_update_wolfpack(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t wolfpack_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int i;
 	int j;
 
-<<<<<<< HEAD
-	UINT8 color = 0x48;
-=======
 	uint8_t color = 0x48;
->>>>>>> upstream/master
 	if (m_ship_size & 0x10) color += 0x13;
 	if (m_ship_size & 0x20) color += 0x22;
 	if (m_ship_size & 0x40) color += 0x3a;
@@ -378,11 +281,7 @@ uint32_t wolfpack_state::screen_update(screen_device &screen, bitmap_ind16 &bitm
 }
 
 
-<<<<<<< HEAD
-void wolfpack_state::screen_eof_wolfpack(screen_device &screen, bool state)
-=======
 WRITE_LINE_MEMBER(wolfpack_state::screen_vblank)
->>>>>>> upstream/master
 {
 	// rising edge
 	if (state)

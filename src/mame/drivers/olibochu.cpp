@@ -55,14 +55,10 @@ $7004 writes, related to $7000 reads
 
 #include "emu.h"
 #include "cpu/z80/z80.h"
-<<<<<<< HEAD
-#include "sound/ay8910.h"
-=======
 #include "machine/gen_latch.h"
 #include "sound/ay8910.h"
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 class olibochu_state : public driver_device
 {
@@ -75,15 +71,6 @@ public:
 		m_spriteram2(*this, "spriteram2"),
 		m_maincpu(*this, "maincpu"),
 		m_gfxdecode(*this, "gfxdecode"),
-<<<<<<< HEAD
-		m_palette(*this, "palette") { }
-
-	/* memory pointers */
-	required_shared_ptr<UINT8> m_videoram;
-	required_shared_ptr<UINT8> m_colorram;
-	required_shared_ptr<UINT8> m_spriteram;
-	required_shared_ptr<UINT8> m_spriteram2;
-=======
 		m_palette(*this, "palette"),
 		m_soundlatch(*this, "soundlatch") { }
 
@@ -98,7 +85,6 @@ public:
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
 	required_device<generic_latch_8_device> m_soundlatch;
->>>>>>> upstream/master
 
 	/* video-related */
 	tilemap_t  *m_bg_tilemap;
@@ -110,18 +96,6 @@ public:
 	DECLARE_WRITE8_MEMBER(olibochu_flipscreen_w);
 	DECLARE_WRITE8_MEMBER(sound_command_w);
 	TILE_GET_INFO_MEMBER(get_bg_tile_info);
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void machine_reset();
-	virtual void video_start();
-	DECLARE_PALETTE_INIT(olibochu);
-	UINT32 screen_update_olibochu(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	TIMER_DEVICE_CALLBACK_MEMBER(olibochu_scanline);
-	void draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect );
-	required_device<cpu_device> m_maincpu;
-	required_device<gfxdecode_device> m_gfxdecode;
-	required_device<palette_device> m_palette;
-=======
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
 	virtual void video_start() override;
@@ -129,27 +103,18 @@ public:
 	uint32_t screen_update_olibochu(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	TIMER_DEVICE_CALLBACK_MEMBER(olibochu_scanline);
 	void draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect );
->>>>>>> upstream/master
 };
 
 
 
 PALETTE_INIT_MEMBER(olibochu_state, olibochu)
 {
-<<<<<<< HEAD
-	const UINT8 *color_prom = memregion("proms")->base();
-=======
 	const uint8_t *color_prom = memregion("proms")->base();
->>>>>>> upstream/master
 	int i;
 
 	for (i = 0; i < palette.entries(); i++)
 	{
-<<<<<<< HEAD
-		UINT8 pen;
-=======
 		uint8_t pen;
->>>>>>> upstream/master
 		int bit0, bit1, bit2, r, g, b;
 
 		if (i < 0x100)
@@ -215,22 +180,13 @@ TILE_GET_INFO_MEMBER(olibochu_state::get_bg_tile_info)
 
 void olibochu_state::video_start()
 {
-<<<<<<< HEAD
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(olibochu_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
-=======
 	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(olibochu_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
->>>>>>> upstream/master
 }
 
 void olibochu_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect )
 {
-<<<<<<< HEAD
-	UINT8 *spriteram = m_spriteram;
-	UINT8 *spriteram_2 = m_spriteram2;
-=======
 	uint8_t *spriteram = m_spriteram;
 	uint8_t *spriteram_2 = m_spriteram2;
->>>>>>> upstream/master
 	int offs;
 
 	/* 16x16 sprites */
@@ -286,11 +242,7 @@ void olibochu_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &clipre
 	}
 }
 
-<<<<<<< HEAD
-UINT32 olibochu_state::screen_update_olibochu(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t olibochu_state::screen_update_olibochu(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	m_bg_tilemap->draw(screen, bitmap, cliprect, 0, 0);
 	draw_sprites(bitmap, cliprect);
@@ -310,11 +262,7 @@ WRITE8_MEMBER(olibochu_state::sound_command_w)
 	for (c = 15; c >= 0; c--)
 		if (m_cmd & (1 << c)) break;
 
-<<<<<<< HEAD
-	if (c >= 0) soundlatch_byte_w(space, 0, 15 - c);
-=======
 	if (c >= 0) m_soundlatch->write(space, 0, 15 - c);
->>>>>>> upstream/master
 }
 
 
@@ -340,11 +288,7 @@ ADDRESS_MAP_END
 static ADDRESS_MAP_START( olibochu_sound_map, AS_PROGRAM, 8, olibochu_state )
 	AM_RANGE(0x0000, 0x1fff) AM_ROM
 	AM_RANGE(0x6000, 0x63ff) AM_RAM
-<<<<<<< HEAD
-	AM_RANGE(0x7000, 0x7000) AM_READ(soundlatch_byte_r) /* likely ay8910 input port, not direct */
-=======
 	AM_RANGE(0x7000, 0x7000) AM_DEVREAD("soundlatch", generic_latch_8_device, read) /* likely ay8910 input port, not direct */
->>>>>>> upstream/master
 	AM_RANGE(0x7000, 0x7001) AM_DEVWRITE("aysnd", ay8910_device, address_data_w)
 	AM_RANGE(0x7004, 0x7004) AM_WRITENOP //sound filter?
 	AM_RANGE(0x7006, 0x7006) AM_WRITENOP //irq ack?
@@ -512,11 +456,7 @@ TIMER_DEVICE_CALLBACK_MEMBER(olibochu_state::olibochu_scanline)
 		m_maincpu->set_input_line_and_vector(0, HOLD_LINE, 0xcf);   /* RST 08h */
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( olibochu, olibochu_state )
-=======
 static MACHINE_CONFIG_START( olibochu )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, 4000000)   /* 4 MHz ?? */
@@ -546,11 +486,8 @@ static MACHINE_CONFIG_START( olibochu )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 
->>>>>>> upstream/master
 	MCFG_SOUND_ADD("aysnd", AY8910, 2000000)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
 MACHINE_CONFIG_END
@@ -600,8 +537,4 @@ ROM_END
 
 
 
-<<<<<<< HEAD
-GAME( 1981, olibochu, 0, olibochu, olibochu, driver_device, 0, ROT270, "Irem / GDI", "Oli-Boo-Chu", MACHINE_WRONG_COLORS | MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1981, olibochu, 0, olibochu, olibochu, olibochu_state, 0, ROT270, "Irem / GDI", "Oli-Boo-Chu", MACHINE_WRONG_COLORS | MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

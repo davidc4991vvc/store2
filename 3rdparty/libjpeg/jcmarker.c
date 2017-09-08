@@ -2,11 +2,7 @@
  * jcmarker.c
  *
  * Copyright (C) 1991-1998, Thomas G. Lane.
-<<<<<<< HEAD
- * Modified 2003-2010 by Guido Vollbeding.
-=======
  * Modified 2003-2013 by Guido Vollbeding.
->>>>>>> upstream/master
  * This file is part of the Independent JPEG Group's software.
  * For conditions of distribution and use, see the accompanying README file.
  *
@@ -23,34 +19,15 @@ typedef enum {			/* JPEG marker codes */
   M_SOF1  = 0xc1,
   M_SOF2  = 0xc2,
   M_SOF3  = 0xc3,
-<<<<<<< HEAD
-  
-  M_SOF5  = 0xc5,
-  M_SOF6  = 0xc6,
-  M_SOF7  = 0xc7,
-  
-=======
 
   M_SOF5  = 0xc5,
   M_SOF6  = 0xc6,
   M_SOF7  = 0xc7,
 
->>>>>>> upstream/master
   M_JPG   = 0xc8,
   M_SOF9  = 0xc9,
   M_SOF10 = 0xca,
   M_SOF11 = 0xcb,
-<<<<<<< HEAD
-  
-  M_SOF13 = 0xcd,
-  M_SOF14 = 0xce,
-  M_SOF15 = 0xcf,
-  
-  M_DHT   = 0xc4,
-  
-  M_DAC   = 0xcc,
-  
-=======
 
   M_SOF13 = 0xcd,
   M_SOF14 = 0xce,
@@ -60,7 +37,6 @@ typedef enum {			/* JPEG marker codes */
 
   M_DAC   = 0xcc,
 
->>>>>>> upstream/master
   M_RST0  = 0xd0,
   M_RST1  = 0xd1,
   M_RST2  = 0xd2,
@@ -69,11 +45,7 @@ typedef enum {			/* JPEG marker codes */
   M_RST5  = 0xd5,
   M_RST6  = 0xd6,
   M_RST7  = 0xd7,
-<<<<<<< HEAD
-  
-=======
 
->>>>>>> upstream/master
   M_SOI   = 0xd8,
   M_EOI   = 0xd9,
   M_SOS   = 0xda,
@@ -82,11 +54,7 @@ typedef enum {			/* JPEG marker codes */
   M_DRI   = 0xdd,
   M_DHP   = 0xde,
   M_EXP   = 0xdf,
-<<<<<<< HEAD
-  
-=======
 
->>>>>>> upstream/master
   M_APP0  = 0xe0,
   M_APP1  = 0xe1,
   M_APP2  = 0xe2,
@@ -103,15 +71,6 @@ typedef enum {			/* JPEG marker codes */
   M_APP13 = 0xed,
   M_APP14 = 0xee,
   M_APP15 = 0xef,
-<<<<<<< HEAD
-  
-  M_JPG0  = 0xf0,
-  M_JPG13 = 0xfd,
-  M_COM   = 0xfe,
-  
-  M_TEM   = 0x01,
-  
-=======
 
   M_JPG0  = 0xf0,
   M_JPG8  = 0xf8,
@@ -120,7 +79,6 @@ typedef enum {			/* JPEG marker codes */
 
   M_TEM   = 0x01,
 
->>>>>>> upstream/master
   M_ERROR = 0x100
 } JPEG_MARKER;
 
@@ -325,8 +283,6 @@ emit_dri (j_compress_ptr cinfo)
 
 
 LOCAL(void)
-<<<<<<< HEAD
-=======
 emit_lse_ict (j_compress_ptr cinfo)
 /* Emit an LSE inverse color transform specification marker */
 {
@@ -358,7 +314,6 @@ emit_lse_ict (j_compress_ptr cinfo)
 
 
 LOCAL(void)
->>>>>>> upstream/master
 emit_sof (j_compress_ptr cinfo, JPEG_MARKER code)
 /* Emit a SOF marker */
 {
@@ -553,13 +508,8 @@ write_marker_byte (j_compress_ptr cinfo, int val)
  * Write datastream header.
  * This consists of an SOI and optional APPn markers.
  * We recommend use of the JFIF marker, but not the Adobe marker,
-<<<<<<< HEAD
- * when using YCbCr or grayscale data.  The JFIF marker should NOT
- * be used for any other JPEG colorspace.  The Adobe marker is helpful
-=======
  * when using YCbCr or grayscale data.  The JFIF marker is also used
  * for other standard JPEG colorspaces.  The Adobe marker is helpful
->>>>>>> upstream/master
  * to distinguish RGB, CMYK, and YCCK colorspaces.
  * Note that an application can write additional header markers after
  * jpeg_start_compress returns.
@@ -584,12 +534,8 @@ write_file_header (j_compress_ptr cinfo)
 
 /*
  * Write frame header.
-<<<<<<< HEAD
- * This consists of DQT and SOFn markers, and a conditional pseudo SOS marker.
-=======
  * This consists of DQT and SOFn markers,
  * a conditional LSE marker and a conditional pseudo SOS marker.
->>>>>>> upstream/master
  * Note that we do not emit the SOF until we have emitted the DQT(s).
  * This avoids compatibility problems with incorrect implementations that
  * try to error-check the quant table numbers as soon as they see the SOF.
@@ -647,13 +593,10 @@ write_frame_header (j_compress_ptr cinfo)
       emit_sof(cinfo, M_SOF1);	/* SOF code for non-baseline Huffman file */
   }
 
-<<<<<<< HEAD
-=======
   /* Check to emit LSE inverse color transform specification marker */
   if (cinfo->color_transform)
     emit_lse_ict(cinfo);
 
->>>>>>> upstream/master
   /* Check to emit pseudo SOS marker */
   if (cinfo->progressive_mode && cinfo->block_size != DCTSIZE)
     emit_pseudo_sos(cinfo);
@@ -762,11 +705,7 @@ jinit_marker_writer (j_compress_ptr cinfo)
   marker = (my_marker_ptr)
     (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_IMAGE,
 				SIZEOF(my_marker_writer));
-<<<<<<< HEAD
-  cinfo->marker = (struct jpeg_marker_writer *) marker;
-=======
   cinfo->marker = &marker->pub;
->>>>>>> upstream/master
   /* Initialize method pointers */
   marker->pub.write_file_header = write_file_header;
   marker->pub.write_frame_header = write_frame_header;

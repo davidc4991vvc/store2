@@ -14,17 +14,12 @@
 
 #include "emu.h"
 #include "includes/nes.h"
-<<<<<<< HEAD
-#include "cpu/m6502/n2a03.h"
-#include "softlist.h"
-=======
 
 #include "cpu/m6502/n2a03.h"
 #include "screen.h"
 #include "softlist.h"
 #include "speaker.h"
 
->>>>>>> upstream/master
 
 WRITE8_MEMBER(nes_state::nes_vh_sprite_dma_w)
 {
@@ -44,31 +39,10 @@ ADDRESS_MAP_END
 
 static INPUT_PORTS_START( nes )
 	// input devices go through slot options
-<<<<<<< HEAD
-	PORT_START("CONFIG")
-	PORT_CONFNAME( 0x01, 0x00, "Draw Top/Bottom 8 Lines")
-	PORT_CONFSETTING(    0x01, DEF_STR(No) )
-	PORT_CONFSETTING(    0x00, DEF_STR(Yes) )
-	PORT_CONFNAME( 0x02, 0x00, "Enforce 8 Sprites/line")
-	PORT_CONFSETTING(    0x02, DEF_STR(No) )
-	PORT_CONFSETTING(    0x00, DEF_STR(Yes) )
-=======
->>>>>>> upstream/master
 INPUT_PORTS_END
 
 static INPUT_PORTS_START( famicom )
 	// input devices go through slot options
-<<<<<<< HEAD
-	PORT_START("CONFIG")
-	PORT_CONFNAME( 0x01, 0x00, "Draw Top/Bottom 8 Lines")
-	PORT_CONFSETTING(    0x01, DEF_STR(No) )
-	PORT_CONFSETTING(    0x00, DEF_STR(Yes) )
-	PORT_CONFNAME( 0x02, 0x00, "Enforce 8 Sprites/line")
-	PORT_CONFSETTING(    0x02, DEF_STR(No) )
-	PORT_CONFSETTING(    0x00, DEF_STR(Yes) )
-
-=======
->>>>>>> upstream/master
 	PORT_START("FLIPDISK") /* fake key */
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_OTHER) PORT_NAME("Change Disk Side") PORT_CODE(KEYCODE_SPACE)
 INPUT_PORTS_END
@@ -80,15 +54,6 @@ void nes_state::ppu_nmi(int *ppu_regs)
 }
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( nes, nes_state )
-	/* basic machine hardware */
-	MCFG_CPU_ADD("maincpu", N2A03, NTSC_CLOCK)
-	MCFG_CPU_PROGRAM_MAP(nes_map)
-
-	MCFG_SCREEN_ADD("screen", RASTER)
-	MCFG_SCREEN_REFRESH_RATE(60.098)
-=======
 static MACHINE_CONFIG_START( nes )
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", N2A03, NTSC_APU_CLOCK)
@@ -96,16 +61,11 @@ static MACHINE_CONFIG_START( nes )
 
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE(60.0988)
->>>>>>> upstream/master
 	// This isn't used so much to calulate the vblank duration (the PPU code tracks that manually) but to determine
 	// the number of cycles in each scanline for the PPU scanline timer. Since the PPU has 20 vblank scanlines + 2
 	// non-rendering scanlines, we compensate. This ends up being 2500 cycles for the non-rendering portion, 2273
 	// cycles for the actual vblank period.
-<<<<<<< HEAD
-	MCFG_SCREEN_VBLANK_TIME(ATTOSECONDS_IN_USEC((113.66/(NTSC_CLOCK/1000000)) * (PPU_VBLANK_LAST_SCANLINE_NTSC-PPU_VBLANK_FIRST_SCANLINE+1+2)))
-=======
 	MCFG_SCREEN_VBLANK_TIME(ATTOSECONDS_IN_USEC((113.66/(NTSC_APU_CLOCK/1000000)) * (ppu2c0x_device::VBLANK_LAST_SCANLINE_NTSC-ppu2c0x_device::VBLANK_FIRST_SCANLINE+1+2)))
->>>>>>> upstream/master
 	MCFG_SCREEN_SIZE(32*8, 262)
 	MCFG_SCREEN_VISIBLE_AREA(0*8, 32*8-1, 0*8, 30*8-1)
 	MCFG_SCREEN_UPDATE_DRIVER(nes_state, screen_update_nes)
@@ -128,11 +88,7 @@ static MACHINE_CONFIG_START( nes )
 	MCFG_NES_CONTROL_PORT_ADD("ctrl2", nes_control_port2_devices, "joypad")
 	MCFG_NESCTRL_BRIGHTPIXEL_CB(nes_state, bright_pixel)
 
-<<<<<<< HEAD
-	MCFG_NES_CARTRIDGE_ADD("nes_slot", nes_cart, NULL)
-=======
 	MCFG_NES_CARTRIDGE_ADD("nes_slot", nes_cart, nullptr)
->>>>>>> upstream/master
 	MCFG_SOFTWARE_LIST_ADD("cart_list", "nes")
 	MCFG_SOFTWARE_LIST_ADD("ade_list", "nes_ade")         // Camerica/Codemasters Aladdin Deck Enhancer mini-carts
 	MCFG_SOFTWARE_LIST_ADD("ntb_list", "nes_ntbrom")      // Sunsoft Nantettate! Baseball mini-carts
@@ -141,23 +97,11 @@ static MACHINE_CONFIG_START( nes )
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_DERIVED( nespal, nes )
-<<<<<<< HEAD
-
-	/* basic machine hardware */
-//  MCFG_CPU_MODIFY("maincpu")
-//  MCFG_CPU_CLOCK(PAL_CLOCK) // this doesn't get inherited by the APU with DERIVED_CLOCK!
-
-	MCFG_CPU_REPLACE("maincpu", N2A03, PAL_CLOCK)
-	MCFG_CPU_PROGRAM_MAP(nes_map)
-
-
-=======
 	/* basic machine hardware */
 	MCFG_CPU_MODIFY("maincpu")
 	MCFG_CPU_CLOCK(PAL_APU_CLOCK)
 	MCFG_CPU_PROGRAM_MAP(nes_map)
 
->>>>>>> upstream/master
 	MCFG_DEVICE_REMOVE("ppu")
 	MCFG_PPU2C07_ADD("ppu")
 	MCFG_PPU2C0X_CPU("maincpu")
@@ -165,27 +109,6 @@ static MACHINE_CONFIG_DERIVED( nespal, nes )
 
 	/* video hardware */
 	MCFG_SCREEN_MODIFY("screen")
-<<<<<<< HEAD
-	MCFG_SCREEN_REFRESH_RATE(53.355)
-	MCFG_SCREEN_VBLANK_TIME(ATTOSECONDS_IN_USEC((106.53/(PAL_CLOCK/1000000)) * (PPU_VBLANK_LAST_SCANLINE_PAL-PPU_VBLANK_FIRST_SCANLINE+1+2)))
-	MCFG_SCREEN_SIZE(32*8, 312)
-	MCFG_SCREEN_VISIBLE_AREA(0*8, 32*8-1, 0*8, 30*8-1)
-
-
-MACHINE_CONFIG_END
-
-static MACHINE_CONFIG_DERIVED( dendy, nes )
-
-	/* basic machine hardware */
-//  MCFG_CPU_MODIFY( "maincpu" )
-//  MCFG_CPU_CLOCK( 26601712/15 )  // this doesn't get inherited by the APU with DERIVED_CLOCK!
-
-	MCFG_CPU_REPLACE("maincpu", N2A03, 26601712/15 )/* 26.601712MHz / 15 == 1.77344746666... MHz */
-	MCFG_CPU_PROGRAM_MAP(nes_map)
-
-	MCFG_DEVICE_REMOVE("ppu")
-	MCFG_PPU2C07_ADD("ppu")
-=======
 	MCFG_SCREEN_REFRESH_RATE(50.0070)
 	MCFG_SCREEN_VBLANK_TIME(ATTOSECONDS_IN_USEC((106.53/(PAL_APU_CLOCK/1000000)) * (ppu2c0x_device::VBLANK_LAST_SCANLINE_PAL-ppu2c0x_device::VBLANK_FIRST_SCANLINE+1+2)))
 	MCFG_SCREEN_SIZE(32*8, 312)
@@ -212,39 +135,20 @@ static MACHINE_CONFIG_DERIVED( nespalc, nespal )
 	/* UMC 6538 and friends -- extends time for rendering dummy scanlines */
 	MCFG_DEVICE_REMOVE("ppu")
 	MCFG_PPUPALC_ADD("ppu")
->>>>>>> upstream/master
 	MCFG_PPU2C0X_CPU("maincpu")
 	MCFG_PPU2C0X_SET_NMI(nes_state, ppu_nmi)
 
 	/* video hardware */
 	MCFG_SCREEN_MODIFY("screen")
-<<<<<<< HEAD
-	MCFG_SCREEN_REFRESH_RATE(50.00697796827)
-	MCFG_SCREEN_VBLANK_TIME(ATTOSECONDS_IN_USEC((106.53/(PAL_CLOCK/1000000)) * (PPU_VBLANK_LAST_SCANLINE_PAL-PPU_VBLANK_FIRST_SCANLINE+1+2)))
-
-MACHINE_CONFIG_END
-
-static MACHINE_CONFIG_DERIVED( famicom, nes )
-=======
 	MCFG_SCREEN_REFRESH_RATE(50.0070)
 	MCFG_SCREEN_VBLANK_TIME(ATTOSECONDS_IN_USEC((113.66/(PALC_APU_CLOCK/1000000)) * (ppu2c0x_device::VBLANK_LAST_SCANLINE_PAL-ppu2c0x_device::VBLANK_FIRST_SCANLINE_PALC+1+2)))
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_DERIVED( famipalc, nespalc )
->>>>>>> upstream/master
 	MCFG_DEVICE_REMOVE("ctrl1")
 	MCFG_DEVICE_REMOVE("ctrl2")
 	MCFG_NES_CONTROL_PORT_ADD("ctrl1", fc_control_port1_devices, "joypad")
 	MCFG_NES_CONTROL_PORT_ADD("ctrl2", fc_control_port2_devices, "joypad")
-<<<<<<< HEAD
-	MCFG_FC_EXPANSION_PORT_ADD("exp", fc_expansion_devices, NULL)
-	MCFG_NESCTRL_BRIGHTPIXEL_CB(nes_state, bright_pixel)
-
-	MCFG_SOFTWARE_LIST_ADD("flop_list", "famicom_flop")
-	MCFG_SOFTWARE_LIST_ADD("cass_list", "famicom_cass")
-MACHINE_CONFIG_END
-
-=======
 	MCFG_FC_EXPANSION_PORT_ADD("exp", fc_expansion_devices, nullptr)
 	MCFG_NESCTRL_BRIGHTPIXEL_CB(nes_state, bright_pixel)
 
@@ -258,7 +162,6 @@ static MACHINE_CONFIG_DERIVED( suborkbd, famipalc )
 	MCFG_SLOT_FIXED(true)
 MACHINE_CONFIG_END
 
->>>>>>> upstream/master
 void nes_state::setup_disk(nes_disksys_device *slot)
 {
 	if (slot)
@@ -278,42 +181,25 @@ void nes_state::setup_disk(nes_disksys_device *slot)
 		slot->vram_alloc(0x2000);
 		slot->prgram_alloc(0x8000);
 
-<<<<<<< HEAD
-		slot->pcb_start(machine(), m_ciram, FALSE);
-		m_ppu->space(AS_PROGRAM).install_readwrite_handler(0, 0x1fff, read8_delegate(FUNC(device_nes_cart_interface::chr_r),(device_nes_cart_interface *)slot), write8_delegate(FUNC(device_nes_cart_interface::chr_w),(device_nes_cart_interface *)slot));
-		m_ppu->space(AS_PROGRAM).install_readwrite_handler(0x2000, 0x3eff, read8_delegate(FUNC(device_nes_cart_interface::nt_r),(device_nes_cart_interface *)slot), write8_delegate(FUNC(device_nes_cart_interface::nt_w),(device_nes_cart_interface *)slot));
-		m_ppu->set_scanline_callback(ppu2c0x_scanline_delegate(FUNC(device_nes_cart_interface::scanline_irq),(device_nes_cart_interface *)slot));
-		m_ppu->set_hblank_callback(ppu2c0x_hblank_delegate(FUNC(nes_disksys_device::hblank_irq),(nes_disksys_device *)slot));
-		m_ppu->set_latch(ppu2c0x_latch_delegate(FUNC(device_nes_cart_interface::ppu_latch),(device_nes_cart_interface *)slot));
-=======
 		slot->pcb_start(machine(), m_ciram.get(), false);
 		m_ppu->space(AS_PROGRAM).install_readwrite_handler(0, 0x1fff, read8_delegate(FUNC(device_nes_cart_interface::chr_r),(device_nes_cart_interface *)slot), write8_delegate(FUNC(device_nes_cart_interface::chr_w),(device_nes_cart_interface *)slot));
 		m_ppu->space(AS_PROGRAM).install_readwrite_handler(0x2000, 0x3eff, read8_delegate(FUNC(device_nes_cart_interface::nt_r),(device_nes_cart_interface *)slot), write8_delegate(FUNC(device_nes_cart_interface::nt_w),(device_nes_cart_interface *)slot));
 		m_ppu->set_scanline_callback(ppu2c0x_device::scanline_delegate(FUNC(device_nes_cart_interface::scanline_irq),(device_nes_cart_interface *)slot));
 		m_ppu->set_hblank_callback(ppu2c0x_device::hblank_delegate(FUNC(nes_disksys_device::hblank_irq),(nes_disksys_device *)slot));
 		m_ppu->set_latch(ppu2c0x_device::latch_delegate(FUNC(device_nes_cart_interface::ppu_latch),(device_nes_cart_interface *)slot));
->>>>>>> upstream/master
 	}
 }
 
 
 MACHINE_START_MEMBER( nes_state, fds )
 {
-<<<<<<< HEAD
-	m_ciram = auto_alloc_array(machine(), UINT8, 0x800);
-=======
 	m_ciram = std::make_unique<uint8_t[]>(0x800);
->>>>>>> upstream/master
 	m_io_disksel = ioport("FLIPDISK");
 	setup_disk(m_disk);
 
 	// register saves
 	save_item(NAME(m_last_frame_flip));
-<<<<<<< HEAD
-	save_pointer(NAME(m_ciram), 0x800);
-=======
 	save_pointer(NAME(m_ciram.get()), 0x800);
->>>>>>> upstream/master
 }
 
 MACHINE_RESET_MEMBER( nes_state, fds )
@@ -334,13 +220,10 @@ static MACHINE_CONFIG_DERIVED( fds, famicom )
 
 	MCFG_DEVICE_REMOVE("cart_list")
 	MCFG_DEVICE_REMOVE("cass_list")
-<<<<<<< HEAD
-=======
 	MCFG_DEVICE_REMOVE("ade_list")
 	MCFG_DEVICE_REMOVE("ntb_list")
 	MCFG_DEVICE_REMOVE("kstudio_list")
 	MCFG_DEVICE_REMOVE("datach_list")
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
@@ -410,8 +293,6 @@ ROM_START( m82 )
 	ROM_LOAD( "m82_v1_0.bin", 0x10000, 0x4000, CRC(7d56840a) SHA1(cbd2d14fa073273ba58367758f40d67fd8a9106d) )
 ROM_END
 
-<<<<<<< HEAD
-=======
 ROM_START( m82p )
 	/* same as m82 */
 	ROM_REGION( 0x14000, "maincpu", 0 )  /* Main RAM + program banks */
@@ -419,7 +300,6 @@ ROM_START( m82p )
 	ROM_LOAD( "m82_v1_0.bin", 0x10000, 0x4000, CRC(7d56840a) SHA1(cbd2d14fa073273ba58367758f40d67fd8a9106d) )
 ROM_END
 
->>>>>>> upstream/master
 // see http://www.disgruntleddesigner.com/chrisc/drpcjr/index.html
 // and http://www.disgruntleddesigner.com/chrisc/drpcjr/DrPCJrMemMap.txt
 ROM_START( drpcjr )
@@ -431,8 +311,6 @@ ROM_START( drpcjr )
 //  ROM_LOAD("drpcjr_v1_5_gg.bin", 0x10000, 0x8000, CRC(98f2033b) SHA1(93c114da787a19279d1a46667c2f69b49e25d4f1) )
 ROM_END
 
-<<<<<<< HEAD
-=======
 ROM_START( iq501 )
 	ROM_REGION( 0x10000, "maincpu", ROMREGION_ERASE00 )  /* Main RAM */
 ROM_END
@@ -441,47 +319,28 @@ ROM_START( iq502 )
 	ROM_REGION( 0x10000, "maincpu", ROMREGION_ERASE00 )  /* Main RAM */
 ROM_END
 
->>>>>>> upstream/master
 ROM_START( dendy )
 	ROM_REGION( 0x10000, "maincpu", ROMREGION_ERASE00 )  /* Main RAM */
 ROM_END
 
-<<<<<<< HEAD
-=======
 ROM_START( dendy2 )
 	ROM_REGION( 0x10000, "maincpu", ROMREGION_ERASE00 )  /* Main RAM */
 ROM_END
 
->>>>>>> upstream/master
 ROM_START( gchinatv )
 	ROM_REGION( 0x10000, "maincpu", ROMREGION_ERASE00 )  /* Main RAM */
 ROM_END
 
-<<<<<<< HEAD
-=======
 ROM_START( sb486 )
 	ROM_REGION( 0x10000, "maincpu", ROMREGION_ERASE00 )  /* Main RAM */
 ROM_END
 
->>>>>>> upstream/master
 /***************************************************************************
 
   Game driver(s)
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-/*     YEAR  NAME      PARENT  COMPAT MACHINE   INPUT    INIT    COMPANY       FULLNAME */
-CONS( 1985, nes,       0,      0,     nes,      nes,     driver_device,     0,       "Nintendo",  "Nintendo Entertainment System / Famicom (NTSC)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
-CONS( 1987, nespal,    nes,    0,     nespal,   nes,     driver_device,     0,       "Nintendo",  "Nintendo Entertainment System (PAL)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
-CONS( 1983, famicom,   nes,    0,     famicom,  famicom, nes_state,         famicom, "Nintendo",  "Famicom (NTSC)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
-CONS( 1983, fds,       nes,    0,     fds,      famicom, nes_state,         famicom, "Nintendo",  "Famicom (w/ Disk System add-on)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
-CONS( 1986, famitwin,  nes,    0,     famitwin, famicom, nes_state,         famicom, "Sharp",     "Famicom Twin", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
-CONS( 198?, m82,       nes,    0,     nes,      nes,     driver_device,     0,       "Nintendo",  "M82 Display Unit", MACHINE_IMPERFECT_GRAPHICS | MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE )
-CONS( 1996, drpcjr,    nes,    0,     famicom,  famicom, nes_state,         famicom, "Bung",      "Doctor PC Jr", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
-CONS( 1992, dendy,     nes,    0,     dendy,    nes,     driver_device,     0,       "Steepler",  "Dendy Classic", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
-CONS( 198?, gchinatv,  nes,    0,     nespal,   nes,     driver_device,     0,       "Golden China",  "Golden China TV Game", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
-=======
 //    YEAR  NAME       PARENT      COMPAT  MACHINE    INPUT    STATE          INIT     COMPANY          FULLNAME
 
 // Nintendo Entertainment System hardware
@@ -517,4 +376,3 @@ CONS( 1993, sb486,     0,          nes,    suborkbd,  nes,     nes_state,     fa
 // Bung hardware
 // Mice, keyboard, etc, including a floppy drive that allows you to run games with a selection of 4 internal "mappers" available on the system.
 CONS( 1996, drpcjr,    0,          nes,    famicom,   famicom, nes_state,     famicom, "Bung",          "Doctor PC Jr", MACHINE_IMPERFECT_GRAPHICS | MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

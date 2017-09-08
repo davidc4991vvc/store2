@@ -20,11 +20,6 @@
 
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/m68000/m68000.h"
-#include "sound/okim6295.h"
-#include "includes/shuuz.h"
-=======
 #include "includes/shuuz.h"
 
 #include "cpu/m68000/m68000.h"
@@ -32,7 +27,6 @@
 #include "machine/watchdog.h"
 #include "sound/okim6295.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 void shuuz_state::machine_start()
@@ -79,13 +73,8 @@ READ16_MEMBER(shuuz_state::leta_r)
 	/* when reading the even ports, do a real analog port update */
 	if (which == 0)
 	{
-<<<<<<< HEAD
-		int dx = (INT8)ioport("TRACKX")->read();
-		int dy = (INT8)ioport("TRACKY")->read();
-=======
 		int dx = (int8_t)ioport("TRACKX")->read();
 		int dy = (int8_t)ioport("TRACKY")->read();
->>>>>>> upstream/master
 
 		m_cur[0] = dx + dy;
 		m_cur[1] = dx - dy;
@@ -123,15 +112,9 @@ READ16_MEMBER(shuuz_state::special_port0_r)
 
 static ADDRESS_MAP_START( main_map, AS_PROGRAM, 16, shuuz_state )
 	AM_RANGE(0x000000, 0x03ffff) AM_ROM
-<<<<<<< HEAD
-	AM_RANGE(0x100000, 0x100fff) AM_DEVREADWRITE8("eeprom", atari_eeprom_device, read, write, 0x00ff)
-	AM_RANGE(0x101000, 0x101fff) AM_DEVWRITE("eeprom", atari_eeprom_device, unlock_write)
-	AM_RANGE(0x102000, 0x102001) AM_WRITE(watchdog_reset16_w)
-=======
 	AM_RANGE(0x100000, 0x100fff) AM_DEVREADWRITE8("eeprom", eeprom_parallel_28xx_device, read, write, 0x00ff)
 	AM_RANGE(0x101000, 0x101fff) AM_DEVWRITE("eeprom", eeprom_parallel_28xx_device, unlock_write)
 	AM_RANGE(0x102000, 0x102001) AM_DEVWRITE("watchdog", watchdog_timer_device, reset16_w)
->>>>>>> upstream/master
 	AM_RANGE(0x103000, 0x103003) AM_READ(leta_r)
 	AM_RANGE(0x105000, 0x105001) AM_READWRITE(special_port0_r, latch_w)
 	AM_RANGE(0x105002, 0x105003) AM_READ_PORT("BUTTONS")
@@ -248,24 +231,16 @@ GFXDECODE_END
  *
  *************************************/
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( shuuz, shuuz_state )
-=======
 static MACHINE_CONFIG_START( shuuz )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, ATARI_CLOCK_14MHz/2)
 	MCFG_CPU_PROGRAM_MAP(main_map)
 
-<<<<<<< HEAD
-	MCFG_ATARI_EEPROM_2816_ADD("eeprom")
-=======
 	MCFG_EEPROM_2816_ADD("eeprom")
 	MCFG_EEPROM_28XX_LOCK_AFTER_WRITE(true)
 
 	MCFG_WATCHDOG_ADD("watchdog")
->>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", shuuz)
@@ -287,11 +262,7 @@ static MACHINE_CONFIG_START( shuuz )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki", ATARI_CLOCK_14MHz/16, OKIM6295_PIN7_HIGH)
-=======
 	MCFG_OKIM6295_ADD("oki", ATARI_CLOCK_14MHz/16, PIN7_HIGH)
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
 
@@ -378,10 +349,5 @@ ROM_END
  *
  *************************************/
 
-<<<<<<< HEAD
-GAME( 1990, shuuz,  0,     shuuz, shuuz, driver_device,  0, ROT0, "Atari Games", "Shuuz (version 8.0)", MACHINE_SUPPORTS_SAVE )
-GAME( 1990, shuuz2, shuuz, shuuz, shuuz2, driver_device, 0, ROT0, "Atari Games", "Shuuz (version 7.1)", MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1990, shuuz,  0,     shuuz, shuuz,  shuuz_state,  0, ROT0, "Atari Games", "Shuuz (version 8.0)", MACHINE_SUPPORTS_SAVE )
 GAME( 1990, shuuz2, shuuz, shuuz, shuuz2, shuuz_state,  0, ROT0, "Atari Games", "Shuuz (version 7.1)", MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

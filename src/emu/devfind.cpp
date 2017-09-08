@@ -12,11 +12,6 @@
 
 
 //**************************************************************************
-<<<<<<< HEAD
-//  BASE FINDER CLASS
-//**************************************************************************
-
-=======
 //  EXPLICIT TEMPLATE INSTANTIATIONS
 //**************************************************************************
 
@@ -99,21 +94,14 @@ template class shared_ptr_finder<s64, true>;
 constexpr char finder_base::DUMMY_TAG[];
 
 
->>>>>>> upstream/master
 //-------------------------------------------------
 //  finder_base - constructor
 //-------------------------------------------------
 
 finder_base::finder_base(device_t &base, const char *tag)
-<<<<<<< HEAD
-	: m_next(base.register_auto_finder(*this)),
-		m_base(base),
-		m_tag(tag)
-=======
 	: m_next(base.register_auto_finder(*this))
 	, m_base(base)
 	, m_tag(tag)
->>>>>>> upstream/master
 {
 }
 
@@ -131,14 +119,6 @@ finder_base::~finder_base()
 //  find_memregion - find memory region
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void *finder_base::find_memregion(UINT8 width, size_t &length, bool required) const
-{
-	// look up the region and return NULL if not found
-	memory_region *region = m_base.memregion(m_tag);
-	if (region == NULL)
-		return NULL;
-=======
 void *finder_base::find_memregion(u8 width, size_t &length, bool required) const
 {
 	// look up the region and return nullptr if not found
@@ -148,20 +128,12 @@ void *finder_base::find_memregion(u8 width, size_t &length, bool required) const
 		length = 0;
 		return nullptr;
 	}
->>>>>>> upstream/master
 
 	// check the width and warn if not correct
 	if (region->bytewidth() != width)
 	{
 		if (required)
 			osd_printf_warning("Region '%s' found but is width %d, not %d as requested\n", m_tag, region->bitwidth(), width*8);
-<<<<<<< HEAD
-		return NULL;
-	}
-
-	// return results
-	length = region->bytes() / width;
-=======
 		length = 0;
 		return nullptr;
 	}
@@ -178,23 +150,11 @@ void *finder_base::find_memregion(u8 width, size_t &length, bool required) const
 
 	// return results
 	length = length_found;
->>>>>>> upstream/master
 	return region->base();
 }
 
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  find_memshare - find memory share
-//-------------------------------------------------
-
-void *finder_base::find_memshare(UINT8 width, size_t &bytes, bool required)
-{
-	// look up the share and return NULL if not found
-	memory_share *share = m_base.memshare(m_tag);
-	if (share == NULL)
-		return NULL;
-=======
 //  validate_memregion - find memory region
 //-------------------------------------------------
 
@@ -240,18 +200,13 @@ void *finder_base::find_memshare(u8 width, size_t &bytes, bool required) const
 	memory_share *share = m_base.memshare(m_tag);
 	if (share == nullptr)
 		return nullptr;
->>>>>>> upstream/master
 
 	// check the width and warn if not correct
 	if (width != 0 && share->bitwidth() != width)
 	{
 		if (required)
 			osd_printf_warning("Shared ptr '%s' found but is width %d, not %d as requested\n", m_tag, share->bitwidth(), width);
-<<<<<<< HEAD
-		return NULL;
-=======
 		return nullptr;
->>>>>>> upstream/master
 	}
 
 	// return results
@@ -265,19 +220,11 @@ void *finder_base::find_memshare(u8 width, size_t &bytes, bool required) const
 //  return true if it's ok
 //-------------------------------------------------
 
-<<<<<<< HEAD
-bool finder_base::report_missing(bool found, const char *objname, bool required)
-{
-	if (required && strcmp(m_tag, FINDER_DUMMY_TAG)==0)
-	{
-		osd_printf_error("Tag not defined for required device\n");
-=======
 bool finder_base::report_missing(bool found, const char *objname, bool required) const
 {
 	if (required && (strcmp(m_tag, DUMMY_TAG) == 0))
 	{
 		osd_printf_error("Tag not defined for required %s\n", objname);
->>>>>>> upstream/master
 		return false;
 	}
 
@@ -286,18 +233,11 @@ bool finder_base::report_missing(bool found, const char *objname, bool required)
 		return true;
 
 	// otherwise, report
-<<<<<<< HEAD
-	if (required)
-		osd_printf_error("Required %s '%s' not found\n", objname, m_tag);
-	else
-		osd_printf_verbose("Optional %s '%s' not found\n", objname, m_tag);
-=======
 	std::string const region_fulltag = m_base.subtag(m_tag);
 	if (required)
 		osd_printf_error("Required %s '%s' not found\n", objname, region_fulltag.c_str());
 	else
 		osd_printf_verbose("Optional %s '%s' not found\n", objname, region_fulltag.c_str());
->>>>>>> upstream/master
 	return !required;
 }
 

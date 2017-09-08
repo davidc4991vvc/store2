@@ -84,12 +84,6 @@ Graphics: CY37256P160-83AC x 2 (Ultra37000 CPLD family - 160 pin TQFP, 256 Macro
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/z180/z180.h"
-#include "machine/eepromser.h"
-#include "sound/dac.h"
-#include "includes/20pacgal.h"
-=======
 #include "includes/20pacgal.h"
 
 #include "cpu/z180/z180.h"
@@ -98,7 +92,6 @@ Graphics: CY37256P160-83AC x 2 (Ultra37000 CPLD family - 160 pin TQFP, 256 Macro
 #include "sound/dac.h"
 #include "sound/volt_reg.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 /*************************************
@@ -140,11 +133,7 @@ WRITE8_MEMBER(_20pacgal_state::timer_pulse_w)
 
 WRITE8_MEMBER(_20pacgal_state::_20pacgal_coin_counter_w)
 {
-<<<<<<< HEAD
-	coin_counter_w(machine(), 0, data & 1);
-=======
 	machine().bookkeeping().coin_counter_w(0, data & 1);
->>>>>>> upstream/master
 }
 
 
@@ -155,28 +144,10 @@ WRITE8_MEMBER(_20pacgal_state::_20pacgal_coin_counter_w)
  *
  *************************************/
 
-<<<<<<< HEAD
-void _20pacgal_state::set_bankptr()
-{
-	if (m_game_selected == 0)
-	{
-		UINT8 *rom = memregion("maincpu")->base();
-		membank("bank1")->set_base(rom + 0x08000);
-	}
-	else
-		membank("bank1")->set_base(m_ram_48000);
-}
-
-WRITE8_MEMBER(_20pacgal_state::ram_bank_select_w)
-{
-	m_game_selected = data & 1;
-	set_bankptr();
-=======
 WRITE8_MEMBER(_20pacgal_state::ram_bank_select_w)
 {
 	m_game_selected = data & 1;
 	membank("bank1")->set_entry(m_game_selected);
->>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(_20pacgal_state::ram_48000_w)
@@ -268,11 +239,7 @@ READ8_MEMBER( _25pacman_state::_25pacman_io_87_r )
 	AM_RANGE(0x80, 0x80) AM_READ_PORT("P1")
 	AM_RANGE(0x81, 0x81) AM_READ_PORT("P2")
 	AM_RANGE(0x82, 0x82) AM_READ_PORT("SERVICE")
-<<<<<<< HEAD
-	AM_RANGE(0x80, 0x80) AM_WRITE(watchdog_reset_w)
-=======
 	AM_RANGE(0x80, 0x80) AM_DEVWRITE("watchdog", watchdog_timer_device, reset_w)
->>>>>>> upstream/master
 	AM_RANGE(0x81, 0x81) AM_WRITE(timer_pulse_w)        /* ??? pulsed by the timer irq */
 	AM_RANGE(0x82, 0x82) AM_WRITE(irqack_w)
 //  AM_RANGE(0x84, 0x84) AM_NOP /* ?? */
@@ -280,11 +247,7 @@ READ8_MEMBER( _25pacman_state::_25pacman_io_87_r )
 	AM_RANGE(0x87, 0x87) AM_READ( _25pacman_io_87_r ) // not eeprom on this
 	AM_RANGE(0x87, 0x87) AM_WRITENOP
 //  AM_RANGE(0x88, 0x88) AM_WRITE(ram_bank_select_w)
-<<<<<<< HEAD
-	AM_RANGE(0x89, 0x89) AM_DEVWRITE("dac", dac_device, write_signed8)
-=======
 	AM_RANGE(0x89, 0x89) AM_DEVWRITE("dac", dac_byte_interface, write)
->>>>>>> upstream/master
 	AM_RANGE(0x8a, 0x8a) AM_WRITEONLY AM_SHARE("stars_ctrl")    /* stars: bits 3-4 = active set; bit 5 = enable */
 	AM_RANGE(0x8b, 0x8b) AM_WRITEONLY AM_SHARE("flip")
 	AM_RANGE(0x8c, 0x8c) AM_WRITENOP
@@ -298,22 +261,14 @@ static ADDRESS_MAP_START( 20pacgal_io_map, AS_IO, 8, _20pacgal_state )
 	AM_RANGE(0x80, 0x80) AM_READ_PORT("P1")
 	AM_RANGE(0x81, 0x81) AM_READ_PORT("P2")
 	AM_RANGE(0x82, 0x82) AM_READ_PORT("SERVICE")
-<<<<<<< HEAD
-	AM_RANGE(0x80, 0x80) AM_WRITE(watchdog_reset_w)
-=======
 	AM_RANGE(0x80, 0x80) AM_DEVWRITE("watchdog", watchdog_timer_device, reset_w)
->>>>>>> upstream/master
 	AM_RANGE(0x81, 0x81) AM_WRITE(timer_pulse_w)        /* ??? pulsed by the timer irq */
 	AM_RANGE(0x82, 0x82) AM_WRITE(irqack_w)
 	AM_RANGE(0x84, 0x84) AM_NOP /* ?? */
 	AM_RANGE(0x85, 0x86) AM_WRITEONLY AM_SHARE("stars_seed")    /* stars: rng seed (lo/hi) */
 	AM_RANGE(0x87, 0x87) AM_READ_PORT("EEPROMIN") AM_WRITE_PORT("EEPROMOUT")
 	AM_RANGE(0x88, 0x88) AM_WRITE(ram_bank_select_w)
-<<<<<<< HEAD
-	AM_RANGE(0x89, 0x89) AM_DEVWRITE("dac", dac_device, write_signed8)
-=======
 	AM_RANGE(0x89, 0x89) AM_DEVWRITE("dac", dac_byte_interface, write)
->>>>>>> upstream/master
 	AM_RANGE(0x8a, 0x8a) AM_WRITEONLY AM_SHARE("stars_ctrl")    /* stars: bits 3-4 = active set; bit 5 = enable */
 	AM_RANGE(0x8b, 0x8b) AM_WRITEONLY AM_SHARE("flip")
 	AM_RANGE(0x8f, 0x8f) AM_WRITE(_20pacgal_coin_counter_w)
@@ -412,14 +367,10 @@ void _20pacgal_state::common_save_state()
 void _20pacgal_state::machine_start()
 {
 	common_save_state();
-<<<<<<< HEAD
-	machine().save().register_postload(save_prepost_delegate(FUNC(_20pacgal_state::set_bankptr), this)); //currently not used by 25pacman
-=======
 
 	// membank currently used only by 20pacgal
 	membank("bank1")->configure_entry(0, memregion("maincpu")->base() + 0x08000);
 	membank("bank1")->configure_entry(1, m_ram_48000);
->>>>>>> upstream/master
 }
 
 void _25pacman_state::machine_start()
@@ -438,11 +389,7 @@ INTERRUPT_GEN_MEMBER(_20pacgal_state::vblank_irq)
 		device.execute().set_input_line(0, HOLD_LINE); // TODO: assert breaks the inputs in 25pacman test mode
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( 20pacgal, _20pacgal_state )
-=======
 static MACHINE_CONFIG_START( 20pacgal )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z180, MAIN_CPU_CLOCK)
@@ -452,29 +399,12 @@ static MACHINE_CONFIG_START( 20pacgal )
 
 	MCFG_EEPROM_SERIAL_93C46_8BIT_ADD("eeprom")
 
-<<<<<<< HEAD
-=======
 	MCFG_WATCHDOG_ADD("watchdog")
 
->>>>>>> upstream/master
 	/* video hardware */
 	MCFG_FRAGMENT_ADD(20pacgal_video)
 
 	/* sound hardware */
-<<<<<<< HEAD
-	MCFG_SPEAKER_STANDARD_MONO("mono")
-
-	MCFG_SOUND_ADD("namco", NAMCO_CUS30, NAMCO_AUDIO_CLOCK)
-	MCFG_NAMCO_AUDIO_VOICES(3)
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
-
-	MCFG_DAC_ADD("dac")
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
-MACHINE_CONFIG_END
-
-
-static MACHINE_CONFIG_DERIVED_CLASS( 25pacman, 20pacgal, _25pacman_state )
-=======
 	MCFG_SPEAKER_STANDARD_MONO("speaker")
 
 	MCFG_SOUND_ADD("namco", NAMCO_CUS30, NAMCO_AUDIO_CLOCK)
@@ -488,7 +418,6 @@ MACHINE_CONFIG_END
 
 
 static MACHINE_CONFIG_DERIVED( 25pacman, 20pacgal )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_MODIFY("maincpu")
@@ -512,11 +441,7 @@ MACHINE_CONFIG_END
 */
 
 ROM_START( 25pacmano ) /* Revision 2.00 */
-<<<<<<< HEAD
-	ROM_REGION( 0x100000, "maincpu", 0 )
-=======
 	ROM_REGION( 0x40000, "maincpu", 0 )
->>>>>>> upstream/master
 	ROM_LOAD( "pacman_25th_rev2.0.u13", 0x00000, 0x40000, CRC(99a52784) SHA1(6222c2eb686e65ba23ca376ff4392be1bc826a03) ) /* Label printed Rev 2.0, program says Rev 2.00 */
 
 	ROM_REGION( 0x8000, "proms", 0 )    /* palette */
@@ -529,11 +454,7 @@ ROM_END
 ROM_START( 25pacman ) /* Revision 3.00 */
 	ROM_REGION( 0x40000, "flash", 0 )
 	ROM_LOAD( "pacman25ver3.u1", 0x00000, 0x40000, CRC(55b0076e) SHA1(4544cc193bdd22bfc88d096083ccc4069cac4607) ) /* program says Rev 3.00 */
-<<<<<<< HEAD
-	ROM_REGION( 0x100000, "maincpu", ROMREGION_ERASE00 )
-=======
 	ROM_REGION( 0x40000, "maincpu", ROMREGION_ERASE00 )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x8000, "proms", 0 )    /* palette */
 	// shouldn't be loading this! must be uploaded somewhere
@@ -545,11 +466,7 @@ ROM_END
 */
 
 ROM_START( 20pacgal ) /* Version 1.08 */
-<<<<<<< HEAD
-	ROM_REGION( 0x100000, "maincpu", 0 )
-=======
 	ROM_REGION( 0x40000, "maincpu", 0 )
->>>>>>> upstream/master
 	ROM_LOAD( "ms_pac-galaga_v1.08.u13", 0x00000, 0x40000, CRC(2ea16809) SHA1(27f041bdbb590917e9dcb70c21aa6b6d6c9f04fb) ) /* Also found labeled as "V1.08 HO" */
 
 	ROM_REGION( 0x8000, "proms", 0 )    /* palette */
@@ -557,11 +474,7 @@ ROM_START( 20pacgal ) /* Version 1.08 */
 ROM_END
 
 ROM_START( 20pacgalr4 ) /* Version 1.04 */
-<<<<<<< HEAD
-	ROM_REGION( 0x100000, "maincpu", 0 )
-=======
 	ROM_REGION( 0x40000, "maincpu", 0 )
->>>>>>> upstream/master
 	ROM_LOAD( "ms_pac-galaga_v1.04.u13", 0x00000, 0x40000, CRC(6c474d2d) SHA1(5a150fc9d2ed0e908385b9f9d532aa33cf80dba4) )
 
 	ROM_REGION( 0x8000, "proms", 0 )    /* palette */
@@ -569,11 +482,7 @@ ROM_START( 20pacgalr4 ) /* Version 1.04 */
 ROM_END
 
 ROM_START( 20pacgalr3 ) /* Version 1.03 */
-<<<<<<< HEAD
-	ROM_REGION( 0x100000, "maincpu", 0 )
-=======
 	ROM_REGION( 0x40000, "maincpu", 0 )
->>>>>>> upstream/master
 	ROM_LOAD( "ms_pac-galaga_v1.03.u13", 0x00000, 0x40000, CRC(e13dce63) SHA1(c8943f082883c423210fc3c97323222afb00f0a2) )
 
 	ROM_REGION( 0x8000, "proms", 0 )    /* palette */
@@ -581,11 +490,7 @@ ROM_START( 20pacgalr3 ) /* Version 1.03 */
 ROM_END
 
 ROM_START( 20pacgalr2 ) /* Version 1.02 */
-<<<<<<< HEAD
-	ROM_REGION( 0x100000, "maincpu", 0 )
-=======
 	ROM_REGION( 0x40000, "maincpu", 0 )
->>>>>>> upstream/master
 	ROM_LOAD( "ms_pac-galaga_v1.02.u13", 0x00000, 0x40000, CRC(b939f805) SHA1(5fe9470601156dfc2d339c94fd8f0aa4db197760) )
 
 	ROM_REGION( 0x8000, "proms", 0 )    /* palette */
@@ -593,11 +498,7 @@ ROM_START( 20pacgalr2 ) /* Version 1.02 */
 ROM_END
 
 ROM_START( 20pacgalr1 ) /* Version 1.01 */
-<<<<<<< HEAD
-	ROM_REGION( 0x100000, "maincpu", 0 )
-=======
 	ROM_REGION( 0x40000, "maincpu", 0 )
->>>>>>> upstream/master
 	ROM_LOAD( "ms_pac-galaga_v1.01.u13", 0x00000, 0x40000, CRC(77159582) SHA1(c05e005a941cbdc806dcd76b315069362c792a72) )
 
 	ROM_REGION( 0x8000, "proms", 0 )    /* palette */
@@ -605,11 +506,7 @@ ROM_START( 20pacgalr1 ) /* Version 1.01 */
 ROM_END
 
 ROM_START( 20pacgalr0 ) /* Version 1.00 */
-<<<<<<< HEAD
-	ROM_REGION( 0x100000, "maincpu", 0 )
-=======
 	ROM_REGION( 0x40000, "maincpu", 0 )
->>>>>>> upstream/master
 	ROM_LOAD( "ms_pac-galaga_v1.0.u13", 0x00000, 0x40000, CRC(3c92a269) SHA1(a616d912393f4e49b95231d72eec48567f46fc00) ) /* Label printed V1.0, program says v1.00 */
 
 	ROM_REGION( 0x8000, "proms", 0 )    /* palette */
@@ -637,17 +534,6 @@ DRIVER_INIT_MEMBER(_20pacgal_state,25pacman)
  *
  *************************************/
 
-<<<<<<< HEAD
-GAME( 2006, 25pacman,          0, 25pacman, 25pacman, _20pacgal_state, 25pacman, ROT90, "Namco / Cosmodog", "Pac-Man - 25th Anniversary Edition (Rev 3.00)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE | MACHINE_NOT_WORKING )
-GAME( 2005, 25pacmano,  25pacman, 20pacgal, 25pacmano,_20pacgal_state, 25pacman, ROT90, "Namco / Cosmodog", "Pac-Man - 25th Anniversary Edition (Rev 2.00)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE)
-
-GAME( 2000, 20pacgal,          0, 20pacgal, 20pacgal, _20pacgal_state, 20pacgal, ROT90, "Namco / Cosmodog", "Ms. Pac-Man/Galaga - 20th Anniversary Class of 1981 Reunion (V1.08)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE)
-GAME( 2000, 20pacgalr4, 20pacgal, 20pacgal, 20pacgal, _20pacgal_state, 20pacgal, ROT90, "Namco / Cosmodog", "Ms. Pac-Man/Galaga - 20th Anniversary Class of 1981 Reunion (V1.04)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE)
-GAME( 2000, 20pacgalr3, 20pacgal, 20pacgal, 20pacgal, _20pacgal_state, 20pacgal, ROT90, "Namco / Cosmodog", "Ms. Pac-Man/Galaga - 20th Anniversary Class of 1981 Reunion (V1.03)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE)
-GAME( 2000, 20pacgalr2, 20pacgal, 20pacgal, 20pacgal, _20pacgal_state, 20pacgal, ROT90, "Namco / Cosmodog", "Ms. Pac-Man/Galaga - 20th Anniversary Class of 1981 Reunion (V1.02)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE)
-GAME( 2000, 20pacgalr1, 20pacgal, 20pacgal, 20pacgal, _20pacgal_state, 20pacgal, ROT90, "Namco / Cosmodog", "Ms. Pac-Man/Galaga - 20th Anniversary Class of 1981 Reunion (V1.01)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE)
-GAME( 2000, 20pacgalr0, 20pacgal, 20pacgal, 20pacgal, _20pacgal_state, 20pacgal, ROT90, "Namco / Cosmodog", "Ms. Pac-Man/Galaga - 20th Anniversary Class of 1981 Reunion (V1.00)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE)
-=======
 GAME( 2006, 25pacman,   0,        25pacman, 25pacman,  _25pacman_state, 25pacman, ROT90, "Namco / Cosmodog", "Pac-Man - 25th Anniversary Edition (Rev 3.00)",                       MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE | MACHINE_NOT_WORKING )
 GAME( 2005, 25pacmano,  25pacman, 20pacgal, 25pacmano, _20pacgal_state, 25pacman, ROT90, "Namco / Cosmodog", "Pac-Man - 25th Anniversary Edition (Rev 2.00)",                       MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE)
 
@@ -657,4 +543,3 @@ GAME( 2000, 20pacgalr3, 20pacgal, 20pacgal, 20pacgal,  _20pacgal_state, 20pacgal
 GAME( 2000, 20pacgalr2, 20pacgal, 20pacgal, 20pacgal,  _20pacgal_state, 20pacgal, ROT90, "Namco / Cosmodog", "Ms. Pac-Man/Galaga - 20th Anniversary Class of 1981 Reunion (V1.02)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE)
 GAME( 2000, 20pacgalr1, 20pacgal, 20pacgal, 20pacgal,  _20pacgal_state, 20pacgal, ROT90, "Namco / Cosmodog", "Ms. Pac-Man/Galaga - 20th Anniversary Class of 1981 Reunion (V1.01)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE)
 GAME( 2000, 20pacgalr0, 20pacgal, 20pacgal, 20pacgal,  _20pacgal_state, 20pacgal, ROT90, "Namco / Cosmodog", "Ms. Pac-Man/Galaga - 20th Anniversary Class of 1981 Reunion (V1.00)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE)
->>>>>>> upstream/master

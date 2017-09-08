@@ -126,10 +126,7 @@ CN1 standard DB15 VGA connector (15KHz)
 #include "cpu/m68000/m68000.h"
 #include "machine/eepromser.h"
 #include "video/pc_vga.h"
-<<<<<<< HEAD
-=======
 #include "screen.h"
->>>>>>> upstream/master
 
 
 class pntnpuzl_state : public driver_device
@@ -139,15 +136,6 @@ public:
 		: driver_device(mconfig, type, tag),
 		m_maincpu(*this,"maincpu"),
 		m_eeprom(*this, "eeprom")
-<<<<<<< HEAD
-		{ }
-
-	UINT16 m_eeprom_data;
-	UINT16 m_pntpzl_200000;
-	UINT16 m_serial;
-	UINT16 m_serial_out;
-	UINT16 m_read_count;
-=======
 	{ }
 
 	uint16_t m_eeprom_data;
@@ -155,7 +143,6 @@ public:
 	uint16_t m_serial;
 	uint16_t m_serial_out;
 	uint16_t m_read_count;
->>>>>>> upstream/master
 	int m_touchscr[5];
 
 	required_device<cpu_device> m_maincpu;
@@ -326,11 +313,7 @@ INPUT_CHANGED_MEMBER(pntnpuzl_state::coin_inserted)
 {
 	/* TODO: change this! */
 	if(newval)
-<<<<<<< HEAD
-		generic_pulse_irq_line(m_maincpu, (UINT8)(FPTR)param, 1);
-=======
 		generic_pulse_irq_line(*m_maincpu, (uint8_t)(uintptr_t)param, 1);
->>>>>>> upstream/master
 }
 
 static INPUT_PORTS_START( pntnpuzl )
@@ -363,11 +346,7 @@ static INPUT_PORTS_START( pntnpuzl )
 	PORT_BIT( 0x8000, IP_ACTIVE_LOW, IPT_OTHER ) PORT_CODE(KEYCODE_D)
 INPUT_PORTS_END
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( pntnpuzl, pntnpuzl_state )
-=======
 static MACHINE_CONFIG_START( pntnpuzl )
->>>>>>> upstream/master
 	MCFG_CPU_ADD("maincpu", M68000, 12000000)//??
 	MCFG_CPU_PROGRAM_MAP(pntnpuzl_map)
 
@@ -390,11 +369,7 @@ ROM_END
 
 DRIVER_INIT_MEMBER(pntnpuzl_state,pip)
 {
-<<<<<<< HEAD
-//  UINT16 *rom = (UINT16 *)memregion("maincpu")->base();
-=======
 //  uint16_t *rom = (uint16_t *)memregion("maincpu")->base();
->>>>>>> upstream/master
 //  rom[0x2696/2] = 0x4e71;
 //  rom[0x26a0/2] = 0x4e71;
 

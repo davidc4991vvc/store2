@@ -49,15 +49,6 @@ stepstag:
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/m68000/m68000.h"
-#include "sound/okim6295.h"
-#include "sound/ymz280b.h"
-#include "rocknms.lh"
-#include "stepstag.lh"
-#include "includes/tetrisp2.h"
-#include "machine/nvram.h"
-=======
 #include "includes/tetrisp2.h"
 
 #include "cpu/m68000/m68000.h"
@@ -71,7 +62,6 @@ stepstag:
 
 #include "rocknms.lh"
 #include "stepstag.lh"
->>>>>>> upstream/master
 
 
 /***************************************************************************
@@ -135,11 +125,7 @@ READ16_MEMBER(tetrisp2_state::rockn_adpcmbank_r)
 
 WRITE16_MEMBER(tetrisp2_state::rockn_adpcmbank_w)
 {
-<<<<<<< HEAD
-	UINT8 *SNDROM = memregion("ymz")->base();
-=======
 	uint8_t *SNDROM = memregion("ymz")->base();
->>>>>>> upstream/master
 	int bank;
 
 	m_rockn_adpcmbank = data;
@@ -156,11 +142,7 @@ WRITE16_MEMBER(tetrisp2_state::rockn_adpcmbank_w)
 
 WRITE16_MEMBER(tetrisp2_state::rockn2_adpcmbank_w)
 {
-<<<<<<< HEAD
-	UINT8 *SNDROM = memregion("ymz")->base();
-=======
 	uint8_t *SNDROM = memregion("ymz")->base();
->>>>>>> upstream/master
 	int bank;
 
 	char banktable[9][3]=
@@ -206,11 +188,7 @@ WRITE16_MEMBER(tetrisp2_state::nndmseal_sound_bank_w)
 {
 	if (ACCESSING_BITS_0_7)
 	{
-<<<<<<< HEAD
-		UINT8 *rom = memregion("okisource")->base();
-=======
 		uint8_t *rom = memregion("okisource")->base();
->>>>>>> upstream/master
 
 		if (data & 0x04)
 		{
@@ -309,11 +287,7 @@ WRITE16_MEMBER(tetrisp2_state::rocknms_sub2main_w)
 
 WRITE16_MEMBER(tetrisp2_state::tetrisp2_coincounter_w)
 {
-<<<<<<< HEAD
-	coin_counter_w( machine(), 0, (data & 0x0001));
-=======
 	machine().bookkeeping().coin_counter_w(0, (data & 0x0001));
->>>>>>> upstream/master
 }
 
 
@@ -355,11 +329,7 @@ static ADDRESS_MAP_START( tetrisp2_map, AS_PROGRAM, 16, tetrisp2_state )
 	AM_RANGE(0xbe0002, 0xbe0003) AM_READ_PORT("PLAYERS")                                        // Inputs
 	AM_RANGE(0xbe0004, 0xbe0005) AM_READ(tetrisp2_ip_1_word_r)                                  // Inputs & protection
 	AM_RANGE(0xbe0008, 0xbe0009) AM_READ_PORT("DSW")                                            // Inputs
-<<<<<<< HEAD
-	AM_RANGE(0xbe000a, 0xbe000b) AM_READ(watchdog_reset16_r)                                    // Watchdog
-=======
 	AM_RANGE(0xbe000a, 0xbe000b) AM_DEVREAD("watchdog", watchdog_timer_device, reset16_r)       // Watchdog
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -367,18 +337,6 @@ WRITE16_MEMBER(tetrisp2_state::nndmseal_coincounter_w)
 {
 	if (ACCESSING_BITS_0_7)
 	{
-<<<<<<< HEAD
-		coin_counter_w( machine(), 0,  data  & 0x0001 );
-		//                  data  & 0x0004 ?
-		coin_lockout_w( machine(), 0,(~data) & 0x0008 );
-	}
-	if (ACCESSING_BITS_8_15)
-	{
-		set_led_status( machine(), 0, data & 0x1000 );  // +
-		set_led_status( machine(), 1, data & 0x2000 );  // -
-		set_led_status( machine(), 2, data & 0x4000 );  // Cancel
-		set_led_status( machine(), 3, data & 0x8000 );  // OK
-=======
 		machine().bookkeeping().coin_counter_w(0,  data  & 0x0001 );
 		//                  data  & 0x0004 ?
 		machine().bookkeeping().coin_lockout_w(0,(~data) & 0x0008 );
@@ -389,7 +347,6 @@ WRITE16_MEMBER(tetrisp2_state::nndmseal_coincounter_w)
 		output().set_led_value(1, data & 0x2000 );  // -
 		output().set_led_value(2, data & 0x4000 );  // Cancel
 		output().set_led_value(3, data & 0x8000 );  // OK
->>>>>>> upstream/master
 	}
 //  popmessage("%04x",data);
 }
@@ -441,11 +398,7 @@ static ADDRESS_MAP_START( nndmseal_map, AS_PROGRAM, 16, tetrisp2_state )
 	AM_RANGE(0xbe0006, 0xbe0007) AM_READ_PORT("PRINT"           )   // ""
 	AM_RANGE(0xbe0008, 0xbe0009) AM_READ_PORT("DSW"             )   // ""
 
-<<<<<<< HEAD
-	AM_RANGE(0xbe000a, 0xbe000b) AM_READ(watchdog_reset16_r     )   // Watchdog
-=======
 	AM_RANGE(0xbe000a, 0xbe000b) AM_DEVREAD("watchdog", watchdog_timer_device, reset16_r)
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -479,11 +432,7 @@ static ADDRESS_MAP_START( rockn1_map, AS_PROGRAM, 16, tetrisp2_state )
 	AM_RANGE(0xbe0002, 0xbe0003) AM_READ_PORT("PLAYERS")                                        // Inputs
 	AM_RANGE(0xbe0004, 0xbe0005) AM_READ_PORT("SYSTEM")                                         // Inputs
 	AM_RANGE(0xbe0008, 0xbe0009) AM_READ_PORT("DSW")                                            // Inputs
-<<<<<<< HEAD
-	AM_RANGE(0xbe000a, 0xbe000b) AM_READ(watchdog_reset16_r)                                    // Watchdog
-=======
 	AM_RANGE(0xbe000a, 0xbe000b) AM_DEVREAD("watchdog", watchdog_timer_device, reset16_r)       // Watchdog
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -517,11 +466,7 @@ static ADDRESS_MAP_START( rockn2_map, AS_PROGRAM, 16, tetrisp2_state )
 	AM_RANGE(0xbe0002, 0xbe0003) AM_READ_PORT("PLAYERS")                                        // Inputs
 	AM_RANGE(0xbe0004, 0xbe0005) AM_READ_PORT("SYSTEM")                                         // Inputs
 	AM_RANGE(0xbe0008, 0xbe0009) AM_READ_PORT("DSW")                                            // Inputs
-<<<<<<< HEAD
-	AM_RANGE(0xbe000a, 0xbe000b) AM_READ(watchdog_reset16_r)                                    // Watchdog
-=======
 	AM_RANGE(0xbe000a, 0xbe000b) AM_DEVREAD("watchdog", watchdog_timer_device, reset16_r)       // Watchdog
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -556,11 +501,7 @@ static ADDRESS_MAP_START( rocknms_main_map, AS_PROGRAM, 16, tetrisp2_state )
 	AM_RANGE(0xbe0002, 0xbe0003) AM_READ_PORT("PLAYERS")
 	AM_RANGE(0xbe0004, 0xbe0005) AM_READ_PORT("SYSTEM")                                         // Inputs
 	AM_RANGE(0xbe0008, 0xbe0009) AM_READ_PORT("DSW")                                            // Inputs
-<<<<<<< HEAD
-	AM_RANGE(0xbe000a, 0xbe000b) AM_READ(watchdog_reset16_r)                                    // Watchdog
-=======
 	AM_RANGE(0xbe000a, 0xbe000b) AM_DEVREAD("watchdog", watchdog_timer_device, reset16_r)       // Watchdog
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -592,11 +533,7 @@ static ADDRESS_MAP_START( rocknms_sub_map, AS_PROGRAM, 16, tetrisp2_state )
 	AM_RANGE(0xba001e, 0xba001f) AM_WRITENOP                                                    // Lev 2 irq ack
 //  AM_RANGE(0xbe0000, 0xbe0001) AM_READNOP                                                     // INT-level1 dummy read
 	AM_RANGE(0xbe0002, 0xbe0003) AM_READWRITE(rocknms_main2sub_r, rocknms_sub2main_w)           // MAIN <-> SUB Communication
-<<<<<<< HEAD
-	AM_RANGE(0xbe000a, 0xbe000b) AM_READ(watchdog_reset16_r )                                   // Watchdog
-=======
 	AM_RANGE(0xbe000a, 0xbe000b) AM_DEVREAD("watchdog", watchdog_timer_device, reset16_r)       // Watchdog
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -631,11 +568,7 @@ READ16_MEMBER(stepstag_state::unk_a42000_r)
 
 WRITE16_MEMBER(stepstag_state::stepstag_soundlatch_word_w)
 {
-<<<<<<< HEAD
-	soundlatch_word_w(space, offset, data, mem_mask);
-=======
 	m_soundlatch->write(space, offset, data, mem_mask);
->>>>>>> upstream/master
 
 	m_subcpu->set_input_line(M68K_IRQ_6, HOLD_LINE);
 
@@ -648,23 +581,6 @@ WRITE16_MEMBER(stepstag_state::stepstag_leds_w)
 //  data = COMBINE_DATA()
 	if (ACCESSING_BITS_0_7)
 	{
-<<<<<<< HEAD
-		set_led_status(machine(),  0,   data & 0x0001); // P2 Front-Left
-		set_led_status(machine(),  1,   data & 0x0002); // P2 Front-Right
-		set_led_status(machine(),  2,   data & 0x0004); // P2 Left
-		set_led_status(machine(),  3,   data & 0x0008); // P2 Right
-		set_led_status(machine(),  4,   data & 0x0010); // P2 Back-Left
-		set_led_status(machine(),  5,   data & 0x0020); // P2 Back-Right
-	}
-	if (ACCESSING_BITS_8_15)
-	{
-		set_led_status(machine(),  6,   data & 0x0100); // P1 Front-Left
-		set_led_status(machine(),  7,   data & 0x0200); // P1 Front-Right
-		set_led_status(machine(),  8,   data & 0x0400); // P1 Left
-		set_led_status(machine(),  9,   data & 0x0800); // P1 Right
-		set_led_status(machine(), 10,   data & 0x1000); // P1 Back-Left
-		set_led_status(machine(), 11,   data & 0x2000); // P1 Back-Right
-=======
 		output().set_led_value( 0,   data & 0x0001); // P2 Front-Left
 		output().set_led_value( 1,   data & 0x0002); // P2 Front-Right
 		output().set_led_value( 2,   data & 0x0004); // P2 Left
@@ -680,7 +596,6 @@ WRITE16_MEMBER(stepstag_state::stepstag_leds_w)
 		output().set_led_value( 9,   data & 0x0800); // P1 Right
 		output().set_led_value(10,   data & 0x1000); // P1 Back-Left
 		output().set_led_value(11,   data & 0x2000); // P1 Back-Right
->>>>>>> upstream/master
 	}
 
 //  popmessage("FEET %02x",data);
@@ -707,11 +622,7 @@ static ADDRESS_MAP_START( stepstag_map, AS_PROGRAM, 16, stepstag_state )
 	AM_RANGE(0xa44000, 0xa44001) AM_READNOP     // watchdog
 //  AM_RANGE(0xa48000, 0xa48001) AM_WRITENOP    // PC?
 //  AM_RANGE(0xa4c000, 0xa4c001) AM_WRITENOP    // PC?
-<<<<<<< HEAD
-	AM_RANGE(0xa50000, 0xa50001) AM_READWRITE( soundlatch_word_r, stepstag_soundlatch_word_w )
-=======
 	AM_RANGE(0xa50000, 0xa50001) AM_DEVREAD("soundlatch", generic_latch_16_device, read) AM_WRITE(stepstag_soundlatch_word_w)
->>>>>>> upstream/master
 	AM_RANGE(0xa60000, 0xa60003) AM_DEVWRITE8("ymz", ymz280b_device, write, 0x00ff)             // Sound
 
 	AM_RANGE(0xb00000, 0xb00001) AM_WRITENOP                                                    // Coin Counter plus other things
@@ -767,11 +678,7 @@ static ADDRESS_MAP_START( stepstag_sub_map, AS_PROGRAM, 16, stepstag_state )
 	AM_RANGE(0xa80000, 0xa80001) AM_WRITENOP // cleared after writing this sprite list
 //  AM_RANGE(0xac0000, 0xac0001) AM_WRITENOP // cleared at boot
 
-<<<<<<< HEAD
-	AM_RANGE(0xb00000, 0xb00001) AM_READWRITE( soundlatch_word_r, soundlatch_word_w )
-=======
 	AM_RANGE(0xb00000, 0xb00001) AM_DEVREADWRITE("soundlatch", generic_latch_16_device, read, write)
->>>>>>> upstream/master
 
 	AM_RANGE(0xc00000, 0xc00001) AM_READ(unknown_read_0xc00000) AM_WRITENOP //??
 	AM_RANGE(0xd00000, 0xd00001) AM_READNOP // watchdog
@@ -1120,11 +1027,7 @@ INPUT_PORTS_END
 
 static INPUT_PORTS_START( rocknms )
 	PORT_START("PLAYERS")   // IN0 - $be0002.w
-<<<<<<< HEAD
-	PORT_BIT( 0x0003, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, tetrisp2_state,rocknms_main2sub_status_r, NULL) // MAIN -> SUB Communication
-=======
 	PORT_BIT( 0x0003, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, tetrisp2_state,rocknms_main2sub_status_r, nullptr) // MAIN -> SUB Communication
->>>>>>> upstream/master
 	PORT_BIT( 0x0004, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT ) PORT_PLAYER(1)
 	PORT_BIT( 0x0008, IP_ACTIVE_LOW, IPT_JOYSTICK_DOWN ) PORT_PLAYER(1)
 	PORT_BIT( 0x0010, IP_ACTIVE_HIGH, IPT_BUTTON1 ) PORT_PLAYER(1)
@@ -1368,17 +1271,11 @@ TIMER_CALLBACK_MEMBER(tetrisp2_state::rockn_timer_sub_level1_callback)
 
 void tetrisp2_state::init_rockn_timer()
 {
-<<<<<<< HEAD
-	machine().scheduler().timer_pulse(attotime::from_msec(32), timer_expired_delegate(FUNC(tetrisp2_state::rockn_timer_level1_callback),this));
-	m_rockn_timer_l4 = machine().scheduler().timer_alloc(timer_expired_delegate(FUNC(tetrisp2_state::rockn_timer_level4_callback),this));
-
-=======
 	m_rockn_timer_l1 = machine().scheduler().timer_alloc(timer_expired_delegate(FUNC(tetrisp2_state::rockn_timer_level1_callback),this));
 	m_rockn_timer_l4 = machine().scheduler().timer_alloc(timer_expired_delegate(FUNC(tetrisp2_state::rockn_timer_level4_callback),this));
 
 	m_rockn_timer_l1->adjust(attotime::from_msec(32), 0, attotime::from_msec(32));
 
->>>>>>> upstream/master
 	save_item(NAME(m_systemregs));
 	save_item(NAME(m_rocknms_sub_systemregs));
 	save_item(NAME(m_rockn_protectdata));
@@ -1410,17 +1307,11 @@ DRIVER_INIT_MEMBER(tetrisp2_state,rocknms)
 {
 	init_rockn_timer();
 
-<<<<<<< HEAD
-	machine().scheduler().timer_pulse(attotime::from_msec(32), timer_expired_delegate(FUNC(tetrisp2_state::rockn_timer_sub_level1_callback),this));
-	m_rockn_timer_sub_l4 = machine().scheduler().timer_alloc(timer_expired_delegate(FUNC(tetrisp2_state::rockn_timer_sub_level4_callback),this));
-
-=======
 	m_rockn_timer_sub_l1 = machine().scheduler().timer_alloc(timer_expired_delegate(FUNC(tetrisp2_state::rockn_timer_sub_level1_callback),this));
 	m_rockn_timer_sub_l4 = machine().scheduler().timer_alloc(timer_expired_delegate(FUNC(tetrisp2_state::rockn_timer_sub_level4_callback),this));
 
 	m_rockn_timer_sub_l1->adjust(attotime::from_msec(32), 0, attotime::from_msec(32));
 
->>>>>>> upstream/master
 	m_rockn_protectdata = 3;
 
 }
@@ -1438,11 +1329,7 @@ DRIVER_INIT_MEMBER(stepstag_state,stepstag)
 }
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( tetrisp2, tetrisp2_state )
-=======
 static MACHINE_CONFIG_START( tetrisp2 )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, 12000000)
@@ -1450,13 +1337,9 @@ static MACHINE_CONFIG_START( tetrisp2 )
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", tetrisp2_state,  irq2_line_hold)
 
 	MCFG_NVRAM_ADD_0FILL("nvram")
-<<<<<<< HEAD
-	MCFG_WATCHDOG_VBLANK_INIT(8)    /* guess */
-=======
 
 	MCFG_WATCHDOG_ADD("watchdog")
 	MCFG_WATCHDOG_VBLANK_INIT("screen", 8)    /* guess */
->>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
@@ -1481,11 +1364,7 @@ static MACHINE_CONFIG_START( tetrisp2 )
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( nndmseal, tetrisp2_state )
-=======
 static MACHINE_CONFIG_START( nndmseal )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, XTAL_12MHz)
@@ -1494,11 +1373,8 @@ static MACHINE_CONFIG_START( nndmseal )
 
 	MCFG_NVRAM_ADD_0FILL("nvram")
 
-<<<<<<< HEAD
-=======
 	MCFG_WATCHDOG_ADD("watchdog")
 
->>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE(60)
@@ -1516,20 +1392,12 @@ static MACHINE_CONFIG_START( nndmseal )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki", XTAL_2MHz, OKIM6295_PIN7_HIGH)
-=======
 	MCFG_OKIM6295_ADD("oki", XTAL_2MHz, PIN7_HIGH)
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( rockn, tetrisp2_state )
-=======
 static MACHINE_CONFIG_START( rockn )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, 12000000)
@@ -1538,11 +1406,8 @@ static MACHINE_CONFIG_START( rockn )
 
 	MCFG_NVRAM_ADD_0FILL("nvram")
 
-<<<<<<< HEAD
-=======
 	MCFG_WATCHDOG_ADD("watchdog")
 
->>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE(60)
@@ -1566,11 +1431,7 @@ static MACHINE_CONFIG_START( rockn )
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( rockn2, tetrisp2_state )
-=======
 static MACHINE_CONFIG_START( rockn2 )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, 12000000)
@@ -1579,11 +1440,8 @@ static MACHINE_CONFIG_START( rockn2 )
 
 	MCFG_NVRAM_ADD_0FILL("nvram")
 
-<<<<<<< HEAD
-=======
 	MCFG_WATCHDOG_ADD("watchdog")
 
->>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE(60)
@@ -1607,11 +1465,7 @@ static MACHINE_CONFIG_START( rockn2 )
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( rocknms, tetrisp2_state )
-=======
 static MACHINE_CONFIG_START( rocknms )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, 12000000)
@@ -1624,11 +1478,8 @@ static MACHINE_CONFIG_START( rocknms )
 
 	MCFG_NVRAM_ADD_0FILL("nvram")
 
-<<<<<<< HEAD
-=======
 	MCFG_WATCHDOG_ADD("watchdog")
 
->>>>>>> upstream/master
 	/* video hardware */
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", tetrisp2)
@@ -1664,11 +1515,7 @@ static MACHINE_CONFIG_START( rocknms )
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( stepstag, stepstag_state )
-=======
 static MACHINE_CONFIG_START( stepstag )
->>>>>>> upstream/master
 	MCFG_CPU_ADD("maincpu", M68000, 16000000 ) //??
 	MCFG_CPU_PROGRAM_MAP(stepstag_map)
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", tetrisp2_state,  irq2_line_hold) // lev 4 triggered by system timer
@@ -1714,11 +1561,8 @@ static MACHINE_CONFIG_START( stepstag )
 	// sound hardware
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
-<<<<<<< HEAD
-=======
 	MCFG_GENERIC_LATCH_16_ADD("soundlatch")
 
->>>>>>> upstream/master
 	MCFG_SOUND_ADD("ymz", YMZ280B, 16934400)
 	MCFG_SOUND_ROUTE(0, "lspeaker", 1.0)
 	MCFG_SOUND_ROUTE(1, "rspeaker", 1.0)
@@ -2019,11 +1863,7 @@ Custom: SS91022-03
         SS91022-05
 
 Other:  Sigma XILINX XCS30
-<<<<<<< HEAD
-        Sigma XILINX XC9536 (socketted and stamped SL4)
-=======
         Sigma XILINX XC9536 (socketed and stamped SL4)
->>>>>>> upstream/master
 
 
 PCB Layout for sound rom board (from Rock'n 3):
@@ -2451,34 +2291,19 @@ ROM_END
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-GAME( 1997, tetrisp2,  0,        tetrisp2, tetrisp2, driver_device, 0,     ROT0,   "Jaleco / The Tetris Company", "Tetris Plus 2 (World)",           MACHINE_SUPPORTS_SAVE )
-GAME( 1997, tetrisp2j, tetrisp2, tetrisp2, tetrisp2j, driver_device,0,     ROT0,   "Jaleco / The Tetris Company", "Tetris Plus 2 (Japan, V2.2)",     MACHINE_SUPPORTS_SAVE )
-GAME( 1997, tetrisp2ja,tetrisp2, tetrisp2, tetrisp2j, driver_device,0,     ROT0,   "Jaleco / The Tetris Company", "Tetris Plus 2 (Japan, V2.1)",     MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1997, tetrisp2,  0,        tetrisp2, tetrisp2,  tetrisp2_state, 0,     ROT0,   "Jaleco / The Tetris Company", "Tetris Plus 2 (World)",           MACHINE_SUPPORTS_SAVE )
 GAME( 1997, tetrisp2j, tetrisp2, tetrisp2, tetrisp2j, tetrisp2_state, 0,     ROT0,   "Jaleco / The Tetris Company", "Tetris Plus 2 (Japan, V2.2)",     MACHINE_SUPPORTS_SAVE )
 GAME( 1997, tetrisp2ja,tetrisp2, tetrisp2, tetrisp2j, tetrisp2_state, 0,     ROT0,   "Jaleco / The Tetris Company", "Tetris Plus 2 (Japan, V2.1)",     MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master
 
 GAME( 1997, nndmseal, 0,        nndmseal, nndmseal, tetrisp2_state, rockn, ROT0 | ORIENTATION_FLIP_X, "I'Max / Jaleco", "Nandemo Seal Iinkai",                  MACHINE_SUPPORTS_SAVE | MACHINE_NOT_WORKING )
 GAME( 1997, nndmseala,nndmseal, nndmseal, nndmseal, tetrisp2_state, rockn, ROT0 | ORIENTATION_FLIP_X, "I'Max / Jaleco", "Nandemo Seal Iinkai (Astro Boy ver.)", MACHINE_SUPPORTS_SAVE | MACHINE_NOT_WORKING )
 
-<<<<<<< HEAD
-GAME( 1999, rockn,    0,        rockn,    rockn, tetrisp2_state,   rockn,    ROT270, "Jaleco",                      "Rock'n Tread (Japan)",            MACHINE_SUPPORTS_SAVE )
-GAME( 1999, rockna,   rockn,    rockn,    rockn, tetrisp2_state,   rockn1,   ROT270, "Jaleco",                      "Rock'n Tread (Japan, alternate)", MACHINE_SUPPORTS_SAVE )
-GAME( 1999, rockn2,   0,        rockn2,   rockn, tetrisp2_state,   rockn2,   ROT270, "Jaleco",                      "Rock'n Tread 2 (Japan)",          MACHINE_SUPPORTS_SAVE )
-GAME( 1999, rocknms,  0,        rocknms,  rocknms, tetrisp2_state, rocknms,  ROT0,   "Jaleco",                      "Rock'n MegaSession (Japan)",      MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_GRAPHICS )
-GAME( 1999, rockn3,   0,        rockn2,   rockn, tetrisp2_state,   rockn3,   ROT270, "Jaleco",                      "Rock'n 3 (Japan)",                MACHINE_SUPPORTS_SAVE )
-GAME( 2000, rockn4,   0,        rockn2,   rockn, tetrisp2_state,   rockn3,   ROT270, "Jaleco / PCCWJ",              "Rock'n 4 (Japan, prototype)",     MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1999, rockn,    0,        rockn,    rockn,   tetrisp2_state, rockn,    ROT270, "Jaleco",                      "Rock'n Tread (Japan)",            MACHINE_SUPPORTS_SAVE )
 GAME( 1999, rockna,   rockn,    rockn,    rockn,   tetrisp2_state, rockn1,   ROT270, "Jaleco",                      "Rock'n Tread (Japan, alternate)", MACHINE_SUPPORTS_SAVE )
 GAME( 1999, rockn2,   0,        rockn2,   rockn,   tetrisp2_state, rockn2,   ROT270, "Jaleco",                      "Rock'n Tread 2 (Japan)",          MACHINE_SUPPORTS_SAVE )
 GAME( 1999, rocknms,  0,        rocknms,  rocknms, tetrisp2_state, rocknms,  ROT0,   "Jaleco",                      "Rock'n MegaSession (Japan)",      MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_GRAPHICS )
 GAME( 1999, rockn3,   0,        rockn2,   rockn,   tetrisp2_state, rockn3,   ROT270, "Jaleco",                      "Rock'n 3 (Japan)",                MACHINE_SUPPORTS_SAVE )
 GAME( 2000, rockn4,   0,        rockn2,   rockn,   tetrisp2_state, rockn3,   ROT270, "Jaleco / PCCWJ",              "Rock'n 4 (Japan, prototype)",     MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master
 
 // Undumped:
 // - Stepping Stage <- the original Game

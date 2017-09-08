@@ -5,29 +5,18 @@
 
 #include "emu.h"
 #include "k057714.h"
-<<<<<<< HEAD
-=======
 #include "screen.h"
->>>>>>> upstream/master
 
 
 #define DUMP_VRAM 0
 #define PRINT_GCU 0
 
 
-<<<<<<< HEAD
-const device_type K057714 = &device_creator<k057714_device>;
-
-k057714_device::k057714_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, K057714, "K057714 GCU", tag, owner, clock, "k057714", __FILE__),
-	m_irq(*this)
-=======
 DEFINE_DEVICE_TYPE(K057714, k057714_device, "k057714", "k057714_device GCU")
 
 k057714_device::k057714_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, K057714, tag, owner, clock)
 	, m_irq(*this)
->>>>>>> upstream/master
 {
 }
 
@@ -35,13 +24,8 @@ void k057714_device::device_start()
 {
 	m_irq.resolve_safe();
 
-<<<<<<< HEAD
-	m_vram = auto_alloc_array(machine(), UINT32, 0x2000000/4);
-	memset(m_vram, 0, 0x2000000);
-=======
 	m_vram = std::make_unique<uint32_t[]>(0x2000000/4);
 	memset(m_vram.get(), 0, 0x2000000);
->>>>>>> upstream/master
 }
 
 void k057714_device::device_reset()
@@ -52,19 +36,11 @@ void k057714_device::device_reset()
 	m_vram_fifo0_addr = 0;
 	m_vram_fifo1_addr = 0;
 
-<<<<<<< HEAD
-	for (int i=0; i < 4; i++)
-	{
-		m_frame[i].base = 0;
-		m_frame[i].width = 0;
-		m_frame[i].height = 0;
-=======
 	for (auto & elem : m_frame)
 	{
 		elem.base = 0;
 		elem.width = 0;
 		elem.height = 0;
->>>>>>> upstream/master
 	}
 }
 
@@ -306,11 +282,7 @@ WRITE32_MEMBER(k057714_device::fifo_w)
 		if (m_ext_fifo_count != 0)      // first access is a dummy write
 		{
 			int count = m_ext_fifo_count - 1;
-<<<<<<< HEAD
-			UINT32 addr = (((m_ext_fifo_addr >> 10) + m_ext_fifo_line) * 1024) + count;
-=======
 			uint32_t addr = (((m_ext_fifo_addr >> 10) + m_ext_fifo_line) * 1024) + count;
->>>>>>> upstream/master
 
 			if ((count & 1) == 0)
 			{
@@ -335,11 +307,7 @@ WRITE32_MEMBER(k057714_device::fifo_w)
 
 int k057714_device::draw(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
-<<<<<<< HEAD
-	UINT16 *vram16 = (UINT16*)m_vram;
-=======
 	uint16_t *vram16 = (uint16_t*)m_vram.get();
->>>>>>> upstream/master
 
 	int x = 0;
 	int y = 0;
@@ -361,21 +329,6 @@ int k057714_device::draw(screen_device &screen, bitmap_ind16 &bitmap, const rect
 
 	for (int j=0; j < height; j++)
 	{
-<<<<<<< HEAD
-		UINT16 *d = &bitmap.pix16(j, x);
-		int li = ((j+y) * fb_pitch) + x;
-		UINT32 fbaddr0 = m_frame[0].base + li;
-		UINT32 fbaddr1 = m_frame[1].base + li;
-		UINT32 fbaddr2 = m_frame[2].base + li;
-//      UINT32 fbaddr3 = m_frame[3].base + li;
-
-		for (int i=0; i < width; i++)
-		{
-			UINT16 pix0 = vram16[fbaddr0 ^ NATIVE_ENDIAN_VALUE_LE_BE(1,0)];
-			UINT16 pix1 = vram16[fbaddr1 ^ NATIVE_ENDIAN_VALUE_LE_BE(1,0)];
-			UINT16 pix2 = vram16[fbaddr2 ^ NATIVE_ENDIAN_VALUE_LE_BE(1,0)];
-//          UINT16 pix3 = vram16[fbaddr3 ^ NATIVE_ENDIAN_VALUE_LE_BE(1,0)];
-=======
 		uint16_t *d = &bitmap.pix16(j, x);
 		int li = ((j+y) * fb_pitch) + x;
 		uint32_t fbaddr0 = m_frame[0].base + li;
@@ -389,7 +342,6 @@ int k057714_device::draw(screen_device &screen, bitmap_ind16 &bitmap, const rect
 			uint16_t pix1 = vram16[fbaddr1 ^ NATIVE_ENDIAN_VALUE_LE_BE(1,0)];
 			uint16_t pix2 = vram16[fbaddr2 ^ NATIVE_ENDIAN_VALUE_LE_BE(1,0)];
 //          uint16_t pix3 = vram16[fbaddr3 ^ NATIVE_ENDIAN_VALUE_LE_BE(1,0)];
->>>>>>> upstream/master
 
 			d[i] = 0;
 
@@ -416,11 +368,7 @@ int k057714_device::draw(screen_device &screen, bitmap_ind16 &bitmap, const rect
 	return 0;
 }
 
-<<<<<<< HEAD
-void k057714_device::draw_object(UINT32 *cmd)
-=======
 void k057714_device::draw_object(uint32_t *cmd)
->>>>>>> upstream/master
 {
 	// 0x00: xxx----- -------- -------- --------   command (5)
 	// 0x00: ---x---- -------- -------- --------   0: absolute coordinates
@@ -451,11 +399,7 @@ void k057714_device::draw_object(uint32_t *cmd)
 	bool yflip = (cmd[1] & 0x08000000) ? true : false;
 	bool alpha_enable = (cmd[1] & 0x30000000) ? true : false;
 	bool trans_enable = (cmd[1] & 0x40000000) ? true : false;
-<<<<<<< HEAD
-	UINT32 address = cmd[0] & 0xffffff;
-=======
 	uint32_t address = cmd[0] & 0xffffff;
->>>>>>> upstream/master
 	int alpha_level = (cmd[2] >> 27) & 0x1f;
 	bool relative_coords = (cmd[0] & 0x10000000) ? true : false;
 
@@ -465,11 +409,7 @@ void k057714_device::draw_object(uint32_t *cmd)
 		y += m_fb_origin_y;
 	}
 
-<<<<<<< HEAD
-	UINT16 *vram16 = (UINT16*)m_vram;
-=======
 	uint16_t *vram16 = (uint16_t*)m_vram.get();
->>>>>>> upstream/master
 
 	if (xscale == 0 || yscale == 0)
 	{
@@ -490,11 +430,7 @@ void k057714_device::draw_object(uint32_t *cmd)
 	{
 		int index;
 		int xinc;
-<<<<<<< HEAD
-		UINT32 fbaddr = ((j+y) * fb_pitch) + x;
-=======
 		uint32_t fbaddr = ((j+y) * fb_pitch) + x;
->>>>>>> upstream/master
 
 		if (yflip)
 		{
@@ -518,11 +454,7 @@ void k057714_device::draw_object(uint32_t *cmd)
 		int u = 0;
 		for (int i=0; i < width; i++)
 		{
-<<<<<<< HEAD
-			UINT16 pix = vram16[((index + (u >> 6)) ^ NATIVE_ENDIAN_VALUE_LE_BE(1,0)) & 0xffffff];
-=======
 			uint16_t pix = vram16[((index + (u >> 6)) ^ NATIVE_ENDIAN_VALUE_LE_BE(1,0)) & 0xffffff];
->>>>>>> upstream/master
 			bool draw = !trans_enable || (trans_enable && (pix & 0x8000));
 			if (alpha_enable)
 			{
@@ -530,16 +462,6 @@ void k057714_device::draw_object(uint32_t *cmd)
 				{
 					if ((pix & 0x7fff) != 0)
 					{
-<<<<<<< HEAD
-						UINT16 srcpix = vram16[fbaddr ^ NATIVE_ENDIAN_VALUE_LE_BE(1,0)];
-
-						UINT32 sr = (srcpix >> 10) & 0x1f;
-						UINT32 sg = (srcpix >>  5) & 0x1f;
-						UINT32 sb = (srcpix >>  0) & 0x1f;
-						UINT32 r = (pix >> 10) & 0x1f;
-						UINT32 g = (pix >>  5) & 0x1f;
-						UINT32 b = (pix >>  0) & 0x1f;
-=======
 						uint16_t srcpix = vram16[fbaddr ^ NATIVE_ENDIAN_VALUE_LE_BE(1,0)];
 
 						uint32_t sr = (srcpix >> 10) & 0x1f;
@@ -548,7 +470,6 @@ void k057714_device::draw_object(uint32_t *cmd)
 						uint32_t r = (pix >> 10) & 0x1f;
 						uint32_t g = (pix >>  5) & 0x1f;
 						uint32_t b = (pix >>  0) & 0x1f;
->>>>>>> upstream/master
 
 						sr += (r * alpha_level) >> 4;
 						sg += (g * alpha_level) >> 4;
@@ -578,11 +499,7 @@ void k057714_device::draw_object(uint32_t *cmd)
 	}
 }
 
-<<<<<<< HEAD
-void k057714_device::fill_rect(UINT32 *cmd)
-=======
 void k057714_device::fill_rect(uint32_t *cmd)
->>>>>>> upstream/master
 {
 	// 0x00: xxx----- -------- -------- --------       command (4)
 	// 0x00: ---x---- -------- -------- --------   0: absolute coordinates
@@ -612,11 +529,7 @@ void k057714_device::fill_rect(uint32_t *cmd)
 		y += m_fb_origin_y;
 	}
 
-<<<<<<< HEAD
-	UINT16 color[4];
-=======
 	uint16_t color[4];
->>>>>>> upstream/master
 	color[0] = (cmd[2] >> 16);
 	color[1] = (cmd[2] & 0xffff);
 	color[2] = (cmd[3] >> 16);
@@ -631,21 +544,13 @@ void k057714_device::fill_rect(uint32_t *cmd)
 	int y1 = y;
 	int y2 = y + height;
 
-<<<<<<< HEAD
-	UINT16 *vram16 = (UINT16*)m_vram;
-=======
 	uint16_t *vram16 = (uint16_t*)m_vram.get();
->>>>>>> upstream/master
 
 	int fb_pitch = 1024;
 
 	for (int j=y1; j < y2; j++)
 	{
-<<<<<<< HEAD
-		UINT32 fbaddr = j * fb_pitch;
-=======
 		uint32_t fbaddr = j * fb_pitch;
->>>>>>> upstream/master
 		for (int i=x1; i < x2; i++)
 		{
 			vram16[(fbaddr+i) ^ NATIVE_ENDIAN_VALUE_LE_BE(1,0)] = color[i&3];
@@ -653,11 +558,7 @@ void k057714_device::fill_rect(uint32_t *cmd)
 	}
 }
 
-<<<<<<< HEAD
-void k057714_device::draw_character(UINT32 *cmd)
-=======
 void k057714_device::draw_character(uint32_t *cmd)
->>>>>>> upstream/master
 {
 	// 0x00: xxx----- -------- -------- --------   command (7)
 	// 0x00: ---x---- -------- -------- --------   0: absolute coordinates
@@ -677,13 +578,8 @@ void k057714_device::draw_character(uint32_t *cmd)
 
 	int x = cmd[1] & 0x3ff;
 	int y = (cmd[1] >> 10) & 0x3fff;
-<<<<<<< HEAD
-	UINT32 address = cmd[0] & 0xffffff;
-	UINT16 color[4];
-=======
 	uint32_t address = cmd[0] & 0xffffff;
 	uint16_t color[4];
->>>>>>> upstream/master
 	bool relative_coords = (cmd[0] & 0x10000000) ? true : false;
 	bool double_height = (cmd[1] & 0x01000000) ? true : false;
 	bool trans_enable = (cmd[1] & 0x40000000) ? true : false;
@@ -703,23 +599,14 @@ void k057714_device::draw_character(uint32_t *cmd)
 	printf("%s Draw Char %08X, x %d, y %d\n", basetag(), address, x, y);
 #endif
 
-<<<<<<< HEAD
-	UINT16 *vram16 = (UINT16*)m_vram;
-=======
 	uint16_t *vram16 = (uint16_t*)m_vram.get();
->>>>>>> upstream/master
 	int fb_pitch = 1024;
 	int height = double_height ? 16 : 8;
 
 	for (int j=0; j < height; j++)
 	{
-<<<<<<< HEAD
-		UINT32 fbaddr = (y+j) * fb_pitch;
-		UINT16 line = vram16[address ^ NATIVE_ENDIAN_VALUE_LE_BE(1,0)];
-=======
 		uint32_t fbaddr = (y+j) * fb_pitch;
 		uint16_t line = vram16[address ^ NATIVE_ENDIAN_VALUE_LE_BE(1,0)];
->>>>>>> upstream/master
 
 		address += 4;
 
@@ -733,11 +620,7 @@ void k057714_device::draw_character(uint32_t *cmd)
 	}
 }
 
-<<<<<<< HEAD
-void k057714_device::fb_config(UINT32 *cmd)
-=======
 void k057714_device::fb_config(uint32_t *cmd)
->>>>>>> upstream/master
 {
 	// 0x00: xxx----- -------- -------- --------   command (3)
 
@@ -755,11 +638,7 @@ void k057714_device::fb_config(uint32_t *cmd)
 	m_fb_origin_y = cmd[3] & 0x3fff;
 }
 
-<<<<<<< HEAD
-void k057714_device::execute_display_list(UINT32 addr)
-=======
 void k057714_device::execute_display_list(uint32_t addr)
->>>>>>> upstream/master
 {
 	bool end = false;
 
@@ -772,11 +651,7 @@ void k057714_device::execute_display_list(uint32_t addr)
 	addr /= 2;
 	while (!end && counter < 0x1000 && addr < (0x2000000/4))
 	{
-<<<<<<< HEAD
-		UINT32 *cmd = &m_vram[addr];
-=======
 		uint32_t *cmd = &m_vram[addr];
->>>>>>> upstream/master
 		addr += 4;
 
 		int command = (cmd[0] >> 29) & 0x7;
@@ -819,11 +694,7 @@ void k057714_device::execute_display_list(uint32_t addr)
 	};
 }
 
-<<<<<<< HEAD
-void k057714_device::execute_command(UINT32* cmd)
-=======
 void k057714_device::execute_command(uint32_t* cmd)
->>>>>>> upstream/master
 {
 	int command = (cmd[0] >> 29) & 0x7;
 

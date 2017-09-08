@@ -6,20 +6,11 @@
 
 **********************************************************************/
 
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __C64_NL10_INTERFACE__
-#define __C64_NL10_INTERFACE__
-
-#include "emu.h"
-=======
 #ifndef MAME_BUS_CBMIEC_C64_NL10_H
 #define MAME_BUS_CBMIEC_C64_NL10_H
 
 #pragma once
 
->>>>>>> upstream/master
 #include "cbmiec.h"
 
 
@@ -30,27 +21,6 @@
 
 // ======================> c64_nl10_interface_device
 
-<<<<<<< HEAD
-class c64_nl10_interface_device :  public device_t,
-									public device_cbm_iec_interface
-{
-public:
-	// construction/destruction
-	c64_nl10_interface_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// optional information overrides
-	virtual const rom_entry *device_rom_region() const;
-
-protected:
-	// device-level overrides
-	virtual void device_start();
-	virtual void device_reset();
-
-	// device_cbm_iec_interface overrides
-	void cbm_iec_atn(int state);
-	void cbm_iec_data(int state);
-	void cbm_iec_reset(int state);
-=======
 class c64_nl10_interface_device : public device_t, public device_cbm_iec_interface
 {
 public:
@@ -69,20 +39,11 @@ protected:
 	void cbm_iec_atn(int state) override;
 	void cbm_iec_data(int state) override;
 	void cbm_iec_reset(int state) override;
->>>>>>> upstream/master
 };
 
 
 // device type definition
-<<<<<<< HEAD
-extern const device_type C64_NL10_INTERFACE;
-
-
-
-#endif
-=======
 DECLARE_DEVICE_TYPE(C64_NL10_INTERFACE, c64_nl10_interface_device)
 
 
 #endif // MAME_BUS_CBMIEC_C64_NL10_H
->>>>>>> upstream/master

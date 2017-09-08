@@ -1,14 +1,9 @@
 // license:BSD-3-Clause
 // copyright-holders:Olivier Galibert
-<<<<<<< HEAD
-#ifndef __MAPLE_DC_H__
-#define __MAPLE_DC_H__
-=======
 #ifndef MAME_MACHINE_MAPLE_DC_H
 #define MAME_MACHINE_MAPLE_DC_H
 
 #pragma once
->>>>>>> upstream/master
 
 #include "cpu/sh4/sh4.h"
 
@@ -22,11 +17,7 @@ class maple_device;
 class maple_dc_device : public device_t
 {
 public:
-<<<<<<< HEAD
-	maple_dc_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-=======
 	maple_dc_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
->>>>>>> upstream/master
 	static void static_set_maincpu_tag(device_t &device, const char *maincpu_tag);
 	static void static_set_irq_cb(device_t &device, void (*irq_cb)(running_machine &));
 
@@ -50,15 +41,9 @@ public:
 
 protected:
 	// device-level overrides
-<<<<<<< HEAD
-	virtual void device_start();
-	virtual void device_reset();
-	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
-=======
 	virtual void device_start() override;
 	virtual void device_reset() override;
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
->>>>>>> upstream/master
 
 private:
 	enum {
@@ -77,17 +62,10 @@ private:
 	sh4_device *cpu;
 	emu_timer *timer;
 
-<<<<<<< HEAD
-	UINT32 mdstar, mden, mdst, msys;
-	UINT32 mdtsel;
-
-	UINT32 dma_state, dma_adr, dma_port, dma_dest;
-=======
 	uint32_t mdstar, mden, mdst, msys;
 	uint32_t mdtsel;
 
 	uint32_t dma_state, dma_adr, dma_port, dma_dest;
->>>>>>> upstream/master
 	bool dma_endflag;
 	void (*irq_cb)(running_machine &);
 
@@ -96,12 +74,6 @@ private:
 	const char *maincpu_tag;
 };
 
-<<<<<<< HEAD
-extern const device_type MAPLE_DC;
-
-#endif /* __MAPLE_DC_H__ */
-=======
 DECLARE_DEVICE_TYPE(MAPLE_DC, maple_dc_device)
 
 #endif // MAME_MACHINE_MAPLE_DC_H
->>>>>>> upstream/master

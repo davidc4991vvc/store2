@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-// license:LGPL-2.1+
-=======
 // license:BSD-3-Clause
->>>>>>> upstream/master
 // copyright-holders:Tomasz Slanina
 /***************************************************************************
 
@@ -34,12 +30,6 @@ YM2151:
 
 ***************************************************************************/
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/z80/z80.h"
-#include "includes/mustache.h"
-#include "audio/t5182.h"
-
-=======
 #include "includes/mustache.h"
 #include "audio/t5182.h"
 
@@ -47,7 +37,6 @@ YM2151:
 #include "speaker.h"
 
 
->>>>>>> upstream/master
 #define XTAL1  14318180
 #define XTAL2  18432000
 #define XTAL3  12000000
@@ -57,12 +46,8 @@ YM2151:
 
 
 static ADDRESS_MAP_START( memmap, AS_PROGRAM, 8, mustache_state )
-<<<<<<< HEAD
-	AM_RANGE(0x0000, 0xbfff) AM_ROM
-=======
 	AM_RANGE(0x0000, 0x7fff) AM_DEVREAD("sei80bu", sei80bu_device, data_r)
 	AM_RANGE(0x8000, 0xbfff) AM_ROM
->>>>>>> upstream/master
 	AM_RANGE(0xc000, 0xcfff) AM_RAM_WRITE(videoram_w) AM_SHARE("videoram")
 	AM_RANGE(0xd000, 0xd000) AM_DEVWRITE("t5182", t5182_device, sound_irq_w)
 	AM_RANGE(0xd001, 0xd001) AM_DEVREAD("t5182", t5182_device, sharedram_semaphore_snd_r)
@@ -80,13 +65,8 @@ static ADDRESS_MAP_START( memmap, AS_PROGRAM, 8, mustache_state )
 	AM_RANGE(0xf000, 0xffff) AM_RAM
 ADDRESS_MAP_END
 
-<<<<<<< HEAD
-static ADDRESS_MAP_START( decrypted_opcodes_map, AS_DECRYPTED_OPCODES, 8, mustache_state )
-	AM_RANGE(0x0000, 0x7fff) AM_ROM AM_SHARE("decrypted_opcodes")
-=======
 static ADDRESS_MAP_START( decrypted_opcodes_map, AS_OPCODES, 8, mustache_state )
 	AM_RANGE(0x0000, 0x7fff) AM_DEVREAD("sei80bu", sei80bu_device, opcode_r)
->>>>>>> upstream/master
 	AM_RANGE(0x8000, 0xbfff) AM_ROM AM_REGION("maincpu", 0x8000)
 ADDRESS_MAP_END
 
@@ -115,44 +95,25 @@ static INPUT_PORTS_START( mustache )
 	PORT_BIT( 0xf9, IP_ACTIVE_LOW, IPT_UNUSED  )
 
 	PORT_START("DSWA")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x01, 0x01, DEF_STR( Cabinet ) ) PORT_DIPLOCATION("SW 2:!1")
-	PORT_DIPSETTING(    0x01, DEF_STR( Upright ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( Cocktail ) )
-	PORT_DIPNAME( 0x06, 0x04, DEF_STR( Difficulty ) ) PORT_DIPLOCATION("SW 2:!2,!3")
-=======
 	PORT_DIPNAME( 0x01, 0x01, DEF_STR( Cabinet ) ) PORT_DIPLOCATION("SW 2:1")
 	PORT_DIPSETTING(    0x01, DEF_STR( Upright ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( Cocktail ) )
 	PORT_DIPNAME( 0x06, 0x04, DEF_STR( Difficulty ) ) PORT_DIPLOCATION("SW 2:2,3")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x06, DEF_STR( Easy ) )
 	PORT_DIPSETTING(    0x04, DEF_STR( Normal ) )
 	PORT_DIPSETTING(    0x02, DEF_STR( Hard ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( Hardest ) )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x18, 0x18, DEF_STR( Lives ) ) PORT_DIPLOCATION("SW 2:!4,!5")
-=======
 	PORT_DIPNAME( 0x18, 0x18, DEF_STR( Lives ) ) PORT_DIPLOCATION("SW 2:4,5")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x10, "1" )
 	PORT_DIPSETTING(    0x18, "3" )
 	PORT_DIPSETTING(    0x08, "4" )
 	PORT_DIPSETTING(    0x00, "5" )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x20, 0x00, DEF_STR( Demo_Sounds ) ) PORT_DIPLOCATION("SW 2:!6")
-=======
 	PORT_DIPNAME( 0x20, 0x00, DEF_STR( Demo_Sounds ) ) PORT_DIPLOCATION("SW 2:6")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START("DSWB")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x07, 0x07, DEF_STR( Coin_A ) ) PORT_DIPLOCATION("SW 1:!1,!2,!3")
-=======
 	PORT_DIPNAME( 0x07, 0x07, DEF_STR( Coin_A ) ) PORT_DIPLOCATION("SW 1:1,2,3")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x00, DEF_STR( 5C_1C ) )
 	PORT_DIPSETTING(    0x04, DEF_STR( 4C_1C ) )
 	PORT_DIPSETTING(    0x02, DEF_STR( 3C_1C ) )
@@ -161,22 +122,11 @@ static INPUT_PORTS_START( mustache )
 	PORT_DIPSETTING(    0x03, DEF_STR( 1C_2C ) )
 	PORT_DIPSETTING(    0x05, DEF_STR( 1C_3C ) )
 	PORT_DIPSETTING(    0x01, DEF_STR( 1C_5C ) )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x18, 0x18, DEF_STR( Coin_B ) ) PORT_DIPLOCATION("SW 1:!4,!5")
-=======
 	PORT_DIPNAME( 0x18, 0x18, DEF_STR( Coin_B ) ) PORT_DIPLOCATION("SW 1:4,5")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x10, DEF_STR( 2C_1C ) )
 	PORT_DIPSETTING(    0x18, DEF_STR( 1C_1C ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( 2C_3C ) )
 	PORT_DIPSETTING(    0x08, DEF_STR( 1C_2C ) )
-<<<<<<< HEAD
-	PORT_SERVICE( 0x20, IP_ACTIVE_LOW ) PORT_DIPLOCATION("SW 1:!6")
-	PORT_DIPNAME( 0x40, 0x40, DEF_STR( Free_Play ) ) PORT_DIPLOCATION("SW 1:!7")
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-// There is an 8th dipswitch here, which controls screen flip, but the operator sheet implies it does it via hardware, i.e. not readable by cpu. May need further investigation.
-=======
 	PORT_SERVICE( 0x20, IP_ACTIVE_LOW ) PORT_DIPLOCATION("SW 1:6")
 	PORT_DIPNAME( 0x40, 0x40, DEF_STR( Free_Play ) ) PORT_DIPLOCATION("SW 1:7")
 	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
@@ -184,7 +134,6 @@ static INPUT_PORTS_START( mustache )
 	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Flip_Screen ) ) PORT_DIPLOCATION("SW 1:8")
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
->>>>>>> upstream/master
 
 INPUT_PORTS_END
 
@@ -228,11 +177,7 @@ TIMER_DEVICE_CALLBACK_MEMBER(mustache_state::scanline)
 
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( mustache, mustache_state )
-=======
 static MACHINE_CONFIG_START( mustache )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, CPU_CLOCK)
@@ -240,15 +185,10 @@ static MACHINE_CONFIG_START( mustache )
 	MCFG_CPU_DECRYPTED_OPCODES_MAP(decrypted_opcodes_map)
 	MCFG_TIMER_DRIVER_ADD_SCANLINE("scantimer", mustache_state, scanline, "screen", 0, 1)
 
-<<<<<<< HEAD
-	MCFG_DEVICE_ADD("t5182", T5182, 0)
-
-=======
 	MCFG_DEVICE_ADD("sei80bu", SEI80BU, 0)
 	MCFG_DEVICE_ROM("maincpu")
 
 	MCFG_DEVICE_ADD("t5182", T5182, 0)
->>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
@@ -260,12 +200,7 @@ static MACHINE_CONFIG_START( mustache )
 	MCFG_SCREEN_PALETTE("palette")
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", mustache)
-<<<<<<< HEAD
-	MCFG_PALETTE_ADD("palette", 8*16+16*8)
-	MCFG_PALETTE_INIT_OWNER(mustache_state, mustache)
-=======
 	MCFG_PALETTE_ADD_RRRRGGGGBBBB_PROMS("palette", "proms", 256)
->>>>>>> upstream/master
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
@@ -303,8 +238,6 @@ ROM_START( mustache )
 	ROM_LOAD( "mustache.b6",0x0300, 0x1000, CRC(5f83fa35) SHA1(cb13e63577762d818e5dcbb52b8a53f66e284e8f) ) /* 63S281N near SEI0070BU */
 ROM_END
 
-<<<<<<< HEAD
-=======
 ROM_START( mustachei )
 	ROM_REGION( 0x20000, "maincpu", 0 )
 	ROM_LOAD( "1.h18", 0x0000, 0x8000, CRC(22893fbc) SHA1(724ea50642aec9be10547bd86fae5e1ebfe54685) )
@@ -332,31 +265,20 @@ ROM_START( mustachei )
 	ROM_LOAD( "a.b6",0x0300, 0x1000, CRC(5f83fa35) SHA1(cb13e63577762d818e5dcbb52b8a53f66e284e8f) ) /* 63S281N near SEI0070BU */
 ROM_END
 
->>>>>>> upstream/master
 DRIVER_INIT_MEMBER(mustache_state,mustache)
 {
 	int i;
 
 	int G1 = memregion("gfx1")->bytes()/3;
 	int G2 = memregion("gfx2")->bytes()/2;
-<<<<<<< HEAD
-	UINT8 *gfx1 = memregion("gfx1")->base();
-	UINT8 *gfx2 = memregion("gfx2")->base();
-	dynamic_buffer buf(G2*2);
-=======
 	uint8_t *gfx1 = memregion("gfx1")->base();
 	uint8_t *gfx2 = memregion("gfx2")->base();
 	std::vector<uint8_t> buf(G2*2);
->>>>>>> upstream/master
 
 	/* BG data lines */
 	for (i=0;i<G1; i++)
 	{
-<<<<<<< HEAD
-		UINT16 w;
-=======
 		uint16_t w;
->>>>>>> upstream/master
 
 		buf[i] = BITSWAP8(gfx1[i], 0,5,2,6,4,1,7,3);
 
@@ -374,11 +296,7 @@ DRIVER_INIT_MEMBER(mustache_state,mustache)
 	/* SPR data lines */
 	for (i=0;i<G2; i++)
 	{
-<<<<<<< HEAD
-		UINT16 w;
-=======
 		uint16_t w;
->>>>>>> upstream/master
 
 		w = (gfx2[i] << 8) | gfx2[i+G2];
 		w = BITSWAP16(w, 5,7,11,4,15,10,3,14, 9,2,13,8,1,12,0,6 );
@@ -390,17 +308,8 @@ DRIVER_INIT_MEMBER(mustache_state,mustache)
 	/* SPR address lines */
 	for (i = 0; i < 2*G2; i++)
 		gfx2[i] = buf[BITSWAP24(i,23,22,21,20,19,18,17,16,15,12,11,10,9,8,7,6,5,4,13,14,3,2,1,0)];
-<<<<<<< HEAD
-
-	seibu_sound_device::apply_decrypt(memregion("maincpu")->base(), m_decrypted_opcodes, 0x8000);
-}
-
-
-GAME( 1987, mustache, 0, mustache, mustache, mustache_state, mustache, ROT90, "Seibu Kaihatsu (March license)", "Mustache Boy", MACHINE_SUPPORTS_SAVE )
-=======
 }
 
 
 GAME( 1987, mustache,  0,        mustache, mustache, mustache_state, mustache, ROT90, "Seibu Kaihatsu (March license)",  "Mustache Boy (Japan)", MACHINE_SUPPORTS_SAVE )
 GAME( 1987, mustachei, mustache, mustache, mustache, mustache_state, mustache, ROT90, "Seibu Kaihatsu (IG SPA license)", "Mustache Boy (Italy)", MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

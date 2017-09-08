@@ -6,13 +6,8 @@
 #error Dont include this file directly; include emu.h instead.
 #endif
 
-<<<<<<< HEAD
-#ifndef __DISLOT_H__
-#define __DISLOT_H__
-=======
 #ifndef MAME_EMU_DISLOT_H
 #define MAME_EMU_DISLOT_H
->>>>>>> upstream/master
 
 //**************************************************************************
 //  LEGACY MACROS
@@ -20,11 +15,7 @@
 
 #define MCFG_DEVICE_SLOT_INTERFACE(_slot_intf, _def_option, _fixed) MCFG_SLOT_OPTION_RESET MCFG_FRAGMENT_ADD(slot_options_##_slot_intf) MCFG_SLOT_DEFAULT_OPTION(_def_option) MCFG_SLOT_FIXED(_fixed)
 #define SLOT_INTERFACE_NAME(name) MACHINE_CONFIG_NAME(slot_options_##name)
-<<<<<<< HEAD
-#define SLOT_INTERFACE_START(name) MACHINE_CONFIG_FRAGMENT(slot_options_##name)
-=======
 #define SLOT_INTERFACE_START(name) MACHINE_CONFIG_START(slot_options_##name)
->>>>>>> upstream/master
 #define SLOT_INTERFACE(name,device) MCFG_SLOT_OPTION_ADD(name, device)
 #define SLOT_INTERFACE_INTERNAL(name,device) MCFG_SLOT_OPTION_ADD(name, device) MCFG_SLOT_OPTION_SELECTABLE(name, false)
 #define SLOT_INTERFACE_END MACHINE_CONFIG_END
@@ -76,45 +67,26 @@
 class device_slot_option
 {
 	friend class device_slot_interface;
-<<<<<<< HEAD
-	friend class simple_list<device_slot_option>;
-=======
->>>>>>> upstream/master
 
 public:
 	device_slot_option(const char *name, const device_type &devtype);
 
-<<<<<<< HEAD
-	device_slot_option *next() const { return m_next; }
-=======
->>>>>>> upstream/master
 	const char *name() const { return m_name; }
 	const device_type &devtype() const { return m_devtype; }
 	bool selectable() const { return m_selectable; }
 	const char *default_bios() const { return m_default_bios; }
 	machine_config_constructor machine_config() const { return m_machine_config; }
 	const input_device_default *input_device_defaults() const { return m_input_device_defaults; }
-<<<<<<< HEAD
-	UINT32 clock() const { return m_clock; }
-
-private:
-	// internal state
-	device_slot_option *m_next;
-=======
 	u32 clock() const { return m_clock; }
 
 private:
 	// internal state
->>>>>>> upstream/master
 	const char *m_name;
 	const device_type &m_devtype;
 	bool m_selectable;
 	const char *m_default_bios;
 	machine_config_constructor m_machine_config;
 	const input_device_default *m_input_device_defaults;
-<<<<<<< HEAD
-	UINT32 m_clock;
-=======
 	u32 m_clock;
 };
 
@@ -144,7 +116,6 @@ private:
 	bool                                                    m_called_get_hashfile_extrainfo;
 	bool                                                    m_has_hash_extrainfo;
 	std::string                                             m_hash_extrainfo;
->>>>>>> upstream/master
 };
 
 
@@ -165,22 +136,6 @@ public:
 	static void static_set_option_default_bios(device_t &device, const char *option, const char *default_bios) { static_option(device, option)->m_default_bios = default_bios; }
 	static void static_set_option_machine_config(device_t &device, const char *option, const machine_config_constructor machine_config) { static_option(device, option)->m_machine_config = machine_config; }
 	static void static_set_option_device_input_defaults(device_t &device, const char *option, const input_device_default *default_input) { static_option(device, option)->m_input_device_defaults = default_input; }
-<<<<<<< HEAD
-	static void static_set_option_clock(device_t &device, const char *option, UINT32 default_clock) { static_option(device, option)->m_clock = default_clock; }
-	bool fixed() const { return m_fixed; }
-	const char *default_option() const { return m_default_option; }
-	device_slot_option *first_option() const { return m_options.first(); }
-	device_slot_option *option(const char *name) const { if (name) return m_options.find(name); return NULL; }
-	virtual void get_default_card_software(std::string &result) { result.clear(); }
-	device_t *get_card_device();
-
-private:
-	// internal state
-	static device_slot_option *static_option(device_t &device, const char *option);
-	tagged_list<device_slot_option> m_options;
-	const char *m_default_option;
-	bool m_fixed;
-=======
 	static void static_set_option_clock(device_t &device, const char *option, u32 default_clock) { static_option(device, option)->m_clock = default_clock; }
 	bool fixed() const { return m_fixed; }
 	bool has_selectable_options() const;
@@ -200,7 +155,6 @@ private:
 	device_t *m_card_device;
 
 	static device_slot_option *static_option(device_t &device, const char *option);
->>>>>>> upstream/master
 };
 
 // iterator
@@ -216,8 +170,4 @@ public:
 	virtual ~device_slot_card_interface();
 };
 
-<<<<<<< HEAD
-#endif  /* __DISLOT_H__ */
-=======
 #endif  /* MAME_EMU_DISLOT_H */
->>>>>>> upstream/master

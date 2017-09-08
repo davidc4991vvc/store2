@@ -1,11 +1,7 @@
 /*
  * transupp.c
  *
-<<<<<<< HEAD
- * Copyright (C) 1997-2009, Thomas G. Lane, Guido Vollbeding.
-=======
  * Copyright (C) 1997-2013, Thomas G. Lane, Guido Vollbeding.
->>>>>>> upstream/master
  * This file is part of the Independent JPEG Group's software.
  * For conditions of distribution and use, see the accompanying README file.
  *
@@ -118,8 +114,6 @@ do_crop (j_decompress_ptr srcinfo, j_compress_ptr dstinfo,
 
 
 LOCAL(void)
-<<<<<<< HEAD
-=======
 do_crop_ext (j_decompress_ptr srcinfo, j_compress_ptr dstinfo,
 	     JDIMENSION x_crop_offset, JDIMENSION y_crop_offset,
 	     jvirt_barray_ptr *src_coef_arrays,
@@ -230,7 +224,6 @@ do_wipe (j_decompress_ptr srcinfo, j_compress_ptr dstinfo,
 
 
 LOCAL(void)
->>>>>>> upstream/master
 do_flip_h_no_crop (j_decompress_ptr srcinfo, j_compress_ptr dstinfo,
 		   JDIMENSION x_crop_offset,
 		   jvirt_barray_ptr *src_coef_arrays)
@@ -888,11 +881,7 @@ jt_read_integer (const char ** strptr, JDIMENSION * result)
  * The routine returns TRUE if the spec string is valid, FALSE if not.
  *
  * The crop spec string should have the format
-<<<<<<< HEAD
- *	<width>x<height>{+-}<xoffset>{+-}<yoffset>
-=======
  *	<width>[f]x<height>[f]{+-}<xoffset>{+-}<yoffset>
->>>>>>> upstream/master
  * where width, height, xoffset, and yoffset are unsigned integers.
  * Each of the elements can be omitted to indicate a default value.
  * (A weakness of this style is that it is not possible to omit xoffset
@@ -914,11 +903,6 @@ jtransform_parse_crop_spec (jpeg_transform_info *info, const char *spec)
     /* fetch width */
     if (! jt_read_integer(&spec, &info->crop_width))
       return FALSE;
-<<<<<<< HEAD
-    info->crop_width_set = JCROP_POS;
-  }
-  if (*spec == 'x' || *spec == 'X') {	
-=======
     if (*spec == 'f' || *spec == 'F') {
       spec++;
       info->crop_width_set = JCROP_FORCE;
@@ -926,20 +910,15 @@ jtransform_parse_crop_spec (jpeg_transform_info *info, const char *spec)
       info->crop_width_set = JCROP_POS;
   }
   if (*spec == 'x' || *spec == 'X') {
->>>>>>> upstream/master
     /* fetch height */
     spec++;
     if (! jt_read_integer(&spec, &info->crop_height))
       return FALSE;
-<<<<<<< HEAD
-    info->crop_height_set = JCROP_POS;
-=======
     if (*spec == 'f' || *spec == 'F') {
       spec++;
       info->crop_height_set = JCROP_FORCE;
     } else
       info->crop_height_set = JCROP_POS;
->>>>>>> upstream/master
   }
   if (*spec == '+' || *spec == '-') {
     /* fetch xoffset */
@@ -1019,12 +998,8 @@ jtransform_request_workspace (j_decompress_ptr srcinfo,
 
   /* Determine number of components in output image */
   if (info->force_grayscale &&
-<<<<<<< HEAD
-      srcinfo->jpeg_color_space == JCS_YCbCr &&
-=======
       (srcinfo->jpeg_color_space == JCS_YCbCr ||
        srcinfo->jpeg_color_space == JCS_BG_YCC) &&
->>>>>>> upstream/master
       srcinfo->num_components == 3)
     /* We'll only process the first component */
     info->num_components = 1;
@@ -1101,35 +1076,6 @@ jtransform_request_workspace (j_decompress_ptr srcinfo,
       info->crop_xoffset = 0;	/* default to +0 */
     if (info->crop_yoffset_set == JCROP_UNSET)
       info->crop_yoffset = 0;	/* default to +0 */
-<<<<<<< HEAD
-    if (info->crop_xoffset >= info->output_width ||
-	info->crop_yoffset >= info->output_height)
-      ERREXIT(srcinfo, JERR_BAD_CROP_SPEC);
-    if (info->crop_width_set == JCROP_UNSET)
-      info->crop_width = info->output_width - info->crop_xoffset;
-    if (info->crop_height_set == JCROP_UNSET)
-      info->crop_height = info->output_height - info->crop_yoffset;
-    /* Ensure parameters are valid */
-    if (info->crop_width <= 0 || info->crop_width > info->output_width ||
-	info->crop_height <= 0 || info->crop_height > info->output_height ||
-	info->crop_xoffset > info->output_width - info->crop_width ||
-	info->crop_yoffset > info->output_height - info->crop_height)
-      ERREXIT(srcinfo, JERR_BAD_CROP_SPEC);
-    /* Convert negative crop offsets into regular offsets */
-    if (info->crop_xoffset_set == JCROP_NEG)
-      xoffset = info->output_width - info->crop_width - info->crop_xoffset;
-    else
-      xoffset = info->crop_xoffset;
-    if (info->crop_yoffset_set == JCROP_NEG)
-      yoffset = info->output_height - info->crop_height - info->crop_yoffset;
-    else
-      yoffset = info->crop_yoffset;
-    /* Now adjust so that upper left corner falls at an iMCU boundary */
-    info->output_width =
-      info->crop_width + (xoffset % info->iMCU_sample_width);
-    info->output_height =
-      info->crop_height + (yoffset % info->iMCU_sample_height);
-=======
     if (info->crop_width_set == JCROP_UNSET) {
       if (info->crop_xoffset >= info->output_width)
 	ERREXIT(srcinfo, JERR_BAD_CROP_SPEC);
@@ -1205,7 +1151,6 @@ jtransform_request_workspace (j_decompress_ptr srcinfo,
 	info->output_height =
 	  info->crop_height + (yoffset % info->iMCU_sample_height);
     }
->>>>>>> upstream/master
     /* Save x/y offsets measured in iMCUs */
     info->x_crop_offset = xoffset / info->iMCU_sample_width;
     info->y_crop_offset = yoffset / info->iMCU_sample_height;
@@ -1221,13 +1166,9 @@ jtransform_request_workspace (j_decompress_ptr srcinfo,
   transpose_it = FALSE;
   switch (info->transform) {
   case JXFORM_NONE:
-<<<<<<< HEAD
-    if (info->x_crop_offset != 0 || info->y_crop_offset != 0)
-=======
     if (info->x_crop_offset != 0 || info->y_crop_offset != 0 ||
 	info->output_width > srcinfo->output_width ||
 	info->output_height > srcinfo->output_height)
->>>>>>> upstream/master
       need_workspace = TRUE;
     /* No workspace needed if neither cropping nor transforming */
     break;
@@ -1281,11 +1222,8 @@ jtransform_request_workspace (j_decompress_ptr srcinfo,
     need_workspace = TRUE;
     transpose_it = TRUE;
     break;
-<<<<<<< HEAD
-=======
   case JXFORM_WIPE:
     break;
->>>>>>> upstream/master
   }
 
   /* Allocate workspace if needed.
@@ -1295,11 +1233,7 @@ jtransform_request_workspace (j_decompress_ptr srcinfo,
   if (need_workspace) {
     coef_arrays = (jvirt_barray_ptr *)
       (*srcinfo->mem->alloc_small) ((j_common_ptr) srcinfo, JPOOL_IMAGE,
-<<<<<<< HEAD
-		SIZEOF(jvirt_barray_ptr) * info->num_components);
-=======
 	SIZEOF(jvirt_barray_ptr) * info->num_components);
->>>>>>> upstream/master
     width_in_iMCUs = (JDIMENSION)
       jdiv_round_up((long) info->output_width,
 		    (long) info->iMCU_sample_width);
@@ -1550,21 +1484,13 @@ jtransform_adjust_parameters (j_decompress_ptr srcinfo,
 {
   /* If force-to-grayscale is requested, adjust destination parameters */
   if (info->force_grayscale) {
-<<<<<<< HEAD
-    /* First, ensure we have YCbCr or grayscale data, and that the source's
-=======
     /* First, ensure we have YCC or grayscale data, and that the source's
->>>>>>> upstream/master
      * Y channel is full resolution.  (No reasonable person would make Y
      * be less than full resolution, so actually coping with that case
      * isn't worth extra code space.  But we check it to avoid crashing.)
      */
-<<<<<<< HEAD
-    if (((dstinfo->jpeg_color_space == JCS_YCbCr &&
-=======
     if ((((dstinfo->jpeg_color_space == JCS_YCbCr ||
 	   dstinfo->jpeg_color_space == JCS_BG_YCC) &&
->>>>>>> upstream/master
 	  dstinfo->num_components == 3) ||
 	 (dstinfo->jpeg_color_space == JCS_GRAYSCALE &&
 	  dstinfo->num_components == 1)) &&
@@ -1659,15 +1585,11 @@ jtransform_execute_transform (j_decompress_ptr srcinfo,
    */
   switch (info->transform) {
   case JXFORM_NONE:
-<<<<<<< HEAD
-    if (info->x_crop_offset != 0 || info->y_crop_offset != 0)
-=======
     if (info->output_width > srcinfo->output_width ||
 	info->output_height > srcinfo->output_height)
       do_crop_ext(srcinfo, dstinfo, info->x_crop_offset, info->y_crop_offset,
 		  src_coef_arrays, dst_coef_arrays);
     else if (info->x_crop_offset != 0 || info->y_crop_offset != 0)
->>>>>>> upstream/master
       do_crop(srcinfo, dstinfo, info->x_crop_offset, info->y_crop_offset,
 	      src_coef_arrays, dst_coef_arrays);
     break;
@@ -1703,13 +1625,10 @@ jtransform_execute_transform (j_decompress_ptr srcinfo,
     do_rot_270(srcinfo, dstinfo, info->x_crop_offset, info->y_crop_offset,
 	       src_coef_arrays, dst_coef_arrays);
     break;
-<<<<<<< HEAD
-=======
   case JXFORM_WIPE:
     do_wipe(srcinfo, dstinfo, info->x_crop_offset, info->y_crop_offset,
 	    src_coef_arrays, info->drop_width, info->drop_height);
     break;
->>>>>>> upstream/master
   }
 }
 

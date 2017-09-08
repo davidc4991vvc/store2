@@ -3,11 +3,7 @@
 #include "emu.h"
 #include "cpu/pdp1/tx0.h"
 
-<<<<<<< HEAD
-CPU_DISASSEMBLE( tx0_64kw )
-=======
 CPU_DISASSEMBLE(tx0_64kw)
->>>>>>> upstream/master
 {
 	int md;
 	int x;
@@ -18,18 +14,6 @@ CPU_DISASSEMBLE(tx0_64kw)
 	switch (md >> 16)
 	{
 	case 0:
-<<<<<<< HEAD
-		sprintf (buffer, "sto 0%06o", x);
-		break;
-	case 1:
-		sprintf (buffer, "add 0%06o", x);
-		break;
-	case 2:
-		sprintf (buffer, "trn 0%06o", x);
-		break;
-	case 3:
-		sprintf (buffer, "opr 0%06o", x);
-=======
 		util::stream_format(stream, "sto 0%06o", x);
 		break;
 	case 1:
@@ -40,17 +24,12 @@ CPU_DISASSEMBLE(tx0_64kw)
 		break;
 	case 3:
 		util::stream_format(stream, "opr 0%06o", x);
->>>>>>> upstream/master
 		break;
 	}
 	return 1;
 }
 
-<<<<<<< HEAD
-CPU_DISASSEMBLE( tx0_8kw )
-=======
 CPU_DISASSEMBLE(tx0_8kw)
->>>>>>> upstream/master
 {
 	int md;
 	int x;
@@ -61,72 +40,6 @@ CPU_DISASSEMBLE(tx0_8kw)
 	switch (md >> 13)
 	{
 	case 0:
-<<<<<<< HEAD
-		sprintf (buffer, "sto 0%05o", x);
-		break;
-	case 1:
-		sprintf (buffer, "stx 0%05o", x);
-		break;
-	case 2:
-		sprintf (buffer, "sxa 0%05o", x);
-		break;
-	case 3:
-		sprintf (buffer, "ado 0%05o", x);
-		break;
-	case 4:
-		sprintf (buffer, "slr 0%05o", x);
-		break;
-	case 5:
-		sprintf (buffer, "slx 0%05o", x);
-		break;
-	case 6:
-		sprintf (buffer, "stz 0%05o", x);
-		break;
-	case 8:
-		sprintf (buffer, "add 0%05o", x);
-		break;
-	case 9:
-		sprintf (buffer, "adx 0%05o", x);
-		break;
-	case 10:
-		sprintf (buffer, "ldx 0%05o", x);
-		break;
-	case 11:
-		sprintf (buffer, "aux 0%05o", x);
-		break;
-	case 12:
-		sprintf (buffer, "llr 0%05o", x);
-		break;
-	case 13:
-		sprintf (buffer, "llx 0%05o", x);
-		break;
-	case 14:
-		sprintf (buffer, "lda 0%05o", x);
-		break;
-	case 15:
-		sprintf (buffer, "lax 0%05o", x);
-		break;
-	case 16:
-		sprintf (buffer, "trn 0%05o", x);
-		break;
-	case 17:
-		sprintf (buffer, "tze 0%05o", x);
-		break;
-	case 18:
-		sprintf (buffer, "tsx 0%05o", x);
-		break;
-	case 19:
-		sprintf (buffer, "tix 0%05o", x);
-		break;
-	case 20:
-		sprintf (buffer, "tra 0%05o", x);
-		break;
-	case 21:
-		sprintf (buffer, "trx 0%05o", x);
-		break;
-	case 22:
-		sprintf (buffer, "tlv 0%05o", x);
-=======
 		util::stream_format(stream, "sto 0%05o", x);
 		break;
 	case 1:
@@ -191,7 +104,6 @@ CPU_DISASSEMBLE(tx0_8kw)
 		break;
 	case 22:
 		util::stream_format(stream, "tlv 0%05o", x);
->>>>>>> upstream/master
 		break;
 	case 24:
 	case 25:
@@ -201,17 +113,10 @@ CPU_DISASSEMBLE(tx0_8kw)
 	case 29:
 	case 30:
 	case 31:
-<<<<<<< HEAD
-		sprintf (buffer, "opr 0%06o", md & 0177777);
-		break;
-	default:
-		sprintf (buffer, "illegal");
-=======
 		util::stream_format(stream, "opr 0%06o", md & 0177777);
 		break;
 	default:
 		util::stream_format(stream, "illegal");
->>>>>>> upstream/master
 		break;
 	}
 	return 1;

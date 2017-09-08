@@ -11,8 +11,6 @@
 #ifndef DEBUG_MEMORY_LEAK
 
 #ifdef _WIN32
-<<<<<<< HEAD
-=======
 
 /*
 void * my_new(size_t size)
@@ -40,7 +38,6 @@ void * my_Realloc(void *p, size_t newSize, size_t oldSize)
 }
 */
 
->>>>>>> upstream/master
 void *
 #ifdef _MSC_VER
 __cdecl
@@ -60,15 +57,6 @@ __cdecl
 #endif
 operator delete(void *p) throw()
 {
-<<<<<<< HEAD
-  /*
-  if (p == 0)
-    return;
-  ::HeapFree(::GetProcessHeap(), 0, p);
-  */
-  ::free(p);
-}
-=======
   // if (p == 0) return; ::HeapFree(::GetProcessHeap(), 0, p);
   ::free(p);
 }
@@ -98,18 +86,13 @@ operator delete[](void *p) throw()
 }
 */
 
->>>>>>> upstream/master
 #endif
 
 #else
 
-<<<<<<< HEAD
-#pragma init_seg(lib)
-=======
 #include <stdio.h>
 
 // #pragma init_seg(lib)
->>>>>>> upstream/master
 const int kDebugSize = 1000000;
 static void *a[kDebugSize];
 static int index = 0;
@@ -119,13 +102,6 @@ void * __cdecl operator new(size_t size)
 {
   numAllocs++;
   void *p = HeapAlloc(GetProcessHeap(), 0, size);
-<<<<<<< HEAD
-  if (index == 40)
-  {
-    int t = 1;
-  }
-=======
->>>>>>> upstream/master
   if (index < kDebugSize)
   {
     a[index] = p;
@@ -133,11 +109,7 @@ void * __cdecl operator new(size_t size)
   }
   if (p == 0)
     throw CNewException();
-<<<<<<< HEAD
-  printf("Alloc %6d, size = %8d\n", numAllocs, size);
-=======
   printf("Alloc %6d, size = %8u\n", numAllocs, (unsigned)size);
->>>>>>> upstream/master
   return p;
 }
 

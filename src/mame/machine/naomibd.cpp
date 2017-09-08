@@ -3,10 +3,6 @@
 
 #include "emu.h"
 #include "naomibd.h"
-<<<<<<< HEAD
-#include "machine/x76f100.h"
-=======
->>>>>>> upstream/master
 
 /*
     Naomi ROM board info from ElSemi:
@@ -39,9 +35,6 @@
     the PIO port. When zero it will stay on current address.  Now this works exactly the same for DMA, and even if DMA engine is 32-byte
     per block it will repeatedly read only the first 16-bit word.
 
-<<<<<<< HEAD
-    * bit 30 (mode bit 2) is most often as special mode switch
-=======
     * bit 30 (mode bit 2)
     DMA_OFFSET: 0 = enable DMA (all cart types), enabled during trasfer only because there can be other devices which uses G1 bus DMA (comm.board, multiboard, etc)
     ROM_OFFSET:
@@ -49,22 +42,10 @@
       "M1" type carts: ???
       "M4" type carts: 1 = enable data decryption, for both PIO and DMA.
     is most often as special mode switch
->>>>>>> upstream/master
     DMA transfer with this bit set will hang. PIO will return semi-random data (floating bus?). So one function of that bit is "disable".
     PIO read will return all ones if DMA mode has this bit cleared, so it seems you can do either PIO or DMA but not both at the same time.
     In other words, disable DMA once before using PIO (most games using both access types do that when the DMA terminates).
     This bit is also used to reset the chip's internal protection mechanism on "Oh! My Goddess" to a known state.
-<<<<<<< HEAD
-    "M4" type carts: ROM_OFFSET bit 30 enables data decryption, for both PIO and DMA.
-
-    * bit 29 (mode bit 1) is "M1" compression bit on Actel carts, other functions on others
-    It's actually the opposite, when set the addressing is following the chip layout and when cleared the protection chip will have it's fun
-    doing a decompression + XOR on the data for Actel carts.
-    "M2" type carts: ROM size/mapping select, 0 - 4MB ROM-mode, 1 - 8MB ROM mode. ROM_OFFSET bit 29 select cart mapping for both PIO and DMA, DMA_OFFSET bit 29 looks have no any effect.
-    "M4" type carts: no effect
-
-    Normal address starts with 0xa0000000 to enable auto-advance and standard addressing mode.
-=======
 
     * bit 29 (mode bit 1)
     "M2" type carts: DMA_OFFSET - no effect, ROM_OFFSET - ROM size/mapping select, 0 - 4MB ROM-mode, 1 - 8MB ROM mode. for both PIO and DMA
@@ -77,7 +58,6 @@
     * bit 0 can be set for "M4" type carts, function unknown
 
     Normal address starts with 0xa0000000 to enable auto-advance and 8MB ROM addressing mode.
->>>>>>> upstream/master
 */
 
 DEVICE_ADDRESS_MAP_START(submap, 16, naomi_board)
@@ -93,20 +73,6 @@ DEVICE_ADDRESS_MAP_START(submap, 16, naomi_board)
 	AM_RANGE(0x00, 0xff) AM_READ(default_r)
 ADDRESS_MAP_END
 
-<<<<<<< HEAD
-naomi_board::naomi_board(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source)
-	: naomi_g1_device(mconfig, type, name, tag, owner, clock, shortname, source)
-{
-	eeprom_tag = 0;
-	rombdid_tag = 0;
-}
-
-void naomi_board::static_set_eeprom_tag(device_t &device, const char *_eeprom_tag, const char *_actel_tag)
-{
-	naomi_board &dev = downcast<naomi_board &>(device);
-	dev.eeprom_tag = _eeprom_tag;
-	dev.rombdid_tag = _actel_tag;
-=======
 naomi_board::naomi_board(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock)
 	: naomi_g1_device(mconfig, type, tag, owner, clock)
 {
@@ -117,7 +83,6 @@ void naomi_board::static_set_eeprom_tag(device_t &device, const char *_eeprom_ta
 {
 	naomi_board &dev = downcast<naomi_board &>(device);
 	dev.eeprom_tag = _eeprom_tag;
->>>>>>> upstream/master
 }
 
 
@@ -132,17 +97,10 @@ void naomi_board::device_start()
 	save_item(NAME(pio_ready));
 	save_item(NAME(dma_ready));
 
-<<<<<<< HEAD
-	if(eeprom_tag)
-		eeprom = machine().device<x76f100_device>(eeprom_tag);
-	else
-		eeprom = 0;
-=======
 	if (eeprom_tag != nullptr)
 		eeprom = owner()->subdevice<x76f100_device>(eeprom_tag);
 	else
 		eeprom = nullptr;
->>>>>>> upstream/master
 }
 
 void naomi_board::device_reset()
@@ -155,17 +113,10 @@ void naomi_board::device_reset()
 	dma_ready = false;
 }
 
-<<<<<<< HEAD
-void naomi_board::dma_get_position(UINT8 *&base, UINT32 &limit, bool to_mainram)
-{
-	if(!to_mainram) {
-		base = 0;
-=======
 void naomi_board::dma_get_position(uint8_t *&base, uint32_t &limit, bool to_mainram)
 {
 	if(!to_mainram) {
 		base = nullptr;
->>>>>>> upstream/master
 		limit = 0;
 		return;
 	}
@@ -179,20 +130,12 @@ void naomi_board::dma_get_position(uint8_t *&base, uint32_t &limit, bool to_main
 	}
 
 	board_get_buffer(base, limit);
-<<<<<<< HEAD
-	UINT32 blimit = 0x20*dma_count - dma_cur_offset;
-=======
 	uint32_t blimit = 0x20*dma_count - dma_cur_offset;
->>>>>>> upstream/master
 	if(0 && limit > blimit)
 		limit = blimit;
 }
 
-<<<<<<< HEAD
-void naomi_board::dma_advance(UINT32 size)
-=======
 void naomi_board::dma_advance(uint32_t size)
->>>>>>> upstream/master
 {
 	dma_cur_offset += size;
 	board_advance(size);
@@ -217,15 +160,9 @@ READ16_MEMBER(naomi_board::rom_data_r)
 		pio_ready = true;
 	}
 
-<<<<<<< HEAD
-	UINT8 *buffer;
-	UINT32 size;
-	UINT16 res;
-=======
 	uint8_t *buffer;
 	uint32_t size;
 	uint16_t res;
->>>>>>> upstream/master
 	board_get_buffer(buffer, size);
 	assert(size > 1);
 	res = buffer[0] | (buffer[1] << 8);
@@ -278,11 +215,7 @@ READ16_MEMBER(naomi_board::default_r)
 	return 0xffff;
 }
 
-<<<<<<< HEAD
-void naomi_board::board_write(offs_t offset, UINT16 data)
-=======
 void naomi_board::board_write(offs_t offset, uint16_t data)
->>>>>>> upstream/master
 {
 	logerror("NAOMIBD: unhandled board write %08x, %04x\n", offset, data);
 }

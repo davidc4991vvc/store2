@@ -6,68 +6,6 @@
 
 **********************************************************************/
 
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __Z8_H__
-#define __Z8_H__
-
-
-enum
-{
-	Z8_PC, Z8_SP, Z8_RP, Z8_T0, Z8_T1,
-
-	Z8_R0, Z8_R1, Z8_R2, Z8_R3, Z8_R4, Z8_R5, Z8_R6, Z8_R7, Z8_R8, Z8_R9, Z8_R10, Z8_R11, Z8_R12, Z8_R13, Z8_R14, Z8_R15,
-
-	Z8_GENPC = STATE_GENPC,
-	Z8_GENSP = STATE_GENSP
-};
-
-
-class z8_device :  public cpu_device
-{
-public:
-	// construction/destruction
-	z8_device(const machine_config &mconfig, device_type type, const char *name, const char *_tag, device_t *_owner, UINT32 _clock, const char *shortname, const char *source, int size);
-
-protected:
-	// device-level overrides
-	virtual void device_start();
-	virtual void device_reset();
-
-	// device_execute_interface overrides
-	virtual UINT32 execute_min_cycles() const { return 6; }
-	virtual UINT32 execute_max_cycles() const { return 20; }
-	virtual UINT32 execute_input_lines() const { return 4; }
-	virtual UINT64 execute_clocks_to_cycles(UINT64 clocks) const { return (clocks + 2 - 1) / 2; }
-	virtual UINT64 execute_cycles_to_clocks(UINT64 cycles) const { return (cycles * 2); }
-	virtual void execute_run();
-	virtual void execute_set_input(int inputnum, int state);
-
-	// device_memory_interface overrides
-	virtual const address_space_config *memory_space_config(address_spacenum spacenum = AS_0) const
-	{
-		switch ( spacenum )
-		{
-			case AS_PROGRAM:   return &m_program_config;
-			case AS_DATA:      return &m_data_config;
-			case AS_IO:        return &m_io_config;
-			default:           return NULL;
-		}
-		return NULL;
-	}
-
-	// device_state_interface overrides
-	virtual void state_import(const device_state_entry &entry);
-	virtual void state_export(const device_state_entry &entry);
-	void state_string_export(const device_state_entry &entry, std::string &str);
-
-	// device_disasm_interface overrides
-	virtual UINT32 disasm_min_opcode_bytes() const { return 1; }
-	virtual UINT32 disasm_max_opcode_bytes() const { return 3; }
-	virtual offs_t disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options);
-
-=======
 #ifndef MAME_CPU_Z8_Z8_H
 #define MAME_CPU_Z8_Z8_H
 
@@ -159,34 +97,14 @@ protected:
 
 	DECLARE_ADDRESS_MAP(program_2kb, 8);
 	DECLARE_ADDRESS_MAP(program_4kb, 8);
->>>>>>> upstream/master
 
 private:
 	address_space_config m_program_config;
 	address_space_config m_data_config;
-<<<<<<< HEAD
-	address_space_config m_io_config;
-=======
->>>>>>> upstream/master
 
 	address_space *m_program;
 	direct_read_data *m_direct;
 	address_space *m_data;
-<<<<<<< HEAD
-	address_space *m_io;
-
-	/* registers */
-	UINT16 m_pc;              /* program counter */
-	UINT8 m_r[256];           /* register file */
-	UINT8 m_input[4];         /* port input latches */
-	UINT8 m_output[4];        /* port output latches */
-	UINT8 m_t0;               /* timer 0 current count */
-	UINT8 m_t1;               /* timer 1 current count */
-
-	/* fake registers */
-	UINT16 m_fake_sp;         /* fake stack pointer */
-	UINT8 m_fake_r[16];       /* fake working registers */
-=======
 
 	// callbacks
 	devcb_read8 m_input_cb[4];
@@ -205,7 +123,6 @@ private:
 	/* fake registers */
 	uint16_t m_fake_sp;         /* fake stack pointer */
 	uint8_t m_fake_r[16];       /* fake working registers */
->>>>>>> upstream/master
 
 	/* interrupts */
 	int m_irq[6];             /* interrupts */
@@ -220,23 +137,6 @@ private:
 	TIMER_CALLBACK_MEMBER( t0_tick );
 	TIMER_CALLBACK_MEMBER( t1_tick );
 
-<<<<<<< HEAD
-	inline UINT8 fetch();
-	inline UINT8 register_read(UINT8 offset);
-	inline UINT16 register_pair_read(UINT8 offset);
-	inline void register_write(UINT8 offset, UINT8 data);
-	inline void register_pair_write(UINT8 offset, UINT16 data);
-	inline UINT8 get_working_register(int offset);
-	inline UINT8 get_register(UINT8 offset);
-	inline UINT8 get_intermediate_register(int offset);
-	inline void stack_push_byte(UINT8 src);
-	inline void stack_push_word(UINT16 src);
-	inline UINT8 stack_pop_byte();
-	inline UINT16 stack_pop_word();
-	inline void set_flag(UINT8 flag, int state);
-	inline void clear(UINT8 dst);
-	inline void load(UINT8 dst, UINT8 src);
-=======
 	inline uint8_t fetch();
 	inline uint8_t register_read(uint8_t offset);
 	inline uint16_t register_pair_read(uint8_t offset);
@@ -252,42 +152,10 @@ private:
 	inline void set_flag(uint8_t flag, int state);
 	inline void clear(uint8_t dst);
 	inline void load(uint8_t dst, uint8_t src);
->>>>>>> upstream/master
 	inline void load_from_memory(address_space *space);
 	inline void load_to_memory(address_space *space);
 	inline void load_from_memory_autoinc(address_space *space);
 	inline void load_to_memory_autoinc(address_space *space);
-<<<<<<< HEAD
-	inline void pop(UINT8 dst);
-	inline void push(UINT8 src);
-	inline void add_carry(UINT8 dst, INT8 src);
-	inline void add(UINT8 dst, INT8 src);
-	inline void compare(UINT8 dst, UINT8 src);
-	inline void decimal_adjust(UINT8 dst);
-	inline void decrement(UINT8 dst);
-	inline void decrement_word(UINT8 dst);
-	inline void increment(UINT8 dst);
-	inline void increment_word(UINT8 dst);
-	inline void subtract_carry(UINT8 dst, UINT8 src);
-	inline void subtract(UINT8 dst, UINT8 src);
-	inline void _and(UINT8 dst, UINT8 src);
-	inline void complement(UINT8 dst);
-	inline void _or(UINT8 dst, UINT8 src);
-	inline void _xor(UINT8 dst, UINT8 src);
-	inline void call(UINT16 dst);
-	inline void jump(UINT16 dst);
-	inline int check_condition_code(int cc);
-	inline void test_complement_under_mask(UINT8 dst, UINT8 src);
-	inline void test_under_mask(UINT8 dst, UINT8 src);
-	inline void rotate_left(UINT8 dst);
-	inline void rotate_left_carry(UINT8 dst);
-	inline void rotate_right(UINT8 dst);
-	inline void rotate_right_carry(UINT8 dst);
-	inline void shift_right_arithmetic(UINT8 dst);
-	inline void swap(UINT8 dst);
-
-	#define INSTRUCTION(inst) void inst(UINT8 opcode, int *cycles);
-=======
 	inline void pop(uint8_t dst);
 	inline void push(uint8_t src);
 	inline void add_carry(uint8_t dst, int8_t src);
@@ -317,7 +185,6 @@ private:
 	inline void swap(uint8_t dst);
 
 	#define INSTRUCTION(inst) void inst(uint8_t opcode, int *cycles);
->>>>>>> upstream/master
 	INSTRUCTION( illegal )
 	INSTRUCTION( clr_R1 )
 	INSTRUCTION( clr_IR1 )
@@ -448,11 +315,7 @@ private:
 	INSTRUCTION( srp_IM )
 	#undef INSTRUCTION
 
-<<<<<<< HEAD
-	typedef void (z8_device::*z8_opcode_func) (UINT8 opcode, int *cycles);
-=======
 	typedef void (z8_device::*z8_opcode_func) (uint8_t opcode, int *cycles);
->>>>>>> upstream/master
 	struct z8_opcode_map
 	{
 		z8_opcode_func  function;
@@ -467,45 +330,20 @@ private:
 class z8601_device : public z8_device
 {
 public:
-<<<<<<< HEAD
-	z8601_device(const machine_config &mconfig, const char *_tag, device_t *_owner, UINT32 _clock);
-=======
 	z8601_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
->>>>>>> upstream/master
 };
 
 
 class ub8830d_device : public z8_device
 {
 public:
-<<<<<<< HEAD
-	ub8830d_device(const machine_config &mconfig, const char *_tag, device_t *_owner, UINT32 _clock);
-=======
 	ub8830d_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
->>>>>>> upstream/master
 };
 
 
 class z8611_device : public z8_device
 {
 public:
-<<<<<<< HEAD
-	z8611_device(const machine_config &mconfig, const char *_tag, device_t *_owner, UINT32 _clock);
-};
-
-
-/* Zilog Z8601 */
-extern const device_type Z8601;
-
-/* VEB Mikroelektronik Erfurt UB8830D MME */
-extern const device_type UB8830D;
-
-/* Zilog Z8611 */
-extern const device_type Z8611;
-
-
-#endif
-=======
 	z8611_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 };
 
@@ -530,4 +368,3 @@ DECLARE_DEVICE_TYPE(Z8611, z8611_device)
 DECLARE_DEVICE_TYPE(Z8681, z8681_device)
 
 #endif // MAME_CPU_Z8_Z8_H
->>>>>>> upstream/master

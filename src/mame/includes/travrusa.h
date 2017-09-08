@@ -1,11 +1,6 @@
-<<<<<<< HEAD
-// license:???
-// copyright-holders:Lee Taylor,John Clegg,Tomasz Slanina
-=======
 // license:BSD-3-Clause
 // copyright-holders:Lee Taylor
 // thanks-to:John Clegg,Tomasz Slanina
->>>>>>> upstream/master
 class travrusa_state : public driver_device
 {
 public:
@@ -18,13 +13,8 @@ public:
 		m_palette(*this, "palette") { }
 
 	/* memory pointers */
-<<<<<<< HEAD
-	required_shared_ptr<UINT8> m_videoram;
-	required_shared_ptr<UINT8> m_spriteram;
-=======
 	required_shared_ptr<uint8_t> m_videoram;
 	required_shared_ptr<uint8_t> m_spriteram;
->>>>>>> upstream/master
 
 	/* video-related */
 	tilemap_t*             m_bg_tilemap;
@@ -38,19 +28,11 @@ public:
 	DECLARE_DRIVER_INIT(motorace);
 	DECLARE_DRIVER_INIT(shtridrb);
 	TILE_GET_INFO_MEMBER(get_tile_info);
-<<<<<<< HEAD
-	virtual void machine_reset();
-	virtual void video_start();
-	DECLARE_PALETTE_INIT(travrusa);
-	DECLARE_PALETTE_INIT(shtrider);
-	UINT32 screen_update_travrusa(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	virtual void machine_reset() override;
 	virtual void video_start() override;
 	DECLARE_PALETTE_INIT(travrusa);
 	DECLARE_PALETTE_INIT(shtrider);
 	uint32_t screen_update_travrusa(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	void set_scroll(  );
 	void draw_sprites(bitmap_ind16 &bitmap,const rectangle &cliprect);
 	required_device<cpu_device> m_maincpu;

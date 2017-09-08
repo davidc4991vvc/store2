@@ -35,11 +35,7 @@
           switch between them.
         * There existed a vertical version of Head On as well.
         * According to the manuals, Borderline has the same sound
-<<<<<<< HEAD
-          board as Tranquilizer Gun.
-=======
           board as Tranquillizer Gun.
->>>>>>> upstream/master
 
     Known issues/to-do's:
         * Analog sound missing in many games
@@ -56,11 +52,6 @@
 ****************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/z80/z80.h"
-#include "cpu/i8085/i8085.h"
-#include "includes/vicdual.h"
-=======
 #include "includes/vicdual.h"
 #include "audio/carnival.h"
 #include "audio/depthch.h"
@@ -73,7 +64,6 @@
 #include "cpu/i8085/i8085.h"
 #include "cpu/z80/z80.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 #include "depthch.lh"
 
@@ -131,13 +121,8 @@ INPUT_CHANGED_MEMBER(vicdual_state::coin_changed)
 	if (newval)
 	{
 		/* increment the coin counter */
-<<<<<<< HEAD
-		coin_counter_w(machine(), 0, 1);
-		coin_counter_w(machine(), 0, 0);
-=======
 		machine().bookkeeping().coin_counter_w(0, 1);
 		machine().bookkeeping().coin_counter_w(0, 0);
->>>>>>> upstream/master
 
 		coin_in();
 	}
@@ -146,11 +131,7 @@ INPUT_CHANGED_MEMBER(vicdual_state::coin_changed)
 
 #define PORT_COIN_DEFAULT                               \
 	PORT_START("COIN")                                  \
-<<<<<<< HEAD
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_COIN1 ) PORT_CHANGED_MEMBER(DEVICE_SELF, vicdual_state,coin_changed, NULL)
-=======
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_COIN1 ) PORT_CHANGED_MEMBER(DEVICE_SELF, vicdual_state,coin_changed, nullptr)
->>>>>>> upstream/master
 
 
 
@@ -192,11 +173,7 @@ CUSTOM_INPUT_MEMBER(vicdual_state::get_vblank_comp)
 
 CUSTOM_INPUT_MEMBER(vicdual_state::get_composite_blank_comp)
 {
-<<<<<<< HEAD
-	return (get_vblank_comp(field, 0) && !m_screen->hblank());
-=======
 	return (get_vblank_comp(field, nullptr) && !m_screen->hblank());
->>>>>>> upstream/master
 }
 
 
@@ -218,11 +195,7 @@ CUSTOM_INPUT_MEMBER(vicdual_state::get_timer_value)
 
 int vicdual_state::is_cabinet_color()
 {
-<<<<<<< HEAD
-	return ((m_color_bw ? m_color_bw->read() : 0) & 1) ? 0 : 1;
-=======
 	return (m_color_bw.read_safe(0) & 1) ? 0 : 1;
->>>>>>> upstream/master
 }
 
 
@@ -271,28 +244,18 @@ void vicdual_state::machine_start()
 	m_port1State = 0;
 	m_port2State = 0;
 	m_psgData = 0;
-<<<<<<< HEAD
-=======
 	m_psgBus = 0;
->>>>>>> upstream/master
 
 	save_item(NAME(m_coin_status));
 	save_item(NAME(m_palette_bank));
 	save_item(NAME(m_port1State));
 	save_item(NAME(m_port2State));
 	save_item(NAME(m_psgData));
-<<<<<<< HEAD
-}
-
-
-static MACHINE_CONFIG_START( vicdual_root, vicdual_state )
-=======
 	save_item(NAME(m_psgBus));
 }
 
 
 static MACHINE_CONFIG_START( vicdual_root )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, VICDUAL_MAIN_CPU_CLOCK)
@@ -314,11 +277,7 @@ MACHINE_CONFIG_END
 
 READ8_MEMBER(vicdual_state::depthch_io_r)
 {
-<<<<<<< HEAD
-	UINT8 ret = 0;
-=======
 	uint8_t ret = 0;
->>>>>>> upstream/master
 
 	if (offset & 0x01)  ret = m_in0->read();
 	if (offset & 0x08)  ret = m_in1->read();
@@ -365,15 +324,9 @@ static INPUT_PORTS_START( depthch )
 	PORT_BIT( 0xc0, IP_ACTIVE_LOW, IPT_UNKNOWN ) /* probably unused */
 
 	PORT_START("IN1")
-<<<<<<< HEAD
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, get_64v, NULL)
-	PORT_BIT( 0x7e, IP_ACTIVE_LOW, IPT_UNUSED )
-	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, read_coin_status, NULL)
-=======
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, get_64v, nullptr)
 	PORT_BIT( 0x7e, IP_ACTIVE_LOW, IPT_UNUSED )
 	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, read_coin_status, nullptr)
->>>>>>> upstream/master
 
 	PORT_COIN_DEFAULT
 INPUT_PORTS_END
@@ -405,11 +358,7 @@ MACHINE_CONFIG_END
 
 READ8_MEMBER(vicdual_state::safari_io_r)
 {
-<<<<<<< HEAD
-	UINT8 ret = 0;
-=======
 	uint8_t ret = 0;
->>>>>>> upstream/master
 
 	if (offset & 0x01)  ret = m_in0->read();
 	if (offset & 0x08)  ret = m_in1->read();
@@ -456,11 +405,7 @@ static INPUT_PORTS_START( safari )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_BUTTON1 )
 
 	PORT_START("IN1")
-<<<<<<< HEAD
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, get_64v, NULL)
-=======
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, get_64v, nullptr)
->>>>>>> upstream/master
 	PORT_BIT( 0x0e, IP_ACTIVE_LOW, IPT_UNKNOWN ) /* probably unused */
 	PORT_DIPNAME( 0x30, 0x30, DEF_STR( Coinage ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( 4C_1C ) )
@@ -468,11 +413,7 @@ static INPUT_PORTS_START( safari )
 	PORT_DIPSETTING(    0x20, DEF_STR( 2C_1C ) )
 	PORT_DIPSETTING(    0x30, DEF_STR( 1C_1C ) )
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_UNKNOWN ) /* probably unused */
-<<<<<<< HEAD
-	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, read_coin_status, NULL)
-=======
 	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, read_coin_status, nullptr)
->>>>>>> upstream/master
 
 	PORT_COIN_DEFAULT
 INPUT_PORTS_END
@@ -500,11 +441,7 @@ MACHINE_CONFIG_END
 
 READ8_MEMBER(vicdual_state::frogs_io_r)
 {
-<<<<<<< HEAD
-	UINT8 ret = 0;
-=======
 	uint8_t ret = 0;
->>>>>>> upstream/master
 
 	if (offset & 0x01)  ret = m_in0->read();
 	if (offset & 0x08)  ret = m_in1->read();
@@ -560,15 +497,9 @@ static INPUT_PORTS_START( frogs )
 	PORT_CONFSETTING(    0x40, DEF_STR( 1C_1C ) )
 
 	PORT_START("IN1")
-<<<<<<< HEAD
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, get_64v, NULL)
-	PORT_BIT( 0x7e, IP_ACTIVE_LOW, IPT_UNKNOWN ) /* probably unused */
-	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, read_coin_status, NULL)
-=======
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, get_64v, nullptr)
 	PORT_BIT( 0x7e, IP_ACTIVE_LOW, IPT_UNKNOWN ) /* probably unused */
 	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, read_coin_status, nullptr)
->>>>>>> upstream/master
 
 	PORT_COIN_DEFAULT
 
@@ -621,11 +552,7 @@ MACHINE_CONFIG_END
 
 READ8_MEMBER(vicdual_state::headon_io_r)
 {
-<<<<<<< HEAD
-	UINT8 ret = 0;
-=======
 	uint8_t ret = 0;
->>>>>>> upstream/master
 
 	if (offset & 0x01)  ret = m_in0->read();
 	if (offset & 0x08)  ret = m_in1->read();
@@ -636,11 +563,7 @@ READ8_MEMBER(vicdual_state::headon_io_r)
 
 READ8_MEMBER(vicdual_state::sspaceat_io_r)
 {
-<<<<<<< HEAD
-	UINT8 ret = 0;
-=======
 	uint8_t ret = 0;
->>>>>>> upstream/master
 
 	if (offset & 0x01)  ret = m_in0->read();
 	if (offset & 0x04)  ret = m_in1->read();
@@ -702,15 +625,9 @@ static INPUT_PORTS_START( headon )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_JOYSTICK_UP    ) PORT_4WAY
 
 	PORT_START("IN1")
-<<<<<<< HEAD
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, get_64v, NULL)
-	PORT_BIT( 0x7e, IP_ACTIVE_LOW, IPT_UNKNOWN ) /* probably unused */
-	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, read_coin_status, NULL)
-=======
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, get_64v, nullptr)
 	PORT_BIT( 0x7e, IP_ACTIVE_LOW, IPT_UNKNOWN ) /* probably unused */
 	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, read_coin_status, nullptr)
->>>>>>> upstream/master
 
 	PORT_CABINET_COLOR_OR_BW
 
@@ -734,17 +651,10 @@ static INPUT_PORTS_START( headonmz )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_JOYSTICK_UP    ) PORT_4WAY
 
 	PORT_START("IN1")
-<<<<<<< HEAD
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, get_64v, NULL)
-	PORT_BIT( 0x04, IP_ACTIVE_HIGH, IPT_SPECIAL ) // protection? (check on startup)
-	PORT_BIT( 0x7a, IP_ACTIVE_LOW, IPT_UNKNOWN ) /* probably unused */
-	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, read_coin_status, NULL)
-=======
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, get_64v, nullptr)
 	PORT_BIT( 0x04, IP_ACTIVE_HIGH, IPT_SPECIAL ) // protection? (check on startup)
 	PORT_BIT( 0x7a, IP_ACTIVE_LOW, IPT_UNKNOWN ) /* probably unused */
 	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, read_coin_status, nullptr)
->>>>>>> upstream/master
 
 	PORT_CABINET_COLOR_OR_BW
 
@@ -777,20 +687,12 @@ static INPUT_PORTS_START( supcrash )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_JOYSTICK_DOWN  ) PORT_4WAY
 
 	PORT_START("IN1")
-<<<<<<< HEAD
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, get_timer_value, NULL)
-=======
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, get_timer_value, nullptr)
->>>>>>> upstream/master
 	PORT_DIPNAME( 0x04, 0x04, "Rom Test" )
 	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_BIT( 0x7a, IP_ACTIVE_LOW, IPT_UNKNOWN ) /* probably unused */
-<<<<<<< HEAD
-	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, read_coin_status, NULL)
-=======
 	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, read_coin_status, nullptr)
->>>>>>> upstream/master
 
 	PORT_COIN_DEFAULT
 INPUT_PORTS_END
@@ -808,15 +710,9 @@ static INPUT_PORTS_START( carnivalh )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNKNOWN )
 
 	PORT_START("IN1")
-<<<<<<< HEAD
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, get_composite_blank_comp, NULL)
-	PORT_BIT( 0x7e, IP_ACTIVE_LOW, IPT_UNKNOWN ) /* probably unused */
-	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, read_coin_status, NULL)
-=======
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, get_composite_blank_comp, nullptr)
 	PORT_BIT( 0x7e, IP_ACTIVE_LOW, IPT_UNKNOWN ) /* probably unused */
 	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, read_coin_status, nullptr)
->>>>>>> upstream/master
 
 	PORT_CABINET_COLOR_OR_BW
 
@@ -858,15 +754,9 @@ static INPUT_PORTS_START( sspaceat )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START("IN2")
-<<<<<<< HEAD
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, get_timer_value, NULL)
-	PORT_BIT( 0x7e, IP_ACTIVE_LOW, IPT_UNUSED )
-	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, read_coin_status, NULL)
-=======
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, get_timer_value, nullptr)
 	PORT_BIT( 0x7e, IP_ACTIVE_LOW, IPT_UNUSED )
 	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, read_coin_status, nullptr)
->>>>>>> upstream/master
 
 	PORT_CABINET_COLOR_OR_BW
 
@@ -921,11 +811,7 @@ MACHINE_CONFIG_END
 
 READ8_MEMBER(vicdual_state::headon2_io_r)
 {
-<<<<<<< HEAD
-	UINT8 ret = 0;
-=======
 	uint8_t ret = 0;
->>>>>>> upstream/master
 
 	if (offset & 0x01)  ret = m_in0->read();
 	if (offset & 0x02) { /* schematics show this as in input port, but never read from */ }
@@ -1012,20 +898,12 @@ static INPUT_PORTS_START( headon2 )
 	PORT_BIT( 0xe0, IP_ACTIVE_LOW, IPT_UNKNOWN ) /* probably unused */
 
 	PORT_START("IN2")
-<<<<<<< HEAD
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, get_timer_value, NULL)
-=======
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, get_timer_value, nullptr)
->>>>>>> upstream/master
 	PORT_DIPNAME( 0x02, 0x02, DEF_STR( Demo_Sounds ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x02, DEF_STR( On ) )
 	PORT_BIT( 0x7c, IP_ACTIVE_LOW, IPT_UNKNOWN ) /* probably unused */
-<<<<<<< HEAD
-	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, read_coin_status, NULL)
-=======
 	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, read_coin_status, nullptr)
->>>>>>> upstream/master
 
 	PORT_COIN_DEFAULT
 INPUT_PORTS_END
@@ -1054,20 +932,12 @@ static INPUT_PORTS_START( car2 )
 	PORT_BIT( 0xe0, IP_ACTIVE_HIGH, IPT_UNKNOWN ) /* probably unused */
 
 	PORT_START("IN2")
-<<<<<<< HEAD
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, get_timer_value, NULL)
-=======
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, get_timer_value, nullptr)
->>>>>>> upstream/master
 	PORT_DIPNAME( 0x02, 0x02, DEF_STR( Demo_Sounds ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x02, DEF_STR( On ) )
 	PORT_BIT( 0x7c, IP_ACTIVE_LOW, IPT_UNKNOWN ) /* probably unused */
-<<<<<<< HEAD
-	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, read_coin_status, NULL)
-=======
 	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, read_coin_status, nullptr)
->>>>>>> upstream/master
 
 	PORT_COIN_DEFAULT
 INPUT_PORTS_END
@@ -1105,17 +975,10 @@ static INPUT_PORTS_START( digger )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START("IN2")
-<<<<<<< HEAD
-//  PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, get_timer_value, NULL)          // it's like this according to the schematics, but gameplay speed is too fast;
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, get_composite_blank_comp, NULL) // gameplay speed is correct now, there's likely an error in the schematics then...
-	PORT_BIT( 0x7e, IP_ACTIVE_LOW, IPT_UNKNOWN )    /* probably unused */
-	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, read_coin_status, NULL)
-=======
 //  PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, get_timer_value, nullptr)          // it's like this according to the schematics, but gameplay speed is too fast;
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, get_composite_blank_comp, nullptr) // gameplay speed is correct now, there's likely an error in the schematics then...
 	PORT_BIT( 0x7e, IP_ACTIVE_LOW, IPT_UNKNOWN )    /* probably unused */
 	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, read_coin_status, nullptr)
->>>>>>> upstream/master
 
 	PORT_COIN_DEFAULT
 INPUT_PORTS_END
@@ -1440,19 +1303,11 @@ ADDRESS_MAP_END
 CUSTOM_INPUT_MEMBER(vicdual_state::fake_lives_r)
 {
 	/* use the low byte for the bitmask */
-<<<<<<< HEAD
-	UINT8 bit_mask = ((FPTR)param) & 0xff;
-
-	/* and use d8 for the port */
-	int port = ((FPTR)param) >> 8 & 1;
-	return ((m_fake_lives[port] ? m_fake_lives[port]->read() : 0) & bit_mask) ? 0 : 1;
-=======
 	uint8_t bit_mask = ((uintptr_t)param) & 0xff;
 
 	/* and use d8 for the port */
 	int port = ((uintptr_t)param) >> 8 & 1;
 	return (m_fake_lives[port].read_safe(0) & bit_mask) ? 0 : 1;
->>>>>>> upstream/master
 }
 
 
@@ -1472,11 +1327,7 @@ static INPUT_PORTS_START( invho2 )
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_UNKNOWN )    /* probably unused */
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNKNOWN )    /* probably unused */
 	PORT_BIT( 0x04, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, fake_lives_r, (void *)0x002)
-<<<<<<< HEAD
-	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, get_composite_blank_comp, NULL)
-=======
 	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, get_composite_blank_comp, nullptr)
->>>>>>> upstream/master
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT  ) PORT_4WAY
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT ) PORT_4WAY
 	PORT_BIT( 0xc0, IP_ACTIVE_LOW, IPT_UNUSED )
@@ -1485,11 +1336,7 @@ static INPUT_PORTS_START( invho2 )
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_UNKNOWN )    /* probably unused */
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNKNOWN )    /* probably unused */
 	PORT_BIT( 0x04, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, fake_lives_r, (void *)0x101)
-<<<<<<< HEAD
-	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, get_timer_value, NULL)
-=======
 	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, get_timer_value, nullptr)
->>>>>>> upstream/master
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_START1 )
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_BUTTON1 )
 	PORT_BIT( 0xc0, IP_ACTIVE_LOW, IPT_UNUSED )
@@ -1498,11 +1345,7 @@ static INPUT_PORTS_START( invho2 )
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_UNKNOWN )    /* probably unused */
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNKNOWN )    /* probably unused */
 	PORT_BIT( 0x04, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, fake_lives_r, (void *)0x102)
-<<<<<<< HEAD
-	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, read_coin_status, NULL)
-=======
 	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, read_coin_status, nullptr)
->>>>>>> upstream/master
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_BUTTON2 ) PORT_NAME("Game Select") PORT_TOGGLE
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_START2 )
 	PORT_BIT( 0xc0, IP_ACTIVE_LOW, IPT_UNUSED )
@@ -1547,11 +1390,7 @@ static INPUT_PORTS_START( carhntds )
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_UNKNOWN )    /* probably unused */
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNKNOWN )    /* probably unused */
 	PORT_BIT( 0x04, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, fake_lives_r, (void *)0x002)
-<<<<<<< HEAD
-	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, get_composite_blank_comp, NULL)
-=======
 	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, get_composite_blank_comp, nullptr)
->>>>>>> upstream/master
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT  ) PORT_4WAY
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT ) PORT_4WAY
 	PORT_BIT( 0xc0, IP_ACTIVE_LOW, IPT_UNUSED )
@@ -1560,11 +1399,7 @@ static INPUT_PORTS_START( carhntds )
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_UNKNOWN )    /* probably unused */
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNKNOWN )    /* probably unused */
 	PORT_BIT( 0x04, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, fake_lives_r, (void *)0x101)
-<<<<<<< HEAD
-	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, get_timer_value, NULL)
-=======
 	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, get_timer_value, nullptr)
->>>>>>> upstream/master
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_START1 )
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_BUTTON1 )
 	PORT_BIT( 0xc0, IP_ACTIVE_LOW, IPT_UNUSED )
@@ -1573,11 +1408,7 @@ static INPUT_PORTS_START( carhntds )
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_UNKNOWN )    /* probably unused */
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNKNOWN )    /* probably unused */
 	PORT_BIT( 0x04, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, fake_lives_r, (void *)0x102)
-<<<<<<< HEAD
-	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, read_coin_status, NULL)
-=======
 	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, read_coin_status, nullptr)
->>>>>>> upstream/master
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_BUTTON2 ) PORT_NAME("Game Select") PORT_TOGGLE
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_START2 )
 	PORT_BIT( 0xc0, IP_ACTIVE_LOW, IPT_UNUSED )
@@ -1616,11 +1447,7 @@ static INPUT_PORTS_START( invds )
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_UNKNOWN )    /* probably unused */
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNKNOWN )    /* probably unused */
 	PORT_BIT( 0x04, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, fake_lives_r, (void *)0x002)
-<<<<<<< HEAD
-	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, get_composite_blank_comp, NULL)
-=======
 	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, get_composite_blank_comp, nullptr)
->>>>>>> upstream/master
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT  ) PORT_2WAY
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT ) PORT_2WAY
 	PORT_BIT( 0xc0, IP_ACTIVE_LOW, IPT_UNUSED )
@@ -1629,11 +1456,7 @@ static INPUT_PORTS_START( invds )
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_UNKNOWN )    /* probably unused */
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNKNOWN )    /* probably unused */
 	PORT_BIT( 0x04, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, fake_lives_r, (void *)0x101)
-<<<<<<< HEAD
-	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, get_timer_value, NULL)
-=======
 	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, get_timer_value, nullptr)
->>>>>>> upstream/master
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_START1 )
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_BUTTON2 )
 	PORT_BIT( 0xc0, IP_ACTIVE_LOW, IPT_UNUSED )
@@ -1642,11 +1465,7 @@ static INPUT_PORTS_START( invds )
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_UNKNOWN )    /* probably unused */
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNKNOWN )    /* probably unused */
 	PORT_BIT( 0x04, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, fake_lives_r, (void *)0x102)
-<<<<<<< HEAD
-	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, read_coin_status, NULL)
-=======
 	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, read_coin_status, nullptr)
->>>>>>> upstream/master
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_BUTTON3 ) PORT_NAME("Game Select") PORT_TOGGLE
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_START2 )
 	PORT_BIT( 0xc0, IP_ACTIVE_LOW, IPT_UNUSED )
@@ -1686,11 +1505,7 @@ static INPUT_PORTS_START( sspacaho )
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT ) PORT_4WAY PORT_COCKTAIL
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )
 	PORT_BIT( 0x04, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, fake_lives_r, (void *)0x002)
-<<<<<<< HEAD
-	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, get_composite_blank_comp, NULL)
-=======
 	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, get_composite_blank_comp, nullptr)
->>>>>>> upstream/master
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT  ) PORT_4WAY
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT ) PORT_4WAY
 	PORT_BIT( 0xc0, IP_ACTIVE_LOW, IPT_UNUSED )
@@ -1701,11 +1516,7 @@ static INPUT_PORTS_START( sspacaho )
 	PORT_DIPNAME( 0x04, 0x00, "Space Attack Bonus Life" )       PORT_DIPLOCATION("SW1:3")
 	PORT_DIPSETTING(    0x00, "10000" )
 	PORT_DIPSETTING(    0x04, "15000" )
-<<<<<<< HEAD
-	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, get_timer_value, NULL)
-=======
 	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, get_timer_value, nullptr)
->>>>>>> upstream/master
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_START1 )
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_BUTTON1 )
 	PORT_BIT( 0xc0, IP_ACTIVE_LOW, IPT_UNUSED )
@@ -1716,11 +1527,7 @@ static INPUT_PORTS_START( sspacaho )
 	PORT_DIPNAME( 0x04, 0x00, "Space Attack Final UFO Bonus" )  PORT_DIPLOCATION("SW1:4")
 	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-<<<<<<< HEAD
-	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, read_coin_status, NULL)
-=======
 	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, read_coin_status, nullptr)
->>>>>>> upstream/master
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_BUTTON2 ) PORT_NAME("Game Select") PORT_TOGGLE
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_START2 )
 	PORT_BIT( 0xc0, IP_ACTIVE_LOW, IPT_UNUSED )
@@ -1756,11 +1563,7 @@ static INPUT_PORTS_START( tranqgun )
 	PORT_DIPNAME( 0x04, 0x00, DEF_STR( Unknown ) )      PORT_DIPLOCATION("SW1:2")
 	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-<<<<<<< HEAD
-	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, get_vblank_comp, NULL)
-=======
 	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, get_vblank_comp, nullptr)
->>>>>>> upstream/master
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT  ) PORT_4WAY
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT ) PORT_4WAY
 	PORT_BIT( 0xc0, IP_ACTIVE_LOW, IPT_UNUSED )
@@ -1771,11 +1574,7 @@ static INPUT_PORTS_START( tranqgun )
 	PORT_DIPNAME( 0x04, 0x00, DEF_STR( Unknown ) )      PORT_DIPLOCATION("SW1:3")
 	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-<<<<<<< HEAD
-	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, get_timer_value, NULL)
-=======
 	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, get_timer_value, nullptr)
->>>>>>> upstream/master
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_START1 )
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_BUTTON1 )
 	PORT_BIT( 0xc0, IP_ACTIVE_LOW, IPT_UNUSED )
@@ -1786,11 +1585,7 @@ static INPUT_PORTS_START( tranqgun )
 	PORT_DIPNAME( 0x04, 0x00, DEF_STR( Unknown ) )      PORT_DIPLOCATION("SW1:4")
 	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-<<<<<<< HEAD
-	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, read_coin_status, NULL)
-=======
 	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, read_coin_status, nullptr)
->>>>>>> upstream/master
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_UNKNOWN )
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_START2 )
 	PORT_BIT( 0xc0, IP_ACTIVE_LOW, IPT_UNUSED )
@@ -1819,11 +1614,7 @@ static INPUT_PORTS_START( spacetrk )
 	PORT_DIPNAME( 0x04, 0x00, DEF_STR( Unknown ) )      PORT_DIPLOCATION("SW1:2") // unknown, but used
 	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-<<<<<<< HEAD
-	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, get_composite_blank_comp, NULL)
-=======
 	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, get_composite_blank_comp, nullptr)
->>>>>>> upstream/master
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_JOYSTICK_DOWN ) PORT_8WAY
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_JOYSTICK_UP   ) PORT_8WAY
 	PORT_BIT( 0xc0, IP_ACTIVE_LOW, IPT_UNUSED )
@@ -1834,11 +1625,7 @@ static INPUT_PORTS_START( spacetrk )
 	PORT_DIPNAME( 0x04, 0x04, DEF_STR( Bonus_Life ) )   PORT_DIPLOCATION("SW1:3")
 	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x04, DEF_STR( On ) )
-<<<<<<< HEAD
-	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, get_timer_value, NULL)
-=======
 	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, get_timer_value, nullptr)
->>>>>>> upstream/master
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_START1 )
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_BUTTON1 )
 	PORT_BIT( 0xc0, IP_ACTIVE_LOW, IPT_UNUSED )
@@ -1849,11 +1636,7 @@ static INPUT_PORTS_START( spacetrk )
 	PORT_DIPNAME( 0x04, 0x00, DEF_STR( Unused ) )       PORT_DIPLOCATION("SW1:4")
 	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-<<<<<<< HEAD
-	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, read_coin_status, NULL)
-=======
 	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, read_coin_status, nullptr)
->>>>>>> upstream/master
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_BUTTON2 )
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_START2 )
 	PORT_BIT( 0xc0, IP_ACTIVE_LOW, IPT_UNUSED )
@@ -1903,11 +1686,7 @@ static INPUT_PORTS_START( carnival )
 	PORT_DIPNAME( 0x04, 0x00, DEF_STR( Unused ) )       PORT_DIPLOCATION("SW1:2")
 	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-<<<<<<< HEAD
-	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, get_composite_blank_comp, NULL)
-=======
 	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, get_composite_blank_comp, nullptr)
->>>>>>> upstream/master
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT  ) PORT_2WAY
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT ) PORT_2WAY
 	PORT_BIT( 0xc0, IP_ACTIVE_LOW, IPT_UNUSED )
@@ -1918,11 +1697,7 @@ static INPUT_PORTS_START( carnival )
 	PORT_DIPNAME( 0x04, 0x00, DEF_STR( Unused ) )       PORT_DIPLOCATION("SW1:3")
 	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-<<<<<<< HEAD
-	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, get_timer_value, NULL)
-=======
 	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, get_timer_value, nullptr)
->>>>>>> upstream/master
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_START1 )
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_BUTTON1 )
 	PORT_BIT( 0xc0, IP_ACTIVE_LOW, IPT_UNUSED )
@@ -1933,11 +1708,7 @@ static INPUT_PORTS_START( carnival )
 	PORT_DIPNAME( 0x04, 0x00, DEF_STR( Unused ) )       PORT_DIPLOCATION("SW1:4")
 	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-<<<<<<< HEAD
-	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, read_coin_status, NULL)
-=======
 	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, read_coin_status, nullptr)
->>>>>>> upstream/master
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_UNKNOWN )    /* probably unused */
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_START2 )
 	PORT_BIT( 0xc0, IP_ACTIVE_LOW, IPT_UNUSED )
@@ -1976,11 +1747,7 @@ static INPUT_PORTS_START( brdrline )
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT ) PORT_4WAY PORT_COCKTAIL
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNKNOWN ) /* probably unused */
 	PORT_BIT( 0x04, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, fake_lives_r, (void *)0x002)
-<<<<<<< HEAD
-	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, get_vblank_comp, NULL)
-=======
 	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, get_vblank_comp, nullptr)
->>>>>>> upstream/master
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT  ) PORT_4WAY
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT ) PORT_4WAY
 	PORT_BIT( 0xc0, IP_ACTIVE_LOW, IPT_UNUSED )
@@ -1989,11 +1756,7 @@ static INPUT_PORTS_START( brdrline )
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_JOYSTICK_DOWN ) PORT_4WAY PORT_COCKTAIL
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNKNOWN )    /* probably unused */
 	PORT_BIT( 0x04, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, fake_lives_r, (void *)0x004)
-<<<<<<< HEAD
-	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, get_64v, NULL)  /* yes, this is different */
-=======
 	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, get_64v, nullptr)  /* yes, this is different */
->>>>>>> upstream/master
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_START1 )
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_BUTTON1 )
 	PORT_BIT( 0xc0, IP_ACTIVE_LOW, IPT_UNUSED )
@@ -2004,11 +1767,7 @@ static INPUT_PORTS_START( brdrline )
 	PORT_DIPNAME( 0x04, 0x04, DEF_STR( Bonus_Life ) )   PORT_DIPLOCATION("SW1:4")
 	PORT_DIPSETTING(    0x04, "15000" )
 	PORT_DIPSETTING(    0x00, "20000" )
-<<<<<<< HEAD
-	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, read_coin_status, NULL)
-=======
 	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, read_coin_status, nullptr)
->>>>>>> upstream/master
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_UNKNOWN )    /* probably unused */
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_START2 )
 	PORT_BIT( 0xc0, IP_ACTIVE_LOW, IPT_UNUSED )
@@ -2061,11 +1820,7 @@ static INPUT_PORTS_START( pulsar )
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_UNKNOWN )    /* probably unused */
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNKNOWN )    /* probably unused */
 	PORT_BIT( 0x04, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, fake_lives_r, (void *)0x002)
-<<<<<<< HEAD
-	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, get_composite_blank_comp, NULL)
-=======
 	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, get_composite_blank_comp, nullptr)
->>>>>>> upstream/master
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT  ) PORT_4WAY
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT ) PORT_4WAY
 	PORT_BIT( 0xc0, IP_ACTIVE_LOW, IPT_UNUSED )
@@ -2076,11 +1831,7 @@ static INPUT_PORTS_START( pulsar )
 	PORT_DIPNAME( 0x04, 0x00, DEF_STR( Unused ) )   PORT_DIPLOCATION("SW1:3")
 	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-<<<<<<< HEAD
-	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, get_timer_value, NULL)
-=======
 	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, get_timer_value, nullptr)
->>>>>>> upstream/master
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_START1 )
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_BUTTON1 )
 	PORT_BIT( 0xc0, IP_ACTIVE_LOW, IPT_UNUSED )
@@ -2091,11 +1842,7 @@ static INPUT_PORTS_START( pulsar )
 	PORT_DIPNAME( 0x04, 0x00, DEF_STR( Unused ) )   PORT_DIPLOCATION("SW1:4")
 	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-<<<<<<< HEAD
-	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, read_coin_status, NULL)
-=======
 	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, read_coin_status, nullptr)
->>>>>>> upstream/master
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_UNKNOWN )    /* probably unused */
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_START2 )
 	PORT_BIT( 0xc0, IP_ACTIVE_LOW, IPT_UNUSED )
@@ -2131,11 +1878,7 @@ static INPUT_PORTS_START( heiankyo )
 	PORT_DIPNAME( 0x04, 0x04, DEF_STR( Unknown ) )  PORT_DIPLOCATION("SW1:2") // bonus life?
 	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-<<<<<<< HEAD
-	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, get_composite_blank_comp, NULL)
-=======
 	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, get_composite_blank_comp, nullptr)
->>>>>>> upstream/master
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT ) PORT_4WAY
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_BUTTON2 )
 	PORT_BIT( 0xc0, IP_ACTIVE_LOW, IPT_UNUSED )
@@ -2146,11 +1889,7 @@ static INPUT_PORTS_START( heiankyo )
 	PORT_DIPNAME( 0x04, 0x04, DEF_STR( Unknown ) )  PORT_DIPLOCATION("SW1:3") // bonus life?
 	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-<<<<<<< HEAD
-	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, get_timer_value, NULL)
-=======
 	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, get_timer_value, nullptr)
->>>>>>> upstream/master
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_JOYSTICK_DOWN ) PORT_4WAY
 	PORT_BIT( 0x20, IP_ACTIVE_HIGH, IPT_UNKNOWN )   /* has to be 0, protection? */
 	PORT_BIT( 0xc0, IP_ACTIVE_LOW, IPT_UNUSED )
@@ -2161,11 +1900,7 @@ static INPUT_PORTS_START( heiankyo )
 	PORT_DIPNAME( 0x04, 0x00, DEF_STR( Lives ) )    PORT_DIPLOCATION("SW1:4")
 	PORT_DIPSETTING(    0x00, "3" )
 	PORT_DIPSETTING(    0x04, "5" )
-<<<<<<< HEAD
-	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, read_coin_status, NULL)
-=======
 	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, read_coin_status, nullptr)
->>>>>>> upstream/master
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT ) PORT_4WAY
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_START1 )
 	PORT_BIT( 0xc0, IP_ACTIVE_LOW, IPT_UNUSED )
@@ -2190,11 +1925,7 @@ static INPUT_PORTS_START( alphaho )
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT ) PORT_4WAY PORT_COCKTAIL
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNKNOWN )    /* probably unused */
 	PORT_BIT( 0x04, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, fake_lives_r, (void *)0x002)
-<<<<<<< HEAD
-	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, get_composite_blank_comp, NULL)
-=======
 	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, get_composite_blank_comp, nullptr)
->>>>>>> upstream/master
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT  ) PORT_4WAY
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT ) PORT_4WAY
 	PORT_BIT( 0xc0, IP_ACTIVE_LOW, IPT_UNUSED )
@@ -2205,11 +1936,7 @@ static INPUT_PORTS_START( alphaho )
 	PORT_DIPNAME( 0x04, 0x04, DEF_STR( Unknown ) )      PORT_DIPLOCATION("SW1:3")
 	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-<<<<<<< HEAD
-	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, get_timer_value, NULL)
-=======
 	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, get_timer_value, nullptr)
->>>>>>> upstream/master
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_START1 )
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_BUTTON1 )
 	PORT_BIT( 0xc0, IP_ACTIVE_LOW, IPT_UNUSED )
@@ -2220,11 +1947,7 @@ static INPUT_PORTS_START( alphaho )
 	PORT_DIPNAME( 0x04, 0x00, "Alpha Fighter Unknown" ) PORT_DIPLOCATION("SW1:4") // related to soccer frequency (code at 0x4950)
 	PORT_DIPSETTING(    0x00, DEF_STR ( Off ) )
 	PORT_DIPSETTING(    0x04, DEF_STR ( On ) )
-<<<<<<< HEAD
-	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, read_coin_status, NULL)
-=======
 	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, read_coin_status, nullptr)
->>>>>>> upstream/master
 	PORT_BIT(0x10, IP_ACTIVE_LOW, IPT_BUTTON2 ) PORT_NAME("Game Select") PORT_TOGGLE
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_START2 )
 	PORT_BIT( 0xc0, IP_ACTIVE_LOW, IPT_UNUSED )
@@ -2279,10 +2002,7 @@ static MACHINE_CONFIG_DERIVED( invds, vicdual_dualgame_root )
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_DERIVED( carhntds, vicdual_dualgame_root )
-<<<<<<< HEAD
-=======
 
->>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_CPU_MODIFY("maincpu")
 	MCFG_CPU_PROGRAM_MAP(carhntds_dualgame_map)
@@ -2316,39 +2036,21 @@ static MACHINE_CONFIG_DERIVED( carnival, vicdual_dualgame_root )
 	MCFG_CPU_MODIFY("maincpu")
 	MCFG_CPU_IO_MAP(carnival_io_map)
 
-<<<<<<< HEAD
-=======
 	MCFG_QUANTUM_PERFECT_CPU("maincpu")
 
->>>>>>> upstream/master
 	/* audio hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 	MCFG_FRAGMENT_ADD(carnival_audio)
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_DERIVED( carnivalh, vicdual_dualgame_root )
-=======
 static MACHINE_CONFIG_DERIVED( carnivalh, carnival )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_MODIFY("maincpu")
 	MCFG_CPU_IO_MAP(headon_io_map)
-<<<<<<< HEAD
-
-	/* audio hardware */
-	MCFG_SPEAKER_STANDARD_MONO("mono")
-	MCFG_FRAGMENT_ADD(carnival_audio)
 MACHINE_CONFIG_END
 
 
-
-=======
-MACHINE_CONFIG_END
-
-
->>>>>>> upstream/master
 static MACHINE_CONFIG_DERIVED( tranqgun, vicdual_dualgame_root )
 
 	/* basic machine hardware */
@@ -2400,10 +2102,6 @@ MACHINE_CONFIG_END
  *
  *************************************/
 
-<<<<<<< HEAD
-
-=======
->>>>>>> upstream/master
 WRITE8_MEMBER(vicdual_state::samurai_protection_w)
 {
 	m_samurai_protection_data = data;
@@ -2412,13 +2110,8 @@ WRITE8_MEMBER(vicdual_state::samurai_protection_w)
 
 CUSTOM_INPUT_MEMBER(vicdual_state::samurai_protection_r)
 {
-<<<<<<< HEAD
-	int offset = (FPTR)param;
-	UINT32 answer = 0;
-=======
 	int offset = (uintptr_t)param;
 	uint32_t answer = 0;
->>>>>>> upstream/master
 
 	if (m_samurai_protection_data == 0xab)
 		answer = 0x02;
@@ -2480,11 +2173,7 @@ static INPUT_PORTS_START( samurai )
 	PORT_DIPNAME( 0x04, 0x00, DEF_STR( Unknown ) )          PORT_DIPLOCATION("SW1:2") // unknown, but used
 	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-<<<<<<< HEAD
-	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, get_composite_blank_comp, NULL)
-=======
 	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, get_composite_blank_comp, nullptr)
->>>>>>> upstream/master
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT  ) PORT_4WAY
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT ) PORT_4WAY
 	PORT_BIT( 0xc0, IP_ACTIVE_LOW, IPT_UNUSED )
@@ -2495,11 +2184,7 @@ static INPUT_PORTS_START( samurai )
 	PORT_DIPNAME( 0x04, 0x00, DEF_STR( Unused ) )           PORT_DIPLOCATION("SW1:3")
 	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-<<<<<<< HEAD
-	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, get_timer_value, NULL)
-=======
 	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, get_timer_value, nullptr)
->>>>>>> upstream/master
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_START1 )
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_BUTTON1 )
 	PORT_BIT( 0xc0, IP_ACTIVE_LOW, IPT_UNUSED )
@@ -2510,11 +2195,7 @@ static INPUT_PORTS_START( samurai )
 	PORT_DIPNAME( 0x04, 0x00, DEF_STR( Unused ) )           PORT_DIPLOCATION("SW1:4")
 	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-<<<<<<< HEAD
-	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, read_coin_status, NULL)
-=======
 	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, read_coin_status, nullptr)
->>>>>>> upstream/master
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_UNKNOWN ) /* probably unused */
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_START2 )
 	PORT_BIT( 0xc0, IP_ACTIVE_LOW, IPT_UNUSED )
@@ -2553,15 +2234,9 @@ MACHINE_CONFIG_END
  *
  *************************************/
 
-<<<<<<< HEAD
-READ8_MEMBER(vicdual_state::nsub_io_r)
-{
-	UINT8 ret = 0;
-=======
 READ8_MEMBER(nsub_state::nsub_io_r)
 {
 	uint8_t ret = 0;
->>>>>>> upstream/master
 
 	if (offset & 0x01)  ret = m_in0->read();
 	if (offset & 0x08)  ret = m_in1->read();
@@ -2570,17 +2245,6 @@ READ8_MEMBER(nsub_state::nsub_io_r)
 }
 
 
-<<<<<<< HEAD
-WRITE8_MEMBER(vicdual_state::nsub_io_w)
-{
-	if (offset & 0x01)  assert_coin_status();
-	if (offset & 0x02) { /* nsub_audio_w(0, data) */ }
-	if (offset & 0x04)  palette_bank_w(space, 0, data);
-}
-
-
-static ADDRESS_MAP_START( nsub_map, AS_PROGRAM, 8, vicdual_state )
-=======
 WRITE8_MEMBER(nsub_state::nsub_io_w)
 {
 	if (offset & 0x01)  assert_coin_status();
@@ -2597,7 +2261,6 @@ WRITE8_MEMBER(nsub_state::nsub_io_w)
 
 
 static ADDRESS_MAP_START( nsub_map, AS_PROGRAM, 8, nsub_state )
->>>>>>> upstream/master
 	AM_RANGE(0x0000, 0x3fff) AM_MIRROR(0x4000) AM_ROM
 	AM_RANGE(0x8000, 0xbfff) AM_NOP /* unused */
 	AM_RANGE(0xc000, 0xc3ff) AM_MIRROR(0x3000) AM_RAM_WRITE(videoram_w) AM_SHARE("videoram")
@@ -2606,11 +2269,7 @@ static ADDRESS_MAP_START( nsub_map, AS_PROGRAM, 8, nsub_state )
 ADDRESS_MAP_END
 
 
-<<<<<<< HEAD
-static ADDRESS_MAP_START( nsub_io_map, AS_IO, 8, vicdual_state )
-=======
 static ADDRESS_MAP_START( nsub_io_map, AS_IO, 8, nsub_state )
->>>>>>> upstream/master
 	ADDRESS_MAP_GLOBAL_MASK(0x0f)
 
 	/* no decoder, just logic gates, so in theory the
@@ -2621,11 +2280,7 @@ ADDRESS_MAP_END
 
 // coinage is handled by extra hardware on a daughterboard, put before the coin-in pin on the main logic board
 // IC board "COIN CALCULATOR" (97201-P): two 74191 counters, a 555 timer, coin meters, and lots of other TTL
-<<<<<<< HEAD
-TIMER_DEVICE_CALLBACK_MEMBER(vicdual_state::nsub_coin_pulse)
-=======
 TIMER_DEVICE_CALLBACK_MEMBER(nsub_state::nsub_coin_pulse)
->>>>>>> upstream/master
 {
 	if (m_nsub_play_counter > 0)
 	{
@@ -2634,19 +2289,11 @@ TIMER_DEVICE_CALLBACK_MEMBER(nsub_state::nsub_coin_pulse)
 	}
 }
 
-<<<<<<< HEAD
-INPUT_CHANGED_MEMBER(vicdual_state::nsub_coin_in)
-{
-	if (newval)
-	{
-		int which = (int)(FPTR)param;
-=======
 INPUT_CHANGED_MEMBER(nsub_state::nsub_coin_in)
 {
 	if (newval)
 	{
 		int which = (int)(uintptr_t)param;
->>>>>>> upstream/master
 		int coinage = m_coinage->read();
 
 		switch (which)
@@ -2669,13 +2316,8 @@ INPUT_CHANGED_MEMBER(nsub_state::nsub_coin_in)
 				}
 
 				// increment coin counter
-<<<<<<< HEAD
-				coin_counter_w(machine(), which, 1);
-				coin_counter_w(machine(), which, 0);
-=======
 				machine().bookkeeping().coin_counter_w(which, 1);
 				machine().bookkeeping().coin_counter_w(which, 0);
->>>>>>> upstream/master
 				break;
 
 			// service coin
@@ -2702,16 +2344,6 @@ static INPUT_PORTS_START( nsub )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_JOYSTICK_UP    ) PORT_8WAY
 
 	PORT_START("IN1")
-<<<<<<< HEAD
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, get_composite_blank_comp, NULL)
-	PORT_BIT( 0x7e, IP_ACTIVE_LOW, IPT_UNKNOWN ) /* probably unused */
-	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, read_coin_status, NULL)
-
-	PORT_START("COIN")
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_COIN1 ) PORT_CHANGED_MEMBER(DEVICE_SELF, vicdual_state,nsub_coin_in, (void*)0)
-	PORT_BIT( 0x02, IP_ACTIVE_HIGH, IPT_COIN2 ) PORT_CHANGED_MEMBER(DEVICE_SELF, vicdual_state,nsub_coin_in, (void*)1)
-	PORT_BIT( 0x04, IP_ACTIVE_HIGH, IPT_SERVICE1 ) PORT_CHANGED_MEMBER(DEVICE_SELF, vicdual_state,nsub_coin_in, (void*)2)
-=======
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nsub_state, get_composite_blank_comp, nullptr)
 	PORT_BIT( 0x7e, IP_ACTIVE_LOW, IPT_UNKNOWN ) /* probably unused */
 	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, nsub_state, read_coin_status, nullptr)
@@ -2720,7 +2352,6 @@ static INPUT_PORTS_START( nsub )
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_COIN1 ) PORT_CHANGED_MEMBER(DEVICE_SELF, nsub_state, nsub_coin_in, (void*)0)
 	PORT_BIT( 0x02, IP_ACTIVE_HIGH, IPT_COIN2 ) PORT_CHANGED_MEMBER(DEVICE_SELF, nsub_state, nsub_coin_in, (void*)1)
 	PORT_BIT( 0x04, IP_ACTIVE_HIGH, IPT_SERVICE1 ) PORT_CHANGED_MEMBER(DEVICE_SELF, nsub_state, nsub_coin_in, (void*)2)
->>>>>>> upstream/master
 
 	PORT_START("COINAGE") // "OPTION SW." on daughterboard
 	PORT_DIPNAME( 0x07, 0x01, DEF_STR( Coin_A ) )       PORT_DIPLOCATION("SW:1,2,3")
@@ -2746,11 +2377,7 @@ static INPUT_PORTS_START( nsub )
 INPUT_PORTS_END
 
 
-<<<<<<< HEAD
-MACHINE_START_MEMBER(vicdual_state,nsub)
-=======
 MACHINE_START_MEMBER(nsub_state, nsub)
->>>>>>> upstream/master
 {
 	m_nsub_play_counter = 0;
 	save_item(NAME(m_nsub_coin_counter));
@@ -2763,34 +2390,13 @@ MACHINE_START_MEMBER(nsub_state, nsub)
 	m_nsub_coinage_timer->adjust(attotime::zero, 0, attotime::from_msec(150));
 }
 
-<<<<<<< HEAD
-MACHINE_RESET_MEMBER(vicdual_state,nsub)
-=======
 MACHINE_RESET_MEMBER(nsub_state, nsub)
->>>>>>> upstream/master
 {
 	m_nsub_coin_counter = m_coinage->read() & 7;
 
 	machine_reset();
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_DERIVED( nsub, vicdual_root )
-
-	/* basic machine hardware */
-	MCFG_CPU_MODIFY("maincpu")
-	MCFG_CPU_PROGRAM_MAP(nsub_map)
-	MCFG_CPU_IO_MAP(nsub_io_map)
-
-	MCFG_TIMER_DRIVER_ADD("nsub_coin", vicdual_state, nsub_coin_pulse)
-
-	MCFG_MACHINE_START_OVERRIDE(vicdual_state,nsub)
-	MCFG_MACHINE_RESET_OVERRIDE(vicdual_state,nsub)
-
-	/* video hardware */
-	MCFG_SCREEN_MODIFY("screen")
-	MCFG_SCREEN_UPDATE_DRIVER(vicdual_state, screen_update_color)
-=======
 static MACHINE_CONFIG_START( nsub )
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, VICDUAL_MAIN_CPU_CLOCK)
@@ -2811,7 +2417,6 @@ static MACHINE_CONFIG_START( nsub )
 
 	/* audio hardware */
 	MCFG_S97271P_ADD("s97271p")
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
@@ -2824,11 +2429,7 @@ MACHINE_CONFIG_END
 
 READ8_MEMBER(vicdual_state::invinco_io_r)
 {
-<<<<<<< HEAD
-	UINT8 ret = 0;
-=======
 	uint8_t ret = 0;
->>>>>>> upstream/master
 
 	if (offset & 0x01)  ret = m_in0->read();
 	if (offset & 0x02)  ret = m_in1->read();
@@ -2896,15 +2497,9 @@ static INPUT_PORTS_START( invinco )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START("IN2")
-<<<<<<< HEAD
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, get_composite_blank_comp, NULL)
-	PORT_BIT( 0x7e, IP_ACTIVE_LOW, IPT_UNKNOWN )    /* probably unused */
-	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, read_coin_status, NULL)
-=======
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, get_composite_blank_comp, nullptr)
 	PORT_BIT( 0x7e, IP_ACTIVE_LOW, IPT_UNKNOWN )    /* probably unused */
 	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, vicdual_state, read_coin_status, nullptr)
->>>>>>> upstream/master
 
 	PORT_COIN_DEFAULT
 INPUT_PORTS_END
@@ -2968,26 +2563,6 @@ ROM_START( depthcho )
 	ROM_LOAD( "316-0014.u28", 0x0020, 0x0020, CRC(7b7a8492) SHA1(6ba8d891cc6eb0dd80051377b6b832e8894655e7) )    /* sequence PROM */
 ROM_END
 
-<<<<<<< HEAD
-ROM_START( subhunt )
-	ROM_REGION( 0x10000, "maincpu", 0 )
-	ROM_LOAD_NIB_LOW ( "dp04",         0x0000, 0x0400, CRC(0ace1aef) SHA1(071256dd63e2e449093a65a4c9b006be5e17b786) )
-	ROM_LOAD_NIB_HIGH( "dp01",         0x0000, 0x0400, CRC(da9e835b) SHA1(505c969b479aeab11bb6a21ef06837280846d90a) )
-	ROM_LOAD_NIB_LOW ( "dp10",         0x0400, 0x0400, CRC(de752f20) SHA1(513a92554d14a09d6b80ba8017d161c7cda9ed8c) )
-	ROM_LOAD_NIB_HIGH( "316-0028.u77", 0x0400, 0x0400, CRC(597ae441) SHA1(8d3af5e64e838a57057d46f97a7b1c1037c1a0cf) ) // dp07
-	ROM_LOAD_NIB_LOW ( "dp05",         0x0800, 0x0400, CRC(1c0530cf) SHA1(b1f2b1038ee063533669341f1a71755eecc2e1a9) )
-	ROM_LOAD_NIB_HIGH( "316-0023.u52", 0x0800, 0x0400, CRC(9244b613) SHA1(6587035ec22d90194cdc3efaed3571a1ab975e1c) ) // dp02
-	ROM_LOAD_NIB_LOW ( "dp11",         0x0c00, 0x0400, CRC(0007044a) SHA1(c8d7c693e3059ff020563336fe712c234e94b8f9) )
-	ROM_LOAD_NIB_HIGH( "dp08",         0x0c00, 0x0400, CRC(4d4e3ec8) SHA1(a0d5392fe5795cc6bf7373f194186506283c947c) )
-	ROM_LOAD_NIB_LOW ( "dp06",         0x1000, 0x0400, CRC(63e1184b) SHA1(91934cb041365dabdc58a831312577fdb0dc923b) )
-	ROM_LOAD_NIB_HIGH( "dp03",         0x1000, 0x0400, CRC(d70dbfd8) SHA1(0183a6b1ffd87a9e28588a7a9aa18aeb003560f0) )
-	ROM_LOAD_NIB_LOW ( "dp12",         0x1400, 0x0400, CRC(170d7718) SHA1(4348e4e2dbb1edd9a4228fd3ccef58c50f1ae129) )
-	ROM_LOAD_NIB_HIGH( "dp09",         0x1400, 0x0400, CRC(97466803) SHA1(f04ba4a1a960836974a85832596fc3a92a711094) )
-
-	ROM_REGION( 0x0040, "user1", 0 )
-	ROM_LOAD( "316-0013.u27", 0x0000, 0x0020, CRC(690ef530) SHA1(6c0de3fa87a341cd378fefb8e06bf7918db9a074) )    /* control PROM */
-	ROM_LOAD( "316-0014.u28", 0x0020, 0x0020, CRC(7b7a8492) SHA1(6ba8d891cc6eb0dd80051377b6b832e8894655e7) )    /* sequence PROM */
-=======
 /* Fully working PCB set from my full-size Sub Hunter upright machine.
 
 Essentally this pcb set is a Taito-made license of
@@ -3019,7 +2594,6 @@ ROM_START( subhunt )
 	ROM_REGION( 0x0040, "user1", 0 )
 	ROM_LOAD( "316-0013.u27", 0x0000, 0x0020, CRC(690ef530) SHA1(6c0de3fa87a341cd378fefb8e06bf7918db9a074) )    /* dp13.u27 - control PROM */
 	ROM_LOAD( "316-0014.u28", 0x0020, 0x0020, CRC(7b7a8492) SHA1(6ba8d891cc6eb0dd80051377b6b832e8894655e7) )    /* dp14.u28 - sequence PROM */
->>>>>>> upstream/master
 ROM_END
 
 
@@ -3100,16 +2674,8 @@ Epr-274.u42
 Epr-275.u41
 Pr-69.u11
 
-<<<<<<< HEAD
-Also PR33.u82 and PR34.u83 were not dumped from this pcb, couldn't be read because aluminium cooler on it.
-They're probably the same as on other games.
-
-This game use a separate "daughter" board for input ??? ref: 97269-P-B
-with a prom on it : PR-02 type MMI 6336-1j which is soldered.
-=======
 This game use a separate "daughter" board for gradient and starfield ref: 97269-P-B
 with 3 proms on it : PR-02 type MMI 6336-1j, PR-56 type MB7054 and PR-57 type MB7054
->>>>>>> upstream/master
 
 */
 
@@ -3590,13 +3156,6 @@ ROM_START( tranqgun )
 	ROM_LOAD( "316-0042.u88", 0x0020, 0x0020, CRC(a1506b9d) SHA1(037c3db2ea40eca459e8acba9d1506dd28d72d10) )    /* sequence PROM */
 ROM_END
 
-<<<<<<< HEAD
-
-
-
-
-=======
->>>>>>> upstream/master
 ROM_START( spacetrk )
 	ROM_REGION( 0x10000, "maincpu", 0 )
 	ROM_LOAD( "u33.bin",      0x0000, 0x0400, CRC(9033fe50) SHA1(0a9b86af03956575403d8b494963f55887fc4dc3) )
@@ -3673,11 +3232,7 @@ ROM_START( carnival )
 	ROM_REGION( 0x0020, "proms", 0 )
 	ROM_LOAD( "316-633",      0x0000, 0x0020, CRC(f0084d80) SHA1(95ec912ac2c64cd58a50c68afc0993746841a531) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x0800, "audiocpu", 0 ) /* sound ROM */
-=======
 	ROM_REGION( 0x0400, "audiocpu", 0 ) /* sound ROM */
->>>>>>> upstream/master
 	ROM_LOAD( "epr-412",     0x0000, 0x0400, CRC(0dbaa2b0) SHA1(eae7fc362a0ff8f908c42e093c7dbb603659373c) )
 
 	ROM_REGION( 0x0020, "user1", 0 )    /* timing PROM */
@@ -3706,11 +3261,7 @@ ROM_START( carnivalc )
 	ROM_REGION( 0x0020, "proms", 0 )
 	ROM_LOAD( "316-633",      0x0000, 0x0020, CRC(f0084d80) SHA1(95ec912ac2c64cd58a50c68afc0993746841a531) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x0800, "audiocpu", 0 ) /* sound ROM */
-=======
 	ROM_REGION( 0x0400, "audiocpu", 0 ) /* sound ROM */
->>>>>>> upstream/master
 	ROM_LOAD( "epr-412",     0x0000, 0x0400, CRC(0dbaa2b0) SHA1(eae7fc362a0ff8f908c42e093c7dbb603659373c) )
 
 	ROM_REGION( 0x0020, "user1", 0 )    /* timing PROM */
@@ -3731,11 +3282,7 @@ ROM_START( carnivalh )
 	ROM_REGION( 0x0020, "proms", 0 )
 	ROM_LOAD( "pr-62.u44",      0x0000, 0x0020, CRC(f0084d80) SHA1(95ec912ac2c64cd58a50c68afc0993746841a531) ) /* Same as 316-633 */
 
-<<<<<<< HEAD
-	ROM_REGION( 0x0800, "audiocpu", 0 ) /* sound ROM */
-=======
 	ROM_REGION( 0x0400, "audiocpu", 0 ) /* sound ROM */
->>>>>>> upstream/master
 	ROM_LOAD( "epr-412.u5",     0x0000, 0x0400, CRC(0dbaa2b0) SHA1(eae7fc362a0ff8f908c42e093c7dbb603659373c) )
 
 	ROM_REGION( 0x0040, "user1", 0 )    /* misc PROMs (type n82s123) */
@@ -3757,11 +3304,7 @@ ROM_START( carnivalha )
 	ROM_REGION( 0x0020, "proms", 0 )
 	ROM_LOAD( "pr-62.u44",      0x0000, 0x0020, CRC(f0084d80) SHA1(95ec912ac2c64cd58a50c68afc0993746841a531) ) /* Same as 316-633 */
 
-<<<<<<< HEAD
-	ROM_REGION( 0x0800, "audiocpu", 0 ) /* sound ROM */
-=======
 	ROM_REGION( 0x0400, "audiocpu", 0 ) /* sound ROM */
->>>>>>> upstream/master
 	ROM_LOAD( "epr-412.u5",     0x0000, 0x0400, CRC(0dbaa2b0) SHA1(eae7fc362a0ff8f908c42e093c7dbb603659373c) )
 
 	ROM_REGION( 0x0040, "user1", 0 )    /* misc PROMs (type n82s123) */
@@ -3791,18 +3334,6 @@ ROM_START( brdrline )
 	ROM_REGION( 0x0020, "proms", 0 )
 	ROM_LOAD( "borderc.49",   0x0000, 0x0020, CRC(bc6be94e) SHA1(34e113ec25e19212b74907d35be5cb8714a8249c) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x0800, "cpu1", 0 ) /* sound ROM */
-	ROM_LOAD( "au.bin",       0x0000, 0x0400, CRC(a23e1d9f) SHA1(ce209571f6341aa6f036a015e666673098bc98ea) )
-
-	ROM_REGION( 0x0100, "user1", 0 )    /* misc PROM */
-	ROM_LOAD( "border.32",   0x0000, 0x0020, CRC(c128d0ba) SHA1(0ce9febbb7e2f5388ed999a479e3d385dba0b342) )
-	ROM_LOAD( "bordera.15",  0x0000, 0x0020, CRC(6449e678) SHA1(421c45c8fba3c2bc2a7ebbea2c837c8fa1a5a2f3) )
-	ROM_LOAD( "borderb.14",  0x0000, 0x0020, CRC(55dcdef1) SHA1(6fbd041edc258b7e1b99bbe9526612cfb1b541f8) )
-	/* following 2 from sound board */
-	ROM_LOAD( "prom93427.1", 0x0000, 0x0100, CRC(64b98dc7) SHA1(f0bb7d0b4b56cc2936ce4cbec165394f3026ed6d) )
-	ROM_LOAD( "prom93427.2", 0x0000, 0x0100, CRC(bda82367) SHA1(1c96453c2ae372892c39b5657cf2b252a90a10a9) )
-=======
 	ROM_REGION( 0x0100, "user1", 0 )    /* misc PROM */
 	ROM_LOAD( "border.32",   0x0000, 0x0020, CRC(c128d0ba) SHA1(0ce9febbb7e2f5388ed999a479e3d385dba0b342) )
 	ROM_LOAD( "bordera.15",  0x0000, 0x0020, CRC(6449e678) SHA1(421c45c8fba3c2bc2a7ebbea2c837c8fa1a5a2f3) ) // sequence
@@ -3813,7 +3344,6 @@ ROM_START( brdrline )
 
 	ROM_REGION( 0x0400, "user2", 0 ) /* sound ROM */
 	ROM_LOAD( "au.bin",       0x0000, 0x0400, CRC(a23e1d9f) SHA1(ce209571f6341aa6f036a015e666673098bc98ea) )
->>>>>>> upstream/master
 ROM_END
 
 
@@ -3875,12 +3405,6 @@ ROM_START( starrkr )
 	ROM_REGION( 0x0020, "proms", 0 )
 	ROM_LOAD( "pr-23.u49",   0x0000, 0x0020, CRC(0a2156b3) SHA1(504abe8e253ff9b12ac6ffacd92722f8ee8a30ae) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x0800, "cpu1", 0 ) /* sound ROM */
-	ROM_LOAD( "epr-613.1",   0x0000, 0x0400, CRC(ff4be0c7) SHA1(7311c34aa88f6ba905a01e7a9f2ed99a0353a06b) )
-
-=======
->>>>>>> upstream/master
 	ROM_REGION( 0x0800, "user1", 0 )    /* misc PROM */
 	ROM_LOAD( "pr-33.u15",  0x0000, 0x0020, CRC(a1506b9d) SHA1(037c3db2ea40eca459e8acba9d1506dd28d72d10) )
 	ROM_LOAD( "pr-34.u14",  0x0000, 0x0020, CRC(e60a7960) SHA1(b8b8716e859c57c35310efc4594262afedb84823) )
@@ -3894,12 +3418,9 @@ ROM_START( starrkr )
 	ROM_LOAD( "pr-64.25",   0x0000, 0x0800, CRC(7342cf53) SHA1(761aa5a38a28c044cbbbe66e3a8a2f47c493d56d) )
 	ROM_LOAD( "pr-62.26",   0x0000, 0x0800, CRC(d352c545) SHA1(6da4f7a7974e2f471b081d230a47767315b2f1a7) )
 	ROM_LOAD( "pr-66.28",   0x0000, 0x0800, CRC(895c5733) SHA1(881a274cdcf23292ea658dcab793303cfb445e51) )
-<<<<<<< HEAD
-=======
 
 	ROM_REGION( 0x0400, "user2", 0 ) /* sound ROM */
 	ROM_LOAD( "epr-613.1",   0x0000, 0x0400, CRC(ff4be0c7) SHA1(7311c34aa88f6ba905a01e7a9f2ed99a0353a06b) )
->>>>>>> upstream/master
 ROM_END
 
 /*
@@ -3958,12 +3479,6 @@ ROM_START( brdrlins )
 	ROM_REGION( 0x0020, "proms", 0 )
 	ROM_LOAD( "5610.49",    0x0000, 0x0020, CRC(bc6be94e) SHA1(34e113ec25e19212b74907d35be5cb8714a8249c) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x0800, "cpu1", 0 ) /* sound ROM */
-	ROM_LOAD( "au.bin",     0x0000, 0x0400, CRC(a23e1d9f) SHA1(ce209571f6341aa6f036a015e666673098bc98ea) )
-
-=======
->>>>>>> upstream/master
 	ROM_REGION( 0x0100, "user1", 0 )    /* misc PROM */
 	ROM_LOAD( "82s123.bin", 0x0000, 0x0020, CRC(c128d0ba) SHA1(0ce9febbb7e2f5388ed999a479e3d385dba0b342) )
 	ROM_LOAD( "5610.15",    0x0000, 0x0020, CRC(6449e678) SHA1(421c45c8fba3c2bc2a7ebbea2c837c8fa1a5a2f3) )
@@ -3971,12 +3486,9 @@ ROM_START( brdrlins )
 	/* following 2 from sound board */
 	ROM_LOAD( "93427.1",    0x0000, 0x0100, CRC(64b98dc7) SHA1(f0bb7d0b4b56cc2936ce4cbec165394f3026ed6d) )
 	ROM_LOAD( "93427.2",    0x0000, 0x0100, CRC(bda82367) SHA1(1c96453c2ae372892c39b5657cf2b252a90a10a9) )
-<<<<<<< HEAD
-=======
 
 	ROM_REGION( 0x0400, "user2", 0 ) /* sound ROM */
 	ROM_LOAD( "au.bin",     0x0000, 0x0400, CRC(a23e1d9f) SHA1(ce209571f6341aa6f036a015e666673098bc98ea) )
->>>>>>> upstream/master
 ROM_END
 
 ROM_START( brdrlinb )
@@ -3993,22 +3505,13 @@ ROM_START( brdrlinb )
 	ROM_REGION( 0x0020, "proms", 0 )
 	ROM_LOAD( "borderc.49",   0x0000, 0x0020, CRC(bc6be94e) SHA1(34e113ec25e19212b74907d35be5cb8714a8249c) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x0800, "cpu1", 0 ) /* sound ROM */
-	ROM_LOAD( "bords.bin",    0x0000, 0x0400, CRC(a23e1d9f) SHA1(ce209571f6341aa6f036a015e666673098bc98ea) )
-
-=======
->>>>>>> upstream/master
 	ROM_REGION( 0x0020, "user1", 0 )    /* misc PROM */
 	ROM_LOAD( "border.32",   0x0000, 0x0020, CRC(c128d0ba) SHA1(0ce9febbb7e2f5388ed999a479e3d385dba0b342) )
 	ROM_LOAD( "bordera.15",  0x0000, 0x0020, CRC(6449e678) SHA1(421c45c8fba3c2bc2a7ebbea2c837c8fa1a5a2f3) )
 	ROM_LOAD( "borderb.14",  0x0000, 0x0020, CRC(55dcdef1) SHA1(6fbd041edc258b7e1b99bbe9526612cfb1b541f8) )
-<<<<<<< HEAD
-=======
 
 	ROM_REGION( 0x0400, "user2", 0 ) /* sound ROM */
 	ROM_LOAD( "bords.bin",    0x0000, 0x0400, CRC(a23e1d9f) SHA1(ce209571f6341aa6f036a015e666673098bc98ea) )
->>>>>>> upstream/master
 ROM_END
 
 ROM_START( startrks )
@@ -4084,13 +3587,8 @@ ROM_START( heiankyo )
 	ROM_LOAD( "ha7.u7",       0x2400, 0x0400, CRC(6d2f9527) SHA1(4e51c5404d0302547c1ae85b27ffe4de11d68224) )
 	ROM_LOAD( "ha6.u6",       0x2800, 0x0400, CRC(e467c353) SHA1(a76b4f6d9702f760f287b5285f76ea4206c6934a) )
 	ROM_LOAD( "ha3.u3",       0x2c00, 0x0400, CRC(6a55eda8) SHA1(f526ebf18a33271b798e53cfcadb27e4c3a03466) )
-<<<<<<< HEAD
-	ROM_FILL(                 0x3000, 0x0400, 0 )
-	ROM_FILL(                 0x3400, 0x0400, 0 )
-=======
 	ROM_FILL(                 0x3000, 0x0400, 0x00 )
 	ROM_FILL(                 0x3400, 0x0400, 0x00 )
->>>>>>> upstream/master
 	ROM_LOAD( "ha2.u2",       0x3800, 0x0400, CRC(056b3b8b) SHA1(3cce6c928599604ffdcdb767caa7b32d8ec1e03d) )
 	ROM_LOAD( "ha1.u1",       0x3c00, 0x0400, CRC(b8da2b5e) SHA1(70d97b89cb3162bd479203c53148319179a9873f) )
 
@@ -4133,53 +3631,6 @@ ROM_END
  *
  *************************************/
 
-<<<<<<< HEAD
-GAMEL(1977, depthch,    0,        depthch,   depthch,   driver_device, 0, ROT0,   "Gremlin", "Depthcharge", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE, layout_depthch )
-GAMEL(1977, depthcho,   depthch,  depthch,   depthch,   driver_device, 0, ROT0,   "Gremlin", "Depthcharge (older)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE, layout_depthch )
-GAMEL(1977, subhunt,    depthch,  depthch,   depthch,   driver_device, 0, ROT0,   "Gremlin (Taito license)", "Sub Hunter (Gremlin / Taito)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE, layout_depthch )
-GAME( 1977, safari,     0,        safari,    safari,    driver_device, 0, ROT0,   "Gremlin", "Safari (set 1)", MACHINE_NO_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 1977, safaria,    safari,   safari,    safari,    driver_device, 0, ROT0,   "Gremlin", "Safari (set 2, bootleg?)", MACHINE_NO_SOUND | MACHINE_SUPPORTS_SAVE ) // on a bootleg board, but seems a different code revision too
-GAME( 1978, frogs,      0,        frogs,     frogs,     driver_device, 0, ROT0,   "Gremlin", "Frogs", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 1979, sspaceat,   0,        sspaceat,  sspaceat,  driver_device, 0, ROT270, "Sega", "Space Attack (upright set 1)", MACHINE_NO_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 1979, sspaceat2,  sspaceat, sspaceat,  sspaceat,  driver_device, 0, ROT270, "Sega", "Space Attack (upright set 2)", MACHINE_NO_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 1979, sspaceat3,  sspaceat, sspaceat,  sspaceat,  driver_device, 0, ROT270, "Sega", "Space Attack (upright set 3)", MACHINE_NO_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 1979, sspaceatc,  sspaceat, sspaceat,  sspaceat,  driver_device, 0, ROT270, "Sega", "Space Attack (cocktail)", MACHINE_NO_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 1979, sspacaho,   0,        sspacaho,  sspacaho,  driver_device, 0, ROT270, "Sega", "Space Attack / Head On", MACHINE_NO_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 1979, headon,     0,        headon,    headon,    driver_device, 0, ROT0,   "Gremlin", "Head On (2 players)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 1979, headon1,    headon,   headon,    headon,    driver_device, 0, ROT0,   "Gremlin", "Head On (1 player)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 1979, headons,    headon,   headons,   headons,   driver_device, 0, ROT0,   "bootleg (Sidam)", "Head On (Sidam bootleg, set 1)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 1979, headonsa,   headon,   headons,   headons,   driver_device, 0, ROT0,   "bootleg (Sidam)", "Head On (Sidam bootleg, set 2)", MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE ) // won't coin up?
-GAME( 1979, headonmz,   headon,   headon,   headonmz,   driver_device, 0, ROT0,   "bootleg", "Head On (bootleg, alt maze)", MACHINE_SUPPORTS_SAVE )
-GAME( 1979, supcrash,   headon,   headons,   supcrash,  driver_device, 0, ROT0,   "bootleg", "Super Crash (bootleg of Head On)", MACHINE_NO_SOUND  | MACHINE_SUPPORTS_SAVE )
-GAME( 1979, hocrash,    headon,   headons,   headons,   driver_device, 0, ROT0,   "bootleg (Fraber)", "Crash (bootleg of Head On)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 1979, headon2,    0,        headon2,   headon2,   driver_device, 0, ROT0,   "Sega", "Head On 2",  MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 1979, headon2s,   headon2,  headon2bw, car2,      driver_device, 0, ROT0,   "bootleg (Sidam)", "Head On 2 (Sidam bootleg)",  MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE ) // won't coin up?
-GAME( 1979, car2,       headon2,  headon2bw, car2,      driver_device, 0, ROT0,   "bootleg (RZ Bologna)", "Car 2 (bootleg of Head On 2)",  MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE ) // title still says 'HeadOn 2'
-GAME( 1979, invho2,     0,        invho2,    invho2,    driver_device, 0, ROT270, "Sega", "Invinco / Head On 2", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 1980, nsub,       0,        nsub,      nsub,      driver_device, 0, ROT270, "Sega", "N-Sub (upright)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_NO_SOUND | MACHINE_SUPPORTS_SAVE ) // this is the upright set. cocktail set still needs to be dumped
-GAME( 1980, samurai,    0,        samurai,   samurai,   driver_device, 0, ROT270, "Sega", "Samurai", MACHINE_NO_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 1979, invinco,    0,        invinco,   invinco,   driver_device, 0, ROT270, "Sega", "Invinco", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 1979, invds,      0,        invds,     invds,     driver_device, 0, ROT270, "Sega", "Invinco / Deep Scan", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 1979, carhntds,   0,        carhntds,  carhntds,  driver_device, 0, ROT270, "Sega", "Car Hunt / Deep Scan (France)", MACHINE_NO_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 1980, tranqgun,   0,        tranqgun,  tranqgun,  driver_device, 0, ROT270, "Sega", "Tranquilizer Gun", MACHINE_NO_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 1980, spacetrk,   0,        spacetrk,  spacetrk,  driver_device, 0, ROT270, "Sega", "Space Trek (upright)", MACHINE_NO_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 1980, spacetrkc,  spacetrk, spacetrk,  spacetrkc, driver_device, 0, ROT270, "Sega", "Space Trek (cocktail)", MACHINE_NO_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 1980, carnival,   0,        carnival,  carnival,  driver_device, 0, ROT270, "Sega", "Carnival (upright)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 1980, carnivalc,  carnival, carnival,  carnivalc, driver_device, 0, ROT270, "Sega", "Carnival (cocktail)",  MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 1980, carnivalh,  carnival, carnivalh, carnivalh, driver_device, 0, ROT270, "Sega", "Carnival (Head On hardware, set 1)",  MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 1980, carnivalha, carnival, carnivalh, carnivalh, driver_device, 0, ROT270, "Sega", "Carnival (Head On hardware, set 2)",  MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 1981, brdrline,   0,        brdrline,  brdrline,  driver_device, 0, ROT270, "Sega", "Borderline", MACHINE_NO_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 1981, starrkr,    brdrline, brdrline,  starrkr,   driver_device, 0, ROT270, "Sega", "Star Raker", MACHINE_NO_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 1981, brdrlins,   brdrline, brdrline,  brdrline,  driver_device, 0, ROT270, "bootleg (Sidam)", "Borderline (Sidam bootleg)", MACHINE_NO_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 1981, brdrlinb,   brdrline, brdrline,  brdrline,  driver_device, 0, ROT270, "bootleg (Karateco)", "Borderline (Karateco bootleg)", MACHINE_NO_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 1981, brdrlinet,  brdrline, tranqgun,  tranqgun,  driver_device, 0, ROT270, "Sega", "Borderline (Tranquilizer Gun conversion)", MACHINE_NO_SOUND | MACHINE_SUPPORTS_SAVE ) // official factory conversion
-GAME( 198?, startrks,   0,        headons,   headons,   driver_device, 0, ROT0,   "bootleg (Sidam)", "Star Trek (Head On hardware)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-
-GAME( 1980, digger,     0,        digger,    digger,    driver_device, 0, ROT270, "Sega", "Digger", MACHINE_NO_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 1981, pulsar,     0,        pulsar,    pulsar,    driver_device, 0, ROT270, "Sega", "Pulsar", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 1979, heiankyo,   0,        heiankyo,  heiankyo,  driver_device, 0, ROT270, "Denki Onkyo", "Heiankyo Alien", MACHINE_NO_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 19??, alphaho,    0,        alphaho,   alphaho,   driver_device, 0, ROT270, "Data East Corporation", "Alpha Fighter / Head On", MACHINE_WRONG_COLORS | MACHINE_NO_SOUND | MACHINE_SUPPORTS_SAVE )
-=======
 GAMEL(1977, depthch,    0,        depthch,   depthch,   vicdual_state, 0, ROT0,   "Gremlin", "Depthcharge", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE, layout_depthch )
 GAMEL(1977, depthcho,   depthch,  depthch,   depthch,   vicdual_state, 0, ROT0,   "Gremlin", "Depthcharge (older)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE, layout_depthch )
 GAMEL(1977, subhunt,    depthch,  depthch,   depthch,   vicdual_state, 0, ROT0,   "Gremlin (Taito license)", "Sub Hunter (Gremlin / Taito)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE, layout_depthch )
@@ -4224,4 +3675,3 @@ GAME( 1980, digger,     0,        digger,    digger,    vicdual_state, 0, ROT270
 GAME( 1981, pulsar,     0,        pulsar,    pulsar,    vicdual_state, 0, ROT270, "Sega", "Pulsar", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
 GAME( 1979, heiankyo,   0,        heiankyo,  heiankyo,  vicdual_state, 0, ROT270, "Denki Onkyo", "Heiankyo Alien", MACHINE_NO_SOUND | MACHINE_SUPPORTS_SAVE )
 GAME( 19??, alphaho,    0,        alphaho,   alphaho,   vicdual_state, 0, ROT270, "Data East Corporation", "Alpha Fighter / Head On", MACHINE_WRONG_COLORS | MACHINE_NO_SOUND | MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

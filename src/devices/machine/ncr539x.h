@@ -5,24 +5,12 @@
  *
  */
 
-<<<<<<< HEAD
-#ifndef _NCR539x_H_
-#define _NCR539x_H_
-
-#include "legscsi.h"
-
-//// 539x registers
-//enum
-//{
-//};
-=======
 #ifndef MAME_MACHINE_NCR539X_H
 #define MAME_MACHINE_NCR539X_H
 
 #pragma once
 
 #include "legscsi.h"
->>>>>>> upstream/master
 
 // device stuff
 
@@ -36,35 +24,15 @@ class ncr539x_device : public legacy_scsi_host_adapter
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	ncr539x_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	template<class _Object> static devcb_base &set_out_irq_callback(device_t &device, _Object object) { return downcast<ncr539x_device &>(device).m_out_irq_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_out_drq_callback(device_t &device, _Object object) { return downcast<ncr539x_device &>(device).m_out_drq_cb.set_callback(object); }
-=======
 	ncr539x_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	template <class Object> static devcb_base &set_out_irq_callback(device_t &device, Object &&cb) { return downcast<ncr539x_device &>(device).m_out_irq_cb.set_callback(std::forward<Object>(cb)); }
 	template <class Object> static devcb_base &set_out_drq_callback(device_t &device, Object &&cb) { return downcast<ncr539x_device &>(device).m_out_drq_cb.set_callback(std::forward<Object>(cb)); }
->>>>>>> upstream/master
 
 	// our API
 	DECLARE_READ8_MEMBER(read);
 	DECLARE_WRITE8_MEMBER(write);
 
-<<<<<<< HEAD
-	void dma_read_data(int bytes, UINT8 *pData);
-	void dma_write_data(int bytes, UINT8 *pData);
-
-protected:
-	// device-level overrides
-	virtual void device_start();
-	virtual void device_reset();
-	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
-
-private:
-	void fifo_write(UINT8 data);
-=======
 	void dma_read_data(int bytes, uint8_t *pData);
 	void dma_write_data(int bytes, uint8_t *pData);
 
@@ -76,24 +44,10 @@ protected:
 
 private:
 	void fifo_write(uint8_t data);
->>>>>>> upstream/master
 	void check_fifo_executable();
 	void exec_fifo();
 	void update_fifo_internal_state(int bytes);
 
-<<<<<<< HEAD
-	UINT32 m_xfer_count;
-	UINT32 m_dma_size;
-	UINT8 m_command;
-	UINT8 m_last_id;
-	UINT8 m_timeout;
-	UINT8 m_sync_xfer_period;
-	UINT8 m_sync_offset;
-	UINT8 m_control1, m_control2, m_control3, m_control4;
-	UINT8 m_clock_factor;
-	UINT8 m_forced_test;
-	UINT8 m_data_alignment;
-=======
 	uint32_t m_xfer_count;
 	uint32_t m_dma_size;
 	uint8_t m_command;
@@ -105,34 +59,21 @@ private:
 	uint8_t m_clock_factor;
 	uint8_t m_forced_test;
 	uint8_t m_data_alignment;
->>>>>>> upstream/master
 
 	bool m_selected;
 	bool m_chipid_available, m_chipid_lock;
 
 	static const int m_fifo_size = 16;
-<<<<<<< HEAD
-	UINT8 m_fifo_ptr, m_fifo_read_ptr, m_fifo[m_fifo_size];
-=======
 	uint8_t m_fifo_ptr, m_fifo_read_ptr, m_fifo[m_fifo_size];
->>>>>>> upstream/master
 
 	//int m_xfer_remaining;   // amount in the FIFO when we're in data in phase
 
 	// read-only registers
-<<<<<<< HEAD
-	UINT8 m_status, m_irq_status, m_internal_state, m_fifo_internal_state;
-
-	static const int m_buffer_size = 2048;
-
-	UINT8 m_buffer[m_buffer_size];
-=======
 	uint8_t m_status, m_irq_status, m_internal_state, m_fifo_internal_state;
 
 	static const int m_buffer_size = 2048;
 
 	uint8_t m_buffer[m_buffer_size];
->>>>>>> upstream/master
 	int m_buffer_offset, m_buffer_remaining, m_total_data;
 
 	emu_timer *m_operation_timer;
@@ -142,11 +83,6 @@ private:
 };
 
 // device type definition
-<<<<<<< HEAD
-extern const device_type NCR539X;
-#endif
-=======
 DECLARE_DEVICE_TYPE(NCR539X, ncr539x_device)
 
 #endif // MAME_MACHINE_NCR539X_H
->>>>>>> upstream/master

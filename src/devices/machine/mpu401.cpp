@@ -38,10 +38,7 @@
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #include "machine/mpu401.h"
 #include "bus/midi/midi.h"
 
@@ -73,21 +70,6 @@ static ADDRESS_MAP_START( mpu401_io_map, AS_IO, 8, mpu401_device )
 	AM_RANGE(M6801_PORT2, M6801_PORT2) AM_READWRITE(port2_r, port2_w)
 ADDRESS_MAP_END
 
-<<<<<<< HEAD
-MACHINE_CONFIG_FRAGMENT( mpu401 )
-	MCFG_CPU_ADD(M6801_TAG, M6801, 4000000) /* 4 MHz as per schematics */
-	MCFG_CPU_PROGRAM_MAP(mpu401_map)
-	MCFG_CPU_IO_MAP(mpu401_io_map)
-	MCFG_M6801_SER_TX(DEVWRITELINE(MIDIOUT_TAG, midi_port_device, write_txd))
-
-	MCFG_MIDI_PORT_ADD(MIDIIN_TAG, midiin_slot, "midiin")
-	MCFG_MIDI_RX_HANDLER(DEVWRITELINE(DEVICE_SELF, mpu401_device, midi_rx_w))
-
-	MCFG_MIDI_PORT_ADD(MIDIOUT_TAG, midiout_slot, "midiout")
-MACHINE_CONFIG_END
-
-=======
->>>>>>> upstream/master
 ROM_START( mpu401 )
 	ROM_REGION(0x1000, ROM_TAG, 0)
 	ROM_LOAD( "roland_6801v0b55p.bin", 0x000000, 0x001000, CRC(65d3a151) SHA1(00efbfb96aeb997b69bb16981c6751d3c784bb87) )
@@ -97,19 +79,6 @@ ROM_END
 //  GLOBAL VARIABLES
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type MPU401 = &device_creator<mpu401_device>;
-
-//-------------------------------------------------
-//  machine_config_additions - device-specific
-//  machine configurations
-//-------------------------------------------------
-
-machine_config_constructor mpu401_device::device_mconfig_additions() const
-{
-	return MACHINE_CONFIG_NAME( mpu401 );
-}
-=======
 DEFINE_DEVICE_TYPE(MPU401, mpu401_device, "mpu401", "Roland MPU-401 I/O box")
 
 //-------------------------------------------------
@@ -127,17 +96,12 @@ MACHINE_CONFIG_MEMBER( mpu401_device::device_add_mconfig )
 
 	MCFG_MIDI_PORT_ADD(MIDIOUT_TAG, midiout_slot, "midiout")
 MACHINE_CONFIG_END
->>>>>>> upstream/master
 
 //-------------------------------------------------
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const rom_entry *mpu401_device::device_rom_region() const
-=======
 const tiny_rom_entry *mpu401_device::device_rom_region() const
->>>>>>> upstream/master
 {
 	return ROM_NAME( mpu401 );
 }
@@ -150,13 +114,8 @@ const tiny_rom_entry *mpu401_device::device_rom_region() const
 //  mpu401_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-mpu401_device::mpu401_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-	device_t(mconfig, MPU401, "Roland MPU-401 I/O box", tag, owner, clock, "mpu401", __FILE__),
-=======
 mpu401_device::mpu401_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	device_t(mconfig, MPU401, tag, owner, clock),
->>>>>>> upstream/master
 	m_ourcpu(*this, M6801_TAG),
 	write_irq(*this)
 {
@@ -169,11 +128,7 @@ mpu401_device::mpu401_device(const machine_config &mconfig, const char *tag, dev
 void mpu401_device::device_start()
 {
 	write_irq.resolve_safe();
-<<<<<<< HEAD
-	m_timer = timer_alloc(0, NULL);
-=======
 	m_timer = timer_alloc(0, nullptr);
->>>>>>> upstream/master
 }
 
 //-------------------------------------------------

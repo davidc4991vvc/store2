@@ -1,23 +1,14 @@
 /*
  * Copyright 2013 Jeremie Roy. All rights reserved.
-<<<<<<< HEAD
- * License: http://www.opensource.org/licenses/BSD-2-Clause
-=======
  * License: https://github.com/bkaradzic/bgfx#license-bsd-2-clause
->>>>>>> upstream/master
  */
 
 #include "../common.h"
 
 #include <bgfx/bgfx.h>
-<<<<<<< HEAD
-#include <stddef.h> // offsetof
-#include <memory.h> // memcpy
-=======
 #include <bgfx/embedded_shader.h>
 
 #include <stddef.h> // offsetof
->>>>>>> upstream/master
 #include <wchar.h>  // wcslen
 
 #include "text_buffer_manager.h"
@@ -31,8 +22,6 @@
 #include "vs_font_distance_field_subpixel.bin.h"
 #include "fs_font_distance_field_subpixel.bin.h"
 
-<<<<<<< HEAD
-=======
 static const bgfx::EmbeddedShader s_embeddedShaders[] =
 {
 	BGFX_EMBEDDED_SHADER(vs_font_basic),
@@ -45,7 +34,6 @@ static const bgfx::EmbeddedShader s_embeddedShaders[] =
 	BGFX_EMBEDDED_SHADER_END()
 };
 
->>>>>>> upstream/master
 #define MAX_BUFFERED_CHARACTERS (8192 - 5)
 
 class TextBuffer
@@ -263,11 +251,7 @@ void TextBuffer::appendText(FontHandle _fontHandle, const char* _string, const c
 
 	if (_end == NULL)
 	{
-<<<<<<< HEAD
-		_end = _string + strlen(_string);
-=======
 		_end = _string + bx::strnlen(_string);
->>>>>>> upstream/master
 	}
 	BX_CHECK(_end >= _string);
 
@@ -594,72 +578,6 @@ TextBufferManager::TextBufferManager(FontManager* _fontManager)
 {
 	m_textBuffers = new BufferCache[MAX_TEXT_BUFFER_COUNT];
 
-<<<<<<< HEAD
-	const bgfx::Memory* vs_font_basic;
-	const bgfx::Memory* fs_font_basic;
-	const bgfx::Memory* vs_font_distance_field;
-	const bgfx::Memory* fs_font_distance_field;
-	const bgfx::Memory* vs_font_distance_field_subpixel;
-	const bgfx::Memory* fs_font_distance_field_subpixel;
-
-	switch (bgfx::getRendererType() )
-	{
-	case bgfx::RendererType::Direct3D9:
-		vs_font_basic = bgfx::makeRef(vs_font_basic_dx9, sizeof(vs_font_basic_dx9) );
-		fs_font_basic = bgfx::makeRef(fs_font_basic_dx9, sizeof(fs_font_basic_dx9) );
-		vs_font_distance_field = bgfx::makeRef(vs_font_distance_field_dx9, sizeof(vs_font_distance_field_dx9) );
-		fs_font_distance_field = bgfx::makeRef(fs_font_distance_field_dx9, sizeof(fs_font_distance_field_dx9) );
-		vs_font_distance_field_subpixel = bgfx::makeRef(vs_font_distance_field_subpixel_dx9, sizeof(vs_font_distance_field_subpixel_dx9) );
-		fs_font_distance_field_subpixel = bgfx::makeRef(fs_font_distance_field_subpixel_dx9, sizeof(fs_font_distance_field_subpixel_dx9) );
-		break;
-
-	case bgfx::RendererType::Direct3D11:
-	case bgfx::RendererType::Direct3D12:
-		vs_font_basic = bgfx::makeRef(vs_font_basic_dx11, sizeof(vs_font_basic_dx11) );
-		fs_font_basic = bgfx::makeRef(fs_font_basic_dx11, sizeof(fs_font_basic_dx11) );
-		vs_font_distance_field = bgfx::makeRef(vs_font_distance_field_dx11, sizeof(vs_font_distance_field_dx11) );
-		fs_font_distance_field = bgfx::makeRef(fs_font_distance_field_dx11, sizeof(fs_font_distance_field_dx11) );
-		vs_font_distance_field_subpixel = bgfx::makeRef(vs_font_distance_field_subpixel_dx11, sizeof(vs_font_distance_field_subpixel_dx11) );
-		fs_font_distance_field_subpixel = bgfx::makeRef(fs_font_distance_field_subpixel_dx11, sizeof(fs_font_distance_field_subpixel_dx11) );
-		break;
-
-	case bgfx::RendererType::Metal:
-		vs_font_basic = bgfx::makeRef(vs_font_basic_mtl, sizeof(vs_font_basic_mtl) );
-		fs_font_basic = bgfx::makeRef(fs_font_basic_mtl, sizeof(fs_font_basic_mtl) );
-		vs_font_distance_field = bgfx::makeRef(vs_font_distance_field_mtl, sizeof(vs_font_distance_field_mtl) );
-		fs_font_distance_field = bgfx::makeRef(fs_font_distance_field_mtl, sizeof(fs_font_distance_field_mtl) );
-		vs_font_distance_field_subpixel = bgfx::makeRef(vs_font_distance_field_subpixel_mtl, sizeof(vs_font_distance_field_subpixel_mtl) );
-		fs_font_distance_field_subpixel = bgfx::makeRef(fs_font_distance_field_subpixel_mtl, sizeof(fs_font_distance_field_subpixel_mtl) );
-		break;
-
-	default:
-		vs_font_basic = bgfx::makeRef(vs_font_basic_glsl, sizeof(vs_font_basic_glsl) );
-		fs_font_basic = bgfx::makeRef(fs_font_basic_glsl, sizeof(fs_font_basic_glsl) );
-		vs_font_distance_field = bgfx::makeRef(vs_font_distance_field_glsl, sizeof(vs_font_distance_field_glsl) );
-		fs_font_distance_field = bgfx::makeRef(fs_font_distance_field_glsl, sizeof(fs_font_distance_field_glsl) );
-		vs_font_distance_field_subpixel = bgfx::makeRef(vs_font_distance_field_subpixel_glsl, sizeof(vs_font_distance_field_subpixel_glsl) );
-		fs_font_distance_field_subpixel = bgfx::makeRef(fs_font_distance_field_subpixel_glsl, sizeof(fs_font_distance_field_subpixel_glsl) );
-		break;
-	}
-
-	m_basicProgram = bgfx::createProgram(
-									  bgfx::createShader(vs_font_basic)
-									, bgfx::createShader(fs_font_basic)
-									, true
-									);
-
-	m_distanceProgram = bgfx::createProgram(
-									  bgfx::createShader(vs_font_distance_field)
-									, bgfx::createShader(fs_font_distance_field)
-									, true
-									);
-
-	m_distanceSubpixelProgram = bgfx::createProgram(
-									  bgfx::createShader(vs_font_distance_field_subpixel)
-									, bgfx::createShader(fs_font_distance_field_subpixel)
-									, true
-									);
-=======
 	bgfx::RendererType::Enum type = bgfx::getRendererType();
 
 	m_basicProgram = bgfx::createProgram(
@@ -679,7 +597,6 @@ TextBufferManager::TextBufferManager(FontManager* _fontManager)
 		, bgfx::createEmbeddedShader(s_embeddedShaders, type, "fs_font_distance_field_subpixel")
 		, true
 		);
->>>>>>> upstream/master
 
 	m_vertexDecl
 		.begin()
@@ -873,13 +790,8 @@ void TextBufferManager::submitTextBuffer(TextBufferHandle _handle, uint8_t _id, 
 						);
 			}
 
-<<<<<<< HEAD
-			bgfx::setVertexBuffer(vbh, bc.textBuffer->getVertexCount() );
-			bgfx::setIndexBuffer(ibh, bc.textBuffer->getIndexCount() );
-=======
 			bgfx::setVertexBuffer(vbh, 0, bc.textBuffer->getVertexCount() );
 			bgfx::setIndexBuffer(ibh, 0, bc.textBuffer->getIndexCount() );
->>>>>>> upstream/master
 		}
 		break;
 
@@ -889,13 +801,8 @@ void TextBufferManager::submitTextBuffer(TextBufferHandle _handle, uint8_t _id, 
 			bgfx::TransientVertexBuffer tvb;
 			bgfx::allocTransientIndexBuffer(&tib, bc.textBuffer->getIndexCount() );
 			bgfx::allocTransientVertexBuffer(&tvb, bc.textBuffer->getVertexCount(), m_vertexDecl);
-<<<<<<< HEAD
-			memcpy(tib.data, bc.textBuffer->getIndexBuffer(), indexSize);
-			memcpy(tvb.data, bc.textBuffer->getVertexBuffer(), vertexSize);
-=======
 			bx::memCopy(tib.data, bc.textBuffer->getIndexBuffer(), indexSize);
 			bx::memCopy(tvb.data, bc.textBuffer->getVertexBuffer(), vertexSize);
->>>>>>> upstream/master
 			bgfx::setVertexBuffer(&tvb, 0, bc.textBuffer->getVertexCount() );
 			bgfx::setIndexBuffer(&tib, 0, bc.textBuffer->getIndexCount() );
 		}

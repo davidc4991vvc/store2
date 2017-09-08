@@ -58,16 +58,6 @@
 
 #include "emu.h"
 #include "namco51.h"
-<<<<<<< HEAD
-
-
-#define VERBOSE 0
-#define LOG(x) do { if (VERBOSE) logerror x; } while (0)
-
-
-#define READ_PORT(num)           m_in_##num(space, 0)
-#define WRITE_PORT(num,data)     m_out_##num(space, 0, data)
-=======
 #include "screen.h"
 
 
@@ -77,17 +67,12 @@
 
 #define READ_PORT(num)           m_in[num](space, 0)
 #define WRITE_PORT(num, data)    m_out[num](space, 0, data)
->>>>>>> upstream/master
 
 WRITE8_MEMBER( namco_51xx_device::write )
 {
 	data &= 0x07;
 
-<<<<<<< HEAD
-	LOG(("%s: custom 51XX write %02x\n",machine().describe_context(),data));
-=======
 	LOG("%s: custom 51XX write %02x\n",machine().describe_context(),data);
->>>>>>> upstream/master
 
 	if (m_coincred_mode)
 	{
@@ -113,11 +98,7 @@ WRITE8_MEMBER( namco_51xx_device::write )
 
 				{
 					/* kludge for a possible bug in Xevious */
-<<<<<<< HEAD
-					static const game_driver *namcoio_51XX_driver = NULL;
-=======
 					static const game_driver *namcoio_51XX_driver = nullptr;
->>>>>>> upstream/master
 					static int namcoio_51XX_kludge = 0;
 
 					/* Only compute namcoio_51XX_kludge when gamedrv changes */
@@ -187,11 +168,7 @@ static const int joy_map[16] =
 
 READ8_MEMBER( namco_51xx_device::read )
 {
-<<<<<<< HEAD
-	LOG(("%s: custom 51XX read\n",machine().describe_context()));
-=======
 	LOG("%s: custom 51XX read\n",machine().describe_context());
->>>>>>> upstream/master
 
 	if (m_mode == 0) /* switch mode */
 	{
@@ -344,42 +321,11 @@ READ8_MEMBER( namco_51xx_device::read )
     DEVICE INTERFACE
 ***************************************************************************/
 
-<<<<<<< HEAD
-static ADDRESS_MAP_START( namco_51xx_map_io, AS_IO, 8, namco_51xx_device )
-//  AM_RANGE(MB88_PORTK,  MB88_PORTK)  AM_READ(namco_51xx_K_r)
-//  AM_RANGE(MB88_PORTO,  MB88_PORTO)  AM_WRITE(namco_51xx_O_w)
-//  AM_RANGE(MB88_PORTR0, MB88_PORTR0) AM_READ(namco_51xx_R0_r)
-//  AM_RANGE(MB88_PORTR2, MB88_PORTR2) AM_READ(namco_51xx_R2_r)
-ADDRESS_MAP_END
-
-
-static MACHINE_CONFIG_FRAGMENT( namco_51xx )
-	MCFG_CPU_ADD("mcu", MB8843, DERIVED_CLOCK(1,1))     /* parent clock, internally divided by 6 */
-	MCFG_CPU_IO_MAP(namco_51xx_map_io)
-	MCFG_DEVICE_DISABLE()
-MACHINE_CONFIG_END
-
-
-=======
->>>>>>> upstream/master
 ROM_START( namco_51xx )
 	ROM_REGION( 0x400, "mcu", 0 )
 	ROM_LOAD( "51xx.bin",     0x0000, 0x0400, CRC(c2f57ef8) SHA1(50de79e0d6a76bda95ffb02fcce369a79e6abfec) )
 ROM_END
 
-<<<<<<< HEAD
-const device_type NAMCO_51XX = &device_creator<namco_51xx_device>;
-
-namco_51xx_device::namco_51xx_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, NAMCO_51XX, "Namco 51xx", tag, owner, clock, "namco51", __FILE__),
-	m_cpu(*this, "mcu"),
-	m_in_0(*this),
-	m_in_1(*this),
-	m_in_2(*this),
-	m_in_3(*this),
-	m_out_0(*this),
-	m_out_1(*this),
-=======
 DEFINE_DEVICE_TYPE(NAMCO_51XX, namco_51xx_device, "namco51", "Namco 51xx")
 
 namco_51xx_device::namco_51xx_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
@@ -387,7 +333,6 @@ namco_51xx_device::namco_51xx_device(const machine_config &mconfig, const char *
 	m_cpu(*this, "mcu"),
 	m_in{ { *this }, { *this }, { *this }, { *this } },
 	m_out{ { *this }, { *this } },
->>>>>>> upstream/master
 	m_lastcoins(0),
 	m_lastbuttons(0),
 	m_mode(0),
@@ -403,23 +348,12 @@ namco_51xx_device::namco_51xx_device(const machine_config &mconfig, const char *
 void namco_51xx_device::device_start()
 {
 	/* resolve our read callbacks */
-<<<<<<< HEAD
-	m_in_0.resolve_safe(0);
-	m_in_1.resolve_safe(0);
-	m_in_2.resolve_safe(0);
-	m_in_3.resolve_safe(0);
-
-	/* resolve our write callbacks */
-	m_out_0.resolve_safe();
-	m_out_1.resolve_safe();
-=======
 	for (devcb_read8 &cb : m_in)
 		cb.resolve_safe(0);
 
 	/* resolve our write callbacks */
 	for (devcb_write8 &cb : m_out)
 		cb.resolve_safe();
->>>>>>> upstream/master
 
 	save_item(NAME(m_lastcoins));
 	save_item(NAME(m_lastbuttons));
@@ -451,16 +385,6 @@ void namco_51xx_device::device_reset()
 }
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  device_mconfig_additions - return a pointer to
-//  the device's machine fragment
-//-------------------------------------------------
-
-machine_config_constructor namco_51xx_device::device_mconfig_additions() const
-{
-	return MACHINE_CONFIG_NAME( namco_51xx  );
-}
-=======
 //  device_add_mconfig - add device configuration
 //-------------------------------------------------
 
@@ -472,18 +396,13 @@ MACHINE_CONFIG_MEMBER( namco_51xx_device::device_add_mconfig )
 //  MCFG_MB88XX_READ_R2_CB(READ8(namco_51xx_device, namco_51xx_R2_r))
 	MCFG_DEVICE_DISABLE()
 MACHINE_CONFIG_END
->>>>>>> upstream/master
 
 //-------------------------------------------------
 //  device_rom_region - return a pointer to the
 //  the device's ROM definitions
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const rom_entry *namco_51xx_device::device_rom_region() const
-=======
 const tiny_rom_entry *namco_51xx_device::device_rom_region() const
->>>>>>> upstream/master
 {
 	return ROM_NAME(namco_51xx );
 }

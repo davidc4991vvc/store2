@@ -9,13 +9,9 @@
 
 ****************************************************************************/
 
-<<<<<<< HEAD
-#include "sound/hc55516.h"
-=======
 #include "machine/gen_latch.h"
 #include "sound/hc55516.h"
 #include "screen.h"
->>>>>>> upstream/master
 
 class redalert_state : public driver_device
 {
@@ -29,17 +25,6 @@ public:
 		m_maincpu(*this, "maincpu"),
 		m_audiocpu(*this, "audiocpu"),
 		m_cvsd(*this, "cvsd"),
-<<<<<<< HEAD
-		m_screen(*this, "screen") { }
-
-	UINT8 m_ay8910_latch_1;
-	UINT8 m_ay8910_latch_2;
-
-	required_shared_ptr<UINT8> m_bitmap_videoram;
-	required_shared_ptr<UINT8> m_charmap_videoram;
-	required_shared_ptr<UINT8> m_video_control;
-	required_shared_ptr<UINT8> m_bitmap_color;
-=======
 		m_screen(*this, "screen"),
 		m_soundlatch(*this, "soundlatch"),
 		m_soundlatch2(*this, "soundlatch2") { }
@@ -51,23 +36,16 @@ public:
 	required_shared_ptr<uint8_t> m_charmap_videoram;
 	required_shared_ptr<uint8_t> m_video_control;
 	required_shared_ptr<uint8_t> m_bitmap_color;
->>>>>>> upstream/master
 
 	required_device<cpu_device> m_maincpu;
 	required_device<cpu_device> m_audiocpu;
 	optional_device<hc55516_device> m_cvsd;
 	required_device<screen_device> m_screen;
-<<<<<<< HEAD
-
-	UINT8 *m_bitmap_colorram;
-	UINT8 m_control_xor;
-=======
 	required_device<generic_latch_8_device> m_soundlatch;
 	optional_device<generic_latch_8_device> m_soundlatch2;
 
 	std::unique_ptr<uint8_t[]> m_bitmap_colorram;
 	uint8_t m_control_xor;
->>>>>>> upstream/master
 	DECLARE_READ8_MEMBER(redalert_interrupt_clear_r);
 	DECLARE_WRITE8_MEMBER(redalert_interrupt_clear_w);
 	DECLARE_READ8_MEMBER(panther_interrupt_clear_r);
@@ -82,15 +60,9 @@ public:
 	DECLARE_VIDEO_START(ww3);
 	DECLARE_SOUND_START(redalert);
 	DECLARE_SOUND_START(demoneye);
-<<<<<<< HEAD
-	UINT32 screen_update_redalert(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
-	UINT32 screen_update_demoneye(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
-	UINT32 screen_update_panther(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
-=======
 	uint32_t screen_update_redalert(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
 	uint32_t screen_update_demoneye(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
 	uint32_t screen_update_panther(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	INTERRUPT_GEN_MEMBER(redalert_vblank_interrupt);
 	DECLARE_WRITE8_MEMBER(redalert_analog_w);
 	DECLARE_WRITE8_MEMBER(redalert_AY8910_w);

@@ -1,9 +1,6 @@
 // license:BSD-3-Clause
 // copyright-holders:Olivier Galibert
-<<<<<<< HEAD
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #include "fdc_pll.h"
 
 std::string fdc_pll_t::tts(attotime t)
@@ -20,27 +17,14 @@ std::string fdc_pll_t::tts(attotime t)
 void fdc_pll_t::set_clock(const attotime &_period)
 {
 	period = _period;
-<<<<<<< HEAD
-	period_adjust_base = period * 0.05;
-	min_period = period * 0.75;
-	max_period = period * 1.25;
-=======
 	double period_as_double = period.as_double();
 	period_adjust_base = attotime::from_double(period_as_double * 0.05);
 	min_period = attotime::from_double(period_as_double * 0.75);
 	max_period = attotime::from_double(period_as_double * 1.25);
->>>>>>> upstream/master
 }
 
 void fdc_pll_t::reset(const attotime &when)
 {
-<<<<<<< HEAD
-	ctime = when;
-	phase_adjust = attotime::zero;
-	freq_hist = 0;
-	write_position = 0;
-	write_start_time = attotime::never;
-=======
 	read_reset(when);
 	write_position = 0;
 	write_start_time = attotime::never;
@@ -51,7 +35,6 @@ void fdc_pll_t::read_reset(const attotime &when)
 	ctime = when;
 	phase_adjust = attotime::zero;
 	freq_hist = 0;
->>>>>>> upstream/master
 }
 
 void fdc_pll_t::start_writing(const attotime &tm)
@@ -81,14 +64,11 @@ int fdc_pll_t::get_next_bit(attotime &tm, floppy_image_device *floppy, const att
 {
 	attotime edge = floppy ? floppy->get_next_transition(ctime) : attotime::never;
 
-<<<<<<< HEAD
-=======
 	return feed_read_data(tm , edge , limit);
 }
 
 int fdc_pll_t::feed_read_data(attotime &tm, const attotime& edge, const attotime &limit)
 {
->>>>>>> upstream/master
 	attotime next = ctime + period + phase_adjust;
 
 #if 0
@@ -102,11 +82,7 @@ int fdc_pll_t::feed_read_data(attotime &tm, const attotime& edge, const attotime
 	ctime = next;
 	tm = next;
 
-<<<<<<< HEAD
-	if(edge.is_never() || edge >= next) {
-=======
 	if(edge.is_never() || edge > next) {
->>>>>>> upstream/master
 		// No transition in the window means 0 and pll in free run mode
 		phase_adjust = attotime::zero;
 		return 0;

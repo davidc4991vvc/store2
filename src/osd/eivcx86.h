@@ -8,15 +8,10 @@
 //
 //============================================================
 
-<<<<<<< HEAD
-#ifndef __EIVCX86__
-#define __EIVCX86__
-=======
 #ifndef MAME_OSD_EIVCX86_H
 #define MAME_OSD_EIVCX86_H
 
 #pragma once
->>>>>>> upstream/master
 
 #ifdef PTR64
 #include <emmintrin.h>
@@ -35,11 +30,7 @@
 
 #ifndef PTR64
 #define mul_32x32 _mul_32x32
-<<<<<<< HEAD
-INLINE INT64 _mul_32x32(INT32 a, INT32 b)
-=======
 static inline int64_t _mul_32x32(int32_t a, int32_t b)
->>>>>>> upstream/master
 {
 	// in theory this should work, but it is untested
 	__asm
@@ -60,11 +51,7 @@ static inline int64_t _mul_32x32(int32_t a, int32_t b)
 
 #ifndef PTR64
 #define mulu_32x32 _mulu_32x32
-<<<<<<< HEAD
-INLINE UINT64 _mulu_32x32(UINT32 a, UINT32 b)
-=======
 static inline uint64_t _mulu_32x32(uint32_t a, uint32_t b)
->>>>>>> upstream/master
 {
 	// in theory this should work, but it is untested
 	__asm
@@ -85,15 +72,9 @@ static inline uint64_t _mulu_32x32(uint32_t a, uint32_t b)
 
 #ifndef PTR64
 #define mul_32x32_hi _mul_32x32_hi
-<<<<<<< HEAD
-INLINE INT32 _mul_32x32_hi(INT32 a, INT32 b)
-{
-	INT32 result;
-=======
 static inline int32_t _mul_32x32_hi(int32_t a, int32_t b)
 {
 	int32_t result;
->>>>>>> upstream/master
 
 	__asm
 	{
@@ -115,15 +96,9 @@ static inline int32_t _mul_32x32_hi(int32_t a, int32_t b)
 
 #ifndef PTR64
 #define mulu_32x32_hi _mulu_32x32_hi
-<<<<<<< HEAD
-INLINE UINT32 _mulu_32x32_hi(UINT32 a, UINT32 b)
-{
-	INT32 result;
-=======
 static inline uint32_t _mulu_32x32_hi(uint32_t a, uint32_t b)
 {
 	int32_t result;
->>>>>>> upstream/master
 
 	__asm
 	{
@@ -146,15 +121,9 @@ static inline uint32_t _mulu_32x32_hi(uint32_t a, uint32_t b)
 
 #ifndef PTR64
 #define mul_32x32_shift _mul_32x32_shift
-<<<<<<< HEAD
-INLINE INT32 _mul_32x32_shift(INT32 a, INT32 b, UINT8 shift)
-{
-	INT32 result;
-=======
 static inline int32_t _mul_32x32_shift(int32_t a, int32_t b, uint8_t shift)
 {
 	int32_t result;
->>>>>>> upstream/master
 
 	__asm
 	{
@@ -179,15 +148,9 @@ static inline int32_t _mul_32x32_shift(int32_t a, int32_t b, uint8_t shift)
 
 #ifndef PTR64
 #define mulu_32x32_shift _mulu_32x32_shift
-<<<<<<< HEAD
-INLINE UINT32 _mulu_32x32_shift(UINT32 a, UINT32 b, UINT8 shift)
-{
-	INT32 result;
-=======
 static inline uint32_t _mulu_32x32_shift(uint32_t a, uint32_t b, uint8_t shift)
 {
 	int32_t result;
->>>>>>> upstream/master
 
 	__asm
 	{
@@ -210,19 +173,11 @@ static inline uint32_t _mulu_32x32_shift(uint32_t a, uint32_t b, uint8_t shift)
 
 #ifndef PTR64
 #define div_64x32 _div_64x32
-<<<<<<< HEAD
-INLINE INT32 _div_64x32(INT64 a, INT32 b)
-{
-	INT32 result;
-	INT32 alow = a;
-	INT32 ahigh = a >> 32;
-=======
 static inline int32_t _div_64x32(int64_t a, int32_t b)
 {
 	int32_t result;
 	int32_t alow = a;
 	int32_t ahigh = a >> 32;
->>>>>>> upstream/master
 
 	__asm
 	{
@@ -244,19 +199,11 @@ static inline int32_t _div_64x32(int64_t a, int32_t b)
 
 #ifndef PTR64
 #define divu_64x32 _divu_64x32
-<<<<<<< HEAD
-INLINE UINT32 _divu_64x32(UINT64 a, UINT32 b)
-{
-	UINT32 result;
-	UINT32 alow = a;
-	UINT32 ahigh = a >> 32;
-=======
 static inline uint32_t _divu_64x32(uint64_t a, uint32_t b)
 {
 	uint32_t result;
 	uint32_t alow = a;
 	uint32_t ahigh = a >> 32;
->>>>>>> upstream/master
 
 	__asm
 	{
@@ -279,21 +226,12 @@ static inline uint32_t _divu_64x32(uint64_t a, uint32_t b)
 
 #ifndef PTR64
 #define div_64x32_rem _div_64x32_rem
-<<<<<<< HEAD
-INLINE INT32 _div_64x32_rem(INT64 a, INT32 b, INT32 *remainder)
-{
-	INT32 result;
-	INT32 alow = a;
-	INT32 ahigh = a >> 32;
-	INT32 rem;
-=======
 static inline int32_t _div_64x32_rem(int64_t a, int32_t b, int32_t *remainder)
 {
 	int32_t result;
 	int32_t alow = a;
 	int32_t ahigh = a >> 32;
 	int32_t rem;
->>>>>>> upstream/master
 
 	__asm
 	{
@@ -318,21 +256,12 @@ static inline int32_t _div_64x32_rem(int64_t a, int32_t b, int32_t *remainder)
 
 #ifndef PTR64
 #define divu_64x32_rem _divu_64x32_rem
-<<<<<<< HEAD
-INLINE UINT32 _divu_64x32_rem(UINT64 a, UINT32 b, UINT32 *remainder)
-{
-	UINT32 result;
-	UINT32 alow = a;
-	UINT32 ahigh = a >> 32;
-	UINT32 rem;
-=======
 static inline uint32_t _divu_64x32_rem(uint64_t a, uint32_t b, uint32_t *remainder)
 {
 	uint32_t result;
 	uint32_t alow = a;
 	uint32_t ahigh = a >> 32;
 	uint32_t rem;
->>>>>>> upstream/master
 
 	__asm
 	{
@@ -357,15 +286,9 @@ static inline uint32_t _divu_64x32_rem(uint64_t a, uint32_t b, uint32_t *remaind
 
 #ifndef PTR64
 #define div_32x32_shift _div_32x32_shift
-<<<<<<< HEAD
-INLINE INT32 _div_32x32_shift(INT32 a, INT32 b, UINT8 shift)
-{
-	INT32 result;
-=======
 static inline int32_t _div_32x32_shift(int32_t a, int32_t b, uint8_t shift)
 {
 	int32_t result;
->>>>>>> upstream/master
 
 	__asm
 	{
@@ -391,15 +314,9 @@ static inline int32_t _div_32x32_shift(int32_t a, int32_t b, uint8_t shift)
 
 #ifndef PTR64
 #define divu_32x32_shift _divu_32x32_shift
-<<<<<<< HEAD
-INLINE UINT32 _divu_32x32_shift(UINT32 a, UINT32 b, UINT8 shift)
-{
-	UINT32 result;
-=======
 static inline uint32_t _divu_32x32_shift(uint32_t a, uint32_t b, uint8_t shift)
 {
 	uint32_t result;
->>>>>>> upstream/master
 
 	__asm
 	{
@@ -424,19 +341,11 @@ static inline uint32_t _divu_32x32_shift(uint32_t a, uint32_t b, uint8_t shift)
 
 #ifndef PTR64
 #define mod_64x32 _mod_64x32
-<<<<<<< HEAD
-INLINE INT32 _mod_64x32(INT64 a, INT32 b)
-{
-	INT32 result;
-	INT32 alow = a;
-	INT32 ahigh = a >> 32;
-=======
 static inline int32_t _mod_64x32(int64_t a, int32_t b)
 {
 	int32_t result;
 	int32_t alow = a;
 	int32_t ahigh = a >> 32;
->>>>>>> upstream/master
 
 	__asm
 	{
@@ -458,19 +367,11 @@ static inline int32_t _mod_64x32(int64_t a, int32_t b)
 
 #ifndef PTR64
 #define modu_64x32 _modu_64x32
-<<<<<<< HEAD
-INLINE UINT32 _modu_64x32(UINT64 a, UINT32 b)
-{
-	UINT32 result;
-	UINT32 alow = a;
-	UINT32 ahigh = a >> 32;
-=======
 static inline uint32_t _modu_64x32(uint64_t a, uint32_t b)
 {
 	uint32_t result;
 	uint32_t alow = a;
 	uint32_t ahigh = a >> 32;
->>>>>>> upstream/master
 
 	__asm
 	{
@@ -492,125 +393,14 @@ static inline uint32_t _modu_64x32(uint64_t a, uint32_t b)
 
 #ifdef PTR64
 #define recip_approx _recip_approx
-<<<<<<< HEAD
-INLINE float _recip_approx(float z)
-{
-	__m128 mz = _mm_set_ss(z);
-	__m128 mooz = _mm_rcp_ss(mz);
-=======
 static inline float _recip_approx(float z)
 {
 	__m128 const mz = _mm_set_ss(z);
 	__m128 const mooz = _mm_rcp_ss(mz);
->>>>>>> upstream/master
 	float ooz;
 	_mm_store_ss(&ooz, mooz);
 	return ooz;
 }
 #endif
 
-<<<<<<< HEAD
-
-
-/***************************************************************************
-    INLINE BIT MANIPULATION FUNCTIONS
-***************************************************************************/
-
-/*-------------------------------------------------
-    count_leading_zeros - return the number of
-    leading zero bits in a 32-bit value
--------------------------------------------------*/
-
-#ifndef PTR64
-#define count_leading_zeros _count_leading_zeros
-INLINE UINT8 _count_leading_zeros(UINT32 value)
-{
-	INT32 result;
-
-	__asm
-	{
-		bsr   eax,value
-		jnz   skip
-		mov   eax,63
-	skip:
-		xor   eax,31
-		mov   result,eax
-	}
-
-	return result;
-}
-#endif
-
-
-/*-------------------------------------------------
-    count_leading_ones - return the number of
-    leading one bits in a 32-bit value
--------------------------------------------------*/
-
-#ifndef PTR64
-#define count_leading_ones _count_leading_ones
-INLINE UINT8 _count_leading_ones(UINT32 value)
-{
-	INT32 result;
-
-	__asm
-	{
-		mov   eax,value
-		not   eax
-		bsr   eax,eax
-		jnz   skip
-		mov   eax,63
-	skip:
-		xor   eax,31
-		mov   result,eax
-	}
-
-	return result;
-}
-#endif
-
-
-
-/***************************************************************************
-    INLINE TIMING FUNCTIONS
-***************************************************************************/
-
-/*-------------------------------------------------
-    get_profile_ticks - return a tick counter
-    from the processor that can be used for
-    profiling. It does not need to run at any
-    particular rate.
--------------------------------------------------*/
-
-#define get_profile_ticks _get_profile_ticks
-
-#ifdef PTR64
-
-INLINE osd_ticks_t _get_profile_ticks(void)
-{
-	return __rdtsc();
-}
-
-#else
-
-INLINE osd_ticks_t _get_profile_ticks(void)
-{
-	UINT64 result;
-	UINT64 *presult = &result;
-
-	__asm {
-		__asm _emit 0Fh __asm _emit 031h    // rdtsc
-		mov ebx, presult
-		mov [ebx],eax
-		mov [ebx+4],edx
-	}
-
-	return result;
-}
-
-#endif
-
-#endif /* __EIVCX86__ */
-=======
 #endif // MAME_OSD_EIVCX86_H
->>>>>>> upstream/master

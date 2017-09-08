@@ -124,11 +124,7 @@ TILEMAP_MAPPER_MEMBER(tumbleb_state::tumblep_scan)
 	return (col & 0x1f) + ((row & 0x1f) << 5) + ((col & 0x60) << 5);
 }
 
-<<<<<<< HEAD
-inline void tumbleb_state::get_bg_tile_info( tile_data &tileinfo, int tile_index, int gfx_bank, UINT16 *gfx_base)
-=======
 inline void tumbleb_state::get_bg_tile_info( tile_data &tileinfo, int tile_index, int gfx_bank, uint16_t *gfx_base)
->>>>>>> upstream/master
 {
 	int data = gfx_base[tile_index];
 
@@ -151,11 +147,7 @@ TILE_GET_INFO_MEMBER(tumbleb_state::get_fg_tile_info)
 			0);
 }
 
-<<<<<<< HEAD
-inline void tumbleb_state::get_fncywld_bg_tile_info( tile_data &tileinfo, int tile_index, int gfx_bank, UINT16 *gfx_base)
-=======
 inline void tumbleb_state::get_fncywld_bg_tile_info( tile_data &tileinfo, int tile_index, int gfx_bank, uint16_t *gfx_base)
->>>>>>> upstream/master
 {
 	int data = gfx_base[tile_index * 2];
 	int attr = gfx_base[tile_index * 2 + 1];
@@ -181,11 +173,7 @@ TILE_GET_INFO_MEMBER(tumbleb_state::get_fncywld_fg_tile_info)
 }
 
 
-<<<<<<< HEAD
-inline void tumbleb_state::pangpang_get_bg_tile_info( tile_data &tileinfo, int tile_index, int gfx_bank, UINT16 *gfx_base )
-=======
 inline void tumbleb_state::pangpang_get_bg_tile_info( tile_data &tileinfo, int tile_index, int gfx_bank, uint16_t *gfx_base )
->>>>>>> upstream/master
 {
 	int data = gfx_base[tile_index * 2 + 1];
 	int attr = gfx_base[tile_index * 2];
@@ -196,11 +184,7 @@ inline void tumbleb_state::pangpang_get_bg_tile_info( tile_data &tileinfo, int t
 			0);
 }
 
-<<<<<<< HEAD
-inline void tumbleb_state::pangpang_get_bg2x_tile_info( tile_data &tileinfo, int tile_index, int gfx_bank, UINT16 *gfx_base )
-=======
 inline void tumbleb_state::pangpang_get_bg2x_tile_info( tile_data &tileinfo, int tile_index, int gfx_bank, uint16_t *gfx_base )
->>>>>>> upstream/master
 {
 	int data = gfx_base[tile_index * 2 + 1];
 	int attr = gfx_base[tile_index * 2];
@@ -238,15 +222,9 @@ void tumbleb_state::tumbleb_tilemap_redraw()
 
 VIDEO_START_MEMBER(tumbleb_state,pangpang)
 {
-<<<<<<< HEAD
-	m_pf1_tilemap =     &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(tumbleb_state::pangpang_get_fg_tile_info),this),  TILEMAP_SCAN_ROWS, 8,  8, 64, 32);
-	m_pf1_alt_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(tumbleb_state::pangpang_get_bg1_tile_info),this), tilemap_mapper_delegate(FUNC(tumbleb_state::tumblep_scan),this),     16, 16, 64, 32);
-	m_pf2_tilemap =     &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(tumbleb_state::pangpang_get_bg2_tile_info),this), tilemap_mapper_delegate(FUNC(tumbleb_state::tumblep_scan),this),     16, 16, 64, 32);
-=======
 	m_pf1_tilemap =     &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(tumbleb_state::pangpang_get_fg_tile_info),this),  TILEMAP_SCAN_ROWS, 8,  8, 64, 32);
 	m_pf1_alt_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(tumbleb_state::pangpang_get_bg1_tile_info),this), tilemap_mapper_delegate(FUNC(tumbleb_state::tumblep_scan),this),     16, 16, 64, 32);
 	m_pf2_tilemap =     &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(tumbleb_state::pangpang_get_bg2_tile_info),this), tilemap_mapper_delegate(FUNC(tumbleb_state::tumblep_scan),this),     16, 16, 64, 32);
->>>>>>> upstream/master
 
 	m_pf1_tilemap->set_transparent_pen(0);
 	m_pf1_alt_tilemap->set_transparent_pen(0);
@@ -257,15 +235,9 @@ VIDEO_START_MEMBER(tumbleb_state,pangpang)
 
 VIDEO_START_MEMBER(tumbleb_state,tumblepb)
 {
-<<<<<<< HEAD
-	m_pf1_tilemap =     &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(tumbleb_state::get_fg_tile_info),this),  TILEMAP_SCAN_ROWS, 8,  8, 64, 32);
-	m_pf1_alt_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(tumbleb_state::get_bg1_tile_info),this), tilemap_mapper_delegate(FUNC(tumbleb_state::tumblep_scan),this),     16, 16, 64, 32);
-	m_pf2_tilemap =     &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(tumbleb_state::get_bg2_tile_info),this), tilemap_mapper_delegate(FUNC(tumbleb_state::tumblep_scan),this),     16, 16, 64, 32);
-=======
 	m_pf1_tilemap =     &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(tumbleb_state::get_fg_tile_info),this),  TILEMAP_SCAN_ROWS, 8,  8, 64, 32);
 	m_pf1_alt_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(tumbleb_state::get_bg1_tile_info),this), tilemap_mapper_delegate(FUNC(tumbleb_state::tumblep_scan),this),     16, 16, 64, 32);
 	m_pf2_tilemap =     &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(tumbleb_state::get_bg2_tile_info),this), tilemap_mapper_delegate(FUNC(tumbleb_state::tumblep_scan),this),     16, 16, 64, 32);
->>>>>>> upstream/master
 
 	m_pf1_tilemap->set_transparent_pen(0);
 	m_pf1_alt_tilemap->set_transparent_pen(0);
@@ -275,15 +247,9 @@ VIDEO_START_MEMBER(tumbleb_state,tumblepb)
 
 VIDEO_START_MEMBER(tumbleb_state,sdfight)
 {
-<<<<<<< HEAD
-	m_pf1_tilemap =     &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(tumbleb_state::get_fg_tile_info),this),  TILEMAP_SCAN_ROWS, 8,  8, 64, 64); // 64*64 to prevent bad tilemap wrapping? - check real behavior
-	m_pf1_alt_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(tumbleb_state::get_bg1_tile_info),this), tilemap_mapper_delegate(FUNC(tumbleb_state::tumblep_scan),this),     16, 16, 64, 32);
-	m_pf2_tilemap =     &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(tumbleb_state::get_bg2_tile_info),this), tilemap_mapper_delegate(FUNC(tumbleb_state::tumblep_scan),this),     16, 16, 64, 32);
-=======
 	m_pf1_tilemap =     &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(tumbleb_state::get_fg_tile_info),this),  TILEMAP_SCAN_ROWS, 8,  8, 64, 64); // 64*64 to prevent bad tilemap wrapping? - check real behavior
 	m_pf1_alt_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(tumbleb_state::get_bg1_tile_info),this), tilemap_mapper_delegate(FUNC(tumbleb_state::tumblep_scan),this),     16, 16, 64, 32);
 	m_pf2_tilemap =     &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(tumbleb_state::get_bg2_tile_info),this), tilemap_mapper_delegate(FUNC(tumbleb_state::tumblep_scan),this),     16, 16, 64, 32);
->>>>>>> upstream/master
 
 	m_pf1_tilemap->set_transparent_pen(0);
 	m_pf1_alt_tilemap->set_transparent_pen(0);
@@ -293,15 +259,9 @@ VIDEO_START_MEMBER(tumbleb_state,sdfight)
 
 VIDEO_START_MEMBER(tumbleb_state,fncywld)
 {
-<<<<<<< HEAD
-	m_pf1_tilemap =     &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(tumbleb_state::get_fncywld_fg_tile_info),this),  TILEMAP_SCAN_ROWS, 8,  8, 64, 32);
-	m_pf1_alt_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(tumbleb_state::get_fncywld_bg1_tile_info),this), tilemap_mapper_delegate(FUNC(tumbleb_state::tumblep_scan),this),     16, 16, 64, 32);
-	m_pf2_tilemap =     &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(tumbleb_state::get_fncywld_bg2_tile_info),this), tilemap_mapper_delegate(FUNC(tumbleb_state::tumblep_scan),this),     16, 16, 64, 32);
-=======
 	m_pf1_tilemap =     &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(tumbleb_state::get_fncywld_fg_tile_info),this),  TILEMAP_SCAN_ROWS, 8,  8, 64, 32);
 	m_pf1_alt_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(tumbleb_state::get_fncywld_bg1_tile_info),this), tilemap_mapper_delegate(FUNC(tumbleb_state::tumblep_scan),this),     16, 16, 64, 32);
 	m_pf2_tilemap =     &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(tumbleb_state::get_fncywld_bg2_tile_info),this), tilemap_mapper_delegate(FUNC(tumbleb_state::tumblep_scan),this),     16, 16, 64, 32);
->>>>>>> upstream/master
 
 	m_pf1_tilemap->set_transparent_pen(15);
 	m_pf1_alt_tilemap->set_transparent_pen(15);
@@ -312,15 +272,9 @@ VIDEO_START_MEMBER(tumbleb_state,fncywld)
 
 VIDEO_START_MEMBER(tumbleb_state,suprtrio)
 {
-<<<<<<< HEAD
-	m_pf1_tilemap =     &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(tumbleb_state::get_fg_tile_info),this),  TILEMAP_SCAN_ROWS, 8,  8, 64, 32);
-	m_pf1_alt_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(tumbleb_state::get_bg1_tile_info),this), tilemap_mapper_delegate(FUNC(tumbleb_state::tumblep_scan),this),     16, 16, 64, 32);
-	m_pf2_tilemap =     &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(tumbleb_state::get_bg2_tile_info),this), tilemap_mapper_delegate(FUNC(tumbleb_state::tumblep_scan),this),     16, 16, 64, 32);
-=======
 	m_pf1_tilemap =     &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(tumbleb_state::get_fg_tile_info),this),  TILEMAP_SCAN_ROWS, 8,  8, 64, 32);
 	m_pf1_alt_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(tumbleb_state::get_bg1_tile_info),this), tilemap_mapper_delegate(FUNC(tumbleb_state::tumblep_scan),this),     16, 16, 64, 32);
 	m_pf2_tilemap =     &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(tumbleb_state::get_bg2_tile_info),this), tilemap_mapper_delegate(FUNC(tumbleb_state::tumblep_scan),this),     16, 16, 64, 32);
->>>>>>> upstream/master
 
 	m_pf1_alt_tilemap->set_transparent_pen(0);
 
@@ -348,11 +302,7 @@ void tumbleb_state::tumbleb_draw_common(screen_device &screen, bitmap_ind16 &bit
 	m_sprgen->draw_sprites(bitmap, cliprect, m_spriteram, m_spriteram.bytes()/2);
 }
 
-<<<<<<< HEAD
-UINT32 tumbleb_state::screen_update_tumblepb(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t tumbleb_state::screen_update_tumblepb(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int offs, offs2;
 
@@ -373,11 +323,7 @@ uint32_t tumbleb_state::screen_update_tumblepb(screen_device &screen, bitmap_ind
 	return 0;
 }
 
-<<<<<<< HEAD
-UINT32 tumbleb_state::screen_update_jumpkids(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t tumbleb_state::screen_update_jumpkids(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int offs, offs2;
 
@@ -397,11 +343,7 @@ uint32_t tumbleb_state::screen_update_jumpkids(screen_device &screen, bitmap_ind
 	return 0;
 }
 
-<<<<<<< HEAD
-UINT32 tumbleb_state::screen_update_semicom(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t tumbleb_state::screen_update_semicom(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int offs, offs2;
 
@@ -421,11 +363,7 @@ uint32_t tumbleb_state::screen_update_semicom(screen_device &screen, bitmap_ind1
 	return 0;
 }
 
-<<<<<<< HEAD
-UINT32 tumbleb_state::screen_update_semicom_altoffsets(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t tumbleb_state::screen_update_semicom_altoffsets(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int offsx, offsy, offsx2;
 
@@ -440,11 +378,7 @@ uint32_t tumbleb_state::screen_update_semicom_altoffsets(screen_device &screen, 
 	return 0;
 }
 
-<<<<<<< HEAD
-UINT32 tumbleb_state::screen_update_bcstory(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t tumbleb_state::screen_update_bcstory(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int offs, offs2;
 
@@ -466,11 +400,7 @@ uint32_t tumbleb_state::screen_update_bcstory(screen_device &screen, bitmap_ind1
 	return 0;
 }
 
-<<<<<<< HEAD
-UINT32 tumbleb_state::screen_update_semibase(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t tumbleb_state::screen_update_semibase(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int offs, offs2;
 
@@ -484,11 +414,7 @@ uint32_t tumbleb_state::screen_update_semibase(screen_device &screen, bitmap_ind
 	return 0;
 }
 
-<<<<<<< HEAD
-UINT32 tumbleb_state::screen_update_sdfight(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t tumbleb_state::screen_update_sdfight(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int offs, offs2;
 
@@ -503,11 +429,7 @@ uint32_t tumbleb_state::screen_update_sdfight(screen_device &screen, bitmap_ind1
 	return 0;
 }
 
-<<<<<<< HEAD
-UINT32 tumbleb_state::screen_update_fncywld(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t tumbleb_state::screen_update_fncywld(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int offs, offs2;
 
@@ -528,11 +450,7 @@ uint32_t tumbleb_state::screen_update_fncywld(screen_device &screen, bitmap_ind1
 	return 0;
 }
 
-<<<<<<< HEAD
-UINT32 tumbleb_state::screen_update_pangpang(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t tumbleb_state::screen_update_pangpang(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int offs, offs2;
 
@@ -554,11 +472,7 @@ uint32_t tumbleb_state::screen_update_pangpang(screen_device &screen, bitmap_ind
 
 
 
-<<<<<<< HEAD
-UINT32 tumbleb_state::screen_update_suprtrio(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t tumbleb_state::screen_update_suprtrio(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	m_pf1_alt_tilemap->set_scrollx(0, -m_control[1] - 6);
 	m_pf1_alt_tilemap->set_scrolly(0, -m_control[2]);

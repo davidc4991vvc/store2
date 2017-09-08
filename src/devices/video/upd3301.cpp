@@ -19,10 +19,6 @@
 
 */
 
-<<<<<<< HEAD
-#include "upd3301.h"
-
-=======
 #include "emu.h"
 #include "upd3301.h"
 
@@ -31,19 +27,12 @@
 //#define VERBOSE 1
 #include "logmacro.h"
 
->>>>>>> upstream/master
 
 
 //**************************************************************************
 //  MACROS / CONSTANTS
 //**************************************************************************
 
-<<<<<<< HEAD
-#define LOG 0
-
-
-=======
->>>>>>> upstream/master
 #define COMMAND_MASK                    0xe0
 #define COMMAND_RESET                   0x00
 #define COMMAND_START_DISPLAY           0x20
@@ -76,11 +65,7 @@ enum
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type UPD3301 = &device_creator<upd3301_device>;
-=======
 DEFINE_DEVICE_TYPE(UPD3301, upd3301_device, "upd3301", "NEC uPD3301")
->>>>>>> upstream/master
 
 
 
@@ -92,13 +77,8 @@ DEFINE_DEVICE_TYPE(UPD3301, upd3301_device, "upd3301", "NEC uPD3301")
 //  upd3301_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-upd3301_device::upd3301_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-	device_t(mconfig, UPD3301, "UPD3301", tag, owner, clock, "upd3301", __FILE__),
-=======
 upd3301_device::upd3301_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	device_t(mconfig, UPD3301, tag, owner, clock),
->>>>>>> upstream/master
 	device_video_interface(mconfig, *this),
 	m_write_int(*this),
 	m_write_drq(*this),
@@ -212,11 +192,7 @@ void upd3301_device::device_timer(emu_timer &timer, device_timer_id id, int para
 	switch (id)
 	{
 	case TIMER_HRTC:
-<<<<<<< HEAD
-		if (LOG) logerror("UPD3301 '%s' HRTC: %u\n", tag(), param);
-=======
 		LOG("UPD3301 HRTC: %u\n", param);
->>>>>>> upstream/master
 
 		m_write_hrtc(param);
 		m_hrtc = param;
@@ -225,11 +201,7 @@ void upd3301_device::device_timer(emu_timer &timer, device_timer_id id, int para
 		break;
 
 	case TIMER_VRTC:
-<<<<<<< HEAD
-		if (LOG) logerror("UPD3301 '%s' VRTC: %u\n", tag(), param);
-=======
 		LOG("UPD3301 VRTC: %u\n", param);
->>>>>>> upstream/master
 
 		m_write_vrtc(param);
 		m_vrtc = param;
@@ -255,11 +227,7 @@ void upd3301_device::device_timer(emu_timer &timer, device_timer_id id, int para
 
 READ8_MEMBER( upd3301_device::read )
 {
-<<<<<<< HEAD
-	UINT8 data = 0;
-=======
 	uint8_t data = 0;
->>>>>>> upstream/master
 
 	switch (offset & 0x01)
 	{
@@ -293,52 +261,31 @@ WRITE8_MEMBER( upd3301_device::write )
 			case 0:
 				m_dma_mode = BIT(data, 7);
 				m_h = (data & 0x7f) + 2;
-<<<<<<< HEAD
-				if (LOG) logerror("UPD3301 '%s' DMA Mode: %s\n", tag(), m_dma_mode ? "character" : "burst");
-				if (LOG) logerror("UPD3301 '%s' H: %u\n", tag(), m_h);
-=======
 				LOG("UPD3301 DMA Mode: %s\n", m_dma_mode ? "character" : "burst");
 				LOG("UPD3301 H: %u\n", m_h);
->>>>>>> upstream/master
 				break;
 
 			case 1:
 				m_b = ((data >> 6) + 1) * 16;
 				m_l = (data & 0x3f) + 1;
-<<<<<<< HEAD
-				if (LOG) logerror("UPD3301 '%s' B: %u\n", tag(), m_b);
-				if (LOG) logerror("UPD3301 '%s' L: %u\n", tag(), m_l);
-=======
 				LOG("UPD3301 B: %u\n", m_b);
 				LOG("UPD3301 L: %u\n", m_l);
->>>>>>> upstream/master
 				break;
 
 			case 2:
 				m_s = BIT(data, 7);
 				m_c = (data >> 4) & 0x03;
 				m_r = (data & 0x1f) + 1;
-<<<<<<< HEAD
-				if (LOG) logerror("UPD3301 '%s' S: %u\n", tag(), m_s);
-				if (LOG) logerror("UPD3301 '%s' C: %u\n", tag(), m_c);
-				if (LOG) logerror("UPD3301 '%s' R: %u\n", tag(), m_r);
-=======
 				LOG("UPD3301 S: %u\n", m_s);
 				LOG("UPD3301 C: %u\n", m_c);
 				LOG("UPD3301 R: %u\n", m_r);
->>>>>>> upstream/master
 				break;
 
 			case 3:
 				m_v = (data >> 5) + 1;
 				m_z = (data & 0x1f) + 2;
-<<<<<<< HEAD
-				if (LOG) logerror("UPD3301 '%s' V: %u\n", tag(), m_v);
-				if (LOG) logerror("UPD3301 '%s' Z: %u\n", tag(), m_z);
-=======
 				LOG("UPD3301 V: %u\n", m_v);
 				LOG("UPD3301 Z: %u\n", m_z);
->>>>>>> upstream/master
 				recompute_parameters();
 				break;
 
@@ -347,17 +294,10 @@ WRITE8_MEMBER( upd3301_device::write )
 				m_at0 = BIT(data, 6);
 				m_sc = BIT(data, 5);
 				m_attr = (data & 0x1f) + 1;
-<<<<<<< HEAD
-				if (LOG) logerror("UPD3301 '%s' AT1: %u\n", tag(), m_at1);
-				if (LOG) logerror("UPD3301 '%s' AT0: %u\n", tag(), m_at0);
-				if (LOG) logerror("UPD3301 '%s' SC: %u\n", tag(), m_sc);
-				if (LOG) logerror("UPD3301 '%s' ATTR: %u\n", tag(), m_attr);
-=======
 				LOG("UPD3301 AT1: %u\n", m_at1);
 				LOG("UPD3301 AT0: %u\n", m_at0);
 				LOG("UPD3301 SC: %u\n", m_sc);
 				LOG("UPD3301 ATTR: %u\n", m_attr);
->>>>>>> upstream/master
 
 				m_mode = MODE_NONE;
 				break;
@@ -371,20 +311,12 @@ WRITE8_MEMBER( upd3301_device::write )
 			{
 			case 0:
 				m_cx = data & 0x7f;
-<<<<<<< HEAD
-				if (LOG) logerror("UPD3301 '%s' CX: %u\n", tag(), m_cx);
-=======
 				LOG("UPD3301 CX: %u\n", m_cx);
->>>>>>> upstream/master
 				break;
 
 			case 1:
 				m_cy = data & 0x3f;
-<<<<<<< HEAD
-				if (LOG) logerror("UPD3301 '%s' CY: %u\n", tag(), m_cy);
-=======
 				LOG("UPD3301 CY: %u\n", m_cy);
->>>>>>> upstream/master
 
 				m_mode = MODE_NONE;
 				break;
@@ -394,11 +326,7 @@ WRITE8_MEMBER( upd3301_device::write )
 			break;
 
 		default:
-<<<<<<< HEAD
-			if (LOG) logerror("UPD3301 '%s' Invalid Parameter Byte %02x!\n", tag(), data);
-=======
 			LOG("UPD3301 Invalid Parameter Byte %02x!\n", data);
->>>>>>> upstream/master
 		}
 		break;
 
@@ -409,38 +337,19 @@ WRITE8_MEMBER( upd3301_device::write )
 		switch (data & 0xe0)
 		{
 		case COMMAND_RESET:
-<<<<<<< HEAD
-			if (LOG) logerror("UPD3301 '%s' Reset\n", tag());
-=======
 			LOG("UPD3301 Reset\n");
->>>>>>> upstream/master
 			m_mode = MODE_RESET;
 			set_display(0);
 			set_interrupt(0);
 			break;
 
 		case COMMAND_START_DISPLAY:
-<<<<<<< HEAD
-			if (LOG) logerror("UPD3301 '%s' Start Display\n", tag());
-=======
 			LOG("UPD3301 Start Display\n");
->>>>>>> upstream/master
 			set_display(1);
 			reset_counters();
 			break;
 
 		case COMMAND_SET_INTERRUPT_MASK:
-<<<<<<< HEAD
-			if (LOG) logerror("UPD3301 '%s' Set Interrupt Mask\n", tag());
-			m_me = BIT(data, 0);
-			m_mn = BIT(data, 1);
-			if (LOG) logerror("UPD3301 '%s' ME: %u\n", tag(), m_me);
-			if (LOG) logerror("UPD3301 '%s' MN: %u\n", tag(), m_mn);
-			break;
-
-		case COMMAND_READ_LIGHT_PEN:
-			if (LOG) logerror("UPD3301 '%s' Read Light Pen\n", tag());
-=======
 			LOG("UPD3301 Set Interrupt Mask\n");
 			m_me = BIT(data, 0);
 			m_mn = BIT(data, 1);
@@ -450,21 +359,10 @@ WRITE8_MEMBER( upd3301_device::write )
 
 		case COMMAND_READ_LIGHT_PEN:
 			LOG("UPD3301 Read Light Pen\n");
->>>>>>> upstream/master
 			m_mode = MODE_READ_LIGHT_PEN;
 			break;
 
 		case COMMAND_LOAD_CURSOR_POSITION:
-<<<<<<< HEAD
-			if (LOG) logerror("UPD3301 '%s' Load Cursor Position\n", tag());
-			m_mode = MODE_LOAD_CURSOR_POSITION;
-			m_cm = BIT(data, 0);
-			if (LOG) logerror("UPD3301 '%s' CM: %u\n", tag(), m_cm);
-			break;
-
-		case COMMAND_RESET_INTERRUPT:
-			if (LOG) logerror("UPD3301 '%s' Reset Interrupt\n", tag());
-=======
 			LOG("UPD3301 Load Cursor Position\n");
 			m_mode = MODE_LOAD_CURSOR_POSITION;
 			m_cm = BIT(data, 0);
@@ -473,16 +371,11 @@ WRITE8_MEMBER( upd3301_device::write )
 
 		case COMMAND_RESET_INTERRUPT:
 			LOG("UPD3301 Reset Interrupt\n");
->>>>>>> upstream/master
 			set_interrupt(0);
 			break;
 
 		case COMMAND_RESET_COUNTERS:
-<<<<<<< HEAD
-			if (LOG) logerror("UPD3301 '%s' Reset Counters\n", tag());
-=======
 			LOG("UPD3301 Reset Counters\n");
->>>>>>> upstream/master
 			m_mode = MODE_RESET_COUNTERS;
 			reset_counters();
 			break;
@@ -572,11 +465,7 @@ void upd3301_device::draw_scanline()
 		for (int sx = 0; sx < m_h; sx++)
 		{
 			int y = m_y + lc;
-<<<<<<< HEAD
-			UINT8 cc = m_data_fifo[sx][!m_input_fifo];
-=======
 			uint8_t cc = m_data_fifo[sx][!m_input_fifo];
->>>>>>> upstream/master
 			int hlgt = 0; // TODO
 			int rvv = 0; // TODO
 			int vsp = 0; // TODO
@@ -597,21 +486,12 @@ void upd3301_device::draw_scanline()
 //  update_screen -
 //-------------------------------------------------
 
-<<<<<<< HEAD
-UINT32 upd3301_device::screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
-{
-	if (m_status & STATUS_VE)
-	{
-		m_y = 0;
-		m_bitmap = &bitmap;
-=======
 uint32_t upd3301_device::screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
 {
 	m_bitmap = &bitmap;
 	if (m_status & STATUS_VE)
 	{
 		m_y = 0;
->>>>>>> upstream/master
 		m_data_fifo_pos = 0;
 		m_attr_fifo_pos = 0;
 
@@ -648,11 +528,7 @@ uint32_t upd3301_device::screen_update(screen_device &screen, bitmap_rgb32 &bitm
 
 void upd3301_device::set_interrupt(int state)
 {
-<<<<<<< HEAD
-	if (LOG) logerror("UPD3301 '%s' Interrupt: %u\n", tag(), state);
-=======
 	LOG("UPD3301 Interrupt: %u\n", state);
->>>>>>> upstream/master
 
 	m_write_int(state);
 
@@ -669,11 +545,7 @@ void upd3301_device::set_interrupt(int state)
 
 void upd3301_device::set_drq(int state)
 {
-<<<<<<< HEAD
-	if (LOG) logerror("UPD3301 '%s' DRQ: %u\n", tag(), state);
-=======
 	LOG("UPD3301 DRQ: %u\n", state);
->>>>>>> upstream/master
 
 	m_write_drq(state);
 }
@@ -753,16 +625,8 @@ void upd3301_device::recompute_parameters()
 
 	visarea.set(0, (m_h * m_width) - 1, 0, (m_l * m_r) - 1);
 
-<<<<<<< HEAD
-	if (LOG)
-	{
-		if (LOG) logerror("UPD3301 '%s' Screen: %u x %u @ %f Hz\n", tag(), horiz_pix_total, vert_pix_total, 1 / ATTOSECONDS_TO_DOUBLE(refresh));
-		if (LOG) logerror("UPD3301 '%s' Visible Area: (%u, %u) - (%u, %u)\n", tag(), visarea.min_x, visarea.min_y, visarea.max_x, visarea.max_y);
-	}
-=======
 	LOG("UPD3301 Screen: %u x %u @ %f Hz\n", horiz_pix_total, vert_pix_total, 1 / ATTOSECONDS_TO_DOUBLE(refresh));
 	LOG("UPD3301 Visible Area: (%u, %u) - (%u, %u)\n", visarea.min_x, visarea.min_y, visarea.max_x, visarea.max_y);
->>>>>>> upstream/master
 
 	m_screen->configure(horiz_pix_total, vert_pix_total, visarea, refresh);
 

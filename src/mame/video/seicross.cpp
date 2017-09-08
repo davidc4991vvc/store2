@@ -29,11 +29,7 @@
 ***************************************************************************/
 PALETTE_INIT_MEMBER(seicross_state, seicross)
 {
-<<<<<<< HEAD
-	const UINT8 *color_prom = memregion("proms")->base();
-=======
 	const uint8_t *color_prom = memregion("proms")->base();
->>>>>>> upstream/master
 	int i;
 
 
@@ -92,12 +88,8 @@ TILE_GET_INFO_MEMBER(seicross_state::get_bg_tile_info)
 
 void seicross_state::video_start()
 {
-<<<<<<< HEAD
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(seicross_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS,
-=======
 	m_bg_tilemap = &machine().tilemap().create(
 			*m_gfxdecode, tilemap_get_info_delegate(FUNC(seicross_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS,
->>>>>>> upstream/master
 			8, 8, 32, 32);
 
 	m_bg_tilemap->set_scroll_cols(32);
@@ -140,11 +132,7 @@ void seicross_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprec
 	}
 }
 
-<<<<<<< HEAD
-UINT32 seicross_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t seicross_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int col;
 

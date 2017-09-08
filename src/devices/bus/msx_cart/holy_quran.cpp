@@ -4,22 +4,6 @@
 #include "holy_quran.h"
 
 
-<<<<<<< HEAD
-const device_type MSX_CART_HOLY_QURAN = &device_creator<msx_cart_holy_quran>;
-
-
-msx_cart_holy_quran::msx_cart_holy_quran(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, MSX_CART_HOLY_QURAN, "MSX Cartridge - Holy Quran", tag, owner, clock, "msx_cart_holy_quran", __FILE__)
-	, msx_cart_interface(mconfig, *this)
-	, m_decrypt(false)
-{
-	for (int i = 0; i < 4; i++)
-	{
-		m_selected_bank[i] = 0;
-		m_bank_base[i] = NULL;
-	}
-
-=======
 DEFINE_DEVICE_TYPE(MSX_CART_HOLY_QURAN, msx_cart_holy_quran_device, "msx_cart_holy_quran", "MSX Cartridge - Holy Quran")
 
 
@@ -30,7 +14,6 @@ msx_cart_holy_quran_device::msx_cart_holy_quran_device(const machine_config &mco
 	, m_bank_base{ nullptr, nullptr, nullptr, nullptr }
 	, m_decrypt(false)
 {
->>>>>>> upstream/master
 	/* protection uses a simple rotation on databus, some lines inverted:
 	    D0   D4                 D4   D5
 	    D1 ~ D3                 D5 ~ D2
@@ -43,28 +26,16 @@ msx_cart_holy_quran_device::msx_cart_holy_quran_device(const machine_config &mco
 }
 
 
-<<<<<<< HEAD
-void msx_cart_holy_quran::device_start()
-=======
 void msx_cart_holy_quran_device::device_start()
->>>>>>> upstream/master
 {
 	save_item(NAME(m_selected_bank));
 	save_item(NAME(m_decrypt));
 
-<<<<<<< HEAD
-	machine().save().register_postload(save_prepost_delegate(FUNC(msx_cart_holy_quran::restore_banks), this));
-}
-
-
-void msx_cart_holy_quran::restore_banks()
-=======
 	machine().save().register_postload(save_prepost_delegate(FUNC(msx_cart_holy_quran_device::restore_banks), this));
 }
 
 
 void msx_cart_holy_quran_device::restore_banks()
->>>>>>> upstream/master
 {
 	m_bank_base[0] = get_rom_base() + (m_selected_bank[0] & 0x7f) * 0x2000;
 	m_bank_base[1] = get_rom_base() + (m_selected_bank[1] & 0x7f) * 0x2000;
@@ -73,28 +44,16 @@ void msx_cart_holy_quran_device::restore_banks()
 }
 
 
-<<<<<<< HEAD
-void msx_cart_holy_quran::device_reset()
-{
-	for (int i = 0; i < 4; i++)
-	{
-		m_selected_bank[i] = 0;
-=======
 void msx_cart_holy_quran_device::device_reset()
 {
 	for (auto & elem : m_selected_bank)
 	{
 		elem = 0;
->>>>>>> upstream/master
 	}
 }
 
 
-<<<<<<< HEAD
-void msx_cart_holy_quran::initialize_cartridge()
-=======
 void msx_cart_holy_quran_device::initialize_cartridge()
->>>>>>> upstream/master
 {
 	if (get_rom_size() != 0x100000)
 	{
@@ -105,19 +64,11 @@ void msx_cart_holy_quran_device::initialize_cartridge()
 }
 
 
-<<<<<<< HEAD
-READ8_MEMBER(msx_cart_holy_quran::read_cart)
-{
-	if (offset >= 0x4000 && offset < 0xc000)
-	{
-		UINT8 data = m_bank_base[(offset - 0x4000) >> 13][offset & 0x1fff];
-=======
 READ8_MEMBER(msx_cart_holy_quran_device::read_cart)
 {
 	if (offset >= 0x4000 && offset < 0xc000)
 	{
 		uint8_t data = m_bank_base[(offset - 0x4000) >> 13][offset & 0x1fff];
->>>>>>> upstream/master
 
 		if (m_decrypt)
 		{
@@ -126,11 +77,7 @@ READ8_MEMBER(msx_cart_holy_quran_device::read_cart)
 
 		// The decryption should actually start working after the first M1 cycle executing something
 		// from the cartridge.
-<<<<<<< HEAD
-		if (offset == ((m_rom[3] << 8) | m_rom[2]) && !space.debugger_access())
-=======
 		if (offset == ((m_rom[3] << 8) | m_rom[2]) && !machine().side_effect_disabled())
->>>>>>> upstream/master
 		{
 			m_decrypt = true;
 		}
@@ -141,11 +88,7 @@ READ8_MEMBER(msx_cart_holy_quran_device::read_cart)
 }
 
 
-<<<<<<< HEAD
-WRITE8_MEMBER(msx_cart_holy_quran::write_cart)
-=======
 WRITE8_MEMBER(msx_cart_holy_quran_device::write_cart)
->>>>>>> upstream/master
 {
 	switch (offset)
 	{
@@ -166,11 +109,7 @@ WRITE8_MEMBER(msx_cart_holy_quran_device::write_cart)
 			restore_banks();
 			break;
 		default:
-<<<<<<< HEAD
-			logerror("msx_cart_holy_quran: unhandled write %02x to %04x\n", data, offset);
-=======
 			logerror("msx_cart_holy_quran_device: unhandled write %02x to %04x\n", data, offset);
->>>>>>> upstream/master
 			break;
 	}
 }

@@ -65,11 +65,7 @@ Stephh's notes (based on the games M68000 code and some tests) :
 3b) 'chelnovu'
 
   - DSW2 bit 6 freezes the game (code at 0x000654), but when you turn
-<<<<<<< HEAD
-    the Dip Swicth back to "Off", it adds credits as if COIN1 was pressed.
-=======
     the Dip Switch back to "Off", it adds credits as if COIN1 was pressed.
->>>>>>> upstream/master
     Is that the correct behaviour ?
   - Even if there is a "andi.w  #$ffff, D5" instruction at 0x000ef0,
     DSW2 bit 7 isn't tested in this set.
@@ -83,25 +79,17 @@ Stephh's notes (based on the games M68000 code and some tests) :
 *******************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-=======
 #include "includes/karnov.h"
 
->>>>>>> upstream/master
 #include "cpu/m68000/m68000.h"
 #include "cpu/m6502/m6502.h"
 #include "sound/2203intf.h"
 #include "sound/3526intf.h"
-<<<<<<< HEAD
-#include "includes/karnov.h"
-#include "cpu/mcs51/mcs51.h"
-=======
 #include "sound/3812intf.h"
 #include "cpu/mcs51/mcs51.h"
 #include "screen.h"
 #include "speaker.h"
 
->>>>>>> upstream/master
 
 /*************************************
  *
@@ -378,12 +366,7 @@ WRITE16_MEMBER(karnov_state::karnov_control_w)
 			return;
 
 		case 2: /* SONREQ (Sound CPU byte) */
-<<<<<<< HEAD
-			soundlatch_byte_w(space, 0, data & 0xff);
-			m_audiocpu->set_input_line(INPUT_LINE_NMI, PULSE_LINE);
-=======
 			m_soundlatch->write(space, 0, data & 0xff);
->>>>>>> upstream/master
 			break;
 
 		case 4: /* DM (DMA to buffer spriteram) */
@@ -458,16 +441,6 @@ static ADDRESS_MAP_START( karnov_map, AS_PROGRAM, 16, karnov_state )
 ADDRESS_MAP_END
 
 
-<<<<<<< HEAD
-static ADDRESS_MAP_START( karnov_sound_map, AS_PROGRAM, 8, karnov_state )
-	AM_RANGE(0x0000, 0x05ff) AM_RAM
-	AM_RANGE(0x0800, 0x0800) AM_READ(soundlatch_byte_r)
-	AM_RANGE(0x1000, 0x1001) AM_DEVWRITE("ym1", ym2203_device, write)
-	AM_RANGE(0x1800, 0x1801) AM_DEVWRITE("ym2", ym3526_device, write)
-	AM_RANGE(0x8000, 0xffff) AM_ROM
-ADDRESS_MAP_END
-
-=======
 static ADDRESS_MAP_START( base_sound_map, AS_PROGRAM, 8, karnov_state )
 	AM_RANGE(0x0000, 0x05ff) AM_RAM
 	AM_RANGE(0x0800, 0x0800) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
@@ -485,7 +458,6 @@ static ADDRESS_MAP_START( karnovjbl_sound_map, AS_PROGRAM, 8, karnov_state )
 	AM_RANGE(0x1800, 0x1801) AM_DEVWRITE("ym2", ym3812_device, write)
 ADDRESS_MAP_END
 
->>>>>>> upstream/master
 
 /*************************************
  *
@@ -767,11 +739,7 @@ GFXDECODE_END
 
 INTERRUPT_GEN_MEMBER(karnov_state::karnov_interrupt)
 {
-<<<<<<< HEAD
-	UINT8 port = ioport("FAKE")->read();
-=======
 	uint8_t port = ioport("FAKE")->read();
->>>>>>> upstream/master
 
 	/* Coin input to the i8751 generates an interrupt to the main cpu */
 	if (port == m_coin_mask)
@@ -834,11 +802,7 @@ void karnov_state::machine_reset()
 }
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( karnov, karnov_state )
-=======
 static MACHINE_CONFIG_START( karnov )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, 10000000)   /* 10 MHz */
@@ -861,43 +825,24 @@ static MACHINE_CONFIG_START( karnov )
 	MCFG_SCREEN_PALETTE("palette")
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", karnov)
-<<<<<<< HEAD
-	MCFG_PALETTE_ADD("palette", 1024)
-	MCFG_PALETTE_INIT_OWNER(karnov_state, karnov)
-
-	MCFG_DEVICE_ADD("spritegen", DECO_KARNOVSPRITES, 0)
-	deco_karnovsprites_device::set_gfx_region(*device, 2);
-	MCFG_DECO_KARNOVSPRITES_GFXDECODE("gfxdecode")
-	MCFG_DECO_KARNOVSPRITES_PALETTE("palette")
-=======
 	MCFG_DECO_RMC3_ADD_PROMS("palette","proms",1024) // xxxxBBBBGGGGRRRR with custom weighting
 
 	MCFG_DEVICE_ADD("spritegen", DECO_KARNOVSPRITES, 0)
 	MCFG_DECO_KARNOVSPRITES_GFX_REGION(2)
 	MCFG_DECO_KARNOVSPRITES_GFXDECODE("gfxdecode")
->>>>>>> upstream/master
 
 	MCFG_VIDEO_START_OVERRIDE(karnov_state,karnov)
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 	MCFG_GENERIC_LATCH_DATA_PENDING_CB(INPUTLINE("audiocpu", INPUT_LINE_NMI))
 
->>>>>>> upstream/master
 	MCFG_SOUND_ADD("ym1", YM2203, 1500000)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.25)
 
 	MCFG_SOUND_ADD("ym2", YM3526, 3000000)
-<<<<<<< HEAD
-	MCFG_YM3526_IRQ_HANDLER(DEVWRITELINE("audiocpu", m6502_device, irq_line))
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
-MACHINE_CONFIG_END
-
-=======
 	MCFG_YM3526_IRQ_HANDLER(INPUTLINE("audiocpu", M6502_IRQ_LINE))
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
@@ -916,7 +861,6 @@ static MACHINE_CONFIG_DERIVED( karnovjbl, karnov )
 
 MACHINE_CONFIG_END
 
->>>>>>> upstream/master
 static ADDRESS_MAP_START( chelnovjbl_mcu_map, AS_PROGRAM, 8, karnov_state )
 	AM_RANGE(0x0000, 0x1fff) AM_ROM
 ADDRESS_MAP_END
@@ -937,11 +881,7 @@ MACHINE_CONFIG_END
 
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( wndrplnt, karnov_state )
-=======
 static MACHINE_CONFIG_START( wndrplnt )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, 10000000)   /* 10 MHz */
@@ -964,41 +904,24 @@ static MACHINE_CONFIG_START( wndrplnt )
 	MCFG_SCREEN_PALETTE("palette")
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", karnov)
-<<<<<<< HEAD
-	MCFG_PALETTE_ADD("palette", 1024)
-	MCFG_PALETTE_INIT_OWNER(karnov_state, karnov)
-
-	MCFG_DEVICE_ADD("spritegen", DECO_KARNOVSPRITES, 0)
-	deco_karnovsprites_device::set_gfx_region(*device, 2);
-	MCFG_DECO_KARNOVSPRITES_GFXDECODE("gfxdecode")
-	MCFG_DECO_KARNOVSPRITES_PALETTE("palette")
-=======
 	MCFG_DECO_RMC3_ADD_PROMS("palette","proms",1024) // xxxxBBBBGGGGRRRR with custom weighting
 
 	MCFG_DEVICE_ADD("spritegen", DECO_KARNOVSPRITES, 0)
 	MCFG_DECO_KARNOVSPRITES_GFX_REGION(2)
 	MCFG_DECO_KARNOVSPRITES_GFXDECODE("gfxdecode")
->>>>>>> upstream/master
 
 	MCFG_VIDEO_START_OVERRIDE(karnov_state,wndrplnt)
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 
->>>>>>> upstream/master
 	MCFG_SOUND_ADD("ym1", YM2203, 1500000)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.25)
 
 	MCFG_SOUND_ADD("ym2", YM3526, 3000000)
-<<<<<<< HEAD
-	MCFG_YM3526_IRQ_HANDLER(DEVWRITELINE("audiocpu", m6502_device, irq_line))
-=======
 	MCFG_YM3526_IRQ_HANDLER(INPUTLINE("audiocpu", M6502_IRQ_LINE))
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
 
@@ -1126,8 +1049,6 @@ ROM_START( karnovj )
 	ROM_LOAD( "karnprom.20",  0x0400, 0x0400, CRC(02f78ffb) SHA1(cb4dd8b0ce3c404195321b17e10f51352f506958) )
 ROM_END
 
-<<<<<<< HEAD
-=======
 ROM_START( karnovjbl )
 	ROM_REGION( 0x60000, "maincpu", 0 ) /* 6*64k for 68000 code */
 	ROM_LOAD16_BYTE( "3.bin",        0x00000, 0x10000, CRC(3e17e268) SHA1(3a63928bb0148175519540f9d891b03590094dfb) )
@@ -1173,7 +1094,6 @@ ROM_START( karnovjbl )
 	ROM_LOAD( "karnprom.20",  0x0400, 0x0400, CRC(02f78ffb) SHA1(cb4dd8b0ce3c404195321b17e10f51352f506958) )
 ROM_END
 
->>>>>>> upstream/master
 ROM_START( wndrplnt )
 	ROM_REGION( 0x60000, "maincpu", 0 ) /* 6*64k for 68000 code */
 	ROM_LOAD16_BYTE( "ea08.bin",   0x00000, 0x10000, CRC(b0578a14) SHA1(a420d1e8f80405161c86a123610ddf17c7ff07ff) )
@@ -1439,11 +1359,7 @@ DRIVER_INIT_MEMBER(karnov_state,wndrplnt)
 
 DRIVER_INIT_MEMBER(karnov_state,chelnov)
 {
-<<<<<<< HEAD
-	UINT16 *RAM = (UINT16 *)memregion("maincpu")->base();
-=======
 	uint16_t *RAM = (uint16_t *)memregion("maincpu")->base();
->>>>>>> upstream/master
 
 	m_microcontroller_id = CHELNOV;
 	m_coin_mask = 0xe0;
@@ -1452,11 +1368,7 @@ DRIVER_INIT_MEMBER(karnov_state,chelnov)
 
 DRIVER_INIT_MEMBER(karnov_state,chelnovu)
 {
-<<<<<<< HEAD
-	UINT16 *RAM = (UINT16 *)memregion("maincpu")->base();
-=======
 	uint16_t *RAM = (uint16_t *)memregion("maincpu")->base();
->>>>>>> upstream/master
 
 	m_microcontroller_id = CHELNOVU;
 	m_coin_mask = 0xe0;
@@ -1465,11 +1377,7 @@ DRIVER_INIT_MEMBER(karnov_state,chelnovu)
 
 DRIVER_INIT_MEMBER(karnov_state,chelnovj)
 {
-<<<<<<< HEAD
-	UINT16 *RAM = (UINT16 *)memregion("maincpu")->base();
-=======
 	uint16_t *RAM = (uint16_t *)memregion("maincpu")->base();
->>>>>>> upstream/master
 
 	m_microcontroller_id = CHELNOVJ;
 	m_coin_mask = 0xe0;
@@ -1483,17 +1391,6 @@ DRIVER_INIT_MEMBER(karnov_state,chelnovj)
  *
  *************************************/
 
-<<<<<<< HEAD
-GAME( 1987, karnov,   0,       karnov,   karnov, karnov_state,   karnov,   ROT0,   "Data East USA",         "Karnov (US, rev 6)", MACHINE_SUPPORTS_SAVE )
-GAME( 1987, karnova,  karnov,  karnov,   karnov, karnov_state,   karnov,   ROT0,   "Data East USA",         "Karnov (US, rev 5)", MACHINE_SUPPORTS_SAVE )
-GAME( 1987, karnovj,  karnov,  karnov,   karnov, karnov_state,   karnovj,  ROT0,   "Data East Corporation", "Karnov (Japan)", MACHINE_SUPPORTS_SAVE )
-GAME( 1987, wndrplnt, 0,       wndrplnt, wndrplnt, karnov_state, wndrplnt, ROT270, "Data East Corporation", "Wonder Planet (Japan)", MACHINE_SUPPORTS_SAVE )
-GAME( 1988, chelnov,  0,       karnov,   chelnov, karnov_state,  chelnov,  ROT0,   "Data East Corporation", "Chelnov - Atomic Runner (World)", MACHINE_SUPPORTS_SAVE )
-GAME( 1988, chelnovu, chelnov, karnov,   chelnovu, karnov_state, chelnovu, ROT0,   "Data East USA",         "Chelnov - Atomic Runner (US)", MACHINE_SUPPORTS_SAVE )
-GAME( 1988, chelnovj, chelnov, karnov,   chelnovj, karnov_state, chelnovj, ROT0,   "Data East Corporation", "Chelnov - Atomic Runner (Japan)", MACHINE_SUPPORTS_SAVE )
-GAME( 1988, chelnovjbl,chelnov,chelnovjbl,chelnovj,karnov_state, chelnovj, ROT0,   "bootleg",               "Chelnov - Atomic Runner (Japan, bootleg with I8031, set 1)", MACHINE_SUPPORTS_SAVE ) // todo: hook up MCU instead of using simulation code
-GAME( 1988, chelnovjbla,chelnov,chelnovjbl,chelnovj,karnov_state,chelnovj, ROT0,   "bootleg",               "Chelnov - Atomic Runner (Japan, bootleg with I8031, set 2)", MACHINE_SUPPORTS_SAVE ) // ^^
-=======
 GAME( 1987, karnov,      0,       karnov,     karnov,   karnov_state, karnov,   ROT0,   "Data East USA",               "Karnov (US, rev 6)",                                         MACHINE_SUPPORTS_SAVE )
 GAME( 1987, karnova,     karnov,  karnov,     karnov,   karnov_state, karnov,   ROT0,   "Data East USA",               "Karnov (US, rev 5)",                                         MACHINE_SUPPORTS_SAVE )
 GAME( 1987, karnovj,     karnov,  karnov,     karnov,   karnov_state, karnovj,  ROT0,   "Data East Corporation",       "Karnov (Japan)",                                             MACHINE_SUPPORTS_SAVE )
@@ -1504,4 +1401,3 @@ GAME( 1988, chelnovu,    chelnov, karnov,     chelnovu, karnov_state, chelnovu, 
 GAME( 1988, chelnovj,    chelnov, karnov,     chelnovj, karnov_state, chelnovj, ROT0,   "Data East Corporation",       "Chelnov - Atomic Runner (Japan)",                            MACHINE_SUPPORTS_SAVE )
 GAME( 1988, chelnovjbl,  chelnov, chelnovjbl, chelnovj, karnov_state, chelnovj, ROT0,   "bootleg",                     "Chelnov - Atomic Runner (Japan, bootleg with I8031, set 1)", MACHINE_SUPPORTS_SAVE ) // todo: hook up MCU instead of using simulation code
 GAME( 1988, chelnovjbla, chelnov, chelnovjbl, chelnovj, karnov_state, chelnovj, ROT0,   "bootleg",                     "Chelnov - Atomic Runner (Japan, bootleg with I8031, set 2)", MACHINE_SUPPORTS_SAVE ) // ^^
->>>>>>> upstream/master

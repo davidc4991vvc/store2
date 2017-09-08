@@ -8,15 +8,10 @@
 
 *********************************************************************/
 
-<<<<<<< HEAD
-#ifndef _PCI9050_H
-#define _PCI9050_H
-=======
 #ifndef MAME_MACHINE_PCI9050_H
 #define MAME_MACHINE_PCI9050_H
 
 #pragma once
->>>>>>> upstream/master
 
 #include "machine/pci.h"
 
@@ -24,15 +19,6 @@
 	MCFG_PCI_DEVICE_ADD(_tag, PCI9050, 0x10b59050, 0x01, 0x06800000, 0x10b59050)
 
 #define MCFG_PCI9050_SET_MAP(id, map) \
-<<<<<<< HEAD
-	downcast<pci9050_device *>(device)->set_map(id, ADDRESS_MAP_NAME(map), #map, owner);
-
-class pci9050_device :
-	public pci_device
-{
-public:
-	pci9050_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-=======
 	downcast<pci9050_device *>(device)->set_map(id, address_map_delegate(ADDRESS_MAP_NAME(map), #map), owner);
 
 #define MCFG_PCI9050_USER_INPUT_CALLBACK(_write) \
@@ -45,7 +31,6 @@ class pci9050_device : public pci_device
 {
 public:
 	pci9050_device(const machine_config &mconfig, const char *tag, device_t *device, uint32_t clock);
->>>>>>> upstream/master
 
 	// PCI9050 I/O register space handlers
 	DECLARE_READ32_MEMBER( lasrr_r  );
@@ -67,14 +52,6 @@ public:
 	DECLARE_READ32_MEMBER( cntrl_r  );
 	DECLARE_WRITE32_MEMBER(cntrl_w  );
 
-<<<<<<< HEAD
-	void set_map(int id, address_map_constructor map, const char *name, device_t *device);
-
-protected:
-	virtual void device_start();
-	virtual void device_config_complete();
-	virtual void device_reset();
-=======
 	template <class Object> static devcb_base &set_user_input_callback(device_t &device, Object &&cb) { return downcast<pci9050_device &>(device).m_user_input_handler.set_callback(std::forward<Object>(cb)); }
 	template <class Object> static devcb_base &set_user_output_callback(device_t &device, Object &&cb) { return downcast<pci9050_device &>(device).m_user_output_handler.set_callback(std::forward<Object>(cb)); }
 
@@ -85,7 +62,6 @@ protected:
 	virtual void device_reset() override;
 
 	void postload(void);
->>>>>>> upstream/master
 
 private:
 	DECLARE_ADDRESS_MAP(map, 32);
@@ -93,31 +69,14 @@ private:
 
 	const char *m_names[4];
 	device_t *m_devices[4];
-<<<<<<< HEAD
-	address_map_constructor m_maps[4];
-
-	UINT32 m_lasrr[4], m_lasba[4], m_lasbrd[4], m_csbase[4];
-	UINT32 m_eromrr, m_eromba, m_erombrd, m_intcsr, m_cntrl;
-=======
 	address_map_delegate m_maps[4];
 
 	uint32_t m_lasrr[4], m_lasba[4], m_lasbrd[4], m_csbase[4];
 	uint32_t m_eromrr, m_eromba, m_erombrd, m_intcsr, m_cntrl;
->>>>>>> upstream/master
 
 	void remap_local(int id);
 	void remap_rom();
 
-<<<<<<< HEAD
-	template<int id> void map_trampoline(address_map &map, device_t &device) {
-		m_maps[id](map, *m_devices[id]);
-	}
-};
-
-extern const device_type PCI9050;
-
-#endif
-=======
 	devcb_read32 m_user_input_handler;
 	devcb_write32 m_user_output_handler;
 };
@@ -125,4 +84,3 @@ extern const device_type PCI9050;
 DECLARE_DEVICE_TYPE(PCI9050, pci9050_device)
 
 #endif // MAME_MACHINE_PCI9050_H
->>>>>>> upstream/master

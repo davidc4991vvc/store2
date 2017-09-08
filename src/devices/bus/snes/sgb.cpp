@@ -19,17 +19,6 @@
 //  sns_rom_sgb_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const device_type SNS_LOROM_SUPERGB = &device_creator<sns_rom_sgb_device>;
-
-
-sns_rom_sgb_device::sns_rom_sgb_device(const machine_config& mconfig, const char* tag, device_t* owner, UINT32 clock) :
-	sns_rom_device(mconfig, SNS_LOROM_SUPERGB, "SNES Super Game Boy Cart", tag, owner, clock, "sns_rom_sgb", __FILE__),
-	m_gb_cpu(*this, "sgb_cpu"),
-	m_gb_snd(*this, "sgb_snd"),
-	m_gb_lcd(*this, "sgb_lcd"),
-	m_cartslot(*this, "gb_slot"),
-=======
 DEFINE_DEVICE_TYPE(SNS_LOROM_SUPERGB,  sns_rom_sgb1_device, "sns_rom_sgb",  "SNES Super Game Boy Cart")
 DEFINE_DEVICE_TYPE(SNS_LOROM_SUPERGB2, sns_rom_sgb2_device, "sns_rom_sgb2", "SNES Super Game Boy 2 Cart")
 
@@ -41,7 +30,6 @@ sns_rom_sgb_device::sns_rom_sgb_device(const machine_config &mconfig, device_typ
 	m_sgb_ppu(*this, "sgb_ppu"),
 	m_cartslot(*this, "gb_slot"),
 	m_region_bios(*this, "sgb_cpu"),
->>>>>>> upstream/master
 	m_sgb_ly(0),
 	m_sgb_row(0),
 	m_vram(0),
@@ -53,9 +41,6 @@ sns_rom_sgb_device::sns_rom_sgb_device(const machine_config &mconfig, device_typ
 	m_vram_offs(0),
 	m_mlt_req(0),
 	m_lcd_row(0),
-<<<<<<< HEAD
-	m_packetsize(0)
-=======
 	m_packetsize(0),
 	m_bios_disabled(false)
 {
@@ -70,7 +55,6 @@ sns_rom_sgb1_device::sns_rom_sgb1_device(const machine_config& mconfig, const ch
 
 sns_rom_sgb2_device::sns_rom_sgb2_device(const machine_config& mconfig, const char* tag, device_t* owner, uint32_t clock) :
 	sns_rom_sgb_device(mconfig, SNS_LOROM_SUPERGB2, tag, owner, clock)
->>>>>>> upstream/master
 {
 }
 
@@ -93,13 +77,10 @@ void sns_rom_sgb_device::device_reset()
 
 READ8_MEMBER(sns_rom_sgb_device::gb_cart_r)
 {
-<<<<<<< HEAD
-=======
 	if (offset < 0x100 && !m_bios_disabled)
 	{
 		return m_region_bios->base()[offset];
 	}
->>>>>>> upstream/master
 	return m_cartslot->read_rom(space, offset);
 }
 
@@ -139,20 +120,12 @@ WRITE8_MEMBER(sns_rom_sgb_device::gb_io_w)
 
 READ8_MEMBER(sns_rom_sgb_device::gb_ie_r)
 {
-<<<<<<< HEAD
-	return m_gb_cpu->get_ie();
-=======
 	return m_sgb_cpu->get_ie();
->>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(sns_rom_sgb_device::gb_ie_w)
 {
-<<<<<<< HEAD
-	m_gb_cpu->set_ie(data & 0x1f);
-=======
 	m_sgb_cpu->set_ie(data);
->>>>>>> upstream/master
 }
 
 
@@ -160,18 +133,6 @@ WRITE8_MEMBER(sns_rom_sgb_device::gb_ie_w)
 static ADDRESS_MAP_START(supergb_map, AS_PROGRAM, 8, sns_rom_sgb_device )
 	ADDRESS_MAP_UNMAP_HIGH
 	AM_RANGE(0x0000, 0x7fff) AM_READWRITE(gb_cart_r, gb_bank_w)
-<<<<<<< HEAD
-	AM_RANGE(0x8000, 0x9fff) AM_DEVREADWRITE("sgb_lcd", sgb_lcd_device, vram_r, vram_w)  /* 8k VRAM */
-	AM_RANGE(0xa000, 0xbfff) AM_READWRITE(gb_ram_r, gb_ram_w )   /* 8k switched RAM bank (cartridge) */
-	AM_RANGE(0xc000, 0xdfff) AM_RAM                               /* 8k low RAM */
-	AM_RANGE(0xe000, 0xfdff) AM_READWRITE(gb_echo_r, gb_echo_w)  /* echo RAM */
-	AM_RANGE(0xff00, 0xff0f) AM_READWRITE(gb_io_r, gb_io_w)      /* I/O */
-	AM_RANGE(0xff10, 0xff26) AM_DEVREADWRITE("sgb_snd", gameboy_sound_device, sound_r, sound_w)      /* sound registers */
-	AM_RANGE(0xfe00, 0xfeff) AM_DEVREADWRITE("sgb_lcd", sgb_lcd_device, oam_r, oam_w)    /* OAM RAM */
-	AM_RANGE(0xff27, 0xff2f) AM_NOP                     /* unused */
-	AM_RANGE(0xff30, 0xff3f) AM_DEVREADWRITE("sgb_snd", gameboy_sound_device, wave_r, wave_w)        /* Wave RAM */
-	AM_RANGE(0xff40, 0xff7f) AM_DEVREADWRITE("sgb_lcd", sgb_lcd_device, video_r, video_w) /* also disable bios?? */        /* Video controller & BIOS flip-flop */
-=======
 	AM_RANGE(0x8000, 0x9fff) AM_DEVREADWRITE("sgb_ppu", sgb_ppu_device, vram_r, vram_w)  /* 8k VRAM */
 	AM_RANGE(0xa000, 0xbfff) AM_READWRITE(gb_ram_r, gb_ram_w )   /* 8k switched RAM bank (cartridge) */
 	AM_RANGE(0xc000, 0xdfff) AM_RAM                              /* 8k low RAM */
@@ -182,7 +143,6 @@ static ADDRESS_MAP_START(supergb_map, AS_PROGRAM, 8, sns_rom_sgb_device )
 	AM_RANGE(0xff27, 0xff2f) AM_NOP                     /* unused */
 	AM_RANGE(0xff30, 0xff3f) AM_DEVREADWRITE("sgb_apu", gameboy_sound_device, wave_r, wave_w)        /* Wave RAM */
 	AM_RANGE(0xff40, 0xff7f) AM_DEVREADWRITE("sgb_ppu", sgb_ppu_device, video_r, video_w) /* also disable bios?? */        /* Video controller & BIOS flip-flop */
->>>>>>> upstream/master
 	AM_RANGE(0xff80, 0xfffe) AM_RAM                     /* High RAM */
 	AM_RANGE(0xffff, 0xffff) AM_READWRITE(gb_ie_r, gb_ie_w)        /* Interrupt enable register */
 ADDRESS_MAP_END
@@ -199,30 +159,13 @@ static SLOT_INTERFACE_START(supergb_cart)
 	SLOT_INTERFACE_INTERNAL("rom_mbc1",  GB_ROM_MBC1)
 SLOT_INTERFACE_END
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_FRAGMENT( supergb )
-=======
 
 MACHINE_CONFIG_MEMBER( sns_rom_sgb1_device::device_add_mconfig )
->>>>>>> upstream/master
 	MCFG_CPU_ADD("sgb_cpu", LR35902, 4295454)   /* 4.295454 MHz */
 	MCFG_CPU_PROGRAM_MAP(supergb_map)
 	MCFG_LR35902_TIMER_CB(WRITE8(sns_rom_sgb_device, gb_timer_callback))
 	MCFG_LR35902_HALT_BUG
 
-<<<<<<< HEAD
-	MCFG_GB_LCD_SGB_ADD("sgb_lcd")
-
-	MCFG_SOUND_ADD("sgb_snd", GAMEBOY, 0)
-
-	MCFG_GB_CARTRIDGE_ADD("gb_slot", supergb_cart, NULL)
-MACHINE_CONFIG_END
-
-
-machine_config_constructor sns_rom_sgb_device::device_mconfig_additions() const
-{
-	return MACHINE_CONFIG_NAME( supergb );
-=======
 	MCFG_SGB_PPU_ADD("sgb_ppu", "sgb_cpu")
 
 	MCFG_SOUND_ADD("sgb_apu", DMG_APU, 4295454)
@@ -266,7 +209,6 @@ ROM_END
 const tiny_rom_entry *sns_rom_sgb2_device::device_rom_region() const
 {
 	return ROM_NAME( supergb2 );
->>>>>>> upstream/master
 }
 
 
@@ -288,11 +230,7 @@ READ8_MEMBER(sns_rom_sgb_device::read_h)
 
 READ8_MEMBER( sns_rom_sgb_device::chip_read )
 {
-<<<<<<< HEAD
-	UINT16 address = offset & 0xffff;
-=======
 	uint16_t address = offset & 0xffff;
->>>>>>> upstream/master
 
 	//LY counter
 	if (address == 0x6000)
@@ -334,11 +272,7 @@ READ8_MEMBER( sns_rom_sgb_device::chip_read )
 	//VRAM port
 	if (address == 0x7800)
 	{
-<<<<<<< HEAD
-		UINT8 data = m_lcd_output[m_vram_offs];
-=======
 		uint8_t data = m_lcd_output[m_vram_offs];
->>>>>>> upstream/master
 		m_vram_offs = (m_vram_offs + 1) % 320;
 		return data;
 	}
@@ -346,27 +280,16 @@ READ8_MEMBER( sns_rom_sgb_device::chip_read )
 	return 0x00;    // this should never happen?
 }
 
-<<<<<<< HEAD
-void sns_rom_sgb_device::lcd_render(UINT32 *source)
-{
-	memset(m_lcd_output, 0x00, 320 * sizeof(UINT16));
-=======
 void sns_rom_sgb_device::lcd_render(uint32_t *source)
 {
 	memset(m_lcd_output, 0x00, 320 * sizeof(uint16_t));
->>>>>>> upstream/master
 
 	for (int y = 0; y < 8; y++)
 	{
 		for (int x = 0; x < 160; x++)
 		{
-<<<<<<< HEAD
-			UINT32 pixel = *source++;
-			UINT16 addr = y * 2 + (x / 8 * 16);
-=======
 			uint32_t pixel = *source++;
 			uint16_t addr = y * 2 + (x / 8 * 16);
->>>>>>> upstream/master
 			m_lcd_output[addr + 0] |= ((pixel & 1) >> 0) << (7 - (x & 7));
 			m_lcd_output[addr + 1] |= ((pixel & 2) >> 1) << (7 - (x & 7));
 		}
@@ -375,11 +298,7 @@ void sns_rom_sgb_device::lcd_render(uint32_t *source)
 
 WRITE8_MEMBER( sns_rom_sgb_device::chip_write )
 {
-<<<<<<< HEAD
-	UINT16 address = offset & 0xffff;
-=======
 	uint16_t address = offset & 0xffff;
->>>>>>> upstream/master
 
 	//VRAM port
 	if (address == 0x6001)
@@ -387,11 +306,7 @@ WRITE8_MEMBER( sns_rom_sgb_device::chip_write )
 		m_vram = data;
 		m_vram_offs = 0;
 
-<<<<<<< HEAD
-		UINT8 offset = (m_sgb_row - (4 - (m_vram - (m_sgb_ly & 3)))) & 3;
-=======
 		uint8_t offset = (m_sgb_row - (4 - (m_vram - (m_sgb_ly & 3)))) & 3;
->>>>>>> upstream/master
 		lcd_render(m_lcd_buffer + offset * 160 * 8);
 
 		return;

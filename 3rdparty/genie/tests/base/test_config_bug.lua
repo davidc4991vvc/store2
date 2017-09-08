@@ -1,24 +1,15 @@
 	T.config_bug_report = { }
 	local config_bug = T.config_bug_report
-<<<<<<< HEAD
-	local vs10_helpers = premake.vstudio.vs10_helpers	
-	
-	local sln, prjA,prjB,prjC,prjD
-=======
 	local vs10_helpers = premake.vstudio.vs10_helpers
 
 	local sln, prjA,prjB,prjC,prjD,prjE
->>>>>>> upstream/master
 	function config_bug.teardown()
 		sln = nil
 		prjA = nil
 		prjB = nil
 		prjC = nil
 		prjD = nil
-<<<<<<< HEAD
-=======
 		prjE = nil
->>>>>>> upstream/master
 	end
 	
 	function config_bug.setup()
@@ -53,11 +44,6 @@
 			setCommonLibraryConfig()
 			configuration "SharedLib"
 				links { "A", "B" }
-<<<<<<< HEAD
-		prjD = project "Executable"
-			kind "WindowedApp"
-			links { "A", "B", "C" }
-=======
 		prjD = project "D"
 			files { "d.cpp" }
 			setCommonLibraryConfig()
@@ -66,7 +52,6 @@
 		prjE = project "Executable"
 			kind "WindowedApp"
 			links { "A", "B", "C", "D" }
->>>>>>> upstream/master
 
 	end
 
@@ -94,10 +79,6 @@
 				defines {"defineSet"}
 
 	end
-<<<<<<< HEAD
-	
-	
-=======
 
 
 	local kindSetOnConfiguration_and_linkSetOnBundleProjB  = function (config_kind)
@@ -126,7 +107,6 @@
 	end
 
 
->>>>>>> upstream/master
 	function kind_set_on_project_config_block()
 		sln = solution "DontCare"
 		configurations { "DebugDLL" }
@@ -153,8 +133,6 @@
 		test.isequal("SharedLib",conf.kind)
 	end
 
-<<<<<<< HEAD
-=======
 	function config_bug.kindSetOnProjectConfigBlock_projKindEqualsBundle()
 		local proj = kind_set_on_project_config_block()
 		premake.bake.buildconfigs()
@@ -162,7 +140,6 @@
 		test.isequal("Bundle",conf.kind)
 	end
 
->>>>>>> upstream/master
 	function config_bug.defineSetOnProjectConfigBlock_projDefineSetIsNotNil()
 		local proj = kind_set_on_project_config_block()
 		premake.bake.buildconfigs()
@@ -201,10 +178,6 @@
 --		sharedLibKindSetOnConfiguration_and_linkSetOnSharedLibProjB()
 		kindSetOnConfiguration_and_linkSetOnSharedLibProjB("SharedLib")
 		premake.bake.buildconfigs()
-<<<<<<< HEAD
-		local config = premake.getconfig(prjB,"DebugDLL","Native")	
-		test.isnotnil(config.links.A)	
-=======
 		local config = premake.getconfig(prjB,"DebugDLL","Native")
 		test.isnotnil(config.links.A)
 	end
@@ -215,6 +188,5 @@
 		premake.bake.buildconfigs()
 		local config = premake.getconfig(prjB,"DebugDLL","Native")
 		test.isnotnil(config.links.A)
->>>>>>> upstream/master
 	end
 	

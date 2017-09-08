@@ -15,19 +15,6 @@
                    RL6   7 |             | 34  SL2
                    RL7   8 |             | 33  SL1
                  RESET   9 |             | 32  SL0
-<<<<<<< HEAD
-                   /RD  10 |     8279    | 31  B0
-                   /WR  11 |             | 30  B1
-                   DB0  12 |             | 29  B2
-                   DB1  13 |             | 28  B3
-                   DB2  14 |             | 27  A0
-                   DB3  15 |             | 26  A1
-                   DB4  16 |             | 25  A2
-                   DB5  17 |             | 24  A3
-                   DB6  18 |             | 23  /BD
-                   DB7  19 |             | 22  /CS
-                   Vss  20 |_____________| 21  CTRL/DATA
-=======
                    /RD  10 |     8279    | 31  OUT B0
                    /WR  11 |             | 30  OUT B1
                    DB0  12 |             | 29  OUT B2
@@ -39,25 +26,15 @@
                    DB6  18 |             | 23  /BD
                    DB7  19 |             | 22  /CS
                    Vss  20 |_____________| 21  A0 (CTRL/DATA)
->>>>>>> upstream/master
 
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __I8279__
-#define __I8279__
-
-#include "emu.h"
-=======
 #ifndef MAME_MACHINE_I8279_H
 #define MAME_MACHINE_I8279_H
 
 #pragma once
 
->>>>>>> upstream/master
 
 
 
@@ -96,21 +73,6 @@ class i8279_device :  public device_t
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	i8279_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	template<class _Object> static devcb_base &set_out_irq_callback(device_t &device, _Object object) { return downcast<i8279_device &>(device).m_out_irq_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_out_sl_callback(device_t &device, _Object object) { return downcast<i8279_device &>(device).m_out_sl_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_out_disp_callback(device_t &device, _Object object) { return downcast<i8279_device &>(device).m_out_disp_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_out_bd_callback(device_t &device, _Object object) { return downcast<i8279_device &>(device).m_out_bd_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_in_rl_callback(device_t &device, _Object object) { return downcast<i8279_device &>(device).m_in_rl_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_in_shift_callback(device_t &device, _Object object) { return downcast<i8279_device &>(device).m_in_shift_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_in_ctrl_callback(device_t &device, _Object object) { return downcast<i8279_device &>(device).m_in_ctrl_cb.set_callback(object); }
-
-	// read & write handlers
-	DECLARE_READ8_MEMBER(status_r);
-	DECLARE_READ8_MEMBER(data_r);
-=======
 	i8279_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	template <class Object> static devcb_base &set_out_irq_callback(device_t &device, Object &&cb) { return downcast<i8279_device &>(device).m_out_irq_cb.set_callback(std::forward<Object>(cb)); }
@@ -126,24 +88,16 @@ public:
 	DECLARE_READ8_MEMBER(status_r);
 	DECLARE_READ8_MEMBER(data_r);
 	DECLARE_WRITE8_MEMBER(write);
->>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(cmd_w);
 	DECLARE_WRITE8_MEMBER(data_w);
 	void timer_mainloop();
 
 protected:
 	// device-level overrides
-<<<<<<< HEAD
-	virtual void device_start();
-	virtual void device_reset();
-	virtual void device_post_load() { }
-	virtual void device_clock_changed() { }
-=======
 	virtual void device_start() override;
 	virtual void device_reset() override;
 	virtual void device_post_load() override { }
 	virtual void device_clock_changed() override { }
->>>>>>> upstream/master
 
 	TIMER_CALLBACK_MEMBER( timerproc_callback );
 
@@ -151,17 +105,6 @@ private:
 
 	void timer_adjust();
 	void clear_display();
-<<<<<<< HEAD
-	void new_key(UINT8 data, bool skey, bool ckey);
-	void new_fifo(UINT8 data);
-	UINT8 get_segments();
-	void set_irq(bool state);
-	void set_display_mode(UINT8 data);
-
-	devcb_write_line    m_out_irq_cb;       // IRQ
-	devcb_write8        m_out_sl_cb;        // Scanlines SL0-3
-	devcb_write8        m_out_disp_cb;      // B0-3,A0-3
-=======
 	void new_key(uint8_t data, bool skey, bool ckey);
 	void new_fifo(uint8_t data);
 	void set_irq(bool state);
@@ -169,7 +112,6 @@ private:
 	devcb_write_line    m_out_irq_cb;       // IRQ
 	devcb_write8        m_out_sl_cb;        // Scanlines SL0-3
 	devcb_write8        m_out_disp_cb;      // Display outputs B0-3, A0-3
->>>>>>> upstream/master
 	devcb_write_line    m_out_bd_cb;        // BD
 	devcb_read8         m_in_rl_cb;         // kbd readlines RL0-7
 	devcb_read_line     m_in_shift_cb;      // Shift key
@@ -177,17 +119,6 @@ private:
 
 	emu_timer *m_timer;
 
-<<<<<<< HEAD
-	UINT8 m_d_ram[16];      // display ram
-	UINT8 m_d_ram_ptr;
-	UINT8 m_s_ram[8]; // might be same as fifo ram
-	UINT8 m_s_ram_ptr;
-	UINT8 m_fifo[8];    // queued keystrokes
-	UINT8 m_cmd[8];   // Device settings
-	UINT8 m_status;     // Returned via status_r
-	UINT32 m_clock;     // Internal scan clock
-	UINT8 m_scanner;    // next output on SL lines
-=======
 	uint8_t m_d_ram[16];      // display ram
 	uint8_t m_d_ram_ptr;
 	uint8_t m_s_ram[8]; // might be same as fifo ram
@@ -197,28 +128,15 @@ private:
 	uint8_t m_status;     // Returned via status_r
 	uint32_t m_clock;     // Internal scan clock
 	uint8_t m_scanner;    // next output on SL lines
->>>>>>> upstream/master
 
 	bool m_autoinc;     // auto-increment flag
 	bool m_read_flag;   // read from where
 	bool m_ctrl_key;    // previous state of strobe input
-<<<<<<< HEAD
-	UINT16 m_key_down;
-=======
 	uint16_t m_key_down;
->>>>>>> upstream/master
 };
 
 
 // device type definition
-<<<<<<< HEAD
-extern const device_type I8279;
-
-
-
-#endif
-=======
 DECLARE_DEVICE_TYPE(I8279, i8279_device)
 
 #endif // MAME_MACHINE_I8279_H
->>>>>>> upstream/master

@@ -41,25 +41,15 @@ public:
 		m_huc6260(*this, "huc6260"),
 		m_cartslot(*this, "cartslot"),
 		m_cd(*this, "pce_cd"),
-<<<<<<< HEAD
-		m_joy(*this, "JOY_P"),
-		m_joy6b(*this, "JOY6B_P"),
-=======
 		m_joy(*this, "JOY_P.%u", 0),
 		m_joy6b(*this, "JOY6B_P.%u", 0),
->>>>>>> upstream/master
 		m_joy_type(*this, "JOY_TYPE"),
 		m_a_card(*this, "A_CARD")
 	{ }
 
 	required_device<h6280_device> m_maincpu;
-<<<<<<< HEAD
-	required_shared_ptr<UINT8> m_cd_ram;
-	required_shared_ptr<UINT8> m_user_ram;
-=======
 	required_shared_ptr<uint8_t> m_cd_ram;
 	required_shared_ptr<uint8_t> m_user_ram;
->>>>>>> upstream/master
 	optional_device<huc6260_device> m_huc6260;
 	required_device<pce_cart_slot_device> m_cartslot;
 	optional_device<pce_cd_device> m_cd;
@@ -68,21 +58,12 @@ public:
 	required_ioport m_joy_type;
 	required_ioport m_a_card;
 
-<<<<<<< HEAD
-	UINT8 m_io_port_options;
-	UINT8 m_sys3_card;
-	UINT8 m_acard;
-	int m_joystick_port_select;
-	int m_joystick_data_select;
-	UINT8 m_joy_6b_packet[5];
-=======
 	uint8_t m_io_port_options;
 	uint8_t m_sys3_card;
 	uint8_t m_acard;
 	int m_joystick_port_select;
 	int m_joystick_data_select;
 	uint8_t m_joy_6b_packet[5];
->>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(mess_pce_joystick_w);
 	DECLARE_READ8_MEMBER(mess_pce_joystick_r);
 	DECLARE_WRITE8_MEMBER(pce_cd_intf_w);
@@ -92,16 +73,9 @@ public:
 	DECLARE_DRIVER_INIT(sgx);
 	DECLARE_DRIVER_INIT(tg16);
 	DECLARE_DRIVER_INIT(mess_pce);
-<<<<<<< HEAD
-	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	DECLARE_MACHINE_START(pce);
-	DECLARE_MACHINE_RESET(mess_pce);
-	DECLARE_WRITE_LINE_MEMBER(pce_irq_changed);
-=======
 	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	DECLARE_MACHINE_START(pce);
 	DECLARE_MACHINE_RESET(mess_pce);
->>>>>>> upstream/master
 };
 
 #endif /* PCE_H_ */

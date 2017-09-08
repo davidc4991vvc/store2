@@ -50,20 +50,12 @@ int main(int argc,char *argv[])
 	argv++; argc--;
 	if (argv[1])
 	{
-<<<<<<< HEAD
-		offset = strtol(argv[1],NULL,0);
-=======
 		offset = strtol(argv[1],nullptr,0);
->>>>>>> upstream/master
 		argv++; argc--;
 	}
 	if (argv[1])
 	{
-<<<<<<< HEAD
-		length = strtol(argv[1],NULL,0);
-=======
 		length = strtol(argv[1],nullptr,0);
->>>>>>> upstream/master
 		argv++; argc--;
 	}
 
@@ -77,22 +69,14 @@ int main(int argc,char *argv[])
 	length_to_dump = length;
 	printf("Starting from %d, dumping %d opcodes (word size)\n",offset,length/2);
 	Buffer = calloc((filelength+1),sizeof(char));
-<<<<<<< HEAD
-	if (Buffer==NULL)
-=======
 	if (Buffer==nullptr)
->>>>>>> upstream/master
 	{
 		printf("Out of Memory !!!");
 		fclose(F);
 		exit(3);
 	}
 	String_Output = calloc(80,sizeof(char));
-<<<<<<< HEAD
-	if (String_Output==NULL)
-=======
 	if (String_Output==nullptr)
->>>>>>> upstream/master
 	{
 		printf("Out of Memory !!!");
 		free(Buffer);

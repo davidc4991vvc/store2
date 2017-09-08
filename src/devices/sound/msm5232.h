@@ -1,18 +1,9 @@
-<<<<<<< HEAD
-// license:???
-// copyright-holders:Jarek Burczynski, Hiromitsu Shioya
-#pragma once
-
-#ifndef __MSM5232_H__
-#define __MSM5232_H__
-=======
 // license:GPL-2.0+
 // copyright-holders:Jarek Burczynski, Hiromitsu Shioya
 #ifndef MAME_SOUND_MSM5232_H
 #define MAME_SOUND_MSM5232_H
 
 #pragma once
->>>>>>> upstream/master
 
 
 #define MCFG_MSM5232_SET_CAPACITORS(_a, _b, _c, _d, _e, _f, _g, _h) \
@@ -21,70 +12,21 @@
 #define MCFG_MSM5232_GATE_HANDLER_CB(_devcb) \
 	devcb = &msm5232_device::set_gate_handler_callback(*device, DEVCB_##_devcb);
 
-<<<<<<< HEAD
-struct VOICE {
-	UINT8 mode;
-
-	int     TG_count_period;
-	int     TG_count;
-
-	UINT8   TG_cnt;     /* 7 bits binary counter (frequency output) */
-	UINT8   TG_out16;   /* bit number (of TG_cnt) for 16' output */
-	UINT8   TG_out8;    /* bit number (of TG_cnt) for  8' output */
-	UINT8   TG_out4;    /* bit number (of TG_cnt) for  4' output */
-	UINT8   TG_out2;    /* bit number (of TG_cnt) for  2' output */
-
-	int     egvol;
-	int     eg_sect;
-	int     counter;
-	int     eg;
-
-	UINT8   eg_arm;     /* attack/release mode */
-
-	double  ar_rate;
-	double  dr_rate;
-	double  rr_rate;
-
-	int     pitch;          /* current pitch data */
-
-	int GF;
-};
-
-=======
->>>>>>> upstream/master
 
 class msm5232_device : public device_t,
 									public device_sound_interface
 {
 public:
-<<<<<<< HEAD
-	msm5232_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-	~msm5232_device() {}
-
-	static void static_set_capacitors(device_t &device, double cap1, double cap2, double cap3, double cap4, double cap5, double cap6, double cap7, double cap8);
-	template<class _Object> static devcb_base &set_gate_handler_callback(device_t &device, _Object object) { return downcast<msm5232_device &>(device).m_gate_handler_cb.set_callback(object); }
-=======
 	msm5232_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	static void static_set_capacitors(device_t &device, double cap1, double cap2, double cap3, double cap4, double cap5, double cap6, double cap7, double cap8);
 	template <class Object> static devcb_base &set_gate_handler_callback(device_t &device, Object &&cb) { return downcast<msm5232_device &>(device).m_gate_handler_cb.set_callback(std::forward<Object>(cb)); }
->>>>>>> upstream/master
 
 	DECLARE_WRITE8_MEMBER( write );
 	void set_clock(int clock);
 
 protected:
 	// device-level overrides
-<<<<<<< HEAD
-	virtual void device_start();
-	virtual void device_stop();
-	virtual void device_reset();
-
-	// sound stream update overrides
-	virtual void sound_stream_update(sound_stream &stream, stream_sample_t **inputs, stream_sample_t **outputs, int samples);
-
-	private:
-=======
 	virtual void device_start() override;
 	virtual void device_stop() override;
 	virtual void device_reset() override;
@@ -121,23 +63,15 @@ private:
 		int GF;
 	};
 
->>>>>>> upstream/master
 	// internal state
 	sound_stream *m_stream;
 
 	VOICE   m_voi[8];
 
-<<<<<<< HEAD
-	UINT32 m_EN_out16[2]; /* enable 16' output masks for both groups (0-disabled ; ~0 -enabled) */
-	UINT32 m_EN_out8[2];  /* enable 8'  output masks */
-	UINT32 m_EN_out4[2];  /* enable 4'  output masks */
-	UINT32 m_EN_out2[2];  /* enable 2'  output masks */
-=======
 	uint32_t m_EN_out16[2]; /* enable 16' output masks for both groups (0-disabled ; ~0 -enabled) */
 	uint32_t m_EN_out8[2];  /* enable 8'  output masks */
 	uint32_t m_EN_out4[2];  /* enable 4'  output masks */
 	uint32_t m_EN_out2[2];  /* enable 2'  output masks */
->>>>>>> upstream/master
 
 	int m_noise_cnt;
 	int m_noise_step;
@@ -150,13 +84,8 @@ private:
 	double  m_ar_tbl[8];
 	double  m_dr_tbl[16];
 
-<<<<<<< HEAD
-	UINT8   m_control1;
-	UINT8   m_control2;
-=======
 	uint8_t   m_control1;
 	uint8_t   m_control2;
->>>>>>> upstream/master
 
 	int     m_gate;       /* current state of the GATE output */
 
@@ -175,13 +104,6 @@ private:
 	void postload();
 };
 
-<<<<<<< HEAD
-extern const device_type MSM5232;
-
-
-#endif /* __MSM5232_H__ */
-=======
 DECLARE_DEVICE_TYPE(MSM5232, msm5232_device)
 
 #endif // MAME_SOUND_MSM5232_H
->>>>>>> upstream/master

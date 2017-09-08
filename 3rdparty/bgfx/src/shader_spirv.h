@@ -1,11 +1,6 @@
 /*
-<<<<<<< HEAD
- * Copyright 2011-2015 Branimir Karadzic. All rights reserved.
- * License: http://www.opensource.org/licenses/BSD-2-Clause
-=======
  * Copyright 2011-2017 Branimir Karadzic. All rights reserved.
  * License: https://github.com/bkaradzic/bgfx#license-bsd-2-clause
->>>>>>> upstream/master
  */
 
 #ifndef BGFX_SHADER_SPIRV_H
@@ -13,36 +8,20 @@
 
 #include <bx/readerwriter.h>
 
-<<<<<<< HEAD
-=======
 BX_ERROR_RESULT(BGFX_SHADER_SPIRV_INVALID_HEADER,      BX_MAKEFOURCC('S', 'H', 0, 1) );
 BX_ERROR_RESULT(BGFX_SHADER_SPIRV_INVALID_INSTRUCTION, BX_MAKEFOURCC('S', 'H', 0, 2) );
 
 #define SPV_CHUNK_HEADER BX_MAKEFOURCC(0x03, 0x02, 0x23, 0x07)
 
->>>>>>> upstream/master
 namespace bgfx
 {
 	// Reference: https://www.khronos.org/registry/spir-v/specs/1.0/SPIRV.html
 
-<<<<<<< HEAD
-	struct SpirvOpcode
-=======
 	struct SpvOpcode
->>>>>>> upstream/master
 	{
 		enum Enum
 		{
 			Nop,
-<<<<<<< HEAD
-			Source,
-			SourceExtension,
-			Extension,
-			ExtInstImport,
-			MemoryModel,
-			EntryPoint,
-			ExecutionMode,
-=======
 			Undef,
 			SourceContinued,
 			Source,
@@ -61,21 +40,15 @@ namespace bgfx
 			ExecutionMode,
 			Capability,
 			Invalid18,
->>>>>>> upstream/master
 			TypeVoid,
 			TypeBool,
 			TypeInt,
 			TypeFloat,
 			TypeVector,
 			TypeMatrix,
-<<<<<<< HEAD
-			TypeSampler,
-			TypeFilter,
-=======
 			TypeImage,
 			TypeSampler,
 			TypeSampledImage,
->>>>>>> upstream/master
 			TypeArray,
 			TypeRuntimeArray,
 			TypeStruct,
@@ -87,54 +60,25 @@ namespace bgfx
 			TypeReserveId,
 			TypeQueue,
 			TypePipe,
-<<<<<<< HEAD
-=======
 			TypeForwardPointer,
 			Invalid40,
->>>>>>> upstream/master
 			ConstantTrue,
 			ConstantFalse,
 			Constant,
 			ConstantComposite,
 			ConstantSampler,
-<<<<<<< HEAD
-			ConstantNullPointer,
-			ConstantNullObject,
-=======
 			ConstantNull,
 			Invalid47,
->>>>>>> upstream/master
 			SpecConstantTrue,
 			SpecConstantFalse,
 			SpecConstant,
 			SpecConstantComposite,
-<<<<<<< HEAD
-			Variable,
-			VariableArray,
-=======
 			SpecConstantOp,
 			Invalid53,
->>>>>>> upstream/master
 			Function,
 			FunctionParameter,
 			FunctionEnd,
 			FunctionCall,
-<<<<<<< HEAD
-			ExtInst,
-			Undef,
-			Load,
-			Store,
-			Phi,
-			DecorationGroup,
-			Decorate,
-			MemberDecorate,
-			GroupDecorate,
-			GroupMemberDecorate,
-			Name,
-			MemberName,
-			String,
-			Line,
-=======
 			Invalid58,
 			Variable,
 			ImageTexelPointer,
@@ -154,7 +98,6 @@ namespace bgfx
 			GroupDecorate,
 			GroupMemberDecorate,
 			Invalid76,
->>>>>>> upstream/master
 			VectorExtractDynamic,
 			VectorInsertDynamic,
 			VectorShuffle,
@@ -162,43 +105,6 @@ namespace bgfx
 			CompositeExtract,
 			CompositeInsert,
 			CopyObject,
-<<<<<<< HEAD
-			CopyMemory,
-			CopyMemorySized,
-			Sampler,
-			TextureSample,
-			TextureSampleDref,
-			TextureSampleLod,
-			TextureSampleProj,
-			TextureSampleGrad,
-			TextureSampleOffset,
-			TextureSampleProjLod,
-			TextureSampleProjGrad,
-			TextureSampleLodOffset,
-			TextureSampleProjOffset,
-			TextureSampleGradOffset,
-			TextureSampleProjLodOffset,
-			TextureSampleProjGradOffset,
-			TextureFetchTexelLod,
-			TextureFetchTexelOffset,
-			TextureFetchSample,
-			TextureFetchTexel,
-			TextureGather,
-			TextureGatherOffset,
-			TextureGatherOffsets,
-			TextureQuerySizeLod,
-			TextureQuerySize,
-			TextureQueryLod,
-			TextureQueryLevels,
-			TextureQuerySamples,
-			AccessChain,
-			InBoundsAccessChain,
-			SNegate,
-			FNegate,
-			Not,
-			Any,
-			All,
-=======
 			Transpose,
 			Invalid85,
 			SampledImage,
@@ -224,7 +130,6 @@ namespace bgfx
 			ImageQueryLevels,
 			ImageQuerySamples,
 			Invalid108,
->>>>>>> upstream/master
 			ConvertFToU,
 			ConvertFToS,
 			ConvertSToF,
@@ -232,23 +137,6 @@ namespace bgfx
 			UConvert,
 			SConvert,
 			FConvert,
-<<<<<<< HEAD
-			ConvertPtrToU,
-			ConvertUToPtr,
-			PtrCastToGeneric,
-			GenericCastToPtr,
-			Bitcast,
-			Transpose,
-			IsNan,
-			IsInf,
-			IsFinite,
-			IsNormal,
-			SignBitSet,
-			LessOrGreater,
-			Ordered,
-			Unordered,
-			ArrayLength,
-=======
 			QuantizeToF16,
 			ConvertPtrToU,
 			SatConvertSToU,
@@ -261,7 +149,6 @@ namespace bgfx
 			Invalid125,
 			SNegate,
 			FNegate,
->>>>>>> upstream/master
 			IAdd,
 			FAdd,
 			ISub,
@@ -283,40 +170,6 @@ namespace bgfx
 			MatrixTimesMatrix,
 			OuterProduct,
 			Dot,
-<<<<<<< HEAD
-			ShiftRightLogical,
-			ShiftRightArithmetic,
-			ShiftLeftLogical,
-			LogicalOr,
-			LogicalXor,
-			LogicalAnd,
-			BitwiseOr,
-			BitwiseXor,
-			BitwiseAnd,
-			Select,
-			IEqual,
-			FOrdEqual,
-			FUnordEqual,
-			INotEqual,
-			FOrdNotEqual,
-			FUnordNotEqual,
-			ULessThan,
-			SLessThan,
-			FOrdLessThan,
-			FUnordLessThan,
-			UGreaterThan,
-			SGreaterThan,
-			FOrdGreaterThan,
-			FUnordGreaterThan,
-			ULessThanEqual,
-			SLessThanEqual,
-			FOrdLessThanEqual,
-			FUnordLessThanEqual,
-			UGreaterThanEqual,
-			SGreaterThanEqual,
-			FOrdGreaterThanEqual,
-			FUnordGreaterThanEqual,
-=======
 			IAddCarry,
 			ISubBorrow,
 			UMulExtended,
@@ -375,7 +228,6 @@ namespace bgfx
 			BitReverse,
 			BitCount,
 			Invalid206,
->>>>>>> upstream/master
 			DPdx,
 			DPdy,
 			Fwidth,
@@ -385,27 +237,17 @@ namespace bgfx
 			DPdxCoarse,
 			DPdyCoarse,
 			FwidthCoarse,
-<<<<<<< HEAD
-=======
 			Invalid216,
 			Invalid217,
->>>>>>> upstream/master
 			EmitVertex,
 			EndPrimitive,
 			EmitStreamVertex,
 			EndStreamPrimitive,
-<<<<<<< HEAD
-			ControlBarrier,
-			MemoryBarrier,
-			ImagePointer,
-			AtomicInit,
-=======
 			Invalid222,
 			Invalid223,
 			ControlBarrier,
 			MemoryBarrier,
 			Invalid226,
->>>>>>> upstream/master
 			AtomicLoad,
 			AtomicStore,
 			AtomicExchange,
@@ -415,23 +257,16 @@ namespace bgfx
 			AtomicIDecrement,
 			AtomicIAdd,
 			AtomicISub,
-<<<<<<< HEAD
-			AtomicUMin,
-=======
 			AtomicSMin,
 			AtomicUMin,
 			AtomicSMax,
->>>>>>> upstream/master
 			AtomicUMax,
 			AtomicAnd,
 			AtomicOr,
 			AtomicXor,
-<<<<<<< HEAD
-=======
 			Invalid243,
 			Invalid244,
 			Phi,
->>>>>>> upstream/master
 			LoopMerge,
 			SelectionMerge,
 			Label,
@@ -444,15 +279,9 @@ namespace bgfx
 			Unreachable,
 			LifetimeStart,
 			LifetimeStop,
-<<<<<<< HEAD
-			CompileFlag,
-			AsyncGroupCopy,
-			WaitGroupEvents,
-=======
 			Invalid258,
 			GroupAsyncCopy,
 			GroupWaitEvents,
->>>>>>> upstream/master
 			GroupAll,
 			GroupAny,
 			GroupBroadcast,
@@ -464,13 +293,8 @@ namespace bgfx
 			GroupFMax,
 			GroupUMax,
 			GroupSMax,
-<<<<<<< HEAD
-			GenericCastToPtrExplicit,
-			GenericPtrMemSemantics,
-=======
 			Invalid272,
 			Invalid273,
->>>>>>> upstream/master
 			ReadPipe,
 			WritePipe,
 			ReservedReadPipe,
@@ -486,11 +310,8 @@ namespace bgfx
 			GroupReserveWritePipePackets,
 			GroupCommitReadPipe,
 			GroupCommitWritePipe,
-<<<<<<< HEAD
-=======
 			Invalid289,
 			Invalid290,
->>>>>>> upstream/master
 			EnqueueMarker,
 			EnqueueKernel,
 			GetKernelNDrangeSubGroupCount,
@@ -505,12 +326,6 @@ namespace bgfx
 			CaptureEventProfilingInfo,
 			GetDefaultQueue,
 			BuildNDRange,
-<<<<<<< HEAD
-			SatConvertSToU,
-			SatConvertUToS,
-			AtomicIMin,
-			AtomicIMax,
-=======
 			ImageSparseSampleImplicitLod,
 			ImageSparseSampleExplicitLod,
 			ImageSparseSampleDrefImplicitLod,
@@ -527,37 +342,24 @@ namespace bgfx
 			AtomicFlagTestAndSet,
 			AtomicFlagClear,
 			ImageSparseRead,
->>>>>>> upstream/master
 
 			Count
 		};
 	};
 
-<<<<<<< HEAD
-	struct SpirvBuiltin
-=======
 	const char* getName(SpvOpcode::Enum _opcode);
 
 	struct SpvBuiltin
->>>>>>> upstream/master
 	{
 		enum Enum
 		{
 			Position,
 			PointSize,
-<<<<<<< HEAD
-			ClipVertex,
-=======
->>>>>>> upstream/master
 			ClipDistance,
 			CullDistance,
 			VertexId,
 			InstanceId,
-<<<<<<< HEAD
-			BuiltInPrimitiveId,
-=======
 			PrimitiveId,
->>>>>>> upstream/master
 			InvocationId,
 			Layer,
 			ViewportIndex,
@@ -571,10 +373,6 @@ namespace bgfx
 			SampleId,
 			SamplePosition,
 			SampleMask,
-<<<<<<< HEAD
-			FragColor,
-=======
->>>>>>> upstream/master
 			FragDepth,
 			HelperInvocation,
 			NumWorkgroups,
@@ -588,22 +386,12 @@ namespace bgfx
 			EnqueuedWorkgroupSize,
 			GlobalOffset,
 			GlobalLinearId,
-<<<<<<< HEAD
-			WorkgroupLinearId,
-=======
->>>>>>> upstream/master
 			SubgroupSize,
 			SubgroupMaxSize,
 			NumSubgroups,
 			NumEnqueuedSubgroups,
 			SubgroupId,
 			SubgroupLocalInvocationId,
-<<<<<<< HEAD
-		};
-	};
-
-	struct SpirvExecutionModel
-=======
 			VertexIndex,
 			InstanceIndex,
 
@@ -614,7 +402,6 @@ namespace bgfx
 	const char* getName(SpvBuiltin::Enum _enum);
 
 	struct SpvExecutionModel
->>>>>>> upstream/master
 	{
 		enum Enum
 		{
@@ -630,9 +417,6 @@ namespace bgfx
 		};
 	};
 
-<<<<<<< HEAD
-	struct SpirvMemoryModel
-=======
 	struct SpvAddressingModel
 	{
 		enum Enum
@@ -646,29 +430,18 @@ namespace bgfx
 	};
 
 	struct SpvMemoryModel
->>>>>>> upstream/master
 	{
 		enum Enum
 		{
 			Simple,
 			GLSL450,
-<<<<<<< HEAD
-			OpenCL12,
-			OpenCL20,
-			OpenCL21,
-=======
 			OpenCL,
->>>>>>> upstream/master
 
 			Count
 		};
 	};
 
-<<<<<<< HEAD
-	struct SpirvStorageClass
-=======
 	struct SpvStorageClass
->>>>>>> upstream/master
 	{
 		enum Enum
 		{
@@ -676,19 +449,6 @@ namespace bgfx
 			Input,
 			Uniform,
 			Output,
-<<<<<<< HEAD
-			WorkgroupLocal,
-			WorkgroupGlobal,
-			PrivateGlobal,
-			Function,
-			Generic,
-			Private,
-			AtomicCounter,
-		};
-	};
-
-	struct SpirvResourceDim
-=======
 			Workgroup,
 			CrossWorkgroup,
 			Private,
@@ -705,7 +465,6 @@ namespace bgfx
 	const char* getName(SpvStorageClass::Enum _enum);
 
 	struct SpvResourceDim
->>>>>>> upstream/master
 	{
 		enum Enum
 		{
@@ -715,18 +474,6 @@ namespace bgfx
 			TextureCube,
 			TextureRect,
 			Buffer,
-<<<<<<< HEAD
-		};
-	};
-
-	struct SpirvDecoration
-	{
-		enum Enum
-		{
-			PrecisionLow,
-			PrecisionMedium,
-			PrecisionHigh,
-=======
 			SubpassData,
 		};
 	};
@@ -737,19 +484,10 @@ namespace bgfx
 		{
 			RelaxedPrecision,
 			SpecId,
->>>>>>> upstream/master
 			Block,
 			BufferBlock,
 			RowMajor,
 			ColMajor,
-<<<<<<< HEAD
-			GLSLShared,
-			GLSLStd140,
-			GLSLStd430,
-			GLSLPacked,
-			Smooth,
-			Noperspective,
-=======
 			ArrayStride,
 			MatrixStride,
 			GLSLShared,
@@ -758,7 +496,6 @@ namespace bgfx
 			BuiltIn,
 			Unknown12,
 			NoPerspective,
->>>>>>> upstream/master
 			Flat,
 			Patch,
 			Centroid,
@@ -769,18 +506,10 @@ namespace bgfx
 			Volatile,
 			Constant,
 			Coherent,
-<<<<<<< HEAD
-			Nonwritable,
-			Nonreadable,
-			Uniform,
-			NoStaticUse,
-			CPacked,
-=======
 			NonWritable,
 			NonReadable,
 			Uniform,
 			Unknown27,
->>>>>>> upstream/master
 			SaturatedConversion,
 			Stream,
 			Location,
@@ -789,80 +518,20 @@ namespace bgfx
 			Binding,
 			DescriptorSet,
 			Offset,
-<<<<<<< HEAD
-			Alignment,
-			XfbBuffer,
-			Stride,
-			BuiltIn,
-=======
 			XfbBuffer,
 			XfbStride,
->>>>>>> upstream/master
 			FuncParamAttr,
 			FPRoundingMode,
 			FPFastMathMode,
 			LinkageAttributes,
-<<<<<<< HEAD
-			SpecId,
-=======
 			NoContraction,
 			InputAttachmentIndex,
 			Alignment,
->>>>>>> upstream/master
 
 			Count
 		};
 	};
 
-<<<<<<< HEAD
-	struct SpirvOperand
-	{
-	};
-
-	struct SpirvInstruction
-	{
-		SpirvOpcode::Enum opcode;
-		uint16_t length;
-
-		uint8_t numOperands;
-		SpirvOperand operand[6];
-
-		union
-		{
-			struct ResultTypeId
-			{
-				uint32_t resultType;
-				uint32_t id;
-			};
-
-			ResultTypeId constant;
-			ResultTypeId constantComposite;
-
-			uint32_t value[8];
-		} un;
-	};
-
-	int32_t read(bx::ReaderI* _reader, SpirvInstruction& _instruction);
-	int32_t write(bx::WriterI* _writer, const SpirvInstruction& _instruction);
-	int32_t toString(char* _out, int32_t _size, const SpirvInstruction& _instruction);
-
-	struct SpirvShader
-	{
-		stl::vector<uint8_t> byteCode;
-	};
-
-	int32_t read(bx::ReaderSeekerI* _reader, SpirvShader& _shader);
-	int32_t write(bx::WriterI* _writer, const SpirvShader& _shader);
-
-	typedef void (*SpirvParseFn)(uint32_t _offset, const SpirvInstruction& _instruction, void* _userData);
-	void parse(const SpirvShader& _src, SpirvParseFn _fn, void* _userData);
-
-	typedef void (*SpirvFilterFn)(SpirvInstruction& _instruction, void* _userData);
-	void filter(SpirvShader& _dst, const SpirvShader& _src, SpirvFilterFn _fn, void* _userData);
-
-	struct Spirv
-	{
-=======
 	const char* getName(SpvDecoration::Enum _enum);
 
 	struct SpvOperand
@@ -959,7 +628,6 @@ namespace bgfx
 	{
 		SpirV() { /* not pod */ }
 
->>>>>>> upstream/master
 		struct Header
 		{
 			uint32_t magic;
@@ -970,19 +638,11 @@ namespace bgfx
 		};
 
 		Header header;
-<<<<<<< HEAD
-		SpirvShader shader;
-	};
-
-	int32_t read(bx::ReaderSeekerI* _reader, Spirv& _spirv);
-	int32_t write(bx::WriterSeekerI* _writer, const Spirv& _spirv);
-=======
 		SpvShader shader;
 	};
 
 	int32_t read(bx::ReaderSeekerI* _reader, SpirV& _spirv, bx::Error* _err);
 	int32_t write(bx::WriterSeekerI* _writer, const SpirV& _spirv, bx::Error* _err);
->>>>>>> upstream/master
 
 } // namespace bgfx
 

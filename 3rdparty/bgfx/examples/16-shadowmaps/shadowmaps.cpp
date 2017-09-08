@@ -1,10 +1,6 @@
 /*
  * Copyright 2013-2014 Dario Manesku. All rights reserved.
-<<<<<<< HEAD
- * License: http://www.opensource.org/licenses/BSD-2-Clause
-=======
  * License: https://github.com/bkaradzic/bgfx#license-bsd-2-clause
->>>>>>> upstream/master
  */
 
 #include <string>
@@ -16,13 +12,8 @@
 
 #include <bgfx/bgfx.h>
 #include <bx/timer.h>
-<<<<<<< HEAD
-#include <bx/readerwriter.h>
-#include <bx/fpumath.h>
-=======
 #include <bx/fpumath.h>
 #include <bx/crtimpl.h>
->>>>>>> upstream/master
 #include "entry/entry.h"
 #include "camera.h"
 #include "imgui/imgui.h"
@@ -266,21 +257,12 @@ void mtxYawPitchRoll(float* __restrict _result
 		            , float _roll
 		            )
 {
-<<<<<<< HEAD
-	float sroll  = sinf(_roll);
-	float croll  = cosf(_roll);
-	float spitch = sinf(_pitch);
-	float cpitch = cosf(_pitch);
-	float syaw   = sinf(_yaw);
-	float cyaw   = cosf(_yaw);
-=======
 	float sroll  = bx::fsin(_roll);
 	float croll  = bx::fcos(_roll);
 	float spitch = bx::fsin(_pitch);
 	float cpitch = bx::fcos(_pitch);
 	float syaw   = bx::fsin(_yaw);
 	float cyaw   = bx::fcos(_yaw);
->>>>>>> upstream/master
 
 	_result[ 0] = sroll * spitch * syaw + croll * cyaw;
 	_result[ 1] = sroll * cpitch;
@@ -430,11 +412,7 @@ struct Uniforms
 	void init()
 	{
 		m_ambientPass    = 1.0f;
-<<<<<<< HEAD
-		m_lightningPass  = 1.0f;
-=======
 		m_lightingPass   = 1.0f;
->>>>>>> upstream/master
 
 		m_shadowMapBias   = 0.003f;
 		m_shadowMapOffset = 0.0f;
@@ -593,11 +571,7 @@ struct Uniforms
 		struct
 		{
 			float m_ambientPass;
-<<<<<<< HEAD
-			float m_lightningPass;
-=======
 			float m_lightingPass;
->>>>>>> upstream/master
 			float m_unused00;
 			float m_unused01;
 		};
@@ -797,23 +771,14 @@ static RenderState s_renderStates[RenderState::Count] =
 
 struct ViewState
 {
-<<<<<<< HEAD
-	ViewState(uint32_t _width = 1280, uint32_t _height = 720)
-=======
 	ViewState(uint16_t _width = 1280, uint16_t _height = 720)
->>>>>>> upstream/master
 		: m_width(_width)
 		, m_height(_height)
 	{
 	}
 
-<<<<<<< HEAD
-	uint32_t m_width;
-	uint32_t m_height;
-=======
 	uint16_t m_width;
 	uint16_t m_height;
->>>>>>> upstream/master
 
 	float m_view[16];
 	float m_proj[16];
@@ -891,11 +856,7 @@ struct Group
 
 namespace bgfx
 {
-<<<<<<< HEAD
-	int32_t read(bx::ReaderI* _reader, bgfx::VertexDecl& _decl);
-=======
 	int32_t read(bx::ReaderI* _reader, bgfx::VertexDecl& _decl, bx::Error* _err = NULL);
->>>>>>> upstream/master
 }
 
 struct Mesh
@@ -914,15 +875,6 @@ struct Mesh
 		mem = bgfx::makeRef(_indices, size);
 		group.m_ibh = bgfx::createIndexBuffer(mem);
 
-<<<<<<< HEAD
-		//TODO:
-		// group.m_sphere = ...
-		// group.m_aabb = ...
-		// group.m_obb = ...
-		// group.m_prims = ...
-
-=======
->>>>>>> upstream/master
 		m_groups.push_back(group);
 	}
 
@@ -932,40 +884,18 @@ struct Mesh
 #define BGFX_CHUNK_MAGIC_IB  BX_MAKEFOURCC('I', 'B', ' ', 0x0)
 #define BGFX_CHUNK_MAGIC_PRI BX_MAKEFOURCC('P', 'R', 'I', 0x0)
 
-<<<<<<< HEAD
-		bx::CrtFileReader reader;
-		reader.open(_filePath);
-=======
 		bx::FileReaderI* reader = entry::getFileReader();
 		bx::open(reader, _filePath);
->>>>>>> upstream/master
 
 		Group group;
 
 		uint32_t chunk;
-<<<<<<< HEAD
-		while (4 == bx::read(&reader, chunk) )
-=======
 		while (4 == bx::read(reader, chunk) )
->>>>>>> upstream/master
 		{
 			switch (chunk)
 			{
 			case BGFX_CHUNK_MAGIC_VB:
 				{
-<<<<<<< HEAD
-					bx::read(&reader, group.m_sphere);
-					bx::read(&reader, group.m_aabb);
-					bx::read(&reader, group.m_obb);
-
-					bgfx::read(&reader, m_decl);
-					uint16_t stride = m_decl.getStride();
-
-					uint16_t numVertices;
-					bx::read(&reader, numVertices);
-					const bgfx::Memory* mem = bgfx::alloc(numVertices*stride);
-					bx::read(&reader, mem->data, mem->size);
-=======
 					bx::read(reader, group.m_sphere);
 					bx::read(reader, group.m_aabb);
 					bx::read(reader, group.m_obb);
@@ -977,7 +907,6 @@ struct Mesh
 					bx::read(reader, numVertices);
 					const bgfx::Memory* mem = bgfx::alloc(numVertices*stride);
 					bx::read(reader, mem->data, mem->size);
->>>>>>> upstream/master
 
 					group.m_vbh = bgfx::createVertexBuffer(mem, m_decl);
 				}
@@ -986,15 +915,9 @@ struct Mesh
 			case BGFX_CHUNK_MAGIC_IB:
 				{
 					uint32_t numIndices;
-<<<<<<< HEAD
-					bx::read(&reader, numIndices);
-					const bgfx::Memory* mem = bgfx::alloc(numIndices*2);
-					bx::read(&reader, mem->data, mem->size);
-=======
 					bx::read(reader, numIndices);
 					const bgfx::Memory* mem = bgfx::alloc(numIndices*2);
 					bx::read(reader, mem->data, mem->size);
->>>>>>> upstream/master
 					group.m_ibh = bgfx::createIndexBuffer(mem);
 				}
 				break;
@@ -1002,33 +925,6 @@ struct Mesh
 			case BGFX_CHUNK_MAGIC_PRI:
 				{
 					uint16_t len;
-<<<<<<< HEAD
-					bx::read(&reader, len);
-
-					std::string material;
-					material.resize(len);
-					bx::read(&reader, const_cast<char*>(material.c_str() ), len);
-
-					uint16_t num;
-					bx::read(&reader, num);
-
-					for (uint32_t ii = 0; ii < num; ++ii)
-					{
-						bx::read(&reader, len);
-
-						std::string name;
-						name.resize(len);
-						bx::read(&reader, const_cast<char*>(name.c_str() ), len);
-
-						Primitive prim;
-						bx::read(&reader, prim.m_startIndex);
-						bx::read(&reader, prim.m_numIndices);
-						bx::read(&reader, prim.m_startVertex);
-						bx::read(&reader, prim.m_numVertices);
-						bx::read(&reader, prim.m_sphere);
-						bx::read(&reader, prim.m_aabb);
-						bx::read(&reader, prim.m_obb);
-=======
 					bx::read(reader, len);
 
 					std::string material;
@@ -1054,7 +950,6 @@ struct Mesh
 						bx::read(reader, prim.m_sphere);
 						bx::read(reader, prim.m_aabb);
 						bx::read(reader, prim.m_obb);
->>>>>>> upstream/master
 
 						group.m_prims.push_back(prim);
 					}
@@ -1065,20 +960,12 @@ struct Mesh
 				break;
 
 			default:
-<<<<<<< HEAD
-				DBG("%08x at %d", chunk, reader.seek() );
-=======
 				DBG("%08x at %d", chunk, bx::seek(reader) );
->>>>>>> upstream/master
 				break;
 			}
 		}
 
-<<<<<<< HEAD
-		reader.close();
-=======
 		bx::close(reader);
->>>>>>> upstream/master
 	}
 
 	void unload()
@@ -1096,15 +983,6 @@ struct Mesh
 		m_groups.clear();
 	}
 
-<<<<<<< HEAD
-	void submit(uint8_t _viewId, float* _mtx, bgfx::ProgramHandle _program, const RenderState& _renderState)
-	{
-		bgfx::TextureHandle texture = BGFX_INVALID_HANDLE;
-		submit(_viewId, _mtx, _program, _renderState, texture);
-	}
-
-	void submit(uint8_t _viewId, float* _mtx, bgfx::ProgramHandle _program, const RenderState& _renderState, bgfx::TextureHandle _texture)
-=======
 	void submit(uint8_t _viewId, float* _mtx, bgfx::ProgramHandle _program, const RenderState& _renderState, bool _submitShadowMaps = false)
 	{
 		bgfx::TextureHandle texture = BGFX_INVALID_HANDLE;
@@ -1112,7 +990,6 @@ struct Mesh
 	}
 
 	void submit(uint8_t _viewId, float* _mtx, bgfx::ProgramHandle _program, const RenderState& _renderState, bgfx::TextureHandle _texture, bool _submitShadowMaps = false)
->>>>>>> upstream/master
 	{
 		for (GroupArray::const_iterator it = m_groups.begin(), itEnd = m_groups.end(); it != itEnd; ++it)
 		{
@@ -1132,18 +1009,12 @@ struct Mesh
 				bgfx::setTexture(0, s_texColor, _texture);
 			}
 
-<<<<<<< HEAD
-			for (uint8_t ii = 0; ii < ShadowMapRenderTargets::Count; ++ii)
-			{
-				bgfx::setTexture(4 + ii, s_shadowMap[ii], s_rtShadowMap[ii]);
-=======
 			if (_submitShadowMaps)
 			{
 				for (uint8_t ii = 0; ii < ShadowMapRenderTargets::Count; ++ii)
 				{
 					bgfx::setTexture(4 + ii, s_shadowMap[ii], bgfx::getTexture(s_rtShadowMap[ii]) );
 				}
->>>>>>> upstream/master
 			}
 
 			// Apply render state.
@@ -1186,11 +1057,7 @@ bgfx::VertexDecl PosColorTexCoord0Vertex::ms_decl;
 
 void screenSpaceQuad(float _textureWidth, float _textureHeight, bool _originBottomLeft = true, float _width = 1.0f, float _height = 1.0f)
 {
-<<<<<<< HEAD
-	if (bgfx::checkAvailTransientVertexBuffer(3, PosColorTexCoord0Vertex::ms_decl) )
-=======
 	if (3 == bgfx::getAvailTransientVertexBuffer(3, PosColorTexCoord0Vertex::ms_decl) )
->>>>>>> upstream/master
 	{
 		bgfx::TransientVertexBuffer vb;
 		bgfx::allocTransientVertexBuffer(&vb, 3, PosColorTexCoord0Vertex::ms_decl);
@@ -1296,11 +1163,7 @@ void splitFrustum(float* _splits, uint8_t _numSplits, float _near, float _far, f
 	{
 		float si = float(int8_t(ff) ) / numSlicesf;
 
-<<<<<<< HEAD
-		const float nearp = l*(_near*powf(ratio, si) ) + (1 - l)*(_near + (_far - _near)*si);
-=======
 		const float nearp = l*(_near*bx::fpow(ratio, si) ) + (1 - l)*(_near + (_far - _near)*si);
->>>>>>> upstream/master
 		_splits[nn] = nearp;          //near
 		_splits[ff] = nearp * 1.005f; //far from previous split
 	}
@@ -1335,38 +1198,6 @@ struct Programs
 		m_packDepth[DepthImpl::Linear][PackDepth::RGBA] = loadProgram("vs_shadowmaps_packdepth_linear", "fs_shadowmaps_packdepth_linear");
 		m_packDepth[DepthImpl::Linear][PackDepth::VSM]  = loadProgram("vs_shadowmaps_packdepth_linear", "fs_shadowmaps_packdepth_vsm_linear");
 
-<<<<<<< HEAD
-		// Color lightning.
-		m_colorLightning[SmType::Single][DepthImpl::InvZ][SmImpl::Hard] = loadProgram("vs_shadowmaps_color_lightning", "fs_shadowmaps_color_lightning_hard");
-		m_colorLightning[SmType::Single][DepthImpl::InvZ][SmImpl::PCF]  = loadProgram("vs_shadowmaps_color_lightning", "fs_shadowmaps_color_lightning_pcf");
-		m_colorLightning[SmType::Single][DepthImpl::InvZ][SmImpl::VSM]  = loadProgram("vs_shadowmaps_color_lightning", "fs_shadowmaps_color_lightning_vsm");
-		m_colorLightning[SmType::Single][DepthImpl::InvZ][SmImpl::ESM]  = loadProgram("vs_shadowmaps_color_lightning", "fs_shadowmaps_color_lightning_esm");
-
-		m_colorLightning[SmType::Single][DepthImpl::Linear][SmImpl::Hard] = loadProgram("vs_shadowmaps_color_lightning_linear", "fs_shadowmaps_color_lightning_hard_linear");
-		m_colorLightning[SmType::Single][DepthImpl::Linear][SmImpl::PCF]  = loadProgram("vs_shadowmaps_color_lightning_linear", "fs_shadowmaps_color_lightning_pcf_linear");
-		m_colorLightning[SmType::Single][DepthImpl::Linear][SmImpl::VSM]  = loadProgram("vs_shadowmaps_color_lightning_linear", "fs_shadowmaps_color_lightning_vsm_linear");
-		m_colorLightning[SmType::Single][DepthImpl::Linear][SmImpl::ESM]  = loadProgram("vs_shadowmaps_color_lightning_linear", "fs_shadowmaps_color_lightning_esm_linear");
-
-		m_colorLightning[SmType::Omni][DepthImpl::InvZ][SmImpl::Hard] = loadProgram("vs_shadowmaps_color_lightning_omni", "fs_shadowmaps_color_lightning_hard_omni");
-		m_colorLightning[SmType::Omni][DepthImpl::InvZ][SmImpl::PCF]  = loadProgram("vs_shadowmaps_color_lightning_omni", "fs_shadowmaps_color_lightning_pcf_omni");
-		m_colorLightning[SmType::Omni][DepthImpl::InvZ][SmImpl::VSM]  = loadProgram("vs_shadowmaps_color_lightning_omni", "fs_shadowmaps_color_lightning_vsm_omni");
-		m_colorLightning[SmType::Omni][DepthImpl::InvZ][SmImpl::ESM]  = loadProgram("vs_shadowmaps_color_lightning_omni", "fs_shadowmaps_color_lightning_esm_omni");
-
-		m_colorLightning[SmType::Omni][DepthImpl::Linear][SmImpl::Hard] = loadProgram("vs_shadowmaps_color_lightning_linear_omni", "fs_shadowmaps_color_lightning_hard_linear_omni");
-		m_colorLightning[SmType::Omni][DepthImpl::Linear][SmImpl::PCF]  = loadProgram("vs_shadowmaps_color_lightning_linear_omni", "fs_shadowmaps_color_lightning_pcf_linear_omni");
-		m_colorLightning[SmType::Omni][DepthImpl::Linear][SmImpl::VSM]  = loadProgram("vs_shadowmaps_color_lightning_linear_omni", "fs_shadowmaps_color_lightning_vsm_linear_omni");
-		m_colorLightning[SmType::Omni][DepthImpl::Linear][SmImpl::ESM]  = loadProgram("vs_shadowmaps_color_lightning_linear_omni", "fs_shadowmaps_color_lightning_esm_linear_omni");
-
-		m_colorLightning[SmType::Cascade][DepthImpl::InvZ][SmImpl::Hard] = loadProgram("vs_shadowmaps_color_lightning_csm", "fs_shadowmaps_color_lightning_hard_csm");
-		m_colorLightning[SmType::Cascade][DepthImpl::InvZ][SmImpl::PCF]  = loadProgram("vs_shadowmaps_color_lightning_csm", "fs_shadowmaps_color_lightning_pcf_csm");
-		m_colorLightning[SmType::Cascade][DepthImpl::InvZ][SmImpl::VSM]  = loadProgram("vs_shadowmaps_color_lightning_csm", "fs_shadowmaps_color_lightning_vsm_csm");
-		m_colorLightning[SmType::Cascade][DepthImpl::InvZ][SmImpl::ESM]  = loadProgram("vs_shadowmaps_color_lightning_csm", "fs_shadowmaps_color_lightning_esm_csm");
-
-		m_colorLightning[SmType::Cascade][DepthImpl::Linear][SmImpl::Hard] = loadProgram("vs_shadowmaps_color_lightning_linear_csm", "fs_shadowmaps_color_lightning_hard_linear_csm");
-		m_colorLightning[SmType::Cascade][DepthImpl::Linear][SmImpl::PCF]  = loadProgram("vs_shadowmaps_color_lightning_linear_csm", "fs_shadowmaps_color_lightning_pcf_linear_csm");
-		m_colorLightning[SmType::Cascade][DepthImpl::Linear][SmImpl::VSM]  = loadProgram("vs_shadowmaps_color_lightning_linear_csm", "fs_shadowmaps_color_lightning_vsm_linear_csm");
-		m_colorLightning[SmType::Cascade][DepthImpl::Linear][SmImpl::ESM]  = loadProgram("vs_shadowmaps_color_lightning_linear_csm", "fs_shadowmaps_color_lightning_esm_linear_csm");
-=======
 		// Color lighting.
 		m_colorLighting[SmType::Single][DepthImpl::InvZ][SmImpl::Hard] = loadProgram("vs_shadowmaps_color_lighting", "fs_shadowmaps_color_lighting_hard");
 		m_colorLighting[SmType::Single][DepthImpl::InvZ][SmImpl::PCF]  = loadProgram("vs_shadowmaps_color_lighting", "fs_shadowmaps_color_lighting_pcf");
@@ -1397,27 +1228,18 @@ struct Programs
 		m_colorLighting[SmType::Cascade][DepthImpl::Linear][SmImpl::PCF]  = loadProgram("vs_shadowmaps_color_lighting_linear_csm", "fs_shadowmaps_color_lighting_pcf_linear_csm");
 		m_colorLighting[SmType::Cascade][DepthImpl::Linear][SmImpl::VSM]  = loadProgram("vs_shadowmaps_color_lighting_linear_csm", "fs_shadowmaps_color_lighting_vsm_linear_csm");
 		m_colorLighting[SmType::Cascade][DepthImpl::Linear][SmImpl::ESM]  = loadProgram("vs_shadowmaps_color_lighting_linear_csm", "fs_shadowmaps_color_lighting_esm_linear_csm");
->>>>>>> upstream/master
 	}
 
 	void destroy()
 	{
-<<<<<<< HEAD
-		// Color lightning.
-=======
 		// Color lighting.
->>>>>>> upstream/master
 		for (uint8_t ii = 0; ii < SmType::Count; ++ii)
 		{
 			for (uint8_t jj = 0; jj < DepthImpl::Count; ++jj)
 			{
 				for (uint8_t kk = 0; kk < SmImpl::Count; ++kk)
 				{
-<<<<<<< HEAD
-					bgfx::destroyProgram(m_colorLightning[ii][jj][kk]);
-=======
 					bgfx::destroyProgram(m_colorLighting[ii][jj][kk]);
->>>>>>> upstream/master
 				}
 			}
 		}
@@ -1462,11 +1284,7 @@ struct Programs
 	bgfx::ProgramHandle m_hBlur[PackDepth::Count];
 	bgfx::ProgramHandle m_drawDepth[PackDepth::Count];
 	bgfx::ProgramHandle m_packDepth[DepthImpl::Count][PackDepth::Count];
-<<<<<<< HEAD
-	bgfx::ProgramHandle m_colorLightning[SmType::Count][DepthImpl::Count][SmImpl::Count];
-=======
 	bgfx::ProgramHandle m_colorLighting[SmType::Count][DepthImpl::Count][SmImpl::Count];
->>>>>>> upstream/master
 };
 
 static Programs s_programs;
@@ -1555,15 +1373,9 @@ int _main_(int _argc, char** _argv)
 	PosColorTexCoord0Vertex::init();
 
 	// Textures.
-<<<<<<< HEAD
-	bgfx::TextureHandle texFigure     = loadTexture("figure-rgba.dds");
-	bgfx::TextureHandle texFlare      = loadTexture("flare.dds");
-	bgfx::TextureHandle texFieldstone = loadTexture("fieldstone-rgba.dds");
-=======
 	bgfx::TextureHandle texFigure     = loadTexture("textures/figure-rgba.dds");
 	bgfx::TextureHandle texFlare      = loadTexture("textures/flare.dds");
 	bgfx::TextureHandle texFieldstone = loadTexture("textures/fieldstone-rgba.dds");
->>>>>>> upstream/master
 
 	// Meshes.
 	Mesh bunnyMesh;
@@ -1649,11 +1461,7 @@ int _main_(int _argc, char** _argv)
 			, 1.0f, 0.0f, 3.0f, 0.01f          // m_yOffset
 			, true                             // m_doBlur
 			, &s_programs.m_packDepth[DepthImpl::InvZ][PackDepth::RGBA] //m_progPack
-<<<<<<< HEAD
-			, &s_programs.m_colorLightning[SmType::Single][DepthImpl::InvZ][SmImpl::Hard] //m_progDraw
-=======
 			, &s_programs.m_colorLighting[SmType::Single][DepthImpl::InvZ][SmImpl::Hard] //m_progDraw
->>>>>>> upstream/master
 		},
 		{ //SmImpl::PCF
 			  10.0f, 7.0f, 12.0f, 1.0f         // m_sizePwrTwo
@@ -1670,11 +1478,7 @@ int _main_(int _argc, char** _argv)
 			, 1.0f, 0.0f, 3.0f, 0.01f          // m_yOffset
 			, true                             // m_doBlur
 			, &s_programs.m_packDepth[DepthImpl::InvZ][PackDepth::RGBA] //m_progPack
-<<<<<<< HEAD
-			, &s_programs.m_colorLightning[SmType::Single][DepthImpl::InvZ][SmImpl::PCF] //m_progDraw
-=======
 			, &s_programs.m_colorLighting[SmType::Single][DepthImpl::InvZ][SmImpl::PCF] //m_progDraw
->>>>>>> upstream/master
 		},
 		{ //SmImpl::VSM
 			  10.0f, 7.0f, 12.0f, 1.0f         // m_sizePwrTwo
@@ -1691,11 +1495,7 @@ int _main_(int _argc, char** _argv)
 			, 1.0f, 0.0f, 3.0f, 0.01f          // m_yOffset
 			, true                             // m_doBlur
 			, &s_programs.m_packDepth[DepthImpl::InvZ][PackDepth::VSM] //m_progPack
-<<<<<<< HEAD
-			, &s_programs.m_colorLightning[SmType::Single][DepthImpl::InvZ][SmImpl::VSM] //m_progDraw
-=======
 			, &s_programs.m_colorLighting[SmType::Single][DepthImpl::InvZ][SmImpl::VSM] //m_progDraw
->>>>>>> upstream/master
 		},
 		{ //SmImpl::ESM
 			  10.0f, 7.0f, 12.0f, 1.0f         // m_sizePwrTwo
@@ -1712,11 +1512,7 @@ int _main_(int _argc, char** _argv)
 			, 1.0f, 0.0f, 3.0f, 0.01f          // m_yOffset
 			, true                             // m_doBlur
 			, &s_programs.m_packDepth[DepthImpl::InvZ][PackDepth::RGBA] //m_progPack
-<<<<<<< HEAD
-			, &s_programs.m_colorLightning[SmType::Single][DepthImpl::InvZ][SmImpl::ESM] //m_progDraw
-=======
 			, &s_programs.m_colorLighting[SmType::Single][DepthImpl::InvZ][SmImpl::ESM] //m_progDraw
->>>>>>> upstream/master
 		}
 
 		},
@@ -1737,11 +1533,7 @@ int _main_(int _argc, char** _argv)
 			, 1.0f, 0.0f, 3.0f, 0.01f          // m_yOffset
 			, true                             // m_doBlur
 			, &s_programs.m_packDepth[DepthImpl::Linear][PackDepth::RGBA] //m_progPack
-<<<<<<< HEAD
-			, &s_programs.m_colorLightning[SmType::Single][DepthImpl::Linear][SmImpl::Hard] //m_progDraw
-=======
 			, &s_programs.m_colorLighting[SmType::Single][DepthImpl::Linear][SmImpl::Hard] //m_progDraw
->>>>>>> upstream/master
 		},
 		{ //SmImpl::PCF
 			  10.0f, 7.0f, 12.0f, 1.0f         // m_sizePwrTwo
@@ -1758,11 +1550,7 @@ int _main_(int _argc, char** _argv)
 			, 1.0f, 0.0f, 3.0f, 0.01f          // m_yOffset
 			, true                             // m_doBlur
 			, &s_programs.m_packDepth[DepthImpl::Linear][PackDepth::RGBA] //m_progPack
-<<<<<<< HEAD
-			, &s_programs.m_colorLightning[SmType::Single][DepthImpl::Linear][SmImpl::PCF] //m_progDraw
-=======
 			, &s_programs.m_colorLighting[SmType::Single][DepthImpl::Linear][SmImpl::PCF] //m_progDraw
->>>>>>> upstream/master
 		},
 		{ //SmImpl::VSM
 			  10.0f, 7.0f, 12.0f, 1.0f         // m_sizePwrTwo
@@ -1779,11 +1567,7 @@ int _main_(int _argc, char** _argv)
 			, 1.0f, 0.0f, 3.0f, 0.01f          // m_yOffset
 			, true                             // m_doBlur
 			, &s_programs.m_packDepth[DepthImpl::Linear][PackDepth::VSM] //m_progPack
-<<<<<<< HEAD
-			, &s_programs.m_colorLightning[SmType::Single][DepthImpl::Linear][SmImpl::VSM] //m_progDraw
-=======
 			, &s_programs.m_colorLighting[SmType::Single][DepthImpl::Linear][SmImpl::VSM] //m_progDraw
->>>>>>> upstream/master
 		},
 		{ //SmImpl::ESM
 			  10.0f, 7.0f, 12.0f, 1.0f         // m_sizePwrTwo
@@ -1800,11 +1584,7 @@ int _main_(int _argc, char** _argv)
 			, 1.0f, 0.0f, 3.0f, 0.01f          // m_yOffset
 			, true                             // m_doBlur
 			, &s_programs.m_packDepth[DepthImpl::Linear][PackDepth::RGBA] //m_progPack
-<<<<<<< HEAD
-			, &s_programs.m_colorLightning[SmType::Single][DepthImpl::Linear][SmImpl::ESM] //m_progDraw
-=======
 			, &s_programs.m_colorLighting[SmType::Single][DepthImpl::Linear][SmImpl::ESM] //m_progDraw
->>>>>>> upstream/master
 		}
 
 		}
@@ -1829,11 +1609,7 @@ int _main_(int _argc, char** _argv)
 			, 0.25f, 0.0f, 2.0f, 0.001f        // m_yOffset
 			, true                             // m_doBlur
 			, &s_programs.m_packDepth[DepthImpl::InvZ][PackDepth::RGBA] //m_progPack
-<<<<<<< HEAD
-			, &s_programs.m_colorLightning[SmType::Omni][DepthImpl::InvZ][SmImpl::Hard] //m_progDraw
-=======
 			, &s_programs.m_colorLighting[SmType::Omni][DepthImpl::InvZ][SmImpl::Hard] //m_progDraw
->>>>>>> upstream/master
 		},
 		{ //SmImpl::PCF
 			  12.0f, 9.0f, 12.0f, 1.0f         // m_sizePwrTwo
@@ -1850,11 +1626,7 @@ int _main_(int _argc, char** _argv)
 			, 1.0f, 0.0f, 3.0f, 0.001f         // m_yOffset
 			, true                             // m_doBlur
 			, &s_programs.m_packDepth[DepthImpl::InvZ][PackDepth::RGBA] //m_progPack
-<<<<<<< HEAD
-			, &s_programs.m_colorLightning[SmType::Omni][DepthImpl::InvZ][SmImpl::PCF] //m_progDraw
-=======
 			, &s_programs.m_colorLighting[SmType::Omni][DepthImpl::InvZ][SmImpl::PCF] //m_progDraw
->>>>>>> upstream/master
 		},
 		{ //SmImpl::VSM
 			  12.0f, 9.0f, 12.0f, 1.0f         // m_sizePwrTwo
@@ -1871,11 +1643,7 @@ int _main_(int _argc, char** _argv)
 			, 0.25f, 0.0f, 2.0f, 0.001f        // m_yOffset
 			, true                             // m_doBlur
 			, &s_programs.m_packDepth[DepthImpl::InvZ][PackDepth::VSM] //m_progPack
-<<<<<<< HEAD
-			, &s_programs.m_colorLightning[SmType::Omni][DepthImpl::InvZ][SmImpl::VSM] //m_progDraw
-=======
 			, &s_programs.m_colorLighting[SmType::Omni][DepthImpl::InvZ][SmImpl::VSM] //m_progDraw
->>>>>>> upstream/master
 		},
 		{ //SmImpl::ESM
 			  12.0f, 9.0f, 12.0f, 1.0f         // m_sizePwrTwo
@@ -1892,11 +1660,7 @@ int _main_(int _argc, char** _argv)
 			, 0.25f, 0.0f, 2.0f, 0.001f        // m_yOffset
 			, true                             // m_doBlur
 			, &s_programs.m_packDepth[DepthImpl::InvZ][PackDepth::RGBA] //m_progPack
-<<<<<<< HEAD
-			, &s_programs.m_colorLightning[SmType::Omni][DepthImpl::InvZ][SmImpl::ESM] //m_progDraw
-=======
 			, &s_programs.m_colorLighting[SmType::Omni][DepthImpl::InvZ][SmImpl::ESM] //m_progDraw
->>>>>>> upstream/master
 		}
 
 		},
@@ -1917,11 +1681,7 @@ int _main_(int _argc, char** _argv)
 			, 0.25f, 0.0f, 2.0f, 0.001f        // m_yOffset
 			, true                             // m_doBlur
 			, &s_programs.m_packDepth[DepthImpl::Linear][PackDepth::RGBA] //m_progPack
-<<<<<<< HEAD
-			, &s_programs.m_colorLightning[SmType::Omni][DepthImpl::Linear][SmImpl::Hard] //m_progDraw
-=======
 			, &s_programs.m_colorLighting[SmType::Omni][DepthImpl::Linear][SmImpl::Hard] //m_progDraw
->>>>>>> upstream/master
 		},
 		{ //SmImpl::PCF
 			  12.0f, 9.0f, 12.0f, 1.0f         // m_sizePwrTwo
@@ -1938,11 +1698,7 @@ int _main_(int _argc, char** _argv)
 			, 1.0f, 0.0f, 3.0f, 0.001f         // m_yOffset
 			, true                             // m_doBlur
 			, &s_programs.m_packDepth[DepthImpl::Linear][PackDepth::RGBA] //m_progPack
-<<<<<<< HEAD
-			, &s_programs.m_colorLightning[SmType::Omni][DepthImpl::Linear][SmImpl::PCF] //m_progDraw
-=======
 			, &s_programs.m_colorLighting[SmType::Omni][DepthImpl::Linear][SmImpl::PCF] //m_progDraw
->>>>>>> upstream/master
 		},
 		{ //SmImpl::VSM
 			  12.0f, 9.0f, 12.0f, 1.0f         // m_sizePwrTwo
@@ -1959,11 +1715,7 @@ int _main_(int _argc, char** _argv)
 			, 0.25f, 0.0f, 2.0f, 0.001f        // m_yOffset
 			, true                             // m_doBlur
 			, &s_programs.m_packDepth[DepthImpl::Linear][PackDepth::VSM] //m_progPack
-<<<<<<< HEAD
-			, &s_programs.m_colorLightning[SmType::Omni][DepthImpl::Linear][SmImpl::VSM] //m_progDraw
-=======
 			, &s_programs.m_colorLighting[SmType::Omni][DepthImpl::Linear][SmImpl::VSM] //m_progDraw
->>>>>>> upstream/master
 		},
 		{ //SmImpl::ESM
 			  12.0f, 9.0f, 12.0f, 1.0f         // m_sizePwrTwo
@@ -1980,11 +1732,7 @@ int _main_(int _argc, char** _argv)
 			, 0.25f, 0.0f, 2.0f, 0.001f        // m_yOffset
 			, true                             // m_doBlur
 			, &s_programs.m_packDepth[DepthImpl::Linear][PackDepth::RGBA] //m_progPack
-<<<<<<< HEAD
-			, &s_programs.m_colorLightning[SmType::Omni][DepthImpl::Linear][SmImpl::ESM] //m_progDraw
-=======
 			, &s_programs.m_colorLighting[SmType::Omni][DepthImpl::Linear][SmImpl::ESM] //m_progDraw
->>>>>>> upstream/master
 		}
 
 		}
@@ -2009,11 +1757,7 @@ int _main_(int _argc, char** _argv)
 			, 0.2f, 0.0f, 1.0f, 0.01f          // m_yOffset
 			, true                             // m_doBlur
 			, &s_programs.m_packDepth[DepthImpl::InvZ][PackDepth::RGBA] //m_progPack
-<<<<<<< HEAD
-			, &s_programs.m_colorLightning[SmType::Cascade][DepthImpl::InvZ][SmImpl::Hard] //m_progDraw
-=======
 			, &s_programs.m_colorLighting[SmType::Cascade][DepthImpl::InvZ][SmImpl::Hard] //m_progDraw
->>>>>>> upstream/master
 		},
 		{ //SmImpl::PCF
 			  11.0f, 7.0f, 12.0f, 1.0f         // m_sizePwrTwo
@@ -2030,11 +1774,7 @@ int _main_(int _argc, char** _argv)
 			, 1.0f, 0.0f, 3.0f, 0.01f          // m_yOffset
 			, true                             // m_doBlur
 			, &s_programs.m_packDepth[DepthImpl::InvZ][PackDepth::RGBA] //m_progPack
-<<<<<<< HEAD
-			, &s_programs.m_colorLightning[SmType::Cascade][DepthImpl::InvZ][SmImpl::PCF] //m_progDraw
-=======
 			, &s_programs.m_colorLighting[SmType::Cascade][DepthImpl::InvZ][SmImpl::PCF] //m_progDraw
->>>>>>> upstream/master
 		},
 		{ //SmImpl::VSM
 			  11.0f, 7.0f, 12.0f, 1.0f         // m_sizePwrTwo
@@ -2051,11 +1791,7 @@ int _main_(int _argc, char** _argv)
 			, 0.2f, 0.0f, 1.0f, 0.01f          // m_yOffset
 			, true                             // m_doBlur
 			, &s_programs.m_packDepth[DepthImpl::InvZ][PackDepth::VSM] //m_progPack
-<<<<<<< HEAD
-			, &s_programs.m_colorLightning[SmType::Cascade][DepthImpl::InvZ][SmImpl::VSM] //m_progDraw
-=======
 			, &s_programs.m_colorLighting[SmType::Cascade][DepthImpl::InvZ][SmImpl::VSM] //m_progDraw
->>>>>>> upstream/master
 		},
 		{ //SmImpl::ESM
 			  11.0f, 7.0f, 12.0f, 1.0f         // m_sizePwrTwo
@@ -2072,11 +1808,7 @@ int _main_(int _argc, char** _argv)
 			, 0.2f, 0.0f, 1.0f, 0.01f          // m_yOffset
 			, true                             // m_doBlur
 			, &s_programs.m_packDepth[DepthImpl::InvZ][PackDepth::RGBA] //m_progPack
-<<<<<<< HEAD
-			, &s_programs.m_colorLightning[SmType::Cascade][DepthImpl::InvZ][SmImpl::ESM] //m_progDraw
-=======
 			, &s_programs.m_colorLighting[SmType::Cascade][DepthImpl::InvZ][SmImpl::ESM] //m_progDraw
->>>>>>> upstream/master
 		}
 
 		},
@@ -2097,11 +1829,7 @@ int _main_(int _argc, char** _argv)
 			, 0.2f, 0.0f, 1.0f, 0.01f          // m_yOffset
 			, true                             // m_doBlur
 			, &s_programs.m_packDepth[DepthImpl::Linear][PackDepth::RGBA] //m_progPack
-<<<<<<< HEAD
-			, &s_programs.m_colorLightning[SmType::Cascade][DepthImpl::Linear][SmImpl::Hard] //m_progDraw
-=======
 			, &s_programs.m_colorLighting[SmType::Cascade][DepthImpl::Linear][SmImpl::Hard] //m_progDraw
->>>>>>> upstream/master
 		},
 		{ //SmImpl::PCF
 			  11.0f, 7.0f, 12.0f, 1.0f         // m_sizePwrTwo
@@ -2118,11 +1846,7 @@ int _main_(int _argc, char** _argv)
 			, 1.0f, 0.0f, 3.0f, 0.01f          // m_yOffset
 			, true                             // m_doBlur
 			, &s_programs.m_packDepth[DepthImpl::Linear][PackDepth::RGBA] //m_progPack
-<<<<<<< HEAD
-			, &s_programs.m_colorLightning[SmType::Cascade][DepthImpl::Linear][SmImpl::PCF] //m_progDraw
-=======
 			, &s_programs.m_colorLighting[SmType::Cascade][DepthImpl::Linear][SmImpl::PCF] //m_progDraw
->>>>>>> upstream/master
 		},
 		{ //SmImpl::VSM
 			  11.0f, 7.0f, 12.0f, 1.0f         // m_sizePwrTwo
@@ -2139,11 +1863,7 @@ int _main_(int _argc, char** _argv)
 			, 0.2f, 0.0f, 1.0f, 0.01f          // m_yOffset
 			, true                             // m_doBlur
 			, &s_programs.m_packDepth[DepthImpl::Linear][PackDepth::VSM] //m_progPack
-<<<<<<< HEAD
-			, &s_programs.m_colorLightning[SmType::Cascade][DepthImpl::Linear][SmImpl::VSM] //m_progDraw
-=======
 			, &s_programs.m_colorLighting[SmType::Cascade][DepthImpl::Linear][SmImpl::VSM] //m_progDraw
->>>>>>> upstream/master
 		},
 		{ //SmImpl::ESM
 			  11.0f, 7.0f, 12.0f, 1.0f         // m_sizePwrTwo
@@ -2160,11 +1880,7 @@ int _main_(int _argc, char** _argv)
 			, 0.2f, 0.0f, 1.0f, 0.01f          // m_yOffset
 			, true                             // m_doBlur
 			, &s_programs.m_packDepth[DepthImpl::Linear][PackDepth::RGBA] //m_progPack
-<<<<<<< HEAD
-			, &s_programs.m_colorLightning[SmType::Cascade][DepthImpl::Linear][SmImpl::ESM] //m_progDraw
-=======
 			, &s_programs.m_colorLighting[SmType::Cascade][DepthImpl::Linear][SmImpl::ESM] //m_progDraw
->>>>>>> upstream/master
 		}
 
 		}
@@ -2222,13 +1938,8 @@ int _main_(int _argc, char** _argv)
 	{
 		bgfx::TextureHandle fbtextures[] =
 		{
-<<<<<<< HEAD
-			bgfx::createTexture2D(currentShadowMapSize, currentShadowMapSize, 1, bgfx::TextureFormat::BGRA8, BGFX_TEXTURE_RT),
-			bgfx::createTexture2D(currentShadowMapSize, currentShadowMapSize, 1, bgfx::TextureFormat::D24S8),
-=======
 			bgfx::createTexture2D(currentShadowMapSize, currentShadowMapSize, false, 1, bgfx::TextureFormat::BGRA8, BGFX_TEXTURE_RT),
 			bgfx::createTexture2D(currentShadowMapSize, currentShadowMapSize, false, 1, bgfx::TextureFormat::D24S8, BGFX_TEXTURE_RT),
->>>>>>> upstream/master
 		};
 		s_rtShadowMap[ii] = bgfx::createFrameBuffer(BX_COUNTOF(fbtextures), fbtextures, true);
 	}
@@ -2245,25 +1956,15 @@ int _main_(int _argc, char** _argv)
 	const float camAspect  = float(int32_t(viewState.m_width) ) / float(int32_t(viewState.m_height) );
 	const float camNear    = 0.1f;
 	const float camFar     = 2000.0f;
-<<<<<<< HEAD
-	const float projHeight = 1.0f/tanf(bx::toRad(camFovy)*0.5f);
-	const float projWidth  = projHeight * 1.0f/camAspect;
-	bx::mtxProj(viewState.m_proj, camFovy, camAspect, camNear, camFar);
-=======
 	const float projHeight = 1.0f/bx::ftan(bx::toRad(camFovy)*0.5f);
 	const float projWidth  = projHeight * camAspect;
 	bx::mtxProj(viewState.m_proj, camFovy, camAspect, camNear, camFar, bgfx::getCaps()->homogeneousDepth);
->>>>>>> upstream/master
 	cameraGetViewMtx(viewState.m_view);
 
 	float timeAccumulatorLight = 0.0f;
 	float timeAccumulatorScene = 0.0f;
 
 	entry::MouseState mouseState;
-<<<<<<< HEAD
-	while (!entry::processEvents(viewState.m_width, viewState.m_height, debug, reset, &mouseState) )
-	{
-=======
 	uint32_t width;
 	uint32_t height;
 	while (!entry::processEvents(width, height, debug, reset, &mouseState) )
@@ -2271,7 +1972,6 @@ int _main_(int _argc, char** _argv)
 		viewState.m_width  = uint16_t(width);
 		viewState.m_height = uint16_t(height);
 
->>>>>>> upstream/master
 		// Imgui.
 		imguiBeginFrame(mouseState.m_mx
 			, mouseState.m_my
@@ -2469,28 +2169,16 @@ int _main_(int _argc, char** _argv)
 		if (settings.m_updateScene)  { timeAccumulatorScene += deltaTime; }
 
 		// Setup lights.
-<<<<<<< HEAD
-		pointLight.m_position.m_x = cosf(timeAccumulatorLight) * 20.0f;
-		pointLight.m_position.m_y = 26.0f;
-		pointLight.m_position.m_z = sinf(timeAccumulatorLight) * 20.0f;
-=======
 		pointLight.m_position.m_x = bx::fcos(timeAccumulatorLight) * 20.0f;
 		pointLight.m_position.m_y = 26.0f;
 		pointLight.m_position.m_z = bx::fsin(timeAccumulatorLight) * 20.0f;
->>>>>>> upstream/master
 		pointLight.m_spotDirectionInner.m_x = -pointLight.m_position.m_x;
 		pointLight.m_spotDirectionInner.m_y = -pointLight.m_position.m_y;
 		pointLight.m_spotDirectionInner.m_z = -pointLight.m_position.m_z;
 
-<<<<<<< HEAD
-		directionalLight.m_position.m_x = -cosf(timeAccumulatorLight);
-		directionalLight.m_position.m_y = -1.0f;
-		directionalLight.m_position.m_z = -sinf(timeAccumulatorLight);
-=======
 		directionalLight.m_position.m_x = -bx::fcos(timeAccumulatorLight);
 		directionalLight.m_position.m_y = -1.0f;
 		directionalLight.m_position.m_z = -bx::fsin(timeAccumulatorLight);
->>>>>>> upstream/master
 
 		// Setup instance matrices.
 		float mtxFloor[16];
@@ -2557,15 +2245,9 @@ int _main_(int _argc, char** _argv)
 				, 0.0f
 				, float(ii)
 				, 0.0f
-<<<<<<< HEAD
-				, sinf(float(ii)*2.0f*bx::pi/float(numTrees) ) * 60.0f
-				, 0.0f
-				, cosf(float(ii)*2.0f*bx::pi/float(numTrees) ) * 60.0f
-=======
 				, bx::fsin(float(ii)*2.0f*bx::pi/float(numTrees) ) * 60.0f
 				, 0.0f
 				, bx::fcos(float(ii)*2.0f*bx::pi/float(numTrees) ) * 60.0f
->>>>>>> upstream/master
 				);
 		}
 
@@ -2612,11 +2294,7 @@ int _main_(int _argc, char** _argv)
 			{
 				const float fovx = 143.98570868f + 3.51f + settings.m_fovXAdjust;
 				const float fovy = 125.26438968f + 9.85f + settings.m_fovYAdjust;
-<<<<<<< HEAD
-				const float aspect = tanf(bx::toRad(fovx*0.5f) )/tanf(bx::toRad(fovy*0.5f) );
-=======
 				const float aspect = bx::ftan(bx::toRad(fovx*0.5f) )/bx::ftan(bx::toRad(fovy*0.5f) );
->>>>>>> upstream/master
 
 				bx::mtxProj(lightProj[ProjType::Vertical]
 						, fovx
@@ -2640,11 +2318,7 @@ int _main_(int _argc, char** _argv)
 
 			const float fovx = 143.98570868f + 7.8f + settings.m_fovXAdjust;
 			const float fovy = 125.26438968f + 3.0f + settings.m_fovYAdjust;
-<<<<<<< HEAD
-			const float aspect = tanf(bx::toRad(fovx*0.5f) )/tanf(bx::toRad(fovy*0.5f) );
-=======
 			const float aspect = bx::ftan(bx::toRad(fovx*0.5f) )/bx::ftan(bx::toRad(fovy*0.5f) );
->>>>>>> upstream/master
 
 			bx::mtxProj(lightProj[ProjType::Horizontal], fovy, aspect, currentSmSettings->m_near, currentSmSettings->m_far);
 
@@ -2670,11 +2344,7 @@ int _main_(int _argc, char** _argv)
 
 				bx::mtxTranspose(mtxYpr[ii], mtxTmp);
 
-<<<<<<< HEAD
-				memcpy(lightView[ii], mtxYpr[ii], 12*sizeof(float) );
-=======
 				bx::memCopy(lightView[ii], mtxYpr[ii], 12*sizeof(float) );
->>>>>>> upstream/master
 				lightView[ii][12] = tmp[0];
 				lightView[ii][13] = tmp[1];
 				lightView[ii][14] = tmp[2];
@@ -2753,13 +2423,8 @@ int _main_(int _argc, char** _argv)
 				if (settings.m_stabilize)
 				{
 					const float quantizer = 64.0f;
-<<<<<<< HEAD
-					scalex = quantizer / ceilf(quantizer / scalex);
-					scaley = quantizer / ceilf(quantizer / scaley);
-=======
 					scalex = quantizer / bx::fceil(quantizer / scalex);
 					scaley = quantizer / bx::fceil(quantizer / scaley);
->>>>>>> upstream/master
 				}
 
 				offsetx = 0.5f * (maxproj[0] + minproj[0]) * scalex;
@@ -2768,13 +2433,8 @@ int _main_(int _argc, char** _argv)
 				if (settings.m_stabilize)
 				{
 					const float halfSize = currentShadowMapSizef * 0.5f;
-<<<<<<< HEAD
-					offsetx = ceilf(offsetx * halfSize) / halfSize;
-					offsety = ceilf(offsety * halfSize) / halfSize;
-=======
 					offsetx = bx::fceil(offsetx * halfSize) / halfSize;
 					offsety = bx::fceil(offsety * halfSize) / halfSize;
->>>>>>> upstream/master
 				}
 
 				float mtxCrop[16];
@@ -2790,11 +2450,7 @@ int _main_(int _argc, char** _argv)
 
 		// Reset render targets.
 		const bgfx::FrameBufferHandle invalidRt = BGFX_INVALID_HANDLE;
-<<<<<<< HEAD
-		for (uint32_t ii = 0; ii < RENDERVIEW_DRAWDEPTH_3_ID+1; ++ii)
-=======
 		for (uint8_t ii = 0; ii < RENDERVIEW_DRAWDEPTH_3_ID+1; ++ii)
->>>>>>> upstream/master
 		{
 			bgfx::setViewFrameBuffer(ii, invalidRt);
 		}
@@ -3035,11 +2691,7 @@ int _main_(int _argc, char** _argv)
 			// Craft stencil mask for point light shadow map packing.
 			if(LightType::PointLight == settings.m_lightType && settings.m_stencilPack)
 			{
-<<<<<<< HEAD
-				if (bgfx::checkAvailTransientVertexBuffer(6, posDecl) )
-=======
 				if (6 == bgfx::getAvailTransientVertexBuffer(6, posDecl) )
->>>>>>> upstream/master
 				{
 					struct Pos
 					{
@@ -3114,11 +2766,7 @@ int _main_(int _argc, char** _argv)
 				uint8_t renderStateIndex = RenderState::ShadowMap_PackDepth;
 				if(LightType::PointLight == settings.m_lightType && settings.m_stencilPack)
 				{
-<<<<<<< HEAD
-					renderStateIndex = (ii < 2) ? RenderState::ShadowMap_PackDepthHoriz : RenderState::ShadowMap_PackDepthVert;
-=======
 					renderStateIndex = uint8_t( (ii < 2) ? RenderState::ShadowMap_PackDepthHoriz : RenderState::ShadowMap_PackDepthVert);
->>>>>>> upstream/master
 				}
 
 				// Floor.
@@ -3168,20 +2816,12 @@ int _main_(int _argc, char** _argv)
 		if (bVsmOrEsm
 		&&  currentSmSettings->m_doBlur)
 		{
-<<<<<<< HEAD
-			bgfx::setTexture(4, s_shadowMap[0], s_rtShadowMap[0]);
-=======
 			bgfx::setTexture(4, s_shadowMap[0], bgfx::getTexture(s_rtShadowMap[0]) );
->>>>>>> upstream/master
 			bgfx::setState(BGFX_STATE_RGB_WRITE|BGFX_STATE_ALPHA_WRITE);
 			screenSpaceQuad(currentShadowMapSizef, currentShadowMapSizef, s_flipV);
 			bgfx::submit(RENDERVIEW_VBLUR_0_ID, s_programs.m_vBlur[depthType]);
 
-<<<<<<< HEAD
-			bgfx::setTexture(4, s_shadowMap[0], s_rtBlur);
-=======
 			bgfx::setTexture(4, s_shadowMap[0], bgfx::getTexture(s_rtBlur) );
->>>>>>> upstream/master
 			bgfx::setState(BGFX_STATE_RGB_WRITE|BGFX_STATE_ALPHA_WRITE);
 			screenSpaceQuad(currentShadowMapSizef, currentShadowMapSizef, s_flipV);
 			bgfx::submit(RENDERVIEW_HBLUR_0_ID, s_programs.m_hBlur[depthType]);
@@ -3192,20 +2832,12 @@ int _main_(int _argc, char** _argv)
 				{
 					const uint8_t viewId = RENDERVIEW_VBLUR_0_ID + jj;
 
-<<<<<<< HEAD
-					bgfx::setTexture(4, s_shadowMap[0], s_rtShadowMap[ii]);
-=======
 					bgfx::setTexture(4, s_shadowMap[0], bgfx::getTexture(s_rtShadowMap[ii]) );
->>>>>>> upstream/master
 					bgfx::setState(BGFX_STATE_RGB_WRITE|BGFX_STATE_ALPHA_WRITE);
 					screenSpaceQuad(currentShadowMapSizef, currentShadowMapSizef, s_flipV);
 					bgfx::submit(viewId, s_programs.m_vBlur[depthType]);
 
-<<<<<<< HEAD
-					bgfx::setTexture(4, s_shadowMap[0], s_rtBlur);
-=======
 					bgfx::setTexture(4, s_shadowMap[0], bgfx::getTexture(s_rtBlur) );
->>>>>>> upstream/master
 					bgfx::setState(BGFX_STATE_RGB_WRITE|BGFX_STATE_ALPHA_WRITE);
 					screenSpaceQuad(currentShadowMapSizef, currentShadowMapSizef, s_flipV);
 					bgfx::submit(viewId+1, s_programs.m_hBlur[depthType]);
@@ -3347,10 +2979,7 @@ int _main_(int _argc, char** _argv)
 					, mtxFloor
 					, *currentSmSettings->m_progDraw
 					, s_renderStates[RenderState::Default]
-<<<<<<< HEAD
-=======
 					, true
->>>>>>> upstream/master
 					);
 
 			// Bunny.
@@ -3362,10 +2991,7 @@ int _main_(int _argc, char** _argv)
 					, mtxBunny
 					, *currentSmSettings->m_progDraw
 					, s_renderStates[RenderState::Default]
-<<<<<<< HEAD
-=======
 					, true
->>>>>>> upstream/master
 					);
 
 			// Hollow cube.
@@ -3377,10 +3003,7 @@ int _main_(int _argc, char** _argv)
 					, mtxHollowcube
 					, *currentSmSettings->m_progDraw
 					, s_renderStates[RenderState::Default]
-<<<<<<< HEAD
-=======
 					, true
->>>>>>> upstream/master
 					);
 
 			// Cube.
@@ -3392,10 +3015,7 @@ int _main_(int _argc, char** _argv)
 					, mtxCube
 					, *currentSmSettings->m_progDraw
 					, s_renderStates[RenderState::Default]
-<<<<<<< HEAD
-=======
 					, true
->>>>>>> upstream/master
 					);
 
 			// Trees.
@@ -3409,10 +3029,7 @@ int _main_(int _argc, char** _argv)
 						, mtxTrees[ii]
 						, *currentSmSettings->m_progDraw
 						, s_renderStates[RenderState::Default]
-<<<<<<< HEAD
-=======
 						, true
->>>>>>> upstream/master
 						);
 			}
 
@@ -3455,11 +3072,7 @@ int _main_(int _argc, char** _argv)
 		// Draw depth rect.
 		if (settings.m_drawDepthBuffer)
 		{
-<<<<<<< HEAD
-			bgfx::setTexture(4, s_shadowMap[0], s_rtShadowMap[0]);
-=======
 			bgfx::setTexture(4, s_shadowMap[0], bgfx::getTexture(s_rtShadowMap[0]) );
->>>>>>> upstream/master
 			bgfx::setState(BGFX_STATE_RGB_WRITE|BGFX_STATE_ALPHA_WRITE);
 			screenSpaceQuad(currentShadowMapSizef, currentShadowMapSizef, s_flipV);
 			bgfx::submit(RENDERVIEW_DRAWDEPTH_0_ID, s_programs.m_drawDepth[depthType]);
@@ -3468,11 +3081,7 @@ int _main_(int _argc, char** _argv)
 			{
 				for (uint8_t ii = 1; ii < settings.m_numSplits; ++ii)
 				{
-<<<<<<< HEAD
-					bgfx::setTexture(4, s_shadowMap[0], s_rtShadowMap[ii]);
-=======
 					bgfx::setTexture(4, s_shadowMap[0], bgfx::getTexture(s_rtShadowMap[ii]) );
->>>>>>> upstream/master
 					bgfx::setState(BGFX_STATE_RGB_WRITE|BGFX_STATE_ALPHA_WRITE);
 					screenSpaceQuad(currentShadowMapSizef, currentShadowMapSizef, s_flipV);
 					bgfx::submit(RENDERVIEW_DRAWDEPTH_0_ID+ii, s_programs.m_drawDepth[depthType]);
@@ -3493,13 +3102,8 @@ int _main_(int _argc, char** _argv)
 
 				bgfx::TextureHandle fbtextures[] =
 				{
-<<<<<<< HEAD
-					bgfx::createTexture2D(currentShadowMapSize, currentShadowMapSize, 1, bgfx::TextureFormat::BGRA8, BGFX_TEXTURE_RT),
-					bgfx::createTexture2D(currentShadowMapSize, currentShadowMapSize, 1, bgfx::TextureFormat::D24S8),
-=======
 					bgfx::createTexture2D(currentShadowMapSize, currentShadowMapSize, false, 1, bgfx::TextureFormat::BGRA8, BGFX_TEXTURE_RT),
 					bgfx::createTexture2D(currentShadowMapSize, currentShadowMapSize, false, 1, bgfx::TextureFormat::D24S8, BGFX_TEXTURE_RT),
->>>>>>> upstream/master
 				};
 				s_rtShadowMap[0] = bgfx::createFrameBuffer(BX_COUNTOF(fbtextures), fbtextures, true);
 			}
@@ -3513,13 +3117,8 @@ int _main_(int _argc, char** _argv)
 
 						bgfx::TextureHandle fbtextures[] =
 						{
-<<<<<<< HEAD
-							bgfx::createTexture2D(currentShadowMapSize, currentShadowMapSize, 1, bgfx::TextureFormat::BGRA8, BGFX_TEXTURE_RT),
-							bgfx::createTexture2D(currentShadowMapSize, currentShadowMapSize, 1, bgfx::TextureFormat::D24S8),
-=======
 							bgfx::createTexture2D(currentShadowMapSize, currentShadowMapSize, false, 1, bgfx::TextureFormat::BGRA8, BGFX_TEXTURE_RT),
 							bgfx::createTexture2D(currentShadowMapSize, currentShadowMapSize, false, 1, bgfx::TextureFormat::D24S8, BGFX_TEXTURE_RT),
->>>>>>> upstream/master
 						};
 						s_rtShadowMap[ii] = bgfx::createFrameBuffer(BX_COUNTOF(fbtextures), fbtextures, true);
 					}

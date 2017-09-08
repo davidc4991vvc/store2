@@ -1,9 +1,6 @@
 // license:BSD-3-Clause
 // copyright-holders:David Haywood
-<<<<<<< HEAD
-=======
 // thanks-to:Richard Bush
->>>>>>> upstream/master
 /*******************************************************************************
  WWF Superstars (C) 1989 Technos Japan  (drivers/wwfsstar.c)
 ********************************************************************************
@@ -143,11 +140,7 @@ Notes:
 
 
  - About the bootleg set:
-<<<<<<< HEAD
-   It matches the US (ealier) set 99.99% just in 64K chunks.  The ONLY difference
-=======
    It matches the US (earlier) set 99.99% just in 64K chunks.  The ONLY difference
->>>>>>> upstream/master
    in the data is WWFS47.BIN has 5 bytes with a single bit stuck (0x00001000):
 
    Offset   WWFS47.BIN   24j6-0.112 (first 0x10000 bytes)
@@ -161,13 +154,6 @@ Notes:
 *******************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/m68000/m68000.h"
-#include "cpu/z80/z80.h"
-#include "sound/2151intf.h"
-#include "sound/okim6295.h"
-#include "includes/wwfsstar.h"
-=======
 #include "includes/wwfsstar.h"
 
 #include "cpu/m68000/m68000.h"
@@ -176,7 +162,6 @@ Notes:
 #include "sound/ym2151.h"
 #include "speaker.h"
 
->>>>>>> upstream/master
 
 #define MASTER_CLOCK    XTAL_20MHz
 #define CPU_CLOCK       MASTER_CLOCK / 2
@@ -202,11 +187,7 @@ static ADDRESS_MAP_START( main_map, AS_PROGRAM, 16, wwfsstar_state )
 	AM_RANGE(0x180004, 0x180007) AM_WRITE(scroll_w)
 	AM_RANGE(0x180006, 0x180007) AM_READ_PORT("P2")
 	AM_RANGE(0x180008, 0x180009) AM_READ_PORT("SYSTEM")
-<<<<<<< HEAD
-	AM_RANGE(0x180008, 0x180009) AM_WRITE(sound_w)
-=======
 	AM_RANGE(0x180008, 0x180009) AM_DEVWRITE8("soundlatch", generic_latch_8_device, write, 0x00ff)
->>>>>>> upstream/master
 	AM_RANGE(0x18000a, 0x18000b) AM_WRITE(flipscreen_w)
 	AM_RANGE(0x1c0000, 0x1c3fff) AM_RAM                             /* Work Ram */
 ADDRESS_MAP_END
@@ -216,11 +197,7 @@ static ADDRESS_MAP_START( sound_map, AS_PROGRAM, 8, wwfsstar_state )
 	AM_RANGE(0x8000, 0x87ff) AM_RAM
 	AM_RANGE(0x8800, 0x8801) AM_DEVREADWRITE("ymsnd", ym2151_device, read, write)
 	AM_RANGE(0x9800, 0x9800) AM_DEVREADWRITE("oki", okim6295_device, read, write)
-<<<<<<< HEAD
-	AM_RANGE(0xa000, 0xa000) AM_READ(soundlatch_byte_r)
-=======
 	AM_RANGE(0xa000, 0xa000) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -243,15 +220,6 @@ WRITE16_MEMBER(wwfsstar_state::scroll_w)
 	}
 }
 
-<<<<<<< HEAD
-WRITE16_MEMBER(wwfsstar_state::sound_w)
-{
-	soundlatch_byte_w(space, 1, data & 0xff);
-	m_audiocpu->set_input_line(INPUT_LINE_NMI, PULSE_LINE );
-}
-
-=======
->>>>>>> upstream/master
 WRITE16_MEMBER(wwfsstar_state::flipscreen_w)
 {
 	flip_screen_set(data & 1);
@@ -345,11 +313,7 @@ static INPUT_PORTS_START( wwfsstar )
 	PORT_BIT( 0x0080, IP_ACTIVE_LOW, IPT_START2 ) PORT_NAME("Button B (1P VS 2P - Buy-in)")
 
 	PORT_START("SYSTEM")
-<<<<<<< HEAD
-	PORT_BIT( 0x0001, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, wwfsstar_state, vblank_r, NULL) /* VBlank */
-=======
 	PORT_BIT( 0x0001, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, wwfsstar_state, vblank_r, nullptr) /* VBlank */
->>>>>>> upstream/master
 	PORT_BIT( 0x0002, IP_ACTIVE_LOW, IPT_COIN1 )
 	PORT_BIT( 0x0004, IP_ACTIVE_LOW, IPT_COIN2 )
 	PORT_BIT( 0x0008, IP_ACTIVE_LOW, IPT_SERVICE1 )
@@ -447,11 +411,7 @@ GFXDECODE_END
  Machine Driver(s)
 *******************************************************************************/
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( wwfsstar, wwfsstar_state )
-=======
 static MACHINE_CONFIG_START( wwfsstar )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, CPU_CLOCK)
@@ -474,22 +434,15 @@ static MACHINE_CONFIG_START( wwfsstar )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
-<<<<<<< HEAD
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 	MCFG_GENERIC_LATCH_DATA_PENDING_CB(INPUTLINE("audiocpu", INPUT_LINE_NMI))
 
->>>>>>> upstream/master
 	MCFG_YM2151_ADD("ymsnd", XTAL_3_579545MHz)
 	MCFG_YM2151_IRQ_HANDLER(INPUTLINE("audiocpu", 0))
 	MCFG_SOUND_ROUTE(0, "lspeaker", 0.45)
 	MCFG_SOUND_ROUTE(1, "rspeaker", 0.45)
 
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki", XTAL_1_056MHz, OKIM6295_PIN7_HIGH)
-=======
 	MCFG_OKIM6295_ADD("oki", XTAL_1_056MHz, PIN7_HIGH)
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 0.47)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 0.47)
 MACHINE_CONFIG_END
@@ -526,11 +479,7 @@ ROM_START( wwfsstar )
 	ROM_LOAD( "24j6-0.112", 0x40000, 0x40000, CRC(77932ef8) SHA1(a6ee3fc05ca0001d5181b69f2b754170ba7a814a) )
 ROM_END
 
-<<<<<<< HEAD
-ROM_START( wwfsstaru )
-=======
 ROM_START( wwfsstaru7 )
->>>>>>> upstream/master
 	ROM_REGION( 0x40000, "maincpu", 0 ) /* Main CPU  (68000) */
 	ROM_LOAD16_BYTE( "24ac-06.34", 0x00000, 0x20000, CRC(924a50e4) SHA1(e163ffc6bada5db0d979523dde77355acedcd456) )
 	ROM_LOAD16_BYTE( "24ad-07.35", 0x00001, 0x20000, CRC(9a76a50e) SHA1(adde96956a7602ae1ece797732e8295dc176b071) )
@@ -558,9 +507,6 @@ ROM_START( wwfsstaru7 )
 	ROM_LOAD( "24j6-0.112", 0x40000, 0x40000, CRC(77932ef8) SHA1(a6ee3fc05ca0001d5181b69f2b754170ba7a814a) )
 ROM_END
 
-<<<<<<< HEAD
-ROM_START( wwfsstarua )
-=======
 ROM_START( wwfsstaru6 )
 	ROM_REGION( 0x40000, "maincpu", 0 ) /* Main CPU  (68000) */
 	ROM_LOAD16_BYTE( "24ac-06.34", 0x00000, 0x20000, CRC(924a50e4) SHA1(e163ffc6bada5db0d979523dde77355acedcd456) )
@@ -590,7 +536,6 @@ ROM_START( wwfsstaru6 )
 ROM_END
 
 ROM_START( wwfsstaru4 )
->>>>>>> upstream/master
 	ROM_REGION( 0x40000, "maincpu", 0 ) /* Main CPU  (68000) */
 	ROM_LOAD16_BYTE( "24ac-04.34", 0x00000, 0x20000, CRC(ee9b850e) SHA1(6b634ad98b6104b9e860d05e73f3a139c2a19a78) )
 	ROM_LOAD16_BYTE( "24ad-04.35", 0x00001, 0x20000, CRC(057c2eef) SHA1(6eb5f60fa51b3e7f17fc6a81182a01ea406febea) )
@@ -711,15 +656,6 @@ ROM_START( wwfsstarb )
 	ROM_LOAD( "wwfs44.bin", 0x70000, 0x10000, CRC(4f965fa9) SHA1(4312838e216d2a90fe413d027f46d77c74a0aa07) )
 ROM_END
 
-<<<<<<< HEAD
-
-
-GAME( 1989, wwfsstar,   0,        wwfsstar, wwfsstar, driver_device,  0, ROT0, "Technos Japan", "WWF Superstars (Europe)", MACHINE_SUPPORTS_SAVE )
-GAME( 1989, wwfsstaru,  wwfsstar, wwfsstar, wwfsstar, driver_device,  0, ROT0, "Technos Japan", "WWF Superstars (US, Newer)", MACHINE_SUPPORTS_SAVE )
-GAME( 1989, wwfsstarua, wwfsstar, wwfsstar, wwfsstar, driver_device,  0, ROT0, "Technos Japan", "WWF Superstars (US)", MACHINE_SUPPORTS_SAVE )
-GAME( 1989, wwfsstarj,  wwfsstar, wwfsstar, wwfsstar, driver_device,  0, ROT0, "Technos Japan", "WWF Superstars (Japan)", MACHINE_SUPPORTS_SAVE )
-GAME( 1989, wwfsstarb,  wwfsstar, wwfsstar, wwfsstar, driver_device,  0, ROT0, "bootleg",       "WWF Superstars (bootleg)", MACHINE_SUPPORTS_SAVE )
-=======
 // There is only 1 ROM difference between US revision 6 & 7.  Rev 7 has a patch to the way the 2nd coin slot works
 
 
@@ -729,4 +665,3 @@ GAME( 1989, wwfsstaru6, wwfsstar, wwfsstar, wwfsstar, wwfsstar_state, 0, ROT0, "
 GAME( 1989, wwfsstaru4, wwfsstar, wwfsstar, wwfsstar, wwfsstar_state, 0, ROT0, "Technos Japan", "WWF Superstars (US revision 4)", MACHINE_SUPPORTS_SAVE )
 GAME( 1989, wwfsstarj,  wwfsstar, wwfsstar, wwfsstar, wwfsstar_state, 0, ROT0, "Technos Japan", "WWF Superstars (Japan)",     MACHINE_SUPPORTS_SAVE )
 GAME( 1989, wwfsstarb,  wwfsstar, wwfsstar, wwfsstar, wwfsstar_state, 0, ROT0, "bootleg",       "WWF Superstars (bootleg)",   MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

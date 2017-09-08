@@ -119,8 +119,4 @@ void BiquadFilter_Filter( BiquadFilter *filter, float *inputs, float *outputs, i
 	filter->xn2 = xn2;
 	filter->yn1 = yn1;
 	filter->yn2 = yn2;		
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> upstream/master

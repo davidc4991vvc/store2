@@ -1,24 +1,3 @@
-<<<<<<< HEAD
-
-#include "nlm_opamp.h"
-
-#include "analog/nld_opamps.h"
-#include "devices/nld_system.h"
-
-/*
- *   Generic layout with 4 opamps, VCC on pint 4 and GND on pin 11
- */
-
-NETLIST_START(opamp_layout_4_4_11)
-	DIPPINS(      /*   +--------------+   */
-		A.OUT,    /*   |1     ++    14|   */ D.OUT,
-		A.MINUS,  /*   |2           13|   */ D.MINUS,
-		A.PLUS,   /*   |3           12|   */ D.PLUS,
-		A.VCC,    /*   |4           11|   */ A.GND,
-		B.PLUS,   /*   |5           10|   */ C.PLUS,
-		B.MINUS,  /*   |6            9|   */ C.MINUS,
-		B.OUT,    /*   |7            8|   */ C.OUT
-=======
 // license:GPL-2.0+
 // copyright-holders:Couriersud
 #include "nlm_opamp.h"
@@ -37,7 +16,6 @@ static NETLIST_START(opamp_layout_4_4_11)
 		B.PLUS,     /*   |5           10|   */ C.PLUS,
 		B.MINUS,    /*   |6            9|   */ C.MINUS,
 		B.OUT,      /*   |7            8|   */ C.OUT
->>>>>>> upstream/master
 					/*   +--------------+   */
 	)
 	NET_C(A.GND, B.GND, C.GND, D.GND)
@@ -45,17 +23,6 @@ static NETLIST_START(opamp_layout_4_4_11)
 NETLIST_END()
 
 /*
-<<<<<<< HEAD
- *   Generic layout with 2 opamps, VCC on pint 8 and GND on pin 4
- */
-
-NETLIST_START(opamp_layout_2_8_4)
-	DIPPINS(      /*   +--------------+   */
-		A.OUT,    /*   |1     ++     8|   */ A.VCC,
-		A.MINUS,  /*   |2            7|   */ B.OUT,
-		A.PLUS,   /*   |3            6|   */ B.MINUS,
-		A.GND,    /*   |4            5|   */ B.PLUS
-=======
  *   Generic layout with 2 opamps, VCC on pin 8 and GND on pin 4
  */
 
@@ -65,16 +32,12 @@ static NETLIST_START(opamp_layout_2_8_4)
 		A.MINUS,    /*   |2            7|   */ B.OUT,
 		A.PLUS,     /*   |3            6|   */ B.MINUS,
 		A.GND,      /*   |4            5|   */ B.PLUS
->>>>>>> upstream/master
 					/*   +--------------+   */
 	)
 	NET_C(A.GND, B.GND)
 	NET_C(A.VCC, B.VCC)
 NETLIST_END()
 
-<<<<<<< HEAD
-NETLIST_START(MB3614_DIP)
-=======
 /*
  *   Generic layout with 2 opamps, VCC+ on pins 9/13,  VCC- on pin 4 and compensation
  */
@@ -155,7 +118,6 @@ static NETLIST_START(opamp_layout_1_11_6)
 NETLIST_END()
 
 static NETLIST_START(MB3614_DIP)
->>>>>>> upstream/master
 	OPAMP(A, "MB3614")
 	OPAMP(B, "MB3614")
 	OPAMP(C, "MB3614")
@@ -165,11 +127,7 @@ static NETLIST_START(MB3614_DIP)
 
 NETLIST_END()
 
-<<<<<<< HEAD
-NETLIST_START(LM324_DIP)
-=======
 static NETLIST_START(LM324_DIP)
->>>>>>> upstream/master
 	OPAMP(A, "LM324")
 	OPAMP(B, "LM324")
 	OPAMP(C, "LM324")
@@ -179,11 +137,7 @@ static NETLIST_START(LM324_DIP)
 
 NETLIST_END()
 
-<<<<<<< HEAD
-NETLIST_START(LM358_DIP)
-=======
 static NETLIST_START(LM358_DIP)
->>>>>>> upstream/master
 	OPAMP(A, "LM358")
 	OPAMP(B, "LM358")
 
@@ -191,11 +145,6 @@ static NETLIST_START(LM358_DIP)
 
 NETLIST_END()
 
-<<<<<<< HEAD
-NETLIST_START(OPAMP_lib)
-	LOCAL_LIB_ENTRY(opamp_layout_4_4_11)
-	LOCAL_LIB_ENTRY(opamp_layout_2_8_4)
-=======
 static NETLIST_START(UA741_DIP8)
 	OPAMP(A, "UA741")
 
@@ -273,30 +222,22 @@ NETLIST_START(OPAMP_lib)
 	LOCAL_LIB_ENTRY(opamp_layout_1_7_4)
 	LOCAL_LIB_ENTRY(opamp_layout_1_8_5)
 	LOCAL_LIB_ENTRY(opamp_layout_1_11_6)
->>>>>>> upstream/master
 
 	NET_MODEL("LM324       OPAMP(TYPE=3 VLH=2.0 VLL=0.2 FPF=5 UGF=500k SLEW=0.3M RI=1000k RO=50 DAB=0.00075)")
 	NET_MODEL("LM358       OPAMP(TYPE=3 VLH=2.0 VLL=0.2 FPF=5 UGF=500k SLEW=0.3M RI=1000k RO=50 DAB=0.001)")
 	NET_MODEL("MB3614      OPAMP(TYPE=3 VLH=1.4 VLL=0.02 FPF=2 UGF=500k SLEW=0.6M RI=1000k RO=50 DAB=0.0002)")
-<<<<<<< HEAD
-=======
 	NET_MODEL("UA741       OPAMP(TYPE=3 VLH=1.0 VLL=1.0 FPF=5 UGF=1000k SLEW=0.5M RI=2000k RO=75 DAB=0.0017)")
 	NET_MODEL("LM747       OPAMP(TYPE=3 VLH=1.0 VLL=1.0 FPF=5 UGF=1000k SLEW=0.5M RI=2000k RO=50 DAB=0.0017)")
 	NET_MODEL("LM747A      OPAMP(TYPE=3 VLH=2.0 VLL=2.0 FPF=5 UGF=1000k SLEW=0.7M RI=6000k RO=50 DAB=0.0015)")
->>>>>>> upstream/master
 
 	LOCAL_LIB_ENTRY(MB3614_DIP)
 	LOCAL_LIB_ENTRY(LM324_DIP)
 	LOCAL_LIB_ENTRY(LM358_DIP)
-<<<<<<< HEAD
-
-=======
 	LOCAL_LIB_ENTRY(UA741_DIP8)
 	LOCAL_LIB_ENTRY(UA741_DIP10)
 	LOCAL_LIB_ENTRY(UA741_DIP14)
 	LOCAL_LIB_ENTRY(LM747_DIP)
 	LOCAL_LIB_ENTRY(LM747A_DIP)
 	LOCAL_LIB_ENTRY(LM3900)
->>>>>>> upstream/master
 
 NETLIST_END()

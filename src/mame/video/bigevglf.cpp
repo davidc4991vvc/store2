@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-// license:???
-=======
 // license:GPL-2.0+
->>>>>>> upstream/master
 // copyright-holders:Jarek Burczynski, Tomasz Slanina
 /***************************************************************************
 
@@ -41,11 +37,7 @@ WRITE8_MEMBER(bigevglf_state::bigevglf_vidram_addr_w)
 
 WRITE8_MEMBER(bigevglf_state::bigevglf_vidram_w)
 {
-<<<<<<< HEAD
-	UINT32 x, y, o;
-=======
 	uint32_t x, y, o;
->>>>>>> upstream/master
 	o = m_vidram_bank + offset;
 	m_vidram[o + 0x10000 * m_plane_selected] = data;
 	y = o >>8;
@@ -69,15 +61,9 @@ void bigevglf_state::video_start()
 	save_item(NAME(m_tmp_bitmap[2]));
 	save_item(NAME(m_tmp_bitmap[3]));
 
-<<<<<<< HEAD
-	m_vidram = auto_alloc_array(machine(), UINT8, 0x100 * 0x100 * 4);
-
-	save_pointer(NAME(m_vidram), 0x100 * 0x100 * 4);
-=======
 	m_vidram = std::make_unique<uint8_t[]>(0x100 * 0x100 * 4);
 
 	save_pointer(NAME(m_vidram.get()), 0x100 * 0x100 * 4);
->>>>>>> upstream/master
 }
 
 void bigevglf_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect )
@@ -98,11 +84,7 @@ void bigevglf_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &clipre
 	}
 }
 
-<<<<<<< HEAD
-UINT32 bigevglf_state::screen_update_bigevglf(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t bigevglf_state::screen_update_bigevglf(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	copybitmap(bitmap, m_tmp_bitmap[m_plane_visible], 0, 0, 0, 0, cliprect);
 	draw_sprites(bitmap, cliprect);

@@ -48,15 +48,6 @@ K051316_CB_MEMBER(overdriv_state::zoom_callback_2)
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-UINT32 overdriv_state::screen_update_overdriv(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-{
-	m_sprite_colorbase  = m_k053251->get_palette_index(K053251_CI0);
-	m_road_colorbase[1] = m_k053251->get_palette_index(K053251_CI1);
-	m_road_colorbase[0] = m_k053251->get_palette_index(K053251_CI2);
-	m_zoom_colorbase[1] = m_k053251->get_palette_index(K053251_CI3);
-	m_zoom_colorbase[0] = m_k053251->get_palette_index(K053251_CI4);
-=======
 uint32_t overdriv_state::screen_update_overdriv(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
 	m_sprite_colorbase  = m_k053251->get_palette_index(k053251_device::CI0);
@@ -64,7 +55,6 @@ uint32_t overdriv_state::screen_update_overdriv(screen_device &screen, bitmap_in
 	m_road_colorbase[0] = m_k053251->get_palette_index(k053251_device::CI2);
 	m_zoom_colorbase[1] = m_k053251->get_palette_index(k053251_device::CI3);
 	m_zoom_colorbase[0] = m_k053251->get_palette_index(k053251_device::CI4);
->>>>>>> upstream/master
 
 	screen.priority().fill(0, cliprect);
 

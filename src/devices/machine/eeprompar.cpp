@@ -36,8 +36,6 @@
     datasheet, for example), and the /WE must be held low for the entire
     write/erase duration in order to guarantee the data is written.
 
-<<<<<<< HEAD
-=======
     Though it is possible for the /OE line to be strobed directly upon
     read accesses, it may also be controlled independently of /CS. For the
     sake of convenience, the device here can also be configured to emulate
@@ -46,20 +44,16 @@
     /OE low to lock the EEPROM after each byte of data is written and upon
     reset, with extra writes required to unlock the EEPROM in between.
 
->>>>>>> upstream/master
 ***************************************************************************/
 
 #include "emu.h"
 #include "machine/eeprompar.h"
 
-<<<<<<< HEAD
-=======
 //#define VERBOSE 1
 #include "logmacro.h"
 
 // set this to 1 to break Prop Cycle (28C64 page write emulation needed)
 #define EMULATE_POLLING 0
->>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -70,13 +64,8 @@
 //  eeprom_parallel_base_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-eeprom_parallel_base_device::eeprom_parallel_base_device(const machine_config &mconfig, device_type devtype, const char *name, const char *tag, device_t *owner, const char *shortname, const char *file)
-	: eeprom_base_device(mconfig, devtype, name, tag, owner, shortname, file)
-=======
 eeprom_parallel_base_device::eeprom_parallel_base_device(const machine_config &mconfig, device_type devtype, const char *tag, device_t *owner)
 	: eeprom_base_device(mconfig, devtype, tag, owner)
->>>>>>> upstream/master
 {
 }
 
@@ -112,22 +101,15 @@ void eeprom_parallel_base_device::device_reset()
 //  eeprom_parallel_28xx_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-eeprom_parallel_28xx_device::eeprom_parallel_28xx_device(const machine_config &mconfig, device_type devtype, const char *name, const char *tag, device_t *owner, const char *shortname, const char *file)
-	: eeprom_parallel_base_device(mconfig, devtype, name, tag, owner, shortname, file)
-=======
 eeprom_parallel_28xx_device::eeprom_parallel_28xx_device(const machine_config &mconfig, device_type devtype, const char *tag, device_t *owner)
 	: eeprom_parallel_base_device(mconfig, devtype, tag, owner),
 		m_lock_after_write(false),
 		m_oe(-1)
->>>>>>> upstream/master
 {
 }
 
 
 //-------------------------------------------------
-<<<<<<< HEAD
-=======
 //  static_set_lock_after_write - configuration
 //  helper to enable simulation of external
 //  flip-flop hooked to lock EEPROM after writes
@@ -167,15 +149,11 @@ void eeprom_parallel_28xx_device::device_reset()
 
 
 //-------------------------------------------------
->>>>>>> upstream/master
 //  read/write - read/write handlers
 //-------------------------------------------------
 
 WRITE8_MEMBER(eeprom_parallel_28xx_device::write)
 {
-<<<<<<< HEAD
-	eeprom_base_device::write(offset, data);
-=======
 	if (m_oe == 0)
 	{
 		// Master Boy writes every byte twice, resetting a control line in between, for some reason not clear
@@ -189,17 +167,10 @@ WRITE8_MEMBER(eeprom_parallel_28xx_device::write)
 		if (m_lock_after_write)
 			m_oe = 0;
 	}
->>>>>>> upstream/master
 }
 
 READ8_MEMBER(eeprom_parallel_28xx_device::read)
 {
-<<<<<<< HEAD
-	return eeprom_base_device::read(offset);
-}
-
-
-=======
 	if (m_oe == 1)
 	{
 		LOG("%s: Read attempted while /OE inactive (offset = %X)\n", machine().describe_context(), offset);
@@ -237,7 +208,6 @@ WRITE8_MEMBER(eeprom_parallel_28xx_device::unlock_write) { oe_w(1); }
 WRITE16_MEMBER(eeprom_parallel_28xx_device::unlock_write) { oe_w(1); }
 WRITE32_MEMBER(eeprom_parallel_28xx_device::unlock_write) { oe_w(1); }
 
->>>>>>> upstream/master
 
 //**************************************************************************
 //  DERIVED TYPES
@@ -245,14 +215,6 @@ WRITE32_MEMBER(eeprom_parallel_28xx_device::unlock_write) { oe_w(1); }
 
 // macro for defining a new device class
 #define DEFINE_PARALLEL_EEPROM_DEVICE(_baseclass, _lowercase, _uppercase, _bits, _cells) \
-<<<<<<< HEAD
-eeprom_parallel_##_lowercase##_device::eeprom_parallel_##_lowercase##_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) \
-	: eeprom_parallel_##_baseclass##_device(mconfig, EEPROM_PARALLEL_##_uppercase, "Parallel EEPROM " #_uppercase " (" #_cells "x" #_bits ")", tag, owner, #_lowercase, __FILE__) \
-{ \
-	static_set_size(*this, _cells, _bits); \
-} \
-const device_type EEPROM_PARALLEL_##_uppercase = &device_creator<eeprom_parallel_##_lowercase##_device>;
-=======
 eeprom_parallel_##_lowercase##_device::eeprom_parallel_##_lowercase##_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) \
 	: eeprom_parallel_##_baseclass##_device(mconfig, EEPROM_PARALLEL_##_uppercase, tag, owner) \
 { \
@@ -260,7 +222,6 @@ eeprom_parallel_##_lowercase##_device::eeprom_parallel_##_lowercase##_device(con
 } \
 DEFINE_DEVICE_TYPE(EEPROM_PARALLEL_##_uppercase, eeprom_parallel_##_lowercase##_device, #_lowercase, "Parallel EEPROM " #_uppercase " (" #_cells "x" #_bits ")")
 
->>>>>>> upstream/master
 // standard 28XX class of 8-bit EEPROMs
 DEFINE_PARALLEL_EEPROM_DEVICE(28xx, 2804, 2804, 8, 512)
 DEFINE_PARALLEL_EEPROM_DEVICE(28xx, 2816, 2816, 8, 2048)

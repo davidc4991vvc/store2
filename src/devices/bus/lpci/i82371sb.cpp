@@ -24,20 +24,6 @@
     IMPLEMENTATION
 ***************************************************************************/
 
-<<<<<<< HEAD
-const device_type I82371SB = &device_creator<i82371sb_device>;
-
-
-i82371sb_device::i82371sb_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-		: southbridge_device(mconfig, I82371SB, "Intel 82371SB", tag, owner, clock, "i82371sb", __FILE__),
-		pci_device_interface( mconfig, *this )
-{
-}
-
-UINT32 i82371sb_device::pci_isa_r(device_t *busdevice,int offset, UINT32 mem_mask)
-{
-	UINT32 result = m_regs[0][offset];
-=======
 DEFINE_DEVICE_TYPE(I82371SB, i82371sb_device, "i82371sb", "Intel 82371SB")
 
 
@@ -51,18 +37,13 @@ i82371sb_device::i82371sb_device(const machine_config &mconfig, const char *tag,
 uint32_t i82371sb_device::pci_isa_r(device_t *busdevice,int offset, uint32_t mem_mask)
 {
 	uint32_t result = m_regs[0][offset];
->>>>>>> upstream/master
 
 	//logerror("i82371sb_pci_isa_r, offset = %02x, mem_mask = %08x\n", offset, mem_mask);
 
 	return result;
 }
 
-<<<<<<< HEAD
-void i82371sb_device::pci_isa_w(device_t *busdevice, int offset, UINT32 data, UINT32 mem_mask)
-=======
 void i82371sb_device::pci_isa_w(device_t *busdevice, int offset, uint32_t data, uint32_t mem_mask)
->>>>>>> upstream/master
 {
 	//logerror("i82371sb_pci_isa_w, offset = %02x, data = %08x, mem_mask = %08x\n", offset, data, mem_mask);
 
@@ -81,16 +62,6 @@ void i82371sb_device::pci_isa_w(device_t *busdevice, int offset, uint32_t data, 
 	}
 }
 
-<<<<<<< HEAD
-UINT32 i82371sb_device::pci_ide_r(device_t *busdevice, int offset, UINT32 mem_mask)
-{
-	//logerror("i82371sb_pci_ide_r, offset = %02x, mem_mask = %08x\n", offset, mem_mask);
-	UINT32 result = m_regs[1][offset];
-	return result;
-}
-
-void i82371sb_device::pci_ide_w(device_t *busdevice, int offset, UINT32 data, UINT32 mem_mask)
-=======
 uint32_t i82371sb_device::pci_ide_r(device_t *busdevice, int offset, uint32_t mem_mask)
 {
 	//logerror("i82371sb_pci_ide_r, offset = %02x, mem_mask = %08x\n", offset, mem_mask);
@@ -99,7 +70,6 @@ uint32_t i82371sb_device::pci_ide_r(device_t *busdevice, int offset, uint32_t me
 }
 
 void i82371sb_device::pci_ide_w(device_t *busdevice, int offset, uint32_t data, uint32_t mem_mask)
->>>>>>> upstream/master
 {
 	//logerror("i82371sb_pci_ide_w, offset = %02x, data = %08x, mem_mask = %08x\n", offset, data, mem_mask);
 
@@ -118,26 +88,16 @@ void i82371sb_device::pci_ide_w(device_t *busdevice, int offset, uint32_t data, 
 	}
 }
 
-<<<<<<< HEAD
-UINT32 i82371sb_device::pci_usb_r(device_t *busdevice, int offset, UINT32 mem_mask)
-{
-	UINT32 result = m_regs[2][offset];
-=======
 uint32_t i82371sb_device::pci_usb_r(device_t *busdevice, int offset, uint32_t mem_mask)
 {
 	uint32_t result = m_regs[2][offset];
->>>>>>> upstream/master
 
 	//logerror("i82371sb_pci_usb_r, offset = %02x, mem_mask = %08x\n", offset, mem_mask);
 
 	return result;
 }
 
-<<<<<<< HEAD
-void i82371sb_device::pci_usb_w(device_t *busdevice, int offset, UINT32 data, UINT32 mem_mask)
-=======
 void i82371sb_device::pci_usb_w(device_t *busdevice, int offset, uint32_t data, uint32_t mem_mask)
->>>>>>> upstream/master
 {
 	//logerror("i82371sb_pci_usb_w, offset = %02x, data = %08x, mem_mask = %08x\n", offset, data, mem_mask);
 
@@ -156,11 +116,7 @@ void i82371sb_device::pci_usb_w(device_t *busdevice, int offset, uint32_t data, 
 	}
 }
 
-<<<<<<< HEAD
-UINT32 i82371sb_device::pci_read(pci_bus_device *pcibus, int function, int offset, UINT32 mem_mask)
-=======
 uint32_t i82371sb_device::pci_read(pci_bus_device *pcibus, int function, int offset, uint32_t mem_mask)
->>>>>>> upstream/master
 {
 	switch (function)
 	{
@@ -174,11 +130,7 @@ uint32_t i82371sb_device::pci_read(pci_bus_device *pcibus, int function, int off
 	return 0;
 }
 
-<<<<<<< HEAD
-void i82371sb_device::pci_write(pci_bus_device *pcibus, int function, int offset, UINT32 data, UINT32 mem_mask)
-=======
 void i82371sb_device::pci_write(pci_bus_device *pcibus, int function, int offset, uint32_t data, uint32_t mem_mask)
->>>>>>> upstream/master
 {
 	switch (function)
 	{
@@ -196,10 +148,7 @@ void i82371sb_device::pci_write(pci_bus_device *pcibus, int function, int offset
 void i82371sb_device::device_start()
 {
 	southbridge_device::device_start();
-<<<<<<< HEAD
-=======
 	m_boot_state_hook.resolve_safe();
->>>>>>> upstream/master
 	/* setup save states */
 	save_item(NAME(m_regs));
 }
@@ -232,11 +181,8 @@ void i82371sb_device::device_reset()
 	m_regs[2][0x08] = 0x0c030000;
 	m_regs[2][0x0c] = 0x00000000;
 }
-<<<<<<< HEAD
-=======
 
 void i82371sb_device::port80_debug_write(uint8_t value)
 {
 	m_boot_state_hook((offs_t)0, value);
 }
->>>>>>> upstream/master

@@ -6,10 +6,7 @@
 
 **********************************************************************/
 
-<<<<<<< HEAD
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #include "c8280.h"
 
 
@@ -39,11 +36,7 @@ enum
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type C8280 = &device_creator<c8280_t>;
-=======
 DEFINE_DEVICE_TYPE(C8280, c8280_device, "c8280", "Commodore 8280")
->>>>>>> upstream/master
 
 
 //-------------------------------------------------
@@ -70,11 +63,7 @@ ROM_END
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const rom_entry *c8280_t::device_rom_region() const
-=======
 const tiny_rom_entry *c8280_device::device_rom_region() const
->>>>>>> upstream/master
 {
 	return ROM_NAME( c8280 );
 }
@@ -84,19 +73,11 @@ const tiny_rom_entry *c8280_device::device_rom_region() const
 //  ADDRESS_MAP( c8280_main_mem )
 //-------------------------------------------------
 
-<<<<<<< HEAD
-static ADDRESS_MAP_START( c8280_main_mem, AS_PROGRAM, 8, c8280_t )
-	AM_RANGE(0x0000, 0x007f) AM_MIRROR(0x100) AM_DEVICE(M6532_0_TAG, mos6532_t, ram_map)
-	AM_RANGE(0x0080, 0x00ff) AM_MIRROR(0x100) AM_DEVICE(M6532_1_TAG, mos6532_t, ram_map)
-	AM_RANGE(0x0200, 0x021f) AM_MIRROR(0xd60) AM_DEVICE(M6532_0_TAG, mos6532_t, io_map)
-	AM_RANGE(0x0280, 0x029f) AM_MIRROR(0xd60) AM_DEVICE(M6532_1_TAG, mos6532_t, io_map)
-=======
 static ADDRESS_MAP_START( c8280_main_mem, AS_PROGRAM, 8, c8280_device )
 	AM_RANGE(0x0000, 0x007f) AM_MIRROR(0x100) AM_DEVICE(M6532_0_TAG, mos6532_new_device, ram_map)
 	AM_RANGE(0x0080, 0x00ff) AM_MIRROR(0x100) AM_DEVICE(M6532_1_TAG, mos6532_new_device, ram_map)
 	AM_RANGE(0x0200, 0x021f) AM_MIRROR(0xd60) AM_DEVICE(M6532_0_TAG, mos6532_new_device, io_map)
 	AM_RANGE(0x0280, 0x029f) AM_MIRROR(0xd60) AM_DEVICE(M6532_1_TAG, mos6532_new_device, io_map)
->>>>>>> upstream/master
 	AM_RANGE(0x1000, 0x13ff) AM_MIRROR(0xc00) AM_RAM AM_SHARE("share1")
 	AM_RANGE(0x2000, 0x23ff) AM_MIRROR(0xc00) AM_RAM AM_SHARE("share2")
 	AM_RANGE(0x3000, 0x33ff) AM_MIRROR(0xc00) AM_RAM AM_SHARE("share3")
@@ -109,17 +90,10 @@ ADDRESS_MAP_END
 //  ADDRESS_MAP( c8280_fdc_mem )
 //-------------------------------------------------
 
-<<<<<<< HEAD
-static ADDRESS_MAP_START( c8280_fdc_mem, AS_PROGRAM, 8, c8280_t )
-	ADDRESS_MAP_GLOBAL_MASK(0x1fff)
-	AM_RANGE(0x0000, 0x007f) AM_MIRROR(0x300) AM_RAM
-	AM_RANGE(0x0080, 0x0083) AM_MIRROR(0x37c) AM_DEVREADWRITE(WD1797_TAG, fd1797_t, read, write)
-=======
 static ADDRESS_MAP_START( c8280_fdc_mem, AS_PROGRAM, 8, c8280_device )
 	ADDRESS_MAP_GLOBAL_MASK(0x1fff)
 	AM_RANGE(0x0000, 0x007f) AM_MIRROR(0x300) AM_RAM
 	AM_RANGE(0x0080, 0x0083) AM_MIRROR(0x37c) AM_DEVREADWRITE(WD1797_TAG, fd1797_device, read, write)
->>>>>>> upstream/master
 	AM_RANGE(0x0400, 0x07ff) AM_RAM AM_SHARE("share1")
 	AM_RANGE(0x0800, 0x0bff) AM_RAM AM_SHARE("share2")
 	AM_RANGE(0x0c00, 0x0fff) AM_RAM AM_SHARE("share3")
@@ -133,11 +107,7 @@ ADDRESS_MAP_END
 //  riot6532 0
 //-------------------------------------------------
 
-<<<<<<< HEAD
-READ8_MEMBER( c8280_t::dio_r )
-=======
 READ8_MEMBER( c8280_device::dio_r )
->>>>>>> upstream/master
 {
 	/*
 
@@ -157,11 +127,7 @@ READ8_MEMBER( c8280_device::dio_r )
 	return m_bus->dio_r();
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER( c8280_t::dio_w )
-=======
 WRITE8_MEMBER( c8280_device::dio_w )
->>>>>>> upstream/master
 {
 	/*
 
@@ -186,11 +152,7 @@ WRITE8_MEMBER( c8280_device::dio_w )
 //  riot6532 1
 //-------------------------------------------------
 
-<<<<<<< HEAD
-READ8_MEMBER( c8280_t::riot1_pa_r )
-=======
 READ8_MEMBER( c8280_device::riot1_pa_r )
->>>>>>> upstream/master
 {
 	/*
 
@@ -207,11 +169,7 @@ READ8_MEMBER( c8280_device::riot1_pa_r )
 
 	*/
 
-<<<<<<< HEAD
-	UINT8 data = 0;
-=======
 	uint8_t data = 0;
->>>>>>> upstream/master
 
 	// end or identify in
 	data |= m_bus->eoi_r() << 5;
@@ -225,11 +183,7 @@ READ8_MEMBER( c8280_device::riot1_pa_r )
 	return data;
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER( c8280_t::riot1_pa_w )
-=======
 WRITE8_MEMBER( c8280_device::riot1_pa_w )
->>>>>>> upstream/master
 {
 	/*
 
@@ -264,11 +218,7 @@ WRITE8_MEMBER( c8280_device::riot1_pa_w )
 	update_ieee_signals();
 }
 
-<<<<<<< HEAD
-READ8_MEMBER( c8280_t::riot1_pb_r )
-=======
 READ8_MEMBER( c8280_device::riot1_pb_r )
->>>>>>> upstream/master
 {
 	/*
 
@@ -285,11 +235,7 @@ READ8_MEMBER( c8280_device::riot1_pb_r )
 
 	*/
 
-<<<<<<< HEAD
-	UINT8 data = 0;
-=======
 	uint8_t data = 0;
->>>>>>> upstream/master
 
 	// device number selection
 	data |= m_slot->get_address() - 8;
@@ -303,11 +249,7 @@ READ8_MEMBER( c8280_device::riot1_pb_r )
 	return data;
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER( c8280_t::riot1_pb_w )
-=======
 WRITE8_MEMBER( c8280_device::riot1_pb_w )
->>>>>>> upstream/master
 {
 	/*
 
@@ -325,15 +267,6 @@ WRITE8_MEMBER( c8280_device::riot1_pb_w )
 	*/
 
 	// activity led 1
-<<<<<<< HEAD
-	output_set_led_value(LED_ACT1, BIT(data, 3));
-
-	// activity led 0
-	output_set_led_value(LED_ACT0, BIT(data, 4));
-
-	// error led
-	output_set_led_value(LED_ERR, BIT(data, 5));
-=======
 	machine().output().set_led_value(LED_ACT1, BIT(data, 3));
 
 	// activity led 0
@@ -341,41 +274,18 @@ WRITE8_MEMBER( c8280_device::riot1_pb_w )
 
 	// error led
 	machine().output().set_led_value(LED_ERR, BIT(data, 5));
->>>>>>> upstream/master
 }
 
 static SLOT_INTERFACE_START( c8280_floppies )
 	SLOT_INTERFACE( "8dsdd", FLOPPY_8_DSDD )
 SLOT_INTERFACE_END
 
-<<<<<<< HEAD
-FLOPPY_FORMATS_MEMBER( c8280_t::floppy_formats )
-=======
 FLOPPY_FORMATS_MEMBER( c8280_device::floppy_formats )
->>>>>>> upstream/master
 	FLOPPY_C8280_FORMAT
 FLOPPY_FORMATS_END
 
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  MACHINE_CONFIG_FRAGMENT( c8280 )
-//-------------------------------------------------
-
-static MACHINE_CONFIG_FRAGMENT( c8280 )
-	MCFG_CPU_ADD(M6502_DOS_TAG, M6502, XTAL_12MHz/8)
-	MCFG_CPU_PROGRAM_MAP(c8280_main_mem)
-
-	MCFG_DEVICE_ADD(M6532_0_TAG, MOS6532n, XTAL_12MHz/8)
-	MCFG_MOS6530n_IN_PA_CB(READ8(c8280_t, dio_r))
-	MCFG_MOS6530n_OUT_PB_CB(WRITE8(c8280_t, dio_w))
-
-	MCFG_DEVICE_ADD(M6532_1_TAG, MOS6532n, XTAL_12MHz/8)
-	MCFG_MOS6530n_IN_PA_CB(READ8(c8280_t, riot1_pa_r))
-	MCFG_MOS6530n_OUT_PA_CB(WRITE8(c8280_t, riot1_pa_w))
-	MCFG_MOS6530n_IN_PB_CB(READ8(c8280_t, riot1_pb_r))
-	MCFG_MOS6530n_OUT_PB_CB(WRITE8(c8280_t, riot1_pb_w))
-=======
 //  device_add_mconfig - add device configuration
 //-------------------------------------------------
 
@@ -392,7 +302,6 @@ MACHINE_CONFIG_MEMBER( c8280_device::device_add_mconfig )
 	MCFG_MOS6530n_OUT_PA_CB(WRITE8(c8280_device, riot1_pa_w))
 	MCFG_MOS6530n_IN_PB_CB(READ8(c8280_device, riot1_pb_r))
 	MCFG_MOS6530n_OUT_PB_CB(WRITE8(c8280_device, riot1_pb_w))
->>>>>>> upstream/master
 	MCFG_MOS6530n_IRQ_CB(INPUTLINE(M6502_DOS_TAG, INPUT_LINE_IRQ0))
 
 	MCFG_CPU_ADD(M6502_FDC_TAG, M6502, XTAL_12MHz/8)
@@ -401,31 +310,12 @@ MACHINE_CONFIG_MEMBER( c8280_device::device_add_mconfig )
 	MCFG_FD1797_ADD(WD1797_TAG, XTAL_12MHz/6)
 	MCFG_WD_FDC_INTRQ_CALLBACK(INPUTLINE(M6502_FDC_TAG, M6502_IRQ_LINE))
 	MCFG_WD_FDC_DRQ_CALLBACK(INPUTLINE(M6502_FDC_TAG, M6502_SET_OVERFLOW))
-<<<<<<< HEAD
-	MCFG_FLOPPY_DRIVE_ADD(WD1797_TAG ":0", c8280_floppies, "8dsdd", c8280_t::floppy_formats)
-	MCFG_FLOPPY_DRIVE_ADD(WD1797_TAG ":1", c8280_floppies, "8dsdd", c8280_t::floppy_formats)
-=======
 	MCFG_FLOPPY_DRIVE_ADD(WD1797_TAG ":0", c8280_floppies, "8dsdd", c8280_device::floppy_formats)
 	MCFG_FLOPPY_DRIVE_ADD(WD1797_TAG ":1", c8280_floppies, "8dsdd", c8280_device::floppy_formats)
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  machine_config_additions - device-specific
-//  machine configurations
-//-------------------------------------------------
-
-machine_config_constructor c8280_t::device_mconfig_additions() const
-{
-	return MACHINE_CONFIG_NAME( c8280 );
-}
-
-
-//-------------------------------------------------
-=======
->>>>>>> upstream/master
 //  INPUT_PORTS( c8280 )
 //-------------------------------------------------
 
@@ -447,11 +337,7 @@ INPUT_PORTS_END
 //  input_ports - device-specific input ports
 //-------------------------------------------------
 
-<<<<<<< HEAD
-ioport_constructor c8280_t::device_input_ports() const
-=======
 ioport_constructor c8280_device::device_input_ports() const
->>>>>>> upstream/master
 {
 	return INPUT_PORTS_NAME( c8280 );
 }
@@ -466,11 +352,7 @@ ioport_constructor c8280_device::device_input_ports() const
 //  update_ieee_signals -
 //-------------------------------------------------
 
-<<<<<<< HEAD
-inline void c8280_t::update_ieee_signals()
-=======
 inline void c8280_device::update_ieee_signals()
->>>>>>> upstream/master
 {
 	int atn = m_bus->atn_r();
 	int nrfd = !(!(!(atn && m_atna) && m_rfdo) || !(atn || m_atna));
@@ -487,19 +369,11 @@ inline void c8280_device::update_ieee_signals()
 //**************************************************************************
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  c8280_t - constructor
-//-------------------------------------------------
-
-c8280_t::c8280_t(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-	device_t(mconfig, C8280, "C8280", tag, owner, clock, "c8280", __FILE__),
-=======
 //  c8280_device - constructor
 //-------------------------------------------------
 
 c8280_device::c8280_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	device_t(mconfig, C8280, tag, owner, clock),
->>>>>>> upstream/master
 	device_ieee488_interface(mconfig, *this),
 	m_maincpu(*this, M6502_DOS_TAG),
 	m_fdccpu(*this, M6502_FDC_TAG),
@@ -520,11 +394,7 @@ c8280_device::c8280_device(const machine_config &mconfig, const char *tag, devic
 //  device_start - device-specific startup
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void c8280_t::device_start()
-=======
 void c8280_device::device_start()
->>>>>>> upstream/master
 {
 	// state saving
 	save_item(NAME(m_rfdo));
@@ -539,11 +409,7 @@ void c8280_device::device_start()
 //  device_reset - device-specific reset
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void c8280_t::device_reset()
-=======
 void c8280_device::device_reset()
->>>>>>> upstream/master
 {
 	m_maincpu->reset();
 
@@ -560,11 +426,7 @@ void c8280_device::device_reset()
 	m_riot1->pa7_w(1);
 
 	m_fk5 = 0;
-<<<<<<< HEAD
-	m_floppy = NULL;
-=======
 	m_floppy = nullptr;
->>>>>>> upstream/master
 	m_fdc->set_floppy(m_floppy);
 	m_fdc->dden_w(0);
 }
@@ -574,11 +436,7 @@ void c8280_device::device_reset()
 //  ieee488_atn -
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void c8280_t::ieee488_atn(int state)
-=======
 void c8280_device::ieee488_atn(int state)
->>>>>>> upstream/master
 {
 	update_ieee_signals();
 
@@ -590,11 +448,7 @@ void c8280_device::ieee488_atn(int state)
 //  ieee488_ifc -
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void c8280_t::ieee488_ifc(int state)
-=======
 void c8280_device::ieee488_ifc(int state)
->>>>>>> upstream/master
 {
 	if (!m_ifc && state)
 	{
@@ -604,11 +458,7 @@ void c8280_device::ieee488_ifc(int state)
 	m_ifc = state;
 }
 
-<<<<<<< HEAD
-READ8_MEMBER( c8280_t::fk5_r )
-=======
 READ8_MEMBER( c8280_device::fk5_r )
->>>>>>> upstream/master
 {
 	/*
 
@@ -625,11 +475,7 @@ READ8_MEMBER( c8280_device::fk5_r )
 
 	*/
 
-<<<<<<< HEAD
-	UINT8 data = m_fk5;
-=======
 	uint8_t data = m_fk5;
->>>>>>> upstream/master
 
 	data |= (m_floppy ? m_floppy->dskchg_r() : 1) << 3;
 	data |= (m_floppy ? m_floppy->twosid_r() : 1) << 4;
@@ -637,11 +483,7 @@ READ8_MEMBER( c8280_device::fk5_r )
 	return data;
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER( c8280_t::fk5_w )
-=======
 WRITE8_MEMBER( c8280_device::fk5_w )
->>>>>>> upstream/master
 {
 	/*
 
@@ -661,11 +503,7 @@ WRITE8_MEMBER( c8280_device::fk5_w )
 	m_fk5 = data & 0x27;
 
 	// drive select
-<<<<<<< HEAD
-	m_floppy = NULL;
-=======
 	m_floppy = nullptr;
->>>>>>> upstream/master
 
 	if (BIT(data, 0)) m_floppy = m_floppy0->get_device();
 	if (BIT(data, 1)) m_floppy = m_floppy1->get_device();

@@ -22,10 +22,7 @@
 
   Game notes:
   -----------
-<<<<<<< HEAD
-=======
 
->>>>>>> upstream/master
   * Wing Game Boards & Games (Originals):
 
   Various types
@@ -37,11 +34,7 @@
   upgrades/conversions/hacks.  Are any of them legit?
 
   W-4   New Lucky 8 Lines
-<<<<<<< HEAD
-        Bingo - supposed to be a W-4 but unverified
-=======
         Bingo
->>>>>>> upstream/master
   F-5   New Lucky 8 Lines w/ Witch Bonus - bootleg/hack??
   W-6   Fever Chance
   W-7   Skill Chance
@@ -105,8 +98,6 @@
   as NOT_WORKING till can figure out how can switch between games.
 
 
-<<<<<<< HEAD
-=======
   * Cherry Master '99 (V9B.00)
 
   Inputs are hooked up as DIP switches for testing purposes.  You can access
@@ -126,7 +117,6 @@
   program ROM changes besides hacking out the Dyna name everywhere.
 
 
->>>>>>> upstream/master
   * Kkoj Noli
 
   kkuj nol-i / kkoj noli (better romanization).
@@ -213,15 +203,12 @@
   Seems to be sooo slow.... (interrupts?)
 
 
-<<<<<<< HEAD
-=======
   * Bingo (Wing)
 
   It has a different machine driver to support the different pos of gfx
   layers. I strogly suspect there is a register to adjust the layer position.
 
 
->>>>>>> upstream/master
 ***************************************************************************/
 
 
@@ -232,16 +219,6 @@
 #define OKI_CLOCK       1056000     /* unverified resonator */
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/z80/z80.h"
-#include "sound/ay8910.h"
-#include "sound/okim6295.h"
-#include "sound/sn76496.h"
-#include "machine/i8255.h"
-#include "machine/nvram.h"
-#include "video/ramdac.h"
-#include "includes/goldstar.h"
-=======
 #include "includes/goldstar.h"
 
 #include "cpu/z80/z80.h"
@@ -255,7 +232,6 @@
 
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 #include "bingowng.lh"
 #include "cherryb3.lh"
@@ -269,10 +245,7 @@
 #include "crazybon.lh"
 #include "goldstar.lh"
 #include "lucky8.lh"
-<<<<<<< HEAD
-=======
 #include "lucky8p1.lh"
->>>>>>> upstream/master
 #include "nfb96.lh"
 #include "nfb96tx.lh"
 #include "pokonl97.lh"
@@ -325,16 +298,6 @@ WRITE8_MEMBER(goldstar_state::p1_lamps_w)
   skill98 is like schery97 but doesn't activate bit 0 for stop
   nfb96, roypok96 and nc96 sets are like schery97 but they don't activate bit 2 for select
 */
-<<<<<<< HEAD
-	output_set_lamp_value(0, (data >> 0) & 1);
-	output_set_lamp_value(1, (data >> 1) & 1);
-	output_set_lamp_value(2, (data >> 2) & 1);
-	output_set_lamp_value(3, (data >> 3) & 1);
-	output_set_lamp_value(4, (data >> 4) & 1);
-	output_set_lamp_value(5, (data >> 5) & 1);
-	output_set_lamp_value(6, (data >> 6) & 1);
-	output_set_lamp_value(7, (data >> 7) & 1);
-=======
 	output().set_lamp_value(0, (data >> 0) & 1);
 	output().set_lamp_value(1, (data >> 1) & 1);
 	output().set_lamp_value(2, (data >> 2) & 1);
@@ -343,23 +306,12 @@ WRITE8_MEMBER(goldstar_state::p1_lamps_w)
 	output().set_lamp_value(5, (data >> 5) & 1);
 	output().set_lamp_value(6, (data >> 6) & 1);
 	output().set_lamp_value(7, (data >> 7) & 1);
->>>>>>> upstream/master
 
 //  popmessage("p1 lamps: %02X", data);
 }
 
 WRITE8_MEMBER(goldstar_state::p2_lamps_w)
 {
-<<<<<<< HEAD
-	output_set_lamp_value(8 + 0, (data >> 0) & 1);
-	output_set_lamp_value(8 + 1, (data >> 1) & 1);
-	output_set_lamp_value(8 + 2, (data >> 2) & 1);
-	output_set_lamp_value(8 + 3, (data >> 3) & 1);
-	output_set_lamp_value(8 + 4, (data >> 4) & 1);
-	output_set_lamp_value(8 + 5, (data >> 5) & 1);
-	output_set_lamp_value(8 + 6, (data >> 6) & 1);
-	output_set_lamp_value(8 + 7, (data >> 7) & 1);
-=======
 	output().set_lamp_value(8 + 0, (data >> 0) & 1);
 	output().set_lamp_value(8 + 1, (data >> 1) & 1);
 	output().set_lamp_value(8 + 2, (data >> 2) & 1);
@@ -368,7 +320,6 @@ WRITE8_MEMBER(goldstar_state::p2_lamps_w)
 	output().set_lamp_value(8 + 5, (data >> 5) & 1);
 	output().set_lamp_value(8 + 6, (data >> 6) & 1);
 	output().set_lamp_value(8 + 7, (data >> 7) & 1);
->>>>>>> upstream/master
 
 //  popmessage("p2 lamps: %02X", data);
 }
@@ -457,19 +408,11 @@ WRITE8_MEMBER(sanghopm_state::coincount_w)
   x--- -xx-  Unknown.
 
 */
-<<<<<<< HEAD
-	coin_counter_w(machine(), 0, data & 0x08);  /* counter1 coin a */
-	coin_counter_w(machine(), 1, data & 0x10);  /* counter2 coin b */
-	coin_counter_w(machine(), 2, data & 0x20);  /* counter3 key in */
-	coin_counter_w(machine(), 3, data & 0x40);  /* counter4 coin c */
-	coin_counter_w(machine(), 4, data & 0x01);  /* counter5 payout */
-=======
 	machine().bookkeeping().coin_counter_w(0, data & 0x08);  /* counter1 coin a */
 	machine().bookkeeping().coin_counter_w(1, data & 0x10);  /* counter2 coin b */
 	machine().bookkeeping().coin_counter_w(2, data & 0x20);  /* counter3 key in */
 	machine().bookkeeping().coin_counter_w(3, data & 0x40);  /* counter4 coin c */
 	machine().bookkeeping().coin_counter_w(4, data & 0x01);  /* counter5 payout */
->>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(sanghopm_state::enable_w)
@@ -536,11 +479,7 @@ ADDRESS_MAP_END
   E1:  W    Reels enable/disable register
  */
 
-<<<<<<< HEAD
-static ADDRESS_MAP_START( ramdac_map, AS_0, 8, goldstar_state )
-=======
 static ADDRESS_MAP_START( ramdac_map, 0, 8, goldstar_state )
->>>>>>> upstream/master
 	AM_RANGE(0x000, 0x3ff) AM_DEVREADWRITE("ramdac", ramdac_device, ramdac_pal_r, ramdac_rgb666_w)
 ADDRESS_MAP_END
 
@@ -787,10 +726,6 @@ static ADDRESS_MAP_START( cm_map, AS_PROGRAM, 8, goldstar_state )
 	AM_RANGE(0xd000, 0xd7ff) AM_RAM AM_SHARE("nvram")
 	AM_RANGE(0xd800, 0xdfff) AM_RAM
 
-<<<<<<< HEAD
-
-=======
->>>>>>> upstream/master
 	AM_RANGE(0xe000, 0xe7ff) AM_RAM_WRITE(goldstar_fg_vidram_w) AM_SHARE("fg_vidram")
 	AM_RANGE(0xe800, 0xefff) AM_RAM_WRITE(goldstar_fg_atrram_w) AM_SHARE("fg_atrram")
 
@@ -845,19 +780,11 @@ WRITE8_MEMBER(goldstar_state::cm_coincount_w)
   interestingly there is no counter for coin B in the cm/cmaster games
 */
 
-<<<<<<< HEAD
-	coin_counter_w(machine(), 0, data & 0x40);  /* Counter 1 Coin A */
-	coin_counter_w(machine(), 1, data & 0x20);  /* Counter 2 Key In */
-	coin_counter_w(machine(), 2, data & 0x10);  /* Counter 3 Coin C */
-	coin_counter_w(machine(), 3, data & 0x08);  /* Counter 4 Coin D */
-	coin_counter_w(machine(), 4, data & 0x01);  /* Counter 5 Payout */
-=======
 	machine().bookkeeping().coin_counter_w(0, data & 0x40);  /* Counter 1 Coin A */
 	machine().bookkeeping().coin_counter_w(1, data & 0x20);  /* Counter 2 Key In */
 	machine().bookkeeping().coin_counter_w(2, data & 0x10);  /* Counter 3 Coin C */
 	machine().bookkeeping().coin_counter_w(3, data & 0x08);  /* Counter 4 Coin D */
 	machine().bookkeeping().coin_counter_w(4, data & 0x01);  /* Counter 5 Payout */
->>>>>>> upstream/master
 
 	if (data & 0x86)
 		popmessage("counters: %02X", data);
@@ -958,8 +885,6 @@ static ADDRESS_MAP_START( lucky8_map, AS_PROGRAM, 8, goldstar_state )
 	AM_RANGE(0xf800, 0xffff) AM_RAM
 ADDRESS_MAP_END
 
-<<<<<<< HEAD
-=======
 static ADDRESS_MAP_START( flaming7_map, AS_PROGRAM, 8, goldstar_state )
 	AM_RANGE(0x0000, 0x7fff) AM_ROM
 	AM_RANGE(0x8000, 0x87ff) AM_RAM AM_SHARE("nvram")
@@ -1044,7 +969,6 @@ static ADDRESS_MAP_START( mbstar_map, AS_PROGRAM, 8, goldstar_state )
 ADDRESS_MAP_END
 
 
->>>>>>> upstream/master
 WRITE8_MEMBER(wingco_state::magodds_outb850_w)
 {
 	// guess, could be wrong, this might just be lights
@@ -1066,14 +990,11 @@ WRITE8_MEMBER(wingco_state::magodds_outb860_w)
 //  popmessage("magodds_outb860_w %02x\n", data);
 }
 
-<<<<<<< HEAD
-=======
 WRITE8_MEMBER(wingco_state::fl7w4_outc802_w)
 {
 	m_fl7w4_id->write((data >> 6) & 0x01);
 }
 
->>>>>>> upstream/master
 static ADDRESS_MAP_START( magodds_map, AS_PROGRAM, 8, wingco_state )
 	AM_RANGE(0x0000, 0x7fff) AM_ROM
 	// where does the extra rom data map?? it seems like it should come straight after the existing rom, but it can't if this is a plain z80?
@@ -1151,13 +1072,8 @@ static ADDRESS_MAP_START( ladylinr_map, AS_PROGRAM, 8, goldstar_state )
 
 	AM_RANGE(0xb800, 0xb803) AM_DEVREADWRITE("ppi8255_0", i8255_device, read, write)    /* Input Ports */
 	AM_RANGE(0xb810, 0xb813) AM_DEVREADWRITE("ppi8255_1", i8255_device, read, write)    /* DSW bank */
-<<<<<<< HEAD
-	AM_RANGE(0xb830, 0xb830) AM_DEVREADWRITE("aysnd", ay8910_device, data_r, data_w)
-	AM_RANGE(0xb840, 0xb840) AM_DEVWRITE("aysnd", ay8910_device, address_w)             /* no sound... only use ports */
-=======
 	AM_RANGE(0xb830, 0xb830) AM_DEVWRITE("aysnd", ay8910_device, address_w)             /* no sound... unused? */
 	AM_RANGE(0xb840, 0xb840) AM_DEVREADWRITE("aysnd", ay8910_device, data_r, data_w)
->>>>>>> upstream/master
 	AM_RANGE(0xb850, 0xb850) AM_WRITENOP                                                /* just turn off the lamps, if exist */
 	AM_RANGE(0xb870, 0xb870) AM_DEVWRITE("snsnd", sn76489_device, write)                /* sound */
 	AM_RANGE(0xf800, 0xffff) AM_RAM
@@ -1230,15 +1146,9 @@ WRITE8_MEMBER(unkch_state::coincount_w)
 
 	m_ticket_dispenser->write(space, offset, data & 0x80);
 
-<<<<<<< HEAD
-	coin_counter_w(machine(), 0, data & 0x04);  /* Credit counter */
-	coin_counter_w(machine(), 1, data & 0x08);  /* Key In counter */
-	coin_counter_w(machine(), 2, data & 0x02);  /* payout counter */
-=======
 	machine().bookkeeping().coin_counter_w(0, data & 0x04);  /* Credit counter */
 	machine().bookkeeping().coin_counter_w(1, data & 0x08);  /* Key In counter */
 	machine().bookkeeping().coin_counter_w(2, data & 0x02);  /* payout counter */
->>>>>>> upstream/master
 
 	//popmessage("coin counters: %02x", data);
 }
@@ -1263,21 +1173,12 @@ WRITE8_MEMBER(unkch_state::unkcm_0x02_w)
 
 	m_vblank_irq_enable = data & 0x80;
 
-<<<<<<< HEAD
-	output_set_lamp_value(0, (data >> 0) & 1);  /* Bet-A / Stop 2 */
-	output_set_lamp_value(1, (data >> 1) & 1);  /* Start / Stop All */
-	output_set_lamp_value(2, (data >> 2) & 1);  /* Info / Small / Stop 3 */
-	output_set_lamp_value(3, (data >> 3) & 1);  /* Big */
-	output_set_lamp_value(4, (data >> 4) & 1);  /* Bet-B / D-Up */
-	output_set_lamp_value(5, (data >> 5) & 1);  /* Take / Stop 1 */
-=======
 	output().set_lamp_value(0, (data >> 0) & 1);  /* Bet-A / Stop 2 */
 	output().set_lamp_value(1, (data >> 1) & 1);  /* Start / Stop All */
 	output().set_lamp_value(2, (data >> 2) & 1);  /* Info / Small / Stop 3 */
 	output().set_lamp_value(3, (data >> 3) & 1);  /* Big */
 	output().set_lamp_value(4, (data >> 4) & 1);  /* Bet-B / D-Up */
 	output().set_lamp_value(5, (data >> 5) & 1);  /* Take / Stop 1 */
->>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(unkch_state::unkcm_0x03_w)
@@ -1887,10 +1788,7 @@ static INPUT_PORTS_START( cmasterb )
 	/* Test Mode For Disp. Of Doll not checked */
 INPUT_PORTS_END
 
-<<<<<<< HEAD
-=======
 
->>>>>>> upstream/master
 static INPUT_PORTS_START( cmezspin )
 	PORT_START("IN0")
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_UNKNOWN )
@@ -1961,10 +1859,7 @@ static INPUT_PORTS_START( cmezspin )
 	/* Test Mode For Disp. Of Doll not checked */
 INPUT_PORTS_END
 
-<<<<<<< HEAD
-=======
 
->>>>>>> upstream/master
 static INPUT_PORTS_START( cmasterc )
 	PORT_START("IN0")
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_UNKNOWN )
@@ -2023,8 +1918,6 @@ static INPUT_PORTS_START( cmasterc )
 	/* Test Mode For Disp. Of Doll not checked */
 INPUT_PORTS_END
 
-<<<<<<< HEAD
-=======
 
 static INPUT_PORTS_START( cmasterg )
 	PORT_START("IN0")
@@ -2085,7 +1978,6 @@ static INPUT_PORTS_START( cmasterg )
 INPUT_PORTS_END
 
 
->>>>>>> upstream/master
 static INPUT_PORTS_START( cmast91 )
 	PORT_START("IN0")
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_UNKNOWN )
@@ -2165,8 +2057,6 @@ static INPUT_PORTS_START( cmast91 )
 INPUT_PORTS_END
 
 
-<<<<<<< HEAD
-=======
 static INPUT_PORTS_START( cmast99 )
 	PORT_START("IN0") // called "PLAYER" in input test
 	PORT_DIPNAME( 0x01, 0x01, "0-1" )
@@ -2374,7 +2264,6 @@ static INPUT_PORTS_START( cmast99 )
 INPUT_PORTS_END
 
 
->>>>>>> upstream/master
 static INPUT_PORTS_START( goldstar )
 	PORT_START("IN0")
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_UNKNOWN )    // appear in the input test but seems to lack function
@@ -3606,20 +3495,6 @@ static INPUT_PORTS_START( ns8linew )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 INPUT_PORTS_END
 
-<<<<<<< HEAD
-static INPUT_PORTS_START( luckylad ) // CHECK & FIX ME
-	PORT_START("IN0")
-	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_UNKNOWN )
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNKNOWN )
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_UNKNOWN )
-	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_UNKNOWN )
-	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_UNKNOWN )
-	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_UNKNOWN )
-	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_UNKNOWN )
-	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNKNOWN )
-
-	PORT_START("IN1")
-=======
 static INPUT_PORTS_START( ns8linwa )
 	PORT_START("IN0")   /* b800 */
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_UNKNOWN )
@@ -3632,7 +3507,6 @@ static INPUT_PORTS_START( ns8linwa )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_BUTTON2 ) PORT_CODE(KEYCODE_X) PORT_NAME("P1 - Start")
 
 	PORT_START("IN1")   /* $b801 - P2 Controls... Not set */
->>>>>>> upstream/master
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_UNKNOWN )
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNKNOWN )
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_UNKNOWN )
@@ -3642,11 +3516,7 @@ static INPUT_PORTS_START( ns8linwa )
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_UNKNOWN )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNKNOWN )
 
-<<<<<<< HEAD
-	PORT_START("IN2")
-=======
 	PORT_START("IN2")   /* $b802 */
->>>>>>> upstream/master
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_UNKNOWN )
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNKNOWN )
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_UNKNOWN )
@@ -3656,17 +3526,6 @@ static INPUT_PORTS_START( ns8linwa )
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_UNKNOWN )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNKNOWN )
 
-<<<<<<< HEAD
-	PORT_START("IN3")
-	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_UNKNOWN )
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNKNOWN )
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_UNKNOWN )
-	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_UNKNOWN )
-	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_UNKNOWN )
-	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_UNKNOWN )
-	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_UNKNOWN )
-	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNKNOWN )
-=======
 	PORT_START("IN3")   /* $b810 - Money in */
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_UNKNOWN )
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNKNOWN )
@@ -3828,7 +3687,6 @@ static INPUT_PORTS_START( luckylad ) // CHECK & FIX ME
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_UNKNOWN )
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_UNKNOWN )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNKNOWN )
->>>>>>> upstream/master
 
 	PORT_START("IN4")
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_UNKNOWN )
@@ -4272,8 +4130,6 @@ static INPUT_PORTS_START( bingownga )
 	PORT_DIPSETTING(    0x28, "1 Coin/10 Credits" )
 INPUT_PORTS_END
 
-<<<<<<< HEAD
-=======
 static INPUT_PORTS_START( mbstar )
 	PORT_START("IN0")
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_OTHER ) PORT_CODE(KEYCODE_1) PORT_NAME("IN0-1")
@@ -4431,7 +4287,6 @@ static INPUT_PORTS_START( mbstar )
 INPUT_PORTS_END
 
 
->>>>>>> upstream/master
 static INPUT_PORTS_START( magodds )
 	PORT_START("IN0")   /* d800 */
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_UNKNOWN )
@@ -6918,44 +6773,23 @@ static INPUT_PORTS_START( crazybon )
 	PORT_START("IN0")
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_UNKNOWN )
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNKNOWN )
-<<<<<<< HEAD
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_GAMBLE_HIGH ) PORT_NAME("Big")
-	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_GAMBLE_D_UP )
-	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_SLOT_STOP_ALL ) PORT_NAME("Stop All / Take Score")
-=======
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_GAMBLE_HIGH ) PORT_NAME("Big / Hold")
 	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_GAMBLE_D_UP )
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_GAMBLE_TAKE )    /* also works as stop all and hold pair */
->>>>>>> upstream/master
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_GAMBLE_BET )
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_GAMBLE_LOW ) PORT_NAME("Small / Info")
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_START1 ) PORT_NAME("Start")
 
 	PORT_INCLUDE( cmv4_coins )
 	PORT_MODIFY("IN1")
-<<<<<<< HEAD
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_UNUSED )     /* Unused coin switch */
-=======
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_SLOT_STOP1 )
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_SLOT_STOP2 )
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SLOT_STOP_ALL )
 	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_SLOT_STOP3 )
->>>>>>> upstream/master
 
 	PORT_INCLUDE( cmv4_service )
 
 	PORT_START("DSW1")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x01, 0x00, "Hold Pair" )                 PORT_DIPLOCATION("DSW1:1")      /* OK - use Take button */
-	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x02, 0x00, "Hopper Out Switch" )         PORT_DIPLOCATION("DSW1:2")      /* not checked */
-	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x04, 0x00, "Coin Out Rate" )             PORT_DIPLOCATION("DSW1:3")      /* OK */
-	PORT_DIPSETTING(    0x04, "1" )
-	PORT_DIPSETTING(    0x00, "10" )
-=======
 	PORT_DIPNAME( 0x01, 0x00, "Hold Pair" )                 PORT_DIPLOCATION("DSW1:1")      /* OK */
 	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
@@ -6968,7 +6802,6 @@ static INPUT_PORTS_START( crazybon )
 	PORT_DIPSETTING(    0x00, "50" )    PORT_CONDITION("DSW3-0",0x03,EQUALS,0x02)
 	PORT_DIPSETTING(    0x00, "100" )   PORT_CONDITION("DSW3-0",0x03,EQUALS,0x01)
 	PORT_DIPSETTING(    0x00, "500" )   PORT_CONDITION("DSW3-0",0x03,EQUALS,0x00)
->>>>>>> upstream/master
 	PORT_DIPNAME( 0x08, 0x00, "'7' In Double Up Game" )     PORT_DIPLOCATION("DSW1:4")      /* OK */
 	PORT_DIPSETTING(    0x08, "Even" )
 	PORT_DIPSETTING(    0x00, "Win" )
@@ -6978,22 +6811,14 @@ static INPUT_PORTS_START( crazybon )
 	PORT_DIPNAME( 0x20, 0x00, "Double Up Game" )            PORT_DIPLOCATION("DSW1:6")      /* OK */
 	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0xc0, 0x00, "Max Bet" )                   PORT_DIPLOCATION("DSW1:7,8")    /* OK */
-=======
 	PORT_DIPNAME( 0xc0, 0x40, "Max Bet" )                   PORT_DIPLOCATION("DSW1:7,8")    /* OK */
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0xc0, "16" )
 	PORT_DIPSETTING(    0x80, "32" )
 	PORT_DIPSETTING(    0x40, "64" )
 	PORT_DIPSETTING(    0x00, "96" )
 
 	PORT_START("DSW2")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x07, 0x00, "Main Game Pay Rate" )        PORT_DIPLOCATION("DSW2:1,2,3")  /* OK */
-=======
 	PORT_DIPNAME( 0x07, 0x07, "Main Game Pay Rate" )        PORT_DIPLOCATION("DSW2:1,2,3")  /* OK */
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x00, "55%" )
 	PORT_DIPSETTING(    0x01, "60%" )
 	PORT_DIPSETTING(    0x02, "65%" )
@@ -7010,35 +6835,20 @@ static INPUT_PORTS_START( crazybon )
 	PORT_DIPNAME( 0x20, 0x00, "Mode" )                      PORT_DIPLOCATION("DSW2:6")     /* OK */
 	PORT_DIPSETTING(    0x00, "Game" )
 	PORT_DIPSETTING(    0x20, "Stealth" )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x40, 0x00, DEF_STR( Unknown ) )          PORT_DIPLOCATION("DSW2:7")
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x00, DEF_STR( Unknown ) )          PORT_DIPLOCATION("DSW2:8")
-=======
 	PORT_DIPNAME( 0x40, 0x40, DEF_STR( Unknown ) )          PORT_DIPLOCATION("DSW2:7")
 	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )          PORT_DIPLOCATION("DSW2:8")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START("DSW3-0")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x03, 0x03, "Key In Rate" )               PORT_DIPLOCATION("DSW3:1,2")    /* OK */
-=======
 	PORT_DIPNAME( 0x03, 0x02, "Key In Rate" )               PORT_DIPLOCATION("DSW3:1,2")    /* OK */
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x03, "1 Coin/10 Credits" )
 	PORT_DIPSETTING(    0x02, "1 Coin/50 Credits" )
 	PORT_DIPSETTING(    0x01, "1 Coin/100 Credits" )
 	PORT_DIPSETTING(    0x00, "1 Coin/500 Credits" )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x0c, 0x0c, "Coin A Rate" )               PORT_DIPLOCATION("DSW3:3,4")    /* OK */
-=======
 	PORT_DIPNAME( 0x0c, 0x00, "Coin A Rate" )               PORT_DIPLOCATION("DSW3:3,4")    /* OK */
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x0c, DEF_STR( 1C_1C ) )
 	PORT_DIPSETTING(    0x08, DEF_STR( 1C_5C ) )
 	PORT_DIPSETTING(    0x04, "1 Coin/10 Credits" )
@@ -7061,11 +6871,7 @@ static INPUT_PORTS_START( crazybon )
 	PORT_BIT( 0xf0, IP_ACTIVE_LOW, IPT_UNUSED )
 
 	PORT_START("DSW4")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x07, 0x07, "Credit Limit" )              PORT_DIPLOCATION("DSW4:1,2,3")  /* OK */
-=======
 	PORT_DIPNAME( 0x07, 0x01, "Credit Limit" )              PORT_DIPLOCATION("DSW4:1,2,3")  /* OK */
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x07, "5,000" )
 	PORT_DIPSETTING(    0x06, "10,000" )
 	PORT_DIPSETTING(    0x05, "20,000" )
@@ -7074,35 +6880,15 @@ static INPUT_PORTS_START( crazybon )
 	PORT_DIPSETTING(    0x02, "50,000" )
 	PORT_DIPSETTING(    0x01, "100,000" )
 	PORT_DIPSETTING(    0x00, "Unlimited" )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x08, 0x08, DEF_STR( Unknown ) )          PORT_DIPLOCATION("DSW4:4")
-	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-=======
 	PORT_DIPNAME( 0x08, 0x00, "Limit Credit" )              PORT_DIPLOCATION("DSW4:4")      /* from manual, not checked */
 	PORT_DIPSETTING(    0x08, DEF_STR( No ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( Yes ) )
->>>>>>> upstream/master
 	PORT_DIPNAME( 0x10, 0x10, "Fast Take With" )            PORT_DIPLOCATION("DSW4:5")      /* OK */
 	PORT_DIPSETTING(    0x10, "Take" )
 	PORT_DIPSETTING(    0x00, "Start" )
 	PORT_DIPNAME( 0x20, 0x20, "Bonus Min Bet" )             PORT_DIPLOCATION("DSW4:6")      /* OK */
 	PORT_DIPSETTING(    0x20, "16" )
 	PORT_DIPSETTING(    0x00, "32" )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x40, 0x40, "Reel Speed" )                PORT_DIPLOCATION("DSW4:7")      /* OK */
-	PORT_DIPSETTING(    0x40, DEF_STR( Low ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( High ) )
-	PORT_DIPNAME( 0x80, 0x80, "Hopper Out By Coin A" )      PORT_DIPLOCATION("DSW4:8")      /* not working */
-	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-
-	PORT_START("DSW5")
-	PORT_DIPNAME( 0x01, 0x01, DEF_STR( Unknown ) )          PORT_DIPLOCATION("DSW5:1")
-	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x06, 0x06, "Coin In Limit" )             PORT_DIPLOCATION("DSW5:2,3")    /* OK */
-=======
 	PORT_DIPNAME( 0x40, 0x00, "Reel Speed" )                PORT_DIPLOCATION("DSW4:7")      /* OK */
 	PORT_DIPSETTING(    0x40, DEF_STR( Low ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( High ) )
@@ -7115,26 +6901,16 @@ static INPUT_PORTS_START( crazybon )
 	PORT_DIPSETTING(    0x01, DEF_STR( No ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( Yes ) )
 	PORT_DIPNAME( 0x06, 0x06, "Max Key In" )                PORT_DIPLOCATION("DSW5:2,3")    /* OK */
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x06, "1,000" )
 	PORT_DIPSETTING(    0x04, "5,000" )
 	PORT_DIPSETTING(    0x02, "10,000" )
 	PORT_DIPSETTING(    0x00, "20,000" )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x18, 0x18, "Condition For 3 Fruit Bonus" )    PORT_DIPLOCATION("DSW5:4,5")    /* OK */
-	PORT_DIPSETTING(    0x18, "5-<-7" )     /* not sure about the "<" ??? */
-	PORT_DIPSETTING(    0x10, "5-9-5" )
-	PORT_DIPSETTING(    0x08, "5-6-3" )
-	PORT_DIPSETTING(    0x00, "5-3-2" )
-	PORT_DIPNAME( 0x60, 0x60, "Game Min Bet" )              PORT_DIPLOCATION("DSW5:6,7")    /* OK */
-=======
 	PORT_DIPNAME( 0x18, 0x00, "Condition For 3 Fruit Bonus" )    PORT_DIPLOCATION("DSW5:4,5")    /* OK */
 	PORT_DIPSETTING(    0x18, "5-<-7" )     /* don't know what "<" means, but that's what the game displays */
 	PORT_DIPSETTING(    0x10, "5-9-5" )
 	PORT_DIPSETTING(    0x08, "5-6-3" )
 	PORT_DIPSETTING(    0x00, "5-3-2" )
 	PORT_DIPNAME( 0x60, 0x20, "Game Min Bet" )              PORT_DIPLOCATION("DSW5:6,7")    /* OK */
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x60, "1" )
 	PORT_DIPSETTING(    0x40, "8" )
 	PORT_DIPSETTING(    0x20, "16" )
@@ -7269,85 +7045,6 @@ static INPUT_PORTS_START( cmtetris )
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_SLOT_STOP3 )    PORT_CODE(KEYCODE_V) PORT_CODE(KEYCODE_LEFT) PORT_NAME("Stop 3 / Small / Info / Left")
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_START1 )        PORT_CODE(KEYCODE_1) PORT_CODE(KEYCODE_DOWN) PORT_NAME("Start / Down")
 
-<<<<<<< HEAD
-	PORT_START("IN1")
-	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_OTHER )         PORT_CODE(KEYCODE_K) PORT_NAME("Hidden switch for Cherry Master")
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_OTHER )         PORT_CODE(KEYCODE_L) PORT_NAME("Hidden switch for Tetris")
-	PORT_BIT( 0x0c, IP_ACTIVE_LOW, IPT_COIN2 ) PORT_IMPULSE(2) PORT_NAME("Coin B") /* Coin Service (tied to PPI u34 PB3 to also coin Tetris game) */
-	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_COIN4 ) PORT_IMPULSE(2) PORT_NAME("Coin D")
-	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_COIN3 ) PORT_IMPULSE(2) PORT_NAME("Coin C")
-	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_GAMBLE_KEYIN )
-	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_COIN1 ) PORT_IMPULSE(2) PORT_NAME("Coin A")
-
-	PORT_INCLUDE( cmv4_service )
-	PORT_MODIFY("IN2")
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL )   /* Tied to GND and to the hidden switch that change games. (PC0+GND) -+-> (PB0|PB1) */
-
-	PORT_START("DSW1")
-	PORT_DIPNAME( 0x01, 0x01, DEF_STR( Unknown ) )  PORT_DIPLOCATION("DSW1:!1")  /* OK */
-	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x02, 0x02, "Hopper Out Switch" ) PORT_DIPLOCATION("DSW1:!2")  /* OK */
-	PORT_DIPSETTING(    0x02, "Active Low" )
-	PORT_DIPSETTING(    0x00, "Active High" )
-	PORT_DIPNAME( 0x04, 0x04, "Payout Mode" )       PORT_DIPLOCATION("DSW1:!3")  /* OK */
-	PORT_DIPSETTING(    0x04, "Payout Switch" )
-	PORT_DIPSETTING(    0x00, "Automatic" )
-	PORT_DIPNAME( 0x08, 0x00, "W-UP '7'" )          PORT_DIPLOCATION("DSW1:!4")  /* not checked */
-	PORT_DIPSETTING(    0x08, "Loss" )
-	PORT_DIPSETTING(    0x00, "Even" )
-	PORT_DIPNAME( 0x10, 0x00, "W-UP Pay Rate" )     PORT_DIPLOCATION("DSW1:!5")  /* OK */
-	PORT_DIPSETTING(    0x00, "80%" )
-	PORT_DIPSETTING(    0x10, "90%" )
-	PORT_DIPNAME( 0x20, 0x00, "W-UP Game" )         PORT_DIPLOCATION("DSW1:!6")  /* OK */
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0xc0, 0xc0, "Bet Max" )           PORT_DIPLOCATION("DSW1:!7,!8")    /* OK */
-	PORT_DIPSETTING(    0x00, "16" )
-	PORT_DIPSETTING(    0x40, "32" )
-	PORT_DIPSETTING(    0x80, "64" )
-	PORT_DIPSETTING(    0xc0, "96" )
-
-	PORT_START("DSW2")
-	PORT_DIPNAME( 0x07, 0x00, "Main Game Pay Rate" )    PORT_DIPLOCATION("DSW2:!1,!2,!3")  /* OK */
-	PORT_DIPSETTING(    0x07, "35%" )
-	PORT_DIPSETTING(    0x06, "40%" )
-	PORT_DIPSETTING(    0x05, "45%" )
-	PORT_DIPSETTING(    0x04, "50%" )
-	PORT_DIPSETTING(    0x03, "55%" )
-	PORT_DIPSETTING(    0x02, "60%" )
-	PORT_DIPSETTING(    0x01, "65%" )
-	PORT_DIPSETTING(    0x00, "70%" )
-	PORT_DIPNAME( 0x18, 0x00, "Hopper Limit" )          PORT_DIPLOCATION("DSW2:!4,!5")    /* OK */
-	PORT_DIPSETTING(    0x18, "300" )
-	PORT_DIPSETTING(    0x10, "500" )
-	PORT_DIPSETTING(    0x08, "1000" )
-	PORT_DIPSETTING(    0x00, "Unlimited" )
-	PORT_DIPNAME( 0x20, 0x00, "100 Odds Sound" )        PORT_DIPLOCATION("DSW2:!6")  /* not checked */
-	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x20, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x40, "Key-In Type" )           PORT_DIPLOCATION("DSW2:!7")  /* OK */
-	PORT_DIPSETTING(    0x40, "A-Type" )
-	PORT_DIPSETTING(    0x00, "B-Type" )
-	PORT_DIPNAME( 0x80, 0x00, "Center Super 7 Bet Limit" )  PORT_DIPLOCATION("DSW2:!8")  /* related with DSW 4-6 */
-	PORT_DIPSETTING(    0x80, "Unlimited" )
-	PORT_DIPSETTING(    0x00, "Limited" )
-
-	PORT_INCLUDE( cmv4_dsw3 )   /* all OK */
-
-	PORT_INCLUDE( cmv4_dsw4 )   /* Display Of Payout Limit not working; all others OK */
-
-	PORT_INCLUDE( cmv4_dsw5 )
-	/* Display of Doll On Demo only affects payout table screen */
-	/* Coin In Limit OK */
-	/* Condition For 3 Kind Of Bonus not checked */
-	/* Display Of Doll At All Fr. Bonus not checked */
-	/* DSW5-7 listed as unused */
-	/* Test Mode For Disp. Of Doll not working */
-INPUT_PORTS_END
-
-
-=======
 	PORT_START("IN1")
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_OTHER )         PORT_CODE(KEYCODE_K) PORT_NAME("Hidden switch for Cherry Master")
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_OTHER )         PORT_CODE(KEYCODE_L) PORT_NAME("Hidden switch for Tetris")
@@ -7731,7 +7428,6 @@ INPUT_PORTS_END
 *            Graphics Layouts & Decode               *
 *****************************************************/
 
->>>>>>> upstream/master
 static const gfx_layout charlayout =
 {
 	8,8,    /* 8*8 characters */
@@ -7829,11 +7525,7 @@ static const gfx_layout tilelayout_cb3e =
 	256,    /* 256 tiles */
 	4,      /* 4 bits per pixel */
 	{ 0, 2, 4, 6 },
-<<<<<<< HEAD
-	{ 2*8+0, 2*8+1,3*8+0, 3*8+1,  0, 1, 1*8+0, 1*8+1 },
-=======
 	{ 2*8+0, 2*8+1,3*8+0, 3*8+1, 0, 1, 1*8+0, 1*8+1 },
->>>>>>> upstream/master
 	{ 0*8, 4*8, 8*8, 12*8, 16*8, 20*8, 24*8, 28*8,
 			32*8, 36*8, 40*8, 44*8, 48*8, 52*8, 56*8, 60*8,
 			64*8, 68*8, 72*8, 76*8, 80*8, 84*8, 88*8, 92*8,
@@ -7874,13 +7566,8 @@ static const gfx_layout tiles8x32x4alt_layout =
 	8,32,
 	RGN_FRAC(1,2),
 	4,
-<<<<<<< HEAD
-	{ RGN_FRAC(1,2)+0, RGN_FRAC(1,2)+4,0,4 },
-	{ 3,2,1,0,11, 10, 9, 8 },
-=======
 	{ RGN_FRAC(1,2)+0, RGN_FRAC(1,2)+4, 0, 4 },
 	{ 3, 2, 1, 0, 11, 10, 9, 8 },
->>>>>>> upstream/master
 	{ 0*16, 1*16,  2*16,  3*16,  4*16,  5*16,  6*16,  7*16,
 		8*16, 9*16, 10*16, 11*16, 12*16, 13*16, 14*16, 15*16,
 		16*16,17*16, 18*16, 19*16, 20*16, 21*16, 22*16, 23*16,
@@ -7889,20 +7576,12 @@ static const gfx_layout tiles8x32x4alt_layout =
 	16*32
 };
 
-<<<<<<< HEAD
-static const UINT32 layout_xoffset[128] =
-=======
 static const uint32_t layout_xoffset[128] =
->>>>>>> upstream/master
 {
 	STEP32(0*128,4),STEP32(1*128,4),STEP32(2*128,4),STEP32(3*128,4)
 };
 
-<<<<<<< HEAD
-static const UINT32 layout_yoffset[128] =
-=======
 static const uint32_t layout_yoffset[128] =
->>>>>>> upstream/master
 {
 	STEP32(0*16384, 512),STEP32(1*16384,512),STEP32(2*16384,512),STEP32(3*16384,512)
 };
@@ -7921,20 +7600,12 @@ static const gfx_layout tiles128x128x4_layout =
 };
 
 
-<<<<<<< HEAD
-static const UINT32 layout_xoffset256[256] =
-=======
 static const uint32_t layout_xoffset256[256] =
->>>>>>> upstream/master
 {
 	STEP32(0*128,4),STEP32(1*128,4),STEP32(2*128,4),STEP32(3*128,4), STEP32(4*128,4), STEP32(5*128,4), STEP32(6*128,4), STEP32(7*128,4)
 };
 
-<<<<<<< HEAD
-static const UINT32 layout_yoffset256[256] =
-=======
 static const uint32_t layout_yoffset256[256] =
->>>>>>> upstream/master
 {
 	STEP32(0*32768, 1024),STEP32(1*32768,1024),STEP32(2*32768,1024),STEP32(3*32768,1024),STEP32(4*32768,1024), STEP32(5*32768,1024),STEP32(6*32768,1024),STEP32(7*32768,1024)
 };
@@ -7975,13 +7646,8 @@ static const gfx_layout cb3c_tiles8x8_layout =
 	8,8,
 	RGN_FRAC(1,1),
 	4,
-<<<<<<< HEAD
-	{ 0,1,2,3 },
-	{ 4,0,12,8,20,16,28,24 },
-=======
 	{ 0, 1, 2, 3 },
 	{ 4, 0, 12, 8, 20, 16, 28, 24 },
->>>>>>> upstream/master
 	{ 0*32, 1*32, 2*32, 3*32, 4*32, 5*32, 6*32, 7*32 },
 	8*32
 };
@@ -7992,17 +7658,11 @@ static const gfx_layout cb3c_tiles8x32_layout =
 	8,32,
 	RGN_FRAC(1,1),
 	4,
-<<<<<<< HEAD
-	{ 0,1,2,3 },
-	{ 4,0,12,8,20,16,28,24 },
-	{ 0*32, 1*32, 2*32, 3*32, 4*32, 5*32, 6*32, 7*32, 8*32,9*32,10*32,11*32,12*32,13*32,14*32,15*32,16*32,17*32,18*32,19*32,20*32,21*32,22*32,23*32,24*32,25*32,26*32,27*32,28*32,29*32,30*32,31*32 },
-=======
 	{ 0, 1, 2, 3 },
 	{ 4, 0, 12, 8, 20, 16, 28, 24 },
 	{ 0*32, 1*32, 2*32, 3*32, 4*32, 5*32, 6*32, 7*32, 8*32, 9*32, 10*32, 11*32, 12*32,
 		13*32, 14*32, 15*32, 16*32, 17*32, 18*32, 19*32, 20*32, 21*32, 22*32, 23*32,
 		24*32, 25*32, 26*32, 27*32, 28*32, 29*32, 30*32, 31*32 },
->>>>>>> upstream/master
 	32*32
 };
 
@@ -8042,8 +7702,6 @@ static const gfx_layout sangho_tilelayout =
 	128*8   /* every char takes 128 consecutive bytes */
 };
 
-<<<<<<< HEAD
-=======
 static const gfx_layout super9_charlayout =
 {
 	8,8,    /* 8*8 characters */
@@ -8119,7 +7777,6 @@ static const gfx_layout flam7_tw_tilelayout =  // FIXME
 		96*8, 100*8, 104*8, 108*8, 112*8, 116*8, 120*8, 124*8 },
 	128*8   /* every char takes 128 consecutive bytes */
 };
->>>>>>> upstream/master
 
 
 static GFXDECODE_START( goldstar )
@@ -8220,8 +7877,6 @@ static GFXDECODE_START( sangho )
 */
 GFXDECODE_END
 
-<<<<<<< HEAD
-=======
 static GFXDECODE_START( super9 )
 	GFXDECODE_ENTRY( "gfx1", 0, super9_charlayout,   0, 16 )
 	GFXDECODE_ENTRY( "gfx2", 0, super9_tilelayout, 128,  8 )
@@ -8237,24 +7892,17 @@ static GFXDECODE_START( flam7_tw )  // gfx 2 still wrong...
 	GFXDECODE_ENTRY( "gfx2", 0, flam7_tw_tilelayout, 104,  8 )
 GFXDECODE_END
 
->>>>>>> upstream/master
 
 static const gfx_layout tiles8x32_4bpp_layout =
 {
 	8,32,
 	RGN_FRAC(1,4),
 	4,
-<<<<<<< HEAD
-	{ RGN_FRAC(0,4),RGN_FRAC(1,4),RGN_FRAC(2,4),RGN_FRAC(3,4) },
-	{ 0,1,2,3,4,5,6,7},
-	{ 0*8, 1*8, 2*8, 3*8, 4*8, 5*8, 6*8, 7*8,8*8,9*8,10*8,11*8,12*8,13*8,14*8,15*8,16*8,17*8,18*8,19*8,20*8,21*8,22*8,23*8,24*8,25*8,26*8,27*8,28*8,29*8,30*8,31*8 },
-=======
 	{ RGN_FRAC(0,4), RGN_FRAC(1,4), RGN_FRAC(2,4), RGN_FRAC(3,4) },
 	{ 0, 1, 2, 3, 4, 5, 6, 7},
 	{ 0*8, 1*8, 2*8, 3*8, 4*8, 5*8, 6*8, 7*8, 8*8, 9*8, 10*8, 11*8, 12*8,
 		13*8, 14*8, 15*8, 16*8, 17*8, 18*8, 19*8, 20*8, 21*8, 22*8, 23*8,
 		24*8, 25*8, 26*8, 27*8, 28*8, 29*8, 30*8, 31*8 },
->>>>>>> upstream/master
 	32*8
 };
 
@@ -8263,13 +7911,8 @@ static const gfx_layout tiles8x8_3bpp_layout =
 	8,8,
 	RGN_FRAC(1,3),
 	3,
-<<<<<<< HEAD
-	{ RGN_FRAC(0,3),RGN_FRAC(1,3),RGN_FRAC(2,3) },
-	{ 0,1,2,3,4,5,6,7},
-=======
 	{ RGN_FRAC(0,3), RGN_FRAC(1,3), RGN_FRAC(2,3) },
 	{ 0, 1, 2, 3, 4, 5, 6, 7},
->>>>>>> upstream/master
 	{ 0*8, 1*8, 2*8, 3*8, 4*8, 5*8, 6*8, 7*8 },
 	8*8
 };
@@ -8285,13 +7928,8 @@ static const gfx_layout tiles8x8x3_miss1bpp_layout =
 	8,8,
 	RGN_FRAC(1,1),
 	3,
-<<<<<<< HEAD
-	{ 1,2,3 },
-	{  8,12,0,4,24,28,16,20 },
-=======
 	{ 1, 2, 3 },
 	{ 8, 12, 0, 4, 24, 28, 16, 20 },
->>>>>>> upstream/master
 	{ 0*32, 1*32, 2*32, 3*32, 4*32, 5*32, 6*32, 7*32 },
 	8*32
 };
@@ -8301,13 +7939,8 @@ static const gfx_layout tiles8x8x4alt_layout =
 	8,8,
 	RGN_FRAC(1,1),
 	4,
-<<<<<<< HEAD
-	{ 0, 1,2,3 },
-	{  4,0,12,8,20,16,28,24 },
-=======
 	{ 0, 1, 2, 3 },
 	{ 4, 0, 12, 8, 20, 16, 28, 24 },
->>>>>>> upstream/master
 	{ 0*32, 1*32, 2*32, 3*32, 4*32, 5*32, 6*32, 7*32 },
 	8*32
 };
@@ -8317,13 +7950,8 @@ static const gfx_layout tiles8x32x4alt2_layout =
 	8,32,
 	RGN_FRAC(1,1),
 	4,
-<<<<<<< HEAD
-	{ 0, 1,2,3 },
-	{  4,0,12,8,20,16,28,24 },
-=======
 	{ 0, 1, 2, 3 },
 	{ 4, 0, 12, 8, 20, 16, 28, 24 },
->>>>>>> upstream/master
 	{ STEP32(0,32) },
 	32*32
 };
@@ -8339,13 +7967,8 @@ static const gfx_layout tilescherrys_layout =
 	8,32,
 	RGN_FRAC(1,1),
 	4,
-<<<<<<< HEAD
-	{ 3,2,1,0 },
-	{  8,12,0,4,24,28,16,20 },
-=======
 	{ 3, 2, 1, 0 },
 	{  8, 12, 0, 4, 24, 28, 16, 20 },
->>>>>>> upstream/master
 	{ STEP32(0,32) },
 	32*32
 };
@@ -8381,15 +8004,9 @@ static const gfx_layout cm97_layout =
 	8,8,
 	RGN_FRAC(1,1),
 	4,
-<<<<<<< HEAD
-	{ 0,1,2,3 },
-	{ 8,12,0,4,24,28, 16,20 },
-	{ 0*32,1*32,2*32,3*32,4*32,5*32,6*32,7*32 },
-=======
 	{ 0, 1, 2, 3 },
 	{ 8, 12, 0, 4, 24, 28, 16, 20 },
 	{ 0*32, 1*32, 2*32, 3*32, 4*32, 5*32, 6*32, 7*32 },
->>>>>>> upstream/master
 	8*32
 };
 
@@ -8400,13 +8017,9 @@ static const gfx_layout cm97_layout32 =
 	4,
 	{ 0,1,2,3 },
 	{ 8,12,0,4,24,28, 16,20 },
-<<<<<<< HEAD
-	{ 0*32,1*32,2*32,3*32,4*32,5*32,6*32,7*32, 8*32, 9*32, 10*32, 11*32, 12*32, 13*32,14*32,15*32,16*32,17*32,18*32,19*32,20*32,21*32,22*32,23*32,24*32,25*32,26*32,27*32,28*32,29*32,30*32,31*32 },
-=======
 	{ 0*32, 1*32, 2*32, 3*32, 4*32, 5*32, 6*32, 7*32, 8*32, 9*32, 10*32, 11*32,
 		12*32, 13*32, 14*32, 15*32, 16*32, 17*32, 18*32, 19*32, 20*32, 21*32,
 		22*32, 23*32, 24*32, 25*32, 26*32, 27*32, 28*32, 29*32, 30*32, 31*32 },
->>>>>>> upstream/master
 	32*32
 };
 
@@ -8445,12 +8058,8 @@ WRITE8_MEMBER(goldstar_state::ay8910_outputb_w)
 	//popmessage("ay8910_outputb_w %02x",data);
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( goldstar, goldstar_state )
-=======
 
 static MACHINE_CONFIG_START( goldstar )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, CPU_CLOCK)
@@ -8472,11 +8081,7 @@ static MACHINE_CONFIG_START( goldstar )
 	MCFG_PALETTE_FORMAT(BBGGGRRR)
 	MCFG_NVRAM_ADD_1FILL("nvram")
 
-<<<<<<< HEAD
-	MCFG_VIDEO_START_OVERRIDE(goldstar_state,goldstar)
-=======
 	MCFG_VIDEO_START_OVERRIDE(goldstar_state, goldstar)
->>>>>>> upstream/master
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
@@ -8485,31 +8090,19 @@ static MACHINE_CONFIG_START( goldstar )
 	MCFG_AY8910_PORT_B_READ_CB(IOPORT("DSW3"))
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
 
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki", OKI_CLOCK, OKIM6295_PIN7_HIGH) /* clock frequency & pin 7 not verified */
-=======
 	MCFG_OKIM6295_ADD("oki", OKI_CLOCK, PIN7_HIGH) /* clock frequency & pin 7 not verified */
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( goldstbl, goldstar_state )
-=======
 static MACHINE_CONFIG_START( goldstbl )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, CPU_CLOCK)
 	MCFG_CPU_PROGRAM_MAP(goldstar_map)
 	MCFG_CPU_IO_MAP(goldstar_readport)
-<<<<<<< HEAD
-	MCFG_CPU_VBLANK_INT_DRIVER("screen", goldstar_state,  irq0_line_hold)
-=======
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", goldstar_state, irq0_line_hold)
->>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
@@ -8525,11 +8118,7 @@ static MACHINE_CONFIG_START( goldstbl )
 	MCFG_PALETTE_FORMAT(BBGGGRRR)
 	MCFG_NVRAM_ADD_1FILL("nvram")
 
-<<<<<<< HEAD
-	MCFG_VIDEO_START_OVERRIDE(goldstar_state,goldstar)
-=======
 	MCFG_VIDEO_START_OVERRIDE(goldstar_state, goldstar)
->>>>>>> upstream/master
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
@@ -8538,11 +8127,7 @@ static MACHINE_CONFIG_START( goldstbl )
 	MCFG_AY8910_PORT_B_READ_CB(IOPORT("DSW3"))
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
 
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki", OKI_CLOCK, OKIM6295_PIN7_HIGH) /* clock frequency & pin 7 not verified */
-=======
 	MCFG_OKIM6295_ADD("oki", OKI_CLOCK, PIN7_HIGH) /* clock frequency & pin 7 not verified */
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
 
@@ -8555,21 +8140,13 @@ static MACHINE_CONFIG_DERIVED( goldfrui, goldstbl )
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( star100, sanghopm_state )
-=======
 static MACHINE_CONFIG_START( star100 )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, CPU_CLOCK)
 	MCFG_CPU_PROGRAM_MAP(star100_map)
 	MCFG_CPU_IO_MAP(star100_readport)
-<<<<<<< HEAD
-	MCFG_CPU_VBLANK_INT_DRIVER("screen", sanghopm_state,  irq0_line_hold)
-=======
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", sanghopm_state, irq0_line_hold)
->>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
@@ -8596,21 +8173,13 @@ static MACHINE_CONFIG_START( star100 )
 	MCFG_AY8910_PORT_B_READ_CB(IOPORT("DSW6"))
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
 
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki", OKI_CLOCK, OKIM6295_PIN7_HIGH) /* clock frequency & pin 7 not verified */
-=======
 	MCFG_OKIM6295_ADD("oki", OKI_CLOCK, PIN7_HIGH) /* clock frequency & pin 7 not verified */
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( super9, goldstar_state )
-=======
 static MACHINE_CONFIG_START( super9 )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, CPU_CLOCK)
@@ -8618,11 +8187,7 @@ static MACHINE_CONFIG_START( super9 )
 //  MCFG_CPU_PROGRAM_MAP(nfm_map)
 	MCFG_CPU_IO_MAP(goldstar_readport)
 //  MCFG_CPU_IO_MAP(unkch_portmap)
-<<<<<<< HEAD
-	MCFG_CPU_VBLANK_INT_DRIVER("screen", goldstar_state,  irq0_line_hold)
-=======
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", goldstar_state, irq0_line_hold)
->>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
@@ -8633,20 +8198,12 @@ static MACHINE_CONFIG_START( super9 )
 	MCFG_SCREEN_UPDATE_DRIVER(goldstar_state, screen_update_goldstar)
 	MCFG_SCREEN_PALETTE("palette")
 
-<<<<<<< HEAD
-	MCFG_GFXDECODE_ADD("gfxdecode", "palette", goldstar)
-=======
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", super9)
->>>>>>> upstream/master
 	MCFG_PALETTE_ADD("palette", 256)
 	MCFG_PALETTE_FORMAT(BBGGGRRR)
 	MCFG_NVRAM_ADD_1FILL("nvram")
 
-<<<<<<< HEAD
-	MCFG_VIDEO_START_OVERRIDE(goldstar_state,goldstar)
-=======
 	MCFG_VIDEO_START_OVERRIDE(goldstar_state, goldstar)
->>>>>>> upstream/master
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
@@ -8655,20 +8212,12 @@ static MACHINE_CONFIG_START( super9 )
 	MCFG_AY8910_PORT_B_READ_CB(IOPORT("DSW3"))
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
 
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki", OKI_CLOCK, OKIM6295_PIN7_HIGH) /* clock frequency & pin 7 not verified */
-=======
 	MCFG_OKIM6295_ADD("oki", OKI_CLOCK, PIN7_HIGH) /* clock frequency & pin 7 not verified */
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-PALETTE_INIT_MEMBER(goldstar_state,cm)
-=======
 PALETTE_INIT_MEMBER(goldstar_state, cm)
->>>>>>> upstream/master
 {
 	/* BBGGGRRR */
 
@@ -8676,13 +8225,8 @@ PALETTE_INIT_MEMBER(goldstar_state, cm)
 
 	for (i = 0; i < 0x100; i++)
 	{
-<<<<<<< HEAD
-		UINT8 data;
-		UINT8*proms = memregion("proms")->base();
-=======
 		uint8_t data;
 		uint8_t*proms = memregion("proms")->base();
->>>>>>> upstream/master
 
 		data = proms[0x000 + i] | (proms[0x100 + i] << 4);
 
@@ -8690,22 +8234,14 @@ PALETTE_INIT_MEMBER(goldstar_state, cm)
 	}
 }
 
-<<<<<<< HEAD
-PALETTE_INIT_MEMBER(goldstar_state,cmast91)
-=======
 PALETTE_INIT_MEMBER(goldstar_state, cmast91)
->>>>>>> upstream/master
 {
 	int i;
 	for (i = 0; i < 0x100; i++)
 	{
 		int r,g,b;
 
-<<<<<<< HEAD
-		UINT8*proms = memregion("proms")->base();
-=======
 		uint8_t*proms = memregion("proms")->base();
->>>>>>> upstream/master
 
 		b = proms[0x000 + i] << 4;
 		g = proms[0x100 + i] << 4;
@@ -8720,13 +8256,8 @@ PALETTE_INIT_MEMBER(goldstar_state, lucky8)
 	/* BBGGGRRR */
 
 	int i;
-<<<<<<< HEAD
-	UINT8 data;
-	UINT8 *proms;
-=======
 	uint8_t data;
 	uint8_t *proms;
->>>>>>> upstream/master
 
 	proms = memregion("proms")->base();
 	for (i = 0; i < 0x100; i++)
@@ -8746,11 +8277,7 @@ PALETTE_INIT_MEMBER(goldstar_state, lucky8)
 }
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( ncb3, cb3_state )
-=======
 static MACHINE_CONFIG_START( ncb3 )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, CPU_CLOCK)
@@ -8820,21 +8347,13 @@ static MACHINE_CONFIG_DERIVED( cm97, ncb3 )
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( wcherry, goldstar_state )
-=======
 static MACHINE_CONFIG_START( wcherry )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, CPU_CLOCK)
 	MCFG_CPU_PROGRAM_MAP(wcherry_map)
 	MCFG_CPU_IO_MAP(wcherry_readwriteport)
-<<<<<<< HEAD
-	MCFG_CPU_VBLANK_INT_DRIVER("screen", goldstar_state,  irq0_line_hold)
-=======
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", goldstar_state, irq0_line_hold)
->>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("ppi8255_0", I8255A, 0)
 	MCFG_I8255_IN_PORTA_CB(IOPORT("IN0"))
@@ -8877,21 +8396,13 @@ static MACHINE_CONFIG_START( wcherry )
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( cm, cmaster_state )
-=======
 static MACHINE_CONFIG_START( cm )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, CPU_CLOCK)
 	MCFG_CPU_PROGRAM_MAP(cm_map)
 	MCFG_CPU_IO_MAP(cm_portmap)
-<<<<<<< HEAD
-	MCFG_CPU_VBLANK_INT_DRIVER("screen", goldstar_state,  irq0_line_hold)
-=======
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", goldstar_state, irq0_line_hold)
->>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("ppi8255_0", I8255A, 0)
 	MCFG_I8255_IN_PORTA_CB(IOPORT("IN0"))
@@ -8932,21 +8443,13 @@ static MACHINE_CONFIG_DERIVED( cmasterc, cm )
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( cmast91, goldstar_state )
-=======
 static MACHINE_CONFIG_START( cmast91 )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, CPU_CLOCK)
 	MCFG_CPU_PROGRAM_MAP(cm_map)
 	MCFG_CPU_IO_MAP(cmast91_portmap)
-<<<<<<< HEAD
-	MCFG_CPU_VBLANK_INT_DRIVER("screen", goldstar_state,  irq0_line_hold)
-=======
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", goldstar_state, irq0_line_hold)
->>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("ppi8255_0", I8255A, 0)
 	MCFG_I8255_IN_PORTA_CB(IOPORT("IN0"))
@@ -8969,17 +8472,10 @@ static MACHINE_CONFIG_START( cmast91 )
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", cmast91)
 	MCFG_PALETTE_ADD("palette", 256)
-<<<<<<< HEAD
-	MCFG_PALETTE_INIT_OWNER(goldstar_state,cmast91)
-	MCFG_NVRAM_ADD_1FILL("nvram")
-
-	MCFG_VIDEO_START_OVERRIDE(goldstar_state,cherrym)
-=======
 	MCFG_PALETTE_INIT_OWNER(goldstar_state, cmast91)
 	MCFG_NVRAM_ADD_1FILL("nvram")
 
 	MCFG_VIDEO_START_OVERRIDE(goldstar_state, cherrym)
->>>>>>> upstream/master
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
@@ -8990,21 +8486,14 @@ static MACHINE_CONFIG_START( cmast91 )
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-=======
 
->>>>>>> upstream/master
 INTERRUPT_GEN_MEMBER(wingco_state::masked_irq)
 {
 	if (m_nmi_enable)
 		device.execute().set_input_line(INPUT_LINE_NMI, PULSE_LINE);
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( lucky8, wingco_state )
-=======
 static MACHINE_CONFIG_START( lucky8 )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, CPU_CLOCK)
@@ -9043,11 +8532,7 @@ static MACHINE_CONFIG_START( lucky8 )
 	MCFG_PALETTE_INIT_OWNER(goldstar_state, lucky8)
 	MCFG_NVRAM_ADD_1FILL("nvram")
 
-<<<<<<< HEAD
-	MCFG_VIDEO_START_OVERRIDE(goldstar_state,goldstar)
-=======
 	MCFG_VIDEO_START_OVERRIDE(goldstar_state, goldstar)
->>>>>>> upstream/master
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
@@ -9055,11 +8540,7 @@ static MACHINE_CONFIG_START( lucky8 )
 	MCFG_SOUND_ADD("snsnd", SN76489, PSG_CLOCK)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.80)
 
-<<<<<<< HEAD
-	MCFG_SOUND_ADD("aysnd", AY8910, AY_CLOCK)
-=======
 	MCFG_SOUND_ADD("aysnd", YM2149, AY_CLOCK)
->>>>>>> upstream/master
 	MCFG_AY8910_PORT_A_READ_CB(IOPORT("DSW3"))
 	MCFG_AY8910_PORT_B_READ_CB(IOPORT("DSW4"))
 	MCFG_AY8910_PORT_A_WRITE_CB(WRITE8(goldstar_state, ay8910_outputa_w))
@@ -9067,11 +8548,7 @@ static MACHINE_CONFIG_START( lucky8 )
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( bingowng, wingco_state )
-=======
 static MACHINE_CONFIG_START( bingowng )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, CPU_CLOCK)
@@ -9106,11 +8583,7 @@ static MACHINE_CONFIG_START( bingowng )
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", ncb3)
 	MCFG_PALETTE_ADD("palette", 256)
-<<<<<<< HEAD
-	MCFG_PALETTE_INIT_OWNER(goldstar_state,lucky8)
-=======
 	MCFG_PALETTE_INIT_OWNER(goldstar_state, lucky8)
->>>>>>> upstream/master
 	MCFG_NVRAM_ADD_1FILL("nvram")
 
 	MCFG_VIDEO_START_OVERRIDE(wingco_state, bingowng)
@@ -9133,20 +8606,6 @@ static MACHINE_CONFIG_DERIVED( bingownga, bingowng )
 	MCFG_GFXDECODE_MODIFY("gfxdecode", bingownga)
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-PALETTE_INIT_MEMBER(wingco_state, magodds)
-{
-	int i;
-	for (i = 0; i < 0x100; i++)
-	{
-		int r,g,b;
-
-		UINT8*proms = memregion("proms")->base();
-
-		b = proms[0x000 + i] << 4;
-		g = proms[0x100 + i] << 4;
-		r = proms[0x200 + i] << 4;
-=======
 
 static MACHINE_CONFIG_DERIVED( flam7_w4, lucky8 )
 	/* basic machine hardware */
@@ -9206,27 +8665,18 @@ PALETTE_INIT_MEMBER(wingco_state, magodds)
 		uint8_t b = proms[0x000 + i] << 4;
 		uint8_t g = proms[0x100 + i] << 4;
 		uint8_t r = proms[0x200 + i] << 4;
->>>>>>> upstream/master
 
 		palette.set_pen_color(i, rgb_t(r, g, b));
 	}
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( magodds, wingco_state )
-=======
 static MACHINE_CONFIG_START( magodds )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, CPU_CLOCK)
 	MCFG_CPU_PROGRAM_MAP(magodds_map)
 	//MCFG_CPU_IO_MAP(goldstar_readport)
-<<<<<<< HEAD
-	MCFG_CPU_VBLANK_INT_DRIVER("screen", wingco_state,  masked_irq)
-=======
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", wingco_state, masked_irq)
->>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("ppi8255_0", I8255A, 0)
 	MCFG_I8255_IN_PORTA_CB(IOPORT("IN0"))
@@ -9275,21 +8725,13 @@ static MACHINE_CONFIG_START( magodds )
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( kkotnoli, goldstar_state )
-=======
 static MACHINE_CONFIG_START( kkotnoli )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, CPU_CLOCK)
 	MCFG_CPU_PROGRAM_MAP(kkotnoli_map)
 	//MCFG_CPU_IO_MAP(goldstar_readport)
-<<<<<<< HEAD
-	MCFG_CPU_VBLANK_INT_DRIVER("screen", goldstar_state,  nmi_line_pulse)
-=======
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", goldstar_state, nmi_line_pulse)
->>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("ppi8255_0", I8255A, 0)
 	MCFG_I8255_IN_PORTA_CB(IOPORT("IN0"))
@@ -9316,11 +8758,7 @@ static MACHINE_CONFIG_START( kkotnoli )
 	MCFG_PALETTE_ADD("palette", 256)
 	MCFG_PALETTE_INIT_OWNER(goldstar_state, lucky8)
 
-<<<<<<< HEAD
-	MCFG_VIDEO_START_OVERRIDE(goldstar_state,goldstar)
-=======
 	MCFG_VIDEO_START_OVERRIDE(goldstar_state, goldstar)
->>>>>>> upstream/master
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
@@ -9331,21 +8769,13 @@ static MACHINE_CONFIG_START( kkotnoli )
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( ladylinr, goldstar_state )
-=======
 static MACHINE_CONFIG_START( ladylinr )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, CPU_CLOCK)
 	MCFG_CPU_PROGRAM_MAP(ladylinr_map)
 	//MCFG_CPU_IO_MAP(goldstar_readport)
-<<<<<<< HEAD
-	MCFG_CPU_VBLANK_INT_DRIVER("screen", goldstar_state,  nmi_line_pulse)
-=======
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", goldstar_state, nmi_line_pulse)
->>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("ppi8255_0", I8255A, 0)
 	MCFG_I8255_IN_PORTA_CB(IOPORT("IN0"))
@@ -9369,45 +8799,26 @@ static MACHINE_CONFIG_START( ladylinr )
 	MCFG_PALETTE_INIT_OWNER(goldstar_state, lucky8)
 	MCFG_NVRAM_ADD_1FILL("nvram")
 
-<<<<<<< HEAD
-	MCFG_VIDEO_START_OVERRIDE(goldstar_state,goldstar)
-
-	/* sound hardware */
-	MCFG_SPEAKER_STANDARD_MONO("mono")//set up a standard mono speaker called 'mono'
-=======
 	MCFG_VIDEO_START_OVERRIDE(goldstar_state, goldstar)
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
->>>>>>> upstream/master
 
 	MCFG_SOUND_ADD("snsnd", SN76489, PSG_CLOCK)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.80)
 
-<<<<<<< HEAD
-	MCFG_SOUND_ADD("aysnd", AY8910, AY_CLOCK)
-=======
 	MCFG_SOUND_ADD("aysnd", AY8910, AY_CLOCK) // unused?
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( wcat3, wingco_state )
-=======
 static MACHINE_CONFIG_START( wcat3 )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, CPU_CLOCK)
 	MCFG_CPU_PROGRAM_MAP(wcat3_map)
 	//MCFG_CPU_IO_MAP(goldstar_readport)
-<<<<<<< HEAD
-	MCFG_CPU_VBLANK_INT_DRIVER("screen", goldstar_state,  nmi_line_pulse)
-=======
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", goldstar_state, nmi_line_pulse)
->>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("ppi8255_0", I8255A, 0)
 	MCFG_I8255_IN_PORTA_CB(IOPORT("IN0"))
@@ -9439,11 +8850,7 @@ static MACHINE_CONFIG_START( wcat3 )
 	MCFG_PALETTE_INIT_OWNER(goldstar_state, lucky8)
 	MCFG_NVRAM_ADD_1FILL("nvram")
 
-<<<<<<< HEAD
-	MCFG_VIDEO_START_OVERRIDE(goldstar_state,goldstar)
-=======
 	MCFG_VIDEO_START_OVERRIDE(goldstar_state, goldstar)
->>>>>>> upstream/master
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
@@ -9462,21 +8869,13 @@ MACHINE_CONFIG_END
 
 
 /* diff with cm machine driver: gfxdecode, OKI & portmap */
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( amcoe1, cmaster_state )
-=======
 static MACHINE_CONFIG_START( amcoe1 )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, CPU_CLOCK)
 	MCFG_CPU_PROGRAM_MAP(cm_map)
 	MCFG_CPU_IO_MAP(amcoe1_portmap)
-<<<<<<< HEAD
-	MCFG_CPU_VBLANK_INT_DRIVER("screen", goldstar_state,  irq0_line_hold)
-=======
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", goldstar_state, irq0_line_hold)
->>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("ppi8255_0", I8255A, 0)
 	MCFG_I8255_IN_PORTA_CB(IOPORT("IN0"))
@@ -9511,11 +8910,7 @@ static MACHINE_CONFIG_START( amcoe1 )
 	MCFG_AY8910_PORT_B_READ_CB(IOPORT("DSW5"))
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
 
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki", OKI_CLOCK, OKIM6295_PIN7_HIGH) /* clock frequency & pin 7 not verified */
-=======
 	MCFG_OKIM6295_ADD("oki", OKI_CLOCK, PIN7_HIGH) /* clock frequency & pin 7 not verified */
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
 
@@ -9530,11 +8925,7 @@ MACHINE_CONFIG_END
 
 
 /* diff with cm machine driver: gfxdecode, AY8910 volume & portmap */
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( amcoe2, cmaster_state )
-=======
 static MACHINE_CONFIG_START( amcoe2 )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, CPU_CLOCK)
@@ -9566,11 +8957,7 @@ static MACHINE_CONFIG_START( amcoe2 )
 	MCFG_PALETTE_INIT_OWNER(goldstar_state,cm)
 	MCFG_NVRAM_ADD_1FILL("nvram")
 
-<<<<<<< HEAD
-	MCFG_VIDEO_START_OVERRIDE(goldstar_state,cherrym)
-=======
 	MCFG_VIDEO_START_OVERRIDE(goldstar_state, cherrym)
->>>>>>> upstream/master
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
@@ -9596,11 +8983,7 @@ INTERRUPT_GEN_MEMBER(unkch_state::vblank_irq)
 		device.execute().set_input_line(INPUT_LINE_NMI, PULSE_LINE);
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( unkch, unkch_state )
-=======
 static MACHINE_CONFIG_START( unkch )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, CPU_CLOCK)
@@ -9639,21 +9022,13 @@ MACHINE_CONFIG_END
 
 
 // hw unknown - should be somewhat similar to cm
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( pkrmast, goldstar_state )
-=======
 static MACHINE_CONFIG_START( pkrmast )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, CPU_CLOCK)
 	MCFG_CPU_PROGRAM_MAP(cm_map)
 	MCFG_CPU_IO_MAP(pkrmast_portmap)
-<<<<<<< HEAD
-	MCFG_CPU_VBLANK_INT_DRIVER("screen", goldstar_state,  irq0_line_hold)
-=======
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", goldstar_state, irq0_line_hold)
->>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
@@ -9680,11 +9055,7 @@ static MACHINE_CONFIG_START( pkrmast )
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( megaline, unkch_state )
-=======
 static MACHINE_CONFIG_START( megaline )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, CPU_CLOCK)
@@ -9734,27 +9105,17 @@ static MACHINE_CONFIG_START( megaline )
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( bonusch, unkch_state )
-
-	/* basic machine hardware */
-	MCFG_CPU_ADD("maincpu", Z80, CPU_CLOCK)
-=======
 static MACHINE_CONFIG_START( bonusch )
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, XTAL_12MHz / 2)
->>>>>>> upstream/master
 	MCFG_CPU_PROGRAM_MAP(bonusch_map)
 	MCFG_CPU_IO_MAP(bonusch_portmap)
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", goldstar_state,  nmi_line_pulse)
 
-<<<<<<< HEAD
-=======
 	MCFG_CPU_ADD("mcu", I80C51, XTAL_12MHz)
 	MCFG_DEVICE_DISABLE()
 
->>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE(60)
@@ -9794,8 +9155,6 @@ MACHINE_CONFIG_END
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-=======
 /*
   Golden Star (bootleg of Cherry 1 Gold)
   Processor: ZILOG Z0840006PSC Z80 CPU 9745 RN
@@ -9825,7 +9184,6 @@ MACHINE_CONFIG_END
   - HOLTEK HT 6116-70 9806K0625
 
 */
->>>>>>> upstream/master
 ROM_START( goldstar )
 	ROM_REGION( 0x10000, "maincpu", 0 )
 	ROM_LOAD( "gs4-cpu.bin",  0x0000, 0x10000, CRC(73e47d4d) SHA1(df2d8233572dc12e8a4b56e5d4f6c566e4ababc9) )
@@ -9840,9 +9198,6 @@ ROM_START( goldstar )
 	ROM_LOAD( "gs1-snd.bin",  0x0000, 0x20000, CRC(9d58960f) SHA1(c68edf95743e146398aabf6b9617d18e1f9bf25b) )
 ROM_END
 
-<<<<<<< HEAD
-
-=======
 /*
   Golden Star (blue version)
 
@@ -9854,7 +9209,6 @@ ROM_END
   The blue one match the golden star ROM 1 and contains ADCPM audio.
 
 */
->>>>>>> upstream/master
 ROM_START( goldstbl )
 	ROM_REGION( 0x10000, "maincpu", 0 )
 	ROM_LOAD( "gsb-cpu.bin",  0x0000, 0x10000, CRC(82b238c3) SHA1(1306e700e213f423bdd79b182aa11335796f7f38) )
@@ -9931,47 +9285,6 @@ ROM_END
 
 
 /*
-<<<<<<< HEAD
-
-Cherry I Gold
-
-Anno    1998
-Produttore
-N.revisione W4BON (rev.1)
-
-
-CPU
-
-1x TMPZ84C00AP-6 (u12)(main)
-2x D8255AC-2 (u45,u46) (missing)
-1x D71055C (u40) (missing)
-1x YM2149 (u39)
-1x SN76489AN (u38)
-1x oscillator 12.0C45
-
-ROMs
-
-1x I27256 (u3)
-1x I27C010 (u1)
-1x PROM N82S147AN (u2)
-1x M27C512 (u20)
-1x GAL20V8 (pl1)(read protected)
-1x PALCE20V8H (pl2)(read protected)
-1x ispLSI1024-60LJ (pl3)(read protected)
-3x PALCE16V8H (pl4,pl6,pl7)(read protected)
-1x PEEL22CV10 (pl5)(read protected)
-
-Note
-
-1x 36x2 edge connector
-1x 10x2 edge connector
-2x trimmer (volume)
-5x 8x2 switches dip (sw1-5)
-1x push lever (TS)
-
-
-=======
->>>>>>> upstream/master
 Cherry Gold  (Cherry 10)
 
 Anno    1997
@@ -10034,8 +9347,6 @@ ROM_START( chry10 )
 ROM_END
 
 
-<<<<<<< HEAD
-=======
 /*
 Cherry I Gold
 
@@ -10074,7 +9385,6 @@ Note
 1x push lever (TS)
 
 */
->>>>>>> upstream/master
 ROM_START( chrygld )
 	ROM_REGION( 0x10000, "maincpu", 0 )
 	ROM_LOAD( "ol-v9.u20",  0x00000, 0x10000, CRC(b61c0695) SHA1(63c44b20fd7f76bdb33331273d2610e8cfd31add) )
@@ -10098,11 +9408,6 @@ ROM_START( chrygld )
 ROM_END
 
 
-<<<<<<< HEAD
-ROM_START( moonlght )
-	ROM_REGION( 0x20000, "maincpu", 0 )
-	ROM_LOAD( "4.bin",       0x0000, 0x20000, CRC(ecb06cfb) SHA1(e32613cac5583a0fecf04fca98796b91698e530c) )
-=======
 /* Moon Light (V.0629)
    Rip off / clone of Gold Star.
 
@@ -10129,7 +9434,6 @@ ROM_START( moonlghta )
 	ROM_REGION( 0x20000, "maincpu", 0 )  // using only the second half of the program ROM.
 	ROM_LOAD( "4.bin",       0x10000, 0x10000, CRC(ecb06cfb) SHA1(e32613cac5583a0fecf04fca98796b91698e530c) )   // high program, normal gfx
 	ROM_CONTINUE(            0x00000, 0x10000)
->>>>>>> upstream/master
 
 	ROM_REGION( 0x20000, "gfx1", 0 )
 	ROM_LOAD( "28.bin",      0x00000, 0x20000, CRC(76915c0f) SHA1(3f6d1c0dd3d9bf29538181a0e930291b822dad8c) )
@@ -10141,8 +9445,6 @@ ROM_START( moonlghta )
 	ROM_LOAD( "gs1-snd.bin",  0x0000, 0x20000, CRC(9d58960f) SHA1(c68edf95743e146398aabf6b9617d18e1f9bf25b) )
 ROM_END
 
-<<<<<<< HEAD
-=======
 /* Moon Light (V.02L0A)
    Rip off / clone of Gold Star.
 
@@ -10211,7 +9513,6 @@ ROM_START( moonlghtc )
 	ROM_LOAD( "moon-sound.bin",  0x0000, 0x20000, CRC(9d58960f) SHA1(c68edf95743e146398aabf6b9617d18e1f9bf25b) )
 ROM_END
 
->>>>>>> upstream/master
 
 /* Gold Fruit
 
@@ -10434,8 +9735,6 @@ ROM_START( cb3e )
 ROM_END
 
 
-<<<<<<< HEAD
-=======
 /* Cherry Gold I (bootleg)
    It runs in CB3e similar hardware...
 
@@ -10488,7 +9787,6 @@ ROM_START( chryglda )
 ROM_END
 
 
->>>>>>> upstream/master
 ROM_START( cmv801 )
 	ROM_REGION( 0x10000, "maincpu", 0 )
 	ROM_LOAD( "prg512",   0x0000, 0x10000, CRC(2f6e3fe9) SHA1(c5ffa51478a0dc2d8ff6a0f286cfb461011bb55d) )
@@ -11000,19 +10298,6 @@ ROM_START( cmasterd )
 
 	/* proms taken from cmv4, probably wrong  */
 	ROM_REGION( 0x200, "proms", 0 )
-<<<<<<< HEAD
-	ROM_LOAD( "82s129.u84", 0x0000, 0x0100, CRC(0489b760) SHA1(78f8632b17a76335183c5c204cdec856988368b0) )
-	ROM_LOAD( "82s129.u70", 0x0100, 0x0100, CRC(21eb5b19) SHA1(9b8425bdb97f11f4855c998c7792c3291fd07470) )
-
-	ROM_REGION( 0x100, "proms2", 0 )
-	ROM_LOAD( "82s129.u46", 0x0000, 0x0100, CRC(50ec383b) SHA1(ae95b92bd3946b40134bcdc22708d5c6b0f4c23e) )
-ROM_END
-
-
-ROM_START( cmastere )
-	ROM_REGION( 0x10000, "maincpu", 0 )
-	ROM_LOAD( "cm33.rom",  0x0000, 0x1000, CRC(c3c3f7df) SHA1(47eda025859afebe64fd76e17e8390262fb40e0b) )
-=======
 	ROM_LOAD( "82s129.u84", 0x0000, 0x0100, CRC(0489b760) SHA1(78f8632b17a76335183c5c204cdec856988368b0) )
 	ROM_LOAD( "82s129.u70", 0x0100, 0x0100, CRC(21eb5b19) SHA1(9b8425bdb97f11f4855c998c7792c3291fd07470) )
 
@@ -11169,7 +10454,6 @@ ROM_END
 ROM_START( cmasterh )
 	ROM_REGION( 0x10000, "maincpu", 0 )
 	ROM_LOAD( "cm_v1.10_dyna.bin",  0x0000,  0x1000, CRC(872f2ef0) SHA1(ec68a03a1e8ab793d4a5eae1ce25f91608351c55) )
->>>>>>> upstream/master
 	ROM_CONTINUE(0x4000,0x1000)
 	ROM_CONTINUE(0x3000,0x1000)
 	ROM_CONTINUE(0x7000,0x1000)
@@ -11179,34 +10463,6 @@ ROM_START( cmasterh )
 	ROM_CONTINUE(0x5000,0x1000)
 
 	ROM_REGION( 0x18000, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_LOAD( "u16.7", 0x00000,  0x8000, CRC(19cc1d67) SHA1(47487f9362bfb36a32100ed772960628844462bf) )
-	ROM_LOAD( "u11.6", 0x08000,  0x8000, CRC(63b3df4e) SHA1(9bacd23da598805ec18ec5ad15cab95d71eb9262) )
-	ROM_LOAD( "u4.5",  0x10000,  0x8000, CRC(e39fff9c) SHA1(22fdc517fa478441622c6245cecb5728c5595757) )
-
-	ROM_REGION( 0x8000, "gfx2", 0 )
-	ROM_LOAD( "u15.4",  0x0000,  0x2000, CRC(8607ffd9) SHA1(9bc94715554aa2473ae2ed249a47f29c7886b3dc) )
-	ROM_LOAD( "u10.3",  0x2000,  0x2000, CRC(c32367be) SHA1(ff217021b9c58e23b2226f8b0a7f5da966225715) )
-	ROM_LOAD( "u14.2",  0x4000,  0x2000, CRC(6dfcb188) SHA1(22430429c798954d9d979e62699b58feae7fdbf4) )
-	ROM_LOAD( "u9.1",   0x6000,  0x2000, CRC(9678ead2) SHA1(e80aefa98b2363fe9e6b2415762695ace272e4d3) )
-
-	ROM_REGION( 0x10000, "user1", 0 )
-	ROM_LOAD( "u53.8",  0x0000, 0x10000, CRC(e92443d3) SHA1(4b6ca4521841610054165f085ae05510e77af191) )
-
-	/* proms taken from cmv4, probably wrong  */
-	ROM_REGION( 0x200, "proms", 0 )
-	ROM_LOAD( "82s129.u84", 0x0000, 0x0100, CRC(0489b760) SHA1(78f8632b17a76335183c5c204cdec856988368b0) )
-	ROM_LOAD( "82s129.u70", 0x0100, 0x0100, CRC(21eb5b19) SHA1(9b8425bdb97f11f4855c998c7792c3291fd07470) )
-
-	ROM_REGION( 0x100, "proms2", 0 )
-	ROM_LOAD( "82s129.u46", 0x0000, 0x0100, CRC(50ec383b) SHA1(ae95b92bd3946b40134bcdc22708d5c6b0f4c23e) )
-ROM_END
-
-
-ROM_START( cmasterf )
-	ROM_REGION( 0x10000, "maincpu", 0 )
-	ROM_LOAD( "cmbig55.rom",  0x0000, 0x1000, CRC(2cc4df7b) SHA1(ad5b8108913ff88fb435c8c12b47446575e1360e) )
-=======
 	ROM_LOAD( "7.u16", 0x00000,  0x8000, CRC(19cc1d67) SHA1(47487f9362bfb36a32100ed772960628844462bf) )
 	ROM_LOAD( "6.u11", 0x08000,  0x8000, CRC(63b3df4e) SHA1(9bacd23da598805ec18ec5ad15cab95d71eb9262) )
 	ROM_LOAD( "5.u4",  0x10000,  0x8000, CRC(e39fff9c) SHA1(22fdc517fa478441622c6245cecb5728c5595757) )
@@ -11232,7 +10488,6 @@ ROM_END
 ROM_START( cmast99 )
 	ROM_REGION( 0x10000, "maincpu", 0 )
 	ROM_LOAD( "cm99-041-8.u81", 0x0000, 0x1000, CRC(5fb0800e) SHA1(14d316b7b89340c5b5c9fdd0b43d5810513b74d6) )
->>>>>>> upstream/master
 	ROM_CONTINUE(0x4000,0x1000)
 	ROM_CONTINUE(0x3000,0x1000)
 	ROM_CONTINUE(0x7000,0x1000)
@@ -11240,36 +10495,6 @@ ROM_START( cmast99 )
 	ROM_CONTINUE(0x6000,0x1000)
 	ROM_CONTINUE(0x2000,0x1000)
 	ROM_CONTINUE(0x5000,0x1000)
-<<<<<<< HEAD
-
-	ROM_REGION( 0x18000, "gfx1", 0 )
-	ROM_LOAD( "u16.7", 0x00000,  0x8000, CRC(19cc1d67) SHA1(47487f9362bfb36a32100ed772960628844462bf) )
-	ROM_LOAD( "u11.6", 0x08000,  0x8000, CRC(63b3df4e) SHA1(9bacd23da598805ec18ec5ad15cab95d71eb9262) )
-	ROM_LOAD( "u4.5",  0x10000,  0x8000, CRC(e39fff9c) SHA1(22fdc517fa478441622c6245cecb5728c5595757) )
-
-	ROM_REGION( 0x8000, "gfx2", 0 )
-	ROM_LOAD( "u15.4",  0x0000,  0x2000, CRC(8607ffd9) SHA1(9bc94715554aa2473ae2ed249a47f29c7886b3dc) )
-	ROM_LOAD( "u10.3",  0x2000,  0x2000, CRC(c32367be) SHA1(ff217021b9c58e23b2226f8b0a7f5da966225715) )
-	ROM_LOAD( "u14.2",  0x4000,  0x2000, CRC(6dfcb188) SHA1(22430429c798954d9d979e62699b58feae7fdbf4) )
-	ROM_LOAD( "u9.1",   0x6000,  0x2000, CRC(9678ead2) SHA1(e80aefa98b2363fe9e6b2415762695ace272e4d3) )
-
-	ROM_REGION( 0x10000, "user1", 0 )
-	ROM_LOAD( "u53.8",  0x0000, 0x10000, CRC(e92443d3) SHA1(4b6ca4521841610054165f085ae05510e77af191) )
-
-	/* proms taken from cmv4, probably wrong  */
-	ROM_REGION( 0x200, "proms", 0 )
-	ROM_LOAD( "82s129.u84", 0x0000, 0x0100, CRC(0489b760) SHA1(78f8632b17a76335183c5c204cdec856988368b0) )
-	ROM_LOAD( "82s129.u70", 0x0100, 0x0100, CRC(21eb5b19) SHA1(9b8425bdb97f11f4855c998c7792c3291fd07470) )
-
-	ROM_REGION( 0x100, "proms2", 0 )
-	ROM_LOAD( "82s129.u46", 0x0000, 0x0100, CRC(50ec383b) SHA1(ae95b92bd3946b40134bcdc22708d5c6b0f4c23e) )
-ROM_END
-
-
-ROM_START( cmast99 )
-	ROM_REGION( 0x10000, "maincpu", 0 )
-	ROM_LOAD( "cm99-041-8.u81", 0x0000, 0x1000, CRC(e0872d9f) SHA1(6d8f5e09e5c9daf834d5c74434eae86e5dd7e194) )
-=======
 	ROM_CONTINUE(0x8000,0x8000)
 
 	ROM_REGION( 0x18000, "gfx1", 0 )
@@ -11299,27 +10524,14 @@ ROM_END
 ROM_START( cmast99b )
 	ROM_REGION( 0x10000, "maincpu", 0 )
 	ROM_LOAD( "cm99b-041-8.u81", 0x0000, 0x1000, CRC(e0872d9f) SHA1(6d8f5e09e5c9daf834d5c74434eae86e5dd7e194) )
->>>>>>> upstream/master
 	ROM_CONTINUE(0x4000,0x1000)
 	ROM_CONTINUE(0x3000,0x1000)
 	ROM_CONTINUE(0x7000,0x1000)
 	ROM_CONTINUE(0x1000,0x1000)
-<<<<<<< HEAD
-	ROM_CONTINUE(0x6000,0x1000) /* maybe wrong */
-	ROM_CONTINUE(0x2000,0x1000)
-	ROM_CONTINUE(0x5000,0x1000) /* maybe wrong */
-	ROM_CONTINUE(0x8000,0x1000)
-	ROM_CONTINUE(0x9000,0x1000) /* maybe wrong */
-	ROM_CONTINUE(0xa000,0x1000) /* maybe wrong */
-	ROM_CONTINUE(0xb000,0x1000) /* maybe wrong */
-	ROM_CONTINUE(0xc000,0x1000) /* maybe wrong */
-	ROM_CONTINUE(0xd000,0x3000) /* padding that isn't visible to CPU (RAM mapped here) */
-=======
 	ROM_CONTINUE(0x6000,0x1000)
 	ROM_CONTINUE(0x2000,0x1000)
 	ROM_CONTINUE(0x5000,0x1000)
 	ROM_CONTINUE(0x8000,0x8000)
->>>>>>> upstream/master
 
 	ROM_REGION( 0x18000, "gfx1", 0 )
 	ROM_LOAD( "cm99-041-7.u16", 0x00000, 0x8000, CRC(69e2aef2) SHA1(195faec239734650dcd777d55a8da84e3a0ed50c) )
@@ -11335,11 +10547,7 @@ ROM_START( cmast99b )
 	ROM_REGION( 0x10000, "user1", 0 )
 	ROM_FILL( 0x0000, 0x10000, 0xff ) // U53 (girl bitmaps) not populated
 
-<<<<<<< HEAD
-	/* proms taken from cmv4, probably wrong  */
-=======
 	/* proms taken from cmv4, probably wrong; U79? and U84 known to be identical to Cherry Master 89 */
->>>>>>> upstream/master
 	ROM_REGION( 0x200, "proms", 0 )
 	ROM_LOAD( "82s129.u84", 0x0000, 0x0100, CRC(0489b760) SHA1(78f8632b17a76335183c5c204cdec856988368b0) BAD_DUMP )
 	ROM_LOAD( "82s129.u70", 0x0100, 0x0100, CRC(21eb5b19) SHA1(9b8425bdb97f11f4855c998c7792c3291fd07470) BAD_DUMP )
@@ -11348,8 +10556,6 @@ ROM_START( cmast99b )
 	ROM_LOAD( "82s129.u46", 0x0000, 0x0100, CRC(50ec383b) SHA1(ae95b92bd3946b40134bcdc22708d5c6b0f4c23e) BAD_DUMP )
 ROM_END
 
-<<<<<<< HEAD
-=======
 /*
     A-Plan
     (C) 1993 WeaShing H.K.
@@ -11387,7 +10593,6 @@ ROM_START( aplan ) // Has "DYNA QL-1  V1.01" string.
 	ROM_LOAD( "82s129.u45",   0x000, 0x100, CRC(0489b760) SHA1(78f8632b17a76335183c5c204cdec856988368b0) )
 	ROM_LOAD( "82s129.u46",   0x100, 0x100, CRC(21eb5b19) SHA1(9b8425bdb97f11f4855c998c7792c3291fd07470) )
 ROM_END
->>>>>>> upstream/master
 
 ROM_START( chryangl )
 	ROM_REGION( 0x10000, "maincpu", 0 )
@@ -11943,109 +11148,6 @@ ROM_END
   a sort of Super Mario character from Nintendo, clouds and stars...
 
 
-<<<<<<< HEAD
- PCB Layout:
-+----------------------------------------------------------------------------------------------------------------------------+
-|      J       I       H         G            F         E         D           C          B              A                    |
-|                                                                        +----------+                                        |
-|   +-----+ +-----+ +-------+ +-----+                +-----+             |ASB IN USA| +--------------+ +-----+            +--+
-|14 |  U  | |  U  | |   F   | |  T  |                |  M  |             |4FJ       | |      8       | |  R  |            |
-|   +-----+ +-----+ +-------+ +-----+                +-----+             |HM6116LP-2| |   D27256     | +-----+            |
-|                                                                        +----------+ |              |                    +--+
-|   +-----+           +-----+ +-----+      +-----+   +-------+ +-----+   +-------+    +--------------+ +-----+             --|
-|13 |  H  |           |  V  | |  T  |      |  H  |   |   F   | |  S  |   |   A   |                     |  M  |             --|
-|   +-----+           +-----+ +-----+      +-----+   +-------+ +-----+   +-------+                     +-----+             --|
-|                +----------+                                                                                              --|
-|                |Toshiba   | +-----+                +-----+   +-----+   +-------+                                         --|
-|12              |TMM2016BP-| |  O  |                |  B  |   |  S  |   |   A   |                                         --|
-|                |12        | +-----+                +-----+   +-----+   +-------+                                         --|
-|                +----------+                                                                                              --|
-|                +----------+                                            +------------------+                              --|
-|                |          | +-----+                +-----+   +-----+   |      ZILOG       |                              --|
-|11              |HM6116L-90| |  O  |                |  B  |   |  L  |   |   Z0840004PSC    |                              --|
-|                |          | +-----+                +-----+   +-----+   |   Z80 CPU        |                              --|
-|                +----------+                                            +------------------+                              --|
-|   +-----+  +--------------+ +-----+      +-----+   +-----+   +-----+   +------------------+                              --|
-|10 |  J  |  |      [7]     | |  O  |      |  W  |   |  B  |   |  X  |   |    NEC JAPAN     |                              --|
-|   +-----+  |    D27256    | +-----+      +-----+   +-----+   +-----+   |    D8255AC-2     |                              --|
-|            |              |                                            |    9014XD010     |                              --|
-|   +-----+  +--------------+ +-----+      +-----+   +-----+   +-----+   +------------------+                            36--|
-|9  |  J  |  +--------------+ |  O  |      |  E  |   |  C  |   |  L  |                                                 Pinout|
-|   +-----+  |      [6]     | +-----+      +-----+   +-----+   +-----+   +------------------+                              --|
-|   +-----+  |    D27256    | +-------+    +-----+   +-----+ +--------+  |    NEC JAPAN     |                              --|
-|8  |  J  |  |              | |   I   |    |  E  |   |  D  | |  DIP1  |  |    D8255AC-2     |                              --|
-|   +-----+  +--------------+ +-------+    +-----+   +-----+ +--------+  |    9014XD010     |                              --|
-|   +-----+  +--------------+ +-------+              +-----+ +--------+  +------------------+ +---+ +-----+                --|
-|7  |  G  |  |      [5]     | |   I   |              |  E  | |  DIP2  |  +------------------+ | Q | |  P  |                --|
-|   +-----+  |   D27256     | +-------+              +-----+ +--------+  |    NEC JAPAN     | +---+ +-----+                --|
-|            |              |                                            |                  |                              --|
-|    XTAL    +--------------+ +-------+              +-----+ +--------+  |                  |       +-----+                --|
-|6  .----.   +--------------+ |   I   |              |  L  | |  DIP3  |  +------------------+       |  P  |                --|
-|            |      [4]     | +-------+              +-----+ +--------+  +------------------+       +-----+                --|
-|            |   D2764D     |                                            |     Winbond      |                              --|
-|   +-----+  |              | +-------+    +-----+   +-----+ +--------+  |     WF19054      |                              --|
-|5  |  J  |  +--------------+ |   I   |    |  K  |   |  B  | |  DIP4  |  |  4150C14090830   |                              --|
-|   +-----+  +--------------+ +-------+    +-----+   +-----+ +--------+  +------------------+                              --|
-|            |      [3]     | +----------+                                                                                 --|
-|   +-----+  |  HN482764G   | |Toshiba Tm| +-----+   +-----+ +---------+  +------+ +------+                                --|
-|4  |  J  |  |              | |m2016BP-12| |  K  |   |  B  | |    I    |  |    V | |   X  |                                --|
-|   +-----+  +--------------+ +----------+ +-----+   +-----+ +---------+  +------+ +------+                               +--+
-|   +-----+  +--------------+ +----------+ +-----+   +-----+ +-------+    +------+ +------+                               |
-|3  |  J  |  |     [2]      | |USC 6516-A| |  T  |   |  B  | |   H   |    |    V | |   X  |                               |
-|   +-----+  |    D2764     | |9252E GYU1| +-----+   +-----+ +-------+    +------+ +------+                               +--+
-|            |              | +----------+                                                                                   |
-|   +-----+  +--------------+ +----------+ +-----+   +-----+  +------+    +------+                                           |
-|2  |  J  |  +--------------+ |Toshiba Tm| |  O  |   |  M  |  |   Y  |    |   Z  |                                           |
-|   +-----+  |     [1]      | |m2016BP-12| +-----+   +-----+  +------+    +------+                                           |
-|   +-----+  |  MBM2764-25  | +----------+ +-----+   +-----+  +------+                                                       |
-|1  |  J  |  |              | +----------+ |  O  |   |  N  |  |   W  |                                                       |
-|   +-----+  +--------------+ |HM6116L-90| +-----+   +-----+  +------+                                  A                    |
-|                             |  9140A   |                                           +-----+    10 Pins   +-----+            |
-|      J       I       H      +----------+    F         E         D           C     B|     ||||||||||||||||     |            |
-+------------------------------------------------------------------------------------+     +--------------+     +------------+
-
-
-DIP1:                     DIP2:                     DIP3:                     DIP4:
-+-------------------+     +-------------------+     +-------------------+     +-------------------+
-| ON                |     | ON                |     | ON                |     | ON                |
-| +---------------+ |     | +---------------+ |     | +---------------+ |     | +---------------+ |
-| |_|_|_|#|_|_|_|_| |     | |#|#|#|_|_|_|_|#| |     | |_|_|#|#|#|#|#|_| |     | |_|_|_|_|#|_|_|_| |
-| |#|#|#| |#|#|#|#| |     | | | | |#|#|#|#| | |     | |#|#| | | | | |#| |     | |#|#|#|#| |#|#|#| |
-| +---------------+ |     | +---------------+ |     | +---------------+ |     | +---------------+ |
-|  1 2 3 4 5 6 7 8  |     |  1 2 3 4 5 6 7 8  |     |  1 2 3 4 5 6 7 8  |     |  1 2 3 4 5 6 7 8  |
-+-------------------+     +-------------------+     +-------------------+     +-------------------+
-
-
-1x XTAL = 12 Mhz
-
-
-A = SN74LS244N / XXAC9307
-B = GD74LS161A / A9417
-C = MB74LS10 / 8507 M12
-D = 74LSMPC / SLB1254
-E = GD74LS74A / 9430
-F = HD74LS273P
-G = HD74LS368AP
-H = 74LS32
-I = 74LS245  / W994K9318 / Malaysia
-J = GS 9429 / GD74LS166     ?????
-K = SN74LS283N / KKFQ9149
-L = GS 9427 / GD74LS138
-M = GS 9424 / GD74LS04
-N = Malaysia 9022AS / SN74LS139AN
-O = GS 9425 / GD74LS157 ????
-P = HD74LS04P
-Q = 5560 / JRC / 3151A
-R = HD74HC00P
-S = DM74S288
-T = DM74S287
-U = LS02
-V = LS174
-W = LS08
-X = LS367
-Y = LS60 ??
-Z = sn76489an
-=======
    PCB Layout:
   +----------------------------------------------------------------------------------------------------------------------------+
   |      J       I       H         G            F         E         D           C          B              A                    |
@@ -12144,7 +11246,6 @@ Z = sn76489an
   X = LS367
   Y = LS00
   Z = SN76489AN
->>>>>>> upstream/master
 
 */
 ROM_START( ns8lines )
@@ -12178,11 +11279,7 @@ ROM_END
 
 
 /*
-<<<<<<< HEAD
-  New Lucky 8 Lines / New Super 8 Lines (Witch Bonus)
-=======
   New Lucky 8 Lines / New Super 8 Lines (F-5, Witch Bonus)
->>>>>>> upstream/master
 
   This set has the 'Witch Bonus' present in Witch Card games.
 
@@ -12242,8 +11339,6 @@ ROM_START( ns8linew )
 ROM_END
 
 
-<<<<<<< HEAD
-=======
 /*
   New Lucky 8 Lines / New Super 8 Lines (W-4, Witch Bonus)
 
@@ -12677,7 +11772,6 @@ ROM_START( chryangla )
 ROM_END
 
 
->>>>>>> upstream/master
 /******************************************************************************
 
   Lucky Lady (1985, Wing)
@@ -12866,11 +11960,7 @@ is this the original Magical Odds?
 DRIVER_INIT_MEMBER(wingco_state, magoddsc)
 {
 	int A;
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("maincpu")->base();
-=======
 	uint8_t *ROM = memregion("maincpu")->base();
->>>>>>> upstream/master
 
 	for (A = 0;A < 0x8000;A++)
 	{
@@ -13512,8 +12602,6 @@ ROM_START( roypok96b )
 ROM_END
 
 
-<<<<<<< HEAD
-=======
 ROM_START( roypok96c )
 	ROM_REGION( 0x10000, "maincpu", 0 )
 	ROM_LOAD( "subboard.bin", 0x0000, 0x1000, CRC(5ce4bed1) SHA1(bd888fec4531157668d4b14a9439a3051e52b3ec) )
@@ -13555,7 +12643,6 @@ ROM_START( roypok96c )
 ROM_END
 
 
->>>>>>> upstream/master
 ROM_START( pokonl97 )
 	ROM_REGION( 0x20000, "maincpu", 0 )
 	ROM_LOAD( "po33.bin", 0x00000, 0x1000, CRC(55bdd5cf) SHA1(7fd9e5c63ab2439db33710d7684f5df5e7324325) )
@@ -14267,17 +13354,10 @@ ROM_END
 DRIVER_INIT_MEMBER(cmaster_state, fb2010)
 {
 	int i;
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("maincpu")->base();
-	for (i = 0;i < 0x10000;i++)
-	{
-		UINT8 x = ROM[i];
-=======
 	uint8_t *ROM = memregion("maincpu")->base();
 	for (i = 0;i < 0x10000;i++)
 	{
 		uint8_t x = ROM[i];
->>>>>>> upstream/master
 
 		switch(i & 0x22)
 		{
@@ -14582,11 +13662,6 @@ ROM_START( nfm )
 ROM_END
 
 
-<<<<<<< HEAD
-ROM_START( unkch1 )
-	ROM_REGION( 0x10000, "maincpu", 0 )
-	ROM_LOAD( "u6.bin",  0x0000, 0x10000, CRC(30309996) SHA1(290f35f587fdf78dcb4f09403c510deec533c9c2) )
-=======
 /* Super Cherry Master.
    Lacks of Dyna copyright. Maybe bootleg.
 
@@ -14608,7 +13683,6 @@ ROM_END
 ROM_START( unkch1 )
 	ROM_REGION( 0x10000, "maincpu", 0 )
 	ROM_LOAD( "u6.bin",  0x00000, 0x10000, CRC(30309996) SHA1(290f35f587fdf78dcb4f09403c510deec533c9c2) )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x20000, "gfx1", 0 )
 	ROM_LOAD( "u29.bin", 0x00000, 0x20000, CRC(6db245a1) SHA1(e9f85ba29b0af483eae6f999f49f1e431d9d2e27) )
@@ -14620,11 +13694,7 @@ ROM_END
 
 ROM_START( unkch2 ) // only gfx2 differs from unkch1
 	ROM_REGION( 0x10000, "maincpu", 0 )
-<<<<<<< HEAD
-	ROM_LOAD( "u6.bin",  0x0000, 0x10000, CRC(30309996) SHA1(290f35f587fdf78dcb4f09403c510deec533c9c2) )
-=======
 	ROM_LOAD( "u6.bin",  0x00000, 0x10000, CRC(30309996) SHA1(290f35f587fdf78dcb4f09403c510deec533c9c2) )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x20000, "gfx1", 0 )
 	ROM_LOAD( "u29.bin", 0x00000, 0x20000, CRC(6db245a1) SHA1(e9f85ba29b0af483eae6f999f49f1e431d9d2e27) )
@@ -14636,11 +13706,7 @@ ROM_END
 
 ROM_START( unkch3 )  // gfx2 is the same as unkch1, others differ
 	ROM_REGION( 0x10000, "maincpu", 0 )
-<<<<<<< HEAD
-	ROM_LOAD( "u6.3",  0x0000, 0x10000, CRC(902f9e42) SHA1(ac5843089748d457f70ea52d15285a0ccda705ad) )
-=======
 	ROM_LOAD( "u6.3",  0x00000, 0x10000, CRC(902f9e42) SHA1(ac5843089748d457f70ea52d15285a0ccda705ad) )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x20000, "gfx1", 0 )
 	ROM_LOAD( "u29.3", 0x00000, 0x20000, CRC(546929e6) SHA1(f97fe5687f8776f0abe68962a0246c9bbeb6acd1) )
@@ -14652,11 +13718,7 @@ ROM_END
 
 ROM_START( unkch4 )  // all roms unique
 	ROM_REGION( 0x10000, "maincpu", 0 )
-<<<<<<< HEAD
-	ROM_LOAD( "u6.4",  0x0000, 0x10000, CRC(eb191efa) SHA1(3004f26f9af7633df572f609647716cc4ac75990) )
-=======
 	ROM_LOAD( "u6.4",  0x00000, 0x10000, CRC(eb191efa) SHA1(3004f26f9af7633df572f609647716cc4ac75990) )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x20000, "gfx1", 0 )
 	ROM_LOAD( "u29.4", 0x00000, 0x20000, CRC(eaec0034) SHA1(6b2d3922873979eafcd4c71c52017263482b82ab) )
@@ -14666,8 +13728,6 @@ ROM_START( unkch4 )  // all roms unique
 ROM_END
 
 
-<<<<<<< HEAD
-=======
 ROM_START( cherry96 )  // all roms unique
 	ROM_REGION( 0x10000, "maincpu", 0 )
 	ROM_LOAD( "new_96-16-3.u6",  0x00000, 0x10000, CRC(84d5f2fc) SHA1(e3ed0670350920c661c5a40581966671b8a8c7df) )
@@ -14680,7 +13740,6 @@ ROM_START( cherry96 )  // all roms unique
 ROM_END
 
 
->>>>>>> upstream/master
 /*
   Cherry Master '97
 
@@ -14803,11 +13862,7 @@ ROM_END
   and Eagle & Fun World stickers (serial numbers).
 
 
-<<<<<<< HEAD
-  For custom IC's 06B49P, and 06B53P, see the reverse-engineering notes in lucky74.c.
-=======
   For custom IC's 06B49P, and 06B53P, see the reverse-engineering notes in lucky74.cpp.
->>>>>>> upstream/master
 
   ------------------------
 
@@ -15280,12 +14335,9 @@ ROM_START( bonusch )
 	ROM_REGION( 0x10000, "maincpu", 0 )
 	ROM_LOAD( "10.1u", 0x00000, 0x10000, CRC(5098eba6) SHA1(40a33a25d3589dfe7e228f1874239fbfbc5250e4) )
 
-<<<<<<< HEAD
-=======
 	ROM_REGION( 0x1000, "mcu", 0 )
 	ROM_LOAD( "0.5p", 0x0000, 0x1000, NO_DUMP )
 
->>>>>>> upstream/master
 	ROM_REGION( 0x20000, "gfx1", 0 )
 	ROM_LOAD( "1.1c",  0x00000, 0x10000, CRC(33ce67c0) SHA1(8f3d7e78a4616bebafed2779b7f793d41576c9c8) )
 	ROM_LOAD( "2.1e",  0x10000, 0x10000, CRC(fc394767) SHA1(645bf0e60a7061771aa73bb4d10603eaaad17f20) )
@@ -15364,13 +14416,6 @@ ROM_END
   One wire goes to edge connector 35+36 (solder side),
   carrying GND, and putting PPI (u34) pin 14 (PC0) to GND.
 
-<<<<<<< HEAD
-  The other goes to edge connector 8 (solder side): PPI pin 18 (PB0)
-
-*/
-ROM_START( cmpacman )
-	ROM_REGION( 0x10000, "maincpu", 0 )
-=======
   The other goes to edge connector 8 (solder side): PPI pin 18 (PB0)
 
 */
@@ -15403,7 +14448,6 @@ ROM_END
 
 ROM_START( cmpacmana )
 	ROM_REGION( 0x10000, "maincpu", 0 )  // Seems to have a pulse/bookkeeping bug.
->>>>>>> upstream/master
 	ROM_LOAD( "corsica_v8.31_pacman_old_board.bin",  0x0000,  0x10000, CRC(f69cbe75) SHA1(08446eb005b6c7ed24489fd664df14b20a41e3eb) )
 
 	ROM_REGION( 0x18000, "gfx1", 0 )
@@ -15610,13 +14654,6 @@ ROM_END
   Probably tracing pin connections to the HX881 will confirm it.
 
 
-<<<<<<< HEAD
-  You can switch the games pulsing their respective hidden buttons.
-
-  Hidden Switch:
-
-  Unknown, yet...
-=======
   Hidden Switch:
 
   You can enter Cherry Master mode in same way like other Tetris versions.
@@ -15631,7 +14668,6 @@ ROM_END
   PPI pin 19 (PB1), to switch to Cherry Master game.
 
   Need proper implementation.
->>>>>>> upstream/master
 
 */
 ROM_START( cmtetrsb )
@@ -15662,8 +14698,6 @@ ROM_START( cmtetrsb )
 ROM_END
 
 
-<<<<<<< HEAD
-=======
 /********************** Flaming 7, from Cyberdyne Systems, Inc. ***********************
 
   Flaming 7.
@@ -16266,21 +15300,14 @@ ROM_START( fl7_tw )  // Serial 00000050E9B7.
 ROM_END
 
 
->>>>>>> upstream/master
 /*********************************************************************************************************************/
 
 DRIVER_INIT_MEMBER(goldstar_state,goldstar)
 {
 	int A;
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("maincpu")->base();
-
-	for (A = 0;A < 0x10000;A++)
-=======
 	uint8_t *ROM = memregion("maincpu")->base();
 
 	for (A = 0; A < 0x10000; A++)
->>>>>>> upstream/master
 	{
 		if ((A & 0x30) == 0)
 			ROM[A] ^= 0x82;
@@ -16289,15 +15316,6 @@ DRIVER_INIT_MEMBER(goldstar_state,goldstar)
 	}
 }
 
-<<<<<<< HEAD
-// this block swapping is the same for chry10, chrygld and cb3
-//  the underlying bitswaps / xors are different however
-void cb3_state::do_blockswaps(UINT8* ROM)
-{
-	int A;
-
-	static const UINT16 cherry_swaptables[32] = {
-=======
 //  this block swapping is the same for chry10, chrygld and cb3
 //  the underlying bitswaps / xors are different however
 void cb3_state::do_blockswaps(uint8_t* ROM)
@@ -16305,7 +15323,6 @@ void cb3_state::do_blockswaps(uint8_t* ROM)
 	int A;
 
 	static const uint16_t cherry_swaptables[32] = {
->>>>>>> upstream/master
 		/* to align with goldstar */
 		0x0800, 0x4000, 0x2800, 0x5800,
 		0x1800, 0x3000, 0x6800, 0x7000,
@@ -16319,30 +15336,17 @@ void cb3_state::do_blockswaps(uint8_t* ROM)
 		0xa000, 0xa800, 0xb000, 0xb800,
 	};
 
-<<<<<<< HEAD
-	dynamic_buffer buffer(0x10000);
-	memcpy(&buffer[0],ROM,0x10000);
-=======
 	std::vector<uint8_t> buffer(0x10000);
 	memcpy(&buffer[0], ROM, 0x10000);
->>>>>>> upstream/master
 
 	// swap some 0x800 blocks around..
 	for (A =0;A<32; A++)
 	{
-<<<<<<< HEAD
-		memcpy(ROM+A*0x800,&buffer[cherry_swaptables[A]],0x800);
-	}
-}
-
-void cb3_state::dump_to_file( UINT8* ROM)
-=======
 		memcpy(ROM + A * 0x800, &buffer[cherry_swaptables[A]], 0x800);
 	}
 }
 
 void cb3_state::dump_to_file( uint8_t* ROM)
->>>>>>> upstream/master
 {
 	#if 0
 	{
@@ -16359,17 +15363,10 @@ void cb3_state::dump_to_file( uint8_t* ROM)
 	#endif
 }
 
-<<<<<<< HEAD
-UINT8 cb3_state::cb3_decrypt(UINT8 cipherText, UINT16 address)
-{
-	int idx;
-	UINT8 output;
-=======
 uint8_t cb3_state::cb3_decrypt(uint8_t cipherText, uint16_t address)
 {
 	int idx;
 	uint8_t output;
->>>>>>> upstream/master
 	int rotation[8] = {1, 0, 0, 1, 0, 1, 1, 1};
 	int sbox[8] = {0x08, 0x08, 0x28, 0x00, 0x20, 0x20, 0x88, 0x88};
 
@@ -16383,22 +15380,14 @@ uint8_t cb3_state::cb3_decrypt(uint8_t cipherText, uint16_t address)
 	return output ^ sbox[idx];
 }
 
-<<<<<<< HEAD
-UINT8 cb3_state::chry10_decrypt(UINT8 cipherText)
-=======
 uint8_t cb3_state::chry10_decrypt(uint8_t cipherText)
->>>>>>> upstream/master
 {
 	return cipherText ^ (BIT(cipherText, 4) << 3) ^ (BIT(cipherText, 1) << 5) ^ (BIT(cipherText, 6) << 7);
 }
 
 DRIVER_INIT_MEMBER(cb3_state, chry10)
 {
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("maincpu")->base();
-=======
 	uint8_t *ROM = memregion("maincpu")->base();
->>>>>>> upstream/master
 	int size = memregion("maincpu")->bytes();
 	int start = 0;
 
@@ -16422,11 +15411,7 @@ DRIVER_INIT_MEMBER(cb3_state, chry10)
 
 DRIVER_INIT_MEMBER(cb3_state, cb3)
 {
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("maincpu")->base();
-=======
 	uint8_t *ROM = memregion("maincpu")->base();
->>>>>>> upstream/master
 	int size = memregion("maincpu")->bytes();
 	int start = 0;
 
@@ -16445,16 +15430,6 @@ DRIVER_INIT_MEMBER(cb3_state, cb3)
 DRIVER_INIT_MEMBER(cb3_state, chrygld)
 {
 	int A;
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("maincpu")->base();
-	do_blockswaps(ROM);
-
-	// a data bitswap
-	for (A = 0;A < 0x10000;A++)
-	{
-		UINT8 dat = ROM[A];
-		dat =  BITSWAP8(dat,5,6,3,4,7,2,1,0);
-=======
 	uint8_t *ROM = memregion("maincpu")->base();
 	do_blockswaps(ROM);
 
@@ -16463,22 +15438,15 @@ DRIVER_INIT_MEMBER(cb3_state, chrygld)
 	{
 		uint8_t dat = ROM[A];
 		dat =  BITSWAP8(dat, 5, 6, 3, 4, 7, 2, 1, 0);
->>>>>>> upstream/master
 		ROM[A] = dat;
 	}
 
 	dump_to_file(ROM);
 }
 
-<<<<<<< HEAD
-DRIVER_INIT_MEMBER(cmaster_state,cm)
-{
-	UINT8 *ROM = memregion("maincpu")->base();
-=======
 DRIVER_INIT_MEMBER(cmaster_state, cm)
 {
 	uint8_t *ROM = memregion("maincpu")->base();
->>>>>>> upstream/master
 
 /*  forcing PPI mode 0 for all, and A, B & C as input.
     the mixed modes 2-0 are not working properly.
@@ -16489,11 +15457,7 @@ DRIVER_INIT_MEMBER(cmaster_state, cm)
 
 DRIVER_INIT_MEMBER(cmaster_state, cmv4)
 {
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("maincpu")->base();
-=======
 	uint8_t *ROM = memregion("maincpu")->base();
->>>>>>> upstream/master
 
 /*  forcing PPI mode 0 for all, and A, B & C as input.
     the mixed modes 2-0 are not working properly.
@@ -16502,15 +15466,9 @@ DRIVER_INIT_MEMBER(cmaster_state, cmv4)
 	ROM[0x020d] = 0x9b;
 }
 
-<<<<<<< HEAD
-DRIVER_INIT_MEMBER(goldstar_state,cmast91)
-{
-	UINT8 *ROM = memregion("maincpu")->base();
-=======
 DRIVER_INIT_MEMBER(goldstar_state, cmast91)
 {
 	uint8_t *ROM = memregion("maincpu")->base();
->>>>>>> upstream/master
 
 /*  forcing PPI mode 0 for all, and A, B & C as input.
     the mixed modes 2-0 are not working properly.
@@ -16521,11 +15479,7 @@ DRIVER_INIT_MEMBER(goldstar_state, cmast91)
 
 DRIVER_INIT_MEMBER(wingco_state, lucky8a)
 {
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("maincpu")->base();
-=======
 	uint8_t *ROM = memregion("maincpu")->base();
->>>>>>> upstream/master
 
 	ROM[0x0010] = 0x21;
 }
@@ -16533,23 +15487,6 @@ DRIVER_INIT_MEMBER(wingco_state, lucky8a)
 DRIVER_INIT_MEMBER(cmaster_state, nfb96sea)
 {
 	int i;
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("maincpu")->base();
-
-	for (i = 0;i < 0x10000;i++)
-	{
-		UINT8 x = ROM[i];
-		switch(i & 7)
-		{
-			case 0: x = BITSWAP8(x^0x80, 1,6,7,4,5,2,3,0); break;
-			case 1: x = BITSWAP8(x^0xa0, 5,6,3,4,1,2,7,0); break;
-			case 2: x = BITSWAP8(x^0x02, 5,6,3,4,1,2,7,0); break;
-			case 3: x = BITSWAP8(x^0xa0, 3,6,1,4,7,2,5,0); break;
-			case 4: x = BITSWAP8(x^0x82, 3,6,1,4,7,2,5,0); break;
-			case 5: x = BITSWAP8(x^0x02, 1,6,7,4,5,2,3,0); break;
-			case 6: x = BITSWAP8(x^0x08, 3,6,1,4,7,2,5,0); break;
-			case 7: x = BITSWAP8(x^0x80, 5,6,3,4,1,2,7,0); break;
-=======
 	uint8_t *ROM = memregion("maincpu")->base();
 
 	for (i = 0; i < 0x10000; i++)
@@ -16565,7 +15502,6 @@ DRIVER_INIT_MEMBER(cmaster_state, nfb96sea)
 			case 5: x = BITSWAP8(x ^ 0x02, 1, 6, 7, 4, 5, 2, 3, 0); break;
 			case 6: x = BITSWAP8(x ^ 0x08, 3, 6, 1, 4, 7, 2, 5, 0); break;
 			case 7: x = BITSWAP8(x ^ 0x80, 5, 6, 3, 4, 1, 2, 7, 0); break;
->>>>>>> upstream/master
 		}
 
 		ROM[i] = x;
@@ -16576,18 +15512,6 @@ DRIVER_INIT_MEMBER(cmaster_state, nfb96sea)
 DRIVER_INIT_MEMBER(cmaster_state, schery97)
 {
 	int i;
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("maincpu")->base();
-	for (i = 0;i < 0x10000;i++)
-	{
-		UINT8 x = ROM[i];
-		switch(i & 0x12)
-		{
-			case 0x00: x = BITSWAP8(x^0x3e, 1,0,7,6,5,4,3,2); break;
-			case 0x02: x = BITSWAP8(x^0x4d, 0,7,6,5,4,3,2,1); break;
-			case 0x10: x = BITSWAP8(x^0x24, 2,1,0,7,6,5,4,3); break;
-			case 0x12: x = BITSWAP8(x^0xbb, 4,3,2,1,0,7,6,5); break;
-=======
 	uint8_t *ROM = memregion("maincpu")->base();
 	for (i = 0; i < 0x10000; i++)
 	{
@@ -16598,36 +15522,18 @@ DRIVER_INIT_MEMBER(cmaster_state, schery97)
 			case 0x02: x = BITSWAP8(x ^ 0x4d, 0, 7, 6, 5, 4, 3, 2, 1); break;
 			case 0x10: x = BITSWAP8(x ^ 0x24, 2, 1, 0, 7, 6, 5, 4, 3); break;
 			case 0x12: x = BITSWAP8(x ^ 0xbb, 4, 3, 2, 1, 0, 7, 6, 5); break;
->>>>>>> upstream/master
 		}
 
 		ROM[i] = x;
 	}
-<<<<<<< HEAD
-	m_maincpu->space(AS_IO).install_read_handler(0x1d, 0x1d, read8_delegate(FUNC(cmaster_state::fixedvala8_r),this));
-	m_maincpu->space(AS_IO).install_read_handler(0x2a, 0x2a, read8_delegate(FUNC(cmaster_state::fixedvalb4_r),this));
-=======
 	m_maincpu->space(AS_IO).install_read_handler(0x1d, 0x1d, read8_delegate(FUNC(cmaster_state::fixedvala8_r), this));
 	m_maincpu->space(AS_IO).install_read_handler(0x2a, 0x2a, read8_delegate(FUNC(cmaster_state::fixedvalb4_r), this));
->>>>>>> upstream/master
 	/* Oki 6295 at 0x20 */
 }
 
 DRIVER_INIT_MEMBER(cmaster_state, schery97a)
 {
 	int i;
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("maincpu")->base();
-	for (i = 0;i < 0x10000;i++)
-	{
-		UINT8 x = ROM[i];
-		switch(i & 6)
-		{
-			case 0: x = BITSWAP8(x^0xb9, 4,0,6,7,3,1,5,2); break;
-			case 2: x = BITSWAP8(x^0x8f, 6,7,4,0,3,2,1,5); break;
-			case 4: x = BITSWAP8(x^0xd2, 3,4,0,2,5,6,1,7); break;
-			case 6: x = BITSWAP8(x^0xd1, 6,0,2,1,4,5,3,7); break;
-=======
 	uint8_t *ROM = memregion("maincpu")->base();
 	for (i = 0; i < 0x10000; i++)
 	{
@@ -16638,36 +15544,19 @@ DRIVER_INIT_MEMBER(cmaster_state, schery97a)
 			case 2: x = BITSWAP8(x ^ 0x8f, 6, 7, 4, 0, 3, 2, 1, 5); break;
 			case 4: x = BITSWAP8(x ^ 0xd2, 3, 4, 0, 2, 5, 6, 1, 7); break;
 			case 6: x = BITSWAP8(x ^ 0xd1, 6, 0, 2, 1, 4, 5, 3, 7); break;
->>>>>>> upstream/master
 		}
 
 		ROM[i] = x;
 	}
 
 
-<<<<<<< HEAD
-	m_maincpu->space(AS_IO).install_read_handler(0x16, 0x16, read8_delegate(FUNC(cmaster_state::fixedval38_r),this));
-=======
 	m_maincpu->space(AS_IO).install_read_handler(0x16, 0x16, read8_delegate(FUNC(cmaster_state::fixedval38_r), this));
->>>>>>> upstream/master
 	/* Oki 6295 at 0x20 */
 }
 
 DRIVER_INIT_MEMBER(cmaster_state, skill98)
 {
 	int i;
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("maincpu")->base();
-	for (i = 0;i < 0x10000;i++)
-	{
-		UINT8 x = ROM[i];
-		switch(i & 0x12)
-		{
-			case 0x00: x = BITSWAP8(x^0x21, 2,1,0,7,6,5,4,3); break;
-			case 0x02: x = BITSWAP8(x^0x45, 2,1,0,7,6,5,4,3); break;
-			case 0x10: x = BITSWAP8(x^0x23, 4,3,2,1,0,7,6,5); break;
-			case 0x12: x = BITSWAP8(x^0x5b, 4,3,2,1,0,7,6,5); break;
-=======
 	uint8_t *ROM = memregion("maincpu")->base();
 	for (i = 0; i < 0x10000; i++)
 	{
@@ -16678,39 +15567,17 @@ DRIVER_INIT_MEMBER(cmaster_state, skill98)
 			case 0x02: x = BITSWAP8(x ^ 0x45, 2, 1, 0, 7, 6, 5, 4, 3); break;
 			case 0x10: x = BITSWAP8(x ^ 0x23, 4, 3, 2, 1, 0, 7, 6, 5); break;
 			case 0x12: x = BITSWAP8(x ^ 0x5b, 4, 3, 2, 1, 0, 7, 6, 5); break;
->>>>>>> upstream/master
 		}
 
 		ROM[i] = x;
 	}
-<<<<<<< HEAD
-	m_maincpu->space(AS_IO).install_read_handler(0x1e, 0x1e, read8_delegate(FUNC(cmaster_state::fixedvalea_r),this));
-=======
 	m_maincpu->space(AS_IO).install_read_handler(0x1e, 0x1e, read8_delegate(FUNC(cmaster_state::fixedvalea_r), this));
->>>>>>> upstream/master
 	/* Oki 6295 at 0x20 */
 }
 
 DRIVER_INIT_MEMBER(cmaster_state, nfb96_c1)
 {
 	int i;
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("maincpu")->base();
-	for (i = 0;i < 0x10000;i++)
-	{
-		UINT8 x = ROM[i];
-
-		switch(i & 0x12)
-		{
-			case 0x00: x = BITSWAP8(x^0xf5, 6,4,3,7,0,1,5,2); break;
-			case 0x02: x = BITSWAP8(x^0xe6, 4,6,3,0,7,2,1,5); break;
-			case 0x10: x = BITSWAP8(x^0x34, 0,3,5,2,4,6,1,7); break;
-			case 0x12: x = BITSWAP8(x^0xc6, 2,0,4,1,6,5,3,7); break;
-		}
-		ROM[i] = x;
-	}
-	m_maincpu->space(AS_IO).install_read_handler(0x31, 0x31, read8_delegate(FUNC(cmaster_state::fixedval68_r),this));
-=======
 	uint8_t *ROM = memregion("maincpu")->base();
 	for (i = 0; i < 0x10000; i++)
 	{
@@ -16726,26 +15593,12 @@ DRIVER_INIT_MEMBER(cmaster_state, nfb96_c1)
 		ROM[i] = x;
 	}
 	m_maincpu->space(AS_IO).install_read_handler(0x31, 0x31, read8_delegate(FUNC(cmaster_state::fixedval68_r), this));
->>>>>>> upstream/master
 
 }
 
 DRIVER_INIT_MEMBER(cmaster_state, nfb96_c2)
 {
 	int i;
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("maincpu")->base();
-	for (i = 0;i < 0x10000;i++)
-	{
-		UINT8 x = ROM[i];
-
-		switch(i & 0x22)
-		{
-			case 0x00: x = BITSWAP8(x^0x5f, 6,4,3,7,0,5,2,1); break;
-			case 0x02: x = BITSWAP8(x^0xe7, 4,6,3,0,7,5,1,2); break;
-			case 0x20: x = BITSWAP8(x^0x18, 0,3,5,2,4,7,1,6); break;
-			case 0x22: x = BITSWAP8(x^0x74, 2,0,4,1,6,7,3,5); break;
-=======
 	uint8_t *ROM = memregion("maincpu")->base();
 	for (i = 0; i < 0x10000; i++)
 	{
@@ -16757,34 +15610,16 @@ DRIVER_INIT_MEMBER(cmaster_state, nfb96_c2)
 			case 0x02: x = BITSWAP8(x ^ 0xe7, 4, 6, 3, 0, 7, 5, 1, 2); break;
 			case 0x20: x = BITSWAP8(x ^ 0x18, 0, 3, 5, 2, 4, 7, 1, 6); break;
 			case 0x22: x = BITSWAP8(x ^ 0x74, 2, 0, 4, 1, 6, 7, 3, 5); break;
->>>>>>> upstream/master
 		}
 
 		ROM[i] = x;
 	}
-<<<<<<< HEAD
-	m_maincpu->space(AS_IO).install_read_handler(0x21, 0x21, read8_delegate(FUNC(cmaster_state::fixedval58_r),this));
-=======
 	m_maincpu->space(AS_IO).install_read_handler(0x21, 0x21, read8_delegate(FUNC(cmaster_state::fixedval58_r), this));
->>>>>>> upstream/master
 }
 
 DRIVER_INIT_MEMBER(cmaster_state, nfb96_d)
 {
 	int i;
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("maincpu")->base();
-	for (i = 0;i < 0x10000;i++)
-	{
-		UINT8 x = ROM[i];
-
-		switch(i & 5)
-		{
-			case 0: x = BITSWAP8(x^0x6a, 2,1,0,7,6,5,4,3); break;
-			case 1: x = BITSWAP8(x^0xcc, 0,7,6,5,4,3,2,1); break;
-			case 4: x = BITSWAP8(x^0x8f, 3,2,1,0,7,6,5,4); break;
-			case 5: x = BITSWAP8(x^0x93, 4,3,2,1,0,7,6,5); break;
-=======
 	uint8_t *ROM = memregion("maincpu")->base();
 	for (i = 0; i < 0x10000; i++)
 	{
@@ -16796,24 +15631,15 @@ DRIVER_INIT_MEMBER(cmaster_state, nfb96_d)
 			case 1: x = BITSWAP8(x ^ 0xcc, 0, 7, 6, 5, 4, 3, 2, 1); break;
 			case 4: x = BITSWAP8(x ^ 0x8f, 3, 2, 1, 0, 7, 6, 5, 4); break;
 			case 5: x = BITSWAP8(x ^ 0x93, 4, 3, 2, 1, 0, 7, 6, 5); break;
->>>>>>> upstream/master
 		}
 		ROM[i] = x;
 	}
 	// nfb96b needs both of these
-<<<<<<< HEAD
-	m_maincpu->space(AS_IO).install_read_handler(0x23, 0x23, read8_delegate(FUNC(cmaster_state::fixedval80_r),this));
-	m_maincpu->space(AS_IO).install_read_handler(0x5a, 0x5a, read8_delegate(FUNC(cmaster_state::fixedvalaa_r),this));
-
-	// csel96b
-	m_maincpu->space(AS_IO).install_read_handler(0x6e, 0x6e, read8_delegate(FUNC(cmaster_state::fixedval96_r),this));
-=======
 	m_maincpu->space(AS_IO).install_read_handler(0x23, 0x23, read8_delegate(FUNC(cmaster_state::fixedval80_r), this));
 	m_maincpu->space(AS_IO).install_read_handler(0x5a, 0x5a, read8_delegate(FUNC(cmaster_state::fixedvalaa_r), this));
 
 	// csel96b
 	m_maincpu->space(AS_IO).install_read_handler(0x6e, 0x6e, read8_delegate(FUNC(cmaster_state::fixedval96_r), this));
->>>>>>> upstream/master
 
 }
 
@@ -16821,23 +15647,6 @@ DRIVER_INIT_MEMBER(cmaster_state, nfb96_d)
 DRIVER_INIT_MEMBER(cmaster_state, nfb96_dk)
 {
 	int i;
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("maincpu")->base();
-	for (i = 0;i < 0x10000;i++)
-	{
-		UINT8 x = ROM[i];
-
-		switch(i & 5)
-		{
-			case 0: x = BITSWAP8(x^0xce, 1,0,7,6,5,4,3,2); break;
-			case 1: x = BITSWAP8(x^0x9e, 3,2,1,0,7,6,5,4); break;
-			case 4: x = BITSWAP8(x^0xc3, 0,7,6,5,4,3,2,1); break;
-			case 5: x = BITSWAP8(x^0xdb, 4,3,2,1,0,7,6,5); break;
-		}
-		ROM[i] = x;
-	}
-	m_maincpu->space(AS_IO).install_read_handler(0x2e, 0x2e, read8_delegate(FUNC(cmaster_state::fixedvalbe_r),this));
-=======
 	uint8_t *ROM = memregion("maincpu")->base();
 	for (i = 0; i < 0x10000; i++)
 	{
@@ -16853,26 +15662,12 @@ DRIVER_INIT_MEMBER(cmaster_state, nfb96_dk)
 		ROM[i] = x;
 	}
 	m_maincpu->space(AS_IO).install_read_handler(0x2e, 0x2e, read8_delegate(FUNC(cmaster_state::fixedvalbe_r), this));
->>>>>>> upstream/master
 
 }
 
 DRIVER_INIT_MEMBER(cmaster_state, rp35)
 {
 	int i;
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("maincpu")->base();
-	for (i = 0;i < 0x10000;i++)
-	{
-		UINT8 x = ROM[i];
-
-		switch(i & 3)
-		{
-			case 0: x = BITSWAP8(x^0x2a, 0,7,6,5,4,3,2,1); break;
-			case 1: x = BITSWAP8(x^0x1c, 4,3,2,1,0,7,6,5); break;
-			case 2: x = BITSWAP8(x^0x4f, 3,2,1,0,7,6,5,4); break;
-			case 3: x = BITSWAP8(x^0x23, 1,0,7,6,5,4,3,2); break;
-=======
 	uint8_t *ROM = memregion("maincpu")->base();
 	for (i = 0; i < 0x10000; i++)
 	{
@@ -16884,36 +15679,17 @@ DRIVER_INIT_MEMBER(cmaster_state, rp35)
 			case 1: x = BITSWAP8(x ^ 0x1c, 4, 3, 2, 1, 0, 7, 6, 5); break;
 			case 2: x = BITSWAP8(x ^ 0x4f, 3, 2, 1, 0, 7, 6, 5, 4); break;
 			case 3: x = BITSWAP8(x ^ 0x23, 1, 0, 7, 6, 5, 4, 3, 2); break;
->>>>>>> upstream/master
 		}
 		ROM[i] = x;
 	}
 
-<<<<<<< HEAD
-	m_maincpu->space(AS_IO).install_read_handler(0x5e, 0x5e, read8_delegate(FUNC(cmaster_state::fixedval84_r),this));
-	m_maincpu->space(AS_IO).install_read_handler(0x36, 0x36, read8_delegate(FUNC(cmaster_state::fixedval90_r),this));
-=======
 	m_maincpu->space(AS_IO).install_read_handler(0x5e, 0x5e, read8_delegate(FUNC(cmaster_state::fixedval84_r), this));
 	m_maincpu->space(AS_IO).install_read_handler(0x36, 0x36, read8_delegate(FUNC(cmaster_state::fixedval90_r), this));
->>>>>>> upstream/master
 }
 
 DRIVER_INIT_MEMBER(cmaster_state, rp36)
 {
 	int i;
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("maincpu")->base();
-	for (i = 0;i < 0x10000;i++)
-	{
-		UINT8 x = ROM[i];
-
-		switch(i & 5)
-		{
-			case 0: x = BITSWAP8(x^0xee, 2,1,0,7,6,5,4,3); break;
-			case 1: x = BITSWAP8(x^0x9f, 3,2,1,0,7,6,5,4); break;
-			case 4: x = BITSWAP8(x^0xc7, 3,2,1,0,7,6,5,4); break;
-			case 5: x = BITSWAP8(x^0xc3, 3,2,1,0,7,6,5,4); break;
-=======
 	uint8_t *ROM = memregion("maincpu")->base();
 	for (i = 0; i < 0x10000; i++)
 	{
@@ -16925,35 +15701,17 @@ DRIVER_INIT_MEMBER(cmaster_state, rp36)
 			case 1: x = BITSWAP8(x ^ 0x9f, 3, 2, 1, 0, 7, 6, 5, 4); break;
 			case 4: x = BITSWAP8(x ^ 0xc7, 3, 2, 1, 0, 7, 6, 5, 4); break;
 			case 5: x = BITSWAP8(x ^ 0xc3, 3, 2, 1, 0, 7, 6, 5, 4); break;
->>>>>>> upstream/master
 		}
 
 		ROM[i] = x;
 	}
 
-<<<<<<< HEAD
-	m_maincpu->space(AS_IO).install_read_handler(0x34, 0x34, read8_delegate(FUNC(cmaster_state::fixedvalb2_r),this));
-=======
 	m_maincpu->space(AS_IO).install_read_handler(0x34, 0x34, read8_delegate(FUNC(cmaster_state::fixedvalb2_r), this));
->>>>>>> upstream/master
 }
 
 DRIVER_INIT_MEMBER(cmaster_state, rp36c3)
 {
 	int i;
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("maincpu")->base();
-	for (i = 0;i < 0x10000;i++)
-	{
-		UINT8 x = ROM[i];
-
-		switch(i & 0xa)
-		{
-			case 0x0: x = BITSWAP8(x^0xfd, 6,4,0,7,3,1,5,2); break;
-			case 0x2: x = BITSWAP8(x^0xee, 4,6,7,0,3,2,1,5); break;
-			case 0x8: x = BITSWAP8(x^0x2c, 0,3,4,2,5,6,1,7); break;
-			case 0xa: x = BITSWAP8(x^0xd6, 2,0,6,1,4,5,3,7); break;
-=======
 	uint8_t *ROM = memregion("maincpu")->base();
 	for (i = 0; i < 0x10000; i++)
 	{
@@ -16987,36 +15745,18 @@ DRIVER_INIT_MEMBER(cmaster_state, rp96sub)  // 95 33 95 33 70 6C 70 6C... XORs s
 			case 1: x = BITSWAP8(x ^ 0xcc, 7, 6, 5, 4, 3, 2, 1, 0); break;
 			case 4: x = BITSWAP8(x ^ 0x8f, 7, 6, 5, 4, 3, 2, 1, 0); break;
 			case 5: x = BITSWAP8(x ^ 0x93, 7, 6, 5, 4, 3, 2, 1, 0); break;
->>>>>>> upstream/master
 		}
 
 		ROM[i] = x;
 	}
 
-<<<<<<< HEAD
-	m_maincpu->space(AS_IO).install_read_handler(0x17, 0x17, read8_delegate(FUNC(cmaster_state::fixedval48_r),this));
-=======
 //  m_maincpu->space(AS_IO).install_read_handler(0x34, 0x34, read8_delegate(FUNC(cmaster_state::fixedvalb2_r),this));
->>>>>>> upstream/master
 }
 
 
 DRIVER_INIT_MEMBER(cmaster_state, po33)
 {
 	int i;
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("maincpu")->base();
-	for (i = 0;i < 0x10000;i++)
-	{
-		UINT8 x = ROM[i];
-
-		switch(i & 0x14)
-		{
-			case 0x00: x = BITSWAP8(x^0xde, 2,1,0,7,6,5,4,3); break;
-			case 0x04: x = BITSWAP8(x^0x3c, 0,7,6,5,4,3,2,1); break;
-			case 0x10: x = BITSWAP8(x^0x2f, 3,2,1,0,7,6,5,4); break;
-			case 0x14: x = BITSWAP8(x^0x5b, 4,3,2,1,0,7,6,5); break;
-=======
 	uint8_t *ROM = memregion("maincpu")->base();
 	for (i = 0; i < 0x10000; i++)
 	{
@@ -17028,37 +15768,18 @@ DRIVER_INIT_MEMBER(cmaster_state, po33)
 			case 0x04: x = BITSWAP8(x ^ 0x3c, 0, 7, 6, 5, 4, 3, 2, 1); break;
 			case 0x10: x = BITSWAP8(x ^ 0x2f, 3, 2, 1, 0, 7, 6, 5, 4); break;
 			case 0x14: x = BITSWAP8(x ^ 0x5b, 4, 3, 2, 1, 0, 7, 6, 5); break;
->>>>>>> upstream/master
 		}
 
 		ROM[i] = x;
 	}
-<<<<<<< HEAD
-	m_maincpu->space(AS_IO).install_read_handler(0x32, 0x32, read8_delegate(FUNC(cmaster_state::fixedval74_r),this));
-	m_maincpu->space(AS_IO).install_read_handler(0x12, 0x12, read8_delegate(FUNC(cmaster_state::fixedval09_r),this));
-=======
 	m_maincpu->space(AS_IO).install_read_handler(0x32, 0x32, read8_delegate(FUNC(cmaster_state::fixedval74_r), this));
 	m_maincpu->space(AS_IO).install_read_handler(0x12, 0x12, read8_delegate(FUNC(cmaster_state::fixedval09_r), this));
->>>>>>> upstream/master
 	/* oki6295 at 0x20 */
 }
 
 DRIVER_INIT_MEMBER(cmaster_state, match133)
 {
 	int i;
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("maincpu")->base();
-	for (i = 0;i < 0x10000;i++)
-	{
-		UINT8 x = ROM[i];
-
-		switch(i & 0x12)
-		{
-			case 0x00: x = BITSWAP8(x^0xde, 3,2,1,0,7,6,5,4); break;
-			case 0x02: x = BITSWAP8(x^0x3d, 1,0,7,6,5,4,3,2); break;
-			case 0x10: x = BITSWAP8(x^0x2f, 4,3,2,1,0,7,6,5); break;
-			case 0x12: x = BITSWAP8(x^0x5c, 4,3,2,1,0,7,6,5); break;
-=======
 	uint8_t *ROM = memregion("maincpu")->base();
 	for (i = 0; i < 0x10000; i++)
 	{
@@ -17070,29 +15791,19 @@ DRIVER_INIT_MEMBER(cmaster_state, match133)
 			case 0x02: x = BITSWAP8(x ^ 0x3d, 1, 0, 7, 6, 5, 4, 3, 2); break;
 			case 0x10: x = BITSWAP8(x ^ 0x2f, 4, 3, 2, 1, 0, 7, 6, 5); break;
 			case 0x12: x = BITSWAP8(x ^ 0x5c, 4, 3, 2, 1, 0, 7, 6, 5); break;
->>>>>>> upstream/master
 		}
 
 		ROM[i] = x;
 	}
 
-<<<<<<< HEAD
-	m_maincpu->space(AS_IO).install_read_handler(0x16, 0x16, read8_delegate(FUNC(cmaster_state::fixedvalc7_r),this));
-	m_maincpu->space(AS_IO).install_read_handler(0x1a, 0x1a, read8_delegate(FUNC(cmaster_state::fixedvale4_r),this));
-=======
 	m_maincpu->space(AS_IO).install_read_handler(0x16, 0x16, read8_delegate(FUNC(cmaster_state::fixedvalc7_r), this));
 	m_maincpu->space(AS_IO).install_read_handler(0x1a, 0x1a, read8_delegate(FUNC(cmaster_state::fixedvale4_r), this));
->>>>>>> upstream/master
 }
 
 DRIVER_INIT_MEMBER(cb3_state, cherrys)
 {
 	int i;
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("maincpu")->base();
-=======
 	uint8_t *ROM = memregion("maincpu")->base();
->>>>>>> upstream/master
 
 	unsigned char rawData[256] = {
 		0xCC, 0xCD, 0xCE, 0xCF, 0xC8, 0xC9, 0xCA, 0xCB, 0xC4, 0xC5, 0xC6, 0xC7,
@@ -17119,15 +15830,9 @@ DRIVER_INIT_MEMBER(cb3_state, cherrys)
 		0x30, 0x31, 0x32, 0x33
 	};
 
-<<<<<<< HEAD
-	for (i = 0;i < 0x10000;i++)
-	{
-		ROM[i] = ROM[i] ^ rawData[i&0xff];
-=======
 	for (i = 0; i < 0x10000; i++)
 	{
 		ROM[i] = ROM[i] ^ rawData[i & 0xff];
->>>>>>> upstream/master
 	}
 
 }
@@ -17138,11 +15843,7 @@ DRIVER_INIT_MEMBER(unkch_state, unkch1)
 	// game stores $02 at ($D75C) and expects it to change
 	// possibly expecting stack to grow to this point in NMI handler?
 	// it does this before enabling vblank irq, so if that's the case there's a missing nmi source
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("maincpu")->base();
-=======
 	uint8_t *ROM = memregion("maincpu")->base();
->>>>>>> upstream/master
 	ROM[0x9d52] = 0x00;
 	ROM[0x9d53] = 0x00;
 }
@@ -17152,11 +15853,7 @@ DRIVER_INIT_MEMBER(unkch_state, unkch3)
 	// game stores $04 at ($D77F) and expects it to change
 	// possibly expecting stack to grow to this point in NMI handler?
 	// it does this before enabling vblank irq, so if that's the case there's a missing nmi source
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("maincpu")->base();
-=======
 	uint8_t *ROM = memregion("maincpu")->base();
->>>>>>> upstream/master
 	ROM[0x9b86] = 0x00;
 	ROM[0x9b87] = 0x00;
 }
@@ -17166,11 +15863,7 @@ DRIVER_INIT_MEMBER(unkch_state, unkch4)
 	// game stores $02 at ($D75C) and expects it to change
 	// possibly expecting stack to grow to this point in NMI handler?
 	// it does this before enabling vblank irq, so if that's the case there's a missing nmi source
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("maincpu")->base();
-=======
 	uint8_t *ROM = memregion("maincpu")->base();
->>>>>>> upstream/master
 	ROM[0x9a6e] = 0x00;
 	ROM[0x9a6f] = 0x00;
 }
@@ -17188,22 +15881,6 @@ DRIVER_INIT_MEMBER(cmaster_state, tonypok)
 DRIVER_INIT_MEMBER(goldstar_state, super9)
 {
 	int i;
-<<<<<<< HEAD
-	UINT8 *src = memregion("gfx1")->base();
-	for (i = 0;i < 0x20000;i++)
-	{
-//      src[i] = BITSWAP8(src[i], 7,4,2,1,6,5,3,0);
-//      src[i] = BITSWAP8(src[i], 7,3,2,6,1,5,4,0);
-		src[i] = BITSWAP8(src[i], 7,3,2,6,5,1,4,0);
-	}
-
-	UINT8 *src2 = memregion("gfx2")->base();
-	for (i = 0;i < 0x8000;i++)
-	{
-//      src2[i] = BITSWAP8(src2[i], 7,4,2,1,6,5,3,0);
-//      src2[i] = BITSWAP8(src2[i], 7,3,2,6,1,5,4,0);
-		src2[i] = BITSWAP8(src2[i], 3,7,6,2,5,1,0,4);   // endianess
-=======
 	uint8_t *src = memregion("gfx1")->base();
 	for (i = 0; i < 0x20000; i++)
 	{
@@ -17218,7 +15895,6 @@ DRIVER_INIT_MEMBER(goldstar_state, super9)
 //      src2[i] = BITSWAP8(src2[i], 7, 4, 2, 1, 6, 5, 3, 0);
 //      src2[i] = BITSWAP8(src2[i], 7, 3, 2, 6, 1, 5, 4, 0);
 		src2[i] = BITSWAP8(src2[i], 3, 7, 6, 2, 5, 1, 0, 4);   // endianess
->>>>>>> upstream/master
 	}
 
 }
@@ -17227,42 +15903,26 @@ DRIVER_INIT_MEMBER(cb3_state, cb3e)
 {
 /*  program bitswap */
 	int i;
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("maincpu")->base();
-=======
 	uint8_t *ROM = memregion("maincpu")->base();
->>>>>>> upstream/master
 	do_blockswaps(ROM);
 
 	for (i = 0; i < 0x10000; i++)
 	{
-<<<<<<< HEAD
-		UINT8 dat = ROM[i];
-=======
 		uint8_t dat = ROM[i];
->>>>>>> upstream/master
 		dat =  BITSWAP8(dat, 5, 6, 3, 4, 7, 2, 1, 0);
 		ROM[i] = dat;
 	}
 
 /*  bank 1 graphics */
 //  int i;
-<<<<<<< HEAD
-	UINT8 *src = memregion("gfx1")->base();
-=======
 	uint8_t *src = memregion("gfx1")->base();
->>>>>>> upstream/master
 	for (i = 0; i < 0x20000; i++)
 	{
 		src[i] = BITSWAP8(src[i], 4, 3, 2, 5, 1, 6, 0, 7);      // OK
 	}
 
 /*  bank 2 graphics */
-<<<<<<< HEAD
-	UINT8 *src2 = memregion("gfx2")->base();
-=======
 	uint8_t *src2 = memregion("gfx2")->base();
->>>>>>> upstream/master
 	for (i = 0; i < 0x8000; i++)
 	{
 		src2[i] = BITSWAP8(src2[i], 3, 4, 2, 5, 1, 6, 0, 7);    // OK
@@ -17273,9 +15933,6 @@ DRIVER_INIT_MEMBER(goldstar_state, wcherry)
 {
 /*  bank 1 graphics */
 	int i;
-<<<<<<< HEAD
-	UINT8 *src = memregion("gfx1")->base();
-=======
 	uint8_t *src = memregion("gfx1")->base();
 	for (i = 0; i < 0x20000; i++)
 	{
@@ -17302,24 +15959,17 @@ DRIVER_INIT_MEMBER(wingco_state, flaming7)
 /*  bank 1 graphics */
 	int i;
 	uint8_t *src = memregion("gfx1")->base();
->>>>>>> upstream/master
 	for (i = 0; i < 0x20000; i++)
 	{
 		src[i] = BITSWAP8(src[i], 4, 3, 2, 5, 1, 6, 0, 7);      // OK
 	}
 
 /*  bank 2 graphics */
-<<<<<<< HEAD
-	UINT8 *src2 = memregion("gfx2")->base();
-=======
 	uint8_t *src2 = memregion("gfx2")->base();
->>>>>>> upstream/master
 	for (i = 0; i < 0x8000; i++)
 	{
 		src2[i] = BITSWAP8(src2[i], 3, 4, 2, 5, 1, 6, 0, 7);    // OK
 	}
-<<<<<<< HEAD
-=======
 
 /*  Patch to bypass the iButton electronic serial number check.
 
@@ -17349,7 +15999,6 @@ DRIVER_INIT_MEMBER(wingco_state, flam7_tw)
 	uint8_t *ROM = memregion("maincpu")->base();
 	ROM[0x60b3] = 0x05;
 
->>>>>>> upstream/master
 }
 
 
@@ -17359,28 +16008,6 @@ DRIVER_INIT_MEMBER(wingco_state, flam7_tw)
 
        YEAR  NAME       PARENT    MACHINE   INPUT     STATE           INIT       ROT    COMPANY              FULLNAME                                      FLAGS              LAYOUT */
 GAMEL( 199?, goldstar,  0,        goldstar, goldstar, goldstar_state, goldstar,  ROT0, "IGS",               "Golden Star",                                 0,                 layout_goldstar )
-<<<<<<< HEAD
-GAMEL( 199?, goldstbl,  goldstar, goldstbl, goldstar, driver_device,  0,         ROT0, "IGS",               "Golden Star (Blue version)",                  0,                 layout_goldstar )
-GAME(  199?, moonlght,  goldstar, moonlght, goldstar, driver_device,  0,         ROT0, "bootleg",           "Moon Light (bootleg of Golden Star)",         0 )
-GAMEL( 199?, chrygld,   0,        chrygld,  chrygld,  cb3_state,      chrygld,   ROT0, "bootleg",           "Cherry Gold I",                               0,                 layout_chrygld )
-GAMEL( 199?, chry10,    0,        chrygld,  chry10,   cb3_state,      chry10,    ROT0, "bootleg",           "Cherry 10 (bootleg with PIC16F84)",           0,                 layout_chrygld )
-GAME(  199?, goldfrui,  goldstar, goldfrui, goldstar, driver_device,  0,         ROT0, "bootleg",           "Gold Fruit",                                  0 )                  // maybe fullname should be 'Gold Fruit (main 40%)'
-GAME(  2001, super9,    goldstar, super9,   goldstar, goldstar_state, super9,    ROT0, "Playmark",          "Super Nove (Playmark)",                       MACHINE_NOT_WORKING )   // need to decode gfx and see the program loops/reset...
-GAME(  2001, wcherry,   0,        wcherry,  chrygld,  goldstar_state, wcherry,   ROT0, "bootleg",           "Win Cherry (ver 0.16 - 19990219)",            MACHINE_NOT_WORKING )
-GAME(  199?, star100,   0,        star100,  star100,  driver_device,  0,         ROT0, "Sang Ho",           "Ming Xing 100 (Star 100)",                    MACHINE_IMPERFECT_COLORS )
-
-
-// are these really dyna, or bootlegs?
-GAMEL( 199?, ncb3,      0,        ncb3,     ncb3,     driver_device,  0,         ROT0, "Dyna",              "Cherry Bonus III (ver.1.40, set 1)",          0,                 layout_cherryb3 )
-GAMEL( 199?, cb3a,      ncb3,     ncb3,     cb3a,     driver_device,  0,         ROT0, "Dyna",              "Cherry Bonus III (ver.1.40, set 2)",          0,                 layout_cherryb3 )
-GAMEL( 199?, cb3,       ncb3,     ncb3,     ncb3,     cb3_state,      cb3,       ROT0, "Dyna",              "Cherry Bonus III (ver.1.40, encrypted)",      0,                 layout_cherryb3 )
-GAMEL( 199?, cb3b,      ncb3,     cherrys,  ncb3,     cb3_state,      cherrys,   ROT0, "Dyna",              "Cherry Bonus III (alt)",                      0,                 layout_cherryb3 )
-GAME(  199?, cb3c,      ncb3,     cb3c,     chrygld,  cb3_state,      cb3,       ROT0, "bootleg",           "Cherry Bonus III (alt, set 2)",               MACHINE_NOT_WORKING)
-GAMEL( 199?, cb3d,      ncb3,     ncb3,     ncb3,     driver_device,  0,         ROT0, "bootleg",           "Cherry Bonus III (set 3)",                    0,                 layout_cherryb3 )
-GAMEL( 199?, cb3e,      ncb3,     cb3e,     chrygld,  cb3_state,      cb3e,      ROT0, "bootleg",           "Cherry Bonus III (set 4, encrypted bootleg)", 0,                 layout_chrygld )
-
-GAME(  1996, cmast97,   ncb3,     cm97,     chrygld,  driver_device,  0,         ROT0, "Dyna",              "Cherry Master '97",                           MACHINE_NOT_WORKING) // fix prom decode
-=======
 GAMEL( 199?, goldstbl,  goldstar, goldstbl, goldstar, goldstar_state, 0,         ROT0, "IGS",               "Golden Star (Blue version)",                  0,                 layout_goldstar )
 GAME(  199?, moonlght,  goldstar, moonlght, goldstar, goldstar_state, 0,         ROT0, "bootleg",           "Moon Light (v.0629, low program)",            0 )
 GAME(  199?, moonlghta, goldstar, moonlght, goldstar, goldstar_state, 0,         ROT0, "bootleg",           "Moon Light (v.0629, high program)",           0 )
@@ -17405,7 +16032,6 @@ GAMEL( 199?, cb3e,      ncb3,     cb3e,     chrygld,  cb3_state,      cb3e,     
 GAMEL( 199?, chryglda,  ncb3,     cb3e,     chrygld,  cb3_state,      cb3e,      ROT0, "bootleg",           "Cherry Gold I (set 2, encrypted bootleg)",    0,                 layout_chrygld )  // Runs in CB3e hardware.
 
 GAME(  1996, cmast97,   ncb3,     cm97,     chrygld,  cb3_state,      0,         ROT0, "Dyna",              "Cherry Master '97",                           MACHINE_NOT_WORKING) // fix prom decode
->>>>>>> upstream/master
 
 // looks like a hack of Cherry Bonus 3
 GAME(  199?, chryangl,  ncb3,     cm,       chryangl, cmaster_state,  cmv4,      ROT0, "<unknown>",         "Cherry Angel",                                MACHINE_NOT_WORKING )
@@ -17416,10 +16042,6 @@ GAMEL( 198?, cmv801,    0,        cm,       cmv801,   cmaster_state,  cm,       
 
 
 
-<<<<<<< HEAD
-
-=======
->>>>>>> upstream/master
 // most of these are almost certainly bootlegs, with added features, hacked payouts etc. identifying which are
 // the original, unmodified dyna versions is almost impossible due to lack of documentation from back in the day,
 // even original boards almost always run modified sets
@@ -17427,11 +16049,7 @@ GAMEL( 1992, cmv4,      0,        cm,       cmv4,     cmaster_state,  cmv4,     
 GAMEL( 1992, cmv4a,     cmv4,     cm,       cmv4,     cmaster_state,  cmv4,      ROT0, "Dyna",              "Cherry Master (ver.4, set 2)",                MACHINE_NOT_WORKING,  layout_cmv4 ) // stealth game?
 GAMEL( 199?, cmwm,      cmv4,     cm,       cmv4,     cmaster_state,  cmv4,      ROT0, "Dyna",              "Cherry Master (Watermelon bootleg / hack)",   0,                 layout_cmv4 ) // CM Fruit Bonus ver.2 T bootleg/hack
 GAMEL( 1995, cmfun,     cmv4,     cm,       cmv4,     cmaster_state,  cmv4,      ROT0, "Dyna",              "Cherry Master (Fun USA v2.5 bootleg / hack)", 0,                 layout_cmv4 )
-<<<<<<< HEAD
-GAMEL( 1991, cmaster,   0,        cm,       cmaster,  driver_device,  0,         ROT0, "Dyna",              "Cherry Master I (ver.1.01, set 1)",           0,                 layout_cmaster )
-=======
 GAMEL( 1991, cmaster,   0,        cm,       cmaster,  cmaster_state,  0,         ROT0, "Dyna",              "Cherry Master I (ver.1.01, set 1)",           0,                 layout_cmaster )
->>>>>>> upstream/master
 GAMEL( 1991, cmasterb,  cmaster,  cm,       cmasterb, cmaster_state,  cmv4,      ROT0, "Dyna",              "Cherry Master I (ver.1.01, set 2)",           0,                 layout_cmasterb )
 GAMEL( 1991, cmezspin,  cmaster,  cm,       cmezspin, cmaster_state,  cmv4,      ROT0, "Dyna",              "Cherry Master I (E-Z Spin bootleg / hack)",   0,                 layout_cmezspin ) // CM Fruit Bonus 55 ver.2 bootleg/hack
 GAMEL( 1991, cmasterc,  cmaster,  cmasterc, cmasterc, cmaster_state,  cmv4,      ROT0, "Dyna",              "Cherry Master I (ver.1.01, set 3)",           0,                 layout_cmasterc )
@@ -17439,15 +16057,6 @@ GAMEL( 1991, cmasterbv, cmaster,  cm,       cmasterb, cmaster_state,  cmv4,     
 GAMEL( 1991, cmasterd,  cmaster,  cm,       cmasterb, cmaster_state,  cmv4,      ROT0, "Dyna",              "Cherry Master I (ver.1.01, set 5)",           0,                 layout_cmasterb )
 GAMEL( 1991, cmastere,  cmaster,  cm,       cmasterb, cmaster_state,  cmv4,      ROT0, "Dyna",              "Cherry Master I (ver.1.01, set 6)",           0,                 layout_cmasterb )
 GAMEL( 1991, cmasterf,  cmaster,  cm,       cmasterb, cmaster_state,  cmv4,      ROT0, "Dyna",              "Cherry Master I (ver.1.01, set 7)",           0,                 layout_cmasterb )
-<<<<<<< HEAD
-GAME(  199?, cmast99,   0,        cm,       cmv4,     cmaster_state,  cmv4,      ROT0, "????",              "Cherry Master '99",                           MACHINE_NOT_WORKING )
-
-
-GAMEL( 1991, tonypok,   0,        cm,       tonypok,  cmaster_state,  tonypok,   ROT0, "Corsica",           "Poker Master (Tony-Poker V3.A, hack?)",       0 ,                layout_tonypok )
-GAME(  199?, jkrmast,   0,        pkrmast,  pkrmast,  driver_device,  0,         ROT0, "<unknown>",         "Joker Master",                                MACHINE_NOT_WORKING ) // encrypted?
-GAME(  199?, pkrmast,   jkrmast,  pkrmast,  pkrmast,  driver_device,  0,         ROT0, "<unknown>",         "Poker Master (ED-1993 set 1)",                MACHINE_NOT_WORKING ) // incomplete dump + encrypted?
-GAME(  1993, pkrmasta,  jkrmast,  pkrmast,  pkrmast,  driver_device,  0,         ROT0, "<unknown>",         "Poker Master (ED-1993 set 2)",                MACHINE_NOT_WORKING ) // incomplete dump + encrypted?
-=======
 GAMEL( 1991, cmasterg,  cmaster,  cm,       cmasterg, cmaster_state,  cmv4,      ROT0, "Dyna",              "Cherry Master I (ver.1.01, set 8, V4-B-)",    0,                 layout_cmasterb )
 GAMEL( 1991, cmasterh,  cmaster,  cm,       cmasterb, cmaster_state,  cmv4,      ROT0, "Dyna",              "Cherry Master I (ver.1.10)",                  0,                 layout_cmasterb )
 
@@ -17456,39 +16065,10 @@ GAMEL( 1991, tonypok,   0,        cm,       tonypok,  cmaster_state,  tonypok,  
 GAME(  199?, jkrmast,   0,        pkrmast,  pkrmast,  goldstar_state, 0,         ROT0, "<unknown>",         "Joker Master",                                MACHINE_NOT_WORKING ) // encrypted?
 GAME(  199?, pkrmast,   jkrmast,  pkrmast,  pkrmast,  goldstar_state, 0,         ROT0, "<unknown>",         "Poker Master (ED-1993 set 1)",                MACHINE_NOT_WORKING ) // incomplete dump + encrypted?
 GAME(  1993, pkrmasta,  jkrmast,  pkrmast,  pkrmast,  goldstar_state, 0,         ROT0, "<unknown>",         "Poker Master (ED-1993 set 2)",                MACHINE_NOT_WORKING ) // incomplete dump + encrypted?
->>>>>>> upstream/master
 
 
 GAME(  1991, cmast91,   0,        cmast91,  cmast91,  goldstar_state, cmast91,   ROT0, "Dyna",              "Cherry Master '91 (ver.1.30)",                0 )
 GAME(  1992, cmast92,   0,        cmast91,  cmast91,  goldstar_state, cmast91,   ROT0, "Dyna",              "Cherry Master '92",                           MACHINE_NOT_WORKING ) // no gfx roms are dumped
-<<<<<<< HEAD
-
-
-GAMEL( 1989, lucky8,    0,        lucky8,   lucky8,   driver_device,  0,         ROT0, "Wing Co., Ltd.",    "New Lucky 8 Lines (set 1, W-4)",                           0,                     layout_lucky8 )
-GAMEL( 1989, lucky8a,   lucky8,   lucky8,   lucky8a,  wingco_state,   lucky8a,   ROT0, "Wing Co., Ltd.",    "New Lucky 8 Lines (set 2, W-4)",                           0,                     layout_lucky8 )
-GAMEL( 1989, lucky8b,   lucky8,   lucky8,   lucky8b,  driver_device,  0,         ROT0, "Wing Co., Ltd.",    "New Lucky 8 Lines (set 3, W-4, extended gfx)",             0,                     layout_lucky8 )
-GAMEL( 1989, lucky8c,   lucky8,   lucky8,   lucky8,   wingco_state,   lucky8a,   ROT0, "Wing Co., Ltd.",    "New Lucky 8 Lines (set 4, W-4)",                           0,                     layout_lucky8 )
-GAMEL( 1989, lucky8d,   lucky8,   lucky8,   lucky8d,  driver_device,  0,         ROT0, "Wing Co., Ltd.",    "New Lucky 8 Lines (set 5, W-4, main 40%, d-up 60%)",       0,                     layout_lucky8 )
-GAMEL( 1989, lucky8e,   lucky8,   lucky8,   lucky8d,  driver_device,  0,         ROT0, "Wing Co., Ltd.",    "New Lucky 8 Lines (set 6, W-4, main 40%, d-up 60%)",       0,                     layout_lucky8 )
-GAMEL( 198?, ns8lines,  0,        lucky8,   lucky8b,  driver_device,  0,         ROT0, "<unknown>",         "New Lucky 8 Lines / New Super 8 Lines (W-4)",              0,                     layout_lucky8 )
-GAMEL( 198?, ns8linew,  0,        lucky8,   ns8linew, driver_device,  0,         ROT0, "<unknown>",         "New Lucky 8 Lines / New Super 8 Lines (F-5, Witch Bonus)", 0,                     layout_lucky8 )
-
-GAMEL( 198?, kkotnoli,  0,        kkotnoli, kkotnoli, driver_device,  0,         ROT0, "hack",              "Kkot No Li (Kill the Bees)",                               MACHINE_IMPERFECT_COLORS, layout_lucky8 )
-GAME(  198?, ladylinr,  0,        ladylinr, ladylinr, driver_device,  0,         ROT0, "TAB Austria",       "Lady Liner",                                               0 )
-GAME(  198?, wcat3,     0,        wcat3,    lucky8,   driver_device,  0,         ROT0, "E.A.I.",            "Wild Cat 3",                                               MACHINE_NOT_WORKING )
-
-GAME(  1985, luckylad,  0,        lucky8,   luckylad, driver_device,  0,         ROT0, "Wing Co., Ltd.",    "Lucky Lady (Wing, encrypted)",                             MACHINE_NOT_WORKING )  // encrypted (see notes in rom_load)...
-GAME(  1991, megaline,  0,        megaline, megaline, driver_device,  0,         ROT0, "Fun World",         "Mega Lines",                                               MACHINE_NOT_WORKING )
-GAME(  1990, bonusch,   0,        bonusch,  bonusch,  driver_device,  0,         ROT0, "Wing Co., Ltd.",    "Bonus Chance (W-8)",                                       MACHINE_NOT_WORKING )  // M80C51F MCU
-
-
-GAMEL( 1993, bingowng,  0,        bingowng, bingowng, driver_device,  0,         ROT0, "Wing Co., Ltd.",    "Bingo (set 1)",                                            0,                     layout_bingowng )
-GAMEL( 1993, bingownga, bingowng, bingownga,bingownga,driver_device,  0,         ROT0, "Wing Co., Ltd.",    "Bingo (set 2)",                                            0,                     layout_bingowng )
-
-GAME(  1992, magodds,   0,        magodds,  magodds,  driver_device,  0,         ROT0, "Pal Company / Micro Manufacturing Inc.", "Magical Odds (set 1)",                             MACHINE_WRONG_COLORS | MACHINE_IMPERFECT_GRAPHICS )
-GAME(  1992, magoddsa,  magodds,  magodds,  magodds,  driver_device,  0,         ROT0, "Pal Company / Micro Manufacturing Inc.", "Magical Odds (set 2)",                             MACHINE_WRONG_COLORS | MACHINE_IMPERFECT_GRAPHICS )
-GAME(  1992, magoddsb,  magodds,  magodds,  magodds,  driver_device,  0,         ROT0, "Pal Company / Micro Manufacturing Inc.", "Magical Odds (set 3)",                             MACHINE_WRONG_COLORS | MACHINE_IMPERFECT_GRAPHICS )
-=======
 GAME(  1999, cmast99,   0,        cm,       cmast99,  cmaster_state,  cmv4,      ROT0, "Dyna",              "Cherry Master '99 (V9B.00)",                  MACHINE_NOT_WORKING )
 GAME(  1999, cmast99b,  cmast99,  cm,       cmast99,  cmaster_state,  cmv4,      ROT0, "bootleg",           "Cherry Master '99 (V9B.00 bootleg / hack)",   MACHINE_NOT_WORKING )
 GAME(  1993, aplan,     0,        cm,       cmast99,  cmaster_state,  cmv4,      ROT0, "WeaShing H.K.",     "A-Plan",                                      MACHINE_NOT_WORKING )
@@ -17537,19 +16117,12 @@ GAME(  1990, bonusch,   0,        bonusch,  bonusch,  unkch_state,    0,        
 GAME(  1992, magodds,   0,        magodds,  magodds,  wingco_state,   0,         ROT0, "Pal Company / Micro Manufacturing Inc.", "Magical Odds (set 1)",                             MACHINE_WRONG_COLORS | MACHINE_IMPERFECT_GRAPHICS )
 GAME(  1992, magoddsa,  magodds,  magodds,  magodds,  wingco_state,   0,         ROT0, "Pal Company / Micro Manufacturing Inc.", "Magical Odds (set 2)",                             MACHINE_WRONG_COLORS | MACHINE_IMPERFECT_GRAPHICS )
 GAME(  1992, magoddsb,  magodds,  magodds,  magodds,  wingco_state,   0,         ROT0, "Pal Company / Micro Manufacturing Inc.", "Magical Odds (set 3)",                             MACHINE_WRONG_COLORS | MACHINE_IMPERFECT_GRAPHICS )
->>>>>>> upstream/master
 GAME(  1991, magoddsc,  magodds,  magodds,  magoddsc, wingco_state,   magoddsc,  ROT0, "Pal Company",                            "Magical Odds (set 4, custom encrypted CPU block)", MACHINE_WRONG_COLORS | MACHINE_NOT_WORKING |MACHINE_NO_SOUND)
 GAME(  1991, magoddsd,  magodds,  magodds,  magoddsc, wingco_state,   magoddsc,  ROT0, "Pal Company",                            "Magical Odds (set 5, custom encrypted CPU block)", MACHINE_WRONG_COLORS | MACHINE_NOT_WORKING |MACHINE_NO_SOUND)
 
 
 /* --- Amcoe games --- */
-<<<<<<< HEAD
-
 /*     YEAR  NAME       PARENT    MACHINE   INPUT      STATE           INIT       ROT    COMPANY    FULLNAME                                                       FLAGS              LAYOUT  */
-
-=======
-/*     YEAR  NAME       PARENT    MACHINE   INPUT      STATE           INIT       ROT    COMPANY    FULLNAME                                                       FLAGS              LAYOUT  */
->>>>>>> upstream/master
 GAMEL( 1997, schery97,  0,        amcoe1,   schery97,  cmaster_state,  schery97,  ROT0, "Amcoe",   "Skill Cherry '97 (Talking ver. sc3.52)",                       0,                 layout_nfb96 )  /* running in CB hardware */
 GAMEL( 1997, schery97a, schery97, amcoe1,   schery97,  cmaster_state,  schery97a, ROT0, "Amcoe",   "Skill Cherry '97 (Talking ver. sc3.52c4)",                     0,                 layout_nfb96 )  /* running in C4 hardware */
 GAMEL( 1998, skill98,   0,        amcoe1,   schery97,  cmaster_state,  skill98,   ROT0, "Amcoe",   "Skill '98 (Talking ver. s98-1.33)",                            0,                 layout_skill98 )
@@ -17579,31 +16152,13 @@ GAME(  2009, fb2010,    0,        amcoe2,   nfb96tx,   cmaster_state,  fb2010,  
 GAMEL( 1996, roypok96,  0,        amcoe2,   roypok96,  cmaster_state,  rp35,      ROT0, "Amcoe",   "Royal Poker '96 (set 1, v97-3.5)",                             0,                 layout_roypok96 )
 GAMEL( 1996, roypok96a, roypok96, amcoe2,   roypok96a, cmaster_state,  rp36,      ROT0, "Amcoe",   "Royal Poker '96 (set 2, v98-3.6)",                             0,                 layout_roypok96 )
 GAMEL( 1996, roypok96b, roypok96, amcoe2,   roypok96a, cmaster_state,  rp36c3,    ROT0, "Amcoe",   "Royal Poker '96 (set 3, v98-3.6?)",                            0,                 layout_roypok96 )
-<<<<<<< HEAD
-=======
 GAME(  1996, roypok96c, roypok96, amcoe2,   roypok96a, cmaster_state,  rp96sub,   ROT0, "Amcoe",   "Royal Poker '96 (set 4, C3 board)",                            MACHINE_NOT_WORKING )
->>>>>>> upstream/master
 
 
 /* these all appear to be graphic hacks of 'New Fruit Bonus '96', they can run with the same program rom
    some sets are messy and appear to have mismatched graphic roms, they need to be sorted out properly
 */
 /*    YEAR  NAME       PARENT    MACHINE   INPUT      STATE           INIT       ROT    COMPANY    FULLNAME                                                                   FLAGS  */
-<<<<<<< HEAD
-GAME( 1996, nfb96se,   nfb96,    amcoe2,   nfb96bl,   driver_device,  0,         ROT0, "bootleg", "New Fruit Bonus '96 Special Edition (bootleg set 1, v97-3.3c Portuguese)", 0 )
-GAME( 1996, nfb96sea,  nfb96,    amcoe2,   nfb96bl,   cmaster_state,  nfb96sea,  ROT0, "bootleg", "New Fruit Bonus '96 Special Edition (bootleg set 2, v97-3.3c English)",    MACHINE_WRONG_COLORS ) // encrypted program
-GAME( 1996, nfb96seb,  nfb96,    amcoe2,   nfb96bl,   driver_device,  0,         ROT0, "bootleg", "New Fruit Bonus '96 Special Edition (bootleg set 3, v97-3.3c Portuguese)", MACHINE_WRONG_COLORS )
-GAME( 2002, carb2002,  nfb96,    amcoe2,   nfb96bl,   driver_device,  0,         ROT0, "bootleg", "Carriage Bonus 2002 (bootleg)",                                            MACHINE_WRONG_COLORS )
-GAME( 2003, carb2003,  nfb96,    amcoe2,   nfb96bl,   driver_device,  0,         ROT0, "bootleg", "Carriage Bonus 2003 (bootleg)",                                            MACHINE_WRONG_COLORS )
-
-GAME( 2003, nfm,       0,        nfm,      nfm,       driver_device,  0,         ROT0, "Ming-Yang Electronic", "New Fruit Machine (Ming-Yang Electronic)",                    MACHINE_NOT_WORKING ) // vFB02-07A "Copyright By Ms. Liu Orchis 2003/03/06"
-
-// these have 'cherry 1994' in the program roms, but also "Super Cherry / New Cherry Gold '99" probably hacks of a 1994 version of Cherry Bonus / Cherry Master (Super Cherry Master?)
-GAMEL(1999, unkch1,   0,         unkch,    unkch,     unkch_state,    unkch1,    ROT0, "bootleg", "New Cherry Gold '99 (bootleg of Super Cherry Master) (set 1)", 0,    layout_unkch )
-GAMEL(1999, unkch2,   unkch1,    unkch,    unkch,     unkch_state,    unkch1,    ROT0, "bootleg", "Super Cherry Gold (bootleg of Super Cherry Master)",           0,    layout_unkch )
-GAMEL(1999, unkch3,   unkch1,    unkch,    unkch3,    unkch_state,    unkch3,    ROT0, "bootleg", "New Cherry Gold '99 (bootleg of Super Cherry Master) (set 2)", 0,    layout_unkch ) // cards have been hacked to look like barrels, girl removed?
-GAMEL(1999, unkch4,   unkch1,    unkch,    unkch4,    unkch_state,    unkch4,    ROT0, "bootleg", "Grand Cherry Master (bootleg of Super Cherry Master)",         0,    layout_unkch ) // by 'Toy System' Hungary
-=======
 GAME( 1996, nfb96se,   nfb96,    amcoe2,   nfb96bl,   cmaster_state,  0,         ROT0, "bootleg", "New Fruit Bonus '96 Special Edition (bootleg set 1, v97-3.3c Portuguese)", 0 )
 GAME( 1996, nfb96sea,  nfb96,    amcoe2,   nfb96bl,   cmaster_state,  nfb96sea,  ROT0, "bootleg", "New Fruit Bonus '96 Special Edition (bootleg set 2, v97-3.3c English)",    MACHINE_WRONG_COLORS ) // encrypted program
 GAME( 1996, nfb96seb,  nfb96,    amcoe2,   nfb96bl,   cmaster_state,  0,         ROT0, "bootleg", "New Fruit Bonus '96 Special Edition (bootleg set 3, v97-3.3c Portuguese)", MACHINE_WRONG_COLORS )
@@ -17623,20 +16178,11 @@ GAMEL(1999, unkch3,   scmaster,  unkch,    unkch3,    unkch_state,    unkch3,   
 GAMEL(1999, unkch4,   scmaster,  unkch,    unkch4,    unkch_state,    unkch4,    ROT0, "bootleg", "Grand Cherry Master (bootleg of Super Cherry Master)",         0,    layout_unkch ) // by 'Toy System' Hungary
 
 GAME( 1996, cherry96, scmaster,  unkch,    unkch4,    unkch_state,    unkch4,    ROT0, "bootleg", "New Cherry '96 (bootleg of New Fruit Bonus?)",                 MACHINE_NOT_WORKING ) // need to be moved to another machine...
->>>>>>> upstream/master
 
 
 /* Stealth sets.
    These have hidden games inside that can be switched to avoid inspections, police or whatever purposes)... */
 
-<<<<<<< HEAD
-/*    YEAR  NAME       PARENT    MACHINE   INPUT     STATE           INIT     ROT    COMPANY                FULLNAME                                                 FLAGS                  LAYOUT    */
-GAMEL( 198?, cmpacman, 0,        cm,       cmpacman, cmaster_state,  cm,      ROT0, "<unknown>",           "Super Pacman (v1.2) + Cherry Master (Corsica, v8.31)",   0,                     layout_cmpacman ) // need to press K to switch between games...
-GAMEL( 198?, cmtetris, 0,        cm,       cmtetris, cmaster_state,  cm,      ROT0, "<unknown>",           "Tetris + Cherry Master (Corsica, v8.01, set 1)",         0,                     layout_cmpacman ) // need to press K/L to switch between games...
-GAMEL( 198?, cmtetrsa, 0,        cm,       cmtetris, cmaster_state,  cm,      ROT0, "<unknown>",           "Tetris + Cherry Master (Corsica, v8.01, set 2)",         MACHINE_NOT_WORKING,      layout_cmpacman ) // seems banked...
-GAMEL( 198?, cmtetrsb, 0,        cm,       cmtetris, cmaster_state,  cm,      ROT0, "<unknown>",           "Tetris + Cherry Master (+K, Canada Version, encrypted)", MACHINE_NOT_WORKING,      layout_cmpacman ) // different Tetris game. press insert to throttle and see the attract running.
-GAMEL( 1997, crazybon, 0,        pkrmast,  crazybon, driver_device,  0,       ROT0, "bootleg (Crazy Co.)", "Crazy Bonus 2002",                                       MACHINE_IMPERFECT_COLORS, layout_crazybon )
-=======
 /*    YEAR  NAME        PARENT    MACHINE   INPUT     STATE           INIT     ROT    COMPANY                FULLNAME                                                      FLAGS                     LAYOUT    */
 GAMEL( 198?, cmpacman,  0,        cm,       cmpacman, cmaster_state,  cm,      ROT0, "<unknown>",           "Super Pacman (v1.2) + Cherry Master (Corsica, v8.31, set 1)", 0,                        layout_cmpacman ) // need to press K to switch between games...
 GAMEL( 198?, cmpacmana, cmpacman, cm,       cmpacman, cmaster_state,  cm,      ROT0, "<unknown>",           "Super Pacman (v1.2) + Cherry Master (Corsica, v8.31, set 2)", 0,                        layout_cmpacman ) // need to press K to switch between games...
@@ -17644,7 +16190,6 @@ GAMEL( 198?, cmtetris,  0,        cm,       cmtetris, cmaster_state,  cm,      R
 GAMEL( 198?, cmtetrsa,  0,        cm,       cmtetris, cmaster_state,  cm,      ROT0, "<unknown>",           "Tetris + Cherry Master (Corsica, v8.01, set 2)",              MACHINE_NOT_WORKING,      layout_cmpacman ) // seems banked...
 GAMEL( 198?, cmtetrsb,  0,        cm,       cmtetris, cmaster_state,  cm,      ROT0, "<unknown>",           "Tetris + Cherry Master (+K, Canada Version, encrypted)",      MACHINE_NOT_WORKING,      layout_cmpacman ) // different Tetris game. press insert to throttle and see the attract running.
 GAMEL( 1997, crazybon,  0,        pkrmast,  crazybon, goldstar_state, 0,       ROT0, "bootleg (Crazy Co.)", "Crazy Bonus 2002",                                            MACHINE_IMPERFECT_COLORS, layout_crazybon ) // Windows ME desktop... but not found the way to switch it.
->>>>>>> upstream/master
 
 /* other possible stealth sets:
  - cmv4a    ---> see the 1fxx zone. put a bp in 1f9f to see the loop.

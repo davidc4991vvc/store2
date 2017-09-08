@@ -1,17 +1,5 @@
 // license:BSD-3-Clause
 // copyright-holders:Olivier Galibert
-<<<<<<< HEAD
-#include "nscsi_bus.h"
-
-const device_type NSCSI_BUS = &device_creator<nscsi_bus_device>;
-const device_type NSCSI_CONNECTOR = &device_creator<nscsi_connector>;
-
-nscsi_bus_device::nscsi_bus_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-	device_t(mconfig, NSCSI_BUS, "NSCSI Bus", tag, owner, clock, "nscsi_bus", __FILE__), data(0), ctrl(0)
-{
-	devcnt = 0;
-	memset(dev, 0, sizeof(dev));
-=======
 #include "emu.h"
 #include "nscsi_bus.h"
 
@@ -24,7 +12,6 @@ nscsi_bus_device::nscsi_bus_device(const machine_config &mconfig, const char *ta
 {
 	devcnt = 0;
 	std::fill(std::begin(dev), std::end(dev), dev_t{ nullptr, 0, 0, 0 });
->>>>>>> upstream/master
 }
 
 void nscsi_bus_device::device_start()
@@ -57,11 +44,7 @@ void nscsi_bus_device::regen_ctrl(int refid)
 		"dout", "din ", "cmd ", "stat", "4   ", "5   ", "mout", "min "
 	};
 
-<<<<<<< HEAD
-	UINT32 octrl = ctrl;
-=======
 	uint32_t octrl = ctrl;
->>>>>>> upstream/master
 	ctrl = 0;
 	for(int i=0; i<devcnt; i++)
 		ctrl |= dev[i].ctrl;
@@ -104,56 +87,32 @@ void nscsi_bus_device::regen_ctrl(int refid)
 				dev[i].dev->scsi_ctrl_changed();
 }
 
-<<<<<<< HEAD
-UINT32 nscsi_bus_device::data_r() const
-=======
 uint32_t nscsi_bus_device::data_r() const
->>>>>>> upstream/master
 {
 	return data;
 }
 
-<<<<<<< HEAD
-UINT32 nscsi_bus_device::ctrl_r() const
-=======
 uint32_t nscsi_bus_device::ctrl_r() const
->>>>>>> upstream/master
 {
 	return ctrl;
 }
 
-<<<<<<< HEAD
-void nscsi_bus_device::ctrl_w(int refid, UINT32 lines, UINT32 mask)
-{
-	UINT32 c = dev[refid].ctrl;
-=======
 void nscsi_bus_device::ctrl_w(int refid, uint32_t lines, uint32_t mask)
 {
 	uint32_t c = dev[refid].ctrl;
->>>>>>> upstream/master
 	dev[refid].ctrl = (c & ~mask) | (lines & mask);
 	regen_ctrl(refid);
 }
 
-<<<<<<< HEAD
-void nscsi_bus_device::data_w(int refid, UINT32 lines)
-=======
 void nscsi_bus_device::data_w(int refid, uint32_t lines)
->>>>>>> upstream/master
 {
 	dev[refid].data = lines;
 	regen_data();
 }
 
-<<<<<<< HEAD
-void nscsi_bus_device::ctrl_wait(int refid, UINT32 lines, UINT32 mask)
-{
-	UINT32 w = dev[refid].wait_ctrl;
-=======
 void nscsi_bus_device::ctrl_wait(int refid, uint32_t lines, uint32_t mask)
 {
 	uint32_t w = dev[refid].wait_ctrl;
->>>>>>> upstream/master
 	dev[refid].wait_ctrl = (w & ~mask) | (lines & mask);
 }
 
@@ -175,13 +134,8 @@ void nscsi_bus_device::device_config_complete()
 }
 
 
-<<<<<<< HEAD
-nscsi_connector::nscsi_connector(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-	device_t(mconfig, NSCSI_CONNECTOR, "NSCSI Connector Abstraction", tag, owner, clock, "nscsi_connector", __FILE__),
-=======
 nscsi_connector::nscsi_connector(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	device_t(mconfig, NSCSI_CONNECTOR, tag, owner, clock),
->>>>>>> upstream/master
 	device_slot_interface(mconfig, *this)
 {
 }
@@ -199,21 +153,12 @@ nscsi_device *nscsi_connector::get_device()
 	return dynamic_cast<nscsi_device *>(get_card_device());
 }
 
-<<<<<<< HEAD
-nscsi_device::nscsi_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source) :
-	device_t(mconfig, type, name, tag, owner, clock, shortname, source),
-	device_slot_card_interface(mconfig, *this)
-{
-	scsi_id = scsi_refid = -1;
-	scsi_bus = 0;
-=======
 nscsi_device::nscsi_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock) :
 	device_t(mconfig, type, tag, owner, clock),
 	device_slot_card_interface(mconfig, *this)
 {
 	scsi_id = scsi_refid = -1;
 	scsi_bus = nullptr;
->>>>>>> upstream/master
 }
 
 void nscsi_device::connect_to_bus(nscsi_bus_device *bus, int refid, int default_scsi_id)
@@ -232,14 +177,6 @@ void nscsi_device::device_start()
 	save_item(NAME(scsi_id));
 }
 
-<<<<<<< HEAD
-nscsi_full_device::nscsi_full_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source) :
-	nscsi_device(mconfig, type, name, tag, owner, clock, shortname, source)
-{
-}
-
-=======
->>>>>>> upstream/master
 
 const char *const nscsi_full_device::command_names[256] = {
 	/* 00 */ "TEST_UNIT_READY", "REZERO", "?", "REQUEST_SENSE", "FORMAT_UNIT", "?", "?", "REASSIGN_BLOCKS",
@@ -322,13 +259,8 @@ void nscsi_full_device::scsi_ctrl_changed()
 
 void nscsi_full_device::step(bool timeout)
 {
-<<<<<<< HEAD
-	UINT32 ctrl = scsi_bus->ctrl_r();
-	UINT32 data = scsi_bus->data_r();
-=======
 	uint32_t ctrl = scsi_bus->ctrl_r();
 	uint32_t data = scsi_bus->data_r();
->>>>>>> upstream/master
 	if(ctrl & S_RST) {
 		scsi_bus->data_w(scsi_refid, 0);
 		scsi_bus->ctrl_w(scsi_refid, 0, S_ALL);
@@ -345,11 +277,7 @@ void nscsi_full_device::step(bool timeout)
 	switch(scsi_state & SUB_MASK ? scsi_state & SUB_MASK : scsi_state & STATE_MASK) {
 	case IDLE:
 		if(((ctrl & (S_SEL|S_BSY)) == S_SEL) && (scsi_id != -1) && ((data & (1 << scsi_id)) != 0)) {
-<<<<<<< HEAD
-			for(scsi_initiator_id = 0; scsi_initiator_id != 16 && (scsi_initiator_id == scsi_id || (data & (1 << scsi_initiator_id))); scsi_initiator_id++);
-=======
 			for(scsi_initiator_id = 0; scsi_initiator_id != 16 && (scsi_initiator_id == scsi_id || (data & (1 << scsi_initiator_id))); scsi_initiator_id++) {};
->>>>>>> upstream/master
 			if(scsi_initiator_id == 16)
 				scsi_initiator_id = -1;
 			scsi_state = TARGET_SELECT_WAIT_BUS_SETTLE;
@@ -520,11 +448,7 @@ void nscsi_full_device::target_recv_byte()
 	step(false);
 }
 
-<<<<<<< HEAD
-void nscsi_full_device::target_send_byte(UINT8 val)
-=======
 void nscsi_full_device::target_send_byte(uint8_t val)
->>>>>>> upstream/master
 {
 	scsi_bus->ctrl_wait(scsi_refid, S_ACK, S_ACK);
 	scsi_state = (scsi_state & STATE_MASK) | (SEND_BYTE_T_WAIT_ACK_1 << SUB_SHIFT);
@@ -533,11 +457,7 @@ void nscsi_full_device::target_send_byte(uint8_t val)
 	step(false);
 }
 
-<<<<<<< HEAD
-UINT8 nscsi_full_device::scsi_get_data(int id, int pos)
-=======
 uint8_t nscsi_full_device::scsi_get_data(int id, int pos)
->>>>>>> upstream/master
 {
 	switch(id) {
 	case SBUF_MAIN:
@@ -549,11 +469,7 @@ uint8_t nscsi_full_device::scsi_get_data(int id, int pos)
 	}
 }
 
-<<<<<<< HEAD
-void nscsi_full_device::scsi_put_data(int id, int pos, UINT8 data)
-=======
 void nscsi_full_device::scsi_put_data(int id, int pos, uint8_t data)
->>>>>>> upstream/master
 {
 	switch(id) {
 	case SBUF_MAIN:
@@ -576,11 +492,7 @@ bool nscsi_full_device::command_done()
 {
 	if(!data_buffer_pos)
 		return false;
-<<<<<<< HEAD
-	UINT8 h = scsi_cmdbuf[0];
-=======
 	uint8_t h = scsi_cmdbuf[0];
->>>>>>> upstream/master
 	switch(h >> 5) {
 	case 0: return data_buffer_pos == 6;
 	case 1: return data_buffer_pos == 10;
@@ -616,11 +528,7 @@ nscsi_full_device::control *nscsi_full_device::buf_control_pop()
 	return c;
 }
 
-<<<<<<< HEAD
-void nscsi_full_device::scsi_status_complete(UINT8 st)
-=======
 void nscsi_full_device::scsi_status_complete(uint8_t st)
->>>>>>> upstream/master
 {
 	control *c;
 	c = buf_control_push();
@@ -651,11 +559,7 @@ void nscsi_full_device::scsi_data_out(int buf, int size)
 	c->param2 = size;
 }
 
-<<<<<<< HEAD
-void nscsi_full_device::sense(bool deferred, UINT8 key)
-=======
 void nscsi_full_device::sense(bool deferred, uint8_t key)
->>>>>>> upstream/master
 {
 	memset(scsi_sense_buffer, 0, sizeof(scsi_sense_buffer));
 	scsi_sense_buffer[0] = deferred ? 0x71 : 0x70;

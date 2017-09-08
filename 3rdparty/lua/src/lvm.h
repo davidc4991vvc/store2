@@ -1,9 +1,5 @@
 /*
-<<<<<<< HEAD
-** $Id: lvm.h,v 2.34 2014/08/01 17:24:02 roberto Exp $
-=======
 ** $Id: lvm.h,v 2.41 2016/12/22 13:08:50 roberto Exp $
->>>>>>> upstream/master
 ** Lua virtual machine
 ** See Copyright Notice in lua.h
 */
@@ -31,8 +27,6 @@
 #endif
 
 
-<<<<<<< HEAD
-=======
 /*
 ** You can define LUA_FLOORN2I if you want to convert floats to integers
 ** by flooring them (instead of raising an error if they are not
@@ -43,24 +37,17 @@
 #endif
 
 
->>>>>>> upstream/master
 #define tonumber(o,n) \
 	(ttisfloat(o) ? (*(n) = fltvalue(o), 1) : luaV_tonumber_(o,n))
 
 #define tointeger(o,i) \
-<<<<<<< HEAD
-	(ttisinteger(o) ? (*(i) = ivalue(o), 1) : luaV_tointeger_(o,i))
-=======
     (ttisinteger(o) ? (*(i) = ivalue(o), 1) : luaV_tointeger(o,i,LUA_FLOORN2I))
->>>>>>> upstream/master
 
 #define intop(op,v1,v2) l_castU2S(l_castS2U(v1) op l_castS2U(v2))
 
 #define luaV_rawequalobj(t1,t2)		luaV_equalobj(NULL,t1,t2)
 
 
-<<<<<<< HEAD
-=======
 /*
 ** fast track for 'gettable': if 't' is a table and 't[k]' is not nil,
 ** return 1 with 'slot' pointing to 't[k]' (final result).  Otherwise,
@@ -106,24 +93,15 @@
 
 
 
->>>>>>> upstream/master
 LUAI_FUNC int luaV_equalobj (lua_State *L, const TValue *t1, const TValue *t2);
 LUAI_FUNC int luaV_lessthan (lua_State *L, const TValue *l, const TValue *r);
 LUAI_FUNC int luaV_lessequal (lua_State *L, const TValue *l, const TValue *r);
 LUAI_FUNC int luaV_tonumber_ (const TValue *obj, lua_Number *n);
-<<<<<<< HEAD
-LUAI_FUNC int luaV_tointeger_ (const TValue *obj, lua_Integer *p);
-LUAI_FUNC void luaV_gettable (lua_State *L, const TValue *t, TValue *key,
-                                            StkId val);
-LUAI_FUNC void luaV_settable (lua_State *L, const TValue *t, TValue *key,
-                                            StkId val);
-=======
 LUAI_FUNC int luaV_tointeger (const TValue *obj, lua_Integer *p, int mode);
 LUAI_FUNC void luaV_finishget (lua_State *L, const TValue *t, TValue *key,
                                StkId val, const TValue *slot);
 LUAI_FUNC void luaV_finishset (lua_State *L, const TValue *t, TValue *key,
                                StkId val, const TValue *slot);
->>>>>>> upstream/master
 LUAI_FUNC void luaV_finishOp (lua_State *L);
 LUAI_FUNC void luaV_execute (lua_State *L);
 LUAI_FUNC void luaV_concat (lua_State *L, int total);

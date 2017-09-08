@@ -9,8 +9,6 @@
 --
 ---------------------------------------------------------------------------
 
-<<<<<<< HEAD
-=======
 files {
 	MAME_DIR .. "src/devices/video/poly.h",
 	MAME_DIR .. "src/devices/video/sprite.cpp",
@@ -19,7 +17,6 @@ files {
 	MAME_DIR .. "src/devices/video/vector.h",
 }
 
->>>>>>> upstream/master
 --------------------------------------------------
 --
 --@src/devices/video/315_5124.h,VIDEOS["SEGA315_5124"] = true
@@ -82,8 +79,6 @@ end
 
 --------------------------------------------------
 --
-<<<<<<< HEAD
-=======
 --@src/devices/video/cesblit.h,VIDEOS["CESBLIT"] = true
 --------------------------------------------------
 
@@ -96,7 +91,6 @@ end
 
 --------------------------------------------------
 --
->>>>>>> upstream/master
 --@src/devices/video/crt9007.h,VIDEOS["CRT9007"] = true
 --------------------------------------------------
 
@@ -181,8 +175,6 @@ if (VIDEOS["EF9345"]~=null) then
 end
 
 --------------------------------------------------
-<<<<<<< HEAD
-=======
 --
 --@src/devices/video/ef9364.h,VIDEOS["EF9364"] = true
 --------------------------------------------------
@@ -207,7 +199,6 @@ if (VIDEOS["EF9365"]~=null) then
 end
 
 --------------------------------------------------
->>>>>>> upstream/master
 --@src/devices/video/epic12.h,VIDEOS["EPIC12"] = true
 --------------------------------------------------
 
@@ -224,13 +215,8 @@ if (VIDEOS["EPIC12"]~=null) then
 		MAME_DIR .. "src/devices/video/epic12_blit6.cpp",
 		MAME_DIR .. "src/devices/video/epic12_blit7.cpp",
 		MAME_DIR .. "src/devices/video/epic12_blit8.cpp",
-<<<<<<< HEAD
-		MAME_DIR .. "src/devices/video/epic12in.inc",
-		MAME_DIR .. "src/devices/video/epic12pixel.inc",
-=======
 		MAME_DIR .. "src/devices/video/epic12in.hxx",
 		MAME_DIR .. "src/devices/video/epic12pixel.hxx",
->>>>>>> upstream/master
 	}
 end
 
@@ -272,15 +258,6 @@ end
 
 --------------------------------------------------
 --
-<<<<<<< HEAD
---@src/devices/video/h63484.h,VIDEOS["H63484"] = true
---------------------------------------------------
-
-if (VIDEOS["H63484"]~=null) then
-	files {
-		MAME_DIR .. "src/devices/video/h63484.cpp",
-		MAME_DIR .. "src/devices/video/h63484.h",
-=======
 --@src/devices/video/mga2064w.h,VIDEOS["MGA2064W"] = true
 --------------------------------------------------
 
@@ -300,7 +277,6 @@ if (VIDEOS["NT7534"]~=null) then
 	files {
 		MAME_DIR .. "src/devices/video/nt7534.cpp",
 		MAME_DIR .. "src/devices/video/nt7534.h",
->>>>>>> upstream/master
 	}
 end
 
@@ -378,8 +354,6 @@ end
 
 --------------------------------------------------
 --
-<<<<<<< HEAD
-=======
 --@src/devices/video/hlcd0515.h,VIDEOS["HLCD0515"] = true
 --------------------------------------------------
 
@@ -416,7 +390,6 @@ end
 
 --------------------------------------------------
 --
->>>>>>> upstream/master
 --@src/devices/video/huc6202.h,VIDEOS["HUC6202"] = true
 --------------------------------------------------
 
@@ -465,8 +438,6 @@ end
 
 --------------------------------------------------
 --
-<<<<<<< HEAD
-=======
 --@src/devices/video/huc6271.h,VIDEOS["HUC6271"] = true
 --------------------------------------------------
 
@@ -479,7 +450,6 @@ end
 
 --------------------------------------------------
 --
->>>>>>> upstream/master
 --@src/devices/video/huc6272.h,VIDEOS["HUC6272"] = true
 --------------------------------------------------
 
@@ -623,15 +593,9 @@ if (VIDEOS["MOS6566"]~=null) then
 end
 
 
-<<<<<<< HEAD
-files {	
-	MAME_DIR .. "src/devices/video/cgapal.cpp",
-	MAME_DIR .. "src/devices/video/cgapal.h",	
-=======
 files {
 	MAME_DIR .. "src/devices/video/cgapal.cpp",
 	MAME_DIR .. "src/devices/video/cgapal.h",
->>>>>>> upstream/master
 }
 
 --------------------------------------------------
@@ -652,8 +616,6 @@ end
 
 --------------------------------------------------
 --
-<<<<<<< HEAD
-=======
 --@src/devices/video/pcd8544.h,VIDEOS["PCD8544"] = true
 --------------------------------------------------
 
@@ -666,7 +628,6 @@ end
 
 --------------------------------------------------
 --
->>>>>>> upstream/master
 --@src/devices/video/polylgcy.h,VIDEOS["POLY"] = true
 --------------------------------------------------
 
@@ -759,8 +720,6 @@ end
 
 --------------------------------------------------
 --
-<<<<<<< HEAD
-=======
 --@src/devices/video/sda5708.h,VIDEOS["SDA5708"] = true
 --------------------------------------------------
 if (VIDEOS["SDA5708"]~=null) then
@@ -772,7 +731,6 @@ end
 
 --------------------------------------------------
 --
->>>>>>> upstream/master
 --@src/devices/video/snes_ppu.h,VIDEOS["SNES_PPU"] = true
 --------------------------------------------------
 if (VIDEOS["SNES_PPU"]~=null) then
@@ -791,13 +749,9 @@ end
 if (VIDEOS["STVVDP"]~=null) then
 	files {
 		MAME_DIR .. "src/devices/video/stvvdp1.cpp",
-<<<<<<< HEAD
-		MAME_DIR .. "src/devices/video/stvvdp2.cpp",
-=======
 		MAME_DIR .. "src/devices/video/stvvdp1.h",
 		MAME_DIR .. "src/devices/video/stvvdp2.cpp",
 		MAME_DIR .. "src/devices/video/stvvdp2.h",
->>>>>>> upstream/master
 	}
 end
 
@@ -947,8 +901,6 @@ end
 
 --------------------------------------------------
 --
-<<<<<<< HEAD
-=======
 --@src/devices/video/zeus2.h,VIDEOS["ZEUS2"] = true
 --------------------------------------------------
 
@@ -961,7 +913,6 @@ end
 
 --------------------------------------------------
 --
->>>>>>> upstream/master
 --@src/devices/video/voodoo.h,VIDEOS["VOODOO"] = true
 --------------------------------------------------
 
@@ -996,8 +947,6 @@ if (VIDEOS["CRTC_EGA"]~=null) then
 		MAME_DIR .. "src/devices/video/crtc_ega.h",
 	}
 end
-<<<<<<< HEAD
-=======
 
 --------------------------------------------------
 --
@@ -1061,4 +1010,3 @@ if (VIDEOS["PPU2C0X"]~=null) then
 	}
 end
 
->>>>>>> upstream/master

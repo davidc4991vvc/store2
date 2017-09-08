@@ -6,19 +6,13 @@
 //
 //============================================================
 
-<<<<<<< HEAD
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #import "disassemblyview.h"
 
 #include "debug/debugvw.h"
 
-<<<<<<< HEAD
-=======
 #include "util/xmlfile.h"
 
->>>>>>> upstream/master
 
 @implementation MAMEDisassemblyView
 
@@ -50,16 +44,6 @@
 
 
 - (NSSize)maximumFrameSize {
-<<<<<<< HEAD
-	debug_view_xy			max(0, 0);
-	debug_view_source const	*source = view->source();
-	for (debug_view_source const *source = view->first_source(); source != NULL; source = source->next())
-	{
-		view->set_source(*source);
-		debug_view_xy const current = view->total_size();
-		max.x = MAX(max.x, current.x);
-		max.y = MAX(max.y, current.y);
-=======
 	debug_view_xy           max(0, 0);
 	debug_view_source const *source = view->source();
 	for (debug_view_source const *source = view->first_source(); source != nullptr; source = source->next())
@@ -68,7 +52,6 @@
 		debug_view_xy const current = view->total_size();
 		max.x = std::max(max.x, current.x);
 		max.y = std::max(max.y, current.y);
->>>>>>> upstream/master
 	}
 	view->set_source(*source);
 	return NSMakeSize(ceil((max.x * fontWidth) + (2 * [textContainer lineFragmentPadding])),
@@ -77,11 +60,7 @@
 
 
 - (void)addContextMenuItemsToMenu:(NSMenu *)menu {
-<<<<<<< HEAD
-	NSMenuItem	*item;
-=======
 	NSMenuItem  *item;
->>>>>>> upstream/master
 
 	[super addContextMenuItemsToMenu:menu];
 
@@ -129,11 +108,7 @@
 
 - (NSString *)selectedSubviewName {
 	const debug_view_source *source = view->source();
-<<<<<<< HEAD
-	if (source != NULL)
-=======
 	if (source != nullptr)
->>>>>>> upstream/master
 		return [NSString stringWithUTF8String:source->name()];
 	else
 		return @"";
@@ -142,11 +117,7 @@
 
 - (int)selectedSubviewIndex {
 	const debug_view_source *source = view->source();
-<<<<<<< HEAD
-	if (source != NULL)
-=======
 	if (source != nullptr)
->>>>>>> upstream/master
 		return view->source_list().indexof(*source);
 	else
 		return -1;
@@ -154,11 +125,7 @@
 
 
 - (void)selectSubviewAtIndex:(int)index {
-<<<<<<< HEAD
-	const int	selected = view->source_list().indexof(*view->source());
-=======
 	const int   selected = view->source_list().indexof(*view->source());
->>>>>>> upstream/master
 	if (selected != index) {
 		view->set_source(*view->source_list().find(index));
 		if ([[self window] firstResponder] != self)
@@ -169,11 +136,7 @@
 
 - (BOOL)selectSubviewForDevice:(device_t *)device {
 	debug_view_source const *const source = view->source_for_device(device);
-<<<<<<< HEAD
-	if (source != NULL)
-=======
 	if (source != nullptr)
->>>>>>> upstream/master
 	{
 		if (view->source() != source)
 		{
@@ -191,19 +154,11 @@
 
 
 - (BOOL)selectSubviewForSpace:(address_space *)space {
-<<<<<<< HEAD
-	if (space == NULL) return NO;
-	debug_view_disasm_source const *source = downcast<debug_view_disasm_source const *>(view->first_source());
-	while ((source != NULL) && (&source->space() != space))
-		source = downcast<debug_view_disasm_source *>(source->next());
-	if (source != NULL)
-=======
 	if (space == nullptr) return NO;
 	debug_view_disasm_source const *source = downcast<debug_view_disasm_source const *>(view->first_source());
 	while ((source != nullptr) && (&source->space() != space))
 		source = downcast<debug_view_disasm_source *>(source->next());
 	if (source != nullptr)
->>>>>>> upstream/master
 	{
 		if (view->source() != source)
 		{
@@ -258,13 +213,8 @@
 												atIndex:index++];
 	[disableItem setKeyEquivalentModifierMask:NSShiftKeyMask];
 
-<<<<<<< HEAD
-	NSMenu		*runMenu = [[menu itemWithTitle:@"Run"] submenu];
-	NSMenuItem	*runItem;
-=======
 	NSMenu      *runMenu = [[menu itemWithTitle:@"Run"] submenu];
 	NSMenuItem  *runItem;
->>>>>>> upstream/master
 	if (runMenu != nil) {
 		runItem = [runMenu addItemWithTitle:@"to Cursor"
 									 action:@selector(debugRunToCursor:)
@@ -306,11 +256,7 @@
 
 
 - (void)insertSubviewItemsInMenu:(NSMenu *)menu atIndex:(NSInteger)index {
-<<<<<<< HEAD
-	for (const debug_view_source *source = view->source_list().first(); source != NULL; source = source->next())
-=======
 	for (const debug_view_source *source = view->source_list().first(); source != nullptr; source = source->next())
->>>>>>> upstream/master
 	{
 		[[menu insertItemWithTitle:[NSString stringWithUTF8String:source->name()]
 							action:NULL
@@ -321,8 +267,6 @@
 		[menu insertItem:[NSMenuItem separatorItem] atIndex:index++];
 }
 
-<<<<<<< HEAD
-=======
 
 - (void)saveConfigurationToNode:(util::xml::data_node *)node {
 	[super saveConfigurationToNode:node];
@@ -337,5 +281,4 @@
 	dasmView->set_right_column((disasm_right_column)node->get_attribute_int("rightbar", dasmView->right_column()));
 }
 
->>>>>>> upstream/master
 @end

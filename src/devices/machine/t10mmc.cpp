@@ -1,9 +1,6 @@
 // license:BSD-3-Clause
 // copyright-holders:smf
-<<<<<<< HEAD
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #include "t10mmc.h"
 
 static int to_msf(int frame)
@@ -26,10 +23,7 @@ void t10mmc::t10_start(device_t &device)
 	device.save_item(NAME(m_num_subblocks));
 	device.save_item(NAME(m_cur_subblock));
 	device.save_item(NAME(m_audio_sense));
-<<<<<<< HEAD
-=======
 	device.save_item(NAME(m_sotc));
->>>>>>> upstream/master
 }
 
 void t10mmc::t10_reset()
@@ -49,10 +43,7 @@ void t10mmc::t10_reset()
 	m_num_subblocks = 1;
 	m_cur_subblock = 0;
 	m_audio_sense = 0;
-<<<<<<< HEAD
-=======
 	m_sotc = 0;
->>>>>>> upstream/master
 }
 
 // scsicd_exec_command
@@ -263,24 +254,6 @@ void t10mmc::ExecCommand()
 		m_transfer_length = 0;
 		break;
 
-<<<<<<< HEAD
-	case T10MMC_CMD_PLAY_AUDIO_TRACK_INDEX:
-		// be careful: tracks here are zero-based, but the SCSI command
-		// uses the real CD track number which is 1-based!
-		m_device->logerror("T10MMC: PLAY AUDIO T/I: strk %d idx %d etrk %d idx %d frames %d\n", command[4], command[5], command[7], command[8], m_blocks);
-		m_lba = cdrom_get_track_start(m_cdrom, command[4]-1);
-		m_blocks = cdrom_get_track_start(m_cdrom, command[7]-1) - m_lba;
-		if (command[4] > command[7])
-		{
-			m_blocks = 0;
-		}
-
-		if (command[4] == command[7])
-		{
-			m_blocks = cdrom_get_track_start(m_cdrom, command[4]) - m_lba;
-		}
-
-=======
 	case T10MMC_CMD_PLAY_AUDIO_MSF:
 		m_lba = (command[5] % 75) + ((command[4] * 75) % (60*75)) + (command[3] * (75*60));
 		m_blocks = (command[8] % 75) + ((command[7] * 75) % (60*75)) + (command[6] * (75*60)) - m_lba;
@@ -298,7 +271,6 @@ void t10mmc::ExecCommand()
 		m_device->logerror("T10MMC: PLAY AUDIO MSF at LBA %x for %x blocks (MSF %i:%i:%i - %i:%i:%i)\n",
 			m_lba, m_blocks, command[3], command[4], command[5], command[6], command[7], command[8]);
 
->>>>>>> upstream/master
 		trk = cdrom_get_track(m_cdrom, m_lba);
 
 		if (cdrom_get_track_type(m_cdrom, trk) == CD_TRACK_AUDIO)
@@ -317,8 +289,6 @@ void t10mmc::ExecCommand()
 		m_transfer_length = 0;
 		break;
 
-<<<<<<< HEAD
-=======
 	case T10MMC_CMD_PLAY_AUDIO_TRACK_INDEX:
 		if (command[4] > command[7])
 		{
@@ -365,7 +335,6 @@ void t10mmc::ExecCommand()
 		}
 		break;
 
->>>>>>> upstream/master
 	case T10MMC_CMD_PAUSE_RESUME:
 		if (m_cdrom)
 		{
@@ -473,17 +442,10 @@ void t10mmc::ExecCommand()
 //
 // Read data from the device resulting from the execution of a command
 
-<<<<<<< HEAD
-void t10mmc::ReadData( UINT8 *data, int dataLength )
-{
-	UINT32 temp;
-	UINT8 tmp_buffer[2048];
-=======
 void t10mmc::ReadData( uint8_t *data, int dataLength )
 {
 	uint32_t temp;
 	uint8_t tmp_buffer[2048];
->>>>>>> upstream/master
 
 	switch ( command[0] )
 	{
@@ -603,11 +565,7 @@ void t10mmc::ReadData( uint8_t *data, int dataLength )
 					data[6] = cdrom_get_track(m_cdrom, m_last_lba) + 1; // track
 					data[7] = 0;    // index
 
-<<<<<<< HEAD
-					UINT32 frame = m_last_lba;
-=======
 					uint32_t frame = m_last_lba;
->>>>>>> upstream/master
 
 					if (msf)
 					{
@@ -695,11 +653,7 @@ void t10mmc::ReadData( uint8_t *data, int dataLength )
 						data[dptr++] = track;
 						data[dptr++] = 0;
 
-<<<<<<< HEAD
-						UINT32 tstart = cdrom_get_track_start(m_cdrom, cdrom_track);
-=======
 						uint32_t tstart = cdrom_get_track_start(m_cdrom, cdrom_track);
->>>>>>> upstream/master
 
 						if (msf)
 						{
@@ -729,11 +683,7 @@ void t10mmc::ReadData( uint8_t *data, int dataLength )
 					data[dptr++] = 1;
 					data[dptr++] = 0;
 
-<<<<<<< HEAD
-					UINT32 tstart = cdrom_get_track_start(m_cdrom, 0);
-=======
 					uint32_t tstart = cdrom_get_track_start(m_cdrom, 0);
->>>>>>> upstream/master
 
 					if (msf)
 					{
@@ -765,11 +715,7 @@ void t10mmc::ReadData( uint8_t *data, int dataLength )
 			case 0xe:   // CD Audio control page
 				data[0] = 0x8e; // page E, parameter is savable
 				data[1] = 0x0e; // page length
-<<<<<<< HEAD
-				data[2] = 0x04; // IMMED = 1, SOTC = 0
-=======
 				data[2] = (1 << 2) | (m_sotc << 1); // IMMED = 1
->>>>>>> upstream/master
 				data[3] = data[4] = data[5] = data[6] = data[7] = 0; // reserved
 
 				// connect each audio channel to 1 output port
@@ -818,11 +764,7 @@ void t10mmc::ReadData( uint8_t *data, int dataLength )
 //
 // Write data to the CD-ROM device as part of the execution of a command
 
-<<<<<<< HEAD
-void t10mmc::WriteData( UINT8 *data, int dataLength )
-=======
 void t10mmc::WriteData( uint8_t *data, int dataLength )
->>>>>>> upstream/master
 {
 	switch (command[ 0 ])
 	{
@@ -848,10 +790,7 @@ void t10mmc::WriteData( uint8_t *data, int dataLength )
 				break;
 
 			case 0xe:   // audio page
-<<<<<<< HEAD
-=======
 				m_sotc = (data[2] >> 1) & 1;
->>>>>>> upstream/master
 				m_device->logerror("Ch 0 route: %x vol: %x\n", data[8], data[9]);
 				m_device->logerror("Ch 1 route: %x vol: %x\n", data[10], data[11]);
 				m_device->logerror("Ch 2 route: %x vol: %x\n", data[12], data[13]);

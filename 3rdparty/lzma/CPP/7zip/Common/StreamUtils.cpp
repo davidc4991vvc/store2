@@ -6,11 +6,7 @@
 
 static const UInt32 kBlockSize = ((UInt32)1 << 31);
 
-<<<<<<< HEAD
-HRESULT ReadStream(ISequentialInStream *stream, void *data, size_t *processedSize)
-=======
 HRESULT ReadStream(ISequentialInStream *stream, void *data, size_t *processedSize) throw()
->>>>>>> upstream/master
 {
   size_t size = *processedSize;
   *processedSize = 0;
@@ -29,33 +25,21 @@ HRESULT ReadStream(ISequentialInStream *stream, void *data, size_t *processedSiz
   return S_OK;
 }
 
-<<<<<<< HEAD
-HRESULT ReadStream_FALSE(ISequentialInStream *stream, void *data, size_t size)
-=======
 HRESULT ReadStream_FALSE(ISequentialInStream *stream, void *data, size_t size) throw()
->>>>>>> upstream/master
 {
   size_t processedSize = size;
   RINOK(ReadStream(stream, data, &processedSize));
   return (size == processedSize) ? S_OK : S_FALSE;
 }
 
-<<<<<<< HEAD
-HRESULT ReadStream_FAIL(ISequentialInStream *stream, void *data, size_t size)
-=======
 HRESULT ReadStream_FAIL(ISequentialInStream *stream, void *data, size_t size) throw()
->>>>>>> upstream/master
 {
   size_t processedSize = size;
   RINOK(ReadStream(stream, data, &processedSize));
   return (size == processedSize) ? S_OK : E_FAIL;
 }
 
-<<<<<<< HEAD
-HRESULT WriteStream(ISequentialOutStream *stream, const void *data, size_t size)
-=======
 HRESULT WriteStream(ISequentialOutStream *stream, const void *data, size_t size) throw()
->>>>>>> upstream/master
 {
   while (size != 0)
   {

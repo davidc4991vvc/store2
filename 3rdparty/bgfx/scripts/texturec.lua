@@ -1,11 +1,6 @@
 --
-<<<<<<< HEAD
--- Copyright 2010-2015 Branimir Karadzic. All rights reserved.
--- License: http://www.opensource.org/licenses/BSD-2-Clause
-=======
 -- Copyright 2010-2017 Branimir Karadzic. All rights reserved.
 -- License: https://github.com/bkaradzic/bgfx#license-bsd-2-clause
->>>>>>> upstream/master
 --
 
 project "texturec"
@@ -16,18 +11,13 @@ project "texturec"
 		path.join(BX_DIR, "include"),
 		path.join(BGFX_DIR, "include"),
 		path.join(BGFX_DIR, "src"),
-<<<<<<< HEAD
-=======
 		path.join(BGFX_DIR, "3rdparty"),
 		path.join(BGFX_DIR, "3rdparty/nvtt"),
 		path.join(BGFX_DIR, "3rdparty/iqa/include"),
->>>>>>> upstream/master
 	}
 
 	files {
 		path.join(BGFX_DIR, "src/image.*"),
-<<<<<<< HEAD
-=======
 		path.join(BGFX_DIR, "3rdparty/libsquish/**.cpp"),
 		path.join(BGFX_DIR, "3rdparty/libsquish/**.h"),
 		path.join(BGFX_DIR, "3rdparty/edtaa3/**.cpp"),
@@ -43,30 +33,21 @@ project "texturec"
 		path.join(BGFX_DIR, "3rdparty/tinyexr/**.h"),
 		path.join(BGFX_DIR, "3rdparty/iqa/include/**.h"),
 		path.join(BGFX_DIR, "3rdparty/iqa/source/**.c"),
->>>>>>> upstream/master
 		path.join(BGFX_DIR, "tools/texturec/**.cpp"),
 		path.join(BGFX_DIR, "tools/texturec/**.h"),
 	}
 
 	links {
-<<<<<<< HEAD
---		"bgfx",
-	}
-
-=======
 		"bx",
 	}
 
 	configuration { "mingw-*" }
 		targetextension ".exe"
 
->>>>>>> upstream/master
 	configuration { "osx" }
 		links {
 			"Cocoa.framework",
 		}
-<<<<<<< HEAD
-=======
 
 	configuration { "vs20* or mingw*" }
 		links {
@@ -74,4 +55,3 @@ project "texturec"
 		}
 
 	configuration {}
->>>>>>> upstream/master

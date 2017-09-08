@@ -267,24 +267,15 @@ WRITE8_MEMBER(nbmj8891_state::romsel_w)
 void nbmj8891_state::vramflip(int vram)
 {
 	int x, y;
-<<<<<<< HEAD
-	UINT8 color1, color2;
-	UINT8 *vidram;
-=======
 	uint8_t color1, color2;
 	uint8_t *vidram;
->>>>>>> upstream/master
 
 	int width = m_screen->width();
 	int height = m_screen->height();
 
 	if (m_flipscreen == m_flipscreen_old) return;
 
-<<<<<<< HEAD
-	vidram = vram ? m_videoram1 : m_videoram0;
-=======
 	vidram = vram ? m_videoram1.get() : m_videoram0.get();
->>>>>>> upstream/master
 
 	for (y = 0; y < (height / 2); y++)
 	{
@@ -304,21 +295,13 @@ void nbmj8891_state::vramflip(int vram)
 
 void nbmj8891_state::update_pixel0(int x, int y)
 {
-<<<<<<< HEAD
-	UINT8 color = m_videoram0[(y * m_screen->width()) + x];
-=======
 	uint8_t color = m_videoram0[(y * m_screen->width()) + x];
->>>>>>> upstream/master
 	m_tmpbitmap0.pix16(y, x) = color;
 }
 
 void nbmj8891_state::update_pixel1(int x, int y)
 {
-<<<<<<< HEAD
-	UINT8 color = m_videoram1[(y * m_screen->width()) + x];
-=======
 	uint8_t color = m_videoram1[(y * m_screen->width()) + x];
->>>>>>> upstream/master
 	m_tmpbitmap1.pix16(y, x) = (color == 0x7f) ? 0xff : color;
 }
 
@@ -330,21 +313,13 @@ void nbmj8891_state::device_timer(emu_timer &timer, device_timer_id id, int para
 		m_nb1413m3->m_busyflag = 1;
 		break;
 	default:
-<<<<<<< HEAD
-		assert_always(FALSE, "Unknown id in nbmj8891_state::device_timer");
-=======
 		assert_always(false, "Unknown id in nbmj8891_state::device_timer");
->>>>>>> upstream/master
 	}
 }
 
 void nbmj8891_state::gfxdraw()
 {
-<<<<<<< HEAD
-	UINT8 *GFX = memregion("gfx1")->base();
-=======
 	uint8_t *GFX = memregion("gfx1")->base();
->>>>>>> upstream/master
 	int width = m_screen->width();
 
 	int x, y;
@@ -353,11 +328,7 @@ void nbmj8891_state::gfxdraw()
 	int sizex, sizey;
 	int skipx, skipy;
 	int ctrx, ctry;
-<<<<<<< HEAD
-	UINT8 color, color1, color2;
-=======
 	uint8_t color, color1, color2;
->>>>>>> upstream/master
 	int gfxaddr, gfxlen;
 
 	m_nb1413m3->m_busyctr = 0;
@@ -509,38 +480,22 @@ void nbmj8891_state::gfxdraw()
 
 
 ******************************************************************************/
-<<<<<<< HEAD
-VIDEO_START_MEMBER(nbmj8891_state,_1layer)
-{
-	UINT8 *CLUT = memregion("protection")->base();
-=======
 VIDEO_START_MEMBER( nbmj8891_state, _1layer )
 {
->>>>>>> upstream/master
 	int width = m_screen->width();
 	int height = m_screen->height();
 
 	m_blitter_timer = timer_alloc(TIMER_BLITTER);
 	m_screen->register_screen_bitmap(m_tmpbitmap0);
-<<<<<<< HEAD
-	m_videoram0 = auto_alloc_array(machine(), UINT8, width * height);
-	m_palette_ptr = auto_alloc_array(machine(), UINT8, 0x200);
-	m_clut = auto_alloc_array(machine(), UINT8, 0x800);
-	memset(m_videoram0, 0xff, (width * height * sizeof(char)));
-=======
 	m_videoram0 = std::make_unique<uint8_t[]>(width * height);
 	m_palette_ptr = std::make_unique<uint8_t[]>(0x200);
 	m_clut = std::make_unique<uint8_t[]>(0x800);
 	memset(m_videoram0.get(), 0xff, (width * height * sizeof(char)));
->>>>>>> upstream/master
 	m_gfxdraw_mode = 0;
 	m_screen_refresh = 1;
 
 	if (m_nb1413m3->m_nb1413m3_type == NB1413M3_TAIWANMB)
 	{
-<<<<<<< HEAD
-		for (int i = 0; i < 0x0800; i++) m_clut[i] = CLUT[i];
-=======
 		if (m_clut_ptr)
 		{
 			for (int i = 0; i < 0x0800; i++)
@@ -548,7 +503,6 @@ VIDEO_START_MEMBER( nbmj8891_state, _1layer )
 				m_clut[i] = m_clut_ptr[i];
 			}
 		}
->>>>>>> upstream/master
 		save_item(NAME(m_param_cnt));
 		save_item(NAME(m_param_old));
 	}
@@ -564,30 +518,17 @@ void nbmj8891_state::video_start()
 	m_blitter_timer = timer_alloc(TIMER_BLITTER);
 	m_screen->register_screen_bitmap(m_tmpbitmap0);
 	m_screen->register_screen_bitmap(m_tmpbitmap1);
-<<<<<<< HEAD
-	m_videoram0 = auto_alloc_array(machine(), UINT8, width * height);
-	m_videoram1 = auto_alloc_array(machine(), UINT8, width * height);
-	m_palette_ptr = auto_alloc_array(machine(), UINT8, 0x200);
-	m_clut = auto_alloc_array(machine(), UINT8, 0x800);
-	memset(m_videoram0, 0xff, (width * height * sizeof(UINT8)));
-	memset(m_videoram1, 0xff, (width * height * sizeof(UINT8)));
-=======
 	m_videoram0 = std::make_unique<uint8_t[]>(width * height);
 	m_videoram1 = std::make_unique<uint8_t[]>(width * height);
 	m_palette_ptr = std::make_unique<uint8_t[]>(0x200);
 	m_clut = std::make_unique<uint8_t[]>(0x800);
 	memset(m_videoram0.get(), 0xff, (width * height * sizeof(uint8_t)));
 	memset(m_videoram1.get(), 0xff, (width * height * sizeof(uint8_t)));
->>>>>>> upstream/master
 	m_gfxdraw_mode = 1;
 	m_screen_refresh = 1;
 
 	common_save_state();
-<<<<<<< HEAD
-	save_pointer(NAME(m_videoram1), width * height);
-=======
 	save_pointer(NAME(m_videoram1.get()), width * height);
->>>>>>> upstream/master
 }
 
 void nbmj8891_state::common_save_state()
@@ -606,15 +547,9 @@ void nbmj8891_state::common_save_state()
 	save_item(NAME(m_flipscreen));
 	save_item(NAME(m_clutsel));
 	save_item(NAME(m_gfxdraw_mode));
-<<<<<<< HEAD
-	save_pointer(NAME(m_videoram0), m_screen->width() * m_screen->height());
-	save_pointer(NAME(m_palette_ptr), 0x200);
-	save_pointer(NAME(m_clut), 0x800);
-=======
 	save_pointer(NAME(m_videoram0.get()), m_screen->width() * m_screen->height());
 	save_pointer(NAME(m_palette_ptr.get()), 0x200);
 	save_pointer(NAME(m_clut.get()), 0x800);
->>>>>>> upstream/master
 	save_item(NAME(m_flipscreen_old));
 
 	machine().save().register_postload(save_prepost_delegate(FUNC(nbmj8891_state::postload), this));
@@ -629,11 +564,7 @@ void nbmj8891_state::postload()
 
 
 ******************************************************************************/
-<<<<<<< HEAD
-UINT32 nbmj8891_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t nbmj8891_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int x, y;
 
@@ -661,19 +592,11 @@ uint32_t nbmj8891_state::screen_update(screen_device &screen, bitmap_ind16 &bitm
 
 		if (m_gfxdraw_mode)
 		{
-<<<<<<< HEAD
-			copyscrollbitmap      (bitmap, m_tmpbitmap0, 0, 0, 0, 0, cliprect);
-			copyscrollbitmap_trans(bitmap, m_tmpbitmap1, 0, 0, 1, &scrolly, cliprect, 0xff);
-		}
-		else
-			copyscrollbitmap(bitmap, m_tmpbitmap0, 0, 0, 1, &scrolly, cliprect);
-=======
 			copyscrollbitmap      (bitmap, m_tmpbitmap0, 0, nullptr, 0, nullptr, cliprect);
 			copyscrollbitmap_trans(bitmap, m_tmpbitmap1, 0, nullptr, 1, &scrolly, cliprect, 0xff);
 		}
 		else
 			copyscrollbitmap(bitmap, m_tmpbitmap0, 0, nullptr, 1, &scrolly, cliprect);
->>>>>>> upstream/master
 	}
 	else
 		bitmap.fill(0xff);

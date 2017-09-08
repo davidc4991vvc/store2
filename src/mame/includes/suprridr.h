@@ -24,19 +24,6 @@ public:
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
 
-<<<<<<< HEAD
-	required_shared_ptr<UINT8> m_fgram;
-	required_shared_ptr<UINT8> m_bgram;
-	required_shared_ptr<UINT8> m_spriteram;
-
-	UINT8 m_nmi_enable;
-	UINT8 m_sound_data;
-	tilemap_t *m_fg_tilemap;
-	tilemap_t *m_bg_tilemap;
-	tilemap_t *m_bg_tilemap_noscroll;
-	UINT8 m_flipx;
-	UINT8 m_flipy;
-=======
 	required_shared_ptr<uint8_t> m_fgram;
 	required_shared_ptr<uint8_t> m_bgram;
 	required_shared_ptr<uint8_t> m_spriteram;
@@ -48,7 +35,6 @@ public:
 	tilemap_t *m_bg_tilemap_noscroll;
 	uint8_t m_flipx;
 	uint8_t m_flipy;
->>>>>>> upstream/master
 
 	DECLARE_WRITE8_MEMBER(nmi_enable_w);
 	DECLARE_WRITE8_MEMBER(sound_data_w);
@@ -71,18 +57,10 @@ public:
 	INTERRUPT_GEN_MEMBER(main_nmi_gen);
 	TIMER_CALLBACK_MEMBER(delayed_sound_w);
 
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void video_start();
-	DECLARE_PALETTE_INIT(suprridr);
-
-	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	virtual void machine_start() override;
 	virtual void video_start() override;
 	DECLARE_PALETTE_INIT(suprridr);
 
 	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	int is_screen_flipped();
 };

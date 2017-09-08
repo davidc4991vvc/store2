@@ -6,10 +6,6 @@
 
 **********************************************************************/
 
-<<<<<<< HEAD
-#include "md_carts.h"
-
-=======
 #include "emu.h"
 #include "md_carts.h"
 
@@ -22,7 +18,6 @@
 #include "stm95.h"
 
 
->>>>>>> upstream/master
 SLOT_INTERFACE_START(md_cart)
 	SLOT_INTERFACE_INTERNAL("rom",  MD_STD_ROM)
 	SLOT_INTERFACE_INTERNAL("rom_svp",  MD_ROM_SVP)
@@ -33,14 +28,9 @@ SLOT_INTERFACE_START(md_cart)
 	SLOT_INTERFACE_INTERNAL("rom_fram",  MD_ROM_FRAM)
 	SLOT_INTERFACE_INTERNAL("rom_hardbl95", MD_ROM_SRAM)
 	SLOT_INTERFACE_INTERNAL("rom_xinqig",  MD_ROM_SRAM)
-<<<<<<< HEAD
-	SLOT_INTERFACE_INTERNAL("rom_beggarp",  MD_ROM_BEGGARP)
-	SLOT_INTERFACE_INTERNAL("rom_wukong",  MD_ROM_WUKONG)
-=======
 	SLOT_INTERFACE_INTERNAL("rom_sf001",  MD_ROM_BEGGARP)
 	SLOT_INTERFACE_INTERNAL("rom_sf002",  MD_ROM_WUKONG)
 	SLOT_INTERFACE_INTERNAL("rom_sf004",  MD_ROM_STARODYS)
->>>>>>> upstream/master
 // EEPROM handling (not supported fully yet)
 	SLOT_INTERFACE_INTERNAL("rom_eeprom",  MD_STD_EEPROM)
 	SLOT_INTERFACE_INTERNAL("rom_nbajam",  MD_EEPROM_NBAJAM)
@@ -75,10 +65,7 @@ SLOT_INTERFACE_START(md_cart)
 	SLOT_INTERFACE_INTERNAL("rom_lion3",  MD_ROM_LION3)
 	SLOT_INTERFACE_INTERNAL("rom_mcpir",  MD_ROM_MCPIR)
 	SLOT_INTERFACE_INTERNAL("rom_mjlov",  MD_ROM_MJLOV)
-<<<<<<< HEAD
-=======
 	SLOT_INTERFACE_INTERNAL("rom_cjmjclub",  MD_ROM_CJMJCLUB)
->>>>>>> upstream/master
 	SLOT_INTERFACE_INTERNAL("rom_pokea",  MD_ROM_POKEA)
 	SLOT_INTERFACE_INTERNAL("rom_pokestad",  MD_ROM_POKESTAD)
 	SLOT_INTERFACE_INTERNAL("rom_realtec",  MD_ROM_REALTEC)
@@ -93,10 +80,7 @@ SLOT_INTERFACE_START(md_cart)
 	SLOT_INTERFACE_INTERNAL("rom_squir",  MD_ROM_SQUIR)
 	SLOT_INTERFACE_INTERNAL("rom_tekkensp",  MD_ROM_TEKKENSP)
 	SLOT_INTERFACE_INTERNAL("rom_topf",  MD_ROM_TOPF)
-<<<<<<< HEAD
-=======
 
 
 SLOT_INTERFACE_INTERNAL("rom_nbajam_alt",  MD_EEPROM_NBAJAM_ALT)
->>>>>>> upstream/master
 SLOT_INTERFACE_END

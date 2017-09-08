@@ -32,15 +32,9 @@ const char *vdk_format::extensions() const
 	return "vdk";
 }
 
-<<<<<<< HEAD
-int vdk_format::identify(io_generic *io, UINT32 form_factor)
-{
-	UINT8 id[2];
-=======
 int vdk_format::identify(io_generic *io, uint32_t form_factor)
 {
 	uint8_t id[2];
->>>>>>> upstream/master
 	io_generic_read(io, id, 0, 2);
 
 	if (id[0] == 'd' && id[1] == 'k')
@@ -49,15 +43,9 @@ int vdk_format::identify(io_generic *io, uint32_t form_factor)
 		return 0;
 }
 
-<<<<<<< HEAD
-bool vdk_format::load(io_generic *io, UINT32 form_factor, floppy_image *image)
-{
-	UINT8 header[0x100];
-=======
 bool vdk_format::load(io_generic *io, uint32_t form_factor, floppy_image *image)
 {
 	uint8_t header[0x100];
->>>>>>> upstream/master
 	io_generic_read(io, header, 0, 0x100);
 
 	int header_size = header[3] * 0x100 + header[2];
@@ -71,11 +59,7 @@ bool vdk_format::load(io_generic *io, uint32_t form_factor, floppy_image *image)
 		for (int head = 0; head < head_count ; head++)
 		{
 			desc_pc_sector sectors[SECTOR_COUNT];
-<<<<<<< HEAD
-			UINT8 sector_data[SECTOR_COUNT * SECTOR_SIZE];
-=======
 			uint8_t sector_data[SECTOR_COUNT * SECTOR_SIZE];
->>>>>>> upstream/master
 			int sector_offset = 0;
 
 			for (int i = 0; i < SECTOR_COUNT; i++)
@@ -104,27 +88,16 @@ bool vdk_format::load(io_generic *io, uint32_t form_factor, floppy_image *image)
 
 bool vdk_format::save(io_generic *io, floppy_image *image)
 {
-<<<<<<< HEAD
-	UINT8 bitstream[500000/8];
-	UINT8 sector_data[50000];
-	desc_xs sectors[256];
-	UINT64 file_offset = 0;
-=======
 	uint8_t bitstream[500000/8];
 	uint8_t sector_data[50000];
 	desc_xs sectors[256];
 	uint64_t file_offset = 0;
->>>>>>> upstream/master
 
 	int track_count, head_count;
 	image->get_actual_geometry(track_count, head_count);
 
 	// write header
-<<<<<<< HEAD
-	UINT8 header[12];
-=======
 	uint8_t header[12];
->>>>>>> upstream/master
 
 	header[0] = 'd';
 	header[1] = 'k';

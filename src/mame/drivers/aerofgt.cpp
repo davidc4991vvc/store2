@@ -61,63 +61,6 @@ Verification still needed for the other PCBs.
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/m68000/m68000.h"
-#include "cpu/z80/z80.h"
-#include "sound/2610intf.h"
-#include "sound/3812intf.h"
-#include "sound/okim6295.h"
-#include "includes/aerofgt.h"
-
-WRITE16_MEMBER(aerofgt_state::sound_command_w)
-{
-	if (ACCESSING_BITS_0_7)
-	{
-		m_pending_command = 1;
-		soundlatch_byte_w(space, offset, data & 0xff);
-		m_audiocpu->set_input_line(INPUT_LINE_NMI, PULSE_LINE);
-	}
-}
-
-WRITE16_MEMBER(aerofgt_state::turbofrc_sound_command_w)
-{
-	if (ACCESSING_BITS_8_15)
-	{
-		m_pending_command = 1;
-		soundlatch_byte_w(space, offset, (data >> 8) & 0xff);
-		m_audiocpu->set_input_line(INPUT_LINE_NMI, PULSE_LINE);
-	}
-}
-
-WRITE16_MEMBER(aerofgt_state::aerfboot_soundlatch_w)
-{
-	if(ACCESSING_BITS_8_15)
-	{
-		soundlatch_byte_w(space, 0, (data >> 8) & 0xff);
-		m_audiocpu->set_input_line(INPUT_LINE_NMI, PULSE_LINE);
-	}
-}
-
-READ16_MEMBER(aerofgt_state::pending_command_r)
-{
-	return m_pending_command;
-}
-
-WRITE8_MEMBER(aerofgt_state::pending_command_clear_w)
-{
-	m_pending_command = 0;
-}
-
-WRITE8_MEMBER(aerofgt_state::aerofgt_sh_bankswitch_w)
-{
-	membank("bank1")->set_entry(data & 0x03);
-}
-
-
-WRITE16_MEMBER(aerofgt_state::pspikesb_oki_banking_w)
-{
-	m_oki->set_bank_base(0x40000 * (data & 3));
-=======
 #include "includes/aerofgt.h"
 
 #include "cpu/m68000/m68000.h"
@@ -155,7 +98,6 @@ WRITE8_MEMBER(aerofgt_state::spinlbrk_sh_bankswitch_w)
 WRITE16_MEMBER(aerofgt_state::pspikesb_oki_banking_w)
 {
 	m_oki->set_rom_bank(data & 3);
->>>>>>> upstream/master
 }
 
 /*TODO: sound banking. */
@@ -169,12 +111,6 @@ WRITE16_MEMBER(aerofgt_state::aerfboo2_okim6295_banking_w)
 
 WRITE8_MEMBER(aerofgt_state::aerfboot_okim6295_banking_w)
 {
-<<<<<<< HEAD
-	UINT8 *oki = memregion("oki")->base();
-	/*bit 2 (0x4) setted too?*/
-	if (data & 0x4)
-		memcpy(&oki[0x20000], &oki[((data & 0x3) * 0x20000) + 0x40000], 0x20000);
-=======
 	/*bit 2 (0x4) set too?*/
 	if (data & 0x4)
 		m_okibank->set_entry(data & 0x3);
@@ -190,7 +126,6 @@ WRITE8_MEMBER(aerofgt_state::karatblzbl_d7759_write_port_0_w)
 WRITE8_MEMBER(aerofgt_state::karatblzbl_d7759_reset_w)
 {
 	m_upd7759->reset_w(data & 0x80);
->>>>>>> upstream/master
 }
 
 static ADDRESS_MAP_START( pspikes_map, AS_PROGRAM, 16, aerofgt_state )
@@ -201,18 +136,11 @@ static ADDRESS_MAP_START( pspikes_map, AS_PROGRAM, 16, aerofgt_state )
 	AM_RANGE(0xffc000, 0xffc3ff) AM_WRITEONLY AM_SHARE("spriteram3")
 	AM_RANGE(0xffd000, 0xffdfff) AM_RAM AM_SHARE("rasterram")   /* bg1 scroll registers */
 	AM_RANGE(0xffe000, 0xffefff) AM_RAM_DEVWRITE("palette", palette_device, write) AM_SHARE("palette")
-<<<<<<< HEAD
-	AM_RANGE(0xfff000, 0xfff001) AM_READ_PORT("IN0") AM_WRITE(pspikes_palette_bank_w)
-	AM_RANGE(0xfff002, 0xfff003) AM_READ_PORT("IN1") AM_WRITE(pspikes_gfxbank_w)
-	AM_RANGE(0xfff004, 0xfff005) AM_READ_PORT("DSW") AM_WRITE(aerofgt_bg1scrolly_w)
-	AM_RANGE(0xfff006, 0xfff007) AM_READWRITE(pending_command_r, sound_command_w)
-=======
 	AM_RANGE(0xfff000, 0xfff001) AM_READ_PORT("IN0") AM_WRITE8(pspikes_palette_bank_w, 0x00ff)
 	AM_RANGE(0xfff002, 0xfff003) AM_READ_PORT("IN1") AM_WRITE8(pspikes_gfxbank_w, 0x00ff)
 	AM_RANGE(0xfff004, 0xfff005) AM_READ_PORT("DSW") AM_WRITE(aerofgt_bg1scrolly_w)
 	AM_RANGE(0xfff006, 0xfff007) AM_READ8(pending_command_r, 0x00ff) AM_DEVWRITE8("soundlatch", generic_latch_8_device, write, 0x00ff)
 	AM_RANGE(0xfff400, 0xfff403) AM_DEVWRITE8("gga", vsystem_gga_device, write, 0x00ff)
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( pspikesb_map, AS_PROGRAM, 16, aerofgt_state )
@@ -230,10 +158,7 @@ static ADDRESS_MAP_START( pspikesb_map, AS_PROGRAM, 16, aerofgt_state )
 	AM_RANGE(0xfff004, 0xfff005) AM_READ_PORT("DSW") AM_WRITE(aerofgt_bg1scrolly_w)
 	AM_RANGE(0xfff006, 0xfff007) AM_DEVREADWRITE8("oki", okim6295_device, read, write, 0x00ff)
 	AM_RANGE(0xfff008, 0xfff009) AM_WRITE(pspikesb_oki_banking_w)
-<<<<<<< HEAD
-=======
 	AM_RANGE(0xfff400, 0xfff403) AM_WRITENOP // GGA access
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( spikes91_map, AS_PROGRAM, 16, aerofgt_state )
@@ -250,11 +175,7 @@ static ADDRESS_MAP_START( spikes91_map, AS_PROGRAM, 16, aerofgt_state )
 	AM_RANGE(0xffd000, 0xffdfff) AM_RAM AM_SHARE("rasterram")   /* bg1 scroll registers */
 	AM_RANGE(0xffe000, 0xffefff) AM_RAM_DEVWRITE("palette", palette_device, write) AM_SHARE("palette")
 	AM_RANGE(0xfff000, 0xfff001) AM_READ_PORT("IN0")
-<<<<<<< HEAD
-	AM_RANGE(0xfff002, 0xfff003) AM_READ_PORT("IN1") AM_WRITE(pspikes_gfxbank_w)
-=======
 	AM_RANGE(0xfff002, 0xfff003) AM_READ_PORT("IN1") AM_WRITE8(pspikes_gfxbank_w, 0x00ff)
->>>>>>> upstream/master
 	AM_RANGE(0xfff004, 0xfff005) AM_READ_PORT("DSW") AM_WRITE(aerofgt_bg1scrolly_w)
 	AM_RANGE(0xfff006, 0xfff007) AM_NOP
 	AM_RANGE(0xfff008, 0xfff009) AM_WRITE(spikes91_lookup_w)
@@ -268,13 +189,6 @@ static ADDRESS_MAP_START( pspikesc_map, AS_PROGRAM, 16, aerofgt_state )
 	AM_RANGE(0xffc000, 0xffcbff) AM_RAM AM_SHARE("spriteram3")
 	AM_RANGE(0xffd000, 0xffdfff) AM_RAM AM_SHARE("rasterram")   /* bg1 scroll registers */
 	AM_RANGE(0xffe000, 0xffefff) AM_RAM_DEVWRITE("palette", palette_device, write) AM_SHARE("palette")
-<<<<<<< HEAD
-	AM_RANGE(0xfff000, 0xfff001) AM_READ_PORT("IN0") AM_WRITE(pspikes_palette_bank_w)
-	AM_RANGE(0xfff002, 0xfff003) AM_READ_PORT("IN1") AM_WRITE(pspikes_gfxbank_w)
-	AM_RANGE(0xfff004, 0xfff005) AM_READ_PORT("DSW")
-	AM_RANGE(0xfff004, 0xfff005) AM_WRITE(aerofgt_bg1scrolly_w)
-	AM_RANGE(0xfff006, 0xfff007) AM_DEVREADWRITE8("oki", okim6295_device, read, write, 0x00ff)
-=======
 	AM_RANGE(0xfff000, 0xfff001) AM_READ_PORT("IN0") AM_WRITE8(pspikes_palette_bank_w, 0x00ff)
 	AM_RANGE(0xfff002, 0xfff003) AM_READ_PORT("IN1") AM_WRITE8(pspikes_gfxbank_w, 0x00ff)
 	AM_RANGE(0xfff004, 0xfff005) AM_READ_PORT("DSW")
@@ -296,7 +210,6 @@ static ADDRESS_MAP_START( kickball_map, AS_PROGRAM, 16, aerofgt_state )
 	AM_RANGE(0xfff004, 0xfff005) AM_READ_PORT("DSW") AM_WRITE(aerofgt_bg1scrolly_w)
 	AM_RANGE(0xfff006, 0xfff007) AM_READ8(pending_command_r, 0x00ff) AM_DEVWRITE8("soundlatch", generic_latch_8_device, write, 0x00ff)
 	AM_RANGE(0xfff400, 0xfff403) AM_WRITENOP // GGA access
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( karatblz_map, AS_PROGRAM, 16, aerofgt_state )
@@ -310,16 +223,6 @@ static ADDRESS_MAP_START( karatblz_map, AS_PROGRAM, 16, aerofgt_state )
 	AM_RANGE(0x0f8000, 0x0fbfff) AM_RAM /* work RAM */
 	AM_RANGE(0x0fc000, 0x0fc7ff) AM_RAM AM_SHARE("spriteram3")
 	AM_RANGE(0x0fe000, 0x0fe7ff) AM_RAM_DEVWRITE("palette", palette_device, write) AM_SHARE("palette")
-<<<<<<< HEAD
-	AM_RANGE(0x0ff000, 0x0ff001) AM_READ_PORT("IN0")
-	AM_RANGE(0x0ff002, 0x0ff003) AM_READ_PORT("IN1") AM_WRITE(karatblz_gfxbank_w)
-	AM_RANGE(0x0ff004, 0x0ff005) AM_READ_PORT("IN2")
-	AM_RANGE(0x0ff006, 0x0ff007) AM_READ_PORT("IN3") AM_WRITE(sound_command_w)
-	AM_RANGE(0x0ff008, 0x0ff009) AM_READ_PORT("DSW") AM_WRITE(aerofgt_bg1scrollx_w)
-	AM_RANGE(0x0ff00a, 0x0ff00b) AM_READ(pending_command_r) AM_WRITE(aerofgt_bg1scrolly_w)
-	AM_RANGE(0x0ff00c, 0x0ff00d) AM_WRITE(aerofgt_bg2scrollx_w)
-	AM_RANGE(0x0ff00e, 0x0ff00f) AM_WRITE(aerofgt_bg2scrolly_w)
-=======
 	AM_RANGE(0x0ff000, 0x0ff001) AM_READ_PORT("IN0") AM_WRITE8(spinlbrk_flip_screen_w, 0xff00)
 	AM_RANGE(0x0ff002, 0x0ff003) AM_READ_PORT("IN1") AM_WRITE8(karatblz_gfxbank_w, 0xff00)
 	AM_RANGE(0x0ff004, 0x0ff005) AM_READ_PORT("IN2")
@@ -351,7 +254,6 @@ static ADDRESS_MAP_START( karatblzbl_map, AS_PROGRAM, 16, aerofgt_state )
 	AM_RANGE(0x0ff00c, 0x0ff00d) AM_WRITE(aerofgt_bg2scrollx_w)
 	AM_RANGE(0x0ff00e, 0x0ff00f) AM_WRITE(aerofgt_bg2scrolly_w)
 	AM_RANGE(0x0ff400, 0x0ff403) AM_WRITENOP // GGA access
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( spinlbrk_map, AS_PROGRAM, 16, aerofgt_state )
@@ -362,12 +264,6 @@ static ADDRESS_MAP_START( spinlbrk_map, AS_PROGRAM, 16, aerofgt_state )
 	AM_RANGE(0xffc000, 0xffc7ff) AM_RAM AM_SHARE("spriteram3")
 	AM_RANGE(0xffd000, 0xffd1ff) AM_RAM AM_SHARE("rasterram")   /* bg1 scroll registers */
 	AM_RANGE(0xffe000, 0xffe7ff) AM_RAM_DEVWRITE("palette", palette_device, write) AM_SHARE("palette")
-<<<<<<< HEAD
-	AM_RANGE(0xfff000, 0xfff001) AM_READ_PORT("IN0") AM_WRITE(spinlbrk_gfxbank_w)
-	AM_RANGE(0xfff002, 0xfff003) AM_READ_PORT("IN1") AM_WRITE(aerofgt_bg2scrollx_w)
-	AM_RANGE(0xfff004, 0xfff005) AM_READ_PORT("DSW")
-	AM_RANGE(0xfff006, 0xfff007) AM_WRITE(sound_command_w)
-=======
 	AM_RANGE(0xfff000, 0xfff001) AM_READ_PORT("IN0") AM_WRITE8(spinlbrk_flip_screen_w, 0xff00)
 	AM_RANGE(0xfff000, 0xfff001) AM_WRITE8(spinlbrk_gfxbank_w, 0x00ff)
 	AM_RANGE(0xfff002, 0xfff003) AM_READ_PORT("IN1") AM_WRITE(aerofgt_bg2scrollx_w)
@@ -376,7 +272,6 @@ static ADDRESS_MAP_START( spinlbrk_map, AS_PROGRAM, 16, aerofgt_state )
 //  AM_RANGE(0xfff008, 0xfff009) - read when analog inputs are enabled
 //  AM_RANGE(0xfff00a, 0xfff00b) /
 	AM_RANGE(0xfff400, 0xfff403) AM_DEVWRITE8("gga", vsystem_gga_device, write, 0x00ff)
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( turbofrc_map, AS_PROGRAM, 16, aerofgt_state )
@@ -391,16 +286,6 @@ static ADDRESS_MAP_START( turbofrc_map, AS_PROGRAM, 16, aerofgt_state )
 	AM_RANGE(0x0fc000, 0x0fc7ff) AM_RAM AM_SHARE("spriteram3")
 	AM_RANGE(0x0fd000, 0x0fdfff) AM_RAM AM_SHARE("rasterram")   /* bg1 scroll registers */
 	AM_RANGE(0x0fe000, 0x0fe7ff) AM_RAM_DEVWRITE("palette", palette_device, write) AM_SHARE("palette")
-<<<<<<< HEAD
-	AM_RANGE(0x0ff000, 0x0ff001) AM_READ_PORT("IN0")
-	AM_RANGE(0x0ff002, 0x0ff003) AM_READ_PORT("IN1") AM_WRITE(aerofgt_bg1scrolly_w)
-	AM_RANGE(0x0ff004, 0x0ff005) AM_READ_PORT("DSW") AM_WRITE(aerofgt_bg2scrollx_w)
-	AM_RANGE(0x0ff006, 0x0ff007) AM_READ(pending_command_r) AM_WRITE(aerofgt_bg2scrolly_w)
-	AM_RANGE(0x0ff008, 0x0ff009) AM_READ_PORT("IN2")
-	AM_RANGE(0x0ff008, 0x0ff00b) AM_WRITE(turbofrc_gfxbank_w)
-	AM_RANGE(0x0ff00c, 0x0ff00d) AM_WRITENOP    /* related to bg2 (written together with the scroll registers) */
-	AM_RANGE(0x0ff00e, 0x0ff00f) AM_WRITE(turbofrc_sound_command_w)
-=======
 	AM_RANGE(0x0ff000, 0x0ff001) AM_READ_PORT("IN0") AM_WRITE8(turbofrc_flip_screen_w, 0x00ff)
 	AM_RANGE(0x0ff002, 0x0ff003) AM_READ_PORT("IN1") AM_WRITE(aerofgt_bg1scrolly_w)
 	AM_RANGE(0x0ff004, 0x0ff005) AM_READ_PORT("DSW") AM_WRITE(aerofgt_bg2scrollx_w)
@@ -410,7 +295,6 @@ static ADDRESS_MAP_START( turbofrc_map, AS_PROGRAM, 16, aerofgt_state )
 	AM_RANGE(0x0ff00c, 0x0ff00d) AM_WRITENOP    /* related to bg2 (written together with the scroll registers) */
 	AM_RANGE(0x0ff00e, 0x0ff00f) AM_DEVWRITE8("soundlatch", generic_latch_8_device, write, 0xff00)
 	AM_RANGE(0x0ff400, 0x0ff403) AM_DEVWRITE8("gga", vsystem_gga_device, write, 0x00ff)
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( aerofgtb_map, AS_PROGRAM, 16, aerofgt_state )
@@ -423,15 +307,6 @@ static ADDRESS_MAP_START( aerofgtb_map, AS_PROGRAM, 16, aerofgt_state )
 	AM_RANGE(0x0f8000, 0x0fbfff) AM_RAM /* work RAM */
 	AM_RANGE(0x0fc000, 0x0fc7ff) AM_RAM AM_SHARE("spriteram3")
 	AM_RANGE(0x0fd000, 0x0fd7ff) AM_RAM_DEVWRITE("palette", palette_device, write) AM_SHARE("palette")
-<<<<<<< HEAD
-	AM_RANGE(0x0fe000, 0x0fe001) AM_READ_PORT("IN0")
-	AM_RANGE(0x0fe002, 0x0fe003) AM_READ_PORT("IN1") AM_WRITE(aerofgt_bg1scrolly_w)
-	AM_RANGE(0x0fe004, 0x0fe005) AM_READ_PORT("DSW1") AM_WRITE(aerofgt_bg2scrollx_w)
-	AM_RANGE(0x0fe006, 0x0fe007) AM_READ(pending_command_r) AM_WRITE(aerofgt_bg2scrolly_w)
-	AM_RANGE(0x0fe008, 0x0fe009) AM_READ_PORT("DSW2")
-	AM_RANGE(0x0fe008, 0x0fe00b) AM_WRITE(turbofrc_gfxbank_w)
-	AM_RANGE(0x0fe00e, 0x0fe00f) AM_WRITE(turbofrc_sound_command_w)
-=======
 	AM_RANGE(0x0fe000, 0x0fe001) AM_READ_PORT("IN0") AM_WRITE8(turbofrc_flip_screen_w, 0x00ff)
 	AM_RANGE(0x0fe002, 0x0fe003) AM_READ_PORT("IN1") AM_WRITE(aerofgt_bg1scrolly_w)
 	AM_RANGE(0x0fe004, 0x0fe005) AM_READ_PORT("DSW1") AM_WRITE(aerofgt_bg2scrollx_w)
@@ -440,7 +315,6 @@ static ADDRESS_MAP_START( aerofgtb_map, AS_PROGRAM, 16, aerofgt_state )
 	AM_RANGE(0x0fe008, 0x0fe00b) AM_WRITE(turbofrc_gfxbank_w)
 	AM_RANGE(0x0fe00e, 0x0fe00f) AM_DEVWRITE8("soundlatch", generic_latch_8_device, write, 0xff00)
 	AM_RANGE(0x0fe400, 0x0fe403) AM_DEVWRITE8("gga", vsystem_gga_device, write, 0x00ff)
->>>>>>> upstream/master
 	AM_RANGE(0x0ff000, 0x0fffff) AM_RAM AM_SHARE("rasterram")   /* used only for the scroll registers */
 ADDRESS_MAP_END
 
@@ -448,11 +322,7 @@ static ADDRESS_MAP_START( aerofgt_map, AS_PROGRAM, 16, aerofgt_state )
 	AM_RANGE(0x000000, 0x07ffff) AM_ROM
 	AM_RANGE(0x1a0000, 0x1a07ff) AM_RAM_DEVWRITE("palette", palette_device, write) AM_SHARE("palette")
 	AM_RANGE(0x1b0000, 0x1b07ff) AM_RAM AM_SHARE("rasterram")   /* used only for the scroll registers */
-<<<<<<< HEAD
-	AM_RANGE(0x1b0800, 0x1b0801) AM_NOP /* ??? */
-=======
 	AM_RANGE(0x1b0800, 0x1b0801) AM_RAM /* tracks watchdog state */
->>>>>>> upstream/master
 	AM_RANGE(0x1b0ff0, 0x1b0fff) AM_RAM /* stack area during boot */
 	AM_RANGE(0x1b2000, 0x1b3fff) AM_RAM_WRITE(aerofgt_bg1videoram_w) AM_SHARE("bg1videoram")
 	AM_RANGE(0x1b4000, 0x1b5fff) AM_RAM_WRITE(aerofgt_bg2videoram_w) AM_SHARE("bg2videoram")
@@ -462,19 +332,8 @@ static ADDRESS_MAP_START( aerofgt_map, AS_PROGRAM, 16, aerofgt_state )
 	AM_RANGE(0xffff80, 0xffff87) AM_WRITE(aerofgt_gfxbank_w)
 	AM_RANGE(0xffff88, 0xffff89) AM_WRITE(aerofgt_bg1scrolly_w) /* + something else in the top byte */
 	AM_RANGE(0xffff90, 0xffff91) AM_WRITE(aerofgt_bg2scrolly_w) /* + something else in the top byte */
-<<<<<<< HEAD
-	AM_RANGE(0xffffa0, 0xffffa1) AM_READ_PORT("P1")
-	AM_RANGE(0xffffa2, 0xffffa3) AM_READ_PORT("P2")
-	AM_RANGE(0xffffa4, 0xffffa5) AM_READ_PORT("SYSTEM")
-	AM_RANGE(0xffffa6, 0xffffa7) AM_READ_PORT("DSW1")
-	AM_RANGE(0xffffa8, 0xffffa9) AM_READ_PORT("DSW2")
-	AM_RANGE(0xffffac, 0xffffad) AM_READ(pending_command_r) AM_WRITENOP /* ??? */
-	AM_RANGE(0xffffae, 0xffffaf) AM_READ_PORT("DSW3")
-	AM_RANGE(0xffffc0, 0xffffc1) AM_WRITE(sound_command_w)
-=======
 	AM_RANGE(0xffffa0, 0xffffbf) AM_DEVREADWRITE8("io", vs9209_device, read, write, 0x00ff)
 	AM_RANGE(0xffffc0, 0xffffc1) AM_DEVWRITE8("soundlatch", generic_latch_8_device, write, 0x00ff)
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( aerfboot_map, AS_PROGRAM, 16, aerofgt_state )
@@ -495,18 +354,10 @@ static ADDRESS_MAP_START( aerfboot_map, AS_PROGRAM, 16, aerofgt_state )
 	AM_RANGE(0x0fe004, 0x0fe005) AM_WRITE(aerofgt_bg2scrollx_w)
 	AM_RANGE(0x0fe006, 0x0fe007) AM_WRITE(aerofgt_bg2scrolly_w)
 	AM_RANGE(0x0fe008, 0x0fe00b) AM_WRITE(turbofrc_gfxbank_w)
-<<<<<<< HEAD
-	AM_RANGE(0x0fe00e, 0x0fe00f) AM_WRITE(aerfboot_soundlatch_w)
-	AM_RANGE(0x0fe010, 0x0fe011) AM_WRITENOP
-	AM_RANGE(0x0fe012, 0x0fe013) AM_WRITENOP
-	AM_RANGE(0x0fe400, 0x0fe401) AM_WRITENOP
-	AM_RANGE(0x0fe402, 0x0fe403) AM_WRITENOP
-=======
 	AM_RANGE(0x0fe00e, 0x0fe00f) AM_DEVWRITE8("soundlatch", generic_latch_8_device, write, 0xff00)
 	AM_RANGE(0x0fe010, 0x0fe011) AM_WRITENOP
 	AM_RANGE(0x0fe012, 0x0fe013) AM_WRITENOP // MSB = watchdog?
 	AM_RANGE(0x0fe400, 0x0fe403) AM_WRITENOP // GGA access
->>>>>>> upstream/master
 	AM_RANGE(0x0ff000, 0x0fffff) AM_RAM AM_SHARE("rasterram")   /* used only for the scroll registers */
 	AM_RANGE(0x100000, 0x107fff) AM_WRITENOP
 	AM_RANGE(0x108000, 0x10bfff) AM_RAM AM_SHARE("spriteram3")
@@ -536,12 +387,7 @@ static ADDRESS_MAP_START( aerfboo2_map, AS_PROGRAM, 16, aerofgt_state )
 	AM_RANGE(0x0fe01e, 0x0fe01f) AM_WRITE(aerfboo2_okim6295_banking_w)
 //  AM_RANGE(0x0fe010, 0x0fe011) AM_WRITENOP
 //  AM_RANGE(0x0fe012, 0x0fe013) AM_WRITE(aerfboot_soundlatch_w)
-<<<<<<< HEAD
-	AM_RANGE(0x0fe400, 0x0fe401) AM_WRITENOP // data for a crtc?
-	AM_RANGE(0x0fe402, 0x0fe403) AM_WRITENOP // address for a crtc?
-=======
 	AM_RANGE(0x0fe400, 0x0fe403) AM_WRITENOP // GGA access
->>>>>>> upstream/master
 	AM_RANGE(0x0ff000, 0x0fffff) AM_RAM AM_SHARE("rasterram")   /* used only for the scroll registers */
 ADDRESS_MAP_END
 
@@ -554,28 +400,17 @@ static ADDRESS_MAP_START( wbbc97_map, AS_PROGRAM, 16, aerofgt_state )
 	AM_RANGE(0xffc000, 0xffc3ff) AM_WRITEONLY AM_SHARE("spriteram3")
 	AM_RANGE(0xffd000, 0xffdfff) AM_RAM AM_SHARE("rasterram")   /* bg1 scroll registers */
 	AM_RANGE(0xffe000, 0xffefff) AM_RAM_DEVWRITE("palette", palette_device, write) AM_SHARE("palette")
-<<<<<<< HEAD
-	AM_RANGE(0xfff000, 0xfff001) AM_READ_PORT("IN0") AM_WRITE(pspikes_palette_bank_w)
-	AM_RANGE(0xfff002, 0xfff003) AM_READ_PORT("IN1") AM_WRITE(pspikes_gfxbank_w)
-	AM_RANGE(0xfff004, 0xfff005) AM_READ_PORT("DSW") AM_WRITE(aerofgt_bg1scrolly_w)
-	AM_RANGE(0xfff006, 0xfff007) AM_READNOP AM_WRITE(sound_command_w)
-	AM_RANGE(0xfff00e, 0xfff00f) AM_WRITE(wbbc97_bitmap_enable_w)
-=======
 	AM_RANGE(0xfff000, 0xfff001) AM_READ_PORT("IN0") AM_WRITE8(pspikes_palette_bank_w, 0x00ff)
 	AM_RANGE(0xfff002, 0xfff003) AM_READ_PORT("IN1") AM_WRITE8(pspikes_gfxbank_w, 0x00ff)
 	AM_RANGE(0xfff004, 0xfff005) AM_READ_PORT("DSW") AM_WRITE(aerofgt_bg1scrolly_w)
 	AM_RANGE(0xfff006, 0xfff007) AM_READ8(pending_command_r, 0x00ff) AM_DEVWRITE8("soundlatch", generic_latch_8_device, write, 0x00ff)
 	AM_RANGE(0xfff00e, 0xfff00f) AM_WRITE(wbbc97_bitmap_enable_w)
 	AM_RANGE(0xfff400, 0xfff403) AM_WRITENOP // GGA access
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( sound_map, AS_PROGRAM, 8, aerofgt_state )
 	AM_RANGE(0x0000, 0x77ff) AM_ROM
 	AM_RANGE(0x7800, 0x7fff) AM_RAM
-<<<<<<< HEAD
-	AM_RANGE(0x8000, 0xffff) AM_ROMBANK("bank1")
-=======
 	AM_RANGE(0x8000, 0xffff) AM_ROMBANK("soundbank")
 ADDRESS_MAP_END
 
@@ -584,17 +419,12 @@ static ADDRESS_MAP_START( spinlbrk_sound_portmap, AS_IO, 8, aerofgt_state )
 	AM_RANGE(0x00, 0x00) AM_WRITE(spinlbrk_sh_bankswitch_w)
 	AM_RANGE(0x14, 0x14) AM_DEVREADWRITE("soundlatch", generic_latch_8_device, read, acknowledge_w)
 	AM_RANGE(0x18, 0x1b) AM_DEVREADWRITE("ymsnd", ym2610_device, read, write)
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( turbofrc_sound_portmap, AS_IO, 8, aerofgt_state )
 	ADDRESS_MAP_GLOBAL_MASK(0xff)
 	AM_RANGE(0x00, 0x00) AM_WRITE(aerofgt_sh_bankswitch_w)
-<<<<<<< HEAD
-	AM_RANGE(0x14, 0x14) AM_READ(soundlatch_byte_r) AM_WRITE(pending_command_clear_w)
-=======
 	AM_RANGE(0x14, 0x14) AM_DEVREADWRITE("soundlatch", generic_latch_8_device, read, acknowledge_w)
->>>>>>> upstream/master
 	AM_RANGE(0x18, 0x1b) AM_DEVREADWRITE("ymsnd", ym2610_device, read, write)
 ADDRESS_MAP_END
 
@@ -602,13 +432,8 @@ static ADDRESS_MAP_START( aerofgt_sound_portmap, AS_IO, 8, aerofgt_state )
 	ADDRESS_MAP_GLOBAL_MASK(0xff)
 	AM_RANGE(0x00, 0x03) AM_DEVREADWRITE("ymsnd", ym2610_device, read, write)
 	AM_RANGE(0x04, 0x04) AM_WRITE(aerofgt_sh_bankswitch_w)
-<<<<<<< HEAD
-	AM_RANGE(0x08, 0x08) AM_WRITE(pending_command_clear_w)
-	AM_RANGE(0x0c, 0x0c) AM_READ(soundlatch_byte_r)
-=======
 	AM_RANGE(0x08, 0x08) AM_DEVWRITE("soundlatch", generic_latch_8_device, acknowledge_w)
 	AM_RANGE(0x0c, 0x0c) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( aerfboot_sound_map, AS_PROGRAM, 8, aerofgt_state )
@@ -616,11 +441,7 @@ static ADDRESS_MAP_START( aerfboot_sound_map, AS_PROGRAM, 8, aerofgt_state )
 	AM_RANGE(0x8000, 0x87ff) AM_RAM
 	AM_RANGE(0x9000, 0x9000) AM_WRITE(aerfboot_okim6295_banking_w)
 	AM_RANGE(0x9800, 0x9800) AM_DEVREADWRITE("oki", okim6295_device, read, write)
-<<<<<<< HEAD
-	AM_RANGE(0xa000, 0xa000) AM_READ(soundlatch_byte_r)
-=======
 	AM_RANGE(0xa000, 0xa000) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( wbbc97_sound_map, AS_PROGRAM, 8, aerofgt_state )
@@ -629,14 +450,6 @@ static ADDRESS_MAP_START( wbbc97_sound_map, AS_PROGRAM, 8, aerofgt_state )
 	AM_RANGE(0xf800, 0xf800) AM_DEVREADWRITE("oki", okim6295_device, read, write)
 	AM_RANGE(0xf810, 0xf811) AM_DEVWRITE("ymsnd", ym3812_device, write)
 	AM_RANGE(0xfc00, 0xfc00) AM_NOP
-<<<<<<< HEAD
-	AM_RANGE(0xfc20, 0xfc20) AM_READ(soundlatch_byte_r)
-ADDRESS_MAP_END
-
-static ADDRESS_MAP_START( karatblzbl_sound_map, AS_PROGRAM, 8, aerofgt_state )
-	AM_RANGE(0x0000, 0x77ff) AM_ROM
-	AM_RANGE(0x7800, 0x7fff) AM_RAM
-=======
 	AM_RANGE(0xfc20, 0xfc20) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
 ADDRESS_MAP_END
 
@@ -672,7 +485,6 @@ ADDRESS_MAP_END
 static ADDRESS_MAP_START( oki_map, 0, 8, aerofgt_state ) //only for aerfboot for now
 	AM_RANGE(0x00000, 0x1ffff) AM_ROM
 	AM_RANGE(0x20000, 0x3ffff) AM_ROMBANK("okibank")
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 static INPUT_PORTS_START( pspikes )
@@ -1014,11 +826,7 @@ static INPUT_PORTS_START( spinlbrk )
 	PORT_DIPSETTING(      0x0000, "1-1C 1-2 HPs" )
 	/* According to Spinal Breakers manual, here DSW2 starts */
 	/* Default in US manual is DEF_STR( Hardest ) */
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x0300, 0x0000, DEF_STR( Difficulty ) )           PORT_DIPLOCATION("SW2:1,2")
-=======
 	PORT_DIPNAME( 0x0300, 0x0300, DEF_STR( Difficulty ) )           PORT_DIPLOCATION("SW2:1,2")
->>>>>>> upstream/master
 	PORT_DIPSETTING(      0x0300, DEF_STR( Normal ) )
 	PORT_DIPSETTING(      0x0200, DEF_STR( Easy ) )
 	PORT_DIPSETTING(      0x0100, DEF_STR( Hard ) )
@@ -1037,11 +845,7 @@ static INPUT_PORTS_START( spinlbrk )
 	PORT_DIPSETTING(      0x4000, "32 Hitpoints" )
 	PORT_DIPSETTING(      0x0000, "40 Hitpoints" )
 	/* Default in US manual is "5 points" */
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x8000, 0x0000, "Life Restoration" )              PORT_DIPLOCATION("SW2:8")
-=======
 	PORT_DIPNAME( 0x8000, 0x8000, "Life Restoration" )              PORT_DIPLOCATION("SW2:8")
->>>>>>> upstream/master
 	PORT_DIPSETTING(      0x8000, "10 Points" )
 	PORT_DIPSETTING(      0x0000, "5 Points" )
 INPUT_PORTS_END
@@ -1050,11 +854,6 @@ static INPUT_PORTS_START( spinlbrku )
 	PORT_INCLUDE(spinlbrk)
 
 	PORT_MODIFY("DSW")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x4000, 0x4000, "Health Pack" )                   PORT_DIPLOCATION("SW2:7")
-	PORT_DIPSETTING(      0x4000, "20 Hitpoints" )
-	PORT_DIPSETTING(      0x0000, "32 Hitpoints" )
-=======
 	PORT_DIPNAME( 0x0300, 0x0000, DEF_STR( Difficulty ) )           PORT_DIPLOCATION("SW2:1,2")
 	PORT_DIPSETTING(      0x0300, DEF_STR( Normal ) )
 	PORT_DIPSETTING(      0x0200, DEF_STR( Easy ) )
@@ -1066,7 +865,6 @@ static INPUT_PORTS_START( spinlbrku )
 	PORT_DIPNAME( 0x8000, 0x0000, "Life Restoration" )              PORT_DIPLOCATION("SW2:8")
 	PORT_DIPSETTING(      0x8000, "10 Points" )
 	PORT_DIPSETTING(      0x0000, "5 Points" )
->>>>>>> upstream/master
 INPUT_PORTS_END
 
 static INPUT_PORTS_START( turbofrc )
@@ -1245,94 +1043,6 @@ INPUT_PORTS_END
 
 static INPUT_PORTS_START( aerofgt )
 	PORT_START("P1")
-<<<<<<< HEAD
-	PORT_BIT( 0x0001, IP_ACTIVE_LOW, IPT_JOYSTICK_UP ) PORT_8WAY
-	PORT_BIT( 0x0002, IP_ACTIVE_LOW, IPT_JOYSTICK_DOWN ) PORT_8WAY
-	PORT_BIT( 0x0004, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT ) PORT_8WAY
-	PORT_BIT( 0x0008, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT ) PORT_8WAY
-	PORT_BIT( 0x0010, IP_ACTIVE_LOW, IPT_BUTTON1 )
-	PORT_BIT( 0x0020, IP_ACTIVE_LOW, IPT_BUTTON2 )
-	PORT_BIT( 0x0040, IP_ACTIVE_LOW, IPT_UNKNOWN )
-	PORT_BIT( 0x0080, IP_ACTIVE_LOW, IPT_UNKNOWN )
-
-	PORT_START("P2")
-	PORT_BIT( 0x0001, IP_ACTIVE_LOW, IPT_JOYSTICK_UP ) PORT_8WAY PORT_PLAYER(2)
-	PORT_BIT( 0x0002, IP_ACTIVE_LOW, IPT_JOYSTICK_DOWN ) PORT_8WAY PORT_PLAYER(2)
-	PORT_BIT( 0x0004, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT ) PORT_8WAY PORT_PLAYER(2)
-	PORT_BIT( 0x0008, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT ) PORT_8WAY PORT_PLAYER(2)
-	PORT_BIT( 0x0010, IP_ACTIVE_LOW, IPT_BUTTON1 ) PORT_PLAYER(2)
-	PORT_BIT( 0x0020, IP_ACTIVE_LOW, IPT_BUTTON2 ) PORT_PLAYER(2)
-	PORT_BIT( 0x0040, IP_ACTIVE_LOW, IPT_UNKNOWN )
-	PORT_BIT( 0x0080, IP_ACTIVE_LOW, IPT_UNKNOWN )
-
-	PORT_START("SYSTEM")
-	PORT_BIT( 0x0001, IP_ACTIVE_LOW, IPT_COIN1 )
-	PORT_BIT( 0x0002, IP_ACTIVE_LOW, IPT_COIN2 )
-	PORT_BIT( 0x0004, IP_ACTIVE_LOW, IPT_START1 )
-	PORT_BIT( 0x0008, IP_ACTIVE_LOW, IPT_START2 )
-	PORT_BIT( 0x0010, IP_ACTIVE_LOW, IPT_UNKNOWN )
-	PORT_BIT( 0x0020, IP_ACTIVE_LOW, IPT_UNKNOWN )
-	PORT_BIT( 0x0040, IP_ACTIVE_LOW, IPT_SERVICE1  )
-	PORT_BIT( 0x0080, IP_ACTIVE_LOW, IPT_UNKNOWN )
-
-	PORT_START("DSW1")
-	/* "Free Play mode: Have SW1:1-8 ON." */
-	PORT_DIPNAME( 0x0001, 0x0001, "Coin Slot" )                 PORT_DIPLOCATION("SW1:1")
-	PORT_DIPSETTING(      0x0001, "Same" )
-	PORT_DIPSETTING(      0x0000, "Individual" )
-	PORT_DIPNAME( 0x000e, 0x000e, DEF_STR( Coin_A ) )           PORT_DIPLOCATION("SW1:2,3,4")
-	PORT_DIPSETTING(      0x000a, DEF_STR( 3C_1C ) )
-	PORT_DIPSETTING(      0x000c, DEF_STR( 2C_1C ) )
-	PORT_DIPSETTING(      0x000e, DEF_STR( 1C_1C ) )
-	PORT_DIPSETTING(      0x0008, DEF_STR( 1C_2C ) )
-	PORT_DIPSETTING(      0x0006, DEF_STR( 1C_3C ) )
-	PORT_DIPSETTING(      0x0004, DEF_STR( 1C_4C ) )
-	PORT_DIPSETTING(      0x0002, DEF_STR( 1C_5C ) )
-	PORT_DIPSETTING(      0x0000, DEF_STR( 1C_6C ) )
-	PORT_DIPNAME( 0x0070, 0x0070, DEF_STR( Coin_B ) )           PORT_DIPLOCATION("SW1:5,6,7")
-	PORT_DIPSETTING(      0x0050, DEF_STR( 3C_1C ) )
-	PORT_DIPSETTING(      0x0060, DEF_STR( 2C_1C ) )
-	PORT_DIPSETTING(      0x0070, DEF_STR( 1C_1C ) )
-	PORT_DIPSETTING(      0x0040, DEF_STR( 1C_2C ) )
-	PORT_DIPSETTING(      0x0030, DEF_STR( 1C_3C ) )
-	PORT_DIPSETTING(      0x0020, DEF_STR( 1C_4C ) )
-	PORT_DIPSETTING(      0x0010, DEF_STR( 1C_5C ) )
-	PORT_DIPSETTING(      0x0000, DEF_STR( 1C_6C ) )
-	PORT_DIPNAME( 0x0080, 0x0080, "Continue Coin" )             PORT_DIPLOCATION("SW1:8") /* "When ON, SW1:2-7 are disabled." */
-	PORT_DIPSETTING(      0x0080, "Start 1 Coin/Continue 1 Coin" )
-	PORT_DIPSETTING(      0x0000, "Start 2 Coin/Continue 1 Coin" )
-
-	PORT_START("DSW2")
-	PORT_DIPNAME( 0x0001, 0x0001, DEF_STR( Flip_Screen ) )      PORT_DIPLOCATION("SW2:1")
-	PORT_DIPSETTING(      0x0001, DEF_STR( Off ) )
-	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
-	PORT_DIPNAME( 0x0002, 0x0000, DEF_STR( Demo_Sounds ) )      PORT_DIPLOCATION("SW2:2")
-	PORT_DIPSETTING(      0x0002, DEF_STR( Off ) )
-	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
-	PORT_DIPNAME( 0x000c, 0x000c, DEF_STR( Difficulty ) )       PORT_DIPLOCATION("SW2:3,4")
-	PORT_DIPSETTING(      0x0008, DEF_STR( Easy ) )
-	PORT_DIPSETTING(      0x000c, DEF_STR( Normal ) )
-	PORT_DIPSETTING(      0x0004, DEF_STR( Hard ) )
-	PORT_DIPSETTING(      0x0000, DEF_STR( Hardest ) )
-	PORT_DIPNAME( 0x0030, 0x0030, DEF_STR( Lives ) )            PORT_DIPLOCATION("SW2:5,6")
-	PORT_DIPSETTING(      0x0020, "1" )
-	PORT_DIPSETTING(      0x0010, "2" )
-	PORT_DIPSETTING(      0x0030, "3" )
-	PORT_DIPSETTING(      0x0000, "4" )
-	PORT_DIPNAME( 0x0040, 0x0040, DEF_STR( Bonus_Life ) )       PORT_DIPLOCATION("SW2:7")
-	PORT_DIPSETTING(      0x0040, "200000" )
-	PORT_DIPSETTING(      0x0000, "300000" )
-	PORT_SERVICE_DIPLOC( 0x0080, IP_ACTIVE_LOW, "SW2:8" )
-
-	/* This DSW3 is not documented in the Aero Fighters manual */
-	PORT_START("DSW3")
-	PORT_DIPNAME( 0x000f, 0x0000, DEF_STR( Region ) )
-	PORT_DIPSETTING(      0x0000, "Any" )
-	PORT_DIPSETTING(      0x000f, "USA/Canada" )
-	PORT_DIPSETTING(      0x000e, DEF_STR( Korea ) )
-	PORT_DIPSETTING(      0x000d, DEF_STR( Hong_Kong ) )
-	PORT_DIPSETTING(      0x000b, DEF_STR( Taiwan ) )
-=======
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_JOYSTICK_UP ) PORT_8WAY
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_JOYSTICK_DOWN ) PORT_8WAY
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT ) PORT_8WAY
@@ -1419,7 +1129,6 @@ static INPUT_PORTS_START( aerofgt )
 	PORT_DIPSETTING(   0xe, DEF_STR( Korea ) )
 	PORT_DIPSETTING(   0xd, DEF_STR( Hong_Kong ) )
 	PORT_DIPSETTING(   0xb, DEF_STR( Taiwan ) )
->>>>>>> upstream/master
 INPUT_PORTS_END
 
 static INPUT_PORTS_START( wbbc97 )
@@ -1591,8 +1300,6 @@ static const gfx_layout wbbc97_spritelayout =
 	8*32
 };
 
-<<<<<<< HEAD
-=======
 static const gfx_layout kickball_spritelayout =
 {
 	16,16,
@@ -1604,7 +1311,6 @@ static const gfx_layout kickball_spritelayout =
 	32*8
 };
 
->>>>>>> upstream/master
 static GFXDECODE_START( pspikes )
 	GFXDECODE_ENTRY( "gfx1", 0, pspikes_charlayout,      0, 64 )    /* colors    0-1023 in 8 banks */
 	GFXDECODE_ENTRY( "gfx2", 0, pspikes_spritelayout, 1024, 64 )    /* colors 1024-2047 in 4 banks */
@@ -1620,13 +1326,10 @@ static GFXDECODE_START( spikes91 )
 	GFXDECODE_ENTRY( "gfx2", 0, spikes91_spritelayout, 1024, 64 )   /* colors 1024-2047 in 4 banks */
 GFXDECODE_END
 
-<<<<<<< HEAD
-=======
 static GFXDECODE_START( kickball )
 	GFXDECODE_ENTRY( "gfx1", 0, pspikes_charlayout,      0, 64 )    /* colors    0-1023 in 8 banks */
 	GFXDECODE_ENTRY( "gfx2", 0, kickball_spritelayout, 1024, 64 )    /* colors 1024-2047 in 4 banks */
 GFXDECODE_END
->>>>>>> upstream/master
 
 static GFXDECODE_START( turbofrc )
 	GFXDECODE_ENTRY( "gfx1", 0, pspikes_charlayout,     0, 16 )
@@ -1670,19 +1373,10 @@ GFXDECODE_END
 
 MACHINE_START_MEMBER(aerofgt_state,common)
 {
-<<<<<<< HEAD
-	save_item(NAME(m_pending_command));
-=======
->>>>>>> upstream/master
 }
 
 MACHINE_START_MEMBER(aerofgt_state,aerofgt)
 {
-<<<<<<< HEAD
-	UINT8 *rom = memregion("audiocpu")->base();
-
-	membank("bank1")->configure_entries(0, 4, &rom[0x10000], 0x8000);
-=======
 	m_soundbank->configure_entries(0, 4, memregion("audiocpu")->base(), 0x8000);
 
 	MACHINE_START_CALL_MEMBER(common);
@@ -1691,34 +1385,22 @@ MACHINE_START_MEMBER(aerofgt_state,aerofgt)
 MACHINE_START_MEMBER(aerofgt_state,spinlbrk)
 {
 	m_soundbank->configure_entries(0, 2, memregion("audiocpu")->base()+0x8000, 0x8000);
->>>>>>> upstream/master
 
 	MACHINE_START_CALL_MEMBER(common);
 }
 
 MACHINE_RESET_MEMBER(aerofgt_state,common)
 {
-<<<<<<< HEAD
-	m_pending_command = 0;
-=======
->>>>>>> upstream/master
 }
 
 MACHINE_RESET_MEMBER(aerofgt_state,aerofgt)
 {
 	MACHINE_RESET_CALL_MEMBER(common);
 
-<<<<<<< HEAD
-	membank("bank1")->set_entry(0); /* needed by spinlbrk */
-}
-
-static MACHINE_CONFIG_START( pspikes, aerofgt_state )
-=======
 	m_soundbank->set_entry(0); /* needed by spinlbrk */
 }
 
 static MACHINE_CONFIG_START( pspikes )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu",M68000,XTAL_20MHz/2)    /* verified on pcb */
@@ -1750,25 +1432,18 @@ static MACHINE_CONFIG_START( pspikes )
 	MCFG_VSYSTEM_SPR2_SET_TILE_INDIRECT( aerofgt_state, aerofgt_old_tile_callback )
 	MCFG_VSYSTEM_SPR2_SET_GFXREGION(1)
 	MCFG_VSYSTEM_SPR2_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_VSYSTEM_SPR2_PALETTE("palette")
-=======
 
 	MCFG_DEVICE_ADD("gga", VSYSTEM_GGA, XTAL_14_31818MHz / 2) // divider not verified
->>>>>>> upstream/master
 
 	MCFG_VIDEO_START_OVERRIDE(aerofgt_state,pspikes)
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
-<<<<<<< HEAD
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 	MCFG_GENERIC_LATCH_DATA_PENDING_CB(INPUTLINE("audiocpu", INPUT_LINE_NMI))
 	MCFG_GENERIC_LATCH_SEPARATE_ACKNOWLEDGE(true)
 
->>>>>>> upstream/master
 	MCFG_SOUND_ADD("ymsnd", YM2610, 8000000)
 	MCFG_YM2610_IRQ_HANDLER(INPUTLINE("audiocpu", 0))
 	MCFG_SOUND_ROUTE(0, "lspeaker",  0.25)
@@ -1777,11 +1452,7 @@ static MACHINE_CONFIG_START( pspikes )
 	MCFG_SOUND_ROUTE(2, "rspeaker", 1.0)
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( spikes91, aerofgt_state )
-=======
 static MACHINE_CONFIG_START( spikes91 )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu",M68000,20000000/2)   /* 10 MHz (?) */
@@ -1806,11 +1477,8 @@ static MACHINE_CONFIG_START( spikes91 )
 	MCFG_PALETTE_ADD("palette", 2048)
 	MCFG_PALETTE_FORMAT(xRRRRRGGGGGBBBBB)
 
-<<<<<<< HEAD
-=======
 	//MCFG_DEVICE_ADD("gga", VSYSTEM_GGA, 0)
 
->>>>>>> upstream/master
 	MCFG_VIDEO_START_OVERRIDE(aerofgt_state,pspikes)
 
 	/* sound hardware */
@@ -1822,11 +1490,7 @@ static MACHINE_CONFIG_START( spikes91 )
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( pspikesb, aerofgt_state )
-=======
 static MACHINE_CONFIG_START( pspikesb )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu",M68000,20000000/2)   /* 10 MHz (?) */
@@ -1849,23 +1513,13 @@ static MACHINE_CONFIG_START( pspikesb )
 	MCFG_PALETTE_ADD("palette", 2048)
 	MCFG_PALETTE_FORMAT(xRRRRRGGGGGBBBBB)
 
-<<<<<<< HEAD
-=======
 	//MCFG_DEVICE_ADD("gga", VSYSTEM_GGA, 0)
 
->>>>>>> upstream/master
 	MCFG_VIDEO_START_OVERRIDE(aerofgt_state,pspikes)
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki", 1056000, OKIM6295_PIN7_HIGH) // clock frequency & pin 7 not verified
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
-MACHINE_CONFIG_END
-
-static MACHINE_CONFIG_START( pspikesc, aerofgt_state )
-=======
 	MCFG_OKIM6295_ADD("oki", 1056000, PIN7_LOW) // clock frequency & pin 7 not verified, pin high causes sound pitch to be too high
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
@@ -1929,7 +1583,6 @@ static MACHINE_CONFIG_START( kickball )
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_START( pspikesc )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu",M68000,20000000/2)   /* 10 MHz (?) */
@@ -1952,38 +1605,23 @@ static MACHINE_CONFIG_START( pspikesc )
 	MCFG_PALETTE_ADD("palette", 2048)
 	MCFG_PALETTE_FORMAT(xRRRRRGGGGGBBBBB)
 
-<<<<<<< HEAD
-=======
 	//MCFG_DEVICE_ADD("gga", VSYSTEM_GGA, 0)
 
->>>>>>> upstream/master
 	MCFG_DEVICE_ADD("vsystem_spr_old", VSYSTEM_SPR2, 0)
 	MCFG_VSYSTEM_SPR2_SET_TILE_INDIRECT( aerofgt_state, aerofgt_old_tile_callback )
 	MCFG_VSYSTEM_SPR2_SET_GFXREGION(1)
 	MCFG_VSYSTEM_SPR2_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_VSYSTEM_SPR2_PALETTE("palette")
-=======
->>>>>>> upstream/master
 
 	MCFG_VIDEO_START_OVERRIDE(aerofgt_state,pspikes)
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki", 1056000, OKIM6295_PIN7_HIGH) // clock frequency & pin 7 not verified
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
-MACHINE_CONFIG_END
-
-static MACHINE_CONFIG_START( karatblz, aerofgt_state )
-=======
 	MCFG_OKIM6295_ADD("oki", 1056000, PIN7_HIGH) // clock frequency & pin 7 not verified
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_START( karatblz )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu",M68000,20000000/2)   /* 10 MHz (?) */
@@ -2011,41 +1649,27 @@ static MACHINE_CONFIG_START( karatblz )
 	MCFG_PALETTE_ADD("palette", 1024)
 	MCFG_PALETTE_FORMAT(xRRRRRGGGGGBBBBB)
 
-<<<<<<< HEAD
-=======
 	MCFG_DEVICE_ADD("gga", VSYSTEM_GGA, XTAL_14_31818MHz / 2) // divider not verified
 
->>>>>>> upstream/master
 	MCFG_DEVICE_ADD("vsystem_spr_old", VSYSTEM_SPR2, 0)
 	MCFG_VSYSTEM_SPR2_SET_TILE_INDIRECT( aerofgt_state, aerofgt_old_tile_callback )
 	MCFG_VSYSTEM_SPR2_SET_GFXREGION(2)
 	MCFG_VSYSTEM_SPR2_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_VSYSTEM_SPR2_PALETTE("palette")
-=======
->>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("vsystem_spr_ol2", VSYSTEM_SPR2, 0)
 	MCFG_VSYSTEM_SPR2_SET_TILE_INDIRECT( aerofgt_state, aerofgt_ol2_tile_callback )
 	MCFG_VSYSTEM_SPR2_SET_GFXREGION(3)
 	MCFG_VSYSTEM_SPR2_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_VSYSTEM_SPR2_PALETTE("palette")
-=======
->>>>>>> upstream/master
 
 	MCFG_VIDEO_START_OVERRIDE(aerofgt_state,karatblz)
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
-<<<<<<< HEAD
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 	MCFG_GENERIC_LATCH_DATA_PENDING_CB(INPUTLINE("audiocpu", INPUT_LINE_NMI))
 	MCFG_GENERIC_LATCH_SEPARATE_ACKNOWLEDGE(true)
 
->>>>>>> upstream/master
 	MCFG_SOUND_ADD("ymsnd", YM2610, XTAL_8MHz ) /* verified on pcb */
 	MCFG_YM2610_IRQ_HANDLER(INPUTLINE("audiocpu", 0))
 	MCFG_SOUND_ROUTE(0, "lspeaker",  0.25)
@@ -2054,33 +1678,19 @@ static MACHINE_CONFIG_START( karatblz )
 	MCFG_SOUND_ROUTE(2, "rspeaker", 1.0)
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( karatblzbl, aerofgt_state )
-
-	/* basic machine hardware */
-	MCFG_CPU_ADD("maincpu",M68000,20000000/2)   /* 10 MHz (?) */
-	MCFG_CPU_PROGRAM_MAP(karatblz_map)
-=======
 static MACHINE_CONFIG_START( karatblzbl )
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu",M68000,20000000/2)   /* 10 MHz (?) */
 	MCFG_CPU_PROGRAM_MAP(karatblzbl_map)
->>>>>>> upstream/master
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", aerofgt_state,  irq1_line_hold)
 
 	MCFG_CPU_ADD("audiocpu",Z80,8000000/2) /* 4 MHz ??? */
 	MCFG_CPU_PROGRAM_MAP(karatblzbl_sound_map)
-<<<<<<< HEAD
-
-//  MCFG_MACHINE_START_OVERRIDE(aerofgt_state,aerofgt)
-//  MCFG_MACHINE_RESET_OVERRIDE(aerofgt_state,aerofgt)
-=======
 	MCFG_CPU_IO_MAP(karatblzbl_sound_portmap)
 
 	MCFG_MACHINE_START_OVERRIDE(aerofgt_state,common)
 	MCFG_MACHINE_RESET_OVERRIDE(aerofgt_state,common)
->>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
@@ -2099,28 +1709,11 @@ static MACHINE_CONFIG_START( karatblzbl )
 	MCFG_VSYSTEM_SPR2_SET_TILE_INDIRECT( aerofgt_state, aerofgt_old_tile_callback )
 	MCFG_VSYSTEM_SPR2_SET_GFXREGION(2)
 	MCFG_VSYSTEM_SPR2_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_VSYSTEM_SPR2_PALETTE("palette")
-=======
->>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("vsystem_spr_ol2", VSYSTEM_SPR2, 0)
 	MCFG_VSYSTEM_SPR2_SET_TILE_INDIRECT( aerofgt_state, aerofgt_ol2_tile_callback )
 	MCFG_VSYSTEM_SPR2_SET_GFXREGION(3)
 	MCFG_VSYSTEM_SPR2_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_VSYSTEM_SPR2_PALETTE("palette")
-
-	MCFG_VIDEO_START_OVERRIDE(aerofgt_state,karatblz)
-
-	/* sound hardware */
-	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
-
-	// NEC D7759c + YM????
-MACHINE_CONFIG_END
-
-static MACHINE_CONFIG_START( spinlbrk, aerofgt_state )
-=======
 
 	//MCFG_DEVICE_ADD("gga", VSYSTEM_GGA, 0)
 
@@ -2142,21 +1735,10 @@ static MACHINE_CONFIG_START( spinlbrk, aerofgt_state )
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_START( spinlbrk )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu",M68000,XTAL_20MHz/2) /* verified on pcb */
 	MCFG_CPU_PROGRAM_MAP(spinlbrk_map)
-<<<<<<< HEAD
-	MCFG_CPU_VBLANK_INT_DRIVER("screen", aerofgt_state,  irq1_line_hold)/* there are vectors for 3 and 4 too */
-
-	MCFG_CPU_ADD("audiocpu",Z80,XTAL_20MHz/4)   /* 5mhz verified on pcb */
-	MCFG_CPU_PROGRAM_MAP(sound_map)
-	MCFG_CPU_IO_MAP(turbofrc_sound_portmap)
-								/* IRQs are triggered by the YM2610 */
-
-	MCFG_MACHINE_START_OVERRIDE(aerofgt_state,aerofgt)
-=======
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", aerofgt_state,  irq1_line_hold) /* there are vectors for 3 and 4 too, analog related? */
 
 	MCFG_CPU_ADD("audiocpu",Z80,XTAL_20MHz/4)   /* 5mhz verified on pcb */
@@ -2165,7 +1747,6 @@ static MACHINE_CONFIG_START( spinlbrk )
 								/* IRQs are triggered by the YM2610 */
 
 	MCFG_MACHINE_START_OVERRIDE(aerofgt_state,spinlbrk)
->>>>>>> upstream/master
 	MCFG_MACHINE_RESET_OVERRIDE(aerofgt_state,aerofgt)
 
 	/* video hardware */
@@ -2178,48 +1759,31 @@ static MACHINE_CONFIG_START( spinlbrk )
 	MCFG_SCREEN_PALETTE("palette")
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", turbofrc)
-<<<<<<< HEAD
-	MCFG_PALETTE_ADD("palette", 1024)
-	MCFG_PALETTE_FORMAT(xRRRRRGGGGGBBBBB)
-
-=======
 	MCFG_PALETTE_ADD_INIT_BLACK("palette", 1024) // doesn't fully initialize palette at start-up ...
 	MCFG_PALETTE_FORMAT(xRRRRRGGGGGBBBBB)
 
 	MCFG_DEVICE_ADD("gga", VSYSTEM_GGA, XTAL_14_31818MHz / 2) // divider not verified
 
->>>>>>> upstream/master
 	MCFG_DEVICE_ADD("vsystem_spr_old", VSYSTEM_SPR2, 0)
 	MCFG_VSYSTEM_SPR2_SET_PRITYPE(1)
 	MCFG_VSYSTEM_SPR2_SET_GFXREGION(2)
 	MCFG_VSYSTEM_SPR2_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_VSYSTEM_SPR2_PALETTE("palette")
-=======
->>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("vsystem_spr_ol2", VSYSTEM_SPR2, 0)
 	MCFG_VSYSTEM_SPR2_SET_TILE_INDIRECT( aerofgt_state, aerofgt_ol2_tile_callback ) // rom lookup
 	MCFG_VSYSTEM_SPR2_SET_PRITYPE(1)
 	MCFG_VSYSTEM_SPR2_SET_GFXREGION(3)
 	MCFG_VSYSTEM_SPR2_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_VSYSTEM_SPR2_PALETTE("palette")
-=======
->>>>>>> upstream/master
 
 	MCFG_VIDEO_START_OVERRIDE(aerofgt_state,spinlbrk)
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
-<<<<<<< HEAD
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 	MCFG_GENERIC_LATCH_DATA_PENDING_CB(INPUTLINE("audiocpu", INPUT_LINE_NMI))
 	MCFG_GENERIC_LATCH_SEPARATE_ACKNOWLEDGE(true)
 
->>>>>>> upstream/master
 	MCFG_SOUND_ADD("ymsnd", YM2610, XTAL_8MHz)  /* verified on pcb */
 	MCFG_YM2610_IRQ_HANDLER(INPUTLINE("audiocpu", 0))
 	MCFG_SOUND_ROUTE(0, "lspeaker",  0.25)
@@ -2228,11 +1792,7 @@ static MACHINE_CONFIG_START( spinlbrk )
 	MCFG_SOUND_ROUTE(2, "rspeaker", 1.0)
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( turbofrc, aerofgt_state )
-=======
 static MACHINE_CONFIG_START( turbofrc )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu",M68000,XTAL_20MHz/2) /* verified on pcb */
@@ -2260,41 +1820,27 @@ static MACHINE_CONFIG_START( turbofrc )
 	MCFG_PALETTE_ADD("palette", 1024)
 	MCFG_PALETTE_FORMAT(xRRRRRGGGGGBBBBB)
 
-<<<<<<< HEAD
-=======
 	MCFG_DEVICE_ADD("gga", VSYSTEM_GGA, XTAL_14_31818MHz / 2) // divider not verified
 
->>>>>>> upstream/master
 	MCFG_DEVICE_ADD("vsystem_spr_old", VSYSTEM_SPR2, 0)
 	MCFG_VSYSTEM_SPR2_SET_TILE_INDIRECT( aerofgt_state, aerofgt_old_tile_callback )
 	MCFG_VSYSTEM_SPR2_SET_GFXREGION(2)
 	MCFG_VSYSTEM_SPR2_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_VSYSTEM_SPR2_PALETTE("palette")
-=======
->>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("vsystem_spr_ol2", VSYSTEM_SPR2, 0)
 	MCFG_VSYSTEM_SPR2_SET_TILE_INDIRECT( aerofgt_state, aerofgt_ol2_tile_callback )
 	MCFG_VSYSTEM_SPR2_SET_GFXREGION(3)
 	MCFG_VSYSTEM_SPR2_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_VSYSTEM_SPR2_PALETTE("palette")
-=======
->>>>>>> upstream/master
 
 	MCFG_VIDEO_START_OVERRIDE(aerofgt_state,turbofrc)
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
-<<<<<<< HEAD
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 	MCFG_GENERIC_LATCH_DATA_PENDING_CB(INPUTLINE("audiocpu", INPUT_LINE_NMI))
 	MCFG_GENERIC_LATCH_SEPARATE_ACKNOWLEDGE(true)
 
->>>>>>> upstream/master
 	MCFG_SOUND_ADD("ymsnd", YM2610, XTAL_8MHz)  /* verified on pcb */
 	MCFG_YM2610_IRQ_HANDLER(INPUTLINE("audiocpu", 0))
 	MCFG_SOUND_ROUTE(0, "lspeaker",  0.25)
@@ -2303,11 +1849,7 @@ static MACHINE_CONFIG_START( turbofrc )
 	MCFG_SOUND_ROUTE(2, "rspeaker", 1.0)
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( aerofgtb, aerofgt_state )
-=======
 static MACHINE_CONFIG_START( aerofgtb )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu",M68000,20000000/2)   /* 10 MHz (?) */
@@ -2336,41 +1878,27 @@ static MACHINE_CONFIG_START( aerofgtb )
 	MCFG_PALETTE_ADD("palette", 1024)
 	MCFG_PALETTE_FORMAT(xRRRRRGGGGGBBBBB)
 
-<<<<<<< HEAD
-=======
 	MCFG_DEVICE_ADD("gga", VSYSTEM_GGA, XTAL_14_31818MHz / 2) // divider not verified
 
->>>>>>> upstream/master
 	MCFG_DEVICE_ADD("vsystem_spr_old", VSYSTEM_SPR2, 0)
 	MCFG_VSYSTEM_SPR2_SET_TILE_INDIRECT( aerofgt_state, aerofgt_old_tile_callback )
 	MCFG_VSYSTEM_SPR2_SET_GFXREGION(2)
 	MCFG_VSYSTEM_SPR2_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_VSYSTEM_SPR2_PALETTE("palette")
-=======
->>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("vsystem_spr_ol2", VSYSTEM_SPR2, 0)
 	MCFG_VSYSTEM_SPR2_SET_TILE_INDIRECT( aerofgt_state, aerofgt_ol2_tile_callback )
 	MCFG_VSYSTEM_SPR2_SET_GFXREGION(3)
 	MCFG_VSYSTEM_SPR2_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_VSYSTEM_SPR2_PALETTE("palette")
-=======
->>>>>>> upstream/master
 
 	MCFG_VIDEO_START_OVERRIDE(aerofgt_state,turbofrc)
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
-<<<<<<< HEAD
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 	MCFG_GENERIC_LATCH_DATA_PENDING_CB(INPUTLINE("audiocpu", INPUT_LINE_NMI))
 	MCFG_GENERIC_LATCH_SEPARATE_ACKNOWLEDGE(true)
 
->>>>>>> upstream/master
 	MCFG_SOUND_ADD("ymsnd", YM2610, 8000000)
 	MCFG_YM2610_IRQ_HANDLER(INPUTLINE("audiocpu", 0))
 	MCFG_SOUND_ROUTE(0, "lspeaker",  0.25)
@@ -2379,11 +1907,7 @@ static MACHINE_CONFIG_START( aerofgtb )
 	MCFG_SOUND_ROUTE(2, "rspeaker", 1.0)
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( aerofgt, aerofgt_state )
-=======
 static MACHINE_CONFIG_START( aerofgt )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu",M68000,XTAL_20MHz/2) /* verified on pcb */
@@ -2398,8 +1922,6 @@ static MACHINE_CONFIG_START( aerofgt )
 	MCFG_MACHINE_START_OVERRIDE(aerofgt_state,aerofgt)
 	MCFG_MACHINE_RESET_OVERRIDE(aerofgt_state,aerofgt)
 
-<<<<<<< HEAD
-=======
 	MCFG_DEVICE_ADD("io", VS9209, 0)
 	MCFG_VS9209_IN_PORTA_CB(IOPORT("P1"))
 	MCFG_VS9209_IN_PORTB_CB(IOPORT("P2"))
@@ -2412,7 +1934,6 @@ static MACHINE_CONFIG_START( aerofgt )
 
 	MCFG_DEVICE_ADD("watchdog", MB3773, 0)
 
->>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE(61.31)  /* verified on pcb */
@@ -2431,23 +1952,16 @@ static MACHINE_CONFIG_START( aerofgt )
 	MCFG_VSYSTEM_SPR_SET_TILE_INDIRECT( aerofgt_state, aerofgt_tile_callback )
 	MCFG_VSYSTEM_SPR_SET_GFXREGION(2)
 	MCFG_VSYSTEM_SPR_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_VSYSTEM_SPR_PALETTE("palette")
-=======
->>>>>>> upstream/master
 
 	MCFG_VIDEO_START_OVERRIDE(aerofgt_state,turbofrc)
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
-<<<<<<< HEAD
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 	MCFG_GENERIC_LATCH_DATA_PENDING_CB(INPUTLINE("audiocpu", INPUT_LINE_NMI))
 	MCFG_GENERIC_LATCH_SEPARATE_ACKNOWLEDGE(true)
 
->>>>>>> upstream/master
 	MCFG_SOUND_ADD("ymsnd", YM2610, XTAL_8MHz)  /* verified on pcb */
 	MCFG_YM2610_IRQ_HANDLER(INPUTLINE("audiocpu", 0))
 	MCFG_SOUND_ROUTE(0, "lspeaker",  0.25)
@@ -2456,11 +1970,7 @@ static MACHINE_CONFIG_START( aerofgt )
 	MCFG_SOUND_ROUTE(2, "rspeaker", 1.0)
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( aerfboot, aerofgt_state )
-=======
 static MACHINE_CONFIG_START( aerfboot )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu",M68000,20000000/2)   /* 10 MHz (?) */
@@ -2487,23 +1997,13 @@ static MACHINE_CONFIG_START( aerfboot )
 	MCFG_PALETTE_ADD("palette", 1024)
 	MCFG_PALETTE_FORMAT(xRRRRRGGGGGBBBBB)
 
-<<<<<<< HEAD
-=======
 	//MCFG_DEVICE_ADD("gga", VSYSTEM_GGA, 0)
 
->>>>>>> upstream/master
 	MCFG_VIDEO_START_OVERRIDE(aerofgt_state,turbofrc)
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki", 1056000, OKIM6295_PIN7_HIGH) // clock frequency & pin 7 not verified
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
-MACHINE_CONFIG_END
-
-static MACHINE_CONFIG_START( aerfboo2, aerofgt_state )
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 	MCFG_GENERIC_LATCH_DATA_PENDING_CB(INPUTLINE("audiocpu", INPUT_LINE_NMI))
 	MCFG_GENERIC_LATCH_SEPARATE_ACKNOWLEDGE(false)
@@ -2514,7 +2014,6 @@ static MACHINE_CONFIG_START( aerfboo2, aerofgt_state )
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_START( aerfboo2 )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu",M68000,20000000/2)   /* 10 MHz (?) */
@@ -2538,29 +2037,18 @@ static MACHINE_CONFIG_START( aerfboo2 )
 	MCFG_PALETTE_ADD("palette", 1024)
 	MCFG_PALETTE_FORMAT(xRRRRRGGGGGBBBBB)
 
-<<<<<<< HEAD
-=======
 	//MCFG_DEVICE_ADD("gga", VSYSTEM_GGA, 0)
 
->>>>>>> upstream/master
 	MCFG_VIDEO_START_OVERRIDE(aerofgt_state,turbofrc)
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki", 1056000, OKIM6295_PIN7_HIGH) // clock frequency & pin 7 not verified
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
-MACHINE_CONFIG_END
-
-static MACHINE_CONFIG_START( wbbc97, aerofgt_state )
-=======
 	MCFG_OKIM6295_ADD("oki", 1056000, PIN7_HIGH) // clock frequency & pin 7 not verified
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_START( wbbc97 )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu",M68000,20000000/2)   /* 10 MHz (?) */
@@ -2585,41 +2073,27 @@ static MACHINE_CONFIG_START( wbbc97 )
 	MCFG_PALETTE_ADD("palette", 2048)
 	MCFG_PALETTE_FORMAT(xRRRRRGGGGGBBBBB)
 
-<<<<<<< HEAD
-=======
 	//MCFG_DEVICE_ADD("gga", VSYSTEM_GGA, 0)
 
->>>>>>> upstream/master
 	MCFG_DEVICE_ADD("vsystem_spr_old", VSYSTEM_SPR2, 0)
 	MCFG_VSYSTEM_SPR2_SET_TILE_INDIRECT( aerofgt_state, aerofgt_old_tile_callback )
 	MCFG_VSYSTEM_SPR2_SET_GFXREGION(1)
 	MCFG_VSYSTEM_SPR2_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_VSYSTEM_SPR2_PALETTE("palette")
-=======
->>>>>>> upstream/master
 
 	MCFG_VIDEO_START_OVERRIDE(aerofgt_state,wbbc97)
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 	MCFG_GENERIC_LATCH_DATA_PENDING_CB(INPUTLINE("audiocpu", INPUT_LINE_NMI))
 	MCFG_GENERIC_LATCH_SEPARATE_ACKNOWLEDGE(false)
 
->>>>>>> upstream/master
 	MCFG_SOUND_ADD("ymsnd", YM3812, 3579545)
 	MCFG_YM3812_IRQ_HANDLER(INPUTLINE("audiocpu", 0))
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki", 1056000, OKIM6295_PIN7_HIGH) // clock frequency & pin 7 not verified
-=======
 	MCFG_OKIM6295_ADD("oki", 1056000, PIN7_HIGH) // clock frequency & pin 7 not verified
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
 MACHINE_CONFIG_END
 
@@ -2635,14 +2109,8 @@ ROM_START( pspikes )
 	ROM_REGION( 0x40000, "maincpu", 0 ) /* 68000 code */
 	ROM_LOAD16_WORD_SWAP( "pspikes2.bin", 0x00000, 0x40000, CRC(ec0c070e) SHA1(4ddcc184e835a2f9d15f01aaa03734fd75fe797e) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x30000, "audiocpu", 0 )    /* 64k for the audio CPU + banks */
-	ROM_LOAD( "19",           0x00000, 0x20000, CRC(7e8ed6e5) SHA1(eeb1a1e1989fad8fc1e741928422efaec0598868) )
-	ROM_RELOAD(               0x10000, 0x20000 )
-=======
 	ROM_REGION( 0x20000, "audiocpu", 0 )    /* 64k for the audio CPU + banks */
 	ROM_LOAD( "19",           0x00000, 0x20000, CRC(7e8ed6e5) SHA1(eeb1a1e1989fad8fc1e741928422efaec0598868) )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x080000, "gfx1", 0 )
 	ROM_LOAD( "g7h",          0x000000, 0x80000, CRC(74c23c3d) SHA1(c0ac57d1f05c42556f97154ce1a08f465948546b) )
@@ -2665,14 +2133,8 @@ ROM_START( pspikesk )
 	ROM_REGION( 0x40000, "maincpu", 0 ) /* 68000 code */
 	ROM_LOAD16_WORD_SWAP( "20",           0x00000, 0x40000, CRC(75cdcee2) SHA1(272a08c46c1d0989f9fbb156e28e6a7ffa9c0a53) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x30000, "audiocpu", 0 )    /* 64k for the audio CPU + banks */
-	ROM_LOAD( "19",           0x00000, 0x20000, CRC(7e8ed6e5) SHA1(eeb1a1e1989fad8fc1e741928422efaec0598868) )
-	ROM_RELOAD(               0x10000, 0x20000 )
-=======
 	ROM_REGION( 0x20000, "audiocpu", 0 )    /* 64k for the audio CPU + banks */
 	ROM_LOAD( "19",           0x00000, 0x20000, CRC(7e8ed6e5) SHA1(eeb1a1e1989fad8fc1e741928422efaec0598868) )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x080000, "gfx1", 0 )
 	ROM_LOAD( "g7h",          0x000000, 0x80000, CRC(74c23c3d) SHA1(c0ac57d1f05c42556f97154ce1a08f465948546b) )
@@ -2696,14 +2158,8 @@ ROM_START( pspikesu )
 	ROM_REGION( 0x40000, "maincpu", 0 ) /* 68000 code */
 	ROM_LOAD16_WORD_SWAP( "svolly91.73", 0x00000, 0x40000, CRC(bfbffcdb) SHA1(2bba99cb6d0cb2fbb3cd1242551dd7e2c6ebef50) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x30000, "audiocpu", 0 )    /* 64k for the audio CPU + banks */
-	ROM_LOAD( "19",           0x00000, 0x20000, CRC(7e8ed6e5) SHA1(eeb1a1e1989fad8fc1e741928422efaec0598868) )
-	ROM_RELOAD(               0x10000, 0x20000 )
-=======
 	ROM_REGION( 0x20000, "audiocpu", 0 )    /* 64k for the audio CPU + banks */
 	ROM_LOAD( "19",           0x00000, 0x20000, CRC(7e8ed6e5) SHA1(eeb1a1e1989fad8fc1e741928422efaec0598868) )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x080000, "gfx1", 0 )
 	ROM_LOAD( "g7h",          0x000000, 0x80000, CRC(74c23c3d) SHA1(c0ac57d1f05c42556f97154ce1a08f465948546b) )
@@ -2723,14 +2179,8 @@ ROM_START( svolly91 )
 	ROM_REGION( 0x40000, "maincpu", 0 ) /* 68000 code */
 	ROM_LOAD16_WORD_SWAP( "u11.jpn",      0x00000, 0x40000, CRC(ea2e4c82) SHA1(f9cf9122499d9b1e54221fb8b6ef9c12004ca85e) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x30000, "audiocpu", 0 )    /* 64k for the audio CPU + banks */
-	ROM_LOAD( "19",           0x00000, 0x20000, CRC(7e8ed6e5) SHA1(eeb1a1e1989fad8fc1e741928422efaec0598868) )
-	ROM_RELOAD(               0x10000, 0x20000 )
-=======
 	ROM_REGION( 0x20000, "audiocpu", 0 )    /* 64k for the audio CPU + banks */
 	ROM_LOAD( "19",           0x00000, 0x20000, CRC(7e8ed6e5) SHA1(eeb1a1e1989fad8fc1e741928422efaec0598868) )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x080000, "gfx1", 0 )
 	ROM_LOAD( "g7h",          0x000000, 0x80000, CRC(74c23c3d) SHA1(c0ac57d1f05c42556f97154ce1a08f465948546b) )
@@ -2959,15 +2409,9 @@ ROM_START( spinlbrk )
 	ROM_LOAD16_BYTE( "ic93",    0x20000, 0x10000, CRC(726f4683) SHA1(65aff0548333571d47a96d4bf5a7857f12399cc7) )
 	ROM_LOAD16_BYTE( "ic94",    0x20001, 0x10000, CRC(c4385e03) SHA1(6683eed812fa8a5430125b14e8647f8e9024bbdd) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x30000, "audiocpu", 0 )    /* 64k for the audio CPU + banks */
-	ROM_LOAD( "ic117",        0x00000, 0x08000, CRC(625ada41) SHA1(2dd0674c68ea382431115c155afbf880f5b9deb2) )
-	ROM_LOAD( "ic118",        0x10000, 0x10000, CRC(1025f024) SHA1(3e497c74c950d2cd2a0931cf2ae9b0124d11ca6a) )
-=======
 	ROM_REGION( 0x18000, "audiocpu", 0 )    /* 64k for the audio CPU + banks */
 	ROM_LOAD( "ic117",        0x00000, 0x08000, CRC(625ada41) SHA1(2dd0674c68ea382431115c155afbf880f5b9deb2) )
 	ROM_LOAD( "ic118",        0x08000, 0x10000, CRC(1025f024) SHA1(3e497c74c950d2cd2a0931cf2ae9b0124d11ca6a) )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x100000, "gfx1", 0 )
 	ROM_LOAD( "ic15",         0x000000, 0x80000, CRC(e318cf3a) SHA1(d634001a0029566ce7b8fa30075970919eb5f44e) )
@@ -3015,15 +2459,9 @@ ROM_START( spinlbrku )
 	ROM_LOAD16_BYTE( "ic93.u4", 0x20000, 0x10000, CRC(0cf73029) SHA1(e1346b759a41f9eec9536dc90671778582e595b4) )
 	ROM_LOAD16_BYTE( "ic94.u3", 0x20001, 0x10000, CRC(5cf7c426) SHA1(b201da40c4511d2845004dff72d36adbb8a4fab9) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x30000, "audiocpu", 0 )    /* 64k for the audio CPU + banks */
-	ROM_LOAD( "ic117",        0x00000, 0x08000, CRC(625ada41) SHA1(2dd0674c68ea382431115c155afbf880f5b9deb2) )
-	ROM_LOAD( "ic118",        0x10000, 0x10000, CRC(1025f024) SHA1(3e497c74c950d2cd2a0931cf2ae9b0124d11ca6a) )
-=======
 	ROM_REGION( 0x18000, "audiocpu", 0 )    /* 64k for the audio CPU + banks */
 	ROM_LOAD( "ic117",        0x00000, 0x08000, CRC(625ada41) SHA1(2dd0674c68ea382431115c155afbf880f5b9deb2) )
 	ROM_LOAD( "ic118",        0x08000, 0x10000, CRC(1025f024) SHA1(3e497c74c950d2cd2a0931cf2ae9b0124d11ca6a) )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x100000, "gfx1", 0 )
 	ROM_LOAD( "ic15",         0x000000, 0x80000, CRC(e318cf3a) SHA1(d634001a0029566ce7b8fa30075970919eb5f44e) )
@@ -3071,15 +2509,9 @@ ROM_START( spinlbrkj )
 	ROM_LOAD16_BYTE( "j4",      0x20000, 0x10000, CRC(33e33912) SHA1(d6d052cd8dbedfd254bdf5e82ad770e4bf241777) )
 	ROM_LOAD16_BYTE( "j3",      0x20001, 0x10000, CRC(16ca61d0) SHA1(5d99a1261251412c3c758af751997fe31026c0d6) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x30000, "audiocpu", 0 )    /* 64k for the audio CPU + banks */
-	ROM_LOAD( "ic117",        0x00000, 0x08000, CRC(625ada41) SHA1(2dd0674c68ea382431115c155afbf880f5b9deb2) )
-	ROM_LOAD( "ic118",        0x10000, 0x10000, CRC(1025f024) SHA1(3e497c74c950d2cd2a0931cf2ae9b0124d11ca6a) )
-=======
 	ROM_REGION( 0x18000, "audiocpu", 0 )    /* 64k for the audio CPU + banks */
 	ROM_LOAD( "ic117",        0x00000, 0x08000, CRC(625ada41) SHA1(2dd0674c68ea382431115c155afbf880f5b9deb2) )
 	ROM_LOAD( "ic118",        0x08000, 0x10000, CRC(1025f024) SHA1(3e497c74c950d2cd2a0931cf2ae9b0124d11ca6a) )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x100000, "gfx1", 0 )
 	ROM_LOAD( "ic15",         0x000000, 0x80000, CRC(e318cf3a) SHA1(d634001a0029566ce7b8fa30075970919eb5f44e) )
@@ -3125,14 +2557,8 @@ ROM_START( karatblz )
 	ROM_LOAD16_WORD_SWAP( "rom2v3",  0x00000, 0x40000, CRC(01f772e1) SHA1(f87f19a82d75839b5671f23ce14218d7b910eabc) )
 	ROM_LOAD16_WORD_SWAP( "1.u15",   0x40000, 0x40000, CRC(d16ee21b) SHA1(d454cdf22b72a537b9d7ae73deb8136a4f09da47) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x30000, "audiocpu", 0 )    /* 64k for the audio CPU + banks */
-	ROM_LOAD( "5.u92",        0x00000, 0x20000, CRC(97d67510) SHA1(1ffd419e3dec7de1099cd5819b0309f7dd0df80e) )
-	ROM_RELOAD(               0x10000, 0x20000 )
-=======
 	ROM_REGION( 0x20000, "audiocpu", 0 )    /* 64k for the audio CPU + banks */
 	ROM_LOAD( "5.u92",        0x00000, 0x20000, CRC(97d67510) SHA1(1ffd419e3dec7de1099cd5819b0309f7dd0df80e) )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x80000, "gfx1", 0 )
 	ROM_LOAD( "gha.u55",      0x00000, 0x80000, CRC(3e0cea91) SHA1(bab41715f106d364013b64649441d280bc6893cf) )
@@ -3162,14 +2588,8 @@ ROM_START( karatblza )
 	ROM_LOAD16_WORD_SWAP( "v2.u14",  0x00000, 0x40000, CRC(7a78976e) SHA1(3b74b80765622b8488bdd0729ec98a2c7584cad5) )
 	ROM_LOAD16_WORD_SWAP( "v1.u15",  0x40000, 0x40000, CRC(47e410fe) SHA1(d26fc93f91ccf00856db2b7dfd0d905d87e99bd8) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x30000, "audiocpu", 0 )    /* 64k for the audio CPU + banks */
-	ROM_LOAD( "5.u92",        0x00000, 0x20000, CRC(97d67510) SHA1(1ffd419e3dec7de1099cd5819b0309f7dd0df80e) )
-	ROM_RELOAD(               0x10000, 0x20000 )
-=======
 	ROM_REGION( 0x20000, "audiocpu", 0 )    /* 64k for the audio CPU + banks */
 	ROM_LOAD( "5.u92",        0x00000, 0x20000, CRC(97d67510) SHA1(1ffd419e3dec7de1099cd5819b0309f7dd0df80e) )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x80000, "gfx1", 0 )
 	ROM_LOAD( "gha.u55",      0x00000, 0x80000, CRC(3e0cea91) SHA1(bab41715f106d364013b64649441d280bc6893cf) )
@@ -3199,14 +2619,8 @@ ROM_START( karatblzu )
 	ROM_LOAD16_WORD_SWAP( "2.u14",   0x00000, 0x40000, CRC(202e6220) SHA1(2605511a0574cbc39fdf3d8ae27a0aa9b43345fb) )
 	ROM_LOAD16_WORD_SWAP( "1.u15",   0x40000, 0x40000, CRC(d16ee21b) SHA1(d454cdf22b72a537b9d7ae73deb8136a4f09da47) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x30000, "audiocpu", 0 )    /* 64k for the audio CPU + banks */
-	ROM_LOAD( "5.u92",        0x00000, 0x20000, CRC(97d67510) SHA1(1ffd419e3dec7de1099cd5819b0309f7dd0df80e) )
-	ROM_RELOAD(               0x10000, 0x20000 )
-=======
 	ROM_REGION( 0x20000, "audiocpu", 0 )    /* 64k for the audio CPU + banks */
 	ROM_LOAD( "5.u92",        0x00000, 0x20000, CRC(97d67510) SHA1(1ffd419e3dec7de1099cd5819b0309f7dd0df80e) )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x80000, "gfx1", 0 )
 	ROM_LOAD( "gha.u55",      0x00000, 0x80000, CRC(3e0cea91) SHA1(bab41715f106d364013b64649441d280bc6893cf) )
@@ -3236,14 +2650,8 @@ ROM_START( karatblzj )
 	ROM_LOAD16_WORD_SWAP( "2tecmo.u14",   0x00000, 0x40000, CRC(57e52654) SHA1(15939d8f7c693b9248f3dd2b2ad5fbae2c19621f) )
 	ROM_LOAD16_WORD_SWAP( "1.u15",        0x40000, 0x40000, CRC(d16ee21b) SHA1(d454cdf22b72a537b9d7ae73deb8136a4f09da47) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x30000, "audiocpu", 0 )    /* 64k for the audio CPU + banks */
-	ROM_LOAD( "5.u92",        0x00000, 0x20000, CRC(97d67510) SHA1(1ffd419e3dec7de1099cd5819b0309f7dd0df80e) )
-	ROM_RELOAD(               0x10000, 0x20000 )
-=======
 	ROM_REGION( 0x20000, "audiocpu", 0 )    /* 64k for the audio CPU + banks */
 	ROM_LOAD( "5.u92",        0x00000, 0x20000, CRC(97d67510) SHA1(1ffd419e3dec7de1099cd5819b0309f7dd0df80e) )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x80000, "gfx1", 0 )
 	ROM_LOAD( "gha.u55",      0x00000, 0x80000, CRC(3e0cea91) SHA1(bab41715f106d364013b64649441d280bc6893cf) )
@@ -3275,11 +2683,7 @@ ROM_END
 Karate Blazers (bootleg)
 
 CPU : MC68000
-<<<<<<< HEAD
-SND : Z80 + NEC D7759c + YM???? (no number on chip)
-=======
 SND : Z80 + NEC D7759c + YM3812 (no number on chip, but ROM is the same as streetsm, which uses a YM3812)
->>>>>>> upstream/master
 
 */
 
@@ -3291,11 +2695,7 @@ ROM_START( karatblzbl )
 	ROM_REGION( 0x10000, "audiocpu", 0 )
 	ROM_LOAD( "2.u80",        0x00000, 0x10000, CRC(ca4b171e) SHA1(a05fd81f68759a09be3ec09f38d7c9364dfb6c14) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x20000, "samples", 0 ) // D7759c data
-=======
 	ROM_REGION( 0x20000, "upd", 0 ) // D7759c data
->>>>>>> upstream/master
 	ROM_LOAD( "1.u88",        0x00000, 0x20000, CRC(47db1605) SHA1(ae00e633eb98567f04ff97e3d63e04e049d955ec) )
 
 	ROM_REGION( 0x80000, "gfx1", 0 )
@@ -3333,42 +2733,6 @@ ROM_START( karatblzbl )
 	ROM_LOAD16_BYTE( "8.u65",        0x080001, 0x040000, CRC(b491201a) SHA1(c18cb1cc8a8bf031e00d8d89de62f7ed5548e767) )
 ROM_END
 
-<<<<<<< HEAD
-
-ROM_START( turbofrc )
-	ROM_REGION( 0xc0000, "maincpu", 0 ) /* 68000 code */
-	ROM_LOAD16_WORD_SWAP( "tfrc2.bin",    0x00000, 0x40000, CRC(721300ee) SHA1(79ab32fdfd377592a0bdbd1c4794cfd529a3eb7b) )
-	ROM_LOAD16_WORD_SWAP( "tfrc1.bin",    0x40000, 0x40000, CRC(6cd5312b) SHA1(57b109fe268fb963e981c91b6d288667a3c9a665) )
-	ROM_LOAD16_WORD_SWAP( "tfrc3.bin",    0x80000, 0x40000, CRC(63f50557) SHA1(f8dba8c9ba412c9a67457ec31a804c57593ab20b) )
-
-	ROM_REGION( 0x30000, "audiocpu", 0 )    /* 64k for the audio CPU + banks */
-	ROM_LOAD( "tfrcu166.bin", 0x00000, 0x20000, CRC(2ca14a65) SHA1(95f6e7b4fa7ca26872ff472d7e6fb75fd4f281d5) )
-	ROM_RELOAD(               0x10000, 0x20000 )
-
-	ROM_REGION( 0x0a0000, "gfx1", 0 )
-	ROM_LOAD( "tfrcu94.bin",  0x000000, 0x80000, CRC(baa53978) SHA1(7f103122dd0bf675226ccf309fba73f645e0c79b) )
-	ROM_LOAD( "tfrcu95.bin",  0x080000, 0x20000, CRC(71a6c573) SHA1(f14ebca676d85fabcde27631145933abc376dd12) )
-
-	ROM_REGION( 0x0a0000, "gfx2", 0 )
-	ROM_LOAD( "tfrcu105.bin", 0x000000, 0x80000, CRC(4de4e59e) SHA1(571396dadb8aac043319cabe24e629210e442d57) )
-	ROM_LOAD( "tfrcu106.bin", 0x080000, 0x20000, CRC(c6479eb5) SHA1(47a58f082c73bc9dae3970e760ba46478ce6a190) )
-
-	ROM_REGION( 0x200000, "spritegfx", 0 )
-	ROM_LOAD( "tfrcu116.bin", 0x000000, 0x80000, CRC(df210f3b) SHA1(990ac43e4a46fee6b929c5b27d317cdadf179b8b) )
-	ROM_LOAD( "tfrcu118.bin", 0x080000, 0x40000, CRC(f61d1d79) SHA1(2b8e33912c05c26170afd2fced0ff06cb7a097fa) )
-	ROM_LOAD( "tfrcu117.bin", 0x100000, 0x80000, CRC(f70812fd) SHA1(1964e1134940825211cd4825fdd3f13b8242192d) )
-	ROM_LOAD( "tfrcu119.bin", 0x180000, 0x40000, CRC(474ea716) SHA1(67753e96fa4fc8cd689a8bddeb60dbde259cacaa) )
-
-	ROM_REGION( 0x100000, "gfx4", 0 )
-	ROM_LOAD( "tfrcu134.bin", 0x000000, 0x80000, CRC(487330a2) SHA1(0bd36c1f5776ba2773f621e9bcb22f56ed1d84ec) )
-	ROM_LOAD( "tfrcu135.bin", 0x080000, 0x80000, CRC(3a7e5b6d) SHA1(0079ffaa1bf93a5087c75615c78ec596b28c9a32) )
-
-	ROM_REGION( 0x20000, "ymsnd.deltat", 0 ) /* sound samples */
-	ROM_LOAD( "tfrcu180.bin",   0x00000, 0x20000, CRC(39c7c7d5) SHA1(66ee9f7cbc18ffab2c70f77ab0edead6bb018ca9) )
-
-	ROM_REGION( 0x100000, "ymsnd", 0 ) /* sound samples */
-	ROM_LOAD( "tfrcu179.bin", 0x000000, 0x100000, CRC(60ca0333) SHA1(28b94edc98d360386759780ccd1122d43ffa5279) )
-=======
 ROM_START( turbofrc ) // World version with no copyright notice
 	ROM_REGION( 0xc0000, "maincpu", 0 ) /* 68000 code */
 	ROM_LOAD16_WORD_SWAP( "4v2.subpcb.u2", 0x00000, 0x40000, CRC(721300ee) SHA1(79ab32fdfd377592a0bdbd1c4794cfd529a3eb7b) ) // 27c2048 - located on a OR-10 SUB BOARD - 4 stamped on chip with VideoSystem logo V
@@ -3435,21 +2799,14 @@ ROM_START( turbofrcu ) // US version: most notable thing in there is the points 
 
 	ROM_REGION( 0x100000, "ymsnd", 0 ) /* sound samples */
 	ROM_LOAD( "lh538o7j.u179", 0x000000, 0x100000, CRC(60ca0333) SHA1(28b94edc98d360386759780ccd1122d43ffa5279) ) // mask rom
->>>>>>> upstream/master
 ROM_END
 
 ROM_START( aerofgt )
 	ROM_REGION( 0x80000, "maincpu", 0 ) /* 68000 code */
 	ROM_LOAD16_WORD_SWAP( "1.u4",         0x00000, 0x80000, CRC(6fdff0a2) SHA1(7cc9529b426091027aa3e23586cb7d162376c0ff) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x30000, "audiocpu", 0 )    /* 64k for the audio CPU + banks */
-	ROM_LOAD( "2.153",        0x00000, 0x20000, CRC(a1ef64ec) SHA1(fa3e434738bf4e742ad68882c1e914100ce0f761) )
-	ROM_RELOAD(               0x10000, 0x20000 )
-=======
 	ROM_REGION( 0x20000, "audiocpu", 0 )    /* 64k for the audio CPU + banks */
 	ROM_LOAD( "2.153",        0x00000, 0x20000, CRC(a1ef64ec) SHA1(fa3e434738bf4e742ad68882c1e914100ce0f761) )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x100000, "gfx1", 0 )
 	ROM_LOAD( "538a54.124",   0x000000, 0x80000, CRC(4d2c4df2) SHA1(f51c2b3135f0a921ac1a79e63d6878c03cb6254b) )
@@ -3471,14 +2828,8 @@ ROM_START( aerofgtb )
 	ROM_LOAD16_BYTE( "v2",                0x00000, 0x40000, CRC(5c9de9f0) SHA1(93b62c59f0bc052c6fdbd5aae292a7ab2122dfd1) )
 	ROM_LOAD16_BYTE( "v1",                0x00001, 0x40000, CRC(89c1dcf4) SHA1(41401d63049c140e4254dc791022d85c44271390) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x30000, "audiocpu", 0 )    /* 64k for the audio CPU + banks */
-	ROM_LOAD( "v3",           0x00000, 0x20000, CRC(cbb18cf4) SHA1(7119a7536cf710660ff06d1e7d2879c79ef12b3d) )
-	ROM_RELOAD(               0x10000, 0x20000 )
-=======
 	ROM_REGION( 0x20000, "audiocpu", 0 )    /* 64k for the audio CPU + banks */
 	ROM_LOAD( "v3",           0x00000, 0x20000, CRC(cbb18cf4) SHA1(7119a7536cf710660ff06d1e7d2879c79ef12b3d) )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x080000, "gfx1", 0 )
 	ROM_LOAD( "it-19-03",     0x000000, 0x80000, CRC(85eba1a4) SHA1(5691a95d6359fdab29be0d615066370c2b856c0a) )
@@ -3506,14 +2857,8 @@ ROM_START( aerofgtc )
 	ROM_LOAD16_BYTE( "v2.149",            0x00000, 0x40000, CRC(f187aec6) SHA1(8905af34f114ae22fbfbd3ae115f19280bdd4fb3) )
 	ROM_LOAD16_BYTE( "v1.111",            0x00001, 0x40000, CRC(9e684b19) SHA1(b5e1e5b74ed9fd223c9315ee2d548e620224c102) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x30000, "audiocpu", 0 )    /* 64k for the audio CPU + banks */
-	ROM_LOAD( "2.153",        0x00000, 0x20000, CRC(a1ef64ec) SHA1(fa3e434738bf4e742ad68882c1e914100ce0f761) )
-	ROM_RELOAD(               0x10000, 0x20000 )
-=======
 	ROM_REGION( 0x20000, "audiocpu", 0 )    /* 64k for the audio CPU + banks */
 	ROM_LOAD( "2.153",        0x00000, 0x20000, CRC(a1ef64ec) SHA1(fa3e434738bf4e742ad68882c1e914100ce0f761) )
->>>>>>> upstream/master
 
 	/* gfx ROMs were missing in this set, I'm using the aerofgtb ones */
 	ROM_REGION( 0x080000, "gfx1", 0 )
@@ -3542,14 +2887,8 @@ ROM_START( sonicwi )
 	ROM_LOAD16_BYTE( "2.149",        0x00000, 0x40000, CRC(3d1b96ba) SHA1(941be323c0cb15e05c92b897984617b05c5cf676) )
 	ROM_LOAD16_BYTE( "1.111",        0x00001, 0x40000, CRC(a3d09f94) SHA1(a1064d659488878f5303edc2b8636312ab632a83) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x30000, "audiocpu", 0 )    /* 64k for the audio CPU + banks */
-	ROM_LOAD( "2.153",        0x00000, 0x20000, CRC(a1ef64ec) SHA1(fa3e434738bf4e742ad68882c1e914100ce0f761) )  // 3.156
-	ROM_RELOAD(               0x10000, 0x20000 )
-=======
 	ROM_REGION( 0x20000, "audiocpu", 0 )    /* 64k for the audio CPU + banks */
 	ROM_LOAD( "2.153",        0x00000, 0x20000, CRC(a1ef64ec) SHA1(fa3e434738bf4e742ad68882c1e914100ce0f761) )  // 3.156
->>>>>>> upstream/master
 
 	/* gfx ROMs were missing in this set, I'm using the aerofgtb ones */
 	ROM_REGION( 0x080000, "gfx1", 0 )
@@ -3595,15 +2934,9 @@ ROM_START( aerfboot )
 	ROM_LOAD( "afb_ep13.td",  0x000000, 0x40000, CRC(1830f70c) SHA1(1759de9b56e4999defc08b2423eff38ec98c4f17) )
 	ROM_LOAD( "afb_ep11.tb",  0x040000, 0x40000, CRC(6298c0eb) SHA1(ede63849973742c67637eac0ec9cda95ea2ecebc) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0xc0000, "oki", ROMREGION_ERASEFF ) /* sound samples */
-	ROM_LOAD( "afb_ep5.u29",  0x000000, 0x20000, CRC(3559609a) SHA1(6f0b633bf74f41487fc98dcdc43a83eb67f3d14c) )
-	ROM_LOAD( "afb_ep4.u30",  0x040000, 0x80000, CRC(f9652163) SHA1(d8c1fcf44b350cc65378869e4eb188ea232b4948) )
-=======
 	ROM_REGION( 0xa0000, "oki", ROMREGION_ERASEFF ) /* sound samples */
 	ROM_LOAD( "afb_ep5.u29",  0x000000, 0x20000, CRC(3559609a) SHA1(6f0b633bf74f41487fc98dcdc43a83eb67f3d14c) )
 	ROM_LOAD( "afb_ep4.u30",  0x020000, 0x80000, CRC(f9652163) SHA1(d8c1fcf44b350cc65378869e4eb188ea232b4948) )
->>>>>>> upstream/master
 ROM_END
 
 ROM_START( aerfboo2 )
@@ -3660,40 +2993,6 @@ ROM_START( wbbc97 )
 	ROM_LOAD( "82s147a.rom",  0x000000, 0x200, CRC(72cec9d2) SHA1(1c6fe6b47fe24bdbebb51d6bef56bf71c9029e72) )
 ROM_END
 
-<<<<<<< HEAD
-
-GAME( 1990, spinlbrk, 0,        spinlbrk, spinlbrk, driver_device, 0, ROT0,   "V-System Co.",     "Spinal Breakers (World)", MACHINE_SUPPORTS_SAVE | MACHINE_NO_COCKTAIL )
-GAME( 1990, spinlbrku,spinlbrk, spinlbrk, spinlbrku, driver_device,0, ROT0,   "V-System Co.",     "Spinal Breakers (US)", MACHINE_SUPPORTS_SAVE | MACHINE_NO_COCKTAIL )
-GAME( 1990, spinlbrkj,spinlbrk, spinlbrk, spinlbrk, driver_device, 0, ROT0,   "V-System Co.",     "Spinal Breakers (Japan)", MACHINE_SUPPORTS_SAVE | MACHINE_NO_COCKTAIL )
-
-GAME( 1991, pspikes,  0,        pspikes,  pspikes, driver_device,  0, ROT0,   "Video System Co.",   "Power Spikes (World)", MACHINE_SUPPORTS_SAVE | MACHINE_NO_COCKTAIL )
-GAME( 1991, pspikesk, pspikes,  pspikes,  pspikes, driver_device,  0, ROT0,   "Video System Co.",   "Power Spikes (Korea)", MACHINE_SUPPORTS_SAVE | MACHINE_NO_COCKTAIL )
-GAME( 1991, pspikesu, pspikes,  pspikes,  pspikes, driver_device,  0, ROT0,   "Video System Co.",   "Power Spikes (US)", MACHINE_SUPPORTS_SAVE | MACHINE_NO_COCKTAIL )
-GAME( 1991, svolly91, pspikes,  pspikes,  pspikes, driver_device,  0, ROT0,   "Video System Co.",   "Super Volley '91 (Japan)", MACHINE_SUPPORTS_SAVE | MACHINE_NO_COCKTAIL )
-GAME( 1991, pspikesb, pspikes,  pspikesb, pspikesb, driver_device, 0, ROT0,   "bootleg",            "Power Spikes (bootleg)", MACHINE_SUPPORTS_SAVE | MACHINE_NO_COCKTAIL )
-GAME( 1991, pspikesba,pspikes,  pspikesb, pspikesb, driver_device, 0, ROT0,   "bootleg (Playmark?)","Power Spikes (Italian bootleg)", MACHINE_SUPPORTS_SAVE | MACHINE_NO_COCKTAIL )
-GAME( 1991, spikes91, pspikes,  spikes91, pspikes, driver_device,  0, ROT0,   "bootleg",            "1991 Spikes (Italian bootleg, set 1)", MACHINE_SUPPORTS_SAVE | MACHINE_NO_SOUND | MACHINE_NO_COCKTAIL )
-GAME( 1991, spikes91b,pspikes,  spikes91, pspikes, driver_device,  0, ROT0,   "bootleg",            "1991 Spikes (Italian bootleg, set 2)", MACHINE_SUPPORTS_SAVE | MACHINE_NO_SOUND | MACHINE_NO_COCKTAIL )
-GAME( 1991, pspikesc, pspikes,  pspikesc, pspikesc, driver_device, 0, ROT0,   "bootleg",            "Power Spikes (China)", MACHINE_SUPPORTS_SAVE | MACHINE_NO_COCKTAIL | MACHINE_IMPERFECT_SOUND )
-GAME( 1997, wbbc97,   0,        wbbc97,   wbbc97, driver_device,   0, ROT0,   "Comad",              "Beach Festival World Championship 1997", MACHINE_SUPPORTS_SAVE | MACHINE_NO_COCKTAIL ) // based on power spikes codebase
-
-GAME( 1991, karatblz, 0,        karatblz, karatblz, driver_device, 0, ROT0,   "Video System Co.", "Karate Blazers (World, set 1)", MACHINE_SUPPORTS_SAVE | MACHINE_NO_COCKTAIL )
-GAME( 1991, karatblza,karatblz, karatblz, karatblz, driver_device, 0, ROT0,   "Video System Co.", "Karate Blazers (World, set 2)", MACHINE_SUPPORTS_SAVE | MACHINE_NO_COCKTAIL )
-GAME( 1991, karatblzu,karatblz, karatblz, karatblz, driver_device, 0, ROT0,   "Video System Co.", "Karate Blazers (US)", MACHINE_SUPPORTS_SAVE | MACHINE_NO_COCKTAIL )
-GAME( 1991, karatblzj,karatblz, karatblz, karatblz, driver_device, 0, ROT0,   "Video System Co.", "Toushin Blazers (Japan)", MACHINE_SUPPORTS_SAVE | MACHINE_NO_COCKTAIL )
-GAME( 1991, karatblzbl,karatblz,karatblzbl,karatblz,driver_device, 0, ROT0,   "bootleg",          "Karate Blazers (bootleg)", MACHINE_SUPPORTS_SAVE | MACHINE_NO_COCKTAIL | MACHINE_NO_SOUND )
-
-GAME( 1991, turbofrc, 0,        turbofrc, turbofrc, driver_device, 0, ROT270, "Video System Co.", "Turbo Force (old revision)", MACHINE_SUPPORTS_SAVE | MACHINE_NO_COCKTAIL )
-// there's also an undumped Turbo Force (new revision). Most notable thing in there is the points value of the rocks in level 6 (5.000 versus 500).
-
-// the tiles on these also contain an alt title 'The Final War' for both the title screen and attract logo was it ever used?
-GAME( 1992, aerofgt,  0,        aerofgt,  aerofgt, driver_device,  0, ROT270, "Video System Co.", "Aero Fighters (World / USA + Canada / Korea / Hong Kong / Taiwan) (newer hardware)", MACHINE_SUPPORTS_SAVE | MACHINE_NO_COCKTAIL ) // this has the newer sprite chip etc. unlike all other games in this driver..
-GAME( 1992, aerofgtb, aerofgt,  aerofgtb, aerofgtb, driver_device, 0, ROT270, "Video System Co.", "Aero Fighters (Taiwan / Japan, set 1)", MACHINE_SUPPORTS_SAVE | MACHINE_NO_COCKTAIL ) // probably intended for Taiwan because the Japanese name is Sonic Wings (below)
-GAME( 1992, aerofgtc, aerofgt,  aerofgtb, aerofgtb, driver_device, 0, ROT270, "Video System Co.", "Aero Fighters (Taiwan / Japan, set 2)", MACHINE_SUPPORTS_SAVE | MACHINE_NO_COCKTAIL )
-GAME( 1992, sonicwi,  aerofgt,  aerofgtb, aerofgtb, driver_device, 0, ROT270, "Video System Co.", "Sonic Wings (Japan)", MACHINE_SUPPORTS_SAVE | MACHINE_NO_COCKTAIL )
-GAME( 1992, aerfboot, aerofgt,  aerfboot, aerofgtb, driver_device, 0, ROT270, "bootleg",          "Aero Fighters (bootleg set 1)", MACHINE_SUPPORTS_SAVE | MACHINE_NO_COCKTAIL | MACHINE_IMPERFECT_SOUND )
-GAME( 1992, aerfboo2, aerofgt,  aerfboo2, aerofgtb, driver_device, 0, ROT270, "bootleg",          "Aero Fighters (bootleg set 2)", MACHINE_SUPPORTS_SAVE | MACHINE_NO_COCKTAIL | MACHINE_IMPERFECT_SOUND )
-=======
 ROM_START( kickball )
 	ROM_REGION( 0x100000, "maincpu", 0 )        /* 68000 Code */
 	ROM_LOAD16_BYTE( "kickball.1", 0x000000, 0x040000, CRC(f0fd971d) SHA1(b887196d9ff62403fd27e41ebda0a1d13215a456) )
@@ -3764,4 +3063,3 @@ GAME( 1992, aerofgtc, aerofgt,  aerofgtb, aerofgtb, aerofgt_state, 0,          R
 GAME( 1992, sonicwi,  aerofgt,  aerofgtb, aerofgtb, aerofgt_state, 0,          ROT270, "Video System Co.", "Sonic Wings (Japan)",                   MACHINE_SUPPORTS_SAVE )
 GAME( 1992, aerfboot, aerofgt,  aerfboot, aerofgtb, aerofgt_state, banked_oki, ROT270, "bootleg",          "Aero Fighters (bootleg set 1)",         MACHINE_SUPPORTS_SAVE | MACHINE_NO_COCKTAIL | MACHINE_IMPERFECT_SOUND )
 GAME( 1992, aerfboo2, aerofgt,  aerfboo2, aerofgtb, aerofgt_state, 0,          ROT270, "bootleg",          "Aero Fighters (bootleg set 2)",         MACHINE_SUPPORTS_SAVE | MACHINE_NO_COCKTAIL | MACHINE_IMPERFECT_SOUND )
->>>>>>> upstream/master

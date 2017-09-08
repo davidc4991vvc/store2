@@ -1,11 +1,6 @@
-<<<<<<< HEAD
-// license:???
-// copyright-holders:Lee Taylor, John Clegg
-=======
 // license:BSD-3-Clause
 // copyright-holders:Lee Taylor
 // thanks-to:John Clegg
->>>>>>> upstream/master
 /***************************************************************************
 
     Irem M58 hardware
@@ -16,12 +11,6 @@
 #include "video/resnet.h"
 #include "includes/m58.h"
 
-<<<<<<< HEAD
-#define SCROLL_PANEL_WIDTH  (14*4)
-#define RADAR_PALETTE_BASE  (256)
-
-=======
->>>>>>> upstream/master
 
 
 /*************************************
@@ -32,15 +21,6 @@
 
 PALETTE_INIT_MEMBER(m58_state, m58)
 {
-<<<<<<< HEAD
-	const UINT8 *color_prom = memregion("proms")->base();
-	const UINT8 *char_lopal = color_prom + 0x000;
-	const UINT8 *char_hipal = color_prom + 0x100;
-	const UINT8 *sprite_pal = color_prom + 0x200;
-	const UINT8 *sprite_table = color_prom + 0x220;
-	const UINT8 *radar_lopal = color_prom + 0x320;
-	const UINT8 *radar_hipal = color_prom + 0x420;
-=======
 	const uint8_t *color_prom = memregion("proms")->base();
 	const uint8_t *char_lopal = color_prom + 0x000;
 	const uint8_t *char_hipal = color_prom + 0x100;
@@ -48,7 +28,6 @@ PALETTE_INIT_MEMBER(m58_state, m58)
 	const uint8_t *sprite_table = color_prom + 0x220;
 	const uint8_t *radar_lopal = color_prom + 0x320;
 	const uint8_t *radar_hipal = color_prom + 0x420;
->>>>>>> upstream/master
 	static const int resistances_3[3] = { 1000, 470, 220 };
 	static const int resistances_2[2]  = { 470, 220 };
 	double weights_r[3], weights_g[3], weights_b[3], scale;
@@ -63,11 +42,7 @@ PALETTE_INIT_MEMBER(m58_state, m58)
 	/* character palette */
 	for (i = 0; i < 256; i++)
 	{
-<<<<<<< HEAD
-		UINT8 promval = (char_lopal[i] & 0x0f) | (char_hipal[i] << 4);
-=======
 		uint8_t promval = (char_lopal[i] & 0x0f) | (char_hipal[i] << 4);
->>>>>>> upstream/master
 		int r = combine_2_weights(weights_r, BIT(promval,6), BIT(promval,7));
 		int g = combine_3_weights(weights_g, BIT(promval,3), BIT(promval,4), BIT(promval,5));
 		int b = combine_3_weights(weights_b, BIT(promval,0), BIT(promval,1), BIT(promval,2));
@@ -78,11 +53,7 @@ PALETTE_INIT_MEMBER(m58_state, m58)
 	/* radar palette */
 	for (i = 0; i < 256; i++)
 	{
-<<<<<<< HEAD
-		UINT8 promval = (radar_lopal[i] & 0x0f) | (radar_hipal[i] << 4);
-=======
 		uint8_t promval = (radar_lopal[i] & 0x0f) | (radar_hipal[i] << 4);
->>>>>>> upstream/master
 		int r = combine_2_weights(weights_r, BIT(promval,6), BIT(promval,7));
 		int g = combine_3_weights(weights_g, BIT(promval,3), BIT(promval,4), BIT(promval,5));
 		int b = combine_3_weights(weights_b, BIT(promval,0), BIT(promval,1), BIT(promval,2));
@@ -99,11 +70,7 @@ PALETTE_INIT_MEMBER(m58_state, m58)
 	/* sprite palette */
 	for (i = 0; i < 16; i++)
 	{
-<<<<<<< HEAD
-		UINT8 promval = sprite_pal[i];
-=======
 		uint8_t promval = sprite_pal[i];
->>>>>>> upstream/master
 		int r = combine_2_weights(weights_r, BIT(promval,6), BIT(promval,7));
 		int g = combine_3_weights(weights_g, BIT(promval,3), BIT(promval,4), BIT(promval,5));
 		int b = combine_3_weights(weights_b, BIT(promval,0), BIT(promval,1), BIT(promval,2));
@@ -122,11 +89,7 @@ PALETTE_INIT_MEMBER(m58_state, m58)
 	/* sprite lookup table */
 	for (i = 0; i < 256; i++)
 	{
-<<<<<<< HEAD
-		UINT8 promval = sprite_table[i] & 0x0f;
-=======
 		uint8_t promval = sprite_table[i] & 0x0f;
->>>>>>> upstream/master
 		palette.set_pen_indirect(256+256+i, 256+256+promval);
 	}
 }
@@ -148,38 +111,23 @@ WRITE8_MEMBER(m58_state::videoram_w)
 
 WRITE8_MEMBER(m58_state::scroll_panel_w)
 {
-<<<<<<< HEAD
-	int sx,sy,i;
-
-	sx = ( offset % 16 );
-	sy = ( offset / 16 );
-=======
 	int sx = ( offset % 16 );
 	int sy = ( offset / 16 );
->>>>>>> upstream/master
 
 	if (sx < 1 || sx > 14)
 		return;
 
 	sx = 4 * (sx - 1);
 
-<<<<<<< HEAD
-	for (i = 0;i < 4;i++)
-=======
 	for (int i = 0;i < 4;i++)
->>>>>>> upstream/master
 	{
 		int col;
 
 		col = (data >> i) & 0x11;
 		col = ((col >> 3) | col) & 3;
 
-<<<<<<< HEAD
-		m_scroll_panel_bitmap.pix16(sy, sx + i) = RADAR_PALETTE_BASE + (sy & 0xfc) + col;
-=======
 		m_scroll_panel_bitmap.pix16(sy, sx + i) = 0x100 + (sy & 0xfc) + col;
 		m_scroll_panel_bitmap.pix16(sy, sx + i + 0x2c8) = 0x100 + (sy & 0xfc) + col; // for flipscreen
->>>>>>> upstream/master
 	}
 }
 
@@ -222,21 +170,9 @@ TILEMAP_MAPPER_MEMBER(m58_state::tilemap_scan_rows)
 
 void m58_state::video_start()
 {
-<<<<<<< HEAD
-	int width = m_screen->width();
-	int height = m_screen->height();
-	const rectangle &visarea = m_screen->visible_area();
-
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(m58_state::get_bg_tile_info),this), tilemap_mapper_delegate(FUNC(m58_state::tilemap_scan_rows),this),  8, 8, 64, 32);
-	m_bg_tilemap->set_scrolldx(visarea.min_x, width - (visarea.max_x + 1));
-	m_bg_tilemap->set_scrolldy(visarea.min_y - 8, height + 16 - (visarea.max_y + 1));
-
-	//m_scroll_panel_bitmap = auto_bitmap_ind16_alloc(machine(), SCROLL_PANEL_WIDTH, height);
-=======
 	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(m58_state::get_bg_tile_info),this), tilemap_mapper_delegate(FUNC(m58_state::tilemap_scan_rows),this), 8, 8, 64, 32);
 	m_bg_tilemap->set_scrolldy(32, 32);
 
->>>>>>> upstream/master
 	m_screen->register_screen_bitmap(m_scroll_panel_bitmap);
 	save_item(NAME(m_scroll_panel_bitmap));
 }
@@ -252,17 +188,10 @@ void m58_state::video_start()
 WRITE8_MEMBER(m58_state::flipscreen_w)
 {
 	/* screen flip is handled both by software and hardware */
-<<<<<<< HEAD
-	flip_screen_set((data & 0x01) ^ (~ioport("DSW2")->read() & 0x01));
-
-	coin_counter_w(machine(), 0, data & 0x02);
-	coin_counter_w(machine(), 1, data & 0x20);
-=======
 	flip_screen_set(BIT(data, 0) ^ BIT(~ioport("DSW2")->read(), 0));
 
 	machine().bookkeeping().coin_counter_w(0, data & 0x02);
 	machine().bookkeeping().coin_counter_w(1, data & 0x20);
->>>>>>> upstream/master
 }
 
 
@@ -273,22 +202,11 @@ WRITE8_MEMBER(m58_state::flipscreen_w)
  *
  *************************************/
 
-<<<<<<< HEAD
-#define DRAW_SPRITE(code, sy)  m_gfxdecode->gfx(1)->transmask(bitmap,cliprect, code, color, flipx, flipy, sx, sy, m_palette->transpen_mask(*m_gfxdecode->gfx(1), color, 512));
-
-void m58_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect )
-{
-	int offs;
-	const rectangle &visarea = m_screen->visible_area();
-
-	for (offs = m_spriteram.bytes() - 4; offs >= 0; offs -= 4)
-=======
 void m58_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect )
 {
 	const rectangle &visarea = m_screen->visible_area();
 
 	for (int offs = m_spriteram.bytes() - 4; offs >= 0; offs -= 4)
->>>>>>> upstream/master
 	{
 		int attr = m_spriteram[offs + 1];
 		int bank = (attr & 0x20) >> 5;
@@ -324,10 +242,6 @@ void m58_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect )
 			sy2 = sy1 + 0x10;
 		}
 
-<<<<<<< HEAD
-		DRAW_SPRITE(code1 + 256 * bank, visarea.min_y + sy1)
-		DRAW_SPRITE(code2 + 256 * bank, visarea.min_y + sy2)
-=======
 		m_gfxdecode->gfx(1)->transmask(bitmap, cliprect,
 			code1 + 256 * bank, color,
 			flipx, flipy, sx, visarea.min_y + sy1,
@@ -338,7 +252,6 @@ void m58_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect )
 			flipx, flipy, sx, visarea.min_y + sy2,
 			m_palette->transpen_mask(*m_gfxdecode->gfx(1), color, 512)
 		);
->>>>>>> upstream/master
 	}
 }
 
@@ -358,23 +271,14 @@ void m58_state::draw_panel( bitmap_ind16 &bitmap, const rectangle &cliprect )
 		const rectangle clippanelflip(0*8, 6*8-1, 1*8, 31*8-1);
 		rectangle clip = flip_screen() ? clippanelflip : clippanel;
 		const rectangle &visarea = m_screen->visible_area();
-<<<<<<< HEAD
-		int sx = flip_screen() ? cliprect.min_x - 8 : cliprect.max_x + 1 - SCROLL_PANEL_WIDTH;
-=======
 		int sx = flip_screen() ? cliprect.min_x - 8 : cliprect.max_x + 1 - 14*4;
->>>>>>> upstream/master
 		int yoffs = flip_screen() ? -40 : -16;
 
 		clip.min_y += visarea.min_y + yoffs;
 		clip.max_y += visarea.max_y + yoffs;
 		clip &= cliprect;
 
-<<<<<<< HEAD
-		copybitmap(bitmap, m_scroll_panel_bitmap, flip_screen(), flip_screen(),
-					sx, visarea.min_y + yoffs, clip);
-=======
 		copybitmap(bitmap, m_scroll_panel_bitmap, flip_screen(), flip_screen(), sx, visarea.min_y + yoffs, clip);
->>>>>>> upstream/master
 	}
 }
 
@@ -386,11 +290,7 @@ void m58_state::draw_panel( bitmap_ind16 &bitmap, const rectangle &cliprect )
  *
  *************************************/
 
-<<<<<<< HEAD
-UINT32 m58_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t m58_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	m_bg_tilemap->set_scrollx(0, (*m_scroll_x_high * 0x100) + *m_scroll_x_low);
 	m_bg_tilemap->set_scrolly(0, *m_scroll_y_low);

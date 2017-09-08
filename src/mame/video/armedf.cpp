@@ -115,17 +115,10 @@ VIDEO_START_MEMBER(armedf_state,terraf)
 {
 	m_sprite_offy = (m_scroll_type & 2 ) ? 0 : 128;  /* legion, legiono, crazy climber 2 */
 
-<<<<<<< HEAD
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(armedf_state::get_bg_tile_info),this), TILEMAP_SCAN_COLS, 16, 16, 64, 32);
-	m_fg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(armedf_state::get_fg_tile_info),this), TILEMAP_SCAN_COLS, 16, 16, 64, 32);
-
-	m_tx_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(armedf_state::get_nb1414m4_tx_tile_info),this),
-=======
 	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(armedf_state::get_bg_tile_info),this), TILEMAP_SCAN_COLS, 16, 16, 64, 32);
 	m_fg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(armedf_state::get_fg_tile_info),this), TILEMAP_SCAN_COLS, 16, 16, 64, 32);
 
 	m_tx_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(armedf_state::get_nb1414m4_tx_tile_info),this),
->>>>>>> upstream/master
 		(m_scroll_type == 2) ? tilemap_mapper_delegate(FUNC(armedf_state::armedf_scan_type3),this) : tilemap_mapper_delegate(FUNC(armedf_state::armedf_scan_type2),this), 8, 8, 64, 32);
 
 	m_bg_tilemap->set_transparent_pen(0xf);
@@ -135,34 +128,20 @@ VIDEO_START_MEMBER(armedf_state,terraf)
 	if (m_scroll_type != 1)
 		m_tx_tilemap->set_scrollx(0, -128);
 
-<<<<<<< HEAD
-	m_text_videoram = auto_alloc_array(machine(), UINT8, 0x1000);
-	memset(m_text_videoram, 0x00, 0x1000);
-
-	save_pointer(NAME(m_text_videoram), 0x1000);
-=======
 	m_text_videoram = std::make_unique<uint8_t[]>(0x1000);
 	memset(m_text_videoram.get(), 0x00, 0x1000);
 
 	save_pointer(NAME(m_text_videoram.get()), 0x1000);
->>>>>>> upstream/master
 }
 
 VIDEO_START_MEMBER(armedf_state,armedf)
 {
 	m_sprite_offy = (m_scroll_type & 2 ) ? 0 : 128;  /* legion, legiono, crazy climber 2 */
 
-<<<<<<< HEAD
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(armedf_state::get_bg_tile_info),this), TILEMAP_SCAN_COLS, 16, 16, 64, 32);
-	m_fg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(armedf_state::get_fg_tile_info),this), TILEMAP_SCAN_COLS, 16, 16, 64, 32);
-
-	m_tx_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(armedf_state::get_armedf_tx_tile_info),this), tilemap_mapper_delegate(FUNC(armedf_state::armedf_scan_type1),this), 8, 8, 64, 32);
-=======
 	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(armedf_state::get_bg_tile_info),this), TILEMAP_SCAN_COLS, 16, 16, 64, 32);
 	m_fg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(armedf_state::get_fg_tile_info),this), TILEMAP_SCAN_COLS, 16, 16, 64, 32);
 
 	m_tx_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(armedf_state::get_armedf_tx_tile_info),this), tilemap_mapper_delegate(FUNC(armedf_state::armedf_scan_type1),this), 8, 8, 64, 32);
->>>>>>> upstream/master
 
 	m_bg_tilemap->set_transparent_pen(0xf);
 	m_fg_tilemap->set_transparent_pen(0xf);
@@ -171,17 +150,10 @@ VIDEO_START_MEMBER(armedf_state,armedf)
 	if (m_scroll_type != 1)
 		m_tx_tilemap->set_scrollx(0, -128);
 
-<<<<<<< HEAD
-	m_text_videoram = auto_alloc_array(machine(), UINT8, 0x1000);
-	memset(m_text_videoram, 0x00, 0x1000);
-
-	save_pointer(NAME(m_text_videoram), 0x1000);
-=======
 	m_text_videoram = std::make_unique<uint8_t[]>(0x1000);
 	memset(m_text_videoram.get(), 0x00, 0x1000);
 
 	save_pointer(NAME(m_text_videoram.get()), 0x1000);
->>>>>>> upstream/master
 }
 
 /***************************************************************************
@@ -287,19 +259,11 @@ WRITE16_MEMBER(armedf_state::armedf_bg_scrolly_w)
 
 /* custom code to handle color cycling effect, handled by m_spr_pal_clut */
 void armedf_state::armedf_drawgfx(bitmap_ind16 &dest_bmp,const rectangle &clip,gfx_element *gfx,
-<<<<<<< HEAD
-							UINT32 code,UINT32 color, UINT32 clut,int flipx,int flipy,int offsx,int offsy,
-							int transparent_color)
-{
-	const pen_t *pal = &m_palette->pen(gfx->colorbase() + gfx->granularity() * (color % gfx->colors()));
-	const UINT8 *source_base = gfx->get_data(code % gfx->elements());
-=======
 							uint32_t code,uint32_t color, uint32_t clut,int flipx,int flipy,int offsx,int offsy,
 							int transparent_color)
 {
 	const pen_t *pal = &m_palette->pen(gfx->colorbase() + gfx->granularity() * (color % gfx->colors()));
 	const uint8_t *source_base = gfx->get_data(code % gfx->elements());
->>>>>>> upstream/master
 	int x_index_base, y_index, sx, sy, ex, ey;
 	int xinc, yinc;
 
@@ -346,13 +310,8 @@ void armedf_state::armedf_drawgfx(bitmap_ind16 &dest_bmp,const rectangle &clip,g
 		{
 			for (y = sy; y < ey; y++)
 			{
-<<<<<<< HEAD
-				const UINT8 *source = source_base + y_index*gfx->rowbytes();
-				UINT16 *dest = &dest_bmp.pix16(y);
-=======
 				const uint8_t *source = source_base + y_index*gfx->rowbytes();
 				uint16_t *dest = &dest_bmp.pix16(y);
->>>>>>> upstream/master
 				int x_index = x_index_base;
 				for (x = sx; x < ex; x++)
 				{
@@ -371,11 +330,7 @@ void armedf_state::armedf_drawgfx(bitmap_ind16 &dest_bmp,const rectangle &clip,g
 
 void armedf_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect, int priority )
 {
-<<<<<<< HEAD
-	UINT16 *buffered_spriteram = m_spriteram->buffer();
-=======
 	uint16_t *buffered_spriteram = m_spriteram->buffer();
->>>>>>> upstream/master
 	int offs;
 
 	for (offs = 0; offs < m_spriteram->bytes() / 2; offs += 4)
@@ -407,11 +362,7 @@ void armedf_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect
 	}
 }
 
-<<<<<<< HEAD
-UINT32 armedf_state::screen_update_armedf(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t armedf_state::screen_update_armedf(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int sprite_enable = m_vreg & 0x200;
 

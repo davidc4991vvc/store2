@@ -9,17 +9,10 @@
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __ASAP_H__
-#define __ASAP_H__
-=======
 #ifndef MAME_CPU_ASAP_ASAP_H
 #define MAME_CPU_ASAP_ASAP_H
 
 #pragma once
->>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -33,49 +26,11 @@ class asap_device : public cpu_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	asap_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-=======
 	asap_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
->>>>>>> upstream/master
 
 	// public interfaces
 
 protected:
-<<<<<<< HEAD
-	// device-level overrides
-	virtual void device_start();
-	virtual void device_reset();
-
-	// device_execute_interface overrides
-	virtual UINT32 execute_min_cycles() const;
-	virtual UINT32 execute_max_cycles() const;
-	virtual UINT32 execute_input_lines() const;
-	virtual void execute_run();
-	virtual void execute_set_input(int inputnum, int state);
-
-	// device_memory_interface overrides
-	virtual const address_space_config *memory_space_config(address_spacenum spacenum = AS_0) const;
-
-	// device_state_interface overrides
-	virtual void state_import(const device_state_entry &entry);
-	virtual void state_export(const device_state_entry &entry);
-	virtual void state_string_export(const device_state_entry &entry, std::string &str);
-
-	// device_disasm_interface overrides
-	virtual UINT32 disasm_min_opcode_bytes() const;
-	virtual UINT32 disasm_max_opcode_bytes() const;
-	virtual offs_t disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options);
-
-	// helpers
-	inline UINT32 readop(offs_t pc);
-	inline UINT8 readbyte(offs_t address);
-	inline UINT16 readword(offs_t address);
-	inline UINT32 readlong(offs_t address);
-	inline void writebyte(offs_t address, UINT8 data);
-	inline void writeword(offs_t address, UINT16 data);
-	inline void writelong(offs_t address, UINT32 data);
-=======
 	enum
 	{
 		ASAP_PC = 1,
@@ -146,7 +101,6 @@ protected:
 	inline void writebyte(offs_t address, uint8_t data);
 	inline void writeword(offs_t address, uint16_t data);
 	inline void writelong(offs_t address, uint32_t data);
->>>>>>> upstream/master
 	inline void generate_exception(int exception);
 	inline void check_irqs();
 	inline void fetch_instruction();
@@ -269,23 +223,6 @@ protected:
 
 	// internal state
 	const address_space_config      m_program_config;
-<<<<<<< HEAD
-	UINT32              m_pc;
-
-	// expanded flags
-	UINT32              m_pflag;
-	UINT32              m_iflag;
-	UINT32              m_cflag;
-	UINT32              m_vflag;
-	UINT32              m_znflag;
-	UINT32              m_flagsio;
-
-	// internal stuff
-	UINT32              m_op;
-	UINT32              m_ppc;
-	UINT32              m_nextpc;
-	UINT8               m_irq_state;
-=======
 	uint32_t              m_pc;
 
 	// expanded flags
@@ -301,17 +238,12 @@ protected:
 	uint32_t              m_ppc;
 	uint32_t              m_nextpc;
 	uint8_t               m_irq_state;
->>>>>>> upstream/master
 	int                 m_icount;
 	address_space *     m_program;
 	direct_read_data *  m_direct;
 
 	// src2val table, registers are at the end
-<<<<<<< HEAD
-	UINT32              m_src2val[65536];
-=======
 	uint32_t              m_src2val[65536];
->>>>>>> upstream/master
 
 	// opcode/condition tables
 	typedef void (asap_device::*ophandler)();
@@ -328,48 +260,6 @@ protected:
 //  ENUMERATIONS
 //**************************************************************************
 
-<<<<<<< HEAD
-// registers
-enum
-{
-	ASAP_PC = 1,
-	ASAP_PS,
-	ASAP_R0,
-	ASAP_R1,
-	ASAP_R2,
-	ASAP_R3,
-	ASAP_R4,
-	ASAP_R5,
-	ASAP_R6,
-	ASAP_R7,
-	ASAP_R8,
-	ASAP_R9,
-	ASAP_R10,
-	ASAP_R11,
-	ASAP_R12,
-	ASAP_R13,
-	ASAP_R14,
-	ASAP_R15,
-	ASAP_R16,
-	ASAP_R17,
-	ASAP_R18,
-	ASAP_R19,
-	ASAP_R20,
-	ASAP_R21,
-	ASAP_R22,
-	ASAP_R23,
-	ASAP_R24,
-	ASAP_R25,
-	ASAP_R26,
-	ASAP_R27,
-	ASAP_R28,
-	ASAP_R29,
-	ASAP_R30,
-	ASAP_R31
-};
-
-=======
->>>>>>> upstream/master
 // input lines
 enum
 {
@@ -379,13 +269,6 @@ enum
 
 
 // device type definition
-<<<<<<< HEAD
-extern const device_type ASAP;
-
-
-#endif /* __ASAP_H__ */
-=======
 DECLARE_DEVICE_TYPE(ASAP, asap_device)
 
 #endif // MAME_CPU_ASAP_ASAP_H
->>>>>>> upstream/master

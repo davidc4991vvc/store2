@@ -11,18 +11,11 @@
 
 *********************************************************************/
 
-<<<<<<< HEAD
-#ifndef __MC146818_H__
-#define __MC146818_H__
-
-#include "emu.h"
-=======
 #ifndef MAME_MACHINE_MC146818_H
 #define MAME_MACHINE_MC146818_H
 
 #pragma once
 
->>>>>>> upstream/master
 
 //**************************************************************************
 //  INTERFACE CONFIGURATION MACROS
@@ -32,11 +25,7 @@
 	MCFG_DEVICE_ADD(_tag, MC146818, _xtal)
 
 #define MCFG_MC146818_IRQ_HANDLER(_irq) \
-<<<<<<< HEAD
-	downcast<mc146818_device *>(device)->set_irq_callback(DEVCB_##_irq);
-=======
 	devcb = &mc146818_device::set_irq_callback(*device, DEVCB_##_irq);
->>>>>>> upstream/master
 
 // The MC146818 doesn't have century support, but when syncing the date & time at startup we can optionally store the century.
 #define MCFG_MC146818_CENTURY_INDEX(_century_index) \
@@ -69,18 +58,10 @@ class mc146818_device : public device_t,
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	mc146818_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-	mc146818_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source);
-
-	// callbacks
-	template<class _irq> void set_irq_callback(_irq irq) { m_write_irq.set_callback(irq); }
-=======
 	mc146818_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	// callbacks
 	template <class Object> static devcb_base &set_irq_callback(device_t &device, Object &&cb) { return downcast<mc146818_device &>(device).m_write_irq.set_callback(std::forward<Object>(cb)); }
->>>>>>> upstream/master
 	void set_century_index(int century_index) { m_century_index = century_index; }
 	void set_use_utc(bool use_utc) { m_use_utc = use_utc; }
 	void set_binary(bool binary) { m_binary = binary; }
@@ -93,20 +74,6 @@ public:
 	DECLARE_WRITE8_MEMBER( write );
 
 protected:
-<<<<<<< HEAD
-	// device-level overrides
-	virtual void device_start();
-	virtual void device_reset();
-	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
-
-	// device_nvram_interface overrides
-	virtual void nvram_default();
-	virtual void nvram_read(emu_file &file);
-	virtual void nvram_write(emu_file &file);
-
-	static const unsigned char ALARM_DONTCARE = 0xc0;
-	static const unsigned char HOURS_PM = 0x80;
-=======
 	mc146818_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock);
 
 	// device-level overrides
@@ -121,7 +88,6 @@ protected:
 
 	static constexpr unsigned char ALARM_DONTCARE = 0xc0;
 	static constexpr unsigned char HOURS_PM = 0x80;
->>>>>>> upstream/master
 
 	virtual int data_size() { return 64; }
 
@@ -203,19 +169,12 @@ private:
 	int get_year();
 	void set_year(int year);
 
-<<<<<<< HEAD
-	// internal state
-
-	UINT8           m_index;
-	dynamic_buffer  m_data;
-=======
 	optional_memory_region m_region;
 
 	// internal state
 
 	uint8_t           m_index;
 	std::vector<uint8_t>  m_data;
->>>>>>> upstream/master
 
 	attotime        m_last_refresh;
 
@@ -232,13 +191,6 @@ private:
 
 
 // device type definition
-<<<<<<< HEAD
-extern const device_type MC146818;
-
-
-#endif /* __MC146818_H__ */
-=======
 DECLARE_DEVICE_TYPE(MC146818, mc146818_device)
 
 #endif // MAME_MACHINE_MC146818_H
->>>>>>> upstream/master

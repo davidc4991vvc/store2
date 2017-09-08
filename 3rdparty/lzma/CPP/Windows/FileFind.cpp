@@ -2,28 +2,18 @@
 
 #include "StdAfx.h"
 
-<<<<<<< HEAD
-#include "FileFind.h"
-#include "FileIO.h"
-=======
->>>>>>> upstream/master
 #ifndef _UNICODE
 #include "../Common/StringConvert.h"
 #endif
 
-<<<<<<< HEAD
-=======
 #include "FileFind.h"
 #include "FileIO.h"
 #include "FileName.h"
 
->>>>>>> upstream/master
 #ifndef _UNICODE
 extern bool g_IsNT;
 #endif
 
-<<<<<<< HEAD
-=======
 using namespace NWindows;
 using namespace NFile;
 using namespace NName;
@@ -53,36 +43,18 @@ EXTERN_C_END
 
 #endif
 
->>>>>>> upstream/master
 namespace NWindows {
 namespace NFile {
 
 #ifdef SUPPORT_DEVICE_FILE
-<<<<<<< HEAD
-bool IsDeviceName(CFSTR n);
-#endif
-
-#if defined(WIN_LONG_PATH)
-bool GetLongPath(CFSTR fileName, UString &res);
-=======
 namespace NSystem
 {
 bool MyGetDiskFreeSpace(CFSTR rootPath, UInt64 &clusterSize, UInt64 &totalSize, UInt64 &freeSize);
 }
->>>>>>> upstream/master
 #endif
 
 namespace NFind {
 
-<<<<<<< HEAD
-bool CFileInfo::IsDots() const
-{
-  if (!IsDir() || Name.IsEmpty())
-    return false;
-  if (Name[0] != FTEXT('.'))
-    return false;
-  return Name.Length() == 1 || (Name.Length() == 2 && Name[1] == FTEXT('.'));
-=======
 bool CFileInfo::IsDots() const throw()
 {
   if (!IsDir() || Name.IsEmpty())
@@ -90,7 +62,6 @@ bool CFileInfo::IsDots() const throw()
   if (Name[0] != '.')
     return false;
   return Name.Len() == 1 || (Name.Len() == 2 && Name[1] == '.');
->>>>>>> upstream/master
 }
 
 #define WIN_FD_TO_MY_FI(fi, fd) \
@@ -99,10 +70,7 @@ bool CFileInfo::IsDots() const throw()
   fi.ATime = fd.ftLastAccessTime; \
   fi.MTime = fd.ftLastWriteTime; \
   fi.Size = (((UInt64)fd.nFileSizeHigh) << 32) + fd.nFileSizeLow; \
-<<<<<<< HEAD
-=======
   fi.IsAltStream = false; \
->>>>>>> upstream/master
   fi.IsDevice = false;
 
   /*
@@ -113,12 +81,6 @@ bool CFileInfo::IsDots() const throw()
   #endif
   */
 
-<<<<<<< HEAD
-static void ConvertWIN32_FIND_DATA_To_FileInfo(const WIN32_FIND_DATAW &fd, CFileInfo &fi)
-{
-  WIN_FD_TO_MY_FI(fi, fd);
-  fi.Name = us2fs(fd.cFileName);
-=======
 static void Convert_WIN32_FIND_DATA_to_FileInfo(const WIN32_FIND_DATAW &fd, CFileInfo &fi)
 {
   WIN_FD_TO_MY_FI(fi, fd);
@@ -126,19 +88,10 @@ static void Convert_WIN32_FIND_DATA_to_FileInfo(const WIN32_FIND_DATAW &fd, CFil
   #if defined(_WIN32) && !defined(UNDER_CE)
   // fi.ShortName = us2fs(fd.cAlternateFileName);
   #endif
->>>>>>> upstream/master
 }
 
 #ifndef _UNICODE
 
-<<<<<<< HEAD
-static inline UINT GetCurrentCodePage() { return ::AreFileApisANSI() ? CP_ACP : CP_OEMCP; }
-
-static void ConvertWIN32_FIND_DATA_To_FileInfo(const WIN32_FIND_DATA &fd, CFileInfo &fi)
-{
-  WIN_FD_TO_MY_FI(fi, fd);
-  fi.Name = fas2fs(fd.cFileName);
-=======
 static void Convert_WIN32_FIND_DATA_to_FileInfo(const WIN32_FIND_DATA &fd, CFileInfo &fi)
 {
   WIN_FD_TO_MY_FI(fi, fd);
@@ -146,18 +99,13 @@ static void Convert_WIN32_FIND_DATA_to_FileInfo(const WIN32_FIND_DATA &fd, CFile
   #if defined(_WIN32) && !defined(UNDER_CE)
   // fi.ShortName = fas2fs(fd.cAlternateFileName);
   #endif
->>>>>>> upstream/master
 }
 #endif
   
 ////////////////////////////////
 // CFindFile
 
-<<<<<<< HEAD
-bool CFindFile::Close()
-=======
 bool CFindFileBase::Close() throw()
->>>>>>> upstream/master
 {
   if (_handle == INVALID_HANDLE_VALUE)
     return true;
@@ -167,9 +115,6 @@ bool CFindFileBase::Close() throw()
   return true;
 }
 
-<<<<<<< HEAD
-bool CFindFile::FindFirst(CFSTR wildcard, CFileInfo &fi)
-=======
 /*
 WinXP-64 FindFirstFile():
   ""      -  ERROR_PATH_NOT_FOUND
@@ -202,7 +147,6 @@ WinXP-64 FindFirstFile():
 */
 
 bool CFindFile::FindFirst(CFSTR path, CFileInfo &fi)
->>>>>>> upstream/master
 {
   if (!Close())
     return false;
@@ -210,31 +154,15 @@ bool CFindFile::FindFirst(CFSTR path, CFileInfo &fi)
   if (!g_IsNT)
   {
     WIN32_FIND_DATAA fd;
-<<<<<<< HEAD
-    _handle = ::FindFirstFileA(fs2fas(wildcard), &fd);
-    if (_handle == INVALID_HANDLE_VALUE)
-      return false;
-    ConvertWIN32_FIND_DATA_To_FileInfo(fd, fi);
-=======
     _handle = ::FindFirstFileA(fs2fas(path), &fd);
     if (_handle == INVALID_HANDLE_VALUE)
       return false;
     Convert_WIN32_FIND_DATA_to_FileInfo(fd, fi);
->>>>>>> upstream/master
   }
   else
   #endif
   {
     WIN32_FIND_DATAW fd;
-<<<<<<< HEAD
-    _handle = ::FindFirstFileW(fs2us(wildcard), &fd);
-    #ifdef WIN_LONG_PATH
-    if (_handle == INVALID_HANDLE_VALUE)
-    {
-      UString longPath;
-      if (GetLongPath(wildcard, longPath))
-        _handle = ::FindFirstFileW(longPath, &fd);
-=======
 
     IF_USE_MAIN_PATH
       _handle = ::FindFirstFileW(fs2us(path), &fd);
@@ -244,16 +172,11 @@ bool CFindFile::FindFirst(CFSTR path, CFileInfo &fi)
       UString superPath;
       if (GetSuperPath(path, superPath, USE_MAIN_PATH))
         _handle = ::FindFirstFileW(superPath, &fd);
->>>>>>> upstream/master
     }
     #endif
     if (_handle == INVALID_HANDLE_VALUE)
       return false;
-<<<<<<< HEAD
-    ConvertWIN32_FIND_DATA_To_FileInfo(fd, fi);
-=======
     Convert_WIN32_FIND_DATA_to_FileInfo(fd, fi);
->>>>>>> upstream/master
   }
   return true;
 }
@@ -266,11 +189,7 @@ bool CFindFile::FindNext(CFileInfo &fi)
     WIN32_FIND_DATAA fd;
     if (!::FindNextFileA(_handle, &fd))
       return false;
-<<<<<<< HEAD
-    ConvertWIN32_FIND_DATA_To_FileInfo(fd, fi);
-=======
     Convert_WIN32_FIND_DATA_to_FileInfo(fd, fi);
->>>>>>> upstream/master
   }
   else
   #endif
@@ -278,9 +197,6 @@ bool CFindFile::FindNext(CFileInfo &fi)
     WIN32_FIND_DATAW fd;
     if (!::FindNextFileW(_handle, &fd))
       return false;
-<<<<<<< HEAD
-    ConvertWIN32_FIND_DATA_To_FileInfo(fd, fi);
-=======
     Convert_WIN32_FIND_DATA_to_FileInfo(fd, fi);
   }
   return true;
@@ -381,16 +297,10 @@ bool CFindStream::FindFirst(CFSTR path, CStreamInfo &si)
     if (_handle == INVALID_HANDLE_VALUE)
       return false;
     Convert_WIN32_FIND_STREAM_DATA_to_StreamInfo(sd, si);
->>>>>>> upstream/master
   }
   return true;
 }
 
-<<<<<<< HEAD
-#define MY_CLEAR_FILETIME(ft) ft.dwLowDateTime = ft.dwHighDateTime = 0;
-
-void CFileInfoBase::Clear()
-=======
 bool CFindStream::FindNext(CStreamInfo &si)
 {
   if (!g_FindNextStreamW)
@@ -429,77 +339,12 @@ bool CStreamEnumerator::Next(CStreamInfo &si, bool &found)
 #define MY_CLEAR_FILETIME(ft) ft.dwLowDateTime = ft.dwHighDateTime = 0;
 
 void CFileInfoBase::ClearBase() throw()
->>>>>>> upstream/master
 {
   Size = 0;
   MY_CLEAR_FILETIME(CTime);
   MY_CLEAR_FILETIME(ATime);
   MY_CLEAR_FILETIME(MTime);
   Attrib = 0;
-<<<<<<< HEAD
-}
-  
-bool CFileInfo::Find(CFSTR wildcard)
-{
-  #ifdef SUPPORT_DEVICE_FILE
-  if (IsDeviceName(wildcard))
-  {
-    Clear();
-    IsDevice = true;
-    NIO::CInFile inFile;
-    if (!inFile.Open(wildcard))
-      return false;
-    Name = wildcard + 4;
-    if (inFile.LengthDefined)
-      Size = inFile.Length;
-    return true;
-  }
-  #endif
-  CFindFile finder;
-  if (finder.FindFirst(wildcard, *this))
-    return true;
-  #ifdef _WIN32
-  {
-    DWORD lastError = GetLastError();
-    if (lastError == ERROR_BAD_NETPATH || lastError == ERROR_FILE_NOT_FOUND)
-    {
-      int len = MyStringLen(wildcard);
-      if (len > 2 && wildcard[0] == '\\' && wildcard[1] == '\\')
-      {
-        int pos = FindCharPosInString(wildcard + 2, FTEXT('\\'));
-        if (pos >= 0)
-        {
-          pos += 2 + 1;
-          len -= pos;
-          CFSTR remString = wildcard + pos;
-          int pos2 = FindCharPosInString(remString, FTEXT('\\'));
-          FString s = wildcard;
-          if (pos2 < 0 || pos2 == len - 1)
-          {
-            FString s = wildcard;
-            if (pos2 < 0)
-            {
-              pos2 = len;
-              s += FTEXT('\\');
-            }
-            s += FCHAR_ANY_MASK;
-            if (finder.FindFirst(s, *this))
-              if (Name == FTEXT("."))
-              {
-                Name = s.Mid(pos, pos2);
-                return true;
-              }
-            ::SetLastError(lastError);
-          }
-        }
-      }
-    }
-  }
-  #endif
-  return false;
-}
-
-=======
   IsAltStream = false;
   IsDevice = false;
 }
@@ -754,7 +599,6 @@ bool CFileInfo::Find(CFSTR path)
 }
 
 
->>>>>>> upstream/master
 bool DoesFileExist(CFSTR name)
 {
   CFileInfo fi;
@@ -766,20 +610,14 @@ bool DoesDirExist(CFSTR name)
   CFileInfo fi;
   return fi.Find(name) && fi.IsDir();
 }
-<<<<<<< HEAD
-=======
 
->>>>>>> upstream/master
 bool DoesFileOrDirExist(CFSTR name)
 {
   CFileInfo fi;
   return fi.Find(name);
 }
 
-<<<<<<< HEAD
-=======
 
->>>>>>> upstream/master
 bool CEnumerator::NextAny(CFileInfo &fi)
 {
   if (_findFile.IsHandleAllocated())
@@ -814,11 +652,7 @@ bool CEnumerator::Next(CFileInfo &fi, bool &found)
 // CFindChangeNotification
 // FindFirstChangeNotification can return 0. MSDN doesn't tell about it.
 
-<<<<<<< HEAD
-bool CFindChangeNotification::Close()
-=======
 bool CFindChangeNotification::Close() throw()
->>>>>>> upstream/master
 {
   if (!IsHandleAllocated())
     return true;
@@ -828,23 +662,6 @@ bool CFindChangeNotification::Close() throw()
   return true;
 }
            
-<<<<<<< HEAD
-HANDLE CFindChangeNotification::FindFirst(CFSTR pathName, bool watchSubtree, DWORD notifyFilter)
-{
-  #ifndef _UNICODE
-  if (!g_IsNT)
-    _handle = ::FindFirstChangeNotification(fs2fas(pathName), BoolToBOOL(watchSubtree), notifyFilter);
-  else
-  #endif
-  {
-    _handle = ::FindFirstChangeNotificationW(fs2us(pathName), BoolToBOOL(watchSubtree), notifyFilter);
-    #ifdef WIN_LONG_PATH
-    if (!IsHandleAllocated())
-    {
-      UString longPath;
-      if (GetLongPath(pathName, longPath))
-        _handle = ::FindFirstChangeNotificationW(longPath, BoolToBOOL(watchSubtree), notifyFilter);
-=======
 HANDLE CFindChangeNotification::FindFirst(CFSTR path, bool watchSubtree, DWORD notifyFilter)
 {
   #ifndef _UNICODE
@@ -861,7 +678,6 @@ HANDLE CFindChangeNotification::FindFirst(CFSTR path, bool watchSubtree, DWORD n
       UString superPath;
       if (GetSuperPath(path, superPath, USE_MAIN_PATH))
         _handle = ::FindFirstChangeNotificationW(superPath, BoolToBOOL(watchSubtree), notifyFilter);
->>>>>>> upstream/master
     }
     #endif
   }
@@ -880,25 +696,6 @@ bool MyGetLogicalDriveStrings(CObjectVector<FString> &driveStrings)
     UINT32 size = GetLogicalDriveStrings(0, NULL);
     if (size == 0)
       return false;
-<<<<<<< HEAD
-    AString buf;
-    UINT32 newSize = GetLogicalDriveStrings(size, buf.GetBuffer(size));
-    if (newSize == 0 || newSize > size)
-      return false;
-    AString s;
-    for (UINT32 i = 0; i < newSize; i++)
-    {
-      char c = buf[i];
-      if (c == '\0')
-      {
-        driveStrings.Add(fas2fs(s));
-        s.Empty();
-      }
-      else
-        s += c;
-    }
-    return s.IsEmpty();
-=======
     CObjArray<char> buf(size);
     UINT32 newSize = GetLogicalDriveStrings(size, buf);
     if (newSize == 0 || newSize > size)
@@ -915,7 +712,6 @@ bool MyGetLogicalDriveStrings(CObjectVector<FString> &driveStrings)
       }
     }
     return prev == newSize;
->>>>>>> upstream/master
   }
   else
   #endif
@@ -923,25 +719,6 @@ bool MyGetLogicalDriveStrings(CObjectVector<FString> &driveStrings)
     UINT32 size = GetLogicalDriveStringsW(0, NULL);
     if (size == 0)
       return false;
-<<<<<<< HEAD
-    UString buf;
-    UINT32 newSize = GetLogicalDriveStringsW(size, buf.GetBuffer(size));
-    if (newSize == 0 || newSize > size)
-      return false;
-    UString s;
-    for (UINT32 i = 0; i < newSize; i++)
-    {
-      WCHAR c = buf[i];
-      if (c == L'\0')
-      {
-        driveStrings.Add(us2fs(s));
-        s.Empty();
-      }
-      else
-        s += c;
-    }
-    return s.IsEmpty();
-=======
     CObjArray<wchar_t> buf(size);
     UINT32 newSize = GetLogicalDriveStringsW(size, buf);
     if (newSize == 0 || newSize > size)
@@ -958,7 +735,6 @@ bool MyGetLogicalDriveStrings(CObjectVector<FString> &driveStrings)
       }
     }
     return prev == newSize;
->>>>>>> upstream/master
   }
 }
 

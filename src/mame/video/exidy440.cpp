@@ -44,14 +44,6 @@ VIDEO_START_MEMBER(exidy440_state,exidy440)
 	m_firq_beam = 0;
 
 	/* allocate a buffer for VRAM */
-<<<<<<< HEAD
-	m_local_videoram = auto_alloc_array(machine(), UINT8, 256 * 256 * 2);
-	memset(m_local_videoram, 0, 256 * 256 * 2);
-
-	/* allocate a buffer for palette RAM */
-	m_local_paletteram = auto_alloc_array(machine(), UINT8, 512 * 2);
-	memset(m_local_paletteram, 0, 512 * 2);
-=======
 	m_local_videoram = std::make_unique<uint8_t[]>(256 * 256 * 2);
 	memset(m_local_videoram.get(), 0, 256 * 256 * 2);
 
@@ -60,7 +52,6 @@ VIDEO_START_MEMBER(exidy440_state,exidy440)
 	memset(m_local_paletteram.get(), 0, 512 * 2);
 
 	m_collide_firq_timer = machine().scheduler().timer_alloc(timer_expired_delegate(FUNC(exidy440_state::collide_firq_callback), this));
->>>>>>> upstream/master
 }
 
 
@@ -68,11 +59,7 @@ VIDEO_START_MEMBER(exidy440_state,topsecex)
 {
 	VIDEO_START_CALL_MEMBER(exidy440);
 
-<<<<<<< HEAD
-	*m_topsecex_yscroll = 0;
-=======
 	m_topsecex_yscroll = 0;
->>>>>>> upstream/master
 }
 
 
@@ -85,11 +72,7 @@ VIDEO_START_MEMBER(exidy440_state,topsecex)
 
 READ8_MEMBER(exidy440_state::exidy440_videoram_r)
 {
-<<<<<<< HEAD
-	UINT8 *base = &m_local_videoram[(*m_scanline * 256 + offset) * 2];
-=======
 	uint8_t *base = &m_local_videoram[(*m_scanline * 256 + offset) * 2];
->>>>>>> upstream/master
 
 	/* combine the two pixel values into one byte */
 	return (base[0] << 4) | base[1];
@@ -98,11 +81,7 @@ READ8_MEMBER(exidy440_state::exidy440_videoram_r)
 
 WRITE8_MEMBER(exidy440_state::exidy440_videoram_w)
 {
-<<<<<<< HEAD
-	UINT8 *base = &m_local_videoram[(*m_scanline * 256 + offset) * 2];
-=======
 	uint8_t *base = &m_local_videoram[(*m_scanline * 256 + offset) * 2];
->>>>>>> upstream/master
 
 	/* expand the two pixel values into two bytes */
 	base[0] = (data >> 4) & 15;
@@ -310,19 +289,11 @@ TIMER_CALLBACK_MEMBER(exidy440_state::collide_firq_callback)
 void exidy440_state::draw_sprites(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int scroll_offset, int check_collision)
 {
 	/* get a pointer to the palette to look for collision flags */
-<<<<<<< HEAD
-	UINT8 *palette = &m_local_paletteram[m_palettebank_vis * 512];
-	int count = 0;
-
-	/* draw the sprite images, checking for collisions along the way */
-	UINT8 *sprite = m_spriteram + (SPRITE_COUNT - 1) * 4;
-=======
 	uint8_t *palette = &m_local_paletteram[m_palettebank_vis * 512];
 	int count = 0;
 
 	/* draw the sprite images, checking for collisions along the way */
 	uint8_t *sprite = m_spriteram + (SPRITE_COUNT - 1) * 4;
->>>>>>> upstream/master
 
 	for (int i = 0; i < SPRITE_COUNT; i++, sprite -= 4)
 	{
@@ -330,11 +301,7 @@ void exidy440_state::draw_sprites(screen_device &screen, bitmap_ind16 &bitmap, c
 		int xoffs = (~((sprite[1] << 8) | sprite[2]) & 0x1ff);
 		int yoffs = (~sprite[0] & 0xff) + 1;
 		int x, y, sy;
-<<<<<<< HEAD
-		UINT8 *src;
-=======
 		uint8_t *src;
->>>>>>> upstream/master
 
 		/* skip if out of range */
 		if (yoffs < cliprect.min_y || yoffs >= cliprect.max_y + 16)
@@ -364,11 +331,7 @@ void exidy440_state::draw_sprites(screen_device &screen, bitmap_ind16 &bitmap, c
 			/* only draw scanlines that are in this cliprect */
 			if (yoffs <= cliprect.max_y)
 			{
-<<<<<<< HEAD
-				UINT8 *old = &m_local_videoram[sy * 512 + xoffs];
-=======
 				uint8_t *old = &m_local_videoram[sy * 512 + xoffs];
->>>>>>> upstream/master
 				int currx = xoffs;
 
 				/* loop over x */
@@ -388,11 +351,7 @@ void exidy440_state::draw_sprites(screen_device &screen, bitmap_ind16 &bitmap, c
 
 						/* check the collisions bit */
 						if (check_collision && (palette[2 * pen] & 0x80) && (count++ < 128))
-<<<<<<< HEAD
-							screen.machine().scheduler().timer_set(screen.time_until_pos(yoffs, currx), timer_expired_delegate(FUNC(exidy440_state::collide_firq_callback), this), currx);
-=======
 							m_collide_firq_timer->adjust(screen.time_until_pos(yoffs, currx), currx);
->>>>>>> upstream/master
 					}
 					currx++;
 
@@ -405,11 +364,7 @@ void exidy440_state::draw_sprites(screen_device &screen, bitmap_ind16 &bitmap, c
 
 						/* check the collisions bit */
 						if (check_collision && (palette[2 * pen] & 0x80) && (count++ < 128))
-<<<<<<< HEAD
-							screen.machine().scheduler().timer_set(screen.time_until_pos(yoffs, currx), timer_expired_delegate(FUNC(exidy440_state::collide_firq_callback), this), currx);
-=======
 							m_collide_firq_timer->adjust(screen.time_until_pos(yoffs, currx), currx);
->>>>>>> upstream/master
 					}
 					currx++;
 				}
@@ -439,11 +394,7 @@ void exidy440_state::update_screen(screen_device &screen, bitmap_ind16 &bitmap, 
 			sy -= (VBSTART - VBEND);
 
 		/* draw line */
-<<<<<<< HEAD
-		draw_scanline8(bitmap, 0, y, (HBSTART - HBEND), &m_local_videoram[sy * 512], NULL);
-=======
 		draw_scanline8(bitmap, 0, y, (HBSTART - HBEND), &m_local_videoram[sy * 512], nullptr);
->>>>>>> upstream/master
 	}
 
 	/* draw the sprites */
@@ -458,17 +409,10 @@ void exidy440_state::update_screen(screen_device &screen, bitmap_ind16 &bitmap, 
  *
  *************************************/
 
-<<<<<<< HEAD
-UINT32 exidy440_state::screen_update_exidy440(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-{
-	/* redraw the screen */
-	update_screen(screen, bitmap, cliprect, 0, TRUE);
-=======
 uint32_t exidy440_state::screen_update_exidy440(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
 	/* redraw the screen */
 	update_screen(screen, bitmap, cliprect, 0, true);
->>>>>>> upstream/master
 
 	/* generate an interrupt once/frame for the beam */
 	if (cliprect.max_y == screen.visible_area().max_y)
@@ -497,17 +441,10 @@ uint32_t exidy440_state::screen_update_exidy440(screen_device &screen, bitmap_in
 }
 
 
-<<<<<<< HEAD
-UINT32 exidy440_state::screen_update_topsecex(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-{
-	/* redraw the screen */
-	update_screen(screen, bitmap, cliprect, *m_topsecex_yscroll, FALSE);
-=======
 uint32_t exidy440_state::screen_update_topsecex(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
 	/* redraw the screen */
 	update_screen(screen, bitmap, cliprect, m_topsecex_yscroll, false);
->>>>>>> upstream/master
 
 	return 0;
 }
@@ -520,11 +457,7 @@ uint32_t exidy440_state::screen_update_topsecex(screen_device &screen, bitmap_in
  *
  *************************************/
 
-<<<<<<< HEAD
-MACHINE_CONFIG_FRAGMENT( exidy440_video )
-=======
 MACHINE_CONFIG_START( exidy440_video )
->>>>>>> upstream/master
 	MCFG_VIDEO_START_OVERRIDE(exidy440_state,exidy440)
 	MCFG_PALETTE_ADD("palette", 256)
 
@@ -536,11 +469,7 @@ MACHINE_CONFIG_START( exidy440_video )
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-MACHINE_CONFIG_FRAGMENT( topsecex_video )
-=======
 MACHINE_CONFIG_START( topsecex_video )
->>>>>>> upstream/master
 	MCFG_VIDEO_START_OVERRIDE(exidy440_state,topsecex)
 
 	MCFG_SCREEN_MODIFY("screen")

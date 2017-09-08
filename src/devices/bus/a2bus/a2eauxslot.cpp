@@ -9,10 +9,6 @@
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "emuopts.h"
-=======
->>>>>>> upstream/master
 #include "a2eauxslot.h"
 
 
@@ -20,11 +16,7 @@
 //  GLOBAL VARIABLES
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type A2EAUXSLOT_SLOT = &device_creator<a2eauxslot_slot_device>;
-=======
 DEFINE_DEVICE_TYPE(A2EAUXSLOT_SLOT, a2eauxslot_slot_device, "a2eauxslot_slot", "Apple IIe AUX Slot")
->>>>>>> upstream/master
 
 //**************************************************************************
 //  LIVE DEVICE
@@ -33,19 +25,6 @@ DEFINE_DEVICE_TYPE(A2EAUXSLOT_SLOT, a2eauxslot_slot_device, "a2eauxslot_slot", "
 //-------------------------------------------------
 //  a2eauxslot_slot_device - constructor
 //-------------------------------------------------
-<<<<<<< HEAD
-a2eauxslot_slot_device::a2eauxslot_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-		device_t(mconfig, A2EAUXSLOT_SLOT, "Apple IIe AUX Slot", tag, owner, clock, "a2eauxslot_slot", __FILE__),
-		device_slot_interface(mconfig, *this),
-	m_a2eauxslot_tag(nullptr),
-	m_a2eauxslot_slottag(nullptr)
-{
-}
-
-a2eauxslot_slot_device::a2eauxslot_slot_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source) :
-		device_t(mconfig, type, name, tag, owner, clock, shortname, source),
-		device_slot_interface(mconfig, *this), m_a2eauxslot_tag(nullptr), m_a2eauxslot_slottag(nullptr)
-=======
 a2eauxslot_slot_device::a2eauxslot_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: a2eauxslot_slot_device(mconfig, A2EAUXSLOT_SLOT, tag, owner, clock)
 {
@@ -56,7 +35,6 @@ a2eauxslot_slot_device::a2eauxslot_slot_device(const machine_config &mconfig, de
 	, device_slot_interface(mconfig, *this)
 	, m_a2eauxslot_tag(nullptr)
 	, m_a2eauxslot_slottag(nullptr)
->>>>>>> upstream/master
 {
 }
 
@@ -82,11 +60,7 @@ void a2eauxslot_slot_device::device_start()
 //  GLOBAL VARIABLES
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type A2EAUXSLOT = &device_creator<a2eauxslot_device>;
-=======
 DEFINE_DEVICE_TYPE(A2EAUXSLOT, a2eauxslot_device, "a2eauxslot", "Apple IIe AUX Bus")
->>>>>>> upstream/master
 
 void a2eauxslot_device::static_set_cputag(device_t &device, const char *tag)
 {
@@ -102,19 +76,6 @@ void a2eauxslot_device::static_set_cputag(device_t &device, const char *tag)
 //  a2eauxslot_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-a2eauxslot_device::a2eauxslot_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-		device_t(mconfig, A2EAUXSLOT, "Apple IIe AUX Bus", tag, owner, clock, "a2eauxslot", __FILE__), m_maincpu(nullptr),
-		m_out_irq_cb(*this),
-		m_out_nmi_cb(*this), m_device(nullptr), m_cputag(nullptr)
-{
-}
-
-a2eauxslot_device::a2eauxslot_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source) :
-		device_t(mconfig, type, name, tag, owner, clock, shortname, source), m_maincpu(nullptr),
-		m_out_irq_cb(*this),
-		m_out_nmi_cb(*this), m_device(nullptr), m_cputag(nullptr)
-=======
 a2eauxslot_device::a2eauxslot_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: a2eauxslot_device(mconfig, A2EAUXSLOT, tag, owner, clock)
 {
@@ -127,7 +88,6 @@ a2eauxslot_device::a2eauxslot_device(const machine_config &mconfig, device_type 
 	, m_out_nmi_cb(*this)
 	, m_device(nullptr)
 	, m_cputag(nullptr)
->>>>>>> upstream/master
 {
 }
 //-------------------------------------------------
@@ -143,11 +103,7 @@ void a2eauxslot_device::device_start()
 	m_out_nmi_cb.resolve_safe();
 
 	// clear slot
-<<<<<<< HEAD
-	m_device = NULL;
-=======
 	m_device = nullptr;
->>>>>>> upstream/master
 }
 
 //-------------------------------------------------

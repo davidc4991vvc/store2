@@ -73,32 +73,19 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type CIRRUS = &device_creator<cirrus_device>;
-=======
 DEFINE_DEVICE_TYPE(PCI_CIRRUS_SVGA, pci_cirrus_svga_device, "pci_cirrus_svga", "Cirrus SVGA (PCI)")
->>>>>>> upstream/master
 
 //**************************************************************************
 //  LIVE DEVICE
 //**************************************************************************
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  cirrus_device - constructor
-//-------------------------------------------------
-
-cirrus_device::cirrus_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-		: device_t(mconfig, CIRRUS, "CIRRUS", tag, owner, clock, "cirrus", __FILE__),
-		pci_device_interface( mconfig, *this )
-=======
 //  pci_cirrus_svga_device - constructor
 //-------------------------------------------------
 
 pci_cirrus_svga_device::pci_cirrus_svga_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, PCI_CIRRUS_SVGA, tag, owner, clock)
 	, pci_device_interface( mconfig, *this )
->>>>>>> upstream/master
 {
 }
 
@@ -106,11 +93,7 @@ pci_cirrus_svga_device::pci_cirrus_svga_device(const machine_config &mconfig, co
 //  device_start - device-specific startup
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void cirrus_device::device_start()
-=======
 void pci_cirrus_svga_device::device_start()
->>>>>>> upstream/master
 {
 }
 
@@ -118,11 +101,7 @@ void pci_cirrus_svga_device::device_start()
 //  device_reset - device-specific reset
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void cirrus_device::device_reset()
-=======
 void pci_cirrus_svga_device::device_reset()
->>>>>>> upstream/master
 {
 }
 
@@ -130,15 +109,9 @@ void pci_cirrus_svga_device::device_reset()
 //  pci_read - implementation of PCI read
 //-------------------------------------------------
 
-<<<<<<< HEAD
-UINT32 cirrus_device::pci_read(pci_bus_device *pcibus, int function, int offset, UINT32 mem_mask)
-{
-	UINT32 result = 0;
-=======
 uint32_t pci_cirrus_svga_device::pci_read(pci_bus_device *pcibus, int function, int offset, uint32_t mem_mask)
 {
 	uint32_t result = 0;
->>>>>>> upstream/master
 
 	if (function == 0)
 	{
@@ -172,11 +145,7 @@ uint32_t pci_cirrus_svga_device::pci_read(pci_bus_device *pcibus, int function, 
 //  pci_write - implementation of PCI write
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void cirrus_device::pci_write(pci_bus_device *pcibus, int function, int offset, UINT32 data, UINT32 mem_mask)
-=======
 void pci_cirrus_svga_device::pci_write(pci_bus_device *pcibus, int function, int offset, uint32_t data, uint32_t mem_mask)
->>>>>>> upstream/master
 {
 	if (LOG_PCIACCESS)
 		logerror("cirrus5430_pci_write(): function=%d offset=0x%02X data=0x%04X\n", function, offset, data);
@@ -188,11 +157,7 @@ void pci_cirrus_svga_device::pci_write(pci_bus_device *pcibus, int function, int
  *
  *************************************/
 
-<<<<<<< HEAD
-WRITE8_MEMBER( cirrus_device::cirrus_42E8_w )
-=======
 WRITE8_MEMBER( pci_cirrus_svga_device::cirrus_42E8_w )
->>>>>>> upstream/master
 {
 	if (data & 0x80)
 		machine().device("vga")->reset();

@@ -101,11 +101,7 @@
 #include "audio/exidy.h"
 #include "includes/victory.h"
 #include "machine/nvram.h"
-<<<<<<< HEAD
-
-=======
 #include "machine/z80pio.h"
->>>>>>> upstream/master
 
 
 /*************************************
@@ -116,17 +112,10 @@
 
 WRITE8_MEMBER(victory_state::lamp_control_w)
 {
-<<<<<<< HEAD
-	set_led_status(machine(), 0, data & 0x80);
-	set_led_status(machine(), 1, data & 0x40);
-	set_led_status(machine(), 2, data & 0x20);
-	set_led_status(machine(), 3, data & 0x10);
-=======
 	output().set_led_value(0, data & 0x80);
 	output().set_led_value(1, data & 0x40);
 	output().set_led_value(2, data & 0x20);
 	output().set_led_value(3, data & 0x10);
->>>>>>> upstream/master
 }
 
 
@@ -155,15 +144,8 @@ static ADDRESS_MAP_START( main_io_map, AS_IO, 8, victory_state )
 	ADDRESS_MAP_GLOBAL_MASK(0xff)
 	AM_RANGE(0x00, 0x00) AM_MIRROR(0x03) AM_READ_PORT("SW2")
 	AM_RANGE(0x04, 0x04) AM_MIRROR(0x03) AM_READ_PORT("SW1")
-<<<<<<< HEAD
-	AM_RANGE(0x08, 0x08) AM_READ_PORT("DIAL")
-	AM_RANGE(0x0a, 0x0a) AM_READ_PORT("COIN")
-	AM_RANGE(0x0c, 0x0c) AM_READ_PORT("BUTTONS")
-	AM_RANGE(0x0e, 0x0e) AM_READ_PORT("UNUSED")
-=======
 	AM_RANGE(0x08, 0x0b) AM_DEVREADWRITE("pio1", z80pio_device, read_alt, write_alt)
 	AM_RANGE(0x0c, 0x0f) AM_DEVREADWRITE("pio2", z80pio_device, read_alt, write_alt)
->>>>>>> upstream/master
 	AM_RANGE(0x10, 0x10) AM_MIRROR(0x03) AM_WRITE(lamp_control_w)
 	AM_RANGE(0x14, 0xff) AM_NOP
 ADDRESS_MAP_END
@@ -226,11 +208,7 @@ INPUT_PORTS_END
  *
  *************************************/
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( victory, victory_state )
-=======
 static MACHINE_CONFIG_START( victory )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, VICTORY_MAIN_CPU_CLOCK)
@@ -240,8 +218,6 @@ static MACHINE_CONFIG_START( victory )
 
 	MCFG_NVRAM_ADD_0FILL("nvram")
 
-<<<<<<< HEAD
-=======
 	// PIO interrupts are disconnected
 	MCFG_DEVICE_ADD("pio1", Z80PIO, VICTORY_MAIN_CPU_CLOCK) // at K8
 	MCFG_Z80PIO_IN_PA_CB(IOPORT("DIAL"))
@@ -251,7 +227,6 @@ static MACHINE_CONFIG_START( victory )
 	MCFG_Z80PIO_IN_PA_CB(IOPORT("BUTTONS"))
 	MCFG_Z80PIO_IN_PB_CB(IOPORT("UNUSED"))
 
->>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_VIDEO_ATTRIBUTES(VIDEO_UPDATE_BEFORE_VBLANK | VIDEO_ALWAYS_UPDATE)
@@ -349,10 +324,5 @@ ROM_END
  *
  *************************************/
 
-<<<<<<< HEAD
-GAME( 1982, victory,  0,       victory, victory, driver_device, 0, ROT0, "Exidy", "Victory", MACHINE_SUPPORTS_SAVE )
-GAME( 1982, victorba, victory, victory, victory, driver_device, 0, ROT0, "Exidy", "Victor Banana", MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1982, victory,  0,       victory, victory, victory_state, 0, ROT0, "Exidy", "Victory", MACHINE_SUPPORTS_SAVE )
 GAME( 1982, victorba, victory, victory, victory, victory_state, 0, ROT0, "Exidy", "Victor Banana", MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

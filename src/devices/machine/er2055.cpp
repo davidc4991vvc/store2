@@ -17,11 +17,7 @@
 //**************************************************************************
 
 // device type definition
-<<<<<<< HEAD
-const device_type ER2055 = &device_creator<er2055_device>;
-=======
 DEFINE_DEVICE_TYPE(ER2055, er2055_device, "er2055", "ER2055 EAROM")
->>>>>>> upstream/master
 
 static ADDRESS_MAP_START( er2055_map, AS_PROGRAM, 8, er2055_device )
 	AM_RANGE(0x0000, 0x003f) AM_RAM
@@ -37,18 +33,11 @@ ADDRESS_MAP_END
 //  er2055_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-er2055_device::er2055_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, ER2055, "ER2055 EAROM", tag, owner, clock, "er2055", __FILE__),
-		device_memory_interface(mconfig, *this),
-		device_nvram_interface(mconfig, *this),
-=======
 er2055_device::er2055_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, ER2055, tag, owner, clock),
 		device_memory_interface(mconfig, *this),
 		device_nvram_interface(mconfig, *this),
 		m_region(*this, DEVICE_SELF),
->>>>>>> upstream/master
 		m_space_config("EAROM", ENDIANNESS_BIG, 8, 6, 0, *ADDRESS_MAP_NAME(er2055_map)),
 		m_control_state(0),
 		m_address(0),
@@ -76,17 +65,11 @@ void er2055_device::device_start()
 //  any address spaces owned by this device
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const address_space_config *er2055_device::memory_space_config(address_spacenum spacenum) const
-{
-	return (spacenum == 0) ? &m_space_config : NULL;
-=======
 device_memory_interface::space_config_vector er2055_device::memory_space_config() const
 {
 	return space_config_vector {
 		std::make_pair(0, &m_space_config)
 	};
->>>>>>> upstream/master
 }
 
 
@@ -99,32 +82,19 @@ void er2055_device::nvram_default()
 {
 	// default to all-0xff
 	for (int byte = 0; byte < SIZE_DATA; byte++)
-<<<<<<< HEAD
-		m_addrspace[0]->write_byte(byte, 0xff);
-
-	// populate from a memory region if present
-	if (m_region != NULL)
-=======
 		space(AS_PROGRAM).write_byte(byte, 0xff);
 
 	// populate from a memory region if present
 	if (m_region != nullptr)
->>>>>>> upstream/master
 	{
 		if (m_region->bytes() != SIZE_DATA)
 			fatalerror("er2055 region '%s' wrong size (expected size = 0x40)\n", tag());
 		if (m_region->bytewidth() != 1)
 			fatalerror("er2055 region '%s' needs to be an 8-bit region\n", tag());
 
-<<<<<<< HEAD
-		UINT8 *default_data = m_region->base();
-		for (int byte = 0; byte < SIZE_DATA; byte++)
-			m_addrspace[0]->write_byte(byte, default_data[byte]);
-=======
 		uint8_t *default_data = m_region->base();
 		for (int byte = 0; byte < SIZE_DATA; byte++)
 			space(AS_PROGRAM).write_byte(byte, default_data[byte]);
->>>>>>> upstream/master
 	}
 }
 
@@ -136,17 +106,10 @@ void er2055_device::nvram_default()
 
 void er2055_device::nvram_read(emu_file &file)
 {
-<<<<<<< HEAD
-	UINT8 buffer[SIZE_DATA];
-	file.read(buffer, sizeof(buffer));
-	for (int byte = 0; byte < SIZE_DATA; byte++)
-		m_addrspace[0]->write_byte(byte, buffer[byte]);
-=======
 	uint8_t buffer[SIZE_DATA];
 	file.read(buffer, sizeof(buffer));
 	for (int byte = 0; byte < SIZE_DATA; byte++)
 		space(AS_PROGRAM).write_byte(byte, buffer[byte]);
->>>>>>> upstream/master
 }
 
 
@@ -157,15 +120,9 @@ void er2055_device::nvram_read(emu_file &file)
 
 void er2055_device::nvram_write(emu_file &file)
 {
-<<<<<<< HEAD
-	UINT8 buffer[SIZE_DATA];
-	for (int byte = 0; byte < SIZE_DATA; byte++)
-		buffer[byte] = m_addrspace[0]->read_byte(byte);
-=======
 	uint8_t buffer[SIZE_DATA];
 	for (int byte = 0; byte < SIZE_DATA; byte++)
 		buffer[byte] = space(AS_PROGRAM).read_byte(byte);
->>>>>>> upstream/master
 	file.write(buffer, sizeof(buffer));
 }
 
@@ -181,17 +138,10 @@ void er2055_device::nvram_write(emu_file &file)
 //  reacts to various combinations
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void er2055_device::set_control(UINT8 cs1, UINT8 cs2, UINT8 c1, UINT8 c2, UINT8 ck)
-{
-	// create a new composite control state
-	UINT8 oldstate = m_control_state;
-=======
 void er2055_device::set_control(uint8_t cs1, uint8_t cs2, uint8_t c1, uint8_t c2, uint8_t ck)
 {
 	// create a new composite control state
 	uint8_t oldstate = m_control_state;
->>>>>>> upstream/master
 	m_control_state = (ck != 0) ? CK : 0;
 	m_control_state |= (c1 != 0) ? C1 : 0;
 	m_control_state |= (c2 != 0) ? C2 : 0;
@@ -208,21 +158,13 @@ void er2055_device::set_control(uint8_t cs1, uint8_t cs2, uint8_t c1, uint8_t c2
 		// write mode; erasing is required, so we perform an AND against previous
 		// data to simulate incorrect behavior if erasing was not done
 		case 0:
-<<<<<<< HEAD
-			m_addrspace[0]->write_byte(m_address, m_addrspace[0]->read_byte(m_address) & m_data);
-=======
 			space(AS_PROGRAM).write_byte(m_address, space(AS_PROGRAM).read_byte(m_address) & m_data);
->>>>>>> upstream/master
 //printf("Write %02X = %02X\n", m_address, m_data);
 			break;
 
 		// erase mode
 		case C2:
-<<<<<<< HEAD
-			m_addrspace[0]->write_byte(m_address, 0xff);
-=======
 			space(AS_PROGRAM).write_byte(m_address, 0xff);
->>>>>>> upstream/master
 //printf("Erase %02X\n", m_address);
 			break;
 
@@ -230,11 +172,7 @@ void er2055_device::set_control(uint8_t cs1, uint8_t cs2, uint8_t c1, uint8_t c2
 		case C1:
 			if ((oldstate & CK) != 0 && (m_control_state & CK) == 0)
 			{
-<<<<<<< HEAD
-				m_data = m_addrspace[0]->read_byte(m_address);
-=======
 				m_data = space(AS_PROGRAM).read_byte(m_address);
->>>>>>> upstream/master
 //printf("Read %02X = %02X\n", m_address, m_data);
 			}
 			break;

@@ -58,11 +58,7 @@ WRITE16_MEMBER(twin16_state::videoram1_w)
 
 WRITE16_MEMBER(twin16_state::zipram_w)
 {
-<<<<<<< HEAD
-	UINT16 old = m_zipram[offset];
-=======
 	uint16_t old = m_zipram[offset];
->>>>>>> upstream/master
 	COMBINE_DATA(&m_zipram[offset]);
 	if (m_zipram[offset] != old)
 		m_gfxdecode->gfx(1)->mark_dirty(offset / 16);
@@ -217,27 +213,6 @@ int twin16_state::set_sprite_timer(  )
 
 void twin16_state::spriteram_process(  )
 {
-<<<<<<< HEAD
-	UINT16 *spriteram16 = m_spriteram->live();
-	UINT16 dx = m_scrollx[0];
-	UINT16 dy = m_scrolly[0];
-
-	const UINT16 *source = &spriteram16[0x0000];
-	const UINT16 *finish = &spriteram16[0x1800];
-
-	set_sprite_timer();
-	memset(&spriteram16[0x1800],0xff,0x800*sizeof(UINT16));
-
-	while( source<finish )
-	{
-		UINT16 priority = source[0];
-		if( priority & 0x8000 )
-		{
-			UINT16 *dest = &spriteram16[0x1800|(priority&0xff)<<2];
-
-			UINT32 xpos = (0x10000*source[4])|source[5];
-			UINT32 ypos = (0x10000*source[6])|source[7];
-=======
 	uint16_t *spriteram16 = m_spriteram->live();
 	uint16_t dx = m_scrollx[0];
 	uint16_t dy = m_scrolly[0];
@@ -257,7 +232,6 @@ void twin16_state::spriteram_process(  )
 
 			uint32_t xpos = (0x10000*source[4])|source[5];
 			uint32_t ypos = (0x10000*source[6])|source[7];
->>>>>>> upstream/master
 
 			/* notes on sprite attributes:
 
@@ -274,11 +248,7 @@ void twin16_state::spriteram_process(  )
 
 			fround, hpuncher, miaj, cuebrickj, don't use the preprocessor.
 			*/
-<<<<<<< HEAD
-			UINT16 attributes = 0x8000 | (source[2]&0x03ff); // scale,size,color
-=======
 			uint16_t attributes = 0x8000 | (source[2]&0x03ff); // scale,size,color
->>>>>>> upstream/master
 
 			dest[0] = source[3]; /* gfx data */
 			dest[1] = ((xpos>>8) - dx)&0xffff;
@@ -292,15 +262,6 @@ void twin16_state::spriteram_process(  )
 
 void twin16_state::draw_sprites( screen_device &screen, bitmap_ind16 &bitmap )
 {
-<<<<<<< HEAD
-	const UINT16 *source = 0x1800+m_spriteram->buffer() + 0x800 - 4;
-	const UINT16 *finish = 0x1800+m_spriteram->buffer();
-
-	for (; source >= finish; source -= 4)
-	{
-		UINT16 attributes = source[3];
-		UINT16 code = source[0];
-=======
 	const uint16_t *source = 0x1800+m_spriteram->buffer() + 0x800 - 4;
 	const uint16_t *finish = 0x1800+m_spriteram->buffer();
 
@@ -308,7 +269,6 @@ void twin16_state::draw_sprites( screen_device &screen, bitmap_ind16 &bitmap )
 	{
 		uint16_t attributes = source[3];
 		uint16_t code = source[0];
->>>>>>> upstream/master
 
 		if((code!=0xffff) && (attributes&0x8000))
 		{
@@ -319,11 +279,7 @@ void twin16_state::draw_sprites( screen_device &screen, bitmap_ind16 &bitmap )
 			int pal_base = ((attributes&0xf)+0x10)*16;
 			int height  = 16<<((attributes>>6)&0x3);
 			int width   = 16<<((attributes>>4)&0x3);
-<<<<<<< HEAD
-			const UINT16 *pen_data = 0;
-=======
 			const uint16_t *pen_data = nullptr;
->>>>>>> upstream/master
 			int flipy = attributes&0x0200;
 			int flipx = attributes&0x0100;
 
@@ -384,24 +340,15 @@ void twin16_state::draw_sprites( screen_device &screen, bitmap_ind16 &bitmap )
 				int sy = (flipy)?(ypos+height-1-y):(ypos+y);
 				if( sy>=16 && sy<256-16 )
 				{
-<<<<<<< HEAD
-					UINT16 *dest = &bitmap.pix16(sy);
-					UINT8 *pdest = &screen.priority().pix8(sy);
-=======
 					uint16_t *dest = &bitmap.pix16(sy);
 					uint8_t *pdest = &screen.priority().pix8(sy);
->>>>>>> upstream/master
 
 					for( x=0; x<width; x++ )
 					{
 						int sx = (flipx)?(xpos+width-1-x):(xpos+x);
 						if( sx>=0 && sx<320 )
 						{
-<<<<<<< HEAD
-							UINT16 pen = pen_data[x>>2]>>((~x&3)<<2)&0xf;
-=======
 							uint16_t pen = pen_data[x>>2]>>((~x&3)<<2)&0xf;
->>>>>>> upstream/master
 
 							if( pen && !(pdest[sx] & TWIN16_SPRITE_OCCUPIED))
 							{
@@ -446,11 +393,7 @@ TILE_GET_INFO_MEMBER(twin16_state::fix_tile_info)
 	SET_TILE_INFO_MEMBER(0, code, color, flags);
 }
 
-<<<<<<< HEAD
-void twin16_state::tile_get_info(tile_data &tileinfo, UINT16 data, int color_base)
-=======
 void twin16_state::tile_get_info(tile_data &tileinfo, uint16_t data, int color_base)
->>>>>>> upstream/master
 {
 	/* fedcba9876543210
 	   xxx------------- color; high bit is also priority over sprites
@@ -464,11 +407,7 @@ void twin16_state::tile_get_info(tile_data &tileinfo, uint16_t data, int color_b
 	tileinfo.category = BIT(data, 15);
 }
 
-<<<<<<< HEAD
-void fround_state::tile_get_info(tile_data &tileinfo, UINT16 data, int color_base)
-=======
 void fround_state::tile_get_info(tile_data &tileinfo, uint16_t data, int color_base)
->>>>>>> upstream/master
 {
 	/* fedcba9876543210
 	   xxx------------- color; high bit is also priority over sprites
@@ -496,15 +435,9 @@ TILE_GET_INFO_MEMBER(twin16_state::layer1_tile_info)
 
 void twin16_state::video_start()
 {
-<<<<<<< HEAD
-	m_fixed_tmap = &machine().tilemap().create(m_gfxdecode,tilemap_get_info_delegate(FUNC(twin16_state::fix_tile_info),this),TILEMAP_SCAN_ROWS,8,8,64,32);
-	m_scroll_tmap[0] = &machine().tilemap().create(m_gfxdecode,tilemap_get_info_delegate(FUNC(twin16_state::layer0_tile_info),this),TILEMAP_SCAN_ROWS,8,8,64,64);
-	m_scroll_tmap[1] = &machine().tilemap().create(m_gfxdecode,tilemap_get_info_delegate(FUNC(twin16_state::layer1_tile_info),this),TILEMAP_SCAN_ROWS,8,8,64,64);
-=======
 	m_fixed_tmap = &machine().tilemap().create(*m_gfxdecode,tilemap_get_info_delegate(FUNC(twin16_state::fix_tile_info),this),TILEMAP_SCAN_ROWS,8,8,64,32);
 	m_scroll_tmap[0] = &machine().tilemap().create(*m_gfxdecode,tilemap_get_info_delegate(FUNC(twin16_state::layer0_tile_info),this),TILEMAP_SCAN_ROWS,8,8,64,64);
 	m_scroll_tmap[1] = &machine().tilemap().create(*m_gfxdecode,tilemap_get_info_delegate(FUNC(twin16_state::layer1_tile_info),this),TILEMAP_SCAN_ROWS,8,8,64,64);
->>>>>>> upstream/master
 
 	m_fixed_tmap->set_transparent_pen(0);
 	m_scroll_tmap[0]->set_transparent_pen(0);
@@ -512,11 +445,7 @@ void twin16_state::video_start()
 
 	m_palette->set_shadow_factor(0.4); // screenshots estimate
 
-<<<<<<< HEAD
-	memset(m_sprite_buffer,0xff,0x800*sizeof(UINT16));
-=======
 	memset(m_sprite_buffer,0xff,0x800*sizeof(uint16_t));
->>>>>>> upstream/master
 	m_video_register = 0;
 	m_sprite_busy = 0;
 	m_sprite_timer = machine().scheduler().timer_alloc(timer_expired_delegate(FUNC(twin16_state::sprite_tick),this));
@@ -541,11 +470,7 @@ void fround_state::video_start()
 	save_item(NAME(m_gfx_bank));
 }
 
-<<<<<<< HEAD
-UINT32 twin16_state::screen_update_twin16(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t twin16_state::screen_update_twin16(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 /*
     PAL equations (007789 @ 11J):
@@ -619,11 +544,7 @@ uint32_t twin16_state::screen_update_twin16(screen_device &screen, bitmap_ind16 
 	return 0;
 }
 
-<<<<<<< HEAD
-void twin16_state::screen_eof_twin16(screen_device &screen, bool state)
-=======
 WRITE_LINE_MEMBER(twin16_state::screen_vblank_twin16)
->>>>>>> upstream/master
 {
 	// rising edge
 	if (state)
@@ -637,13 +558,8 @@ WRITE_LINE_MEMBER(twin16_state::screen_vblank_twin16)
 			/* if the sprite preprocessor is used, sprite ram is copied to an external buffer first,
 			as evidenced by 1-frame sprite lag in gradius2 and devilw otherwise, though there's probably
 			more to it than that */
-<<<<<<< HEAD
-			memcpy(&m_spriteram->buffer()[0x1800],m_sprite_buffer,0x800*sizeof(UINT16));
-			memcpy(m_sprite_buffer,&m_spriteram->live()[0x1800],0x800*sizeof(UINT16));
-=======
 			memcpy(&m_spriteram->buffer()[0x1800],m_sprite_buffer,0x800*sizeof(uint16_t));
 			memcpy(m_sprite_buffer,&m_spriteram->live()[0x1800],0x800*sizeof(uint16_t));
->>>>>>> upstream/master
 		}
 		else {
 			m_spriteram->copy();

@@ -14,11 +14,7 @@
 
 TILE_GET_INFO_MEMBER(tail2nos_state::get_tile_info)
 {
-<<<<<<< HEAD
-	UINT16 code = m_txvideoram[tile_index];
-=======
 	uint16_t code = m_txvideoram[tile_index];
->>>>>>> upstream/master
 	SET_TILE_INFO_MEMBER(0,
 			(code & 0x1fff) + (m_txbank << 13),
 			((code & 0xe000) >> 13) + m_txpalette * 16,
@@ -53,11 +49,7 @@ void tail2nos_state::tail2nos_postload()
 
 void tail2nos_state::video_start()
 {
-<<<<<<< HEAD
-	m_tx_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(tail2nos_state::get_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 64, 32);
-=======
 	m_tx_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(tail2nos_state::get_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 64, 32);
->>>>>>> upstream/master
 
 	m_tx_tilemap->set_transparent_pen(15);
 
@@ -87,49 +79,13 @@ WRITE16_MEMBER(tail2nos_state::tail2nos_zoomdata_w)
 		m_k051316->mark_gfx_dirty(offset * 2);
 }
 
-<<<<<<< HEAD
-WRITE16_MEMBER(tail2nos_state::tail2nos_gfxbank_w)
-=======
 WRITE8_MEMBER(tail2nos_state::tail2nos_gfxbank_w)
->>>>>>> upstream/master
 {
 	// -------- --pe-b-b
 	// p = palette bank
 	// b = tile bank
 	// e = video enable
 
-<<<<<<< HEAD
-	if (ACCESSING_BITS_0_7)
-	{
-		int bank;
-		bank = 0;
-		/* bits 0 and 2 select char bank */
-		if (data & 0x04) bank |= 2;
-		if (data & 0x01) bank |= 1;
-
-
-		if (m_txbank != bank)
-		{
-			m_txbank = bank;
-			m_tx_tilemap->mark_all_dirty();
-		}
-
-		/* bit 5 seems to select palette bank (used on startup) */
-		if (data & 0x20)
-			bank = 7;
-		else
-			bank = 3;
-
-		if (m_txpalette != bank)
-		{
-			m_txpalette = bank;
-			m_tx_tilemap->mark_all_dirty();
-		}
-
-		/* bit 4 seems to be video enable */
-		m_video_enable = data & 0x10;
-	}
-=======
 	// bits 0 and 2 select char bank
 	int bank = 0;
 	if (data & 0x04) bank |= 2;
@@ -160,7 +116,6 @@ WRITE8_MEMBER(tail2nos_state::tail2nos_gfxbank_w)
 	m_flip_screen = BIT(data, 7);
 	m_tx_tilemap->set_flip(m_flip_screen ? TILEMAP_FLIPX | TILEMAP_FLIPY : 0);
 	m_tx_tilemap->set_scrolly(m_flip_screen ? -8 : 0);
->>>>>>> upstream/master
 }
 
 
@@ -172,11 +127,7 @@ WRITE8_MEMBER(tail2nos_state::tail2nos_gfxbank_w)
 
 void tail2nos_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect )
 {
-<<<<<<< HEAD
-	UINT16 *spriteram = m_spriteram;
-=======
 	uint16_t *spriteram = m_spriteram;
->>>>>>> upstream/master
 	int offs;
 
 
@@ -194,8 +145,6 @@ void tail2nos_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &clipre
 		color = (spriteram[offs + 2] & 0xe000) >> 13;
 		flipx = spriteram[offs + 2] & 0x1000;
 		flipy = spriteram[offs + 2] & 0x0800;
-<<<<<<< HEAD
-=======
 		if (m_flip_screen)
 		{
 			flipx = !flipx;
@@ -203,7 +152,6 @@ void tail2nos_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &clipre
 			sx = 302 - sx;
 			sy = 216 - sy;
 		}
->>>>>>> upstream/master
 
 		m_gfxdecode->gfx(1)->transpen(bitmap,/* placement relative to zoom layer verified on the real thing */
 				cliprect,
@@ -214,11 +162,7 @@ void tail2nos_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &clipre
 	}
 }
 
-<<<<<<< HEAD
-UINT32 tail2nos_state::screen_update_tail2nos(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t tail2nos_state::screen_update_tail2nos(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	if (m_video_enable)
 	{

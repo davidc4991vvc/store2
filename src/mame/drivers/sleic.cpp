@@ -4,12 +4,7 @@
 
     PINBALL
     Sleic made a number of pinball machines (Pinball, Bike Race, Dona Elvira 2,
-<<<<<<< HEAD
-    Super Pang, Io Moon) but seems only Pinball is dumped. The only manual I could
-    find is in Spanish and has no schematics.
-=======
     Super Pang, Io Moon). The only manual I could find is in Spanish and has no schematics.
->>>>>>> upstream/master
 
     Principal components:
     80C188-10
@@ -47,11 +42,7 @@ protected:
 	required_device<cpu_device> m_maincpu;
 
 	// driver_device overrides
-<<<<<<< HEAD
-	virtual void machine_reset();
-=======
 	virtual void machine_reset() override;
->>>>>>> upstream/master
 public:
 	DECLARE_DRIVER_INIT(sleic);
 };
@@ -73,11 +64,7 @@ DRIVER_INIT_MEMBER(sleic_state,sleic)
 {
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( sleic, sleic_state )
-=======
 static MACHINE_CONFIG_START( sleic )
->>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", I8088, 8000000)
 	MCFG_CPU_PROGRAM_MAP(sleic_map)
@@ -86,9 +73,6 @@ MACHINE_CONFIG_END
 /*-------------------------------------------------------------------
 / Bike Race (1992)
 /-------------------------------------------------------------------*/
-<<<<<<< HEAD
-
-=======
 ROM_START(bikerace)
 	ROM_REGION(0x100000, "maincpu", 0)
 	ROM_LOAD("bkcpu04.bin", 0xe0000, 0x20000, CRC(ce745e89) SHA1(04ba97a9ef1e60a7609c87cf6d8fcae2d0e32621))
@@ -126,7 +110,6 @@ ROM_START(bikerace2)
 	ROM_LOAD("bkcpu05.bin", 0x00000, 0x20000, CRC(072ce879) SHA1(4f6fb044592feb4c72bbdcbe5f19e063c0e49d0d))
 	ROM_LOAD("bkcpu06.bin", 0x20000, 0x20000, CRC(9db436d4) SHA1(3869524c0490e0a019d2f8ab46546ff42727665e))
 ROM_END
->>>>>>> upstream/master
 /*-------------------------------------------------------------------
 / Dona Elvira 2 (1996)
 /-------------------------------------------------------------------*/
@@ -134,11 +117,6 @@ ROM_END
 /*-------------------------------------------------------------------
 / Io Moon (1994)
 /-------------------------------------------------------------------*/
-<<<<<<< HEAD
-
-/*-------------------------------------------------------------------
-/ Sleic Pin Ball (1994)
-=======
 ROM_START(iomoon)
 	ROM_REGION(0x100000, "maincpu", 0)
 	ROM_LOAD("v1_3_01.bin", 0x80000, 0x80000, CRC(df80bf4f) SHA1(29547b444cad116c9dc925d6b3112f584df37250))
@@ -155,7 +133,6 @@ ROM_START(iomoon)
 ROM_END
 /*-------------------------------------------------------------------
 / Sleic Pin Ball (1993)
->>>>>>> upstream/master
 /-------------------------------------------------------------------*/
 ROM_START(sleicpin)
 	ROM_REGION(0x100000, "maincpu", 0)
@@ -171,11 +148,7 @@ ROM_START(sleicpin)
 	ROM_LOAD("sp02-1_1.rom", 0x00000, 0x80000, CRC(0e4851a0) SHA1(0692ee2df0b560e2013db9c03fd27c6eb12e618d))
 ROM_END
 
-<<<<<<< HEAD
-GAME(1993,  sleicpin,  0,  sleic,  sleic, sleic_state,  sleic,  ROT0,  "Sleic",    "Sleic Pin Ball",     MACHINE_IS_SKELETON_MECHANICAL)
-=======
 GAME(1992,  bikerace,  0,         sleic,  sleic, sleic_state,  sleic,  ROT0,  "Sleic",    "Bike Race",               MACHINE_IS_SKELETON_MECHANICAL)
 GAME(1992,  bikerace2, bikerace,  sleic,  sleic, sleic_state,  sleic,  ROT0,  "Sleic",    "Bike Race (2-ball play)", MACHINE_IS_SKELETON_MECHANICAL)
 GAME(1993,  sleicpin,  0,         sleic,  sleic, sleic_state,  sleic,  ROT0,  "Sleic",    "Sleic Pin Ball",          MACHINE_IS_SKELETON_MECHANICAL)
 GAME(1994,  iomoon,    0,         sleic,  sleic, sleic_state,  sleic,  ROT0,  "Sleic",    "Io Moon",                 MACHINE_IS_SKELETON_MECHANICAL)
->>>>>>> upstream/master

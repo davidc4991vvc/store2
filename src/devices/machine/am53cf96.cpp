@@ -18,11 +18,7 @@
 READ8_MEMBER( am53cf96_device::read )
 {
 	int rv;
-<<<<<<< HEAD
-	static const int states[] = { 0, 0, 1, 1, 2, 3, 4, 5, 6, 7, 0 };
-=======
 	static constexpr int states[] = { 0, 0, 1, 1, 2, 3, 4, 5, 6, 7, 0 };
->>>>>>> upstream/master
 
 	if (offset == REG_STATUS)
 	{
@@ -150,13 +146,8 @@ WRITE8_MEMBER( am53cf96_device::write )
 	}
 }
 
-<<<<<<< HEAD
-am53cf96_device::am53cf96_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-	legacy_scsi_host_adapter(mconfig, AM53CF96, "53CF96 SCSI", tag, owner, clock, "am53cf96", __FILE__),
-=======
 am53cf96_device::am53cf96_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	legacy_scsi_host_adapter(mconfig, AM53CF96, tag, owner, clock),
->>>>>>> upstream/master
 	m_irq_handler(*this)
 {
 }
@@ -183,11 +174,7 @@ void am53cf96_device::device_start()
 }
 
 // retrieve data from the SCSI controller
-<<<<<<< HEAD
-void am53cf96_device::dma_read_data(int bytes, UINT8 *pData)
-=======
 void am53cf96_device::dma_read_data(int bytes, uint8_t *pData)
->>>>>>> upstream/master
 {
 	scsi_regs[REG_STATUS] |= 0x10;  // indicate DMA finished
 
@@ -195,11 +182,7 @@ void am53cf96_device::dma_read_data(int bytes, uint8_t *pData)
 }
 
 // write data to the SCSI controller
-<<<<<<< HEAD
-void am53cf96_device::dma_write_data(int bytes, UINT8 *pData)
-=======
 void am53cf96_device::dma_write_data(int bytes, uint8_t *pData)
->>>>>>> upstream/master
 {
 //  int i;
 
@@ -208,8 +191,4 @@ void am53cf96_device::dma_write_data(int bytes, uint8_t *pData)
 	write_data(pData, bytes);
 }
 
-<<<<<<< HEAD
-const device_type AM53CF96 = &device_creator<am53cf96_device>;
-=======
 DEFINE_DEVICE_TYPE(AM53CF96, am53cf96_device, "am53cf96", "AMD 53CF96 SCSI")
->>>>>>> upstream/master

@@ -113,19 +113,12 @@ Notes (couriersud)
 
 ***************************************************************************/
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/m6502/m6502.h"
-#include "machine/rescap.h"
-#include "sound/samples.h"
-#include "includes/m10.h"
-=======
 #include "includes/m10.h"
 
 #include "cpu/m6502/m6502.h"
 #include "machine/rescap.h"
 #include "sound/samples.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 /*************************************
@@ -169,11 +162,7 @@ PALETTE_INIT_MEMBER(m10_state,m10)
 		if (i & 0x01)
 			color = rgb_t(pal1bit(~i >> 3), pal1bit(~i >> 2), pal1bit(~i >> 1));
 		else
-<<<<<<< HEAD
-			color = rgb_t::black;
-=======
 			color = rgb_t::black();
->>>>>>> upstream/master
 
 		palette.set_pen_color(i, color);
 	}
@@ -181,11 +170,8 @@ PALETTE_INIT_MEMBER(m10_state,m10)
 
 MACHINE_START_MEMBER(m10_state,m10)
 {
-<<<<<<< HEAD
-=======
 	m_interrupt_timer = timer_alloc(TIMER_INTERRUPT);
 
->>>>>>> upstream/master
 	save_item(NAME(m_bottomline));
 	save_item(NAME(m_flip));
 	save_item(NAME(m_last));
@@ -491,20 +477,12 @@ TIMER_CALLBACK_MEMBER(m10_state::interrupt_callback)
 	if (param == 0)
 	{
 		m_maincpu->set_input_line(0, ASSERT_LINE);
-<<<<<<< HEAD
-		timer_set(m_screen->time_until_pos(IREMM10_VBSTART + 16), TIMER_INTERRUPT, 1);
-=======
 		m_interrupt_timer->adjust(m_screen->time_until_pos(IREMM10_VBSTART + 16), 1);
->>>>>>> upstream/master
 	}
 	if (param == 1)
 	{
 		m_maincpu->set_input_line(0, ASSERT_LINE);
-<<<<<<< HEAD
-		timer_set(m_screen->time_until_pos(IREMM10_VBSTART + 24), TIMER_INTERRUPT, 2);
-=======
 		m_interrupt_timer->adjust(m_screen->time_until_pos(IREMM10_VBSTART + 24), 2);
->>>>>>> upstream/master
 	}
 	if (param == -1)
 		m_maincpu->set_input_line(0, CLEAR_LINE);
@@ -518,11 +496,7 @@ void m10_state::device_timer(emu_timer &timer, device_timer_id id, int param, vo
 		interrupt_callback(ptr, param);
 		break;
 	default:
-<<<<<<< HEAD
-		assert_always(FALSE, "Unknown id in m10_state::device_timer");
-=======
 		assert_always(false, "Unknown id in m10_state::device_timer");
->>>>>>> upstream/master
 	}
 }
 
@@ -530,11 +504,7 @@ void m10_state::device_timer(emu_timer &timer, device_timer_id id, int param, vo
 INTERRUPT_GEN_MEMBER(m10_state::m11_interrupt)
 {
 	device.execute().set_input_line(0, ASSERT_LINE);
-<<<<<<< HEAD
-	//timer_set(m_screen->time_until_pos(IREMM10_VBEND), TIMER_INTERRUPT, -1);
-=======
 	//m_interrupt_timer->adjust(m_screen->time_until_pos(IREMM10_VBEND), -1);
->>>>>>> upstream/master
 }
 
 INTERRUPT_GEN_MEMBER(m10_state::m10_interrupt)
@@ -546,11 +516,7 @@ INTERRUPT_GEN_MEMBER(m10_state::m10_interrupt)
 INTERRUPT_GEN_MEMBER(m10_state::m15_interrupt)
 {
 	device.execute().set_input_line(0, ASSERT_LINE);
-<<<<<<< HEAD
-	timer_set(m_screen->time_until_pos(IREMM10_VBSTART + 1, 80), TIMER_INTERRUPT, -1);
-=======
 	m_interrupt_timer->adjust(m_screen->time_until_pos(IREMM10_VBSTART + 1, 80), -1);
->>>>>>> upstream/master
 }
 
 /*************************************
@@ -834,11 +800,7 @@ static const char *const m10_sample_names[] =
 	"8",        /* UFO/saucer hit */
 	"9",        /* bonus base */
 	"0",        /* UFO sound */
-<<<<<<< HEAD
-	0
-=======
 	nullptr
->>>>>>> upstream/master
 };
 
 /*************************************
@@ -847,11 +809,7 @@ static const char *const m10_sample_names[] =
  *
  *************************************/
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( m10, m10_state )
-=======
 static MACHINE_CONFIG_START( m10 )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6502,IREMM10_CPU_CLOCK)
@@ -914,11 +872,7 @@ static MACHINE_CONFIG_DERIVED( m11, m10 )
 	/* sound hardware */
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( m15, m10_state )
-=======
 static MACHINE_CONFIG_START( m15 )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6502,IREMM15_CPU_CLOCK)
@@ -1091,15 +1045,6 @@ ROM_START( greenber )
 	ROM_LOAD( "gb9", 0x3000, 0x0400, CRC(c27b9ba3) SHA1(a2f4f0c4b61eb03bba13ae5d25dc01009a4f86ee) ) // ok ?
 ROM_END
 
-<<<<<<< HEAD
-GAME( 1979, andromed,  0,        m11,     skychut, m10_state,  andromed, ROT270, "IPM",  "Andromeda (Japan?)", MACHINE_NO_SOUND | MACHINE_IMPERFECT_COLORS | MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE )
-GAME( 1979, ipminvad,  0,        m10,     ipminvad, driver_device, 0,        ROT270, "IPM",  "IPM Invader", MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_COLORS | MACHINE_SUPPORTS_SAVE )
-GAME( 1979, ipminvad1, ipminvad, m10,     ipminvad, m10_state, ipminva1, ROT270, "IPM",  "IPM Invader (Incomplete Dump)", MACHINE_IMPERFECT_SOUND | MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE )
-GAME( 1980, skychut,   0,        m11,     skychut, driver_device,  0,        ROT270, "Irem", "Sky Chuter", MACHINE_NO_SOUND | MACHINE_IMPERFECT_COLORS | MACHINE_SUPPORTS_SAVE )
-GAME( 1979, spacbeam,  0,        m15,     spacbeam, driver_device, 0,        ROT270, "Irem", "Space Beam", MACHINE_NO_SOUND | MACHINE_IMPERFECT_COLORS | MACHINE_SUPPORTS_SAVE ) // IPM or Irem?
-GAME( 1979, headoni,   0,        headoni, headoni, driver_device,  0,        ROT270, "Irem", "Head On (Irem, M-15 Hardware)", MACHINE_NO_SOUND | MACHINE_IMPERFECT_COLORS | MACHINE_SUPPORTS_SAVE )
-GAME( 1980, greenber,  0,        m15,     spacbeam, driver_device, 0,        ROT270, "Irem", "Green Beret (Irem)", MACHINE_NO_SOUND | MACHINE_IMPERFECT_COLORS | MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1979, andromed,  0,        m11,     skychut,  m10_state, andromed, ROT270, "IPM",  "Andromeda (Japan?)",            MACHINE_NO_SOUND | MACHINE_IMPERFECT_COLORS | MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE )
 GAME( 1979, ipminvad,  0,        m10,     ipminvad, m10_state, 0,        ROT270, "IPM",  "IPM Invader",                   MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_COLORS | MACHINE_SUPPORTS_SAVE )
 GAME( 1979, ipminvad1, ipminvad, m10,     ipminvad, m10_state, ipminva1, ROT270, "IPM",  "IPM Invader (Incomplete Dump)", MACHINE_IMPERFECT_SOUND | MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE )
@@ -1107,4 +1052,3 @@ GAME( 1980, skychut,   0,        m11,     skychut,  m10_state, 0,        ROT270,
 GAME( 1979, spacbeam,  0,        m15,     spacbeam, m10_state, 0,        ROT270, "Irem", "Space Beam",                    MACHINE_NO_SOUND | MACHINE_IMPERFECT_COLORS | MACHINE_SUPPORTS_SAVE ) // IPM or Irem?
 GAME( 1979, headoni,   0,        headoni, headoni,  m10_state, 0,        ROT270, "Irem", "Head On (Irem, M-15 Hardware)", MACHINE_NO_SOUND | MACHINE_IMPERFECT_COLORS | MACHINE_SUPPORTS_SAVE )
 GAME( 1980, greenber,  0,        m15,     spacbeam, m10_state, 0,        ROT270, "Irem", "Green Beret (Irem)",            MACHINE_NO_SOUND | MACHINE_IMPERFECT_COLORS | MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

@@ -38,11 +38,7 @@ TILE_GET_INFO_MEMBER(circus_state::get_bg_tile_info)
 
 void circus_state::video_start()
 {
-<<<<<<< HEAD
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(circus_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
-=======
 	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(circus_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
->>>>>>> upstream/master
 }
 
 void circus_state::draw_line( bitmap_ind16 &bitmap, const rectangle &cliprect, int x1, int y1, int x2, int y2, int dotted )
@@ -67,11 +63,7 @@ void circus_state::draw_line( bitmap_ind16 &bitmap, const rectangle &cliprect, i
 void circus_state::draw_sprite_collision( bitmap_ind16 &bitmap, const rectangle &cliprect )
 {
 	gfx_element *sprite_gfx = m_gfxdecode->gfx(1);
-<<<<<<< HEAD
-	const UINT8 *sprite_data = sprite_gfx->get_data(m_clown_z);
-=======
 	const uint8_t *sprite_data = sprite_gfx->get_data(m_clown_z);
->>>>>>> upstream/master
 	int sx, sy, dx, dy;
 	int pixel, collision = 0;
 
@@ -117,11 +109,7 @@ void circus_state::circus_draw_fg( bitmap_ind16 &bitmap, const rectangle &clipre
 	draw_line(bitmap, cliprect, 231, 192, 248, 192, 0);
 }
 
-<<<<<<< HEAD
-UINT32 circus_state::screen_update_circus(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t circus_state::screen_update_circus(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	m_bg_tilemap->draw(screen, bitmap, cliprect, 0, 0);
 	circus_draw_fg(bitmap, cliprect);
@@ -190,11 +178,7 @@ void circus_state::robotbwl_draw_ball( bitmap_ind16 &bitmap, const rectangle &cl
 			m_clown_y + 8, m_clown_x + 8, 0);
 }
 
-<<<<<<< HEAD
-UINT32 circus_state::screen_update_robotbwl(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t circus_state::screen_update_robotbwl(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	m_bg_tilemap->draw(screen, bitmap, cliprect, 0, 0);
 	robotbwl_draw_scoreboard(bitmap, cliprect);
@@ -213,22 +197,14 @@ void circus_state::crash_draw_car( bitmap_ind16 &bitmap, const rectangle &clipre
 		m_clown_y, m_clown_x - 1, 0);
 }
 
-<<<<<<< HEAD
-UINT32 circus_state::screen_update_crash(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t circus_state::screen_update_crash(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	m_bg_tilemap->draw(screen, bitmap, cliprect, 0, 0);
 	crash_draw_car(bitmap, cliprect);
 	return 0;
 }
 
-<<<<<<< HEAD
-UINT32 circus_state::screen_update_ripcord(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t circus_state::screen_update_ripcord(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	m_bg_tilemap->draw(screen, bitmap, cliprect, 0, 0);
 	draw_sprite_collision(bitmap, cliprect);

@@ -1,16 +1,9 @@
-<<<<<<< HEAD
-#ifndef NLD_TTL74XX_H_
-#define NLD_TTL74XX_H_
-
-#include "nl_setup.h"
-=======
 // license:GPL-2.0+
 // copyright-holders:Couriersud
 #ifndef NLD_TTL74XX_H_
 #define NLD_TTL74XX_H_
 
 #include "../nl_setup.h"
->>>>>>> upstream/master
 
 #ifndef __PLIB_PREPROCESSOR__
 
@@ -18,13 +11,6 @@
  *  Netlist Macros
  * ---------------------------------------------------------------------------*/
 
-<<<<<<< HEAD
-#define TTL_7416_GATE(_name)                                                   \
-		NET_REGISTER_DEV(TTL_7416_GATE, _name)
-
-#define TTL_7416_DIP(_name)                                                    \
-		NET_REGISTER_DEV(TTL7416_DIP, _name)
-=======
 #ifndef NL_AUTO_DEVICES
 
 #define TTL_7400_GATE(name)                                                   \
@@ -257,7 +243,6 @@
 		NET_REGISTER_DEV(DM9312_DIP, name)
 
 #endif
->>>>>>> upstream/master
 
 /* ----------------------------------------------------------------------------
  *  External declarations

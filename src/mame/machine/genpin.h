@@ -4,10 +4,6 @@
 #define GENPIN_H_
 
 
-<<<<<<< HEAD
-#include "emu.h"
-=======
->>>>>>> upstream/master
 #include "sound/samples.h"
 #include "machine/nvram.h"
 
@@ -33,11 +29,7 @@ const char *const genpin_sample_names[] =
 	"relay_release",
 	"solenoid_engage",
 	"solenoid_release",
-<<<<<<< HEAD
-	0   /* end of array */
-=======
 	nullptr   /* end of array */
->>>>>>> upstream/master
 };
 
 MACHINE_CONFIG_EXTERN( genpin_audio );

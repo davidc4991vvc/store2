@@ -6,15 +6,9 @@
 struct iox_t
 {
 	int reset,ff_event,ff_1,protcheck[4],protlatch[4];
-<<<<<<< HEAD
-	UINT8 data;
-	UINT8 mux;
-	UINT8 ff;
-=======
 	uint8_t data;
 	uint8_t mux;
 	uint8_t ff;
->>>>>>> upstream/master
 };
 
 class srmp2_state : public driver_device
@@ -34,13 +28,8 @@ public:
 	int m_gfx_bank;
 	int m_adpcm_bank;
 	int m_adpcm_data;
-<<<<<<< HEAD
-	UINT32 m_adpcm_sptr;
-	UINT32 m_adpcm_eptr;
-=======
 	uint32_t m_adpcm_sptr;
 	uint32_t m_adpcm_eptr;
->>>>>>> upstream/master
 	iox_t m_iox;
 
 	// common
@@ -64,24 +53,14 @@ public:
 	DECLARE_WRITE8_MEMBER(srmp2_irq2_ack_w);
 	DECLARE_WRITE8_MEMBER(srmp2_irq4_ack_w);
 	DECLARE_WRITE16_MEMBER(srmp2_flags_w);
-<<<<<<< HEAD
-	DECLARE_WRITE16_MEMBER(srmp2_adpcm_code_w);
-=======
 	DECLARE_WRITE8_MEMBER(adpcm_code_w);
->>>>>>> upstream/master
 
 	// srmp3
 	DECLARE_WRITE8_MEMBER(srmp3_rombank_w);
 	DECLARE_WRITE8_MEMBER(srmp3_flags_w);
 	DECLARE_WRITE8_MEMBER(srmp3_irq_ack_w);
-<<<<<<< HEAD
-	DECLARE_WRITE8_MEMBER(srmp3_adpcm_code_w);
-
-	virtual void machine_start();
-=======
 
 	virtual void machine_start() override;
->>>>>>> upstream/master
 	DECLARE_MACHINE_START(srmp2);
 	DECLARE_PALETTE_INIT(srmp2);
 	DECLARE_MACHINE_START(srmp3);
@@ -89,19 +68,10 @@ public:
 	DECLARE_MACHINE_START(rmgoldyh);
 	DECLARE_MACHINE_START(mjyuugi);
 
-<<<<<<< HEAD
-	UINT32 screen_update_srmp2(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	UINT32 screen_update_srmp3(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	UINT32 screen_update_mjyuugi(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	SETA001_SPRITE_GFXBANK_CB_MEMBER(srmp3_gfxbank_callback);
-
-	UINT8 iox_key_matrix_calc(UINT8 p_side);
-=======
 	uint32_t screen_update_srmp2(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	uint32_t screen_update_srmp3(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	uint32_t screen_update_mjyuugi(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	SETA001_SPRITE_GFXBANK_CB_MEMBER(srmp3_gfxbank_callback);
 
 	uint8_t iox_key_matrix_calc(uint8_t p_side);
->>>>>>> upstream/master
 };

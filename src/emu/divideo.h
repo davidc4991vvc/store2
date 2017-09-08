@@ -14,13 +14,8 @@
 #error Dont include this file directly; include emu.h instead.
 #endif
 
-<<<<<<< HEAD
-#ifndef __DIVIDEO_H__
-#define __DIVIDEO_H__
-=======
 #ifndef MAME_EMU_DIVIDEO_H
 #define MAME_EMU_DIVIDEO_H
->>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -55,13 +50,8 @@ public:
 
 protected:
 	// optional operation overrides
-<<<<<<< HEAD
-	virtual void interface_validity_check(validity_checker &valid) const;
-	virtual void interface_pre_start();
-=======
 	virtual void interface_validity_check(validity_checker &valid) const override;
 	virtual void interface_pre_start() override;
->>>>>>> upstream/master
 
 	// configuration state
 	bool            m_screen_required;          // is a screen required?
@@ -75,8 +65,4 @@ protected:
 typedef device_interface_iterator<device_video_interface> video_interface_iterator;
 
 
-<<<<<<< HEAD
-#endif  /* __DIVIDEO_H__ */
-=======
 #endif  /* MAME_EMU_DIVIDEO_H */
->>>>>>> upstream/master

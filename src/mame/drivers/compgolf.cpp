@@ -15,12 +15,9 @@
 #include "emu.h"
 #include "cpu/m6809/m6809.h"
 #include "sound/2203intf.h"
-<<<<<<< HEAD
-=======
 #include "screen.h"
 #include "speaker.h"
 
->>>>>>> upstream/master
 #include "includes/compgolf.h"
 
 
@@ -199,19 +196,6 @@ static GFXDECODE_START( compgolf )
 	GFXDECODE_ENTRY( "gfx3", 0, tilelayout8,  0, 0x10 )
 GFXDECODE_END
 
-<<<<<<< HEAD
-/*************************************
- *
- *  Sound interface
- *
- *************************************/
-
-WRITE_LINE_MEMBER(compgolf_state::sound_irq)
-{
-	m_maincpu->set_input_line(0, state);
-}
-=======
->>>>>>> upstream/master
 
 /*************************************
  *
@@ -237,11 +221,7 @@ void compgolf_state::machine_reset()
 	m_scrolly_hi = 0;
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( compgolf, compgolf_state )
-=======
 static MACHINE_CONFIG_START( compgolf )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6809, 2000000)
@@ -266,11 +246,7 @@ static MACHINE_CONFIG_START( compgolf )
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
 	MCFG_SOUND_ADD("ymsnd", YM2203, 1500000)
-<<<<<<< HEAD
-	MCFG_YM2203_IRQ_HANDLER(WRITELINE(compgolf_state, sound_irq))
-=======
 	MCFG_YM2203_IRQ_HANDLER(INPUTLINE("maincpu", 0))
->>>>>>> upstream/master
 	MCFG_AY8910_PORT_A_WRITE_CB(WRITE8(compgolf_state, compgolf_scrollx_lo_w))
 	MCFG_AY8910_PORT_B_WRITE_CB(WRITE8(compgolf_state, compgolf_scrolly_lo_w))
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
@@ -344,13 +320,8 @@ ROM_END
 
 void compgolf_state::compgolf_expand_bg()
 {
-<<<<<<< HEAD
-	UINT8 *GFXDST = memregion("gfx2")->base();
-	UINT8 *GFXSRC = memregion("gfx4")->base();
-=======
 	uint8_t *GFXDST = memregion("gfx2")->base();
 	uint8_t *GFXSRC = memregion("gfx4")->base();
->>>>>>> upstream/master
 
 	int x;
 

@@ -2,25 +2,13 @@
 
 #include "StdAfx.h"
 
-<<<<<<< HEAD
-#include "LimitedStreams.h"
-#include "../../Common/Defs.h"
-=======
 #include <string.h>
 
 #include "LimitedStreams.h"
->>>>>>> upstream/master
 
 STDMETHODIMP CLimitedSequentialInStream::Read(void *data, UInt32 size, UInt32 *processedSize)
 {
   UInt32 realProcessedSize = 0;
-<<<<<<< HEAD
-  UInt32 sizeToRead = (UInt32)MyMin((_size - _pos), (UInt64)size);
-  HRESULT result = S_OK;
-  if (sizeToRead > 0)
-  {
-    result = _stream->Read(data, sizeToRead, &realProcessedSize);
-=======
   {
     const UInt64 rem = _size - _pos;
     if (size > rem)
@@ -30,31 +18,17 @@ STDMETHODIMP CLimitedSequentialInStream::Read(void *data, UInt32 size, UInt32 *p
   if (size != 0)
   {
     result = _stream->Read(data, size, &realProcessedSize);
->>>>>>> upstream/master
     _pos += realProcessedSize;
     if (realProcessedSize == 0)
       _wasFinished = true;
   }
-<<<<<<< HEAD
-  if (processedSize != NULL)
-=======
   if (processedSize)
->>>>>>> upstream/master
     *processedSize = realProcessedSize;
   return result;
 }
 
 STDMETHODIMP CLimitedInStream::Read(void *data, UInt32 size, UInt32 *processedSize)
 {
-<<<<<<< HEAD
-  if (processedSize != NULL)
-    *processedSize = 0;
-  if (_virtPos >= _size)
-    return (_virtPos == _size) ? S_OK: E_FAIL;
-  UInt64 rem = _size - _virtPos;
-  if (rem < size)
-    size = (UInt32)rem;
-=======
   if (processedSize)
     *processedSize = 0;
   if (_virtPos >= _size)
@@ -68,7 +42,6 @@ STDMETHODIMP CLimitedInStream::Read(void *data, UInt32 size, UInt32 *processedSi
     if (size > rem)
       size = (UInt32)rem;
   }
->>>>>>> upstream/master
   UInt64 newPos = _startOffset + _virtPos;
   if (newPos != _physPos)
   {
@@ -76,11 +49,7 @@ STDMETHODIMP CLimitedInStream::Read(void *data, UInt32 size, UInt32 *processedSi
     RINOK(SeekToPhys());
   }
   HRESULT res = _stream->Read(data, size, &size);
-<<<<<<< HEAD
-  if (processedSize != NULL)
-=======
   if (processedSize)
->>>>>>> upstream/master
     *processedSize = size;
   _physPos += size;
   _virtPos += size;
@@ -89,15 +58,6 @@ STDMETHODIMP CLimitedInStream::Read(void *data, UInt32 size, UInt32 *processedSi
 
 STDMETHODIMP CLimitedInStream::Seek(Int64 offset, UInt32 seekOrigin, UInt64 *newPosition)
 {
-<<<<<<< HEAD
-  switch(seekOrigin)
-  {
-    case STREAM_SEEK_SET: _virtPos = offset; break;
-    case STREAM_SEEK_CUR: _virtPos += offset; break;
-    case STREAM_SEEK_END: _virtPos = _size + offset; break;
-    default: return STG_E_INVALIDFUNCTION;
-  }
-=======
   switch (seekOrigin)
   {
     case STREAM_SEEK_SET: break;
@@ -108,27 +68,11 @@ STDMETHODIMP CLimitedInStream::Seek(Int64 offset, UInt32 seekOrigin, UInt64 *new
   if (offset < 0)
     return HRESULT_WIN32_ERROR_NEGATIVE_SEEK;
   _virtPos = offset;
->>>>>>> upstream/master
   if (newPosition)
     *newPosition = _virtPos;
   return S_OK;
 }
 
-<<<<<<< HEAD
-STDMETHODIMP CClusterInStream::Read(void *data, UInt32 size, UInt32 *processedSize)
-{
-  if (processedSize != NULL)
-    *processedSize = 0;
-  if (_virtPos >= Size)
-    return (_virtPos == Size) ? S_OK: E_FAIL;
-
-  if (_curRem == 0)
-  {
-    UInt32 blockSize = (UInt32)1 << BlockSizeLog;
-    UInt32 virtBlock = (UInt32)(_virtPos >> BlockSizeLog);
-    UInt32 offsetInBlock = (UInt32)_virtPos & (blockSize - 1);
-    UInt32 phyBlock = Vector[virtBlock];
-=======
 HRESULT CreateLimitedInStream(IInStream *inStream, UInt64 pos, UInt64 size, ISequentialInStream **resStream)
 {
   *resStream = 0;
@@ -162,26 +106,12 @@ STDMETHODIMP CClusterInStream::Read(void *data, UInt32 size, UInt32 *processedSi
     const UInt32 offsetInBlock = (UInt32)_virtPos & (blockSize - 1);
     const UInt32 phyBlock = Vector[virtBlock];
     
->>>>>>> upstream/master
     UInt64 newPos = StartOffset + ((UInt64)phyBlock << BlockSizeLog) + offsetInBlock;
     if (newPos != _physPos)
     {
       _physPos = newPos;
       RINOK(SeekToPhys());
     }
-<<<<<<< HEAD
-    _curRem = blockSize - offsetInBlock;
-    for (int i = 1; i < 64 && (virtBlock + i) < (UInt32)Vector.Size() && phyBlock + i == Vector[virtBlock + i]; i++)
-      _curRem += (UInt32)1 << BlockSizeLog;
-    UInt64 rem = Size - _virtPos;
-    if (_curRem > rem)
-      _curRem = (UInt32)rem;
-  }
-  if (size > _curRem)
-    size = _curRem;
-  HRESULT res = Stream->Read(data, size, &size);
-  if (processedSize != NULL)
-=======
 
     _curRem = blockSize - offsetInBlock;
     
@@ -193,7 +123,6 @@ STDMETHODIMP CClusterInStream::Read(void *data, UInt32 size, UInt32 *processedSi
     size = _curRem;
   HRESULT res = Stream->Read(data, size, &size);
   if (processedSize)
->>>>>>> upstream/master
     *processedSize = size;
   _physPos += size;
   _virtPos += size;
@@ -203,21 +132,6 @@ STDMETHODIMP CClusterInStream::Read(void *data, UInt32 size, UInt32 *processedSi
  
 STDMETHODIMP CClusterInStream::Seek(Int64 offset, UInt32 seekOrigin, UInt64 *newPosition)
 {
-<<<<<<< HEAD
-  UInt64 newVirtPos = offset;
-  switch(seekOrigin)
-  {
-    case STREAM_SEEK_SET: break;
-    case STREAM_SEEK_CUR: newVirtPos += _virtPos; break;
-    case STREAM_SEEK_END: newVirtPos += Size; break;
-    default: return STG_E_INVALIDFUNCTION;
-  }
-  if (_virtPos != newVirtPos)
-    _curRem = 0;
-  _virtPos = newVirtPos;
-  if (newPosition)
-    *newPosition = newVirtPos;
-=======
   switch (seekOrigin)
   {
     case STREAM_SEEK_SET: break;
@@ -232,29 +146,10 @@ STDMETHODIMP CClusterInStream::Seek(Int64 offset, UInt32 seekOrigin, UInt64 *new
   _virtPos = offset;
   if (newPosition)
     *newPosition = offset;
->>>>>>> upstream/master
   return S_OK;
 }
 
 
-<<<<<<< HEAD
-HRESULT CreateLimitedInStream(IInStream *inStream, UInt64 pos, UInt64 size, ISequentialInStream **resStream)
-{
-  *resStream = 0;
-  CLimitedInStream *streamSpec = new CLimitedInStream;
-  CMyComPtr<ISequentialInStream> streamTemp = streamSpec;
-  streamSpec->SetStream(inStream);
-  RINOK(streamSpec->InitAndSeek(pos, size));
-  streamSpec->SeekToStart();
-  *resStream = streamTemp.Detach();
-  return S_OK;
-}
-
-STDMETHODIMP CLimitedSequentialOutStream::Write(const void *data, UInt32 size, UInt32 *processedSize)
-{
-  HRESULT result = S_OK;
-  if (processedSize != NULL)
-=======
 STDMETHODIMP CExtentsStream::Read(void *data, UInt32 size, UInt32 *processedSize)
 {
   if (processedSize)
@@ -319,7 +214,6 @@ STDMETHODIMP CLimitedSequentialOutStream::Write(const void *data, UInt32 size, U
 {
   HRESULT result = S_OK;
   if (processedSize)
->>>>>>> upstream/master
     *processedSize = 0;
   if (size > _size)
   {
@@ -328,11 +222,7 @@ STDMETHODIMP CLimitedSequentialOutStream::Write(const void *data, UInt32 size, U
       _overflow = true;
       if (!_overflowIsAllowed)
         return E_FAIL;
-<<<<<<< HEAD
-      if (processedSize != NULL)
-=======
       if (processedSize)
->>>>>>> upstream/master
         *processedSize = size;
       return S_OK;
     }
@@ -341,12 +231,6 @@ STDMETHODIMP CLimitedSequentialOutStream::Write(const void *data, UInt32 size, U
   if (_stream)
     result = _stream->Write(data, size, &size);
   _size -= size;
-<<<<<<< HEAD
-  if (processedSize != NULL)
-    *processedSize = size;
-  return result;
-}
-=======
   if (processedSize)
     *processedSize = size;
   return result;
@@ -481,4 +365,3 @@ STDMETHODIMP CTailOutStream::SetSize(UInt64 newSize)
   _virtSize = newSize;
   return Stream->SetSize(Offset + newSize);
 }
->>>>>>> upstream/master

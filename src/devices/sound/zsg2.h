@@ -4,17 +4,10 @@
     ZOOM ZSG-2 custom wavetable synthesizer
 */
 
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __ZSG2_H__
-#define __ZSG2_H__
-=======
 #ifndef MAME_SOUND_ZSG2_H
 #define MAME_SOUND_ZSG2_H
 
 #pragma once
->>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -36,58 +29,26 @@ class zsg2_device : public device_t,
 					public device_sound_interface
 {
 public:
-<<<<<<< HEAD
-	zsg2_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-	~zsg2_device() { }
-
-	// static configuration helpers
-	template<class _Object> static devcb_base &set_ext_read_handler(device_t &device, _Object object) { return downcast<zsg2_device &>(device).m_ext_read_handler.set_callback(object); }
-=======
 	zsg2_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	// static configuration helpers
 	template <class Object> static devcb_base &set_ext_read_handler(device_t &device, Object &&cb) { return downcast<zsg2_device &>(device).m_ext_read_handler.set_callback(std::forward<Object>(cb)); }
->>>>>>> upstream/master
 
 	DECLARE_READ16_MEMBER(read);
 	DECLARE_WRITE16_MEMBER(write);
 
 protected:
 	// device-level overrides
-<<<<<<< HEAD
-	virtual void device_start();
-	virtual void device_reset();
-
-	// sound stream update overrides
-	virtual void sound_stream_update(sound_stream &stream, stream_sample_t **inputs, stream_sample_t **outputs, int samples);
-=======
 	virtual void device_start() override;
 	virtual void device_reset() override;
 
 	// sound stream update overrides
 	virtual void sound_stream_update(sound_stream &stream, stream_sample_t **inputs, stream_sample_t **outputs, int samples) override;
->>>>>>> upstream/master
 
 private:
 	// 16 registers per channel, 48 channels
 	struct zchan
 	{
-<<<<<<< HEAD
-		UINT16 v[16];
-		bool is_playing;
-		INT16 *samples;
-		UINT32 cur_pos;
-		UINT32 step_ptr;
-		UINT32 step;
-		UINT32 start_pos;
-		UINT32 end_pos;
-		UINT32 loop_pos;
-		UINT32 page;
-		UINT16 vol;
-		UINT16 flags;
-		UINT8 panl;
-		UINT8 panr;
-=======
 		uint16_t v[16];
 		bool is_playing;
 		int16_t *samples;
@@ -102,43 +63,20 @@ private:
 		uint16_t flags;
 		uint8_t panl;
 		uint8_t panr;
->>>>>>> upstream/master
 	};
 
 	zchan m_chan[48];
 
-<<<<<<< HEAD
-	required_region_ptr<UINT32> m_mem_base;
-	UINT32 m_read_address;
-	UINT32 *m_mem_copy;
-	UINT32 m_mem_blocks;
-	INT16 *m_full_samples;
-=======
 	required_region_ptr<uint32_t> m_mem_base;
 	uint32_t m_read_address;
 	std::unique_ptr<uint32_t[]> m_mem_copy;
 	uint32_t m_mem_blocks;
 	std::unique_ptr<int16_t[]> m_full_samples;
->>>>>>> upstream/master
 
 	sound_stream *m_stream;
 
 	devcb_read32 m_ext_read_handler;
 
-<<<<<<< HEAD
-	UINT32 read_memory(UINT32 offset);
-	void chan_w(int ch, int reg, UINT16 data);
-	UINT16 chan_r(int ch, int reg);
-	void control_w(int reg, UINT16 data);
-	UINT16 control_r(int reg);
-	INT16 *prepare_samples(UINT32 offset);
-};
-
-extern const device_type ZSG2;
-
-
-#endif  /* __ZSG2_H__ */
-=======
 	uint32_t read_memory(uint32_t offset);
 	void chan_w(int ch, int reg, uint16_t data);
 	uint16_t chan_r(int ch, int reg);
@@ -150,4 +88,3 @@ extern const device_type ZSG2;
 DECLARE_DEVICE_TYPE(ZSG2, zsg2_device)
 
 #endif // MAME_SOUND_ZSG2_H
->>>>>>> upstream/master

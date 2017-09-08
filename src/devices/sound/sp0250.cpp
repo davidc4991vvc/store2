@@ -34,17 +34,10 @@ should be 312, but 312 = 39*8 so it doesn't look right because a divider by 39 i
 */
 #define CLOCK_DIVIDER (7*6*8)
 
-<<<<<<< HEAD
-const device_type SP0250 = &device_creator<sp0250_device>;
-
-sp0250_device::sp0250_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, SP0250, "SP0250", tag, owner, clock, "sp0250", __FILE__),
-=======
 DEFINE_DEVICE_TYPE(SP0250, sp0250_device, "sp0250", "GI SP0250 LPC")
 
 sp0250_device::sp0250_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, SP0250, tag, owner, clock),
->>>>>>> upstream/master
 		device_sound_interface(mconfig, *this),
 		m_amp(0),
 		m_pitch(0),
@@ -53,28 +46,11 @@ sp0250_device::sp0250_device(const machine_config &mconfig, const char *tag, dev
 		m_rcount(0),
 		m_playing(0),
 		m_RNG(0),
-<<<<<<< HEAD
-		m_stream(NULL),
-=======
 		m_stream(nullptr),
->>>>>>> upstream/master
 		m_voiced(0),
 		m_fifo_pos(0),
 		m_drq(*this)
 {
-<<<<<<< HEAD
-	for (int i = 0; i < 15; i++)
-	{
-		m_fifo[i] = 0;
-	}
-
-	for (int i = 0; i < 6; i++)
-	{
-		m_filter[i].F = 0;
-		m_filter[i].B = 0;
-		m_filter[i].z1 = 0;
-		m_filter[i].z2 = 0;
-=======
 	for (auto & elem : m_fifo)
 	{
 		elem = 0;
@@ -86,7 +62,6 @@ sp0250_device::sp0250_device(const machine_config &mconfig, const char *tag, dev
 		elem.B = 0;
 		elem.z1 = 0;
 		elem.z2 = 0;
->>>>>>> upstream/master
 	}
 }
 
@@ -101,12 +76,8 @@ void sp0250_device::device_start()
 	if (!m_drq.isnull())
 	{
 		m_drq( ASSERT_LINE);
-<<<<<<< HEAD
-		machine().scheduler().timer_pulse(attotime::from_hz(clock()) * CLOCK_DIVIDER, timer_expired_delegate(FUNC(sp0250_device::timer_tick), this));
-=======
 		m_tick_timer= machine().scheduler().timer_alloc(timer_expired_delegate(FUNC(sp0250_device::timer_tick), this));
 		m_tick_timer->adjust(attotime::from_hz(clock()) * CLOCK_DIVIDER, 0, attotime::from_hz(clock()) * CLOCK_DIVIDER);
->>>>>>> upstream/master
 	}
 
 	m_stream = machine().sound().stream_alloc(*this, 0, 1, clock() / CLOCK_DIVIDER);
@@ -123,26 +94,15 @@ void sp0250_device::device_start()
 	save_item(NAME(m_fifo_pos));
 }
 
-<<<<<<< HEAD
-static UINT16 sp0250_ga(UINT8 v)
-=======
 static uint16_t sp0250_ga(uint8_t v)
->>>>>>> upstream/master
 {
 	return (v & 0x1f) << (v>>5);
 }
 
-<<<<<<< HEAD
-static INT16 sp0250_gc(UINT8 v)
-{
-	// Internal ROM to the chip, cf. manual
-	static const UINT16 coefs[128] =
-=======
 static int16_t sp0250_gc(uint8_t v)
 {
 	// Internal ROM to the chip, cf. manual
 	static const uint16_t coefs[128] =
->>>>>>> upstream/master
 	{
 			0,   9,  17,  25,  33,  41,  49,  57,  65,  73,  81,  89,  97, 105, 113, 121,
 		129, 137, 145, 153, 161, 169, 177, 185, 193, 201, 203, 217, 225, 233, 241, 249,
@@ -153,11 +113,7 @@ static int16_t sp0250_gc(uint8_t v)
 		479, 481, 482, 483, 484, 485, 486, 487, 488, 489, 490, 491, 492, 493, 494, 495,
 		496, 497, 498, 499, 500, 501, 502, 503, 504, 505, 506, 507, 508, 509, 510, 511
 	};
-<<<<<<< HEAD
-	INT16 res = coefs[v & 0x7f];
-=======
 	int16_t res = coefs[v & 0x7f];
->>>>>>> upstream/master
 
 	if (!(v & 0x80))
 		res = -res;
@@ -216,11 +172,7 @@ WRITE8_MEMBER( sp0250_device::write )
 }
 
 
-<<<<<<< HEAD
-UINT8 sp0250_device::drq_r()
-=======
 uint8_t sp0250_device::drq_r()
->>>>>>> upstream/master
 {
 	m_stream->update();
 	return (m_fifo_pos == 15) ? CLEAR_LINE : ASSERT_LINE;
@@ -238,11 +190,7 @@ void sp0250_device::sound_stream_update(sound_stream &stream, stream_sample_t **
 	{
 		if (m_playing)
 		{
-<<<<<<< HEAD
-			INT16 z0;
-=======
 			int16_t z0;
->>>>>>> upstream/master
 			int f;
 
 			if (m_voiced)

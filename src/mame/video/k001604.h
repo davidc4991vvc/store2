@@ -1,23 +1,5 @@
 // license:BSD-3-Clause
 // copyright-holders:David Haywood
-<<<<<<< HEAD
-#pragma once
-#ifndef __K001604_H__
-#define __K001604_H__
-
-
-class k001604_device : public device_t
-{
-public:
-	k001604_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-	~k001604_device() {}
-
-	// static configuration
-	static void static_set_gfxdecode_tag(device_t &device, const char *tag);
-	static void static_set_palette_tag(device_t &device, const char *tag);
-	static void set_gfx_index_1(device_t &device, int idx) { downcast<k001604_device &>(device).m_gfx_index_1 = idx; }
-	static void set_gfx_index_2(device_t &device, int idx) { downcast<k001604_device &>(device).m_gfx_index_2 = idx; }
-=======
 #ifndef MAME_VIDEO_K001604_H
 #define MAME_VIDEO_K001604_H
 
@@ -30,7 +12,6 @@ public:
 	k001604_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	// static configuration
->>>>>>> upstream/master
 	static void set_layer_size(device_t &device, int size) { downcast<k001604_device &>(device).m_layer_size = size; }
 	static void set_roz_size(device_t &device, int size) { downcast<k001604_device &>(device).m_roz_size = size; }
 	static void set_txt_mem_offset(device_t &device, int offs) { downcast<k001604_device &>(device).m_txt_mem_offset = offs; }
@@ -47,19 +28,10 @@ public:
 
 protected:
 	// device-level overrides
-<<<<<<< HEAD
-	virtual void device_start();
-	virtual void device_reset();
-private:
-	// internal state
-	int            m_gfx_index_1;
-	int            m_gfx_index_2;
-=======
 	virtual void device_start() override;
 	virtual void device_reset() override;
 private:
 	// internal state
->>>>>>> upstream/master
 	int            m_layer_size;        // 0 -> width = 128 tiles, 1 -> width = 256 tiles
 	int            m_roz_size;          // 0 -> 8x8, 1 -> 16x16
 	int            m_txt_mem_offset;
@@ -67,20 +39,10 @@ private:
 
 	tilemap_t      *m_layer_8x8[2];
 	tilemap_t      *m_layer_roz;
-<<<<<<< HEAD
-	int            m_gfx_index[2];
-
-	UINT32 *       m_tile_ram;
-	UINT32 *       m_char_ram;
-	UINT32 *       m_reg;
-	required_device<gfxdecode_device> m_gfxdecode;
-	required_device<palette_device> m_palette;
-=======
 
 	std::unique_ptr<uint32_t[]>       m_tile_ram;
 	std::unique_ptr<uint32_t[]>       m_char_ram;
 	std::unique_ptr<uint32_t[]>       m_reg;
->>>>>>> upstream/master
 
 	TILEMAP_MAPPER_MEMBER(scan_layer_8x8_0_size0);
 	TILEMAP_MAPPER_MEMBER(scan_layer_8x8_0_size1);
@@ -92,19 +54,8 @@ private:
 	TILE_GET_INFO_MEMBER(tile_info_layer_roz);
 };
 
-<<<<<<< HEAD
-extern const device_type K001604;
-
-
-#define MCFG_K001604_GFX_INDEX1(_idx) \
-	k001604_device::set_gfx_index_1(*device, _idx);
-
-#define MCFG_K001604_GFX_INDEX2(_idx) \
-	k001604_device::set_gfx_index_2(*device, _idx);
-=======
 DECLARE_DEVICE_TYPE(K001604, k001604_device)
 
->>>>>>> upstream/master
 
 #define MCFG_K001604_LAYER_SIZE(_size) \
 	k001604_device::set_layer_size(*device, _size);
@@ -118,17 +69,7 @@ DECLARE_DEVICE_TYPE(K001604, k001604_device)
 #define MCFG_K001604_ROZ_OFFSET(_offs) \
 	k001604_device::set_roz_mem_offset(*device, _offs);
 
-<<<<<<< HEAD
-#define MCFG_K001604_GFXDECODE(_gfxtag) \
-	k001604_device::static_set_gfxdecode_tag(*device, "^" _gfxtag);
-
-#define MCFG_K001604_PALETTE(_palette_tag) \
-	k001604_device::static_set_palette_tag(*device, "^" _palette_tag);
-
-#endif
-=======
 #define MCFG_K001604_PALETTE(_palette_tag) \
 	MCFG_GFX_PALETTE(_palette_tag)
 
 #endif // MAME_VIDEO_K001604_H
->>>>>>> upstream/master

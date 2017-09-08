@@ -6,10 +6,7 @@
 
 **********************************************************************/
 
-<<<<<<< HEAD
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #include "c2n.h"
 
 
@@ -18,18 +15,6 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type C2N = &device_creator<c2n_device>;
-const device_type C1530 = &device_creator<c1530_device>;
-const device_type C1531 = &device_creator<c1531_device>;
-
-
-//-------------------------------------------------
-//  MACHINE_CONFIG( c2n )
-//-------------------------------------------------
-
-static MACHINE_CONFIG_FRAGMENT( c2n )
-=======
 DEFINE_DEVICE_TYPE(C2N,   c2n_device,   "c2n",   "Commodore C2N Datassette")
 DEFINE_DEVICE_TYPE(C1530, c1530_device, "c1530", "Commodore 1530 Datassette")
 DEFINE_DEVICE_TYPE(C1531, c1531_device, "c1531", "Commodore 1531 Datassette")
@@ -40,7 +25,6 @@ DEFINE_DEVICE_TYPE(C1531, c1531_device, "c1531", "Commodore 1531 Datassette")
 //-------------------------------------------------
 
 MACHINE_CONFIG_MEMBER( c2n_device::device_add_mconfig )
->>>>>>> upstream/master
 	MCFG_CASSETTE_ADD("cassette" )
 	MCFG_CASSETTE_FORMATS(cbm_cassette_formats)
 	MCFG_CASSETTE_DEFAULT_STATE(CASSETTE_STOPPED | CASSETTE_MOTOR_DISABLED | CASSETTE_SPEAKER_MUTED)
@@ -48,20 +32,6 @@ MACHINE_CONFIG_MEMBER( c2n_device::device_add_mconfig )
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-//-------------------------------------------------
-//  machine_config_additions - device-specific
-//  machine configurations
-//-------------------------------------------------
-
-machine_config_constructor c2n_device::device_mconfig_additions() const
-{
-	return MACHINE_CONFIG_NAME( c2n );
-}
-
-
-=======
->>>>>>> upstream/master
 
 //**************************************************************************
 //  LIVE DEVICE
@@ -71,22 +41,6 @@ machine_config_constructor c2n_device::device_mconfig_additions() const
 //  c2n_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-c2n_device::c2n_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source)
-	: device_t(mconfig, type, name, tag, owner, clock, shortname, source),
-		device_pet_datassette_port_interface(mconfig, *this),
-		m_cassette(*this, "cassette"),
-		m_motor(false),
-	m_read_timer(nullptr)
-{
-}
-
-c2n_device::c2n_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, C2N, "C2N Datassette", tag, owner, clock, "c2n", __FILE__),
-		device_pet_datassette_port_interface(mconfig, *this),
-		m_cassette(*this, "cassette"),
-		m_motor(false), m_read_timer(nullptr)
-=======
 c2n_device::c2n_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, type, tag, owner, clock)
 	, device_pet_datassette_port_interface(mconfig, *this)
@@ -98,7 +52,6 @@ c2n_device::c2n_device(const machine_config &mconfig, device_type type, const ch
 
 c2n_device::c2n_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: c2n_device(mconfig, C2N, tag, owner, clock)
->>>>>>> upstream/master
 {
 }
 
@@ -107,30 +60,20 @@ c2n_device::c2n_device(const machine_config &mconfig, const char *tag, device_t 
 //  c1530_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-c1530_device::c1530_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: c2n_device(mconfig, C1530, "C1530 Datassette", tag, owner, clock, "c1530", __FILE__) { }
-=======
 c1530_device::c1530_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: c2n_device(mconfig, C1530, tag, owner, clock)
 {
 }
->>>>>>> upstream/master
 
 
 //-------------------------------------------------
 //  c1531_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-c1531_device::c1531_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: c2n_device(mconfig, C1531, "C1531 Datassette", tag, owner, clock, "c1531", __FILE__) { }
-=======
 c1531_device::c1531_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: c2n_device(mconfig, C1531, tag, owner, clock)
 {
 }
->>>>>>> upstream/master
 
 
 //-------------------------------------------------

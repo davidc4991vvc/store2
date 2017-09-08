@@ -15,10 +15,7 @@
 
 */
 
-<<<<<<< HEAD
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #include "c8050fdc.h"
 
 
@@ -43,11 +40,7 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type C8050_FDC = &device_creator<c8050_fdc_t>;
-=======
 DEFINE_DEVICE_TYPE(C8050_FDC, c8050_fdc_device, "c8050fdc", "Commodore 8050 FDC")
->>>>>>> upstream/master
 
 
 //-------------------------------------------------
@@ -64,11 +57,7 @@ ROM_END
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const rom_entry *c8050_fdc_t::device_rom_region() const
-=======
 const tiny_rom_entry *c8050_fdc_device::device_rom_region() const
->>>>>>> upstream/master
 {
 	return ROM_NAME( c8050_fdc );
 }
@@ -80,31 +69,18 @@ const tiny_rom_entry *c8050_fdc_device::device_rom_region() const
 //**************************************************************************
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  c8050_fdc_t - constructor
-//-------------------------------------------------
-
-c8050_fdc_t::c8050_fdc_t(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-	device_t(mconfig, C8050_FDC, "Commodore 8050 FDC", tag, owner, clock, "c8050fdc", __FILE__),
-=======
 //  c8050_fdc_device - constructor
 //-------------------------------------------------
 
 c8050_fdc_device::c8050_fdc_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	device_t(mconfig, C8050_FDC, tag, owner, clock),
->>>>>>> upstream/master
 	m_write_sync(*this),
 	m_write_ready(*this),
 	m_write_brdy(*this),
 	m_write_error(*this),
 	m_gcr_rom(*this, "gcr"),
-<<<<<<< HEAD
-	m_floppy0(NULL),
-	m_floppy1(NULL),
-=======
 	m_floppy0(nullptr),
 	m_floppy1(nullptr),
->>>>>>> upstream/master
 	m_mtr0(1),
 	m_mtr1(1),
 	m_stp0(0),
@@ -127,11 +103,7 @@ c8050_fdc_device::c8050_fdc_device(const machine_config &mconfig, const char *ta
 //  device_start - device-specific startup
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void c8050_fdc_t::device_start()
-=======
 void c8050_fdc_device::device_start()
->>>>>>> upstream/master
 {
 	// resolve callbacks
 	m_write_sync.resolve_safe();
@@ -162,11 +134,7 @@ void c8050_fdc_device::device_start()
 //  device_reset - device-specific reset
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void c8050_fdc_t::device_reset()
-=======
 void c8050_fdc_device::device_reset()
->>>>>>> upstream/master
 {
 	live_abort();
 }
@@ -176,30 +144,18 @@ void c8050_fdc_device::device_reset()
 //  device_timer - handler timer events
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void c8050_fdc_t::device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr)
-=======
 void c8050_fdc_device::device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr)
->>>>>>> upstream/master
 {
 	live_sync();
 	live_run();
 }
 
-<<<<<<< HEAD
-floppy_image_device* c8050_fdc_t::get_floppy()
-=======
 floppy_image_device* c8050_fdc_device::get_floppy()
->>>>>>> upstream/master
 {
 	return cur_live.drv_sel ? m_floppy1 : m_floppy0;
 }
 
-<<<<<<< HEAD
-void c8050_fdc_t::stp_w(floppy_image_device *floppy, int mtr, int &old_stp, int stp)
-=======
 void c8050_fdc_device::stp_w(floppy_image_device *floppy, int mtr, int &old_stp, int stp)
->>>>>>> upstream/master
 {
 	if (mtr) return;
 
@@ -229,11 +185,7 @@ void c8050_fdc_device::stp_w(floppy_image_device *floppy, int mtr, int &old_stp,
 	old_stp = stp;
 }
 
-<<<<<<< HEAD
-void c8050_fdc_t::stp0_w(int stp)
-=======
 void c8050_fdc_device::stp0_w(int stp)
->>>>>>> upstream/master
 {
 	if (m_stp0 != stp)
 	{
@@ -244,11 +196,7 @@ void c8050_fdc_device::stp0_w(int stp)
 	}
 }
 
-<<<<<<< HEAD
-void c8050_fdc_t::stp1_w(int stp)
-=======
 void c8050_fdc_device::stp1_w(int stp)
->>>>>>> upstream/master
 {
 	if (m_stp1 != stp)
 	{
@@ -259,11 +207,7 @@ void c8050_fdc_device::stp1_w(int stp)
 	}
 }
 
-<<<<<<< HEAD
-void c8050_fdc_t::ds_w(int ds)
-=======
 void c8050_fdc_device::ds_w(int ds)
->>>>>>> upstream/master
 {
 	if (m_ds != ds)
 	{
@@ -276,11 +220,7 @@ void c8050_fdc_device::ds_w(int ds)
 	}
 }
 
-<<<<<<< HEAD
-void c8050_fdc_t::set_floppy(floppy_connector *floppy0, floppy_connector *floppy1)
-=======
 void c8050_fdc_device::set_floppy(floppy_connector *floppy0, floppy_connector *floppy1)
->>>>>>> upstream/master
 {
 	m_floppy0 = floppy0->get_device();
 
@@ -289,11 +229,7 @@ void c8050_fdc_device::set_floppy(floppy_connector *floppy0, floppy_connector *f
 	}
 }
 
-<<<<<<< HEAD
-void c8050_fdc_t::live_start()
-=======
 void c8050_fdc_device::live_start()
->>>>>>> upstream/master
 {
 	cur_live.tm = machine().time();
 	cur_live.state = RUNNING;
@@ -315,107 +251,63 @@ void c8050_fdc_device::live_start()
 	live_run();
 }
 
-<<<<<<< HEAD
-void c8050_fdc_t::pll_reset(const attotime &when)
-=======
 void c8050_fdc_device::pll_reset(const attotime &when)
->>>>>>> upstream/master
 {
 	cur_pll.reset(when);
 	cur_pll.set_clock(attotime::from_hz(clock() / (16 - m_ds)));
 }
 
-<<<<<<< HEAD
-void c8050_fdc_t::pll_start_writing(const attotime &tm)
-=======
 void c8050_fdc_device::pll_start_writing(const attotime &tm)
->>>>>>> upstream/master
 {
 	cur_pll.start_writing(tm);
 	pll_reset(cur_live.tm);
 }
 
-<<<<<<< HEAD
-void c8050_fdc_t::pll_commit(floppy_image_device *floppy, const attotime &tm)
-=======
 void c8050_fdc_device::pll_commit(floppy_image_device *floppy, const attotime &tm)
->>>>>>> upstream/master
 {
 	cur_pll.commit(floppy, tm);
 }
 
-<<<<<<< HEAD
-void c8050_fdc_t::pll_stop_writing(floppy_image_device *floppy, const attotime &tm)
-=======
 void c8050_fdc_device::pll_stop_writing(floppy_image_device *floppy, const attotime &tm)
->>>>>>> upstream/master
 {
 	cur_pll.stop_writing(floppy, tm);
 	pll_reset(cur_live.tm);
 }
 
-<<<<<<< HEAD
-void c8050_fdc_t::pll_save_checkpoint()
-=======
 void c8050_fdc_device::pll_save_checkpoint()
->>>>>>> upstream/master
 {
 	checkpoint_pll = cur_pll;
 }
 
-<<<<<<< HEAD
-void c8050_fdc_t::pll_retrieve_checkpoint()
-=======
 void c8050_fdc_device::pll_retrieve_checkpoint()
->>>>>>> upstream/master
 {
 	cur_pll = checkpoint_pll;
 }
 
-<<<<<<< HEAD
-int c8050_fdc_t::pll_get_next_bit(attotime &tm, floppy_image_device *floppy, const attotime &limit)
-=======
 int c8050_fdc_device::pll_get_next_bit(attotime &tm, floppy_image_device *floppy, const attotime &limit)
->>>>>>> upstream/master
 {
 	return cur_pll.get_next_bit(tm, floppy, limit);
 }
 
-<<<<<<< HEAD
-bool c8050_fdc_t::pll_write_next_bit(bool bit, attotime &tm, floppy_image_device *floppy, const attotime &limit)
-=======
 bool c8050_fdc_device::pll_write_next_bit(bool bit, attotime &tm, floppy_image_device *floppy, const attotime &limit)
->>>>>>> upstream/master
 {
 	return cur_pll.write_next_bit(bit, tm, floppy, limit);
 }
 
-<<<<<<< HEAD
-void c8050_fdc_t::checkpoint()
-=======
 void c8050_fdc_device::checkpoint()
->>>>>>> upstream/master
 {
 	pll_commit(get_floppy(), cur_live.tm);
 	checkpoint_live = cur_live;
 	pll_save_checkpoint();
 }
 
-<<<<<<< HEAD
-void c8050_fdc_t::rollback()
-=======
 void c8050_fdc_device::rollback()
->>>>>>> upstream/master
 {
 	cur_live = checkpoint_live;
 	pll_retrieve_checkpoint();
 }
 
-<<<<<<< HEAD
-void c8050_fdc_t::live_delay(int state)
-=======
 void c8050_fdc_device::live_delay(int state)
->>>>>>> upstream/master
 {
 	cur_live.next_state = state;
 	if(cur_live.tm != machine().time())
@@ -424,11 +316,7 @@ void c8050_fdc_device::live_delay(int state)
 		live_sync();
 }
 
-<<<<<<< HEAD
-void c8050_fdc_t::live_sync()
-=======
 void c8050_fdc_device::live_sync()
->>>>>>> upstream/master
 {
 	if(!cur_live.tm.is_never()) {
 		if(cur_live.tm > machine().time()) {
@@ -451,11 +339,7 @@ void c8050_fdc_device::live_sync()
 	}
 }
 
-<<<<<<< HEAD
-void c8050_fdc_t::live_abort()
-=======
 void c8050_fdc_device::live_abort()
->>>>>>> upstream/master
 {
 	if(!cur_live.tm.is_never() && cur_live.tm > machine().time()) {
 		rollback();
@@ -474,11 +358,7 @@ void c8050_fdc_device::live_abort()
 	cur_live.error = 1;
 }
 
-<<<<<<< HEAD
-void c8050_fdc_t::live_run(const attotime &limit)
-=======
 void c8050_fdc_device::live_run(const attotime &limit)
->>>>>>> upstream/master
 {
 	if(cur_live.state == IDLE || cur_live.next_state != -1)
 		return;
@@ -617,25 +497,15 @@ void c8050_fdc_device::live_run(const attotime &limit)
 	}
 }
 
-<<<<<<< HEAD
-READ8_MEMBER( c8050_fdc_t::read )
-{
-	UINT8 e = checkpoint_live.e;
-=======
 READ8_MEMBER( c8050_fdc_device::read )
 {
 	uint8_t e = checkpoint_live.e;
->>>>>>> upstream/master
 	offs_t i = checkpoint_live.i;
 
 	return GCR_DECODE(e, i);
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER( c8050_fdc_t::write )
-=======
 WRITE8_MEMBER( c8050_fdc_device::write )
->>>>>>> upstream/master
 {
 	if (LOG) logerror("%s %s PI %02x\n", machine().time().as_string(), machine().describe_context(), data);
 
@@ -648,31 +518,19 @@ WRITE8_MEMBER( c8050_fdc_device::write )
 	}
 }
 
-<<<<<<< HEAD
-WRITE_LINE_MEMBER( c8050_fdc_t::ds0_w )
-=======
 WRITE_LINE_MEMBER( c8050_fdc_device::ds0_w )
->>>>>>> upstream/master
 {
 	m_ds0 = state;
 }
 
-<<<<<<< HEAD
-WRITE_LINE_MEMBER( c8050_fdc_t::ds1_w )
-=======
 WRITE_LINE_MEMBER( c8050_fdc_device::ds1_w )
->>>>>>> upstream/master
 {
 	m_ds1 = state;
 
 	ds_w(m_ds1 << 1 | m_ds0);
 }
 
-<<<<<<< HEAD
-WRITE_LINE_MEMBER( c8050_fdc_t::drv_sel_w )
-=======
 WRITE_LINE_MEMBER( c8050_fdc_device::drv_sel_w )
->>>>>>> upstream/master
 {
 	if (m_drv_sel != state)
 	{
@@ -684,11 +542,7 @@ WRITE_LINE_MEMBER( c8050_fdc_device::drv_sel_w )
 	}
 }
 
-<<<<<<< HEAD
-WRITE_LINE_MEMBER( c8050_fdc_t::mode_sel_w )
-=======
 WRITE_LINE_MEMBER( c8050_fdc_device::mode_sel_w )
->>>>>>> upstream/master
 {
 	if (m_mode_sel != state)
 	{
@@ -700,11 +554,7 @@ WRITE_LINE_MEMBER( c8050_fdc_device::mode_sel_w )
 	}
 }
 
-<<<<<<< HEAD
-WRITE_LINE_MEMBER( c8050_fdc_t::rw_sel_w )
-=======
 WRITE_LINE_MEMBER( c8050_fdc_device::rw_sel_w )
->>>>>>> upstream/master
 {
 	if (m_rw_sel != state)
 	{
@@ -721,11 +571,7 @@ WRITE_LINE_MEMBER( c8050_fdc_device::rw_sel_w )
 	}
 }
 
-<<<<<<< HEAD
-WRITE_LINE_MEMBER( c8050_fdc_t::mtr0_w )
-=======
 WRITE_LINE_MEMBER( c8050_fdc_device::mtr0_w )
->>>>>>> upstream/master
 {
 	if (m_mtr0 != state)
 	{
@@ -747,11 +593,7 @@ WRITE_LINE_MEMBER( c8050_fdc_device::mtr0_w )
 	}
 }
 
-<<<<<<< HEAD
-WRITE_LINE_MEMBER( c8050_fdc_t::mtr1_w )
-=======
 WRITE_LINE_MEMBER( c8050_fdc_device::mtr1_w )
->>>>>>> upstream/master
 {
 	if (m_mtr1 != state)
 	{
@@ -773,11 +615,7 @@ WRITE_LINE_MEMBER( c8050_fdc_device::mtr1_w )
 	}
 }
 
-<<<<<<< HEAD
-WRITE_LINE_MEMBER( c8050_fdc_t::odd_hd_w )
-=======
 WRITE_LINE_MEMBER( c8050_fdc_device::odd_hd_w )
->>>>>>> upstream/master
 {
 	if (m_odd_hd != state)
 	{
@@ -791,11 +629,7 @@ WRITE_LINE_MEMBER( c8050_fdc_device::odd_hd_w )
 	}
 }
 
-<<<<<<< HEAD
-WRITE_LINE_MEMBER( c8050_fdc_t::pull_sync_w )
-=======
 WRITE_LINE_MEMBER( c8050_fdc_device::pull_sync_w )
->>>>>>> upstream/master
 {
 	if (LOG_MORE) logerror("%s %s PULL SYNC %u\n", machine().time().as_string(), machine().describe_context(), state);
 }

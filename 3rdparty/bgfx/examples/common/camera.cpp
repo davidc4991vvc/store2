@@ -1,79 +1,46 @@
 /*
  * Copyright 2013 Dario Manesku. All rights reserved.
-<<<<<<< HEAD
- * License: http://www.opensource.org/licenses/BSD-2-Clause
-=======
  * License: https://github.com/bkaradzic/bgfx#license-bsd-2-clause
->>>>>>> upstream/master
  */
 
 #include <bx/timer.h>
 #include <bx/fpumath.h>
 #include "camera.h"
-<<<<<<< HEAD
-#include "entry/cmd.h"
-#include "entry/input.h"
-=======
 #include "entry/entry.h"
 #include "entry/cmd.h"
 #include "entry/input.h"
 #include <bx/allocator.h>
->>>>>>> upstream/master
 
 int cmdMove(CmdContext* /*_context*/, void* /*_userData*/, int _argc, char const* const* _argv)
 {
 	if (_argc > 1)
 	{
-<<<<<<< HEAD
-		if (0 == strcmp(_argv[1], "forward") )
-=======
 		if (0 == bx::strncmp(_argv[1], "forward") )
->>>>>>> upstream/master
 		{
 			cameraSetKeyState(CAMERA_KEY_FORWARD, true);
 			return 0;
 		}
-<<<<<<< HEAD
-		else if (0 == strcmp(_argv[1], "left") )
-=======
 		else if (0 == bx::strncmp(_argv[1], "left") )
->>>>>>> upstream/master
 		{
 			cameraSetKeyState(CAMERA_KEY_LEFT, true);
 			return 0;
 		}
-<<<<<<< HEAD
-		else if (0 == strcmp(_argv[1], "right") )
-=======
 		else if (0 == bx::strncmp(_argv[1], "right") )
->>>>>>> upstream/master
 		{
 			cameraSetKeyState(CAMERA_KEY_RIGHT, true);
 			return 0;
 		}
-<<<<<<< HEAD
-		else if (0 == strcmp(_argv[1], "backward") )
-=======
 		else if (0 == bx::strncmp(_argv[1], "backward") )
->>>>>>> upstream/master
 		{
 			cameraSetKeyState(CAMERA_KEY_BACKWARD, true);
 			return 0;
 		}
-<<<<<<< HEAD
-		else if (0 == strcmp(_argv[1], "up") )
-=======
 		else if (0 == bx::strncmp(_argv[1], "up") )
->>>>>>> upstream/master
 		{
 			cameraSetKeyState(CAMERA_KEY_UP, true);
 			return 0;
 		}
-<<<<<<< HEAD
-		else if (0 == strcmp(_argv[1], "down") )
-=======
 		else if (0 == bx::strncmp(_argv[1], "down") )
->>>>>>> upstream/master
 		{
 			cameraSetKeyState(CAMERA_KEY_DOWN, true);
 			return 0;
@@ -98,13 +65,9 @@ static const InputBinding s_camBindings[] =
 	{ entry::Key::GamepadDown,      entry::Modifier::None, 0, cmd, "move backward" },
 	{ entry::Key::KeyD,             entry::Modifier::None, 0, cmd, "move right"    },
 	{ entry::Key::GamepadRight,     entry::Modifier::None, 0, cmd, "move right"    },
-<<<<<<< HEAD
-	{ entry::Key::GamepadShoulderL, entry::Modifier::None, 0, cmd, "move down"     },
-=======
 	{ entry::Key::KeyQ,             entry::Modifier::None, 0, cmd, "move down"     },
 	{ entry::Key::GamepadShoulderL, entry::Modifier::None, 0, cmd, "move down"     },
 	{ entry::Key::KeyE,             entry::Modifier::None, 0, cmd, "move up"       },
->>>>>>> upstream/master
 	{ entry::Key::GamepadShoulderR, entry::Modifier::None, 0, cmd, "move up"       },
 
 	INPUT_BINDING_END
@@ -203,28 +166,16 @@ struct Camera
 
 		float direction[3] =
 		{
-<<<<<<< HEAD
-			cosf(m_verticalAngle) * sinf(m_horizontalAngle),
-			sinf(m_verticalAngle),
-			cosf(m_verticalAngle) * cosf(m_horizontalAngle),
-=======
 			bx::fcos(m_verticalAngle) * bx::fsin(m_horizontalAngle),
 			bx::fsin(m_verticalAngle),
 			bx::fcos(m_verticalAngle) * bx::fcos(m_horizontalAngle),
->>>>>>> upstream/master
 		};
 
 		float right[3] =
 		{
-<<<<<<< HEAD
-			sinf(m_horizontalAngle - bx::piHalf),
-			0,
-			cosf(m_horizontalAngle - bx::piHalf),
-=======
 			bx::fsin(m_horizontalAngle - bx::piHalf),
 			0,
 			bx::fcos(m_horizontalAngle - bx::piHalf),
->>>>>>> upstream/master
 		};
 
 		float up[3];
@@ -313,11 +264,7 @@ struct Camera
 
 	void setPosition(const float* _pos)
 	{
-<<<<<<< HEAD
-		memcpy(m_eye, _pos, sizeof(float)*3);
-=======
 		bx::memCopy(m_eye, _pos, sizeof(float)*3);
->>>>>>> upstream/master
 	}
 
 	void setVerticalAngle(float _verticalAngle)
@@ -351,20 +298,12 @@ static Camera* s_camera = NULL;
 
 void cameraCreate()
 {
-<<<<<<< HEAD
-	s_camera = new Camera;
-=======
 	s_camera = BX_NEW(entry::getAllocator(), Camera);
->>>>>>> upstream/master
 }
 
 void cameraDestroy()
 {
-<<<<<<< HEAD
-	delete s_camera;
-=======
 	BX_DELETE(entry::getAllocator(), s_camera);
->>>>>>> upstream/master
 	s_camera = NULL;
 }
 
@@ -395,20 +334,12 @@ void cameraGetViewMtx(float* _viewMtx)
 
 void cameraGetPosition(float* _pos)
 {
-<<<<<<< HEAD
-	memcpy(_pos, s_camera->m_eye, 3*sizeof(float) );
-=======
 	bx::memCopy(_pos, s_camera->m_eye, 3*sizeof(float) );
->>>>>>> upstream/master
 }
 
 void cameraGetAt(float* _at)
 {
-<<<<<<< HEAD
-	memcpy(_at, s_camera->m_at, 3*sizeof(float) );
-=======
 	bx::memCopy(_at, s_camera->m_at, 3*sizeof(float) );
->>>>>>> upstream/master
 }
 
 void cameraUpdate(float _deltaTime, const entry::MouseState& _mouseState)

@@ -11,21 +11,6 @@
 #include "emu.h"
 #include "m6510.h"
 
-<<<<<<< HEAD
-const device_type M6510 = &device_creator<m6510_device>;
-
-m6510_device::m6510_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-	m6502_device(mconfig, M6510, "M6510", tag, owner, clock, "m6510", __FILE__),
-	read_port(*this),
-	write_port(*this), dir(0), port(0), drive(0)
-{
-	pullup = 0x00;
-	floating = 0x00;
-}
-
-m6510_device::m6510_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source) :
-	m6502_device(mconfig, type, name, tag, owner, clock, shortname, source),
-=======
 DEFINE_DEVICE_TYPE(M6510, m6510_device, "m6510", "M6510")
 
 m6510_device::m6510_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
@@ -35,7 +20,6 @@ m6510_device::m6510_device(const machine_config &mconfig, const char *tag, devic
 
 m6510_device::m6510_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock) :
 	m6502_device(mconfig, type, tag, owner, clock),
->>>>>>> upstream/master
 	read_port(*this),
 	write_port(*this), dir(0), port(0), drive(0)
 {
@@ -43,25 +27,15 @@ m6510_device::m6510_device(const machine_config &mconfig, device_type type, cons
 	floating = 0x00;
 }
 
-<<<<<<< HEAD
-void m6510_device::set_pulls(UINT8 _pullup, UINT8 _floating)
-=======
 void m6510_device::set_pulls(uint8_t _pullup, uint8_t _floating)
->>>>>>> upstream/master
 {
 	pullup = _pullup;
 	floating = _floating;
 }
 
-<<<<<<< HEAD
-offs_t m6510_device::disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options)
-{
-	return disassemble_generic(buffer, pc, oprom, opram, options, disasm_entries);
-=======
 offs_t m6510_device::disasm_disassemble(std::ostream &stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, uint32_t options)
 {
 	return disassemble_generic(stream, pc, oprom, opram, options, disasm_entries);
->>>>>>> upstream/master
 }
 
 void m6510_device::device_start()
@@ -98,48 +72,28 @@ void m6510_device::update_port()
 	write_port((port & dir) | (pullup & ~dir));
 }
 
-<<<<<<< HEAD
-UINT8 m6510_device::get_port()
-=======
 uint8_t m6510_device::get_port()
->>>>>>> upstream/master
 {
 	return (port & dir) | (pullup & ~dir);
 }
 
-<<<<<<< HEAD
-UINT8 m6510_device::dir_r()
-=======
 uint8_t m6510_device::dir_r()
->>>>>>> upstream/master
 {
 	return dir;
 }
 
-<<<<<<< HEAD
-UINT8 m6510_device::port_r()
-=======
 uint8_t m6510_device::port_r()
->>>>>>> upstream/master
 {
 	return ((read_port() | (floating & drive)) & ~dir) | (port & dir);
 }
 
-<<<<<<< HEAD
-void m6510_device::dir_w(UINT8 data)
-=======
 void m6510_device::dir_w(uint8_t data)
->>>>>>> upstream/master
 {
 	dir = data;
 	update_port();
 }
 
-<<<<<<< HEAD
-void m6510_device::port_w(UINT8 data)
-=======
 void m6510_device::port_w(uint8_t data)
->>>>>>> upstream/master
 {
 	port = data;
 	update_port();
@@ -151,15 +105,9 @@ m6510_device::mi_6510_normal::mi_6510_normal(m6510_device *_base)
 	base = _base;
 }
 
-<<<<<<< HEAD
-UINT8 m6510_device::mi_6510_normal::read(UINT16 adr)
-{
-	UINT8 res = program->read_byte(adr);
-=======
 uint8_t m6510_device::mi_6510_normal::read(uint16_t adr)
 {
 	uint8_t res = program->read_byte(adr);
->>>>>>> upstream/master
 	if(adr == 0x0000)
 		res = base->dir_r();
 	else if(adr == 0x0001)
@@ -167,15 +115,9 @@ uint8_t m6510_device::mi_6510_normal::read(uint16_t adr)
 	return res;
 }
 
-<<<<<<< HEAD
-UINT8 m6510_device::mi_6510_normal::read_sync(UINT16 adr)
-{
-	UINT8 res = sdirect->read_byte(adr);
-=======
 uint8_t m6510_device::mi_6510_normal::read_sync(uint16_t adr)
 {
 	uint8_t res = sdirect->read_byte(adr);
->>>>>>> upstream/master
 	if(adr == 0x0000)
 		res = base->dir_r();
 	else if(adr == 0x0001)
@@ -183,15 +125,9 @@ uint8_t m6510_device::mi_6510_normal::read_sync(uint16_t adr)
 	return res;
 }
 
-<<<<<<< HEAD
-UINT8 m6510_device::mi_6510_normal::read_arg(UINT16 adr)
-{
-	UINT8 res = direct->read_byte(adr);
-=======
 uint8_t m6510_device::mi_6510_normal::read_arg(uint16_t adr)
 {
 	uint8_t res = direct->read_byte(adr);
->>>>>>> upstream/master
 	if(adr == 0x0000)
 		res = base->dir_r();
 	else if(adr == 0x0001)
@@ -199,11 +135,7 @@ uint8_t m6510_device::mi_6510_normal::read_arg(uint16_t adr)
 	return res;
 }
 
-<<<<<<< HEAD
-void m6510_device::mi_6510_normal::write(UINT16 adr, UINT8 val)
-=======
 void m6510_device::mi_6510_normal::write(uint16_t adr, uint8_t val)
->>>>>>> upstream/master
 {
 	program->write_byte(adr, val);
 	if(adr == 0x0000)
@@ -216,15 +148,9 @@ m6510_device::mi_6510_nd::mi_6510_nd(m6510_device *_base) : mi_6510_normal(_base
 {
 }
 
-<<<<<<< HEAD
-UINT8 m6510_device::mi_6510_nd::read_sync(UINT16 adr)
-{
-	UINT8 res = sprogram->read_byte(adr);
-=======
 uint8_t m6510_device::mi_6510_nd::read_sync(uint16_t adr)
 {
 	uint8_t res = sprogram->read_byte(adr);
->>>>>>> upstream/master
 	if(adr == 0x0000)
 		res = base->dir_r();
 	else if(adr == 0x0001)
@@ -232,15 +158,9 @@ uint8_t m6510_device::mi_6510_nd::read_sync(uint16_t adr)
 	return res;
 }
 
-<<<<<<< HEAD
-UINT8 m6510_device::mi_6510_nd::read_arg(UINT16 adr)
-{
-	UINT8 res = program->read_byte(adr);
-=======
 uint8_t m6510_device::mi_6510_nd::read_arg(uint16_t adr)
 {
 	uint8_t res = program->read_byte(adr);
->>>>>>> upstream/master
 	if(adr == 0x0000)
 		res = base->dir_r();
 	else if(adr == 0x0001)
@@ -248,8 +168,4 @@ uint8_t m6510_device::mi_6510_nd::read_arg(uint16_t adr)
 	return res;
 }
 
-<<<<<<< HEAD
-#include "cpu/m6502/m6510.inc"
-=======
 #include "cpu/m6502/m6510.hxx"
->>>>>>> upstream/master

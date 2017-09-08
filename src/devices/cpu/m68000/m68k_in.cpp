@@ -81,12 +81,8 @@ must fix:
 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 M68KMAKE_PROTOTYPE_HEADER
 
-<<<<<<< HEAD
-
-=======
 // license:BSD-3-Clause
 // copyright-holders:Karl Stenerud
->>>>>>> upstream/master
 /* ======================================================================== */
 /* ============================ OPCODE HANDLERS =========================== */
 /* ======================================================================== */
@@ -144,11 +140,7 @@ static const opcode_handler_struct m68k_opcode_handler_table[] =
 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 M68KMAKE_TABLE_FOOTER
 
-<<<<<<< HEAD
-	{0, 0, 0, {0, 0, 0, 0, 0}}
-=======
 	{nullptr, 0, 0, {0, 0, 0, 0, 0}}
->>>>>>> upstream/master
 };
 
 
@@ -910,11 +902,7 @@ M68KMAKE_OP(1111, 0, ., .)
 
 M68KMAKE_OP(040fpu0, 32, ., .)
 {
-<<<<<<< HEAD
-	if((mc68kcpu)->has_fpu)
-=======
 	if((mc68kcpu)->get_fpu_enable())
->>>>>>> upstream/master
 	{
 		m68040_fpu_op0(mc68kcpu);
 		return;
@@ -925,11 +913,7 @@ M68KMAKE_OP(040fpu0, 32, ., .)
 
 M68KMAKE_OP(040fpu1, 32, ., .)
 {
-<<<<<<< HEAD
-	if((mc68kcpu)->has_fpu)
-=======
 	if((mc68kcpu)->get_fpu_enable())
->>>>>>> upstream/master
 	{
 		m68040_fpu_op1(mc68kcpu);
 		return;
@@ -941,17 +925,10 @@ M68KMAKE_OP(040fpu1, 32, ., .)
 
 M68KMAKE_OP(abcd, 8, rr, .)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DX(mc68kcpu);
-	UINT32 src = DY(mc68kcpu);
-	UINT32 dst = *r_dst;
-	UINT32 res = LOW_NIBBLE(src) + LOW_NIBBLE(dst) + XFLAG_AS_1(mc68kcpu);
-=======
 	uint32_t* r_dst = &DX(mc68kcpu);
 	uint32_t src = DY(mc68kcpu);
 	uint32_t dst = *r_dst;
 	uint32_t res = LOW_NIBBLE(src) + LOW_NIBBLE(dst) + XFLAG_1(mc68kcpu);
->>>>>>> upstream/master
 
 	(mc68kcpu)->v_flag = ~res; /* Undefined V behavior */
 
@@ -974,17 +951,10 @@ M68KMAKE_OP(abcd, 8, rr, .)
 
 M68KMAKE_OP(abcd, 8, mm, ax7)
 {
-<<<<<<< HEAD
-	UINT32 src = OPER_AY_PD_8(mc68kcpu);
-	UINT32 ea  = EA_A7_PD_8(mc68kcpu);
-	UINT32 dst = m68ki_read_8((mc68kcpu), ea);
-	UINT32 res = LOW_NIBBLE(src) + LOW_NIBBLE(dst) + XFLAG_AS_1(mc68kcpu);
-=======
 	uint32_t src = OPER_AY_PD_8(mc68kcpu);
 	uint32_t ea  = EA_A7_PD_8(mc68kcpu);
 	uint32_t dst = m68ki_read_8((mc68kcpu), ea);
 	uint32_t res = LOW_NIBBLE(src) + LOW_NIBBLE(dst) + XFLAG_1(mc68kcpu);
->>>>>>> upstream/master
 
 	(mc68kcpu)->v_flag = ~res; /* Undefined V behavior */
 
@@ -1007,17 +977,10 @@ M68KMAKE_OP(abcd, 8, mm, ax7)
 
 M68KMAKE_OP(abcd, 8, mm, ay7)
 {
-<<<<<<< HEAD
-	UINT32 src = OPER_A7_PD_8(mc68kcpu);
-	UINT32 ea  = EA_AX_PD_8(mc68kcpu);
-	UINT32 dst = m68ki_read_8((mc68kcpu), ea);
-	UINT32 res = LOW_NIBBLE(src) + LOW_NIBBLE(dst) + XFLAG_AS_1(mc68kcpu);
-=======
 	uint32_t src = OPER_A7_PD_8(mc68kcpu);
 	uint32_t ea  = EA_AX_PD_8(mc68kcpu);
 	uint32_t dst = m68ki_read_8((mc68kcpu), ea);
 	uint32_t res = LOW_NIBBLE(src) + LOW_NIBBLE(dst) + XFLAG_1(mc68kcpu);
->>>>>>> upstream/master
 
 	(mc68kcpu)->v_flag = ~res; /* Undefined V behavior */
 
@@ -1040,17 +1003,10 @@ M68KMAKE_OP(abcd, 8, mm, ay7)
 
 M68KMAKE_OP(abcd, 8, mm, axy7)
 {
-<<<<<<< HEAD
-	UINT32 src = OPER_A7_PD_8(mc68kcpu);
-	UINT32 ea  = EA_A7_PD_8(mc68kcpu);
-	UINT32 dst = m68ki_read_8((mc68kcpu), ea);
-	UINT32 res = LOW_NIBBLE(src) + LOW_NIBBLE(dst) + XFLAG_AS_1(mc68kcpu);
-=======
 	uint32_t src = OPER_A7_PD_8(mc68kcpu);
 	uint32_t ea  = EA_A7_PD_8(mc68kcpu);
 	uint32_t dst = m68ki_read_8((mc68kcpu), ea);
 	uint32_t res = LOW_NIBBLE(src) + LOW_NIBBLE(dst) + XFLAG_1(mc68kcpu);
->>>>>>> upstream/master
 
 	(mc68kcpu)->v_flag = ~res; /* Undefined V behavior */
 
@@ -1073,17 +1029,10 @@ M68KMAKE_OP(abcd, 8, mm, axy7)
 
 M68KMAKE_OP(abcd, 8, mm, .)
 {
-<<<<<<< HEAD
-	UINT32 src = OPER_AY_PD_8(mc68kcpu);
-	UINT32 ea  = EA_AX_PD_8(mc68kcpu);
-	UINT32 dst = m68ki_read_8((mc68kcpu), ea);
-	UINT32 res = LOW_NIBBLE(src) + LOW_NIBBLE(dst) + XFLAG_AS_1(mc68kcpu);
-=======
 	uint32_t src = OPER_AY_PD_8(mc68kcpu);
 	uint32_t ea  = EA_AX_PD_8(mc68kcpu);
 	uint32_t dst = m68ki_read_8((mc68kcpu), ea);
 	uint32_t res = LOW_NIBBLE(src) + LOW_NIBBLE(dst) + XFLAG_1(mc68kcpu);
->>>>>>> upstream/master
 
 	(mc68kcpu)->v_flag = ~res; /* Undefined V behavior */
 
@@ -1106,17 +1055,10 @@ M68KMAKE_OP(abcd, 8, mm, .)
 
 M68KMAKE_OP(add, 8, er, d)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DX(mc68kcpu);
-	UINT32 src = MASK_OUT_ABOVE_8(DY(mc68kcpu));
-	UINT32 dst = MASK_OUT_ABOVE_8(*r_dst);
-	UINT32 res = src + dst;
-=======
 	uint32_t* r_dst = &DX(mc68kcpu);
 	uint32_t src = MASK_OUT_ABOVE_8(DY(mc68kcpu));
 	uint32_t dst = MASK_OUT_ABOVE_8(*r_dst);
 	uint32_t res = src + dst;
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_8(res);
 	(mc68kcpu)->v_flag = VFLAG_ADD_8(src, dst, res);
@@ -1129,17 +1071,10 @@ M68KMAKE_OP(add, 8, er, d)
 
 M68KMAKE_OP(add, 8, er, .)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DX(mc68kcpu);
-	UINT32 src = M68KMAKE_GET_OPER_AY_8;
-	UINT32 dst = MASK_OUT_ABOVE_8(*r_dst);
-	UINT32 res = src + dst;
-=======
 	uint32_t* r_dst = &DX(mc68kcpu);
 	uint32_t src = M68KMAKE_GET_OPER_AY_8;
 	uint32_t dst = MASK_OUT_ABOVE_8(*r_dst);
 	uint32_t res = src + dst;
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_8(res);
 	(mc68kcpu)->v_flag = VFLAG_ADD_8(src, dst, res);
@@ -1152,17 +1087,10 @@ M68KMAKE_OP(add, 8, er, .)
 
 M68KMAKE_OP(add, 16, er, d)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DX(mc68kcpu);
-	UINT32 src = MASK_OUT_ABOVE_16(DY(mc68kcpu));
-	UINT32 dst = MASK_OUT_ABOVE_16(*r_dst);
-	UINT32 res = src + dst;
-=======
 	uint32_t* r_dst = &DX(mc68kcpu);
 	uint32_t src = MASK_OUT_ABOVE_16(DY(mc68kcpu));
 	uint32_t dst = MASK_OUT_ABOVE_16(*r_dst);
 	uint32_t res = src + dst;
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_16(res);
 	(mc68kcpu)->v_flag = VFLAG_ADD_16(src, dst, res);
@@ -1175,17 +1103,10 @@ M68KMAKE_OP(add, 16, er, d)
 
 M68KMAKE_OP(add, 16, er, a)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DX(mc68kcpu);
-	UINT32 src = MASK_OUT_ABOVE_16(AY(mc68kcpu));
-	UINT32 dst = MASK_OUT_ABOVE_16(*r_dst);
-	UINT32 res = src + dst;
-=======
 	uint32_t* r_dst = &DX(mc68kcpu);
 	uint32_t src = MASK_OUT_ABOVE_16(AY(mc68kcpu));
 	uint32_t dst = MASK_OUT_ABOVE_16(*r_dst);
 	uint32_t res = src + dst;
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_16(res);
 	(mc68kcpu)->v_flag = VFLAG_ADD_16(src, dst, res);
@@ -1198,17 +1119,10 @@ M68KMAKE_OP(add, 16, er, a)
 
 M68KMAKE_OP(add, 16, er, .)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DX(mc68kcpu);
-	UINT32 src = M68KMAKE_GET_OPER_AY_16;
-	UINT32 dst = MASK_OUT_ABOVE_16(*r_dst);
-	UINT32 res = src + dst;
-=======
 	uint32_t* r_dst = &DX(mc68kcpu);
 	uint32_t src = M68KMAKE_GET_OPER_AY_16;
 	uint32_t dst = MASK_OUT_ABOVE_16(*r_dst);
 	uint32_t res = src + dst;
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_16(res);
 	(mc68kcpu)->v_flag = VFLAG_ADD_16(src, dst, res);
@@ -1221,17 +1135,10 @@ M68KMAKE_OP(add, 16, er, .)
 
 M68KMAKE_OP(add, 32, er, d)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DX(mc68kcpu);
-	UINT32 src = DY(mc68kcpu);
-	UINT32 dst = *r_dst;
-	UINT32 res = src + dst;
-=======
 	uint32_t* r_dst = &DX(mc68kcpu);
 	uint32_t src = DY(mc68kcpu);
 	uint32_t dst = *r_dst;
 	uint32_t res = src + dst;
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_32(res);
 	(mc68kcpu)->v_flag = VFLAG_ADD_32(src, dst, res);
@@ -1244,17 +1151,10 @@ M68KMAKE_OP(add, 32, er, d)
 
 M68KMAKE_OP(add, 32, er, a)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DX(mc68kcpu);
-	UINT32 src = AY(mc68kcpu);
-	UINT32 dst = *r_dst;
-	UINT32 res = src + dst;
-=======
 	uint32_t* r_dst = &DX(mc68kcpu);
 	uint32_t src = AY(mc68kcpu);
 	uint32_t dst = *r_dst;
 	uint32_t res = src + dst;
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_32(res);
 	(mc68kcpu)->v_flag = VFLAG_ADD_32(src, dst, res);
@@ -1267,17 +1167,10 @@ M68KMAKE_OP(add, 32, er, a)
 
 M68KMAKE_OP(add, 32, er, .)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DX(mc68kcpu);
-	UINT32 src = M68KMAKE_GET_OPER_AY_32;
-	UINT32 dst = *r_dst;
-	UINT32 res = src + dst;
-=======
 	uint32_t* r_dst = &DX(mc68kcpu);
 	uint32_t src = M68KMAKE_GET_OPER_AY_32;
 	uint32_t dst = *r_dst;
 	uint32_t res = src + dst;
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_32(res);
 	(mc68kcpu)->v_flag = VFLAG_ADD_32(src, dst, res);
@@ -1290,17 +1183,10 @@ M68KMAKE_OP(add, 32, er, .)
 
 M68KMAKE_OP(add, 8, re, .)
 {
-<<<<<<< HEAD
-	UINT32 ea = M68KMAKE_GET_EA_AY_8;
-	UINT32 src = MASK_OUT_ABOVE_8(DX(mc68kcpu));
-	UINT32 dst = m68ki_read_8((mc68kcpu), ea);
-	UINT32 res = src + dst;
-=======
 	uint32_t ea = M68KMAKE_GET_EA_AY_8;
 	uint32_t src = MASK_OUT_ABOVE_8(DX(mc68kcpu));
 	uint32_t dst = m68ki_read_8((mc68kcpu), ea);
 	uint32_t res = src + dst;
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_8(res);
 	(mc68kcpu)->v_flag = VFLAG_ADD_8(src, dst, res);
@@ -1313,17 +1199,10 @@ M68KMAKE_OP(add, 8, re, .)
 
 M68KMAKE_OP(add, 16, re, .)
 {
-<<<<<<< HEAD
-	UINT32 ea = M68KMAKE_GET_EA_AY_16;
-	UINT32 src = MASK_OUT_ABOVE_16(DX(mc68kcpu));
-	UINT32 dst = m68ki_read_16((mc68kcpu), ea);
-	UINT32 res = src + dst;
-=======
 	uint32_t ea = M68KMAKE_GET_EA_AY_16;
 	uint32_t src = MASK_OUT_ABOVE_16(DX(mc68kcpu));
 	uint32_t dst = m68ki_read_16((mc68kcpu), ea);
 	uint32_t res = src + dst;
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_16(res);
 	(mc68kcpu)->v_flag = VFLAG_ADD_16(src, dst, res);
@@ -1336,17 +1215,10 @@ M68KMAKE_OP(add, 16, re, .)
 
 M68KMAKE_OP(add, 32, re, .)
 {
-<<<<<<< HEAD
-	UINT32 ea = M68KMAKE_GET_EA_AY_32;
-	UINT32 src = DX(mc68kcpu);
-	UINT32 dst = m68ki_read_32((mc68kcpu), ea);
-	UINT32 res = src + dst;
-=======
 	uint32_t ea = M68KMAKE_GET_EA_AY_32;
 	uint32_t src = DX(mc68kcpu);
 	uint32_t dst = m68ki_read_32((mc68kcpu), ea);
 	uint32_t res = src + dst;
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_32(res);
 	(mc68kcpu)->v_flag = VFLAG_ADD_32(src, dst, res);
@@ -1359,11 +1231,7 @@ M68KMAKE_OP(add, 32, re, .)
 
 M68KMAKE_OP(adda, 16, ., d)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &AX(mc68kcpu);
-=======
 	uint32_t* r_dst = &AX(mc68kcpu);
->>>>>>> upstream/master
 
 	*r_dst = MASK_OUT_ABOVE_32(*r_dst + MAKE_INT_16(DY(mc68kcpu)));
 }
@@ -1371,11 +1239,7 @@ M68KMAKE_OP(adda, 16, ., d)
 
 M68KMAKE_OP(adda, 16, ., a)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &AX(mc68kcpu);
-=======
 	uint32_t* r_dst = &AX(mc68kcpu);
->>>>>>> upstream/master
 
 	*r_dst = MASK_OUT_ABOVE_32(*r_dst + MAKE_INT_16(AY(mc68kcpu)));
 }
@@ -1383,13 +1247,8 @@ M68KMAKE_OP(adda, 16, ., a)
 
 M68KMAKE_OP(adda, 16, ., .)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &AX(mc68kcpu);
-	UINT32 src = MAKE_INT_16(M68KMAKE_GET_OPER_AY_16);
-=======
 	uint32_t* r_dst = &AX(mc68kcpu);
 	uint32_t src = MAKE_INT_16(M68KMAKE_GET_OPER_AY_16);
->>>>>>> upstream/master
 
 	*r_dst = MASK_OUT_ABOVE_32(*r_dst + src);
 }
@@ -1397,11 +1256,7 @@ M68KMAKE_OP(adda, 16, ., .)
 
 M68KMAKE_OP(adda, 32, ., d)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &AX(mc68kcpu);
-=======
 	uint32_t* r_dst = &AX(mc68kcpu);
->>>>>>> upstream/master
 
 	*r_dst = MASK_OUT_ABOVE_32(*r_dst + DY(mc68kcpu));
 }
@@ -1409,11 +1264,7 @@ M68KMAKE_OP(adda, 32, ., d)
 
 M68KMAKE_OP(adda, 32, ., a)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &AX(mc68kcpu);
-=======
 	uint32_t* r_dst = &AX(mc68kcpu);
->>>>>>> upstream/master
 
 	*r_dst = MASK_OUT_ABOVE_32(*r_dst + AY(mc68kcpu));
 }
@@ -1421,13 +1272,8 @@ M68KMAKE_OP(adda, 32, ., a)
 
 M68KMAKE_OP(adda, 32, ., .)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &AX(mc68kcpu);
-	UINT32 src = M68KMAKE_GET_OPER_AY_32;
-=======
 	uint32_t* r_dst = &AX(mc68kcpu);
 	uint32_t src = M68KMAKE_GET_OPER_AY_32;
->>>>>>> upstream/master
 
 	*r_dst = MASK_OUT_ABOVE_32(*r_dst + src);
 }
@@ -1435,17 +1281,10 @@ M68KMAKE_OP(adda, 32, ., .)
 
 M68KMAKE_OP(addi, 8, ., d)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DY(mc68kcpu);
-	UINT32 src = OPER_I_8(mc68kcpu);
-	UINT32 dst = MASK_OUT_ABOVE_8(*r_dst);
-	UINT32 res = src + dst;
-=======
 	uint32_t* r_dst = &DY(mc68kcpu);
 	uint32_t src = OPER_I_8(mc68kcpu);
 	uint32_t dst = MASK_OUT_ABOVE_8(*r_dst);
 	uint32_t res = src + dst;
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_8(res);
 	(mc68kcpu)->v_flag = VFLAG_ADD_8(src, dst, res);
@@ -1458,17 +1297,10 @@ M68KMAKE_OP(addi, 8, ., d)
 
 M68KMAKE_OP(addi, 8, ., .)
 {
-<<<<<<< HEAD
-	UINT32 src = OPER_I_8(mc68kcpu);
-	UINT32 ea = M68KMAKE_GET_EA_AY_8;
-	UINT32 dst = m68ki_read_8((mc68kcpu), ea);
-	UINT32 res = src + dst;
-=======
 	uint32_t src = OPER_I_8(mc68kcpu);
 	uint32_t ea = M68KMAKE_GET_EA_AY_8;
 	uint32_t dst = m68ki_read_8((mc68kcpu), ea);
 	uint32_t res = src + dst;
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_8(res);
 	(mc68kcpu)->v_flag = VFLAG_ADD_8(src, dst, res);
@@ -1481,17 +1313,10 @@ M68KMAKE_OP(addi, 8, ., .)
 
 M68KMAKE_OP(addi, 16, ., d)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DY(mc68kcpu);
-	UINT32 src = OPER_I_16(mc68kcpu);
-	UINT32 dst = MASK_OUT_ABOVE_16(*r_dst);
-	UINT32 res = src + dst;
-=======
 	uint32_t* r_dst = &DY(mc68kcpu);
 	uint32_t src = OPER_I_16(mc68kcpu);
 	uint32_t dst = MASK_OUT_ABOVE_16(*r_dst);
 	uint32_t res = src + dst;
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_16(res);
 	(mc68kcpu)->v_flag = VFLAG_ADD_16(src, dst, res);
@@ -1504,17 +1329,10 @@ M68KMAKE_OP(addi, 16, ., d)
 
 M68KMAKE_OP(addi, 16, ., .)
 {
-<<<<<<< HEAD
-	UINT32 src = OPER_I_16(mc68kcpu);
-	UINT32 ea = M68KMAKE_GET_EA_AY_16;
-	UINT32 dst = m68ki_read_16((mc68kcpu), ea);
-	UINT32 res = src + dst;
-=======
 	uint32_t src = OPER_I_16(mc68kcpu);
 	uint32_t ea = M68KMAKE_GET_EA_AY_16;
 	uint32_t dst = m68ki_read_16((mc68kcpu), ea);
 	uint32_t res = src + dst;
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_16(res);
 	(mc68kcpu)->v_flag = VFLAG_ADD_16(src, dst, res);
@@ -1527,17 +1345,10 @@ M68KMAKE_OP(addi, 16, ., .)
 
 M68KMAKE_OP(addi, 32, ., d)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DY(mc68kcpu);
-	UINT32 src = OPER_I_32(mc68kcpu);
-	UINT32 dst = *r_dst;
-	UINT32 res = src + dst;
-=======
 	uint32_t* r_dst = &DY(mc68kcpu);
 	uint32_t src = OPER_I_32(mc68kcpu);
 	uint32_t dst = *r_dst;
 	uint32_t res = src + dst;
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_32(res);
 	(mc68kcpu)->v_flag = VFLAG_ADD_32(src, dst, res);
@@ -1550,17 +1361,10 @@ M68KMAKE_OP(addi, 32, ., d)
 
 M68KMAKE_OP(addi, 32, ., .)
 {
-<<<<<<< HEAD
-	UINT32 src = OPER_I_32(mc68kcpu);
-	UINT32 ea = M68KMAKE_GET_EA_AY_32;
-	UINT32 dst = m68ki_read_32((mc68kcpu), ea);
-	UINT32 res = src + dst;
-=======
 	uint32_t src = OPER_I_32(mc68kcpu);
 	uint32_t ea = M68KMAKE_GET_EA_AY_32;
 	uint32_t dst = m68ki_read_32((mc68kcpu), ea);
 	uint32_t res = src + dst;
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_32(res);
 	(mc68kcpu)->v_flag = VFLAG_ADD_32(src, dst, res);
@@ -1573,17 +1377,10 @@ M68KMAKE_OP(addi, 32, ., .)
 
 M68KMAKE_OP(addq, 8, ., d)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DY(mc68kcpu);
-	UINT32 src = ((((mc68kcpu)->ir >> 9) - 1) & 7) + 1;
-	UINT32 dst = MASK_OUT_ABOVE_8(*r_dst);
-	UINT32 res = src + dst;
-=======
 	uint32_t* r_dst = &DY(mc68kcpu);
 	uint32_t src = ((((mc68kcpu)->ir >> 9) - 1) & 7) + 1;
 	uint32_t dst = MASK_OUT_ABOVE_8(*r_dst);
 	uint32_t res = src + dst;
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_8(res);
 	(mc68kcpu)->v_flag = VFLAG_ADD_8(src, dst, res);
@@ -1596,17 +1393,10 @@ M68KMAKE_OP(addq, 8, ., d)
 
 M68KMAKE_OP(addq, 8, ., .)
 {
-<<<<<<< HEAD
-	UINT32 src = ((((mc68kcpu)->ir >> 9) - 1) & 7) + 1;
-	UINT32 ea = M68KMAKE_GET_EA_AY_8;
-	UINT32 dst = m68ki_read_8((mc68kcpu), ea);
-	UINT32 res = src + dst;
-=======
 	uint32_t src = ((((mc68kcpu)->ir >> 9) - 1) & 7) + 1;
 	uint32_t ea = M68KMAKE_GET_EA_AY_8;
 	uint32_t dst = m68ki_read_8((mc68kcpu), ea);
 	uint32_t res = src + dst;
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_8(res);
 	(mc68kcpu)->v_flag = VFLAG_ADD_8(src, dst, res);
@@ -1619,17 +1409,10 @@ M68KMAKE_OP(addq, 8, ., .)
 
 M68KMAKE_OP(addq, 16, ., d)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DY(mc68kcpu);
-	UINT32 src = ((((mc68kcpu)->ir >> 9) - 1) & 7) + 1;
-	UINT32 dst = MASK_OUT_ABOVE_16(*r_dst);
-	UINT32 res = src + dst;
-=======
 	uint32_t* r_dst = &DY(mc68kcpu);
 	uint32_t src = ((((mc68kcpu)->ir >> 9) - 1) & 7) + 1;
 	uint32_t dst = MASK_OUT_ABOVE_16(*r_dst);
 	uint32_t res = src + dst;
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_16(res);
 	(mc68kcpu)->v_flag = VFLAG_ADD_16(src, dst, res);
@@ -1642,11 +1425,7 @@ M68KMAKE_OP(addq, 16, ., d)
 
 M68KMAKE_OP(addq, 16, ., a)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &AY(mc68kcpu);
-=======
 	uint32_t* r_dst = &AY(mc68kcpu);
->>>>>>> upstream/master
 
 	*r_dst = MASK_OUT_ABOVE_32(*r_dst + ((((mc68kcpu)->ir >> 9) - 1) & 7) + 1);
 }
@@ -1654,17 +1433,10 @@ M68KMAKE_OP(addq, 16, ., a)
 
 M68KMAKE_OP(addq, 16, ., .)
 {
-<<<<<<< HEAD
-	UINT32 src = ((((mc68kcpu)->ir >> 9) - 1) & 7) + 1;
-	UINT32 ea = M68KMAKE_GET_EA_AY_16;
-	UINT32 dst = m68ki_read_16((mc68kcpu), ea);
-	UINT32 res = src + dst;
-=======
 	uint32_t src = ((((mc68kcpu)->ir >> 9) - 1) & 7) + 1;
 	uint32_t ea = M68KMAKE_GET_EA_AY_16;
 	uint32_t dst = m68ki_read_16((mc68kcpu), ea);
 	uint32_t res = src + dst;
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_16(res);
 	(mc68kcpu)->v_flag = VFLAG_ADD_16(src, dst, res);
@@ -1677,17 +1449,10 @@ M68KMAKE_OP(addq, 16, ., .)
 
 M68KMAKE_OP(addq, 32, ., d)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DY(mc68kcpu);
-	UINT32 src = ((((mc68kcpu)->ir >> 9) - 1) & 7) + 1;
-	UINT32 dst = *r_dst;
-	UINT32 res = src + dst;
-=======
 	uint32_t* r_dst = &DY(mc68kcpu);
 	uint32_t src = ((((mc68kcpu)->ir >> 9) - 1) & 7) + 1;
 	uint32_t dst = *r_dst;
 	uint32_t res = src + dst;
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_32(res);
 	(mc68kcpu)->v_flag = VFLAG_ADD_32(src, dst, res);
@@ -1700,11 +1465,7 @@ M68KMAKE_OP(addq, 32, ., d)
 
 M68KMAKE_OP(addq, 32, ., a)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &AY(mc68kcpu);
-=======
 	uint32_t* r_dst = &AY(mc68kcpu);
->>>>>>> upstream/master
 
 	*r_dst = MASK_OUT_ABOVE_32(*r_dst + ((((mc68kcpu)->ir >> 9) - 1) & 7) + 1);
 }
@@ -1712,17 +1473,10 @@ M68KMAKE_OP(addq, 32, ., a)
 
 M68KMAKE_OP(addq, 32, ., .)
 {
-<<<<<<< HEAD
-	UINT32 src = ((((mc68kcpu)->ir >> 9) - 1) & 7) + 1;
-	UINT32 ea = M68KMAKE_GET_EA_AY_32;
-	UINT32 dst = m68ki_read_32((mc68kcpu), ea);
-	UINT32 res = src + dst;
-=======
 	uint32_t src = ((((mc68kcpu)->ir >> 9) - 1) & 7) + 1;
 	uint32_t ea = M68KMAKE_GET_EA_AY_32;
 	uint32_t dst = m68ki_read_32((mc68kcpu), ea);
 	uint32_t res = src + dst;
->>>>>>> upstream/master
 
 
 	(mc68kcpu)->n_flag = NFLAG_32(res);
@@ -1736,17 +1490,10 @@ M68KMAKE_OP(addq, 32, ., .)
 
 M68KMAKE_OP(addx, 8, rr, .)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DX(mc68kcpu);
-	UINT32 src = MASK_OUT_ABOVE_8(DY(mc68kcpu));
-	UINT32 dst = MASK_OUT_ABOVE_8(*r_dst);
-	UINT32 res = src + dst + XFLAG_AS_1(mc68kcpu);
-=======
 	uint32_t* r_dst = &DX(mc68kcpu);
 	uint32_t src = MASK_OUT_ABOVE_8(DY(mc68kcpu));
 	uint32_t dst = MASK_OUT_ABOVE_8(*r_dst);
 	uint32_t res = src + dst + XFLAG_1(mc68kcpu);
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_8(res);
 	(mc68kcpu)->v_flag = VFLAG_ADD_8(src, dst, res);
@@ -1761,17 +1508,10 @@ M68KMAKE_OP(addx, 8, rr, .)
 
 M68KMAKE_OP(addx, 16, rr, .)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DX(mc68kcpu);
-	UINT32 src = MASK_OUT_ABOVE_16(DY(mc68kcpu));
-	UINT32 dst = MASK_OUT_ABOVE_16(*r_dst);
-	UINT32 res = src + dst + XFLAG_AS_1(mc68kcpu);
-=======
 	uint32_t* r_dst = &DX(mc68kcpu);
 	uint32_t src = MASK_OUT_ABOVE_16(DY(mc68kcpu));
 	uint32_t dst = MASK_OUT_ABOVE_16(*r_dst);
 	uint32_t res = src + dst + XFLAG_1(mc68kcpu);
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_16(res);
 	(mc68kcpu)->v_flag = VFLAG_ADD_16(src, dst, res);
@@ -1786,17 +1526,10 @@ M68KMAKE_OP(addx, 16, rr, .)
 
 M68KMAKE_OP(addx, 32, rr, .)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DX(mc68kcpu);
-	UINT32 src = DY(mc68kcpu);
-	UINT32 dst = *r_dst;
-	UINT32 res = src + dst + XFLAG_AS_1(mc68kcpu);
-=======
 	uint32_t* r_dst = &DX(mc68kcpu);
 	uint32_t src = DY(mc68kcpu);
 	uint32_t dst = *r_dst;
 	uint32_t res = src + dst + XFLAG_1(mc68kcpu);
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_32(res);
 	(mc68kcpu)->v_flag = VFLAG_ADD_32(src, dst, res);
@@ -1811,17 +1544,10 @@ M68KMAKE_OP(addx, 32, rr, .)
 
 M68KMAKE_OP(addx, 8, mm, ax7)
 {
-<<<<<<< HEAD
-	UINT32 src = OPER_AY_PD_8(mc68kcpu);
-	UINT32 ea  = EA_A7_PD_8(mc68kcpu);
-	UINT32 dst = m68ki_read_8((mc68kcpu), ea);
-	UINT32 res = src + dst + XFLAG_AS_1(mc68kcpu);
-=======
 	uint32_t src = OPER_AY_PD_8(mc68kcpu);
 	uint32_t ea  = EA_A7_PD_8(mc68kcpu);
 	uint32_t dst = m68ki_read_8((mc68kcpu), ea);
 	uint32_t res = src + dst + XFLAG_1(mc68kcpu);
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_8(res);
 	(mc68kcpu)->v_flag = VFLAG_ADD_8(src, dst, res);
@@ -1836,17 +1562,10 @@ M68KMAKE_OP(addx, 8, mm, ax7)
 
 M68KMAKE_OP(addx, 8, mm, ay7)
 {
-<<<<<<< HEAD
-	UINT32 src = OPER_A7_PD_8(mc68kcpu);
-	UINT32 ea  = EA_AX_PD_8(mc68kcpu);
-	UINT32 dst = m68ki_read_8((mc68kcpu), ea);
-	UINT32 res = src + dst + XFLAG_AS_1(mc68kcpu);
-=======
 	uint32_t src = OPER_A7_PD_8(mc68kcpu);
 	uint32_t ea  = EA_AX_PD_8(mc68kcpu);
 	uint32_t dst = m68ki_read_8((mc68kcpu), ea);
 	uint32_t res = src + dst + XFLAG_1(mc68kcpu);
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_8(res);
 	(mc68kcpu)->v_flag = VFLAG_ADD_8(src, dst, res);
@@ -1861,17 +1580,10 @@ M68KMAKE_OP(addx, 8, mm, ay7)
 
 M68KMAKE_OP(addx, 8, mm, axy7)
 {
-<<<<<<< HEAD
-	UINT32 src = OPER_A7_PD_8(mc68kcpu);
-	UINT32 ea  = EA_A7_PD_8(mc68kcpu);
-	UINT32 dst = m68ki_read_8((mc68kcpu), ea);
-	UINT32 res = src + dst + XFLAG_AS_1(mc68kcpu);
-=======
 	uint32_t src = OPER_A7_PD_8(mc68kcpu);
 	uint32_t ea  = EA_A7_PD_8(mc68kcpu);
 	uint32_t dst = m68ki_read_8((mc68kcpu), ea);
 	uint32_t res = src + dst + XFLAG_1(mc68kcpu);
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_8(res);
 	(mc68kcpu)->v_flag = VFLAG_ADD_8(src, dst, res);
@@ -1886,17 +1598,10 @@ M68KMAKE_OP(addx, 8, mm, axy7)
 
 M68KMAKE_OP(addx, 8, mm, .)
 {
-<<<<<<< HEAD
-	UINT32 src = OPER_AY_PD_8(mc68kcpu);
-	UINT32 ea  = EA_AX_PD_8(mc68kcpu);
-	UINT32 dst = m68ki_read_8((mc68kcpu), ea);
-	UINT32 res = src + dst + XFLAG_AS_1(mc68kcpu);
-=======
 	uint32_t src = OPER_AY_PD_8(mc68kcpu);
 	uint32_t ea  = EA_AX_PD_8(mc68kcpu);
 	uint32_t dst = m68ki_read_8((mc68kcpu), ea);
 	uint32_t res = src + dst + XFLAG_1(mc68kcpu);
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_8(res);
 	(mc68kcpu)->v_flag = VFLAG_ADD_8(src, dst, res);
@@ -1911,17 +1616,10 @@ M68KMAKE_OP(addx, 8, mm, .)
 
 M68KMAKE_OP(addx, 16, mm, .)
 {
-<<<<<<< HEAD
-	UINT32 src = OPER_AY_PD_16(mc68kcpu);
-	UINT32 ea  = EA_AX_PD_16(mc68kcpu);
-	UINT32 dst = m68ki_read_16((mc68kcpu), ea);
-	UINT32 res = src + dst + XFLAG_AS_1(mc68kcpu);
-=======
 	uint32_t src = OPER_AY_PD_16(mc68kcpu);
 	uint32_t ea  = EA_AX_PD_16(mc68kcpu);
 	uint32_t dst = m68ki_read_16((mc68kcpu), ea);
 	uint32_t res = src + dst + XFLAG_1(mc68kcpu);
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_16(res);
 	(mc68kcpu)->v_flag = VFLAG_ADD_16(src, dst, res);
@@ -1936,17 +1634,10 @@ M68KMAKE_OP(addx, 16, mm, .)
 
 M68KMAKE_OP(addx, 32, mm, .)
 {
-<<<<<<< HEAD
-	UINT32 src = OPER_AY_PD_32(mc68kcpu);
-	UINT32 ea  = EA_AX_PD_32(mc68kcpu);
-	UINT32 dst = m68ki_read_32((mc68kcpu), ea);
-	UINT32 res = src + dst + XFLAG_AS_1(mc68kcpu);
-=======
 	uint32_t src = OPER_AY_PD_32(mc68kcpu);
 	uint32_t ea  = EA_AX_PD_32(mc68kcpu);
 	uint32_t dst = m68ki_read_32((mc68kcpu), ea);
 	uint32_t res = src + dst + XFLAG_1(mc68kcpu);
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_32(res);
 	(mc68kcpu)->v_flag = VFLAG_ADD_32(src, dst, res);
@@ -2021,13 +1712,8 @@ M68KMAKE_OP(and, 32, er, .)
 
 M68KMAKE_OP(and, 8, re, .)
 {
-<<<<<<< HEAD
-	UINT32 ea = M68KMAKE_GET_EA_AY_8;
-	UINT32 res = DX(mc68kcpu) & m68ki_read_8((mc68kcpu), ea);
-=======
 	uint32_t ea = M68KMAKE_GET_EA_AY_8;
 	uint32_t res = DX(mc68kcpu) & m68ki_read_8((mc68kcpu), ea);
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_8(res);
 	(mc68kcpu)->c_flag = CFLAG_CLEAR;
@@ -2040,13 +1726,8 @@ M68KMAKE_OP(and, 8, re, .)
 
 M68KMAKE_OP(and, 16, re, .)
 {
-<<<<<<< HEAD
-	UINT32 ea = M68KMAKE_GET_EA_AY_16;
-	UINT32 res = DX(mc68kcpu) & m68ki_read_16((mc68kcpu), ea);
-=======
 	uint32_t ea = M68KMAKE_GET_EA_AY_16;
 	uint32_t res = DX(mc68kcpu) & m68ki_read_16((mc68kcpu), ea);
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_16(res);
 	(mc68kcpu)->c_flag = CFLAG_CLEAR;
@@ -2059,13 +1740,8 @@ M68KMAKE_OP(and, 16, re, .)
 
 M68KMAKE_OP(and, 32, re, .)
 {
-<<<<<<< HEAD
-	UINT32 ea = M68KMAKE_GET_EA_AY_32;
-	UINT32 res = DX(mc68kcpu) & m68ki_read_32((mc68kcpu), ea);
-=======
 	uint32_t ea = M68KMAKE_GET_EA_AY_32;
 	uint32_t res = DX(mc68kcpu) & m68ki_read_32((mc68kcpu), ea);
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_32(res);
 	(mc68kcpu)->not_z_flag = res;
@@ -2088,15 +1764,9 @@ M68KMAKE_OP(andi, 8, ., d)
 
 M68KMAKE_OP(andi, 8, ., .)
 {
-<<<<<<< HEAD
-	UINT32 src = OPER_I_8(mc68kcpu);
-	UINT32 ea = M68KMAKE_GET_EA_AY_8;
-	UINT32 res = src & m68ki_read_8((mc68kcpu), ea);
-=======
 	uint32_t src = OPER_I_8(mc68kcpu);
 	uint32_t ea = M68KMAKE_GET_EA_AY_8;
 	uint32_t res = src & m68ki_read_8((mc68kcpu), ea);
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_8(res);
 	(mc68kcpu)->not_z_flag = res;
@@ -2119,15 +1789,9 @@ M68KMAKE_OP(andi, 16, ., d)
 
 M68KMAKE_OP(andi, 16, ., .)
 {
-<<<<<<< HEAD
-	UINT32 src = OPER_I_16(mc68kcpu);
-	UINT32 ea = M68KMAKE_GET_EA_AY_16;
-	UINT32 res = src & m68ki_read_16((mc68kcpu), ea);
-=======
 	uint32_t src = OPER_I_16(mc68kcpu);
 	uint32_t ea = M68KMAKE_GET_EA_AY_16;
 	uint32_t res = src & m68ki_read_16((mc68kcpu), ea);
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_16(res);
 	(mc68kcpu)->not_z_flag = res;
@@ -2150,15 +1814,9 @@ M68KMAKE_OP(andi, 32, ., d)
 
 M68KMAKE_OP(andi, 32, ., .)
 {
-<<<<<<< HEAD
-	UINT32 src = OPER_I_32(mc68kcpu);
-	UINT32 ea = M68KMAKE_GET_EA_AY_32;
-	UINT32 res = src & m68ki_read_32((mc68kcpu), ea);
-=======
 	uint32_t src = OPER_I_32(mc68kcpu);
 	uint32_t ea = M68KMAKE_GET_EA_AY_32;
 	uint32_t res = src & m68ki_read_32((mc68kcpu), ea);
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_32(res);
 	(mc68kcpu)->not_z_flag = res;
@@ -2179,11 +1837,7 @@ M68KMAKE_OP(andi, 16, tos, .)
 {
 	if((mc68kcpu)->s_flag)
 	{
-<<<<<<< HEAD
-		UINT32 src = OPER_I_16(mc68kcpu);
-=======
 		uint32_t src = OPER_I_16(mc68kcpu);
->>>>>>> upstream/master
 		m68ki_trace_t0(mc68kcpu);              /* auto-disable (see m68kcpu.h) */
 		m68ki_set_sr((mc68kcpu), m68ki_get_sr(mc68kcpu) & src);
 		return;
@@ -2194,17 +1848,10 @@ M68KMAKE_OP(andi, 16, tos, .)
 
 M68KMAKE_OP(asr, 8, s, .)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DY(mc68kcpu);
-	UINT32 shift = ((((mc68kcpu)->ir >> 9) - 1) & 7) + 1;
-	UINT32 src = MASK_OUT_ABOVE_8(*r_dst);
-	UINT32 res = src >> shift;
-=======
 	uint32_t* r_dst = &DY(mc68kcpu);
 	uint32_t shift = ((((mc68kcpu)->ir >> 9) - 1) & 7) + 1;
 	uint32_t src = MASK_OUT_ABOVE_8(*r_dst);
 	uint32_t res = src >> shift;
->>>>>>> upstream/master
 
 	if(shift != 0)
 		(mc68kcpu)->remaining_cycles -= shift<<(mc68kcpu)->cyc_shift;
@@ -2223,17 +1870,10 @@ M68KMAKE_OP(asr, 8, s, .)
 
 M68KMAKE_OP(asr, 16, s, .)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DY(mc68kcpu);
-	UINT32 shift = ((((mc68kcpu)->ir >> 9) - 1) & 7) + 1;
-	UINT32 src = MASK_OUT_ABOVE_16(*r_dst);
-	UINT32 res = src >> shift;
-=======
 	uint32_t* r_dst = &DY(mc68kcpu);
 	uint32_t shift = ((((mc68kcpu)->ir >> 9) - 1) & 7) + 1;
 	uint32_t src = MASK_OUT_ABOVE_16(*r_dst);
 	uint32_t res = src >> shift;
->>>>>>> upstream/master
 
 	if(shift != 0)
 		(mc68kcpu)->remaining_cycles -= shift<<(mc68kcpu)->cyc_shift;
@@ -2252,17 +1892,10 @@ M68KMAKE_OP(asr, 16, s, .)
 
 M68KMAKE_OP(asr, 32, s, .)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DY(mc68kcpu);
-	UINT32 shift = ((((mc68kcpu)->ir >> 9) - 1) & 7) + 1;
-	UINT32 src = *r_dst;
-	UINT32 res = src >> shift;
-=======
 	uint32_t* r_dst = &DY(mc68kcpu);
 	uint32_t shift = ((((mc68kcpu)->ir >> 9) - 1) & 7) + 1;
 	uint32_t src = *r_dst;
 	uint32_t res = src >> shift;
->>>>>>> upstream/master
 
 	if(shift != 0)
 		(mc68kcpu)->remaining_cycles -= shift<<(mc68kcpu)->cyc_shift;
@@ -2281,17 +1914,10 @@ M68KMAKE_OP(asr, 32, s, .)
 
 M68KMAKE_OP(asr, 8, r, .)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DY(mc68kcpu);
-	UINT32 shift = DX(mc68kcpu) & 0x3f;
-	UINT32 src = MASK_OUT_ABOVE_8(*r_dst);
-	UINT32 res = src >> shift;
-=======
 	uint32_t* r_dst = &DY(mc68kcpu);
 	uint32_t shift = DX(mc68kcpu) & 0x3f;
 	uint32_t src = MASK_OUT_ABOVE_8(*r_dst);
 	uint32_t res = src >> shift;
->>>>>>> upstream/master
 
 	if(shift != 0)
 	{
@@ -2340,17 +1966,10 @@ M68KMAKE_OP(asr, 8, r, .)
 
 M68KMAKE_OP(asr, 16, r, .)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DY(mc68kcpu);
-	UINT32 shift = DX(mc68kcpu) & 0x3f;
-	UINT32 src = MASK_OUT_ABOVE_16(*r_dst);
-	UINT32 res = src >> shift;
-=======
 	uint32_t* r_dst = &DY(mc68kcpu);
 	uint32_t shift = DX(mc68kcpu) & 0x3f;
 	uint32_t src = MASK_OUT_ABOVE_16(*r_dst);
 	uint32_t res = src >> shift;
->>>>>>> upstream/master
 
 	if(shift != 0)
 	{
@@ -2399,17 +2018,10 @@ M68KMAKE_OP(asr, 16, r, .)
 
 M68KMAKE_OP(asr, 32, r, .)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DY(mc68kcpu);
-	UINT32 shift = DX(mc68kcpu) & 0x3f;
-	UINT32 src = *r_dst;
-	UINT32 res = src >> shift;
-=======
 	uint32_t* r_dst = &DY(mc68kcpu);
 	uint32_t shift = DX(mc68kcpu) & 0x3f;
 	uint32_t src = *r_dst;
 	uint32_t res = src >> shift;
->>>>>>> upstream/master
 
 	if(shift != 0)
 	{
@@ -2458,15 +2070,9 @@ M68KMAKE_OP(asr, 32, r, .)
 
 M68KMAKE_OP(asr, 16, ., .)
 {
-<<<<<<< HEAD
-	UINT32 ea = M68KMAKE_GET_EA_AY_16;
-	UINT32 src = m68ki_read_16((mc68kcpu), ea);
-	UINT32 res = src >> 1;
-=======
 	uint32_t ea = M68KMAKE_GET_EA_AY_16;
 	uint32_t src = m68ki_read_16((mc68kcpu), ea);
 	uint32_t res = src >> 1;
->>>>>>> upstream/master
 
 	if(GET_MSB_16(src))
 		res |= 0x8000;
@@ -2482,17 +2088,10 @@ M68KMAKE_OP(asr, 16, ., .)
 
 M68KMAKE_OP(asl, 8, s, .)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DY(mc68kcpu);
-	UINT32 shift = ((((mc68kcpu)->ir >> 9) - 1) & 7) + 1;
-	UINT32 src = MASK_OUT_ABOVE_8(*r_dst);
-	UINT32 res = MASK_OUT_ABOVE_8(src << shift);
-=======
 	uint32_t* r_dst = &DY(mc68kcpu);
 	uint32_t shift = ((((mc68kcpu)->ir >> 9) - 1) & 7) + 1;
 	uint32_t src = MASK_OUT_ABOVE_8(*r_dst);
 	uint32_t res = MASK_OUT_ABOVE_8(src << shift);
->>>>>>> upstream/master
 
 	if(shift != 0)
 		(mc68kcpu)->remaining_cycles -= shift<<(mc68kcpu)->cyc_shift;
@@ -2509,17 +2108,10 @@ M68KMAKE_OP(asl, 8, s, .)
 
 M68KMAKE_OP(asl, 16, s, .)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DY(mc68kcpu);
-	UINT32 shift = ((((mc68kcpu)->ir >> 9) - 1) & 7) + 1;
-	UINT32 src = MASK_OUT_ABOVE_16(*r_dst);
-	UINT32 res = MASK_OUT_ABOVE_16(src << shift);
-=======
 	uint32_t* r_dst = &DY(mc68kcpu);
 	uint32_t shift = ((((mc68kcpu)->ir >> 9) - 1) & 7) + 1;
 	uint32_t src = MASK_OUT_ABOVE_16(*r_dst);
 	uint32_t res = MASK_OUT_ABOVE_16(src << shift);
->>>>>>> upstream/master
 
 	if(shift != 0)
 		(mc68kcpu)->remaining_cycles -= shift<<(mc68kcpu)->cyc_shift;
@@ -2536,17 +2128,10 @@ M68KMAKE_OP(asl, 16, s, .)
 
 M68KMAKE_OP(asl, 32, s, .)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DY(mc68kcpu);
-	UINT32 shift = ((((mc68kcpu)->ir >> 9) - 1) & 7) + 1;
-	UINT32 src = *r_dst;
-	UINT32 res = MASK_OUT_ABOVE_32(src << shift);
-=======
 	uint32_t* r_dst = &DY(mc68kcpu);
 	uint32_t shift = ((((mc68kcpu)->ir >> 9) - 1) & 7) + 1;
 	uint32_t src = *r_dst;
 	uint32_t res = MASK_OUT_ABOVE_32(src << shift);
->>>>>>> upstream/master
 
 	if(shift != 0)
 		(mc68kcpu)->remaining_cycles -= shift<<(mc68kcpu)->cyc_shift;
@@ -2563,17 +2148,10 @@ M68KMAKE_OP(asl, 32, s, .)
 
 M68KMAKE_OP(asl, 8, r, .)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DY(mc68kcpu);
-	UINT32 shift = DX(mc68kcpu) & 0x3f;
-	UINT32 src = MASK_OUT_ABOVE_8(*r_dst);
-	UINT32 res = MASK_OUT_ABOVE_8(src << shift);
-=======
 	uint32_t* r_dst = &DY(mc68kcpu);
 	uint32_t shift = DX(mc68kcpu) & 0x3f;
 	uint32_t src = MASK_OUT_ABOVE_8(*r_dst);
 	uint32_t res = MASK_OUT_ABOVE_8(src << shift);
->>>>>>> upstream/master
 
 	if(shift != 0)
 	{
@@ -2607,17 +2185,10 @@ M68KMAKE_OP(asl, 8, r, .)
 
 M68KMAKE_OP(asl, 16, r, .)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DY(mc68kcpu);
-	UINT32 shift = DX(mc68kcpu) & 0x3f;
-	UINT32 src = MASK_OUT_ABOVE_16(*r_dst);
-	UINT32 res = MASK_OUT_ABOVE_16(src << shift);
-=======
 	uint32_t* r_dst = &DY(mc68kcpu);
 	uint32_t shift = DX(mc68kcpu) & 0x3f;
 	uint32_t src = MASK_OUT_ABOVE_16(*r_dst);
 	uint32_t res = MASK_OUT_ABOVE_16(src << shift);
->>>>>>> upstream/master
 
 	if(shift != 0)
 	{
@@ -2651,17 +2222,10 @@ M68KMAKE_OP(asl, 16, r, .)
 
 M68KMAKE_OP(asl, 32, r, .)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DY(mc68kcpu);
-	UINT32 shift = DX(mc68kcpu) & 0x3f;
-	UINT32 src = *r_dst;
-	UINT32 res = MASK_OUT_ABOVE_32(src << shift);
-=======
 	uint32_t* r_dst = &DY(mc68kcpu);
 	uint32_t shift = DX(mc68kcpu) & 0x3f;
 	uint32_t src = *r_dst;
 	uint32_t res = MASK_OUT_ABOVE_32(src << shift);
->>>>>>> upstream/master
 
 	if(shift != 0)
 	{
@@ -2695,15 +2259,9 @@ M68KMAKE_OP(asl, 32, r, .)
 
 M68KMAKE_OP(asl, 16, ., .)
 {
-<<<<<<< HEAD
-	UINT32 ea = M68KMAKE_GET_EA_AY_16;
-	UINT32 src = m68ki_read_16((mc68kcpu), ea);
-	UINT32 res = MASK_OUT_ABOVE_16(src << 1);
-=======
 	uint32_t ea = M68KMAKE_GET_EA_AY_16;
 	uint32_t src = m68ki_read_16((mc68kcpu), ea);
 	uint32_t res = MASK_OUT_ABOVE_16(src << 1);
->>>>>>> upstream/master
 
 	m68ki_write_16((mc68kcpu), ea, res);
 
@@ -2731,11 +2289,7 @@ M68KMAKE_OP(bcc, 16, ., .)
 {
 	if(M68KMAKE_CC)
 	{
-<<<<<<< HEAD
-		UINT32 offset = OPER_I_16(mc68kcpu);
-=======
 		uint32_t offset = OPER_I_16(mc68kcpu);
->>>>>>> upstream/master
 		REG_PC(mc68kcpu) -= 2;
 		m68ki_trace_t0(mc68kcpu);              /* auto-disable (see m68kcpu.h) */
 		m68ki_branch_16((mc68kcpu), offset);
@@ -2752,11 +2306,7 @@ M68KMAKE_OP(bcc, 32, ., .)
 	{
 		if(M68KMAKE_CC)
 		{
-<<<<<<< HEAD
-			UINT32 offset = OPER_I_32(mc68kcpu);
-=======
 			uint32_t offset = OPER_I_32(mc68kcpu);
->>>>>>> upstream/master
 			REG_PC(mc68kcpu) -= 4;
 			m68ki_trace_t0(mc68kcpu);              /* auto-disable (see m68kcpu.h) */
 			m68ki_branch_32((mc68kcpu), offset);
@@ -2780,13 +2330,8 @@ M68KMAKE_OP(bcc, 32, ., .)
 
 M68KMAKE_OP(bchg, 32, r, d)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DY(mc68kcpu);
-	UINT32 mask = 1 << (DX(mc68kcpu) & 0x1f);
-=======
 	uint32_t* r_dst = &DY(mc68kcpu);
 	uint32_t mask = 1 << (DX(mc68kcpu) & 0x1f);
->>>>>>> upstream/master
 
 	(mc68kcpu)->not_z_flag = *r_dst & mask;
 	*r_dst ^= mask;
@@ -2795,15 +2340,9 @@ M68KMAKE_OP(bchg, 32, r, d)
 
 M68KMAKE_OP(bchg, 8, r, .)
 {
-<<<<<<< HEAD
-	UINT32 ea = M68KMAKE_GET_EA_AY_8;
-	UINT32 src = m68ki_read_8((mc68kcpu), ea);
-	UINT32 mask = 1 << (DX(mc68kcpu) & 7);
-=======
 	uint32_t ea = M68KMAKE_GET_EA_AY_8;
 	uint32_t src = m68ki_read_8((mc68kcpu), ea);
 	uint32_t mask = 1 << (DX(mc68kcpu) & 7);
->>>>>>> upstream/master
 
 	(mc68kcpu)->not_z_flag = src & mask;
 	m68ki_write_8((mc68kcpu), ea, src ^ mask);
@@ -2812,13 +2351,8 @@ M68KMAKE_OP(bchg, 8, r, .)
 
 M68KMAKE_OP(bchg, 32, s, d)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DY(mc68kcpu);
-	UINT32 mask = 1 << (OPER_I_8(mc68kcpu) & 0x1f);
-=======
 	uint32_t* r_dst = &DY(mc68kcpu);
 	uint32_t mask = 1 << (OPER_I_8(mc68kcpu) & 0x1f);
->>>>>>> upstream/master
 
 	(mc68kcpu)->not_z_flag = *r_dst & mask;
 	*r_dst ^= mask;
@@ -2827,15 +2361,9 @@ M68KMAKE_OP(bchg, 32, s, d)
 
 M68KMAKE_OP(bchg, 8, s, .)
 {
-<<<<<<< HEAD
-	UINT32 mask = 1 << (OPER_I_8(mc68kcpu) & 7);
-	UINT32 ea = M68KMAKE_GET_EA_AY_8;
-	UINT32 src = m68ki_read_8((mc68kcpu), ea);
-=======
 	uint32_t mask = 1 << (OPER_I_8(mc68kcpu) & 7);
 	uint32_t ea = M68KMAKE_GET_EA_AY_8;
 	uint32_t src = m68ki_read_8((mc68kcpu), ea);
->>>>>>> upstream/master
 
 	(mc68kcpu)->not_z_flag = src & mask;
 	m68ki_write_8((mc68kcpu), ea, src ^ mask);
@@ -2844,13 +2372,8 @@ M68KMAKE_OP(bchg, 8, s, .)
 
 M68KMAKE_OP(bclr, 32, r, d)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DY(mc68kcpu);
-	UINT32 mask = 1 << (DX(mc68kcpu) & 0x1f);
-=======
 	uint32_t* r_dst = &DY(mc68kcpu);
 	uint32_t mask = 1 << (DX(mc68kcpu) & 0x1f);
->>>>>>> upstream/master
 
 	(mc68kcpu)->not_z_flag = *r_dst & mask;
 	*r_dst &= ~mask;
@@ -2859,15 +2382,9 @@ M68KMAKE_OP(bclr, 32, r, d)
 
 M68KMAKE_OP(bclr, 8, r, .)
 {
-<<<<<<< HEAD
-	UINT32 ea = M68KMAKE_GET_EA_AY_8;
-	UINT32 src = m68ki_read_8((mc68kcpu), ea);
-	UINT32 mask = 1 << (DX(mc68kcpu) & 7);
-=======
 	uint32_t ea = M68KMAKE_GET_EA_AY_8;
 	uint32_t src = m68ki_read_8((mc68kcpu), ea);
 	uint32_t mask = 1 << (DX(mc68kcpu) & 7);
->>>>>>> upstream/master
 
 	(mc68kcpu)->not_z_flag = src & mask;
 	m68ki_write_8((mc68kcpu), ea, src & ~mask);
@@ -2876,13 +2393,8 @@ M68KMAKE_OP(bclr, 8, r, .)
 
 M68KMAKE_OP(bclr, 32, s, d)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DY(mc68kcpu);
-	UINT32 mask = 1 << (OPER_I_8(mc68kcpu) & 0x1f);
-=======
 	uint32_t* r_dst = &DY(mc68kcpu);
 	uint32_t mask = 1 << (OPER_I_8(mc68kcpu) & 0x1f);
->>>>>>> upstream/master
 
 	(mc68kcpu)->not_z_flag = *r_dst & mask;
 	*r_dst &= ~mask;
@@ -2891,15 +2403,9 @@ M68KMAKE_OP(bclr, 32, s, d)
 
 M68KMAKE_OP(bclr, 8, s, .)
 {
-<<<<<<< HEAD
-	UINT32 mask = 1 << (OPER_I_8(mc68kcpu) & 7);
-	UINT32 ea = M68KMAKE_GET_EA_AY_8;
-	UINT32 src = m68ki_read_8((mc68kcpu), ea);
-=======
 	uint32_t mask = 1 << (OPER_I_8(mc68kcpu) & 7);
 	uint32_t ea = M68KMAKE_GET_EA_AY_8;
 	uint32_t src = m68ki_read_8((mc68kcpu), ea);
->>>>>>> upstream/master
 
 	(mc68kcpu)->not_z_flag = src & mask;
 	m68ki_write_8((mc68kcpu), ea, src & ~mask);
@@ -2910,19 +2416,11 @@ M68KMAKE_OP(bfchg, 32, ., d)
 {
 	if(CPU_TYPE_IS_EC020_PLUS((mc68kcpu)->cpu_type))
 	{
-<<<<<<< HEAD
-		UINT32 word2 = OPER_I_16(mc68kcpu);
-		UINT32 offset = (word2>>6)&31;
-		UINT32 width = word2;
-		UINT32* data = &DY(mc68kcpu);
-		UINT64 mask;
-=======
 		uint32_t word2 = OPER_I_16(mc68kcpu);
 		uint32_t offset = (word2>>6)&31;
 		uint32_t width = word2;
 		uint32_t* data = &DY(mc68kcpu);
 		uint64_t mask;
->>>>>>> upstream/master
 
 
 		if(BIT_B(word2))
@@ -2953,17 +2451,6 @@ M68KMAKE_OP(bfchg, 32, ., .)
 {
 	if(CPU_TYPE_IS_EC020_PLUS((mc68kcpu)->cpu_type))
 	{
-<<<<<<< HEAD
-		UINT32 word2 = OPER_I_16(mc68kcpu);
-		INT32 offset = (word2>>6)&31;
-		UINT32 width = word2;
-		UINT32 mask_base;
-		UINT32 data_long;
-		UINT32 mask_long;
-		UINT32 data_byte = 0;
-		UINT32 mask_byte = 0;
-		UINT32 ea = M68KMAKE_GET_EA_AY_8;
-=======
 		uint32_t word2 = OPER_I_16(mc68kcpu);
 		int32_t offset = (word2>>6)&31;
 		uint32_t width = word2;
@@ -2973,7 +2460,6 @@ M68KMAKE_OP(bfchg, 32, ., .)
 		uint32_t data_byte = 0;
 		uint32_t mask_byte = 0;
 		uint32_t ea = M68KMAKE_GET_EA_AY_8;
->>>>>>> upstream/master
 
 
 		if(BIT_B(word2))
@@ -3019,19 +2505,11 @@ M68KMAKE_OP(bfclr, 32, ., d)
 {
 	if(CPU_TYPE_IS_EC020_PLUS((mc68kcpu)->cpu_type))
 	{
-<<<<<<< HEAD
-		UINT32 word2 = OPER_I_16(mc68kcpu);
-		UINT32 offset = (word2>>6)&31;
-		UINT32 width = word2;
-		UINT32* data = &DY(mc68kcpu);
-		UINT64 mask;
-=======
 		uint32_t word2 = OPER_I_16(mc68kcpu);
 		uint32_t offset = (word2>>6)&31;
 		uint32_t width = word2;
 		uint32_t* data = &DY(mc68kcpu);
 		uint64_t mask;
->>>>>>> upstream/master
 
 
 		if(BIT_B(word2))
@@ -3064,17 +2542,6 @@ M68KMAKE_OP(bfclr, 32, ., .)
 {
 	if(CPU_TYPE_IS_EC020_PLUS((mc68kcpu)->cpu_type))
 	{
-<<<<<<< HEAD
-		UINT32 word2 = OPER_I_16(mc68kcpu);
-		INT32 offset = (word2>>6)&31;
-		UINT32 width = word2;
-		UINT32 mask_base;
-		UINT32 data_long;
-		UINT32 mask_long;
-		UINT32 data_byte = 0;
-		UINT32 mask_byte = 0;
-		UINT32 ea = M68KMAKE_GET_EA_AY_8;
-=======
 		uint32_t word2 = OPER_I_16(mc68kcpu);
 		int32_t offset = (word2>>6)&31;
 		uint32_t width = word2;
@@ -3084,7 +2551,6 @@ M68KMAKE_OP(bfclr, 32, ., .)
 		uint32_t data_byte = 0;
 		uint32_t mask_byte = 0;
 		uint32_t ea = M68KMAKE_GET_EA_AY_8;
->>>>>>> upstream/master
 
 
 		if(BIT_B(word2))
@@ -3130,17 +2596,10 @@ M68KMAKE_OP(bfexts, 32, ., d)
 {
 	if(CPU_TYPE_IS_EC020_PLUS((mc68kcpu)->cpu_type))
 	{
-<<<<<<< HEAD
-		UINT32 word2 = OPER_I_16(mc68kcpu);
-		UINT32 offset = (word2>>6)&31;
-		UINT32 width = word2;
-		UINT64 data = DY(mc68kcpu);
-=======
 		uint32_t word2 = OPER_I_16(mc68kcpu);
 		uint32_t offset = (word2>>6)&31;
 		uint32_t width = word2;
 		uint64_t data = DY(mc68kcpu);
->>>>>>> upstream/master
 
 
 		if(BIT_B(word2))
@@ -3171,19 +2630,11 @@ M68KMAKE_OP(bfexts, 32, ., .)
 {
 	if(CPU_TYPE_IS_EC020_PLUS((mc68kcpu)->cpu_type))
 	{
-<<<<<<< HEAD
-		UINT32 word2 = OPER_I_16(mc68kcpu);
-		INT32 offset = (word2>>6)&31;
-		UINT32 width = word2;
-		UINT32 data;
-		UINT32 ea = M68KMAKE_GET_EA_AY_8;
-=======
 		uint32_t word2 = OPER_I_16(mc68kcpu);
 		int32_t offset = (word2>>6)&31;
 		uint32_t width = word2;
 		uint32_t data;
 		uint32_t ea = M68KMAKE_GET_EA_AY_8;
->>>>>>> upstream/master
 
 
 		if(BIT_B(word2))
@@ -3231,17 +2682,10 @@ M68KMAKE_OP(bfextu, 32, ., d)
 {
 	if(CPU_TYPE_IS_EC020_PLUS((mc68kcpu)->cpu_type))
 	{
-<<<<<<< HEAD
-		UINT32 word2 = OPER_I_16(mc68kcpu);
-		UINT32 offset = (word2>>6)&31;
-		UINT32 width = word2;
-		UINT64 data = DY(mc68kcpu);
-=======
 		uint32_t word2 = OPER_I_16(mc68kcpu);
 		uint32_t offset = (word2>>6)&31;
 		uint32_t width = word2;
 		uint64_t data = DY(mc68kcpu);
->>>>>>> upstream/master
 
 
 		if(BIT_B(word2))
@@ -3272,19 +2716,11 @@ M68KMAKE_OP(bfextu, 32, ., .)
 {
 	if(CPU_TYPE_IS_EC020_PLUS((mc68kcpu)->cpu_type))
 	{
-<<<<<<< HEAD
-		UINT32 word2 = OPER_I_16(mc68kcpu);
-		INT32 offset = (word2>>6)&31;
-		UINT32 width = word2;
-		UINT32 data;
-		UINT32 ea = M68KMAKE_GET_EA_AY_8;
-=======
 		uint32_t word2 = OPER_I_16(mc68kcpu);
 		int32_t offset = (word2>>6)&31;
 		uint32_t width = word2;
 		uint32_t data;
 		uint32_t ea = M68KMAKE_GET_EA_AY_8;
->>>>>>> upstream/master
 
 
 		if(BIT_B(word2))
@@ -3331,19 +2767,11 @@ M68KMAKE_OP(bfffo, 32, ., d)
 {
 	if(CPU_TYPE_IS_EC020_PLUS((mc68kcpu)->cpu_type))
 	{
-<<<<<<< HEAD
-		UINT32 word2 = OPER_I_16(mc68kcpu);
-		UINT32 offset = (word2>>6)&31;
-		UINT32 width = word2;
-		UINT64 data = DY(mc68kcpu);
-		UINT32 bit;
-=======
 		uint32_t word2 = OPER_I_16(mc68kcpu);
 		uint32_t offset = (word2>>6)&31;
 		uint32_t width = word2;
 		uint64_t data = DY(mc68kcpu);
 		uint32_t bit;
->>>>>>> upstream/master
 
 
 		if(BIT_B(word2))
@@ -3377,15 +2805,6 @@ M68KMAKE_OP(bfffo, 32, ., .)
 {
 	if(CPU_TYPE_IS_EC020_PLUS((mc68kcpu)->cpu_type))
 	{
-<<<<<<< HEAD
-		UINT32 word2 = OPER_I_16(mc68kcpu);
-		INT32 offset = (word2>>6)&31;
-		INT32 local_offset;
-		UINT32 width = word2;
-		UINT32 data;
-		UINT32 bit;
-		UINT32 ea = M68KMAKE_GET_EA_AY_8;
-=======
 		uint32_t word2 = OPER_I_16(mc68kcpu);
 		int32_t offset = (word2>>6)&31;
 		int32_t local_offset;
@@ -3393,7 +2812,6 @@ M68KMAKE_OP(bfffo, 32, ., .)
 		uint32_t data;
 		uint32_t bit;
 		uint32_t ea = M68KMAKE_GET_EA_AY_8;
->>>>>>> upstream/master
 
 
 		if(BIT_B(word2))
@@ -3439,21 +2857,12 @@ M68KMAKE_OP(bfins, 32, ., d)
 {
 	if(CPU_TYPE_IS_EC020_PLUS((mc68kcpu)->cpu_type))
 	{
-<<<<<<< HEAD
-		UINT32 word2 = OPER_I_16(mc68kcpu);
-		UINT32 offset = (word2>>6)&31;
-		UINT32 width = word2;
-		UINT32* data = &DY(mc68kcpu);
-		UINT64 mask;
-		UINT64 insert = REG_D(mc68kcpu)[(word2>>12)&7];
-=======
 		uint32_t word2 = OPER_I_16(mc68kcpu);
 		uint32_t offset = (word2>>6)&31;
 		uint32_t width = word2;
 		uint32_t* data = &DY(mc68kcpu);
 		uint64_t mask;
 		uint64_t insert = REG_D(mc68kcpu)[(word2>>12)&7];
->>>>>>> upstream/master
 
 
 		if(BIT_B(word2))
@@ -3490,20 +2899,6 @@ M68KMAKE_OP(bfins, 32, ., .)
 {
 	if(CPU_TYPE_IS_EC020_PLUS((mc68kcpu)->cpu_type))
 	{
-<<<<<<< HEAD
-		UINT32 word2 = OPER_I_16(mc68kcpu);
-		INT32 offset = (word2>>6)&31;
-		UINT32 width = word2;
-		UINT32 insert_base = REG_D(mc68kcpu)[(word2>>12)&7];
-		UINT32 insert_long;
-		UINT32 insert_byte;
-		UINT32 mask_base;
-		UINT32 data_long;
-		UINT32 mask_long;
-		UINT32 data_byte = 0;
-		UINT32 mask_byte = 0;
-		UINT32 ea = M68KMAKE_GET_EA_AY_8;
-=======
 		uint32_t word2 = OPER_I_16(mc68kcpu);
 		int32_t offset = (word2>>6)&31;
 		uint32_t width = word2;
@@ -3516,7 +2911,6 @@ M68KMAKE_OP(bfins, 32, ., .)
 		uint32_t data_byte = 0;
 		uint32_t mask_byte = 0;
 		uint32_t ea = M68KMAKE_GET_EA_AY_8;
->>>>>>> upstream/master
 
 
 		if(BIT_B(word2))
@@ -3566,15 +2960,9 @@ M68KMAKE_OP(bfins, 32, ., .)
 		if((width + offset) > 32)
 		{
 			mask_byte = MASK_OUT_ABOVE_8(mask_base) << (8-offset);
-<<<<<<< HEAD
-			insert_byte = MASK_OUT_ABOVE_8(insert_base);
-			data_byte = m68ki_read_8((mc68kcpu), ea+4);
-			(mc68kcpu)->not_z_flag |= (data_byte & mask_byte);
-=======
 			insert_byte = MASK_OUT_ABOVE_8(insert_base) << (8-offset);
 			data_byte = m68ki_read_8((mc68kcpu), ea+4);
 			(mc68kcpu)->not_z_flag |= (insert_byte & mask_byte);
->>>>>>> upstream/master
 			m68ki_write_8((mc68kcpu), ea+4, (data_byte & ~mask_byte) | insert_byte);
 		}
 		return;
@@ -3587,19 +2975,11 @@ M68KMAKE_OP(bfset, 32, ., d)
 {
 	if(CPU_TYPE_IS_EC020_PLUS((mc68kcpu)->cpu_type))
 	{
-<<<<<<< HEAD
-		UINT32 word2 = OPER_I_16(mc68kcpu);
-		UINT32 offset = (word2>>6)&31;
-		UINT32 width = word2;
-		UINT32* data = &DY(mc68kcpu);
-		UINT64 mask;
-=======
 		uint32_t word2 = OPER_I_16(mc68kcpu);
 		uint32_t offset = (word2>>6)&31;
 		uint32_t width = word2;
 		uint32_t* data = &DY(mc68kcpu);
 		uint64_t mask;
->>>>>>> upstream/master
 
 
 		if(BIT_B(word2))
@@ -3632,17 +3012,6 @@ M68KMAKE_OP(bfset, 32, ., .)
 {
 	if(CPU_TYPE_IS_EC020_PLUS((mc68kcpu)->cpu_type))
 	{
-<<<<<<< HEAD
-		UINT32 word2 = OPER_I_16(mc68kcpu);
-		INT32 offset = (word2>>6)&31;
-		UINT32 width = word2;
-		UINT32 mask_base;
-		UINT32 data_long;
-		UINT32 mask_long;
-		UINT32 data_byte = 0;
-		UINT32 mask_byte = 0;
-		UINT32 ea = M68KMAKE_GET_EA_AY_8;
-=======
 		uint32_t word2 = OPER_I_16(mc68kcpu);
 		int32_t offset = (word2>>6)&31;
 		uint32_t width = word2;
@@ -3652,7 +3021,6 @@ M68KMAKE_OP(bfset, 32, ., .)
 		uint32_t data_byte = 0;
 		uint32_t mask_byte = 0;
 		uint32_t ea = M68KMAKE_GET_EA_AY_8;
->>>>>>> upstream/master
 
 		if(BIT_B(word2))
 			offset = MAKE_INT_32(REG_D(mc68kcpu)[offset&7]);
@@ -3697,19 +3065,11 @@ M68KMAKE_OP(bftst, 32, ., d)
 {
 	if(CPU_TYPE_IS_EC020_PLUS((mc68kcpu)->cpu_type))
 	{
-<<<<<<< HEAD
-		UINT32 word2 = OPER_I_16(mc68kcpu);
-		UINT32 offset = (word2>>6)&31;
-		UINT32 width = word2;
-		UINT32* data = &DY(mc68kcpu);
-		UINT64 mask;
-=======
 		uint32_t word2 = OPER_I_16(mc68kcpu);
 		uint32_t offset = (word2>>6)&31;
 		uint32_t width = word2;
 		uint32_t* data = &DY(mc68kcpu);
 		uint64_t mask;
->>>>>>> upstream/master
 
 
 		if(BIT_B(word2))
@@ -3740,17 +3100,6 @@ M68KMAKE_OP(bftst, 32, ., .)
 {
 	if(CPU_TYPE_IS_EC020_PLUS((mc68kcpu)->cpu_type))
 	{
-<<<<<<< HEAD
-		UINT32 word2 = OPER_I_16(mc68kcpu);
-		INT32 offset = (word2>>6)&31;
-		UINT32 width = word2;
-		UINT32 mask_base;
-		UINT32 data_long;
-		UINT32 mask_long;
-		UINT32 data_byte = 0;
-		UINT32 mask_byte = 0;
-		UINT32 ea = M68KMAKE_GET_EA_AY_8;
-=======
 		uint32_t word2 = OPER_I_16(mc68kcpu);
 		int32_t offset = (word2>>6)&31;
 		uint32_t width = word2;
@@ -3760,7 +3109,6 @@ M68KMAKE_OP(bftst, 32, ., .)
 		uint32_t data_byte = 0;
 		uint32_t mask_byte = 0;
 		uint32_t ea = M68KMAKE_GET_EA_AY_8;
->>>>>>> upstream/master
 
 		if(BIT_B(word2))
 			offset = MAKE_INT_32(REG_D(mc68kcpu)[offset&7]);
@@ -3821,11 +3169,7 @@ M68KMAKE_OP(bra, 8, ., .)
 
 M68KMAKE_OP(bra, 16, ., .)
 {
-<<<<<<< HEAD
-	UINT32 offset = OPER_I_16(mc68kcpu);
-=======
 	uint32_t offset = OPER_I_16(mc68kcpu);
->>>>>>> upstream/master
 	REG_PC(mc68kcpu) -= 2;
 	m68ki_trace_t0(mc68kcpu);              /* auto-disable (see m68kcpu.h) */
 	m68ki_branch_16((mc68kcpu), offset);
@@ -3838,11 +3182,7 @@ M68KMAKE_OP(bra, 32, ., .)
 {
 	if(CPU_TYPE_IS_EC020_PLUS((mc68kcpu)->cpu_type))
 	{
-<<<<<<< HEAD
-		UINT32 offset = OPER_I_32(mc68kcpu);
-=======
 		uint32_t offset = OPER_I_32(mc68kcpu);
->>>>>>> upstream/master
 		REG_PC(mc68kcpu) -= 4;
 		m68ki_trace_t0(mc68kcpu);              /* auto-disable (see m68kcpu.h) */
 		m68ki_branch_32((mc68kcpu), offset);
@@ -3862,13 +3202,8 @@ M68KMAKE_OP(bra, 32, ., .)
 
 M68KMAKE_OP(bset, 32, r, d)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DY(mc68kcpu);
-	UINT32 mask = 1 << (DX(mc68kcpu) & 0x1f);
-=======
 	uint32_t* r_dst = &DY(mc68kcpu);
 	uint32_t mask = 1 << (DX(mc68kcpu) & 0x1f);
->>>>>>> upstream/master
 
 	(mc68kcpu)->not_z_flag = *r_dst & mask;
 	*r_dst |= mask;
@@ -3877,15 +3212,9 @@ M68KMAKE_OP(bset, 32, r, d)
 
 M68KMAKE_OP(bset, 8, r, .)
 {
-<<<<<<< HEAD
-	UINT32 ea = M68KMAKE_GET_EA_AY_8;
-	UINT32 src = m68ki_read_8((mc68kcpu), ea);
-	UINT32 mask = 1 << (DX(mc68kcpu) & 7);
-=======
 	uint32_t ea = M68KMAKE_GET_EA_AY_8;
 	uint32_t src = m68ki_read_8((mc68kcpu), ea);
 	uint32_t mask = 1 << (DX(mc68kcpu) & 7);
->>>>>>> upstream/master
 
 	(mc68kcpu)->not_z_flag = src & mask;
 	m68ki_write_8((mc68kcpu), ea, src | mask);
@@ -3894,13 +3223,8 @@ M68KMAKE_OP(bset, 8, r, .)
 
 M68KMAKE_OP(bset, 32, s, d)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DY(mc68kcpu);
-	UINT32 mask = 1 << (OPER_I_8(mc68kcpu) & 0x1f);
-=======
 	uint32_t* r_dst = &DY(mc68kcpu);
 	uint32_t mask = 1 << (OPER_I_8(mc68kcpu) & 0x1f);
->>>>>>> upstream/master
 
 	(mc68kcpu)->not_z_flag = *r_dst & mask;
 	*r_dst |= mask;
@@ -3909,15 +3233,9 @@ M68KMAKE_OP(bset, 32, s, d)
 
 M68KMAKE_OP(bset, 8, s, .)
 {
-<<<<<<< HEAD
-	UINT32 mask = 1 << (OPER_I_8(mc68kcpu) & 7);
-	UINT32 ea = M68KMAKE_GET_EA_AY_8;
-	UINT32 src = m68ki_read_8((mc68kcpu), ea);
-=======
 	uint32_t mask = 1 << (OPER_I_8(mc68kcpu) & 7);
 	uint32_t ea = M68KMAKE_GET_EA_AY_8;
 	uint32_t src = m68ki_read_8((mc68kcpu), ea);
->>>>>>> upstream/master
 
 	(mc68kcpu)->not_z_flag = src & mask;
 	m68ki_write_8((mc68kcpu), ea, src | mask);
@@ -3934,11 +3252,7 @@ M68KMAKE_OP(bsr, 8, ., .)
 
 M68KMAKE_OP(bsr, 16, ., .)
 {
-<<<<<<< HEAD
-	UINT32 offset = OPER_I_16(mc68kcpu);
-=======
 	uint32_t offset = OPER_I_16(mc68kcpu);
->>>>>>> upstream/master
 	m68ki_trace_t0(mc68kcpu);              /* auto-disable (see m68kcpu.h) */
 	m68ki_push_32((mc68kcpu), REG_PC(mc68kcpu));
 	REG_PC(mc68kcpu) -= 2;
@@ -3950,11 +3264,7 @@ M68KMAKE_OP(bsr, 32, ., .)
 {
 	if(CPU_TYPE_IS_EC020_PLUS((mc68kcpu)->cpu_type))
 	{
-<<<<<<< HEAD
-		UINT32 offset = OPER_I_32(mc68kcpu);
-=======
 		uint32_t offset = OPER_I_32(mc68kcpu);
->>>>>>> upstream/master
 		m68ki_trace_t0(mc68kcpu);              /* auto-disable (see m68kcpu.h) */
 		m68ki_push_32((mc68kcpu), REG_PC(mc68kcpu));
 		REG_PC(mc68kcpu) -= 4;
@@ -3990,11 +3300,7 @@ M68KMAKE_OP(btst, 32, s, d)
 
 M68KMAKE_OP(btst, 8, s, .)
 {
-<<<<<<< HEAD
-	UINT32 bit = OPER_I_8(mc68kcpu) & 7;
-=======
 	uint32_t bit = OPER_I_8(mc68kcpu) & 7;
->>>>>>> upstream/master
 
 	(mc68kcpu)->not_z_flag = M68KMAKE_GET_OPER_AY_8 & (1 << bit);
 }
@@ -4005,20 +3311,12 @@ M68KMAKE_OP(callm, 32, ., .)
 	/* note: watch out for pcrelative modes */
 	if(CPU_TYPE_IS_020_VARIANT((mc68kcpu)->cpu_type))
 	{
-<<<<<<< HEAD
-		UINT32 ea = M68KMAKE_GET_EA_AY_32;
-=======
 		uint32_t ea = M68KMAKE_GET_EA_AY_32;
->>>>>>> upstream/master
 
 		m68ki_trace_t0(mc68kcpu);              /* auto-disable (see m68kcpu.h) */
 		REG_PC(mc68kcpu) += 2;
 (void)ea;   /* just to avoid an 'unused variable' warning */
-<<<<<<< HEAD
-		logerror("%s at %08x: called unimplemented instruction %04x (callm)\n",
-=======
 		mc68kcpu->logerror("%s at %08x: called unimplemented instruction %04x (callm)\n",
->>>>>>> upstream/master
 						(mc68kcpu)->tag(), REG_PC(mc68kcpu) - 2, (mc68kcpu)->ir);
 		return;
 	}
@@ -4030,19 +3328,11 @@ M68KMAKE_OP(cas, 8, ., .)
 {
 	if(CPU_TYPE_IS_EC020_PLUS((mc68kcpu)->cpu_type))
 	{
-<<<<<<< HEAD
-		UINT32 word2 = OPER_I_16(mc68kcpu);
-		UINT32 ea = M68KMAKE_GET_EA_AY_8;
-		UINT32 dest = m68ki_read_8((mc68kcpu), ea);
-		UINT32* compare = &REG_D(mc68kcpu)[word2 & 7];
-		UINT32 res = dest - MASK_OUT_ABOVE_8(*compare);
-=======
 		uint32_t word2 = OPER_I_16(mc68kcpu);
 		uint32_t ea = M68KMAKE_GET_EA_AY_8;
 		uint32_t dest = m68ki_read_8((mc68kcpu), ea);
 		uint32_t* compare = &REG_D(mc68kcpu)[word2 & 7];
 		uint32_t res = dest - MASK_OUT_ABOVE_8(*compare);
->>>>>>> upstream/master
 
 		m68ki_trace_t0(mc68kcpu);              /* auto-disable (see m68kcpu.h) */
 		(mc68kcpu)->n_flag = NFLAG_8(res);
@@ -4067,19 +3357,11 @@ M68KMAKE_OP(cas, 16, ., .)
 {
 	if(CPU_TYPE_IS_EC020_PLUS((mc68kcpu)->cpu_type))
 	{
-<<<<<<< HEAD
-		UINT32 word2 = OPER_I_16(mc68kcpu);
-		UINT32 ea = M68KMAKE_GET_EA_AY_16;
-		UINT32 dest = m68ki_read_16((mc68kcpu), ea);
-		UINT32* compare = &REG_D(mc68kcpu)[word2 & 7];
-		UINT32 res = dest - MASK_OUT_ABOVE_16(*compare);
-=======
 		uint32_t word2 = OPER_I_16(mc68kcpu);
 		uint32_t ea = M68KMAKE_GET_EA_AY_16;
 		uint32_t dest = m68ki_read_16((mc68kcpu), ea);
 		uint32_t* compare = &REG_D(mc68kcpu)[word2 & 7];
 		uint32_t res = dest - MASK_OUT_ABOVE_16(*compare);
->>>>>>> upstream/master
 
 		m68ki_trace_t0(mc68kcpu);              /* auto-disable (see m68kcpu.h) */
 		(mc68kcpu)->n_flag = NFLAG_16(res);
@@ -4104,19 +3386,11 @@ M68KMAKE_OP(cas, 32, ., .)
 {
 	if(CPU_TYPE_IS_EC020_PLUS((mc68kcpu)->cpu_type))
 	{
-<<<<<<< HEAD
-		UINT32 word2 = OPER_I_16(mc68kcpu);
-		UINT32 ea = M68KMAKE_GET_EA_AY_32;
-		UINT32 dest = m68ki_read_32((mc68kcpu), ea);
-		UINT32* compare = &REG_D(mc68kcpu)[word2 & 7];
-		UINT32 res = dest - *compare;
-=======
 		uint32_t word2 = OPER_I_16(mc68kcpu);
 		uint32_t ea = M68KMAKE_GET_EA_AY_32;
 		uint32_t dest = m68ki_read_32((mc68kcpu), ea);
 		uint32_t* compare = &REG_D(mc68kcpu)[word2 & 7];
 		uint32_t res = dest - *compare;
->>>>>>> upstream/master
 
 		m68ki_trace_t0(mc68kcpu);              /* auto-disable (see m68kcpu.h) */
 		(mc68kcpu)->n_flag = NFLAG_32(res);
@@ -4141,17 +3415,6 @@ M68KMAKE_OP(cas2, 16, ., .)
 {
 	if(CPU_TYPE_IS_EC020_PLUS((mc68kcpu)->cpu_type))
 	{
-<<<<<<< HEAD
-		UINT32 word2 = OPER_I_32(mc68kcpu);
-		UINT32* compare1 = &REG_D(mc68kcpu)[(word2 >> 16) & 7];
-		UINT32 ea1 = REG_DA(mc68kcpu)[(word2 >> 28) & 15];
-		UINT32 dest1 = m68ki_read_16((mc68kcpu), ea1);
-		UINT32 res1 = dest1 - MASK_OUT_ABOVE_16(*compare1);
-		UINT32* compare2 = &REG_D(mc68kcpu)[word2 & 7];
-		UINT32 ea2 = REG_DA(mc68kcpu)[(word2 >> 12) & 15];
-		UINT32 dest2 = m68ki_read_16((mc68kcpu), ea2);
-		UINT32 res2;
-=======
 		uint32_t word2 = OPER_I_32(mc68kcpu);
 		uint32_t* compare1 = &REG_D(mc68kcpu)[(word2 >> 16) & 7];
 		uint32_t ea1 = REG_DA(mc68kcpu)[(word2 >> 28) & 15];
@@ -4161,7 +3424,6 @@ M68KMAKE_OP(cas2, 16, ., .)
 		uint32_t ea2 = REG_DA(mc68kcpu)[(word2 >> 12) & 15];
 		uint32_t dest2 = m68ki_read_16((mc68kcpu), ea2);
 		uint32_t res2;
->>>>>>> upstream/master
 
 		m68ki_trace_t0(mc68kcpu);              /* auto-disable (see m68kcpu.h) */
 		(mc68kcpu)->n_flag = NFLAG_16(res1);
@@ -4198,17 +3460,6 @@ M68KMAKE_OP(cas2, 32, ., .)
 {
 	if(CPU_TYPE_IS_EC020_PLUS((mc68kcpu)->cpu_type))
 	{
-<<<<<<< HEAD
-		UINT32 word2 = OPER_I_32(mc68kcpu);
-		UINT32* compare1 = &REG_D(mc68kcpu)[(word2 >> 16) & 7];
-		UINT32 ea1 = REG_DA(mc68kcpu)[(word2 >> 28) & 15];
-		UINT32 dest1 = m68ki_read_32((mc68kcpu), ea1);
-		UINT32 res1 = dest1 - *compare1;
-		UINT32* compare2 = &REG_D(mc68kcpu)[word2 & 7];
-		UINT32 ea2 = REG_DA(mc68kcpu)[(word2 >> 12) & 15];
-		UINT32 dest2 = m68ki_read_32((mc68kcpu), ea2);
-		UINT32 res2;
-=======
 		uint32_t word2 = OPER_I_32(mc68kcpu);
 		uint32_t* compare1 = &REG_D(mc68kcpu)[(word2 >> 16) & 7];
 		uint32_t ea1 = REG_DA(mc68kcpu)[(word2 >> 28) & 15];
@@ -4218,7 +3469,6 @@ M68KMAKE_OP(cas2, 32, ., .)
 		uint32_t ea2 = REG_DA(mc68kcpu)[(word2 >> 12) & 15];
 		uint32_t dest2 = m68ki_read_32((mc68kcpu), ea2);
 		uint32_t res2;
->>>>>>> upstream/master
 
 		m68ki_trace_t0(mc68kcpu);              /* auto-disable (see m68kcpu.h) */
 		(mc68kcpu)->n_flag = NFLAG_32(res1);
@@ -4253,13 +3503,8 @@ M68KMAKE_OP(cas2, 32, ., .)
 
 M68KMAKE_OP(chk, 16, ., d)
 {
-<<<<<<< HEAD
-	INT32 src = MAKE_INT_16(DX(mc68kcpu));
-	INT32 bound = MAKE_INT_16(DY(mc68kcpu));
-=======
 	int32_t src = MAKE_INT_16(DX(mc68kcpu));
 	int32_t bound = MAKE_INT_16(DY(mc68kcpu));
->>>>>>> upstream/master
 
 	(mc68kcpu)->not_z_flag = ZFLAG_16(src); /* Undocumented */
 	(mc68kcpu)->v_flag = VFLAG_CLEAR;   /* Undocumented */
@@ -4276,13 +3521,8 @@ M68KMAKE_OP(chk, 16, ., d)
 
 M68KMAKE_OP(chk, 16, ., .)
 {
-<<<<<<< HEAD
-	INT32 src = MAKE_INT_16(DX(mc68kcpu));
-	INT32 bound = MAKE_INT_16(M68KMAKE_GET_OPER_AY_16);
-=======
 	int32_t src = MAKE_INT_16(DX(mc68kcpu));
 	int32_t bound = MAKE_INT_16(M68KMAKE_GET_OPER_AY_16);
->>>>>>> upstream/master
 
 	(mc68kcpu)->not_z_flag = ZFLAG_16(src); /* Undocumented */
 	(mc68kcpu)->v_flag = VFLAG_CLEAR;   /* Undocumented */
@@ -4301,13 +3541,8 @@ M68KMAKE_OP(chk, 32, ., d)
 {
 	if(CPU_TYPE_IS_EC020_PLUS((mc68kcpu)->cpu_type))
 	{
-<<<<<<< HEAD
-		INT32 src = MAKE_INT_32(DX(mc68kcpu));
-		INT32 bound = MAKE_INT_32(DY(mc68kcpu));
-=======
 		int32_t src = MAKE_INT_32(DX(mc68kcpu));
 		int32_t bound = MAKE_INT_32(DY(mc68kcpu));
->>>>>>> upstream/master
 
 		(mc68kcpu)->not_z_flag = ZFLAG_32(src); /* Undocumented */
 		(mc68kcpu)->v_flag = VFLAG_CLEAR;   /* Undocumented */
@@ -4329,13 +3564,8 @@ M68KMAKE_OP(chk, 32, ., .)
 {
 	if(CPU_TYPE_IS_EC020_PLUS((mc68kcpu)->cpu_type))
 	{
-<<<<<<< HEAD
-		INT32 src = MAKE_INT_32(DX(mc68kcpu));
-		INT32 bound = MAKE_INT_32(M68KMAKE_GET_OPER_AY_32);
-=======
 		int32_t src = MAKE_INT_32(DX(mc68kcpu));
 		int32_t bound = MAKE_INT_32(M68KMAKE_GET_OPER_AY_32);
->>>>>>> upstream/master
 
 		(mc68kcpu)->not_z_flag = ZFLAG_32(src); /* Undocumented */
 		(mc68kcpu)->v_flag = VFLAG_CLEAR;   /* Undocumented */
@@ -4357,19 +3587,11 @@ M68KMAKE_OP(chk2cmp2, 8, ., pcdi)
 {
 	if(CPU_TYPE_IS_EC020_PLUS((mc68kcpu)->cpu_type))
 	{
-<<<<<<< HEAD
-		UINT32 word2 = OPER_I_16(mc68kcpu);
-		UINT32 compare = REG_DA(mc68kcpu)[(word2 >> 12) & 15]&0xff;
-		UINT32 ea = EA_PCDI_8(mc68kcpu);
-		UINT32 lower_bound = m68ki_read_pcrel_8((mc68kcpu), ea);
-		UINT32 upper_bound = m68ki_read_pcrel_8((mc68kcpu), ea + 1);
-=======
 		uint32_t word2 = OPER_I_16(mc68kcpu);
 		uint32_t compare = REG_DA(mc68kcpu)[(word2 >> 12) & 15]&0xff;
 		uint32_t ea = EA_PCDI_8(mc68kcpu);
 		uint32_t lower_bound = m68ki_read_pcrel_8((mc68kcpu), ea);
 		uint32_t upper_bound = m68ki_read_pcrel_8((mc68kcpu), ea + 1);
->>>>>>> upstream/master
 
 		if(!BIT_F(word2))
 			(mc68kcpu)->c_flag = MAKE_INT_8(compare) - MAKE_INT_8(lower_bound);
@@ -4396,19 +3618,11 @@ M68KMAKE_OP(chk2cmp2, 8, ., pcix)
 {
 	if(CPU_TYPE_IS_EC020_PLUS((mc68kcpu)->cpu_type))
 	{
-<<<<<<< HEAD
-		UINT32 word2 = OPER_I_16(mc68kcpu);
-		UINT32 compare = REG_DA(mc68kcpu)[(word2 >> 12) & 15]&0xff;
-		UINT32 ea = EA_PCIX_8(mc68kcpu);
-		UINT32 lower_bound = m68ki_read_pcrel_8((mc68kcpu), ea);
-		UINT32 upper_bound = m68ki_read_pcrel_8((mc68kcpu), ea + 1);
-=======
 		uint32_t word2 = OPER_I_16(mc68kcpu);
 		uint32_t compare = REG_DA(mc68kcpu)[(word2 >> 12) & 15]&0xff;
 		uint32_t ea = EA_PCIX_8(mc68kcpu);
 		uint32_t lower_bound = m68ki_read_pcrel_8((mc68kcpu), ea);
 		uint32_t upper_bound = m68ki_read_pcrel_8((mc68kcpu), ea + 1);
->>>>>>> upstream/master
 
 		if(!BIT_F(word2))
 			(mc68kcpu)->c_flag = MAKE_INT_8(compare) - MAKE_INT_8(lower_bound);
@@ -4435,19 +3649,11 @@ M68KMAKE_OP(chk2cmp2, 8, ., .)
 {
 	if(CPU_TYPE_IS_EC020_PLUS((mc68kcpu)->cpu_type))
 	{
-<<<<<<< HEAD
-		UINT32 word2 = OPER_I_16(mc68kcpu);
-		UINT32 compare = REG_DA(mc68kcpu)[(word2 >> 12) & 15]&0xff;
-		UINT32 ea = M68KMAKE_GET_EA_AY_8;
-		UINT32 lower_bound = m68ki_read_8((mc68kcpu), ea);
-		UINT32 upper_bound = m68ki_read_8((mc68kcpu), ea + 1);
-=======
 		uint32_t word2 = OPER_I_16(mc68kcpu);
 		uint32_t compare = REG_DA(mc68kcpu)[(word2 >> 12) & 15]&0xff;
 		uint32_t ea = M68KMAKE_GET_EA_AY_8;
 		uint32_t lower_bound = m68ki_read_8((mc68kcpu), ea);
 		uint32_t upper_bound = m68ki_read_8((mc68kcpu), ea + 1);
->>>>>>> upstream/master
 
 		if(!BIT_F(word2))
 			(mc68kcpu)->c_flag = MAKE_INT_8(compare) - MAKE_INT_8(lower_bound);
@@ -4474,19 +3680,11 @@ M68KMAKE_OP(chk2cmp2, 16, ., pcdi)
 {
 	if(CPU_TYPE_IS_EC020_PLUS((mc68kcpu)->cpu_type))
 	{
-<<<<<<< HEAD
-		UINT32 word2 = OPER_I_16(mc68kcpu);
-		UINT32 compare = REG_DA(mc68kcpu)[(word2 >> 12) & 15]&0xffff;
-		UINT32 ea = EA_PCDI_16(mc68kcpu);
-		UINT32 lower_bound = m68ki_read_pcrel_16((mc68kcpu), ea);
-		UINT32 upper_bound = m68ki_read_pcrel_16((mc68kcpu), ea + 2);
-=======
 		uint32_t word2 = OPER_I_16(mc68kcpu);
 		uint32_t compare = REG_DA(mc68kcpu)[(word2 >> 12) & 15]&0xffff;
 		uint32_t ea = EA_PCDI_16(mc68kcpu);
 		uint32_t lower_bound = m68ki_read_pcrel_16((mc68kcpu), ea);
 		uint32_t upper_bound = m68ki_read_pcrel_16((mc68kcpu), ea + 2);
->>>>>>> upstream/master
 
 		if(!BIT_F(word2))
 			(mc68kcpu)->c_flag = MAKE_INT_16(compare) - MAKE_INT_16(lower_bound);
@@ -4518,19 +3716,11 @@ M68KMAKE_OP(chk2cmp2, 16, ., pcix)
 {
 	if(CPU_TYPE_IS_EC020_PLUS((mc68kcpu)->cpu_type))
 	{
-<<<<<<< HEAD
-		UINT32 word2 = OPER_I_16(mc68kcpu);
-		UINT32 compare = REG_DA(mc68kcpu)[(word2 >> 12) & 15]&0xffff;
-		UINT32 ea = EA_PCIX_16(mc68kcpu);
-		UINT32 lower_bound = m68ki_read_pcrel_16((mc68kcpu), ea);
-		UINT32 upper_bound = m68ki_read_pcrel_16((mc68kcpu), ea + 2);
-=======
 		uint32_t word2 = OPER_I_16(mc68kcpu);
 		uint32_t compare = REG_DA(mc68kcpu)[(word2 >> 12) & 15]&0xffff;
 		uint32_t ea = EA_PCIX_16(mc68kcpu);
 		uint32_t lower_bound = m68ki_read_pcrel_16((mc68kcpu), ea);
 		uint32_t upper_bound = m68ki_read_pcrel_16((mc68kcpu), ea + 2);
->>>>>>> upstream/master
 
 		if(!BIT_F(word2))
 			(mc68kcpu)->c_flag = MAKE_INT_16(compare) - MAKE_INT_16(lower_bound);
@@ -4562,19 +3752,11 @@ M68KMAKE_OP(chk2cmp2, 16, ., .)
 {
 	if(CPU_TYPE_IS_EC020_PLUS((mc68kcpu)->cpu_type))
 	{
-<<<<<<< HEAD
-		UINT32 word2 = OPER_I_16(mc68kcpu);
-		UINT32 compare = REG_DA(mc68kcpu)[(word2 >> 12) & 15]&0xffff;
-		UINT32 ea = M68KMAKE_GET_EA_AY_16;
-		UINT32 lower_bound = m68ki_read_16((mc68kcpu), ea);
-		UINT32 upper_bound = m68ki_read_16((mc68kcpu), ea + 2);
-=======
 		uint32_t word2 = OPER_I_16(mc68kcpu);
 		uint32_t compare = REG_DA(mc68kcpu)[(word2 >> 12) & 15]&0xffff;
 		uint32_t ea = M68KMAKE_GET_EA_AY_16;
 		uint32_t lower_bound = m68ki_read_16((mc68kcpu), ea);
 		uint32_t upper_bound = m68ki_read_16((mc68kcpu), ea + 2);
->>>>>>> upstream/master
 
 		if(!BIT_F(word2))
 			(mc68kcpu)->c_flag = MAKE_INT_16(compare) - MAKE_INT_16(lower_bound);
@@ -4607,19 +3789,11 @@ M68KMAKE_OP(chk2cmp2, 32, ., pcdi)
 {
 	if(CPU_TYPE_IS_EC020_PLUS((mc68kcpu)->cpu_type))
 	{
-<<<<<<< HEAD
-		UINT32 word2 = OPER_I_16(mc68kcpu);
-		UINT32 compare = REG_DA(mc68kcpu)[(word2 >> 12) & 15];
-		UINT32 ea = EA_PCDI_32(mc68kcpu);
-		UINT32 lower_bound = m68ki_read_pcrel_32((mc68kcpu), ea);
-		UINT32 upper_bound = m68ki_read_pcrel_32((mc68kcpu), ea + 4);
-=======
 		uint32_t word2 = OPER_I_16(mc68kcpu);
 		uint32_t compare = REG_DA(mc68kcpu)[(word2 >> 12) & 15];
 		uint32_t ea = EA_PCDI_32(mc68kcpu);
 		uint32_t lower_bound = m68ki_read_pcrel_32((mc68kcpu), ea);
 		uint32_t upper_bound = m68ki_read_pcrel_32((mc68kcpu), ea + 4);
->>>>>>> upstream/master
 
 		(mc68kcpu)->c_flag = compare - lower_bound;
 		(mc68kcpu)->not_z_flag = !((upper_bound==compare) | (lower_bound==compare));
@@ -4645,19 +3819,11 @@ M68KMAKE_OP(chk2cmp2, 32, ., pcix)
 {
 	if(CPU_TYPE_IS_EC020_PLUS((mc68kcpu)->cpu_type))
 	{
-<<<<<<< HEAD
-		UINT32 word2 = OPER_I_16(mc68kcpu);
-		UINT32 compare = REG_DA(mc68kcpu)[(word2 >> 12) & 15];
-		UINT32 ea = EA_PCIX_32(mc68kcpu);
-		UINT32 lower_bound = m68ki_read_pcrel_32((mc68kcpu), ea);
-		UINT32 upper_bound = m68ki_read_pcrel_32((mc68kcpu), ea + 4);
-=======
 		uint32_t word2 = OPER_I_16(mc68kcpu);
 		uint32_t compare = REG_DA(mc68kcpu)[(word2 >> 12) & 15];
 		uint32_t ea = EA_PCIX_32(mc68kcpu);
 		uint32_t lower_bound = m68ki_read_pcrel_32((mc68kcpu), ea);
 		uint32_t upper_bound = m68ki_read_pcrel_32((mc68kcpu), ea + 4);
->>>>>>> upstream/master
 
 		(mc68kcpu)->c_flag = compare - lower_bound;
 		(mc68kcpu)->not_z_flag = !((upper_bound==compare) | (lower_bound==compare));
@@ -4683,19 +3849,11 @@ M68KMAKE_OP(chk2cmp2, 32, ., .)
 {
 	if(CPU_TYPE_IS_EC020_PLUS((mc68kcpu)->cpu_type))
 	{
-<<<<<<< HEAD
-		UINT32 word2 = OPER_I_16(mc68kcpu);
-		UINT32 compare = REG_DA(mc68kcpu)[(word2 >> 12) & 15];
-		UINT32 ea = M68KMAKE_GET_EA_AY_32;
-		UINT32 lower_bound = m68ki_read_32((mc68kcpu), ea);
-		UINT32 upper_bound = m68ki_read_32((mc68kcpu), ea + 4);
-=======
 		uint32_t word2 = OPER_I_16(mc68kcpu);
 		uint32_t compare = REG_DA(mc68kcpu)[(word2 >> 12) & 15];
 		uint32_t ea = M68KMAKE_GET_EA_AY_32;
 		uint32_t lower_bound = m68ki_read_32((mc68kcpu), ea);
 		uint32_t upper_bound = m68ki_read_32((mc68kcpu), ea + 4);
->>>>>>> upstream/master
 
 		(mc68kcpu)->c_flag = compare - lower_bound;
 		(mc68kcpu)->not_z_flag = !((upper_bound==compare) | (lower_bound==compare));
@@ -4730,11 +3888,7 @@ M68KMAKE_OP(clr, 8, ., d)
 
 M68KMAKE_OP(clr, 8, ., .)
 {
-<<<<<<< HEAD
-	UINT32 ea = M68KMAKE_GET_EA_AY_8;
-=======
 	uint32_t ea = M68KMAKE_GET_EA_AY_8;
->>>>>>> upstream/master
 
 	if(CPU_TYPE_IS_000((mc68kcpu)->cpu_type))
 	{
@@ -4763,11 +3917,7 @@ M68KMAKE_OP(clr, 16, ., d)
 
 M68KMAKE_OP(clr, 16, ., .)
 {
-<<<<<<< HEAD
-	UINT32 ea = M68KMAKE_GET_EA_AY_16;
-=======
 	uint32_t ea = M68KMAKE_GET_EA_AY_16;
->>>>>>> upstream/master
 
 	if(CPU_TYPE_IS_000((mc68kcpu)->cpu_type))
 	{
@@ -4796,11 +3946,7 @@ M68KMAKE_OP(clr, 32, ., d)
 
 M68KMAKE_OP(clr, 32, ., .)
 {
-<<<<<<< HEAD
-	UINT32 ea = M68KMAKE_GET_EA_AY_32;
-=======
 	uint32_t ea = M68KMAKE_GET_EA_AY_32;
->>>>>>> upstream/master
 
 	if(CPU_TYPE_IS_000((mc68kcpu)->cpu_type))
 	{
@@ -4818,15 +3964,9 @@ M68KMAKE_OP(clr, 32, ., .)
 
 M68KMAKE_OP(cmp, 8, ., d)
 {
-<<<<<<< HEAD
-	UINT32 src = MASK_OUT_ABOVE_8(DY(mc68kcpu));
-	UINT32 dst = MASK_OUT_ABOVE_8(DX(mc68kcpu));
-	UINT32 res = dst - src;
-=======
 	uint32_t src = MASK_OUT_ABOVE_8(DY(mc68kcpu));
 	uint32_t dst = MASK_OUT_ABOVE_8(DX(mc68kcpu));
 	uint32_t res = dst - src;
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_8(res);
 	(mc68kcpu)->not_z_flag = MASK_OUT_ABOVE_8(res);
@@ -4837,15 +3977,9 @@ M68KMAKE_OP(cmp, 8, ., d)
 
 M68KMAKE_OP(cmp, 8, ., .)
 {
-<<<<<<< HEAD
-	UINT32 src = M68KMAKE_GET_OPER_AY_8;
-	UINT32 dst = MASK_OUT_ABOVE_8(DX(mc68kcpu));
-	UINT32 res = dst - src;
-=======
 	uint32_t src = M68KMAKE_GET_OPER_AY_8;
 	uint32_t dst = MASK_OUT_ABOVE_8(DX(mc68kcpu));
 	uint32_t res = dst - src;
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_8(res);
 	(mc68kcpu)->not_z_flag = MASK_OUT_ABOVE_8(res);
@@ -4856,15 +3990,9 @@ M68KMAKE_OP(cmp, 8, ., .)
 
 M68KMAKE_OP(cmp, 16, ., d)
 {
-<<<<<<< HEAD
-	UINT32 src = MASK_OUT_ABOVE_16(DY(mc68kcpu));
-	UINT32 dst = MASK_OUT_ABOVE_16(DX(mc68kcpu));
-	UINT32 res = dst - src;
-=======
 	uint32_t src = MASK_OUT_ABOVE_16(DY(mc68kcpu));
 	uint32_t dst = MASK_OUT_ABOVE_16(DX(mc68kcpu));
 	uint32_t res = dst - src;
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_16(res);
 	(mc68kcpu)->not_z_flag = MASK_OUT_ABOVE_16(res);
@@ -4875,15 +4003,9 @@ M68KMAKE_OP(cmp, 16, ., d)
 
 M68KMAKE_OP(cmp, 16, ., a)
 {
-<<<<<<< HEAD
-	UINT32 src = MASK_OUT_ABOVE_16(AY(mc68kcpu));
-	UINT32 dst = MASK_OUT_ABOVE_16(DX(mc68kcpu));
-	UINT32 res = dst - src;
-=======
 	uint32_t src = MASK_OUT_ABOVE_16(AY(mc68kcpu));
 	uint32_t dst = MASK_OUT_ABOVE_16(DX(mc68kcpu));
 	uint32_t res = dst - src;
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_16(res);
 	(mc68kcpu)->not_z_flag = MASK_OUT_ABOVE_16(res);
@@ -4894,15 +4016,9 @@ M68KMAKE_OP(cmp, 16, ., a)
 
 M68KMAKE_OP(cmp, 16, ., .)
 {
-<<<<<<< HEAD
-	UINT32 src = M68KMAKE_GET_OPER_AY_16;
-	UINT32 dst = MASK_OUT_ABOVE_16(DX(mc68kcpu));
-	UINT32 res = dst - src;
-=======
 	uint32_t src = M68KMAKE_GET_OPER_AY_16;
 	uint32_t dst = MASK_OUT_ABOVE_16(DX(mc68kcpu));
 	uint32_t res = dst - src;
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_16(res);
 	(mc68kcpu)->not_z_flag = MASK_OUT_ABOVE_16(res);
@@ -4913,15 +4029,9 @@ M68KMAKE_OP(cmp, 16, ., .)
 
 M68KMAKE_OP(cmp, 32, ., d)
 {
-<<<<<<< HEAD
-	UINT32 src = DY(mc68kcpu);
-	UINT32 dst = DX(mc68kcpu);
-	UINT32 res = dst - src;
-=======
 	uint32_t src = DY(mc68kcpu);
 	uint32_t dst = DX(mc68kcpu);
 	uint32_t res = dst - src;
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_32(res);
 	(mc68kcpu)->not_z_flag = MASK_OUT_ABOVE_32(res);
@@ -4932,15 +4042,9 @@ M68KMAKE_OP(cmp, 32, ., d)
 
 M68KMAKE_OP(cmp, 32, ., a)
 {
-<<<<<<< HEAD
-	UINT32 src = AY(mc68kcpu);
-	UINT32 dst = DX(mc68kcpu);
-	UINT32 res = dst - src;
-=======
 	uint32_t src = AY(mc68kcpu);
 	uint32_t dst = DX(mc68kcpu);
 	uint32_t res = dst - src;
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_32(res);
 	(mc68kcpu)->not_z_flag = MASK_OUT_ABOVE_32(res);
@@ -4951,15 +4055,9 @@ M68KMAKE_OP(cmp, 32, ., a)
 
 M68KMAKE_OP(cmp, 32, ., .)
 {
-<<<<<<< HEAD
-	UINT32 src = M68KMAKE_GET_OPER_AY_32;
-	UINT32 dst = DX(mc68kcpu);
-	UINT32 res = dst - src;
-=======
 	uint32_t src = M68KMAKE_GET_OPER_AY_32;
 	uint32_t dst = DX(mc68kcpu);
 	uint32_t res = dst - src;
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_32(res);
 	(mc68kcpu)->not_z_flag = MASK_OUT_ABOVE_32(res);
@@ -4970,15 +4068,9 @@ M68KMAKE_OP(cmp, 32, ., .)
 
 M68KMAKE_OP(cmpa, 16, ., d)
 {
-<<<<<<< HEAD
-	UINT32 src = MAKE_INT_16(DY(mc68kcpu));
-	UINT32 dst = AX(mc68kcpu);
-	UINT32 res = dst - src;
-=======
 	uint32_t src = MAKE_INT_16(DY(mc68kcpu));
 	uint32_t dst = AX(mc68kcpu);
 	uint32_t res = dst - src;
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_32(res);
 	(mc68kcpu)->not_z_flag = MASK_OUT_ABOVE_32(res);
@@ -4989,15 +4081,9 @@ M68KMAKE_OP(cmpa, 16, ., d)
 
 M68KMAKE_OP(cmpa, 16, ., a)
 {
-<<<<<<< HEAD
-	UINT32 src = MAKE_INT_16(AY(mc68kcpu));
-	UINT32 dst = AX(mc68kcpu);
-	UINT32 res = dst - src;
-=======
 	uint32_t src = MAKE_INT_16(AY(mc68kcpu));
 	uint32_t dst = AX(mc68kcpu);
 	uint32_t res = dst - src;
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_32(res);
 	(mc68kcpu)->not_z_flag = MASK_OUT_ABOVE_32(res);
@@ -5008,15 +4094,9 @@ M68KMAKE_OP(cmpa, 16, ., a)
 
 M68KMAKE_OP(cmpa, 16, ., .)
 {
-<<<<<<< HEAD
-	UINT32 src = MAKE_INT_16(M68KMAKE_GET_OPER_AY_16);
-	UINT32 dst = AX(mc68kcpu);
-	UINT32 res = dst - src;
-=======
 	uint32_t src = MAKE_INT_16(M68KMAKE_GET_OPER_AY_16);
 	uint32_t dst = AX(mc68kcpu);
 	uint32_t res = dst - src;
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_32(res);
 	(mc68kcpu)->not_z_flag = MASK_OUT_ABOVE_32(res);
@@ -5027,15 +4107,9 @@ M68KMAKE_OP(cmpa, 16, ., .)
 
 M68KMAKE_OP(cmpa, 32, ., d)
 {
-<<<<<<< HEAD
-	UINT32 src = DY(mc68kcpu);
-	UINT32 dst = AX(mc68kcpu);
-	UINT32 res = dst - src;
-=======
 	uint32_t src = DY(mc68kcpu);
 	uint32_t dst = AX(mc68kcpu);
 	uint32_t res = dst - src;
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_32(res);
 	(mc68kcpu)->not_z_flag = MASK_OUT_ABOVE_32(res);
@@ -5046,15 +4120,9 @@ M68KMAKE_OP(cmpa, 32, ., d)
 
 M68KMAKE_OP(cmpa, 32, ., a)
 {
-<<<<<<< HEAD
-	UINT32 src = AY(mc68kcpu);
-	UINT32 dst = AX(mc68kcpu);
-	UINT32 res = dst - src;
-=======
 	uint32_t src = AY(mc68kcpu);
 	uint32_t dst = AX(mc68kcpu);
 	uint32_t res = dst - src;
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_32(res);
 	(mc68kcpu)->not_z_flag = MASK_OUT_ABOVE_32(res);
@@ -5065,15 +4133,9 @@ M68KMAKE_OP(cmpa, 32, ., a)
 
 M68KMAKE_OP(cmpa, 32, ., .)
 {
-<<<<<<< HEAD
-	UINT32 src = M68KMAKE_GET_OPER_AY_32;
-	UINT32 dst = AX(mc68kcpu);
-	UINT32 res = dst - src;
-=======
 	uint32_t src = M68KMAKE_GET_OPER_AY_32;
 	uint32_t dst = AX(mc68kcpu);
 	uint32_t res = dst - src;
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_32(res);
 	(mc68kcpu)->not_z_flag = MASK_OUT_ABOVE_32(res);
@@ -5084,15 +4146,9 @@ M68KMAKE_OP(cmpa, 32, ., .)
 
 M68KMAKE_OP(cmpi, 8, ., d)
 {
-<<<<<<< HEAD
-	UINT32 src = OPER_I_8(mc68kcpu);
-	UINT32 dst = MASK_OUT_ABOVE_8(DY(mc68kcpu));
-	UINT32 res = dst - src;
-=======
 	uint32_t src = OPER_I_8(mc68kcpu);
 	uint32_t dst = MASK_OUT_ABOVE_8(DY(mc68kcpu));
 	uint32_t res = dst - src;
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_8(res);
 	(mc68kcpu)->not_z_flag = MASK_OUT_ABOVE_8(res);
@@ -5103,15 +4159,9 @@ M68KMAKE_OP(cmpi, 8, ., d)
 
 M68KMAKE_OP(cmpi, 8, ., .)
 {
-<<<<<<< HEAD
-	UINT32 src = OPER_I_8(mc68kcpu);
-	UINT32 dst = M68KMAKE_GET_OPER_AY_8;
-	UINT32 res = dst - src;
-=======
 	uint32_t src = OPER_I_8(mc68kcpu);
 	uint32_t dst = M68KMAKE_GET_OPER_AY_8;
 	uint32_t res = dst - src;
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_8(res);
 	(mc68kcpu)->not_z_flag = MASK_OUT_ABOVE_8(res);
@@ -5124,15 +4174,9 @@ M68KMAKE_OP(cmpi, 8, ., pcdi)
 {
 	if(CPU_TYPE_IS_EC020_PLUS((mc68kcpu)->cpu_type))
 	{
-<<<<<<< HEAD
-		UINT32 src = OPER_I_8(mc68kcpu);
-		UINT32 dst = OPER_PCDI_8(mc68kcpu);
-		UINT32 res = dst - src;
-=======
 		uint32_t src = OPER_I_8(mc68kcpu);
 		uint32_t dst = OPER_PCDI_8(mc68kcpu);
 		uint32_t res = dst - src;
->>>>>>> upstream/master
 
 		(mc68kcpu)->n_flag = NFLAG_8(res);
 		(mc68kcpu)->not_z_flag = MASK_OUT_ABOVE_8(res);
@@ -5148,15 +4192,9 @@ M68KMAKE_OP(cmpi, 8, ., pcix)
 {
 	if(CPU_TYPE_IS_EC020_PLUS((mc68kcpu)->cpu_type))
 	{
-<<<<<<< HEAD
-		UINT32 src = OPER_I_8(mc68kcpu);
-		UINT32 dst = OPER_PCIX_8(mc68kcpu);
-		UINT32 res = dst - src;
-=======
 		uint32_t src = OPER_I_8(mc68kcpu);
 		uint32_t dst = OPER_PCIX_8(mc68kcpu);
 		uint32_t res = dst - src;
->>>>>>> upstream/master
 
 		(mc68kcpu)->n_flag = NFLAG_8(res);
 		(mc68kcpu)->not_z_flag = MASK_OUT_ABOVE_8(res);
@@ -5170,15 +4208,9 @@ M68KMAKE_OP(cmpi, 8, ., pcix)
 
 M68KMAKE_OP(cmpi, 16, ., d)
 {
-<<<<<<< HEAD
-	UINT32 src = OPER_I_16(mc68kcpu);
-	UINT32 dst = MASK_OUT_ABOVE_16(DY(mc68kcpu));
-	UINT32 res = dst - src;
-=======
 	uint32_t src = OPER_I_16(mc68kcpu);
 	uint32_t dst = MASK_OUT_ABOVE_16(DY(mc68kcpu));
 	uint32_t res = dst - src;
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_16(res);
 	(mc68kcpu)->not_z_flag = MASK_OUT_ABOVE_16(res);
@@ -5189,15 +4221,9 @@ M68KMAKE_OP(cmpi, 16, ., d)
 
 M68KMAKE_OP(cmpi, 16, ., .)
 {
-<<<<<<< HEAD
-	UINT32 src = OPER_I_16(mc68kcpu);
-	UINT32 dst = M68KMAKE_GET_OPER_AY_16;
-	UINT32 res = dst - src;
-=======
 	uint32_t src = OPER_I_16(mc68kcpu);
 	uint32_t dst = M68KMAKE_GET_OPER_AY_16;
 	uint32_t res = dst - src;
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_16(res);
 	(mc68kcpu)->not_z_flag = MASK_OUT_ABOVE_16(res);
@@ -5210,15 +4236,9 @@ M68KMAKE_OP(cmpi, 16, ., pcdi)
 {
 	if(CPU_TYPE_IS_EC020_PLUS((mc68kcpu)->cpu_type))
 	{
-<<<<<<< HEAD
-		UINT32 src = OPER_I_16(mc68kcpu);
-		UINT32 dst = OPER_PCDI_16(mc68kcpu);
-		UINT32 res = dst - src;
-=======
 		uint32_t src = OPER_I_16(mc68kcpu);
 		uint32_t dst = OPER_PCDI_16(mc68kcpu);
 		uint32_t res = dst - src;
->>>>>>> upstream/master
 
 		(mc68kcpu)->n_flag = NFLAG_16(res);
 		(mc68kcpu)->not_z_flag = MASK_OUT_ABOVE_16(res);
@@ -5234,15 +4254,9 @@ M68KMAKE_OP(cmpi, 16, ., pcix)
 {
 	if(CPU_TYPE_IS_EC020_PLUS((mc68kcpu)->cpu_type))
 	{
-<<<<<<< HEAD
-		UINT32 src = OPER_I_16(mc68kcpu);
-		UINT32 dst = OPER_PCIX_16(mc68kcpu);
-		UINT32 res = dst - src;
-=======
 		uint32_t src = OPER_I_16(mc68kcpu);
 		uint32_t dst = OPER_PCIX_16(mc68kcpu);
 		uint32_t res = dst - src;
->>>>>>> upstream/master
 
 		(mc68kcpu)->n_flag = NFLAG_16(res);
 		(mc68kcpu)->not_z_flag = MASK_OUT_ABOVE_16(res);
@@ -5256,15 +4270,9 @@ M68KMAKE_OP(cmpi, 16, ., pcix)
 
 M68KMAKE_OP(cmpi, 32, ., d)
 {
-<<<<<<< HEAD
-	UINT32 src = OPER_I_32(mc68kcpu);
-	UINT32 dst = DY(mc68kcpu);
-	UINT32 res = dst - src;
-=======
 	uint32_t src = OPER_I_32(mc68kcpu);
 	uint32_t dst = DY(mc68kcpu);
 	uint32_t res = dst - src;
->>>>>>> upstream/master
 
 	if (!(mc68kcpu)->cmpild_instr_callback.isnull())
 		((mc68kcpu)->cmpild_instr_callback)(*(mc68kcpu)->program, (mc68kcpu)->ir & 7, src, 0xffffffff);
@@ -5278,15 +4286,9 @@ M68KMAKE_OP(cmpi, 32, ., d)
 
 M68KMAKE_OP(cmpi, 32, ., .)
 {
-<<<<<<< HEAD
-	UINT32 src = OPER_I_32(mc68kcpu);
-	UINT32 dst = M68KMAKE_GET_OPER_AY_32;
-	UINT32 res = dst - src;
-=======
 	uint32_t src = OPER_I_32(mc68kcpu);
 	uint32_t dst = M68KMAKE_GET_OPER_AY_32;
 	uint32_t res = dst - src;
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_32(res);
 	(mc68kcpu)->not_z_flag = MASK_OUT_ABOVE_32(res);
@@ -5299,15 +4301,9 @@ M68KMAKE_OP(cmpi, 32, ., pcdi)
 {
 	if(CPU_TYPE_IS_EC020_PLUS((mc68kcpu)->cpu_type))
 	{
-<<<<<<< HEAD
-		UINT32 src = OPER_I_32(mc68kcpu);
-		UINT32 dst = OPER_PCDI_32(mc68kcpu);
-		UINT32 res = dst - src;
-=======
 		uint32_t src = OPER_I_32(mc68kcpu);
 		uint32_t dst = OPER_PCDI_32(mc68kcpu);
 		uint32_t res = dst - src;
->>>>>>> upstream/master
 
 		(mc68kcpu)->n_flag = NFLAG_32(res);
 		(mc68kcpu)->not_z_flag = MASK_OUT_ABOVE_32(res);
@@ -5323,15 +4319,9 @@ M68KMAKE_OP(cmpi, 32, ., pcix)
 {
 	if(CPU_TYPE_IS_EC020_PLUS((mc68kcpu)->cpu_type))
 	{
-<<<<<<< HEAD
-		UINT32 src = OPER_I_32(mc68kcpu);
-		UINT32 dst = OPER_PCIX_32(mc68kcpu);
-		UINT32 res = dst - src;
-=======
 		uint32_t src = OPER_I_32(mc68kcpu);
 		uint32_t dst = OPER_PCIX_32(mc68kcpu);
 		uint32_t res = dst - src;
->>>>>>> upstream/master
 
 		(mc68kcpu)->n_flag = NFLAG_32(res);
 		(mc68kcpu)->not_z_flag = MASK_OUT_ABOVE_32(res);
@@ -5345,15 +4335,9 @@ M68KMAKE_OP(cmpi, 32, ., pcix)
 
 M68KMAKE_OP(cmpm, 8, ., ax7)
 {
-<<<<<<< HEAD
-	UINT32 src = OPER_AY_PI_8(mc68kcpu);
-	UINT32 dst = OPER_A7_PI_8(mc68kcpu);
-	UINT32 res = dst - src;
-=======
 	uint32_t src = OPER_AY_PI_8(mc68kcpu);
 	uint32_t dst = OPER_A7_PI_8(mc68kcpu);
 	uint32_t res = dst - src;
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_8(res);
 	(mc68kcpu)->not_z_flag = MASK_OUT_ABOVE_8(res);
@@ -5364,15 +4348,9 @@ M68KMAKE_OP(cmpm, 8, ., ax7)
 
 M68KMAKE_OP(cmpm, 8, ., ay7)
 {
-<<<<<<< HEAD
-	UINT32 src = OPER_A7_PI_8(mc68kcpu);
-	UINT32 dst = OPER_AX_PI_8(mc68kcpu);
-	UINT32 res = dst - src;
-=======
 	uint32_t src = OPER_A7_PI_8(mc68kcpu);
 	uint32_t dst = OPER_AX_PI_8(mc68kcpu);
 	uint32_t res = dst - src;
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_8(res);
 	(mc68kcpu)->not_z_flag = MASK_OUT_ABOVE_8(res);
@@ -5383,15 +4361,9 @@ M68KMAKE_OP(cmpm, 8, ., ay7)
 
 M68KMAKE_OP(cmpm, 8, ., axy7)
 {
-<<<<<<< HEAD
-	UINT32 src = OPER_A7_PI_8(mc68kcpu);
-	UINT32 dst = OPER_A7_PI_8(mc68kcpu);
-	UINT32 res = dst - src;
-=======
 	uint32_t src = OPER_A7_PI_8(mc68kcpu);
 	uint32_t dst = OPER_A7_PI_8(mc68kcpu);
 	uint32_t res = dst - src;
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_8(res);
 	(mc68kcpu)->not_z_flag = MASK_OUT_ABOVE_8(res);
@@ -5402,15 +4374,9 @@ M68KMAKE_OP(cmpm, 8, ., axy7)
 
 M68KMAKE_OP(cmpm, 8, ., .)
 {
-<<<<<<< HEAD
-	UINT32 src = OPER_AY_PI_8(mc68kcpu);
-	UINT32 dst = OPER_AX_PI_8(mc68kcpu);
-	UINT32 res = dst - src;
-=======
 	uint32_t src = OPER_AY_PI_8(mc68kcpu);
 	uint32_t dst = OPER_AX_PI_8(mc68kcpu);
 	uint32_t res = dst - src;
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_8(res);
 	(mc68kcpu)->not_z_flag = MASK_OUT_ABOVE_8(res);
@@ -5421,15 +4387,9 @@ M68KMAKE_OP(cmpm, 8, ., .)
 
 M68KMAKE_OP(cmpm, 16, ., .)
 {
-<<<<<<< HEAD
-	UINT32 src = OPER_AY_PI_16(mc68kcpu);
-	UINT32 dst = OPER_AX_PI_16(mc68kcpu);
-	UINT32 res = dst - src;
-=======
 	uint32_t src = OPER_AY_PI_16(mc68kcpu);
 	uint32_t dst = OPER_AX_PI_16(mc68kcpu);
 	uint32_t res = dst - src;
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_16(res);
 	(mc68kcpu)->not_z_flag = MASK_OUT_ABOVE_16(res);
@@ -5440,15 +4400,9 @@ M68KMAKE_OP(cmpm, 16, ., .)
 
 M68KMAKE_OP(cmpm, 32, ., .)
 {
-<<<<<<< HEAD
-	UINT32 src = OPER_AY_PI_32(mc68kcpu);
-	UINT32 dst = OPER_AX_PI_32(mc68kcpu);
-	UINT32 res = dst - src;
-=======
 	uint32_t src = OPER_AY_PI_32(mc68kcpu);
 	uint32_t dst = OPER_AX_PI_32(mc68kcpu);
 	uint32_t res = dst - src;
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_32(res);
 	(mc68kcpu)->not_z_flag = MASK_OUT_ABOVE_32(res);
@@ -5461,11 +4415,7 @@ M68KMAKE_OP(cpbcc, 32, ., .)
 {
 	if(CPU_TYPE_IS_EC020_PLUS((mc68kcpu)->cpu_type))
 	{
-<<<<<<< HEAD
-		logerror("%s at %08x: called unimplemented instruction %04x (cpbcc)\n",
-=======
 		mc68kcpu->logerror("%s at %08x: called unimplemented instruction %04x (cpbcc)\n",
->>>>>>> upstream/master
 						(mc68kcpu)->tag(), REG_PC(mc68kcpu) - 2, (mc68kcpu)->ir);
 		return;
 	}
@@ -5477,11 +4427,7 @@ M68KMAKE_OP(cpdbcc, 32, ., .)
 {
 	if(CPU_TYPE_IS_EC020_PLUS((mc68kcpu)->cpu_type))
 	{
-<<<<<<< HEAD
-		logerror("%s at %08x: called unimplemented instruction %04x (cpdbcc)\n",
-=======
 		mc68kcpu->logerror("%s at %08x: called unimplemented instruction %04x (cpdbcc)\n",
->>>>>>> upstream/master
 						(mc68kcpu)->tag(), REG_PC(mc68kcpu) - 2, (mc68kcpu)->ir);
 		return;
 	}
@@ -5491,15 +4437,9 @@ M68KMAKE_OP(cpdbcc, 32, ., .)
 
 M68KMAKE_OP(cpgen, 32, ., .)
 {
-<<<<<<< HEAD
-	if(CPU_TYPE_IS_EC020_PLUS((mc68kcpu)->cpu_type) && (mc68kcpu->has_fpu || mc68kcpu->has_pmmu))
-	{
-		logerror("%s at %08x: called unimplemented instruction %04x (cpgen)\n",
-=======
 	if(CPU_TYPE_IS_EC020_PLUS((mc68kcpu)->cpu_type) && (mc68kcpu->get_fpu_enable() || mc68kcpu->has_pmmu))
 	{
 		mc68kcpu->logerror("%s at %08x: called unimplemented instruction %04x (cpgen)\n",
->>>>>>> upstream/master
 						(mc68kcpu)->tag(), REG_PC(mc68kcpu) - 2, (mc68kcpu)->ir);
 		return;
 	}
@@ -5511,11 +4451,7 @@ M68KMAKE_OP(cpscc, 32, ., .)
 {
 	if(CPU_TYPE_IS_EC020_PLUS((mc68kcpu)->cpu_type))
 	{
-<<<<<<< HEAD
-		logerror("%s at %08x: called unimplemented instruction %04x (cpscc)\n",
-=======
 		mc68kcpu->logerror("%s at %08x: called unimplemented instruction %04x (cpscc)\n",
->>>>>>> upstream/master
 						(mc68kcpu)->tag(), REG_PC(mc68kcpu) - 2, (mc68kcpu)->ir);
 		return;
 	}
@@ -5527,11 +4463,7 @@ M68KMAKE_OP(cptrapcc, 32, ., .)
 {
 	if(CPU_TYPE_IS_EC020_PLUS((mc68kcpu)->cpu_type))
 	{
-<<<<<<< HEAD
-		logerror("%s at %08x: called unimplemented instruction %04x (cptrapcc)\n",
-=======
 		mc68kcpu->logerror("%s at %08x: called unimplemented instruction %04x (cptrapcc)\n",
->>>>>>> upstream/master
 						(mc68kcpu)->tag(), REG_PC(mc68kcpu) - 2, (mc68kcpu)->ir);
 		return;
 	}
@@ -5540,11 +4472,7 @@ M68KMAKE_OP(cptrapcc, 32, ., .)
 
 M68KMAKE_OP(ftrapcc, 32, ., .)
 {
-<<<<<<< HEAD
-	if((mc68kcpu)->has_fpu)
-=======
 	if((mc68kcpu)->get_fpu_enable())
->>>>>>> upstream/master
 	{
 		m68881_ftrap(mc68kcpu);
 		return;
@@ -5560,22 +4488,13 @@ M68KMAKE_OP(dbt, 16, ., .)
 
 M68KMAKE_OP(dbf, 16, ., .)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DY(mc68kcpu);
-	UINT32 res = MASK_OUT_ABOVE_16(*r_dst - 1);
-=======
 	uint32_t* r_dst = &DY(mc68kcpu);
 	uint32_t res = MASK_OUT_ABOVE_16(*r_dst - 1);
->>>>>>> upstream/master
 
 	*r_dst = MASK_OUT_BELOW_16(*r_dst) | res;
 	if(res != 0xffff)
 	{
-<<<<<<< HEAD
-		UINT32 offset = OPER_I_16(mc68kcpu);
-=======
 		uint32_t offset = OPER_I_16(mc68kcpu);
->>>>>>> upstream/master
 		REG_PC(mc68kcpu) -= 2;
 		m68ki_trace_t0(mc68kcpu);              /* auto-disable (see m68kcpu.h) */
 		m68ki_branch_16((mc68kcpu), offset);
@@ -5591,22 +4510,13 @@ M68KMAKE_OP(dbcc, 16, ., .)
 {
 	if(M68KMAKE_NOT_CC)
 	{
-<<<<<<< HEAD
-		UINT32* r_dst = &DY(mc68kcpu);
-		UINT32 res = MASK_OUT_ABOVE_16(*r_dst - 1);
-=======
 		uint32_t* r_dst = &DY(mc68kcpu);
 		uint32_t res = MASK_OUT_ABOVE_16(*r_dst - 1);
->>>>>>> upstream/master
 
 		*r_dst = MASK_OUT_BELOW_16(*r_dst) | res;
 		if(res != 0xffff)
 		{
-<<<<<<< HEAD
-			UINT32 offset = OPER_I_16(mc68kcpu);
-=======
 			uint32_t offset = OPER_I_16(mc68kcpu);
->>>>>>> upstream/master
 			REG_PC(mc68kcpu) -= 2;
 			m68ki_trace_t0(mc68kcpu);              /* auto-disable (see m68kcpu.h) */
 			m68ki_branch_16((mc68kcpu), offset);
@@ -5623,16 +4533,6 @@ M68KMAKE_OP(dbcc, 16, ., .)
 
 M68KMAKE_OP(divs, 16, ., d)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DX(mc68kcpu);
-	INT32 src = MAKE_INT_16(DY(mc68kcpu));
-	INT32 quotient;
-	INT32 remainder;
-
-	if(src != 0)
-	{
-		if((UINT32)*r_dst == 0x80000000 && src == -1)
-=======
 	uint32_t* r_dst = &DX(mc68kcpu);
 	int32_t src = MAKE_INT_16(DY(mc68kcpu));
 	int32_t quotient;
@@ -5641,7 +4541,6 @@ M68KMAKE_OP(divs, 16, ., d)
 	if(src != 0)
 	{
 		if((uint32_t)*r_dst == 0x80000000 && src == -1)
->>>>>>> upstream/master
 		{
 			(mc68kcpu)->not_z_flag = 0;
 			(mc68kcpu)->n_flag = NFLAG_CLEAR;
@@ -5672,16 +4571,6 @@ M68KMAKE_OP(divs, 16, ., d)
 
 M68KMAKE_OP(divs, 16, ., .)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DX(mc68kcpu);
-	INT32 src = MAKE_INT_16(M68KMAKE_GET_OPER_AY_16);
-	INT32 quotient;
-	INT32 remainder;
-
-	if(src != 0)
-	{
-		if((UINT32)*r_dst == 0x80000000 && src == -1)
-=======
 	uint32_t* r_dst = &DX(mc68kcpu);
 	int32_t src = MAKE_INT_16(M68KMAKE_GET_OPER_AY_16);
 	int32_t quotient;
@@ -5690,7 +4579,6 @@ M68KMAKE_OP(divs, 16, ., .)
 	if(src != 0)
 	{
 		if((uint32_t)*r_dst == 0x80000000 && src == -1)
->>>>>>> upstream/master
 		{
 			(mc68kcpu)->not_z_flag = 0;
 			(mc68kcpu)->n_flag = NFLAG_CLEAR;
@@ -5721,15 +4609,6 @@ M68KMAKE_OP(divs, 16, ., .)
 
 M68KMAKE_OP(divu, 16, ., d)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DX(mc68kcpu);
-	UINT32 src = MASK_OUT_ABOVE_16(DY(mc68kcpu));
-
-	if(src != 0)
-	{
-		UINT32 quotient = *r_dst / src;
-		UINT32 remainder = *r_dst % src;
-=======
 	uint32_t* r_dst = &DX(mc68kcpu);
 	uint32_t src = MASK_OUT_ABOVE_16(DY(mc68kcpu));
 
@@ -5737,7 +4616,6 @@ M68KMAKE_OP(divu, 16, ., d)
 	{
 		uint32_t quotient = *r_dst / src;
 		uint32_t remainder = *r_dst % src;
->>>>>>> upstream/master
 
 		if(quotient < 0x10000)
 		{
@@ -5757,15 +4635,6 @@ M68KMAKE_OP(divu, 16, ., d)
 
 M68KMAKE_OP(divu, 16, ., .)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DX(mc68kcpu);
-	UINT32 src = M68KMAKE_GET_OPER_AY_16;
-
-	if(src != 0)
-	{
-		UINT32 quotient = *r_dst / src;
-		UINT32 remainder = *r_dst % src;
-=======
 	uint32_t* r_dst = &DX(mc68kcpu);
 	uint32_t src = M68KMAKE_GET_OPER_AY_16;
 
@@ -5773,7 +4642,6 @@ M68KMAKE_OP(divu, 16, ., .)
 	{
 		uint32_t quotient = *r_dst / src;
 		uint32_t remainder = *r_dst % src;
->>>>>>> upstream/master
 
 		if(quotient < 0x10000)
 		{
@@ -5795,19 +4663,11 @@ M68KMAKE_OP(divl, 32, ., d)
 {
 	if(CPU_TYPE_IS_EC020_PLUS((mc68kcpu)->cpu_type))
 	{
-<<<<<<< HEAD
-		UINT32 word2 = OPER_I_16(mc68kcpu);
-		UINT64 divisor   = DY(mc68kcpu);
-		UINT64 dividend  = 0;
-		UINT64 quotient  = 0;
-		UINT64 remainder = 0;
-=======
 		uint32_t word2 = OPER_I_16(mc68kcpu);
 		uint64_t divisor   = DY(mc68kcpu);
 		uint64_t dividend  = 0;
 		uint64_t quotient  = 0;
 		uint64_t remainder = 0;
->>>>>>> upstream/master
 
 		if(divisor != 0)
 		{
@@ -5819,15 +4679,9 @@ M68KMAKE_OP(divl, 32, ., d)
 
 				if(BIT_B(word2))       /* signed */
 				{
-<<<<<<< HEAD
-					quotient  = (UINT64)((INT64)dividend / (INT64)((INT32)divisor));
-					remainder = (UINT64)((INT64)dividend % (INT64)((INT32)divisor));
-					if((INT64)quotient != (INT64)((INT32)quotient))
-=======
 					quotient  = (uint64_t)((int64_t)dividend / (int64_t)((int32_t)divisor));
 					remainder = (uint64_t)((int64_t)dividend % (int64_t)((int32_t)divisor));
 					if((int64_t)quotient != (int64_t)((int32_t)quotient))
->>>>>>> upstream/master
 					{
 						(mc68kcpu)->v_flag = VFLAG_SET;
 						return;
@@ -5849,13 +4703,8 @@ M68KMAKE_OP(divl, 32, ., d)
 				dividend = REG_D(mc68kcpu)[(word2 >> 12) & 7];
 				if(BIT_B(word2))       /* signed */
 				{
-<<<<<<< HEAD
-					quotient  = (UINT64)((INT64)((INT32)dividend) / (INT64)((INT32)divisor));
-					remainder = (UINT64)((INT64)((INT32)dividend) % (INT64)((INT32)divisor));
-=======
 					quotient  = (uint64_t)((int64_t)((int32_t)dividend) / (int64_t)((int32_t)divisor));
 					remainder = (uint64_t)((int64_t)((int32_t)dividend) % (int64_t)((int32_t)divisor));
->>>>>>> upstream/master
 				}
 				else                    /* unsigned */
 				{
@@ -5884,19 +4733,11 @@ M68KMAKE_OP(divl, 32, ., .)
 {
 	if(CPU_TYPE_IS_EC020_PLUS((mc68kcpu)->cpu_type))
 	{
-<<<<<<< HEAD
-		UINT32 word2 = OPER_I_16(mc68kcpu);
-		UINT64 divisor = M68KMAKE_GET_OPER_AY_32;
-		UINT64 dividend  = 0;
-		UINT64 quotient  = 0;
-		UINT64 remainder = 0;
-=======
 		uint32_t word2 = OPER_I_16(mc68kcpu);
 		uint64_t divisor = M68KMAKE_GET_OPER_AY_32;
 		uint64_t dividend  = 0;
 		uint64_t quotient  = 0;
 		uint64_t remainder = 0;
->>>>>>> upstream/master
 
 		if(divisor != 0)
 		{
@@ -5908,15 +4749,9 @@ M68KMAKE_OP(divl, 32, ., .)
 
 				if(BIT_B(word2))       /* signed */
 				{
-<<<<<<< HEAD
-					quotient  = (UINT64)((INT64)dividend / (INT64)((INT32)divisor));
-					remainder = (UINT64)((INT64)dividend % (INT64)((INT32)divisor));
-					if((INT64)quotient != (INT64)((INT32)quotient))
-=======
 					quotient  = (uint64_t)((int64_t)dividend / (int64_t)((int32_t)divisor));
 					remainder = (uint64_t)((int64_t)dividend % (int64_t)((int32_t)divisor));
 					if((int64_t)quotient != (int64_t)((int32_t)quotient))
->>>>>>> upstream/master
 					{
 						(mc68kcpu)->v_flag = VFLAG_SET;
 						return;
@@ -5938,13 +4773,8 @@ M68KMAKE_OP(divl, 32, ., .)
 				dividend = REG_D(mc68kcpu)[(word2 >> 12) & 7];
 				if(BIT_B(word2))       /* signed */
 				{
-<<<<<<< HEAD
-					quotient  = (UINT64)((INT64)((INT32)dividend) / (INT64)((INT32)divisor));
-					remainder = (UINT64)((INT64)((INT32)dividend) % (INT64)((INT32)divisor));
-=======
 					quotient  = (uint64_t)((int64_t)((int32_t)dividend) / (int64_t)((int32_t)divisor));
 					remainder = (uint64_t)((int64_t)((int32_t)dividend) % (int64_t)((int32_t)divisor));
->>>>>>> upstream/master
 				}
 				else                    /* unsigned */
 				{
@@ -5971,11 +4801,7 @@ M68KMAKE_OP(divl, 32, ., .)
 
 M68KMAKE_OP(eor, 8, ., d)
 {
-<<<<<<< HEAD
-	UINT32 res = MASK_OUT_ABOVE_8(DY(mc68kcpu) ^= MASK_OUT_ABOVE_8(DX(mc68kcpu)));
-=======
 	uint32_t res = MASK_OUT_ABOVE_8(DY(mc68kcpu) ^= MASK_OUT_ABOVE_8(DX(mc68kcpu)));
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_8(res);
 	(mc68kcpu)->not_z_flag = res;
@@ -5986,13 +4812,8 @@ M68KMAKE_OP(eor, 8, ., d)
 
 M68KMAKE_OP(eor, 8, ., .)
 {
-<<<<<<< HEAD
-	UINT32 ea = M68KMAKE_GET_EA_AY_8;
-	UINT32 res = MASK_OUT_ABOVE_8(DX(mc68kcpu) ^ m68ki_read_8((mc68kcpu), ea));
-=======
 	uint32_t ea = M68KMAKE_GET_EA_AY_8;
 	uint32_t res = MASK_OUT_ABOVE_8(DX(mc68kcpu) ^ m68ki_read_8((mc68kcpu), ea));
->>>>>>> upstream/master
 
 	m68ki_write_8((mc68kcpu), ea, res);
 
@@ -6005,11 +4826,7 @@ M68KMAKE_OP(eor, 8, ., .)
 
 M68KMAKE_OP(eor, 16, ., d)
 {
-<<<<<<< HEAD
-	UINT32 res = MASK_OUT_ABOVE_16(DY(mc68kcpu) ^= MASK_OUT_ABOVE_16(DX(mc68kcpu)));
-=======
 	uint32_t res = MASK_OUT_ABOVE_16(DY(mc68kcpu) ^= MASK_OUT_ABOVE_16(DX(mc68kcpu)));
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_16(res);
 	(mc68kcpu)->not_z_flag = res;
@@ -6020,13 +4837,8 @@ M68KMAKE_OP(eor, 16, ., d)
 
 M68KMAKE_OP(eor, 16, ., .)
 {
-<<<<<<< HEAD
-	UINT32 ea = M68KMAKE_GET_EA_AY_16;
-	UINT32 res = MASK_OUT_ABOVE_16(DX(mc68kcpu) ^ m68ki_read_16((mc68kcpu), ea));
-=======
 	uint32_t ea = M68KMAKE_GET_EA_AY_16;
 	uint32_t res = MASK_OUT_ABOVE_16(DX(mc68kcpu) ^ m68ki_read_16((mc68kcpu), ea));
->>>>>>> upstream/master
 
 	m68ki_write_16((mc68kcpu), ea, res);
 
@@ -6039,11 +4851,7 @@ M68KMAKE_OP(eor, 16, ., .)
 
 M68KMAKE_OP(eor, 32, ., d)
 {
-<<<<<<< HEAD
-	UINT32 res = DY(mc68kcpu) ^= DX(mc68kcpu);
-=======
 	uint32_t res = DY(mc68kcpu) ^= DX(mc68kcpu);
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_32(res);
 	(mc68kcpu)->not_z_flag = res;
@@ -6054,13 +4862,8 @@ M68KMAKE_OP(eor, 32, ., d)
 
 M68KMAKE_OP(eor, 32, ., .)
 {
-<<<<<<< HEAD
-	UINT32 ea = M68KMAKE_GET_EA_AY_32;
-	UINT32 res = DX(mc68kcpu) ^ m68ki_read_32((mc68kcpu), ea);
-=======
 	uint32_t ea = M68KMAKE_GET_EA_AY_32;
 	uint32_t res = DX(mc68kcpu) ^ m68ki_read_32((mc68kcpu), ea);
->>>>>>> upstream/master
 
 	m68ki_write_32((mc68kcpu), ea, res);
 
@@ -6073,11 +4876,7 @@ M68KMAKE_OP(eor, 32, ., .)
 
 M68KMAKE_OP(eori, 8, ., d)
 {
-<<<<<<< HEAD
-	UINT32 res = MASK_OUT_ABOVE_8(DY(mc68kcpu) ^= OPER_I_8(mc68kcpu));
-=======
 	uint32_t res = MASK_OUT_ABOVE_8(DY(mc68kcpu) ^= OPER_I_8(mc68kcpu));
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_8(res);
 	(mc68kcpu)->not_z_flag = res;
@@ -6088,15 +4887,9 @@ M68KMAKE_OP(eori, 8, ., d)
 
 M68KMAKE_OP(eori, 8, ., .)
 {
-<<<<<<< HEAD
-	UINT32 src = OPER_I_8(mc68kcpu);
-	UINT32 ea = M68KMAKE_GET_EA_AY_8;
-	UINT32 res = src ^ m68ki_read_8((mc68kcpu), ea);
-=======
 	uint32_t src = OPER_I_8(mc68kcpu);
 	uint32_t ea = M68KMAKE_GET_EA_AY_8;
 	uint32_t res = src ^ m68ki_read_8((mc68kcpu), ea);
->>>>>>> upstream/master
 
 	m68ki_write_8((mc68kcpu), ea, res);
 
@@ -6109,11 +4902,7 @@ M68KMAKE_OP(eori, 8, ., .)
 
 M68KMAKE_OP(eori, 16, ., d)
 {
-<<<<<<< HEAD
-	UINT32 res = MASK_OUT_ABOVE_16(DY(mc68kcpu) ^= OPER_I_16(mc68kcpu));
-=======
 	uint32_t res = MASK_OUT_ABOVE_16(DY(mc68kcpu) ^= OPER_I_16(mc68kcpu));
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_16(res);
 	(mc68kcpu)->not_z_flag = res;
@@ -6124,15 +4913,9 @@ M68KMAKE_OP(eori, 16, ., d)
 
 M68KMAKE_OP(eori, 16, ., .)
 {
-<<<<<<< HEAD
-	UINT32 src = OPER_I_16(mc68kcpu);
-	UINT32 ea = M68KMAKE_GET_EA_AY_16;
-	UINT32 res = src ^ m68ki_read_16((mc68kcpu), ea);
-=======
 	uint32_t src = OPER_I_16(mc68kcpu);
 	uint32_t ea = M68KMAKE_GET_EA_AY_16;
 	uint32_t res = src ^ m68ki_read_16((mc68kcpu), ea);
->>>>>>> upstream/master
 
 	m68ki_write_16((mc68kcpu), ea, res);
 
@@ -6145,11 +4928,7 @@ M68KMAKE_OP(eori, 16, ., .)
 
 M68KMAKE_OP(eori, 32, ., d)
 {
-<<<<<<< HEAD
-	UINT32 res = DY(mc68kcpu) ^= OPER_I_32(mc68kcpu);
-=======
 	uint32_t res = DY(mc68kcpu) ^= OPER_I_32(mc68kcpu);
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_32(res);
 	(mc68kcpu)->not_z_flag = res;
@@ -6160,15 +4939,9 @@ M68KMAKE_OP(eori, 32, ., d)
 
 M68KMAKE_OP(eori, 32, ., .)
 {
-<<<<<<< HEAD
-	UINT32 src = OPER_I_32(mc68kcpu);
-	UINT32 ea = M68KMAKE_GET_EA_AY_32;
-	UINT32 res = src ^ m68ki_read_32((mc68kcpu), ea);
-=======
 	uint32_t src = OPER_I_32(mc68kcpu);
 	uint32_t ea = M68KMAKE_GET_EA_AY_32;
 	uint32_t res = src ^ m68ki_read_32((mc68kcpu), ea);
->>>>>>> upstream/master
 
 	m68ki_write_32((mc68kcpu), ea, res);
 
@@ -6189,11 +4962,7 @@ M68KMAKE_OP(eori, 16, tos, .)
 {
 	if((mc68kcpu)->s_flag)
 	{
-<<<<<<< HEAD
-		UINT32 src = OPER_I_16(mc68kcpu);
-=======
 		uint32_t src = OPER_I_16(mc68kcpu);
->>>>>>> upstream/master
 		m68ki_trace_t0(mc68kcpu);              /* auto-disable (see m68kcpu.h) */
 		m68ki_set_sr((mc68kcpu), m68ki_get_sr(mc68kcpu) ^ src);
 		return;
@@ -6204,15 +4973,9 @@ M68KMAKE_OP(eori, 16, tos, .)
 
 M68KMAKE_OP(exg, 32, dd, .)
 {
-<<<<<<< HEAD
-	UINT32* reg_a = &DX(mc68kcpu);
-	UINT32* reg_b = &DY(mc68kcpu);
-	UINT32 tmp = *reg_a;
-=======
 	uint32_t* reg_a = &DX(mc68kcpu);
 	uint32_t* reg_b = &DY(mc68kcpu);
 	uint32_t tmp = *reg_a;
->>>>>>> upstream/master
 	*reg_a = *reg_b;
 	*reg_b = tmp;
 }
@@ -6220,15 +4983,9 @@ M68KMAKE_OP(exg, 32, dd, .)
 
 M68KMAKE_OP(exg, 32, aa, .)
 {
-<<<<<<< HEAD
-	UINT32* reg_a = &AX(mc68kcpu);
-	UINT32* reg_b = &AY(mc68kcpu);
-	UINT32 tmp = *reg_a;
-=======
 	uint32_t* reg_a = &AX(mc68kcpu);
 	uint32_t* reg_b = &AY(mc68kcpu);
 	uint32_t tmp = *reg_a;
->>>>>>> upstream/master
 	*reg_a = *reg_b;
 	*reg_b = tmp;
 }
@@ -6236,15 +4993,9 @@ M68KMAKE_OP(exg, 32, aa, .)
 
 M68KMAKE_OP(exg, 32, da, .)
 {
-<<<<<<< HEAD
-	UINT32* reg_a = &DX(mc68kcpu);
-	UINT32* reg_b = &AY(mc68kcpu);
-	UINT32 tmp = *reg_a;
-=======
 	uint32_t* reg_a = &DX(mc68kcpu);
 	uint32_t* reg_b = &AY(mc68kcpu);
 	uint32_t tmp = *reg_a;
->>>>>>> upstream/master
 	*reg_a = *reg_b;
 	*reg_b = tmp;
 }
@@ -6252,11 +5003,7 @@ M68KMAKE_OP(exg, 32, da, .)
 
 M68KMAKE_OP(ext, 16, ., .)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DY(mc68kcpu);
-=======
 	uint32_t* r_dst = &DY(mc68kcpu);
->>>>>>> upstream/master
 
 	*r_dst = MASK_OUT_BELOW_16(*r_dst) | MASK_OUT_ABOVE_8(*r_dst) | (GET_MSB_8(*r_dst) ? 0xff00 : 0);
 
@@ -6269,11 +5016,7 @@ M68KMAKE_OP(ext, 16, ., .)
 
 M68KMAKE_OP(ext, 32, ., .)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DY(mc68kcpu);
-=======
 	uint32_t* r_dst = &DY(mc68kcpu);
->>>>>>> upstream/master
 
 	*r_dst = MASK_OUT_ABOVE_16(*r_dst) | (GET_MSB_16(*r_dst) ? 0xffff0000 : 0);
 
@@ -6288,11 +5031,7 @@ M68KMAKE_OP(extb, 32, ., .)
 {
 	if(CPU_TYPE_IS_EC020_PLUS((mc68kcpu)->cpu_type))
 	{
-<<<<<<< HEAD
-		UINT32* r_dst = &DY(mc68kcpu);
-=======
 		uint32_t* r_dst = &DY(mc68kcpu);
->>>>>>> upstream/master
 
 		*r_dst = MASK_OUT_ABOVE_8(*r_dst) | (GET_MSB_8(*r_dst) ? 0xffffff00 : 0);
 
@@ -6322,11 +5061,7 @@ M68KMAKE_OP(jmp, 32, ., .)
 
 M68KMAKE_OP(jsr, 32, ., .)
 {
-<<<<<<< HEAD
-	UINT32 ea = M68KMAKE_GET_EA_AY_32;
-=======
 	uint32_t ea = M68KMAKE_GET_EA_AY_32;
->>>>>>> upstream/master
 	m68ki_trace_t0(mc68kcpu);                  /* auto-disable (see m68kcpu.h) */
 	m68ki_push_32((mc68kcpu), REG_PC(mc68kcpu));
 	m68ki_jump((mc68kcpu), ea);
@@ -6349,11 +5084,7 @@ M68KMAKE_OP(link, 16, ., a7)
 
 M68KMAKE_OP(link, 16, ., .)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &AY(mc68kcpu);
-=======
 	uint32_t* r_dst = &AY(mc68kcpu);
->>>>>>> upstream/master
 
 	m68ki_push_32((mc68kcpu), *r_dst);
 	*r_dst = REG_A(mc68kcpu)[7];
@@ -6378,11 +5109,7 @@ M68KMAKE_OP(link, 32, ., .)
 {
 	if(CPU_TYPE_IS_EC020_PLUS((mc68kcpu)->cpu_type))
 	{
-<<<<<<< HEAD
-		UINT32* r_dst = &AY(mc68kcpu);
-=======
 		uint32_t* r_dst = &AY(mc68kcpu);
->>>>>>> upstream/master
 
 		m68ki_push_32((mc68kcpu), *r_dst);
 		*r_dst = REG_A(mc68kcpu)[7];
@@ -6395,17 +5122,10 @@ M68KMAKE_OP(link, 32, ., .)
 
 M68KMAKE_OP(lsr, 8, s, .)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DY(mc68kcpu);
-	UINT32 shift = ((((mc68kcpu)->ir >> 9) - 1) & 7) + 1;
-	UINT32 src = MASK_OUT_ABOVE_8(*r_dst);
-	UINT32 res = src >> shift;
-=======
 	uint32_t* r_dst = &DY(mc68kcpu);
 	uint32_t shift = ((((mc68kcpu)->ir >> 9) - 1) & 7) + 1;
 	uint32_t src = MASK_OUT_ABOVE_8(*r_dst);
 	uint32_t res = src >> shift;
->>>>>>> upstream/master
 
 	if(shift != 0)
 		(mc68kcpu)->remaining_cycles -= shift<<(mc68kcpu)->cyc_shift;
@@ -6421,17 +5141,10 @@ M68KMAKE_OP(lsr, 8, s, .)
 
 M68KMAKE_OP(lsr, 16, s, .)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DY(mc68kcpu);
-	UINT32 shift = ((((mc68kcpu)->ir >> 9) - 1) & 7) + 1;
-	UINT32 src = MASK_OUT_ABOVE_16(*r_dst);
-	UINT32 res = src >> shift;
-=======
 	uint32_t* r_dst = &DY(mc68kcpu);
 	uint32_t shift = ((((mc68kcpu)->ir >> 9) - 1) & 7) + 1;
 	uint32_t src = MASK_OUT_ABOVE_16(*r_dst);
 	uint32_t res = src >> shift;
->>>>>>> upstream/master
 
 	if(shift != 0)
 		(mc68kcpu)->remaining_cycles -= shift<<(mc68kcpu)->cyc_shift;
@@ -6447,17 +5160,10 @@ M68KMAKE_OP(lsr, 16, s, .)
 
 M68KMAKE_OP(lsr, 32, s, .)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DY(mc68kcpu);
-	UINT32 shift = ((((mc68kcpu)->ir >> 9) - 1) & 7) + 1;
-	UINT32 src = *r_dst;
-	UINT32 res = src >> shift;
-=======
 	uint32_t* r_dst = &DY(mc68kcpu);
 	uint32_t shift = ((((mc68kcpu)->ir >> 9) - 1) & 7) + 1;
 	uint32_t src = *r_dst;
 	uint32_t res = src >> shift;
->>>>>>> upstream/master
 
 	if(shift != 0)
 		(mc68kcpu)->remaining_cycles -= shift<<(mc68kcpu)->cyc_shift;
@@ -6473,17 +5179,10 @@ M68KMAKE_OP(lsr, 32, s, .)
 
 M68KMAKE_OP(lsr, 8, r, .)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DY(mc68kcpu);
-	UINT32 shift = DX(mc68kcpu) & 0x3f;
-	UINT32 src = MASK_OUT_ABOVE_8(*r_dst);
-	UINT32 res = src >> shift;
-=======
 	uint32_t* r_dst = &DY(mc68kcpu);
 	uint32_t shift = DX(mc68kcpu) & 0x3f;
 	uint32_t src = MASK_OUT_ABOVE_8(*r_dst);
 	uint32_t res = src >> shift;
->>>>>>> upstream/master
 
 	if(shift != 0)
 	{
@@ -6517,17 +5216,10 @@ M68KMAKE_OP(lsr, 8, r, .)
 
 M68KMAKE_OP(lsr, 16, r, .)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DY(mc68kcpu);
-	UINT32 shift = DX(mc68kcpu) & 0x3f;
-	UINT32 src = MASK_OUT_ABOVE_16(*r_dst);
-	UINT32 res = src >> shift;
-=======
 	uint32_t* r_dst = &DY(mc68kcpu);
 	uint32_t shift = DX(mc68kcpu) & 0x3f;
 	uint32_t src = MASK_OUT_ABOVE_16(*r_dst);
 	uint32_t res = src >> shift;
->>>>>>> upstream/master
 
 	if(shift != 0)
 	{
@@ -6561,17 +5253,10 @@ M68KMAKE_OP(lsr, 16, r, .)
 
 M68KMAKE_OP(lsr, 32, r, .)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DY(mc68kcpu);
-	UINT32 shift = DX(mc68kcpu) & 0x3f;
-	UINT32 src = *r_dst;
-	UINT32 res = src >> shift;
-=======
 	uint32_t* r_dst = &DY(mc68kcpu);
 	uint32_t shift = DX(mc68kcpu) & 0x3f;
 	uint32_t src = *r_dst;
 	uint32_t res = src >> shift;
->>>>>>> upstream/master
 
 	if(shift != 0)
 	{
@@ -6604,15 +5289,9 @@ M68KMAKE_OP(lsr, 32, r, .)
 
 M68KMAKE_OP(lsr, 16, ., .)
 {
-<<<<<<< HEAD
-	UINT32 ea = M68KMAKE_GET_EA_AY_16;
-	UINT32 src = m68ki_read_16((mc68kcpu), ea);
-	UINT32 res = src >> 1;
-=======
 	uint32_t ea = M68KMAKE_GET_EA_AY_16;
 	uint32_t src = m68ki_read_16((mc68kcpu), ea);
 	uint32_t res = src >> 1;
->>>>>>> upstream/master
 
 	m68ki_write_16((mc68kcpu), ea, res);
 
@@ -6625,17 +5304,10 @@ M68KMAKE_OP(lsr, 16, ., .)
 
 M68KMAKE_OP(lsl, 8, s, .)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DY(mc68kcpu);
-	UINT32 shift = ((((mc68kcpu)->ir >> 9) - 1) & 7) + 1;
-	UINT32 src = MASK_OUT_ABOVE_8(*r_dst);
-	UINT32 res = MASK_OUT_ABOVE_8(src << shift);
-=======
 	uint32_t* r_dst = &DY(mc68kcpu);
 	uint32_t shift = ((((mc68kcpu)->ir >> 9) - 1) & 7) + 1;
 	uint32_t src = MASK_OUT_ABOVE_8(*r_dst);
 	uint32_t res = MASK_OUT_ABOVE_8(src << shift);
->>>>>>> upstream/master
 
 	if(shift != 0)
 		(mc68kcpu)->remaining_cycles -= shift<<(mc68kcpu)->cyc_shift;
@@ -6651,17 +5323,10 @@ M68KMAKE_OP(lsl, 8, s, .)
 
 M68KMAKE_OP(lsl, 16, s, .)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DY(mc68kcpu);
-	UINT32 shift = ((((mc68kcpu)->ir >> 9) - 1) & 7) + 1;
-	UINT32 src = MASK_OUT_ABOVE_16(*r_dst);
-	UINT32 res = MASK_OUT_ABOVE_16(src << shift);
-=======
 	uint32_t* r_dst = &DY(mc68kcpu);
 	uint32_t shift = ((((mc68kcpu)->ir >> 9) - 1) & 7) + 1;
 	uint32_t src = MASK_OUT_ABOVE_16(*r_dst);
 	uint32_t res = MASK_OUT_ABOVE_16(src << shift);
->>>>>>> upstream/master
 
 	if(shift != 0)
 		(mc68kcpu)->remaining_cycles -= shift<<(mc68kcpu)->cyc_shift;
@@ -6677,17 +5342,10 @@ M68KMAKE_OP(lsl, 16, s, .)
 
 M68KMAKE_OP(lsl, 32, s, .)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DY(mc68kcpu);
-	UINT32 shift = ((((mc68kcpu)->ir >> 9) - 1) & 7) + 1;
-	UINT32 src = *r_dst;
-	UINT32 res = MASK_OUT_ABOVE_32(src << shift);
-=======
 	uint32_t* r_dst = &DY(mc68kcpu);
 	uint32_t shift = ((((mc68kcpu)->ir >> 9) - 1) & 7) + 1;
 	uint32_t src = *r_dst;
 	uint32_t res = MASK_OUT_ABOVE_32(src << shift);
->>>>>>> upstream/master
 
 	if(shift != 0)
 		(mc68kcpu)->remaining_cycles -= shift<<(mc68kcpu)->cyc_shift;
@@ -6703,17 +5361,10 @@ M68KMAKE_OP(lsl, 32, s, .)
 
 M68KMAKE_OP(lsl, 8, r, .)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DY(mc68kcpu);
-	UINT32 shift = DX(mc68kcpu) & 0x3f;
-	UINT32 src = MASK_OUT_ABOVE_8(*r_dst);
-	UINT32 res = MASK_OUT_ABOVE_8(src << shift);
-=======
 	uint32_t* r_dst = &DY(mc68kcpu);
 	uint32_t shift = DX(mc68kcpu) & 0x3f;
 	uint32_t src = MASK_OUT_ABOVE_8(*r_dst);
 	uint32_t res = MASK_OUT_ABOVE_8(src << shift);
->>>>>>> upstream/master
 
 	if(shift != 0)
 	{
@@ -6747,17 +5398,10 @@ M68KMAKE_OP(lsl, 8, r, .)
 
 M68KMAKE_OP(lsl, 16, r, .)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DY(mc68kcpu);
-	UINT32 shift = DX(mc68kcpu) & 0x3f;
-	UINT32 src = MASK_OUT_ABOVE_16(*r_dst);
-	UINT32 res = MASK_OUT_ABOVE_16(src << shift);
-=======
 	uint32_t* r_dst = &DY(mc68kcpu);
 	uint32_t shift = DX(mc68kcpu) & 0x3f;
 	uint32_t src = MASK_OUT_ABOVE_16(*r_dst);
 	uint32_t res = MASK_OUT_ABOVE_16(src << shift);
->>>>>>> upstream/master
 
 	if(shift != 0)
 	{
@@ -6791,17 +5435,10 @@ M68KMAKE_OP(lsl, 16, r, .)
 
 M68KMAKE_OP(lsl, 32, r, .)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DY(mc68kcpu);
-	UINT32 shift = DX(mc68kcpu) & 0x3f;
-	UINT32 src = *r_dst;
-	UINT32 res = MASK_OUT_ABOVE_32(src << shift);
-=======
 	uint32_t* r_dst = &DY(mc68kcpu);
 	uint32_t shift = DX(mc68kcpu) & 0x3f;
 	uint32_t src = *r_dst;
 	uint32_t res = MASK_OUT_ABOVE_32(src << shift);
->>>>>>> upstream/master
 
 	if(shift != 0)
 	{
@@ -6834,15 +5471,9 @@ M68KMAKE_OP(lsl, 32, r, .)
 
 M68KMAKE_OP(lsl, 16, ., .)
 {
-<<<<<<< HEAD
-	UINT32 ea = M68KMAKE_GET_EA_AY_16;
-	UINT32 src = m68ki_read_16((mc68kcpu), ea);
-	UINT32 res = MASK_OUT_ABOVE_16(src << 1);
-=======
 	uint32_t ea = M68KMAKE_GET_EA_AY_16;
 	uint32_t src = m68ki_read_16((mc68kcpu), ea);
 	uint32_t res = MASK_OUT_ABOVE_16(src << 1);
->>>>>>> upstream/master
 
 	m68ki_write_16((mc68kcpu), ea, res);
 
@@ -6855,13 +5486,8 @@ M68KMAKE_OP(lsl, 16, ., .)
 
 M68KMAKE_OP(move, 8, d, d)
 {
-<<<<<<< HEAD
-	UINT32 res = MASK_OUT_ABOVE_8(DY(mc68kcpu));
-	UINT32* r_dst = &DX(mc68kcpu);
-=======
 	uint32_t res = MASK_OUT_ABOVE_8(DY(mc68kcpu));
 	uint32_t* r_dst = &DX(mc68kcpu);
->>>>>>> upstream/master
 
 	*r_dst = MASK_OUT_BELOW_8(*r_dst) | res;
 
@@ -6874,13 +5500,8 @@ M68KMAKE_OP(move, 8, d, d)
 
 M68KMAKE_OP(move, 8, d, .)
 {
-<<<<<<< HEAD
-	UINT32 res = M68KMAKE_GET_OPER_AY_8;
-	UINT32* r_dst = &DX(mc68kcpu);
-=======
 	uint32_t res = M68KMAKE_GET_OPER_AY_8;
 	uint32_t* r_dst = &DX(mc68kcpu);
->>>>>>> upstream/master
 
 	*r_dst = MASK_OUT_BELOW_8(*r_dst) | res;
 
@@ -6893,13 +5514,8 @@ M68KMAKE_OP(move, 8, d, .)
 
 M68KMAKE_OP(move, 8, ai, d)
 {
-<<<<<<< HEAD
-	UINT32 res = MASK_OUT_ABOVE_8(DY(mc68kcpu));
-	UINT32 ea = EA_AX_AI_8(mc68kcpu);
-=======
 	uint32_t res = MASK_OUT_ABOVE_8(DY(mc68kcpu));
 	uint32_t ea = EA_AX_AI_8(mc68kcpu);
->>>>>>> upstream/master
 
 	m68ki_write_8((mc68kcpu), ea, res);
 
@@ -6912,13 +5528,8 @@ M68KMAKE_OP(move, 8, ai, d)
 
 M68KMAKE_OP(move, 8, ai, .)
 {
-<<<<<<< HEAD
-	UINT32 res = M68KMAKE_GET_OPER_AY_8;
-	UINT32 ea = EA_AX_AI_8(mc68kcpu);
-=======
 	uint32_t res = M68KMAKE_GET_OPER_AY_8;
 	uint32_t ea = EA_AX_AI_8(mc68kcpu);
->>>>>>> upstream/master
 
 	m68ki_write_8((mc68kcpu), ea, res);
 
@@ -6931,13 +5542,8 @@ M68KMAKE_OP(move, 8, ai, .)
 
 M68KMAKE_OP(move, 8, pi7, d)
 {
-<<<<<<< HEAD
-	UINT32 res = MASK_OUT_ABOVE_8(DY(mc68kcpu));
-	UINT32 ea = EA_A7_PI_8(mc68kcpu);
-=======
 	uint32_t res = MASK_OUT_ABOVE_8(DY(mc68kcpu));
 	uint32_t ea = EA_A7_PI_8(mc68kcpu);
->>>>>>> upstream/master
 
 	m68ki_write_8((mc68kcpu), ea, res);
 
@@ -6950,13 +5556,8 @@ M68KMAKE_OP(move, 8, pi7, d)
 
 M68KMAKE_OP(move, 8, pi, d)
 {
-<<<<<<< HEAD
-	UINT32 res = MASK_OUT_ABOVE_8(DY(mc68kcpu));
-	UINT32 ea = EA_AX_PI_8(mc68kcpu);
-=======
 	uint32_t res = MASK_OUT_ABOVE_8(DY(mc68kcpu));
 	uint32_t ea = EA_AX_PI_8(mc68kcpu);
->>>>>>> upstream/master
 
 	m68ki_write_8((mc68kcpu), ea, res);
 
@@ -6969,13 +5570,8 @@ M68KMAKE_OP(move, 8, pi, d)
 
 M68KMAKE_OP(move, 8, pi7, .)
 {
-<<<<<<< HEAD
-	UINT32 res = M68KMAKE_GET_OPER_AY_8;
-	UINT32 ea = EA_A7_PI_8(mc68kcpu);
-=======
 	uint32_t res = M68KMAKE_GET_OPER_AY_8;
 	uint32_t ea = EA_A7_PI_8(mc68kcpu);
->>>>>>> upstream/master
 
 	m68ki_write_8((mc68kcpu), ea, res);
 
@@ -6988,13 +5584,8 @@ M68KMAKE_OP(move, 8, pi7, .)
 
 M68KMAKE_OP(move, 8, pi, .)
 {
-<<<<<<< HEAD
-	UINT32 res = M68KMAKE_GET_OPER_AY_8;
-	UINT32 ea = EA_AX_PI_8(mc68kcpu);
-=======
 	uint32_t res = M68KMAKE_GET_OPER_AY_8;
 	uint32_t ea = EA_AX_PI_8(mc68kcpu);
->>>>>>> upstream/master
 
 	m68ki_write_8((mc68kcpu), ea, res);
 
@@ -7007,13 +5598,8 @@ M68KMAKE_OP(move, 8, pi, .)
 
 M68KMAKE_OP(move, 8, pd7, d)
 {
-<<<<<<< HEAD
-	UINT32 res = MASK_OUT_ABOVE_8(DY(mc68kcpu));
-	UINT32 ea = EA_A7_PD_8(mc68kcpu);
-=======
 	uint32_t res = MASK_OUT_ABOVE_8(DY(mc68kcpu));
 	uint32_t ea = EA_A7_PD_8(mc68kcpu);
->>>>>>> upstream/master
 
 	m68ki_write_8((mc68kcpu), ea, res);
 
@@ -7026,13 +5612,8 @@ M68KMAKE_OP(move, 8, pd7, d)
 
 M68KMAKE_OP(move, 8, pd, d)
 {
-<<<<<<< HEAD
-	UINT32 res = MASK_OUT_ABOVE_8(DY(mc68kcpu));
-	UINT32 ea = EA_AX_PD_8(mc68kcpu);
-=======
 	uint32_t res = MASK_OUT_ABOVE_8(DY(mc68kcpu));
 	uint32_t ea = EA_AX_PD_8(mc68kcpu);
->>>>>>> upstream/master
 
 	m68ki_write_8((mc68kcpu), ea, res);
 
@@ -7045,13 +5626,8 @@ M68KMAKE_OP(move, 8, pd, d)
 
 M68KMAKE_OP(move, 8, pd7, .)
 {
-<<<<<<< HEAD
-	UINT32 res = M68KMAKE_GET_OPER_AY_8;
-	UINT32 ea = EA_A7_PD_8(mc68kcpu);
-=======
 	uint32_t res = M68KMAKE_GET_OPER_AY_8;
 	uint32_t ea = EA_A7_PD_8(mc68kcpu);
->>>>>>> upstream/master
 
 	m68ki_write_8((mc68kcpu), ea, res);
 
@@ -7064,13 +5640,8 @@ M68KMAKE_OP(move, 8, pd7, .)
 
 M68KMAKE_OP(move, 8, pd, .)
 {
-<<<<<<< HEAD
-	UINT32 res = M68KMAKE_GET_OPER_AY_8;
-	UINT32 ea = EA_AX_PD_8(mc68kcpu);
-=======
 	uint32_t res = M68KMAKE_GET_OPER_AY_8;
 	uint32_t ea = EA_AX_PD_8(mc68kcpu);
->>>>>>> upstream/master
 
 	m68ki_write_8((mc68kcpu), ea, res);
 
@@ -7083,13 +5654,8 @@ M68KMAKE_OP(move, 8, pd, .)
 
 M68KMAKE_OP(move, 8, di, d)
 {
-<<<<<<< HEAD
-	UINT32 res = MASK_OUT_ABOVE_8(DY(mc68kcpu));
-	UINT32 ea = EA_AX_DI_8(mc68kcpu);
-=======
 	uint32_t res = MASK_OUT_ABOVE_8(DY(mc68kcpu));
 	uint32_t ea = EA_AX_DI_8(mc68kcpu);
->>>>>>> upstream/master
 
 	m68ki_write_8((mc68kcpu), ea, res);
 
@@ -7102,13 +5668,8 @@ M68KMAKE_OP(move, 8, di, d)
 
 M68KMAKE_OP(move, 8, di, .)
 {
-<<<<<<< HEAD
-	UINT32 res = M68KMAKE_GET_OPER_AY_8;
-	UINT32 ea = EA_AX_DI_8(mc68kcpu);
-=======
 	uint32_t res = M68KMAKE_GET_OPER_AY_8;
 	uint32_t ea = EA_AX_DI_8(mc68kcpu);
->>>>>>> upstream/master
 
 	m68ki_write_8((mc68kcpu), ea, res);
 
@@ -7121,13 +5682,8 @@ M68KMAKE_OP(move, 8, di, .)
 
 M68KMAKE_OP(move, 8, ix, d)
 {
-<<<<<<< HEAD
-	UINT32 res = MASK_OUT_ABOVE_8(DY(mc68kcpu));
-	UINT32 ea = EA_AX_IX_8(mc68kcpu);
-=======
 	uint32_t res = MASK_OUT_ABOVE_8(DY(mc68kcpu));
 	uint32_t ea = EA_AX_IX_8(mc68kcpu);
->>>>>>> upstream/master
 
 	m68ki_write_8((mc68kcpu), ea, res);
 
@@ -7140,13 +5696,8 @@ M68KMAKE_OP(move, 8, ix, d)
 
 M68KMAKE_OP(move, 8, ix, .)
 {
-<<<<<<< HEAD
-	UINT32 res = M68KMAKE_GET_OPER_AY_8;
-	UINT32 ea = EA_AX_IX_8(mc68kcpu);
-=======
 	uint32_t res = M68KMAKE_GET_OPER_AY_8;
 	uint32_t ea = EA_AX_IX_8(mc68kcpu);
->>>>>>> upstream/master
 
 	m68ki_write_8((mc68kcpu), ea, res);
 
@@ -7159,13 +5710,8 @@ M68KMAKE_OP(move, 8, ix, .)
 
 M68KMAKE_OP(move, 8, aw, d)
 {
-<<<<<<< HEAD
-	UINT32 res = MASK_OUT_ABOVE_8(DY(mc68kcpu));
-	UINT32 ea = EA_AW_8(mc68kcpu);
-=======
 	uint32_t res = MASK_OUT_ABOVE_8(DY(mc68kcpu));
 	uint32_t ea = EA_AW_8(mc68kcpu);
->>>>>>> upstream/master
 
 	m68ki_write_8((mc68kcpu), ea, res);
 
@@ -7178,13 +5724,8 @@ M68KMAKE_OP(move, 8, aw, d)
 
 M68KMAKE_OP(move, 8, aw, .)
 {
-<<<<<<< HEAD
-	UINT32 res = M68KMAKE_GET_OPER_AY_8;
-	UINT32 ea = EA_AW_8(mc68kcpu);
-=======
 	uint32_t res = M68KMAKE_GET_OPER_AY_8;
 	uint32_t ea = EA_AW_8(mc68kcpu);
->>>>>>> upstream/master
 
 	m68ki_write_8((mc68kcpu), ea, res);
 
@@ -7197,13 +5738,8 @@ M68KMAKE_OP(move, 8, aw, .)
 
 M68KMAKE_OP(move, 8, al, d)
 {
-<<<<<<< HEAD
-	UINT32 res = MASK_OUT_ABOVE_8(DY(mc68kcpu));
-	UINT32 ea = EA_AL_8(mc68kcpu);
-=======
 	uint32_t res = MASK_OUT_ABOVE_8(DY(mc68kcpu));
 	uint32_t ea = EA_AL_8(mc68kcpu);
->>>>>>> upstream/master
 
 	m68ki_write_8((mc68kcpu), ea, res);
 
@@ -7216,13 +5752,8 @@ M68KMAKE_OP(move, 8, al, d)
 
 M68KMAKE_OP(move, 8, al, .)
 {
-<<<<<<< HEAD
-	UINT32 res = M68KMAKE_GET_OPER_AY_8;
-	UINT32 ea = EA_AL_8(mc68kcpu);
-=======
 	uint32_t res = M68KMAKE_GET_OPER_AY_8;
 	uint32_t ea = EA_AL_8(mc68kcpu);
->>>>>>> upstream/master
 
 	m68ki_write_8((mc68kcpu), ea, res);
 
@@ -7235,13 +5766,8 @@ M68KMAKE_OP(move, 8, al, .)
 
 M68KMAKE_OP(move, 16, d, d)
 {
-<<<<<<< HEAD
-	UINT32 res = MASK_OUT_ABOVE_16(DY(mc68kcpu));
-	UINT32* r_dst = &DX(mc68kcpu);
-=======
 	uint32_t res = MASK_OUT_ABOVE_16(DY(mc68kcpu));
 	uint32_t* r_dst = &DX(mc68kcpu);
->>>>>>> upstream/master
 
 	*r_dst = MASK_OUT_BELOW_16(*r_dst) | res;
 
@@ -7254,13 +5780,8 @@ M68KMAKE_OP(move, 16, d, d)
 
 M68KMAKE_OP(move, 16, d, a)
 {
-<<<<<<< HEAD
-	UINT32 res = MASK_OUT_ABOVE_16(AY(mc68kcpu));
-	UINT32* r_dst = &DX(mc68kcpu);
-=======
 	uint32_t res = MASK_OUT_ABOVE_16(AY(mc68kcpu));
 	uint32_t* r_dst = &DX(mc68kcpu);
->>>>>>> upstream/master
 
 	*r_dst = MASK_OUT_BELOW_16(*r_dst) | res;
 
@@ -7273,13 +5794,8 @@ M68KMAKE_OP(move, 16, d, a)
 
 M68KMAKE_OP(move, 16, d, .)
 {
-<<<<<<< HEAD
-	UINT32 res = M68KMAKE_GET_OPER_AY_16;
-	UINT32* r_dst = &DX(mc68kcpu);
-=======
 	uint32_t res = M68KMAKE_GET_OPER_AY_16;
 	uint32_t* r_dst = &DX(mc68kcpu);
->>>>>>> upstream/master
 
 	*r_dst = MASK_OUT_BELOW_16(*r_dst) | res;
 
@@ -7292,13 +5808,8 @@ M68KMAKE_OP(move, 16, d, .)
 
 M68KMAKE_OP(move, 16, ai, d)
 {
-<<<<<<< HEAD
-	UINT32 res = MASK_OUT_ABOVE_16(DY(mc68kcpu));
-	UINT32 ea = EA_AX_AI_16(mc68kcpu);
-=======
 	uint32_t res = MASK_OUT_ABOVE_16(DY(mc68kcpu));
 	uint32_t ea = EA_AX_AI_16(mc68kcpu);
->>>>>>> upstream/master
 
 	m68ki_write_16((mc68kcpu), ea, res);
 
@@ -7311,13 +5822,8 @@ M68KMAKE_OP(move, 16, ai, d)
 
 M68KMAKE_OP(move, 16, ai, a)
 {
-<<<<<<< HEAD
-	UINT32 res = MASK_OUT_ABOVE_16(AY(mc68kcpu));
-	UINT32 ea = EA_AX_AI_16(mc68kcpu);
-=======
 	uint32_t res = MASK_OUT_ABOVE_16(AY(mc68kcpu));
 	uint32_t ea = EA_AX_AI_16(mc68kcpu);
->>>>>>> upstream/master
 
 	m68ki_write_16((mc68kcpu), ea, res);
 
@@ -7330,13 +5836,8 @@ M68KMAKE_OP(move, 16, ai, a)
 
 M68KMAKE_OP(move, 16, ai, .)
 {
-<<<<<<< HEAD
-	UINT32 res = M68KMAKE_GET_OPER_AY_16;
-	UINT32 ea = EA_AX_AI_16(mc68kcpu);
-=======
 	uint32_t res = M68KMAKE_GET_OPER_AY_16;
 	uint32_t ea = EA_AX_AI_16(mc68kcpu);
->>>>>>> upstream/master
 
 	m68ki_write_16((mc68kcpu), ea, res);
 
@@ -7349,13 +5850,8 @@ M68KMAKE_OP(move, 16, ai, .)
 
 M68KMAKE_OP(move, 16, pi, d)
 {
-<<<<<<< HEAD
-	UINT32 res = MASK_OUT_ABOVE_16(DY(mc68kcpu));
-	UINT32 ea = EA_AX_PI_16(mc68kcpu);
-=======
 	uint32_t res = MASK_OUT_ABOVE_16(DY(mc68kcpu));
 	uint32_t ea = EA_AX_PI_16(mc68kcpu);
->>>>>>> upstream/master
 
 	m68ki_write_16((mc68kcpu), ea, res);
 
@@ -7368,13 +5864,8 @@ M68KMAKE_OP(move, 16, pi, d)
 
 M68KMAKE_OP(move, 16, pi, a)
 {
-<<<<<<< HEAD
-	UINT32 res = MASK_OUT_ABOVE_16(AY(mc68kcpu));
-	UINT32 ea = EA_AX_PI_16(mc68kcpu);
-=======
 	uint32_t res = MASK_OUT_ABOVE_16(AY(mc68kcpu));
 	uint32_t ea = EA_AX_PI_16(mc68kcpu);
->>>>>>> upstream/master
 
 	m68ki_write_16((mc68kcpu), ea, res);
 
@@ -7387,13 +5878,8 @@ M68KMAKE_OP(move, 16, pi, a)
 
 M68KMAKE_OP(move, 16, pi, .)
 {
-<<<<<<< HEAD
-	UINT32 res = M68KMAKE_GET_OPER_AY_16;
-	UINT32 ea = EA_AX_PI_16(mc68kcpu);
-=======
 	uint32_t res = M68KMAKE_GET_OPER_AY_16;
 	uint32_t ea = EA_AX_PI_16(mc68kcpu);
->>>>>>> upstream/master
 
 	m68ki_write_16((mc68kcpu), ea, res);
 
@@ -7406,13 +5892,8 @@ M68KMAKE_OP(move, 16, pi, .)
 
 M68KMAKE_OP(move, 16, pd, d)
 {
-<<<<<<< HEAD
-	UINT32 res = MASK_OUT_ABOVE_16(DY(mc68kcpu));
-	UINT32 ea = EA_AX_PD_16(mc68kcpu);
-=======
 	uint32_t res = MASK_OUT_ABOVE_16(DY(mc68kcpu));
 	uint32_t ea = EA_AX_PD_16(mc68kcpu);
->>>>>>> upstream/master
 
 	m68ki_write_16((mc68kcpu), ea, res);
 
@@ -7425,13 +5906,8 @@ M68KMAKE_OP(move, 16, pd, d)
 
 M68KMAKE_OP(move, 16, pd, a)
 {
-<<<<<<< HEAD
-	UINT32 res = MASK_OUT_ABOVE_16(AY(mc68kcpu));
-	UINT32 ea = EA_AX_PD_16(mc68kcpu);
-=======
 	uint32_t res = MASK_OUT_ABOVE_16(AY(mc68kcpu));
 	uint32_t ea = EA_AX_PD_16(mc68kcpu);
->>>>>>> upstream/master
 
 	m68ki_write_16((mc68kcpu), ea, res);
 
@@ -7444,13 +5920,8 @@ M68KMAKE_OP(move, 16, pd, a)
 
 M68KMAKE_OP(move, 16, pd, .)
 {
-<<<<<<< HEAD
-	UINT32 res = M68KMAKE_GET_OPER_AY_16;
-	UINT32 ea = EA_AX_PD_16(mc68kcpu);
-=======
 	uint32_t res = M68KMAKE_GET_OPER_AY_16;
 	uint32_t ea = EA_AX_PD_16(mc68kcpu);
->>>>>>> upstream/master
 
 	m68ki_write_16((mc68kcpu), ea, res);
 
@@ -7463,13 +5934,8 @@ M68KMAKE_OP(move, 16, pd, .)
 
 M68KMAKE_OP(move, 16, di, d)
 {
-<<<<<<< HEAD
-	UINT32 res = MASK_OUT_ABOVE_16(DY(mc68kcpu));
-	UINT32 ea = EA_AX_DI_16(mc68kcpu);
-=======
 	uint32_t res = MASK_OUT_ABOVE_16(DY(mc68kcpu));
 	uint32_t ea = EA_AX_DI_16(mc68kcpu);
->>>>>>> upstream/master
 
 	m68ki_write_16((mc68kcpu), ea, res);
 
@@ -7482,13 +5948,8 @@ M68KMAKE_OP(move, 16, di, d)
 
 M68KMAKE_OP(move, 16, di, a)
 {
-<<<<<<< HEAD
-	UINT32 res = MASK_OUT_ABOVE_16(AY(mc68kcpu));
-	UINT32 ea = EA_AX_DI_16(mc68kcpu);
-=======
 	uint32_t res = MASK_OUT_ABOVE_16(AY(mc68kcpu));
 	uint32_t ea = EA_AX_DI_16(mc68kcpu);
->>>>>>> upstream/master
 
 	m68ki_write_16((mc68kcpu), ea, res);
 
@@ -7501,13 +5962,8 @@ M68KMAKE_OP(move, 16, di, a)
 
 M68KMAKE_OP(move, 16, di, .)
 {
-<<<<<<< HEAD
-	UINT32 res = M68KMAKE_GET_OPER_AY_16;
-	UINT32 ea = EA_AX_DI_16(mc68kcpu);
-=======
 	uint32_t res = M68KMAKE_GET_OPER_AY_16;
 	uint32_t ea = EA_AX_DI_16(mc68kcpu);
->>>>>>> upstream/master
 
 	m68ki_write_16((mc68kcpu), ea, res);
 
@@ -7520,13 +5976,8 @@ M68KMAKE_OP(move, 16, di, .)
 
 M68KMAKE_OP(move, 16, ix, d)
 {
-<<<<<<< HEAD
-	UINT32 res = MASK_OUT_ABOVE_16(DY(mc68kcpu));
-	UINT32 ea = EA_AX_IX_16(mc68kcpu);
-=======
 	uint32_t res = MASK_OUT_ABOVE_16(DY(mc68kcpu));
 	uint32_t ea = EA_AX_IX_16(mc68kcpu);
->>>>>>> upstream/master
 
 	m68ki_write_16((mc68kcpu), ea, res);
 
@@ -7539,13 +5990,8 @@ M68KMAKE_OP(move, 16, ix, d)
 
 M68KMAKE_OP(move, 16, ix, a)
 {
-<<<<<<< HEAD
-	UINT32 res = MASK_OUT_ABOVE_16(AY(mc68kcpu));
-	UINT32 ea = EA_AX_IX_16(mc68kcpu);
-=======
 	uint32_t res = MASK_OUT_ABOVE_16(AY(mc68kcpu));
 	uint32_t ea = EA_AX_IX_16(mc68kcpu);
->>>>>>> upstream/master
 
 	m68ki_write_16((mc68kcpu), ea, res);
 
@@ -7558,13 +6004,8 @@ M68KMAKE_OP(move, 16, ix, a)
 
 M68KMAKE_OP(move, 16, ix, .)
 {
-<<<<<<< HEAD
-	UINT32 res = M68KMAKE_GET_OPER_AY_16;
-	UINT32 ea = EA_AX_IX_16(mc68kcpu);
-=======
 	uint32_t res = M68KMAKE_GET_OPER_AY_16;
 	uint32_t ea = EA_AX_IX_16(mc68kcpu);
->>>>>>> upstream/master
 
 	m68ki_write_16((mc68kcpu), ea, res);
 
@@ -7577,13 +6018,8 @@ M68KMAKE_OP(move, 16, ix, .)
 
 M68KMAKE_OP(move, 16, aw, d)
 {
-<<<<<<< HEAD
-	UINT32 res = MASK_OUT_ABOVE_16(DY(mc68kcpu));
-	UINT32 ea = EA_AW_16(mc68kcpu);
-=======
 	uint32_t res = MASK_OUT_ABOVE_16(DY(mc68kcpu));
 	uint32_t ea = EA_AW_16(mc68kcpu);
->>>>>>> upstream/master
 
 	m68ki_write_16((mc68kcpu), ea, res);
 
@@ -7596,13 +6032,8 @@ M68KMAKE_OP(move, 16, aw, d)
 
 M68KMAKE_OP(move, 16, aw, a)
 {
-<<<<<<< HEAD
-	UINT32 res = MASK_OUT_ABOVE_16(AY(mc68kcpu));
-	UINT32 ea = EA_AW_16(mc68kcpu);
-=======
 	uint32_t res = MASK_OUT_ABOVE_16(AY(mc68kcpu));
 	uint32_t ea = EA_AW_16(mc68kcpu);
->>>>>>> upstream/master
 
 	m68ki_write_16((mc68kcpu), ea, res);
 
@@ -7615,13 +6046,8 @@ M68KMAKE_OP(move, 16, aw, a)
 
 M68KMAKE_OP(move, 16, aw, .)
 {
-<<<<<<< HEAD
-	UINT32 res = M68KMAKE_GET_OPER_AY_16;
-	UINT32 ea = EA_AW_16(mc68kcpu);
-=======
 	uint32_t res = M68KMAKE_GET_OPER_AY_16;
 	uint32_t ea = EA_AW_16(mc68kcpu);
->>>>>>> upstream/master
 
 	m68ki_write_16((mc68kcpu), ea, res);
 
@@ -7634,13 +6060,8 @@ M68KMAKE_OP(move, 16, aw, .)
 
 M68KMAKE_OP(move, 16, al, d)
 {
-<<<<<<< HEAD
-	UINT32 res = MASK_OUT_ABOVE_16(DY(mc68kcpu));
-	UINT32 ea = EA_AL_16(mc68kcpu);
-=======
 	uint32_t res = MASK_OUT_ABOVE_16(DY(mc68kcpu));
 	uint32_t ea = EA_AL_16(mc68kcpu);
->>>>>>> upstream/master
 
 	m68ki_write_16((mc68kcpu), ea, res);
 
@@ -7653,13 +6074,8 @@ M68KMAKE_OP(move, 16, al, d)
 
 M68KMAKE_OP(move, 16, al, a)
 {
-<<<<<<< HEAD
-	UINT32 res = MASK_OUT_ABOVE_16(AY(mc68kcpu));
-	UINT32 ea = EA_AL_16(mc68kcpu);
-=======
 	uint32_t res = MASK_OUT_ABOVE_16(AY(mc68kcpu));
 	uint32_t ea = EA_AL_16(mc68kcpu);
->>>>>>> upstream/master
 
 	m68ki_write_16((mc68kcpu), ea, res);
 
@@ -7672,13 +6088,8 @@ M68KMAKE_OP(move, 16, al, a)
 
 M68KMAKE_OP(move, 16, al, .)
 {
-<<<<<<< HEAD
-	UINT32 res = M68KMAKE_GET_OPER_AY_16;
-	UINT32 ea = EA_AL_16(mc68kcpu);
-=======
 	uint32_t res = M68KMAKE_GET_OPER_AY_16;
 	uint32_t ea = EA_AL_16(mc68kcpu);
->>>>>>> upstream/master
 
 	m68ki_write_16((mc68kcpu), ea, res);
 
@@ -7691,13 +6102,8 @@ M68KMAKE_OP(move, 16, al, .)
 
 M68KMAKE_OP(move, 32, d, d)
 {
-<<<<<<< HEAD
-	UINT32 res = DY(mc68kcpu);
-	UINT32* r_dst = &DX(mc68kcpu);
-=======
 	uint32_t res = DY(mc68kcpu);
 	uint32_t* r_dst = &DX(mc68kcpu);
->>>>>>> upstream/master
 
 	*r_dst = res;
 
@@ -7710,13 +6116,8 @@ M68KMAKE_OP(move, 32, d, d)
 
 M68KMAKE_OP(move, 32, d, a)
 {
-<<<<<<< HEAD
-	UINT32 res = AY(mc68kcpu);
-	UINT32* r_dst = &DX(mc68kcpu);
-=======
 	uint32_t res = AY(mc68kcpu);
 	uint32_t* r_dst = &DX(mc68kcpu);
->>>>>>> upstream/master
 
 	*r_dst = res;
 
@@ -7729,13 +6130,8 @@ M68KMAKE_OP(move, 32, d, a)
 
 M68KMAKE_OP(move, 32, d, .)
 {
-<<<<<<< HEAD
-	UINT32 res = M68KMAKE_GET_OPER_AY_32;
-	UINT32* r_dst = &DX(mc68kcpu);
-=======
 	uint32_t res = M68KMAKE_GET_OPER_AY_32;
 	uint32_t* r_dst = &DX(mc68kcpu);
->>>>>>> upstream/master
 
 	*r_dst = res;
 
@@ -7748,13 +6144,8 @@ M68KMAKE_OP(move, 32, d, .)
 
 M68KMAKE_OP(move, 32, ai, d)
 {
-<<<<<<< HEAD
-	UINT32 res = DY(mc68kcpu);
-	UINT32 ea = EA_AX_AI_32(mc68kcpu);
-=======
 	uint32_t res = DY(mc68kcpu);
 	uint32_t ea = EA_AX_AI_32(mc68kcpu);
->>>>>>> upstream/master
 
 	m68ki_write_32((mc68kcpu), ea, res);
 
@@ -7767,13 +6158,8 @@ M68KMAKE_OP(move, 32, ai, d)
 
 M68KMAKE_OP(move, 32, ai, a)
 {
-<<<<<<< HEAD
-	UINT32 res = AY(mc68kcpu);
-	UINT32 ea = EA_AX_AI_32(mc68kcpu);
-=======
 	uint32_t res = AY(mc68kcpu);
 	uint32_t ea = EA_AX_AI_32(mc68kcpu);
->>>>>>> upstream/master
 
 	m68ki_write_32((mc68kcpu), ea, res);
 
@@ -7786,13 +6172,8 @@ M68KMAKE_OP(move, 32, ai, a)
 
 M68KMAKE_OP(move, 32, ai, .)
 {
-<<<<<<< HEAD
-	UINT32 res = M68KMAKE_GET_OPER_AY_32;
-	UINT32 ea = EA_AX_AI_32(mc68kcpu);
-=======
 	uint32_t res = M68KMAKE_GET_OPER_AY_32;
 	uint32_t ea = EA_AX_AI_32(mc68kcpu);
->>>>>>> upstream/master
 
 	m68ki_write_32((mc68kcpu), ea, res);
 
@@ -7805,13 +6186,8 @@ M68KMAKE_OP(move, 32, ai, .)
 
 M68KMAKE_OP(move, 32, pi, d)
 {
-<<<<<<< HEAD
-	UINT32 res = DY(mc68kcpu);
-	UINT32 ea = EA_AX_PI_32(mc68kcpu);
-=======
 	uint32_t res = DY(mc68kcpu);
 	uint32_t ea = EA_AX_PI_32(mc68kcpu);
->>>>>>> upstream/master
 
 	m68ki_write_32((mc68kcpu), ea, res);
 
@@ -7824,13 +6200,8 @@ M68KMAKE_OP(move, 32, pi, d)
 
 M68KMAKE_OP(move, 32, pi, a)
 {
-<<<<<<< HEAD
-	UINT32 res = AY(mc68kcpu);
-	UINT32 ea = EA_AX_PI_32(mc68kcpu);
-=======
 	uint32_t res = AY(mc68kcpu);
 	uint32_t ea = EA_AX_PI_32(mc68kcpu);
->>>>>>> upstream/master
 
 	m68ki_write_32((mc68kcpu), ea, res);
 
@@ -7843,13 +6214,8 @@ M68KMAKE_OP(move, 32, pi, a)
 
 M68KMAKE_OP(move, 32, pi, .)
 {
-<<<<<<< HEAD
-	UINT32 res = M68KMAKE_GET_OPER_AY_32;
-	UINT32 ea = EA_AX_PI_32(mc68kcpu);
-=======
 	uint32_t res = M68KMAKE_GET_OPER_AY_32;
 	uint32_t ea = EA_AX_PI_32(mc68kcpu);
->>>>>>> upstream/master
 
 	m68ki_write_32((mc68kcpu), ea, res);
 
@@ -7862,13 +6228,8 @@ M68KMAKE_OP(move, 32, pi, .)
 
 M68KMAKE_OP(move, 32, pd, d)
 {
-<<<<<<< HEAD
-	UINT32 res = DY(mc68kcpu);
-	UINT32 ea = EA_AX_PD_32(mc68kcpu);
-=======
 	uint32_t res = DY(mc68kcpu);
 	uint32_t ea = EA_AX_PD_32(mc68kcpu);
->>>>>>> upstream/master
 
 	m68ki_write_16((mc68kcpu), ea+2, res & 0xFFFF );
 	m68ki_write_16((mc68kcpu), ea, (res >> 16) & 0xFFFF );
@@ -7882,13 +6243,8 @@ M68KMAKE_OP(move, 32, pd, d)
 
 M68KMAKE_OP(move, 32, pd, a)
 {
-<<<<<<< HEAD
-	UINT32 res = AY(mc68kcpu);
-	UINT32 ea = EA_AX_PD_32(mc68kcpu);
-=======
 	uint32_t res = AY(mc68kcpu);
 	uint32_t ea = EA_AX_PD_32(mc68kcpu);
->>>>>>> upstream/master
 
 	m68ki_write_16((mc68kcpu), ea+2, res & 0xFFFF );
 	m68ki_write_16((mc68kcpu), ea, (res >> 16) & 0xFFFF );
@@ -7902,13 +6258,8 @@ M68KMAKE_OP(move, 32, pd, a)
 
 M68KMAKE_OP(move, 32, pd, .)
 {
-<<<<<<< HEAD
-	UINT32 res = M68KMAKE_GET_OPER_AY_32;
-	UINT32 ea = EA_AX_PD_32(mc68kcpu);
-=======
 	uint32_t res = M68KMAKE_GET_OPER_AY_32;
 	uint32_t ea = EA_AX_PD_32(mc68kcpu);
->>>>>>> upstream/master
 
 	m68ki_write_16((mc68kcpu), ea+2, res & 0xFFFF );
 	m68ki_write_16((mc68kcpu), ea, (res >> 16) & 0xFFFF );
@@ -7922,13 +6273,8 @@ M68KMAKE_OP(move, 32, pd, .)
 
 M68KMAKE_OP(move, 32, di, d)
 {
-<<<<<<< HEAD
-	UINT32 res = DY(mc68kcpu);
-	UINT32 ea = EA_AX_DI_32(mc68kcpu);
-=======
 	uint32_t res = DY(mc68kcpu);
 	uint32_t ea = EA_AX_DI_32(mc68kcpu);
->>>>>>> upstream/master
 
 	m68ki_write_32((mc68kcpu), ea, res);
 
@@ -7941,13 +6287,8 @@ M68KMAKE_OP(move, 32, di, d)
 
 M68KMAKE_OP(move, 32, di, a)
 {
-<<<<<<< HEAD
-	UINT32 res = AY(mc68kcpu);
-	UINT32 ea = EA_AX_DI_32(mc68kcpu);
-=======
 	uint32_t res = AY(mc68kcpu);
 	uint32_t ea = EA_AX_DI_32(mc68kcpu);
->>>>>>> upstream/master
 
 	m68ki_write_32((mc68kcpu), ea, res);
 
@@ -7960,13 +6301,8 @@ M68KMAKE_OP(move, 32, di, a)
 
 M68KMAKE_OP(move, 32, di, .)
 {
-<<<<<<< HEAD
-	UINT32 res = M68KMAKE_GET_OPER_AY_32;
-	UINT32 ea = EA_AX_DI_32(mc68kcpu);
-=======
 	uint32_t res = M68KMAKE_GET_OPER_AY_32;
 	uint32_t ea = EA_AX_DI_32(mc68kcpu);
->>>>>>> upstream/master
 
 	m68ki_write_32((mc68kcpu), ea, res);
 
@@ -7979,13 +6315,8 @@ M68KMAKE_OP(move, 32, di, .)
 
 M68KMAKE_OP(move, 32, ix, d)
 {
-<<<<<<< HEAD
-	UINT32 res = DY(mc68kcpu);
-	UINT32 ea = EA_AX_IX_32(mc68kcpu);
-=======
 	uint32_t res = DY(mc68kcpu);
 	uint32_t ea = EA_AX_IX_32(mc68kcpu);
->>>>>>> upstream/master
 
 	m68ki_write_32((mc68kcpu), ea, res);
 
@@ -7998,13 +6329,8 @@ M68KMAKE_OP(move, 32, ix, d)
 
 M68KMAKE_OP(move, 32, ix, a)
 {
-<<<<<<< HEAD
-	UINT32 res = AY(mc68kcpu);
-	UINT32 ea = EA_AX_IX_32(mc68kcpu);
-=======
 	uint32_t res = AY(mc68kcpu);
 	uint32_t ea = EA_AX_IX_32(mc68kcpu);
->>>>>>> upstream/master
 
 	m68ki_write_32((mc68kcpu), ea, res);
 
@@ -8017,13 +6343,8 @@ M68KMAKE_OP(move, 32, ix, a)
 
 M68KMAKE_OP(move, 32, ix, .)
 {
-<<<<<<< HEAD
-	UINT32 res = M68KMAKE_GET_OPER_AY_32;
-	UINT32 ea = EA_AX_IX_32(mc68kcpu);
-=======
 	uint32_t res = M68KMAKE_GET_OPER_AY_32;
 	uint32_t ea = EA_AX_IX_32(mc68kcpu);
->>>>>>> upstream/master
 
 	m68ki_write_32((mc68kcpu), ea, res);
 
@@ -8036,13 +6357,8 @@ M68KMAKE_OP(move, 32, ix, .)
 
 M68KMAKE_OP(move, 32, aw, d)
 {
-<<<<<<< HEAD
-	UINT32 res = DY(mc68kcpu);
-	UINT32 ea = EA_AW_32(mc68kcpu);
-=======
 	uint32_t res = DY(mc68kcpu);
 	uint32_t ea = EA_AW_32(mc68kcpu);
->>>>>>> upstream/master
 
 	m68ki_write_32((mc68kcpu), ea, res);
 
@@ -8055,13 +6371,8 @@ M68KMAKE_OP(move, 32, aw, d)
 
 M68KMAKE_OP(move, 32, aw, a)
 {
-<<<<<<< HEAD
-	UINT32 res = AY(mc68kcpu);
-	UINT32 ea = EA_AW_32(mc68kcpu);
-=======
 	uint32_t res = AY(mc68kcpu);
 	uint32_t ea = EA_AW_32(mc68kcpu);
->>>>>>> upstream/master
 
 	m68ki_write_32((mc68kcpu), ea, res);
 
@@ -8074,13 +6385,8 @@ M68KMAKE_OP(move, 32, aw, a)
 
 M68KMAKE_OP(move, 32, aw, .)
 {
-<<<<<<< HEAD
-	UINT32 res = M68KMAKE_GET_OPER_AY_32;
-	UINT32 ea = EA_AW_32(mc68kcpu);
-=======
 	uint32_t res = M68KMAKE_GET_OPER_AY_32;
 	uint32_t ea = EA_AW_32(mc68kcpu);
->>>>>>> upstream/master
 
 	m68ki_write_32((mc68kcpu), ea, res);
 
@@ -8093,13 +6399,8 @@ M68KMAKE_OP(move, 32, aw, .)
 
 M68KMAKE_OP(move, 32, al, d)
 {
-<<<<<<< HEAD
-	UINT32 res = DY(mc68kcpu);
-	UINT32 ea = EA_AL_32(mc68kcpu);
-=======
 	uint32_t res = DY(mc68kcpu);
 	uint32_t ea = EA_AL_32(mc68kcpu);
->>>>>>> upstream/master
 
 	m68ki_write_32((mc68kcpu), ea, res);
 
@@ -8112,13 +6413,8 @@ M68KMAKE_OP(move, 32, al, d)
 
 M68KMAKE_OP(move, 32, al, a)
 {
-<<<<<<< HEAD
-	UINT32 res = AY(mc68kcpu);
-	UINT32 ea = EA_AL_32(mc68kcpu);
-=======
 	uint32_t res = AY(mc68kcpu);
 	uint32_t ea = EA_AL_32(mc68kcpu);
->>>>>>> upstream/master
 
 	m68ki_write_32((mc68kcpu), ea, res);
 
@@ -8131,13 +6427,8 @@ M68KMAKE_OP(move, 32, al, a)
 
 M68KMAKE_OP(move, 32, al, .)
 {
-<<<<<<< HEAD
-	UINT32 res = M68KMAKE_GET_OPER_AY_32;
-	UINT32 ea = EA_AL_32(mc68kcpu);
-=======
 	uint32_t res = M68KMAKE_GET_OPER_AY_32;
 	uint32_t ea = EA_AL_32(mc68kcpu);
->>>>>>> upstream/master
 
 	m68ki_write_32((mc68kcpu), ea, res);
 
@@ -8233,11 +6524,7 @@ M68KMAKE_OP(move, 16, frs, .)
 {
 	if(CPU_TYPE_IS_000((mc68kcpu)->cpu_type) || (mc68kcpu)->s_flag) /* NS990408 */
 	{
-<<<<<<< HEAD
-		UINT32 ea = M68KMAKE_GET_EA_AY_16;
-=======
 		uint32_t ea = M68KMAKE_GET_EA_AY_16;
->>>>>>> upstream/master
 		m68ki_write_16((mc68kcpu), ea, m68ki_get_sr(mc68kcpu));
 		return;
 	}
@@ -8260,11 +6547,7 @@ M68KMAKE_OP(move, 16, tos, .)
 {
 	if((mc68kcpu)->s_flag)
 	{
-<<<<<<< HEAD
-		UINT32 new_sr = M68KMAKE_GET_OPER_AY_16;
-=======
 		uint32_t new_sr = M68KMAKE_GET_OPER_AY_16;
->>>>>>> upstream/master
 		m68ki_trace_t0(mc68kcpu);              /* auto-disable (see m68kcpu.h) */
 		m68ki_set_sr((mc68kcpu), new_sr);
 		return;
@@ -8302,11 +6585,7 @@ M68KMAKE_OP(movec, 32, cr, .)
 	{
 		if((mc68kcpu)->s_flag)
 		{
-<<<<<<< HEAD
-			UINT32 word2 = OPER_I_16(mc68kcpu);
-=======
 			uint32_t word2 = OPER_I_16(mc68kcpu);
->>>>>>> upstream/master
 
 			m68ki_trace_t0(mc68kcpu);          /* auto-disable (see m68kcpu.h) */
 			switch (word2 & 0xfff)
@@ -8520,11 +6799,7 @@ M68KMAKE_OP(movec, 32, rc, .)
 	{
 		if((mc68kcpu)->s_flag)
 		{
-<<<<<<< HEAD
-			UINT32 word2 = OPER_I_16(mc68kcpu);
-=======
 			uint32_t word2 = OPER_I_16(mc68kcpu);
->>>>>>> upstream/master
 
 			m68ki_trace_t0(mc68kcpu);          /* auto-disable (see m68kcpu.h) */
 			switch (word2 & 0xfff)
@@ -8553,11 +6828,7 @@ M68KMAKE_OP(movec, 32, rc, .)
 						(mc68kcpu)->cacr = REG_DA(mc68kcpu)[(word2 >> 12) & 15] & 0x0f;
 					}
 
-<<<<<<< HEAD
-//                  logerror("movec to cacr=%04x\n", (mc68kcpu)->cacr);
-=======
 //                  mc68kcpu->logerror("movec to cacr=%04x\n", (mc68kcpu)->cacr);
->>>>>>> upstream/master
 					if ((mc68kcpu)->cacr & (M68K_CACR_CI | M68K_CACR_CEI))
 					{
 						m68ki_ic_clear(mc68kcpu);
@@ -8778,17 +7049,10 @@ M68KMAKE_OP(movec, 32, rc, .)
 
 M68KMAKE_OP(movem, 16, re, pd)
 {
-<<<<<<< HEAD
-	UINT32 i = 0;
-	UINT32 register_list = OPER_I_16(mc68kcpu);
-	UINT32 ea = AY(mc68kcpu);
-	UINT32 count = 0;
-=======
 	uint32_t i = 0;
 	uint32_t register_list = OPER_I_16(mc68kcpu);
 	uint32_t ea = AY(mc68kcpu);
 	uint32_t count = 0;
->>>>>>> upstream/master
 
 	for(; i < 16; i++)
 		if(register_list & (1 << i))
@@ -8805,17 +7069,10 @@ M68KMAKE_OP(movem, 16, re, pd)
 
 M68KMAKE_OP(movem, 16, re, .)
 {
-<<<<<<< HEAD
-	UINT32 i = 0;
-	UINT32 register_list = OPER_I_16(mc68kcpu);
-	UINT32 ea = M68KMAKE_GET_EA_AY_16;
-	UINT32 count = 0;
-=======
 	uint32_t i = 0;
 	uint32_t register_list = OPER_I_16(mc68kcpu);
 	uint32_t ea = M68KMAKE_GET_EA_AY_16;
 	uint32_t count = 0;
->>>>>>> upstream/master
 
 	for(; i < 16; i++)
 		if(register_list & (1 << i))
@@ -8831,17 +7088,10 @@ M68KMAKE_OP(movem, 16, re, .)
 
 M68KMAKE_OP(movem, 32, re, pd)
 {
-<<<<<<< HEAD
-	UINT32 i = 0;
-	UINT32 register_list = OPER_I_16(mc68kcpu);
-	UINT32 ea = AY(mc68kcpu);
-	UINT32 count = 0;
-=======
 	uint32_t i = 0;
 	uint32_t register_list = OPER_I_16(mc68kcpu);
 	uint32_t ea = AY(mc68kcpu);
 	uint32_t count = 0;
->>>>>>> upstream/master
 
 	for(; i < 16; i++)
 		if(register_list & (1 << i))
@@ -8859,17 +7109,10 @@ M68KMAKE_OP(movem, 32, re, pd)
 
 M68KMAKE_OP(movem, 32, re, .)
 {
-<<<<<<< HEAD
-	UINT32 i = 0;
-	UINT32 register_list = OPER_I_16(mc68kcpu);
-	UINT32 ea = M68KMAKE_GET_EA_AY_32;
-	UINT32 count = 0;
-=======
 	uint32_t i = 0;
 	uint32_t register_list = OPER_I_16(mc68kcpu);
 	uint32_t ea = M68KMAKE_GET_EA_AY_32;
 	uint32_t count = 0;
->>>>>>> upstream/master
 
 	for(; i < 16; i++)
 		if(register_list & (1 << i))
@@ -8885,17 +7128,10 @@ M68KMAKE_OP(movem, 32, re, .)
 
 M68KMAKE_OP(movem, 16, er, pi)
 {
-<<<<<<< HEAD
-	UINT32 i = 0;
-	UINT32 register_list = OPER_I_16(mc68kcpu);
-	UINT32 ea = AY(mc68kcpu);
-	UINT32 count = 0;
-=======
 	uint32_t i = 0;
 	uint32_t register_list = OPER_I_16(mc68kcpu);
 	uint32_t ea = AY(mc68kcpu);
 	uint32_t count = 0;
->>>>>>> upstream/master
 
 	for(; i < 16; i++)
 		if(register_list & (1 << i))
@@ -8912,17 +7148,10 @@ M68KMAKE_OP(movem, 16, er, pi)
 
 M68KMAKE_OP(movem, 16, er, pcdi)
 {
-<<<<<<< HEAD
-	UINT32 i = 0;
-	UINT32 register_list = OPER_I_16(mc68kcpu);
-	UINT32 ea = EA_PCDI_16(mc68kcpu);
-	UINT32 count = 0;
-=======
 	uint32_t i = 0;
 	uint32_t register_list = OPER_I_16(mc68kcpu);
 	uint32_t ea = EA_PCDI_16(mc68kcpu);
 	uint32_t count = 0;
->>>>>>> upstream/master
 
 	for(; i < 16; i++)
 		if(register_list & (1 << i))
@@ -8938,17 +7167,10 @@ M68KMAKE_OP(movem, 16, er, pcdi)
 
 M68KMAKE_OP(movem, 16, er, pcix)
 {
-<<<<<<< HEAD
-	UINT32 i = 0;
-	UINT32 register_list = OPER_I_16(mc68kcpu);
-	UINT32 ea = EA_PCIX_16(mc68kcpu);
-	UINT32 count = 0;
-=======
 	uint32_t i = 0;
 	uint32_t register_list = OPER_I_16(mc68kcpu);
 	uint32_t ea = EA_PCIX_16(mc68kcpu);
 	uint32_t count = 0;
->>>>>>> upstream/master
 
 	for(; i < 16; i++)
 		if(register_list & (1 << i))
@@ -8964,17 +7186,10 @@ M68KMAKE_OP(movem, 16, er, pcix)
 
 M68KMAKE_OP(movem, 16, er, .)
 {
-<<<<<<< HEAD
-	UINT32 i = 0;
-	UINT32 register_list = OPER_I_16(mc68kcpu);
-	UINT32 ea = M68KMAKE_GET_EA_AY_16;
-	UINT32 count = 0;
-=======
 	uint32_t i = 0;
 	uint32_t register_list = OPER_I_16(mc68kcpu);
 	uint32_t ea = M68KMAKE_GET_EA_AY_16;
 	uint32_t count = 0;
->>>>>>> upstream/master
 
 	for(; i < 16; i++)
 		if(register_list & (1 << i))
@@ -8990,17 +7205,10 @@ M68KMAKE_OP(movem, 16, er, .)
 
 M68KMAKE_OP(movem, 32, er, pi)
 {
-<<<<<<< HEAD
-	UINT32 i = 0;
-	UINT32 register_list = OPER_I_16(mc68kcpu);
-	UINT32 ea = AY(mc68kcpu);
-	UINT32 count = 0;
-=======
 	uint32_t i = 0;
 	uint32_t register_list = OPER_I_16(mc68kcpu);
 	uint32_t ea = AY(mc68kcpu);
 	uint32_t count = 0;
->>>>>>> upstream/master
 
 	for(; i < 16; i++)
 		if(register_list & (1 << i))
@@ -9017,17 +7225,10 @@ M68KMAKE_OP(movem, 32, er, pi)
 
 M68KMAKE_OP(movem, 32, er, pcdi)
 {
-<<<<<<< HEAD
-	UINT32 i = 0;
-	UINT32 register_list = OPER_I_16(mc68kcpu);
-	UINT32 ea = EA_PCDI_32(mc68kcpu);
-	UINT32 count = 0;
-=======
 	uint32_t i = 0;
 	uint32_t register_list = OPER_I_16(mc68kcpu);
 	uint32_t ea = EA_PCDI_32(mc68kcpu);
 	uint32_t count = 0;
->>>>>>> upstream/master
 
 	for(; i < 16; i++)
 		if(register_list & (1 << i))
@@ -9043,17 +7244,10 @@ M68KMAKE_OP(movem, 32, er, pcdi)
 
 M68KMAKE_OP(movem, 32, er, pcix)
 {
-<<<<<<< HEAD
-	UINT32 i = 0;
-	UINT32 register_list = OPER_I_16(mc68kcpu);
-	UINT32 ea = EA_PCIX_32(mc68kcpu);
-	UINT32 count = 0;
-=======
 	uint32_t i = 0;
 	uint32_t register_list = OPER_I_16(mc68kcpu);
 	uint32_t ea = EA_PCIX_32(mc68kcpu);
 	uint32_t count = 0;
->>>>>>> upstream/master
 
 	for(; i < 16; i++)
 		if(register_list & (1 << i))
@@ -9069,17 +7263,10 @@ M68KMAKE_OP(movem, 32, er, pcix)
 
 M68KMAKE_OP(movem, 32, er, .)
 {
-<<<<<<< HEAD
-	UINT32 i = 0;
-	UINT32 register_list = OPER_I_16(mc68kcpu);
-	UINT32 ea = M68KMAKE_GET_EA_AY_32;
-	UINT32 count = 0;
-=======
 	uint32_t i = 0;
 	uint32_t register_list = OPER_I_16(mc68kcpu);
 	uint32_t ea = M68KMAKE_GET_EA_AY_32;
 	uint32_t count = 0;
->>>>>>> upstream/master
 
 	for(; i < 16; i++)
 		if(register_list & (1 << i))
@@ -9095,13 +7282,8 @@ M68KMAKE_OP(movem, 32, er, .)
 
 M68KMAKE_OP(movep, 16, re, .)
 {
-<<<<<<< HEAD
-	UINT32 ea = EA_AY_DI_16(mc68kcpu);
-	UINT32 src = DX(mc68kcpu);
-=======
 	uint32_t ea = EA_AY_DI_16(mc68kcpu);
 	uint32_t src = DX(mc68kcpu);
->>>>>>> upstream/master
 
 	m68ki_write_8((mc68kcpu), ea, MASK_OUT_ABOVE_8(src >> 8));
 	m68ki_write_8((mc68kcpu), ea += 2, MASK_OUT_ABOVE_8(src));
@@ -9110,13 +7292,8 @@ M68KMAKE_OP(movep, 16, re, .)
 
 M68KMAKE_OP(movep, 32, re, .)
 {
-<<<<<<< HEAD
-	UINT32 ea = EA_AY_DI_32(mc68kcpu);
-	UINT32 src = DX(mc68kcpu);
-=======
 	uint32_t ea = EA_AY_DI_32(mc68kcpu);
 	uint32_t src = DX(mc68kcpu);
->>>>>>> upstream/master
 
 	m68ki_write_8((mc68kcpu), ea, MASK_OUT_ABOVE_8(src >> 24));
 	m68ki_write_8((mc68kcpu), ea += 2, MASK_OUT_ABOVE_8(src >> 16));
@@ -9127,13 +7304,8 @@ M68KMAKE_OP(movep, 32, re, .)
 
 M68KMAKE_OP(movep, 16, er, .)
 {
-<<<<<<< HEAD
-	UINT32 ea = EA_AY_DI_16(mc68kcpu);
-	UINT32* r_dst = &DX(mc68kcpu);
-=======
 	uint32_t ea = EA_AY_DI_16(mc68kcpu);
 	uint32_t* r_dst = &DX(mc68kcpu);
->>>>>>> upstream/master
 
 	*r_dst = MASK_OUT_BELOW_16(*r_dst) | ((m68ki_read_8((mc68kcpu), ea) << 8) + m68ki_read_8((mc68kcpu), ea + 2));
 }
@@ -9141,11 +7313,7 @@ M68KMAKE_OP(movep, 16, er, .)
 
 M68KMAKE_OP(movep, 32, er, .)
 {
-<<<<<<< HEAD
-	UINT32 ea = EA_AY_DI_32(mc68kcpu);
-=======
 	uint32_t ea = EA_AY_DI_32(mc68kcpu);
->>>>>>> upstream/master
 
 	DX(mc68kcpu) = (m68ki_read_8((mc68kcpu), ea) << 24) + (m68ki_read_8((mc68kcpu), ea + 2) << 16)
 		+ (m68ki_read_8((mc68kcpu), ea + 4) << 8) + m68ki_read_8((mc68kcpu), ea + 6);
@@ -9158,13 +7326,8 @@ M68KMAKE_OP(moves, 8, ., .)
 	{
 		if((mc68kcpu)->s_flag)
 		{
-<<<<<<< HEAD
-			UINT32 word2 = OPER_I_16(mc68kcpu);
-			UINT32 ea = M68KMAKE_GET_EA_AY_8;
-=======
 			uint32_t word2 = OPER_I_16(mc68kcpu);
 			uint32_t ea = M68KMAKE_GET_EA_AY_8;
->>>>>>> upstream/master
 
 			m68ki_trace_t0(mc68kcpu);              /* auto-disable (see m68kcpu.h) */
 			if(BIT_B(word2))           /* Register to memory */
@@ -9198,13 +7361,8 @@ M68KMAKE_OP(moves, 16, ., .)
 	{
 		if((mc68kcpu)->s_flag)
 		{
-<<<<<<< HEAD
-			UINT32 word2 = OPER_I_16(mc68kcpu);
-			UINT32 ea = M68KMAKE_GET_EA_AY_16;
-=======
 			uint32_t word2 = OPER_I_16(mc68kcpu);
 			uint32_t ea = M68KMAKE_GET_EA_AY_16;
->>>>>>> upstream/master
 
 			m68ki_trace_t0(mc68kcpu);              /* auto-disable (see m68kcpu.h) */
 			if(BIT_B(word2))           /* Register to memory */
@@ -9238,13 +7396,8 @@ M68KMAKE_OP(moves, 32, ., .)
 	{
 		if((mc68kcpu)->s_flag)
 		{
-<<<<<<< HEAD
-			UINT32 word2 = OPER_I_16(mc68kcpu);
-			UINT32 ea = M68KMAKE_GET_EA_AY_32;
-=======
 			uint32_t word2 = OPER_I_16(mc68kcpu);
 			uint32_t ea = M68KMAKE_GET_EA_AY_32;
->>>>>>> upstream/master
 
 			m68ki_trace_t0(mc68kcpu);              /* auto-disable (see m68kcpu.h) */
 			if(BIT_B(word2))           /* Register to memory */
@@ -9269,11 +7422,7 @@ M68KMAKE_OP(moves, 32, ., .)
 
 M68KMAKE_OP(moveq, 32, ., .)
 {
-<<<<<<< HEAD
-	UINT32 res = DX(mc68kcpu) = MAKE_INT_8(MASK_OUT_ABOVE_8((mc68kcpu)->ir));
-=======
 	uint32_t res = DX(mc68kcpu) = MAKE_INT_8(MASK_OUT_ABOVE_8((mc68kcpu)->ir));
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_32(res);
 	(mc68kcpu)->not_z_flag = res;
@@ -9284,11 +7433,7 @@ M68KMAKE_OP(moveq, 32, ., .)
 
 M68KMAKE_OP(move16, 32, ., .)
 {
-<<<<<<< HEAD
-	UINT16 w2 = OPER_I_16(mc68kcpu);
-=======
 	uint16_t w2 = OPER_I_16(mc68kcpu);
->>>>>>> upstream/master
 	int ax = (mc68kcpu)->ir & 7;
 	int ay = (w2 >> 12) & 7;
 	m68ki_write_32((mc68kcpu), REG_A(mc68kcpu)[ay],    m68ki_read_32((mc68kcpu), REG_A(mc68kcpu)[ax]));
@@ -9303,13 +7448,8 @@ M68KMAKE_OP(move16, 32, ., .)
 
 M68KMAKE_OP(muls, 16, ., d)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DX(mc68kcpu);
-	UINT32 res = MASK_OUT_ABOVE_32(MAKE_INT_16(DY(mc68kcpu)) * MAKE_INT_16(MASK_OUT_ABOVE_16(*r_dst)));
-=======
 	uint32_t* r_dst = &DX(mc68kcpu);
 	uint32_t res = MASK_OUT_ABOVE_32(MAKE_INT_16(DY(mc68kcpu)) * MAKE_INT_16(MASK_OUT_ABOVE_16(*r_dst)));
->>>>>>> upstream/master
 
 	*r_dst = res;
 
@@ -9322,13 +7462,8 @@ M68KMAKE_OP(muls, 16, ., d)
 
 M68KMAKE_OP(muls, 16, ., .)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DX(mc68kcpu);
-	UINT32 res = MASK_OUT_ABOVE_32(MAKE_INT_16(M68KMAKE_GET_OPER_AY_16) * MAKE_INT_16(MASK_OUT_ABOVE_16(*r_dst)));
-=======
 	uint32_t* r_dst = &DX(mc68kcpu);
 	uint32_t res = MASK_OUT_ABOVE_32(MAKE_INT_16(M68KMAKE_GET_OPER_AY_16) * MAKE_INT_16(MASK_OUT_ABOVE_16(*r_dst)));
->>>>>>> upstream/master
 
 	*r_dst = res;
 
@@ -9341,13 +7476,8 @@ M68KMAKE_OP(muls, 16, ., .)
 
 M68KMAKE_OP(mulu, 16, ., d)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DX(mc68kcpu);
-	UINT32 res = MASK_OUT_ABOVE_16(DY(mc68kcpu)) * MASK_OUT_ABOVE_16(*r_dst);
-=======
 	uint32_t* r_dst = &DX(mc68kcpu);
 	uint32_t res = MASK_OUT_ABOVE_16(DY(mc68kcpu)) * MASK_OUT_ABOVE_16(*r_dst);
->>>>>>> upstream/master
 
 	*r_dst = res;
 
@@ -9360,13 +7490,8 @@ M68KMAKE_OP(mulu, 16, ., d)
 
 M68KMAKE_OP(mulu, 16, ., .)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DX(mc68kcpu);
-	UINT32 res = M68KMAKE_GET_OPER_AY_16 * MASK_OUT_ABOVE_16(*r_dst);
-=======
 	uint32_t* r_dst = &DX(mc68kcpu);
 	uint32_t res = M68KMAKE_GET_OPER_AY_16 * MASK_OUT_ABOVE_16(*r_dst);
->>>>>>> upstream/master
 
 	*r_dst = res;
 
@@ -9381,36 +7506,21 @@ M68KMAKE_OP(mull, 32, ., d)
 {
 	if(CPU_TYPE_IS_EC020_PLUS((mc68kcpu)->cpu_type))
 	{
-<<<<<<< HEAD
-		UINT32 word2 = OPER_I_16(mc68kcpu);
-		UINT64 src = DY(mc68kcpu);
-		UINT64 dst = REG_D(mc68kcpu)[(word2 >> 12) & 7];
-		UINT64 res;
-=======
 		uint32_t word2 = OPER_I_16(mc68kcpu);
 		uint64_t src = DY(mc68kcpu);
 		uint64_t dst = REG_D(mc68kcpu)[(word2 >> 12) & 7];
 		uint64_t res;
->>>>>>> upstream/master
 
 		(mc68kcpu)->c_flag = CFLAG_CLEAR;
 
 		if(BIT_B(word2))               /* signed */
 		{
-<<<<<<< HEAD
-			res = (INT64)((INT32)src) * (INT64)((INT32)dst);
-=======
 			res = (int64_t)((int32_t)src) * (int64_t)((int32_t)dst);
->>>>>>> upstream/master
 			if(!BIT_A(word2))
 			{
 				(mc68kcpu)->not_z_flag = MASK_OUT_ABOVE_32(res);
 				(mc68kcpu)->n_flag = NFLAG_32(res);
-<<<<<<< HEAD
-				(mc68kcpu)->v_flag = ((INT64)res != (INT32)res)<<7;
-=======
 				(mc68kcpu)->v_flag = ((int64_t)res != (int32_t)res)<<7;
->>>>>>> upstream/master
 				REG_D(mc68kcpu)[(word2 >> 12) & 7] = (mc68kcpu)->not_z_flag;
 				return;
 			}
@@ -9446,36 +7556,21 @@ M68KMAKE_OP(mull, 32, ., .)
 {
 	if(CPU_TYPE_IS_EC020_PLUS((mc68kcpu)->cpu_type))
 	{
-<<<<<<< HEAD
-		UINT32 word2 = OPER_I_16(mc68kcpu);
-		UINT64 src = M68KMAKE_GET_OPER_AY_32;
-		UINT64 dst = REG_D(mc68kcpu)[(word2 >> 12) & 7];
-		UINT64 res;
-=======
 		uint32_t word2 = OPER_I_16(mc68kcpu);
 		uint64_t src = M68KMAKE_GET_OPER_AY_32;
 		uint64_t dst = REG_D(mc68kcpu)[(word2 >> 12) & 7];
 		uint64_t res;
->>>>>>> upstream/master
 
 		(mc68kcpu)->c_flag = CFLAG_CLEAR;
 
 		if(BIT_B(word2))               /* signed */
 		{
-<<<<<<< HEAD
-			res = (INT64)((INT32)src) * (INT64)((INT32)dst);
-=======
 			res = (int64_t)((int32_t)src) * (int64_t)((int32_t)dst);
->>>>>>> upstream/master
 			if(!BIT_A(word2))
 			{
 				(mc68kcpu)->not_z_flag = MASK_OUT_ABOVE_32(res);
 				(mc68kcpu)->n_flag = NFLAG_32(res);
-<<<<<<< HEAD
-				(mc68kcpu)->v_flag = ((INT64)res != (INT32)res)<<7;
-=======
 				(mc68kcpu)->v_flag = ((int64_t)res != (int32_t)res)<<7;
->>>>>>> upstream/master
 				REG_D(mc68kcpu)[(word2 >> 12) & 7] = (mc68kcpu)->not_z_flag;
 				return;
 			}
@@ -9509,15 +7604,9 @@ M68KMAKE_OP(mull, 32, ., .)
 
 M68KMAKE_OP(nbcd, 8, ., d)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DY(mc68kcpu);
-	UINT32 dst = *r_dst;
-	UINT32 res = MASK_OUT_ABOVE_8(0x9a - dst - XFLAG_AS_1(mc68kcpu));
-=======
 	uint32_t* r_dst = &DY(mc68kcpu);
 	uint32_t dst = *r_dst;
 	uint32_t res = MASK_OUT_ABOVE_8(0x9a - dst - XFLAG_1(mc68kcpu));
->>>>>>> upstream/master
 
 	if(res != 0x9a)
 	{
@@ -9548,15 +7637,9 @@ M68KMAKE_OP(nbcd, 8, ., d)
 
 M68KMAKE_OP(nbcd, 8, ., .)
 {
-<<<<<<< HEAD
-	UINT32 ea = M68KMAKE_GET_EA_AY_8;
-	UINT32 dst = m68ki_read_8((mc68kcpu), ea);
-	UINT32 res = MASK_OUT_ABOVE_8(0x9a - dst - XFLAG_AS_1(mc68kcpu));
-=======
 	uint32_t ea = M68KMAKE_GET_EA_AY_8;
 	uint32_t dst = m68ki_read_8((mc68kcpu), ea);
 	uint32_t res = MASK_OUT_ABOVE_8(0x9a - dst - XFLAG_1(mc68kcpu));
->>>>>>> upstream/master
 
 	if(res != 0x9a)
 	{
@@ -9587,13 +7670,8 @@ M68KMAKE_OP(nbcd, 8, ., .)
 
 M68KMAKE_OP(neg, 8, ., d)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DY(mc68kcpu);
-	UINT32 res = 0 - MASK_OUT_ABOVE_8(*r_dst);
-=======
 	uint32_t* r_dst = &DY(mc68kcpu);
 	uint32_t res = 0 - MASK_OUT_ABOVE_8(*r_dst);
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_8(res);
 	(mc68kcpu)->c_flag = (mc68kcpu)->x_flag = CFLAG_8(res);
@@ -9606,15 +7684,9 @@ M68KMAKE_OP(neg, 8, ., d)
 
 M68KMAKE_OP(neg, 8, ., .)
 {
-<<<<<<< HEAD
-	UINT32 ea = M68KMAKE_GET_EA_AY_8;
-	UINT32 src = m68ki_read_8((mc68kcpu), ea);
-	UINT32 res = 0 - src;
-=======
 	uint32_t ea = M68KMAKE_GET_EA_AY_8;
 	uint32_t src = m68ki_read_8((mc68kcpu), ea);
 	uint32_t res = 0 - src;
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_8(res);
 	(mc68kcpu)->c_flag = (mc68kcpu)->x_flag = CFLAG_8(res);
@@ -9627,13 +7699,8 @@ M68KMAKE_OP(neg, 8, ., .)
 
 M68KMAKE_OP(neg, 16, ., d)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DY(mc68kcpu);
-	UINT32 res = 0 - MASK_OUT_ABOVE_16(*r_dst);
-=======
 	uint32_t* r_dst = &DY(mc68kcpu);
 	uint32_t res = 0 - MASK_OUT_ABOVE_16(*r_dst);
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_16(res);
 	(mc68kcpu)->c_flag = (mc68kcpu)->x_flag = CFLAG_16(res);
@@ -9646,15 +7713,9 @@ M68KMAKE_OP(neg, 16, ., d)
 
 M68KMAKE_OP(neg, 16, ., .)
 {
-<<<<<<< HEAD
-	UINT32 ea = M68KMAKE_GET_EA_AY_16;
-	UINT32 src = m68ki_read_16((mc68kcpu), ea);
-	UINT32 res = 0 - src;
-=======
 	uint32_t ea = M68KMAKE_GET_EA_AY_16;
 	uint32_t src = m68ki_read_16((mc68kcpu), ea);
 	uint32_t res = 0 - src;
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_16(res);
 	(mc68kcpu)->c_flag = (mc68kcpu)->x_flag = CFLAG_16(res);
@@ -9667,13 +7728,8 @@ M68KMAKE_OP(neg, 16, ., .)
 
 M68KMAKE_OP(neg, 32, ., d)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DY(mc68kcpu);
-	UINT32 res = 0 - *r_dst;
-=======
 	uint32_t* r_dst = &DY(mc68kcpu);
 	uint32_t res = 0 - *r_dst;
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_32(res);
 	(mc68kcpu)->c_flag = (mc68kcpu)->x_flag = CFLAG_SUB_32(*r_dst, 0, res);
@@ -9686,15 +7742,9 @@ M68KMAKE_OP(neg, 32, ., d)
 
 M68KMAKE_OP(neg, 32, ., .)
 {
-<<<<<<< HEAD
-	UINT32 ea = M68KMAKE_GET_EA_AY_32;
-	UINT32 src = m68ki_read_32((mc68kcpu), ea);
-	UINT32 res = 0 - src;
-=======
 	uint32_t ea = M68KMAKE_GET_EA_AY_32;
 	uint32_t src = m68ki_read_32((mc68kcpu), ea);
 	uint32_t res = 0 - src;
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_32(res);
 	(mc68kcpu)->c_flag = (mc68kcpu)->x_flag = CFLAG_SUB_32(src, 0, res);
@@ -9707,13 +7757,8 @@ M68KMAKE_OP(neg, 32, ., .)
 
 M68KMAKE_OP(negx, 8, ., d)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DY(mc68kcpu);
-	UINT32 res = 0 - MASK_OUT_ABOVE_8(*r_dst) - XFLAG_AS_1(mc68kcpu);
-=======
 	uint32_t* r_dst = &DY(mc68kcpu);
 	uint32_t res = 0 - MASK_OUT_ABOVE_8(*r_dst) - XFLAG_1(mc68kcpu);
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_8(res);
 	(mc68kcpu)->x_flag = (mc68kcpu)->c_flag = CFLAG_8(res);
@@ -9728,15 +7773,9 @@ M68KMAKE_OP(negx, 8, ., d)
 
 M68KMAKE_OP(negx, 8, ., .)
 {
-<<<<<<< HEAD
-	UINT32 ea = M68KMAKE_GET_EA_AY_8;
-	UINT32 src = m68ki_read_8((mc68kcpu), ea);
-	UINT32 res = 0 - src - XFLAG_AS_1(mc68kcpu);
-=======
 	uint32_t ea = M68KMAKE_GET_EA_AY_8;
 	uint32_t src = m68ki_read_8((mc68kcpu), ea);
 	uint32_t res = 0 - src - XFLAG_1(mc68kcpu);
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_8(res);
 	(mc68kcpu)->x_flag = (mc68kcpu)->c_flag = CFLAG_8(res);
@@ -9751,13 +7790,8 @@ M68KMAKE_OP(negx, 8, ., .)
 
 M68KMAKE_OP(negx, 16, ., d)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DY(mc68kcpu);
-	UINT32 res = 0 - MASK_OUT_ABOVE_16(*r_dst) - XFLAG_AS_1(mc68kcpu);
-=======
 	uint32_t* r_dst = &DY(mc68kcpu);
 	uint32_t res = 0 - MASK_OUT_ABOVE_16(*r_dst) - XFLAG_1(mc68kcpu);
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_16(res);
 	(mc68kcpu)->x_flag = (mc68kcpu)->c_flag = CFLAG_16(res);
@@ -9772,15 +7806,9 @@ M68KMAKE_OP(negx, 16, ., d)
 
 M68KMAKE_OP(negx, 16, ., .)
 {
-<<<<<<< HEAD
-	UINT32 ea  = M68KMAKE_GET_EA_AY_16;
-	UINT32 src = m68ki_read_16((mc68kcpu), ea);
-	UINT32 res = 0 - MASK_OUT_ABOVE_16(src) - XFLAG_AS_1(mc68kcpu);
-=======
 	uint32_t ea  = M68KMAKE_GET_EA_AY_16;
 	uint32_t src = m68ki_read_16((mc68kcpu), ea);
 	uint32_t res = 0 - MASK_OUT_ABOVE_16(src) - XFLAG_1(mc68kcpu);
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_16(res);
 	(mc68kcpu)->x_flag = (mc68kcpu)->c_flag = CFLAG_16(res);
@@ -9795,13 +7823,8 @@ M68KMAKE_OP(negx, 16, ., .)
 
 M68KMAKE_OP(negx, 32, ., d)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DY(mc68kcpu);
-	UINT32 res = 0 - MASK_OUT_ABOVE_32(*r_dst) - XFLAG_AS_1(mc68kcpu);
-=======
 	uint32_t* r_dst = &DY(mc68kcpu);
 	uint32_t res = 0 - MASK_OUT_ABOVE_32(*r_dst) - XFLAG_1(mc68kcpu);
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_32(res);
 	(mc68kcpu)->x_flag = (mc68kcpu)->c_flag = CFLAG_SUB_32(*r_dst, 0, res);
@@ -9816,15 +7839,9 @@ M68KMAKE_OP(negx, 32, ., d)
 
 M68KMAKE_OP(negx, 32, ., .)
 {
-<<<<<<< HEAD
-	UINT32 ea  = M68KMAKE_GET_EA_AY_32;
-	UINT32 src = m68ki_read_32((mc68kcpu), ea);
-	UINT32 res = 0 - MASK_OUT_ABOVE_32(src) - XFLAG_AS_1(mc68kcpu);
-=======
 	uint32_t ea  = M68KMAKE_GET_EA_AY_32;
 	uint32_t src = m68ki_read_32((mc68kcpu), ea);
 	uint32_t res = 0 - MASK_OUT_ABOVE_32(src) - XFLAG_1(mc68kcpu);
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_32(res);
 	(mc68kcpu)->x_flag = (mc68kcpu)->c_flag = CFLAG_SUB_32(src, 0, res);
@@ -9845,13 +7862,8 @@ M68KMAKE_OP(nop, 0, ., .)
 
 M68KMAKE_OP(not, 8, ., d)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DY(mc68kcpu);
-	UINT32 res = MASK_OUT_ABOVE_8(~*r_dst);
-=======
 	uint32_t* r_dst = &DY(mc68kcpu);
 	uint32_t res = MASK_OUT_ABOVE_8(~*r_dst);
->>>>>>> upstream/master
 
 	*r_dst = MASK_OUT_BELOW_8(*r_dst) | res;
 
@@ -9864,13 +7876,8 @@ M68KMAKE_OP(not, 8, ., d)
 
 M68KMAKE_OP(not, 8, ., .)
 {
-<<<<<<< HEAD
-	UINT32 ea = M68KMAKE_GET_EA_AY_8;
-	UINT32 res = MASK_OUT_ABOVE_8(~m68ki_read_8((mc68kcpu), ea));
-=======
 	uint32_t ea = M68KMAKE_GET_EA_AY_8;
 	uint32_t res = MASK_OUT_ABOVE_8(~m68ki_read_8((mc68kcpu), ea));
->>>>>>> upstream/master
 
 	m68ki_write_8((mc68kcpu), ea, res);
 
@@ -9883,13 +7890,8 @@ M68KMAKE_OP(not, 8, ., .)
 
 M68KMAKE_OP(not, 16, ., d)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DY(mc68kcpu);
-	UINT32 res = MASK_OUT_ABOVE_16(~*r_dst);
-=======
 	uint32_t* r_dst = &DY(mc68kcpu);
 	uint32_t res = MASK_OUT_ABOVE_16(~*r_dst);
->>>>>>> upstream/master
 
 	*r_dst = MASK_OUT_BELOW_16(*r_dst) | res;
 
@@ -9902,13 +7904,8 @@ M68KMAKE_OP(not, 16, ., d)
 
 M68KMAKE_OP(not, 16, ., .)
 {
-<<<<<<< HEAD
-	UINT32 ea = M68KMAKE_GET_EA_AY_16;
-	UINT32 res = MASK_OUT_ABOVE_16(~m68ki_read_16((mc68kcpu), ea));
-=======
 	uint32_t ea = M68KMAKE_GET_EA_AY_16;
 	uint32_t res = MASK_OUT_ABOVE_16(~m68ki_read_16((mc68kcpu), ea));
->>>>>>> upstream/master
 
 	m68ki_write_16((mc68kcpu), ea, res);
 
@@ -9921,13 +7918,8 @@ M68KMAKE_OP(not, 16, ., .)
 
 M68KMAKE_OP(not, 32, ., d)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DY(mc68kcpu);
-	UINT32 res = *r_dst = MASK_OUT_ABOVE_32(~*r_dst);
-=======
 	uint32_t* r_dst = &DY(mc68kcpu);
 	uint32_t res = *r_dst = MASK_OUT_ABOVE_32(~*r_dst);
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_32(res);
 	(mc68kcpu)->not_z_flag = res;
@@ -9938,13 +7930,8 @@ M68KMAKE_OP(not, 32, ., d)
 
 M68KMAKE_OP(not, 32, ., .)
 {
-<<<<<<< HEAD
-	UINT32 ea = M68KMAKE_GET_EA_AY_32;
-	UINT32 res = MASK_OUT_ABOVE_32(~m68ki_read_32((mc68kcpu), ea));
-=======
 	uint32_t ea = M68KMAKE_GET_EA_AY_32;
 	uint32_t res = MASK_OUT_ABOVE_32(~m68ki_read_32((mc68kcpu), ea));
->>>>>>> upstream/master
 
 	m68ki_write_32((mc68kcpu), ea, res);
 
@@ -9957,11 +7944,7 @@ M68KMAKE_OP(not, 32, ., .)
 
 M68KMAKE_OP(or, 8, er, d)
 {
-<<<<<<< HEAD
-	UINT32 res = MASK_OUT_ABOVE_8((DX(mc68kcpu) |= MASK_OUT_ABOVE_8(DY(mc68kcpu))));
-=======
 	uint32_t res = MASK_OUT_ABOVE_8((DX(mc68kcpu) |= MASK_OUT_ABOVE_8(DY(mc68kcpu))));
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_8(res);
 	(mc68kcpu)->not_z_flag = res;
@@ -9972,11 +7955,7 @@ M68KMAKE_OP(or, 8, er, d)
 
 M68KMAKE_OP(or, 8, er, .)
 {
-<<<<<<< HEAD
-	UINT32 res = MASK_OUT_ABOVE_8((DX(mc68kcpu) |= M68KMAKE_GET_OPER_AY_8));
-=======
 	uint32_t res = MASK_OUT_ABOVE_8((DX(mc68kcpu) |= M68KMAKE_GET_OPER_AY_8));
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_8(res);
 	(mc68kcpu)->not_z_flag = res;
@@ -9987,11 +7966,7 @@ M68KMAKE_OP(or, 8, er, .)
 
 M68KMAKE_OP(or, 16, er, d)
 {
-<<<<<<< HEAD
-	UINT32 res = MASK_OUT_ABOVE_16((DX(mc68kcpu) |= MASK_OUT_ABOVE_16(DY(mc68kcpu))));
-=======
 	uint32_t res = MASK_OUT_ABOVE_16((DX(mc68kcpu) |= MASK_OUT_ABOVE_16(DY(mc68kcpu))));
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_16(res);
 	(mc68kcpu)->not_z_flag = res;
@@ -10002,11 +7977,7 @@ M68KMAKE_OP(or, 16, er, d)
 
 M68KMAKE_OP(or, 16, er, .)
 {
-<<<<<<< HEAD
-	UINT32 res = MASK_OUT_ABOVE_16((DX(mc68kcpu) |= M68KMAKE_GET_OPER_AY_16));
-=======
 	uint32_t res = MASK_OUT_ABOVE_16((DX(mc68kcpu) |= M68KMAKE_GET_OPER_AY_16));
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_16(res);
 	(mc68kcpu)->not_z_flag = res;
@@ -10017,11 +7988,7 @@ M68KMAKE_OP(or, 16, er, .)
 
 M68KMAKE_OP(or, 32, er, d)
 {
-<<<<<<< HEAD
-	UINT32 res = DX(mc68kcpu) |= DY(mc68kcpu);
-=======
 	uint32_t res = DX(mc68kcpu) |= DY(mc68kcpu);
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_32(res);
 	(mc68kcpu)->not_z_flag = res;
@@ -10032,11 +7999,7 @@ M68KMAKE_OP(or, 32, er, d)
 
 M68KMAKE_OP(or, 32, er, .)
 {
-<<<<<<< HEAD
-	UINT32 res = DX(mc68kcpu) |= M68KMAKE_GET_OPER_AY_32;
-=======
 	uint32_t res = DX(mc68kcpu) |= M68KMAKE_GET_OPER_AY_32;
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_32(res);
 	(mc68kcpu)->not_z_flag = res;
@@ -10047,13 +8010,8 @@ M68KMAKE_OP(or, 32, er, .)
 
 M68KMAKE_OP(or, 8, re, .)
 {
-<<<<<<< HEAD
-	UINT32 ea = M68KMAKE_GET_EA_AY_8;
-	UINT32 res = MASK_OUT_ABOVE_8(DX(mc68kcpu) | m68ki_read_8((mc68kcpu), ea));
-=======
 	uint32_t ea = M68KMAKE_GET_EA_AY_8;
 	uint32_t res = MASK_OUT_ABOVE_8(DX(mc68kcpu) | m68ki_read_8((mc68kcpu), ea));
->>>>>>> upstream/master
 
 	m68ki_write_8((mc68kcpu), ea, res);
 
@@ -10066,13 +8024,8 @@ M68KMAKE_OP(or, 8, re, .)
 
 M68KMAKE_OP(or, 16, re, .)
 {
-<<<<<<< HEAD
-	UINT32 ea = M68KMAKE_GET_EA_AY_16;
-	UINT32 res = MASK_OUT_ABOVE_16(DX(mc68kcpu) | m68ki_read_16((mc68kcpu), ea));
-=======
 	uint32_t ea = M68KMAKE_GET_EA_AY_16;
 	uint32_t res = MASK_OUT_ABOVE_16(DX(mc68kcpu) | m68ki_read_16((mc68kcpu), ea));
->>>>>>> upstream/master
 
 	m68ki_write_16((mc68kcpu), ea, res);
 
@@ -10085,13 +8038,8 @@ M68KMAKE_OP(or, 16, re, .)
 
 M68KMAKE_OP(or, 32, re, .)
 {
-<<<<<<< HEAD
-	UINT32 ea = M68KMAKE_GET_EA_AY_32;
-	UINT32 res = DX(mc68kcpu) | m68ki_read_32((mc68kcpu), ea);
-=======
 	uint32_t ea = M68KMAKE_GET_EA_AY_32;
 	uint32_t res = DX(mc68kcpu) | m68ki_read_32((mc68kcpu), ea);
->>>>>>> upstream/master
 
 	m68ki_write_32((mc68kcpu), ea, res);
 
@@ -10104,11 +8052,7 @@ M68KMAKE_OP(or, 32, re, .)
 
 M68KMAKE_OP(ori, 8, ., d)
 {
-<<<<<<< HEAD
-	UINT32 res = MASK_OUT_ABOVE_8((DY(mc68kcpu) |= OPER_I_8(mc68kcpu)));
-=======
 	uint32_t res = MASK_OUT_ABOVE_8((DY(mc68kcpu) |= OPER_I_8(mc68kcpu)));
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_8(res);
 	(mc68kcpu)->not_z_flag = res;
@@ -10119,15 +8063,9 @@ M68KMAKE_OP(ori, 8, ., d)
 
 M68KMAKE_OP(ori, 8, ., .)
 {
-<<<<<<< HEAD
-	UINT32 src = OPER_I_8(mc68kcpu);
-	UINT32 ea = M68KMAKE_GET_EA_AY_8;
-	UINT32 res = MASK_OUT_ABOVE_8(src | m68ki_read_8((mc68kcpu), ea));
-=======
 	uint32_t src = OPER_I_8(mc68kcpu);
 	uint32_t ea = M68KMAKE_GET_EA_AY_8;
 	uint32_t res = MASK_OUT_ABOVE_8(src | m68ki_read_8((mc68kcpu), ea));
->>>>>>> upstream/master
 
 	m68ki_write_8((mc68kcpu), ea, res);
 
@@ -10140,11 +8078,7 @@ M68KMAKE_OP(ori, 8, ., .)
 
 M68KMAKE_OP(ori, 16, ., d)
 {
-<<<<<<< HEAD
-	UINT32 res = MASK_OUT_ABOVE_16(DY(mc68kcpu) |= OPER_I_16(mc68kcpu));
-=======
 	uint32_t res = MASK_OUT_ABOVE_16(DY(mc68kcpu) |= OPER_I_16(mc68kcpu));
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_16(res);
 	(mc68kcpu)->not_z_flag = res;
@@ -10155,15 +8089,9 @@ M68KMAKE_OP(ori, 16, ., d)
 
 M68KMAKE_OP(ori, 16, ., .)
 {
-<<<<<<< HEAD
-	UINT32 src = OPER_I_16(mc68kcpu);
-	UINT32 ea = M68KMAKE_GET_EA_AY_16;
-	UINT32 res = MASK_OUT_ABOVE_16(src | m68ki_read_16((mc68kcpu), ea));
-=======
 	uint32_t src = OPER_I_16(mc68kcpu);
 	uint32_t ea = M68KMAKE_GET_EA_AY_16;
 	uint32_t res = MASK_OUT_ABOVE_16(src | m68ki_read_16((mc68kcpu), ea));
->>>>>>> upstream/master
 
 	m68ki_write_16((mc68kcpu), ea, res);
 
@@ -10176,11 +8104,7 @@ M68KMAKE_OP(ori, 16, ., .)
 
 M68KMAKE_OP(ori, 32, ., d)
 {
-<<<<<<< HEAD
-	UINT32 res = DY(mc68kcpu) |= OPER_I_32(mc68kcpu);
-=======
 	uint32_t res = DY(mc68kcpu) |= OPER_I_32(mc68kcpu);
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_32(res);
 	(mc68kcpu)->not_z_flag = res;
@@ -10191,15 +8115,9 @@ M68KMAKE_OP(ori, 32, ., d)
 
 M68KMAKE_OP(ori, 32, ., .)
 {
-<<<<<<< HEAD
-	UINT32 src = OPER_I_32(mc68kcpu);
-	UINT32 ea = M68KMAKE_GET_EA_AY_32;
-	UINT32 res = src | m68ki_read_32((mc68kcpu), ea);
-=======
 	uint32_t src = OPER_I_32(mc68kcpu);
 	uint32_t ea = M68KMAKE_GET_EA_AY_32;
 	uint32_t res = src | m68ki_read_32((mc68kcpu), ea);
->>>>>>> upstream/master
 
 	m68ki_write_32((mc68kcpu), ea, res);
 
@@ -10220,11 +8138,7 @@ M68KMAKE_OP(ori, 16, tos, .)
 {
 	if((mc68kcpu)->s_flag)
 	{
-<<<<<<< HEAD
-		UINT32 src = OPER_I_16(mc68kcpu);
-=======
 		uint32_t src = OPER_I_16(mc68kcpu);
->>>>>>> upstream/master
 		m68ki_trace_t0(mc68kcpu);              /* auto-disable (see m68kcpu.h) */
 		m68ki_set_sr((mc68kcpu), m68ki_get_sr(mc68kcpu) | src);
 		return;
@@ -10238,13 +8152,8 @@ M68KMAKE_OP(pack, 16, rr, .)
 	if(CPU_TYPE_IS_EC020_PLUS((mc68kcpu)->cpu_type))
 	{
 		/* Note: DX(mc68kcpu) and DY(mc68kcpu) are reversed in Motorola's docs */
-<<<<<<< HEAD
-		UINT32 src = DY(mc68kcpu) + OPER_I_16(mc68kcpu);
-		UINT32* r_dst = &DX(mc68kcpu);
-=======
 		uint32_t src = DY(mc68kcpu) + OPER_I_16(mc68kcpu);
 		uint32_t* r_dst = &DX(mc68kcpu);
->>>>>>> upstream/master
 
 		*r_dst = MASK_OUT_BELOW_8(*r_dst) | ((src >> 4) & 0x00f0) | (src & 0x000f);
 		return;
@@ -10258,13 +8167,8 @@ M68KMAKE_OP(pack, 16, mm, ax7)
 	if(CPU_TYPE_IS_EC020_PLUS((mc68kcpu)->cpu_type))
 	{
 		/* Note: AX and AY are reversed in Motorola's docs */
-<<<<<<< HEAD
-		UINT32 ea_src = EA_AY_PD_8(mc68kcpu);
-		UINT32 src = m68ki_read_8((mc68kcpu), ea_src);
-=======
 		uint32_t ea_src = EA_AY_PD_8(mc68kcpu);
 		uint32_t src = m68ki_read_8((mc68kcpu), ea_src);
->>>>>>> upstream/master
 		ea_src = EA_AY_PD_8(mc68kcpu);
 		src = ((src << 8) | m68ki_read_8((mc68kcpu), ea_src)) + OPER_I_16(mc68kcpu);
 
@@ -10280,13 +8184,8 @@ M68KMAKE_OP(pack, 16, mm, ay7)
 	if(CPU_TYPE_IS_EC020_PLUS((mc68kcpu)->cpu_type))
 	{
 		/* Note: AX and AY are reversed in Motorola's docs */
-<<<<<<< HEAD
-		UINT32 ea_src = EA_A7_PD_8(mc68kcpu);
-		UINT32 src = m68ki_read_8((mc68kcpu), ea_src);
-=======
 		uint32_t ea_src = EA_A7_PD_8(mc68kcpu);
 		uint32_t src = m68ki_read_8((mc68kcpu), ea_src);
->>>>>>> upstream/master
 		ea_src = EA_A7_PD_8(mc68kcpu);
 		src = ((src << 8) | m68ki_read_8((mc68kcpu), ea_src)) + OPER_I_16(mc68kcpu);
 
@@ -10301,13 +8200,8 @@ M68KMAKE_OP(pack, 16, mm, axy7)
 {
 	if(CPU_TYPE_IS_EC020_PLUS((mc68kcpu)->cpu_type))
 	{
-<<<<<<< HEAD
-		UINT32 ea_src = EA_A7_PD_8(mc68kcpu);
-		UINT32 src = m68ki_read_8((mc68kcpu), ea_src);
-=======
 		uint32_t ea_src = EA_A7_PD_8(mc68kcpu);
 		uint32_t src = m68ki_read_8((mc68kcpu), ea_src);
->>>>>>> upstream/master
 		ea_src = EA_A7_PD_8(mc68kcpu);
 		src = ((src << 8) | m68ki_read_8((mc68kcpu), ea_src)) + OPER_I_16(mc68kcpu);
 
@@ -10323,13 +8217,8 @@ M68KMAKE_OP(pack, 16, mm, .)
 	if(CPU_TYPE_IS_EC020_PLUS((mc68kcpu)->cpu_type))
 	{
 		/* Note: AX and AY are reversed in Motorola's docs */
-<<<<<<< HEAD
-		UINT32 ea_src = EA_AY_PD_8(mc68kcpu);
-		UINT32 src = m68ki_read_8((mc68kcpu), ea_src);
-=======
 		uint32_t ea_src = EA_AY_PD_8(mc68kcpu);
 		uint32_t src = m68ki_read_8((mc68kcpu), ea_src);
->>>>>>> upstream/master
 		ea_src = EA_AY_PD_8(mc68kcpu);
 		src = ((src << 8) | m68ki_read_8((mc68kcpu), ea_src)) + OPER_I_16(mc68kcpu);
 
@@ -10342,11 +8231,7 @@ M68KMAKE_OP(pack, 16, mm, .)
 
 M68KMAKE_OP(pea, 32, ., .)
 {
-<<<<<<< HEAD
-	UINT32 ea = M68KMAKE_GET_EA_AY_32;
-=======
 	uint32_t ea = M68KMAKE_GET_EA_AY_32;
->>>>>>> upstream/master
 
 	m68ki_push_32((mc68kcpu), ea);
 }
@@ -10355,11 +8240,7 @@ M68KMAKE_OP(pflusha, 32, ., .)
 {
 	if ((CPU_TYPE_IS_EC020_PLUS((mc68kcpu)->cpu_type)) && ((mc68kcpu)->has_pmmu))
 	{
-<<<<<<< HEAD
-		logerror("68040: unhandled PFLUSHA (ir=%04x)\n", mc68kcpu->ir);
-=======
 		mc68kcpu->logerror("68040: unhandled PFLUSHA (ir=%04x)\n", mc68kcpu->ir);
->>>>>>> upstream/master
 		return;
 	}
 	m68ki_exception_1111(mc68kcpu);
@@ -10369,11 +8250,7 @@ M68KMAKE_OP(pflushan, 32, ., .)
 {
 	if ((CPU_TYPE_IS_EC020_PLUS((mc68kcpu)->cpu_type)) && ((mc68kcpu)->has_pmmu))
 	{
-<<<<<<< HEAD
-		logerror("68040: unhandled PFLUSHAN (ir=%04x)\n", mc68kcpu->ir);
-=======
 		mc68kcpu->logerror("68040: unhandled PFLUSHAN (ir=%04x)\n", mc68kcpu->ir);
->>>>>>> upstream/master
 		return;
 	}
 	m68ki_exception_1111(mc68kcpu);
@@ -10395,11 +8272,7 @@ M68KMAKE_OP(ptest, 32, ., .)
 {
 	if ((CPU_TYPE_IS_040_PLUS((mc68kcpu)->cpu_type)) && ((mc68kcpu)->has_pmmu))
 	{
-<<<<<<< HEAD
-		logerror("68040: unhandled PTEST\n");
-=======
 		mc68kcpu->logerror("68040: unhandled PTEST\n");
->>>>>>> upstream/master
 		return;
 	}
 	else
@@ -10423,19 +8296,11 @@ M68KMAKE_OP(reset, 0, ., .)
 
 M68KMAKE_OP(ror, 8, s, .)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DY(mc68kcpu);
-	UINT32 orig_shift = ((((mc68kcpu)->ir >> 9) - 1) & 7) + 1;
-	UINT32 shift = orig_shift & 7;
-	UINT32 src = MASK_OUT_ABOVE_8(*r_dst);
-	UINT32 res = ROR_8(src, shift);
-=======
 	uint32_t* r_dst = &DY(mc68kcpu);
 	uint32_t orig_shift = ((((mc68kcpu)->ir >> 9) - 1) & 7) + 1;
 	uint32_t shift = orig_shift & 7;
 	uint32_t src = MASK_OUT_ABOVE_8(*r_dst);
 	uint32_t res = ROR_8(src, shift);
->>>>>>> upstream/master
 
 	if(orig_shift != 0)
 		(mc68kcpu)->remaining_cycles -= orig_shift<<(mc68kcpu)->cyc_shift;
@@ -10451,17 +8316,10 @@ M68KMAKE_OP(ror, 8, s, .)
 
 M68KMAKE_OP(ror, 16, s, .)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DY(mc68kcpu);
-	UINT32 shift = ((((mc68kcpu)->ir >> 9) - 1) & 7) + 1;
-	UINT32 src = MASK_OUT_ABOVE_16(*r_dst);
-	UINT32 res = ROR_16(src, shift);
-=======
 	uint32_t* r_dst = &DY(mc68kcpu);
 	uint32_t shift = ((((mc68kcpu)->ir >> 9) - 1) & 7) + 1;
 	uint32_t src = MASK_OUT_ABOVE_16(*r_dst);
 	uint32_t res = ROR_16(src, shift);
->>>>>>> upstream/master
 
 	if(shift != 0)
 		(mc68kcpu)->remaining_cycles -= shift<<(mc68kcpu)->cyc_shift;
@@ -10477,17 +8335,10 @@ M68KMAKE_OP(ror, 16, s, .)
 
 M68KMAKE_OP(ror, 32, s, .)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DY(mc68kcpu);
-	UINT32 shift = ((((mc68kcpu)->ir >> 9) - 1) & 7) + 1;
-	UINT64 src = *r_dst;
-	UINT32 res = ROR_32(src, shift);
-=======
 	uint32_t* r_dst = &DY(mc68kcpu);
 	uint32_t shift = ((((mc68kcpu)->ir >> 9) - 1) & 7) + 1;
 	uint64_t src = *r_dst;
 	uint32_t res = ROR_32(src, shift);
->>>>>>> upstream/master
 
 	if(shift != 0)
 		(mc68kcpu)->remaining_cycles -= shift<<(mc68kcpu)->cyc_shift;
@@ -10503,19 +8354,11 @@ M68KMAKE_OP(ror, 32, s, .)
 
 M68KMAKE_OP(ror, 8, r, .)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DY(mc68kcpu);
-	UINT32 orig_shift = DX(mc68kcpu) & 0x3f;
-	UINT32 shift = orig_shift & 7;
-	UINT32 src = MASK_OUT_ABOVE_8(*r_dst);
-	UINT32 res = ROR_8(src, shift);
-=======
 	uint32_t* r_dst = &DY(mc68kcpu);
 	uint32_t orig_shift = DX(mc68kcpu) & 0x3f;
 	uint32_t shift = orig_shift & 7;
 	uint32_t src = MASK_OUT_ABOVE_8(*r_dst);
 	uint32_t res = ROR_8(src, shift);
->>>>>>> upstream/master
 
 	if(orig_shift != 0)
 	{
@@ -10538,19 +8381,11 @@ M68KMAKE_OP(ror, 8, r, .)
 
 M68KMAKE_OP(ror, 16, r, .)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DY(mc68kcpu);
-	UINT32 orig_shift = DX(mc68kcpu) & 0x3f;
-	UINT32 shift = orig_shift & 15;
-	UINT32 src = MASK_OUT_ABOVE_16(*r_dst);
-	UINT32 res = ROR_16(src, shift);
-=======
 	uint32_t* r_dst = &DY(mc68kcpu);
 	uint32_t orig_shift = DX(mc68kcpu) & 0x3f;
 	uint32_t shift = orig_shift & 15;
 	uint32_t src = MASK_OUT_ABOVE_16(*r_dst);
 	uint32_t res = ROR_16(src, shift);
->>>>>>> upstream/master
 
 	if(orig_shift != 0)
 	{
@@ -10573,19 +8408,11 @@ M68KMAKE_OP(ror, 16, r, .)
 
 M68KMAKE_OP(ror, 32, r, .)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DY(mc68kcpu);
-	UINT32 orig_shift = DX(mc68kcpu) & 0x3f;
-	UINT32 shift = orig_shift & 31;
-	UINT64 src = *r_dst;
-	UINT32 res = ROR_32(src, shift);
-=======
 	uint32_t* r_dst = &DY(mc68kcpu);
 	uint32_t orig_shift = DX(mc68kcpu) & 0x3f;
 	uint32_t shift = orig_shift & 31;
 	uint64_t src = *r_dst;
 	uint32_t res = ROR_32(src, shift);
->>>>>>> upstream/master
 
 	if(orig_shift != 0)
 	{
@@ -10608,15 +8435,9 @@ M68KMAKE_OP(ror, 32, r, .)
 
 M68KMAKE_OP(ror, 16, ., .)
 {
-<<<<<<< HEAD
-	UINT32 ea = M68KMAKE_GET_EA_AY_16;
-	UINT32 src = m68ki_read_16((mc68kcpu), ea);
-	UINT32 res = ROR_16(src, 1);
-=======
 	uint32_t ea = M68KMAKE_GET_EA_AY_16;
 	uint32_t src = m68ki_read_16((mc68kcpu), ea);
 	uint32_t res = ROR_16(src, 1);
->>>>>>> upstream/master
 
 	m68ki_write_16((mc68kcpu), ea, res);
 
@@ -10629,19 +8450,11 @@ M68KMAKE_OP(ror, 16, ., .)
 
 M68KMAKE_OP(rol, 8, s, .)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DY(mc68kcpu);
-	UINT32 orig_shift = ((((mc68kcpu)->ir >> 9) - 1) & 7) + 1;
-	UINT32 shift = orig_shift & 7;
-	UINT32 src = MASK_OUT_ABOVE_8(*r_dst);
-	UINT32 res = ROL_8(src, shift);
-=======
 	uint32_t* r_dst = &DY(mc68kcpu);
 	uint32_t orig_shift = ((((mc68kcpu)->ir >> 9) - 1) & 7) + 1;
 	uint32_t shift = orig_shift & 7;
 	uint32_t src = MASK_OUT_ABOVE_8(*r_dst);
 	uint32_t res = ROL_8(src, shift);
->>>>>>> upstream/master
 
 	if(orig_shift != 0)
 		(mc68kcpu)->remaining_cycles -= orig_shift<<(mc68kcpu)->cyc_shift;
@@ -10657,17 +8470,10 @@ M68KMAKE_OP(rol, 8, s, .)
 
 M68KMAKE_OP(rol, 16, s, .)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DY(mc68kcpu);
-	UINT32 shift = ((((mc68kcpu)->ir >> 9) - 1) & 7) + 1;
-	UINT32 src = MASK_OUT_ABOVE_16(*r_dst);
-	UINT32 res = ROL_16(src, shift);
-=======
 	uint32_t* r_dst = &DY(mc68kcpu);
 	uint32_t shift = ((((mc68kcpu)->ir >> 9) - 1) & 7) + 1;
 	uint32_t src = MASK_OUT_ABOVE_16(*r_dst);
 	uint32_t res = ROL_16(src, shift);
->>>>>>> upstream/master
 
 	if(shift != 0)
 		(mc68kcpu)->remaining_cycles -= shift<<(mc68kcpu)->cyc_shift;
@@ -10683,17 +8489,10 @@ M68KMAKE_OP(rol, 16, s, .)
 
 M68KMAKE_OP(rol, 32, s, .)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DY(mc68kcpu);
-	UINT32 shift = ((((mc68kcpu)->ir >> 9) - 1) & 7) + 1;
-	UINT64 src = *r_dst;
-	UINT32 res = ROL_32(src, shift);
-=======
 	uint32_t* r_dst = &DY(mc68kcpu);
 	uint32_t shift = ((((mc68kcpu)->ir >> 9) - 1) & 7) + 1;
 	uint64_t src = *r_dst;
 	uint32_t res = ROL_32(src, shift);
->>>>>>> upstream/master
 
 	if(shift != 0)
 		(mc68kcpu)->remaining_cycles -= shift<<(mc68kcpu)->cyc_shift;
@@ -10709,19 +8508,11 @@ M68KMAKE_OP(rol, 32, s, .)
 
 M68KMAKE_OP(rol, 8, r, .)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DY(mc68kcpu);
-	UINT32 orig_shift = DX(mc68kcpu) & 0x3f;
-	UINT32 shift = orig_shift & 7;
-	UINT32 src = MASK_OUT_ABOVE_8(*r_dst);
-	UINT32 res = ROL_8(src, shift);
-=======
 	uint32_t* r_dst = &DY(mc68kcpu);
 	uint32_t orig_shift = DX(mc68kcpu) & 0x3f;
 	uint32_t shift = orig_shift & 7;
 	uint32_t src = MASK_OUT_ABOVE_8(*r_dst);
 	uint32_t res = ROL_8(src, shift);
->>>>>>> upstream/master
 
 	if(orig_shift != 0)
 	{
@@ -10752,19 +8543,11 @@ M68KMAKE_OP(rol, 8, r, .)
 
 M68KMAKE_OP(rol, 16, r, .)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DY(mc68kcpu);
-	UINT32 orig_shift = DX(mc68kcpu) & 0x3f;
-	UINT32 shift = orig_shift & 15;
-	UINT32 src = MASK_OUT_ABOVE_16(*r_dst);
-	UINT32 res = MASK_OUT_ABOVE_16(ROL_16(src, shift));
-=======
 	uint32_t* r_dst = &DY(mc68kcpu);
 	uint32_t orig_shift = DX(mc68kcpu) & 0x3f;
 	uint32_t shift = orig_shift & 15;
 	uint32_t src = MASK_OUT_ABOVE_16(*r_dst);
 	uint32_t res = MASK_OUT_ABOVE_16(ROL_16(src, shift));
->>>>>>> upstream/master
 
 	if(orig_shift != 0)
 	{
@@ -10795,19 +8578,11 @@ M68KMAKE_OP(rol, 16, r, .)
 
 M68KMAKE_OP(rol, 32, r, .)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DY(mc68kcpu);
-	UINT32 orig_shift = DX(mc68kcpu) & 0x3f;
-	UINT32 shift = orig_shift & 31;
-	UINT64 src = *r_dst;
-	UINT32 res = ROL_32(src, shift);
-=======
 	uint32_t* r_dst = &DY(mc68kcpu);
 	uint32_t orig_shift = DX(mc68kcpu) & 0x3f;
 	uint32_t shift = orig_shift & 31;
 	uint64_t src = *r_dst;
 	uint32_t res = ROL_32(src, shift);
->>>>>>> upstream/master
 
 	if(orig_shift != 0)
 	{
@@ -10831,15 +8606,9 @@ M68KMAKE_OP(rol, 32, r, .)
 
 M68KMAKE_OP(rol, 16, ., .)
 {
-<<<<<<< HEAD
-	UINT32 ea = M68KMAKE_GET_EA_AY_16;
-	UINT32 src = m68ki_read_16((mc68kcpu), ea);
-	UINT32 res = MASK_OUT_ABOVE_16(ROL_16(src, 1));
-=======
 	uint32_t ea = M68KMAKE_GET_EA_AY_16;
 	uint32_t src = m68ki_read_16((mc68kcpu), ea);
 	uint32_t res = MASK_OUT_ABOVE_16(ROL_16(src, 1));
->>>>>>> upstream/master
 
 	m68ki_write_16((mc68kcpu), ea, res);
 
@@ -10852,17 +8621,10 @@ M68KMAKE_OP(rol, 16, ., .)
 
 M68KMAKE_OP(roxr, 8, s, .)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DY(mc68kcpu);
-	UINT32 shift = ((((mc68kcpu)->ir >> 9) - 1) & 7) + 1;
-	UINT32 src = MASK_OUT_ABOVE_8(*r_dst);
-	UINT32 res = ROR_9(src | (XFLAG_AS_1(mc68kcpu) << 8), shift);
-=======
 	uint32_t* r_dst = &DY(mc68kcpu);
 	uint32_t shift = ((((mc68kcpu)->ir >> 9) - 1) & 7) + 1;
 	uint32_t src = MASK_OUT_ABOVE_8(*r_dst);
 	uint32_t res = ROR_9(src | (XFLAG_1(mc68kcpu) << 8), shift);
->>>>>>> upstream/master
 
 	if(shift != 0)
 		(mc68kcpu)->remaining_cycles -= shift<<(mc68kcpu)->cyc_shift;
@@ -10880,17 +8642,10 @@ M68KMAKE_OP(roxr, 8, s, .)
 
 M68KMAKE_OP(roxr, 16, s, .)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DY(mc68kcpu);
-	UINT32 shift = ((((mc68kcpu)->ir >> 9) - 1) & 7) + 1;
-	UINT32 src = MASK_OUT_ABOVE_16(*r_dst);
-	UINT32 res = ROR_17(src | (XFLAG_AS_1(mc68kcpu) << 16), shift);
-=======
 	uint32_t* r_dst = &DY(mc68kcpu);
 	uint32_t shift = ((((mc68kcpu)->ir >> 9) - 1) & 7) + 1;
 	uint32_t src = MASK_OUT_ABOVE_16(*r_dst);
 	uint32_t res = ROR_17(src | (XFLAG_1(mc68kcpu) << 16), shift);
->>>>>>> upstream/master
 
 	if(shift != 0)
 		(mc68kcpu)->remaining_cycles -= shift<<(mc68kcpu)->cyc_shift;
@@ -10908,17 +8663,10 @@ M68KMAKE_OP(roxr, 16, s, .)
 
 M68KMAKE_OP(roxr, 32, s, .)
 {
-<<<<<<< HEAD
-	UINT32*  r_dst = &DY(mc68kcpu);
-	UINT32   shift = ((((mc68kcpu)->ir >> 9) - 1) & 7) + 1;
-	UINT64 src   = *r_dst;
-	UINT64 res   = src | (((UINT64)XFLAG_AS_1(mc68kcpu)) << 32);
-=======
 	uint32_t*  r_dst = &DY(mc68kcpu);
 	uint32_t   shift = ((((mc68kcpu)->ir >> 9) - 1) & 7) + 1;
 	uint64_t src   = *r_dst;
 	uint64_t res   = src | (((uint64_t)XFLAG_1(mc68kcpu)) << 32);
->>>>>>> upstream/master
 
 	if(shift != 0)
 		(mc68kcpu)->remaining_cycles -= shift<<(mc68kcpu)->cyc_shift;
@@ -10938,16 +8686,6 @@ M68KMAKE_OP(roxr, 32, s, .)
 
 M68KMAKE_OP(roxr, 8, r, .)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DY(mc68kcpu);
-	UINT32 orig_shift = DX(mc68kcpu) & 0x3f;
-
-	if(orig_shift != 0)
-	{
-		UINT32 shift = orig_shift % 9;
-		UINT32 src   = MASK_OUT_ABOVE_8(*r_dst);
-		UINT32 res   = ROR_9(src | (XFLAG_AS_1(mc68kcpu) << 8), shift);
-=======
 	uint32_t* r_dst = &DY(mc68kcpu);
 	uint32_t orig_shift = DX(mc68kcpu) & 0x3f;
 
@@ -10956,7 +8694,6 @@ M68KMAKE_OP(roxr, 8, r, .)
 		uint32_t shift = orig_shift % 9;
 		uint32_t src   = MASK_OUT_ABOVE_8(*r_dst);
 		uint32_t res   = ROR_9(src | (XFLAG_1(mc68kcpu) << 8), shift);
->>>>>>> upstream/master
 
 		(mc68kcpu)->remaining_cycles -= orig_shift<<(mc68kcpu)->cyc_shift;
 
@@ -10979,16 +8716,6 @@ M68KMAKE_OP(roxr, 8, r, .)
 
 M68KMAKE_OP(roxr, 16, r, .)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DY(mc68kcpu);
-	UINT32 orig_shift = DX(mc68kcpu) & 0x3f;
-
-	if(orig_shift != 0)
-	{
-		UINT32 shift = orig_shift % 17;
-		UINT32 src   = MASK_OUT_ABOVE_16(*r_dst);
-		UINT32 res   = ROR_17(src | (XFLAG_AS_1(mc68kcpu) << 16), shift);
-=======
 	uint32_t* r_dst = &DY(mc68kcpu);
 	uint32_t orig_shift = DX(mc68kcpu) & 0x3f;
 
@@ -10997,7 +8724,6 @@ M68KMAKE_OP(roxr, 16, r, .)
 		uint32_t shift = orig_shift % 17;
 		uint32_t src   = MASK_OUT_ABOVE_16(*r_dst);
 		uint32_t res   = ROR_17(src | (XFLAG_1(mc68kcpu) << 16), shift);
->>>>>>> upstream/master
 
 		(mc68kcpu)->remaining_cycles -= orig_shift<<(mc68kcpu)->cyc_shift;
 
@@ -11020,16 +8746,6 @@ M68KMAKE_OP(roxr, 16, r, .)
 
 M68KMAKE_OP(roxr, 32, r, .)
 {
-<<<<<<< HEAD
-	UINT32*  r_dst = &DY(mc68kcpu);
-	UINT32   orig_shift = DX(mc68kcpu) & 0x3f;
-
-	if(orig_shift != 0)
-	{
-		UINT32   shift = orig_shift % 33;
-		UINT64 src   = *r_dst;
-		UINT64 res   = src | (((UINT64)XFLAG_AS_1(mc68kcpu)) << 32);
-=======
 	uint32_t*  r_dst = &DY(mc68kcpu);
 	uint32_t   orig_shift = DX(mc68kcpu) & 0x3f;
 
@@ -11038,7 +8754,6 @@ M68KMAKE_OP(roxr, 32, r, .)
 		uint32_t   shift = orig_shift % 33;
 		uint64_t src   = *r_dst;
 		uint64_t res   = src | (((uint64_t)XFLAG_1(mc68kcpu)) << 32);
->>>>>>> upstream/master
 
 		res = ROR_33_64(res, shift);
 
@@ -11063,15 +8778,9 @@ M68KMAKE_OP(roxr, 32, r, .)
 
 M68KMAKE_OP(roxr, 16, ., .)
 {
-<<<<<<< HEAD
-	UINT32 ea = M68KMAKE_GET_EA_AY_16;
-	UINT32 src = m68ki_read_16((mc68kcpu), ea);
-	UINT32 res = ROR_17(src | (XFLAG_AS_1(mc68kcpu) << 16), 1);
-=======
 	uint32_t ea = M68KMAKE_GET_EA_AY_16;
 	uint32_t src = m68ki_read_16((mc68kcpu), ea);
 	uint32_t res = ROR_17(src | (XFLAG_1(mc68kcpu) << 16), 1);
->>>>>>> upstream/master
 
 	(mc68kcpu)->c_flag = (mc68kcpu)->x_flag = res >> 8;
 	res = MASK_OUT_ABOVE_16(res);
@@ -11086,17 +8795,10 @@ M68KMAKE_OP(roxr, 16, ., .)
 
 M68KMAKE_OP(roxl, 8, s, .)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DY(mc68kcpu);
-	UINT32 shift = ((((mc68kcpu)->ir >> 9) - 1) & 7) + 1;
-	UINT32 src = MASK_OUT_ABOVE_8(*r_dst);
-	UINT32 res = ROL_9(src | (XFLAG_AS_1(mc68kcpu) << 8), shift);
-=======
 	uint32_t* r_dst = &DY(mc68kcpu);
 	uint32_t shift = ((((mc68kcpu)->ir >> 9) - 1) & 7) + 1;
 	uint32_t src = MASK_OUT_ABOVE_8(*r_dst);
 	uint32_t res = ROL_9(src | (XFLAG_1(mc68kcpu) << 8), shift);
->>>>>>> upstream/master
 
 	if(shift != 0)
 		(mc68kcpu)->remaining_cycles -= shift<<(mc68kcpu)->cyc_shift;
@@ -11114,17 +8816,10 @@ M68KMAKE_OP(roxl, 8, s, .)
 
 M68KMAKE_OP(roxl, 16, s, .)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DY(mc68kcpu);
-	UINT32 shift = ((((mc68kcpu)->ir >> 9) - 1) & 7) + 1;
-	UINT32 src = MASK_OUT_ABOVE_16(*r_dst);
-	UINT32 res = ROL_17(src | (XFLAG_AS_1(mc68kcpu) << 16), shift);
-=======
 	uint32_t* r_dst = &DY(mc68kcpu);
 	uint32_t shift = ((((mc68kcpu)->ir >> 9) - 1) & 7) + 1;
 	uint32_t src = MASK_OUT_ABOVE_16(*r_dst);
 	uint32_t res = ROL_17(src | (XFLAG_1(mc68kcpu) << 16), shift);
->>>>>>> upstream/master
 
 	if(shift != 0)
 		(mc68kcpu)->remaining_cycles -= shift<<(mc68kcpu)->cyc_shift;
@@ -11142,17 +8837,10 @@ M68KMAKE_OP(roxl, 16, s, .)
 
 M68KMAKE_OP(roxl, 32, s, .)
 {
-<<<<<<< HEAD
-	UINT32*  r_dst = &DY(mc68kcpu);
-	UINT32   shift = ((((mc68kcpu)->ir >> 9) - 1) & 7) + 1;
-	UINT64 src   = *r_dst;
-	UINT64 res   = src | (((UINT64)XFLAG_AS_1(mc68kcpu)) << 32);
-=======
 	uint32_t*  r_dst = &DY(mc68kcpu);
 	uint32_t   shift = ((((mc68kcpu)->ir >> 9) - 1) & 7) + 1;
 	uint64_t src   = *r_dst;
 	uint64_t res   = src | (((uint64_t)XFLAG_1(mc68kcpu)) << 32);
->>>>>>> upstream/master
 
 	if(shift != 0)
 		(mc68kcpu)->remaining_cycles -= shift<<(mc68kcpu)->cyc_shift;
@@ -11172,26 +8860,15 @@ M68KMAKE_OP(roxl, 32, s, .)
 
 M68KMAKE_OP(roxl, 8, r, .)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DY(mc68kcpu);
-	UINT32 orig_shift = DX(mc68kcpu) & 0x3f;
-=======
 	uint32_t* r_dst = &DY(mc68kcpu);
 	uint32_t orig_shift = DX(mc68kcpu) & 0x3f;
->>>>>>> upstream/master
 
 
 	if(orig_shift != 0)
 	{
-<<<<<<< HEAD
-		UINT32 shift = orig_shift % 9;
-		UINT32 src   = MASK_OUT_ABOVE_8(*r_dst);
-		UINT32 res   = ROL_9(src | (XFLAG_AS_1(mc68kcpu) << 8), shift);
-=======
 		uint32_t shift = orig_shift % 9;
 		uint32_t src   = MASK_OUT_ABOVE_8(*r_dst);
 		uint32_t res   = ROL_9(src | (XFLAG_1(mc68kcpu) << 8), shift);
->>>>>>> upstream/master
 
 		(mc68kcpu)->remaining_cycles -= orig_shift<<(mc68kcpu)->cyc_shift;
 
@@ -11214,16 +8891,6 @@ M68KMAKE_OP(roxl, 8, r, .)
 
 M68KMAKE_OP(roxl, 16, r, .)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DY(mc68kcpu);
-	UINT32 orig_shift = DX(mc68kcpu) & 0x3f;
-
-	if(orig_shift != 0)
-	{
-		UINT32 shift = orig_shift % 17;
-		UINT32 src   = MASK_OUT_ABOVE_16(*r_dst);
-		UINT32 res   = ROL_17(src | (XFLAG_AS_1(mc68kcpu) << 16), shift);
-=======
 	uint32_t* r_dst = &DY(mc68kcpu);
 	uint32_t orig_shift = DX(mc68kcpu) & 0x3f;
 
@@ -11232,7 +8899,6 @@ M68KMAKE_OP(roxl, 16, r, .)
 		uint32_t shift = orig_shift % 17;
 		uint32_t src   = MASK_OUT_ABOVE_16(*r_dst);
 		uint32_t res   = ROL_17(src | (XFLAG_1(mc68kcpu) << 16), shift);
->>>>>>> upstream/master
 
 		(mc68kcpu)->remaining_cycles -= orig_shift<<(mc68kcpu)->cyc_shift;
 
@@ -11255,16 +8921,6 @@ M68KMAKE_OP(roxl, 16, r, .)
 
 M68KMAKE_OP(roxl, 32, r, .)
 {
-<<<<<<< HEAD
-	UINT32*  r_dst = &DY(mc68kcpu);
-	UINT32   orig_shift = DX(mc68kcpu) & 0x3f;
-
-	if(orig_shift != 0)
-	{
-		UINT32   shift = orig_shift % 33;
-		UINT64 src   = *r_dst;
-		UINT64 res   = src | (((UINT64)XFLAG_AS_1(mc68kcpu)) << 32);
-=======
 	uint32_t*  r_dst = &DY(mc68kcpu);
 	uint32_t   orig_shift = DX(mc68kcpu) & 0x3f;
 
@@ -11273,7 +8929,6 @@ M68KMAKE_OP(roxl, 32, r, .)
 		uint32_t   shift = orig_shift % 33;
 		uint64_t src   = *r_dst;
 		uint64_t res   = src | (((uint64_t)XFLAG_1(mc68kcpu)) << 32);
->>>>>>> upstream/master
 
 		res = ROL_33_64(res, shift);
 
@@ -11298,15 +8953,9 @@ M68KMAKE_OP(roxl, 32, r, .)
 
 M68KMAKE_OP(roxl, 16, ., .)
 {
-<<<<<<< HEAD
-	UINT32 ea = M68KMAKE_GET_EA_AY_16;
-	UINT32 src = m68ki_read_16((mc68kcpu), ea);
-	UINT32 res = ROL_17(src | (XFLAG_AS_1(mc68kcpu) << 16), 1);
-=======
 	uint32_t ea = M68KMAKE_GET_EA_AY_16;
 	uint32_t src = m68ki_read_16((mc68kcpu), ea);
 	uint32_t res = ROL_17(src | (XFLAG_1(mc68kcpu) << 16), 1);
->>>>>>> upstream/master
 
 	(mc68kcpu)->c_flag = (mc68kcpu)->x_flag = res >> 8;
 	res = MASK_OUT_ABOVE_16(res);
@@ -11323,11 +8972,7 @@ M68KMAKE_OP(rtd, 32, ., .)
 {
 	if(CPU_TYPE_IS_010_PLUS((mc68kcpu)->cpu_type))
 	{
-<<<<<<< HEAD
-		UINT32 new_pc = m68ki_pull_32(mc68kcpu);
-=======
 		uint32_t new_pc = m68ki_pull_32(mc68kcpu);
->>>>>>> upstream/master
 
 		m68ki_trace_t0(mc68kcpu);              /* auto-disable (see m68kcpu.h) */
 		REG_A(mc68kcpu)[7] = MASK_OUT_ABOVE_32(REG_A(mc68kcpu)[7] + MAKE_INT_16(OPER_I_16(mc68kcpu)));
@@ -11342,15 +8987,9 @@ M68KMAKE_OP(rte, 32, ., .)
 {
 	if((mc68kcpu)->s_flag)
 	{
-<<<<<<< HEAD
-		UINT32 new_sr;
-		UINT32 new_pc;
-		UINT32 format_word;
-=======
 		uint32_t new_sr;
 		uint32_t new_pc;
 		uint32_t format_word;
->>>>>>> upstream/master
 
 		if (!(mc68kcpu)->rte_instr_callback.isnull())
 			((mc68kcpu)->rte_instr_callback)(1);
@@ -11513,11 +9152,7 @@ M68KMAKE_OP(rtm, 32, ., .)
 	if(CPU_TYPE_IS_020_VARIANT((mc68kcpu)->cpu_type))
 	{
 		m68ki_trace_t0(mc68kcpu);              /* auto-disable (see m68kcpu.h) */
-<<<<<<< HEAD
-		logerror("%s at %08x: called unimplemented instruction %04x (rtm)\n",
-=======
 		mc68kcpu->logerror("%s at %08x: called unimplemented instruction %04x (rtm)\n",
->>>>>>> upstream/master
 						(mc68kcpu)->tag(), REG_PC(mc68kcpu) - 2, (mc68kcpu)->ir);
 		return;
 	}
@@ -11542,17 +9177,10 @@ M68KMAKE_OP(rts, 32, ., .)
 
 M68KMAKE_OP(sbcd, 8, rr, .)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DX(mc68kcpu);
-	UINT32 src = DY(mc68kcpu);
-	UINT32 dst = *r_dst;
-	UINT32 res = LOW_NIBBLE(dst) - LOW_NIBBLE(src) - XFLAG_AS_1(mc68kcpu);
-=======
 	uint32_t* r_dst = &DX(mc68kcpu);
 	uint32_t src = DY(mc68kcpu);
 	uint32_t dst = *r_dst;
 	uint32_t res = LOW_NIBBLE(dst) - LOW_NIBBLE(src) - XFLAG_1(mc68kcpu);
->>>>>>> upstream/master
 
 //  (mc68kcpu)->v_flag = ~res; /* Undefined V behavior */
 	(mc68kcpu)->v_flag = VFLAG_CLEAR;   /* Undefined in Motorola's M68000PM/AD rev.1 and safer to assume cleared. */
@@ -11581,17 +9209,10 @@ M68KMAKE_OP(sbcd, 8, rr, .)
 
 M68KMAKE_OP(sbcd, 8, mm, ax7)
 {
-<<<<<<< HEAD
-	UINT32 src = OPER_AY_PD_8(mc68kcpu);
-	UINT32 ea  = EA_A7_PD_8(mc68kcpu);
-	UINT32 dst = m68ki_read_8((mc68kcpu), ea);
-	UINT32 res = LOW_NIBBLE(dst) - LOW_NIBBLE(src) - XFLAG_AS_1(mc68kcpu);
-=======
 	uint32_t src = OPER_AY_PD_8(mc68kcpu);
 	uint32_t ea  = EA_A7_PD_8(mc68kcpu);
 	uint32_t dst = m68ki_read_8((mc68kcpu), ea);
 	uint32_t res = LOW_NIBBLE(dst) - LOW_NIBBLE(src) - XFLAG_1(mc68kcpu);
->>>>>>> upstream/master
 
 //  (mc68kcpu)->v_flag = ~res; /* Undefined V behavior */
 	(mc68kcpu)->v_flag = VFLAG_CLEAR;   /* Undefined in Motorola's M68000PM/AD rev.1 and safer to return zero. */
@@ -11620,17 +9241,10 @@ M68KMAKE_OP(sbcd, 8, mm, ax7)
 
 M68KMAKE_OP(sbcd, 8, mm, ay7)
 {
-<<<<<<< HEAD
-	UINT32 src = OPER_A7_PD_8(mc68kcpu);
-	UINT32 ea  = EA_AX_PD_8(mc68kcpu);
-	UINT32 dst = m68ki_read_8((mc68kcpu), ea);
-	UINT32 res = LOW_NIBBLE(dst) - LOW_NIBBLE(src) - XFLAG_AS_1(mc68kcpu);
-=======
 	uint32_t src = OPER_A7_PD_8(mc68kcpu);
 	uint32_t ea  = EA_AX_PD_8(mc68kcpu);
 	uint32_t dst = m68ki_read_8((mc68kcpu), ea);
 	uint32_t res = LOW_NIBBLE(dst) - LOW_NIBBLE(src) - XFLAG_1(mc68kcpu);
->>>>>>> upstream/master
 
 //  (mc68kcpu)->v_flag = ~res; /* Undefined V behavior */
 	(mc68kcpu)->v_flag = VFLAG_CLEAR;   /* Undefined in Motorola's M68000PM/AD rev.1 and safer to return zero. */
@@ -11659,17 +9273,10 @@ M68KMAKE_OP(sbcd, 8, mm, ay7)
 
 M68KMAKE_OP(sbcd, 8, mm, axy7)
 {
-<<<<<<< HEAD
-	UINT32 src = OPER_A7_PD_8(mc68kcpu);
-	UINT32 ea  = EA_A7_PD_8(mc68kcpu);
-	UINT32 dst = m68ki_read_8((mc68kcpu), ea);
-	UINT32 res = LOW_NIBBLE(dst) - LOW_NIBBLE(src) - XFLAG_AS_1(mc68kcpu);
-=======
 	uint32_t src = OPER_A7_PD_8(mc68kcpu);
 	uint32_t ea  = EA_A7_PD_8(mc68kcpu);
 	uint32_t dst = m68ki_read_8((mc68kcpu), ea);
 	uint32_t res = LOW_NIBBLE(dst) - LOW_NIBBLE(src) - XFLAG_1(mc68kcpu);
->>>>>>> upstream/master
 
 //  (mc68kcpu)->v_flag = ~res; /* Undefined V behavior */
 	(mc68kcpu)->v_flag = VFLAG_CLEAR;   /* Undefined in Motorola's M68000PM/AD rev.1 and safer to return zero. */
@@ -11698,17 +9305,10 @@ M68KMAKE_OP(sbcd, 8, mm, axy7)
 
 M68KMAKE_OP(sbcd, 8, mm, .)
 {
-<<<<<<< HEAD
-	UINT32 src = OPER_AY_PD_8(mc68kcpu);
-	UINT32 ea  = EA_AX_PD_8(mc68kcpu);
-	UINT32 dst = m68ki_read_8((mc68kcpu), ea);
-	UINT32 res = LOW_NIBBLE(dst) - LOW_NIBBLE(src) - XFLAG_AS_1(mc68kcpu);
-=======
 	uint32_t src = OPER_AY_PD_8(mc68kcpu);
 	uint32_t ea  = EA_AX_PD_8(mc68kcpu);
 	uint32_t dst = m68ki_read_8((mc68kcpu), ea);
 	uint32_t res = LOW_NIBBLE(dst) - LOW_NIBBLE(src) - XFLAG_1(mc68kcpu);
->>>>>>> upstream/master
 
 //  (mc68kcpu)->v_flag = ~res; /* Undefined V behavior */
 	(mc68kcpu)->v_flag = VFLAG_CLEAR;   /* Undefined in Motorola's M68000PM/AD rev.1 and safer to return zero. */
@@ -11781,11 +9381,7 @@ M68KMAKE_OP(stop, 0, ., .)
 {
 	if((mc68kcpu)->s_flag)
 	{
-<<<<<<< HEAD
-		UINT32 new_sr = OPER_I_16(mc68kcpu);
-=======
 		uint32_t new_sr = OPER_I_16(mc68kcpu);
->>>>>>> upstream/master
 		m68ki_trace_t0(mc68kcpu);              /* auto-disable (see m68kcpu.h) */
 		(mc68kcpu)->stopped |= STOP_LEVEL_STOP;
 		m68ki_set_sr((mc68kcpu), new_sr);
@@ -11798,17 +9394,10 @@ M68KMAKE_OP(stop, 0, ., .)
 
 M68KMAKE_OP(sub, 8, er, d)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DX(mc68kcpu);
-	UINT32 src = MASK_OUT_ABOVE_8(DY(mc68kcpu));
-	UINT32 dst = MASK_OUT_ABOVE_8(*r_dst);
-	UINT32 res = dst - src;
-=======
 	uint32_t* r_dst = &DX(mc68kcpu);
 	uint32_t src = MASK_OUT_ABOVE_8(DY(mc68kcpu));
 	uint32_t dst = MASK_OUT_ABOVE_8(*r_dst);
 	uint32_t res = dst - src;
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_8(res);
 	(mc68kcpu)->x_flag = (mc68kcpu)->c_flag = CFLAG_8(res);
@@ -11821,17 +9410,10 @@ M68KMAKE_OP(sub, 8, er, d)
 
 M68KMAKE_OP(sub, 8, er, .)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DX(mc68kcpu);
-	UINT32 src = M68KMAKE_GET_OPER_AY_8;
-	UINT32 dst = MASK_OUT_ABOVE_8(*r_dst);
-	UINT32 res = dst - src;
-=======
 	uint32_t* r_dst = &DX(mc68kcpu);
 	uint32_t src = M68KMAKE_GET_OPER_AY_8;
 	uint32_t dst = MASK_OUT_ABOVE_8(*r_dst);
 	uint32_t res = dst - src;
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_8(res);
 	(mc68kcpu)->x_flag = (mc68kcpu)->c_flag = CFLAG_8(res);
@@ -11844,17 +9426,10 @@ M68KMAKE_OP(sub, 8, er, .)
 
 M68KMAKE_OP(sub, 16, er, d)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DX(mc68kcpu);
-	UINT32 src = MASK_OUT_ABOVE_16(DY(mc68kcpu));
-	UINT32 dst = MASK_OUT_ABOVE_16(*r_dst);
-	UINT32 res = dst - src;
-=======
 	uint32_t* r_dst = &DX(mc68kcpu);
 	uint32_t src = MASK_OUT_ABOVE_16(DY(mc68kcpu));
 	uint32_t dst = MASK_OUT_ABOVE_16(*r_dst);
 	uint32_t res = dst - src;
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_16(res);
 	(mc68kcpu)->x_flag = (mc68kcpu)->c_flag = CFLAG_16(res);
@@ -11867,17 +9442,10 @@ M68KMAKE_OP(sub, 16, er, d)
 
 M68KMAKE_OP(sub, 16, er, a)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DX(mc68kcpu);
-	UINT32 src = MASK_OUT_ABOVE_16(AY(mc68kcpu));
-	UINT32 dst = MASK_OUT_ABOVE_16(*r_dst);
-	UINT32 res = dst - src;
-=======
 	uint32_t* r_dst = &DX(mc68kcpu);
 	uint32_t src = MASK_OUT_ABOVE_16(AY(mc68kcpu));
 	uint32_t dst = MASK_OUT_ABOVE_16(*r_dst);
 	uint32_t res = dst - src;
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_16(res);
 	(mc68kcpu)->x_flag = (mc68kcpu)->c_flag = CFLAG_16(res);
@@ -11890,17 +9458,10 @@ M68KMAKE_OP(sub, 16, er, a)
 
 M68KMAKE_OP(sub, 16, er, .)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DX(mc68kcpu);
-	UINT32 src = M68KMAKE_GET_OPER_AY_16;
-	UINT32 dst = MASK_OUT_ABOVE_16(*r_dst);
-	UINT32 res = dst - src;
-=======
 	uint32_t* r_dst = &DX(mc68kcpu);
 	uint32_t src = M68KMAKE_GET_OPER_AY_16;
 	uint32_t dst = MASK_OUT_ABOVE_16(*r_dst);
 	uint32_t res = dst - src;
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_16(res);
 	(mc68kcpu)->x_flag = (mc68kcpu)->c_flag = CFLAG_16(res);
@@ -11913,17 +9474,10 @@ M68KMAKE_OP(sub, 16, er, .)
 
 M68KMAKE_OP(sub, 32, er, d)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DX(mc68kcpu);
-	UINT32 src = DY(mc68kcpu);
-	UINT32 dst = *r_dst;
-	UINT32 res = dst - src;
-=======
 	uint32_t* r_dst = &DX(mc68kcpu);
 	uint32_t src = DY(mc68kcpu);
 	uint32_t dst = *r_dst;
 	uint32_t res = dst - src;
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_32(res);
 	(mc68kcpu)->x_flag = (mc68kcpu)->c_flag = CFLAG_SUB_32(src, dst, res);
@@ -11936,17 +9490,10 @@ M68KMAKE_OP(sub, 32, er, d)
 
 M68KMAKE_OP(sub, 32, er, a)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DX(mc68kcpu);
-	UINT32 src = AY(mc68kcpu);
-	UINT32 dst = *r_dst;
-	UINT32 res = dst - src;
-=======
 	uint32_t* r_dst = &DX(mc68kcpu);
 	uint32_t src = AY(mc68kcpu);
 	uint32_t dst = *r_dst;
 	uint32_t res = dst - src;
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_32(res);
 	(mc68kcpu)->x_flag = (mc68kcpu)->c_flag = CFLAG_SUB_32(src, dst, res);
@@ -11959,17 +9506,10 @@ M68KMAKE_OP(sub, 32, er, a)
 
 M68KMAKE_OP(sub, 32, er, .)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DX(mc68kcpu);
-	UINT32 src = M68KMAKE_GET_OPER_AY_32;
-	UINT32 dst = *r_dst;
-	UINT32 res = dst - src;
-=======
 	uint32_t* r_dst = &DX(mc68kcpu);
 	uint32_t src = M68KMAKE_GET_OPER_AY_32;
 	uint32_t dst = *r_dst;
 	uint32_t res = dst - src;
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_32(res);
 	(mc68kcpu)->x_flag = (mc68kcpu)->c_flag = CFLAG_SUB_32(src, dst, res);
@@ -11982,17 +9522,10 @@ M68KMAKE_OP(sub, 32, er, .)
 
 M68KMAKE_OP(sub, 8, re, .)
 {
-<<<<<<< HEAD
-	UINT32 ea = M68KMAKE_GET_EA_AY_8;
-	UINT32 src = MASK_OUT_ABOVE_8(DX(mc68kcpu));
-	UINT32 dst = m68ki_read_8((mc68kcpu), ea);
-	UINT32 res = dst - src;
-=======
 	uint32_t ea = M68KMAKE_GET_EA_AY_8;
 	uint32_t src = MASK_OUT_ABOVE_8(DX(mc68kcpu));
 	uint32_t dst = m68ki_read_8((mc68kcpu), ea);
 	uint32_t res = dst - src;
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_8(res);
 	(mc68kcpu)->not_z_flag = MASK_OUT_ABOVE_8(res);
@@ -12005,17 +9538,10 @@ M68KMAKE_OP(sub, 8, re, .)
 
 M68KMAKE_OP(sub, 16, re, .)
 {
-<<<<<<< HEAD
-	UINT32 ea = M68KMAKE_GET_EA_AY_16;
-	UINT32 src = MASK_OUT_ABOVE_16(DX(mc68kcpu));
-	UINT32 dst = m68ki_read_16((mc68kcpu), ea);
-	UINT32 res = dst - src;
-=======
 	uint32_t ea = M68KMAKE_GET_EA_AY_16;
 	uint32_t src = MASK_OUT_ABOVE_16(DX(mc68kcpu));
 	uint32_t dst = m68ki_read_16((mc68kcpu), ea);
 	uint32_t res = dst - src;
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_16(res);
 	(mc68kcpu)->not_z_flag = MASK_OUT_ABOVE_16(res);
@@ -12028,17 +9554,10 @@ M68KMAKE_OP(sub, 16, re, .)
 
 M68KMAKE_OP(sub, 32, re, .)
 {
-<<<<<<< HEAD
-	UINT32 ea = M68KMAKE_GET_EA_AY_32;
-	UINT32 src = DX(mc68kcpu);
-	UINT32 dst = m68ki_read_32((mc68kcpu), ea);
-	UINT32 res = dst - src;
-=======
 	uint32_t ea = M68KMAKE_GET_EA_AY_32;
 	uint32_t src = DX(mc68kcpu);
 	uint32_t dst = m68ki_read_32((mc68kcpu), ea);
 	uint32_t res = dst - src;
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_32(res);
 	(mc68kcpu)->not_z_flag = MASK_OUT_ABOVE_32(res);
@@ -12051,11 +9570,7 @@ M68KMAKE_OP(sub, 32, re, .)
 
 M68KMAKE_OP(suba, 16, ., d)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &AX(mc68kcpu);
-=======
 	uint32_t* r_dst = &AX(mc68kcpu);
->>>>>>> upstream/master
 
 	*r_dst = MASK_OUT_ABOVE_32(*r_dst - MAKE_INT_16(DY(mc68kcpu)));
 }
@@ -12063,11 +9578,7 @@ M68KMAKE_OP(suba, 16, ., d)
 
 M68KMAKE_OP(suba, 16, ., a)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &AX(mc68kcpu);
-=======
 	uint32_t* r_dst = &AX(mc68kcpu);
->>>>>>> upstream/master
 
 	*r_dst = MASK_OUT_ABOVE_32(*r_dst - MAKE_INT_16(AY(mc68kcpu)));
 }
@@ -12075,13 +9586,8 @@ M68KMAKE_OP(suba, 16, ., a)
 
 M68KMAKE_OP(suba, 16, ., .)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &AX(mc68kcpu);
-	UINT32 src = MAKE_INT_16(M68KMAKE_GET_OPER_AY_16);
-=======
 	uint32_t* r_dst = &AX(mc68kcpu);
 	uint32_t src = MAKE_INT_16(M68KMAKE_GET_OPER_AY_16);
->>>>>>> upstream/master
 
 	*r_dst = MASK_OUT_ABOVE_32(*r_dst - src);
 }
@@ -12089,11 +9595,7 @@ M68KMAKE_OP(suba, 16, ., .)
 
 M68KMAKE_OP(suba, 32, ., d)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &AX(mc68kcpu);
-=======
 	uint32_t* r_dst = &AX(mc68kcpu);
->>>>>>> upstream/master
 
 	*r_dst = MASK_OUT_ABOVE_32(*r_dst - DY(mc68kcpu));
 }
@@ -12101,11 +9603,7 @@ M68KMAKE_OP(suba, 32, ., d)
 
 M68KMAKE_OP(suba, 32, ., a)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &AX(mc68kcpu);
-=======
 	uint32_t* r_dst = &AX(mc68kcpu);
->>>>>>> upstream/master
 
 	*r_dst = MASK_OUT_ABOVE_32(*r_dst - AY(mc68kcpu));
 }
@@ -12113,13 +9611,8 @@ M68KMAKE_OP(suba, 32, ., a)
 
 M68KMAKE_OP(suba, 32, ., .)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &AX(mc68kcpu);
-	UINT32 src = M68KMAKE_GET_OPER_AY_32;
-=======
 	uint32_t* r_dst = &AX(mc68kcpu);
 	uint32_t src = M68KMAKE_GET_OPER_AY_32;
->>>>>>> upstream/master
 
 	*r_dst = MASK_OUT_ABOVE_32(*r_dst - src);
 }
@@ -12127,17 +9620,10 @@ M68KMAKE_OP(suba, 32, ., .)
 
 M68KMAKE_OP(subi, 8, ., d)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DY(mc68kcpu);
-	UINT32 src = OPER_I_8(mc68kcpu);
-	UINT32 dst = MASK_OUT_ABOVE_8(*r_dst);
-	UINT32 res = dst - src;
-=======
 	uint32_t* r_dst = &DY(mc68kcpu);
 	uint32_t src = OPER_I_8(mc68kcpu);
 	uint32_t dst = MASK_OUT_ABOVE_8(*r_dst);
 	uint32_t res = dst - src;
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_8(res);
 	(mc68kcpu)->not_z_flag = MASK_OUT_ABOVE_8(res);
@@ -12150,17 +9636,10 @@ M68KMAKE_OP(subi, 8, ., d)
 
 M68KMAKE_OP(subi, 8, ., .)
 {
-<<<<<<< HEAD
-	UINT32 src = OPER_I_8(mc68kcpu);
-	UINT32 ea = M68KMAKE_GET_EA_AY_8;
-	UINT32 dst = m68ki_read_8((mc68kcpu), ea);
-	UINT32 res = dst - src;
-=======
 	uint32_t src = OPER_I_8(mc68kcpu);
 	uint32_t ea = M68KMAKE_GET_EA_AY_8;
 	uint32_t dst = m68ki_read_8((mc68kcpu), ea);
 	uint32_t res = dst - src;
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_8(res);
 	(mc68kcpu)->not_z_flag = MASK_OUT_ABOVE_8(res);
@@ -12173,17 +9652,10 @@ M68KMAKE_OP(subi, 8, ., .)
 
 M68KMAKE_OP(subi, 16, ., d)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DY(mc68kcpu);
-	UINT32 src = OPER_I_16(mc68kcpu);
-	UINT32 dst = MASK_OUT_ABOVE_16(*r_dst);
-	UINT32 res = dst - src;
-=======
 	uint32_t* r_dst = &DY(mc68kcpu);
 	uint32_t src = OPER_I_16(mc68kcpu);
 	uint32_t dst = MASK_OUT_ABOVE_16(*r_dst);
 	uint32_t res = dst - src;
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_16(res);
 	(mc68kcpu)->not_z_flag = MASK_OUT_ABOVE_16(res);
@@ -12196,17 +9668,10 @@ M68KMAKE_OP(subi, 16, ., d)
 
 M68KMAKE_OP(subi, 16, ., .)
 {
-<<<<<<< HEAD
-	UINT32 src = OPER_I_16(mc68kcpu);
-	UINT32 ea = M68KMAKE_GET_EA_AY_16;
-	UINT32 dst = m68ki_read_16((mc68kcpu), ea);
-	UINT32 res = dst - src;
-=======
 	uint32_t src = OPER_I_16(mc68kcpu);
 	uint32_t ea = M68KMAKE_GET_EA_AY_16;
 	uint32_t dst = m68ki_read_16((mc68kcpu), ea);
 	uint32_t res = dst - src;
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_16(res);
 	(mc68kcpu)->not_z_flag = MASK_OUT_ABOVE_16(res);
@@ -12219,17 +9684,10 @@ M68KMAKE_OP(subi, 16, ., .)
 
 M68KMAKE_OP(subi, 32, ., d)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DY(mc68kcpu);
-	UINT32 src = OPER_I_32(mc68kcpu);
-	UINT32 dst = *r_dst;
-	UINT32 res = dst - src;
-=======
 	uint32_t* r_dst = &DY(mc68kcpu);
 	uint32_t src = OPER_I_32(mc68kcpu);
 	uint32_t dst = *r_dst;
 	uint32_t res = dst - src;
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_32(res);
 	(mc68kcpu)->not_z_flag = MASK_OUT_ABOVE_32(res);
@@ -12242,17 +9700,10 @@ M68KMAKE_OP(subi, 32, ., d)
 
 M68KMAKE_OP(subi, 32, ., .)
 {
-<<<<<<< HEAD
-	UINT32 src = OPER_I_32(mc68kcpu);
-	UINT32 ea = M68KMAKE_GET_EA_AY_32;
-	UINT32 dst = m68ki_read_32((mc68kcpu), ea);
-	UINT32 res = dst - src;
-=======
 	uint32_t src = OPER_I_32(mc68kcpu);
 	uint32_t ea = M68KMAKE_GET_EA_AY_32;
 	uint32_t dst = m68ki_read_32((mc68kcpu), ea);
 	uint32_t res = dst - src;
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_32(res);
 	(mc68kcpu)->not_z_flag = MASK_OUT_ABOVE_32(res);
@@ -12265,17 +9716,10 @@ M68KMAKE_OP(subi, 32, ., .)
 
 M68KMAKE_OP(subq, 8, ., d)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DY(mc68kcpu);
-	UINT32 src = ((((mc68kcpu)->ir >> 9) - 1) & 7) + 1;
-	UINT32 dst = MASK_OUT_ABOVE_8(*r_dst);
-	UINT32 res = dst - src;
-=======
 	uint32_t* r_dst = &DY(mc68kcpu);
 	uint32_t src = ((((mc68kcpu)->ir >> 9) - 1) & 7) + 1;
 	uint32_t dst = MASK_OUT_ABOVE_8(*r_dst);
 	uint32_t res = dst - src;
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_8(res);
 	(mc68kcpu)->not_z_flag = MASK_OUT_ABOVE_8(res);
@@ -12288,17 +9732,10 @@ M68KMAKE_OP(subq, 8, ., d)
 
 M68KMAKE_OP(subq, 8, ., .)
 {
-<<<<<<< HEAD
-	UINT32 src = ((((mc68kcpu)->ir >> 9) - 1) & 7) + 1;
-	UINT32 ea = M68KMAKE_GET_EA_AY_8;
-	UINT32 dst = m68ki_read_8((mc68kcpu), ea);
-	UINT32 res = dst - src;
-=======
 	uint32_t src = ((((mc68kcpu)->ir >> 9) - 1) & 7) + 1;
 	uint32_t ea = M68KMAKE_GET_EA_AY_8;
 	uint32_t dst = m68ki_read_8((mc68kcpu), ea);
 	uint32_t res = dst - src;
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_8(res);
 	(mc68kcpu)->not_z_flag = MASK_OUT_ABOVE_8(res);
@@ -12311,17 +9748,10 @@ M68KMAKE_OP(subq, 8, ., .)
 
 M68KMAKE_OP(subq, 16, ., d)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DY(mc68kcpu);
-	UINT32 src = ((((mc68kcpu)->ir >> 9) - 1) & 7) + 1;
-	UINT32 dst = MASK_OUT_ABOVE_16(*r_dst);
-	UINT32 res = dst - src;
-=======
 	uint32_t* r_dst = &DY(mc68kcpu);
 	uint32_t src = ((((mc68kcpu)->ir >> 9) - 1) & 7) + 1;
 	uint32_t dst = MASK_OUT_ABOVE_16(*r_dst);
 	uint32_t res = dst - src;
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_16(res);
 	(mc68kcpu)->not_z_flag = MASK_OUT_ABOVE_16(res);
@@ -12334,11 +9764,7 @@ M68KMAKE_OP(subq, 16, ., d)
 
 M68KMAKE_OP(subq, 16, ., a)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &AY(mc68kcpu);
-=======
 	uint32_t* r_dst = &AY(mc68kcpu);
->>>>>>> upstream/master
 
 	*r_dst = MASK_OUT_ABOVE_32(*r_dst - (((((mc68kcpu)->ir >> 9) - 1) & 7) + 1));
 }
@@ -12346,17 +9772,10 @@ M68KMAKE_OP(subq, 16, ., a)
 
 M68KMAKE_OP(subq, 16, ., .)
 {
-<<<<<<< HEAD
-	UINT32 src = ((((mc68kcpu)->ir >> 9) - 1) & 7) + 1;
-	UINT32 ea = M68KMAKE_GET_EA_AY_16;
-	UINT32 dst = m68ki_read_16((mc68kcpu), ea);
-	UINT32 res = dst - src;
-=======
 	uint32_t src = ((((mc68kcpu)->ir >> 9) - 1) & 7) + 1;
 	uint32_t ea = M68KMAKE_GET_EA_AY_16;
 	uint32_t dst = m68ki_read_16((mc68kcpu), ea);
 	uint32_t res = dst - src;
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_16(res);
 	(mc68kcpu)->not_z_flag = MASK_OUT_ABOVE_16(res);
@@ -12369,17 +9788,10 @@ M68KMAKE_OP(subq, 16, ., .)
 
 M68KMAKE_OP(subq, 32, ., d)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DY(mc68kcpu);
-	UINT32 src = ((((mc68kcpu)->ir >> 9) - 1) & 7) + 1;
-	UINT32 dst = *r_dst;
-	UINT32 res = dst - src;
-=======
 	uint32_t* r_dst = &DY(mc68kcpu);
 	uint32_t src = ((((mc68kcpu)->ir >> 9) - 1) & 7) + 1;
 	uint32_t dst = *r_dst;
 	uint32_t res = dst - src;
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_32(res);
 	(mc68kcpu)->not_z_flag = MASK_OUT_ABOVE_32(res);
@@ -12392,11 +9804,7 @@ M68KMAKE_OP(subq, 32, ., d)
 
 M68KMAKE_OP(subq, 32, ., a)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &AY(mc68kcpu);
-=======
 	uint32_t* r_dst = &AY(mc68kcpu);
->>>>>>> upstream/master
 
 	*r_dst = MASK_OUT_ABOVE_32(*r_dst - (((((mc68kcpu)->ir >> 9) - 1) & 7) + 1));
 }
@@ -12404,17 +9812,10 @@ M68KMAKE_OP(subq, 32, ., a)
 
 M68KMAKE_OP(subq, 32, ., .)
 {
-<<<<<<< HEAD
-	UINT32 src = ((((mc68kcpu)->ir >> 9) - 1) & 7) + 1;
-	UINT32 ea = M68KMAKE_GET_EA_AY_32;
-	UINT32 dst = m68ki_read_32((mc68kcpu), ea);
-	UINT32 res = dst - src;
-=======
 	uint32_t src = ((((mc68kcpu)->ir >> 9) - 1) & 7) + 1;
 	uint32_t ea = M68KMAKE_GET_EA_AY_32;
 	uint32_t dst = m68ki_read_32((mc68kcpu), ea);
 	uint32_t res = dst - src;
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_32(res);
 	(mc68kcpu)->not_z_flag = MASK_OUT_ABOVE_32(res);
@@ -12427,17 +9828,10 @@ M68KMAKE_OP(subq, 32, ., .)
 
 M68KMAKE_OP(subx, 8, rr, .)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DX(mc68kcpu);
-	UINT32 src = MASK_OUT_ABOVE_8(DY(mc68kcpu));
-	UINT32 dst = MASK_OUT_ABOVE_8(*r_dst);
-	UINT32 res = dst - src - XFLAG_AS_1(mc68kcpu);
-=======
 	uint32_t* r_dst = &DX(mc68kcpu);
 	uint32_t src = MASK_OUT_ABOVE_8(DY(mc68kcpu));
 	uint32_t dst = MASK_OUT_ABOVE_8(*r_dst);
 	uint32_t res = dst - src - XFLAG_1(mc68kcpu);
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_8(res);
 	(mc68kcpu)->x_flag = (mc68kcpu)->c_flag = CFLAG_8(res);
@@ -12452,17 +9846,10 @@ M68KMAKE_OP(subx, 8, rr, .)
 
 M68KMAKE_OP(subx, 16, rr, .)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DX(mc68kcpu);
-	UINT32 src = MASK_OUT_ABOVE_16(DY(mc68kcpu));
-	UINT32 dst = MASK_OUT_ABOVE_16(*r_dst);
-	UINT32 res = dst - src - XFLAG_AS_1(mc68kcpu);
-=======
 	uint32_t* r_dst = &DX(mc68kcpu);
 	uint32_t src = MASK_OUT_ABOVE_16(DY(mc68kcpu));
 	uint32_t dst = MASK_OUT_ABOVE_16(*r_dst);
 	uint32_t res = dst - src - XFLAG_1(mc68kcpu);
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_16(res);
 	(mc68kcpu)->x_flag = (mc68kcpu)->c_flag = CFLAG_16(res);
@@ -12477,17 +9864,10 @@ M68KMAKE_OP(subx, 16, rr, .)
 
 M68KMAKE_OP(subx, 32, rr, .)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DX(mc68kcpu);
-	UINT32 src = DY(mc68kcpu);
-	UINT32 dst = *r_dst;
-	UINT32 res = dst - src - XFLAG_AS_1(mc68kcpu);
-=======
 	uint32_t* r_dst = &DX(mc68kcpu);
 	uint32_t src = DY(mc68kcpu);
 	uint32_t dst = *r_dst;
 	uint32_t res = dst - src - XFLAG_1(mc68kcpu);
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_32(res);
 	(mc68kcpu)->x_flag = (mc68kcpu)->c_flag = CFLAG_SUB_32(src, dst, res);
@@ -12502,17 +9882,10 @@ M68KMAKE_OP(subx, 32, rr, .)
 
 M68KMAKE_OP(subx, 8, mm, ax7)
 {
-<<<<<<< HEAD
-	UINT32 src = OPER_AY_PD_8(mc68kcpu);
-	UINT32 ea  = EA_A7_PD_8(mc68kcpu);
-	UINT32 dst = m68ki_read_8((mc68kcpu), ea);
-	UINT32 res = dst - src - XFLAG_AS_1(mc68kcpu);
-=======
 	uint32_t src = OPER_AY_PD_8(mc68kcpu);
 	uint32_t ea  = EA_A7_PD_8(mc68kcpu);
 	uint32_t dst = m68ki_read_8((mc68kcpu), ea);
 	uint32_t res = dst - src - XFLAG_1(mc68kcpu);
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_8(res);
 	(mc68kcpu)->x_flag = (mc68kcpu)->c_flag = CFLAG_8(res);
@@ -12527,17 +9900,10 @@ M68KMAKE_OP(subx, 8, mm, ax7)
 
 M68KMAKE_OP(subx, 8, mm, ay7)
 {
-<<<<<<< HEAD
-	UINT32 src = OPER_A7_PD_8(mc68kcpu);
-	UINT32 ea  = EA_AX_PD_8(mc68kcpu);
-	UINT32 dst = m68ki_read_8((mc68kcpu), ea);
-	UINT32 res = dst - src - XFLAG_AS_1(mc68kcpu);
-=======
 	uint32_t src = OPER_A7_PD_8(mc68kcpu);
 	uint32_t ea  = EA_AX_PD_8(mc68kcpu);
 	uint32_t dst = m68ki_read_8((mc68kcpu), ea);
 	uint32_t res = dst - src - XFLAG_1(mc68kcpu);
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_8(res);
 	(mc68kcpu)->x_flag = (mc68kcpu)->c_flag = CFLAG_8(res);
@@ -12552,17 +9918,10 @@ M68KMAKE_OP(subx, 8, mm, ay7)
 
 M68KMAKE_OP(subx, 8, mm, axy7)
 {
-<<<<<<< HEAD
-	UINT32 src = OPER_A7_PD_8(mc68kcpu);
-	UINT32 ea  = EA_A7_PD_8(mc68kcpu);
-	UINT32 dst = m68ki_read_8((mc68kcpu), ea);
-	UINT32 res = dst - src - XFLAG_AS_1(mc68kcpu);
-=======
 	uint32_t src = OPER_A7_PD_8(mc68kcpu);
 	uint32_t ea  = EA_A7_PD_8(mc68kcpu);
 	uint32_t dst = m68ki_read_8((mc68kcpu), ea);
 	uint32_t res = dst - src - XFLAG_1(mc68kcpu);
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_8(res);
 	(mc68kcpu)->x_flag = (mc68kcpu)->c_flag = CFLAG_8(res);
@@ -12577,17 +9936,10 @@ M68KMAKE_OP(subx, 8, mm, axy7)
 
 M68KMAKE_OP(subx, 8, mm, .)
 {
-<<<<<<< HEAD
-	UINT32 src = OPER_AY_PD_8(mc68kcpu);
-	UINT32 ea  = EA_AX_PD_8(mc68kcpu);
-	UINT32 dst = m68ki_read_8((mc68kcpu), ea);
-	UINT32 res = dst - src - XFLAG_AS_1(mc68kcpu);
-=======
 	uint32_t src = OPER_AY_PD_8(mc68kcpu);
 	uint32_t ea  = EA_AX_PD_8(mc68kcpu);
 	uint32_t dst = m68ki_read_8((mc68kcpu), ea);
 	uint32_t res = dst - src - XFLAG_1(mc68kcpu);
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_8(res);
 	(mc68kcpu)->x_flag = (mc68kcpu)->c_flag = CFLAG_8(res);
@@ -12602,17 +9954,10 @@ M68KMAKE_OP(subx, 8, mm, .)
 
 M68KMAKE_OP(subx, 16, mm, .)
 {
-<<<<<<< HEAD
-	UINT32 src = OPER_AY_PD_16(mc68kcpu);
-	UINT32 ea  = EA_AX_PD_16(mc68kcpu);
-	UINT32 dst = m68ki_read_16((mc68kcpu), ea);
-	UINT32 res = dst - src - XFLAG_AS_1(mc68kcpu);
-=======
 	uint32_t src = OPER_AY_PD_16(mc68kcpu);
 	uint32_t ea  = EA_AX_PD_16(mc68kcpu);
 	uint32_t dst = m68ki_read_16((mc68kcpu), ea);
 	uint32_t res = dst - src - XFLAG_1(mc68kcpu);
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_16(res);
 	(mc68kcpu)->x_flag = (mc68kcpu)->c_flag = CFLAG_16(res);
@@ -12627,17 +9972,10 @@ M68KMAKE_OP(subx, 16, mm, .)
 
 M68KMAKE_OP(subx, 32, mm, .)
 {
-<<<<<<< HEAD
-	UINT32 src = OPER_AY_PD_32(mc68kcpu);
-	UINT32 ea  = EA_AX_PD_32(mc68kcpu);
-	UINT32 dst = m68ki_read_32((mc68kcpu), ea);
-	UINT32 res = dst - src - XFLAG_AS_1(mc68kcpu);
-=======
 	uint32_t src = OPER_AY_PD_32(mc68kcpu);
 	uint32_t ea  = EA_AX_PD_32(mc68kcpu);
 	uint32_t dst = m68ki_read_32((mc68kcpu), ea);
 	uint32_t res = dst - src - XFLAG_1(mc68kcpu);
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_32(res);
 	(mc68kcpu)->x_flag = (mc68kcpu)->c_flag = CFLAG_SUB_32(src, dst, res);
@@ -12652,11 +9990,7 @@ M68KMAKE_OP(subx, 32, mm, .)
 
 M68KMAKE_OP(swap, 32, ., .)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DY(mc68kcpu);
-=======
 	uint32_t* r_dst = &DY(mc68kcpu);
->>>>>>> upstream/master
 
 	(mc68kcpu)->not_z_flag = MASK_OUT_ABOVE_32(*r_dst<<16);
 	*r_dst = (*r_dst>>16) | (mc68kcpu)->not_z_flag;
@@ -12670,11 +10004,7 @@ M68KMAKE_OP(swap, 32, ., .)
 
 M68KMAKE_OP(tas, 8, ., d)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &DY(mc68kcpu);
-=======
 	uint32_t* r_dst = &DY(mc68kcpu);
->>>>>>> upstream/master
 
 	(mc68kcpu)->not_z_flag = MASK_OUT_ABOVE_8(*r_dst);
 	(mc68kcpu)->n_flag = NFLAG_8(*r_dst);
@@ -12686,13 +10016,8 @@ M68KMAKE_OP(tas, 8, ., d)
 
 M68KMAKE_OP(tas, 8, ., .)
 {
-<<<<<<< HEAD
-	UINT32 ea = M68KMAKE_GET_EA_AY_8;
-	UINT32 dst = m68ki_read_8((mc68kcpu), ea);
-=======
 	uint32_t ea = M68KMAKE_GET_EA_AY_8;
 	uint32_t dst = m68ki_read_8((mc68kcpu), ea);
->>>>>>> upstream/master
 
 	(mc68kcpu)->not_z_flag = dst;
 	(mc68kcpu)->n_flag = NFLAG_8(dst);
@@ -12839,11 +10164,7 @@ M68KMAKE_OP(trapv, 0, ., .)
 
 M68KMAKE_OP(tst, 8, ., d)
 {
-<<<<<<< HEAD
-	UINT32 res = MASK_OUT_ABOVE_8(DY(mc68kcpu));
-=======
 	uint32_t res = MASK_OUT_ABOVE_8(DY(mc68kcpu));
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_8(res);
 	(mc68kcpu)->not_z_flag = res;
@@ -12854,11 +10175,7 @@ M68KMAKE_OP(tst, 8, ., d)
 
 M68KMAKE_OP(tst, 8, ., .)
 {
-<<<<<<< HEAD
-	UINT32 res = M68KMAKE_GET_OPER_AY_8;
-=======
 	uint32_t res = M68KMAKE_GET_OPER_AY_8;
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_8(res);
 	(mc68kcpu)->not_z_flag = res;
@@ -12871,11 +10188,7 @@ M68KMAKE_OP(tst, 8, ., pcdi)
 {
 	if(CPU_TYPE_IS_EC020_PLUS((mc68kcpu)->cpu_type))
 	{
-<<<<<<< HEAD
-		UINT32 res = OPER_PCDI_8(mc68kcpu);
-=======
 		uint32_t res = OPER_PCDI_8(mc68kcpu);
->>>>>>> upstream/master
 
 		(mc68kcpu)->n_flag = NFLAG_8(res);
 		(mc68kcpu)->not_z_flag = res;
@@ -12891,11 +10204,7 @@ M68KMAKE_OP(tst, 8, ., pcix)
 {
 	if(CPU_TYPE_IS_EC020_PLUS((mc68kcpu)->cpu_type))
 	{
-<<<<<<< HEAD
-		UINT32 res = OPER_PCIX_8(mc68kcpu);
-=======
 		uint32_t res = OPER_PCIX_8(mc68kcpu);
->>>>>>> upstream/master
 
 		(mc68kcpu)->n_flag = NFLAG_8(res);
 		(mc68kcpu)->not_z_flag = res;
@@ -12911,11 +10220,7 @@ M68KMAKE_OP(tst, 8, ., i)
 {
 	if(CPU_TYPE_IS_EC020_PLUS((mc68kcpu)->cpu_type))
 	{
-<<<<<<< HEAD
-		UINT32 res = OPER_I_8(mc68kcpu);
-=======
 		uint32_t res = OPER_I_8(mc68kcpu);
->>>>>>> upstream/master
 
 		(mc68kcpu)->n_flag = NFLAG_8(res);
 		(mc68kcpu)->not_z_flag = res;
@@ -12929,11 +10234,7 @@ M68KMAKE_OP(tst, 8, ., i)
 
 M68KMAKE_OP(tst, 16, ., d)
 {
-<<<<<<< HEAD
-	UINT32 res = MASK_OUT_ABOVE_16(DY(mc68kcpu));
-=======
 	uint32_t res = MASK_OUT_ABOVE_16(DY(mc68kcpu));
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_16(res);
 	(mc68kcpu)->not_z_flag = res;
@@ -12946,11 +10247,7 @@ M68KMAKE_OP(tst, 16, ., a)
 {
 	if(CPU_TYPE_IS_EC020_PLUS((mc68kcpu)->cpu_type))
 	{
-<<<<<<< HEAD
-		UINT32 res = MAKE_INT_16(AY(mc68kcpu));
-=======
 		uint32_t res = MAKE_INT_16(AY(mc68kcpu));
->>>>>>> upstream/master
 
 		(mc68kcpu)->n_flag = NFLAG_16(res);
 		(mc68kcpu)->not_z_flag = res;
@@ -12964,11 +10261,7 @@ M68KMAKE_OP(tst, 16, ., a)
 
 M68KMAKE_OP(tst, 16, ., .)
 {
-<<<<<<< HEAD
-	UINT32 res = M68KMAKE_GET_OPER_AY_16;
-=======
 	uint32_t res = M68KMAKE_GET_OPER_AY_16;
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_16(res);
 	(mc68kcpu)->not_z_flag = res;
@@ -12981,11 +10274,7 @@ M68KMAKE_OP(tst, 16, ., pcdi)
 {
 	if(CPU_TYPE_IS_EC020_PLUS((mc68kcpu)->cpu_type))
 	{
-<<<<<<< HEAD
-		UINT32 res = OPER_PCDI_16(mc68kcpu);
-=======
 		uint32_t res = OPER_PCDI_16(mc68kcpu);
->>>>>>> upstream/master
 
 		(mc68kcpu)->n_flag = NFLAG_16(res);
 		(mc68kcpu)->not_z_flag = res;
@@ -13001,11 +10290,7 @@ M68KMAKE_OP(tst, 16, ., pcix)
 {
 	if(CPU_TYPE_IS_EC020_PLUS((mc68kcpu)->cpu_type))
 	{
-<<<<<<< HEAD
-		UINT32 res = OPER_PCIX_16(mc68kcpu);
-=======
 		uint32_t res = OPER_PCIX_16(mc68kcpu);
->>>>>>> upstream/master
 
 		(mc68kcpu)->n_flag = NFLAG_16(res);
 		(mc68kcpu)->not_z_flag = res;
@@ -13021,11 +10306,7 @@ M68KMAKE_OP(tst, 16, ., i)
 {
 	if(CPU_TYPE_IS_EC020_PLUS((mc68kcpu)->cpu_type))
 	{
-<<<<<<< HEAD
-		UINT32 res = OPER_I_16(mc68kcpu);
-=======
 		uint32_t res = OPER_I_16(mc68kcpu);
->>>>>>> upstream/master
 
 		(mc68kcpu)->n_flag = NFLAG_16(res);
 		(mc68kcpu)->not_z_flag = res;
@@ -13039,11 +10320,7 @@ M68KMAKE_OP(tst, 16, ., i)
 
 M68KMAKE_OP(tst, 32, ., d)
 {
-<<<<<<< HEAD
-	UINT32 res = DY(mc68kcpu);
-=======
 	uint32_t res = DY(mc68kcpu);
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_32(res);
 	(mc68kcpu)->not_z_flag = res;
@@ -13056,11 +10333,7 @@ M68KMAKE_OP(tst, 32, ., a)
 {
 	if(CPU_TYPE_IS_EC020_PLUS((mc68kcpu)->cpu_type))
 	{
-<<<<<<< HEAD
-		UINT32 res = AY(mc68kcpu);
-=======
 		uint32_t res = AY(mc68kcpu);
->>>>>>> upstream/master
 
 		(mc68kcpu)->n_flag = NFLAG_32(res);
 		(mc68kcpu)->not_z_flag = res;
@@ -13074,11 +10347,7 @@ M68KMAKE_OP(tst, 32, ., a)
 
 M68KMAKE_OP(tst, 32, ., .)
 {
-<<<<<<< HEAD
-	UINT32 res = M68KMAKE_GET_OPER_AY_32;
-=======
 	uint32_t res = M68KMAKE_GET_OPER_AY_32;
->>>>>>> upstream/master
 
 	(mc68kcpu)->n_flag = NFLAG_32(res);
 	(mc68kcpu)->not_z_flag = res;
@@ -13091,11 +10360,7 @@ M68KMAKE_OP(tst, 32, ., pcdi)
 {
 	if(CPU_TYPE_IS_EC020_PLUS((mc68kcpu)->cpu_type))
 	{
-<<<<<<< HEAD
-		UINT32 res = OPER_PCDI_32(mc68kcpu);
-=======
 		uint32_t res = OPER_PCDI_32(mc68kcpu);
->>>>>>> upstream/master
 
 		(mc68kcpu)->n_flag = NFLAG_32(res);
 		(mc68kcpu)->not_z_flag = res;
@@ -13111,11 +10376,7 @@ M68KMAKE_OP(tst, 32, ., pcix)
 {
 	if(CPU_TYPE_IS_EC020_PLUS((mc68kcpu)->cpu_type))
 	{
-<<<<<<< HEAD
-		UINT32 res = OPER_PCIX_32(mc68kcpu);
-=======
 		uint32_t res = OPER_PCIX_32(mc68kcpu);
->>>>>>> upstream/master
 
 		(mc68kcpu)->n_flag = NFLAG_32(res);
 		(mc68kcpu)->not_z_flag = res;
@@ -13131,11 +10392,7 @@ M68KMAKE_OP(tst, 32, ., i)
 {
 	if(CPU_TYPE_IS_EC020_PLUS((mc68kcpu)->cpu_type))
 	{
-<<<<<<< HEAD
-		UINT32 res = OPER_I_32(mc68kcpu);
-=======
 		uint32_t res = OPER_I_32(mc68kcpu);
->>>>>>> upstream/master
 
 		(mc68kcpu)->n_flag = NFLAG_32(res);
 		(mc68kcpu)->not_z_flag = res;
@@ -13155,11 +10412,7 @@ M68KMAKE_OP(unlk, 32, ., a7)
 
 M68KMAKE_OP(unlk, 32, ., .)
 {
-<<<<<<< HEAD
-	UINT32* r_dst = &AY(mc68kcpu);
-=======
 	uint32_t* r_dst = &AY(mc68kcpu);
->>>>>>> upstream/master
 
 	REG_A(mc68kcpu)[7] = *r_dst;
 	*r_dst = m68ki_pull_32(mc68kcpu);
@@ -13171,13 +10424,8 @@ M68KMAKE_OP(unpk, 16, rr, .)
 	if(CPU_TYPE_IS_EC020_PLUS((mc68kcpu)->cpu_type))
 	{
 		/* Note: DX(mc68kcpu) and DY(mc68kcpu) are reversed in Motorola's docs */
-<<<<<<< HEAD
-		UINT32 src = DY(mc68kcpu);
-		UINT32* r_dst = &DX(mc68kcpu);
-=======
 		uint32_t src = DY(mc68kcpu);
 		uint32_t* r_dst = &DX(mc68kcpu);
->>>>>>> upstream/master
 
 		*r_dst = MASK_OUT_BELOW_16(*r_dst) | (((((src << 4) & 0x0f00) | (src & 0x000f)) + OPER_I_16(mc68kcpu)) & 0xffff);
 		return;
@@ -13191,13 +10439,8 @@ M68KMAKE_OP(unpk, 16, mm, ax7)
 	if(CPU_TYPE_IS_EC020_PLUS((mc68kcpu)->cpu_type))
 	{
 		/* Note: AX and AY are reversed in Motorola's docs */
-<<<<<<< HEAD
-		UINT32 src = OPER_AY_PD_8(mc68kcpu);
-		UINT32 ea_dst;
-=======
 		uint32_t src = OPER_AY_PD_8(mc68kcpu);
 		uint32_t ea_dst;
->>>>>>> upstream/master
 
 		src = (((src << 4) & 0x0f00) | (src & 0x000f)) + OPER_I_16(mc68kcpu);
 		ea_dst = EA_A7_PD_8(mc68kcpu);
@@ -13215,13 +10458,8 @@ M68KMAKE_OP(unpk, 16, mm, ay7)
 	if(CPU_TYPE_IS_EC020_PLUS((mc68kcpu)->cpu_type))
 	{
 		/* Note: AX and AY are reversed in Motorola's docs */
-<<<<<<< HEAD
-		UINT32 src = OPER_A7_PD_8(mc68kcpu);
-		UINT32 ea_dst;
-=======
 		uint32_t src = OPER_A7_PD_8(mc68kcpu);
 		uint32_t ea_dst;
->>>>>>> upstream/master
 
 		src = (((src << 4) & 0x0f00) | (src & 0x000f)) + OPER_I_16(mc68kcpu);
 		ea_dst = EA_AX_PD_8(mc68kcpu);
@@ -13238,13 +10476,8 @@ M68KMAKE_OP(unpk, 16, mm, axy7)
 {
 	if(CPU_TYPE_IS_EC020_PLUS((mc68kcpu)->cpu_type))
 	{
-<<<<<<< HEAD
-		UINT32 src = OPER_A7_PD_8(mc68kcpu);
-		UINT32 ea_dst;
-=======
 		uint32_t src = OPER_A7_PD_8(mc68kcpu);
 		uint32_t ea_dst;
->>>>>>> upstream/master
 
 		src = (((src << 4) & 0x0f00) | (src & 0x000f)) + OPER_I_16(mc68kcpu);
 		ea_dst = EA_A7_PD_8(mc68kcpu);
@@ -13262,13 +10495,8 @@ M68KMAKE_OP(unpk, 16, mm, .)
 	if(CPU_TYPE_IS_EC020_PLUS((mc68kcpu)->cpu_type))
 	{
 		/* Note: AX and AY are reversed in Motorola's docs */
-<<<<<<< HEAD
-		UINT32 src = OPER_AY_PD_8(mc68kcpu);
-		UINT32 ea_dst;
-=======
 		uint32_t src = OPER_AY_PD_8(mc68kcpu);
 		uint32_t ea_dst;
->>>>>>> upstream/master
 
 		src = (((src << 4) & 0x0f00) | (src & 0x000f)) + OPER_I_16(mc68kcpu);
 		ea_dst = EA_AX_PD_8(mc68kcpu);
@@ -13285,17 +10513,10 @@ M68KMAKE_OP(cinv, 32, ., .)
 {
 	if(CPU_TYPE_IS_040_PLUS((mc68kcpu)->cpu_type))
 	{
-<<<<<<< HEAD
-		UINT16 ir = mc68kcpu->ir;
-		UINT8 cache = (ir >> 6) & 3;
-//      UINT8 scope = (ir >> 3) & 3;
-//      logerror("68040 %s: pc=%08x ir=%04x cache=%d scope=%d register=%d\n", ir & 0x0020 ? "cpush" : "cinv", REG_PPC(mc68kcpu), ir, cache, scope, ir & 7);
-=======
 		uint16_t ir = mc68kcpu->ir;
 		uint8_t cache = (ir >> 6) & 3;
 //      uint8_t scope = (ir >> 3) & 3;
 //      mc68kcpu->logerror("68040 %s: pc=%08x ir=%04x cache=%d scope=%d register=%d\n", ir & 0x0020 ? "cpush" : "cinv", REG_PPC(mc68kcpu), ir, cache, scope, ir & 7);
->>>>>>> upstream/master
 		switch (cache)
 		{
 		case 2:
@@ -13312,11 +10533,7 @@ M68KMAKE_OP(cpush, 32, ., .)
 {
 	if(CPU_TYPE_IS_040_PLUS((mc68kcpu)->cpu_type))
 	{
-<<<<<<< HEAD
-		logerror("%s at %08x: called unimplemented instruction %04x (cpush)\n",
-=======
 		mc68kcpu->logerror("%s at %08x: called unimplemented instruction %04x (cpush)\n",
->>>>>>> upstream/master
 						(mc68kcpu)->tag(), REG_PC(mc68kcpu) - 2, (mc68kcpu)->ir);
 		return;
 	}

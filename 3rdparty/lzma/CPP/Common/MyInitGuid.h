@@ -3,13 +3,6 @@
 #ifndef __COMMON_MY_INITGUID_H
 #define __COMMON_MY_INITGUID_H
 
-<<<<<<< HEAD
-#ifdef _WIN32
-#ifdef UNDER_CE
-#include <basetyps.h>
-#endif
-#include <initguid.h>
-=======
 /*
 This file must be included only to one C++ file in project before
 declarations of COM interfaces with DEFINE_GUID macro.
@@ -34,29 +27,19 @@ Also we need IID_IUnknown that is initialized in some file for linking:
 
 #include <initguid.h>
 
->>>>>>> upstream/master
 #ifdef UNDER_CE
 DEFINE_GUID(IID_IUnknown,
 0x00000000, 0x0000, 0x0000, 0xC0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x46);
 #endif
-<<<<<<< HEAD
-#else
-=======
 
 #else
 
->>>>>>> upstream/master
 #define INITGUID
 #include "MyGuidDef.h"
 DEFINE_GUID(IID_IUnknown,
 0x00000000, 0x0000, 0x0000, 0xC0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x46);
-<<<<<<< HEAD
-#endif
-
-=======
 
 #endif
 
 
->>>>>>> upstream/master
 #endif

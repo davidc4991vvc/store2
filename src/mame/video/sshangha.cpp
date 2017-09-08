@@ -30,30 +30,17 @@ void sshangha_state::video_start()
 
 /******************************************************************************/
 
-<<<<<<< HEAD
-UINT32 sshangha_state::screen_update_sshangha(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
-=======
 uint32_t sshangha_state::screen_update_sshangha(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	m_sprgen1->draw_sprites(bitmap, cliprect, m_spriteram, 0x800, true);
 
 	// I'm pretty sure only the original has the 2nd spriteram, used for the Japanese text on the 2nd scene (non-scrolling text) in the intro of the quest (3rd in JPN) mode
-<<<<<<< HEAD
-	if (m_spriteram2 != NULL)
-		m_sprgen2->draw_sprites(bitmap, cliprect, m_spriteram2, 0x800, true);
-
-	// flip screen
-	address_space &space = machine().driver_data()->generic_space();
-	UINT16 flip = m_deco_tilegen1->pf_control_r(space, 0, 0xffff);
-=======
 	if (m_spriteram2 != nullptr)
 		m_sprgen2->draw_sprites(bitmap, cliprect, m_spriteram2, 0x800, true);
 
 	// flip screen
 	address_space &space = machine().dummy_space();
 	uint16_t flip = m_deco_tilegen1->pf_control_r(space, 0, 0xffff);
->>>>>>> upstream/master
 	flip_screen_set(BIT(flip, 7));
 
 	bitmap.fill(m_palette->black_pen(), cliprect);
@@ -71,11 +58,7 @@ uint32_t sshangha_state::screen_update_sshangha(screen_device &screen, bitmap_rg
 		m_deco_tilegen1->tilemap_1_draw(screen, bitmap, cliprect, 0, 0);
 	}
 
-<<<<<<< HEAD
-	if (m_spriteram2 != NULL)
-=======
 	if (m_spriteram2 != nullptr)
->>>>>>> upstream/master
 		m_sprgen2->inefficient_copy_sprite_bitmap(bitmap, cliprect, 0x0000, 0x0000, 0, 0x1ff);
 
 	m_sprgen1->inefficient_copy_sprite_bitmap(bitmap, cliprect, 0x0000, 0x0200, 0, 0x1ff);

@@ -1,11 +1,6 @@
 // license:BSD-3-Clause
 // copyright-holders:Andrew Gardner
-<<<<<<< HEAD
-#define NO_MEM_TRACKING
-
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #include "deviceswindow.h"
 #include "deviceinformationwindow.h"
 
@@ -52,11 +47,7 @@ QModelIndex DevicesWindowModel::index(int row, int column, const QModelIndex &pa
 	if(!hasIndex(row, column, parent))
 		return QModelIndex();
 
-<<<<<<< HEAD
-	device_t *target = NULL;
-=======
 	device_t *target = nullptr;
->>>>>>> upstream/master
 
 	if(!parent.isValid()) {
 		if(row == 0)
@@ -65,11 +56,7 @@ QModelIndex DevicesWindowModel::index(int row, int column, const QModelIndex &pa
 	} else {
 		device_t *dparent = static_cast<device_t *>(parent.internalPointer());
 		int count = row;
-<<<<<<< HEAD
-		for(target = dparent->first_subdevice(); count && target; target = target->next())
-=======
 		for(target = dparent->subdevices().first(); count && target; target = target->next())
->>>>>>> upstream/master
 			count--;
 	}
 
@@ -93,11 +80,7 @@ QModelIndex DevicesWindowModel::parent(const QModelIndex &index) const
 	device_t *dpp = dparent->owner();
 	int row = 0;
 	if(dpp) {
-<<<<<<< HEAD
-		for(device_t *child = dpp->first_subdevice(); child && child != dparent; child = child->next())
-=======
 		for(device_t *child = dpp->subdevices().first(); child && child != dparent; child = child->next())
->>>>>>> upstream/master
 			row++;
 	}
 	return createIndex(row, 0, dparent);
@@ -109,15 +92,7 @@ int DevicesWindowModel::rowCount(const QModelIndex &parent) const
 		return 1;
 
 	device_t *dparent = static_cast<device_t *>(parent.internalPointer());
-<<<<<<< HEAD
-	int count = 0;
-	for(device_t *child = dparent->first_subdevice(); child; child = child->next())
-		count++;
-
-	return count;
-=======
 	return dparent->subdevices().count();
->>>>>>> upstream/master
 }
 
 int DevicesWindowModel::columnCount(const QModelIndex &parent) const
@@ -128,16 +103,6 @@ int DevicesWindowModel::columnCount(const QModelIndex &parent) const
 
 
 DevicesWindow::DevicesWindow(running_machine* machine, QWidget* parent) :
-<<<<<<< HEAD
-	WindowQt(machine, NULL),
-	m_devices_model(machine)
-{
-	m_selected_device = NULL;
-
-	setWindowTitle("Debug: All Devices");
-
-	if (parent != NULL)
-=======
 	WindowQt(machine, nullptr),
 	m_devices_model(machine)
 {
@@ -146,7 +111,6 @@ DevicesWindow::DevicesWindow(running_machine* machine, QWidget* parent) :
 	setWindowTitle("Debug: All Devices");
 
 	if (parent != nullptr)
->>>>>>> upstream/master
 	{
 		QPoint parentPos = parent->pos();
 		setGeometry(parentPos.x()+100, parentPos.y()+100, 600, 400);
@@ -159,13 +123,8 @@ DevicesWindow::DevicesWindow(running_machine* machine, QWidget* parent) :
 	m_devices_view->setModel(&m_devices_model);
 	m_devices_view->expandAll();
 	m_devices_view->resizeColumnToContents(0);
-<<<<<<< HEAD
-	connect(m_devices_view->selectionModel(), SIGNAL(currentRowChanged(const QModelIndex &,const QModelIndex &)), this, SLOT(currentRowChanged(const QModelIndex &,const QModelIndex &)));
-	connect(m_devices_view, SIGNAL(activated(const QModelIndex &)), this, SLOT(activated(const QModelIndex &)));
-=======
 	connect(m_devices_view->selectionModel(), &QItemSelectionModel::currentRowChanged, this, &DevicesWindow::currentRowChanged);
 	connect(m_devices_view, &QTreeView::activated, this, &DevicesWindow::activated);
->>>>>>> upstream/master
 	setCentralWidget(m_devices_view);
 }
 
@@ -206,21 +165,13 @@ void DevicesWindowQtConfig::applyToQWidget(QWidget* widget)
 }
 
 
-<<<<<<< HEAD
-void DevicesWindowQtConfig::addToXmlDataNode(xml_data_node* node) const
-=======
 void DevicesWindowQtConfig::addToXmlDataNode(util::xml::data_node &node) const
->>>>>>> upstream/master
 {
 	WindowQtConfig::addToXmlDataNode(node);
 }
 
 
-<<<<<<< HEAD
-void DevicesWindowQtConfig::recoverFromXmlNode(xml_data_node* node)
-=======
 void DevicesWindowQtConfig::recoverFromXmlNode(util::xml::data_node const &node)
->>>>>>> upstream/master
 {
 	WindowQtConfig::recoverFromXmlNode(node);
 }

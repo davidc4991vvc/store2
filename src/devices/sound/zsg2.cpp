@@ -59,31 +59,18 @@ TODO:
 
 
 // device type definition
-<<<<<<< HEAD
-const device_type ZSG2 = &device_creator<zsg2_device>;
-=======
 DEFINE_DEVICE_TYPE(ZSG2, zsg2_device, "zsg2", "ZOOM ZSG-2")
->>>>>>> upstream/master
 
 //-------------------------------------------------
 //  zsg2_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-zsg2_device::zsg2_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, ZSG2, "ZSG-2", tag, owner, clock, "zsg2", __FILE__),
-		device_sound_interface(mconfig, *this),
-		m_mem_base(*this, DEVICE_SELF),
-		m_read_address(0),
-		m_ext_read_handler(*this)
-=======
 zsg2_device::zsg2_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, ZSG2, tag, owner, clock)
 	, device_sound_interface(mconfig, *this)
 	, m_mem_base(*this, DEVICE_SELF)
 	, m_read_address(0)
 	, m_ext_read_handler(*this)
->>>>>>> upstream/master
 {
 }
 
@@ -101,21 +88,12 @@ void zsg2_device::device_start()
 	m_stream = stream_alloc(0, 2, clock() / 768);
 
 	m_mem_blocks = m_mem_base.length();
-<<<<<<< HEAD
-	m_mem_copy = auto_alloc_array_clear(machine(), UINT32, m_mem_blocks);
-	m_full_samples = auto_alloc_array_clear(machine(), INT16, m_mem_blocks * 4 + 4); // +4 is for empty block
-
-	// register for savestates
-	save_pointer(NAME(m_mem_copy), m_mem_blocks / sizeof(UINT32));
-	save_pointer(NAME(m_full_samples), (m_mem_blocks * 4 + 4) / sizeof(INT16));
-=======
 	m_mem_copy = make_unique_clear<uint32_t[]>(m_mem_blocks);
 	m_full_samples = make_unique_clear<int16_t[]>(m_mem_blocks * 4 + 4); // +4 is for empty block
 
 	// register for savestates
 	save_pointer(NAME(m_mem_copy.get()), m_mem_blocks / sizeof(uint32_t));
 	save_pointer(NAME(m_full_samples.get()), (m_mem_blocks * 4 + 4) / sizeof(int16_t));
->>>>>>> upstream/master
 	save_item(NAME(m_read_address));
 
 	for (int ch = 0; ch < 48; ch++)
@@ -173,11 +151,7 @@ void zsg2_device::device_reset()
 
 /******************************************************************************/
 
-<<<<<<< HEAD
-UINT32 zsg2_device::read_memory(UINT32 offset)
-=======
 uint32_t zsg2_device::read_memory(uint32_t offset)
->>>>>>> upstream/master
 {
 	if (offset >= m_mem_blocks)
 		return 0;
@@ -188,15 +162,9 @@ uint32_t zsg2_device::read_memory(uint32_t offset)
 	return m_ext_read_handler(offset);
 }
 
-<<<<<<< HEAD
-INT16 *zsg2_device::prepare_samples(UINT32 offset)
-{
-	UINT32 block = read_memory(offset);
-=======
 int16_t *zsg2_device::prepare_samples(uint32_t offset)
 {
 	uint32_t block = read_memory(offset);
->>>>>>> upstream/master
 
 	if (block == 0)
 		return &m_full_samples[m_mem_blocks]; // overflow or 0
@@ -215,11 +183,7 @@ int16_t *zsg2_device::prepare_samples(uint32_t offset)
 	m_full_samples[offset|3] = (block >> (8+1) & 0x40) | (block >> (16+2) & 0x20) | (block >> (24+3) & 0x10) | (block & 0xf);
 
 	// sign-extend and shift
-<<<<<<< HEAD
-	UINT8 shift = block >> 4 & 0xf;
-=======
 	uint8_t shift = block >> 4 & 0xf;
->>>>>>> upstream/master
 	for (int i = offset; i < (offset + 4); i++)
 	{
 		m_full_samples[i] <<= 9;
@@ -238,39 +202,6 @@ void zsg2_device::sound_stream_update(sound_stream &stream, stream_sample_t **in
 {
 	for (int i = 0; i < samples; i++)
 	{
-<<<<<<< HEAD
-		INT32 mix_l = 0;
-		INT32 mix_r = 0;
-
-		// loop over all channels
-		for (int ch = 0; ch < 48; ch++)
-		{
-			if (!m_chan[ch].is_playing)
-				continue;
-
-			m_chan[ch].step_ptr += m_chan[ch].step;
-			if (m_chan[ch].step_ptr & 0x10000)
-			{
-				m_chan[ch].step_ptr &= 0xffff;
-				if (++m_chan[ch].cur_pos >= m_chan[ch].end_pos)
-				{
-					// loop sample
-					m_chan[ch].cur_pos = m_chan[ch].loop_pos;
-					if ((m_chan[ch].cur_pos + 1) >= m_chan[ch].end_pos)
-					{
-						// end of sample
-						m_chan[ch].is_playing = false;
-						continue;
-					}
-				}
-				m_chan[ch].samples = prepare_samples(m_chan[ch].page | m_chan[ch].cur_pos);
-			}
-
-			INT32 sample = (m_chan[ch].samples[m_chan[ch].step_ptr >> 14 & 3] * m_chan[ch].vol) >> 16;
-
-			mix_l += (sample * m_chan[ch].panl + sample * (0x1f - m_chan[ch].panr)) >> 5;
-			mix_r += (sample * m_chan[ch].panr + sample * (0x1f - m_chan[ch].panl)) >> 5;
-=======
 		int32_t mix_l = 0;
 		int32_t mix_r = 0;
 
@@ -302,7 +233,6 @@ void zsg2_device::sound_stream_update(sound_stream &stream, stream_sample_t **in
 
 			mix_l += (sample * elem.panl + sample * (0x1f - elem.panr)) >> 5;
 			mix_r += (sample * elem.panr + sample * (0x1f - elem.panl)) >> 5;
->>>>>>> upstream/master
 		}
 
 		outputs[0][i] = mix_l;
@@ -313,11 +243,7 @@ void zsg2_device::sound_stream_update(sound_stream &stream, stream_sample_t **in
 
 /******************************************************************************/
 
-<<<<<<< HEAD
-void zsg2_device::chan_w(int ch, int reg, UINT16 data)
-=======
 void zsg2_device::chan_w(int ch, int reg, uint16_t data)
->>>>>>> upstream/master
 {
 	switch (reg)
 	{
@@ -392,11 +318,7 @@ void zsg2_device::chan_w(int ch, int reg, uint16_t data)
 	m_chan[ch].v[reg] = data;
 }
 
-<<<<<<< HEAD
-UINT16 zsg2_device::chan_r(int ch, int reg)
-=======
 uint16_t zsg2_device::chan_r(int ch, int reg)
->>>>>>> upstream/master
 {
 	switch (reg)
 	{
@@ -414,11 +336,7 @@ uint16_t zsg2_device::chan_r(int ch, int reg)
 
 /******************************************************************************/
 
-<<<<<<< HEAD
-void zsg2_device::control_w(int reg, UINT16 data)
-=======
 void zsg2_device::control_w(int reg, uint16_t data)
->>>>>>> upstream/master
 {
 	switch (reg)
 	{
@@ -473,11 +391,7 @@ void zsg2_device::control_w(int reg, uint16_t data)
 	}
 }
 
-<<<<<<< HEAD
-UINT16 zsg2_device::control_r(int reg)
-=======
 uint16_t zsg2_device::control_r(int reg)
->>>>>>> upstream/master
 {
 	switch (reg)
 	{

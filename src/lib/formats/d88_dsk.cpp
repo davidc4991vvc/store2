@@ -38,19 +38,11 @@
 
 struct d88_tag
 {
-<<<<<<< HEAD
-	UINT32 image_size;
-	UINT32 trackoffset[164];
-	UINT8 write_protect;
-	UINT8 disk_type;
-	UINT8 heads;
-=======
 	uint32_t image_size;
 	uint32_t trackoffset[164];
 	uint8_t write_protect;
 	uint8_t disk_type;
 	uint8_t heads;
->>>>>>> upstream/master
 };
 
 static struct d88_tag *get_d88_tag(floppy_image_legacy *floppy)
@@ -61,13 +53,8 @@ static struct d88_tag *get_d88_tag(floppy_image_legacy *floppy)
 static int d88_get_sector_id(floppy_image_legacy *floppy, int head, int track, int sector_index)
 {
 	struct d88_tag* tag = get_d88_tag(floppy);
-<<<<<<< HEAD
-	UINT32 offset;
-	UINT8 sector_hdr[16];
-=======
 	uint32_t offset;
 	uint8_t sector_hdr[16];
->>>>>>> upstream/master
 	int x;
 
 	offset = tag->trackoffset[(track*tag->heads)+head];
@@ -104,13 +91,8 @@ static int d88_get_heads_per_disk(floppy_image_legacy *floppy)
 static int d88_get_sectors_per_track(floppy_image_legacy *floppy, int head, int track)
 {
 	struct d88_tag* tag = get_d88_tag(floppy);
-<<<<<<< HEAD
-	UINT32 offset;
-	UINT8 sector_hdr[16];
-=======
 	uint32_t offset;
 	uint8_t sector_hdr[16];
->>>>>>> upstream/master
 
 	offset = tag->trackoffset[(track*tag->heads)+head];
 
@@ -119,21 +101,12 @@ static int d88_get_sectors_per_track(floppy_image_legacy *floppy, int head, int 
 	return sector_hdr[4];
 }
 
-<<<<<<< HEAD
-static floperr_t d88_get_sector_length(floppy_image_legacy *floppy, int head, int track, int sector, UINT32 *sector_length)
-{
-	struct d88_tag* tag = get_d88_tag(floppy);
-	UINT32 offset;
-	UINT8 sector_hdr[16];
-	UINT32 len;
-=======
 static floperr_t d88_get_sector_length(floppy_image_legacy *floppy, int head, int track, int sector, uint32_t *sector_length)
 {
 	struct d88_tag* tag = get_d88_tag(floppy);
 	uint32_t offset;
 	uint8_t sector_hdr[16];
 	uint32_t len;
->>>>>>> upstream/master
 	int count,secs;
 
 	offset = tag->trackoffset[(track*tag->heads)+head];
@@ -158,26 +131,13 @@ static floperr_t d88_get_sector_length(floppy_image_legacy *floppy, int head, in
 	return FLOPPY_ERROR_SEEKERROR;
 }
 
-<<<<<<< HEAD
-static floperr_t d88_read_track(floppy_image_legacy *floppy, int head, int track, UINT64 offset, void *buffer, size_t buflen)
-=======
 static floperr_t d88_read_track(floppy_image_legacy *floppy, int head, int track, uint64_t offset, void *buffer, size_t buflen)
->>>>>>> upstream/master
 {
 //  floperr_t err;
 
 	return FLOPPY_ERROR_UNSUPPORTED;
 }
 
-<<<<<<< HEAD
-static UINT32 d88_get_sector_offset(floppy_image_legacy* floppy, int head, int track, int sector)
-{
-	struct d88_tag* tag = get_d88_tag(floppy);
-	UINT32 offset = 0;
-	UINT8 sector_hdr[16];
-	UINT32 len;
-	UINT32 secs;
-=======
 static uint32_t d88_get_sector_offset(floppy_image_legacy* floppy, int head, int track, int sector)
 {
 	struct d88_tag* tag = get_d88_tag(floppy);
@@ -185,7 +145,6 @@ static uint32_t d88_get_sector_offset(floppy_image_legacy* floppy, int head, int
 	uint8_t sector_hdr[16];
 	uint32_t len;
 	uint32_t secs;
->>>>>>> upstream/master
 	int count;
 
 	// get offset of the beginning of the track
@@ -210,19 +169,11 @@ static uint32_t d88_get_sector_offset(floppy_image_legacy* floppy, int head, int
 	return 0;
 }
 
-<<<<<<< HEAD
-static floperr_t d88_get_indexed_sector_info(floppy_image_legacy *floppy, int head, int track, int sector_index, int *cylinder, int *side, int *sector, UINT32 *sector_length, unsigned long *flags)
-{
-	struct d88_tag* tag = get_d88_tag(floppy);
-	UINT32 offset;
-	UINT8 sector_hdr[16];
-=======
 static floperr_t d88_get_indexed_sector_info(floppy_image_legacy *floppy, int head, int track, int sector_index, int *cylinder, int *side, int *sector, uint32_t *sector_length, unsigned long *flags)
 {
 	struct d88_tag* tag = get_d88_tag(floppy);
 	uint32_t offset;
 	uint8_t sector_hdr[16];
->>>>>>> upstream/master
 	int x;
 
 	offset = tag->trackoffset[(track*tag->heads)+head];
@@ -265,13 +216,8 @@ static floperr_t d88_get_indexed_sector_info(floppy_image_legacy *floppy, int he
 
 static floperr_t d88_read_sector(floppy_image_legacy *floppy, int head, int track, int sector, void *buffer, size_t buflen)
 {
-<<<<<<< HEAD
-	UINT64 offset;
-	UINT32 sector_length;
-=======
 	uint64_t offset;
 	uint32_t sector_length;
->>>>>>> upstream/master
 
 	offset = d88_get_sector_offset(floppy,head,track,sector);
 
@@ -299,13 +245,8 @@ static floperr_t d88_read_indexed_sector(floppy_image_legacy *floppy, int head, 
 
 static floperr_t d88_write_sector(floppy_image_legacy *floppy, int head, int track, int sector, const void *buffer, size_t buflen, int ddam)
 {
-<<<<<<< HEAD
-	UINT64 offset;
-	UINT32 sector_length;
-=======
 	uint64_t offset;
 	uint32_t sector_length;
->>>>>>> upstream/master
 
 	offset = d88_get_sector_offset(floppy,head,track,sector);
 
@@ -331,15 +272,9 @@ static floperr_t d88_write_indexed_sector(floppy_image_legacy *floppy, int head,
 	return d88_write_sector(floppy,head,track,sec,buffer,buflen,ddam);
 }
 
-<<<<<<< HEAD
-static void d88_get_header(floppy_image_legacy* floppy,UINT32* size, UINT8* prot, UINT8* type, UINT32* offsets)
-{
-	UINT8 header[D88_HEADER_LEN];
-=======
 static void d88_get_header(floppy_image_legacy* floppy,uint32_t* size, uint8_t* prot, uint8_t* type, uint32_t* offsets)
 {
 	uint8_t header[D88_HEADER_LEN];
->>>>>>> upstream/master
 	int x,s;
 
 	floppy_image_read(floppy,header,0,D88_HEADER_LEN);
@@ -347,13 +282,8 @@ static void d88_get_header(floppy_image_legacy* floppy,uint32_t* size, uint8_t* 
 #ifdef SPOT_DUPLICATES
 		// there exist many .d88 files with same data and different headers and
 		// this allows to spot duplicates, making easier to debug softlists.
-<<<<<<< HEAD
-		UINT32 temp_size = floppy_image_size(floppy);
-		UINT8 tmp_copy[temp_size - D88_HEADER_LEN];
-=======
 		uint32_t temp_size = floppy_image_size(floppy);
 		uint8_t tmp_copy[temp_size - D88_HEADER_LEN];
->>>>>>> upstream/master
 		floppy_image_read(floppy,tmp_copy,D88_HEADER_LEN,temp_size - D88_HEADER_LEN);
 		printf("CRC16: %d\n", ccitt_crc16(0xffff, tmp_copy, temp_size - D88_HEADER_LEN));
 #endif
@@ -387,15 +317,9 @@ static void d88_get_header(floppy_image_legacy* floppy,uint32_t* size, uint8_t* 
 
 FLOPPY_IDENTIFY(d88_dsk_identify)
 {
-<<<<<<< HEAD
-	UINT32 size;
-
-	d88_get_header(floppy,&size,NULL,NULL,NULL);
-=======
 	uint32_t size;
 
 	d88_get_header(floppy,&size,nullptr,nullptr,nullptr);
->>>>>>> upstream/master
 
 	if(floppy_image_size(floppy) == size)
 	{
@@ -412,15 +336,9 @@ FLOPPY_CONSTRUCT(d88_dsk_construct)
 {
 	struct FloppyCallbacks *callbacks;
 	struct d88_tag *tag;
-<<<<<<< HEAD
-	UINT32 size;
-	UINT8 prot,type = 0;
-	UINT32 offs[164];
-=======
 	uint32_t size;
 	uint8_t prot,type = 0;
 	uint32_t offs[164];
->>>>>>> upstream/master
 	int x;
 
 	if(params)
@@ -496,15 +414,6 @@ const char *d88_format::extensions() const
 	return "d77,d88,1dd";
 }
 
-<<<<<<< HEAD
-int d88_format::identify(io_generic *io, UINT32 form_factor)
-{
-	UINT64 size = io_generic_size(io);
-	UINT8 h[32];
-
-	io_generic_read(io, h, 0, 32);
-	if((LITTLE_ENDIANIZE_INT32(*(UINT32 *)(h+0x1c)) == size) &&
-=======
 int d88_format::identify(io_generic *io, uint32_t form_factor)
 {
 	uint64_t size = io_generic_size(io);
@@ -512,22 +421,15 @@ int d88_format::identify(io_generic *io, uint32_t form_factor)
 
 	io_generic_read(io, h, 0, 32);
 	if((little_endianize_int32(*(uint32_t *)(h+0x1c)) == size) &&
->>>>>>> upstream/master
 		(h[0x1b] == 0x00 || h[0x1b] == 0x10 || h[0x1b] == 0x20 || h[0x1b] == 0x30 || h[0x1b] == 0x40))
 		return 100;
 
 	return 0;
 }
 
-<<<<<<< HEAD
-bool d88_format::load(io_generic *io, UINT32 form_factor, floppy_image *image)
-{
-	UINT8 h[32];
-=======
 bool d88_format::load(io_generic *io, uint32_t form_factor, floppy_image *image)
 {
 	uint8_t h[32];
->>>>>>> upstream/master
 
 	io_generic_read(io, h, 0, 32);
 
@@ -574,37 +476,16 @@ bool d88_format::load(io_generic *io, uint32_t form_factor, floppy_image *image)
 	if(!head_count)
 		return false;
 
-<<<<<<< HEAD
-	UINT32 track_pos[164];
-=======
 	uint32_t track_pos[164];
->>>>>>> upstream/master
 	io_generic_read(io, track_pos, 32, 164*4);
 
 	for(int track=0; track < track_count; track++)
 		for(int head=0; head < head_count; head++) {
-<<<<<<< HEAD
-			int pos = LITTLE_ENDIANIZE_INT32(track_pos[track * head_count + head]);
-=======
 			int pos = little_endianize_int32(track_pos[track * head_count + head]);
->>>>>>> upstream/master
 			if(!pos)
 				continue;
 
 			desc_pc_sector sects[256];
-<<<<<<< HEAD
-			UINT8 sect_data[65536];
-			int sdatapos = 0;
-			int sector_count = 1;
-			for(int i=0; i<sector_count; i++) {
-				UINT8 hs[16];
-				io_generic_read(io, hs, pos, 16);
-				pos += 16;
-
-				UINT16 size = LITTLE_ENDIANIZE_INT16(*(UINT16 *)(hs+14));
-				if(i == 0) {
-					sector_count = LITTLE_ENDIANIZE_INT16(*(UINT16 *)(hs+4));
-=======
 			uint8_t sect_data[65536];
 			int sdatapos = 0;
 			int sector_count = 1;
@@ -616,7 +497,6 @@ bool d88_format::load(io_generic *io, uint32_t form_factor, floppy_image *image)
 				uint16_t size = little_endianize_int16(*(uint16_t *)(hs+14));
 				if(i == 0) {
 					sector_count = little_endianize_int16(*(uint16_t *)(hs+4));
->>>>>>> upstream/master
 					// Support broken vfman converter
 					if(sector_count == 0x1000)
 						sector_count = 0x10;
@@ -637,11 +517,7 @@ bool d88_format::load(io_generic *io, uint32_t form_factor, floppy_image *image)
 					sdatapos += size;
 
 				} else
-<<<<<<< HEAD
-					sects[i].data    = NULL;
-=======
 					sects[i].data    = nullptr;
->>>>>>> upstream/master
 			}
 
 			build_pc_track_mfm(track, head, image, cell_count, sector_count, sects, calc_default_pc_gap3_size(form_factor, sects[0].actual_size));

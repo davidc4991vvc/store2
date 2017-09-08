@@ -14,11 +14,7 @@
     as in test pa_devs.c.
 */
 /*
-<<<<<<< HEAD
- * $Id: paqa_devs.c 1910 2013-09-07 10:14:52Z gineera $
-=======
  * $Id$
->>>>>>> upstream/master
  *
  * This program uses the PortAudio Portable Audio Library.
  * For more information see: http://www.portaudio.com

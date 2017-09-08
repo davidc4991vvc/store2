@@ -218,19 +218,6 @@ Todo:
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/z80/z80.h"
-#include "cpu/z8000/z8000.h"
-#include "cpu/mb88xx/mb88xx.h"
-#include "machine/namco06.h"
-#include "machine/namco51.h"
-#include "machine/namco53.h"
-#include "audio/namco52.h"
-#include "audio/namco54.h"
-#include "includes/polepos.h"
-#include "sound/tms5220.h"
-#include "machine/nvram.h"
-=======
 #include "includes/polepos.h"
 #include "audio/namco52.h"
 #include "audio/namco54.h"
@@ -248,7 +235,6 @@ Todo:
 #include "sound/tms5220.h"
 #include "sound/volt_reg.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 #include "polepos.lh"
 #include "topracer.lh"
@@ -277,11 +263,7 @@ READ16_MEMBER(polepos_state::polepos2_ic25_r)
 	{
 		m_last_unsigned = offset & 0xff;
 		result = (m_last_result >> 8) & 0xff;
-<<<<<<< HEAD
-		m_last_result = (INT8)m_last_signed * (UINT8)m_last_unsigned;
-=======
 		m_last_result = (int8_t)m_last_signed * (uint8_t)m_last_unsigned;
->>>>>>> upstream/master
 	}
 
 //  logerror("%04X: read IC25 @ %04X = %02X\n", space.device().safe_pc(), offset, result);
@@ -308,55 +290,6 @@ READ8_MEMBER(polepos_state::polepos_ready_r)
 }
 
 
-<<<<<<< HEAD
-WRITE8_MEMBER(polepos_state::polepos_latch_w)
-{
-	int bit = data & 1;
-
-	switch (offset)
-	{
-		case 0x00:  /* IRQON */
-			m_main_irq_mask = bit;
-			if (!bit)
-				m_maincpu->set_input_line(0, CLEAR_LINE);
-			break;
-
-		case 0x01:  /* IOSEL */
-//          polepos_mcu_enable_w(offset,data);
-			break;
-
-		case 0x02:  /* CLSON */
-			m_namco_sound->polepos_sound_enable(bit);
-			if (!bit)
-			{
-				machine().device<polepos_sound_device>("polepos")->polepos_engine_sound_lsb_w(space, 0, 0);
-				machine().device<polepos_sound_device>("polepos")->polepos_engine_sound_msb_w(space, 0, 0);
-			}
-			break;
-
-		case 0x03:  /* GASEL */
-			m_adc_input = bit;
-			break;
-
-		case 0x04:  /* RESB */
-			m_subcpu->set_input_line(INPUT_LINE_RESET, bit ? CLEAR_LINE : ASSERT_LINE);
-			break;
-
-		case 0x05:  /* RESA */
-			m_subcpu2->set_input_line(INPUT_LINE_RESET, bit ? CLEAR_LINE : ASSERT_LINE);
-			break;
-
-		case 0x06:  /* SB0 */
-			m_auto_start_mask = !bit;
-			break;
-
-		case 0x07:  /* CHACL */
-			polepos_chacl_w(space,offset,data);
-			break;
-	}
-}
-
-=======
 WRITE_LINE_MEMBER(polepos_state::iosel_w)
 {
 //          polepos_mcu_enable_w(offset,data);
@@ -387,7 +320,6 @@ WRITE_LINE_MEMBER(polepos_state::chacl_w)
 	polepos_chacl_w(machine().dummy_space(), 0, state);
 }
 
->>>>>>> upstream/master
 WRITE16_MEMBER(polepos_state::polepos_z8002_nvi_enable_w)
 {
 	data &= 1;
@@ -397,12 +329,6 @@ WRITE16_MEMBER(polepos_state::polepos_z8002_nvi_enable_w)
 		space.device().execute().set_input_line(0, CLEAR_LINE);
 }
 
-<<<<<<< HEAD
-
-CUSTOM_INPUT_MEMBER(polepos_state::high_port_r){ return ioport((const char *)param)->read() >> 4; }
-CUSTOM_INPUT_MEMBER(polepos_state::low_port_r){ return ioport((const char *)param)->read() & 0x0f; }
-=======
->>>>>>> upstream/master
 CUSTOM_INPUT_MEMBER(polepos_state::auto_start_r)
 {
 	return m_auto_start_mask;
@@ -411,35 +337,20 @@ CUSTOM_INPUT_MEMBER(polepos_state::auto_start_r)
 WRITE8_MEMBER(polepos_state::out_0)
 {
 // no start lamps in pole position
-<<<<<<< HEAD
-//  set_led_status(machine(), 1,data & 1);
-//  set_led_status(machine(), 0,data & 2);
-	coin_counter_w(machine(), 1,~data & 4);
-	coin_counter_w(machine(), 0,~data & 8);
-=======
 //  output().set_led_value(1,data & 1);
 //  output().set_led_value(0,data & 2);
 	machine().bookkeeping().coin_counter_w(1,~data & 4);
 	machine().bookkeeping().coin_counter_w(0,~data & 8);
->>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(polepos_state::out_1)
 {
-<<<<<<< HEAD
-	coin_lockout_global_w(machine(), data & 1);
-=======
 	machine().bookkeeping().coin_lockout_global_w(data & 1);
->>>>>>> upstream/master
 }
 
 READ8_MEMBER(polepos_state::namco_52xx_rom_r)
 {
-<<<<<<< HEAD
-	UINT32 length = memregion("52xx")->bytes();
-=======
 	uint32_t length = memregion("52xx")->bytes();
->>>>>>> upstream/master
 logerror("ROM @ %04X\n", offset);
 	return (offset < length) ? memregion("52xx")->base()[offset] : 0xff;
 }
@@ -459,13 +370,8 @@ READ8_MEMBER(polepos_state::namco_53xx_k_r)
 READ8_MEMBER(polepos_state::steering_changed_r)
 {
 	/* read the current steering value and update our delta */
-<<<<<<< HEAD
-	UINT8 steer_new = ioport("STEER")->read();
-	m_steer_accum += (INT8)(steer_new - m_steer_last) * 2;
-=======
 	uint8_t steer_new = ioport("STEER")->read();
 	m_steer_accum += (int8_t)(steer_new - m_steer_last) * 2;
->>>>>>> upstream/master
 	m_steer_last = steer_new;
 
 	/* if we have delta, clock things */
@@ -492,11 +398,7 @@ TIMER_DEVICE_CALLBACK_MEMBER(polepos_state::polepos_scanline)
 {
 	int scanline = param;
 
-<<<<<<< HEAD
-	if (((scanline == 64) || (scanline == 192)) && m_main_irq_mask) // 64V
-=======
 	if (((scanline == 64) || (scanline == 192)) && m_latch->q0_r()) // 64V
->>>>>>> upstream/master
 		m_maincpu->set_input_line(0, ASSERT_LINE);
 
 	if (scanline == 240 && m_sub_irq_mask)  // VBLANK
@@ -509,16 +411,6 @@ TIMER_DEVICE_CALLBACK_MEMBER(polepos_state::polepos_scanline)
 
 MACHINE_RESET_MEMBER(polepos_state,polepos)
 {
-<<<<<<< HEAD
-	address_space &space = m_maincpu->space(AS_PROGRAM);
-	int i;
-
-	/* Reset all latches */
-	for (i = 0; i < 8; i++)
-		polepos_latch_w(space, i, 0);
-
-=======
->>>>>>> upstream/master
 	/* set the interrupt vectors (this shouldn't be needed) */
 	m_subcpu->set_input_line_vector(0, Z8000_NVI);
 	m_subcpu2->set_input_line_vector(0, Z8000_NVI);
@@ -544,13 +436,8 @@ static ADDRESS_MAP_START( z80_map, AS_PROGRAM, 8, polepos_state )
 	AM_RANGE(0x9000, 0x9000) AM_MIRROR(0x0eff) AM_DEVREADWRITE("06xx", namco_06xx_device, data_r, data_w)
 	AM_RANGE(0x9100, 0x9100) AM_MIRROR(0x0eff) AM_DEVREADWRITE("06xx", namco_06xx_device, ctrl_r, ctrl_w)
 	AM_RANGE(0xa000, 0xa000) AM_MIRROR(0x0cff) AM_READ(polepos_ready_r)                 /* READY */
-<<<<<<< HEAD
-	AM_RANGE(0xa000, 0xa007) AM_MIRROR(0x0cf8) AM_WRITE(polepos_latch_w)                /* misc latches */
-	AM_RANGE(0xa100, 0xa100) AM_MIRROR(0x0cff) AM_WRITE(watchdog_reset_w)               /* Watchdog */
-=======
 	AM_RANGE(0xa000, 0xa007) AM_MIRROR(0x0cf8) AM_DEVWRITE("latch", ls259_device, write_d0)
 	AM_RANGE(0xa100, 0xa100) AM_MIRROR(0x0cff) AM_DEVWRITE("watchdog", watchdog_timer_device, reset_w)
->>>>>>> upstream/master
 	AM_RANGE(0xa200, 0xa200) AM_MIRROR(0x0cff) AM_DEVWRITE("polepos", polepos_sound_device, polepos_engine_sound_lsb_w)    /* Car Sound ( Lower Nibble ) */
 	AM_RANGE(0xa300, 0xa300) AM_MIRROR(0x0cff) AM_DEVWRITE("polepos", polepos_sound_device, polepos_engine_sound_msb_w)    /* Car Sound ( Upper Nibble ) */
 ADDRESS_MAP_END
@@ -580,19 +467,6 @@ ADDRESS_MAP_END
  *********************************************************************/
 
 static INPUT_PORTS_START( polepos )
-<<<<<<< HEAD
-	PORT_START("IN0L")
-	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_UNUSED )
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_BUTTON1 ) PORT_NAME("Gear Change") PORT_CODE(KEYCODE_SPACE) POLEPOS_TOGGLE /* Gear */
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, polepos_state,auto_start_r, NULL)  // start 1, program controlled
-	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_UNUSED )
-
-	PORT_START("IN0H")
-	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_COIN1 )
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_COIN2 )
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SERVICE1 )
-	PORT_SERVICE( 0x08, IP_ACTIVE_LOW )
-=======
 	PORT_START("IN0")
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_UNUSED )
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_BUTTON1 ) PORT_NAME("Gear Change") PORT_CODE(KEYCODE_SPACE) POLEPOS_TOGGLE /* Gear */
@@ -602,7 +476,6 @@ static INPUT_PORTS_START( polepos )
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_COIN2 )
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_SERVICE1 )
 	PORT_SERVICE( 0x80, IP_ACTIVE_LOW )
->>>>>>> upstream/master
 
 	PORT_START("DSWA")
 	PORT_DIPNAME( 0x07, 0x07, DEF_STR( Coin_A ) )       PORT_DIPLOCATION("SW1:1,2,3")
@@ -628,12 +501,6 @@ static INPUT_PORTS_START( polepos )
 	PORT_DIPSETTING(    0x80, "3" ) /* Manufacturer's recommended settings for Upright cabinet */
 	PORT_DIPSETTING(    0x00, "4" ) /* Manufacturer's recommended settings for Sit-Down cabinet */
 
-<<<<<<< HEAD
-	PORT_START("DSWA_HI")
-	PORT_BIT( 0x0f, 0x00, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, polepos_state,high_port_r, "DSWA")
-
-=======
->>>>>>> upstream/master
 	PORT_START("DSWB")
 	PORT_DIPNAME( 0x07, 0x03, "Extended Rank" )     PORT_DIPLOCATION("SW2:1,2,3")
 	PORT_DIPSETTING(    0x07, "A" )
@@ -660,12 +527,6 @@ static INPUT_PORTS_START( polepos )
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ))
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
-<<<<<<< HEAD
-	PORT_START("DSWB_HI")
-	PORT_BIT( 0x0f, 0x00, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, polepos_state,high_port_r, "DSWB")
-
-=======
->>>>>>> upstream/master
 	PORT_START("BRAKE")
 	PORT_BIT( 0xff, 0x00, IPT_PEDAL2 ) PORT_MINMAX(0,0x90) PORT_SENSITIVITY(100) PORT_KEYDELTA(16)
 
@@ -742,15 +603,6 @@ static INPUT_PORTS_START( topracern )
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_COIN1 )
 	PORT_SERVICE( 0x80, IP_ACTIVE_LOW )
 
-<<<<<<< HEAD
-	PORT_START("IN0L")
-	PORT_BIT( 0x0f, 0x00, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, polepos_state,low_port_r, "IN0")
-
-	PORT_START("IN0H")
-	PORT_BIT( 0x0f, 0x00, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, polepos_state,high_port_r, "IN0")
-
-=======
->>>>>>> upstream/master
 	PORT_START("DSWA")
 	PORT_DIPNAME( 0x07, 0x07, DEF_STR( Coin_A ) )
 	PORT_DIPSETTING(    0x05, DEF_STR( 3C_1C ) )
@@ -775,12 +627,6 @@ static INPUT_PORTS_START( topracern )
 	PORT_DIPSETTING(    0x80, "3" )
 	PORT_DIPSETTING(    0x00, "4" )
 
-<<<<<<< HEAD
-	PORT_START("DSWA_HI")
-	PORT_BIT( 0x0f, 0x00, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, polepos_state,high_port_r, "DSWA")
-
-=======
->>>>>>> upstream/master
 	/* FIXME: these dips don't work and may not even exist on this bootleg */
 	PORT_START("DSWB")
 	PORT_DIPNAME( 0x07, 0x07, "Extended Rank" )
@@ -808,12 +654,6 @@ static INPUT_PORTS_START( topracern )
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ))
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
-<<<<<<< HEAD
-	PORT_START("DSWB_HI")
-	PORT_BIT( 0x0f, 0x00, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, polepos_state,high_port_r, "DSWB")
-
-=======
->>>>>>> upstream/master
 	PORT_START("BRAKE")
 	PORT_BIT( 0xff, 0x00, IPT_PEDAL2 ) PORT_MINMAX(0,0x90) PORT_SENSITIVITY(100) PORT_KEYDELTA(16)
 
@@ -843,11 +683,7 @@ static INPUT_PORTS_START( polepos2 )
 	PORT_DIPSETTING(    0x10, DEF_STR( 3C_2C ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( 4C_3C ) )
 	PORT_DIPSETTING(    0x18, DEF_STR( 1C_1C ) )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x04, 0x00, "Speed Unit" )        PORT_DIPLOCATION("SW1:6") /* Set defualt to MPH for "English" regions */
-=======
 	PORT_DIPNAME( 0x04, 0x00, "Speed Unit" )        PORT_DIPLOCATION("SW1:6") /* Set default to MPH for "English" regions */
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x00, "mph" )
 	PORT_DIPSETTING(    0x04, "km/h" )
 	PORT_DIPNAME( 0x02, 0x02, DEF_STR( Demo_Sounds ) )  PORT_DIPLOCATION("SW1:7")
@@ -886,18 +722,12 @@ static INPUT_PORTS_START( polepos2j )
 	PORT_INCLUDE( polepos2 )
 
 	PORT_MODIFY("DSWA")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x04, 0x04, "Speed Unit" )        PORT_DIPLOCATION("SW1:6") /* Set defualt to km/h for Japan */
-=======
 	PORT_DIPNAME( 0x04, 0x04, "Speed Unit" )        PORT_DIPLOCATION("SW1:6") /* Set default to km/h for Japan */
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x00, "mph" )
 	PORT_DIPSETTING(    0x04, "km/h" )
 INPUT_PORTS_END
 
 
-<<<<<<< HEAD
-=======
 static INPUT_PORTS_START( polepos2bi )
 	PORT_INCLUDE( topracern )
 
@@ -951,7 +781,6 @@ static INPUT_PORTS_START( polepos2bi )
 INPUT_PORTS_END
 
 
->>>>>>> upstream/master
 
 /*********************************************************************
  * Graphics layouts
@@ -1011,11 +840,7 @@ GFXDECODE_END
  * Machine driver
  *********************************************************************/
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( polepos, polepos_state )
-=======
 static MACHINE_CONFIG_START( polepos )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, MASTER_CLOCK/8)    /* 3.072 MHz */
@@ -1029,17 +854,10 @@ static MACHINE_CONFIG_START( polepos )
 	MCFG_CPU_PROGRAM_MAP(z8002_map)
 
 	MCFG_NAMCO_51XX_ADD("51xx", MASTER_CLOCK/8/2)      /* 1.536 MHz */
-<<<<<<< HEAD
-	MCFG_NAMCO_51XX_INPUT_0_CB(IOPORT("IN0L"))
-	MCFG_NAMCO_51XX_INPUT_1_CB(IOPORT("IN0H"))
-	MCFG_NAMCO_51XX_INPUT_2_CB(IOPORT("DSWB"))
-	MCFG_NAMCO_51XX_INPUT_3_CB(IOPORT("DSWB_HI"))
-=======
 	MCFG_NAMCO_51XX_INPUT_0_CB(IOPORT("IN0")) MCFG_DEVCB_MASK(0x0f)
 	MCFG_NAMCO_51XX_INPUT_1_CB(IOPORT("IN0")) MCFG_DEVCB_RSHIFT(4)
 	MCFG_NAMCO_51XX_INPUT_2_CB(IOPORT("DSWB")) MCFG_DEVCB_MASK(0x0f)
 	MCFG_NAMCO_51XX_INPUT_3_CB(IOPORT("DSWB")) MCFG_DEVCB_RSHIFT(4)
->>>>>>> upstream/master
 	MCFG_NAMCO_51XX_OUTPUT_0_CB(WRITE8(polepos_state,out_0))
 	MCFG_NAMCO_51XX_OUTPUT_1_CB(WRITE8(polepos_state,out_1))
 
@@ -1053,13 +871,8 @@ static MACHINE_CONFIG_START( polepos )
 	MCFG_NAMCO_53XX_K_CB(READ8(polepos_state,namco_53xx_k_r))
 	MCFG_NAMCO_53XX_INPUT_0_CB(READ8(polepos_state,steering_changed_r))
 	MCFG_NAMCO_53XX_INPUT_1_CB(READ8(polepos_state,steering_delta_r))
-<<<<<<< HEAD
-	MCFG_NAMCO_53XX_INPUT_2_CB(IOPORT("DSWA"))
-	MCFG_NAMCO_53XX_INPUT_3_CB(IOPORT("DSWA_HI"))
-=======
 	MCFG_NAMCO_53XX_INPUT_2_CB(IOPORT("DSWA")) MCFG_DEVCB_MASK(0x0f)
 	MCFG_NAMCO_53XX_INPUT_3_CB(IOPORT("DSWA")) MCFG_DEVCB_RSHIFT(4)
->>>>>>> upstream/master
 
 	MCFG_NAMCO_54XX_ADD("54xx", MASTER_CLOCK/8/2)  /* 1.536 MHz */
 	MCFG_NAMCO_54XX_DISCRETE("discrete")
@@ -1074,12 +887,8 @@ static MACHINE_CONFIG_START( polepos )
 	MCFG_NAMCO_06XX_WRITE_2_CB(DEVWRITE8("52xx", namco_52xx_device, write))
 	MCFG_NAMCO_06XX_WRITE_3_CB(DEVWRITE8("54xx", namco_54xx_device, write))
 
-<<<<<<< HEAD
-	MCFG_WATCHDOG_VBLANK_INIT(16)   // 128V clocks the same as VBLANK
-=======
 	MCFG_WATCHDOG_ADD("watchdog")
 	MCFG_WATCHDOG_VBLANK_INIT("screen", 16)   // 128V clocks the same as VBLANK
->>>>>>> upstream/master
 
 	MCFG_QUANTUM_TIME(attotime::from_hz(6000))  /* some interleaving */
 
@@ -1088,8 +897,6 @@ static MACHINE_CONFIG_START( polepos )
 
 	MCFG_TIMER_DRIVER_ADD_SCANLINE("scantimer", polepos_state, polepos_scanline, "screen", 0, 1)
 
-<<<<<<< HEAD
-=======
 	MCFG_DEVICE_ADD("latch", LS259, 0) // at 8E on polepos
 	MCFG_ADDRESSABLE_LATCH_Q0_OUT_CB(CLEARLINE("maincpu", 0)) MCFG_DEVCB_INVERT
 	MCFG_ADDRESSABLE_LATCH_Q1_OUT_CB(WRITELINE(polepos_state, iosel_w))
@@ -1100,7 +907,6 @@ static MACHINE_CONFIG_START( polepos )
 	MCFG_ADDRESSABLE_LATCH_Q6_OUT_CB(WRITELINE(polepos_state, sb0_w))
 	MCFG_ADDRESSABLE_LATCH_Q7_OUT_CB(WRITELINE(polepos_state, chacl_w))
 
->>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_RAW_PARAMS(MASTER_CLOCK/4, 384, 0, 256, 264, 16, 224+16)
@@ -1137,9 +943,6 @@ static MACHINE_CONFIG_START( polepos )
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( topracern, polepos_state )
-=======
 WRITE8_MEMBER(polepos_state::bootleg_soundlatch_w)
 {
 	if (m_soundlatch.found()) // topracern also uses this; no idea what it should do there
@@ -1169,16 +972,11 @@ static ADDRESS_MAP_START( sound_z80_bootleg_iomap, AS_IO, 8, polepos_state )
 ADDRESS_MAP_END
 
 static MACHINE_CONFIG_START( topracern )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, MASTER_CLOCK/8)    /* 3.072 MHz */
 	MCFG_CPU_PROGRAM_MAP(z80_map)
-<<<<<<< HEAD
-	MCFG_CPU_IO_MAP(z80_io)
-=======
 	MCFG_CPU_IO_MAP(topracern_io)
->>>>>>> upstream/master
 
 	MCFG_CPU_ADD("sub", Z8002, MASTER_CLOCK/8)  /* 3.072 MHz */
 	MCFG_CPU_PROGRAM_MAP(z8002_map)
@@ -1190,23 +988,15 @@ static MACHINE_CONFIG_START( topracern )
 	/* doesn't exist on the bootleg, but required for now or the game only boots in test mode!
 	   they probably simulate some of the logic */
 	MCFG_NAMCO_51XX_ADD("51xx", MASTER_CLOCK/8/2)       /* 1.536 MHz */
-<<<<<<< HEAD
-	MCFG_NAMCO_51XX_INPUT_1_CB(IOPORT("IN0H"))
-=======
 	MCFG_NAMCO_51XX_INPUT_1_CB(IOPORT("IN0")) MCFG_DEVCB_RSHIFT(4)
->>>>>>> upstream/master
 
 	MCFG_NAMCO_06XX_ADD("06xx", MASTER_CLOCK/8/64)
 	MCFG_NAMCO_06XX_MAINCPU("maincpu")
 	MCFG_NAMCO_06XX_READ_0_CB(DEVREAD8("51xx", namco_51xx_device, read))
 	MCFG_NAMCO_06XX_WRITE_0_CB(DEVWRITE8("51xx", namco_51xx_device, write))
 
-<<<<<<< HEAD
-	MCFG_WATCHDOG_VBLANK_INIT(16)   // 128V clocks the same as VBLANK
-=======
 	MCFG_WATCHDOG_ADD("watchdog")
 	MCFG_WATCHDOG_VBLANK_INIT("screen", 16)   // 128V clocks the same as VBLANK
->>>>>>> upstream/master
 
 	MCFG_QUANTUM_TIME(attotime::from_hz(6000))  /* some interleaving */
 
@@ -1215,8 +1005,6 @@ static MACHINE_CONFIG_START( topracern )
 
 	MCFG_TIMER_DRIVER_ADD_SCANLINE("scantimer", polepos_state, polepos_scanline, "screen", 0, 1)
 
-<<<<<<< HEAD
-=======
 	MCFG_DEVICE_ADD("latch", LS259, 0)
 	MCFG_ADDRESSABLE_LATCH_Q0_OUT_CB(CLEARLINE("maincpu", 0)) MCFG_DEVCB_INVERT
 	MCFG_ADDRESSABLE_LATCH_Q1_OUT_CB(WRITELINE(polepos_state, iosel_w))
@@ -1227,7 +1015,6 @@ static MACHINE_CONFIG_START( topracern )
 	MCFG_ADDRESSABLE_LATCH_Q6_OUT_CB(WRITELINE(polepos_state, sb0_w))
 	MCFG_ADDRESSABLE_LATCH_Q7_OUT_CB(WRITELINE(polepos_state, chacl_w))
 
->>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_RAW_PARAMS(MASTER_CLOCK/4, 384, 0, 256, 264, 16, 224+16)
@@ -1255,19 +1042,6 @@ static MACHINE_CONFIG_START( topracern )
 	MCFG_SOUND_ADD("polepos", POLEPOS, 0)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 0.90 * 0.77)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 0.90 * 0.77)
-<<<<<<< HEAD
-MACHINE_CONFIG_END
-
-
-static ADDRESS_MAP_START( sound_z80_bootleg_map, AS_PROGRAM, 8, polepos_state )
-	AM_RANGE(0x0000, 0x1fff) AM_ROM
-	AM_RANGE(0x2700, 0x27ff) AM_RAM
-ADDRESS_MAP_END
-
-static ADDRESS_MAP_START( sound_z80_bootleg_iomap, AS_IO, 8, polepos_state )
-	ADDRESS_MAP_GLOBAL_MASK(0xff)
-ADDRESS_MAP_END
-=======
 
 	MCFG_SOUND_ADD("dac", DAC_4BIT_R2R, 0) // unknown resistor configuration
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 0.12)
@@ -1275,7 +1049,6 @@ ADDRESS_MAP_END
 	MCFG_DEVICE_ADD("vref", VOLTAGE_REGULATOR, 0) MCFG_VOLTAGE_REGULATOR_OUTPUT(5.0)
 	MCFG_SOUND_ROUTE_EX(0, "dac", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "dac", -1.0, DAC_VREF_NEG_INPUT)
 MACHINE_CONFIG_END
->>>>>>> upstream/master
 
 static MACHINE_CONFIG_DERIVED( polepos2bi, topracern )
 
@@ -1283,13 +1056,10 @@ static MACHINE_CONFIG_DERIVED( polepos2bi, topracern )
 	MCFG_CPU_PROGRAM_MAP(sound_z80_bootleg_map)
 	MCFG_CPU_IO_MAP(sound_z80_bootleg_iomap)
 
-<<<<<<< HEAD
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 	MCFG_GENERIC_LATCH_DATA_PENDING_CB(INPUTLINE("soundz80bl", INPUT_LINE_NMI))
 	MCFG_GENERIC_LATCH_SEPARATE_ACKNOWLEDGE(true)
 
->>>>>>> upstream/master
 	MCFG_SOUND_ADD("tms", TMS5220, 600000) /* ? Mhz */
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 0.80)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 0.80)
@@ -2132,13 +1902,8 @@ ROM_START( polepos2 )
 
 	ROM_REGION( 0x8000, "52xx", 0 )
 	ROM_LOAD( "pp1_11.2e",    0x0000, 0x2000, CRC(45b9bfeb) SHA1(ff8c690471944d414931fb88666594ef608997f8) )    /* voice */
-<<<<<<< HEAD
-	ROM_LOAD( "pp1_12.2f",    0x2000, 0x2000, CRC(a31b4be5) SHA1(38298093bb97ea8647fe187359cae05b65e1c616) )    /* voice */
-	ROM_LOAD( "pp1_13.1e",    0x4000, 0x2000, CRC(a4237466) SHA1(88a397276038cc2fc05f2c18472e6b7cef167f2e) )    /* voice */
-=======
 	ROM_LOAD( "pp1_13.1e",    0x2000, 0x2000, CRC(a4237466) SHA1(88a397276038cc2fc05f2c18472e6b7cef167f2e) )    /* voice */
 	ROM_LOAD( "pp1_12.2f",    0x4000, 0x2000, CRC(a31b4be5) SHA1(38298093bb97ea8647fe187359cae05b65e1c616) )    /* voice */
->>>>>>> upstream/master
 	ROM_LOAD( "pp1_14.1f",    0x6000, 0x2000, CRC(944580f9) SHA1(c76f529cae718674ce97a1a599a3c6eaf6bf561a) )    /* voice */
 
 	/* unknown or unused (P)ROM data */
@@ -2396,11 +2161,7 @@ ROM_START( polepos2bi )
 	ROM_REGION( 0x0100, "user1", 0 )
 	ROM_LOAD( "74s287-a.bin",   0x0000, 0x0100, CRC(0e742cb1) SHA1(3ae43270aab4848fdeece1648e7e040ab216b08e) )    /* sync chain */
 
-<<<<<<< HEAD
-	/* this is used for the italian speech with a TMS5220, not properly hooked up */
-=======
 	/* this is used for the Italian speech with a TMS5220 */
->>>>>>> upstream/master
 	ROM_REGION( 0x2000, "soundz80bl", 0 )
 	ROM_LOAD( "20.bin",       0x0000, 0x2000, CRC(1771fe1b) SHA1(da74ca85dfd4f5ad5a9dbfe6f7668d93105e3575) )
 
@@ -2411,8 +2172,6 @@ ROM_START( polepos2bi )
 ROM_END
 
 
-<<<<<<< HEAD
-=======
 /*
   Gran Premio F1 (Spanish bootleg of Pole Position II)
 
@@ -2591,23 +2350,11 @@ ROM_START( polepos2bs )
 ROM_END
 
 
->>>>>>> upstream/master
 
 /*********************************************************************
  * Initialization routines
  *********************************************************************/
 
-<<<<<<< HEAD
-DRIVER_INIT_MEMBER(polepos_state,topracern)
-{
-	/* extra direct mapped inputs read */
-	m_maincpu->space(AS_IO).install_read_port(0x02, 0x02, "STEER");
-	m_maincpu->space(AS_IO).install_read_port(0x03, 0x03, "IN0");
-	m_maincpu->space(AS_IO).install_read_port(0x04, 0x04, "DSWA");
-}
-
-=======
->>>>>>> upstream/master
 DRIVER_INIT_MEMBER(polepos_state,polepos2)
 {
 	/* note that the bootleg version doesn't need this custom IC; it has a hacked ROM in its place */
@@ -2619,21 +2366,6 @@ DRIVER_INIT_MEMBER(polepos_state,polepos2)
  * Game drivers
  *********************************************************************/
 
-<<<<<<< HEAD
-GAME( 1982, polepos,    0,        polepos,    poleposa,  driver_device, 0,         ROT0, "Namco", "Pole Position (World)", 0 )
-GAME( 1982, poleposj,   polepos,  polepos,    polepos,   driver_device, 0,         ROT0, "Namco", "Pole Position (Japan)", 0 )
-GAME( 1982, poleposa1,  polepos,  polepos,    poleposa,  driver_device, 0,         ROT0, "Namco (Atari license)", "Pole Position (Atari version 1)", 0 )
-GAME( 1982, poleposa2,  polepos,  polepos,    poleposa,  driver_device, 0,         ROT0, "Namco (Atari license)", "Pole Position (Atari version 2)", 0 )
-GAME( 1984, topracer,   polepos,  polepos,    polepos,   driver_device, 0,         ROT0, "bootleg", "Top Racer (with MB8841 + MB8842, 1984)", 0 ) // the NAMCO customs have been cloned on these bootlegs
-GAME( 1983, topracera,  polepos,  polepos,    polepos,   driver_device, 0,         ROT0, "bootleg", "Top Racer (with MB8841 + MB8842, 1983)", 0 ) // the only difference between them is the year displayed on the title screen
-GAME( 1983, ppspeed,    polepos,  polepos,    polepos,   driver_device, 0,         ROT0, "bootleg", "Speed Up (Spanish bootleg of Pole Position)", 0 ) // very close to topracer / topracera
-GAME( 1982, topracern,  polepos,  topracern,  topracern, polepos_state, topracern, ROT0, "bootleg", "Top Racer (no MB8841 + MB8842)", 0 )
-
-GAME( 1983, polepos2,   0,        polepos,    polepos2j, polepos_state, polepos2,  ROT0, "Namco", "Pole Position II (Japan)", 0 )
-GAME( 1983, polepos2a,  polepos2, polepos,    polepos2,  polepos_state, polepos2,  ROT0, "Namco (Atari license)", "Pole Position II (Atari)", 0 )
-GAME( 1983, polepos2b,  polepos2, polepos,    polepos2,  driver_device, 0,         ROT0, "bootleg", "Pole Position II (bootleg)", 0 )
-GAME( 1984, polepos2bi, polepos2, polepos2bi, topracern, polepos_state, topracern, ROT0, "bootleg", "Gran Premio F1 (Italian bootleg of Pole Position II)", MACHINE_IMPERFECT_COLORS | MACHINE_IMPERFECT_SOUND ) // should have italian voices
-=======
 /*    YEAR  NAME        PARENT    MACHINE     INPUT      STATE          INIT       ROT    COMPANY                   FULLNAME                                                FLAGS */
 GAME( 1982, polepos,    0,        polepos,    poleposa,  polepos_state, 0,         ROT0, "Namco",                   "Pole Position (World)",                                0 )
 GAME( 1982, poleposj,   polepos,  polepos,    polepos,   polepos_state, 0,         ROT0, "Namco",                   "Pole Position (Japan)",                                0 )
@@ -2649,4 +2381,3 @@ GAME( 1983, polepos2a,  polepos2, polepos,    polepos2,  polepos_state, polepos2
 GAME( 1983, polepos2b,  polepos2, polepos,    polepos2,  polepos_state, 0,         ROT0, "bootleg",                 "Pole Position II (bootleg)",                           0 )
 GAME( 1984, polepos2bi, polepos2, polepos2bi, polepos2bi,polepos_state, 0,         ROT0, "bootleg",                 "Gran Premio F1 (Italian bootleg of Pole Position II)", MACHINE_IMPERFECT_COLORS | MACHINE_IMPERFECT_SOUND )
 GAME( 1984, polepos2bs, polepos2, polepos2bi, polepos2bi,polepos_state, 0,         ROT0, "bootleg (BCN Internacional S.A.)", "Gran Premio F1 (Spanish bootleg of Pole Position II)", MACHINE_IMPERFECT_COLORS | MACHINE_IMPERFECT_SOUND )
->>>>>>> upstream/master

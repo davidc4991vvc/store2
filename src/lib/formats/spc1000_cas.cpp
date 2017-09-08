@@ -33,11 +33,7 @@ IPL: This seems a quickload format containing RAM dump, not a real tape
 // image size
 static int spc1000_image_size;
 
-<<<<<<< HEAD
-static int spc1000_put_samples(INT16 *buffer, int sample_pos, int count, int level)
-=======
 static int spc1000_put_samples(int16_t *buffer, int sample_pos, int count, int level)
->>>>>>> upstream/master
 {
 	if (buffer)
 	{
@@ -48,11 +44,7 @@ static int spc1000_put_samples(int16_t *buffer, int sample_pos, int count, int l
 	return count;
 }
 
-<<<<<<< HEAD
-static int spc1000_output_bit(INT16 *buffer, int sample_pos, bool bit)
-=======
 static int spc1000_output_bit(int16_t *buffer, int sample_pos, bool bit)
->>>>>>> upstream/master
 {
 	int samples = 0;
 
@@ -70,41 +62,23 @@ static int spc1000_output_bit(int16_t *buffer, int sample_pos, bool bit)
 	return samples;
 }
 
-<<<<<<< HEAD
-static int spc1000_handle_tap(INT16 *buffer, const UINT8 *bytes)
-{
-	UINT32 sample_count = 0;
-
-	/* data */
-	for (UINT32 i = 0; i < spc1000_image_size; i++)
-=======
 static int spc1000_handle_tap(int16_t *buffer, const uint8_t *bytes)
 {
 	uint32_t sample_count = 0;
 
 	/* data */
 	for (uint32_t i = 0; i < spc1000_image_size; i++)
->>>>>>> upstream/master
 		sample_count += spc1000_output_bit(buffer, sample_count, bytes[i] & 1);
 
 	return sample_count;
 }
 
-<<<<<<< HEAD
-static int spc1000_handle_cas(INT16 *buffer, const UINT8 *bytes)
-{
-	UINT32 sample_count = 0;
-
-	/* data (skipping first 16 bytes, which is CAS header) */
-	for (UINT32 i = 0x10; i < spc1000_image_size; i++)
-=======
 static int spc1000_handle_cas(int16_t *buffer, const uint8_t *bytes)
 {
 	uint32_t sample_count = 0;
 
 	/* data (skipping first 16 bytes, which is CAS header) */
 	for (uint32_t i = 0x10; i < spc1000_image_size; i++)
->>>>>>> upstream/master
 		for (int j = 0; j < 8; j++)
 			sample_count += spc1000_output_bit(buffer, sample_count, (bytes[i] >> (7 - j)) & 1);
 
@@ -116,20 +90,12 @@ static int spc1000_handle_cas(int16_t *buffer, const uint8_t *bytes)
    Generate samples for the tape image
 ********************************************************************/
 
-<<<<<<< HEAD
-static int spc1000_tap_fill_wave(INT16 *buffer, int length, UINT8 *bytes)
-=======
 static int spc1000_tap_fill_wave(int16_t *buffer, int length, uint8_t *bytes)
->>>>>>> upstream/master
 {
 	return spc1000_handle_tap(buffer, bytes);
 }
 
-<<<<<<< HEAD
-static int spc1000_cas_fill_wave(INT16 *buffer, int length, UINT8 *bytes)
-=======
 static int spc1000_cas_fill_wave(int16_t *buffer, int length, uint8_t *bytes)
->>>>>>> upstream/master
 {
 	return spc1000_handle_cas(buffer, bytes);
 }
@@ -138,20 +104,6 @@ static int spc1000_cas_fill_wave(int16_t *buffer, int length, uint8_t *bytes)
    Calculate the number of samples needed for this tape image
 ********************************************************************/
 
-<<<<<<< HEAD
-static int spc1000_tap_calculate_size_in_samples(const UINT8 *bytes, int length)
-{
-	spc1000_image_size = length;
-
-	return spc1000_handle_tap(NULL, bytes);
-}
-
-static int spc1000_cas_calculate_size_in_samples(const UINT8 *bytes, int length)
-{
-	spc1000_image_size = length;
-
-	return spc1000_handle_cas(NULL, bytes);
-=======
 static int spc1000_tap_calculate_size_in_samples(const uint8_t *bytes, int length)
 {
 	spc1000_image_size = length;
@@ -164,7 +116,6 @@ static int spc1000_cas_calculate_size_in_samples(const uint8_t *bytes, int lengt
 	spc1000_image_size = length;
 
 	return spc1000_handle_cas(nullptr, bytes);
->>>>>>> upstream/master
 }
 
 
@@ -185,20 +136,12 @@ static const struct CassetteLegacyWaveFiller spc1000_tap_legacy_fill_wave =
 	0                                       /* trailer_samples */
 };
 
-<<<<<<< HEAD
-static casserr_t spc1000_tap_cassette_identify(cassette_image *cassette, struct CassetteOptions *opts)
-=======
 static cassette_image::error spc1000_tap_cassette_identify(cassette_image *cassette, struct CassetteOptions *opts)
->>>>>>> upstream/master
 {
 	return cassette_legacy_identify(cassette, opts, &spc1000_tap_legacy_fill_wave);
 }
 
-<<<<<<< HEAD
-static casserr_t spc1000_tap_cassette_load(cassette_image *cassette)
-=======
 static cassette_image::error spc1000_tap_cassette_load(cassette_image *cassette)
->>>>>>> upstream/master
 {
 	return cassette_legacy_construct(cassette, &spc1000_tap_legacy_fill_wave);
 }
@@ -208,11 +151,7 @@ static const struct CassetteFormat spc1000_tap_cassette_image_format =
 	"tap",
 	spc1000_tap_cassette_identify,
 	spc1000_tap_cassette_load,
-<<<<<<< HEAD
-	NULL
-=======
 	nullptr
->>>>>>> upstream/master
 };
 
 
@@ -228,20 +167,12 @@ static const struct CassetteLegacyWaveFiller spc1000_cas_legacy_fill_wave =
 	0                                       /* trailer_samples */
 };
 
-<<<<<<< HEAD
-static casserr_t spc1000_cas_cassette_identify(cassette_image *cassette, struct CassetteOptions *opts)
-=======
 static cassette_image::error spc1000_cas_cassette_identify(cassette_image *cassette, struct CassetteOptions *opts)
->>>>>>> upstream/master
 {
 	return cassette_legacy_identify(cassette, opts, &spc1000_cas_legacy_fill_wave);
 }
 
-<<<<<<< HEAD
-static casserr_t spc1000_cas_cassette_load(cassette_image *cassette)
-=======
 static cassette_image::error spc1000_cas_cassette_load(cassette_image *cassette)
->>>>>>> upstream/master
 {
 	return cassette_legacy_construct(cassette, &spc1000_cas_legacy_fill_wave);
 }
@@ -251,11 +182,7 @@ static const struct CassetteFormat spc1000_cas_cassette_image_format =
 	"cas",
 	spc1000_cas_cassette_identify,
 	spc1000_cas_cassette_load,
-<<<<<<< HEAD
-	NULL
-=======
 	nullptr
->>>>>>> upstream/master
 };
 
 

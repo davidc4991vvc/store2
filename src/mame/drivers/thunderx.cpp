@@ -33,14 +33,6 @@
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/z80/z80.h"
-#include "cpu/m6809/konami.h" /* for the callback and the firq irq definition */
-
-#include "sound/2151intf.h"
-#include "includes/konamipt.h"
-#include "includes/thunderx.h"
-=======
 #include "includes/thunderx.h"
 #include "includes/konamipt.h"
 
@@ -50,7 +42,6 @@
 #include "machine/watchdog.h"
 #include "sound/ym2151.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 INTERRUPT_GEN_MEMBER(thunderx_state::vblank_interrupt)
@@ -67,11 +58,7 @@ void thunderx_state::device_timer(emu_timer &timer, device_timer_id id, int para
 		m_maincpu->set_input_line(KONAMI_FIRQ_LINE, HOLD_LINE);
 		break;
 	default:
-<<<<<<< HEAD
-		assert_always(FALSE, "Unknown id in thunderx_state::device_timer");
-=======
 		assert_always(false, "Unknown id in thunderx_state::device_timer");
->>>>>>> upstream/master
 	}
 }
 
@@ -195,13 +182,8 @@ this is the data written to internal ram on startup:
 
 void thunderx_state::run_collisions( int s0, int e0, int s1, int e1, int cm, int hm )
 {
-<<<<<<< HEAD
-	UINT8* p0;
-	UINT8* p1;
-=======
 	uint8_t* p0;
 	uint8_t* p1;
->>>>>>> upstream/master
 	int ii, jj;
 
 	p0 = &m_pmcram[16 + 5 * s0];
@@ -331,11 +313,7 @@ WRITE8_MEMBER(thunderx_state::thunderx_1f98_w)
 		calculate_collisions();
 
 		/* 100 cycle delay is arbitrary */
-<<<<<<< HEAD
-		timer_set(downcast<cpu_device *>(&space.device())->cycles_to_attotime(100), TIMER_THUNDERX_FIRQ);
-=======
 		m_thunderx_firq_timer->adjust(m_maincpu->cycles_to_attotime(100));
->>>>>>> upstream/master
 	}
 
 	m_1f98_latch = data;
@@ -350,13 +328,8 @@ WRITE8_MEMBER(thunderx_state::scontra_bankswitch_w)
 	m_bank5800->set_bank((data & 0x10) >> 4);
 
 	// bits 5-6 coin counters
-<<<<<<< HEAD
-	coin_counter_w(machine(), 0, data & 0x20);
-	coin_counter_w(machine(), 1, data & 0x40);
-=======
 	machine().bookkeeping().coin_counter_w(0, data & 0x20);
 	machine().bookkeeping().coin_counter_w(1, data & 0x40);
->>>>>>> upstream/master
 
 	// bit 7 controls layer priority
 	m_priority = data & 0x80;
@@ -370,13 +343,8 @@ WRITE8_MEMBER(thunderx_state::thunderx_videobank_w)
 	m_bank5800->set_bank(data & 0x10 ? 2 : (data & 0x1));
 
 	/* bits 1-2 coin counters */
-<<<<<<< HEAD
-	coin_counter_w(machine(), 0, data & 0x02);
-	coin_counter_w(machine(), 1, data & 0x04);
-=======
 	machine().bookkeeping().coin_counter_w(0, data & 0x02);
 	machine().bookkeeping().coin_counter_w(1, data & 0x04);
->>>>>>> upstream/master
 
 	/* bit 3 controls layer priority */
 	m_priority = data & 0x08;
@@ -387,13 +355,8 @@ WRITE8_MEMBER(thunderx_state::gbusters_videobank_w)
 	// same as thunderx without the PMC
 	m_bank5800->set_bank(data & 0x1);
 
-<<<<<<< HEAD
-	coin_counter_w(machine(), 0, data & 0x02);
-	coin_counter_w(machine(), 1, data & 0x04);
-=======
 	machine().bookkeeping().coin_counter_w(0, data & 0x02);
 	machine().bookkeeping().coin_counter_w(1, data & 0x04);
->>>>>>> upstream/master
 
 	m_priority = data & 0x08;
 }
@@ -441,15 +404,9 @@ WRITE8_MEMBER(thunderx_state::k052109_051960_w)
 
 static ADDRESS_MAP_START( scontra_map, AS_PROGRAM, 8, thunderx_state )
 	AM_RANGE(0x1f80, 0x1f80) AM_WRITE(scontra_bankswitch_w) /* bankswitch control + coin counters */
-<<<<<<< HEAD
-	AM_RANGE(0x1f84, 0x1f84) AM_WRITE(soundlatch_byte_w)
-	AM_RANGE(0x1f88, 0x1f88) AM_WRITE(sh_irqtrigger_w)     /* cause interrupt on audio CPU */
-	AM_RANGE(0x1f8c, 0x1f8c) AM_WRITE(watchdog_reset_w)
-=======
 	AM_RANGE(0x1f84, 0x1f84) AM_DEVWRITE("soundlatch", generic_latch_8_device, write)
 	AM_RANGE(0x1f88, 0x1f88) AM_WRITE(sh_irqtrigger_w)     /* cause interrupt on audio CPU */
 	AM_RANGE(0x1f8c, 0x1f8c) AM_DEVWRITE("watchdog", watchdog_timer_device, reset_w)
->>>>>>> upstream/master
 	AM_RANGE(0x1f90, 0x1f90) AM_READ_PORT("SYSTEM")
 	AM_RANGE(0x1f91, 0x1f91) AM_READ_PORT("P1")
 	AM_RANGE(0x1f92, 0x1f92) AM_READ_PORT("P2")
@@ -492,11 +449,7 @@ ADDRESS_MAP_END
 static ADDRESS_MAP_START( thunderx_sound_map, AS_PROGRAM, 8, thunderx_state )
 	AM_RANGE(0x0000, 0x7fff) AM_ROM
 	AM_RANGE(0x8000, 0x87ff) AM_RAM
-<<<<<<< HEAD
-	AM_RANGE(0xa000, 0xa000) AM_READ(soundlatch_byte_r)
-=======
 	AM_RANGE(0xa000, 0xa000) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
->>>>>>> upstream/master
 	AM_RANGE(0xc000, 0xc001) AM_DEVREADWRITE("ymsnd", ym2151_device, read, write)
 ADDRESS_MAP_END
 
@@ -663,11 +616,7 @@ void thunderx_state::machine_start()
 
 	// verified from both scontra and thunderx/gbusters schematics
 	// banks 4-7 must mirror banks 0-3 for gbusters rom test to pass
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("maincpu")->base();
-=======
 	uint8_t *ROM = memregion("maincpu")->base();
->>>>>>> upstream/master
 	m_rombank->configure_entries(0, 4, &ROM[0], 0x2000);
 	m_rombank->configure_entries(4, 4, &ROM[0], 0x2000);
 	m_rombank->configure_entries(8, 8, &ROM[0x10000], 0x2000);
@@ -681,11 +630,7 @@ void thunderx_state::machine_reset()
 	m_priority = 0;
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( scontra, thunderx_state )
-=======
 static MACHINE_CONFIG_START( scontra )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", KONAMI, XTAL_24MHz/2/4)     /* 052001 (verified on pcb) */
@@ -702,11 +647,8 @@ static MACHINE_CONFIG_START( scontra )
 	MCFG_ADDRESS_MAP_BANK_ADDRBUS_WIDTH(12)
 	MCFG_ADDRESS_MAP_BANK_STRIDE(0x0800)
 
-<<<<<<< HEAD
-=======
 	MCFG_WATCHDOG_ADD("watchdog")
 
->>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE(59.17)             /* verified on pcb */
@@ -732,11 +674,8 @@ static MACHINE_CONFIG_START( scontra )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 
->>>>>>> upstream/master
 	MCFG_YM2151_ADD("ymsnd", XTAL_3_579545MHz)  /* verified on pcb */
 	MCFG_SOUND_ROUTE(0, "mono", 1.0)
 	MCFG_SOUND_ROUTE(1, "mono", 1.0)
@@ -1095,20 +1034,6 @@ ROM_START( crazycop )
 ROM_END
 
 
-<<<<<<< HEAD
-
-/***************************************************************************/
-
-GAME( 1988, scontra,   0,        scontra,  scontra, driver_device,  0, ROT90, "Konami", "Super Contra", MACHINE_SUPPORTS_SAVE )
-GAME( 1988, scontraj,  scontra,  scontra,  scontra, driver_device,  0, ROT90, "Konami", "Super Contra (Japan)", MACHINE_SUPPORTS_SAVE )
-GAME( 1988, thunderx,  0,        thunderx, thunderx, driver_device, 0, ROT0,  "Konami", "Thunder Cross (set 1)", MACHINE_SUPPORTS_SAVE )
-GAME( 1988, thunderxa, thunderx, thunderx, thunderx, driver_device, 0, ROT0,  "Konami", "Thunder Cross (set 2)", MACHINE_SUPPORTS_SAVE )
-GAME( 1988, thunderxb, thunderx, thunderx, thunderx, driver_device, 0, ROT0,  "Konami", "Thunder Cross (set 3)", MACHINE_SUPPORTS_SAVE )
-GAME( 1988, thunderxj, thunderx, thunderx, thnderxj, driver_device, 0, ROT0,  "Konami", "Thunder Cross (Japan)", MACHINE_SUPPORTS_SAVE )
-GAME( 1988, gbusters,  0,        gbusters, gbusters, driver_device, 0, ROT90, "Konami", "Gang Busters (set 1)", MACHINE_SUPPORTS_SAVE ) /* N02 & J03 program roms */
-GAME( 1988, gbustersa, gbusters, gbusters, gbusters, driver_device, 0, ROT90, "Konami", "Gang Busters (set 2)", MACHINE_SUPPORTS_SAVE ) /* unknown region program roms */
-GAME( 1988, crazycop,  gbusters, gbusters, gbusters, driver_device, 0, ROT90, "Konami", "Crazy Cop (Japan)", MACHINE_SUPPORTS_SAVE )    /* M02 & J03 program roms */
-=======
 DRIVER_INIT_MEMBER(thunderx_state, thunderx)
 {
 	m_thunderx_firq_timer = timer_alloc(TIMER_THUNDERX_FIRQ);
@@ -1125,4 +1050,3 @@ GAME( 1988, thunderxj, thunderx, thunderx, thnderxj, thunderx_state, thunderx, R
 GAME( 1988, gbusters,  0,        gbusters, gbusters, thunderx_state, 0,        ROT90, "Konami", "Gang Busters (set 1)",  MACHINE_SUPPORTS_SAVE ) // N02 & J03 program ROMs
 GAME( 1988, gbustersa, gbusters, gbusters, gbusters, thunderx_state, 0,        ROT90, "Konami", "Gang Busters (set 2)",  MACHINE_SUPPORTS_SAVE ) // unknown region program ROMs
 GAME( 1988, crazycop,  gbusters, gbusters, gbusters, thunderx_state, 0,        ROT90, "Konami", "Crazy Cop (Japan)",     MACHINE_SUPPORTS_SAVE ) // M02 & J03 program ROMs
->>>>>>> upstream/master

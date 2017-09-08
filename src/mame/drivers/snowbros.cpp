@@ -65,11 +65,7 @@ out of the sprite list at that point.. (verify on real hw)
 
 Ma Cheon Ru
 
-<<<<<<< HEAD
-The electrified maze + ball minigame appears unreponsive to controls, this
-=======
 The electrified maze + ball minigame appears unresponsive to controls, this
->>>>>>> upstream/master
 is because it actually requires you to move the joysticks in a circular
 motion through all 8 directions at a very even speed, a task which is
 practically impossible to perform on keyboard, and not even that easy with
@@ -80,24 +76,6 @@ a joystick.  This is not an emulation bug.
 
 #include "emu.h"
 #include "includes/snowbros.h"
-<<<<<<< HEAD
-#include "cpu/m68000/m68000.h"
-#include "cpu/z80/z80.h"
-#include "sound/2151intf.h"
-#include "sound/3812intf.h"
-#include "sound/okim6295.h"
-#include "cpu/mcs51/mcs51.h" // for semicom mcu
-
-
-WRITE16_MEMBER(snowbros_state::snowbros_flipscreen_w)
-{
-	if (ACCESSING_BITS_8_15)
-		flip_screen_set(~data & 0x8000);
-}
-
-
-UINT32 snowbros_state::screen_update_snowbros(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 
 #include "cpu/m68000/m68000.h"
 #include "cpu/mcs51/mcs51.h" // for semicom mcu
@@ -123,7 +101,6 @@ WRITE8_MEMBER(snowbros_state::bootleg_flipscreen_w)
 
 
 uint32_t snowbros_state::screen_update_snowbros(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	/* This clears & redraws the entire screen each pass */
 	bitmap.fill(0xf0, cliprect);
@@ -132,11 +109,7 @@ uint32_t snowbros_state::screen_update_snowbros(screen_device &screen, bitmap_in
 }
 
 
-<<<<<<< HEAD
-void snowbros_state::screen_eof_snowbros(screen_device &screen, bool state)
-=======
 WRITE_LINE_MEMBER(snowbros_state::screen_vblank_snowbros)
->>>>>>> upstream/master
 {
 	// rising edge
 	if (state)
@@ -209,32 +182,6 @@ TIMER_DEVICE_CALLBACK_MEMBER(snowbros_state::snowbros3_irq)
 
 }
 
-<<<<<<< HEAD
-
-/* Sound Routines */
-
-READ16_MEMBER(snowbros_state::snowbros_68000_sound_r)
-{
-	return soundlatch_byte_r(space,offset);
-}
-
-
-WRITE16_MEMBER(snowbros_state::snowbros_68000_sound_w)
-{
-	if (ACCESSING_BITS_0_7)
-	{
-		soundlatch_byte_w(space, offset, data & 0xff);
-		m_soundcpu->set_input_line(INPUT_LINE_NMI, PULSE_LINE);
-	}
-}
-
-WRITE16_MEMBER(snowbros_state::semicom_soundcmd_w)
-{
-	if (ACCESSING_BITS_0_7) soundlatch_byte_w(space,0,data & 0xff);
-}
-
-=======
->>>>>>> upstream/master
 READ16_MEMBER(snowbros_state::toto_read)
 {
 	int pc = space.device().safe_pc();
@@ -247,16 +194,10 @@ READ16_MEMBER(snowbros_state::toto_read)
 static ADDRESS_MAP_START( snowbros_map, AS_PROGRAM, 16, snowbros_state )
 	AM_RANGE(0x000000, 0x03ffff) AM_ROM
 	AM_RANGE(0x100000, 0x103fff) AM_RAM
-<<<<<<< HEAD
-	AM_RANGE(0x200000, 0x200001) AM_WRITE(watchdog_reset16_w)
-	AM_RANGE(0x300000, 0x300001) AM_READWRITE(snowbros_68000_sound_r,snowbros_68000_sound_w)
-	AM_RANGE(0x400000, 0x400001) AM_WRITE(snowbros_flipscreen_w)
-=======
 	AM_RANGE(0x200000, 0x200001) AM_DEVWRITE("watchdog", watchdog_timer_device, reset16_w)
 	AM_RANGE(0x300000, 0x300001) AM_DEVREAD8("soundlatch2", generic_latch_8_device, read, 0x00ff)
 	AM_RANGE(0x300000, 0x300001) AM_DEVWRITE8("soundlatch", generic_latch_8_device, write, 0x00ff)
 	AM_RANGE(0x400000, 0x400001) AM_WRITE8(snowbros_flipscreen_w, 0xff00)
->>>>>>> upstream/master
 	AM_RANGE(0x500000, 0x500001) AM_READ_PORT("DSW1")
 	AM_RANGE(0x500002, 0x500003) AM_READ_PORT("DSW2")
 	AM_RANGE(0x500004, 0x500005) AM_READ_PORT("SYSTEM")
@@ -275,12 +216,8 @@ ADDRESS_MAP_END
 static ADDRESS_MAP_START( sound_io_map, AS_IO, 8, snowbros_state )
 	ADDRESS_MAP_GLOBAL_MASK(0xff)
 	AM_RANGE(0x02, 0x03) AM_DEVREADWRITE("ymsnd", ym3812_device, read, write)
-<<<<<<< HEAD
-	AM_RANGE(0x04, 0x04) AM_READWRITE(soundlatch_byte_r, soundlatch_byte_w) /* goes back to the main CPU, checked during boot */
-=======
 	AM_RANGE(0x04, 0x04) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
 	AM_RANGE(0x04, 0x04) AM_DEVWRITE("soundlatch2", generic_latch_8_device, write) // goes back to the main CPU, checked during boot
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -299,11 +236,7 @@ WRITE8_MEMBER(snowbros_state::prot_io_w)
 	{
 		case 0x00:
 		{
-<<<<<<< HEAD
-			UINT16 word = m_hyperpac_ram[(0xe000/2)+m_semicom_prot_offset];
-=======
 			uint16_t word = m_hyperpac_ram[(0xe000/2)+m_semicom_prot_offset];
->>>>>>> upstream/master
 			word = (word & 0xff00) | (data << 0);
 			m_hyperpac_ram[(0xe000/2)+m_semicom_prot_offset] = word;
 			break;
@@ -311,11 +244,7 @@ WRITE8_MEMBER(snowbros_state::prot_io_w)
 
 		case 0x01:
 		{
-<<<<<<< HEAD
-			UINT16 word = m_hyperpac_ram[(0xe000/2)+m_semicom_prot_offset];
-=======
 			uint16_t word = m_hyperpac_ram[(0xe000/2)+m_semicom_prot_offset];
->>>>>>> upstream/master
 			word = (word & 0x00ff) | (data << 8);
 			m_hyperpac_ram[(0xe000/2)+m_semicom_prot_offset] = word;
 			break;
@@ -349,16 +278,10 @@ ADDRESS_MAP_END
 static ADDRESS_MAP_START( wintbob_map, AS_PROGRAM, 16, snowbros_state )
 	AM_RANGE(0x000000, 0x03ffff) AM_ROM
 	AM_RANGE(0x100000, 0x103fff) AM_RAM
-<<<<<<< HEAD
-	AM_RANGE(0x200000, 0x200001) AM_WRITE(watchdog_reset16_w)
-	AM_RANGE(0x300000, 0x300001) AM_READWRITE(snowbros_68000_sound_r,snowbros_68000_sound_w)
-	AM_RANGE(0x400000, 0x400001) AM_WRITE(snowbros_flipscreen_w)
-=======
 	AM_RANGE(0x200000, 0x200001) AM_DEVWRITE("watchdog", watchdog_timer_device, reset16_w)
 	AM_RANGE(0x300000, 0x300001) AM_DEVREAD8("soundlatch2", generic_latch_8_device, read, 0x00ff)
 	AM_RANGE(0x300000, 0x300001) AM_DEVWRITE8("soundlatch", generic_latch_8_device, write, 0x00ff)
 	AM_RANGE(0x400000, 0x400001) AM_WRITE8(bootleg_flipscreen_w, 0xff00)
->>>>>>> upstream/master
 	AM_RANGE(0x500000, 0x500001) AM_READ_PORT("DSW1")
 	AM_RANGE(0x500002, 0x500003) AM_READ_PORT("DSW2")
 	AM_RANGE(0x500004, 0x500005) AM_READ_PORT("SYSTEM")
@@ -375,11 +298,7 @@ static ADDRESS_MAP_START( honeydol_map, AS_PROGRAM, 16, snowbros_state )
 	AM_RANGE(0x000000, 0x03ffff) AM_ROM
 	AM_RANGE(0x100000, 0x10ffff) AM_RAM AM_SHARE("hyperpac_ram")
 	AM_RANGE(0x200000, 0x200001) AM_WRITENOP    /* ? */
-<<<<<<< HEAD
-	AM_RANGE(0x300000, 0x300001) AM_WRITE(snowbros_68000_sound_w)   /* ? */
-=======
 	AM_RANGE(0x300000, 0x300001) AM_DEVWRITE8("soundlatch", generic_latch_8_device, write, 0x00ff)
->>>>>>> upstream/master
 	AM_RANGE(0x400000, 0x400001) AM_WRITE(snowbros_irq4_ack_w)  /* IRQ 4 acknowledge */
 	AM_RANGE(0x500000, 0x500001) AM_WRITE(snowbros_irq3_ack_w)  /* IRQ 3 acknowledge */
 	AM_RANGE(0x600000, 0x600001) AM_WRITE(snowbros_irq2_ack_w)  /* IRQ 2 acknowledge */
@@ -400,33 +319,12 @@ ADDRESS_MAP_END
 static ADDRESS_MAP_START( honeydol_sound_io_map, AS_IO, 8, snowbros_state )
 	ADDRESS_MAP_GLOBAL_MASK(0xff)
 	AM_RANGE(0x02, 0x03) AM_DEVREADWRITE("ymsnd", ym3812_device, read, write)                                // not connected?
-<<<<<<< HEAD
-	AM_RANGE(0x04, 0x04) AM_READWRITE(soundlatch_byte_r, soundlatch_byte_w) /* goes back to the main CPU, checked during boot */
-=======
 	AM_RANGE(0x04, 0x04) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
 	AM_RANGE(0x04, 0x04) AM_WRITENOP // still written but never actually read by the main CPU
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 /* Twin Adventure */
 
-<<<<<<< HEAD
-WRITE16_MEMBER(snowbros_state::twinadv_68000_sound_w)
-{
-	if (ACCESSING_BITS_0_7)
-	{
-		soundlatch_byte_w(space, offset, data & 0xff);
-		m_soundcpu->set_input_line(INPUT_LINE_NMI, PULSE_LINE);
-	}
-}
-
-static ADDRESS_MAP_START( twinadv_map, AS_PROGRAM, 16, snowbros_state )
-	AM_RANGE(0x000000, 0x03ffff) AM_ROM
-	AM_RANGE(0x100000, 0x10ffff) AM_RAM
-	AM_RANGE(0x200000, 0x200001) AM_WRITE(watchdog_reset16_w)
-	AM_RANGE(0x300000, 0x300001) AM_READWRITE(snowbros_68000_sound_r,twinadv_68000_sound_w)
-	AM_RANGE(0x400000, 0x400001) AM_WRITE(snowbros_flipscreen_w)
-=======
 static ADDRESS_MAP_START( twinadv_map, AS_PROGRAM, 16, snowbros_state )
 	AM_RANGE(0x000000, 0x03ffff) AM_ROM
 	AM_RANGE(0x100000, 0x10ffff) AM_RAM
@@ -434,7 +332,6 @@ static ADDRESS_MAP_START( twinadv_map, AS_PROGRAM, 16, snowbros_state )
 	AM_RANGE(0x300000, 0x300001) AM_DEVREAD8("soundlatch2", generic_latch_8_device, read, 0x00ff)
 	AM_RANGE(0x300000, 0x300001) AM_DEVWRITE8("soundlatch", generic_latch_8_device, write, 0x00ff)
 	AM_RANGE(0x400000, 0x400001) AM_WRITE8(bootleg_flipscreen_w, 0xff00)
->>>>>>> upstream/master
 
 	AM_RANGE(0x500000, 0x500001) AM_READ_PORT("DSW1")
 	AM_RANGE(0x500002, 0x500003) AM_READ_PORT("DSW2")
@@ -452,21 +349,13 @@ WRITE8_MEMBER(snowbros_state::twinadv_oki_bank_w)
 
 	if (data&0xfd) logerror ("Unused bank bits! %02x\n",data);
 
-<<<<<<< HEAD
-	m_oki->set_bank_base(bank * 0x40000);
-=======
 	m_oki->set_rom_bank(bank);
->>>>>>> upstream/master
 }
 
 static ADDRESS_MAP_START( twinadv_sound_io_map, AS_IO, 8, snowbros_state )
 	ADDRESS_MAP_GLOBAL_MASK(0xff)
-<<<<<<< HEAD
-	AM_RANGE(0x02, 0x02) AM_READWRITE(soundlatch_byte_r, soundlatch_byte_w) // back to 68k?
-=======
 	AM_RANGE(0x02, 0x02) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
 	AM_RANGE(0x02, 0x02) AM_DEVWRITE("soundlatch2", generic_latch_8_device, write) // back to 68k?
->>>>>>> upstream/master
 	AM_RANGE(0x04, 0x04) AM_WRITE(twinadv_oki_bank_w) // oki bank?
 	AM_RANGE(0x06, 0x06) AM_DEVREADWRITE("oki", okim6295_device, read, write)
 ADDRESS_MAP_END
@@ -482,11 +371,7 @@ sound hardware is also different
 static ADDRESS_MAP_START( hyperpac_map, AS_PROGRAM, 16, snowbros_state )
 	AM_RANGE(0x000000, 0x0fffff) AM_ROM
 	AM_RANGE(0x100000, 0x10ffff) AM_RAM AM_SHARE("hyperpac_ram")
-<<<<<<< HEAD
-	AM_RANGE(0x300000, 0x300001) AM_WRITE(semicom_soundcmd_w)
-=======
 	AM_RANGE(0x300000, 0x300001) AM_DEVWRITE8("soundlatch", generic_latch_8_device, write, 0x00ff)
->>>>>>> upstream/master
 //  AM_RANGE(0x400000, 0x400001) ???
 	AM_RANGE(0x500000, 0x500001) AM_READ_PORT("DSW1")
 	AM_RANGE(0x500002, 0x500003) AM_READ_PORT("DSW2")
@@ -504,15 +389,7 @@ static ADDRESS_MAP_START( hyperpac_sound_map, AS_PROGRAM, 8, snowbros_state )
 	AM_RANGE(0xd000, 0xd7ff) AM_RAM
 	AM_RANGE(0xf000, 0xf001) AM_DEVREADWRITE("ymsnd", ym2151_device,read,write)
 	AM_RANGE(0xf002, 0xf002) AM_DEVREADWRITE("oki", okim6295_device, read, write)
-<<<<<<< HEAD
-	AM_RANGE(0xf008, 0xf008) AM_READ(soundlatch_byte_r)
-ADDRESS_MAP_END
-
-static ADDRESS_MAP_START( hyperpac_sound_io_map, AS_IO, 8, snowbros_state )
-	ADDRESS_MAP_GLOBAL_MASK(0xff)
-=======
 	AM_RANGE(0xf008, 0xf008) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 /* Same volume used for all samples at the Moment, could be right, we have no
@@ -524,11 +401,7 @@ READ16_MEMBER(snowbros_state::sb3_sound_r)
 
 void snowbros_state::sb3_play_music(int data)
 {
-<<<<<<< HEAD
-	UINT8 *snd;
-=======
 	uint8_t *snd;
->>>>>>> upstream/master
 
 	/* sample is actually played in interrupt function so it loops */
 	m_sb3_music = data;
@@ -629,17 +502,10 @@ WRITE16_MEMBER(snowbros_state::sb3_sound_w)
 static ADDRESS_MAP_START( snowbros3_map, AS_PROGRAM, 16, snowbros_state )
 	AM_RANGE( 0x000000, 0x03ffff) AM_ROM
 	AM_RANGE( 0x100000, 0x103fff) AM_RAM
-<<<<<<< HEAD
-	AM_RANGE( 0x200000, 0x200001) AM_WRITE(watchdog_reset16_w)
-	AM_RANGE( 0x300000, 0x300001) AM_READ(sb3_sound_r) // ?
-	AM_RANGE( 0x300000, 0x300001) AM_WRITE(sb3_sound_w)  // ?
-	AM_RANGE( 0x400000, 0x400001) AM_WRITE(snowbros_flipscreen_w)
-=======
 	AM_RANGE( 0x200000, 0x200001) AM_DEVWRITE("watchdog", watchdog_timer_device, reset16_w)
 	AM_RANGE( 0x300000, 0x300001) AM_READ(sb3_sound_r) // ?
 	AM_RANGE( 0x300000, 0x300001) AM_WRITE(sb3_sound_w)  // ?
 	AM_RANGE( 0x400000, 0x400001) AM_WRITE8(bootleg_flipscreen_w, 0xff00)
->>>>>>> upstream/master
 	AM_RANGE( 0x500000, 0x500001) AM_READ_PORT("DSW1")
 	AM_RANGE( 0x500002, 0x500003) AM_READ_PORT("DSW2")
 	AM_RANGE( 0x500004, 0x500005) AM_READ_PORT("SYSTEM")
@@ -655,11 +521,7 @@ ADDRESS_MAP_END
 static ADDRESS_MAP_START( finalttr_map, AS_PROGRAM, 16, snowbros_state )
 	AM_RANGE(0x000000, 0x0fffff) AM_ROM
 	AM_RANGE(0x100000, 0x103fff) AM_RAM AM_SHARE("hyperpac_ram")
-<<<<<<< HEAD
-	AM_RANGE(0x300000, 0x300001) AM_WRITE(semicom_soundcmd_w)
-=======
 	AM_RANGE(0x300000, 0x300001) AM_DEVWRITE8("soundlatch", generic_latch_8_device, write, 0x00ff)
->>>>>>> upstream/master
 //  AM_RANGE(0x400000, 0x400001) ???
 
 	AM_RANGE(0x500000, 0x500001) AM_READ_PORT("DSW1")
@@ -673,8 +535,6 @@ static ADDRESS_MAP_START( finalttr_map, AS_PROGRAM, 16, snowbros_state )
 	AM_RANGE(0xa00000, 0xa00001) AM_WRITE(snowbros_irq2_ack_w)  /* IRQ 2 acknowledge */
 ADDRESS_MAP_END
 
-<<<<<<< HEAD
-=======
 
 static ADDRESS_MAP_START( yutnori_map, AS_PROGRAM, 16, snowbros_state )
 	AM_RANGE(0x000000, 0x03ffff) AM_ROM
@@ -705,7 +565,6 @@ static ADDRESS_MAP_START( yutnori_map, AS_PROGRAM, 16, snowbros_state )
 	AM_RANGE(0xa00000, 0xa00001) AM_READNOP AM_WRITE(snowbros_irq2_ack_w)  /* IRQ 2 acknowledge */
 ADDRESS_MAP_END
 
->>>>>>> upstream/master
 static INPUT_PORTS_START( snowbros )
 	PORT_START("DSW1")  /* 500001 */
 	PORT_DIPNAME( 0x01, 0x00, DEF_STR( Region ) )       PORT_DIPLOCATION("SW1:1") /* Listed as "NOT USE" in the manual */
@@ -1687,8 +1546,6 @@ static INPUT_PORTS_START( suhosong )
 	PORT_BIT( 0x8000, IP_ACTIVE_HIGH, IPT_UNKNOWN )
 INPUT_PORTS_END
 
-<<<<<<< HEAD
-=======
 
 
 
@@ -1767,7 +1624,6 @@ static INPUT_PORTS_START( yutnori )
 INPUT_PORTS_END
 
 
->>>>>>> upstream/master
 /* SnowBros */
 
 static const gfx_layout tilelayout =
@@ -1866,11 +1722,7 @@ GFXDECODE_END
 
 MACHINE_RESET_MEMBER(snowbros_state,semiprot)
 {
-<<<<<<< HEAD
-	UINT16 *PROTDATA = (UINT16*)memregion("user1")->base();
-=======
 	uint16_t *PROTDATA = (uint16_t*)memregion("user1")->base();
->>>>>>> upstream/master
 	int i;
 
 	for (i = 0;i < 0x200/2;i++)
@@ -1879,31 +1731,20 @@ MACHINE_RESET_MEMBER(snowbros_state,semiprot)
 
 MACHINE_RESET_MEMBER(snowbros_state,finalttr)
 {
-<<<<<<< HEAD
-	UINT16 *PROTDATA = (UINT16*)memregion("user1")->base();
-=======
 	uint16_t *PROTDATA = (uint16_t*)memregion("user1")->base();
->>>>>>> upstream/master
 	int i;
 
 	for (i = 0;i < 0x200/2;i++)
 		m_hyperpac_ram[0x2000/2 + i] = PROTDATA[i];
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( snowbros, snowbros_state )
-=======
 static MACHINE_CONFIG_START( snowbros )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, XTAL_16MHz/2) /* 8 Mhz - confirmed */
 	MCFG_CPU_PROGRAM_MAP(snowbros_map)
 	MCFG_TIMER_DRIVER_ADD_SCANLINE("scantimer", snowbros_state, snowbros_irq, "screen", 0, 1)
-<<<<<<< HEAD
-=======
 	MCFG_WATCHDOG_ADD("watchdog")
->>>>>>> upstream/master
 
 	MCFG_CPU_ADD("soundcpu", Z80, XTAL_12MHz/2) /* 6 MHz - confirmed */
 	MCFG_CPU_PROGRAM_MAP(sound_map)
@@ -1916,11 +1757,7 @@ static MACHINE_CONFIG_START( snowbros )
 	MCFG_SCREEN_SIZE(32*8, 262)
 	MCFG_SCREEN_VISIBLE_AREA(0*8, 32*8-1, 2*8, 30*8-1)
 	MCFG_SCREEN_UPDATE_DRIVER(snowbros_state, screen_update_snowbros)
-<<<<<<< HEAD
-	MCFG_SCREEN_VBLANK_DRIVER(snowbros_state, screen_eof_snowbros)
-=======
 	MCFG_SCREEN_VBLANK_CALLBACK(WRITELINE(snowbros_state, screen_vblank_snowbros))
->>>>>>> upstream/master
 	MCFG_SCREEN_PALETTE("palette")
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", snowbros)
@@ -1929,22 +1766,15 @@ static MACHINE_CONFIG_START( snowbros )
 
 	MCFG_DEVICE_ADD("pandora", KANEKO_PANDORA, 0)
 	MCFG_KANEKO_PANDORA_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_KANEKO_PANDORA_PALETTE("palette")
-=======
->>>>>>> upstream/master
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 	MCFG_GENERIC_LATCH_DATA_PENDING_CB(INPUTLINE("soundcpu", INPUT_LINE_NMI))
 
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch2")
 
->>>>>>> upstream/master
 	MCFG_SOUND_ADD("ymsnd", YM3812, XTAL_12MHz/4) /* 3 MHz - confirmed */
 	MCFG_YM3812_IRQ_HANDLER(INPUTLINE("soundcpu", 0))
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
@@ -1964,11 +1794,7 @@ static MACHINE_CONFIG_DERIVED( wintbob, snowbros )
 	MCFG_GFXDECODE_MODIFY("gfxdecode", wb)
 	MCFG_SCREEN_MODIFY("screen")
 	MCFG_SCREEN_UPDATE_DRIVER(snowbros_state, screen_update_wintbob)
-<<<<<<< HEAD
-	MCFG_SCREEN_VBLANK_NONE()
-=======
 	MCFG_SCREEN_VBLANK_CALLBACK(NOOP)
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
@@ -1982,12 +1808,6 @@ static MACHINE_CONFIG_DERIVED( semicom, snowbros )
 	MCFG_CPU_MODIFY("soundcpu")
 	MCFG_CPU_CLOCK(XTAL_16MHz/4) /* 4MHz - Confirmed */
 	MCFG_CPU_PROGRAM_MAP(hyperpac_sound_map)
-<<<<<<< HEAD
-	MCFG_CPU_IO_MAP(hyperpac_sound_io_map)
-
-	MCFG_GFXDECODE_MODIFY("gfxdecode", hyperpac)
-
-=======
 	MCFG_DEVICE_REMOVE_ADDRESS_MAP(AS_IO)
 
 	MCFG_GFXDECODE_MODIFY("gfxdecode", hyperpac)
@@ -1997,18 +1817,13 @@ static MACHINE_CONFIG_DERIVED( semicom, snowbros )
 
 	MCFG_DEVICE_REMOVE("soundlatch2")
 
->>>>>>> upstream/master
 	/* sound hardware */
 	MCFG_SOUND_REPLACE("ymsnd", YM2151, XTAL_16MHz/4) /* 4MHz - Confirmed */
 	MCFG_YM2151_IRQ_HANDLER(INPUTLINE("soundcpu", 0))
 	MCFG_SOUND_ROUTE(0, "mono", 0.10)
 	MCFG_SOUND_ROUTE(1, "mono", 0.10)
 
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki", XTAL_16MHz/16, OKIM6295_PIN7_HIGH) /* 1MHz & pin 7 High - Confirmed */
-=======
 	MCFG_OKIM6295_ADD("oki", XTAL_16MHz/16, PIN7_HIGH) /* 1MHz & pin 7 High - Confirmed */
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
 
@@ -2028,11 +1843,7 @@ static MACHINE_CONFIG_DERIVED( semiprot, semicom )
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( honeydol, snowbros_state )
-=======
 static MACHINE_CONFIG_START( honeydol )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, XTAL_12MHz) /* MC68000P12 @ 12MHz */
@@ -2059,40 +1870,25 @@ static MACHINE_CONFIG_START( honeydol )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-	/* sound hardware */
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 	MCFG_GENERIC_LATCH_DATA_PENDING_CB(INPUTLINE("soundcpu", INPUT_LINE_NMI))
->>>>>>> upstream/master
 
 	MCFG_SOUND_ADD("ymsnd", YM3812, XTAL_12MHz/4) /* 3Mhz */
 	MCFG_YM3812_IRQ_HANDLER(INPUTLINE("soundcpu", 0))
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 
 
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki", XTAL_16MHz/16, OKIM6295_PIN7_HIGH) /* freq? */
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
-MACHINE_CONFIG_END
-
-static MACHINE_CONFIG_START( twinadv, snowbros_state )
-=======
 	MCFG_OKIM6295_ADD("oki", XTAL_16MHz/16, PIN7_HIGH) /* freq? */
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_START( twinadv )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, XTAL_12MHz) /* 12MHz like Honey Dolls ? */
 	MCFG_CPU_PROGRAM_MAP(twinadv_map)
 	MCFG_TIMER_DRIVER_ADD_SCANLINE("scantimer", snowbros_state, snowbros_irq, "screen", 0, 1)
-<<<<<<< HEAD
-=======
 	MCFG_WATCHDOG_ADD("watchdog")
->>>>>>> upstream/master
 
 	MCFG_CPU_ADD("soundcpu", Z80, XTAL_16MHz/4) /* 4Mhz (16MHz/4) like SemiCom or 6MHz (12MHz/2) like snowbros??? */
 	MCFG_CPU_PROGRAM_MAP(sound_map)
@@ -2115,10 +1911,6 @@ static MACHINE_CONFIG_START( twinadv )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-	/* sound hardware */
-	MCFG_OKIM6295_ADD("oki", XTAL_16MHz/16, OKIM6295_PIN7_HIGH) /* freq? */
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 	MCFG_GENERIC_LATCH_DATA_PENDING_CB(INPUTLINE("soundcpu", INPUT_LINE_NMI))
 
@@ -2126,7 +1918,6 @@ static MACHINE_CONFIG_START( twinadv )
 
 	/* sound hardware */
 	MCFG_OKIM6295_ADD("oki", XTAL_16MHz/16, PIN7_HIGH) /* freq? */
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
 
@@ -2165,11 +1956,7 @@ static MACHINE_CONFIG_DERIVED( finalttr, semicom )
 	MCFG_SOUND_ROUTE(0, "mono", 0.08)
 	MCFG_SOUND_ROUTE(1, "mono", 0.08)
 
-<<<<<<< HEAD
-	MCFG_OKIM6295_REPLACE("oki", 999900, OKIM6295_PIN7_HIGH)
-=======
 	MCFG_OKIM6295_REPLACE("oki", 999900, PIN7_HIGH)
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.40)
 MACHINE_CONFIG_END
 
@@ -2180,20 +1967,13 @@ static MACHINE_CONFIG_DERIVED( _4in1, semicom )
 	MCFG_GFXDECODE_MODIFY("gfxdecode", snowbros)
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( snowbro3, snowbros_state ) /* PCB has 16MHz & 12MHz OSCs */
-=======
 static MACHINE_CONFIG_START( snowbro3 ) /* PCB has 16MHz & 12MHz OSCs */
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, XTAL_12MHz) /* MC68000P10 CPU @ 12mhz or 8MHz (16MHz/2) ? */
 	MCFG_CPU_PROGRAM_MAP(snowbros3_map)
 	MCFG_TIMER_DRIVER_ADD_SCANLINE("scantimer", snowbros_state, snowbros3_irq, "screen", 0, 1)
-<<<<<<< HEAD
-=======
 	MCFG_WATCHDOG_ADD("watchdog")
->>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
@@ -2211,9 +1991,6 @@ static MACHINE_CONFIG_START( snowbro3 ) /* PCB has 16MHz & 12MHz OSCs */
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki", XTAL_16MHz/16, OKIM6295_PIN7_HIGH) // clock frequency & pin 7 not verified
-=======
 	MCFG_OKIM6295_ADD("oki", XTAL_16MHz/16, PIN7_HIGH) // clock frequency & pin 7 not verified
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
@@ -2253,7 +2030,6 @@ static MACHINE_CONFIG_START( yutnori )
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 
 	MCFG_OKIM6295_ADD("oki2", XTAL_16MHz/16, PIN7_HIGH) // clock frequency & pin 7 not verified
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
 
@@ -2529,8 +2305,6 @@ ROM_START( twinadvk )
 	ROM_LOAD( "srb.bin", 0x40000, 0x40000, CRC(109e51e6) SHA1(3344c68d63bbad4a02b47143b2d2f72ce9bcb4bb) ) // bank 2
 ROM_END
 
-<<<<<<< HEAD
-=======
 ROM_START( multi96 )
 	ROM_REGION( 0x40000, "maincpu", 0 )
 	ROM_LOAD16_BYTE( "uh12",  0x00001, 0x20000, CRC(e912ea4e) SHA1(cf0b37d6b6fbdd311ef7b404c4ba2c6a7e1f8486) ) // sldh
@@ -2549,7 +2323,6 @@ ROM_START( multi96 )
 	ROM_LOAD( "sra.bin", 0x00000, 0x40000, CRC(82f452c4) SHA1(95ad6ede87ceafb045ed7df40496baf96190b97f) ) // bank 1
 	ROM_LOAD( "srb.bin", 0x40000, 0x40000, CRC(109e51e6) SHA1(3344c68d63bbad4a02b47143b2d2f72ce9bcb4bb) ) // bank 2
 ROM_END
->>>>>>> upstream/master
 
 /* SemiCom Games */
 
@@ -2967,8 +2740,6 @@ ROM_START( suhosong )
 ROM_END
 
 
-<<<<<<< HEAD
-=======
 ROM_START( yutnori )
 	ROM_REGION( 0x80000, "maincpu", 0 )    /* 68000 code */
 	ROM_LOAD16_BYTE( "SYS_D0-D7",    0x000001, 0x20000, CRC(d5c853da) SHA1(578f29c3a307f82fcaa23a7fe2931c0a673e777e) )
@@ -2990,7 +2761,6 @@ ROM_START( yutnori )
 ROM_END
 
 
->>>>>>> upstream/master
 
 DRIVER_INIT_MEMBER(snowbros_state,cookbib2)
 {
@@ -3004,20 +2774,12 @@ READ16_MEMBER(snowbros_state::_4in1_02_read)
 
 DRIVER_INIT_MEMBER(snowbros_state,4in1boot)
 {
-<<<<<<< HEAD
-	UINT8 *src = memregion("maincpu")->base();
-=======
 	uint8_t *src = memregion("maincpu")->base();
->>>>>>> upstream/master
 	int len = memregion("maincpu")->bytes();
 
 	/* strange order */
 	{
-<<<<<<< HEAD
-		dynamic_buffer buffer(len);
-=======
 		std::vector<uint8_t> buffer(len);
->>>>>>> upstream/master
 		int i;
 		for (i = 0;i < len; i++)
 			if (i&1) buffer[i] = BITSWAP8(src[i],6,7,5,4,3,2,1,0);
@@ -3031,11 +2793,7 @@ DRIVER_INIT_MEMBER(snowbros_state,4in1boot)
 
 	/* strange order */
 	{
-<<<<<<< HEAD
-		dynamic_buffer buffer(len);
-=======
 		std::vector<uint8_t> buffer(len);
->>>>>>> upstream/master
 		int i;
 		for (i = 0;i < len; i++)
 			buffer[i] = src[i^0x4000];
@@ -3046,20 +2804,12 @@ DRIVER_INIT_MEMBER(snowbros_state,4in1boot)
 
 DRIVER_INIT_MEMBER(snowbros_state,snowbro3)
 {
-<<<<<<< HEAD
-	UINT8 *src = memregion("maincpu")->base();
-=======
 	uint8_t *src = memregion("maincpu")->base();
->>>>>>> upstream/master
 	int len = memregion("maincpu")->bytes();
 
 	/* strange order */
 	{
-<<<<<<< HEAD
-		dynamic_buffer buffer(len);
-=======
 		std::vector<uint8_t> buffer(len);
->>>>>>> upstream/master
 		int i;
 		for (i = 0;i < len; i++)
 			buffer[i] = src[BITSWAP24(i,23,22,21,20,19,18,17,16,15,14,13,12,11,10,9,8,7,6,5,3,4,1,2,0)];
@@ -3101,11 +2851,7 @@ DRIVER_INIT_MEMBER(snowbros_state,pzlbreak)
 DRIVER_INIT_MEMBER(snowbros_state,toto)
 {
 	// every single rom has bits 0x10 and 0x08 swapped
-<<<<<<< HEAD
-	UINT8 *src = memregion("maincpu")->base();
-=======
 	uint8_t *src = memregion("maincpu")->base();
->>>>>>> upstream/master
 	int len = memregion("maincpu")->bytes();
 
 	for (int i = 0; i < len; i++)
@@ -3139,18 +2885,6 @@ DRIVER_INIT_MEMBER(snowbros_state, hyperpac)
 }
 
 
-<<<<<<< HEAD
-GAME( 1990, snowbros,  0,        snowbros, snowbros, driver_device, 0, ROT0, "Toaplan",                        "Snow Bros. - Nick & Tom (set 1)", MACHINE_SUPPORTS_SAVE )
-GAME( 1990, snowbrosa, snowbros, snowbros, snowbros, driver_device, 0, ROT0, "Toaplan",                        "Snow Bros. - Nick & Tom (set 2)", MACHINE_SUPPORTS_SAVE )
-GAME( 1990, snowbrosb, snowbros, snowbros, snowbros, driver_device, 0, ROT0, "Toaplan",                        "Snow Bros. - Nick & Tom (set 3)", MACHINE_SUPPORTS_SAVE )
-GAME( 1990, snowbrosc, snowbros, snowbros, snowbros, driver_device, 0, ROT0, "Toaplan",                        "Snow Bros. - Nick & Tom (set 4)", MACHINE_SUPPORTS_SAVE )
-GAME( 1990, snowbrosj, snowbros, snowbros, snowbroj, driver_device, 0, ROT0, "Toaplan",                        "Snow Bros. - Nick & Tom (Japan)", MACHINE_SUPPORTS_SAVE )
-GAME( 1990, snowbrosd, snowbros, snowbros, snowbroj, driver_device, 0, ROT0, "Toaplan (Dooyong license)",      "Snow Bros. - Nick & Tom (Dooyong license)", MACHINE_SUPPORTS_SAVE )
-GAME( 1990, wintbob,   snowbros, wintbob,  snowbros, driver_device, 0, ROT0, "bootleg (Sakowa Project Korea)", "The Winter Bobble (bootleg of Snow Bros.)", MACHINE_SUPPORTS_SAVE )
-GAME( 1990, snowbroswb,snowbros, wintbob,  snowbros, driver_device, 0, ROT0, "bootleg",                        "Snow Bros. - Nick & Tom (The Winter Bobble hardware bootleg)", MACHINE_SUPPORTS_SAVE ) // this was probably unhacked back from the more common Winter Bobble to make it look more original
-
-GAME( 1996, toto,      0,        snowbros, snowbros, snowbros_state, toto, ROT0, "SoftClub",                    "Come Back Toto", MACHINE_SUPPORTS_SAVE ) // modified from 'snowbros' code
-=======
 DRIVER_INIT_MEMBER(snowbros_state, yutnori)
 {
 	// presumably related to the PIC protection
@@ -3172,33 +2906,10 @@ GAME( 1990, wintbob,    snowbros, wintbob,     snowbros, snowbros_state, 0,    R
 GAME( 1990, snowbroswb, snowbros, wintbob,     snowbros, snowbros_state, 0,    ROT0, "bootleg",                        "Snow Bros. - Nick & Tom (The Winter Bobble hardware bootleg)", MACHINE_SUPPORTS_SAVE ) // this was probably unhacked back from the more common Winter Bobble to make it look more original
 
 GAME( 1996, toto,       0,        snowbros,    snowbros, snowbros_state, toto, ROT0, "SoftClub",                       "Come Back Toto", MACHINE_SUPPORTS_SAVE ) // modified from 'snowbros' code
->>>>>>> upstream/master
 
 // none of the games below are on genuine SnowBros hardware, but they clone the functionality of it.
 
 // SemiCom / Jeil titles are protected, a dumb MCU copies code into RAM at startup, some also check for a specific return value from an address on startup.
-<<<<<<< HEAD
-GAME( 1993, finalttr, 0,        finalttr,     finalttr, driver_device,  0,        ROT0, "Jeil Computer System", "Final Tetris", MACHINE_SUPPORTS_SAVE )
-GAME( 1995, hyperpac, 0,        semicom_mcu,  hyperpac, snowbros_state, hyperpac, ROT0, "SemiCom",              "Hyper Pacman", MACHINE_SUPPORTS_SAVE )
-GAME( 1995, hyperpacb,hyperpac, semicom,      hyperpac, driver_device,  0,        ROT0, "bootleg",              "Hyper Pacman (bootleg)", MACHINE_SUPPORTS_SAVE )
-GAME( 1996, cookbib2, 0,        semiprot,     cookbib2, snowbros_state, cookbib2, ROT0, "SemiCom",              "Cookie & Bibi 2", MACHINE_SUPPORTS_SAVE )
-GAME( 1996, toppyrap, 0,        semiprot,     toppyrap, driver_device,  0,        ROT0, "SemiCom",              "Toppy & Rappy", MACHINE_SUPPORTS_SAVE )
-GAME( 1997, cookbib3, 0,        semiprot,     cookbib3, snowbros_state, cookbib3, ROT0, "SemiCom",              "Cookie & Bibi 3", MACHINE_SUPPORTS_SAVE )
-GAME( 1997, pzlbreak, 0,        semiprot,     pzlbreak, snowbros_state, pzlbreak, ROT0, "SemiCom / Tirano",     "Puzzle Break", MACHINE_SUPPORTS_SAVE )
-GAME( 1997, suhosong, 0,        semiprot,     suhosong, driver_device,  0,        ROT0, "SemiCom",              "Su Ho Seong", MACHINE_SUPPORTS_SAVE )
-GAME( 1997, twinkle,  0,        semiprot,     twinkle,  driver_device,  0,        ROT0, "SemiCom / Tirano",     "Twinkle", MACHINE_SUPPORTS_SAVE )
-GAME( 1998, 3in1semi, 0,        semiprot,     moremore, snowbros_state, 3in1semi, ROT0, "SemiCom / XESS",       "New HyperMan (3-in-1 with Cookie & Bibi & HyperMan)", MACHINE_SUPPORTS_SAVE )
-GAME( 1999, mcheonru, 0,        semiprot,     mcheonru, snowbros_state, 3in1semi, ROT0, "SemiCom / AceVer",     "Ma Cheon Ru", MACHINE_SUPPORTS_SAVE ) // a flyer exists for an English version called Arirang, AceVer team logo is displayed on it
-GAME( 1999, moremore, 0,        semiprot,     moremore, snowbros_state, 3in1semi, ROT0, "SemiCom / Exit",       "More More", MACHINE_SUPPORTS_SAVE )
-GAME( 1999, moremorp, 0,        semiprot,     moremore, snowbros_state, 3in1semi, ROT0, "SemiCom / Exit",       "More More Plus", MACHINE_SUPPORTS_SAVE )
-// This is very similar to the SemiCom titles, but unprotected.
-GAME( 2002, 4in1boot, 0,        _4in1,    4in1boot, snowbros_state, 4in1boot, ROT0, "K1 Soft", "Puzzle King (PacMan 2, Tetris, HyperMan 2, Snow Bros.)" , MACHINE_SUPPORTS_SAVE )
-
-GAME( 1995, honeydol, 0,        honeydol, honeydol, driver_device, 0, ROT0, "Barko Corp.", "Honey Dolls", MACHINE_SUPPORTS_SAVE ) // based on snowbros code..
-
-GAME( 1995, twinadv,  0,        twinadv,  twinadv, driver_device,  0, ROT0, "Barko Corp.", "Twin Adventure (World)", MACHINE_SUPPORTS_SAVE )
-GAME( 1995, twinadvk, twinadv,  twinadv,  twinadv, driver_device,  0, ROT0, "Barko Corp.", "Twin Adventure (Korea)", MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1993, finalttr,   0,        finalttr,    finalttr, snowbros_state, 0,        ROT0, "Jeil Computer System", "Final Tetris", MACHINE_SUPPORTS_SAVE )
 GAME( 1995, hyperpac,   0,        semicom_mcu, hyperpac, snowbros_state, hyperpac, ROT0, "SemiCom",              "Hyper Pacman", MACHINE_SUPPORTS_SAVE )
 GAME( 1995, hyperpacb,  hyperpac, semicom,     hyperpac, snowbros_state, 0,        ROT0, "bootleg",              "Hyper Pacman (bootleg)", MACHINE_SUPPORTS_SAVE )
@@ -3220,19 +2931,13 @@ GAME( 1995, honeydol,   0,        honeydol,    honeydol, snowbros_state, 0,     
 GAME( 1995, twinadv,    0,        twinadv,     twinadv,  snowbros_state, 0,        ROT0, "Barko Corp.", "Twin Adventure (World)", MACHINE_SUPPORTS_SAVE )
 GAME( 1995, twinadvk,   twinadv,  twinadv,     twinadv,  snowbros_state, 0,        ROT0, "Barko Corp.", "Twin Adventure (Korea)", MACHINE_SUPPORTS_SAVE )
 GAME( 1996, multi96,    twinadv,  twinadv,     twinadv,  snowbros_state, 0,        ROT0, "Barko Corp.", "Multi Game '96 (Italy)", MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master
 
 // The Korean games database shows an earlier version of this called Ball Boy with a different title screen to the version of Ball Boy we have
 // http://mamedev.emulab.it/undumped/images/Ballboy.jpg
 // it is possible this 'ball boy' is the original bootleg, with snwobro3 being a hack of that, and the ballboy set we have a further hack of that
 // there is also a later 2004 version with 3 player support
 // these use an MCU to drive the sound
-<<<<<<< HEAD
-GAME( 2002, snowbro3, 0,        snowbro3, snowbroj, snowbros_state, snowbro3, ROT0, "Syrmex",  "Snow Brothers 3 - Magical Adventure", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE ) // hacked from SnowBros code but released as an original game
-GAME( 2003, ballboy,  snowbro3, snowbro3, snowbroj, snowbros_state, snowbro3, ROT0, "bootleg", "Ball Boy", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 2002, snowbro3,   0,        snowbro3,    snowbroj, snowbros_state, snowbro3, ROT0, "Syrmex",  "Snow Brothers 3 - Magical Adventure", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE ) // hacked from SnowBros code but released as an original game
 GAME( 2003, ballboy,    snowbro3, snowbro3,    snowbroj, snowbros_state, snowbro3, ROT0, "bootleg", "Ball Boy", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
 // protection appears to handle the sound, should check if it's just a block of code that is conditionally executed like some of the Semicom titles.
 GAME( 1999, yutnori,    0,        yutnori,     yutnori,  snowbros_state, yutnori,  ROT0, "Nunal",   "Puzzle Yutnori (Korea)", MACHINE_UNEMULATED_PROTECTION | MACHINE_NO_SOUND ) // Nunal is apparently Korean slang for Eyeball, hence the logo.  Some places report 'JCC Soft' as the manufacturer
->>>>>>> upstream/master

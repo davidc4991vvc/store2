@@ -8,11 +8,7 @@
 
 WRITE8_MEMBER(pokechmp_state::pokechmp_videoram_w)
 {
-<<<<<<< HEAD
-	UINT8 *videoram = m_videoram;
-=======
 	uint8_t *videoram = m_videoram;
->>>>>>> upstream/master
 	videoram[offset] = data;
 	m_bg_tilemap->mark_tile_dirty(offset / 2);
 }
@@ -28,11 +24,7 @@ WRITE8_MEMBER(pokechmp_state::pokechmp_flipscreen_w)
 
 TILE_GET_INFO_MEMBER(pokechmp_state::get_bg_tile_info)
 {
-<<<<<<< HEAD
-	UINT8 *videoram = m_videoram;
-=======
 	uint8_t *videoram = m_videoram;
->>>>>>> upstream/master
 	int code = videoram[tile_index*2+1] + ((videoram[tile_index*2] & 0x3f) << 8);
 	int color = videoram[tile_index*2] >> 6;
 
@@ -41,22 +33,14 @@ TILE_GET_INFO_MEMBER(pokechmp_state::get_bg_tile_info)
 
 void pokechmp_state::video_start()
 {
-<<<<<<< HEAD
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(pokechmp_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS,
-=======
 	m_bg_tilemap = &machine().tilemap().create(
 			*m_gfxdecode, tilemap_get_info_delegate(FUNC(pokechmp_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS,
->>>>>>> upstream/master
 			8, 8, 32, 32);
 }
 
 void pokechmp_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
-<<<<<<< HEAD
-	UINT8 *spriteram = m_spriteram;
-=======
 	uint8_t *spriteram = m_spriteram;
->>>>>>> upstream/master
 	int offs;
 
 	for (offs = 0;offs < m_spriteram.bytes();offs += 4)
@@ -90,11 +74,7 @@ void pokechmp_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprec
 	}
 }
 
-<<<<<<< HEAD
-UINT32 pokechmp_state::screen_update_pokechmp(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t pokechmp_state::screen_update_pokechmp(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	m_bg_tilemap->draw(screen, bitmap, cliprect, 0, 0);
 	draw_sprites(bitmap, cliprect);

@@ -22,20 +22,11 @@
 
 **********************************************************************/
 
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __CBM2_USER_PORT__
-#define __CBM2_USER_PORT__
-
-#include "emu.h"
-=======
 #ifndef MAME_BUS_CBM2_USER_H
 #define MAME_BUS_CBM2_USER_H
 
 #pragma once
 
->>>>>>> upstream/master
 
 
 
@@ -82,23 +73,11 @@ class cbm2_user_port_device;
 class device_cbm2_user_port_interface : public device_slot_card_interface
 {
 public:
-<<<<<<< HEAD
-	// construction/destruction
-	device_cbm2_user_port_interface(const machine_config &mconfig, device_t &device);
-	virtual ~device_cbm2_user_port_interface() { }
-
-	virtual UINT8 cbm2_d1_r(address_space &space, offs_t offset) { return 0xff; };
-	virtual void cbm2_d1_w(address_space &space, offs_t offset, UINT8 data) { };
-
-	virtual UINT8 cbm2_d2_r(address_space &space, offs_t offset) { return 0xff; };
-	virtual void cbm2_d2_w(address_space &space, offs_t offset, UINT8 data) { };
-=======
 	virtual uint8_t cbm2_d1_r(address_space &space, offs_t offset) { return 0xff; };
 	virtual void cbm2_d1_w(address_space &space, offs_t offset, uint8_t data) { };
 
 	virtual uint8_t cbm2_d2_r(address_space &space, offs_t offset) { return 0xff; };
 	virtual void cbm2_d2_w(address_space &space, offs_t offset, uint8_t data) { };
->>>>>>> upstream/master
 
 	virtual int cbm2_pb2_r() { return 1; }
 	virtual void cbm2_pb2_w(int state) { };
@@ -110,12 +89,9 @@ public:
 	virtual void cbm2_sp_w(int state) { };
 
 protected:
-<<<<<<< HEAD
-=======
 	// construction/destruction
 	device_cbm2_user_port_interface(const machine_config &mconfig, device_t &device);
 
->>>>>>> upstream/master
 	cbm2_user_port_device *m_slot;
 };
 
@@ -127,28 +103,6 @@ class cbm2_user_port_device : public device_t,
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	cbm2_user_port_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-	virtual ~cbm2_user_port_device() { }
-
-	template<class _Object> static devcb_base &set_irq_wr_callback(device_t &device, _Object object) { return downcast<cbm2_user_port_device &>(device).m_write_irq.set_callback(object); }
-	template<class _Object> static devcb_base &set_sp_wr_callback(device_t &device, _Object object) { return downcast<cbm2_user_port_device &>(device).m_write_sp.set_callback(object); }
-	template<class _Object> static devcb_base &set_cnt_wr_callback(device_t &device, _Object object) { return downcast<cbm2_user_port_device &>(device).m_write_cnt.set_callback(object); }
-	template<class _Object> static devcb_base &set_flag_wr_callback(device_t &device, _Object object) { return downcast<cbm2_user_port_device &>(device).m_write_flag.set_callback(object); }
-
-	// computer interface
-	DECLARE_READ8_MEMBER( d1_r ) { UINT8 data = 0xff; if (m_card != NULL) data = m_card->cbm2_d1_r(space, offset); return data; }
-	DECLARE_WRITE8_MEMBER( d1_w ) { if (m_card != NULL) m_card->cbm2_d1_w(space, offset, data); }
-	DECLARE_READ8_MEMBER( d2_r ) { UINT8 data = 0xff; if (m_card != NULL) data = m_card->cbm2_d2_r(space, offset); return data; }
-	DECLARE_WRITE8_MEMBER( d2_w ) { if (m_card != NULL) m_card->cbm2_d2_w(space, offset, data); }
-	DECLARE_READ_LINE_MEMBER( pb2_r ) { return m_card ? m_card->cbm2_pb2_r() : 1; }
-	DECLARE_WRITE_LINE_MEMBER( pb2_w ) { if (m_card != NULL) m_card->cbm2_pb2_w(state); }
-	DECLARE_READ_LINE_MEMBER( pb3_r ) { return m_card ? m_card->cbm2_pb3_r() : 1; }
-	DECLARE_WRITE_LINE_MEMBER( pb3_w ) { if (m_card != NULL) m_card->cbm2_pb3_w(state); }
-	DECLARE_WRITE_LINE_MEMBER( pc_w ) { if (m_card != NULL) m_card->cbm2_pc_w(state); }
-	DECLARE_WRITE_LINE_MEMBER( cnt_w ) { if (m_card != NULL) m_card->cbm2_cnt_w(state); }
-	DECLARE_WRITE_LINE_MEMBER( sp_w ) { if (m_card != NULL) m_card->cbm2_sp_w(state); }
-=======
 	cbm2_user_port_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	template <class Object> static devcb_base &set_irq_wr_callback(device_t &device, Object &&cb) { return downcast<cbm2_user_port_device &>(device).m_write_irq.set_callback(std::forward<Object>(cb)); }
@@ -168,7 +122,6 @@ public:
 	DECLARE_WRITE_LINE_MEMBER( pc_w ) { if (m_card != nullptr) m_card->cbm2_pc_w(state); }
 	DECLARE_WRITE_LINE_MEMBER( cnt_w ) { if (m_card != nullptr) m_card->cbm2_cnt_w(state); }
 	DECLARE_WRITE_LINE_MEMBER( sp_w ) { if (m_card != nullptr) m_card->cbm2_sp_w(state); }
->>>>>>> upstream/master
 
 	// cartridge interface
 	DECLARE_WRITE_LINE_MEMBER( irq_w ) { m_write_irq(state); }
@@ -178,11 +131,7 @@ public:
 
 protected:
 	// device-level overrides
-<<<<<<< HEAD
-	virtual void device_start();
-=======
 	virtual void device_start() override;
->>>>>>> upstream/master
 
 	devcb_write_line   m_write_irq;
 	devcb_write_line   m_write_sp;
@@ -194,20 +143,11 @@ protected:
 
 
 // device type definition
-<<<<<<< HEAD
-extern const device_type CBM2_USER_PORT;
-=======
 DECLARE_DEVICE_TYPE(CBM2_USER_PORT, cbm2_user_port_device)
->>>>>>> upstream/master
 
 
 // slot devices
 SLOT_INTERFACE_EXTERN( cbm2_user_port_cards );
 
 
-<<<<<<< HEAD
-
-#endif
-=======
 #endif // MAME_BUS_CBM2_USER_H
->>>>>>> upstream/master

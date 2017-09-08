@@ -92,13 +92,6 @@ Notes:
       HSync - 15.2042kHz
       VSync - 59.1879Hz
 
-<<<<<<< HEAD
-**************************************************************************/
-
-#include "emu.h"
-#include "video/k053250.h"
-#include "includes/konamigx.h"
-=======
 
 Notes on metamrpha.  Research done by Vas Crabb
 The one rom that is different than the parent set has 2 bytes which have switched values (0 to 1 and 1 to 0).
@@ -145,17 +138,11 @@ we have no way of knowing which is the later/corrected version.
 #include "includes/konamipt.h"
 #include "video/k053250.h"
 
->>>>>>> upstream/master
 #include "cpu/m68000/m68000.h"
 #include "cpu/z80/z80.h"
 #include "machine/eepromser.h"
 #include "sound/k054539.h"
-<<<<<<< HEAD
-#include "includes/konamipt.h"
-#include "includes/mystwarr.h"
-=======
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 
@@ -257,57 +244,11 @@ INTERRUPT_GEN_MEMBER(mystwarr_state::ddd_interrupt)
 
 /**********************************************************************************/
 
-<<<<<<< HEAD
-WRITE16_MEMBER(mystwarr_state::sound_cmd1_w)
-{
-	soundlatch_byte_w(space, 0, data&0xff);
-}
-
-WRITE16_MEMBER(mystwarr_state::sound_cmd1_msb_w)
-{
-	soundlatch_byte_w(space, 0, data>>8);
-}
-
-WRITE16_MEMBER(mystwarr_state::sound_cmd2_w)
-{
-	soundlatch2_byte_w(space, 0, data&0xff);
-	return;
-}
-
-WRITE16_MEMBER(mystwarr_state::sound_cmd2_msb_w)
-{
-	soundlatch2_byte_w(space, 0, data>>8);
-	return;
-}
-
-=======
->>>>>>> upstream/master
 WRITE16_MEMBER(mystwarr_state::sound_irq_w)
 {
 	m_soundcpu->set_input_line(0, HOLD_LINE);
 }
 
-<<<<<<< HEAD
-READ16_MEMBER(mystwarr_state::sound_status_r)
-{
-	int latch = soundlatch3_byte_r(space,0);
-
-	if ((latch & 0xf) == 0xe) latch |= 1;
-
-	return latch;
-}
-
-READ16_MEMBER(mystwarr_state::sound_status_msb_r)
-{
-	int latch = soundlatch3_byte_r(space,0);
-
-	if ((latch & 0xf) == 0xe) latch |= 1;
-
-	return latch<<8;
-}
-
-=======
->>>>>>> upstream/master
 WRITE16_MEMBER(mystwarr_state::irq_ack_w)
 {
 	m_k056832->b_word_w(space, offset, data, mem_mask);
@@ -362,23 +303,12 @@ static ADDRESS_MAP_START( mystwarr_map, AS_PROGRAM, 16, mystwarr_state )
 	AM_RANGE(0x48a000, 0x48a01f) AM_DEVWRITE("k054338", k054338_device, word_w)
 	AM_RANGE(0x48c000, 0x48c03f) AM_DEVWRITE("k056832", k056832_device,word_w)
 	AM_RANGE(0x490000, 0x490001) AM_WRITE(mweeprom_w)
-<<<<<<< HEAD
-	AM_RANGE(0x492000, 0x492001) AM_WRITENOP    // watchdog
-=======
 	AM_RANGE(0x492000, 0x492001) AM_NOP    // watchdog
->>>>>>> upstream/master
 	AM_RANGE(0x494000, 0x494001) AM_READ_PORT("P1_P2")
 	AM_RANGE(0x494002, 0x494003) AM_READ_PORT("P3_P4")
 	AM_RANGE(0x496000, 0x496001) AM_READ_PORT("IN0")
 	AM_RANGE(0x496002, 0x496003) AM_READ(eeprom_r)
-<<<<<<< HEAD
-	AM_RANGE(0x49800c, 0x49800d) AM_WRITE(sound_cmd1_w)
-	AM_RANGE(0x49800e, 0x49800f) AM_WRITE(sound_cmd2_w)
-	AM_RANGE(0x498014, 0x498015) AM_READ(sound_status_r)
-	AM_RANGE(0x498000, 0x49801f) AM_RAM
-=======
 	AM_RANGE(0x498000, 0x49801f) AM_DEVICE8("k054321", k054321_device, main_map, 0x00ff)
->>>>>>> upstream/master
 	AM_RANGE(0x49a000, 0x49a001) AM_WRITE(sound_irq_w)
 	AM_RANGE(0x49c000, 0x49c01f) AM_DEVREADWRITE8("k053252", k053252_device, read, write, 0x00ff)
 	AM_RANGE(0x49e000, 0x49e007) AM_WRITE(irq_ack_w)    // VSCCS (custom)
@@ -403,14 +333,7 @@ static ADDRESS_MAP_START( metamrph_map, AS_PROGRAM, 16, mystwarr_state )
 	AM_RANGE(0x258000, 0x2580ff) AM_DEVWRITE("k055555", k055555_device, K055555_word_w)
 	AM_RANGE(0x260000, 0x26001f) AM_DEVREADWRITE8("k053252", k053252_device, read, write, 0x00ff)
 	AM_RANGE(0x264000, 0x264001) AM_WRITE(sound_irq_w)
-<<<<<<< HEAD
-	AM_RANGE(0x26800c, 0x26800d) AM_WRITE(sound_cmd1_w)
-	AM_RANGE(0x26800e, 0x26800f) AM_WRITE(sound_cmd2_w)
-	AM_RANGE(0x268014, 0x268015) AM_READ(sound_status_r)
-	AM_RANGE(0x268000, 0x26801f) AM_RAM
-=======
 	AM_RANGE(0x268000, 0x26801f) AM_DEVICE8("k054321", k054321_device, main_map, 0x00ff)
->>>>>>> upstream/master
 	AM_RANGE(0x26c000, 0x26c007) AM_DEVWRITE("k056832", k056832_device,b_word_w)
 	AM_RANGE(0x270000, 0x27003f) AM_DEVWRITE("k056832", k056832_device,word_w)
 	AM_RANGE(0x274000, 0x274001) AM_READ_PORT("P1_P3")
@@ -442,14 +365,7 @@ static ADDRESS_MAP_START( viostorm_map, AS_PROGRAM, 16, mystwarr_state )
 	AM_RANGE(0x25c000, 0x25c03f) AM_READWRITE(K055550_word_r,K055550_word_w)
 	AM_RANGE(0x260000, 0x26001f) AM_DEVREADWRITE8("k053252", k053252_device, read, write, 0x00ff)
 	AM_RANGE(0x264000, 0x264001) AM_WRITE(sound_irq_w)
-<<<<<<< HEAD
-	AM_RANGE(0x26800c, 0x26800d) AM_WRITE(sound_cmd1_w)
-	AM_RANGE(0x26800e, 0x26800f) AM_WRITE(sound_cmd2_w)
-	AM_RANGE(0x268014, 0x268015) AM_READ(sound_status_r)
-	AM_RANGE(0x268000, 0x26801f) AM_RAM
-=======
 	AM_RANGE(0x268000, 0x26801f) AM_DEVICE8("k054321", k054321_device, main_map, 0x00ff)
->>>>>>> upstream/master
 	AM_RANGE(0x26c000, 0x26c007) AM_DEVWRITE("k056832", k056832_device,b_word_w)
 	AM_RANGE(0x270000, 0x27003f) AM_DEVWRITE("k056832", k056832_device,word_w)
 	AM_RANGE(0x274000, 0x274001) AM_READ_PORT("P1_P3")
@@ -533,14 +449,7 @@ static ADDRESS_MAP_START( martchmp_map, AS_PROGRAM, 16, mystwarr_state )
 	AM_RANGE(0x414002, 0x414003) AM_READ_PORT("P3_P4")
 	AM_RANGE(0x416000, 0x416001) AM_READ_PORT("IN0")
 	AM_RANGE(0x416002, 0x416003) AM_READ(eeprom_r)                  // eeprom read
-<<<<<<< HEAD
-	AM_RANGE(0x418014, 0x418015) AM_READ(sound_status_r)                // z80 status
-	AM_RANGE(0x41800c, 0x41800d) AM_WRITE(sound_cmd1_w)
-	AM_RANGE(0x41800e, 0x41800f) AM_WRITE(sound_cmd2_w)
-	AM_RANGE(0x418000, 0x41801f) AM_RAM                                 // sound regs fall through
-=======
 	AM_RANGE(0x418000, 0x41801f) AM_DEVICE8("k054321", k054321_device, main_map, 0x00ff)
->>>>>>> upstream/master
 	AM_RANGE(0x41a000, 0x41a001) AM_WRITE(sound_irq_w)
 	AM_RANGE(0x41c000, 0x41c01f) AM_DEVREADWRITE8("k053252", k053252_device, read, write, 0x00ff)              // CCU
 	AM_RANGE(0x41e000, 0x41e007) AM_DEVWRITE("k056832", k056832_device,b_word_w)              // VSCCS
@@ -569,14 +478,7 @@ static ADDRESS_MAP_START( dadandrn_map, AS_PROGRAM, 16, mystwarr_state )
 	AM_RANGE(0x484000, 0x484003) AM_WRITE(ddd_053936_clip_w)
 	AM_RANGE(0x486000, 0x48601f) AM_DEVREADWRITE8("k053252", k053252_device, read, write, 0x00ff)
 	AM_RANGE(0x488000, 0x4880ff) AM_DEVWRITE("k055555", k055555_device, K055555_word_w)
-<<<<<<< HEAD
-	AM_RANGE(0x48a00c, 0x48a00d) AM_WRITE(sound_cmd1_msb_w)
-	AM_RANGE(0x48a00e, 0x48a00f) AM_WRITE(sound_cmd2_msb_w)
-	AM_RANGE(0x48a014, 0x48a015) AM_READ(sound_status_msb_r)
-	AM_RANGE(0x48a000, 0x48a01f) AM_RAM                 // sound regs fall-through
-=======
 	AM_RANGE(0x48a000, 0x48a01f) AM_DEVICE8("k054321", k054321_device, main_map, 0xff00)
->>>>>>> upstream/master
 	AM_RANGE(0x48c000, 0x48c01f) AM_DEVWRITE("k054338", k054338_device, word_w)
 	AM_RANGE(0x48e000, 0x48e001) AM_READ_PORT("IN0_P1") // bit 3 (0x8) is test switch
 	AM_RANGE(0x48e020, 0x48e021) AM_READ(dddeeprom_r)
@@ -612,14 +514,7 @@ static ADDRESS_MAP_START( gaiapols_map, AS_PROGRAM, 16, mystwarr_state )
 	AM_RANGE(0x484000, 0x484003) AM_WRITE(ddd_053936_clip_w)
 	AM_RANGE(0x486000, 0x48601f) AM_DEVREADWRITE8("k053252", k053252_device, read, write, 0x00ff)
 	AM_RANGE(0x488000, 0x4880ff) AM_DEVWRITE("k055555", k055555_device, K055555_word_w)
-<<<<<<< HEAD
-	AM_RANGE(0x48a00c, 0x48a00d) AM_WRITE(sound_cmd1_msb_w)
-	AM_RANGE(0x48a00e, 0x48a00f) AM_WRITE(sound_cmd2_msb_w)
-	AM_RANGE(0x48a014, 0x48a015) AM_READ(sound_status_msb_r)
-	AM_RANGE(0x48a000, 0x48a01f) AM_RAM                             // sound regs fall-through
-=======
 	AM_RANGE(0x48a000, 0x48a01f) AM_DEVICE8("k054321", k054321_device, main_map, 0xff00)
->>>>>>> upstream/master
 	AM_RANGE(0x48c000, 0x48c01f) AM_DEVWRITE("k054338", k054338_device, word_w)
 	AM_RANGE(0x48e000, 0x48e001) AM_READ_PORT("IN0_P1")             // bit 3 (0x8) is test switch
 	AM_RANGE(0x48e020, 0x48e021) AM_READ(dddeeprom_r)
@@ -662,13 +557,7 @@ static ADDRESS_MAP_START( mystwarr_sound_map, AS_PROGRAM, 8, mystwarr_state )
 	AM_RANGE(0xe230, 0xe3ff) AM_RAM
 	AM_RANGE(0xe400, 0xe62f) AM_DEVREADWRITE("k054539_2", k054539_device, read, write)
 	AM_RANGE(0xe630, 0xe7ff) AM_RAM
-<<<<<<< HEAD
-	AM_RANGE(0xf000, 0xf000) AM_WRITE(soundlatch3_byte_w)
-	AM_RANGE(0xf002, 0xf002) AM_READ(soundlatch_byte_r)
-	AM_RANGE(0xf003, 0xf003) AM_READ(soundlatch2_byte_r)
-=======
 	AM_RANGE(0xf000, 0xf003) AM_DEVICE("k054321", k054321_device, sound_map)
->>>>>>> upstream/master
 	AM_RANGE(0xf800, 0xf800) AM_WRITE(sound_ctrl_w)
 	AM_RANGE(0xfff0, 0xfff3) AM_WRITENOP    // unknown write
 ADDRESS_MAP_END
@@ -1009,11 +898,7 @@ MACHINE_RESET_MEMBER(mystwarr_state,gaiapols)
 }
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( mystwarr, mystwarr_state )
-=======
 static MACHINE_CONFIG_START( mystwarr )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, 16000000)   /* 16 MHz (confirmed) */
@@ -1048,30 +933,16 @@ static MACHINE_CONFIG_START( mystwarr )
 	MCFG_PALETTE_ENABLE_SHADOWS()
 	MCFG_PALETTE_ENABLE_HILIGHTS()
 
-<<<<<<< HEAD
-	MCFG_GFXDECODE_ADD("gfxdecode", "palette", empty)
-
-	MCFG_DEVICE_ADD("k056832", K056832, 0)
-	MCFG_K056832_CB(mystwarr_state, mystwarr_tile_callback)
-	MCFG_K056832_CONFIG("gfx1", 0, K056832_BPP_5, 0, 0, "none")
-	MCFG_K056832_GFXDECODE("gfxdecode")
-=======
 	MCFG_DEVICE_ADD("k056832", K056832, 0)
 	MCFG_K056832_CB(mystwarr_state, mystwarr_tile_callback)
 	MCFG_K056832_CONFIG("gfx1", K056832_BPP_5, 0, 0, "none")
->>>>>>> upstream/master
 	MCFG_K056832_PALETTE("palette")
 
 	MCFG_K055555_ADD("k055555")
 
 	MCFG_DEVICE_ADD("k055673", K055673, 0)
 	MCFG_K055673_CB(mystwarr_state, mystwarr_sprite_callback)
-<<<<<<< HEAD
-	MCFG_K055673_CONFIG("gfx2", 0, K055673_LAYOUT_GX, -48, -24)
-	MCFG_K055673_GFXDECODE("gfxdecode")
-=======
 	MCFG_K055673_CONFIG("gfx2", K055673_LAYOUT_GX, -48, -24)
->>>>>>> upstream/master
 	MCFG_K055673_PALETTE("palette")
 
 	MCFG_DEVICE_ADD("k054338", K054338, 0)
@@ -1083,11 +954,8 @@ static MACHINE_CONFIG_START( mystwarr )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
-<<<<<<< HEAD
-=======
 	MCFG_K054321_ADD("k054321", ":lspeaker", ":rspeaker")
 
->>>>>>> upstream/master
 	MCFG_DEVICE_ADD("k054539_1", K054539, XTAL_18_432MHz)
 	MCFG_K054539_REGION_OVERRRIDE("shared")
 	MCFG_K054539_TIMER_HANDLER(WRITELINE(mystwarr_state, k054539_nmi_gen))
@@ -1128,11 +996,7 @@ static MACHINE_CONFIG_DERIVED( viostorm, mystwarr )
 
 	MCFG_DEVICE_MODIFY("k055673")
 	MCFG_K055673_CB(mystwarr_state, metamrph_sprite_callback)
-<<<<<<< HEAD
-	MCFG_K055673_CONFIG("gfx2", 0, K055673_LAYOUT_RNG, -62, -23)
-=======
 	MCFG_K055673_CONFIG("gfx2", K055673_LAYOUT_RNG, -62, -23)
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_DERIVED( metamrph, mystwarr )
@@ -1165,11 +1029,7 @@ static MACHINE_CONFIG_DERIVED( metamrph, mystwarr )
 
 	MCFG_DEVICE_MODIFY("k055673")
 	MCFG_K055673_CB(mystwarr_state, metamrph_sprite_callback)
-<<<<<<< HEAD
-	MCFG_K055673_CONFIG("gfx2", 0, K055673_LAYOUT_RNG, -51, -24)
-=======
 	MCFG_K055673_CONFIG("gfx2", K055673_LAYOUT_RNG, -51, -24)
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_DERIVED( dadandrn, mystwarr )
@@ -1185,11 +1045,7 @@ static MACHINE_CONFIG_DERIVED( dadandrn, mystwarr )
 	MCFG_DEVICE_MODIFY("k053252")
 	MCFG_K053252_OFFSETS(24, 16+1)
 
-<<<<<<< HEAD
-	MCFG_GFXDECODE_MODIFY("gfxdecode", dadandrn)
-=======
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", dadandrn)
->>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_VIDEO_START_OVERRIDE(mystwarr_state, dadandrn)
@@ -1206,11 +1062,7 @@ static MACHINE_CONFIG_DERIVED( dadandrn, mystwarr )
 
 	MCFG_DEVICE_MODIFY("k055673")
 	MCFG_K055673_CB(mystwarr_state, gaiapols_sprite_callback)
-<<<<<<< HEAD
-	MCFG_K055673_CONFIG("gfx2", 0, K055673_LAYOUT_GX, -42, -22)
-=======
 	MCFG_K055673_CONFIG("gfx2", K055673_LAYOUT_GX, -42, -22)
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_DERIVED( gaiapols, mystwarr )
@@ -1228,11 +1080,7 @@ static MACHINE_CONFIG_DERIVED( gaiapols, mystwarr )
 
 	MCFG_K054000_ADD("k054000")
 
-<<<<<<< HEAD
-	MCFG_GFXDECODE_MODIFY("gfxdecode", gaiapols)
-=======
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", gaiapols)
->>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_VIDEO_START_OVERRIDE(mystwarr_state, gaiapols)
@@ -1250,11 +1098,7 @@ static MACHINE_CONFIG_DERIVED( gaiapols, mystwarr )
 
 	MCFG_DEVICE_MODIFY("k055673")
 	MCFG_K055673_CB(mystwarr_state, gaiapols_sprite_callback)
-<<<<<<< HEAD
-	MCFG_K055673_CONFIG("gfx2", 0, K055673_LAYOUT_RNG, -61, -22) // stage2 brick walls
-=======
 	MCFG_K055673_CONFIG("gfx2", K055673_LAYOUT_RNG, -61, -22) // stage2 brick walls
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_DERIVED( martchmp, mystwarr )
@@ -1289,11 +1133,7 @@ static MACHINE_CONFIG_DERIVED( martchmp, mystwarr )
 
 	MCFG_DEVICE_MODIFY("k055673")
 	MCFG_K055673_CB(mystwarr_state, martchmp_sprite_callback)
-<<<<<<< HEAD
-	MCFG_K055673_CONFIG("gfx2", 0, K055673_LAYOUT_GX, -58, -23)
-=======
 	MCFG_K055673_CONFIG("gfx2", K055673_LAYOUT_GX, -58, -23)
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 /**********************************************************************************/
@@ -1424,8 +1264,6 @@ ROM_END
 ROM_START( mystwarra )
 	/* main program */
 	ROM_REGION( 0x200000, "maincpu", 0 )
-<<<<<<< HEAD
-=======
 	ROM_LOAD16_BYTE( "128aab01.20f", 0x000000, 0x40000, CRC(3dc89153) SHA1(dd7b315794b07823d380fe2c59ceff93964d5542) )
 	ROM_LOAD16_BYTE( "128aab02.20g", 0x000001, 0x40000, CRC(8fe92ad2) SHA1(f99e6c4bab026fae6becbcf5463ae67081d3b6dd) )
 	ROM_LOAD16_BYTE( "128a03.19f",   0x100000, 0x80000, CRC(e98094f3) SHA1(a3f9b804ff487f792a00ce85a383868ab0b1b5d8) )
@@ -1466,7 +1304,6 @@ ROM_END
 ROM_START( mystwarraa )
 	/* main program */
 	ROM_REGION( 0x200000, "maincpu", 0 )
->>>>>>> upstream/master
 	ROM_LOAD16_BYTE( "128aaa01.20f", 0x000000, 0x40000, CRC(633ead86) SHA1(56d8628f6081e860c4c6109eabd1c1392f669996) )
 	ROM_LOAD16_BYTE( "128aaa02.20g", 0x000001, 0x40000, CRC(69ab81a2) SHA1(545bc298dfc4de05bac15d63a84c10400231a04d) )
 	ROM_LOAD16_BYTE( "128a03.19f",   0x100000, 0x80000, CRC(e98094f3) SHA1(a3f9b804ff487f792a00ce85a383868ab0b1b5d8) )
@@ -1787,8 +1624,6 @@ ROM_START( metamrph )
 	ROM_LOAD( "metamrph.nv", 0x0000, 0x080, CRC(2c51229a) SHA1(7f056792cc44ec3d4aacc33c825ab796a913488e) )
 ROM_END
 
-<<<<<<< HEAD
-=======
 ROM_START( metamrphe ) /* alternate set - possibly a bugfix version. Only 2 adjusted bytes causing a swap in commands */
 	/* main program */
 	ROM_REGION( 0x200000, "maincpu", 0 )
@@ -1863,7 +1698,6 @@ ROM_START( metamrpha )
 	ROM_LOAD( "metamrpha.nv", 0x0000, 0x080, CRC(6d34a4f2) SHA1(6ec2645ee4375d4924c3cfed2285224af6d19f4c) )
 ROM_END
 
->>>>>>> upstream/master
 ROM_START( metamrphu )
 	/* main program */
 	ROM_REGION( 0x200000, "maincpu", 0 )
@@ -2395,39 +2229,6 @@ ROM_START( dadandrn )
 	ROM_LOAD( "dadandrn.nv", 0x0000, 0x080, CRC(346ae0cf) SHA1(1f79b2e21766f7a971c7d0f618700deb8a32f78a) )
 ROM_END
 
-<<<<<<< HEAD
-/*           ROM       parent    machine   inp       init */
-GAME( 1993, mystwarr,   0,        mystwarr, mystwarr, driver_device, 0, ROT0,  "Konami", "Mystic Warriors (ver EAA)", MACHINE_IMPERFECT_GRAPHICS )
-GAME( 1993, mystwarru,  mystwarr, mystwarr, mystwarr, driver_device, 0, ROT0,  "Konami", "Mystic Warriors (ver UAA)", MACHINE_IMPERFECT_GRAPHICS )
-GAME( 1993, mystwarrj,  mystwarr, mystwarr, mystwarr, driver_device, 0, ROT0,  "Konami", "Mystic Warriors (ver JAA)", MACHINE_IMPERFECT_GRAPHICS )
-GAME( 1993, mystwarra,  mystwarr, mystwarr, mystwarr, driver_device, 0, ROT0,  "Konami", "Mystic Warriors (ver AAA)", MACHINE_IMPERFECT_GRAPHICS )
-
-GAME( 1993, mmaulers,   0,        dadandrn, dadandrn, driver_device, 0, ROT0,  "Konami", "Monster Maulers (ver EAA)", MACHINE_IMPERFECT_GRAPHICS )
-GAME( 1993, dadandrn,   mmaulers, dadandrn, dadandrn, driver_device, 0, ROT0,  "Konami", "Kyukyoku Sentai Dadandarn (ver JAA)", MACHINE_IMPERFECT_GRAPHICS )
-
-GAME( 1993, viostorm,   0,        viostorm, viostorm, driver_device, 0, ROT0,  "Konami", "Violent Storm (ver EAC)", MACHINE_IMPERFECT_GRAPHICS )
-GAME( 1993, viostormeb, viostorm, viostorm, viostorm, driver_device, 0, ROT0,  "Konami", "Violent Storm (ver EAB)", MACHINE_IMPERFECT_GRAPHICS )
-GAME( 1993, viostormu,  viostorm, viostorm, viostorm, driver_device, 0, ROT0,  "Konami", "Violent Storm (ver UAC)", MACHINE_IMPERFECT_GRAPHICS )
-GAME( 1993, viostormub, viostorm, viostorm, viostorm, driver_device, 0, ROT0,  "Konami", "Violent Storm (ver UAB)", MACHINE_IMPERFECT_GRAPHICS )
-GAME( 1993, viostormj,  viostorm, viostorm, viostorm, driver_device, 0, ROT0,  "Konami", "Violent Storm (ver JAC)", MACHINE_IMPERFECT_GRAPHICS )
-GAME( 1993, viostorma,  viostorm, viostorm, viostorm, driver_device, 0, ROT0,  "Konami", "Violent Storm (ver AAC)", MACHINE_IMPERFECT_GRAPHICS )
-GAME( 1993, viostormab, viostorm, viostorm, viostorm, driver_device, 0, ROT0,  "Konami", "Violent Storm (ver AAB)", MACHINE_IMPERFECT_GRAPHICS )
-
-GAME( 1993, metamrph,   0,        metamrph, metamrph, driver_device, 0, ROT0,  "Konami", "Metamorphic Force (ver EAA)", MACHINE_IMPERFECT_GRAPHICS )
-GAME( 1993, metamrphu,  metamrph, metamrph, metamrph, driver_device, 0, ROT0,  "Konami", "Metamorphic Force (ver UAA)", MACHINE_IMPERFECT_GRAPHICS )
-GAME( 1993, metamrphj,  metamrph, metamrph, metamrph, driver_device, 0, ROT0,  "Konami", "Metamorphic Force (ver JAA)", MACHINE_IMPERFECT_GRAPHICS )
-
-GAME( 1993, mtlchamp,   0,        martchmp, martchmp, driver_device, 0, ROT0,  "Konami", "Martial Champion (ver EAB)", MACHINE_IMPERFECT_GRAPHICS )
-GAME( 1993, mtlchamp1,  mtlchamp, martchmp, martchmp, driver_device, 0, ROT0,  "Konami", "Martial Champion (ver EAA)", MACHINE_IMPERFECT_GRAPHICS )
-GAME( 1993, mtlchampu,  mtlchamp, martchmp, martchmp, driver_device, 0, ROT0,  "Konami", "Martial Champion (ver UAE)", MACHINE_IMPERFECT_GRAPHICS )
-GAME( 1993, mtlchampu1, mtlchamp, martchmp, martchmp, driver_device, 0, ROT0,  "Konami", "Martial Champion (ver UAD)", MACHINE_IMPERFECT_GRAPHICS )
-GAME( 1993, mtlchampj,  mtlchamp, martchmp, martchmp, driver_device, 0, ROT0,  "Konami", "Martial Champion (ver JAA)", MACHINE_IMPERFECT_GRAPHICS )
-GAME( 1993, mtlchampa,  mtlchamp, martchmp, martchmp, driver_device, 0, ROT0,  "Konami", "Martial Champion (ver AAA)", MACHINE_IMPERFECT_GRAPHICS )
-
-GAME( 1993, gaiapols,   0,        gaiapols, dadandrn, driver_device, 0, ROT90, "Konami", "Gaiapolis (ver EAF)", MACHINE_IMPERFECT_GRAPHICS )
-GAME( 1993, gaiapolsu,  gaiapols, gaiapols, dadandrn, driver_device, 0, ROT90, "Konami", "Gaiapolis (ver UAF)", MACHINE_IMPERFECT_GRAPHICS )
-GAME( 1993, gaiapolsj,  gaiapols, gaiapols, dadandrn, driver_device, 0, ROT90, "Konami", "Gaiapolis (ver JAF)", MACHINE_IMPERFECT_GRAPHICS )
-=======
 //    YEAR  NAME        PARENT    MACHINE   INPUT     STATE
 GAME( 1993, mystwarr,   0,        mystwarr, mystwarr, mystwarr_state, 0, ROT0,  "Konami", "Mystic Warriors (ver EAA)", MACHINE_IMPERFECT_GRAPHICS )
 GAME( 1993, mystwarru,  mystwarr, mystwarr, mystwarr, mystwarr_state, 0, ROT0,  "Konami", "Mystic Warriors (ver UAA)", MACHINE_IMPERFECT_GRAPHICS )
@@ -2462,4 +2263,3 @@ GAME( 1993, mtlchampa,  mtlchamp, martchmp, martchmp, mystwarr_state, 0, ROT0,  
 GAME( 1993, gaiapols,   0,        gaiapols, dadandrn, mystwarr_state, 0, ROT90, "Konami", "Gaiapolis (ver EAF)", MACHINE_IMPERFECT_GRAPHICS )
 GAME( 1993, gaiapolsu,  gaiapols, gaiapols, dadandrn, mystwarr_state, 0, ROT90, "Konami", "Gaiapolis (ver UAF)", MACHINE_IMPERFECT_GRAPHICS )
 GAME( 1993, gaiapolsj,  gaiapols, gaiapols, dadandrn, mystwarr_state, 0, ROT90, "Konami", "Gaiapolis (ver JAF)", MACHINE_IMPERFECT_GRAPHICS )
->>>>>>> upstream/master

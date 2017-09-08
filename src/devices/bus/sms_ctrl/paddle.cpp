@@ -2,12 +2,6 @@
 // copyright-holders:Fabio Priuli
 /**********************************************************************
 
-<<<<<<< HEAD
-    Sega Master System "Paddle Control" emulation
-
-**********************************************************************/
-
-=======
     Sega Mark III "Paddle Control" emulation
 
 
@@ -30,7 +24,6 @@ Notes:
 **********************************************************************/
 
 #include "emu.h"
->>>>>>> upstream/master
 #include "paddle.h"
 
 
@@ -39,17 +32,6 @@ Notes:
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type SMS_PADDLE = &device_creator<sms_paddle_device>;
-
-
-#define PADDLE_INTERVAL attotime::from_hz(XTAL_53_693175MHz/15/256)
-
-
-CUSTOM_INPUT_MEMBER( sms_paddle_device::dir_pins_r )
-{
-	UINT8 data = m_paddle_x->read();
-=======
 DEFINE_DEVICE_TYPE(SMS_PADDLE, sms_paddle_device, "sms_paddle", "Sega SMS Paddle")
 
 // time interval not verified
@@ -60,7 +42,6 @@ DEFINE_DEVICE_TYPE(SMS_PADDLE, sms_paddle_device, "sms_paddle", "Sega SMS Paddle
 CUSTOM_INPUT_MEMBER( sms_paddle_device::rldu_pins_r )
 {
 	uint8_t data = m_paddle_x->read();
->>>>>>> upstream/master
 
 	if (m_read_state)
 		data >>= 4;
@@ -70,11 +51,7 @@ CUSTOM_INPUT_MEMBER( sms_paddle_device::rldu_pins_r )
 }
 
 
-<<<<<<< HEAD
-CUSTOM_INPUT_MEMBER( sms_paddle_device::tr_pin_r )
-=======
 READ_LINE_MEMBER( sms_paddle_device::tr_pin_r )
->>>>>>> upstream/master
 {
 	// The returned value is inverted due to IP_ACTIVE_LOW mapping.
 	return ~m_read_state;
@@ -83,19 +60,11 @@ READ_LINE_MEMBER( sms_paddle_device::tr_pin_r )
 
 static INPUT_PORTS_START( sms_paddle )
 	PORT_START("CTRL_PORT")
-<<<<<<< HEAD
-	PORT_BIT( 0x0f, IP_ACTIVE_LOW, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, sms_paddle_device, dir_pins_r, NULL) // Directional pins
-	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_UNUSED ) // Vcc
-	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_BUTTON1 ) // TL
-	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_UNUSED ) // TH
-	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, sms_paddle_device, tr_pin_r, NULL)
-=======
 	PORT_BIT( 0x0f, IP_ACTIVE_LOW, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, sms_paddle_device, rldu_pins_r, nullptr) // R,L,D,U
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_UNUSED ) // Vcc
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_BUTTON1 ) // TL
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_UNUSED ) // TH
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_SPECIAL ) PORT_READ_LINE_DEVICE_MEMBER( DEVICE_SELF, sms_paddle_device, tr_pin_r ) // TR
->>>>>>> upstream/master
 
 	PORT_START("PADDLE_X") // Paddle knob
 	PORT_BIT( 0xff, 0x80, IPT_PADDLE) PORT_SENSITIVITY(40) PORT_KEYDELTA(20) PORT_CENTERDELTA(0) PORT_MINMAX(0,255)
@@ -121,13 +90,8 @@ ioport_constructor sms_paddle_device::device_input_ports() const
 //  sms_paddle_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-sms_paddle_device::sms_paddle_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-	device_t(mconfig, SMS_PADDLE, "Sega SMS Paddle", tag, owner, clock, "sms_paddle", __FILE__),
-=======
 sms_paddle_device::sms_paddle_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	device_t(mconfig, SMS_PADDLE, tag, owner, clock),
->>>>>>> upstream/master
 	device_sms_control_port_interface(mconfig, *this),
 	m_paddle_pins(*this, "CTRL_PORT"),
 	m_paddle_x(*this, "PADDLE_X"),
@@ -154,11 +118,7 @@ void sms_paddle_device::device_start()
 //  sms_peripheral_r - paddle read
 //-------------------------------------------------
 
-<<<<<<< HEAD
-UINT8 sms_paddle_device::peripheral_r()
-=======
 uint8_t sms_paddle_device::peripheral_r()
->>>>>>> upstream/master
 {
 	int num_intervals = (machine().time() - m_start_time).as_double() / m_interval.as_double();
 	m_read_state = num_intervals & 1;

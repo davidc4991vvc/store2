@@ -11,16 +11,11 @@
 #include "machine/6821pia.h"
 #include "machine/i8279.h"
 #include "sound/ay8910.h"
-<<<<<<< HEAD
-#include "icecold.lh"
-
-=======
 #include "speaker.h"
 
 #include "icecold.lh"
 
 
->>>>>>> upstream/master
 class icecold_state : public driver_device
 {
 public:
@@ -46,11 +41,7 @@ public:
 	DECLARE_WRITE8_MEMBER( motors_w );
 
 	// driver_device overrides
-<<<<<<< HEAD
-	virtual void machine_reset();
-=======
 	virtual void machine_reset() override;
->>>>>>> upstream/master
 
 	// devices
 	required_device<cpu_device> m_maincpu;
@@ -58,17 +49,10 @@ public:
 	required_device<ay8910_device> m_ay8910_1;
 	required_device<pia6821_device> m_pia1;
 
-<<<<<<< HEAD
-	UINT8   m_digit;            // scanlines from i8279
-	UINT8   m_sound_latch;      // sound bus latch
-	UINT8   m_ay_ctrl;          // ay controls line
-	UINT8   m_motors_ctrl;      // motors control
-=======
 	uint8_t   m_digit;            // scanlines from i8279
 	uint8_t   m_sound_latch;      // sound bus latch
 	uint8_t   m_ay_ctrl;          // ay controls line
 	uint8_t   m_motors_ctrl;      // motors control
->>>>>>> upstream/master
 	int     m_sint;             // SINT line
 	int     m_motenbl;          // /MOTENBL line
 	int     m_ball_gate_sw;     // ball gate switch
@@ -85,12 +69,7 @@ static ADDRESS_MAP_START( icecold_map, AS_PROGRAM, 8, icecold_state )
 	AM_RANGE(0x4010, 0x4013) AM_DEVREADWRITE("pia0", pia6821_device, read, write)
 	AM_RANGE(0x4020, 0x4023) AM_DEVREADWRITE("pia1", pia6821_device, read, write)
 	AM_RANGE(0x4040, 0x4043) AM_DEVREADWRITE("pia2", pia6821_device, read, write)   // not used
-<<<<<<< HEAD
-	AM_RANGE(0x4080, 0x4080) AM_DEVREADWRITE("i8279", i8279_device, data_r, data_w )
-	AM_RANGE(0x4081, 0x4081) AM_DEVREADWRITE("i8279", i8279_device, status_r, cmd_w)
-=======
 	AM_RANGE(0x4080, 0x4081) AM_DEVREADWRITE("i8279", i8279_device, read, write)
->>>>>>> upstream/master
 	AM_RANGE(0x4100, 0x4100) AM_WRITE(motors_w)
 	AM_RANGE(0xa000, 0xffff) AM_ROM
 ADDRESS_MAP_END
@@ -151,11 +130,7 @@ static INPUT_PORTS_START( icecold )
 	PORT_BIT(0x08, IP_ACTIVE_LOW, IPT_JOYSTICKLEFT_DOWN)
 	PORT_BIT(0x20, IP_ACTIVE_LOW, IPT_JOYSTICKRIGHT_UP)
 	PORT_BIT(0x80, IP_ACTIVE_LOW, IPT_JOYSTICKLEFT_UP)
-<<<<<<< HEAD
-	PORT_BIT(0x55, IP_ACTIVE_LOW, IPT_SPECIAL)          PORT_CUSTOM_MEMBER(DEVICE_SELF, icecold_state, motors_limit_r, NULL)
-=======
 	PORT_BIT(0x55, IP_ACTIVE_LOW, IPT_SPECIAL)          PORT_CUSTOM_MEMBER(DEVICE_SELF, icecold_state, motors_limit_r, nullptr)
->>>>>>> upstream/master
 
 	PORT_START("X0")
 	PORT_BIT(0x01, IP_ACTIVE_LOW, IPT_START1)
@@ -201,11 +176,7 @@ void icecold_state::machine_reset()
 
 CUSTOM_INPUT_MEMBER( icecold_state::motors_limit_r )
 {
-<<<<<<< HEAD
-	UINT8 data = 0;
-=======
 	uint8_t data = 0;
->>>>>>> upstream/master
 
 	if (m_rmotor <= 1)      data |= 0x01;   // right down limit
 	if (m_lmotor <= 1)      data |= 0x04;   // left down limit
@@ -232,11 +203,7 @@ WRITE8_MEMBER( icecold_state::scanlines_w )
 
 WRITE8_MEMBER( icecold_state::digit_w )
 {
-<<<<<<< HEAD
-	output_set_digit_value(m_digit, data & 0x7f);
-=======
 	output().set_digit_value(m_digit, data & 0x7f);
->>>>>>> upstream/master
 }
 
 READ8_MEMBER( icecold_state::kbd_r )
@@ -283,15 +250,6 @@ READ8_MEMBER( icecold_state::ay_r )
 
 WRITE8_MEMBER( icecold_state::ay8910_0_b_w )
 {
-<<<<<<< HEAD
-	output_set_lamp_value(1, BIT(data, 0));
-	output_set_lamp_value(2, BIT(data, 1));
-	output_set_lamp_value(3, BIT(data, 2));
-	output_set_lamp_value(4, BIT(data, 3));
-	output_set_lamp_value(5, BIT(data, 4));
-	output_set_value("in_play", BIT(data, 5));
-	output_set_value("good_game", BIT(data, 6));
-=======
 	output().set_lamp_value(1, BIT(data, 0));
 	output().set_lamp_value(2, BIT(data, 1));
 	output().set_lamp_value(3, BIT(data, 2));
@@ -299,21 +257,11 @@ WRITE8_MEMBER( icecold_state::ay8910_0_b_w )
 	output().set_lamp_value(5, BIT(data, 4));
 	output().set_value("in_play", BIT(data, 5));
 	output().set_value("good_game", BIT(data, 6));
->>>>>>> upstream/master
 	m_motenbl = BIT(data, 7);
 }
 
 WRITE8_MEMBER( icecold_state::ay8910_1_a_w )
 {
-<<<<<<< HEAD
-	output_set_lamp_value(6, BIT(data, 0));
-	output_set_lamp_value(7, BIT(data, 1));
-	output_set_lamp_value(8, BIT(data, 2));
-	output_set_lamp_value(9, BIT(data, 3));
-	output_set_lamp_value(10, BIT(data, 4));
-	output_set_value("game_over", BIT(data, 5));
-	output_set_value("tilt", BIT(data, 6));
-=======
 	output().set_lamp_value(6, BIT(data, 0));
 	output().set_lamp_value(7, BIT(data, 1));
 	output().set_lamp_value(8, BIT(data, 2));
@@ -321,7 +269,6 @@ WRITE8_MEMBER( icecold_state::ay8910_1_a_w )
 	output().set_lamp_value(10, BIT(data, 4));
 	output().set_value("game_over", BIT(data, 5));
 	output().set_value("tilt", BIT(data, 6));
->>>>>>> upstream/master
 	// BIT 7 watchdog reset
 }
 
@@ -329,19 +276,11 @@ WRITE8_MEMBER( icecold_state::ay8910_1_b_w )
 {
 	if (m_motenbl == 0)
 	{
-<<<<<<< HEAD
-		output_set_value("start", BIT(data, 0));
-		coin_counter_w(machine(), 1, BIT(data, 1));     // hopper counter
-		coin_counter_w(machine(), 2, BIT(data, 2));     // good game counter
-		coin_lockout_w(machine(), 0, BIT(data, 3));     // not used ??
-		coin_counter_w(machine(), 0, BIT(data, 4));     // coin counter
-=======
 		output().set_value("start", BIT(data, 0));
 		machine().bookkeeping().coin_counter_w(1, BIT(data, 1));     // hopper counter
 		machine().bookkeeping().coin_counter_w(2, BIT(data, 2));     // good game counter
 		machine().bookkeeping().coin_lockout_w(0, BIT(data, 3));     // not used ??
 		machine().bookkeeping().coin_counter_w(0, BIT(data, 4));     // coin counter
->>>>>>> upstream/master
 		// BIT 5 errant ball solenoid
 		// BIT 7 hopper motor
 	}
@@ -373,17 +312,6 @@ TIMER_DEVICE_CALLBACK_MEMBER(icecold_state::icecold_motors_timer)
 			m_ball_gate_sw = 0;
 
 		// motors are keep in range 0-100
-<<<<<<< HEAD
-		m_lmotor = MIN(m_lmotor, 100);
-		m_lmotor = MAX(m_lmotor, 0);
-		m_rmotor = MIN(m_rmotor, 100);
-		m_rmotor = MAX(m_rmotor, 0);
-
-		if (lmotor_dir != 0 || rmotor_dir != 0)
-		{
-			output_set_value("lmotor", m_lmotor);
-			output_set_value("rmotor", m_rmotor);
-=======
 		m_lmotor = std::min(m_lmotor, 100);
 		m_lmotor = std::max(m_lmotor, 0);
 		m_rmotor = std::min(m_rmotor, 100);
@@ -393,7 +321,6 @@ TIMER_DEVICE_CALLBACK_MEMBER(icecold_state::icecold_motors_timer)
 		{
 			output().set_value("lmotor", m_lmotor);
 			output().set_value("rmotor", m_rmotor);
->>>>>>> upstream/master
 
 			popmessage("Left Motor   Right Motor\n%-4s         %-4s\n%02d\\100       %02d\\100",
 						(lmotor_dir > 0) ? " up" : ((lmotor_dir < 0) ? "down" : "off"),
@@ -402,11 +329,7 @@ TIMER_DEVICE_CALLBACK_MEMBER(icecold_state::icecold_motors_timer)
 	}
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( icecold, icecold_state )
-=======
 static MACHINE_CONFIG_START( icecold )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6809, XTAL_6MHz/4)
@@ -415,33 +338,19 @@ static MACHINE_CONFIG_START( icecold )
 	MCFG_DEVICE_ADD( "pia0", PIA6821, 0)
 	MCFG_PIA_READPA_HANDLER(IOPORT("JOY"))
 	MCFG_PIA_READPB_HANDLER(IOPORT("DSW3"))
-<<<<<<< HEAD
-	MCFG_PIA_IRQA_HANDLER(DEVWRITELINE("maincpu", m6809_device, irq_line))
-	MCFG_PIA_IRQB_HANDLER(DEVWRITELINE("maincpu", m6809_device, irq_line))
-=======
 	MCFG_PIA_IRQA_HANDLER(INPUTLINE("maincpu", M6809_IRQ_LINE))
 	MCFG_PIA_IRQB_HANDLER(INPUTLINE("maincpu", M6809_IRQ_LINE))
->>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD( "pia1", PIA6821, 0)
 	MCFG_PIA_READPA_HANDLER(READ8(icecold_state, ay_r))
 	MCFG_PIA_WRITEPA_HANDLER(WRITE8(icecold_state, ay_w))
 	MCFG_PIA_WRITEPB_HANDLER(WRITE8(icecold_state, snd_ctrl_w))
-<<<<<<< HEAD
-	MCFG_PIA_IRQA_HANDLER(DEVWRITELINE("maincpu", m6809_device, firq_line))
-	MCFG_PIA_IRQB_HANDLER(DEVWRITELINE("maincpu", m6809_device, firq_line))
-
-	MCFG_DEVICE_ADD( "pia2", PIA6821, 0)
-	MCFG_PIA_IRQA_HANDLER(DEVWRITELINE("maincpu", m6809_device, irq_line))
-	MCFG_PIA_IRQB_HANDLER(DEVWRITELINE("maincpu", m6809_device, irq_line))
-=======
 	MCFG_PIA_IRQA_HANDLER(INPUTLINE("maincpu", M6809_FIRQ_LINE))
 	MCFG_PIA_IRQB_HANDLER(INPUTLINE("maincpu", M6809_FIRQ_LINE))
 
 	MCFG_DEVICE_ADD( "pia2", PIA6821, 0)
 	MCFG_PIA_IRQA_HANDLER(INPUTLINE("maincpu", M6809_IRQ_LINE))
 	MCFG_PIA_IRQB_HANDLER(INPUTLINE("maincpu", M6809_IRQ_LINE))
->>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("i8279", I8279, XTAL_6MHz/4)
 	MCFG_I8279_OUT_IRQ_CB(DEVWRITELINE("pia0", pia6821_device, cb1_w)) // irq
@@ -490,10 +399,5 @@ ROM_START(zekepeak)
 ROM_END
 
 
-<<<<<<< HEAD
-GAME(1983,  icecold,   0,        icecold,  icecold, driver_device,  0,  ROT0,  "Taito",    "Ice Cold Beer",      MACHINE_NOT_WORKING | MACHINE_MECHANICAL)
-GAME(1983,  zekepeak,  icecold,  icecold,  icecold, driver_device,  0,  ROT0,  "Taito",    "Zeke's Peak",        MACHINE_NOT_WORKING | MACHINE_MECHANICAL)
-=======
 GAME(1983,  icecold,   0,        icecold,  icecold, icecold_state,  0,  ROT0,  "Taito",    "Ice Cold Beer",      MACHINE_NOT_WORKING | MACHINE_MECHANICAL)
 GAME(1983,  zekepeak,  icecold,  icecold,  icecold, icecold_state,  0,  ROT0,  "Taito",    "Zeke's Peak",        MACHINE_NOT_WORKING | MACHINE_MECHANICAL)
->>>>>>> upstream/master

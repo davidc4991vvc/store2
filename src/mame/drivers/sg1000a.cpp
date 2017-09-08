@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-// license:LGPL-2.1+
-=======
 // license:BSD-3-Clause
->>>>>>> upstream/master
 // copyright-holders:Tomasz Slanina
 /*********************************************************
 Sega hardware based on their SG-1000 console
@@ -25,19 +21,11 @@ Z80 A                    3.57954 MHz (Champion Boxing)
 8255 for I/O port work
 3 Eproms for program and graphics
 TMM2064 for program RAM
-<<<<<<< HEAD
-TMS9928 for graphics ( 3.57954 MHz? )
-8 8118 dynamic RAMs for the graphics
-74LS139 and 74LS32 for logic gating
-ULN2003 for coin counter output
-76489 for music
-=======
 TMS9928ANL for graphics ( 3.57954 MHz? )
 8 8118 dynamic RAMs for the graphics
 74LS139 and 74LS32 for logic gating
 ULN2003AN for coin counter output
 SN76489AN for music
->>>>>>> upstream/master
 7808 voltage regulator to a transistorized circuit for TV output
 secondary crystal, numbers unknown for the TMS9928
 
@@ -125,8 +113,6 @@ CN4               CN5
 
 ******************************************************/
 
-<<<<<<< HEAD
-=======
 /* Super Derby II notes from Charles MacDonald
 
 ================================================================================
@@ -283,18 +269,13 @@ End
 ================================================================================
 */
 
->>>>>>> upstream/master
 #include "emu.h"
 #include "cpu/z80/z80.h"
 #include "sound/sn76496.h"
 #include "video/tms9928a.h"
 #include "machine/i8255.h"
-<<<<<<< HEAD
-#include "machine/segacrpt.h"
-=======
 #include "machine/segacrpt_device.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 class sg1000a_state : public driver_device
@@ -305,19 +286,10 @@ public:
 		m_maincpu(*this, "maincpu"),
 		m_decrypted_opcodes(*this, "decrypted_opcodes") { }
 
-<<<<<<< HEAD
-	DECLARE_WRITE_LINE_MEMBER(vdp_interrupt);
-	DECLARE_WRITE8_MEMBER(sg1000a_coin_counter_w);
-	DECLARE_DRIVER_INIT(sg1000a);
-	DECLARE_DRIVER_INIT(chwrestl);
-	required_device<cpu_device> m_maincpu;
-	optional_shared_ptr<UINT8> m_decrypted_opcodes;
-=======
 	DECLARE_WRITE8_MEMBER(sg1000a_coin_counter_w);
 	DECLARE_DRIVER_INIT(sg1000a);
 	required_device<cpu_device> m_maincpu;
 	optional_shared_ptr<uint8_t> m_decrypted_opcodes;
->>>>>>> upstream/master
 };
 
 
@@ -332,29 +304,19 @@ static ADDRESS_MAP_START( program_map, AS_PROGRAM, 8, sg1000a_state )
 	AM_RANGE(0xc000, 0xc3ff) AM_RAM AM_MIRROR(0x400)
 ADDRESS_MAP_END
 
-<<<<<<< HEAD
-static ADDRESS_MAP_START( decrypted_opcodes_map, AS_DECRYPTED_OPCODES, 8, sg1000a_state )
-=======
 static ADDRESS_MAP_START( decrypted_opcodes_map, AS_OPCODES, 8, sg1000a_state )
->>>>>>> upstream/master
 	AM_RANGE(0x0000, 0x7fff) AM_ROM AM_SHARE("decrypted_opcodes")
 	AM_RANGE(0x8000, 0xbfff) AM_ROM AM_REGION("maincpu", 0x8000)
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( io_map, AS_IO, 8, sg1000a_state )
 	ADDRESS_MAP_GLOBAL_MASK(0xff)
-<<<<<<< HEAD
-	AM_RANGE(0x7f, 0x7f) AM_DEVWRITE("snsnd", sn76489_device, write)
-=======
 	AM_RANGE(0x7f, 0x7f) AM_DEVWRITE("snsnd", sn76489a_device, write)
->>>>>>> upstream/master
 	AM_RANGE(0xbe, 0xbe) AM_DEVREADWRITE("tms9928a", tms9928a_device, vram_read, vram_write)
 	AM_RANGE(0xbf, 0xbf) AM_DEVREADWRITE("tms9928a", tms9928a_device, register_read, register_write)
 	AM_RANGE(0xdc, 0xdf) AM_DEVREADWRITE("ppi8255", i8255_device, read, write)
 ADDRESS_MAP_END
 
-<<<<<<< HEAD
-=======
 static ADDRESS_MAP_START( sderby2_io_map, AS_IO, 8, sg1000a_state )
 	ADDRESS_MAP_GLOBAL_MASK(0xff)
 	AM_RANGE(0x7f, 0x7f) AM_DEVWRITE("snsnd", sn76489a_device, write)
@@ -364,7 +326,6 @@ static ADDRESS_MAP_START( sderby2_io_map, AS_IO, 8, sg1000a_state )
 	AM_RANGE(0xc8, 0xcb) AM_DEVREADWRITE("ppi8255", i8255_device, read, write) // NEC D8255AC-2
 ADDRESS_MAP_END
 
->>>>>>> upstream/master
 /*************************************
  *
  *  Generic Port definitions
@@ -451,16 +412,6 @@ static INPUT_PORTS_START( dokidoki )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 INPUT_PORTS_END
 
-<<<<<<< HEAD
-WRITE_LINE_MEMBER(sg1000a_state::vdp_interrupt)
-{
-	m_maincpu->set_input_line(INPUT_LINE_IRQ0, state);
-}
-
-WRITE8_MEMBER(sg1000a_state::sg1000a_coin_counter_w)
-{
-	coin_counter_w(machine(), 0, data & 0x01);
-=======
 static INPUT_PORTS_START( sderby2s )
 	PORT_INCLUDE( sg1000 )
 
@@ -495,7 +446,6 @@ INPUT_PORTS_END
 WRITE8_MEMBER(sg1000a_state::sg1000a_coin_counter_w)
 {
 	machine().bookkeeping().coin_counter_w(0, data & 0x01);
->>>>>>> upstream/master
 }
 
 /*************************************
@@ -504,11 +454,7 @@ WRITE8_MEMBER(sg1000a_state::sg1000a_coin_counter_w)
  *
  *************************************/
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( sg1000a, sg1000a_state )
-=======
 static MACHINE_CONFIG_START( sg1000a )
->>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, XTAL_3_579545MHz)
 	MCFG_CPU_PROGRAM_MAP(program_map)
@@ -523,11 +469,7 @@ static MACHINE_CONFIG_START( sg1000a )
 	/* video hardware */
 	MCFG_DEVICE_ADD( "tms9928a", TMS9928A, XTAL_10_738635MHz / 2 )
 	MCFG_TMS9928A_VRAM_SIZE(0x4000)
-<<<<<<< HEAD
-	MCFG_TMS9928A_OUT_INT_LINE_CB(WRITELINE(sg1000a_state, vdp_interrupt))
-=======
 	MCFG_TMS9928A_OUT_INT_LINE_CB(INPUTLINE("maincpu", INPUT_LINE_IRQ0))
->>>>>>> upstream/master
 
 	MCFG_TMS9928A_SCREEN_ADD_NTSC( "screen" )
 	MCFG_SCREEN_UPDATE_DEVICE( "tms9928a", tms9928a_device, screen_update )
@@ -535,19 +477,11 @@ static MACHINE_CONFIG_START( sg1000a )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-	MCFG_SOUND_ADD("snsnd", SN76489, XTAL_3_579545MHz)
-=======
 	MCFG_SOUND_ADD("snsnd", SN76489A, XTAL_3_579545MHz)
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_DERIVED( sg1000ax, sg1000a )
-<<<<<<< HEAD
-	MCFG_CPU_MODIFY("maincpu")
-	MCFG_CPU_DECRYPTED_OPCODES_MAP(decrypted_opcodes_map)
-=======
 	MCFG_CPU_REPLACE("maincpu", SEGA_315_5033, XTAL_3_579545MHz)
 	MCFG_CPU_PROGRAM_MAP(program_map)
 	MCFG_CPU_IO_MAP(io_map)
@@ -561,7 +495,6 @@ static MACHINE_CONFIG_DERIVED( sderby2s, sg1000a )
 	MCFG_CPU_IO_MAP(sderby2_io_map)
 
 	// Actually uses a Sega 315-5066 chip, which is a TMS9918 and SN76489 in the same package but with RGB output
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 /*************************************
@@ -591,15 +524,12 @@ ROM_START( dokidoki )
 	ROM_LOAD( "epr-7358.ic3",   0x8000, 0x4000, CRC(c6f26b0b) SHA1(3753e05b6e77159832dbe88562ba7a818120d1a3) )
 ROM_END
 
-<<<<<<< HEAD
-=======
 ROM_START( sderby2s )
 	ROM_REGION( 0x10000, "maincpu", 0 )
 	ROM_LOAD( "epr-6450d.ic10",   0x0000, 0x4000, CRC(e56986d3) SHA1(a2dbdc95128cc94a1492e080aeea402f2d4b89fe) )
 	ROM_LOAD( "epr-6504d.ic11",   0x4000, 0x4000, CRC(7bb364b9) SHA1(9f93572b6d999422d93ad5f7a251b4695565651f) )
 ROM_END
 
->>>>>>> upstream/master
 /*************************************
  *
  *  Driver initialization
@@ -610,37 +540,7 @@ DRIVER_INIT_MEMBER(sg1000a_state,sg1000a)
 {
 }
 
-<<<<<<< HEAD
-DRIVER_INIT_MEMBER(sg1000a_state,chwrestl)
-{
-	static const UINT8 convtable[32][4] =
-	{
-		/*       opcode                   data                     address      */
-		/*  A    B    C    D         A    B    C    D                           */
-		{ 0x28,0x08,0xa8,0x88 }, { 0x88,0x80,0x08,0x00 },   /* ...0...0...0...0 */
-		{ 0x28,0x08,0xa8,0x88 }, { 0x28,0xa8,0x08,0x88 },   /* ...0...0...0...1 */
-		{ 0x88,0x80,0x08,0x00 }, { 0x88,0x08,0x80,0x00 },   /* ...0...0...1...0 */
-		{ 0x88,0x08,0x80,0x00 }, { 0x28,0xa8,0x08,0x88 },   /* ...0...0...1...1 */
-		{ 0x28,0x08,0xa8,0x88 }, { 0x88,0x80,0x08,0x00 },   /* ...0...1...0...0 */
-		{ 0x88,0x80,0x08,0x00 }, { 0x88,0x80,0x08,0x00 },   /* ...0...1...0...1 */
-		{ 0x88,0x08,0x80,0x00 }, { 0x88,0x08,0x80,0x00 },   /* ...0...1...1...0 */
-		{ 0xa0,0x80,0xa8,0x88 }, { 0xa0,0x80,0xa8,0x88 },   /* ...0...1...1...1 */
-		{ 0x80,0xa0,0x00,0x20 }, { 0x28,0x08,0xa8,0x88 },   /* ...1...0...0...0 */
-		{ 0x28,0xa8,0x08,0x88 }, { 0x28,0x08,0xa8,0x88 },   /* ...1...0...0...1 */
-		{ 0x80,0xa0,0x00,0x20 }, { 0x80,0xa0,0x00,0x20 },   /* ...1...0...1...0 */
-		{ 0x28,0xa8,0x08,0x88 }, { 0x80,0xa0,0x00,0x20 },   /* ...1...0...1...1 */
-		{ 0xa0,0x80,0xa8,0x88 }, { 0x28,0x08,0xa8,0x88 },   /* ...1...1...0...0 */
-		{ 0x80,0xa0,0x00,0x20 }, { 0xa0,0x80,0xa8,0x88 },   /* ...1...1...0...1 */
-		{ 0xa0,0x80,0xa8,0x88 }, { 0x80,0xa0,0x00,0x20 },   /* ...1...1...1...0 */
-		{ 0xa0,0x80,0xa8,0x88 }, { 0xa0,0x80,0xa8,0x88 }    /* ...1...1...1...1 */
-	};
 
-	DRIVER_INIT_CALL(sg1000a);
-	sega_decode(memregion("maincpu")->base(), m_decrypted_opcodes, 0x8000, convtable);
-}
-=======
-
->>>>>>> upstream/master
 
 /*************************************
  *
@@ -648,13 +548,7 @@ DRIVER_INIT_MEMBER(sg1000a_state,chwrestl)
  *
  *************************************/
 
-<<<<<<< HEAD
-GAME( 1984, chboxing, 0, sg1000a,  chboxing, sg1000a_state, sg1000a,  ROT0, "Sega", "Champion Boxing", 0 )
-GAME( 1985, chwrestl, 0, sg1000ax, chwrestl, sg1000a_state, chwrestl, ROT0, "Sega", "Champion Pro Wrestling", 0 )
-GAME( 1985, dokidoki, 0, sg1000a,  dokidoki, sg1000a_state, sg1000a,  ROT0, "Sega", "Doki Doki Penguin Land", 0 )
-=======
 GAME( 1984, chboxing, 0, sg1000a,  chboxing, sg1000a_state, sg1000a,  ROT0, "Sega", "Champion Boxing",                  0 )
 GAME( 1985, chwrestl, 0, sg1000ax, chwrestl, sg1000a_state, sg1000a,  ROT0, "Sega", "Champion Pro Wrestling",           0 )
 GAME( 1985, dokidoki, 0, sg1000a,  dokidoki, sg1000a_state, sg1000a,  ROT0, "Sega", "Doki Doki Penguin Land",           0 )
 GAME( 1985, sderby2s, 0, sderby2s, sderby2s, sg1000a_state, sg1000a,  ROT0, "Sega", "Super Derby II (Satellite board)", MACHINE_NOT_WORKING ) // inputs aren't hooked up, probably needs to be connected to the main board anyway
->>>>>>> upstream/master

@@ -6,10 +6,7 @@
 
 **********************************************************************/
 
-<<<<<<< HEAD
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #include "hand.h"
 
 
@@ -18,15 +15,6 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type COLECO_HAND_CONTROLLER = &device_creator<coleco_hand_controller_t>;
-
-
-CUSTOM_INPUT_MEMBER( coleco_hand_controller_t::keypad_r )
-{
-	UINT8 data = 0xf;
-	UINT16 keypad = m_io_keypad->read();
-=======
 DEFINE_DEVICE_TYPE(COLECO_HAND_CONTROLLER, coleco_hand_controller_device, "coleco_hand", "ColecoVision Hand Controller")
 
 
@@ -34,7 +22,6 @@ CUSTOM_INPUT_MEMBER( coleco_hand_controller_device::keypad_r )
 {
 	uint8_t data = 0xf;
 	uint16_t keypad = m_io_keypad->read();
->>>>>>> upstream/master
 
 	if (!BIT(keypad, 0)) data &= 0x0a;
 	if (!BIT(keypad, 1)) data &= 0x0d;
@@ -63,11 +50,7 @@ static INPUT_PORTS_START( coleco_hand_controller )
 	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_SPECIAL )
 
 	PORT_START("COMMON1")
-<<<<<<< HEAD
-	PORT_BIT( 0x0f, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, coleco_hand_controller_t, keypad_r, 0)
-=======
 	PORT_BIT( 0x0f, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, coleco_hand_controller_device, keypad_r, nullptr)
->>>>>>> upstream/master
 	PORT_BIT( 0x30, IP_ACTIVE_LOW, IPT_UNUSED )
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_BUTTON2 )
 	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_SPECIAL )
@@ -92,11 +75,7 @@ INPUT_PORTS_END
 //  input_ports - device-specific input ports
 //-------------------------------------------------
 
-<<<<<<< HEAD
-ioport_constructor coleco_hand_controller_t::device_input_ports() const
-=======
 ioport_constructor coleco_hand_controller_device::device_input_ports() const
->>>>>>> upstream/master
 {
 	return INPUT_PORTS_NAME( coleco_hand_controller );
 }
@@ -108,19 +87,11 @@ ioport_constructor coleco_hand_controller_device::device_input_ports() const
 //**************************************************************************
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  coleco_hand_controller_t - constructor
-//-------------------------------------------------
-
-coleco_hand_controller_t::coleco_hand_controller_t(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-	device_t(mconfig, COLECO_HAND_CONTROLLER, "ColecoVision Hand Controller", tag, owner, clock, "coleco_hand", __FILE__),
-=======
 //  coleco_hand_controller_device - constructor
 //-------------------------------------------------
 
 coleco_hand_controller_device::coleco_hand_controller_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	device_t(mconfig, COLECO_HAND_CONTROLLER, tag, owner, clock),
->>>>>>> upstream/master
 	device_colecovision_control_port_interface(mconfig, *this),
 	m_io_common0(*this, "COMMON0"),
 	m_io_common1(*this, "COMMON1"),
@@ -133,11 +104,7 @@ coleco_hand_controller_device::coleco_hand_controller_device(const machine_confi
 //  device_start - device-specific startup
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void coleco_hand_controller_t::device_start()
-=======
 void coleco_hand_controller_device::device_start()
->>>>>>> upstream/master
 {
 	// state saving
 	save_item(NAME(m_common0));
@@ -149,15 +116,9 @@ void coleco_hand_controller_device::device_start()
 //  joy_r - joystick read
 //-------------------------------------------------
 
-<<<<<<< HEAD
-UINT8 coleco_hand_controller_t::joy_r()
-{
-	UINT8 data = 0x7f;
-=======
 uint8_t coleco_hand_controller_device::joy_r()
 {
 	uint8_t data = 0x7f;
->>>>>>> upstream/master
 
 	if (!m_common0) data &= m_io_common0->read();
 	if (!m_common1) data &= m_io_common1->read();

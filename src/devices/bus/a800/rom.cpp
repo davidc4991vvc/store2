@@ -18,29 +18,6 @@
 //  constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const device_type A800_ROM = &device_creator<a800_rom_device>;
-const device_type A800_ROM_BBSB = &device_creator<a800_rom_bbsb_device>;
-const device_type A800_ROM_WILLIAMS = &device_creator<a800_rom_williams_device>;
-const device_type A800_ROM_EXPRESS = &device_creator<a800_rom_express_device>;
-const device_type A800_ROM_TURBO = &device_creator<a800_rom_turbo_device>;
-const device_type A800_ROM_TELELINK2 = &device_creator<a800_rom_telelink2_device>;
-const device_type A800_ROM_MICROCALC = &device_creator<a800_rom_microcalc_device>;
-const device_type XEGS_ROM = &device_creator<xegs_rom_device>;
-const device_type A5200_ROM_2CHIPS = &device_creator<a5200_rom_2chips_device>;
-const device_type A5200_ROM_BBSB = &device_creator<a5200_rom_bbsb_device>;
-
-
-a800_rom_device::a800_rom_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source)
-					: device_t(mconfig, type, name, tag, owner, clock, shortname, source),
-						device_a800_cart_interface( mconfig, *this )
-{
-}
-
-a800_rom_device::a800_rom_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: device_t(mconfig, A800_ROM, "Atari 800 ROM Carts", tag, owner, clock, "a800_rom", __FILE__),
-						device_a800_cart_interface( mconfig, *this )
-=======
 DEFINE_DEVICE_TYPE(A800_ROM,           a800_rom_device,           "a800_rom",      "Atari 800 ROM Carts")
 DEFINE_DEVICE_TYPE(A800_ROM_BBSB,      a800_rom_bbsb_device,      "a800_bbsb",     "Atari 800 ROM Carts BBSB")
 DEFINE_DEVICE_TYPE(A800_ROM_WILLIAMS,  a800_rom_williams_device,  "a800_williams", "Atari 800 64K ROM Carts Williams")
@@ -61,51 +38,17 @@ a800_rom_device::a800_rom_device(const machine_config &mconfig, device_type type
 
 a800_rom_device::a800_rom_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: a800_rom_device(mconfig, A800_ROM, tag, owner, clock)
->>>>>>> upstream/master
 {
 }
 
 
-<<<<<<< HEAD
-a800_rom_bbsb_device::a800_rom_bbsb_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: a800_rom_device(mconfig, A800_ROM_BBSB, "Atari 800 ROM Cart BBSB", tag, owner, clock, "a800_bbsb", __FILE__)
-=======
 a800_rom_bbsb_device::a800_rom_bbsb_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: a800_rom_device(mconfig, A800_ROM_BBSB, tag, owner, clock)
->>>>>>> upstream/master
 {
 }
 
 
 
-<<<<<<< HEAD
-xegs_rom_device::xegs_rom_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: a800_rom_device(mconfig, XEGS_ROM, "Atari XEGS 64K ROM Carts", tag, owner, clock, "a800_xegs", __FILE__), m_bank(0)
-				{
-}
-
-
-a800_rom_williams_device::a800_rom_williams_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: a800_rom_device(mconfig, A800_ROM_WILLIAMS, "Atari 800 64K ROM Carts Williams", tag, owner, clock, "a800_williams", __FILE__), m_bank(0)
-				{
-}
-
-
-a800_rom_express_device::a800_rom_express_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: a800_rom_device(mconfig, A800_ROM_EXPRESS, "Atari 800 64K ROM Carts Express/Diamond", tag, owner, clock, "a800_express", __FILE__), m_bank(0)
-				{
-}
-
-
-a800_rom_turbo_device::a800_rom_turbo_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: a800_rom_device(mconfig, A800_ROM_TURBO, "Atari 800 64K ROM Carts Turbosoft", tag, owner, clock, "a800_turbo", __FILE__), m_bank(0)
-				{
-}
-
-
-a800_rom_telelink2_device::a800_rom_telelink2_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: a800_rom_device(mconfig, A800_ROM_TELELINK2, "Atari 800 64K ROM Cart Telelink II", tag, owner, clock, "a800_tlink2", __FILE__)
-=======
 xegs_rom_device::xegs_rom_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: a800_rom_device(mconfig, XEGS_ROM, tag, owner, clock)
 	, m_bank(0)
@@ -136,21 +79,10 @@ a800_rom_turbo_device::a800_rom_turbo_device(const machine_config &mconfig, cons
 
 a800_rom_telelink2_device::a800_rom_telelink2_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: a800_rom_device(mconfig, A800_ROM_TELELINK2, tag, owner, clock)
->>>>>>> upstream/master
 {
 }
 
 
-<<<<<<< HEAD
-a800_rom_microcalc_device::a800_rom_microcalc_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: a800_rom_device(mconfig, A800_ROM_MICROCALC, "Atari 800 64K ROM Cart SITSA MicroCalc", tag, owner, clock, "a800_sitsa", __FILE__), m_bank(0)
-				{
-}
-
-
-a5200_rom_2chips_device::a5200_rom_2chips_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: a800_rom_device(mconfig, A5200_ROM_2CHIPS, "Atari 5200 ROM Cart 16K in 2 Chips", tag, owner, clock, "a5200_16k2c", __FILE__)
-=======
 a800_rom_microcalc_device::a800_rom_microcalc_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: a800_rom_device(mconfig, A800_ROM_MICROCALC, tag, owner, clock)
 	, m_bank(0)
@@ -160,18 +92,12 @@ a800_rom_microcalc_device::a800_rom_microcalc_device(const machine_config &mconf
 
 a5200_rom_2chips_device::a5200_rom_2chips_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: a800_rom_device(mconfig, A5200_ROM_2CHIPS, tag, owner, clock)
->>>>>>> upstream/master
 {
 }
 
 
-<<<<<<< HEAD
-a5200_rom_bbsb_device::a5200_rom_bbsb_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: a800_rom_device(mconfig, A5200_ROM_BBSB, "Atari 5200 ROM Cart BBSB", tag, owner, clock, "a5200_bbsb", __FILE__)
-=======
 a5200_rom_bbsb_device::a5200_rom_bbsb_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: a800_rom_device(mconfig, A5200_ROM_BBSB, tag, owner, clock)
->>>>>>> upstream/master
 {
 }
 
@@ -312,11 +238,7 @@ READ8_MEMBER(a800_rom_bbsb_device::read_80xx)
 
 WRITE8_MEMBER(a800_rom_bbsb_device::write_80xx)
 {
-<<<<<<< HEAD
-	UINT16 addr = offset & 0xfff;
-=======
 	uint16_t addr = offset & 0xfff;
->>>>>>> upstream/master
 	if (addr >= 0xff6 && addr <= 0xff9)
 		m_banks[BIT(offset, 12)] = (addr - 0xff6);
 }
@@ -523,11 +445,7 @@ READ8_MEMBER(a5200_rom_bbsb_device::read_80xx)
 
 WRITE8_MEMBER(a5200_rom_bbsb_device::write_80xx)
 {
-<<<<<<< HEAD
-	UINT16 addr = offset & 0xfff;
-=======
 	uint16_t addr = offset & 0xfff;
->>>>>>> upstream/master
 	if (addr >= 0xff6 && addr <= 0xff9)
 		m_banks[BIT(offset, 12)] = (addr - 0xff6);
 }

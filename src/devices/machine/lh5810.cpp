@@ -13,8 +13,6 @@
 #include "emu.h"
 #include "lh5810.h"
 
-<<<<<<< HEAD
-=======
 //*************************************************************************
 //  MACROS / CONSTANTS
 //*************************************************************************
@@ -36,16 +34,11 @@ enum
 };
 
 
->>>>>>> upstream/master
 //**************************************************************************
 //  GLOBAL VARIABLES
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type LH5810 = &device_creator<lh5810_device>;
-=======
 DEFINE_DEVICE_TYPE(LH5810, lh5810_device, "lh5810", "LH5810 I/O Port")
->>>>>>> upstream/master
 
 //**************************************************************************
 //  LIVE DEVICE
@@ -55,16 +48,6 @@ DEFINE_DEVICE_TYPE(LH5810, lh5810_device, "lh5810", "LH5810 I/O Port")
 //  lh5810_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-lh5810_device::lh5810_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, LH5810, "LH5810", tag, owner, clock, "lh5810", __FILE__),
-	m_porta_r_cb(*this),
-	m_porta_w_cb(*this),
-	m_portb_r_cb(*this),
-	m_portb_w_cb(*this),
-	m_portc_w_cb(*this),
-	m_out_int_cb(*this), m_irq(0)
-=======
 lh5810_device::lh5810_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, LH5810, tag, owner, clock)
 	, m_porta_r_cb(*this)
@@ -74,7 +57,6 @@ lh5810_device::lh5810_device(const machine_config &mconfig, const char *tag, dev
 	, m_portc_w_cb(*this)
 	, m_out_int_cb(*this)
 	, m_irq(0)
->>>>>>> upstream/master
 {
 }
 

@@ -33,20 +33,11 @@
 
 **********************************************************************/
 
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __MOS8722__
-#define __MOS8722__
-
-#include "emu.h"
-=======
 #ifndef MAME_MACHINE_MOS8722_H
 #define MAME_MACHINE_MOS8722_H
 
 #pragma once
 
->>>>>>> upstream/master
 
 
 
@@ -81,18 +72,6 @@ class mos8722_device :  public device_t
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	mos8722_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	template<class _Object> static devcb_base &set_z80en_wr_callback(device_t &device, _Object object) { return downcast<mos8722_device &>(device).m_write_z80en.set_callback(object); }
-	template<class _Object> static devcb_base &set_fsdir_wr_callback(device_t &device, _Object object) { return downcast<mos8722_device &>(device).m_write_fsdir.set_callback(object); }
-	template<class _Object> static devcb_base &set_game_rd_callback(device_t &device, _Object object) { return downcast<mos8722_device &>(device).m_read_game.set_callback(object); }
-	template<class _Object> static devcb_base &set_exrom_rd_callback(device_t &device, _Object object) { return downcast<mos8722_device &>(device).m_read_exrom.set_callback(object); }
-	template<class _Object> static devcb_base &set_sense40_rd_callback(device_t &device, _Object object) { return downcast<mos8722_device &>(device).m_read_sense40.set_callback(object); }
-
-
-	UINT8 read(offs_t offset, UINT8 data);
-=======
 	mos8722_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	template <class Object> static devcb_base &set_z80en_wr_callback(device_t &device, Object &&cb) { return downcast<mos8722_device &>(device).m_write_z80en.set_callback(std::forward<Object>(cb)); }
@@ -103,7 +82,6 @@ public:
 
 
 	uint8_t read(offs_t offset, uint8_t data);
->>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER( write );
 
 	DECLARE_READ_LINE_MEMBER( fsdir_r );
@@ -112,13 +90,8 @@ public:
 
 protected:
 	// device-level overrides
-<<<<<<< HEAD
-	virtual void device_start();
-	virtual void device_reset();
-=======
 	virtual void device_start() override;
 	virtual void device_reset() override;
->>>>>>> upstream/master
 
 private:
 	enum
@@ -165,29 +138,14 @@ private:
 	devcb_read_line    m_read_exrom;
 	devcb_read_line    m_read_sense40;
 
-<<<<<<< HEAD
-	UINT8 m_reg[16];
-
-	UINT8 m_p0h_latch;
-	UINT8 m_p1h_latch;
-=======
 	uint8_t m_reg[16];
 
 	uint8_t m_p0h_latch;
 	uint8_t m_p1h_latch;
->>>>>>> upstream/master
 };
 
 
 // device type definition
-<<<<<<< HEAD
-extern const device_type MOS8722;
-
-
-
-#endif
-=======
 DECLARE_DEVICE_TYPE(MOS8722, mos8722_device)
 
 #endif // MAME_MACHINE_MOS8722_H
->>>>>>> upstream/master

@@ -19,16 +19,9 @@
     ROM_LOAD("hercules.chr", 0x00000, 0x1000, CRC(7e8c9d76))
 
 */
-<<<<<<< HEAD
-#ifndef __ISA_AGA_H__
-#define __ISA_AGA_H__
-
-#include "emu.h"
-=======
 #ifndef MAME_BUS_ISA_AGA_H
 #define MAME_BUS_ISA_AGA_H
 
->>>>>>> upstream/master
 #include "isa.h"
 #include "cga.h"
 #include "video/mc6845.h"
@@ -43,21 +36,7 @@ class isa8_aga_device :
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	isa8_aga_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-	isa8_aga_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source);
-	// device-level overrides
-	virtual void device_start();
-	// optional information overrides
-	virtual machine_config_constructor device_mconfig_additions() const;
-	virtual const rom_entry *device_rom_region() const;
-	virtual ioport_constructor device_input_ports() const;
-
-	DECLARE_WRITE_LINE_MEMBER( hsync_changed );
-	DECLARE_WRITE_LINE_MEMBER( vsync_changed );
-=======
 	isa8_aga_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
->>>>>>> upstream/master
 
 	DECLARE_READ8_MEMBER( pc_aga_mda_r );
 	DECLARE_WRITE8_MEMBER( pc_aga_mda_w );
@@ -68,10 +47,6 @@ public:
 	DECLARE_WRITE8_MEMBER( pc_aga_videoram_w );
 	DECLARE_READ8_MEMBER( pc_aga_videoram_r );
 
-<<<<<<< HEAD
-	MC6845_UPDATE_ROW( aga_update_row );
-=======
->>>>>>> upstream/master
 	MC6845_UPDATE_ROW( mda_text_inten_update_row );
 	MC6845_UPDATE_ROW( mda_text_blink_update_row );
 	MC6845_UPDATE_ROW( cga_text_inten_update_row );
@@ -86,8 +61,6 @@ public:
 	required_device<palette_device> m_palette;
 	required_device<mc6845_device> m_mc6845;
 
-<<<<<<< HEAD
-=======
 protected:
 	isa8_aga_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock);
 
@@ -99,34 +72,10 @@ protected:
 	virtual const tiny_rom_entry *device_rom_region() const override;
 	virtual ioport_constructor device_input_ports() const override;
 
->>>>>>> upstream/master
 	required_ioport m_cga_config;
 
 	int     m_update_row_type;
 	AGA_MODE    m_mode;
-<<<<<<< HEAD
-	UINT8   m_mda_mode_control;
-	UINT8   m_mda_status;
-	UINT8   *m_mda_chr_gen;
-
-	UINT8   m_cga_mode_control;
-	UINT8   m_cga_color_select;
-	UINT8   m_cga_status;
-	UINT8   *m_cga_chr_gen;
-
-	int   m_framecnt;
-	UINT8   m_vsync;
-	UINT8   m_hsync;
-
-
-	UINT8   m_cga_palette_lut_2bpp[4];
-
-	UINT8  *m_videoram;
-};
-
-// device type definition
-extern const device_type ISA8_AGA;
-=======
 	uint8_t   m_mda_mode_control;
 	uint8_t   m_mda_status;
 	uint8_t   *m_mda_chr_gen;
@@ -153,7 +102,6 @@ private:
 
 // device type definition
 DECLARE_DEVICE_TYPE(ISA8_AGA, isa8_aga_device)
->>>>>>> upstream/master
 
 // ======================> isa8_aga_pc200_device
 
@@ -162,34 +110,14 @@ class isa8_aga_pc200_device :
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	isa8_aga_pc200_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-	// device-level overrides
-	virtual void device_start();
-	// optional information overrides
-	virtual const rom_entry *device_rom_region() const;
-
-	UINT8 m_port8;
-	UINT8 m_portd;
-	UINT8 m_porte;
-=======
 	isa8_aga_pc200_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 	// optional information overrides
 	virtual const tiny_rom_entry *device_rom_region() const override;
->>>>>>> upstream/master
 
 	DECLARE_READ8_MEMBER( pc200_videoram_r );
 	DECLARE_WRITE8_MEMBER( pc200_videoram_w );
 	DECLARE_WRITE8_MEMBER( pc200_cga_w );
 	DECLARE_READ8_MEMBER( pc200_cga_r );
-<<<<<<< HEAD
-};
-
-// device type definition
-extern const device_type ISA8_AGA_PC200;
-
-#endif
-=======
 
 protected:
 	// device-level overrides
@@ -204,4 +132,3 @@ protected:
 DECLARE_DEVICE_TYPE(ISA8_AGA_PC200, isa8_aga_pc200_device)
 
 #endif // MAME_BUS_ISA_AGA_H
->>>>>>> upstream/master

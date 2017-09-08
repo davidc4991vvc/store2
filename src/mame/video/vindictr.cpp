@@ -19,11 +19,7 @@
 
 TILE_GET_INFO_MEMBER(vindictr_state::get_alpha_tile_info)
 {
-<<<<<<< HEAD
-	UINT16 data = tilemap.basemem_read(tile_index);
-=======
 	uint16_t data = m_alpha_tilemap->basemem_read(tile_index);
->>>>>>> upstream/master
 	int code = data & 0x3ff;
 	int color = ((data >> 10) & 0x0f) | ((data >> 9) & 0x20);
 	int opaque = data & 0x8000;
@@ -33,11 +29,7 @@ TILE_GET_INFO_MEMBER(vindictr_state::get_alpha_tile_info)
 
 TILE_GET_INFO_MEMBER(vindictr_state::get_playfield_tile_info)
 {
-<<<<<<< HEAD
-	UINT16 data = tilemap.basemem_read(tile_index);
-=======
 	uint16_t data = m_playfield_tilemap->basemem_read(tile_index);
->>>>>>> upstream/master
 	int code = (m_playfield_tile_bank * 0x1000) + (data & 0xfff);
 	int color = 0x10 + 2 * ((data >> 12) & 7);
 	SET_TILE_INFO_MEMBER(0, code, color, (data >> 15) & 1);
@@ -145,11 +137,7 @@ void vindictr_state::scanline_update(screen_device &screen, int scanline)
 	/* update the current parameters */
 	for (x = 42; x < 64; x++)
 	{
-<<<<<<< HEAD
-		UINT16 data = m_alpha_tilemap->basemem_read(offset++);
-=======
 		uint16_t data = m_alpha_tilemap->basemem_read(offset++);
->>>>>>> upstream/master
 
 		switch ((data >> 9) & 7)
 		{
@@ -183,11 +171,7 @@ void vindictr_state::scanline_update(screen_device &screen, int scanline)
 				break;
 
 			case 6:     /* /VIRQ */
-<<<<<<< HEAD
-				scanline_int_gen(m_maincpu);
-=======
 				scanline_int_gen(*m_maincpu);
->>>>>>> upstream/master
 				break;
 
 			case 7:     /* /PFVS */
@@ -218,11 +202,7 @@ void vindictr_state::scanline_update(screen_device &screen, int scanline)
  *
  *************************************/
 
-<<<<<<< HEAD
-UINT32 vindictr_state::screen_update_vindictr(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t vindictr_state::screen_update_vindictr(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	// start drawing
 	m_mob->draw_async(cliprect);
@@ -232,19 +212,11 @@ uint32_t vindictr_state::screen_update_vindictr(screen_device &screen, bitmap_in
 
 	// draw and merge the MO
 	bitmap_ind16 &mobitmap = m_mob->bitmap();
-<<<<<<< HEAD
-	for (const sparse_dirty_rect *rect = m_mob->first_dirty_rect(cliprect); rect != NULL; rect = rect->next())
-		for (int y = rect->min_y; y <= rect->max_y; y++)
-		{
-			UINT16 *mo = &mobitmap.pix16(y);
-			UINT16 *pf = &bitmap.pix16(y);
-=======
 	for (const sparse_dirty_rect *rect = m_mob->first_dirty_rect(cliprect); rect != nullptr; rect = rect->next())
 		for (int y = rect->min_y; y <= rect->max_y; y++)
 		{
 			uint16_t *mo = &mobitmap.pix16(y);
 			uint16_t *pf = &bitmap.pix16(y);
->>>>>>> upstream/master
 			for (int x = rect->min_x; x <= rect->max_x; x++)
 				if (mo[x] != 0xffff)
 				{
@@ -280,19 +252,11 @@ uint32_t vindictr_state::screen_update_vindictr(screen_device &screen, bitmap_in
 	m_alpha_tilemap->draw(screen, bitmap, cliprect, 0, 0);
 
 	/* now go back and process the upper bit of MO priority */
-<<<<<<< HEAD
-	for (const sparse_dirty_rect *rect = m_mob->first_dirty_rect(cliprect); rect != NULL; rect = rect->next())
-		for (int y = rect->min_y; y <= rect->max_y; y++)
-		{
-			UINT16 *mo = &mobitmap.pix16(y);
-			UINT16 *pf = &bitmap.pix16(y);
-=======
 	for (const sparse_dirty_rect *rect = m_mob->first_dirty_rect(cliprect); rect != nullptr; rect = rect->next())
 		for (int y = rect->min_y; y <= rect->max_y; y++)
 		{
 			uint16_t *mo = &mobitmap.pix16(y);
 			uint16_t *pf = &bitmap.pix16(y);
->>>>>>> upstream/master
 			for (int x = rect->min_x; x <= rect->max_x; x++)
 				if (mo[x] != 0xffff)
 				{

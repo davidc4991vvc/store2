@@ -1,21 +1,15 @@
 // license:BSD-3-Clause
 // copyright-holders:Aaron Giles
-<<<<<<< HEAD
-=======
 
->>>>>>> upstream/master
 /***************************************************************************
 
     HAR MadMax hardware
 
 **************************************************************************/
 
-<<<<<<< HEAD
-=======
 #include "machine/gen_latch.h"
 #include "sound/bsmt2000.h"
 #include "screen.h"
->>>>>>> upstream/master
 
 class dcheese_state : public driver_device
 {
@@ -30,24 +24,6 @@ public:
 		: driver_device(mconfig, type, tag),
 		m_maincpu(*this, "maincpu"),
 		m_audiocpu(*this, "audiocpu"),
-<<<<<<< HEAD
-		m_screen(*this, "screen") { }
-
-	/* video-related */
-	UINT16   m_blitter_color[2];
-	UINT16   m_blitter_xparam[16];
-	UINT16   m_blitter_yparam[16];
-	UINT16   m_blitter_vidparam[32];
-
-	bitmap_ind16 *m_dstbitmap;
-	emu_timer *m_blitter_timer;
-
-	/* misc */
-	UINT8    m_irq_state[5];
-	UINT8    m_soundlatch_full;
-	UINT8    m_sound_control;
-	UINT8    m_sound_msb_latch;
-=======
 		m_screen(*this, "screen"),
 		m_bsmt(*this, "bsmt"),
 		m_soundlatch(*this, "soundlatch") { }
@@ -66,23 +42,15 @@ public:
 	uint8_t    m_irq_state[5];
 	uint8_t    m_sound_control;
 	uint8_t    m_sound_msb_latch;
->>>>>>> upstream/master
 
 	/* devices */
 	required_device<cpu_device> m_maincpu;
 	required_device<cpu_device> m_audiocpu;
 	required_device<screen_device> m_screen;
-<<<<<<< HEAD
-	device_t *m_bsmt;
-	DECLARE_WRITE16_MEMBER(eeprom_control_w);
-	DECLARE_WRITE16_MEMBER(sound_command_w);
-	DECLARE_READ8_MEMBER(sound_command_r);
-=======
 	required_device<bsmt2000_device> m_bsmt;
 	required_device<generic_latch_8_device> m_soundlatch;
 
 	DECLARE_WRITE16_MEMBER(eeprom_control_w);
->>>>>>> upstream/master
 	DECLARE_READ8_MEMBER(sound_status_r);
 	DECLARE_WRITE8_MEMBER(sound_control_w);
 	DECLARE_WRITE8_MEMBER(bsmt_data_w);
@@ -93,17 +61,10 @@ public:
 	DECLARE_WRITE16_MEMBER(madmax_blitter_unknown_w);
 	DECLARE_READ16_MEMBER(madmax_blitter_vidparam_r);
 	DECLARE_CUSTOM_INPUT_MEMBER(sound_latch_state_r);
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void video_start();
-	DECLARE_PALETTE_INIT(dcheese);
-	UINT32 screen_update_dcheese(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	virtual void machine_start() override;
 	virtual void video_start() override;
 	DECLARE_PALETTE_INIT(dcheese);
 	uint32_t screen_update_dcheese(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	INTERRUPT_GEN_MEMBER(dcheese_vblank);
 	void dcheese_signal_irq(int which);
 	void update_irq_state();
@@ -113,11 +74,7 @@ public:
 	void do_blit(  );
 
 protected:
-<<<<<<< HEAD
-	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
-=======
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
->>>>>>> upstream/master
 };
 
 /*----------- defined in drivers/dcheese.c -----------*/

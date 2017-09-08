@@ -2,11 +2,7 @@
 // copyright-holders:Joakim Larsson Edstr??m
 /**********************************************************************
 *
-<<<<<<< HEAD
-*   Motorola MC68230 PI/T Parallell Interface and Timer
-=======
 *   Motorola MC68230 PI/T Parallel Interface and Timer
->>>>>>> upstream/master
 *
 *                           _____   _____
 *                   D5   1 |*    \_/     | 48  D4
@@ -36,35 +32,16 @@
 *
 **********************************************************************/
 
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __68230PIT_H__
-#define __68230PIT_H__
-
-#include "emu.h"
-=======
 #ifndef MAME_MACHIEN_68230PIT_H
 #define MAME_MACHIEN_68230PIT_H
 
 #pragma once
 
->>>>>>> upstream/master
 
 //**************************************************************************
 //  INTERFACE CONFIGURATION MACROS
 //**************************************************************************
 
-<<<<<<< HEAD
-#define MCFG_PIT68230_PA_OUTPUT_CALLBACK(_write) \
-		devcb = &pit68230_device::set_pa_wr_callback (*device, DEVCB_ ## _write);
-
-#define MCFG_PIT68230_PB_OUTPUT_CALLBACK(_write) \
-		devcb = &pit68230_device::set_pb_wr_callback (*device, DEVCB_ ## _write);
-
-#define MCFG_PIT68230_H2_CALLBACK(_write) \
-		devcb = &pit68230_device::set_h2_wr_callback (*device, DEVCB_ ## _write);
-=======
 #define MCFG_PIT68230_PA_INPUT_CB(_devcb) \
 	devcb = &pit68230_device::set_pa_in_callback (*device, DEVCB_##_devcb);
 
@@ -100,7 +77,6 @@
 
 #define MCFG_PIT68230_PORT_IRQ_CB(_devcb) \
 	devcb = &pit68230_device::set_pirq_out_callback(*device, DEVCB_##_devcb);
->>>>>>> upstream/master
 
 /*-----------------------------------------------------------------------
  * Registers                RS1-RS5   R/W Description
@@ -132,55 +108,6 @@
 //**************************************************************************
 //  TYPE DEFINITIONS
 //**************************************************************************
-<<<<<<< HEAD
-class pit68230_device :  public device_t, public device_execute_interface
-{
-public:
-// construction/destruction
-pit68230_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, UINT32 variant, const char *shortname, const char *source);
-pit68230_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-template<class _Object> static devcb_base &set_pa_wr_callback (device_t &device, _Object object)
-{
-		return downcast<pit68230_device &>(device).m_write_pa.set_callback (object);
-}
-template<class _Object> static devcb_base &set_h2_wr_callback (device_t &device, _Object object)
-{
-		return downcast<pit68230_device &>(device).m_write_h2.set_callback (object);
-}
-
-DECLARE_WRITE8_MEMBER (write);
-DECLARE_READ8_MEMBER (read);
-
-void h1_set (UINT8 state);
-void portb_setbit (UINT8 bit, UINT8 state);
-
-protected:
-// device-level overrides
-virtual void device_start ();
-virtual void device_reset ();
-virtual void device_timer (emu_timer &timer, device_timer_id id, int param, void *ptr);
-virtual void execute_run ();
-int m_icount;
-devcb_write8 m_write_pa;
-devcb_write_line m_write_h2;
-
-// peripheral ports
-UINT8 m_pgcr;           // Port General Control register
-UINT8 m_psrr;           // Port Service Request register
-UINT8 m_paddr;          // Port A Data Direction register
-UINT8 m_pbddr;          // Port B Data Direction register
-UINT8 m_pcddr;          // Port C Data Direction register
-UINT8 m_pacr;           // Port A Control register
-UINT8 m_pbcr;           // Port B Control register
-UINT8 m_padr;           // Port A Data register
-UINT8 m_pbdr;           // Port B Data register
-UINT8 m_psr;            // Port Status Register
-};
-
-// device type definition
-extern const device_type PIT68230;
-#endif /* __68230PIT_H__ */
-=======
 class pit68230_device :  public device_t//, public device_execute_interface
 {
 public:
@@ -453,4 +380,3 @@ protected:
 DECLARE_DEVICE_TYPE(PIT68230, pit68230_device)
 
 #endif // MAME_MACHIEN_68230PIT_H
->>>>>>> upstream/master

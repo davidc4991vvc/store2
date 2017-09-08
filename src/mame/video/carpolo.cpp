@@ -68,11 +68,7 @@
 
 PALETTE_INIT_MEMBER(carpolo_state, carpolo)
 {
-<<<<<<< HEAD
-	const UINT8 *color_prom = memregion("proms")->base();
-=======
 	const uint8_t *color_prom = memregion("proms")->base();
->>>>>>> upstream/master
 	int i;
 
 	/* thanks to Jarek Burczynski for analyzing the circuit */
@@ -99,11 +95,7 @@ PALETTE_INIT_MEMBER(carpolo_state, carpolo)
 
 	for (i = 0; i < palette.entries(); i++)
 	{
-<<<<<<< HEAD
-		UINT8 pen, r, g, b;
-=======
 		uint8_t pen, r, g, b;
->>>>>>> upstream/master
 
 		if (i < 0x18)
 			/* sprites */
@@ -153,15 +145,6 @@ PALETTE_INIT_MEMBER(carpolo_state, carpolo)
 
 void carpolo_state::video_start()
 {
-<<<<<<< HEAD
-	m_sprite_sprite_collision_bitmap1 = auto_bitmap_ind16_alloc(machine(), SPRITE_WIDTH*2, SPRITE_HEIGHT*2);
-	m_sprite_sprite_collision_bitmap2 = auto_bitmap_ind16_alloc(machine(), SPRITE_WIDTH*2, SPRITE_HEIGHT*2);
-
-	m_sprite_goal_collision_bitmap1 = auto_bitmap_ind16_alloc(machine(), SPRITE_WIDTH+GOAL_WIDTH, SPRITE_HEIGHT+GOAL_HEIGHT);
-	m_sprite_goal_collision_bitmap2 = auto_bitmap_ind16_alloc(machine(), SPRITE_WIDTH+GOAL_WIDTH, SPRITE_HEIGHT+GOAL_HEIGHT);
-
-	m_sprite_border_collision_bitmap = auto_bitmap_ind16_alloc(machine(), SPRITE_WIDTH, SPRITE_HEIGHT);
-=======
 	m_sprite_sprite_collision_bitmap1 = std::make_unique<bitmap_ind16>(SPRITE_WIDTH*2, SPRITE_HEIGHT*2);
 	m_sprite_sprite_collision_bitmap2 = std::make_unique<bitmap_ind16>(SPRITE_WIDTH*2, SPRITE_HEIGHT*2);
 
@@ -169,7 +152,6 @@ void carpolo_state::video_start()
 	m_sprite_goal_collision_bitmap2 = std::make_unique<bitmap_ind16>(SPRITE_WIDTH+GOAL_WIDTH, SPRITE_HEIGHT+GOAL_HEIGHT);
 
 	m_sprite_border_collision_bitmap = std::make_unique<bitmap_ind16>(SPRITE_WIDTH, SPRITE_HEIGHT);
->>>>>>> upstream/master
 
 	save_item(NAME(*m_sprite_sprite_collision_bitmap1));
 	save_item(NAME(*m_sprite_sprite_collision_bitmap2));
@@ -190,11 +172,7 @@ void carpolo_state::draw_alpha_line(bitmap_ind16 &bitmap, const rectangle &clipr
 {
 	for (int x = 0; x < 32; x++)
 	{
-<<<<<<< HEAD
-		UINT8 code, col;
-=======
 		uint8_t code, col;
->>>>>>> upstream/master
 
 		code = m_alpharam[alpha_line * 32 + x] >> 2;
 		col  = m_alpharam[alpha_line * 32 + x] & 0x03;
@@ -209,11 +187,7 @@ void carpolo_state::draw_alpha_line(bitmap_ind16 &bitmap, const rectangle &clipr
 
 void carpolo_state::remap_sprite_code(int bank, int code, int *remapped_code, int *flipy)
 {
-<<<<<<< HEAD
-	UINT8* PROM = memregion("user1")->base();
-=======
 	uint8_t* PROM = memregion("user1")->base();
->>>>>>> upstream/master
 
 	code = (bank << 4) | code;
 	*remapped_code = PROM[code] & 0x0f;
@@ -222,11 +196,7 @@ void carpolo_state::remap_sprite_code(int bank, int code, int *remapped_code, in
 
 
 void carpolo_state::draw_sprite(bitmap_ind16 &bitmap, const rectangle &cliprect,
-<<<<<<< HEAD
-						UINT8 x, UINT8 y, int bank, int code, int col)
-=======
 						uint8_t x, uint8_t y, int bank, int code, int col)
->>>>>>> upstream/master
 {
 	int remapped_code, flipy;
 
@@ -244,19 +214,11 @@ void carpolo_state::draw_sprite(bitmap_ind16 &bitmap, const rectangle &cliprect,
 	m_gfxdecode->gfx(0)->transpen(bitmap,cliprect,
 			remapped_code, col,
 			0, flipy,
-<<<<<<< HEAD
-			(INT16)x - 256, y,0);
-}
-
-
-UINT32 carpolo_state::screen_update_carpolo(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 			(int16_t)x - 256, y,0);
 }
 
 
 uint32_t carpolo_state::screen_update_carpolo(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	/* draw the playfield elements in the correct priority order */
 
@@ -542,15 +504,9 @@ int carpolo_state::check_sprite_right_goal_collision(int x1, int y1, int code1, 
 
 /* returns 1 for collision with vertical border,
    2 for collision with horizontal border */
-<<<<<<< HEAD
-int carpolo_state::check_sprite_border_collision(UINT8 x1, UINT8 y1, int code1, int flipy1)
-{
-	UINT8 x,y;
-=======
 int carpolo_state::check_sprite_border_collision(uint8_t x1, uint8_t y1, int code1, int flipy1)
 {
 	uint8_t x,y;
->>>>>>> upstream/master
 	int collided = 0;
 
 	x1 = 240 - x1;
@@ -565,25 +521,15 @@ int carpolo_state::check_sprite_border_collision(uint8_t x1, uint8_t y1, int cod
 		for (y = 0; y < SPRITE_HEIGHT; y++)
 			if (m_sprite_border_collision_bitmap->pix16(y, x) == 1)
 			{
-<<<<<<< HEAD
-				if (((UINT8)(x1 + x) == LEFT_BORDER) ||
-					((UINT8)(x1 + x) == RIGHT_BORDER))
-=======
 				if (((uint8_t)(x1 + x) == LEFT_BORDER) ||
 					((uint8_t)(x1 + x) == RIGHT_BORDER))
->>>>>>> upstream/master
 				{
 					collided = 1;
 					break;
 				}
 
-<<<<<<< HEAD
-				if (((UINT8)(y1 + y) == TOP_BORDER) ||
-					((UINT8)(y1 + y) == BOTTOM_BORDER))
-=======
 				if (((uint8_t)(y1 + y) == TOP_BORDER) ||
 					((uint8_t)(y1 + y) == BOTTOM_BORDER))
->>>>>>> upstream/master
 				{
 					collided = 2;
 					break;
@@ -594,11 +540,7 @@ int carpolo_state::check_sprite_border_collision(uint8_t x1, uint8_t y1, int cod
 }
 
 
-<<<<<<< HEAD
-void carpolo_state::screen_eof_carpolo(screen_device &screen, bool state)
-=======
 WRITE_LINE_MEMBER(carpolo_state::screen_vblank_carpolo)
->>>>>>> upstream/master
 {
 	// rising edge
 	if (state)

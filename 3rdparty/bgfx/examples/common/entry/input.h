@@ -1,11 +1,6 @@
 /*
-<<<<<<< HEAD
- * Copyright 2010-2015 Branimir Karadzic. All rights reserved.
- * License: http://www.opensource.org/licenses/BSD-2-Clause
-=======
  * Copyright 2010-2017 Branimir Karadzic. All rights reserved.
  * License: https://github.com/bkaradzic/bgfx#license-bsd-2-clause
->>>>>>> upstream/master
  */
 
 #ifndef INPUT_H_HEADER_GUARD
@@ -17,8 +12,6 @@ typedef void (*InputBindingFn)(const void* _userData);
 
 struct InputBinding
 {
-<<<<<<< HEAD
-=======
 	void set(entry::Key::Enum _key, uint8_t _modifiers, uint8_t _flags, InputBindingFn _fn, const void* _userData = NULL)
 	{
 		m_key = _key;
@@ -37,7 +30,6 @@ struct InputBinding
 		m_userData  = NULL;
 	}
 
->>>>>>> upstream/master
 	entry::Key::Enum m_key;
 	uint8_t m_modifiers;
 	uint8_t m_flags;

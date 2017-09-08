@@ -1,14 +1,5 @@
 EXPORTS
   CreateObject PRIVATE
-<<<<<<< HEAD
-  GetHandlerProperty PRIVATE
-  GetNumberOfFormats PRIVATE
-  GetHandlerProperty2 PRIVATE
-  CreateObject PRIVATE
-  GetNumberOfMethods PRIVATE
-  GetMethodProperty PRIVATE
-  SetLargePageMode PRIVATE
-=======
 
   GetHandlerProperty PRIVATE
   GetNumberOfFormats PRIVATE
@@ -26,4 +17,3 @@ EXPORTS
 
   SetLargePageMode PRIVATE
   SetCaseSensitive PRIVATE
->>>>>>> upstream/master

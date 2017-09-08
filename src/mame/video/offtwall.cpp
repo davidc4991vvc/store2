@@ -19,13 +19,8 @@
 
 TILE_GET_INFO_MEMBER(offtwall_state::get_playfield_tile_info)
 {
-<<<<<<< HEAD
-	UINT16 data1 = tilemap.basemem_read(tile_index);
-	UINT16 data2 = tilemap.extmem_read(tile_index) >> 8;
-=======
 	uint16_t data1 = m_vad->playfield().basemem_read(tile_index);
 	uint16_t data2 = m_vad->playfield().extmem_read(tile_index) >> 8;
->>>>>>> upstream/master
 	int code = data1 & 0x7fff;
 	int color = 0x10 + (data2 & 0x0f);
 	SET_TILE_INFO_MEMBER(0, code, color, (data1 >> 15) & 1);
@@ -86,23 +81,6 @@ VIDEO_START_MEMBER(offtwall_state,offtwall)
  *
  *************************************/
 
-<<<<<<< HEAD
-UINT32 offtwall_state::screen_update_offtwall(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-{
-	// start drawing
-	m_vad->mob()->draw_async(cliprect);
-
-	/* draw the playfield */
-	m_vad->playfield()->draw(screen, bitmap, cliprect, 0, 0);
-
-	// draw and merge the MO
-	bitmap_ind16 &mobitmap = m_vad->mob()->bitmap();
-	for (const sparse_dirty_rect *rect = m_vad->mob()->first_dirty_rect(cliprect); rect != NULL; rect = rect->next())
-		for (int y = rect->min_y; y <= rect->max_y; y++)
-		{
-			UINT16 *mo = &mobitmap.pix16(y);
-			UINT16 *pf = &bitmap.pix16(y);
-=======
 uint32_t offtwall_state::screen_update_offtwall(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
 	// start drawing
@@ -118,7 +96,6 @@ uint32_t offtwall_state::screen_update_offtwall(screen_device &screen, bitmap_in
 		{
 			uint16_t *mo = &mobitmap.pix16(y);
 			uint16_t *pf = &bitmap.pix16(y);
->>>>>>> upstream/master
 			for (int x = rect->min_x; x <= rect->max_x; x++)
 				if (mo[x] != 0xffff)
 				{

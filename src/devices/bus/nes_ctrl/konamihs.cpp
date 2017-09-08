@@ -6,21 +6,14 @@
 
 **********************************************************************/
 
-<<<<<<< HEAD
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #include "konamihs.h"
 
 //**************************************************************************
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type NES_KONAMIHS = &device_creator<nes_konamihs_device>;
-=======
 DEFINE_DEVICE_TYPE(NES_KONAMIHS, nes_konamihs_device, "nes_konamihs", "Konami Hyper Shot Controller")
->>>>>>> upstream/master
 
 
 static INPUT_PORTS_START( nes_konamihs )
@@ -50,13 +43,6 @@ ioport_constructor nes_konamihs_device::device_input_ports() const
 //  nes_konamihs_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-nes_konamihs_device::nes_konamihs_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-					device_t(mconfig, NES_KONAMIHS, "Konami Hyper Shot Controller", tag, owner, clock, "nes_konamihs", __FILE__),
-					device_nes_control_port_interface(mconfig, *this),
-					m_ipt_p1(*this, "P1"),
-					m_ipt_p2(*this, "P2"), m_latch_p1(0), m_latch_p2(0)
-=======
 nes_konamihs_device::nes_konamihs_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	device_t(mconfig, NES_KONAMIHS, tag, owner, clock),
 	device_nes_control_port_interface(mconfig, *this),
@@ -64,7 +50,6 @@ nes_konamihs_device::nes_konamihs_device(const machine_config &mconfig, const ch
 	m_ipt_p2(*this, "P2"),
 	m_latch_p1(0),
 	m_latch_p2(0)
->>>>>>> upstream/master
 {
 }
 
@@ -95,15 +80,9 @@ void nes_konamihs_device::device_reset()
 //  read
 //-------------------------------------------------
 
-<<<<<<< HEAD
-UINT8 nes_konamihs_device::read_exp(offs_t offset)
-{
-	UINT8 ret = 0;
-=======
 uint8_t nes_konamihs_device::read_exp(offs_t offset)
 {
 	uint8_t ret = 0;
->>>>>>> upstream/master
 	if (offset == 1)    //$4017
 	{
 		ret |= m_latch_p1 << 1;
@@ -116,11 +95,7 @@ uint8_t nes_konamihs_device::read_exp(offs_t offset)
 //  write
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void nes_konamihs_device::write(UINT8 data)
-=======
 void nes_konamihs_device::write(uint8_t data)
->>>>>>> upstream/master
 {
 	if ((data & 0x02) == 0)
 		m_latch_p1 = m_ipt_p1->read();

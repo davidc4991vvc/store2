@@ -1,11 +1,6 @@
-<<<<<<< HEAD
-// license:???
-// copyright-holders:Bryan McPhail,Fuzz,Ernesto Corvi,Andrew Prime,Zsolt Vasvari
-=======
 // license:BSD-3-Clause
 // copyright-holders:Bryan McPhail,Ernesto Corvi,Andrew Prime,Zsolt Vasvari
 // thanks-to:Fuzz
->>>>>>> upstream/master
 /***************************************************************************
 
     Neo-Geo hardware
@@ -34,11 +29,6 @@
           are incomplete / buggy?
         * Graphical Glitches caused by incorrect timing?
           - Some raster effects are imperfect (off by a couple of lines)
-<<<<<<< HEAD
-        * Multi-cart support not implemented - the MVS can take up to
-          6 cartridges depending on the board being used
-=======
->>>>>>> upstream/master
         * 68000 waitstates on ROM region access, determined by jumpers on cart
           (garou train stage 3 background bug is probably related to this)
 
@@ -314,14 +304,6 @@
     Unofficial pcb's from NG:DEV.TEAM:
 
     MVS CHA:
-<<<<<<< HEAD
-    GIGA CHAR Board 1.0
-    GIGA CHAR Board 1.5
-
-    MVS PROG:
-    GIGA PROG Board 1.0
-    GIGA PROG Board 1.5
-=======
     GIGA CHAR Board 1.0 Rev. A
     GIGA CHAR Board 1.5 Rev. 0
     GIGA CHAR Board 1.5 Rev. C
@@ -330,7 +312,6 @@
     GIGA PROG Board 1.0 Rev. B
     GIGA PROG Board 1.5 Rev. A
     GIGA PROG Board 1.5 Rev. C
->>>>>>> upstream/master
 
 
     Unofficial pcb's from NEOBITZ:
@@ -450,10 +431,7 @@
     fails to reset the system the code will continue and set a value in
     backup ram to indiate that the protection check has failed.
 
-<<<<<<< HEAD
-=======
 ****************************************************************************
->>>>>>> upstream/master
 
     Mahjong Panel notes (2009-03 FP):
     =================================
@@ -472,20 +450,6 @@
     * These only work with Japanese BIOS, but I think it's not a bug: I
       doubt other BIOS were programmed to be compatible with mahjong panels
 
-<<<<<<< HEAD
-****************************************************************************/
-
-#include "emu.h"
-#include "cpu/m68000/m68000.h"
-#include "includes/neogeo.h"
-#include "machine/nvram.h"
-#include "cpu/z80/z80.h"
-#include "sound/2610intf.h"
-#include "softlist.h"
-#include "neogeo.lh"
-
-
-=======
 ****************************************************************************
 
     AES driver (home version of MVS)
@@ -512,7 +476,6 @@
 #define VERBOSE     (0)
 
 
->>>>>>> upstream/master
 #define LOG_VIDEO_SYSTEM         (0)
 #define LOG_MAIN_CPU_BANKING     (0)
 #define LOG_AUDIO_CPU_BANKING    (0)
@@ -538,46 +501,28 @@
 
 void neogeo_state::adjust_display_position_interrupt_timer()
 {
-<<<<<<< HEAD
-	attotime period = attotime::from_ticks((UINT64)m_display_counter + 1, NEOGEO_PIXEL_CLOCK);
-=======
 	attotime period = attotime::from_ticks((uint64_t)m_display_counter + 1, NEOGEO_PIXEL_CLOCK);
->>>>>>> upstream/master
 	if (LOG_VIDEO_SYSTEM) logerror("adjust_display_position_interrupt_timer  current y: %02x  current x: %02x   target y: %x  target x: %x\n", m_screen->vpos(), m_screen->hpos(), (m_display_counter + 1) / NEOGEO_HTOTAL, (m_display_counter + 1) % NEOGEO_HTOTAL);
 
 	m_display_position_interrupt_timer->adjust(period);
 }
 
 
-<<<<<<< HEAD
-void neogeo_state::neogeo_set_display_position_interrupt_control( UINT16 data )
-=======
 void neogeo_state::set_display_position_interrupt_control(uint16_t data)
->>>>>>> upstream/master
 {
 	m_display_position_interrupt_control = data;
 }
 
 
-<<<<<<< HEAD
-void neogeo_state::neogeo_set_display_counter_msb( UINT16 data )
-{
-	m_display_counter = (m_display_counter & 0x0000ffff) | ((UINT32)data << 16);
-=======
 void neogeo_state::set_display_counter_msb(uint16_t data)
 {
 	m_display_counter = (m_display_counter & 0x0000ffff) | ((uint32_t)data << 16);
->>>>>>> upstream/master
 
 	if (LOG_VIDEO_SYSTEM) logerror("PC %06x: set_display_counter %08x\n", m_maincpu->pc(), m_display_counter);
 }
 
 
-<<<<<<< HEAD
-void neogeo_state::neogeo_set_display_counter_lsb( UINT16 data )
-=======
 void neogeo_state::set_display_counter_lsb(uint16_t data)
->>>>>>> upstream/master
 {
 	m_display_counter = (m_display_counter & 0xffff0000) | data;
 
@@ -599,11 +544,7 @@ void neogeo_state::update_interrupts()
 }
 
 
-<<<<<<< HEAD
-void neogeo_state::neogeo_acknowledge_interrupt( UINT16 data )
-=======
 void neogeo_state::acknowledge_interrupt(uint16_t data)
->>>>>>> upstream/master
 {
 	if (data & 0x01)
 		m_irq3_pending = 0;
@@ -703,39 +644,6 @@ WRITE8_MEMBER(neogeo_state::audio_cpu_enable_nmi_w)
  *
  *************************************/
 
-<<<<<<< HEAD
-void neogeo_state::select_controller( UINT8 data )
-{
-	m_controller_select = data;
-}
-
-
-CUSTOM_INPUT_MEMBER(neogeo_state::multiplexed_controller_r)
-{
-	int port = (FPTR)param;
-
-	static const char *const cntrl[2][2] =
-	{
-		{ "IN0-0", "IN0-1" }, { "IN1-0", "IN1-1" }
-	};
-
-	return read_safe(ioport(cntrl[port][m_controller_select & 0x01]), 0x00);
-}
-
-CUSTOM_INPUT_MEMBER(neogeo_state::kizuna4p_controller_r)
-{
-	int port = (FPTR)param;
-
-	static const char *const cntrl[2][2] =
-	{
-		{ "IN0-0", "IN0-1" }, { "IN1-0", "IN1-1" }
-	};
-
-	int ret = read_safe(ioport(cntrl[port][m_controller_select & 0x01]), 0x00);
-	if (m_controller_select & 0x04) ret &= ((m_controller_select & 0x01) ? ~0x20 : ~0x10);
-
-	return ret;
-=======
 READ16_MEMBER(neogeo_state::in0_r)
 {
 	return ((m_edge->in0_r(space, offset) & m_ctrl1->ctrl_r(space, offset)) << 8) | m_dsw->read();
@@ -744,66 +652,26 @@ READ16_MEMBER(neogeo_state::in0_r)
 READ16_MEMBER(neogeo_state::in1_r)
 {
 	return ((m_edge->in1_r(space, offset) & m_ctrl2->ctrl_r(space, offset)) << 8) | 0xff;
->>>>>>> upstream/master
 }
 
 CUSTOM_INPUT_MEMBER(neogeo_state::kizuna4p_start_r)
 {
-<<<<<<< HEAD
-	return (ioport("START")->read() >> (m_controller_select & 0x01)) | ~0x05;
-}
-
-#if 1 // this needs to be added dynamically somehow
-CUSTOM_INPUT_MEMBER(neogeo_state::mahjong_controller_r)
-{
-	UINT32 ret;
-
-/*
-cpu #0 (PC=00C18B9A): unmapped memory word write to 00380000 = 0012 & 00FF
-cpu #0 (PC=00C18BB6): unmapped memory word write to 00380000 = 001B & 00FF
-cpu #0 (PC=00C18D54): unmapped memory word write to 00380000 = 0024 & 00FF
-cpu #0 (PC=00C18D6C): unmapped memory word write to 00380000 = 0009 & 00FF
-cpu #0 (PC=00C18C40): unmapped memory word write to 00380000 = 0000 & 00FF
-*/
-	switch (m_controller_select)
-	{
-	default:
-	case 0x00: ret = 0x0000; break; /* nothing? */
-	case 0x09: ret = ioport("MAHJONG1")->read(); break;
-	case 0x12: ret = ioport("MAHJONG2")->read(); break;
-	case 0x1b: ret = ioport("MAHJONG3")->read(); break; /* player 1 normal inputs? */
-	case 0x24: ret = ioport("MAHJONG4")->read(); break;
-	}
-
-	return ret;
-}
-#endif
-=======
 	return (m_edge->read_start_sel() & 0x05) | ~0x05;
 }
->>>>>>> upstream/master
 
 WRITE8_MEMBER(neogeo_state::io_control_w)
 {
 	switch (offset)
 	{
 		case 0x00:
-<<<<<<< HEAD
-			select_controller(data);
-=======
 			if (m_ctrl1) m_ctrl1->write_ctrlsel(data);
 			if (m_ctrl2) m_ctrl2->write_ctrlsel(data);
 			if (m_edge) m_edge->write_ctrlsel(data);
->>>>>>> upstream/master
 			break;
 
 		case 0x10:
 			if (m_type == NEOGEO_MVS)
-<<<<<<< HEAD
-				if (m_cartslots[0]) set_slot_number(data);
-=======
 				if (m_slots[data] != nullptr) set_slot_idx(data);
->>>>>>> upstream/master
 			break;
 
 		case 0x18:
@@ -843,15 +711,9 @@ WRITE8_MEMBER(neogeo_state::io_control_w)
  *
  *************************************/
 
-<<<<<<< HEAD
-READ16_MEMBER(neogeo_state::neogeo_unmapped_r)
-{
-	UINT16 ret;
-=======
 READ16_MEMBER(neogeo_state::unmapped_r)
 {
 	uint16_t ret;
->>>>>>> upstream/master
 
 	/* unmapped memory returns the last word on the data bus, which is almost always the opcode
 	   of the next instruction due to prefetch */
@@ -876,15 +738,9 @@ READ16_MEMBER(neogeo_state::unmapped_r)
  *
  *************************************/
 
-<<<<<<< HEAD
-void neogeo_state::set_save_ram_unlock( UINT8 data )
-{
-	m_save_ram_unlocked = data;
-=======
 WRITE_LINE_MEMBER(neogeo_state::set_save_ram_unlock)
 {
 	m_save_ram_unlocked = state;
->>>>>>> upstream/master
 }
 
 
@@ -914,11 +770,7 @@ READ16_MEMBER(neogeo_state::memcard_r)
 {
 	m_maincpu->eat_cycles(2); // insert waitstate
 
-<<<<<<< HEAD
-	UINT16 ret;
-=======
 	uint16_t ret;
->>>>>>> upstream/master
 
 	if (m_memcard->present() != -1)
 		ret = m_memcard->read(space, offset) | 0xff00;
@@ -948,11 +800,7 @@ WRITE16_MEMBER(neogeo_state::memcard_w)
 
 WRITE8_MEMBER(neogeo_state::audio_command_w)
 {
-<<<<<<< HEAD
-	soundlatch_write(data);
-=======
 	m_soundlatch->write(space, 0, data);
->>>>>>> upstream/master
 
 	m_audio_cpu_nmi_pending = true;
 	audio_cpu_check_nmi();
@@ -964,11 +812,7 @@ WRITE8_MEMBER(neogeo_state::audio_command_w)
 
 READ8_MEMBER(neogeo_state::audio_command_r)
 {
-<<<<<<< HEAD
-	UINT8 ret = soundlatch_read();
-=======
 	uint8_t ret = m_soundlatch->read(space, 0);
->>>>>>> upstream/master
 
 	m_audio_cpu_nmi_pending = false;
 	audio_cpu_check_nmi();
@@ -979,36 +823,12 @@ READ8_MEMBER(neogeo_state::audio_command_r)
 
 CUSTOM_INPUT_MEMBER(neogeo_state::get_audio_result)
 {
-<<<<<<< HEAD
-	UINT8 ret = soundlatch_read(1); // soundlatch2_byte_r
-=======
 	uint8_t ret = m_soundlatch2->read(m_audiocpu->space(AS_PROGRAM), 0);
->>>>>>> upstream/master
 
 	return ret;
 }
 
 
-<<<<<<< HEAD
-
-
-void neogeo_state::neogeo_main_cpu_banking_init()
-{
-	/* create vector banks */
-//  m_bank_vectors->configure_entry(1, m_region_maincpu->base());
-//  m_bank_vectors->configure_entry(0, memregion("mainbios")->base());
-//  m_bank_vectors->set_entry(0);
-	m_use_cart_vectors = 0;
-
-	if (m_type != NEOGEO_CD)
-	{
-		if (!m_cartslots[0]) m_banked_cart->init_banks();
-	}
-}
-
-
-=======
->>>>>>> upstream/master
 /*************************************
  *
  *  Audio CPU banking
@@ -1023,119 +843,12 @@ READ8_MEMBER(neogeo_state::audio_cpu_bank_select_r)
 }
 
 
-<<<<<<< HEAD
-void neogeo_state::neogeo_audio_cpu_banking_init(int set_entry)
-{
-	if (m_type == NEOGEO_CD) return;
-
-	int region;
-	int bank;
-	UINT8 *rgn;
-	UINT32 address_mask;
-
-	rgn = memregion("audiocpu")->base();
-
-	/* audio bios/cartridge selection */
-	m_bank_audio_main->configure_entry(1, memregion("audiocpu")->base());
-	if (memregion("audiobios"))
-		m_bank_audio_main->configure_entry(0, memregion("audiobios")->base());
-	else /* on hardware with no SM1 ROM, the cart ROM is always enabled */
-		m_bank_audio_main->configure_entry(0, memregion("audiocpu")->base());
-
-	m_bank_audio_main->set_entry(m_use_cart_audio);
-
-	/* audio banking */
-	m_bank_audio_cart[0] = membank("audio_f000");
-	m_bank_audio_cart[1] = membank("audio_e000");
-	m_bank_audio_cart[2] = membank("audio_c000");
-	m_bank_audio_cart[3] = membank("audio_8000");
-
-	address_mask = (memregion("audiocpu")->bytes() - 0x10000 - 1) & 0x3ffff;
-
-
-	for (region = 0; region < 4; region++)
-	{
-		for (bank = 0xff; bank >= 0; bank--)
-		{
-			UINT32 bank_address = 0x10000 + ((bank << (11 + region)) & address_mask);
-			m_bank_audio_cart[region]->configure_entry(bank, &rgn[bank_address]);
-		}
-	}
-
-	// set initial audio banks - THIS IS A HACK
-	// Z80 banking is handled by the NEO-ZMC chip in the cartridge
-	// (in later cartridges, by multifunction banking/protection chips that implement the same bank scheme)
-	// On the real chip, initial banks are all 0.
-	// However, early cartridges with less than 64KB of Z80 code and data don't have ROM banking at all.
-	// These initial bank settings are required so non-banked games will work until we identify them
-	// and use a different Z80 address map for them.
-	m_bank_audio_cart[0]->set_entry(0x1e);
-	m_bank_audio_cart[1]->set_entry(0x0e);
-	m_bank_audio_cart[2]->set_entry(0x06);
-	m_bank_audio_cart[3]->set_entry(0x02);
-}
-
-
-
-=======
->>>>>>> upstream/master
 /*************************************
  *
  *  System control register
  *
  *************************************/
 
-<<<<<<< HEAD
-WRITE8_MEMBER(neogeo_state::system_control_w)
-{
-	UINT8 bit = (offset >> 3) & 0x01;
-
-	switch (offset & 0x07)
-	{
-		default:
-		case 0x00:
-			neogeo_set_screen_shadow(bit);
-			break;
-
-		case 0x01:
-			if (m_type == NEOGEO_CD)
-				printf("NeoCD: write to regular vector change address? %d\n", bit); // what IS going on with "neocdz doubledr" and why do games write here if it's hooked up to nothing?
-			else
-				//m_bank_vectors->set_entry(bit);
-				m_use_cart_vectors = bit;
-			break;
-
-		case 0x05:
-			if (m_type == NEOGEO_MVS)
-			{
-				m_use_cart_audio = bit;
-				m_sprgen->neogeo_set_fixed_layer_source(bit);
-				m_bank_audio_main->set_entry(m_use_cart_audio);
-			}
-			break;
-
-		case 0x06:
-			if (m_type == NEOGEO_MVS)
-				set_save_ram_unlock(bit);
-			break;
-
-		case 0x07:
-			neogeo_set_palette_bank(bit);
-			break;
-
-		case 0x02: // memory card 1: write enable/disable
-		case 0x03: // memory card 2: write disable/enable
-		case 0x04: // memory card: register select enable/set to normal (what does it mean?)
-			logerror("PC: %x  Unmapped system control write.  Offset: %x  Data: %x\n", space.device().safe_pc(), offset & 0x07, bit);
-			break;
-	}
-
-	if (LOG_VIDEO_SYSTEM && ((offset & 0x07) != 0x06)) logerror("PC: %x  System control write.  Offset: %x  Data: %x\n", space.device().safe_pc(), offset & 0x07, bit);
-}
-
-
-
-=======
 
 WRITE_LINE_MEMBER(neogeo_state::set_use_cart_vectors)
 {
@@ -1173,7 +886,6 @@ WRITE16_MEMBER(neogeo_state::write_banksel)
 }
 
 
->>>>>>> upstream/master
 /*************************************
  *
  *  LEDs
@@ -1182,29 +894,6 @@ WRITE16_MEMBER(neogeo_state::write_banksel)
 
 void neogeo_state::set_outputs(  )
 {
-<<<<<<< HEAD
-	static const UINT8 led_map[0x10] =
-		{ 0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7d,0x07,0x7f,0x6f,0x58,0x4c,0x62,0x69,0x78,0x00 };
-
-	/* EL */
-	output_set_digit_value(0, led_map[m_el_value]);
-
-	/* LED1 */
-	output_set_digit_value(1, led_map[m_led1_value >> 4]);
-	output_set_digit_value(2, led_map[m_led1_value & 0x0f]);
-
-	/* LED2 */
-	output_set_digit_value(3, led_map[m_led2_value >> 4]);
-	output_set_digit_value(4, led_map[m_led2_value & 0x0f]);
-}
-
-
-void neogeo_state::set_output_latch( UINT8 data )
-{
-	/* looks like the LEDs are set on the
-	   falling edge */
-	UINT8 falling_bits = m_output_latch & ~data;
-=======
 	static const uint8_t led_map[0x10] =
 		{ 0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7d,0x07,0x7f,0x6f,0x58,0x4c,0x62,0x69,0x78,0x00 };
 
@@ -1226,7 +915,6 @@ void neogeo_state::set_output_latch( uint8_t data )
 	/* looks like the LEDs are set on the
 	   falling edge */
 	uint8_t falling_bits = m_output_latch & ~data;
->>>>>>> upstream/master
 
 	if (falling_bits & 0x08)
 		m_el_value = 16 - (m_output_data & 0x0f);
@@ -1246,18 +934,12 @@ void neogeo_state::set_output_latch( uint8_t data )
 }
 
 
-<<<<<<< HEAD
-void neogeo_state::set_output_data( UINT8 data )
-=======
 void neogeo_state::set_output_data( uint8_t data )
->>>>>>> upstream/master
 {
 	m_output_data = data;
 }
 
 
-<<<<<<< HEAD
-=======
 /*************************************
  *
  *  Bankswitch passthrus for cart-specific
@@ -1336,7 +1018,6 @@ READ16_MEMBER(neogeo_state::read_lorom_kof10th)
 		offset += m_slots[m_curr_slot]->get_special_bank();
 	return rom[offset + 0x80/2];
 }
->>>>>>> upstream/master
 
 /*************************************
  *
@@ -1344,34 +1025,6 @@ READ16_MEMBER(neogeo_state::read_lorom_kof10th)
  *
  *************************************/
 
-<<<<<<< HEAD
-DRIVER_INIT_MEMBER(neogeo_state,neogeo)
-{
-	if (!m_cartslots[0]) m_banked_cart->install_banks(machine(), m_maincpu, m_region_maincpu->base(), m_region_maincpu->bytes());
-
-	m_sprgen->m_fixed_layer_bank_type = 0;
-}
-
-
-void neogeo_state::neogeo_postload()
-{
-	m_bank_audio_main->set_entry(m_use_cart_audio);
-
-	if (m_type == NEOGEO_MVS) set_outputs();
-}
-
-
-void neogeo_state::machine_start()
-{
-	m_type = NEOGEO_MVS;
-
-
-	/* set the initial main CPU bank */
-	neogeo_main_cpu_banking_init();
-
-	/* set the initial audio CPU ROM banks */
-	neogeo_audio_cpu_banking_init(1);
-=======
 void neogeo_state::init_cpu()
 {
 	uint8_t *ROM = (!m_slots[m_curr_slot] || m_slots[m_curr_slot]->get_rom_size() == 0) ? m_region_maincpu->base() : (uint8_t *)m_slots[m_curr_slot]->get_rom_base();
@@ -1630,7 +1283,6 @@ void neogeo_state::set_slot_idx(int slot)
 void neogeo_state::common_machine_start()
 {
 	m_use_cart_vectors = 0;
->>>>>>> upstream/master
 
 	create_interrupt_timers();
 
@@ -1641,16 +1293,6 @@ void neogeo_state::common_machine_start()
 	/* start with an IRQ3 - but NOT on a reset */
 	m_irq3_pending = 1;
 
-<<<<<<< HEAD
-	// enable rtc and serial mode
-	m_upd4990a->cs_w(1);
-	m_upd4990a->oe_w(1);
-	m_upd4990a->c0_w(1);
-	m_upd4990a->c1_w(1);
-	m_upd4990a->c2_w(1);
-
-=======
->>>>>>> upstream/master
 	/* register state save */
 	save_item(NAME(m_display_position_interrupt_control));
 	save_item(NAME(m_display_counter));
@@ -1659,37 +1301,6 @@ void neogeo_state::common_machine_start()
 	save_item(NAME(m_irq3_pending));
 	save_item(NAME(m_audio_cpu_nmi_enabled));
 	save_item(NAME(m_audio_cpu_nmi_pending));
-<<<<<<< HEAD
-	save_item(NAME(m_controller_select));
-	save_item(NAME(m_save_ram_unlocked));
-	save_item(NAME(m_output_data));
-	save_item(NAME(m_output_latch));
-	save_item(NAME(m_el_value));
-	save_item(NAME(m_led1_value));
-	save_item(NAME(m_led2_value));
-
-	save_item(NAME(m_use_cart_vectors));
-	save_item(NAME(m_use_cart_audio));
-
-	machine().save().register_postload(save_prepost_delegate(FUNC(neogeo_state::neogeo_postload), this));
-
-
-	m_cartslots[0] = m_cartslot1;
-	m_cartslots[1] = m_cartslot2;
-	m_cartslots[2] = m_cartslot3;
-	m_cartslots[3] = m_cartslot4;
-	m_cartslots[4] = m_cartslot5;
-	m_cartslots[5] = m_cartslot6;
-
-
-	m_sprgen->set_screen(m_screen);
-	m_sprgen->set_sprite_region(m_region_sprites->base(), m_region_sprites->bytes());
-	m_sprgen->set_fixed_regions(m_region_fixed->base(), m_region_fixed->bytes(), m_region_fixedbios);
-
-}
-
-
-=======
 	save_item(NAME(m_curr_slot));
 	save_item(NAME(m_bank_base));
 	save_item(NAME(m_use_cart_vectors));
@@ -1746,7 +1357,6 @@ void neogeo_state::neogeo_postload()
 			m_bank_cartridge->set_base((uint8_t *)m_slots[m_curr_slot]->get_rom_base() + m_bank_base);
 }
 
->>>>>>> upstream/master
 
 /*************************************
  *
@@ -1754,70 +1364,9 @@ void neogeo_state::neogeo_postload()
  *
  *************************************/
 
-<<<<<<< HEAD
-void neogeo_state::set_slot_number(int slot)
-{
-	if (slot != m_currentslot)
-	{
-		m_currentslot = slot;
-
-		address_space &space = m_maincpu->space(AS_PROGRAM);
-
-		// unmap old handlers, some carts will have installed overlays on them, we need them to be cleared
-		space.unmap_readwrite(0x000080, 0x0fffff);
-		space.unmap_readwrite(0x200000, 0x2fffff);
-
-
-		if (m_cartslots[m_currentslot]->get_sprites_size() == 0)
-			return;
-
-		// give the sprite chip pointers to the graphics for this slot from the slot device
-		m_sprgen->set_sprite_region(m_cartslots[m_currentslot]->get_sprites_base(), m_cartslots[m_currentslot]->get_sprites_size());
-		m_sprgen->set_fixed_regions(m_cartslots[m_currentslot]->get_fixed_base(), m_cartslots[m_currentslot]->get_fixed_size(), m_region_fixedbios);
-		m_sprgen->set_optimized_sprite_data(m_cartslots[m_currentslot]->get_sprites_optimized(), m_cartslots[m_currentslot]->get_sprites_addrmask());
-		m_sprgen->m_fixed_layer_bank_type = m_cartslots[m_currentslot]->get_fixed_bank_type();
-		/*
-		    Resetting a sound device causes the core to update() it and generate samples if it's not up to date.
-		    Thus we preemptively reset it here while the old pointers are still valid so it's up to date and
-		    doesn't generate samples below when we reset it for the new pointers.
-		*/
-		device_t* ym = machine().device("ymsnd");
-		ym->reset();
-
-		m_cartslots[m_currentslot]->setup_memory_banks(machine()); // setup basic pointers
-
-		ym->reset(); // reset it again to get the new pointers
-
-		// these could have changed, ensure the pointers are valid
-		m_region_maincpu.findit();
-		m_region_sprites.findit();
-		m_region_fixed.findit();
-
-		space.install_rom(0x000080, 0x0fffff, m_region_maincpu->base()+0x80); // reinstall the base program rom handler
-
-		m_cartslots[m_currentslot]->activate_cart(machine(), m_maincpu, m_region_maincpu->base(), m_region_maincpu->bytes(), m_cartslots[m_currentslot]->get_fixed_base(), m_cartslots[m_currentslot]->get_fixed_size());
-		//memcpy((UINT8*)m_cartslots[m_currentslot]->get_rom_base(),m_region_maincpu->base(), m_region_maincpu->bytes()); // hack- copy back any mods activate made (eh cthd2003)c
-
-		neogeo_audio_cpu_banking_init(0); // should probably be responsibility of the cart
-		m_audiocpu->reset(); // or some games like svc have no sounnd if in higher slots?
-
-	}
-}
 
 void neogeo_state::machine_reset()
 {
-	offs_t offs;
-	address_space &space = m_maincpu->space(AS_PROGRAM);
-
-	/* reset system control registers */
-	for (offs = 0; offs < 8; offs++)
-		system_control_w(space, offs, 0);
-
-=======
-
-void neogeo_state::machine_reset()
-{
->>>>>>> upstream/master
 	// disable audiocpu nmi
 	m_audio_cpu_nmi_enabled = false;
 	m_audio_cpu_nmi_pending = false;
@@ -1825,50 +1374,6 @@ void neogeo_state::machine_reset()
 
 	m_maincpu->reset();
 
-<<<<<<< HEAD
-	// mamep: Hack for AES BIOS
-	m_sprgen->neogeo_set_fixed_layer_source(1);
-
-	start_interrupt_timers();
-
-	/* trigger the IRQ3 that was set by MACHINE_START */
-	update_interrupts();
-
-	m_recurse = false;
-
-	if (m_cartslots[0]) // if thie system has cart slots then do some extra initialization
-	{
-		set_slot_number(0);
-	}
-
-}
-
-READ16_MEMBER(neogeo_state::banked_vectors_r)
-{
-	if (!m_use_cart_vectors)
-	{
-		UINT16* bios = (UINT16*)memregion("mainbios")->base();
-		return bios[offset];
-	}
-	else
-	{
-		UINT16* game = (UINT16*)m_region_maincpu->base();
-		return game[offset];
-	}
-
-}
-
-READ16_MEMBER(neogeo_state::neogeo_slot_rom_low_r)
-{
-	return m_cartslots[m_currentslot]->read_rom(space, offset+(0x80/2), mem_mask);
-}
-
-READ16_MEMBER(neogeo_state::neogeo_slot_rom_low_bectors_r)
-{
-	if (!m_use_cart_vectors)
-	{
-		UINT16* bios = (UINT16*)memregion("mainbios")->base();
-=======
 	start_interrupt_timers();
 
 	// trigger the IRQ3 that was set by MACHINE_START
@@ -1890,25 +1395,15 @@ READ16_MEMBER(neogeo_state::banked_vectors_r)
 	if (!m_use_cart_vectors)
 	{
 		uint16_t* bios = (uint16_t*)m_region_mainbios->base();
->>>>>>> upstream/master
 		return bios[offset];
 	}
 	else
 	{
-<<<<<<< HEAD
-		return m_cartslots[m_currentslot]->read_rom(space, offset, mem_mask);
-	}
-
-}
-
-
-=======
 		uint16_t* rom = (m_slots[m_curr_slot] && m_slots[m_curr_slot]->get_rom_size() > 0) ? m_slots[m_curr_slot]->get_rom_base() : (uint16_t*)m_region_maincpu->base();
 		return rom[offset];
 	}
 }
 
->>>>>>> upstream/master
 /*************************************
  *
  *  Main CPU memory handlers
@@ -1919,38 +1414,6 @@ ADDRESS_MAP_START( neogeo_main_map, AS_PROGRAM, 16, neogeo_state )
 
 	AM_RANGE(0x100000, 0x10ffff) AM_MIRROR(0x0f0000) AM_RAM
 	/* some games have protection devices in the 0x200000 region, it appears to map to cart space, not surprising, the ROM is read here too */
-<<<<<<< HEAD
-	AM_RANGE(0x300000, 0x300001) AM_MIRROR(0x01ff7e) AM_READ_PORT("P1/DSW")
-	AM_RANGE(0x300080, 0x300081) AM_MIRROR(0x01ff7e) AM_READ_PORT("TEST")
-	AM_RANGE(0x300000, 0x300001) AM_MIRROR(0x01fffe) AM_WRITE8(watchdog_reset_w, 0x00ff)
-	AM_RANGE(0x320000, 0x320001) AM_MIRROR(0x01fffe) AM_READ_PORT("AUDIO/COIN") AM_WRITE8(audio_command_w, 0xff00)
-	AM_RANGE(0x340000, 0x340001) AM_MIRROR(0x01fffe) AM_READ_PORT("P2")
-	AM_RANGE(0x360000, 0x37ffff) AM_READ(neogeo_unmapped_r)
-	AM_RANGE(0x380000, 0x380001) AM_MIRROR(0x01fffe) AM_READ_PORT("SYSTEM")
-	AM_RANGE(0x380000, 0x38007f) AM_MIRROR(0x01ff80) AM_WRITE8(io_control_w, 0x00ff)
-	AM_RANGE(0x3a0000, 0x3a001f) AM_MIRROR(0x01ffe0) AM_READ(neogeo_unmapped_r) AM_WRITE8(system_control_w, 0x00ff)
-	AM_RANGE(0x3c0000, 0x3c0007) AM_MIRROR(0x01fff8) AM_READ(neogeo_video_register_r)
-	AM_RANGE(0x3c0000, 0x3c000f) AM_MIRROR(0x01fff0) AM_WRITE(neogeo_video_register_w)
-	AM_RANGE(0x3e0000, 0x3fffff) AM_READ(neogeo_unmapped_r)
-	AM_RANGE(0x400000, 0x401fff) AM_MIRROR(0x3fe000) AM_READWRITE(neogeo_paletteram_r, neogeo_paletteram_w)
-	AM_RANGE(0x800000, 0x800fff) AM_READWRITE(memcard_r, memcard_w)
-	AM_RANGE(0xc00000, 0xc1ffff) AM_MIRROR(0x0e0000) AM_ROM AM_REGION("mainbios", 0)
-	AM_RANGE(0xd00000, 0xd0ffff) AM_MIRROR(0x0f0000) AM_RAM_WRITE(save_ram_w) AM_SHARE("saveram")
-	AM_RANGE(0xe00000, 0xffffff) AM_READ(neogeo_unmapped_r)
-ADDRESS_MAP_END
-
-
-
-
-static ADDRESS_MAP_START( main_map_slot, AS_PROGRAM, 16, neogeo_state )
-	AM_RANGE(0x000000, 0x00007f) AM_READ(neogeo_slot_rom_low_bectors_r)
-	AM_RANGE(0x000080, 0x0fffff) AM_READ(neogeo_slot_rom_low_r)
-	AM_RANGE(0x200000, 0x2fffff) AM_ROMBANK("cartridge")
-//  AM_RANGE(0x2ffff0, 0x2fffff) AM_WRITE(main_cpu_bank_select_w)
-	AM_IMPORT_FROM( neogeo_main_map )
-ADDRESS_MAP_END
-
-=======
 	AM_RANGE(0x300080, 0x300081) AM_MIRROR(0x01ff7e) AM_READ_PORT("TEST")
 	AM_RANGE(0x300000, 0x300001) AM_MIRROR(0x01fffe) AM_DEVWRITE8("watchdog", watchdog_timer_device, reset_w, 0x00ff)
 	AM_RANGE(0x320000, 0x320001) AM_MIRROR(0x01fffe) AM_READ_PORT("AUDIO/COIN") AM_WRITE8(audio_command_w, 0xff00)
@@ -2005,7 +1468,6 @@ static ADDRESS_MAP_START( aes_main_map, AS_PROGRAM, 16, aes_state )
 ADDRESS_MAP_END
 
 
->>>>>>> upstream/master
 /*************************************
  *
  *  Audio CPU memory handlers
@@ -2030,19 +1492,11 @@ ADDRESS_MAP_END
  *************************************/
 
 static ADDRESS_MAP_START( audio_io_map, AS_IO, 8, neogeo_state )
-<<<<<<< HEAD
-	AM_RANGE(0x00, 0x00) AM_MIRROR(0xff00) AM_READWRITE(audio_command_r, soundlatch_clear_byte_w)
-	AM_RANGE(0x04, 0x07) AM_MIRROR(0xff00) AM_DEVREADWRITE("ymsnd", ym2610_device, read, write)
-	AM_RANGE(0x08, 0x08) AM_MIRROR(0xff10) AM_MASK(0x0010) AM_WRITE(audio_cpu_enable_nmi_w)
-	AM_RANGE(0x08, 0x0b) AM_MIRROR(0xfff0) AM_MASK(0xff03) AM_READ(audio_cpu_bank_select_r)
-	AM_RANGE(0x0c, 0x0c) AM_MIRROR(0xff00) AM_WRITE(soundlatch2_byte_w)
-=======
 	AM_RANGE(0x00, 0x00) AM_MIRROR(0xff00) AM_READ(audio_command_r) AM_DEVWRITE("soundlatch", generic_latch_8_device, clear_w)
 	AM_RANGE(0x04, 0x07) AM_MIRROR(0xff00) AM_DEVREADWRITE("ymsnd", ym2610_device, read, write)
 	AM_RANGE(0x08, 0x08) AM_MIRROR(0xff00) AM_SELECT(0x0010) AM_WRITE(audio_cpu_enable_nmi_w)
 	AM_RANGE(0x08, 0x0b) AM_MIRROR(0x00f0) AM_SELECT(0xff00) AM_READ(audio_cpu_bank_select_r)
 	AM_RANGE(0x0c, 0x0c) AM_MIRROR(0xff00) AM_DEVWRITE("soundlatch2", generic_latch_8_device, write)
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -2055,51 +1509,6 @@ ADDRESS_MAP_END
  *************************************/
 
 INPUT_PORTS_START( neogeo )
-<<<<<<< HEAD
-	PORT_START("P1/DSW")
-	PORT_DIPNAME( 0x0001, 0x0001, "Setting Mode" ) PORT_DIPLOCATION("SW:1")
-	PORT_DIPSETTING(      0x0001, DEF_STR( Off ) )
-	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
-	PORT_DIPNAME( 0x0002, 0x0002, DEF_STR( Cabinet ) ) PORT_DIPLOCATION("SW:2")
-	PORT_DIPSETTING(      0x0002, DEF_STR( Normal ) )
-	PORT_DIPSETTING(      0x0000, "VS Mode" )
-	PORT_DIPNAME( 0x0004, 0x0004, DEF_STR( Controller ) ) PORT_DIPLOCATION("SW:3")
-	PORT_DIPSETTING(      0x0004, DEF_STR( Joystick ) )
-	PORT_DIPSETTING(      0x0000, "Mahjong Panel" )
-	PORT_DIPNAME( 0x0018, 0x0018, "COMM Setting (Cabinet No.)" ) PORT_DIPLOCATION("SW:4,5")
-	PORT_DIPSETTING(      0x0018, "1" )
-	PORT_DIPSETTING(      0x0010, "2" )
-	PORT_DIPSETTING(      0x0008, "3" )
-	PORT_DIPSETTING(      0x0000, "4" )
-	PORT_DIPNAME( 0x0020, 0x0020, "COMM Setting (Link Enable)" ) PORT_DIPLOCATION("SW:6")
-	PORT_DIPSETTING(      0x0020, DEF_STR( Off ) )
-	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
-	PORT_DIPNAME( 0x0040, 0x0040, DEF_STR( Free_Play ) ) PORT_DIPLOCATION("SW:7")
-	PORT_DIPSETTING(      0x0040, DEF_STR( Off ) )
-	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
-	PORT_DIPNAME( 0x0080, 0x0080, "Freeze" ) PORT_DIPLOCATION("SW:8")
-	PORT_DIPSETTING(      0x0080, DEF_STR( Off ) )
-	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
-	PORT_BIT( 0x0100, IP_ACTIVE_LOW, IPT_JOYSTICK_UP )
-	PORT_BIT( 0x0200, IP_ACTIVE_LOW, IPT_JOYSTICK_DOWN )
-	PORT_BIT( 0x0400, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT )
-	PORT_BIT( 0x0800, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT )
-	PORT_BIT( 0x1000, IP_ACTIVE_LOW, IPT_BUTTON1 )
-	PORT_BIT( 0x2000, IP_ACTIVE_LOW, IPT_BUTTON2 )
-	PORT_BIT( 0x4000, IP_ACTIVE_LOW, IPT_BUTTON3 )
-	PORT_BIT( 0x8000, IP_ACTIVE_LOW, IPT_BUTTON4 )
-
-	PORT_START("P2")
-	PORT_BIT( 0x00ff, IP_ACTIVE_LOW, IPT_UNUSED )
-	PORT_BIT( 0x0100, IP_ACTIVE_LOW, IPT_JOYSTICK_UP ) PORT_PLAYER(2)
-	PORT_BIT( 0x0200, IP_ACTIVE_LOW, IPT_JOYSTICK_DOWN ) PORT_PLAYER(2)
-	PORT_BIT( 0x0400, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT ) PORT_PLAYER(2)
-	PORT_BIT( 0x0800, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT ) PORT_PLAYER(2)
-	PORT_BIT( 0x1000, IP_ACTIVE_LOW, IPT_BUTTON1 ) PORT_PLAYER(2)
-	PORT_BIT( 0x2000, IP_ACTIVE_LOW, IPT_BUTTON2 ) PORT_PLAYER(2)
-	PORT_BIT( 0x4000, IP_ACTIVE_LOW, IPT_BUTTON3 ) PORT_PLAYER(2)
-	PORT_BIT( 0x8000, IP_ACTIVE_LOW, IPT_BUTTON4 ) PORT_PLAYER(2)
-=======
 	PORT_START("DSW")
 	PORT_DIPNAME( 0x01, 0x01, "Setting Mode" ) PORT_DIPLOCATION("SW:1")
 	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
@@ -2124,7 +1533,6 @@ INPUT_PORTS_START( neogeo )
 	PORT_DIPNAME( 0x80, 0x80, "Freeze" ) PORT_DIPLOCATION("SW:8")
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
->>>>>>> upstream/master
 
 	PORT_START("SYSTEM")
 	PORT_BIT( 0x00ff, IP_ACTIVE_LOW, IPT_UNUSED )
@@ -2132,11 +1540,7 @@ INPUT_PORTS_START( neogeo )
 	PORT_BIT( 0x0200, IP_ACTIVE_LOW, IPT_OTHER ) PORT_NAME("Next Game") PORT_CODE(KEYCODE_3)
 	PORT_BIT( 0x0400, IP_ACTIVE_LOW, IPT_START2 )
 	PORT_BIT( 0x0800, IP_ACTIVE_LOW, IPT_OTHER ) PORT_NAME("Previous Game") PORT_CODE(KEYCODE_4)
-<<<<<<< HEAD
-	PORT_BIT( 0x7000, IP_ACTIVE_HIGH, IPT_CUSTOM ) PORT_CUSTOM_MEMBER(DEVICE_SELF, neogeo_state, get_memcard_status, NULL)
-=======
 	PORT_BIT( 0x7000, IP_ACTIVE_HIGH, IPT_CUSTOM ) PORT_CUSTOM_MEMBER(DEVICE_SELF, neogeo_state, get_memcard_status, nullptr)
->>>>>>> upstream/master
 	PORT_BIT( 0x8000, IP_ACTIVE_LOW, IPT_SPECIAL ) /* Hardware type (AES=0, MVS=1). Some games check this and show a piracy warning screen if the hardware and BIOS don't match */
 
 	PORT_START("AUDIO/COIN")
@@ -2148,11 +1552,7 @@ INPUT_PORTS_START( neogeo )
 	PORT_BIT( 0x0020, IP_ACTIVE_LOW, IPT_SPECIAL ) /* what is this? When ACTIVE_HIGH + IN4 bit 6 ACTIVE_LOW MVS-4 slot is detected */
 	PORT_BIT( 0x0040, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_READ_LINE_DEVICE_MEMBER("upd4990a", upd1990a_device, tp_r)
 	PORT_BIT( 0x0080, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_READ_LINE_DEVICE_MEMBER("upd4990a", upd1990a_device, data_out_r)
-<<<<<<< HEAD
-	PORT_BIT( 0xff00, IP_ACTIVE_HIGH, IPT_CUSTOM ) PORT_CUSTOM_MEMBER(DEVICE_SELF, neogeo_state,get_audio_result, NULL)
-=======
 	PORT_BIT( 0xff00, IP_ACTIVE_HIGH, IPT_CUSTOM ) PORT_CUSTOM_MEMBER(DEVICE_SELF, neogeo_state,get_audio_result, nullptr)
->>>>>>> upstream/master
 
 	PORT_START("TEST")
 	PORT_BIT( 0x003f, IP_ACTIVE_HIGH, IPT_UNUSED )
@@ -2170,12 +1570,6 @@ INPUT_PORTS_END
 
 
 
-<<<<<<< HEAD
-
-DRIVER_INIT_MEMBER(neogeo_state,mvs)
-{
-	DRIVER_INIT_CALL(neogeo);
-=======
 INPUT_PORTS_START( aes )
 	PORT_START("IN2")
 	PORT_BIT( 0x0fff, IP_ACTIVE_LOW, IPT_UNUSED )
@@ -2199,7 +1593,6 @@ INPUT_CHANGED_MEMBER(aes_state::aes_jp1)
 	// Shorting JP1 causes a 68000 /BERR (Bus Error). On Dev Bios, this pops up the debug monitor.
 	if (newval)
 		m_maincpu->set_input_line(M68K_LINE_BUSERROR, HOLD_LINE);
->>>>>>> upstream/master
 }
 
 
@@ -2211,11 +1604,7 @@ INPUT_CHANGED_MEMBER(aes_state::aes_jp1)
  *
  *************************************/
 
-<<<<<<< HEAD
-MACHINE_CONFIG_START( neogeo_base, neogeo_state )
-=======
 MACHINE_CONFIG_START( neogeo_base )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, NEOGEO_MAIN_CPU_CLOCK)
@@ -2225,8 +1614,6 @@ MACHINE_CONFIG_START( neogeo_base )
 	MCFG_CPU_PROGRAM_MAP(audio_map)
 	MCFG_CPU_IO_MAP(audio_io_map)
 
-<<<<<<< HEAD
-=======
 	MCFG_DEVICE_ADD("systemlatch", HC259, 0)
 	MCFG_ADDRESSABLE_LATCH_Q0_OUT_CB(WRITELINE(neogeo_state, set_screen_shadow))
 	MCFG_ADDRESSABLE_LATCH_Q1_OUT_CB(WRITELINE(neogeo_state, set_use_cart_vectors))
@@ -2237,7 +1624,6 @@ MACHINE_CONFIG_START( neogeo_base )
 
 	MCFG_WATCHDOG_ADD("watchdog")
 
->>>>>>> upstream/master
 	/* video hardware */
 	MCFG_DEFAULT_LAYOUT(layout_neogeo)
 
@@ -2253,48 +1639,20 @@ MACHINE_CONFIG_START( neogeo_base )
 	/* audio hardware */
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
-<<<<<<< HEAD
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch2")
 
->>>>>>> upstream/master
 	MCFG_SOUND_ADD("ymsnd", YM2610, NEOGEO_YM2610_CLOCK)
 	MCFG_YM2610_IRQ_HANDLER(INPUTLINE("audiocpu", 0))
 	MCFG_SOUND_ROUTE(0, "lspeaker", 0.28)
 	MCFG_SOUND_ROUTE(0, "rspeaker", 0.28)
 	MCFG_SOUND_ROUTE(1, "lspeaker", 0.98)
 	MCFG_SOUND_ROUTE(2, "rspeaker", 0.98)
-<<<<<<< HEAD
-	MCFG_NEOGEO_BANKED_CART_ADD("banked_cart")
-=======
->>>>>>> upstream/master
 
 MACHINE_CONFIG_END
 
 
 MACHINE_CONFIG_DERIVED( neogeo_arcade, neogeo_base )
-<<<<<<< HEAD
-	MCFG_WATCHDOG_TIME_INIT(attotime::from_ticks(3244030, NEOGEO_MASTER_CLOCK))
-	MCFG_UPD4990A_ADD("upd4990a", XTAL_32_768kHz, NULL, NULL)
-	MCFG_NVRAM_ADD_0FILL("saveram")
-	MCFG_NEOGEO_MEMCARD_ADD("memcard")
-MACHINE_CONFIG_END
-
-
-static MACHINE_CONFIG_DERIVED( mvs, neogeo_arcade )
-	MCFG_CPU_MODIFY("maincpu")
-	MCFG_CPU_PROGRAM_MAP(main_map_slot)
-
-	MCFG_NEOGEO_CARTRIDGE_ADD("cartslot1", neogeo_cart, NULL)
-	MCFG_NEOGEO_CARTRIDGE_ADD("cartslot2", neogeo_cart, NULL)
-	MCFG_NEOGEO_CARTRIDGE_ADD("cartslot3", neogeo_cart, NULL)
-	MCFG_NEOGEO_CARTRIDGE_ADD("cartslot4", neogeo_cart, NULL)
-	MCFG_NEOGEO_CARTRIDGE_ADD("cartslot5", neogeo_cart, NULL)
-	MCFG_NEOGEO_CARTRIDGE_ADD("cartslot6", neogeo_cart, NULL)
-
-	MCFG_SOFTWARE_LIST_ADD("cart_list","neogeo")
-=======
 	MCFG_CPU_MODIFY("maincpu")
 	MCFG_CPU_PROGRAM_MAP(main_map_slot)
 
@@ -2407,14 +1765,10 @@ static MACHINE_CONFIG_DERIVED( aes, neogeo_base )
 
 	MCFG_SOFTWARE_LIST_ADD("cart_list","neogeo")
 	MCFG_SOFTWARE_LIST_FILTER("cart_list","AES")
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
 
-<<<<<<< HEAD
-
-=======
 /*************************************
  *
  *  Neo-Geo bios
@@ -2594,7 +1948,6 @@ MACHINE_CONFIG_END
 #define ROM_Y_ZOOM \
 	ROM_REGION( 0x20000, "zoomy", 0 ) \
 	ROM_LOAD( "000-lo.lo", 0x00000, 0x20000, CRC(5a86cff2) SHA1(5992277debadeb64d1c1c64b0a92d9293eaf7e4a) )
->>>>>>> upstream/master
 
 
 
@@ -2619,19 +1972,10 @@ ROM_START( neogeo )
 
 	ROM_REGION( 0x10000, "ymsnd", ROMREGION_ERASEFF )
 
-<<<<<<< HEAD
-	NO_DELTAT_REGION
-
-=======
->>>>>>> upstream/master
 	ROM_REGION( 0x100000, "sprites", ROMREGION_ERASEFF )
 ROM_END
 
 
-<<<<<<< HEAD
-/*    YEAR  NAME        PARENT    COMPAT    MACHINE   INPUT     INIT    */
-CONS( 1990, neogeo,     0,        0,        mvs,      neogeo_6slot,   neogeo_state, mvs,  "SNK", "Neo-Geo", MACHINE_IS_BIOS_ROOT | MACHINE_SUPPORTS_SAVE )
-=======
 ROM_START( aes )
 	ROM_REGION16_BE( 0x20000, "mainbios", 0 )
 	ROM_SYSTEM_BIOS( 0, "asia", "Asia AES" )
@@ -11775,4 +11119,3 @@ GAME( 2005, lasthope,   neogeo,   neobase,   neogeo, neogeo_state,   neogeo,   R
 /* NEOBITZ */
 // Knight's Chance (c)2014 - MVS/AES
 
->>>>>>> upstream/master

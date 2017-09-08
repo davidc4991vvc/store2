@@ -28,11 +28,7 @@ static void tvc64_emit_level(cassette_image *cass, double &time, int freq, int l
 	time += period;
 }
 
-<<<<<<< HEAD
-static casserr_t tvc64_output_byte(cassette_image *cass, double &time, UINT8 byte)
-=======
 static cassette_image::error tvc64_output_byte(cassette_image *cass, double &time, uint8_t byte)
->>>>>>> upstream/master
 {
 	for (int i=0; i<8; i++)
 	{
@@ -48,11 +44,7 @@ static cassette_image::error tvc64_output_byte(cassette_image *cass, double &tim
 		}
 	}
 
-<<<<<<< HEAD
-	return CASSETTE_ERROR_SUCCESS;
-=======
 	return cassette_image::error::SUCCESS;
->>>>>>> upstream/master
 }
 
 static int tvc64_output_predata(cassette_image *cass, double &time, int number)
@@ -63,31 +55,18 @@ static int tvc64_output_predata(cassette_image *cass, double &time, int number)
 		tvc64_emit_level(cass, time, TVC64_PRE_FREQ*2, -1);
 	}
 
-<<<<<<< HEAD
-	return CASSETTE_ERROR_SUCCESS;
-}
-
-static UINT16 tvc64_calc_crc(const UINT8 *bytes, int size)
-{
-	UINT16 crc = 0;
-=======
 	return (int)cassette_image::error::SUCCESS;
 }
 
 static uint16_t tvc64_calc_crc(const uint8_t *bytes, int size)
 {
 	uint16_t crc = 0;
->>>>>>> upstream/master
 
 	for (int i=0; i<size; i++)
 	{
 		for (int b=0; b<8; b++)
 		{
-<<<<<<< HEAD
-			UINT8 al = (bytes[i] & (1<<b)) ? 0x80 : 0x00;
-=======
 			uint8_t al = (bytes[i] & (1<<b)) ? 0x80 : 0x00;
->>>>>>> upstream/master
 
 			al ^= ((crc>>8) & 0xff);
 
@@ -103,17 +82,6 @@ static uint16_t tvc64_calc_crc(const uint8_t *bytes, int size)
 	return crc;
 }
 
-<<<<<<< HEAD
-static casserr_t tvc64_cassette_load(cassette_image *cassette)
-{
-	UINT8 tmp_buff[512];
-	int buff_idx = 0;
-	double time = 0.0;
-
-	UINT8 header[TVC64_HEADER_BYTES];
-	cassette_image_read(cassette, header, 0, TVC64_HEADER_BYTES);
-	UINT16 cas_size = (header[0x83]<<8) | header[0x82];
-=======
 static cassette_image::error tvc64_cassette_load(cassette_image *cassette)
 {
 	uint8_t tmp_buff[512];
@@ -123,7 +91,6 @@ static cassette_image::error tvc64_cassette_load(cassette_image *cassette)
 	uint8_t header[TVC64_HEADER_BYTES];
 	cassette_image_read(cassette, header, 0, TVC64_HEADER_BYTES);
 	uint16_t cas_size = (header[0x83]<<8) | header[0x82];
->>>>>>> upstream/master
 
 	// tape header
 	tmp_buff[buff_idx++] = 0x00;
@@ -150,11 +117,7 @@ static cassette_image::error tvc64_cassette_load(cassette_image *cassette)
 	tmp_buff[buff_idx++] = 0x00;    // no last sector
 
 	// updates the header CRC
-<<<<<<< HEAD
-	UINT16 crc = tvc64_calc_crc(tmp_buff, buff_idx);
-=======
 	uint16_t crc = tvc64_calc_crc(tmp_buff, buff_idx);
->>>>>>> upstream/master
 	tmp_buff[buff_idx++] = crc & 0xff;
 	tmp_buff[buff_idx++] = (crc>>8) & 0xff;
 
@@ -192,15 +155,9 @@ static cassette_image::error tvc64_cassette_load(cassette_image *cassette)
 	tmp_buff[buff_idx++] = 0x00;        // data sector
 	tmp_buff[buff_idx++] = 0x11;        // not puffered
 	tmp_buff[buff_idx++] = 0x00;        // not write protected
-<<<<<<< HEAD
-	tmp_buff[buff_idx++] = (UINT8)((cas_size / 256) + ((cas_size % 256) > 0 ? 1 : 0));  // number of sectors
-
-	UINT8 sect_num = 1;
-=======
 	tmp_buff[buff_idx++] = (uint8_t)((cas_size / 256) + ((cas_size % 256) > 0 ? 1 : 0));  // number of sectors
 
 	uint8_t sect_num = 1;
->>>>>>> upstream/master
 	int sector_num = cas_size / 256;
 	for (int i=0; i<=sector_num; i++)
 	{
@@ -240,21 +197,12 @@ static cassette_image::error tvc64_cassette_load(cassette_image *cassette)
 	// 1 sec silence
 	tvc64_emit_level(cassette, time, 1, 0);
 
-<<<<<<< HEAD
-	return CASSETTE_ERROR_SUCCESS;
-}
-
-static casserr_t tvc64_cassette_identify(cassette_image *cassette, struct CassetteOptions *opts)
-{
-	UINT8 byte;
-=======
 	return cassette_image::error::SUCCESS;
 }
 
 static cassette_image::error tvc64_cassette_identify(cassette_image *cassette, struct CassetteOptions *opts)
 {
 	uint8_t byte;
->>>>>>> upstream/master
 	cassette_image_read(cassette, &byte, 0, 1);
 
 	if (byte == 0x11)
@@ -262,17 +210,10 @@ static cassette_image::error tvc64_cassette_identify(cassette_image *cassette, s
 		opts->bits_per_sample = 16;
 		opts->channels = 1;
 		opts->sample_frequency = 44100;
-<<<<<<< HEAD
-		return CASSETTE_ERROR_SUCCESS;
-	}
-
-	return CASSETTE_ERROR_INVALIDIMAGE;
-=======
 		return cassette_image::error::SUCCESS;
 	}
 
 	return cassette_image::error::INVALID_IMAGE;
->>>>>>> upstream/master
 }
 
 static const struct CassetteFormat tvc64_cassette_image_format =
@@ -280,11 +221,7 @@ static const struct CassetteFormat tvc64_cassette_image_format =
 	"cas",
 	tvc64_cassette_identify,
 	tvc64_cassette_load,
-<<<<<<< HEAD
-	NULL
-=======
 	nullptr
->>>>>>> upstream/master
 };
 
 CASSETTE_FORMATLIST_START(tvc64_cassette_formats)

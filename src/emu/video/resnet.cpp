@@ -449,11 +449,7 @@ int compute_res_net(int inputs, int channel, const res_net_info &di)
 {
 	double rTotal=0.0;
 	double v = 0;
-<<<<<<< HEAD
-	int i;
-=======
 	int    i;
->>>>>>> upstream/master
 
 	double vBias = di.rgb[channel].vBias;
 	double vOH = di.vOH;
@@ -463,11 +459,7 @@ int compute_res_net(int inputs, int channel, const res_net_info &di)
 	double vcc = di.vcc;
 	double ttlHRes = 0;
 	double rGnd = di.rgb[channel].rGnd;
-<<<<<<< HEAD
-	UINT8  OpenCol = di.OpenCol;
-=======
 	u8     OpenCol = di.OpenCol;
->>>>>>> upstream/master
 
 	/* Global options */
 
@@ -678,11 +670,7 @@ int compute_res_net(int inputs, int channel, const res_net_info &di)
 
 	rTotal = 1.0 / rTotal;
 	v *= rTotal;
-<<<<<<< HEAD
-	v = MAX(minout, v - cut);
-=======
 	v = std::max(minout, v - cut);
->>>>>>> upstream/master
 
 	switch (di.options & RES_NET_MONITOR_MASK)
 	{
@@ -691,13 +679,8 @@ int compute_res_net(int inputs, int channel, const res_net_info &di)
 			break;
 		case RES_NET_MONITOR_SANYO_EZV20:
 			v = vcc - v;
-<<<<<<< HEAD
-			v = MAX(0, v-0.7);
-			v = MIN(v, vcc - 2 * 0.7);
-=======
 			v = std::max(double(0), v-0.7);
 			v = std::min(v, vcc - 2 * 0.7);
->>>>>>> upstream/master
 			v = v / (vcc-1.4);
 			v = v * vcc;
 			break;
@@ -709,25 +692,15 @@ int compute_res_net(int inputs, int channel, const res_net_info &di)
 	return (int) (v * 255 / vcc + 0.4);
 }
 
-<<<<<<< HEAD
-void compute_res_net_all(std::vector<rgb_t> &rgb, const UINT8 *prom, const res_net_decode_info &rdi, const res_net_info &di)
-{
-	UINT8 r,g,b;
-=======
 void compute_res_net_all(std::vector<rgb_t> &rgb, const u8 *prom, const res_net_decode_info &rdi, const res_net_info &di)
 {
 	u8 r,g,b;
->>>>>>> upstream/master
 	int i,j,k;
 
 	rgb.resize(rdi.end - rdi.start + 1);
 	for (i=rdi.start; i<=rdi.end; i++)
 	{
-<<<<<<< HEAD
-		UINT8 t[3] = {0,0,0};
-=======
 		u8 t[3] = {0,0,0};
->>>>>>> upstream/master
 		int s;
 		for (j=0;j<rdi.numcomp;j++)
 			for (k=0; k<3; k++)

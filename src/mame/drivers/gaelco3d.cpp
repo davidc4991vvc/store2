@@ -145,18 +145,6 @@ REF. 970429
 **************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/m68000/m68000.h"
-#include "includes/gaelco3d.h"
-#include "cpu/tms32031/tms32031.h"
-#include "cpu/adsp2100/adsp2100.h"
-#include "machine/eepromser.h"
-
-#define LOG             0
-
-
-
-=======
 #include "includes/gaelco3d.h"
 
 #include "cpu/adsp2100/adsp2100.h"
@@ -168,7 +156,6 @@ REF. 970429
 
 
 #define LOG             0
->>>>>>> upstream/master
 
 
 WRITE_LINE_MEMBER(gaelco3d_state::ser_irq)
@@ -197,39 +184,25 @@ void gaelco3d_state::machine_start()
 	save_item(NAME(m_adsp_ireg_base));
 	save_item(NAME(m_adsp_incs));
 	save_item(NAME(m_adsp_size));
-<<<<<<< HEAD
-=======
 	save_item(NAME(m_fp_clock));
 	save_item(NAME(m_fp_state));
 	save_item(NAME(m_fp_analog_ports));
 	save_item(NAME(m_fp_lenght));
->>>>>>> upstream/master
 }
 
 
 MACHINE_RESET_MEMBER(gaelco3d_state,common)
 {
-<<<<<<< HEAD
-	UINT16 *src;
-=======
 	uint16_t *src;
->>>>>>> upstream/master
 	int i;
 
 	m_framenum = 0;
 
 	/* boot the ADSP chip */
-<<<<<<< HEAD
-	src = (UINT16 *)memregion("user1")->base();
-	for (i = 0; i < (src[3] & 0xff) * 8; i++)
-	{
-		UINT32 opcode = ((src[i*4+0] & 0xff) << 16) | ((src[i*4+1] & 0xff) << 8) | (src[i*4+2] & 0xff);
-=======
 	src = (uint16_t *)memregion("user1")->base();
 	for (i = 0; i < (src[3] & 0xff) * 8; i++)
 	{
 		uint32_t opcode = ((src[i*4+0] & 0xff) << 16) | ((src[i*4+1] & 0xff) << 8) | (src[i*4+2] & 0xff);
->>>>>>> upstream/master
 		m_adsp_ram_base[i] = opcode;
 	}
 
@@ -262,11 +235,8 @@ MACHINE_RESET_MEMBER(gaelco3d_state,gaelco3d2)
 {
 	MACHINE_RESET_CALL_MEMBER( common );
 	m_tms_offset_xor = BYTE_XOR_BE(0);
-<<<<<<< HEAD
-=======
 	m_fp_clock = 27;
 	m_fp_state = 0;
->>>>>>> upstream/master
 }
 
 
@@ -289,19 +259,6 @@ WRITE16_MEMBER(gaelco3d_state::irq_ack_w)
 	m_maincpu->set_input_line(2, CLEAR_LINE);
 }
 
-<<<<<<< HEAD
-WRITE32_MEMBER(gaelco3d_state::irq_ack32_w)
-{
-	if (mem_mask == 0xffff0000)
-		irq_ack_w(space, offset, data, mem_mask >> 16);
-	else if (ACCESSING_BITS_0_7)
-		m_serial->tr_w(space, 0, data & 0x01);
-	else
-		logerror("%06X:irq_ack_w(%02X) = %08X & %08X\n", space.device().safe_pc(), offset, data, mem_mask);
-}
-
-=======
->>>>>>> upstream/master
 
 /*************************************
  *
@@ -312,21 +269,13 @@ WRITE32_MEMBER(gaelco3d_state::irq_ack32_w)
 
 READ16_MEMBER(gaelco3d_state::eeprom_data_r)
 {
-<<<<<<< HEAD
-	UINT32 result = 0xffff;
-=======
 	uint32_t result = 0xffff;
->>>>>>> upstream/master
 
 	if (ACCESSING_BITS_0_7)
 	{
 		/* bit 0 is clock */
 		/* bit 1 active */
-<<<<<<< HEAD
-		result &= ~GAELCOSER_EXT_STATUS_MASK;
-=======
 		result &= ~uint32_t(gaelco_serial_device::EXT_STATUS_MASK);
->>>>>>> upstream/master
 		result |= m_serial->status_r(space, 0);
 	}
 
@@ -337,55 +286,6 @@ READ16_MEMBER(gaelco3d_state::eeprom_data_r)
 	return result;
 }
 
-<<<<<<< HEAD
-READ32_MEMBER(gaelco3d_state::eeprom_data32_r)
-{
-	if (ACCESSING_BITS_16_31)
-		return (eeprom_data_r(space, 0, mem_mask >> 16) << 16) | 0xffff;
-	else if (ACCESSING_BITS_0_7)
-	{
-		UINT8 data = m_serial->data_r(space,0);
-		if (LOG)
-			logerror("%06X:read(%02X) = %08X & %08X\n", m_maincpu->pc(), offset, data, mem_mask);
-		return  data | 0xffffff00;
-	}
-	else
-		logerror("%06X:read(%02X) = mask %08X\n", m_maincpu->pc(), offset, mem_mask);
-
-	return 0xffffffff;
-}
-
-
-WRITE16_MEMBER(gaelco3d_state::eeprom_data_w)
-{
-	if (ACCESSING_BITS_0_7)
-	{
-		m_eeprom->di_write(data & 0x01);
-	}
-	else if (mem_mask != 0xffff)
-		logerror("write mask: %08x data %08x\n", mem_mask, data);
-}
-
-
-WRITE16_MEMBER(gaelco3d_state::eeprom_clock_w)
-{
-	if (ACCESSING_BITS_0_7)
-	{
-		m_eeprom->clk_write((data & 0x01) ? ASSERT_LINE : CLEAR_LINE);
-	}
-}
-
-
-WRITE16_MEMBER(gaelco3d_state::eeprom_cs_w)
-{
-	if (ACCESSING_BITS_0_7)
-	{
-		m_eeprom->cs_write((data & 0x01) ? ASSERT_LINE : CLEAR_LINE);
-	}
-}
-
-=======
->>>>>>> upstream/master
 
 
 /*************************************
@@ -448,61 +348,11 @@ WRITE16_MEMBER(gaelco3d_state::sound_status_w)
 
 CUSTOM_INPUT_MEMBER(gaelco3d_state::analog_bit_r)
 {
-<<<<<<< HEAD
-	int which = (FPTR)param;
-=======
 	int which = (uintptr_t)param;
->>>>>>> upstream/master
 	return (m_analog_ports[which] >> 7) & 0x01;
 }
 
 
-<<<<<<< HEAD
-WRITE16_MEMBER(gaelco3d_state::analog_port_clock_w)
-{
-	/* a zero/one combo is written here to clock the next analog port bit */
-	if (ACCESSING_BITS_0_7)
-	{
-		if (!(data & 0xff))
-		{
-			m_analog_ports[0] <<= 1;
-			m_analog_ports[1] <<= 1;
-			m_analog_ports[2] <<= 1;
-			m_analog_ports[3] <<= 1;
-		}
-	}
-	else
-	{
-		if (LOG)
-			logerror("%06X:analog_port_clock_w(%02X) = %08X & %08X\n", space.device().safe_pc(), offset, data, mem_mask);
-	}
-}
-
-
-WRITE16_MEMBER(gaelco3d_state::analog_port_latch_w)
-{
-	/* a zero is written here to read the analog ports, and a one is written when finished */
-	if (ACCESSING_BITS_0_7)
-	{
-		if (!(data & 0xff))
-		{
-			m_analog_ports[0] = read_safe(ioport("ANALOG0"), 0);
-			m_analog_ports[1] = read_safe(ioport("ANALOG1"), 0);
-			m_analog_ports[2] = read_safe(ioport("ANALOG2"), 0);
-			m_analog_ports[3] = read_safe(ioport("ANALOG3"), 0);
-		}
-	}
-	else
-	{
-		if (LOG)
-			logerror("%06X:analog_port_latch_w(%02X) = %08X & %08X\n", space.device().safe_pc(), offset, data, mem_mask);
-	}
-
-}
-
-
-
-=======
 WRITE_LINE_MEMBER(gaelco3d_state::analog_port_clock_w)
 {
 	/* a zero/one combo is written here to clock the next analog port bit */
@@ -560,7 +410,6 @@ WRITE_LINE_MEMBER(gaelco3d_state::fp_analog_clock_w)
 }
 
 
->>>>>>> upstream/master
 /*************************************
  *
  *  TMS32031 interface
@@ -569,13 +418,8 @@ WRITE_LINE_MEMBER(gaelco3d_state::fp_analog_clock_w)
 
 READ32_MEMBER(gaelco3d_state::tms_m68k_ram_r)
 {
-<<<<<<< HEAD
-//  logerror("%06X:tms_m68k_ram_r(%04X) = %08X\n", space.device().safe_pc(), offset, !(offset & 1) ? ((INT32)m_m68k_ram_base[offset/2] >> 16) : (int)(INT16)m_m68k_ram_base[offset/2]);
-	return (INT32)(INT16)m_m68k_ram_base[offset ^ m_tms_offset_xor];
-=======
 //  logerror("%06X:tms_m68k_ram_r(%04X) = %08X\n", space.device().safe_pc(), offset, !(offset & 1) ? ((int32_t)m_m68k_ram_base[offset/2] >> 16) : (int)(int16_t)m_m68k_ram_base[offset/2]);
 	return (int32_t)(int16_t)m_m68k_ram_base[offset ^ m_tms_offset_xor];
->>>>>>> upstream/master
 }
 
 
@@ -600,46 +444,21 @@ WRITE8_MEMBER(gaelco3d_state::tms_iack_w)
  *
  *************************************/
 
-<<<<<<< HEAD
-WRITE16_MEMBER(gaelco3d_state::tms_reset_w)
-=======
 WRITE_LINE_MEMBER(gaelco3d_state::tms_reset_w)
->>>>>>> upstream/master
 {
 	/* this is set to 0 while data is uploaded, then set to $ffff after it is done */
 	/* it does not ever appear to be touched after that */
 	if (LOG)
-<<<<<<< HEAD
-		logerror("%06X:tms_reset_w(%02X) = %08X & %08X\n", space.device().safe_pc(), offset, data, mem_mask);
-		m_tms->set_input_line(INPUT_LINE_RESET, (data == 0xffff) ? CLEAR_LINE : ASSERT_LINE);
-}
-
-
-WRITE16_MEMBER(gaelco3d_state::tms_irq_w)
-=======
 		logerror("%06X:tms_reset_w = %d\n", m_maincpu->pc(), state);
 	m_tms->set_input_line(INPUT_LINE_RESET, state ? CLEAR_LINE : ASSERT_LINE);
 }
 
 
 WRITE_LINE_MEMBER(gaelco3d_state::tms_irq_w)
->>>>>>> upstream/master
 {
 	/* this is written twice, 0,1, in quick succession */
 	/* done after uploading, and after modifying the comm area */
 	if (LOG)
-<<<<<<< HEAD
-		logerror("%06X:tms_irq_w(%02X) = %08X & %08X\n", space.device().safe_pc(), offset, data, mem_mask);
-	if (ACCESSING_BITS_0_7)
-		m_tms->set_input_line(0, (data & 0x01) ? CLEAR_LINE : ASSERT_LINE);
-}
-
-
-WRITE16_MEMBER(gaelco3d_state::tms_control3_w)
-{
-	if (LOG)
-		logerror("%06X:tms_control3_w(%02X) = %08X & %08X\n", space.device().safe_pc(), offset, data, mem_mask);
-=======
 		logerror("%06X:tms_irq_w = %d\n", m_maincpu->pc(), state);
 	m_tms->set_input_line(0, state ? CLEAR_LINE : ASSERT_LINE);
 }
@@ -649,7 +468,6 @@ WRITE_LINE_MEMBER(gaelco3d_state::tms_control3_w)
 {
 	if (LOG)
 		logerror("%06X:tms_control3_w = %d\n", m_maincpu->pc(), state);
->>>>>>> upstream/master
 }
 
 
@@ -727,15 +545,9 @@ WRITE16_MEMBER(gaelco3d_state::adsp_control_w)
 
 		case S1_CONTROL_REG:
 			if (((data >> 4) & 3) == 2)
-<<<<<<< HEAD
-				logerror("Oh no!, the data is compresed with u-law encoding\n");
-			if (((data >> 4) & 3) == 3)
-				logerror("Oh no!, the data is compresed with A-law encoding\n");
-=======
 				logerror("Oh no!, the data is compressed with u-law encoding\n");
 			if (((data >> 4) & 3) == 3)
 				logerror("Oh no!, the data is compressed with A-law encoding\n");
->>>>>>> upstream/master
 			break;
 	}
 }
@@ -764,11 +576,7 @@ TIMER_DEVICE_CALLBACK_MEMBER(gaelco3d_state::adsp_autobuffer_irq)
 	/* copy the current data into the buffer */
 // logerror("ADSP buffer: I%d=%04X incs=%04X size=%04X\n", m_adsp_ireg, reg, m_adsp_incs, m_adsp_size);
 	if (m_adsp_incs)
-<<<<<<< HEAD
-		dmadac_transfer(&m_dmadac[0], SOUND_CHANNELS, m_adsp_incs, SOUND_CHANNELS * m_adsp_incs, m_adsp_size / (SOUND_CHANNELS * m_adsp_incs), (INT16 *)&m_adsp_fastram_base[reg - 0x3800]);
-=======
 		dmadac_transfer(&m_dmadac[0], SOUND_CHANNELS, m_adsp_incs, SOUND_CHANNELS * m_adsp_incs, m_adsp_size / (SOUND_CHANNELS * m_adsp_incs), (int16_t *)&m_adsp_fastram_base[reg - 0x3800]);
->>>>>>> upstream/master
 
 	/* increment it */
 	reg += m_adsp_size;
@@ -780,11 +588,7 @@ TIMER_DEVICE_CALLBACK_MEMBER(gaelco3d_state::adsp_autobuffer_irq)
 		reg = m_adsp_ireg_base;
 
 		/* generate the (internal, thats why the pulse) irq */
-<<<<<<< HEAD
-		generic_pulse_irq_line(m_adsp, ADSP2105_IRQ1, 1);
-=======
 		generic_pulse_irq_line(*m_adsp, ADSP2105_IRQ1, 1);
->>>>>>> upstream/master
 	}
 
 	/* store it */
@@ -805,11 +609,7 @@ WRITE32_MEMBER(gaelco3d_state::adsp_tx_callback)
 		{
 			/* get the autobuffer registers */
 			int     mreg, lreg;
-<<<<<<< HEAD
-			UINT16  source;
-=======
 			uint16_t  source;
->>>>>>> upstream/master
 			attotime sample_period;
 
 			m_adsp_ireg = (m_adsp_control_regs[S1_AUTOBUF_REG] >> 9) & 7;
@@ -870,33 +670,6 @@ WRITE32_MEMBER(gaelco3d_state::adsp_tx_callback)
  *************************************/
 
 
-<<<<<<< HEAD
-WRITE32_MEMBER(gaelco3d_state::radikalb_lamp_w)
-{
-	/* arbitrary data written */
-	if (ACCESSING_BITS_0_7)
-		logerror("%06X:unknown_127_w = %02X\n", space.device().safe_pc(), data & 0xff);
-	else
-		logerror("%06X:unknown_127_w(%02X) = %08X & %08X\n", space.device().safe_pc(), offset, data, mem_mask);
-}
-
-WRITE32_MEMBER(gaelco3d_state::unknown_137_w)
-{
-	/* only written $00 or $ff */
-	if (ACCESSING_BITS_0_7)
-		logerror("%06X:unknown_137_w = %02X\n", space.device().safe_pc(), data & 0xff);
-	else
-		logerror("%06X:unknown_137_w(%02X) = %08X & %08X\n", space.device().safe_pc(), offset, data, mem_mask);
-}
-
-WRITE32_MEMBER(gaelco3d_state::unknown_13a_w)
-{
-	/* only written $0000 or $0001 */
-	if (ACCESSING_BITS_0_15)
-		logerror("%06X:unknown_13a_w = %04X\n", space.device().safe_pc(), data & 0xffff);
-	else
-		logerror("%06X:unknown_13a_w(%02X) = %08X & %08X\n", space.device().safe_pc(), offset, data, mem_mask);
-=======
 WRITE_LINE_MEMBER(gaelco3d_state::radikalb_lamp_w)
 {
 	/* arbitrary data written */
@@ -913,7 +686,6 @@ WRITE_LINE_MEMBER(gaelco3d_state::unknown_13a_w)
 {
 	/* only written $0000 or $0001 */
 	logerror("%06X:unknown_13a_w = %04X\n", m_maincpu->pc(), state);
->>>>>>> upstream/master
 }
 
 
@@ -934,30 +706,11 @@ static ADDRESS_MAP_START( main_map, AS_PROGRAM, 16, gaelco3d_state )
 	AM_RANGE(0x51003c, 0x51003d) AM_READ_PORT("IN3")
 	AM_RANGE(0x510040, 0x510041) AM_WRITE(sound_data_w)
 	AM_RANGE(0x510042, 0x510043) AM_READ(sound_status_r)
-<<<<<<< HEAD
-	AM_RANGE(0x510100, 0x510101) AM_READ(eeprom_data_r)
-	AM_RANGE(0x510100, 0x510101) AM_WRITE(irq_ack_w)
-	AM_RANGE(0x510102, 0x510103) AM_DEVWRITE8("serial", gaelco_serial_device, tr_w, 0x00ff)
-	AM_RANGE(0x510102, 0x510103) AM_DEVREAD8("serial", gaelco_serial_device, data_r, 0x00ff)
-	AM_RANGE(0x510104, 0x510105) AM_DEVWRITE8("serial", gaelco_serial_device, data_w, 0x00ff)
-	AM_RANGE(0x51010a, 0x51010b) AM_DEVWRITE8("serial", gaelco_serial_device, rts_w, 0x00ff)
-	AM_RANGE(0x510110, 0x510113) AM_WRITE(eeprom_data_w)
-	AM_RANGE(0x510116, 0x510117) AM_WRITE(tms_control3_w)
-	AM_RANGE(0x510118, 0x51011b) AM_WRITE(eeprom_clock_w)
-	AM_RANGE(0x510120, 0x510123) AM_WRITE(eeprom_cs_w)
-	AM_RANGE(0x51012a, 0x51012b) AM_WRITE(tms_reset_w)
-	AM_RANGE(0x510132, 0x510133) AM_WRITE(tms_irq_w)
-	AM_RANGE(0x510146, 0x510147) AM_DEVWRITE8("serial", gaelco_serial_device, irq_enable, 0x00ff)
-	AM_RANGE(0x510156, 0x510157) AM_WRITE(analog_port_clock_w)
-	AM_RANGE(0x510166, 0x510167) AM_WRITE(analog_port_latch_w)
-	AM_RANGE(0x510176, 0x510177) AM_DEVWRITE8("serial", gaelco_serial_device, unknown_w, 0x00ff)
-=======
 	AM_RANGE(0x510100, 0x510101) AM_READWRITE(eeprom_data_r, irq_ack_w)
 	AM_RANGE(0x510102, 0x510103) AM_DEVREAD8("serial", gaelco_serial_device, data_r, 0x00ff)
 	AM_RANGE(0x510102, 0x510103) AM_SELECT(0x000038) AM_DEVWRITE8_MOD("mainlatch", ls259_device, write_d0, rshift<2>, 0x00ff)
 	AM_RANGE(0x510104, 0x510105) AM_DEVWRITE8("serial", gaelco_serial_device, data_w, 0x00ff)
 	AM_RANGE(0x510106, 0x510107) AM_SELECT(0x000070) AM_DEVWRITE8_MOD("outlatch", ls259_device, write_d0, rshift<3>, 0x00ff)
->>>>>>> upstream/master
 	AM_RANGE(0xfe7f80, 0xfe7fff) AM_WRITE(tms_comm_w) AM_SHARE("tms_comm_base")
 	AM_RANGE(0xfe0000, 0xfeffff) AM_RAM AM_SHARE("m68k_ram_base")
 ADDRESS_MAP_END
@@ -972,42 +725,18 @@ static ADDRESS_MAP_START( main020_map, AS_PROGRAM, 32, gaelco3d_state )
 	AM_RANGE(0x51003c, 0x51003f) AM_READ_PORT("IN3")
 	AM_RANGE(0x510040, 0x510043) AM_READ16(sound_status_r, 0x0000ffff)
 	AM_RANGE(0x510040, 0x510043) AM_WRITE16(sound_data_w, 0xffff0000)
-<<<<<<< HEAD
-	AM_RANGE(0x510100, 0x510103) AM_READ(eeprom_data32_r)
-	AM_RANGE(0x510100, 0x510103) AM_WRITE(irq_ack32_w)
-	AM_RANGE(0x510104, 0x510107) AM_DEVWRITE8("serial", gaelco_serial_device, data_w, 0x00ff0000)
-	AM_RANGE(0x510108, 0x51010b) AM_DEVWRITE8("serial", gaelco_serial_device, rts_w, 0x000000ff)
-	AM_RANGE(0x510110, 0x510113) AM_WRITE16(eeprom_data_w, 0x0000ffff)
-	AM_RANGE(0x510114, 0x510117) AM_WRITE16(tms_control3_w, 0x0000ffff)
-	AM_RANGE(0x510118, 0x51011b) AM_WRITE16(eeprom_clock_w, 0x0000ffff)
-	AM_RANGE(0x510120, 0x510123) AM_WRITE16(eeprom_cs_w, 0x0000ffff)
-	AM_RANGE(0x510124, 0x510127) AM_WRITE(radikalb_lamp_w)
-	AM_RANGE(0x510128, 0x51012b) AM_WRITE16(tms_reset_w, 0x0000ffff)
-	AM_RANGE(0x510130, 0x510133) AM_WRITE16(tms_irq_w, 0x0000ffff)
-	AM_RANGE(0x510134, 0x510137) AM_WRITE(unknown_137_w)
-	AM_RANGE(0x510138, 0x51013b) AM_WRITE(unknown_13a_w)
-	AM_RANGE(0x510144, 0x510147) AM_DEVWRITE8("serial", gaelco_serial_device, irq_enable, 0x000000ff)
-	AM_RANGE(0x510154, 0x510157) AM_WRITE16(analog_port_clock_w, 0x0000ffff)
-	AM_RANGE(0x510164, 0x510167) AM_WRITE16(analog_port_latch_w, 0x0000ffff)
-	AM_RANGE(0x510174, 0x510177) AM_DEVWRITE8("serial", gaelco_serial_device, unknown_w, 0x000000ff)
-=======
 	AM_RANGE(0x510100, 0x510103) AM_READWRITE16(eeprom_data_r, irq_ack_w, 0xffff0000)
 	AM_RANGE(0x510100, 0x510103) AM_DEVREAD8("serial", gaelco_serial_device, data_r, 0x000000ff)
 	AM_RANGE(0x510100, 0x510103) AM_SELECT(0x000038) AM_DEVWRITE8_MOD("mainlatch", ls259_device, write_d0, rshift<1>, 0x000000ff)
 	AM_RANGE(0x510104, 0x510107) AM_DEVWRITE8("serial", gaelco_serial_device, data_w, 0x00ff0000)
 	AM_RANGE(0x510104, 0x510107) AM_SELECT(0x000070) AM_DEVWRITE8_MOD("outlatch", ls259_device, write_d0, rshift<2>, 0x000000ff)
->>>>>>> upstream/master
 	AM_RANGE(0xfe7f80, 0xfe7fff) AM_WRITE16(tms_comm_w, 0xffffffff) AM_SHARE("tms_comm_base")
 	AM_RANGE(0xfe0000, 0xfeffff) AM_RAM AM_SHARE("m68k_ram_base")
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( tms_map, AS_PROGRAM, 32, gaelco3d_state )
 	AM_RANGE(0x000000, 0x007fff) AM_READWRITE(tms_m68k_ram_r, tms_m68k_ram_w)
-<<<<<<< HEAD
-	AM_RANGE(0x400000, 0x5fffff) AM_ROM AM_REGION("user2", 0)
-=======
 	AM_RANGE(0x400000, 0x7fffff) AM_ROM AM_REGION("user2", 0)
->>>>>>> upstream/master
 	AM_RANGE(0xc00000, 0xc00007) AM_WRITE(gaelco3d_render_w)
 ADDRESS_MAP_END
 
@@ -1143,8 +872,6 @@ static INPUT_PORTS_START( radikalb )
 	PORT_BIT( 0xff, 0x80, IPT_PADDLE ) PORT_MINMAX(0x10,0xf0) PORT_SENSITIVITY(25) PORT_KEYDELTA(25)
 INPUT_PORTS_END
 
-<<<<<<< HEAD
-=======
 static INPUT_PORTS_START( footbpow )
 	PORT_START("IN0")
 	PORT_BIT( 0x0000ffff, IP_ACTIVE_HIGH, IPT_UNKNOWN )
@@ -1198,7 +925,6 @@ static INPUT_PORTS_START( footbpow )
 	PORT_BIT( 0xff, 0x80, IPT_AD_STICK_X ) PORT_MINMAX(0x00, 0xff) PORT_PLAYER(2) PORT_SENSITIVITY(25) PORT_KEYDELTA(50)
 INPUT_PORTS_END
 
->>>>>>> upstream/master
 
 
 /*************************************
@@ -1207,11 +933,7 @@ INPUT_PORTS_END
  *
  *************************************/
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( gaelco3d, gaelco3d_state )
-=======
 static MACHINE_CONFIG_START( gaelco3d )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, 15000000)
@@ -1228,13 +950,8 @@ static MACHINE_CONFIG_START( gaelco3d )
 	MCFG_CPU_PROGRAM_MAP(adsp_program_map)
 	MCFG_CPU_DATA_MAP(adsp_data_map)
 
-<<<<<<< HEAD
-
-	MCFG_EEPROM_SERIAL_93C66_ADD("eeprom")
-=======
 	MCFG_EEPROM_SERIAL_93C66_ADD("eeprom")
 	MCFG_EEPROM_SERIAL_ENABLE_STREAMING()
->>>>>>> upstream/master
 
 	MCFG_QUANTUM_TIME(attotime::from_hz(6000))
 
@@ -1243,8 +960,6 @@ static MACHINE_CONFIG_START( gaelco3d )
 	MCFG_DEVICE_ADD("serial", GAELCO_SERIAL, 0)
 	MCFG_GAELCO_SERIAL_IRQ_HANDLER(WRITELINE(gaelco3d_state, ser_irq))
 
-<<<<<<< HEAD
-=======
 	MCFG_DEVICE_ADD("mainlatch", LS259, 0) // IC5 on bottom board next to EEPROM
 	MCFG_ADDRESSABLE_LATCH_Q0_OUT_CB(DEVWRITELINE("serial", gaelco_serial_device, tr_w))
 	MCFG_ADDRESSABLE_LATCH_Q1_OUT_CB(DEVWRITELINE("serial", gaelco_serial_device, rts_w))
@@ -1264,7 +979,6 @@ static MACHINE_CONFIG_START( gaelco3d )
 	MCFG_ADDRESSABLE_LATCH_Q6_OUT_CB(WRITELINE(gaelco3d_state, analog_port_latch_w))
 	MCFG_ADDRESSABLE_LATCH_Q7_OUT_CB(DEVWRITELINE("serial", gaelco_serial_device, unknown_w))
 
->>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE(60)
@@ -1306,13 +1020,10 @@ static MACHINE_CONFIG_DERIVED( gaelco3d2, gaelco3d )
 	MCFG_MACHINE_RESET_OVERRIDE(gaelco3d_state,gaelco3d2)
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-=======
 static MACHINE_CONFIG_DERIVED( footbpow, gaelco3d2 )
 	MCFG_DEVICE_MODIFY("outlatch")
 	MCFG_ADDRESSABLE_LATCH_Q5_OUT_CB(WRITELINE(gaelco3d_state, fp_analog_clock_w))
 MACHINE_CONFIG_END
->>>>>>> upstream/master
 
 
 /*************************************
@@ -1329,11 +1040,7 @@ ROM_START( speedup )
 	ROM_REGION16_LE( 0x400000, "user1", 0 ) /* ADSP-2115 code & data */
 	ROM_LOAD( "sup25.bin", 0x0000000, 0x400000, CRC(284c7cd1) SHA1(58fbe73195aac9808a347c543423593e17ad3a10) )
 
-<<<<<<< HEAD
-	ROM_REGION32_LE( 0x800000, "user2", 0 )
-=======
 	ROM_REGION32_LE( 0x1000000, "user2", 0 )
->>>>>>> upstream/master
 	ROM_LOAD32_WORD( "sup32.bin", 0x000000, 0x200000, CRC(aed151de) SHA1(a139d4451d3758aa70621a25289d64c98c26d5c0) )
 	ROM_LOAD32_WORD( "sup33.bin", 0x000002, 0x200000, CRC(9be6ab7d) SHA1(8bb07f2a096d1f8989a5a409f87b35b7d771de88) )
 
@@ -1351,10 +1058,6 @@ ROM_START( speedup )
 //  ROM_LOAD( "ic42.bin", 0x0020000, 0x020000, CRC(e89e829b) SHA1(50c99bd9667d78a61252eaad5281a2e7f57be85a) )
 ROM_END
 
-<<<<<<< HEAD
-
-=======
->>>>>>> upstream/master
 ROM_START( speedup10 )
 	ROM_REGION( 0x200000, "maincpu", 0 )    /* 68000 code */
 	ROM_LOAD16_BYTE( "ic10_1.00", 0x000000, 0x80000, CRC(24ed8f48) SHA1(59d59e2a0b2fb7aed5320167960129819adedd9a) ) /* hand written labels IC10 1.00 */
@@ -1363,11 +1066,7 @@ ROM_START( speedup10 )
 	ROM_REGION16_LE( 0x400000, "user1", 0 ) /* ADSP-2115 code & data */
 	ROM_LOAD( "sup25.bin", 0x0000000, 0x400000, CRC(284c7cd1) SHA1(58fbe73195aac9808a347c543423593e17ad3a10) )
 
-<<<<<<< HEAD
-	ROM_REGION32_LE( 0x800000, "user2", 0 )
-=======
 	ROM_REGION32_LE( 0x1000000, "user2", 0 )
->>>>>>> upstream/master
 	ROM_LOAD32_WORD( "sup32.bin", 0x000000, 0x200000, CRC(aed151de) SHA1(a139d4451d3758aa70621a25289d64c98c26d5c0) )
 	ROM_LOAD32_WORD( "sup33.bin", 0x000002, 0x200000, CRC(9be6ab7d) SHA1(8bb07f2a096d1f8989a5a409f87b35b7d771de88) )
 
@@ -1396,11 +1095,7 @@ ROM_START( surfplnt )
 	ROM_REGION16_LE( 0x400000, "user1", 0 ) /* ADSP-2115 code & data */
 	ROM_LOAD( "pls.18", 0x0000000, 0x400000, CRC(a1b64695) SHA1(7487cd51305e30a5b55aada0bae9161fcb3fcd19) )
 
-<<<<<<< HEAD
-	ROM_REGION32_LE( 0x800000, "user2", 0 )
-=======
 	ROM_REGION32_LE( 0x1000000, "user2", 0 )
->>>>>>> upstream/master
 	ROM_LOAD32_WORD( "pls.40", 0x000000, 0x400000, CRC(26877ad3) SHA1(2e0c15b0e060e0b3d5b5cdaf1e22b9ec8e1abc9a) )
 	ROM_LOAD32_WORD( "pls.37", 0x000002, 0x400000, CRC(75893062) SHA1(81f10243336a309f8cc8532ee9a130ecc35bbcd6) )
 
@@ -1422,10 +1117,6 @@ ROM_START( surfplnt )
 //  ROM_LOAD( "surfplnt.u30", 0x0060000, 0x020000, CRC(ccf88f7e) SHA1(c6a3bb9d6cf14a93a36ed20a47b7c068ccd630aa) )
 ROM_END
 
-<<<<<<< HEAD
-
-=======
->>>>>>> upstream/master
 ROM_START( surfplnt40 )
 	ROM_REGION( 0x200000, "maincpu", 0 )    /* 68000 code */
 	ROM_LOAD16_BYTE( "surfpl40.u5",  0x000000, 0x80000, CRC(572e0343) SHA1(badb08a5a495611b5fd2d821d4299348b2c9f308) )
@@ -1436,11 +1127,7 @@ ROM_START( surfplnt40 )
 	ROM_REGION16_LE( 0x400000, "user1", 0 ) /* ADSP-2115 code & data */
 	ROM_LOAD( "pls.18", 0x0000000, 0x400000, CRC(a1b64695) SHA1(7487cd51305e30a5b55aada0bae9161fcb3fcd19) )
 
-<<<<<<< HEAD
-	ROM_REGION32_LE( 0x800000, "user2", 0 )
-=======
 	ROM_REGION32_LE( 0x1000000, "user2", 0 )
->>>>>>> upstream/master
 	ROM_LOAD32_WORD( "pls.40", 0x000000, 0x400000, CRC(26877ad3) SHA1(2e0c15b0e060e0b3d5b5cdaf1e22b9ec8e1abc9a) )
 	ROM_LOAD32_WORD( "pls.37", 0x000002, 0x400000, CRC(75893062) SHA1(81f10243336a309f8cc8532ee9a130ecc35bbcd6) )
 
@@ -1473,11 +1160,7 @@ ROM_START( radikalb )
 	ROM_REGION16_LE( 0x400000, "user1", 0 ) /* ADSP-2115 code & data */
 	ROM_LOAD( "rab.23", 0x0000000, 0x400000, CRC(dcf52520) SHA1(ab54421c182436660d2a56a334c1aa335424644a) )
 
-<<<<<<< HEAD
-	ROM_REGION32_LE( 0x800000, "user2", 0 )
-=======
 	ROM_REGION32_LE( 0x1000000, "user2", 0 )
->>>>>>> upstream/master
 	ROM_LOAD32_WORD( "rab.48", 0x000000, 0x400000, CRC(9c56a06a) SHA1(54f12d8b55fa14446c47e31684c92074c4157fe1) )
 	ROM_LOAD32_WORD( "rab.45", 0x000002, 0x400000, CRC(7e698584) SHA1(a9423835a126396902c499e9f7df3b68c2ab28a8) )
 
@@ -1504,11 +1187,6 @@ ROM_START( radikalb )
 //  ROM_LOAD( "rab.35", 0x0060000, 0x020000, CRC(bbcf6977) SHA1(0282c8ba79c35ed1240711d5812bfb590d151738) )
 ROM_END
 
-<<<<<<< HEAD
-
-
-=======
->>>>>>> upstream/master
 ROM_START( radikalba )
 	ROM_REGION( 0x200000, "maincpu", 0 )    /* 68020 code */
 	ROM_LOAD32_BYTE( "rab.6",  0x000000, 0x80000, CRC(ccac98c5) SHA1(43a30caf9880f48aba79676f9e746fdc6258139d) )
@@ -1519,11 +1197,7 @@ ROM_START( radikalba )
 	ROM_REGION16_LE( 0x400000, "user1", 0 ) /* ADSP-2115 code & data */
 	ROM_LOAD( "rab.23", 0x0000000, 0x400000, CRC(dcf52520) SHA1(ab54421c182436660d2a56a334c1aa335424644a) )
 
-<<<<<<< HEAD
-	ROM_REGION32_LE( 0x800000, "user2", 0 )
-=======
 	ROM_REGION32_LE( 0x1000000, "user2", 0 )
->>>>>>> upstream/master
 	ROM_LOAD32_WORD( "rab.48", 0x000000, 0x400000, CRC(9c56a06a) SHA1(54f12d8b55fa14446c47e31684c92074c4157fe1) )
 	ROM_LOAD32_WORD( "rab.45", 0x000002, 0x400000, CRC(7e698584) SHA1(a9423835a126396902c499e9f7df3b68c2ab28a8) )
 
@@ -1551,8 +1225,6 @@ ROM_START( radikalba )
 ROM_END
 
 
-<<<<<<< HEAD
-=======
 ROM_START( footbpow )
 	ROM_REGION( 0x200000, "maincpu", 0 )    /* 68020 code */
 	ROM_LOAD32_BYTE( "fop_7.ic7",   0x000000, 0x80000, CRC(a2d7ec69) SHA1(27e4f3d27882152244c0f9d5a984e0f1bd7b7d3f) )
@@ -1586,7 +1258,6 @@ ROM_START( footbpow )
 ROM_END
 
 
->>>>>>> upstream/master
 /*************************************
  *
  *  Driver init
@@ -1605,16 +1276,6 @@ DRIVER_INIT_MEMBER(gaelco3d_state,gaelco3d)
  *
  *************************************/
 
-<<<<<<< HEAD
-GAME( 1996, speedup,    0,        gaelco3d,  speedup,  gaelco3d_state, gaelco3d, ROT0, "Gaelco", "Speed Up (Version 1.20)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
-GAME( 1996, speedup10,  speedup,  gaelco3d,  speedup,  gaelco3d_state, gaelco3d, ROT0, "Gaelco", "Speed Up (Version 1.00)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
-
-GAME( 1997, surfplnt,   0,        gaelco3d,  surfplnt, gaelco3d_state, gaelco3d, ROT0, "Gaelco", "Surf Planet (Version 4.1)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE)
-GAME( 1997, surfplnt40, surfplnt, gaelco3d,  surfplnt, gaelco3d_state, gaelco3d, ROT0, "Gaelco", "Surf Planet (Version 4.0)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE)
-
-GAME( 1998, radikalb,   0,        gaelco3d2, radikalb, gaelco3d_state, gaelco3d, ROT0, "Gaelco",                 "Radikal Bikers (Version 2.02)",                MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE)
-GAME( 1998, radikalba,  radikalb, gaelco3d2, radikalb, gaelco3d_state, gaelco3d, ROT0, "Gaelco (Atari license)", "Radikal Bikers (Version 2.02, Atari license)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE)
-=======
 GAME( 1996, speedup,    0,        gaelco3d,  speedup,  gaelco3d_state, gaelco3d, ROT0, "Gaelco",                 "Speed Up (Version 1.20)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
 GAME( 1996, speedup10,  speedup,  gaelco3d,  speedup,  gaelco3d_state, gaelco3d, ROT0, "Gaelco",                 "Speed Up (Version 1.00)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
 
@@ -1625,4 +1286,3 @@ GAME( 1998, radikalb,   0,        gaelco3d2, radikalb, gaelco3d_state, gaelco3d,
 GAME( 1998, radikalba,  radikalb, gaelco3d2, radikalb, gaelco3d_state, gaelco3d, ROT0, "Gaelco (Atari license)", "Radikal Bikers (Version 2.02, Atari license)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE)
 
 GAME( 1999, footbpow,   0,        footbpow,  footbpow, gaelco3d_state, gaelco3d, ROT0, "Gaelco",                 "Football Power", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_CONTROLS )
->>>>>>> upstream/master

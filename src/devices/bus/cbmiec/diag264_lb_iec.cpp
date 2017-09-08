@@ -6,10 +6,7 @@
 
 **********************************************************************/
 
-<<<<<<< HEAD
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #include "diag264_lb_iec.h"
 
 
@@ -18,11 +15,7 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type DIAG264_SERIAL_LOOPBACK = &device_creator<diag264_serial_loopback_device>;
-=======
 DEFINE_DEVICE_TYPE(DIAG264_SERIAL_LOOPBACK, diag264_serial_loopback_device, "diag264_serial_loopback", "Diag264 Serial Loopback")
->>>>>>> upstream/master
 
 
 
@@ -34,15 +27,9 @@ DEFINE_DEVICE_TYPE(DIAG264_SERIAL_LOOPBACK, diag264_serial_loopback_device, "dia
 //  diag264_serial_loopback_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-diag264_serial_loopback_device::diag264_serial_loopback_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, DIAG264_SERIAL_LOOPBACK, "Diag264 Serial Loopback", tag, owner, clock, "diag264_serial_loopback", __FILE__),
-		device_cbm_iec_interface(mconfig, *this)
-=======
 diag264_serial_loopback_device::diag264_serial_loopback_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, DIAG264_SERIAL_LOOPBACK, tag, owner, clock)
 	, device_cbm_iec_interface(mconfig, *this)
->>>>>>> upstream/master
 {
 }
 

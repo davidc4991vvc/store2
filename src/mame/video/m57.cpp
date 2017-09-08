@@ -34,11 +34,7 @@
 
 PALETTE_INIT_MEMBER(m57_state, m57)
 {
-<<<<<<< HEAD
-	const UINT8 *color_prom = memregion("proms")->base();
-=======
 	const uint8_t *color_prom = memregion("proms")->base();
->>>>>>> upstream/master
 	int i;
 
 	/* character palette */
@@ -116,13 +112,8 @@ PALETTE_INIT_MEMBER(m57_state, m57)
 
 TILE_GET_INFO_MEMBER(m57_state::get_tile_info)
 {
-<<<<<<< HEAD
-	UINT8 attr = m_videoram[tile_index * 2 + 0];
-	UINT16 code = m_videoram[tile_index * 2 + 1] | ((attr & 0xc0) << 2);
-=======
 	uint8_t attr = m_videoram[tile_index * 2 + 0];
 	uint16_t code = m_videoram[tile_index * 2 + 1] | ((attr & 0xc0) << 2);
->>>>>>> upstream/master
 
 	SET_TILE_INFO_MEMBER(0, code, attr & 0x0f, TILE_FLIPXY(attr >> 4));
 }
@@ -149,11 +140,7 @@ WRITE8_MEMBER(m57_state::m57_videoram_w)
 
 void m57_state::video_start()
 {
-<<<<<<< HEAD
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(m57_state::get_tile_info),this), TILEMAP_SCAN_ROWS,  8, 8, 32, 32);
-=======
 	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(m57_state::get_tile_info),this), TILEMAP_SCAN_ROWS,  8, 8, 32, 32);
->>>>>>> upstream/master
 	m_bg_tilemap->set_scroll_rows(256);
 
 	save_item(NAME(m_flipscreen));
@@ -172,13 +159,8 @@ WRITE8_MEMBER(m57_state::m57_flipscreen_w)
 	m_flipscreen = (data & 0x01) ^ (~ioport("DSW2")->read() & 0x01);
 	m_bg_tilemap->set_flip(m_flipscreen ? (TILEMAP_FLIPY | TILEMAP_FLIPX) : 0);
 
-<<<<<<< HEAD
-	coin_counter_w(machine(), 0,data & 0x02);
-	coin_counter_w(machine(), 1,data & 0x20);
-=======
 	machine().bookkeeping().coin_counter_w(0,data & 0x02);
 	machine().bookkeeping().coin_counter_w(1,data & 0x20);
->>>>>>> upstream/master
 }
 
 
@@ -191,11 +173,7 @@ WRITE8_MEMBER(m57_state::m57_flipscreen_w)
 void m57_state::draw_background(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
 	int y,x;
-<<<<<<< HEAD
-	INT16 scrolly;
-=======
 	int16_t scrolly;
->>>>>>> upstream/master
 
 	// from 64 to 127: not wrapped
 	for (y = 64; y < 128; y++)
@@ -241,11 +219,7 @@ void m57_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect)
 
 	for (offs = m_spriteram.bytes() - 4; offs >= 0; offs -= 4)
 	{
-<<<<<<< HEAD
-		UINT8 attributes = m_spriteram[offs + 1];
-=======
 		uint8_t attributes = m_spriteram[offs + 1];
->>>>>>> upstream/master
 		int sx = m_spriteram[offs + 3];
 		int sy = ((224 - m_spriteram[offs + 0] - 32) & 0xff) + 32;
 		int code = m_spriteram[offs + 2];
@@ -284,11 +258,7 @@ void m57_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect)
  *
  *************************************/
 
-<<<<<<< HEAD
-UINT32 m57_state::screen_update_m57(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t m57_state::screen_update_m57(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	draw_background(screen, bitmap, cliprect);
 	draw_sprites(bitmap, cliprect);

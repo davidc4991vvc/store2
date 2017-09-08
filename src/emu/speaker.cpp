@@ -2,21 +2,14 @@
 // copyright-holders:Aaron Giles
 /***************************************************************************
 
-<<<<<<< HEAD
-    speaker.c
-=======
     speaker.cpp
->>>>>>> upstream/master
 
     Speaker output sound device.
 
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-=======
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 
@@ -35,11 +28,7 @@
 //**************************************************************************
 
 // device type definition
-<<<<<<< HEAD
-const device_type SPEAKER = &device_creator<speaker_device>;
-=======
 DEFINE_DEVICE_TYPE(SPEAKER, speaker_device, "speaker", "Speaker")
->>>>>>> upstream/master
 
 
 
@@ -51,19 +40,6 @@ DEFINE_DEVICE_TYPE(SPEAKER, speaker_device, "speaker", "Speaker")
 //  speaker_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-speaker_device::speaker_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, SPEAKER, "Speaker", tag, owner, clock, "speaker", __FILE__),
-		device_mixer_interface(mconfig, *this),
-		m_x(0.0),
-		m_y(0.0),
-		m_z(0.0)
-#ifdef MAME_DEBUG
-	,
-		m_max_sample(0),
-		m_clipped_samples(0),
-		m_total_samples(0)
-=======
 speaker_device::speaker_device(const machine_config &mconfig, const char *tag, device_t *owner, u32 clock)
 	: device_t(mconfig, SPEAKER, tag, owner, clock)
 	, device_mixer_interface(mconfig, *this)
@@ -74,7 +50,6 @@ speaker_device::speaker_device(const machine_config &mconfig, const char *tag, d
 	, m_max_sample(0)
 	, m_clipped_samples(0)
 	, m_total_samples(0)
->>>>>>> upstream/master
 #endif
 {
 }
@@ -112,17 +87,10 @@ void speaker_device::static_set_position(device_t &device, double x, double y, d
 //  mix - mix in samples from the speaker's stream
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void speaker_device::mix(INT32 *leftmix, INT32 *rightmix, int &samples_this_update, bool suppress)
-{
-	// skip if no stream
-	if (m_mixer_stream == NULL)
-=======
 void speaker_device::mix(s32 *leftmix, s32 *rightmix, int &samples_this_update, bool suppress)
 {
 	// skip if no stream
 	if (m_mixer_stream == nullptr)
->>>>>>> upstream/master
 		return;
 
 	// update the stream, getting the start/end pointers around the operation

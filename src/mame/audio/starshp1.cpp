@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-// license:???
-=======
 // license:BSD-3-Clause
->>>>>>> upstream/master
 // copyright-holders:Derrick Renaud
 /************************************************************************
  * starshp1 Sound System Analog emulation
@@ -30,11 +26,7 @@
 #define STARSHP1_SL2_SND        NODE_17
 
 /* Timing signals */
-<<<<<<< HEAD
-#define STARSHP1_HSYNC  15750   /* per manual */
-=======
 #define STARSHP1_HSYNC  (STARSHP1_PIXEL_CLOCK / STARSHP1_HTOTAL)
->>>>>>> upstream/master
 #define STARSHP1_S1V    STARSHP1_HSYNC / 2
 #define STARSHP1_S128V  STARSHP1_S1V / 128
 

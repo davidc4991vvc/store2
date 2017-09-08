@@ -14,10 +14,7 @@
 
 */
 
-<<<<<<< HEAD
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #include "c1581.h"
 
 
@@ -36,13 +33,8 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type C1563 = &device_creator<c1563_t>;
-const device_type C1581 = &device_creator<c1581_t>;
-=======
 DEFINE_DEVICE_TYPE(C1563, c1563_device, "c1563", "C1563 Disk Drive")
 DEFINE_DEVICE_TYPE(C1581, c1581_device, "c1581", "C1581 Disk Drive")
->>>>>>> upstream/master
 
 
 //-------------------------------------------------
@@ -67,11 +59,7 @@ ROM_END
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const rom_entry *c1581_t::device_rom_region() const
-=======
 const tiny_rom_entry *c1581_device::device_rom_region() const
->>>>>>> upstream/master
 {
 	return ROM_NAME( c1581 );
 }
@@ -91,11 +79,7 @@ ROM_END
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const rom_entry *c1563_t::device_rom_region() const
-=======
 const tiny_rom_entry *c1563_device::device_rom_region() const
->>>>>>> upstream/master
 {
 	return ROM_NAME( c1563 );
 }
@@ -105,17 +89,10 @@ const tiny_rom_entry *c1563_device::device_rom_region() const
 //  ADDRESS_MAP( c1581_mem )
 //-------------------------------------------------
 
-<<<<<<< HEAD
-static ADDRESS_MAP_START( c1581_mem, AS_PROGRAM, 8, c1581_t )
-	AM_RANGE(0x0000, 0x1fff) AM_MIRROR(0x2000) AM_RAM
-	AM_RANGE(0x4000, 0x400f) AM_MIRROR(0x1ff0) AM_DEVREADWRITE(M8520_TAG, mos8520_device, read, write)
-	AM_RANGE(0x6000, 0x6003) AM_MIRROR(0x1ffc) AM_DEVREADWRITE(WD1772_TAG, wd1772_t, read, write)
-=======
 static ADDRESS_MAP_START( c1581_mem, AS_PROGRAM, 8, c1581_device )
 	AM_RANGE(0x0000, 0x1fff) AM_MIRROR(0x2000) AM_RAM
 	AM_RANGE(0x4000, 0x400f) AM_MIRROR(0x1ff0) AM_DEVREADWRITE(M8520_TAG, mos8520_device, read, write)
 	AM_RANGE(0x6000, 0x6003) AM_MIRROR(0x1ffc) AM_DEVREADWRITE(WD1772_TAG, wd1772_device, read, write)
->>>>>>> upstream/master
 	AM_RANGE(0x8000, 0xffff) AM_ROM AM_REGION(M6502_TAG, 0)
 ADDRESS_MAP_END
 
@@ -124,33 +101,21 @@ ADDRESS_MAP_END
 //  MOS8520_INTERFACE( cia_intf )
 //-------------------------------------------------
 
-<<<<<<< HEAD
-WRITE_LINE_MEMBER( c1581_t::cnt_w )
-=======
 WRITE_LINE_MEMBER( c1581_device::cnt_w )
->>>>>>> upstream/master
 {
 	m_cnt_out = state;
 
 	update_iec();
 }
 
-<<<<<<< HEAD
-WRITE_LINE_MEMBER( c1581_t::sp_w )
-=======
 WRITE_LINE_MEMBER( c1581_device::sp_w )
->>>>>>> upstream/master
 {
 	m_sp_out = state;
 
 	update_iec();
 }
 
-<<<<<<< HEAD
-READ8_MEMBER( c1581_t::cia_pa_r )
-=======
 READ8_MEMBER( c1581_device::cia_pa_r )
->>>>>>> upstream/master
 {
 	/*
 
@@ -167,11 +132,7 @@ READ8_MEMBER( c1581_device::cia_pa_r )
 
 	*/
 
-<<<<<<< HEAD
-	UINT8 data = 0;
-=======
 	uint8_t data = 0;
->>>>>>> upstream/master
 
 	// ready
 	//data |= !m_floppy->ready_r() << 1;
@@ -185,11 +146,7 @@ READ8_MEMBER( c1581_device::cia_pa_r )
 	return data;
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER( c1581_t::cia_pa_w )
-=======
 WRITE8_MEMBER( c1581_device::cia_pa_w )
->>>>>>> upstream/master
 {
 	/*
 
@@ -213,15 +170,6 @@ WRITE8_MEMBER( c1581_device::cia_pa_w )
 	m_floppy->mon_w(BIT(data, 2));
 
 	// power led
-<<<<<<< HEAD
-	output_set_led_value(LED_POWER, BIT(data, 5));
-
-	// activity led
-	output_set_led_value(LED_ACT, BIT(data, 6));
-}
-
-READ8_MEMBER( c1581_t::cia_pb_r )
-=======
 	machine().output().set_led_value(LED_POWER, BIT(data, 5));
 
 	// activity led
@@ -229,7 +177,6 @@ READ8_MEMBER( c1581_t::cia_pb_r )
 }
 
 READ8_MEMBER( c1581_device::cia_pb_r )
->>>>>>> upstream/master
 {
 	/*
 
@@ -246,11 +193,7 @@ READ8_MEMBER( c1581_device::cia_pb_r )
 
 	*/
 
-<<<<<<< HEAD
-	UINT8 data = 0;
-=======
 	uint8_t data;
->>>>>>> upstream/master
 
 	// data in
 	data = !m_bus->data_r();
@@ -267,11 +210,7 @@ READ8_MEMBER( c1581_device::cia_pb_r )
 	return data;
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER( c1581_t::cia_pb_w )
-=======
 WRITE8_MEMBER( c1581_device::cia_pb_w )
->>>>>>> upstream/master
 {
 	/*
 
@@ -314,49 +253,24 @@ SLOT_INTERFACE_END
 
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  FLOPPY_FORMATS( c1581_t::floppy_formats )
-//-------------------------------------------------
-
-FLOPPY_FORMATS_MEMBER( c1581_t::floppy_formats )
-=======
 //  FLOPPY_FORMATS( c1581_device::floppy_formats )
 //-------------------------------------------------
 
 FLOPPY_FORMATS_MEMBER( c1581_device::floppy_formats )
->>>>>>> upstream/master
 	FLOPPY_D81_FORMAT
 FLOPPY_FORMATS_END
 
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  MACHINE_DRIVER( c1581 )
-//-------------------------------------------------
-
-static MACHINE_CONFIG_FRAGMENT( c1581 )
-=======
 //  device_add_mconfig - add device configuration
 //-------------------------------------------------
 
 MACHINE_CONFIG_MEMBER( c1581_device::device_add_mconfig )
->>>>>>> upstream/master
 	MCFG_CPU_ADD(M6502_TAG, M6502, XTAL_16MHz/8)
 	MCFG_CPU_PROGRAM_MAP(c1581_mem)
 
 	MCFG_DEVICE_ADD(M8520_TAG, MOS8520, XTAL_16MHz/8)
 	MCFG_MOS6526_IRQ_CALLBACK(INPUTLINE(M6502_TAG, INPUT_LINE_IRQ0))
-<<<<<<< HEAD
-	MCFG_MOS6526_CNT_CALLBACK(WRITELINE(c1581_t, cnt_w))
-	MCFG_MOS6526_SP_CALLBACK(WRITELINE(c1581_t, sp_w))
-	MCFG_MOS6526_PA_INPUT_CALLBACK(READ8(c1581_t, cia_pa_r))
-	MCFG_MOS6526_PA_OUTPUT_CALLBACK(WRITE8(c1581_t, cia_pa_w))
-	MCFG_MOS6526_PB_INPUT_CALLBACK(READ8(c1581_t, cia_pb_r))
-	MCFG_MOS6526_PB_OUTPUT_CALLBACK(WRITE8(c1581_t, cia_pb_w))
-
-	MCFG_WD1772_ADD(WD1772_TAG, XTAL_16MHz/2)
-	MCFG_FLOPPY_DRIVE_ADD(WD1772_TAG":0", c1581_floppies, "35dd", c1581_t::floppy_formats)
-=======
 	MCFG_MOS6526_CNT_CALLBACK(WRITELINE(c1581_device, cnt_w))
 	MCFG_MOS6526_SP_CALLBACK(WRITELINE(c1581_device, sp_w))
 	MCFG_MOS6526_PA_INPUT_CALLBACK(READ8(c1581_device, cia_pa_r))
@@ -366,25 +280,10 @@ MACHINE_CONFIG_MEMBER( c1581_device::device_add_mconfig )
 
 	MCFG_WD1772_ADD(WD1772_TAG, XTAL_16MHz/2)
 	MCFG_FLOPPY_DRIVE_ADD_FIXED(WD1772_TAG":0", c1581_floppies, "35dd", c1581_device::floppy_formats)
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  machine_config_additions - device-specific
-//  machine configurations
-//-------------------------------------------------
-
-machine_config_constructor c1581_t::device_mconfig_additions() const
-{
-	return MACHINE_CONFIG_NAME( c1581 );
-}
-
-
-//-------------------------------------------------
-=======
->>>>>>> upstream/master
 //  INPUT_PORTS( c1581 )
 //-------------------------------------------------
 
@@ -402,11 +301,7 @@ INPUT_PORTS_END
 //  input_ports - device-specific input ports
 //-------------------------------------------------
 
-<<<<<<< HEAD
-ioport_constructor c1581_t::device_input_ports() const
-=======
 ioport_constructor c1581_device::device_input_ports() const
->>>>>>> upstream/master
 {
 	return INPUT_PORTS_NAME( c1581 );
 }
@@ -418,19 +313,11 @@ ioport_constructor c1581_device::device_input_ports() const
 //**************************************************************************
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  c1581_t - constructor
-//-------------------------------------------------
-
-c1581_t::c1581_t(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source)
-	: device_t(mconfig, type, name, tag, owner, clock, shortname, source),
-=======
 //  c1581_device - constructor
 //-------------------------------------------------
 
 c1581_device::c1581_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, type, tag, owner, clock),
->>>>>>> upstream/master
 		device_cbm_iec_interface(mconfig, *this),
 		m_maincpu(*this, M6502_TAG),
 		m_cia(*this, M8520_TAG),
@@ -445,53 +332,25 @@ c1581_device::c1581_device(const machine_config &mconfig, device_type type, cons
 {
 }
 
-<<<<<<< HEAD
-c1581_t::c1581_t(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, C1581, "C1581", tag, owner, clock, "c1581", __FILE__),
-		device_cbm_iec_interface(mconfig, *this),
-		m_maincpu(*this, M6502_TAG),
-		m_cia(*this, M8520_TAG),
-		m_fdc(*this, WD1772_TAG),
-		m_floppy(*this, WD1772_TAG":0:35dd"),
-		m_address(*this, "ADDRESS"),
-		m_data_out(0),
-		m_atn_ack(0),
-		m_fast_ser_dir(0),
-		m_sp_out(1),
-		m_cnt_out(1)
-=======
 c1581_device::c1581_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: c1581_device(mconfig, C1581, tag, owner, clock)
->>>>>>> upstream/master
 {
 }
 
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  c1563_t - constructor
-//-------------------------------------------------
-
-c1563_t::c1563_t(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: c1581_t(mconfig, C1563, "C1563", tag, owner, clock, "c1563", __FILE__) { }
-=======
 //  c1563_device - constructor
 //-------------------------------------------------
 
 c1563_device::c1563_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: c1581_device(mconfig, C1563, tag, owner, clock) { }
->>>>>>> upstream/master
 
 
 //-------------------------------------------------
 //  device_start - device-specific startup
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void c1581_t::device_start()
-=======
 void c1581_device::device_start()
->>>>>>> upstream/master
 {
 	// state saving
 	save_item(NAME(m_data_out));
@@ -506,11 +365,7 @@ void c1581_device::device_start()
 //  device_reset - device-specific reset
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void c1581_t::device_reset()
-=======
 void c1581_device::device_reset()
->>>>>>> upstream/master
 {
 	m_maincpu->reset();
 
@@ -531,11 +386,7 @@ void c1581_device::device_reset()
 //  cbm_iec_srq -
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void c1581_t::cbm_iec_srq(int state)
-=======
 void c1581_device::cbm_iec_srq(int state)
->>>>>>> upstream/master
 {
 	update_iec();
 }
@@ -545,11 +396,7 @@ void c1581_device::cbm_iec_srq(int state)
 //  cbm_iec_atn -
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void c1581_t::cbm_iec_atn(int state)
-=======
 void c1581_device::cbm_iec_atn(int state)
->>>>>>> upstream/master
 {
 	update_iec();
 }
@@ -559,11 +406,7 @@ void c1581_device::cbm_iec_atn(int state)
 //  cbm_iec_data -
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void c1581_t::cbm_iec_data(int state)
-=======
 void c1581_device::cbm_iec_data(int state)
->>>>>>> upstream/master
 {
 	update_iec();
 }
@@ -573,11 +416,7 @@ void c1581_device::cbm_iec_data(int state)
 //  cbm_iec_reset -
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void c1581_t::cbm_iec_reset(int state)
-=======
 void c1581_device::cbm_iec_reset(int state)
->>>>>>> upstream/master
 {
 	if (!state)
 	{
@@ -590,11 +429,7 @@ void c1581_device::cbm_iec_reset(int state)
 //  update_iec -
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void c1581_t::update_iec()
-=======
 void c1581_device::update_iec()
->>>>>>> upstream/master
 {
 	m_cia->cnt_w(m_fast_ser_dir || m_bus->srq_r());
 	m_cia->sp_w(m_fast_ser_dir || m_bus->data_r());

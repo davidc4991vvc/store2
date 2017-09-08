@@ -1,24 +1,14 @@
 // license:BSD-3-Clause
 // copyright-holders:Nicola Salmoria
-<<<<<<< HEAD
-#ifndef __TC0180VCU_H__
-#define __TC0180VCU_H__
-=======
 #ifndef MAME_VIDEO_TC0180VCU_H
 #define MAME_VIDEO_TC0180VCU_H
 
 #pragma once
->>>>>>> upstream/master
 
 class tc0180vcu_device : public device_t
 {
 public:
-<<<<<<< HEAD
-	tc0180vcu_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-	~tc0180vcu_device() {}
-=======
 	tc0180vcu_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
->>>>>>> upstream/master
 
 	// static configuration
 	static void static_set_gfxdecode_tag(device_t &device, const char *tag);
@@ -39,23 +29,6 @@ public:
 
 protected:
 	// device-level overrides
-<<<<<<< HEAD
-	virtual void device_start();
-	virtual void device_reset();
-
-private:
-	// internal state
-	UINT16         m_ctrl[0x10];
-
-	UINT16 *       m_ram;
-	UINT16 *       m_scrollram;
-
-	tilemap_t      *m_tilemap[3];
-
-	UINT16         m_bg_rambank[2], m_fg_rambank[2], m_tx_rambank;
-	UINT8          m_framebuffer_page;
-	UINT8          m_video_control;
-=======
 	virtual void device_start() override;
 	virtual void device_reset() override;
 
@@ -71,7 +44,6 @@ private:
 	uint16_t         m_bg_rambank[2], m_fg_rambank[2], m_tx_rambank;
 	uint8_t          m_framebuffer_page;
 	uint8_t          m_video_control;
->>>>>>> upstream/master
 
 	int            m_bg_color_base;
 	int            m_fg_color_base;
@@ -83,17 +55,10 @@ private:
 	TILE_GET_INFO_MEMBER(get_fg_tile_info);
 	TILE_GET_INFO_MEMBER(get_tx_tile_info);
 
-<<<<<<< HEAD
-	void video_control( UINT8 data );
-};
-
-extern const device_type TC0180VCU;
-=======
 	void video_control( uint8_t data );
 };
 
 DECLARE_DEVICE_TYPE(TC0180VCU, tc0180vcu_device)
->>>>>>> upstream/master
 
 #define MCFG_TC0180VCU_BG_COLORBASE(_color) \
 	tc0180vcu_device::set_bg_colorbase(*device, _color);
@@ -107,8 +72,4 @@ DECLARE_DEVICE_TYPE(TC0180VCU, tc0180vcu_device)
 #define MCFG_TC0180VCU_GFXDECODE(_gfxtag) \
 	tc0180vcu_device::static_set_gfxdecode_tag(*device, "^" _gfxtag);
 
-<<<<<<< HEAD
-#endif
-=======
 #endif // MAME_VIDEO_TC0180VCU_H
->>>>>>> upstream/master

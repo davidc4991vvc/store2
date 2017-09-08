@@ -1,17 +1,9 @@
 /* Alloc.c -- Memory allocation functions
-<<<<<<< HEAD
-2008-09-24
-Igor Pavlov
-Public domain */
-
-#ifdef _WIN32_7Z
-=======
 2015-02-21 : Igor Pavlov : Public domain */
 
 #include "Precomp.h"
 
 #ifdef _WIN32
->>>>>>> upstream/master
 #include <windows.h>
 #endif
 #include <stdlib.h>
@@ -52,11 +44,7 @@ void MyFree(void *address)
   free(address);
 }
 
-<<<<<<< HEAD
-#ifdef _WIN32_7Z
-=======
 #ifdef _WIN32
->>>>>>> upstream/master
 
 void *MidAlloc(size_t size)
 {
@@ -137,8 +125,6 @@ void BigFree(void *address)
 }
 
 #endif
-<<<<<<< HEAD
-=======
 
 
 static void *SzAlloc(void *p, size_t size) { UNUSED_VAR(p); return MyAlloc(size); }
@@ -148,4 +134,3 @@ ISzAlloc g_Alloc = { SzAlloc, SzFree };
 static void *SzBigAlloc(void *p, size_t size) { UNUSED_VAR(p); return BigAlloc(size); }
 static void SzBigFree(void *p, void *address) { UNUSED_VAR(p); BigFree(address); }
 ISzAlloc g_BigAlloc = { SzBigAlloc, SzBigFree };
->>>>>>> upstream/master

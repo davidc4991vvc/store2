@@ -7,28 +7,18 @@
 */
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "debugger.h"
-#include "rsp.h"
-=======
 #include "rsp.h"
 
->>>>>>> upstream/master
 #include "rspfe.h"
 #include "rspcp2.h"
 #include "rspcp2d.h"
 
-<<<<<<< HEAD
-
-const device_type RSP = &device_creator<rsp_device>;
-=======
 #include "debugger.h"
 
 #include "rspdefs.h"
 
 
 DEFINE_DEVICE_TYPE(RSP, rsp_device, "rsp", "RSP")
->>>>>>> upstream/master
 
 
 #define LOG_INSTRUCTION_EXECUTION       0
@@ -37,22 +27,6 @@ DEFINE_DEVICE_TYPE(RSP, rsp_device, "rsp", "RSP")
 #define RSP_TEST_SYNC                   0
 
 #define PRINT_VECREG(x)     osd_printf_debug("V%d: %04X|%04X|%04X|%04X|%04X|%04X|%04X|%04X\n", (x), \
-<<<<<<< HEAD
-							(UINT16)VREG_S((x),0), (UINT16)VREG_S((x),1), \
-							(UINT16)VREG_S((x),2), (UINT16)VREG_S((x),3), \
-							(UINT16)VREG_S((x),4), (UINT16)VREG_S((x),5), \
-							(UINT16)VREG_S((x),6), (UINT16)VREG_S((x),7))
-
-#define PRINT_ACCUM(x)     osd_printf_debug("A%d: %08X|%08X\n", (x), \
-							(UINT32)( ( ACCUM(x) >> 32 ) & 0x00000000ffffffff ),    \
-							(UINT32)(   ACCUM(x)         & 0x00000000ffffffff ))
-
-extern offs_t rsp_dasm_one(char *buffer, offs_t pc, UINT32 op);
-
-
-#define SIMM16      ((INT32)(INT16)(op))
-#define UIMM16      ((UINT16)(op))
-=======
 							(uint16_t)VREG_S((x),0), (uint16_t)VREG_S((x),1), \
 							(uint16_t)VREG_S((x),2), (uint16_t)VREG_S((x),3), \
 							(uint16_t)VREG_S((x),4), (uint16_t)VREG_S((x),5), \
@@ -65,7 +39,6 @@ extern offs_t rsp_dasm_one(char *buffer, offs_t pc, UINT32 op);
 
 #define SIMM16      ((int32_t)(int16_t)(op))
 #define UIMM16      ((uint16_t)(op))
->>>>>>> upstream/master
 #define UIMM26      (op & 0x03ffffff)
 
 #define RSVAL           (m_rsp_state->r[RSREG])
@@ -127,32 +100,6 @@ extern offs_t rsp_dasm_one(char *buffer, offs_t pc, UINT32 op);
 #define CACHE_SIZE                      (32 * 1024 * 1024)
 
 
-<<<<<<< HEAD
-rsp_device::rsp_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: cpu_device(mconfig, RSP, "RSP", tag, owner, clock, "rsp", __FILE__)
-	, m_program_config("program", ENDIANNESS_BIG, 32, 32)
-	, m_cache(CACHE_SIZE + sizeof(internal_rsp_state))
-	, m_drcuml(NULL)
-//  , m_drcuml(*this, m_cache, 0, 8, 32, 2)
-	, m_drcfe(NULL)
-	, m_drcoptions(0)
-	, m_cache_dirty(TRUE)
-	, m_numcycles(0)
-	, m_format(NULL)
-	, m_arg2(0)
-	, m_arg3(0)
-	, m_entry(NULL)
-	, m_nocode(NULL)
-	, m_out_of_cycles(NULL)
-	, m_read8(NULL)
-	, m_write8(NULL)
-	, m_read16(NULL)
-	, m_write16(NULL)
-	, m_read32(NULL)
-	, m_write32(NULL)
-	, m_rsp_state(NULL)
-	, m_exec_output(NULL)
-=======
 rsp_device::rsp_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: cpu_device(mconfig, RSP, tag, owner, clock)
 	, m_program_config("program", ENDIANNESS_BIG, 32, 32)
@@ -177,26 +124,16 @@ rsp_device::rsp_device(const machine_config &mconfig, const char *tag, device_t 
 	, m_write32(nullptr)
 	, m_rsp_state(nullptr)
 	, m_exec_output(nullptr)
->>>>>>> upstream/master
 	, m_sr(0)
 	, m_step_count(0)
 	, m_ppc(0)
 	, m_nextpc(0)
-<<<<<<< HEAD
-	, m_dmem32(NULL)
-	, m_dmem16(NULL)
-	, m_dmem8(NULL)
-	, m_imem32(NULL)
-	, m_imem16(NULL)
-	, m_imem8(NULL)
-=======
 	, m_dmem32(nullptr)
 	, m_dmem16(nullptr)
 	, m_dmem8(nullptr)
 	, m_imem32(nullptr)
 	, m_imem16(nullptr)
 	, m_imem8(nullptr)
->>>>>>> upstream/master
 	, m_debugger_temp(0)
 	, m_dp_reg_r_func(*this)
 	, m_dp_reg_w_func(*this)
@@ -206,31 +143,6 @@ rsp_device::rsp_device(const machine_config &mconfig, const char *tag, device_t 
 {
 }
 
-<<<<<<< HEAD
-offs_t rsp_device::disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options)
-{
-	extern CPU_DISASSEMBLE( rsp );
-	return CPU_DISASSEMBLE_NAME( rsp )(this, buffer, pc, oprom, opram, options);
-}
-
-void rsp_device::rsp_add_imem(UINT32 *base)
-{
-	m_imem32 = base;
-	m_imem16 = (UINT16*)base;
-	m_imem8 = (UINT8*)base;
-}
-
-void rsp_device::rsp_add_dmem(UINT32 *base)
-{
-	m_dmem32 = base;
-	m_dmem16 = (UINT16*)base;
-	m_dmem8 = (UINT8*)base;
-}
-
-UINT8 rsp_device::DM_READ8(UINT32 address)
-{
-	UINT8 ret = m_dmem8[BYTE4_XOR_BE(address & 0xfff)];
-=======
 device_memory_interface::space_config_vector rsp_device::memory_space_config() const
 {
 	return space_config_vector {
@@ -261,20 +173,13 @@ void rsp_device::rsp_add_dmem(uint32_t *base)
 uint8_t rsp_device::DM_READ8(uint32_t address)
 {
 	uint8_t ret = m_dmem8[BYTE4_XOR_BE(address & 0xfff)];
->>>>>>> upstream/master
 	//printf("R8:%08x=%02x\n", address, ret);
 	return ret;
 }
 
-<<<<<<< HEAD
-UINT16 rsp_device::DM_READ16(UINT32 address)
-{
-	UINT16 ret;
-=======
 uint16_t rsp_device::DM_READ16(uint32_t address)
 {
 	uint16_t ret;
->>>>>>> upstream/master
 	address &= 0xfff;
 	ret = m_dmem8[BYTE4_XOR_BE(address)] << 8;
 	ret |= m_dmem8[BYTE4_XOR_BE(address + 1)];
@@ -282,15 +187,9 @@ uint16_t rsp_device::DM_READ16(uint32_t address)
 	return ret;
 }
 
-<<<<<<< HEAD
-UINT32 rsp_device::DM_READ32(UINT32 address)
-{
-	UINT32 ret;
-=======
 uint32_t rsp_device::DM_READ32(uint32_t address)
 {
 	uint32_t ret;
->>>>>>> upstream/master
 	address &= 0xfff;
 	ret = m_dmem8[BYTE4_XOR_BE(address)] << 24;
 	ret |= m_dmem8[BYTE4_XOR_BE(address + 1)] << 16;
@@ -300,22 +199,14 @@ uint32_t rsp_device::DM_READ32(uint32_t address)
 	return ret;
 }
 
-<<<<<<< HEAD
-void rsp_device::DM_WRITE8(UINT32 address, UINT8 data)
-=======
 void rsp_device::DM_WRITE8(uint32_t address, uint8_t data)
->>>>>>> upstream/master
 {
 	address &= 0xfff;
 	m_dmem8[BYTE4_XOR_BE(address)] = data;
 	//printf("W8:%08x=%02x\n", address, data);
 }
 
-<<<<<<< HEAD
-void rsp_device::DM_WRITE16(UINT32 address, UINT16 data)
-=======
 void rsp_device::DM_WRITE16(uint32_t address, uint16_t data)
->>>>>>> upstream/master
 {
 	address &= 0xfff;
 	m_dmem8[BYTE4_XOR_BE(address)] = data >> 8;
@@ -323,11 +214,7 @@ void rsp_device::DM_WRITE16(uint32_t address, uint16_t data)
 	//printf("W16:%08x=%04x\n", address, data);
 }
 
-<<<<<<< HEAD
-void rsp_device::DM_WRITE32(UINT32 address, UINT32 data)
-=======
 void rsp_device::DM_WRITE32(uint32_t address, uint32_t data)
->>>>>>> upstream/master
 {
 	address &= 0xfff;
 	m_dmem8[BYTE4_XOR_BE(address)] = data >> 24;
@@ -337,30 +224,18 @@ void rsp_device::DM_WRITE32(uint32_t address, uint32_t data)
 	//printf("W32:%08x=%08x\n", address, data);
 }
 
-<<<<<<< HEAD
-UINT8 rsp_device::READ8(UINT32 address)
-{
-	UINT8 ret;
-=======
 uint8_t rsp_device::READ8(uint32_t address)
 {
 	uint8_t ret;
->>>>>>> upstream/master
 	address &= 0xfff;
 	ret = m_program->read_byte(address);
 	//printf("R8:%08x=%02x\n", address, ret);
 	return ret;
 }
 
-<<<<<<< HEAD
-UINT16 rsp_device::READ16(UINT32 address)
-{
-	UINT16 ret;
-=======
 uint16_t rsp_device::READ16(uint32_t address)
 {
 	uint16_t ret;
->>>>>>> upstream/master
 	address &= 0xfff;
 
 	ret = (m_program->read_byte(address) << 8) | (m_program->read_byte(address + 1) & 0xff);
@@ -369,15 +244,9 @@ uint16_t rsp_device::READ16(uint32_t address)
 	return ret;
 }
 
-<<<<<<< HEAD
-UINT32 rsp_device::READ32(UINT32 address)
-{
-	UINT32 ret;
-=======
 uint32_t rsp_device::READ32(uint32_t address)
 {
 	uint32_t ret;
->>>>>>> upstream/master
 	address &= 0xfff;
 
 	ret =   (m_program->read_byte(address) << 24) |
@@ -389,22 +258,14 @@ uint32_t rsp_device::READ32(uint32_t address)
 	return ret;
 }
 
-<<<<<<< HEAD
-void rsp_device::WRITE8(UINT32 address, UINT8 data)
-=======
 void rsp_device::WRITE8(uint32_t address, uint8_t data)
->>>>>>> upstream/master
 {
 	address &= 0xfff;
 	m_program->write_byte(address, data);
 	//printf("W8:%08x=%02x\n", address, data);
 }
 
-<<<<<<< HEAD
-void rsp_device::WRITE16(UINT32 address, UINT16 data)
-=======
 void rsp_device::WRITE16(uint32_t address, uint16_t data)
->>>>>>> upstream/master
 {
 	address &= 0xfff;
 
@@ -413,11 +274,7 @@ void rsp_device::WRITE16(uint32_t address, uint16_t data)
 	//printf("W16:%08x=%04x\n", address, data);
 }
 
-<<<<<<< HEAD
-void rsp_device::WRITE32(UINT32 address, UINT32 data)
-=======
 void rsp_device::WRITE32(uint32_t address, uint32_t data)
->>>>>>> upstream/master
 {
 	address &= 0xfff;
 
@@ -430,11 +287,7 @@ void rsp_device::WRITE32(uint32_t address, uint32_t data)
 
 /*****************************************************************************/
 
-<<<<<<< HEAD
-UINT32 rsp_device::get_cop0_reg(int reg)
-=======
 uint32_t rsp_device::get_cop0_reg(int reg)
->>>>>>> upstream/master
 {
 	reg &= 0xf;
 	if (reg < 8)
@@ -449,11 +302,7 @@ uint32_t rsp_device::get_cop0_reg(int reg)
 	return 0;
 }
 
-<<<<<<< HEAD
-void rsp_device::set_cop0_reg(int reg, UINT32 data)
-=======
 void rsp_device::set_cop0_reg(int reg, uint32_t data)
->>>>>>> upstream/master
 {
 	reg &= 0xf;
 	if (reg < 8)
@@ -466,15 +315,6 @@ void rsp_device::set_cop0_reg(int reg, uint32_t data)
 	}
 }
 
-<<<<<<< HEAD
-void rsp_device::unimplemented_opcode(UINT32 op)
-{
-	if ((machine().debug_flags & DEBUG_FLAG_ENABLED) != 0)
-	{
-		char string[200];
-		rsp_dasm_one(string, m_ppc, op);
-		osd_printf_debug("%08X: %s\n", m_ppc, string);
-=======
 void rsp_device::unimplemented_opcode(uint32_t op)
 {
 	if ((machine().debug_flags & DEBUG_FLAG_ENABLED) != 0)
@@ -483,7 +323,6 @@ void rsp_device::unimplemented_opcode(uint32_t op)
 		rsp_dasm_one(string, m_ppc, op);
 		string.put('\0');
 		osd_printf_debug("%08X: %s\n", m_ppc, &string.vec()[0]);
->>>>>>> upstream/master
 	}
 
 #if SAVE_DISASM
@@ -495,11 +334,7 @@ void rsp_device::unimplemented_opcode(uint32_t op)
 
 		for (i=0; i < 0x1000; i+=4)
 		{
-<<<<<<< HEAD
-			UINT32 opcode = ROPCODE(0x04001000 + i);
-=======
 			uint32_t opcode = ROPCODE(0x04001000 + i);
->>>>>>> upstream/master
 			rsp_dasm_one(string, 0x04001000 + i, opcode);
 			fprintf(dasm, "%08X: %08X   %s\n", 0x04001000 + i, opcode, string);
 		}
@@ -536,11 +371,7 @@ void rsp_device::resolve_cb()
 
 void rsp_device::device_start()
 {
-<<<<<<< HEAD
-	m_isdrc = (mconfig().options().drc() && !mconfig().m_force_no_drc) ? true : false;
-=======
 	m_isdrc = allow_drc();
->>>>>>> upstream/master
 	m_rsp_state = (internal_rsp_state *)m_cache.alloc_near(sizeof(internal_rsp_state));
 
 	if (LOG_INSTRUCTION_EXECUTION)
@@ -552,19 +383,11 @@ void rsp_device::device_start()
 
 	if (m_isdrc)
 	{
-<<<<<<< HEAD
-		m_cop2 = auto_alloc(machine(), rsp_cop2_drc(*this, machine()));
-	}
-	else
-	{
-		m_cop2 = auto_alloc(machine(), rsp_cop2(*this, machine()));
-=======
 		m_cop2 = std::make_unique<rsp_cop2_drc>(*this, machine());
 	}
 	else
 	{
 		m_cop2 = std::make_unique<rsp_cop2>(*this, machine());
->>>>>>> upstream/master
 	}
 	m_cop2->init();
 	m_cop2->start();
@@ -579,13 +402,8 @@ void rsp_device::device_start()
 	m_step_count = 0;
 
 	/* initialize the UML generator */
-<<<<<<< HEAD
-	UINT32 drc_flags = 0;
-	m_drcuml = auto_alloc(machine(), drcuml_state(*this, m_cache, drc_flags, 8, 32, 2));
-=======
 	uint32_t drc_flags = 0;
 	m_drcuml = std::make_unique<drcuml_state>(*this, m_cache, drc_flags, 8, 32, 2);
->>>>>>> upstream/master
 
 	/* add symbols for our stuff */
 	m_drcuml->symbol_add(&m_rsp_state->pc, sizeof(m_rsp_state->pc), "pc");
@@ -603,11 +421,7 @@ void rsp_device::device_start()
 	m_drcuml->symbol_add(&m_numcycles, sizeof(m_numcycles), "numcycles");
 
 	/* initialize the front-end helper */
-<<<<<<< HEAD
-	m_drcfe = auto_alloc(machine(), rsp_frontend(*this, COMPILE_BACKWARDS_BYTES, COMPILE_FORWARDS_BYTES, SINGLE_INSTRUCTION_MODE ? 1 : COMPILE_MAX_SEQUENCE));
-=======
 	m_drcfe = std::make_unique<rsp_frontend>(*this, COMPILE_BACKWARDS_BYTES, COMPILE_FORWARDS_BYTES, SINGLE_INSTRUCTION_MODE ? 1 : COMPILE_MAX_SEQUENCE);
->>>>>>> upstream/master
 
 	/* compute the register parameters */
 	for (int regnum = 0; regnum < 32; regnum++)
@@ -616,11 +430,7 @@ void rsp_device::device_start()
 	}
 
 	/* mark the cache dirty so it is updated on next execute */
-<<<<<<< HEAD
-	m_cache_dirty = TRUE;
-=======
 	m_cache_dirty = true;
->>>>>>> upstream/master
 
 	state_add( RSP_PC,      "PC", m_debugger_temp).callimport().callexport().formatstr("%08X");
 	state_add( RSP_R0,      "R0", m_rsp_state->r[0]).formatstr("%08X");
@@ -693,15 +503,9 @@ void rsp_device::device_start()
 	state_add( RSP_V31,     "V31", m_debugger_temp).formatstr("%39s");
 
 	state_add( STATE_GENPC, "GENPC", m_debugger_temp).callimport().callexport().noshow();
-<<<<<<< HEAD
-	state_add( STATE_GENFLAGS, "GENFLAGS", m_debugger_temp).formatstr("%1s").noshow();
-	state_add( STATE_GENSP, "GENSP", m_rsp_state->r[31]).noshow();
-	state_add( STATE_GENPCBASE, "GENPCBASE", m_debugger_temp).callimport().callexport().noshow();
-=======
 	state_add( STATE_GENPCBASE, "CURPC", m_rsp_state->pc).noshow();
 	state_add( STATE_GENFLAGS, "GENFLAGS", m_debugger_temp).formatstr("%1s").noshow();
 	state_add( STATE_GENSP, "GENSP", m_rsp_state->r[31]).noshow();
->>>>>>> upstream/master
 
 	m_icountptr = &m_rsp_state->icount;
 }
@@ -745,11 +549,7 @@ void rsp_device::state_export(const device_state_entry &entry)
 	}
 }
 
-<<<<<<< HEAD
-void rsp_device::state_string_export(const device_state_entry &entry, std::string &str)
-=======
 void rsp_device::state_string_export(const device_state_entry &entry, std::string &str) const
->>>>>>> upstream/master
 {
 	const int index = entry.index();
 	if (index >= RSP_V0 && index <= RSP_V31)
@@ -758,11 +558,7 @@ void rsp_device::state_string_export(const device_state_entry &entry, std::strin
 	}
 	else if (index == STATE_GENFLAGS)
 	{
-<<<<<<< HEAD
-		strprintf(str, "%s", "");
-=======
 		str = "";
->>>>>>> upstream/master
 	}
 }
 
@@ -777,11 +573,7 @@ void rsp_device::device_stop()
 
 		for (i=0; i < 0x1000; i+=4)
 		{
-<<<<<<< HEAD
-			UINT32 opcode = ROPCODE(0x04001000 + i);
-=======
 			uint32_t opcode = ROPCODE(0x04001000 + i);
->>>>>>> upstream/master
 			rsp_dasm_one(string, 0x04001000 + i, opcode);
 			fprintf(dasm, "%08X: %08X   %s\n", 0x04001000 + i, opcode, string);
 		}
@@ -813,26 +605,7 @@ void rsp_device::device_stop()
 
 	if (m_exec_output)
 		fclose(m_exec_output);
-<<<<<<< HEAD
-	m_exec_output = NULL;
-
-	/* clean up the DRC */
-	if (m_drcuml)
-	{
-		auto_free(machine(), m_drcuml);
-	}
-	if (m_drcfe)
-	{
-		auto_free(machine(), m_drcfe);
-	}
-
-	if (m_cop2)
-	{
-		auto_free(machine(), m_cop2);
-	}
-=======
 	m_exec_output = nullptr;
->>>>>>> upstream/master
 }
 
 void rsp_device::device_reset()
@@ -852,11 +625,7 @@ void rsp_device::execute_run()
 
 	if( m_sr & ( RSP_STATUS_HALT | RSP_STATUS_BROKE ) )
 	{
-<<<<<<< HEAD
-		m_rsp_state->icount = MIN(m_rsp_state->icount, 0);
-=======
 		m_rsp_state->icount = std::min(m_rsp_state->icount, 0);
->>>>>>> upstream/master
 	}
 
 	while (m_rsp_state->icount > 0)
@@ -864,11 +633,7 @@ void rsp_device::execute_run()
 		m_ppc = m_rsp_state->pc;
 		debugger_instruction_hook(this, m_rsp_state->pc);
 
-<<<<<<< HEAD
-		UINT32 op = ROPCODE(m_rsp_state->pc);
-=======
 		uint32_t op = ROPCODE(m_rsp_state->pc);
->>>>>>> upstream/master
 		if (m_nextpc != ~0)
 		{
 			m_rsp_state->pc = m_nextpc;
@@ -885,35 +650,17 @@ void rsp_device::execute_run()
 			{
 				switch (op & 0x3f)
 				{
-<<<<<<< HEAD
-					case 0x00:  /* SLL */       if (RDREG) RDVAL = (UINT32)RTVAL << SHIFT; break;
-					case 0x02:  /* SRL */       if (RDREG) RDVAL = (UINT32)RTVAL >> SHIFT; break;
-					case 0x03:  /* SRA */       if (RDREG) RDVAL = (INT32)RTVAL >> SHIFT; break;
-					case 0x04:  /* SLLV */      if (RDREG) RDVAL = (UINT32)RTVAL << (RSVAL & 0x1f); break;
-					case 0x06:  /* SRLV */      if (RDREG) RDVAL = (UINT32)RTVAL >> (RSVAL & 0x1f); break;
-					case 0x07:  /* SRAV */      if (RDREG) RDVAL = (INT32)RTVAL >> (RSVAL & 0x1f); break;
-=======
 					case 0x00:  /* SLL */       if (RDREG) RDVAL = (uint32_t)RTVAL << SHIFT; break;
 					case 0x02:  /* SRL */       if (RDREG) RDVAL = (uint32_t)RTVAL >> SHIFT; break;
 					case 0x03:  /* SRA */       if (RDREG) RDVAL = (int32_t)RTVAL >> SHIFT; break;
 					case 0x04:  /* SLLV */      if (RDREG) RDVAL = (uint32_t)RTVAL << (RSVAL & 0x1f); break;
 					case 0x06:  /* SRLV */      if (RDREG) RDVAL = (uint32_t)RTVAL >> (RSVAL & 0x1f); break;
 					case 0x07:  /* SRAV */      if (RDREG) RDVAL = (int32_t)RTVAL >> (RSVAL & 0x1f); break;
->>>>>>> upstream/master
 					case 0x08:  /* JR */        JUMP_PC(RSVAL); break;
 					case 0x09:  /* JALR */      JUMP_PC_L(RSVAL, RDREG); break;
 					case 0x0d:  /* BREAK */
 					{
 						m_sp_set_status_func(0, 0x3, 0xffffffff);
-<<<<<<< HEAD
-						m_rsp_state->icount = MIN(m_rsp_state->icount, 1);
-						break;
-					}
-					case 0x20:  /* ADD */       if (RDREG) RDVAL = (INT32)(RSVAL + RTVAL); break;
-					case 0x21:  /* ADDU */      if (RDREG) RDVAL = (INT32)(RSVAL + RTVAL); break;
-					case 0x22:  /* SUB */       if (RDREG) RDVAL = (INT32)(RSVAL - RTVAL); break;
-					case 0x23:  /* SUBU */      if (RDREG) RDVAL = (INT32)(RSVAL - RTVAL); break;
-=======
 						m_rsp_state->icount = std::min(m_rsp_state->icount, 1);
 						break;
 					}
@@ -921,18 +668,12 @@ void rsp_device::execute_run()
 					case 0x21:  /* ADDU */      if (RDREG) RDVAL = (int32_t)(RSVAL + RTVAL); break;
 					case 0x22:  /* SUB */       if (RDREG) RDVAL = (int32_t)(RSVAL - RTVAL); break;
 					case 0x23:  /* SUBU */      if (RDREG) RDVAL = (int32_t)(RSVAL - RTVAL); break;
->>>>>>> upstream/master
 					case 0x24:  /* AND */       if (RDREG) RDVAL = RSVAL & RTVAL; break;
 					case 0x25:  /* OR */        if (RDREG) RDVAL = RSVAL | RTVAL; break;
 					case 0x26:  /* XOR */       if (RDREG) RDVAL = RSVAL ^ RTVAL; break;
 					case 0x27:  /* NOR */       if (RDREG) RDVAL = ~(RSVAL | RTVAL); break;
-<<<<<<< HEAD
-					case 0x2a:  /* SLT */       if (RDREG) RDVAL = (INT32)RSVAL < (INT32)RTVAL; break;
-					case 0x2b:  /* SLTU */      if (RDREG) RDVAL = (UINT32)RSVAL < (UINT32)RTVAL; break;
-=======
 					case 0x2a:  /* SLT */       if (RDREG) RDVAL = (int32_t)RSVAL < (int32_t)RTVAL; break;
 					case 0x2b:  /* SLTU */      if (RDREG) RDVAL = (uint32_t)RSVAL < (uint32_t)RTVAL; break;
->>>>>>> upstream/master
 					default:    unimplemented_opcode(op); break;
 				}
 				break;
@@ -942,17 +683,10 @@ void rsp_device::execute_run()
 			{
 				switch (RTREG)
 				{
-<<<<<<< HEAD
-					case 0x00:  /* BLTZ */      if ((INT32)(RSVAL) < 0) JUMP_REL(SIMM16); break;
-					case 0x01:  /* BGEZ */      if ((INT32)(RSVAL) >= 0) JUMP_REL(SIMM16); break;
-					case 0x10:  /* BLTZAL */    if ((INT32)(RSVAL) < 0) JUMP_REL_L(SIMM16, 31); break;
-					case 0x11:  /* BGEZAL */    if ((INT32)(RSVAL) >= 0) JUMP_REL_L(SIMM16, 31); break;
-=======
 					case 0x00:  /* BLTZ */      if ((int32_t)(RSVAL) < 0) JUMP_REL(SIMM16); break;
 					case 0x01:  /* BGEZ */      if ((int32_t)(RSVAL) >= 0) JUMP_REL(SIMM16); break;
 					case 0x10:  /* BLTZAL */    if ((int32_t)(RSVAL) < 0) JUMP_REL_L(SIMM16, 31); break;
 					case 0x11:  /* BGEZAL */    if ((int32_t)(RSVAL) >= 0) JUMP_REL_L(SIMM16, 31); break;
->>>>>>> upstream/master
 					default:    unimplemented_opcode(op); break;
 				}
 				break;
@@ -962,21 +696,12 @@ void rsp_device::execute_run()
 			case 0x03:  /* JAL */       JUMP_ABS_L(UIMM26, 31); break;
 			case 0x04:  /* BEQ */       if (RSVAL == RTVAL) JUMP_REL(SIMM16); break;
 			case 0x05:  /* BNE */       if (RSVAL != RTVAL) JUMP_REL(SIMM16); break;
-<<<<<<< HEAD
-			case 0x06:  /* BLEZ */      if ((INT32)RSVAL <= 0) JUMP_REL(SIMM16); break;
-			case 0x07:  /* BGTZ */      if ((INT32)RSVAL > 0) JUMP_REL(SIMM16); break;
-			case 0x08:  /* ADDI */      if (RTREG) RTVAL = (INT32)(RSVAL + SIMM16); break;
-			case 0x09:  /* ADDIU */     if (RTREG) RTVAL = (INT32)(RSVAL + SIMM16); break;
-			case 0x0a:  /* SLTI */      if (RTREG) RTVAL = (INT32)(RSVAL) < ((INT32)SIMM16); break;
-			case 0x0b:  /* SLTIU */     if (RTREG) RTVAL = (UINT32)(RSVAL) < (UINT32)((INT32)SIMM16); break;
-=======
 			case 0x06:  /* BLEZ */      if ((int32_t)RSVAL <= 0) JUMP_REL(SIMM16); break;
 			case 0x07:  /* BGTZ */      if ((int32_t)RSVAL > 0) JUMP_REL(SIMM16); break;
 			case 0x08:  /* ADDI */      if (RTREG) RTVAL = (int32_t)(RSVAL + SIMM16); break;
 			case 0x09:  /* ADDIU */     if (RTREG) RTVAL = (int32_t)(RSVAL + SIMM16); break;
 			case 0x0a:  /* SLTI */      if (RTREG) RTVAL = (int32_t)(RSVAL) < ((int32_t)SIMM16); break;
 			case 0x0b:  /* SLTIU */     if (RTREG) RTVAL = (uint32_t)(RSVAL) < (uint32_t)((int32_t)SIMM16); break;
->>>>>>> upstream/master
 			case 0x0c:  /* ANDI */      if (RTREG) RTVAL = RSVAL & UIMM16; break;
 			case 0x0d:  /* ORI */       if (RTREG) RTVAL = RSVAL | UIMM16; break;
 			case 0x0e:  /* XORI */      if (RTREG) RTVAL = RSVAL ^ UIMM16; break;
@@ -999,19 +724,11 @@ void rsp_device::execute_run()
 				break;
 			}
 
-<<<<<<< HEAD
-			case 0x20:  /* LB */        if (RTREG) RTVAL = (INT32)(INT8)READ8(RSVAL + SIMM16); break;
-			case 0x21:  /* LH */        if (RTREG) RTVAL = (INT32)(INT16)READ16(RSVAL + SIMM16); break;
-			case 0x23:  /* LW */        if (RTREG) RTVAL = READ32(RSVAL + SIMM16); break;
-			case 0x24:  /* LBU */       if (RTREG) RTVAL = (UINT8)READ8(RSVAL + SIMM16); break;
-			case 0x25:  /* LHU */       if (RTREG) RTVAL = (UINT16)READ16(RSVAL + SIMM16); break;
-=======
 			case 0x20:  /* LB */        if (RTREG) RTVAL = (int32_t)(int8_t)READ8(RSVAL + SIMM16); break;
 			case 0x21:  /* LH */        if (RTREG) RTVAL = (int32_t)(int16_t)READ16(RSVAL + SIMM16); break;
 			case 0x23:  /* LW */        if (RTREG) RTVAL = READ32(RSVAL + SIMM16); break;
 			case 0x24:  /* LBU */       if (RTREG) RTVAL = (uint8_t)READ8(RSVAL + SIMM16); break;
 			case 0x25:  /* LHU */       if (RTREG) RTVAL = (uint16_t)READ16(RSVAL + SIMM16); break;
->>>>>>> upstream/master
 			case 0x28:  /* SB */        WRITE8(RSVAL + SIMM16, RTVAL); break;
 			case 0x29:  /* SH */        WRITE16(RSVAL + SIMM16, RTVAL); break;
 			case 0x2b:  /* SW */        WRITE32(RSVAL + SIMM16, RTVAL); break;
@@ -1028,15 +745,6 @@ void rsp_device::execute_run()
 		if (LOG_INSTRUCTION_EXECUTION)
 		{
 			int i, l;
-<<<<<<< HEAD
-			static UINT32 prev_regs[32];
-			char string[200];
-			rsp_dasm_one(string, m_ppc, op);
-
-			fprintf(m_exec_output, "%08X: %s", m_ppc, string);
-
-			l = strlen(string);
-=======
 			static uint32_t prev_regs[32];
 
 			util::ovectorstream string;
@@ -1046,7 +754,6 @@ void rsp_device::execute_run()
 			fprintf(m_exec_output, "%08X: %s", m_ppc, &string.vec()[0]);
 
 			l = string.vec().size() - 1;
->>>>>>> upstream/master
 			if (l < 36)
 			{
 				for (i=l; i < 36; i++)
@@ -1088,11 +795,7 @@ void rsp_device::execute_run()
 
 		if( m_sr & ( RSP_STATUS_HALT | RSP_STATUS_BROKE ) )
 		{
-<<<<<<< HEAD
-			m_rsp_state->icount = MIN(m_rsp_state->icount, 0);
-=======
 			m_rsp_state->icount = std::min(m_rsp_state->icount, 0);
->>>>>>> upstream/master
 		}
 		/*m_cop2->dump(op);
 		if (((op >> 26) & 0x3f) == 0x3a)

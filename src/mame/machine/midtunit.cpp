@@ -1,11 +1,6 @@
-<<<<<<< HEAD
-// license:???
-// copyright-holders:Alex Pasadyn, Zsolt Vasvari, Kurt Mahan, Ernesto Corvi, Aaron Giles
-=======
 // license:BSD-3-Clause
 // copyright-holders:Alex Pasadyn, Zsolt Vasvari, Ernesto Corvi, Aaron Giles
 // thanks-to:Kurt Mahan
->>>>>>> upstream/master
 /*************************************************************************
 
     Driver for Midway T-unit games.
@@ -18,13 +13,6 @@
 #include "includes/midtunit.h"
 
 
-<<<<<<< HEAD
-/* compile-time constants */
-#define ENABLE_ALL_JDREDD_LEVELS    0
-
-
-=======
->>>>>>> upstream/master
 /* constant definitions */
 #define SOUND_ADPCM                 1
 #define SOUND_ADPCM_LARGE           2
@@ -90,11 +78,7 @@ READ16_MEMBER(midtunit_state::midtunit_cmos_r)
  *
  *************************************/
 
-<<<<<<< HEAD
-static const UINT8 mk_prot_values[] =
-=======
 static const uint8_t mk_prot_values[] =
->>>>>>> upstream/master
 {
 	0x13, 0x27, 0x0f, 0x1f, 0x3e, 0x3d, 0x3b, 0x37,
 	0x2e, 0x1c, 0x38, 0x31, 0x22, 0x05, 0x0a, 0x15,
@@ -197,11 +181,7 @@ WRITE16_MEMBER(midtunit_state::mk2_prot_w)
  *
  *************************************/
 
-<<<<<<< HEAD
-static const UINT32 nbajam_prot_values[128] =
-=======
 static const uint32_t nbajam_prot_values[128] =
->>>>>>> upstream/master
 {
 	0x21283b3b, 0x2439383b, 0x31283b3b, 0x302b3938, 0x31283b3b, 0x302b3938, 0x232f2f2f, 0x26383b3b,
 	0x21283b3b, 0x2439383b, 0x312a1224, 0x302b1120, 0x312a1224, 0x302b1120, 0x232d283b, 0x26383b3b,
@@ -221,11 +201,7 @@ static const uint32_t nbajam_prot_values[128] =
 	0x0b31283b, 0x0e26383b, 0x19322e06, 0x18312a12, 0x1b332f05, 0x1a302b11, 0x0b31283b, 0x0e26383b
 };
 
-<<<<<<< HEAD
-static const UINT32 nbajamte_prot_values[128] =
-=======
 static const uint32_t nbajamte_prot_values[128] =
->>>>>>> upstream/master
 {
 	0x00000000, 0x04081020, 0x08102000, 0x0c183122, 0x10200000, 0x14281020, 0x18312204, 0x1c393326,
 	0x20000001, 0x24081021, 0x28102000, 0x2c183122, 0x30200001, 0x34281021, 0x38312204, 0x3c393326,
@@ -256,11 +232,7 @@ READ16_MEMBER(midtunit_state::nbajam_prot_r)
 WRITE16_MEMBER(midtunit_state::nbajam_prot_w)
 {
 	int table_index = (offset >> 6) & 0x7f;
-<<<<<<< HEAD
-	UINT32 protval = m_nbajam_prot_table[table_index];
-=======
 	uint32_t protval = m_nbajam_prot_table[table_index];
->>>>>>> upstream/master
 
 	m_nbajam_prot_queue[0] = data;
 	m_nbajam_prot_queue[1] = ((protval >> 24) & 0xff) << 9;
@@ -278,11 +250,7 @@ WRITE16_MEMBER(midtunit_state::nbajam_prot_w)
  *
  *************************************/
 
-<<<<<<< HEAD
-static const UINT8 jdredd_prot_values_10740[] =
-=======
 static const uint8_t jdredd_prot_values_10740[] =
->>>>>>> upstream/master
 {
 	0x14,0x2A,0x15,0x0A,0x25,0x32,0x39,0x1C,
 	0x2E,0x37,0x3B,0x1D,0x2E,0x37,0x1B,0x0D,
@@ -292,29 +260,17 @@ static const uint8_t jdredd_prot_values_10740[] =
 	0x2B,0x15,0x0A,0x05,0x22,0x00
 };
 
-<<<<<<< HEAD
-static const UINT8 jdredd_prot_values_13240[] =
-=======
 static const uint8_t jdredd_prot_values_13240[] =
->>>>>>> upstream/master
 {
 	0x28
 };
 
-<<<<<<< HEAD
-static const UINT8 jdredd_prot_values_76540[] =
-=======
 static const uint8_t jdredd_prot_values_76540[] =
->>>>>>> upstream/master
 {
 	0x04,0x08
 };
 
-<<<<<<< HEAD
-static const UINT8 jdredd_prot_values_77760[] =
-=======
 static const uint8_t jdredd_prot_values_77760[] =
->>>>>>> upstream/master
 {
 	0x14,0x2A,0x14,0x2A,0x35,0x2A,0x35,0x1A,
 	0x35,0x1A,0x2D,0x1A,0x2D,0x36,0x2D,0x36,
@@ -330,11 +286,7 @@ static const uint8_t jdredd_prot_values_77760[] =
 	0x20,0x00,0x00
 };
 
-<<<<<<< HEAD
-static const UINT8 jdredd_prot_values_80020[] =
-=======
 static const uint8_t jdredd_prot_values_80020[] =
->>>>>>> upstream/master
 {
 	0x3A,0x1D,0x2E,0x37,0x00,0x00,0x2C,0x1C,
 	0x39,0x33,0x00,0x00,0x00,0x00,0x00,0x00
@@ -385,11 +337,7 @@ WRITE16_MEMBER(midtunit_state::jdredd_prot_w)
 
 READ16_MEMBER(midtunit_state::jdredd_prot_r)
 {
-<<<<<<< HEAD
-	UINT16 result = 0xffff;
-=======
 	uint16_t result = 0xffff;
->>>>>>> upstream/master
 
 	if (m_jdredd_prot_table && m_jdredd_prot_index < m_jdredd_prot_max)
 		result = m_jdredd_prot_table[m_jdredd_prot_index++] << 9;
@@ -399,24 +347,6 @@ READ16_MEMBER(midtunit_state::jdredd_prot_r)
 }
 
 
-<<<<<<< HEAD
-#if ENABLE_ALL_JDREDD_LEVELS
-static UINT16 *jdredd_hack;
-READ16_MEMBER(midtunit_state::jdredd_hack_r)
-{
-	if (space.device().safe_pc() == 0xFFBA7EB0)
-	{
-		fprintf(stderr, "jdredd_hack_r\n");
-		return 0;
-	}
-
-	return jdredd_hack[offset];
-}
-#endif
-
-
-=======
->>>>>>> upstream/master
 
 /*************************************
  *
@@ -516,16 +446,7 @@ DRIVER_INIT_MEMBER(midtunit_state,jdreddp)
 	/* sound chip protection (hidden RAM) */
 	machine().device("adpcm:cpu")->memory().space(AS_PROGRAM).install_read_bank(0xfbcf, 0xfbf9, "bank7");
 	machine().device("adpcm:cpu")->memory().space(AS_PROGRAM).install_write_bank(0xfbcf, 0xfbf9, "bank9");
-<<<<<<< HEAD
-	membank("adpcm:bank9")->set_base(auto_alloc_array(machine(), UINT8, 0x80));
-
-#if ENABLE_ALL_JDREDD_LEVELS
-	/* how about the final levels? */
-	jdredd_hack = m_maincpu->space(AS_PROGRAM).install_read_handler(0xFFBA7FF0, 0xFFBA7FFf, read16_delegate(FUNC(midtunit_state::jdredd_hack_r), this));
-#endif
-=======
 	membank("adpcm:bank9")->set_base(auto_alloc_array(machine(), uint8_t, 0x80));
->>>>>>> upstream/master
 }
 
 

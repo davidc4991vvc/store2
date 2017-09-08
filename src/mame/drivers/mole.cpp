@@ -1,11 +1,6 @@
-<<<<<<< HEAD
-// license:???
-// copyright-holders:Jason Nelson, Phil Stroffolino
-=======
 // license:BSD-3-Clause
 // copyright-holders:Phil Stroffolino
 // thanks-to:Jason Nelson
->>>>>>> upstream/master
 /*****************************************************************************
 
    MOLE ATTACK by Yachiyo Electronics Co.,LTD. 1982
@@ -13,11 +8,6 @@
    Known Clones:
    "Holey Moley", from tai (Thomas Automatics, Inc.)
 
-<<<<<<< HEAD
-   emulated by Jason Nelson, Phil Stroffolino
-
-=======
->>>>>>> upstream/master
    Known Issues:
    - some dips not mapped
    - protection isn't fully understood, but game seems to be ok.
@@ -62,11 +52,8 @@
 #include "emu.h"
 #include "cpu/m6502/m6502.h"
 #include "sound/ay8910.h"
-<<<<<<< HEAD
-=======
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 class mole_state : public driver_device
@@ -86,11 +73,7 @@ public:
 	int m_tile_bank;
 
 	/* memory */
-<<<<<<< HEAD
-	UINT16 m_tileram[0x400];
-=======
 	uint16_t m_tileram[0x400];
->>>>>>> upstream/master
 
 	DECLARE_WRITE8_MEMBER(mole_tileram_w);
 	DECLARE_WRITE8_MEMBER(mole_tilebank_w);
@@ -98,17 +81,10 @@ public:
 	DECLARE_WRITE8_MEMBER(mole_flipscreen_w);
 	DECLARE_READ8_MEMBER(mole_protection_r);
 	TILE_GET_INFO_MEMBER(get_bg_tile_info);
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void machine_reset();
-	virtual void video_start();
-	UINT32 screen_update_mole(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
 	virtual void video_start() override;
 	uint32_t screen_update_mole(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 };
 
 
@@ -120,11 +96,7 @@ public:
 
 TILE_GET_INFO_MEMBER(mole_state::get_bg_tile_info)
 {
-<<<<<<< HEAD
-	UINT16 code = m_tileram[tile_index];
-=======
 	uint16_t code = m_tileram[tile_index];
->>>>>>> upstream/master
 
 	SET_TILE_INFO_MEMBER((code & 0x200) ? 1 : 0, code & 0x1ff, 0, 0);
 }
@@ -132,11 +104,7 @@ TILE_GET_INFO_MEMBER(mole_state::get_bg_tile_info)
 void mole_state::video_start()
 {
 	memset(m_tileram, 0, sizeof(m_tileram));
-<<<<<<< HEAD
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(mole_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 40, 25);
-=======
 	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(mole_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 40, 25);
->>>>>>> upstream/master
 
 	save_item(NAME(m_tileram));
 }
@@ -162,11 +130,7 @@ WRITE8_MEMBER(mole_state::mole_flipscreen_w)
 	flip_screen_set(data & 0x01);
 }
 
-<<<<<<< HEAD
-UINT32 mole_state::screen_update_mole(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t mole_state::screen_update_mole(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	m_bg_tilemap->draw(screen, bitmap, cliprect, 0, 0);
 	return 0;
@@ -353,11 +317,7 @@ void mole_state::machine_reset()
 	m_tile_bank = 0;
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( mole, mole_state )
-=======
 static MACHINE_CONFIG_START( mole )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6502, 4000000) // ???
@@ -412,8 +372,4 @@ ROM_END
  *
  *************************************/
 
-<<<<<<< HEAD
-GAME( 1982, mole, 0, mole, mole, driver_device, 0, ROT0, "Yachiyo Electronics, Ltd.", "Mole Attack", MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1982, mole, 0, mole, mole, mole_state, 0, ROT0, "Yachiyo Electronics, Ltd.", "Mole Attack", MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

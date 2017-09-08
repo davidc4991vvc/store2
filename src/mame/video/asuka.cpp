@@ -2,10 +2,7 @@
 // copyright-holders:David Graves, Brian Troha
 #include "emu.h"
 #include "includes/asuka.h"
-<<<<<<< HEAD
-=======
 #include "screen.h"
->>>>>>> upstream/master
 
 /**************************************************************
                  SPRITE READ AND WRITE HANDLERS
@@ -22,15 +19,9 @@ WRITE16_MEMBER(asuka_state::asuka_spritectrl_w)
                         SCREEN REFRESH
 **************************************************************/
 
-<<<<<<< HEAD
-UINT32 asuka_state::screen_update_asuka(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-{
-	UINT8 layer[3];
-=======
 uint32_t asuka_state::screen_update_asuka(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
 	uint8_t layer[3];
->>>>>>> upstream/master
 
 	m_tc0100scn->tilemap_update();
 
@@ -53,15 +44,9 @@ uint32_t asuka_state::screen_update_asuka(screen_device &screen, bitmap_ind16 &b
 }
 
 
-<<<<<<< HEAD
-UINT32 asuka_state::screen_update_bonzeadv(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-{
-	UINT8 layer[3];
-=======
 uint32_t asuka_state::screen_update_bonzeadv(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
 	uint8_t layer[3];
->>>>>>> upstream/master
 
 	m_tc0100scn->tilemap_update();
 

@@ -194,11 +194,7 @@ INPUT_PORTS_END
 //  GLOBAL VARIABLES
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type PC_KBD_MICROSOFT_NATURAL      = &device_creator<pc_kbd_microsoft_natural_device>;
-=======
 DEFINE_DEVICE_TYPE(PC_KBD_MICROSOFT_NATURAL, pc_kbd_microsoft_natural_device, "kb_ms_natural", "Microsoft Natural Keyboard")
->>>>>>> upstream/master
 
 /*****************************************************************************
     ADDRESS MAPS
@@ -212,19 +208,6 @@ static ADDRESS_MAP_START( microsoft_natural_io, AS_IO, 8, pc_kbd_microsoft_natur
 ADDRESS_MAP_END
 
 
-<<<<<<< HEAD
-/*****************************************************************************
-    MACHINE CONFIG
-*****************************************************************************/
-
-MACHINE_CONFIG_FRAGMENT( microsoft_natural )
-	MCFG_CPU_ADD("ms_natrl_cpu", I8051, XTAL_6MHz)
-	MCFG_CPU_IO_MAP(microsoft_natural_io)
-MACHINE_CONFIG_END
-
-
-=======
->>>>>>> upstream/master
 /***************************************************************************
     ROM DEFINITIONS
 ***************************************************************************/
@@ -235,28 +218,6 @@ ROM_START( microsoft_natural )
 ROM_END
 
 
-<<<<<<< HEAD
-pc_kbd_microsoft_natural_device::pc_kbd_microsoft_natural_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, PC_KBD_MICROSOFT_NATURAL, "Microsoft Natural Keyboard", tag, owner, clock, "ms_natural", __FILE__)
-	, device_pc_kbd_interface(mconfig, *this)
-	, m_cpu(*this, "ms_natrl_cpu")
-	, m_p2_0(*this, "P2.0")
-	, m_p2_1(*this, "P2.1")
-	, m_p2_2(*this, "P2.2")
-	, m_p2_3(*this, "P2.3")
-	, m_p2_4(*this, "P2.4")
-	, m_p2_5(*this, "P2.5")
-	, m_p2_6(*this, "P2.6")
-	, m_p2_7(*this, "P2.7")
-	, m_p1_0(*this, "P1.0")
-	, m_p1_1(*this, "P1.1")
-	, m_p1_2(*this, "P1.2")
-	, m_p1_3(*this, "P1.3")
-	, m_p1_4(*this, "P1.4")
-	, m_p1_5(*this, "P1.5")
-	, m_p1_6(*this, "P1.6")
-	, m_p1_7(*this, "P1.7"), m_p0(0), m_p1(0), m_p2(0), m_p3(0)
-=======
 pc_kbd_microsoft_natural_device::pc_kbd_microsoft_natural_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, PC_KBD_MICROSOFT_NATURAL, tag, owner, clock)
 	, device_pc_kbd_interface(mconfig, *this)
@@ -264,7 +225,6 @@ pc_kbd_microsoft_natural_device::pc_kbd_microsoft_natural_device(const machine_c
 	, m_p2_r(*this, "P2.%u", 0)
 	, m_p1_r(*this, "P1.%u", 0)
 	, m_p0(0), m_p1(0), m_p2(0), m_p3(0)
->>>>>>> upstream/master
 {
 }
 
@@ -294,16 +254,6 @@ void pc_kbd_microsoft_natural_device::device_reset()
 
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  machine_config_additions - device-specific
-//  machine configurations
-//-------------------------------------------------
-
-machine_config_constructor pc_kbd_microsoft_natural_device::device_mconfig_additions() const
-{
-	return MACHINE_CONFIG_NAME( microsoft_natural );
-}
-=======
 //  device_add_mconfig - add device configuration
 //-------------------------------------------------
 
@@ -311,7 +261,6 @@ MACHINE_CONFIG_MEMBER( pc_kbd_microsoft_natural_device::device_add_mconfig )
 	MCFG_CPU_ADD("ms_natrl_cpu", I8051, XTAL_6MHz)
 	MCFG_CPU_IO_MAP(microsoft_natural_io)
 MACHINE_CONFIG_END
->>>>>>> upstream/master
 
 
 ioport_constructor pc_kbd_microsoft_natural_device::device_input_ports() const
@@ -324,11 +273,7 @@ ioport_constructor pc_kbd_microsoft_natural_device::device_input_ports() const
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const rom_entry *pc_kbd_microsoft_natural_device::device_rom_region() const
-=======
 const tiny_rom_entry *pc_kbd_microsoft_natural_device::device_rom_region() const
->>>>>>> upstream/master
 {
 	return ROM_NAME( microsoft_natural );
 }
@@ -346,96 +291,12 @@ WRITE_LINE_MEMBER( pc_kbd_microsoft_natural_device::data_write )
 
 READ8_MEMBER( pc_kbd_microsoft_natural_device::p0_read )
 {
-<<<<<<< HEAD
-	UINT8 data = 0xFF;
-=======
 	uint8_t data = 0xFF;
->>>>>>> upstream/master
 
 	if (LOG)
 		logerror("%s: P0 read. P1 = %02x, P2 = %02x\n", tag(), m_p1, m_p2 );
 
 	if ( ! ( m_p2 & 0x01 ) )
-<<<<<<< HEAD
-	{
-		data &= m_p2_0->read();
-	}
-
-	if ( ! ( m_p2 & 0x02 ) )
-	{
-		data &= m_p2_1->read();
-	}
-
-	if ( ! ( m_p2 & 0x04 ) )
-	{
-		data &= m_p2_2->read();
-	}
-
-	if ( ! ( m_p2 & 0x08 ) )
-	{
-		data &= m_p2_3->read();
-	}
-
-	if ( ! ( m_p2 & 0x10 ) )
-	{
-		data &= m_p2_4->read();
-	}
-
-	if ( ! ( m_p2 & 0x20 ) )
-	{
-		data &= m_p2_5->read();
-	}
-
-	if ( ! ( m_p2 & 0x40 ) )
-	{
-		data &= m_p2_6->read();
-	}
-
-	if ( ! ( m_p2 & 0x80 ) )
-	{
-		data &= m_p2_7->read();
-	}
-
-	if ( ! ( m_p1 & 0x01 ) )
-	{
-		data &= m_p1_0->read();
-	}
-
-	if ( ! ( m_p1 & 0x02 ) )
-	{
-		data &= m_p1_1->read();
-	}
-
-	if ( ! ( m_p1 & 0x04 ) )
-	{
-		data &= m_p1_2->read();
-	}
-
-	if ( ! ( m_p1 & 0x08 ) )
-	{
-		data &= m_p1_3->read();
-	}
-
-	if ( ! ( m_p1 & 0x10 ) )
-	{
-		data &= m_p1_4->read();
-	}
-
-	if ( ! ( m_p1 & 0x20 ) )
-	{
-		data &= m_p1_5->read();
-	}
-
-	if ( ! ( m_p1 & 0x40 ) )
-	{
-		data &= m_p1_6->read();
-	}
-
-	if ( ! ( m_p1 & 0x80 ) )
-	{
-		data &= m_p1_7->read();
-	}
-=======
 		data &= m_p2_r[0]->read();
 
 	if ( ! ( m_p2 & 0x02 ) )
@@ -482,7 +343,6 @@ READ8_MEMBER( pc_kbd_microsoft_natural_device::p0_read )
 
 	if ( ! ( m_p1 & 0x80 ) )
 		data &= m_p1_r[7]->read();
->>>>>>> upstream/master
 
 	return data;
 }
@@ -508,11 +368,7 @@ WRITE8_MEMBER( pc_kbd_microsoft_natural_device::p2_write )
 
 READ8_MEMBER( pc_kbd_microsoft_natural_device::p3_read )
 {
-<<<<<<< HEAD
-	UINT8 data = m_p3 & ~0x21;
-=======
 	uint8_t data = m_p3 & ~0x21;
->>>>>>> upstream/master
 
 	// (Incoming) Clock signal is tied to the T1/P3.5 pin
 	data |= (clock_signal() ? 0x20 : 0x00);

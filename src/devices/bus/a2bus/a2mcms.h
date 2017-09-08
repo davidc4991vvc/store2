@@ -10,16 +10,9 @@
 
 *********************************************************************/
 
-<<<<<<< HEAD
-#ifndef __A2BUS_MCMS__
-#define __A2BUS_MCMS__
-
-#include "emu.h"
-=======
 #ifndef MAME_BUS_A2BUS_A2MCMS_H
 #define MAME_BUS_A2BUS_A2MCMS_H
 
->>>>>>> upstream/master
 #include "a2bus.h"
 
 //**************************************************************************
@@ -32,19 +25,11 @@ class mcms_device : public device_t, public device_sound_interface
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	mcms_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	DECLARE_WRITE8_MEMBER(voiceregs_w);
-	DECLARE_WRITE8_MEMBER(control_w);
-	UINT8 get_pen_rand(void) { m_stream->update(); return m_rand; }
-=======
 	mcms_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	DECLARE_WRITE8_MEMBER(voiceregs_w);
 	DECLARE_WRITE8_MEMBER(control_w);
 	uint8_t get_pen_rand(void) { m_stream->update(); return m_rand; }
->>>>>>> upstream/master
 
 	void set_bus_device(a2bus_mcms1_device *pDev) { m_pBusDevice = pDev; }
 
@@ -53,40 +38,23 @@ public:
 
 protected:
 	// device-level overrides
-<<<<<<< HEAD
-	virtual void device_start();
-	virtual void device_reset();
-	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
-
-	virtual void sound_stream_update(sound_stream &stream, stream_sample_t **inputs, stream_sample_t **outputs, int samples);
-=======
 	virtual void device_start() override;
 	virtual void device_reset() override;
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
 
 	virtual void sound_stream_update(sound_stream &stream, stream_sample_t **inputs, stream_sample_t **outputs, int samples) override;
->>>>>>> upstream/master
 
 private:
 	sound_stream *m_stream;
 	emu_timer *m_timer, *m_clrtimer;
 	a2bus_mcms1_device *m_pBusDevice;
 	bool m_enabled;
-<<<<<<< HEAD
-	UINT8 m_vols[16];
-	UINT8 m_table[16];
-	UINT16 m_freq[16];
-	UINT16 m_acc[16];
-	UINT8 m_mastervol;
-	UINT8 m_rand;
-=======
 	uint8_t m_vols[16];
 	uint8_t m_table[16];
 	uint16_t m_freq[16];
 	uint16_t m_acc[16];
 	uint8_t m_mastervol;
 	uint8_t m_rand;
->>>>>>> upstream/master
 };
 
 // card 1
@@ -96,34 +64,11 @@ class a2bus_mcms1_device:
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	a2bus_mcms1_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source);
-	a2bus_mcms1_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// optional information overrides
-	virtual machine_config_constructor device_mconfig_additions() const;
-=======
 	a2bus_mcms1_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
->>>>>>> upstream/master
 
 	// comms from card 2 (oscillator parameter writes)
 	mcms_device *get_engine(void);
 
-<<<<<<< HEAD
-	DECLARE_WRITE_LINE_MEMBER(irq_w);
-
-	required_device<mcms_device> m_mcms;
-
-protected:
-	virtual void device_start();
-	virtual void device_reset();
-
-	// overrides of standard a2bus slot functions
-	virtual UINT8 read_c0nx(address_space &space, UINT8 offset);
-	virtual UINT8 read_cnxx(address_space &space, UINT8 offset);
-	virtual void write_cnxx(address_space &space, UINT8 offset, UINT8 data);
-	virtual bool take_c800() { return false; }
-=======
 	required_device<mcms_device> m_mcms;
 
 protected:
@@ -141,7 +86,6 @@ protected:
 
 private:
 	DECLARE_WRITE_LINE_MEMBER(irq_w);
->>>>>>> upstream/master
 };
 
 // card 2
@@ -151,20 +95,6 @@ class a2bus_mcms2_device:
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	a2bus_mcms2_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source);
-	a2bus_mcms2_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-protected:
-	virtual void device_start();
-	virtual void device_reset();
-
-	// overrides of standard a2bus slot functions
-	virtual UINT8 read_c0nx(address_space &space, UINT8 offset);
-	virtual void write_c0nx(address_space &space, UINT8 offset, UINT8 data);
-	virtual void write_cnxx(address_space &space, UINT8 offset, UINT8 data);
-	virtual bool take_c800() { return false; }
-=======
 	a2bus_mcms2_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 protected:
@@ -178,7 +108,6 @@ protected:
 	virtual void write_c0nx(address_space &space, uint8_t offset, uint8_t data) override;
 	virtual void write_cnxx(address_space &space, uint8_t offset, uint8_t data) override;
 	virtual bool take_c800() override { return false; }
->>>>>>> upstream/master
 
 private:
 	a2bus_mcms1_device *m_card1;    // card 1 for passthrough
@@ -186,14 +115,7 @@ private:
 };
 
 // device type definition
-<<<<<<< HEAD
-extern const device_type A2BUS_MCMS1;
-extern const device_type A2BUS_MCMS2;
-
-#endif /* __A2BUS_MCMS__ */
-=======
 DECLARE_DEVICE_TYPE(A2BUS_MCMS1, a2bus_mcms1_device)
 DECLARE_DEVICE_TYPE(A2BUS_MCMS2, a2bus_mcms2_device)
 
 #endif // MAME_BUS_A2BUS_A2MCMS_H
->>>>>>> upstream/master

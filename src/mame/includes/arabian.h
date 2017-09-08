@@ -20,24 +20,6 @@ public:
 		m_palette(*this, "palette") { }
 
 	/* memory pointers */
-<<<<<<< HEAD
-	required_shared_ptr<UINT8> m_custom_cpu_ram;
-	required_shared_ptr<UINT8> m_blitter;
-
-	UINT8 *  m_main_bitmap;
-	UINT8 *  m_converted_gfx;
-
-	/* video-related */
-	UINT8    m_video_control;
-	UINT8    m_flip_screen;
-
-	/* MCU */
-	UINT8    m_mcu_port_o;
-	UINT8    m_mcu_port_p;
-	UINT8    m_mcu_port_r[4];
-	DECLARE_READ8_MEMBER(mcu_port_r_r);
-	DECLARE_WRITE8_MEMBER(mcu_port_r_w);
-=======
 	required_shared_ptr<uint8_t> m_custom_cpu_ram;
 	required_shared_ptr<uint8_t> m_blitter;
 
@@ -60,7 +42,6 @@ public:
 	DECLARE_WRITE8_MEMBER(mcu_port_r1_w);
 	DECLARE_WRITE8_MEMBER(mcu_port_r2_w);
 	DECLARE_WRITE8_MEMBER(mcu_port_r3_w);
->>>>>>> upstream/master
 	DECLARE_READ8_MEMBER(mcu_portk_r);
 	DECLARE_WRITE8_MEMBER(mcu_port_o_w);
 	DECLARE_WRITE8_MEMBER(mcu_port_p_w);
@@ -68,21 +49,12 @@ public:
 	DECLARE_WRITE8_MEMBER(arabian_videoram_w);
 	DECLARE_WRITE8_MEMBER(ay8910_porta_w);
 	DECLARE_WRITE8_MEMBER(ay8910_portb_w);
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void machine_reset();
-	virtual void video_start();
-	DECLARE_PALETTE_INIT(arabian);
-	UINT32 screen_update_arabian(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	void blit_area( UINT8 plane, UINT16 src, UINT8 x, UINT8 y, UINT8 sx, UINT8 sy );
-=======
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
 	virtual void video_start() override;
 	DECLARE_PALETTE_INIT(arabian);
 	uint32_t screen_update_arabian(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	void blit_area( uint8_t plane, uint16_t src, uint8_t x, uint8_t y, uint8_t sx, uint8_t sy );
->>>>>>> upstream/master
 	required_device<cpu_device> m_maincpu;
 	required_device<cpu_device> m_mcu;
 	required_device<palette_device> m_palette;

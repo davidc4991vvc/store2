@@ -1,7 +1,4 @@
-<<<<<<< HEAD
-=======
 <?xml version="1.0"?>
->>>>>>> upstream/master
 <!-- wpc_an.lay -->
 
 <!-- 2013-10-01: Initial version. -->
@@ -152,8 +149,4 @@
 			<bounds left="200" top="200" right="210" bottom="210" />
 		</bezel>
 	</view>
-<<<<<<< HEAD
 </mamelayout>
-=======
-</mamelayout>
->>>>>>> upstream/master

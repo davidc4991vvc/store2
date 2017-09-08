@@ -1,16 +1,10 @@
 // license:BSD-3-Clause
 // copyright-holders:Nicola Salmoria
 #include "emu.h"
-<<<<<<< HEAD
-
-#include "includes/f1gp.h"
-
-=======
 #include "includes/f1gp.h"
 
 #include "screen.h"
 
->>>>>>> upstream/master
 
 #define TOTAL_CHARS 0x800
 
@@ -54,15 +48,6 @@ TILE_GET_INFO_MEMBER(f1gp_state::get_fg_tile_info)
 
 VIDEO_START_MEMBER(f1gp_state,f1gp)
 {
-<<<<<<< HEAD
-	m_roz_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(f1gp_state::f1gp_get_roz_tile_info),this), TILEMAP_SCAN_ROWS, 16, 16, 64, 64);
-	m_fg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(f1gp_state::get_fg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 64, 32);
-
-	m_fg_tilemap->set_transparent_pen(0xff);
-
-	m_zoomdata = (UINT16 *)memregion("gfx4")->base();
-	m_gfxdecode->gfx(3)->set_source((UINT8 *)m_zoomdata);
-=======
 	m_roz_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(f1gp_state::f1gp_get_roz_tile_info),this), TILEMAP_SCAN_ROWS, 16, 16, 64, 64);
 	m_fg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(f1gp_state::get_fg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 64, 32);
 
@@ -70,7 +55,6 @@ VIDEO_START_MEMBER(f1gp_state,f1gp)
 
 	m_zoomdata = (uint16_t *)memregion("gfx4")->base();
 	m_gfxdecode->gfx(3)->set_source((uint8_t *)m_zoomdata);
->>>>>>> upstream/master
 
 	save_pointer(NAME(m_zoomdata), memregion("gfx4")->bytes()/2);
 }
@@ -78,15 +62,6 @@ VIDEO_START_MEMBER(f1gp_state,f1gp)
 
 VIDEO_START_MEMBER(f1gp_state,f1gpb)
 {
-<<<<<<< HEAD
-	m_roz_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(f1gp_state::f1gp_get_roz_tile_info),this), TILEMAP_SCAN_ROWS, 16, 16, 64, 64);
-	m_fg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(f1gp_state::get_fg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 64, 32);
-
-	m_fg_tilemap->set_transparent_pen(0xff);
-
-	m_zoomdata = (UINT16 *)memregion("gfx4")->base();
-	m_gfxdecode->gfx(3)->set_source((UINT8 *)m_zoomdata);
-=======
 	m_roz_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(f1gp_state::f1gp_get_roz_tile_info),this), TILEMAP_SCAN_ROWS, 16, 16, 64, 64);
 	m_fg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(f1gp_state::get_fg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 64, 32);
 
@@ -94,36 +69,23 @@ VIDEO_START_MEMBER(f1gp_state,f1gpb)
 
 	m_zoomdata = (uint16_t *)memregion("gfx4")->base();
 	m_gfxdecode->gfx(3)->set_source((uint8_t *)m_zoomdata);
->>>>>>> upstream/master
 
 	save_pointer(NAME(m_zoomdata), memregion("gfx4")->bytes()/2);
 }
 
 /* new hw type */
-<<<<<<< HEAD
-UINT32 f1gp_state::f1gp2_tile_callback( UINT32 code )
-=======
 uint32_t f1gp_state::f1gp2_tile_callback( uint32_t code )
->>>>>>> upstream/master
 {
 	return m_sprcgram[code&0x3fff];
 }
 
 /* old hw type */
-<<<<<<< HEAD
-UINT32 f1gp_state::f1gp_old_tile_callback( UINT32 code )
-=======
 uint32_t f1gp_state::f1gp_old_tile_callback( uint32_t code )
->>>>>>> upstream/master
 {
 	return m_spr1cgram[code % (m_spr1cgram.bytes()/2)];
 }
 
-<<<<<<< HEAD
-UINT32 f1gp_state::f1gp_ol2_tile_callback( UINT32 code )
-=======
 uint32_t f1gp_state::f1gp_ol2_tile_callback( uint32_t code )
->>>>>>> upstream/master
 {
 	return m_spr2cgram[code % (m_spr2cgram.bytes()/2)];
 }
@@ -132,13 +94,8 @@ uint32_t f1gp_state::f1gp_ol2_tile_callback( uint32_t code )
 
 VIDEO_START_MEMBER(f1gp_state,f1gp2)
 {
-<<<<<<< HEAD
-	m_roz_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(f1gp_state::f1gp2_get_roz_tile_info),this), TILEMAP_SCAN_ROWS, 16, 16, 64, 64);
-	m_fg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(f1gp_state::get_fg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 64, 32);
-=======
 	m_roz_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(f1gp_state::f1gp2_get_roz_tile_info),this), TILEMAP_SCAN_ROWS, 16, 16, 64, 64);
 	m_fg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(f1gp_state::get_fg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 64, 32);
->>>>>>> upstream/master
 
 	m_fg_tilemap->set_transparent_pen(0xff);
 	m_roz_tilemap->set_transparent_pen(0x0f);
@@ -230,11 +187,7 @@ WRITE16_MEMBER(f1gp_state::f1gp2_gfxctrl_w)
 ***************************************************************************/
 
 
-<<<<<<< HEAD
-UINT32 f1gp_state::screen_update_f1gp(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t f1gp_state::screen_update_f1gp(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	screen.priority().fill(0, cliprect);
 
@@ -257,11 +210,7 @@ uint32_t f1gp_state::screen_update_f1gp(screen_device &screen, bitmap_ind16 &bit
 }
 
 
-<<<<<<< HEAD
-UINT32 f1gp_state::screen_update_f1gp2(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t f1gp_state::screen_update_f1gp2(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	if (m_gfxctrl & 4)  /* blank screen */
 		bitmap.fill(m_palette->black_pen(), cliprect);
@@ -302,11 +251,7 @@ uint32_t f1gp_state::screen_update_f1gp2(screen_device &screen, bitmap_ind16 &bi
 // BOOTLEG
 void f1gp_state::f1gpb_draw_sprites( screen_device &screen,bitmap_ind16 &bitmap,const rectangle &cliprect )
 {
-<<<<<<< HEAD
-	UINT16 *spriteram = m_spriteram;
-=======
 	uint16_t *spriteram = m_spriteram;
->>>>>>> upstream/master
 	int attr_start, start_offset = m_spriteram.bytes() / 2 - 4;
 
 	// find the "end of list" to draw the sprites in reverse order
@@ -372,16 +317,6 @@ void f1gp_state::f1gpb_draw_sprites( screen_device &screen,bitmap_ind16 &bitmap,
 }
 
 // BOOTLEG
-<<<<<<< HEAD
-UINT32 f1gp_state::screen_update_f1gpb(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-{
-	UINT32 startx, starty;
-	int incxx, incxy, incyx, incyy;
-
-	incxy = (INT16)m_rozregs[1];
-	incyx = -incxy;
-	incxx = incyy = (INT16)m_rozregs[3];
-=======
 uint32_t f1gp_state::screen_update_f1gpb(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
 	uint32_t startx, starty;
@@ -390,7 +325,6 @@ uint32_t f1gp_state::screen_update_f1gpb(screen_device &screen, bitmap_ind16 &bi
 	incxy = (int16_t)m_rozregs[1];
 	incyx = -incxy;
 	incxx = incyy = (int16_t)m_rozregs[3];
->>>>>>> upstream/master
 	startx = m_rozregs[0] + 328;
 	starty = m_rozregs[2];
 

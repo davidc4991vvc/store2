@@ -11,12 +11,6 @@
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/z80/z80.h"
-#include "cpu/m68000/m68000.h"
-#include "sound/3812intf.h"
-#include "includes/prehisle.h"
-=======
 #include "includes/prehisle.h"
 
 #include "cpu/z80/z80.h"
@@ -25,17 +19,12 @@
 #include "screen.h"
 #include "speaker.h"
 
->>>>>>> upstream/master
 
 /******************************************************************************/
 
 WRITE16_MEMBER(prehisle_state::soundcmd_w)
 {
-<<<<<<< HEAD
-	soundlatch_byte_w(space, 0, data & 0xff);
-=======
 	m_soundlatch->write(space, 0, data & 0xff);
->>>>>>> upstream/master
 	m_audiocpu->set_input_line(INPUT_LINE_NMI, PULSE_LINE);
 }
 
@@ -70,11 +59,7 @@ WRITE8_MEMBER(prehisle_state::D7759_upd_reset_w)
 static ADDRESS_MAP_START( prehisle_sound_map, AS_PROGRAM, 8, prehisle_state )
 	AM_RANGE(0x0000, 0xefff) AM_ROM
 	AM_RANGE(0xf000, 0xf7ff) AM_RAM
-<<<<<<< HEAD
-	AM_RANGE(0xf800, 0xf800) AM_READ(soundlatch_byte_r)
-=======
 	AM_RANGE(0xf800, 0xf800) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
->>>>>>> upstream/master
 	AM_RANGE(0xf800, 0xf800) AM_WRITENOP    // ???
 ADDRESS_MAP_END
 
@@ -211,11 +196,7 @@ GFXDECODE_END
 
 /******************************************************************************/
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( prehisle, prehisle_state )
-=======
 static MACHINE_CONFIG_START( prehisle )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, XTAL_18MHz/2)   /* verified on pcb */
@@ -243,11 +224,8 @@ static MACHINE_CONFIG_START( prehisle )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 
->>>>>>> upstream/master
 	MCFG_SOUND_ADD("ymsnd", YM3812, XTAL_4MHz)  /* verified on pcb */
 	MCFG_YM3812_IRQ_HANDLER(INPUTLINE("audiocpu", 0))
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
@@ -370,15 +348,6 @@ ROM_START( gensitou )
 	ROM_LOAD( "gt4.4",  0x000000, 0x20000, CRC(85dfb9ec) SHA1(78c865e7ccffddb71dcddccab358fa945f521f25) )
 ROM_END
 
-<<<<<<< HEAD
-/******************************************************************************/
-
-
-GAME( 1989, prehisle, 0,        prehisle, prehisle, driver_device, 0, ROT0, "SNK", "Prehistoric Isle in 1930 (World)", MACHINE_SUPPORTS_SAVE )
-GAME( 1989, prehisleu,prehisle, prehisle, prehisle, driver_device, 0, ROT0, "SNK", "Prehistoric Isle in 1930 (US)", MACHINE_SUPPORTS_SAVE )
-GAME( 1989, prehislek,prehisle, prehisle, prehisle, driver_device, 0, ROT0, "SNK (Victor license)", "Prehistoric Isle in 1930 (Korea)", MACHINE_SUPPORTS_SAVE )
-GAME( 1989, gensitou, prehisle, prehisle, prehisle, driver_device, 0, ROT0, "SNK", "Genshi-Tou 1930's", MACHINE_SUPPORTS_SAVE )
-=======
 // world bootleg using 64k*8 UVEPROMs, program and sound unchanged, sprites and background tilemaps altered
 ROM_START( prehisleb )
 	ROM_REGION( 0x40000, "maincpu", 0 )
@@ -433,4 +402,3 @@ GAME( 1989, prehisleu, prehisle, prehisle, prehisle, prehisle_state, 0, ROT0, "S
 GAME( 1989, prehislek, prehisle, prehisle, prehisle, prehisle_state, 0, ROT0, "SNK (Victor license)", "Prehistoric Isle in 1930 (Korea)",          MACHINE_SUPPORTS_SAVE )
 GAME( 1989, gensitou,  prehisle, prehisle, prehisle, prehisle_state, 0, ROT0, "SNK",                  "Genshi-Tou 1930's",                         MACHINE_SUPPORTS_SAVE )
 GAME( 1989, prehisleb, prehisle, prehisle, prehisle, prehisle_state, 0, ROT0, "bootleg",              "Prehistoric Isle in 1930 (World, bootleg)", MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

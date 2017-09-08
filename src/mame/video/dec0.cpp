@@ -21,11 +21,7 @@ WRITE16_MEMBER(dec0_state::dec0_update_sprites_w)
 /******************************************************************************/
 
 
-<<<<<<< HEAD
-UINT32 dec0_state::screen_update_hbarrel(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t dec0_state::screen_update_hbarrel(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	flip_screen_set(m_tilegen1->get_flip_state());
 
@@ -42,11 +38,7 @@ uint32_t dec0_state::screen_update_hbarrel(screen_device &screen, bitmap_ind16 &
 
 /******************************************************************************/
 
-<<<<<<< HEAD
-UINT32 dec0_state::screen_update_baddudes(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t dec0_state::screen_update_baddudes(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	flip_screen_set(m_tilegen1->get_flip_state());
 
@@ -84,11 +76,7 @@ uint32_t dec0_state::screen_update_baddudes(screen_device &screen, bitmap_ind16 
 
 /******************************************************************************/
 
-<<<<<<< HEAD
-UINT32 dec0_state::screen_update_robocop(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t dec0_state::screen_update_robocop(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int trans;
 
@@ -132,22 +120,14 @@ uint32_t dec0_state::screen_update_robocop(screen_device &screen, bitmap_ind16 &
 }
 
 
-<<<<<<< HEAD
-UINT32 dec0_automat_state::screen_update_automat(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t dec0_automat_state::screen_update_automat(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int trans;
 
 	// layer enables seem different... where are they?
 
 	// the bootleg doesn't write these registers, I think they're hardcoded?, so fake them for compatibility with our implementation..
-<<<<<<< HEAD
-	address_space &space = machine().driver_data()->generic_space();
-=======
 	address_space &space = machine().dummy_space();
->>>>>>> upstream/master
 	m_tilegen1->pf_control_0_w(space,0,0x0003, 0x00ff); // 8x8
 	m_tilegen1->pf_control_0_w(space,1,0x0003, 0x00ff);
 	m_tilegen1->pf_control_0_w(space,2,0x0000, 0x00ff);
@@ -209,20 +189,12 @@ uint32_t dec0_automat_state::screen_update_automat(screen_device &screen, bitmap
 	return 0;
 }
 
-<<<<<<< HEAD
-UINT32 dec0_automat_state::screen_update_secretab(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t dec0_automat_state::screen_update_secretab(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	// layer enables seem different... where are they?
 
 	// the bootleg doesn't write these registers, I think they're hardcoded?, so fake them for compatibility with our implementation..
-<<<<<<< HEAD
-	address_space &space = machine().driver_data()->generic_space();
-=======
 	address_space &space = machine().dummy_space();
->>>>>>> upstream/master
 	m_tilegen1->pf_control_0_w(space,0,0x0003, 0x00ff); // 8x8
 	m_tilegen1->pf_control_0_w(space,1,0x0003, 0x00ff);
 	m_tilegen1->pf_control_0_w(space,2,0x0000, 0x00ff);
@@ -266,11 +238,7 @@ uint32_t dec0_automat_state::screen_update_secretab(screen_device &screen, bitma
 
 /******************************************************************************/
 
-<<<<<<< HEAD
-UINT32 dec0_state::screen_update_birdtry(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t dec0_state::screen_update_birdtry(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	flip_screen_set(m_tilegen1->get_flip_state());
 
@@ -285,11 +253,7 @@ uint32_t dec0_state::screen_update_birdtry(screen_device &screen, bitmap_ind16 &
 
 /******************************************************************************/
 
-<<<<<<< HEAD
-UINT32 dec0_state::screen_update_hippodrm(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t dec0_state::screen_update_hippodrm(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	flip_screen_set(m_tilegen1->get_flip_state());
 
@@ -311,11 +275,7 @@ uint32_t dec0_state::screen_update_hippodrm(screen_device &screen, bitmap_ind16 
 
 /******************************************************************************/
 
-<<<<<<< HEAD
-UINT32 dec0_state::screen_update_slyspy(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t dec0_state::screen_update_slyspy(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	flip_screen_set(m_tilegen1->get_flip_state());
 
@@ -334,11 +294,7 @@ uint32_t dec0_state::screen_update_slyspy(screen_device &screen, bitmap_ind16 &b
 
 /******************************************************************************/
 
-<<<<<<< HEAD
-UINT32 dec0_state::screen_update_midres(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t dec0_state::screen_update_midres(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int trans;
 
@@ -392,11 +348,7 @@ VIDEO_START_MEMBER(dec0_state,dec0_nodma)
 VIDEO_START_MEMBER(dec0_state,dec0)
 {
 	save_item(NAME(m_pri));
-<<<<<<< HEAD
-	m_buffered_spriteram = auto_alloc_array(machine(), UINT16, 0x800/2);
-=======
 	m_buffered_spriteram = auto_alloc_array(machine(), uint16_t, 0x800/2);
->>>>>>> upstream/master
 	save_pointer(NAME(m_buffered_spriteram), 0x800/2);
 }
 

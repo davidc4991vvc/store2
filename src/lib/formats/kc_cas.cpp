@@ -43,11 +43,7 @@ static int kc_image_size;
 /*******************************************************************
    Generate one high-low cycle of sample data
 ********************************************************************/
-<<<<<<< HEAD
-INLINE int kc_cas_cycle(INT16 *buffer, int sample_pos, int len)
-=======
 static inline int kc_cas_cycle(int16_t *buffer, int sample_pos, int len)
->>>>>>> upstream/master
 {
 	int num_samples = KC_WAV_FREQUENCY / (len * 2);
 
@@ -67,11 +63,7 @@ static inline int kc_cas_cycle(int16_t *buffer, int sample_pos, int len)
 /*******************************************************************
    Generate n samples of silence
 ********************************************************************/
-<<<<<<< HEAD
-INLINE int kc_cas_silence(INT16 *buffer, int sample_pos, int len)
-=======
 static inline int kc_cas_silence(int16_t *buffer, int sample_pos, int len)
->>>>>>> upstream/master
 {
 	int i = 0;
 
@@ -86,11 +78,7 @@ static inline int kc_cas_silence(int16_t *buffer, int sample_pos, int len)
 /*******************************************************************
    Generate samples for 1 byte
 ********************************************************************/
-<<<<<<< HEAD
-INLINE int kc_cas_byte(INT16 *buffer, int sample_pos, UINT8 data)
-=======
 static inline int kc_cas_byte(int16_t *buffer, int sample_pos, uint8_t data)
->>>>>>> upstream/master
 {
 	int samples = 0;
 
@@ -115,11 +103,7 @@ static inline int kc_cas_byte(int16_t *buffer, int sample_pos, uint8_t data)
 	return samples;
 }
 
-<<<<<<< HEAD
-static int kc_handle_cass(INT16 *buffer, const UINT8 *casdata, int type)
-=======
 static int kc_handle_cass(int16_t *buffer, const uint8_t *casdata, int type)
->>>>>>> upstream/master
 {
 	int data_pos = (type == KC_IMAGE_KCC || type == KC_IMAGE_KCM) ? 0 : 16;
 	int sample_count = 0;
@@ -135,11 +119,7 @@ static int kc_handle_cass(int16_t *buffer, const uint8_t *casdata, int type)
 	// on the entire file
 	while( data_pos < kc_image_size )
 	{
-<<<<<<< HEAD
-		UINT8 checksum = 0;
-=======
 		uint8_t checksum = 0;
->>>>>>> upstream/master
 
 		// 200 cycles of BIT_1 every block
 		for (int i=0; i<200; i++)
@@ -162,11 +142,7 @@ static int kc_handle_cass(int16_t *buffer, const uint8_t *casdata, int type)
 		// write the 128 bytes of the block
 		for (int i=0; i<128; i++)
 		{
-<<<<<<< HEAD
-			UINT8 data = 0;
-=======
 			uint8_t data = 0;
->>>>>>> upstream/master
 
 			if (data_pos < kc_image_size)
 				data = casdata[data_pos++];
@@ -208,21 +184,13 @@ static int kc_handle_cass(int16_t *buffer, const uint8_t *casdata, int type)
 }
 
 
-<<<<<<< HEAD
-static int kc_handle_kcc(INT16 *buffer, const UINT8 *casdata)
-=======
 static int kc_handle_kcc(int16_t *buffer, const uint8_t *casdata)
->>>>>>> upstream/master
 {
 	return kc_handle_cass(buffer, casdata, KC_IMAGE_KCC);
 }
 
 
-<<<<<<< HEAD
-static int kc_handle_tap(INT16 *buffer, const UINT8 *casdata)
-=======
 static int kc_handle_tap(int16_t *buffer, const uint8_t *casdata)
->>>>>>> upstream/master
 {
 	if (!strncmp((const char *)(casdata + 1), "KC-TAPE by AF", 13))
 	{
@@ -238,15 +206,6 @@ static int kc_handle_tap(int16_t *buffer, const uint8_t *casdata)
 	}
 	else
 	{
-<<<<<<< HEAD
-		return CASSETTE_ERROR_INVALIDIMAGE;
-	}
-}
-
-static int kc_handle_sss(INT16 *buffer, const UINT8 *casdata)
-{
-	dynamic_buffer sss(kc_image_size + 11);
-=======
 		return (int)cassette_image::error::INVALID_IMAGE;
 	}
 }
@@ -254,7 +213,6 @@ static int kc_handle_sss(INT16 *buffer, const UINT8 *casdata)
 static int kc_handle_sss(int16_t *buffer, const uint8_t *casdata)
 {
 	std::vector<uint8_t> sss(kc_image_size + 11);
->>>>>>> upstream/master
 
 	// tries to generate the missing head
 	memset(&sss[0], 0xd3, 3);
@@ -274,11 +232,7 @@ static int kc_handle_sss(int16_t *buffer, const uint8_t *casdata)
 /*******************************************************************
    Generate samples for the tape image
 ********************************************************************/
-<<<<<<< HEAD
-static int kc_kcc_fill_wave(INT16 *buffer, int sample_count, UINT8 *bytes)
-=======
 static int kc_kcc_fill_wave(int16_t *buffer, int sample_count, uint8_t *bytes)
->>>>>>> upstream/master
 {
 	return kc_handle_kcc(buffer, bytes);
 }
@@ -287,19 +241,11 @@ static int kc_kcc_fill_wave(int16_t *buffer, int sample_count, uint8_t *bytes)
 /*******************************************************************
    Calculate the number of samples needed for this tape image classical
 ********************************************************************/
-<<<<<<< HEAD
-static int kc_kcc_to_wav_size(const UINT8 *casdata, int caslen)
-{
-	kc_image_size = caslen ;
-
-	return kc_handle_kcc( NULL, casdata );
-=======
 static int kc_kcc_to_wav_size(const uint8_t *casdata, int caslen)
 {
 	kc_image_size = caslen ;
 
 	return kc_handle_kcc( nullptr, casdata );
->>>>>>> upstream/master
 }
 
 
@@ -314,21 +260,13 @@ static const struct CassetteLegacyWaveFiller kc_kcc_legacy_fill_wave =
 	0                                       /* trailer_samples */
 };
 
-<<<<<<< HEAD
-static casserr_t kc_kcc_identify(cassette_image *cassette, struct CassetteOptions *opts)
-=======
 static cassette_image::error kc_kcc_identify(cassette_image *cassette, struct CassetteOptions *opts)
->>>>>>> upstream/master
 {
 	return cassette_legacy_identify(cassette, opts, &kc_kcc_legacy_fill_wave);
 }
 
 
-<<<<<<< HEAD
-static casserr_t kc_kcc_load(cassette_image *cassette)
-=======
 static cassette_image::error kc_kcc_load(cassette_image *cassette)
->>>>>>> upstream/master
 {
 	return cassette_legacy_construct(cassette, &kc_kcc_legacy_fill_wave);
 }
@@ -339,22 +277,14 @@ static const struct CassetteFormat kc_kcc_format =
 	"kcc,kcb",
 	kc_kcc_identify,
 	kc_kcc_load,
-<<<<<<< HEAD
-	NULL
-=======
 	nullptr
->>>>>>> upstream/master
 };
 
 
 /*******************************************************************
    Generate samples for the tape image
 ********************************************************************/
-<<<<<<< HEAD
-static int kc_tap_fill_wave(INT16 *buffer, int sample_count, UINT8 *bytes)
-=======
 static int kc_tap_fill_wave(int16_t *buffer, int sample_count, uint8_t *bytes)
->>>>>>> upstream/master
 {
 	return kc_handle_tap(buffer, bytes);
 }
@@ -363,19 +293,11 @@ static int kc_tap_fill_wave(int16_t *buffer, int sample_count, uint8_t *bytes)
 /*******************************************************************
    Calculate the number of samples needed for this tape image classical
 ********************************************************************/
-<<<<<<< HEAD
-static int kc_tap_to_wav_size(const UINT8 *casdata, int caslen)
-{
-	kc_image_size = caslen ;
-
-	return kc_handle_tap( NULL, casdata );
-=======
 static int kc_tap_to_wav_size(const uint8_t *casdata, int caslen)
 {
 	kc_image_size = caslen ;
 
 	return kc_handle_tap( nullptr, casdata );
->>>>>>> upstream/master
 }
 
 
@@ -390,21 +312,13 @@ static const struct CassetteLegacyWaveFiller kc_tap_legacy_fill_wave =
 	0                                       /* trailer_samples */
 };
 
-<<<<<<< HEAD
-static casserr_t kc_tap_identify(cassette_image *cassette, struct CassetteOptions *opts)
-=======
 static cassette_image::error kc_tap_identify(cassette_image *cassette, struct CassetteOptions *opts)
->>>>>>> upstream/master
 {
 	return cassette_legacy_identify(cassette, opts, &kc_tap_legacy_fill_wave);
 }
 
 
-<<<<<<< HEAD
-static casserr_t kc_tap_load(cassette_image *cassette)
-=======
 static cassette_image::error kc_tap_load(cassette_image *cassette)
->>>>>>> upstream/master
 {
 	return cassette_legacy_construct(cassette, &kc_tap_legacy_fill_wave);
 }
@@ -415,22 +329,14 @@ static const struct CassetteFormat kc_tap_format =
 	"tap,853,854,855,tp2,kcm",
 	kc_tap_identify,
 	kc_tap_load,
-<<<<<<< HEAD
-	NULL
-=======
 	nullptr
->>>>>>> upstream/master
 };
 
 
 /*******************************************************************
    Generate samples for the tape image
 ********************************************************************/
-<<<<<<< HEAD
-static int kc_sss_fill_wave(INT16 *buffer, int sample_count, UINT8 *bytes)
-=======
 static int kc_sss_fill_wave(int16_t *buffer, int sample_count, uint8_t *bytes)
->>>>>>> upstream/master
 {
 	return kc_handle_sss(buffer, bytes);
 }
@@ -439,19 +345,11 @@ static int kc_sss_fill_wave(int16_t *buffer, int sample_count, uint8_t *bytes)
 /*******************************************************************
    Calculate the number of samples needed for this tape image classical
 ********************************************************************/
-<<<<<<< HEAD
-static int kc_sss_to_wav_size(const UINT8 *casdata, int caslen)
-{
-	kc_image_size = caslen ;
-
-	return kc_handle_sss( NULL, casdata );
-=======
 static int kc_sss_to_wav_size(const uint8_t *casdata, int caslen)
 {
 	kc_image_size = caslen ;
 
 	return kc_handle_sss( nullptr, casdata );
->>>>>>> upstream/master
 }
 
 
@@ -466,21 +364,13 @@ static const struct CassetteLegacyWaveFiller kc_sss_legacy_fill_wave =
 	0                                       /* trailer_samples */
 };
 
-<<<<<<< HEAD
-static casserr_t kc_sss_identify(cassette_image *cassette, struct CassetteOptions *opts)
-=======
 static cassette_image::error kc_sss_identify(cassette_image *cassette, struct CassetteOptions *opts)
->>>>>>> upstream/master
 {
 	return cassette_legacy_identify(cassette, opts, &kc_sss_legacy_fill_wave);
 }
 
 
-<<<<<<< HEAD
-static casserr_t kc_sss_load(cassette_image *cassette)
-=======
 static cassette_image::error kc_sss_load(cassette_image *cassette)
->>>>>>> upstream/master
 {
 	return cassette_legacy_construct(cassette, &kc_sss_legacy_fill_wave);
 }
@@ -490,11 +380,7 @@ static const struct CassetteFormat kc_sss_format =
 	"sss",
 	kc_sss_identify,
 	kc_sss_load,
-<<<<<<< HEAD
-	NULL
-=======
 	nullptr
->>>>>>> upstream/master
 };
 
 

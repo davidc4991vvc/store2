@@ -2,19 +2,11 @@
 // copyright-holders:Sven Gothel
 /***
  *
-<<<<<<< HEAD
- * GL Shader Tool - Convinient Basic Shader functionality
- *
- * Copyright (c) 2007, Sven Gothel
- *
- * OpenGL GLSL ARB extentions:
-=======
  * GL Shader Tool - Convenient Basic Shader functionality
  *
  * Copyright (c) 2007, Sven Gothel
  *
  * OpenGL GLSL ARB extensions:
->>>>>>> upstream/master
  *
  *  GL_ARB_shader_objects
  *  GL_ARB_shading_language_100
@@ -26,30 +18,6 @@
 #include "emu.h"
 #include "gl_shader_tool.h"
 
-<<<<<<< HEAD
-PFNGLGETOBJECTPARAMETERIVARBPROC pfn_glGetObjectParameterivARB=NULL;
-PFNGLGETINFOLOGARBPROC pfn_glGetInfoLogARB=NULL;
-PFNGLDELETEOBJECTARBPROC pfn_glDeleteObjectARB=NULL;
-PFNGLCREATESHADEROBJECTARBPROC pfn_glCreateShaderObjectARB=NULL;
-PFNGLSHADERSOURCEARBPROC pfn_glShaderSourceARB=NULL;
-PFNGLCOMPILESHADERARBPROC pfn_glCompileShaderARB=NULL;
-PFNGLCREATEPROGRAMOBJECTARBPROC pfn_glCreateProgramObjectARB=NULL;
-PFNGLATTACHOBJECTARBPROC pfn_glAttachObjectARB=NULL;
-PFNGLLINKPROGRAMARBPROC pfn_glLinkProgramARB=NULL;
-PFNGLVALIDATEPROGRAMARBPROC pfn_glValidateProgramARB=NULL;
-PFNGLUSEPROGRAMOBJECTARBPROC pfn_glUseProgramObjectARB=NULL;
-PFNGLGETUNIFORMLOCATIONARBPROC pfn_glGetUniformLocationARB=NULL;
-PFNGLUNIFORM1FARBPROC pfn_glUniform1fARB=NULL;
-PFNGLUNIFORM1IARBPROC pfn_glUniform1iARB=NULL;
-PFNGLUNIFORM1FVARBPROC pfn_glUniform1fvARB=NULL;
-PFNGLUNIFORM2FVARBPROC pfn_glUniform2fvARB=NULL;
-PFNGLUNIFORM3FVARBPROC pfn_glUniform3fvARB=NULL;
-PFNGLUNIFORM4FVARBPROC pfn_glUniform4fvARB=NULL;
-PFNGLUNIFORM1IVARBPROC pfn_glUniform1ivARB=NULL;
-PFNGLUNIFORM2IVARBPROC pfn_glUniform2ivARB=NULL;
-PFNGLUNIFORM3IVARBPROC pfn_glUniform3ivARB=NULL;
-PFNGLUNIFORM4IVARBPROC pfn_glUniform4ivARB=NULL;
-=======
 PFNGLGETOBJECTPARAMETERIVARBPROC pfn_glGetObjectParameterivARB= nullptr;
 PFNGLGETINFOLOGARBPROC pfn_glGetInfoLogARB= nullptr;
 PFNGLDELETEOBJECTARBPROC pfn_glDeleteObjectARB= nullptr;
@@ -72,7 +40,6 @@ PFNGLUNIFORM1IVARBPROC pfn_glUniform1ivARB= nullptr;
 PFNGLUNIFORM2IVARBPROC pfn_glUniform2ivARB= nullptr;
 PFNGLUNIFORM3IVARBPROC pfn_glUniform3ivARB= nullptr;
 PFNGLUNIFORM4IVARBPROC pfn_glUniform4ivARB= nullptr;
->>>>>>> upstream/master
 
 
 int gl_shader_loadExtention(osd_gl_context *gl_ctx)
@@ -185,98 +152,57 @@ int gl_shader_check_error(GLhandleARB obj, GLenum obj_query, GLSLCheckMode m, co
 		if( param!=GL_PROGRAM_OBJECT_ARB && param!=GL_SHADER_OBJECT_ARB )
 		{
 			if ( CHECK_VERBOSE <= m )
-<<<<<<< HEAD
-				osd_printf_warning("%s:%d: GL Error: object type 0x%X generation failed\n", file, line, (unsigned int)(FPTR)obj);
-=======
 				osd_printf_warning("%s:%d: GL Error: object type 0x%X generation failed\n", file, line, (unsigned int)(uintptr_t)obj);
->>>>>>> upstream/master
 			res=-1;
 		} else if ( CHECK_ALWAYS_VERBOSE <= m )
 		{
 			if(param==GL_PROGRAM_OBJECT_ARB)
-<<<<<<< HEAD
-				osd_printf_warning("%s:%d: GL Error: object type 0x%X is PROGRAM, successful\n", file, line, (unsigned int)(FPTR)obj);
-			else
-				osd_printf_warning("%s:%d: GL Info: object type 0x%X is SHADER, successful\n", file, line, (unsigned int)(FPTR)obj);
-=======
 				osd_printf_warning("%s:%d: GL Error: object type 0x%X is PROGRAM, successful\n", file, line, (unsigned int)(uintptr_t)obj);
 			else
 				osd_printf_warning("%s:%d: GL Info: object type 0x%X is SHADER, successful\n", file, line, (unsigned int)(uintptr_t)obj);
->>>>>>> upstream/master
 		}
 		break;
 		case GL_OBJECT_DELETE_STATUS_ARB:
 		if(param!=1)
 		{
 			if ( CHECK_ALWAYS_VERBOSE <= m )
-<<<<<<< HEAD
-				osd_printf_warning("%s:%d: GL Info: object 0x%X not yet marked for deletion\n", file, line, (unsigned int)(FPTR)obj);
-		} else if ( CHECK_ALWAYS_VERBOSE <= m )
-		{
-			osd_printf_warning("%s:%d: GL Info: object 0x%X deletion successful\n", file, line, (unsigned int)(FPTR)obj);
-=======
 				osd_printf_warning("%s:%d: GL Info: object 0x%X not yet marked for deletion\n", file, line, (unsigned int)(uintptr_t)obj);
 		} else if ( CHECK_ALWAYS_VERBOSE <= m )
 		{
 			osd_printf_warning("%s:%d: GL Info: object 0x%X deletion successful\n", file, line, (unsigned int)(uintptr_t)obj);
->>>>>>> upstream/master
 		}
 		break;
 		case GL_OBJECT_COMPILE_STATUS_ARB:
 		if(param!=1)
 		{
 			if ( CHECK_VERBOSE <= m )
-<<<<<<< HEAD
-				osd_printf_warning("%s:%d: GL Error: object 0x%X compilation failed\n", file, line, (unsigned int)(FPTR)obj);
-			res=-1;
-		} else if ( CHECK_ALWAYS_VERBOSE <= m )
-		{
-			osd_printf_warning("%s:%d: GL Info: object 0x%X compiled successful\n", file, line, (unsigned int)(FPTR)obj);
-=======
 				osd_printf_warning("%s:%d: GL Error: object 0x%X compilation failed\n", file, line, (unsigned int)(uintptr_t)obj);
 			res=-1;
 		} else if ( CHECK_ALWAYS_VERBOSE <= m )
 		{
 			osd_printf_warning("%s:%d: GL Info: object 0x%X compiled successful\n", file, line, (unsigned int)(uintptr_t)obj);
->>>>>>> upstream/master
 		}
 		break;
 		case GL_OBJECT_LINK_STATUS_ARB:
 		if(param!=1)
 		{
 			if ( CHECK_VERBOSE <= m )
-<<<<<<< HEAD
-				osd_printf_warning("%s:%d: GL Error: object 0x%X linking failed\n", file, line, (unsigned int)(FPTR)obj);
-			res=-1;
-		} else if ( CHECK_ALWAYS_VERBOSE <= m )
-		{
-			osd_printf_warning("%s:%d: GL Info: object 0x%X linked successful\n", file, line, (unsigned int)(FPTR)obj);
-=======
 				osd_printf_warning("%s:%d: GL Error: object 0x%X linking failed\n", file, line, (unsigned int)(uintptr_t)obj);
 			res=-1;
 		} else if ( CHECK_ALWAYS_VERBOSE <= m )
 		{
 			osd_printf_warning("%s:%d: GL Info: object 0x%X linked successful\n", file, line, (unsigned int)(uintptr_t)obj);
->>>>>>> upstream/master
 		}
 		break;
 		case GL_OBJECT_VALIDATE_STATUS_ARB:
 		if(param!=1)
 		{
 			if ( CHECK_VERBOSE <= m )
-<<<<<<< HEAD
-				osd_printf_warning("%s:%d: GL Error: object 0x%X validation failed\n", file, line, (unsigned int)(FPTR)obj);
-			res=-1;
-		} else if ( CHECK_ALWAYS_VERBOSE <= m )
-		{
-			osd_printf_warning("%s:%d: GL Info: object 0x%X validation successful\n", file, line, (unsigned int)(FPTR)obj);
-=======
 				osd_printf_warning("%s:%d: GL Error: object 0x%X validation failed\n", file, line, (unsigned int)(uintptr_t)obj);
 			res=-1;
 		} else if ( CHECK_ALWAYS_VERBOSE <= m )
 		{
 			osd_printf_warning("%s:%d: GL Info: object 0x%X validation successful\n", file, line, (unsigned int)(uintptr_t)obj);
->>>>>>> upstream/master
 		}
 		break;
 		}
@@ -330,11 +256,7 @@ int gl_texture_check_size(GLenum target, GLint level, GLint internalFormat, GLsi
 	glTexImage2D (texTargetProxy, level,
 			internalFormat,
 			width, height,
-<<<<<<< HEAD
-			border, format, type, NULL);
-=======
 			border, format, type, nullptr);
->>>>>>> upstream/master
 	if ( 0!=(err=GL_CHECK_ERROR_NORMAL() )) return err;
 
 	glGetTexLevelParameteriv( texTargetProxy, level, GL_TEXTURE_WIDTH,  avail_width);
@@ -383,11 +305,7 @@ static int delete_shader_tool( GLhandleARB *program, GLhandleARB *vertex_shader,
 	int res=0;
 
 	GL_CHECK_ERROR_QUIET();
-<<<<<<< HEAD
-	if(program!=NULL && *program!=0)
-=======
 	if(program!= nullptr && *program!=0)
->>>>>>> upstream/master
 	{
 		pfn_glDeleteObjectARB(*program);
 		if(externalcall)
@@ -396,11 +314,7 @@ static int delete_shader_tool( GLhandleARB *program, GLhandleARB *vertex_shader,
 		}
 		*program=0;
 	}
-<<<<<<< HEAD
-	if(vertex_shader!=NULL && *vertex_shader!=0)
-=======
 	if(vertex_shader!= nullptr && *vertex_shader!=0)
->>>>>>> upstream/master
 	{
 		pfn_glDeleteObjectARB(*vertex_shader);
 		if(externalcall)
@@ -409,11 +323,7 @@ static int delete_shader_tool( GLhandleARB *program, GLhandleARB *vertex_shader,
 		}
 		*vertex_shader=0;
 	}
-<<<<<<< HEAD
-	if(fragment_shader!=NULL && *fragment_shader!=0)
-=======
 	if(fragment_shader!= nullptr && *fragment_shader!=0)
->>>>>>> upstream/master
 	{
 		pfn_glDeleteObjectARB(*fragment_shader);
 		if(externalcall)
@@ -430,32 +340,19 @@ int gl_compile_shader_source( GLhandleARB *shader, GLenum type, const char * sha
 {
 		int err = 0;
 
-<<<<<<< HEAD
-	if(shader==NULL || shader_source==NULL)
-	{
-		if(shader==NULL)
-			osd_printf_warning("error: gl_compile_shader_source: NULL shader passed\n");
-		if(shader_source==NULL)
-			osd_printf_warning("error: gl_compile_shader_source: NULL shader source passed\n");
-=======
 	if(shader== nullptr || shader_source== nullptr)
 	{
 		if(shader== nullptr)
 			osd_printf_warning("error: gl_compile_shader_source: nullptr shader passed\n");
 		if(shader_source== nullptr)
 			osd_printf_warning("error: gl_compile_shader_source: nullptr shader source passed\n");
->>>>>>> upstream/master
 		return -1;
 	}
 		*shader = pfn_glCreateShaderObjectARB(type);
 	err=GL_SHADER_CHECK(*shader, GL_OBJECT_TYPE_ARB);
 		if(err) goto errout;
 
-<<<<<<< HEAD
-		pfn_glShaderSourceARB(*shader, 1, (const GLcharARB **)&shader_source, NULL);
-=======
 		pfn_glShaderSourceARB(*shader, 1, (const GLcharARB **)&shader_source, nullptr);
->>>>>>> upstream/master
 
 		pfn_glCompileShaderARB(*shader);
 		err=GL_SHADER_CHECK(*shader, GL_OBJECT_COMPILE_STATUS_ARB);
@@ -477,21 +374,12 @@ errout:
 
 int gl_compile_shader_file( GLhandleARB *shader, GLenum type, const char * shader_file, int verbose )
 {
-<<<<<<< HEAD
-	if(shader==NULL || shader_file==NULL)
-	{
-		if(shader==NULL)
-			osd_printf_warning("error: gl_compile_shader_source: NULL shader passed\n");
-		if(shader_file==NULL)
-			osd_printf_warning("error: gl_compile_shader_source: NULL shader file passed\n");
-=======
 	if(shader== nullptr || shader_file== nullptr)
 	{
 		if(shader== nullptr)
 			osd_printf_warning("error: gl_compile_shader_source: nullptr shader passed\n");
 		if(shader_file== nullptr)
 			osd_printf_warning("error: gl_compile_shader_source: nullptr shader file passed\n");
->>>>>>> upstream/master
 		return -1;
 	}
 

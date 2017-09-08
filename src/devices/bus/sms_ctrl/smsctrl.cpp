@@ -6,13 +6,9 @@
 
 **********************************************************************/
 
-<<<<<<< HEAD
-#include "smsctrl.h"
-=======
 #include "emu.h"
 #include "smsctrl.h"
 
->>>>>>> upstream/master
 // slot devices
 #include "joypad.h"
 #include "lphaser.h"
@@ -29,11 +25,7 @@
 //  GLOBAL VARIABLES
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type SMS_CONTROL_PORT = &device_creator<sms_control_port_device>;
-=======
 DEFINE_DEVICE_TYPE(SMS_CONTROL_PORT, sms_control_port_device, "sms_control_port", "Sega SMS controller port")
->>>>>>> upstream/master
 
 
 
@@ -70,20 +62,12 @@ device_sms_control_port_interface::~device_sms_control_port_interface()
 //  sms_control_port_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-sms_control_port_device::sms_control_port_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-						device_t(mconfig, SMS_CONTROL_PORT, "Sega SMS control port", tag, owner, clock, "sms_control_port", __FILE__),
-						device_slot_interface(mconfig, *this), m_device(nullptr),
-						m_th_pin_handler(*this),
-						m_pixel_handler(*this)
-=======
 sms_control_port_device::sms_control_port_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	device_t(mconfig, SMS_CONTROL_PORT, tag, owner, clock),
 	device_slot_interface(mconfig, *this),
 	m_device(nullptr),
 	m_th_pin_handler(*this),
 	m_pixel_handler(*this)
->>>>>>> upstream/master
 {
 }
 
@@ -110,25 +94,15 @@ void sms_control_port_device::device_start()
 }
 
 
-<<<<<<< HEAD
-UINT8 sms_control_port_device::port_r()
-{
-	UINT8 data = 0xff;
-=======
 uint8_t sms_control_port_device::port_r()
 {
 	uint8_t data = 0xff;
->>>>>>> upstream/master
 	if (m_device)
 		data = m_device->peripheral_r();
 	return data;
 }
 
-<<<<<<< HEAD
-void sms_control_port_device::port_w( UINT8 data )
-=======
 void sms_control_port_device::port_w( uint8_t data )
->>>>>>> upstream/master
 {
 	if (m_device)
 		m_device->peripheral_w(data);
@@ -140,11 +114,7 @@ void sms_control_port_device::th_pin_w(int state)
 	m_th_pin_handler(state);
 }
 
-<<<<<<< HEAD
-UINT32 sms_control_port_device::pixel_r()
-=======
 uint32_t sms_control_port_device::pixel_r()
->>>>>>> upstream/master
 {
 	return m_pixel_handler();
 }

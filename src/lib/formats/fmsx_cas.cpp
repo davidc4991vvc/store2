@@ -8,11 +8,7 @@
 #define CAS_PERIOD        (16)
 #define CAS_HEADER_PERIODS (4000)
 #define CAS_EMPTY_PERIODS (1000)
-<<<<<<< HEAD
-static const UINT8 CasHeader[8] = { 0x1F,0xA6,0xDE,0xBA,0xCC,0x13,0x7D,0x74 };
-=======
 static const uint8_t CasHeader[8] = { 0x1F,0xA6,0xDE,0xBA,0xCC,0x13,0x7D,0x74 };
->>>>>>> upstream/master
 
 static int cas_size;
 
@@ -20,11 +16,7 @@ static int cas_size;
 /*******************************************************************
    Calculate the number of samples needed for this tape image
 ********************************************************************/
-<<<<<<< HEAD
-static int fmsx_cas_to_wav_size (const UINT8 *casdata, int caslen)
-=======
 static int fmsx_cas_to_wav_size (const uint8_t *casdata, int caslen)
->>>>>>> upstream/master
 {
 	int     pos, size;
 
@@ -56,11 +48,7 @@ static int fmsx_cas_to_wav_size (const uint8_t *casdata, int caslen)
 /*******************************************************************
    Generate samples for the tape image
 ********************************************************************/
-<<<<<<< HEAD
-static int fmsx_cas_fill_wave(INT16 *buffer, int sample_count, UINT8 *bytes)
-=======
 static int fmsx_cas_fill_wave(int16_t *buffer, int sample_count, uint8_t *bytes)
->>>>>>> upstream/master
 {
 	int cas_pos, bit, state = 1, samples_pos, size, n, i, p;
 
@@ -129,22 +117,14 @@ static const struct CassetteLegacyWaveFiller fmsx_legacy_fill_wave =
 
 
 
-<<<<<<< HEAD
-static casserr_t fmsx_cas_identify(cassette_image *cassette, struct CassetteOptions *opts)
-=======
 static cassette_image::error fmsx_cas_identify(cassette_image *cassette, struct CassetteOptions *opts)
->>>>>>> upstream/master
 {
 	return cassette_legacy_identify(cassette, opts, &fmsx_legacy_fill_wave);
 }
 
 
 
-<<<<<<< HEAD
-static casserr_t fmsx_cas_load(cassette_image *cassette)
-=======
 static cassette_image::error fmsx_cas_load(cassette_image *cassette)
->>>>>>> upstream/master
 {
 	return cassette_legacy_construct(cassette, &fmsx_legacy_fill_wave);
 }
@@ -156,11 +136,7 @@ static const struct CassetteFormat fmsx_cas_format =
 	"tap,cas",
 	fmsx_cas_identify,
 	fmsx_cas_load,
-<<<<<<< HEAD
-	NULL
-=======
 	nullptr
->>>>>>> upstream/master
 };
 
 

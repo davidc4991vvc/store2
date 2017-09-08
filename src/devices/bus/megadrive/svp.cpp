@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-// license:???
-=======
 // license:BSD-3-Clause
->>>>>>> upstream/master
 // copyright-holders:Fabio Priuli,Pierpaolo Prazzoli,Grazvydas Ignotas
 /****************************************** SVP related *****************************************/
 
@@ -38,24 +34,6 @@
 //  md_rom_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const device_type MD_ROM_SVP = &device_creator<md_rom_svp_device>;
-
-md_rom_svp_device::md_rom_svp_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source)
-							: device_t(mconfig, type, name, tag, owner, clock, shortname, source),
-							device_md_cart_interface( mconfig, *this ),
-							m_svp(*this, "svp"),
-							m_test_ipt(*this, "MEMORY_TEST"), m_emu_status(0), m_xst(0), m_xst2(0)
-						{
-}
-
-md_rom_svp_device::md_rom_svp_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-							: device_t(mconfig, MD_ROM_SVP, "MD Virtua Racing", tag, owner, clock, "md_rom_svp", __FILE__),
-							device_md_cart_interface( mconfig, *this ),
-							m_svp(*this, "svp"),
-							m_test_ipt(*this, "MEMORY_TEST"), m_emu_status(0), m_xst(0), m_xst2(0)
-						{
-=======
 DEFINE_DEVICE_TYPE(MD_ROM_SVP, md_rom_svp_device, "md_rom_svp", "MD Virtua Racing")
 
 md_rom_svp_device::md_rom_svp_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock)
@@ -70,7 +48,6 @@ md_rom_svp_device::md_rom_svp_device(const machine_config &mconfig, device_type 
 md_rom_svp_device::md_rom_svp_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: md_rom_svp_device(mconfig, MD_ROM_SVP, tag, owner, clock)
 {
->>>>>>> upstream/master
 }
 
 
@@ -81,11 +58,7 @@ md_rom_svp_device::md_rom_svp_device(const machine_config &mconfig, const char *
 
 // HELPERS
 
-<<<<<<< HEAD
-INLINE int get_inc(int mode)
-=======
 static inline int get_inc(int mode)
->>>>>>> upstream/master
 {
 	int inc = (mode >> 11) & 7;
 	if (inc != 0) {
@@ -96,11 +69,7 @@ static inline int get_inc(int mode)
 	return inc;
 }
 
-<<<<<<< HEAD
-INLINE void overwrite_write(UINT16 *dst, UINT16 d)
-=======
 static inline void overwrite_write(uint16_t *dst, uint16_t d)
->>>>>>> upstream/master
 {
 	if (d & 0xf000) { *dst &= ~0xf000; *dst |= d & 0xf000; }
 	if (d & 0x0f00) { *dst &= ~0x0f00; *dst |= d & 0x0f00; }
@@ -110,11 +79,7 @@ static inline void overwrite_write(uint16_t *dst, uint16_t d)
 
 
 
-<<<<<<< HEAD
-UINT32 md_rom_svp_device::pm_io(int reg, int write, UINT32 d)
-=======
 uint32_t md_rom_svp_device::pm_io(int reg, int write, uint32_t d)
->>>>>>> upstream/master
 {
 	if (m_emu_status & SSP_PMC_SET)
 	{
@@ -134,11 +99,7 @@ uint32_t md_rom_svp_device::pm_io(int reg, int write, uint32_t d)
 	if (reg == 4 || (m_svp->state().state_int(SSP_ST) & 0x60))
 	{
 #define CADDR ((((mode<<16)&0x7f0000)|addr)<<1)
-<<<<<<< HEAD
-		UINT16 *dram = (UINT16 *)m_dram;
-=======
 		uint16_t *dram = (uint16_t *)m_dram;
->>>>>>> upstream/master
 		if (write)
 		{
 			int mode = m_pmac_write[reg] >> 16;
@@ -164,11 +125,7 @@ uint32_t md_rom_svp_device::pm_io(int reg, int write, uint32_t d)
 			else if ((mode & 0x47ff) == 0x001c) // IRAM
 			{
 				int inc = get_inc(mode);
-<<<<<<< HEAD
-				((UINT16 *)m_iram)[addr & 0x3ff] = d;
-=======
 				((uint16_t *)m_iram)[addr & 0x3ff] = d;
->>>>>>> upstream/master
 				m_pmac_write[reg] += inc;
 			}
 			else
@@ -183,11 +140,7 @@ uint32_t md_rom_svp_device::pm_io(int reg, int write, uint32_t d)
 			int addr = m_pmac_read[reg] & 0xffff;
 			if ((mode & 0xfff0) == 0x0800) // ROM, inc 1, verified to be correct
 			{
-<<<<<<< HEAD
-				UINT16 *ROM = (UINT16 *)get_rom_base();
-=======
 				uint16_t *ROM = (uint16_t *)get_rom_base();
->>>>>>> upstream/master
 				m_pmac_read[reg] += 1;
 				d = ROM[addr | ((mode & 0xf) << 16)];
 			}
@@ -214,22 +167,13 @@ uint32_t md_rom_svp_device::pm_io(int reg, int write, uint32_t d)
 		return d;
 	}
 
-<<<<<<< HEAD
-	return (UINT32)-1;
-=======
 	return (uint32_t)-1;
->>>>>>> upstream/master
 }
 
 READ16_MEMBER( md_rom_svp_device::read_pm0 )
 {
-<<<<<<< HEAD
-	UINT32 d = pm_io(0, 0, 0);
-	if (d != (UINT32)-1)
-=======
 	uint32_t d = pm_io(0, 0, 0);
 	if (d != (uint32_t)-1)
->>>>>>> upstream/master
 		return d;
 	d = m_xst2;
 	m_xst2 &= ~2; // ?
@@ -238,26 +182,16 @@ READ16_MEMBER( md_rom_svp_device::read_pm0 )
 
 WRITE16_MEMBER( md_rom_svp_device::write_pm0 )
 {
-<<<<<<< HEAD
-	UINT32 r = pm_io(0, 1, data);
-	if (r != (UINT32)-1)
-=======
 	uint32_t r = pm_io(0, 1, data);
 	if (r != (uint32_t)-1)
->>>>>>> upstream/master
 		return;
 	m_xst2 = data; // ?
 }
 
 READ16_MEMBER( md_rom_svp_device::read_pm1 )
 {
-<<<<<<< HEAD
-	UINT32 r = pm_io(1, 0, 0);
-	if (r != (UINT32)-1)
-=======
 	uint32_t r = pm_io(1, 0, 0);
 	if (r != (uint32_t)-1)
->>>>>>> upstream/master
 		return r;
 	logerror("svp: PM1 acces in non PM mode?\n");
 	return 0;
@@ -265,26 +199,16 @@ READ16_MEMBER( md_rom_svp_device::read_pm1 )
 
 WRITE16_MEMBER( md_rom_svp_device::write_pm1 )
 {
-<<<<<<< HEAD
-	UINT32 r = pm_io(1, 1, data);
-	if (r != (UINT32)-1)
-=======
 	uint32_t r = pm_io(1, 1, data);
 	if (r != (uint32_t)-1)
->>>>>>> upstream/master
 		return;
 	logerror("svp: PM1 acces in non PM mode?\n");
 }
 
 READ16_MEMBER( md_rom_svp_device::read_pm2 )
 {
-<<<<<<< HEAD
-	UINT32 r = pm_io(2, 0, 0);
-	if (r != (UINT32)-1)
-=======
 	uint32_t r = pm_io(2, 0, 0);
 	if (r != (uint32_t)-1)
->>>>>>> upstream/master
 		return r;
 	logerror("svp: PM2 acces in non PM mode?\n");
 	return 0;
@@ -292,39 +216,24 @@ READ16_MEMBER( md_rom_svp_device::read_pm2 )
 
 WRITE16_MEMBER( md_rom_svp_device::write_pm2 )
 {
-<<<<<<< HEAD
-	UINT32 r = pm_io(2, 1, data);
-	if (r != (UINT32)-1)
-=======
 	uint32_t r = pm_io(2, 1, data);
 	if (r != (uint32_t)-1)
->>>>>>> upstream/master
 		return;
 	logerror("svp: PM2 acces in non PM mode?\n");
 }
 
 READ16_MEMBER( md_rom_svp_device::read_xst )
 {
-<<<<<<< HEAD
-	UINT32 d = pm_io(3, 0, 0);
-	if (d != (UINT32)-1)
-=======
 	uint32_t d = pm_io(3, 0, 0);
 	if (d != (uint32_t)-1)
->>>>>>> upstream/master
 		return d;
 	return m_xst;
 }
 
 WRITE16_MEMBER( md_rom_svp_device::write_xst )
 {
-<<<<<<< HEAD
-	UINT32 r = pm_io(3, 1, data);
-	if (r != (UINT32)-1)
-=======
 	uint32_t r = pm_io(3, 1, data);
 	if (r != (uint32_t)-1)
->>>>>>> upstream/master
 		return;
 	m_xst2 |= 1;
 	m_xst = data;
@@ -383,11 +292,7 @@ WRITE16_MEMBER( md_rom_svp_device::write_al )
 
 READ16_MEMBER( md_rom_svp_device::rom_read1 )
 {
-<<<<<<< HEAD
-	UINT16 *IRAM = (UINT16 *)m_iram;
-=======
 	uint16_t *IRAM = (uint16_t *)m_iram;
->>>>>>> upstream/master
 	return IRAM[offset];
 }
 
@@ -435,49 +340,24 @@ ADDRESS_MAP_START( md_svp_ext_map, AS_IO, 16, md_rom_svp_device )
 	AM_RANGE(7*2, 7*2+1) AM_READWRITE(read_al, write_al)
 ADDRESS_MAP_END
 
-<<<<<<< HEAD
-//-------------------------------------------------
-//  MACHINE_DRIVER( md_svp )
-//-------------------------------------------------
-
-static MACHINE_CONFIG_FRAGMENT( md_svp )
-=======
 
 //-------------------------------------------------
 //  device_add_mconfig - add device configuration
 //-------------------------------------------------
 
 MACHINE_CONFIG_MEMBER( md_rom_svp_device::device_add_mconfig )
->>>>>>> upstream/master
 	MCFG_CPU_ADD("svp", SSP1601, MASTER_CLOCK_NTSC / 7 * 3) /* ~23 MHz (guessed) */
 	MCFG_CPU_PROGRAM_MAP(md_svp_ssp_map)
 	MCFG_CPU_IO_MAP(md_svp_ext_map)
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-//-------------------------------------------------
-//  machine_config_additions - device-specific
-//  machine configurations
-//-------------------------------------------------
-
-machine_config_constructor md_rom_svp_device::device_mconfig_additions() const
-{
-	return MACHINE_CONFIG_NAME( md_svp );
-}
-
-=======
->>>>>>> upstream/master
 ioport_constructor md_rom_svp_device::device_input_ports() const
 {
 	return INPUT_PORTS_NAME( md_svp );
 }
 
 
-<<<<<<< HEAD
-void md_rom_svp_device::set_bank_to_rom(const char *banktag, UINT32 offset)
-=======
 void md_rom_svp_device::set_bank_to_rom(const char *banktag, uint32_t offset)
->>>>>>> upstream/master
 {
 	if (membank(banktag))
 		membank(banktag)->set_base(m_rom + offset);
@@ -513,11 +393,7 @@ void md_rom_svp_device::device_start()
 
 READ16_MEMBER(md_rom_svp_device::read)
 {
-<<<<<<< HEAD
-	UINT16 *DRAM = (UINT16 *)m_dram;
-=======
 	uint16_t *DRAM = (uint16_t *)m_dram;
->>>>>>> upstream/master
 
 	if (offset >= 0x300000/2 && offset < 0x320000/2)
 	{
@@ -526,22 +402,14 @@ READ16_MEMBER(md_rom_svp_device::read)
 	else if (offset >= 0x390000/2 && offset < 0x3a0000/2)
 	{
 		// this is rewritten 68k test code
-<<<<<<< HEAD
-		UINT32 a1 = offset - 0x390000/2;
-=======
 		uint32_t a1 = offset - 0x390000/2;
->>>>>>> upstream/master
 		a1 = (a1 & 0x7001) | ((a1 & 0x3e) << 6) | ((a1 & 0xfc0) >> 5);
 		return DRAM[a1];
 	}
 	else if (offset >= 0x3a0000/2 && offset < 0x3b0000/2)
 	{
 		// this is rewritten 68k test code
-<<<<<<< HEAD
-		UINT32 a1 = offset - 0x3a0000/2;
-=======
 		uint32_t a1 = offset - 0x3a0000/2;
->>>>>>> upstream/master
 		a1 = (a1 & 0x7801) | ((a1 & 0x1e) << 6) | ((a1 & 0x7e0) >> 4);
 		return DRAM[a1];
 	}
@@ -558,24 +426,15 @@ WRITE16_MEMBER(md_rom_svp_device::write)
 {
 	if (offset >= 0x300000/2 && offset < 0x320000/2)
 	{
-<<<<<<< HEAD
-		UINT32 a1 = offset - 0x300000/2;
-		UINT16 *DRAM = (UINT16 *)m_dram;
-=======
 		uint32_t a1 = offset - 0x300000/2;
 		uint16_t *DRAM = (uint16_t *)m_dram;
->>>>>>> upstream/master
 		DRAM[a1] = data;
 	}
 }
 
 READ16_MEMBER(md_rom_svp_device::read_a15)
 {
-<<<<<<< HEAD
-	UINT32 d;
-=======
 	uint32_t d;
->>>>>>> upstream/master
 	switch (offset)
 	{
 		// 0xa15000, 0xa15002

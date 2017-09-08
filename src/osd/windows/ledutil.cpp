@@ -29,10 +29,6 @@
 //============================================================
 
 // standard windows headers
-<<<<<<< HEAD
-#define WIN32_LEAN_AND_MEAN
-=======
->>>>>>> upstream/master
 #include <windows.h>
 #include <winioctl.h>
 
@@ -45,12 +41,7 @@
 // MAME output header file
 typedef int running_machine;
 #include "osdcomm.h"
-<<<<<<< HEAD
-#include "output.h"
-
-=======
 #include "modules/output/win32_output.h"
->>>>>>> upstream/master
 
 
 //============================================================
@@ -161,11 +152,7 @@ static LRESULT handle_update_state(WPARAM wparam, LPARAM lparam);
 // these functions provide the meat
 static void output_startup(const char *commandline);
 static void output_mame_start(void);
-<<<<<<< HEAD
-static void output_set_state(const char *name, INT32 state);
-=======
 static void output_set_state(const char *name, int32_t state);
->>>>>>> upstream/master
 static void output_mame_stop(void);
 static void output_shutdown(void);
 
@@ -191,15 +178,6 @@ int main(int argc, char *argv[])
 	// if the argument is "-kill", post a close message
 	if (strcmp(arg, "-kill") == 0)
 	{
-<<<<<<< HEAD
-		if (otherwnd != NULL)
-			PostMessage(otherwnd, WM_QUIT, 0, 0);
-		return (otherwnd != NULL) ? 1 : 0;
-	}
-
-	// if we had another instance, defer to it
-	if (otherwnd != NULL)
-=======
 		if (otherwnd != nullptr)
 			PostMessage(otherwnd, WM_QUIT, 0, 0);
 		return (otherwnd != nullptr) ? 1 : 0;
@@ -207,7 +185,6 @@ int main(int argc, char *argv[])
 
 	// if we had another instance, defer to it
 	if (otherwnd != nullptr)
->>>>>>> upstream/master
 		return 0;
 
 	// call the startup code
@@ -226,19 +203,11 @@ int main(int argc, char *argv[])
 						WINDOW_STYLE,
 						0, 0,
 						1, 1,
-<<<<<<< HEAD
-						NULL,
-						NULL,
-						GetModuleHandle(NULL),
-						NULL);
-	if (listener_hwnd == NULL)
-=======
 						nullptr,
 						nullptr,
 						GetModuleHandle(nullptr),
 						nullptr);
 	if (listener_hwnd == nullptr)
->>>>>>> upstream/master
 		goto error;
 
 	// allocate message ids
@@ -264,30 +233,18 @@ int main(int argc, char *argv[])
 
 	// see if MAME is already running
 	otherwnd = FindWindow(OUTPUT_WINDOW_CLASS, OUTPUT_WINDOW_NAME);
-<<<<<<< HEAD
-	if (otherwnd != NULL)
-		handle_mame_start((WPARAM)otherwnd, 0);
-
-	// process messages
-	while (GetMessage(&message, NULL, 0, 0))
-=======
 	if (otherwnd != nullptr)
 		handle_mame_start((WPARAM)otherwnd, 0);
 
 	// process messages
 	while (GetMessage(&message, nullptr, 0, 0))
->>>>>>> upstream/master
 	{
 		TranslateMessage(&message);
 		DispatchMessage(&message);
 	}
 
 	// reset on the way out if still live
-<<<<<<< HEAD
-	if (mame_target != NULL)
-=======
 	if (mame_target != nullptr)
->>>>>>> upstream/master
 		handle_mame_stop((WPARAM)mame_target, 0);
 	exitcode = 0;
 
@@ -314,11 +271,7 @@ static int create_window_class(void)
 
 		// initialize the description of the window class
 		wc.lpszClassName    = WINDOW_CLASS;
-<<<<<<< HEAD
-		wc.hInstance        = GetModuleHandle(NULL);
-=======
 		wc.hInstance        = GetModuleHandle(nullptr);
->>>>>>> upstream/master
 		wc.lpfnWndProc      = listener_window_proc;
 
 		// register the class; fail if we can't
@@ -365,11 +318,7 @@ static LRESULT CALLBACK listener_window_proc(HWND wnd, UINT message, WPARAM wpar
 
 static LRESULT handle_mame_start(WPARAM wparam, LPARAM lparam)
 {
-<<<<<<< HEAD
-	DEBUG_PRINTF(("mame_start (%08X)\n", (UINT32)wparam));
-=======
 	DEBUG_PRINTF(("mame_start (%08X)\n", (uint32_t)wparam));
->>>>>>> upstream/master
 
 	// make this the targeted version of MAME
 	mame_target = (HWND)wparam;
@@ -393,22 +342,14 @@ static LRESULT handle_mame_start(WPARAM wparam, LPARAM lparam)
 
 static LRESULT handle_mame_stop(WPARAM wparam, LPARAM lparam)
 {
-<<<<<<< HEAD
-	DEBUG_PRINTF(("mame_stop (%08X)\n", (UINT32)wparam));
-=======
 	DEBUG_PRINTF(("mame_stop (%08X)\n", (uint32_t)wparam));
->>>>>>> upstream/master
 
 	// ignore if this is not the instance we care about
 	if (mame_target != (HWND)wparam)
 		return 1;
 
 	// clear our target out
-<<<<<<< HEAD
-	mame_target = NULL;
-=======
 	mame_target = nullptr;
->>>>>>> upstream/master
 	reset_id_to_outname_cache();
 
 	// reset the LED states
@@ -428,11 +369,7 @@ static LRESULT handle_copydata(WPARAM wparam, LPARAM lparam)
 	id_map_entry *entry;
 	char *string;
 
-<<<<<<< HEAD
-	DEBUG_PRINTF(("copydata (%08X)\n", (UINT32)wparam));
-=======
 	DEBUG_PRINTF(("copydata (%08X)\n", (uint32_t)wparam));
->>>>>>> upstream/master
 
 	// ignore requests we don't care about
 	if (mame_target != (HWND)wparam)
@@ -440,19 +377,11 @@ static LRESULT handle_copydata(WPARAM wparam, LPARAM lparam)
 
 	// allocate memory
 	entry = (id_map_entry *)malloc(sizeof(*entry));
-<<<<<<< HEAD
-	if (entry == NULL)
-		return 0;
-
-	string = (char *)malloc(strlen(data->string) + 1);
-	if (string == NULL)
-=======
 	if (entry == nullptr)
 		return 0;
 
 	string = (char *)malloc(strlen(data->string) + 1);
 	if (string == nullptr)
->>>>>>> upstream/master
 	{
 		free(entry);
 		return 0;
@@ -467,11 +396,7 @@ static LRESULT handle_copydata(WPARAM wparam, LPARAM lparam)
 	strcpy(string, data->string);
 	idmaplist = entry;
 
-<<<<<<< HEAD
-	DEBUG_PRINTF(("  id %d = '%s'\n", entry->id, entry->name));
-=======
 	DEBUG_PRINTF(("  id %d = '%s'\n", (int)entry->id, entry->name));
->>>>>>> upstream/master
 
 	return 0;
 }
@@ -484,11 +409,7 @@ static LRESULT handle_copydata(WPARAM wparam, LPARAM lparam)
 static void reset_id_to_outname_cache(void)
 {
 	// free our ID list
-<<<<<<< HEAD
-	while (idmaplist != NULL)
-=======
 	while (idmaplist != nullptr)
->>>>>>> upstream/master
 	{
 		id_map_entry *temp = idmaplist;
 		idmaplist = temp->next;
@@ -507,11 +428,7 @@ static const char *map_id_to_outname(WPARAM id)
 	id_map_entry *entry;
 
 	// see if we have an entry in our map
-<<<<<<< HEAD
-	for (entry = idmaplist; entry != NULL; entry = entry->next)
-=======
 	for (entry = idmaplist; entry != nullptr; entry = entry->next)
->>>>>>> upstream/master
 		if (entry->id == id)
 			return entry->name;
 
@@ -519,11 +436,7 @@ static const char *map_id_to_outname(WPARAM id)
 	SendMessage(mame_target, om_mame_get_id_string, (WPARAM)listener_hwnd, id);
 
 	// now see if we have the entry in our map
-<<<<<<< HEAD
-	for (entry = idmaplist; entry != NULL; entry = entry->next)
-=======
 	for (entry = idmaplist; entry != nullptr; entry = entry->next)
->>>>>>> upstream/master
 		if (entry->id == id)
 			return entry->name;
 
@@ -538,11 +451,7 @@ static const char *map_id_to_outname(WPARAM id)
 
 static LRESULT handle_update_state(WPARAM wparam, LPARAM lparam)
 {
-<<<<<<< HEAD
-	DEBUG_PRINTF(("update_state: id=%d state=%d\n", (UINT32)wparam, (UINT32)lparam));
-=======
 	DEBUG_PRINTF(("update_state: id=%d state=%d\n", (uint32_t)wparam, (uint32_t)lparam));
->>>>>>> upstream/master
 	output_set_state(map_id_to_outname(wparam), lparam);
 	return 0;
 }
@@ -565,11 +474,7 @@ static void output_startup(const char *commandline)
 {
 	// default to PS/2, override if USB is specified as a parameter
 	ledmethod = LED_METHOD_PS2;
-<<<<<<< HEAD
-	if (commandline != NULL && strcmp(commandline, "-usb") == 0)
-=======
 	if (commandline != nullptr && strcmp(commandline, "-usb") == 0)
->>>>>>> upstream/master
 		ledmethod = LED_METHOD_USB;
 
 	// output the method
@@ -611,17 +516,6 @@ static void output_mame_start(void)
 			if (!DefineDosDevice(DDD_RAW_TARGET_PATH, TEXT("Kbd"), TEXT("\\Device\\KeyboardClass0")))
 			{
 				error_number = GetLastError();
-<<<<<<< HEAD
-				fprintf(stderr, "Unable to open the keyboard device. (error %d)\n", (UINT32)error_number);
-				return;
-			}
-
-			hKbdDev = CreateFile(TEXT("\\\\.\\Kbd"), GENERIC_WRITE, 0, NULL, OPEN_EXISTING, 0, NULL);
-			if (hKbdDev == INVALID_HANDLE_VALUE)
-			{
-				error_number = GetLastError();
-				fprintf(stderr, "Unable to open the keyboard device. (error %d)\n", (UINT32)error_number);
-=======
 				fprintf(stderr, "Unable to open the keyboard device. (error %d)\n", (uint32_t)error_number);
 				return;
 			}
@@ -631,7 +525,6 @@ static void output_mame_start(void)
 			{
 				error_number = GetLastError();
 				fprintf(stderr, "Unable to open the keyboard device. (error %d)\n", (uint32_t)error_number);
->>>>>>> upstream/master
 				return;
 			}
 			break;
@@ -656,11 +549,7 @@ static void output_mame_stop(void)
 	switch (ledmethod)
 	{
 		case LED_METHOD_PS2:
-<<<<<<< HEAD
-			if (!DefineDosDevice(DDD_REMOVE_DEFINITION, TEXT("Kbd"), NULL))
-=======
 			if (!DefineDosDevice(DDD_REMOVE_DEFINITION, TEXT("Kbd"), nullptr))
->>>>>>> upstream/master
 			{
 				error_number = GetLastError();
 				fprintf(stderr, "Unable to close the keyboard device. (error %d)\n", error_number);
@@ -681,11 +570,7 @@ static void output_mame_stop(void)
 //  output_set_state
 //============================================================
 
-<<<<<<< HEAD
-static void output_set_state(const char *outname, INT32 state)
-=======
 static void output_set_state(const char *outname, int32_t state)
->>>>>>> upstream/master
 {
 	// look for pause state
 	if (strcmp(outname, "pause") == 0)
@@ -745,15 +630,9 @@ static int led_get_state(void)
 			OutputBuffer.UnitId = 0;
 
 			DeviceIoControl(hKbdDev, IOCTL_KEYBOARD_QUERY_INDICATORS,
-<<<<<<< HEAD
-							NULL, 0,
-							&OutputBuffer, DataLength,
-							&ReturnedLength, NULL);
-=======
 							nullptr, 0,
 							&OutputBuffer, DataLength,
 							&ReturnedLength, nullptr);
->>>>>>> upstream/master
 
 			// Demangle lights to match 95/98
 			if (OutputBuffer.LedFlags & KEYBOARD_NUM_LOCK_ON) result |= 0x1;
@@ -821,13 +700,8 @@ static void led_set_state(int state)
 			InputBuffer.LedFlags = LedFlags;
 			DeviceIoControl(hKbdDev, IOCTL_KEYBOARD_SET_INDICATORS,
 							&InputBuffer, DataLength,
-<<<<<<< HEAD
-							NULL, 0,
-							&ReturnedLength, NULL);
-=======
 							nullptr, 0,
 							&ReturnedLength, nullptr);
->>>>>>> upstream/master
 			break;
 		}
 	}

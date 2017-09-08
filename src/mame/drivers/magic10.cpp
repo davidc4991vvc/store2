@@ -2,82 +2,6 @@
 // copyright-holders:Pierpaolo Prazzoli, Roberto Fresca
 /****************************************************************************
 
-<<<<<<< HEAD
-    MAGIC'S 10
-    ----------
-
-    Driver by Pierpaolo Prazzoli.
-    Additional work by Roberto Fresca.
-
-
-    Supported games:
-
-    Magic's 10 (ver. 16.15),        1995, AWP Games.
-    Magic's 10 (ver. 16.45),        1995, AWP Games.
-    Magic's 10 (ver. 16.54),        1995, AWP Games.
-    Magic's 10 (ver. 16.55),        1995, AWP Games.
-    Magic's 10 2,                   1997, ABM Games.
-    Music Sort (ver 2.02, English), 1995, ABM Games.
-    Super Pool (9743 rev.01),       1997, ABM Games.
-    Hot Slot (ver. 05.01),          1996, ABM Electronics.
-    Magic Colors (ver. 1.7a),       1999, Unknown.
-    Super Gran Safari (ver 3.11),   1996, New Impeuropex Corp.
-
-
-*****************************************************************************
-
-
-    Game Notes
-    ==========
-
-
-    * Magic's 10
-
-    First time boot instructions:
-
-    - Switch "Disable Free Play" to ON
-    - Enter a coin
-    - Press Collect to get the 1st game over
-
-
-
-    * Super Gran Safari
-
-    There is a input sequence to initialize the game.
-
-    The code expects a mask of 0x4c00 in the DIP switches port to allow
-    enter the sequence, so DIP switches must be on default position.
-
-    When you see the black screen, enter the following sequence:
-    HOLD 4 (key V), HOLD 2 (key X), HOLD 5 (key B), START (key 1).
-
-    The code is checking for a 5th entry. In fact expects HOLD 3 as the first
-    entry, then the rest listed above. I don't know why bypass the first one.
-    Input port bits are checked in the following order: 2, 3, 1, 4, 5.
-
-    The player can play the "Super Game" to grab the points.
-    In this subgame, you must to hit the lion to get the prize.
-    For now, you must miss the shot till hopper & ticket dispenser are properly emulated.
-
-
-*****************************************************************************
-
-
-    TODO:
-
-    - Ticket / Hopper support.
-    - Some unknown writes
-    - Finish magic10_2 (association coin - credits handling its inputs
-       and some reads that drive the note displayed?)
-    - Dump/decap/trojan the MCU in the later games (magic102, suprpool, hotslot, mcolors).
-       The MCU shares memory addresses at $500000-$50001f (in magic102)
-       It can't be simulated with a high level of confidence because all the game logic is
-       in there, including rngs for the cards and combinations for the points.
-    - Priorities,likely to be hardwired with the color writes (0=tile has the
-       highest priority).
-    - Define parent/clone relationship between Magic's 10 and Music Sort.
-
-=======
   MAGIC'S 10
   ----------
 
@@ -161,17 +85,11 @@
   - Priorities,likely to be hardwired with the color writes (0=tile has the
      highest priority).
   - Define parent/clone relationship between Magic's 10 and Music Sort.
->>>>>>> upstream/master
 
 ****************************************************************************/
 
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/m68000/m68000.h"
-#include "sound/okim6295.h"
-#include "machine/nvram.h"
-=======
 
 #include "cpu/m68000/m68000.h"
 #include "machine/nvram.h"
@@ -179,20 +97,16 @@
 #include "screen.h"
 #include "speaker.h"
 
->>>>>>> upstream/master
 #include "sgsafari.lh"
 #include "musicsrt.lh"
 
 
-<<<<<<< HEAD
-=======
 #define MAIN_CLOCK    XTAL_20MHz
 #define AUX_CLOCK     XTAL_30MHz
 
 #define CPU_CLOCK    MAIN_CLOCK/2
 
 
->>>>>>> upstream/master
 class magic10_state : public driver_device
 {
 public:
@@ -209,21 +123,12 @@ public:
 	tilemap_t *m_layer0_tilemap;
 	tilemap_t *m_layer1_tilemap;
 	tilemap_t *m_layer2_tilemap;
-<<<<<<< HEAD
-	required_shared_ptr<UINT16> m_layer0_videoram;
-	required_shared_ptr<UINT16> m_layer1_videoram;
-	required_shared_ptr<UINT16> m_layer2_videoram;
-	int m_layer2_offset[2];
-	required_shared_ptr<UINT16> m_vregs;
-	UINT16 m_magic102_ret;
-=======
 	required_shared_ptr<uint16_t> m_layer0_videoram;
 	required_shared_ptr<uint16_t> m_layer1_videoram;
 	required_shared_ptr<uint16_t> m_layer2_videoram;
 	int m_layer2_offset[2];
 	required_shared_ptr<uint16_t> m_vregs;
 	uint16_t m_magic102_ret;
->>>>>>> upstream/master
 	DECLARE_WRITE16_MEMBER(layer0_videoram_w);
 	DECLARE_WRITE16_MEMBER(layer1_videoram_w);
 	DECLARE_WRITE16_MEMBER(layer2_videoram_w);
@@ -236,20 +141,12 @@ public:
 	DECLARE_DRIVER_INIT(magic102);
 	DECLARE_DRIVER_INIT(magic10);
 	DECLARE_DRIVER_INIT(hotslot);
-<<<<<<< HEAD
-	TILE_GET_INFO_MEMBER(get_layer0_tile_info);
-	TILE_GET_INFO_MEMBER(get_layer1_tile_info);
-	TILE_GET_INFO_MEMBER(get_layer2_tile_info);
-	virtual void video_start();
-	UINT32 screen_update_magic10(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	DECLARE_DRIVER_INIT(altaten);
 	TILE_GET_INFO_MEMBER(get_layer0_tile_info);
 	TILE_GET_INFO_MEMBER(get_layer1_tile_info);
 	TILE_GET_INFO_MEMBER(get_layer2_tile_info);
 	virtual void video_start() override;
 	uint32_t screen_update_magic10(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	required_device<cpu_device> m_maincpu;
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
@@ -304,25 +201,15 @@ TILE_GET_INFO_MEMBER(magic10_state::get_layer2_tile_info)
 
 void magic10_state::video_start()
 {
-<<<<<<< HEAD
-	m_layer0_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(magic10_state::get_layer0_tile_info),this), TILEMAP_SCAN_ROWS, 16, 16, 32, 32);
-	m_layer1_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(magic10_state::get_layer1_tile_info),this), TILEMAP_SCAN_ROWS, 16, 16, 32, 32);
-	m_layer2_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(magic10_state::get_layer2_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 64, 64);
-=======
 	m_layer0_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(magic10_state::get_layer0_tile_info),this), TILEMAP_SCAN_ROWS, 16, 16, 32, 32);
 	m_layer1_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(magic10_state::get_layer1_tile_info),this), TILEMAP_SCAN_ROWS, 16, 16, 32, 32);
 	m_layer2_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(magic10_state::get_layer2_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 64, 64);
->>>>>>> upstream/master
 
 	m_layer1_tilemap->set_transparent_pen(0);
 	m_layer2_tilemap->set_transparent_pen(0);
 }
 
-<<<<<<< HEAD
-UINT32 magic10_state::screen_update_magic10(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t magic10_state::screen_update_magic10(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	/*TODO: understand where this comes from. */
 	m_layer2_tilemap->set_scrollx(0, m_layer2_offset[0]);
@@ -382,24 +269,6 @@ WRITE16_MEMBER(magic10_state::magic10_out_w)
   0x0400 - Coin counter.
 
 
-<<<<<<< HEAD
-    - Lbits -
-    7654 3210
-    =========
-    ---- ---x  Hold1 lamp.
-    ---- --x-  Hold2 lamp.
-    ---- -x--  Hold3 lamp.
-    ---- x---  Hold4 lamp.
-    ---x ----  Hold5 lamp.
-    --x- ----  Start lamp.
-    -x-- ----  Play (Bet/Take/Cancel) lamp.
-
-    - Hbits -
-    7654 3210
-    =========
-    ---- ---x  Payout lamp.
-    ---- -x--  Coin counter.
-=======
   - Lbits -
   7654 3210
   =========
@@ -416,24 +285,11 @@ WRITE16_MEMBER(magic10_state::magic10_out_w)
   =========
   ---- ---x  Payout lamp.
   ---- -x--  Coin counter.
->>>>>>> upstream/master
 
 */
 
 //  popmessage("lamps: %02X", data);
 
-<<<<<<< HEAD
-	output_set_lamp_value(1, (data & 1));           /* Lamp 1 - HOLD 1 */
-	output_set_lamp_value(2, (data >> 1) & 1);      /* Lamp 2 - HOLD 2 */
-	output_set_lamp_value(3, (data >> 2) & 1);      /* Lamp 3 - HOLD 3 */
-	output_set_lamp_value(4, (data >> 3) & 1);      /* Lamp 4 - HOLD 4 */
-	output_set_lamp_value(5, (data >> 4) & 1);      /* Lamp 5 - HOLD 5 */
-	output_set_lamp_value(6, (data >> 5) & 1);      /* Lamp 6 - START  */
-	output_set_lamp_value(7, (data >> 6) & 1);      /* Lamp 7 - PLAY (BET/TAKE/CANCEL) */
-	output_set_lamp_value(8, (data >> 8) & 1);      /* Lamp 8 - PAYOUT/SUPERGAME */
-
-	coin_counter_w(machine(), 0, data & 0x400);
-=======
 	output().set_lamp_value(1, (data & 1));           /* Lamp 1 - HOLD 1 */
 	output().set_lamp_value(2, (data >> 1) & 1);      /* Lamp 2 - HOLD 2 */
 	output().set_lamp_value(3, (data >> 2) & 1);      /* Lamp 3 - HOLD 3 */
@@ -444,7 +300,6 @@ WRITE16_MEMBER(magic10_state::magic10_out_w)
 	output().set_lamp_value(8, (data >> 8) & 1);      /* Lamp 8 - PAYOUT/SUPERGAME */
 
 	machine().bookkeeping().coin_counter_w(0, data & 0x400);
->>>>>>> upstream/master
 }
 
 /***************************
@@ -882,19 +737,11 @@ GFXDECODE_END
 *      Machine Drivers      *
 ****************************/
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( magic10, magic10_state )
-	/* basic machine hardware */
-	MCFG_CPU_ADD("maincpu", M68000, 10000000) // ?
-	MCFG_CPU_PROGRAM_MAP(magic10_map)
-	MCFG_CPU_VBLANK_INT_DRIVER("screen", magic10_state,  irq1_line_hold)
-=======
 static MACHINE_CONFIG_START( magic10 )
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, CPU_CLOCK)  // 10 MHz.
 	MCFG_CPU_PROGRAM_MAP(magic10_map)
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", magic10_state, irq1_line_hold)
->>>>>>> upstream/master
 
 	MCFG_NVRAM_ADD_0FILL("nvram")
 
@@ -913,11 +760,7 @@ static MACHINE_CONFIG_START( magic10 )
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki", 1056000, OKIM6295_PIN7_HIGH)   /* clock frequency & pin 7 not verified */
-=======
 	MCFG_OKIM6295_ADD("oki", 1056000, PIN7_HIGH)   /* clock frequency & pin 7 not verified */
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
 
@@ -957,11 +800,7 @@ static MACHINE_CONFIG_DERIVED( sgsafari, magic10 )
 	/* basic machine hardware */
 	MCFG_CPU_MODIFY("maincpu")
 	MCFG_CPU_PROGRAM_MAP(sgsafari_map)
-<<<<<<< HEAD
-	MCFG_CPU_VBLANK_INT_DRIVER("screen", magic10_state,  irq2_line_hold)    /* L1 interrupts */
-=======
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", magic10_state, irq2_line_hold)    /* L1 interrupts */
->>>>>>> upstream/master
 
 	MCFG_SCREEN_MODIFY("screen")
 	MCFG_SCREEN_VISIBLE_AREA(0*8, 44*8-1, 0*8, 30*8-1)
@@ -973,18 +812,6 @@ MACHINE_CONFIG_END
 ****************************/
 
 /*
-<<<<<<< HEAD
-
-Magic 10 (videopoker)
-
-1x 68k
-1x 20mhz OSC near 68k
-1x Oki M6295
-1x 30mhz OSC near oki chip
-2x fpga
-1x bank of Dipswitch
-1x Dallas Ds1220y-200 Nonvolatile ram
-=======
   Magic's 10 (ver. 16.55)
 
   CPUs:
@@ -1015,7 +842,6 @@ Magic 10 (videopoker)
   1x 28x2 edge connector.
   1x trimmer (volume).
   1x 8x2 DIP switches (DIP1)
->>>>>>> upstream/master
 
 */
 ROM_START( magic10 )
@@ -1031,12 +857,9 @@ ROM_START( magic10 )
 
 	ROM_REGION( 0x40000, "oki", 0 ) /* ADPCM samples */
 	ROM_LOAD( "u22.bin", 0x00000, 0x40000, CRC(98885246) SHA1(752d549e6248074f2a7f6c5cc4d0bbc44c7fa4c3) )
-<<<<<<< HEAD
-=======
 
 	ROM_REGION( 0x0400, "plds", 0 ) /* PLDs */
 	ROM_LOAD( "pal16r4.u42", 0x0000, 0x0104, CRC(6d70f3f2) SHA1(44c2be5945c052e057d4e0b03369acb7b9ff5d37) )
->>>>>>> upstream/master
 ROM_END
 
 ROM_START( magic10a )
@@ -1054,8 +877,6 @@ ROM_START( magic10a )
 	ROM_LOAD( "u22.bin", 0x00000, 0x40000, CRC(98885246) SHA1(752d549e6248074f2a7f6c5cc4d0bbc44c7fa4c3) )
 ROM_END
 
-<<<<<<< HEAD
-=======
 /*
   Magic's 10 (ver. 16.45)
 
@@ -1092,7 +913,6 @@ ROM_END
   1x 8x2 DIP switches (DIP1).
 
 */
->>>>>>> upstream/master
 ROM_START( magic10b )
 	ROM_REGION( 0x40000, "maincpu", 0 ) /* 68000 code */
 	ROM_LOAD16_BYTE( "u3_1645.bin",  0x00000, 0x20000, CRC(7f2549e4) SHA1(6578ad29273c357faae7c6be3fa1b49087e088a2) )
@@ -1109,38 +929,6 @@ ROM_START( magic10b )
 ROM_END
 
 /*
-<<<<<<< HEAD
-
-Magic's 10 (ver. 16.15)
-
-1995, A.W.P. Games
-Version: 16.15
-
-CPU:
-1x TS68000P12 (main)(u1)
-2x TPC1020AFN-084C (PLD)(not dumped)(u41,u60)
-
-Sound:
-1x OKI M6295 (u21)
-1x TDA2003 (u24)
-1x LM358N
-
-1x oscillator 20.000000MHz (close to main)(osc1)
-1x oscillator 30.000MHz (close to sound)(osc2)
-1x orange resonator 1000J (close to sound)(xtal1)
-
-ROMs:
-1x M27C2001 (1)
-6x M27C1001 (2,3,5,6,7)
-1x TMS27C010A (4)
-1x PALCE16V8H (read protected)
-
-Note:
-1x 28x2 edge connector
-1x trimmer (volume)
-1x 8x2 switches dip
-1x battery
-=======
   Magic's 10 (ver. 16.15)
 
   1995, A.W.P. Games
@@ -1170,7 +958,6 @@ Note:
   1x trimmer (volume)
   1x 8x2 switches dip
   1x battery
->>>>>>> upstream/master
 
 */
 ROM_START( magic10c )
@@ -1189,19 +976,6 @@ ROM_START( magic10c )
 ROM_END
 
 /*
-<<<<<<< HEAD
-
-pcb is marked: Copyright ABM - 9605 Rev.02
-
-1x 68000
-1x osc 30mhz
-1x osc 20mhz (near the 68k)
-1x h8/330 HD6473308cp10
-1x dipswitch
-1x battery
-1x fpga by Actel
-1x oki6295
-=======
   PCB is marked: Copyright ABM - 9605 Rev.02
 
   1x 68000
@@ -1212,7 +986,6 @@ pcb is marked: Copyright ABM - 9605 Rev.02
   1x battery
   1x fpga by Actel
   1x oki6295
->>>>>>> upstream/master
 
 */
 ROM_START( magic102 )
@@ -1234,35 +1007,6 @@ ROM_START( magic102 )
 ROM_END
 
 /*
-<<<<<<< HEAD
-
-Super Pool
-
-ABM (Nazionale Elettronica Giochi S.A.S.), 1998.
-9743 Rev.01
-
-1x MC68HC000P10
-1x ACTEL A1020B-PL84C
-1x HD6473308CP10 (label says: do not remove version 1.2)
-1x U6295 (sound)
-1x LM358N (sound)
-1x TDA2003 (sound)
-1x oscillator 20.000MHz
-1x oscillator 30.0000MHz
-1x blu resonator 1000J (close to sound)
-
-1x M27C2001 (1) (Sound)
-2x TMS27C010A (2,3) (main)
-4x TMS27C010A (4,5,6,7) (gfx)
-1x PALCE22V10H (not dumped)
-1x PALCE16V8H (not dumped)
-
-1x 28x2 JAMMA edge connector
-1x 12 legs connector (J1)
-1x trimmer (volume)
-1x 8x2 switches dip
-1x lithium battery
-=======
   Super Pool
 
   ABM (Nazionale Elettronica Giochi S.A.S.), 1998.
@@ -1289,7 +1033,6 @@ ABM (Nazionale Elettronica Giochi S.A.S.), 1998.
   1x trimmer (volume)
   1x 8x2 switches dip
   1x lithium battery
->>>>>>> upstream/master
 
 
   STATUS:
@@ -1322,49 +1065,6 @@ ROM_START( suprpool )
 ROM_END
 
 /*
-<<<<<<< HEAD
-
-Hot Slot
-
-CPU:
-1x HD6473308CP10 (u24)(main)
-1x A40MX04-PL84-9828 (u50)(main)
-1x missing PLD (u1)
-
-1x 6295 (u31)(sound)
-1x KA358 (u33)(sound)
-1x TDA2003 (u34)(sound)
-
-1x oscillator 20.0000MHz (OSC1)
-1x 1000J blu resonator (XTAL1)
-
-ROMs:
-3x 27C2001 (1,4,6)
-2x 27C020 (5,7)
-2x 27C010 (2,3)
-1x GAL16V8D (as PAL16R4)(read protected)
-1x missing PAL22V10
-
-Note:
-1x 28x2 edge connector
-1x trimmer (volume)
-1n trimmer (unknown)
-3x 12 legs connector (J1,J2,J3)
-1x 8x2 switches DIP
-
-- Co-processor is unknown, but fits in a QFP68 socket.
-- The system RAM test need the bit 7 of offset 0x500005 activated to be successful.
-  This offset seems to be a kind of port.
-
-  code:
-
-  0x00f550  move.b  #$b,  $500005
-  0x00f558  btst    #$7,  $500005
-  0x00f560  beq     $f558
-  ....
-
-  seems to copy some bytes (maybe commands) and wait for the status on bit 7
-=======
   Hot Slot
 
   CPU:
@@ -1422,7 +1122,6 @@ Note:
     ....
 
     seems to copy some bytes (maybe commands) and wait for the status on bit 7
->>>>>>> upstream/master
 
 
   STATUS:
@@ -1455,33 +1154,6 @@ ROM_START( hotslot )
 ROM_END
 
 /*
-<<<<<<< HEAD
-
-Magic Colors
-
-CPU:
-1x HD6473308CP10 (u24)(main)
-1x A40MX04-PL84-9828 (u50)(main)
-1x missing PLD (u1)
-
-1x M6295 (u31)(sound)
-1x KA358 (u33)(sound)
-1x TDA2003 (u34)(sound)
-
-1x oscillator 20.0000MHz (OSC1)
-1x 1000J blu resonator (XTAL1)
-
-ROMs:
-6x 27C010 (2,3,4,5,6,7)
-1x 27C020 (1)
-1x GAL16V8D (as PAL16R4)(read protected)
-1x missing PAL22V10
-
-Note:
-1x 28x2 edge connector
-1x trimmer (volume)
-1x 12 legs connector (J1,J2,J3)
-=======
   Magic Colors
   PCB marking: Rev.03
 
@@ -1507,7 +1179,6 @@ Note:
   1x 28x2 edge connector
   1x trimmer (volume)
   1x 12 legs connector (J1,J2,J3)
->>>>>>> upstream/master
 
 
   STATUS:
@@ -1540,34 +1211,6 @@ ROM_START( mcolors )
 ROM_END
 
 /*
-<<<<<<< HEAD
-
-Super Gran Safari
-1996 - New Impeuropex Corp.
-
-CPU:
-1x MC68000P12 (main)
-2x A1020B-PL84C (not dumped)
-
-1x M6295 (sound)
-1x TDA2002 (sound)
-1x GL324 (sound)
-
-1x oscillator 30.000MHz
-
-ROMs:
-2x M27C512 (1,2)
-1x M27C2001 (3)
-4x M27C1001 (4,5,6,7)
-
-Note:
-1x JAMMA edge connector
-1x 12 legs connector (j2)
-1x 8x2 switches dip
-1x 4 legs jumper (j3)
-1x 2 legs jumper (j4)
-1x trimmer (volume)
-=======
   Super Gran Safari
   1996 - New Impeuropex Corp.
 
@@ -1593,7 +1236,6 @@ Note:
   1x 4 legs jumper (j3)
   1x 2 legs jumper (j4)
   1x trimmer (volume)
->>>>>>> upstream/master
 
 
   STATUS:
@@ -1623,30 +1265,6 @@ ROM_START( sgsafari )
 ROM_END
 
 /*
-<<<<<<< HEAD
-
-Music Sort (Ver. 2.02).
-Same PCB than Magic's 10 (ver. 16.15)
-
-CPU:
-1x TS68000P12 (main)
-2x TPC1020AFN-084C (PLD)(not dumped)
-
-Sound:
-1x OKI M6295
-1x TDA2003
-1x LM358N
-
-1x oscillator 20.000000MHz (close to main)
-1x oscillator 30.000MHz (close to sound)
-1x orange resonator 1000J (close to sound)
-
-Note:
-1x 28x2 edge connector
-1x trimmer (volume)
-1x 8x2 switches dip
-1x battery
-=======
   Music Sort (Ver. 2.02).
   Same PCB than Magic's 10 (ver. 16.15)
 
@@ -1668,7 +1286,6 @@ Note:
   1x trimmer (volume)
   1x 8x2 switches dip
   1x battery
->>>>>>> upstream/master
 
 */
 ROM_START( musicsrt )
@@ -1689,8 +1306,6 @@ ROM_START( musicsrt )
 	ROM_LOAD( "musicsrt_nv.bin", 0x0000, 0x0800, CRC(f4e063cf) SHA1(a60bbd960bb7dcf023417e8c7164303b6ce71014) )
 ROM_END
 
-<<<<<<< HEAD
-=======
 /*
   Luna Park (ver. 1.2)
   1998.25.11
@@ -1822,47 +1437,30 @@ ROM_START( altaten )
 	ROM_LOAD( "alta_tensione_1.u32", 0x00000, 0x40000, CRC(4fe79e43) SHA1(7c154cb00e9b64fbdcc218280f2183b816cef20b) )
 ROM_END
 
->>>>>>> upstream/master
 
 /****************************
 *       Driver Init         *
 ****************************/
 
-<<<<<<< HEAD
-DRIVER_INIT_MEMBER(magic10_state,magic10)
-=======
 DRIVER_INIT_MEMBER(magic10_state, magic10)
->>>>>>> upstream/master
 {
 	m_layer2_offset[0] = 32;
 	m_layer2_offset[1] = 2;
 }
 
-<<<<<<< HEAD
-DRIVER_INIT_MEMBER(magic10_state,magic102)
-=======
 DRIVER_INIT_MEMBER(magic10_state, magic102)
->>>>>>> upstream/master
 {
 	m_layer2_offset[0] = 8;
 	m_layer2_offset[1] = 20;
 }
 
-<<<<<<< HEAD
-DRIVER_INIT_MEMBER(magic10_state,suprpool)
-=======
 DRIVER_INIT_MEMBER(magic10_state, suprpool)
->>>>>>> upstream/master
 {
 	m_layer2_offset[0] = 8;
 	m_layer2_offset[1] = 16;
 }
 
-<<<<<<< HEAD
-DRIVER_INIT_MEMBER(magic10_state,hotslot)
-=======
 DRIVER_INIT_MEMBER(magic10_state, hotslot)
->>>>>>> upstream/master
 {
 /*  a value of -56 center the playfield, but displace the intro and initial screen.
     a value of -64 center the intro and initial screen, but displace the playfield.
@@ -1871,18 +1469,12 @@ DRIVER_INIT_MEMBER(magic10_state, hotslot)
 	m_layer2_offset[1] = 0; // Y offset.
 }
 
-<<<<<<< HEAD
-DRIVER_INIT_MEMBER(magic10_state,sgsafari)
-=======
 DRIVER_INIT_MEMBER(magic10_state, sgsafari)
->>>>>>> upstream/master
 {
 	m_layer2_offset[0] = 16;
 	m_layer2_offset[1] = 20;
 }
 
-<<<<<<< HEAD
-=======
 DRIVER_INIT_MEMBER(magic10_state, altaten)
 {
 	m_layer2_offset[0] = 8;
@@ -1895,29 +1487,16 @@ DRIVER_INIT_MEMBER(magic10_state, altaten)
 		rom[0x7669] = 0x4e;
 }
 
->>>>>>> upstream/master
 
 /******************************
 *        Game Drivers         *
 ******************************/
 
-<<<<<<< HEAD
-/*     YEAR  NAME      PARENT    MACHINE   INPUT     STATE          INIT      ROT    COMPANY                 FULLNAME                         FLAGS            LAYOUT  */
-=======
 //     YEAR  NAME      PARENT    MACHINE   INPUT     STATE          INIT      ROT   COMPANY                 FULLNAME                          FLAGS            LAYOUT
->>>>>>> upstream/master
 GAMEL( 1995, magic10,  0,        magic10,  magic10,  magic10_state, magic10,  ROT0, "A.W.P. Games",         "Magic's 10 (ver. 16.55)",        0,               layout_sgsafari )
 GAMEL( 1995, magic10a, magic10,  magic10,  magic10,  magic10_state, magic10,  ROT0, "A.W.P. Games",         "Magic's 10 (ver. 16.54)",        0,               layout_sgsafari )
 GAMEL( 1995, magic10b, magic10,  magic10a, magic10,  magic10_state, magic10,  ROT0, "A.W.P. Games",         "Magic's 10 (ver. 16.45)",        0,               layout_sgsafari )
 GAMEL( 1995, magic10c, magic10,  magic10a, magic10,  magic10_state, magic10,  ROT0, "A.W.P. Games",         "Magic's 10 (ver. 16.15)",        0,               layout_sgsafari )
-<<<<<<< HEAD
-GAME(  1997, magic102, 0,        magic102, magic102, magic10_state, magic102, ROT0, "ABM Games",            "Magic's 10 2 (ver 1.1)",         MACHINE_NOT_WORKING                 )
-GAME(  1997, suprpool, 0,        magic102, magic102, magic10_state, suprpool, ROT0, "ABM Games",            "Super Pool (9743 rev.01)",       MACHINE_NOT_WORKING                 )
-GAME(  1996, hotslot,  0,        hotslot,  hotslot,  magic10_state, hotslot,  ROT0, "ABM Electronics",      "Hot Slot (ver. 05.01)",          MACHINE_NOT_WORKING                 )
-GAME(  1999, mcolors,  0,        magic102, magic102, magic10_state, magic102, ROT0, "<unknown>",            "Magic Colors (ver. 1.7a)",       MACHINE_NOT_WORKING                 )
-GAMEL( 1996, sgsafari, 0,        sgsafari, sgsafari, magic10_state, sgsafari, ROT0, "New Impeuropex Corp.", "Super Gran Safari (ver 3.11)",   0,               layout_sgsafari )
-GAMEL( 1995, musicsrt, 0,        magic10a, musicsrt, magic10_state, magic10,  ROT0, "ABM Games",            "Music Sort (ver 2.02, English)", 0,               layout_musicsrt )
-=======
 GAME(  1997, magic102, 0,        magic102, magic102, magic10_state, magic102, ROT0, "ABM Games",            "Magic's 10 2 (ver 1.1)",         MACHINE_NOT_WORKING )
 GAME(  1998, suprpool, 0,        magic102, magic102, magic10_state, suprpool, ROT0, "ABM Games",            "Super Pool (ver. 1.2)",          MACHINE_NOT_WORKING )
 GAME(  1996, hotslot,  0,        hotslot,  hotslot,  magic10_state, hotslot,  ROT0, "ABM Electronics",      "Hot Slot (ver. 05.01)",          MACHINE_NOT_WORKING )
@@ -1926,4 +1505,3 @@ GAMEL( 1996, sgsafari, 0,        sgsafari, sgsafari, magic10_state, sgsafari, RO
 GAMEL( 1995, musicsrt, 0,        magic10a, musicsrt, magic10_state, magic10,  ROT0, "ABM Games",            "Music Sort (ver 2.02, English)", 0,               layout_musicsrt )
 GAME(  1998, lunaprk,  0,        magic102, magic102, magic10_state, suprpool, ROT0, "ABM Games",            "Luna Park (ver. 1.2)",           MACHINE_NOT_WORKING )
 GAME(  199?, altaten,  0,        magic102, magic102, magic10_state, altaten,  ROT0, "<unknown>",            "Alta Tensione (ver. 2.01a)",     MACHINE_NOT_WORKING )
->>>>>>> upstream/master

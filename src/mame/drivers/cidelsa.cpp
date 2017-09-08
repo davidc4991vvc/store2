@@ -1,9 +1,6 @@
 // license:BSD-3-Clause
 // copyright-holders:Curt Coder
-<<<<<<< HEAD
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #include "includes/cidelsa.h"
 
 /* CDP1802 Interface */
@@ -117,15 +114,9 @@ WRITE8_MEMBER( cidelsa_state::altair_out1_w )
 	    7   CONT. M1
 	*/
 
-<<<<<<< HEAD
-	set_led_status(machine(), 0, data & 0x08); // 1P
-	set_led_status(machine(), 1, data & 0x10); // 2P
-	set_led_status(machine(), 2, data & 0x20); // FIRE
-=======
 	output().set_led_value(0, data & 0x08); // 1P
 	output().set_led_value(1, data & 0x10); // 2P
 	output().set_led_value(2, data & 0x20); // FIRE
->>>>>>> upstream/master
 }
 
 WRITE8_MEMBER( draco_state::out1_w )
@@ -365,11 +356,7 @@ void cidelsa_state::device_timer(emu_timer &timer, device_timer_id id, int param
 		m_reset = 1;
 		break;
 	default:
-<<<<<<< HEAD
-		assert_always(FALSE, "Unknown id in cidelsa_state::device_timer");
-=======
 		assert_always(false, "Unknown id in cidelsa_state::device_timer");
->>>>>>> upstream/master
 	}
 }
 
@@ -402,11 +389,7 @@ void cidelsa_state::machine_reset()
 
 /* Machine Drivers */
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( destryer, cidelsa_state )
-=======
 static MACHINE_CONFIG_START( destryer )
->>>>>>> upstream/master
 	/* basic system hardware */
 	MCFG_CPU_ADD(CDP1802_TAG, CDP1802, DESTRYER_CHR1)
 	MCFG_CPU_PROGRAM_MAP(destryer_map)
@@ -421,11 +404,7 @@ static MACHINE_CONFIG_START( destryer )
 	MCFG_FRAGMENT_ADD(destryer_video)
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( destryera, cidelsa_state )
-=======
 static MACHINE_CONFIG_START( destryera )
->>>>>>> upstream/master
 	/* basic system hardware */
 	MCFG_CPU_ADD(CDP1802_TAG, CDP1802, DESTRYER_CHR1)
 	MCFG_CPU_PROGRAM_MAP(destryera_map)
@@ -440,11 +419,7 @@ static MACHINE_CONFIG_START( destryera )
 	MCFG_FRAGMENT_ADD(destryer_video)
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( altair, cidelsa_state )
-=======
 static MACHINE_CONFIG_START( altair )
->>>>>>> upstream/master
 	/* basic system hardware */
 	MCFG_CPU_ADD(CDP1802_TAG, CDP1802, ALTAIR_CHR1)
 	MCFG_CPU_PROGRAM_MAP(altair_map)
@@ -473,11 +448,7 @@ static MACHINE_CONFIG_START( altair )
 	MCFG_FRAGMENT_ADD(altair_video)
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( draco, draco_state )
-=======
 static MACHINE_CONFIG_START( draco )
->>>>>>> upstream/master
 	/* basic system hardware */
 	MCFG_CPU_ADD(CDP1802_TAG, CDP1802, DRACO_CHR1)
 	MCFG_CPU_PROGRAM_MAP(draco_map)
@@ -490,11 +461,7 @@ static MACHINE_CONFIG_START( draco )
 
 	MCFG_CPU_ADD(COP402N_TAG, COP402, DRACO_SND_CHR1)
 	MCFG_CPU_PROGRAM_MAP(draco_sound_map)
-<<<<<<< HEAD
-	MCFG_COP400_CONFIG( COP400_CKI_DIVISOR_16, COP400_CKO_OSCILLATOR_OUTPUT, COP400_MICROBUS_DISABLED )
-=======
 	MCFG_COP400_CONFIG( COP400_CKI_DIVISOR_16, COP400_CKO_OSCILLATOR_OUTPUT, false )
->>>>>>> upstream/master
 	MCFG_COP400_WRITE_D_CB(WRITE8(draco_state, sound_bankswitch_w))
 	MCFG_COP400_WRITE_G_CB(WRITE8(draco_state, sound_g_w))
 	MCFG_COP400_READ_L_CB(READ8(draco_state, psg_r))
@@ -565,14 +532,7 @@ ROM_END
 
 /* Game Drivers */
 
-<<<<<<< HEAD
-GAME( 1980, destryer, 0,        destryer, destryer, driver_device, 0, ROT90, "Cidelsa", "Destroyer (Cidelsa) (set 1)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 1980, destryera,destryer, destryera,destryer, driver_device, 0, ROT90, "Cidelsa", "Destroyer (Cidelsa) (set 2)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 1981, altair,   0,        altair,   altair, driver_device,   0, ROT90, "Cidelsa", "Altair", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 1981, draco,    0,        draco,    draco, driver_device,    0, ROT90, "Cidelsa", "Draco", MACHINE_IMPERFECT_COLORS | MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1980, destryer, 0,        destryer, destryer, cidelsa_state, 0, ROT90, "Cidelsa", "Destroyer (Cidelsa) (set 1)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
 GAME( 1980, destryera,destryer, destryera,destryer, cidelsa_state, 0, ROT90, "Cidelsa", "Destroyer (Cidelsa) (set 2)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
 GAME( 1981, altair,   0,        altair,   altair,   cidelsa_state, 0, ROT90, "Cidelsa", "Altair", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
 GAME( 1981, draco,    0,        draco,    draco,    draco_state,   0, ROT90, "Cidelsa", "Draco", MACHINE_IMPERFECT_COLORS | MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

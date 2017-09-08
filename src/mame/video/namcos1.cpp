@@ -8,10 +8,7 @@ Namco System 1 Video Hardware
 
 #include "emu.h"
 #include "includes/namcos1.h"
-<<<<<<< HEAD
-=======
 #include "screen.h"
->>>>>>> upstream/master
 
 
 /*
@@ -56,11 +53,7 @@ Namco System 1 Video Hardware
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-inline void namcos1_state::get_tile_info(tile_data &tileinfo,int tile_index,UINT8 *info_vram)
-=======
 inline void namcos1_state::get_tile_info(tile_data &tileinfo,int tile_index,uint8_t *info_vram)
->>>>>>> upstream/master
 {
 	int code;
 
@@ -112,17 +105,6 @@ void namcos1_state::video_start()
 {
 	int i;
 
-<<<<<<< HEAD
-	m_tilemap_maskdata = (UINT8 *)memregion("gfx1")->base();
-
-	/* initialize playfields */
-	m_bg_tilemap[0] = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(namcos1_state::bg_get_info0),this),TILEMAP_SCAN_ROWS,8,8,64,64);
-	m_bg_tilemap[1] = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(namcos1_state::bg_get_info1),this),TILEMAP_SCAN_ROWS,8,8,64,64);
-	m_bg_tilemap[2] = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(namcos1_state::bg_get_info2),this),TILEMAP_SCAN_ROWS,8,8,64,64);
-	m_bg_tilemap[3] = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(namcos1_state::bg_get_info3),this),TILEMAP_SCAN_ROWS,8,8,64,32);
-	m_bg_tilemap[4] = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(namcos1_state::fg_get_info4),this),TILEMAP_SCAN_ROWS,8,8,36,28);
-	m_bg_tilemap[5] = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(namcos1_state::fg_get_info5),this),TILEMAP_SCAN_ROWS,8,8,36,28);
-=======
 	m_tilemap_maskdata = (uint8_t *)memregion("gfx1")->base();
 
 	/* initialize playfields */
@@ -132,7 +114,6 @@ void namcos1_state::video_start()
 	m_bg_tilemap[3] = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(namcos1_state::bg_get_info3),this),TILEMAP_SCAN_ROWS,8,8,64,32);
 	m_bg_tilemap[4] = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(namcos1_state::fg_get_info4),this),TILEMAP_SCAN_ROWS,8,8,36,28);
 	m_bg_tilemap[5] = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(namcos1_state::fg_get_info5),this),TILEMAP_SCAN_ROWS,8,8,36,28);
->>>>>>> upstream/master
 
 	for (i = 0; i < 4; i++)
 	{
@@ -233,15 +214,9 @@ sprite format:
 
 void namcos1_state::draw_sprites(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
-<<<<<<< HEAD
-	UINT8 *spriteram = m_spriteram + 0x800;
-	const UINT8 *source = &spriteram[0x800-0x20];   /* the last is NOT a sprite */
-	const UINT8 *finish = &spriteram[0];
-=======
 	uint8_t *spriteram = m_spriteram + 0x800;
 	const uint8_t *source = &spriteram[0x800-0x20];   /* the last is NOT a sprite */
 	const uint8_t *finish = &spriteram[0];
->>>>>>> upstream/master
 	gfx_element *gfx = m_gfxdecode->gfx(1);
 
 	int sprite_xoffs = spriteram[0x07f5] + ((spriteram[0x07f4] & 1) << 8);
@@ -308,11 +283,7 @@ void namcos1_state::draw_sprites(screen_device &screen, bitmap_ind16 &bitmap, co
 
 
 
-<<<<<<< HEAD
-UINT32 namcos1_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t namcos1_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int i, j, scrollx, scrolly, priority;
 	rectangle new_clip = cliprect;
@@ -376,22 +347,14 @@ uint32_t namcos1_state::screen_update(screen_device &screen, bitmap_ind16 &bitma
 }
 
 
-<<<<<<< HEAD
-void namcos1_state::screen_eof(screen_device &screen, bool state)
-=======
 WRITE_LINE_MEMBER(namcos1_state::screen_vblank)
->>>>>>> upstream/master
 {
 	// rising edge
 	if (state)
 	{
 		if (m_copy_sprites)
 		{
-<<<<<<< HEAD
-			UINT8 *spriteram = m_spriteram + 0x800;
-=======
 			uint8_t *spriteram = m_spriteram + 0x800;
->>>>>>> upstream/master
 			int i,j;
 
 			for (i = 0;i < 0x800;i += 16)

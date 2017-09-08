@@ -9,21 +9,13 @@
 #include "emu.h"
 #include "includes/archimds.h"
 
-<<<<<<< HEAD
-UINT32 archimedes_state::screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
-=======
 uint32_t archimedes_state::screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int xstart,ystart,xend,yend;
 	int res_x,res_y;
 	int xsize,ysize;
 	int calc_dxs = 0,calc_dxe = 0;
-<<<<<<< HEAD
-	const UINT8 x_step[4] = { 5, 7, 11, 19 };
-=======
 	const uint8_t x_step[4] = { 19, 11, 7, 5 };
->>>>>>> upstream/master
 
 	/* border color */
 	bitmap.fill(m_palette->pen(0x10), cliprect);
@@ -48,13 +40,8 @@ uint32_t archimedes_state::screen_update(screen_device &screen, bitmap_rgb32 &bi
 	{
 		int count;
 		int x,y,xi;
-<<<<<<< HEAD
-		UINT8 pen;
-		static UINT8 *vram = memregion("vram")->base();
-=======
 		uint8_t pen;
 		static uint8_t *vram = memregion("vram")->base();
->>>>>>> upstream/master
 
 		count = (0);
 
@@ -194,30 +181,18 @@ uint32_t archimedes_state::screen_update(screen_device &screen, bitmap_rgb32 &bi
 		if(m_cursor_enabled == true)
 		{
 			count = 0;
-<<<<<<< HEAD
-			for(y=0;y<16;y++)
-=======
 			int cursor_h = m_vidc_regs[VIDC_VCER] - m_vidc_regs[VIDC_VCSR];
 			for(y=0; y<cursor_h; y++)
->>>>>>> upstream/master
 			{
 				for(x=0;x<32;x+=4)
 				{
 					for(xi=0;xi<4;xi++)
 					{
-<<<<<<< HEAD
-						UINT8 cursor_dot;
-						pen = m_cursor_vram[count];
-
-						res_x = x+xi+xstart;
-						res_y = (y+ystart)*(m_vidc_interlace+1);
-=======
 						uint8_t cursor_dot;
 						pen = m_cursor_vram[count];
 
 						res_x = m_vidc_regs[VIDC_HCSR] - m_vidc_regs[VIDC_HBSR] + x + xi;
 						res_y = (m_vidc_regs[VIDC_VCSR] - m_vidc_regs[VIDC_VBSR] + y) * (m_vidc_interlace + 1);
->>>>>>> upstream/master
 
 						cursor_dot = ((pen>>(xi*2))&0x3);
 

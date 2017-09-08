@@ -12,41 +12,23 @@
 #include "snkwave.h"
 
 
-<<<<<<< HEAD
-#define CLOCK_SHIFT 8
-
-
-const device_type SNKWAVE = &device_creator<snkwave_device>;
-=======
 DEFINE_DEVICE_TYPE(SNKWAVE, snkwave_device, "snkwave", "SNK Wave")
->>>>>>> upstream/master
 
 //-------------------------------------------------
 //  snkwave_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-snkwave_device::snkwave_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, SNKWAVE, "SNK Wave", tag, owner, clock, "snkwave", __FILE__),
-		device_sound_interface(mconfig, *this),
-		m_stream(NULL),
-=======
 snkwave_device::snkwave_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, SNKWAVE, tag, owner, clock),
 		device_sound_interface(mconfig, *this),
 		m_stream(nullptr),
->>>>>>> upstream/master
 		m_external_clock(0),
 		m_sample_rate(0),
 		m_frequency(0),
 		m_counter(0),
 		m_waveform_position(0)
 {
-<<<<<<< HEAD
-	memset(m_waveform, 0, sizeof(m_waveform));
-=======
 	std::fill(std::begin(m_waveform), std::end(m_waveform), 0);
->>>>>>> upstream/master
 }
 
 //-------------------------------------------------
@@ -73,11 +55,7 @@ void snkwave_device::device_start()
 	save_item(NAME(m_frequency));
 	save_item(NAME(m_counter));
 	save_item(NAME(m_waveform_position));
-<<<<<<< HEAD
-	save_pointer(NAME(m_waveform), SNKWAVE_WAVEFORM_LENGTH);
-=======
 	save_pointer(NAME(m_waveform), WAVEFORM_LENGTH);
->>>>>>> upstream/master
 }
 
 
@@ -104,11 +82,7 @@ void snkwave_device::sound_stream_update(sound_stream &stream, stream_sample_t *
 	while (samples-- > 0)
 	{
 		int loops;
-<<<<<<< HEAD
-		INT16 out = 0;
-=======
 		int16_t out = 0;
->>>>>>> upstream/master
 
 		loops = 1 << CLOCK_SHIFT;
 		while (loops > 0)
@@ -119,11 +93,7 @@ void snkwave_device::sound_stream_update(sound_stream &stream, stream_sample_t *
 			{
 				out += m_waveform[m_waveform_position] * steps;
 				m_counter = m_frequency;
-<<<<<<< HEAD
-				m_waveform_position = (m_waveform_position + 1) & (SNKWAVE_WAVEFORM_LENGTH-1);
-=======
 				m_waveform_position = (m_waveform_position + 1) & (WAVEFORM_LENGTH-1);
->>>>>>> upstream/master
 				loops -= steps;
 			}
 			else
@@ -169,16 +139,6 @@ WRITE8_MEMBER( snkwave_device::snkwave_w )
    So the sequence 01234567 will play as
    89ABCDEF76543210
 */
-<<<<<<< HEAD
-void snkwave_device::update_waveform(unsigned int offset, UINT8 data)
-{
-	assert(offset < SNKWAVE_WAVEFORM_LENGTH/4);
-
-	m_waveform[offset * 2]     = ((data & 0x38) >> 3) << (12-CLOCK_SHIFT);
-	m_waveform[offset * 2 + 1] = ((data & 0x07) >> 0) << (12-CLOCK_SHIFT);
-	m_waveform[SNKWAVE_WAVEFORM_LENGTH-2 - offset * 2] = ~m_waveform[offset * 2 + 1];
-	m_waveform[SNKWAVE_WAVEFORM_LENGTH-1 - offset * 2] = ~m_waveform[offset * 2];
-=======
 void snkwave_device::update_waveform(unsigned int offset, uint8_t data)
 {
 	assert(offset < WAVEFORM_LENGTH/4);
@@ -187,5 +147,4 @@ void snkwave_device::update_waveform(unsigned int offset, uint8_t data)
 	m_waveform[offset * 2 + 1] = ((data & 0x07) >> 0) << (12-CLOCK_SHIFT);
 	m_waveform[WAVEFORM_LENGTH-2 - offset * 2] = ~m_waveform[offset * 2 + 1];
 	m_waveform[WAVEFORM_LENGTH-1 - offset * 2] = ~m_waveform[offset * 2];
->>>>>>> upstream/master
 }

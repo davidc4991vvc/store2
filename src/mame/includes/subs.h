@@ -35,13 +35,8 @@ public:
 	required_device<palette_device> m_palette;
 	required_device<discrete_device> m_discrete;
 
-<<<<<<< HEAD
-	required_shared_ptr<UINT8> m_spriteram;
-	required_shared_ptr<UINT8> m_videoram;
-=======
 	required_shared_ptr<uint8_t> m_spriteram;
 	required_shared_ptr<uint8_t> m_videoram;
->>>>>>> upstream/master
 
 	int m_steering_buf1;
 	int m_steering_buf2;
@@ -54,24 +49,6 @@ public:
 	DECLARE_READ8_MEMBER(control_r);
 	DECLARE_READ8_MEMBER(coin_r);
 	DECLARE_READ8_MEMBER(options_r);
-<<<<<<< HEAD
-	DECLARE_WRITE8_MEMBER(lamp1_w);
-	DECLARE_WRITE8_MEMBER(lamp2_w);
-	DECLARE_WRITE8_MEMBER(invert1_w);
-	DECLARE_WRITE8_MEMBER(invert2_w);
-	DECLARE_WRITE8_MEMBER(sonar1_w);
-	DECLARE_WRITE8_MEMBER(sonar2_w);
-	DECLARE_WRITE8_MEMBER(crash_w);
-	DECLARE_WRITE8_MEMBER(explode_w);
-	DECLARE_WRITE8_MEMBER(noise_reset_w);
-
-	virtual void machine_start();
-	virtual void machine_reset();
-	DECLARE_PALETTE_INIT(subs);
-
-	UINT32 screen_update_left(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	UINT32 screen_update_right(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	DECLARE_WRITE_LINE_MEMBER(lamp1_w);
 	DECLARE_WRITE_LINE_MEMBER(lamp2_w);
 	DECLARE_WRITE_LINE_MEMBER(invert1_w);
@@ -84,7 +61,6 @@ public:
 
 	uint32_t screen_update_left(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	uint32_t screen_update_right(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 
 	INTERRUPT_GEN_MEMBER(interrupt);
 

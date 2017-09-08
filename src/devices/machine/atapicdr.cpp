@@ -1,37 +1,5 @@
 // license:BSD-3-Clause
 // copyright-holders:smf
-<<<<<<< HEAD
-#include "atapicdr.h"
-
-// device type definition
-const device_type ATAPI_CDROM = &device_creator<atapi_cdrom_device>;
-
-atapi_cdrom_device::atapi_cdrom_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-	atapi_hle_device(mconfig, ATAPI_CDROM, "ATAPI CDROM", tag, owner, clock, "cdrom", __FILE__)
-{
-}
-
-atapi_cdrom_device::atapi_cdrom_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source) :
-	atapi_hle_device(mconfig, type, name, tag, owner, clock, shortname, source)
-{
-}
-
-static MACHINE_CONFIG_FRAGMENT( atapicdr )
-	MCFG_CDROM_ADD("image")
-	MCFG_CDROM_INTERFACE("cdrom")
-	MCFG_SOUND_ADD("cdda", CDDA, 0)
-MACHINE_CONFIG_END
-
-//-------------------------------------------------
-//  machine_config_additions - device-specific
-//  machine configurations
-//-------------------------------------------------
-
-machine_config_constructor atapi_cdrom_device::device_mconfig_additions() const
-{
-	return MACHINE_CONFIG_NAME( atapicdr );
-}
-=======
 #include "emu.h"
 #include "atapicdr.h"
 
@@ -67,7 +35,6 @@ MACHINE_CONFIG_MEMBER( atapi_cdrom_device::device_add_mconfig )
 	MCFG_CDROM_INTERFACE("cdrom")
 	MCFG_SOUND_ADD("cdda", CDDA, 0)
 MACHINE_CONFIG_END
->>>>>>> upstream/master
 
 void atapi_cdrom_device::device_start()
 {
@@ -109,8 +76,6 @@ void atapi_cdrom_device::device_start()
 	atapi_hle_device::device_start();
 }
 
-<<<<<<< HEAD
-=======
 void atapi_cdrom_device::device_reset()
 {
 	atapi_hle_device::device_reset();
@@ -134,7 +99,6 @@ void atapi_cdrom_device::process_buffer()
 	atapi_hle_device::process_buffer();
 }
 
->>>>>>> upstream/master
 void atapi_cdrom_device::perform_diagnostic()
 {
 	m_error = IDE_ERROR_DIAGNOSTIC_PASSED;
@@ -143,8 +107,6 @@ void atapi_cdrom_device::perform_diagnostic()
 void atapi_cdrom_device::identify_packet_device()
 {
 }
-<<<<<<< HEAD
-=======
 
 void atapi_cdrom_device::ExecCommand()
 {
@@ -187,4 +149,3 @@ void atapi_cdrom_device::ExecCommand()
 	}
 	t10mmc::ExecCommand();
 }
->>>>>>> upstream/master

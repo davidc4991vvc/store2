@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-// license:???
-=======
 // license:BSD-3-Clause
->>>>>>> upstream/master
 // copyright-holders:Yves
 /*     vlc.c
 Multi-games from VLC Nevada 1995
@@ -127,24 +123,6 @@ nevada TYPE2 :  64       45      51       06       32      02        31     31  
 */
 
 
-<<<<<<< HEAD
-#define MASTER_CLOCK    XTAL_16MHz
-#define MASTER_CPU            ((MASTER_CLOCK)/2)    // 8mhz
-#define SOUND_CLOCK           ((MASTER_CLOCK) /8)   // 2mhz
-
-#define VIDEO_CLOCK           XTAL_33MHz
-#define MC6845_CLOCK          ((VIDEO_CLOCK)/4/16)  // 0.515625 MHZ
-
-
-#include "emu.h"
-#include "cpu/m68000/m68000.h"
-#include "machine/mc68681.h"
-#include "machine/nvram.h"
-#include "video/mc6845.h"
-#include "sound/ay8910.h"
-#include "machine/msm6242.h"
-#include "machine/microtch.h"
-=======
 #include "emu.h"
 #include "cpu/m68000/m68000.h"
 #include "machine/mc68681.h"
@@ -164,7 +142,6 @@ nevada TYPE2 :  64       45      51       06       32      02        31     31  
 
 #define VIDEO_CLOCK     XTAL_33MHz
 #define MC6845_CLOCK    ((VIDEO_CLOCK)/4/16)  // 0.515625 MHZ
->>>>>>> upstream/master
 
 
 /***************************************************************************
@@ -186,13 +163,9 @@ public:
 		m_microtouch(*this,"microtouch"),
 		m_nvram(*this,"nvram"),
 		m_ram62256(*this, "ram62256"),
-<<<<<<< HEAD
-		m_backup(*this, "backup")
-=======
 		m_backup(*this, "backup"),
 		m_vram(*this, "vram"),
 		m_gfxdecode(*this, "gfxdecode")
->>>>>>> upstream/master
 		{ }
 
 	required_device<mc68681_device> m_duart18_68681;
@@ -203,22 +176,6 @@ public:
 	optional_device<microtouch_device> m_microtouch;
 	required_device<nvram_device> m_nvram;
 
-<<<<<<< HEAD
-	required_shared_ptr<UINT16> m_ram62256;
-	required_shared_ptr<UINT16> m_backup;
-
-	void nvram_init(nvram_device &nvram, void *data, size_t size);
-
-	UINT16  m_datA40000;
-
-		//UINT8* m_videoram;
-		//UINT8* m_colorram;
-
-	UINT16* m_videoram;
-	tilemap_t *m_bg_tilemap;
-	virtual void video_start();
-	UINT32 screen_update_nevada(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	required_shared_ptr<uint16_t> m_ram62256;
 	required_shared_ptr<uint16_t> m_backup;
 	required_shared_ptr<uint16_t> m_vram;
@@ -234,7 +191,6 @@ public:
 	tilemap_t *m_tilemap;
 	virtual void video_start() override;
 	uint32_t screen_update_nevada(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	DECLARE_PALETTE_INIT(nevada);
 
 	DECLARE_WRITE_LINE_MEMBER(duart18_irq_handler);
@@ -246,11 +202,6 @@ public:
 	DECLARE_WRITE16_MEMBER (io_board_x);
 	DECLARE_READ16_MEMBER( nevada_sec_r );
 	DECLARE_WRITE16_MEMBER( nevada_sec_w );
-<<<<<<< HEAD
-
-	DECLARE_MACHINE_START(nevada);
-	DECLARE_DRIVER_INIT(nevada);
-=======
 	DECLARE_WRITE16_MEMBER( vram_w );
 
 	DECLARE_MACHINE_START(nevada);
@@ -258,7 +209,6 @@ public:
 
 	TILE_GET_INFO_MEMBER(get_bg_tile_info);
 
->>>>>>> upstream/master
 };
 
 /*
@@ -273,11 +223,7 @@ there is a 74LS173 on the LOWER byte that used bit D3..D0
 funny thing , the DOOR ACCESS Switch is connected on the CLEAR  PIN of this 4bits register
 so when D3..D0 are LOW , DOOR is OPEN
 */
-<<<<<<< HEAD
-static const UINT8 pal35[256] = {
-=======
 static const uint8_t pal35[256] = {
->>>>>>> upstream/master
 0x11, 0x42, 0x5B, 0xCA, 0x19, 0x42, 0x5B, 0xCA, 0x38, 0x63, 0x3A, 0x63, 0x3A, 0x63, 0x3A, 0x63,
 0xD3, 0x08, 0x5B, 0xCA, 0x19, 0xCA, 0x19, 0xCA, 0x18, 0xEB, 0x18, 0xEB, 0x18, 0xEB, 0x18, 0xEB,
 0xD3, 0xCA, 0x5B, 0xCC, 0x5B, 0xCC, 0x5B, 0xCC, 0xBA, 0x63, 0x38, 0x65, 0x38, 0x65, 0x38, 0x65,
@@ -306,27 +252,6 @@ static const gfx_layout charlayout =
 	/* Todo  , just for sample */
 
 	8,8,
-<<<<<<< HEAD
-	RGN_FRAC(1,4),
-	4,
-	{ RGN_FRAC(0,4), RGN_FRAC(1,4), RGN_FRAC(2,4), RGN_FRAC(3,4) },
-	{ 0, 1, 2, 3, 4, 5, 6, 7 },
-	{ 0*8, 1*8, 2*8, 3*8, 4*8, 5*8, 6*8, 7*8 },
-	8*8
-};
-
-/***************************************************************************/
-/*
-WRITE16_MEMBER( nevada_state:nevada_videoram_w )
-{
-// Todo, Just for sample
-
-    m_videoram[offset] = data;
-    m_bg_tilemap->mark_tile_dirty(offset);
-
-}
-*/
-=======
 	RGN_FRAC(1,1),
 	4,
 	{ 0, 1, 2, 3 },
@@ -346,7 +271,6 @@ WRITE16_MEMBER( nevada_state::vram_w )
 
 }
 
->>>>>>> upstream/master
 /***************************************************************************/
 static GFXDECODE_START( nevada )
 	/* Todo  , just for sample */
@@ -354,21 +278,6 @@ static GFXDECODE_START( nevada )
 GFXDECODE_END
 
 /***************************************************************************/
-<<<<<<< HEAD
-/*
-static TILE_GET_INFO_MEMBER( nevada_state::get_bg_tile_info )
-{
-// Todo, Just for sample
-    int attr = m_colorram[tile_index];
-    int code = ((attr & 1) << 8) | m_videoram[tile_index];
-    int bank = (attr & 0x02) >> 1;
-    int color = (attr & 0x3c) >> 2;
-
-    SET_TILE_INFO_MEMBER(bank, code, color, 0);
-
-}
-*/
-=======
 
 TILE_GET_INFO_MEMBER( nevada_state::get_bg_tile_info )
 {
@@ -381,26 +290,10 @@ TILE_GET_INFO_MEMBER( nevada_state::get_bg_tile_info )
 
 }
 
->>>>>>> upstream/master
 
 /***************************************************************************/
 void nevada_state::video_start()
 {
-<<<<<<< HEAD
-// todo
-/*
-    m_bg_tilemap = tilemap_create(machine(), get_bg_tile_info, tilemap_scan_rows, 8, 8, 32, 32);
-*/
-}
-
-/***************************************************************************/
-UINT32 nevada_state::screen_update_nevada(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-{
-	// Todo
-/*
-    m_bg_tilemap->draw(screen, bitmap, cliprect, 0, 0);
-*/
-=======
 	m_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(nevada_state::get_bg_tile_info),this),TILEMAP_SCAN_ROWS,8,8,31,31);
 }
 
@@ -409,7 +302,6 @@ uint32_t nevada_state::screen_update_nevada(screen_device &screen, bitmap_ind16 
 {
 	m_tilemap->draw(screen, bitmap, cliprect, 0, 0);
 
->>>>>>> upstream/master
 	return 0;
 }
 
@@ -492,17 +384,10 @@ static const ay8910_interface ay8910_config =
 	AY8910_DEFAULT_LOADS,
 //  DEVCB_INPUT_PORT("DSW1"),  /* not used */
 //  DEVCB_INPUT_PORT("DSW2"),  /* not used */
-<<<<<<< HEAD
-	DEVCB_NULL, /* callback for display state changes */
-	DEVCB_NULL, /* callback for cursor state changes */
-	DEVCB_NULL,
-	DEVCB_NULL
-=======
 	DEVCB_NOOP, /* callback for display state changes */
 	DEVCB_NOOP, /* callback for cursor state changes */
 	DEVCB_NOOP,
 	DEVCB_NOOP
->>>>>>> upstream/master
 };
 #endif
 
@@ -527,11 +412,7 @@ WRITE16_MEMBER(nevada_state::io_board_x)
 READ16_MEMBER(nevada_state::nevada_sec_r )
 {
 //  D3..D0 = DOOR OPEN or Track STATE of PAL35
-<<<<<<< HEAD
-	UINT16 res;
-=======
 	uint16_t res;
->>>>>>> upstream/master
 		/* UPPER byte is use for input in PAL35 */
 			// 74LS173 $bits Register used LOWER bits D3..D0 for PAL35 state and DOOR LOGIC SWITCH
 			res = pal35[m_datA40000 >> 8];
@@ -636,21 +517,12 @@ static ADDRESS_MAP_START( nevada_map, AS_PROGRAM, 16,nevada_state )
 	AM_RANGE(0x00908000, 0x00908001) AM_DEVWRITE8("crtc",mc6845_device,register_w,0x00ff )
 	AM_RANGE(0x00a00000, 0x00a00001) AM_READWRITE(io_board_r,io_board_w)
 	AM_RANGE(0x00a08000, 0x00a08001) AM_WRITE(io_board_x)
-<<<<<<< HEAD
-	AM_RANGE(0x00a10000, 0x00a10001) AM_WRITE(watchdog_reset16_w )
-=======
 	AM_RANGE(0x00a10000, 0x00a10001) AM_DEVWRITE("watchdog", watchdog_timer_device, reset16_w)
->>>>>>> upstream/master
 	AM_RANGE(0x00a20000, 0x00a20001) AM_DEVWRITE8("aysnd", ay8910_device, address_w, 0x00ff)
 	AM_RANGE(0x00a28000, 0x00a28001) AM_DEVWRITE8("aysnd", ay8910_device, data_w, 0x00ff)
 	AM_RANGE(0x00a30000, 0x00A300ff) AM_DEVREADWRITE8("rtc",msm6242_device, read, write, 0x00ff)
 	AM_RANGE(0x00a40000, 0x00A40001) AM_READWRITE( nevada_sec_r, nevada_sec_w)
-<<<<<<< HEAD
-		//AM_RANGE(0x00b00000, 0x00b01fff) AM_RAM_WRITE(nevada_videoram_w) AM_BASE_MEMBER(nevada_state, m_videoram)
-			AM_RANGE(0x00b00000, 0x00b01fff) AM_RAM // Video
-=======
 	AM_RANGE(0x00b00000, 0x00b03fff) AM_RAM_WRITE(vram_w) AM_SHARE("vram")
->>>>>>> upstream/master
 	AM_RANGE(0x00b10000, 0x00b100ff) AM_DEVREADWRITE8( "duart40_68681", mc68681_device, read, write, 0x00ff ) // Lower byte
 	AM_RANGE(0x00b20000, 0x00b200ff) AM_DEVREADWRITE8( "duart39_68681", mc68681_device, read, write, 0x00ff ) // Lower byte
 	AM_RANGE(0x00e00000, 0x00e000ff) AM_DEVREADWRITE8( "duart18_68681", mc68681_device, read, write, 0xff00 ) // Upper byte
@@ -660,14 +532,7 @@ ADDRESS_MAP_END
 
 
 /***************************************************************************/
-<<<<<<< HEAD
-static ADDRESS_MAP_START( nevada_iomap, AS_IO, 8, nevada_state )
-// todo
 
-ADDRESS_MAP_END
-=======
-
->>>>>>> upstream/master
 /*
 U18 MC68681 PIN4  IP1  from U16 (75HC189 pin6) from PIN2 J90 UNKNOWN !
 U18 MC68681 PIN36 IP2  ACCESS DOOR SWITCH
@@ -724,21 +589,12 @@ MACHINE_START_MEMBER(nevada_state, nevada)
 *     Machine Driver     *
 *************************/
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( nevada, nevada_state )
-	// basic machine hardware
-	MCFG_CPU_ADD("maincpu", M68000, MASTER_CPU)
-	MCFG_CPU_PROGRAM_MAP(nevada_map)
-	MCFG_CPU_IO_MAP(nevada_iomap)  //0x10000 0x20000
-
-=======
 static MACHINE_CONFIG_START( nevada )
 	// basic machine hardware
 	MCFG_CPU_ADD("maincpu", M68000, MASTER_CPU)
 	MCFG_CPU_PROGRAM_MAP(nevada_map)
 
 	MCFG_WATCHDOG_ADD("watchdog")
->>>>>>> upstream/master
 	MCFG_WATCHDOG_TIME_INIT(attotime::from_msec(150))   /* 150ms Ds1232 TD to Ground */
 
 	MCFG_MACHINE_START_OVERRIDE(nevada_state, nevada)
@@ -817,11 +673,7 @@ ROM_END
 *************************/
 DRIVER_INIT_MEMBER(nevada_state,nevada)
 {
-<<<<<<< HEAD
-	UINT16 *ROM = (UINT16 *)memregion("maincpu")->base();
-=======
 	uint16_t *ROM = (uint16_t *)memregion("maincpu")->base();
->>>>>>> upstream/master
 
 	memset(m_backup,0x00,m_backup.bytes()); // temp
 
@@ -846,10 +698,5 @@ DRIVER_INIT_MEMBER(nevada_state,nevada)
 *      Game Drivers      *
 *************************/
 
-<<<<<<< HEAD
-/*    YEAR  NAME     PARENT MACHINE INPUT   INIT    ROT    COMPANY    FULLNAME             FLAGS... */
-
-=======
 //    YEAR  NAME     PARENT MACHINE INPUT   STATE         INIT    ROT   COMPANY     FULLNAME             FLAGS
->>>>>>> upstream/master
 GAME( 1995, nevada,  0,     nevada, nevada, nevada_state, nevada, ROT0, "VLC Inc.", "VLC Nevada",        MACHINE_NO_SOUND | MACHINE_NOT_WORKING )

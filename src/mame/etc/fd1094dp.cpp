@@ -39,11 +39,7 @@ char srcpath[250],dstfilename[250];
 			(BIT(val, B1) <<  1) | \
 			(BIT(val, B0) <<  0))
 
-<<<<<<< HEAD
-UINT16 buffer[0x2000];
-=======
 uint16_t buffer[0x2000];
->>>>>>> upstream/master
 int little_endian;
 
 int is_little_endian(void)
@@ -493,11 +489,7 @@ void find_global_key(void)
 }
 
 
-<<<<<<< HEAD
-UINT8 mainkey[0x2000];
-=======
 uint8_t mainkey[0x2000];
->>>>>>> upstream/master
 
 void find_main_key(void)
 {

@@ -125,11 +125,7 @@ static INPUT_PORTS_START( maygayew )
 INPUT_PORTS_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( maygayew, maygayew_state )
-=======
 static MACHINE_CONFIG_START( maygayew )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000,8000000) // MC68306FC16 - standard 68000 core + peripherals
@@ -434,20 +430,6 @@ ROM_START( mg_scl )
 ROM_END
 
 // complete(?) dump
-<<<<<<< HEAD
-GAME( 199?, mg_gbr      , 0         , maygayew, maygayew, driver_device, 0, ROT0, "Maygay", "Guinness Book Of Records (Maygay M2)", MACHINE_IS_SKELETON )
-GAME( 199?, mg_risk     , 0         , maygayew, maygayew, driver_device, 0, ROT0, "Maygay", "Risk (Maygay M2)", MACHINE_IS_SKELETON )
-GAME( 199?, mg_bb       , 0         , maygayew, maygayew, driver_device, 0, ROT0, "Maygay", "Big Break (Maygay M2)", MACHINE_IS_SKELETON )
-GAME( 199?, mg_lug      , 0         , maygayew, maygayew, driver_device, 0, ROT0, "Maygay", "London Underground (Maygay M2)", MACHINE_IS_SKELETON )
-GAME( 199?, mg_alad     , 0         , maygayew, maygayew, driver_device, 0, ROT0, "Maygay", "Aladdin's Cave (Maygay M2)", MACHINE_IS_SKELETON )
-
-// incomplete dumps
-GAME( 199?, mg_ewg      , 0         , maygayew, maygayew, driver_device, 0, ROT0, "Maygay", "Each Way Gambler (Maygay M2)", MACHINE_IS_SKELETON )
-GAME( 199?, mg_jv       , 0         , maygayew, maygayew, driver_device, 0, ROT0, "Maygay", "Jack & Vera (Maygay M2)", MACHINE_IS_SKELETON )
-GAME( 199?, mg_pbw      , 0         , maygayew, maygayew, driver_device, 0, ROT0, "Maygay", "Pinball Wizard (Maygay M2)", MACHINE_IS_SKELETON )
-GAME( 199?, mg_scl      , 0         , maygayew, maygayew, driver_device, 0, ROT0, "Maygay", "Super Clue (Maygay M2)", MACHINE_IS_SKELETON )
-GAME( 199?, mg_kf       , 0         , maygayew, maygayew, driver_device, 0, ROT0, "Maygay", "Krypton Factor (Maygay M2)", MACHINE_IS_SKELETON )
-=======
 GAME( 199?, mg_gbr      , 0         , maygayew, maygayew, maygayew_state, 0, ROT0, "Maygay", "Guinness Book Of Records (Maygay M2)", MACHINE_IS_SKELETON )
 GAME( 199?, mg_risk     , 0         , maygayew, maygayew, maygayew_state, 0, ROT0, "Maygay", "Risk (Maygay M2)", MACHINE_IS_SKELETON )
 GAME( 199?, mg_bb       , 0         , maygayew, maygayew, maygayew_state, 0, ROT0, "Maygay", "Big Break (Maygay M2)", MACHINE_IS_SKELETON )
@@ -460,4 +442,3 @@ GAME( 199?, mg_jv       , 0         , maygayew, maygayew, maygayew_state, 0, ROT
 GAME( 199?, mg_pbw      , 0         , maygayew, maygayew, maygayew_state, 0, ROT0, "Maygay", "Pinball Wizard (Maygay M2)", MACHINE_IS_SKELETON )
 GAME( 199?, mg_scl      , 0         , maygayew, maygayew, maygayew_state, 0, ROT0, "Maygay", "Super Clue (Maygay M2)", MACHINE_IS_SKELETON )
 GAME( 199?, mg_kf       , 0         , maygayew, maygayew, maygayew_state, 0, ROT0, "Maygay", "Krypton Factor (Maygay M2)", MACHINE_IS_SKELETON )
->>>>>>> upstream/master

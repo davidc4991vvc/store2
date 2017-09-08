@@ -17,10 +17,7 @@
 
 */
 
-<<<<<<< HEAD
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #include "fd2000.h"
 
 
@@ -42,13 +39,8 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type FD2000 = &device_creator<fd2000_device>;
-const device_type FD4000 = &device_creator<fd4000_device>;
-=======
 DEFINE_DEVICE_TYPE(FD2000, fd2000_device, "fd2000", "FD-2000 Disk Drive")
 DEFINE_DEVICE_TYPE(FD4000, fd4000_device, "fd4000", "FD-4000 Disk Drive")
->>>>>>> upstream/master
 
 
 //-------------------------------------------------
@@ -83,20 +75,6 @@ ROM_END
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const rom_entry *fd2000_device::device_rom_region() const
-{
-	switch (m_variant)
-	{
-	default:
-		return ROM_NAME( fd2000 );
-
-	case TYPE_FD4000:
-		return ROM_NAME( fd4000 );
-	}
-}
-
-=======
 const tiny_rom_entry *fd2000_device::device_rom_region() const
 {
 	return ROM_NAME( fd2000 );
@@ -106,7 +84,6 @@ const tiny_rom_entry *fd4000_device::device_rom_region() const
 {
 	return ROM_NAME( fd4000 );
 }
->>>>>>> upstream/master
 
 //-------------------------------------------------
 //  ADDRESS_MAP( fd2000_mem )
@@ -189,11 +166,7 @@ READ8_MEMBER( fd2000_device::via_pb_r )
 
 	*/
 
-<<<<<<< HEAD
-	UINT8 data = 0;
-=======
 	uint8_t data = 0;
->>>>>>> upstream/master
 
 	// FDC interrupt
 	data |= m_fdc->get_irq() << 7;
@@ -233,20 +206,12 @@ FLOPPY_FORMATS_MEMBER( fd2000_device::floppy_formats )
 FLOPPY_FORMATS_END
 */
 
-<<<<<<< HEAD
-//-------------------------------------------------
-//  MACHINE_DRIVER( fd2000 )
-//-------------------------------------------------
-
-static MACHINE_CONFIG_FRAGMENT( fd2000 )
-=======
 
 //-------------------------------------------------
 //  device_add_mconfig - add device configuration
 //-------------------------------------------------
 
 MACHINE_CONFIG_MEMBER( fd2000_device::device_add_mconfig )
->>>>>>> upstream/master
 	MCFG_CPU_ADD(G65SC02PI2_TAG, M65C02, XTAL_24MHz/12)
 	MCFG_CPU_PROGRAM_MAP(fd2000_mem)
 
@@ -258,23 +223,11 @@ MACHINE_CONFIG_MEMBER( fd2000_device::device_add_mconfig )
 
 	MCFG_DP8473_ADD(DP8473V_TAG)
 
-<<<<<<< HEAD
-	MCFG_FLOPPY_DRIVE_ADD(DP8473V_TAG":0", fd2000_floppies, "35hd", floppy_image_device::default_floppy_formats)//fd2000_device::floppy_formats)
-MACHINE_CONFIG_END
-
-
-//-------------------------------------------------
-//  MACHINE_DRIVER( fd4000 )
-//-------------------------------------------------
-
-static MACHINE_CONFIG_FRAGMENT( fd4000 )
-=======
 	MCFG_FLOPPY_DRIVE_ADD_FIXED(DP8473V_TAG":0", fd2000_floppies, "35hd", floppy_image_device::default_floppy_formats)//fd2000_device::floppy_formats)
 MACHINE_CONFIG_END
 
 
 MACHINE_CONFIG_MEMBER( fd4000_device::device_add_mconfig )
->>>>>>> upstream/master
 	MCFG_CPU_ADD(R65C02P4_TAG, M65C02, XTAL_24MHz/6)
 	MCFG_CPU_PROGRAM_MAP(fd4000_mem)
 
@@ -286,35 +239,10 @@ MACHINE_CONFIG_MEMBER( fd4000_device::device_add_mconfig )
 
 	MCFG_PC8477A_ADD(PC8477AV1_TAG)
 
-<<<<<<< HEAD
-	MCFG_FLOPPY_DRIVE_ADD(PC8477AV1_TAG":0", fd4000_floppies, "35ed", floppy_image_device::default_floppy_formats)//fd2000_device::floppy_formats)
-MACHINE_CONFIG_END
-
-
-//-------------------------------------------------
-//  machine_config_additions - device-specific
-//  machine configurations
-//-------------------------------------------------
-
-machine_config_constructor fd2000_device::device_mconfig_additions() const
-{
-	switch (m_variant)
-	{
-	default:
-		return MACHINE_CONFIG_NAME( fd2000 );
-
-	case TYPE_FD4000:
-		return MACHINE_CONFIG_NAME( fd4000 );
-	}
-}
-
-
-=======
 	MCFG_FLOPPY_DRIVE_ADD_FIXED(PC8477AV1_TAG":0", fd4000_floppies, "35ed", floppy_image_device::default_floppy_formats)//fd2000_device::floppy_formats)
 MACHINE_CONFIG_END
 
 
->>>>>>> upstream/master
 //**************************************************************************
 //  LIVE DEVICE
 //**************************************************************************
@@ -323,25 +251,6 @@ MACHINE_CONFIG_END
 //  fd2000_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-fd2000_device::fd2000_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, FD2000, "FD-2000", tag, owner, clock, "fd2000", __FILE__),
-		device_cbm_iec_interface(mconfig, *this),
-		m_maincpu(*this, G65SC02PI2_TAG),
-		m_fdc(*this, DP8473V_TAG),
-		m_floppy0(*this, DP8473V_TAG":0"),
-		m_variant(TYPE_FD2000)
-{
-}
-
-fd2000_device::fd2000_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, UINT32 variant, const char *shortname, const char *source)
-	: device_t(mconfig, type, name, tag, owner, clock, shortname, source),
-		device_cbm_iec_interface(mconfig, *this),
-		m_maincpu(*this, R65C02P4_TAG),
-		m_fdc(*this, PC8477AV1_TAG),
-		m_floppy0(*this, PC8477AV1_TAG":0"),
-		m_variant(variant)
-=======
 fd2000_device::fd2000_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: fd2000_device(mconfig, FD2000, tag, owner, clock)
 {
@@ -353,7 +262,6 @@ fd2000_device::fd2000_device(const machine_config &mconfig, device_type type, co
 	, m_maincpu(*this, G65SC02PI2_TAG)
 	, m_fdc(*this, DP8473V_TAG)
 	, m_floppy0(*this, DP8473V_TAG":0")
->>>>>>> upstream/master
 {
 }
 
@@ -362,10 +270,6 @@ fd2000_device::fd2000_device(const machine_config &mconfig, device_type type, co
 //  fd4000_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-fd4000_device::fd4000_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: fd2000_device(mconfig, FD4000, "FD-4000", tag, owner, clock, TYPE_FD4000, "fd4000", __FILE__ ) { }
-=======
 fd4000_device::fd4000_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: fd2000_device(mconfig, FD4000, tag, owner, clock)
 {
@@ -373,7 +277,6 @@ fd4000_device::fd4000_device(const machine_config &mconfig, const char *tag, dev
 	m_fdc.set_tag(PC8477AV1_TAG);
 	m_floppy0.set_tag(PC8477AV1_TAG":0");
 }
->>>>>>> upstream/master
 
 
 //-------------------------------------------------

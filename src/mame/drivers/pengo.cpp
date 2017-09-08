@@ -64,12 +64,6 @@
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/z80/z80.h"
-#include "machine/segacrpt.h"
-#include "includes/pacman.h"
-
-=======
 #include "includes/pacman.h"
 
 #include "cpu/z80/z80.h"
@@ -78,22 +72,12 @@
 #include "screen.h"
 #include "speaker.h"
 
->>>>>>> upstream/master
 
 class pengo_state : public pacman_state
 {
 public:
 	pengo_state(const machine_config &mconfig, device_type type, const char *tag)
 		: pacman_state(mconfig, type, tag), m_decrypted_opcodes(*this, "decrypted_opcodes") { }
-<<<<<<< HEAD
-	DECLARE_WRITE8_MEMBER(pengo_coin_counter_w);
-	DECLARE_WRITE8_MEMBER(irq_mask_w);
-	DECLARE_DRIVER_INIT(penta);
-	DECLARE_DRIVER_INIT(pengo);
-	INTERRUPT_GEN_MEMBER(vblank_irq);
-
-	optional_shared_ptr<UINT8> m_decrypted_opcodes;
-=======
 	DECLARE_WRITE_LINE_MEMBER(coin_counter_1_w);
 	DECLARE_WRITE_LINE_MEMBER(coin_counter_2_w);
 	DECLARE_WRITE_LINE_MEMBER(irq_mask_w);
@@ -101,7 +85,6 @@ public:
 	INTERRUPT_GEN_MEMBER(vblank_irq);
 
 	optional_shared_ptr<uint8_t> m_decrypted_opcodes;
->>>>>>> upstream/master
 };
 
 
@@ -134,16 +117,6 @@ public:
  *
  *************************************/
 
-<<<<<<< HEAD
-WRITE8_MEMBER(pengo_state::pengo_coin_counter_w)
-{
-	coin_counter_w(machine(), offset, data & 1);
-}
-
-WRITE8_MEMBER(pengo_state::irq_mask_w)
-{
-	m_irq_mask = data & 1;
-=======
 WRITE_LINE_MEMBER(pengo_state::coin_counter_1_w)
 {
 	machine().bookkeeping().coin_counter_w(0, state);
@@ -157,7 +130,6 @@ WRITE_LINE_MEMBER(pengo_state::coin_counter_2_w)
 WRITE_LINE_MEMBER(pengo_state::irq_mask_w)
 {
 	m_irq_mask = state;
->>>>>>> upstream/master
 }
 
 static ADDRESS_MAP_START( pengo_map, AS_PROGRAM, 8, pengo_state )
@@ -170,29 +142,14 @@ static ADDRESS_MAP_START( pengo_map, AS_PROGRAM, 8, pengo_state )
 	AM_RANGE(0x9020, 0x902f) AM_WRITEONLY AM_SHARE("spriteram2")
 	AM_RANGE(0x9000, 0x903f) AM_READ_PORT("DSW1")
 	AM_RANGE(0x9040, 0x907f) AM_READ_PORT("DSW0")
-<<<<<<< HEAD
-	AM_RANGE(0x9040, 0x9040) AM_WRITE(irq_mask_w)
-	AM_RANGE(0x9041, 0x9041) AM_DEVWRITE("namco", namco_device, pacman_sound_enable_w)
-	AM_RANGE(0x9042, 0x9042) AM_WRITE(pengo_palettebank_w)
-	AM_RANGE(0x9043, 0x9043) AM_WRITE(pacman_flipscreen_w)
-	AM_RANGE(0x9044, 0x9045) AM_WRITE(pengo_coin_counter_w)
-	AM_RANGE(0x9046, 0x9046) AM_WRITE(pengo_colortablebank_w)
-	AM_RANGE(0x9047, 0x9047) AM_WRITE(pengo_gfxbank_w)
-	AM_RANGE(0x9070, 0x9070) AM_WRITENOP
-=======
 	AM_RANGE(0x9040, 0x9047) AM_DEVWRITE("latch", ls259_device, write_d0)
 	AM_RANGE(0x9070, 0x9070) AM_DEVWRITE("watchdog", watchdog_timer_device, reset_w)
->>>>>>> upstream/master
 	AM_RANGE(0x9080, 0x90bf) AM_READ_PORT("IN1")
 	AM_RANGE(0x90c0, 0x90ff) AM_READ_PORT("IN0")
 ADDRESS_MAP_END
 
 
-<<<<<<< HEAD
-static ADDRESS_MAP_START( decrypted_opcodes_map, AS_DECRYPTED_OPCODES, 8, pengo_state )
-=======
 static ADDRESS_MAP_START( decrypted_opcodes_map, AS_OPCODES, 8, pengo_state )
->>>>>>> upstream/master
 	AM_RANGE(0x0000, 0x7fff) AM_ROM AM_SHARE("decrypted_opcodes")
 	AM_RANGE(0x8800, 0x8fef) AM_RAM AM_SHARE("mainram")
 	AM_RANGE(0x8ff0, 0x8fff) AM_RAM AM_SHARE("spriteram")
@@ -208,20 +165,8 @@ static ADDRESS_MAP_START( jrpacmbl_map, AS_PROGRAM, 8, pengo_state )
 	AM_RANGE(0x9020, 0x902f) AM_WRITEONLY AM_SHARE("spriteram2")
 	AM_RANGE(0x9030, 0x9030) AM_WRITE(jrpacman_scroll_w)
 	AM_RANGE(0x9040, 0x904f) AM_READ_PORT("DSW")
-<<<<<<< HEAD
-	AM_RANGE(0x9040, 0x9040) AM_WRITE(irq_mask_w)
-	AM_RANGE(0x9041, 0x9041) AM_DEVWRITE("namco", namco_device, pacman_sound_enable_w)
-	AM_RANGE(0x9042, 0x9042) AM_WRITE(pengo_palettebank_w)
-	AM_RANGE(0x9043, 0x9043) AM_WRITE(pacman_flipscreen_w)
-	AM_RANGE(0x9044, 0x9044) AM_WRITE(jrpacman_bgpriority_w)
-	AM_RANGE(0x9045, 0x9045) AM_WRITE(jrpacman_spritebank_w)
-	AM_RANGE(0x9046, 0x9046) AM_WRITE(pengo_colortablebank_w)
-	AM_RANGE(0x9047, 0x9047) AM_WRITE(jrpacman_charbank_w)
-	AM_RANGE(0x9070, 0x9070) AM_WRITENOP
-=======
 	AM_RANGE(0x9040, 0x9047) AM_DEVWRITE("latch", ls259_device, write_d0)
 	AM_RANGE(0x9070, 0x9070) AM_DEVWRITE("watchdog", watchdog_timer_device, reset_w)
->>>>>>> upstream/master
 	AM_RANGE(0x9080, 0x90bf) AM_READ_PORT("P2")
 	AM_RANGE(0x90c0, 0x90ff) AM_READ_PORT("P1")
 ADDRESS_MAP_END
@@ -421,11 +366,7 @@ INTERRUPT_GEN_MEMBER(pengo_state::vblank_irq)
 }
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( pengo, pengo_state )
-=======
 static MACHINE_CONFIG_START( pengo )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, MASTER_CLOCK/6)
@@ -433,8 +374,6 @@ static MACHINE_CONFIG_START( pengo )
 	MCFG_CPU_DECRYPTED_OPCODES_MAP(decrypted_opcodes_map)
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", pengo_state,  vblank_irq)
 
-<<<<<<< HEAD
-=======
 	MCFG_DEVICE_ADD("latch", LS259, 0) // U27
 	MCFG_ADDRESSABLE_LATCH_Q0_OUT_CB(WRITELINE(pengo_state, irq_mask_w))
 	MCFG_ADDRESSABLE_LATCH_Q1_OUT_CB(DEVWRITELINE("namco", namco_device, pacman_sound_enable_w))
@@ -447,7 +386,6 @@ static MACHINE_CONFIG_START( pengo )
 
 	MCFG_WATCHDOG_ADD("watchdog")
 
->>>>>>> upstream/master
 	/* video hardware */
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", pengo)
 	MCFG_PALETTE_ADD("palette", 128*4)
@@ -472,9 +410,6 @@ MACHINE_CONFIG_END
 static MACHINE_CONFIG_DERIVED( pengou, pengo )
 
 	MCFG_CPU_MODIFY("maincpu")
-<<<<<<< HEAD
-	MCFG_DEVICE_REMOVE_ADDRESS_MAP(AS_DECRYPTED_OPCODES)
-=======
 	MCFG_DEVICE_REMOVE_ADDRESS_MAP(AS_OPCODES)
 MACHINE_CONFIG_END
 
@@ -484,7 +419,6 @@ static MACHINE_CONFIG_DERIVED( pengoe, pengo )
 	MCFG_CPU_DECRYPTED_OPCODES_MAP(decrypted_opcodes_map)
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", pengo_state,  vblank_irq)
 	MCFG_SEGACRPT_SET_DECRYPTED_TAG(":decrypted_opcodes")
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_DERIVED( jrpacmbl, pengo )
@@ -492,16 +426,12 @@ static MACHINE_CONFIG_DERIVED( jrpacmbl, pengo )
 	/* basic machine hardware */
 	MCFG_CPU_MODIFY("maincpu")
 	MCFG_CPU_PROGRAM_MAP(jrpacmbl_map)
-<<<<<<< HEAD
-	MCFG_DEVICE_REMOVE_ADDRESS_MAP(AS_DECRYPTED_OPCODES)
-=======
 	MCFG_DEVICE_REMOVE_ADDRESS_MAP(AS_OPCODES)
 
 	MCFG_DEVICE_MODIFY("latch")
 	MCFG_ADDRESSABLE_LATCH_Q4_OUT_CB(WRITELINE(pengo_state, jrpacman_bgpriority_w))
 	MCFG_ADDRESSABLE_LATCH_Q5_OUT_CB(WRITELINE(pengo_state, jrpacman_spritebank_w))
 	MCFG_ADDRESSABLE_LATCH_Q7_OUT_CB(WRITELINE(pengo_state, jrpacman_charbank_w))
->>>>>>> upstream/master
 
 	MCFG_VIDEO_START_OVERRIDE(pengo_state,jrpacman)
 MACHINE_CONFIG_END
@@ -648,8 +578,6 @@ ROM_START( pengo4 )
 	ROM_LOAD( "pr1636.70",    0x0100, 0x0100, CRC(77245b66) SHA1(0c4d0bee858b97632411c440bea6948a74759746) ) /* timing - not used */
 ROM_END
 
-<<<<<<< HEAD
-=======
 ROM_START( pengo5 ) // PCB has an additional label Bally N.E.
 	ROM_REGION( 0x10000, "maincpu", 0 )
 	ROM_LOAD( "0_OCT6-82.bin",   0x0000, 0x1000, CRC(43e45441) SHA1(e94a9f9971e57cd53fe425059a6cb7cadbd206f1) )
@@ -675,7 +603,6 @@ ROM_START( pengo5 ) // PCB has an additional label Bally N.E.
 	ROM_LOAD( "pr1635.51",    0x0000, 0x0100, CRC(c29dea27) SHA1(563c9770028fe39188e62630711589d6ed242a66) ) /* waveform */
 	ROM_LOAD( "pr1636.70",    0x0100, 0x0100, CRC(77245b66) SHA1(0c4d0bee858b97632411c440bea6948a74759746) ) /* timing - not used */
 ROM_END
->>>>>>> upstream/master
 
 ROM_START( pengob )
 	ROM_REGION( 0x10000, "maincpu", 0 )
@@ -762,35 +689,6 @@ ROM_END
  *
  *************************************/
 
-<<<<<<< HEAD
-DRIVER_INIT_MEMBER(pengo_state,pengo)
-{
-	static const UINT8 convtable[32][4] =
-	{
-		/*       opcode                   data                     address      */
-		/*  A    B    C    D         A    B    C    D                           */
-		{ 0xa0,0x80,0xa8,0x88 }, { 0x28,0xa8,0x08,0x88 },   /* ...0...0...0...0 */
-		{ 0x28,0xa8,0x08,0x88 }, { 0xa0,0x80,0xa8,0x88 },   /* ...0...0...0...1 */
-		{ 0xa0,0x80,0x20,0x00 }, { 0xa0,0x80,0x20,0x00 },   /* ...0...0...1...0 */
-		{ 0x08,0x28,0x88,0xa8 }, { 0xa0,0x80,0xa8,0x88 },   /* ...0...0...1...1 */
-		{ 0x08,0x00,0x88,0x80 }, { 0x28,0xa8,0x08,0x88 },   /* ...0...1...0...0 */
-		{ 0xa0,0x80,0x20,0x00 }, { 0x08,0x00,0x88,0x80 },   /* ...0...1...0...1 */
-		{ 0xa0,0x80,0x20,0x00 }, { 0xa0,0x80,0x20,0x00 },   /* ...0...1...1...0 */
-		{ 0xa0,0x80,0x20,0x00 }, { 0x00,0x08,0x20,0x28 },   /* ...0...1...1...1 */
-		{ 0x88,0x80,0x08,0x00 }, { 0xa0,0x80,0x20,0x00 },   /* ...1...0...0...0 */
-		{ 0x88,0x80,0x08,0x00 }, { 0x00,0x08,0x20,0x28 },   /* ...1...0...0...1 */
-		{ 0x08,0x28,0x88,0xa8 }, { 0x08,0x28,0x88,0xa8 },   /* ...1...0...1...0 */
-		{ 0xa0,0x80,0xa8,0x88 }, { 0xa0,0x80,0x20,0x00 },   /* ...1...0...1...1 */
-		{ 0x08,0x00,0x88,0x80 }, { 0x88,0x80,0x08,0x00 },   /* ...1...1...0...0 */
-		{ 0x00,0x08,0x20,0x28 }, { 0x88,0x80,0x08,0x00 },   /* ...1...1...0...1 */
-		{ 0x08,0x28,0x88,0xa8 }, { 0x08,0x28,0x88,0xa8 },   /* ...1...1...1...0 */
-		{ 0x08,0x00,0x88,0x80 }, { 0xa0,0x80,0x20,0x00 }    /* ...1...1...1...1 */
-	};
-
-	sega_decode(memregion("maincpu")->base(), m_decrypted_opcodes, 0x8000, convtable);
-}
-=======
->>>>>>> upstream/master
 
 
 DRIVER_INIT_MEMBER(pengo_state,penta)
@@ -819,20 +717,12 @@ DRIVER_INIT_MEMBER(pengo_state,penta)
     (e.g. 0xc0 is XORed with H)
     therefore in the following tables we only keep track of A, B, C, D, E, F, G and H.
 */
-<<<<<<< HEAD
-	static const UINT8 data_xortable[2][8] =
-=======
 	static const uint8_t data_xortable[2][8] =
->>>>>>> upstream/master
 	{
 		{ 0xa0,0x82,0x28,0x0a,0x82,0xa0,0x0a,0x28 },    /* ...............0 */
 		{ 0x88,0x0a,0x82,0x00,0x88,0x0a,0x82,0x00 }     /* ...............1 */
 	};
-<<<<<<< HEAD
-	static const UINT8 opcode_xortable[8][8] =
-=======
 	static const uint8_t opcode_xortable[8][8] =
->>>>>>> upstream/master
 	{
 		{ 0x02,0x08,0x2a,0x20,0x20,0x2a,0x08,0x02 },    /* ...0...0...0.... */
 		{ 0x88,0x88,0x00,0x00,0x88,0x88,0x00,0x00 },    /* ...0...0...1.... */
@@ -844,20 +734,12 @@ DRIVER_INIT_MEMBER(pengo_state,penta)
 		{ 0x88,0x0a,0x82,0x00,0xa0,0x22,0xaa,0x28 }     /* ...1...1...1.... */
 	};
 
-<<<<<<< HEAD
-	UINT8 *rom = memregion("maincpu")->base();
-=======
 	uint8_t *rom = memregion("maincpu")->base();
->>>>>>> upstream/master
 
 	for (int A = 0x0000;A < 0x8000;A++)
 	{
 		int i,j;
-<<<<<<< HEAD
-		UINT8 src;
-=======
 		uint8_t src;
->>>>>>> upstream/master
 
 
 		src = rom[A];
@@ -887,16 +769,6 @@ DRIVER_INIT_MEMBER(pengo_state,penta)
  *
  *************************************/
 
-<<<<<<< HEAD
-GAME( 1982, pengo,    0,     pengo,  pengo, pengo_state, pengo,    ROT90, "Sega", "Pengo (set 1 rev c)", MACHINE_SUPPORTS_SAVE )
-GAME( 1982, pengo2,   pengo, pengo,  pengo, pengo_state, pengo,    ROT90, "Sega", "Pengo (set 2)", MACHINE_SUPPORTS_SAVE )
-GAME( 1982, pengo2u,  pengo, pengou, pengo, driver_device, 0,      ROT90, "Sega", "Pengo (set 2 not encrypted)", MACHINE_SUPPORTS_SAVE )
-GAME( 1982, pengo3u,  pengo, pengou, pengo, driver_device, 0,      ROT90, "Sega", "Pengo (set 3 not encrypted)", MACHINE_SUPPORTS_SAVE )
-GAME( 1982, pengo4,   pengo, pengo,  pengo, pengo_state, pengo,    ROT90, "Sega", "Pengo (set 4)", MACHINE_SUPPORTS_SAVE )
-GAME( 1982, pengob,   pengo, pengo,  pengo, pengo_state, penta,    ROT90, "bootleg", "Pengo (bootleg)", MACHINE_SUPPORTS_SAVE )
-GAME( 1982, penta,    pengo, pengo,  pengo, pengo_state, penta,    ROT90, "bootleg (Grinbee Shouji)", "Penta", MACHINE_SUPPORTS_SAVE ) // Grinbee Shouji was a subsidiary of Orca
-GAME( 1983, jrpacmbl, jrpacman, jrpacmbl, jrpacmbl, driver_device, 0, ROT90, "bootleg", "Jr. Pac-Man (Pengo hardware)", MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1982, pengo,    0,        pengoe,   pengo,    pengo_state, 0,     ROT90, "Sega",                     "Pengo (set 1 rev c)",          MACHINE_SUPPORTS_SAVE )
 GAME( 1982, pengo2,   pengo,    pengoe,   pengo,    pengo_state, 0,     ROT90, "Sega",                     "Pengo (set 2)",                MACHINE_SUPPORTS_SAVE )
 GAME( 1982, pengo2u,  pengo,    pengou,   pengo,    pengo_state, 0,     ROT90, "Sega",                     "Pengo (set 2 not encrypted)",  MACHINE_SUPPORTS_SAVE )
@@ -906,4 +778,3 @@ GAME( 1982, pengo5,   pengo,    pengoe,   pengo,    pengo_state, 0,     ROT90, "
 GAME( 1982, pengob,   pengo,    pengo,    pengo,    pengo_state, penta, ROT90, "bootleg",                  "Pengo (bootleg)",              MACHINE_SUPPORTS_SAVE )
 GAME( 1982, penta,    pengo,    pengo,    pengo,    pengo_state, penta, ROT90, "bootleg (Grinbee Shouji)", "Penta",                        MACHINE_SUPPORTS_SAVE ) // Grinbee Shouji was a subsidiary of Orca
 GAME( 1983, jrpacmbl, jrpacman, jrpacmbl, jrpacmbl, pengo_state, 0,     ROT90, "bootleg",                  "Jr. Pac-Man (Pengo hardware)", MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

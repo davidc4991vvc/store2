@@ -23,21 +23,12 @@ public:
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
 
-<<<<<<< HEAD
-	required_shared_ptr<UINT32> m_generic_paletteram_32;
-	required_shared_ptr<UINT32> m_vidram;
-	required_shared_ptr<UINT32> m_vidram2;
-	required_shared_ptr<UINT32> m_vidram3;
-	required_shared_ptr<UINT32> m_sprram;
-	required_shared_ptr<UINT32> m_regs;
-=======
 	required_shared_ptr<uint32_t> m_generic_paletteram_32;
 	required_shared_ptr<uint32_t> m_vidram;
 	required_shared_ptr<uint32_t> m_vidram2;
 	required_shared_ptr<uint32_t> m_vidram3;
 	required_shared_ptr<uint32_t> m_sprram;
 	required_shared_ptr<uint32_t> m_regs;
->>>>>>> upstream/master
 
 	tilemap_t *m_fg_tilemap;
 	tilemap_t *m_fg2_tilemap;
@@ -54,14 +45,8 @@ public:
 	TILE_GET_INFO_MEMBER(get_fg2_tile_info);
 	TILE_GET_INFO_MEMBER(get_fg3_tile_info);
 
-<<<<<<< HEAD
-	virtual void video_start();
-
-	UINT32 screen_update_silkroad(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	virtual void video_start() override;
 
 	uint32_t screen_update_silkroad(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	void draw_sprites(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 };

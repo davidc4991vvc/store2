@@ -6,10 +6,7 @@
 
 ****************************************************************************/
 #include "sound/samples.h"
-<<<<<<< HEAD
-=======
 #include "screen.h"
->>>>>>> upstream/master
 /*
  *  SPACEFB_PIXEL_CLOCK clocks the star generator circuit.  The rest of
  *  the graphics use a clock half of SPACEFB_PIXEL_CLOCK, thus creating
@@ -46,16 +43,6 @@ public:
 	required_device<samples_device> m_samples;
 	required_device<screen_device> m_screen;
 
-<<<<<<< HEAD
-	required_shared_ptr<UINT8> m_videoram;
-
-	UINT8 m_sound_latch;
-	emu_timer *m_interrupt_timer;
-	UINT8 *m_object_present_map;
-	UINT8 m_port_0;
-	UINT8 m_port_2;
-	UINT32 m_star_shift_reg;
-=======
 	required_shared_ptr<uint8_t> m_videoram;
 
 	uint8_t m_sound_latch;
@@ -64,7 +51,6 @@ public:
 	uint8_t m_port_0;
 	uint8_t m_port_2;
 	uint32_t m_star_shift_reg;
->>>>>>> upstream/master
 	double m_color_weights_rg[3];
 	double m_color_weights_b[2];
 
@@ -72,30 +58,17 @@ public:
 	DECLARE_WRITE8_MEMBER(port_1_w);
 	DECLARE_WRITE8_MEMBER(port_2_w);
 	DECLARE_READ8_MEMBER(audio_p2_r);
-<<<<<<< HEAD
-	DECLARE_READ8_MEMBER(audio_t0_r);
-	DECLARE_READ8_MEMBER(audio_t1_r);
-
-	virtual void machine_start();
-	virtual void machine_reset();
-	virtual void video_start();
-=======
 	DECLARE_READ_LINE_MEMBER(audio_t0_r);
 	DECLARE_READ_LINE_MEMBER(audio_t1_r);
 
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
 	virtual void video_start() override;
->>>>>>> upstream/master
 
 	TIMER_CALLBACK_MEMBER(interrupt_callback);
 	void start_interrupt_timer();
 
-<<<<<<< HEAD
-	UINT32 screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
-=======
 	uint32_t screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	inline void shift_star_generator();
 	void get_starfield_pens(pen_t *pens);
 	void draw_starfield(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
@@ -111,11 +84,7 @@ protected:
 		TIMER_INTERRUPT
 	};
 
-<<<<<<< HEAD
-	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
-=======
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
->>>>>>> upstream/master
 };
 
 /*----------- defined in audio/spacefb.c -----------*/

@@ -7,10 +7,7 @@
 *************************************************************************/
 
 #include "includes/slapstic.h"
-<<<<<<< HEAD
-=======
 #include "screen.h"
->>>>>>> upstream/master
 
 class atetris_state : public driver_device
 {
@@ -30,15 +27,6 @@ public:
 	required_device<screen_device> m_screen;
 	optional_device<atari_slapstic_device> m_slapstic_device;
 
-<<<<<<< HEAD
-	required_shared_ptr<UINT8>  m_nvram;
-	required_shared_ptr<UINT8> m_videoram;
-
-	UINT8 *m_slapstic_source;
-	UINT8 *m_slapstic_base;
-	UINT8 m_current_bank;
-	UINT8 m_nvram_write_enable;
-=======
 	required_shared_ptr<uint8_t>  m_nvram;
 	required_shared_ptr<uint8_t> m_videoram;
 
@@ -46,7 +34,6 @@ public:
 	uint8_t *m_slapstic_base;
 	uint8_t m_current_bank;
 	uint8_t m_nvram_write_enable;
->>>>>>> upstream/master
 	emu_timer *m_interrupt_timer;
 	tilemap_t *m_bg_tilemap;
 
@@ -58,17 +45,10 @@ public:
 	DECLARE_WRITE8_MEMBER(videoram_w);
 	DECLARE_DRIVER_INIT(atetris);
 	TILE_GET_INFO_MEMBER(get_tile_info);
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void machine_reset();
-	virtual void video_start();
-	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
 	virtual void video_start() override;
 	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	TIMER_CALLBACK_MEMBER(interrupt_gen);
 	void reset_bank();
 };

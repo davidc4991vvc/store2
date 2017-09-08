@@ -11,20 +11,12 @@
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-#ifndef FIXFREQ_H
-#define FIXFREQ_H
-
-#include "emu.h"
-#include "machine/netlist.h"
-=======
 #ifndef MAME_VIDEO_FIXFREQ_H
 #define MAME_VIDEO_FIXFREQ_H
 
 #include "machine/netlist.h"
 #include "screen.h"
 
->>>>>>> upstream/master
 
 #define FIXFREQ_INTERFACE(name) \
 	const fixedfreq_interface (name) =
@@ -75,18 +67,6 @@
 
 // ======================> vga_device
 
-<<<<<<< HEAD
-class fixedfreq_device :  public device_t,
-							public device_video_interface
-{
-public:
-	// construction/destruction
-	fixedfreq_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-	fixedfreq_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source);
-
-	// inline configuration helpers
-	static void set_minitor_clock(device_t &device, UINT32 clock) { downcast<fixedfreq_device &>(device).m_monitor_clock = clock; }
-=======
 class fixedfreq_device : public device_t, public device_video_interface
 {
 public:
@@ -95,7 +75,6 @@ public:
 
 	// inline configuration helpers
 	static void set_minitor_clock(device_t &device, uint32_t clock) { downcast<fixedfreq_device &>(device).m_monitor_clock = clock; }
->>>>>>> upstream/master
 	static void set_fieldcount(device_t &device, int count) { downcast<fixedfreq_device &>(device).m_fieldcount = count; }
 	static void set_threshold(device_t &device, double threshold) { downcast<fixedfreq_device &>(device).m_sync_threshold = threshold; }
 	static void set_gain(device_t &device, double gain) { downcast<fixedfreq_device &>(device).m_gain = gain; }
@@ -116,28 +95,17 @@ public:
 		dev.m_vbackporch = backporch;
 	}
 
-<<<<<<< HEAD
-	virtual UINT32 screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
-=======
 	virtual uint32_t screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 
 	NETDEV_ANALOG_CALLBACK_MEMBER(update_vid);
 
 protected:
-<<<<<<< HEAD
-	// device-level overrides
-	virtual void device_start();
-	virtual void device_reset();
-	virtual void device_post_load();
-=======
 	fixedfreq_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock);
 
 	// device-level overrides
 	virtual void device_start() override;
 	virtual void device_reset() override;
 	virtual void device_post_load() override;
->>>>>>> upstream/master
 	//virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
 
 	void recompute_parameters(bool postload);
@@ -159,19 +127,11 @@ private:
 	attotime m_last_vsync_time;
 	attotime m_refresh;
 	attotime  m_clock_period;
-<<<<<<< HEAD
-	bitmap_rgb32 *m_bitmap[2];
-	int m_cur_bm;
-
-	/* adjustable by drivers */
-	UINT32 m_monitor_clock;
-=======
 	std::unique_ptr<bitmap_rgb32> m_bitmap[2];
 	int m_cur_bm;
 
 	/* adjustable by drivers */
 	uint32_t m_monitor_clock;
->>>>>>> upstream/master
 	int m_hvisible;
 	int m_hfrontporch;
 	int m_hsync;
@@ -192,22 +152,10 @@ private:
 	int m_sig_vsync;
 	int m_sig_composite;
 	int m_sig_field;
-<<<<<<< HEAD
-
-protected:
-
-=======
->>>>>>> upstream/master
 };
 
 
 // device type definition
-<<<<<<< HEAD
-extern const device_type FIXFREQ;
-
-#endif /* FIXFREQ_H */
-=======
 DECLARE_DEVICE_TYPE(FIXFREQ, fixedfreq_device)
 
 #endif // MAME_VIDEO_FIXFREQ_H
->>>>>>> upstream/master

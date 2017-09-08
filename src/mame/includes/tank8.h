@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-// license:???
-=======
 // license:BSD-3-Clause
->>>>>>> upstream/master
 // copyright-holders:Stefan Jokisch
 /*************************************************************************
 
@@ -11,10 +7,7 @@
 *************************************************************************/
 
 #include "sound/discrete.h"
-<<<<<<< HEAD
-=======
 #include "screen.h"
->>>>>>> upstream/master
 
 /* Discrete Sound Input Nodes */
 #define TANK8_CRASH_EN          NODE_01
@@ -60,19 +53,11 @@ public:
 	required_device<screen_device> m_screen;
 	required_device<palette_device> m_palette;
 
-<<<<<<< HEAD
-	required_shared_ptr<UINT8> m_video_ram;
-	required_shared_ptr<UINT8> m_pos_h_ram;
-	required_shared_ptr<UINT8> m_pos_v_ram;
-	required_shared_ptr<UINT8> m_pos_d_ram;
-	required_shared_ptr<UINT8> m_team;
-=======
 	required_shared_ptr<uint8_t> m_video_ram;
 	required_shared_ptr<uint8_t> m_pos_h_ram;
 	required_shared_ptr<uint8_t> m_pos_v_ram;
 	required_shared_ptr<uint8_t> m_pos_d_ram;
 	required_shared_ptr<uint8_t> m_team;
->>>>>>> upstream/master
 
 	int m_collision_index;
 	tilemap_t *m_tilemap;
@@ -95,21 +80,12 @@ public:
 	TILE_GET_INFO_MEMBER(get_tile_info);
 
 	DECLARE_DRIVER_INIT(decode);
-<<<<<<< HEAD
-	virtual void machine_reset();
-	virtual void video_start();
-	DECLARE_PALETTE_INIT(tank8);
-
-	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	void screen_eof(screen_device &screen, bool state);
-=======
 	virtual void machine_reset() override;
 	virtual void video_start() override;
 	DECLARE_PALETTE_INIT(tank8);
 
 	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	DECLARE_WRITE_LINE_MEMBER(screen_vblank);
->>>>>>> upstream/master
 	void set_pens();
 	inline int get_x_pos(int n);
 	inline int get_y_pos(int n);
@@ -118,11 +94,7 @@ public:
 	void set_collision(int index);
 
 protected:
-<<<<<<< HEAD
-	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
-=======
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
->>>>>>> upstream/master
 };
 
 /*----------- defined in audio/tank8.c -----------*/

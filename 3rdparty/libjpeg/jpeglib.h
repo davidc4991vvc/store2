@@ -2,11 +2,7 @@
  * jpeglib.h
  *
  * Copyright (C) 1991-1998, Thomas G. Lane.
-<<<<<<< HEAD
- * Modified 2002-2010 by Guido Vollbeding.
-=======
  * Modified 2002-2015 by Guido Vollbeding.
->>>>>>> upstream/master
  * This file is part of the Independent JPEG Group's software.
  * For conditions of distribution and use, see the accompanying README file.
  *
@@ -15,16 +11,6 @@
  * and perhaps jerror.h if they want to know the exact error codes.
  */
 
-<<<<<<< HEAD
-#ifdef USE_SYSTEM_JPEGLIB
-#ifndef XMD_H
-#define XMD_H
-#endif
-#include <jpeglib.h>
-#else
-
-=======
->>>>>>> upstream/master
 #ifndef JPEGLIB_H
 #define JPEGLIB_H
 
@@ -48,22 +34,6 @@ extern "C" {
 #endif
 
 /* Version IDs for the JPEG library.
-<<<<<<< HEAD
- * Might be useful for tests like "#if JPEG_LIB_VERSION >= 80".
- */
-
-#define JPEG_LIB_VERSION        80	/* Compatibility version 8.0 */
-#define JPEG_LIB_VERSION_MAJOR  8
-#define JPEG_LIB_VERSION_MINOR  3
-
-
-/* Various constants determining the sizes of things.
- * All of these are specified by the JPEG standard, so don't change them
- * if you want to be compatible.
- */
-
-#define DCTSIZE		    8	/* The basic DCT block is 8x8 samples */
-=======
  * Might be useful for tests like "#if JPEG_LIB_VERSION >= 90".
  */
 
@@ -78,7 +48,6 @@ extern "C" {
  */
 
 #define DCTSIZE		    8	/* The basic DCT block is 8x8 coefficients */
->>>>>>> upstream/master
 #define DCTSIZE2	    64	/* DCTSIZE squared; # of elements in a block */
 #define NUM_QUANT_TBLS      4	/* Quantization tables are numbered 0..3 */
 #define NUM_HUFF_TBLS       4	/* Huffman tables are numbered 0..3 */
@@ -188,23 +157,12 @@ typedef struct {
   /* The downsampled dimensions are the component's actual, unpadded number
    * of samples at the main buffer (preprocessing/compression interface);
    * DCT scaling is included, so
-<<<<<<< HEAD
-   * downsampled_width = ceil(image_width * Hi/Hmax * DCT_h_scaled_size/DCTSIZE)
-=======
    * downsampled_width =
    *   ceil(image_width * Hi/Hmax * DCT_h_scaled_size/block_size)
->>>>>>> upstream/master
    * and similarly for height.
    */
   JDIMENSION downsampled_width;	 /* actual width in samples */
   JDIMENSION downsampled_height; /* actual height in samples */
-<<<<<<< HEAD
-  /* This flag is used only for decompression.  In cases where some of the
-   * components will be ignored (eg grayscale output from YCbCr image),
-   * we can skip most computations for the unused components.
-   */
-  boolean component_needed;	/* do we need the value of this component? */
-=======
   /* For decompression, in cases where some of the components will be
    * ignored (eg grayscale output from YCbCr image), we can skip most
    * computations for the unused components.
@@ -214,7 +172,6 @@ typedef struct {
    * in initial_setup, and then adapted in color conversion setup.
    */
   boolean component_needed;
->>>>>>> upstream/master
 
   /* These values are computed before starting a scan of the component. */
   /* The decompressor output side may not use these variables. */
@@ -263,14 +220,6 @@ struct jpeg_marker_struct {
 typedef enum {
 	JCS_UNKNOWN,		/* error/unspecified */
 	JCS_GRAYSCALE,		/* monochrome */
-<<<<<<< HEAD
-	JCS_RGB,		/* red/green/blue */
-	JCS_YCbCr,		/* Y/Cb/Cr (also known as YUV) */
-	JCS_CMYK,		/* C/M/Y/K */
-	JCS_YCCK		/* Y/Cb/Cr/K */
-} J_COLOR_SPACE;
-
-=======
 	JCS_RGB,		/* red/green/blue, standard RGB (sRGB) */
 	JCS_YCbCr,		/* Y/Cb/Cr (also known as YUV), standard YCC */
 	JCS_CMYK,		/* C/M/Y/K */
@@ -286,7 +235,6 @@ typedef enum {
 	JCT_SUBTRACT_GREEN = 1
 } J_COLOR_TRANSFORM;
 
->>>>>>> upstream/master
 /* DCT/IDCT algorithm options. */
 
 typedef enum {
@@ -435,14 +383,10 @@ struct jpeg_compress_struct {
   UINT16 X_density;		/* Horizontal pixel density */
   UINT16 Y_density;		/* Vertical pixel density */
   boolean write_Adobe_marker;	/* should an Adobe marker be written? */
-<<<<<<< HEAD
-  
-=======
 
   J_COLOR_TRANSFORM color_transform;
   /* Color transform identifier, writes LSE marker if nonzero */
 
->>>>>>> upstream/master
   /* State variable: index of next scanline to be written to
    * jpeg_write_scanlines().  Application may use this to control its
    * processing loop, e.g., "while (next_scanline < image_height)".
@@ -662,12 +606,9 @@ struct jpeg_decompress_struct {
   boolean saw_Adobe_marker;	/* TRUE iff an Adobe APP14 marker was found */
   UINT8 Adobe_transform;	/* Color transform code from Adobe marker */
 
-<<<<<<< HEAD
-=======
   J_COLOR_TRANSFORM color_transform;
   /* Color transform identifier derived from LSE marker, otherwise zero */
 
->>>>>>> upstream/master
   boolean CCIR601_sampling;	/* TRUE=first samples are cosited */
 
   /* Aside from the specific data retained from APPn markers known to the
@@ -760,11 +701,7 @@ struct jpeg_decompress_struct {
 
 struct jpeg_error_mgr {
   /* Error exit handler: does not return to caller */
-<<<<<<< HEAD
-  JMETHOD(void, error_exit, (j_common_ptr cinfo));
-=======
   JMETHOD(noreturn_t, error_exit, (j_common_ptr cinfo));
->>>>>>> upstream/master
   /* Conditionally emit a trace or warning message */
   JMETHOD(void, emit_message, (j_common_ptr cinfo, int msg_level));
   /* Routine that actually outputs a trace or error message */
@@ -1042,11 +979,7 @@ EXTERN(void) jpeg_mem_dest JPP((j_compress_ptr cinfo,
 			       unsigned char ** outbuffer,
 			       unsigned long * outsize));
 EXTERN(void) jpeg_mem_src JPP((j_decompress_ptr cinfo,
-<<<<<<< HEAD
-			      unsigned char * inbuffer,
-=======
 			      const unsigned char * inbuffer,
->>>>>>> upstream/master
 			      unsigned long insize));
 
 /* Default parameter setup for compression */
@@ -1245,7 +1178,3 @@ struct jpeg_color_quantizer { long dummy; };
 #endif
 
 #endif /* JPEGLIB_H */
-<<<<<<< HEAD
-#endif /* USE_SYSTEM_JPEGLIB */
-=======
->>>>>>> upstream/master

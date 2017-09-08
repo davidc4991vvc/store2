@@ -15,12 +15,6 @@
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/z80/z80.h"
-#include "cpu/m6809/m6809.h"
-#include "includes/konamipt.h"
-#include "includes/bottom9.h"
-=======
 #include "includes/bottom9.h"
 #include "includes/konamipt.h"
 
@@ -30,7 +24,6 @@
 #include "machine/watchdog.h"
 #include "speaker.h"
 
->>>>>>> upstream/master
 
 INTERRUPT_GEN_MEMBER(bottom9_state::bottom9_interrupt)
 {
@@ -120,13 +113,8 @@ WRITE8_MEMBER(bottom9_state::bankswitch_w)
 WRITE8_MEMBER(bottom9_state::bottom9_1f90_w)
 {
 	/* bits 0/1 = coin counters */
-<<<<<<< HEAD
-	coin_counter_w(machine(), 0, data & 0x01);
-	coin_counter_w(machine(), 1, data & 0x02);
-=======
 	machine().bookkeeping().coin_counter_w(0, data & 0x01);
 	machine().bookkeeping().coin_counter_w(1, data & 0x02);
->>>>>>> upstream/master
 
 	/* bit 2 = enable char ROM reading through the video RAM */
 	m_k052109->set_rmrd_line((data & 0x04) ? ASSERT_LINE : CLEAR_LINE);
@@ -175,13 +163,8 @@ static ADDRESS_MAP_START( main_map, AS_PROGRAM, 8, bottom9_state )
 	AM_RANGE(0x0000, 0x07ff) AM_READWRITE(bottom9_bankedram1_r, bottom9_bankedram1_w)
 	AM_RANGE(0x1f80, 0x1f80) AM_WRITE(bankswitch_w)
 	AM_RANGE(0x1f90, 0x1f90) AM_WRITE(bottom9_1f90_w)
-<<<<<<< HEAD
-	AM_RANGE(0x1fa0, 0x1fa0) AM_WRITE(watchdog_reset_w)
-	AM_RANGE(0x1fb0, 0x1fb0) AM_WRITE(soundlatch_byte_w)
-=======
 	AM_RANGE(0x1fa0, 0x1fa0) AM_DEVWRITE("watchdog", watchdog_timer_device, reset_w)
 	AM_RANGE(0x1fb0, 0x1fb0) AM_DEVWRITE("soundlatch", generic_latch_8_device, write)
->>>>>>> upstream/master
 	AM_RANGE(0x1fc0, 0x1fc0) AM_WRITE(bottom9_sh_irqtrigger_w)
 	AM_RANGE(0x1fd0, 0x1fd0) AM_READ_PORT("SYSTEM")
 	AM_RANGE(0x1fd1, 0x1fd1) AM_READ_PORT("P1")
@@ -202,11 +185,7 @@ static ADDRESS_MAP_START( audio_map, AS_PROGRAM, 8, bottom9_state )
 	AM_RANGE(0x9000, 0x9000) AM_WRITE(sound_bank_w)
 	AM_RANGE(0xa000, 0xa00d) AM_DEVREADWRITE("k007232_1", k007232_device, read, write)
 	AM_RANGE(0xb000, 0xb00d) AM_DEVREADWRITE("k007232_2", k007232_device, read, write)
-<<<<<<< HEAD
-	AM_RANGE(0xd000, 0xd000) AM_READ(soundlatch_byte_r)
-=======
 	AM_RANGE(0xd000, 0xd000) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
->>>>>>> upstream/master
 	AM_RANGE(0xf000, 0xf000) AM_WRITE(nmi_enable_w)
 ADDRESS_MAP_END
 
@@ -301,11 +280,7 @@ WRITE8_MEMBER(bottom9_state::volume_callback1)
 
 void bottom9_state::machine_start()
 {
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("maincpu")->base();
-=======
 	uint8_t *ROM = memregion("maincpu")->base();
->>>>>>> upstream/master
 
 	membank("bank1")->configure_entries(0, 12, &ROM[0x10000], 0x2000);
 
@@ -323,11 +298,7 @@ void bottom9_state::machine_reset()
 	m_nmienable = 0;
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( bottom9, bottom9_state )
-=======
 static MACHINE_CONFIG_START( bottom9 )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6809, 2000000) /* ? */
@@ -338,11 +309,8 @@ static MACHINE_CONFIG_START( bottom9 )
 	MCFG_CPU_PROGRAM_MAP(audio_map)
 	MCFG_CPU_PERIODIC_INT_DRIVER(bottom9_state, bottom9_sound_interrupt, 8*60)  /* irq is triggered by the main CPU */
 
-<<<<<<< HEAD
-=======
 	MCFG_WATCHDOG_ADD("watchdog")
 
->>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE(60)
@@ -372,11 +340,8 @@ static MACHINE_CONFIG_START( bottom9 )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 
->>>>>>> upstream/master
 	MCFG_SOUND_ADD("k007232_1", K007232, 3579545)
 	MCFG_K007232_PORT_WRITE_HANDLER(WRITE8(bottom9_state, volume_callback0))
 	MCFG_SOUND_ROUTE(0, "mono", 0.40)
@@ -568,12 +533,6 @@ ROM_END
 
 
 
-<<<<<<< HEAD
-GAME( 1989, bottom9,  0,       bottom9, bottom9, driver_device,  0, ROT0, "Konami", "Bottom of the Ninth (version T)", MACHINE_SUPPORTS_SAVE )
-GAME( 1989, bottom9n, bottom9, bottom9, bottom9, driver_device,  0, ROT0, "Konami", "Bottom of the Ninth (version N)", MACHINE_SUPPORTS_SAVE )
-GAME( 1989, mstadium, bottom9, bottom9, mstadium, driver_device, 0, ROT0, "Konami", "Main Stadium (Japan)", MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1989, bottom9,  0,       bottom9, bottom9,  bottom9_state, 0, ROT0, "Konami", "Bottom of the Ninth (version T)", MACHINE_SUPPORTS_SAVE )
 GAME( 1989, bottom9n, bottom9, bottom9, bottom9,  bottom9_state, 0, ROT0, "Konami", "Bottom of the Ninth (version N)", MACHINE_SUPPORTS_SAVE )
 GAME( 1989, mstadium, bottom9, bottom9, mstadium, bottom9_state, 0, ROT0, "Konami", "Main Stadium (Japan)", MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

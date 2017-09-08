@@ -17,19 +17,6 @@ public:
 		m_gfxdecode(*this, "gfxdecode"),
 		m_palette(*this, "palette") { }
 
-<<<<<<< HEAD
-	UINT8 m_in0_b4;
-
-	/* memory pointers */
-	required_shared_ptr<UINT8> m_videoram;
-	required_shared_ptr<UINT8> m_spriteram;
-
-	/* video-related */
-	tilemap_t *m_bg_tilemap;
-	UINT8 m_scroll_lsb;
-	UINT8 m_scroll_msb;
-	UINT8 m_starfield_enabled;
-=======
 	uint8_t m_in0_b4;
 
 	/* memory pointers */
@@ -41,7 +28,6 @@ public:
 	uint8_t m_scroll_lsb;
 	uint8_t m_scroll_msb;
 	uint8_t m_starfield_enabled;
->>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(battlex_palette_w);
 	DECLARE_WRITE8_MEMBER(battlex_scroll_x_lsb_w);
 	DECLARE_WRITE8_MEMBER(battlex_scroll_x_msb_w);
@@ -51,26 +37,16 @@ public:
 	DECLARE_CUSTOM_INPUT_MEMBER(battlex_in0_b4_r);
 	DECLARE_DRIVER_INIT(battlex);
 	TILE_GET_INFO_MEMBER(get_bg_tile_info);
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void machine_reset();
-	virtual void video_start();
-	UINT32 screen_update_battlex(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
 	virtual void video_start() override;
 	uint32_t screen_update_battlex(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	INTERRUPT_GEN_MEMBER(battlex_interrupt);
 	void draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect );
 	required_device<cpu_device> m_maincpu;
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
-<<<<<<< HEAD
-=======
 
 	DECLARE_VIDEO_START(dodgeman);
 	TILE_GET_INFO_MEMBER(get_dodgeman_bg_tile_info);
->>>>>>> upstream/master
 };

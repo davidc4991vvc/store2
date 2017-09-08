@@ -1,24 +1,14 @@
 // license:BSD-3-Clause
 // copyright-holders:Nicola Salmoria
-<<<<<<< HEAD
-#ifndef __PC090OJ_H__
-#define __PC090OJ_H__
-=======
 #ifndef MAME_VIDEO_PC090OJ_H
 #define MAME_VIDEO_PC090OJ_H
 
 #pragma once
->>>>>>> upstream/master
 
 class pc090oj_device : public device_t
 {
 public:
-<<<<<<< HEAD
-	pc090oj_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-	~pc090oj_device() {}
-=======
 	pc090oj_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
->>>>>>> upstream/master
 
 	// static configuration
 	static void static_set_gfxdecode_tag(device_t &device, const char *tag);
@@ -35,23 +25,14 @@ public:
 	DECLARE_READ16_MEMBER( word_r );
 	DECLARE_WRITE16_MEMBER( word_w );
 
-<<<<<<< HEAD
-	void set_sprite_ctrl(UINT16 sprctrl);
-=======
 	void set_sprite_ctrl(uint16_t sprctrl);
->>>>>>> upstream/master
 	void eof_callback();
 	void draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect, bitmap_ind8 &priority_bitmap, int pri_type);
 
 protected:
 	// device-level overrides
-<<<<<<< HEAD
-	virtual void device_start();
-	virtual void device_reset();
-=======
 	virtual void device_start() override;
 	virtual void device_reset() override;
->>>>>>> upstream/master
 
 private:
 	/* NB: pc090oj_ctrl is the internal register controlling flipping
@@ -64,19 +45,11 @@ private:
 
 */
 
-<<<<<<< HEAD
-	UINT16     m_ctrl;
-	UINT16     m_sprite_ctrl;
-
-	UINT16 *   m_ram;
-	UINT16 *   m_ram_buffered;
-=======
 	uint16_t     m_ctrl;
 	uint16_t     m_sprite_ctrl;
 
 	std::unique_ptr<uint16_t[]>  m_ram;
 	std::unique_ptr<uint16_t[]>  m_ram_buffered;
->>>>>>> upstream/master
 
 	int        m_gfxnum;
 	int        m_x_offset, m_y_offset;
@@ -86,11 +59,7 @@ private:
 	required_device<palette_device> m_palette;
 };
 
-<<<<<<< HEAD
-extern const device_type PC090OJ;
-=======
 DECLARE_DEVICE_TYPE(PC090OJ, pc090oj_device)
->>>>>>> upstream/master
 
 
 #define MCFG_PC090OJ_GFX_REGION(_region) \
@@ -108,8 +77,4 @@ DECLARE_DEVICE_TYPE(PC090OJ, pc090oj_device)
 #define MCFG_PC090OJ_PALETTE(_palette_tag) \
 	pc090oj_device::static_set_palette_tag(*device, "^" _palette_tag);
 
-<<<<<<< HEAD
-#endif
-=======
 #endif // MAME_VIDEO_PC090)J_H
->>>>>>> upstream/master

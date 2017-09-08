@@ -1,9 +1,5 @@
 // license:BSD-3-Clause
-<<<<<<< HEAD
-// copyright-holders:Angelo Salese, ElSemi
-=======
 // copyright-holders:Angelo Salese, ElSemi, Ville Linde
->>>>>>> upstream/master
 /*****************************************************************************
  *
  * MB86235 "TGPx4" (c) Fujitsu
@@ -16,72 +12,6 @@
  *****************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "debugger.h"
-#include "mb86235.h"
-
-
-const device_type MB86235 = &device_creator<mb86235_cpu_device>;
-
-
-
-
-
-#define mb86235_readop(A) m_program->read_dword(A)
-#define mb86235_readmem(A) m_program->read_dword(A)
-#define mb86235_writemem(A,B) m_program->write_dword((A),B)
-
-
-/***********************************
- *  illegal opcodes
- ***********************************/
-void mb86235_cpu_device::mb86235_illegal()
-{
-	//logerror("mb86235 illegal opcode at 0x%04x\n", m_pc);
-	m_icount -= 1;
-}
-
-/* Execute cycles */
-void mb86235_cpu_device::execute_run()
-{
-	UINT32 opcode;
-
-	do
-	{
-		debugger_instruction_hook(this, m_pc);
-
-		opcode = mb86235_readop(m_pc);
-		//m_pc++;
-
-		switch( opcode )
-		{
-			default:
-				mb86235_illegal();
-				break;
-		}
-
-	} while( m_icount > 0 );
-}
-
-
-void mb86235_cpu_device::device_start()
-{
-	m_program = &space(AS_PROGRAM);
-
-	save_item(NAME(m_pc));
-	save_item(NAME(m_flags));
-
-	// Register state for debugger
-	//state_add( CP1610_R0, "PC", m_pc ).formatstr("%02X");
-	state_add( STATE_GENPC, "curpc", m_pc ).noshow();
-	state_add( STATE_GENFLAGS, "GENFLAGS", m_flags ).noshow();
-
-	m_icountptr = &m_icount;
-}
-
-void mb86235_cpu_device::device_reset()
-{
-=======
 #include "mb86235.h"
 #include "mb86235fe.h"
 
@@ -249,7 +179,6 @@ void mb86235_device::device_reset()
 	flush_cache();
 
 	m_core->pc = 0;
->>>>>>> upstream/master
 }
 
 #if 0
@@ -275,16 +204,6 @@ void mb86235_cpu_device::execute_set_input(int irqline, int state)
 }
 #endif
 
-<<<<<<< HEAD
-mb86235_cpu_device::mb86235_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: cpu_device(mconfig, MB86235, "MB86235", tag, owner, clock, "mb86235", __FILE__)
-	, m_program_config("program", ENDIANNESS_LITTLE, 32, 32, -2)
-{
-}
-
-
-void mb86235_cpu_device::state_string_export(const device_state_entry &entry, std::string &str)
-=======
 mb86235_device::mb86235_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: cpu_device(mconfig, MB86235, tag, owner, clock)
 	, m_program_config("program", ENDIANNESS_LITTLE, 64, 32, -3)
@@ -306,30 +225,15 @@ device_memory_interface::space_config_vector mb86235_device::memory_space_config
 }
 
 void mb86235_device::state_string_export(const device_state_entry &entry, std::string &str) const
->>>>>>> upstream/master
 {
 	switch (entry.index())
 	{
 		case STATE_GENFLAGS:
-<<<<<<< HEAD
-			strprintf(str, "%c%c%c%c",
-				m_flags & 0x80 ? 'S':'.',
-				m_flags & 0x40 ? 'Z':'.',
-				m_flags & 0x20 ? 'V':'.',
-				m_flags & 0x10 ? 'C':'.');
-=======
 			str = string_format("?");
->>>>>>> upstream/master
 			break;
 	}
 }
 
-<<<<<<< HEAD
-offs_t mb86235_cpu_device::disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options)
-{
-	extern CPU_DISASSEMBLE( mb86235 );
-	return CPU_DISASSEMBLE_NAME(mb86235)(this, buffer, pc, oprom, opram, options);
-=======
 offs_t mb86235_device::disasm_disassemble(std::ostream &stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, uint32_t options)
 {
 	extern CPU_DISASSEMBLE( mb86235 );
@@ -390,5 +294,4 @@ bool mb86235_device::is_fifoout0_empty()
 #else
 	return false;
 #endif
->>>>>>> upstream/master
 }

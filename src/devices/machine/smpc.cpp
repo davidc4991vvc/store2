@@ -149,12 +149,6 @@ TODO:
 */
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "coreutil.h"
-#include "includes/stv.h"
-#include "machine/smpc.h"
-#include "machine/eepromser.h"
-=======
 #include "machine/smpc.h"
 #include "includes/saturn.h" // FIXME: this is a dependency from devices on MAME
 
@@ -163,7 +157,6 @@ TODO:
 
 #include "coreutil.h"
 
->>>>>>> upstream/master
 
 #define LOG_SMPC 0
 #define LOG_PAD_CMD 0
@@ -225,17 +218,6 @@ TIMER_CALLBACK_MEMBER( saturn_state::smpc_cd_enable )
 void saturn_state::smpc_system_reset()
 {
 	/*Only backup ram and SMPC ram are retained after that this command is issued.*/
-<<<<<<< HEAD
-	memset(m_scu_regs ,0x00,0x000100);
-	memset(m_scsp_regs,0x00,0x001000);
-	memset(m_sound_ram,0x00,0x080000);
-	memset(m_workram_h,0x00,0x100000);
-	memset(m_workram_l,0x00,0x100000);
-	memset(m_vdp2_regs,0x00,0x040000);
-	memset(m_vdp2_vram,0x00,0x100000);
-	memset(m_vdp2_cram,0x00,0x080000);
-	memset(m_vdp1_vram,0x00,0x100000);
-=======
 	memset(m_scu_regs.get() ,0x00,0x000100);
 	memset(m_scsp_regs.get(),0x00,0x001000);
 	memset(m_sound_ram,0x00,0x080000);
@@ -245,7 +227,6 @@ void saturn_state::smpc_system_reset()
 	memset(m_vdp2_vram.get(),0x00,0x100000);
 	memset(m_vdp2_cram.get(),0x00,0x080000);
 	memset(m_vdp1_vram.get(),0x00,0x100000);
->>>>>>> upstream/master
 	//A-Bus
 
 	m_maincpu->set_input_line(INPUT_LINE_RESET, PULSE_LINE);
@@ -253,11 +234,7 @@ void saturn_state::smpc_system_reset()
 
 TIMER_CALLBACK_MEMBER( saturn_state::smpc_change_clock )
 {
-<<<<<<< HEAD
-	UINT32 xtal;
-=======
 	uint32_t xtal;
->>>>>>> upstream/master
 
 	if(LOG_SMPC) printf ("Clock change execute at (%d %d)\n",machine().first_screen()->hpos(),machine().first_screen()->vpos());
 
@@ -371,10 +348,6 @@ TIMER_CALLBACK_MEMBER( saturn_state::stv_smpc_intback )
 	}
 }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> upstream/master
 /*
     [0] port status:
         0x04 Sega-tap
@@ -386,178 +359,6 @@ TIMER_CALLBACK_MEMBER( saturn_state::stv_smpc_intback )
         0x02 digital pad
         0x25 (tested by Game Basic?)
         0x34 keyboard
-<<<<<<< HEAD
-*/
-
-void saturn_state::smpc_digital_pad(UINT8 pad_num, UINT8 offset)
-{
-	static const char *const padnames[] = { "JOY1", "JOY2" };
-	UINT16 pad_data;
-
-	pad_data = ioport(padnames[pad_num])->read();
-	m_smpc.OREG[0+pad_num*offset] = 0xf1;
-	m_smpc.OREG[1+pad_num*offset] = 0x02;
-	m_smpc.OREG[2+pad_num*offset] = pad_data>>8;
-	m_smpc.OREG[3+pad_num*offset] = pad_data & 0xff;
-}
-
-void saturn_state::smpc_analog_pad( UINT8 pad_num, UINT8 offset, UINT8 id)
-{
-	static const char *const padnames[] = { "AN_JOY1", "AN_JOY2" };
-	static const char *const annames[2][3] = { { "AN_X1", "AN_Y1", "AN_Z1" },
-												{ "AN_X2", "AN_Y2", "AN_Z2" }};
-	UINT16 pad_data;
-
-	pad_data = ioport(padnames[pad_num])->read();
-	m_smpc.OREG[0+pad_num*offset] = 0xf1;
-	m_smpc.OREG[1+pad_num*offset] = id;
-	m_smpc.OREG[2+pad_num*offset] = pad_data>>8;
-	m_smpc.OREG[3+pad_num*offset] = pad_data & 0xff;
-	m_smpc.OREG[4+pad_num*offset] = ioport(annames[pad_num][0])->read();
-	if(id == 0x15)
-	{
-		m_smpc.OREG[5+pad_num*offset] = ioport(annames[pad_num][1])->read();
-		m_smpc.OREG[6+pad_num*offset] = ioport(annames[pad_num][2])->read();
-	}
-}
-
-void saturn_state::smpc_keyboard(UINT8 pad_num, UINT8 offset)
-{
-	UINT16 game_key;
-
-	game_key = 0xffff;
-
-	game_key ^= ((ioport("KEYS_1")->read() & 0x80) << 8); // right
-	game_key ^= ((ioport("KEYS_1")->read() & 0x40) << 8); // left
-	game_key ^= ((ioport("KEYS_1")->read() & 0x20) << 8); // down
-	game_key ^= ((ioport("KEYS_1")->read() & 0x10) << 8); // up
-	game_key ^= ((ioport("KEYF")->read() & 0x80) << 4); // ESC -> START
-	game_key ^= ((ioport("KEY3")->read() & 0x04) << 8); // Z / A trigger
-	game_key ^= ((ioport("KEY4")->read() & 0x02) << 8); // C / C trigger
-	game_key ^= ((ioport("KEY6")->read() & 0x04) << 6); // X / B trigger
-	game_key ^= ((ioport("KEY2")->read() & 0x20) << 2); // Q / R trigger
-	game_key ^= ((ioport("KEY3")->read() & 0x10) << 2); // A / X trigger
-	game_key ^= ((ioport("KEY3")->read() & 0x08) << 2); // S / Y trigger
-	game_key ^= ((ioport("KEY4")->read() & 0x08) << 1); // D / Z trigger
-	game_key ^= ((ioport("KEY4")->read() & 0x10) >> 1); // E / L trigger
-
-	m_smpc.OREG[0+pad_num*offset] = 0xf1;
-	m_smpc.OREG[1+pad_num*offset] = 0x34;
-	m_smpc.OREG[2+pad_num*offset] = game_key>>8; // game buttons, TODO
-	m_smpc.OREG[3+pad_num*offset] = game_key & 0xff;
-	/*
-	    Keyboard Status hook-up
-	    TODO: how shift key actually works? EGWord uses it in order to switch between hiragana and katakana modes.
-	    x--- ---- 0
-	    -x-- ---- caps lock
-	    --x- ---- num lock
-	    ---x ---- scroll lock
-	    ---- x--- data ok
-	    ---- -x-- 1
-	    ---- --x- 1
-	    ---- ---x Break key
-	*/
-	m_smpc.OREG[4+pad_num*offset] = m_keyb.status | 6;
-	if(m_keyb.prev_data != m_keyb.data)
-	{
-		m_smpc.OREG[5+pad_num*offset] = m_keyb.data;
-		m_keyb.repeat_count = 0;
-		m_keyb.prev_data = m_keyb.data;
-	}
-	else
-	{
-		/* Very crude repeat support */
-		m_keyb.repeat_count ++;
-		m_keyb.repeat_count = m_keyb.repeat_count > 32 ? 32 : m_keyb.repeat_count;
-		m_smpc.OREG[5+pad_num*offset] = (m_keyb.repeat_count == 32) ? m_keyb.data : 0;
-	}
-}
-
-void saturn_state::smpc_mouse(UINT8 pad_num, UINT8 offset, UINT8 id)
-{
-	static const char *const mousenames[2][3] = { { "MOUSEB1", "MOUSEX1", "MOUSEY1" },
-													{ "MOUSEB2", "MOUSEX2", "MOUSEY2" }};
-	UINT8 mouse_ctrl;
-	INT16 mouse_x, mouse_y;
-
-	mouse_ctrl = ioport(mousenames[pad_num][0])->read();
-	mouse_x = ioport(mousenames[pad_num][1])->read();
-	mouse_y = ioport(mousenames[pad_num][2])->read();
-
-	if(mouse_x < 0)
-		mouse_ctrl |= 0x10;
-
-	if(mouse_y < 0)
-		mouse_ctrl |= 0x20;
-
-	if((mouse_x & 0xff00) != 0xff00 && (mouse_x & 0xff00) != 0x0000)
-		mouse_ctrl |= 0x40;
-
-	if((mouse_y & 0xff00) != 0xff00 && (mouse_y & 0xff00) != 0x0000)
-		mouse_ctrl |= 0x80;
-
-	m_smpc.OREG[0+pad_num*offset] = 0xf1;
-	m_smpc.OREG[1+pad_num*offset] = id; // 0x23 / 0xe3
-	m_smpc.OREG[2+pad_num*offset] = mouse_ctrl;
-	m_smpc.OREG[3+pad_num*offset] = mouse_x & 0xff;
-	m_smpc.OREG[4+pad_num*offset] = mouse_y & 0xff;
-}
-
-/* TODO: is there ANY game on which the MD pad works? */
-void saturn_state::smpc_md_pad(UINT8 pad_num, UINT8 offset, UINT8 id)
-{
-	static const char *const padnames[] = { "MD_JOY1", "MD_JOY2" };
-	UINT16 pad_data;
-
-	pad_data = ioport(padnames[pad_num])->read();
-	m_smpc.OREG[0+pad_num*offset] = 0xf1;
-	m_smpc.OREG[1+pad_num*offset] = id;
-	m_smpc.OREG[2+pad_num*offset] = pad_data>>8;
-	if(id == 0xe2) // MD 6 Button PAD
-		m_smpc.OREG[3+pad_num*offset] = pad_data & 0xff;
-}
-
-void saturn_state::smpc_unconnected(UINT8 pad_num, UINT8 offset)
-{
-	m_smpc.OREG[0+pad_num*offset] = 0xf0;
-}
-
-TIMER_CALLBACK_MEMBER( saturn_state::intback_peripheral )
-{
-	int pad_num;
-	static const UINT8 peri_id[10] = { 0x02, 0x13, 0x15, 0x23, 0x23, 0x34, 0xe1, 0xe2, 0xe3, 0xff };
-	UINT8 read_id[2];
-	UINT8 offset;
-
-//  if (LOG_SMPC) logerror("SMPC: providing PAD data for intback, pad %d\n", intback_stage-2);
-
-	read_id[0] = (ioport("INPUT_TYPE")->read()) & 0x0f;
-	read_id[1] = (ioport("INPUT_TYPE")->read()) >> 4;
-
-	/* doesn't work? */
-	//pad_num = m_smpc.intback_stage - 1;
-
-	if(LOG_PAD_CMD) printf("%d %d %d\n",m_smpc.intback_stage - 1,machine().first_screen()->vpos(),(int)machine().first_screen()->frame_number());
-
-	offset = 0;
-
-	for(pad_num=0;pad_num<2;pad_num++)
-	{
-		switch(read_id[pad_num])
-		{
-			case 0: smpc_digital_pad(pad_num,offset); break;
-			case 1: smpc_analog_pad(pad_num,offset,peri_id[read_id[pad_num]]); break; /* Steering Wheel */
-			case 2: smpc_analog_pad(pad_num,offset,peri_id[read_id[pad_num]]); break; /* Analog Pad */
-			case 4: smpc_mouse(pad_num,offset,peri_id[read_id[pad_num]]); break; /* Pointing Device */
-			case 5: smpc_keyboard(pad_num,offset); break;
-			case 6: smpc_md_pad(pad_num,offset,peri_id[read_id[pad_num]]); break; /* MD 3B PAD */
-			case 7: smpc_md_pad(pad_num,offset,peri_id[read_id[pad_num]]); break; /* MD 6B PAD */
-			case 8: smpc_mouse(pad_num,offset,peri_id[read_id[pad_num]]); break; /* Saturn Mouse */
-			case 9: smpc_unconnected(pad_num,offset); break;
-		}
-
-		offset += (peri_id[read_id[pad_num]] & 0xf) + 2; /* offset for port 2 */
-=======
 
  Lower 4 bits of the port status tell the number of controllers to check for the port
  Lower 4 bits of the peripheral ID tell the number of registers used by each controller
@@ -611,7 +412,6 @@ TIMER_CALLBACK_MEMBER( saturn_state::intback_peripheral )
 		for (int j = 0; j < (id & 0xf); j++)
 			m_smpc.OREG[reg_offset++] = m_ctrl2->read_ctrl(j + ctrl2_offset);
 		ctrl2_offset += (id & 0xf);
->>>>>>> upstream/master
 	}
 
 	if (m_smpc.intback_stage == 2)
@@ -742,11 +542,7 @@ TIMER_CALLBACK_MEMBER( saturn_state::smpc_audio_reset_line_pulse )
  *
  *******************************************/
 
-<<<<<<< HEAD
-void saturn_state::smpc_comreg_exec(address_space &space, UINT8 data, UINT8 is_stv)
-=======
 void saturn_state::smpc_comreg_exec(address_space &space, uint8_t data, uint8_t is_stv)
->>>>>>> upstream/master
 {
 	switch (data)
 	{
@@ -994,45 +790,6 @@ WRITE8_MEMBER( saturn_state::stv_SMPC_w )
  *
  *******************************************/
 
-<<<<<<< HEAD
-UINT8 saturn_state::smpc_th_control_mode(UINT8 pad_n)
-{
-	int th;
-	const char *const padnames[] = { "JOY1", "JOY2" };
-	UINT8 res = 0;
-
-	th = (pad_n == 0) ? ((m_smpc.PDR1>>5) & 3) : ((m_smpc.PDR2>>5) & 3);
-
-	if (LOG_SMPC) printf("SMPC: SH-2 TH control mode, returning pad data %d for phase %d\n",pad_n+1, th);
-
-	switch(th)
-	{
-		/* TODO: 3D Lemmings bogusly enables TH Control mode, wants this to return the ID, needs HW tests.  */
-		case 3:
-			res = th<<6;
-			res |= 0x14;
-			res |= machine().root_device().ioport(padnames[pad_n])->read() & 8; // L
-			break;
-		case 2:
-			res = th<<6;
-			//  1 C B Right Left Down Up
-			//  WHP actually has a very specific code at 0x6015f30, doesn't like bits 0-1 active here ...
-			res|= (((machine().root_device().ioport(padnames[pad_n])->read()>>4)) & 0x30); // C & B
-			res|= (((machine().root_device().ioport(padnames[pad_n])->read()>>12)) & 0xc);
-			break;
-		case 1:
-			res = th<<6;
-			res |= 0x10;
-			res |= (machine().root_device().ioport(padnames[pad_n])->read()>>4) & 0xf; // R, X, Y, Z
-			break;
-		case 0:
-			res = th<<6;
-			//  0 Start A 0 0    Down Up
-			res|= (((machine().root_device().ioport(padnames[pad_n])->read()>>6)) & 0x30); // Start & A
-			res|= (((machine().root_device().ioport(padnames[pad_n])->read()>>12)) & 0x3);
-			//  ... and actually wants bits 2 - 3 active here.
-			res|= 0xc;
-=======
 uint8_t saturn_state::smpc_th_control_mode(uint8_t pad_n)
 {
 	uint8_t res = 0;
@@ -1073,26 +830,12 @@ uint8_t saturn_state::smpc_th_control_mode(uint8_t pad_n)
 			res |= ((ctrl_read >> 12) & 0x03);
 			//  ... and it actually wants bits 2 - 3 active here.
 			res |= 0xc;
->>>>>>> upstream/master
 			break;
 	}
 
 	return res;
 }
 
-<<<<<<< HEAD
-UINT8 saturn_state::smpc_direct_mode(UINT8 pad_n)
-{
-	int hshake;
-	const int shift_bit[4] = { 4, 12, 8, 0 };
-	const char *const padnames[] = { "JOY1", "JOY2" };
-
-	hshake = (pad_n == 0) ? ((m_smpc.PDR1>>5) & 3) : ((m_smpc.PDR2>>5) & 3);
-
-	if (LOG_SMPC) logerror("SMPC: SH-2 direct mode, returning data for phase %d\n", hshake);
-
-	return 0x80 | 0x10 | ((machine().root_device().ioport(padnames[pad_n])->read()>>shift_bit[hshake]) & 0xf);
-=======
 uint8_t saturn_state::smpc_direct_mode(uint8_t pad_n)
 {
 	int hshake = (pad_n == 0) ? ((m_smpc.PDR1 >> 5) & 3) : ((m_smpc.PDR2 >> 5) & 3);
@@ -1107,16 +850,11 @@ uint8_t saturn_state::smpc_direct_mode(uint8_t pad_n)
 	if (LOG_SMPC) logerror("SMPC: SH-2 direct mode, returning data for phase %d\n", hshake);
 
 	return 0x80 | 0x10 | ((ctrl_read >> shift_bit[hshake]) & 0xf);
->>>>>>> upstream/master
 }
 
 READ8_MEMBER( saturn_state::saturn_SMPC_r )
 {
-<<<<<<< HEAD
-	UINT8 return_data = 0;
-=======
 	uint8_t return_data = 0;
->>>>>>> upstream/master
 
 	if (!(offset & 1)) // avoid reading to even bytes (TODO: is it 0s or 1s?)
 		return 0x00;
@@ -1137,15 +875,9 @@ READ8_MEMBER( saturn_state::saturn_SMPC_r )
 	{
 		if ((m_smpc.IOSEL1 && offset == 0x75) || (m_smpc.IOSEL2 && offset == 0x77))
 		{
-<<<<<<< HEAD
-			UINT8 cur_ddr;
-
-			if(machine().root_device().ioport("INPUT_TYPE")->read() && !(space.debugger_access()))
-=======
 			uint8_t cur_ddr;
 
 			if (((m_ctrl1 && m_ctrl1->read_id(0) != 0x02) || (m_ctrl2 && m_ctrl2->read_id(0) != 0x02)) && !(machine().side_effect_disabled()))
->>>>>>> upstream/master
 			{
 				popmessage("Warning: read with SH-2 direct mode with a non-pad device");
 				return 0;

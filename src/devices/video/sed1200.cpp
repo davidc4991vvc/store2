@@ -16,17 +16,10 @@
 #include "emu.h"
 #include "sed1200.h"
 
-<<<<<<< HEAD
-const device_type SED1200D0A = &device_creator<sed1200d0a_device>;
-const device_type SED1200F0A = &device_creator<sed1200f0a_device>;
-const device_type SED1200D0B = &device_creator<sed1200d0b_device>;
-const device_type SED1200F0B = &device_creator<sed1200f0b_device>;
-=======
 DEFINE_DEVICE_TYPE(SED1200D0A, sed1200d0a_device, "sed1200da", "Epson SED1200D-0A")
 DEFINE_DEVICE_TYPE(SED1200F0A, sed1200f0a_device, "sed1200fa", "Epson SED1200F-0A")
 DEFINE_DEVICE_TYPE(SED1200D0B, sed1200d0b_device, "sed1200db", "Epson SED1200D-0B")
 DEFINE_DEVICE_TYPE(SED1200F0B, sed1200f0b_device, "sed1200fb", "Epson SED1200F-0B")
->>>>>>> upstream/master
 
 ROM_START( sed1200x0a )
 	ROM_REGION( 0x800, "cgrom", 0 )
@@ -38,34 +31,6 @@ ROM_START( sed1200x0b )
 	ROM_LOAD( "sed1200-b.bin", 0x000, 0x800, CRC(d0741f51) SHA1(c8c856f1357286a2c8c806af81724a828345357e))
 ROM_END
 
-<<<<<<< HEAD
-sed1200_device::sed1200_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source) :
-	device_t(mconfig, type, name, tag, owner, clock, shortname, source), cursor_direction(false), cursor_blinking(false), cursor_full(false), cursor_on(false), display_on(false), cursor_address(0), cgram_address(0), cgrom(nullptr)
-{
-}
-
-sed1200d0a_device::sed1200d0a_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-	sed1200_device(mconfig, SED1200D0A, "sed1200d-0a", tag, owner, clock, "sed1200", __FILE__)
-{
-}
-
-sed1200f0a_device::sed1200f0a_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-	sed1200_device(mconfig, SED1200F0A, "sed1200f-0a", tag, owner, clock, "sed1200", __FILE__)
-{
-}
-
-sed1200d0b_device::sed1200d0b_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-	sed1200_device(mconfig, SED1200D0B, "sed1200d-0b", tag, owner, clock, "sed1200", __FILE__)
-{
-}
-
-sed1200f0b_device::sed1200f0b_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-	sed1200_device(mconfig, SED1200F0B, "sed1200f-0b", tag, owner, clock, "sed1200", __FILE__)
-{
-}
-
-const rom_entry *sed1200d0a_device::device_rom_region() const
-=======
 sed1200_device::sed1200_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock) :
 	device_t(mconfig, type, tag, owner, clock), cursor_direction(false), cursor_blinking(false), cursor_full(false), cursor_on(false), display_on(false), cursor_address(0), cgram_address(0), cgrom(nullptr)
 {
@@ -92,34 +57,21 @@ sed1200f0b_device::sed1200f0b_device(const machine_config &mconfig, const char *
 }
 
 const tiny_rom_entry *sed1200d0a_device::device_rom_region() const
->>>>>>> upstream/master
 {
 	return ROM_NAME(sed1200x0a);
 }
 
-<<<<<<< HEAD
-const rom_entry *sed1200f0a_device::device_rom_region() const
-=======
 const tiny_rom_entry *sed1200f0a_device::device_rom_region() const
->>>>>>> upstream/master
 {
 	return ROM_NAME(sed1200x0a);
 }
 
-<<<<<<< HEAD
-const rom_entry *sed1200d0b_device::device_rom_region() const
-=======
 const tiny_rom_entry *sed1200d0b_device::device_rom_region() const
->>>>>>> upstream/master
 {
 	return ROM_NAME(sed1200x0b);
 }
 
-<<<<<<< HEAD
-const rom_entry *sed1200f0b_device::device_rom_region() const
-=======
 const tiny_rom_entry *sed1200f0b_device::device_rom_region() const
->>>>>>> upstream/master
 {
 	return ROM_NAME(sed1200x0b);
 }
@@ -147,11 +99,7 @@ void sed1200_device::soft_reset()
 	cgram_address = 0x00;
 }
 
-<<<<<<< HEAD
-void sed1200_device::control_w(UINT8 data)
-=======
 void sed1200_device::control_w(uint8_t data)
->>>>>>> upstream/master
 {
 	switch(data) {
 	case 0x04: case 0x05:
@@ -192,20 +140,12 @@ void sed1200_device::control_w(uint8_t data)
 	}
 }
 
-<<<<<<< HEAD
-UINT8 sed1200_device::control_r()
-=======
 uint8_t sed1200_device::control_r()
->>>>>>> upstream/master
 {
 	return 0x00;
 }
 
-<<<<<<< HEAD
-void sed1200_device::data_w(UINT8 data)
-=======
 void sed1200_device::data_w(uint8_t data)
->>>>>>> upstream/master
 {
 	ddram[cursor_address] = data;
 	cursor_step();
@@ -226,22 +166,14 @@ void sed1200_device::cursor_step()
 	}
 }
 
-<<<<<<< HEAD
-const UINT8 *sed1200_device::render()
-=======
 const uint8_t *sed1200_device::render()
->>>>>>> upstream/master
 {
 	memset(render_buf, 0, 20*8);
 	if(!display_on)
 		return render_buf;
 
 	for(int i=0; i<20; i++) {
-<<<<<<< HEAD
-		UINT8 c = ddram[i];
-=======
 		uint8_t c = ddram[i];
->>>>>>> upstream/master
 		if(c < 4)
 			memcpy(render_buf + 8*i, cgram + 8*c, 8);
 		else if(cgrom)

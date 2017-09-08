@@ -14,26 +14,13 @@
 
 #include "emu.h"
 #include "pds30_procolor816.h"
-<<<<<<< HEAD
-=======
 #include "screen.h"
->>>>>>> upstream/master
 
 #define PROCOLOR816_SCREEN_NAME "cb264_screen"
 #define PROCOLOR816_ROM_REGION  "cb264_rom"
 
 #define VRAM_SIZE   (0x200000)  // 2 megs?
 
-<<<<<<< HEAD
-MACHINE_CONFIG_FRAGMENT( procolor816 )
-	MCFG_SCREEN_ADD( PROCOLOR816_SCREEN_NAME, RASTER)
-	MCFG_SCREEN_UPDATE_DEVICE(DEVICE_SELF, nubus_procolor816_device, screen_update)
-	MCFG_SCREEN_RAW_PARAMS(25175000, 800, 0, 640, 525, 0, 480)
-	MCFG_SCREEN_SIZE(1024,768)
-	MCFG_SCREEN_VISIBLE_AREA(0, 640-1, 0, 480-1)
-MACHINE_CONFIG_END
-=======
->>>>>>> upstream/master
 
 ROM_START( procolor816 )
 	ROM_REGION(0x8000, PROCOLOR816_ROM_REGION, 0)
@@ -44,20 +31,6 @@ ROM_END
 //  GLOBAL VARIABLES
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type PDS030_PROCOLOR816 = &device_creator<nubus_procolor816_device>;
-
-
-//-------------------------------------------------
-//  machine_config_additions - device-specific
-//  machine configurations
-//-------------------------------------------------
-
-machine_config_constructor nubus_procolor816_device::device_mconfig_additions() const
-{
-	return MACHINE_CONFIG_NAME( procolor816 );
-}
-=======
 DEFINE_DEVICE_TYPE(PDS030_PROCOLOR816, nubus_procolor816_device, "pd3_pc16", "Lapis ProColor Server 8*16")
 
 
@@ -72,17 +45,12 @@ MACHINE_CONFIG_MEMBER( nubus_procolor816_device::device_add_mconfig )
 	MCFG_SCREEN_SIZE(1024,768)
 	MCFG_SCREEN_VISIBLE_AREA(0, 640-1, 0, 480-1)
 MACHINE_CONFIG_END
->>>>>>> upstream/master
 
 //-------------------------------------------------
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const rom_entry *nubus_procolor816_device::device_rom_region() const
-=======
 const tiny_rom_entry *nubus_procolor816_device::device_rom_region() const
->>>>>>> upstream/master
 {
 	return ROM_NAME( procolor816 );
 }
@@ -95,23 +63,6 @@ const tiny_rom_entry *nubus_procolor816_device::device_rom_region() const
 //  nubus_procolor816_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-nubus_procolor816_device::nubus_procolor816_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-		device_t(mconfig, PDS030_PROCOLOR816, "Lapis ProColor Server 8*16", tag, owner, clock, "pd3_pc16", __FILE__),
-		device_video_interface(mconfig, *this),
-		device_nubus_card_interface(mconfig, *this), m_vram32(nullptr), m_mode(0), m_vbl_disable(0), m_toggle(0), m_count(0), m_clutoffs(0), m_timer(nullptr)
-{
-	m_assembled_tag = std::string(tag).append(":").append(PROCOLOR816_SCREEN_NAME);
-	m_screen_tag = m_assembled_tag.c_str();
-}
-
-nubus_procolor816_device::nubus_procolor816_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source) :
-		device_t(mconfig, type, name, tag, owner, clock, shortname, source),
-		device_video_interface(mconfig, *this),
-		device_nubus_card_interface(mconfig, *this), m_vram32(nullptr), m_mode(0), m_vbl_disable(0), m_toggle(0), m_count(0), m_clutoffs(0), m_timer(nullptr)
-{
-	m_assembled_tag = std::string(tag).append(":").append(PROCOLOR816_SCREEN_NAME);
-=======
 nubus_procolor816_device::nubus_procolor816_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	nubus_procolor816_device(mconfig, PDS030_PROCOLOR816, tag, owner, clock)
 {
@@ -124,7 +75,6 @@ nubus_procolor816_device::nubus_procolor816_device(const machine_config &mconfig
 	m_vram32(nullptr), m_mode(0), m_vbl_disable(0), m_toggle(0), m_count(0), m_clutoffs(0), m_timer(nullptr),
 	m_assembled_tag(util::string_format("%s:%s", tag, PROCOLOR816_SCREEN_NAME))
 {
->>>>>>> upstream/master
 	m_screen_tag = m_assembled_tag.c_str();
 }
 
@@ -134,11 +84,7 @@ nubus_procolor816_device::nubus_procolor816_device(const machine_config &mconfig
 
 void nubus_procolor816_device::device_start()
 {
-<<<<<<< HEAD
-	UINT32 slotspace;
-=======
 	uint32_t slotspace;
->>>>>>> upstream/master
 
 	// set_nubus_device makes m_slot valid
 	set_nubus_device();
@@ -149,21 +95,13 @@ void nubus_procolor816_device::device_start()
 //  printf("[procolor816 %p] slotspace = %x\n", this, slotspace);
 
 	m_vram.resize(VRAM_SIZE);
-<<<<<<< HEAD
-	m_vram32 = (UINT32 *)&m_vram[0];
-=======
 	m_vram32 = (uint32_t *)&m_vram[0];
->>>>>>> upstream/master
 
 	m_nubus->install_device(slotspace, slotspace+VRAM_SIZE-1, read32_delegate(FUNC(nubus_procolor816_device::vram_r), this), write32_delegate(FUNC(nubus_procolor816_device::vram_w), this));
 	m_nubus->install_device(slotspace+0x900000, slotspace+VRAM_SIZE-1+0x900000, read32_delegate(FUNC(nubus_procolor816_device::vram_r), this), write32_delegate(FUNC(nubus_procolor816_device::vram_w), this));
 	m_nubus->install_device(slotspace+0xf00000, slotspace+0xff7fff, read32_delegate(FUNC(nubus_procolor816_device::procolor816_r), this), write32_delegate(FUNC(nubus_procolor816_device::procolor816_w), this));
 
-<<<<<<< HEAD
-	m_timer = timer_alloc(0, NULL);
-=======
 	m_timer = timer_alloc(0, nullptr);
->>>>>>> upstream/master
 	m_timer->adjust(m_screen->time_until_pos(479, 0), 0);
 }
 
@@ -201,19 +139,11 @@ void nubus_procolor816_device::device_timer(emu_timer &timer, device_timer_id ti
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-UINT32 nubus_procolor816_device::screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
-{
-	UINT32 *scanline;
-	int x, y;
-	UINT8 pixels, *vram;
-=======
 uint32_t nubus_procolor816_device::screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
 {
 	uint32_t *scanline;
 	int x, y;
 	uint8_t pixels, *vram;
->>>>>>> upstream/master
 
 	vram = &m_vram[4];
 
@@ -285,13 +215,8 @@ uint32_t nubus_procolor816_device::screen_update(screen_device &screen, bitmap_r
 
 		case 4: // 15 bpp
 			{
-<<<<<<< HEAD
-				UINT16 *vram16 = (UINT16 *)&m_vram[0];
-				UINT16 pixels;
-=======
 				uint16_t *vram16 = (uint16_t *)&m_vram[0];
 				uint16_t pixels;
->>>>>>> upstream/master
 
 				for (y = 0; y < 480; y++)
 				{

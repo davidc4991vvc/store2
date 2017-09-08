@@ -1,9 +1,3 @@
-<<<<<<< HEAD
-// license:???
-// copyright-holders:Bryan McPhail,Fuzz,Ernesto Corvi,Andrew Prime,Zsolt Vasvari
-
-#define VERBOSE     (0)
-=======
 // license:BSD-3-Clause
 // copyright-holders:Bryan McPhail,Ernesto Corvi,Andrew Prime,Zsolt Vasvari
 // thanks-to:Fuzz
@@ -11,7 +5,6 @@
 #define MAME_VIDEO_NEOGEO_SPR_H
 
 #pragma once
->>>>>>> upstream/master
 
 // todo, move these back, currently the sprite code needs some of the values tho
 #define NEOGEO_MASTER_CLOCK                     (24000000)
@@ -31,56 +24,6 @@
 class neosprite_base_device : public device_t
 {
 public:
-<<<<<<< HEAD
-	neosprite_base_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock,  device_type type);
-//  neosprite_base_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	virtual void optimize_sprite_data();
-	virtual void set_optimized_sprite_data(UINT8* sprdata, UINT32 mask);
-
-	virtual void draw_fixed_layer_2pixels(UINT32*&pixel_addr, int offset, UINT8* gfx_base, const pen_t* char_pens);
-	void draw_fixed_layer( bitmap_rgb32 &bitmap, int scanline );
-	void set_videoram_offset( UINT16 data );
-	UINT16 get_videoram_data(  );
-	void set_videoram_data( UINT16 data);
-	void set_videoram_modulo( UINT16 data);
-	UINT16 get_videoram_modulo(  );
-	void set_auto_animation_speed( UINT8 data);
-	void set_auto_animation_disabled( UINT8 data);
-	UINT8 neogeo_get_auto_animation_counter(  );
-	void create_auto_animation_timer(  );
-	void start_auto_animation_timer(  );
-	void neogeo_set_fixed_layer_source( UINT8 data );
-	inline bool sprite_on_scanline(int scanline, int y, int rows);
-	virtual void draw_pixel(int romaddr, UINT32* dst, const pen_t *line_pens) = 0;
-	void draw_sprites( bitmap_rgb32 &bitmap, int scanline );
-	void parse_sprites( int scanline );
-	void create_sprite_line_timer(  );
-	void start_sprite_line_timer(  );
-	virtual void set_sprite_region(UINT8* region_sprites, UINT32 region_sprites_size);
-	void set_fixed_regions(UINT8* fix_cart, UINT32 fix_cart_size, memory_region* fix_bios);
-	void set_screen(screen_device* screen);
-	void set_pens(const pen_t* pens);
-
-	UINT16     *m_videoram;
-	UINT16     *m_videoram_drawsource;
-
-	UINT16     m_vram_offset;
-	UINT16     m_vram_read_buffer;
-	UINT16     m_vram_modulo;
-
-	const UINT8 *m_region_zoomy;
-
-	UINT32     m_sprite_gfx_address_mask;
-
-	UINT8      m_auto_animation_speed;
-	UINT8      m_auto_animation_disabled;
-	UINT8      m_auto_animation_counter;
-	UINT8      m_auto_animation_frame_counter;
-
-	UINT8      m_fixed_layer_source;
-	UINT8      m_fixed_layer_bank_type;
-=======
 	virtual void optimize_sprite_data();
 	virtual void set_optimized_sprite_data(uint8_t* sprdata, uint32_t mask);
 
@@ -126,7 +69,6 @@ public:
 
 	uint8_t      m_fixed_layer_source;
 	uint8_t      m_fixed_layer_bank_type;
->>>>>>> upstream/master
 
 	emu_timer  *m_auto_animation_timer;
 	emu_timer  *m_sprite_line_timer;
@@ -138,23 +80,6 @@ public:
 	int m_bppshift; // 4 for 4bpp gfx (NeoGeo) 8 for 8bpp gfx (Midas)
 
 protected:
-<<<<<<< HEAD
-	virtual void device_start();
-	virtual void device_reset();
-	UINT32 get_region_mask(UINT8* rgn, UINT32 rgn_size);
-	UINT8* m_region_sprites; UINT32 m_region_sprites_size;
-	UINT8* m_region_fixed; UINT32 m_region_fixed_size;
-	memory_region* m_region_fixedbios;
-	screen_device* m_screen;
-	const pen_t   *m_pens;
-
-private:
-
-};
-
-//extern const device_type NEOGEO_SPRITE_BASE;
-
-=======
 	neosprite_base_device(
 			const machine_config &mconfig,
 			device_type type,
@@ -172,20 +97,10 @@ private:
 	const pen_t   *m_pens;
 };
 
->>>>>>> upstream/master
 
 class neosprite_regular_device : public neosprite_base_device
 {
 public:
-<<<<<<< HEAD
-	neosprite_regular_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-	virtual void draw_pixel(int romaddr, UINT32* dst, const pen_t *line_pens);
-	virtual void set_sprite_region(UINT8* region_sprites, UINT32 region_sprites_size);
-
-};
-
-extern const device_type NEOGEO_SPRITE_REGULAR;
-=======
 	neosprite_regular_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 	virtual void draw_pixel(int romaddr, uint32_t* dst, const pen_t *line_pens) override;
 	virtual void set_sprite_region(uint8_t* region_sprites, uint32_t region_sprites_size) override;
@@ -193,27 +108,11 @@ extern const device_type NEOGEO_SPRITE_REGULAR;
 };
 
 DECLARE_DEVICE_TYPE(NEOGEO_SPRITE_REGULAR, neosprite_regular_device)
->>>>>>> upstream/master
 
 
 class neosprite_optimized_device : public neosprite_base_device
 {
 public:
-<<<<<<< HEAD
-	neosprite_optimized_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-	virtual void optimize_sprite_data();
-	virtual void set_optimized_sprite_data(UINT8* sprdata, UINT32 mask);
-	virtual void draw_pixel(int romaddr, UINT32* dst, const pen_t *line_pens);
-	std::vector<UINT8> m_sprite_gfx;
-	UINT8* m_spritegfx8;
-
-};
-
-extern const device_type NEOGEO_SPRITE_OPTIMZIED;
-
-
-
-=======
 	neosprite_optimized_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 	virtual void optimize_sprite_data() override;
 	virtual void set_optimized_sprite_data(uint8_t* sprdata, uint32_t mask) override;
@@ -226,29 +125,11 @@ private:
 };
 
 DECLARE_DEVICE_TYPE(NEOGEO_SPRITE_OPTIMZIED, neosprite_optimized_device)
->>>>>>> upstream/master
 
 
 class neosprite_midas_device : public neosprite_base_device
 {
 public:
-<<<<<<< HEAD
-	neosprite_midas_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	virtual void draw_pixel(int romaddr, UINT32* dst, const pen_t *line_pens);
-
-	UINT16* m_videoram_buffer;
-	void buffer_vram();
-	virtual void draw_fixed_layer_2pixels(UINT32*&pixel_addr, int offset, UINT8* gfx_base, const pen_t* char_pens);
-	virtual void set_sprite_region(UINT8* region_sprites, UINT32 region_sprites_size);
-
-	protected:
-	virtual void device_start();
-
-};
-
-extern const device_type NEOGEO_SPRITE_MIDAS;
-=======
 	neosprite_midas_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	virtual void draw_pixel(int romaddr, uint32_t* dst, const pen_t *line_pens) override;
@@ -266,4 +147,3 @@ extern const device_type NEOGEO_SPRITE_MIDAS;
 DECLARE_DEVICE_TYPE(NEOGEO_SPRITE_MIDAS, neosprite_midas_device)
 
 #endif // MAME_VIDEO_NEOGEO_SPR_H
->>>>>>> upstream/master

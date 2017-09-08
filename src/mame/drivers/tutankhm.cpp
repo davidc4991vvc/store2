@@ -8,11 +8,7 @@
     based on original work by Rob Jarrett
 
     I include here the document based on Rob Jarrett's research because it's
-<<<<<<< HEAD
-    really exaustive.
-=======
     really exhaustive.
->>>>>>> upstream/master
 
     Sound board: uses the same board as Pooyan.
 
@@ -55,12 +51,6 @@
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/m6809/m6809.h"
-#include "includes/konamipt.h"
-#include "audio/timeplt.h"
-#include "includes/tutankhm.h"
-=======
 #include "includes/tutankhm.h"
 #include "includes/konamipt.h"
 
@@ -69,7 +59,6 @@
 #include "machine/gen_latch.h"
 #include "machine/watchdog.h"
 #include "screen.h"
->>>>>>> upstream/master
 
 
 /*************************************
@@ -87,15 +76,9 @@ INTERRUPT_GEN_MEMBER(tutankhm_state::tutankhm_interrupt)
 }
 
 
-<<<<<<< HEAD
-WRITE8_MEMBER(tutankhm_state::irq_enable_w)
-{
-	m_irq_enable = data & 1;
-=======
 WRITE_LINE_MEMBER(tutankhm_state::irq_enable_w)
 {
 	m_irq_enable = state;
->>>>>>> upstream/master
 	if (!m_irq_enable)
 		m_maincpu->set_input_line(0, CLEAR_LINE);
 }
@@ -119,17 +102,6 @@ WRITE8_MEMBER(tutankhm_state::tutankhm_bankselect_w)
  *
  *************************************/
 
-<<<<<<< HEAD
-WRITE8_MEMBER(tutankhm_state::sound_mute_w)
-{
-	machine().sound().system_mute(data & 1);
-}
-
-
-WRITE8_MEMBER(tutankhm_state::tutankhm_coin_counter_w)
-{
-	coin_counter_w(machine(), offset ^ 1, data);
-=======
 WRITE_LINE_MEMBER(tutankhm_state::coin_counter_1_w)
 {
 	machine().bookkeeping().coin_counter_w(0, state);
@@ -146,7 +118,6 @@ WRITE8_MEMBER(tutankhm_state::sound_on_w)
 {
 	m_timeplt_audio->sh_irqtrigger_w(0);
 	m_timeplt_audio->sh_irqtrigger_w(1);
->>>>>>> upstream/master
 }
 
 
@@ -160,32 +131,16 @@ static ADDRESS_MAP_START( main_map, AS_PROGRAM, 8, tutankhm_state )
 	AM_RANGE(0x0000, 0x7fff) AM_RAM AM_SHARE("videoram")
 	AM_RANGE(0x8000, 0x800f) AM_MIRROR(0x00f0) AM_RAM_DEVWRITE("palette", palette_device, write) AM_SHARE("palette")
 	AM_RANGE(0x8100, 0x8100) AM_MIRROR(0x000f) AM_RAM AM_SHARE("scroll")
-<<<<<<< HEAD
-	AM_RANGE(0x8120, 0x8120) AM_MIRROR(0x000f) AM_READ(watchdog_reset_r)
-=======
 	AM_RANGE(0x8120, 0x8120) AM_MIRROR(0x000f) AM_DEVREAD("watchdog", watchdog_timer_device, reset_r)
->>>>>>> upstream/master
 	AM_RANGE(0x8160, 0x8160) AM_MIRROR(0x000f) AM_READ_PORT("DSW2") /* DSW2 (inverted bits) */
 	AM_RANGE(0x8180, 0x8180) AM_MIRROR(0x000f) AM_READ_PORT("IN0")  /* IN0 I/O: Coin slots, service, 1P/2P buttons */
 	AM_RANGE(0x81a0, 0x81a0) AM_MIRROR(0x000f) AM_READ_PORT("IN1")  /* IN1: Player 1 I/O */
 	AM_RANGE(0x81c0, 0x81c0) AM_MIRROR(0x000f) AM_READ_PORT("IN2")  /* IN2: Player 2 I/O */
 	AM_RANGE(0x81e0, 0x81e0) AM_MIRROR(0x000f) AM_READ_PORT("DSW1") /* DSW1 (inverted bits) */
-<<<<<<< HEAD
-	AM_RANGE(0x8200, 0x8200) AM_MIRROR(0x00f8) AM_READNOP AM_WRITE(irq_enable_w)
-	AM_RANGE(0x8202, 0x8203) AM_MIRROR(0x00f8) AM_WRITE(tutankhm_coin_counter_w)
-	AM_RANGE(0x8204, 0x8204) AM_MIRROR(0x00f8) AM_WRITENOP // starfield?
-	AM_RANGE(0x8205, 0x8205) AM_MIRROR(0x00f8) AM_WRITE(sound_mute_w)
-	AM_RANGE(0x8206, 0x8206) AM_MIRROR(0x00f8) AM_WRITE(tutankhm_flip_screen_x_w)
-	AM_RANGE(0x8207, 0x8207) AM_MIRROR(0x00f8) AM_WRITE(tutankhm_flip_screen_y_w)
-	AM_RANGE(0x8300, 0x8300) AM_MIRROR(0x00ff) AM_WRITE(tutankhm_bankselect_w)
-	AM_RANGE(0x8600, 0x8600) AM_MIRROR(0x00ff) AM_DEVWRITE("timeplt_audio", timeplt_audio_device, sh_irqtrigger_w)
-	AM_RANGE(0x8700, 0x8700) AM_MIRROR(0x00ff) AM_WRITE(soundlatch_byte_w)
-=======
 	AM_RANGE(0x8200, 0x8207) AM_MIRROR(0x00f8) AM_READNOP AM_DEVWRITE("mainlatch", ls259_device, write_d0)
 	AM_RANGE(0x8300, 0x8300) AM_MIRROR(0x00ff) AM_WRITE(tutankhm_bankselect_w)
 	AM_RANGE(0x8600, 0x8600) AM_MIRROR(0x00ff) AM_WRITE(sound_on_w)
 	AM_RANGE(0x8700, 0x8700) AM_MIRROR(0x00ff) AM_DEVWRITE("soundlatch", generic_latch_8_device, write)
->>>>>>> upstream/master
 	AM_RANGE(0x8800, 0x8fff) AM_RAM
 	AM_RANGE(0x9000, 0x9fff) AM_ROMBANK("bank1")
 	AM_RANGE(0xa000, 0xffff) AM_ROM
@@ -265,18 +220,9 @@ MACHINE_START_MEMBER(tutankhm_state,tutankhm)
 MACHINE_RESET_MEMBER(tutankhm_state,tutankhm)
 {
 	m_irq_toggle = 0;
-<<<<<<< HEAD
-	m_irq_enable = 0;
-	m_flip_x = 0;
-	m_flip_y = 0;
-}
-
-static MACHINE_CONFIG_START( tutankhm, tutankhm_state )
-=======
 }
 
 static MACHINE_CONFIG_START( tutankhm )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6809, XTAL_18_432MHz/12)   /* 1.5 MHz ??? */
@@ -286,8 +232,6 @@ static MACHINE_CONFIG_START( tutankhm )
 	MCFG_MACHINE_START_OVERRIDE(tutankhm_state,tutankhm)
 	MCFG_MACHINE_RESET_OVERRIDE(tutankhm_state,tutankhm)
 
-<<<<<<< HEAD
-=======
 	MCFG_DEVICE_ADD("mainlatch", LS259, 0) // C3
 	MCFG_ADDRESSABLE_LATCH_Q0_OUT_CB(WRITELINE(tutankhm_state, irq_enable_w))
 	MCFG_ADDRESSABLE_LATCH_Q1_OUT_CB(NOOP) // PAY OUT - not used
@@ -300,7 +244,6 @@ static MACHINE_CONFIG_START( tutankhm )
 
 	MCFG_WATCHDOG_ADD("watchdog")
 
->>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE(60)
@@ -313,12 +256,9 @@ static MACHINE_CONFIG_START( tutankhm )
 	MCFG_PALETTE_FORMAT(BBGGGRRR)
 
 	/* sound hardware */
-<<<<<<< HEAD
-=======
 
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 
->>>>>>> upstream/master
 	MCFG_FRAGMENT_ADD(timeplt_sound)
 MACHINE_CONFIG_END
 
@@ -397,10 +337,5 @@ ROM_END
  *
  *************************************/
 
-<<<<<<< HEAD
-GAME( 1982, tutankhm, 0,        tutankhm, tutankhm, driver_device, 0, ROT90, "Konami", "Tutankham", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_GRAPHICS)
-GAME( 1982, tutankhms,tutankhm, tutankhm, tutankhm, driver_device, 0, ROT90, "Konami (Stern Electronics license)", "Tutankham (Stern Electronics)", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_GRAPHICS)
-=======
 GAME( 1982, tutankhm, 0,        tutankhm, tutankhm, tutankhm_state, 0, ROT90, "Konami", "Tutankham", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_GRAPHICS)
 GAME( 1982, tutankhms,tutankhm, tutankhm, tutankhm, tutankhm_state, 0, ROT90, "Konami (Stern Electronics license)", "Tutankham (Stern Electronics)", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_GRAPHICS)
->>>>>>> upstream/master

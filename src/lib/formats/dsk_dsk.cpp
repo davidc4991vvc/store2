@@ -23,11 +23,7 @@ struct dskdsk_tag
 	int heads;
 	int tracks;
 	int sector_size;
-<<<<<<< HEAD
-	UINT64 track_offsets[84*2]; /* offset within data for each track */
-=======
 	uint64_t track_offsets[84*2]; /* offset within data for each track */
->>>>>>> upstream/master
 
 };
 
@@ -43,11 +39,7 @@ static struct dskdsk_tag *get_tag(floppy_image_legacy *floppy)
 
 FLOPPY_IDENTIFY( dsk_dsk_identify )
 {
-<<<<<<< HEAD
-	UINT8 header[8];
-=======
 	uint8_t header[8];
->>>>>>> upstream/master
 
 	floppy_image_read(floppy, header, 0, 8);
 	if ( memcmp( header, MV_CPC, 8 ) ==0) {
@@ -71,30 +63,17 @@ static int dsk_get_tracks_per_disk(floppy_image_legacy *floppy)
 	return get_tag(floppy)->tracks;
 }
 
-<<<<<<< HEAD
-static UINT64 dsk_get_track_offset(floppy_image_legacy *floppy, int head, int track)
-=======
 static uint64_t dsk_get_track_offset(floppy_image_legacy *floppy, int head, int track)
->>>>>>> upstream/master
 {
 	return get_tag(floppy)->track_offsets[(track<<1) + head];
 }
 
-<<<<<<< HEAD
-static floperr_t get_offset(floppy_image_legacy *floppy, int head, int track, int sector, int sector_is_index, UINT64 *offset)
-{
-	UINT64 offs;
-	UINT64 track_offset;
-	UINT8 track_info[0x100];
-	UINT8 sectors_per_track;
-=======
 static floperr_t get_offset(floppy_image_legacy *floppy, int head, int track, int sector, bool sector_is_index, uint64_t *offset)
 {
 	uint64_t offs;
 	uint64_t track_offset;
 	uint8_t track_info[0x100];
 	uint8_t sectors_per_track;
->>>>>>> upstream/master
 	int i;
 	/* translate the sector to a raw sector */
 
@@ -132,15 +111,9 @@ static floperr_t get_offset(floppy_image_legacy *floppy, int head, int track, in
 
 
 
-<<<<<<< HEAD
-static floperr_t internal_dsk_read_sector(floppy_image_legacy *floppy, int head, int track, int sector, int sector_is_index, void *buffer, size_t buflen)
-{
-	UINT64 offset;
-=======
 static floperr_t internal_dsk_read_sector(floppy_image_legacy *floppy, int head, int track, int sector, bool sector_is_index, void *buffer, size_t buflen)
 {
 	uint64_t offset;
->>>>>>> upstream/master
 	floperr_t err;
 	err = get_offset(floppy, head, track, sector, sector_is_index, &offset);
 	if (err)
@@ -151,15 +124,9 @@ static floperr_t internal_dsk_read_sector(floppy_image_legacy *floppy, int head,
 
 
 
-<<<<<<< HEAD
-static floperr_t internal_dsk_write_sector(floppy_image_legacy *floppy, int head, int track, int sector, int sector_is_index, const void *buffer, size_t buflen, int ddam)
-{
-	UINT64 offset;
-=======
 static floperr_t internal_dsk_write_sector(floppy_image_legacy *floppy, int head, int track, int sector, bool sector_is_index, const void *buffer, size_t buflen, int ddam)
 {
 	uint64_t offset;
->>>>>>> upstream/master
 	floperr_t err;
 
 	err = get_offset(floppy, head, track, sector, sector_is_index, &offset);
@@ -174,42 +141,21 @@ static floperr_t internal_dsk_write_sector(floppy_image_legacy *floppy, int head
 
 static floperr_t dsk_read_sector(floppy_image_legacy *floppy, int head, int track, int sector, void *buffer, size_t buflen)
 {
-<<<<<<< HEAD
-	return internal_dsk_read_sector(floppy, head, track, sector, FALSE, buffer, buflen);
-=======
 	return internal_dsk_read_sector(floppy, head, track, sector, false, buffer, buflen);
->>>>>>> upstream/master
 }
 
 static floperr_t dsk_write_sector(floppy_image_legacy *floppy, int head, int track, int sector, const void *buffer, size_t buflen, int ddam)
 {
-<<<<<<< HEAD
-	return internal_dsk_write_sector(floppy, head, track, sector, FALSE, buffer, buflen, ddam);
-=======
 	return internal_dsk_write_sector(floppy, head, track, sector, false, buffer, buflen, ddam);
->>>>>>> upstream/master
 }
 
 static floperr_t dsk_read_indexed_sector(floppy_image_legacy *floppy, int head, int track, int sector, void *buffer, size_t buflen)
 {
-<<<<<<< HEAD
-	return internal_dsk_read_sector(floppy, head, track, sector, TRUE, buffer, buflen);
-=======
 	return internal_dsk_read_sector(floppy, head, track, sector, true, buffer, buflen);
->>>>>>> upstream/master
 }
 
 static floperr_t dsk_write_indexed_sector(floppy_image_legacy *floppy, int head, int track, int sector, const void *buffer, size_t buflen, int ddam)
 {
-<<<<<<< HEAD
-	return internal_dsk_write_sector(floppy, head, track, sector, TRUE, buffer, buflen, ddam);
-}
-
-static floperr_t dsk_get_sector_length(floppy_image_legacy *floppy, int head, int track, int sector, UINT32 *sector_length)
-{
-	floperr_t err;
-	err = get_offset(floppy, head, track, sector, FALSE, NULL);
-=======
 	return internal_dsk_write_sector(floppy, head, track, sector, true, buffer, buflen, ddam);
 }
 
@@ -217,7 +163,6 @@ static floperr_t dsk_get_sector_length(floppy_image_legacy *floppy, int head, in
 {
 	floperr_t err;
 	err = get_offset(floppy, head, track, sector, false, nullptr);
->>>>>>> upstream/master
 	if (err)
 		return err;
 
@@ -227,16 +172,6 @@ static floperr_t dsk_get_sector_length(floppy_image_legacy *floppy, int head, in
 	return FLOPPY_ERROR_SUCCESS;
 }
 
-<<<<<<< HEAD
-static floperr_t dsk_get_indexed_sector_info(floppy_image_legacy *floppy, int head, int track, int sector_index, int *cylinder, int *side, int *sector, UINT32 *sector_length, unsigned long *flags)
-{
-	floperr_t retVal;
-	UINT64 offset;
-	UINT8 sector_info[0x100];
-	int pos;
-
-	retVal = get_offset(floppy, head, track, sector_index, FALSE, NULL);
-=======
 static floperr_t dsk_get_indexed_sector_info(floppy_image_legacy *floppy, int head, int track, int sector_index, int *cylinder, int *side, int *sector, uint32_t *sector_length, unsigned long *flags)
 {
 	floperr_t retVal;
@@ -245,7 +180,6 @@ static floperr_t dsk_get_indexed_sector_info(floppy_image_legacy *floppy, int he
 	int pos;
 
 	retVal = get_offset(floppy, head, track, sector_index, false, nullptr);
->>>>>>> upstream/master
 	offset = dsk_get_track_offset(floppy,head,track);
 	pos = 0x18 + (sector_index << 3);
 	floppy_image_read(floppy, sector_info, offset, 0x100);
@@ -258,17 +192,12 @@ static floperr_t dsk_get_indexed_sector_info(floppy_image_legacy *floppy, int he
 	if (sector_length) {
 		*sector_length = 1 << (sector_info[pos + 3] + 7);
 	}
-<<<<<<< HEAD
-	if (flags)
-		*flags = (sector_info[pos + 5] & 0x40) ? ID_FLAG_DELETED_DATA : 0;
-=======
 	if (flags) {
 		*flags = 0;
 		if (sector_info[pos + 4] & 0x20) *flags |= ID_FLAG_CRC_ERROR_IN_ID_FIELD;
 		if (sector_info[pos + 5] & 0x20) *flags |= ID_FLAG_CRC_ERROR_IN_DATA_FIELD;
 		if (sector_info[pos + 5] & 0x40) *flags |= ID_FLAG_DELETED_DATA;
 	}
->>>>>>> upstream/master
 	return retVal;
 }
 
@@ -277,13 +206,8 @@ FLOPPY_CONSTRUCT( dsk_dsk_construct )
 {
 	struct FloppyCallbacks *callbacks;
 	struct dskdsk_tag *tag;
-<<<<<<< HEAD
-	UINT8 header[0x100];
-	UINT64 tmp = 0;
-=======
 	uint8_t header[0x100];
 	uint64_t tmp = 0;
->>>>>>> upstream/master
 	int i;
 	int skip,cnt;
 
@@ -296,13 +220,8 @@ FLOPPY_CONSTRUCT( dsk_dsk_construct )
 	floppy_image_read(floppy, header, 0, 0x100);
 #ifdef SPOT_DUPLICATES
 	// this allow to spot .dsk files with same data and different headers, making easier to debug softlists.
-<<<<<<< HEAD
-	UINT32 temp_size = floppy_image_size(floppy);
-	UINT8 tmp_copy[temp_size - 0x100];
-=======
 	uint32_t temp_size = floppy_image_size(floppy);
 	uint8_t tmp_copy[temp_size - 0x100];
->>>>>>> upstream/master
 	floppy_image_read(floppy,tmp_copy,0x100,temp_size - 0x100);
 	printf("CRC16: %d\n", ccitt_crc16(0xffff, tmp_copy, temp_size - 0x100));
 #endif
@@ -380,15 +299,9 @@ bool dsk_format::supports_save() const
 	return false;
 }
 
-<<<<<<< HEAD
-int dsk_format::identify(io_generic *io, UINT32 form_factor)
-{
-	UINT8 header[16];
-=======
 int dsk_format::identify(io_generic *io, uint32_t form_factor)
 {
 	uint8_t header[16];
->>>>>>> upstream/master
 
 	io_generic_read(io, &header, 0, sizeof(header));
 	if ( memcmp( header, DSK_FORMAT_HEADER, 8 ) ==0) {
@@ -405,19 +318,6 @@ int dsk_format::identify(io_generic *io, uint32_t form_factor)
 
 struct track_header
 {
-<<<<<<< HEAD
-	UINT8 headertag[13];
-	UINT16 unused1;
-	UINT8 unused1b;
-	UINT8 track_number;
-	UINT8 side_number;
-	UINT8 datarate;
-	UINT8 rec_mode;
-	UINT8 sector_size_code;
-	UINT8 number_of_sector;
-	UINT8 gap3_length;
-	UINT8 filler_byte;
-=======
 	uint8_t headertag[13];
 	uint16_t unused1;
 	uint8_t unused1b;
@@ -429,20 +329,10 @@ struct track_header
 	uint8_t number_of_sector;
 	uint8_t gap3_length;
 	uint8_t filler_byte;
->>>>>>> upstream/master
 };
 
 struct sector_header
 {
-<<<<<<< HEAD
-	UINT8   track;
-	UINT8   side;
-	UINT8   sector_id;
-	UINT8   sector_size_code;
-	UINT8   fdc_status_reg1;
-	UINT8   fdc_status_reg2;
-	UINT16  data_length;
-=======
 	uint8_t   track;
 	uint8_t   side;
 	uint8_t   sector_id;
@@ -450,23 +340,10 @@ struct sector_header
 	uint8_t   fdc_status_reg1;
 	uint8_t   fdc_status_reg2;
 	uint16_t  data_length;
->>>>>>> upstream/master
 };
 
 #pragma pack()
 
-<<<<<<< HEAD
-bool dsk_format::load(io_generic *io, UINT32 form_factor, floppy_image *image)
-{
-	UINT8 header[0x100];
-	bool extendformat = FALSE;
-
-	UINT64 image_size = io_generic_size(io);
-
-	io_generic_read(io, &header, 0, sizeof(header));
-	if ( memcmp( header, EXT_FORMAT_HEADER, 16 ) ==0) {
-		extendformat = TRUE;
-=======
 bool dsk_format::load(io_generic *io, uint32_t form_factor, floppy_image *image)
 {
 	uint8_t header[0x100];
@@ -477,7 +354,6 @@ bool dsk_format::load(io_generic *io, uint32_t form_factor, floppy_image *image)
 	io_generic_read(io, &header, 0, sizeof(header));
 	if ( memcmp( header, EXT_FORMAT_HEADER, 16 ) ==0) {
 		extendformat = true;
->>>>>>> upstream/master
 	}
 
 	int heads = header[0x31];
@@ -486,11 +362,7 @@ bool dsk_format::load(io_generic *io, uint32_t form_factor, floppy_image *image)
 		skip = 2;
 	}
 	int tracks  = header[0x30];
-<<<<<<< HEAD
-	UINT64 track_offsets[84*2];
-=======
 	uint64_t track_offsets[84*2];
->>>>>>> upstream/master
 	int cnt =0;
 	if (!extendformat) {
 		int tmp = 0x100;
@@ -527,11 +399,7 @@ bool dsk_format::load(io_generic *io, uint32_t form_factor, floppy_image *image)
 			track_header tr;
 			io_generic_read(io, &tr,track_offsets[(track<<1)+side],sizeof(tr));
 			desc_pc_sector sects[256];
-<<<<<<< HEAD
-			UINT8 sect_data[65536];
-=======
 			uint8_t sect_data[65536];
->>>>>>> upstream/master
 			int sdatapos = 0;
 			int pos = track_offsets[(track<<1)+side] + 0x100;
 			for(int j=0;j<tr.number_of_sector;j++) {
@@ -555,11 +423,7 @@ bool dsk_format::load(io_generic *io, uint32_t form_factor, floppy_image *image)
 					sdatapos += sects[j].actual_size;
 
 				} else
-<<<<<<< HEAD
-					sects[j].data = NULL;
-=======
 					sects[j].data = nullptr;
->>>>>>> upstream/master
 
 				if(extendformat)
 					pos += sector.data_length;

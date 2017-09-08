@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-// license:LGPL-2.1+
-=======
 // license:BSD-3-Clause
->>>>>>> upstream/master
 // copyright-holders:Tomasz Slanina
 /*
 King Of Football (c)1995 BMC
@@ -32,17 +28,6 @@ ft5_v6_c4.u58 /
 
 */
 
-<<<<<<< HEAD
-#define NVRAM_HACK 1
-
-#include "emu.h"
-#include "cpu/m68000/m68000.h"
-#include "sound/okim6295.h"
-#include "sound/2413intf.h"
-#include "video/ramdac.h"
-
-
-=======
 #include "emu.h"
 #include "cpu/m68000/m68000.h"
 #include "sound/okim6295.h"
@@ -54,7 +39,6 @@ ft5_v6_c4.u58 /
 
 #define NVRAM_HACK 1
 
->>>>>>> upstream/master
 class koftball_state : public driver_device
 {
 public:
@@ -68,24 +52,14 @@ public:
 		m_palette(*this, "palette") { }
 
 	required_device<cpu_device> m_maincpu;
-<<<<<<< HEAD
-	required_shared_ptr<UINT16> m_main_ram;
-	required_shared_ptr<UINT16> m_bmc_1_videoram;
-	required_shared_ptr<UINT16> m_bmc_2_videoram;
-=======
 	required_shared_ptr<uint16_t> m_main_ram;
 	required_shared_ptr<uint16_t> m_bmc_1_videoram;
 	required_shared_ptr<uint16_t> m_bmc_2_videoram;
->>>>>>> upstream/master
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
 	tilemap_t *m_tilemap_1;
 	tilemap_t *m_tilemap_2;
-<<<<<<< HEAD
-	UINT16 m_prot_data;
-=======
 	uint16_t m_prot_data;
->>>>>>> upstream/master
 
 	DECLARE_READ16_MEMBER(random_number_r);
 	DECLARE_READ16_MEMBER(prot_r);
@@ -95,13 +69,8 @@ public:
 	DECLARE_DRIVER_INIT(koftball);
 	TILE_GET_INFO_MEMBER(get_t1_tile_info);
 	TILE_GET_INFO_MEMBER(get_t2_tile_info);
-<<<<<<< HEAD
-	virtual void video_start();
-	UINT32 screen_update_koftball(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	virtual void video_start() override;
 	uint32_t screen_update_koftball(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	TIMER_DEVICE_CALLBACK_MEMBER(bmc_interrupt);
 };
 
@@ -126,22 +95,13 @@ TILE_GET_INFO_MEMBER(koftball_state::get_t2_tile_info)
 
 void koftball_state::video_start()
 {
-<<<<<<< HEAD
-	m_tilemap_1 = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(koftball_state::get_t1_tile_info),this),TILEMAP_SCAN_ROWS,8,8,64,32);
-	m_tilemap_2 = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(koftball_state::get_t2_tile_info),this),TILEMAP_SCAN_ROWS,8,8,64,32);
-=======
 	m_tilemap_1 = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(koftball_state::get_t1_tile_info),this),TILEMAP_SCAN_ROWS,8,8,64,32);
 	m_tilemap_2 = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(koftball_state::get_t2_tile_info),this),TILEMAP_SCAN_ROWS,8,8,64,32);
->>>>>>> upstream/master
 
 	m_tilemap_1->set_transparent_pen(0);
 }
 
-<<<<<<< HEAD
-UINT32 koftball_state::screen_update_koftball(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t koftball_state::screen_update_koftball(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	m_tilemap_2->draw(screen, bitmap, cliprect, 0, 0);
 	m_tilemap_1->draw(screen, bitmap, cliprect, 0, 0);
@@ -212,11 +172,7 @@ static ADDRESS_MAP_START( koftball_mem, AS_PROGRAM, 16, koftball_state )
 	AM_RANGE(0x360000, 0x360001) AM_WRITE(prot_w)
 ADDRESS_MAP_END
 
-<<<<<<< HEAD
-static ADDRESS_MAP_START( ramdac_map, AS_0, 8, koftball_state )
-=======
 static ADDRESS_MAP_START( ramdac_map, 0, 8, koftball_state )
->>>>>>> upstream/master
 	AM_RANGE(0x000, 0x3ff) AM_DEVREADWRITE("ramdac",ramdac_device,ramdac_pal_r,ramdac_rgb666_w)
 ADDRESS_MAP_END
 
@@ -272,11 +228,7 @@ static GFXDECODE_START( koftball )
 GFXDECODE_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( koftball, koftball_state )
-=======
 static MACHINE_CONFIG_START( koftball )
->>>>>>> upstream/master
 	MCFG_CPU_ADD("maincpu", M68000, XTAL_21_4772MHz / 2)
 	MCFG_CPU_PROGRAM_MAP(koftball_mem)
 	MCFG_TIMER_DRIVER_ADD_SCANLINE("scantimer", koftball_state, bmc_interrupt, "screen", 0, 1)
@@ -300,11 +252,7 @@ static MACHINE_CONFIG_START( koftball )
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 0.50)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 0.50)
 
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki", 1122000, OKIM6295_PIN7_LOW) /* clock frequency & pin 7 not verified */
-=======
 	MCFG_OKIM6295_ADD("oki", 1122000, PIN7_LOW) /* clock frequency & pin 7 not verified */
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 0.50)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 0.50)
 MACHINE_CONFIG_END
@@ -328,11 +276,7 @@ ROM_END
 
 #if NVRAM_HACK
 
-<<<<<<< HEAD
-static const UINT16 nvram[]=
-=======
 static const uint16_t nvram[]=
->>>>>>> upstream/master
 {
 	0x0000,0x5555,0x0000,0x5555,0x0000,0x5555,0x0000,0x5555,
 	0x0000,0x5555,0x0000,0x0000,0x0000,0x0000,0x5555,0x5555,

@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-// license:LGPL-2.1+
-=======
 // license:BSD-3-Clause
->>>>>>> upstream/master
 // copyright-holders:Tomasz Slanina
 /*
 Dorachan (Dora-Chan ?) (c) 1980 Craul Denshi
@@ -16,10 +12,7 @@ Todo:
 
 #include "emu.h"
 #include "cpu/z80/z80.h"
-<<<<<<< HEAD
-=======
 #include "screen.h"
->>>>>>> upstream/master
 
 
 class dorachan_state : public driver_device
@@ -39,34 +32,19 @@ public:
 	required_device<screen_device> m_screen;
 	required_device<palette_device> m_palette;
 
-<<<<<<< HEAD
-	required_shared_ptr<UINT8> m_videoram;
-	required_region_ptr<UINT8> m_colors;
-
-	// internal state
-	UINT8 m_flip_screen;
-=======
 	required_shared_ptr<uint8_t> m_videoram;
 	required_region_ptr<uint8_t> m_colors;
 
 	// internal state
 	uint8_t m_flip_screen;
->>>>>>> upstream/master
 
 	DECLARE_WRITE8_MEMBER(control_w);
 	DECLARE_READ8_MEMBER(protection_r);
 	DECLARE_READ8_MEMBER(v128_r);
-<<<<<<< HEAD
-	UINT32 screen_update_dorachan(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
-
-	virtual void machine_start();
-	virtual void machine_reset();
-=======
 	uint32_t screen_update_dorachan(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
 
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
->>>>>>> upstream/master
 };
 
 
@@ -77,16 +55,6 @@ public:
  *
  *************************************/
 
-<<<<<<< HEAD
-UINT32 dorachan_state::screen_update_dorachan(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
-{
-	for (offs_t offs = 0; offs < m_videoram.bytes(); offs++)
-	{
-		UINT8 fore_color;
-
-		UINT8 x = offs >> 8 << 3;
-		UINT8 y = offs & 0xff;
-=======
 uint32_t dorachan_state::screen_update_dorachan(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
 {
 	for (offs_t offs = 0; offs < m_videoram.bytes(); offs++)
@@ -95,16 +63,11 @@ uint32_t dorachan_state::screen_update_dorachan(screen_device &screen, bitmap_rg
 
 		uint8_t x = offs >> 8 << 3;
 		uint8_t y = offs & 0xff;
->>>>>>> upstream/master
 
 		/* the need for +1 is extremely unusual, but definitely correct */
 		offs_t color_address = ((((offs << 2) & 0x03e0) | (offs >> 8)) + 1) & 0x03ff;
 
-<<<<<<< HEAD
-		UINT8 data = m_videoram[offs];
-=======
 		uint8_t data = m_videoram[offs];
->>>>>>> upstream/master
 
 		if (m_flip_screen)
 			fore_color = (m_colors[color_address] >> 3) & 0x07;
@@ -113,11 +76,7 @@ uint32_t dorachan_state::screen_update_dorachan(screen_device &screen, bitmap_rg
 
 		for (int i = 0; i < 8; i++)
 		{
-<<<<<<< HEAD
-			UINT8 color = (data & 0x01) ? fore_color : 0;
-=======
 			uint8_t color = (data & 0x01) ? fore_color : 0;
->>>>>>> upstream/master
 			bitmap.pix32(y, x) = m_palette->pen_color(color);
 
 			data = data >> 1;
@@ -138,11 +97,7 @@ uint32_t dorachan_state::screen_update_dorachan(screen_device &screen, bitmap_rg
 
 READ8_MEMBER(dorachan_state::protection_r)
 {
-<<<<<<< HEAD
-	UINT8 ret = 0;
-=======
 	uint8_t ret = 0;
->>>>>>> upstream/master
 
 	switch (m_maincpu->pcbase())
 	{
@@ -245,11 +200,7 @@ void dorachan_state::machine_reset()
 	m_flip_screen = 0;
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( dorachan, dorachan_state )
-=======
 static MACHINE_CONFIG_START( dorachan )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, 2000000)
@@ -303,8 +254,4 @@ ROM_END
  *
  *************************************/
 
-<<<<<<< HEAD
-GAME( 1980, dorachan, 0, dorachan, dorachan, driver_device, 0, ROT270, "Alpha Denshi Co. / Craul Denshi", "Dora-chan (Japan)", MACHINE_NO_SOUND | MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1980, dorachan, 0, dorachan, dorachan, dorachan_state, 0, ROT270, "Alpha Denshi Co. / Craul Denshi", "Dora-chan (Japan)", MACHINE_NO_SOUND | MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

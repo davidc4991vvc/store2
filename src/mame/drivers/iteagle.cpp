@@ -109,11 +109,8 @@ www.multitech.com
 #include "video/voodoo_pci.h"
 #include "sound/es1373.h"
 #include "machine/iteagle_fpga.h"
-<<<<<<< HEAD
-=======
 #include "machine/pci-ide.h"
 #include "screen.h"
->>>>>>> upstream/master
 
 
 //*************************************
@@ -129,13 +126,8 @@ public:
 
 	required_device<mips3_device> m_maincpu;
 
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void machine_reset();
-=======
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
->>>>>>> upstream/master
 };
 
 void iteagle_state::machine_start()
@@ -144,30 +136,14 @@ void iteagle_state::machine_start()
 	m_maincpu->mips3drc_set_options(MIPS3DRC_FASTEST_OPTIONS);
 
 	/* configure fast RAM regions for DRC */
-<<<<<<< HEAD
-	//m_maincpu->mips3drc_add_fastram(0x00000000, 16*1024*1024-1, FALSE, m_rambase);
-	//m_maincpu->mips3drc_add_fastram(0x1fc00000, 0x1fc7ffff, TRUE, m_rombase);
-=======
 	//m_maincpu->mips3drc_add_fastram(0x00000000, 16*1024*1024-1, false, m_rambase);
 	//m_maincpu->mips3drc_add_fastram(0x1fc00000, 0x1fc7ffff, true, m_rombase);
->>>>>>> upstream/master
 }
 
 void iteagle_state::machine_reset()
 {
 }
 
-<<<<<<< HEAD
-#define PCI_ID_IDE          ":pci:06.0"
-// Primary IDE Control  ":pci:06.1"
-// Seconday IDE Control ":pci:06.2"
-#define PCI_ID_SOUND    ":pci:07.0"
-#define PCI_ID_FPGA         ":pci:08.0"
-#define PCI_ID_VIDEO    ":pci:09.0"
-#define PCI_ID_EEPROM   ":pci:0a.0"
-
-static MACHINE_CONFIG_START( iteagle, iteagle_state )
-=======
 #define PCI_ID_NILE     ":pci:00.0"
 #define PCI_ID_PERIPH   ":pci:06.0"
 #define PCI_ID_IDE      ":pci:06.1"
@@ -178,7 +154,6 @@ static MACHINE_CONFIG_START( iteagle, iteagle_state )
 #define PCI_ID_EEPROM   ":pci:0a.0"
 
 static MACHINE_CONFIG_START( iteagle )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", VR4310LE, 166666666)
@@ -186,12 +161,6 @@ static MACHINE_CONFIG_START( iteagle )
 	MCFG_MIPS3_DCACHE_SIZE(8192)
 
 	MCFG_PCI_ROOT_ADD(                ":pci")
-<<<<<<< HEAD
-	MCFG_VRC4373_ADD(                 ":pci:00.0", ":maincpu")
-	MCFG_ITEAGLE_IDE_ADD(             PCI_ID_IDE)
-	MCFG_ITEAGLE_IDE_IRQ_ADD(         ":maincpu", MIPS3_IRQ2)
-	MCFG_ITEAGLE_FPGA_ADD(            PCI_ID_FPGA, ":maincpu", MIPS3_IRQ1)
-=======
 	MCFG_VRC4373_ADD(                 PCI_ID_NILE, ":maincpu")
 	MCFG_VRC4373_SET_RAM(0x00800000)
 	MCFG_VRC4373_SET_SIMM0(0x02000000)
@@ -200,7 +169,6 @@ static MACHINE_CONFIG_START( iteagle )
 	MCFG_IDE_PCI_IRQ_ADD(             ":maincpu", MIPS3_IRQ2)
 
 	MCFG_ITEAGLE_FPGA_ADD(            PCI_ID_FPGA, ":maincpu", MIPS3_IRQ1, MIPS3_IRQ4)
->>>>>>> upstream/master
 	MCFG_ES1373_ADD(                  PCI_ID_SOUND)
 	MCFG_SOUND_ROUTE(0, PCI_ID_SOUND":lspeaker", 1.0)
 	MCFG_SOUND_ROUTE(1, PCI_ID_SOUND":rspeaker", 1.0)
@@ -226,11 +194,7 @@ MACHINE_CONFIG_END
 static MACHINE_CONFIG_DERIVED( gtfore02, iteagle )
 	MCFG_DEVICE_MODIFY(PCI_ID_FPGA)
 	MCFG_ITEAGLE_FPGA_INIT(0x01000402, 0x020201)
-<<<<<<< HEAD
-	MCFG_DEVICE_MODIFY(":pci:0a.0")
-=======
 	MCFG_DEVICE_MODIFY(PCI_ID_EEPROM)
->>>>>>> upstream/master
 	MCFG_ITEAGLE_EEPROM_INIT(0x0402, 0x7)
 MACHINE_CONFIG_END
 
@@ -258,34 +222,19 @@ MACHINE_CONFIG_END
 static MACHINE_CONFIG_DERIVED( gtfore06, iteagle )
 	MCFG_DEVICE_MODIFY(PCI_ID_FPGA)
 	MCFG_ITEAGLE_FPGA_INIT(0x01000406, 0x0c0b0d)
-<<<<<<< HEAD
-	MCFG_DEVICE_MODIFY(":pci:0a.0")
-=======
 	MCFG_DEVICE_MODIFY(PCI_ID_EEPROM)
->>>>>>> upstream/master
 	MCFG_ITEAGLE_EEPROM_INIT(0x0406, 0x9);
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_DERIVED( carnking, iteagle )
 	MCFG_DEVICE_MODIFY(PCI_ID_FPGA)
-<<<<<<< HEAD
-	MCFG_ITEAGLE_FPGA_INIT(0x01000603, 0x0c0b0d)
-	MCFG_DEVICE_MODIFY(PCI_ID_EEPROM)
-	MCFG_ITEAGLE_EEPROM_INIT(0x0603, 0x9)
-=======
 	MCFG_ITEAGLE_FPGA_INIT(0x01000a01, 0x0e0a0a)
 	MCFG_DEVICE_MODIFY(PCI_ID_EEPROM)
 	MCFG_ITEAGLE_EEPROM_INIT(0x0a01, 0x9)
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_DERIVED( bbhsc, iteagle )
 	MCFG_DEVICE_MODIFY(PCI_ID_FPGA)
-<<<<<<< HEAD
-	MCFG_ITEAGLE_FPGA_INIT(0x01000600, 0x0c0a0a)
-	MCFG_DEVICE_MODIFY(PCI_ID_EEPROM)
-	MCFG_ITEAGLE_EEPROM_INIT(0x0600, 0x9)
-=======
 	// 0xXX01XXXX = tournament board
 	MCFG_ITEAGLE_FPGA_INIT(0x02010600, 0x0c0a0a)
 	MCFG_DEVICE_MODIFY(PCI_ID_EEPROM)
@@ -297,17 +246,12 @@ static MACHINE_CONFIG_DERIVED( bbh2sp, iteagle )
 	MCFG_ITEAGLE_FPGA_INIT(0x02000602, 0x0d0a0a)
 	MCFG_DEVICE_MODIFY(PCI_ID_EEPROM)
 	MCFG_ITEAGLE_EEPROM_INIT(0x0000, 0x7)
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_DERIVED( bbhcotw, iteagle )
 	MCFG_DEVICE_MODIFY(PCI_ID_FPGA)
 	MCFG_ITEAGLE_FPGA_INIT(0x02000603, 0x080704)
-<<<<<<< HEAD
-	MCFG_DEVICE_MODIFY(":pci:0a.0")
-=======
 	MCFG_DEVICE_MODIFY(PCI_ID_EEPROM)
->>>>>>> upstream/master
 	MCFG_ITEAGLE_EEPROM_INIT(0x0603, 0x9)
 MACHINE_CONFIG_END
 
@@ -349,13 +293,8 @@ static INPUT_PORTS_START( iteagle )
 	PORT_BIT( 0xfe00, IP_ACTIVE_LOW, IPT_UNKNOWN )
 
 	PORT_START("SYSTEM")
-<<<<<<< HEAD
-	PORT_BIT( 0x0001, IP_ACTIVE_LOW, IPT_TILT ) PORT_NAME( "Test" )
-	PORT_BIT( 0x0002, IP_ACTIVE_LOW, IPT_SERVICE )
-=======
 	PORT_BIT( 0x0001, IP_ACTIVE_LOW, IPT_SERVICE ) PORT_NAME( "Service" )
 	PORT_BIT( 0x0002, IP_ACTIVE_LOW, IPT_SERVICE1 )
->>>>>>> upstream/master
 	PORT_BIT( 0x000c, IP_ACTIVE_LOW, IPT_UNKNOWN )
 	PORT_DIPNAME( 0x0010, 0x00, "SW51-1" )
 	PORT_DIPSETTING(0x00, "Normal" )
@@ -407,11 +346,7 @@ static INPUT_PORTS_START( virtpool )
 
 INPUT_PORTS_END
 
-<<<<<<< HEAD
-static INPUT_PORTS_START( bbhcotw )
-=======
 static INPUT_PORTS_START( bbh )
->>>>>>> upstream/master
 	PORT_INCLUDE( iteagle )
 
 	PORT_MODIFY("IN1")
@@ -438,11 +373,7 @@ INPUT_PORTS_END
  *
  *************************************/
 #define EAGLE_BIOS \
-<<<<<<< HEAD
-	ROM_REGION( 0x100000, ":pci:00.0", 0 ) /* MIPS code */ \
-=======
 	ROM_REGION( 0x100000, PCI_ID_NILE":rom", 0 ) /* MIPS code */ \
->>>>>>> upstream/master
 	ROM_SYSTEM_BIOS(  0, "209", "bootrom 2.09" ) \
 	ROMX_LOAD( "eagle209.u15", 0x000000, 0x100000, CRC(e0fc1a16) SHA1(c9524f7ee6b95bd484a3b75bcbe2243cb273f84c), ROM_BIOS(1) ) \
 	ROM_SYSTEM_BIOS(  1, "208", "bootrom 2.08" ) \
@@ -482,11 +413,7 @@ ROM_START( iteagle )
 ROM_END
 
 ROM_START( virtpool ) /* On earlier Eagle 1 PCB, possibly a prototype version - later boards are known as Eagle 2 */
-<<<<<<< HEAD
-	ROM_REGION( 0x100000, ":pci:00.0", 0 ) /* MIPS code */
-=======
 	ROM_REGION( 0x100000, PCI_ID_NILE":rom", 0 ) /* MIPS code */
->>>>>>> upstream/master
 	ROM_SYSTEM_BIOS( 0, "pool", "Virtual Pool bootrom" )
 	ROMX_LOAD( "eagle1_bootrom_v1p01", 0x000000, 0x080000, CRC(6c8c1593) SHA1(707d5633388f8dd4e9252f4d8d6f27c98c2cb35a), ROM_BIOS(1) )
 
@@ -626,8 +553,6 @@ ROM_START( bbhsc )
 	DISK_REGION( PCI_ID_IDE":ide:0:hdd:image" )
 	DISK_IMAGE( "bbhsc_v1.50.07_cf", 0, SHA1(21dcf1f7e5ab901ac64e6afb099c35e273b3bf1f) ) /* Build 16:35:34, Feb 26 2002 - 4gb Compact Flash conversion */
 ROM_END
-<<<<<<< HEAD
-=======
 	//DISK_IMAGE( "bbhsc_v1.50.07_cf", 0, SHA1(21dcf1f7e5ab901ac64e6afb099c35e273b3bf1f) ) /* Build 16:35:34, Feb 26 2002 - 4gb Compact Flash conversion */
 	//DISK_IMAGE( "bbhsc_v1.60.01", 0, SHA1(8554fdd7193ee27c0fe8ca921aa8db9c0378b313) )
 
@@ -643,7 +568,6 @@ ROM_END
 	//DISK_IMAGE( "bbh2sp_v2.02.08", 0, SHA1(13b9b4ea0465f55dd1c7bc6e2f962c3c9b9566bd) )
 	//DISK_IMAGE( "bbh2sp_v2.02.09", 0, SHA1(fac3963b6da35a8c8b00f6826bc10e9c7230b1d6) )
 	//DISK_IMAGE( "bbh2sp_v2.02.11", 0, SHA1(63e41cca534f4774bfba4b4dda9620fe805029b4) )
->>>>>>> upstream/master
 
 ROM_START( bbhcotw ) /* This version is meant for 8meg GREEN board PCBs */
 	EAGLE_BIOS
@@ -661,24 +585,6 @@ ROM_END
  *
  *************************************/
 
-<<<<<<< HEAD
-GAME( 2000, iteagle,          0,  iteagle,  iteagle,  driver_device, 0, ROT0, "Incredible Technologies", "Eagle BIOS", MACHINE_IS_BIOS_ROOT )
-GAME( 1998, virtpool,   iteagle,  virtpool, virtpool, driver_device, 0, ROT0, "Incredible Technologies", "Virtual Pool", 0 )
-GAME( 2002, carnking,   iteagle,  carnking, iteagle,  driver_device, 0, ROT0, "Incredible Technologies", "Carnival King (v1.00.11)", MACHINE_NOT_WORKING )
-GAME( 2000, gtfore01,   iteagle,  gtfore01, iteagle,  driver_device, 0, ROT0, "Incredible Technologies", "Golden Tee Fore! (v1.00.25)", 0 )
-GAME( 2001, gtfore02,   iteagle,  gtfore02, iteagle,  driver_device, 0, ROT0, "Incredible Technologies", "Golden Tee Fore! 2002 (v2.01.06)", 0 )
-GAME( 2002, gtfore03,   iteagle,  gtfore03, iteagle,  driver_device, 0, ROT0, "Incredible Technologies", "Golden Tee Fore! 2003 (v3.00.10)", 0 )
-GAME( 2002, gtfore03a,  gtfore03, gtfore03, iteagle,  driver_device, 0, ROT0, "Incredible Technologies", "Golden Tee Fore! 2003 (v3.00.09)", 0 )
-GAME( 2003, gtfore04,   iteagle,  gtfore04, iteagle,  driver_device, 0, ROT0, "Incredible Technologies", "Golden Tee Fore! 2004 Extra (v4.00.08)", 0 )
-GAME( 2003, gtfore04a,  gtfore04, gtfore04, iteagle,  driver_device, 0, ROT0, "Incredible Technologies", "Golden Tee Fore! 2004 (v4.00.00)", 0 )
-GAME( 2004, gtfore05,   iteagle,  gtfore05, iteagle,  driver_device, 0, ROT0, "Incredible Technologies", "Golden Tee Fore! 2005 Extra (v5.01.06)", 0 )
-GAME( 2004, gtfore05a,  gtfore05, gtfore05, iteagle,  driver_device, 0, ROT0, "Incredible Technologies", "Golden Tee Fore! 2005 Extra (v5.01.02)", 0 )
-GAME( 2004, gtfore05b,  gtfore05, gtfore05, iteagle,  driver_device, 0, ROT0, "Incredible Technologies", "Golden Tee Fore! 2005 Extra (v5.01.00)", 0 )
-GAME( 2004, gtfore05c,  gtfore05, gtfore05, iteagle,  driver_device, 0, ROT0, "Incredible Technologies", "Golden Tee Fore! 2005 Extra (v5.00.00)", 0 )
-GAME( 2005, gtfore06,   iteagle,  gtfore06, iteagle,  driver_device, 0, ROT0, "Incredible Technologies", "Golden Tee Fore! 2006 Complete (v6.00.01)", 0 )
-GAME( 2002, bbhsc,      iteagle,  bbhsc,    iteagle,  driver_device, 0, ROT0, "Incredible Technologies", "Big Buck Hunter - Shooter's Challenge (v1.50.07)", MACHINE_NOT_WORKING )
-GAME( 2006, bbhcotw,    iteagle,  bbhcotw,  bbhcotw,  driver_device, 0, ROT0, "Incredible Technologies", "Big Buck Hunter Call of the Wild (v3.02.5)", 0 )
-=======
 GAME( 2000, iteagle,    0,        iteagle,  iteagle,  iteagle_state, 0, ROT0, "Incredible Technologies", "Eagle BIOS", MACHINE_IS_BIOS_ROOT )
 GAME( 1998, virtpool,   iteagle,  virtpool, virtpool, iteagle_state, 0, ROT0, "Incredible Technologies", "Virtual Pool", MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE ) // random lockups on loading screens
 GAME( 2002, carnking,   iteagle,  carnking, bbh,      iteagle_state, 0, ROT0, "Incredible Technologies", "Carnival King (v1.00.11)", MACHINE_SUPPORTS_SAVE )
@@ -696,4 +602,3 @@ GAME( 2005, gtfore06,   iteagle,  gtfore06, iteagle,  iteagle_state, 0, ROT0, "I
 GAME( 2002, bbhsc,      iteagle,  bbhsc,    bbh,      iteagle_state, 0, ROT0, "Incredible Technologies", "Big Buck Hunter - Shooter's Challenge (v1.50.07)", MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE ) // doesn't boot
 GAME( 2002, bbh2sp,     iteagle,  bbh2sp,   bbh,      iteagle_state, 0, ROT0, "Incredible Technologies", "Big Buck Hunter II - Sportsman's Paradise (v2.02.11)", MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE ) // SW51-2 needs to be off
 GAME( 2006, bbhcotw,    iteagle,  bbhcotw,  bbh,      iteagle_state, 0, ROT0, "Incredible Technologies", "Big Buck Hunter Call of the Wild (v3.02.5)", MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE ) // random lockups
->>>>>>> upstream/master

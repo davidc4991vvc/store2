@@ -80,25 +80,11 @@ TODO:
     13/6/2005       WP - Added support for bootstrap rom banking.
 
 ***************************************************************************/
-<<<<<<< HEAD
-#define __MACHINE_GB_C
-=======
->>>>>>> upstream/master
 
 #include "emu.h"
 #include "includes/gb.h"
 
 
-<<<<<<< HEAD
-/* RAM layout defines */
-#define CGB_START_VRAM_BANKS    0x0000
-#define CGB_START_RAM_BANKS ( 2 * 8 * 1024 )
-
-#define JOYPAD      m_gb_io[0x00]   /* Joystick: 1.1.P15.P14.P13.P12.P11.P10       */
-#define SIODATA     m_gb_io[0x01]   /* Serial IO data buffer                       */
-#define SIOCONT     m_gb_io[0x02]   /* Serial IO control register                  */
-#define DIVREG      m_gb_io[0x04]   /* Divider register (???)                      */
-=======
 #define ENABLE_LOGGING 0
 #define LOG(x) do { if (ENABLE_LOGGING) logerror x; } while(0)
 
@@ -110,26 +96,11 @@ TODO:
 #define JOYPAD      m_gb_io[0x00]   /* Joystick: 1.1.P15.P14.P13.P12.P11.P10       */
 #define SIODATA     m_gb_io[0x01]   /* Serial IO data buffer                       */
 #define SIOCONT     m_gb_io[0x02]   /* Serial IO control register                  */
->>>>>>> upstream/master
 #define TIMECNT     m_gb_io[0x05]   /* Timer counter. Gen. int. when it overflows  */
 #define TIMEMOD     m_gb_io[0x06]   /* New value of TimeCount after it overflows   */
 #define TIMEFRQ     m_gb_io[0x07]   /* Timer frequency and start/stop switch       */
 
 
-<<<<<<< HEAD
-
-/*
-  Prototypes
-*/
-
-
-#ifdef MAME_DEBUG
-/* #define V_GENERAL*/      /* Display general debug information */
-/* #define V_BANK*/         /* Display bank switching debug information */
-#endif
-
-=======
->>>>>>> upstream/master
 //-------------------------
 // handle save state
 //-------------------------
@@ -180,12 +151,6 @@ void gb_state::gb_init_regs()
 void gb_state::gb_init()
 {
 	address_space &space = m_maincpu->space(AS_PROGRAM);
-<<<<<<< HEAD
-	m_custom->sound_w(space, 0x16, 0x00);       /* Initialize sound hardware */
-
-	m_divcount = 0;
-	m_triggering_irq = 0;
-=======
 	m_apu->sound_w(space, 0x16, 0x00);       /* Initialize sound hardware */
 
 	m_divcount = 8;
@@ -200,32 +165,17 @@ void gb_state::gb_init()
 	m_gb_io[0x01] = 0x00;
 	m_gb_io[0x02] = 0x7E;
 	m_gb_io[0x03] = 0xFF;
->>>>>>> upstream/master
 	m_gb_io[0x07] = 0xF8;        /* Upper bits of TIMEFRQ register are set to 1 */
 }
 
 
 void gb_state::machine_start()
 {
-<<<<<<< HEAD
-	/* Allocate the serial timer, and disable it */
-	m_gb_serial_timer = machine().scheduler().timer_alloc(timer_expired_delegate(FUNC(gb_state::gb_serial_timer_proc),this));
-	m_gb_serial_timer->enable( 0 );
-
-=======
->>>>>>> upstream/master
 	save_gb_base();
 }
 
 MACHINE_START_MEMBER(gb_state,gbc)
 {
-<<<<<<< HEAD
-	/* Allocate the serial timer, and disable it */
-	m_gb_serial_timer = machine().scheduler().timer_alloc(timer_expired_delegate(FUNC(gb_state::gb_serial_timer_proc),this));
-	m_gb_serial_timer->enable( 0 );
-
-=======
->>>>>>> upstream/master
 	for (int i = 0; i < 8; i++)
 		m_gbc_rammap[i] = m_ram->pointer() + CGB_START_RAM_BANKS + i * 0x1000;
 
@@ -238,21 +188,8 @@ MACHINE_START_MEMBER(gb_state,sgb)
 {
 	m_sgb_packets = -1;
 
-<<<<<<< HEAD
-	/* Allocate the serial timer, and disable it */
-	m_gb_serial_timer = machine().scheduler().timer_alloc(timer_expired_delegate(FUNC(gb_state::gb_serial_timer_proc),this));
-	m_gb_serial_timer->enable( 0 );
-
 	save_gb_base();
 	save_sgb_only();
-
-	if (m_cartslot && m_cartslot->get_sgb_hack()) {
-		dynamic_cast<sgb_lcd_device*>(m_lcd.target())->set_sgb_hack(TRUE);
-	}
-=======
-	save_gb_base();
-	save_sgb_only();
->>>>>>> upstream/master
 }
 
 void gb_state::machine_reset()
@@ -260,13 +197,7 @@ void gb_state::machine_reset()
 	gb_init();
 
 	/* Enable BIOS rom */
-<<<<<<< HEAD
-	m_bios_disable = 0;
-
-	m_divcount = 0x0004;
-=======
 	m_bios_disable = false;
->>>>>>> upstream/master
 }
 
 MACHINE_RESET_MEMBER(gb_state,gbc)
@@ -276,17 +207,10 @@ MACHINE_RESET_MEMBER(gb_state,gbc)
 	gb_init_regs();
 
 	/* Enable BIOS rom */
-<<<<<<< HEAD
-	m_bios_disable = 0;
-
-	for (int i = 0; i < 8; i++)
-		memset(m_gbc_rammap[i], 0, 0x1000);
-=======
 	m_bios_disable = false;
 
 	for (auto & elem : m_gbc_rammap)
 		memset(elem, 0, 0x1000);
->>>>>>> upstream/master
 }
 
 MACHINE_RESET_MEMBER(gb_state,sgb)
@@ -296,23 +220,13 @@ MACHINE_RESET_MEMBER(gb_state,sgb)
 	gb_init_regs();
 
 	/* Enable BIOS rom */
-<<<<<<< HEAD
-	m_bios_disable = 0;
-
-	m_divcount = 0x0004;
-=======
 	m_bios_disable = false;
->>>>>>> upstream/master
 }
 
 
 WRITE8_MEMBER(gb_state::gb_io_w)
 {
-<<<<<<< HEAD
-	static const UINT8 timer_shifts[4] = {10, 4, 6, 8};
-=======
 	static const uint8_t timer_shifts[4] = {10, 4, 6, 8};
->>>>>>> upstream/master
 
 	switch (offset)
 	{
@@ -326,27 +240,6 @@ WRITE8_MEMBER(gb_state::gb_io_w)
 	case 0x01:                      /* SB - Serial transfer data */
 		break;
 	case 0x02:                      /* SC - SIO control */
-<<<<<<< HEAD
-		switch( data & 0x81 )
-		{
-		case 0x00:
-		case 0x01:
-		case 0x80:              /* enabled & external clock */
-			m_sio_count = 0;
-			break;
-		case 0x81:              /* enabled & internal clock */
-			SIODATA = 0xFF;
-			m_sio_count = 8;
-			m_gb_serial_timer->adjust(m_maincpu->cycles_to_attotime(512), 0, m_maincpu->cycles_to_attotime(512));
-			m_gb_serial_timer->enable( 1 );
-			break;
-		}
-		break;
-	case 0x04:                      /* DIV - Divider register */
-		/* Force increment of TIMECNT register */
-		if ( m_divcount >= 16 )
-			gb_timer_increment();
-=======
 		switch (data & 0x81)
 		{
 		case 0x00:
@@ -371,29 +264,18 @@ logerror("SIOCONT write, serial clock is %04x\n", m_internal_serial_clock);
 			gb_timer_increment();
 		}
 		LOG(("DIV write\n"));
->>>>>>> upstream/master
 		m_divcount = 0;
 		return;
 	case 0x05:                      /* TIMA - Timer counter */
 		/* Check if the counter is being reloaded in this cycle */
-<<<<<<< HEAD
-		if ( m_reloading && ( m_divcount & ( m_shift_cycles - 1 ) ) == 4 )
-		{
-			data = TIMECNT;
-=======
 		if ((TIMEFRQ & 0x04) && TIMECNT == TIMEMOD && (m_divcount & (m_shift_cycles - 1)) == 4)
 		{
 			data = TIMEMOD;
->>>>>>> upstream/master
 		}
 		break;
 	case 0x06:                      /* TMA - Timer module */
 		/* Check if the counter is being reloaded in this cycle */
-<<<<<<< HEAD
-		if ( m_reloading && ( m_divcount & ( m_shift_cycles - 1 ) ) == 4 )
-=======
 		if ((TIMEFRQ & 0x04) && TIMECNT == TIMEMOD && (m_divcount & (m_shift_cycles - 1)) == 4)
->>>>>>> upstream/master
 		{
 			TIMECNT = data;
 		}
@@ -401,17 +283,10 @@ logerror("SIOCONT write, serial clock is %04x\n", m_internal_serial_clock);
 	case 0x07:                      /* TAC - Timer control */
 		data |= 0xF8;
 		/* Check if timer is just disabled or the timer frequency is changing */
-<<<<<<< HEAD
-		if ( ( ! ( data & 0x04 ) && ( TIMEFRQ & 0x04 ) ) || ( ( data & 0x04 ) && ( TIMEFRQ & 0x04 ) && ( data & 0x03 ) != ( TIMEFRQ & 0x03 ) ) )
-		{
-			/* Check if TIMECNT should be incremented */
-			if ( ( m_divcount & ( m_shift_cycles - 1 ) ) >= ( m_shift_cycles >> 1 ) )
-=======
 		if ((!(data & 0x04) && (TIMEFRQ & 0x04)) || ((data & 0x04) && (TIMEFRQ & 0x04) && (data & 0x03) != (TIMEFRQ & 0x03)))
 		{
 			/* Check if TIMECNT should be incremented */
 			if ((m_divcount & (m_shift_cycles - 1)) >= (m_shift_cycles >> 1))
->>>>>>> upstream/master
 			{
 				gb_timer_increment();
 			}
@@ -420,15 +295,10 @@ logerror("SIOCONT write, serial clock is %04x\n", m_internal_serial_clock);
 		m_shift_cycles = 1 << m_shift;
 		break;
 	case 0x0F:                      /* IF - Interrupt flag */
-<<<<<<< HEAD
-		data &= 0x1F;
-		m_maincpu->set_if( data );
-=======
 		m_ppu->update_state();
 		LOG(("write if\n"));
 		data &= 0x1F;
 		m_maincpu->set_if(data);
->>>>>>> upstream/master
 		break;
 	}
 
@@ -440,57 +310,15 @@ WRITE8_MEMBER(gb_state::gb_io2_w)
 	if (offset == 0x10)
 	{
 		/* disable BIOS ROM */
-<<<<<<< HEAD
-		m_bios_disable = 1;
-		//printf("here again?\n");
-	}
-	else
-		m_lcd->video_w(space, offset, data);
-=======
 		m_bios_disable = true;
 	}
 	else
 		m_ppu->video_w(space, offset, data);
->>>>>>> upstream/master
 }
 
 #ifdef MAME_DEBUG
 static const char *const sgbcmds[32] =
 {
-<<<<<<< HEAD
-	"PAL01   ",
-	"PAL23   ",
-	"PAL03   ",
-	"PAL12   ",
-	"ATTR_BLK",
-	"ATTR_LIN",
-	"ATTR_DIV",
-	"ATTR_CHR",
-	"SOUND   ",
-	"SOU_TRN ",
-	"PAL_SET ",
-	"PAL_TRN ",
-	"ATRC_EN ",
-	"TEST_EN ",
-	"ICON_EN ",
-	"DATA_SND",
-	"DATA_TRN",
-	"MLT_REG ",
-	"JUMP    ",
-	"CHR_TRN ",
-	"PCT_TRN ",
-	"ATTR_TRN",
-	"ATTR_SET",
-	"MASK_EN ",
-	"OBJ_TRN ",
-	"????????",
-	"????????",
-	"????????",
-	"????????",
-	"????????",
-	"????????",
-	"????????"
-=======
 	/* 0x00 */ "PAL01   ",
 	/* 0x01 */ "PAL23   ",
 	/* 0x02 */ "PAL03   ",
@@ -523,21 +351,14 @@ static const char *const sgbcmds[32] =
 	/* 0x1D */ "????????",
 	/* 0x1E */ "????????",
 	/* 0x1F */ "????????"
->>>>>>> upstream/master
 };
 #endif
 
 WRITE8_MEMBER(gb_state::sgb_io_w)
 {
-<<<<<<< HEAD
-	UINT8 *sgb_data = m_sgb_data;
-
-	switch( offset )
-=======
 	uint8_t *sgb_data = m_sgb_data;
 
 	switch (offset)
->>>>>>> upstream/master
 	{
 		case 0x00:
 			switch (data & 0x30)
@@ -577,16 +398,6 @@ WRITE8_MEMBER(gb_state::sgb_io_w)
 			case 0x20:              /* data false */
 				if (m_sgb_rest)
 				{
-<<<<<<< HEAD
-					if( m_sgb_bytecount == 16 && m_sgb_packets == -1 )
-					{
-#ifdef MAME_DEBUG
-						logerror("SGB: %s (%02X) pkts: %d data: %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X\n",
-								sgbcmds[sgb_data[0] >> 3],sgb_data[0] >> 3, sgb_data[0] & 0x07, sgb_data[1], sgb_data[2], sgb_data[3],
-								sgb_data[4], sgb_data[5], sgb_data[6], sgb_data[7],
-								sgb_data[8], sgb_data[9], sgb_data[10], sgb_data[11],
-								sgb_data[12], sgb_data[13], sgb_data[14], sgb_data[15]);
-=======
 					if (m_sgb_bytecount == 16 && m_sgb_packets == -1)
 					{
 #ifdef MAME_DEBUG
@@ -595,7 +406,6 @@ WRITE8_MEMBER(gb_state::sgb_io_w)
 								sgb_data[4], sgb_data[5], sgb_data[6], sgb_data[7],
 								sgb_data[8], sgb_data[9], sgb_data[10], sgb_data[11],
 								sgb_data[12], sgb_data[13], sgb_data[14], sgb_data[15]));
->>>>>>> upstream/master
 #endif
 						m_sgb_packets = sgb_data[0] & 0x07;
 						m_sgb_start = 0;
@@ -611,22 +421,14 @@ WRITE8_MEMBER(gb_state::sgb_io_w)
 									m_sgb_controller_mode = 2;
 								break;
 							default:
-<<<<<<< HEAD
-								dynamic_cast<sgb_lcd_device*>(m_lcd.target())->sgb_io_write_pal(sgb_data[0] >> 3, &sgb_data[0]);
-=======
 								dynamic_cast<sgb_ppu_device*>(m_ppu.target())->sgb_io_write_pal(sgb_data[0] >> 3, &sgb_data[0]);
->>>>>>> upstream/master
 								break;
 						}
 						m_sgb_start = 0;
 						m_sgb_bytecount = 0;
 						m_sgb_packets = -1;
 					}
-<<<<<<< HEAD
-					if( m_sgb_start )
-=======
 					if (m_sgb_start)
->>>>>>> upstream/master
 					{
 						sgb_data[m_sgb_bytecount] >>= 1;
 						m_sgb_bitcount++;
@@ -654,22 +456,14 @@ WRITE8_MEMBER(gb_state::sgb_io_w)
 					JOYPAD = 0x3F;
 
 				/* Hack to let cartridge know it's running on an SGB */
-<<<<<<< HEAD
-				if ( (sgb_data[0] >> 3) == 0x1F )
-=======
 				if ((sgb_data[0] >> 3) == 0x1F)
->>>>>>> upstream/master
 					JOYPAD = 0x3E;
 				break;
 			}
 			return;
 		default:
 			/* we didn't handle the write, so pass it to the GB handler */
-<<<<<<< HEAD
-			gb_io_w( space, offset, data );
-=======
 			gb_io_w(space, offset, data);
->>>>>>> upstream/master
 			return;
 	}
 
@@ -684,11 +478,7 @@ READ8_MEMBER(gb_state::gb_ie_r)
 
 WRITE8_MEMBER(gb_state::gb_ie_w)
 {
-<<<<<<< HEAD
-	m_maincpu->set_ie( data & 0x1F );
-=======
 	m_maincpu->set_ie(data);
->>>>>>> upstream/master
 }
 
 /* IO read */
@@ -697,12 +487,8 @@ READ8_MEMBER(gb_state::gb_io_r)
 	switch(offset)
 	{
 		case 0x04:
-<<<<<<< HEAD
-			return ( m_divcount >> 8 ) & 0xFF;
-=======
 			LOG(("read DIV, divcount = %04x\n", m_divcount));
 			return (m_divcount >> 8) & 0xFF;
->>>>>>> upstream/master
 		case 0x00:
 		case 0x01:
 		case 0x02:
@@ -713,50 +499,17 @@ READ8_MEMBER(gb_state::gb_io_r)
 			return m_gb_io[offset];
 		case 0x0F:
 			/* Make sure the internal states are up to date */
-<<<<<<< HEAD
-			return 0xE0 | m_maincpu->get_if();
-		default:
-			/* It seems unsupported registers return 0xFF */
-=======
 			m_ppu->update_state();
 			LOG(("read if\n"));
 logerror("IF read, serial clock is %04x\n", m_internal_serial_clock);
 			return 0xE0 | m_maincpu->get_if();
 		default:
 			/* Unsupported registers return 0xFF */
->>>>>>> upstream/master
 			return 0xFF;
 	}
 }
 
 
-<<<<<<< HEAD
-TIMER_CALLBACK_MEMBER(gb_state::gb_serial_timer_proc)
-{
-	/* Shift in a received bit */
-	SIODATA = (SIODATA << 1) | 0x01;
-	/* Decrement number of handled bits */
-	m_sio_count--;
-	/* If all bits done, stop timer and trigger interrupt */
-	if ( ! m_sio_count )
-	{
-		SIOCONT &= 0x7F;
-		m_gb_serial_timer->enable( 0 );
-		m_maincpu->set_input_line(SIO_INT, ASSERT_LINE);
-	}
-}
-
-void gb_state::gb_timer_check_irq()
-{
-	m_reloading = 0;
-	if ( m_triggering_irq )
-	{
-		m_triggering_irq = 0;
-		if ( TIMECNT == 0 )
-		{
-			TIMECNT = TIMEMOD;
-			m_maincpu->set_input_line(TIM_INT, ASSERT_LINE);
-=======
 /* Called when 512 internal cycles are passed */
 void gb_state::gb_serial_timer_tick()
 {
@@ -795,7 +548,6 @@ void gb_state::gb_timer_check_irq()
 			m_maincpu->set_input_line(lr35902_cpu_device::TIM_INT, ASSERT_LINE);
 			// Make sure the state is updated during the current timeslice in case it is read.
 			m_maincpu->execute_set_input(lr35902_cpu_device::TIM_INT, ASSERT_LINE);
->>>>>>> upstream/master
 			m_reloading = 1;
 		}
 	}
@@ -805,33 +557,14 @@ void gb_state::gb_timer_increment()
 {
 	gb_timer_check_irq();
 
-<<<<<<< HEAD
-	TIMECNT += 1;
-	if ( TIMECNT == 0 )
-=======
 	LOG(("increment timer\n"));
 	TIMECNT += 1;
 	if (TIMECNT == 0)
->>>>>>> upstream/master
 	{
 		m_triggering_irq = 1;
 	}
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER( gb_state::gb_timer_callback )
-{
-	UINT16 old_gb_divcount = m_divcount;
-	m_divcount += data;
-
-	gb_timer_check_irq();
-
-	if ( TIMEFRQ & 0x04 )
-	{
-		UINT16 old_count = old_gb_divcount >> m_shift;
-		UINT16 new_count = m_divcount >> m_shift;
-		if ( data > m_shift_cycles )
-=======
 // This gets called while the cpu is executing instructions to keep the timer state in sync
 WRITE8_MEMBER(gb_state::gb_timer_callback)
 {
@@ -850,27 +583,10 @@ WRITE8_MEMBER(gb_state::gb_timer_callback)
 		uint16_t old_count = old_gb_divcount >> m_shift;
 		uint16_t new_count = m_divcount >> m_shift;
 		if (data > m_shift_cycles)
->>>>>>> upstream/master
 		{
 			gb_timer_increment();
 			old_count++;
 		}
-<<<<<<< HEAD
-		if ( new_count != old_count )
-		{
-			gb_timer_increment();
-		}
-		if ( new_count << m_shift < m_divcount )
-		{
-			gb_timer_check_irq();
-		}
-	}
-}
-
-WRITE8_MEMBER(gb_state::gbc_io2_w)
-{
-	switch( offset )
-=======
 		if (new_count != old_count)
 		{
 			gb_timer_increment();
@@ -904,17 +620,12 @@ WRITE8_MEMBER(gb_state::gbc_io_w)
 WRITE8_MEMBER(gb_state::gbc_io2_w)
 {
 	switch (offset)
->>>>>>> upstream/master
 	{
 		case 0x0D:  /* KEY1 - Prepare speed switch */
 			m_maincpu->set_speed(data);
 			return;
 		case 0x10:  /* BFF - Bios disable */
-<<<<<<< HEAD
-			m_bios_disable = 1;
-=======
 			m_bios_disable = true;
->>>>>>> upstream/master
 			return;
 		case 0x16:  /* RP - Infrared port */
 			break;
@@ -927,20 +638,12 @@ WRITE8_MEMBER(gb_state::gbc_io2_w)
 		default:
 			break;
 	}
-<<<<<<< HEAD
-	m_lcd->video_w(space, offset, data);
-=======
 	m_ppu->video_w(space, offset, data);
->>>>>>> upstream/master
 }
 
 READ8_MEMBER(gb_state::gbc_io2_r)
 {
-<<<<<<< HEAD
-	switch( offset )
-=======
 	switch (offset)
->>>>>>> upstream/master
 	{
 	case 0x0D:  /* KEY1 */
 		return m_maincpu->get_speed();
@@ -951,11 +654,7 @@ READ8_MEMBER(gb_state::gbc_io2_r)
 	default:
 		break;
 	}
-<<<<<<< HEAD
-	return m_lcd->video_r(space, offset);
-=======
 	return m_ppu->video_r(space, offset);
->>>>>>> upstream/master
 }
 
 /****************************************************************************
@@ -966,13 +665,6 @@ READ8_MEMBER(gb_state::gbc_io2_r)
 
 MACHINE_START_MEMBER(megaduck_state,megaduck)
 {
-<<<<<<< HEAD
-	/* Allocate the serial timer, and disable it */
-	m_gb_serial_timer = machine().scheduler().timer_alloc(timer_expired_delegate(FUNC(gb_state::gb_serial_timer_proc),this));
-	m_gb_serial_timer->enable( 0 );
-
-=======
->>>>>>> upstream/master
 	save_gb_base();
 }
 
@@ -981,11 +673,7 @@ MACHINE_RESET_MEMBER(megaduck_state,megaduck)
 	/* We may have to add some more stuff here, if not then it can be merged back into gb */
 	gb_init();
 
-<<<<<<< HEAD
-	m_bios_disable = 1;
-=======
 	m_bios_disable = true;
->>>>>>> upstream/master
 }
 
 /*
@@ -1026,23 +714,14 @@ MACHINE_RESET_MEMBER(megaduck_state,megaduck)
 
 READ8_MEMBER(megaduck_state::megaduck_video_r)
 {
-<<<<<<< HEAD
-	UINT8 data;
-=======
 	uint8_t data;
->>>>>>> upstream/master
 
 	if ((offset & 0x0C) && ((offset & 0x0C) ^ 0x0C))
 	{
 		offset ^= 0x0C;
 	}
-<<<<<<< HEAD
-	data = m_lcd->video_r(space, offset);
-	if ( offset )
-=======
 	data = m_ppu->video_r(space, offset);
 	if (offset)
->>>>>>> upstream/master
 		return data;
 	return BITSWAP8(data,7,0,5,4,6,3,2,1);
 }
@@ -1057,18 +736,6 @@ WRITE8_MEMBER(megaduck_state::megaduck_video_w)
 	{
 		offset ^= 0x0C;
 	}
-<<<<<<< HEAD
-	m_lcd->video_w(space, offset, data);
-}
-
-/* Map megaduck audio offset to game boy audio offsets */
-
-static const UINT8 megaduck_sound_offsets[16] = { 0, 2, 1, 3, 4, 6, 5, 7, 8, 9, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F };
-
-WRITE8_MEMBER(megaduck_state::megaduck_sound_w1)
-{
-	m_custom->sound_w(space, megaduck_sound_offsets[offset], data);
-=======
 	m_ppu->video_w(space, offset, data);
 }
 
@@ -1083,62 +750,30 @@ WRITE8_MEMBER(megaduck_state::megaduck_sound_w1)
 		m_apu->sound_w(space, megaduck_sound_offsets[offset], ((data & 0x0f)<<4) | ((data & 0xf0)>>4));
 	else
 		m_apu->sound_w(space, megaduck_sound_offsets[offset], data);
->>>>>>> upstream/master
 }
 
 READ8_MEMBER(megaduck_state::megaduck_sound_r1)
 {
-<<<<<<< HEAD
-	return m_custom->sound_r(space, megaduck_sound_offsets[offset]);
-=======
 	uint8_t data = m_apu->sound_r(space, megaduck_sound_offsets[offset]);
 	if ((offset == 0x01) || (offset == 0x07))
 		return ((data & 0x0f)<<4) | ((data & 0xf0)>>4);
 	else
 		return data;
->>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(megaduck_state::megaduck_sound_w2)
 {
-<<<<<<< HEAD
-	switch(offset)
-	{
-		case 0x00:  m_custom->sound_w(space, 0x10, data); break;
-		case 0x01:  m_custom->sound_w(space, 0x12, data); break;
-		case 0x02:  m_custom->sound_w(space, 0x11, data); break;
-		case 0x03:  m_custom->sound_w(space, 0x13, data); break;
-		case 0x04:  m_custom->sound_w(space, 0x14, data); break;
-		case 0x05:  m_custom->sound_w(space, 0x16, data); break;
-		case 0x06:  m_custom->sound_w(space, 0x15, data); break;
-		case 0x07:
-		case 0x08:
-		case 0x09:
-		case 0x0A:
-		case 0x0B:
-		case 0x0C:
-		case 0x0D:
-		case 0x0E:
-		case 0x0F:
-			break;
-	}
-=======
 	if ((offset == 0x01) || (offset == 0x02))
 		m_apu->sound_w(space, 0x10 + megaduck_sound_offsets[offset], ((data & 0x0f)<<4) | ((data & 0xf0)>>4));
 	else
 		m_apu->sound_w(space, 0x10 + megaduck_sound_offsets[offset], data);
->>>>>>> upstream/master
 }
 
 READ8_MEMBER(megaduck_state::megaduck_sound_r2)
 {
-<<<<<<< HEAD
-	return m_custom->sound_r(space, 0x10 + megaduck_sound_offsets[offset]);
-=======
 	uint8_t data = m_apu->sound_r(space, 0x10 + megaduck_sound_offsets[offset]);
 	if ((offset == 0x01) || (offset == 0x02))
 		return ((data & 0x0f)<<4) | ((data & 0xf0)>>4);
 	else
 		return data;
->>>>>>> upstream/master
 }

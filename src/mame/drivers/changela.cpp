@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-// license:???
-=======
 // license:GPL-2.0+
->>>>>>> upstream/master
 // copyright-holders:Jarek Burczynski, Phil Stroffolino, Tomasz Slanina
 /**************************************************************************
 Change Lanes
@@ -15,12 +11,6 @@ Tomasz Slanina
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/z80/z80.h"
-#include "cpu/m6805/m6805.h"
-#include "sound/ay8910.h"
-#include "includes/changela.h"
-=======
 #include "includes/changela.h"
 
 #include "cpu/z80/z80.h"
@@ -28,7 +18,6 @@ Tomasz Slanina
 #include "machine/watchdog.h"
 #include "sound/ay8910.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 #include "changela.lh"
 
@@ -43,11 +32,8 @@ READ8_MEMBER(changela_state::mcu_r)
 WRITE8_MEMBER(changela_state::mcu_w)
 {
 	m_mcu_in = data;
-<<<<<<< HEAD
-=======
 	if (!BIT(m_port_c_out, 2))
 		m_mcu->pa_w(space, 0, data);
->>>>>>> upstream/master
 }
 
 
@@ -55,58 +41,11 @@ WRITE8_MEMBER(changela_state::mcu_w)
         MCU
 *********************************/
 
-<<<<<<< HEAD
-READ8_MEMBER(changela_state::changela_68705_port_a_r)
-{
-	return (m_port_a_out & m_ddr_a) | (m_port_a_in & ~m_ddr_a);
-}
-
-=======
->>>>>>> upstream/master
 WRITE8_MEMBER(changela_state::changela_68705_port_a_w)
 {
 	m_port_a_out = data;
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER(changela_state::changela_68705_ddr_a_w)
-{
-	m_ddr_a = data;
-}
-
-READ8_MEMBER(changela_state::changela_68705_port_b_r)
-{
-	return (m_port_b_out & m_ddr_b) | (ioport("MCU")->read() & ~m_ddr_b);
-}
-
-WRITE8_MEMBER(changela_state::changela_68705_port_b_w)
-{
-	m_port_b_out = data;
-}
-
-WRITE8_MEMBER(changela_state::changela_68705_ddr_b_w)
-{
-	m_ddr_b = data;
-}
-
-READ8_MEMBER(changela_state::changela_68705_port_c_r)
-{
-	return (m_port_c_out & m_ddr_c) | (m_port_c_in & ~m_ddr_c);
-}
-
-WRITE8_MEMBER(changela_state::changela_68705_port_c_w)
-{
-	/* PC3 is connected to the CLOCK input of the LS374,
-	    so we latch the data on positive going edge of the clock */
-
-/* this is strange because if we do this corectly - it just doesn't work */
-	if ((data & 8) /*& (!(m_port_c_out & 8))*/ )
-		m_mcu_out = m_port_a_out;
-
-	/* PC2 is connected to the /OE input of the LS374 */
-	if (!(data & 4))
-		m_port_a_in = m_mcu_in;
-=======
 WRITE8_MEMBER(changela_state::changela_68705_port_c_w)
 {
 	/* PC3 is connected to the CLOCK input of the LS374, so we latch the data on rising edge */
@@ -116,44 +55,16 @@ WRITE8_MEMBER(changela_state::changela_68705_port_c_w)
 	/* PC2 is connected to the /OE input of the LS374 */
 	if (BIT(data, 2))
 		m_mcu->pa_w(space, 0, BIT(data, 2) ? 0xff : m_mcu_in);
->>>>>>> upstream/master
 
 	m_port_c_out = data;
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER(changela_state::changela_68705_ddr_c_w)
-{
-	m_ddr_c = data;
-}
-
-
-static ADDRESS_MAP_START( mcu_map, AS_PROGRAM, 8, changela_state )
-	ADDRESS_MAP_GLOBAL_MASK(0x7ff)
-	AM_RANGE(0x0000, 0x0000) AM_READWRITE(changela_68705_port_a_r, changela_68705_port_a_w)
-	AM_RANGE(0x0001, 0x0001) AM_READWRITE(changela_68705_port_b_r, changela_68705_port_b_w)
-	AM_RANGE(0x0002, 0x0002) AM_READWRITE(changela_68705_port_c_r, changela_68705_port_c_w)
-
-	AM_RANGE(0x0004, 0x0004) AM_WRITE(changela_68705_ddr_a_w)
-	AM_RANGE(0x0005, 0x0005) AM_WRITE(changela_68705_ddr_b_w)
-	AM_RANGE(0x0006, 0x0006) AM_WRITE(changela_68705_ddr_c_w)
-
-	AM_RANGE(0x0000, 0x007f) AM_RAM
-	AM_RANGE(0x0080, 0x07ff) AM_ROM
-ADDRESS_MAP_END
-
-=======
->>>>>>> upstream/master
 
 
 /* U30 */
 READ8_MEMBER(changela_state::changela_24_r)
 {
-<<<<<<< HEAD
-	return ((m_port_c_out & 2) << 2) | 7;   /* bits 2,1,0-N/C inputs */
-=======
 	return (BIT(m_port_c_out, 1) << 3) | 0x07;   /* bits 2,1,0-N/C inputs */
->>>>>>> upstream/master
 }
 
 READ8_MEMBER(changela_state::changela_25_r)
@@ -172,11 +83,7 @@ READ8_MEMBER(changela_state::changela_31_r)
 	/* If the new value is less than the old value, and it did not wrap around,
 	   or if the new value is greater than the old value, and it did wrap around,
 	   then we are moving LEFT. */
-<<<<<<< HEAD
-	UINT8 curr_value = ioport("WHEEL")->read();
-=======
 	uint8_t curr_value = ioport("WHEEL")->read();
->>>>>>> upstream/master
 
 	if ((curr_value < m_prev_value_31 && (m_prev_value_31 - curr_value) < 0x80)
 	||  (curr_value > m_prev_value_31 && (curr_value - m_prev_value_31) > 0x80))
@@ -212,17 +119,6 @@ READ8_MEMBER(changela_state::changela_2d_r)
 	/* Gas pedal is made up of 2 switches, 1 active low, 1 active high */
 	switch (ioport("IN1")->read() & 0x03)
 	{
-<<<<<<< HEAD
-		case 0x02:
-			gas = 0x80;
-			break;
-		case 0x01:
-			gas = 0x00;
-			break;
-		default:
-			gas = 0x40;
-			break;
-=======
 	case 0x02:
 		gas = 0x80;
 		break;
@@ -232,32 +128,11 @@ READ8_MEMBER(changela_state::changela_2d_r)
 	default:
 		gas = 0x40;
 		break;
->>>>>>> upstream/master
 	}
 
 	return (ioport("IN1")->read() & 0x20) | gas | (v8 << 4);
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER(changela_state::mcu_pc_0_w)
-{
-	m_port_c_in = (m_port_c_in & 0xfe) | (data & 1);
-}
-
-WRITE8_MEMBER(changela_state::changela_collision_reset_0)
-{
-	m_collision_reset = data & 0x01;
-}
-
-WRITE8_MEMBER(changela_state::changela_collision_reset_1)
-{
-	m_tree_collision_reset = data & 0x01;
-}
-
-WRITE8_MEMBER(changela_state::changela_coin_counter_w)
-{
-	coin_counter_w(machine(), offset, data);
-=======
 WRITE_LINE_MEMBER(changela_state::mcu_pc_0_w)
 {
 	m_mcu->pc_w(machine().dummy_space(), 0, 0xfe | state);
@@ -281,7 +156,6 @@ WRITE_LINE_MEMBER(changela_state::coin_counter_1_w)
 WRITE_LINE_MEMBER(changela_state::coin_counter_2_w)
 {
 	machine().bookkeeping().coin_counter_w(1, state);
->>>>>>> upstream/master
 }
 
 
@@ -304,22 +178,11 @@ static ADDRESS_MAP_START( changela_map, AS_PROGRAM, 8, changela_state )
 	AM_RANGE(0xd010, 0xd011) AM_DEVREADWRITE("ay2", ay8910_device, data_r, address_data_w)
 
 	/* LS259 - U44 */
-<<<<<<< HEAD
-	AM_RANGE(0xd020, 0xd020) AM_WRITE(changela_collision_reset_0)
-	AM_RANGE(0xd021, 0xd022) AM_WRITE(changela_coin_counter_w)
-//AM_RANGE(0xd023, 0xd023) AM_WRITENOP
-
-	/* LS139 - U24 */
-	AM_RANGE(0xd024, 0xd024) AM_READWRITE(changela_24_r, mcu_pc_0_w)
-	AM_RANGE(0xd025, 0xd025) AM_READWRITE(changela_25_r, changela_collision_reset_1)
-	AM_RANGE(0xd026, 0xd026) AM_WRITENOP
-=======
 	AM_RANGE(0xd020, 0xd027) AM_DEVWRITE("outlatch", ls259_device, write_d0)
 
 	/* LS139 - U24 */
 	AM_RANGE(0xd024, 0xd024) AM_READ(changela_24_r)
 	AM_RANGE(0xd025, 0xd025) AM_READ(changela_25_r)
->>>>>>> upstream/master
 	AM_RANGE(0xd028, 0xd028) AM_READ(mcu_r)
 	AM_RANGE(0xd02c, 0xd02c) AM_READ(changela_2c_r)
 	AM_RANGE(0xd02d, 0xd02d) AM_READ(changela_2d_r)
@@ -327,11 +190,7 @@ static ADDRESS_MAP_START( changela_map, AS_PROGRAM, 8, changela_state )
 	AM_RANGE(0xd030, 0xd030) AM_READWRITE(changela_30_r, mcu_w)
 	AM_RANGE(0xd031, 0xd031) AM_READ(changela_31_r)
 
-<<<<<<< HEAD
-	AM_RANGE(0xe000, 0xe000) AM_WRITE(watchdog_reset_w) /* Watchdog */
-=======
 	AM_RANGE(0xe000, 0xe000) AM_DEVWRITE("watchdog", watchdog_timer_device, reset_w) /* Watchdog */
->>>>>>> upstream/master
 
 	AM_RANGE(0xf000, 0xf7ff) AM_RAM /* RAM2 (Processor RAM) */
 ADDRESS_MAP_END
@@ -425,11 +284,7 @@ static INPUT_PORTS_START( changela )
 	PORT_DIPNAME( 0x01, 0x01, "Right Slot" )                PORT_DIPLOCATION("SWD:1")
 	PORT_DIPSETTING(    0x01, "On Right (Bottom) Counter" )
 	PORT_DIPSETTING(    0x00, "On Left (Top) Counter" )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x02, 0x02, "Left Slot" )                 PORT_DIPLOCATION("SWD:2")
-=======
 	PORT_DIPNAME( 0x02, 0x00, "Left Slot" )                 PORT_DIPLOCATION("SWD:2")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x02, "On Right (Bottom) Counter" )
 	PORT_DIPSETTING(    0x00, "On Left (Top) Counter" )
 	PORT_DIPNAME( 0x1c, 0x00, "Credits For Bonus" )         PORT_DIPLOCATION("SWD:3,4,5")
@@ -454,22 +309,16 @@ static INPUT_PORTS_START( changela )
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_START2 )
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SERVICE )
 	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_START1 )
-<<<<<<< HEAD
-=======
 #ifdef THREE_STATE_SWITCH
->>>>>>> upstream/master
 	PORT_DIPNAME( 0x30, 0x30, "Self Test Switch" )          PORT_DIPLOCATION("SWT:1,2")
 	//PORT_DIPSETTING(    0x00, "?" )                       /* Not possible, 3-state switch */
 	PORT_DIPSETTING(    0x20, "Free Game" )                 /* "Puts a credit on the game without increasing the coin counter." */
 	PORT_DIPSETTING(    0x10, DEF_STR( Test ) )
 	PORT_DIPSETTING(    0x30, DEF_STR( Off ) )
-<<<<<<< HEAD
-=======
 #else // schematics don't make it clear exactly how this switch is supposed to work
 	PORT_BIT( 0x10, IP_ACTIVE_HIGH, IPT_SERVICE1 ) PORT_NAME("Free Game/Self-Test")
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_UNKNOWN )
 #endif
->>>>>>> upstream/master
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_COIN2 )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_COIN1 )
 
@@ -503,11 +352,7 @@ TIMER_DEVICE_CALLBACK_MEMBER(changela_state::changela_scanline)
 
 INTERRUPT_GEN_MEMBER(changela_state::chl_mcu_irq)
 {
-<<<<<<< HEAD
-	generic_pulse_irq_line(m_mcu, 0, 1);
-=======
 	generic_pulse_irq_line(*m_mcu, 0, 1);
->>>>>>> upstream/master
 }
 
 void changela_state::machine_start()
@@ -522,26 +367,10 @@ void changela_state::machine_start()
 	save_item(NAME(m_tree_on));
 
 	/* mcu */
-<<<<<<< HEAD
-	save_item(NAME(m_port_a_in));
-	save_item(NAME(m_port_a_out));
-	save_item(NAME(m_ddr_a));
-	save_item(NAME(m_port_b_out));
-	save_item(NAME(m_ddr_b));
-	save_item(NAME(m_port_c_in));
-	save_item(NAME(m_port_c_out));
-	save_item(NAME(m_ddr_c));
-
-	save_item(NAME(m_mcu_out));
-	save_item(NAME(m_mcu_in));
-	save_item(NAME(m_mcu_pc_1));
-	save_item(NAME(m_mcu_pc_0));
-=======
 	save_item(NAME(m_port_a_out));
 	save_item(NAME(m_port_c_out));
 	save_item(NAME(m_mcu_out));
 	save_item(NAME(m_mcu_in));
->>>>>>> upstream/master
 
 	/* misc */
 	save_item(NAME(m_tree0_col));
@@ -553,12 +382,9 @@ void changela_state::machine_start()
 	save_item(NAME(m_tree_collision_reset));
 	save_item(NAME(m_prev_value_31));
 	save_item(NAME(m_dir_31));
-<<<<<<< HEAD
-=======
 
 	m_port_a_out = 0xff;
 	m_port_c_out = 0xff;
->>>>>>> upstream/master
 }
 
 void changela_state::machine_reset()
@@ -574,20 +400,6 @@ void changela_state::machine_reset()
 	m_tree_on[1] = 0;
 
 	/* mcu */
-<<<<<<< HEAD
-	m_mcu_pc_1 = 0;
-	m_mcu_pc_0 = 0;
-
-	m_port_a_in = 0;
-	m_port_a_out = 0;
-	m_ddr_a = 0;
-	m_port_b_out = 0;
-	m_ddr_b = 0;
-	m_port_c_in = 0;
-	m_port_c_out = 0;
-	m_ddr_c = 0;
-=======
->>>>>>> upstream/master
 	m_mcu_out = 0;
 	m_mcu_in = 0;
 
@@ -603,22 +415,12 @@ void changela_state::machine_reset()
 	m_dir_31 = 0;
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( changela, changela_state )
-=======
 static MACHINE_CONFIG_START( changela )
->>>>>>> upstream/master
 
 	MCFG_CPU_ADD("maincpu", Z80,5000000)
 	MCFG_CPU_PROGRAM_MAP(changela_map)
 	MCFG_TIMER_DRIVER_ADD_SCANLINE("scantimer", changela_state, changela_scanline, "screen", 0, 1)
 
-<<<<<<< HEAD
-	MCFG_CPU_ADD("mcu", M68705,2500000)
-	MCFG_CPU_PROGRAM_MAP(mcu_map)
-	MCFG_CPU_VBLANK_INT_DRIVER("screen", changela_state, chl_mcu_irq)
-
-=======
 	MCFG_CPU_ADD("mcu", M68705P3, 2500000)
 	MCFG_M68705_PORTB_R_CB(IOPORT("MCU"))
 	MCFG_M68705_PORTA_W_CB(WRITE8(changela_state, changela_68705_port_a_w))
@@ -633,7 +435,6 @@ static MACHINE_CONFIG_START( changela )
 	MCFG_ADDRESSABLE_LATCH_Q5_OUT_CB(WRITELINE(changela_state, collision_reset_1_w))
 
 	MCFG_WATCHDOG_ADD("watchdog")
->>>>>>> upstream/master
 
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE(60)
@@ -667,11 +468,7 @@ ROM_START( changela )
 	ROM_LOAD( "cl22",   0x6000, 0x2000, CRC(796e0abd) SHA1(64dd9fc1f9bc44519a253ef0c02e181dd13904bf) )
 	ROM_LOAD( "cl27",   0xb000, 0x1000, CRC(3668afb8) SHA1(bcfb788baf806edcb129ea9f9dcb1d4260684773) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x10000, "mcu", 0 ) /* 68705U3 */
-=======
 	ROM_REGION( 0x00800, "mcu", 0 ) /* 68705P3 */
->>>>>>> upstream/master
 	ROM_LOAD( "cl38a",  0x0000, 0x800, CRC(b70156ce) SHA1(c5eab8bbd65c4f587426298da4e22f991ce01dde) )
 
 	ROM_REGION( 0x4000, "gfx1", 0 ) /* tile data */
@@ -698,8 +495,4 @@ ROM_START( changela )
 	ROM_LOAD( "cl88",   0x0000, 0x0020, CRC(da4d6625) SHA1(2d9a268973518252eb36f479ab650af8c16c885c) ) /* math train state machine */
 ROM_END
 
-<<<<<<< HEAD
-GAMEL( 1983, changela, 0, changela, changela, driver_device, 0,   ROT180, "Taito Corporation", "Change Lanes", MACHINE_SUPPORTS_SAVE, layout_changela )
-=======
 GAMEL( 1983, changela, 0, changela, changela, changela_state, 0,   ROT180, "Taito Corporation", "Change Lanes", MACHINE_SUPPORTS_SAVE, layout_changela )
->>>>>>> upstream/master

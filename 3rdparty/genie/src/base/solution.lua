@@ -35,10 +35,7 @@
 		sln.blocks         = { }
 		sln.configurations = { }
 		sln.groups         = { }
-<<<<<<< HEAD
-=======
 		sln.importedprojects = { }
->>>>>>> upstream/master
 		return sln
 	end
 

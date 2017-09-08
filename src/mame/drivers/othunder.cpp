@@ -1,9 +1,6 @@
 // license:BSD-3-Clause
 // copyright-holders:David Graves
-<<<<<<< HEAD
-=======
 // thanks-to:Richard Bush
->>>>>>> upstream/master
 /***************************************************************************
 
 Operation Thunderbolt  (Taito)
@@ -117,11 +114,7 @@ Notes:
 
 Operation Thunderbolt operates on hardware very similar to the Taito Z
 system, in particular the game Spacegun. The lightgun hardware in these
-<<<<<<< HEAD
-two (as well as the eerom and calibration process) looks identical.
-=======
 two (as well as the eeprom and calibration process) looks identical.
->>>>>>> upstream/master
 
 The game has 4 separate layers of graphics - one 64x64 tiled scrolling
 background plane of 8x8 tiles, a similar foreground plane, a sprite plane,
@@ -287,25 +280,11 @@ TODO:
   made by 16x8 tiles loses precision due to limitations of drawgfxzoom().
 
 - Schematics show a OBPRI output to control sprite priority. This doesn't seem
-<<<<<<< HEAD
-  to be used however, and isn't hooked up. See othunder_TC0220IOC_w().
-=======
   to be used however, and isn't hooked up. See tc0220ioc_w().
->>>>>>> upstream/master
 
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/z80/z80.h"
-#include "cpu/m68000/m68000.h"
-#include "machine/eepromser.h"
-#include "audio/taitosnd.h"
-#include "sound/2610intf.h"
-#include "sound/flt_vol.h"
-#include "includes/othunder.h"
-#include "includes/taitoipt.h"
-=======
 #include "includes/othunder.h"
 #include "includes/taitoipt.h"
 #include "audio/taitosnd.h"
@@ -317,18 +296,13 @@ TODO:
 #include "sound/flt_vol.h"
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 /***********************************************************
                 INTERRUPTS
 ***********************************************************/
 
-<<<<<<< HEAD
-void othunder_state::update_irq(  )
-=======
 void othunder_state::update_irq()
->>>>>>> upstream/master
 {
 	m_maincpu->set_input_line(6, m_ad_irq ? ASSERT_LINE : CLEAR_LINE);
 	m_maincpu->set_input_line(5, m_vblank_irq ? ASSERT_LINE : CLEAR_LINE);
@@ -365,11 +339,7 @@ void othunder_state::device_timer(emu_timer &timer, device_timer_id id, int para
 		update_irq();
 		break;
 	default:
-<<<<<<< HEAD
-		assert_always(FALSE, "Unknown id in othunder_state::device_timer");
-=======
 		assert_always(false, "Unknown id in othunder_state::device_timer");
->>>>>>> upstream/master
 	}
 }
 
@@ -382,18 +352,8 @@ The eeprom unlock command is different, and the write/clock/reset
 bits are different.
 ******************************************************************/
 
-<<<<<<< HEAD
-WRITE16_MEMBER(othunder_state::othunder_tc0220ioc_w)
-{
-	if (ACCESSING_BITS_0_7)
-	{
-		switch (offset)
-		{
-			case 0x03:
-=======
 WRITE8_MEMBER(othunder_state::eeprom_w)
 {
->>>>>>> upstream/master
 
 /*              0000000x    SOL-1 (gun solenoid)
                 000000x0    SOL-2 (gun solenoid)
@@ -404,24 +364,6 @@ WRITE8_MEMBER(othunder_state::eeprom_w)
                 0x000000    eeprom in data
                 x0000000    eeprom out data  */
 
-<<<<<<< HEAD
-				/* Recoil Piston Motor Status */
-				output_set_value("Player1_Recoil_Piston", data & 0x1 );
-				output_set_value("Player2_Recoil_Piston", (data & 0x2) >>1 );
-
-				if (data & 4)
-					popmessage("OBPRI SET!");
-
-				m_eeprom->di_write((data & 0x40) >> 6);
-				m_eeprom->clk_write((data & 0x20) ? ASSERT_LINE : CLEAR_LINE);
-				m_eeprom->cs_write((data & 0x10) ? ASSERT_LINE : CLEAR_LINE);
-				break;
-
-			default:
-				m_tc0220ioc->write(space, offset, data & 0xff);
-		}
-	}
-=======
 	/* Recoil Piston Motor Status */
 	output().set_value("Player1_Recoil_Piston", data & 0x1 );
 	output().set_value("Player2_Recoil_Piston", (data & 0x2) >>1 );
@@ -440,7 +382,6 @@ WRITE8_MEMBER(othunder_state::coins_w)
 	machine().bookkeeping().coin_lockout_w(1, ~data & 0x02);
 	machine().bookkeeping().coin_counter_w(0, data & 0x04);
 	machine().bookkeeping().coin_counter_w(1, data & 0x08);
->>>>>>> upstream/master
 }
 
 
@@ -448,53 +389,26 @@ WRITE8_MEMBER(othunder_state::coins_w)
             GAME INPUTS
 **********************************************************/
 
-<<<<<<< HEAD
-READ16_MEMBER(othunder_state::othunder_tc0220ioc_r)
-{
-	switch (offset)
-	{
-		case 0x03:
-			return (m_eeprom->do_read() & 1) << 7;
-
-		default:
-			return m_tc0220ioc->read(space, offset);
-	}
-}
-
-=======
->>>>>>> upstream/master
 #define P1X_PORT_TAG     "P1X"
 #define P1Y_PORT_TAG     "P1Y"
 #define P2X_PORT_TAG     "P2X"
 #define P2Y_PORT_TAG     "P2Y"
 #define ROTARY_PORT_TAG  "ROTARY"
 
-<<<<<<< HEAD
-READ16_MEMBER(othunder_state::othunder_lightgun_r)
-=======
 READ16_MEMBER(othunder_state::lightgun_r)
->>>>>>> upstream/master
 {
 	static const char *const portname[4] = { P1X_PORT_TAG, P1Y_PORT_TAG, P2X_PORT_TAG, P2Y_PORT_TAG };
 	return ioport(portname[offset])->read();
 }
 
-<<<<<<< HEAD
-WRITE16_MEMBER(othunder_state::othunder_lightgun_w)
-=======
 WRITE16_MEMBER(othunder_state::lightgun_w)
->>>>>>> upstream/master
 {
 	/* A write starts the A/D conversion. An interrupt will be triggered when
 	   the conversion is complete.
 	   The ADC60808 clock is 512kHz. Conversion takes between 0 and 8 clock
 	   cycles, so would end in a maximum of 15.625us. We'll use 10. */
 
-<<<<<<< HEAD
-	timer_set(attotime::from_usec(10), TIMER_AD_INTERRUPT);
-=======
 	m_ad_interrupt_timer->adjust(attotime::from_usec(10));
->>>>>>> upstream/master
 }
 
 
@@ -507,11 +421,7 @@ WRITE8_MEMBER(othunder_state::sound_bankswitch_w)
 	membank("z80bank")->set_entry(data & 3);
 }
 
-<<<<<<< HEAD
-WRITE16_MEMBER(othunder_state::othunder_sound_w)
-=======
 WRITE16_MEMBER(othunder_state::sound_w)
->>>>>>> upstream/master
 {
 	if (offset == 0)
 		m_tc0140syt->master_port_w(space, 0, data & 0xff);
@@ -519,11 +429,7 @@ WRITE16_MEMBER(othunder_state::sound_w)
 		m_tc0140syt->master_comm_w(space, 0, data & 0xff);
 }
 
-<<<<<<< HEAD
-READ16_MEMBER(othunder_state::othunder_sound_r)
-=======
 READ16_MEMBER(othunder_state::sound_r)
->>>>>>> upstream/master
 {
 	if (offset == 1)
 		return ((m_tc0140syt->master_comm_r(space, 0) & 0xff));
@@ -531,11 +437,7 @@ READ16_MEMBER(othunder_state::sound_r)
 		return 0;
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER(othunder_state::othunder_TC0310FAM_w)
-=======
 WRITE8_MEMBER(othunder_state::tc0310fam_w)
->>>>>>> upstream/master
 {
 	/* there are two TC0310FAM, one for CH1 and one for CH2 from the YM2610. The
 	   PSG output is routed to both chips. */
@@ -571,25 +473,14 @@ WRITE8_MEMBER(othunder_state::tc0310fam_w)
 static ADDRESS_MAP_START( othunder_map, AS_PROGRAM, 16, othunder_state )
 	AM_RANGE(0x000000, 0x07ffff) AM_ROM
 	AM_RANGE(0x080000, 0x08ffff) AM_RAM
-<<<<<<< HEAD
-	AM_RANGE(0x090000, 0x09000f) AM_READWRITE(othunder_tc0220ioc_r, othunder_tc0220ioc_w)
-//  AM_RANGE(0x090006, 0x090007) AM_WRITE(eeprom_w)
-=======
 	AM_RANGE(0x090000, 0x09000f) AM_DEVREADWRITE8("tc0220ioc", tc0220ioc_device, read, write, 0x00ff)
->>>>>>> upstream/master
 //  AM_RANGE(0x09000c, 0x09000d) AM_WRITENOP   /* ?? (keeps writing 0x77) */
 	AM_RANGE(0x100000, 0x100007) AM_DEVREADWRITE("tc0110pcr", tc0110pcr_device, word_r, step1_rbswap_word_w)   /* palette */
 	AM_RANGE(0x200000, 0x20ffff) AM_DEVREADWRITE("tc0100scn", tc0100scn_device, word_r, word_w)    /* tilemaps */
 	AM_RANGE(0x220000, 0x22000f) AM_DEVREADWRITE("tc0100scn", tc0100scn_device, ctrl_word_r, ctrl_word_w)
-<<<<<<< HEAD
-	AM_RANGE(0x300000, 0x300003) AM_READWRITE(othunder_sound_r, othunder_sound_w)
-	AM_RANGE(0x400000, 0x4005ff) AM_RAM AM_SHARE("spriteram")
-	AM_RANGE(0x500000, 0x500007) AM_READWRITE(othunder_lightgun_r, othunder_lightgun_w)
-=======
 	AM_RANGE(0x300000, 0x300003) AM_READWRITE(sound_r, sound_w)
 	AM_RANGE(0x400000, 0x4005ff) AM_RAM AM_SHARE("spriteram")
 	AM_RANGE(0x500000, 0x500007) AM_READWRITE(lightgun_r, lightgun_w)
->>>>>>> upstream/master
 	AM_RANGE(0x600000, 0x600003) AM_WRITE(irq_ack_w)
 ADDRESS_MAP_END
 
@@ -603,11 +494,7 @@ static ADDRESS_MAP_START( z80_sound_map, AS_PROGRAM, 8, othunder_state )
 	AM_RANGE(0xe000, 0xe003) AM_DEVREADWRITE("ymsnd", ym2610_device, read, write)
 	AM_RANGE(0xe200, 0xe200) AM_READNOP AM_DEVWRITE("tc0140syt", tc0140syt_device, slave_port_w)
 	AM_RANGE(0xe201, 0xe201) AM_DEVREADWRITE("tc0140syt", tc0140syt_device, slave_comm_r, slave_comm_w)
-<<<<<<< HEAD
-	AM_RANGE(0xe400, 0xe403) AM_WRITE(othunder_TC0310FAM_w) /* pan */
-=======
 	AM_RANGE(0xe400, 0xe403) AM_WRITE(tc0310fam_w) /* pan */
->>>>>>> upstream/master
 	AM_RANGE(0xe600, 0xe600) AM_WRITENOP /* ? */
 	AM_RANGE(0xea00, 0xea00) AM_READ_PORT(ROTARY_PORT_TAG)  /* rotary input */
 	AM_RANGE(0xee00, 0xee00) AM_WRITENOP /* ? */
@@ -715,12 +602,9 @@ static INPUT_PORTS_START( othundu )
 	PORT_DIPNAME( 0x40, 0x40, DEF_STR( Continue_Price ) )        /* see notes */
 	PORT_DIPSETTING(    0x00, DEF_STR( 1C_1C ) )
 	PORT_DIPSETTING(    0x40, "Same as Start" )
-<<<<<<< HEAD
-=======
 	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Language ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( English ) )
 	PORT_DIPSETTING(    0x80, DEF_STR( Japanese ) )
->>>>>>> upstream/master
 INPUT_PORTS_END
 
 
@@ -757,22 +641,6 @@ static GFXDECODE_START( othunder )
 GFXDECODE_END
 
 
-<<<<<<< HEAD
-
-/**************************************************************
-                 YM2610 (SOUND)
-**************************************************************/
-
-/* handler called by the YM2610 emulator when the internal timers cause an IRQ */
-WRITE_LINE_MEMBER(othunder_state::irqhandler)
-{
-	m_audiocpu->set_input_line(0, state ? ASSERT_LINE : CLEAR_LINE);
-}
-
-
-
-=======
->>>>>>> upstream/master
 /***********************************************************
                  MACHINE DRIVERS
 ***********************************************************/
@@ -781,11 +649,8 @@ void othunder_state::machine_start()
 {
 	membank("z80bank")->configure_entries(0, 4, memregion("audiocpu")->base(), 0x4000);
 
-<<<<<<< HEAD
-=======
 	m_ad_interrupt_timer = timer_alloc(TIMER_AD_INTERRUPT);
 
->>>>>>> upstream/master
 	save_item(NAME(m_vblank_irq));
 	save_item(NAME(m_ad_irq));
 	save_item(NAME(m_pan));
@@ -797,21 +662,13 @@ void othunder_state::machine_reset()
 	m_ad_irq = 0;
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( othunder, othunder_state )
-=======
 static MACHINE_CONFIG_START( othunder )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 //  MCFG_CPU_ADD("maincpu", M68000, 24000000/2 )   /* 12 MHz */
 	MCFG_CPU_ADD("maincpu", M68000, 13000000 )  /* fixes garbage graphics on startup */
 	MCFG_CPU_PROGRAM_MAP(othunder_map)
-<<<<<<< HEAD
-	MCFG_CPU_VBLANK_INT_DRIVER("screen", othunder_state,  vblank_interrupt)
-=======
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", othunder_state, vblank_interrupt)
->>>>>>> upstream/master
 
 	MCFG_CPU_ADD("audiocpu", Z80,16000000/4 )   /* 4 MHz */
 	MCFG_CPU_PROGRAM_MAP(z80_sound_map)
@@ -823,13 +680,9 @@ static MACHINE_CONFIG_START( othunder )
 	MCFG_TC0220IOC_READ_0_CB(IOPORT("DSWA"))
 	MCFG_TC0220IOC_READ_1_CB(IOPORT("DSWB"))
 	MCFG_TC0220IOC_READ_2_CB(IOPORT("IN0"))
-<<<<<<< HEAD
-	MCFG_TC0220IOC_READ_3_CB(IOPORT("IN1"))
-=======
 	MCFG_TC0220IOC_READ_3_CB(DEVREADLINE("eeprom", eeprom_serial_93cxx_device, do_read)) MCFG_DEVCB_BIT(7)
 	MCFG_TC0220IOC_WRITE_3_CB(WRITE8(othunder_state, eeprom_w))
 	MCFG_TC0220IOC_WRITE_4_CB(WRITE8(othunder_state, coins_w))
->>>>>>> upstream/master
 	MCFG_TC0220IOC_READ_7_CB(IOPORT("IN2"))
 
 	/* video hardware */
@@ -838,11 +691,7 @@ static MACHINE_CONFIG_START( othunder )
 	MCFG_SCREEN_VBLANK_TIME(ATTOSECONDS_IN_USEC(0))
 	MCFG_SCREEN_SIZE(40*8, 32*8)
 	MCFG_SCREEN_VISIBLE_AREA(0*8, 40*8-1, 2*8, 32*8-1)
-<<<<<<< HEAD
-	MCFG_SCREEN_UPDATE_DRIVER(othunder_state, screen_update_othunder)
-=======
 	MCFG_SCREEN_UPDATE_DRIVER(othunder_state, screen_update)
->>>>>>> upstream/master
 	MCFG_SCREEN_PALETTE("palette")
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", othunder)
@@ -862,11 +711,7 @@ static MACHINE_CONFIG_START( othunder )
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
 	MCFG_SOUND_ADD("ymsnd", YM2610, 16000000/2)
-<<<<<<< HEAD
-	MCFG_YM2610_IRQ_HANDLER(WRITELINE(othunder_state, irqhandler))
-=======
 	MCFG_YM2610_IRQ_HANDLER(INPUTLINE("audiocpu", 0))
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(0, "2610.0l", 0.25)
 	MCFG_SOUND_ROUTE(0, "2610.0r", 0.25)
 	MCFG_SOUND_ROUTE(1, "2610.1l", 1.0)
@@ -900,8 +745,6 @@ MACHINE_CONFIG_END
 
 ROM_START( othunder )
 	ROM_REGION( 0x80000, "maincpu", 0 ) /* 512K for 68000 code */
-<<<<<<< HEAD
-=======
 	ROM_LOAD16_BYTE( "b67-20-1.ic63", 0x00000, 0x20000, CRC(851a453b) SHA1(48b8c379e78cd79463f1e24dc23816a97cf819b8) )
 	ROM_LOAD16_BYTE( "b67-23-1.ic64", 0x00001, 0x20000, CRC(6e4f3d56) SHA1(99a29c0cbea0aea42355a036aa7f2174ca997872) )
 	ROM_LOAD16_BYTE( "b67-14.ic61",   0x40000, 0x20000, CRC(7f3dd724) SHA1(2f2eeae0ee31e20082237b9a947c6848771eb73c) )
@@ -940,7 +783,6 @@ ROM_END
 
 ROM_START( othundero )
 	ROM_REGION( 0x80000, "maincpu", 0 ) /* 512K for 68000 code */
->>>>>>> upstream/master
 	ROM_LOAD16_BYTE( "b67-20.ic63",   0x00000, 0x20000, CRC(21439ea2) SHA1(d5b5a194e9698cf43513c0d56146772e8132ab07) )
 	ROM_LOAD16_BYTE( "b67-23.ic64",   0x00001, 0x20000, CRC(789e9daa) SHA1(15bb0eec68aeea0b9f55889566338c9ce0ac9b5e) )
 	ROM_LOAD16_BYTE( "b67-14.ic61",   0x40000, 0x20000, CRC(7f3dd724) SHA1(2f2eeae0ee31e20082237b9a947c6848771eb73c) )
@@ -1091,14 +933,6 @@ ROM_START( othunderj )
 	ROM_LOAD16_WORD( "93c46_eeprom-othunder.ic86", 0x0000, 0x0080, CRC(3729b844) SHA1(f6bb41d293d1e47214f8b2d147991404f3278ebf) )
 ROM_END
 
-<<<<<<< HEAD
-
-
-GAME( 1988, othunder,   0,        othunder, othunder, driver_device, 0, ORIENTATION_FLIP_X, "Taito Corporation Japan", "Operation Thunderbolt (World)", MACHINE_SUPPORTS_SAVE )
-GAME( 1988, othunderu,  othunder, othunder, othundu, driver_device,  0, ORIENTATION_FLIP_X, "Taito America Corporation", "Operation Thunderbolt (US)", MACHINE_SUPPORTS_SAVE )
-GAME( 1988, othunderuo, othunder, othunder, othundu, driver_device,  0, ORIENTATION_FLIP_X, "Taito America Corporation", "Operation Thunderbolt (US, older)", MACHINE_SUPPORTS_SAVE )
-GAME( 1988, othunderj,  othunder, othunder, othundrj, driver_device, 0, ORIENTATION_FLIP_X, "Taito Corporation", "Operation Thunderbolt (Japan)", MACHINE_SUPPORTS_SAVE )
-=======
 ROM_START( othunderjsc ) // SC stands for Shopping Center. It was put in a smaller, single player cabinet aimed at children
 	ROM_REGION( 0x80000, "maincpu", 0 ) /* 512K for 68000 code */
 	ROM_LOAD16_BYTE( "b67-24.ic63",   0x00000, 0x20000, CRC(18670e0b) SHA1(d848623046905471e3f859db6f179e1e4b3e4d51) ) // 27C1001
@@ -1143,4 +977,3 @@ GAME( 1988, othunderu,   othunder, othunder, othundu,  othunder_state, 0, ORIENT
 GAME( 1988, othunderuo,  othunder, othunder, othundu,  othunder_state, 0, ORIENTATION_FLIP_X, "Taito America Corporation", "Operation Thunderbolt (US)",           MACHINE_SUPPORTS_SAVE )
 GAME( 1988, othunderj,   othunder, othunder, othundrj, othunder_state, 0, ORIENTATION_FLIP_X, "Taito Corporation",         "Operation Thunderbolt (Japan)",        MACHINE_SUPPORTS_SAVE )
 GAME( 1988, othunderjsc, othunder, othunder, othundrj, othunder_state, 0, ORIENTATION_FLIP_X, "Taito Corporation",         "Operation Thunderbolt (Japan, SC)",     MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

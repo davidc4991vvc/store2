@@ -11,21 +11,6 @@
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-#ifndef __H83002_H__
-#define __H83002_H__
-
-#include "h8h.h"
-#include "h8_adc.h"
-#include "h8_port.h"
-#include "h8_intc.h"
-#include "h8_sci.h"
-#include "h8_timer16.h"
-
-class h83002_device : public h8h_device {
-public:
-	h83002_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-=======
 #ifndef MAME_CPU_H8_H83002_H
 #define MAME_CPU_H8_H83002_H
 
@@ -51,16 +36,10 @@ public:
 
 	template<class _Object> static devcb_base &set_tend0_callback(device_t &device, _Object object) { return downcast<h83002_device&>(device).tend0_cb.set_callback(object); }
 	template<class _Object> static devcb_base &set_tend1_callback(device_t &device, _Object object) { return downcast<h83002_device&>(device).tend1_cb.set_callback(object); }
->>>>>>> upstream/master
 
 	DECLARE_READ8_MEMBER(syscr_r);
 	DECLARE_WRITE8_MEMBER(syscr_w);
 
-<<<<<<< HEAD
-protected:
-	required_device<h8h_intc_device> intc;
-	required_device<h8_adc_device> adc;
-=======
 	DECLARE_READ8_MEMBER(rtmcsr_r);
 	DECLARE_WRITE8_MEMBER(rtmcsr_w);
 
@@ -70,7 +49,6 @@ protected:
 	optional_device<h8_dma_device> dma;
 	optional_device<h8_dma_channel_device> dma0;
 	optional_device<h8_dma_channel_device> dma1;
->>>>>>> upstream/master
 	required_device<h8_port_device> port4;
 	required_device<h8_port_device> port6;
 	required_device<h8_port_device> port7;
@@ -86,27 +64,6 @@ protected:
 	required_device<h8h_timer16_channel_device> timer16_4;
 	required_device<h8_sci_device> sci0;
 	required_device<h8_sci_device> sci1;
-<<<<<<< HEAD
-
-	UINT8 syscr;
-
-	virtual void update_irq_filter();
-	virtual void interrupt_taken();
-	virtual int trapa_setup();
-	virtual void irq_setup();
-	virtual void internal_update(UINT64 current_time);
-	virtual machine_config_constructor device_mconfig_additions() const;
-	DECLARE_ADDRESS_MAP(map, 16);
-
-	virtual void device_start();
-	virtual void device_reset();
-	virtual void execute_set_input(int inputnum, int state);
-};
-
-extern const device_type H83002;
-
-#endif
-=======
 	required_device<h8_watchdog_device> watchdog;
 
 	uint8_t syscr;
@@ -130,4 +87,3 @@ extern const device_type H83002;
 DECLARE_DEVICE_TYPE(H83002, h83002_device)
 
 #endif // MAME_CPU_H8_H83002_H
->>>>>>> upstream/master

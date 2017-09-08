@@ -363,60 +363,13 @@ NOTE: There are several unpopulated locations (denoted by *) for additional rom 
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-=======
 #include "includes/deco32.h"
 
->>>>>>> upstream/master
 #include "cpu/z80/z80.h"
 #include "cpu/arm/arm.h"
 #include "cpu/h6280/h6280.h"
 #include "cpu/m6809/m6809.h"
 #include "cpu/z80/z80.h"
-<<<<<<< HEAD
-#include "includes/decocrpt.h"
-#include "includes/deco32.h"
-#include "sound/2151intf.h"
-
-/**********************************************************************************/
-
-
-TIMER_DEVICE_CALLBACK_MEMBER(deco32_state::interrupt_gen)
-{
-	m_maincpu->set_input_line(ARM_IRQ_LINE, HOLD_LINE);
-}
-
-READ32_MEMBER(deco32_state::irq_controller_r)
-{
-	int vblank;
-
-	switch (offset)
-	{
-	case 2: /* Raster IRQ ACK - value read is not used */
-		m_maincpu->set_input_line(ARM_IRQ_LINE, CLEAR_LINE);
-		return 0;
-
-	case 3: /* Irq controller
-
-        Bit 0:  1 = Vblank active
-        Bit 1:  ? (Hblank active?  Captain America raster IRQ waits for this to go low)
-        Bit 2:
-        Bit 3:
-        Bit 4:  VBL Irq
-        Bit 5:  Raster IRQ
-        Bit 6:  Lightgun IRQ (on Lock N Load only)
-        Bit 7:
-        */
-
-		/* ZV03082007 - video_screen_get_vblank() doesn't work for Captain America, as it expects
-		   that this bit is NOT set in rows 0-7. */
-		vblank = m_screen->vpos() > m_screen->visible_area().max_y;
-		if (vblank)
-			return 0xffffff80 | 0x1 | 0x10; /* Assume VBL takes priority over possible raster/lightgun irq */
-
-		return 0xffffff80 | vblank | ((m_irq_source) ? 0x40 : 0x20);
-//      return 0xffffff80 | vblank | (0x40); //test for lock load guns
-=======
 #include "machine/decocrpt.h"
 #include "machine/deco156.h"
 #include "speaker.h"
@@ -469,7 +422,6 @@ READ32_MEMBER(deco32_state::irq_controller_r)
 			bool const hvblank(m_screen->vblank() && m_screen->hblank());
 			return 0xffffff80 | (hvblank ? 1 : 0) | (m_screen->vblank() ? 2 : 0) | m_irq_cause;
 		}
->>>>>>> upstream/master
 	}
 
 	logerror("%08x: Unmapped IRQ read %08x (%08x)\n",space.device().safe_pc(),offset,mem_mask);
@@ -487,17 +439,6 @@ WRITE32_MEMBER(deco32_state::irq_controller_w)
 		break;
 
 	case 1: /* Raster IRQ scanline position, only valid for values between 1 & 239 (0 and 240-256 do NOT generate IRQ's) */
-<<<<<<< HEAD
-		scanline=(data&0xff);
-		if (m_raster_enable && scanline>0 && scanline<240)
-		{
-			m_raster_irq_timer->adjust(m_screen->time_until_pos(scanline-1, 0));
-		}
-		else
-			m_raster_irq_timer->reset();
-		break;
-	case 2: /* VBL irq ack */
-=======
 	{
 		scanline=(data&0xff);
 
@@ -511,25 +452,10 @@ WRITE32_MEMBER(deco32_state::irq_controller_w)
 	}
 	case 2: /* VBL irq ack */
 		update_irq_state(VBLANK_IRQ,false);
->>>>>>> upstream/master
 		break;
 	}
 }
 
-<<<<<<< HEAD
-WRITE32_MEMBER(deco32_state::sound_w)
-{
-	soundlatch_byte_w(space,0,data & 0xff);
-	m_audiocpu->set_input_line(0, HOLD_LINE);
-}
-
-void deco32_state::deco32_sound_cb( address_space &space, UINT16 data, UINT16 mem_mask )
-{
-	soundlatch_byte_w(space,0,data & 0xff);
-	m_audiocpu->set_input_line(0, HOLD_LINE);
-}
-
-=======
 // TODO: probably clears both player 1 and player 2
 WRITE32_MEMBER(dragngun_state::gun_irq_ack_w)
 {
@@ -561,7 +487,6 @@ void deco32_state::deco32_set_audio_output(uint8_t raw_data)
 	//popmessage("%02x %02x %f",raw_data,raw_vol,vol_output);
 }
 
->>>>>>> upstream/master
 READ32_MEMBER(deco32_state::_71_r)
 {
 	/* Bit 0x80 goes high when sprite DMA is complete, and low
@@ -587,10 +512,7 @@ READ32_MEMBER(deco32_state::fghthist_control_r)
 	return 0xffffffff;
 }
 
-<<<<<<< HEAD
-=======
 
->>>>>>> upstream/master
 WRITE32_MEMBER(deco32_state::fghthist_eeprom_w)
 {
 	if (ACCESSING_BITS_0_7) {
@@ -600,17 +522,11 @@ WRITE32_MEMBER(deco32_state::fghthist_eeprom_w)
 
 		pri_w(space,0,data&0x1,0xffffffff); /* Bit 0 - layer priority toggle */
 	}
-<<<<<<< HEAD
-	else if (!ACCESSING_BITS_8_15)
-	{
-		// Volume port
-=======
 
 	if (ACCESSING_BITS_8_15)
 	{
 		// Volume port
 		deco32_set_audio_output((data >> 8) & 0xff);
->>>>>>> upstream/master
 	}
 }
 
@@ -624,15 +540,6 @@ READ32_MEMBER(dragngun_state::service_r)
 	return ioport("IN2")->read();
 }
 
-<<<<<<< HEAD
-READ32_MEMBER(dragngun_state::lockload_gun_mirror_r)
-{
-//logerror("%08x:Read gun %d\n",space.device().safe_pc(),offset);
-//return ((machine().rand()%0xffff)<<16) | machine().rand()%0xffff;
-	if (offset) /* Mirror of player 1 and player 2 fire buttons */
-		return ioport("IN4")->read() | ((machine().rand()%0xff)<<16);
-	return ioport("IN3")->read() | ioport("LIGHT0_X")->read() | (ioport("LIGHT0_X")->read()<<16) | (ioport("LIGHT0_X")->read()<<24); //((machine().rand()%0xff)<<16);
-=======
 // TODO: improve this, Y axis not understood at all
 READ32_MEMBER(dragngun_state::lockload_gun_mirror_r)
 {
@@ -648,7 +555,6 @@ READ32_MEMBER(dragngun_state::lockload_gun_mirror_r)
 	}
 
 	return ~0;
->>>>>>> upstream/master
 }
 
 READ32_MEMBER(dragngun_state::lightgun_r)
@@ -693,15 +599,8 @@ WRITE32_MEMBER(dragngun_state::eeprom_w)
 
 WRITE32_MEMBER(deco32_state::tattass_control_w)
 {
-<<<<<<< HEAD
-	address_space &eeprom_space = m_eeprom->space();
-
-	/* Eprom in low byte */
-	if (mem_mask==0x000000ff) { /* Byte write to low byte only (different from word writing including low byte) */
-=======
 	/* Eprom in low byte */
 	if (ACCESSING_BITS_0_7) { /* Byte write to low byte only (different from word writing including low byte) */
->>>>>>> upstream/master
 		/*
 		    The Tattoo Assassins eprom seems strange...  It's 1024 bytes in size, and 8 bit
 		    in width, but offers a 'multiple read' mode where a bit stream can be read
@@ -748,11 +647,7 @@ WRITE32_MEMBER(deco32_state::tattass_control_w)
 				int d=m_readBitCount/8;
 				int m=7-(m_readBitCount%8);
 				int a=(m_byteAddr+d)%1024;
-<<<<<<< HEAD
-				int b=eeprom_space.read_byte(a);
-=======
 				int b=m_eeprom->internal_read(a);
->>>>>>> upstream/master
 
 				m_tattass_eprom_bit=(b>>m)&1;
 
@@ -769,11 +664,7 @@ WRITE32_MEMBER(deco32_state::tattass_control_w)
 					int b=(m_buffer[24]<<7)|(m_buffer[25]<<6)|(m_buffer[26]<<5)|(m_buffer[27]<<4)
 						|(m_buffer[28]<<3)|(m_buffer[29]<<2)|(m_buffer[30]<<1)|(m_buffer[31]<<0);
 
-<<<<<<< HEAD
-					eeprom_space.write_byte(m_byteAddr, b);
-=======
 					m_eeprom->internal_write(m_byteAddr, b);
->>>>>>> upstream/master
 				}
 				m_lastClock=data&0x20;
 				return;
@@ -788,11 +679,7 @@ WRITE32_MEMBER(deco32_state::tattass_control_w)
 
 				/* Check for read command */
 				if (m_buffer[0] && m_buffer[1]) {
-<<<<<<< HEAD
-					m_tattass_eprom_bit=(eeprom_space.read_byte(m_byteAddr)>>7)&1;
-=======
 					m_tattass_eprom_bit=(m_eeprom->internal_read(m_byteAddr)>>7)&1;
->>>>>>> upstream/master
 					m_readBitCount=1;
 					m_pendingCommand=1;
 				}
@@ -814,22 +701,12 @@ WRITE32_MEMBER(deco32_state::tattass_control_w)
 		}
 
 		m_lastClock=data&0x20;
-<<<<<<< HEAD
-		return;
-	}
-
-	/* Volume in high byte */
-	if (mem_mask==0x0000ff00) {
-		//TODO:  volume attenuation == ((data>>8)&0xff);
-		return;
-=======
 	}
 
 	/* Volume in high byte */
 	if (ACCESSING_BITS_8_15) {
 		//TODO:  volume attenuation == ((data>>8)&0xff);
 		// TODO: is it really there?
->>>>>>> upstream/master
 	}
 
 	/* Playfield control - Only written in full word memory accesses */
@@ -851,40 +728,20 @@ WRITE32_MEMBER(deco32_state::tattass_control_w)
 /**********************************************************************************/
 
 
-<<<<<<< HEAD
-UINT16 deco32_state::port_b_nslasher(int unused)
-{
-	return (m_eeprom->do_read());
-}
-
-void deco32_state::nslasher_sound_cb( address_space &space, UINT16 data, UINT16 mem_mask )
-{
-	/* bit 1 of nslasher_sound_irq specifies IRQ command writes */
-	soundlatch_byte_w(space,0,(data)&0xff);
-=======
 void deco32_state::nslasher_sound_cb( address_space &space, uint16_t data, uint16_t mem_mask )
 {
 	/* bit 1 of nslasher_sound_irq specifies IRQ command writes */
 	m_soundlatch->write(space,0,(data)&0xff);
->>>>>>> upstream/master
 	m_nslasher_sound_irq |= 0x02;
 	m_audiocpu->set_input_line(0, (m_nslasher_sound_irq != 0) ? ASSERT_LINE : CLEAR_LINE);
 }
 
-<<<<<<< HEAD
-UINT16 deco32_state::port_b_tattass(int unused)
-=======
 READ16_MEMBER(deco32_state::port_b_tattass)
->>>>>>> upstream/master
 {
 	return m_tattass_eprom_bit;
 }
 
-<<<<<<< HEAD
-void deco32_state::tattass_sound_cb( address_space &space, UINT16 data, UINT16 mem_mask )
-=======
 void deco32_state::tattass_sound_cb( address_space &space, uint16_t data, uint16_t mem_mask )
->>>>>>> upstream/master
 {
 	/* 'Swap bits 0 and 3 to correct for design error from BSMT schematic' */
 	int soundcommand = (data)&0xff;
@@ -902,13 +759,10 @@ WRITE32_MEMBER(deco32_state::nslasher_eeprom_w)
 
 		pri_w(space,0,data&0x3,0xffffffff); /* Bit 0 - layer priority toggle, Bit 1 - BG2/3 Joint mode (8bpp) */
 	}
-<<<<<<< HEAD
-=======
 
 //  popmessage("%08x",data);
 	if (ACCESSING_BITS_8_15)
 		deco32_set_audio_output((data >> 8) & 0xff);
->>>>>>> upstream/master
 }
 
 
@@ -995,27 +849,16 @@ ADDRESS_MAP_END
 
 READ32_MEMBER( deco32_state::fghthist_protection_region_0_146_r )
 {
-<<<<<<< HEAD
-	UINT32 retdata = 0x0000ffff;
-
-	if (mem_mask & 0xffff0000)
-=======
 	uint32_t retdata = 0x0000ffff;
 
 	if (ACCESSING_BITS_16_31)
->>>>>>> upstream/master
 	{
 		mem_mask >>=16;
 
 		int real_address = 0 + (offset *2);
 		int deco146_addr = BITSWAP32(real_address, /* NC */31,30,29,28,27,26,25,24,23,22,21,20,19,18, 13,12,11,/**/      17,16,15,14,   10,9,8,7,6,5,4,3,2,1,   0) & 0x7fff;
-<<<<<<< HEAD
-		UINT8 cs = 0;
-		UINT16 data = m_deco146->read_data( deco146_addr, mem_mask, cs );
-=======
 		uint8_t cs = 0;
 		uint16_t data = m_deco146->read_data( deco146_addr, mem_mask, cs );
->>>>>>> upstream/master
 
 
 
@@ -1026,22 +869,14 @@ READ32_MEMBER( deco32_state::fghthist_protection_region_0_146_r )
 
 WRITE32_MEMBER( deco32_state::fghthist_protection_region_0_146_w )
 {
-<<<<<<< HEAD
-	if (mem_mask & 0xffff0000)
-=======
 	if (ACCESSING_BITS_16_31)
->>>>>>> upstream/master
 	{
 		data >>=16;
 		mem_mask >>=16;
 
 		int real_address = 0 + (offset *2);
 		int deco146_addr = BITSWAP32(real_address, /* NC */31,30,29,28,27,26,25,24,23,22,21,20,19,18, 13,12,11,/**/      17,16,15,14,    10,9,8,7,6,5,4,3,2,1,   0) & 0x7fff;
-<<<<<<< HEAD
-		UINT8 cs = 0;
-=======
 		uint8_t cs = 0;
->>>>>>> upstream/master
 		m_deco146->write_data( space, deco146_addr, data, mem_mask, cs );
 	}
 }
@@ -1116,13 +951,8 @@ READ16_MEMBER( deco32_state::dg_protection_region_0_146_r )
 {
 	int real_address = 0 + (offset *2);
 	int deco146_addr = BITSWAP32(real_address, /* NC */31,30,29,28,27,26,25,24,23,22,21,20,19,18, 13,12,11,/**/      17,16,15,14,    10,9,8, 7,6,5,4, 3,2,1,0) & 0x7fff;
-<<<<<<< HEAD
-	UINT8 cs = 0;
-	UINT16 data = m_deco146->read_data( deco146_addr, mem_mask, cs );
-=======
 	uint8_t cs = 0;
 	uint16_t data = m_deco146->read_data( deco146_addr, mem_mask, cs );
->>>>>>> upstream/master
 	return data;
 }
 
@@ -1130,11 +960,7 @@ WRITE16_MEMBER( deco32_state::dg_protection_region_0_146_w )
 {
 	int real_address = 0 + (offset *2);
 	int deco146_addr = BITSWAP32(real_address, /* NC */31,30,29,28,27,26,25,24,23,22,21,20,19,18, 13,12,11,/**/      17,16,15,14,    10,9,8, 7,6,5,4, 3,2,1,0) & 0x7fff;
-<<<<<<< HEAD
-	UINT8 cs = 0;
-=======
 	uint8_t cs = 0;
->>>>>>> upstream/master
 	m_deco146->write_data( space, deco146_addr, data, mem_mask, cs );
 }
 
@@ -1221,11 +1047,7 @@ static ADDRESS_MAP_START( lockload_map, AS_PROGRAM, 32, dragngun_state )
 	AM_RANGE(0x138008, 0x13800b) AM_WRITE(palette_dma_w)
 
 	AM_RANGE(0x170000, 0x170007) AM_READ(lockload_gun_mirror_r) /* Not on Dragongun */
-<<<<<<< HEAD
-	AM_RANGE(0x178008, 0x17800f) AM_WRITENOP /* Gun read ACK's */
-=======
 	AM_RANGE(0x178008, 0x17800f) AM_WRITE(gun_irq_ack_w) /* Gun read ACK's */
->>>>>>> upstream/master
 
 	AM_RANGE(0x180000, 0x18001f) AM_DEVREADWRITE("tilegen1", deco16ic_device, pf_control_dword_r, pf_control_dword_w)
 	AM_RANGE(0x190000, 0x191fff) AM_DEVREADWRITE("tilegen1", deco16ic_device, pf1_data_dword_r, pf1_data_dword_w)
@@ -1252,10 +1074,7 @@ static ADDRESS_MAP_START( lockload_map, AS_PROGRAM, 32, dragngun_state )
 	AM_RANGE(0x300000, 0x3fffff) AM_ROM
 
 //  AM_RANGE(0x400000, 0x400003) AM_DEVREADWRITE8("oki3", okim6295_device, read, write, 0x000000ff)
-<<<<<<< HEAD
-=======
 	AM_RANGE(0x410000, 0x410003) AM_WRITENOP /* Some kind of serial bit-stream - digital volume control? */
->>>>>>> upstream/master
 	AM_RANGE(0x420000, 0x420003) AM_READWRITE(eeprom_r, eeprom_w)
 //  AM_RANGE(0x430000, 0x43001f) AM_WRITE(lightgun_w)
 //  AM_RANGE(0x438000, 0x438003) AM_READ(lightgun_r)
@@ -1313,13 +1132,8 @@ READ16_MEMBER( deco32_state::nslasher_protection_region_0_104_r )
 {
 	int real_address = 0 + (offset *2);
 	int deco146_addr = BITSWAP32(real_address, /* NC */31,30,29,28,27,26,25,24,23,22,21,20,19,18, 13,12,11,/**/      17,16,15,14,    10,9,8, 7,6,5,4, 3,2,1,0) & 0x7fff;
-<<<<<<< HEAD
-	UINT8 cs = 0;
-	UINT16 data = m_deco104->read_data( deco146_addr, mem_mask, cs );
-=======
 	uint8_t cs = 0;
 	uint16_t data = m_deco104->read_data( deco146_addr, mem_mask, cs );
->>>>>>> upstream/master
 	return data;
 }
 
@@ -1327,11 +1141,7 @@ WRITE16_MEMBER( deco32_state::nslasher_protection_region_0_104_w )
 {
 	int real_address = 0 + (offset *2);
 	int deco146_addr = BITSWAP32(real_address, /* NC */31,30,29,28,27,26,25,24,23,22,21,20,19,18, 13,12,11,/**/      17,16,15,14,    10,9,8, 7,6,5,4, 3,2,1,0) & 0x7fff;
-<<<<<<< HEAD
-	UINT8 cs = 0;
-=======
 	uint8_t cs = 0;
->>>>>>> upstream/master
 	m_deco104->write_data( space, deco146_addr, data, mem_mask, cs );
 }
 
@@ -1390,11 +1200,7 @@ static ADDRESS_MAP_START( sound_map, AS_PROGRAM, 8, deco32_state )
 	AM_RANGE(0x110000, 0x110001) AM_DEVREADWRITE("ymsnd", ym2151_device, read, write)
 	AM_RANGE(0x120000, 0x120001) AM_DEVREADWRITE("oki1", okim6295_device, read, write)
 	AM_RANGE(0x130000, 0x130001) AM_DEVREADWRITE("oki2", okim6295_device, read, write)
-<<<<<<< HEAD
-	AM_RANGE(0x140000, 0x140001) AM_READ(soundlatch_byte_r)
-=======
 	AM_RANGE(0x140000, 0x140001) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
->>>>>>> upstream/master
 	AM_RANGE(0x1f0000, 0x1f1fff) AM_RAMBANK("bank8")
 	AM_RANGE(0x1fec00, 0x1fec01) AM_DEVWRITE("audiocpu", h6280_device, timer_w)
 	AM_RANGE(0x1ff400, 0x1ff403) AM_DEVWRITE("audiocpu", h6280_device, irq_status_w)
@@ -1405,11 +1211,7 @@ READ8_MEMBER(deco32_state::latch_r)
 	/* bit 1 of nslasher_sound_irq specifies IRQ command writes */
 	m_nslasher_sound_irq &= ~0x02;
 	m_audiocpu->set_input_line(0, (m_nslasher_sound_irq != 0) ? ASSERT_LINE : CLEAR_LINE);
-<<<<<<< HEAD
-	return soundlatch_byte_r(space,0);
-=======
 	return m_soundlatch->read(space,0);
->>>>>>> upstream/master
 }
 
 static ADDRESS_MAP_START( nslasher_sound, AS_PROGRAM, 8, deco32_state )
@@ -1689,8 +1491,6 @@ static INPUT_PORTS_START( dragngun )
 	PORT_BIT( 0xff, 0x80, IPT_LIGHTGUN_Y ) PORT_SENSITIVITY(20) PORT_KEYDELTA(25) PORT_PLAYER(2)
 INPUT_PORTS_END
 
-<<<<<<< HEAD
-=======
 INPUT_CHANGED_MEMBER(dragngun_state::lockload_gun_trigger)
 {
 	uint8_t player_side = (uint8_t)(uintptr_t)param;
@@ -1705,33 +1505,22 @@ INPUT_CHANGED_MEMBER(dragngun_state::lockload_gun_trigger)
 	}
 }
 
->>>>>>> upstream/master
 static INPUT_PORTS_START( lockload )
 	PORT_START("INPUTS")
 	PORT_BIT( 0x0001, IP_ACTIVE_LOW, IPT_UNUSED )
 	PORT_BIT( 0x0002, IP_ACTIVE_LOW, IPT_UNUSED )
 	PORT_BIT( 0x0004, IP_ACTIVE_LOW, IPT_UNUSED )
 	PORT_BIT( 0x0008, IP_ACTIVE_LOW, IPT_UNUSED )
-<<<<<<< HEAD
-	PORT_BIT( 0x0010, IP_ACTIVE_LOW, IPT_BUTTON1 ) PORT_PLAYER(1)
-	PORT_BIT( 0x0020, IP_ACTIVE_LOW, IPT_BUTTON2 ) PORT_PLAYER(1)
-=======
 	PORT_BIT( 0x0010, IP_ACTIVE_LOW, IPT_BUTTON1 ) PORT_PLAYER(1) PORT_NAME("P1 Fire") PORT_CHANGED_MEMBER(DEVICE_SELF, dragngun_state, lockload_gun_trigger, 0)
 	PORT_BIT( 0x0020, IP_ACTIVE_LOW, IPT_BUTTON2 ) PORT_PLAYER(1) PORT_NAME("P1 Reload")
->>>>>>> upstream/master
 	PORT_BIT( 0x0040, IP_ACTIVE_LOW, IPT_UNUSED )
 	PORT_BIT( 0x0080, IP_ACTIVE_LOW, IPT_START1 )
 	PORT_BIT( 0x0100, IP_ACTIVE_LOW, IPT_UNUSED )
 	PORT_BIT( 0x0200, IP_ACTIVE_LOW, IPT_UNUSED )
 	PORT_BIT( 0x0400, IP_ACTIVE_LOW, IPT_UNUSED )
 	PORT_BIT( 0x0800, IP_ACTIVE_LOW, IPT_UNUSED )
-<<<<<<< HEAD
-	PORT_BIT( 0x1000, IP_ACTIVE_LOW, IPT_BUTTON1 ) PORT_PLAYER(2)
-	PORT_BIT( 0x2000, IP_ACTIVE_LOW, IPT_BUTTON2 ) PORT_PLAYER(2)
-=======
 	PORT_BIT( 0x1000, IP_ACTIVE_LOW, IPT_BUTTON1 ) PORT_PLAYER(2) PORT_NAME("P2 Fire") PORT_CHANGED_MEMBER(DEVICE_SELF, dragngun_state, lockload_gun_trigger, 1)
 	PORT_BIT( 0x2000, IP_ACTIVE_LOW, IPT_BUTTON2 ) PORT_PLAYER(2) PORT_NAME("P2 Reload")
->>>>>>> upstream/master
 	PORT_BIT( 0x4000, IP_ACTIVE_LOW, IPT_UNUSED )
 	PORT_BIT( 0x8000, IP_ACTIVE_LOW, IPT_START2 )
 
@@ -1774,17 +1563,6 @@ static INPUT_PORTS_START( lockload )
 	PORT_SERVICE( 0x0004, IP_ACTIVE_LOW )
 	PORT_BIT( 0x00f8, IP_ACTIVE_LOW, IPT_UNUSED ) //check  //test BUTTON F2
 
-<<<<<<< HEAD
-	PORT_START("IN3")
-	PORT_BIT( 0x0200, IP_ACTIVE_LOW, IPT_BUTTON1 ) PORT_PLAYER(1) /* mirror of fire buttons */
-	PORT_BIT( 0x0400, IP_ACTIVE_LOW, IPT_BUTTON2 ) PORT_PLAYER(1)
-
-	PORT_START("IN4")
-	PORT_BIT( 0x0200, IP_ACTIVE_LOW, IPT_BUTTON1 ) PORT_PLAYER(2)
-	PORT_BIT( 0x0400, IP_ACTIVE_LOW, IPT_BUTTON2 ) PORT_PLAYER(2)
-
-=======
->>>>>>> upstream/master
 	PORT_START("LIGHT0_X")
 	PORT_BIT( 0xff, 0x80, IPT_LIGHTGUN_X ) PORT_CROSSHAIR(X, 1.0, 0.0, 0) PORT_SENSITIVITY(20) PORT_KEYDELTA(25) PORT_PLAYER(1)
 
@@ -2031,13 +1809,8 @@ WRITE_LINE_MEMBER(deco32_state::sound_irq_nslasher)
 
 WRITE8_MEMBER(deco32_state::sound_bankswitch_w)
 {
-<<<<<<< HEAD
-	m_oki1->set_bank_base(((data >> 0)& 1) * 0x40000);
-	m_oki2->set_bank_base(((data >> 1)& 1) * 0x40000);
-=======
 	m_oki1->set_rom_bank((data >> 0) & 1);
 	m_oki2->set_rom_bank((data >> 1) & 1);
->>>>>>> upstream/master
 }
 
 /**********************************************************************************/
@@ -2047,13 +1820,6 @@ MACHINE_RESET_MEMBER(deco32_state,deco32)
 	m_raster_irq_timer = machine().device<timer_device>("int_timer");
 }
 
-<<<<<<< HEAD
-INTERRUPT_GEN_MEMBER(deco32_state::deco32_vbl_interrupt)
-{
-	device.execute().set_input_line(ARM_IRQ_LINE, HOLD_LINE);
-}
-=======
->>>>>>> upstream/master
 
 DECOSPR_PRIORITY_CB_MEMBER(deco32_state::captaven_pri_callback)
 {
@@ -2083,34 +1849,18 @@ DECO16IC_BANK_CB_MEMBER(deco32_state::captaven_bank_callback)
 	return bank * 0x4000;
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( captaven, deco32_state )
-=======
 static MACHINE_CONFIG_START( captaven )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", ARM, XTAL_28MHz/4) /* verified on pcb (Data East 101 custom)*/
 	MCFG_CPU_PROGRAM_MAP(captaven_map)
-<<<<<<< HEAD
-	MCFG_CPU_VBLANK_INT_DRIVER("screen", deco32_state,  deco32_vbl_interrupt)
-=======
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", deco32_state,  vblank_irq_gen)
->>>>>>> upstream/master
 
 	MCFG_CPU_ADD("audiocpu", H6280, XTAL_32_22MHz/4/3)  /* pin 10 is 32mhz/4, pin 14 is High so internal divisor is 3 (verified on pcb) */
 	MCFG_CPU_PROGRAM_MAP(sound_map)
 
 	MCFG_MACHINE_RESET_OVERRIDE(deco32_state,deco32)
 
-<<<<<<< HEAD
-	MCFG_TIMER_DRIVER_ADD("int_timer", deco32_state, interrupt_gen)
-
-	MCFG_SCREEN_ADD("screen", RASTER)
-	MCFG_SCREEN_REFRESH_RATE(60)
-	MCFG_SCREEN_SIZE(42*8, 32*8)
-	MCFG_SCREEN_VISIBLE_AREA(0*8, 40*8-1, 1*8, 31*8-1)
-=======
 	MCFG_TIMER_DRIVER_ADD("int_timer", deco32_state, raster_irq_gen)
 
 	MCFG_SCREEN_ADD("screen", RASTER)
@@ -2118,7 +1868,6 @@ static MACHINE_CONFIG_START( captaven )
 //  MCFG_SCREEN_SIZE(42*8, 32*8)
 //  MCFG_SCREEN_VISIBLE_AREA(0*8, 40*8-1, 1*8, 31*8-1)
 	MCFG_SCREEN_RAW_PARAMS(XTAL_28MHz/4,442,0,40*8,274,8,31*8)
->>>>>>> upstream/master
 	MCFG_SCREEN_UPDATE_DRIVER(deco32_state, screen_update_captaven)
 	MCFG_SCREEN_PALETTE("palette")
 
@@ -2137,10 +1886,6 @@ static MACHINE_CONFIG_START( captaven )
 	MCFG_DECO16IC_PF12_8X8_BANK(0)
 	MCFG_DECO16IC_PF12_16X16_BANK(1)
 	MCFG_DECO16IC_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_DECO16IC_PALETTE("palette")
-=======
->>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("tilegen2", DECO16IC, 0)    // pf3 is in 8bpp mode, pf4 is not used
 	MCFG_DECO16IC_SPLIT(0)
@@ -2156,26 +1901,16 @@ static MACHINE_CONFIG_START( captaven )
 	MCFG_DECO16IC_PF12_8X8_BANK(0)
 	MCFG_DECO16IC_PF12_16X16_BANK(2)
 	MCFG_DECO16IC_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_DECO16IC_PALETTE("palette")
-=======
->>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("spritegen", DECO_SPRITE, 0)
 	MCFG_DECO_SPRITE_GFX_REGION(3)
 	MCFG_DECO_SPRITE_PRIORITY_CB(deco32_state, captaven_pri_callback)
 	MCFG_DECO_SPRITE_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_DECO_SPRITE_PALETTE("palette")
-
-	MCFG_DECO146_ADD("ioprot")
-=======
 
 	MCFG_DECO146_ADD("ioprot")
 	MCFG_DECO146_IN_PORTA_CB(IOPORT("INPUTS"))
 	MCFG_DECO146_IN_PORTB_CB(IOPORT("SYSTEM"))
 	MCFG_DECO146_IN_PORTC_CB(IOPORT("DSW"))
->>>>>>> upstream/master
 	MCFG_DECO146_SET_SOUNDLATCH_CALLBACK(deco32_state, deco32_sound_cb)
 
 	MCFG_VIDEO_START_OVERRIDE(deco32_state,captaven)
@@ -2183,53 +1918,24 @@ static MACHINE_CONFIG_START( captaven )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
-<<<<<<< HEAD
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 
->>>>>>> upstream/master
 	MCFG_YM2151_ADD("ymsnd", XTAL_32_22MHz/9) /* verified on pcb */
 	MCFG_YM2151_IRQ_HANDLER(INPUTLINE("audiocpu", 1))
 	MCFG_YM2151_PORT_WRITE_HANDLER(WRITE8(deco32_state,sound_bankswitch_w))
 	MCFG_SOUND_ROUTE(0, "lspeaker", 0.42)
 	MCFG_SOUND_ROUTE(1, "rspeaker", 0.42)
 
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki1", XTAL_32_22MHz/32, OKIM6295_PIN7_HIGH)  /* verified on pcb; pin 7 is floating to 2.5V (left unconnected), so I presume High */
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 1.0)
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 1.0)
-
-	MCFG_OKIM6295_ADD("oki2", XTAL_32_22MHz/16, OKIM6295_PIN7_HIGH) /* verified on pcb; pin 7 is floating to 2.5V (left unconnected), so I presume High */
-=======
 	MCFG_OKIM6295_ADD("oki1", XTAL_32_22MHz/32, PIN7_HIGH)  /* verified on pcb; pin 7 is floating to 2.5V (left unconnected), so I presume High */
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 1.0)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 1.0)
 
 	MCFG_OKIM6295_ADD("oki2", XTAL_32_22MHz/16, PIN7_HIGH) /* verified on pcb; pin 7 is floating to 2.5V (left unconnected), so I presume High */
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 0.35)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 0.35)
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-UINT16 deco32_state::port_a_fghthist(int unused)
-{
-	return machine().root_device().ioport(":IN0")->read();
-}
-
-UINT16 deco32_state::port_b_fghthist(int unused)
-{
-	return machine().device<eeprom_serial_93cxx_device>(":eeprom")->do_read();
-}
-
-UINT16 deco32_state::port_c_fghthist(int unused)
-{
-	return machine().root_device().ioport(":IN1")->read();
-}
-
-=======
->>>>>>> upstream/master
 DECO16IC_BANK_CB_MEMBER(deco32_state::fghthist_bank_callback)
 {
 	bank = bank >> 4;
@@ -2238,20 +1944,12 @@ DECO16IC_BANK_CB_MEMBER(deco32_state::fghthist_bank_callback)
 	return bank * 0x1000;
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( fghthist, deco32_state ) /* DE-0380-2 PCB */
-=======
 static MACHINE_CONFIG_START( fghthist ) /* DE-0380-2 PCB */
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", ARM, 28000000/4)
 	MCFG_CPU_PROGRAM_MAP(fghthist_map)
-<<<<<<< HEAD
-	MCFG_CPU_VBLANK_INT_DRIVER("screen", deco32_state,  deco32_vbl_interrupt)
-=======
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", deco32_state,  vblank_irq_gen)
->>>>>>> upstream/master
 
 	MCFG_CPU_ADD("audiocpu", H6280, 32220000/8)
 	MCFG_CPU_PROGRAM_MAP(sound_map)
@@ -2259,16 +1957,10 @@ static MACHINE_CONFIG_START( fghthist ) /* DE-0380-2 PCB */
 	MCFG_EEPROM_SERIAL_93C46_ADD("eeprom")
 
 	MCFG_SCREEN_ADD("screen", RASTER)
-<<<<<<< HEAD
-	MCFG_SCREEN_REFRESH_RATE(60)
-	MCFG_SCREEN_SIZE(42*8, 32*8)
-	MCFG_SCREEN_VISIBLE_AREA(0*8, 40*8-1, 1*8, 31*8-1)
-=======
 //  MCFG_SCREEN_REFRESH_RATE(60)
 //  MCFG_SCREEN_SIZE(42*8, 32*8)
 //  MCFG_SCREEN_VISIBLE_AREA(0*8, 40*8-1, 1*8, 31*8-1)
 	MCFG_SCREEN_RAW_PARAMS(XTAL_28MHz/4,442,0,40*8,274,8,31*8)
->>>>>>> upstream/master
 	MCFG_SCREEN_UPDATE_DRIVER(deco32_state, screen_update_fghthist)
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", fghthist)
@@ -2288,10 +1980,6 @@ static MACHINE_CONFIG_START( fghthist ) /* DE-0380-2 PCB */
 	MCFG_DECO16IC_PF12_8X8_BANK(0)
 	MCFG_DECO16IC_PF12_16X16_BANK(1)
 	MCFG_DECO16IC_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_DECO16IC_PALETTE("palette")
-=======
->>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("tilegen2", DECO16IC, 0)
 	MCFG_DECO16IC_SPLIT(0)
@@ -2307,28 +1995,15 @@ static MACHINE_CONFIG_START( fghthist ) /* DE-0380-2 PCB */
 	MCFG_DECO16IC_PF12_8X8_BANK(0)
 	MCFG_DECO16IC_PF12_16X16_BANK(2)
 	MCFG_DECO16IC_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_DECO16IC_PALETTE("palette")
-=======
->>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("spritegen", DECO_SPRITE, 0)
 	MCFG_DECO_SPRITE_GFX_REGION(3)
 	MCFG_DECO_SPRITE_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_DECO_SPRITE_PALETTE("palette")
-
-	MCFG_DECO146_ADD("ioprot")
-	MCFG_DECO146_SET_PORTA_CALLBACK( deco32_state, port_a_fghthist )
-	MCFG_DECO146_SET_PORTB_CALLBACK( deco32_state, port_b_fghthist )
-	MCFG_DECO146_SET_PORTC_CALLBACK( deco32_state, port_c_fghthist )
-=======
 
 	MCFG_DECO146_ADD("ioprot")
 	MCFG_DECO146_IN_PORTA_CB(IOPORT("IN0"))
 	MCFG_DECO146_IN_PORTB_CB(DEVREADLINE("eeprom", eeprom_serial_93cxx_device, do_read)) MCFG_DEVCB_BIT(0)
 	MCFG_DECO146_IN_PORTC_CB(IOPORT("IN1"))
->>>>>>> upstream/master
 	MCFG_DECO146_SET_INTERFACE_SCRAMBLE_INTERLEAVE
 	MCFG_DECO146_SET_USE_MAGIC_ADDRESS_XOR
 
@@ -2338,48 +2013,29 @@ static MACHINE_CONFIG_START( fghthist ) /* DE-0380-2 PCB */
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
-<<<<<<< HEAD
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 
->>>>>>> upstream/master
 	MCFG_YM2151_ADD("ymsnd", 32220000/9)
 	MCFG_YM2151_IRQ_HANDLER(INPUTLINE("audiocpu", 1))
 	MCFG_YM2151_PORT_WRITE_HANDLER(WRITE8(deco32_state,sound_bankswitch_w))
 	MCFG_SOUND_ROUTE(0, "lspeaker", 0.42)
 	MCFG_SOUND_ROUTE(1, "rspeaker", 0.42)
 
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki1", 32220000/32, OKIM6295_PIN7_HIGH)
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 1.0)
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 1.0)
-
-	MCFG_OKIM6295_ADD("oki2", 32220000/16, OKIM6295_PIN7_HIGH)
-=======
 	MCFG_OKIM6295_ADD("oki1", 32220000/32, PIN7_HIGH)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 1.0)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 1.0)
 
 	MCFG_OKIM6295_ADD("oki2", 32220000/16, PIN7_HIGH)
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 0.35)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 0.35)
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( fghthsta, deco32_state ) /* DE-0395-1 PCB */
-=======
 static MACHINE_CONFIG_START( fghthsta ) /* DE-0395-1 PCB */
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", ARM, 28000000/4)
 	MCFG_CPU_PROGRAM_MAP(fghthsta_memmap)
-<<<<<<< HEAD
-	MCFG_CPU_VBLANK_INT_DRIVER("screen", deco32_state,  deco32_vbl_interrupt)
-=======
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", deco32_state,  vblank_irq_gen)
->>>>>>> upstream/master
 
 	MCFG_CPU_ADD("audiocpu", H6280, 32220000/8)
 	MCFG_CPU_PROGRAM_MAP(sound_map)
@@ -2387,16 +2043,10 @@ static MACHINE_CONFIG_START( fghthsta ) /* DE-0395-1 PCB */
 	MCFG_EEPROM_SERIAL_93C46_ADD("eeprom")
 
 	MCFG_SCREEN_ADD("screen", RASTER)
-<<<<<<< HEAD
-	MCFG_SCREEN_REFRESH_RATE(60)
-	MCFG_SCREEN_SIZE(42*8, 32*8)
-	MCFG_SCREEN_VISIBLE_AREA(0*8, 40*8-1, 1*8, 31*8-1)
-=======
 //  MCFG_SCREEN_REFRESH_RATE(60)
 //  MCFG_SCREEN_SIZE(42*8, 32*8)
 //  MCFG_SCREEN_VISIBLE_AREA(0*8, 40*8-1, 1*8, 31*8-1)
 	MCFG_SCREEN_RAW_PARAMS(XTAL_28MHz/4,442,0,40*8,274,8,31*8)
->>>>>>> upstream/master
 	MCFG_SCREEN_UPDATE_DRIVER(deco32_state, screen_update_fghthist)
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", fghthist)
@@ -2416,10 +2066,6 @@ static MACHINE_CONFIG_START( fghthsta ) /* DE-0395-1 PCB */
 	MCFG_DECO16IC_PF12_8X8_BANK(0)
 	MCFG_DECO16IC_PF12_16X16_BANK(1)
 	MCFG_DECO16IC_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_DECO16IC_PALETTE("palette")
-=======
->>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("tilegen2", DECO16IC, 0)
 	MCFG_DECO16IC_SPLIT(0)
@@ -2435,28 +2081,15 @@ static MACHINE_CONFIG_START( fghthsta ) /* DE-0395-1 PCB */
 	MCFG_DECO16IC_PF12_8X8_BANK(0)
 	MCFG_DECO16IC_PF12_16X16_BANK(2)
 	MCFG_DECO16IC_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_DECO16IC_PALETTE("palette")
-=======
->>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("spritegen", DECO_SPRITE, 0)
 	MCFG_DECO_SPRITE_GFX_REGION(3)
 	MCFG_DECO_SPRITE_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_DECO_SPRITE_PALETTE("palette")
-
-	MCFG_DECO146_ADD("ioprot")
-	MCFG_DECO146_SET_PORTA_CALLBACK( deco32_state, port_a_fghthist )
-	MCFG_DECO146_SET_PORTB_CALLBACK( deco32_state, port_b_fghthist )
-	MCFG_DECO146_SET_PORTC_CALLBACK( deco32_state, port_c_fghthist )
-=======
 
 	MCFG_DECO146_ADD("ioprot")
 	MCFG_DECO146_IN_PORTA_CB(IOPORT("IN0"))
 	MCFG_DECO146_IN_PORTB_CB(DEVREADLINE("eeprom", eeprom_serial_93cxx_device, do_read)) MCFG_DEVCB_BIT(0)
 	MCFG_DECO146_IN_PORTC_CB(IOPORT("IN1"))
->>>>>>> upstream/master
 	MCFG_DECO146_SET_INTERFACE_SCRAMBLE_INTERLEAVE
 	MCFG_DECO146_SET_USE_MAGIC_ADDRESS_XOR
 
@@ -2465,30 +2098,19 @@ static MACHINE_CONFIG_START( fghthsta ) /* DE-0395-1 PCB */
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
-<<<<<<< HEAD
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 
->>>>>>> upstream/master
 	MCFG_YM2151_ADD("ymsnd", 32220000/9)
 	MCFG_YM2151_IRQ_HANDLER(INPUTLINE("audiocpu", 1))
 	MCFG_YM2151_PORT_WRITE_HANDLER(WRITE8(deco32_state,sound_bankswitch_w))
 	MCFG_SOUND_ROUTE(0, "lspeaker", 0.42)
 	MCFG_SOUND_ROUTE(1, "rspeaker", 0.42)
 
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki1", 32220000/32, OKIM6295_PIN7_HIGH)
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 1.0)
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 1.0)
-
-	MCFG_OKIM6295_ADD("oki2", 32220000/16, OKIM6295_PIN7_HIGH)
-=======
 	MCFG_OKIM6295_ADD("oki1", 32220000/32, PIN7_HIGH)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 1.0)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 1.0)
 
 	MCFG_OKIM6295_ADD("oki2", 32220000/16, PIN7_HIGH)
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 0.35)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 0.35)
 MACHINE_CONFIG_END
@@ -2510,15 +2132,9 @@ static MACHINE_CONFIG_DERIVED( fghthistz, fghthsta )
 	/*
 	MCFG_DEVICE_REMOVE("ioprot")
 	MCFG_DECO146_ADD("ioprot")
-<<<<<<< HEAD
-	MCFG_DECO146_SET_PORTA_CALLBACK( deco32_state, port_a_fghthist )
-	MCFG_DECO146_SET_PORTB_CALLBACK( deco32_state, port_b_fghthist )
-	MCFG_DECO146_SET_PORTC_CALLBACK( deco32_state, port_c_fghthist )
-=======
 	MCFG_DECO146_IN_PORTA_CB(IOPORT("IN0"))
 	MCFG_DECO146_IN_PORTB_CB(DEVREADLINE("eeprom", eeprom_serial_93cxx_device, do_read)) MCFG_DEVCB_BIT(0)
 	MCFG_DECO146_IN_PORTC_CB(IOPORT("IN1"))
->>>>>>> upstream/master
 	MCFG_DECO146_SET_INTERFACE_SCRAMBLE_INTERLEAVE
 	MCFG_DECO146_SET_USE_MAGIC_ADDRESS_XOR
 	MCFG_DECO146_SET_SOUNDLATCH_CALLBACK(deco32_state, nslasher_sound_cb)
@@ -2538,20 +2154,12 @@ DECO16IC_BANK_CB_MEMBER(dragngun_state::bank_2_callback)
 	return bank * 0x1000;
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( dragngun, dragngun_state )
-=======
 static MACHINE_CONFIG_START( dragngun )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", ARM, 28000000/4)
 	MCFG_CPU_PROGRAM_MAP(dragngun_map)
-<<<<<<< HEAD
-	MCFG_CPU_VBLANK_INT_DRIVER("screen", deco32_state,  deco32_vbl_interrupt)
-=======
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", deco32_state,  vblank_irq_gen)
->>>>>>> upstream/master
 
 	MCFG_CPU_ADD("audiocpu", H6280, 32220000/8)
 	MCFG_CPU_PROGRAM_MAP(sound_map)
@@ -2559,15 +2167,6 @@ static MACHINE_CONFIG_START( dragngun )
 	MCFG_MACHINE_RESET_OVERRIDE(deco32_state,deco32)
 	MCFG_EEPROM_SERIAL_93C46_ADD("eeprom")
 
-<<<<<<< HEAD
-	MCFG_TIMER_DRIVER_ADD("int_timer", deco32_state, interrupt_gen)
-
-	/* video hardware */
-	MCFG_SCREEN_ADD("screen", RASTER)
-	MCFG_SCREEN_REFRESH_RATE(60)
-	MCFG_SCREEN_SIZE(42*8, 32*8)
-	MCFG_SCREEN_VISIBLE_AREA(0*8, 40*8-1, 1*8, 31*8-1)
-=======
 	MCFG_TIMER_DRIVER_ADD("int_timer", deco32_state, raster_irq_gen)
 
 	/* video hardware */
@@ -2576,7 +2175,6 @@ static MACHINE_CONFIG_START( dragngun )
 //  MCFG_SCREEN_SIZE(42*8, 32*8)
 //  MCFG_SCREEN_VISIBLE_AREA(0*8, 40*8-1, 1*8, 31*8-1)
 	MCFG_SCREEN_RAW_PARAMS(XTAL_28MHz/4,442,0,40*8,274,8,31*8)
->>>>>>> upstream/master
 	MCFG_SCREEN_UPDATE_DRIVER(dragngun_state, screen_update_dragngun)
 	//MCFG_SCREEN_PALETTE("palette")
 
@@ -2596,10 +2194,6 @@ static MACHINE_CONFIG_START( dragngun )
 	MCFG_DECO16IC_PF12_8X8_BANK(0)
 	MCFG_DECO16IC_PF12_16X16_BANK(1)
 	MCFG_DECO16IC_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_DECO16IC_PALETTE("palette")
-=======
->>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("tilegen2", DECO16IC, 0)
 	MCFG_DECO16IC_SPLIT(0)
@@ -2615,17 +2209,9 @@ static MACHINE_CONFIG_START( dragngun )
 	MCFG_DECO16IC_PF12_8X8_BANK(0)
 	MCFG_DECO16IC_PF12_16X16_BANK(2)
 	MCFG_DECO16IC_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_DECO16IC_PALETTE("palette")
 
 	MCFG_DEVICE_ADD("spritegen_zoom", DECO_ZOOMSPR, 0)
 	MCFG_DECO_ZOOMSPR_GFXDECODE("gfxdecode")
-	MCFG_DECO_ZOOMSPR_PALETTE("palette")
-=======
-
-	MCFG_DEVICE_ADD("spritegen_zoom", DECO_ZOOMSPR, 0)
-	MCFG_DECO_ZOOMSPR_GFXDECODE("gfxdecode")
->>>>>>> upstream/master
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", dragngun)
 	MCFG_PALETTE_ADD("palette", 2048)
@@ -2633,40 +2219,23 @@ static MACHINE_CONFIG_START( dragngun )
 	MCFG_VIDEO_START_OVERRIDE(dragngun_state,dragngun)
 
 	MCFG_DECO146_ADD("ioprot")
-<<<<<<< HEAD
-=======
 	MCFG_DECO146_IN_PORTA_CB(IOPORT("INPUTS"))
 	MCFG_DECO146_IN_PORTB_CB(IOPORT("SYSTEM"))
 	MCFG_DECO146_IN_PORTC_CB(IOPORT("DSW"))
->>>>>>> upstream/master
 	MCFG_DECO146_SET_SOUNDLATCH_CALLBACK(deco32_state, deco32_sound_cb)
 	MCFG_DECO146_SET_INTERFACE_SCRAMBLE_REVERSE
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
-<<<<<<< HEAD
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 
->>>>>>> upstream/master
 	MCFG_YM2151_ADD("ymsnd", 32220000/9)
 	MCFG_YM2151_IRQ_HANDLER(INPUTLINE("audiocpu", 1))
 	MCFG_YM2151_PORT_WRITE_HANDLER(WRITE8(deco32_state,sound_bankswitch_w))
 	MCFG_SOUND_ROUTE(0, "lspeaker", 0.42)
 	MCFG_SOUND_ROUTE(1, "rspeaker", 0.42)
 
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki1", 32220000/32, OKIM6295_PIN7_HIGH)
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 1.0)
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 1.0)
-
-	MCFG_OKIM6295_ADD("oki2", 32220000/16, OKIM6295_PIN7_HIGH)
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 0.35)
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 0.35)
-
-	MCFG_OKIM6295_ADD("oki3", 32220000/32, OKIM6295_PIN7_HIGH)
-=======
 	MCFG_OKIM6295_ADD("oki1", 32220000/32, PIN7_HIGH)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 1.0)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 1.0)
@@ -2676,37 +2245,16 @@ static MACHINE_CONFIG_START( dragngun )
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 0.35)
 
 	MCFG_OKIM6295_ADD("oki3", 32220000/32, PIN7_HIGH)
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 1.0)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 1.0)
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-TIMER_DEVICE_CALLBACK_MEMBER(dragngun_state::lockload_vbl_irq)
-=======
 TIMER_DEVICE_CALLBACK_MEMBER(dragngun_state::lockload_vblank_irq_gen)
->>>>>>> upstream/master
 {
 	int scanline = param;
 
 	if(scanline == 31*8)
-<<<<<<< HEAD
-	{
-		m_irq_source = 0;
-		m_maincpu->set_input_line(ARM_IRQ_LINE, HOLD_LINE);
-	}
-
-	if(scanline == 0)
-	{
-		m_irq_source = 1;
-		m_maincpu->set_input_line(ARM_IRQ_LINE, HOLD_LINE);
-	}
-}
-
-
-static MACHINE_CONFIG_START( lockload, dragngun_state )
-=======
 		update_irq_state(VBLANK_IRQ,true);
 
 	// TODO: this occurs at lightgun Y positions, also needs cleaning up.
@@ -2716,16 +2264,11 @@ static MACHINE_CONFIG_START( lockload, dragngun_state )
 
 
 static MACHINE_CONFIG_START( lockload )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", ARM, 28000000/4)
 	MCFG_CPU_PROGRAM_MAP(lockload_map)
-<<<<<<< HEAD
-	MCFG_TIMER_DRIVER_ADD_SCANLINE("scantimer", dragngun_state, lockload_vbl_irq, "screen", 0, 1)
-=======
 	MCFG_TIMER_DRIVER_ADD_SCANLINE("scantimer", dragngun_state, lockload_vblank_irq_gen, "screen", 0, 1)
->>>>>>> upstream/master
 
 	MCFG_CPU_ADD("audiocpu", Z80, 32220000/8)
 	MCFG_CPU_PROGRAM_MAP(nslasher_sound)
@@ -2736,15 +2279,6 @@ static MACHINE_CONFIG_START( lockload )
 	MCFG_MACHINE_RESET_OVERRIDE(deco32_state,deco32)
 	MCFG_EEPROM_SERIAL_93C46_ADD("eeprom")
 
-<<<<<<< HEAD
-	MCFG_TIMER_DRIVER_ADD("int_timer", deco32_state, interrupt_gen)
-
-	/* video hardware */
-	MCFG_SCREEN_ADD("screen", RASTER)
-	MCFG_SCREEN_REFRESH_RATE(60)
-	MCFG_SCREEN_SIZE(42*8, 32*8+22)
-	MCFG_SCREEN_VISIBLE_AREA(0*8, 40*8-1, 1*8, 31*8-1)
-=======
 	MCFG_TIMER_DRIVER_ADD("int_timer", deco32_state, raster_irq_gen)
 
 	/* video hardware */
@@ -2753,7 +2287,6 @@ static MACHINE_CONFIG_START( lockload )
 //  MCFG_SCREEN_SIZE(42*8, 32*8+22)
 //  MCFG_SCREEN_VISIBLE_AREA(0*8, 40*8-1, 1*8, 31*8-1)
 	MCFG_SCREEN_RAW_PARAMS(XTAL_28MHz/4,442,0,40*8,274,8,31*8)
->>>>>>> upstream/master
 	MCFG_SCREEN_UPDATE_DRIVER(dragngun_state, screen_update_dragngun)
 
 	MCFG_BUFFERED_SPRITERAM32_ADD("spriteram")
@@ -2777,10 +2310,6 @@ static MACHINE_CONFIG_START( lockload )
 	MCFG_DECO16IC_PF12_8X8_BANK(0)
 	MCFG_DECO16IC_PF12_16X16_BANK(1)
 	MCFG_DECO16IC_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_DECO16IC_PALETTE("palette")
-=======
->>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("tilegen2", DECO16IC, 0)
 	MCFG_DECO16IC_SPLIT(0)
@@ -2796,15 +2325,6 @@ static MACHINE_CONFIG_START( lockload )
 	MCFG_DECO16IC_PF12_8X8_BANK(0)
 	MCFG_DECO16IC_PF12_16X16_BANK(2)
 	MCFG_DECO16IC_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_DECO16IC_PALETTE("palette")
-
-	MCFG_DEVICE_ADD("spritegen_zoom", DECO_ZOOMSPR, 0)
-	MCFG_DECO_ZOOMSPR_GFXDECODE("gfxdecode")
-	MCFG_DECO_ZOOMSPR_PALETTE("palette")
-
-	MCFG_DECO146_ADD("ioprot")
-=======
 
 	MCFG_DEVICE_ADD("spritegen_zoom", DECO_ZOOMSPR, 0)
 	MCFG_DECO_ZOOMSPR_GFXDECODE("gfxdecode")
@@ -2813,37 +2333,25 @@ static MACHINE_CONFIG_START( lockload )
 	MCFG_DECO146_IN_PORTA_CB(IOPORT("INPUTS"))
 	MCFG_DECO146_IN_PORTB_CB(IOPORT("SYSTEM"))
 	MCFG_DECO146_IN_PORTC_CB(IOPORT("DSW"))
->>>>>>> upstream/master
 	MCFG_DECO146_SET_SOUNDLATCH_CALLBACK(deco32_state, deco32_sound_cb)
 	MCFG_DECO146_SET_INTERFACE_SCRAMBLE_REVERSE
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
-<<<<<<< HEAD
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 
->>>>>>> upstream/master
 	MCFG_YM2151_ADD("ymsnd", 32220000/9)
 	MCFG_YM2151_IRQ_HANDLER(WRITELINE(deco32_state,sound_irq_nslasher))
 	MCFG_YM2151_PORT_WRITE_HANDLER(WRITE8(deco32_state,sound_bankswitch_w))
 	MCFG_SOUND_ROUTE(0, "lspeaker", 0.42)
 	MCFG_SOUND_ROUTE(1, "rspeaker", 0.42)
 
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki1", 32220000/32, OKIM6295_PIN7_HIGH)
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 1.0)
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 1.0)
-
-	MCFG_OKIM6295_ADD("oki2", 32220000/32, OKIM6295_PIN7_HIGH)
-=======
 	MCFG_OKIM6295_ADD("oki1", 32220000/32, PIN7_HIGH)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 1.0)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 1.0)
 
 	MCFG_OKIM6295_ADD("oki2", 32220000/16, PIN7_HIGH)
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 0.35)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 0.35)
 MACHINE_CONFIG_END
@@ -2864,34 +2372,20 @@ DECO16IC_BANK_CB_MEMBER(deco32_state::tattass_bank_callback)
 	return bank * 0x1000;
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( tattass, deco32_state )
-=======
 static MACHINE_CONFIG_START( tattass )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", ARM, 28000000/4) // unconfirmed
 	MCFG_CPU_PROGRAM_MAP(tattass_map)
-<<<<<<< HEAD
-	MCFG_CPU_VBLANK_INT_DRIVER("screen", deco32_state,  deco32_vbl_interrupt)
-=======
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", deco32_state,  vblank_irq_gen)
->>>>>>> upstream/master
 
 	MCFG_EEPROM_SERIAL_93C76_8BIT_ADD("eeprom")
 
 	MCFG_SCREEN_ADD("screen", RASTER)
-<<<<<<< HEAD
-	MCFG_SCREEN_REFRESH_RATE(60)
-	MCFG_SCREEN_SIZE(42*8, 32*8)
-	MCFG_SCREEN_VISIBLE_AREA(0*8, 40*8-1, 1*8, 31*8-1)
-=======
 //  MCFG_SCREEN_REFRESH_RATE(60)
 //  MCFG_SCREEN_SIZE(42*8, 32*8)
 //  MCFG_SCREEN_VISIBLE_AREA(0*8, 40*8-1, 1*8, 31*8-1)
 	MCFG_SCREEN_RAW_PARAMS(XTAL_28MHz/4,442,0,40*8,274,8,31*8)
->>>>>>> upstream/master
 	MCFG_SCREEN_UPDATE_DRIVER(deco32_state, screen_update_nslasher)
 
 	MCFG_DEVICE_ADD("tilegen1", DECO16IC, 0)
@@ -2908,10 +2402,6 @@ static MACHINE_CONFIG_START( tattass )
 	MCFG_DECO16IC_PF12_8X8_BANK(0)
 	MCFG_DECO16IC_PF12_16X16_BANK(1)
 	MCFG_DECO16IC_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_DECO16IC_PALETTE("palette")
-=======
->>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("tilegen2", DECO16IC, 0)
 	MCFG_DECO16IC_SPLIT(0)
@@ -2927,38 +2417,22 @@ static MACHINE_CONFIG_START( tattass )
 	MCFG_DECO16IC_PF12_8X8_BANK(0)
 	MCFG_DECO16IC_PF12_16X16_BANK(2)
 	MCFG_DECO16IC_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_DECO16IC_PALETTE("palette")
-=======
->>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("spritegen1", DECO_SPRITE, 0)
 	MCFG_DECO_SPRITE_GFX_REGION(3)
 	MCFG_DECO_SPRITE_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_DECO_SPRITE_PALETTE("palette")
-=======
->>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("spritegen2", DECO_SPRITE, 0)
 	MCFG_DECO_SPRITE_GFX_REGION(4)
 	MCFG_DECO_SPRITE_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_DECO_SPRITE_PALETTE("palette")
-=======
->>>>>>> upstream/master
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", tattass)
 	MCFG_PALETTE_ADD("palette", 2048)
 
 	MCFG_DECO104_ADD("ioprot104")
-<<<<<<< HEAD
-	MCFG_DECO146_SET_PORTB_CALLBACK( deco32_state, port_b_tattass )
-=======
 	MCFG_DECO146_IN_PORTA_CB(IOPORT("INPUTS"))
 	MCFG_DECO146_IN_PORTB_CB(READ16(deco32_state, port_b_tattass))
 	MCFG_DECO146_IN_PORTC_CB(IOPORT("DSW"))
->>>>>>> upstream/master
 	MCFG_DECO146_SET_SOUNDLATCH_CALLBACK(deco32_state, tattass_sound_cb)
 	MCFG_DECO146_SET_INTERFACE_SCRAMBLE_INTERLEAVE
 
@@ -2968,20 +2442,12 @@ static MACHINE_CONFIG_START( tattass )
 	MCFG_DECOBSMT_ADD(DECOBSMT_TAG)
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( nslasher, deco32_state )
-=======
 static MACHINE_CONFIG_START( nslasher )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", ARM, 28322000/4)
 	MCFG_CPU_PROGRAM_MAP(nslasher_map)
-<<<<<<< HEAD
-	MCFG_CPU_VBLANK_INT_DRIVER("screen", deco32_state,  deco32_vbl_interrupt)
-=======
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", deco32_state,  vblank_irq_gen)
->>>>>>> upstream/master
 
 	MCFG_CPU_ADD("audiocpu", Z80, 32220000/9)
 	MCFG_CPU_PROGRAM_MAP(nslasher_sound)
@@ -2992,16 +2458,10 @@ static MACHINE_CONFIG_START( nslasher )
 	MCFG_EEPROM_SERIAL_93C46_ADD("eeprom")
 
 	MCFG_SCREEN_ADD("screen", RASTER)
-<<<<<<< HEAD
-	MCFG_SCREEN_REFRESH_RATE(60)
-	MCFG_SCREEN_SIZE(42*8, 32*8)
-	MCFG_SCREEN_VISIBLE_AREA(0*8, 40*8-1, 1*8, 31*8-1)
-=======
 //  MCFG_SCREEN_REFRESH_RATE(60)
 //  MCFG_SCREEN_SIZE(42*8, 32*8)
 //  MCFG_SCREEN_VISIBLE_AREA(0*8, 40*8-1, 1*8, 31*8-1)
 	MCFG_SCREEN_RAW_PARAMS(XTAL_28MHz/4,442,0,40*8,274,8,31*8)
->>>>>>> upstream/master
 	MCFG_SCREEN_UPDATE_DRIVER(deco32_state, screen_update_nslasher)
 
 	MCFG_DEVICE_ADD("tilegen1", DECO16IC, 0)
@@ -3018,10 +2478,6 @@ static MACHINE_CONFIG_START( nslasher )
 	MCFG_DECO16IC_PF12_8X8_BANK(0)
 	MCFG_DECO16IC_PF12_16X16_BANK(1)
 	MCFG_DECO16IC_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_DECO16IC_PALETTE("palette")
-=======
->>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("tilegen2", DECO16IC, 0)
 	MCFG_DECO16IC_SPLIT(0)
@@ -3037,26 +2493,14 @@ static MACHINE_CONFIG_START( nslasher )
 	MCFG_DECO16IC_PF12_8X8_BANK(0)
 	MCFG_DECO16IC_PF12_16X16_BANK(2)
 	MCFG_DECO16IC_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_DECO16IC_PALETTE("palette")
-=======
->>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("spritegen1", DECO_SPRITE, 0)
 	MCFG_DECO_SPRITE_GFX_REGION(3)
 	MCFG_DECO_SPRITE_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_DECO_SPRITE_PALETTE("palette")
-=======
->>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("spritegen2", DECO_SPRITE, 0)
 	MCFG_DECO_SPRITE_GFX_REGION(4)
 	MCFG_DECO_SPRITE_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_DECO_SPRITE_PALETTE("palette")
-=======
->>>>>>> upstream/master
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", nslasher)
 	MCFG_PALETTE_ADD("palette", 2048)
@@ -3064,43 +2508,28 @@ static MACHINE_CONFIG_START( nslasher )
 	MCFG_VIDEO_START_OVERRIDE(deco32_state,nslasher)
 
 	MCFG_DECO104_ADD("ioprot104")
-<<<<<<< HEAD
-	MCFG_DECO146_SET_PORTB_CALLBACK( deco32_state, port_b_nslasher )
-=======
 	MCFG_DECO146_IN_PORTA_CB(IOPORT("INPUTS"))
 	MCFG_DECO146_IN_PORTB_CB(DEVREADLINE("eeprom", eeprom_serial_93cxx_device, do_read)) MCFG_DEVCB_BIT(0)
 	MCFG_DECO146_IN_PORTC_CB(IOPORT("DSW"))
->>>>>>> upstream/master
 	MCFG_DECO146_SET_SOUNDLATCH_CALLBACK(deco32_state, nslasher_sound_cb)
 	MCFG_DECO146_SET_INTERFACE_SCRAMBLE_INTERLEAVE
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
-<<<<<<< HEAD
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 
->>>>>>> upstream/master
 	MCFG_YM2151_ADD("ymsnd", 32220000/9)
 	MCFG_YM2151_IRQ_HANDLER(WRITELINE(deco32_state,sound_irq_nslasher))
 	MCFG_YM2151_PORT_WRITE_HANDLER(WRITE8(deco32_state,sound_bankswitch_w))
 	MCFG_SOUND_ROUTE(0, "lspeaker", 0.40)
 	MCFG_SOUND_ROUTE(1, "rspeaker", 0.40)
 
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki1", 32220000/32, OKIM6295_PIN7_HIGH)
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 0.80)
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 0.80)
-
-	MCFG_OKIM6295_ADD("oki2", 32220000/16, OKIM6295_PIN7_HIGH)
-=======
 	MCFG_OKIM6295_ADD("oki1", 32220000/32, PIN7_HIGH)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 0.80)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 0.80)
 
 	MCFG_OKIM6295_ADD("oki2", 32220000/16, PIN7_HIGH)
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 0.10)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 0.10)
 MACHINE_CONFIG_END
@@ -3115,13 +2544,9 @@ static MACHINE_CONFIG_DERIVED( nslasheru, nslasher )
 
 	MCFG_DEVICE_REMOVE("ioprot104")
 	MCFG_DECO104_ADD("ioprot104")
-<<<<<<< HEAD
-	MCFG_DECO146_SET_PORTB_CALLBACK( deco32_state, port_b_nslasher )
-=======
 	MCFG_DECO146_IN_PORTA_CB(IOPORT("INPUTS"))
 	MCFG_DECO146_IN_PORTB_CB(DEVREADLINE("eeprom", eeprom_serial_93cxx_device, do_read)) MCFG_DEVCB_BIT(0)
 	MCFG_DECO146_IN_PORTC_CB(IOPORT("DSW"))
->>>>>>> upstream/master
 	MCFG_DECO146_SET_SOUNDLATCH_CALLBACK(deco32_state, deco32_sound_cb)
 	MCFG_DECO146_SET_INTERFACE_SCRAMBLE_INTERLEAVE
 MACHINE_CONFIG_END
@@ -4574,17 +3999,6 @@ DRIVER_INIT_MEMBER(deco32_state,captaven)
 
 	save_item(NAME(m_raster_enable));
 	save_item(NAME(m_nslasher_sound_irq));
-<<<<<<< HEAD
-	save_item(NAME(m_irq_source));
-}
-
-extern void process_dvi_data(device_t *device,UINT8* dvi_data, int offset, int regionsize);
-
-void dragngun_state::dragngun_init_common()
-{
-	const UINT8 *SRC_RAM = memregion("gfx1")->base();
-	UINT8 *DST_RAM = memregion("gfx2")->base();
-=======
 	save_item(NAME(m_irq_cause));
 }
 
@@ -4594,7 +4008,6 @@ void dragngun_state::dragngun_init_common()
 {
 	const uint8_t *SRC_RAM = memregion("gfx1")->base();
 	uint8_t *DST_RAM = memregion("gfx2")->base();
->>>>>>> upstream/master
 
 	deco74_decrypt_gfx(machine(), "gfx1");
 	deco74_decrypt_gfx(machine(), "gfx2");
@@ -4605,11 +4018,7 @@ void dragngun_state::dragngun_init_common()
 
 #if 0
 	{
-<<<<<<< HEAD
-		UINT8 *ROM = memregion("dvi")->base();
-=======
 		uint8_t *ROM = memregion("dvi")->base();
->>>>>>> upstream/master
 
 		FILE *fp;
 		char filename[256];
@@ -4625,12 +4034,8 @@ void dragngun_state::dragngun_init_common()
 
 	save_item(NAME(m_lightgun_port));
 	save_item(NAME(m_raster_enable));
-<<<<<<< HEAD
-	save_item(NAME(m_irq_source));
-=======
 	save_item(NAME(m_irq_cause));
 	save_item(NAME(m_gun_latch));
->>>>>>> upstream/master
 
 	// there are DVI headers at 0x000000, 0x580000, 0x800000, 0xB10000, 0xB80000
 //  process_dvi_data(this,memregion("dvi")->base(),0x000000, 0x1000000);
@@ -4644,11 +4049,7 @@ DRIVER_INIT_MEMBER(dragngun_state,dragngun)
 {
 	dragngun_init_common();
 
-<<<<<<< HEAD
-	UINT32 *ROM = (UINT32 *)memregion("maincpu")->base();
-=======
 	uint32_t *ROM = (uint32_t *)memregion("maincpu")->base();
->>>>>>> upstream/master
 	ROM[0x1b32c/4]=0xe1a00000; // bl $ee000: NOP test switch lock
 }
 
@@ -4656,11 +4057,7 @@ DRIVER_INIT_MEMBER(dragngun_state,dragngunj)
 {
 	dragngun_init_common();
 
-<<<<<<< HEAD
-	UINT32 *ROM = (UINT32 *)memregion("maincpu")->base();
-=======
 	uint32_t *ROM = (uint32_t *)memregion("maincpu")->base();
->>>>>>> upstream/master
 	ROM[0x1a1b4/4]=0xe1a00000; // bl $ee000: NOP test switch lock
 }
 
@@ -4672,13 +4069,8 @@ DRIVER_INIT_MEMBER(deco32_state,fghthist)
 
 DRIVER_INIT_MEMBER(dragngun_state,lockload)
 {
-<<<<<<< HEAD
-	UINT8 *RAM = memregion("maincpu")->base();
-//  UINT32 *ROM = (UINT32 *)memregion("maincpu")->base();
-=======
 	uint8_t *RAM = memregion("maincpu")->base();
 //  uint32_t *ROM = (uint32_t *)memregion("maincpu")->base();
->>>>>>> upstream/master
 
 	deco74_decrypt_gfx(machine(), "gfx1");
 	deco74_decrypt_gfx(machine(), "gfx2");
@@ -4689,11 +4081,7 @@ DRIVER_INIT_MEMBER(dragngun_state,lockload)
 
 	save_item(NAME(m_raster_enable));
 	save_item(NAME(m_nslasher_sound_irq));
-<<<<<<< HEAD
-	save_item(NAME(m_irq_source));
-=======
 	save_item(NAME(m_irq_cause));
->>>>>>> upstream/master
 
 //  ROM[0x3fe3c0/4]=0xe1a00000;//  NOP test switch lock
 //  ROM[0x3fe3cc/4]=0xe1a00000;//  NOP test switch lock
@@ -4702,13 +4090,8 @@ DRIVER_INIT_MEMBER(dragngun_state,lockload)
 
 DRIVER_INIT_MEMBER(deco32_state,tattass)
 {
-<<<<<<< HEAD
-	UINT8 *RAM = memregion("gfx1")->base();
-	dynamic_buffer tmp(0x80000);
-=======
 	uint8_t *RAM = memregion("gfx1")->base();
 	std::vector<uint8_t> tmp(0x80000);
->>>>>>> upstream/master
 
 	/* Reorder bitplanes to make decoding easier */
 	memcpy(&tmp[0],RAM+0x80000,0x80000);
@@ -4734,13 +4117,8 @@ DRIVER_INIT_MEMBER(deco32_state,tattass)
 
 DRIVER_INIT_MEMBER(deco32_state,nslasher)
 {
-<<<<<<< HEAD
-	UINT8 *RAM = memregion("gfx1")->base();
-	dynamic_buffer tmp(0x80000);
-=======
 	uint8_t *RAM = memregion("gfx1")->base();
 	std::vector<uint8_t> tmp(0x80000);
->>>>>>> upstream/master
 
 	/* Reorder bitplanes to make decoding easier */
 	memcpy(&tmp[0],RAM+0x80000,0x80000);
@@ -4757,11 +4135,7 @@ DRIVER_INIT_MEMBER(deco32_state,nslasher)
 
 	deco156_decrypt(machine());
 
-<<<<<<< HEAD
-	soundlatch_setclearedvalue(0xff);
-=======
 	m_soundlatch->preset_w(0xff);
->>>>>>> upstream/master
 
 	save_item(NAME(m_nslasher_sound_irq));
 

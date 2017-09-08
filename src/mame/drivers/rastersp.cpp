@@ -21,17 +21,11 @@
 #include "machine/53c7xx.h"
 #include "machine/mc146818.h"
 #include "machine/nscsi_hd.h"
-<<<<<<< HEAD
-#include "sound/dac.h"
-#include "machine/nvram.h"
-
-=======
 #include "machine/nvram.h"
 #include "sound/dac.h"
 #include "sound/volt_reg.h"
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 /*************************************
  *
@@ -60,13 +54,8 @@ public:
 			m_maincpu(*this, "maincpu"),
 			m_dsp(*this, "dsp"),
 			m_dram(*this, "dram"),
-<<<<<<< HEAD
-			m_dac_l(*this, "dac_l"),
-			m_dac_r(*this, "dac_r"),
-=======
 			m_ldac(*this, "ldac"),
 			m_rdac(*this, "rdac"),
->>>>>>> upstream/master
 			m_tms_timer1(*this, "tms_timer1"),
 			m_tms_tx_timer(*this, "tms_tx_timer"),
 			m_palette(*this, "palette"),
@@ -111,15 +100,9 @@ public:
 
 	required_device<cpu_device>     m_maincpu;
 	required_device<cpu_device>     m_dsp;
-<<<<<<< HEAD
-	required_shared_ptr<UINT32>     m_dram;
-	required_device<dac_device>     m_dac_l;
-	required_device<dac_device>     m_dac_r;
-=======
 	required_shared_ptr<uint32_t>     m_dram;
 	required_device<dac_word_interface> m_ldac;
 	required_device<dac_word_interface> m_rdac;
->>>>>>> upstream/master
 	required_device<timer_device>   m_tms_timer1;
 	required_device<timer_device>   m_tms_tx_timer;
 	required_device<palette_device> m_palette;
@@ -147,26 +130,6 @@ public:
 	TIMER_DEVICE_CALLBACK_MEMBER(tms_tx_timer);
 	INTERRUPT_GEN_MEMBER(vblank_irq);
 
-<<<<<<< HEAD
-	UINT8   *m_nvram8;
-	UINT8   m_io_reg;
-	UINT8   m_irq_status;
-	UINT32  m_dpyaddr;
-	UINT16 *m_paletteram;
-	UINT32  m_speedup_count;
-	UINT32  m_tms_io_regs[0x80];
-	bitmap_ind16 m_update_bitmap;
-
-	UINT32  screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	void    update_irq(UINT32 which, UINT32 state);
-	void    upload_palette(UINT32 word1, UINT32 word2);
-	IRQ_CALLBACK_MEMBER(irq_callback);
-protected:
-	// driver_device overrides
-	virtual void machine_reset();
-	virtual void machine_start();
-	virtual void video_start();
-=======
 	std::unique_ptr<uint8_t[]>   m_nvram8;
 	uint8_t   m_io_reg;
 	uint8_t   m_irq_status;
@@ -185,7 +148,6 @@ protected:
 	virtual void machine_reset() override;
 	virtual void machine_start() override;
 	virtual void video_start() override;
->>>>>>> upstream/master
 };
 
 
@@ -198,15 +160,9 @@ protected:
 
 void rastersp_state::machine_start()
 {
-<<<<<<< HEAD
-	m_nvram8 = auto_alloc_array(machine(), UINT8, NVRAM_SIZE);
-	m_nvram->set_base(m_nvram8,NVRAM_SIZE);
-	m_paletteram = auto_alloc_array(machine(), UINT16, 0x8000);
-=======
 	m_nvram8 = std::make_unique<uint8_t[]>(NVRAM_SIZE);
 	m_nvram->set_base(m_nvram8.get(),NVRAM_SIZE);
 	m_paletteram = std::make_unique<uint16_t[]>(0x8000);
->>>>>>> upstream/master
 
 	membank("bank1")->set_base(m_dram);
 	membank("bank2")->set_base(&m_dram[0x10000/4]);
@@ -261,30 +217,18 @@ WRITE32_MEMBER( rastersp_state::dpylist_w )
 		return;
 	}
 
-<<<<<<< HEAD
-	UINT32 dpladdr = (m_dpyaddr & ~0xff) >> 6;
-=======
 	uint32_t dpladdr = (m_dpyaddr & ~0xff) >> 6;
->>>>>>> upstream/master
 
 	if ((m_dpyaddr & 0xff) != 0xb2 && (m_dpyaddr & 0xff) != 0xf2)
 		logerror("Unusual display list data: %x\n", m_dpyaddr);
 
 	int y = 0;
 	int x = 0;
-<<<<<<< HEAD
-	UINT16 *bmpptr = &m_update_bitmap.pix16(0, 0);
-
-	while (y < 240)
-	{
-		UINT32 word1 = m_dram[dpladdr/4];
-=======
 	uint16_t *bmpptr = &m_update_bitmap.pix16(0, 0);
 
 	while (y < 240)
 	{
 		uint32_t word1 = m_dram[dpladdr/4];
->>>>>>> upstream/master
 
 		if (word1 & 0x80000000)
 		{
@@ -293,11 +237,7 @@ WRITE32_MEMBER( rastersp_state::dpylist_w )
 		}
 		else
 		{
-<<<<<<< HEAD
-			UINT32 word2 = m_dram[(dpladdr + 4)/4];
-=======
 			uint32_t word2 = m_dram[(dpladdr + 4)/4];
->>>>>>> upstream/master
 
 			dpladdr += 8;
 
@@ -306,18 +246,6 @@ WRITE32_MEMBER( rastersp_state::dpylist_w )
 				if ((word2 & 0xfe000000) != 0x94000000)
 					logerror("Unusual display list entry: %x %x\n", word1, word2);
 
-<<<<<<< HEAD
-				UINT32 srcaddr = word1 >> 8;
-				UINT32 pixels = (word2 >> 16) & 0x1ff;
-				UINT32 palbase = (word2 >> 4) & 0xf00;
-
-				UINT16* palptr = &m_paletteram[palbase];
-				UINT8* srcptr = reinterpret_cast<UINT8*>(&m_dram[0]);
-
-				UINT32 acc = srcaddr << 8;
-
-				INT32 incr = word2 & 0xfff;
-=======
 				uint32_t srcaddr = word1 >> 8;
 				uint32_t pixels = (word2 >> 16) & 0x1ff;
 				uint32_t palbase = (word2 >> 4) & 0xf00;
@@ -328,7 +256,6 @@ WRITE32_MEMBER( rastersp_state::dpylist_w )
 				uint32_t acc = srcaddr << 8;
 
 				int32_t incr = word2 & 0xfff;
->>>>>>> upstream/master
 
 				// Sign extend for our convenience
 				incr |= ~((incr & 0x800) - 1) & ~0xff;
@@ -365,34 +292,20 @@ WRITE32_MEMBER( rastersp_state::dpylist_w )
 }
 
 
-<<<<<<< HEAD
-void rastersp_state::upload_palette(UINT32 word1, UINT32 word2)
-=======
 void rastersp_state::upload_palette(uint32_t word1, uint32_t word2)
->>>>>>> upstream/master
 {
 	if (word1 & 3)
 		fatalerror("Unalligned palette address! (%x, %x)\n", word1, word2);
 
-<<<<<<< HEAD
-	UINT32 addr = word1 >> 8;
-	UINT32 entries = (word2 >> 16) & 0x1ff;
-	UINT32 index = ((word2 >> 12) & 0x1f) * 256;
-=======
 	uint32_t addr = word1 >> 8;
 	uint32_t entries = (word2 >> 16) & 0x1ff;
 	uint32_t index = ((word2 >> 12) & 0x1f) * 256;
->>>>>>> upstream/master
 
 	// The third byte of each entry in RAM appears to contain an index
 	// but appears to be discared when written to palette RAM
 	while (entries--)
 	{
-<<<<<<< HEAD
-		UINT32 data = m_dram[addr / 4];
-=======
 		uint32_t data = m_dram[addr / 4];
->>>>>>> upstream/master
 		m_paletteram[index++] = data & 0xffff;
 		addr += 4;
 	}
@@ -438,11 +351,7 @@ Unknown: (D4000100) - Present at start of a list
 
 *******************************************************************************/
 
-<<<<<<< HEAD
-UINT32 rastersp_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t rastersp_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	copybitmap(bitmap, m_update_bitmap, 0, 0, 0, 0, cliprect);
 	return 0;
@@ -458,11 +367,7 @@ uint32_t rastersp_state::screen_update(screen_device &screen, bitmap_ind16 &bitm
 
 IRQ_CALLBACK_MEMBER(rastersp_state::irq_callback)
 {
-<<<<<<< HEAD
-	UINT8 vector = 0;
-=======
 	uint8_t vector = 0;
->>>>>>> upstream/master
 
 	if (m_irq_status & (1 << IRQ_SCSI))
 	{
@@ -487,15 +392,9 @@ IRQ_CALLBACK_MEMBER(rastersp_state::irq_callback)
 }
 
 
-<<<<<<< HEAD
-void rastersp_state::update_irq(UINT32 which, UINT32 state)
-{
-	UINT32 mask = 1 << which;
-=======
 void rastersp_state::update_irq(uint32_t which, uint32_t state)
 {
 	uint32_t mask = 1 << which;
->>>>>>> upstream/master
 
 	if (state)
 		m_irq_status |= mask;
@@ -570,11 +469,7 @@ WRITE8_MEMBER( rastersp_state::nvram_w )
 
 	offset &= ~0x2000;
 
-<<<<<<< HEAD
-	UINT32 addr = ((offset & 0x00f0000) >> 5) | ((offset & 0x1fff) / 4);
-=======
 	uint32_t addr = ((offset & 0x00f0000) >> 5) | ((offset & 0x1fff) / 4);
->>>>>>> upstream/master
 
 	m_nvram8[addr] = data & 0xff;
 }
@@ -591,11 +486,7 @@ READ8_MEMBER( rastersp_state::nvram_r )
 
 	offset &= ~0x2000;
 
-<<<<<<< HEAD
-	UINT32 addr = ((offset & 0x00f0000) >> 5) | ((offset & 0x1fff) / 4);
-=======
 	uint32_t addr = ((offset & 0x00f0000) >> 5) | ((offset & 0x1fff) / 4);
->>>>>>> upstream/master
 
 	return m_nvram8[addr];
 }
@@ -619,20 +510,10 @@ TIMER_DEVICE_CALLBACK_MEMBER( rastersp_state::tms_tx_timer )
 	// Is the transmit shifter full?
 	if (m_tms_io_regs[SPORT_GLOBAL_CTL] & (1 << 3))
 	{
-<<<<<<< HEAD
-		UINT32 data = m_tms_io_regs[SPORT_DATA_TX];
-
-		INT16 ldata = data & 0xffff;
-		INT16 rdata = data >> 16;
-
-		m_dac_l->write_signed16(0x8000 + ldata);
-		m_dac_r->write_signed16(0x8000 + rdata);
-=======
 		uint32_t data = m_tms_io_regs[SPORT_DATA_TX];
 
 		m_ldac->write(data & 0xffff);
 		m_rdac->write(data >> 16);
->>>>>>> upstream/master
 	}
 
 	// Set XSREMPTY
@@ -657,11 +538,7 @@ TIMER_DEVICE_CALLBACK_MEMBER( rastersp_state::tms_timer1 )
 
 READ32_MEMBER( rastersp_state::tms32031_control_r )
 {
-<<<<<<< HEAD
-	UINT32 val = m_tms_io_regs[offset];
-=======
 	uint32_t val = m_tms_io_regs[offset];
->>>>>>> upstream/master
 
 	switch (offset)
 	{
@@ -684,11 +561,7 @@ READ32_MEMBER( rastersp_state::tms32031_control_r )
 
 WRITE32_MEMBER( rastersp_state::tms32031_control_w )
 {
-<<<<<<< HEAD
-	UINT32 old = m_tms_io_regs[offset];
-=======
 	uint32_t old = m_tms_io_regs[offset];
->>>>>>> upstream/master
 
 	m_tms_io_regs[offset] = data;
 
@@ -773,11 +646,7 @@ WRITE32_MEMBER( rastersp_state::dsp_speedup_w )
 	// 809e90  48fd, 48d5
 	if (space.device().safe_pc() == 0x809c23)
 	{
-<<<<<<< HEAD
-		INT32 cycles_left = space.device().execute().cycles_remaining();
-=======
 		int32_t cycles_left = space.device().execute().cycles_remaining();
->>>>>>> upstream/master
 		data += cycles_left / 6;
 		space.device().execute().spin();
 	}
@@ -959,11 +828,7 @@ WRITE32_MEMBER(rastersp_state::ncr53c700_write)
 	m_maincpu->space(AS_PROGRAM).write_dword(offset, data, mem_mask);
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_FRAGMENT( ncr53c700 )
-=======
 static MACHINE_CONFIG_START( ncr53c700 )
->>>>>>> upstream/master
 	MCFG_DEVICE_CLOCK(66000000)
 	MCFG_NCR53C7XX_IRQ_HANDLER(DEVWRITELINE(":", rastersp_state, scsi_irq))
 	MCFG_NCR53C7XX_HOST_READ(DEVREAD32(":", rastersp_state, ncr53c700_read))
@@ -982,11 +847,7 @@ SLOT_INTERFACE_END
  *
  *************************************/
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( rastersp, rastersp_state )
-=======
 static MACHINE_CONFIG_START( rastersp )
->>>>>>> upstream/master
 	MCFG_CPU_ADD("maincpu", I486, 33330000)
 	MCFG_CPU_PROGRAM_MAP(cpu_map)
 	MCFG_CPU_IO_MAP(io_map)
@@ -1022,18 +883,11 @@ static MACHINE_CONFIG_START( rastersp )
 	/* Sound */
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
-<<<<<<< HEAD
-	MCFG_DAC_ADD("dac_l")
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 1.0)
-	MCFG_DAC_ADD("dac_r")
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 1.0)
-=======
 	MCFG_SOUND_ADD("ldac", DAC_16BIT_R2R_TWOS_COMPLEMENT, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 0.5) // unknown DAC
 	MCFG_SOUND_ADD("rdac", DAC_16BIT_R2R_TWOS_COMPLEMENT, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 0.5) // unknown DAC
 	MCFG_DEVICE_ADD("vref", VOLTAGE_REGULATOR, 0) MCFG_VOLTAGE_REGULATOR_OUTPUT(5.0)
 	MCFG_SOUND_ROUTE_EX(0, "ldac", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "ldac", -1.0, DAC_VREF_NEG_INPUT)
 	MCFG_SOUND_ROUTE_EX(0, "rdac", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "rdac", -1.0, DAC_VREF_NEG_INPUT)
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
@@ -1100,10 +954,5 @@ ROM_END
  *
  *************************************/
 
-<<<<<<< HEAD
-GAME( 1994, rotr, 0, rastersp, rotr, driver_device, 0, ROT0, "BFM/Mirage", "Rise of the Robots (prototype)", 0 )
-GAME( 1997, fbcrazy, 0, rastersp, rotr, driver_device, 0, ROT0, "BFM", "Football Crazy (Video Quiz)", MACHINE_NOT_WORKING )
-=======
 GAME( 1994, rotr,    0, rastersp, rotr, rastersp_state, 0, ROT0, "BFM/Mirage", "Rise of the Robots (prototype)", 0 )
 GAME( 1997, fbcrazy, 0, rastersp, rotr, rastersp_state, 0, ROT0, "BFM",        "Football Crazy (Video Quiz)",    MACHINE_NOT_WORKING )
->>>>>>> upstream/master

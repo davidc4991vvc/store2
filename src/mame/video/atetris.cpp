@@ -18,11 +18,7 @@
 
 TILE_GET_INFO_MEMBER(atetris_state::get_tile_info)
 {
-<<<<<<< HEAD
-	UINT8 *videoram = m_videoram;
-=======
 	uint8_t *videoram = m_videoram;
->>>>>>> upstream/master
 	int code = videoram[tile_index * 2] | ((videoram[tile_index * 2 + 1] & 7) << 8);
 	int color = (videoram[tile_index * 2 + 1] & 0xf0) >> 4;
 
@@ -39,11 +35,7 @@ TILE_GET_INFO_MEMBER(atetris_state::get_tile_info)
 
 WRITE8_MEMBER(atetris_state::videoram_w)
 {
-<<<<<<< HEAD
-	UINT8 *videoram = m_videoram;
-=======
 	uint8_t *videoram = m_videoram;
->>>>>>> upstream/master
 
 	videoram[offset] = data;
 	m_bg_tilemap->mark_tile_dirty(offset / 2);
@@ -59,11 +51,7 @@ WRITE8_MEMBER(atetris_state::videoram_w)
 
 void atetris_state::video_start()
 {
-<<<<<<< HEAD
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(atetris_state::get_tile_info),this), TILEMAP_SCAN_ROWS,  8,8, 64,32);
-=======
 	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(atetris_state::get_tile_info),this), TILEMAP_SCAN_ROWS,  8,8, 64,32);
->>>>>>> upstream/master
 }
 
 
@@ -74,11 +62,7 @@ void atetris_state::video_start()
  *
  *************************************/
 
-<<<<<<< HEAD
-UINT32 atetris_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t atetris_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	m_bg_tilemap->draw(screen, bitmap, cliprect, 0,0);
 	return 0;

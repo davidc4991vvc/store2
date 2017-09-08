@@ -14,10 +14,7 @@
 
 */
 
-<<<<<<< HEAD
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #include "magic_formel.h"
 
 
@@ -34,11 +31,7 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type C64_MAGIC_FORMEL = &device_creator<c64_magic_formel_cartridge_device>;
-=======
 DEFINE_DEVICE_TYPE(C64_MAGIC_FORMEL, c64_magic_formel_cartridge_device, "c64_magic_formel", "C64 Magic Formel cartridge")
->>>>>>> upstream/master
 
 
 WRITE8_MEMBER( c64_magic_formel_cartridge_device::pia_pa_w )
@@ -100,17 +93,10 @@ WRITE_LINE_MEMBER( c64_magic_formel_cartridge_device::pia_cb2_w )
 
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  MACHINE_CONFIG_FRAGMENT( c64_magic_formel )
-//-------------------------------------------------
-
-static MACHINE_CONFIG_FRAGMENT( c64_magic_formel )
-=======
 //  device_add_mconfig - add device configuration
 //-------------------------------------------------
 
 MACHINE_CONFIG_MEMBER( c64_magic_formel_cartridge_device::device_add_mconfig )
->>>>>>> upstream/master
 	MCFG_DEVICE_ADD(MC6821_TAG, PIA6821, 0)
 	MCFG_PIA_WRITEPA_HANDLER(WRITE8(c64_magic_formel_cartridge_device, pia_pa_w))
 	MCFG_PIA_WRITEPB_HANDLER(WRITE8(c64_magic_formel_cartridge_device, pia_pb_w))
@@ -119,20 +105,6 @@ MACHINE_CONFIG_END
 
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  machine_config_additions - device-specific
-//  machine configurations
-//-------------------------------------------------
-
-machine_config_constructor c64_magic_formel_cartridge_device::device_mconfig_additions() const
-{
-	return MACHINE_CONFIG_NAME( c64_magic_formel );
-}
-
-
-//-------------------------------------------------
-=======
->>>>>>> upstream/master
 //  INPUT_CHANGED_MEMBER( freeze )
 //-------------------------------------------------
 
@@ -157,11 +129,7 @@ INPUT_CHANGED_MEMBER( c64_magic_formel_cartridge_device::freeze )
 
 static INPUT_PORTS_START( c64_magic_formel )
 	PORT_START("FREEZE")
-<<<<<<< HEAD
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_OTHER ) PORT_NAME("Freeze") PORT_CODE(KEYCODE_F12) PORT_CHANGED_MEMBER(DEVICE_SELF, c64_magic_formel_cartridge_device, freeze, 0)
-=======
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_OTHER ) PORT_NAME("Freeze") PORT_CODE(KEYCODE_F12) PORT_CHANGED_MEMBER(DEVICE_SELF, c64_magic_formel_cartridge_device, freeze, nullptr)
->>>>>>> upstream/master
 INPUT_PORTS_END
 
 
@@ -184,13 +152,8 @@ ioport_constructor c64_magic_formel_cartridge_device::device_input_ports() const
 //  c64_magic_formel_cartridge_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-c64_magic_formel_cartridge_device::c64_magic_formel_cartridge_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-	device_t(mconfig, C64_MAGIC_FORMEL, "C64 Magic Formel cartridge", tag, owner, clock, "c64_magic_formel", __FILE__),
-=======
 c64_magic_formel_cartridge_device::c64_magic_formel_cartridge_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	device_t(mconfig, C64_MAGIC_FORMEL, tag, owner, clock),
->>>>>>> upstream/master
 	device_c64_expansion_card_interface(mconfig, *this),
 	m_pia(*this, MC6821_TAG),
 	m_ram(*this, "ram"),
@@ -242,11 +205,7 @@ void c64_magic_formel_cartridge_device::device_reset()
 //  c64_cd_r - cartridge data read
 //-------------------------------------------------
 
-<<<<<<< HEAD
-UINT8 c64_magic_formel_cartridge_device::c64_cd_r(address_space &space, offs_t offset, UINT8 data, int sphi2, int ba, int roml, int romh, int io1, int io2)
-=======
 uint8_t c64_magic_formel_cartridge_device::c64_cd_r(address_space &space, offs_t offset, uint8_t data, int sphi2, int ba, int roml, int romh, int io1, int io2)
->>>>>>> upstream/master
 {
 	if (!romh)
 	{
@@ -267,11 +226,7 @@ uint8_t c64_magic_formel_cartridge_device::c64_cd_r(address_space &space, offs_t
 //  c64_cd_w - cartridge data write
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void c64_magic_formel_cartridge_device::c64_cd_w(address_space &space, offs_t offset, UINT8 data, int sphi2, int ba, int roml, int romh, int io1, int io2)
-=======
 void c64_magic_formel_cartridge_device::c64_cd_w(address_space &space, offs_t offset, uint8_t data, int sphi2, int ba, int roml, int romh, int io1, int io2)
->>>>>>> upstream/master
 {
 	if (!io1 && !m_ram_oe)
 	{
@@ -281,11 +236,7 @@ void c64_magic_formel_cartridge_device::c64_cd_w(address_space &space, offs_t of
 	else if (!io2 && !(!m_u9b && m_ram_oe))
 	{
 		offs_t addr = (offset >> 6) & 0x03;
-<<<<<<< HEAD
-		UINT8 new_data = (BIT(data, 1) << 7) | (offset & 0x3f);
-=======
 		uint8_t new_data = (BIT(data, 1) << 7) | (offset & 0x3f);
->>>>>>> upstream/master
 
 		m_pia->write(space, addr, new_data);
 	}

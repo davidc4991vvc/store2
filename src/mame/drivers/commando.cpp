@@ -45,11 +45,6 @@ Note : there is an ingame typo bug that doesn't display the bonus life values
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/z80/z80.h"
-#include "sound/2203intf.h"
-#include "includes/commando.h"
-=======
 #include "includes/commando.h"
 
 #include "cpu/z80/z80.h"
@@ -57,7 +52,6 @@ Note : there is an ingame typo bug that doesn't display the bonus life values
 #include "sound/2203intf.h"
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 /* Memory Maps */
@@ -69,11 +63,7 @@ static ADDRESS_MAP_START( commando_map, AS_PROGRAM, 8, commando_state )
 	AM_RANGE(0xc002, 0xc002) AM_READ_PORT("P2")
 	AM_RANGE(0xc003, 0xc003) AM_READ_PORT("DSW1")
 	AM_RANGE(0xc004, 0xc004) AM_READ_PORT("DSW2")
-<<<<<<< HEAD
-	AM_RANGE(0xc800, 0xc800) AM_WRITE(soundlatch_byte_w)
-=======
 	AM_RANGE(0xc800, 0xc800) AM_DEVWRITE("soundlatch", generic_latch_8_device, write)
->>>>>>> upstream/master
 	AM_RANGE(0xc804, 0xc804) AM_WRITE(commando_c804_w)
 	AM_RANGE(0xc808, 0xc809) AM_WRITE(commando_scrollx_w)
 	AM_RANGE(0xc80a, 0xc80b) AM_WRITE(commando_scrolly_w)
@@ -86,22 +76,14 @@ static ADDRESS_MAP_START( commando_map, AS_PROGRAM, 8, commando_state )
 	AM_RANGE(0xff80, 0xffff) AM_RAM
 ADDRESS_MAP_END
 
-<<<<<<< HEAD
-static ADDRESS_MAP_START( decrypted_opcodes_map, AS_DECRYPTED_OPCODES, 8, commando_state )
-=======
 static ADDRESS_MAP_START( decrypted_opcodes_map, AS_OPCODES, 8, commando_state )
->>>>>>> upstream/master
 	AM_RANGE(0x0000, 0xbfff) AM_ROM AM_SHARE("decrypted_opcodes")
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( sound_map, AS_PROGRAM, 8, commando_state )
 	AM_RANGE(0x0000, 0x3fff) AM_ROM
 	AM_RANGE(0x4000, 0x47ff) AM_RAM
-<<<<<<< HEAD
-	AM_RANGE(0x6000, 0x6000) AM_READ(soundlatch_byte_r)
-=======
 	AM_RANGE(0x6000, 0x6000) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
->>>>>>> upstream/master
 	AM_RANGE(0x8000, 0x8001) AM_DEVWRITE("ym1", ym2203_device, write)
 	AM_RANGE(0x8002, 0x8003) AM_DEVWRITE("ym2", ym2203_device, write)
 ADDRESS_MAP_END
@@ -266,11 +248,7 @@ void commando_state::machine_reset()
 }
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( commando, commando_state )
-=======
 static MACHINE_CONFIG_START( commando )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, PHI_MAIN)  // ???
@@ -290,30 +268,19 @@ static MACHINE_CONFIG_START( commando )
 	MCFG_SCREEN_SIZE(32*8, 32*8)
 	MCFG_SCREEN_VISIBLE_AREA(0*8, 32*8-1, 2*8, 30*8-1)
 	MCFG_SCREEN_UPDATE_DRIVER(commando_state, screen_update_commando)
-<<<<<<< HEAD
-	MCFG_SCREEN_VBLANK_DEVICE("spriteram", buffered_spriteram8_device, vblank_copy_rising)
-	MCFG_SCREEN_PALETTE("palette")
-
-	MCFG_GFXDECODE_ADD("gfxdecode", "palette", commando)
-	MCFG_PALETTE_ADD_RRRRGGGGBBBB_PROMS("palette", 256)
-=======
 	MCFG_SCREEN_VBLANK_CALLBACK(DEVWRITELINE("spriteram", buffered_spriteram8_device, vblank_copy_rising))
 	MCFG_SCREEN_PALETTE("palette")
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", commando)
 	MCFG_PALETTE_ADD_RRRRGGGGBBBB_PROMS("palette", "proms", 256)
->>>>>>> upstream/master
 
 	MCFG_BUFFERED_SPRITERAM8_ADD("spriteram")
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 
->>>>>>> upstream/master
 	MCFG_SOUND_ADD("ym1", YM2203, PHI_B/2)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.15)
 
@@ -658,8 +625,6 @@ ROM_START( sinvasnb )
 	ROM_LOAD( "vtb6.6e",  0x0500, 0x0100, CRC(0eaf5158) SHA1(bafd4108708f66cd7b280e47152b108f3e254fc9) )    /* video timing (not used) */
 ROM_END
 
-<<<<<<< HEAD
-=======
 ROM_START( mercenario )
 	ROM_REGION( 0xc000, "maincpu", 0 )
 	ROM_LOAD( "4ac.bin",  0x0000, 0x4000, CRC(59ebf408) SHA1(ce2c06580a9fc902b1f6409249f25eba8216af8a) )
@@ -698,46 +663,29 @@ ROM_START( mercenario )
 ROM_END
 
 
->>>>>>> upstream/master
 /* Driver Initialization */
 
 DRIVER_INIT_MEMBER(commando_state,commando)
 {
-<<<<<<< HEAD
-	UINT8 *rom = memregion("maincpu")->base();
-=======
 	uint8_t *rom = memregion("maincpu")->base();
->>>>>>> upstream/master
 
 	// the first opcode is *not* encrypted
 	m_decrypted_opcodes[0] = rom[0];
 	for (int A = 1; A < 0xc000; A++)
 	{
-<<<<<<< HEAD
-		UINT8 src = rom[A];
-=======
 		uint8_t src = rom[A];
->>>>>>> upstream/master
 		m_decrypted_opcodes[A] = (src & 0x11) | ((src & 0xe0) >> 4) | ((src & 0x0e) << 4);
 	}
 }
 
 DRIVER_INIT_MEMBER(commando_state,spaceinv)
 {
-<<<<<<< HEAD
-	UINT8 *rom = memregion("maincpu")->base();
-=======
 	uint8_t *rom = memregion("maincpu")->base();
->>>>>>> upstream/master
 
 	// the first opcode *is* encrypted
 	for (int A = 0; A < 0xc000; A++)
 	{
-<<<<<<< HEAD
-		UINT8 src = rom[A];
-=======
 		uint8_t src = rom[A];
->>>>>>> upstream/master
 		m_decrypted_opcodes[A] = (src & 0x11) | ((src & 0xe0) >> 4) | ((src & 0x0e) << 4);
 	}
 }
@@ -745,19 +693,11 @@ DRIVER_INIT_MEMBER(commando_state,spaceinv)
 /* Game Drivers */
 
 GAME( 1985, commando,  0,        commando, commando, commando_state, commando, ROT270, "Capcom", "Commando (World)", MACHINE_SUPPORTS_SAVE )
-<<<<<<< HEAD
-GAME( 1985, commandou, commando, commando, commandou, commando_state,commando, ROT270, "Capcom (Data East USA license)", "Commando (US set 1)", MACHINE_SUPPORTS_SAVE )
-GAME( 1985, commandou2, commando, commando, commando, commando_state, commando, ROT270, "Capcom (Data East USA license)", "Commando (US set 2)", MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1985, commandou, commando, commando, commandou,commando_state, commando, ROT270, "Capcom (Data East USA license)", "Commando (US set 1)", MACHINE_SUPPORTS_SAVE )
 GAME( 1985, commandou2,commando, commando, commando, commando_state, commando, ROT270, "Capcom (Data East USA license)", "Commando (US set 2)", MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master
 GAME( 1985, commandoj, commando, commando, commando, commando_state, commando, ROT270, "Capcom", "Senjou no Ookami", MACHINE_SUPPORTS_SAVE )
 GAME( 1985, commandob, commando, commando, commando, commando_state, spaceinv, ROT270, "bootleg", "Commando (bootleg set 1)", MACHINE_SUPPORTS_SAVE )
 GAME( 1985, commandob2,commando, commando, commando, commando_state, commando, ROT270, "bootleg", "Commando (bootleg set 2)", MACHINE_SUPPORTS_SAVE )
 GAME( 1985, sinvasn,   commando, commando, commando, commando_state, commando, ROT270, "Capcom", "Space Invasion (Europe)", MACHINE_SUPPORTS_SAVE )
 GAME( 1985, sinvasnb,  commando, commando, commando, commando_state, spaceinv, ROT270, "bootleg", "Space Invasion (bootleg)", MACHINE_SUPPORTS_SAVE )
-<<<<<<< HEAD
-=======
 GAME( 1985, mercenario,commando, commando, commando, commando_state, spaceinv, ROT270, "bootleg", "Mercenario (Commando bootleg)", MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

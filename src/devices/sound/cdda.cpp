@@ -18,13 +18,8 @@
 void cdda_device::sound_stream_update(sound_stream &stream, stream_sample_t **inputs, stream_sample_t **outputs, int samples)
 {
 	get_audio_data(&outputs[0][0], &outputs[1][0], samples);
-<<<<<<< HEAD
-	m_audio_volume[0] = (INT16)outputs[0][0];
-	m_audio_volume[1] = (INT16)outputs[1][0];
-=======
 	m_audio_volume[0] = (int16_t)outputs[0][0];
 	m_audio_volume[1] = (int16_t)outputs[1][0];
->>>>>>> upstream/master
 }
 
 //-------------------------------------------------
@@ -34,11 +29,7 @@ void cdda_device::sound_stream_update(sound_stream &stream, stream_sample_t **in
 void cdda_device::device_start()
 {
 	/* allocate an audio cache */
-<<<<<<< HEAD
-	m_audio_cache = auto_alloc_array( machine(), UINT8, CD_MAX_SECTOR_DATA * MAX_SECTORS );
-=======
 	m_audio_cache = std::make_unique<uint8_t[]>(CD_MAX_SECTOR_DATA * MAX_SECTORS );
->>>>>>> upstream/master
 
 	m_stream = machine().sound().stream_alloc(*this, 0, 2, 44100);
 
@@ -49,22 +40,14 @@ void cdda_device::device_start()
 	m_audio_length = 0;
 	m_audio_samples = 0;
 	m_audio_bptr = 0;
-<<<<<<< HEAD
-	m_disc = NULL;
-=======
 	m_disc = nullptr;
->>>>>>> upstream/master
 
 	save_item( NAME(m_audio_playing) );
 	save_item( NAME(m_audio_pause) );
 	save_item( NAME(m_audio_ended_normally) );
 	save_item( NAME(m_audio_lba) );
 	save_item( NAME(m_audio_length) );
-<<<<<<< HEAD
-	save_pointer( NAME(m_audio_cache), CD_MAX_SECTOR_DATA * MAX_SECTORS );
-=======
 	save_pointer( NAME(m_audio_cache.get()), CD_MAX_SECTOR_DATA * MAX_SECTORS );
->>>>>>> upstream/master
 	save_item( NAME(m_audio_samples) );
 	save_item( NAME(m_audio_bptr) );
 }
@@ -86,21 +69,12 @@ void cdda_device::set_cdrom(void *file)
     Book audio track
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-void cdda_device::start_audio(UINT32 startlba, UINT32 numblocks)
-{
-	m_stream->update();
-	m_audio_playing = TRUE;
-	m_audio_pause = FALSE;
-	m_audio_ended_normally = FALSE;
-=======
 void cdda_device::start_audio(uint32_t startlba, uint32_t numblocks)
 {
 	m_stream->update();
 	m_audio_playing = true;
 	m_audio_pause = false;
 	m_audio_ended_normally = false;
->>>>>>> upstream/master
 	m_audio_lba = startlba;
 	m_audio_length = numblocks;
 	m_audio_samples = 0;
@@ -115,13 +89,8 @@ void cdda_device::start_audio(uint32_t startlba, uint32_t numblocks)
 void cdda_device::stop_audio()
 {
 	m_stream->update();
-<<<<<<< HEAD
-	m_audio_playing = FALSE;
-	m_audio_ended_normally = TRUE;
-=======
 	m_audio_playing = false;
 	m_audio_ended_normally = true;
->>>>>>> upstream/master
 }
 
 
@@ -142,11 +111,7 @@ void cdda_device::pause_audio(int pause)
     (physical sector) during Red Book playback
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-UINT32 cdda_device::get_audio_lba()
-=======
 uint32_t cdda_device::get_audio_lba()
->>>>>>> upstream/master
 {
 	m_stream->update();
 	return m_audio_lba;
@@ -183,10 +148,7 @@ int cdda_device::audio_paused()
 
 int cdda_device::audio_ended()
 {
-<<<<<<< HEAD
-=======
 	m_stream->update();
->>>>>>> upstream/master
 	return m_audio_ended_normally;
 }
 
@@ -197,17 +159,10 @@ int cdda_device::audio_ended()
     converts it to 2 16-bit 44.1 kHz streams
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-void cdda_device::get_audio_data(stream_sample_t *bufL, stream_sample_t *bufR, UINT32 samples_wanted)
-{
-	int i;
-	INT16 *audio_cache = (INT16 *) m_audio_cache;
-=======
 void cdda_device::get_audio_data(stream_sample_t *bufL, stream_sample_t *bufR, uint32_t samples_wanted)
 {
 	int i;
 	int16_t *audio_cache = (int16_t *) m_audio_cache.get();
->>>>>>> upstream/master
 
 	while (samples_wanted > 0)
 	{
@@ -217,13 +172,8 @@ void cdda_device::get_audio_data(stream_sample_t *bufL, stream_sample_t *bufR, u
 		{
 			if( m_disc && m_audio_playing && !m_audio_pause && !m_audio_length )
 			{
-<<<<<<< HEAD
-				m_audio_playing = FALSE;
-				m_audio_ended_normally = TRUE;
-=======
 				m_audio_playing = false;
 				m_audio_ended_normally = true;
->>>>>>> upstream/master
 			}
 
 			memset(bufL, 0, sizeof(stream_sample_t)*samples_wanted);
@@ -240,13 +190,8 @@ void cdda_device::get_audio_data(stream_sample_t *bufL, stream_sample_t *bufR, u
 		for (i = 0; i < samples; i++)
 		{
 			/* CD-DA data on the disc is big-endian */
-<<<<<<< HEAD
-			*bufL++ = (INT16) BIG_ENDIANIZE_INT16( audio_cache[ m_audio_bptr ] ); m_audio_bptr++;
-			*bufR++ = (INT16) BIG_ENDIANIZE_INT16( audio_cache[ m_audio_bptr ] ); m_audio_bptr++;
-=======
 			*bufL++ = (int16_t) big_endianize_int16( audio_cache[ m_audio_bptr ] ); m_audio_bptr++;
 			*bufR++ = (int16_t) big_endianize_int16( audio_cache[ m_audio_bptr ] ); m_audio_bptr++;
->>>>>>> upstream/master
 		}
 
 		samples_wanted -= samples;
@@ -277,61 +222,15 @@ void cdda_device::get_audio_data(stream_sample_t *bufL, stream_sample_t *bufR, u
 }
 
 /*-------------------------------------------------
-<<<<<<< HEAD
-    cdda_set_volume - sets CD-DA volume level
-    for both speakers, used for fade in/out effects
--------------------------------------------------*/
-
-void cdda_device::set_volume(int volume)
-{
-	m_stream->set_output_gain(0,volume / 100.0);
-	m_stream->set_output_gain(1,volume / 100.0);
-}
-
-/*-------------------------------------------------
-    cdda_set_channel_volume - sets CD-DA volume level
-    for either speaker, used for fade in/out effects
--------------------------------------------------*/
-
-void cdda_device::set_channel_volume(int channel, int volume)
-{
-	m_stream->set_output_gain(channel,volume / 100.0);
-}
-
-
-/*-------------------------------------------------
-=======
->>>>>>> upstream/master
     cdda_get_channel_volume - sets CD-DA volume level
     for either speaker, used for volume control display
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-INT16 cdda_device::get_channel_volume(int channel)
-=======
 int16_t cdda_device::get_channel_volume(int channel)
->>>>>>> upstream/master
 {
 	return m_audio_volume[channel];
 }
 
-<<<<<<< HEAD
-const device_type CDDA = &device_creator<cdda_device>;
-
-cdda_device::cdda_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, CDDA, "CD/DA", tag, owner, clock, "cdda", __FILE__),
-		device_sound_interface(mconfig, *this)
-{
-}
-
-//-------------------------------------------------
-//  device_config_complete - perform any
-//  operations now that the configuration is
-//  complete
-//-------------------------------------------------
-
-void cdda_device::device_config_complete()
-=======
 DEFINE_DEVICE_TYPE(CDDA, cdda_device, "cdda", "CD/DA")
 
 cdda_device::cdda_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
@@ -339,6 +238,5 @@ cdda_device::cdda_device(const machine_config &mconfig, const char *tag, device_
 	, device_sound_interface(mconfig, *this)
 	, m_disc(nullptr)
 	, m_stream(nullptr)
->>>>>>> upstream/master
 {
 }

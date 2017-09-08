@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-// license:???
-=======
 // license:BSD-3-Clause
->>>>>>> upstream/master
 // copyright-holders:Paul Leaman, Miguel Angel Horna
 /***************************************************************************
 
@@ -25,30 +21,15 @@
   - understand reg 9
   - understand other writes to $90-$ff area
 
-<<<<<<< HEAD
-=======
   Links:
   https://siliconpr0n.org/map/capcom/dl-1425
 
->>>>>>> upstream/master
 ***************************************************************************/
 
 #include "emu.h"
 #include "qsound.h"
 
 // device type definition
-<<<<<<< HEAD
-const device_type QSOUND = &device_creator<qsound_device>;
-
-
-// program map for the DSP (points to internal 4096 words of internal ROM)
-static ADDRESS_MAP_START( dsp16_program_map, AS_PROGRAM, 16, qsound_device )
-	AM_RANGE(0x0000, 0x0fff) AM_ROM
-ADDRESS_MAP_END
-
-
-// data map for the DSP (the dsp16 appears to use 2048 words of internal RAM)
-=======
 DEFINE_DEVICE_TYPE(QSOUND, qsound_device, "qsound", "Q-Sound")
 
 
@@ -69,33 +50,16 @@ ADDRESS_MAP_END
 // As originally released, the DSP16A had 1024 words of internal RAM,
 // but this was expanded to 2048 words in the DL-1425 decap.
 // The older DSP16 non-a part has 512 words of RAM.
->>>>>>> upstream/master
 static ADDRESS_MAP_START( dsp16_data_map, AS_DATA, 16, qsound_device )
 	ADDRESS_MAP_UNMAP_HIGH
 	AM_RANGE(0x0000, 0x07ff) AM_RAM
 ADDRESS_MAP_END
 
 
-<<<<<<< HEAD
-// machine fragment
-static MACHINE_CONFIG_FRAGMENT( qsound )
-	MCFG_CPU_ADD("qsound", DSP16, QSOUND_CLOCK)
-	MCFG_CPU_PROGRAM_MAP(dsp16_program_map)
-	MCFG_CPU_DATA_MAP(dsp16_data_map)
-MACHINE_CONFIG_END
-
-
-// ROM definition for the Qsound program ROM
-// NOTE: ROM is marked as bad since a handful of questionable bits haven't been fully examined.
-ROM_START( qsound )
-	ROM_REGION( 0x2000, "qsound", 0 )
-	ROM_LOAD16_WORD( "qsound.bin", 0x0000, 0x2000, BAD_DUMP CRC(059c847d) SHA1(229cead1be2f86733dd80573d4983ba482355ece) )
-=======
 // ROM definition for the Qsound program ROM
 ROM_START( qsound )
 	ROM_REGION( 0x6000, "qsound", 0 )
 	ROM_LOAD16_WORD( "dl-1425.bin", 0x0000, 0x6000, CRC(d6cf5ef5) SHA1(555f50fe5cdf127619da7d854c03f4a244a0c501) )
->>>>>>> upstream/master
 ROM_END
 
 
@@ -107,22 +71,13 @@ ROM_END
 //  qsound_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-qsound_device::qsound_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, QSOUND, "Q-Sound", tag, owner, clock, "qsound", __FILE__),
-=======
 qsound_device::qsound_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, QSOUND, tag, owner, clock),
->>>>>>> upstream/master
 		device_sound_interface(mconfig, *this),
 		m_cpu(*this, "qsound"),
 		m_sample_rom(*this, DEVICE_SELF),
 		m_data(0),
-<<<<<<< HEAD
-		m_stream(NULL)
-=======
 		m_stream(nullptr)
->>>>>>> upstream/master
 {
 }
 
@@ -132,27 +87,13 @@ qsound_device::qsound_device(const machine_config &mconfig, const char *tag, dev
 //  internal ROM region
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const rom_entry *qsound_device::device_rom_region() const
-=======
 const tiny_rom_entry *qsound_device::device_rom_region() const
->>>>>>> upstream/master
 {
 	return ROM_NAME( qsound );
 }
 
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  machine_config_additions - return a pointer to
-//  the device's machine fragment
-//-------------------------------------------------
-
-machine_config_constructor qsound_device::device_mconfig_additions() const
-{
-	return MACHINE_CONFIG_NAME( qsound );
-}
-=======
 //  device_add_mconfig - add device configuration
 //-------------------------------------------------
 
@@ -161,7 +102,6 @@ MACHINE_CONFIG_MEMBER( qsound_device::device_add_mconfig )
 	MCFG_CPU_PROGRAM_MAP(dsp16_program_map)
 	MCFG_CPU_DATA_MAP(dsp16_data_map)
 MACHINE_CONFIG_END
->>>>>>> upstream/master
 
 
 //-------------------------------------------------
@@ -211,15 +151,9 @@ void qsound_device::sound_stream_update(sound_stream &stream, stream_sample_t **
 	memset(outputs[0], 0, samples * sizeof(*outputs[0]));
 	memset(outputs[1], 0, samples * sizeof(*outputs[1]));
 
-<<<<<<< HEAD
-	for (int ch = 0; ch < 16; ch++)
-	{
-		if (m_channel[ch].enabled)
-=======
 	for (auto & elem : m_channel)
 	{
 		if (elem.enabled)
->>>>>>> upstream/master
 		{
 			stream_sample_t *lmix=outputs[0];
 			stream_sample_t *rmix=outputs[1];
@@ -227,24 +161,6 @@ void qsound_device::sound_stream_update(sound_stream &stream, stream_sample_t **
 			// Go through the buffer and add voice contributions
 			for (int i = 0; i < samples; i++)
 			{
-<<<<<<< HEAD
-				m_channel[ch].address += (m_channel[ch].step_ptr >> 12);
-				m_channel[ch].step_ptr &= 0xfff;
-				m_channel[ch].step_ptr += m_channel[ch].freq;
-
-				if (m_channel[ch].address >= m_channel[ch].end)
-				{
-					if (m_channel[ch].loop)
-					{
-						// Reached the end, restart the loop
-						m_channel[ch].address -= m_channel[ch].loop;
-
-						// Make sure we don't overflow (what does the real chip do in this case?)
-						if (m_channel[ch].address >= m_channel[ch].end)
-							m_channel[ch].address = m_channel[ch].end - m_channel[ch].loop;
-
-						m_channel[ch].address &= 0xffff;
-=======
 				elem.address += (elem.step_ptr >> 12);
 				elem.step_ptr &= 0xfff;
 				elem.step_ptr += elem.freq;
@@ -261,29 +177,18 @@ void qsound_device::sound_stream_update(sound_stream &stream, stream_sample_t **
 							elem.address = elem.end - elem.loop;
 
 						elem.address &= 0xffff;
->>>>>>> upstream/master
 					}
 					else
 					{
 						// Reached the end of a non-looped sample
-<<<<<<< HEAD
-						m_channel[ch].enabled = false;
-=======
 						elem.enabled = false;
->>>>>>> upstream/master
 						break;
 					}
 				}
 
-<<<<<<< HEAD
-				INT8 sample = read_sample(m_channel[ch].bank | m_channel[ch].address);
-				*lmix++ += ((sample * m_channel[ch].lvol * m_channel[ch].vol) >> 14);
-				*rmix++ += ((sample * m_channel[ch].rvol * m_channel[ch].vol) >> 14);
-=======
 				int8_t sample = read_sample(elem.bank | elem.address);
 				*lmix++ += ((sample * elem.lvol * elem.vol) >> 14);
 				*rmix++ += ((sample * elem.rvol * elem.vol) >> 14);
->>>>>>> upstream/master
 			}
 		}
 	}
@@ -321,15 +226,9 @@ READ8_MEMBER(qsound_device::qsound_r)
 }
 
 
-<<<<<<< HEAD
-void qsound_device::write_data(UINT8 address, UINT16 data)
-{
-	int ch = 0, reg = 0;
-=======
 void qsound_device::write_data(uint8_t address, uint16_t data)
 {
 	int ch = 0, reg;
->>>>>>> upstream/master
 
 	// direct sound reg
 	if (address < 0x80)

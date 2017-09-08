@@ -20,15 +20,10 @@
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "video/atarirle.h"
-#include "includes/atarig42.h"
-=======
 #include "includes/atarig42.h"
 #include "machine/eeprompar.h"
 #include "machine/watchdog.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 /*************************************
@@ -133,20 +128,6 @@ WRITE16_MEMBER(atarig42_state::mo_command_w)
  *
  *************************************/
 
-<<<<<<< HEAD
-DIRECT_UPDATE_MEMBER( atarig42_state::atarig42_sloop_direct_handler )
-{
-	if (address < 0x80000)
-	{
-		direct.explicit_configure(0x00000, 0x7ffff, 0x7ffff, m_sloop_base);
-		return (offs_t)-1;
-	}
-	return address;
-}
-
-
-=======
->>>>>>> upstream/master
 void atarig42_state::roadriot_sloop_tweak(int offset)
 {
 /*
@@ -284,11 +265,7 @@ WRITE16_MEMBER(atarig42_state::roadriot_sloop_data_w)
 
 void atarig42_state::guardians_sloop_tweak(int offset)
 {
-<<<<<<< HEAD
-	UINT32 *last_accesses = m_last_accesses;
-=======
 	uint32_t *last_accesses = m_last_accesses;
->>>>>>> upstream/master
 
 	if (offset >= 0x7f7c0/2)
 	{
@@ -353,24 +330,14 @@ static ADDRESS_MAP_START( main_map, AS_PROGRAM, 16, atarig42_state )
 	AM_RANGE(0xe00030, 0xe00031) AM_DEVREAD8("jsa", atari_jsa_iii_device, main_response_r, 0x00ff)
 	AM_RANGE(0xe00040, 0xe00041) AM_DEVWRITE8("jsa", atari_jsa_iii_device, main_command_w, 0x00ff)
 	AM_RANGE(0xe00050, 0xe00051) AM_WRITE(io_latch_w)
-<<<<<<< HEAD
-	AM_RANGE(0xe00060, 0xe00061) AM_DEVWRITE("eeprom", atari_eeprom_device, unlock_write)
-	AM_RANGE(0xe03000, 0xe03001) AM_WRITE(video_int_ack_w)
-	AM_RANGE(0xe03800, 0xe03801) AM_WRITE(watchdog_reset16_w)
-=======
 	AM_RANGE(0xe00060, 0xe00061) AM_DEVWRITE("eeprom", eeprom_parallel_28xx_device, unlock_write)
 	AM_RANGE(0xe03000, 0xe03001) AM_WRITE(video_int_ack_w)
 	AM_RANGE(0xe03800, 0xe03801) AM_DEVWRITE("watchdog", watchdog_timer_device, reset16_w)
->>>>>>> upstream/master
 	AM_RANGE(0xe80000, 0xe80fff) AM_RAM
 	AM_RANGE(0xf40000, 0xf40001) AM_DEVREAD("asic65", asic65_device, io_r)
 	AM_RANGE(0xf60000, 0xf60001) AM_DEVREAD("asic65", asic65_device, read)
 	AM_RANGE(0xf80000, 0xf80003) AM_DEVWRITE("asic65", asic65_device, data_w)
-<<<<<<< HEAD
-	AM_RANGE(0xfa0000, 0xfa0fff) AM_DEVREADWRITE8("eeprom", atari_eeprom_device, read, write, 0x00ff)
-=======
 	AM_RANGE(0xfa0000, 0xfa0fff) AM_DEVREADWRITE8("eeprom", eeprom_parallel_28xx_device, read, write, 0x00ff)
->>>>>>> upstream/master
 	AM_RANGE(0xfc0000, 0xfc0fff) AM_RAM_DEVWRITE("palette", palette_device, write) AM_SHARE("palette")
 	AM_RANGE(0xff0000, 0xff0fff) AM_RAM AM_SHARE("rle")
 	AM_RANGE(0xff2000, 0xff5fff) AM_DEVWRITE("playfield", tilemap_device, write) AM_SHARE("playfield")
@@ -555,11 +522,7 @@ static const atari_rle_objects_config modesc_0x400 =
  *
  *************************************/
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( atarig42, atarig42_state )
-=======
 static MACHINE_CONFIG_START( atarig42 )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, ATARI_CLOCK_14MHz)
@@ -569,14 +532,10 @@ static MACHINE_CONFIG_START( atarig42 )
 	MCFG_MACHINE_START_OVERRIDE(atarig42_state,atarig42)
 	MCFG_MACHINE_RESET_OVERRIDE(atarig42_state,atarig42)
 
-<<<<<<< HEAD
-	MCFG_ATARI_EEPROM_2816_ADD("eeprom")
-=======
 	MCFG_EEPROM_2816_ADD("eeprom")
 	MCFG_EEPROM_28XX_LOCK_AFTER_WRITE(true)
 
 	MCFG_WATCHDOG_ADD("watchdog")
->>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", atarig42)
@@ -629,8 +588,6 @@ MACHINE_CONFIG_END
 
 ROM_START( roadriot )
 	ROM_REGION( 0x80004, "maincpu", 0 ) /* 68000 code */
-<<<<<<< HEAD
-=======
 	ROM_LOAD16_BYTE( "136089-3214.8d", 0x00000, 0x20000, CRC(6b4dc220) SHA1(43517d8adbc8771ac4e4dcde221def12e1859b61) )
 	ROM_LOAD16_BYTE( "136089-3213.8c", 0x00001, 0x20000, CRC(2f182b74) SHA1(b6b30bc068b5eeb52e0000236b7f58b1e88bb154) )
 	ROM_LOAD16_BYTE( "136089-2016.9d", 0x40000, 0x20000, CRC(6191653c) SHA1(97d1a84a585149e8f2c49cab7af22dc755dff350) )
@@ -688,7 +645,6 @@ ROM_END
 
 ROM_START( roadriota )
 	ROM_REGION( 0x80004, "maincpu", 0 ) /* 68000 code */
->>>>>>> upstream/master
 	ROM_LOAD16_BYTE( "136089-3114.8d", 0x00000, 0x20000, CRC(a2bd949c) SHA1(f96064d491b4d488cadebd3a63a6d3edf9236046) )
 	ROM_LOAD16_BYTE( "136089-3113.8c", 0x00001, 0x20000, CRC(68c45cb1) SHA1(e38c7ad3f3d301e59a1d9f53e8f2c28e91d691fe) )
 	ROM_LOAD16_BYTE( "136089-2016.9d", 0x40000, 0x20000, CRC(6191653c) SHA1(97d1a84a585149e8f2c49cab7af22dc755dff350) )
@@ -697,14 +653,8 @@ ROM_START( roadriota )
 	ROM_REGION( 0x2000, "asic65:asic65cpu", 0 )   /* ASIC65 TMS32015 code */
 	ROM_LOAD( "136089-1012.3f", 0x00000, 0x0a80, CRC(7c5498e7) SHA1(9d8b235baf7b75bef8ef9b168647c5b2b80b2cb3) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x14000, "jsa:cpu", 0 ) /* 6502 code */
-	ROM_LOAD( "136089-1047.12c", 0x10000, 0x4000, CRC(849dd26c) SHA1(05a0b2a5f7ee4437448b5f076d3066d96dec2320) )
-	ROM_CONTINUE(           0x04000, 0xc000 )
-=======
 	ROM_REGION( 0x10000, "jsa:cpu", 0 ) /* 6502 code */
 	ROM_LOAD( "136089-1047.12c", 0x00000, 0x10000, CRC(849dd26c) SHA1(05a0b2a5f7ee4437448b5f076d3066d96dec2320) )
->>>>>>> upstream/master
 
 	ROM_REGION( 0xc0000, "gfx1", 0 )
 	ROM_LOAD( "136089-1041.22d",    0x000000, 0x20000, CRC(b7451f92) SHA1(9fd17913630e457e406e596f2d86afff98787750) ) /* playfield, planes 0-1 */
@@ -741,11 +691,7 @@ ROM_START( roadriota )
 	ROM_LOAD( "136089-1050.15e",  0x40000, 0x20000, CRC(64d410bb) SHA1(877bccca7ff37a9dd8294bc1453487a2f516ca7d) )
 	ROM_LOAD( "136089-1051.12e",  0x60000, 0x20000, CRC(bffd01c8) SHA1(f6de000f61ea0c1ddb31ee5301506e5e966638c2) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x800, "eeprom:eeprom", 0 )
-=======
 	ROM_REGION( 0x800, "eeprom", 0 )
->>>>>>> upstream/master
 	ROM_LOAD( "roadriot-eeprom.5c", 0x0000, 0x800, CRC(8d9b957d) SHA1(9d895c5977a3f405130594a10d530a82a6aa265f) )
 
 	ROM_REGION( 0x0600, "proms", 0 )    /* microcode for growth renderer */
@@ -754,11 +700,7 @@ ROM_START( roadriota )
 	ROM_LOAD( "136089-1003.21p",  0x0400, 0x0200, CRC(1f571706) SHA1(26d5ea59163b3482ab1f8a26178d0849c5fd9692) )
 ROM_END
 
-<<<<<<< HEAD
-ROM_START( roadrioto )
-=======
 ROM_START( roadriotb )
->>>>>>> upstream/master
 	ROM_REGION( 0x80004, "maincpu", 0 ) /* 68000 code */
 	ROM_LOAD16_BYTE( "136089-2014.8d", 0x00000, 0x20000, CRC(bf8aaafc) SHA1(1594d91b56609d49921c866d8f5796619e79217b) ) /* Program ROMs in Blue labels,  */
 	ROM_LOAD16_BYTE( "136089-2013.8c", 0x00001, 0x20000, CRC(5dd2dd70) SHA1(8f6a0e809ec1f6feea8a18197a789086a7b9dd6a) ) /* other ROMs in Yellow labels   */
@@ -768,14 +710,8 @@ ROM_START( roadriotb )
 	ROM_REGION( 0x2000, "asic65:asic65cpu", 0 )   /* ASIC65 TMS32015 code */
 	ROM_LOAD( "136089-1012.3f", 0x00000, 0x0a80, CRC(7c5498e7) SHA1(9d8b235baf7b75bef8ef9b168647c5b2b80b2cb3) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x14000, "jsa:cpu", 0 ) /* 6502 code */
-	ROM_LOAD( "136089-1047.12c", 0x10000, 0x4000, CRC(849dd26c) SHA1(05a0b2a5f7ee4437448b5f076d3066d96dec2320) )
-	ROM_CONTINUE(           0x04000, 0xc000 )
-=======
 	ROM_REGION( 0x10000, "jsa:cpu", 0 ) /* 6502 code */
 	ROM_LOAD( "136089-1047.12c", 0x00000, 0x10000, CRC(849dd26c) SHA1(05a0b2a5f7ee4437448b5f076d3066d96dec2320) )
->>>>>>> upstream/master
 
 	ROM_REGION( 0xc0000, "gfx1", 0 )
 	ROM_LOAD( "136089-1041.22d",    0x000000, 0x20000, CRC(b7451f92) SHA1(9fd17913630e457e406e596f2d86afff98787750) ) /* playfield, planes 0-1 */
@@ -812,11 +748,7 @@ ROM_START( roadriotb )
 	ROM_LOAD( "136089-1050.15e",  0x40000, 0x20000, CRC(64d410bb) SHA1(877bccca7ff37a9dd8294bc1453487a2f516ca7d) )
 	ROM_LOAD( "136089-1051.12e",  0x60000, 0x20000, CRC(bffd01c8) SHA1(f6de000f61ea0c1ddb31ee5301506e5e966638c2) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x800, "eeprom:eeprom", 0 )
-=======
 	ROM_REGION( 0x800, "eeprom", 0 )
->>>>>>> upstream/master
 	ROM_LOAD( "roadriot-eeprom.5c", 0x0000, 0x800, CRC(8d9b957d) SHA1(9d895c5977a3f405130594a10d530a82a6aa265f) )
 
 	ROM_REGION( 0x0600, "proms", 0 )    /* microcode for growth renderer */
@@ -836,14 +768,8 @@ ROM_START( guardian )
 	ROM_REGION( 0x2000, "asic65:asic65cpu", 0 )   /* ASIC65 TMS32015 code */
 	ROM_LOAD( "136089-1012.3f", 0x00000, 0x0a80, NO_DUMP )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x14000, "jsa:cpu", 0 ) /* 6502 code */
-	ROM_LOAD( "136092-0080-snd.12c", 0x10000, 0x4000, CRC(0388f805) SHA1(49c11313bc4192dbe294cf68b652cb19047889fd) )
-	ROM_CONTINUE(             0x04000, 0xc000 )
-=======
 	ROM_REGION( 0x10000, "jsa:cpu", 0 ) /* 6502 code */
 	ROM_LOAD( "136092-0080-snd.12c", 0x00000, 0x10000, CRC(0388f805) SHA1(49c11313bc4192dbe294cf68b652cb19047889fd) )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x180000, "gfx1", 0 )
 	ROM_LOAD( "136092-0037a.23e",  0x000000, 0x80000, CRC(ca10b63e) SHA1(243a2a440e1bc9135d3dbe6553d39c54b9bdcd13) ) /* playfield, planes 0-1 */
@@ -870,11 +796,7 @@ ROM_START( guardian )
 	ROM_REGION( 0x80000, "jsa:oki1", 0 )
 	ROM_LOAD( "136092-0010-snd.19e",  0x00000, 0x80000, CRC(bca27f40) SHA1(91a41eac116eb7d9a790abc590eb06328726d1c2) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x800, "eeprom:eeprom", 0 )
-=======
 	ROM_REGION( 0x800, "eeprom", 0 )
->>>>>>> upstream/master
 	ROM_LOAD( "guardian-eeprom.5c", 0x0000, 0x800, CRC(85835fab) SHA1(747e2851c8baa0e7f1c0784b0d6900514230ab07) )
 
 	ROM_REGION( 0x0600, "proms", 0 )    /* microcode for growth renderer */
@@ -907,13 +829,8 @@ DRIVER_INIT_MEMBER(atarig42_state,roadriot)
 	m_playfield_base = 0x400;
 
 	address_space &main = m_maincpu->space(AS_PROGRAM);
-<<<<<<< HEAD
-	m_sloop_base = main.install_readwrite_handler(0x000000, 0x07ffff, read16_delegate(FUNC(atarig42_state::roadriot_sloop_data_r),this), write16_delegate(FUNC(atarig42_state::roadriot_sloop_data_w),this));
-	main.set_direct_update_handler(direct_update_delegate(FUNC(atarig42_state::atarig42_sloop_direct_handler), this));
-=======
 	main.install_readwrite_handler(0x000000, 0x07ffff, read16_delegate(FUNC(atarig42_state::roadriot_sloop_data_r),this), write16_delegate(FUNC(atarig42_state::roadriot_sloop_data_w),this));
 	m_sloop_base = (uint16_t *)memregion("maincpu")->base();
->>>>>>> upstream/master
 
 	/*
 	Road Riot color MUX
@@ -944,19 +861,11 @@ DRIVER_INIT_MEMBER(atarig42_state,guardian)
 
 	/* it looks like they jsr to $80000 as some kind of protection */
 	/* put an RTS there so we don't die */
-<<<<<<< HEAD
-	*(UINT16 *)&memregion("maincpu")->base()[0x80000] = 0x4E75;
-
-	address_space &main = m_maincpu->space(AS_PROGRAM);
-	m_sloop_base = main.install_readwrite_handler(0x000000, 0x07ffff, read16_delegate(FUNC(atarig42_state::guardians_sloop_data_r),this), write16_delegate(FUNC(atarig42_state::guardians_sloop_data_w),this));
-	main.set_direct_update_handler(direct_update_delegate(FUNC(atarig42_state::atarig42_sloop_direct_handler), this));
-=======
 	*(uint16_t *)&memregion("maincpu")->base()[0x80000] = 0x4E75;
 
 	address_space &main = m_maincpu->space(AS_PROGRAM);
 	main.install_readwrite_handler(0x000000, 0x07ffff, read16_delegate(FUNC(atarig42_state::guardians_sloop_data_r),this), write16_delegate(FUNC(atarig42_state::guardians_sloop_data_w),this));
 	m_sloop_base = (uint16_t *)memregion("maincpu")->base();
->>>>>>> upstream/master
 
 	/*
 	Guardians color MUX
@@ -988,13 +897,7 @@ DRIVER_INIT_MEMBER(atarig42_state,guardian)
  *
  *************************************/
 
-<<<<<<< HEAD
-GAME( 1991, roadriot, 0,        atarig42_0x200, roadriot, atarig42_state, roadriot, ROT0, "Atari Games", "Road Riot 4WD (set 1, 13 Nov 1991)", MACHINE_UNEMULATED_PROTECTION )
-GAME( 1991, roadrioto,roadriot, atarig42_0x200, roadriot, atarig42_state, roadriot, ROT0, "Atari Games", "Road Riot 4WD (set 2, 04 Jun 1991)", MACHINE_UNEMULATED_PROTECTION )
-GAME( 1992, guardian, 0,        atarig42_0x400, guardian, atarig42_state, guardian, ROT0, "Atari Games", "Guardians of the 'Hood", 0 )
-=======
 GAME( 1991, roadriot,  0,        atarig42_0x200, roadriot, atarig42_state, roadriot, ROT0, "Atari Games", "Road Riot 4WD (set 1, 04 Dec 1991)", MACHINE_UNEMULATED_PROTECTION )
 GAME( 1991, roadriota, roadriot, atarig42_0x200, roadriot, atarig42_state, roadriot, ROT0, "Atari Games", "Road Riot 4WD (set 2, 13 Nov 1991)", MACHINE_UNEMULATED_PROTECTION )
 GAME( 1991, roadriotb, roadriot, atarig42_0x200, roadriot, atarig42_state, roadriot, ROT0, "Atari Games", "Road Riot 4WD (set 3, 04 Jun 1991)", MACHINE_UNEMULATED_PROTECTION )
 GAME( 1992, guardian,  0,        atarig42_0x400, guardian, atarig42_state, guardian, ROT0, "Atari Games", "Guardians of the 'Hood", 0 )
->>>>>>> upstream/master

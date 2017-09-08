@@ -10,10 +10,6 @@
 
 #import "debugwindowhandler.h"
 
-<<<<<<< HEAD
-#include "emu.h"
-=======
->>>>>>> upstream/master
 
 #import <Cocoa/Cocoa.h>
 
@@ -25,10 +21,7 @@
 	MAMEDebugCommandHistory *history;
 	NSMutableArray          *auxiliaryWindows;
 
-<<<<<<< HEAD
-=======
 	NSSplitView             *regSplit, *dasmSplit;
->>>>>>> upstream/master
 	MAMERegistersView       *regView;
 	MAMEDisassemblyView     *dasmView;
 	MAMEDebugView           *consoleView;
@@ -58,14 +51,11 @@
 - (void)showDebugger:(NSNotification *)notification;
 - (void)auxiliaryWindowWillClose:(NSNotification *)notification;
 
-<<<<<<< HEAD
-=======
 - (void)loadConfiguration:(util::xml::data_node const *)parentnode;
 
 - (void)saveConfigurationToNode:(util::xml::data_node *)node;
 - (void)restoreConfigurationFromNode:(util::xml::data_node const *)node;
 
->>>>>>> upstream/master
 - (BOOL)control:(NSControl *)control textShouldBeginEditing:(NSText *)fieldEditor;
 - (BOOL)control:(NSControl *)control textView:(NSTextView *)textView doCommandBySelector:(SEL)command;
 

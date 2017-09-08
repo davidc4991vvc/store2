@@ -303,15 +303,9 @@ D3DReflect(_In_reads_bytes_(SrcDataSize) LPCVOID pSrcData,
 
 HRESULT WINAPI
 D3DReflectLibrary(__in_bcount(SrcDataSize) LPCVOID pSrcData,
-<<<<<<< HEAD
-                  __in SIZE_T SrcDataSize,
-	              __in REFIID riid,
-                  __out LPVOID * ppReflector);
-=======
                   SIZE_T SrcDataSize,
 	              REFIID riid,
                   LPVOID * ppReflector);
->>>>>>> upstream/master
 
 //----------------------------------------------------------------------------
 // D3DDisassemble:
@@ -356,11 +350,7 @@ D3DDisassembleRegion(_In_reads_bytes_(SrcDataSize) LPCVOID pSrcData,
 // Shader linking and Function Linking Graph (FLG) APIs
 //----------------------------------------------------------------------------
 HRESULT WINAPI
-<<<<<<< HEAD
-D3DCreateLinker(__out interface ID3D11Linker ** ppLinker);
-=======
 D3DCreateLinker(interface ID3D11Linker ** ppLinker);
->>>>>>> upstream/master
 
 HRESULT WINAPI
 D3DLoadModule(_In_ LPCVOID pSrcData,

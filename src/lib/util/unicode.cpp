@@ -2,11 +2,7 @@
 // copyright-holders:Aaron Giles
 /*********************************************************************
 
-<<<<<<< HEAD
-    unicode.c
-=======
     unicode.cpp
->>>>>>> upstream/master
 
     Unicode related functions
 
@@ -14,15 +10,6 @@
 
 #include "unicode.h"
 
-<<<<<<< HEAD
-
-/*-------------------------------------------------
-    uchar_isvalid - return true if a given
-    character is a legitimate unicode character
--------------------------------------------------*/
-
-int uchar_isvalid(unicode_char uchar)
-=======
 #ifdef _WIN32
 #include "strconv.h"
 #define UTF8PROC_DLLEXPORT
@@ -40,30 +27,11 @@ int uchar_isvalid(unicode_char uchar)
 //-------------------------------------------------
 
 bool uchar_isvalid(char32_t uchar)
->>>>>>> upstream/master
 {
 	return (uchar < 0x110000) && !((uchar >= 0xd800) && (uchar <= 0xdfff));
 }
 
 
-<<<<<<< HEAD
-/*-------------------------------------------------
-    uchar_from_utf8 - convert a UTF-8 sequence
-    into a unicode character
--------------------------------------------------*/
-
-int uchar_from_utf8(unicode_char *uchar, const char *utf8char, size_t count)
-{
-	unicode_char c, minchar;
-	int auxlen, i;
-	char auxchar;
-
-	/* validate parameters */
-	if (utf8char == NULL || count == 0)
-		return 0;
-
-	/* start with the first byte */
-=======
 //-------------------------------------------------
 //  uchar_is_printable - tests to see if a unicode
 //  char is printable
@@ -107,94 +75,55 @@ int uchar_from_utf8(char32_t *uchar, const char *utf8char, size_t count)
 		return 0;
 
 	// start with the first byte
->>>>>>> upstream/master
 	c = (unsigned char) *utf8char;
 	count--;
 	utf8char++;
 
-<<<<<<< HEAD
-	/* based on that, determine how many additional bytes we need */
-	if (c < 0x80)
-	{
-		/* unicode char 0x00000000 - 0x0000007F */
-=======
 	// based on that, determine how many additional bytes we need
 	if (c < 0x80)
 	{
 		// unicode char 0x00000000 - 0x0000007F
->>>>>>> upstream/master
 		c &= 0x7f;
 		auxlen = 0;
 		minchar = 0x00000000;
 	}
 	else if (c >= 0xc0 && c < 0xe0)
 	{
-<<<<<<< HEAD
-		/* unicode char 0x00000080 - 0x000007FF */
-=======
 		// unicode char 0x00000080 - 0x000007FF
->>>>>>> upstream/master
 		c &= 0x1f;
 		auxlen = 1;
 		minchar = 0x00000080;
 	}
 	else if (c >= 0xe0 && c < 0xf0)
 	{
-<<<<<<< HEAD
-		/* unicode char 0x00000800 - 0x0000FFFF */
-=======
 		// unicode char 0x00000800 - 0x0000FFFF
->>>>>>> upstream/master
 		c &= 0x0f;
 		auxlen = 2;
 		minchar = 0x00000800;
 	}
 	else if (c >= 0xf0 && c < 0xf8)
 	{
-<<<<<<< HEAD
-		/* unicode char 0x00010000 - 0x001FFFFF */
-=======
 		// unicode char 0x00010000 - 0x001FFFFF
->>>>>>> upstream/master
 		c &= 0x07;
 		auxlen = 3;
 		minchar = 0x00010000;
 	}
 	else if (c >= 0xf8 && c < 0xfc)
 	{
-<<<<<<< HEAD
-		/* unicode char 0x00200000 - 0x03FFFFFF */
-=======
 		// unicode char 0x00200000 - 0x03FFFFFF
->>>>>>> upstream/master
 		c &= 0x03;
 		auxlen = 4;
 		minchar = 0x00200000;
 	}
 	else if (c >= 0xfc && c < 0xfe)
 	{
-<<<<<<< HEAD
-		/* unicode char 0x04000000 - 0x7FFFFFFF */
-=======
 		// unicode char 0x04000000 - 0x7FFFFFFF
->>>>>>> upstream/master
 		c &= 0x01;
 		auxlen = 5;
 		minchar = 0x04000000;
 	}
 	else
 	{
-<<<<<<< HEAD
-		/* invalid */
-		return -1;
-	}
-
-	/* exceeds the count? */
-	if (auxlen > count)
-		return -1;
-
-	/* we now know how long the char is, now compute it */
-=======
 		// invalid
 		return -1;
 	}
@@ -204,16 +133,11 @@ int uchar_from_utf8(char32_t *uchar, const char *utf8char, size_t count)
 		return -1;
 
 	// we now know how long the char is, now compute it
->>>>>>> upstream/master
 	for (i = 0; i < auxlen; i++)
 	{
 		auxchar = utf8char[i];
 
-<<<<<<< HEAD
-		/* all auxillary chars must be between 0x80-0xbf */
-=======
 		// all auxillary chars must be between 0x80-0xbf
->>>>>>> upstream/master
 		if ((auxchar & 0xc0) != 0x80)
 			return -1;
 
@@ -221,11 +145,7 @@ int uchar_from_utf8(char32_t *uchar, const char *utf8char, size_t count)
 		c |= auxchar & 0x3f;
 	}
 
-<<<<<<< HEAD
-	/* make sure that this char is above the minimum */
-=======
 	// make sure that this char is above the minimum
->>>>>>> upstream/master
 	if (c < minchar)
 		return -1;
 
@@ -234,24 +154,6 @@ int uchar_from_utf8(char32_t *uchar, const char *utf8char, size_t count)
 }
 
 
-<<<<<<< HEAD
-/*-------------------------------------------------
-    uchar_from_utf16 - convert a UTF-16 sequence
-    into a unicode character
--------------------------------------------------*/
-
-int uchar_from_utf16(unicode_char *uchar, const utf16_char *utf16char, size_t count)
-{
-	int rc = -1;
-
-	/* validate parameters */
-	if (utf16char == NULL || count == 0)
-		return 0;
-
-	/* handle the two-byte case */
-	if (utf16char[0] >= 0xd800 && utf16char[0] <= 0xdbff)
-	{
-=======
 //-------------------------------------------------
 //  uchar_from_utf16 - convert a UTF-16 sequence
 //  into a unicode character
@@ -269,23 +171,15 @@ int uchar_from_utf16(char32_t *uchar, const char16_t *utf16char, size_t count)
 	if (utf16char[0] >= 0xd800 && utf16char[0] <= 0xdbff)
 	{
 		// handle the two-byte case
->>>>>>> upstream/master
 		if (count > 1 && utf16char[1] >= 0xdc00 && utf16char[1] <= 0xdfff)
 		{
 			*uchar = 0x10000 + ((utf16char[0] & 0x3ff) * 0x400) + (utf16char[1] & 0x3ff);
 			rc = 2;
 		}
 	}
-<<<<<<< HEAD
-
-	/* handle the one-byte case */
-	else if (utf16char[0] < 0xdc00 || utf16char[0] > 0xdfff)
-	{
-=======
 	else if (utf16char[0] < 0xdc00 || utf16char[0] > 0xdfff)
 	{
 		// handle the one-byte case
->>>>>>> upstream/master
 		*uchar = utf16char[0];
 		rc = 1;
 	}
@@ -294,21 +188,6 @@ int uchar_from_utf16(char32_t *uchar, const char16_t *utf16char, size_t count)
 }
 
 
-<<<<<<< HEAD
-/*-------------------------------------------------
-    uchar_from_utf16f - convert a UTF-16 sequence
-    into a unicode character from a flipped
-    byte order
--------------------------------------------------*/
-
-int uchar_from_utf16f(unicode_char *uchar, const utf16_char *utf16char, size_t count)
-{
-	utf16_char buf[2] = {0};
-	if (count > 0)
-		buf[0] = FLIPENDIAN_INT16(utf16char[0]);
-	if (count > 1)
-		buf[1] = FLIPENDIAN_INT16(utf16char[1]);
-=======
 //-------------------------------------------------
 //  uchar_from_utf16f - convert a UTF-16 sequence
 //  into a unicode character from a flipped
@@ -322,30 +201,10 @@ int uchar_from_utf16f(char32_t *uchar, const char16_t *utf16char, size_t count)
 		buf[0] = flipendian_int16(utf16char[0]);
 	if (count > 1)
 		buf[1] = flipendian_int16(utf16char[1]);
->>>>>>> upstream/master
 	return uchar_from_utf16(uchar, buf, count);
 }
 
 
-<<<<<<< HEAD
-/*-------------------------------------------------
-    utf8_from_uchar - convert a unicode character
-    into a UTF-8 sequence
--------------------------------------------------*/
-
-int utf8_from_uchar(char *utf8string, size_t count, unicode_char uchar)
-{
-	int rc = 0;
-
-	/* error on invalid characters */
-	if (!uchar_isvalid(uchar))
-		return -1;
-
-	/* based on the value, output the appropriate number of bytes */
-	if (uchar < 0x80)
-	{
-		/* unicode char 0x00000000 - 0x0000007F */
-=======
 //-------------------------------------------------
 //  utf8_from_uchar - convert a unicode character
 //  into a UTF-8 sequence
@@ -363,18 +222,13 @@ int utf8_from_uchar(char *utf8string, size_t count, char32_t uchar)
 	if (uchar < 0x80)
 	{
 		// unicode char 0x00000000 - 0x0000007F
->>>>>>> upstream/master
 		if (count < 1)
 			return -1;
 		utf8string[rc++] = (char) uchar;
 	}
 	else if (uchar < 0x800)
 	{
-<<<<<<< HEAD
-		/* unicode char 0x00000080 - 0x000007FF */
-=======
 		// unicode char 0x00000080 - 0x000007FF
->>>>>>> upstream/master
 		if (count < 2)
 			return -1;
 		utf8string[rc++] = ((char) (uchar >> 6)) | 0xC0;
@@ -382,11 +236,7 @@ int utf8_from_uchar(char *utf8string, size_t count, char32_t uchar)
 	}
 	else if (uchar < 0x10000)
 	{
-<<<<<<< HEAD
-		/* unicode char 0x00000800 - 0x0000FFFF */
-=======
 		// unicode char 0x00000800 - 0x0000FFFF
->>>>>>> upstream/master
 		if (count < 3)
 			return -1;
 		utf8string[rc++] = ((char) (uchar >> 12)) | 0xE0;
@@ -395,11 +245,7 @@ int utf8_from_uchar(char *utf8string, size_t count, char32_t uchar)
 	}
 	else if (uchar < 0x00200000)
 	{
-<<<<<<< HEAD
-		/* unicode char 0x00010000 - 0x001FFFFF */
-=======
 		// unicode char 0x00010000 - 0x001FFFFF
->>>>>>> upstream/master
 		if (count < 4)
 			return -1;
 		utf8string[rc++] = ((char) (uchar >> 18)) | 0xF0;
@@ -409,11 +255,7 @@ int utf8_from_uchar(char *utf8string, size_t count, char32_t uchar)
 	}
 	else if (uchar < 0x04000000)
 	{
-<<<<<<< HEAD
-		/* unicode char 0x00200000 - 0x03FFFFFF */
-=======
 		// unicode char 0x00200000 - 0x03FFFFFF
->>>>>>> upstream/master
 		if (count < 5)
 			return -1;
 		utf8string[rc++] = ((char) (uchar >> 24)) | 0xF8;
@@ -424,11 +266,7 @@ int utf8_from_uchar(char *utf8string, size_t count, char32_t uchar)
 	}
 	else if (uchar < 0x80000000)
 	{
-<<<<<<< HEAD
-		/* unicode char 0x04000000 - 0x7FFFFFFF */
-=======
 		// unicode char 0x04000000 - 0x7FFFFFFF
->>>>>>> upstream/master
 		if (count < 6)
 			return -1;
 		utf8string[rc++] = ((char) (uchar >> 30)) | 0xFC;
@@ -445,35 +283,6 @@ int utf8_from_uchar(char *utf8string, size_t count, char32_t uchar)
 }
 
 
-<<<<<<< HEAD
-/*-------------------------------------------------
-    utf16_from_uchar - convert a unicode character
-    into a UTF-16 sequence
--------------------------------------------------*/
-
-int utf16_from_uchar(utf16_char *utf16string, size_t count, unicode_char uchar)
-{
-	int rc;
-
-	/* error on invalid characters */
-	if (!uchar_isvalid(uchar))
-		return -1;
-
-	/* single word case */
-	if (uchar < 0x10000)
-	{
-		if (count < 1)
-			return -1;
-		utf16string[0] = (utf16_char) uchar;
-		rc = 1;
-	}
-
-	/* double word case */
-	else if (uchar < 0x100000)
-	{
-		if (count < 2)
-			return -1;
-=======
 //-------------------------------------------------
 //  utf8_from_uchar - convert a unicode character
 //  into a UTF-8 sequence
@@ -514,34 +323,18 @@ int utf16_from_uchar(char16_t *utf16string, size_t count, char32_t uchar)
 		if (count < 2)
 			return -1;
 		uchar -= 0x10000;
->>>>>>> upstream/master
 		utf16string[0] = ((uchar >> 10) & 0x03ff) | 0xd800;
 		utf16string[1] = ((uchar >>  0) & 0x03ff) | 0xdc00;
 		rc = 2;
 	}
 	else
-<<<<<<< HEAD
-		return -1;
-=======
 	{
 		return -1;
 	}
->>>>>>> upstream/master
 	return rc;
 }
 
 
-<<<<<<< HEAD
-/*-------------------------------------------------
-    utf16_from_uchar - convert a unicode character
-    into a UTF-16 sequence with flipped endianness
--------------------------------------------------*/
-
-int utf16f_from_uchar(utf16_char *utf16string, size_t count, unicode_char uchar)
-{
-	int rc;
-	utf16_char buf[2] = { 0, 0 };
-=======
 //-------------------------------------------------
 //  utf16_from_uchar - convert a unicode character
 //  into a UTF-16 sequence with flipped endianness
@@ -551,30 +344,17 @@ int utf16f_from_uchar(char16_t *utf16string, size_t count, char32_t uchar)
 {
 	int rc;
 	char16_t buf[2] = { 0, 0 };
->>>>>>> upstream/master
 
 	rc = utf16_from_uchar(buf, count, uchar);
 
 	if (rc >= 1)
-<<<<<<< HEAD
-		utf16string[0] = FLIPENDIAN_INT16(buf[0]);
-	if (rc >= 2)
-		utf16string[1] = FLIPENDIAN_INT16(buf[1]);
-=======
 		utf16string[0] = flipendian_int16(buf[0]);
 	if (rc >= 2)
 		utf16string[1] = flipendian_int16(buf[1]);
->>>>>>> upstream/master
 	return rc;
 }
 
 
-<<<<<<< HEAD
-/*-------------------------------------------------
-    utf8_previous_char - return a pointer to the
-    previous character in a string
--------------------------------------------------*/
-=======
 //-------------------------------------------------
 // wstring_from_utf8
 //-------------------------------------------------
@@ -724,7 +504,6 @@ char32_t uchar_tolower(char32_t ch)
  *
  * @return  null if it fails, else a char*.
  */
->>>>>>> upstream/master
 
 const char *utf8_previous_char(const char *utf8string)
 {
@@ -734,15 +513,6 @@ const char *utf8_previous_char(const char *utf8string)
 }
 
 
-<<<<<<< HEAD
-/*-------------------------------------------------
-    utf8_is_valid_string - return true if the
-    given string is a properly formed sequence of
-    UTF-8 characters
--------------------------------------------------*/
-
-int utf8_is_valid_string(const char *utf8string)
-=======
 //-------------------------------------------------
 //  utf8_is_valid_string - return true if the
 //  given string is a properly formed sequence of
@@ -760,23 +530,11 @@ int utf8_is_valid_string(const char *utf8string)
  */
 
 bool utf8_is_valid_string(const char *utf8string)
->>>>>>> upstream/master
 {
 	int remaining_length = strlen(utf8string);
 
 	while (*utf8string != 0)
 	{
-<<<<<<< HEAD
-		unicode_char uchar = 0;
-		int charlen;
-
-		/* extract the current character and verify it */
-		charlen = uchar_from_utf8(&uchar, utf8string, remaining_length);
-		if (charlen <= 0 || uchar == 0 || !uchar_isvalid(uchar))
-			return FALSE;
-
-		/* advance */
-=======
 		char32_t uchar = 0;
 		int charlen;
 
@@ -786,14 +544,9 @@ bool utf8_is_valid_string(const char *utf8string)
 			return false;
 
 		// advance
->>>>>>> upstream/master
 		utf8string += charlen;
 		remaining_length -= charlen;
 	}
 
-<<<<<<< HEAD
-	return TRUE;
-=======
 	return true;
->>>>>>> upstream/master
 }

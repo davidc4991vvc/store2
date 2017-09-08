@@ -1,14 +1,9 @@
 // license:BSD-3-Clause
 // copyright-holders:Fabio Priuli
-<<<<<<< HEAD
-#ifndef __NES_MULTIGAME_H
-#define __NES_MULTIGAME_H
-=======
 #ifndef MAME_BUS_NES_MULTIGAME_H
 #define MAME_BUS_NES_MULTIGAME_H
 
 #pragma once
->>>>>>> upstream/master
 
 #include "nxrom.h"
 
@@ -19,15 +14,6 @@ class nes_action52_device : public nes_nrom_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	nes_action52_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// device-level overrides
-	virtual void device_start();
-	virtual DECLARE_WRITE8_MEMBER(write_h);
-
-	virtual void pcb_reset();
-=======
 	nes_action52_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	virtual DECLARE_WRITE8_MEMBER(write_h) override;
@@ -37,7 +23,6 @@ public:
 protected:
 	// device-level overrides
 	virtual void device_start() override;
->>>>>>> upstream/master
 };
 
 
@@ -47,19 +32,6 @@ class nes_caltron_device : public nes_nrom_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	nes_caltron_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// device-level overrides
-	virtual void device_start();
-	virtual DECLARE_WRITE8_MEMBER(write_m);
-	virtual DECLARE_WRITE8_MEMBER(write_h);
-
-	virtual void pcb_reset();
-
-private:
-	UINT8 m_latch;
-=======
 	nes_caltron_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	virtual DECLARE_WRITE8_MEMBER(write_m) override;
@@ -73,7 +45,6 @@ protected:
 
 private:
 	uint8_t m_latch;
->>>>>>> upstream/master
 };
 
 
@@ -83,19 +54,6 @@ class nes_rumblestat_device : public nes_nrom_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	nes_rumblestat_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// device-level overrides
-	virtual void device_start();
-	virtual DECLARE_WRITE8_MEMBER(write_m);
-	virtual DECLARE_WRITE8_MEMBER(write_h);
-
-	virtual void pcb_reset();
-
-private:
-	UINT8 m_prg, m_chr;
-=======
 	nes_rumblestat_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	virtual DECLARE_WRITE8_MEMBER(write_m) override;
@@ -109,7 +67,6 @@ protected:
 
 private:
 	uint8_t m_prg, m_chr;
->>>>>>> upstream/master
 };
 
 
@@ -119,21 +76,6 @@ class nes_svision16_device : public nes_nrom_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	nes_svision16_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// device-level overrides
-	virtual void device_start();
-	virtual DECLARE_READ8_MEMBER(read_m);
-	virtual DECLARE_WRITE8_MEMBER(write_m);
-	virtual DECLARE_WRITE8_MEMBER(write_h);
-
-	virtual void pcb_reset();
-
-private:
-	void update_prg();
-	UINT8 m_latch1, m_latch2;
-=======
 	nes_svision16_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	virtual DECLARE_READ8_MEMBER(read_m) override;
@@ -149,7 +91,6 @@ protected:
 private:
 	void update_prg();
 	uint8_t m_latch1, m_latch2;
->>>>>>> upstream/master
 };
 
 
@@ -159,19 +100,6 @@ class nes_n625092_device : public nes_nrom_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	nes_n625092_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// device-level overrides
-	virtual void device_start();
-	virtual DECLARE_WRITE8_MEMBER(write_h);
-
-	virtual void pcb_reset();
-
-private:
-	void set_prg(UINT8 reg1, UINT8 reg2);
-	UINT8 m_latch1, m_latch2;
-=======
 	nes_n625092_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	virtual DECLARE_WRITE8_MEMBER(write_h) override;
@@ -185,7 +113,6 @@ protected:
 private:
 	void set_prg(uint8_t reg1, uint8_t reg2);
 	uint8_t m_latch1, m_latch2;
->>>>>>> upstream/master
 };
 
 
@@ -195,15 +122,6 @@ class nes_a65as_device : public nes_nrom_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	nes_a65as_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// device-level overrides
-	virtual void device_start();
-	virtual DECLARE_WRITE8_MEMBER(write_h);
-
-	virtual void pcb_reset();
-=======
 	nes_a65as_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	virtual DECLARE_WRITE8_MEMBER(write_h) override;
@@ -213,7 +131,6 @@ public:
 protected:
 	// device-level overrides
 	virtual void device_start() override;
->>>>>>> upstream/master
 };
 
 
@@ -223,18 +140,6 @@ class nes_t262_device : public nes_nrom_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	nes_t262_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// device-level overrides
-	virtual void device_start();
-	virtual DECLARE_WRITE8_MEMBER(write_h);
-
-	virtual void pcb_reset();
-
-private:
-	UINT8 m_latch1, m_latch2;
-=======
 	nes_t262_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	virtual DECLARE_WRITE8_MEMBER(write_h) override;
@@ -247,7 +152,6 @@ protected:
 
 private:
 	uint8_t m_latch1, m_latch2;
->>>>>>> upstream/master
 };
 
 
@@ -257,15 +161,6 @@ class nes_novel1_device : public nes_nrom_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	nes_novel1_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// device-level overrides
-	virtual void device_start();
-	virtual DECLARE_WRITE8_MEMBER(write_h);
-
-	virtual void pcb_reset();
-=======
 	nes_novel1_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	virtual DECLARE_WRITE8_MEMBER(write_h) override;
@@ -275,7 +170,6 @@ public:
 protected:
 	// device-level overrides
 	virtual void device_start() override;
->>>>>>> upstream/master
 };
 
 
@@ -285,15 +179,6 @@ class nes_novel2_device : public nes_nrom_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	nes_novel2_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// device-level overrides
-	virtual void device_start();
-	virtual DECLARE_WRITE8_MEMBER(write_h);
-
-	virtual void pcb_reset();
-=======
 	nes_novel2_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	virtual DECLARE_WRITE8_MEMBER(write_h) override;
@@ -303,7 +188,6 @@ public:
 protected:
 	// device-level overrides
 	virtual void device_start() override;
->>>>>>> upstream/master
 };
 
 
@@ -313,15 +197,6 @@ class nes_studyngame_device : public nes_nrom_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	nes_studyngame_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// device-level overrides
-	virtual void device_start();
-	virtual DECLARE_WRITE8_MEMBER(write_h);
-
-	virtual void pcb_reset();
-=======
 	nes_studyngame_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	virtual DECLARE_WRITE8_MEMBER(write_h) override;
@@ -331,7 +206,6 @@ public:
 protected:
 	// device-level overrides
 	virtual void device_start() override;
->>>>>>> upstream/master
 };
 
 
@@ -341,15 +215,6 @@ class nes_sgun20in1_device : public nes_nrom_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	nes_sgun20in1_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// device-level overrides
-	virtual void device_start();
-	virtual DECLARE_WRITE8_MEMBER(write_h);
-
-	virtual void pcb_reset();
-=======
 	nes_sgun20in1_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	virtual DECLARE_WRITE8_MEMBER(write_h) override;
@@ -359,7 +224,6 @@ public:
 protected:
 	// device-level overrides
 	virtual void device_start() override;
->>>>>>> upstream/master
 };
 
 
@@ -369,19 +233,6 @@ class nes_vt5201_device : public nes_nrom_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	nes_vt5201_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// device-level overrides
-	virtual void device_start();
-	virtual DECLARE_READ8_MEMBER(read_h);
-	virtual DECLARE_WRITE8_MEMBER(write_h);
-
-	virtual void pcb_reset();
-
-private:
-	UINT8 m_latch, m_dipsetting;
-=======
 	nes_vt5201_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	virtual DECLARE_READ8_MEMBER(read_h) override;
@@ -395,7 +246,6 @@ protected:
 
 private:
 	uint8_t m_latch, m_dipsetting;
->>>>>>> upstream/master
 };
 
 
@@ -405,15 +255,6 @@ class nes_810544c_device : public nes_nrom_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	nes_810544c_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// device-level overrides
-	virtual void device_start();
-	virtual DECLARE_WRITE8_MEMBER(write_h);
-
-	virtual void pcb_reset();
-=======
 	nes_810544c_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	virtual DECLARE_WRITE8_MEMBER(write_h) override;
@@ -423,7 +264,6 @@ public:
 protected:
 	// device-level overrides
 	virtual void device_start() override;
->>>>>>> upstream/master
 };
 
 
@@ -433,15 +273,6 @@ class nes_ntd03_device : public nes_nrom_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	nes_ntd03_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// device-level overrides
-	virtual void device_start();
-	virtual DECLARE_WRITE8_MEMBER(write_h);
-
-	virtual void pcb_reset();
-=======
 	nes_ntd03_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	virtual DECLARE_WRITE8_MEMBER(write_h) override;
@@ -451,7 +282,6 @@ public:
 protected:
 	// device-level overrides
 	virtual void device_start() override;
->>>>>>> upstream/master
 };
 
 
@@ -461,22 +291,6 @@ class nes_bmc_gb63_device : public nes_nrom_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	nes_bmc_gb63_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// device-level overrides
-	virtual void device_start();
-	virtual DECLARE_READ8_MEMBER(read_h);
-	virtual DECLARE_WRITE8_MEMBER(write_h);
-	virtual DECLARE_WRITE8_MEMBER(chr_w);
-
-	virtual void pcb_reset();
-
-private:
-	void update_banks();
-	UINT8 m_latch, m_dipsetting;
-	UINT8 m_reg[2];
-=======
 	nes_bmc_gb63_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	virtual DECLARE_READ8_MEMBER(read_h) override;
@@ -493,7 +307,6 @@ private:
 	void update_banks();
 	uint8_t m_latch, m_dipsetting;
 	uint8_t m_reg[2];
->>>>>>> upstream/master
 	int m_vram_disable;
 };
 
@@ -503,18 +316,6 @@ class nes_bmc_gka_device : public nes_nrom_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	nes_bmc_gka_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// device-level overrides
-	virtual void device_start();
-	virtual DECLARE_WRITE8_MEMBER(write_h);
-
-	virtual void pcb_reset();
-
-private:
-	UINT8 m_latch1, m_latch2;
-=======
 	nes_bmc_gka_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	virtual DECLARE_WRITE8_MEMBER(write_h) override;
@@ -527,7 +328,6 @@ protected:
 
 private:
 	uint8_t m_latch1, m_latch2;
->>>>>>> upstream/master
 };
 
 
@@ -537,15 +337,6 @@ class nes_bmc_gkb_device : public nes_nrom_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	nes_bmc_gkb_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// device-level overrides
-	virtual void device_start();
-	virtual DECLARE_WRITE8_MEMBER(write_h);
-
-	virtual void pcb_reset();
-=======
 	nes_bmc_gkb_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	virtual DECLARE_WRITE8_MEMBER(write_h) override;
@@ -555,7 +346,6 @@ public:
 protected:
 	// device-level overrides
 	virtual void device_start() override;
->>>>>>> upstream/master
 };
 
 
@@ -565,18 +355,6 @@ class nes_bmc_ws_device : public nes_nrom_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	nes_bmc_ws_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// device-level overrides
-	virtual void device_start();
-	virtual DECLARE_WRITE8_MEMBER(write_m);
-
-	virtual void pcb_reset();
-
-private:
-	UINT8 m_latch;
-=======
 	nes_bmc_ws_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	virtual DECLARE_WRITE8_MEMBER(write_m) override;
@@ -589,7 +367,6 @@ protected:
 
 private:
 	uint8_t m_latch;
->>>>>>> upstream/master
 };
 
 
@@ -599,15 +376,6 @@ class nes_bmc_11160_device : public nes_nrom_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	nes_bmc_11160_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// device-level overrides
-	virtual void device_start();
-	virtual DECLARE_WRITE8_MEMBER(write_h);
-
-	virtual void pcb_reset();
-=======
 	nes_bmc_11160_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	virtual DECLARE_WRITE8_MEMBER(write_h) override;
@@ -617,7 +385,6 @@ public:
 protected:
 	// device-level overrides
 	virtual void device_start() override;
->>>>>>> upstream/master
 };
 
 
@@ -627,15 +394,6 @@ class nes_bmc_g146_device : public nes_nrom_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	nes_bmc_g146_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// device-level overrides
-	virtual void device_start();
-	virtual DECLARE_WRITE8_MEMBER(write_h);
-
-	virtual void pcb_reset();
-=======
 	nes_bmc_g146_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	virtual DECLARE_WRITE8_MEMBER(write_h) override;
@@ -645,7 +403,6 @@ public:
 protected:
 	// device-level overrides
 	virtual void device_start() override;
->>>>>>> upstream/master
 };
 
 
@@ -655,16 +412,6 @@ class nes_bmc_8157_device : public nes_nrom_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	nes_bmc_8157_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// device-level overrides
-	virtual void device_start();
-	virtual DECLARE_READ8_MEMBER(read_h);
-	virtual DECLARE_WRITE8_MEMBER(write_h);
-
-	virtual void pcb_reset();
-=======
 	nes_bmc_8157_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	virtual DECLARE_READ8_MEMBER(read_h) override;
@@ -675,7 +422,6 @@ public:
 protected:
 	// device-level overrides
 	virtual void device_start() override;
->>>>>>> upstream/master
 };
 
 
@@ -685,15 +431,6 @@ class nes_bmc_hik300_device : public nes_nrom_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	nes_bmc_hik300_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// device-level overrides
-	virtual void device_start();
-	virtual DECLARE_WRITE8_MEMBER(write_h);
-
-	virtual void pcb_reset();
-=======
 	nes_bmc_hik300_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	virtual DECLARE_WRITE8_MEMBER(write_h) override;
@@ -703,7 +440,6 @@ public:
 protected:
 	// device-level overrides
 	virtual void device_start() override;
->>>>>>> upstream/master
 };
 
 
@@ -713,15 +449,6 @@ class nes_bmc_s700_device : public nes_nrom_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	nes_bmc_s700_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// device-level overrides
-	virtual void device_start();
-	virtual DECLARE_WRITE8_MEMBER(write_h);
-
-	virtual void pcb_reset();
-=======
 	nes_bmc_s700_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	virtual DECLARE_WRITE8_MEMBER(write_h) override;
@@ -731,7 +458,6 @@ public:
 protected:
 	// device-level overrides
 	virtual void device_start() override;
->>>>>>> upstream/master
 };
 
 
@@ -741,20 +467,6 @@ class nes_bmc_ball11_device : public nes_nrom_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	nes_bmc_ball11_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// device-level overrides
-	virtual void device_start();
-	virtual DECLARE_WRITE8_MEMBER(write_m);
-	virtual DECLARE_WRITE8_MEMBER(write_h);
-
-	virtual void pcb_reset();
-
-private:
-	void set_banks();
-	UINT8 m_reg[2];
-=======
 	nes_bmc_ball11_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	virtual DECLARE_WRITE8_MEMBER(write_m) override;
@@ -769,7 +481,6 @@ protected:
 private:
 	void set_banks();
 	uint8_t m_reg[2];
->>>>>>> upstream/master
 };
 
 
@@ -779,15 +490,6 @@ class nes_bmc_22games_device : public nes_nrom_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	nes_bmc_22games_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// device-level overrides
-	virtual void device_start();
-	virtual DECLARE_WRITE8_MEMBER(write_h);
-
-	virtual void pcb_reset();
-=======
 	nes_bmc_22games_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	virtual DECLARE_WRITE8_MEMBER(write_h) override;
@@ -797,7 +499,6 @@ public:
 protected:
 	// device-level overrides
 	virtual void device_start() override;
->>>>>>> upstream/master
 };
 
 
@@ -807,20 +508,6 @@ class nes_bmc_64y2k_device : public nes_nrom_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	nes_bmc_64y2k_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// device-level overrides
-	virtual void device_start();
-	virtual DECLARE_WRITE8_MEMBER(write_l);
-	virtual DECLARE_WRITE8_MEMBER(write_h);
-
-	virtual void pcb_reset();
-
-private:
-	void set_prg();
-	UINT8 m_reg[4];
-=======
 	nes_bmc_64y2k_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	virtual DECLARE_WRITE8_MEMBER(write_l) override;
@@ -835,7 +522,6 @@ protected:
 private:
 	void set_prg();
 	uint8_t m_reg[4];
->>>>>>> upstream/master
 };
 
 
@@ -845,19 +531,6 @@ class nes_bmc_12in1_device : public nes_nrom_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	nes_bmc_12in1_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// device-level overrides
-	virtual void device_start();
-	virtual DECLARE_WRITE8_MEMBER(write_h);
-
-	virtual void pcb_reset();
-
-private:
-	void update_banks();
-	UINT8 m_reg[3];
-=======
 	nes_bmc_12in1_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	virtual DECLARE_WRITE8_MEMBER(write_h) override;
@@ -871,7 +544,6 @@ protected:
 private:
 	void update_banks();
 	uint8_t m_reg[3];
->>>>>>> upstream/master
 };
 
 
@@ -881,15 +553,6 @@ class nes_bmc_20in1_device : public nes_nrom_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	nes_bmc_20in1_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// device-level overrides
-	virtual void device_start();
-	virtual DECLARE_WRITE8_MEMBER(write_h);
-
-	virtual void pcb_reset();
-=======
 	nes_bmc_20in1_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	virtual DECLARE_WRITE8_MEMBER(write_h) override;
@@ -899,7 +562,6 @@ public:
 protected:
 	// device-level overrides
 	virtual void device_start() override;
->>>>>>> upstream/master
 };
 
 
@@ -909,15 +571,6 @@ class nes_bmc_21in1_device : public nes_nrom_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	nes_bmc_21in1_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// device-level overrides
-	virtual void device_start();
-	virtual DECLARE_WRITE8_MEMBER(write_h);
-
-	virtual void pcb_reset();
-=======
 	nes_bmc_21in1_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	virtual DECLARE_WRITE8_MEMBER(write_h) override;
@@ -927,7 +580,6 @@ public:
 protected:
 	// device-level overrides
 	virtual void device_start() override;
->>>>>>> upstream/master
 };
 
 
@@ -937,15 +589,6 @@ class nes_bmc_31in1_device : public nes_nrom_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	nes_bmc_31in1_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// device-level overrides
-	virtual void device_start();
-	virtual DECLARE_WRITE8_MEMBER(write_h);
-
-	virtual void pcb_reset();
-=======
 	nes_bmc_31in1_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	virtual DECLARE_WRITE8_MEMBER(write_h) override;
@@ -955,7 +598,6 @@ public:
 protected:
 	// device-level overrides
 	virtual void device_start() override;
->>>>>>> upstream/master
 };
 
 
@@ -965,15 +607,6 @@ class nes_bmc_35in1_device : public nes_nrom_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	nes_bmc_35in1_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// device-level overrides
-	virtual void device_start();
-	virtual DECLARE_WRITE8_MEMBER(write_h);
-
-	virtual void pcb_reset();
-=======
 	nes_bmc_35in1_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	virtual DECLARE_WRITE8_MEMBER(write_h) override;
@@ -983,7 +616,6 @@ public:
 protected:
 	// device-level overrides
 	virtual void device_start() override;
->>>>>>> upstream/master
 };
 
 
@@ -993,15 +625,6 @@ class nes_bmc_36in1_device : public nes_nrom_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	nes_bmc_36in1_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// device-level overrides
-	virtual void device_start();
-	virtual DECLARE_WRITE8_MEMBER(write_h);
-
-	virtual void pcb_reset();
-=======
 	nes_bmc_36in1_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	virtual DECLARE_WRITE8_MEMBER(write_h) override;
@@ -1011,7 +634,6 @@ public:
 protected:
 	// device-level overrides
 	virtual void device_start() override;
->>>>>>> upstream/master
 };
 
 
@@ -1021,15 +643,6 @@ class nes_bmc_64in1_device : public nes_nrom_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	nes_bmc_64in1_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// device-level overrides
-	virtual void device_start();
-	virtual DECLARE_WRITE8_MEMBER(write_h);
-
-	virtual void pcb_reset();
-=======
 	nes_bmc_64in1_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	virtual DECLARE_WRITE8_MEMBER(write_h) override;
@@ -1039,7 +652,6 @@ public:
 protected:
 	// device-level overrides
 	virtual void device_start() override;
->>>>>>> upstream/master
 };
 
 
@@ -1049,20 +661,6 @@ class nes_bmc_70in1_device : public nes_nrom_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	nes_bmc_70in1_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// device-level overrides
-	virtual void device_start();
-	virtual DECLARE_READ8_MEMBER(read_h);
-	virtual DECLARE_WRITE8_MEMBER(write_h);
-
-	virtual void pcb_reset();
-
-private:
-	UINT8 m_mode;
-	UINT8 m_reg[2];
-=======
 	nes_bmc_70in1_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	virtual DECLARE_READ8_MEMBER(read_h) override;
@@ -1077,7 +675,6 @@ protected:
 private:
 	uint8_t m_mode;
 	uint8_t m_reg[2];
->>>>>>> upstream/master
 };
 
 
@@ -1087,15 +684,6 @@ class nes_bmc_72in1_device : public nes_nrom_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	nes_bmc_72in1_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// device-level overrides
-	virtual void device_start();
-	virtual DECLARE_WRITE8_MEMBER(write_h);
-
-	virtual void pcb_reset();
-=======
 	nes_bmc_72in1_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	virtual DECLARE_WRITE8_MEMBER(write_h) override;
@@ -1105,7 +693,6 @@ public:
 protected:
 	// device-level overrides
 	virtual void device_start() override;
->>>>>>> upstream/master
 };
 
 
@@ -1115,18 +702,6 @@ class nes_bmc_76in1_device : public nes_nrom_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	nes_bmc_76in1_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// device-level overrides
-	virtual void device_start();
-	virtual DECLARE_WRITE8_MEMBER(write_h);
-
-	virtual void pcb_reset();
-
-private:
-	UINT8 m_latch1, m_latch2;
-=======
 	nes_bmc_76in1_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	virtual DECLARE_WRITE8_MEMBER(write_h) override;
@@ -1139,7 +714,6 @@ protected:
 
 private:
 	uint8_t m_latch1, m_latch2;
->>>>>>> upstream/master
 };
 
 
@@ -1149,15 +723,6 @@ class nes_bmc_110in1_device : public nes_nrom_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	nes_bmc_110in1_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// device-level overrides
-	virtual void device_start();
-	virtual DECLARE_WRITE8_MEMBER(write_h);
-
-	virtual void pcb_reset();
-=======
 	nes_bmc_110in1_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	virtual DECLARE_WRITE8_MEMBER(write_h) override;
@@ -1167,7 +732,6 @@ public:
 protected:
 	// device-level overrides
 	virtual void device_start() override;
->>>>>>> upstream/master
 };
 
 
@@ -1177,15 +741,6 @@ class nes_bmc_150in1_device : public nes_nrom_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	nes_bmc_150in1_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// device-level overrides
-	virtual void device_start();
-	virtual DECLARE_WRITE8_MEMBER(write_h);
-
-	virtual void pcb_reset();
-=======
 	nes_bmc_150in1_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	virtual DECLARE_WRITE8_MEMBER(write_h) override;
@@ -1195,7 +750,6 @@ public:
 protected:
 	// device-level overrides
 	virtual void device_start() override;
->>>>>>> upstream/master
 };
 
 
@@ -1205,15 +759,6 @@ class nes_bmc_190in1_device : public nes_nrom_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	nes_bmc_190in1_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// device-level overrides
-	virtual void device_start();
-	virtual DECLARE_WRITE8_MEMBER(write_h);
-
-	virtual void pcb_reset();
-=======
 	nes_bmc_190in1_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	virtual DECLARE_WRITE8_MEMBER(write_h) override;
@@ -1223,7 +768,6 @@ public:
 protected:
 	// device-level overrides
 	virtual void device_start() override;
->>>>>>> upstream/master
 };
 
 
@@ -1233,20 +777,6 @@ class nes_bmc_800in1_device : public nes_nrom_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	nes_bmc_800in1_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// device-level overrides
-	virtual void device_start();
-	virtual DECLARE_READ8_MEMBER(read_h);
-	virtual DECLARE_WRITE8_MEMBER(write_h);
-
-	virtual void pcb_reset();
-
-private:
-	UINT8 m_mode;
-	UINT8 m_reg[2];
-=======
 	nes_bmc_800in1_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	virtual DECLARE_READ8_MEMBER(read_h) override;
@@ -1261,7 +791,6 @@ protected:
 private:
 	uint8_t m_mode;
 	uint8_t m_reg[2];
->>>>>>> upstream/master
 };
 
 
@@ -1271,19 +800,6 @@ class nes_bmc_1200in1_device : public nes_nrom_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	nes_bmc_1200in1_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// device-level overrides
-	virtual void device_start();
-	virtual DECLARE_WRITE8_MEMBER(write_h);
-	virtual DECLARE_WRITE8_MEMBER(chr_w);
-
-	virtual void pcb_reset();
-
-private:
-	UINT8 m_vram_protect;
-=======
 	nes_bmc_1200in1_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	virtual DECLARE_WRITE8_MEMBER(write_h) override;
@@ -1297,7 +813,6 @@ protected:
 
 private:
 	uint8_t m_vram_protect;
->>>>>>> upstream/master
 };
 
 
@@ -1307,19 +822,6 @@ class nes_bmc_gold150_device : public nes_nrom_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	nes_bmc_gold150_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// device-level overrides
-	virtual void device_start();
-	virtual DECLARE_READ8_MEMBER(read_h);
-	virtual DECLARE_WRITE8_MEMBER(write_h);
-
-	virtual void pcb_reset();
-
-private:
-	UINT8 m_latch;
-=======
 	nes_bmc_gold150_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	virtual DECLARE_READ8_MEMBER(read_h) override;
@@ -1333,7 +835,6 @@ protected:
 
 private:
 	uint8_t m_latch;
->>>>>>> upstream/master
 };
 
 
@@ -1343,15 +844,6 @@ class nes_bmc_gold260_device : public nes_nrom_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	nes_bmc_gold260_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// device-level overrides
-	virtual void device_start();
-	virtual DECLARE_WRITE8_MEMBER(write_h);
-
-	virtual void pcb_reset();
-=======
 	nes_bmc_gold260_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	virtual DECLARE_WRITE8_MEMBER(write_h) override;
@@ -1361,7 +853,6 @@ public:
 protected:
 	// device-level overrides
 	virtual void device_start() override;
->>>>>>> upstream/master
 };
 
 
@@ -1371,19 +862,6 @@ class nes_bmc_ch001_device : public nes_nrom_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	nes_bmc_ch001_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// device-level overrides
-	virtual void device_start();
-	virtual DECLARE_READ8_MEMBER(read_h);
-	virtual DECLARE_WRITE8_MEMBER(write_h);
-
-	virtual void pcb_reset();
-
-private:
-	UINT8 m_latch;
-=======
 	nes_bmc_ch001_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	virtual DECLARE_READ8_MEMBER(read_h) override;
@@ -1397,7 +875,6 @@ protected:
 
 private:
 	uint8_t m_latch;
->>>>>>> upstream/master
 };
 
 
@@ -1407,15 +884,6 @@ class nes_bmc_super22_device : public nes_nrom_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	nes_bmc_super22_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// device-level overrides
-	virtual void device_start();
-	virtual DECLARE_WRITE8_MEMBER(write_h);
-
-	virtual void pcb_reset();
-=======
 	nes_bmc_super22_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	virtual DECLARE_WRITE8_MEMBER(write_h) override;
@@ -1425,7 +893,6 @@ public:
 protected:
 	// device-level overrides
 	virtual void device_start() override;
->>>>>>> upstream/master
 };
 
 
@@ -1435,13 +902,6 @@ class nes_bmc_4in1reset_device : public nes_nrom_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	nes_bmc_4in1reset_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// device-level overrides
-	virtual void device_start();
-	virtual void pcb_reset();
-=======
 	nes_bmc_4in1reset_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	virtual void pcb_reset() override;
@@ -1449,7 +909,6 @@ public:
 protected:
 	// device-level overrides
 	virtual void device_start() override;
->>>>>>> upstream/master
 
 private:
 	int m_latch;
@@ -1461,74 +920,6 @@ class nes_bmc_42in1reset_device : public nes_nrom_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	nes_bmc_42in1reset_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// device-level overrides
-	virtual void device_start();
-	virtual DECLARE_WRITE8_MEMBER(write_h);
-
-	virtual void pcb_reset();
-
-private:
-	int m_latch;
-	UINT8 m_reg[2];
-};
-
-
-
-// device type definition
-extern const device_type NES_ACTION52;
-extern const device_type NES_CALTRON6IN1;
-extern const device_type NES_RUMBLESTATION;
-extern const device_type NES_SVISION16;
-extern const device_type NES_N625092;
-extern const device_type NES_A65AS;
-extern const device_type NES_T262;
-extern const device_type NES_NOVEL1;
-extern const device_type NES_NOVEL2;
-extern const device_type NES_STUDYNGAME;
-extern const device_type NES_SUPERGUN20IN1;
-extern const device_type NES_VT5201;
-extern const device_type NES_810544C;
-extern const device_type NES_NTD03;
-extern const device_type NES_BMC_GB63;
-extern const device_type NES_BMC_GKA;
-extern const device_type NES_BMC_GKB;
-extern const device_type NES_BMC_WS;
-extern const device_type NES_BMC_11160;
-extern const device_type NES_BMC_G146;
-extern const device_type NES_BMC_8157;
-extern const device_type NES_BMC_HIK300;
-extern const device_type NES_BMC_S700;
-extern const device_type NES_BMC_BALL11;
-extern const device_type NES_BMC_22GAMES;
-extern const device_type NES_BMC_64Y2K;
-extern const device_type NES_BMC_12IN1;
-extern const device_type NES_BMC_20IN1;
-extern const device_type NES_BMC_21IN1;
-extern const device_type NES_BMC_31IN1;
-extern const device_type NES_BMC_35IN1;
-extern const device_type NES_BMC_36IN1;
-extern const device_type NES_BMC_64IN1;
-extern const device_type NES_BMC_70IN1;
-extern const device_type NES_BMC_72IN1;
-extern const device_type NES_BMC_76IN1;
-extern const device_type NES_BMC_110IN1;
-extern const device_type NES_BMC_150IN1;
-extern const device_type NES_BMC_190IN1;
-extern const device_type NES_BMC_800IN1;
-extern const device_type NES_BMC_1200IN1;
-extern const device_type NES_BMC_GOLD150;
-extern const device_type NES_BMC_GOLD260;
-extern const device_type NES_BMC_CH001;
-extern const device_type NES_BMC_SUPER22;
-extern const device_type NES_BMC_4IN1RESET;
-extern const device_type NES_BMC_42IN1RESET;
-
-
-#endif
-=======
 	nes_bmc_42in1reset_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	virtual DECLARE_WRITE8_MEMBER(write_h) override;
@@ -1595,4 +986,3 @@ DECLARE_DEVICE_TYPE(NES_BMC_4IN1RESET,  nes_bmc_4in1reset_device)
 DECLARE_DEVICE_TYPE(NES_BMC_42IN1RESET, nes_bmc_42in1reset_device)
 
 #endif // MAME_BUS_NES_MULTIGAME_H
->>>>>>> upstream/master

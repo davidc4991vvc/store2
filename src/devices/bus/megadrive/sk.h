@@ -1,14 +1,9 @@
 // license:BSD-3-Clause
 // copyright-holders:Fabio Priuli
-<<<<<<< HEAD
-#ifndef __MD_SK_H
-#define __MD_SK_H
-=======
 #ifndef MAME_BUS_MEGADRIVE_SK_H
 #define MAME_BUS_MEGADRIVE_SK_H
 
 #pragma once
->>>>>>> upstream/master
 
 #include "md_slot.h"
 
@@ -20,18 +15,6 @@ class md_rom_sk_device : public device_t,
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	md_rom_sk_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source);
-	md_rom_sk_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// device-level overrides
-	virtual void device_start();
-	virtual machine_config_constructor device_mconfig_additions() const;
-
-	// reading and writing
-	virtual DECLARE_READ16_MEMBER(read);
-	virtual DECLARE_WRITE16_MEMBER(write);
-=======
 	md_rom_sk_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 protected:
@@ -45,7 +28,6 @@ protected:
 	// reading and writing
 	virtual DECLARE_READ16_MEMBER(read) override;
 	virtual DECLARE_WRITE16_MEMBER(write) override;
->>>>>>> upstream/master
 
 private:
 	required_device<md_cart_slot_device> m_exp;
@@ -53,12 +35,6 @@ private:
 
 
 // device type definition
-<<<<<<< HEAD
-extern const device_type MD_ROM_SK;
-
-#endif
-=======
 DECLARE_DEVICE_TYPE(MD_ROM_SK, md_rom_sk_device)
 
 #endif // MAME_BUS_MEGADRIVE_SK_H
->>>>>>> upstream/master

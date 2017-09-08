@@ -1,13 +1,5 @@
 // Common/NewHandler.h
 
-<<<<<<< HEAD
-#ifndef __COMMON_NEWHANDLER_H
-#define __COMMON_NEWHANDLER_H
-
-class CNewException {};
-
-#ifdef _WIN32
-=======
 #ifndef __COMMON_NEW_HANDLER_H
 #define __COMMON_NEW_HANDLER_H
 
@@ -50,15 +42,11 @@ __cdecl
 #endif
 operator new(size_t size);
 
->>>>>>> upstream/master
 void
 #ifdef _MSC_VER
 __cdecl
 #endif
 operator delete(void *p) throw();
-<<<<<<< HEAD
-#endif
-=======
 
 #endif
 
@@ -77,6 +65,5 @@ __cdecl
 operator delete[](void *p) throw();
 #endif
 */
->>>>>>> upstream/master
 
 #endif

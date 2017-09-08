@@ -3830,24 +3830,6 @@ builtin_builder::_all(const glsl_type *type)
 
 UNOP(not, ir_unop_logic_not, always_available)
 
-<<<<<<< HEAD
-static bool
-has_lod(const glsl_type *sampler_type)
-{
-   assert(sampler_type->is_sampler());
-
-   switch (sampler_type->sampler_dimensionality) {
-   case GLSL_SAMPLER_DIM_RECT:
-   case GLSL_SAMPLER_DIM_BUF:
-   case GLSL_SAMPLER_DIM_MS:
-      return false;
-   default:
-      return true;
-   }
-}
-
-=======
->>>>>>> upstream/master
 ir_function_signature *
 builtin_builder::_textureSize(builtin_available_predicate avail,
                               const glsl_type *return_type,
@@ -3860,11 +3842,7 @@ builtin_builder::_textureSize(builtin_available_predicate avail,
    ir_texture *tex = new(mem_ctx) ir_texture(ir_txs);
    tex->set_sampler(new(mem_ctx) ir_dereference_variable(s), return_type);
 
-<<<<<<< HEAD
-   if (has_lod(sampler_type)) {
-=======
    if (ir_texture::has_lod(sampler_type)) {
->>>>>>> upstream/master
       ir_variable *lod = in_var(glsl_type::int_type, "lod");
       sig->parameters.push_tail(lod);
       tex->lod_info.lod = var_ref(lod);
@@ -4024,11 +4002,7 @@ builtin_builder::_texelFetch(builtin_available_predicate avail,
       sig->parameters.push_tail(sample);
       tex->lod_info.sample_index = var_ref(sample);
       tex->op = ir_txf_ms;
-<<<<<<< HEAD
-   } else if (has_lod(sampler_type)) {
-=======
    } else if (ir_texture::has_lod(sampler_type)) {
->>>>>>> upstream/master
       ir_variable *lod = in_var(glsl_type::int_type, "lod");
       sig->parameters.push_tail(lod);
       tex->lod_info.lod = var_ref(lod);

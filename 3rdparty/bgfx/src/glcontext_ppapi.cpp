@@ -1,21 +1,12 @@
 /*
-<<<<<<< HEAD
- * Copyright 2011-2015 Branimir Karadzic. All rights reserved.
- * License: http://www.opensource.org/licenses/BSD-2-Clause
-=======
  * Copyright 2011-2017 Branimir Karadzic. All rights reserved.
  * License: https://github.com/bkaradzic/bgfx#license-bsd-2-clause
->>>>>>> upstream/master
  */
 
 #include "bgfx_p.h"
 
 #if BX_PLATFORM_NACL && (BGFX_CONFIG_RENDERER_OPENGLES || BGFX_CONFIG_RENDERER_OPENGL)
-<<<<<<< HEAD
-#	include <bgfx/bgfxplatform.h>
-=======
 #	include <bgfx/platform.h>
->>>>>>> upstream/master
 #	include "renderer_gl.h"
 
 namespace bgfx { namespace gl
@@ -40,10 +31,7 @@ namespace bgfx { namespace gl
 			, m_instInterface(NULL)
 			, m_graphicsInterface(NULL)
 			, m_instancedArrays(NULL)
-<<<<<<< HEAD
-=======
 			, m_query(NULL)
->>>>>>> upstream/master
 			, m_postSwapBuffers(NULL)
 			, m_forceSwap(true)
 		{
@@ -72,10 +60,7 @@ namespace bgfx { namespace gl
 		const PPB_Instance* m_instInterface;
 		const PPB_Graphics3D* m_graphicsInterface;
 		const PPB_OpenGLES2InstancedArrays* m_instancedArrays;
-<<<<<<< HEAD
-=======
 		const PPB_OpenGLES2Query* m_query;
->>>>>>> upstream/master
 		PostSwapBuffersFn m_postSwapBuffers;
 		bool m_forceSwap;
 	};
@@ -112,8 +97,6 @@ namespace bgfx { namespace gl
 		s_ppapi.m_instancedArrays->DrawElementsInstancedANGLE(s_ppapi.m_context, _mode, _count, _type, _indices, _primcount);
 	}
 
-<<<<<<< HEAD
-=======
 	static void GL_APIENTRY naclGenQueries(GLsizei _n, GLuint* _queries)
 	{
 		s_ppapi.m_query->GenQueriesEXT(s_ppapi.m_context, _n, _queries);
@@ -150,7 +133,6 @@ namespace bgfx { namespace gl
 		*_params = params;
 	}
 
->>>>>>> upstream/master
 	bool Ppapi::setInterfaces(PP_Instance _instance, const PPB_Instance* _instInterface, const PPB_Graphics3D* _graphicsInterface, PostSwapBuffersFn _postSwapBuffers)
 	{
 		BX_TRACE("PPAPI Interfaces");
@@ -159,10 +141,7 @@ namespace bgfx { namespace gl
 		m_instInterface = _instInterface;
 		m_graphicsInterface = _graphicsInterface;
 		m_instancedArrays = glGetInstancedArraysInterfacePPAPI();
-<<<<<<< HEAD
-=======
 		m_query = glGetQueryInterfacePPAPI();
->>>>>>> upstream/master
 		m_postSwapBuffers = _postSwapBuffers;
 
 		int32_t attribs[] =
@@ -188,11 +167,6 @@ namespace bgfx { namespace gl
 		glSetCurrentContextPPAPI(m_context);
 		m_graphicsInterface->SwapBuffers(m_context, naclSwapComplete);
 
-<<<<<<< HEAD
-		glVertexAttribDivisor   = naclVertexAttribDivisor;
-		glDrawArraysInstanced   = naclDrawArraysInstanced;
-		glDrawElementsInstanced = naclDrawElementsInstanced;
-=======
 		if (NULL != m_instancedArrays)
 		{
 			glVertexAttribDivisor   = naclVertexAttribDivisor;
@@ -209,7 +183,6 @@ namespace bgfx { namespace gl
 			glGetQueryObjectiv    = naclGetQueryObjectiv;
 			glGetQueryObjectui64v = naclGetQueryObjectui64v;
 		}
->>>>>>> upstream/master
 
 		// Prevent render thread creation.
 		RenderFrame::Enum result = renderFrame();
@@ -220,11 +193,8 @@ namespace bgfx { namespace gl
 	{
 		BX_UNUSED(_width, _height);
 		BX_TRACE("GlContext::create");
-<<<<<<< HEAD
-=======
 
 		g_internalData.context = &s_ppapi.m_context;
->>>>>>> upstream/master
 	}
 
 	void GlContext::destroy()

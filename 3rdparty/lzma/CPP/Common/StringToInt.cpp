@@ -4,51 +4,6 @@
 
 #include "StringToInt.h"
 
-<<<<<<< HEAD
-UInt64 ConvertStringToUInt64(const char *s, const char **end)
-{
-  UInt64 result = 0;
-  for (;;)
-  {
-    char c = *s;
-    if (c < '0' || c > '9')
-    {
-      if (end != NULL)
-        *end = s;
-      return result;
-    }
-    result *= 10;
-    result += (c - '0');
-    s++;
-  }
-}
-
-UInt64 ConvertOctStringToUInt64(const char *s, const char **end)
-{
-  UInt64 result = 0;
-  for (;;)
-  {
-    char c = *s;
-    if (c < '0' || c > '7')
-    {
-      if (end != NULL)
-        *end = s;
-      return result;
-    }
-    result <<= 3;
-    result += (c - '0');
-    s++;
-  }
-}
-
-UInt64 ConvertHexStringToUInt64(const char *s, const char **end)
-{
-  UInt64 result = 0;
-  for (;;)
-  {
-    char c = *s;
-    UInt32 v;
-=======
 static const UInt32 k_UInt32_max = 0xFFFFFFFF;
 static const UInt64 k_UInt64_max = UINT64_CONST(0xFFFFFFFFFFFFFFFF);
 // static const UInt64 k_UInt64_max = (UInt64)(Int64)-1;
@@ -147,57 +102,11 @@ UInt32 ConvertHexStringToUInt32(const char *s, const char **end) throw()
   {
     unsigned c = (Byte)*s;
     unsigned v;
->>>>>>> upstream/master
     if (c >= '0' && c <= '9') v = (c - '0');
     else if (c >= 'A' && c <= 'F') v = 10 + (c - 'A');
     else if (c >= 'a' && c <= 'f') v = 10 + (c - 'a');
     else
     {
-<<<<<<< HEAD
-      if (end != NULL)
-        *end = s;
-      return result;
-    }
-    result <<= 4;
-    result |= v;
-    s++;
-  }
-}
-
-
-UInt64 ConvertStringToUInt64(const wchar_t *s, const wchar_t **end)
-{
-  UInt64 result = 0;
-  for (;;)
-  {
-    wchar_t c = *s;
-    if (c < '0' || c > '9')
-    {
-      if (end != NULL)
-        *end = s;
-      return result;
-    }
-    result *= 10;
-    result += (c - '0');
-    s++;
-  }
-}
-
-
-Int64 ConvertStringToInt64(const char *s, const char **end)
-{
-  if (*s == '-')
-    return -(Int64)ConvertStringToUInt64(s + 1, end);
-  return ConvertStringToUInt64(s, end);
-}
-
-Int64 ConvertStringToInt64(const wchar_t *s, const wchar_t **end)
-{
-  if (*s == L'-')
-    return -(Int64)ConvertStringToUInt64(s + 1, end);
-  return ConvertStringToUInt64(s, end);
-}
-=======
       if (end)
         *end = s;
       return res;
@@ -233,4 +142,3 @@ UInt64 ConvertHexStringToUInt64(const char *s, const char **end) throw()
     res |= v;
   }
 }
->>>>>>> upstream/master

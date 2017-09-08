@@ -8,26 +8,6 @@
 
 **************************************************************************/
 
-<<<<<<< HEAD
-#ifndef __TAITOIO_H__
-#define __TAITOIO_H__
-
-
-class tc0220ioc_device : public device_t
-{
-public:
-	tc0220ioc_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-	~tc0220ioc_device() {}
-
-	template<class _Object> static devcb_base &set_read_0_callback(device_t &device, _Object object) { return downcast<tc0220ioc_device &>(device).m_read_0_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_read_1_callback(device_t &device, _Object object) { return downcast<tc0220ioc_device &>(device).m_read_1_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_read_2_callback(device_t &device, _Object object) { return downcast<tc0220ioc_device &>(device).m_read_2_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_read_3_callback(device_t &device, _Object object) { return downcast<tc0220ioc_device &>(device).m_read_3_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_read_7_callback(device_t &device, _Object object) { return downcast<tc0220ioc_device &>(device).m_read_7_cb.set_callback(object); }
-
-	DECLARE_READ8_MEMBER( read );
-	DECLARE_WRITE8_MEMBER( write );
-=======
 #ifndef MAME_MACHINE_TAITOIO_H
 #define MAME_MACHINE_TAITOIO_H
 
@@ -51,7 +31,6 @@ public:
 	DECLARE_READ8_MEMBER( read );
 	DECLARE_WRITE8_MEMBER( write );
 	DECLARE_READ8_MEMBER( watchdog_r );
->>>>>>> upstream/master
 	DECLARE_READ8_MEMBER( port_r );
 	DECLARE_WRITE8_MEMBER( port_w );
 	DECLARE_READ8_MEMBER( portreg_r );
@@ -59,15 +38,6 @@ public:
 
 protected:
 	// device-level overrides
-<<<<<<< HEAD
-	virtual void device_start();
-	virtual void device_reset();
-
-private:
-	// internal state
-	UINT8      m_regs[8];
-	UINT8      m_port;
-=======
 	virtual void device_start() override;
 	virtual void device_reset() override;
 	virtual void device_add_mconfig(machine_config &config) override;
@@ -78,18 +48,11 @@ private:
 	uint8_t      m_port;
 
 	required_device<watchdog_timer_device> m_watchdog;
->>>>>>> upstream/master
 
 	devcb_read8 m_read_0_cb;
 	devcb_read8 m_read_1_cb;
 	devcb_read8 m_read_2_cb;
 	devcb_read8 m_read_3_cb;
-<<<<<<< HEAD
-	devcb_read8 m_read_7_cb;
-};
-
-extern const device_type TC0220IOC;
-=======
 	devcb_write8 m_write_4_cb;
 	devcb_read8 m_read_7_cb;
 };
@@ -134,21 +97,10 @@ private:
 };
 
 DECLARE_DEVICE_TYPE(TC0220IOC, tc0220ioc_device)
->>>>>>> upstream/master
 
 class tc0510nio_device : public device_t
 {
 public:
-<<<<<<< HEAD
-	tc0510nio_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-	~tc0510nio_device() {}
-
-	template<class _Object> static devcb_base &set_read_0_callback(device_t &device, _Object object) { return downcast<tc0510nio_device &>(device).m_read_0_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_read_1_callback(device_t &device, _Object object) { return downcast<tc0510nio_device &>(device).m_read_1_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_read_2_callback(device_t &device, _Object object) { return downcast<tc0510nio_device &>(device).m_read_2_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_read_3_callback(device_t &device, _Object object) { return downcast<tc0510nio_device &>(device).m_read_3_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_read_7_callback(device_t &device, _Object object) { return downcast<tc0510nio_device &>(device).m_read_7_cb.set_callback(object); }
-=======
 	tc0510nio_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	template <class Object> static devcb_base &set_read_0_callback(device_t &device, Object &&cb) { return downcast<tc0510nio_device &>(device).m_read_0_cb.set_callback(std::forward<Object>(cb)); }
@@ -158,7 +110,6 @@ public:
 	template <class Object> static devcb_base &set_write_3_callback(device_t &device, Object &&cb) { return downcast<tc0510nio_device &>(device).m_write_3_cb.set_callback(std::forward<Object>(cb)); }
 	template <class Object> static devcb_base &set_write_4_callback(device_t &device, Object &&cb) { return downcast<tc0510nio_device &>(device).m_write_4_cb.set_callback(std::forward<Object>(cb)); }
 	template <class Object> static devcb_base &set_read_7_callback(device_t &device, Object &&cb) { return downcast<tc0510nio_device &>(device).m_read_7_cb.set_callback(std::forward<Object>(cb)); }
->>>>>>> upstream/master
 
 	DECLARE_READ8_MEMBER( read );
 	DECLARE_WRITE8_MEMBER( write );
@@ -169,14 +120,6 @@ public:
 
 protected:
 	// device-level overrides
-<<<<<<< HEAD
-	virtual void device_start();
-	virtual void device_reset();
-
-private:
-	// internal state
-	UINT8   m_regs[8];
-=======
 	virtual void device_start() override;
 	virtual void device_reset() override;
 	virtual void device_add_mconfig(machine_config &config) override;
@@ -186,39 +129,21 @@ private:
 	uint8_t   m_regs[8];
 
 	required_device<watchdog_timer_device> m_watchdog;
->>>>>>> upstream/master
 
 	devcb_read8 m_read_0_cb;
 	devcb_read8 m_read_1_cb;
 	devcb_read8 m_read_2_cb;
 	devcb_read8 m_read_3_cb;
-<<<<<<< HEAD
-	devcb_read8 m_read_7_cb;
-};
-
-extern const device_type TC0510NIO;
-=======
 	devcb_write8 m_write_3_cb;
 	devcb_write8 m_write_4_cb;
 	devcb_read8 m_read_7_cb;
 };
 
 DECLARE_DEVICE_TYPE(TC0510NIO, tc0510nio_device)
->>>>>>> upstream/master
 
 class tc0640fio_device : public device_t
 {
 public:
-<<<<<<< HEAD
-	tc0640fio_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-	~tc0640fio_device() {}
-
-	template<class _Object> static devcb_base &set_read_0_callback(device_t &device, _Object object) { return downcast<tc0640fio_device &>(device).m_read_0_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_read_1_callback(device_t &device, _Object object) { return downcast<tc0640fio_device &>(device).m_read_1_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_read_2_callback(device_t &device, _Object object) { return downcast<tc0640fio_device &>(device).m_read_2_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_read_3_callback(device_t &device, _Object object) { return downcast<tc0640fio_device &>(device).m_read_3_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_read_7_callback(device_t &device, _Object object) { return downcast<tc0640fio_device &>(device).m_read_7_cb.set_callback(object); }
-=======
 	tc0640fio_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	template <class Object> static devcb_base &set_read_0_callback(device_t &device, Object &&cb) { return downcast<tc0640fio_device &>(device).m_read_0_cb.set_callback(std::forward<Object>(cb)); }
@@ -227,7 +152,6 @@ public:
 	template <class Object> static devcb_base &set_read_3_callback(device_t &device, Object &&cb) { return downcast<tc0640fio_device &>(device).m_read_3_cb.set_callback(std::forward<Object>(cb)); }
 	template <class Object> static devcb_base &set_write_4_callback(device_t &device, Object &&cb) { return downcast<tc0640fio_device &>(device).m_write_4_cb.set_callback(std::forward<Object>(cb)); }
 	template <class Object> static devcb_base &set_read_7_callback(device_t &device, Object &&cb) { return downcast<tc0640fio_device &>(device).m_read_7_cb.set_callback(std::forward<Object>(cb)); }
->>>>>>> upstream/master
 
 
 	DECLARE_READ8_MEMBER( read );
@@ -239,14 +163,6 @@ public:
 
 protected:
 	// device-level overrides
-<<<<<<< HEAD
-	virtual void device_start();
-	virtual void device_reset();
-
-	private:
-	// internal state
-	UINT8   m_regs[8];
-=======
 	virtual void device_start() override;
 	virtual void device_reset() override;
 	virtual void device_add_mconfig(machine_config &config) override;
@@ -256,32 +172,22 @@ protected:
 	uint8_t   m_regs[8];
 
 	required_device<watchdog_timer_device> m_watchdog;
->>>>>>> upstream/master
 
 	devcb_read8 m_read_0_cb;
 	devcb_read8 m_read_1_cb;
 	devcb_read8 m_read_2_cb;
 	devcb_read8 m_read_3_cb;
-<<<<<<< HEAD
-	devcb_read8 m_read_7_cb;
-};
-
-extern const device_type TC0640FIO;
-=======
 	devcb_write8 m_write_4_cb;
 	devcb_read8 m_read_7_cb;
 };
 
 DECLARE_DEVICE_TYPE(TC0640FIO, tc0640fio_device)
->>>>>>> upstream/master
 
 
 /***************************************************************************
     DEVICE CONFIGURATION MACROS
 ***************************************************************************/
 
-<<<<<<< HEAD
-=======
 #define MCFG_TC0040IOC_READ_0_CB(_devcb) \
 	devcb = &tc0040ioc_device::set_read_0_callback(*device, DEVCB_##_devcb);
 
@@ -301,7 +207,6 @@ DECLARE_DEVICE_TYPE(TC0640FIO, tc0640fio_device)
 	devcb = &tc0040ioc_device::set_read_7_callback(*device, DEVCB_##_devcb);
 
 
->>>>>>> upstream/master
 #define MCFG_TC0220IOC_READ_0_CB(_devcb) \
 	devcb = &tc0220ioc_device::set_read_0_callback(*device, DEVCB_##_devcb);
 
@@ -314,15 +219,12 @@ DECLARE_DEVICE_TYPE(TC0640FIO, tc0640fio_device)
 #define MCFG_TC0220IOC_READ_3_CB(_devcb) \
 	devcb = &tc0220ioc_device::set_read_3_callback(*device, DEVCB_##_devcb);
 
-<<<<<<< HEAD
-=======
 #define MCFG_TC0220IOC_WRITE_3_CB(_devcb) \
 	devcb = &tc0220ioc_device::set_write_3_callback(*device, DEVCB_##_devcb);
 
 #define MCFG_TC0220IOC_WRITE_4_CB(_devcb) \
 	devcb = &tc0220ioc_device::set_write_4_callback(*device, DEVCB_##_devcb);
 
->>>>>>> upstream/master
 #define MCFG_TC0220IOC_READ_7_CB(_devcb) \
 	devcb = &tc0220ioc_device::set_read_7_callback(*device, DEVCB_##_devcb);
 
@@ -339,15 +241,12 @@ DECLARE_DEVICE_TYPE(TC0640FIO, tc0640fio_device)
 #define MCFG_TC0510NIO_READ_3_CB(_devcb) \
 	devcb = &tc0510nio_device::set_read_3_callback(*device, DEVCB_##_devcb);
 
-<<<<<<< HEAD
-=======
 #define MCFG_TC0510NIO_WRITE_3_CB(_devcb) \
 	devcb = &tc0510nio_device::set_write_3_callback(*device, DEVCB_##_devcb);
 
 #define MCFG_TC0510NIO_WRITE_4_CB(_devcb) \
 	devcb = &tc0510nio_device::set_write_4_callback(*device, DEVCB_##_devcb);
 
->>>>>>> upstream/master
 #define MCFG_TC0510NIO_READ_7_CB(_devcb) \
 	devcb = &tc0510nio_device::set_read_7_callback(*device, DEVCB_##_devcb);
 
@@ -364,18 +263,11 @@ DECLARE_DEVICE_TYPE(TC0640FIO, tc0640fio_device)
 #define MCFG_TC0640FIO_READ_3_CB(_devcb) \
 	devcb = &tc0640fio_device::set_read_3_callback(*device, DEVCB_##_devcb);
 
-<<<<<<< HEAD
-=======
 #define MCFG_TC0640FIO_WRITE_4_CB(_devcb) \
 	devcb = &tc0640fio_device::set_write_4_callback(*device, DEVCB_##_devcb);
 
->>>>>>> upstream/master
 #define MCFG_TC0640FIO_READ_7_CB(_devcb) \
 	devcb = &tc0640fio_device::set_read_7_callback(*device, DEVCB_##_devcb);
 
 
-<<<<<<< HEAD
-#endif  /* __TAITOIO_H__ */
-=======
 #endif // MAME_MACHINE_TAITOIO_H
->>>>>>> upstream/master

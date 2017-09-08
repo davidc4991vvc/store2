@@ -37,11 +37,7 @@ static const char *const adr_b[]=
 { P, WP, XS, X, S, M, B, W };
 
 static const char *const adr_af[]=
-<<<<<<< HEAD
-{ P, WP, XS, X, S, M, B, W, 0, 0, 0, 0, 0, 0, 0, A };
-=======
 { P, WP, XS, X, S, M, B, W, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, A };
->>>>>>> upstream/master
 
 static const char *const adr_a[]=
 	{ P, WP, XS, X, S, M, B, W };
@@ -49,21 +45,13 @@ static const char *const adr_a[]=
 static const char number_2_hex[]=
 { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
 
-<<<<<<< HEAD
-#define SATURN_PEEKOP_DIS8(v)   v = (INT8)( oprom[pos] | ( oprom[pos+1] << 4 ) ); pos+= 2;
-=======
 #define SATURN_PEEKOP_DIS8(v)   v = (int8_t)( oprom[pos] | ( oprom[pos+1] << 4 ) ); pos+= 2;
->>>>>>> upstream/master
 
 #define SATURN_PEEKOP_DIS12(v)  v = oprom[pos] | ( oprom[pos+1] << 4 ) | ( oprom[pos+2] << 8 ); \
 								pos += 3;                                                       \
 								if ( v & 0x0800 )   v = -0x1000 + v;
 
-<<<<<<< HEAD
-#define SATURN_PEEKOP_DIS16(v)  v = (INT16)( oprom[pos] | ( oprom[pos+1] << 4 ) | ( oprom[pos+2] << 8 ) | ( oprom[pos+3] << 12 ) ); pos += 4;
-=======
 #define SATURN_PEEKOP_DIS16(v)  v = (int16_t)( oprom[pos] | ( oprom[pos+1] << 4 ) | ( oprom[pos+2] << 8 ) | ( oprom[pos+3] << 12 ) ); pos += 4;
->>>>>>> upstream/master
 
 #define SATURN_PEEKOP_ADR(v)    v = oprom[pos] | ( oprom[pos+1] << 4 ) | ( oprom[pos+2] << 8 ) | ( oprom[pos+3] << 12 ) | ( oprom[pos+4] << 16 ); pos += 5;
 
@@ -602,11 +590,7 @@ static const char *field_2_string(int adr_enum)
 	case FieldW: return W;
 	case FieldA: return A;
 	}
-<<<<<<< HEAD
-	return 0;
-=======
 	return nullptr;
->>>>>>> upstream/master
 }
 
 static const OPCODE opcodes[][0x10]= {
@@ -1283,11 +1267,7 @@ static const int field_adr_a[]=
 static const int field_adr_b[]=
 { FieldP, FieldWP, FieldXS, FieldX, FieldS, FieldM, FieldB, FieldW };
 
-<<<<<<< HEAD
-CPU_DISASSEMBLE( saturn )
-=======
 CPU_DISASSEMBLE(saturn)
->>>>>>> upstream/master
 {
 	int adr=0;
 
@@ -1309,11 +1289,7 @@ CPU_DISASSEMBLE(saturn)
 			cont=0;
 			bin[binsize++]=number_2_hex[op];
 			bin[binsize]=0;
-<<<<<<< HEAD
-			sprintf(buffer, "???%s",bin);
-=======
 			util::stream_format(stream, "???%s",bin);
->>>>>>> upstream/master
 			break;
 		default:
 			bin[binsize++]=number_2_hex[op];
@@ -1332,11 +1308,7 @@ CPU_DISASSEMBLE(saturn)
 				cont = 0;
 				bin[binsize++]=number_2_hex[op];
 				bin[binsize]=0;
-<<<<<<< HEAD
-				sprintf(buffer, "???%s",bin);
-=======
 				util::stream_format(stream, "???%s",bin);
->>>>>>> upstream/master
 				break;
 			}
 			break;
@@ -1344,22 +1316,6 @@ CPU_DISASSEMBLE(saturn)
 			cont=0;
 			switch (level->adr==AdrNone?adr:level->adr) {
 			case AdrNone:
-<<<<<<< HEAD
-				strcpy(buffer, mnemonics[level->mnemonic].name[set]);
-				break;
-			case Imm:
-				sprintf(buffer, mnemonics[level->mnemonic].name[set], oprom[pos++]);
-				break;
-			case ImmCount:
-				sprintf(buffer, mnemonics[level->mnemonic].name[set], oprom[pos++]+1);
-				break;
-			case AdrImmCount:
-				sprintf(buffer, mnemonics[level->mnemonic].name[set], field_2_string(adr), oprom[pos++]+1);
-				break;
-			case AdrCount: // mnemonics have string %s for address field
-				snprintf(number,sizeof(number),"%x",oprom[pos++]+1);
-				sprintf(buffer, mnemonics[level->mnemonic].name[set], number);
-=======
 				stream << mnemonics[level->mnemonic].name[set];
 				break;
 			case Imm:
@@ -1374,27 +1330,18 @@ CPU_DISASSEMBLE(saturn)
 			case AdrCount: // mnemonics have string %s for address field
 				snprintf(number,sizeof(number),"%x",oprom[pos++]+1);
 				util::stream_format(stream, mnemonics[level->mnemonic].name[set], number);
->>>>>>> upstream/master
 				break;
 			case Imm2:
 				v=oprom[pos++];
 				v|=oprom[pos++]<<4;
-<<<<<<< HEAD
-				sprintf(buffer, mnemonics[level->mnemonic].name[set], v);
-=======
 				util::stream_format(stream, mnemonics[level->mnemonic].name[set], v);
->>>>>>> upstream/master
 				break;
 			case Imm4:
 				v=oprom[pos++];
 				v|=oprom[pos++]<<4;
 				v|=oprom[pos++]<<8;
 				v|=oprom[pos++]<<12;
-<<<<<<< HEAD
-				sprintf(buffer, mnemonics[level->mnemonic].name[set], v);
-=======
 				util::stream_format(stream, mnemonics[level->mnemonic].name[set], v);
->>>>>>> upstream/master
 				break;
 			case Imm5:
 				v=oprom[pos++];
@@ -1402,174 +1349,79 @@ CPU_DISASSEMBLE(saturn)
 				v|=oprom[pos++]<<8;
 				v|=oprom[pos++]<<12;
 				v|=oprom[pos++]<<16;
-<<<<<<< HEAD
-				sprintf(buffer, mnemonics[level->mnemonic].name[set], v);
-=======
 				util::stream_format(stream, mnemonics[level->mnemonic].name[set], v);
->>>>>>> upstream/master
 				break;
 			case ImmCload:
 				c=i=oprom[pos++] & 0xf;
 				number[i+1]=0;
 				for (;i>=0; i--) number[i]=number_2_hex[oprom[pos++] & 0xf];
-<<<<<<< HEAD
-				sprintf(buffer, mnemonics[level->mnemonic].name[set], c+1, number);
-=======
 				util::stream_format(stream, mnemonics[level->mnemonic].name[set], c+1, number);
->>>>>>> upstream/master
 				break;
 			case Dis3:
 				SATURN_PEEKOP_DIS12(v);
 				c=(pc+pos-3+v)&0xfffff;
-<<<<<<< HEAD
-				sprintf(buffer, mnemonics[level->mnemonic].name[set], c );
-=======
 				util::stream_format(stream, mnemonics[level->mnemonic].name[set], c );
->>>>>>> upstream/master
 				break;
 			case Dis3Call:
 				SATURN_PEEKOP_DIS12(v);
 				c=(pc+pos+v)&0xfffff;
-<<<<<<< HEAD
-				sprintf(buffer, mnemonics[level->mnemonic].name[set], c );
-=======
 				util::stream_format(stream, mnemonics[level->mnemonic].name[set], c );
->>>>>>> upstream/master
 				break;
 			case Dis4:
 				SATURN_PEEKOP_DIS16(v);
 				c=(pc+pos-4+v)&0xfffff;
-<<<<<<< HEAD
-				sprintf(buffer, mnemonics[level->mnemonic].name[set], c );
-=======
 				util::stream_format(stream, mnemonics[level->mnemonic].name[set], c );
->>>>>>> upstream/master
 				break;
 			case Dis4Call:
 				SATURN_PEEKOP_DIS16(v);
 				c=(pc+pos+v)&0xfffff;
-<<<<<<< HEAD
-				sprintf(buffer, mnemonics[level->mnemonic].name[set], c );
-				break;
-			case Abs:
-				SATURN_PEEKOP_ADR(v);
-				sprintf(buffer, mnemonics[level->mnemonic].name[set], v );
-=======
 				util::stream_format(stream, mnemonics[level->mnemonic].name[set], c );
 				break;
 			case Abs:
 				SATURN_PEEKOP_ADR(v);
 				util::stream_format(stream, mnemonics[level->mnemonic].name[set], v );
->>>>>>> upstream/master
 				break;
 			case BranchReturn:
 				SATURN_PEEKOP_DIS8(v);
 				if (v==0) {
-<<<<<<< HEAD
-					strcpy(buffer, mnemonics[level->mnemonic+1].name[set]);
-				} else {
-					c=(pc+pos-2+v)&0xfffff;
-					sprintf(buffer, mnemonics[level->mnemonic].name[set], c);
-=======
 					stream << mnemonics[level->mnemonic+1].name[set];
 				} else {
 					c=(pc+pos-2+v)&0xfffff;
 					util::stream_format(stream, mnemonics[level->mnemonic].name[set], c);
->>>>>>> upstream/master
 				}
 				break;
 			case ABranchReturn:
 				SATURN_PEEKOP_DIS8(v);
 				if (v==0) {
-<<<<<<< HEAD
-					sprintf(buffer, mnemonics[level->mnemonic+1].name[set], A);
-				} else {
-					c=(pc+pos-2+v)&0xfffff;
-					sprintf(buffer, mnemonics[level->mnemonic].name[set], A, c);
-=======
 					util::stream_format(stream, mnemonics[level->mnemonic+1].name[set], A);
 				} else {
 					c=(pc+pos-2+v)&0xfffff;
 					util::stream_format(stream, mnemonics[level->mnemonic].name[set], A, c);
->>>>>>> upstream/master
 				}
 				break;
 			case xBranchReturn:
 				SATURN_PEEKOP_DIS8(v);
 				if (v==0) {
-<<<<<<< HEAD
-					sprintf(buffer, mnemonics[level->mnemonic+1].name[set], field_2_string(adr));
-				} else {
-					c=(pc+pos-2+v)&0xfffff;
-					sprintf(buffer, mnemonics[level->mnemonic].name[set], field_2_string(adr), c);
-=======
 					util::stream_format(stream, mnemonics[level->mnemonic+1].name[set], field_2_string(adr));
 				} else {
 					c=(pc+pos-2+v)&0xfffff;
 					util::stream_format(stream, mnemonics[level->mnemonic].name[set], field_2_string(adr), c);
->>>>>>> upstream/master
 				}
 				break;
 			case TestBranchRet:
 				i=oprom[pos++];
 				SATURN_PEEKOP_DIS8(v);
 				if (v==0) {
-<<<<<<< HEAD
-					sprintf(buffer, mnemonics[level->mnemonic+1].name[set], i);
-				} else {
-					c=(pc+pos-2+v)&0xfffff;
-					sprintf(buffer, mnemonics[level->mnemonic].name[set], i, c);
-=======
 					util::stream_format(stream, mnemonics[level->mnemonic+1].name[set], i);
 				} else {
 					c=(pc+pos-2+v)&0xfffff;
 					util::stream_format(stream, mnemonics[level->mnemonic].name[set], i, c);
->>>>>>> upstream/master
 				}
 				break;
 			case ImmBranch:
 				i=oprom[pos++];
 				SATURN_PEEKOP_DIS8(v);
 				c=(pc+pos-2+v)&0xfffff;
-<<<<<<< HEAD
-				sprintf(buffer, mnemonics[level->mnemonic].name[set], i, c);
-				break;
-			case FieldP:
-				sprintf(buffer, mnemonics[level->mnemonic].name[set], P );
-				break;
-			case FieldWP:
-				sprintf(buffer, mnemonics[level->mnemonic].name[set], WP );
-				break;
-			case FieldXS:
-				sprintf(buffer, mnemonics[level->mnemonic].name[set], XS );
-				break;
-			case FieldX:
-				sprintf(buffer, mnemonics[level->mnemonic].name[set], X );
-				break;
-			case FieldS:
-				sprintf(buffer, mnemonics[level->mnemonic].name[set], S );
-				break;
-			case FieldM:
-				sprintf(buffer, mnemonics[level->mnemonic].name[set], M );
-				break;
-			case FieldB:
-				sprintf(buffer, mnemonics[level->mnemonic].name[set], B );
-				break;
-			case FieldA:
-				sprintf(buffer, mnemonics[level->mnemonic].name[set], A );
-				break;
-			case FieldW:
-				sprintf(buffer, mnemonics[level->mnemonic].name[set], W );
-				break;
-			case AdrA:
-				sprintf(buffer, mnemonics[level->mnemonic].name[set], adr_a[oprom[pos++] & 0x7] );
-				break;
-			case AdrAF:
-				sprintf(buffer, mnemonics[level->mnemonic].name[set], adr_af[oprom[pos++] & 0xf] );
-				break;
-			case AdrB:
-				sprintf(buffer, mnemonics[level->mnemonic].name[set], adr_b[oprom[pos++] & 0x7] );
-=======
 				util::stream_format(stream, mnemonics[level->mnemonic].name[set], i, c);
 				break;
 			case FieldP:
@@ -1607,7 +1459,6 @@ CPU_DISASSEMBLE(saturn)
 				break;
 			case AdrB:
 				util::stream_format(stream, mnemonics[level->mnemonic].name[set], adr_b[oprom[pos++] & 0x7] );
->>>>>>> upstream/master
 				break;
 			}
 			break;

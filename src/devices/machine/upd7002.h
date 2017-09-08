@@ -10,29 +10,17 @@
  *
  ****************************************************************************/
 
-<<<<<<< HEAD
-#ifndef UPD7002_H_
-#define UPD7002_H_
-=======
 #ifndef MAME_MACHINE_UPD7002_H
 #define MAME_MACHINE_UPD7002_H
 
 #pragma once
->>>>>>> upstream/master
 
 /***************************************************************************
     TYPE DEFINITIONS
 ***************************************************************************/
 
-<<<<<<< HEAD
-typedef device_delegate<int (int channel_number)> upd7002_get_analogue_delegate;
 #define UPD7002_GET_ANALOGUE(name)  int name(int channel_number)
 
-typedef device_delegate<void (int data)> upd7002_eoc_delegate;
-=======
-#define UPD7002_GET_ANALOGUE(name)  int name(int channel_number)
-
->>>>>>> upstream/master
 #define UPD7002_EOC(name)   void name(int data)
 
 
@@ -43,13 +31,6 @@ typedef device_delegate<void (int data)> upd7002_eoc_delegate;
 class upd7002_device : public device_t
 {
 public:
-<<<<<<< HEAD
-	upd7002_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-	~upd7002_device() {}
-
-	static void set_get_analogue_callback(device_t &device, upd7002_get_analogue_delegate callback) { downcast<upd7002_device &>(device).m_get_analogue_cb = callback; }
-	static void set_eoc_callback(device_t &device, upd7002_eoc_delegate callback) { downcast<upd7002_device &>(device).m_eoc_cb = callback; }
-=======
 	typedef device_delegate<int (int channel_number)> get_analogue_delegate;
 	typedef device_delegate<void (int data)> eoc_delegate;
 
@@ -57,7 +38,6 @@ public:
 
 	static void set_get_analogue_callback(device_t &device, get_analogue_delegate &&callback) { downcast<upd7002_device &>(device).m_get_analogue_cb = std::move(callback); }
 	static void set_eoc_callback(device_t &device, eoc_delegate &&callback) { downcast<upd7002_device &>(device).m_eoc_cb = std::move(callback); }
->>>>>>> upstream/master
 
 	DECLARE_READ8_MEMBER(eoc_r);
 	DECLARE_READ8_MEMBER(read);
@@ -65,15 +45,9 @@ public:
 
 protected:
 	// device-level overrides
-<<<<<<< HEAD
-	virtual void device_start();
-	virtual void device_reset();
-	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
-=======
 	virtual void device_start() override;
 	virtual void device_reset() override;
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
->>>>>>> upstream/master
 
 private:
 	// internal state
@@ -109,13 +83,8 @@ private:
 	only then at the end of the second conversion will the conversion complete function run */
 	int m_conversion_counter;
 
-<<<<<<< HEAD
-	upd7002_get_analogue_delegate m_get_analogue_cb;
-	upd7002_eoc_delegate          m_eoc_cb;
-=======
 	get_analogue_delegate m_get_analogue_cb;
 	eoc_delegate          m_eoc_cb;
->>>>>>> upstream/master
 
 	enum
 	{
@@ -123,11 +92,7 @@ private:
 	};
 };
 
-<<<<<<< HEAD
-extern const device_type UPD7002;
-=======
 DECLARE_DEVICE_TYPE(UPD7002, upd7002_device)
->>>>>>> upstream/master
 
 
 /***************************************************************************
@@ -135,18 +100,9 @@ DECLARE_DEVICE_TYPE(UPD7002, upd7002_device)
 ***************************************************************************/
 
 #define MCFG_UPD7002_GET_ANALOGUE_CB(_class, _method) \
-<<<<<<< HEAD
-	upd7002_device::set_get_analogue_callback(*device, upd7002_get_analogue_delegate(&_class::_method, #_class "::" #_method, downcast<_class *>(owner)));
-
-#define MCFG_UPD7002_EOC_CB(_class, _method) \
-	upd7002_device::set_eoc_callback(*device, upd7002_eoc_delegate(&_class::_method, #_class "::" #_method, downcast<_class *>(owner)));
-
-#endif /* UPD7002_H_ */
-=======
 		upd7002_device::set_get_analogue_callback(*device, upd7002_device::get_analogue_delegate(&_class::_method, #_class "::" #_method, downcast<_class *>(owner)));
 
 #define MCFG_UPD7002_EOC_CB(_class, _method) \
 		upd7002_device::set_eoc_callback(*device, upd7002_device::eoc_delegate(&_class::_method, #_class "::" #_method, downcast<_class *>(owner)));
 
 #endif // MAME_MACHINE_UPD7002_H
->>>>>>> upstream/master

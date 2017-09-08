@@ -1,29 +1,12 @@
 /*
-<<<<<<< HEAD
- * Copyright 2011-2015 Branimir Karadzic. All rights reserved.
- * License: http://www.opensource.org/licenses/BSD-2-Clause
-=======
  * Copyright 2011-2017 Branimir Karadzic. All rights reserved.
  * License: https://github.com/bkaradzic/bgfx#license-bsd-2-clause
->>>>>>> upstream/master
  */
 
 #include "entry_p.h"
 
 #if ENTRY_CONFIG_USE_GLFW
 
-<<<<<<< HEAD
-#define GLFW_DLL
-#include <GLFW/glfw3.h>
-#include <bgfx/bgfxplatform.h>
-#include "dbg.h"
-
-// This is just trivial implementation of GLFW3 integration.
-// It's here just for testing purpose.
-
-namespace entry
-{
-=======
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
 
@@ -284,18 +267,11 @@ namespace entry
 		WindowHandle m_handle;
 	};
 
->>>>>>> upstream/master
 	static void errorCb(int _error, const char* _description)
 	{
 		DBG("GLFW error %d: %s", _error, _description);
 	}
 
-<<<<<<< HEAD
-	struct Context
-	{
-		Context()
-		{
-=======
 	static void joystickCb(int _jid, int _action);
 
 	// Based on cutef8 by Jeff Bezanson (Public Domain)
@@ -409,34 +385,10 @@ namespace entry
 			s_translateKey[GLFW_KEY_X]			  = Key::KeyX;
 			s_translateKey[GLFW_KEY_Y]			  = Key::KeyY;
 			s_translateKey[GLFW_KEY_Z]			  = Key::KeyZ;
->>>>>>> upstream/master
 		}
 
 		int run(int _argc, char** _argv)
 		{
-<<<<<<< HEAD
-			glfwSetErrorCallback(errorCb);
-
-			glfwInit();
-			m_window = glfwCreateWindow(1280, 720, "bgfx", NULL, NULL);
-			glfwMakeContextCurrent(m_window);
-
-			glfwSetKeyCallback(m_window, keyCb);
-
-			bgfx::glfwSetWindow(m_window);
-			int result = main(_argc, _argv);
-
-			glfwDestroyWindow(m_window);
-			glfwTerminate();
-			return result;
-		}
-
-		static void keyCb(GLFWwindow* _window, int _key, int _scancode, int _action, int _mods);
-
-		EventQueue m_eventQueue;
-
-		GLFWwindow* m_window;
-=======
 			m_mte.m_argc = _argc;
 			m_mte.m_argv = _argv;
 
@@ -673,32 +625,12 @@ namespace entry
 		bx::SpScUnboundedQueueT<Msg> m_msgs;
 
 		double m_scrollPos;
->>>>>>> upstream/master
 	};
 
 	Context s_ctx;
 
 	void Context::keyCb(GLFWwindow* _window, int _key, int _scancode, int _action, int _mods)
 	{
-<<<<<<< HEAD
-		BX_UNUSED(_window, _scancode, _mods);
-		if (_key    == GLFW_KEY_Q
-		&&  _action == GLFW_PRESS
-		&&  _mods   == GLFW_MOD_CONTROL)
-		{
-			s_ctx.m_eventQueue.postExitEvent();
-		}
-	}
-
-	const Event* poll()
-	{
-		glfwPollEvents();
-
-		if (glfwWindowShouldClose(s_ctx.m_window) )
-		{
-			s_ctx.m_eventQueue.postExitEvent();
-		}
-=======
 		BX_UNUSED(_scancode);
 		if (_key == GLFW_KEY_UNKNOWN)
 		{
@@ -795,16 +727,12 @@ namespace entry
 	const Event* poll()
 	{
 		glfwPostEmptyEvent();
->>>>>>> upstream/master
 		return s_ctx.m_eventQueue.poll();
 	}
 
 	const Event* poll(WindowHandle _handle)
 	{
-<<<<<<< HEAD
-=======
 		glfwPostEmptyEvent();
->>>>>>> upstream/master
 		return s_ctx.m_eventQueue.poll(_handle);
 	}
 
@@ -815,11 +743,6 @@ namespace entry
 
 	WindowHandle createWindow(int32_t _x, int32_t _y, uint32_t _width, uint32_t _height, uint32_t _flags, const char* _title)
 	{
-<<<<<<< HEAD
-		BX_UNUSED(_x, _y, _width, _height, _flags, _title);
-		WindowHandle handle = { UINT16_MAX };
-		return handle;
-=======
 		Msg* msg = new Msg(GLFW_WINDOW_CREATE);
 		msg->m_x = _x;
 		msg->m_y = _y;
@@ -831,91 +754,63 @@ namespace entry
 		s_ctx.m_msgs.push(msg);
 		glfwPostEmptyEvent();
 		return msg->m_handle;
->>>>>>> upstream/master
 	}
 
 	void destroyWindow(WindowHandle _handle)
 	{
-<<<<<<< HEAD
-		BX_UNUSED(_handle);
-=======
 		Msg* msg = new Msg(GLFW_WINDOW_DESTROY);
 		msg->m_handle = _handle;
 		s_ctx.m_msgs.push(msg);
 		glfwPostEmptyEvent();
->>>>>>> upstream/master
 	}
 
 	void setWindowPos(WindowHandle _handle, int32_t _x, int32_t _y)
 	{
-<<<<<<< HEAD
-		BX_UNUSED(_handle, _x, _y);
-=======
 		Msg* msg = new Msg(GLFW_WINDOW_SET_POS);
 		msg->m_x = _x;
 		msg->m_y = _y;
 		msg->m_handle = _handle;
 		s_ctx.m_msgs.push(msg);
 		glfwPostEmptyEvent();
->>>>>>> upstream/master
 	}
 
 	void setWindowSize(WindowHandle _handle, uint32_t _width, uint32_t _height)
 	{
-<<<<<<< HEAD
-		BX_UNUSED(_handle, _width, _height);
-=======
 		Msg* msg = new Msg(GLFW_WINDOW_SET_SIZE);
 		msg->m_width = _width;
 		msg->m_height = _height;
 		msg->m_handle = _handle;
 		s_ctx.m_msgs.push(msg);
 		glfwPostEmptyEvent();
->>>>>>> upstream/master
 	}
 
 	void setWindowTitle(WindowHandle _handle, const char* _title)
 	{
-<<<<<<< HEAD
-		BX_UNUSED(_handle, _title);
-=======
 		Msg* msg = new Msg(GLFW_WINDOW_SET_TITLE);
 		msg->m_title = _title;
 		msg->m_handle = _handle;
 		s_ctx.m_msgs.push(msg);
 		glfwPostEmptyEvent();
->>>>>>> upstream/master
 	}
 
 	void toggleWindowFrame(WindowHandle _handle)
 	{
-<<<<<<< HEAD
-		BX_UNUSED(_handle);
-=======
 		Msg* msg = new Msg(GLFW_WINDOW_TOGGLE_FRAME);
 		msg->m_handle = _handle;
 		s_ctx.m_msgs.push(msg);
 		glfwPostEmptyEvent();
->>>>>>> upstream/master
 	}
 
 	void toggleFullscreen(WindowHandle _handle)
 	{
-<<<<<<< HEAD
-		BX_UNUSED(_handle);
-=======
 		Msg* msg = new Msg(GLFW_WINDOW_TOGGLE_FULL_SCREEN);
 		msg->m_handle = _handle;
 		s_ctx.m_msgs.push(msg);
 		glfwPostEmptyEvent();
->>>>>>> upstream/master
 	}
 
 	void setMouseLock(WindowHandle _handle, bool _lock)
 	{
-<<<<<<< HEAD
-		BX_UNUSED(_handle, _lock);
-=======
 		Msg* msg = new Msg(GLFW_WINDOW_MOUSE_LOCK);
 		msg->m_value = _lock;
 		msg->m_handle = _handle;
@@ -935,7 +830,6 @@ namespace entry
 		glfwPostEmptyEvent();
 
 		return result;
->>>>>>> upstream/master
 	}
 }
 

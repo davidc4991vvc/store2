@@ -6,10 +6,6 @@
 
 **********************************************************************/
 
-<<<<<<< HEAD
-#include "nes_carts.h"
-
-=======
 #include "emu.h"
 #include "nes_carts.h"
 
@@ -68,7 +64,6 @@
 #include "mmc3_clones.h"
 
 
->>>>>>> upstream/master
 SLOT_INTERFACE_START(nes_cart)
 // HROM, NROM, RROM, SROM & STROM
 	SLOT_INTERFACE_INTERNAL("nrom",             NES_NROM)
@@ -260,11 +255,8 @@ SLOT_INTERFACE_START(nes_cart)
 	SLOT_INTERFACE_INTERNAL("ks7012",           NES_KS7012)  // used in Zanac (FDS Conversion)
 	SLOT_INTERFACE_INTERNAL("ks7013b",          NES_KS7013B) // used in Highway Star (FDS Conversion)
 	SLOT_INTERFACE_INTERNAL("ks7031",           NES_KS7031) //  used in Dracula II (FDS Conversion)
-<<<<<<< HEAD
-=======
 	SLOT_INTERFACE_INTERNAL("ks7016",           NES_KS7016) //  used in Exciting Basket (FDS Conversion)
 	SLOT_INTERFACE_INTERNAL("ks7037",           NES_KS7037) //  used in Metroid (FDS Conversion)
->>>>>>> upstream/master
 	SLOT_INTERFACE_INTERNAL("gs2015",           NES_GS2015)
 	SLOT_INTERFACE_INTERNAL("gs2004",           NES_GS2004)
 	SLOT_INTERFACE_INTERNAL("gs2013",           NES_GS2013)
@@ -279,10 +271,7 @@ SLOT_INTERFACE_START(nes_cart)
 	SLOT_INTERFACE_INTERNAL("daou_306",         NES_DAOU306)
 	SLOT_INTERFACE_INTERNAL("subor0",           NES_SUBOR0)
 	SLOT_INTERFACE_INTERNAL("subor1",           NES_SUBOR1)
-<<<<<<< HEAD
-=======
 	SLOT_INTERFACE_INTERNAL("subor2",           NES_SUBOR2)
->>>>>>> upstream/master
 	SLOT_INTERFACE_INTERNAL("cc21",             NES_CC21)
 	SLOT_INTERFACE_INTERNAL("xiaozy",           NES_XIAOZY)
 	SLOT_INTERFACE_INTERNAL("edu2k",            NES_EDU2K)
@@ -292,10 +281,7 @@ SLOT_INTERFACE_START(nes_cart)
 	SLOT_INTERFACE_INTERNAL("unl_43272",        NES_43272)    // used in Gaau Hok Gwong Cheung
 	SLOT_INTERFACE_INTERNAL("tf1201",           NES_TF1201)
 	SLOT_INTERFACE_INTERNAL("unl_cfight",       NES_CITYFIGHT) //  used by City Fighter IV
-<<<<<<< HEAD
-=======
 	SLOT_INTERFACE_INTERNAL("zemina",           NES_ZEMINA)    // mapper 190 - Magic Kid GooGoo
->>>>>>> upstream/master
 // misc bootleg boards
 	SLOT_INTERFACE_INTERNAL("ax5705",           NES_AX5705)
 	SLOT_INTERFACE_INTERNAL("sc127",            NES_SC127)
@@ -317,10 +303,7 @@ SLOT_INTERFACE_START(nes_cart)
 	SLOT_INTERFACE_INTERNAL("unl_ac08",         NES_AC08) //  used by Green Beret FDS conversion
 	SLOT_INTERFACE_INTERNAL("unl_bb",           NES_UNL_BB) //  used by a few FDS conversions
 	SLOT_INTERFACE_INTERNAL("sgpipe",           NES_SHUIGUAN)    // mapper 183
-<<<<<<< HEAD
-=======
 	SLOT_INTERFACE_INTERNAL("rt01",             NES_RT01)
->>>>>>> upstream/master
 // misc MMC3 clone boards
 	SLOT_INTERFACE_INTERNAL("dbz5",             NES_REX_DBZ5)
 	SLOT_INTERFACE_INTERNAL("sl1632",           NES_REX_SL1632)
@@ -419,10 +402,6 @@ SLOT_INTERFACE_START(nes_cart)
 	SLOT_INTERFACE_INTERNAL("ninjaryu",         NES_NROM)    // mapper 111 - UNSUPPORTED
 	SLOT_INTERFACE_INTERNAL("unl_dance",        NES_NROM)    // UNSUPPORTED
 	SLOT_INTERFACE_INTERNAL("onebus",           NES_NROM)    // UNSUPPORTED
-<<<<<<< HEAD
-	SLOT_INTERFACE_INTERNAL("dance2k",          NES_NROM)    // UNSUPPORTED
-	SLOT_INTERFACE_INTERNAL("pec586",           NES_NROM)    // UNSUPPORTED
-=======
 	SLOT_INTERFACE_INTERNAL("pec586",           NES_NROM)    // UNSUPPORTED
 	SLOT_INTERFACE_INTERNAL("coolboy",          NES_NROM)    // UNSUPPORTED
 	SLOT_INTERFACE_INTERNAL("bmc_f15",          NES_NROM)    // UNSUPPORTED
@@ -431,7 +410,6 @@ SLOT_INTERFACE_START(nes_cart)
 	SLOT_INTERFACE_INTERNAL("unl_eh8813a",      NES_NROM)    // UNSUPPORTED
 	SLOT_INTERFACE_INTERNAL("unl_158b",         NES_NROM)    // UNSUPPORTED
 	SLOT_INTERFACE_INTERNAL("unl_drgnfgt",      NES_NROM)    // UNSUPPORTED
->>>>>>> upstream/master
 // are there dumps of games with these boards?
 	SLOT_INTERFACE_INTERNAL("bmc_hik_kof",      NES_NROM) // mapper 251 - UNSUPPORTED
 	SLOT_INTERFACE_INTERNAL("bmc_13in1jy110",   NES_NROM) //  [mentioned in FCEUMM source - we need more info] - UNSUPPORTED

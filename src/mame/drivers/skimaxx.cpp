@@ -40,11 +40,8 @@
 #include "cpu/m68000/m68000.h"
 #include "cpu/tms34010/tms34010.h"
 #include "sound/okim6295.h"
-<<<<<<< HEAD
-=======
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 class skimaxx_state : public driver_device
@@ -63,21 +60,6 @@ public:
 	required_device<cpu_device> m_subcpu;
 	required_device<tms34010_device> m_tms;
 
-<<<<<<< HEAD
-	required_shared_ptr<UINT32> m_blitter_regs;
-	required_shared_ptr<UINT32> m_fpga_ctrl;
-	required_shared_ptr<UINT16> m_fg_buffer;
-
-	UINT32 *m_bg_buffer;
-	UINT32 *m_bg_buffer_front;
-	UINT32 *m_bg_buffer_back;
-	UINT16 *m_blitter_gfx;
-	UINT32 m_blitter_gfx_len;
-	UINT32 m_blitter_src_x;
-	UINT32 m_blitter_src_dx;
-	UINT32 m_blitter_src_y;
-	UINT32 m_blitter_src_dy;
-=======
 	required_shared_ptr<uint32_t> m_blitter_regs;
 	required_shared_ptr<uint32_t> m_fpga_ctrl;
 	required_shared_ptr<uint16_t> m_fg_buffer;
@@ -91,7 +73,6 @@ public:
 	uint32_t m_blitter_src_dx;
 	uint32_t m_blitter_src_y;
 	uint32_t m_blitter_src_dy;
->>>>>>> upstream/master
 
 	DECLARE_WRITE32_MEMBER(skimaxx_blitter_w);
 	DECLARE_READ32_MEMBER(skimaxx_blitter_r);
@@ -107,13 +88,8 @@ public:
 	TMS340X0_FROM_SHIFTREG_CB_MEMBER(from_shiftreg);
 	TMS340X0_SCANLINE_IND16_CB_MEMBER(scanline_update);
 
-<<<<<<< HEAD
-	virtual void machine_reset();
-	virtual void video_start();
-=======
 	virtual void machine_reset() override;
 	virtual void video_start() override;
->>>>>>> upstream/master
 };
 
 
@@ -126,11 +102,7 @@ public:
 // Set up blit parameters
 WRITE32_MEMBER(skimaxx_state::skimaxx_blitter_w)
 {
-<<<<<<< HEAD
-	UINT32 newdata = COMBINE_DATA( &m_blitter_regs[offset] );
-=======
 	uint32_t newdata = COMBINE_DATA( &m_blitter_regs[offset] );
->>>>>>> upstream/master
 
 	switch (offset)
 	{
@@ -161,19 +133,11 @@ WRITE32_MEMBER(skimaxx_state::skimaxx_blitter_w)
 // A read by the 68030 from this area blits one pixel to the back buffer (at the same offset)
 READ32_MEMBER(skimaxx_state::skimaxx_blitter_r)
 {
-<<<<<<< HEAD
-	UINT32 penaddr = ((m_blitter_src_x >> 8) & 0x1ff) + ((m_blitter_src_y >> 8) << 9);
-	UINT16 *src = m_blitter_gfx + (penaddr % m_blitter_gfx_len);
-	UINT32 *dst = m_bg_buffer_back + offset;
-
-	UINT16 pen = (*src) & 0x7fff;
-=======
 	uint32_t penaddr = ((m_blitter_src_x >> 8) & 0x1ff) + ((m_blitter_src_y >> 8) << 9);
 	uint16_t *src = m_blitter_gfx + (penaddr % m_blitter_gfx_len);
 	uint32_t *dst = m_bg_buffer_back + offset;
 
 	uint16_t pen = (*src) & 0x7fff;
->>>>>>> upstream/master
 
 	if (pen)
 	{
@@ -192,21 +156,12 @@ READ32_MEMBER(skimaxx_state::skimaxx_blitter_r)
 
 void skimaxx_state::video_start()
 {
-<<<<<<< HEAD
-	m_blitter_gfx = (UINT16 *) memregion( "blitter" )->base();
-	m_blitter_gfx_len = memregion( "blitter" )->bytes() / 2;
-
-	m_bg_buffer = auto_alloc_array(machine(), UINT32, 0x400 * 0x100 * sizeof(UINT16) / sizeof(UINT32) * 2); // 2 buffers
-	m_bg_buffer_back  = m_bg_buffer + 0x400 * 0x100 * sizeof(UINT16) / sizeof(UINT32) * 0;
-	m_bg_buffer_front = m_bg_buffer + 0x400 * 0x100 * sizeof(UINT16) / sizeof(UINT32) * 1;
-=======
 	m_blitter_gfx = (uint16_t *) memregion( "blitter" )->base();
 	m_blitter_gfx_len = memregion( "blitter" )->bytes() / 2;
 
 	m_bg_buffer = std::make_unique<uint32_t[]>(0x400 * 0x100 * sizeof(uint16_t) / sizeof(uint32_t) * 2); // 2 buffers
 	m_bg_buffer_back  = m_bg_buffer.get() + 0x400 * 0x100 * sizeof(uint16_t) / sizeof(uint32_t) * 0;
 	m_bg_buffer_front = m_bg_buffer.get() + 0x400 * 0x100 * sizeof(uint16_t) / sizeof(uint32_t) * 1;
->>>>>>> upstream/master
 	membank("bank1")->configure_entry(0, m_bg_buffer_back);
 	membank("bank1")->configure_entry(1, m_bg_buffer_front);
 }
@@ -220,20 +175,12 @@ void skimaxx_state::video_start()
 // TODO: Might not be used
 TMS340X0_TO_SHIFTREG_CB_MEMBER(skimaxx_state::to_shiftreg)
 {
-<<<<<<< HEAD
-	memcpy(shiftreg, &m_fg_buffer[TOWORD(address)], 512 * sizeof(UINT16));
-=======
 	memcpy(shiftreg, &m_fg_buffer[TOWORD(address)], 512 * sizeof(uint16_t));
->>>>>>> upstream/master
 }
 
 TMS340X0_FROM_SHIFTREG_CB_MEMBER(skimaxx_state::from_shiftreg)
 {
-<<<<<<< HEAD
-	memcpy(&m_fg_buffer[TOWORD(address)], shiftreg, 512 * sizeof(UINT16));
-=======
 	memcpy(&m_fg_buffer[TOWORD(address)], shiftreg, 512 * sizeof(uint16_t));
->>>>>>> upstream/master
 }
 
 
@@ -249,17 +196,10 @@ TMS340X0_SCANLINE_IND16_CB_MEMBER(skimaxx_state::scanline_update)
 
 	if (params->rowaddr >= 0x220)
 	{
-<<<<<<< HEAD
-		UINT32 rowaddr = (params->rowaddr - 0x220);
-		UINT16 *fg = &m_fg_buffer[rowaddr << 8];
-		UINT32 *bg = &m_bg_buffer_front[rowaddr/2 * 1024/2];
-		UINT16 *dest = &bitmap.pix16(scanline);
-=======
 		uint32_t rowaddr = (params->rowaddr - 0x220);
 		uint16_t *fg = &m_fg_buffer[rowaddr << 8];
 		uint32_t *bg = &m_bg_buffer_front[rowaddr/2 * 1024/2];
 		uint16_t *dest = &bitmap.pix16(scanline);
->>>>>>> upstream/master
 		//int coladdr = params->coladdr;
 		int x;
 		//coladdr = 0;
@@ -267,11 +207,7 @@ TMS340X0_SCANLINE_IND16_CB_MEMBER(skimaxx_state::scanline_update)
 		dest += params->heblnk;
 		for (x = params->heblnk; x < params->hsblnk; x+=2)
 		{
-<<<<<<< HEAD
-			UINT16 tmspix;
-=======
 			uint16_t tmspix;
->>>>>>> upstream/master
 			tmspix = *fg & 0x7fff;
 			if (tmspix)
 			{
@@ -280,11 +216,7 @@ TMS340X0_SCANLINE_IND16_CB_MEMBER(skimaxx_state::scanline_update)
 			}
 			else
 			{
-<<<<<<< HEAD
-				UINT32 data = *bg & 0x7fff7fff;
-=======
 				uint32_t data = *bg & 0x7fff7fff;
->>>>>>> upstream/master
 				*dest++ = data >> 16;
 				*dest++ = data;
 			}
@@ -313,26 +245,15 @@ TMS340X0_SCANLINE_IND16_CB_MEMBER(skimaxx_state::scanline_update)
 
 WRITE32_MEMBER(skimaxx_state::skimaxx_fpga_ctrl_w)
 {
-<<<<<<< HEAD
-	UINT32 newdata = COMBINE_DATA( m_fpga_ctrl );
-=======
 	uint32_t newdata = COMBINE_DATA( m_fpga_ctrl );
->>>>>>> upstream/master
 
 	if (ACCESSING_BITS_0_7)
 	{
 		// double buffering
-<<<<<<< HEAD
-		UINT8 bank_bg_buffer = (newdata & 0x40) ? 1 : 0;
-
-		m_bg_buffer_back  = m_bg_buffer + 0x400 * 0x100 * sizeof(UINT16) / sizeof(UINT32) * bank_bg_buffer;
-		m_bg_buffer_front = m_bg_buffer + 0x400 * 0x100 * sizeof(UINT16) / sizeof(UINT32) * (1 - bank_bg_buffer);
-=======
 		uint8_t bank_bg_buffer = (newdata & 0x40) ? 1 : 0;
 
 		m_bg_buffer_back  = m_bg_buffer.get() + 0x400 * 0x100 * sizeof(uint16_t) / sizeof(uint32_t) * bank_bg_buffer;
 		m_bg_buffer_front = m_bg_buffer.get() + 0x400 * 0x100 * sizeof(uint16_t) / sizeof(uint32_t) * (1 - bank_bg_buffer);
->>>>>>> upstream/master
 
 		membank("bank1")->set_entry(bank_bg_buffer);
 	}
@@ -407,11 +328,7 @@ static ADDRESS_MAP_START( 68030_1_map, AS_PROGRAM, 32, skimaxx_state )
 
 	AM_RANGE(0x20000050, 0x20000057) AM_READ(skimaxx_analog_r ) AM_WRITENOP // read (0-1f), write motor?
 
-<<<<<<< HEAD
-	AM_RANGE(0xfffc0000, 0xffffffff) AM_RAM AM_MIRROR(0x00020000)
-=======
 	AM_RANGE(0xfffc0000, 0xfffdffff) AM_RAM AM_MIRROR(0x00020000)
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -466,20 +383,12 @@ ADDRESS_MAP_END
 
 #if 0
 
-<<<<<<< HEAD
-static const UINT32 texlayout_xoffset[512] =
-=======
 static const uint32_t texlayout_xoffset[512] =
->>>>>>> upstream/master
 {
 	STEP512(0,16)
 };
 
-<<<<<<< HEAD
-static const UINT32 texlayout_yoffset[128] =
-=======
 static const uint32_t texlayout_yoffset[128] =
->>>>>>> upstream/master
 {
 	STEP128(0,512*16)
 };
@@ -584,11 +493,7 @@ void skimaxx_state::machine_reset()
  *
  *************************************/
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( skimaxx, skimaxx_state )
-=======
 static MACHINE_CONFIG_START( skimaxx )
->>>>>>> upstream/master
 	MCFG_CPU_ADD("maincpu", M68EC030, XTAL_40MHz)
 	MCFG_CPU_PROGRAM_MAP(68030_1_map)
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", skimaxx_state,  irq3_line_hold)    // 1,3,7 are identical, rest is RTE
@@ -600,11 +505,7 @@ static MACHINE_CONFIG_START( skimaxx )
 	/* video hardware */
 	MCFG_CPU_ADD("tms", TMS34010, XTAL_50MHz)
 	MCFG_CPU_PROGRAM_MAP(tms_program_map)
-<<<<<<< HEAD
-	MCFG_TMS340X0_HALT_ON_RESET(FALSE) /* halt on reset */
-=======
 	MCFG_TMS340X0_HALT_ON_RESET(false) /* halt on reset */
->>>>>>> upstream/master
 	MCFG_TMS340X0_PIXEL_CLOCK(50000000/8) /* pixel clock */
 	MCFG_TMS340X0_PIXELS_PER_CLOCK(2) /* pixels per clock */
 	MCFG_TMS340X0_SCANLINE_IND16_CB(skimaxx_state, scanline_update)     /* scanline updater (indexed16) */
@@ -628,18 +529,6 @@ static MACHINE_CONFIG_START( skimaxx )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki1", XTAL_4MHz, OKIM6295_PIN7_LOW)     // ?
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 1.0)
-
-	MCFG_OKIM6295_ADD("oki2", XTAL_4MHz/2, OKIM6295_PIN7_HIGH)  // ?
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 1.0)
-
-	MCFG_OKIM6295_ADD("oki3", XTAL_4MHz, OKIM6295_PIN7_LOW)     // ?
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 1.0)
-
-	MCFG_OKIM6295_ADD("oki4", XTAL_4MHz/2, OKIM6295_PIN7_HIGH)  // ?
-=======
 	MCFG_OKIM6295_ADD("oki1", XTAL_4MHz, PIN7_LOW)     // ?
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 1.0)
 
@@ -650,7 +539,6 @@ static MACHINE_CONFIG_START( skimaxx )
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 1.0)
 
 	MCFG_OKIM6295_ADD("oki4", XTAL_4MHz/2, PIN7_HIGH)  // ?
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 1.0)
 MACHINE_CONFIG_END
 
@@ -710,8 +598,4 @@ ROM_END
  *
  *************************************/
 
-<<<<<<< HEAD
-GAME( 1996, skimaxx, 0, skimaxx, skimaxx, driver_device, 0, ROT0, "Kyle Hodgetts / ICE", "Skimaxx", MACHINE_IMPERFECT_GRAPHICS )
-=======
 GAME( 1996, skimaxx, 0, skimaxx, skimaxx, skimaxx_state, 0, ROT0, "Kyle Hodgetts / ICE", "Skimaxx", MACHINE_IMPERFECT_GRAPHICS )
->>>>>>> upstream/master

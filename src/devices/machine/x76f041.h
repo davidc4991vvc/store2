@@ -7,20 +7,11 @@
  *
  */
 
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __X76F041_H__
-#define __X76F041_H__
-
-#include "emu.h"
-=======
 #ifndef MAME_MACHINE_X76F041_H
 #define MAME_MACHINE_X76F041_H
 
 #pragma once
 
->>>>>>> upstream/master
 
 #define MCFG_X76F041_ADD( _tag ) \
 	MCFG_DEVICE_ADD( _tag, X76F041, 0 )
@@ -30,11 +21,7 @@ class x76f041_device : public device_t,
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	x76f041_device( const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock );
-=======
 	x76f041_device( const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock );
->>>>>>> upstream/master
 
 	DECLARE_WRITE_LINE_MEMBER( write_cs );
 	DECLARE_WRITE_LINE_MEMBER( write_rst );
@@ -44,18 +31,6 @@ public:
 
 protected:
 	// device-level overrides
-<<<<<<< HEAD
-	virtual void device_start();
-
-	// device_nvram_interface overrides
-	virtual void nvram_default();
-	virtual void nvram_read( emu_file &file );
-	virtual void nvram_write( emu_file &file );
-
-private:
-	inline void ATTR_PRINTF( 3, 4 ) verboselog( int n_level, const char *s_fmt, ... );
-	UINT8 *password();
-=======
 	virtual void device_start() override;
 
 	// device_nvram_interface overrides
@@ -66,7 +41,6 @@ private:
 private:
 	inline void ATTR_PRINTF( 3, 4 ) verboselog( int n_level, const char *s_fmt, ... );
 	uint8_t *password();
->>>>>>> upstream/master
 	void password_ok();
 	void load_address();
 	int data_offset();
@@ -124,11 +98,8 @@ private:
 		STATE_WRITE_CONFIGURATION_REGISTERS
 	};
 
-<<<<<<< HEAD
-=======
 	optional_memory_region m_region;
 
->>>>>>> upstream/master
 	// internal state
 	int m_cs;
 	int m_rst;
@@ -141,15 +112,6 @@ private:
 	int m_byte;
 	int m_command;
 	int m_address;
-<<<<<<< HEAD
-	UINT8 m_write_buffer[ 8 ];
-	UINT8 m_response_to_reset[ 4 ];
-	UINT8 m_write_password[ 8 ];
-	UINT8 m_read_password[ 8 ];
-	UINT8 m_configuration_password[ 8 ];
-	UINT8 m_configuration_registers[ 8 ];
-	UINT8 m_data[ 512 ];
-=======
 	uint8_t m_write_buffer[ 8 ];
 	uint8_t m_response_to_reset[ 4 ];
 	uint8_t m_write_password[ 8 ];
@@ -157,17 +119,10 @@ private:
 	uint8_t m_configuration_password[ 8 ];
 	uint8_t m_configuration_registers[ 8 ];
 	uint8_t m_data[ 512 ];
->>>>>>> upstream/master
 };
 
 
 // device type definition
-<<<<<<< HEAD
-extern const device_type X76F041;
-
-#endif
-=======
 DECLARE_DEVICE_TYPE(X76F041, x76f041_device)
 
 #endif // MAME_MACHINE_X76F041_H
->>>>>>> upstream/master

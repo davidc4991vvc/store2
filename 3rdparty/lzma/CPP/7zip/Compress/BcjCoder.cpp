@@ -4,17 +4,6 @@
 
 #include "BcjCoder.h"
 
-<<<<<<< HEAD
-UInt32 CBCJ_x86_Encoder::SubFilter(Byte *data, UInt32 size)
-{
-  return (UInt32)::x86_Convert(data, size, _bufferPos, &_prevMask, 1);
-}
-
-UInt32 CBCJ_x86_Decoder::SubFilter(Byte *data, UInt32 size)
-{
-  return (UInt32)::x86_Convert(data, size, _bufferPos, &_prevMask, 0);
-}
-=======
 namespace NCompress {
 namespace NBcj {
 
@@ -33,4 +22,3 @@ STDMETHODIMP_(UInt32) CCoder::Filter(Byte *data, UInt32 size)
 }
 
 }}
->>>>>>> upstream/master

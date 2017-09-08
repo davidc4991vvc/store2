@@ -43,17 +43,12 @@ Note: this is quite clearly a 'Korean bootleg' of Shisensho - Joshiryo-Hen / Mat
 
 #include "emu.h"
 #include "cpu/z80/z80.h"
-<<<<<<< HEAD
-#include "sound/okim6295.h"
-#include "sound/3812intf.h"
-=======
 #include "machine/gen_latch.h"
 #include "machine/watchdog.h"
 #include "sound/3812intf.h"
 #include "sound/okim6295.h"
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 #define MASTER_CLOCK        XTAL_4MHz
 
@@ -67,15 +62,6 @@ public:
 		m_fgram(*this, "fgram"),
 		m_maincpu(*this, "maincpu"),
 		m_audiocpu(*this, "audiocpu"),
-<<<<<<< HEAD
-		m_gfxdecode(*this, "gfxdecode"),
-		m_palette(*this, "palette")  { }
-
-	/* memory pointers */
-	required_shared_ptr<UINT8> m_paletteram;
-	required_shared_ptr<UINT8> m_paletteram2;
-	required_shared_ptr<UINT8> m_fgram;
-=======
 		m_watchdog(*this, "watchdog"),
 		m_gfxdecode(*this, "gfxdecode"),
 		m_palette(*this, "palette"),
@@ -85,7 +71,6 @@ public:
 	required_shared_ptr<uint8_t> m_paletteram;
 	required_shared_ptr<uint8_t> m_paletteram2;
 	required_shared_ptr<uint8_t> m_fgram;
->>>>>>> upstream/master
 
 	/* video-related */
 	tilemap_t *m_fg_tilemap;
@@ -93,35 +78,20 @@ public:
 	/* devices */
 	required_device<cpu_device> m_maincpu;
 	required_device<cpu_device> m_audiocpu;
-<<<<<<< HEAD
-	required_device<gfxdecode_device> m_gfxdecode;
-	required_device<palette_device> m_palette;
-=======
 	required_device<watchdog_timer_device> m_watchdog;
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
 	required_device<generic_latch_8_device> m_soundlatch;
->>>>>>> upstream/master
 
 	DECLARE_WRITE8_MEMBER(onetwo_fgram_w);
 	DECLARE_WRITE8_MEMBER(onetwo_cpubank_w);
 	DECLARE_WRITE8_MEMBER(onetwo_coin_counters_w);
-<<<<<<< HEAD
-	DECLARE_WRITE8_MEMBER(onetwo_soundlatch_w);
-	DECLARE_WRITE8_MEMBER(palette1_w);
-	DECLARE_WRITE8_MEMBER(palette2_w);
-	TILE_GET_INFO_MEMBER(get_fg_tile_info);
-	virtual void machine_start();
-	virtual void video_start();
-	UINT32 screen_update_onetwo(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	DECLARE_WRITE8_MEMBER(palette1_w);
 	DECLARE_WRITE8_MEMBER(palette2_w);
 	TILE_GET_INFO_MEMBER(get_fg_tile_info);
 	virtual void machine_start() override;
 	virtual void video_start() override;
 	uint32_t screen_update_onetwo(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	void set_color(int offset);
 };
 
@@ -145,17 +115,10 @@ TILE_GET_INFO_MEMBER(onetwo_state::get_fg_tile_info)
 
 void onetwo_state::video_start()
 {
-<<<<<<< HEAD
-	m_fg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(onetwo_state::get_fg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 64, 32);
-}
-
-UINT32 onetwo_state::screen_update_onetwo(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 	m_fg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(onetwo_state::get_fg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 64, 32);
 }
 
 uint32_t onetwo_state::screen_update_onetwo(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	m_fg_tilemap->draw(screen, bitmap, cliprect, 0, 0);
 	return 0;
@@ -180,21 +143,9 @@ WRITE8_MEMBER(onetwo_state::onetwo_cpubank_w)
 
 WRITE8_MEMBER(onetwo_state::onetwo_coin_counters_w)
 {
-<<<<<<< HEAD
-	machine().watchdog_reset();
-	coin_counter_w(machine(), 0, BIT(data, 1));
-	coin_counter_w(machine(), 1, BIT(data, 2));
-}
-
-WRITE8_MEMBER(onetwo_state::onetwo_soundlatch_w)
-{
-	soundlatch_byte_w(space, 0, data);
-	m_audiocpu->set_input_line(INPUT_LINE_NMI, PULSE_LINE);
-=======
 	m_watchdog->watchdog_reset();
 	machine().bookkeeping().coin_counter_w(0, BIT(data, 1));
 	machine().bookkeeping().coin_counter_w(1, BIT(data, 2));
->>>>>>> upstream/master
 }
 
 void onetwo_state::set_color(int offset)
@@ -237,11 +188,7 @@ ADDRESS_MAP_END
 static ADDRESS_MAP_START( main_cpu_io, AS_IO, 8, onetwo_state )
 	ADDRESS_MAP_GLOBAL_MASK(0xff)
 	AM_RANGE(0x00, 0x00) AM_READ_PORT("DSW1") AM_WRITE(onetwo_coin_counters_w)
-<<<<<<< HEAD
-	AM_RANGE(0x01, 0x01) AM_READ_PORT("DSW2") AM_WRITE(onetwo_soundlatch_w)
-=======
 	AM_RANGE(0x01, 0x01) AM_READ_PORT("DSW2") AM_DEVWRITE("soundlatch", generic_latch_8_device, write)
->>>>>>> upstream/master
 	AM_RANGE(0x02, 0x02) AM_READ_PORT("P1") AM_WRITE(onetwo_cpubank_w)
 	AM_RANGE(0x03, 0x03) AM_READ_PORT("P2")
 	AM_RANGE(0x04, 0x04) AM_READ_PORT("SYSTEM")
@@ -250,11 +197,7 @@ ADDRESS_MAP_END
 static ADDRESS_MAP_START( sound_cpu, AS_PROGRAM, 8, onetwo_state )
 	AM_RANGE(0x0000, 0x5fff) AM_ROM
 	AM_RANGE(0xf000, 0xf7ff) AM_RAM
-<<<<<<< HEAD
-	AM_RANGE(0xf800, 0xf800) AM_READ(soundlatch_byte_r)
-=======
 	AM_RANGE(0xf800, 0xf800) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( sound_cpu_io, AS_IO, 8, onetwo_state )
@@ -262,11 +205,7 @@ static ADDRESS_MAP_START( sound_cpu_io, AS_IO, 8, onetwo_state )
 	AM_RANGE(0x00, 0x00) AM_DEVREADWRITE("ymsnd", ym3812_device, status_port_r, control_port_w)
 	AM_RANGE(0x20, 0x20) AM_DEVWRITE("ymsnd", ym3812_device, write_port_w)
 	AM_RANGE(0x40, 0x40) AM_DEVREADWRITE("oki", okim6295_device, read, write)
-<<<<<<< HEAD
-	AM_RANGE(0xc0, 0xc0) AM_WRITE(soundlatch_clear_byte_w)
-=======
 	AM_RANGE(0xc0, 0xc0) AM_DEVWRITE("soundlatch", generic_latch_8_device, acknowledge_w)
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 /*************************************
@@ -403,21 +342,13 @@ GFXDECODE_END
 
 void onetwo_state::machine_start()
 {
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("maincpu")->base();
-=======
 	uint8_t *ROM = memregion("maincpu")->base();
->>>>>>> upstream/master
 
 	membank("bank1")->configure_entries(0, 8, &ROM[0x10000], 0x4000);
 
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( onetwo, onetwo_state )
-=======
 static MACHINE_CONFIG_START( onetwo )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80,MASTER_CLOCK)   /* 4 MHz */
@@ -429,10 +360,7 @@ static MACHINE_CONFIG_START( onetwo )
 	MCFG_CPU_PROGRAM_MAP(sound_cpu)
 	MCFG_CPU_IO_MAP(sound_cpu_io)
 
-<<<<<<< HEAD
-=======
 	MCFG_WATCHDOG_ADD("watchdog")
->>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
@@ -450,22 +378,15 @@ static MACHINE_CONFIG_START( onetwo )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 	MCFG_GENERIC_LATCH_DATA_PENDING_CB(INPUTLINE("audiocpu", INPUT_LINE_NMI))
 	MCFG_GENERIC_LATCH_SEPARATE_ACKNOWLEDGE(true)
 
->>>>>>> upstream/master
 	MCFG_SOUND_ADD("ymsnd", YM3812, MASTER_CLOCK)
 	MCFG_YM3812_IRQ_HANDLER(INPUTLINE("audiocpu", 0))
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki", 1056000*2, OKIM6295_PIN7_LOW) // clock frequency & pin 7 not verified
-=======
 	MCFG_OKIM6295_ADD("oki", 1056000*2, PIN7_LOW) // clock frequency & pin 7 not verified
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
 
@@ -513,10 +434,5 @@ ROM_END
  *
  *************************************/
 
-<<<<<<< HEAD
-GAME( 1997, onetwo,       0, onetwo, onetwo, driver_device, 0, ROT0, "Barko", "One + Two", MACHINE_SUPPORTS_SAVE )
-GAME( 1997, onetwoe, onetwo, onetwo, onetwo, driver_device, 0, ROT0, "Barko", "One + Two (earlier)", MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1997, onetwo,       0, onetwo, onetwo, onetwo_state, 0, ROT0, "Barko", "One + Two", MACHINE_SUPPORTS_SAVE )
 GAME( 1997, onetwoe, onetwo, onetwo, onetwo, onetwo_state, 0, ROT0, "Barko", "One + Two (earlier)", MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

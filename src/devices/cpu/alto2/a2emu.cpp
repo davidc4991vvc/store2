@@ -5,10 +5,7 @@
  *   Xerox AltoII emulator task
  *
  *****************************************************************************/
-<<<<<<< HEAD
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #include "alto2cpu.h"
 
 /** @brief CTL2K_U3 address line for F2 function */
@@ -251,11 +248,7 @@
  */
 void alto2_cpu_device::bs_early_emu_disp()
 {
-<<<<<<< HEAD
-	UINT16 r = IR_DISP(m_emu.ir);
-=======
 	uint16_t r = IR_DISP(m_emu.ir);
->>>>>>> upstream/master
 	if (IR_X(m_emu.ir)) {
 		r = ((signed char)r) & 0177777;
 	}
@@ -312,11 +305,7 @@ void alto2_cpu_device::f1_late_emu_load_esrb()
  */
 void alto2_cpu_device::f1_early_rsnf()
 {
-<<<<<<< HEAD
-	UINT16 r = 0177400 | m_ether_id;
-=======
 	uint16_t r = 0177400 | m_ether_id;
->>>>>>> upstream/master
 	LOG((this,LOG_EMU,2,"    <-RSNF; (%#o)\n", r));
 	m_bus &= r;
 }
@@ -366,11 +355,7 @@ void alto2_cpu_device::f1_early_startf()
  */
 void alto2_cpu_device::f2_late_busodd()
 {
-<<<<<<< HEAD
-	UINT16 r = m_bus & 1;
-=======
 	uint16_t r = m_bus & 1;
->>>>>>> upstream/master
 	LOG((this,LOG_EMU,2,"    BUSODD; %sbranch (%#o|%#o)\n", r ? "" : "no ", m_next2, r));
 	m_next2 |= r;
 }
@@ -381,11 +366,7 @@ void alto2_cpu_device::f2_late_busodd()
 void alto2_cpu_device::f2_late_magic()
 {
 	int XC;
-<<<<<<< HEAD
-	switch (m_d_f1) {
-=======
 	switch (f1()) {
->>>>>>> upstream/master
 	case f1_l_lsh_1:    // <-L MLSH 1
 		XC = (m_t >> 15) & 1;
 		m_shifter = (m_l << 1) | XC;
@@ -444,26 +425,6 @@ void alto2_cpu_device::f2_early_load_dns()
  */
 void alto2_cpu_device::f2_late_load_dns()
 {
-<<<<<<< HEAD
-	UINT8 IR10 = X_BIT(m_emu.ir,16,10);
-	UINT8 IR11 = X_BIT(m_emu.ir,16,11);
-	UINT8 IR12 = X_BIT(m_emu.ir,16,12);
-	UINT8 IR13 = X_BIT(m_emu.ir,16,13);
-	UINT8 IR14 = X_BIT(m_emu.ir,16,14);
-	UINT8 IR15 = X_BIT(m_emu.ir,16,15);
-	UINT8 exorB = IR11 ^ IR10;
-	UINT8 CARRY = m_emu.cy ^ 1;
-	UINT8 ORA = (exorB | CARRY) ^ 1;
-	UINT8 exorC = ORA ^ (IR11 ^ 1);
-	UINT8 exorD = exorC ^ m_laluc0;
-	UINT8 XC = exorD;
-	UINT8 NEWCARRY;
-	UINT8 DCARRY;
-	UINT8 DSKIP;
-	UINT8 SHZERO;
-
-	switch (m_d_f1) {
-=======
 	uint8_t IR10 = X_BIT(m_emu.ir,16,10);
 	uint8_t IR11 = X_BIT(m_emu.ir,16,11);
 	uint8_t IR12 = X_BIT(m_emu.ir,16,12);
@@ -482,7 +443,6 @@ void alto2_cpu_device::f2_late_load_dns()
 	uint8_t SHZERO;
 
 	switch (f1()) {
->>>>>>> upstream/master
 	case f1_l_rsh_1:    // <-L RSH 1
 		NEWCARRY = m_l & 1;
 		m_shifter = ((m_l >> 1) | (XC << 15)) & 0177777;
@@ -575,11 +535,7 @@ void alto2_cpu_device::bitblt_info()
  */
 void alto2_cpu_device::f2_late_load_ir()
 {
-<<<<<<< HEAD
-	UINT16 r = (X_BIT(m_bus,16,0) << 3) | X_RDBITS(m_bus,16,5,7);
-=======
 	uint16_t r = (X_BIT(m_bus,16,0) << 3) | X_RDBITS(m_bus,16,5,7);
->>>>>>> upstream/master
 
 #if ALTO2_DEBUG
 	/* special logging of some opcodes */
@@ -644,11 +600,7 @@ void alto2_cpu_device::f2_late_load_ir()
  */
 void alto2_cpu_device::f2_late_idisp()
 {
-<<<<<<< HEAD
-	UINT16 r;
-=======
 	uint16_t r;
->>>>>>> upstream/master
 
 	if (IR_ARITH(m_emu.ir)) {
 		/* 1xxxxxxxxxxxxxxx */
@@ -682,11 +634,7 @@ void alto2_cpu_device::f2_early_acsource()
  */
 void alto2_cpu_device::f2_late_acsource()
 {
-<<<<<<< HEAD
-	UINT16 r;
-=======
 	uint16_t r;
->>>>>>> upstream/master
 
 	if (IR_ARITH(m_emu.ir)) {
 		/* 1xxxxxxxxxxxxxxx */
@@ -709,31 +657,6 @@ void alto2_cpu_device::init_emu(int task)
 	save_item(NAME(m_emu.cy));
 
 	init_ram(task);
-<<<<<<< HEAD
-
-	set_bs(task, bs_emu_read_sreg,      &alto2_cpu_device::bs_early_read_sreg, 0);
-	set_bs(task, bs_emu_load_sreg,      &alto2_cpu_device::bs_early_load_sreg, &alto2_cpu_device::bs_late_load_sreg);
-	set_bs(task, bs_disp,               &alto2_cpu_device::bs_early_emu_disp, 0);
-
-	set_f1(task, f1_block,              &alto2_cpu_device::f1_early_emu_block, 0);  // catch the emulator task trying to block (wrong branch)
-	set_f1(task, f1_emu_swmode,         0, &alto2_cpu_device::f1_late_swmode);
-	set_f1(task, f1_emu_wrtram,         0, &alto2_cpu_device::f1_late_wrtram);
-	set_f1(task, f1_emu_rdram,          0, &alto2_cpu_device::f1_late_rdram);
-	set_f1(task, f1_emu_load_rmr,       0, &alto2_cpu_device::f1_late_emu_load_rmr);
-	set_f1(task, f1_task_14,            0, 0);                                      // F1 014 is undefined (?)
-	set_f1(task, f1_emu_load_esrb,      0, &alto2_cpu_device::f1_late_emu_load_esrb);
-	set_f1(task, f1_emu_rsnf,           &alto2_cpu_device::f1_early_rsnf, 0);
-	set_f1(task, f1_emu_startf,         &alto2_cpu_device::f1_early_startf, 0);
-
-	set_f2(task, f2_emu_busodd,         0, &alto2_cpu_device::f2_late_busodd);
-	set_f2(task, f2_emu_magic,          0, &alto2_cpu_device::f2_late_magic);
-	set_f2(task, f2_emu_load_dns,       &alto2_cpu_device::f2_early_load_dns, &alto2_cpu_device::f2_late_load_dns);
-	set_f2(task, f2_emu_acdest,         &alto2_cpu_device::f2_early_acdest, 0);
-	set_f2(task, f2_emu_load_ir,        0, &alto2_cpu_device::f2_late_load_ir);
-	set_f2(task, f2_emu_idisp,          0, &alto2_cpu_device::f2_late_idisp);
-	set_f2(task, f2_emu_acsource,       &alto2_cpu_device::f2_early_acsource, &alto2_cpu_device::f2_late_acsource);
-=======
->>>>>>> upstream/master
 }
 
 void alto2_cpu_device::exit_emu()

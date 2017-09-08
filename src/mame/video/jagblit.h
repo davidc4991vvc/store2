@@ -63,11 +63,7 @@
                       W   --x----- -------- -------- --------      (BUSHI - hi priority bus)
                       W   ---x---- -------- -------- --------      (BKGWREN - writeback destination)
                       W   ----x--- -------- -------- --------      (DCOMPEN - write inhibit from data comparator)
-<<<<<<< HEAD
-                      W   -----x-- -------- -------- --------      (BCOMPEN - write inhibit from bit coparator)
-=======
                       W   -----x-- -------- -------- --------      (BCOMPEN - write inhibit from bit comparator)
->>>>>>> upstream/master
                       W   ------x- -------- -------- --------      (CMPDST - compare dest instead of src)
                       W   -------x xxx----- -------- --------      (logical operation)
                       W   -------- ---xxx-- -------- --------      (ZMODE - Z comparator mode)

@@ -13,21 +13,14 @@
 
 **********************************************************************/
 
-<<<<<<< HEAD
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #include "twintap.h"
 
 //**************************************************************************
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type SNES_TWINTAP = &device_creator<snes_twintap_device>;
-=======
 DEFINE_DEVICE_TYPE(SNES_TWINTAP, snes_twintap_device, "snes_twintap", "Yonezawa Twin Tap Controller")
->>>>>>> upstream/master
 
 
 static INPUT_PORTS_START( snes_twintap )
@@ -57,18 +50,11 @@ ioport_constructor snes_twintap_device::device_input_ports() const
 //  snes_twintap_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-snes_twintap_device::snes_twintap_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-					device_t(mconfig, SNES_TWINTAP, "Yonezawa Twin Tap Controller", tag, owner, clock, "snes_twintap", __FILE__),
-					device_snes_control_port_interface(mconfig, *this),
-					m_inputs(*this, "INPUTS"), m_strobe(0), m_latch(0)
-=======
 snes_twintap_device::snes_twintap_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	device_t(mconfig, SNES_TWINTAP, tag, owner, clock),
 	device_snes_control_port_interface(mconfig, *this),
 	m_inputs(*this, "INPUTS"),
 	m_strobe(0), m_latch(0)
->>>>>>> upstream/master
 {
 }
 
@@ -108,15 +94,9 @@ void snes_twintap_device::port_poll()
 //  read
 //-------------------------------------------------
 
-<<<<<<< HEAD
-UINT8 snes_twintap_device::read_pin4()
-{
-	UINT8 ret = m_latch & 1;
-=======
 uint8_t snes_twintap_device::read_pin4()
 {
 	uint8_t ret = m_latch & 1;
->>>>>>> upstream/master
 	m_latch >>= 1;
 	return ret;
 }
@@ -125,11 +105,7 @@ uint8_t snes_twintap_device::read_pin4()
 //  write
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void snes_twintap_device::write_strobe(UINT8 data)
-=======
 void snes_twintap_device::write_strobe(uint8_t data)
->>>>>>> upstream/master
 {
 	int old = m_strobe;
 	m_strobe = data & 0x01;

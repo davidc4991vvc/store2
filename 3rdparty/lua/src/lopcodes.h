@@ -1,9 +1,5 @@
 /*
-<<<<<<< HEAD
-** $Id: lopcodes.h,v 1.148 2014/10/25 11:50:46 roberto Exp $
-=======
 ** $Id: lopcodes.h,v 1.149 2016/07/19 17:12:21 roberto Exp $
->>>>>>> upstream/master
 ** Opcodes for Lua virtual machine
 ** See Copyright Notice in lua.h
 */
@@ -143,13 +139,9 @@ enum OpMode {iABC, iABx, iAsBx, iAx};  /* basic instruction format */
 /* gets the index of the constant */
 #define INDEXK(r)	((int)(r) & ~BITRK)
 
-<<<<<<< HEAD
-#define MAXINDEXRK	(BITRK - 1)
-=======
 #if !defined(MAXINDEXRK)  /* (for debugging only) */
 #define MAXINDEXRK	(BITRK - 1)
 #endif
->>>>>>> upstream/master
 
 /* code a constant index as a RK value */
 #define RKASK(x)	((x) | BITRK)

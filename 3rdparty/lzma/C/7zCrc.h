@@ -1,18 +1,10 @@
 /* 7zCrc.h -- CRC32 calculation
-<<<<<<< HEAD
-2009-11-21 : Igor Pavlov : Public domain */
-=======
 2013-01-18 : Igor Pavlov : Public domain */
->>>>>>> upstream/master
 
 #ifndef __7Z_CRC_H
 #define __7Z_CRC_H
 
-<<<<<<< HEAD
-#include "Types.h"
-=======
 #include "7zTypes.h"
->>>>>>> upstream/master
 
 EXTERN_C_BEGIN
 

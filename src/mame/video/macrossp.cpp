@@ -46,11 +46,7 @@ WRITE32_MEMBER(macrossp_state::macrossp_scra_videoram_w)
 
 TILE_GET_INFO_MEMBER(macrossp_state::get_macrossp_scra_tile_info)
 {
-<<<<<<< HEAD
-	UINT32 attr, tileno, color;
-=======
 	uint32_t attr, tileno, color;
->>>>>>> upstream/master
 
 	attr = m_scra_videoram[tile_index];
 	tileno = attr & 0x0000ffff;
@@ -85,11 +81,7 @@ WRITE32_MEMBER(macrossp_state::macrossp_scrb_videoram_w)
 
 TILE_GET_INFO_MEMBER(macrossp_state::get_macrossp_scrb_tile_info)
 {
-<<<<<<< HEAD
-	UINT32 attr, tileno, color;
-=======
 	uint32_t attr, tileno, color;
->>>>>>> upstream/master
 
 	attr = m_scrb_videoram[tile_index];
 	tileno = attr & 0x0000ffff;
@@ -124,11 +116,7 @@ WRITE32_MEMBER(macrossp_state::macrossp_scrc_videoram_w)
 
 TILE_GET_INFO_MEMBER(macrossp_state::get_macrossp_scrc_tile_info)
 {
-<<<<<<< HEAD
-	UINT32 attr, tileno, color;
-=======
 	uint32_t attr, tileno, color;
->>>>>>> upstream/master
 
 	attr = m_scrc_videoram[tile_index];
 	tileno = attr & 0x0000ffff;
@@ -163,11 +151,7 @@ WRITE32_MEMBER(macrossp_state::macrossp_text_videoram_w)
 
 TILE_GET_INFO_MEMBER(macrossp_state::get_macrossp_text_tile_info)
 {
-<<<<<<< HEAD
-	UINT32 tileno, colour;
-=======
 	uint32_t tileno, colour;
->>>>>>> upstream/master
 
 	tileno = m_text_videoram[tile_index] & 0x0000ffff;
 	colour = (m_text_videoram[tile_index] & 0x00fe0000) >> 17;
@@ -181,15 +165,6 @@ TILE_GET_INFO_MEMBER(macrossp_state::get_macrossp_text_tile_info)
 
 void macrossp_state::video_start()
 {
-<<<<<<< HEAD
-	m_spriteram_old = auto_alloc_array_clear(machine(), UINT32, m_spriteram.bytes() / 4);
-	m_spriteram_old2 = auto_alloc_array_clear(machine(), UINT32, m_spriteram.bytes() / 4);
-
-	m_text_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(macrossp_state::get_macrossp_text_tile_info),this), TILEMAP_SCAN_ROWS, 16, 16, 64, 64);
-	m_scra_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(macrossp_state::get_macrossp_scra_tile_info),this), TILEMAP_SCAN_ROWS, 16, 16, 64, 64);
-	m_scrb_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(macrossp_state::get_macrossp_scrb_tile_info),this), TILEMAP_SCAN_ROWS, 16, 16, 64, 64);
-	m_scrc_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(macrossp_state::get_macrossp_scrc_tile_info),this), TILEMAP_SCAN_ROWS, 16, 16, 64, 64);
-=======
 	m_spriteram_old = make_unique_clear<uint32_t[]>(m_spriteram.bytes() / 4);
 	m_spriteram_old2 = make_unique_clear<uint32_t[]>(m_spriteram.bytes() / 4);
 
@@ -197,7 +172,6 @@ void macrossp_state::video_start()
 	m_scra_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(macrossp_state::get_macrossp_scra_tile_info),this), TILEMAP_SCAN_ROWS, 16, 16, 64, 64);
 	m_scrb_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(macrossp_state::get_macrossp_scrb_tile_info),this), TILEMAP_SCAN_ROWS, 16, 16, 64, 64);
 	m_scrc_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(macrossp_state::get_macrossp_scrc_tile_info),this), TILEMAP_SCAN_ROWS, 16, 16, 64, 64);
->>>>>>> upstream/master
 
 	m_text_tilemap->set_transparent_pen(0);
 	m_scra_tilemap->set_transparent_pen(0);
@@ -209,13 +183,8 @@ void macrossp_state::video_start()
 	m_gfxdecode->gfx(2)->set_granularity(64);
 	m_gfxdecode->gfx(3)->set_granularity(64);
 
-<<<<<<< HEAD
-	save_pointer(NAME(m_spriteram_old), m_spriteram.bytes() / 4);
-	save_pointer(NAME(m_spriteram_old2), m_spriteram.bytes() / 4);
-=======
 	save_pointer(NAME(m_spriteram_old.get()), m_spriteram.bytes() / 4);
 	save_pointer(NAME(m_spriteram_old2.get()), m_spriteram.bytes() / 4);
->>>>>>> upstream/master
 }
 
 
@@ -223,15 +192,9 @@ void macrossp_state::video_start()
 void macrossp_state::draw_sprites(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect )
 {
 	gfx_element *gfx = m_gfxdecode->gfx(0);
-<<<<<<< HEAD
-	//  UINT32 *source = m_spriteram;
-	UINT32 *source = (m_spriteram_old2 + m_spriteram.bytes() / 4) - 3; /* buffers by two frames */
-	UINT32 *finish = m_spriteram_old2;
-=======
 	//  uint32_t *source = m_spriteram;
 	uint32_t *source = (m_spriteram_old2.get() + m_spriteram.bytes() / 4) - 3; /* buffers by two frames */
 	uint32_t *finish = m_spriteram_old2.get();
->>>>>>> upstream/master
 
 	/* reverse order */
 	while (source >= finish)
@@ -349,13 +312,8 @@ void macrossp_state::draw_sprites(screen_device &screen, bitmap_rgb32 &bitmap, c
 void macrossp_state::draw_layer( screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect, int layer, int line, int pri )
 {
 	tilemap_t *tm;
-<<<<<<< HEAD
-	UINT32 *vr;
-	UINT32 *lr;
-=======
 	uint32_t *vr;
 	uint32_t *lr;
->>>>>>> upstream/master
 
 	switch (layer)
 	{
@@ -417,11 +375,7 @@ void macrossp_state::draw_layer( screen_device &screen, bitmap_rgb32 &bitmap, co
 	}
 }
 
-<<<<<<< HEAD
-UINT32 macrossp_state::screen_update_macrossp(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
-=======
 uint32_t macrossp_state::screen_update_macrossp(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int layerpri[3];
 	int sprites = true;
@@ -503,22 +457,13 @@ m_scrc_videoregs[2]);// 08 - 0b
 	return 0;
 }
 
-<<<<<<< HEAD
-void macrossp_state::screen_eof_macrossp(screen_device &screen, bool state)
-=======
 WRITE_LINE_MEMBER(macrossp_state::screen_vblank_macrossp)
->>>>>>> upstream/master
 {
 	// rising edge
 	if (state)
 	{
 		/* looks like sprites are *two* frames ahead, like nmk16 */
-<<<<<<< HEAD
-		memcpy(m_spriteram_old2, m_spriteram_old, m_spriteram.bytes());
-		memcpy(m_spriteram_old, m_spriteram, m_spriteram.bytes());
-=======
 		memcpy(m_spriteram_old2.get(), m_spriteram_old.get(), m_spriteram.bytes());
 		memcpy(m_spriteram_old.get(), m_spriteram, m_spriteram.bytes());
->>>>>>> upstream/master
 	}
 }

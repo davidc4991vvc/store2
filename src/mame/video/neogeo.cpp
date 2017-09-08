@@ -1,11 +1,6 @@
-<<<<<<< HEAD
-// license:???
-// copyright-holders:Bryan McPhail,Fuzz,Ernesto Corvi,Andrew Prime,Zsolt Vasvari
-=======
 // license:BSD-3-Clause
 // copyright-holders:Bryan McPhail,Ernesto Corvi,Andrew Prime,Zsolt Vasvari
 // thanks-to:Fuzz
->>>>>>> upstream/master
 /***************************************************************************
 
     Neo-Geo hardware
@@ -16,17 +11,10 @@
 #include "includes/neogeo.h"
 #include "video/resnet.h"
 
-<<<<<<< HEAD
-#define NUM_PENS    (0x1000)
-
-
-
-=======
 #define VERBOSE     (0)
 
 
 #define NUM_PENS    (0x1000)
->>>>>>> upstream/master
 
 /*************************************
  *
@@ -42,48 +30,27 @@ void neogeo_state::create_rgb_lookups()
 	   ensuring that we use the same scaler for all */
 	double weights_normal[5];
 	double scaler = compute_resistor_weights(0, 255, -1,
-<<<<<<< HEAD
-							5, resistances, weights_normal, 0, 0,
-							0, NULL, NULL, 0, 0,
-							0, NULL, NULL, 0, 0);
-=======
 											5, resistances, weights_normal, 0, 0,
 											0, nullptr, nullptr, 0, 0,
 											0, nullptr, nullptr, 0, 0);
->>>>>>> upstream/master
 
 	double weights_dark[5];
 	compute_resistor_weights(0, 255, scaler,
 							5, resistances, weights_dark, 8200, 0,
-<<<<<<< HEAD
-							0, NULL, NULL, 0, 0,
-							0, NULL, NULL, 0, 0);
-=======
 							0, nullptr, nullptr, 0, 0,
 							0, nullptr, nullptr, 0, 0);
->>>>>>> upstream/master
 
 	double weights_shadow[5];
 	compute_resistor_weights(0, 255, scaler,
 							5, resistances, weights_shadow, 150, 0,
-<<<<<<< HEAD
-							0, NULL, NULL, 0, 0,
-							0, NULL, NULL, 0, 0);
-=======
 							0, nullptr, nullptr, 0, 0,
 							0, nullptr, nullptr, 0, 0);
->>>>>>> upstream/master
 
 	double weights_dark_shadow[5];
 	compute_resistor_weights(0, 255, scaler,
 							5, resistances, weights_dark_shadow, 1.0 / ((1.0 / 8200) + (1.0 / 150)), 0,
-<<<<<<< HEAD
-							0, NULL, NULL, 0, 0,
-							0, NULL, NULL, 0, 0);
-=======
 							0, nullptr, nullptr, 0, 0,
 							0, nullptr, nullptr, 0, 0);
->>>>>>> upstream/master
 
 	for (int i = 0; i < 32; i++)
 	{
@@ -107,47 +74,27 @@ void neogeo_state::set_pens()
 }
 
 
-<<<<<<< HEAD
-void neogeo_state::neogeo_set_screen_shadow( int data )
-{
-	m_screen_shadow = data;
-=======
 WRITE_LINE_MEMBER(neogeo_state::set_screen_shadow)
 {
 	m_screen_shadow = state;
->>>>>>> upstream/master
 	set_pens();
 }
 
 
-<<<<<<< HEAD
-void neogeo_state::neogeo_set_palette_bank( int data )
-{
-	m_palette_bank = data ? 0x1000 : 0;
-=======
 WRITE_LINE_MEMBER(neogeo_state::set_palette_bank)
 {
 	m_palette_bank = state ? 0x1000 : 0;
->>>>>>> upstream/master
 	set_pens();
 }
 
 
-<<<<<<< HEAD
-READ16_MEMBER(neogeo_state::neogeo_paletteram_r)
-=======
 READ16_MEMBER(neogeo_state::paletteram_r)
->>>>>>> upstream/master
 {
 	return m_paletteram[m_palette_bank + offset];
 }
 
 
-<<<<<<< HEAD
-WRITE16_MEMBER(neogeo_state::neogeo_paletteram_w)
-=======
 WRITE16_MEMBER(neogeo_state::paletteram_w)
->>>>>>> upstream/master
 {
 	offset += m_palette_bank;
 	data = COMBINE_DATA(&m_paletteram[offset]);
@@ -158,16 +105,6 @@ WRITE16_MEMBER(neogeo_state::paletteram_w)
 	int b = ((data >> 12) & 0x1) | ((data << 1) & 0x1e);
 
 	m_palette->set_pen_color(offset,
-<<<<<<< HEAD
-					m_palette_lookup[r][dark],
-					m_palette_lookup[g][dark],
-					m_palette_lookup[b][dark]);	// normal
-
-	m_palette->set_pen_color(offset + 0x2000,
-					m_palette_lookup[r][dark+2],
-					m_palette_lookup[g][dark+2],
-					m_palette_lookup[b][dark+2]); // shadow
-=======
 								m_palette_lookup[r][dark],
 								m_palette_lookup[g][dark],
 								m_palette_lookup[b][dark]); // normal
@@ -176,7 +113,6 @@ WRITE16_MEMBER(neogeo_state::paletteram_w)
 								m_palette_lookup[r][dark+2],
 								m_palette_lookup[g][dark+2],
 								m_palette_lookup[b][dark+2]); // shadow
->>>>>>> upstream/master
 }
 
 
@@ -225,11 +161,7 @@ void neogeo_state::video_reset()
  *
  *************************************/
 
-<<<<<<< HEAD
-UINT32 neogeo_state::screen_update_neogeo(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
-=======
 uint32_t neogeo_state::screen_update_neogeo(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	// fill with background color first
 	bitmap.fill(*m_bg_pen, cliprect);
@@ -249,17 +181,10 @@ uint32_t neogeo_state::screen_update_neogeo(screen_device &screen, bitmap_rgb32 
  *
  *************************************/
 
-<<<<<<< HEAD
-UINT16 neogeo_state::get_video_control(  )
-{
-	UINT16 ret;
-	UINT16 v_counter;
-=======
 uint16_t neogeo_state::get_video_control()
 {
 	uint16_t ret;
 	uint16_t v_counter;
->>>>>>> upstream/master
 
 	/*
 	    The format of this very important location is:  AAAA AAAA A??? BCCC
@@ -296,30 +221,13 @@ uint16_t neogeo_state::get_video_control()
 }
 
 
-<<<<<<< HEAD
-void neogeo_state::set_video_control( UINT16 data )
-=======
 void neogeo_state::set_video_control(uint16_t data)
->>>>>>> upstream/master
 {
 	if (VERBOSE) logerror("%s: video control write %04x\n", machine().describe_context(), data);
 
 	m_sprgen->set_auto_animation_speed(data >> 8);
 	m_sprgen->set_auto_animation_disabled(data & 0x0008);
 
-<<<<<<< HEAD
-	neogeo_set_display_position_interrupt_control(data & 0x00f0);
-}
-
-
-READ16_MEMBER(neogeo_state::neogeo_video_register_r)
-{
-	UINT16 ret;
-
-	/* accessing the LSB only is not mapped */
-	if (mem_mask == 0x00ff)
-		ret = neogeo_unmapped_r(space, 0, 0xffff) & 0x00ff;
-=======
 	set_display_position_interrupt_control(data & 0x00f0);
 }
 
@@ -331,7 +239,6 @@ READ16_MEMBER(neogeo_state::video_register_r)
 	/* accessing the LSB only is not mapped */
 	if (mem_mask == 0x00ff)
 		ret = unmapped_r(space, 0, 0xffff) & 0x00ff;
->>>>>>> upstream/master
 	else
 	{
 		switch (offset)
@@ -348,11 +255,7 @@ READ16_MEMBER(neogeo_state::video_register_r)
 }
 
 
-<<<<<<< HEAD
-WRITE16_MEMBER(neogeo_state::neogeo_video_register_w)
-=======
 WRITE16_MEMBER(neogeo_state::video_register_w)
->>>>>>> upstream/master
 {
 	/* accessing the LSB only is not mapped */
 	if (mem_mask != 0x00ff)
@@ -367,15 +270,9 @@ WRITE16_MEMBER(neogeo_state::video_register_w)
 		case 0x01: m_sprgen->set_videoram_data(data); break;
 		case 0x02: m_sprgen->set_videoram_modulo(data); break;
 		case 0x03: set_video_control(data); break;
-<<<<<<< HEAD
-		case 0x04: neogeo_set_display_counter_msb(data); break;
-		case 0x05: neogeo_set_display_counter_lsb(data); break;
-		case 0x06: neogeo_acknowledge_interrupt(data); break;
-=======
 		case 0x04: set_display_counter_msb(data); break;
 		case 0x05: set_display_counter_lsb(data); break;
 		case 0x06: acknowledge_interrupt(data); break;
->>>>>>> upstream/master
 		case 0x07: break; // d0: pause timer for 32 lines when in PAL mode (LSPC2 only)
 		}
 	}

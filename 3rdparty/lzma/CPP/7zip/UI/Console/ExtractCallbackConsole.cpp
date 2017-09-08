@@ -1,22 +1,3 @@
-<<<<<<< HEAD
-// ExtractCallbackConsole.h
-
-#include "StdAfx.h"
-
-#include "ExtractCallbackConsole.h"
-#include "UserInputUtils.h"
-#include "ConsoleClose.h"
-
-#include "Common/Wildcard.h"
-
-#include "Windows/FileDir.h"
-#include "Windows/FileFind.h"
-#include "Windows/Time.h"
-#include "Windows/Defs.h"
-#include "Windows/PropVariant.h"
-#include "Windows/Error.h"
-#include "Windows/PropVariantConversions.h"
-=======
 // ExtractCallbackConsole.cpp
 
 #include "StdAfx.h"
@@ -33,21 +14,11 @@
 #ifndef _7ZIP_ST
 #include "../../../Windows/Synchronization.h"
 #endif
->>>>>>> upstream/master
 
 #include "../../Common/FilePathAutoRename.h"
 
 #include "../Common/ExtractingFilePath.h"
 
-<<<<<<< HEAD
-using namespace NWindows;
-using namespace NFile;
-using namespace NDirectory;
-
-static const char *kTestString    =  "Testing     ";
-static const char *kExtractString =  "Extracting  ";
-static const char *kSkipString   =  "Skipping    ";
-=======
 #include "ConsoleClose.h"
 #include "ExtractCallbackConsole.h"
 #include "UserInputUtils.h"
@@ -170,24 +141,16 @@ static NSynchronization::CCriticalSection g_CriticalSection;
 static const char *kTestString    =  "T";
 static const char *kExtractString =  "-";
 static const char *kSkipString    =  ".";
->>>>>>> upstream/master
 
 // static const char *kCantAutoRename = "can not create file with auto name\n";
 // static const char *kCantRenameFile = "can not rename existing file\n";
 // static const char *kCantDeleteOutputFile = "can not delete output file ";
-<<<<<<< HEAD
-static const char *kError = "ERROR: ";
-static const char *kMemoryExceptionMessage = "Can't allocate required memory!";
-
-static const char *kProcessing = "Processing archive: ";
-=======
 
 static const char *kMemoryExceptionMessage = "Can't allocate required memory!";
 
 static const char *kExtracting = "Extracting archive: ";
 static const char *kTesting = "Testing archive: ";
 
->>>>>>> upstream/master
 static const char *kEverythingIsOk = "Everything is Ok";
 static const char *kNoFiles = "No files to process";
 
@@ -196,36 +159,6 @@ static const char *kCrcFailed = "CRC Failed";
 static const char *kCrcFailedEncrypted = "CRC Failed in encrypted file. Wrong password?";
 static const char *kDataError = "Data Error";
 static const char *kDataErrorEncrypted = "Data Error in encrypted file. Wrong password?";
-<<<<<<< HEAD
-static const char *kUnknownError = "Unknown Error";
-
-STDMETHODIMP CExtractCallbackConsole::SetTotal(UInt64)
-{
-  if (NConsoleClose::TestBreakSignal())
-    return E_ABORT;
-  return S_OK;
-}
-
-STDMETHODIMP CExtractCallbackConsole::SetCompleted(const UInt64 *)
-{
-  if (NConsoleClose::TestBreakSignal())
-    return E_ABORT;
-  return S_OK;
-}
-
-STDMETHODIMP CExtractCallbackConsole::AskOverwrite(
-    const wchar_t *existName, const FILETIME *, const UInt64 *,
-    const wchar_t *newName, const FILETIME *, const UInt64 *,
-    Int32 *answer)
-{
-  (*OutStream) << "file " << existName <<
-    "\nalready exists. Overwrite with " << endl;
-  (*OutStream) << newName;
-  
-  NUserAnswerMode::EEnum overwriteAnswer = ScanUserYesNoAllQuit(OutStream);
-  
-  switch(overwriteAnswer)
-=======
 static const char *kUnavailableData = "Unavailable data";
 static const char *kUnexpectedEnd = "Unexpected end of data";
 static const char *kDataAfterEnd = "There are some data after the end of the payload data";
@@ -316,7 +249,6 @@ STDMETHODIMP CExtractCallbackConsole::AskOverwrite(
   NUserAnswerMode::EEnum overwriteAnswer = ScanUserYesNoAllQuit(_so);
   
   switch (overwriteAnswer)
->>>>>>> upstream/master
   {
     case NUserAnswerMode::kQuit:  return E_ABORT;
     case NUserAnswerMode::kNo:     *answer = NOverwriteAnswer::kNo; break;
@@ -326,23 +258,6 @@ STDMETHODIMP CExtractCallbackConsole::AskOverwrite(
     case NUserAnswerMode::kAutoRenameAll: *answer = NOverwriteAnswer::kAutoRename; break;
     default: return E_FAIL;
   }
-<<<<<<< HEAD
-  return S_OK;
-}
-
-STDMETHODIMP CExtractCallbackConsole::PrepareOperation(const wchar_t *name, bool /* isFolder */, Int32 askExtractMode, const UInt64 *position)
-{
-  switch (askExtractMode)
-  {
-    case NArchive::NExtract::NAskMode::kExtract: (*OutStream) << kExtractString; break;
-    case NArchive::NExtract::NAskMode::kTest:    (*OutStream) << kTestString; break;
-    case NArchive::NExtract::NAskMode::kSkip:    (*OutStream) << kSkipString; break;
-  };
-  (*OutStream) << name;
-  if (position != 0)
-    (*OutStream) << " <" << *position << ">";
-  return S_OK;
-=======
   
   if (_so)
   {
@@ -411,50 +326,10 @@ STDMETHODIMP CExtractCallbackConsole::PrepareOperation(const wchar_t *name, Int3
   }
 
   return CheckBreak2();
->>>>>>> upstream/master
 }
 
 STDMETHODIMP CExtractCallbackConsole::MessageError(const wchar_t *message)
 {
-<<<<<<< HEAD
-  (*OutStream) << message << endl;
-  NumFileErrorsInCurrentArchive++;
-  NumFileErrors++;
-  return S_OK;
-}
-
-STDMETHODIMP CExtractCallbackConsole::SetOperationResult(Int32 operationResult, bool encrypted)
-{
-  switch(operationResult)
-  {
-    case NArchive::NExtract::NOperationResult::kOK:
-      break;
-    default:
-    {
-      NumFileErrorsInCurrentArchive++;
-      NumFileErrors++;
-      (*OutStream) << "     ";
-      switch(operationResult)
-      {
-        case NArchive::NExtract::NOperationResult::kUnSupportedMethod:
-          (*OutStream) << kUnsupportedMethod;
-          break;
-        case NArchive::NExtract::NOperationResult::kCRCError:
-          (*OutStream) << (encrypted ? kCrcFailedEncrypted: kCrcFailed);
-          break;
-        case NArchive::NExtract::NOperationResult::kDataError:
-          (*OutStream) << (encrypted ? kDataErrorEncrypted : kDataError);
-          break;
-        default:
-          (*OutStream) << kUnknownError;
-      }
-    }
-  }
-  (*OutStream) << endl;
-  return S_OK;
-}
-
-=======
   MT_LOCK
   
   RINOK(CheckBreak2());
@@ -569,7 +444,6 @@ STDMETHODIMP CExtractCallbackConsole::ReportExtractResult(Int32 opRes, Int32 enc
 
 
 
->>>>>>> upstream/master
 #ifndef _NO_CRYPTO
 
 HRESULT CExtractCallbackConsole::SetPassword(const UString &password)
@@ -581,56 +455,14 @@ HRESULT CExtractCallbackConsole::SetPassword(const UString &password)
 
 STDMETHODIMP CExtractCallbackConsole::CryptoGetTextPassword(BSTR *password)
 {
-<<<<<<< HEAD
-  if (!PasswordIsDefined)
-  {
-    Password = GetPassword(OutStream);
-    PasswordIsDefined = true;
-  }
-  return StringToBstr(Password, password);
-=======
   COM_TRY_BEGIN
   MT_LOCK
   return Open_CryptoGetTextPassword(password);
   COM_TRY_END
->>>>>>> upstream/master
 }
 
 #endif
 
-<<<<<<< HEAD
-HRESULT CExtractCallbackConsole::BeforeOpen(const wchar_t *name)
-{
-  NumArchives++;
-  NumFileErrorsInCurrentArchive = 0;
-  (*OutStream) << endl << kProcessing << name << endl;
-  return S_OK;
-}
-
-HRESULT CExtractCallbackConsole::OpenResult(const wchar_t * /* name */, HRESULT result, bool encrypted)
-{
-  (*OutStream) << endl;
-  if (result != S_OK)
-  {
-    (*OutStream) << "Error: ";
-    if (result == S_FALSE)
-    {
-      (*OutStream) << (encrypted ?
-        "Can not open encrypted archive. Wrong password?" :
-        "Can not open file as archive");
-    }
-    else
-    {
-      if (result == E_OUTOFMEMORY)
-        (*OutStream) << "Can't allocate required memory";
-      else
-        (*OutStream) << NError::MyFormatMessageW(result);
-    }
-    (*OutStream) << endl;
-    NumArchiveErrors++;
-  }
-  return S_OK;
-=======
 HRESULT CExtractCallbackConsole::BeforeOpen(const wchar_t *name, bool testMode)
 {
   RINOK(CheckBreak2());
@@ -857,15 +689,10 @@ HRESULT CExtractCallbackConsole::OpenResult(
   
   
   return CheckBreak2();
->>>>>>> upstream/master
 }
   
 HRESULT CExtractCallbackConsole::ThereAreNoFiles()
 {
-<<<<<<< HEAD
-  (*OutStream) << endl << kNoFiles << endl;
-  return S_OK;
-=======
   ClosePercents_for_so();
 
   if (_so)
@@ -875,36 +702,10 @@ HRESULT CExtractCallbackConsole::ThereAreNoFiles()
       _so->Flush();
   }
   return CheckBreak2();
->>>>>>> upstream/master
 }
 
 HRESULT CExtractCallbackConsole::ExtractResult(HRESULT result)
 {
-<<<<<<< HEAD
-  if (result == S_OK)
-  {
-    (*OutStream) << endl;
-    if (NumFileErrorsInCurrentArchive == 0)
-      (*OutStream) << kEverythingIsOk << endl;
-    else
-    {
-      NumArchiveErrors++;
-      (*OutStream) << "Sub items Errors: " << NumFileErrorsInCurrentArchive << endl;
-    }
-  }
-  if (result == S_OK)
-    return result;
-  NumArchiveErrors++;
-  if (result == E_ABORT || result == ERROR_DISK_FULL)
-    return result;
-  (*OutStream) << endl << kError;
-  if (result == E_OUTOFMEMORY)
-    (*OutStream) << kMemoryExceptionMessage;
-  else
-    (*OutStream) << NError::MyFormatMessageW(result);
-  (*OutStream) << endl;
-  return S_OK;
-=======
   MT_LOCK
   
   if (NeedPercents())
@@ -960,5 +761,4 @@ HRESULT CExtractCallbackConsole::ExtractResult(HRESULT result)
   }
 
   return CheckBreak2();
->>>>>>> upstream/master
 }

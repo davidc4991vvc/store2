@@ -16,10 +16,7 @@
 #define __GALAXOLD_H__
 
 #include "machine/7474.h"
-<<<<<<< HEAD
-=======
 #include "screen.h"
->>>>>>> upstream/master
 
 /* star circuit */
 #define STAR_COUNT  252
@@ -61,45 +58,6 @@ public:
 	required_device<palette_device> m_palette;
 
 	/* memory pointers */
-<<<<<<< HEAD
-	required_shared_ptr<UINT8> m_videoram;
-	required_shared_ptr<UINT8> m_spriteram;
-	optional_shared_ptr<UINT8> m_spriteram2;
-	required_shared_ptr<UINT8> m_attributesram;
-	optional_shared_ptr<UINT8> m_bulletsram;
-	optional_shared_ptr<UINT8> m_rockclim_videoram;
-	optional_shared_ptr<UINT8> m_racknrol_tiles_bank;
-
-	int m_irq_line;
-	UINT8 m__4in1_bank;
-	tilemap_t *m_bg_tilemap;
-	tilemap_t *m_rockclim_tilemap;
-	int m_spriteram2_present;
-	UINT8 m_gfxbank[5];
-	UINT8 m_flipscreen_x;
-	UINT8 m_flipscreen_y;
-	UINT8 m_color_mask;
-	tilemap_t *m_dambustr_tilemap2;
-	UINT8 *m_dambustr_videoram2;
-	int m_leftclip;
-
-	void (galaxold_state::*m_modify_charcode)(UINT16 *code, UINT8 x);     /* function to call to do character banking */
-	void (galaxold_state::*m_modify_spritecode)(UINT8 *spriteram, int*, int*, int*, int); /* function to call to do sprite banking */
-	void (galaxold_state::*m_modify_color)(UINT8 *color);   /* function to call to do modify how the color codes map to the PROM */
-	void (galaxold_state::*m_modify_ypos)(UINT8*);  /* function to call to do modify how vertical positioning bits are connected */
-
-	UINT8 m_timer_adjusted;
-	UINT8 m_darkplnt_bullet_color;
-	void (galaxold_state::*m_draw_bullets)(bitmap_ind16 &,const rectangle &, int, int, int);  /* function to call to draw a bullet */
-
-	UINT8 m_background_enable;
-	UINT8 m_background_red;
-	UINT8 m_background_green;
-	UINT8 m_background_blue;
-	void (galaxold_state::*m_draw_background)(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);   /* function to call to draw the background */
-	UINT16 m_rockclim_v;
-	UINT16 m_rockclim_h;
-=======
 	required_shared_ptr<uint8_t> m_videoram;
 	required_shared_ptr<uint8_t> m_spriteram;
 	optional_shared_ptr<uint8_t> m_spriteram2;
@@ -137,21 +95,11 @@ public:
 	void (galaxold_state::*m_draw_background)(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);   /* function to call to draw the background */
 	uint16_t m_rockclim_v;
 	uint16_t m_rockclim_h;
->>>>>>> upstream/master
 	int m_dambustr_bg_split_line;
 	int m_dambustr_bg_color_1;
 	int m_dambustr_bg_color_2;
 	int m_dambustr_bg_priority;
 	int m_dambustr_char_bank;
-<<<<<<< HEAD
-	bitmap_ind16 *m_dambustr_tmpbitmap;
-
-	void (galaxold_state::*m_draw_stars)(bitmap_ind16 &, const rectangle &);      /* function to call to draw the star layer */
-	int m_stars_colors_start;
-	INT32 m_stars_scrollpos;
-	UINT8 m_stars_on;
-	UINT8 m_stars_blink_state;
-=======
 	std::unique_ptr<bitmap_ind16> m_dambustr_tmpbitmap;
 
 	void (galaxold_state::*m_draw_stars)(bitmap_ind16 &, const rectangle &);      /* function to call to draw the star layer */
@@ -159,7 +107,6 @@ public:
 	int32_t m_stars_scrollpos;
 	uint8_t m_stars_on;
 	uint8_t m_stars_blink_state;
->>>>>>> upstream/master
 	emu_timer *m_stars_blink_timer;
 	emu_timer *m_stars_scroll_timer;
 	struct star_gold m_stars[STAR_COUNT];
@@ -187,11 +134,6 @@ public:
 	DECLARE_WRITE8_MEMBER(galaxold_attributesram_w);
 	DECLARE_WRITE8_MEMBER(galaxold_flip_screen_x_w);
 	DECLARE_WRITE8_MEMBER(galaxold_flip_screen_y_w);
-<<<<<<< HEAD
-	DECLARE_WRITE8_MEMBER(gteikob2_flip_screen_x_w);
-	DECLARE_WRITE8_MEMBER(gteikob2_flip_screen_y_w);
-=======
->>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(hotshock_flip_screen_w);
 	DECLARE_WRITE8_MEMBER(scrambold_background_enable_w);
 	DECLARE_WRITE8_MEMBER(scrambold_background_red_w);
@@ -245,19 +187,12 @@ public:
 	DECLARE_VIDEO_START(galaxold);
 	DECLARE_VIDEO_START(drivfrcg);
 	DECLARE_VIDEO_START(racknrol);
-<<<<<<< HEAD
-	DECLARE_VIDEO_START(batman2);
-=======
->>>>>>> upstream/master
 	DECLARE_VIDEO_START(mooncrst);
 	DECLARE_VIDEO_START(scrambold);
 	DECLARE_VIDEO_START(newsin7);
 	DECLARE_VIDEO_START(pisces);
 	DECLARE_VIDEO_START(dkongjrm);
-<<<<<<< HEAD
-=======
 	DECLARE_VIDEO_START(dkongjrmc);
->>>>>>> upstream/master
 	DECLARE_VIDEO_START(rockclim);
 	DECLARE_VIDEO_START(galaxold_plain);
 	DECLARE_VIDEO_START(ozon1);
@@ -275,13 +210,8 @@ public:
 	DECLARE_VIDEO_START(harem);
 	DECLARE_VIDEO_START(bagmanmc);
 
-<<<<<<< HEAD
-	UINT32 screen_update_galaxold(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	UINT32 screen_update_dambustr(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	uint32_t screen_update_galaxold(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	uint32_t screen_update_dambustr(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 
 	INTERRUPT_GEN_MEMBER(hunchbks_vh_interrupt);
 	TIMER_CALLBACK_MEMBER(stars_blink_callback);
@@ -291,27 +221,6 @@ public:
 
 	void state_save_register();
 	void video_start_common();
-<<<<<<< HEAD
-	void pisces_modify_spritecode(UINT8 *spriteram, int *code, int *flipx, int *flipy, int offs);
-	void theend_draw_bullets(bitmap_ind16 &bitmap, const rectangle &cliprect, int offs, int x, int y);
-	void mooncrst_modify_spritecode(UINT8 *spriteram, int *code, int *flipx, int *flipy, int offs);
-	void batman2_modify_charcode(UINT16 *code, UINT8 x);
-	void rockclim_draw_background(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	void rockclim_modify_spritecode(UINT8 *spriteram, int *code, int *flipx, int *flipy, int offs);
-	void harem_modify_spritecode(UINT8 *spriteram, int *code, int *flipx, int *flipy, int offs);
-	void mooncrst_modify_charcode(UINT16 *code, UINT8 x);
-	void pisces_modify_charcode(UINT16 *code, UINT8 x);
-	void mimonkey_modify_charcode(UINT16 *code, UINT8 x);
-	void mariner_modify_charcode(UINT16 *code, UINT8 x);
-	void dambustr_modify_charcode(UINT16 *code, UINT8 x);
-	void mshuttle_modify_spritecode(UINT8 *spriteram, int *code, int *flipx, int *flipy, int offs);
-	void mimonkey_modify_spritecode(UINT8 *spriteram, int *code, int *flipx, int *flipy, int offs);
-	void batman2_modify_spritecode(UINT8 *spriteram, int *code, int *flipx, int *flipy, int offs);
-	void dkongjrm_modify_spritecode(UINT8 *spriteram, int *code, int *flipx, int *flipy, int offs);
-	void ad2083_modify_spritecode(UINT8 *spriteram, int *code, int *flipx, int *flipy, int offs);
-	void dambustr_modify_spritecode(UINT8 *spriteram, int *code, int *flipx, int *flipy, int offs);
-	void drivfrcg_modify_color(UINT8 *color);
-=======
 	void pisces_modify_spritecode(uint8_t *spriteram, int *code, int *flipx, int *flipy, int offs);
 	void mooncrst_modify_spritecode(uint8_t *spriteram, int *code, int *flipx, int *flipy, int offs);
 	void rockclim_draw_background(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
@@ -330,7 +239,6 @@ public:
 	void ad2083_modify_spritecode(uint8_t *spriteram, int *code, int *flipx, int *flipy, int offs);
 	void dambustr_modify_spritecode(uint8_t *spriteram, int *code, int *flipx, int *flipy, int offs);
 	void drivfrcg_modify_color(uint8_t *color);
->>>>>>> upstream/master
 	void galaxold_draw_bullets(bitmap_ind16 &bitmap, const rectangle &cliprect, int offs, int x, int y);
 	void scrambold_draw_bullets(bitmap_ind16 &bitmap, const rectangle &cliprect, int offs, int x, int y);
 	void darkplnt_draw_bullets(bitmap_ind16 &bitmap, const rectangle &cliprect, int offs, int x, int y);
@@ -354,15 +262,9 @@ public:
 	void start_stars_blink_timer(double ra, double rb, double c);
 	void start_stars_scroll_timer();
 	void draw_bullets_common(bitmap_ind16 &bitmap, const rectangle &cliprect);
-<<<<<<< HEAD
-	void draw_sprites(bitmap_ind16 &bitmap, UINT8 *spriteram, size_t spriteram_size);
-	void bagmanmc_modify_charcode(UINT16 *code, UINT8 x);
-	void bagmanmc_modify_spritecode(UINT8 *spriteram, int *code, int *flipx, int *flipy, int offs);
-=======
 	void draw_sprites(bitmap_ind16 &bitmap, uint8_t *spriteram, size_t spriteram_size);
 	void bagmanmc_modify_charcode(uint16_t *code, uint8_t x);
 	void bagmanmc_modify_spritecode(uint8_t *spriteram, int *code, int *flipx, int *flipy, int offs);
->>>>>>> upstream/master
 	void machine_reset_common(int line);
 };
 

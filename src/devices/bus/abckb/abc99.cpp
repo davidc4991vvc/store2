@@ -52,13 +52,9 @@ Notes:
 
 */
 
-<<<<<<< HEAD
-#include "abc99.h"
-=======
 #include "emu.h"
 #include "abc99.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 
@@ -75,11 +71,7 @@ Notes:
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type ABC99 = &device_creator<abc99_device>;
-=======
 DEFINE_DEVICE_TYPE(ABC99, abc99_device, "abc99", "Luxor ABC 99")
->>>>>>> upstream/master
 
 
 //-------------------------------------------------
@@ -104,11 +96,7 @@ ROM_END
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const rom_entry *abc99_device::device_rom_region() const
-=======
 const tiny_rom_entry *abc99_device::device_rom_region() const
->>>>>>> upstream/master
 {
 	return ROM_NAME( abc99 );
 }
@@ -145,13 +133,6 @@ static ADDRESS_MAP_START( abc99_z2_io, AS_IO, 8, abc99_device )
 	AM_RANGE(0x3d, 0x3d) AM_READ_PORT("X13") AM_WRITENOP
 	AM_RANGE(0x3e, 0x3e) AM_READ_PORT("X14") AM_WRITENOP
 	AM_RANGE(0x3f, 0x3f) AM_READ_PORT("X15") AM_WRITENOP
-<<<<<<< HEAD
-	AM_RANGE(MCS48_PORT_P1, MCS48_PORT_P1) AM_WRITE(z2_p1_w)
-	AM_RANGE(MCS48_PORT_P2, MCS48_PORT_P2) AM_READ(z2_p2_r)
-	AM_RANGE(MCS48_PORT_T0, MCS48_PORT_T0) AM_READ(z2_t0_r)
-	AM_RANGE(MCS48_PORT_T1, MCS48_PORT_T1) AM_READ(z2_t1_r)
-=======
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -165,52 +146,26 @@ ADDRESS_MAP_END
 
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  ADDRESS_MAP( abc99_z5_io )
-//-------------------------------------------------
-
-static ADDRESS_MAP_START( abc99_z5_io, AS_IO, 8, abc99_device )
-/*  AM_RANGE(MCS48_PORT_P1, MCS48_PORT_P1) AM_READ(z5_p1_r)
-    AM_RANGE(MCS48_PORT_P2, MCS48_PORT_P2) AM_WRITE(z5_p2_w)
-    AM_RANGE(MCS48_PORT_T0, MCS48_PORT_T0) AM_WRITENOP // Z2 CLK
-    AM_RANGE(MCS48_PORT_T1, MCS48_PORT_T1) AM_READ(z5_t1_r)*/
-ADDRESS_MAP_END
-
-
-//-------------------------------------------------
-//  MACHINE_DRIVER( abc99 )
-//-------------------------------------------------
-
-static MACHINE_CONFIG_FRAGMENT( abc99 )
-=======
 //  device_add_mconfig - add device configuration
 //-------------------------------------------------
 
 MACHINE_CONFIG_MEMBER( abc99_device::device_add_mconfig )
->>>>>>> upstream/master
 	// keyboard CPU
 	MCFG_CPU_ADD(I8035_Z2_TAG, I8035, XTAL_6MHz/3) // from Z5 T0 output
 	MCFG_CPU_PROGRAM_MAP(abc99_z2_mem)
 	MCFG_CPU_IO_MAP(abc99_z2_io)
-<<<<<<< HEAD
-=======
 	MCFG_MCS48_PORT_P1_OUT_CB(WRITE8(abc99_device, z2_p1_w))
 	MCFG_MCS48_PORT_P2_IN_CB(READ8(abc99_device, z2_p2_r))
 	MCFG_MCS48_PORT_T0_IN_CB(READLINE(abc99_device, z2_t0_r))
 	MCFG_MCS48_PORT_T1_IN_CB(READLINE(abc99_device, z2_t1_r))
->>>>>>> upstream/master
 
 	// mouse CPU
 	MCFG_CPU_ADD(I8035_Z5_TAG, I8035, XTAL_6MHz)
 	MCFG_CPU_PROGRAM_MAP(abc99_z5_mem)
-<<<<<<< HEAD
-	MCFG_CPU_IO_MAP(abc99_z5_io)
-=======
 	//MCFG_MCS48_PORT_P1_IN_CB(READ8(abc99_device, z5_p1_r))
 	//MCFG_MCS48_PORT_P2_OUT_CB(WRITE8(abc99_device, z5_p2_w))
 	//MCFG_MCS48_PORT_T0_CLK_CUSTOM() // Z2 CLK
 	//MCFG_MCS48_PORT_T1_IN_CB(READ8(abc99_device, z5_t1_r))
->>>>>>> upstream/master
 	MCFG_DEVICE_DISABLE() // HACK fix for broken serial I/O
 
 	// sound hardware
@@ -221,20 +176,6 @@ MACHINE_CONFIG_END
 
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  machine_config_additions - device-specific
-//  machine configurations
-//-------------------------------------------------
-
-machine_config_constructor abc99_device::device_mconfig_additions() const
-{
-	return MACHINE_CONFIG_NAME( abc99 );
-}
-
-
-//-------------------------------------------------
-=======
->>>>>>> upstream/master
 //  INPUT_CHANGED_MEMBER( keyboard_reset )
 //-------------------------------------------------
 
@@ -438,11 +379,7 @@ INPUT_PORTS_START( abc99 )
 	PORT_BIT( 0xff, 0x00, IPT_MOUSE_Y ) PORT_SENSITIVITY(100) PORT_KEYDELTA(5) PORT_MINMAX(0, 255) PORT_PLAYER(1)
 
 	PORT_START("J4")
-<<<<<<< HEAD
-	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_SPECIAL ) PORT_NAME("Keyboard Reset") PORT_CHANGED_MEMBER(DEVICE_SELF, abc99_device, keyboard_reset, 0)
-=======
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_SPECIAL ) PORT_NAME("Keyboard Reset") PORT_CHANGED_MEMBER(DEVICE_SELF, abc99_device, keyboard_reset, nullptr)
->>>>>>> upstream/master
 INPUT_PORTS_END
 
 
@@ -530,13 +467,8 @@ inline void abc99_device::scan_mouse()
 //  abc99_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-abc99_device::abc99_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-	device_t(mconfig, ABC99, "Luxor ABC 99", tag, owner, clock, "abc99", __FILE__),
-=======
 abc99_device::abc99_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	device_t(mconfig, ABC99, tag, owner, clock),
->>>>>>> upstream/master
 	abc_keyboard_interface(mconfig, *this), m_serial_timer(nullptr), m_mouse_timer(nullptr),
 	m_maincpu(*this, I8035_Z2_TAG),
 	m_mousecpu(*this, I8035_Z5_TAG),
@@ -638,16 +570,6 @@ WRITE8_MEMBER( abc99_device::z2_led_w )
 {
 	if (m_led_en) return;
 
-<<<<<<< HEAD
-	output_set_led_value(LED_1, BIT(data, 0));
-	output_set_led_value(LED_2, BIT(data, 1));
-	output_set_led_value(LED_3, BIT(data, 2));
-	output_set_led_value(LED_4, BIT(data, 3));
-	output_set_led_value(LED_5, BIT(data, 4));
-	output_set_led_value(LED_6, BIT(data, 5));
-	output_set_led_value(LED_7, BIT(data, 6));
-	output_set_led_value(LED_8, BIT(data, 7));
-=======
 	machine().output().set_led_value(LED_1, BIT(data, 0));
 	machine().output().set_led_value(LED_2, BIT(data, 1));
 	machine().output().set_led_value(LED_3, BIT(data, 2));
@@ -656,7 +578,6 @@ WRITE8_MEMBER( abc99_device::z2_led_w )
 	machine().output().set_led_value(LED_6, BIT(data, 5));
 	machine().output().set_led_value(LED_7, BIT(data, 6));
 	machine().output().set_led_value(LED_8, BIT(data, 7));
->>>>>>> upstream/master
 }
 
 
@@ -692,15 +613,9 @@ WRITE8_MEMBER( abc99_device::z2_p1_w )
 	m_t1_z5 = BIT(data, 2);
 
 	// key LEDs
-<<<<<<< HEAD
-	output_set_led_value(LED_INS, BIT(data, 3));
-	output_set_led_value(LED_ALT, BIT(data, 4));
-	output_set_led_value(LED_CAPS_LOCK, BIT(data, 5));
-=======
 	machine().output().set_led_value(LED_INS, BIT(data, 3));
 	machine().output().set_led_value(LED_ALT, BIT(data, 4));
 	machine().output().set_led_value(LED_CAPS_LOCK, BIT(data, 5));
->>>>>>> upstream/master
 
 	// speaker output
 	m_speaker->level_w(!BIT(data, 6));
@@ -731,11 +646,7 @@ READ8_MEMBER( abc99_device::z2_p2_r )
 
 	*/
 
-<<<<<<< HEAD
-	UINT8 data = m_z14->read() << 5;
-=======
 	uint8_t data = m_z14->read() << 5;
->>>>>>> upstream/master
 
 	return data;
 }
@@ -745,11 +656,7 @@ READ8_MEMBER( abc99_device::z2_p2_r )
 //  z2_t0_r -
 //-------------------------------------------------
 
-<<<<<<< HEAD
-READ8_MEMBER( abc99_device::z2_t0_r )
-=======
 READ_LINE_MEMBER( abc99_device::z2_t0_r )
->>>>>>> upstream/master
 {
 	return 1; // 0=mouse connected, 1=no mouse
 }
@@ -759,11 +666,7 @@ READ_LINE_MEMBER( abc99_device::z2_t0_r )
 //  z2_t1_r -
 //-------------------------------------------------
 
-<<<<<<< HEAD
-READ8_MEMBER( abc99_device::z2_t1_r )
-=======
 READ_LINE_MEMBER( abc99_device::z2_t1_r )
->>>>>>> upstream/master
 {
 	return m_t1_z2;
 }
@@ -790,11 +693,7 @@ READ8_MEMBER( abc99_device::z5_p1_r )
 
 	*/
 
-<<<<<<< HEAD
-	UINT8 data = 0;
-=======
 	uint8_t data = 0;
->>>>>>> upstream/master
 
 	// mouse buttons
 	data |= (m_mouseb->read() & 0x07) << 4;

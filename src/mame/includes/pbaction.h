@@ -6,11 +6,8 @@
 
 *************************************************************************/
 
-<<<<<<< HEAD
-=======
 #include "machine/gen_latch.h"
 
->>>>>>> upstream/master
 class pbaction_state : public driver_device
 {
 public:
@@ -26,17 +23,6 @@ public:
 		m_audiocpu(*this, "audiocpu"),
 		m_gfxdecode(*this, "gfxdecode"),
 		m_palette(*this, "palette"),
-<<<<<<< HEAD
-		m_decrypted_opcodes(*this, "decrypted_opcodes") { }
-
-	/* memory pointers */
-	required_shared_ptr<UINT8> m_videoram;
-	required_shared_ptr<UINT8> m_videoram2;
-	required_shared_ptr<UINT8> m_colorram;
-	required_shared_ptr<UINT8> m_colorram2;
-	required_shared_ptr<UINT8> m_work_ram;
-	required_shared_ptr<UINT8> m_spriteram;
-=======
 		m_soundlatch(*this, "soundlatch"),
 		m_decrypted_opcodes(*this, "decrypted_opcodes") { }
 
@@ -47,7 +33,6 @@ public:
 	required_shared_ptr<uint8_t> m_colorram2;
 	required_shared_ptr<uint8_t> m_work_ram;
 	required_shared_ptr<uint8_t> m_spriteram;
->>>>>>> upstream/master
 
 	/* video-related */
 	tilemap_t  *m_bg_tilemap;
@@ -59,16 +44,10 @@ public:
 	required_device<cpu_device> m_audiocpu;
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
-<<<<<<< HEAD
-	optional_shared_ptr<UINT8> m_decrypted_opcodes;
-
-	UINT8      m_nmi_mask;
-=======
 	required_device<generic_latch_8_device> m_soundlatch;
 	optional_shared_ptr<uint8_t> m_decrypted_opcodes;
 
 	uint8_t      m_nmi_mask;
->>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(pbaction_sh_command_w);
 	DECLARE_WRITE8_MEMBER(nmi_mask_w);
 	DECLARE_READ8_MEMBER(pbactio3_prot_kludge_r);
@@ -79,22 +58,12 @@ public:
 	DECLARE_WRITE8_MEMBER(pbaction_scroll_w);
 	DECLARE_WRITE8_MEMBER(pbaction_flipscreen_w);
 	DECLARE_DRIVER_INIT(pbactio3);
-<<<<<<< HEAD
-	DECLARE_DRIVER_INIT(pbactio4);
-	TILE_GET_INFO_MEMBER(get_bg_tile_info);
-	TILE_GET_INFO_MEMBER(get_fg_tile_info);
-	virtual void machine_start();
-	virtual void machine_reset();
-	virtual void video_start();
-	UINT32 screen_update_pbaction(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	TILE_GET_INFO_MEMBER(get_bg_tile_info);
 	TILE_GET_INFO_MEMBER(get_fg_tile_info);
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
 	virtual void video_start() override;
 	uint32_t screen_update_pbaction(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	INTERRUPT_GEN_MEMBER(pbaction_interrupt);
 	INTERRUPT_GEN_MEMBER(vblank_irq);
 	void draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect );

@@ -58,36 +58,13 @@
 */
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "debugger.h"
-#include "avr8.h"
-=======
 #include "avr8.h"
 #include "debugger.h"
->>>>>>> upstream/master
 
 #define VERBOSE_LEVEL   (0)
 
 #define ENABLE_VERBOSE_LOG (0)
 
-<<<<<<< HEAD
-#if ENABLE_VERBOSE_LOG
-INLINE void ATTR_PRINTF(3,4) verboselog(UINT16 pc, int n_level, const char *s_fmt, ...)
-{
-	if( VERBOSE_LEVEL >= n_level )
-	{
-		va_list v;
-		char buf[ 32768 ];
-		va_start( v, s_fmt );
-		vsprintf( buf, s_fmt, v );
-		va_end( v );
-		logerror( "%05x: %s", pc << 1, buf );
-	}
-}
-#else
-#define verboselog(x,y,z, ...)
-#endif
-=======
 static inline void ATTR_PRINTF(3, 4) verboselogout(device_t &dev, uint16_t pc, const char *s_fmt, ...)
 {
 	va_list v;
@@ -100,7 +77,6 @@ static inline void ATTR_PRINTF(3, 4) verboselogout(device_t &dev, uint16_t pc, c
 
 #define verboselog(x,y,...) do { if (ENABLE_VERBOSE_LOG && (VERBOSE_LEVEL >= y)) verboselogout(*this, x, __VA_ARGS__); } while (false)
 
->>>>>>> upstream/master
 
 //**************************************************************************
 //  ENUMS AND MACROS
@@ -191,11 +167,7 @@ enum
 	WGM5_FAST_PWM_OCR
 };
 
-<<<<<<< HEAD
-//static const char avr8_reg_name[4] = { 'A', 'B', 'C', 'D' };
-=======
 static const char avr8_reg_name[4] = { 'A', 'B', 'C', 'D' };
->>>>>>> upstream/master
 
 #define SREG_R(b) ((m_r[AVR8_REGIDX_SREG] & (1 << (b))) >> (b))
 #define SREG_W(b,v) m_r[AVR8_REGIDX_SREG] = (m_r[AVR8_REGIDX_SREG] & ~(1 << (b))) | ((v) << (b))
@@ -213,11 +185,7 @@ static const char avr8_reg_name[4] = { 'A', 'B', 'C', 'D' };
 #define KCONST6(op)     ((((op) >> 2) & 0x0030) | ((op) & 0x000f))
 #define KCONST7(op)     (((op) >> 3) & 0x007f)
 #define KCONST8(op)     ((((op) >> 4) & 0x00f0) | ((op) & 0x000f))
-<<<<<<< HEAD
-#define KCONST22(op)    (((((UINT32)(op) >> 3) & 0x003e) | ((UINT32)(op) & 0x0001)) << 16)
-=======
 #define KCONST22(op)    (((((uint32_t)(op) >> 3) & 0x003e) | ((uint32_t)(op) & 0x0001)) << 16)
->>>>>>> upstream/master
 #define QCONST6(op)     ((((op) >> 8) & 0x0020) | (((op) >> 7) & 0x0018) | ((op) & 0x0007))
 #define ACONST5(op)     (((op) >> 3) & 0x001f)
 #define ACONST6(op)     ((((op) >> 5) & 0x0030) | ((op) & 0x000f))
@@ -595,17 +563,10 @@ static const char avr8_reg_name[4] = { 'A', 'B', 'C', 'D' };
 //  DEVICE INTERFACE
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type ATMEGA88 = &device_creator<atmega88_device>;
-const device_type ATMEGA644 = &device_creator<atmega644_device>;
-const device_type ATMEGA1280 = &device_creator<atmega1280_device>;
-const device_type ATMEGA2560 = &device_creator<atmega2560_device>;
-=======
 DEFINE_DEVICE_TYPE(ATMEGA88,   atmega88_device,   "atmega88",   "ATmega88")
 DEFINE_DEVICE_TYPE(ATMEGA644,  atmega644_device,  "atmega644",  "ATmega644")
 DEFINE_DEVICE_TYPE(ATMEGA1280, atmega1280_device, "atmega1280", "ATmega1280")
 DEFINE_DEVICE_TYPE(ATMEGA2560, atmega2560_device, "atmega2560", "ATmega2560")
->>>>>>> upstream/master
 
 //**************************************************************************
 //  INTERNAL ADDRESS MAP
@@ -631,13 +592,8 @@ ADDRESS_MAP_END
 //  atmega88_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-atmega88_device::atmega88_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: avr8_device(mconfig, "ATMEGA88", tag, owner, clock, ATMEGA88, 0x0fff, ADDRESS_MAP_NAME(atmega88_internal_map), CPU_TYPE_ATMEGA88, "atmega88", __FILE__)
-=======
 atmega88_device::atmega88_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: avr8_device(mconfig, tag, owner, clock, ATMEGA88, 0x0fff, ADDRESS_MAP_NAME(atmega88_internal_map), CPU_TYPE_ATMEGA88)
->>>>>>> upstream/master
 {
 }
 
@@ -645,13 +601,8 @@ atmega88_device::atmega88_device(const machine_config &mconfig, const char *tag,
 //  atmega644_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-atmega644_device::atmega644_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: avr8_device(mconfig, "ATMEGA644", tag, owner, clock, ATMEGA644, 0xffff, ADDRESS_MAP_NAME(atmega644_internal_map), CPU_TYPE_ATMEGA644, "atmega644", __FILE__)
-=======
 atmega644_device::atmega644_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: avr8_device(mconfig, tag, owner, clock, ATMEGA644, 0xffff, ADDRESS_MAP_NAME(atmega644_internal_map), CPU_TYPE_ATMEGA644)
->>>>>>> upstream/master
 {
 }
 
@@ -659,13 +610,8 @@ atmega644_device::atmega644_device(const machine_config &mconfig, const char *ta
 //  atmega1280_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-atmega1280_device::atmega1280_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: avr8_device(mconfig, "ATMEGA1280", tag, owner, clock, ATMEGA1280, 0x1ffff, ADDRESS_MAP_NAME(atmega1280_internal_map), CPU_TYPE_ATMEGA1280, "atmega1280", __FILE__)
-=======
 atmega1280_device::atmega1280_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: avr8_device(mconfig, tag, owner, clock, ATMEGA1280, 0x1ffff, ADDRESS_MAP_NAME(atmega1280_internal_map), CPU_TYPE_ATMEGA1280)
->>>>>>> upstream/master
 {
 }
 
@@ -673,13 +619,8 @@ atmega1280_device::atmega1280_device(const machine_config &mconfig, const char *
 //  atmega2560_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-atmega2560_device::atmega2560_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: avr8_device(mconfig, "ATMEGA2560", tag, owner, clock, ATMEGA2560, 0x1ffff, ADDRESS_MAP_NAME(atmega2560_internal_map), CPU_TYPE_ATMEGA2560, "atmega2560", __FILE__)
-=======
 atmega2560_device::atmega2560_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: avr8_device(mconfig, tag, owner, clock, ATMEGA2560, 0x1ffff, ADDRESS_MAP_NAME(atmega2560_internal_map), CPU_TYPE_ATMEGA2560)
->>>>>>> upstream/master
 {
 }
 
@@ -687,28 +628,6 @@ atmega2560_device::atmega2560_device(const machine_config &mconfig, const char *
 //  avr8_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-avr8_device::avr8_device(const machine_config &mconfig, const char *name, const char *tag, device_t *owner, UINT32 clock, const device_type type, UINT32 addr_mask, address_map_constructor internal_map, UINT8 cpu_type, const char *shortname, const char *source)
-	: cpu_device(mconfig, type, name, tag, owner, clock, shortname, source),
-		m_shifted_pc(0),
-		m_program_config("program", ENDIANNESS_LITTLE, 8, 22),
-		m_data_config("data", ENDIANNESS_LITTLE, 8, 16, 0, internal_map),
-		m_io_config("io", ENDIANNESS_LITTLE, 8, 4),
-		m_eeprom_tag(NULL),
-		m_eeprom(NULL),
-		m_cpu_type(cpu_type),
-		m_lfuses(0x62),
-		m_hfuses(0x99),
-		m_efuses(0xFF),
-		m_lock_bits(0xFF),
-		m_pc(0),
-		m_spi_active(false),
-		m_spi_prescale(0),
-		m_spi_prescale_count(0),
-		m_addr_mask(addr_mask),
-		m_interrupt_pending(false),
-		m_elapsed_cycles(0)
-=======
 avr8_device::avr8_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock, const device_type type, uint32_t addr_mask, address_map_constructor internal_map, uint8_t cpu_type)
 	: cpu_device(mconfig, type, tag, owner, clock)
 	, m_shifted_pc(0)
@@ -728,7 +647,6 @@ avr8_device::avr8_device(const machine_config &mconfig, const char *tag, device_
 	, m_addr_mask(addr_mask)
 	, m_interrupt_pending(false)
 	, m_elapsed_cycles(0)
->>>>>>> upstream/master
 {
 	// Allocate & setup
 
@@ -745,11 +663,7 @@ avr8_device::avr8_device(const machine_config &mconfig, const char *tag, device_
 //  static_set_low_fuses
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void avr8_device::set_low_fuses(const UINT8 byte)
-=======
 void avr8_device::set_low_fuses(const uint8_t byte)
->>>>>>> upstream/master
 {
 	m_lfuses = byte;
 }
@@ -758,11 +672,7 @@ void avr8_device::set_low_fuses(const uint8_t byte)
 //  static_set_high_fuses
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void avr8_device::set_high_fuses(const UINT8 byte)
-=======
 void avr8_device::set_high_fuses(const uint8_t byte)
->>>>>>> upstream/master
 {
 	m_hfuses = byte;
 }
@@ -771,11 +681,7 @@ void avr8_device::set_high_fuses(const uint8_t byte)
 //  static_set_extended_fuses
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void avr8_device::set_extended_fuses(const UINT8 byte)
-=======
 void avr8_device::set_extended_fuses(const uint8_t byte)
->>>>>>> upstream/master
 {
 	m_efuses = byte;
 }
@@ -784,11 +690,7 @@ void avr8_device::set_extended_fuses(const uint8_t byte)
 //  static_set_lock_bits
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void avr8_device::set_lock_bits(const UINT8 byte)
-=======
 void avr8_device::set_lock_bits(const uint8_t byte)
->>>>>>> upstream/master
 {
 	m_lock_bits = byte;
 }
@@ -798,15 +700,9 @@ void avr8_device::set_lock_bits(const uint8_t byte)
 //  instruction
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void avr8_device::unimplemented_opcode(UINT32 op)
-{
-//  debugger_break(machine());
-=======
 void avr8_device::unimplemented_opcode(uint32_t op)
 {
 //  machine().debug_break();
->>>>>>> upstream/master
 	fatalerror("AVR8: unknown opcode (%08x) at %08x\n", op, m_shifted_pc);
 }
 
@@ -816,11 +712,7 @@ void avr8_device::unimplemented_opcode(uint32_t op)
 //  bytes long
 //-------------------------------------------------
 
-<<<<<<< HEAD
-inline bool avr8_device::is_long_opcode(UINT16 op)
-=======
 inline bool avr8_device::is_long_opcode(uint16_t op)
->>>>>>> upstream/master
 {
 	if((op & 0xf000) == 0x9000)
 	{
@@ -856,10 +748,7 @@ void avr8_device::device_start()
 
 	// register our state for the debugger
 	state_add(STATE_GENPC,     "GENPC",     m_shifted_pc).noshow();
-<<<<<<< HEAD
-=======
 	state_add(STATE_GENPCBASE, "CURPC",     m_shifted_pc).noshow();
->>>>>>> upstream/master
 	state_add(STATE_GENFLAGS,  "GENFLAGS",  m_r[AVR8_REGIDX_SREG]).callimport().callexport().formatstr("%8s").noshow();
 	state_add(AVR8_SREG,       "STATUS",    m_r[AVR8_REGIDX_SREG]).mask(0xff);
 	state_add(AVR8_PC,         "PC",        m_shifted_pc).mask(m_addr_mask);
@@ -931,11 +820,6 @@ void avr8_device::device_start()
 
 	// set our instruction counter
 	m_icountptr = &m_icount;
-<<<<<<< HEAD
-
-	m_eeprom = machine().root_device().memregion(m_eeprom_tag)->base();
-=======
->>>>>>> upstream/master
 }
 
 //-------------------------------------------------
@@ -965,15 +849,9 @@ void avr8_device::device_reset()
 	logerror("AVR Boot loader section size: %d words\n", m_boot_size);
 	}
 
-<<<<<<< HEAD
-	for (int i = 0; i < 0x200; i++)
-	{
-		m_r[i] = 0;
-=======
 	for (auto & elem : m_r)
 	{
 		elem = 0;
->>>>>>> upstream/master
 	}
 
 	m_spi_active = false;
@@ -994,27 +872,6 @@ void avr8_device::device_reset()
 
 //-------------------------------------------------
 //  memory_space_config - return the configuration
-<<<<<<< HEAD
-//  of the specified address space, or NULL if
-//  the space doesn't exist
-//-------------------------------------------------
-
-const address_space_config *avr8_device::memory_space_config(address_spacenum spacenum) const
-{
-	if (spacenum == AS_PROGRAM)
-	{
-		return &m_program_config;
-	}
-	else if (spacenum == AS_DATA)
-	{
-		return &m_data_config;
-	}
-	else if (spacenum == AS_IO)
-	{
-		return &m_io_config;
-	}
-	return NULL;
-=======
 //  of the specified address space, or nullptr if
 //  the space doesn't exist
 //-------------------------------------------------
@@ -1026,7 +883,6 @@ device_memory_interface::space_config_vector avr8_device::memory_space_config() 
 		std::make_pair(AS_DATA,    &m_data_config),
 		std::make_pair(AS_IO,      &m_io_config)
 	};
->>>>>>> upstream/master
 }
 
 
@@ -1035,20 +891,12 @@ device_memory_interface::space_config_vector avr8_device::memory_space_config() 
 //  for the debugger
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void avr8_device::state_string_export(const device_state_entry &entry, std::string &str)
-=======
 void avr8_device::state_string_export(const device_state_entry &entry, std::string &str) const
->>>>>>> upstream/master
 {
 	switch (entry.index())
 	{
 		case STATE_GENFLAGS:
-<<<<<<< HEAD
-			strprintf(str, "%c%c%c%c%c%c%c%c",
-=======
 			str = string_format("%c%c%c%c%c%c%c%c",
->>>>>>> upstream/master
 				(m_r[AVR8_REGIDX_SREG] & 0x80) ? 'I' : '-',
 				(m_r[AVR8_REGIDX_SREG] & 0x40) ? 'T' : '-',
 				(m_r[AVR8_REGIDX_SREG] & 0x20) ? 'H' : '-',
@@ -1067,11 +915,7 @@ void avr8_device::state_string_export(const device_state_entry &entry, std::stri
 //  of the shortest instruction, in bytes
 //-------------------------------------------------
 
-<<<<<<< HEAD
-UINT32 avr8_device::disasm_min_opcode_bytes() const
-=======
 uint32_t avr8_device::disasm_min_opcode_bytes() const
->>>>>>> upstream/master
 {
 	return 2;
 }
@@ -1082,11 +926,7 @@ uint32_t avr8_device::disasm_min_opcode_bytes() const
 //  of the longest instruction, in bytes
 //-------------------------------------------------
 
-<<<<<<< HEAD
-UINT32 avr8_device::disasm_max_opcode_bytes() const
-=======
 uint32_t avr8_device::disasm_max_opcode_bytes() const
->>>>>>> upstream/master
 {
 	return 4;
 }
@@ -1097,17 +937,10 @@ uint32_t avr8_device::disasm_max_opcode_bytes() const
 //  helper function
 //-------------------------------------------------
 
-<<<<<<< HEAD
-offs_t avr8_device::disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options)
-{
-	extern CPU_DISASSEMBLE( avr8 );
-	return CPU_DISASSEMBLE_NAME(avr8)(this, buffer, pc, oprom, opram, options);
-=======
 offs_t avr8_device::disasm_disassemble(std::ostream &stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, uint32_t options)
 {
 	extern CPU_DISASSEMBLE( avr8 );
 	return CPU_DISASSEMBLE_NAME(avr8)(this, stream, pc, oprom, opram, options);
->>>>>>> upstream/master
 }
 
 
@@ -1115,30 +948,18 @@ offs_t avr8_device::disasm_disassemble(std::ostream &stream, offs_t pc, const ui
 //  MEMORY ACCESSORS
 //**************************************************************************
 
-<<<<<<< HEAD
-inline void avr8_device::push(UINT8 val)
-{
-	UINT16 sp = SPREG;
-=======
 inline void avr8_device::push(uint8_t val)
 {
 	uint16_t sp = SPREG;
->>>>>>> upstream/master
 	m_data->write_byte(sp, val);
 	sp--;
 	m_r[AVR8_REGIDX_SPL] = sp & 0x00ff;
 	m_r[AVR8_REGIDX_SPH] = (sp >> 8) & 0x00ff;
 }
 
-<<<<<<< HEAD
-inline UINT8 avr8_device::pop()
-{
-	UINT16 sp = SPREG;
-=======
 inline uint8_t avr8_device::pop()
 {
 	uint16_t sp = SPREG;
->>>>>>> upstream/master
 	sp++;
 	m_r[AVR8_REGIDX_SPL] = sp & 0x00ff;
 	m_r[AVR8_REGIDX_SPH] = (sp >> 8) & 0x00ff;
@@ -1149,11 +970,7 @@ inline uint8_t avr8_device::pop()
 //  IRQ HANDLING
 //**************************************************************************
 
-<<<<<<< HEAD
-void avr8_device::set_irq_line(UINT16 vector, int state)
-=======
 void avr8_device::set_irq_line(uint16_t vector, int state)
->>>>>>> upstream/master
 {
 	// Horrible hack, not accurate
 	if(state)
@@ -1176,19 +993,11 @@ void avr8_device::set_irq_line(uint16_t vector, int state)
 class CInterruptCondition
 {
 	public:
-<<<<<<< HEAD
-		UINT8 m_intindex;
-		UINT8 m_intreg;
-		UINT8 m_intmask;
-		UINT8 m_regindex;
-		UINT8 m_regmask;
-=======
 		uint8_t m_intindex;
 		uint8_t m_intreg;
 		uint8_t m_intmask;
 		uint8_t m_regindex;
 		uint8_t m_regmask;
->>>>>>> upstream/master
 };
 
 static const CInterruptCondition s_int_conditions[AVR8_INTIDX_COUNT] =
@@ -1303,11 +1112,7 @@ void avr8_device::timer_tick(int cycles)
 			m_spi_prescale_count++;
 			if (m_spi_prescale_count >= m_spi_prescale)
 			{
-<<<<<<< HEAD
-				UINT8 out_bit = (m_r[AVR8_REGIDX_SPDR] & (1 << m_spi_prescale_countdown)) >> m_spi_prescale_countdown;
-=======
 				uint8_t out_bit = (m_r[AVR8_REGIDX_SPDR] & (1 << m_spi_prescale_countdown)) >> m_spi_prescale_countdown;
->>>>>>> upstream/master
 				m_spi_prescale_countdown--;
 				m_io->write_byte(AVR8_IO_PORTB, (m_r[AVR8_REGIDX_PORTB] &~ AVR8_PORTB_MOSI) | (out_bit ? AVR8_PORTB_MOSI : 0));
 				m_r[AVR8_REGIDX_PORTB] = (m_r[AVR8_REGIDX_PORTB] &~ AVR8_PORTB_MOSI) | (out_bit ? AVR8_PORTB_MOSI : 0);
@@ -1337,15 +1142,9 @@ void avr8_device::timer_tick(int cycles)
 	}
 }
 
-<<<<<<< HEAD
-//  UINT8 ocr0[2] = { m_r[AVR8_REGIDX_OCR0A], m_r[AVR8_REGIDX_OCR0B] };
-//TODO  UINT8 ocf0[2] = { (1 << AVR8_TIFR0_OCF0A_SHIFT), (1 << AVR8_TIFR4_OCF0B_SHIFT) };
-//TODO  UINT8 int0[2] = { AVR8_INTIDX_OCF0A, AVR8_INTIDX_OCF0B };
-=======
 //  uint8_t ocr0[2] = { m_r[AVR8_REGIDX_OCR0A], m_r[AVR8_REGIDX_OCR0B] };
 //TODO  uint8_t ocf0[2] = { (1 << AVR8_TIFR0_OCF0A_SHIFT), (1 << AVR8_TIFR4_OCF0B_SHIFT) };
 //TODO  uint8_t int0[2] = { AVR8_INTIDX_OCF0A, AVR8_INTIDX_OCF0B };
->>>>>>> upstream/master
 
 #define LOG_TIMER_0 0
 #define LOG_TIMER_5 0
@@ -1357,13 +1156,8 @@ void avr8_device::timer0_tick()
 	printf("AVR8_TCCR0A_COM0B: %d\n", AVR8_TCCR0A_COM0B);
 #endif
 
-<<<<<<< HEAD
-	UINT8 count = m_r[AVR8_REGIDX_TCNT0];
-	INT32 increment = m_timer_increment[0];
-=======
 	uint8_t count = m_r[AVR8_REGIDX_TCNT0];
 	int32_t increment = m_timer_increment[0];
->>>>>>> upstream/master
 
 	switch(AVR8_WGM0)
 	{
@@ -1436,19 +1230,11 @@ void avr8_device::timer0_tick()
 	m_r[AVR8_REGIDX_TCNT0] = count & 0xff;
 }
 
-<<<<<<< HEAD
-void avr8_device::changed_tccr0a(UINT8 data)
-{
-	UINT8 oldtccr = AVR8_TCCR0A;
-	UINT8 newtccr = data;
-	UINT8 changed = newtccr ^ oldtccr;
-=======
 void avr8_device::changed_tccr0a(uint8_t data)
 {
 	uint8_t oldtccr = AVR8_TCCR0A;
 	uint8_t newtccr = data;
 	uint8_t changed = newtccr ^ oldtccr;
->>>>>>> upstream/master
 
 	AVR8_TCCR0A = data;
 
@@ -1464,15 +1250,6 @@ void avr8_device::timer0_force_output_compare(int reg)
 	verboselog(m_pc, 0, "timer0_force_output_compare: TODO; should be forcing OC0%c\n", avr8_reg_name[reg]);
 }
 
-<<<<<<< HEAD
-void avr8_device::changed_tccr0b(UINT8 data)
-{
-	if (VERBOSE_LEVEL) printf("changed_tccr0b: data=0x%02X\n", data);
-
-	UINT8 oldtccr = AVR8_TCCR0B;
-	UINT8 newtccr = data;
-	UINT8 changed = newtccr ^ oldtccr;
-=======
 void avr8_device::changed_tccr0b(uint8_t data)
 {
 	if (VERBOSE_LEVEL) printf("changed_tccr0b: data=0x%02X\n", data);
@@ -1480,7 +1257,6 @@ void avr8_device::changed_tccr0b(uint8_t data)
 	uint8_t oldtccr = AVR8_TCCR0B;
 	uint8_t newtccr = data;
 	uint8_t changed = newtccr ^ oldtccr;
->>>>>>> upstream/master
 
 	AVR8_TCCR0B = data;
 
@@ -1507,11 +1283,7 @@ void avr8_device::changed_tccr0b(uint8_t data)
 	}
 }
 
-<<<<<<< HEAD
-void avr8_device::update_ocr0(UINT8 newval, UINT8 reg)
-=======
 void avr8_device::update_ocr0(uint8_t newval, uint8_t reg)
->>>>>>> upstream/master
 {
 	m_r[(reg == AVR8_REG_A) ? AVR8_REGIDX_OCR0A : AVR8_REGIDX_OCR0B] = newval;
 }
@@ -1522,22 +1294,6 @@ void avr8_device::timer1_tick()
 {
 	/* TODO: Handle comparison, setting OC1x pins, detection of BOTTOM and TOP */
 
-<<<<<<< HEAD
-	UINT16 count = (m_r[AVR8_REGIDX_TCNT1H] << 8) | m_r[AVR8_REGIDX_TCNT1L];
-	INT32 wgm1 = ((m_r[AVR8_REGIDX_TCCR1B] & AVR8_TCCR1B_WGM1_32_MASK) >> 1) |
-					(m_r[AVR8_REGIDX_TCCR1A] & AVR8_TCCR1A_WGM1_10_MASK);
-
-	// Cache things in array form to avoid a compare+branch inside a potentially high-frequency timer
-	//UINT8 compare_mode[2] = { (m_r[AVR8_REGIDX_TCCR1A] & AVR8_TCCR1A_COM1A_MASK) >> AVR8_TCCR1A_COM1A_SHIFT,
-								//(m_r[AVR8_REGIDX_TCCR1A] & AVR8_TCCR1A_COM1B_MASK) >> AVR8_TCCR1A_COM1B_SHIFT };
-	UINT16 ocr1[2] = { (m_r[AVR8_REGIDX_OCR1AH] << 8) | m_r[AVR8_REGIDX_OCR1AL],
-						(m_r[AVR8_REGIDX_OCR1BH] << 8) | m_r[AVR8_REGIDX_OCR1BL] };
-	UINT8 ocf1[2] = { (1 << AVR8_TIFR1_OCF1A_SHIFT), (1 << AVR8_TIFR1_OCF1B_SHIFT) };
-	UINT8 int1[2] = { AVR8_INTIDX_OCF1A, AVR8_INTIDX_OCF1B };
-	INT32 increment = m_timer_increment[1];
-
-	for(INT32 reg = AVR8_REG_A; reg <= AVR8_REG_B; reg++)
-=======
 	uint16_t count = (m_r[AVR8_REGIDX_TCNT1H] << 8) | m_r[AVR8_REGIDX_TCNT1L];
 	int32_t wgm1 = ((m_r[AVR8_REGIDX_TCCR1B] & AVR8_TCCR1B_WGM1_32_MASK) >> 1) |
 					(m_r[AVR8_REGIDX_TCCR1A] & AVR8_TCCR1A_WGM1_10_MASK);
@@ -1552,7 +1308,6 @@ void avr8_device::timer1_tick()
 	int32_t increment = m_timer_increment[1];
 
 	for(int32_t reg = AVR8_REG_A; reg <= AVR8_REG_B; reg++)
->>>>>>> upstream/master
 	{
 		switch(wgm1)
 		{
@@ -1642,15 +1397,9 @@ void avr8_device::timer1_tick()
 	m_r[AVR8_REGIDX_TCNT1L] = count & 0xff;
 }
 
-<<<<<<< HEAD
-void avr8_device::update_timer_waveform_gen_mode(UINT8 t, UINT8 mode)
-{
-	INT32 oc_val = -1, ic_val = -1;
-=======
 void avr8_device::update_timer_waveform_gen_mode(uint8_t t, uint8_t mode)
 {
 	int32_t oc_val = -1, ic_val = -1;
->>>>>>> upstream/master
 
 	switch (t){
 	case 0:
@@ -1679,15 +1428,9 @@ void avr8_device::update_timer_waveform_gen_mode(uint8_t t, uint8_t mode)
 		break;
 	}
 
-<<<<<<< HEAD
-	INT32 top_values_02[8] = {0xFF, 0xFF, oc_val, 0xFF, -1, oc_val, -1, oc_val}; //table 20-8
-
-	INT32 top_values_1345[16] = {0xFFFF, 0x00FF, 0x01FF, 0x03FF,
-=======
 	int32_t top_values_02[8] = {0xFF, 0xFF, oc_val, 0xFF, -1, oc_val, -1, oc_val}; //table 20-8
 
 	int32_t top_values_1345[16] = {0xFFFF, 0x00FF, 0x01FF, 0x03FF,
->>>>>>> upstream/master
 							oc_val, 0x00FF, 0x01FF, 0x03FF,
 							ic_val, oc_val, ic_val, oc_val,
 							ic_val, -1,     ic_val, oc_val}; //table 17-2
@@ -1711,19 +1454,11 @@ void avr8_device::update_timer_waveform_gen_mode(uint8_t t, uint8_t mode)
 	}
 }
 
-<<<<<<< HEAD
-void avr8_device::changed_tccr1a(UINT8 data)
-{
-	UINT8 oldtccr = AVR8_TCCR1A;
-	UINT8 newtccr = data;
-	UINT8 changed = newtccr ^ oldtccr;
-=======
 void avr8_device::changed_tccr1a(uint8_t data)
 {
 	uint8_t oldtccr = AVR8_TCCR1A;
 	uint8_t newtccr = data;
 	uint8_t changed = newtccr ^ oldtccr;
->>>>>>> upstream/master
 
 	m_r[AVR8_REGIDX_TCCR1A] = newtccr;
 
@@ -1744,15 +1479,6 @@ void avr8_device::update_timer1_input_edge_select()
 	//verboselog(m_pc, 0, "update_timer1_input_edge_select: TODO; Clocking edge is %s\n", "test");
 }
 
-<<<<<<< HEAD
-void avr8_device::changed_tccr1b(UINT8 data)
-{
-	if (VERBOSE_LEVEL) printf("changed_tccr1b: data=0x%02X\n", data);
-
-	UINT8 oldtccr = AVR8_TCCR1B;
-	UINT8 newtccr = data;
-	UINT8 changed = newtccr ^ oldtccr;
-=======
 void avr8_device::changed_tccr1b(uint8_t data)
 {
 	if (VERBOSE_LEVEL) printf("changed_tccr1b: data=0x%02X\n", data);
@@ -1760,7 +1486,6 @@ void avr8_device::changed_tccr1b(uint8_t data)
 	uint8_t oldtccr = AVR8_TCCR1B;
 	uint8_t newtccr = data;
 	uint8_t changed = newtccr ^ oldtccr;
->>>>>>> upstream/master
 
 	m_r[AVR8_REGIDX_TCCR1B] = newtccr;
 
@@ -1787,21 +1512,12 @@ void avr8_device::changed_tccr1b(uint8_t data)
 	}
 }
 
-<<<<<<< HEAD
-void avr8_device::update_ocr1(UINT16 newval, UINT8 reg)
-{
-	UINT8 *p_reg_h = (reg == AVR8_REG_A) ? &m_r[AVR8_REGIDX_OCR1AH] : &m_r[AVR8_REGIDX_OCR1BH];
-	UINT8 *p_reg_l = (reg == AVR8_REG_A) ? &m_r[AVR8_REGIDX_OCR1AL] : &m_r[AVR8_REGIDX_OCR1BL];
-	*p_reg_h = (UINT8)(newval >> 8);
-	*p_reg_l = (UINT8)newval;
-=======
 void avr8_device::update_ocr1(uint16_t newval, uint8_t reg)
 {
 	uint8_t *p_reg_h = (reg == AVR8_REG_A) ? &m_r[AVR8_REGIDX_OCR1AH] : &m_r[AVR8_REGIDX_OCR1BH];
 	uint8_t *p_reg_l = (reg == AVR8_REG_A) ? &m_r[AVR8_REGIDX_OCR1AL] : &m_r[AVR8_REGIDX_OCR1BL];
 	*p_reg_h = (uint8_t)(newval >> 8);
 	*p_reg_l = (uint8_t)newval;
->>>>>>> upstream/master
 
 	// Nothing needs to be done? All handled in timer callback
 }
@@ -1810,20 +1526,6 @@ void avr8_device::update_ocr1(uint16_t newval, uint8_t reg)
 
 void avr8_device::timer2_tick()
 {
-<<<<<<< HEAD
-	UINT16 count = m_r[AVR8_REGIDX_TCNT2];
-	INT32 wgm2 = ((m_r[AVR8_REGIDX_TCCR2B] & AVR8_TCCR2B_WGM2_2_MASK) >> 1) |
-					(m_r[AVR8_REGIDX_TCCR2A] & AVR8_TCCR2A_WGM2_10_MASK);
-
-	// Cache things in array form to avoid a compare+branch inside a potentially high-frequency timer
-	//UINT8 compare_mode[2] = { (m_r[AVR8_REGIDX_TCCR2A] & AVR8_TCCR2A_COM2A_MASK) >> AVR8_TCCR2A_COM2A_SHIFT,
-								//(m_r[AVR8_REGIDX_TCCR2A] & AVR8_TCCR2A_COM2B_MASK) >> AVR8_TCCR2A_COM2B_SHIFT };
-	UINT8 ocr2[2] = { m_r[AVR8_REGIDX_OCR2A], m_r[AVR8_REGIDX_OCR2B] };
-	UINT8 ocf2[2] = { (1 << AVR8_TIFR2_OCF2A_SHIFT), (1 << AVR8_TIFR2_OCF2B_SHIFT) };
-	INT32 increment = m_timer_increment[2];
-
-	for(INT32 reg = AVR8_REG_A; reg <= AVR8_REG_B; reg++)
-=======
 	uint16_t count = m_r[AVR8_REGIDX_TCNT2];
 	int32_t wgm2 = ((m_r[AVR8_REGIDX_TCCR2B] & AVR8_TCCR2B_WGM2_2_MASK) >> 1) |
 					(m_r[AVR8_REGIDX_TCCR2A] & AVR8_TCCR2A_WGM2_10_MASK);
@@ -1836,7 +1538,6 @@ void avr8_device::timer2_tick()
 	int32_t increment = m_timer_increment[2];
 
 	for(int32_t reg = AVR8_REG_A; reg <= AVR8_REG_B; reg++)
->>>>>>> upstream/master
 	{
 		switch(wgm2)
 		{
@@ -1915,19 +1616,11 @@ void avr8_device::timer2_tick()
 	update_interrupt(AVR8_INTIDX_TOV2);
 }
 
-<<<<<<< HEAD
-void avr8_device::changed_tccr2a(UINT8 data)
-{
-	UINT8 oldtccr = AVR8_TCCR2A;
-	UINT8 newtccr = data;
-	UINT8 changed = newtccr ^ oldtccr;
-=======
 void avr8_device::changed_tccr2a(uint8_t data)
 {
 	uint8_t oldtccr = AVR8_TCCR2A;
 	uint8_t newtccr = data;
 	uint8_t changed = newtccr ^ oldtccr;
->>>>>>> upstream/master
 
 	AVR8_TCCR2A = data;
 
@@ -1944,15 +1637,6 @@ void avr8_device::timer2_force_output_compare(int reg)
 	verboselog(m_pc, 0, "force_output_compare: TODO; should be forcing OC2%c\n", avr8_reg_name[reg]);
 }
 
-<<<<<<< HEAD
-void avr8_device::changed_tccr2b(UINT8 data)
-{
-	if (VERBOSE_LEVEL) printf("changed_tccr2b: data=0x%02X\n", data);
-
-	UINT8 oldtccr = AVR8_TCCR2B;
-	UINT8 newtccr = data;
-	UINT8 changed = newtccr ^ oldtccr;
-=======
 void avr8_device::changed_tccr2b(uint8_t data)
 {
 	if (VERBOSE_LEVEL) printf("changed_tccr2b: data=0x%02X\n", data);
@@ -1960,7 +1644,6 @@ void avr8_device::changed_tccr2b(uint8_t data)
 	uint8_t oldtccr = AVR8_TCCR2B;
 	uint8_t newtccr = data;
 	uint8_t changed = newtccr ^ oldtccr;
->>>>>>> upstream/master
 
 	AVR8_TCCR2B = data;
 
@@ -1987,11 +1670,7 @@ void avr8_device::changed_tccr2b(uint8_t data)
 	}
 }
 
-<<<<<<< HEAD
-void avr8_device::update_ocr2(UINT8 newval, UINT8 reg)
-=======
 void avr8_device::update_ocr2(uint8_t newval, uint8_t reg)
->>>>>>> upstream/master
 {
 	m_r[(reg == AVR8_REG_A) ? AVR8_REGIDX_OCR2A : AVR8_REGIDX_OCR2B] = newval;
 
@@ -2013,18 +1692,6 @@ void avr8_device::timer4_tick()
 //  printf("AVR8_WGM4: %d\n", AVR8_WGM4);
 //  printf("AVR8_TCCR4A_COM4B: %d\n", AVR8_TCCR4A_COM4B);
 
-<<<<<<< HEAD
-	UINT16 count = (m_r[AVR8_REGIDX_TCNT4H] << 8) | m_r[AVR8_REGIDX_TCNT4L];
-
-	// Cache things in array form to avoid a compare+branch inside a potentially high-frequency timer
-	//UINT8 compare_mode[2] = { (m_r[AVR8_REGIDX_TCCR1A] & AVR8_TCCR1A_COM1A_MASK) >> AVR8_TCCR1A_COM1A_SHIFT,
-								//(m_r[AVR8_REGIDX_TCCR1A] & AVR8_TCCR1A_COM1B_MASK) >> AVR8_TCCR1A_COM1B_SHIFT };
-	UINT16 ocr4[2] = { (m_r[AVR8_REGIDX_OCR4AH] << 8) | m_r[AVR8_REGIDX_OCR4AL],
-						(m_r[AVR8_REGIDX_OCR4BH] << 8) | m_r[AVR8_REGIDX_OCR4BL] };
-//TODO  UINT8 ocf4[2] = { (1 << AVR8_TIFR4_OCF4A_SHIFT), (1 << AVR8_TIFR4_OCF4B_SHIFT) };
-//TODO  UINT8 int4[2] = { AVR8_INTIDX_OCF4A, AVR8_INTIDX_OCF4B };
-	INT32 increment = m_timer_increment[4];
-=======
 	uint16_t count = (m_r[AVR8_REGIDX_TCNT4H] << 8) | m_r[AVR8_REGIDX_TCNT4L];
 
 	// Cache things in array form to avoid a compare+branch inside a potentially high-frequency timer
@@ -2035,7 +1702,6 @@ void avr8_device::timer4_tick()
 //TODO  uint8_t ocf4[2] = { (1 << AVR8_TIFR4_OCF4A_SHIFT), (1 << AVR8_TIFR4_OCF4B_SHIFT) };
 //TODO  uint8_t int4[2] = { AVR8_INTIDX_OCF4A, AVR8_INTIDX_OCF4B };
 	int32_t increment = m_timer_increment[4];
->>>>>>> upstream/master
 
 	switch(AVR8_WGM4)
 	{
@@ -2096,11 +1762,7 @@ void avr8_device::timer4_tick()
 			break;
 
 		default:
-<<<<<<< HEAD
-			verboselog(m_pc, 0, "update_timer4_compare_mode: Unknown waveform generation mode: %02x\n", wgm4);
-=======
 			verboselog(m_pc, 0, "update_timer4_compare_mode: Unknown waveform generation mode: %02x\n", AVR8_WGM4);
->>>>>>> upstream/master
 			break;
 	}
 
@@ -2109,11 +1771,7 @@ void avr8_device::timer4_tick()
 	m_r[AVR8_REGIDX_TCNT4L] = count & 0xff;
 }
 
-<<<<<<< HEAD
-void avr8_device::update_timer_clock_source(UINT8 t, UINT8 clock_select)
-=======
 void avr8_device::update_timer_clock_source(uint8_t t, uint8_t clock_select)
->>>>>>> upstream/master
 {
 	int prescale_values[8] = {0, 1, 8, 64, 256, 1024, -1, -1};
 	m_timer_prescale[t] = prescale_values[clock_select];
@@ -2129,38 +1787,22 @@ void avr8_device::update_timer_clock_source(uint8_t t, uint8_t clock_select)
 		m_timer_prescale_count[t] = m_timer_prescale[t] - 1;
 }
 
-<<<<<<< HEAD
-void avr8_device::changed_tccr3a(UINT8 data)
-=======
 void avr8_device::changed_tccr3a(uint8_t data)
->>>>>>> upstream/master
 {
 	//TODO: Implement-me
 //  AVR8_TCCR3A = data;
 }
 
-<<<<<<< HEAD
-void avr8_device::changed_tccr3b(UINT8 data)
-=======
 void avr8_device::changed_tccr3b(uint8_t data)
->>>>>>> upstream/master
 {
 	printf("IMPLEMENT-ME: changed_tccr4b: data=0x%02X\n", data);
 }
 
-<<<<<<< HEAD
-void avr8_device::changed_tccr3c(UINT8 data)
-{
-//  UINT8 oldtccr = AVR8_TCCR3C;
-//  UINT8 newtccr = data;
-//  UINT8 changed = newtccr ^ oldtccr;
-=======
 void avr8_device::changed_tccr3c(uint8_t data)
 {
 //  uint8_t oldtccr = AVR8_TCCR3C;
 //  uint8_t newtccr = data;
 //  uint8_t changed = newtccr ^ oldtccr;
->>>>>>> upstream/master
 	printf("IMPLEMENT-ME: changed_tccr3c: data=0x%02X\n", data);
 
 //  AVR8_TCCR3C = data;
@@ -2168,19 +1810,11 @@ void avr8_device::changed_tccr3c(uint8_t data)
 	//TODO: Implement-me
 }
 
-<<<<<<< HEAD
-void avr8_device::changed_tccr4a(UINT8 data)
-{
-	UINT8 oldtccr = AVR8_TCCR4A;
-	UINT8 newtccr = data;
-	UINT8 changed = newtccr ^ oldtccr;
-=======
 void avr8_device::changed_tccr4a(uint8_t data)
 {
 	uint8_t oldtccr = AVR8_TCCR4A;
 	uint8_t newtccr = data;
 	uint8_t changed = newtccr ^ oldtccr;
->>>>>>> upstream/master
 
 	AVR8_TCCR4A = data;
 
@@ -2190,15 +1824,6 @@ void avr8_device::changed_tccr4a(uint8_t data)
 	}
 }
 
-<<<<<<< HEAD
-void avr8_device::changed_tccr4b(UINT8 data)
-{
-	printf("changed_tccr4b: data=0x%02X\n", data);
-
-	UINT8 oldtccr = AVR8_TCCR4B;
-	UINT8 newtccr = data;
-	UINT8 changed = newtccr ^ oldtccr;
-=======
 void avr8_device::changed_tccr4b(uint8_t data)
 {
 	printf("changed_tccr4b: data=0x%02X\n", data);
@@ -2206,7 +1831,6 @@ void avr8_device::changed_tccr4b(uint8_t data)
 	uint8_t oldtccr = AVR8_TCCR4B;
 	uint8_t newtccr = data;
 	uint8_t changed = newtccr ^ oldtccr;
->>>>>>> upstream/master
 
 	AVR8_TCCR4B = data;
 
@@ -2233,19 +1857,11 @@ void avr8_device::changed_tccr4b(uint8_t data)
 	}
 }
 
-<<<<<<< HEAD
-void avr8_device::changed_tccr4c(UINT8 data)
-{
-//  UINT8 oldtccr = AVR8_TCCR4C;
-//  UINT8 newtccr = data;
-//  UINT8 changed = newtccr ^ oldtccr;
-=======
 void avr8_device::changed_tccr4c(uint8_t data)
 {
 //  uint8_t oldtccr = AVR8_TCCR4C;
 //  uint8_t newtccr = data;
 //  uint8_t changed = newtccr ^ oldtccr;
->>>>>>> upstream/master
 
 	AVR8_TCCR4C = data;
 
@@ -2262,13 +1878,8 @@ void avr8_device::timer5_tick()
 	printf("AVR8_TCCR5A_COM5B: %d\n", AVR8_TCCR5A_COM5B);
 #endif
 
-<<<<<<< HEAD
-	UINT16 count = (AVR8_TCNT5H << 8) + AVR8_TCNT5L;
-	INT32 increment = m_timer_increment[5];
-=======
 	uint16_t count = (AVR8_TCNT5H << 8) + AVR8_TCNT5L;
 	int32_t increment = m_timer_increment[5];
->>>>>>> upstream/master
 
 	switch(AVR8_WGM5)
 	{
@@ -2341,19 +1952,11 @@ void avr8_device::timer5_tick()
 	m_r[AVR8_REGIDX_TCNT5L] = count & 0xff;
 }
 
-<<<<<<< HEAD
-void avr8_device::changed_tccr5a(UINT8 data)
-{
-	UINT8 oldtccr = AVR8_TCCR5A;
-	UINT8 newtccr = data;
-	UINT8 changed = newtccr ^ oldtccr;
-=======
 void avr8_device::changed_tccr5a(uint8_t data)
 {
 	uint8_t oldtccr = AVR8_TCCR5A;
 	uint8_t newtccr = data;
 	uint8_t changed = newtccr ^ oldtccr;
->>>>>>> upstream/master
 
 	AVR8_TCCR5A = data;
 
@@ -2363,15 +1966,6 @@ void avr8_device::changed_tccr5a(uint8_t data)
 	}
 }
 
-<<<<<<< HEAD
-void avr8_device::changed_tccr5b(UINT8 data)
-{
-	printf("changed_tccr5b: data=0x%02X\n", data);
-
-	UINT8 oldtccr = AVR8_TCCR5B;
-	UINT8 newtccr = data;
-	UINT8 changed = newtccr ^ oldtccr;
-=======
 void avr8_device::changed_tccr5b(uint8_t data)
 {
 	printf("changed_tccr5b: data=0x%02X\n", data);
@@ -2379,7 +1973,6 @@ void avr8_device::changed_tccr5b(uint8_t data)
 	uint8_t oldtccr = AVR8_TCCR5B;
 	uint8_t newtccr = data;
 	uint8_t changed = newtccr ^ oldtccr;
->>>>>>> upstream/master
 
 	AVR8_TCCR5B = data;
 
@@ -2444,11 +2037,7 @@ void avr8_device::spi_update_clock_phase()
 	// TODO
 }
 
-<<<<<<< HEAD
-const UINT8 avr8_device::spi_clock_divisor[8] = { 4, 16, 64, 128, 2, 8, 32, 64 };
-=======
 const uint8_t avr8_device::spi_clock_divisor[8] = { 4, 16, 64, 128, 2, 8, 32, 64 };
->>>>>>> upstream/master
 
 void avr8_device::spi_update_clock_rate()
 {
@@ -2456,15 +2045,6 @@ void avr8_device::spi_update_clock_rate()
 	m_spi_prescale_count &= m_spi_prescale - 1;
 }
 
-<<<<<<< HEAD
-void avr8_device::change_spcr(UINT8 data)
-{
-	UINT8 oldspcr = AVR8_SPCR;
-	UINT8 newspcr = data;
-	UINT8 changed = newspcr ^ oldspcr;
-	UINT8 high_to_low = ~newspcr & oldspcr;
-	UINT8 low_to_high = newspcr & ~oldspcr;
-=======
 void avr8_device::change_spcr(uint8_t data)
 {
 	uint8_t oldspcr = AVR8_SPCR;
@@ -2472,7 +2052,6 @@ void avr8_device::change_spcr(uint8_t data)
 	uint8_t changed = newspcr ^ oldspcr;
 	uint8_t high_to_low = ~newspcr & oldspcr;
 	uint8_t low_to_high = newspcr & ~oldspcr;
->>>>>>> upstream/master
 
 	AVR8_SPCR = data;
 
@@ -2512,19 +2091,11 @@ void avr8_device::change_spcr(uint8_t data)
 	}
 }
 
-<<<<<<< HEAD
-void avr8_device::change_spsr(UINT8 data)
-{
-	UINT8 oldspsr = AVR8_SPSR;
-	UINT8 newspsr = data;
-	UINT8 changed = newspsr ^ oldspsr;
-=======
 void avr8_device::change_spsr(uint8_t data)
 {
 	uint8_t oldspsr = AVR8_SPSR;
 	uint8_t newspsr = data;
 	uint8_t changed = newspsr ^ oldspsr;
->>>>>>> upstream/master
 
 	AVR8_SPSR &= ~1;
 	AVR8_SPSR |= data & 1;
@@ -2713,22 +2284,14 @@ WRITE8_MEMBER( avr8_device::regs_w )
 
 			if (data & AVR8_EECR_EERE_MASK)
 			{
-<<<<<<< HEAD
-				UINT16 addr = (m_r[AVR8_REGIDX_EEARH] & AVR8_EEARH_MASK) << 8;
-=======
 				uint16_t addr = (m_r[AVR8_REGIDX_EEARH] & AVR8_EEARH_MASK) << 8;
->>>>>>> upstream/master
 				addr |= m_r[AVR8_REGIDX_EEARL];
 				m_r[AVR8_REGIDX_EEDR] = m_eeprom[addr];
 		if (VERBOSE_LEVEL) printf("EEPROM read @ 0x%04x data = 0x%02x\n", addr, m_eeprom[addr]);
 			}
 			if ((data & AVR8_EECR_EEPE_MASK) && (data & AVR8_EECR_EEMPE_MASK))
 			{
-<<<<<<< HEAD
-				UINT16 addr = (m_r[AVR8_REGIDX_EEARH] & AVR8_EEARH_MASK) << 8;
-=======
 				uint16_t addr = (m_r[AVR8_REGIDX_EEARH] & AVR8_EEARH_MASK) << 8;
->>>>>>> upstream/master
 				addr |= m_r[AVR8_REGIDX_EEARL];
 				m_eeprom[addr] = m_r[AVR8_REGIDX_EEDR];
 		if (VERBOSE_LEVEL) printf("EEPROM write @ 0x%04x data = 0x%02x ('%c')\n", addr, m_eeprom[addr], m_eeprom[addr]);
@@ -3341,11 +2904,7 @@ READ8_MEMBER( avr8_device::regs_r )
 
 		default:
 			printf("[%08X] AVR8: Unknown Register Read: 0x%03X\n", m_shifted_pc, offset);
-<<<<<<< HEAD
-//      debugger_break(machine());
-=======
 //          machine().debug_break();
->>>>>>> upstream/master
 			return 0;
 	}
 }
@@ -3360,11 +2919,7 @@ READ8_MEMBER( avr8_device::regs_r )
 //  cycles it takes for one instruction to execute
 //-------------------------------------------------
 
-<<<<<<< HEAD
-UINT32 avr8_device::execute_min_cycles() const
-=======
 uint32_t avr8_device::execute_min_cycles() const
->>>>>>> upstream/master
 {
 	return 1;
 }
@@ -3375,11 +2930,7 @@ uint32_t avr8_device::execute_min_cycles() const
 //  cycles it takes for one instruction to execute
 //-------------------------------------------------
 
-<<<<<<< HEAD
-UINT32 avr8_device::execute_max_cycles() const
-=======
 uint32_t avr8_device::execute_max_cycles() const
->>>>>>> upstream/master
 {
 	return 4;
 }
@@ -3390,11 +2941,7 @@ uint32_t avr8_device::execute_max_cycles() const
 //  input/interrupt lines
 //-------------------------------------------------
 
-<<<<<<< HEAD
-UINT32 avr8_device::execute_input_lines() const
-=======
 uint32_t avr8_device::execute_input_lines() const
->>>>>>> upstream/master
 {
 	return 0;
 }
@@ -3412,17 +2959,6 @@ void avr8_device::execute_set_input(int inputnum, int state)
 
 void avr8_device::execute_run()
 {
-<<<<<<< HEAD
-	UINT32 op = 0;
-	INT32 offs = 0;
-	UINT8 rd = 0;
-	UINT8 rr = 0;
-	UINT8 res = 0;
-	UINT16 pd = 0;
-	UINT32 pd32 = 0;
-	INT16 sd = 0;
-	INT32 opcycles = 1;
-=======
 	uint32_t op;
 	int32_t offs;
 	uint8_t rd;
@@ -3432,7 +2968,6 @@ void avr8_device::execute_run()
 	uint32_t pd32;
 	int16_t sd;
 	int32_t opcycles;
->>>>>>> upstream/master
 
 	while (m_icount > 0)
 	{
@@ -3443,11 +2978,7 @@ void avr8_device::execute_run()
 
 		debugger_instruction_hook(this, m_shifted_pc);
 
-<<<<<<< HEAD
-		op = (UINT32)m_program->read_word(m_shifted_pc);
-=======
 		op = (uint32_t)m_program->read_word(m_shifted_pc);
->>>>>>> upstream/master
 
 		switch(op & 0xf000)
 		{
@@ -3461,11 +2992,7 @@ void avr8_device::execute_run()
 						m_r[RD4(op) << 1] = m_r[RR4(op) << 1];
 						break;
 					case 0x0200:    // MULS Rd,Rr
-<<<<<<< HEAD
-						sd = (INT8)m_r[16 + RD4(op)] * (INT8)m_r[16 + RR4(op)];
-=======
 						sd = (int8_t)m_r[16 + RD4(op)] * (int8_t)m_r[16 + RR4(op)];
->>>>>>> upstream/master
 						m_r[1] = (sd >> 8) & 0x00ff;
 						m_r[0] = sd & 0x00ff;
 						SREG_W(AVR8_SREG_C, (sd & 0x8000) ? 1 : 0);
@@ -3476,11 +3003,7 @@ void avr8_device::execute_run()
 						switch(MULCONST2(op))
 						{
 							case 0x0000: // MULSU Rd,Rr
-<<<<<<< HEAD
-								sd = (INT8)m_r[16 + RD3(op)] * (UINT8)m_r[16 + RR3(op)];
-=======
 								sd = (int8_t)m_r[16 + RD3(op)] * (uint8_t)m_r[16 + RR3(op)];
->>>>>>> upstream/master
 								m_r[1] = (sd >> 8) & 0x00ff;
 								m_r[0] = sd & 0x00ff;
 								SREG_W(AVR8_SREG_C, (sd & 0x8000) ? 1 : 0);
@@ -3488,11 +3011,7 @@ void avr8_device::execute_run()
 								opcycles = 2;
 								break;
 							case 0x0001: // FMUL Rd,Rr
-<<<<<<< HEAD
-								sd = (UINT8)m_r[16 + RD3(op)] * (UINT8)m_r[16 + RR3(op)];
-=======
 								sd = (uint8_t)m_r[16 + RD3(op)] * (uint8_t)m_r[16 + RR3(op)];
->>>>>>> upstream/master
 								sd <<= 1;
 								m_r[1] = (sd >> 8) & 0x00ff;
 								m_r[0] = sd & 0x00ff;
@@ -3501,11 +3020,7 @@ void avr8_device::execute_run()
 								opcycles = 2;
 								break;
 							case 0x0002: // FMULS Rd,Rr
-<<<<<<< HEAD
-								sd = (INT8)m_r[16 + RD3(op)] * (INT8)m_r[16 + RR3(op)];
-=======
 								sd = (int8_t)m_r[16 + RD3(op)] * (int8_t)m_r[16 + RR3(op)];
->>>>>>> upstream/master
 								sd <<= 1;
 								m_r[1] = (sd >> 8) & 0x00ff;
 								m_r[0] = sd & 0x00ff;
@@ -3514,11 +3029,7 @@ void avr8_device::execute_run()
 								opcycles = 2;
 								break;
 							case 0x0003: // FMULSU Rd,Rr
-<<<<<<< HEAD
-								sd = (INT8)m_r[16 + RD3(op)] * (UINT8)m_r[16 + RR3(op)];
-=======
 								sd = (int8_t)m_r[16 + RD3(op)] * (uint8_t)m_r[16 + RR3(op)];
->>>>>>> upstream/master
 								sd <<= 1;
 								m_r[1] = (sd >> 8) & 0x00ff;
 								m_r[0] = sd & 0x00ff;
@@ -3582,11 +3093,7 @@ void avr8_device::execute_run()
 						rr = m_r[RR5(op)];
 						if (rd == rr)
 						{
-<<<<<<< HEAD
-							op = (UINT32)m_program->read_word(m_shifted_pc + 2);
-=======
 							op = (uint32_t)m_program->read_word(m_shifted_pc + 2);
->>>>>>> upstream/master
 							opcycles += is_long_opcode(op) ? 2 : 1;
 							m_pc += is_long_opcode(op) ? 2 : 1;
 						}
@@ -4274,11 +3781,7 @@ void avr8_device::execute_run()
 					case 0x0900:    // SBIC A,b
 						if(NOT(BIT(m_data->read_byte(32 + ACONST5(op)), RR3(op))))
 						{
-<<<<<<< HEAD
-							op = (UINT32)m_program->read_word(m_shifted_pc + 2);
-=======
 							op = (uint32_t)m_program->read_word(m_shifted_pc + 2);
->>>>>>> upstream/master
 							opcycles = is_long_opcode(op) ? 3 : 2;
 							m_pc += is_long_opcode(op) ? 2 : 1;
 						}
@@ -4290,11 +3793,7 @@ void avr8_device::execute_run()
 					case 0x0b00:    // SBIS A,b
 						if(BIT(m_data->read_byte(32 + ACONST5(op)), RR3(op)))
 						{
-<<<<<<< HEAD
-							op = (UINT32)m_program->read_word(m_shifted_pc + 2);
-=======
 							op = (uint32_t)m_program->read_word(m_shifted_pc + 2);
->>>>>>> upstream/master
 							opcycles = is_long_opcode(op) ? 3 : 2;
 							m_pc += is_long_opcode(op) ? 2 : 1;
 						}
@@ -4303,11 +3802,7 @@ void avr8_device::execute_run()
 					case 0x0d00:
 					case 0x0e00:
 					case 0x0f00:    // MUL Rd,Rr
-<<<<<<< HEAD
-						sd = (UINT8)m_r[RD5(op)] * (UINT8)m_r[RR5(op)];
-=======
 						sd = (uint8_t)m_r[RD5(op)] * (uint8_t)m_r[RR5(op)];
->>>>>>> upstream/master
 						m_r[1] = (sd >> 8) & 0x00ff;
 						m_r[0] = sd & 0x00ff;
 						SREG_W(AVR8_SREG_C, (sd & 0x8000) ? 1 : 0);
@@ -4327,20 +3822,12 @@ void avr8_device::execute_run()
 				}
 				break;
 			case 0xc000:    // RJMP k
-<<<<<<< HEAD
-				offs = (INT32)((op & 0x0800) ? ((op & 0x0fff) | 0xfffff000) : (op & 0x0fff));
-=======
 				offs = (int32_t)((op & 0x0800) ? ((op & 0x0fff) | 0xfffff000) : (op & 0x0fff));
->>>>>>> upstream/master
 				m_pc += offs;
 				opcycles = 2;
 				break;
 			case 0xd000:    // RCALL k
-<<<<<<< HEAD
-				offs = (INT32)((op & 0x0800) ? ((op & 0x0fff) | 0xfffff000) : (op & 0x0fff));
-=======
 				offs = (int32_t)((op & 0x0800) ? ((op & 0x0fff) | 0xfffff000) : (op & 0x0fff));
->>>>>>> upstream/master
 				push((m_pc + 1) & 0x00ff);
 				push(((m_pc + 1) >> 8) & 0x00ff);
 				m_pc += offs;
@@ -4355,11 +3842,7 @@ void avr8_device::execute_run()
 					case 0x0000: // BRLO through BRIE
 						if(SREG_R(op & 0x0007))
 						{
-<<<<<<< HEAD
-							offs = (INT32)(KCONST7(op));
-=======
 							offs = (int32_t)(KCONST7(op));
->>>>>>> upstream/master
 							if(offs & 0x40)
 							{
 								offs |= 0xffffff80;
@@ -4371,11 +3854,7 @@ void avr8_device::execute_run()
 					case 0x0400: // BRSH through BRID
 						if(SREG_R(op & 0x0007) == 0)
 						{
-<<<<<<< HEAD
-							offs = (INT32)(KCONST7(op));
-=======
 							offs = (int32_t)(KCONST7(op));
->>>>>>> upstream/master
 							if(offs & 0x40)
 							{
 								offs |= 0xffffff80;
@@ -4406,11 +3885,7 @@ void avr8_device::execute_run()
 						{
 							if(BIT(m_r[RD5(op)], RR3(op)))
 							{
-<<<<<<< HEAD
-								op = (UINT32)m_program->read_word(m_shifted_pc + 2);
-=======
 								op = (uint32_t)m_program->read_word(m_shifted_pc + 2);
->>>>>>> upstream/master
 								m_pc += is_long_opcode(op) ? 2 : 1;
 								opcycles = is_long_opcode(op) ? 3 : 2;
 							}
@@ -4419,11 +3894,7 @@ void avr8_device::execute_run()
 						{
 							if(NOT(BIT(m_r[RD5(op)], RR3(op))))
 							{
-<<<<<<< HEAD
-								op = (UINT32)m_program->read_word(m_shifted_pc + 2);
-=======
 								op = (uint32_t)m_program->read_word(m_shifted_pc + 2);
->>>>>>> upstream/master
 								m_pc += is_long_opcode(op) ? 2 : 1;
 								opcycles = is_long_opcode(op) ? 3 : 2;
 							}

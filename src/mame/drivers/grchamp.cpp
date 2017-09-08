@@ -24,8 +24,6 @@
         Note that a dipswitch setting allows score to be displayed
         onscreen, but there's no equivalent for tachometer.
 
-<<<<<<< HEAD
-=======
     -   TODO: the two sound callbacks could, under unusual circumstances,
         conflict with one another, causing the newly written value to have
         its bit 7 cleared before the sound cpu reads it.
@@ -37,7 +35,6 @@
         system, as the system used in audio/grchamp.cpp for dac output is
         incorrect.
 
->>>>>>> upstream/master
     Notes:
 
     -   The object of the game is to avoid the opposing cars.
@@ -55,14 +52,6 @@
 
     -   The Speech Feature enhances the game play.
 
-<<<<<<< HEAD
-***************************************************************************/
-
-#include "emu.h"
-#include "cpu/z80/z80.h"
-#include "sound/ay8910.h"
-#include "includes/grchamp.h"
-=======
     -   Schematics: https://ia800501.us.archive.org/16/items/ArcadeGameManualGrandchampion/grandchampion.pdf
 
 ***************************************************************************/
@@ -73,7 +62,6 @@
 #include "cpu/z80/z80.h"
 #include "sound/ay8910.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 #include "grchamp.lh"
 
@@ -107,11 +95,8 @@
 
 void grchamp_state::machine_start()
 {
-<<<<<<< HEAD
-=======
 	m_soundlatch_data = 0x00;
 	m_soundlatch_flag = false;
->>>>>>> upstream/master
 	save_item(NAME(m_cpu0_out));
 	save_item(NAME(m_cpu1_out));
 	save_item(NAME(m_comm_latch));
@@ -123,18 +108,11 @@ void grchamp_state::machine_start()
 	save_item(NAME(m_collmode));
 }
 
-<<<<<<< HEAD
-void grchamp_state::machine_reset()
-{
-	/* if the coin system is 1 way, lock Coin B (Page 40) */
-	coin_lockout_w(machine(), 1, (ioport("DSWB")->read() & 0x10) ? 1 : 0);
-=======
 	void grchamp_state::machine_reset()
 {
 	m_soundnmi->in_w<0>(0); // disable sound nmi
 	/* if the coin system is 1 way, lock Coin B (Page 40) */
 	machine().bookkeeping().coin_lockout_w(1, (ioport("DSWB")->read() & 0x10) ? 1 : 0);
->>>>>>> upstream/master
 }
 
 
@@ -168,11 +146,7 @@ INTERRUPT_GEN_MEMBER(grchamp_state::cpu1_interrupt)
 
 WRITE8_MEMBER(grchamp_state::cpu0_outputs_w)
 {
-<<<<<<< HEAD
-	UINT8 diff = data ^ m_cpu0_out[offset];
-=======
 	uint8_t diff = data ^ m_cpu0_out[offset];
->>>>>>> upstream/master
 	m_cpu0_out[offset] = data;
 
 	switch (offset)
@@ -222,13 +196,8 @@ WRITE8_MEMBER(grchamp_state::cpu0_outputs_w)
 			/* bit 4:   coin lockout */
 			/* bit 5:   Game Over lamp */
 			/* bit 6-7: n/c */
-<<<<<<< HEAD
-			coin_lockout_global_w(machine(), (data >> 4) & 1);
-			output_set_value("led0", (~data >> 5) & 1);
-=======
 			machine().bookkeeping().coin_lockout_global_w((data >> 4) & 1);
 			output().set_value("led0", (~data >> 5) & 1);
->>>>>>> upstream/master
 			break;
 
 		case 0x0a:  /* OUT10 */
@@ -244,21 +213,12 @@ WRITE8_MEMBER(grchamp_state::cpu0_outputs_w)
 			break;
 
 		case 0x0d:  /* OUT13 */
-<<<<<<< HEAD
-			machine().watchdog_reset();
-=======
 			m_watchdog->watchdog_reset();
->>>>>>> upstream/master
 			break;
 
 		case 0x0e:  /* OUT14 */
 			/* O-21 connector */
-<<<<<<< HEAD
-			soundlatch_byte_w(space, 0, data);
-			m_audiocpu->set_input_line(INPUT_LINE_NMI, PULSE_LINE);
-=======
 			machine().scheduler().synchronize(timer_expired_delegate(FUNC(grchamp_state::soundlatch_w_cb), this), data); // soundlatch write, needs to synchronize
->>>>>>> upstream/master
 			break;
 	}
 }
@@ -266,11 +226,7 @@ WRITE8_MEMBER(grchamp_state::cpu0_outputs_w)
 
 WRITE8_MEMBER(grchamp_state::led_board_w)
 {
-<<<<<<< HEAD
-	static const UINT8 ls247_map[16] =
-=======
 	static const uint8_t ls247_map[16] =
->>>>>>> upstream/master
 		{ 0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7d,0x07,0x7f,0x6f,0x58,0x4c,0x62,0x69,0x78,0x00 };
 
 	switch (offset)
@@ -289,11 +245,7 @@ WRITE8_MEMBER(grchamp_state::led_board_w)
 
 		case 0x0c:
 			m_ledram[m_ledaddr & 0x07] = m_ledlatch;
-<<<<<<< HEAD
-			output_set_digit_value(m_ledaddr & 0x07, ls247_map[m_ledram[m_ledaddr & 0x07] & 0x0f]);
-=======
 			output().set_digit_value(m_ledaddr & 0x07, ls247_map[m_ledram[m_ledaddr & 0x07] & 0x0f]);
->>>>>>> upstream/master
 			/*
 			    ledram[0] & 0x0f = score LSD
 			    ledram[1] & 0x0f = score
@@ -318,11 +270,7 @@ WRITE8_MEMBER(grchamp_state::led_board_w)
 
 WRITE8_MEMBER(grchamp_state::cpu1_outputs_w)
 {
-<<<<<<< HEAD
-	UINT8 diff = data ^ m_cpu1_out[offset];
-=======
 	uint8_t diff = data ^ m_cpu1_out[offset];
->>>>>>> upstream/master
 	m_cpu1_out[offset] = data;
 
 	switch (offset)
@@ -413,11 +361,7 @@ WRITE8_MEMBER(grchamp_state::cpu1_outputs_w)
  *
  *************************************/
 
-<<<<<<< HEAD
-UINT8 grchamp_state::get_pc3259_bits(int offs)
-=======
 uint8_t grchamp_state::get_pc3259_bits(int offs)
->>>>>>> upstream/master
 {
 	int bits;
 
@@ -494,8 +438,6 @@ READ8_MEMBER(grchamp_state::main_to_sub_comm_r)
  *  Sound port handlers
  *
  *************************************/
-<<<<<<< HEAD
-=======
 TIMER_CALLBACK_MEMBER(grchamp_state::soundlatch_w_cb)
 {
 	if (m_soundlatch_flag && (m_soundlatch_data != param))
@@ -531,7 +473,6 @@ READ8_MEMBER(grchamp_state::soundlatch_flags_r)
 {
 	return 0x03 | (m_soundlatch_flag?0x8:0);
 }
->>>>>>> upstream/master
 
 WRITE8_MEMBER(grchamp_state::portA_0_w)
 {
@@ -545,14 +486,6 @@ WRITE8_MEMBER(grchamp_state::portB_0_w)
 
 WRITE8_MEMBER(grchamp_state::portA_2_w)
 {
-<<<<<<< HEAD
-	/* A0/A1 modify the output of AY8910 #2 */
-	/* A7 contributes to the discrete logic hanging off of AY8910 #0 */
-}
-WRITE8_MEMBER(grchamp_state::portB_2_w)
-{
-	/* B0 connects elsewhere */
-=======
 	/* A0/A1 modify the output of AY8910 #2 with filter capacitors */
 	/* A7 contributes to the volume control for the discrete logic dac hanging off of AY8910 #0's i/o ports */
 }
@@ -560,7 +493,6 @@ WRITE8_MEMBER(grchamp_state::portB_2_w)
 {
 	/* B0 is the sound nmi enable, active low */
 	m_soundnmi->in_w<0>((~data)&1);
->>>>>>> upstream/master
 }
 
 
@@ -632,11 +564,7 @@ static ADDRESS_MAP_START( main_portmap, AS_IO, 8, grchamp_state )
 	AM_RANGE(0x19, 0x19) AM_MIRROR(0x60) AM_READ(pc3259_3_r)
 	AM_RANGE(0x00, 0x0f) AM_MIRROR(0x40) AM_WRITE(cpu0_outputs_w)
 	AM_RANGE(0x10, 0x13) AM_MIRROR(0x40) AM_WRITE(main_to_sub_comm_w)
-<<<<<<< HEAD
-	AM_RANGE(0x20, 0x2f) AM_MIRROR(0x53) AM_WRITE(led_board_w)
-=======
 	AM_RANGE(0x20, 0x20) AM_SELECT(0x0c) AM_MIRROR(0x53) AM_WRITE(led_board_w)
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -658,11 +586,6 @@ static ADDRESS_MAP_START( sub_portmap, AS_IO, 8, grchamp_state )
 ADDRESS_MAP_END
 
 
-<<<<<<< HEAD
-/* complete memory map derived from schematics */
-static ADDRESS_MAP_START( sound_map, AS_PROGRAM, 8, grchamp_state )
-	AM_RANGE(0x0000, 0x1fff) AM_ROM
-=======
 /* complete memory map derived from schematics;
    the grchamp sound system is almost identical to taitosj.cpp sound system
 */
@@ -696,7 +619,6 @@ static ADDRESS_MAP_START( sound_map, AS_PROGRAM, 8, grchamp_state )
 static ADDRESS_MAP_START( sound_map, AS_PROGRAM, 8, grchamp_state )
 	AM_RANGE(0x0000, 0x1fff) AM_ROM
 	// 2000-3fff are empty rom sockets
->>>>>>> upstream/master
 	AM_RANGE(0x4000, 0x43ff) AM_RAM
 	AM_RANGE(0x4800, 0x4801) AM_MIRROR(0x07f8) AM_DEVWRITE("ay1", ay8910_device, address_data_w)
 	AM_RANGE(0x4801, 0x4801) AM_MIRROR(0x07f8) AM_DEVREAD("ay1", ay8910_device, data_r)
@@ -704,12 +626,8 @@ static ADDRESS_MAP_START( sound_map, AS_PROGRAM, 8, grchamp_state )
 	AM_RANGE(0x4803, 0x4803) AM_MIRROR(0x07f8) AM_DEVREAD("ay2", ay8910_device, data_r)
 	AM_RANGE(0x4804, 0x4805) AM_MIRROR(0x07fa) AM_DEVWRITE("ay3", ay8910_device, address_data_w)
 	AM_RANGE(0x4805, 0x4805) AM_MIRROR(0x07fa) AM_DEVREAD("ay3", ay8910_device, data_r)
-<<<<<<< HEAD
-	AM_RANGE(0x5000, 0x5000) AM_READ(soundlatch_byte_r)
-=======
 	AM_RANGE(0x5000, 0x5000) AM_MIRROR(0x07fc) AM_READ(soundlatch_r) AM_WRITE(soundlatch_clear7_w)
 	AM_RANGE(0x5001, 0x5001) AM_MIRROR(0x07fc) AM_READ(soundlatch_flags_r) AM_WRITENOP // writes here on taitosj reset the secondary semaphore, which doesn't exist on grchamp, but the code tries to reset it anyway!
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -808,11 +726,7 @@ INPUT_PORTS_END
  *
  *************************************/
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( grchamp, grchamp_state )
-=======
 static MACHINE_CONFIG_START( grchamp )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	/* CPU BOARD */
@@ -832,12 +746,8 @@ static MACHINE_CONFIG_START( grchamp )
 	MCFG_CPU_PROGRAM_MAP(sound_map)
 	MCFG_CPU_PERIODIC_INT_DRIVER(grchamp_state, irq0_line_hold,  (double)SOUND_CLOCK/4/16/16/10/16)
 
-<<<<<<< HEAD
-	MCFG_WATCHDOG_VBLANK_INIT(8)
-=======
 	MCFG_WATCHDOG_ADD("watchdog")
 	MCFG_WATCHDOG_VBLANK_INIT("screen", 8)
->>>>>>> upstream/master
 	MCFG_QUANTUM_TIME(attotime::from_hz(6000))
 
 	/* video hardware */
@@ -854,12 +764,9 @@ static MACHINE_CONFIG_START( grchamp )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-=======
 	MCFG_INPUT_MERGER_ALL_HIGH("soundnmi")
 	MCFG_INPUT_MERGER_OUTPUT_HANDLER(INPUTLINE("audiocpu", INPUT_LINE_NMI))
 
->>>>>>> upstream/master
 	MCFG_SOUND_ADD("ay1", AY8910, SOUND_CLOCK/4)    /* 3B */
 	MCFG_AY8910_PORT_A_WRITE_CB(WRITE8(grchamp_state, portA_0_w))
 	MCFG_AY8910_PORT_B_WRITE_CB(WRITE8(grchamp_state, portB_0_w))
@@ -941,8 +848,4 @@ ROM_END
  *
  *************************************/
 
-<<<<<<< HEAD
-GAMEL( 1981, grchamp, 0, grchamp, grchamp, driver_device, 0, ROT270, "Taito", "Grand Champion", MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE, layout_grchamp )
-=======
 GAMEL( 1981, grchamp, 0, grchamp, grchamp, grchamp_state, 0, ROT270, "Taito", "Grand Champion", MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE, layout_grchamp )
->>>>>>> upstream/master

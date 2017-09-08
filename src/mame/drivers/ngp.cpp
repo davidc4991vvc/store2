@@ -98,30 +98,18 @@ the Neogeo Pocket.
 
 
 #include "emu.h"
-<<<<<<< HEAD
-=======
 #include "bus/generic/slot.h"
 #include "bus/generic/carts.h"
->>>>>>> upstream/master
 #include "cpu/tlcs900/tlcs900.h"
 #include "cpu/z80/z80.h"
 #include "sound/t6w28.h"
 #include "sound/dac.h"
-<<<<<<< HEAD
-#include "video/k1ge.h"
-#include "rendlay.h"
-#include "softlist.h"
-
-#include "bus/generic/slot.h"
-#include "bus/generic/carts.h"
-=======
 #include "sound/volt_reg.h"
 #include "video/k1ge.h"
 #include "rendlay.h"
 #include "screen.h"
 #include "softlist.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 enum flash_state
 {
@@ -146,13 +134,8 @@ public:
 		m_tlcs900(*this, "maincpu"),
 		m_z80(*this, "soundcpu"),
 		m_t6w28(*this, "t6w28"),
-<<<<<<< HEAD
-		m_dac_l(*this, "dac_l"),
-		m_dac_r(*this, "dac_r"),
-=======
 		m_ldac(*this, "ldac"),
 		m_rdac(*this, "rdac"),
->>>>>>> upstream/master
 		m_cart(*this, "cartslot"),
 		m_mainram(*this, "mainram"),
 		m_k1ge(*this, "k1ge"),
@@ -162,81 +145,45 @@ public:
 		{
 			m_flash_chip[0].present = 0;
 			m_flash_chip[0].state = F_READ;
-<<<<<<< HEAD
-			m_flash_chip[0].data = NULL;
-
-			m_flash_chip[1].present = 0;
-			m_flash_chip[1].state = F_READ;
-			m_flash_chip[1].data = NULL;
-=======
 			m_flash_chip[0].data = nullptr;
 
 			m_flash_chip[1].present = 0;
 			m_flash_chip[1].state = F_READ;
 			m_flash_chip[1].data = nullptr;
->>>>>>> upstream/master
 
 			m_nvram_loaded = false;
 		}
 
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void machine_reset();
-
-	UINT8 m_io_reg[0x40];
-	UINT8 m_old_to3;
-=======
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
 
 	uint8_t m_io_reg[0x40];
 	uint8_t m_old_to3;
->>>>>>> upstream/master
 	emu_timer* m_seconds_timer;
 
 	struct {
 		int     present;
-<<<<<<< HEAD
-		UINT8   manufacturer_id;
-		UINT8   device_id;
-		UINT8   *data;
-		UINT8   org_data[16];
-		int     state;
-		UINT8   command[2];
-=======
 		uint8_t   manufacturer_id;
 		uint8_t   device_id;
 		uint8_t   *data;
 		uint8_t   org_data[16];
 		int     state;
 		uint8_t   command[2];
->>>>>>> upstream/master
 	} m_flash_chip[2];
 
 	required_device<cpu_device> m_tlcs900;
 	required_device<cpu_device> m_z80;
 	required_device<t6w28_device> m_t6w28;
-<<<<<<< HEAD
-	required_device<dac_device> m_dac_l;
-	required_device<dac_device> m_dac_r;
-	required_device<generic_slot_device> m_cart;
-	required_shared_ptr<UINT8> m_mainram;
-=======
 	required_device<dac_byte_interface> m_ldac;
 	required_device<dac_byte_interface> m_rdac;
 	required_device<generic_slot_device> m_cart;
 	required_shared_ptr<uint8_t> m_mainram;
->>>>>>> upstream/master
 	required_device<k1ge_device> m_k1ge;
 
 	DECLARE_READ8_MEMBER( ngp_io_r );
 	DECLARE_WRITE8_MEMBER( ngp_io_w );
 
-<<<<<<< HEAD
-	void flash_w( int which, offs_t offset, UINT8 data );
-=======
 	void flash_w( int which, offs_t offset, uint8_t data );
->>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER( flash0_w );
 	DECLARE_WRITE8_MEMBER( flash1_w );
 
@@ -249,11 +196,7 @@ public:
 	DECLARE_WRITE_LINE_MEMBER( ngp_vblank_pin_w );
 	DECLARE_WRITE_LINE_MEMBER( ngp_hblank_pin_w );
 	DECLARE_WRITE8_MEMBER( ngp_tlcs900_porta );
-<<<<<<< HEAD
-	UINT32 screen_update_ngp(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	uint32_t screen_update_ngp(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	DECLARE_INPUT_CHANGED_MEMBER(power_callback);
 	TIMER_CALLBACK_MEMBER(ngp_seconds_callback);
 
@@ -265,15 +208,9 @@ protected:
 	required_ioport m_io_controls;
 	required_ioport m_io_power;
 
-<<<<<<< HEAD
-	virtual void nvram_default();
-	virtual void nvram_read(emu_file &file);
-	virtual void nvram_write(emu_file &file);
-=======
 	virtual void nvram_default() override;
 	virtual void nvram_read(emu_file &file) override;
 	virtual void nvram_write(emu_file &file) override;
->>>>>>> upstream/master
 	required_device<cpu_device> m_maincpu;
 };
 
@@ -313,11 +250,7 @@ TIMER_CALLBACK_MEMBER(ngp_state::ngp_seconds_callback)
 
 READ8_MEMBER( ngp_state::ngp_io_r )
 {
-<<<<<<< HEAD
-	UINT8 data = m_io_reg[offset];
-=======
 	uint8_t data = m_io_reg[offset];
->>>>>>> upstream/master
 
 	switch( offset )
 	{
@@ -347,17 +280,10 @@ WRITE8_MEMBER( ngp_state::ngp_io_w )
 		break;
 
 	case 0x22:      /* DAC right */
-<<<<<<< HEAD
-		m_dac_r->write_unsigned8(data );
-		break;
-	case 0x23:      /* DAC left */
-		m_dac_l->write_unsigned8(data );
-=======
 		m_rdac->write(data);
 		break;
 	case 0x23:      /* DAC left */
 		m_ldac->write(data);
->>>>>>> upstream/master
 		break;
 
 	/* Internal eeprom related? */
@@ -398,11 +324,7 @@ WRITE8_MEMBER( ngp_state::ngp_io_w )
 }
 
 
-<<<<<<< HEAD
-void ngp_state::flash_w( int which, offs_t offset, UINT8 data )
-=======
 void ngp_state::flash_w( int which, offs_t offset, uint8_t data )
->>>>>>> upstream/master
 {
 	if ( ! m_flash_chip[which].present )
 		return;
@@ -426,11 +348,7 @@ void ngp_state::flash_w( int which, offs_t offset, uint8_t data )
 			if ( m_flash_chip[which].command[0] == 0x80 )
 			{
 				int size = 0x10000;
-<<<<<<< HEAD
-				UINT8 *block = m_flash_chip[which].data;
-=======
 				uint8_t *block = m_flash_chip[which].data;
->>>>>>> upstream/master
 
 				m_flash_chip[which].state = F_AUTO_BLOCK_ERASE;
 				switch( m_flash_chip[which].device_id )
@@ -701,11 +619,7 @@ static INPUT_PORTS_START( ngp )
 	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_UNUSED )
 
 	PORT_START("Power")
-<<<<<<< HEAD
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_OTHER ) PORT_CODE(KEYCODE_Q) PORT_NAME("Power") PORT_CHANGED_MEMBER(DEVICE_SELF, ngp_state, power_callback, NULL)
-=======
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_POWER_ON ) PORT_CHANGED_MEMBER(DEVICE_SELF, ngp_state, power_callback, nullptr)
->>>>>>> upstream/master
 INPUT_PORTS_END
 
 
@@ -736,11 +650,7 @@ void ngp_state::machine_start()
 	if (m_cart->exists())
 	{
 		std::string region_tag;
-<<<<<<< HEAD
-		UINT8 *cart = memregion(region_tag.assign(m_cart->tag()).append(GENERIC_ROM_REGION_TAG).c_str())->base();
-=======
 		uint8_t *cart = memregion(region_tag.assign(m_cart->tag()).append(GENERIC_ROM_REGION_TAG).c_str())->base();
->>>>>>> upstream/master
 
 		m_maincpu->space(AS_PROGRAM).install_read_bank(0x200000, 0x3fffff, "flash0");
 		m_maincpu->space(AS_PROGRAM).install_read_bank(0x800000, 0x9fffff, "flash1");
@@ -824,11 +734,7 @@ void ngp_state::machine_reset()
 }
 
 
-<<<<<<< HEAD
-UINT32 ngp_state::screen_update_ngp(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t ngp_state::screen_update_ngp(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	m_k1ge->update( bitmap, cliprect );
 	return 0;
@@ -837,20 +743,12 @@ uint32_t ngp_state::screen_update_ngp(screen_device &screen, bitmap_ind16 &bitma
 
 DEVICE_IMAGE_LOAD_MEMBER( ngp_state, ngp_cart )
 {
-<<<<<<< HEAD
-	UINT32 size = m_cart->common_get_size("rom");
-=======
 	uint32_t size = m_cart->common_get_size("rom");
->>>>>>> upstream/master
 
 	if (size != 0x8000 && size != 0x80000 && size != 0x100000 && size != 0x200000 && size != 0x400000)
 	{
 		image.seterror(IMAGE_ERROR_UNSPECIFIED, "Unsupported cartridge size");
-<<<<<<< HEAD
-		return IMAGE_INIT_FAIL;
-=======
 		return image_init_result::FAIL;
->>>>>>> upstream/master
 	}
 
 	// alloc 0x400000 ROM to simplify mapping in the address map
@@ -886,11 +784,7 @@ DEVICE_IMAGE_LOAD_MEMBER( ngp_state, ngp_cart )
 		m_flash_chip[1].state = F_READ;
 	}
 
-<<<<<<< HEAD
-	return IMAGE_INIT_PASS;
-=======
 	return image_init_result::PASS;
->>>>>>> upstream/master
 }
 
 
@@ -922,11 +816,7 @@ void ngp_state::nvram_write(emu_file &file)
 }
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( ngp_common, ngp_state )
-=======
 static MACHINE_CONFIG_START( ngp_common )
->>>>>>> upstream/master
 
 	MCFG_CPU_ADD( "maincpu", TMP95C061, XTAL_6_144MHz )
 	MCFG_TLCS900H_AM8_16(1)
@@ -950,18 +840,11 @@ static MACHINE_CONFIG_START( ngp_common )
 	MCFG_SOUND_ROUTE( 0, "lspeaker", 0.50 )
 	MCFG_SOUND_ROUTE( 1, "rspeaker", 0.50 )
 
-<<<<<<< HEAD
-	MCFG_SOUND_ADD( "dac_l", DAC, 0 )
-	MCFG_SOUND_ROUTE( ALL_OUTPUTS, "lspeaker", 0.50 )
-	MCFG_SOUND_ADD( "dac_r", DAC, 0 )
-	MCFG_SOUND_ROUTE( ALL_OUTPUTS, "rspeaker", 0.50 )
-=======
 	MCFG_SOUND_ADD("ldac", DAC_8BIT_R2R, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 0.25) // unknown DAC
 	MCFG_SOUND_ADD("rdac", DAC_8BIT_R2R, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 0.25) // unknown DAC
 	MCFG_DEVICE_ADD("vref", VOLTAGE_REGULATOR, 0) MCFG_VOLTAGE_REGULATOR_OUTPUT(5.0)
 	MCFG_SOUND_ROUTE_EX(0, "ldac", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "ldac", -1.0, DAC_VREF_NEG_INPUT)
 	MCFG_SOUND_ROUTE_EX(0, "rdac", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "rdac", -1.0, DAC_VREF_NEG_INPUT)
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
@@ -1012,11 +895,6 @@ ROM_START( ngpc )
 ROM_END
 
 
-<<<<<<< HEAD
-CONS( 1998, ngp, 0, 0, ngp, ngp, driver_device, 0,  "SNK", "NeoGeo Pocket", MACHINE_SUPPORTS_SAVE )
-CONS( 1999, ngpc, ngp, 0, ngpc, ngp, driver_device, 0, "SNK", "NeoGeo Pocket Color", MACHINE_SUPPORTS_SAVE )
-=======
 //    YEAR  NAME  PARENT COMPAT MACHINE INPUT STATE      INIT COMPANY  FULLNAME               FLAGS
 CONS( 1998, ngp,  0,     0,     ngp,    ngp,  ngp_state, 0,   "SNK",   "NeoGeo Pocket",       MACHINE_SUPPORTS_SAVE )
 CONS( 1999, ngpc, ngp,   0,     ngpc,   ngp,  ngp_state, 0,   "SNK",   "NeoGeo Pocket Color", MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

@@ -59,36 +59,6 @@ Abstracts the VS9210
 
 */
 
-<<<<<<< HEAD
-
-
-#include "emu.h"
-#include "vsystem_spr.h"
-
-
-
-
-
-
-const device_type VSYSTEM_SPR = &device_creator<vsystem_spr_device>;
-
-vsystem_spr_device::vsystem_spr_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, VSYSTEM_SPR, "Video System Sprites", tag, owner, clock, "vsystem_spr", __FILE__),
-		m_gfxdecode(*this),
-		m_palette(*this)
-{
-	m_transpen = 15;
-	m_pal_base = 0;
-	m_xoffs = 0;
-	m_yoffs = 0;
-	m_pdraw = false;
-	m_gfx_region = -1;
-	m_pal_mask = 0x3f;
-
-	m_newtilecb =  vsystem_tile_indirection_delegate(FUNC(vsystem_spr_device::tile_callback_noindirect), this);
-
-	memset(&m_curr_sprite, 0, sizeof(m_curr_sprite));
-=======
 #include "emu.h"
 #include "vsystem_spr.h"
 #include "screen.h"
@@ -109,7 +79,6 @@ vsystem_spr_device::vsystem_spr_device(const machine_config &mconfig, const char
 	, m_curr_sprite()
 	, m_gfxdecode(*this, finder_base::DUMMY_TAG)
 {
->>>>>>> upstream/master
 }
 
 //-------------------------------------------------
@@ -122,21 +91,7 @@ void vsystem_spr_device::static_set_gfxdecode_tag(device_t &device, const char *
 	downcast<vsystem_spr_device &>(device).m_gfxdecode.set_tag(tag);
 }
 
-<<<<<<< HEAD
-//-------------------------------------------------
-//  static_set_palette_tag: Set the tag of the
-//  palette device
-//-------------------------------------------------
-
-void vsystem_spr_device::static_set_palette_tag(device_t &device, const char *tag)
-{
-	downcast<vsystem_spr_device &>(device).m_palette.set_tag(tag);
-}
-
-UINT32 vsystem_spr_device::tile_callback_noindirect(UINT32 tile)
-=======
 uint32_t vsystem_spr_device::tile_callback_noindirect(uint32_t tile)
->>>>>>> upstream/master
 {
 	return tile;
 }
@@ -180,14 +135,6 @@ void vsystem_spr_device::CG10103_set_pal_base(device_t &device, int pal_base)
 }
 
 
-<<<<<<< HEAD
-void vsystem_spr_device::set_pal_base(int pal_base)
-{
-	m_pal_base = pal_base;
-}
-
-=======
->>>>>>> upstream/master
 // static
 void vsystem_spr_device::set_pal_mask(device_t &device, int pal_mask)
 {
@@ -227,11 +174,7 @@ void vsystem_spr_device::device_reset()
 {
 }
 
-<<<<<<< HEAD
-void vsystem_spr_device::get_sprite_attributes(UINT16* ram)
-=======
 void vsystem_spr_device::sprite_attributes::get(uint16_t const *ram)
->>>>>>> upstream/master
 {
 	/*
 	    attr_start + 0x0000
@@ -255,23 +198,6 @@ void vsystem_spr_device::sprite_attributes::get(uint16_t const *ram)
 	    xxxx xxxx xxxx xxxx map start (lsb)
 	*/
 
-<<<<<<< HEAD
-	m_curr_sprite.oy =    (ram[0] & 0x01ff);
-	m_curr_sprite.ysize = (ram[0] & 0x0e00) >> 9;
-	m_curr_sprite.zoomy = (ram[0] & 0xf000) >> 12;
-
-	m_curr_sprite.ox =    (ram[1] & 0x01ff);
-	m_curr_sprite.xsize = (ram[1] & 0x0e00) >> 9;
-	m_curr_sprite.zoomx = (ram[1] & 0xf000) >> 12;
-
-	m_curr_sprite.flipx = (ram[2] & 0x4000);
-	m_curr_sprite.flipy = (ram[2] & 0x8000);
-	m_curr_sprite.color = (ram[2] & 0x3f00) >> 8;
-	m_curr_sprite.pri   = (ram[2] & 0x3000) >> 12;
-	m_curr_sprite.map   = (ram[2] & 0x0001) << 16;
-
-	m_curr_sprite.map  |= (ram[3] & 0xffff);
-=======
 	oy =    (ram[0] & 0x01ff);
 	ysize = (ram[0] & 0x0e00) >> 9;
 	zoomy = (ram[0] & 0xf000) >> 12;
@@ -287,7 +213,6 @@ void vsystem_spr_device::sprite_attributes::get(uint16_t const *ram)
 	map   = (ram[2] & 0x0001) << 16;
 
 	map  |= (ram[3] & 0xffff);
->>>>>>> upstream/master
 }
 
 
@@ -354,11 +279,7 @@ void vsystem_spr_device::common_sprite_drawgfx(bitmap_ind16 &bitmap, const recta
 
 
 
-<<<<<<< HEAD
-void vsystem_spr_device::draw_sprites( UINT16* spriteram, int spriteram_bytes, screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int prihack_mask, int prihack_val )
-=======
 void vsystem_spr_device::draw_sprites(uint16_t const *spriteram, int spriteram_bytes, screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int prihack_mask, int prihack_val )
->>>>>>> upstream/master
 {
 	int offs;
 	int end = 0;
@@ -395,11 +316,7 @@ void vsystem_spr_device::draw_sprites(uint16_t const *spriteram, int spriteram_b
 
 			attr_start = 4 * (spriteram[offs] & 0x03ff);
 
-<<<<<<< HEAD
-			get_sprite_attributes(&spriteram[attr_start]);
-=======
 			m_curr_sprite.get(&spriteram[attr_start]);
->>>>>>> upstream/master
 
 			m_curr_sprite.color &= m_pal_mask;
 

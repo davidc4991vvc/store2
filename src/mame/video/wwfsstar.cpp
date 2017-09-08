@@ -1,9 +1,5 @@
 // license:BSD-3-Clause
-<<<<<<< HEAD
-// copyright-holders:David Haywood
-=======
 // copyright-holders:David Haywood,Stephane Humbert
->>>>>>> upstream/master
 /*******************************************************************************
  WWF Superstars (C) 1989 Technos Japan  (video/wwfsstar.c)
 ********************************************************************************
@@ -54,11 +50,7 @@ TILE_GET_INFO_MEMBER(wwfsstar_state::get_fg0_tile_info)
 
 	**- End of Comments -*/
 
-<<<<<<< HEAD
-	UINT16 *tilebase;
-=======
 	uint16_t *tilebase;
->>>>>>> upstream/master
 	int tileno;
 	int colbank;
 
@@ -94,11 +86,7 @@ TILE_GET_INFO_MEMBER(wwfsstar_state::get_bg0_tile_info)
 
 	**- End of Comments -*/
 
-<<<<<<< HEAD
-	UINT16 *tilebase;
-=======
 	uint16_t *tilebase;
->>>>>>> upstream/master
 	int tileno, colbank, flipx;
 
 	tilebase =  &m_bg0_videoram[tile_index*2];
@@ -141,13 +129,8 @@ void wwfsstar_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprec
 	**- End of Comments -*/
 
 	gfx_element *gfx = m_gfxdecode->gfx(1);
-<<<<<<< HEAD
-	UINT16 *source = m_spriteram;
-	UINT16 *finish = source + 0x3ff/2;
-=======
 	uint16_t *source = m_spriteram;
 	uint16_t *finish = source + 0x3ff/2;
->>>>>>> upstream/master
 
 	while (source < finish)
 	{
@@ -221,17 +204,10 @@ void wwfsstar_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprec
 
 void wwfsstar_state::video_start()
 {
-<<<<<<< HEAD
-	m_fg0_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(wwfsstar_state::get_fg0_tile_info),this),TILEMAP_SCAN_ROWS, 8, 8,32,32);
-	m_fg0_tilemap->set_transparent_pen(0);
-
-	m_bg0_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(wwfsstar_state::get_bg0_tile_info),this),tilemap_mapper_delegate(FUNC(wwfsstar_state::bg0_scan),this), 16, 16,32,32);
-=======
 	m_fg0_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(wwfsstar_state::get_fg0_tile_info),this),TILEMAP_SCAN_ROWS, 8, 8,32,32);
 	m_fg0_tilemap->set_transparent_pen(0);
 
 	m_bg0_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(wwfsstar_state::get_bg0_tile_info),this),tilemap_mapper_delegate(FUNC(wwfsstar_state::bg0_scan),this), 16, 16,32,32);
->>>>>>> upstream/master
 	m_fg0_tilemap->set_transparent_pen(0);
 
 	save_item(NAME(m_vblank));
@@ -239,11 +215,7 @@ void wwfsstar_state::video_start()
 	save_item(NAME(m_scrolly));
 }
 
-<<<<<<< HEAD
-UINT32 wwfsstar_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t wwfsstar_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	m_bg0_tilemap->set_scrolly(0, m_scrolly  );
 	m_bg0_tilemap->set_scrollx(0, m_scrollx  );

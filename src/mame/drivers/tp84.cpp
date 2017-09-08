@@ -1,20 +1,9 @@
-<<<<<<< HEAD
-// license:???
-// copyright-holders:Marc Lafontaine
-=======
 // license:BSD-3-Clause
 // copyright-holders:Aaron Giles
->>>>>>> upstream/master
 /***************************************************************************
 
 Time Pilot 84  (c) 1984 Konami
 
-<<<<<<< HEAD
-driver by Marc Lafontaine
-
-
-=======
->>>>>>> upstream/master
 ---- Master 6809 ------
 
 Write
@@ -75,15 +64,6 @@ C004      76489 #4 trigger
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/z80/z80.h"
-#include "cpu/m6809/m6809.h"
-#include "sound/sn76496.h"
-#include "sound/flt_rc.h"
-#include "includes/konamipt.h"
-#include "includes/tp84.h"
-
-=======
 #include "includes/tp84.h"
 #include "includes/konamipt.h"
 
@@ -96,13 +76,10 @@ C004      76489 #4 trigger
 #include "sound/sn76496.h"
 
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 void tp84_state::machine_start()
 {
-<<<<<<< HEAD
-=======
 	save_item(NAME(m_irq_enable));
 	save_item(NAME(m_sub_irq_mask));
 	save_item(NAME(m_flipscreen_x));
@@ -146,7 +123,6 @@ WRITE_LINE_MEMBER(tp84_state::flip_screen_x_w)
 WRITE_LINE_MEMBER(tp84_state::flip_screen_y_w)
 {
 	m_flipscreen_y = state;
->>>>>>> upstream/master
 }
 
 
@@ -168,11 +144,7 @@ WRITE8_MEMBER(tp84_state::tp84_filter_w)
 	C = 0;
 	if (offset & 0x008) C +=  47000;    /*  47000pF = 0.047uF */
 	if (offset & 0x010) C += 470000;    /* 470000pF = 0.47uF */
-<<<<<<< HEAD
-	dynamic_cast<filter_rc_device*>(machine().device("filter1"))->filter_rc_set_RC(FLT_RC_LOWPASS,1000,2200,1000,CAP_P(C));
-=======
 	downcast<filter_rc_device*>(machine().device("filter1"))->filter_rc_set_RC(filter_rc_device::LOWPASS,1000,2200,1000,CAP_P(C));
->>>>>>> upstream/master
 
 	/* 76489 #1 (optional) */
 	C = 0;
@@ -183,20 +155,12 @@ WRITE8_MEMBER(tp84_state::tp84_filter_w)
 	/* 76489 #2 */
 	C = 0;
 	if (offset & 0x080) C += 470000;    /* 470000pF = 0.47uF */
-<<<<<<< HEAD
-	dynamic_cast<filter_rc_device*>(machine().device("filter2"))->filter_rc_set_RC(FLT_RC_LOWPASS,1000,2200,1000,CAP_P(C));
-=======
 	downcast<filter_rc_device*>(machine().device("filter2"))->filter_rc_set_RC(filter_rc_device::LOWPASS,1000,2200,1000,CAP_P(C));
->>>>>>> upstream/master
 
 	/* 76489 #3 */
 	C = 0;
 	if (offset & 0x100) C += 470000;    /* 470000pF = 0.47uF */
-<<<<<<< HEAD
-	dynamic_cast<filter_rc_device*>(machine().device("filter3"))->filter_rc_set_RC(FLT_RC_LOWPASS,1000,2200,1000,CAP_P(C));
-=======
 	downcast<filter_rc_device*>(machine().device("filter3"))->filter_rc_set_RC(filter_rc_device::LOWPASS,1000,2200,1000,CAP_P(C));
->>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(tp84_state::tp84_sh_irqtrigger_w)
@@ -207,27 +171,15 @@ WRITE8_MEMBER(tp84_state::tp84_sh_irqtrigger_w)
 
 
 static ADDRESS_MAP_START( tp84_cpu1_map, AS_PROGRAM, 8, tp84_state )
-<<<<<<< HEAD
-	AM_RANGE(0x2000, 0x2000) AM_WRITE(watchdog_reset_w)
-=======
 	AM_RANGE(0x2000, 0x2000) AM_DEVWRITE("watchdog", watchdog_timer_device, reset_w)
->>>>>>> upstream/master
 	AM_RANGE(0x2800, 0x2800) AM_READ_PORT("SYSTEM") AM_WRITEONLY AM_SHARE("palette_bank")
 	AM_RANGE(0x2820, 0x2820) AM_READ_PORT("P1")
 	AM_RANGE(0x2840, 0x2840) AM_READ_PORT("P2")
 	AM_RANGE(0x2860, 0x2860) AM_READ_PORT("DSW1")
-<<<<<<< HEAD
-	AM_RANGE(0x3000, 0x3000) AM_READ_PORT("DSW2") AM_WRITEONLY
-	AM_RANGE(0x3004, 0x3004) AM_WRITEONLY AM_SHARE("flipscreen_x")
-	AM_RANGE(0x3005, 0x3005) AM_WRITEONLY AM_SHARE("flipscreen_y")
-	AM_RANGE(0x3800, 0x3800) AM_WRITE(tp84_sh_irqtrigger_w)
-	AM_RANGE(0x3a00, 0x3a00) AM_WRITE(soundlatch_byte_w)
-=======
 	AM_RANGE(0x3000, 0x3000) AM_READ_PORT("DSW2")
 	AM_RANGE(0x3000, 0x3007) AM_DEVWRITE("mainlatch", ls259_device, write_d0)
 	AM_RANGE(0x3800, 0x3800) AM_WRITE(tp84_sh_irqtrigger_w)
 	AM_RANGE(0x3a00, 0x3a00) AM_DEVWRITE("soundlatch", generic_latch_8_device, write)
->>>>>>> upstream/master
 	AM_RANGE(0x3c00, 0x3c00) AM_WRITEONLY AM_SHARE("scroll_x")
 	AM_RANGE(0x3e00, 0x3e00) AM_WRITEONLY AM_SHARE("scroll_y")
 	AM_RANGE(0x4000, 0x43ff) AM_RAM AM_SHARE("bg_videoram")
@@ -244,27 +196,15 @@ static ADDRESS_MAP_START( tp84b_cpu1_map, AS_PROGRAM, 8, tp84_state )
 	AM_RANGE(0x0800, 0x0bff) AM_RAM AM_SHARE("bg_colorram")
 	AM_RANGE(0x0c00, 0x0fff) AM_RAM AM_SHARE("fg_colorram")
 	AM_RANGE(0x1000, 0x17ff) AM_RAM AM_SHARE("share1")
-<<<<<<< HEAD
-	AM_RANGE(0x1800, 0x1800) AM_WRITE(watchdog_reset_w)
-=======
 	AM_RANGE(0x1800, 0x1800) AM_DEVWRITE("watchdog", watchdog_timer_device, reset_w)
->>>>>>> upstream/master
 	AM_RANGE(0x1a00, 0x1a00) AM_READ_PORT("SYSTEM") AM_WRITEONLY AM_SHARE("palette_bank")
 	AM_RANGE(0x1a20, 0x1a20) AM_READ_PORT("P1")
 	AM_RANGE(0x1a40, 0x1a40) AM_READ_PORT("P2")
 	AM_RANGE(0x1a60, 0x1a60) AM_READ_PORT("DSW1")
-<<<<<<< HEAD
-	AM_RANGE(0x1c00, 0x1c00) AM_READ_PORT("DSW2") AM_WRITENOP
-	AM_RANGE(0x1c04, 0x1c04) AM_WRITEONLY AM_SHARE("flipscreen_x")
-	AM_RANGE(0x1c05, 0x1c05) AM_WRITEONLY AM_SHARE("flipscreen_y")
-	AM_RANGE(0x1e00, 0x1e00) AM_WRITE(tp84_sh_irqtrigger_w)
-	AM_RANGE(0x1e80, 0x1e80) AM_WRITE(soundlatch_byte_w)
-=======
 	AM_RANGE(0x1c00, 0x1c00) AM_READ_PORT("DSW2")
 	AM_RANGE(0x1c00, 0x1c07) AM_DEVWRITE("mainlatch", ls259_device, write_d0)
 	AM_RANGE(0x1e00, 0x1e00) AM_WRITE(tp84_sh_irqtrigger_w)
 	AM_RANGE(0x1e80, 0x1e80) AM_DEVWRITE("soundlatch", generic_latch_8_device, write)
->>>>>>> upstream/master
 	AM_RANGE(0x1f00, 0x1f00) AM_WRITEONLY AM_SHARE("scroll_x")
 	AM_RANGE(0x1f80, 0x1f80) AM_WRITEONLY AM_SHARE("scroll_y")
 	AM_RANGE(0x8000, 0xffff) AM_ROM
@@ -291,11 +231,7 @@ ADDRESS_MAP_END
 static ADDRESS_MAP_START( audio_map, AS_PROGRAM, 8, tp84_state )
 	AM_RANGE(0x0000, 0x3fff) AM_ROM
 	AM_RANGE(0x4000, 0x43ff) AM_RAM
-<<<<<<< HEAD
-	AM_RANGE(0x6000, 0x6000) AM_READ(soundlatch_byte_r)
-=======
 	AM_RANGE(0x6000, 0x6000) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
->>>>>>> upstream/master
 	AM_RANGE(0x8000, 0x8000) AM_READ(tp84_sh_timer_r)
 	AM_RANGE(0xa000, 0xa1ff) AM_WRITE(tp84_filter_w)
 	AM_RANGE(0xc000, 0xc000) AM_WRITENOP
@@ -392,20 +328,12 @@ INTERRUPT_GEN_MEMBER(tp84_state::sub_vblank_irq)
 }
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( tp84, tp84_state )
-=======
 static MACHINE_CONFIG_START( tp84 )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("cpu1",M6809, XTAL_18_432MHz/12) /* verified on pcb */
 	MCFG_CPU_PROGRAM_MAP(tp84_cpu1_map)
-<<<<<<< HEAD
-	MCFG_CPU_VBLANK_INT_DRIVER("screen", tp84_state,  irq0_line_hold)
-=======
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", tp84_state,  main_vblank_irq)
->>>>>>> upstream/master
 
 	MCFG_CPU_ADD("sub", M6809, XTAL_18_432MHz/12)   /* verified on pcb */
 	MCFG_CPU_PROGRAM_MAP(cpu2_map)
@@ -417,8 +345,6 @@ static MACHINE_CONFIG_START( tp84 )
 	MCFG_QUANTUM_TIME(attotime::from_hz(6000))  /* 100 CPU slices per frame - an high value to ensure proper */
 							/* synchronization of the CPUs */
 
-<<<<<<< HEAD
-=======
 	MCFG_DEVICE_ADD("mainlatch", LS259, 0) // 3B
 	MCFG_ADDRESSABLE_LATCH_Q0_OUT_CB(WRITELINE(tp84_state, irq_enable_w))
 	MCFG_ADDRESSABLE_LATCH_Q1_OUT_CB(WRITELINE(tp84_state, coin_counter_2_w))
@@ -427,7 +353,6 @@ static MACHINE_CONFIG_START( tp84 )
 	MCFG_ADDRESSABLE_LATCH_Q5_OUT_CB(WRITELINE(tp84_state, flip_screen_y_w))
 
 	MCFG_WATCHDOG_ADD("watchdog")
->>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
@@ -446,11 +371,8 @@ static MACHINE_CONFIG_START( tp84 )
 	/* audio hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 
->>>>>>> upstream/master
 	MCFG_SOUND_ADD("y2404_1", Y2404, XTAL_14_31818MHz/8) /* verified on pcb */
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "filter1", 0.75)
 
@@ -569,12 +491,6 @@ ROM_START( tp84b )
 ROM_END
 
 
-<<<<<<< HEAD
-GAME( 1984, tp84,  0,    tp84,  tp84, driver_device, 0, ROT90, "Konami", "Time Pilot '84 (set 1)", MACHINE_SUPPORTS_SAVE )
-GAME( 1984, tp84a, tp84, tp84,  tp84a, driver_device,0, ROT90, "Konami", "Time Pilot '84 (set 2)", MACHINE_SUPPORTS_SAVE )
-GAME( 1984, tp84b, tp84, tp84b, tp84, driver_device, 0, ROT90, "Konami", "Time Pilot '84 (set 3)", MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1984, tp84,  0,    tp84,  tp84,  tp84_state, 0, ROT90, "Konami", "Time Pilot '84 (set 1)", MACHINE_SUPPORTS_SAVE )
 GAME( 1984, tp84a, tp84, tp84,  tp84a, tp84_state, 0, ROT90, "Konami", "Time Pilot '84 (set 2)", MACHINE_SUPPORTS_SAVE )
 GAME( 1984, tp84b, tp84, tp84b, tp84,  tp84_state, 0, ROT90, "Konami", "Time Pilot '84 (set 3)", MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

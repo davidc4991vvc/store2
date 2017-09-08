@@ -5,16 +5,11 @@
 
 #include "../../Common/MyCom.h"
 #include "../../Common/MyString.h"
-<<<<<<< HEAD
-=======
 
->>>>>>> upstream/master
 #include "../ICoder.h"
 
 #include "MethodId.h"
 
-<<<<<<< HEAD
-=======
 /*
   if EXTERNAL_CODECS is not defined, the code supports only codecs that
       are statically linked at compile-time and link-time.
@@ -31,24 +26,10 @@
     2) External codecs
 */
 
->>>>>>> upstream/master
 #ifdef EXTERNAL_CODECS
 
 struct CCodecInfoEx
 {
-<<<<<<< HEAD
-  UString Name;
-  CMethodId Id;
-  UInt32 NumInStreams;
-  UInt32 NumOutStreams;
-  bool EncoderIsAssigned;
-  bool DecoderIsAssigned;
-  bool IsSimpleCodec() const { return NumOutStreams == 1 && NumInStreams == 1; }
-  CCodecInfoEx(): EncoderIsAssigned(false), DecoderIsAssigned(false) {}
-};
-
-HRESULT LoadExternalCodecs(ICompressCodecsInfo *codecsInfo, CObjectVector<CCodecInfoEx> &externalCodecs);
-=======
   CMethodId Id;
   AString Name;
   UInt32 NumStreams;
@@ -63,25 +44,12 @@ struct CHasherInfoEx
   CMethodId Id;
   AString Name;
 };
->>>>>>> upstream/master
 
 #define PUBLIC_ISetCompressCodecsInfo public ISetCompressCodecsInfo,
 #define QUERY_ENTRY_ISetCompressCodecsInfo MY_QUERYINTERFACE_ENTRY(ISetCompressCodecsInfo)
 #define DECL_ISetCompressCodecsInfo STDMETHOD(SetCompressCodecsInfo)(ICompressCodecsInfo *compressCodecsInfo);
 #define IMPL_ISetCompressCodecsInfo2(x) \
 STDMETHODIMP x::SetCompressCodecsInfo(ICompressCodecsInfo *compressCodecsInfo) { \
-<<<<<<< HEAD
-  COM_TRY_BEGIN _codecsInfo = compressCodecsInfo;  return LoadExternalCodecs(_codecsInfo, _externalCodecs); COM_TRY_END }
-#define IMPL_ISetCompressCodecsInfo IMPL_ISetCompressCodecsInfo2(CHandler)
-
-#define EXTERNAL_CODECS_VARS2 _codecsInfo, &_externalCodecs
-
-#define DECL_EXTERNAL_CODECS_VARS CMyComPtr<ICompressCodecsInfo> _codecsInfo; CObjectVector<CCodecInfoEx> _externalCodecs;
-#define EXTERNAL_CODECS_VARS EXTERNAL_CODECS_VARS2,
-
-#define DECL_EXTERNAL_CODECS_LOC_VARS2 ICompressCodecsInfo *codecsInfo, const CObjectVector<CCodecInfoEx> *externalCodecs
-#define EXTERNAL_CODECS_LOC_VARS2 codecsInfo, externalCodecs
-=======
   COM_TRY_BEGIN __externalCodecs.GetCodecs = compressCodecsInfo;  return __externalCodecs.Load(); COM_TRY_END }
 #define IMPL_ISetCompressCodecsInfo IMPL_ISetCompressCodecsInfo2(CHandler)
 
@@ -126,7 +94,6 @@ extern CExternalCodecs g_ExternalCodecs;
 
 #define DECL_EXTERNAL_CODECS_LOC_VARS2 const CExternalCodecs *__externalCodecs
 #define EXTERNAL_CODECS_LOC_VARS2 __externalCodecs
->>>>>>> upstream/master
 
 #define DECL_EXTERNAL_CODECS_LOC_VARS DECL_EXTERNAL_CODECS_LOC_VARS2,
 #define EXTERNAL_CODECS_LOC_VARS EXTERNAL_CODECS_LOC_VARS2,
@@ -139,13 +106,9 @@ extern CExternalCodecs g_ExternalCodecs;
 #define IMPL_ISetCompressCodecsInfo
 #define EXTERNAL_CODECS_VARS2
 #define DECL_EXTERNAL_CODECS_VARS
-<<<<<<< HEAD
-#define EXTERNAL_CODECS_VARS EXTERNAL_CODECS_VARS2
-=======
 #define EXTERNAL_CODECS_VARS
 #define EXTERNAL_CODECS_VARS_L
 #define EXTERNAL_CODECS_VARS_G
->>>>>>> upstream/master
 #define DECL_EXTERNAL_CODECS_LOC_VARS2
 #define EXTERNAL_CODECS_LOC_VARS2
 #define DECL_EXTERNAL_CODECS_LOC_VARS
@@ -153,42 +116,6 @@ extern CExternalCodecs g_ExternalCodecs;
 
 #endif
 
-<<<<<<< HEAD
-bool FindMethod(
-  DECL_EXTERNAL_CODECS_LOC_VARS
-  const UString &name, CMethodId &methodId, UInt32 &numInStreams, UInt32 &numOutStreams);
-
-bool FindMethod(
-  DECL_EXTERNAL_CODECS_LOC_VARS
-  CMethodId methodId, UString &name);
-
-
-HRESULT CreateCoder(
-  DECL_EXTERNAL_CODECS_LOC_VARS
-  CMethodId methodId,
-  CMyComPtr<ICompressFilter> &filter,
-  CMyComPtr<ICompressCoder> &coder,
-  CMyComPtr<ICompressCoder2> &coder2,
-  bool encode, bool onlyCoder);
-
-HRESULT CreateCoder(
-  DECL_EXTERNAL_CODECS_LOC_VARS
-  CMethodId methodId,
-  CMyComPtr<ICompressCoder> &coder,
-  CMyComPtr<ICompressCoder2> &coder2,
-  bool encode);
-
-HRESULT CreateCoder(
-  DECL_EXTERNAL_CODECS_LOC_VARS
-  CMethodId methodId,
-  CMyComPtr<ICompressCoder> &coder, bool encode);
-
-HRESULT CreateFilter(
-  DECL_EXTERNAL_CODECS_LOC_VARS
-  CMethodId methodId,
-  CMyComPtr<ICompressFilter> &filter,
-  bool encode);
-=======
 
 
 
@@ -251,6 +178,5 @@ HRESULT CreateHasher(
     CMethodId methodId,
     AString &name,
     CMyComPtr<IHasher> &hasher);
->>>>>>> upstream/master
 
 #endif

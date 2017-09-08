@@ -10,17 +10,11 @@
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/m6809/m6809.h"
-#include "audio/exidy440.h"
-
-=======
 #include "audio/exidy440.h"
 
 #include "cpu/m6809/m6809.h"
 #include "speaker.h"
 
->>>>>>> upstream/master
 
 #define SOUND_LOG       0
 #define FADE_TO_ZERO    1
@@ -54,32 +48,6 @@ static const int channel_bits[4] =
 };
 
 
-<<<<<<< HEAD
-const device_type EXIDY440 = &device_creator<exidy440_sound_device>;
-
-exidy440_sound_device::exidy440_sound_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, EXIDY440, "Exidy 440 CVSD", tag, owner, clock, "exidy440_sound", __FILE__),
-		device_sound_interface(mconfig, *this),
-		m_sound_command(0),
-		m_sound_command_ack(0),
-		m_mixer_buffer_left(NULL),
-		m_mixer_buffer_right(NULL),
-		m_sound_cache(NULL),
-		m_sound_cache_end(NULL),
-		m_sound_cache_max(NULL),
-		m_m6844_priority(0x00),
-		m_m6844_interrupt(0x00),
-		m_m6844_chain(0x00),
-		m_stream(NULL)
-{
-	m_sound_banks[0] = m_sound_banks[1] = m_sound_banks[2] = m_sound_banks[3] = 0;
-
-	for (int i = 0; i < 4; i++)
-	{
-		m_sound_channel[i].base = NULL;
-		m_sound_channel[i].offset = 0;
-		m_sound_channel[i].remaining = 0;
-=======
 DEFINE_DEVICE_TYPE(EXIDY440, exidy440_sound_device, "exidy440_sound", "Exidy 440 CVSD")
 
 exidy440_sound_device::exidy440_sound_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
@@ -104,24 +72,10 @@ exidy440_sound_device::exidy440_sound_device(const machine_config &mconfig, cons
 		elem.base = nullptr;
 		elem.offset = 0;
 		elem.remaining = 0;
->>>>>>> upstream/master
 	}
 }
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  device_config_complete - perform any
-//  operations now that the configuration is
-//  complete
-//-------------------------------------------------
-
-void exidy440_sound_device::device_config_complete()
-{
-}
-
-//-------------------------------------------------
-=======
->>>>>>> upstream/master
 //  device_start - device-specific startup
 //-------------------------------------------------
 
@@ -159,17 +113,6 @@ void exidy440_sound_device::device_start()
 
 	/* allocate the sample cache */
 	length = machine().root_device().memregion("cvsd")->bytes() * 16 + MAX_CACHE_ENTRIES * sizeof(sound_cache_entry);
-<<<<<<< HEAD
-	m_sound_cache = (sound_cache_entry *)auto_alloc_array_clear(machine(), UINT8, length);
-
-	/* determine the hard end of the cache and reset */
-	m_sound_cache_max = (sound_cache_entry *)((UINT8 *)m_sound_cache + length);
-	reset_sound_cache();
-
-	/* allocate the mixer buffer */
-	m_mixer_buffer_left = auto_alloc_array_clear(machine(), INT32, 2 * clock());
-	m_mixer_buffer_right = m_mixer_buffer_left + clock();
-=======
 	m_sound_cache = (sound_cache_entry *)auto_alloc_array_clear(machine(), uint8_t, length);
 
 	/* determine the hard end of the cache and reset */
@@ -179,7 +122,6 @@ void exidy440_sound_device::device_start()
 	/* allocate the mixer buffer */
 	m_mixer_buffer_left = make_unique_clear<int32_t[]>(clock());
 	m_mixer_buffer_right = make_unique_clear<int32_t[]>(clock());
->>>>>>> upstream/master
 
 	if (SOUND_LOG)
 		m_debuglog = fopen("sound.log", "w");
@@ -201,17 +143,10 @@ void exidy440_sound_device::device_stop()
  *
  *************************************/
 
-<<<<<<< HEAD
-void exidy440_sound_device::add_and_scale_samples(int ch, INT32 *dest, int samples, int volume)
-{
-	sound_channel_data *channel = &m_sound_channel[ch];
-	INT16 *srcdata;
-=======
 void exidy440_sound_device::add_and_scale_samples(int ch, int32_t *dest, int samples, int volume)
 {
 	sound_channel_data *channel = &m_sound_channel[ch];
 	int16_t *srcdata;
->>>>>>> upstream/master
 	int i;
 
 	/* channels 2 and 3 are half-rate samples */
@@ -229,11 +164,7 @@ void exidy440_sound_device::add_and_scale_samples(int ch, int32_t *dest, int sam
 		/* copy 1 for 2 to the destination */
 		for (i = 0; i < samples; i += 2)
 		{
-<<<<<<< HEAD
-			INT16 sample = *srcdata++ * volume / 256;
-=======
 			int16_t sample = *srcdata++ * volume / 256;
->>>>>>> upstream/master
 			*dest++ += sample;
 			*dest++ += sample;
 		}
@@ -258,24 +189,14 @@ void exidy440_sound_device::add_and_scale_samples(int ch, int32_t *dest, int sam
 
 void exidy440_sound_device::mix_to_16(int length, stream_sample_t *dest_left, stream_sample_t *dest_right)
 {
-<<<<<<< HEAD
-	INT32 *mixer_left = m_mixer_buffer_left;
-	INT32 *mixer_right = m_mixer_buffer_right;
-=======
 	int32_t *mixer_left = m_mixer_buffer_left.get();
 	int32_t *mixer_right = m_mixer_buffer_right.get();
->>>>>>> upstream/master
 	int i, clippers = 0;
 
 	for (i = 0; i < length; i++)
 	{
-<<<<<<< HEAD
-		INT32 sample_left = *mixer_left++;
-		INT32 sample_right = *mixer_right++;
-=======
 		int32_t sample_left = *mixer_left++;
 		int32_t sample_right = *mixer_right++;
->>>>>>> upstream/master
 
 		if (sample_left < -32768) { sample_left = -32768; clippers++; }
 		else if (sample_left > 32767) { sample_left = 32767; clippers++; }
@@ -303,11 +224,7 @@ READ8_MEMBER( exidy440_sound_device::sound_command_r )
 }
 
 
-<<<<<<< HEAD
-void exidy440_sound_device::exidy440_sound_command(UINT8 param)
-=======
 void exidy440_sound_device::exidy440_sound_command(uint8_t param)
->>>>>>> upstream/master
 {
 	m_sound_command = param;
 	m_sound_command_ack = 0;
@@ -315,11 +232,7 @@ void exidy440_sound_device::exidy440_sound_command(uint8_t param)
 }
 
 
-<<<<<<< HEAD
-UINT8 exidy440_sound_device::exidy440_sound_command_ack()
-=======
 uint8_t exidy440_sound_device::exidy440_sound_command_ack()
->>>>>>> upstream/master
 {
 	return m_sound_command_ack;
 }
@@ -601,20 +514,12 @@ void exidy440_sound_device::reset_sound_cache()
 }
 
 
-<<<<<<< HEAD
-INT16 *exidy440_sound_device::add_to_sound_cache(UINT8 *input, int address, int length, int bits, int frequency)
-=======
 int16_t *exidy440_sound_device::add_to_sound_cache(uint8_t *input, int address, int length, int bits, int frequency)
->>>>>>> upstream/master
 {
 	sound_cache_entry *current = m_sound_cache_end;
 
 	/* compute where the end will be once we add this entry */
-<<<<<<< HEAD
-	m_sound_cache_end = (sound_cache_entry *)((UINT8 *)current + sizeof(sound_cache_entry) + length * 16);
-=======
 	m_sound_cache_end = (sound_cache_entry *)((uint8_t *)current + sizeof(sound_cache_entry) + length * 16);
->>>>>>> upstream/master
 
 	/* if this will overflow the cache, reset and re-add */
 	if (m_sound_cache_end > m_sound_cache_max)
@@ -636,11 +541,7 @@ int16_t *exidy440_sound_device::add_to_sound_cache(uint8_t *input, int address, 
 }
 
 
-<<<<<<< HEAD
-INT16 *exidy440_sound_device::find_or_add_to_sound_cache(int address, int length, int bits, int frequency)
-=======
 int16_t *exidy440_sound_device::find_or_add_to_sound_cache(int address, int length, int bits, int frequency)
->>>>>>> upstream/master
 {
 	sound_cache_entry *current;
 
@@ -664,11 +565,7 @@ void exidy440_sound_device::play_cvsd(int ch)
 	sound_channel_data *channel = &m_sound_channel[ch];
 	int address = m_m6844_channel[ch].address;
 	int length = m_m6844_channel[ch].counter;
-<<<<<<< HEAD
-	INT16 *base;
-=======
 	int16_t *base;
->>>>>>> upstream/master
 
 	/* add the bank number to the address */
 	if (m_sound_banks[ch] & 1)
@@ -729,19 +626,11 @@ void exidy440_sound_device::stop_cvsd(int ch)
  *
  *************************************/
 
-<<<<<<< HEAD
-void exidy440_sound_device::fir_filter(INT32 *input, INT16 *output, int count)
-{
-	while (count--)
-	{
-		INT32 result = (input[-1] - input[-8] - input[-48] + input[-55]) << 2;
-=======
 void exidy440_sound_device::fir_filter(int32_t *input, int16_t *output, int count)
 {
 	while (count--)
 	{
 		int32_t result = (input[-1] - input[-8] - input[-48] + input[-55]) << 2;
->>>>>>> upstream/master
 		result += (input[0] + input[-18] + input[-38] + input[-56]) << 3;
 		result += (-input[-2] - input[-4] + input[-5] + input[-51] - input[-52] - input[-54]) << 4;
 		result += (-input[-3] - input[-11] - input[-45] - input[-53]) << 5;
@@ -772,15 +661,9 @@ void exidy440_sound_device::fir_filter(int32_t *input, int16_t *output, int coun
  *
  *************************************/
 
-<<<<<<< HEAD
-void exidy440_sound_device::decode_and_filter_cvsd(UINT8 *input, int bytes, int maskbits, int frequency, INT16 *output)
-{
-	INT32 buffer[SAMPLE_BUFFER_LENGTH + FIR_HISTORY_LENGTH];
-=======
 void exidy440_sound_device::decode_and_filter_cvsd(uint8_t *input, int bytes, int maskbits, int frequency, int16_t *output)
 {
 	int32_t buffer[SAMPLE_BUFFER_LENGTH + FIR_HISTORY_LENGTH];
->>>>>>> upstream/master
 	int total_samples = bytes * 8;
 	int mask = (1 << maskbits) - 1;
 	double filter, integrator, leak;
@@ -797,11 +680,7 @@ void exidy440_sound_device::decode_and_filter_cvsd(uint8_t *input, int bytes, in
 	gain = SAMPLE_GAIN;
 
 	/* clear the history words for a start */
-<<<<<<< HEAD
-	memset(&buffer[0], 0, FIR_HISTORY_LENGTH * sizeof(INT32));
-=======
 	memset(&buffer[0], 0, FIR_HISTORY_LENGTH * sizeof(int32_t));
->>>>>>> upstream/master
 
 	/* initialize the CVSD decoder */
 	steps = 0xaa;
@@ -811,11 +690,7 @@ void exidy440_sound_device::decode_and_filter_cvsd(uint8_t *input, int bytes, in
 	/* loop over chunks */
 	for (chunk_start = 0; chunk_start < total_samples; chunk_start += SAMPLE_BUFFER_LENGTH)
 	{
-<<<<<<< HEAD
-		INT32 *bufptr = &buffer[FIR_HISTORY_LENGTH];
-=======
 		int32_t *bufptr = &buffer[FIR_HISTORY_LENGTH];
->>>>>>> upstream/master
 		int chunk_bytes;
 		int ind;
 
@@ -888,21 +763,13 @@ void exidy440_sound_device::decode_and_filter_cvsd(uint8_t *input, int bytes, in
 		fir_filter(&buffer[FIR_HISTORY_LENGTH], &output[chunk_start], chunk_bytes * 8);
 
 		/* copy the last few input samples down to the start for a new history */
-<<<<<<< HEAD
-		memcpy(&buffer[0], &buffer[SAMPLE_BUFFER_LENGTH], FIR_HISTORY_LENGTH * sizeof(INT32));
-=======
 		memcpy(&buffer[0], &buffer[SAMPLE_BUFFER_LENGTH], FIR_HISTORY_LENGTH * sizeof(int32_t));
->>>>>>> upstream/master
 	}
 
 	/* make sure the volume goes smoothly to 0 over the last 512 samples */
 	if (FADE_TO_ZERO)
 	{
-<<<<<<< HEAD
-		INT16 *data;
-=======
 		int16_t *data;
->>>>>>> upstream/master
 
 		chunk_start = (total_samples > 512) ? total_samples - 512 : 0;
 		data = output + chunk_start;
@@ -929,13 +796,8 @@ void exidy440_sound_device::sound_stream_update(sound_stream &stream, stream_sam
 	int ch;
 
 	/* reset the mixer buffers */
-<<<<<<< HEAD
-	memset(m_mixer_buffer_left, 0, samples * sizeof(INT32));
-	memset(m_mixer_buffer_right, 0, samples * sizeof(INT32));
-=======
 	memset(m_mixer_buffer_left.get(), 0, samples * sizeof(int32_t));
 	memset(m_mixer_buffer_right.get(), 0, samples * sizeof(int32_t));
->>>>>>> upstream/master
 
 	/* loop over channels */
 	for (ch = 0; ch < 4; ch++)
@@ -954,20 +816,12 @@ void exidy440_sound_device::sound_stream_update(sound_stream &stream, stream_sam
 		/* get a pointer to the sample data and copy to the left */
 		volume = m_sound_volume[2 * ch + 0];
 		if (volume)
-<<<<<<< HEAD
-			add_and_scale_samples(ch, m_mixer_buffer_left, length, volume);
-=======
 			add_and_scale_samples(ch, m_mixer_buffer_left.get(), length, volume);
->>>>>>> upstream/master
 
 		/* get a pointer to the sample data and copy to the left */
 		volume = m_sound_volume[2 * ch + 1];
 		if (volume)
-<<<<<<< HEAD
-			add_and_scale_samples(ch, m_mixer_buffer_right, length, volume);
-=======
 			add_and_scale_samples(ch, m_mixer_buffer_right.get(), length, volume);
->>>>>>> upstream/master
 
 		/* update our counters */
 		channel->offset += length;
@@ -997,11 +851,7 @@ void exidy440_sound_device::sound_stream_update(sound_stream &stream, stream_sam
  *
  *************************************/
 
-<<<<<<< HEAD
-static ADDRESS_MAP_START( exidy440_audio_map, AS_PROGRAM, 8, driver_device )
-=======
 static ADDRESS_MAP_START( exidy440_audio_map, AS_PROGRAM, 8, exidy440_sound_device )
->>>>>>> upstream/master
 	AM_RANGE(0x0000, 0x7fff) AM_NOP
 	AM_RANGE(0x8000, 0x801f) AM_MIRROR(0x03e0) AM_DEVREADWRITE("custom", exidy440_sound_device, m6844_r, m6844_w)
 	AM_RANGE(0x8400, 0x840f) AM_MIRROR(0x03f0) AM_DEVREADWRITE("custom", exidy440_sound_device, sound_volume_r, sound_volume_w)
@@ -1023,11 +873,7 @@ ADDRESS_MAP_END
  *
  *************************************/
 
-<<<<<<< HEAD
-MACHINE_CONFIG_FRAGMENT( exidy440_audio )
-=======
 MACHINE_CONFIG_START( exidy440_audio )
->>>>>>> upstream/master
 
 	MCFG_CPU_ADD("audiocpu", M6809, EXIDY440_AUDIO_CLOCK)
 	MCFG_CPU_PROGRAM_MAP(exidy440_audio_map)

@@ -1,9 +1,5 @@
 // license:BSD-3-Clause
 // copyright-holders:Luca Elia
-<<<<<<< HEAD
-/* TODO: some variables are per-game specifics */
-#include "sound/okim6295.h"
-=======
 
 /* TODO: some variables are per-game specifics */
 
@@ -13,23 +9,15 @@
 #include "machine/watchdog.h"
 #include "video/ms1_tmap.h"
 #include "screen.h"
->>>>>>> upstream/master
 
 class cischeat_state : public driver_device
 {
 public:
 	cischeat_state(const machine_config &mconfig, device_type type, const char *tag)
 		: driver_device(mconfig, type, tag),
-<<<<<<< HEAD
-		m_vregs(*this, "vregs"),
-		m_scrollram(*this, "scrollram"),
-		m_ram(*this, "ram"),
-		m_roadram(*this, "roadram"),
-=======
 		m_tmap(*this, "scroll%u", 0),
 		m_ram(*this, "ram"),
 		m_roadram(*this, "roadram.%u", 0),
->>>>>>> upstream/master
 		m_f1gpstr2_ioready(*this, "ioready"),
 		m_maincpu(*this, "maincpu"),
 		m_cpu1(*this, "cpu1"),
@@ -37,36 +25,6 @@ public:
 		m_cpu3(*this, "cpu3"),
 		m_cpu5(*this, "cpu5"),
 		m_soundcpu(*this, "soundcpu"),
-<<<<<<< HEAD
-		m_oki1(*this, "oki1"),
-		m_oki2(*this, "oki2"),
-		m_gfxdecode(*this, "gfxdecode"),
-		m_palette(*this, "palette") { }
-
-	required_shared_ptr<UINT16> m_vregs;
-	optional_shared_ptr_array<UINT16,3> m_scrollram;
-	required_shared_ptr<UINT16> m_ram;
-	optional_shared_ptr_array<UINT16,2> m_roadram;
-	optional_shared_ptr<UINT16> m_f1gpstr2_ioready;
-
-	UINT16 *m_objectram;
-	tilemap_t *m_tmap[3];
-	tilemap_t *m_tilemap[3][2][4];
-	int m_scrollx[3];
-	int m_scrolly[3];
-	int m_active_layers;
-	int m_bits_per_color_code;
-	int m_scroll_flag[3];
-
-	int m_prev;
-	int m_armold;
-	UINT16 m_scudhamm_motor_command;
-	int m_ip_select;
-	UINT8 m_drawmode_table[16];
-	int m_debugsprites;
-	int m_show_unknown;
-	UINT16 *m_spriteram;
-=======
 		m_screen(*this, "screen"),
 		m_watchdog(*this, "watchdog"),
 		m_oki1(*this, "oki1"),
@@ -107,7 +65,6 @@ public:
 	uint8_t m_motor_value;
 	uint8_t m_io_value;
 
->>>>>>> upstream/master
 	DECLARE_WRITE16_MEMBER(scudhamm_motor_command_w);
 	DECLARE_WRITE16_MEMBER(scudhamm_leds_w);
 	DECLARE_WRITE16_MEMBER(scudhamm_enable_w);
@@ -118,44 +75,6 @@ public:
 	DECLARE_READ16_MEMBER(armchmp2_buttons_r);
 	DECLARE_WRITE16_MEMBER(armchmp2_leds_w);
 	DECLARE_WRITE16_MEMBER(bigrun_soundbank_w);
-<<<<<<< HEAD
-	DECLARE_READ16_MEMBER(f1gpstr2_io_r);
-	DECLARE_WRITE16_MEMBER(f1gpstr2_io_w);
-	DECLARE_READ16_MEMBER(scudhamm_motor_status_r);
-	DECLARE_READ16_MEMBER(scudhamm_motor_pos_r);
-	DECLARE_READ16_MEMBER(scudhamm_analog_r);
-	DECLARE_WRITE16_MEMBER(cischeat_scrollram_0_w);
-	DECLARE_WRITE16_MEMBER(cischeat_scrollram_1_w);
-	DECLARE_WRITE16_MEMBER(cischeat_scrollram_2_w);
-	DECLARE_READ16_MEMBER(bigrun_vregs_r);
-	DECLARE_WRITE16_MEMBER(bigrun_vregs_w);
-	DECLARE_READ16_MEMBER(cischeat_vregs_r);
-	DECLARE_WRITE16_MEMBER(cischeat_vregs_w);
-	DECLARE_READ16_MEMBER(f1gpstar_vregs_r);
-	DECLARE_READ16_MEMBER(f1gpstr2_vregs_r);
-	DECLARE_READ16_MEMBER(wildplt_vregs_r);
-	DECLARE_WRITE16_MEMBER(f1gpstar_vregs_w);
-	DECLARE_WRITE16_MEMBER(f1gpstr2_vregs_w);
-	DECLARE_WRITE16_MEMBER(scudhamm_vregs_w);
-	void cischeat_set_vreg_flag(int which, int data);
-	DECLARE_WRITE16_MEMBER(cischeat_soundbank_1_w);
-	DECLARE_WRITE16_MEMBER(cischeat_soundbank_2_w);
-	DECLARE_DRIVER_INIT(wildplt);
-	DECLARE_DRIVER_INIT(cischeat);
-	DECLARE_DRIVER_INIT(bigrun);
-	DECLARE_DRIVER_INIT(f1gpstar);
-	TILEMAP_MAPPER_MEMBER(cischeat_scan_8x8);
-	TILEMAP_MAPPER_MEMBER(cischeat_scan_16x16);
-	TILE_GET_INFO_MEMBER(cischeat_get_scroll_tile_info_8x8);
-	TILE_GET_INFO_MEMBER(cischeat_get_scroll_tile_info_16x16);
-	DECLARE_VIDEO_START(bigrun);
-	DECLARE_VIDEO_START(f1gpstar);
-	DECLARE_VIDEO_START(cischeat);
-	UINT32 screen_update_bigrun(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	UINT32 screen_update_scudhamm(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	UINT32 screen_update_cischeat(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	UINT32 screen_update_f1gpstar(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	DECLARE_READ16_MEMBER(scudhamm_motor_status_r);
 	DECLARE_READ16_MEMBER(scudhamm_motor_pos_r);
 	DECLARE_READ16_MEMBER(scudhamm_analog_r);
@@ -190,16 +109,10 @@ public:
 	uint32_t screen_update_scudhamm(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	uint32_t screen_update_cischeat(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	uint32_t screen_update_f1gpstar(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	TIMER_DEVICE_CALLBACK_MEMBER(bigrun_scanline);
 	TIMER_DEVICE_CALLBACK_MEMBER(scudhamm_scanline);
 	TIMER_DEVICE_CALLBACK_MEMBER(armchamp2_scanline);
 	void prepare_shadows();
-<<<<<<< HEAD
-	inline void scrollram_w(address_space &space, offs_t offset, UINT16 data, UINT16 mem_mask, int which);
-	void create_tilemaps();
-=======
->>>>>>> upstream/master
 	void cischeat_draw_road(bitmap_ind16 &bitmap, const rectangle &cliprect, int road_num, int priority1, int priority2, int transparency);
 	void f1gpstar_draw_road(bitmap_ind16 &bitmap, const rectangle &cliprect, int road_num, int priority1, int priority2, int transparency);
 	void cischeat_draw_sprites(bitmap_ind16 &bitmap , const rectangle &cliprect, int priority1, int priority2);
@@ -211,17 +124,12 @@ public:
 	optional_device<cpu_device> m_cpu3;
 	optional_device<cpu_device> m_cpu5;
 	optional_device<cpu_device> m_soundcpu;
-<<<<<<< HEAD
-=======
 	required_device<screen_device> m_screen;
 	optional_device<watchdog_timer_device> m_watchdog;
->>>>>>> upstream/master
 	required_device<okim6295_device> m_oki1;
 	required_device<okim6295_device> m_oki2;
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
-<<<<<<< HEAD
-=======
 	optional_device<generic_latch_16_device> m_soundlatch;
 	optional_device<generic_latch_16_device> m_soundlatch2;
 
@@ -248,5 +156,4 @@ public:
 
 	DECLARE_DRIVER_INIT(captflag);
 	TIMER_DEVICE_CALLBACK_MEMBER(captflag_scanline);
->>>>>>> upstream/master
 };

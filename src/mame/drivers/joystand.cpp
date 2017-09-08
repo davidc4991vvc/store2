@@ -90,14 +90,6 @@ Notes:
 
 #include "emu.h"
 #include "cpu/m68000/m68000.h"
-<<<<<<< HEAD
-#include "machine/tmp68301.h"
-#include "machine/msm6242.h"
-#include "machine/eepromser.h"
-#include "machine/intelfsh.h"
-#include "sound/2413intf.h"
-#include "sound/okim6295.h"
-=======
 #include "machine/eepromser.h"
 #include "machine/intelfsh.h"
 #include "machine/msm6242.h"
@@ -106,7 +98,6 @@ Notes:
 #include "sound/ym2413.h"
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 class joystand_state : public driver_device
 {
@@ -164,15 +155,6 @@ public:
 	required_device<okim6295_device> m_oki;
 
 	// memory pointers
-<<<<<<< HEAD
-	required_shared_ptr<UINT16> m_bg1_ram;
-	required_shared_ptr<UINT16> m_bg2_ram;
-	required_shared_ptr<UINT16> m_bg15_0_ram;
-	required_shared_ptr<UINT16> m_bg15_1_ram;
-	required_shared_ptr<UINT16> m_scroll;
-	required_shared_ptr<UINT16> m_enable;
-	required_shared_ptr<UINT16> m_outputs;
-=======
 	required_shared_ptr<uint16_t> m_bg1_ram;
 	required_shared_ptr<uint16_t> m_bg2_ram;
 	required_shared_ptr<uint16_t> m_bg15_0_ram;
@@ -180,7 +162,6 @@ public:
 	required_shared_ptr<uint16_t> m_scroll;
 	required_shared_ptr<uint16_t> m_enable;
 	required_shared_ptr<uint16_t> m_outputs;
->>>>>>> upstream/master
 
 	// tilemaps
 	tilemap_t *m_bg1_tmap;
@@ -195,11 +176,7 @@ public:
 	DECLARE_WRITE16_MEMBER(bg15_0_w);
 	DECLARE_WRITE16_MEMBER(bg15_1_w);
 	static const rgb_t BG15_TRANSPARENT;
-<<<<<<< HEAD
-	void draw_bg15_tile(address_space &space, int x, int y, UINT16 code);
-=======
 	void draw_bg15_tile(address_space &space, int x, int y, uint16_t code);
->>>>>>> upstream/master
 	void draw_bg15_tilemap();
 	bool bg15_tiles_dirty;
 
@@ -219,21 +196,12 @@ public:
 	DECLARE_WRITE16_MEMBER(outputs_w);
 
 	// screen updates
-<<<<<<< HEAD
-	UINT32 screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
-	virtual void video_start();
-
-	// machine
-	virtual void machine_start();
-	virtual void machine_reset();
-=======
 	uint32_t screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
 	virtual void video_start() override;
 
 	// machine
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
->>>>>>> upstream/master
 	INTERRUPT_GEN_MEMBER(joystand_interrupt);
 };
 
@@ -247,21 +215,13 @@ const rgb_t joystand_state::BG15_TRANSPARENT = 0x99999999;
 
 TILE_GET_INFO_MEMBER(joystand_state::get_bg1_tile_info)
 {
-<<<<<<< HEAD
-	UINT32 code = (m_bg1_ram[tile_index * 2 + 0] << 16) | m_bg1_ram[tile_index * 2 + 1];
-=======
 	uint32_t code = (m_bg1_ram[tile_index * 2 + 0] << 16) | m_bg1_ram[tile_index * 2 + 1];
->>>>>>> upstream/master
 	SET_TILE_INFO_MEMBER(0, code & 0x00ffffff, code >> 24, 0);
 }
 
 TILE_GET_INFO_MEMBER(joystand_state::get_bg2_tile_info)
 {
-<<<<<<< HEAD
-	UINT32 code = (m_bg2_ram[tile_index * 2 + 0] << 16) | m_bg2_ram[tile_index * 2 + 1];
-=======
 	uint32_t code = (m_bg2_ram[tile_index * 2 + 0] << 16) | m_bg2_ram[tile_index * 2 + 1];
->>>>>>> upstream/master
 	SET_TILE_INFO_MEMBER(0, code & 0x00ffffff, code >> 24, 0);
 }
 
@@ -286,20 +246,12 @@ WRITE16_MEMBER(joystand_state::bg2_w)
 // pixel-based
 WRITE16_MEMBER(joystand_state::bg15_0_w)
 {
-<<<<<<< HEAD
-	UINT16 val = COMBINE_DATA(&m_bg15_0_ram[offset]);
-=======
 	uint16_t val = COMBINE_DATA(&m_bg15_0_ram[offset]);
->>>>>>> upstream/master
 	m_bg15_bitmap[0].pix32(offset >> 9, offset & 0x1ff) = (val & 0x8000) ? BG15_TRANSPARENT : m_bg15_palette->pen_color(val & 0x7fff);
 }
 
 // tile-based
-<<<<<<< HEAD
-void joystand_state::draw_bg15_tile(address_space &space, int x, int y, UINT16 code)
-=======
 void joystand_state::draw_bg15_tile(address_space &space, int x, int y, uint16_t code)
->>>>>>> upstream/master
 {
 	x *= 16;
 	y *= 16;
@@ -309,11 +261,7 @@ void joystand_state::draw_bg15_tile(address_space &space, int x, int y, uint16_t
 	{
 		for (int tx = 0; tx < 16; ++tx)
 		{
-<<<<<<< HEAD
-			UINT16 val = space.read_word(srcaddr + ty * 16 * 2 + tx * 2);
-=======
 			uint16_t val = space.read_word(srcaddr + ty * 16 * 2 + tx * 2);
->>>>>>> upstream/master
 			m_bg15_bitmap[1].pix32(y + ty , x + tx) = (val & 0x8000) ? BG15_TRANSPARENT : m_bg15_palette->pen_color(val & 0x7fff);
 		}
 	}
@@ -327,11 +275,7 @@ void joystand_state::draw_bg15_tilemap()
 	bg15_tiles_dirty = false;
 
 	address_space &space = m_maincpu->space(AS_PROGRAM);
-<<<<<<< HEAD
-	UINT16 *src = m_bg15_1_ram + 2/2;
-=======
 	uint16_t *src = m_bg15_1_ram + 2/2;
->>>>>>> upstream/master
 	for (int y = 0; y < 0x10; ++y)
 	{
 		for (int x = 0; x < 0x20; ++x)
@@ -345,11 +289,7 @@ void joystand_state::draw_bg15_tilemap()
 
 WRITE16_MEMBER(joystand_state::bg15_1_w)
 {
-<<<<<<< HEAD
-	UINT16 code = COMBINE_DATA(&m_bg15_1_ram[offset]);
-=======
 	uint16_t code = COMBINE_DATA(&m_bg15_1_ram[offset]);
->>>>>>> upstream/master
 	if ((offset & 0x83) == 0x01)
 		draw_bg15_tile(space, (offset/4) & 0x1f, offset/0x100, code);
 }
@@ -362,38 +302,22 @@ WRITE16_MEMBER(joystand_state::bg15_1_w)
 
 void joystand_state::video_start()
 {
-<<<<<<< HEAD
-	m_bg1_tmap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(joystand_state::get_bg1_tile_info),this), TILEMAP_SCAN_ROWS,  8,  8, 0x40, 0x20);
-	m_bg2_tmap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(joystand_state::get_bg2_tile_info),this), TILEMAP_SCAN_ROWS,  8,  8, 0x40, 0x40);
-=======
 	m_bg1_tmap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(joystand_state::get_bg1_tile_info),this), TILEMAP_SCAN_ROWS,  8,  8, 0x40, 0x20);
 	m_bg2_tmap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(joystand_state::get_bg2_tile_info),this), TILEMAP_SCAN_ROWS,  8,  8, 0x40, 0x40);
->>>>>>> upstream/master
 
 	m_bg1_tmap->set_transparent_pen(0xf);
 	m_bg2_tmap->set_transparent_pen(0xf);
 
-<<<<<<< HEAD
-	for (int i = 0; i < 2; ++i)
-	{
-		m_bg15_bitmap[i].allocate(0x200, 0x200);
-		m_bg15_bitmap[i].fill(BG15_TRANSPARENT);
-=======
 	for (auto & elem : m_bg15_bitmap)
 	{
 		elem.allocate(0x200, 0x200);
 		elem.fill(BG15_TRANSPARENT);
->>>>>>> upstream/master
 	}
 
 	bg15_tiles_dirty = true;
 }
 
-<<<<<<< HEAD
-UINT32 joystand_state::screen_update( screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect )
-=======
 uint32_t joystand_state::screen_update( screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect )
->>>>>>> upstream/master
 {
 	int layers_ctrl = -1;
 
@@ -441,11 +365,7 @@ READ16_MEMBER(joystand_state::fpga_r)
 WRITE16_MEMBER(joystand_state::oki_bank_w)
 {
 	if (ACCESSING_BITS_0_7)
-<<<<<<< HEAD
-		m_oki->set_bank_base(((data >> 6) & 3) * 0x40000);
-=======
 		m_oki->set_rom_bank((data >> 6) & 3);
->>>>>>> upstream/master
 }
 
 READ16_MEMBER(joystand_state::eeprom_r)
@@ -476,19 +396,6 @@ WRITE16_MEMBER(joystand_state::outputs_w)
 	COMBINE_DATA(&m_outputs[0]);
 	if (ACCESSING_BITS_8_15)
 	{
-<<<<<<< HEAD
-		coin_counter_w(machine(), 0,            BIT(data, 0)); // coin counter 1
-		coin_counter_w(machine(), 1,            BIT(data, 1)); // coin counter 2
-
-		output_set_value("blocker",             BIT(data, 2));
-		output_set_value("error_lamp",          BIT(data, 3)); // counter error
-		output_set_value("photo_lamp",          BIT(data, 4)); // during photo
-	}
-	if (ACCESSING_BITS_8_15)
-	{
-		output_set_value("ok_button_led",       BIT(data, 8));
-		output_set_value("cancel_button_led",   BIT(data, 9));
-=======
 		machine().bookkeeping().coin_counter_w(0,            BIT(data, 0)); // coin counter 1
 		machine().bookkeeping().coin_counter_w(1,            BIT(data, 1)); // coin counter 2
 
@@ -500,7 +407,6 @@ WRITE16_MEMBER(joystand_state::outputs_w)
 	{
 		output().set_value("ok_button_led",       BIT(data, 8));
 		output().set_value("cancel_button_led",   BIT(data, 9));
->>>>>>> upstream/master
 	}
 }
 
@@ -673,11 +579,7 @@ INTERRUPT_GEN_MEMBER(joystand_state::joystand_interrupt)
 	m_tmp68301->external_interrupt_1();
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( joystand, joystand_state )
-=======
 static MACHINE_CONFIG_START( joystand )
->>>>>>> upstream/master
 
 	// basic machine hardware
 	MCFG_CPU_ADD("maincpu", M68000, XTAL_16MHz) // !! TMP68301 !!
@@ -708,11 +610,7 @@ static MACHINE_CONFIG_START( joystand )
 	MCFG_SOUND_ADD("ym2413", YM2413, XTAL_3_579545MHz)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.80)
 
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki", XTAL_16MHz / 16, OKIM6295_PIN7_HIGH) // pin 7 not verified
-=======
 	MCFG_OKIM6295_ADD("oki", XTAL_16MHz / 16, PIN7_HIGH) // pin 7 not verified
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
 
 	// cart
@@ -788,8 +686,4 @@ ROM_START( joystand )
 	ROM_LOAD( "jsp-xct.ic5",   0x000, 0x117, NO_DUMP )
 ROM_END
 
-<<<<<<< HEAD
-GAME( 1997, joystand, 0, joystand, joystand, driver_device, 0, ROT0, "Yuvo", "Joy Stand Private", MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1997, joystand, 0, joystand, joystand, joystand_state, 0, ROT0, "Yuvo", "Joy Stand Private", MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

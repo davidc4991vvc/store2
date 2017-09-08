@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-// license:???
-=======
 // license:GPL-2.0+
->>>>>>> upstream/master
 // copyright-holders:Jarek Burczynski
 /****************************************************************************
 
@@ -55,15 +51,10 @@ Thanks to HIGHWAYMAN for providing info on how to get to these epoxies
 
 #include "emu.h"
 #include "cpu/z80/z80.h"
-<<<<<<< HEAD
-#include "video/resnet.h"
-#include "sound/ay8910.h"
-=======
 #include "sound/ay8910.h"
 #include "video/resnet.h"
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 class wallc_state : public driver_device
@@ -75,24 +66,6 @@ public:
 		m_gfxdecode(*this, "gfxdecode"),
 		m_videoram(*this, "videoram") { }
 
-<<<<<<< HEAD
-	required_device<cpu_device> m_maincpu;
-	required_device<gfxdecode_device> m_gfxdecode;
-
-	required_shared_ptr<UINT8> m_videoram;
-
-	tilemap_t *m_bg_tilemap;
-
-	DECLARE_WRITE8_MEMBER(wallc_videoram_w);
-	DECLARE_WRITE8_MEMBER(wallc_coin_counter_w);
-	DECLARE_DRIVER_INIT(wallc);
-	DECLARE_DRIVER_INIT(wallca);
-	DECLARE_DRIVER_INIT(sidam);
-	TILE_GET_INFO_MEMBER(get_bg_tile_info);
-	virtual void video_start();
-	DECLARE_PALETTE_INIT(wallc);
-	UINT32 screen_update_wallc(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	DECLARE_WRITE8_MEMBER(videoram_w);
 	DECLARE_WRITE8_MEMBER(wallc_coin_counter_w);
 	DECLARE_WRITE8_MEMBER(unkitpkr_out0_w);
@@ -121,7 +94,6 @@ private:
 	required_shared_ptr<uint8_t> m_videoram;
 
 	tilemap_t *m_bg_tilemap;
->>>>>>> upstream/master
 };
 
 
@@ -152,11 +124,7 @@ private:
 
 PALETTE_INIT_MEMBER(wallc_state, wallc)
 {
-<<<<<<< HEAD
-	const UINT8 *color_prom = memregion("proms")->base();
-=======
 	const uint8_t *color_prom = memregion("proms")->base();
->>>>>>> upstream/master
 	int i;
 
 	static const int resistances_rg[2] = { 330, 220 };
@@ -192,9 +160,6 @@ PALETTE_INIT_MEMBER(wallc_state, wallc)
 	}
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER(wallc_state::wallc_videoram_w)
-=======
 PALETTE_INIT_MEMBER(wallc_state, unkitpkr)
 {
 //  this pcb has 470 ohms resistors instead of the expected 330 ohms.
@@ -235,7 +200,6 @@ PALETTE_INIT_MEMBER(wallc_state, unkitpkr)
 }
 
 WRITE8_MEMBER(wallc_state::videoram_w)
->>>>>>> upstream/master
 {
 	m_videoram[offset] = data;
 	m_bg_tilemap->mark_tile_dirty(offset);
@@ -243,9 +207,6 @@ WRITE8_MEMBER(wallc_state::videoram_w)
 
 TILE_GET_INFO_MEMBER(wallc_state::get_bg_tile_info)
 {
-<<<<<<< HEAD
-	SET_TILE_INFO_MEMBER(0, m_videoram[tile_index] + 0x100, 1, 0);
-=======
 	SET_TILE_INFO_MEMBER(0, m_videoram[tile_index] | 0x100, 1, 0);
 }
 
@@ -258,17 +219,10 @@ TILE_GET_INFO_MEMBER(wallc_state::get_bg_tile_info_unkitpkr)
 		code |= 0x100;
 
 	SET_TILE_INFO_MEMBER(0, code, 1, 0);
->>>>>>> upstream/master
 }
 
 void wallc_state::video_start()
 {
-<<<<<<< HEAD
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(wallc_state::get_bg_tile_info),this), TILEMAP_SCAN_COLS_FLIP_Y,   8, 8, 32, 32);
-}
-
-UINT32 wallc_state::screen_update_wallc(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(wallc_state::get_bg_tile_info), this), TILEMAP_SCAN_COLS_FLIP_Y, 8, 8, 32, 32);
 }
 
@@ -278,17 +232,11 @@ VIDEO_START_MEMBER(wallc_state, unkitpkr)
 }
 
 uint32_t wallc_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	m_bg_tilemap->draw(screen, bitmap, cliprect, 0, 0);
 	return 0;
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER(wallc_state::wallc_coin_counter_w)
-{
-	coin_counter_w(machine(), 0,data & 2);
-=======
 
 WRITE8_MEMBER(wallc_state::wallc_coin_counter_w)
 {
@@ -307,16 +255,11 @@ WRITE8_MEMBER(wallc_state::unkitpkr_out1_w)
 
 WRITE8_MEMBER(wallc_state::unkitpkr_out2_w)
 {
->>>>>>> upstream/master
 }
 
 static ADDRESS_MAP_START( wallc_map, AS_PROGRAM, 8, wallc_state )
 	AM_RANGE(0x0000, 0x7fff) AM_ROM
-<<<<<<< HEAD
-	AM_RANGE(0x8000, 0x83ff) AM_RAM_WRITE(wallc_videoram_w) AM_MIRROR(0xc00) AM_SHARE("videoram")   /* 2114, 2114 */
-=======
 	AM_RANGE(0x8000, 0x83ff) AM_RAM_WRITE(videoram_w) AM_MIRROR(0xc00) AM_SHARE("videoram")   /* 2114, 2114 */
->>>>>>> upstream/master
 	AM_RANGE(0xa000, 0xa3ff) AM_RAM     /* 2114, 2114 */
 
 	AM_RANGE(0xb000, 0xb000) AM_READ_PORT("DSW1")
@@ -327,10 +270,6 @@ static ADDRESS_MAP_START( wallc_map, AS_PROGRAM, 8, wallc_state )
 	AM_RANGE(0xb000, 0xb000) AM_WRITENOP
 	AM_RANGE(0xb100, 0xb100) AM_WRITE(wallc_coin_counter_w)
 	AM_RANGE(0xb200, 0xb200) AM_WRITENOP
-<<<<<<< HEAD
-	AM_RANGE(0xb500, 0xb500) AM_DEVWRITE("aysnd", ay8910_device, address_w)
-	AM_RANGE(0xb600, 0xb600) AM_DEVWRITE("aysnd", ay8910_device, data_w)
-=======
 	AM_RANGE(0xb500, 0xb500) AM_DEVWRITE("aysnd", ay8912_device, address_w)
 	AM_RANGE(0xb600, 0xb600) AM_DEVWRITE("aysnd", ay8912_device, data_w)
 ADDRESS_MAP_END
@@ -351,7 +290,6 @@ static ADDRESS_MAP_START( unkitpkr_map, AS_PROGRAM, 8, wallc_state )
 	AM_RANGE(0xb200, 0xb200) AM_WRITE(unkitpkr_out2_w)
 	AM_RANGE(0xb500, 0xb500) AM_DEVWRITE("aysnd", ay8912_device, address_w)
 	AM_RANGE(0xb600, 0xb600) AM_DEVREADWRITE("aysnd", ay8910_device, data_r, data_w)  // Port A = DSW
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -412,8 +350,6 @@ static INPUT_PORTS_START( wallc )
 	PORT_DIPUNUSED_DIPLOC( 0x80, 0x80, "SW2:8" ) /* Shown as "Unused" in the manual */
 INPUT_PORTS_END
 
-<<<<<<< HEAD
-=======
 static INPUT_PORTS_START( unkitpkr )
 	PORT_START("IN0")    /* b000 */
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_UNKNOWN )
@@ -474,7 +410,6 @@ static INPUT_PORTS_START( unkitpkr )
 	PORT_DIPUNUSED_DIPLOC( 0x40, 0x40, "SW2:7" )
 	PORT_DIPUNUSED_DIPLOC( 0x80, 0x80, "SW2:8" )
 INPUT_PORTS_END
->>>>>>> upstream/master
 
 
 static const gfx_layout charlayout =
@@ -492,14 +427,6 @@ static GFXDECODE_START( wallc )
 	GFXDECODE_ENTRY( "gfx1", 0     , charlayout, 0, 4 )
 GFXDECODE_END
 
-<<<<<<< HEAD
-DRIVER_INIT_MEMBER(wallc_state,wallc)
-{
-	UINT8 c;
-	UINT32 i;
-
-	UINT8 *ROM = memregion("maincpu")->base();
-=======
 
 DRIVER_INIT_MEMBER(wallc_state, wallc)
 {
@@ -507,7 +434,6 @@ DRIVER_INIT_MEMBER(wallc_state, wallc)
 	uint32_t i;
 
 	uint8_t *ROM = memregion("maincpu")->base();
->>>>>>> upstream/master
 
 	for (i=0; i<0x2000*2; i++)
 	{
@@ -517,21 +443,12 @@ DRIVER_INIT_MEMBER(wallc_state, wallc)
 	}
 }
 
-<<<<<<< HEAD
-DRIVER_INIT_MEMBER(wallc_state,wallca)
-{
-	UINT8 c;
-	UINT32 i;
-
-	UINT8 *ROM = memregion("maincpu")->base();
-=======
 DRIVER_INIT_MEMBER(wallc_state, wallca)
 {
 	uint8_t c;
 	uint32_t i;
 
 	uint8_t *ROM = memregion("maincpu")->base();
->>>>>>> upstream/master
 
 	for (i=0; i<0x4000; i++)
 	{
@@ -551,20 +468,11 @@ DRIVER_INIT_MEMBER(wallc_state, wallca)
 }
 
 
-<<<<<<< HEAD
-
-static MACHINE_CONFIG_START( wallc, wallc_state )
-	/* basic machine hardware */
-	MCFG_CPU_ADD("maincpu", Z80, 12288000 / 4)  /* 3.072 MHz ? */
-	MCFG_CPU_PROGRAM_MAP(wallc_map)
-	MCFG_CPU_VBLANK_INT_DRIVER("screen", wallc_state,  irq0_line_hold)
-=======
 static MACHINE_CONFIG_START( wallc )
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, 12288000 / 4)  /* 3.072 MHz ? */
 	MCFG_CPU_PROGRAM_MAP(wallc_map)
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", wallc_state, irq0_line_hold)
->>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
@@ -572,11 +480,7 @@ static MACHINE_CONFIG_START( wallc )
 	MCFG_SCREEN_VBLANK_TIME(ATTOSECONDS_IN_USEC(2500) /* not accurate */)
 	MCFG_SCREEN_SIZE(32*8, 32*8)
 	MCFG_SCREEN_VISIBLE_AREA(0*8, 32*8-1, 0*8, 32*8-1)
-<<<<<<< HEAD
-	MCFG_SCREEN_UPDATE_DRIVER(wallc_state, screen_update_wallc)
-=======
 	MCFG_SCREEN_UPDATE_DRIVER(wallc_state, screen_update)
->>>>>>> upstream/master
 	MCFG_SCREEN_PALETTE("palette")
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", wallc)
@@ -585,12 +489,6 @@ static MACHINE_CONFIG_START( wallc )
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
-<<<<<<< HEAD
-	MCFG_SOUND_ADD("aysnd", AY8910, 12288000 / 8)
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.30)
-MACHINE_CONFIG_END
-
-=======
 	MCFG_SOUND_ADD("aysnd", AY8912, 12288000 / 8)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.30)
 MACHINE_CONFIG_END
@@ -612,7 +510,6 @@ static MACHINE_CONFIG_DERIVED( unkitpkr, wallc )
 MACHINE_CONFIG_END
 
 
->>>>>>> upstream/master
 /***************************************************************************
 
   Game driver(s)
@@ -662,10 +559,6 @@ ROM_START( brkblast )
 ROM_END
 
 
-<<<<<<< HEAD
-
-=======
->>>>>>> upstream/master
 /*
 
 It use a epoxy brick like wallc
@@ -684,11 +577,7 @@ Inside the brick there are:
 -negate A15 to feed 74245 /EN ALWAYS
 
 
-<<<<<<< HEAD
-The 74245 let pass the data unmodifyed if A15 is high (like wallc)
-=======
 The 74245 let pass the data unmodified if A15 is high (like wallc)
->>>>>>> upstream/master
 
 If A15 is low a Pal16r4 kick in
 this chip can modify D2,D3,D4,D5,D6,D7
@@ -732,21 +621,12 @@ ROM_START( sidampkr )
 	ROM_LOAD( "11607-74.288",  0x0000, 0x0020, CRC(e14bf545) SHA1(5e8c5a9ea6e4842f27a47c1d7224ed294bbaa40b) )
 ROM_END
 
-<<<<<<< HEAD
-DRIVER_INIT_MEMBER(wallc_state,sidam)
-{
-	UINT8 c;
-	UINT32 i;
-
-	UINT8 *ROM = memregion("maincpu")->base();
-=======
 DRIVER_INIT_MEMBER(wallc_state, sidam)
 {
 	uint8_t c;
 	uint32_t i;
 
 	uint8_t *ROM = memregion("maincpu")->base();
->>>>>>> upstream/master
 	int count = 0;
 
 	for (i=0; i<0x2000; i++)
@@ -784,17 +664,6 @@ DRIVER_INIT_MEMBER(wallc_state, sidam)
 		c = ROM[ i ] ^ 0x0f;
 		ROM[ i ] = c;
 	}
-<<<<<<< HEAD
-
-
-}
-
-GAME( 1984, wallc,  0,      wallc,  wallc, wallc_state, wallc,  ROT0, "Midcoin", "Wall Crash (set 1)", MACHINE_SUPPORTS_SAVE )
-GAME( 1984, wallca, wallc,  wallc,  wallc, wallc_state, wallca, ROT0, "Midcoin", "Wall Crash (set 2)", MACHINE_SUPPORTS_SAVE )
-GAME( 1984, brkblast,wallc, wallc,  wallc, wallc_state, wallca, ROT0, "bootleg (Fadesa)", "Brick Blast (bootleg of Wall Crash)", MACHINE_SUPPORTS_SAVE ) // Spanish bootleg board, Fadesa stickers / text on various components
-
-GAME( 1984, sidampkr,0,     wallc,  wallc, wallc_state, sidam,  ROT270, "Sidam", "unknown Sidam Poker", MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE )
-=======
 }
 
 /*
@@ -871,4 +740,3 @@ GAME( 1984, brkblast, wallc,  wallc,    wallc,    wallc_state, wallca,   ROT0,  
 
 GAME( 1984, sidampkr, 0,      wallc,    wallc,    wallc_state, sidam,    ROT270, "Sidam",            "unknown Sidam Poker",                 MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE )
 GAME( 198?, unkitpkr, 0,      unkitpkr, unkitpkr, wallc_state, unkitpkr, ROT0,   "<unknown>",        "unknown Italian poker game",          MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

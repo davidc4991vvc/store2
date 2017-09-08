@@ -14,45 +14,27 @@ struct CBenchInfo
   UInt64 UserFreq;
   UInt64 UnpackSize;
   UInt64 PackSize;
-<<<<<<< HEAD
-  UInt32 NumIterations;
-=======
   UInt64 NumIterations;
->>>>>>> upstream/master
   
   CBenchInfo(): NumIterations(0) {}
   UInt64 GetUsage() const;
   UInt64 GetRatingPerUsage(UInt64 rating) const;
-<<<<<<< HEAD
-=======
   UInt64 GetSpeed(UInt64 numCommands) const;
->>>>>>> upstream/master
 };
 
 struct IBenchCallback
 {
-<<<<<<< HEAD
-=======
   virtual HRESULT SetFreq(bool showFreq, UInt64 cpuFreq) = 0;
->>>>>>> upstream/master
   virtual HRESULT SetEncodeResult(const CBenchInfo &info, bool final) = 0;
   virtual HRESULT SetDecodeResult(const CBenchInfo &info, bool final) = 0;
 };
 
 UInt64 GetCompressRating(UInt32 dictSize, UInt64 elapsedTime, UInt64 freq, UInt64 size);
-<<<<<<< HEAD
-UInt64 GetDecompressRating(UInt64 elapsedTime, UInt64 freq, UInt64 outSize, UInt64 inSize, UInt32 numIterations);
-
-const int kBenchMinDicLogSize = 18;
-
-UInt64 GetBenchMemoryUsage(UInt32 numThreads, UInt32 dictionary);
-=======
 UInt64 GetDecompressRating(UInt64 elapsedTime, UInt64 freq, UInt64 outSize, UInt64 inSize, UInt64 numIterations);
 
 const unsigned kBenchMinDicLogSize = 18;
 
 UInt64 GetBenchMemoryUsage(UInt32 numThreads, UInt32 dictionary, bool totalBench = false);
->>>>>>> upstream/master
 
 struct IBenchPrintCallback
 {
@@ -65,11 +47,7 @@ HRESULT Bench(
     DECL_EXTERNAL_CODECS_LOC_VARS
     IBenchPrintCallback *printCallback,
     IBenchCallback *benchCallback,
-<<<<<<< HEAD
-    const CObjectVector<CProperty> props,
-=======
     const CObjectVector<CProperty> &props,
->>>>>>> upstream/master
     UInt32 numIterations,
     bool multiDict
     );

@@ -23,17 +23,11 @@
 ******************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "debugger.h"
-#include "hd61700.h"
-
-=======
 #include "hd61700.h"
 
 #include "debugger.h"
 
 
->>>>>>> upstream/master
 // internal ROM
 #define INT_ROM                 0x0c00
 
@@ -97,44 +91,18 @@
 #define CPU_SLP                 0x02
 
 /* HD61700 IRQ vector */
-<<<<<<< HEAD
-static const UINT16 irq_vector[] = {0x0032, 0x0042, 0x0052, 0x0062, 0x0072};
-=======
 static const uint16_t irq_vector[] = {0x0032, 0x0042, 0x0052, 0x0062, 0x0072};
->>>>>>> upstream/master
 
 //**************************************************************************
 //  HD61700 DEVICE
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type HD61700 = &device_creator<hd61700_cpu_device>;
-=======
 DEFINE_DEVICE_TYPE(HD61700, hd61700_cpu_device, "hd61700", "HD61700")
->>>>>>> upstream/master
 
 //-------------------------------------------------
 //  hd61700_cpu_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-hd61700_cpu_device::hd61700_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: cpu_device(mconfig, HD61700, "HD61700", tag, owner, clock, "hd61700", __FILE__),
-		m_program_config("program", ENDIANNESS_BIG, 16, 18, -1),
-		m_ppc(0x0000),
-		m_curpc(0x0000),
-		m_pc(0),
-		m_flags(0),
-		m_lcd_ctrl_cb(*this),
-		m_lcd_read_cb(*this),
-		m_lcd_write_cb(*this),
-		m_kb_read_cb(*this),
-		m_kb_write_cb(*this),
-		m_port_read_cb(*this),
-		m_port_write_cb(*this)
-{
-	// ...
-=======
 hd61700_cpu_device::hd61700_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: cpu_device(mconfig, HD61700, tag, owner, clock)
 	, m_program_config("program", ENDIANNESS_BIG, 16, 18, -1)
@@ -157,7 +125,6 @@ device_memory_interface::space_config_vector hd61700_cpu_device::memory_space_co
 	return space_config_vector {
 		std::make_pair(AS_PROGRAM, &m_program_config)
 	};
->>>>>>> upstream/master
 }
 
 
@@ -224,20 +191,11 @@ void hd61700_cpu_device::device_start()
 
 	for (int ireg=0; ireg<32; ireg++)
 	{
-<<<<<<< HEAD
-		std::string tmpstr;
-		state_add(HD61700_MAINREG + ireg, strformat(tmpstr, "R%d", ireg).c_str(), m_regmain[ireg]).callimport().callexport().formatstr("%02X");
-	}
-
-	state_add(STATE_GENPC, "curpc", m_curpc).callimport().callexport().formatstr("%8s").noshow();
-	state_add(STATE_GENPCBASE, "curpcbase", m_ppc).callimport().callexport().formatstr("%8s").noshow();
-=======
 		state_add(HD61700_MAINREG + ireg, string_format("R%d", ireg).c_str(), m_regmain[ireg]).callimport().callexport().formatstr("%02X");
 	}
 
 	state_add(STATE_GENPC, "GENPC", m_curpc).formatstr("%8s").noshow();
 	state_add(STATE_GENPCBASE, "CURPC", m_ppc).formatstr("%8s").noshow();
->>>>>>> upstream/master
 	state_add(STATE_GENFLAGS, "GENFLAGS",  m_flags).mask(0xff).formatstr("%8s").noshow();
 
 	// set our instruction counter
@@ -251,11 +209,6 @@ void hd61700_cpu_device::device_start()
 
 void hd61700_cpu_device::device_reset()
 {
-<<<<<<< HEAD
-	m_ppc = 0x0000;
-	m_curpc = 0x0000;
-=======
->>>>>>> upstream/master
 	set_pc(0x0000);
 	m_flags = FLAG_SW;
 	m_state = 0;
@@ -267,13 +220,8 @@ void hd61700_cpu_device::device_reset()
 	memset(m_reg16bit, 0, sizeof(m_reg16bit));
 	memset(m_regmain, 0, sizeof(m_regmain));
 
-<<<<<<< HEAD
-	for (int i=0;i<6; i++)
-		m_lines_status[i] = CLEAR_LINE;
-=======
 	for (auto & elem : m_lines_status)
 		elem = CLEAR_LINE;
->>>>>>> upstream/master
 }
 
 
@@ -328,20 +276,12 @@ void hd61700_cpu_device::state_import(const device_state_entry &entry)
 //  for the debugger
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void hd61700_cpu_device::state_string_export(const device_state_entry &entry, std::string &str)
-=======
 void hd61700_cpu_device::state_string_export(const device_state_entry &entry, std::string &str) const
->>>>>>> upstream/master
 {
 	switch (entry.index())
 	{
 		case STATE_GENFLAGS:
-<<<<<<< HEAD
-			strprintf(str, "%c%c%c%c%c%c",
-=======
 			str = string_format("%c%c%c%c%c%c",
->>>>>>> upstream/master
 				m_flags & FLAG_Z   ? '.' : 'Z',
 				m_flags & FLAG_C   ? 'C' : '.',
 				m_flags & FLAG_LZ  ? '.' : 'L',
@@ -360,17 +300,10 @@ void hd61700_cpu_device::state_string_export(const device_state_entry &entry, st
 //  helper function
 //-------------------------------------------------
 
-<<<<<<< HEAD
-offs_t hd61700_cpu_device::disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options)
-{
-	extern CPU_DISASSEMBLE( hd61700 );
-	return CPU_DISASSEMBLE_NAME(hd61700)(this, buffer, pc, oprom, opram, options);
-=======
 offs_t hd61700_cpu_device::disasm_disassemble(std::ostream &stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, uint32_t options)
 {
 	extern CPU_DISASSEMBLE( hd61700 );
 	return CPU_DISASSEMBLE_NAME(hd61700)(this, stream, pc, oprom, opram, options);
->>>>>>> upstream/master
 }
 
 
@@ -379,11 +312,7 @@ offs_t hd61700_cpu_device::disasm_disassemble(std::ostream &stream, offs_t pc, c
 //  check_irqs - check if need interrupts
 //-------------------------------------------------
 
-<<<<<<< HEAD
-bool hd61700_cpu_device::check_irqs(void)
-=======
 bool hd61700_cpu_device::check_irqs()
->>>>>>> upstream/master
 {
 	for (int i=4; i>=0; i--)
 	{
@@ -412,11 +341,8 @@ void hd61700_cpu_device::execute_run()
 {
 	do
 	{
-<<<<<<< HEAD
-=======
 		m_ppc = m_curpc;
 
->>>>>>> upstream/master
 		debugger_instruction_hook(this, m_curpc);
 
 		// verify that CPU is not in sleep
@@ -426,19 +352,10 @@ void hd61700_cpu_device::execute_run()
 		}
 		else
 		{
-<<<<<<< HEAD
-			UINT8 op;
-
-			check_irqs();
-
-			m_ppc = m_curpc;
-
-=======
 			uint8_t op;
 
 			check_irqs();
 
->>>>>>> upstream/master
 			// instruction fetch
 			op = read_op();
 
@@ -450,15 +367,9 @@ void hd61700_cpu_device::execute_run()
 				case 0x08:  //ad
 				case 0x09:  //sb
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT8 src = READ_REG(get_sir_im8(arg));
-						UINT16 res = READ_REG(arg) + ((op&1) ? -src : +src);
-=======
 						uint8_t arg = read_op();
 						uint8_t src = READ_REG(get_sir_im8(arg));
 						uint16_t res = READ_REG(arg) + ((op&1) ? -src : +src);
->>>>>>> upstream/master
 
 						COND_WRITE_REG(op, arg, res & 0xff);
 
@@ -474,11 +385,7 @@ void hd61700_cpu_device::execute_run()
 
 				case 0x02:  //ld
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-=======
 						uint8_t arg = read_op();
->>>>>>> upstream/master
 						COPY_REG(arg, get_sir_im8(arg));
 
 						check_optional_jr(arg);
@@ -495,15 +402,9 @@ void hd61700_cpu_device::execute_run()
 				case 0x0e:  //or
 				case 0x0f:  //xr
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-
-						UINT8 res = make_logic(op, READ_REG(arg),  READ_REG(get_sir_im8(arg)));
-=======
 						uint8_t arg = read_op();
 
 						uint8_t res = make_logic(op, READ_REG(arg),  READ_REG(get_sir_im8(arg)));
->>>>>>> upstream/master
 
 						COND_WRITE_REG(op, arg, res);
 
@@ -523,13 +424,8 @@ void hd61700_cpu_device::execute_run()
 				case 0x0a:  //adb
 				case 0x0b:  //sbb
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT16 res;
-=======
 						uint8_t arg = read_op();
 						uint16_t res;
->>>>>>> upstream/master
 
 						if (op & 0x01)
 							res = make_bcd_sub(READ_REG(arg), READ_REG(get_sir_im8(arg)));
@@ -550,15 +446,9 @@ void hd61700_cpu_device::execute_run()
 
 				case 0x10:  //st
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT8 src = get_sir_im8(arg);
-						UINT16 offset = REG_GET16(src);
-=======
 						uint8_t arg = read_op();
 						uint8_t src = get_sir_im8(arg);
 						uint16_t offset = REG_GET16(src);
->>>>>>> upstream/master
 
 						mem_writebyte(REG_UA>>4, offset, READ_REG(arg));
 
@@ -569,15 +459,9 @@ void hd61700_cpu_device::execute_run()
 
 				case 0x11:  //ld
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT8 src = get_sir_im8(arg);
-						UINT16 offset = REG_GET16(src);
-=======
 						uint8_t arg = read_op();
 						uint8_t src = get_sir_im8(arg);
 						uint16_t offset = REG_GET16(src);
->>>>>>> upstream/master
 
 						WRITE_REG(arg, mem_readbyte(REG_UA>>4, offset));
 
@@ -588,11 +472,7 @@ void hd61700_cpu_device::execute_run()
 
 				case 0x12:  //stl
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-=======
 						uint8_t arg = read_op();
->>>>>>> upstream/master
 						m_lcd_write_cb((offs_t)0, READ_REG(arg));
 
 						check_optional_jr(arg);
@@ -602,13 +482,8 @@ void hd61700_cpu_device::execute_run()
 
 				case 0x13:  //ldl
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT8 res = m_lcd_read_cb(0);
-=======
 						uint8_t arg = read_op();
 						uint8_t res = m_lcd_read_cb(0);
->>>>>>> upstream/master
 
 						WRITE_REG(arg, res);
 
@@ -619,11 +494,7 @@ void hd61700_cpu_device::execute_run()
 
 				case 0x14:  //ppo/pfl
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-=======
 						uint8_t arg = read_op();
->>>>>>> upstream/master
 
 						if (arg & 0x40)
 						{
@@ -641,11 +512,7 @@ void hd61700_cpu_device::execute_run()
 
 				case 0x15:  //psr
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-=======
 						uint8_t arg = read_op();
->>>>>>> upstream/master
 						WRITE_SREG(arg, READ_REG(arg));
 
 						check_optional_jr(arg);
@@ -656,15 +523,9 @@ void hd61700_cpu_device::execute_run()
 				case 0x16:  //pst
 				case 0x17:  //pst
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT8 src = READ_REG(arg);
-						UINT8 idx = GET_REG_IDX(op, arg);
-=======
 						uint8_t arg = read_op();
 						uint8_t src = READ_REG(arg);
 						uint8_t idx = GET_REG_IDX(op, arg);
->>>>>>> upstream/master
 
 						switch (idx)
 						{
@@ -701,25 +562,15 @@ void hd61700_cpu_device::execute_run()
 
 				case 0x18:
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT8 op1 = (arg>>5) & 0x03;
-=======
 						uint8_t arg = read_op();
 						uint8_t op1 = (arg>>5) & 0x03;
->>>>>>> upstream/master
 						switch (op1)
 						{
 							case 0x00:  //rod
 							case 0x02:  //bid
 								{
-<<<<<<< HEAD
-									UINT8 src = READ_REG(arg);
-									UINT8 res = (src>>1)&0x7f;
-=======
 									uint8_t src = READ_REG(arg);
 									uint8_t res = (src>>1)&0x7f;
->>>>>>> upstream/master
 
 									if (!(op1&0x02))
 										res = res | ((m_flags&FLAG_C) !=0 )<<7;
@@ -736,13 +587,8 @@ void hd61700_cpu_device::execute_run()
 							case 0x01:  //rou
 							case 0x03:  //biu
 								{
-<<<<<<< HEAD
-									UINT8 src = READ_REG(arg);
-									UINT8 res = (src<<1)&0xfe;
-=======
 									uint8_t src = READ_REG(arg);
 									uint8_t res = (src<<1)&0xfe;
->>>>>>> upstream/master
 
 									if (!(op1&0x02))
 										res = res | ((m_flags&FLAG_C) !=0 )<<0;
@@ -764,23 +610,14 @@ void hd61700_cpu_device::execute_run()
 
 				case 0x1a:
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT8 op1 = (arg>>5) & 0x03;
-=======
 						uint8_t arg = read_op();
 						uint8_t op1 = (arg>>5) & 0x03;
->>>>>>> upstream/master
 						switch (op1)
 						{
 							case 0x00:  //did
 							case 0x01:  //diu
 								{
-<<<<<<< HEAD
-									UINT8 res;
-=======
 									uint8_t res;
->>>>>>> upstream/master
 
 									if (op1&0x01)
 										res = (READ_REG(arg)<<4)&0xf0;
@@ -810,13 +647,8 @@ void hd61700_cpu_device::execute_run()
 
 				case 0x1b:  //cmp/inv
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT8 res = ~(READ_REG(arg));
-=======
 						uint8_t arg = read_op();
 						uint8_t res = ~(READ_REG(arg));
->>>>>>> upstream/master
 						if (!(arg & 0x40)) res++;
 
 						WRITE_REG(arg, res);
@@ -833,13 +665,8 @@ void hd61700_cpu_device::execute_run()
 
 				case 0x1c:  //gpo/gfl
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT8 src = 0xff;
-=======
 						uint8_t arg = read_op();
 						uint8_t src;
->>>>>>> upstream/master
 
 						if (arg&0x40)
 						{
@@ -860,11 +687,7 @@ void hd61700_cpu_device::execute_run()
 
 				case 0x1d:  //gsr
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-=======
 						uint8_t arg = read_op();
->>>>>>> upstream/master
 						WRITE_REG(arg, READ_SREG(arg));
 						check_optional_jr(arg);
 						m_icount -= 3;
@@ -874,13 +697,8 @@ void hd61700_cpu_device::execute_run()
 				case 0x1e:  //gst
 				case 0x1f:  //gst
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT8 idx = GET_REG_IDX(op, arg);
-=======
 						uint8_t arg = read_op();
 						uint8_t idx = GET_REG_IDX(op, arg);
->>>>>>> upstream/master
 						WRITE_REG(arg, READ_REG8(idx));
 						check_optional_jr(arg);
 						m_icount -= 3;
@@ -890,13 +708,8 @@ void hd61700_cpu_device::execute_run()
 				case 0x20:  //st
 				case 0x22:  //sti
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT16 prev_ir = REG_IX;
-=======
 						uint8_t arg = read_op();
 						uint16_t prev_ir = REG_IX;
->>>>>>> upstream/master
 						REG_IX += get_sign_mreg(arg);
 
 						mem_writebyte(REG_UA>>4, REG_IX++, READ_REG(arg));
@@ -910,13 +723,8 @@ void hd61700_cpu_device::execute_run()
 				case 0x21:  //st
 				case 0x23:  //sti
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT16 prev_ir = REG_IZ;
-=======
 						uint8_t arg = read_op();
 						uint16_t prev_ir = REG_IZ;
->>>>>>> upstream/master
 						REG_IZ += get_sign_mreg(arg);
 
 						mem_writebyte(REG_UA>>6, REG_IZ++, READ_REG(arg));
@@ -929,11 +737,7 @@ void hd61700_cpu_device::execute_run()
 
 				case 0x24:  //std
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-=======
 						uint8_t arg = read_op();
->>>>>>> upstream/master
 						REG_IX += get_sign_mreg(arg);
 
 						mem_writebyte(REG_UA>>4, REG_IX, READ_REG(arg));
@@ -943,11 +747,7 @@ void hd61700_cpu_device::execute_run()
 
 				case 0x25:  //std
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-=======
 						uint8_t arg = read_op();
->>>>>>> upstream/master
 						REG_IZ += get_sign_mreg(arg);
 
 						mem_writebyte(REG_UA>>6, REG_IZ, READ_REG(arg));
@@ -957,11 +757,7 @@ void hd61700_cpu_device::execute_run()
 
 				case 0x26:  //phs
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-=======
 						uint8_t arg = read_op();
->>>>>>> upstream/master
 
 						push(REG_SS, READ_REG(arg));
 						m_icount -= 9;
@@ -969,11 +765,7 @@ void hd61700_cpu_device::execute_run()
 					break;
 				case 0x27:  //phu
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-=======
 						uint8_t arg = read_op();
->>>>>>> upstream/master
 
 						push(REG_US, READ_REG(arg));
 						m_icount -= 9;
@@ -983,13 +775,8 @@ void hd61700_cpu_device::execute_run()
 				case 0x28:  //ld
 				case 0x2a:  //ldi
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT16 prev_ir = REG_IX;
-=======
 						uint8_t arg = read_op();
 						uint16_t prev_ir = REG_IX;
->>>>>>> upstream/master
 						REG_IX += get_sign_mreg(arg);
 
 						WRITE_REG(arg, mem_readbyte(REG_UA>>4, REG_IX++));
@@ -1003,13 +790,8 @@ void hd61700_cpu_device::execute_run()
 				case 0x29:  //ld
 				case 0x2b:  //ldi
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT16 prev_ir = REG_IZ;
-=======
 						uint8_t arg = read_op();
 						uint16_t prev_ir = REG_IZ;
->>>>>>> upstream/master
 						REG_IZ += get_sign_mreg(arg);
 
 						WRITE_REG(arg, mem_readbyte(REG_UA>>6, REG_IZ++));
@@ -1022,11 +804,7 @@ void hd61700_cpu_device::execute_run()
 
 				case 0x2c:  //ldd
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-=======
 						uint8_t arg = read_op();
->>>>>>> upstream/master
 						REG_IX += get_sign_mreg(arg);
 
 						WRITE_REG(arg, mem_readbyte(REG_UA>>4, REG_IX));
@@ -1037,11 +815,7 @@ void hd61700_cpu_device::execute_run()
 
 				case 0x2d:  //ldd
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-=======
 						uint8_t arg = read_op();
->>>>>>> upstream/master
 						REG_IZ += get_sign_mreg(arg);
 
 						WRITE_REG(arg, mem_readbyte(REG_UA>>6, REG_IZ));
@@ -1052,11 +826,7 @@ void hd61700_cpu_device::execute_run()
 
 				case 0x2e:  //pps
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-=======
 						uint8_t arg = read_op();
->>>>>>> upstream/master
 						WRITE_REG(arg, pop(REG_SS));
 
 						m_icount -= 11;
@@ -1064,11 +834,7 @@ void hd61700_cpu_device::execute_run()
 					break;
 				case 0x2f:  //ppu
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-=======
 						uint8_t arg = read_op();
->>>>>>> upstream/master
 						WRITE_REG(arg, pop(REG_US));
 
 						m_icount -= 11;
@@ -1084,15 +850,9 @@ void hd61700_cpu_device::execute_run()
 				case 0x36:  //jp nlz
 				case 0x37:  //unconditional jp
 					{
-<<<<<<< HEAD
-						UINT8 lsb = read_op();
-						if (m_pc < INT_ROM) read_op();
-						UINT8 msb = read_op();
-=======
 						uint8_t lsb = read_op();
 						if (m_pc < INT_ROM) read_op();
 						uint8_t msb = read_op();
->>>>>>> upstream/master
 
 						if (check_cond(op))
 							set_pc((msb<<8) | lsb);
@@ -1105,19 +865,11 @@ void hd61700_cpu_device::execute_run()
 				case 0x3c:  //ad
 				case 0x3e:  //sb
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT16 offset = REG_IX + get_sign_mreg(arg);
-						UINT8 src = mem_readbyte(REG_UA>>4, offset);
-
-						UINT16 res = src + ((op & 2) ? -READ_REG(arg) : +READ_REG(arg)) ;
-=======
 						uint8_t arg = read_op();
 						uint16_t offset = REG_IX + get_sign_mreg(arg);
 						uint8_t src = mem_readbyte(REG_UA>>4, offset);
 
 						uint16_t res = src + ((op & 2) ? -READ_REG(arg) : +READ_REG(arg)) ;
->>>>>>> upstream/master
 
 						if ((op & 4))
 							mem_writebyte(REG_UA>>4, offset, res & 0xff);
@@ -1136,19 +888,11 @@ void hd61700_cpu_device::execute_run()
 				case 0x3d:  //ad
 				case 0x3f:  //sb
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT16 offset = REG_IZ + get_sign_mreg(arg);
-						UINT8 src = mem_readbyte(REG_UA>>6, offset);
-
-						UINT16 res = src + ((op & 2) ? -READ_REG(arg) : +READ_REG(arg)) ;
-=======
 						uint8_t arg = read_op();
 						uint16_t offset = REG_IZ + get_sign_mreg(arg);
 						uint8_t src = mem_readbyte(REG_UA>>6, offset);
 
 						uint16_t res = src + ((op & 2) ? -READ_REG(arg) : +READ_REG(arg)) ;
->>>>>>> upstream/master
 
 						if ((op & 4))
 							mem_writebyte(REG_UA>>6, offset, res & 0xff);
@@ -1167,15 +911,9 @@ void hd61700_cpu_device::execute_run()
 				case 0x48:  //ad
 				case 0x49:  //sb
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT8 src = read_op();
-						UINT16 res = READ_REG(arg) + ((op&1) ? -src : +src);
-=======
 						uint8_t arg = read_op();
 						uint8_t src = read_op();
 						uint16_t res = READ_REG(arg) + ((op&1) ? -src : +src);
->>>>>>> upstream/master
 
 						COND_WRITE_REG(op, arg, res & 0xff);
 
@@ -1191,13 +929,8 @@ void hd61700_cpu_device::execute_run()
 
 				case 0x42:  //ld
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT8 src = read_op() ;
-=======
 						uint8_t arg = read_op();
 						uint8_t src = read_op() ;
->>>>>>> upstream/master
 
 						WRITE_REG(arg, src);
 
@@ -1215,17 +948,10 @@ void hd61700_cpu_device::execute_run()
 				case 0x4e:  //or
 				case 0x4f:  //xr
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT8 src = read_op();
-
-						UINT8 res = make_logic(op, READ_REG(arg), src);
-=======
 						uint8_t arg = read_op();
 						uint8_t src = read_op();
 
 						uint8_t res = make_logic(op, READ_REG(arg), src);
->>>>>>> upstream/master
 
 						COND_WRITE_REG(op, arg, res);
 
@@ -1245,15 +971,9 @@ void hd61700_cpu_device::execute_run()
 				case 0x4a:  //adb
 				case 0x4b:  //sbb
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT8 src = read_op();
-						UINT16 res;
-=======
 						uint8_t arg = read_op();
 						uint8_t src = read_op();
 						uint16_t res;
->>>>>>> upstream/master
 
 						if (op & 0x01)
 							res = make_bcd_sub(READ_REG(arg), src);
@@ -1274,15 +994,9 @@ void hd61700_cpu_device::execute_run()
 
 				case 0x50:  //st
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT8 src = read_op();
-						UINT16 offset = REG_GET16(READ_SREG(arg));
-=======
 						uint8_t arg = read_op();
 						uint8_t src = read_op();
 						uint16_t offset = REG_GET16(READ_SREG(arg));
->>>>>>> upstream/master
 
 						mem_writebyte(REG_UA>>4, offset, src);
 						m_icount -= 8;
@@ -1291,13 +1005,8 @@ void hd61700_cpu_device::execute_run()
 
 				case 0x51:  //ld
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT8 src = read_op();
-=======
 						uint8_t arg = read_op();
 						uint8_t src = read_op();
->>>>>>> upstream/master
 
 						WRITE_REG(arg, src);
 						m_icount -= 8;
@@ -1306,11 +1015,7 @@ void hd61700_cpu_device::execute_run()
 
 				case 0x52:  //stl
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-=======
 						uint8_t arg = read_op();
->>>>>>> upstream/master
 						m_lcd_write_cb((offs_t)0, arg);
 
 						m_icount -= 12;
@@ -1319,13 +1024,8 @@ void hd61700_cpu_device::execute_run()
 
 				case 0x54:  //ppo/pfl
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT8 src = read_op();
-=======
 						uint8_t arg = read_op();
 						uint8_t src = read_op();
->>>>>>> upstream/master
 
 						if (arg & 0x40)
 						{
@@ -1342,11 +1042,7 @@ void hd61700_cpu_device::execute_run()
 
 				case 0x55:  //psr
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-=======
 						uint8_t arg = read_op();
->>>>>>> upstream/master
 						WRITE_SREG(arg, arg);
 
 						m_icount -= 3;
@@ -1356,15 +1052,9 @@ void hd61700_cpu_device::execute_run()
 				case 0x56:  //pst
 				case 0x57:  //pst
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT8 src = read_op();
-						UINT8 idx = GET_REG_IDX(op, arg);
-=======
 						uint8_t arg = read_op();
 						uint8_t src = read_op();
 						uint8_t idx = GET_REG_IDX(op, arg);
->>>>>>> upstream/master
 
 						switch (idx)
 						{
@@ -1401,15 +1091,9 @@ void hd61700_cpu_device::execute_run()
 				case 0x58:  //bups
 				case 0x59:  //bdns
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT8 tmp;
-						UINT16 res;
-=======
 						uint8_t arg = read_op();
 						uint8_t tmp;
 						uint16_t res;
->>>>>>> upstream/master
 
 						for(;;)
 						{
@@ -1437,13 +1121,8 @@ void hd61700_cpu_device::execute_run()
 				case 0x5c:  //sup
 				case 0x5d:  //sdn
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT16 res;
-=======
 						uint8_t arg = read_op();
 						uint16_t res;
->>>>>>> upstream/master
 
 						for(;;)
 						{
@@ -1468,13 +1147,8 @@ void hd61700_cpu_device::execute_run()
 				case 0x60:  //st
 				case 0x62:  //sti
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT16 prev_ir = REG_IX;
-=======
 						uint8_t arg = read_op();
 						uint16_t prev_ir = REG_IX;
->>>>>>> upstream/master
 						REG_IX += get_sign_im8(arg);
 
 						mem_writebyte(REG_UA>>4, REG_IX++, READ_REG(arg));
@@ -1488,13 +1162,8 @@ void hd61700_cpu_device::execute_run()
 				case 0x61:  //st
 				case 0x63:  //sti
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT16 prev_ir = REG_IZ;
-=======
 						uint8_t arg = read_op();
 						uint16_t prev_ir = REG_IZ;
->>>>>>> upstream/master
 						REG_IZ += get_sign_im8(arg);
 
 						mem_writebyte(REG_UA>>6, REG_IZ++, READ_REG(arg));
@@ -1506,11 +1175,7 @@ void hd61700_cpu_device::execute_run()
 
 				case 0x64:  //std
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-=======
 						uint8_t arg = read_op();
->>>>>>> upstream/master
 						REG_IX += get_sign_im8(arg);
 
 						mem_writebyte(REG_UA>>4, REG_IX, READ_REG(arg));
@@ -1520,11 +1185,7 @@ void hd61700_cpu_device::execute_run()
 
 				case 0x65:  //std
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-=======
 						uint8_t arg = read_op();
->>>>>>> upstream/master
 						REG_IZ += get_sign_im8(arg);
 
 						mem_writebyte(REG_UA>>6, REG_IZ, READ_REG(arg));
@@ -1535,13 +1196,8 @@ void hd61700_cpu_device::execute_run()
 				case 0x68:  //ld
 				case 0x6a:  //ldi
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT16 prev_ir = REG_IX;
-=======
 						uint8_t arg = read_op();
 						uint16_t prev_ir = REG_IX;
->>>>>>> upstream/master
 						REG_IX += get_sign_im8(arg);
 
 						WRITE_REG(arg, mem_readbyte(REG_UA>>4, REG_IX++));
@@ -1554,13 +1210,8 @@ void hd61700_cpu_device::execute_run()
 				case 0x69:  //ld
 				case 0x6b:  //ldi
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT16 prev_ir = REG_IZ;
-=======
 						uint8_t arg = read_op();
 						uint16_t prev_ir = REG_IZ;
->>>>>>> upstream/master
 						REG_IZ += get_sign_im8(arg);
 
 						WRITE_REG(arg, mem_readbyte(REG_UA>>6, REG_IZ++));
@@ -1572,11 +1223,7 @@ void hd61700_cpu_device::execute_run()
 
 				case 0x6c:  //ldd
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-=======
 						uint8_t arg = read_op();
->>>>>>> upstream/master
 						REG_IX += get_sign_im8(arg);
 
 						WRITE_REG(arg, mem_readbyte(REG_UA>>4, REG_IX));
@@ -1586,11 +1233,7 @@ void hd61700_cpu_device::execute_run()
 
 				case 0x6d:  //ldd
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-=======
 						uint8_t arg = read_op();
->>>>>>> upstream/master
 						REG_IZ += get_sign_im8(arg);
 
 						WRITE_REG(arg, mem_readbyte(REG_UA>>6, REG_IZ));
@@ -1607,15 +1250,9 @@ void hd61700_cpu_device::execute_run()
 				case 0x76:  //cal nlz
 				case 0x77:  //unconditional cal
 					{
-<<<<<<< HEAD
-						UINT8 lsb = read_op();
-						if (m_pc < INT_ROM) read_op();
-						UINT8 msb = read_op();
-=======
 						uint8_t lsb = read_op();
 						if (m_pc < INT_ROM) read_op();
 						uint8_t msb = read_op();
->>>>>>> upstream/master
 
 						if (check_cond(op))
 						{
@@ -1635,19 +1272,11 @@ void hd61700_cpu_device::execute_run()
 				case 0x7c:  //ad
 				case 0x7e:  //sb
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT16 offset = REG_IX + get_sign_im8(arg);
-						UINT8 src = mem_readbyte(REG_UA>>4, offset);
-
-						UINT16 res = src + ((op & 2) ? -READ_REG(arg) : +READ_REG(arg)) ;
-=======
 						uint8_t arg = read_op();
 						uint16_t offset = REG_IX + get_sign_im8(arg);
 						uint8_t src = mem_readbyte(REG_UA>>4, offset);
 
 						uint16_t res = src + ((op & 2) ? -READ_REG(arg) : +READ_REG(arg)) ;
->>>>>>> upstream/master
 
 						if ((op & 4))
 							mem_writebyte(REG_UA>>4, offset, res & 0xff);
@@ -1666,19 +1295,11 @@ void hd61700_cpu_device::execute_run()
 				case 0x7d:  //ad
 				case 0x7f:  //sb
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT16 offset = REG_IZ + get_sign_im8(arg);
-						UINT8 src = mem_readbyte(REG_UA>>6, offset);
-
-						UINT16 res = src + ((op & 2) ? -READ_REG(arg) : +READ_REG(arg)) ;
-=======
 						uint8_t arg = read_op();
 						uint16_t offset = REG_IZ + get_sign_im8(arg);
 						uint8_t src = mem_readbyte(REG_UA>>6, offset);
 
 						uint16_t res = src + ((op & 2) ? -READ_REG(arg) : +READ_REG(arg)) ;
->>>>>>> upstream/master
 
 						if ((op & 4))
 							mem_writebyte(REG_UA>>6, offset, res & 0xff);
@@ -1697,15 +1318,9 @@ void hd61700_cpu_device::execute_run()
 				case 0x88:  //adw
 				case 0x89:  //sbw
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT8 src = get_sir_im8(arg);
-						UINT32 res = REG_GET16(arg) + ((op & 0x01) ? -REG_GET16(src) : +REG_GET16(src));
-=======
 						uint8_t arg = read_op();
 						uint8_t src = get_sir_im8(arg);
 						uint32_t res = REG_GET16(arg) + ((op & 0x01) ? -REG_GET16(src) : +REG_GET16(src));
->>>>>>> upstream/master
 
 						if (op & 0x08)  REG_PUT16(arg, res&0xffff);
 
@@ -1721,13 +1336,8 @@ void hd61700_cpu_device::execute_run()
 
 				case 0x82:  //ldw
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT8 src = get_sir_im8(arg);
-=======
 						uint8_t arg = read_op();
 						uint8_t src = get_sir_im8(arg);
->>>>>>> upstream/master
 
 						COPY_REG(arg, src);
 						COPY_REG(arg+1, src+1);
@@ -1746,15 +1356,6 @@ void hd61700_cpu_device::execute_run()
 				case 0x8e:  //orw
 				case 0x8f:  //xrw
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT8 src = get_sir_im8(arg);
-
-						UINT8 res0 = make_logic(op, READ_REG(arg), READ_REG(src));
-						COND_WRITE_REG(op, arg, res0);
-
-						UINT8 res1 = make_logic(op, READ_REG(arg+1), READ_REG(src+1));
-=======
 						uint8_t arg = read_op();
 						uint8_t src = get_sir_im8(arg);
 
@@ -1762,7 +1363,6 @@ void hd61700_cpu_device::execute_run()
 						COND_WRITE_REG(op, arg, res0);
 
 						uint8_t res1 = make_logic(op, READ_REG(arg+1), READ_REG(src+1));
->>>>>>> upstream/master
 						COND_WRITE_REG(op, arg+1, res1);
 
 						CLEAR_FLAGS;
@@ -1781,15 +1381,9 @@ void hd61700_cpu_device::execute_run()
 				case 0x8a:  //adbw
 				case 0x8b:  //sbbw
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT8 src = get_sir_im8(arg);
-						UINT16 res0, res1;
-=======
 						uint8_t arg = read_op();
 						uint8_t src = get_sir_im8(arg);
 						uint16_t res0, res1;
->>>>>>> upstream/master
 
 						if (op & 0x01)
 							res0 = make_bcd_sub(READ_REG(arg), READ_REG(src));
@@ -1819,15 +1413,9 @@ void hd61700_cpu_device::execute_run()
 
 				case 0x90:  //stw
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT8 src = get_sir_im8(arg);
-						UINT16 offset = REG_GET16(src);
-=======
 						uint8_t arg = read_op();
 						uint8_t src = get_sir_im8(arg);
 						uint16_t offset = REG_GET16(src);
->>>>>>> upstream/master
 
 						mem_writebyte(REG_UA>>4, offset+0, READ_REG(arg+0));
 						mem_writebyte(REG_UA>>4, offset+1, READ_REG(arg+1));
@@ -1839,15 +1427,9 @@ void hd61700_cpu_device::execute_run()
 
 				case 0x91:  //ldw
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT8 src = get_sir_im8(arg);
-						UINT16 offset = REG_GET16(src);
-=======
 						uint8_t arg = read_op();
 						uint8_t src = get_sir_im8(arg);
 						uint16_t offset = REG_GET16(src);
->>>>>>> upstream/master
 
 						WRITE_REG(arg+0, mem_readbyte(REG_UA>>4, offset+0));
 						WRITE_REG(arg+1, mem_readbyte(REG_UA>>4, offset+1));
@@ -1859,11 +1441,7 @@ void hd61700_cpu_device::execute_run()
 
 				case 0x92:  //stlw
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-=======
 						uint8_t arg = read_op();
->>>>>>> upstream/master
 
 						m_lcd_write_cb((offs_t)0, READ_REG(arg));
 						m_lcd_write_cb((offs_t)0, READ_REG(arg+1));
@@ -1875,13 +1453,8 @@ void hd61700_cpu_device::execute_run()
 
 				case 0x93:  //ldcw
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT8 reg0, reg1;
-=======
 						uint8_t arg = read_op();
 						uint8_t reg0, reg1;
->>>>>>> upstream/master
 
 						reg0 = m_lcd_read_cb(0);
 						reg1 = m_lcd_read_cb(0);
@@ -1897,13 +1470,8 @@ void hd61700_cpu_device::execute_run()
 				case 0x96:  //pre
 				case 0x97:  //pre
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT8 idx = GET_REG_IDX(op, arg);
-=======
 						uint8_t arg = read_op();
 						uint8_t idx = GET_REG_IDX(op, arg);
->>>>>>> upstream/master
 
 						if (idx < 5)
 							m_reg16bit[idx] = REG_GET16(arg);
@@ -1915,25 +1483,15 @@ void hd61700_cpu_device::execute_run()
 
 				case 0x98:  //rodw
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT8 op1 = (arg>>5) & 0x03;
-=======
 						uint8_t arg = read_op();
 						uint8_t op1 = (arg>>5) & 0x03;
->>>>>>> upstream/master
 						switch (op1)
 						{
 							case 0x00:  //rodw
 							case 0x02:  //bidw
 								{
-<<<<<<< HEAD
-									UINT16 src = REG_GET16(arg-1);
-									UINT16 res = (src>>1)&0x7fff;
-=======
 									uint16_t src = REG_GET16(arg-1);
 									uint16_t res = (src>>1)&0x7fff;
->>>>>>> upstream/master
 
 									if (!(op1&0x02))
 										res = res | ((m_flags&FLAG_C) !=0 )<<15;
@@ -1950,13 +1508,8 @@ void hd61700_cpu_device::execute_run()
 							case 0x01:  //rouw
 							case 0x03:  //biuw
 								{
-<<<<<<< HEAD
-									UINT16 src = REG_GET16(arg);
-									UINT16 res = (src<<1)&0xfffe;
-=======
 									uint16_t src = REG_GET16(arg);
 									uint16_t res = (src<<1)&0xfffe;
->>>>>>> upstream/master
 
 									if (!(op1&0x02))
 										res = res | ((m_flags&FLAG_C) !=0 )<<0;
@@ -1978,22 +1531,13 @@ void hd61700_cpu_device::execute_run()
 
 				case 0x9a:
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT8 op1 = (arg>>5) & 0x03;
-=======
 						uint8_t arg = read_op();
 						uint8_t op1 = (arg>>5) & 0x03;
->>>>>>> upstream/master
 						switch (op1)
 						{
 							case 0x00:  //didw
 								{
-<<<<<<< HEAD
-									UINT16 src = (REG_GET16(arg-1)>>4)&0x0fff;
-=======
 									uint16_t src = (REG_GET16(arg-1)>>4)&0x0fff;
->>>>>>> upstream/master
 									REG_PUT16(arg-1, src);
 
 									CLEAR_FLAGS;
@@ -2004,11 +1548,7 @@ void hd61700_cpu_device::execute_run()
 
 							case 0x01:  //diuw
 								{
-<<<<<<< HEAD
-									UINT16 src = (REG_GET16(arg)<<4)&0xfff0;
-=======
 									uint16_t src = (REG_GET16(arg)<<4)&0xfff0;
->>>>>>> upstream/master
 									REG_PUT16(arg, src);
 
 									CLEAR_FLAGS;
@@ -2019,11 +1559,7 @@ void hd61700_cpu_device::execute_run()
 
 							case 0x02:  //bydw
 								{
-<<<<<<< HEAD
-									UINT8 src = READ_REG(arg);
-=======
 									uint8_t src = READ_REG(arg);
->>>>>>> upstream/master
 
 									WRITE_REG(arg, 0);
 									WRITE_REG(arg-1, src);
@@ -2036,11 +1572,7 @@ void hd61700_cpu_device::execute_run()
 
 							case 0x03:  //byuw
 								{
-<<<<<<< HEAD
-									UINT8 src = READ_REG(arg);
-=======
 									uint8_t src = READ_REG(arg);
->>>>>>> upstream/master
 
 									WRITE_REG(arg, 0);
 									WRITE_REG(arg+1, src);
@@ -2059,13 +1591,8 @@ void hd61700_cpu_device::execute_run()
 
 				case 0x9b:  //cmpw/invw
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT16 res = ~(REG_GET16(arg));
-=======
 						uint8_t arg = read_op();
 						uint16_t res = ~(REG_GET16(arg));
->>>>>>> upstream/master
 						if (!(arg & 0x40)) res++;
 
 						REG_PUT16(arg, res);
@@ -2083,13 +1610,8 @@ void hd61700_cpu_device::execute_run()
 
 				case 0x9c:  //gpow/gflw
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT8 reg0, reg1;
-=======
 						uint8_t arg = read_op();
 						uint8_t reg0, reg1;
->>>>>>> upstream/master
 
 						if (arg&0x40)
 						{
@@ -2116,15 +1638,6 @@ void hd61700_cpu_device::execute_run()
 				case 0x9e:  //gre
 				case 0x9f:  //gre
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT8 idx = GET_REG_IDX(op, arg);
-						UINT16 src;
-
-						if (idx >= 5)
-						{
-							UINT16 port = m_kb_read_cb(0);
-=======
 						uint8_t arg = read_op();
 						uint8_t idx = GET_REG_IDX(op, arg);
 						uint16_t src;
@@ -2132,7 +1645,6 @@ void hd61700_cpu_device::execute_run()
 						if (idx >= 5)
 						{
 							uint16_t port = m_kb_read_cb(0);
->>>>>>> upstream/master
 							src = (REG_KY & 0x0f00) | (port & 0xf0ff);
 						}
 						else
@@ -2148,15 +1660,9 @@ void hd61700_cpu_device::execute_run()
 				case 0xa0:  //stw
 				case 0xa2:  //stiw
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT16 prev_ir = REG_IX;
-						UINT8 ir_inc = READ_REG(get_sir_im8(arg));
-=======
 						uint8_t arg = read_op();
 						uint16_t prev_ir = REG_IX;
 						uint8_t ir_inc = READ_REG(get_sir_im8(arg));
->>>>>>> upstream/master
 
 						REG_IX += ((arg & 0x80) ? -ir_inc : +ir_inc);
 
@@ -2171,15 +1677,9 @@ void hd61700_cpu_device::execute_run()
 				case 0xa1:  //stw
 				case 0xa3:  //stiw
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT16 prev_ir = REG_IZ;
-						UINT8 ir_inc = READ_REG(get_sir_im8(arg));
-=======
 						uint8_t arg = read_op();
 						uint16_t prev_ir = REG_IZ;
 						uint8_t ir_inc = READ_REG(get_sir_im8(arg));
->>>>>>> upstream/master
 
 						REG_IZ += ((arg & 0x80) ? -ir_inc : +ir_inc);
 
@@ -2193,13 +1693,8 @@ void hd61700_cpu_device::execute_run()
 
 				case 0xa4:  //stdw
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT8 ir_inc = READ_REG(get_sir_im8(arg));
-=======
 						uint8_t arg = read_op();
 						uint8_t ir_inc = READ_REG(get_sir_im8(arg));
->>>>>>> upstream/master
 
 						REG_IX += ((arg & 0x80) ? -ir_inc : +ir_inc);
 
@@ -2211,13 +1706,8 @@ void hd61700_cpu_device::execute_run()
 					break;
 				case 0xa5:  //stdw
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT8 ir_inc = READ_REG(get_sir_im8(arg));
-=======
 						uint8_t arg = read_op();
 						uint8_t ir_inc = READ_REG(get_sir_im8(arg));
->>>>>>> upstream/master
 
 						REG_IZ += ((arg & 0x80) ? -ir_inc : +ir_inc);
 
@@ -2230,11 +1720,7 @@ void hd61700_cpu_device::execute_run()
 
 				case 0xa6:  //phsw
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-=======
 						uint8_t arg = read_op();
->>>>>>> upstream/master
 						push(REG_SS, READ_REG(arg));
 						push(REG_SS, READ_REG(arg-1));
 
@@ -2243,11 +1729,7 @@ void hd61700_cpu_device::execute_run()
 					break;
 				case 0xa7:  //phuw
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-=======
 						uint8_t arg = read_op();
->>>>>>> upstream/master
 						push(REG_US, READ_REG(arg));
 						push(REG_US, READ_REG(arg-1));
 
@@ -2258,15 +1740,9 @@ void hd61700_cpu_device::execute_run()
 				case 0xa8:  //ldw
 				case 0xaa:  //ldiw
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT16 prev_ir = REG_IX;
-						UINT8 ir_inc = READ_REG(get_sir_im8(arg));
-=======
 						uint8_t arg = read_op();
 						uint16_t prev_ir = REG_IX;
 						uint8_t ir_inc = READ_REG(get_sir_im8(arg));
->>>>>>> upstream/master
 
 						REG_IX += ((arg & 0x80) ? -ir_inc : +ir_inc);
 
@@ -2282,15 +1758,9 @@ void hd61700_cpu_device::execute_run()
 				case 0xa9:  //ldw
 				case 0xab:  //ldiw
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT16 prev_ir = REG_IZ;
-						UINT8 ir_inc = READ_REG(get_sir_im8(arg));
-=======
 						uint8_t arg = read_op();
 						uint16_t prev_ir = REG_IZ;
 						uint8_t ir_inc = READ_REG(get_sir_im8(arg));
->>>>>>> upstream/master
 
 						REG_IZ += ((arg & 0x80) ? -ir_inc : +ir_inc);
 
@@ -2305,13 +1775,8 @@ void hd61700_cpu_device::execute_run()
 
 				case 0xac:  //lddw
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT8 ir_inc = READ_REG(get_sir_im8(arg));
-=======
 						uint8_t arg = read_op();
 						uint8_t ir_inc = READ_REG(get_sir_im8(arg));
->>>>>>> upstream/master
 
 						REG_IX += ((arg & 0x80) ? -ir_inc : +ir_inc);
 
@@ -2324,13 +1789,8 @@ void hd61700_cpu_device::execute_run()
 
 				case 0xad:  //lddw
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT8 ir_inc = READ_REG(get_sir_im8(arg));
-=======
 						uint8_t arg = read_op();
 						uint8_t ir_inc = READ_REG(get_sir_im8(arg));
->>>>>>> upstream/master
 
 						REG_IZ += ((arg & 0x80) ? -ir_inc : +ir_inc);
 
@@ -2344,11 +1804,7 @@ void hd61700_cpu_device::execute_run()
 				case 0xae:  //ppsw
 				case 0xaf:  //ppuw
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-=======
 						uint8_t arg = read_op();
->>>>>>> upstream/master
 
 						WRITE_REG(arg, pop((op&1) ? REG_US : REG_SS));
 						WRITE_REG(arg+1, pop((op&1) ? REG_US : REG_SS));
@@ -2366,13 +1822,8 @@ void hd61700_cpu_device::execute_run()
 				case 0xb6:  //jr nlz
 				case 0xb7:  //unconditional jr
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT32 new_pc = m_pc-1 + get_im_7(arg);
-=======
 						uint8_t arg = read_op();
 						uint32_t new_pc = m_pc-1 + get_im_7(arg);
->>>>>>> upstream/master
 
 						if (check_cond(op))
 							set_pc(new_pc);
@@ -2383,15 +1834,6 @@ void hd61700_cpu_device::execute_run()
 				case 0xb8:  //adcw
 				case 0xbc:  //adw
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT8 ir_inc = READ_REG(get_sir_im8(arg));
-
-						UINT16 offset = REG_IX + ((arg & 0x80) ? -ir_inc : +ir_inc);
-
-						UINT16 src0 = mem_readbyte(REG_UA>>4, offset) + READ_REG(arg);
-						UINT16 src1 = mem_readbyte(REG_UA>>4, offset+1) + READ_REG(arg+1) + ((src0>0xff) ? 1 : 0);
-=======
 						uint8_t arg = read_op();
 						uint8_t ir_inc = READ_REG(get_sir_im8(arg));
 
@@ -2399,7 +1841,6 @@ void hd61700_cpu_device::execute_run()
 
 						uint16_t src0 = mem_readbyte(REG_UA>>4, offset) + READ_REG(arg);
 						uint16_t src1 = mem_readbyte(REG_UA>>4, offset+1) + READ_REG(arg+1) + ((src0>0xff) ? 1 : 0);
->>>>>>> upstream/master
 
 						if (op&0x04)
 						{
@@ -2419,15 +1860,6 @@ void hd61700_cpu_device::execute_run()
 				case 0xba:  //sbcw
 				case 0xbe:  //sbw
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT8 ir_inc = READ_REG(get_sir_im8(arg));
-
-						UINT16 offset = REG_IX + ((arg & 0x80) ? -ir_inc : +ir_inc);
-
-						UINT16 src0 = mem_readbyte(REG_UA>>4, offset) - READ_REG(arg);
-						UINT16 src1 = mem_readbyte(REG_UA>>4, offset+1) - READ_REG(arg+1) - ((src0>0xff) ? 1 : 0);
-=======
 						uint8_t arg = read_op();
 						uint8_t ir_inc = READ_REG(get_sir_im8(arg));
 
@@ -2435,7 +1867,6 @@ void hd61700_cpu_device::execute_run()
 
 						uint16_t src0 = mem_readbyte(REG_UA>>4, offset) - READ_REG(arg);
 						uint16_t src1 = mem_readbyte(REG_UA>>4, offset+1) - READ_REG(arg+1) - ((src0>0xff) ? 1 : 0);
->>>>>>> upstream/master
 
 						if (op&0x04)
 						{
@@ -2455,15 +1886,6 @@ void hd61700_cpu_device::execute_run()
 				case 0xb9:  //adcw
 				case 0xbd:  //adw
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT8 ir_inc = READ_REG(get_sir_im8(arg));
-
-						UINT16 offset = REG_IZ + ((arg & 0x80) ? -ir_inc : +ir_inc);
-
-						UINT16 src0 = mem_readbyte(REG_UA>>6, offset) + READ_REG(arg);
-						UINT16 src1 = mem_readbyte(REG_UA>>6, offset+1) + READ_REG(arg+1) + ((src0>0xff) ? 1 : 0);
-=======
 						uint8_t arg = read_op();
 						uint8_t ir_inc = READ_REG(get_sir_im8(arg));
 
@@ -2471,7 +1893,6 @@ void hd61700_cpu_device::execute_run()
 
 						uint16_t src0 = mem_readbyte(REG_UA>>6, offset) + READ_REG(arg);
 						uint16_t src1 = mem_readbyte(REG_UA>>6, offset+1) + READ_REG(arg+1) + ((src0>0xff) ? 1 : 0);
->>>>>>> upstream/master
 
 						if (op&0x04)
 						{
@@ -2491,15 +1912,6 @@ void hd61700_cpu_device::execute_run()
 				case 0xbb:  //sbcw
 				case 0xbf:  //sbw
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT8 ir_inc = READ_REG(get_sir_im8(arg));
-
-						UINT16 offset = REG_IZ + ((arg & 0x80) ? -ir_inc : +ir_inc);
-
-						UINT16 src0 = mem_readbyte(REG_UA>>6, offset) - READ_REG(arg);
-						UINT16 src1 = mem_readbyte(REG_UA>>6, offset+1) - READ_REG(arg+1) - ((src0>0xff) ? 1 : 0);
-=======
 						uint8_t arg = read_op();
 						uint8_t ir_inc = READ_REG(get_sir_im8(arg));
 
@@ -2507,7 +1919,6 @@ void hd61700_cpu_device::execute_run()
 
 						uint16_t src0 = mem_readbyte(REG_UA>>6, offset) - READ_REG(arg);
 						uint16_t src1 = mem_readbyte(REG_UA>>6, offset+1) - READ_REG(arg+1) - ((src0>0xff) ? 1 : 0);
->>>>>>> upstream/master
 
 						if (op&0x04)
 						{
@@ -2529,21 +1940,12 @@ void hd61700_cpu_device::execute_run()
 				case 0xc8:  //adbm
 				case 0xc9:  //sbbm
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT8 arg1 = read_op();
-						UINT8 dst = arg;
-						UINT8 src = get_sir_im8(arg, arg1);
-						UINT8 c, f;
-						UINT16 res = 0;
-=======
 						uint8_t arg = read_op();
 						uint8_t arg1 = read_op();
 						uint8_t dst = arg;
 						uint8_t src = get_sir_im8(arg, arg1);
 						uint8_t c, f;
 						uint16_t res = 0;
->>>>>>> upstream/master
 
 						c = f = 0;
 						for (int n=GET_IM3(arg1); n>0; n--)
@@ -2575,17 +1977,10 @@ void hd61700_cpu_device::execute_run()
 
 				case 0xc2:  //ldm
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT8 arg1 = read_op();
-						UINT8 dst = arg;
-						UINT8 src = get_sir_im8(arg, arg1);
-=======
 						uint8_t arg = read_op();
 						uint8_t arg1 = read_op();
 						uint8_t dst = arg;
 						uint8_t src = get_sir_im8(arg, arg1);
->>>>>>> upstream/master
 
 						for (int n=GET_IM3(arg1); n>0; n--)
 						{
@@ -2607,19 +2002,11 @@ void hd61700_cpu_device::execute_run()
 				case 0xce:  //orm
 				case 0xcf:  //xrm
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT8 arg1 = read_op();
-						UINT8 dst = arg;
-						UINT8 src = get_sir_im8(arg, arg1);
-						UINT8 res = 0, f = 0;
-=======
 						uint8_t arg = read_op();
 						uint8_t arg1 = read_op();
 						uint8_t dst = arg;
 						uint8_t src = get_sir_im8(arg, arg1);
 						uint8_t res = 0, f = 0;
->>>>>>> upstream/master
 
 						for (int n=GET_IM3(arg1); n>0; n--)
 						{
@@ -2649,19 +2036,11 @@ void hd61700_cpu_device::execute_run()
 				case 0xca:  //adbm
 				case 0xcb:  //sbbm
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT8 arg1 = read_op();
-						UINT8 dst = arg;
-						UINT16 res = 0;
-						UINT8 src, f;
-=======
 						uint8_t arg = read_op();
 						uint8_t arg1 = read_op();
 						uint8_t dst = arg;
 						uint16_t res = 0;
 						uint8_t src, f;
->>>>>>> upstream/master
 						src = arg1 & 0x1f;
 						f = 0;
 
@@ -2694,13 +2073,8 @@ void hd61700_cpu_device::execute_run()
 
 				case 0xd0:  //stw
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT16 offset = REG_GET16(READ_SREG(arg));
-=======
 						uint8_t arg = read_op();
 						uint16_t offset = REG_GET16(READ_SREG(arg));
->>>>>>> upstream/master
 
 						mem_writebyte(REG_UA>>4, offset+0, read_op());
 						mem_writebyte(REG_UA>>4, offset+1, read_op());
@@ -2711,15 +2085,9 @@ void hd61700_cpu_device::execute_run()
 
 				case 0xd1:  //ldw
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT8 reg0 = read_op();
-						UINT8 reg1 = read_op();
-=======
 						uint8_t arg = read_op();
 						uint8_t reg0 = read_op();
 						uint8_t reg1 = read_op();
->>>>>>> upstream/master
 
 						WRITE_REG(arg+0, reg0);
 						WRITE_REG(arg+1, reg1);
@@ -2729,13 +2097,8 @@ void hd61700_cpu_device::execute_run()
 
 				case 0xd2:  //stlm
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT8 arg1 = read_op();
-=======
 						uint8_t arg = read_op();
 						uint8_t arg1 = read_op();
->>>>>>> upstream/master
 
 						for (int n=GET_IM3(arg1); n>0; n--)
 						{
@@ -2751,15 +2114,9 @@ void hd61700_cpu_device::execute_run()
 
 				case 0xd3:  //ldlm
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT8 arg1 = read_op();
-						UINT8 src;
-=======
 						uint8_t arg = read_op();
 						uint8_t arg1 = read_op();
 						uint8_t src;
->>>>>>> upstream/master
 
 						for (int n=GET_IM3(arg1); n>0; n--)
 						{
@@ -2777,17 +2134,10 @@ void hd61700_cpu_device::execute_run()
 				case 0xd6:  //pre
 				case 0xd7:  //pre
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT8 lsb = read_op();
-						UINT8 msb = read_op();
-						UINT8 idx = GET_REG_IDX(op, arg);
-=======
 						uint8_t arg = read_op();
 						uint8_t lsb = read_op();
 						uint8_t msb = read_op();
 						uint8_t idx = GET_REG_IDX(op, arg);
->>>>>>> upstream/master
 
 						if (idx < 5)
 							m_reg16bit[idx] = (msb<<8) | lsb;
@@ -2799,11 +2149,7 @@ void hd61700_cpu_device::execute_run()
 				case 0xd8:  //bup
 				case 0xd9:  //bdn
 					{
-<<<<<<< HEAD
-						UINT8 src;
-=======
 						uint8_t src;
->>>>>>> upstream/master
 						for(;;)
 						{
 							src = mem_readbyte(REG_UA>>4, REG_IX);
@@ -2823,24 +2169,14 @@ void hd61700_cpu_device::execute_run()
 
 				case 0xda:
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT8 op1 = (arg>>5) & 0x03;
-=======
 						uint8_t arg = read_op();
 						uint8_t op1 = (arg>>5) & 0x03;
->>>>>>> upstream/master
 						switch (op1)
 						{
 							case 0x00:  //didm
 								{
-<<<<<<< HEAD
-									UINT8 arg1 = read_op();
-									UINT8 r1 = 0, r2 = 0;
-=======
 									uint8_t arg1 = read_op();
 									uint8_t r1 = 0, r2 = 0;
->>>>>>> upstream/master
 
 									for (int n=GET_IM3(arg1); n>0; n--)
 									{
@@ -2859,13 +2195,8 @@ void hd61700_cpu_device::execute_run()
 
 							case 0x01:  //dium
 								{
-<<<<<<< HEAD
-									UINT8 arg1 = read_op();
-									UINT8 r1 = 0, r2 = 0;
-=======
 									uint8_t arg1 = read_op();
 									uint8_t r1 = 0, r2 = 0;
->>>>>>> upstream/master
 
 									for (int n=GET_IM3(arg1); n>0; n--)
 									{
@@ -2884,13 +2215,8 @@ void hd61700_cpu_device::execute_run()
 
 							case 0x02:  //bydm
 								{
-<<<<<<< HEAD
-									UINT8 arg1 = read_op();
-									UINT8 r1 = 0, r2 = 0, f = 0;
-=======
 									uint8_t arg1 = read_op();
 									uint8_t r1 = 0, r2 = 0, f = 0;
->>>>>>> upstream/master
 
 									for (int n=GET_IM3(arg1); n>0; n--)
 									{
@@ -2909,13 +2235,8 @@ void hd61700_cpu_device::execute_run()
 
 							case 0x03:  //byum
 								{
-<<<<<<< HEAD
-									UINT8 arg1 = read_op();
-									UINT8 r1 = 0, r2 = 0, f = 0;
-=======
 									uint8_t arg1 = read_op();
 									uint8_t r1 = 0, r2 = 0, f = 0;
->>>>>>> upstream/master
 
 									for (int n=GET_IM3(arg1); n>0; n--)
 									{
@@ -2937,15 +2258,9 @@ void hd61700_cpu_device::execute_run()
 
 				case 0xdb:  //cmpm/invm
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT8 arg1 = read_op();
-						UINT8 r1 = 0, r2 = 0, f = 0;
-=======
 						uint8_t arg = read_op();
 						uint8_t arg1 = read_op();
 						uint8_t r1 = 0, r2, f = 0;
->>>>>>> upstream/master
 
 						r2 = (arg&0x40) ? 0 : 1;
 
@@ -2971,13 +2286,8 @@ void hd61700_cpu_device::execute_run()
 				case 0xdc:  //sup
 				case 0xdd:  //sdn
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT16 res;
-=======
 						uint8_t arg = read_op();
 						uint16_t res;
->>>>>>> upstream/master
 
 						for(;;)
 						{
@@ -3001,11 +2311,7 @@ void hd61700_cpu_device::execute_run()
 
 				case 0xde:  //jp
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-=======
 						uint8_t arg = read_op();
->>>>>>> upstream/master
 						set_pc(REG_GET16(arg));
 
 						m_icount -= 5;
@@ -3014,17 +2320,10 @@ void hd61700_cpu_device::execute_run()
 
 				case 0xdf:  //jp
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT16 offset = REG_GET16(arg);
-						UINT8 lsb = mem_readbyte(REG_UA>>4, offset+0);
-						UINT8 msb = mem_readbyte(REG_UA>>4, offset+1);
-=======
 						uint8_t arg = read_op();
 						uint16_t offset = REG_GET16(arg);
 						uint8_t lsb = mem_readbyte(REG_UA>>4, offset+0);
 						uint8_t msb = mem_readbyte(REG_UA>>4, offset+1);
->>>>>>> upstream/master
 
 						set_pc((msb<<8) | lsb);
 
@@ -3035,17 +2334,10 @@ void hd61700_cpu_device::execute_run()
 				case 0xe0:  //stm
 				case 0xe2:  //stim
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT8 arg1 = read_op();
-						UINT16 prev_ir = REG_IX;
-						UINT8 ir_inc = READ_REG(get_sir_im8(arg, arg1));
-=======
 						uint8_t arg = read_op();
 						uint8_t arg1 = read_op();
 						uint16_t prev_ir = REG_IX;
 						uint8_t ir_inc = READ_REG(get_sir_im8(arg, arg1));
->>>>>>> upstream/master
 
 						REG_IX += ((arg & 0x80) ? -ir_inc : +ir_inc);
 
@@ -3064,17 +2356,10 @@ void hd61700_cpu_device::execute_run()
 				case 0xe1:  //stm
 				case 0xe3:  //stim
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT8 arg1 = read_op();
-						UINT16 prev_ir = REG_IZ;
-						UINT8 ir_inc = READ_REG(get_sir_im8(arg, arg1));
-=======
 						uint8_t arg = read_op();
 						uint8_t arg1 = read_op();
 						uint16_t prev_ir = REG_IZ;
 						uint8_t ir_inc = READ_REG(get_sir_im8(arg, arg1));
->>>>>>> upstream/master
 
 						REG_IZ += ((arg & 0x80) ? -ir_inc : +ir_inc);
 
@@ -3092,15 +2377,9 @@ void hd61700_cpu_device::execute_run()
 
 				case 0xe4:  //stdm
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT8 arg1 = read_op();
-						UINT8 ir_inc = READ_REG(get_sir_im8(arg, arg1));
-=======
 						uint8_t arg = read_op();
 						uint8_t arg1 = read_op();
 						uint8_t ir_inc = READ_REG(get_sir_im8(arg, arg1));
->>>>>>> upstream/master
 
 						REG_IX += ((arg & 0x80) ? -ir_inc : +ir_inc);
 
@@ -3118,15 +2397,9 @@ void hd61700_cpu_device::execute_run()
 
 				case 0xe5:  //stdm
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT8 arg1 = read_op();
-						UINT8 ir_inc = READ_REG(get_sir_im8(arg, arg1));
-=======
 						uint8_t arg = read_op();
 						uint8_t arg1 = read_op();
 						uint8_t ir_inc = READ_REG(get_sir_im8(arg, arg1));
->>>>>>> upstream/master
 
 						REG_IZ += ((arg & 0x80) ? -ir_inc : +ir_inc);
 
@@ -3145,13 +2418,8 @@ void hd61700_cpu_device::execute_run()
 				case 0xe6:  //phsm
 				case 0xe7:  //phum
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT8 arg1 = read_op();
-=======
 						uint8_t arg = read_op();
 						uint8_t arg1 = read_op();
->>>>>>> upstream/master
 
 						for (int n=GET_IM3(arg1); n>0; n--)
 						{
@@ -3167,17 +2435,10 @@ void hd61700_cpu_device::execute_run()
 				case 0xe8:  //ldm
 				case 0xea:  //ldim
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT8 arg1 = read_op();
-						UINT16 prev_ir = REG_IX;
-						UINT8 ir_inc = READ_REG(get_sir_im8(arg, arg1));
-=======
 						uint8_t arg = read_op();
 						uint8_t arg1 = read_op();
 						uint16_t prev_ir = REG_IX;
 						uint8_t ir_inc = READ_REG(get_sir_im8(arg, arg1));
->>>>>>> upstream/master
 
 						REG_IX += ((arg & 0x80) ? -ir_inc : +ir_inc);
 
@@ -3196,17 +2457,10 @@ void hd61700_cpu_device::execute_run()
 				case 0xe9:  //ldm
 				case 0xeb:  //ldim
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT8 arg1 = read_op();
-						UINT16 prev_ir = REG_IZ;
-						UINT8 ir_inc = READ_REG(get_sir_im8(arg, arg1));
-=======
 						uint8_t arg = read_op();
 						uint8_t arg1 = read_op();
 						uint16_t prev_ir = REG_IZ;
 						uint8_t ir_inc = READ_REG(get_sir_im8(arg, arg1));
->>>>>>> upstream/master
 
 						REG_IZ += ((arg & 0x80) ? -ir_inc : +ir_inc);
 
@@ -3224,15 +2478,9 @@ void hd61700_cpu_device::execute_run()
 
 				case 0xec:  //lddm
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT8 arg1 = read_op();
-						UINT8 ir_inc = READ_REG(get_sir_im8(arg, arg1));
-=======
 						uint8_t arg = read_op();
 						uint8_t arg1 = read_op();
 						uint8_t ir_inc = READ_REG(get_sir_im8(arg, arg1));
->>>>>>> upstream/master
 
 						REG_IX += ((arg & 0x80) ? -ir_inc : +ir_inc);
 
@@ -3250,15 +2498,9 @@ void hd61700_cpu_device::execute_run()
 
 				case 0xed:  //lddm
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT8 arg1 = read_op();
-						UINT8 ir_inc = READ_REG(get_sir_im8(arg, arg1));
-=======
 						uint8_t arg = read_op();
 						uint8_t arg1 = read_op();
 						uint8_t ir_inc = READ_REG(get_sir_im8(arg, arg1));
->>>>>>> upstream/master
 
 						REG_IZ += ((arg & 0x80) ? -ir_inc : +ir_inc);
 
@@ -3277,13 +2519,8 @@ void hd61700_cpu_device::execute_run()
 				case 0xee:  //ppsm
 				case 0xef:  //ppum
 					{
-<<<<<<< HEAD
-						UINT8 arg = read_op();
-						UINT8 arg1 = read_op();
-=======
 						uint8_t arg = read_op();
 						uint8_t arg1 = read_op();
->>>>>>> upstream/master
 
 						for (int n=GET_IM3(arg1); n>0; n--)
 						{
@@ -3306,13 +2543,8 @@ void hd61700_cpu_device::execute_run()
 					{
 						if (check_cond(op))
 						{
-<<<<<<< HEAD
-							UINT8 lsb = pop(REG_SS) ;
-							UINT8 msb = pop(REG_SS);
-=======
 							uint8_t lsb = pop(REG_SS) ;
 							uint8_t msb = pop(REG_SS);
->>>>>>> upstream/master
 
 							set_pc((((msb<<8) | (lsb<<0)) + 1));
 						}
@@ -3341,13 +2573,8 @@ void hd61700_cpu_device::execute_run()
 
 				case 0xfd:  //rtni
 					{
-<<<<<<< HEAD
-						UINT8 lsb = pop(REG_SS);
-						UINT8 msb = pop(REG_SS);
-=======
 						uint8_t lsb = pop(REG_SS);
 						uint8_t msb = pop(REG_SS);
->>>>>>> upstream/master
 
 						set_pc((msb<<8) | (lsb<<0));
 
@@ -3357,11 +2584,7 @@ void hd61700_cpu_device::execute_run()
 
 				case 0xfc:  //cani
 					{
-<<<<<<< HEAD
-						for (UINT8 arg=0x10; arg>0; arg>>=1)
-=======
 						for (uint8_t arg=0x10; arg>0; arg>>=1)
->>>>>>> upstream/master
 						{
 							if (REG_IB & arg)
 							{
@@ -3437,11 +2660,7 @@ void hd61700_cpu_device::execute_run()
 		}
 
 		//if is in the internal ROM align the pc
-<<<<<<< HEAD
-		if ((m_fetch_addr&1) && m_pc < INT_ROM)
-=======
 		if (!WORD_ALIGNED(m_fetch_addr) && m_pc < INT_ROM)
->>>>>>> upstream/master
 			set_pc((m_fetch_addr+1)>>1);
 
 		m_icount -= 3;
@@ -3522,19 +2741,6 @@ void hd61700_cpu_device::execute_set_input(int inputnum, int state)
 //  INLINE HELPERS
 //**************************************************************************
 
-<<<<<<< HEAD
-inline void hd61700_cpu_device::set_pc(INT32 new_pc)
-{
-	m_curpc = (m_curpc & 0x30000) | new_pc;
-	m_pc = new_pc & 0xffff;
-	m_fetch_addr = new_pc<<1;
-}
-
-inline UINT8 hd61700_cpu_device::read_op()
-{
-	UINT16 data = 0;
-	UINT32 addr18 = make_18bit_addr((m_irq_status) ? 0 : prev_ua, m_pc);
-=======
 inline void hd61700_cpu_device::set_pc(int32_t new_pc)
 {
 	m_curpc = (m_curpc & 0x30000) | new_pc;
@@ -3547,7 +2753,6 @@ inline uint8_t hd61700_cpu_device::read_op()
 {
 	uint16_t data;
 	uint32_t addr18 = make_18bit_addr((m_irq_status) ? 0 : prev_ua, m_pc);
->>>>>>> upstream/master
 
 	if (m_pc <= INT_ROM)
 	{
@@ -3575,67 +2780,38 @@ inline uint8_t hd61700_cpu_device::read_op()
 	return (data&0xff);
 }
 
-<<<<<<< HEAD
-inline UINT8 hd61700_cpu_device::mem_readbyte(UINT8 segment, UINT16 offset)
-=======
 inline uint8_t hd61700_cpu_device::mem_readbyte(uint8_t segment, uint16_t offset)
->>>>>>> upstream/master
 {
 	return m_program->read_word(make_18bit_addr(segment, offset)<<1) & 0xff;
 }
 
-<<<<<<< HEAD
-inline void hd61700_cpu_device::mem_writebyte(UINT8 segment, UINT16 offset, UINT8 data)
-=======
 inline void hd61700_cpu_device::mem_writebyte(uint8_t segment, uint16_t offset, uint8_t data)
->>>>>>> upstream/master
 {
 	m_program->write_word(make_18bit_addr(segment, offset)<<1, data);
 }
 
-<<<<<<< HEAD
-inline UINT32 hd61700_cpu_device::make_18bit_addr(UINT8 segment, UINT16 offset)
-{
-	if (offset >= ((REG_IB>>6) & 0x03) * 0x4000)
-		return (UINT32)((offset | ((segment&0x03)<<16)) & 0x3ffff);
-=======
 inline uint32_t hd61700_cpu_device::make_18bit_addr(uint8_t segment, uint16_t offset)
 {
 	if (offset >= ((REG_IB>>6) & 0x03) * 0x4000)
 		return (uint32_t)((offset | ((segment&0x03)<<16)) & 0x3ffff);
->>>>>>> upstream/master
 	else
 		return offset;
 }
 
-<<<<<<< HEAD
-inline void hd61700_cpu_device::push(UINT16 &offset, UINT8 data)
-=======
 inline void hd61700_cpu_device::push(uint16_t &offset, uint8_t data)
->>>>>>> upstream/master
 {
 	offset--;
 	mem_writebyte(REG_UA>>2, offset, data);
 }
 
-<<<<<<< HEAD
-inline UINT8 hd61700_cpu_device::pop(UINT16 &offset)
-{
-	UINT8 data = mem_readbyte(REG_UA>>2, offset);
-=======
 inline uint8_t hd61700_cpu_device::pop(uint16_t &offset)
 {
 	uint8_t data = mem_readbyte(REG_UA>>2, offset);
->>>>>>> upstream/master
 	offset++;
 	return data;
 }
 
-<<<<<<< HEAD
-inline int hd61700_cpu_device::check_cond(UINT32 op)
-=======
 inline int hd61700_cpu_device::check_cond(uint32_t op)
->>>>>>> upstream/master
 {
 	switch ( op & 0x07 )
 	{
@@ -3681,11 +2857,7 @@ inline int hd61700_cpu_device::check_cond(uint32_t op)
 	return 0;
 }
 
-<<<<<<< HEAD
-inline UINT8 hd61700_cpu_device::make_logic(UINT8 type, UINT8 d1, UINT8 d2)
-=======
 inline uint8_t hd61700_cpu_device::make_logic(uint8_t type, uint8_t d1, uint8_t d2)
->>>>>>> upstream/master
 {
 	switch (type&3)
 	{
@@ -3702,17 +2874,6 @@ inline uint8_t hd61700_cpu_device::make_logic(uint8_t type, uint8_t d1, uint8_t 
 	}
 }
 
-<<<<<<< HEAD
-inline void hd61700_cpu_device::check_optional_jr(UINT8 arg)
-{
-	if (arg & 0x80)
-	{
-		if (m_pc < INT_ROM && !(m_fetch_addr&1)) read_op();
-
-		UINT8 arg1 = read_op();
-
-		UINT32 new_pc = m_pc + get_im_7(arg1) - 1;
-=======
 inline void hd61700_cpu_device::check_optional_jr(uint8_t arg)
 {
 	if (arg & 0x80)
@@ -3722,26 +2883,17 @@ inline void hd61700_cpu_device::check_optional_jr(uint8_t arg)
 		uint8_t arg1 = read_op();
 
 		uint32_t new_pc = m_pc + get_im_7(arg1) - 1;
->>>>>>> upstream/master
 
 		set_pc(new_pc);
 		m_icount -= 3;
 	}
 }
 
-<<<<<<< HEAD
-inline UINT8 hd61700_cpu_device::get_sir_im8(UINT8 arg)
-{
-	if (((arg>>5) & 0x03) == 0x03)
-	{
-		UINT8 arg1 = read_op();
-=======
 inline uint8_t hd61700_cpu_device::get_sir_im8(uint8_t arg)
 {
 	if (((arg>>5) & 0x03) == 0x03)
 	{
 		uint8_t arg1 = read_op();
->>>>>>> upstream/master
 
 		return arg1&0x1f;
 	}
@@ -3751,11 +2903,7 @@ inline uint8_t hd61700_cpu_device::get_sir_im8(uint8_t arg)
 	}
 }
 
-<<<<<<< HEAD
-inline UINT8 hd61700_cpu_device::get_sir_im8(UINT8 arg, UINT8 arg1)
-=======
 inline uint8_t hd61700_cpu_device::get_sir_im8(uint8_t arg, uint8_t arg1)
->>>>>>> upstream/master
 {
 	if (((arg>>5) & 0x03) == 0x03)
 	{
@@ -3767,11 +2915,7 @@ inline uint8_t hd61700_cpu_device::get_sir_im8(uint8_t arg, uint8_t arg1)
 	}
 }
 
-<<<<<<< HEAD
-inline int hd61700_cpu_device::get_sign_mreg(UINT8 arg)
-=======
 inline int hd61700_cpu_device::get_sign_mreg(uint8_t arg)
->>>>>>> upstream/master
 {
 	int res = READ_REG(get_sir_im8(arg));
 
@@ -3780,11 +2924,7 @@ inline int hd61700_cpu_device::get_sign_mreg(uint8_t arg)
 	return res;
 }
 
-<<<<<<< HEAD
-inline int hd61700_cpu_device::get_sign_im8(UINT8 arg)
-=======
 inline int hd61700_cpu_device::get_sign_im8(uint8_t arg)
->>>>>>> upstream/master
 {
 	int res = read_op();
 
@@ -3793,11 +2933,7 @@ inline int hd61700_cpu_device::get_sign_im8(uint8_t arg)
 	return res;
 }
 
-<<<<<<< HEAD
-inline int hd61700_cpu_device::get_im_7(UINT8 data)
-=======
 inline int hd61700_cpu_device::get_im_7(uint8_t data)
->>>>>>> upstream/master
 {
 	if (data&0x80)
 		return 0x80 - data;
@@ -3805,17 +2941,10 @@ inline int hd61700_cpu_device::get_im_7(uint8_t data)
 		return data;
 }
 
-<<<<<<< HEAD
-inline UINT16 hd61700_cpu_device::make_bcd_sub(UINT8 arg1, UINT8 arg2)
-{
-	UINT32 ret = (arg1&0x0f) - (arg2&0x0f);
-	UINT8 carry;
-=======
 inline uint16_t hd61700_cpu_device::make_bcd_sub(uint8_t arg1, uint8_t arg2)
 {
 	uint32_t ret = (arg1&0x0f) - (arg2&0x0f);
 	uint8_t carry;
->>>>>>> upstream/master
 
 	if (ret > 0x09)
 	{
@@ -3840,17 +2969,10 @@ inline uint16_t hd61700_cpu_device::make_bcd_sub(uint8_t arg1, uint8_t arg2)
 	return ret;
 }
 
-<<<<<<< HEAD
-inline UINT16 hd61700_cpu_device::make_bcd_add(UINT8 arg1, UINT8 arg2)
-{
-	UINT32 ret = (arg1&0x0f) + (arg2&0x0f);
-	UINT8 carry;
-=======
 inline uint16_t hd61700_cpu_device::make_bcd_add(uint8_t arg1, uint8_t arg2)
 {
 	uint32_t ret = (arg1&0x0f) + (arg2&0x0f);
 	uint8_t carry;
->>>>>>> upstream/master
 
 	if (ret > 0x09)
 	{

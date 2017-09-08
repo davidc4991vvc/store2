@@ -8,20 +8,11 @@
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __GAYLE_H__
-#define __GAYLE_H__
-
-#include "emu.h"
-=======
 #ifndef MAME_MACHINE_GAYLE_H
 #define MAME_MACHINE_GAYLE_H
 
 #pragma once
 
->>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -58,25 +49,6 @@ class gayle_device : public device_t
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	gayle_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// callbacks
-	template<class _Object> static devcb_base &set_int2_handler(device_t &device, _Object object)
-		{ return downcast<gayle_device &>(device).m_int2_w.set_callback(object); }
-
-	template<class _Object> static devcb_base &set_cs0_read_handler(device_t &device, _Object object)
-		{ return downcast<gayle_device &>(device).m_cs0_read.set_callback(object); }
-
-	template<class _Object> static devcb_base &set_cs0_write_handler(device_t &device, _Object object)
-		{ return downcast<gayle_device &>(device).m_cs0_write.set_callback(object); }
-
-	template<class _Object> static devcb_base &set_cs1_read_handler(device_t &device, _Object object)
-		{ return downcast<gayle_device &>(device).m_cs1_read.set_callback(object); }
-
-	template<class _Object> static devcb_base &set_cs1_write_handler(device_t &device, _Object object)
-		{ return downcast<gayle_device &>(device).m_cs1_write.set_callback(object); }
-=======
 	gayle_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	// callbacks
@@ -94,7 +66,6 @@ public:
 
 	template <class Object> static devcb_base &set_cs1_write_handler(device_t &device, Object &&cb)
 	{ return downcast<gayle_device &>(device).m_cs1_write.set_callback(std::forward<Object>(cb)); }
->>>>>>> upstream/master
 
 	// interface
 	DECLARE_WRITE_LINE_MEMBER( ide_interrupt_w );
@@ -105,19 +76,11 @@ public:
 	DECLARE_WRITE16_MEMBER( gayle_id_w );
 
 	// inline configuration
-<<<<<<< HEAD
-	static void set_id(device_t &device, UINT8 id);
-
-protected:
-	virtual void device_start();
-	virtual void device_reset();
-=======
 	static void set_id(device_t &device, uint8_t id);
 
 protected:
 	virtual void device_start() override;
 	virtual void device_reset() override;
->>>>>>> upstream/master
 
 private:
 	enum
@@ -135,17 +98,6 @@ private:
 	devcb_read16 m_cs1_read;
 	devcb_write16 m_cs1_write;
 
-<<<<<<< HEAD
-	UINT8 m_gayle_id;
-	int m_gayle_id_count;
-	UINT8 m_gayle_reg[4];
-};
-
-// device type definition
-extern const device_type GAYLE;
-
-#endif
-=======
 	uint8_t m_gayle_id;
 	int m_gayle_id_count;
 	uint8_t m_gayle_reg[4];
@@ -155,4 +107,3 @@ extern const device_type GAYLE;
 DECLARE_DEVICE_TYPE(GAYLE, gayle_device)
 
 #endif // MAME_MACHINE_GAYLE_H
->>>>>>> upstream/master

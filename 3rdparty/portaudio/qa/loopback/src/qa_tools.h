@@ -70,8 +70,6 @@ extern int g_testsFailed;
 	} \
 	else g_testsPassed++;
 
-<<<<<<< HEAD
-=======
 #define QA_ASSERT_CLOSE_INT( message, expected, actual, tolerance ) \
     if (abs((expected)-(actual))>(tolerance)) \
     { \
@@ -81,6 +79,5 @@ extern int g_testsFailed;
     } \
     else g_testsPassed++;
 
->>>>>>> upstream/master
 
 #endif

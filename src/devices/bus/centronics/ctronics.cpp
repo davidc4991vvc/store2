@@ -6,25 +6,15 @@
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #include "ctronics.h"
 
 // class centronics_device
 
-<<<<<<< HEAD
-const device_type CENTRONICS = &device_creator<centronics_device>;
-
-centronics_device::centronics_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, CENTRONICS, "Centronics", tag, owner, clock, "centronics", __FILE__),
-=======
 DEFINE_DEVICE_TYPE(CENTRONICS, centronics_device, "centronics", "Centronics")
 
 centronics_device::centronics_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, CENTRONICS, tag, owner, clock),
->>>>>>> upstream/master
 	device_slot_interface(mconfig, *this),
 	m_strobe_handler(*this),
 	m_data0_handler(*this),
@@ -43,11 +33,7 @@ centronics_device::centronics_device(const machine_config &mconfig, const char *
 	m_fault_handler(*this),
 	m_init_handler(*this),
 	m_select_in_handler(*this),
-<<<<<<< HEAD
-	m_dev(NULL)
-=======
 	m_dev(nullptr)
->>>>>>> upstream/master
 {
 }
 

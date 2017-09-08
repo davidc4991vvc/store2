@@ -8,10 +8,7 @@
 
 *********************************************************************/
 
-<<<<<<< HEAD
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #include "a1cassette.h"
 
 /***************************************************************************
@@ -24,19 +21,7 @@
 
 #define CASSETTE_ROM_REGION "casrom"
 
-<<<<<<< HEAD
-const device_type A1BUS_CASSETTE = &device_creator<a1bus_cassette_device>;
-
-/* sound output */
-
-MACHINE_CONFIG_FRAGMENT( cassette )
-	MCFG_CASSETTE_ADD("cassette")
-	MCFG_CASSETTE_DEFAULT_STATE(CASSETTE_STOPPED)
-	MCFG_CASSETTE_INTERFACE("apple1_cass")
-MACHINE_CONFIG_END
-=======
 DEFINE_DEVICE_TYPE(A1BUS_CASSETTE, a1bus_cassette_device, "a1cass", "Apple I cassette board")
->>>>>>> upstream/master
 
 ROM_START( cassette )
 	/* 256-byte cassette interface ROM, in two 82s129 or mmi6301 256x4 proms at locations 3 and 4 on the cassette interface daughtercard (they are labeled "MMI 6301-IJ // 7623L // APPLE-A3" and "MMI 6301-IJ // 7623L // APPLE-A4") */
@@ -46,18 +31,6 @@ ROM_START( cassette )
 ROM_END
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  machine_config_additions - device-specific
-//  machine configurations
-//-------------------------------------------------
-
-machine_config_constructor a1bus_cassette_device::device_mconfig_additions() const
-{
-	return MACHINE_CONFIG_NAME( cassette );
-}
-
-const rom_entry *a1bus_cassette_device::device_rom_region() const
-=======
 //  device_add_mconfig - add device configuration
 //-------------------------------------------------
 
@@ -70,7 +43,6 @@ MACHINE_CONFIG_MEMBER( a1bus_cassette_device::device_add_mconfig )
 MACHINE_CONFIG_END
 
 const tiny_rom_entry *a1bus_cassette_device::device_rom_region() const
->>>>>>> upstream/master
 {
 	return ROM_NAME( cassette );
 }
@@ -79,19 +51,6 @@ const tiny_rom_entry *a1bus_cassette_device::device_rom_region() const
 //  LIVE DEVICE
 //**************************************************************************
 
-<<<<<<< HEAD
-a1bus_cassette_device::a1bus_cassette_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-		device_t(mconfig, A1BUS_CASSETTE, "Apple I cassette board", tag, owner, clock, "a1cass", __FILE__),
-		device_a1bus_card_interface(mconfig, *this),
-		m_cassette(*this, "cassette"), m_rom(nullptr), m_cassette_output_flipflop(0)
-{
-}
-
-a1bus_cassette_device::a1bus_cassette_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source) :
-		device_t(mconfig, type, name, tag, owner, clock, shortname, source),
-		device_a1bus_card_interface(mconfig, *this),
-		m_cassette(*this, "cassette"), m_rom(nullptr), m_cassette_output_flipflop(0)
-=======
 a1bus_cassette_device::a1bus_cassette_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: a1bus_cassette_device(mconfig, A1BUS_CASSETTE, tag, owner, clock)
 {
@@ -103,7 +62,6 @@ a1bus_cassette_device::a1bus_cassette_device(const machine_config &mconfig, devi
 	, m_cassette(*this, "cassette")
 	, m_rom(nullptr),
 	m_cassette_output_flipflop(0)
->>>>>>> upstream/master
 {
 }
 
@@ -118,11 +76,7 @@ void a1bus_cassette_device::device_start()
 	m_rom = device().machine().root_device().memregion(this->subtag(CASSETTE_ROM_REGION).c_str())->base();
 
 	install_device(0xc000, 0xc0ff, read8_delegate(FUNC(a1bus_cassette_device::cassette_r), this), write8_delegate(FUNC(a1bus_cassette_device::cassette_w), this));
-<<<<<<< HEAD
-	install_bank(0xc100, 0xc1ff, 0, 0, (char *)"bank_a1cas", m_rom);
-=======
 	install_bank(0xc100, 0xc1ff, (char *)"bank_a1cas", m_rom);
->>>>>>> upstream/master
 
 	save_item(NAME(m_cassette_output_flipflop));
 }
@@ -223,15 +177,9 @@ READ8_MEMBER(a1bus_cassette_device::cassette_r)
 		   because it can cause tape header bits on real cassette
 		   images to be misread as data bits.) */
 		if (m_cassette->input() > 0.0)
-<<<<<<< HEAD
-			return m_rom[0xc100 + (offset & ~1)];
-		else
-			return m_rom[0xc100 + offset];
-=======
 			return m_rom[(offset & ~1)];
 		else
 			return m_rom[offset];
->>>>>>> upstream/master
 	}
 }
 

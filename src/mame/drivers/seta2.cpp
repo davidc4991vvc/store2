@@ -30,10 +30,7 @@ P-FG01-1                1995    Guardians / Denjin Makai II             Banprest
 P0-113A                 1994    Mobile Suit Gundam EX Revue             Banpresto
 P0-123A                 1996    Wakakusamonogatari Mahjong Yonshimai    Maboroshi Ware
 P0-125A ; KE (Namco)    1996    Kosodate Quiz My Angel                  Namco
-<<<<<<< HEAD
-=======
 P0-130B ; M-133 (Namco) 1997    Star Audition                           Namco
->>>>>>> upstream/master
 P0-136A ; KL (Namco)    1997    Kosodate Quiz My Angel 2                Namco
 P-FG-02                 1997    Reel'N Quake                            <unknown>
 P-FG-03              <unknown>  Endless Riches                          E.N.Tiger
@@ -82,11 +79,7 @@ grdians:
   ignore the individual color codes in the tiles data. Note: the frontmost frame
   has the shadow bit set, and has become invisible after implementing it.
 
-<<<<<<< HEAD
-pengbros:
-=======
 penbros:
->>>>>>> upstream/master
 - Zooming is used briefly.
 
 deerhunt,wschamp:
@@ -116,16 +109,6 @@ reelquak:
 
 #include "emu.h"
 #include "includes/seta2.h"
-<<<<<<< HEAD
-#include "cpu/m68000/m68000.h"
-#include "machine/tmp68301.h"
-#include "cpu/h8/h83006.h"
-#include "sound/okim9810.h"
-#include "machine/eepromser.h"
-#include "machine/nvram.h"
-#include "machine/ticket.h"
-#include "machine/mcf5206e.h"
-=======
 
 #include "cpu/h8/h83006.h"
 #include "cpu/m68000/m68000.h"
@@ -134,7 +117,6 @@ reelquak:
 #include "machine/ticket.h"
 #include "machine/watchdog.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 /***************************************************************************
@@ -149,11 +131,7 @@ WRITE16_MEMBER(seta2_state::sound_bank_w)
 {
 	if (ACCESSING_BITS_0_7)
 	{
-<<<<<<< HEAD
-		UINT8 *ROM = memregion( "x1snd" )->base();
-=======
 		uint8_t *ROM = memregion( "x1snd" )->base();
->>>>>>> upstream/master
 		int banks = (memregion( "x1snd" )->bytes() - 0x100000) / 0x20000;
 		if (data >= banks)
 		{
@@ -174,13 +152,8 @@ WRITE16_MEMBER(seta2_state::grdians_lockout_w)
 	if (ACCESSING_BITS_0_7)
 	{
 		// initially 0, then either $25 (coin 1) or $2a (coin 2)
-<<<<<<< HEAD
-		coin_counter_w(machine(), 0,data & 0x01);   // or 0x04
-		coin_counter_w(machine(), 1,data & 0x02);   // or 0x08
-=======
 		machine().bookkeeping().coin_counter_w(0,data & 0x01);   // or 0x04
 		machine().bookkeeping().coin_counter_w(1,data & 0x02);   // or 0x08
->>>>>>> upstream/master
 	}
 //  popmessage("%04X", data & 0xffff);
 }
@@ -194,11 +167,7 @@ static ADDRESS_MAP_START( grdians_map, AS_PROGRAM, 16, seta2_state )
 	AM_RANGE(0x700000, 0x700001) AM_READ_PORT("P1")                 // P1
 	AM_RANGE(0x700002, 0x700003) AM_READ_PORT("P2")                 // P2
 	AM_RANGE(0x700004, 0x700005) AM_READ_PORT("SYSTEM")             // Coins
-<<<<<<< HEAD
-	AM_RANGE(0x70000c, 0x70000d) AM_READ(watchdog_reset16_r)        // Watchdog
-=======
 	AM_RANGE(0x70000c, 0x70000d) AM_DEVREAD("watchdog", watchdog_timer_device, reset16_r)
->>>>>>> upstream/master
 	AM_RANGE(0x800000, 0x800001) AM_WRITE(grdians_lockout_w)
 	AM_RANGE(0xb00000, 0xb03fff) AM_DEVREADWRITE("x1snd", x1_010_device, word_r, word_w)   // Sound
 	AM_RANGE(0xc00000, 0xc3ffff) AM_RAM AM_SHARE("spriteram")       // Sprites
@@ -236,11 +205,7 @@ static ADDRESS_MAP_START( gundamex_map, AS_PROGRAM, 16, seta2_state )
 	AM_RANGE(0x700004, 0x700005) AM_READ_PORT("SYSTEM")             // Coins
 	AM_RANGE(0x700008, 0x700009) AM_READ_PORT("IN0")                // P1
 	AM_RANGE(0x70000a, 0x70000b) AM_READ_PORT("IN1")                // P2
-<<<<<<< HEAD
-	AM_RANGE(0x70000c, 0x70000d) AM_WRITE(watchdog_reset16_w)
-=======
 	AM_RANGE(0x70000c, 0x70000d) AM_DEVWRITE("watchdog", watchdog_timer_device, reset16_w)
->>>>>>> upstream/master
 	AM_RANGE(0x800000, 0x800001) AM_WRITE(grdians_lockout_w)
 	AM_RANGE(0xb00000, 0xb03fff) AM_DEVREADWRITE("x1snd", x1_010_device, word_r, word_w)   // Sound
 	AM_RANGE(0xc00000, 0xc3ffff) AM_RAM AM_SHARE("spriteram")   // Sprites
@@ -299,11 +264,7 @@ static ADDRESS_MAP_START( mj4simai_map, AS_PROGRAM, 16, seta2_state )
 	AM_RANGE(0x600000, 0x600001) AM_READ(mj4simai_p1_r)             // P1
 	AM_RANGE(0x600002, 0x600003) AM_READ(mj4simai_p2_r)             // P2
 	AM_RANGE(0x600004, 0x600005) AM_WRITE(mj4simai_keyboard_w)      // select keyboard row to read
-<<<<<<< HEAD
-	AM_RANGE(0x600006, 0x600007) AM_READ(watchdog_reset16_r)        // Watchdog
-=======
 	AM_RANGE(0x600006, 0x600007) AM_DEVREAD("watchdog", watchdog_timer_device, reset16_r)
->>>>>>> upstream/master
 	AM_RANGE(0x600100, 0x600101) AM_READ_PORT("SYSTEM")             //
 	AM_RANGE(0x600200, 0x600201) AM_WRITENOP                        // Leds? Coins?
 	AM_RANGE(0x600300, 0x600301) AM_READ_PORT("DSW1")               // DSW 1
@@ -327,11 +288,7 @@ static ADDRESS_MAP_START( myangel_map, AS_PROGRAM, 16, seta2_state )
 	AM_RANGE(0x700000, 0x700001) AM_READ_PORT("P1")                 // P1
 	AM_RANGE(0x700002, 0x700003) AM_READ_PORT("P2")                 // P2
 	AM_RANGE(0x700004, 0x700005) AM_READ_PORT("SYSTEM")             // Coins
-<<<<<<< HEAD
-	AM_RANGE(0x700006, 0x700007) AM_READ(watchdog_reset16_r)        // Watchdog
-=======
 	AM_RANGE(0x700006, 0x700007) AM_DEVREAD("watchdog", watchdog_timer_device, reset16_r)
->>>>>>> upstream/master
 	AM_RANGE(0x700200, 0x700201) AM_WRITENOP                        // Leds? Coins?
 	AM_RANGE(0x700300, 0x700301) AM_READ_PORT("DSW1")               // DSW 1
 	AM_RANGE(0x700302, 0x700303) AM_READ_PORT("DSW2")               // DSW 2
@@ -354,11 +311,7 @@ static ADDRESS_MAP_START( myangel2_map, AS_PROGRAM, 16, seta2_state )
 	AM_RANGE(0x600000, 0x600001) AM_READ_PORT("P1")                 // P1
 	AM_RANGE(0x600002, 0x600003) AM_READ_PORT("P2")                 // P2
 	AM_RANGE(0x600004, 0x600005) AM_READ_PORT("SYSTEM")             // Coins
-<<<<<<< HEAD
-	AM_RANGE(0x600006, 0x600007) AM_READ(watchdog_reset16_r)        // Watchdog
-=======
 	AM_RANGE(0x600006, 0x600007) AM_DEVREAD("watchdog", watchdog_timer_device, reset16_r)
->>>>>>> upstream/master
 	AM_RANGE(0x600200, 0x600201) AM_WRITENOP                        // Leds? Coins?
 	AM_RANGE(0x600300, 0x600301) AM_READ_PORT("DSW1")               // DSW 1
 	AM_RANGE(0x600302, 0x600303) AM_READ_PORT("DSW2")               // DSW 2
@@ -379,11 +332,7 @@ ADDRESS_MAP_END
     The offset to use is stored in RAM at address 0x20BA16 */
 READ16_MEMBER(seta2_state::pzlbowl_protection_r)
 {
-<<<<<<< HEAD
-	UINT32 address = (space.read_word(0x20ba16) << 16) | space.read_word(0x20ba18);
-=======
 	uint32_t address = (space.read_word(0x20ba16) << 16) | space.read_word(0x20ba18);
->>>>>>> upstream/master
 	return memregion("maincpu")->base()[address - 2];
 }
 
@@ -396,13 +345,8 @@ WRITE16_MEMBER(seta2_state::pzlbowl_coin_counter_w)
 {
 	if (ACCESSING_BITS_0_7)
 	{
-<<<<<<< HEAD
-		coin_counter_w(machine(), 0,data & 0x10);
-		coin_counter_w(machine(), 1,data & 0x20);
-=======
 		machine().bookkeeping().coin_counter_w(0,data & 0x10);
 		machine().bookkeeping().coin_counter_w(1,data & 0x20);
->>>>>>> upstream/master
 	}
 }
 
@@ -415,11 +359,7 @@ static ADDRESS_MAP_START( pzlbowl_map, AS_PROGRAM, 16, seta2_state )
 	AM_RANGE(0x500000, 0x500001) AM_READ_PORT("P1")                     // P1
 	AM_RANGE(0x500002, 0x500003) AM_READ_PORT("P2")                     // P2
 	AM_RANGE(0x500004, 0x500005) AM_READWRITE(pzlbowl_coins_r,pzlbowl_coin_counter_w)   // Coins + Protection?
-<<<<<<< HEAD
-	AM_RANGE(0x500006, 0x500007) AM_READ(watchdog_reset16_r)            // Watchdog
-=======
 	AM_RANGE(0x500006, 0x500007) AM_DEVREAD("watchdog", watchdog_timer_device, reset16_r)
->>>>>>> upstream/master
 	AM_RANGE(0x700000, 0x700001) AM_READ(pzlbowl_protection_r)          // Protection
 	AM_RANGE(0x800000, 0x83ffff) AM_RAM AM_SHARE("spriteram")       // Sprites
 	AM_RANGE(0x840000, 0x84ffff) AM_RAM_DEVWRITE("palette", palette_device, write) AM_SHARE("palette")    // Palette
@@ -433,30 +373,16 @@ ADDRESS_MAP_END
                             Penguin Bros
 ***************************************************************************/
 
-<<<<<<< HEAD
-static ADDRESS_MAP_START( penbros_map, AS_PROGRAM, 16, seta2_state )
-=======
 static ADDRESS_MAP_START( penbros_base_map, AS_PROGRAM, 16, seta2_state )
->>>>>>> upstream/master
 	AM_RANGE(0x000000, 0x0fffff) AM_ROM                             // ROM
 	AM_RANGE(0x200000, 0x20ffff) AM_RAM                             // RAM
 	AM_RANGE(0x210000, 0x23ffff) AM_RAM                             // RAM
 	AM_RANGE(0x300000, 0x30ffff) AM_RAM                             // RAM
-<<<<<<< HEAD
-	AM_RANGE(0x500300, 0x500301) AM_READ_PORT("DSW1")               // DSW 1
-	AM_RANGE(0x500302, 0x500303) AM_READ_PORT("DSW2")               // DSW 2
-	AM_RANGE(0x500300, 0x50030f) AM_WRITE(sound_bank_w)       // Samples Banks
-=======
->>>>>>> upstream/master
 	AM_RANGE(0x600000, 0x600001) AM_READ_PORT("P1")                 // P1
 	AM_RANGE(0x600002, 0x600003) AM_READ_PORT("P2")                 // P2
 	AM_RANGE(0x600004, 0x600005) AM_READ_PORT("SYSTEM")             // Coins
 	AM_RANGE(0x600004, 0x600005) AM_WRITE(pzlbowl_coin_counter_w)   // Coins Counter
-<<<<<<< HEAD
-	AM_RANGE(0x600006, 0x600007) AM_READ(watchdog_reset16_r)        // Watchdog
-=======
 	AM_RANGE(0x600006, 0x600007) AM_DEVREAD("watchdog", watchdog_timer_device, reset16_r)
->>>>>>> upstream/master
 	//AM_RANGE(0x700000, 0x700001) AM_READ(pzlbowl_protection_r)      // Protection
 	AM_RANGE(0xb00000, 0xb3ffff) AM_RAM AM_SHARE("spriteram")       // Sprites
 	AM_RANGE(0xb40000, 0xb4ffff) AM_RAM_DEVWRITE("palette", palette_device, write) AM_SHARE("palette")    // Palette
@@ -465,8 +391,6 @@ static ADDRESS_MAP_START( penbros_base_map, AS_PROGRAM, 16, seta2_state )
 	AM_RANGE(0xfffc00, 0xffffff) AM_DEVREADWRITE("tmp68301", tmp68301_device, regs_r, regs_w)      // TMP68301 Registers
 ADDRESS_MAP_END
 
-<<<<<<< HEAD
-=======
 static ADDRESS_MAP_START( penbros_map, AS_PROGRAM, 16, seta2_state )
 	AM_IMPORT_FROM(penbros_base_map)
 	AM_RANGE(0x500300, 0x500301) AM_READ_PORT("DSW1")               // DSW 1
@@ -481,7 +405,6 @@ static ADDRESS_MAP_START( penbrosk_map, AS_PROGRAM, 16, seta2_state )
 	// TODO: Where are the samples banks?
 ADDRESS_MAP_END
 
->>>>>>> upstream/master
 
 /***************************************************************************
                               Reel'N Quake
@@ -491,15 +414,6 @@ WRITE16_MEMBER(seta2_state::reelquak_leds_w)
 {
 	if (ACCESSING_BITS_0_7)
 	{
-<<<<<<< HEAD
-		set_led_status( machine(), 0, data & 0x0001 );  // start
-		set_led_status( machine(), 1, data & 0x0002 );  // small
-		set_led_status( machine(), 2, data & 0x0004 );  // bet
-		set_led_status( machine(), 3, data & 0x0008 );  // big
-		set_led_status( machine(), 4, data & 0x0010 );  // double up
-		set_led_status( machine(), 5, data & 0x0020 );  // collect
-		set_led_status( machine(), 6, data & 0x0040 );  // bet cancel
-=======
 		output().set_led_value(0, data & 0x0001 );  // start
 		output().set_led_value(1, data & 0x0002 );  // small
 		output().set_led_value(2, data & 0x0004 );  // bet
@@ -507,7 +421,6 @@ WRITE16_MEMBER(seta2_state::reelquak_leds_w)
 		output().set_led_value(4, data & 0x0010 );  // double up
 		output().set_led_value(5, data & 0x0020 );  // collect
 		output().set_led_value(6, data & 0x0040 );  // bet cancel
->>>>>>> upstream/master
 	}
 	if (ACCESSING_BITS_8_15)
 	{
@@ -521,17 +434,10 @@ WRITE16_MEMBER(seta2_state::reelquak_coin_w)
 {
 	if (ACCESSING_BITS_0_7)
 	{
-<<<<<<< HEAD
-		coin_counter_w(machine(), 0, data & 0x01);  // coin in
-		coin_counter_w(machine(), 1, data & 0x02);  // coin in
-		coin_counter_w(machine(), 2, data & 0x04);  // pay out
-		coin_counter_w(machine(), 3, data & 0x08);  // key in
-=======
 		machine().bookkeeping().coin_counter_w(0, data & 0x01);  // coin in
 		machine().bookkeeping().coin_counter_w(1, data & 0x02);  // coin in
 		machine().bookkeeping().coin_counter_w(2, data & 0x04);  // pay out
 		machine().bookkeeping().coin_counter_w(3, data & 0x08);  // key in
->>>>>>> upstream/master
 		//                                data & 0x10); // Sound IRQ Ack.? 1->0
 		//                                data & 0x20); // Vblank IRQ.? 1
 	}
@@ -545,11 +451,7 @@ static ADDRESS_MAP_START( reelquak_map, AS_PROGRAM, 16, seta2_state )
 	AM_RANGE(0x400000, 0x400001) AM_READ_PORT("P1")                 // P1
 	AM_RANGE(0x400002, 0x400003) AM_READ_PORT("TICKET")             // Tickets
 	AM_RANGE(0x400004, 0x400005) AM_READ_PORT("SYSTEM")             // Coins
-<<<<<<< HEAD
-	AM_RANGE(0x400006, 0x400007) AM_READ(watchdog_reset16_r)        // Watchdog
-=======
 	AM_RANGE(0x400006, 0x400007) AM_DEVREAD("watchdog", watchdog_timer_device, reset16_r)
->>>>>>> upstream/master
 	AM_RANGE(0x400200, 0x400201) AM_WRITE(reelquak_coin_w)          // Coin Counters / IRQ Ack
 	AM_RANGE(0x400300, 0x400301) AM_READ_PORT("DSW1")               // DSW 1
 	AM_RANGE(0x400302, 0x400303) AM_READ_PORT("DSW2")               // DSW 2
@@ -584,19 +486,11 @@ WRITE16_MEMBER(seta2_state::samshoot_coin_w)
 {
 	if (ACCESSING_BITS_0_7)
 	{
-<<<<<<< HEAD
-		coin_counter_w(machine(), 0, data & 0x10);
-		coin_counter_w(machine(), 1, data & 0x20);
-		// Are these connected? They are set in I/O test
-		coin_lockout_w(machine(), 0,~data & 0x40);
-		coin_lockout_w(machine(), 1,~data & 0x80);
-=======
 		machine().bookkeeping().coin_counter_w(0, data & 0x10);
 		machine().bookkeeping().coin_counter_w(1, data & 0x20);
 		// Are these connected? They are set in I/O test
 		machine().bookkeeping().coin_lockout_w(0,~data & 0x40);
 		machine().bookkeeping().coin_lockout_w(1,~data & 0x80);
->>>>>>> upstream/master
 	}
 //  popmessage("%04x",data);
 }
@@ -617,11 +511,7 @@ static ADDRESS_MAP_START( samshoot_map, AS_PROGRAM, 16, seta2_state )
 	AM_RANGE( 0x700000, 0x700001 ) AM_READ_PORT("TRIGGER")          // Trigger
 	AM_RANGE( 0x700002, 0x700003 ) AM_READ_PORT("PUMP")             // Pump
 	AM_RANGE( 0x700004, 0x700005 ) AM_READ_PORT("COIN") AM_WRITE(samshoot_coin_w )  // Coins
-<<<<<<< HEAD
-	AM_RANGE( 0x700006, 0x700007 ) AM_READ(watchdog_reset16_r ) // Watchdog?
-=======
 	AM_RANGE( 0x700006, 0x700007 ) AM_DEVREAD("watchdog", watchdog_timer_device, reset16_r ) // Watchdog?
->>>>>>> upstream/master
 
 	AM_RANGE( 0x800000, 0x83ffff ) AM_RAM AM_SHARE("spriteram") // Sprites
 	AM_RANGE( 0x840000, 0x84ffff ) AM_RAM_DEVWRITE("palette", palette_device, write) AM_SHARE("palette")  // Palette
@@ -634,8 +524,6 @@ ADDRESS_MAP_END
 
 
 /***************************************************************************
-<<<<<<< HEAD
-=======
                               Star Audition
 ***************************************************************************/
 
@@ -738,7 +626,6 @@ ADDRESS_MAP_END
 
 
 /***************************************************************************
->>>>>>> upstream/master
                                Funcube series
 ***************************************************************************/
 
@@ -754,20 +641,6 @@ class funcube_touchscreen_device : public device_t,
 									public device_serial_interface
 {
 public:
-<<<<<<< HEAD
-	funcube_touchscreen_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	virtual ioport_constructor device_input_ports() const;
-	template<class _Object> static devcb_base &set_tx_cb(device_t &device, _Object object) { return downcast<funcube_touchscreen_device &>(device).m_tx_cb.set_callback(object); }
-
-protected:
-	virtual void device_start();
-	virtual void device_reset();
-	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
-
-	virtual void tra_complete();
-	virtual void tra_callback();
-=======
 	funcube_touchscreen_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	virtual ioport_constructor device_input_ports() const override;
@@ -780,7 +653,6 @@ protected:
 
 	virtual void tra_complete() override;
 	virtual void tra_callback() override;
->>>>>>> upstream/master
 
 private:
 	devcb_write_line m_tx_cb;
@@ -788,21 +660,12 @@ private:
 	required_ioport m_y;
 	required_ioport m_btn;
 
-<<<<<<< HEAD
-	UINT8 m_button_state;
-	int m_serial_pos;
-	UINT8 m_serial[4];
-};
-
-const device_type FUNCUBE_TOUCHSCREEN = &device_creator<funcube_touchscreen_device>;
-=======
 	uint8_t m_button_state;
 	int m_serial_pos;
 	uint8_t m_serial[4];
 };
 
 DEFINE_DEVICE_TYPE(FUNCUBE_TOUCHSCREEN, funcube_touchscreen_device, "funcube_touchscreen", "Funcube Touchscreen")
->>>>>>> upstream/master
 
 static INPUT_PORTS_START( funcube_touchscreen )
 	PORT_START("touch_btn")
@@ -815,13 +678,8 @@ static INPUT_PORTS_START( funcube_touchscreen )
 	PORT_BIT( 0xff, 0x00, IPT_LIGHTGUN_Y ) PORT_MINMAX(0,0x46+1) PORT_CROSSHAIR(Y, -(0xf0-8.0)/0xf0*0x047/0x46, -1.0/0x46, 0) PORT_SENSITIVITY(45) PORT_KEYDELTA(5) PORT_REVERSE
 INPUT_PORTS_END
 
-<<<<<<< HEAD
-funcube_touchscreen_device::funcube_touchscreen_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-	device_t(mconfig, FUNCUBE_TOUCHSCREEN, "Funcube Touchscreen", tag, owner, clock, "funcube_touchscrene", __FILE__),
-=======
 funcube_touchscreen_device::funcube_touchscreen_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	device_t(mconfig, FUNCUBE_TOUCHSCREEN, tag, owner, clock),
->>>>>>> upstream/master
 	device_serial_interface(mconfig, *this),
 	m_tx_cb(*this),
 	m_x(*this, "touch_x"),
@@ -847,10 +705,6 @@ void funcube_touchscreen_device::device_start()
 	save_item(NAME(m_button_state));
 	save_item(NAME(m_serial_pos));
 	save_item(NAME(m_serial));
-<<<<<<< HEAD
-	device_serial_interface::register_save_state(machine().save(), this);
-=======
->>>>>>> upstream/master
 }
 
 void funcube_touchscreen_device::device_reset()
@@ -862,22 +716,6 @@ void funcube_touchscreen_device::device_reset()
 
 void funcube_touchscreen_device::device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr)
 {
-<<<<<<< HEAD
-	if(id) {
-		device_serial_interface::device_timer(timer, id, param, ptr);
-		return;
-	}
-
-	UINT8 button_state = m_btn->read();
-	if(m_button_state != button_state) {
-		m_button_state = button_state;
-		m_serial[0] = button_state ? 0xfe : 0xfd;
-		m_serial[1] = m_x->read();
-		m_serial[2] = m_y->read();
-		m_serial[3] = 0xff;
-		m_serial_pos = 0;
-		transmit_register_setup(m_serial[m_serial_pos++]);
-=======
 	if(!id) {
 		uint8_t button_state = m_btn->read();
 		if(m_button_state != button_state) {
@@ -889,7 +727,6 @@ void funcube_touchscreen_device::device_timer(emu_timer &timer, device_timer_id 
 			m_serial_pos = 0;
 			transmit_register_setup(m_serial[m_serial_pos++]);
 		}
->>>>>>> upstream/master
 	}
 }
 
@@ -910,11 +747,7 @@ void funcube_touchscreen_device::tra_callback()
 // RAM shared with the sub CPU
 READ32_MEMBER(seta2_state::funcube_nvram_dword_r)
 {
-<<<<<<< HEAD
-	UINT16 val = m_nvram[offset];
-=======
 	uint16_t val = m_nvram[offset];
->>>>>>> upstream/master
 	return ((val & 0xff00) << 8) | (val & 0x00ff);
 }
 
@@ -945,11 +778,7 @@ READ16_MEMBER(seta2_state::spriteram16_word_r)
 
 READ32_MEMBER(seta2_state::funcube_debug_r)
 {
-<<<<<<< HEAD
-	UINT32 ret = ioport("DEBUG")->read();
-=======
 	uint32_t ret = ioport("DEBUG")->read();
->>>>>>> upstream/master
 
 	// This bits let you move the crosshair in the inputs / touch panel test with a joystick
 	if (!(m_screen->frame_number() % 3))
@@ -966,21 +795,12 @@ WRITE32_MEMBER(seta2_state::oki_write)
 {
 	if (ACCESSING_BITS_0_7)
 	{
-<<<<<<< HEAD
-		const UINT8 tmp = (data & 0x000000ff);
-		m_oki->write_TMP_register(tmp);
-	}
-	else if (ACCESSING_BITS_16_23)
-	{
-		const UINT8 cmd = (data & 0x00ff0000) >> 16;
-=======
 		const uint8_t tmp = (data & 0x000000ff);
 		m_oki->write_tmp_register(tmp);
 	}
 	else if (ACCESSING_BITS_16_23)
 	{
 		const uint8_t cmd = (data & 0x00ff0000) >> 16;
->>>>>>> upstream/master
 		m_oki->write_command(cmd);
 	}
 }
@@ -990,11 +810,7 @@ static ADDRESS_MAP_START( funcube_map, AS_PROGRAM, 32, seta2_state )
 	AM_RANGE( 0x00200000, 0x0020ffff ) AM_RAM
 
 	AM_RANGE( 0x00400000, 0x00400003 ) AM_READ(funcube_debug_r)
-<<<<<<< HEAD
-	AM_RANGE( 0x00400004, 0x00400007 ) AM_READ(watchdog_reset32_r ) AM_WRITENOP
-=======
 	AM_RANGE( 0x00400004, 0x00400007 ) AM_DEVREAD("watchdog", watchdog_timer_device, reset32_r) AM_WRITENOP
->>>>>>> upstream/master
 
 	AM_RANGE( 0x00500000, 0x00500003 ) AM_READWRITE(oki_read, oki_write)
 
@@ -1013,11 +829,7 @@ static ADDRESS_MAP_START( funcube2_map, AS_PROGRAM, 32, seta2_state )
 	AM_RANGE( 0x00200000, 0x0020ffff ) AM_RAM
 
 	AM_RANGE( 0x00500000, 0x00500003 ) AM_READ(funcube_debug_r )
-<<<<<<< HEAD
-	AM_RANGE( 0x00500004, 0x00500007 ) AM_READ(watchdog_reset32_r ) AM_WRITENOP
-=======
 	AM_RANGE( 0x00500004, 0x00500007 ) AM_DEVREAD("watchdog", watchdog_timer_device, reset32_r) AM_WRITENOP
->>>>>>> upstream/master
 
 	AM_RANGE( 0x00600000, 0x00600003 ) AM_READWRITE(oki_read, oki_write)
 
@@ -1047,19 +859,6 @@ ADDRESS_MAP_END
 
 READ16_MEMBER(seta2_state::funcube_coins_r)
 {
-<<<<<<< HEAD
-	UINT8 ret = ioport("SWITCH")->read();
-	UINT8 coin_bit0 = 1;    // active low
-	UINT8 coin_bit1 = 1;
-
-	UINT8 hopper_bit = (m_funcube_hopper_motor && !(m_screen->frame_number()%20)) ? 1 : 0;
-
-	const UINT64 coin_total_cycles = FUNCUBE_SUB_CPU_CLOCK / (1000/20);
-
-	if ( m_funcube_coin_start_cycles )
-	{
-		UINT64 elapsed = downcast<cpu_device *>(&space.device())->total_cycles() - m_funcube_coin_start_cycles;
-=======
 	uint8_t ret = ioport("SWITCH")->read();
 	uint8_t coin_bit0 = 1;    // active low
 	uint8_t coin_bit1 = 1;
@@ -1071,7 +870,6 @@ READ16_MEMBER(seta2_state::funcube_coins_r)
 	if ( m_funcube_coin_start_cycles )
 	{
 		uint64_t elapsed = downcast<cpu_device *>(&space.device())->total_cycles() - m_funcube_coin_start_cycles;
->>>>>>> upstream/master
 
 		if ( elapsed < coin_total_cycles/2 )
 			coin_bit0 = 0;
@@ -1100,16 +898,6 @@ WRITE16_MEMBER(seta2_state::funcube_leds_w)
 {
 	*m_funcube_leds = data;
 
-<<<<<<< HEAD
-	set_led_status( machine(), 0, (~data) & 0x01 ); // win lamp (red)
-	set_led_status( machine(), 1, (~data) & 0x02 ); // win lamp (green)
-
-	// Set in a moving pattern: 0111 -> 1011 -> 1101 -> 1110
-	set_led_status( machine(), 2, (~data) & 0x10 );
-	set_led_status( machine(), 3, (~data) & 0x20 );
-	set_led_status( machine(), 4, (~data) & 0x40 );
-	set_led_status( machine(), 5, (~data) & 0x80 );
-=======
 	output().set_led_value(0, (~data) & 0x01 ); // win lamp (red)
 	output().set_led_value(1, (~data) & 0x02 ); // win lamp (green)
 
@@ -1118,7 +906,6 @@ WRITE16_MEMBER(seta2_state::funcube_leds_w)
 	output().set_led_value(3, (~data) & 0x20 );
 	output().set_led_value(4, (~data) & 0x40 );
 	output().set_led_value(5, (~data) & 0x80 );
->>>>>>> upstream/master
 
 	funcube_debug_outputs();
 }
@@ -1141,11 +928,7 @@ WRITE16_MEMBER(seta2_state::funcube_outputs_w)
 	// Bit 1: high on pay out
 
 	// Bit 3: low after coining up, blinks on pay out
-<<<<<<< HEAD
-	set_led_status( machine(), 6, (~data) & 0x08 );
-=======
 	output().set_led_value(6, (~data) & 0x08 );
->>>>>>> upstream/master
 
 	funcube_debug_outputs();
 }
@@ -2005,8 +1788,6 @@ static INPUT_PORTS_START( endrichs )
 	PORT_DIPUNUSED_DIPLOC( 0x0080, IP_ACTIVE_LOW, "SW2:8" )
 INPUT_PORTS_END
 
-<<<<<<< HEAD
-=======
 /***************************************************************************
                               Star Audition
 ***************************************************************************/
@@ -2081,7 +1862,6 @@ static INPUT_PORTS_START( staraudi )
 	PORT_BIT( 0xff00, IP_ACTIVE_LOW, IPT_START4   ) // unused?
 INPUT_PORTS_END
 
->>>>>>> upstream/master
 
 /***************************************************************************
                             Sammy Outdoor Shooting
@@ -2486,8 +2266,6 @@ static GFXDECODE_START( funcube )
 	GFXDECODE_ENTRY( "sprites", 0, funcube_layout_2bpp_hi, 0, 0x8000/16 )   // 2bpp, but 4bpp color granularity
 GFXDECODE_END
 
-<<<<<<< HEAD
-=======
 /***************************************************************************
                               Star Audition
 ***************************************************************************/
@@ -2525,7 +2303,6 @@ static GFXDECODE_START( staraudi )
 	GFXDECODE_ENTRY( "sprites", 0, funcube_layout_2bpp_hi,  0, 0x8000/16 )   // 2bpp, but 4bpp color granularity
 GFXDECODE_END
 
->>>>>>> upstream/master
 
 /***************************************************************************
 
@@ -2544,11 +2321,7 @@ INTERRUPT_GEN_MEMBER(seta2_state::samshoot_interrupt)
 	m_tmp68301->external_interrupt_2();   // to do: hook up x1-10 interrupts
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( seta2, seta2_state )
-=======
 static MACHINE_CONFIG_START( seta2 )
->>>>>>> upstream/master
 	MCFG_CPU_ADD("maincpu", M68301, XTAL_50MHz/3)   // !! TMP68301 !!
 	MCFG_CPU_PROGRAM_MAP(mj4simai_map)
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", seta2_state,  seta2_interrupt)
@@ -2556,11 +2329,8 @@ static MACHINE_CONFIG_START( seta2 )
 
 	MCFG_DEVICE_ADD("tmp68301", TMP68301, 0)
 
-<<<<<<< HEAD
-=======
 	MCFG_WATCHDOG_ADD("watchdog")
 
->>>>>>> upstream/master
 	// video hardware
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE(60)
@@ -2568,11 +2338,7 @@ static MACHINE_CONFIG_START( seta2 )
 	MCFG_SCREEN_SIZE(0x200, 0x200)
 	MCFG_SCREEN_VISIBLE_AREA(0x40, 0x1c0-1, 0x80, 0x170-1)
 	MCFG_SCREEN_UPDATE_DRIVER(seta2_state, screen_update)
-<<<<<<< HEAD
-	MCFG_SCREEN_VBLANK_DRIVER(seta2_state, screen_eof)
-=======
 	MCFG_SCREEN_VBLANK_CALLBACK(WRITELINE(seta2_state, screen_vblank))
->>>>>>> upstream/master
 	MCFG_SCREEN_PALETTE("palette")
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", seta2)
@@ -2662,8 +2428,6 @@ static MACHINE_CONFIG_DERIVED( penbros, seta2 )
 	MCFG_SCREEN_VISIBLE_AREA(0, 0x140-1, 0x80, 0x160-1)
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-=======
 static MACHINE_CONFIG_DERIVED( penbrosk, penbros )
 	MCFG_CPU_MODIFY("maincpu") // actually TMP68HC000P-16
 	MCFG_CPU_PROGRAM_MAP(penbrosk_map)
@@ -2671,7 +2435,6 @@ static MACHINE_CONFIG_DERIVED( penbrosk, penbros )
 	//TODO:
 	//MCFG_DEVICE_REMOVE("tmp68301")
 MACHINE_CONFIG_END
->>>>>>> upstream/master
 
 static MACHINE_CONFIG_DERIVED( reelquak, seta2 )
 	MCFG_CPU_MODIFY("maincpu")
@@ -2707,8 +2470,6 @@ static MACHINE_CONFIG_DERIVED( samshoot, seta2 )
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-=======
 static MACHINE_CONFIG_DERIVED( staraudi, seta2 )
 	MCFG_CPU_MODIFY("maincpu")
 	MCFG_CPU_PROGRAM_MAP(staraudi_map)
@@ -2725,7 +2486,6 @@ static MACHINE_CONFIG_DERIVED( staraudi, seta2 )
 MACHINE_CONFIG_END
 
 
->>>>>>> upstream/master
 /***************************************************************************
                                Funcube series
 ***************************************************************************/
@@ -2753,11 +2513,7 @@ MACHINE_RESET_MEMBER(seta2_state, funcube)
 	m_funcube_hopper_motor = 0;
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( funcube, seta2_state )
-=======
 static MACHINE_CONFIG_START( funcube )
->>>>>>> upstream/master
 
 	MCFG_CPU_ADD("maincpu", MCF5206E, XTAL_25_447MHz)
 	MCFG_CPU_PROGRAM_MAP(funcube_map)
@@ -2774,11 +2530,8 @@ static MACHINE_CONFIG_START( funcube )
 
 	MCFG_NVRAM_ADD_0FILL("nvram")
 
-<<<<<<< HEAD
-=======
 	MCFG_WATCHDOG_ADD("watchdog")
 
->>>>>>> upstream/master
 	MCFG_MACHINE_START_OVERRIDE(seta2_state, funcube)
 	MCFG_MACHINE_RESET_OVERRIDE(seta2_state, funcube)
 
@@ -2789,11 +2542,7 @@ static MACHINE_CONFIG_START( funcube )
 	MCFG_SCREEN_SIZE(0x200, 0x200)
 	MCFG_SCREEN_VISIBLE_AREA(0x0+1, 0x140-1+1, 0x80, 0x170-1)
 	MCFG_SCREEN_UPDATE_DRIVER(seta2_state, screen_update)
-<<<<<<< HEAD
-	MCFG_SCREEN_VBLANK_DRIVER(seta2_state, screen_eof)
-=======
 	MCFG_SCREEN_VBLANK_CALLBACK(WRITELINE(seta2_state, screen_vblank))
->>>>>>> upstream/master
 	MCFG_SCREEN_PALETTE("palette")
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", funcube)
@@ -2829,11 +2578,7 @@ static MACHINE_CONFIG_DERIVED( funcube3, funcube2 )
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( namcostr, seta2_state )
-=======
 static MACHINE_CONFIG_START( namcostr )
->>>>>>> upstream/master
 	MCFG_CPU_ADD("maincpu", M68301, XTAL_50MHz/3)   // !! TMP68301 !!
 	MCFG_CPU_PROGRAM_MAP(namcostr_map)
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", seta2_state,  seta2_interrupt)
@@ -2848,11 +2593,7 @@ static MACHINE_CONFIG_START( namcostr )
 	MCFG_SCREEN_SIZE(0x200, 0x200)
 	MCFG_SCREEN_VISIBLE_AREA(0x40, 0x1c0-1, 0x80, 0x170-1)
 	MCFG_SCREEN_UPDATE_DRIVER(seta2_state, screen_update)
-<<<<<<< HEAD
-	MCFG_SCREEN_VBLANK_DRIVER(seta2_state, screen_eof)
-=======
 	MCFG_SCREEN_VBLANK_CALLBACK(WRITELINE(seta2_state, screen_vblank))
->>>>>>> upstream/master
 	MCFG_SCREEN_PALETTE("palette")
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", funcube)
@@ -3069,13 +2810,8 @@ ROM_END
 
 DRIVER_INIT_MEMBER(seta2_state,funcube)
 {
-<<<<<<< HEAD
-	UINT32 *main_cpu = (UINT32 *) memregion("maincpu")->base();
-	UINT16 *sub_cpu  = (UINT16 *) memregion("sub")->base();
-=======
 	uint32_t *main_cpu = (uint32_t *) memregion("maincpu")->base();
 	uint16_t *sub_cpu  = (uint16_t *) memregion("sub")->base();
->>>>>>> upstream/master
 
 	main_cpu[0x064/4] = 0x0000042a; // PIC protection?
 
@@ -3085,13 +2821,8 @@ DRIVER_INIT_MEMBER(seta2_state,funcube)
 
 DRIVER_INIT_MEMBER(seta2_state,funcube2)
 {
-<<<<<<< HEAD
-	UINT32 *main_cpu = (UINT32 *) memregion("maincpu")->base();
-	UINT16 *sub_cpu  = (UINT16 *) memregion("sub")->base();
-=======
 	uint32_t *main_cpu = (uint32_t *) memregion("maincpu")->base();
 	uint16_t *sub_cpu  = (uint16_t *) memregion("sub")->base();
->>>>>>> upstream/master
 
 	main_cpu[0xa5c/4] = 0x4e713e3c;       // PIC protection?
 	main_cpu[0xa74/4] = 0x4e713e3c;
@@ -3103,13 +2834,8 @@ DRIVER_INIT_MEMBER(seta2_state,funcube2)
 
 DRIVER_INIT_MEMBER(seta2_state,funcube3)
 {
-<<<<<<< HEAD
-	UINT32 *main_cpu = (UINT32 *) memregion("maincpu")->base();
-	UINT16 *sub_cpu  = (UINT16 *) memregion("sub")->base();
-=======
 	uint32_t *main_cpu = (uint32_t *) memregion("maincpu")->base();
 	uint16_t *sub_cpu  = (uint16_t *) memregion("sub")->base();
->>>>>>> upstream/master
 
 	main_cpu[0x008bc/4] = 0x4a804e71;
 	main_cpu[0x19f0c/4] = 0x4e714e71;
@@ -3242,11 +2968,7 @@ ROM_START( gundamex )
 	ROM_LOAD( "ka001006.u21",  0x1000000, 0x200000, CRC(6aac2f2f) SHA1(fac5478ca2941a93c57f670a058ff626e537bcde) )
 	ROM_LOAD( "ka001007.u22",  0x1200000, 0x200000, CRC(588f9d63) SHA1(ed5148d09d02e3bc12c50c39c5c86e6356b2dd7a) )
 	ROM_LOAD( "ka001008.u23",  0x1400000, 0x200000, CRC(db55a60a) SHA1(03d118c7284ca86219891c473e2a89489710ea27) )
-<<<<<<< HEAD
-	ROM_FILL(                  0x1800000, 0x600000, 0 ) // 6bpp instead of 8bpp
-=======
 	ROM_FILL(                  0x1800000, 0x600000, 0x00 ) // 6bpp instead of 8bpp
->>>>>>> upstream/master
 
 	ROM_REGION( 0x300000, "x1snd", 0 )  // Samples
 	// Leave 1MB empty (addressable by the chip)
@@ -3285,11 +3007,7 @@ ROM_START( mj4simai )
 	ROM_LOAD( "cha-06.u17",  0x0c00000, 0x400000, CRC(5cb0b3a9) SHA1(92fb82d45b4c46326d5796981f812e20a8ddb4f2) )
 	ROM_LOAD( "cha-01.u21",  0x1000000, 0x400000, CRC(35f47b37) SHA1(4a8eb088890272f2a069e2c3f00fadf6421f7b0e) )
 	ROM_LOAD( "cha-02.u22",  0x1400000, 0x400000, CRC(f6346860) SHA1(4eebd3fa315b97964fa39b88224f9de7622ba881) )
-<<<<<<< HEAD
-	ROM_FILL(                0x1800000, 0x800000, 0 )   // 6bpp instead of 8bpp
-=======
 	ROM_FILL(                0x1800000, 0x800000, 0x00 )   // 6bpp instead of 8bpp
->>>>>>> upstream/master
 
 	ROM_REGION( 0x500000, "x1snd", 0 )  // Samples
 	// Leave 1MB empty (addressable by the chip)
@@ -3565,19 +3283,13 @@ ROM_START( penbros )
 	ROM_LOAD( "u38.bin", 0x000000, 0x400000, CRC(4247b39e) SHA1(f273931293beced312e02c870bf35e9cf0c91a8b) )
 	ROM_LOAD( "u39.bin", 0x400000, 0x400000, CRC(f9f07faf) SHA1(66fc4a9ad422fb384d2c775e43619137226898fc) )
 	ROM_LOAD( "u40.bin", 0x800000, 0x400000, CRC(dc9e0a96) SHA1(c2c8ccf9039ee0e179b08fdd2d37f29899349cda) )
-<<<<<<< HEAD
-	ROM_FILL(            0xc00000, 0x400000, 0 )    // 6bpp instead of 8bpp
-=======
 	ROM_FILL(            0xc00000, 0x400000, 0x00 )    // 6bpp instead of 8bpp
->>>>>>> upstream/master
 
 	ROM_REGION( 0x300000, "x1snd", 0 )  // Samples
 	// Leave 1MB empty (addressable by the chip)
 	ROM_LOAD( "u18.bin", 0x100000, 0x200000, CRC(de4e65e2) SHA1(82d4e590c714b3e9bf0ffaf1500deb24fd315595) )
 ROM_END
 
-<<<<<<< HEAD
-=======
 // bootleg PCB with standard 68000 instead of TMP68301 and 4 FPGAs (3 A40MX04 and 1 A54SX16A)
 
 ROM_START( penbrosk )
@@ -3595,7 +3307,6 @@ ROM_START( penbrosk )
 	ROM_LOAD( "29F1610.bin", 0x100000, 0x200000, CRC(de4e65e2) SHA1(82d4e590c714b3e9bf0ffaf1500deb24fd315595) )
 ROM_END
 
->>>>>>> upstream/master
 /***************************************************************************
 
 Reel'N Quake!
@@ -3801,8 +3512,6 @@ ROM_END
 
 /***************************************************************************
 
-<<<<<<< HEAD
-=======
 Star Audition
 (c)1997 Namco
 
@@ -3861,7 +3570,6 @@ void staraudi_state::driver_start()
 
 /***************************************************************************
 
->>>>>>> upstream/master
 Sammy USA Outdoor Shooting Series PCB
 
 PCB B0-003A (or B0-003B):
@@ -4172,34 +3880,6 @@ ROM_START( trophyh ) /* V1.0 is currently the only known version */
 ROM_END
 
 
-<<<<<<< HEAD
-GAME( 1994, gundamex, 0,        gundamex, gundamex, driver_device, 0,        ROT0, "Banpresto",             "Mobile Suit Gundam EX Revue",                  0 )
-GAME( 1995, grdians,  0,        grdians,  grdians,  driver_device, 0,        ROT0, "Winkysoft (Banpresto license)", "Guardians / Denjin Makai II",          MACHINE_NO_COCKTAIL | MACHINE_IMPERFECT_GRAPHICS )
-GAME( 1996, mj4simai, 0,        mj4simai, mj4simai, driver_device, 0,        ROT0, "Maboroshi Ware",        "Wakakusamonogatari Mahjong Yonshimai (Japan)", MACHINE_NO_COCKTAIL )
-GAME( 1996, myangel,  0,        myangel,  myangel,  driver_device, 0,        ROT0, "MOSS / Namco",          "Kosodate Quiz My Angel (Japan)",               MACHINE_NO_COCKTAIL | MACHINE_IMPERFECT_GRAPHICS )
-GAME( 1997, myangel2, 0,        myangel2, myangel2, driver_device, 0,        ROT0, "MOSS / Namco",          "Kosodate Quiz My Angel 2 (Japan)",             MACHINE_NO_COCKTAIL | MACHINE_IMPERFECT_GRAPHICS )
-GAME( 1997, reelquak, 0,        reelquak, reelquak, driver_device, 0,        ROT0, "<unknown>",             "Reel'N Quake! (Version 1.05)",                 MACHINE_NO_COCKTAIL | MACHINE_IMPERFECT_GRAPHICS )
-GAME( 199?, endrichs, 0,        reelquak, endrichs, driver_device, 0,        ROT0, "E.N.Tiger",             "Endless Riches (Ver 1.20)",                    MACHINE_NO_COCKTAIL | MACHINE_IMPERFECT_GRAPHICS )
-GAME( 1999, pzlbowl,  0,        pzlbowl,  pzlbowl,  driver_device, 0,        ROT0, "MOSS / Nihon System",   "Puzzle De Bowling (Japan)",                    MACHINE_NO_COCKTAIL )
-GAME( 2000, penbros,  0,        penbros,  penbros,  driver_device, 0,        ROT0, "Subsino",               "Penguin Brothers (Japan)",                     MACHINE_NO_COCKTAIL )
-GAME( 2000, namcostr, 0,        namcostr, funcube,  driver_device, 0,        ROT0, "Namco",                 "Namco Stars",                                  MACHINE_NO_COCKTAIL | MACHINE_NOT_WORKING )
-GAME( 2000, deerhunt, 0,        samshoot, deerhunt, driver_device, 0,        ROT0, "Sammy USA Corporation", "Deer Hunting USA V4.3",                        MACHINE_NO_COCKTAIL | MACHINE_IMPERFECT_GRAPHICS )
-GAME( 2000, deerhunta,deerhunt, samshoot, deerhunt, driver_device, 0,        ROT0, "Sammy USA Corporation", "Deer Hunting USA V4.2",                        MACHINE_NO_COCKTAIL | MACHINE_IMPERFECT_GRAPHICS )
-GAME( 2000, deerhuntb,deerhunt, samshoot, deerhunt, driver_device, 0,        ROT0, "Sammy USA Corporation", "Deer Hunting USA V4.0",                        MACHINE_NO_COCKTAIL | MACHINE_IMPERFECT_GRAPHICS )
-GAME( 2000, deerhuntc,deerhunt, samshoot, deerhunt, driver_device, 0,        ROT0, "Sammy USA Corporation", "Deer Hunting USA V3",                          MACHINE_NO_COCKTAIL | MACHINE_IMPERFECT_GRAPHICS )
-GAME( 2000, deerhuntd,deerhunt, samshoot, deerhunt, driver_device, 0,        ROT0, "Sammy USA Corporation", "Deer Hunting USA V2",                          MACHINE_NO_COCKTAIL | MACHINE_IMPERFECT_GRAPHICS )
-GAME( 2000, deerhunte,deerhunt, samshoot, deerhunt, driver_device, 0,        ROT0, "Sammy USA Corporation", "Deer Hunting USA V1",                          MACHINE_NO_COCKTAIL | MACHINE_IMPERFECT_GRAPHICS )
-GAME( 2001, turkhunt, 0,        samshoot, turkhunt, driver_device, 0,        ROT0, "Sammy USA Corporation", "Turkey Hunting USA V1.0",                      MACHINE_NO_COCKTAIL | MACHINE_IMPERFECT_GRAPHICS )
-GAME( 2001, wschamp,  0,        samshoot, wschamp,  driver_device, 0,        ROT0, "Sammy USA Corporation", "Wing Shooting Championship V2.00",             MACHINE_NO_COCKTAIL | MACHINE_IMPERFECT_GRAPHICS )
-GAME( 2001, wschampa, wschamp,  samshoot, wschamp,  driver_device, 0,        ROT0, "Sammy USA Corporation", "Wing Shooting Championship V1.01",             MACHINE_NO_COCKTAIL | MACHINE_IMPERFECT_GRAPHICS )
-GAME( 2001, wschampb, wschamp,  samshoot, wschamp,  driver_device, 0,        ROT0, "Sammy USA Corporation", "Wing Shooting Championship V1.00",             MACHINE_NO_COCKTAIL | MACHINE_IMPERFECT_GRAPHICS )
-GAME( 2002, trophyh,  0,        samshoot, trophyh,  driver_device, 0,        ROT0, "Sammy USA Corporation", "Trophy Hunting - Bear & Moose V1.0",           MACHINE_NO_COCKTAIL | MACHINE_IMPERFECT_GRAPHICS )
-GAME( 2000, funcube,  0,        funcube,  funcube,  seta2_state,   funcube,  ROT0, "Namco",                 "Funcube (v1.5)",                               MACHINE_NO_COCKTAIL )
-GAME( 2001, funcube2, 0,        funcube2, funcube,  seta2_state,   funcube2, ROT0, "Namco",                 "Funcube 2 (v1.1)",                             MACHINE_NO_COCKTAIL )
-GAME( 2001, funcube3, 0,        funcube3, funcube,  seta2_state,   funcube3, ROT0, "Namco",                 "Funcube 3 (v1.1)",                             MACHINE_NO_COCKTAIL )
-GAME( 2001, funcube4, 0,        funcube2, funcube,  seta2_state,   funcube2, ROT0, "Namco",                 "Funcube 4 (v1.0)",                             MACHINE_NO_COCKTAIL )
-GAME( 2002, funcube5, 0,        funcube2, funcube,  seta2_state,   funcube2, ROT0, "Namco",                 "Funcube 5 (v1.0)",                             MACHINE_NO_COCKTAIL )
-=======
 GAME( 1994, gundamex,  0,        gundamex, gundamex, seta2_state, 0,        ROT0, "Banpresto",             "Mobile Suit Gundam EX Revue",                  0 )
 GAME( 1995, grdians,   0,        grdians,  grdians,  seta2_state, 0,        ROT0, "Winkysoft (Banpresto license)", "Guardians / Denjin Makai II",          MACHINE_NO_COCKTAIL | MACHINE_IMPERFECT_GRAPHICS )
 GAME( 1996, mj4simai,  0,        mj4simai, mj4simai, seta2_state, 0,        ROT0, "Maboroshi Ware",        "Wakakusamonogatari Mahjong Yonshimai (Japan)", MACHINE_NO_COCKTAIL )
@@ -4228,4 +3908,3 @@ GAME( 2001, funcube2,  0,        funcube2, funcube,  seta2_state, funcube2, ROT0
 GAME( 2001, funcube3,  0,        funcube3, funcube,  seta2_state, funcube3, ROT0, "Namco",                 "Funcube 3 (v1.1)",                             MACHINE_NO_COCKTAIL )
 GAME( 2001, funcube4,  0,        funcube2, funcube,  seta2_state, funcube2, ROT0, "Namco",                 "Funcube 4 (v1.0)",                             MACHINE_NO_COCKTAIL )
 GAME( 2002, funcube5,  0,        funcube2, funcube,  seta2_state, funcube2, ROT0, "Namco",                 "Funcube 5 (v1.0)",                             MACHINE_NO_COCKTAIL )
->>>>>>> upstream/master

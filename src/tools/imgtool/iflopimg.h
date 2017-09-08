@@ -29,16 +29,6 @@ enum
 
 int imgtool_floppy_make_class(int index, imgtool_class *imgclass);
 
-<<<<<<< HEAD
-floppy_image_legacy *imgtool_floppy(imgtool_image *img);
-imgtoolerr_t imgtool_floppy_error(floperr_t err);
-
-imgtoolerr_t imgtool_floppy_read_sector_to_stream(imgtool_image *img, int head, int track, int sector, int offset, size_t length, imgtool_stream *f);
-imgtoolerr_t imgtool_floppy_write_sector_from_stream(imgtool_image *img, int head, int track, int sector, int offset, size_t length, imgtool_stream *f);
-
-
-void *imgtool_floppy_extrabytes(imgtool_image *img);
-=======
 floppy_image_legacy *imgtool_floppy(imgtool::image &img);
 imgtoolerr_t imgtool_floppy_error(floperr_t err);
 
@@ -47,6 +37,5 @@ imgtoolerr_t imgtool_floppy_write_sector_from_stream(imgtool::image &img, int he
 
 
 void *imgtool_floppy_extrabytes(imgtool::image &img);
->>>>>>> upstream/master
 
 #endif /* IFLOPIMG_H */

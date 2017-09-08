@@ -83,15 +83,9 @@ static const instr_desc instructions[16] =
 	{ "A",      store },        { "S",      swap }
 };
 
-<<<<<<< HEAD
-CPU_DISASSEMBLE( apexc )
-{
-	UINT32 instruction;         /* 32-bit machine instruction */
-=======
 CPU_DISASSEMBLE(apexc)
 {
 	uint32_t instruction;         /* 32-bit machine instruction */
->>>>>>> upstream/master
 	int x, y, function, c6, vector; /* instruction fields */
 	int n;                      /* 'friendly', instruction-dependant interpretation of C6 */
 	const instr_desc *the_desc; /* pointer to the relevant entry in the instructions array */
@@ -120,11 +114,7 @@ CPU_DISASSEMBLE(apexc)
 	case two_address:
 	case branch:
 	case swap:
-<<<<<<< HEAD
-		buffer += sprintf(buffer, "   %-10s", mnemonic);    /* 10 chars*/
-=======
 		util::stream_format(stream, "   %-10s", mnemonic);    /* 10 chars*/
->>>>>>> upstream/master
 		break;
 
 	case shiftl:
@@ -133,54 +123,32 @@ CPU_DISASSEMBLE(apexc)
 			n = c6;
 		else
 			n = 64-c6;
-<<<<<<< HEAD
-		buffer += sprintf(buffer, "   %-2s(%2d)    ", mnemonic, n); /* 10 chars */
-=======
 		util::stream_format(stream, "   %-2s(%2d)    ", mnemonic, n); /* 10 chars */
->>>>>>> upstream/master
 		break;
 
 	case multiply:
 		n = 33-c6;
 		if (n == 32)
 			/* case "32" : do not show bit specifier */
-<<<<<<< HEAD
-			buffer += sprintf(buffer, "   %-10s", mnemonic);    /* 10 chars */
-		else
-			buffer += sprintf(buffer, "   %-2s(%2d)    ", mnemonic, n); /* 10 chars */
-=======
 			util::stream_format(stream, "   %-10s", mnemonic);    /* 10 chars */
 		else
 			util::stream_format(stream, "   %-2s(%2d)    ", mnemonic, n); /* 10 chars */
->>>>>>> upstream/master
 		break;
 
 	case store:
 		if (c6 == 0)
 		{   /* case "1-32" : do not show bit specifier */
-<<<<<<< HEAD
-			buffer += sprintf(buffer, "   %-10s", mnemonic);    /* 10 chars*/
-=======
 			util::stream_format(stream, "   %-10s", mnemonic);    /* 10 chars*/
->>>>>>> upstream/master
 		}
 		else if (c6 & 0x20)
 		{   /* case "1-n" */
 			n = c6-32;
-<<<<<<< HEAD
-			buffer += sprintf(buffer, "   %-2s (1-%02d) ", mnemonic, n);    /* 10 chars */
-=======
 			util::stream_format(stream, "   %-2s (1-%02d) ", mnemonic, n);    /* 10 chars */
->>>>>>> upstream/master
 		}
 		else
 		{   /* case "n-32" */
 			n = c6+1;
-<<<<<<< HEAD
-			buffer += sprintf(buffer, "   %-2s(%02d-32) ", mnemonic, n);    /* 8 chars */
-=======
 			util::stream_format(stream, "   %-2s(%02d-32) ", mnemonic, n);    /* 8 chars */
->>>>>>> upstream/master
 		}
 	}
 
@@ -188,50 +156,28 @@ CPU_DISASSEMBLE(apexc)
 	switch (the_desc->format)
 	{
 	case branch:
-<<<<<<< HEAD
-		buffer--;   /* eat last char */
-		buffer += sprintf(buffer, "<%03X(%02d/%02d) >=", x<<2, (x >> 5) & 0x1f, x & 0x1f);  /* 10+1 chars */
-=======
 		stream.seekp(-1, std::ios_base::cur);   /* eat last char */
 		util::stream_format(stream, "<%03X(%02d/%02d) >=", x<<2, (x >> 5) & 0x1f, x & 0x1f);  /* 10+1 chars */
->>>>>>> upstream/master
 		break;
 
 	case multiply:
 	case swap:
-<<<<<<< HEAD
-		buffer += sprintf(buffer, "   (%02d)      ", (x >> 5) & 0x1f);  /* 10 chars */
-=======
 		util::stream_format(stream, "   (%02d)      ", (x >> 5) & 0x1f);  /* 10 chars */
->>>>>>> upstream/master
 		break;
 
 	case one_address:
 	case shiftl:
 	case shiftr:
-<<<<<<< HEAD
-		buffer += sprintf(buffer, "             "); /* 10 chars */
-=======
 		util::stream_format(stream, "             "); /* 10 chars */
->>>>>>> upstream/master
 		break;
 
 	case two_address:
 	case store:
-<<<<<<< HEAD
-		buffer += sprintf(buffer, "%03X(%02d/%02d)   ", x<<2, (x >> 5) & 0x1f, x & 0x1f);   /* 10 chars */
-=======
 		util::stream_format(stream, "%03X(%02d/%02d)   ", x<<2, (x >> 5) & 0x1f, x & 0x1f);   /* 10 chars */
->>>>>>> upstream/master
 		break;
 	}
 
 	/* print Y address */
-<<<<<<< HEAD
-	buffer += sprintf(buffer, "%03X(%02d/%02d)", y<<2, (y >> 5) & 0x1f, y & 0x1f);  /* 7 chars */
-
-=======
 	util::stream_format(stream, "%03X(%02d/%02d)", y<<2, (y >> 5) & 0x1f, y & 0x1f);  /* 7 chars */
->>>>>>> upstream/master
 	return 4;
 }

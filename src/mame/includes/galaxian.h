@@ -6,28 +6,18 @@
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-=======
 #include "machine/gen_latch.h"
->>>>>>> upstream/master
 #include "machine/i8255.h"
 #include "sound/ay8910.h"
 #include "sound/dac.h"
 #include "sound/digitalk.h"
-<<<<<<< HEAD
-=======
 #include "screen.h"
->>>>>>> upstream/master
 
 /* we scale horizontally by 3 to render stars correctly */
 #define GALAXIAN_XSCALE         3
 
 /* master clocks */
-<<<<<<< HEAD
-#define GALAXIAN_MASTER_CLOCK   (18432000)
-=======
 #define GALAXIAN_MASTER_CLOCK   (XTAL_18_432MHz)
->>>>>>> upstream/master
 #define GALAXIAN_PIXEL_CLOCK    (GALAXIAN_XSCALE*GALAXIAN_MASTER_CLOCK/3)
 
 /* H counts from 128->511, HBLANK starts at 130 and ends at 250 */
@@ -54,21 +44,6 @@ public:
 			m_audiocpu(*this, "audiocpu"),
 			m_audio2(*this, "audio2"),
 			m_dac(*this, "dac"),
-<<<<<<< HEAD
-			m_ay8910_0(*this, "8910.0"),
-			m_ay8910_1(*this, "8910.1"),
-			m_ay8910_2(*this, "8910.2"),
-			m_ay8910_cclimber(*this, "cclimber_audio:aysnd"),
-			m_digitalker(*this, "digitalker"),
-			m_ppi8255_0(*this, "ppi8255_0"),
-			m_ppi8255_1(*this, "ppi8255_1"),
-			m_ppi8255_2(*this, "ppi8255_2"),
-			m_spriteram(*this, "spriteram"),
-			m_videoram(*this, "videoram"),
-			m_gfxdecode(*this, "gfxdecode"),
-			m_screen(*this, "screen"),
-			m_palette(*this, "palette"),
-=======
 			m_ay8910(*this, "8910.%u", 0),
 			m_ay8910_cclimber(*this, "cclimber_audio:aysnd"),
 			m_digitalker(*this, "digitalker"),
@@ -81,29 +56,11 @@ public:
 			m_tenspot_game_dsw(*this, {"IN2_GAME0", "IN2_GAME1", "IN2_GAME2", "IN2_GAME3", "IN2_GAME4", "IN2_GAME5", "IN2_GAME6", "IN2_GAME7", "IN2_GAME8", "IN2_GAME9"}),
 			m_spriteram(*this, "spriteram"),
 			m_videoram(*this, "videoram"),
->>>>>>> upstream/master
 			m_decrypted_opcodes(*this, "decrypted_opcodes") { }
 
 	required_device<cpu_device> m_maincpu;
 	optional_device<cpu_device> m_audiocpu;
 	optional_device<cpu_device> m_audio2;
-<<<<<<< HEAD
-	optional_device<dac_device> m_dac;
-	optional_device<ay8910_device> m_ay8910_0;
-	optional_device<ay8910_device> m_ay8910_1;
-	optional_device<ay8910_device> m_ay8910_2;
-	optional_device<ay8910_device> m_ay8910_cclimber;
-	optional_device<digitalker_device> m_digitalker;
-	optional_device<i8255_device>  m_ppi8255_0;
-	optional_device<i8255_device>  m_ppi8255_1;
-	optional_device<i8255_device>  m_ppi8255_2;
-	required_shared_ptr<UINT8> m_spriteram;
-	required_shared_ptr<UINT8> m_videoram;
-	required_device<gfxdecode_device> m_gfxdecode;
-	required_device<screen_device> m_screen;
-	required_device<palette_device> m_palette;
-	optional_shared_ptr<UINT8> m_decrypted_opcodes;
-=======
 	optional_device<dac_byte_interface> m_dac;
 	optional_device_array<ay8910_device, 3> m_ay8910;
 	optional_device<ay8910_device> m_ay8910_cclimber;
@@ -120,34 +77,12 @@ public:
 	required_shared_ptr<uint8_t> m_spriteram;
 	required_shared_ptr<uint8_t> m_videoram;
 	optional_shared_ptr<uint8_t> m_decrypted_opcodes;
->>>>>>> upstream/master
 
 	int m_bullets_base;
 	int m_sprites_base;
 	int m_numspritegens;
 	int m_counter_74ls161[2];
 	int m_direction[2];
-<<<<<<< HEAD
-	UINT8 m_gmgalax_selected_game;
-	UINT8 m_zigzag_ay8910_latch;
-	UINT8 m_kingball_speech_dip;
-	UINT8 m_kingball_sound;
-	UINT8 m_mshuttle_ay8910_cs;
-	UINT16 m_protection_state;
-	UINT8 m_protection_result;
-	UINT8 m_konami_sound_control;
-	UINT8 m_sfx_sample_control;
-	UINT8 m_moonwar_port_select;
-	UINT8 m_irq_enabled;
-	int m_irq_line;
-	int m_tenspot_current_game;
-	UINT8 m_frogger_adjust;
-	UINT8 m_sfx_tilemap;
-
-	/* video extension callbacks */
-	typedef void (galaxian_state::*galaxian_extend_tile_info_func)(UINT16 *code, UINT8 *color, UINT8 attrib, UINT8 x);
-	typedef void (galaxian_state::*galaxian_extend_sprite_info_func)(const UINT8 *base, UINT8 *sx, UINT8 *sy, UINT8 *flipx, UINT8 *flipy, UINT16 *code, UINT8 *color);
-=======
 	uint8_t m_gmgalax_selected_game;
 	uint8_t m_zigzag_ay8910_latch;
 	uint8_t m_kingball_speech_dip;
@@ -167,7 +102,6 @@ public:
 	/* video extension callbacks */
 	typedef void (galaxian_state::*galaxian_extend_tile_info_func)(uint16_t *code, uint8_t *color, uint8_t attrib, uint8_t x);
 	typedef void (galaxian_state::*galaxian_extend_sprite_info_func)(const uint8_t *base, uint8_t *sx, uint8_t *sy, uint8_t *flipx, uint8_t *flipy, uint16_t *code, uint8_t *color);
->>>>>>> upstream/master
 	typedef void (galaxian_state::*galaxian_draw_bullet_func)(bitmap_rgb32 &bitmap, const rectangle &cliprect, int offs, int x, int y);
 	typedef void (galaxian_state::*galaxian_draw_background_func)(bitmap_rgb32 &bitmap, const rectangle &cliprect);
 
@@ -177,22 +111,6 @@ public:
 	galaxian_draw_background_func m_draw_background_ptr;
 
 	tilemap_t *m_bg_tilemap;
-<<<<<<< HEAD
-	UINT8 m_flipscreen_x;
-	UINT8 m_flipscreen_y;
-	UINT8 m_background_enable;
-	UINT8 m_background_red;
-	UINT8 m_background_green;
-	UINT8 m_background_blue;
-	UINT32 m_star_rng_origin;
-	UINT32 m_star_rng_origin_frame;
-	rgb_t m_star_color[64];
-	UINT8 *m_stars;
-	UINT8 m_stars_enabled;
-	UINT8 m_stars_blink_state;
-	rgb_t m_bullet_color[8];
-	UINT8 m_gfxbank[5];
-=======
 	uint8_t m_flipscreen_x;
 	uint8_t m_flipscreen_y;
 	uint8_t m_background_enable;
@@ -207,7 +125,6 @@ public:
 	uint8_t m_stars_blink_state;
 	rgb_t m_bullet_color[8];
 	uint8_t m_gfxbank[5];
->>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(galaxian_videoram_w);
 	DECLARE_WRITE8_MEMBER(galaxian_objram_w);
 	DECLARE_WRITE8_MEMBER(galaxian_flip_screen_x_w);
@@ -272,11 +189,8 @@ public:
 	DECLARE_WRITE8_MEMBER(tenspot_unk_6000_w);
 	DECLARE_WRITE8_MEMBER(tenspot_unk_8000_w);
 	DECLARE_WRITE8_MEMBER(tenspot_unk_e000_w);
-<<<<<<< HEAD
-=======
 	DECLARE_READ8_MEMBER(froggeram_ppi8255_r);
 	DECLARE_WRITE8_MEMBER(froggeram_ppi8255_w);
->>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(artic_gfxbank_w);
 	DECLARE_READ8_MEMBER(tenspot_dsw_read);
 	DECLARE_INPUT_CHANGED_MEMBER(gmgalax_game_changed);
@@ -329,11 +243,7 @@ public:
 	DECLARE_DRIVER_INIT(thepitm);
 	DECLARE_DRIVER_INIT(theend);
 	DECLARE_DRIVER_INIT(scramble);
-<<<<<<< HEAD
-	DECLARE_DRIVER_INIT(explorer);
-=======
 	DECLARE_DRIVER_INIT(mandinga);
->>>>>>> upstream/master
 	DECLARE_DRIVER_INIT(sfx);
 	DECLARE_DRIVER_INIT(atlantis);
 	DECLARE_DRIVER_INIT(scobra);
@@ -352,14 +262,6 @@ public:
 	DECLARE_DRIVER_INIT(moonwar);
 	DECLARE_DRIVER_INIT(ghostmun);
 	DECLARE_DRIVER_INIT(froggrs);
-<<<<<<< HEAD
-	TILE_GET_INFO_MEMBER(bg_get_tile_info);
-	virtual void video_start();
-	DECLARE_PALETTE_INIT(galaxian);
-	DECLARE_PALETTE_INIT(moonwar);
-	void tenspot_set_game_bank(int bank, int from_game);
-	UINT32 screen_update_galaxian(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
-=======
 	DECLARE_DRIVER_INIT(warofbugg);
 	DECLARE_DRIVER_INIT(jungsub);
 	DECLARE_DRIVER_INIT(victoryc);
@@ -370,26 +272,17 @@ public:
 	DECLARE_PALETTE_INIT(moonwar);
 	void tenspot_set_game_bank(int bank, int from_game);
 	uint32_t screen_update_galaxian(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	INTERRUPT_GEN_MEMBER(interrupt_gen);
 	INTERRUPT_GEN_MEMBER(fakechange_interrupt_gen);
 	TIMER_DEVICE_CALLBACK_MEMBER(checkmaj_irq0_gen);
 	TIMER_DEVICE_CALLBACK_MEMBER(galaxian_stars_blink_timer);
 	TIMER_DEVICE_CALLBACK_MEMBER(timefgtr_scanline);
 	void state_save_register();
-<<<<<<< HEAD
-	void sprites_draw(bitmap_rgb32 &bitmap, const rectangle &cliprect, const UINT8 *spritebase);
-	void bullets_draw(bitmap_rgb32 &bitmap, const rectangle &cliprect, const UINT8 *base);
-	void stars_init();
-	void stars_update_origin();
-	void stars_draw_row(bitmap_rgb32 &bitmap, int maxx, int y, UINT32 star_offs, UINT8 starmask);
-=======
 	void sprites_draw(bitmap_rgb32 &bitmap, const rectangle &cliprect, const uint8_t *spritebase);
 	void bullets_draw(bitmap_rgb32 &bitmap, const rectangle &cliprect, const uint8_t *base);
 	void stars_init();
 	void stars_update_origin();
 	void stars_draw_row(bitmap_rgb32 &bitmap, int maxx, int y, uint32_t star_offs, uint8_t starmask);
->>>>>>> upstream/master
 	void galaxian_draw_background(bitmap_rgb32 &bitmap, const rectangle &cliprect);
 	void background_draw_colorsplit(bitmap_rgb32 &bitmap, const rectangle &cliprect, rgb_t color, int split, int split_flipped);
 	void scramble_draw_stars(bitmap_rgb32 &bitmap, const rectangle &cliprect, int maxx);
@@ -399,38 +292,11 @@ public:
 	void turtles_draw_background(bitmap_rgb32 &bitmap, const rectangle &cliprect);
 	void frogger_draw_background(bitmap_rgb32 &bitmap, const rectangle &cliprect);
 	void quaak_draw_background(bitmap_rgb32 &bitmap, const rectangle &cliprect);
-<<<<<<< HEAD
-	int flip_and_clip(rectangle &draw, int xstart, int xend, const rectangle &cliprect);
-	void amidar_draw_background(bitmap_rgb32 &bitmap, const rectangle &cliprect);
-=======
->>>>>>> upstream/master
 	inline void galaxian_draw_pixel(bitmap_rgb32 &bitmap, const rectangle &cliprect, int y, int x, rgb_t color);
 	void galaxian_draw_bullet(bitmap_rgb32 &bitmap, const rectangle &cliprect, int offs, int x, int y);
 	void mshuttle_draw_bullet(bitmap_rgb32 &bitmap, const rectangle &cliprect, int offs, int x, int y);
 	void scramble_draw_bullet(bitmap_rgb32 &bitmap, const rectangle &cliprect, int offs, int x, int y);
 	void theend_draw_bullet(bitmap_rgb32 &bitmap, const rectangle &cliprect, int offs, int x, int y);
-<<<<<<< HEAD
-	void upper_extend_tile_info(UINT16 *code, UINT8 *color, UINT8 attrib, UINT8 x);
-	void upper_extend_sprite_info(const UINT8 *base, UINT8 *sx, UINT8 *sy, UINT8 *flipx, UINT8 *flipy, UINT16 *code, UINT8 *color);
-	void frogger_extend_tile_info(UINT16 *code, UINT8 *color, UINT8 attrib, UINT8 x);
-	void frogger_extend_sprite_info(const UINT8 *base, UINT8 *sx, UINT8 *sy, UINT8 *flipx, UINT8 *flipy, UINT16 *code, UINT8 *color);
-	void gmgalax_extend_tile_info(UINT16 *code, UINT8 *color, UINT8 attrib, UINT8 x);
-	void gmgalax_extend_sprite_info(const UINT8 *base, UINT8 *sx, UINT8 *sy, UINT8 *flipx, UINT8 *flipy, UINT16 *code, UINT8 *color);
-	void pisces_extend_tile_info(UINT16 *code, UINT8 *color, UINT8 attrib, UINT8 x);
-	void pisces_extend_sprite_info(const UINT8 *base, UINT8 *sx, UINT8 *sy, UINT8 *flipx, UINT8 *flipy, UINT16 *code, UINT8 *color);
-	void batman2_extend_tile_info(UINT16 *code, UINT8 *color, UINT8 attrib, UINT8 x);
-	void mooncrst_extend_tile_info(UINT16 *code, UINT8 *color, UINT8 attrib, UINT8 x);
-	void mooncrst_extend_sprite_info(const UINT8 *base, UINT8 *sx, UINT8 *sy, UINT8 *flipx, UINT8 *flipy, UINT16 *code, UINT8 *color);
-	void moonqsr_extend_tile_info(UINT16 *code, UINT8 *color, UINT8 attrib, UINT8 x);
-	void moonqsr_extend_sprite_info(const UINT8 *base, UINT8 *sx, UINT8 *sy, UINT8 *flipx, UINT8 *flipy, UINT16 *code, UINT8 *color);
-	void mshuttle_extend_tile_info(UINT16 *code, UINT8 *color, UINT8 attrib, UINT8 x);
-	void mshuttle_extend_sprite_info(const UINT8 *base, UINT8 *sx, UINT8 *sy, UINT8 *flipx, UINT8 *flipy, UINT16 *code, UINT8 *color);
-	void calipso_extend_sprite_info(const UINT8 *base, UINT8 *sx, UINT8 *sy, UINT8 *flipx, UINT8 *flipy, UINT16 *code, UINT8 *color);
-	void jumpbug_extend_tile_info(UINT16 *code, UINT8 *color, UINT8 attrib, UINT8 x);
-	void jumpbug_extend_sprite_info(const UINT8 *base, UINT8 *sx, UINT8 *sy, UINT8 *flipx, UINT8 *flipy, UINT16 *code, UINT8 *color);
-	void monsterz_set_latch();
-	void decode_mooncrst(int length, UINT8 *dest);
-=======
 	void upper_extend_tile_info(uint16_t *code, uint8_t *color, uint8_t attrib, uint8_t x);
 	void upper_extend_sprite_info(const uint8_t *base, uint8_t *sx, uint8_t *sy, uint8_t *flipx, uint8_t *flipy, uint16_t *code, uint8_t *color);
 	void frogger_extend_tile_info(uint16_t *code, uint8_t *color, uint8_t attrib, uint8_t x);
@@ -451,7 +317,6 @@ public:
 	void jumpbug_extend_sprite_info(const uint8_t *base, uint8_t *sx, uint8_t *sy, uint8_t *flipx, uint8_t *flipy, uint16_t *code, uint8_t *color);
 	void monsterz_set_latch();
 	void decode_mooncrst(int length, uint8_t *dest);
->>>>>>> upstream/master
 	void decode_checkman();
 	void decode_dingoe();
 	void decode_frogger_sound();
@@ -460,13 +325,8 @@ public:
 	void decode_anteater_gfx();
 	void decode_losttomb_gfx();
 	void decode_superbon();
-<<<<<<< HEAD
-	void unmap_galaxian_sound(offs_t base);
-	void mshuttle_decode(const UINT8 convtable[8][16]);
-=======
 	void decode_victoryc();
 	void mshuttle_decode(const uint8_t convtable[8][16]);
->>>>>>> upstream/master
 	void common_init(galaxian_draw_bullet_func draw_bullet,galaxian_draw_background_func draw_background,
 		galaxian_extend_tile_info_func extend_tile_info,galaxian_extend_sprite_info_func extend_sprite_info);
 };

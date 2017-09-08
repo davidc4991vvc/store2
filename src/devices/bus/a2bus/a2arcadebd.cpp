@@ -15,10 +15,7 @@
 
 #include "emu.h"
 #include "a2arcadebd.h"
-<<<<<<< HEAD
-=======
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 /***************************************************************************
@@ -33,11 +30,6 @@
 //  GLOBAL VARIABLES
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type A2BUS_ARCADEBOARD = &device_creator<a2bus_arcboard_device>;
-
-MACHINE_CONFIG_FRAGMENT( arcadeboard )
-=======
 DEFINE_DEVICE_TYPE(A2BUS_ARCADEBOARD, a2bus_arcboard_device, "a2arcbd", "Third Millenium Engineering Arcade Board")
 
 //-------------------------------------------------
@@ -45,7 +37,6 @@ DEFINE_DEVICE_TYPE(A2BUS_ARCADEBOARD, a2bus_arcboard_device, "a2arcbd", "Third M
 //-------------------------------------------------
 
 MACHINE_CONFIG_MEMBER( a2bus_arcboard_device::device_add_mconfig )
->>>>>>> upstream/master
 	MCFG_DEVICE_ADD( TMS_TAG, TMS9918A, XTAL_10_738635MHz / 2 )
 	MCFG_TMS9928A_VRAM_SIZE(0x4000) // 16k of VRAM
 	MCFG_TMS9928A_OUT_INT_LINE_CB(WRITELINE(a2bus_arcboard_device, tms_irq_w))
@@ -57,35 +48,10 @@ MACHINE_CONFIG_MEMBER( a2bus_arcboard_device::device_add_mconfig )
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-//-------------------------------------------------
-//  machine_config_additions - device-specific
-//  machine configurations
-//-------------------------------------------------
-
-machine_config_constructor a2bus_arcboard_device::device_mconfig_additions() const
-{
-	return MACHINE_CONFIG_NAME( arcadeboard );
-}
-
-=======
->>>>>>> upstream/master
 //**************************************************************************
 //  LIVE DEVICE
 //**************************************************************************
 
-<<<<<<< HEAD
-a2bus_arcboard_device::a2bus_arcboard_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-	device_t(mconfig, A2BUS_ARCADEBOARD, "Third Millenium Engineering Arcade Board", tag, owner, clock, "a2arcbd", __FILE__),
-	device_a2bus_card_interface(mconfig, *this),
-	m_tms(*this, TMS_TAG),
-	m_ay(*this, AY_TAG)
-{
-}
-
-a2bus_arcboard_device::a2bus_arcboard_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source) :
-	device_t(mconfig, type, name, tag, owner, clock, shortname, source),
-=======
 a2bus_arcboard_device::a2bus_arcboard_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	a2bus_arcboard_device(mconfig, A2BUS_ARCADEBOARD, tag, owner, clock)
 {
@@ -93,7 +59,6 @@ a2bus_arcboard_device::a2bus_arcboard_device(const machine_config &mconfig, cons
 
 a2bus_arcboard_device::a2bus_arcboard_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock) :
 	device_t(mconfig, type, tag, owner, clock),
->>>>>>> upstream/master
 	device_a2bus_card_interface(mconfig, *this),
 	m_tms(*this, TMS_TAG),
 	m_ay(*this, AY_TAG)
@@ -124,11 +89,7 @@ void a2bus_arcboard_device::device_reset()
     6 - AY data
 */
 
-<<<<<<< HEAD
-UINT8 a2bus_arcboard_device::read_c0nx(address_space &space, UINT8 offset)
-=======
 uint8_t a2bus_arcboard_device::read_c0nx(address_space &space, uint8_t offset)
->>>>>>> upstream/master
 {
 	switch (offset)
 	{
@@ -145,26 +106,16 @@ uint8_t a2bus_arcboard_device::read_c0nx(address_space &space, uint8_t offset)
 	return 0xff;
 }
 
-<<<<<<< HEAD
-void a2bus_arcboard_device::write_c0nx(address_space &space, UINT8 offset, UINT8 data)
-{
-	switch (offset)
-	{
-=======
 void a2bus_arcboard_device::write_c0nx(address_space &space, uint8_t offset, uint8_t data)
 {
 	switch (offset)
 	{
 		case 0:
->>>>>>> upstream/master
 		case 2:
 			m_tms->vram_write(space, 0, data);
 			break;
 
-<<<<<<< HEAD
-=======
 		case 1:
->>>>>>> upstream/master
 		case 3:
 			m_tms->register_write(space, 0, data);
 			break;

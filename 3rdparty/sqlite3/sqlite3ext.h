@@ -15,19 +15,10 @@
 ** as extensions by SQLite should #include this file instead of 
 ** sqlite3.h.
 */
-<<<<<<< HEAD
-#ifndef _SQLITE3EXT_H_
-#define _SQLITE3EXT_H_
-#include "sqlite3.h"
-
-typedef struct sqlite3_api_routines sqlite3_api_routines;
-
-=======
 #ifndef SQLITE3EXT_H
 #define SQLITE3EXT_H
 #include "sqlite3.h"
 
->>>>>>> upstream/master
 /*
 ** The following structure holds pointers to all of the SQLite API
 ** routines.
@@ -274,11 +265,6 @@ struct sqlite3_api_routines {
   void (*result_text64)(sqlite3_context*,const char*,sqlite3_uint64,
                          void(*)(void*), unsigned char);
   int (*strglob)(const char*,const char*);
-<<<<<<< HEAD
-};
-
-/*
-=======
   /* Version 3.8.11 and later */
   sqlite3_value *(*value_dup)(const sqlite3_value*);
   void (*value_free)(sqlite3_value*);
@@ -309,7 +295,6 @@ typedef int (*sqlite3_loadext_entry)(
 );
 
 /*
->>>>>>> upstream/master
 ** The following macros redefine the API routines so that they are
 ** redirected through the global sqlite3_api structure.
 **
@@ -320,11 +305,7 @@ typedef int (*sqlite3_loadext_entry)(
 ** the API.  So the redefinition macros are only valid if the
 ** SQLITE_CORE macros is undefined.
 */
-<<<<<<< HEAD
-#ifndef SQLITE_CORE
-=======
 #if !defined(SQLITE_CORE) && !defined(SQLITE_OMIT_LOAD_EXTENSION)
->>>>>>> upstream/master
 #define sqlite3_aggregate_context      sqlite3_api->aggregate_context
 #ifndef SQLITE_OMIT_DEPRECATED
 #define sqlite3_aggregate_count        sqlite3_api->aggregate_count
@@ -451,10 +432,7 @@ typedef int (*sqlite3_loadext_entry)(
 #define sqlite3_value_text16le         sqlite3_api->value_text16le
 #define sqlite3_value_type             sqlite3_api->value_type
 #define sqlite3_vmprintf               sqlite3_api->vmprintf
-<<<<<<< HEAD
-=======
 #define sqlite3_vsnprintf              sqlite3_api->vsnprintf
->>>>>>> upstream/master
 #define sqlite3_overload_function      sqlite3_api->overload_function
 #define sqlite3_prepare_v2             sqlite3_api->prepare_v2
 #define sqlite3_prepare16_v2           sqlite3_api->prepare16_v2
@@ -545,11 +523,6 @@ typedef int (*sqlite3_loadext_entry)(
 #define sqlite3_result_blob64          sqlite3_api->result_blob64
 #define sqlite3_result_text64          sqlite3_api->result_text64
 #define sqlite3_strglob                sqlite3_api->strglob
-<<<<<<< HEAD
-#endif /* SQLITE_CORE */
-
-#ifndef SQLITE_CORE
-=======
 /* Version 3.8.11 and later */
 #define sqlite3_value_dup              sqlite3_api->value_dup
 #define sqlite3_value_free             sqlite3_api->value_free
@@ -570,7 +543,6 @@ typedef int (*sqlite3_loadext_entry)(
 #endif /* !defined(SQLITE_CORE) && !defined(SQLITE_OMIT_LOAD_EXTENSION) */
 
 #if !defined(SQLITE_CORE) && !defined(SQLITE_OMIT_LOAD_EXTENSION)
->>>>>>> upstream/master
   /* This case when the file really is being compiled as a loadable 
   ** extension */
 # define SQLITE_EXTENSION_INIT1     const sqlite3_api_routines *sqlite3_api=0;
@@ -585,8 +557,4 @@ typedef int (*sqlite3_loadext_entry)(
 # define SQLITE_EXTENSION_INIT3     /*no-op*/
 #endif
 
-<<<<<<< HEAD
-#endif /* _SQLITE3EXT_H_ */
-=======
 #endif /* SQLITE3EXT_H */
->>>>>>> upstream/master

@@ -1,11 +1,6 @@
-<<<<<<< HEAD
-// license:???
-// copyright-holders:Michael Strutts,Nicola Salmoria,Tormod Tjaberg,Mirko Buffoni,Lee Taylor,Valerio Verrando,Marco Cassili,Zsolt Vasvari,Aaron Giles,Jonathan Gevaryahu,hap,Robbbert
-=======
 // license:BSD-3-Clause
 // copyright-holders:Nicola Salmoria, Tormod Tjaberg, Mirko Buffoni,Lee Taylor, Valerio Verrando, Zsolt Vasvari,Aaron Giles,Jonathan Gevaryahu,hap,Robbbert
 // thanks-to:Michael Strutts, Marco Cassili
->>>>>>> upstream/master
 /***************************************************************************
 
   video.c
@@ -57,31 +52,19 @@ PALETTE_INIT_MEMBER( _8080bw_state, sflush )
 }
 
 
-<<<<<<< HEAD
-inline void _8080bw_state::set_pixel( bitmap_rgb32 &bitmap, UINT8 y, UINT8 x, int color )
-=======
 inline void _8080bw_state::set_pixel( bitmap_rgb32 &bitmap, uint8_t y, uint8_t x, int color )
->>>>>>> upstream/master
 {
 	if (y >= MW8080BW_VCOUNTER_START_NO_VBLANK)
 	{
 		if (m_flip_screen)
-<<<<<<< HEAD
-			bitmap.pix32(MW8080BW_VBSTART - 1 - (y - MW8080BW_VCOUNTER_START_NO_VBLANK), MW8080BW_HPIXCOUNT - 1 - x) = color;
-=======
 			bitmap.pix32(MW8080BW_VBSTART - 1 - (y - MW8080BW_VCOUNTER_START_NO_VBLANK), MW8080BW_HPIXCOUNT - 1 - x) = m_palette->pen_color(color);
->>>>>>> upstream/master
 		else
 			bitmap.pix32(y - MW8080BW_VCOUNTER_START_NO_VBLANK, x) = m_palette->pen_color(color);
 	}
 }
 
 
-<<<<<<< HEAD
-inline void _8080bw_state::set_8_pixels( bitmap_rgb32 &bitmap, UINT8 y, UINT8 x, UINT8 data, int fore_color, int back_color )
-=======
 inline void _8080bw_state::set_8_pixels( bitmap_rgb32 &bitmap, uint8_t y, uint8_t x, uint8_t data, int fore_color, int back_color )
->>>>>>> upstream/master
 {
 	int i;
 
@@ -98,19 +81,11 @@ inline void _8080bw_state::set_8_pixels( bitmap_rgb32 &bitmap, uint8_t y, uint8_
 /* this is needed as this driver doesn't emulate the shift register like mw8080bw does */
 void _8080bw_state::clear_extra_columns( bitmap_rgb32 &bitmap, int color )
 {
-<<<<<<< HEAD
-	UINT8 x;
-
-	for (x = 0; x < 4; x++)
-	{
-		UINT8 y;
-=======
 	uint8_t x;
 
 	for (x = 0; x < 4; x++)
 	{
 		uint8_t y;
->>>>>>> upstream/master
 
 		for (y = MW8080BW_VCOUNTER_START_NO_VBLANK; y != 0; y++)
 		{
@@ -123,22 +98,6 @@ void _8080bw_state::clear_extra_columns( bitmap_rgb32 &bitmap, int color )
 }
 
 
-<<<<<<< HEAD
-UINT32 _8080bw_state::screen_update_invadpt2(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
-{
-	UINT8 *prom = memregion("proms")->base();
-	UINT8 *color_map_base = m_color_map ? &prom[0x0400] : &prom[0x0000];
-
-	for (offs_t offs = 0; offs < m_main_ram.bytes(); offs++)
-	{
-		UINT8 y = offs >> 5;
-		UINT8 x = offs << 3;
-
-		offs_t color_address = (offs >> 8 << 5) | (offs & 0x1f);
-
-		UINT8 data = m_main_ram[offs];
-		UINT8 fore_color = m_screen_red ? 1 : color_map_base[color_address] & 0x07;
-=======
 uint32_t _8080bw_state::screen_update_invadpt2(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
 {
 	uint8_t *prom = memregion("proms")->base();
@@ -153,7 +112,6 @@ uint32_t _8080bw_state::screen_update_invadpt2(screen_device &screen, bitmap_rgb
 
 		uint8_t data = m_main_ram[offs];
 		uint8_t fore_color = m_screen_red ? 1 : color_map_base[color_address] & 0x07;
->>>>>>> upstream/master
 
 		set_8_pixels(bitmap, y, x, data, fore_color, 0);
 	}
@@ -164,22 +122,6 @@ uint32_t _8080bw_state::screen_update_invadpt2(screen_device &screen, bitmap_rgb
 }
 
 
-<<<<<<< HEAD
-UINT32 _8080bw_state::screen_update_ballbomb(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
-{
-	UINT8 *prom = memregion("proms")->base();
-	UINT8 *color_map_base = m_color_map ? &prom[0x0400] : &prom[0x0000];
-
-	for (offs_t offs = 0; offs < m_main_ram.bytes(); offs++)
-	{
-		UINT8 y = offs >> 5;
-		UINT8 x = offs << 3;
-
-		offs_t color_address = (offs >> 8 << 5) | (offs & 0x1f);
-
-		UINT8 data = m_main_ram[offs];
-		UINT8 fore_color = m_screen_red ? 1 : color_map_base[color_address] & 0x07;
-=======
 uint32_t _8080bw_state::screen_update_ballbomb(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
 {
 	uint8_t *prom = memregion("proms")->base();
@@ -194,7 +136,6 @@ uint32_t _8080bw_state::screen_update_ballbomb(screen_device &screen, bitmap_rgb
 
 		uint8_t data = m_main_ram[offs];
 		uint8_t fore_color = m_screen_red ? 1 : color_map_base[color_address] & 0x07;
->>>>>>> upstream/master
 
 		/* blue background */
 		set_8_pixels(bitmap, y, x, data, fore_color, 2);
@@ -206,21 +147,6 @@ uint32_t _8080bw_state::screen_update_ballbomb(screen_device &screen, bitmap_rgb
 }
 
 
-<<<<<<< HEAD
-UINT32 _8080bw_state::screen_update_schaser(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
-{
-	UINT8 *background_map_base = memregion("proms")->base();
-
-	for (offs_t offs = 0; offs < m_main_ram.bytes(); offs++)
-	{
-		UINT8 back_color = 0;
-
-		UINT8 y = offs >> 5;
-		UINT8 x = offs << 3;
-
-		UINT8 data = m_main_ram[offs];
-		UINT8 fore_color = m_colorram[offs & 0x1f9f] & 0x07;
-=======
 uint32_t _8080bw_state::screen_update_schaser(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
 {
 	uint8_t *background_map_base = memregion("proms")->base();
@@ -234,17 +160,12 @@ uint32_t _8080bw_state::screen_update_schaser(screen_device &screen, bitmap_rgb3
 
 		uint8_t data = m_main_ram[offs];
 		uint8_t fore_color = m_scattered_colorram[(offs & 0x1f) | ((offs & 0x1f80) >> 2)] & 0x07;
->>>>>>> upstream/master
 
 		if (!m_schaser_background_disable)
 		{
 			offs_t back_address = (offs >> 8 << 5) | (offs & 0x1f);
 
-<<<<<<< HEAD
-			UINT8 back_data = background_map_base[back_address];
-=======
 			uint8_t back_data = background_map_base[back_address];
->>>>>>> upstream/master
 
 			/* the equations derived from the schematics don't appear to produce
 			   the right colors, but this one does, at least for this PROM */
@@ -260,17 +181,6 @@ uint32_t _8080bw_state::screen_update_schaser(screen_device &screen, bitmap_rgb3
 }
 
 
-<<<<<<< HEAD
-UINT32 _8080bw_state::screen_update_schasercv(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
-{
-	for (offs_t offs = 0; offs < m_main_ram.bytes(); offs++)
-	{
-		UINT8 y = offs >> 5;
-		UINT8 x = offs << 3;
-
-		UINT8 data = m_main_ram[offs];
-		UINT8 fore_color = m_colorram[offs & 0x1f9f] & 0x07;
-=======
 uint32_t _8080bw_state::screen_update_schasercv(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
 {
 	for (offs_t offs = 0; offs < m_main_ram.bytes(); offs++)
@@ -280,7 +190,6 @@ uint32_t _8080bw_state::screen_update_schasercv(screen_device &screen, bitmap_rg
 
 		uint8_t data = m_main_ram[offs];
 		uint8_t fore_color = m_scattered_colorram[(offs & 0x1f) | ((offs & 0x1f80) >> 2)] & 0x07;
->>>>>>> upstream/master
 
 		/* blue background */
 		set_8_pixels(bitmap, y, x, data, fore_color, 2);
@@ -292,18 +201,6 @@ uint32_t _8080bw_state::screen_update_schasercv(screen_device &screen, bitmap_rg
 }
 
 
-<<<<<<< HEAD
-UINT32 _8080bw_state::screen_update_rollingc(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
-{
-	for (offs_t offs = 0; offs < m_main_ram.bytes(); offs++)
-	{
-		UINT8 y = offs >> 5;
-		UINT8 x = offs << 3;
-
-		UINT8 data = m_main_ram[offs];
-		UINT8 fore_color = m_colorram[offs & 0x1f1f] & 0x0f;
-		UINT8 back_color = m_colorram2[offs & 0x1f1f] & 0x0f;
-=======
 uint32_t _8080bw_state::screen_update_rollingc(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
 {
 	for (offs_t offs = 0; offs < m_main_ram.bytes(); offs++)
@@ -314,7 +211,6 @@ uint32_t _8080bw_state::screen_update_rollingc(screen_device &screen, bitmap_rgb
 		uint8_t data = m_main_ram[offs];
 		uint8_t fore_color = m_scattered_colorram[(offs & 0x1f) | ((offs & 0x1f00) >> 3)] & 0x0f;
 		uint8_t back_color = m_scattered_colorram2[(offs & 0x1f) | ((offs & 0x1f00) >> 3)] & 0x0f;
->>>>>>> upstream/master
 
 		set_8_pixels(bitmap, y, x, data, fore_color, back_color);
 	}
@@ -325,19 +221,6 @@ uint32_t _8080bw_state::screen_update_rollingc(screen_device &screen, bitmap_rgb
 }
 
 
-<<<<<<< HEAD
-UINT32 _8080bw_state::screen_update_polaris(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
-{
-	UINT8 *color_map_base = memregion("proms")->base();
-	UINT8 *cloud_gfx = memregion("user1")->base();
-
-	for (offs_t offs = 0; offs < m_main_ram.bytes(); offs++)
-	{
-		UINT8 y = offs >> 5;
-		UINT8 x = offs << 3;
-
-		UINT8 data = m_main_ram[offs];
-=======
 uint32_t _8080bw_state::screen_update_polaris(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
 {
 	uint8_t *color_map_base = memregion("proms")->base();
@@ -349,7 +232,6 @@ uint32_t _8080bw_state::screen_update_polaris(screen_device &screen, bitmap_rgb3
 		uint8_t x = offs << 3;
 
 		uint8_t data = m_main_ram[offs];
->>>>>>> upstream/master
 
 		offs_t color_address = (offs >> 8 << 5) | (offs & 0x1f);
 
@@ -359,17 +241,10 @@ uint32_t _8080bw_state::screen_update_polaris(screen_device &screen, bitmap_rgb3
 		   by screenshots.  Bit 3 is connected to cloud enable, while
 		   bits 1 and 2 are marked 'not use' (sic) */
 
-<<<<<<< HEAD
-		UINT8 back_color = (color_map_base[color_address] & 0x01) ? 6 : 2;
-		UINT8 fore_color = ~m_colorram[offs & 0x1f9f] & 0x07;
-
-		UINT8 cloud_y = y - m_polaris_cloud_pos;
-=======
 		uint8_t back_color = (color_map_base[color_address] & 0x01) ? 6 : 2;
 		uint8_t fore_color = ~m_scattered_colorram[(offs & 0x1f) | ((offs & 0x1f80) >> 2)] & 0x07;
 
 		uint8_t cloud_y = y - m_polaris_cloud_pos;
->>>>>>> upstream/master
 
 		if ((color_map_base[color_address] & 0x08) || (cloud_y >= 64))
 		{
@@ -382,11 +257,7 @@ uint32_t _8080bw_state::screen_update_polaris(screen_device &screen, bitmap_rgb3
 
 			for (i = 0; i < 8; i++)
 			{
-<<<<<<< HEAD
-				UINT8 color;
-=======
 				uint8_t color;
->>>>>>> upstream/master
 
 				if (data & 0x01)
 				{
@@ -414,17 +285,6 @@ uint32_t _8080bw_state::screen_update_polaris(screen_device &screen, bitmap_rgb3
 }
 
 
-<<<<<<< HEAD
-UINT32 _8080bw_state::screen_update_lupin3(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
-{
-	for (offs_t offs = 0; offs < m_main_ram.bytes(); offs++)
-	{
-		UINT8 y = offs >> 5;
-		UINT8 x = offs << 3;
-
-		UINT8 data = m_main_ram[offs];
-		UINT8 fore_color = ~m_colorram[offs & 0x1f9f] & 0x07;
-=======
 uint32_t _8080bw_state::screen_update_lupin3(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
 {
 	for (offs_t offs = 0; offs < m_main_ram.bytes(); offs++)
@@ -434,7 +294,6 @@ uint32_t _8080bw_state::screen_update_lupin3(screen_device &screen, bitmap_rgb32
 
 		uint8_t data = m_main_ram[offs];
 		uint8_t fore_color = ~m_scattered_colorram[(offs & 0x1f) | ((offs & 0x1f80) >> 2)] & 0x07;
->>>>>>> upstream/master
 
 		set_8_pixels(bitmap, y, x, data, fore_color, 0);
 	}
@@ -445,19 +304,6 @@ uint32_t _8080bw_state::screen_update_lupin3(screen_device &screen, bitmap_rgb32
 }
 
 
-<<<<<<< HEAD
-UINT32 _8080bw_state::screen_update_cosmo(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
-{
-	for (offs_t offs = 0; offs < m_main_ram.bytes(); offs++)
-	{
-		UINT8 y = offs >> 5;
-		UINT8 x = offs << 3;
-
-		offs_t color_address = (offs >> 8 << 5) | (offs & 0x1f);
-
-		UINT8 data = m_main_ram[offs];
-		UINT8 fore_color = m_colorram[color_address] & 0x07;
-=======
 uint32_t _8080bw_state::screen_update_cosmo(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
 {
 	for (offs_t offs = 0; offs < m_main_ram.bytes(); offs++)
@@ -469,7 +315,6 @@ uint32_t _8080bw_state::screen_update_cosmo(screen_device &screen, bitmap_rgb32 
 
 		uint8_t data = m_main_ram[offs];
 		uint8_t fore_color = m_colorram[color_address] & 0x07;
->>>>>>> upstream/master
 
 		set_8_pixels(bitmap, y, x, data, fore_color, 0);
 	}
@@ -480,22 +325,6 @@ uint32_t _8080bw_state::screen_update_cosmo(screen_device &screen, bitmap_rgb32 
 }
 
 
-<<<<<<< HEAD
-UINT32 _8080bw_state::screen_update_indianbt(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
-{
-	UINT8 *prom = memregion("proms")->base();
-	UINT8 *color_map_base = m_color_map ? &prom[0x0400] : &prom[0x0000];
-
-	for (offs_t offs = 0; offs < m_main_ram.bytes(); offs++)
-	{
-		UINT8 y = offs >> 5;
-		UINT8 x = offs << 3;
-
-		offs_t color_address = (offs >> 8 << 5) | (offs & 0x1f);
-
-		UINT8 data = m_main_ram[offs];
-		UINT8 fore_color = color_map_base[color_address] & 0x07;
-=======
 uint32_t _8080bw_state::screen_update_indianbt(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
 {
 	uint8_t *prom = memregion("proms")->base();
@@ -510,7 +339,6 @@ uint32_t _8080bw_state::screen_update_indianbt(screen_device &screen, bitmap_rgb
 
 		uint8_t data = m_main_ram[offs];
 		uint8_t fore_color = color_map_base[color_address] & 0x07;
->>>>>>> upstream/master
 
 		set_8_pixels(bitmap, y, x, data, fore_color, 0);
 	}
@@ -521,17 +349,6 @@ uint32_t _8080bw_state::screen_update_indianbt(screen_device &screen, bitmap_rgb
 }
 
 
-<<<<<<< HEAD
-UINT32 _8080bw_state::screen_update_sflush(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
-{
-	for (offs_t offs = 0; offs < m_main_ram.bytes(); offs++)
-	{
-		UINT8 y = offs >> 5;
-		UINT8 x = offs << 3;
-
-		UINT8 data = m_main_ram[offs];
-		UINT8 fore_color = m_colorram[offs & 0x1f9f] & 0x07;
-=======
 uint32_t _8080bw_state::screen_update_sflush(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
 {
 	for (offs_t offs = 0; offs < m_main_ram.bytes(); offs++)
@@ -541,7 +358,6 @@ uint32_t _8080bw_state::screen_update_sflush(screen_device &screen, bitmap_rgb32
 
 		uint8_t data = m_main_ram[offs];
 		uint8_t fore_color = m_scattered_colorram[(offs & 0x1f) | ((offs & 0x1f80) >> 2)] & 0x07;
->>>>>>> upstream/master
 
 		set_8_pixels(bitmap, y, x, data, fore_color, 0);
 	}
@@ -552,16 +368,6 @@ uint32_t _8080bw_state::screen_update_sflush(screen_device &screen, bitmap_rgb32
 }
 
 
-<<<<<<< HEAD
-UINT32 _8080bw_state::screen_update_shuttlei(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
-{
-	for (offs_t offs = 0; offs < m_main_ram.bytes(); offs++)
-	{
-		UINT8 y = offs >> 5;
-		UINT8 x = offs << 3;
-
-		UINT8 data = m_main_ram[offs];
-=======
 uint32_t _8080bw_state::screen_update_shuttlei(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
 {
 	for (offs_t offs = 0; offs < m_main_ram.bytes(); offs++)
@@ -570,7 +376,6 @@ uint32_t _8080bw_state::screen_update_shuttlei(screen_device &screen, bitmap_rgb
 		uint8_t x = offs << 3;
 
 		uint8_t data = m_main_ram[offs];
->>>>>>> upstream/master
 
 		for (int i = 0; i < 8; i++)
 		{
@@ -586,17 +391,6 @@ uint32_t _8080bw_state::screen_update_shuttlei(screen_device &screen, bitmap_rgb
 }
 
 
-<<<<<<< HEAD
-UINT32 _8080bw_state::screen_update_spacecom(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
-{
-	for (offs_t offs = 0; offs < 0x1c00; offs++)
-	{
-		UINT8 y = offs >> 5;
-		UINT8 x = offs << 3;
-		UINT8 flipx = m_flip_screen ? 7 : 0;
-
-		UINT8 data = m_main_ram[offs+0x400];
-=======
 uint32_t _8080bw_state::screen_update_spacecom(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
 {
 	for (offs_t offs = 0; offs < 0x1c00; offs++)
@@ -606,7 +400,6 @@ uint32_t _8080bw_state::screen_update_spacecom(screen_device &screen, bitmap_rgb
 		uint8_t flipx = m_flip_screen ? 7 : 0;
 
 		uint8_t data = m_main_ram[offs+0x400];
->>>>>>> upstream/master
 
 		for (int i = 0; i < 8; i++)
 		{

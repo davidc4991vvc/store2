@@ -1,9 +1,5 @@
 /*
-<<<<<<< HEAD
- * $Id: pa_converters.c 1748 2011-09-01 22:08:32Z philburk $
-=======
  * $Id$
->>>>>>> upstream/master
  * Portable Audio I/O Library sample conversion mechanism
  *
  * Based on the Open Source API proposed by Ross Bencina

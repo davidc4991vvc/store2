@@ -96,27 +96,16 @@ public:
 	}
 
 	// devices
-<<<<<<< HEAD
-	required_device<netlist_mame_device_t> m_maincpu;
-=======
 	required_device<netlist_mame_device> m_maincpu;
->>>>>>> upstream/master
 	required_device<fixedfreq_device> m_video;
 
 protected:
 
 	// driver_device overrides
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void machine_reset();
-
-	virtual void video_start();
-=======
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
 
 	virtual void video_start() override;
->>>>>>> upstream/master
 
 private:
 
@@ -150,11 +139,7 @@ void taitottl_state::video_start()
 {
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( taitottl, taitottl_state )
-=======
 static MACHINE_CONFIG_START( taitottl )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_DEVICE_ADD("maincpu", NETLIST_CPU, NETLIST_CLOCK)
@@ -266,14 +251,7 @@ ROM_START( zzblock )
 ROM_END
 
 
-<<<<<<< HEAD
-GAME( 1977, gunman,    0,       taitottl, 0, driver_device,  0, ROT0, "Taito", "Gunman [TTL]", MACHINE_IS_SKELETON )
-GAME( 1977, missilex,  0,       taitottl, 0, driver_device,  0, ROT0, "Taito", "Missile-X [TTL]", MACHINE_IS_SKELETON )
-GAME( 1977, ttblock,   0,       taitottl, 0, driver_device,  0, ROT0, "Taito", "T.T. Block [TTL]", MACHINE_IS_SKELETON )
-GAME( 1979, zzblock,   0,       taitottl, 0, driver_device,  0, ROT0, "Taito", "Zun Zun Block [TTL]", MACHINE_IS_SKELETON )
-=======
 GAME( 1977, gunman,    0,       taitottl, 0, taitottl_state,  0, ROT0, "Taito", "Gunman [TTL]",        MACHINE_IS_SKELETON )
 GAME( 1977, missilex,  0,       taitottl, 0, taitottl_state,  0, ROT0, "Taito", "Missile-X [TTL]",     MACHINE_IS_SKELETON )
 GAME( 1977, ttblock,   0,       taitottl, 0, taitottl_state,  0, ROT0, "Taito", "T.T Block [TTL]",    MACHINE_IS_SKELETON )
 GAME( 1979, zzblock,   0,       taitottl, 0, taitottl_state,  0, ROT0, "Taito", "Zun Zun Block [TTL]", MACHINE_IS_SKELETON )
->>>>>>> upstream/master

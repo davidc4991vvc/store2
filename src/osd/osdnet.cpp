@@ -3,20 +3,6 @@
 #include "emu.h"
 #include "osdnet.h"
 
-<<<<<<< HEAD
-static class simple_list<osd_netdev::entry_t> netdev_list;
-
-void add_netdev(const char *name, const char *description, create_netdev func)
-{
-	osd_netdev::entry_t *entry = global_alloc_clear(osd_netdev::entry_t);
-	entry->id = netdev_list.count();
-	strncpy(entry->name, name, 255);
-	entry->name[255] = '\0';
-	strncpy(entry->description, (description != NULL) ? description : "(no name)", 255);
-	entry->description[255] = '\0';
-	entry->func = func;
-	netdev_list.append(*entry);
-=======
 static class std::vector<std::unique_ptr<osd_netdev::entry_t>> netdev_list;
 
 void add_netdev(const char *name, const char *description, create_netdev func)
@@ -29,44 +15,24 @@ void add_netdev(const char *name, const char *description, create_netdev func)
 	entry->description[255] = '\0';
 	entry->func = func;
 	netdev_list.push_back(std::move(entry));
->>>>>>> upstream/master
 }
 
 void clear_netdev()
 {
-<<<<<<< HEAD
-	netdev_list.reset();
-}
-
-const osd_netdev::entry_t *netdev_first() {
-	return netdev_list.first();
-=======
 	netdev_list.clear();
 }
 
 const std::vector<std::unique_ptr<osd_netdev::entry_t>>& get_netdev_list()
 {
 	return netdev_list;
->>>>>>> upstream/master
 }
 
 class osd_netdev *open_netdev(int id, class device_network_interface *ifdev, int rate)
 {
-<<<<<<< HEAD
-	osd_netdev::entry_t *entry = netdev_list.first();
-	while(entry) {
-		if(entry->id==id)
-			return entry->func(entry->name, ifdev, rate);
-		entry = entry->m_next;
-	}
-
-	return NULL;
-=======
 	for(auto &entry : netdev_list)
 		if(entry->id==id)
 			return entry->func(entry->name, ifdev, rate);
 	return nullptr;
->>>>>>> upstream/master
 }
 
 osd_netdev::osd_netdev(class device_network_interface *ifdev, int rate)
@@ -84,22 +50,14 @@ osd_netdev::~osd_netdev()
 //  m_timer->reset();
 }
 
-<<<<<<< HEAD
-int osd_netdev::send(UINT8 *buf, int len)
-=======
 int osd_netdev::send(uint8_t *buf, int len)
->>>>>>> upstream/master
 {
 	return 0;
 }
 
 void osd_netdev::recv(void *ptr, int param)
 {
-<<<<<<< HEAD
-	UINT8 *buf;
-=======
 	uint8_t *buf;
->>>>>>> upstream/master
 	int len;
 	//const char atalkmac[] = { 0x09, 0x00, 0x07, 0xff, 0xff, 0xff };
 	while((!m_stop) && (len = recv_dev(&buf)))
@@ -120,11 +78,7 @@ void osd_netdev::recv(void *ptr, int param)
 	}
 }
 
-<<<<<<< HEAD
-int osd_netdev::recv_dev(UINT8 **buf)
-=======
 int osd_netdev::recv_dev(uint8_t **buf)
->>>>>>> upstream/master
 {
 	return 0;
 }
@@ -153,21 +107,13 @@ const char *osd_netdev::get_mac()
 
 int netdev_count()
 {
-<<<<<<< HEAD
-	return netdev_list.count();
-=======
 	return netdev_list.size();
->>>>>>> upstream/master
 }
 
 void osd_list_network_adapters(void)
 {
 	#ifdef USE_NETWORK
-<<<<<<< HEAD
-	int num_devs = netdev_list.count();
-=======
 	int num_devs = netdev_list.size();
->>>>>>> upstream/master
 
 	if (num_devs == 0)
 	{
@@ -176,16 +122,9 @@ void osd_list_network_adapters(void)
 	}
 
 	printf("Available network adapters:\n");
-<<<<<<< HEAD
-	const osd_netdev::entry_t *entry = netdev_first();
-	while(entry) {
-		printf("    %s\n", entry->description);
-		entry = entry->m_next;
-=======
 	for (auto &entry : netdev_list)
 	{
 		printf("    %s\n", entry->description);
->>>>>>> upstream/master
 	}
 
 	#else

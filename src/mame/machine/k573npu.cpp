@@ -5,10 +5,7 @@
  *
  */
 
-<<<<<<< HEAD
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #include "k573npu.h"
 
 /*
@@ -75,13 +72,8 @@
 
 */
 
-<<<<<<< HEAD
-k573npu_device::k573npu_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-	device_t(mconfig, KONAMI_573_NETWORK_PCB_UNIT, "Konami 573 Network PCB Unit", tag, owner, clock, "k573npu", __FILE__)
-=======
 k573npu_device::k573npu_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	device_t(mconfig, KONAMI_573_NETWORK_PCB_UNIT, tag, owner, clock)
->>>>>>> upstream/master
 {
 }
 
@@ -94,17 +86,9 @@ ROM_START( k573npu )
 	ROM_LOAD( "29f400.24e",   0x000000, 0x080000, CRC(8dcf294b) SHA1(efac79e18db22c30886463ec1bc448187da7a95a) )
 ROM_END
 
-<<<<<<< HEAD
-const rom_entry *k573npu_device::device_rom_region() const
-=======
 const tiny_rom_entry *k573npu_device::device_rom_region() const
->>>>>>> upstream/master
 {
 	return ROM_NAME( k573npu );
 }
 
-<<<<<<< HEAD
-const device_type KONAMI_573_NETWORK_PCB_UNIT = &device_creator<k573npu_device>;
-=======
 DEFINE_DEVICE_TYPE(KONAMI_573_NETWORK_PCB_UNIT, k573npu_device, "k573npu", "Konami 573 Network PCB Unit")
->>>>>>> upstream/master

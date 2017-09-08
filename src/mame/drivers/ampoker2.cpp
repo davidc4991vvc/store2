@@ -235,11 +235,7 @@
   an oscilloscope, I measured a value of 60 uS = 1538 Hz. We used a NMI period of 1536 Hz due
   to a better binary composition (1024+512).
 
-<<<<<<< HEAD
-  Inputs/Ouputs are driven through 74LS251 and 74LS259 multiplexers. Each one handles 1 bit
-=======
   Inputs/Outputs are driven through 74LS251 and 74LS259 multiplexers. Each one handles 1 bit
->>>>>>> upstream/master
   from data bus, and there are many devices as addressed ports (8x 74LS251 and 8x 74LS259).
 
   Input ports are mapped to offsets 0xC410 through 0xC417. Output ports are mapped to 0xC4000
@@ -320,11 +316,7 @@
   - Reworked the color routines switching to resnet system.
   - Added a resistor network diagram.
   - Switch to pre-defined crystal value.
-<<<<<<< HEAD
-  - Changed the WATCHDOG_TIME_INIT to be based on miliseconds instead of hertz.
-=======
   - Changed the WATCHDOG_TIME_INIT to be based on milliseconds instead of hertz.
->>>>>>> upstream/master
   - Other minor cleanup/fixes.
   - Updated technical notes.
 
@@ -385,14 +377,6 @@
 #define MASTER_CLOCK    XTAL_6MHz
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/z80/z80.h"
-#include "sound/ay8910.h"
-#include "machine/nvram.h"
-#include "ampoker2.lh"
-#include "sigmapkr.lh"
-#include "includes/ampoker2.h"
-=======
 #include "includes/ampoker2.h"
 
 #include "cpu/z80/z80.h"
@@ -403,7 +387,6 @@
 
 #include "ampoker2.lh"
 #include "sigmapkr.lh"
->>>>>>> upstream/master
 
 /**********************
 * Read/Write Handlers *
@@ -500,17 +483,10 @@ WRITE8_MEMBER(ampoker2_state::ampoker2_port31_w)
     BIT 4 = TWL_YELL      ;Tower Light YELLOW
 --------------------------------------------------*/
 {
-<<<<<<< HEAD
-	output_set_lamp_value(1, ((data >> 1) & 1));    /* Lamp 1 - BET/RED */
-	output_set_lamp_value(6, ((data >> 2) & 1));    /* Lamp 6 - HOLD 4 */
-	output_set_lamp_value(4, ((data >> 3) & 1));    /* Lamp 4 - HOLD 2 */
-	output_set_lamp_value(8, ((data >> 4) & 1));    /* Lamp 8 - TWR.YELLOW */
-=======
 	output().set_lamp_value(1, ((data >> 1) & 1));    /* Lamp 1 - BET/RED */
 	output().set_lamp_value(6, ((data >> 2) & 1));    /* Lamp 6 - HOLD 4 */
 	output().set_lamp_value(4, ((data >> 3) & 1));    /* Lamp 4 - HOLD 2 */
 	output().set_lamp_value(8, ((data >> 4) & 1));    /* Lamp 8 - TWR.YELLOW */
->>>>>>> upstream/master
 }
 
 
@@ -525,11 +501,7 @@ WRITE8_MEMBER(ampoker2_state::ampoker2_port32_w)
     BIT 4 =
 --------------------------------------------------*/
 {
-<<<<<<< HEAD
-	output_set_lamp_value(5, ((data >> 3) & 1));    /* Lamp 5 - HOLD 3 */
-=======
 	output().set_lamp_value(5, ((data >> 3) & 1));    /* Lamp 5 - HOLD 3 */
->>>>>>> upstream/master
 }
 
 
@@ -558,11 +530,7 @@ WRITE8_MEMBER(ampoker2_state::ampoker2_port34_w)
     BIT 4 = LAMP_2        ;Lamp 3  (BLACK)
 --------------------------------------------------*/
 {
-<<<<<<< HEAD
-	output_set_lamp_value(2, ((data >> 4) & 1));    /* Lamp 2 - BLACK */
-=======
 	output().set_lamp_value(2, ((data >> 4) & 1));    /* Lamp 2 - BLACK */
->>>>>>> upstream/master
 }
 
 
@@ -591,17 +559,10 @@ WRITE8_MEMBER(ampoker2_state::ampoker2_port36_w)
     BIT 4 = LAMP_3        ;Lamp 3  (HOLD1)
 --------------------------------------------------*/
 {
-<<<<<<< HEAD
-	output_set_lamp_value(9, (data & 1));           /* Lamp 9 - TWR.GREEN */
-	output_set_lamp_value(7, ((data >> 2) & 1));    /* Lamp 7 - HOLD 5 */
-	output_set_lamp_value(0, ((data >> 3) & 1));    /* Lamp 0 - DEAL */
-	output_set_lamp_value(3, ((data >> 4) & 1));    /* Lamp 3 - HOLD 1 */
-=======
 	output().set_lamp_value(9, (data & 1));           /* Lamp 9 - TWR.GREEN */
 	output().set_lamp_value(7, ((data >> 2) & 1));    /* Lamp 7 - HOLD 5 */
 	output().set_lamp_value(0, ((data >> 3) & 1));    /* Lamp 0 - DEAL */
 	output().set_lamp_value(3, ((data >> 4) & 1));    /* Lamp 3 - HOLD 1 */
->>>>>>> upstream/master
 }
 
 
@@ -616,11 +577,7 @@ WRITE8_MEMBER(ampoker2_state::ampoker2_watchdog_reset_w)
 
 	if (((data >> 3) & 0x01) == 0)      /* check for refresh value (0x08) */
 	{
-<<<<<<< HEAD
-		machine().watchdog_reset();
-=======
 		m_watchdog->watchdog_reset();
->>>>>>> upstream/master
 //      popmessage("%02x", data);
 	}
 	else
@@ -733,11 +690,7 @@ static INPUT_PORTS_START( ampoker2 )
 
 	PORT_START("IN3")
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_OTHER ) PORT_NAME("Hopper Out") PORT_CODE(KEYCODE_G)
-<<<<<<< HEAD
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_OTHER ) PORT_NAME("Supervisor Key") PORT_TOGGLE PORT_CODE(KEYCODE_0)
-=======
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SERVICE2 ) PORT_NAME("Supervisor Key") PORT_TOGGLE
->>>>>>> upstream/master
 	PORT_DIPNAME( 0x08, 0x08, "Remote Credits" ) PORT_DIPLOCATION("SW1:1") /* DSW1 */
 	PORT_DIPSETTING(    0x08, "Cred x 100" ) PORT_CONDITION("IN1", 0x08, EQUALS,0x08)
 	PORT_DIPSETTING(    0x00, "Cred x  50" ) PORT_CONDITION("IN1", 0x08, EQUALS,0x08)
@@ -759,11 +712,7 @@ static INPUT_PORTS_START( ampoker2 )
 	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_OTHER ) PORT_NAME("Return Line") PORT_CODE(KEYCODE_J)
-<<<<<<< HEAD
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_OTHER ) PORT_NAME("TILT") PORT_CODE(KEYCODE_K)
-=======
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_TILT ) PORT_NAME("TILT")
->>>>>>> upstream/master
 	PORT_DIPNAME( 0x08, 0x08, DEF_STR( Unknown ) )
 	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
@@ -807,11 +756,7 @@ static INPUT_PORTS_START( ampkr95 )
 	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_POKER_HOLD1 )
-<<<<<<< HEAD
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SERVICE ) PORT_NAME("Operator Key") PORT_TOGGLE
-=======
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_GAMBLE_SERVICE ) PORT_NAME("Operator Key") PORT_TOGGLE
->>>>>>> upstream/master
 	PORT_DIPNAME( 0x08, 0x08, "Remote Mode" )
 	PORT_DIPSETTING(    0x08, "Mode 1" )
 	PORT_DIPSETTING(    0x00, "Mode 2" )
@@ -826,19 +771,11 @@ static INPUT_PORTS_START( ampkr95 )
 	PORT_DIPNAME( 0x08, 0x08, DEF_STR( Unknown ) )
 	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-<<<<<<< HEAD
-	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_BUTTON9 ) PORT_NAME("Payout") PORT_CODE(KEYCODE_Q)
-
-	PORT_START("IN3")
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_OTHER ) PORT_NAME("Hopper Out") PORT_CODE(KEYCODE_G)
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_OTHER ) PORT_NAME("Supervisor Key") PORT_TOGGLE PORT_CODE(KEYCODE_0)
-=======
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_GAMBLE_PAYOUT ) PORT_NAME("Payout")
 
 	PORT_START("IN3")
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_OTHER ) PORT_NAME("Hopper Out") PORT_CODE(KEYCODE_G)
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SERVICE2 ) PORT_NAME("Supervisor Key") PORT_TOGGLE
->>>>>>> upstream/master
 	PORT_DIPNAME( 0x08, 0x08, "Remote Credits" ) PORT_DIPLOCATION("SW1:1") /* DSW1 */
 	PORT_DIPSETTING(    0x08, "Cred x 100" ) PORT_CONDITION("IN1",0x08,EQUALS,0x08)
 	PORT_DIPSETTING(    0x00, "Cred x  50" ) PORT_CONDITION("IN1",0x08,EQUALS,0x08)
@@ -860,11 +797,7 @@ static INPUT_PORTS_START( ampkr95 )
 	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_OTHER ) PORT_NAME("Return Line") PORT_CODE(KEYCODE_J)
-<<<<<<< HEAD
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_OTHER ) PORT_NAME("TILT") PORT_CODE(KEYCODE_K)
-=======
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_TILT ) PORT_NAME("TILT")
->>>>>>> upstream/master
 	PORT_DIPNAME( 0x08, 0x08, "Rate Table SW1" ) PORT_DIPLOCATION("SW1:3") /* DSW3 (should be arranged with DSW4) */
 	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
@@ -908,11 +841,7 @@ static INPUT_PORTS_START( sigmapkr )
 	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_POKER_HOLD1 )
-<<<<<<< HEAD
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SERVICE ) PORT_NAME("Operator Key") PORT_TOGGLE
-=======
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_GAMBLE_SERVICE ) PORT_NAME("Operator Key") PORT_TOGGLE
->>>>>>> upstream/master
 	PORT_DIPNAME( 0x08, 0x08, "Remote Mode" )
 	PORT_DIPSETTING(    0x08, "Mode 1" )
 	PORT_DIPSETTING(    0x00, "Mode 2" )
@@ -927,29 +856,17 @@ static INPUT_PORTS_START( sigmapkr )
 	PORT_DIPNAME( 0x08, 0x08, DEF_STR( Unknown ) )
 	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-<<<<<<< HEAD
-	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_BUTTON9 ) PORT_NAME("Payout") PORT_CODE(KEYCODE_Q)
-
-	PORT_START("IN3")
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_OTHER ) PORT_NAME("Hopper Out") PORT_CODE(KEYCODE_G)
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_OTHER ) PORT_NAME("Supervisor Key") PORT_TOGGLE PORT_CODE(KEYCODE_0)
-=======
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_GAMBLE_PAYOUT ) PORT_NAME("Payout")
 
 	PORT_START("IN3")
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_OTHER ) PORT_NAME("Hopper Out") PORT_CODE(KEYCODE_G)
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SERVICE2 ) PORT_NAME("Supervisor Key") PORT_TOGGLE
->>>>>>> upstream/master
 	PORT_DIPNAME( 0x08, 0x08, "Remote Credits" ) PORT_DIPLOCATION("SW1:1") /* DSW1 */
 	PORT_DIPSETTING(    0x08, "Cred x 100" ) PORT_CONDITION("IN1",0x08,EQUALS,0x08)
 	PORT_DIPSETTING(    0x00, "Cred x  50" ) PORT_CONDITION("IN1",0x08,EQUALS,0x08)
 	PORT_DIPSETTING(    0x08, "Cred x 100" ) PORT_CONDITION("IN1",0x08,EQUALS,0x00) /* x100 in ampkr95 */
 	PORT_DIPSETTING(    0x00, "Remote Off" ) PORT_CONDITION("IN1",0x08,EQUALS,0x00)
-<<<<<<< HEAD
-	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_BUTTON3 ) PORT_NAME("Double") PORT_CODE(KEYCODE_S)
-=======
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_GAMBLE_D_UP ) PORT_NAME("Double")
->>>>>>> upstream/master
 
 	PORT_START("IN4")
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_UNKNOWN ) /* not used */
@@ -965,11 +882,7 @@ static INPUT_PORTS_START( sigmapkr )
 	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_OTHER ) PORT_NAME("Return Line") PORT_CODE(KEYCODE_J)
-<<<<<<< HEAD
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_OTHER ) PORT_NAME("TILT") PORT_CODE(KEYCODE_K)
-=======
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_TILT ) PORT_NAME("TILT")
->>>>>>> upstream/master
 	PORT_DIPNAME( 0x08, 0x08, "Rate Table SW1" ) PORT_DIPLOCATION("SW1:3") /* DSW3 (should be arranged with DSW4) */
 	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
@@ -1012,11 +925,7 @@ static INPUT_PORTS_START( sigma2k )
 	PORT_START("IN1")
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_UNKNOWN )
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_POKER_HOLD1 )
-<<<<<<< HEAD
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SERVICE ) PORT_NAME("Operator Key") PORT_TOGGLE
-=======
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_GAMBLE_SERVICE ) PORT_NAME("Operator Key") PORT_TOGGLE
->>>>>>> upstream/master
 	PORT_DIPNAME( 0x08, 0x08, DEF_STR( Unknown ) )
 	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
@@ -1040,11 +949,7 @@ static INPUT_PORTS_START( sigma2k )
 	PORT_START("IN3")
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_UNKNOWN )
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNKNOWN )
-<<<<<<< HEAD
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_OTHER ) PORT_NAME("Supervisor Key") PORT_TOGGLE PORT_CODE(KEYCODE_0)
-=======
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SERVICE2 ) PORT_NAME("Supervisor Key") PORT_TOGGLE
->>>>>>> upstream/master
 	PORT_DIPNAME( 0x08, 0x08, DEF_STR( Unknown ) )
 	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
@@ -1140,13 +1045,8 @@ static INPUT_PORTS_START( piccolop )
 	PORT_DIPNAME( 0x01, 0x01, DEF_STR( Unknown ) )
 	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-<<<<<<< HEAD
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_SERVICE ) PORT_NAME("Hopper Out") PORT_CODE(KEYCODE_G)
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SERVICE ) PORT_NAME("Supervisor Key") PORT_TOGGLE PORT_CODE(KEYCODE_0)
-=======
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_OTHER ) PORT_NAME("Hopper Out") PORT_CODE(KEYCODE_G)
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SERVICE2 ) PORT_NAME("Supervisor Key") PORT_TOGGLE
->>>>>>> upstream/master
 	PORT_DIPNAME( 0x08, 0x08, DEF_STR( Unknown ) )
 	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
@@ -1156,11 +1056,7 @@ static INPUT_PORTS_START( piccolop )
 	PORT_DIPNAME( 0x01, 0x01, DEF_STR( Unknown ) )
 	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-<<<<<<< HEAD
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_SERVICE ) PORT_NAME("Hopper Low") PORT_CODE(KEYCODE_H)
-=======
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_OTHER ) PORT_NAME("Hopper Low") PORT_CODE(KEYCODE_H)
->>>>>>> upstream/master
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_POKER_HOLD4 ) PORT_NAME("Hold 4 / Red")
 	PORT_DIPNAME( 0x08, 0x08, DEF_STR( Unknown ) )
 	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
@@ -1171,13 +1067,8 @@ static INPUT_PORTS_START( piccolop )
 	PORT_DIPNAME( 0x01, 0x01, DEF_STR( Unknown ) )
 	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-<<<<<<< HEAD
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_SERVICE ) PORT_NAME("Return Line") PORT_CODE(KEYCODE_J)
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SERVICE ) PORT_NAME("TILT") PORT_CODE(KEYCODE_K)
-=======
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_OTHER ) PORT_NAME("Return Line") PORT_CODE(KEYCODE_J)
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_TILT ) PORT_NAME("TILT")
->>>>>>> upstream/master
 	PORT_DIPNAME( 0x08, 0x08, DEF_STR( Unknown ) )
 	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
@@ -1201,11 +1092,7 @@ static INPUT_PORTS_START( piccolop )
 	PORT_DIPNAME( 0x08, 0x08, DEF_STR( Unknown ) )
 	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-<<<<<<< HEAD
-	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_SERVICE ) PORT_NAME("Coin Refill") PORT_CODE(KEYCODE_R)
-=======
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_OTHER ) PORT_NAME("Coin Refill") PORT_CODE(KEYCODE_R)
->>>>>>> upstream/master
 INPUT_PORTS_END
 
 
@@ -1252,23 +1139,15 @@ GFXDECODE_END
 *     Machine Driver     *
 *************************/
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( ampoker2, ampoker2_state )
-=======
 static MACHINE_CONFIG_START( ampoker2 )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, MASTER_CLOCK/2)        /* 3 MHz */
 	MCFG_CPU_PROGRAM_MAP(ampoker2_map)
 	MCFG_CPU_IO_MAP(ampoker2_io_map)
-<<<<<<< HEAD
-	MCFG_CPU_PERIODIC_INT_DRIVER(ampoker2_state, nmi_line_pulse,  1536)
-=======
 	MCFG_CPU_PERIODIC_INT_DRIVER(ampoker2_state, nmi_line_pulse, 1536)
 
 	MCFG_WATCHDOG_ADD("watchdog")
->>>>>>> upstream/master
 	MCFG_WATCHDOG_TIME_INIT(attotime::from_msec(200))   /* 200 ms, measured */
 
 	MCFG_NVRAM_ADD_0FILL("nvram")
@@ -1290,27 +1169,15 @@ static MACHINE_CONFIG_START( ampoker2 )
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
-<<<<<<< HEAD
-	MCFG_SOUND_ADD("aysnd", AY8910,MASTER_CLOCK/4)  /* 1.5 MHz, measured */
-=======
 	MCFG_SOUND_ADD("aysnd", AY8910, MASTER_CLOCK/4)  /* 1.5 MHz, measured */
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.30)
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_DERIVED( sigma2k, ampoker2 )
 
-<<<<<<< HEAD
-	/* basic machine hardware */
-
-	/* video hardware */
-	MCFG_GFXDECODE_MODIFY("gfxdecode", sigma2k)
-	MCFG_VIDEO_START_OVERRIDE(ampoker2_state,sigma2k)
-=======
 	/* video hardware */
 	MCFG_GFXDECODE_MODIFY("gfxdecode", sigma2k)
 	MCFG_VIDEO_START_OVERRIDE(ampoker2_state, sigma2k)
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
@@ -1508,24 +1375,14 @@ ROM_END
 *      Driver Init       *
 *************************/
 
-<<<<<<< HEAD
-DRIVER_INIT_MEMBER(ampoker2_state,rabbitpk)
-{
-	UINT8 *rom = memregion("maincpu")->base();
-=======
 DRIVER_INIT_MEMBER(ampoker2_state, rabbitpk)
 {
 	uint8_t *rom = memregion("maincpu")->base();
->>>>>>> upstream/master
 	int size = memregion("maincpu")->bytes();
 	int start = 0;
 	int i;
 
-<<<<<<< HEAD
-	UINT8 dec_base[32] =
-=======
 	uint8_t dec_base[32] =
->>>>>>> upstream/master
 	{
 		0x00, 0x43, 0x45, 0x06, 0xc3, 0x80, 0x86, 0xc5,
 		0x84, 0xc7, 0xc1, 0x82, 0x47, 0x04, 0x02, 0x41,
@@ -1539,11 +1396,7 @@ DRIVER_INIT_MEMBER(ampoker2_state, rabbitpk)
 	}
 }
 
-<<<<<<< HEAD
-DRIVER_INIT_MEMBER(ampoker2_state,piccolop)
-=======
 DRIVER_INIT_MEMBER(ampoker2_state, piccolop)
->>>>>>> upstream/master
 {
 /*
   The protection is based on a stuck bit at RAM offset $C416.
@@ -1576,11 +1429,7 @@ DRIVER_INIT_MEMBER(ampoker2_state, piccolop)
 
 */
 
-<<<<<<< HEAD
-	UINT8 *rom = memregion("maincpu")->base();
-=======
 	uint8_t *rom = memregion("maincpu")->base();
->>>>>>> upstream/master
 
 	// NOP'ing the mortal jump...
 	rom[0x154b] = 0x00;
@@ -1595,20 +1444,6 @@ DRIVER_INIT_MEMBER(ampoker2_state, piccolop)
 *************************/
 
 //     YEAR  NAME      PARENT    MACHINE   INPUT     STATE           INIT      ROT    COMPANY              FULLNAME                             FLAGS                   LAYOUT
-<<<<<<< HEAD
-GAMEL( 1990, ampoker2, 0,        ampoker2, ampoker2, driver_device,  0,        ROT0, "Novomatic",         "American Poker II",                  MACHINE_SUPPORTS_SAVE,     layout_ampoker2 )
-GAMEL( 1990, ampkr2b1, ampoker2, ampoker2, ampoker2, driver_device,  0,        ROT0, "bootleg",           "American Poker II (bootleg, set 1)", MACHINE_SUPPORTS_SAVE,     layout_ampoker2 )
-GAMEL( 1990, ampkr2b2, ampoker2, ampoker2, ampoker2, driver_device,  0,        ROT0, "bootleg",           "American Poker II (bootleg, set 2)", MACHINE_SUPPORTS_SAVE,     layout_ampoker2 )
-GAMEL( 1994, ampkr2b3, ampoker2, ampoker2, ampoker2, driver_device,  0,        ROT0, "bootleg",           "American Poker II (bootleg, set 3)", MACHINE_SUPPORTS_SAVE,     layout_ampoker2 )
-GAMEL( 1994, ampkr2b4, ampoker2, ampoker2, ampoker2, driver_device,  0,        ROT0, "bootleg",           "American Poker II (bootleg, set 4)", MACHINE_SUPPORTS_SAVE,     layout_ampoker2 )
-GAMEL( 1994, ampkr228, ampoker2, ampoker2, ampoker2, driver_device,  0,        ROT0, "bootleg?",          "American Poker II (iamp2 v28)",      MACHINE_SUPPORTS_SAVE,     layout_ampoker2 )
-GAMEL( 1995, ampkr95,  ampoker2, ampoker2, ampkr95,  driver_device,  0,        ROT0, "bootleg",           "American Poker 95",                  MACHINE_SUPPORTS_SAVE,     layout_ampoker2 )
-GAMEL( 1990, pkrdewin, ampoker2, ampoker2, ampoker2, driver_device,  0,        ROT0, "bootleg",           "Poker De Win",                       MACHINE_SUPPORTS_SAVE,     layout_ampoker2 )
-GAMEL( 1990, videomat, ampoker2, ampoker2, ampoker2, driver_device,  0,        ROT0, "bootleg",           "Videomat (Polish bootleg)",          MACHINE_SUPPORTS_SAVE,     layout_ampoker2 )
-GAMEL( 1990, rabbitpk, ampoker2, ampoker2, ampoker2, ampoker2_state, rabbitpk, ROT0, "bootleg",           "Rabbit Poker (Arizona Poker v1.1?)", MACHINE_SUPPORTS_SAVE,     layout_ampoker2 )
-GAMEL( 1995, sigmapkr, 0,        ampoker2, sigmapkr, driver_device,  0,        ROT0, "Sigma Inc.",        "Sigma Poker",                        MACHINE_SUPPORTS_SAVE,     layout_sigmapkr )
-GAMEL( 1998, sigma2k,  0,        sigma2k,  sigma2k,  driver_device,  0,        ROT0, "Sigma Inc.",        "Sigma Poker 2000",                   MACHINE_SUPPORTS_SAVE,     layout_sigmapkr )
-=======
 GAMEL( 1990, ampoker2, 0,        ampoker2, ampoker2, ampoker2_state, 0,        ROT0, "Novomatic",         "American Poker II",                  MACHINE_SUPPORTS_SAVE,  layout_ampoker2 )
 GAMEL( 1990, ampkr2b1, ampoker2, ampoker2, ampoker2, ampoker2_state, 0,        ROT0, "bootleg",           "American Poker II (bootleg, set 1)", MACHINE_SUPPORTS_SAVE,  layout_ampoker2 )
 GAMEL( 1990, ampkr2b2, ampoker2, ampoker2, ampoker2, ampoker2_state, 0,        ROT0, "bootleg",           "American Poker II (bootleg, set 2)", MACHINE_SUPPORTS_SAVE,  layout_ampoker2 )
@@ -1621,5 +1456,4 @@ GAMEL( 1990, videomat, ampoker2, ampoker2, ampoker2, ampoker2_state, 0,        R
 GAMEL( 1990, rabbitpk, ampoker2, ampoker2, ampoker2, ampoker2_state, rabbitpk, ROT0, "bootleg",           "Rabbit Poker (Arizona Poker v1.1?)", MACHINE_SUPPORTS_SAVE,  layout_ampoker2 )
 GAMEL( 1995, sigmapkr, 0,        ampoker2, sigmapkr, ampoker2_state, 0,        ROT0, "Sigma Inc.",        "Sigma Poker",                        MACHINE_SUPPORTS_SAVE,  layout_sigmapkr )
 GAMEL( 1998, sigma2k,  0,        sigma2k,  sigma2k,  ampoker2_state, 0,        ROT0, "Sigma Inc.",        "Sigma Poker 2000",                   MACHINE_SUPPORTS_SAVE,  layout_sigmapkr )
->>>>>>> upstream/master
 GAME(  1990, piccolop, ampoker2, ampoker2, piccolop, ampoker2_state, piccolop, ROT0, "Admiral/Novomatic", "Piccolo Poker 100",                  MACHINE_SUPPORTS_SAVE )

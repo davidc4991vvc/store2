@@ -9,10 +9,7 @@
 #include "machine/segag80.h"
 #include "audio/segasnd.h"
 #include "video/vector.h"
-<<<<<<< HEAD
-=======
 #include "screen.h"
->>>>>>> upstream/master
 
 class segag80v_state : public driver_device
 {
@@ -28,13 +25,8 @@ public:
 		m_vector(*this, "vector"),
 		m_screen(*this, "screen"){ }
 
-<<<<<<< HEAD
-	required_shared_ptr<UINT8> m_mainram;
-	required_shared_ptr<UINT8> m_vectorram;
-=======
 	required_shared_ptr<uint8_t> m_mainram;
 	required_shared_ptr<uint8_t> m_vectorram;
->>>>>>> upstream/master
 
 	required_device<cpu_device> m_maincpu;
 	optional_device<samples_device> m_samples;
@@ -44,19 +36,11 @@ public:
 	required_device<screen_device> m_screen;
 
 
-<<<<<<< HEAD
-	UINT8 m_mult_data[2];
-	UINT16 m_mult_result;
-	UINT8 m_spinner_select;
-	UINT8 m_spinner_sign;
-	UINT8 m_spinner_count;
-=======
 	uint8_t m_mult_data[2];
 	uint16_t m_mult_result;
 	uint8_t m_spinner_select;
 	uint8_t m_spinner_sign;
 	uint8_t m_spinner_count;
->>>>>>> upstream/master
 	segag80_decrypt_func m_decrypt;
 	int m_min_x;
 	int m_min_y;
@@ -85,15 +69,6 @@ public:
 	DECLARE_DRIVER_INIT(elim2);
 	DECLARE_DRIVER_INIT(tacscan);
 	DECLARE_DRIVER_INIT(spacfury);
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void video_start();
-	UINT32 screen_update_segag80v(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
-	inline int adjust_xy(int rawx, int rawy, int *outx, int *outy);
-	void sega_generate_vector_list();
-	offs_t decrypt_offset(address_space &space, offs_t offset);
-	inline UINT8 demangle(UINT8 d7d6, UINT8 d5d4, UINT8 d3d2, UINT8 d1d0);
-=======
 	virtual void machine_start() override;
 	virtual void video_start() override;
 	uint32_t screen_update_segag80v(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
@@ -101,5 +76,4 @@ public:
 	void sega_generate_vector_list();
 	offs_t decrypt_offset(address_space &space, offs_t offset);
 	inline uint8_t demangle(uint8_t d7d6, uint8_t d5d4, uint8_t d3d2, uint8_t d1d0);
->>>>>>> upstream/master
 };

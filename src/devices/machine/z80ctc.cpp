@@ -72,23 +72,14 @@ const int WAITING_FOR_TRIG  = 0x100;
 //**************************************************************************
 
 // device type definition
-<<<<<<< HEAD
-const device_type Z80CTC = &device_creator<z80ctc_device>;
-=======
 DEFINE_DEVICE_TYPE(Z80CTC, z80ctc_device, "z80ctc", "Z80 CTC")
->>>>>>> upstream/master
 
 //-------------------------------------------------
 //  z80ctc_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-z80ctc_device::z80ctc_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, Z80CTC, "Z80 CTC", tag, owner, clock, "z80ctc", __FILE__),
-=======
 z80ctc_device::z80ctc_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, Z80CTC, tag, owner, clock),
->>>>>>> upstream/master
 		device_z80daisy_interface(mconfig, *this),
 		m_intr_cb(*this),
 		m_zc0_cb(*this),
@@ -137,12 +128,6 @@ WRITE_LINE_MEMBER( z80ctc_device::trg3 ) { m_channel[3].trigger(state); }
 
 void z80ctc_device::device_start()
 {
-<<<<<<< HEAD
-	m_period16 = attotime::from_hz(m_clock) * 16;
-	m_period256 = attotime::from_hz(m_clock) * 256;
-
-=======
->>>>>>> upstream/master
 	// resolve callbacks
 	m_intr_cb.resolve_safe();
 	m_zc0_cb.resolve_safe();
@@ -195,15 +180,8 @@ int z80ctc_device::z80daisy_irq_state()
 
 	// loop over all channels
 	int state = 0;
-<<<<<<< HEAD
-	for (int ch = 0; ch < 4; ch++)
-	{
-		ctc_channel &channel = m_channel[ch];
-
-=======
 	for (auto & channel : m_channel)
 	{
->>>>>>> upstream/master
 		// if we're servicing a request, don't indicate more interrupts
 		if (channel.m_int_state & Z80_DAISY_IEO)
 		{
@@ -301,21 +279,13 @@ void z80ctc_device::interrupt_check()
 //-------------------------------------------------
 
 z80ctc_device::ctc_channel::ctc_channel()
-<<<<<<< HEAD
-	: m_device(NULL),
-=======
 	: m_device(nullptr),
->>>>>>> upstream/master
 		m_index(0),
 		m_mode(0),
 		m_tconst(0),
 		m_down(0),
 		m_extclk(0),
-<<<<<<< HEAD
-		m_timer(NULL),
-=======
 		m_timer(nullptr),
->>>>>>> upstream/master
 		m_int_state(0)
 {
 }
@@ -330,11 +300,7 @@ void z80ctc_device::ctc_channel::start(z80ctc_device *device, int index)
 	// initialize state
 	m_device = device;
 	m_index = index;
-<<<<<<< HEAD
-	m_timer = m_device->machine().scheduler().timer_alloc(FUNC(static_timer_callback), this);
-=======
 	m_timer = m_device->machine().scheduler().timer_alloc(timer_expired_delegate(FUNC(z80ctc_device::ctc_channel::timer_callback), this));
->>>>>>> upstream/master
 
 	// register for save states
 	m_device->save_item(NAME(m_mode), m_index);
@@ -376,11 +342,7 @@ attotime z80ctc_device::ctc_channel::period() const
 	}
 
 	// compute the period
-<<<<<<< HEAD
-	attotime period = ((m_mode & PRESCALER) == PRESCALER_16) ? m_device->m_period16 : m_device->m_period256;
-=======
 	attotime period = m_device->clocks_to_attotime((m_mode & PRESCALER) == PRESCALER_16 ? 16 : 256);
->>>>>>> upstream/master
 	return period * m_tconst;
 }
 
@@ -389,11 +351,7 @@ attotime z80ctc_device::ctc_channel::period() const
 //  read - read the channel's state
 //-------------------------------------------------
 
-<<<<<<< HEAD
-UINT8 z80ctc_device::ctc_channel::read()
-=======
 uint8_t z80ctc_device::ctc_channel::read()
->>>>>>> upstream/master
 {
 	// if we're in counter mode, just return the count
 	if ((m_mode & MODE) == MODE_COUNTER || (m_mode & WAITING_FOR_TRIG))
@@ -402,19 +360,11 @@ uint8_t z80ctc_device::ctc_channel::read()
 	// else compute the down counter value
 	else
 	{
-<<<<<<< HEAD
-		attotime period = ((m_mode & PRESCALER) == PRESCALER_16) ? m_device->m_period16 : m_device->m_period256;
-
-		VPRINTF_CHANNEL(("CTC clock %f\n",ATTOSECONDS_TO_HZ(period.attoseconds())));
-
-		if (m_timer != NULL)
-=======
 		attotime period = m_device->clocks_to_attotime((m_mode & PRESCALER) == PRESCALER_16 ? 16 : 256);
 
 		VPRINTF_CHANNEL(("CTC clock %f\n",ATTOSECONDS_TO_HZ(period.attoseconds())));
 
 		if (m_timer != nullptr)
->>>>>>> upstream/master
 			return ((int)(m_timer->remaining().as_double() / period.as_double()) + 1) & 0xff;
 		else
 			return 0;
@@ -426,11 +376,7 @@ uint8_t z80ctc_device::ctc_channel::read()
 //  write - handle writes to a channel
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void z80ctc_device::ctc_channel::write(UINT8 data)
-=======
 void z80ctc_device::ctc_channel::write(uint8_t data)
->>>>>>> upstream/master
 {
 	// if we're waiting for a time constant, this is it
 	if ((m_mode & CONSTANT) == CONSTANT_LOAD)
@@ -481,15 +427,12 @@ void z80ctc_device::ctc_channel::write(uint8_t data)
 	// this must be a control word
 	else if ((data & CONTROL) == CONTROL_WORD)
 	{
-<<<<<<< HEAD
-=======
 		// (mode change without reset?)
 		if ((m_mode & MODE) == MODE_TIMER && (data & MODE) == MODE_COUNTER && (data & RESET) == 0)
 		{
 			m_timer->adjust(attotime::never);
 		}
 
->>>>>>> upstream/master
 		// set the new mode
 		m_mode = data;
 		VPRINTF_CHANNEL(("CTC ch.%d mode = %02x\n", m_index, data));
@@ -509,11 +452,7 @@ void z80ctc_device::ctc_channel::write(uint8_t data)
 //  side-effects
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void z80ctc_device::ctc_channel::trigger(UINT8 data)
-=======
 void z80ctc_device::ctc_channel::trigger(uint8_t data)
->>>>>>> upstream/master
 {
 	// normalize data
 	data = data ? 1 : 0;
@@ -542,11 +481,7 @@ void z80ctc_device::ctc_channel::trigger(uint8_t data)
 			{
 				// if we hit zero, do the same thing as for a timer interrupt
 				if (--m_down == 0)
-<<<<<<< HEAD
-					timer_callback();
-=======
 					timer_callback(nullptr,0);
->>>>>>> upstream/master
 			}
 		}
 	}
@@ -558,11 +493,7 @@ void z80ctc_device::ctc_channel::trigger(uint8_t data)
 //  side-effects
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void z80ctc_device::ctc_channel::timer_callback()
-=======
 TIMER_CALLBACK_MEMBER(z80ctc_device::ctc_channel::timer_callback)
->>>>>>> upstream/master
 {
 	// down counter has reached zero - see if we should interrupt
 	if ((m_mode & INTERRUPT) == INTERRUPT_ON)

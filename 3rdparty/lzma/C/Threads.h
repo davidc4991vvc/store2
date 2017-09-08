@@ -1,21 +1,9 @@
 /* Threads.h -- multithreading library
-<<<<<<< HEAD
-2009-03-27 : Igor Pavlov : Public domain */
-=======
 2013-11-12 : Igor Pavlov : Public domain */
->>>>>>> upstream/master
 
 #ifndef __7Z_THREADS_H
 #define __7Z_THREADS_H
 
-<<<<<<< HEAD
-#include "Types.h"
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-=======
 #ifdef _WIN32
 #include <windows.h>
 #endif
@@ -24,7 +12,6 @@ extern "C" {
 
 EXTERN_C_BEGIN
 
->>>>>>> upstream/master
 WRes HandlePtr_Close(HANDLE *h);
 WRes Handle_WaitObject(HANDLE h);
 
@@ -33,9 +20,6 @@ typedef HANDLE CThread;
 #define Thread_WasCreated(p) (*(p) != NULL)
 #define Thread_Close(p) HandlePtr_Close(p)
 #define Thread_Wait(p) Handle_WaitObject(*(p))
-<<<<<<< HEAD
-typedef unsigned THREAD_FUNC_RET_TYPE;
-=======
 
 typedef
 #ifdef UNDER_CE
@@ -45,7 +29,6 @@ typedef
 #endif
   THREAD_FUNC_RET_TYPE;
 
->>>>>>> upstream/master
 #define THREAD_FUNC_CALL_TYPE MY_STD_CALL
 #define THREAD_FUNC_DECL THREAD_FUNC_RET_TYPE THREAD_FUNC_CALL_TYPE
 typedef THREAD_FUNC_RET_TYPE (THREAD_FUNC_CALL_TYPE * THREAD_FUNC_TYPE)(void *);
@@ -79,12 +62,6 @@ WRes CriticalSection_Init(CCriticalSection *p);
 #define CriticalSection_Enter(p) EnterCriticalSection(p)
 #define CriticalSection_Leave(p) LeaveCriticalSection(p)
 
-<<<<<<< HEAD
-#ifdef __cplusplus
-}
-#endif
-=======
 EXTERN_C_END
->>>>>>> upstream/master
 
 #endif

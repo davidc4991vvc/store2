@@ -65,11 +65,7 @@ VIDEO_START_MEMBER(rampart_state,rampart)
  *
  *************************************/
 
-<<<<<<< HEAD
-UINT32 rampart_state::screen_update_rampart(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t rampart_state::screen_update_rampart(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	// start drawing
 	m_mob->draw_async(cliprect);
@@ -79,19 +75,11 @@ uint32_t rampart_state::screen_update_rampart(screen_device &screen, bitmap_ind1
 
 	// draw and merge the MO
 	bitmap_ind16 &mobitmap = m_mob->bitmap();
-<<<<<<< HEAD
-	for (const sparse_dirty_rect *rect = m_mob->first_dirty_rect(cliprect); rect != NULL; rect = rect->next())
-		for (int y = rect->min_y; y <= rect->max_y; y++)
-		{
-			UINT16 *mo = &mobitmap.pix16(y);
-			UINT16 *pf = &bitmap.pix16(y);
-=======
 	for (const sparse_dirty_rect *rect = m_mob->first_dirty_rect(cliprect); rect != nullptr; rect = rect->next())
 		for (int y = rect->min_y; y <= rect->max_y; y++)
 		{
 			uint16_t *mo = &mobitmap.pix16(y);
 			uint16_t *pf = &bitmap.pix16(y);
->>>>>>> upstream/master
 			for (int x = rect->min_x; x <= rect->max_x; x++)
 				if (mo[x] != 0xffff)
 				{
@@ -115,13 +103,8 @@ void rampart_state::rampart_bitmap_render(bitmap_ind16 &bitmap, const rectangle 
 	/* update any dirty scanlines */
 	for (int y = cliprect.min_y; y <= cliprect.max_y; y++)
 	{
-<<<<<<< HEAD
-		const UINT16 *src = &m_bitmap[256 * y];
-		UINT16 *dst = &bitmap.pix16(y);
-=======
 		const uint16_t *src = &m_bitmap[256 * y];
 		uint16_t *dst = &bitmap.pix16(y);
->>>>>>> upstream/master
 
 		/* regenerate the line */
 		for (int x = cliprect.min_x & ~1; x <= cliprect.max_x; x += 2)

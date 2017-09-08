@@ -15,13 +15,6 @@
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/m6502/m6502.h"
-#include "sound/2203intf.h"
-#include "sound/3812intf.h"
-#include "includes/pcktgal.h"
-#include "machine/deco222.h"
-=======
 #include "includes/pcktgal.h"
 
 #include "cpu/m6502/m6502.h"
@@ -31,7 +24,6 @@
 #include "screen.h"
 #include "speaker.h"
 
->>>>>>> upstream/master
 
 /***************************************************************************/
 
@@ -51,11 +43,7 @@ WRITE8_MEMBER(pcktgal_state::sound_bank_w)
 
 WRITE8_MEMBER(pcktgal_state::sound_w)
 {
-<<<<<<< HEAD
-	soundlatch_byte_w(space, 0, data);
-=======
 	m_soundlatch->write(space, 0, data);
->>>>>>> upstream/master
 	m_audiocpu->set_input_line(INPUT_LINE_NMI, PULSE_LINE);
 }
 
@@ -107,11 +95,7 @@ static ADDRESS_MAP_START( pcktgal_sound_map, AS_PROGRAM, 8, pcktgal_state )
 	AM_RANGE(0x1000, 0x1001) AM_DEVWRITE("ym2", ym3812_device, write)
 	AM_RANGE(0x1800, 0x1800) AM_WRITE(adpcm_data_w) /* ADPCM data for the MSM5205 chip */
 	AM_RANGE(0x2000, 0x2000) AM_WRITE(sound_bank_w)
-<<<<<<< HEAD
-	AM_RANGE(0x3000, 0x3000) AM_READ(soundlatch_byte_r)
-=======
 	AM_RANGE(0x3000, 0x3000) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
->>>>>>> upstream/master
 	AM_RANGE(0x3400, 0x3400) AM_READ(adpcm_reset_r) /* ? not sure */
 	AM_RANGE(0x4000, 0x7fff) AM_ROMBANK("bank3")
 	AM_RANGE(0x8000, 0xffff) AM_ROM
@@ -237,11 +221,7 @@ void pcktgal_state::machine_start()
 	save_item(NAME(m_toggle));
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( pcktgal, pcktgal_state )
-=======
 static MACHINE_CONFIG_START( pcktgal )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6502, 2000000)
@@ -268,21 +248,14 @@ static MACHINE_CONFIG_START( pcktgal )
 
 
 	MCFG_DEVICE_ADD("tilegen1", DECO_BAC06, 0)
-<<<<<<< HEAD
-	deco_bac06_device::set_gfx_region_wide(*device,0,0,0);
-=======
 	MCFG_DECO_BAC06_GFX_REGION_WIDE(0, 0, 0)
->>>>>>> upstream/master
 	MCFG_DECO_BAC06_GFXDECODE("gfxdecode")
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 
->>>>>>> upstream/master
 	MCFG_SOUND_ADD("ym1", YM2203, 1500000)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.60)
 
@@ -291,11 +264,7 @@ static MACHINE_CONFIG_START( pcktgal )
 
 	MCFG_SOUND_ADD("msm", MSM5205, 384000)
 	MCFG_MSM5205_VCLK_CB(WRITELINE(pcktgal_state, adpcm_int))  /* interrupt function */
-<<<<<<< HEAD
-	MCFG_MSM5205_PRESCALER_SELECTOR(MSM5205_S48_4B)      /* 8KHz            */
-=======
 	MCFG_MSM5205_PRESCALER_SELECTOR(S48_4B)      /* 8KHz            */
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.70)
 MACHINE_CONFIG_END
 
@@ -459,11 +428,7 @@ ROM_END
 
 DRIVER_INIT_MEMBER(pcktgal_state,pcktgal)
 {
-<<<<<<< HEAD
-	UINT8 *rom = memregion("gfx1")->base();
-=======
 	uint8_t *rom = memregion("gfx1")->base();
->>>>>>> upstream/master
 	int len = memregion("gfx1")->bytes();
 	int i,j,temp[16];
 
@@ -484,11 +449,7 @@ DRIVER_INIT_MEMBER(pcktgal_state,pcktgal)
 /***************************************************************************/
 
 GAME( 1987, pcktgal,  0,       pcktgal, pcktgal, pcktgal_state, pcktgal,  ROT0, "Data East Corporation", "Pocket Gal (Japan)", MACHINE_SUPPORTS_SAVE )
-<<<<<<< HEAD
-GAME( 1987, pcktgalb, pcktgal, bootleg, pcktgal, driver_device, 0,        ROT0, "bootleg", "Pocket Gal (bootleg)", MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1987, pcktgalb, pcktgal, bootleg, pcktgal, pcktgal_state, 0,        ROT0, "bootleg", "Pocket Gal (bootleg)", MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master
 GAME( 1989, pcktgal2, pcktgal, pcktgal2,pcktgal, pcktgal_state, pcktgal,  ROT0, "Data East Corporation", "Pocket Gal 2 (English)", MACHINE_SUPPORTS_SAVE )
 GAME( 1989, pcktgal2j,pcktgal, pcktgal2,pcktgal, pcktgal_state, pcktgal,  ROT0, "Data East Corporation", "Pocket Gal 2 (Japanese)", MACHINE_SUPPORTS_SAVE )
 GAME( 1989, spool3,   pcktgal, pcktgal2,pcktgal, pcktgal_state, pcktgal,  ROT0, "Data East Corporation", "Super Pool III (English)", MACHINE_SUPPORTS_SAVE )

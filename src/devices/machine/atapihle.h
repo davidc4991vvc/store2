@@ -8,33 +8,17 @@
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __ATAPIHLE_H__
-#define __ATAPIHLE_H__
-=======
 #ifndef MAME_MACHINE_ATAPIHLE_H
 #define MAME_MACHINE_ATAPIHLE_H
 
 #pragma once
->>>>>>> upstream/master
 
 #include "atahle.h"
 #include "t10spc.h"
 
-<<<<<<< HEAD
-class atapi_hle_device : public ata_hle_device,
-	public virtual t10spc
-{
-public:
-	atapi_hle_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock,const char *shortname, const char *source);
-
-=======
 class atapi_hle_device : public ata_hle_device, public virtual t10spc
 {
 public:
->>>>>>> upstream/master
 	enum atapi_features_flag_t
 	{
 		ATAPI_FEATURES_FLAG_DMA = 0x01,
@@ -63,18 +47,6 @@ public:
 	};
 
 protected:
-<<<<<<< HEAD
-	virtual void device_start();
-	virtual void device_reset();
-
-	virtual int sector_length() { return ATAPI_BUFFER_LENGTH; }
-	virtual void process_buffer();
-	virtual void fill_buffer();
-	virtual bool is_ready() { return false; }
-	virtual void signature();
-	virtual void process_command();
-	virtual void finished_command();
-=======
 	atapi_hle_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock);
 
 	virtual void device_start() override;
@@ -87,7 +59,6 @@ protected:
 	virtual void signature() override;
 	virtual void process_command() override;
 	virtual void finished_command() override;
->>>>>>> upstream/master
 
 	virtual void identify_packet_device() = 0;
 
@@ -100,14 +71,7 @@ private:
 	int m_packet;
 	int m_data_size;
 
-<<<<<<< HEAD
-	static const int ATAPI_BUFFER_LENGTH = 0xf800;
-};
-
-#endif
-=======
 	static constexpr int ATAPI_BUFFER_LENGTH = 0xf800;
 };
 
 #endif // MAME_MACHINE_ATAPIHLE_H
->>>>>>> upstream/master

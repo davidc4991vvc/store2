@@ -13,10 +13,7 @@
  * - wd2793, nms8255
  */
 
-<<<<<<< HEAD
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #include "includes/msx.h"
 
 #define VERBOSE 0
@@ -35,15 +32,9 @@ void msx_state::check_irq()
 {
 	int state = CLEAR_LINE;
 
-<<<<<<< HEAD
-	for (int i = 0; i < ARRAY_LENGTH(m_irq_state); i++)
-	{
-		if (m_irq_state[i] != CLEAR_LINE)
-=======
 	for (auto & elem : m_irq_state)
 	{
 		if (elem != CLEAR_LINE)
->>>>>>> upstream/master
 		{
 			state = ASSERT_LINE;
 		}
@@ -57,15 +48,9 @@ void msx_state::machine_reset()
 {
 	msx_memory_reset ();
 	msx_memory_map_all ();
-<<<<<<< HEAD
-	for (int i = 0; i < ARRAY_LENGTH(m_irq_state); i++)
-	{
-		m_irq_state[i] = CLEAR_LINE;
-=======
 	for (auto & elem : m_irq_state)
 	{
 		elem = CLEAR_LINE;
->>>>>>> upstream/master
 	}
 	check_irq();
 }
@@ -74,12 +59,6 @@ void msx_state::machine_reset()
 void msx_state::machine_start()
 {
 	m_port_c_old = 0xff;
-<<<<<<< HEAD
-}
-
-
-static const UINT8 cc_op[0x100] = {
-=======
 
 	for (device_t &device : device_iterator(*this))
 	{
@@ -93,7 +72,6 @@ static const UINT8 cc_op[0x100] = {
 
 
 static const uint8_t cc_op[0x100] = {
->>>>>>> upstream/master
 	4+1,10+1, 7+1, 6+1, 4+1, 4+1, 7+1, 4+1, 4+1,11+1, 7+1, 6+1, 4+1, 4+1, 7+1, 4+1,
 	8+1,10+1, 7+1, 6+1, 4+1, 4+1, 7+1, 4+1,12+1,11+1, 7+1, 6+1, 4+1, 4+1, 7+1, 4+1,
 	7+1,10+1,16+1, 6+1, 4+1, 4+1, 7+1, 4+1, 7+1,11+1,16+1, 6+1, 4+1, 4+1, 7+1, 4+1,
@@ -112,11 +90,7 @@ static const uint8_t cc_op[0x100] = {
 	5+1,10+1,10+1, 4+1,10+1,11+1, 7+1,11+1, 5+1, 6+1,10+1, 4+1,10+1, 0  , 7+1,11+1
 };
 
-<<<<<<< HEAD
-static const UINT8 cc_cb[0x100] = {
-=======
 static const uint8_t cc_cb[0x100] = {
->>>>>>> upstream/master
 	8+2, 8+2, 8+2, 8+2, 8+2, 8+2,15+2, 8+2, 8+2, 8+2, 8+2, 8+2, 8+2, 8+2,15+2, 8+2,
 	8+2, 8+2, 8+2, 8+2, 8+2, 8+2,15+2, 8+2, 8+2, 8+2, 8+2, 8+2, 8+2, 8+2,15+2, 8+2,
 	8+2, 8+2, 8+2, 8+2, 8+2, 8+2,15+2, 8+2, 8+2, 8+2, 8+2, 8+2, 8+2, 8+2,15+2, 8+2,
@@ -135,11 +109,7 @@ static const uint8_t cc_cb[0x100] = {
 	8+2, 8+2, 8+2, 8+2, 8+2, 8+2,15+2, 8+2, 8+2, 8+2, 8+2, 8+2, 8+2, 8+2,15+2, 8+2
 };
 
-<<<<<<< HEAD
-static const UINT8 cc_ed[0x100] = {
-=======
 static const uint8_t cc_ed[0x100] = {
->>>>>>> upstream/master
 	8+2, 8+2, 8+2, 8+2, 8+2, 8+2, 8+2, 8+2, 8+2, 8+2, 8+2, 8+2, 8+2, 8+2, 8+2, 8+2,
 	8+2, 8+2, 8+2, 8+2, 8+2, 8+2, 8+2, 8+2, 8+2, 8+2, 8+2, 8+2, 8+2, 8+2, 8+2, 8+2,
 	8+2, 8+2, 8+2, 8+2, 8+2, 8+2, 8+2, 8+2, 8+2, 8+2, 8+2, 8+2, 8+2, 8+2, 8+2, 8+2,
@@ -158,11 +128,7 @@ static const uint8_t cc_ed[0x100] = {
 	8+2, 8+2, 8+2, 8+2, 8+2, 8+2, 8+2, 8+2, 8+2, 8+2, 8+2, 8+2, 8+2, 8+2, 8+2, 8+2
 };
 
-<<<<<<< HEAD
-static const UINT8 cc_xy[0x100] = {
-=======
 static const uint8_t cc_xy[0x100] = {
->>>>>>> upstream/master
 	4+4+2,10+4+2, 7+4+2, 6+4+2, 4+4+2, 4+4+2, 7+4+2, 4+4+2, 4+4+2,11+4+2, 7+4+2, 6+4+2, 4+4+2, 4+4+2, 7+4+2, 4+4+2,
 	8+4+2,10+4+2, 7+4+2, 6+4+2, 4+4+2, 4+4+2, 7+4+2, 4+4+2,12+4+2,11+4+2, 7+4+2, 6+4+2, 4+4+2, 4+4+2, 7+4+2, 4+4+2,
 	7+4+2,10+4+2,16+4+2, 6+4+2, 4+4+2, 4+4+2, 7+4+2, 4+4+2, 7+4+2,11+4+2,16+4+2, 6+4+2, 4+4+2, 4+4+2, 7+4+2, 4+4+2,
@@ -181,11 +147,7 @@ static const uint8_t cc_xy[0x100] = {
 	5+4+2,10+4+2,10+4+2, 4+4+2,10+4+2,11+4+2, 7+4+2,11+4+2, 5+4+2, 6+4+2,10+4+2, 4+4+2,10+4+2, 4  +1, 7+4+2,11+4+2
 };
 
-<<<<<<< HEAD
-static const UINT8 cc_xycb[0x100] = {
-=======
 static const uint8_t cc_xycb[0x100] = {
->>>>>>> upstream/master
 23+2,23+2,23+2,23+2,23+2,23+2,23+2,23+2,23+2,23+2,23+2,23+2,23+2,23+2,23+2,23+2,
 23+2,23+2,23+2,23+2,23+2,23+2,23+2,23+2,23+2,23+2,23+2,23+2,23+2,23+2,23+2,23+2,
 23+2,23+2,23+2,23+2,23+2,23+2,23+2,23+2,23+2,23+2,23+2,23+2,23+2,23+2,23+2,23+2,
@@ -205,11 +167,7 @@ static const uint8_t cc_xycb[0x100] = {
 };
 
 /* extra cycles if jr/jp/call taken and 'interrupt latency' on rst 0-7 */
-<<<<<<< HEAD
-static const UINT8 cc_ex[0x100] = {
-=======
 static const uint8_t cc_ex[0x100] = {
->>>>>>> upstream/master
 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 	5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, /* DJNZ */
 	5, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, /* JR NZ/JR Z */
@@ -247,10 +205,6 @@ void msx_state::driver_start()
 	save_item(NAME(m_secondary_slot));
 	save_item(NAME(m_port_c_old));
 	save_item(NAME(m_keylatch));
-<<<<<<< HEAD
-	save_item(NAME(m_current_switched_device));
-=======
->>>>>>> upstream/master
 	save_item(NAME(m_irq_state));
 
 	machine().save().register_postload(save_prepost_delegate(FUNC(msx_state::post_load), this));
@@ -282,22 +236,14 @@ INTERRUPT_GEN_MEMBER(msx_state::msx_interrupt)
 
 READ8_MEMBER(msx_state::msx_psg_port_a_r)
 {
-<<<<<<< HEAD
-	UINT8 data;
-=======
 	uint8_t data;
->>>>>>> upstream/master
 
 	data = (m_cassette->input() > 0.0038 ? 0x80 : 0);
 
 	if ( (m_psg_b ^ m_io_dsw->read() ) & 0x40)
 	{
 		/* game port 2 */
-<<<<<<< HEAD
-		UINT8 inp = m_io_joy1->read();
-=======
 		uint8_t inp = m_io_joy1->read();
->>>>>>> upstream/master
 		if ( !(inp & 0x80) )
 		{
 			/* joystick */
@@ -316,11 +262,7 @@ READ8_MEMBER(msx_state::msx_psg_port_a_r)
 	else
 	{
 		/* game port 1 */
-<<<<<<< HEAD
-		UINT8 inp = m_io_joy0->read();
-=======
 		uint8_t inp = m_io_joy0->read();
->>>>>>> upstream/master
 		if ( !(inp & 0x80) )
 		{
 			/* joystick */
@@ -353,11 +295,7 @@ WRITE8_MEMBER(msx_state::msx_psg_port_b_w)
 {
 	/* Arabic or kana mode led */
 	if ( (data ^ m_psg_b) & 0x80)
-<<<<<<< HEAD
-		set_led_status (machine(), 2, !(data & 0x80) );
-=======
 		output().set_led_value(2, !(data & 0x80) );
->>>>>>> upstream/master
 
 	if ( (m_psg_b ^ data) & 0x10)
 	{
@@ -411,19 +349,11 @@ WRITE8_MEMBER( msx_state::msx_ppi_port_c_w )
 
 	/* caps lock */
 	if ( BIT(m_port_c_old ^ data, 6) )
-<<<<<<< HEAD
-		set_led_status (machine(), 1, !BIT(data, 6) );
-
-	/* key click */
-	if ( BIT(m_port_c_old ^ data, 7) )
-		m_dac->write_signed8(BIT(data, 7) ? 0x7f : 0);
-=======
 		output().set_led_value(1, !BIT(data, 6) );
 
 	/* key click */
 	if ( BIT(m_port_c_old ^ data, 7) )
 		m_dac->write(BIT(data, 7));
->>>>>>> upstream/master
 
 	/* cassette motor on/off */
 	if ( BIT(m_port_c_old ^ data, 4) )
@@ -438,23 +368,13 @@ WRITE8_MEMBER( msx_state::msx_ppi_port_c_w )
 
 READ8_MEMBER( msx_state::msx_ppi_port_b_r )
 {
-<<<<<<< HEAD
-	UINT8 result = 0xff;
-	int row, data;
-	ioport_port *keynames[] = { m_io_key0, m_io_key1, m_io_key2, m_io_key3, m_io_key4, m_io_key5 };
-=======
 	uint8_t result = 0xff;
 	int row, data;
->>>>>>> upstream/master
 
 	row = m_keylatch;
 	if (row <= 10)
 	{
-<<<<<<< HEAD
-		data = keynames[row / 2]->read();
-=======
 		data = m_io_key[row / 2]->read();
->>>>>>> upstream/master
 
 		if (BIT(row, 0))
 			data >>= 8;
@@ -469,20 +389,12 @@ READ8_MEMBER( msx_state::msx_ppi_port_b_r )
  *
  ***********************************************************************/
 
-<<<<<<< HEAD
-void msx_state::install_slot_pages(device_t &owner, UINT8 prim, UINT8 sec, UINT8 page, UINT8 numpages, device_t *device)
-=======
 void msx_state::install_slot_pages(device_t &owner, uint8_t prim, uint8_t sec, uint8_t page, uint8_t numpages, device_t *device)
->>>>>>> upstream/master
 {
 	msx_state &msx = downcast<msx_state &>(owner);
 	msx_internal_slot_interface *internal_slot = dynamic_cast<msx_internal_slot_interface *>(device);
 
-<<<<<<< HEAD
-	for ( int i = page; i < MIN(page + numpages, 4); i++ )
-=======
 	for ( int i = page; i < std::min(page + numpages, 4); i++ )
->>>>>>> upstream/master
 	{
 		msx.m_all_slots[prim][sec][i] = internal_slot;
 	}
@@ -497,25 +409,15 @@ void msx_state::msx_memory_init()
 	int count_populated_pages = 0;
 
 	// Populate all unpopulated slots with the dummy interface
-<<<<<<< HEAD
-	for ( int prim = 0; prim < 4; prim++ )
-=======
 	for (auto & elem : m_all_slots)
->>>>>>> upstream/master
 	{
 		for ( int sec = 0; sec < 4; sec++ )
 		{
 			for ( int page = 0; page < 4; page++ )
 			{
-<<<<<<< HEAD
-				if ( m_all_slots[prim][sec][page] == NULL )
-				{
-					m_all_slots[prim][sec][page] = &m_empty_slot;
-=======
 				if ( elem[sec][page] == nullptr )
 				{
 					elem[sec][page] = &m_empty_slot;
->>>>>>> upstream/master
 				}
 				else
 				{
@@ -534,15 +436,6 @@ void msx_state::msx_memory_reset ()
 {
 	m_primary_slot = 0;
 
-<<<<<<< HEAD
-	for (int prim=0; prim<4; prim++)
-	{
-		m_secondary_slot[prim] = 0;
-	}
-}
-
-void msx_state::msx_memory_map_page (UINT8 page)
-=======
 	for (auto & elem : m_secondary_slot)
 	{
 		elem = 0;
@@ -550,7 +443,6 @@ void msx_state::msx_memory_map_page (UINT8 page)
 }
 
 void msx_state::msx_memory_map_page (uint8_t page)
->>>>>>> upstream/master
 {
 	int slot_primary = (m_primary_slot >> (page * 2)) & 3;
 	int slot_secondary = (m_secondary_slot[slot_primary] >> (page * 2)) & 3;
@@ -560,11 +452,7 @@ void msx_state::msx_memory_map_page (uint8_t page)
 
 void msx_state::msx_memory_map_all ()
 {
-<<<<<<< HEAD
-	for (UINT8 i=0; i<4; i++)
-=======
 	for (uint8_t i=0; i<4; i++)
->>>>>>> upstream/master
 		msx_memory_map_page (i);
 }
 
@@ -609,20 +497,12 @@ READ8_MEMBER( msx_state::msx_sec_slot_r )
 
 READ8_MEMBER( msx_state::msx_kanji_r )
 {
-<<<<<<< HEAD
-	UINT8 result = 0xff;
-=======
 	uint8_t result = 0xff;
->>>>>>> upstream/master
 
 	if (offset && m_region_kanji)
 	{
 		int latch = m_kanji_latch;
-<<<<<<< HEAD
-		result = m_region_kanji->u8(latch++);
-=======
 		result = m_region_kanji->as_u8(latch++);
->>>>>>> upstream/master
 
 		m_kanji_latch &= ~0x1f;
 		m_kanji_latch |= latch & 0x1f;
@@ -640,10 +520,6 @@ WRITE8_MEMBER( msx_state::msx_kanji_w )
 
 READ8_MEMBER( msx_state::msx_switched_r )
 {
-<<<<<<< HEAD
-	// Read from selected switched device
-	return this->space().read_byte( (m_current_switched_device << 8) | offset );
-=======
 	uint8_t data = 0xff;
 
 	for (int i = 0; i < m_switched.size(); i++)
@@ -652,25 +528,12 @@ READ8_MEMBER( msx_state::msx_switched_r )
 	}
 
 	return data;
->>>>>>> upstream/master
 }
 
 WRITE8_MEMBER( msx_state::msx_switched_w )
 {
-<<<<<<< HEAD
-	if (offset == 0)
-	{
-		// Select switched device
-		m_current_switched_device = data;
-	}
-	else
-	{
-		// Write to selected switched device
-		this->space().write_byte( (m_current_switched_device << 8) | offset, data );
-=======
 	for (int i = 0; i < m_switched.size(); i++)
 	{
 		m_switched[i]->switched_write(space, offset, data);
->>>>>>> upstream/master
 	}
 }

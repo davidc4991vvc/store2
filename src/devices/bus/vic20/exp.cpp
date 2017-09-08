@@ -6,10 +6,7 @@
 
 **********************************************************************/
 
-<<<<<<< HEAD
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #include "exp.h"
 
 
@@ -18,11 +15,7 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type VIC20_EXPANSION_SLOT = &device_creator<vic20_expansion_slot_device>;
-=======
 DEFINE_DEVICE_TYPE(VIC20_EXPANSION_SLOT, vic20_expansion_slot_device, "vic20_expansion_slot", "VIC-20 expansion port")
->>>>>>> upstream/master
 
 
 
@@ -64,15 +57,6 @@ device_vic20_expansion_card_interface::~device_vic20_expansion_card_interface()
 //  vic20_expansion_slot_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-vic20_expansion_slot_device::vic20_expansion_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-		device_t(mconfig, VIC20_EXPANSION_SLOT, "VIC-20 expansion port", tag, owner, clock, "vic20_expansion_slot", __FILE__),
-		device_slot_interface(mconfig, *this),
-		device_image_interface(mconfig, *this),
-		m_write_irq(*this),
-		m_write_nmi(*this),
-		m_write_res(*this), m_card(nullptr)
-=======
 vic20_expansion_slot_device::vic20_expansion_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	device_t(mconfig, VIC20_EXPANSION_SLOT, tag, owner, clock),
 	device_slot_interface(mconfig, *this),
@@ -81,7 +65,6 @@ vic20_expansion_slot_device::vic20_expansion_slot_device(const machine_config &m
 	m_write_nmi(*this),
 	m_write_res(*this),
 	m_card(nullptr)
->>>>>>> upstream/master
 {
 }
 
@@ -126,26 +109,6 @@ void vic20_expansion_slot_device::device_reset()
 //  call_load -
 //-------------------------------------------------
 
-<<<<<<< HEAD
-bool vic20_expansion_slot_device::call_load()
-{
-	if (m_card)
-	{
-		if (software_entry() == NULL)
-		{
-			if (!core_stricmp(filetype(), "20")) fread(m_card->m_blk1, 0x2000);
-			else if (!core_stricmp(filetype(), "40")) fread(m_card->m_blk2, 0x2000);
-			else if (!core_stricmp(filetype(), "60")) fread(m_card->m_blk3, 0x2000);
-			else if (!core_stricmp(filetype(), "70")) fread(m_card->m_blk3, 0x2000, 0x1000);
-			else if (!core_stricmp(filetype(), "a0")) fread(m_card->m_blk5, 0x2000);
-			else if (!core_stricmp(filetype(), "b0")) fread(m_card->m_blk5, 0x2000, 0x1000);
-			else if (!core_stricmp(filetype(), "crt"))
-			{
-				// read the header
-				UINT8 header[2];
-				fread(&header, 2);
-				UINT16 address = (header[1] << 8) | header[0];
-=======
 image_init_result vic20_expansion_slot_device::call_load()
 {
 	if (m_card)
@@ -164,7 +127,6 @@ image_init_result vic20_expansion_slot_device::call_load()
 				uint8_t header[2];
 				fread(&header, 2);
 				uint16_t address = (header[1] << 8) | header[0];
->>>>>>> upstream/master
 
 				switch (address)
 				{
@@ -174,11 +136,7 @@ image_init_result vic20_expansion_slot_device::call_load()
 				case 0x7000: fread(m_card->m_blk3, 0x2000, 0x1000); break;
 				case 0xa000: fread(m_card->m_blk5, 0x2000); break;
 				case 0xb000: fread(m_card->m_blk5, 0x2000, 0x1000); break;
-<<<<<<< HEAD
-				default: return IMAGE_INIT_FAIL;
-=======
 				default: return image_init_result::FAIL;
->>>>>>> upstream/master
 				}
 			}
 		}
@@ -191,23 +149,7 @@ image_init_result vic20_expansion_slot_device::call_load()
 		}
 	}
 
-<<<<<<< HEAD
-	return IMAGE_INIT_PASS;
-}
-
-
-//-------------------------------------------------
-//  call_softlist_load -
-//-------------------------------------------------
-
-bool vic20_expansion_slot_device::call_softlist_load(software_list_device &swlist, const char *swname, const rom_entry *start_entry)
-{
-	load_software_part_region(*this, swlist, swname, start_entry);
-
-	return true;
-=======
 	return image_init_result::PASS;
->>>>>>> upstream/master
 }
 
 
@@ -215,15 +157,9 @@ bool vic20_expansion_slot_device::call_softlist_load(software_list_device &swlis
 //  get_default_card_software -
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void vic20_expansion_slot_device::get_default_card_software(std::string &result)
-{
-	software_get_default_slot(result, "standard");
-=======
 std::string vic20_expansion_slot_device::get_default_card_software(get_default_card_software_hook &hook) const
 {
 	return software_get_default_slot("standard");
->>>>>>> upstream/master
 }
 
 
@@ -231,15 +167,9 @@ std::string vic20_expansion_slot_device::get_default_card_software(get_default_c
 //  cd_r - cartridge data read
 //-------------------------------------------------
 
-<<<<<<< HEAD
-UINT8 vic20_expansion_slot_device::cd_r(address_space &space, offs_t offset, UINT8 data, int ram1, int ram2, int ram3, int blk1, int blk2, int blk3, int blk5, int io2, int io3)
-{
-	if (m_card != NULL)
-=======
 uint8_t vic20_expansion_slot_device::cd_r(address_space &space, offs_t offset, uint8_t data, int ram1, int ram2, int ram3, int blk1, int blk2, int blk3, int blk5, int io2, int io3)
 {
 	if (m_card != nullptr)
->>>>>>> upstream/master
 	{
 		data = m_card->vic20_cd_r(space, offset, data, ram1, ram2, ram3, blk1, blk2, blk3, blk5, io2, io3);
 	}
@@ -252,15 +182,9 @@ uint8_t vic20_expansion_slot_device::cd_r(address_space &space, offs_t offset, u
 //  cd_w - cartridge data write
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void vic20_expansion_slot_device::cd_w(address_space &space, offs_t offset, UINT8 data, int ram1, int ram2, int ram3, int blk1, int blk2, int blk3, int blk5, int io2, int io3)
-{
-	if (m_card != NULL)
-=======
 void vic20_expansion_slot_device::cd_w(address_space &space, offs_t offset, uint8_t data, int ram1, int ram2, int ram3, int blk1, int blk2, int blk3, int blk5, int io2, int io3)
 {
 	if (m_card != nullptr)
->>>>>>> upstream/master
 	{
 		m_card->vic20_cd_w(space, offset, data, ram1, ram2, ram3, blk1, blk2, blk3, blk5, io2, io3);
 	}
@@ -280,11 +204,8 @@ void vic20_expansion_slot_device::cd_w(address_space &space, offs_t offset, uint
 #include "vic1111.h"
 #include "vic1112.h"
 #include "vic1210.h"
-<<<<<<< HEAD
-=======
 #include "videopak.h"
 #include "speakeasy.h"
->>>>>>> upstream/master
 
 SLOT_INTERFACE_START( vic20_expansion_cards )
 	SLOT_INTERFACE("exp", VIC1010)
@@ -292,11 +213,8 @@ SLOT_INTERFACE_START( vic20_expansion_cards )
 	SLOT_INTERFACE("8k", VIC1110)
 	SLOT_INTERFACE("16k", VIC1111)
 	SLOT_INTERFACE("fe3", VIC20_FE3)
-<<<<<<< HEAD
-=======
 	SLOT_INTERFACE("speakez", VIC20_SPEAKEASY)
 	SLOT_INTERFACE("videopak", VIC20_VIDEO_PAK)
->>>>>>> upstream/master
 
 	// the following need ROMs from the software list
 	SLOT_INTERFACE_INTERNAL("standard", VIC20_STD)

@@ -6,29 +6,13 @@
 struct chr_bank
 {
 	int writable;   // 1 for RAM, 0 for ROM
-<<<<<<< HEAD
-	UINT8* chr;     // direct access to the memory
-=======
 	uint8_t* chr;     // direct access to the memory
->>>>>>> upstream/master
 };
 
 class playch10_state : public driver_device
 {
 public:
 	playch10_state(const machine_config &mconfig, device_type type, const char *tag)
-<<<<<<< HEAD
-		: driver_device(mconfig, type, tag),
-		m_maincpu(*this, "maincpu"),
-		m_ppu(*this, "ppu"),
-		m_rp5h01(*this, "rp5h01"),
-		m_ram_8w(*this, "ram_8w"),
-		m_videoram(*this, "videoram"),
-		m_timedata(*this, "timedata"),
-		m_work_ram(*this, "work_ram"),
-		m_gfxdecode(*this, "gfxdecode")
-		{ }
-=======
 		: driver_device(mconfig, type, tag)
 		, m_maincpu(*this, "maincpu")
 		, m_ppu(*this, "ppu")
@@ -41,20 +25,11 @@ public:
 		, m_vrom_region(*this, "gfx2")
 	{
 	}
->>>>>>> upstream/master
 
 	required_device<cpu_device> m_maincpu;
 	required_device<ppu2c0x_device> m_ppu;
 	optional_device<rp5h01_device> m_rp5h01;
 
-<<<<<<< HEAD
-	required_shared_ptr<UINT8> m_ram_8w;
-	required_shared_ptr<UINT8> m_videoram;
-	required_shared_ptr<UINT8> m_timedata;
-	required_shared_ptr<UINT8> m_work_ram;
-	required_device<gfxdecode_device> m_gfxdecode;
-
-=======
 	required_shared_ptr<uint8_t> m_ram_8w;
 	required_shared_ptr<uint8_t> m_videoram;
 	required_shared_ptr<uint8_t> m_timedata;
@@ -63,7 +38,6 @@ public:
 
 	optional_memory_region m_vrom_region;
 
->>>>>>> upstream/master
 	int m_up_8w;
 	int m_pc10_nmi_enable;
 	int m_pc10_dog_di;
@@ -79,17 +53,10 @@ public:
 	int m_mirroring;
 	int m_MMC2_bank[4];
 	int m_MMC2_bank_latch[2];
-<<<<<<< HEAD
-	UINT8* m_vrom;
-	UINT8* m_vram;
-	UINT8* m_nametable[4];
-	UINT8* m_nt_ram;
-=======
 	uint8_t* m_vrom;
 	std::unique_ptr<uint8_t[]> m_vram;
 	uint8_t* m_nametable[4];
 	std::unique_ptr<uint8_t[]> m_nt_ram;
->>>>>>> upstream/master
 	chr_bank m_chr_page[8];
 	int m_mmc1_shiftreg;
 	int m_mmc1_shiftcount;
@@ -101,36 +68,15 @@ public:
 	int m_gboard_last_bank;
 	int m_gboard_command;
 	int m_IRQ_count;
-<<<<<<< HEAD
-	UINT8 m_IRQ_count_latch;
-	int m_IRQ_enable;
-	int m_pc10_bios;
-	tilemap_t *m_bg_tilemap;
-	DECLARE_WRITE8_MEMBER(up8w_w);
-=======
 	uint8_t m_IRQ_count_latch;
 	int m_IRQ_enable;
 	int m_pc10_bios;
 	tilemap_t *m_bg_tilemap;
 	DECLARE_WRITE_LINE_MEMBER(up8w_w);
->>>>>>> upstream/master
 	DECLARE_READ8_MEMBER(ram_8w_r);
 	DECLARE_WRITE8_MEMBER(ram_8w_w);
 	DECLARE_WRITE8_MEMBER(sprite_dma_w);
 	DECLARE_WRITE8_MEMBER(time_w);
-<<<<<<< HEAD
-	DECLARE_WRITE8_MEMBER(pc10_SDCS_w);
-	DECLARE_WRITE8_MEMBER(pc10_CNTRLMASK_w);
-	DECLARE_WRITE8_MEMBER(pc10_DISPMASK_w);
-	DECLARE_WRITE8_MEMBER(pc10_SOUNDMASK_w);
-	DECLARE_WRITE8_MEMBER(pc10_NMIENABLE_w);
-	DECLARE_WRITE8_MEMBER(pc10_DOGDI_w);
-	DECLARE_WRITE8_MEMBER(pc10_GAMERES_w);
-	DECLARE_WRITE8_MEMBER(pc10_GAMESTOP_w);
-	DECLARE_WRITE8_MEMBER(pc10_PPURES_w);
-	DECLARE_READ8_MEMBER(pc10_detectclr_r);
-	DECLARE_WRITE8_MEMBER(pc10_CARTSEL_w);
-=======
 	DECLARE_WRITE_LINE_MEMBER(sdcs_w);
 	DECLARE_WRITE_LINE_MEMBER(cntrl_mask_w);
 	DECLARE_WRITE_LINE_MEMBER(disp_mask_w);
@@ -140,7 +86,6 @@ public:
 	DECLARE_WRITE_LINE_MEMBER(ppu_reset_w);
 	DECLARE_READ8_MEMBER(pc10_detectclr_r);
 	DECLARE_WRITE8_MEMBER(cart_sel_w);
->>>>>>> upstream/master
 	DECLARE_READ8_MEMBER(pc10_prot_r);
 	DECLARE_WRITE8_MEMBER(pc10_prot_w);
 	DECLARE_WRITE8_MEMBER(pc10_in0_w);
@@ -172,10 +117,7 @@ public:
 	DECLARE_DRIVER_INIT(pcfboard);
 	DECLARE_DRIVER_INIT(pcfboard_2);
 	DECLARE_DRIVER_INIT(virus);
-<<<<<<< HEAD
-=======
 	DECLARE_DRIVER_INIT(ttoon);
->>>>>>> upstream/master
 	DECLARE_DRIVER_INIT(pcgboard);
 	DECLARE_DRIVER_INIT(pcgboard_type2);
 	DECLARE_DRIVER_INIT(pchboard);
@@ -183,17 +125,6 @@ public:
 	DECLARE_DRIVER_INIT(pckboard);
 	DECLARE_DRIVER_INIT(pc_hrz);
 	TILE_GET_INFO_MEMBER(get_bg_tile_info);
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void machine_reset();
-	virtual void video_start();
-	DECLARE_PALETTE_INIT(playch10);
-	DECLARE_MACHINE_START(playch10_hboard);
-	DECLARE_VIDEO_START(playch10_hboard);
-	UINT32 screen_update_playch10_top(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	UINT32 screen_update_playch10_bottom(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	UINT32 screen_update_playch10_single(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
 	virtual void video_start() override;
@@ -203,7 +134,6 @@ public:
 	uint32_t screen_update_playch10_top(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	uint32_t screen_update_playch10_bottom(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	uint32_t screen_update_playch10_single(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	INTERRUPT_GEN_MEMBER(playch10_interrupt);
 	void pc10_set_videorom_bank( int first, int count, int bank, int size );
 	void set_videoram_bank( int first, int count, int bank, int size );

@@ -27,24 +27,15 @@
 //**************************************************************************
 
 // device type definition
-<<<<<<< HEAD
-const device_type DSP16 = &device_creator<dsp16_device>;
-=======
 DEFINE_DEVICE_TYPE(DSP16, dsp16_device, "dsp16", "DSP16")
->>>>>>> upstream/master
 
 
 //-------------------------------------------------
 //  dsp16_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-dsp16_device::dsp16_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: cpu_device(mconfig, DSP16, "DSP16", tag, owner, clock, "dsp16", __FILE__),
-=======
 dsp16_device::dsp16_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: cpu_device(mconfig, DSP16, tag, owner, clock),
->>>>>>> upstream/master
 		m_program_config("program", ENDIANNESS_LITTLE, 16, 16, -1),
 		m_data_config("data", ENDIANNESS_LITTLE, 16, 16, -1),
 		m_i(0),
@@ -81,15 +72,9 @@ dsp16_device::dsp16_device(const machine_config &mconfig, const char *tag, devic
 		m_cacheEnd(CACHE_INVALID),
 		m_cacheRedoNextPC(CACHE_INVALID),
 		m_cacheIterations(0),
-<<<<<<< HEAD
-		m_program(NULL),
-		m_data(NULL),
-		m_direct(NULL),
-=======
 		m_program(nullptr),
 		m_data(nullptr),
 		m_direct(nullptr),
->>>>>>> upstream/master
 		m_icount(0)
 {
 	// Allocate & setup
@@ -105,11 +90,7 @@ void dsp16_device::device_start()
 {
 	// register state with the debugger
 	state_add(STATE_GENPC,    "GENPC",     m_pc).noshow();
-<<<<<<< HEAD
-	//state_add(STATE_GENPCBASE, "GENPCBASE", m_ppc).noshow();
-=======
 	state_add(STATE_GENPCBASE, "CURPC",    m_ppc).noshow();
->>>>>>> upstream/master
 	state_add(STATE_GENFLAGS, "GENFLAGS",  m_psw).callimport().callexport().formatstr("%10s").noshow();
 	state_add(DSP16_PC,       "PC",        m_pc);
 	state_add(DSP16_I,        "I",         m_i);
@@ -127,13 +108,8 @@ void dsp16_device::device_start()
 	state_add(DSP16_X,        "X",         m_x);
 	state_add(DSP16_Y,        "Y",         m_y);
 	state_add(DSP16_P,        "P",         m_p);
-<<<<<<< HEAD
-	state_add(DSP16_A0,       "A0",        m_a0).mask(U64(0xfffffffff));
-	state_add(DSP16_A1,       "A1",        m_a1).mask(U64(0xfffffffff));
-=======
 	state_add(DSP16_A0,       "A0",        m_a0).mask(0xfffffffffU);
 	state_add(DSP16_A1,       "A1",        m_a1).mask(0xfffffffffU);
->>>>>>> upstream/master
 	state_add(DSP16_AUC,      "AUC",       m_auc).formatstr("%8s");
 	state_add(DSP16_PSW,      "PSW",       m_psw).formatstr("%16s");
 	state_add(DSP16_C0,       "C0",        m_c0);
@@ -221,17 +197,6 @@ void dsp16_device::device_reset()
 
 //-------------------------------------------------
 //  memory_space_config - return the configuration
-<<<<<<< HEAD
-//  of the specified address space, or NULL if
-//  the space doesn't exist
-//-------------------------------------------------
-
-const address_space_config *dsp16_device::memory_space_config(address_spacenum spacenum) const
-{
-	return (spacenum == AS_PROGRAM) ? &m_program_config :
-			(spacenum == AS_DATA) ? &m_data_config :
-			NULL;
-=======
 //  of the specified address space, or nullptr if
 //  the space doesn't exist
 //-------------------------------------------------
@@ -242,7 +207,6 @@ device_memory_interface::space_config_vector dsp16_device::memory_space_config()
 		std::make_pair(AS_PROGRAM, &m_program_config),
 		std::make_pair(AS_DATA,    &m_data_config)
 	};
->>>>>>> upstream/master
 }
 
 
@@ -251,111 +215,6 @@ device_memory_interface::space_config_vector dsp16_device::memory_space_config()
 //  for the debugger
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void dsp16_device::state_string_export(const device_state_entry &entry, std::string &str)
-{
-	switch (entry.index())
-	{
-		case STATE_GENFLAGS:
-			strprintf(str, "(below)");
-			break;
-
-		case DSP16_AUC:
-		{
-			std::string alignString;
-			const UINT8 align = m_auc & 0x03;
-			switch (align)
-			{
-				case 0x00: strprintf(alignString,"xy"); break;
-				case 0x01: strprintf(alignString,"/4"); break;
-				case 0x02: strprintf(alignString,"x4"); break;
-				case 0x03: strprintf(alignString,",,"); break;
-			}
-			strprintf(str, "%c%c%c%c%c%s",
-							m_auc & 0x40 ? 'Y':'.',
-							m_auc & 0x20 ? '1':'.',
-							m_auc & 0x10 ? '0':'.',
-							m_auc & 0x08 ? '1':'.',
-							m_auc & 0x04 ? '0':'.',
-							alignString.c_str());
-			break;
-		}
-
-		case DSP16_PSW:
-			strprintf(str, "%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c",
-							m_psw & 0x8000 ? 'M':'.',
-							m_psw & 0x4000 ? 'E':'.',
-							m_psw & 0x2000 ? 'L':'.',
-							m_psw & 0x1000 ? 'V':'.',
-							m_psw & 0x0800 ? ',':',',
-							m_psw & 0x0400 ? ',':',',
-							m_psw & 0x0200 ? 'O':'.',
-							m_psw & 0x0100 ? '1':'.',
-							m_psw & 0x0080 ? '1':'.',
-							m_psw & 0x0040 ? '1':'.',
-							m_psw & 0x0020 ? '1':'.',
-							m_psw & 0x0010 ? 'O':'.',
-							m_psw & 0x0008 ? '1':'.',
-							m_psw & 0x0004 ? '1':'.',
-							m_psw & 0x0002 ? '1':'.',
-							m_psw & 0x0001 ? '1':'.');
-			break;
-
-		case DSP16_PIOC:
-		{
-			std::string strobeString;
-			const UINT8 strobe = (m_pioc & 0x6000) >> 13;
-			switch (strobe)
-			{
-				case 0x00: strprintf(strobeString, "1T"); break;
-				case 0x01: strprintf(strobeString, "2T"); break;
-				case 0x02: strprintf(strobeString, "3T"); break;
-				case 0x03: strprintf(strobeString, "4T"); break;
-			}
-			strprintf(str, "%c%s%c%c%c%c%c%c%c%c%c%c%c%c%c",
-							m_pioc & 0x8000 ? 'I':'.',
-							strobeString.c_str(),
-							m_pioc & 0x1000 ? 'O':'I',
-							m_pioc & 0x0800 ? 'O':'I',
-							m_pioc & 0x0400 ? 'S':'.',
-							m_pioc & 0x0200 ? 'I':'.',
-							m_pioc & 0x0100 ? 'O':'.',
-							m_pioc & 0x0080 ? 'P':'.',
-							m_pioc & 0x0040 ? 'P':'.',
-							m_pioc & 0x0020 ? 'I':'.',
-							m_pioc & 0x0010 ? 'I':'.',
-							m_pioc & 0x0008 ? 'O':'.',
-							m_pioc & 0x0004 ? 'P':'.',
-							m_pioc & 0x0002 ? 'P':'.',
-							m_pioc & 0x0001 ? 'I':'.');
-			break;
-		}
-
-		// Placeholder for a better view later (TODO)
-		case DSP16_SIOC:
-		{
-			std::string clkString;
-			const UINT8 clk = (m_sioc & 0x0180) >> 7;
-			switch (clk)
-			{
-				case 0x00: strprintf(clkString, "/4"); break;
-				case 0x01: strprintf(clkString, "12"); break;
-				case 0x02: strprintf(clkString, "16"); break;
-				case 0x03: strprintf(clkString, "20"); break;
-			}
-			strprintf(str, "%c%s%c%c%c%c%c%c%c",
-							m_sioc & 0x0200 ? 'I':'O',
-							clkString.c_str(),
-							m_sioc & 0x0040 ? 'L':'M',
-							m_sioc & 0x0020 ? 'I':'O',
-							m_sioc & 0x0010 ? 'I':'O',
-							m_sioc & 0x0008 ? 'I':'O',
-							m_sioc & 0x0004 ? 'I':'O',
-							m_sioc & 0x0002 ? '2':'1',
-							m_sioc & 0x0001 ? '2':'1');
-			break;
-		}
-=======
 void dsp16_device::state_string_export(const device_state_entry &entry, std::string &str) const
 {
 	switch (entry.index())
@@ -459,7 +318,6 @@ void dsp16_device::state_string_export(const device_state_entry &entry, std::str
 					m_sioc & 0x0001 ? '2':'1');
 		}
 		break;
->>>>>>> upstream/master
 	}
 }
 
@@ -469,11 +327,7 @@ void dsp16_device::state_string_export(const device_state_entry &entry, std::str
 //  of the shortest instruction, in bytes
 //-------------------------------------------------
 
-<<<<<<< HEAD
-UINT32 dsp16_device::disasm_min_opcode_bytes() const
-=======
 uint32_t dsp16_device::disasm_min_opcode_bytes() const
->>>>>>> upstream/master
 {
 	return 2;
 }
@@ -484,11 +338,7 @@ uint32_t dsp16_device::disasm_min_opcode_bytes() const
 //  of the longest instruction, in bytes
 //-------------------------------------------------
 
-<<<<<<< HEAD
-UINT32 dsp16_device::disasm_max_opcode_bytes() const
-=======
 uint32_t dsp16_device::disasm_max_opcode_bytes() const
->>>>>>> upstream/master
 {
 	return 4;
 }
@@ -499,17 +349,10 @@ uint32_t dsp16_device::disasm_max_opcode_bytes() const
 //  helper function
 //-------------------------------------------------
 
-<<<<<<< HEAD
-offs_t dsp16_device::disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options)
-{
-	extern CPU_DISASSEMBLE( dsp16a );
-	return CPU_DISASSEMBLE_NAME(dsp16a)(this, buffer, pc, oprom, opram, options);
-=======
 offs_t dsp16_device::disasm_disassemble(std::ostream &stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, uint32_t options)
 {
 	extern CPU_DISASSEMBLE( dsp16a );
 	return CPU_DISASSEMBLE_NAME(dsp16a)(this, stream, pc, oprom, opram, options);
->>>>>>> upstream/master
 }
 
 
@@ -518,33 +361,19 @@ offs_t dsp16_device::disasm_disassemble(std::ostream &stream, offs_t pc, const u
     MEMORY ACCESSORS
 ***************************************************************************/
 
-<<<<<<< HEAD
-inline UINT32 dsp16_device::data_read(const UINT16& addr)
-=======
 inline uint32_t dsp16_device::data_read(const uint16_t& addr)
->>>>>>> upstream/master
 {
 	return m_data->read_word(addr << 1);
 }
 
-<<<<<<< HEAD
-inline void dsp16_device::data_write(const UINT16& addr, const UINT16& data)
-=======
 inline void dsp16_device::data_write(const uint16_t& addr, const uint16_t& data)
->>>>>>> upstream/master
 {
 	m_data->write_word(addr << 1, data & 0xffff);
 }
 
-<<<<<<< HEAD
-inline UINT32 dsp16_device::opcode_read(const UINT8 pcOffset)
-{
-	const UINT16 readPC = m_pc + pcOffset;
-=======
 inline uint32_t dsp16_device::opcode_read(const uint8_t pcOffset)
 {
 	const uint16_t readPC = m_pc + pcOffset;
->>>>>>> upstream/master
 	return m_direct->read_dword(readPC << 1);
 }
 
@@ -558,11 +387,7 @@ inline uint32_t dsp16_device::opcode_read(const uint8_t pcOffset)
 //  cycles it takes for one instruction to execute
 //-------------------------------------------------
 
-<<<<<<< HEAD
-UINT32 dsp16_device::execute_min_cycles() const
-=======
 uint32_t dsp16_device::execute_min_cycles() const
->>>>>>> upstream/master
 {
 	return 1;
 }
@@ -573,11 +398,7 @@ uint32_t dsp16_device::execute_min_cycles() const
 //  cycles it takes for one instruction to execute
 //-------------------------------------------------
 
-<<<<<<< HEAD
-UINT32 dsp16_device::execute_max_cycles() const
-=======
 uint32_t dsp16_device::execute_max_cycles() const
->>>>>>> upstream/master
 {
 	return 1;
 }
@@ -588,11 +409,7 @@ uint32_t dsp16_device::execute_max_cycles() const
 //  input/interrupt lines
 //-------------------------------------------------
 
-<<<<<<< HEAD
-UINT32 dsp16_device::execute_input_lines() const
-=======
 uint32_t dsp16_device::execute_input_lines() const
->>>>>>> upstream/master
 {
 	return 1;
 }
@@ -618,15 +435,9 @@ void dsp16_device::execute_run()
 		debugger_instruction_hook(this, m_pc);
 
 		// instruction fetch & execute
-<<<<<<< HEAD
-		UINT8 cycles;
-		UINT8 pcAdvance;
-		const UINT16 op = opcode_read();
-=======
 		uint8_t cycles;
 		uint8_t pcAdvance;
 		const uint16_t op = opcode_read();
->>>>>>> upstream/master
 		execute_one(op, cycles, pcAdvance);
 
 		// step
@@ -640,8 +451,4 @@ void dsp16_device::execute_run()
 	} while (m_icount > 0);
 }
 
-<<<<<<< HEAD
-#include "dsp16ops.inc"
-=======
 #include "dsp16ops.hxx"
->>>>>>> upstream/master

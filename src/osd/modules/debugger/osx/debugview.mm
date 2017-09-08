@@ -8,20 +8,14 @@
 
 #import "debugview.h"
 
-<<<<<<< HEAD
-=======
 #include "emu.h"
 #include "debugger.h"
->>>>>>> upstream/master
 #include "debug/debugcpu.h"
 
 #include "modules/lib/osdobj_common.h"
 
-<<<<<<< HEAD
-=======
 #include "util/xmlfile.h"
 
->>>>>>> upstream/master
 #include <string.h>
 
 
@@ -73,19 +67,11 @@ static void debugwin_view_update(debug_view &view, void *osdprivate)
 	InactiveSelectedBackground = [[NSColor colorWithCalibratedWhite:0.875 alpha:1.0] retain];
 	InactiveSelectedCurrentBackground = [[NSColor colorWithCalibratedRed:0.875 green:0.5 blue:0.625 alpha:1.0] retain];
 
-<<<<<<< HEAD
-	NonWhiteCharacters = [[NSCharacterSet whitespaceAndNewlineCharacterSet] invertedSet];
-}
-
-
-- (NSColor *)foregroundForAttribute:(UINT8)attrib {
-=======
 	NonWhiteCharacters = [[[NSCharacterSet whitespaceAndNewlineCharacterSet] invertedSet] retain];
 }
 
 
 - (NSColor *)foregroundForAttribute:(uint8_t)attrib {
->>>>>>> upstream/master
 	if (attrib & DCA_COMMENT)
 		return (attrib & DCA_DISABLED) ? DisabledCommentForeground : CommentForeground;
 	else if (attrib & DCA_INVALID)
@@ -97,11 +83,7 @@ static void debugwin_view_update(debug_view &view, void *osdprivate)
 }
 
 
-<<<<<<< HEAD
-- (NSColor *)backgroundForAttribute:(UINT8)attrib {
-=======
 - (NSColor *)backgroundForAttribute:(uint8_t)attrib {
->>>>>>> upstream/master
 	BOOL const active = [[self window] isKeyWindow] && ([[self window] firstResponder] == self);
 	if ((attrib & DCA_SELECTED) && (attrib & DCA_CURRENT))
 		return active ? SelectedCurrentBackground : InactiveSelectedCurrentBackground;
@@ -138,15 +120,9 @@ static void debugwin_view_update(debug_view &view, void *osdprivate)
 	else
 	{
 		data += ((position.y - view->visible_position().y) * view->visible_size().x);
-<<<<<<< HEAD
-		int			attr = -1;
-		NSUInteger	start = 0, length = 0;
-		for (UINT32 col = origin.x; col < origin.x + size.x; col++)
-=======
 		int         attr = -1;
 		NSUInteger  start = 0, length = 0;
 		for (uint32_t col = origin.x; col < origin.x + size.x; col++)
->>>>>>> upstream/master
 		{
 			[[text mutableString] appendFormat:@"%c", data[col - origin.x].byte];
 			if ((start < length) && (attr != data[col - origin.x].attrib))
@@ -189,11 +165,7 @@ static void debugwin_view_update(debug_view &view, void *osdprivate)
 }
 
 
-<<<<<<< HEAD
-- (void)convertBounds:(NSRect)b toFirstAffectedLine:(INT32 *)f count:(INT32 *)c {
-=======
 - (void)convertBounds:(NSRect)b toFirstAffectedLine:(int32_t *)f count:(int32_t *)c {
->>>>>>> upstream/master
 	*f = lround(floor(b.origin.y / fontHeight));
 	*c = lround(ceil((b.origin.y + b.size.height) / fontHeight)) - *f;
 }
@@ -203,11 +175,7 @@ static void debugwin_view_update(debug_view &view, void *osdprivate)
 	// this gets all the lines that are at least partially visible
 	debug_view_xy origin(0, 0), size(totalWidth, totalHeight);
 	[self convertBounds:[self visibleRect] toFirstAffectedLine:&origin.y count:&size.y];
-<<<<<<< HEAD
-	size.y = MIN(size.y, totalHeight - origin.y);
-=======
 	size.y = std::min(size.y, totalHeight - origin.y);
->>>>>>> upstream/master
 
 	// tell the underlying view how much real estate is available
 	view->set_visible_size(size);
@@ -219,11 +187,7 @@ static void debugwin_view_update(debug_view &view, void *osdprivate)
 - (void)typeCharacterAndScrollToCursor:(char)ch {
 	debug_view_xy const oldPos = view->cursor_position();
 	view->process_char(ch);
-<<<<<<< HEAD
-	if (view->cursor_supported() && view->cursor_visible())
-=======
 	if (view->cursor_supported())
->>>>>>> upstream/master
 	{
 		debug_view_xy const newPos = view->cursor_position();
 		if ((newPos.x != oldPos.x) || (newPos.y != oldPos.y))
@@ -239,26 +203,16 @@ static void debugwin_view_update(debug_view &view, void *osdprivate)
 
 
 - (void)adjustSizeAndRecomputeVisible {
-<<<<<<< HEAD
-	NSSize const clip = [[[self enclosingScrollView] contentView] bounds].size;
-=======
 	NSScrollView *const scroller = [self enclosingScrollView];
 	NSSize const clip = [[scroller contentView] bounds].size;
->>>>>>> upstream/master
 	NSSize content = NSMakeSize((fontWidth * totalWidth) + (2 * [textContainer lineFragmentPadding]),
 								fontHeight * totalHeight);
 	if (wholeLineScroll)
 		content.height += (fontHeight * 2) - 1;
-<<<<<<< HEAD
-	[self setFrameSize:NSMakeSize(ceil(MAX(clip.width, content.width)),
-								  ceil(MAX(clip.height, content.height)))];
-	[self recomputeVisible];
-=======
 	[self setFrameSize:NSMakeSize(ceil(std::max(clip.width, content.width)),
 								  ceil(std::max(clip.height, content.height)))];
 	[self recomputeVisible];
 	[scroller reflectScrolledClipView:[scroller contentView]];
->>>>>>> upstream/master
 }
 
 
@@ -312,11 +266,7 @@ static void debugwin_view_update(debug_view &view, void *osdprivate)
 
 - (void)dealloc {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-<<<<<<< HEAD
-	if (view != NULL) machine->debug_view().free_view(*view);
-=======
 	if (view != nullptr) machine->debug_view().free_view(*view);
->>>>>>> upstream/master
 	if (font != nil) [font release];
 	if (text != nil) [text release];
 	[super dealloc];
@@ -337,14 +287,9 @@ static void debugwin_view_update(debug_view &view, void *osdprivate)
 										fontHeight * newSize.y);
 			if (wholeLineScroll)
 				content.height += (fontHeight * 2) - 1;
-<<<<<<< HEAD
-			[self setFrameSize:NSMakeSize(ceil(MAX(clip.width, content.width)),
-										  ceil(MAX(clip.height, content.height)))];
-=======
 			[self setFrameSize:NSMakeSize(ceil(std::max(clip.width, content.width)),
 										  ceil(std::max(clip.height, content.height)))];
 			[scroller reflectScrolledClipView:[scroller contentView]];
->>>>>>> upstream/master
 		}
 		totalWidth = newSize.x;
 		totalHeight = newSize.y;
@@ -413,21 +358,12 @@ static void debugwin_view_update(debug_view &view, void *osdprivate)
 		return;
 	}
 
-<<<<<<< HEAD
-	for (UINT32 row = 0; row < size.y; row++, data += size.x)
-	{
-		// add content for the line and set colours
-		int			attr = -1;
-		NSUInteger	start = [text length], length = start;
-		for (UINT32 col = 0; col < size.x; col++)
-=======
 	for (uint32_t row = 0; row < size.y; row++, data += size.x)
 	{
 		// add content for the line and set colours
 		int         attr = -1;
 		NSUInteger  start = [text length], length = start;
 		for (uint32_t col = 0; col < size.x; col++)
->>>>>>> upstream/master
 		{
 			[[text mutableString] appendFormat:@"%c", data[col].byte];
 			if ((start < length) && (attr != (data[col].attrib & ~DCA_SELECTED)))
@@ -539,11 +475,7 @@ static void debugwin_view_update(debug_view &view, void *osdprivate)
 
 
 - (void)addContextMenuItemsToMenu:(NSMenu *)menu {
-<<<<<<< HEAD
-	NSMenuItem	*item;
-=======
 	NSMenuItem  *item;
->>>>>>> upstream/master
 
 	item = [menu addItemWithTitle:@"Copy Visible"
 						   action:@selector(copyVisible:)
@@ -557,8 +489,6 @@ static void debugwin_view_update(debug_view &view, void *osdprivate)
 }
 
 
-<<<<<<< HEAD
-=======
 - (void)saveConfigurationToNode:(util::xml::data_node *)node {
 	if (view->cursor_supported())
 	{
@@ -607,7 +537,6 @@ static void debugwin_view_update(debug_view &view, void *osdprivate)
 }
 
 
->>>>>>> upstream/master
 - (BOOL)acceptsFirstResponder {
 	return view->cursor_supported();
 }
@@ -616,17 +545,7 @@ static void debugwin_view_update(debug_view &view, void *osdprivate)
 - (BOOL)becomeFirstResponder {
 	if (view->cursor_supported())
 	{
-<<<<<<< HEAD
-		debug_view_xy pos;
 		view->set_cursor_visible(true);
-		pos = view->cursor_position();
-		[self scrollRectToVisible:NSMakeRect((pos.x * fontWidth) + [textContainer lineFragmentPadding],
-											 pos.y * fontHeight,
-											 fontWidth,
-											 fontHeight)]; // FIXME: metrics
-=======
-		view->set_cursor_visible(true);
->>>>>>> upstream/master
 		[self setNeedsDisplay:YES];
 		return [super becomeFirstResponder];
 	}
@@ -712,11 +631,7 @@ static void debugwin_view_update(debug_view &view, void *osdprivate)
 	if (wholeLineScroll)
 	{
 		CGFloat const clamp = [self bounds].size.height - fontHeight - proposedVisibleRect.size.height;
-<<<<<<< HEAD
-		proposedVisibleRect.origin.y = MIN(proposedVisibleRect.origin.y, MAX(clamp, 0));
-=======
 		proposedVisibleRect.origin.y = std::min(proposedVisibleRect.origin.y, std::max(clamp, CGFloat(0)));
->>>>>>> upstream/master
 		proposedVisibleRect.origin.y -= fmod(proposedVisibleRect.origin.y, fontHeight);
 	}
 	return proposedVisibleRect;
@@ -730,19 +645,11 @@ static void debugwin_view_update(debug_view &view, void *osdprivate)
 	debug_view_xy const size = view->visible_size();
 
 	// work out how much we need to draw
-<<<<<<< HEAD
-	INT32 row, clip;
-	[self convertBounds:dirtyRect toFirstAffectedLine:&row count:&clip];
-	clip += row;
-	row = MAX(row, origin.y);
-	clip = MIN(clip, origin.y + size.y);
-=======
 	int32_t row, clip;
 	[self convertBounds:dirtyRect toFirstAffectedLine:&row count:&clip];
 	clip += row;
 	row = std::max(row, origin.y);
 	clip = std::min(clip, origin.y + size.y);
->>>>>>> upstream/master
 
 	// this gets the text for the whole visible area
 	debug_view_char const *data = view->viewdata();
@@ -763,15 +670,9 @@ static void debugwin_view_update(debug_view &view, void *osdprivate)
 	// render entire lines to get character alignment right
 	for ( ; row < clip; row++, data += size.x)
 	{
-<<<<<<< HEAD
-		int			attr = -1;
-		NSUInteger	start = 0, length = 0;
-		for (UINT32 col = origin.x; col < origin.x + size.x; col++)
-=======
 		int         attr = -1;
 		NSUInteger  start = 0, length = 0;
 		for (uint32_t col = origin.x; col < origin.x + size.x; col++)
->>>>>>> upstream/master
 		{
 			[[text mutableString] appendFormat:@"%c", data[col - origin.x].byte];
 			if ((start < length) && (attr != data[col - origin.x].attrib))
@@ -815,11 +716,7 @@ static void debugwin_view_update(debug_view &view, void *osdprivate)
 											  inTextContainer:textContainer];
 		if (start == 0)
 			box.origin.x = 0;
-<<<<<<< HEAD
-		box.size.width = MAX([self bounds].size.width - box.origin.x, 0);
-=======
 		box.size.width = std::max([self bounds].size.width - box.origin.x, CGFloat(0));
->>>>>>> upstream/master
 		[[self backgroundForAttribute:attr] set];
 		[NSBezierPath fillRect:NSMakeRect(box.origin.x,
 										  row * fontHeight,
@@ -880,13 +777,8 @@ static void debugwin_view_update(debug_view &view, void *osdprivate)
 
 
 - (void)keyDown:(NSEvent *)event {
-<<<<<<< HEAD
-	NSUInteger	modifiers = [event modifierFlags];
-	NSString	*str = [event charactersIgnoringModifiers];
-=======
 	NSUInteger  modifiers = [event modifierFlags];
 	NSString    *str = [event charactersIgnoringModifiers];
->>>>>>> upstream/master
 
 	if ([str length] == 1)
 	{
@@ -954,8 +846,6 @@ static void debugwin_view_update(debug_view &view, void *osdprivate)
 }
 
 
-<<<<<<< HEAD
-=======
 - (void)keyUp:(NSEvent *)event {
 	if (view->cursor_supported() && view->cursor_visible())
 	{
@@ -968,7 +858,6 @@ static void debugwin_view_update(debug_view &view, void *osdprivate)
 }
 
 
->>>>>>> upstream/master
 - (void)insertTab:(id)sender {
 	if ([[self window] firstResponder] == self)
 		[[self window] selectNextKeyView:self];
@@ -982,22 +871,13 @@ static void debugwin_view_update(debug_view &view, void *osdprivate)
 
 
 - (void)insertNewline:(id)sender {
-<<<<<<< HEAD
-	debug_cpu_get_visible_cpu(*machine)->debug()->single_step();
-=======
 	machine->debugger().cpu().get_visible_cpu()->debug()->single_step();
->>>>>>> upstream/master
 }
 
 
 - (void)insertText:(id)string {
-<<<<<<< HEAD
-	NSUInteger	len;
-	NSRange		found;
-=======
 	NSUInteger  len;
 	NSRange     found;
->>>>>>> upstream/master
 	if ([string isKindOfClass:[NSAttributedString class]])
 		string = [string string];
 	for (len = [string length], found = NSMakeRange(0, 0);
@@ -1014,11 +894,7 @@ static void debugwin_view_update(debug_view &view, void *osdprivate)
 
 
 - (BOOL)validateMenuItem:(NSMenuItem *)item {
-<<<<<<< HEAD
-	SEL	action = [item action];
-=======
 	SEL action = [item action];
->>>>>>> upstream/master
 
 	if (action == @selector(paste:))
 	{

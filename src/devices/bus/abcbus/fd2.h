@@ -6,20 +6,11 @@
 
 *********************************************************************/
 
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __ABC_FD2__
-#define __ABC_FD2__
-
-#include "emu.h"
-=======
 #ifndef MAME_BUS_ABCBUS_FD2_H
 #define MAME_BUS_ABCBUS_FD2_H
 
 #pragma once
 
->>>>>>> upstream/master
 #include "abcbus.h"
 #include "cpu/z80/z80.h"
 #include "cpu/z80/z80daisy.h"
@@ -33,29 +24,13 @@
 //  TYPE DEFINITIONS
 //**************************************************************************
 
-<<<<<<< HEAD
-// ======================> abc_fd2_t
-
-class abc_fd2_t :  public device_t,
-=======
 // ======================> abc_fd2_device
 
 class abc_fd2_device :  public device_t,
->>>>>>> upstream/master
 					public device_abcbus_card_interface
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	abc_fd2_t(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// optional information overrides
-	virtual const rom_entry *device_rom_region() const;
-	virtual machine_config_constructor device_mconfig_additions() const;
-
-	DECLARE_WRITE8_MEMBER( status_w );
-
-=======
 	abc_fd2_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	DECLARE_WRITE8_MEMBER( status_w );
@@ -79,7 +54,6 @@ protected:
 	virtual uint8_t abcbus_xmemfl(offs_t offset) override;
 
 private:
->>>>>>> upstream/master
 	DECLARE_READ8_MEMBER( pio_pa_r );
 	DECLARE_WRITE8_MEMBER( pio_pa_w );
 	DECLARE_READ8_MEMBER( pio_pb_r );
@@ -87,54 +61,20 @@ private:
 
 	DECLARE_FLOPPY_FORMATS( floppy_formats );
 
-<<<<<<< HEAD
-protected:
-	// device-level overrides
-	virtual void device_start();
-	virtual void device_reset();
-
-	// device_abcbus_interface overrides
-	virtual void abcbus_cs(UINT8 data);
-	virtual UINT8 abcbus_inp();
-	virtual void abcbus_out(UINT8 data);
-	virtual UINT8 abcbus_stat();
-	virtual void abcbus_c1(UINT8 data);
-	virtual void abcbus_c3(UINT8 data);
-	virtual UINT8 abcbus_xmemfl(offs_t offset);
-
-private:
-	required_device<cpu_device> m_maincpu;
-	required_device<z80pio_device> m_pio;
-	required_device<fd1771_t> m_fdc;
-=======
 	required_device<cpu_device> m_maincpu;
 	required_device<z80pio_device> m_pio;
 	required_device<fd1771_device> m_fdc;
->>>>>>> upstream/master
 	required_device<floppy_connector> m_floppy0;
 	required_device<floppy_connector> m_floppy1;
 	required_memory_region m_dos_rom;
 
 	bool m_cs;
-<<<<<<< HEAD
-	UINT8 m_status;
-	UINT8 m_data;
-=======
 	uint8_t m_status;
 	uint8_t m_data;
->>>>>>> upstream/master
 };
 
 
 // device type definition
-<<<<<<< HEAD
-extern const device_type ABC_FD2;
-
-
-
-#endif
-=======
 DECLARE_DEVICE_TYPE(ABC_FD2, abc_fd2_device)
 
 #endif // MAME_BUS_ABCBUS_FD2_H
->>>>>>> upstream/master

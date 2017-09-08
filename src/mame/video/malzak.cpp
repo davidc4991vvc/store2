@@ -18,21 +18,13 @@
 #include "video/saa5050.h"
 #include "includes/malzak.h"
 
-<<<<<<< HEAD
-UINT32 malzak_state::screen_update_malzak(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
-=======
 uint32_t malzak_state::screen_update_malzak(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	const rgb_t *palette = m_palette->palette()->entry_list_raw();
 	int sx, sy;
 	int x,y;
 
-<<<<<<< HEAD
-	bitmap.fill(rgb_t::black);
-=======
 	bitmap.fill(rgb_t::black(), cliprect);
->>>>>>> upstream/master
 
 	m_trom->screen_update(screen, bitmap, cliprect);
 
@@ -52,13 +44,8 @@ uint32_t malzak_state::screen_update_malzak(screen_device &screen, bitmap_rgb32 
 		}
 
 	/* update the S2636 chips */
-<<<<<<< HEAD
-	bitmap_ind16 &s2636_0_bitmap = m_s2636_0->update(cliprect);
-	bitmap_ind16 &s2636_1_bitmap = m_s2636_1->update(cliprect);
-=======
 	bitmap_ind16 const &s2636_0_bitmap = m_s2636_0->update(cliprect);
 	bitmap_ind16 const &s2636_1_bitmap = m_s2636_1->update(cliprect);
->>>>>>> upstream/master
 
 	/* copy the S2636 images into the main bitmap */
 	{

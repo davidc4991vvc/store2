@@ -60,8 +60,6 @@
 		]]
 	end
 
-<<<<<<< HEAD
-=======
 	function suite.PBXBuildFile_ListsDependencyTargets_OnBundle()
 		kind "Bundle"
 		prepare()
@@ -73,7 +71,6 @@
 		]]
 	end
 
->>>>>>> upstream/master
 
 ---------------------------------------------------------------------------
 -- PBXContainerItemProxy tests
@@ -171,8 +168,6 @@
 		]]
 	end
 
-<<<<<<< HEAD
-=======
 	function suite.PBXFrameworksBuildPhase_ListsDependencies_OnBundle()
 		kind "Bundle"
 		prepare()
@@ -191,7 +186,6 @@
 		]]
 	end
 
->>>>>>> upstream/master
 ---------------------------------------------------------------------------
 -- PBXGroup tests
 ---------------------------------------------------------------------------

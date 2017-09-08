@@ -6,17 +6,12 @@
 
 */
 
-<<<<<<< HEAD
-#include "clgd542x.h"
-
-=======
 #include "emu.h"
 #include "clgd542x.h"
 
 #include "screen.h"
 
 
->>>>>>> upstream/master
 #define LOG_REG 0
 #define LOG_BLIT 1
 
@@ -46,28 +41,6 @@
 
 #define TEXT_COPY_9COLUMN(ch) (((ch & 0xe0) == 0xc0)&&(vga.attribute.data[0x10]&4))
 
-<<<<<<< HEAD
-const device_type CIRRUS_GD5428 = &device_creator<cirrus_gd5428_device>;
-const device_type CIRRUS_GD5430 = &device_creator<cirrus_gd5430_device>;
-
-
-cirrus_gd5428_device::cirrus_gd5428_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: svga_device(mconfig, CIRRUS_GD5428, "Cirrus Logic GD5428", tag, owner, clock, "clgd5428", __FILE__)
-{
-}
-
-cirrus_gd5428_device::cirrus_gd5428_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source)
-	: svga_device(mconfig, type, name, tag, owner, clock, shortname, source)
-{
-}
-
-cirrus_gd5430_device::cirrus_gd5430_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: cirrus_gd5428_device(mconfig, CIRRUS_GD5430, "Cirrus Logic GD5430", tag, owner, clock, "clgd5430", __FILE__)
-{
-}
-
-MACHINE_CONFIG_FRAGMENT( pcvideo_cirrus_gd5428 )
-=======
 DEFINE_DEVICE_TYPE(CIRRUS_GD5428, cirrus_gd5428_device, "clgd5428", "Cirrus Logic GD5428")
 DEFINE_DEVICE_TYPE(CIRRUS_GD5430, cirrus_gd5430_device, "clgd5430", "Cirrus Logic GD5430")
 
@@ -88,7 +61,6 @@ cirrus_gd5430_device::cirrus_gd5430_device(const machine_config &mconfig, const 
 }
 
 MACHINE_CONFIG_START( pcvideo_cirrus_gd5428 )
->>>>>>> upstream/master
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_RAW_PARAMS(XTAL_25_1748MHz,900,0,640,526,0,480)
 	MCFG_SCREEN_UPDATE_DEVICE("vga", cirrus_gd5428_device, screen_update)
@@ -97,11 +69,7 @@ MACHINE_CONFIG_START( pcvideo_cirrus_gd5428 )
 	MCFG_DEVICE_ADD("vga", CIRRUS_GD5428, 0)
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-MACHINE_CONFIG_FRAGMENT( pcvideo_cirrus_gd5430 )
-=======
 MACHINE_CONFIG_START( pcvideo_cirrus_gd5430 )
->>>>>>> upstream/master
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_RAW_PARAMS(XTAL_25_1748MHz,900,0,640,526,0,480)
 	MCFG_SCREEN_UPDATE_DEVICE("vga", cirrus_gd5430_device, screen_update)
@@ -169,15 +137,6 @@ void cirrus_gd5428_device::device_reset()
 	m_blt_system_transfer = false;
 }
 
-<<<<<<< HEAD
-UINT32 cirrus_gd5428_device::screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
-{
-	int x,y,bit;
-	UINT32 ptr = (vga.svga_intf.vram_size - 0x4000);  // cursor patterns are stored in the last 16kB of VRAM
-	svga_device::screen_update(screen, bitmap, cliprect);
-
-	/*UINT8 cur_mode =*/ pc_vga_choosevideomode();
-=======
 uint32_t cirrus_gd5428_device::screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
 {
 	int x,y,bit;
@@ -185,7 +144,6 @@ uint32_t cirrus_gd5428_device::screen_update(screen_device &screen, bitmap_rgb32
 	svga_device::screen_update(screen, bitmap, cliprect);
 
 	/*uint8_t cur_mode =*/ pc_vga_choosevideomode();
->>>>>>> upstream/master
 	if(m_cursor_attr & 0x01)  // hardware cursor enabled
 	{
 		// draw hardware graphics cursor
@@ -198,15 +156,9 @@ uint32_t cirrus_gd5428_device::screen_update(screen_device &screen, bitmap_rgb32
 				{
 					for(bit=0;bit<8;bit++)
 					{
-<<<<<<< HEAD
-						UINT8 pixel1 = vga.memory[ptr % vga.svga_intf.vram_size] >> (7-bit);
-						UINT8 pixel2 = vga.memory[(ptr+512) % vga.svga_intf.vram_size] >> (7-bit);
-						UINT8 output = ((pixel1 & 0x01) << 1) | (pixel2 & 0x01);
-=======
 						uint8_t pixel1 = vga.memory[ptr % vga.svga_intf.vram_size] >> (7-bit);
 						uint8_t pixel2 = vga.memory[(ptr+512) % vga.svga_intf.vram_size] >> (7-bit);
 						uint8_t output = ((pixel1 & 0x01) << 1) | (pixel2 & 0x01);
->>>>>>> upstream/master
 						switch(output)
 						{
 						case 0:  // transparent - do nothing
@@ -234,15 +186,9 @@ uint32_t cirrus_gd5428_device::screen_update(screen_device &screen, bitmap_rgb32
 				{
 					for(bit=0;bit<8;bit++)
 					{
-<<<<<<< HEAD
-						UINT8 pixel1 = vga.memory[ptr % vga.svga_intf.vram_size] >> (7-bit);
-						UINT8 pixel2 = vga.memory[(ptr+128) % vga.svga_intf.vram_size] >> (7-bit);
-						UINT8 output = ((pixel1 & 0x01) << 1) | (pixel2 & 0x01);
-=======
 						uint8_t pixel1 = vga.memory[ptr % vga.svga_intf.vram_size] >> (7-bit);
 						uint8_t pixel2 = vga.memory[(ptr+128) % vga.svga_intf.vram_size] >> (7-bit);
 						uint8_t output = ((pixel1 & 0x01) << 1) | (pixel2 & 0x01);
->>>>>>> upstream/master
 						switch(output)
 						{
 						case 0:  // transparent - do nothing
@@ -268,15 +214,9 @@ uint32_t cirrus_gd5428_device::screen_update(screen_device &screen, bitmap_rgb32
 
 void cirrus_gd5428_device::cirrus_define_video_mode()
 {
-<<<<<<< HEAD
-	UINT8 divisor = 1;
-	float clock;
-	UINT8 clocksel = (vga.miscellaneous_output & 0xc) >> 2;
-=======
 	uint8_t divisor = 1;
 	float clock;
 	uint8_t clocksel = (vga.miscellaneous_output & 0xc) >> 2;
->>>>>>> upstream/master
 
 	svga.rgb8_en = 0;
 	svga.rgb15_en = 0;
@@ -308,15 +248,9 @@ void cirrus_gd5428_device::cirrus_define_video_mode()
 	recompute_params_clock(divisor, (int)clock);
 }
 
-<<<<<<< HEAD
-UINT16 cirrus_gd5428_device::offset()
-{
-	UINT16 off = vga_device::offset();
-=======
 uint16_t cirrus_gd5428_device::offset()
 {
 	uint16_t off = vga_device::offset();
->>>>>>> upstream/master
 
 	if (svga.rgb8_en == 1) // guess
 		off <<= 2;
@@ -332,11 +266,7 @@ uint16_t cirrus_gd5428_device::offset()
 
 void cirrus_gd5428_device::start_bitblt()
 {
-<<<<<<< HEAD
-	UINT32 x,y;
-=======
 	uint32_t x,y;
->>>>>>> upstream/master
 
 	if(m_blt_mode & 0x01)
 	{
@@ -358,11 +288,7 @@ void cirrus_gd5428_device::start_bitblt()
 				if(m_blt_mode & 0x10)  // 16-bit colour expansion / transparency width
 				{
 					// use GR0/1/10/11 background/foreground regs
-<<<<<<< HEAD
-					UINT16 pixel = (vga.memory[m_blt_source_current % vga.svga_intf.vram_size] >> (7-((x/2) % 8)) & 0x01) ? ((m_gr11 << 8) | vga.gc.enable_set_reset) : ((m_gr10 << 8) | vga.gc.set_reset);
-=======
 					uint16_t pixel = (vga.memory[m_blt_source_current % vga.svga_intf.vram_size] >> (7-((x/2) % 8)) & 0x01) ? ((m_gr11 << 8) | vga.gc.enable_set_reset) : ((m_gr10 << 8) | vga.gc.set_reset);
->>>>>>> upstream/master
 
 					if(m_blt_dest_current & 1)
 						copy_pixel(pixel >> 8, vga.memory[m_blt_dest_current % vga.svga_intf.vram_size]);
@@ -373,11 +299,7 @@ void cirrus_gd5428_device::start_bitblt()
 				}
 				else
 				{
-<<<<<<< HEAD
-					UINT8 pixel = (vga.memory[m_blt_source_current % vga.svga_intf.vram_size] >> (7-(x % 8)) & 0x01) ? vga.gc.enable_set_reset : vga.gc.set_reset;  // use GR0/1/10/11 background/foreground regs
-=======
 					uint8_t pixel = (vga.memory[m_blt_source_current % vga.svga_intf.vram_size] >> (7-(x % 8)) & 0x01) ? vga.gc.enable_set_reset : vga.gc.set_reset;  // use GR0/1/10/11 background/foreground regs
->>>>>>> upstream/master
 
 					copy_pixel(pixel, vga.memory[m_blt_dest_current % vga.svga_intf.vram_size]);
 					if((x % 8) == 7 && !(m_blt_mode & 0x40))  // don't increment if a pattern (it's only 8 bits)
@@ -425,11 +347,7 @@ void cirrus_gd5428_device::start_bitblt()
 
 void cirrus_gd5428_device::start_reverse_bitblt()
 {
-<<<<<<< HEAD
-	UINT32 x,y;
-=======
 	uint32_t x,y;
->>>>>>> upstream/master
 
 	if(LOG_BLIT) logerror("CL: Reverse BitBLT started: Src: %06x Dst: %06x Width: %i Height %i ROP: %02x Mode: %02x\n",m_blt_source,m_blt_dest,m_blt_width,m_blt_height,m_blt_rop,m_blt_mode);
 
@@ -446,11 +364,7 @@ void cirrus_gd5428_device::start_reverse_bitblt()
 				if(m_blt_mode & 0x10)  // 16-bit colour expansion / transparency width
 				{
 					// use GR0/1/10/11 background/foreground regs
-<<<<<<< HEAD
-					UINT16 pixel = (vga.memory[m_blt_source_current % vga.svga_intf.vram_size] >> (7-((x/2) % 8)) & 0x01) ? ((m_gr11 << 8) | vga.gc.enable_set_reset) : ((m_gr10 << 8) | vga.gc.set_reset);
-=======
 					uint16_t pixel = (vga.memory[m_blt_source_current % vga.svga_intf.vram_size] >> (7-((x/2) % 8)) & 0x01) ? ((m_gr11 << 8) | vga.gc.enable_set_reset) : ((m_gr10 << 8) | vga.gc.set_reset);
->>>>>>> upstream/master
 
 					if(m_blt_dest_current & 1)
 						copy_pixel(pixel >> 8, vga.memory[m_blt_dest_current % vga.svga_intf.vram_size]);
@@ -461,11 +375,7 @@ void cirrus_gd5428_device::start_reverse_bitblt()
 				}
 				else
 				{
-<<<<<<< HEAD
-				UINT8 pixel = (vga.memory[m_blt_source_current % vga.svga_intf.vram_size] >> (7-(x % 8)) & 0x01) ? vga.gc.enable_set_reset : vga.gc.set_reset;  // use GR0/1/10/11 background/foreground regs
-=======
 				uint8_t pixel = (vga.memory[m_blt_source_current % vga.svga_intf.vram_size] >> (7-(x % 8)) & 0x01) ? vga.gc.enable_set_reset : vga.gc.set_reset;  // use GR0/1/10/11 background/foreground regs
->>>>>>> upstream/master
 
 				copy_pixel(pixel, vga.memory[m_blt_dest_current % vga.svga_intf.vram_size]);
 				if((x % 8) == 7 && !(m_blt_mode & 0x40))  // don't decrement if a pattern (it's only 8 bits)
@@ -526,11 +436,7 @@ void cirrus_gd5428_device::start_system_bitblt()
 void cirrus_gd5428_device::blit_dword()
 {
 	// TODO: add support for reverse direction
-<<<<<<< HEAD
-	UINT8 x,pixel;
-=======
 	uint8_t x,pixel;
->>>>>>> upstream/master
 
 	for(x=0;x<32;x+=8)
 	{
@@ -557,11 +463,7 @@ void cirrus_gd5428_device::blit_dword()
 void cirrus_gd5428_device::blit_byte()
 {
 	// TODO: add support for reverse direction
-<<<<<<< HEAD
-	UINT8 x,pixel;
-=======
 	uint8_t x,pixel;
->>>>>>> upstream/master
 
 	for(x=0;x<8;x++)
 	{
@@ -588,15 +490,9 @@ void cirrus_gd5428_device::blit_byte()
 	}
 }
 
-<<<<<<< HEAD
-void cirrus_gd5428_device::copy_pixel(UINT8 src, UINT8 dst)
-{
-	UINT8 res = src;
-=======
 void cirrus_gd5428_device::copy_pixel(uint8_t src, uint8_t dst)
 {
 	uint8_t res = src;
->>>>>>> upstream/master
 
 	switch(m_blt_rop)
 	{
@@ -630,15 +526,9 @@ void cirrus_gd5428_device::copy_pixel(uint8_t src, uint8_t dst)
 	vga.memory[m_blt_dest_current % vga.svga_intf.vram_size] = res;
 }
 
-<<<<<<< HEAD
-UINT8 cirrus_gd5428_device::cirrus_seq_reg_read(UINT8 index)
-{
-	UINT8 res;
-=======
 uint8_t cirrus_gd5428_device::cirrus_seq_reg_read(uint8_t index)
 {
 	uint8_t res;
->>>>>>> upstream/master
 
 	res = 0xff;
 
@@ -695,11 +585,7 @@ uint8_t cirrus_gd5428_device::cirrus_seq_reg_read(uint8_t index)
 	return res;
 }
 
-<<<<<<< HEAD
-void cirrus_gd5428_device::cirrus_seq_reg_write(UINT8 index, UINT8 data)
-=======
 void cirrus_gd5428_device::cirrus_seq_reg_write(uint8_t index, uint8_t data)
->>>>>>> upstream/master
 {
 	if(LOG_REG) logerror("CL: SEQ write %02x to SR%02x\n",data,index);
 	switch(index)
@@ -791,15 +677,9 @@ void cirrus_gd5428_device::cirrus_seq_reg_write(uint8_t index, uint8_t data)
 	}
 }
 
-<<<<<<< HEAD
-UINT8 cirrus_gd5428_device::cirrus_gc_reg_read(UINT8 index)
-{
-	UINT8 res = 0xff;
-=======
 uint8_t cirrus_gd5428_device::cirrus_gc_reg_read(uint8_t index)
 {
 	uint8_t res = 0xff;
->>>>>>> upstream/master
 
 	switch(index)
 	{
@@ -919,11 +799,7 @@ uint8_t cirrus_gd5428_device::cirrus_gc_reg_read(uint8_t index)
 	return res;
 }
 
-<<<<<<< HEAD
-void cirrus_gd5428_device::cirrus_gc_reg_write(UINT8 index, UINT8 data)
-=======
 void cirrus_gd5428_device::cirrus_gc_reg_write(uint8_t index, uint8_t data)
->>>>>>> upstream/master
 {
 	if(LOG_REG) logerror("CL: GC write %02x to GR%02x\n",data,index);
 	switch(index)
@@ -1054,11 +930,7 @@ void cirrus_gd5428_device::cirrus_gc_reg_write(uint8_t index, uint8_t data)
 
 READ8_MEMBER(cirrus_gd5428_device::port_03c0_r)
 {
-<<<<<<< HEAD
-	UINT8 res = 0xff;
-=======
 	uint8_t res = 0xff;
->>>>>>> upstream/master
 
 	switch(offset)
 	{
@@ -1150,11 +1022,7 @@ WRITE8_MEMBER(cirrus_gd5428_device::port_03c0_w)
 
 READ8_MEMBER(cirrus_gd5428_device::port_03b0_r)
 {
-<<<<<<< HEAD
-	UINT8 res = 0xff;
-=======
 	uint8_t res = 0xff;
->>>>>>> upstream/master
 
 	if (CRTC_PORT_ADDR == 0x3b0)
 	{
@@ -1174,11 +1042,7 @@ READ8_MEMBER(cirrus_gd5428_device::port_03b0_r)
 
 READ8_MEMBER(cirrus_gd5428_device::port_03d0_r)
 {
-<<<<<<< HEAD
-	UINT8 res = 0xff;
-=======
 	uint8_t res = 0xff;
->>>>>>> upstream/master
 
 	if (CRTC_PORT_ADDR == 0x3d0)
 	{
@@ -1232,15 +1096,9 @@ WRITE8_MEMBER(cirrus_gd5428_device::port_03d0_w)
 	cirrus_define_video_mode();
 }
 
-<<<<<<< HEAD
-UINT8 cirrus_gd5428_device::cirrus_crtc_reg_read(UINT8 index)
-{
-	UINT8 res = 0xff;
-=======
 uint8_t cirrus_gd5428_device::cirrus_crtc_reg_read(uint8_t index)
 {
 	uint8_t res;
->>>>>>> upstream/master
 
 	switch(index)
 	{
@@ -1267,11 +1125,7 @@ uint8_t cirrus_gd5428_device::cirrus_crtc_reg_read(uint8_t index)
 	return res;
 }
 
-<<<<<<< HEAD
-void cirrus_gd5428_device::cirrus_crtc_reg_write(UINT8 index, UINT8 data)
-=======
 void cirrus_gd5428_device::cirrus_crtc_reg_write(uint8_t index, uint8_t data)
->>>>>>> upstream/master
 {
 	if(LOG_REG) logerror("CL: CRTC write %02x to CR%02x\n",data,index);
 	switch(index)
@@ -1309,17 +1163,10 @@ void cirrus_gd5428_device::cirrus_crtc_reg_write(uint8_t index, uint8_t data)
 
 }
 
-<<<<<<< HEAD
-inline UINT8 cirrus_gd5428_device::cirrus_vga_latch_write(int offs, UINT8 data)
-{
-	UINT8 res = 0;
-	UINT8 mode_mask = (gc_mode_ext & 0x04) ? 0x07 : 0x03;
-=======
 inline uint8_t cirrus_gd5428_device::cirrus_vga_latch_write(int offs, uint8_t data)
 {
 	uint8_t res = 0;
 	uint8_t mode_mask = (gc_mode_ext & 0x04) ? 0x07 : 0x03;
->>>>>>> upstream/master
 
 	switch (vga.gc.write_mode & mode_mask) {
 	case 0:
@@ -1354,15 +1201,9 @@ inline uint8_t cirrus_gd5428_device::cirrus_vga_latch_write(int offs, uint8_t da
 
 READ8_MEMBER(cirrus_gd5428_device::mem_r)
 {
-<<<<<<< HEAD
-	UINT32 addr;
-	UINT8 bank;
-	UINT8 cur_mode = pc_vga_choosevideomode();
-=======
 	uint32_t addr;
 	uint8_t bank;
 	uint8_t cur_mode = pc_vga_choosevideomode();
->>>>>>> upstream/master
 
 	if(gc_locked || offset >= 0x10000 || cur_mode == TEXT_MODE || cur_mode == SCREEN_OFF)
 		return vga_device::mem_r(space,offset,mem_mask);
@@ -1383,11 +1224,7 @@ READ8_MEMBER(cirrus_gd5428_device::mem_r)
 
 	if(svga.rgb8_en || svga.rgb15_en || svga.rgb16_en || svga.rgb24_en)
 	{
-<<<<<<< HEAD
-		UINT8 data = 0;
-=======
 		uint8_t data = 0;
->>>>>>> upstream/master
 		if(gc_mode_ext & 0x01)
 		{
 			if(offset & 0x10000)
@@ -1431,11 +1268,7 @@ READ8_MEMBER(cirrus_gd5428_device::mem_r)
 	if(vga.sequencer.data[4] & 4)
 	{
 		int data;
-<<<<<<< HEAD
-		if (!space.debugger_access())
-=======
 		if (!machine().side_effect_disabled())
->>>>>>> upstream/master
 		{
 			vga.gc.latch[0]=vga.memory[(offset+addr) % vga.svga_intf.vram_size];
 			vga.gc.latch[1]=vga.memory[((offset+addr)+0x10000) % vga.svga_intf.vram_size];
@@ -1445,13 +1278,8 @@ READ8_MEMBER(cirrus_gd5428_device::mem_r)
 
 		if (vga.gc.read_mode)
 		{
-<<<<<<< HEAD
-			UINT8 byte,layer;
-			UINT8 fill_latch;
-=======
 			uint8_t byte,layer;
 			uint8_t fill_latch;
->>>>>>> upstream/master
 			data=0;
 
 			for(byte=0;byte<8;byte++)
@@ -1475,13 +1303,8 @@ READ8_MEMBER(cirrus_gd5428_device::mem_r)
 	else
 	{
 		// TODO: Lines up in 16-colour mode, likely different for 256-colour modes (docs say video addresses are shifted right 3 places)
-<<<<<<< HEAD
-		UINT8 i,data;
-//      UINT8 bits = ((gc_mode_ext & 0x08) && (vga.gc.write_mode == 1)) ? 8 : 4;
-=======
 		uint8_t i,data;
 //      uint8_t bits = ((gc_mode_ext & 0x08) && (vga.gc.write_mode == 1)) ? 8 : 4;
->>>>>>> upstream/master
 
 		data = 0;
 		//printf("%08x\n",offset);
@@ -1509,15 +1332,9 @@ READ8_MEMBER(cirrus_gd5428_device::mem_r)
 
 WRITE8_MEMBER(cirrus_gd5428_device::mem_w)
 {
-<<<<<<< HEAD
-	UINT32 addr;
-	UINT8 bank;
-	UINT8 cur_mode = pc_vga_choosevideomode();
-=======
 	uint32_t addr;
 	uint8_t bank;
 	uint8_t cur_mode = pc_vga_choosevideomode();
->>>>>>> upstream/master
 
 	if(m_blt_system_transfer)
 	{
@@ -1677,13 +1494,8 @@ WRITE8_MEMBER(cirrus_gd5428_device::mem_w)
 
 		{
 		// TODO: Lines up in 16-colour mode, likely different for 256-colour modes (docs say video addresses are shifted right 3 places)
-<<<<<<< HEAD
-			UINT8 i;
-//          UINT8 bits = ((gc_mode_ext & 0x08) && (vga.gc.write_mode == 1)) ? 8 : 4;
-=======
 			uint8_t i;
 //          uint8_t bits = ((gc_mode_ext & 0x08) && (vga.gc.write_mode == 1)) ? 8 : 4;
->>>>>>> upstream/master
 
 			for(i=0;i<4;i++)
 			{

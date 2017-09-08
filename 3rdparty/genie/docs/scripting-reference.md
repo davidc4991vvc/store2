@@ -43,10 +43,7 @@
     * [location](#locationpath)
     * [newaction](#newactiondescription)
     * [newoption](#newoptionsdescription)
-<<<<<<< HEAD
-=======
     * [nopch](#nopch)
->>>>>>> upstream/master
     * [objdir](#objdirpath)
     * [os.chdir](#oschdirpath)
     * [os.copyfile](#oscopyfilesource-destination)
@@ -75,11 +72,7 @@
     * [path.getrelative](#pathgetrelativesrc-dest)
     * [path.isabsolute](#pathisabsolutepath)
     * [path.iscfile](#pathiscfilepath)
-<<<<<<< HEAD
-    * [path.iscppfile](#pathiscppfilepath)
-=======
     * [path.isSourceFile](#pathiscppfilepath)
->>>>>>> upstream/master
     * [path.isresourcefile](#pathisresourcefilepath)
     * [path.join](#pathjoinleading-trailing)
     * [path.rebase](#pathrebasepath-oldbase-newbase)
@@ -108,10 +101,7 @@
     * [targetname](#targetnamename)
     * [targetprefix](#targetprefixprefix)
     * [targetsuffix](#targetsuffixsuffix)
-<<<<<<< HEAD
-=======
     * [userincludedirs](#userincludedirspaths)
->>>>>>> upstream/master
     * [uuid](#uuidprojectuuid)
     * [vpaths](#vpathsgroup--pattern)
 * Additional Information
@@ -356,15 +346,6 @@ for rule listed commands are executed.
 **Scope:** solutions, projects, configurations
 
 #### Arguments
-<<<<<<< HEAD
-_input_file_ - source file that should be "compiled" with custom task
-_output_file_ - generated file name
-_dependency_ - additional dependencies, that can be used as parameters to commands
-_command_ - command list, special functions in commands are :
-		$(<) - input file
-		$(@) - output file
-		$(1) - $(9) - additional dependencies
-=======
 _input_file_ - source file that should be "compiled" with custom task  
 _output_file_ - generated file name  
 _dependency_ - additional dependencies, that can be used as parameters to commands  
@@ -372,20 +353,13 @@ _command_ - command list, special functions in commands are :
     $(<) - input file  
     $(@) - output file  
     $(1) - $(9) - additional dependencies
->>>>>>> upstream/master
 
 #### Examples
 
 ```lua
 custombuildtask {
-<<<<<<< HEAD
-		{ ROOT_DIR .. "version.txt" , GEN_DIR .. "src/version.inc",   { ROOT_DIR .. "version.py" }, {"@echo Generating version.inc file...", "python $(1) $(<) > $(@)" }},
-	}
-	
-=======
         { ROOT_DIR .. "version.txt" , GEN_DIR .. "src/version.inc",   { ROOT_DIR .. "version.py" }, {"@echo Generating version.inc file...", "python $(1) $(<) > $(@)" }},
     }
->>>>>>> upstream/master
 ```
 
 [Back to top](#table-of-contents)
@@ -396,20 +370,12 @@ Specifies a list of arguments to pas to the application when run under the debug
 
 **Note:** Not implemented for Xcode 3, where it must be configured in a per-user config file.
 
-<<<<<<< HEAD
-**Note:** In Visual Studio, this can be overridden by a per-user config file (e.g. ProjectName.vcxproj.MYDOMAIN-MYUSERNAME.user). Removing this file (`genie clean`) will restore the default settings.
-=======
 **Note:** In Visual Studio, this can be overridden by a per-user config file (e.g. ProjectName.vcxproj.MYDOMAIN-MYUSERNAME.user).
->>>>>>> upstream/master
 
 **Scope:** solutions, projects, configurations
 
 #### Arguments
-<<<<<<< HEAD
-_args_ - list of arguments to pas to the executable while debugging
-=======
 _args_ - list of arguments to pass to the executable while debugging
->>>>>>> upstream/master
 
 #### Examples
 ```lua
@@ -424,11 +390,7 @@ Sets the working directory for the integrated debugger.
 
 **Note:** Not implemented for Xcode 3, where it must be configured in a per-user config file.
 
-<<<<<<< HEAD
-**Note:** In Visual Studio, this can be overridden by a per-user config file (e.g. ProjectName.vcxproj.MYDOMAIN-MYUSERNAME.user). Removing this file (`genie clean`) will restore the default settings.
-=======
 **Note:** In Visual Studio, this can be overridden by a per-user config file (e.g. ProjectName.vcxproj.MYDOMAIN-MYUSERNAME.user).
->>>>>>> upstream/master
 
 **Scope:** solutions, projects, configurations
 
@@ -464,21 +426,13 @@ defines { "CALLSPEC=__dllexport" }
 [Back to top](#table-of-contents)
 
 ---
-<<<<<<< HEAD
-### dependency({_main_file, _depending_of_}...)
-=======
 ### dependency({_main_file_, _depending_of_}...)
->>>>>>> upstream/master
 GMAKE specific adds dependency between source file and any other file.
 
 **Scope:** solutions, projects, configurations
 
 #### Arguments
-<<<<<<< HEAD
-_main_file - name of source file that depends of other file
-=======
 _main_file_ - name of source file that depends of other file  
->>>>>>> upstream/master
 _depending_of_ - name of dependency file
 
 #### Examples
@@ -563,27 +517,17 @@ Specifies build flags to modify the compiling or linking process. Multiple calls
 #### Arguments
 _flags_ - List of flag names from list below. Names are case-insensitive and ignored if not supported on a platform.
 
-<<<<<<< HEAD
-* _EnableSSE, EnableSSE2_ - Enable SSE instruction sets
-=======
 * _EnableSSE, EnableSSE2, EnableAVX, EnableAVX2_ - Enable SSE/AVX instruction sets
->>>>>>> upstream/master
 * _ExtraWarnings_ - Sets compiler's max warning level.
 * _FatalWarnings_ - Treat warnings as errors.
 * _FloatFast_ - Enable floating point optimizations at the expense of accuracy.
 * _FloatStrict_ - Improve floating point consistency at the expense of performance.
 * _Managed_ - Enable Managed C++ (.NET).
-<<<<<<< HEAD
-* _MFC_ - Enable support for Microsoft Foundation Classes.
-* _NativeWChar, NoNativeWChar_ - Toggle support for the wchar data type.
-* _No64BitChecks_ - Disable 64-bit portability warnings.
-=======
 * _MinimumWarnings_ - - Sets compiler's minimum warning level (Visual Studio only).
 * _MFC_ - Enable support for Microsoft Foundation Classes.
 * _NativeWChar, NoNativeWChar_ - Toggle support for the wchar data type.
 * _No64BitChecks_ - Disable 64-bit portability warnings.
 * _NoBufferSecurityCheck_ - Turns off Visual Studio 'Security Check' option. Can give up to 10% performance improvement.
->>>>>>> upstream/master
 * _NoEditAndContinue_ - Disable support for Visual Studio's Edit-and-Continue feature.
 * _NoExceptions_ - Disable C++ exception support.
 * _NoFramePointer_ - Disable the generation of stack frame pointers.
@@ -593,11 +537,8 @@ _flags_ - List of flag names from list below. Names are case-insensitive and ign
 * _NoMinimalRebuild_ - Disable Visual Studio's minimal rebuild feature.
 * _NoPCH_ - Disable precompiled headers.
 * _NoRTTI_ - Disable C++ runtime type information.
-<<<<<<< HEAD
-=======
 * _NoWinMD_ - Disables Generation of Windows Metadata.
 * _NoWinRT_ - Disables Windows RunTime Extension for project.
->>>>>>> upstream/master
 * _Optimize_ - Perform a balanced set of optimizations.
 * _OptimizeSize_ - Optimize for the smallest file size.
 * _OptimizeSpeed_ - Optimize for the best performance.
@@ -606,10 +547,7 @@ _flags_ - List of flag names from list below. Names are case-insensitive and ign
 * _Symbols_ - Generate debugging information.
 * _Unicode_ - Enable Unicode strings. If not specified, the default toolset behavior is used.
 * _Unsafe_ - Enable the use of unsafe code in .NET applications.
-<<<<<<< HEAD
-=======
 * _UseFullPaths_ - Enable absolute paths for `__FILE__`. 
->>>>>>> upstream/master
 * _WinMain_ - Use WinMain() as the entry point for Windows applications, rather than main().
 
 **Note:** When not set, options will default to the tool default.
@@ -657,13 +595,8 @@ framework "3.0"
 Implements an immediate `if` clause, returning one of two possible values.
 
 #### Arguments
-<<<<<<< HEAD
-_condition_ - logical condition to test
-_trueval_ - value to return if _condition_ evaluates to `true`
-=======
 _condition_ - logical condition to test  
 _trueval_ - value to return if _condition_ evaluates to `true`  
->>>>>>> upstream/master
 _falseval_ - value to return if _condition_ evaluates to `false`
 
 #### Examples
@@ -824,14 +757,9 @@ _kind_ - project kind identifier. One of:
 
 * _ConsoleApp_ - console executable
 * _WindowedApp_ - application that runs in a desktop window. Does not apply on Linux.
-<<<<<<< HEAD
-* _SharedLib_ - shared library or DLL
-* _StaticLib_ - static library
-=======
 * _StaticLib_ - static library
 * _SharedLib_ - shared library or DLL
 * _Bundle_ - Xcode: Cocoa Bundle, everywhere else: alias to _SharedLib_
->>>>>>> upstream/master
 
 #### Examples
 ```lua
@@ -853,20 +781,12 @@ project "MyProject"
 
 ---
 ### language(_lang_)
-<<<<<<< HEAD
-Sets the programming language used by a project. GENie currently supports C, C++, and C#. Not all languages are supported by all of the generators. For instance, SharpDevelop does not currently support C or C++ development, and Code::Blocks does not support the .NET languages (C#, managed C++).
-=======
 Sets the programming language used by a project. GENie currently supports C, C++, C# and Vala. Not all languages are supported by all of the generators. For instance, SharpDevelop does not currently support C or C++ development, and Code::Blocks does not support the .NET languages (C#, managed C++).
->>>>>>> upstream/master
 
 **Scope:** solutions, projects
 
 #### Arguments
-<<<<<<< HEAD
-_lang_ - language identifier string ("C", "C++", or "C#"). Case insensitive.
-=======
 _lang_ - language identifier string ("C", "C++", "C#" or "Vala"). Case insensitive.
->>>>>>> upstream/master
 
 #### Examples
 ```lua
@@ -938,11 +858,7 @@ configuration "macosx"
 --- OS X frameworks need the extension to be handled properly
     links { "Cocoa.framework", "png" }
 ```
-<<<<<<< HEAD
-In a solution with two projects, link the library into the executable. Note that the project name is used to specify the link. GENie will automatically figure out the correect library file name and directory and create a project dependency.
-=======
 In a solution with two projects, link the library into the executable. Note that the project name is used to specify the link. GENie will automatically figure out the correct library file name and directory and create a project dependency.
->>>>>>> upstream/master
 ```lua
 solution "MySolution"
     configurations { "Debug", "Release" }
@@ -991,11 +907,7 @@ _path_ - directory into which files should be generated, relative to the current
 solution "MySolution"
     location "../build"
 ```
-<<<<<<< HEAD
-If you plan to build with multiple tools from the same source tree, you might want to split up the project files by toolset. The _ACTION global variable contains the current toolset identifier, as specified on the command line. Note that Lua sytax requires parentheses around the function parameters in this case.
-=======
 If you plan to build with multiple tools from the same source tree, you might want to split up the project files by toolset. The _ACTION global variable contains the current toolset identifier, as specified on the command line. Note that Lua syntax requires parentheses around the function parameters in this case.
->>>>>>> upstream/master
 ```lua
 location ("../build/" .. _ACTION)
 ```
@@ -1054,8 +966,6 @@ newoption {
 [Back to top](#table-of-contents)
 
 ---
-<<<<<<< HEAD
-=======
 ### nopch({_files_...})
 Sets sources files added with the [`files`](#files) function, to not use the precompiled header. Multiple calls are concatenated.
 
@@ -1081,7 +991,6 @@ nopch { "tests/*.c" }
 [Back to top](#table-of-contents)
 
 ---
->>>>>>> upstream/master
 ### objdir(_path_)
 Sets an object and intermediate file directory for a project. By default, object and intermediate files are stored in a directory named "obj" in the same directory as the project.
 
@@ -1206,11 +1115,7 @@ _id_ - one of "bsd", "linux", "macosx", "solaris", or "windows"
 **Note:** This function returns the OS being targeted, which is not necessarily the same as the OS on which GENie is being run.
 
 #### Return Value
-<<<<<<< HEAD
-`true` if the supplied _id_ matches the current operating system identifer, `false` otherwise.
-=======
 `true` if the supplied _id_ matches the current operating system identifier, `false` otherwise.
->>>>>>> upstream/master
 
 [Back to top](#table-of-contents)
 
@@ -1240,11 +1145,7 @@ Checks for the existence of a directory.
 _path_ - the file system path to check
 
 #### Return Value
-<<<<<<< HEAD
-`true` if a matching directory is found
-=======
 `true` if a matching directory is found  
->>>>>>> upstream/master
 `false` if there is no such file system path, or if the path points to a file
 
 [Back to top](#table-of-contents)
@@ -1257,14 +1158,9 @@ Checks for the existence of a file.
 _path_ - the file system path to check
 
 #### Return Value
-<<<<<<< HEAD
-`true` if a matching file is found
-`false` if there is no such file system path or if the path points to a directory instead of a file
-=======
 `true` if a matching file is found  
 `false` if there is no such file system path or if the path points to a directory instead of a file
 
->>>>>>> upstream/master
 [Back to top](#table-of-contents)
 
 ---
@@ -1310,11 +1206,7 @@ Creates a new directory.
 _path_ - path to be created
 
 #### Return Value
-<<<<<<< HEAD
-`true` if successful
-=======
 `true` if successful  
->>>>>>> upstream/master
 `nil` and an error message otherwise
 
 [Back to top](#table-of-contents)
@@ -1343,12 +1235,7 @@ description
 **Scope:** solutions, projects, configurations
 
 #### Arguments
-<<<<<<< HEAD
-_fname_ - name of the file being searched, followed by one or more path sets to be searched
-
-=======
 _fname_ - name of the file being searched, followed by one or more path sets to be searched  
->>>>>>> upstream/master
 _paths_ - the match format of the PATH environment variable: a colon-delimited list of path. On Windows, you may use a semicolon-delimited list if drive letters might be included
 
 #### Return Value
@@ -1369,11 +1256,7 @@ Removes an existing directory as well as any files or subdirectories it contains
 _path_ - file system path to be removed
 
 #### Return Value
-<<<<<<< HEAD
-`true` if successful
-=======
 `true` if successful  
->>>>>>> upstream/master
 `nil` and an error message otherwise
 
 [Back to top](#table-of-contents)
@@ -1396,8 +1279,6 @@ Table of values:
 [Back to top](#table-of-contents)
 
 ---
-<<<<<<< HEAD
-=======
 ### userincludedirs({_paths_...})
 Specifies the user include file search paths. Multiple calls are concatenated.
 
@@ -1424,7 +1305,6 @@ userincludedirs { "../includes/**" }
 [Back to top](#table-of-contents)
 
 ---
->>>>>>> upstream/master
 ### os.uuid()
 Returns a Universally Unique Identifier
 
@@ -1510,11 +1390,7 @@ File name and extension without directory information
 Computes relative path from one directory to another.
 
 #### Arguments
-<<<<<<< HEAD
-_src_ - originating directory
-=======
 _src_ - originating directory  
->>>>>>> upstream/master
 _dest_ - target directory
 
 #### Return Value
@@ -1530,11 +1406,7 @@ Returns whether or not a path is absolute.
 _path_ - path to check
 
 #### Return Value
-<<<<<<< HEAD
-`true` if path is absolute
-=======
 `true` if path is absolute  
->>>>>>> upstream/master
 `false` otherwise
 
 [Back to top](#table-of-contents)
@@ -1547,32 +1419,20 @@ Determines whether file is a C source code file, based on extension.
 _path_ - path to check
 
 #### Return Value
-<<<<<<< HEAD
-`true` if path uses a C file extension
-=======
 `true` if path uses a C file extension  
->>>>>>> upstream/master
 `false` otherwise
 
 [Back to top](#table-of-contents)
 
 ---
-<<<<<<< HEAD
-### path.iscppfile(_path_)
-=======
 ### path.isSourceFile(_path_)
->>>>>>> upstream/master
 Determines whether a file is a C++ source code file, based on extension.
 
 #### Arguments
 _path_ - path to check
 
 #### Return Value
-<<<<<<< HEAD
-`true` if path uses a C++ file extension
-=======
 `true` if path uses a C++ file extension  
->>>>>>> upstream/master
 `false` otherwise
 
 [Back to top](#table-of-contents)
@@ -1585,11 +1445,7 @@ Determines whether a path represends a Windows resource file, based on extension
 _path_ - path to check
 
 #### Return Value
-<<<<<<< HEAD
-`true` if path uses a well-known Windows resource file extension
-=======
 `true` if path uses a well-known Windows resource file extension  
->>>>>>> upstream/master
 `false` otherwise
 
 [Back to top](#table-of-contents)
@@ -1601,11 +1457,7 @@ Joins two path portions together into a single path.
 **Note:** if _trailing_ is an absolute path, then _leading_ is ignored and the absolute path is returned.
 
 #### Arguments
-<<<<<<< HEAD
-_leading_ - beginning portion of the path
-=======
 _leading_ - beginning portion of the path  
->>>>>>> upstream/master
 _trailing_ - ending portion of the path
 
 #### Return Value
@@ -1629,13 +1481,8 @@ p = path.join("MySolution", "$(ProjectDir)")
 Takes a relative path and makes it relative to a different location.
 
 #### Arguments
-<<<<<<< HEAD
-_path_ - path to be modified
-_oldbase_ - original base directory, from which _path_ is relative
-=======
 _path_ - path to be modified  
 _oldbase_ - original base directory, from which _path_ is relative  
->>>>>>> upstream/master
 _newbase_ - the new base directory, from where the resulting path should be relative
 
 #### Return Value
@@ -1648,19 +1495,12 @@ Rebased path
 Converts the separators in a path.
 
 #### Arguments
-<<<<<<< HEAD
-_path_ - path to modify
-=======
 _path_ - path to modify  
->>>>>>> upstream/master
 _newsep_ - new path separator. Defaults to current environment default.
 
 #### Return Value
 Modified path
-<<<<<<< HEAD
-=======
 
->>>>>>> upstream/master
 [Back to top](#table-of-contents)
 
 ---
@@ -1713,16 +1553,12 @@ _identifiers_ - list of hardware platform specifiers from this list:
 * _Universal32_ - like _Universal_ above, but targeting only 32-bit platforms
 * _Universal64_ - like _Universal_ above, but targeting only 64-bit platforms
 * _PS3_ - Playstation 3
-<<<<<<< HEAD
-* _Xbox360_ - Xbox 360 compiler and linker under Visual Studio
-=======
 * _WiiDev_ - Wii
 * _Xbox360_ - Xbox 360 compiler and linker under Visual Studio
 * _PowerPC_ - PowerPC processors
 * _ARM_ - ARM-based processors
 * _Orbis_ - Playstation 4
 * _Durango_ - Xbox One
->>>>>>> upstream/master
 
 #### Return Value
 Current list of target platforms for the active solution
@@ -1835,11 +1671,7 @@ configuration "not windows"
 Prints a formatted string
 
 #### Arguments
-<<<<<<< HEAD
-_format_ - formatting string, containing C `printf()` formatting codes
-=======
 _format_ - formatting string, containing C `printf()` formatting codes  
->>>>>>> upstream/master
 _args_ - arguments to be substituted into the format string
 
 [Back to top](#table-of-contents)
@@ -1947,11 +1779,7 @@ configuration { "linux", "gmake" }
 
 ---
 ### solution(_name_)
-<<<<<<< HEAD
-Creates a new solution and makes it active. Solutions are the top-level opjects in a GENie build script, and are synonymous with a Visual Studio solution. Each solution contains one or more projects, which in turn contain the settings to generate a single binary target.
-=======
 Creates a new solution and makes it active. Solutions are the top-level objects in a GENie build script, and are synonymous with a Visual Studio solution. Each solution contains one or more projects, which in turn contain the settings to generate a single binary target.
->>>>>>> upstream/master
 
 #### Arguments
 _name_ - unique name for the solution. If a solution with the given name already exists, it is made active and returned. This value will be used as the file name of the generated solution file.
@@ -1994,19 +1822,11 @@ end
 Checks if the given _haystack_ string ends with _needle_.
 
 #### Arguments
-<<<<<<< HEAD
-_haystack_ - string to search within
-_needle_   - string to check ending of _haystack_ against
-
-#### Return Value
-`true`  - _haystack_ ends with _needle_
-=======
 _haystack_ - string to search within  
 _needle_   - string to check ending of _haystack_ against
 
 #### Return Value
 `true`  - _haystack_ ends with _needle_  
->>>>>>> upstream/master
 `false` - _haystack_ does not end with _needle_
 
 [Back to top](#table-of-contents)
@@ -2016,11 +1836,7 @@ _needle_   - string to check ending of _haystack_ against
 Breaks a string into an array of strings, formed by splitting _str_ on _pattern_.
 
 #### Arguments
-<<<<<<< HEAD
-_str_     - string to be split
-=======
 _str_     - string to be split  
->>>>>>> upstream/master
 _pattern_ - separator pattern at which to split; may use Lua's pattern matching syntax
 
 #### Return Value
@@ -2033,13 +1849,8 @@ List of substrings
 Finds the last instance of a pattern within a string.
 
 #### Arguments
-<<<<<<< HEAD
-_str_     - string to be searched
-_pattern_ - pattern to search for; may use Lua's pattern matching syntax
-=======
 _str_     - string to be searched  
 _pattern_ - pattern to search for; may use Lua's pattern matching syntax  
->>>>>>> upstream/master
 _plain_   - whether or not plain string comparison should be used (rather than pattern-matching)
 
 #### Return Value
@@ -2052,19 +1863,11 @@ The matching pattern, if found, or `nil`
 Checks if the given _haystack_ starts with _needle_.
 
 #### Arguments
-<<<<<<< HEAD
-_haystack_ - string to search within
-_needle_   - string to check start of _haystack_ against
-
-#### Return Value
-`true`  - _haystack_ starts with _needle_
-=======
 _haystack_ - string to search within  
 _needle_   - string to check start of _haystack_ against
 
 #### Return Value
 `true`  - _haystack_ starts with _needle_  
->>>>>>> upstream/master
 `false` - _haystack_ does not start with _needle_
 
 [Back to top](#table-of-contents)
@@ -2074,19 +1877,11 @@ _needle_   - string to check start of _haystack_ against
 Determines if a _array_ contains _value_.
 
 #### Arguments
-<<<<<<< HEAD
-_array_ - table to test for _value_
-_value_ - _value_ being tested for
-
-#### Return Value
-`true`  - _array_ contains _value_
-=======
 _array_ - table to test for _value_  
 _value_ - _value_ being tested for
 
 #### Return Value
 `true`  - _array_ contains _value_  
->>>>>>> upstream/master
 `false` - _array_ does not contain _value_
 
 [Back to top](#table-of-contents)
@@ -2096,15 +1891,9 @@ _value_ - _value_ being tested for
 Merges an array of items into a single formatted string.
 
 #### Arguments
-<<<<<<< HEAD
-_array_   - table to be converted into a string
-_before_  - string to be inserted before each item
-_after_   - string to be inserted after each item
-=======
 _array_   - table to be converted into a string  
 _before_  - string to be inserted before each item  
 _after_   - string to be inserted after each item  
->>>>>>> upstream/master
 _between_ - string to be inserted between each item
 
 #### Return Value
@@ -2229,11 +2018,7 @@ Places files into groups for "virtual paths", rather than mirroring the filesyst
 #### Arguments
 Table of values, where keys (_groups_) are strings and values (_pattern_) are lists of file system patterns.
 
-<<<<<<< HEAD
-_group_   - name for the new group
-=======
 _group_   - name for the new group  
->>>>>>> upstream/master
 _pattern_ - file system pattern for matching file names
 
 #### Examples
@@ -2255,11 +2040,7 @@ It is also possible to include the file's path in the virtual group. Using this 
 vpaths { ["Headers/*"] = "**.h" }
 ```
 
-<<<<<<< HEAD
-Any directory information explicitly provided in the pattern will be remvoed from the replacement. Using this rule, "src/lua/lua.h" will appear in the IDE as "Headers/lua/lua.h".
-=======
 Any directory information explicitly provided in the pattern will be removed from the replacement. Using this rule, "src/lua/lua.h" will appear in the IDE as "Headers/lua/lua.h".
->>>>>>> upstream/master
 ```lua
 vpaths { ["Headers/*"] = "src/**.h" }
 ```
@@ -2288,8 +2069,4 @@ vpaths {
 In some places, wildcards may be used in string values passed to a function. Usually, these strings represent paths. There are two types of wildcards:
 
 * `*` - matches files within a single directory
-<<<<<<< HEAD
 * `**` - matches files recursively in any child directory
-=======
-* `**` - matches files recursively in any child directory
->>>>>>> upstream/master

@@ -12,13 +12,8 @@
 *****************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "debugger.h"
-#include "t11.h"
-=======
 #include "t11.h"
 #include "debugger.h"
->>>>>>> upstream/master
 
 
 /*************************************
@@ -40,23 +35,6 @@
 #define PSW     m_psw.b.l
 
 
-<<<<<<< HEAD
-const device_type T11 = &device_creator<t11_device>;
-const device_type K1801VM2 = &device_creator<k1801vm2_device>;
-
-
-k1801vm2_device::k1801vm2_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: t11_device(mconfig, K1801VM2, "K1801VM2", tag, owner, clock, "k1801vm2", __FILE__)
-{
-}
-
-t11_device::t11_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source)
-	: cpu_device(mconfig, type, name, tag, owner, clock, shortname, source)
-	, m_program_config("program", ENDIANNESS_LITTLE, 16, 16, 0)
-	, c_initial_mode(0)
-{
-	m_is_octal = true;
-=======
 DEFINE_DEVICE_TYPE(T11,      t11_device,      "t11",      "T11")
 DEFINE_DEVICE_TYPE(K1801VM2, k1801vm2_device, "k1801vm2", "K1801VM2")
 
@@ -73,21 +51,10 @@ t11_device::t11_device(const machine_config &mconfig, device_type type, const ch
 	, m_out_reset_func(*this)
 {
 	m_program_config.m_is_octal = true;
->>>>>>> upstream/master
 	memset(m_reg, 0x00, sizeof(m_reg));
 	memset(&m_psw, 0x00, sizeof(m_psw));
 }
 
-<<<<<<< HEAD
-t11_device::t11_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: cpu_device(mconfig, T11, "T11", tag, owner, clock, "t11", __FILE__)
-	, m_program_config("program", ENDIANNESS_LITTLE, 16, 16, 0)
-	, c_initial_mode(0)
-{
-	m_is_octal = true;
-	memset(m_reg, 0x00, sizeof(m_reg));
-	memset(&m_psw, 0x00, sizeof(m_psw));
-=======
 t11_device::t11_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: t11_device(mconfig, T11, tag, owner, clock)
 {
@@ -98,7 +65,6 @@ device_memory_interface::space_config_vector t11_device::memory_space_config() c
 	return space_config_vector {
 		std::make_pair(AS_PROGRAM, &m_program_config)
 	};
->>>>>>> upstream/master
 }
 
 
@@ -204,13 +170,8 @@ int t11_device::POP()
 
 struct irq_table_entry
 {
-<<<<<<< HEAD
-	UINT8   priority;
-	UINT8   vector;
-=======
 	uint8_t   priority;
 	uint8_t   vector;
->>>>>>> upstream/master
 };
 
 static const struct irq_table_entry irq_table[] =
@@ -276,17 +237,10 @@ void t11_device::t11_check_irqs()
  *************************************/
 
 /* includes the static function prototypes and the master opcode table */
-<<<<<<< HEAD
-#include "t11table.inc"
-
-/* includes the actual opcode implementations */
-#include "t11ops.inc"
-=======
 #include "t11table.hxx"
 
 /* includes the actual opcode implementations */
 #include "t11ops.hxx"
->>>>>>> upstream/master
 
 
 
@@ -298,11 +252,7 @@ void t11_device::t11_check_irqs()
 
 void t11_device::device_start()
 {
-<<<<<<< HEAD
-	static const UINT16 initial_pc[] =
-=======
 	static const uint16_t initial_pc[] =
->>>>>>> upstream/master
 	{
 		0xc000, 0x8000, 0x4000, 0x2000,
 		0x1000, 0x0000, 0xf600, 0xf400
@@ -311,10 +261,7 @@ void t11_device::device_start()
 	m_initial_pc = initial_pc[c_initial_mode >> 13];
 	m_program = &space(AS_PROGRAM);
 	m_direct = &m_program->direct();
-<<<<<<< HEAD
-=======
 	m_out_reset_func.resolve_safe();
->>>>>>> upstream/master
 
 	save_item(NAME(m_ppc.w.l));
 	save_item(NAME(m_reg[0].w.l));
@@ -341,33 +288,19 @@ void t11_device::device_start()
 	state_add( T11_R4,  "R4",  m_reg[4].w.l).formatstr("%04X");
 	state_add( T11_R5,  "R5",  m_reg[5].w.l).formatstr("%04X");
 
-<<<<<<< HEAD
-	state_add(STATE_GENPC, "curpc", m_reg[7].w.l).noshow();
-	state_add(STATE_GENFLAGS, "GENFLAGS", m_psw.b.l).noshow();
-	state_add(STATE_GENPCBASE, "GENPCBASE", m_ppc.w.l).noshow();
-=======
 	state_add(STATE_GENPC, "GENPC", m_reg[7].w.l).noshow();
 	state_add(STATE_GENPCBASE, "CURPC", m_ppc.w.l).noshow();
 	state_add(STATE_GENFLAGS, "GENFLAGS", m_psw.b.l).formatstr("%8s").noshow();
->>>>>>> upstream/master
 
 	m_icountptr = &m_icount;
 }
 
-<<<<<<< HEAD
-void t11_device::state_string_export(const device_state_entry &entry, std::string &str)
-=======
 void t11_device::state_string_export(const device_state_entry &entry, std::string &str) const
->>>>>>> upstream/master
 {
 	switch (entry.index())
 	{
 		case STATE_GENFLAGS:
-<<<<<<< HEAD
-			strprintf(str, "%c%c%c%c%c%c%c%c",
-=======
 			str = string_format("%c%c%c%c%c%c%c%c",
->>>>>>> upstream/master
 				m_psw.b.l & 0x80 ? '?':'.',
 				m_psw.b.l & 0x40 ? 'I':'.',
 				m_psw.b.l & 0x20 ? 'I':'.',
@@ -381,20 +314,12 @@ void t11_device::state_string_export(const device_state_entry &entry, std::strin
 	}
 }
 
-<<<<<<< HEAD
-void k1801vm2_device::state_string_export(const device_state_entry &entry, std::string &str)
-=======
 void k1801vm2_device::state_string_export(const device_state_entry &entry, std::string &str) const
->>>>>>> upstream/master
 {
 	switch (entry.index())
 	{
 		case STATE_GENFLAGS:
-<<<<<<< HEAD
-			strprintf(str, "%c%c%c%c%c%c%c%c%c",
-=======
 			str = string_format("%c%c%c%c%c%c%c%c%c",
->>>>>>> upstream/master
 				m_psw.b.l & 0x100 ? 'H':'.',
 				m_psw.b.l & 0x80 ? 'P':'.',
 				m_psw.b.l & 0x40 ? '?':'.',
@@ -485,11 +410,7 @@ void t11_device::execute_run()
 
 	do
 	{
-<<<<<<< HEAD
-		UINT16 op;
-=======
 		uint16_t op;
->>>>>>> upstream/master
 
 		m_ppc = m_reg[7];   /* copy PC to previous PC */
 
@@ -502,15 +423,8 @@ void t11_device::execute_run()
 }
 
 
-<<<<<<< HEAD
-offs_t t11_device::disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options)
-{
-	extern CPU_DISASSEMBLE( t11 );
-	return CPU_DISASSEMBLE_NAME(t11)(this, buffer, pc, oprom, opram, options);
-=======
 offs_t t11_device::disasm_disassemble(std::ostream &stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, uint32_t options)
 {
 	extern CPU_DISASSEMBLE( t11 );
 	return CPU_DISASSEMBLE_NAME(t11)(this, stream, pc, oprom, opram, options);
->>>>>>> upstream/master
 }

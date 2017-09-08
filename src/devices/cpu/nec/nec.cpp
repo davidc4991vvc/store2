@@ -105,27 +105,6 @@
 ****************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "debugger.h"
-
-typedef UINT8 BOOLEAN;
-typedef UINT8 BYTE;
-typedef UINT16 WORD;
-typedef UINT32 DWORD;
-
-#include "nec.h"
-#include "necpriv.h"
-
-const device_type V20 = &device_creator<v20_device>;
-const device_type V30 = &device_creator<v30_device>;
-const device_type V33 = &device_creator<v33_device>;
-const device_type V33A =&device_creator<v33a_device>;
-
-
-
-nec_common_device::nec_common_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source, bool is_16bit, offs_t fetch_xor, UINT8 prefetch_size, UINT8 prefetch_cycles, UINT32 chip_type)
-	: cpu_device(mconfig, type, name, tag, owner, clock, shortname, source)
-=======
 #include "nec.h"
 #include "debugger.h"
 
@@ -145,7 +124,6 @@ DEFINE_DEVICE_TYPE(V33A, v33a_device, "v33a", "V33A")
 
 nec_common_device::nec_common_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock, bool is_16bit, offs_t fetch_xor, uint8_t prefetch_size, uint8_t prefetch_cycles, uint32_t chip_type)
 	: cpu_device(mconfig, type, tag, owner, clock)
->>>>>>> upstream/master
 	, m_program_config("program", ENDIANNESS_LITTLE, is_16bit ? 16 : 8, 20, 0)
 	, m_io_config("io", ENDIANNESS_LITTLE, is_16bit ? 16 : 8, 16, 0)
 	, m_fetch_xor(fetch_xor)
@@ -156,22 +134,12 @@ nec_common_device::nec_common_device(const machine_config &mconfig, device_type 
 }
 
 
-<<<<<<< HEAD
-v20_device::v20_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: nec_common_device(mconfig, V20, "V20", tag, owner, clock, "v20", __FILE__, false, 0, 4, 4, V20_TYPE)
-=======
 v20_device::v20_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: nec_common_device(mconfig, V20, tag, owner, clock, false, 0, 4, 4, V20_TYPE)
->>>>>>> upstream/master
 {
 }
 
 
-<<<<<<< HEAD
-v30_device::v30_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: nec_common_device(mconfig, V30, "V30", tag, owner, clock, "v30", __FILE__, true, BYTE_XOR_LE(0), 6, 2, V30_TYPE)
-{
-=======
 v30_device::v30_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: nec_common_device(mconfig, V30, tag, owner, clock, true, BYTE_XOR_LE(0), 6, 2, V30_TYPE)
 {
@@ -183,46 +151,28 @@ device_memory_interface::space_config_vector nec_common_device::memory_space_con
 		std::make_pair(AS_PROGRAM, &m_program_config),
 		std::make_pair(AS_IO,      &m_io_config)
 	};
->>>>>>> upstream/master
 }
 
 
 /* FIXME: Need information about prefetch size and cycles for V33.
  * complete guess below, nbbatman will not work
  * properly without. */
-<<<<<<< HEAD
-v33_device::v33_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: nec_common_device(mconfig, V33, "V33", tag, owner, clock, "v33", __FILE__, true, BYTE_XOR_LE(0), 6, 1, V33_TYPE)
-=======
 v33_device::v33_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: nec_common_device(mconfig, V33, tag, owner, clock, true, BYTE_XOR_LE(0), 6, 1, V33_TYPE)
->>>>>>> upstream/master
 {
 }
 
 
-<<<<<<< HEAD
-v33a_device::v33a_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: nec_common_device(mconfig, V33A, "V33A", tag, owner, clock, "v33A", __FILE__, true, BYTE_XOR_LE(0), 6, 1, V33_TYPE)
-=======
 v33a_device::v33a_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: nec_common_device(mconfig, V33A, tag, owner, clock, true, BYTE_XOR_LE(0), 6, 1, V33_TYPE)
->>>>>>> upstream/master
 {
 }
 
 
-<<<<<<< HEAD
-offs_t nec_common_device::disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options)
-{
-	extern CPU_DISASSEMBLE( nec );
-	return CPU_DISASSEMBLE_NAME(nec)(this, buffer, pc, oprom, opram, options);
-=======
 offs_t nec_common_device::disasm_disassemble(std::ostream &stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, uint32_t options)
 {
 	extern CPU_DISASSEMBLE( nec );
 	return CPU_DISASSEMBLE_NAME(nec)(this, stream, pc, oprom, opram, options);
->>>>>>> upstream/master
 }
 
 
@@ -265,25 +215,15 @@ void nec_common_device::do_prefetch(int previous_ICount)
 
 }
 
-<<<<<<< HEAD
-UINT8 nec_common_device::fetch()
-=======
 uint8_t nec_common_device::fetch()
->>>>>>> upstream/master
 {
 	prefetch();
 	return m_direct->read_byte((Sreg(PS)<<4)+m_ip++, m_fetch_xor);
 }
 
-<<<<<<< HEAD
-UINT16 nec_common_device::fetchword()
-{
-	UINT16 r = FETCH();
-=======
 uint16_t nec_common_device::fetchword()
 {
 	uint16_t r = FETCH();
->>>>>>> upstream/master
 	r |= (FETCH()<<8);
 	return r;
 }
@@ -293,15 +233,9 @@ uint16_t nec_common_device::fetchword()
 #include "necea.h"
 #include "necmodrm.h"
 
-<<<<<<< HEAD
-static UINT8 parity_table[256];
-
-UINT8 nec_common_device::fetchop()
-=======
 static uint8_t parity_table[256];
 
 uint8_t nec_common_device::fetchop()
->>>>>>> upstream/master
 {
 	prefetch();
 	return m_direct->read_byte(( Sreg(PS)<<4)+m_ip++, m_fetch_xor);
@@ -343,11 +277,7 @@ void nec_common_device::device_reset()
 
 void nec_common_device::nec_interrupt(unsigned int_num, int/*INTSOURCES*/ source)
 {
-<<<<<<< HEAD
-	UINT32 dest_seg, dest_off;
-=======
 	uint32_t dest_seg, dest_off;
->>>>>>> upstream/master
 
 	i_pushf();
 	m_TF = m_IF = 0;
@@ -382,11 +312,7 @@ void nec_common_device::external_int()
 	{
 		/* the actual vector is retrieved after pushing flags */
 		/* and clearing the IF */
-<<<<<<< HEAD
-		nec_interrupt((UINT32)-1, INT_IRQ);
-=======
 		nec_interrupt((uint32_t)-1, INT_IRQ);
->>>>>>> upstream/master
 		m_irq_state = CLEAR_LINE;
 		m_pending_irq &= ~INT_IRQ;
 	}
@@ -396,11 +322,7 @@ void nec_common_device::external_int()
 /*                             OPCODES                                      */
 /****************************************************************************/
 
-<<<<<<< HEAD
-#include "necinstr.inc"
-=======
 #include "necinstr.hxx"
->>>>>>> upstream/master
 
 /*****************************************************************************/
 
@@ -516,36 +438,22 @@ void nec_common_device::device_start()
 	state_add( NEC_SS,    "SS", Sreg(SS)).formatstr("%04X");
 	state_add( NEC_DS,    "DS0", Sreg(DS0)).formatstr("%04X");
 
-<<<<<<< HEAD
-	state_add( STATE_GENPC, "GENPC", m_debugger_temp).callimport().callexport().noshow();
-=======
 	state_add( STATE_GENPC, "GENPC", m_debugger_temp).callexport().noshow();
 	state_add( STATE_GENPCBASE, "CURPC", m_debugger_temp).callexport().noshow();
->>>>>>> upstream/master
 	state_add( STATE_GENSP, "GENSP", m_debugger_temp).callimport().callexport().noshow();
 	state_add( STATE_GENFLAGS, "GENFLAGS", m_debugger_temp).formatstr("%16s").noshow();
 
 	m_icountptr = &m_icount;
 }
 
-<<<<<<< HEAD
-void nec_common_device::state_string_export(const device_state_entry &entry, std::string &str)
-{
-	UINT16 flags = CompressFlags();
-=======
 void nec_common_device::state_string_export(const device_state_entry &entry, std::string &str) const
 {
 	uint16_t flags = CompressFlags();
->>>>>>> upstream/master
 
 	switch (entry.index())
 	{
 		case STATE_GENFLAGS:
-<<<<<<< HEAD
-			strprintf(str, "%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c",
-=======
 			str = string_format("%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c",
->>>>>>> upstream/master
 				flags & 0x8000 ? 'N':'E',
 				flags & 0x4000 ? '?':'.',
 				flags & 0x2000 ? '?':'.',
@@ -594,10 +502,7 @@ void nec_common_device::state_export(const device_state_entry &entry)
 	switch (entry.index())
 	{
 		case STATE_GENPC:
-<<<<<<< HEAD
-=======
 		case STATE_GENPCBASE:
->>>>>>> upstream/master
 		case NEC_PC:
 			m_debugger_temp = (Sreg(PS)<<4) + m_ip;
 			break;

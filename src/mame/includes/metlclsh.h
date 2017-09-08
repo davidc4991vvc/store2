@@ -21,30 +21,17 @@ public:
 		m_palette(*this, "palette") { }
 
 	/* memory pointers */
-<<<<<<< HEAD
-	required_shared_ptr<UINT8> m_fgram;
-	required_shared_ptr<UINT8> m_spriteram;
-	required_shared_ptr<UINT8> m_bgram;
-	required_shared_ptr<UINT8> m_scrollx;
-	UINT8 *        m_otherram;
-=======
 	required_shared_ptr<uint8_t> m_fgram;
 	required_shared_ptr<uint8_t> m_spriteram;
 	required_shared_ptr<uint8_t> m_bgram;
 	required_shared_ptr<uint8_t> m_scrollx;
 	std::unique_ptr<uint8_t[]>        m_otherram;
->>>>>>> upstream/master
 
 	/* video-related */
 	tilemap_t      *m_bg_tilemap;
 	tilemap_t      *m_fg_tilemap;
-<<<<<<< HEAD
-	UINT8          m_write_mask;
-	UINT8          m_gfxbank;
-=======
 	uint8_t          m_write_mask;
 	uint8_t          m_gfxbank;
->>>>>>> upstream/master
 
 	/* devices */
 	required_device<cpu_device> m_maincpu;
@@ -66,16 +53,9 @@ public:
 	TILEMAP_MAPPER_MEMBER(metlclsh_bgtilemap_scan);
 	TILE_GET_INFO_MEMBER(get_bg_tile_info);
 	TILE_GET_INFO_MEMBER(get_fg_tile_info);
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void machine_reset();
-	virtual void video_start();
-	UINT32 screen_update_metlclsh(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
 	virtual void video_start() override;
 	uint32_t screen_update_metlclsh(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	void draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect );
 };

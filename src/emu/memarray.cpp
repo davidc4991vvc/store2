@@ -20,22 +20,13 @@
 //-------------------------------------------------
 
 memory_array::memory_array()
-<<<<<<< HEAD
-	: m_base(NULL),
-=======
 	: m_base(nullptr),
->>>>>>> upstream/master
 		m_bytes(0),
 		m_membits(0),
 		m_endianness(ENDIANNESS_LITTLE),
 		m_bytes_per_entry(0),
-<<<<<<< HEAD
-		m_read_entry(NULL),
-		m_write_entry(NULL)
-=======
 		m_read_entry(nullptr),
 		m_write_entry(nullptr)
->>>>>>> upstream/master
 {
 }
 
@@ -44,17 +35,10 @@ memory_array::memory_array()
 //  set - configure the parameters
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void memory_array::set(void *base, UINT32 bytes, int membits, endianness_t endianness, int bpe)
-{
-	// validate inputs
-	assert(base != NULL);
-=======
 void memory_array::set(void *base, u32 bytes, int membits, endianness_t endianness, int bpe)
 {
 	// validate inputs
 	assert(base != nullptr);
->>>>>>> upstream/master
 	assert(bytes > 0);
 	assert(membits == 8 || membits == 16 || membits == 32 || membits == 64);
 	assert(bpe == 1 || bpe == 2 || bpe == 4);
@@ -105,11 +89,7 @@ void memory_array::set(void *base, u32 bytes, int membits, endianness_t endianne
 //  set - additional setter variants
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void memory_array::set(const address_space &space, void *base, UINT32 bytes, int bpe)
-=======
 void memory_array::set(const address_space &space, void *base, u32 bytes, int bpe)
->>>>>>> upstream/master
 {
 	set(base, bytes, space.data_width(), space.endianness(), bpe);
 }
@@ -145,25 +125,6 @@ void memory_array::set_endianness(endianness_t endianness)
 //  heleprs for 1 byte-per-entry
 //-------------------------------------------------
 
-<<<<<<< HEAD
-UINT32 memory_array::read8_from_8(int index) { return reinterpret_cast<UINT8 *>(m_base)[index]; }
-void memory_array::write8_to_8(int index, UINT32 data) { reinterpret_cast<UINT8 *>(m_base)[index] = data; }
-
-UINT32 memory_array::read8_from_16le(int index) { return reinterpret_cast<UINT8 *>(m_base)[BYTE_XOR_LE(index)]; }
-void memory_array::write8_to_16le(int index, UINT32 data) { reinterpret_cast<UINT8 *>(m_base)[BYTE_XOR_LE(index)] = data; }
-UINT32 memory_array::read8_from_16be(int index) { return reinterpret_cast<UINT8 *>(m_base)[BYTE_XOR_BE(index)]; }
-void memory_array::write8_to_16be(int index, UINT32 data) { reinterpret_cast<UINT8 *>(m_base)[BYTE_XOR_BE(index)] = data; }
-
-UINT32 memory_array::read8_from_32le(int index) { return reinterpret_cast<UINT8 *>(m_base)[BYTE4_XOR_LE(index)]; }
-void memory_array::write8_to_32le(int index, UINT32 data) { reinterpret_cast<UINT8 *>(m_base)[BYTE4_XOR_LE(index)] = data; }
-UINT32 memory_array::read8_from_32be(int index) { return reinterpret_cast<UINT8 *>(m_base)[BYTE4_XOR_BE(index)]; }
-void memory_array::write8_to_32be(int index, UINT32 data) { reinterpret_cast<UINT8 *>(m_base)[BYTE4_XOR_BE(index)] = data; }
-
-UINT32 memory_array::read8_from_64le(int index) { return reinterpret_cast<UINT8 *>(m_base)[BYTE8_XOR_BE(index)]; }
-void memory_array::write8_to_64le(int index, UINT32 data) { reinterpret_cast<UINT8 *>(m_base)[BYTE8_XOR_BE(index)] = data; }
-UINT32 memory_array::read8_from_64be(int index) { return reinterpret_cast<UINT8 *>(m_base)[BYTE8_XOR_BE(index)]; }
-void memory_array::write8_to_64be(int index, UINT32 data) { reinterpret_cast<UINT8 *>(m_base)[BYTE8_XOR_BE(index)] = data; }
-=======
 u32 memory_array::read8_from_8(int index) const { return reinterpret_cast<u8 *>(m_base)[index]; }
 void memory_array::write8_to_8(int index, u32 data) { reinterpret_cast<u8 *>(m_base)[index] = data; }
 
@@ -181,7 +142,6 @@ u32 memory_array::read8_from_64le(int index) const { return reinterpret_cast<u8 
 void memory_array::write8_to_64le(int index, u32 data) { reinterpret_cast<u8 *>(m_base)[BYTE8_XOR_BE(index)] = data; }
 u32 memory_array::read8_from_64be(int index) const { return reinterpret_cast<u8 *>(m_base)[BYTE8_XOR_BE(index)]; }
 void memory_array::write8_to_64be(int index, u32 data) { reinterpret_cast<u8 *>(m_base)[BYTE8_XOR_BE(index)] = data; }
->>>>>>> upstream/master
 
 
 //-------------------------------------------------
@@ -189,25 +149,6 @@ void memory_array::write8_to_64be(int index, u32 data) { reinterpret_cast<u8 *>(
 //  heleprs for 2 bytes-per-entry
 //-------------------------------------------------
 
-<<<<<<< HEAD
-UINT32 memory_array::read16_from_8le(int index) { return read8_from_8(index*2) | (read8_from_8(index*2+1) << 8); }
-void memory_array::write16_to_8le(int index, UINT32 data) { write8_to_8(index*2, data); write8_to_8(index*2+1, data >> 8); }
-UINT32 memory_array::read16_from_8be(int index) { return (read8_from_8(index*2) << 8) | read8_from_8(index*2+1); }
-void memory_array::write16_to_8be(int index, UINT32 data) { write8_to_8(index*2, data >> 8); write8_to_8(index*2+1, data); }
-
-UINT32 memory_array::read16_from_16(int index) { return reinterpret_cast<UINT16 *>(m_base)[index]; }
-void memory_array::write16_to_16(int index, UINT32 data) { reinterpret_cast<UINT16 *>(m_base)[index] = data; }
-
-UINT32 memory_array::read16_from_32le(int index) { return reinterpret_cast<UINT16 *>(m_base)[BYTE_XOR_LE(index)]; }
-void memory_array::write16_to_32le(int index, UINT32 data) { reinterpret_cast<UINT16 *>(m_base)[BYTE_XOR_LE(index)] = data; }
-UINT32 memory_array::read16_from_32be(int index) { return reinterpret_cast<UINT16 *>(m_base)[BYTE_XOR_BE(index)]; }
-void memory_array::write16_to_32be(int index, UINT32 data) { reinterpret_cast<UINT16 *>(m_base)[BYTE_XOR_BE(index)] = data; }
-
-UINT32 memory_array::read16_from_64le(int index) { return reinterpret_cast<UINT16 *>(m_base)[BYTE4_XOR_LE(index)]; }
-void memory_array::write16_to_64le(int index, UINT32 data) { reinterpret_cast<UINT16 *>(m_base)[BYTE4_XOR_LE(index)] = data; }
-UINT32 memory_array::read16_from_64be(int index) { return reinterpret_cast<UINT16 *>(m_base)[BYTE4_XOR_BE(index)]; }
-void memory_array::write16_to_64be(int index, UINT32 data) { reinterpret_cast<UINT16 *>(m_base)[BYTE4_XOR_BE(index)] = data; }
-=======
 u32 memory_array::read16_from_8le(int index) const { return read8_from_8(index*2) | (read8_from_8(index*2+1) << 8); }
 void memory_array::write16_to_8le(int index, u32 data) { write8_to_8(index*2, data); write8_to_8(index*2+1, data >> 8); }
 u32 memory_array::read16_from_8be(int index) const { return (read8_from_8(index*2) << 8) | read8_from_8(index*2+1); }
@@ -225,7 +166,6 @@ u32 memory_array::read16_from_64le(int index) const { return reinterpret_cast<u1
 void memory_array::write16_to_64le(int index, u32 data) { reinterpret_cast<u16 *>(m_base)[BYTE4_XOR_LE(index)] = data; }
 u32 memory_array::read16_from_64be(int index) const { return reinterpret_cast<u16 *>(m_base)[BYTE4_XOR_BE(index)]; }
 void memory_array::write16_to_64be(int index, u32 data) { reinterpret_cast<u16 *>(m_base)[BYTE4_XOR_BE(index)] = data; }
->>>>>>> upstream/master
 
 
 //-------------------------------------------------
@@ -233,25 +173,6 @@ void memory_array::write16_to_64be(int index, u32 data) { reinterpret_cast<u16 *
 //  heleprs for 4 bytes-per-entry
 //-------------------------------------------------
 
-<<<<<<< HEAD
-UINT32 memory_array::read32_from_8le(int index) { return read16_from_8le(index*2) | (read16_from_8le(index*2+1) << 16); }
-void memory_array::write32_to_8le(int index, UINT32 data) { write16_to_8le(index*2, data); write16_to_8le(index*2+1, data >> 16); }
-UINT32 memory_array::read32_from_8be(int index) { return (read16_from_8be(index*2) << 16) | read16_from_8be(index*2+1); }
-void memory_array::write32_to_8be(int index, UINT32 data) { write16_to_8be(index*2, data >> 16); write16_to_8be(index*2+1, data); }
-
-UINT32 memory_array::read32_from_16le(int index) { return read16_from_16(index*2) | (read16_from_16(index*2+1) << 16); }
-void memory_array::write32_to_16le(int index, UINT32 data) { write16_to_16(index*2, data); write16_to_16(index*2+1, data >> 16); }
-UINT32 memory_array::read32_from_16be(int index) { return (read16_from_16(index*2) << 16) | read16_from_16(index*2+1); }
-void memory_array::write32_to_16be(int index, UINT32 data) { write16_to_16(index*2, data >> 16); write16_to_16(index*2+1, data); }
-
-UINT32 memory_array::read32_from_32(int index) { return reinterpret_cast<UINT32 *>(m_base)[index]; }
-void memory_array::write32_to_32(int index, UINT32 data) { reinterpret_cast<UINT32 *>(m_base)[index] = data; }
-
-UINT32 memory_array::read32_from_64le(int index) { return reinterpret_cast<UINT32 *>(m_base)[BYTE_XOR_LE(index)]; }
-void memory_array::write32_to_64le(int index, UINT32 data) { reinterpret_cast<UINT32 *>(m_base)[BYTE_XOR_LE(index)] = data; }
-UINT32 memory_array::read32_from_64be(int index) { return reinterpret_cast<UINT32 *>(m_base)[BYTE_XOR_BE(index)]; }
-void memory_array::write32_to_64be(int index, UINT32 data) { reinterpret_cast<UINT32 *>(m_base)[BYTE_XOR_BE(index)] = data; }
-=======
 u32 memory_array::read32_from_8le(int index) const { return read16_from_8le(index*2) | (read16_from_8le(index*2+1) << 16); }
 void memory_array::write32_to_8le(int index, u32 data) { write16_to_8le(index*2, data); write16_to_8le(index*2+1, data >> 16); }
 u32 memory_array::read32_from_8be(int index) const { return (read16_from_8be(index*2) << 16) | read16_from_8be(index*2+1); }
@@ -269,4 +190,3 @@ u32 memory_array::read32_from_64le(int index) const { return reinterpret_cast<u3
 void memory_array::write32_to_64le(int index, u32 data) { reinterpret_cast<u32 *>(m_base)[BYTE_XOR_LE(index)] = data; }
 u32 memory_array::read32_from_64be(int index) const { return reinterpret_cast<u32 *>(m_base)[BYTE_XOR_BE(index)]; }
 void memory_array::write32_to_64be(int index, u32 data) { reinterpret_cast<u32 *>(m_base)[BYTE_XOR_BE(index)] = data; }
->>>>>>> upstream/master

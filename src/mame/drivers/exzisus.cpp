@@ -1,9 +1,6 @@
 // license:BSD-3-Clause
 // copyright-holders:Yochizo
-<<<<<<< HEAD
-=======
 // thanks-to:Richard Bush
->>>>>>> upstream/master
 /***************************************************************************
 
 Exzisus
@@ -39,13 +36,6 @@ TODO:
 ****************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/z80/z80.h"
-#include "includes/taitoipt.h"
-#include "audio/taitosnd.h"
-#include "sound/2151intf.h"
-#include "includes/exzisus.h"
-=======
 #include "includes/exzisus.h"
 #include "includes/taitoipt.h"
 #include "audio/taitosnd.h"
@@ -54,7 +44,6 @@ TODO:
 #include "sound/ym2151.h"
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 /***************************************************************************
@@ -77,17 +66,10 @@ WRITE8_MEMBER(exzisus_state::cpub_bankswitch_w)
 
 WRITE8_MEMBER(exzisus_state::coincounter_w)
 {
-<<<<<<< HEAD
-	coin_lockout_w(machine(), 0,~data & 0x01);
-	coin_lockout_w(machine(), 1,~data & 0x02);
-	coin_counter_w(machine(), 0,data & 0x04);
-	coin_counter_w(machine(), 1,data & 0x08);
-=======
 	machine().bookkeeping().coin_lockout_w(0,~data & 0x01);
 	machine().bookkeeping().coin_lockout_w(1,~data & 0x02);
 	machine().bookkeeping().coin_counter_w(0,data & 0x04);
 	machine().bookkeeping().coin_counter_w(1,data & 0x08);
->>>>>>> upstream/master
 }
 
 // is it ok that cpub_reset refers to cpuc?
@@ -101,11 +83,7 @@ WRITE8_MEMBER(exzisus_state::cpub_reset_w)
 // the RAM check to work
 DRIVER_INIT_MEMBER(exzisus_state,exzisus)
 {
-<<<<<<< HEAD
-	UINT8 *RAM = memregion("cpua")->base();
-=======
 	uint8_t *RAM = memregion("cpua")->base();
->>>>>>> upstream/master
 
 	/* Fix WORK RAM error */
 	RAM[0x67fd] = 0x18;
@@ -247,11 +225,7 @@ GFXDECODE_END
 
 
 /* All clocks are unconfirmed */
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( exzisus, exzisus_state )
-=======
 static MACHINE_CONFIG_START( exzisus )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("cpua", Z80, 6000000)
@@ -281,11 +255,7 @@ static MACHINE_CONFIG_START( exzisus )
 	MCFG_SCREEN_PALETTE("palette")
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", exzisus)
-<<<<<<< HEAD
-	MCFG_PALETTE_ADD_RRRRGGGGBBBB_PROMS("palette", 1024)
-=======
 	MCFG_PALETTE_ADD_RRRRGGGGBBBB_PROMS("palette", "proms", 1024)
->>>>>>> upstream/master
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
@@ -420,12 +390,6 @@ ROM_START( exzisust )
 	ROM_LOAD( "b23-05.16l", 0x00800, 0x00400, CRC(87f0f69a) SHA1(37df6fd56245fab9beaabfd86fd8f95d7c42c2a5) )
 ROM_END
 
-<<<<<<< HEAD
-GAME( 1987, exzisus,  0,       exzisus, exzisus, driver_device, 0, ROT0, "Taito Corporation", "Exzisus (Japan, dedicated)",  MACHINE_SUPPORTS_SAVE )
-GAME( 1987, exzisusa, exzisus, exzisus, exzisus, driver_device, 0, ROT0, "Taito Corporation", "Exzisus (Japan, conversion)", MACHINE_SUPPORTS_SAVE )
-GAME( 1987, exzisust, exzisus, exzisus, exzisus, driver_device, 0, ROT0, "Taito Corporation (TAD license)", "Exzisus (TAD license)", MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1987, exzisus,  0,       exzisus, exzisus, exzisus_state, 0, ROT0, "Taito Corporation",               "Exzisus (Japan, dedicated)",  MACHINE_SUPPORTS_SAVE )
 GAME( 1987, exzisusa, exzisus, exzisus, exzisus, exzisus_state, 0, ROT0, "Taito Corporation",               "Exzisus (Japan, conversion)", MACHINE_SUPPORTS_SAVE )
 GAME( 1987, exzisust, exzisus, exzisus, exzisus, exzisus_state, 0, ROT0, "Taito Corporation (TAD license)", "Exzisus (TAD license)",       MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

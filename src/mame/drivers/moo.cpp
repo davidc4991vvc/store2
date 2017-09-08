@@ -115,16 +115,6 @@ Bucky:
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/m68000/m68000.h"
-#include "cpu/z80/z80.h"
-#include "machine/eepromser.h"
-#include "sound/2151intf.h"
-#include "sound/okim6295.h"
-#include "sound/k054539.h"
-#include "includes/konamipt.h"
-#include "includes/moo.h"
-=======
 #include "includes/moo.h"
 #include "includes/konamipt.h"
 
@@ -135,7 +125,6 @@ Bucky:
 #include "sound/okim6295.h"
 #include "sound/k054539.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 #define MOO_DEBUG 0
 #define MOO_DMADELAY (100)
@@ -170,11 +159,7 @@ WRITE16_MEMBER(moo_state::control2_w)
 void moo_state::moo_objdma()
 {
 	int num_inactive;
-<<<<<<< HEAD
-	UINT16 *src, *dst;
-=======
 	uint16_t *src, *dst;
->>>>>>> upstream/master
 	int counter = m_k053246->k053247_get_dy();
 
 	m_k053246->k053247_get_ram( &dst);
@@ -236,37 +221,11 @@ INTERRUPT_GEN_MEMBER(moo_state::moobl_interrupt)
 	device.execute().set_input_line(5, HOLD_LINE);
 }
 
-<<<<<<< HEAD
-WRITE16_MEMBER(moo_state::sound_cmd1_w)
-{
-	if ((data & 0x00ff0000) == 0)
-	{
-		data &= 0xff;
-		soundlatch_byte_w(space, 0, data);
-	}
-}
-
-WRITE16_MEMBER(moo_state::sound_cmd2_w)
-{
-	if ((data & 0x00ff0000) == 0)
-		soundlatch2_byte_w(space, 0, data & 0xff);
-}
-
-=======
->>>>>>> upstream/master
 WRITE16_MEMBER(moo_state::sound_irq_w)
 {
 	m_soundcpu->set_input_line(0, HOLD_LINE);
 }
 
-<<<<<<< HEAD
-READ16_MEMBER(moo_state::sound_status_r)
-{
-	return soundlatch3_byte_r(space, 0);
-}
-
-=======
->>>>>>> upstream/master
 WRITE8_MEMBER(moo_state::sound_bankswitch_w)
 {
 	membank("bank1")->set_base(memregion("soundcpu")->base() + 0x10000 + (data&0xf)*0x4000);
@@ -305,11 +264,7 @@ WRITE16_MEMBER(moo_state::k053247_scattered_word_w)
 
 WRITE16_MEMBER(moo_state::moo_prot_w)
 {
-<<<<<<< HEAD
-	UINT32 src1, src2, dst, length, a, b, res;
-=======
 	uint32_t src1, src2, dst, length, a, b, res;
->>>>>>> upstream/master
 
 	COMBINE_DATA(&m_protram[offset]);
 
@@ -341,11 +296,7 @@ WRITE16_MEMBER(moo_state::moobl_oki_bank_w)
 {
 	logerror("%x to OKI bank\n", data);
 
-<<<<<<< HEAD
-	m_oki->set_bank_base((data & 0x0f) * 0x40000);
-=======
 	m_oki->set_rom_bank(data & 0x0f);
->>>>>>> upstream/master
 }
 
 static ADDRESS_MAP_START( moo_map, AS_PROGRAM, 16, moo_state )
@@ -359,14 +310,7 @@ static ADDRESS_MAP_START( moo_map, AS_PROGRAM, 16, moo_state )
 	AM_RANGE(0x0ce000, 0x0ce01f) AM_WRITE(moo_prot_w)
 	AM_RANGE(0x0d0000, 0x0d001f) AM_DEVREADWRITE8("k053252", k053252_device, read, write, 0x00ff)                  /* CCU regs (ignored) */
 	AM_RANGE(0x0d4000, 0x0d4001) AM_WRITE(sound_irq_w)
-<<<<<<< HEAD
-	AM_RANGE(0x0d600c, 0x0d600d) AM_WRITE(sound_cmd1_w)
-	AM_RANGE(0x0d600e, 0x0d600f) AM_WRITE(sound_cmd2_w)
-	AM_RANGE(0x0d6014, 0x0d6015) AM_READ(sound_status_r)
-	AM_RANGE(0x0d6000, 0x0d601f) AM_RAM                         /* sound regs fall through */
-=======
 	AM_RANGE(0x0d6000, 0x0d601f) AM_DEVICE8("k054321", k054321_device, main_map, 0x00ff)
->>>>>>> upstream/master
 	AM_RANGE(0x0d8000, 0x0d8007) AM_DEVWRITE("k056832", k056832_device, b_word_w)        /* VSCCS regs */
 	AM_RANGE(0x0da000, 0x0da001) AM_READ_PORT("P1_P3")
 	AM_RANGE(0x0da002, 0x0da003) AM_READ_PORT("P2_P4")
@@ -429,14 +373,7 @@ static ADDRESS_MAP_START( bucky_map, AS_PROGRAM, 16, moo_state )
 	AM_RANGE(0x0d0000, 0x0d001f) AM_DEVREADWRITE8("k053252", k053252_device, read, write, 0x00ff)                  /* CCU regs (ignored) */
 	AM_RANGE(0x0d2000, 0x0d20ff) AM_DEVREADWRITE("k054000", k054000_device, lsb_r, lsb_w)
 	AM_RANGE(0x0d4000, 0x0d4001) AM_WRITE(sound_irq_w)
-<<<<<<< HEAD
-	AM_RANGE(0x0d600c, 0x0d600d) AM_WRITE(sound_cmd1_w)
-	AM_RANGE(0x0d600e, 0x0d600f) AM_WRITE(sound_cmd2_w)
-	AM_RANGE(0x0d6014, 0x0d6015) AM_READ(sound_status_r)
-	AM_RANGE(0x0d6000, 0x0d601f) AM_RAM                         /* sound regs fall through */
-=======
 	AM_RANGE(0x0d6000, 0x0d601f) AM_DEVICE8("k054321", k054321_device, main_map, 0x00ff)
->>>>>>> upstream/master
 	AM_RANGE(0x0d8000, 0x0d8007) AM_DEVWRITE("k056832", k056832_device, b_word_w)        /* VSCCS regs */
 	AM_RANGE(0x0da000, 0x0da001) AM_READ_PORT("P1_P3")
 	AM_RANGE(0x0da002, 0x0da003) AM_READ_PORT("P2_P4")
@@ -464,13 +401,7 @@ static ADDRESS_MAP_START( sound_map, AS_PROGRAM, 8, moo_state )
 	AM_RANGE(0xc000, 0xdfff) AM_RAM
 	AM_RANGE(0xe000, 0xe22f) AM_DEVREADWRITE("k054539", k054539_device, read, write)
 	AM_RANGE(0xec00, 0xec01) AM_DEVREADWRITE("ymsnd", ym2151_device,read,write)
-<<<<<<< HEAD
-	AM_RANGE(0xf000, 0xf000) AM_WRITE(soundlatch3_byte_w)
-	AM_RANGE(0xf002, 0xf002) AM_READ(soundlatch_byte_r)
-	AM_RANGE(0xf003, 0xf003) AM_READ(soundlatch2_byte_r)
-=======
 	AM_RANGE(0xf000, 0xf003) AM_DEVICE("k054321", k054321_device, sound_map)
->>>>>>> upstream/master
 	AM_RANGE(0xf800, 0xf800) AM_WRITE(sound_bankswitch_w)
 ADDRESS_MAP_END
 
@@ -559,11 +490,7 @@ MACHINE_RESET_MEMBER(moo_state,moo)
 	m_sprite_colorbase = 0;
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( moo, moo_state )
-=======
 static MACHINE_CONFIG_START( moo )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, XTAL_32MHz/2) // 16MHz verified
@@ -597,28 +524,14 @@ static MACHINE_CONFIG_START( moo )
 
 	MCFG_VIDEO_START_OVERRIDE(moo_state,moo)
 
-<<<<<<< HEAD
-	MCFG_GFXDECODE_ADD("gfxdecode", "palette", empty)
-
-	MCFG_DEVICE_ADD("k053246", K053246, 0)
-	MCFG_K053246_CB(moo_state, sprite_callback)
-	MCFG_K053246_CONFIG("gfx2", 1, NORMAL_PLANE_ORDER, -48+1, 23)
-	MCFG_K053246_GFXDECODE("gfxdecode")
-=======
 	MCFG_DEVICE_ADD("k053246", K053246, 0)
 	MCFG_K053246_CB(moo_state, sprite_callback)
 	MCFG_K053246_CONFIG("gfx2", NORMAL_PLANE_ORDER, -48+1, 23)
->>>>>>> upstream/master
 	MCFG_K053246_PALETTE("palette")
 
 	MCFG_DEVICE_ADD("k056832", K056832, 0)
 	MCFG_K056832_CB(moo_state, tile_callback)
-<<<<<<< HEAD
-	MCFG_K056832_CONFIG("gfx1", 0, K056832_BPP_4, 1, 0, "none")
-	MCFG_K056832_GFXDECODE("gfxdecode")
-=======
 	MCFG_K056832_CONFIG("gfx1", K056832_BPP_4, 1, 0, "none")
->>>>>>> upstream/master
 	MCFG_K056832_PALETTE("palette")
 
 	MCFG_K053251_ADD("k053251")
@@ -628,11 +541,8 @@ static MACHINE_CONFIG_START( moo )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
-<<<<<<< HEAD
-=======
 	MCFG_K054321_ADD("k054321", ":lspeaker", ":rspeaker")
 
->>>>>>> upstream/master
 	MCFG_YM2151_ADD("ymsnd", XTAL_32MHz/8) // 4MHz verified
 	MCFG_SOUND_ROUTE(0, "lspeaker", 0.50)
 	MCFG_SOUND_ROUTE(1, "rspeaker", 0.50)
@@ -642,11 +552,7 @@ static MACHINE_CONFIG_START( moo )
 	MCFG_SOUND_ROUTE(1, "rspeaker", 0.75)
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( moobl, moo_state )
-=======
 static MACHINE_CONFIG_START( moobl )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, 16100000)
@@ -674,28 +580,14 @@ static MACHINE_CONFIG_START( moobl )
 
 	MCFG_VIDEO_START_OVERRIDE(moo_state,moo)
 
-<<<<<<< HEAD
-	MCFG_GFXDECODE_ADD("gfxdecode", "palette", empty)
-
-	MCFG_DEVICE_ADD("k053246", K053246, 0)
-	MCFG_K053246_CB(moo_state, sprite_callback)
-	MCFG_K053246_CONFIG("gfx2", 1, NORMAL_PLANE_ORDER, -48+1, 23)
-	MCFG_K053246_GFXDECODE("gfxdecode")
-=======
 	MCFG_DEVICE_ADD("k053246", K053246, 0)
 	MCFG_K053246_CB(moo_state, sprite_callback)
 	MCFG_K053246_CONFIG("gfx2", NORMAL_PLANE_ORDER, -48+1, 23)
->>>>>>> upstream/master
 	MCFG_K053246_PALETTE("palette")
 
 	MCFG_DEVICE_ADD("k056832", K056832, 0)
 	MCFG_K056832_CB(moo_state, tile_callback)
-<<<<<<< HEAD
-	MCFG_K056832_CONFIG("gfx1", 0, K056832_BPP_4, 1, 0, "none")
-	MCFG_K056832_GFXDECODE("gfxdecode")
-=======
 	MCFG_K056832_CONFIG("gfx1", K056832_BPP_4, 1, 0, "none")
->>>>>>> upstream/master
 	MCFG_K056832_PALETTE("palette")
 
 	MCFG_K053251_ADD("k053251")
@@ -705,11 +597,7 @@ static MACHINE_CONFIG_START( moobl )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki", 1056000, OKIM6295_PIN7_HIGH) // clock frequency & pin 7 not verified
-=======
 	MCFG_OKIM6295_ADD("oki", 1056000, PIN7_HIGH) // clock frequency & pin 7 not verified
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 1.0)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 1.0)
 MACHINE_CONFIG_END
@@ -722,11 +610,7 @@ static MACHINE_CONFIG_DERIVED( bucky, moo )
 	MCFG_K054000_ADD("k054000")
 
 	MCFG_DEVICE_MODIFY("k053246")
-<<<<<<< HEAD
-	MCFG_K053246_CONFIG("gfx2", 1, NORMAL_PLANE_ORDER, -48, 23)
-=======
 	MCFG_K053246_CONFIG("gfx2", NORMAL_PLANE_ORDER, -48, 23)
->>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_PALETTE_MODIFY("palette")
@@ -951,8 +835,6 @@ ROM_START( buckyea ) /* Version EA */
 	ROM_LOAD( "bucky.nv", 0x0000, 0x080, CRC(6a5986f3) SHA1(3efddeed261b09031c582e12318f00c2cbb214ea) )
 ROM_END
 
-<<<<<<< HEAD
-=======
 ROM_START( buckyjaa ) /* Version JA */
 	ROM_REGION( 0x240000, "maincpu", 0 )
 	/* main program */
@@ -989,7 +871,6 @@ ROM_START( buckyjaa ) /* Version JA */
 	ROM_LOAD( "buckyja.nv", 0x0000, 0x080, CRC(2f280a74) SHA1(c4b4472da57599587325bad6d9e7760916076816) )
 ROM_END
 
->>>>>>> upstream/master
 ROM_START( buckyuab ) /* Version UA */
 	ROM_REGION( 0x240000, "maincpu", 0 )
 	/* main program */
@@ -1118,17 +999,6 @@ ROM_START( moomesabl )
 ROM_END
 
 
-<<<<<<< HEAD
-GAME( 1992, moomesa,    0,       moo,     moo,   driver_device, 0, ROT0, "Konami",  "Wild West C.O.W.-Boys of Moo Mesa (ver EAB)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
-GAME( 1992, moomesauac, moomesa, moo,     moo,   driver_device, 0, ROT0, "Konami",  "Wild West C.O.W.-Boys of Moo Mesa (ver UAC)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
-GAME( 1992, moomesauab, moomesa, moo,     moo,   driver_device, 0, ROT0, "Konami",  "Wild West C.O.W.-Boys of Moo Mesa (ver UAB)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
-GAME( 1992, moomesaaab, moomesa, moo,     moo,   driver_device, 0, ROT0, "Konami",  "Wild West C.O.W.-Boys of Moo Mesa (ver AAB)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
-GAME( 1992, moomesabl,  moomesa, moobl,   moo,   driver_device, 0, ROT0, "bootleg", "Wild West C.O.W.-Boys of Moo Mesa (bootleg)", MACHINE_NOT_WORKING | MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE ) // based on Version AA
-GAME( 1992, bucky,      0,       bucky,   bucky, driver_device, 0, ROT0, "Konami",  "Bucky O'Hare (ver EAB)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
-GAME( 1992, buckyea,    bucky,   bucky,   bucky, driver_device, 0, ROT0, "Konami",  "Bucky O'Hare (ver EA)",  MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
-GAME( 1992, buckyuab,   bucky,   bucky,   bucky, driver_device, 0, ROT0, "Konami",  "Bucky O'Hare (ver UAB)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
-GAME( 1992, buckyaab,   bucky,   bucky,   bucky, driver_device, 0, ROT0, "Konami",  "Bucky O'Hare (ver AAB)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1992, moomesa,    0,       moo,     moo,   moo_state, 0, ROT0, "Konami",  "Wild West C.O.W.-Boys of Moo Mesa (ver EAB)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
 GAME( 1992, moomesauac, moomesa, moo,     moo,   moo_state, 0, ROT0, "Konami",  "Wild West C.O.W.-Boys of Moo Mesa (ver UAC)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
 GAME( 1992, moomesauab, moomesa, moo,     moo,   moo_state, 0, ROT0, "Konami",  "Wild West C.O.W.-Boys of Moo Mesa (ver UAB)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
@@ -1139,4 +1009,3 @@ GAME( 1992, buckyea,    bucky,   bucky,   bucky, moo_state, 0, ROT0, "Konami",  
 GAME( 1992, buckyjaa,   bucky,   bucky,   bucky, moo_state, 0, ROT0, "Konami",  "Bucky O'Hare (ver JAA)",                      MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
 GAME( 1992, buckyuab,   bucky,   bucky,   bucky, moo_state, 0, ROT0, "Konami",  "Bucky O'Hare (ver UAB)",                      MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
 GAME( 1992, buckyaab,   bucky,   bucky,   bucky, moo_state, 0, ROT0, "Konami",  "Bucky O'Hare (ver AAB)",                      MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

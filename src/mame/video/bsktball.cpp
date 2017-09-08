@@ -28,11 +28,7 @@ TILE_GET_INFO_MEMBER(bsktball_state::get_bg_tile_info)
 
 void bsktball_state::video_start()
 {
-<<<<<<< HEAD
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(bsktball_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
-=======
 	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(bsktball_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
->>>>>>> upstream/master
 }
 
 void bsktball_state::draw_sprites(  bitmap_ind16 &bitmap, const rectangle &cliprect )
@@ -54,11 +50,7 @@ void bsktball_state::draw_sprites(  bitmap_ind16 &bitmap, const rectangle &clipr
 	}
 }
 
-<<<<<<< HEAD
-UINT32 bsktball_state::screen_update_bsktball(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t bsktball_state::screen_update_bsktball(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	m_bg_tilemap->draw(screen, bitmap, cliprect, 0, 0);
 	draw_sprites(bitmap, cliprect);

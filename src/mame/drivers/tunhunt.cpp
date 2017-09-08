@@ -46,17 +46,11 @@
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/m6502/m6502.h"
-#include "sound/pokey.h"
-#include "includes/tunhunt.h"
-=======
 #include "includes/tunhunt.h"
 
 #include "cpu/m6502/m6502.h"
 #include "sound/pokey.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 /*************************************
@@ -78,15 +72,9 @@ WRITE8_MEMBER(tunhunt_state::control_w)
 	*/
 
 	m_control = data;
-<<<<<<< HEAD
-	coin_counter_w( machine(), 0,data&0x01 );
-	coin_counter_w( machine(), 1,data&0x02 );
-	set_led_status( machine(), 0, data&0x40 ); /* start */
-=======
 	machine().bookkeeping().coin_counter_w(0,data&0x01 );
 	machine().bookkeeping().coin_counter_w(1,data&0x02 );
 	output().set_led_value(0, data&0x40 ); /* start */
->>>>>>> upstream/master
 }
 
 
@@ -280,11 +268,7 @@ GFXDECODE_END
  *
  *************************************/
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( tunhunt, tunhunt_state )
-=======
 static MACHINE_CONFIG_START( tunhunt )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6502, XTAL_12_096MHz/6)        /* ??? */
@@ -409,12 +393,6 @@ ROM_END
  *
  *************************************/
 
-<<<<<<< HEAD
-/*         rom   parent  machine    inp         init */
-GAME( 1979,tunhunt,  0,       tunhunt,   tunhunt, driver_device,    0,  ORIENTATION_SWAP_XY, "Atari", "Tunnel Hunt", MACHINE_SUPPORTS_SAVE )
-GAME( 1981,tunhuntc, tunhunt, tunhunt,   tunhunt, driver_device,    0,  ORIENTATION_SWAP_XY, "Atari (Centuri license)", "Tunnel Hunt (Centuri)", MACHINE_SUPPORTS_SAVE )
-=======
 /*         rom       parent   machine    inp      state          init */
 GAME( 1979,tunhunt,  0,       tunhunt,   tunhunt, tunhunt_state,    0,  ORIENTATION_SWAP_XY, "Atari", "Tunnel Hunt", MACHINE_SUPPORTS_SAVE )
 GAME( 1981,tunhuntc, tunhunt, tunhunt,   tunhunt, tunhunt_state,    0,  ORIENTATION_SWAP_XY, "Atari (Centuri license)", "Tunnel Hunt (Centuri)", MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

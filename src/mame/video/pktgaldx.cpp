@@ -2,15 +2,6 @@
 // copyright-holders:David Haywood, Bryan McPhail
 #include "emu.h"
 #include "includes/pktgaldx.h"
-<<<<<<< HEAD
-
-/* Video on the orginal */
-
-UINT32 pktgaldx_state::screen_update_pktgaldx(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-{
-	address_space &space = machine().driver_data()->generic_space();
-	UINT16 flip = m_deco_tilegen1->pf_control_r(space, 0, 0xffff);
-=======
 #include "screen.h"
 
 /* Video on the orginal */
@@ -19,7 +10,6 @@ uint32_t pktgaldx_state::screen_update_pktgaldx(screen_device &screen, bitmap_in
 {
 	address_space &space = machine().dummy_space();
 	uint16_t flip = m_deco_tilegen1->pf_control_r(space, 0, 0xffff);
->>>>>>> upstream/master
 
 	flip_screen_set(BIT(flip, 7));
 	m_deco_tilegen1->pf_update(m_pf1_rowscroll, m_pf2_rowscroll);
@@ -35,11 +25,7 @@ uint32_t pktgaldx_state::screen_update_pktgaldx(screen_device &screen, bitmap_in
 
 /* Video for the bootleg */
 
-<<<<<<< HEAD
-UINT32 pktgaldx_state::screen_update_pktgaldb(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t pktgaldx_state::screen_update_pktgaldb(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int x, y;
 	int offset = 0;

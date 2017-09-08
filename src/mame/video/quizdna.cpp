@@ -29,11 +29,7 @@ TILE_GET_INFO_MEMBER(quizdna_state::get_bg_tile_info)
 TILE_GET_INFO_MEMBER(quizdna_state::get_fg_tile_info)
 {
 	int code,col,x,y;
-<<<<<<< HEAD
-	UINT8 *FG = memregion("user1")->base();
-=======
 	uint8_t *FG = memregion("user1")->base();
->>>>>>> upstream/master
 
 	x = tile_index & 0x1f;
 	y = FG[(tile_index >> 5) & 0x1f] & 0x3f;
@@ -57,18 +53,6 @@ void quizdna_state::video_start()
 	m_bg_xscroll[0] = 0;
 	m_bg_xscroll[1] = 0;
 
-<<<<<<< HEAD
-	m_bg_ram = auto_alloc_array(machine(), UINT8, 0x2000);
-	m_fg_ram = auto_alloc_array(machine(), UINT8, 0x1000);
-
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(quizdna_state::get_bg_tile_info),this),TILEMAP_SCAN_ROWS,8,8,64,32 );
-	m_fg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(quizdna_state::get_fg_tile_info),this),TILEMAP_SCAN_ROWS,16,8,32,32 );
-
-	m_fg_tilemap->set_transparent_pen(0 );
-
-	save_pointer(NAME(m_bg_ram), 0x2000);
-	save_pointer(NAME(m_fg_ram), 0x1000);
-=======
 	m_bg_ram = std::make_unique<uint8_t[]>(0x2000);
 	m_fg_ram = std::make_unique<uint8_t[]>(0x1000);
 
@@ -79,7 +63,6 @@ void quizdna_state::video_start()
 
 	save_pointer(NAME(m_bg_ram.get()), 0x2000);
 	save_pointer(NAME(m_fg_ram.get()), 0x1000);
->>>>>>> upstream/master
 	save_item(NAME(m_bg_xscroll));
 	save_item(NAME(m_flipscreen));
 	save_item(NAME(m_video_enable));
@@ -87,11 +70,7 @@ void quizdna_state::video_start()
 
 WRITE8_MEMBER(quizdna_state::bg_ram_w)
 {
-<<<<<<< HEAD
-	UINT8 *RAM = memregion("maincpu")->base();
-=======
 	uint8_t *RAM = memregion("maincpu")->base();
->>>>>>> upstream/master
 	m_bg_ram[offset] = data;
 	RAM[0x12000+offset] = data;
 
@@ -102,11 +81,7 @@ WRITE8_MEMBER(quizdna_state::fg_ram_w)
 {
 	int i;
 	int offs = offset & 0xfff;
-<<<<<<< HEAD
-	UINT8 *RAM = memregion("maincpu")->base();
-=======
 	uint8_t *RAM = memregion("maincpu")->base();
->>>>>>> upstream/master
 
 	RAM[0x10000+offs] = data;
 	RAM[0x11000+offs] = data; /* mirror */
@@ -135,11 +110,7 @@ WRITE8_MEMBER(quizdna_state::screen_ctrl_w)
 	int tmp = (data & 0x10) >> 4;
 	m_video_enable = data & 0x20;
 
-<<<<<<< HEAD
-	coin_counter_w(machine(), 0, data & 1);
-=======
 	machine().bookkeeping().coin_counter_w(0, data & 1);
->>>>>>> upstream/master
 
 	if (m_flipscreen == tmp)
 		return;
@@ -215,11 +186,7 @@ void quizdna_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect
 	}
 }
 
-<<<<<<< HEAD
-UINT32 quizdna_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t quizdna_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	if (m_video_enable)
 	{

@@ -14,13 +14,8 @@
 #error Dont include this file directly; include emu.h instead.
 #endif
 
-<<<<<<< HEAD
-#ifndef __SAVE_H__
-#define __SAVE_H__
-=======
 #ifndef MAME_EMU_SAVE_H
 #define MAME_EMU_SAVE_H
->>>>>>> upstream/master
 
 
 
@@ -44,11 +39,7 @@ enum save_error
 //**************************************************************************
 
 // callback delegate for presave/postload
-<<<<<<< HEAD
-typedef delegate<void ()> save_prepost_delegate;
-=======
 typedef named_delegate<void ()> save_prepost_delegate;
->>>>>>> upstream/master
 
 
 // use this to declare a given type is a simple, non-pointer type that can be
@@ -71,31 +62,12 @@ class state_entry
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	state_entry(void *data, const char *name, device_t *device, const char *module, const char *tag, int index, UINT8 size, UINT32 count);
-
-	// getters
-	state_entry *next() const { return m_next; }
-=======
 	state_entry(void *data, const char *name, device_t *device, const char *module, const char *tag, int index, u8 size, u32 count);
->>>>>>> upstream/master
 
 	// helpers
 	void flip_data();
 
 	// state
-<<<<<<< HEAD
-	state_entry *       m_next;                 // pointer to next entry
-	void *              m_data;                 // pointer to the memory to save/restore
-	std::string         m_name;                 // full name
-	device_t *          m_device;               // associated device, NULL if none
-	std::string         m_module;               // module name
-	std::string         m_tag;                  // tag name
-	int                 m_index;                // index
-	UINT8               m_typesize;             // size of the raw data type
-	UINT32              m_typecount;            // number of items
-	UINT32              m_offset;               // offset within the final structure
-=======
 	void *          m_data;                 // pointer to the memory to save/restore
 	std::string     m_name;                 // full name
 	device_t *      m_device;               // associated device, nullptr if none
@@ -105,7 +77,6 @@ public:
 	u8              m_typesize;             // size of the raw data type
 	u32             m_typecount;            // number of items
 	u32             m_offset;               // offset within the final structure
->>>>>>> upstream/master
 };
 
 class save_manager
@@ -120,20 +91,12 @@ public:
 
 	// getters
 	running_machine &machine() const { return m_machine; }
-<<<<<<< HEAD
-	int registration_count() const { return m_entry_list.count(); }
-=======
 	int registration_count() const { return m_entry_list.size(); }
->>>>>>> upstream/master
 	bool registration_allowed() const { return m_reg_allowed; }
 
 	// registration control
 	void allow_registration(bool allowed = true);
-<<<<<<< HEAD
-	const char *indexed_item(int index, void *&base, UINT32 &valsize, UINT32 &valcount) const;
-=======
 	const char *indexed_item(int index, void *&base, u32 &valsize, u32 &valcount) const;
->>>>>>> upstream/master
 
 	// function registration
 	void register_presave(save_prepost_delegate func);
@@ -144,11 +107,7 @@ public:
 	void dispatch_postload();
 
 	// generic memory registration
-<<<<<<< HEAD
-	void save_memory(device_t *device, const char *module, const char *tag, UINT32 index, const char *name, void *val, UINT32 valsize, UINT32 valcount = 1);
-=======
 	void save_memory(device_t *device, const char *module, const char *tag, u32 index, const char *name, void *val, u32 valsize, u32 valcount = 1);
->>>>>>> upstream/master
 
 	// templatized wrapper for general objects
 	template<typename _ItemType>
@@ -177,11 +136,7 @@ public:
 
 	// templatized wrapper for pointers
 	template<typename _ItemType>
-<<<<<<< HEAD
-	void save_pointer(device_t *device, const char *module, const char *tag, int index, _ItemType *value, const char *valname, UINT32 count)
-=======
 	void save_pointer(device_t *device, const char *module, const char *tag, int index, _ItemType *value, const char *valname, u32 count)
->>>>>>> upstream/master
 	{
 		if (!type_checker<_ItemType>::is_atom) throw emu_fatalerror("Called save_item on a non-fundamental type!");
 		save_memory(device, module, tag, index, valname, value, sizeof(*value), count);
@@ -189,15 +144,9 @@ public:
 
 	// global memory registration
 	template<typename _ItemType>
-<<<<<<< HEAD
-	void save_item(_ItemType &value, const char *valname, int index = 0) { save_item(NULL, "global", NULL, index, value, valname); }
-	template<typename _ItemType>
-	void save_pointer(_ItemType *value, const char *valname, UINT32 count, int index = 0) { save_pointer(NULL, "global", NULL, index, value, valname, count); }
-=======
 	void save_item(_ItemType &value, const char *valname, int index = 0) { save_item(nullptr, "global", nullptr, index, value, valname); }
 	template<typename _ItemType>
 	void save_pointer(_ItemType *value, const char *valname, u32 count, int index = 0) { save_pointer(nullptr, "global", nullptr, index, value, valname, count); }
->>>>>>> upstream/master
 
 	// file processing
 	static save_error check_file(running_machine &machine, emu_file &file, const char *gamename, void (CLIB_DECL *errormsg)(const char *fmt, ...));
@@ -206,15 +155,9 @@ public:
 
 private:
 	// internal helpers
-<<<<<<< HEAD
-	UINT32 signature() const;
-	void dump_registry() const;
-	static save_error validate_header(const UINT8 *header, const char *gamename, UINT32 signature, void (CLIB_DECL *errormsg)(const char *fmt, ...), const char *error_prefix);
-=======
 	u32 signature() const;
 	void dump_registry() const;
 	static save_error validate_header(const u8 *header, const char *gamename, u32 signature, void (CLIB_DECL *errormsg)(const char *fmt, ...), const char *error_prefix);
->>>>>>> upstream/master
 
 	// state callback item
 	class state_callback
@@ -223,14 +166,6 @@ private:
 		// construction/destruction
 		state_callback(save_prepost_delegate callback);
 
-<<<<<<< HEAD
-		// getters
-		state_callback *next() const { return m_next; }
-
-		// state
-		state_callback *    m_next;                 // pointer to next entry
-=======
->>>>>>> upstream/master
 		save_prepost_delegate m_func;               // delegate
 	};
 
@@ -239,31 +174,15 @@ private:
 	bool                    m_reg_allowed;          // are registrations allowed?
 	int                     m_illegal_regs;         // number of illegal registrations
 
-<<<<<<< HEAD
-	simple_list<state_entry> m_entry_list;          // list of reigstered entries
-	simple_list<state_callback> m_presave_list;     // list of pre-save functions
-	simple_list<state_callback> m_postload_list;    // list of post-load functions
-=======
 	std::vector<std::unique_ptr<state_entry>> m_entry_list;          // list of registered entries
 	std::vector<std::unique_ptr<state_callback>> m_presave_list;     // list of pre-save functions
 	std::vector<std::unique_ptr<state_callback>> m_postload_list;    // list of post-load functions
->>>>>>> upstream/master
 };
 
 
 // template specializations to enumerate the fundamental atomic types you are allowed to save
 ALLOW_SAVE_TYPE_AND_ARRAY(char)
 ALLOW_SAVE_TYPE          (bool); // std::vector<bool> may be packed internally
-<<<<<<< HEAD
-ALLOW_SAVE_TYPE_AND_ARRAY(INT8)
-ALLOW_SAVE_TYPE_AND_ARRAY(UINT8)
-ALLOW_SAVE_TYPE_AND_ARRAY(INT16)
-ALLOW_SAVE_TYPE_AND_ARRAY(UINT16)
-ALLOW_SAVE_TYPE_AND_ARRAY(INT32)
-ALLOW_SAVE_TYPE_AND_ARRAY(UINT32)
-ALLOW_SAVE_TYPE_AND_ARRAY(INT64)
-ALLOW_SAVE_TYPE_AND_ARRAY(UINT64)
-=======
 ALLOW_SAVE_TYPE_AND_ARRAY(s8)
 ALLOW_SAVE_TYPE_AND_ARRAY(u8)
 ALLOW_SAVE_TYPE_AND_ARRAY(s16)
@@ -272,7 +191,6 @@ ALLOW_SAVE_TYPE_AND_ARRAY(s32)
 ALLOW_SAVE_TYPE_AND_ARRAY(u32)
 ALLOW_SAVE_TYPE_AND_ARRAY(s64)
 ALLOW_SAVE_TYPE_AND_ARRAY(u64)
->>>>>>> upstream/master
 ALLOW_SAVE_TYPE_AND_ARRAY(PAIR)
 ALLOW_SAVE_TYPE_AND_ARRAY(PAIR64)
 ALLOW_SAVE_TYPE_AND_ARRAY(float)
@@ -329,8 +247,4 @@ inline void save_manager::save_item(device_t *device, const char *module, const 
 }
 
 
-<<<<<<< HEAD
-#endif  /* __SAVE_H__ */
-=======
 #endif  /* MAME_EMU_SAVE_H */
->>>>>>> upstream/master

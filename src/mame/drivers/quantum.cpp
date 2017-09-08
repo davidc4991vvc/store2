@@ -1,10 +1,5 @@
-<<<<<<< HEAD
-// license:???
-// copyright-holders:Paul Forgey, Hedley Rainnie, Aaron Giles, Couriersud
-=======
 // license:BSD-3-Clause
 // copyright-holders:Hedley Rainnie, Aaron Giles, Couriersud, Paul Forgey
->>>>>>> upstream/master
 /***************************************************************************
 
     Atari Quantum hardware
@@ -60,12 +55,9 @@ NOTE: The Atari 136002-125 PROM in the sets below wasn't dumped from an actual
 #include "sound/pokey.h"
 #include "sound/discrete.h"
 #include "machine/nvram.h"
-<<<<<<< HEAD
-=======
 #include "machine/watchdog.h"
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 class quantum_state : public driver_device
@@ -125,24 +117,14 @@ WRITE16_MEMBER(quantum_state::led_w)
 	if (ACCESSING_BITS_0_7)
 	{
 		/* bits 0 and 1 are coin counters */
-<<<<<<< HEAD
-		coin_counter_w(machine(), 0, data & 2);
-		coin_counter_w(machine(), 1, data & 1);
-=======
 		machine().bookkeeping().coin_counter_w(0, data & 2);
 		machine().bookkeeping().coin_counter_w(1, data & 1);
->>>>>>> upstream/master
 
 		/* bit 3 = select second trackball for cocktail mode? */
 
 		/* bits 4 and 5 are LED controls */
-<<<<<<< HEAD
-		set_led_status(machine(), 0, data & 0x10);
-		set_led_status(machine(), 1, data & 0x20);
-=======
 		output().set_led_value(0, data & 0x10);
 		output().set_led_value(1, data & 0x20);
->>>>>>> upstream/master
 
 		/* bits 6 and 7 flip screen */
 		m_avg->set_flip_x (data & 0x40);
@@ -172,11 +154,7 @@ static ADDRESS_MAP_START( main_map, AS_PROGRAM, 16, quantum_state )
 	AM_RANGE(0x960000, 0x960001) AM_WRITENOP
 	AM_RANGE(0x968000, 0x968001) AM_DEVWRITE("avg", avg_quantum_device, reset_word_w)
 	AM_RANGE(0x970000, 0x970001) AM_DEVWRITE("avg", avg_quantum_device, go_word_w)
-<<<<<<< HEAD
-	AM_RANGE(0x978000, 0x978001) AM_READNOP AM_WRITE(watchdog_reset16_w)
-=======
 	AM_RANGE(0x978000, 0x978001) AM_READNOP AM_DEVWRITE("watchdog", watchdog_timer_device, reset16_w)
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -189,11 +167,7 @@ ADDRESS_MAP_END
 static INPUT_PORTS_START( quantum )
 	PORT_START("SYSTEM")
 	/* YHALT here MUST BE ALWAYS 0  */
-<<<<<<< HEAD
-	PORT_BIT( 0x0001, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER("avg", avg_quantum_device, done_r, NULL) /* vg YHALT */
-=======
 	PORT_BIT( 0x0001, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER("avg", avg_quantum_device, done_r, nullptr) /* vg YHALT */
->>>>>>> upstream/master
 	PORT_BIT( 0x0002, IP_ACTIVE_LOW, IPT_COIN3 )
 	PORT_BIT( 0x0004, IP_ACTIVE_LOW, IPT_START1 )
 	PORT_BIT( 0x0008, IP_ACTIVE_LOW, IPT_START2 )
@@ -290,11 +264,7 @@ DISCRETE_SOUND_END
  *
  *************************************/
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( quantum, quantum_state )
-=======
 static MACHINE_CONFIG_START( quantum )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, MASTER_CLOCK / 2)
@@ -303,11 +273,8 @@ static MACHINE_CONFIG_START( quantum )
 
 	MCFG_NVRAM_ADD_1FILL("nvram")
 
-<<<<<<< HEAD
-=======
 	MCFG_WATCHDOG_ADD("watchdog")
 
->>>>>>> upstream/master
 	/* video hardware */
 	MCFG_VECTOR_ADD("vector")
 	MCFG_SCREEN_ADD("screen", VECTOR)
@@ -430,12 +397,6 @@ ROM_END
  *
  *************************************/
 
-<<<<<<< HEAD
-GAME( 1982, quantum,  0,       quantum, quantum, driver_device, 0, ROT270, "General Computer Corporation (Atari license)", "Quantum (rev 2)", MACHINE_SUPPORTS_SAVE )
-GAME( 1982, quantum1, quantum, quantum, quantum, driver_device, 0, ROT270, "General Computer Corporation (Atari license)", "Quantum (rev 1)", MACHINE_SUPPORTS_SAVE )
-GAME( 1982, quantump, quantum, quantum, quantum, driver_device, 0, ROT270, "General Computer Corporation (Atari license)", "Quantum (prototype)", MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1982, quantum,  0,       quantum, quantum, quantum_state, 0, ROT270, "General Computer Corporation (Atari license)", "Quantum (rev 2)", MACHINE_SUPPORTS_SAVE )
 GAME( 1982, quantum1, quantum, quantum, quantum, quantum_state, 0, ROT270, "General Computer Corporation (Atari license)", "Quantum (rev 1)", MACHINE_SUPPORTS_SAVE )
 GAME( 1982, quantump, quantum, quantum, quantum, quantum_state, 0, ROT270, "General Computer Corporation (Atari license)", "Quantum (prototype)", MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

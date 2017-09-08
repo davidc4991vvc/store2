@@ -28,14 +28,10 @@ public:
 	lazercmd_state(const machine_config &mconfig, device_type type, const char *tag)
 		: driver_device(mconfig, type, tag),
 		m_maincpu(*this, "maincpu"),
-<<<<<<< HEAD
-		m_dac(*this, "dac"),
-=======
 		m_dac0(*this, "dac0"),
 		m_dac1(*this, "dac1"),
 		m_dac2(*this, "dac2"),
 		m_dac3(*this, "dac3"),
->>>>>>> upstream/master
 		m_videoram(*this, "videoram"),
 		m_gfxdecode(*this, "gfxdecode"),
 		m_palette(*this, "palette")
@@ -43,33 +39,17 @@ public:
 
 	/* device */
 	required_device<s2650_device> m_maincpu;
-<<<<<<< HEAD
-	required_device<dac_device> m_dac;
-	/* memory pointers */
-	required_shared_ptr<UINT8> m_videoram;
-=======
 	optional_device<dac_bit_interface> m_dac0;
 	optional_device<dac_bit_interface> m_dac1;
 	required_device<dac_bit_interface> m_dac2;
 	required_device<dac_bit_interface> m_dac3;
 	/* memory pointers */
 	required_shared_ptr<uint8_t> m_videoram;
->>>>>>> upstream/master
 
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
 
 	/* video-related */
-<<<<<<< HEAD
-	UINT8 m_marker_x;
-	UINT8 m_marker_y;
-
-	/* misc */
-	int m_timer_count;
-	UINT8 m_sense_state;
-	UINT8 m_dac_data;
-	UINT8 m_attract;
-=======
 	uint8_t m_marker_x;
 	uint8_t m_marker_y;
 
@@ -77,7 +57,6 @@ public:
 	int m_timer_count;
 	uint8_t m_sense_state;
 	uint8_t m_attract;
->>>>>>> upstream/master
 
 	DECLARE_WRITE8_MEMBER(lazercmd_ctrl_port_w);
 	DECLARE_READ8_MEMBER(lazercmd_ctrl_port_r);
@@ -88,17 +67,10 @@ public:
 	DECLARE_WRITE8_MEMBER(bbonk_hardware_w);
 	DECLARE_READ8_MEMBER(lazercmd_hardware_r);
 	DECLARE_DRIVER_INIT(lazercmd);
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void machine_reset();
-	DECLARE_PALETTE_INIT(lazercmd);
-	UINT32 screen_update_lazercmd(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
 	DECLARE_PALETTE_INIT(lazercmd);
 	uint32_t screen_update_lazercmd(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	TIMER_DEVICE_CALLBACK_MEMBER(lazercmd_timer);
 	TIMER_DEVICE_CALLBACK_MEMBER(bbonk_timer);
 	int vert_scale(int data);

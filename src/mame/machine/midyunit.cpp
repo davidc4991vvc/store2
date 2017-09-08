@@ -1,11 +1,6 @@
-<<<<<<< HEAD
-// license:???
-// copyright-holders:Alex Pasadyn, Zsolt Vasvari, Kurt Mahan, Ernesto Corvi, Aaron Giles
-=======
 // license:BSD-3-Clause
 // copyright-holders:Alex Pasadyn, Zsolt Vasvari, Ernesto Corvi, Aaron Giles
 // thanks-to:Kurt Mahan
->>>>>>> upstream/master
 /*************************************************************************
 
     Williams/Midway Y/Z-unit system
@@ -13,10 +8,6 @@
 **************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/tms34010/tms34010.h"
-=======
->>>>>>> upstream/master
 #include "cpu/m6809/m6809.h"
 #include "includes/midyunit.h"
 
@@ -121,11 +112,6 @@ READ16_MEMBER(midyunit_state::midyunit_protection_r)
  *
  *************************************/
 
-<<<<<<< HEAD
-IOPORT_ARRAY_MEMBER(midyunit_state::ports) { "IN0", "IN1", "IN2", "DSW", "UNK0", "UNK1" };
-
-=======
->>>>>>> upstream/master
 READ16_MEMBER(midyunit_state::midyunit_input_r)
 {
 	return m_ports[offset]->read();
@@ -159,16 +145,6 @@ WRITE16_MEMBER(midyunit_state::term2_sound_w)
 	/* Flash Lamp Output Data */
 	if  ( ((data & 0x800) != 0x800) && ((data & 0x400) == 0x400 ) )
 	{
-<<<<<<< HEAD
-	output_set_value("Left_Flash_1", data & 0x1);
-	output_set_value("Left_Flash_2", (data & 0x2) >> 1);
-	output_set_value("Left_Flash_3", (data & 0x4) >> 2);
-	output_set_value("Left_Flash_4", (data & 0x8) >> 3);
-	output_set_value("Right_Flash_1", (data & 0x10) >> 4);
-	output_set_value("Right_Flash_2", (data & 0x20) >> 5);
-	output_set_value("Right_Flash_3", (data & 0x40) >> 6);
-	output_set_value("Right_Flash_4", (data & 0x80) >> 7);
-=======
 	output().set_value("Left_Flash_1", data & 0x1);
 	output().set_value("Left_Flash_2", (data & 0x2) >> 1);
 	output().set_value("Left_Flash_3", (data & 0x4) >> 2);
@@ -177,27 +153,17 @@ WRITE16_MEMBER(midyunit_state::term2_sound_w)
 	output().set_value("Right_Flash_2", (data & 0x20) >> 5);
 	output().set_value("Right_Flash_3", (data & 0x40) >> 6);
 	output().set_value("Right_Flash_4", (data & 0x80) >> 7);
->>>>>>> upstream/master
 	}
 
 	/* Gun Output Data */
 	if  ( ((data & 0x800) == 0x800) && ((data & 0x400) != 0x400 ) )
 	{
-<<<<<<< HEAD
-	output_set_value("Left_Gun_Recoil", data & 0x1);
-	output_set_value("Right_Gun_Recoil", (data & 0x2) >> 1);
-	output_set_value("Left_Gun_Green_Led", (~data & 0x20) >> 5);
-	output_set_value("Left_Gun_Red_Led", (~data & 0x10) >> 4);
-	output_set_value("Right_Gun_Green_Led", (~data & 0x80) >> 7);
-	output_set_value("Right_Gun_Red_Led", (~data & 0x40) >> 6);
-=======
 	output().set_value("Left_Gun_Recoil", data & 0x1);
 	output().set_value("Right_Gun_Recoil", (data & 0x2) >> 1);
 	output().set_value("Left_Gun_Green_Led", (~data & 0x20) >> 5);
 	output().set_value("Left_Gun_Red_Led", (~data & 0x10) >> 4);
 	output().set_value("Right_Gun_Green_Led", (~data & 0x80) >> 7);
 	output().set_value("Right_Gun_Red_Led", (~data & 0x40) >> 6);
->>>>>>> upstream/master
 	}
 
 	if (offset == 0)
@@ -276,13 +242,8 @@ WRITE8_MEMBER(midyunit_state::cvsd_protection_w)
 void midyunit_state::init_generic(int bpp, int sound, int prot_start, int prot_end)
 {
 	offs_t gfx_chunk = m_gfx_rom.bytes() / 4;
-<<<<<<< HEAD
-	UINT8 d1, d2, d3, d4, d5, d6;
-	UINT8 *base;
-=======
 	uint8_t d1, d2, d3, d4, d5, d6;
 	uint8_t *base;
->>>>>>> upstream/master
 	int i;
 
 	/* load graphics ROMs */
@@ -540,12 +501,8 @@ void midyunit_state::term2_init_common(write16_delegate hack_w)
 
 	/* HACK: this prevents the freeze on the movies */
 	/* until we figure what's causing it, this is better than nothing */
-<<<<<<< HEAD
-	m_t2_hack_mem = m_maincpu->space(AS_PROGRAM).install_write_handler(0x010aa0e0, 0x010aa0ff, hack_w);
-=======
 	m_maincpu->space(AS_PROGRAM).install_write_handler(0x010aa0e0, 0x010aa0ff, hack_w);
 	m_t2_hack_mem = m_mainram + (0xaa0e0>>4);
->>>>>>> upstream/master
 }
 
 DRIVER_INIT_MEMBER(midyunit_state,term2)    { term2_init_common(write16_delegate(FUNC(midyunit_state::term2_hack_w),this)); }
@@ -643,11 +600,7 @@ WRITE16_MEMBER(midyunit_state::midyunit_sound_w)
 				break;
 
 			case SOUND_YAWDIM:
-<<<<<<< HEAD
-				soundlatch_byte_w(space, 0, data);
-=======
 				m_soundlatch->write(space, 0, data);
->>>>>>> upstream/master
 				m_audiocpu->set_input_line(INPUT_LINE_NMI, PULSE_LINE);
 				break;
 		}

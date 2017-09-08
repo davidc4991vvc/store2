@@ -2,11 +2,7 @@
  * jdhuff.c
  *
  * Copyright (C) 1991-1997, Thomas G. Lane.
-<<<<<<< HEAD
- * Modified 2006-2009 by Guido Vollbeding.
-=======
  * Modified 2006-2013 by Guido Vollbeding.
->>>>>>> upstream/master
  * This file is part of the Independent JPEG Group's software.
  * For conditions of distribution and use, see the accompanying README file.
  *
@@ -632,8 +628,6 @@ jpeg_huff_decode (bitread_working_state * state,
 
 
 /*
-<<<<<<< HEAD
-=======
  * Finish up at the end of a Huffman-compressed scan.
  */
 
@@ -650,7 +644,6 @@ finish_pass_huff (j_decompress_ptr cinfo)
 
 
 /*
->>>>>>> upstream/master
  * Check for a restart marker & resynchronize decoder.
  * Returns FALSE if must suspend.
  */
@@ -661,14 +654,7 @@ process_restart (j_decompress_ptr cinfo)
   huff_entropy_ptr entropy = (huff_entropy_ptr) cinfo->entropy;
   int ci;
 
-<<<<<<< HEAD
-  /* Throw away any unused bits remaining in bit buffer; */
-  /* include any full bytes in next_marker's count of discarded bytes */
-  cinfo->marker->discarded_bytes += entropy->bitstate.bits_left / 8;
-  entropy->bitstate.bits_left = 0;
-=======
   finish_pass_huff(cinfo);
->>>>>>> upstream/master
 
   /* Advance past the RSTn marker */
   if (! (*cinfo->marker->read_restart_marker) (cinfo))
@@ -824,11 +810,7 @@ decode_mcu_AC_first (j_decompress_ptr cinfo, JBLOCKROW *MCU_data)
 
     /* There is always only one block per MCU */
 
-<<<<<<< HEAD
-    if (EOBRUN > 0)		/* if it's a band of zeroes... */
-=======
     if (EOBRUN)			/* if it's a band of zeroes... */
->>>>>>> upstream/master
       EOBRUN--;			/* ...process it now (we do nothing) */
     else {
       BITREAD_LOAD_STATE(cinfo,entropy->bitstate);
@@ -847,20 +829,6 @@ decode_mcu_AC_first (j_decompress_ptr cinfo, JBLOCKROW *MCU_data)
 	  /* Scale and output coefficient in natural (dezigzagged) order */
 	  (*block)[natural_order[k]] = (JCOEF) (s << Al);
 	} else {
-<<<<<<< HEAD
-	  if (r == 15) {	/* ZRL */
-	    k += 15;		/* skip 15 zeroes in band */
-	  } else {		/* EOBr, run length is 2^r + appended bits */
-	    EOBRUN = 1 << r;
-	    if (r) {		/* EOBr, r > 0 */
-	      CHECK_BIT_BUFFER(br_state, r, return FALSE);
-	      r = GET_BITS(r);
-	      EOBRUN += r;
-	    }
-	    EOBRUN--;		/* this band is processed at this moment */
-	    break;		/* force end-of-band */
-	  }
-=======
 	  if (r != 15) {	/* EOBr, run length is 2^r + appended bits */
 	    if (r) {		/* EOBr, r > 0 */
 	      EOBRUN = 1 << r;
@@ -872,7 +840,6 @@ decode_mcu_AC_first (j_decompress_ptr cinfo, JBLOCKROW *MCU_data)
 	    break;		/* force end-of-band */
 	  }
 	  k += 15;		/* ZRL: skip 15 zeroes in band */
->>>>>>> upstream/master
 	}
       }
 
@@ -892,26 +859,15 @@ decode_mcu_AC_first (j_decompress_ptr cinfo, JBLOCKROW *MCU_data)
 
 /*
  * MCU decoding for DC successive approximation refinement scan.
-<<<<<<< HEAD
- * Note: we assume such scans can be multi-component, although the spec
- * is not very clear on the point.
-=======
  * Note: we assume such scans can be multi-component,
  * although the spec is not very clear on the point.
->>>>>>> upstream/master
  */
 
 METHODDEF(boolean)
 decode_mcu_DC_refine (j_decompress_ptr cinfo, JBLOCKROW *MCU_data)
 {   
   huff_entropy_ptr entropy = (huff_entropy_ptr) cinfo->entropy;
-<<<<<<< HEAD
-  int p1 = 1 << cinfo->Al;	/* 1 in the bit position being coded */
-  int blkn;
-  JBLOCKROW block;
-=======
   int p1, blkn;
->>>>>>> upstream/master
   BITREAD_STATE_VARS;
 
   /* Process restart marker if needed; may have to suspend */
@@ -928,17 +884,6 @@ decode_mcu_DC_refine (j_decompress_ptr cinfo, JBLOCKROW *MCU_data)
   /* Load up working state */
   BITREAD_LOAD_STATE(cinfo,entropy->bitstate);
 
-<<<<<<< HEAD
-  /* Outer loop handles each block in the MCU */
-
-  for (blkn = 0; blkn < cinfo->blocks_in_MCU; blkn++) {
-    block = MCU_data[blkn];
-
-    /* Encoded data is simply the next bit of the two's-complement DC value */
-    CHECK_BIT_BUFFER(br_state, 1, return FALSE);
-    if (GET_BITS(1))
-      (*block)[0] |= p1;
-=======
   p1 = 1 << cinfo->Al;		/* 1 in the bit position being coded */
 
   /* Outer loop handles each block in the MCU */
@@ -948,7 +893,6 @@ decode_mcu_DC_refine (j_decompress_ptr cinfo, JBLOCKROW *MCU_data)
     CHECK_BIT_BUFFER(br_state, 1, return FALSE);
     if (GET_BITS(1))
       MCU_data[blkn][0][0] |= p1;
->>>>>>> upstream/master
     /* Note: since we use |=, repeating the assignment later is safe */
   }
 
@@ -1017,11 +961,7 @@ decode_mcu_AC_refine (j_decompress_ptr cinfo, JBLOCKROW *MCU_data)
     k = cinfo->Ss;
 
     if (EOBRUN == 0) {
-<<<<<<< HEAD
-      for (; k <= Se; k++) {
-=======
       do {
->>>>>>> upstream/master
 	HUFF_DECODE(s, br_state, tbl, goto undoit, label3);
 	r = s >> 4;
 	s &= 15;
@@ -1051,11 +991,7 @@ decode_mcu_AC_refine (j_decompress_ptr cinfo, JBLOCKROW *MCU_data)
 	 */
 	do {
 	  thiscoef = *block + natural_order[k];
-<<<<<<< HEAD
-	  if (*thiscoef != 0) {
-=======
 	  if (*thiscoef) {
->>>>>>> upstream/master
 	    CHECK_BIT_BUFFER(br_state, 1, goto undoit);
 	    if (GET_BITS(1)) {
 	      if ((*thiscoef & p1) == 0) { /* do nothing if already set it */
@@ -1078,32 +1014,19 @@ decode_mcu_AC_refine (j_decompress_ptr cinfo, JBLOCKROW *MCU_data)
 	  /* Remember its position in case we have to suspend */
 	  newnz_pos[num_newnz++] = pos;
 	}
-<<<<<<< HEAD
-      }
-    }
-
-    if (EOBRUN > 0) {
-=======
 	k++;
       } while (k <= Se);
     }
 
     if (EOBRUN) {
->>>>>>> upstream/master
       /* Scan any remaining coefficient positions after the end-of-band
        * (the last newly nonzero coefficient, if any).  Append a correction
        * bit to each already-nonzero coefficient.  A correction bit is 1
        * if the absolute value of the coefficient must be increased.
        */
-<<<<<<< HEAD
-      for (; k <= Se; k++) {
-	thiscoef = *block + natural_order[k];
-	if (*thiscoef != 0) {
-=======
       do {
 	thiscoef = *block + natural_order[k];
 	if (*thiscoef) {
->>>>>>> upstream/master
 	  CHECK_BIT_BUFFER(br_state, 1, goto undoit);
 	  if (GET_BITS(1)) {
 	    if ((*thiscoef & p1) == 0) { /* do nothing if already changed it */
@@ -1114,12 +1037,8 @@ decode_mcu_AC_refine (j_decompress_ptr cinfo, JBLOCKROW *MCU_data)
 	    }
 	  }
 	}
-<<<<<<< HEAD
-      }
-=======
 	k++;
       } while (k <= Se);
->>>>>>> upstream/master
       /* Count one block completed in EOB run */
       EOBRUN--;
     }
@@ -1136,11 +1055,7 @@ decode_mcu_AC_refine (j_decompress_ptr cinfo, JBLOCKROW *MCU_data)
 
 undoit:
   /* Re-zero any output coefficients that we made newly nonzero */
-<<<<<<< HEAD
-  while (num_newnz > 0)
-=======
   while (num_newnz)
->>>>>>> upstream/master
     (*block)[newnz_pos[--num_newnz]] = 0;
 
   return FALSE;
@@ -1611,14 +1526,9 @@ jinit_huff_decoder (j_decompress_ptr cinfo)
   entropy = (huff_entropy_ptr)
     (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_IMAGE,
 				SIZEOF(huff_entropy_decoder));
-<<<<<<< HEAD
-  cinfo->entropy = (struct jpeg_entropy_decoder *) entropy;
-  entropy->pub.start_pass = start_pass_huff_decoder;
-=======
   cinfo->entropy = &entropy->pub;
   entropy->pub.start_pass = start_pass_huff_decoder;
   entropy->pub.finish_pass = finish_pass_huff;
->>>>>>> upstream/master
 
   if (cinfo->progressive_mode) {
     /* Create progression status table */

@@ -24,217 +24,6 @@
 //-------------------------------------------------
 
 // BASE CARTS + NVRAM
-<<<<<<< HEAD
-const device_type MD_STD_ROM = &device_creator<md_std_rom_device>;
-const device_type MD_ROM_SRAM = &device_creator<md_rom_sram_device>;
-const device_type MD_ROM_FRAM = &device_creator<md_rom_fram_device>;
-
-// BASE CARTS + BANKSWITCH AT RESET
-const device_type MD_ROM_CM2IN1 = &device_creator<md_rom_cm2in1_device>;
-
-// BASE CARTS + PROTECTION / BANKSWITCH
-const device_type MD_ROM_SSF2 = &device_creator<md_rom_ssf2_device>;
-const device_type MD_ROM_BUGSLIFE = &device_creator<md_rom_bugslife_device>;
-const device_type MD_ROM_SMOUSE = &device_creator<md_rom_smouse_device>;
-const device_type MD_ROM_SMW64 = &device_creator<md_rom_smw64_device>;
-const device_type MD_ROM_SMB = &device_creator<md_rom_smb_device>;
-const device_type MD_ROM_SMB2 = &device_creator<md_rom_smb2_device>;
-const device_type MD_ROM_SBUBL = &device_creator<md_rom_sbubl_device>;
-const device_type MD_ROM_RX3 = &device_creator<md_rom_rx3_device>;
-const device_type MD_ROM_MJLOV = &device_creator<md_rom_mjlov_device>;
-const device_type MD_ROM_KOF98 = &device_creator<md_rom_kof98_device>;
-const device_type MD_ROM_KOF99 = &device_creator<md_rom_kof99_device>;
-const device_type MD_ROM_SOULB = &device_creator<md_rom_soulb_device>;
-const device_type MD_ROM_CHINF3 = &device_creator<md_rom_chinf3_device>;
-const device_type MD_ROM_16MJ2 = &device_creator<md_rom_16mj2_device>;
-const device_type MD_ROM_ELFWOR = &device_creator<md_rom_elfwor_device>;
-const device_type MD_ROM_YASECH = &device_creator<md_rom_yasech_device>;
-const device_type MD_ROM_LION2 = &device_creator<md_rom_lion2_device>;
-const device_type MD_ROM_LION3 = &device_creator<md_rom_lion3_device>;
-const device_type MD_ROM_MCPIR = &device_creator<md_rom_mcpirate_device>;
-const device_type MD_ROM_POKEA = &device_creator<md_rom_pokea_device>;
-const device_type MD_ROM_POKESTAD = &device_creator<md_rom_pokestad_device>;
-const device_type MD_ROM_REALTEC = &device_creator<md_rom_realtec_device>;
-const device_type MD_ROM_REDCL = &device_creator<md_rom_redcl_device>;
-const device_type MD_ROM_SQUIR = &device_creator<md_rom_squir_device>;
-const device_type MD_ROM_TEKKENSP = &device_creator<md_rom_tekkensp_device>;
-const device_type MD_ROM_TOPF = &device_creator<md_rom_topf_device>;
-const device_type MD_ROM_RADICA = &device_creator<md_rom_radica_device>;
-const device_type MD_ROM_BEGGARP = &device_creator<md_rom_beggarp_device>;
-const device_type MD_ROM_WUKONG = &device_creator<md_rom_wukong_device>;
-
-
-md_std_rom_device::md_std_rom_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source)
-					: device_t(mconfig, type, name, tag, owner, clock, shortname, source),
-					device_md_cart_interface( mconfig, *this )
-{
-}
-
-md_std_rom_device::md_std_rom_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: device_t(mconfig, MD_STD_ROM, "MD Standard cart", tag, owner, clock, "md_std_rom", __FILE__),
-					device_md_cart_interface( mconfig, *this )
-{
-}
-
-md_rom_sram_device::md_rom_sram_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: md_std_rom_device(mconfig, MD_ROM_SRAM, "MD Standard cart + SRAM", tag, owner, clock, "md_rom_sram", __FILE__)
-{
-}
-
-md_rom_fram_device::md_rom_fram_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: md_std_rom_device(mconfig, MD_ROM_FRAM, "MD Standard cart + FRAM", tag, owner, clock, "md_rom_fram", __FILE__)
-{
-}
-
-md_rom_ssf2_device::md_rom_ssf2_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: md_std_rom_device(mconfig, MD_ROM_SSF2, "MD Super SF2", tag, owner, clock, "md_rom_ssf2", __FILE__), m_lastoff(0), m_lastdata(0)
-				{
-}
-
-md_rom_cm2in1_device::md_rom_cm2in1_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: md_std_rom_device(mconfig, MD_ROM_CM2IN1, "MD Codemasters 2in1", tag, owner, clock, "md_rom_cm2in1", __FILE__), m_base(0)
-				{
-}
-
-md_rom_mcpirate_device::md_rom_mcpirate_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: md_std_rom_device(mconfig, MD_ROM_MCPIR, "MD Pirate Multicarts (Various)", tag, owner, clock, "md_rom_mcpirate", __FILE__), m_bank(0)
-				{
-}
-
-md_rom_bugslife_device::md_rom_bugslife_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: md_std_rom_device(mconfig, MD_ROM_BUGSLIFE, "MD A Bug's Life", tag, owner, clock, "md_rom_bugslife", __FILE__)
-{
-}
-
-md_rom_smouse_device::md_rom_smouse_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: md_std_rom_device(mconfig, MD_ROM_SMOUSE, "MD Huan Le Tao Qi Shu / Smart Mouse", tag, owner, clock, "md_rom_smouse", __FILE__)
-{
-}
-
-md_rom_smb_device::md_rom_smb_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: md_std_rom_device(mconfig, MD_ROM_SMB, "MD Super Mario Bros.", tag, owner, clock, "md_rom_smb", __FILE__)
-{
-}
-
-md_rom_smb2_device::md_rom_smb2_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: md_std_rom_device(mconfig, MD_ROM_SMB2, "MD Super Mario Bros. 2", tag, owner, clock, "md_rom_smb2", __FILE__)
-{
-}
-
-md_rom_smw64_device::md_rom_smw64_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: md_std_rom_device(mconfig, MD_ROM_SMW64, "MD Super Mario World 64", tag, owner, clock, "md_rom_smw64", __FILE__), m_latch0(0), m_latch1(0)
-				{
-}
-
-md_rom_sbubl_device::md_rom_sbubl_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: md_std_rom_device(mconfig, MD_ROM_SBUBL, "MD Super Bubble Bobble", tag, owner, clock, "md_rom_sbubl", __FILE__)
-{
-}
-
-md_rom_rx3_device::md_rom_rx3_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: md_std_rom_device(mconfig, MD_ROM_RX3, "MD Rockman X3", tag, owner, clock, "md_rom_rx3", __FILE__)
-{
-}
-
-md_rom_mjlov_device::md_rom_mjlov_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: md_std_rom_device(mconfig, MD_ROM_MJLOV, "MD Ma Jiang Qing Ren / Mahjong Lover", tag, owner, clock, "md_rom_mjlov", __FILE__)
-{
-}
-
-md_rom_kof98_device::md_rom_kof98_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: md_std_rom_device(mconfig, MD_ROM_KOF98, "MD KOF 98", tag, owner, clock, "md_rom_kof98", __FILE__)
-{
-}
-
-md_rom_kof99_device::md_rom_kof99_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: md_std_rom_device(mconfig, MD_ROM_KOF99, "MD KOF 99 (and others)", tag, owner, clock, "md_rom_kof99", __FILE__)
-{
-}
-
-md_rom_soulb_device::md_rom_soulb_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: md_std_rom_device(mconfig, MD_ROM_SOULB, "MD Soul Blade", tag, owner, clock, "md_rom_soulb", __FILE__)
-{
-}
-
-md_rom_chinf3_device::md_rom_chinf3_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: md_std_rom_device(mconfig, MD_ROM_CHINF3, "MD Chinese Fighter 3", tag, owner, clock, "md_rom_chinf3", __FILE__), m_bank(0)
-				{
-}
-
-md_rom_16mj2_device::md_rom_16mj2_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: md_std_rom_device(mconfig, MD_ROM_16MJ2, "MD 16 Mahjong Tiles II", tag, owner, clock, "md_rom_16mj2", __FILE__)
-{
-}
-
-md_rom_elfwor_device::md_rom_elfwor_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: md_std_rom_device(mconfig, MD_ROM_ELFWOR, "MD Linghuan Daoshi Super Magician / Elf Wor", tag, owner, clock, "md_rom_elfwor", __FILE__)
-{
-}
-
-md_rom_yasech_device::md_rom_yasech_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: md_std_rom_device(mconfig, MD_ROM_YASECH, "MD Ya Se Chuan Shuo", tag, owner, clock, "md_rom_yasech", __FILE__)
-{
-}
-
-md_rom_lion2_device::md_rom_lion2_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: md_std_rom_device(mconfig, MD_ROM_LION2, "MD Lion King 2", tag, owner, clock, "md_rom_lion2", __FILE__), m_prot1_data(0), m_prot2_data(0)
-				{
-}
-
-md_rom_lion3_device::md_rom_lion3_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: md_std_rom_device(mconfig, MD_ROM_LION3, "MD Lion King 3", tag, owner, clock, "md_rom_lion3", __FILE__), m_bank(0)
-				{
-}
-
-md_rom_pokea_device::md_rom_pokea_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: md_std_rom_device(mconfig, MD_ROM_POKEA, "MD Pokemon (Alt Protection)", tag, owner, clock, "md_rom_pokea", __FILE__)
-{
-}
-
-md_rom_pokestad_device::md_rom_pokestad_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: md_std_rom_device(mconfig, MD_ROM_POKESTAD, "MD Pokemon Stadium", tag, owner, clock, "md_rom_pokestad", __FILE__), m_bank(0)
-				{
-}
-
-md_rom_realtec_device::md_rom_realtec_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: md_std_rom_device(mconfig, MD_ROM_REALTEC, "MD Realtec", tag, owner, clock, "md_rom_realtec", __FILE__), m_bank_addr(0), m_bank_size(0), m_old_bank_addr(0)
-				{
-}
-
-md_rom_redcl_device::md_rom_redcl_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: md_std_rom_device(mconfig, MD_ROM_REDCL, "MD Redcliff", tag, owner, clock, "md_rom_redcl", __FILE__)
-{
-}
-
-md_rom_squir_device::md_rom_squir_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: md_std_rom_device(mconfig, MD_ROM_SQUIR, "MD Squirrel King", tag, owner, clock, "md_rom_squir", __FILE__), m_latch(0)
-				{
-}
-
-md_rom_tekkensp_device::md_rom_tekkensp_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: md_std_rom_device(mconfig, MD_ROM_TEKKENSP, "MD Tekken Special", tag, owner, clock, "md_rom_tekkensp", __FILE__), m_reg(0)
-				{
-}
-
-md_rom_topf_device::md_rom_topf_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: md_std_rom_device(mconfig, MD_ROM_TOPF, "MD Top Fighter", tag, owner, clock, "md_rom_topf", __FILE__), m_latch(0)
-				{
-}
-
-md_rom_radica_device::md_rom_radica_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: md_std_rom_device(mconfig, MD_ROM_RADICA, "MD Radica TV games", tag, owner, clock, "md_rom_radica", __FILE__), m_bank(0)
-				{
-}
-
-md_rom_beggarp_device::md_rom_beggarp_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: md_std_rom_device(mconfig, MD_ROM_BEGGARP, "MD Beggar Prince", tag, owner, clock, "md_rom_beggarp", __FILE__), m_mode(0), m_lock(0)
-				{
-}
-
-md_rom_wukong_device::md_rom_wukong_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: md_std_rom_device(mconfig, MD_ROM_WUKONG, "MD Legend of Wukong", tag, owner, clock, "md_rom_wukong", __FILE__), m_mode(0)
-				{
-=======
 DEFINE_DEVICE_TYPE(MD_STD_ROM,      md_std_rom_device,      "md_std_rom",      "MD Standard cart")
 DEFINE_DEVICE_TYPE(MD_ROM_SRAM,     md_rom_sram_device,     "md_rom_sram",     "MD Standard cart + SRAM")
 DEFINE_DEVICE_TYPE(MD_ROM_FRAM,     md_rom_fram_device,     "md_rom_fram",     "MD Standard cart + FRAM")
@@ -454,7 +243,6 @@ md_rom_wukong_device::md_rom_wukong_device(const machine_config &mconfig, const 
 md_rom_starodys_device::md_rom_starodys_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: md_std_rom_device(mconfig, MD_ROM_STARODYS, tag, owner, clock), m_mode(0), m_lock(0), m_ram_enable(0), m_base(0)
 {
->>>>>>> upstream/master
 }
 
 //-------------------------------------------------
@@ -638,8 +426,6 @@ void md_rom_wukong_device::device_reset()
 	m_mode = 0;
 }
 
-<<<<<<< HEAD
-=======
 void md_rom_starodys_device::device_start()
 {
 	save_item(NAME(m_mode));
@@ -656,7 +442,6 @@ void md_rom_starodys_device::device_reset()
 	m_base = 0;
 }
 
->>>>>>> upstream/master
 /*-------------------------------------------------
  mapper specific handlers
  -------------------------------------------------*/
@@ -765,11 +550,7 @@ WRITE16_MEMBER(md_rom_ssf2_device::write_a13)
 			m_lastdata = data;
 			if (offset) // bank 0 is not modified
 			{
-<<<<<<< HEAD
-				UINT16 *ROM = get_rom_base();
-=======
 				uint16_t *ROM = get_rom_base();
->>>>>>> upstream/master
 				m_bank[offset] = data & 0xf;
 				memcpy(ROM + offset * 0x080000/2, ROM + 0x400000/2 + (m_bank[offset] * 0x080000)/2, 0x080000);
 			}
@@ -842,11 +623,7 @@ READ16_MEMBER(md_rom_chinf3_device::read)
 	 and the writes made at the start of the game.. */
 	if (offset >= 0x400000/2 && offset < 0x500000/2)
 	{
-<<<<<<< HEAD
-		UINT32 retdat = 0;
-=======
 		uint32_t retdat;
->>>>>>> upstream/master
 		/*
 		 04dc10 chifi3, prot_r? 2800
 		 04cefa chifi3, prot_r? 65262
@@ -1144,8 +921,6 @@ READ16_MEMBER(md_rom_mjlov_device::read)
 
 
 /*-------------------------------------------------
-<<<<<<< HEAD
-=======
  CHAOJI MAJIANG CLUB
  -------------------------------------------------*/
 
@@ -1163,7 +938,6 @@ READ16_MEMBER(md_rom_cjmjclub_device::read)
 
 
 /*-------------------------------------------------
->>>>>>> upstream/master
  SUPER BUBBLE BOBBLE MD
  -------------------------------------------------*/
 
@@ -1269,11 +1043,7 @@ WRITE16_MEMBER(md_rom_realtec_device::write)
 READ16_MEMBER(md_rom_redcl_device::read)
 {
 	if (offset == 0x400000/2)   return 0x55 << 8;
-<<<<<<< HEAD
-	if (offset == 0x400004/2)   return -0x56 << 8;
-=======
 	if (offset == 0x400004/2)   return 0xaa << 8;
->>>>>>> upstream/master
 
 	// non-protection accesses
 	if (offset < 0x400000/2)
@@ -1391,11 +1161,7 @@ READ16_MEMBER(md_rom_smw64_device::read)
 	}
 	if ((offset >= 0x670000/2) && (offset < 0x680000/2))
 	{
-<<<<<<< HEAD
-		UINT16 data = (m_ctrl[1] & 0x80) ? ((m_ctrl[2] & 0x40) ? (m_reg[4] & m_reg[5]) : (m_reg[4] ^ 0xff)) : 0x0000;
-=======
 		uint16_t data = (m_ctrl[1] & 0x80) ? ((m_ctrl[2] & 0x40) ? (m_reg[4] & m_reg[5]) : (m_reg[4] ^ 0xff)) : 0x0000;
->>>>>>> upstream/master
 		if (offset & 0x1)   // odd offset, return lower 7 bits of the above
 			return data & 0x7f;
 		else    // even offset, return whole data above, but also update the regs if CTRL3 has 0x80 set
@@ -1633,26 +1399,14 @@ WRITE16_MEMBER(md_rom_beggarp_device::write)
 		m_nvram[offset & 0x3fff] = data;
 }
 
-<<<<<<< HEAD
-=======
 // this works the same as in standard SRAM carts
->>>>>>> upstream/master
 WRITE16_MEMBER(md_rom_beggarp_device::write_a13)
 {
 	if (offset == 0xf0/2)
 	{
-<<<<<<< HEAD
-		/* unsure if this is actually supposed to toggle or just switch on? yet to encounter game that uses this */
 		m_nvram_active = BIT(data, 0);
 		m_nvram_readonly = BIT(data, 1);
 
-		// since a lot of generic carts ends up here if loaded from fullpath
-		// we turn on nvram (with m_nvram_handlers_installed) only if they toggle it on by writing here!
-=======
-		m_nvram_active = BIT(data, 0);
-		m_nvram_readonly = BIT(data, 1);
-
->>>>>>> upstream/master
 		if (m_nvram_active)
 			m_nvram_handlers_installed = 1;
 	}
@@ -1675,11 +1429,7 @@ READ16_MEMBER(md_rom_wukong_device::read)
 	if (offset >= m_nvram_start/2 && offset <= m_nvram_end/2 && m_nvram_active)
 		return m_nvram[offset - m_nvram_start/2];
 
-<<<<<<< HEAD
-	// here can access both last 128K of the ROM and the first 128K, depending of bit7 of m_mode
-=======
 	// here can access both last 128K of the ROM and the first 128K, depending of m_mode
->>>>>>> upstream/master
 	if (offset >= 0x200000/2 && offset < 0x220000/2)
 		return !m_mode ? m_rom[offset] : m_rom[offset & 0xffff];
 	else if (offset < 0x400000/2)
@@ -1697,22 +1447,11 @@ WRITE16_MEMBER(md_rom_wukong_device::write)
 		m_nvram[offset - m_nvram_start/2] = data;
 }
 
-<<<<<<< HEAD
-=======
 // this works the same as in standard SRAM carts
->>>>>>> upstream/master
 WRITE16_MEMBER(md_rom_wukong_device::write_a13)
 {
 	if (offset == 0xf0/2)
 	{
-<<<<<<< HEAD
-		/* unsure if this is actually supposed to toggle or just switch on? yet to encounter game that uses this */
-		m_nvram_active = BIT(data, 0);
-		m_nvram_readonly = BIT(data, 1);
-
-		// since a lot of generic carts ends up here if loaded from fullpath
-		// we turn on nvram (with m_nvram_handlers_installed) only if they toggle it on by writing here!
-=======
 		m_nvram_active = BIT(data, 0);
 		m_nvram_readonly = BIT(data, 1);
 
@@ -1810,7 +1549,6 @@ WRITE16_MEMBER(md_rom_starodys_device::write_a13)
 		m_nvram_active = BIT(data, 0);
 		m_nvram_readonly = BIT(data, 1);
 
->>>>>>> upstream/master
 		if (m_nvram_active)
 			m_nvram_handlers_installed = 1;
 	}

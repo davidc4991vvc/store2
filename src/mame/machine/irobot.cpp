@@ -95,11 +95,7 @@ WRITE8_MEMBER(irobot_state::irobot_statwr_w)
 
 WRITE8_MEMBER(irobot_state::irobot_out0_w)
 {
-<<<<<<< HEAD
-	UINT8 *RAM = memregion("maincpu")->base();
-=======
 	uint8_t *RAM = memregion("maincpu")->base();
->>>>>>> upstream/master
 
 	m_out0 = data;
 	switch (data & 0x60)
@@ -121,11 +117,7 @@ WRITE8_MEMBER(irobot_state::irobot_out0_w)
 
 WRITE8_MEMBER(irobot_state::irobot_rom_banksel_w)
 {
-<<<<<<< HEAD
-	UINT8 *RAM = memregion("maincpu")->base();
-=======
 	uint8_t *RAM = memregion("maincpu")->base();
->>>>>>> upstream/master
 
 	switch ((data & 0x0E) >> 1)
 	{
@@ -148,13 +140,8 @@ WRITE8_MEMBER(irobot_state::irobot_rom_banksel_w)
 			membank("bank1")->set_base(&RAM[0x1A000]);
 			break;
 	}
-<<<<<<< HEAD
-	set_led_status(machine(), 0,data & 0x10);
-	set_led_status(machine(), 1,data & 0x20);
-=======
 	output().set_led_value(0,data & 0x10);
 	output().set_led_value(1,data & 0x20);
->>>>>>> upstream/master
 }
 
 TIMER_CALLBACK_MEMBER(irobot_state::scanline_callback)
@@ -175,11 +162,7 @@ TIMER_CALLBACK_MEMBER(irobot_state::scanline_callback)
 
 void irobot_state::machine_reset()
 {
-<<<<<<< HEAD
-	UINT8 *MB = memregion("mathbox")->base();
-=======
 	uint8_t *MB = memregion("mathbox")->base();
->>>>>>> upstream/master
 
 	/* initialize the memory regions */
 	m_mbROM     = MB + 0x00000;
@@ -299,22 +282,6 @@ static void disassemble_instruction(irmb_ops *op);
 #endif
 
 
-<<<<<<< HEAD
-UINT32 irobot_state::irmb_din(const irmb_ops *curop)
-{
-	UINT32 d = 0;
-
-	if (!(curop->flags & FL_MBMEMDEC) && (curop->flags & FL_MBRW))
-	{
-		UINT32 ad = curop->diradd | (m_irmb_latch & curop->latchmask);
-
-		if (curop->diren || (m_irmb_latch & 0x6000) == 0)
-			d = ((UINT16 *)m_mbRAM)[ad & 0xfff];             /* MB RAM read */
-		else if (m_irmb_latch & 0x4000)
-			d = ((UINT16 *)m_mbROM)[ad + 0x2000];                /* MB ROM read, CEMATH = 1 */
-		else
-			d = ((UINT16 *)m_mbROM)[ad & 0x1fff];                /* MB ROM read, CEMATH = 0 */
-=======
 uint32_t irobot_state::irmb_din(const irmb_ops *curop)
 {
 	uint32_t d = 0;
@@ -329,40 +296,24 @@ uint32_t irobot_state::irmb_din(const irmb_ops *curop)
 			d = ((uint16_t *)m_mbROM)[ad + 0x2000];                /* MB ROM read, CEMATH = 1 */
 		else
 			d = ((uint16_t *)m_mbROM)[ad & 0x1fff];                /* MB ROM read, CEMATH = 0 */
->>>>>>> upstream/master
 	}
 	return d;
 }
 
 
-<<<<<<< HEAD
-void irobot_state::irmb_dout(const irmb_ops *curop, UINT32 d)
-{
-	/* Write to video com ram */
-	if (curop->ramsel == 3)
-		((UINT16 *)m_combase_mb)[m_irmb_latch & 0x7ff] = d;
-=======
 void irobot_state::irmb_dout(const irmb_ops *curop, uint32_t d)
 {
 	/* Write to video com ram */
 	if (curop->ramsel == 3)
 		((uint16_t *)m_combase_mb)[m_irmb_latch & 0x7ff] = d;
->>>>>>> upstream/master
 
 	/* Write to mathox ram */
 	if (!(curop->flags & FL_MBMEMDEC))
 	{
-<<<<<<< HEAD
-		UINT32 ad = curop->diradd | (m_irmb_latch & curop->latchmask);
-
-		if (curop->diren || (m_irmb_latch & 0x6000) == 0)
-			((UINT16 *)m_mbRAM)[ad & 0xfff] = d;             /* MB RAM write */
-=======
 		uint32_t ad = curop->diradd | (m_irmb_latch & curop->latchmask);
 
 		if (curop->diren || (m_irmb_latch & 0x6000) == 0)
 			((uint16_t *)m_mbRAM)[ad & 0xfff] = d;             /* MB RAM write */
->>>>>>> upstream/master
 	}
 }
 
@@ -370,11 +321,7 @@ void irobot_state::irmb_dout(const irmb_ops *curop, uint32_t d)
 /* Convert microcode roms to a more usable form */
 void irobot_state::load_oproms()
 {
-<<<<<<< HEAD
-	UINT8 *MB = memregion("proms")->base() + 0x20;
-=======
 	uint8_t *MB = memregion("proms")->base() + 0x20;
->>>>>>> upstream/master
 	int i;
 
 	/* allocate RAM */
@@ -582,17 +529,6 @@ void irobot_state::irmb_run()
 	const irmb_ops *prevop = &m_mbops[0];
 	const irmb_ops *curop = &m_mbops[0];
 
-<<<<<<< HEAD
-	UINT32 Q = 0;
-	UINT32 Y = 0;
-	UINT32 nflag = 0;
-	UINT32 vflag = 0;
-	UINT32 cflag = 0;
-	UINT32 zresult = 1;
-	UINT32 CI = 0;
-	UINT32 SP = 0;
-	UINT32 icount = 0;
-=======
 	uint32_t Q = 0;
 	uint32_t Y = 0;
 	uint32_t nflag = 0;
@@ -602,21 +538,14 @@ void irobot_state::irmb_run()
 	uint32_t CI = 0;
 	uint32_t SP = 0;
 	uint32_t icount = 0;
->>>>>>> upstream/master
 
 	g_profiler.start(PROFILER_USER1);
 
 	while ((prevop->flags & (FL_DPSEL | FL_carry)) != (FL_DPSEL | FL_carry))
 	{
-<<<<<<< HEAD
-		UINT32 result;
-		UINT32 fu;
-		UINT32 tmp;
-=======
 		uint32_t result;
 		uint32_t fu;
 		uint32_t tmp;
->>>>>>> upstream/master
 
 		icount += curop->cycles;
 

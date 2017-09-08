@@ -28,10 +28,7 @@
 
 */
 
-<<<<<<< HEAD
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #include "warp_speed.h"
 
 
@@ -52,11 +49,7 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type C64_WARP_SPEED = &device_creator<c64_warp_speed_cartridge_device>;
-=======
 DEFINE_DEVICE_TYPE(C64_WARP_SPEED, c64_warp_speed_cartridge_device, "c64_warp_speed", "C64 Warp Speed cartridge")
->>>>>>> upstream/master
 
 
 //-------------------------------------------------
@@ -93,13 +86,8 @@ ioport_constructor c64_warp_speed_cartridge_device::device_input_ports() const
 //  c64_warp_speed_cartridge_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-c64_warp_speed_cartridge_device::c64_warp_speed_cartridge_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-	device_t(mconfig, C64_WARP_SPEED, "C64 Warp Speed cartridge", tag, owner, clock, "c64_warp_speed", __FILE__),
-=======
 c64_warp_speed_cartridge_device::c64_warp_speed_cartridge_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	device_t(mconfig, C64_WARP_SPEED, tag, owner, clock),
->>>>>>> upstream/master
 	device_c64_expansion_card_interface(mconfig, *this)
 {
 }
@@ -129,11 +117,7 @@ void c64_warp_speed_cartridge_device::device_reset()
 //  c64_cd_r - cartridge data read
 //-------------------------------------------------
 
-<<<<<<< HEAD
-UINT8 c64_warp_speed_cartridge_device::c64_cd_r(address_space &space, offs_t offset, UINT8 data, int sphi2, int ba, int roml, int romh, int io1, int io2)
-=======
 uint8_t c64_warp_speed_cartridge_device::c64_cd_r(address_space &space, offs_t offset, uint8_t data, int sphi2, int ba, int roml, int romh, int io1, int io2)
->>>>>>> upstream/master
 {
 	if (!roml || !romh || !io1 || !io2)
 	{
@@ -149,11 +133,7 @@ uint8_t c64_warp_speed_cartridge_device::c64_cd_r(address_space &space, offs_t o
 //  c64_cd_w - cartridge data write
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void c64_warp_speed_cartridge_device::c64_cd_w(address_space &space, offs_t offset, UINT8 data, int sphi2, int ba, int roml, int romh, int io1, int io2)
-=======
 void c64_warp_speed_cartridge_device::c64_cd_w(address_space &space, offs_t offset, uint8_t data, int sphi2, int ba, int roml, int romh, int io1, int io2)
->>>>>>> upstream/master
 {
 	if (!io1)
 	{

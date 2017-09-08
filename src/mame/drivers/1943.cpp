@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-// license:???
-=======
 // license:BSD-3-Clause
->>>>>>> upstream/master
 // copyright-holders:Paul Leaman
 /***************************************************************************
 
@@ -13,10 +9,7 @@
 
     Games supported:
         * 1943: The Battle of Midway (3 regions)
-<<<<<<< HEAD
-=======
         * 1943: The Battle of Midway Mark II (US)
->>>>>>> upstream/master
         * 1943 Kai: Midway Kaisen (Japan)
 
 ***************************************************************************/
@@ -39,11 +32,6 @@
 */
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/z80/z80.h"
-#include "sound/2203intf.h"
-#include "includes/1943.h"
-=======
 #include "includes/1943.h"
 
 #include "cpu/z80/z80.h"
@@ -52,7 +40,6 @@
 #include "sound/2203intf.h"
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 /* Protection Handlers */
@@ -124,15 +111,9 @@ static ADDRESS_MAP_START( c1943_map, AS_PROGRAM, 8, _1943_state )
 	AM_RANGE(0xc003, 0xc003) AM_READ_PORT("DSWA")
 	AM_RANGE(0xc004, 0xc004) AM_READ_PORT("DSWB")
 	AM_RANGE(0xc007, 0xc007) AM_READ(c1943_protection_r)
-<<<<<<< HEAD
-	AM_RANGE(0xc800, 0xc800) AM_WRITE(soundlatch_byte_w)
-	AM_RANGE(0xc804, 0xc804) AM_WRITE(c1943_c804_w) // ROM bank switch, screen flip
-	AM_RANGE(0xc806, 0xc806) AM_WRITE(watchdog_reset_w)
-=======
 	AM_RANGE(0xc800, 0xc800) AM_DEVWRITE("soundlatch", generic_latch_8_device, write)
 	AM_RANGE(0xc804, 0xc804) AM_WRITE(c1943_c804_w) // ROM bank switch, screen flip
 	AM_RANGE(0xc806, 0xc806) AM_DEVWRITE("watchdog", watchdog_timer_device, reset_w)
->>>>>>> upstream/master
 	AM_RANGE(0xc807, 0xc807) AM_WRITE(c1943_protection_w)
 	AM_RANGE(0xd000, 0xd3ff) AM_RAM_WRITE(c1943_videoram_w) AM_SHARE("videoram")
 	AM_RANGE(0xd400, 0xd7ff) AM_RAM_WRITE(c1943_colorram_w) AM_SHARE("colorram")
@@ -151,11 +132,7 @@ ADDRESS_MAP_END
 static ADDRESS_MAP_START( sound_map, AS_PROGRAM, 8, _1943_state )
 	AM_RANGE(0x0000, 0x7fff) AM_ROM
 	AM_RANGE(0xc000, 0xc7ff) AM_RAM
-<<<<<<< HEAD
-	AM_RANGE(0xc800, 0xc800) AM_READ(soundlatch_byte_r)
-=======
 	AM_RANGE(0xc800, 0xc800) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
->>>>>>> upstream/master
 	AM_RANGE(0xe000, 0xe001) AM_DEVWRITE("ym1", ym2203_device, write)
 	AM_RANGE(0xe002, 0xe003) AM_DEVWRITE("ym2", ym2203_device, write)
 ADDRESS_MAP_END
@@ -332,11 +309,7 @@ void _1943_state::machine_reset()
 	m_prot_value = 0;
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( 1943, _1943_state )
-=======
 static MACHINE_CONFIG_START( 1943 )
->>>>>>> upstream/master
 
 	// basic machine hardware
 	MCFG_CPU_ADD("maincpu", Z80, XTAL_24MHz/4) /* verified on pcb */
@@ -347,11 +320,8 @@ static MACHINE_CONFIG_START( 1943 )
 	MCFG_CPU_PROGRAM_MAP(sound_map)
 	MCFG_CPU_PERIODIC_INT_DRIVER(_1943_state, irq0_line_hold, 4*60)
 
-<<<<<<< HEAD
-=======
 	MCFG_WATCHDOG_ADD("watchdog")
 
->>>>>>> upstream/master
 	// video hardware
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE(60)
@@ -369,11 +339,8 @@ static MACHINE_CONFIG_START( 1943 )
 	// sound hardware
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 
->>>>>>> upstream/master
 	MCFG_SOUND_ADD("ym1", YM2203, XTAL_24MHz/16) /* verified on pcb */
 	MCFG_SOUND_ROUTE(0, "mono", 0.15)
 	MCFG_SOUND_ROUTE(1, "mono", 0.15)
@@ -396,21 +363,13 @@ ROM_START( 1943 )
 	ROM_LOAD( "bme03.14d", 0x20000, 0x10000, CRC(835822c2) SHA1(2c2fad13f062069efa7721abb9d807fb5a7625b4) ) /* These 3 roms have a BLUE stripe on them */
 
 	ROM_REGION( 0x10000, "audiocpu", 0 )
-<<<<<<< HEAD
-	ROM_LOAD( "bm04.5h", 0x00000, 0x8000, CRC(ee2bd2d7) SHA1(4d2d019a9f8452fbbb247e893280568a2e86073e) )
-=======
 	ROM_LOAD( "bm05.4k", 0x00000, 0x8000, CRC(ee2bd2d7) SHA1(4d2d019a9f8452fbbb247e893280568a2e86073e) )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x10000, "mcu", 0 ) /*  C8751H-88 MCU Code */
 	ROM_LOAD( "bm.7k", 0x00000, 0x10000 , NO_DUMP ) /* can't be dumped */
 
 	ROM_REGION( 0x8000, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_LOAD( "bm05.4k", 0x00000, 0x8000, CRC(46cb9d3d) SHA1(96fd0e714b91fe13a2ca0d185ada9e4b4baa0c0b) )    /* characters */
-=======
 	ROM_LOAD( "bm04.5h", 0x00000, 0x8000, CRC(46cb9d3d) SHA1(96fd0e714b91fe13a2ca0d185ada9e4b4baa0c0b) )    /* characters */
->>>>>>> upstream/master
 
 	ROM_REGION( 0x40000, "gfx2", 0 )
 	ROM_LOAD( "bm15.10f", 0x00000, 0x8000, CRC(6b1a0443) SHA1(32337c840ccd6815fd5844c194365c58d708f6dc) )   /* bg tiles */
@@ -462,21 +421,13 @@ ROM_START( 1943u )
 	ROM_LOAD( "bmu03c.14d", 0x20000, 0x10000, CRC(3f0ee26c) SHA1(8da74fe91a6be3f23fc625f2a433f1f79c424994) ) /* These 3 roms have a RED stripe on them */
 
 	ROM_REGION( 0x10000, "audiocpu", 0 )
-<<<<<<< HEAD
-	ROM_LOAD( "bm04.5h", 0x00000, 0x8000, CRC(ee2bd2d7) SHA1(4d2d019a9f8452fbbb247e893280568a2e86073e) )
-=======
 	ROM_LOAD( "bm05.4k", 0x00000, 0x8000, CRC(ee2bd2d7) SHA1(4d2d019a9f8452fbbb247e893280568a2e86073e) )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x10000, "mcu", 0 ) /*  C8751H-88 MCU Code */
 	ROM_LOAD( "bm.7k", 0x00000, 0x10000 , NO_DUMP ) /* can't be dumped */
 
 	ROM_REGION( 0x8000, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_LOAD( "bm05.4k", 0x00000, 0x8000, CRC(46cb9d3d) SHA1(96fd0e714b91fe13a2ca0d185ada9e4b4baa0c0b) )    /* characters */
-=======
 	ROM_LOAD( "bm04.5h", 0x00000, 0x8000, CRC(46cb9d3d) SHA1(96fd0e714b91fe13a2ca0d185ada9e4b4baa0c0b) )    /* characters */
->>>>>>> upstream/master
 
 	ROM_REGION( 0x40000, "gfx2", 0 )
 	ROM_LOAD( "bm15.10f", 0x00000, 0x8000, CRC(6b1a0443) SHA1(32337c840ccd6815fd5844c194365c58d708f6dc) )   /* bg tiles */
@@ -528,21 +479,13 @@ ROM_START( 1943ua )
 	ROM_LOAD( "bmu03.14d", 0x20000, 0x10000, CRC(9e7c07f7) SHA1(c437e5fd0e8eb87ef50a6d71a7a43efc38e4f128) ) /* These 3 roms have a RED stripe on them */
 
 	ROM_REGION( 0x10000, "audiocpu", 0 )
-<<<<<<< HEAD
-	ROM_LOAD( "bm04.5h", 0x00000, 0x8000, CRC(ee2bd2d7) SHA1(4d2d019a9f8452fbbb247e893280568a2e86073e) )
-=======
 	ROM_LOAD( "bm05.4k", 0x00000, 0x8000, CRC(ee2bd2d7) SHA1(4d2d019a9f8452fbbb247e893280568a2e86073e) )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x10000, "mcu", 0 ) /*  C8751H-88 MCU Code */
 	ROM_LOAD( "bm.7k", 0x00000, 0x10000 , NO_DUMP ) /* can't be dumped */
 
 	ROM_REGION( 0x8000, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_LOAD( "bm05.4k", 0x00000, 0x8000, CRC(46cb9d3d) SHA1(96fd0e714b91fe13a2ca0d185ada9e4b4baa0c0b) )    /* characters */
-=======
 	ROM_LOAD( "bm04.5h", 0x00000, 0x8000, CRC(46cb9d3d) SHA1(96fd0e714b91fe13a2ca0d185ada9e4b4baa0c0b) )    /* characters */
->>>>>>> upstream/master
 
 	ROM_REGION( 0x40000, "gfx2", 0 )
 	ROM_LOAD( "bm15.10f", 0x00000, 0x8000, CRC(6b1a0443) SHA1(32337c840ccd6815fd5844c194365c58d708f6dc) )   /* bg tiles */
@@ -594,21 +537,13 @@ ROM_START( 1943j )
 	ROM_LOAD( "bm03b.14d", 0x20000, 0x10000, CRC(7093da2a) SHA1(27456593e47d69506a27804e32088b15c1f7d767) )
 
 	ROM_REGION( 0x10000, "audiocpu", 0 )
-<<<<<<< HEAD
-	ROM_LOAD( "bm04.5h", 0x00000, 0x8000, CRC(ee2bd2d7) SHA1(4d2d019a9f8452fbbb247e893280568a2e86073e) )
-=======
 	ROM_LOAD( "bm05.4k", 0x00000, 0x8000, CRC(ee2bd2d7) SHA1(4d2d019a9f8452fbbb247e893280568a2e86073e) )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x10000, "mcu", 0 ) /*  C8751H-88 MCU Code */
 	ROM_LOAD( "bm.7k", 0x00000, 0x10000 , NO_DUMP ) /* can't be dumped */
 
 	ROM_REGION( 0x8000, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_LOAD( "bm05.4k", 0x00000, 0x8000, CRC(46cb9d3d) SHA1(96fd0e714b91fe13a2ca0d185ada9e4b4baa0c0b) )    /* characters */
-=======
 	ROM_LOAD( "bm04.5h", 0x00000, 0x8000, CRC(46cb9d3d) SHA1(96fd0e714b91fe13a2ca0d185ada9e4b4baa0c0b) )    /* characters */
->>>>>>> upstream/master
 
 	ROM_REGION( 0x40000, "gfx2", 0 )
 	ROM_LOAD( "bm15.10f", 0x00000, 0x8000, CRC(6b1a0443) SHA1(32337c840ccd6815fd5844c194365c58d708f6dc) )   /* bg tiles */
@@ -655,9 +590,6 @@ ROM_END
 
 ROM_START( 1943ja )
 	ROM_REGION( 0x30000, "maincpu", 0 ) /* 64k for code + 128k for the banked ROMs images */
-<<<<<<< HEAD
-	ROM_LOAD( "bm01.12d", 0x00000, 0x08000, CRC(f6935937) SHA1(6fe8885d734447c2a667cf80dd545200aad6c767) ) /* Rom labels/names + revision needs to be verified */
-=======
 	ROM_LOAD( "bm01.12d", 0x00000, 0x08000, CRC(232df705) SHA1(04d97853d5edef8a6126c81febadbdeda373df29) ) /* Rom labels/names + revision needs to be verified */
 	ROM_LOAD( "bm02.13d", 0x10000, 0x10000, CRC(af971575) SHA1(af1d8ce73e8671b7b41248ce6486c9b5aaf6a233) )
 	ROM_LOAD( "bm03.14d", 0x20000, 0x10000, CRC(300ec713) SHA1(f66d2356b413a418c887b4085a5315475c7a8bba) )
@@ -717,26 +649,17 @@ ROM_END
 ROM_START( 1943jah )
 	ROM_REGION( 0x30000, "maincpu", 0 ) /* 64k for code + 128k for the banked ROMs images */
 	ROM_LOAD( "bm01_hack.12d", 0x00000, 0x08000, CRC(f6935937) SHA1(6fe8885d734447c2a667cf80dd545200aad6c767) ) /* Rom labels/names + revision needs to be verified */
->>>>>>> upstream/master
 	ROM_LOAD( "bm02.13d", 0x10000, 0x10000, CRC(af971575) SHA1(af1d8ce73e8671b7b41248ce6486c9b5aaf6a233) )
 	ROM_LOAD( "bm03.14d", 0x20000, 0x10000, CRC(300ec713) SHA1(f66d2356b413a418c887b4085a5315475c7a8bba) )
 
 	ROM_REGION( 0x10000, "audiocpu", 0 )
-<<<<<<< HEAD
-	ROM_LOAD( "bm04.5h", 0x00000, 0x8000, CRC(ee2bd2d7) SHA1(4d2d019a9f8452fbbb247e893280568a2e86073e) )
-=======
 	ROM_LOAD( "bm05.4k", 0x00000, 0x8000, CRC(ee2bd2d7) SHA1(4d2d019a9f8452fbbb247e893280568a2e86073e) )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x10000, "mcu", 0 ) /*  C8751H-88 MCU Code */
 	ROM_LOAD( "bm.7k", 0x00000, 0x10000 , NO_DUMP ) /* can't be dumped */
 
 	ROM_REGION( 0x8000, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_LOAD( "bm05.4k", 0x00000, 0x8000, CRC(46cb9d3d) SHA1(96fd0e714b91fe13a2ca0d185ada9e4b4baa0c0b) )    /* characters */
-=======
 	ROM_LOAD( "bm04.5h", 0x00000, 0x8000, CRC(46cb9d3d) SHA1(96fd0e714b91fe13a2ca0d185ada9e4b4baa0c0b) )    /* characters */
->>>>>>> upstream/master
 
 	ROM_REGION( 0x40000, "gfx2", 0 )
 	ROM_LOAD( "bm15.10f", 0x00000, 0x8000, CRC(6b1a0443) SHA1(32337c840ccd6815fd5844c194365c58d708f6dc) )   /* bg tiles */
@@ -788,21 +711,13 @@ ROM_START( 1943kai )
 	ROM_LOAD( "bmk03.14d", 0x20000, 0x10000, CRC(475a6ac5) SHA1(fa07a855ba9173b6f81641c806ec7d938b0c282e) )
 
 	ROM_REGION( 0x10000, "audiocpu", 0 )
-<<<<<<< HEAD
-	ROM_LOAD( "bmk04.5h", 0x00000, 0x8000, CRC(25f37957) SHA1(1e50c2a920eb3b5c881843686db857e9fee5ba1d) )
-=======
 	ROM_LOAD( "bmk05.4k", 0x00000, 0x8000, CRC(25f37957) SHA1(1e50c2a920eb3b5c881843686db857e9fee5ba1d) )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x10000, "mcu", 0 ) /*  C8751H-88 MCU Code */
 	ROM_LOAD( "bm.7k", 0x00000, 0x10000 , NO_DUMP ) /* can't be dumped */
 
 	ROM_REGION( 0x8000, "gfx1", 0 )
-<<<<<<< HEAD
-	ROM_LOAD( "bmk05.4k", 0x00000, 0x8000, CRC(884a8692) SHA1(027aa8c868dc07ccd9e27705031107881aef4b91) )   /* characters */
-=======
 	ROM_LOAD( "bmk04.5h", 0x00000, 0x8000, CRC(884a8692) SHA1(027aa8c868dc07ccd9e27705031107881aef4b91) )   /* characters */
->>>>>>> upstream/master
 
 	ROM_REGION( 0x40000, "gfx2", 0 ) /* Yes, BM15 & BM19 are NOT BMK */
 	ROM_LOAD( "bm15.10f",  0x00000, 0x8000, CRC(6b1a0443) SHA1(32337c840ccd6815fd5844c194365c58d708f6dc) )  /* bg tiles */
@@ -847,8 +762,6 @@ ROM_START( 1943kai )
 	ROM_LOAD( "bm6.4b",    0x0b00, 0x0100, CRC(0eaf5158) SHA1(bafd4108708f66cd7b280e47152b108f3e254fc9) )   /* video timing (not used) */
 ROM_END
 
-<<<<<<< HEAD
-=======
 ROM_START( 1943mii ) /* Prototype, location test or limited release? - PCB had genuine CAPCOM labels on the roms */
 	ROM_REGION( 0x30000, "maincpu", 0 ) /* 64k for code + 128k for the banked ROMs images */
 	ROM_LOAD( "01.12d", 0x00000, 0x08000, CRC(8ba22485) SHA1(ed67992d2cf7dcba72bc9525fbce6d2cb03d78c4) ) /* these 3 had USA hand written in pencil on labels */
@@ -909,7 +822,6 @@ ROM_START( 1943mii ) /* Prototype, location test or limited release? - PCB had g
 	ROM_LOAD( "4.12c",    0x0a00, 0x0100, CRC(91a8a2e1) SHA1(9583c87eff876f04bc2ccf7218cd8081f1bcdb94) )   /* priority encoder / palette selector (not used) */
 	ROM_LOAD( "6.4b",     0x0b00, 0x0100, CRC(0eaf5158) SHA1(bafd4108708f66cd7b280e47152b108f3e254fc9) )   /* video timing (not used) */
 ROM_END
->>>>>>> upstream/master
 
 ROM_START( 1943b )
 	ROM_REGION( 0x30000, "maincpu", 0 ) /* 64k for code + 128k for the banked ROMs images */
@@ -918,11 +830,7 @@ ROM_START( 1943b )
 	ROM_LOAD( "bm03.14d", 0x20000, 0x10000, CRC(300ec713) SHA1(f66d2356b413a418c887b4085a5315475c7a8bba) )
 
 	ROM_REGION( 0x10000, "audiocpu", 0 )
-<<<<<<< HEAD
-	ROM_LOAD( "bm04.5h", 0x00000, 0x8000, CRC(ee2bd2d7) SHA1(4d2d019a9f8452fbbb247e893280568a2e86073e) )
-=======
 	ROM_LOAD( "bm05.4k", 0x00000, 0x8000, CRC(ee2bd2d7) SHA1(4d2d019a9f8452fbbb247e893280568a2e86073e) )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x8000, "gfx1", 0 ) // logo replaced
 	ROM_LOAD( "4.5h", 0x00000, 0x8000, CRC(0aba2096) SHA1(4833ad9f747b529ce92c4993388ab3516f8df4ed) )   /* characters */
@@ -966,12 +874,6 @@ ROM_START( 1943b )
 	ROM_LOAD( "bm6.4b",   0x0b00, 0x0100, CRC(0eaf5158) SHA1(bafd4108708f66cd7b280e47152b108f3e254fc9) )    /* video timing (not used) */
 ROM_END
 
-<<<<<<< HEAD
-
-DRIVER_INIT_MEMBER(_1943_state,1943)
-{
-	UINT8 *ROM = memregion("maincpu")->base();
-=======
 ROM_START( 1943bj )
 	ROM_REGION( 0x30000, "maincpu", 0 ) /* 64k for code + 128k for the banked ROMs images */
 	ROM_LOAD( "mkb03.12d", 0x00000, 0x08000, CRC(b3b7c7cd) SHA1(6197023f4384fd2ac72b686c26a6ff2877345b61) ) // protection patched out
@@ -1034,7 +936,6 @@ ROM_END
 DRIVER_INIT_MEMBER(_1943_state,1943)
 {
 	uint8_t *ROM = memregion("maincpu")->base();
->>>>>>> upstream/master
 	membank("bank1")->configure_entries(0, 8, &ROM[0x10000], 0x4000);
 }
 
@@ -1051,13 +952,8 @@ GAME( 1987, 1943u,    1943,  1943,   1943, _1943_state,  1943, ROT270,  "Capcom"
 GAME( 1987, 1943ua,   1943,  1943,   1943, _1943_state,  1943, ROT270,  "Capcom",  "1943: The Battle of Midway (US)", MACHINE_SUPPORTS_SAVE )
 GAME( 1987, 1943j,    1943,  1943,   1943, _1943_state,  1943, ROT270,  "Capcom",  "1943: Midway Kaisen (Japan, Rev B)", MACHINE_SUPPORTS_SAVE )
 GAME( 1987, 1943ja,   1943,  1943,   1943, _1943_state,  1943, ROT270,  "Capcom",  "1943: Midway Kaisen (Japan)", MACHINE_SUPPORTS_SAVE )
-<<<<<<< HEAD
-GAME( 1987, 1943b,    1943,  1943,   1943, _1943_state,  1943b,ROT270,  "bootleg", "1943: Battle of Midway (bootleg, hack of Japan set)", MACHINE_SUPPORTS_SAVE )
-GAME( 1987, 1943kai,  0,     1943,   1943, _1943_state,  1943, ROT270,  "Capcom",  "1943 Kai: Midway Kaisen (Japan)", MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1987, 1943jah,  1943,  1943,   1943, _1943_state,  1943, ROT270,  "Capcom",  "1943: Midway Kaisen (Japan, no protection hack)", MACHINE_SUPPORTS_SAVE )
 GAME( 1987, 1943b,    1943,  1943,   1943, _1943_state,  1943b,ROT270,  "bootleg", "1943: Battle of Midway (bootleg, hack of Japan set)", MACHINE_SUPPORTS_SAVE )
 GAME( 1987, 1943bj,   1943,  1943,   1943, _1943_state,  1943b,ROT270,  "bootleg", "1943: Midway Kaisen (bootleg)", MACHINE_SUPPORTS_SAVE )
 GAME( 1987, 1943kai,  0,     1943,   1943, _1943_state,  1943, ROT270,  "Capcom",  "1943 Kai: Midway Kaisen (Japan)", MACHINE_SUPPORTS_SAVE )
 GAME( 1987, 1943mii,  0,     1943,   1943, _1943_state,  1943, ROT270,  "Capcom",  "1943: The Battle of Midway Mark II (US)", MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

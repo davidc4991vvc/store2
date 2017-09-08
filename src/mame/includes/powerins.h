@@ -1,10 +1,7 @@
 // license:BSD-3-Clause
 // copyright-holders:Luca Elia
 #include "machine/nmk112.h"
-<<<<<<< HEAD
-=======
 #include "screen.h"
->>>>>>> upstream/master
 
 class powerins_state : public driver_device
 {
@@ -26,17 +23,10 @@ public:
 	required_device<screen_device> m_screen;
 	required_device<palette_device> m_palette;
 
-<<<<<<< HEAD
-	required_shared_ptr<UINT16> m_vctrl_0;
-	required_shared_ptr<UINT16> m_vram_0;
-	required_shared_ptr<UINT16> m_vram_1;
-	required_shared_ptr<UINT16> m_spriteram;
-=======
 	required_shared_ptr<uint16_t> m_vctrl_0;
 	required_shared_ptr<uint16_t> m_vram_0;
 	required_shared_ptr<uint16_t> m_vram_1;
 	required_shared_ptr<uint16_t> m_spriteram;
->>>>>>> upstream/master
 
 	tilemap_t *m_tilemap_0;
 	tilemap_t *m_tilemap_1;
@@ -55,14 +45,8 @@ public:
 	TILE_GET_INFO_MEMBER(get_tile_info_1);
 	TILEMAP_MAPPER_MEMBER(get_memory_offset_0);
 
-<<<<<<< HEAD
-	virtual void video_start();
-
-	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	virtual void video_start() override;
 
 	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	void draw_sprites(bitmap_ind16 &bitmap,const rectangle &cliprect);
 };

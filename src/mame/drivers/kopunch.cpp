@@ -32,17 +32,11 @@
 ********************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/i8085/i8085.h"
-#include "machine/i8255.h"
-#include "includes/kopunch.h"
-=======
 #include "includes/kopunch.h"
 
 #include "cpu/i8085/i8085.h"
 #include "machine/i8255.h"
 #include "screen.h"
->>>>>>> upstream/master
 
 
 /********************************************************
@@ -121,22 +115,13 @@ READ8_MEMBER(kopunch_state::sensors2_r)
 
 WRITE8_MEMBER(kopunch_state::lamp_w)
 {
-<<<<<<< HEAD
-	set_led_status(machine(), 0, ~data & 0x80);
-=======
 	output().set_led_value(0, ~data & 0x80);
->>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(kopunch_state::coin_w)
 {
-<<<<<<< HEAD
-	coin_counter_w(machine(), 0, ~data & 0x80);
-	coin_counter_w(machine(), 1, ~data & 0x40);
-=======
 	machine().bookkeeping().coin_counter_w(0, ~data & 0x80);
 	machine().bookkeeping().coin_counter_w(1, ~data & 0x40);
->>>>>>> upstream/master
 
 //  if ((data & 0x3f) != 0x3e)
 //      printf("port 34 = %02x   ",data);
@@ -244,11 +229,7 @@ void kopunch_state::machine_start()
 	save_item(NAME(m_scrollx));
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( kopunch, kopunch_state )
-=======
 static MACHINE_CONFIG_START( kopunch )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", I8085A, 4000000) // 4 MHz?
@@ -265,22 +246,13 @@ static MACHINE_CONFIG_START( kopunch )
 	MCFG_DEVICE_ADD("ppi8255_1", I8255A, 0)
 	// $34 - always $80 (PPI mode 0, ports A & B & C as output)
 	MCFG_I8255_OUT_PORTA_CB(WRITE8(kopunch_state, coin_w))
-<<<<<<< HEAD
-	MCFG_I8255_OUT_PORTB_CB(LOGGER("PPI8255 - unmapped write port B", 0))
-	MCFG_I8255_OUT_PORTC_CB(LOGGER("PPI8255 - unmapped write port C", 0))
-=======
 	MCFG_I8255_OUT_PORTB_CB(LOGGER("PPI8255 - unmapped write port B"))
 	MCFG_I8255_OUT_PORTC_CB(LOGGER("PPI8255 - unmapped write port C"))
->>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("ppi8255_2", I8255A, 0)
 	// $38 - always $89 (PPI mode 0, ports A & B as output, port C as input)
 	MCFG_I8255_OUT_PORTA_CB(WRITE8(kopunch_state, lamp_w))
-<<<<<<< HEAD
-	MCFG_I8255_OUT_PORTB_CB(LOGGER("PPI8255 - unmapped write port B", 0))
-=======
 	MCFG_I8255_OUT_PORTB_CB(LOGGER("PPI8255 - unmapped write port B"))
->>>>>>> upstream/master
 	MCFG_I8255_IN_PORTC_CB(IOPORT("DSW"))
 
 	MCFG_DEVICE_ADD("ppi8255_3", I8255A, 0)
@@ -340,8 +312,4 @@ ROM_START( kopunch )
 ROM_END
 
 
-<<<<<<< HEAD
-GAME( 1981, kopunch, 0, kopunch, kopunch, driver_device, 0, ROT270, "Sega", "KO Punch", MACHINE_NO_SOUND | MACHINE_NOT_WORKING | MACHINE_MECHANICAL | MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1981, kopunch, 0, kopunch, kopunch, kopunch_state, 0, ROT270, "Sega", "KO Punch", MACHINE_NO_SOUND | MACHINE_NOT_WORKING | MACHINE_MECHANICAL | MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

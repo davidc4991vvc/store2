@@ -3042,8 +3042,6 @@ process_initializer(ir_variable *var, ast_declaration *decl,
    ir_dereference *const lhs = new(state) ir_dereference_variable(var);
    ir_rvalue *rhs = decl->initializer->hir(initializer_instructions, state);
 
-<<<<<<< HEAD
-=======
    /* Propagate precision qualifier for constant value */
    if (type->qualifier.flags.q.constant) {
       ir_constant *constant_value = rhs->constant_expression_value();
@@ -3057,7 +3055,6 @@ process_initializer(ir_variable *var, ast_declaration *decl,
       }
    }
 	
->>>>>>> upstream/master
    /* Calculate the constant value if this is a const or uniform
     * declaration.
     */

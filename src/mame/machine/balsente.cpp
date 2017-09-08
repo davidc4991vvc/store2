@@ -49,11 +49,7 @@ TIMER_DEVICE_CALLBACK_MEMBER(balsente_state::balsente_interrupt_timer)
 	/* if we're a shooter, we do a little more work */
 	if (m_shooter)
 	{
-<<<<<<< HEAD
-		UINT8 tempx, tempy;
-=======
 		uint8_t tempx, tempy;
->>>>>>> upstream/master
 
 		/* we latch the beam values on the first interrupt after VBLANK */
 		if (param == 64)
@@ -190,13 +186,8 @@ void balsente_state::machine_reset()
 
 void balsente_state::poly17_init()
 {
-<<<<<<< HEAD
-	UINT32 i, x = 0;
-	UINT8 *p, *r;
-=======
 	uint32_t i, x = 0;
 	uint8_t *p, *r;
->>>>>>> upstream/master
 
 	/* allocate memory */
 	p = m_poly17;
@@ -218,13 +209,8 @@ void balsente_state::poly17_init()
 inline void balsente_state::noise_gen_chip(int chip, int count, short *buffer)
 {
 	/* noise generator runs at 100kHz */
-<<<<<<< HEAD
-	UINT32 step = (100000 << 14) / CEM3394_SAMPLE_RATE;
-	UINT32 noise_counter = m_noise_position[chip];
-=======
 	uint32_t step = (100000 << 14) / cem3394_device::SAMPLE_RATE;
 	uint32_t noise_counter = m_noise_position[chip];
->>>>>>> upstream/master
 
 	while (count--)
 	{
@@ -258,11 +244,7 @@ WRITE8_MEMBER(balsente_state::balsente_random_reset_w)
 
 READ8_MEMBER(balsente_state::balsente_random_num_r)
 {
-<<<<<<< HEAD
-	UINT32 cc;
-=======
 	uint32_t cc;
->>>>>>> upstream/master
 
 	/* CPU runs at 1.25MHz, noise source at 100kHz --> multiply by 12.5 */
 	cc = m_maincpu->total_cycles();
@@ -332,11 +314,7 @@ WRITE8_MEMBER(balsente_state::balsente_misc_output_w)
 	}
 	else
 	{
-<<<<<<< HEAD
-//      set_led_status(machine(), offset, data);
-=======
 //      output().set_led_value(offset, data);
->>>>>>> upstream/master
 	}
 }
 
@@ -350,11 +328,7 @@ WRITE8_MEMBER(balsente_state::balsente_misc_output_w)
 
 void balsente_state::m6850_update_io()
 {
-<<<<<<< HEAD
-	UINT8 new_state;
-=======
 	uint8_t new_state;
->>>>>>> upstream/master
 
 	/* sound -> main CPU communications */
 	if (!(m_m6850_sound_status & 0x02))
@@ -621,12 +595,6 @@ WRITE8_MEMBER(balsente_state::balsente_adc_select_w)
 {
 	/* set a timer to go off and read the value after 50us */
 	/* it's important that we do this for Mini Golf */
-<<<<<<< HEAD
-logerror("adc_select %d\n", offset & 7);
-	machine().scheduler().timer_set(attotime::from_usec(50), timer_expired_delegate(FUNC(balsente_state::adc_finished),this), offset & 7);
-}
-
-=======
 	logerror("adc_select %d\n", offset & 7);
 	machine().scheduler().timer_set(attotime::from_usec(50), timer_expired_delegate(FUNC(balsente_state::adc_finished),this), offset & 7);
 }
@@ -654,7 +622,6 @@ WRITE8_MEMBER(balsente_state::teamht_multiplex_select_w)
 	}
 
 }
->>>>>>> upstream/master
 
 
 /*************************************
@@ -899,11 +866,7 @@ void balsente_state::set_counter_0_ff(timer_device &timer, int newstate)
 		{
 			m_counter[0].count--;
 			if (m_counter[0].count == 0)
-<<<<<<< HEAD
-				balsente_counter_callback(timer, NULL, 0);
-=======
 				balsente_counter_callback(timer, nullptr, 0);
->>>>>>> upstream/master
 		}
 	}
 
@@ -932,30 +895,17 @@ void balsente_state::update_counter_0_timer()
 	/* find the counter with the maximum frequency */
 	/* this is used to calibrate the timers at startup */
 	for (i = 0; i < 6; i++)
-<<<<<<< HEAD
-		if (m_cem_device[i]->get_parameter(CEM3394_FINAL_GAIN) < 10.0)
-=======
 		if (m_cem_device[i]->get_parameter(cem3394_device::FINAL_GAIN) < 10.0)
->>>>>>> upstream/master
 		{
 			double tempfreq;
 
 			/* if the filter resonance is high, then they're calibrating the filter frequency */
-<<<<<<< HEAD
-			if (m_cem_device[i]->get_parameter(CEM3394_FILTER_RESONANCE) > 0.9)
-				tempfreq = m_cem_device[i]->get_parameter(CEM3394_FILTER_FREQENCY);
-
-			/* otherwise, they're calibrating the VCO frequency */
-			else
-				tempfreq = m_cem_device[i]->get_parameter(CEM3394_VCO_FREQUENCY);
-=======
 			if (m_cem_device[i]->get_parameter(cem3394_device::FILTER_RESONANCE) > 0.9)
 				tempfreq = m_cem_device[i]->get_parameter(cem3394_device::FILTER_FREQENCY);
 
 			/* otherwise, they're calibrating the VCO frequency */
 			else
 				tempfreq = m_cem_device[i]->get_parameter(cem3394_device::VCO_FREQUENCY);
->>>>>>> upstream/master
 
 			if (tempfreq > maxfreq) maxfreq = tempfreq;
 		}
@@ -990,11 +940,7 @@ READ8_MEMBER(balsente_state::balsente_counter_state_r)
 
 WRITE8_MEMBER(balsente_state::balsente_counter_control_w)
 {
-<<<<<<< HEAD
-	UINT8 diff_counter_control = m_counter_control ^ data;
-=======
 	uint8_t diff_counter_control = m_counter_control ^ data;
->>>>>>> upstream/master
 
 	/* set the new global value */
 	m_counter_control = data;
@@ -1002,13 +948,8 @@ WRITE8_MEMBER(balsente_state::balsente_counter_control_w)
 	/* bit D0 enables/disables audio */
 	if (diff_counter_control & 0x01)
 	{
-<<<<<<< HEAD
-		for (int ch = 0; ch < 6; ch++)
-			m_cem_device[ch]->set_output_gain(0, (data & 0x01) ? 1.0 : 0);
-=======
 		for (auto & elem : m_cem_device)
 			elem->set_output_gain(0, (data & 0x01) ? 1.0 : 0);
->>>>>>> upstream/master
 	}
 
 	/* bit D1 is hooked to counter 0's gate */
@@ -1046,18 +987,6 @@ WRITE8_MEMBER(balsente_state::balsente_counter_control_w)
 
 WRITE8_MEMBER(balsente_state::balsente_chip_select_w)
 {
-<<<<<<< HEAD
-	static const UINT8 register_map[8] =
-	{
-		CEM3394_VCO_FREQUENCY,
-		CEM3394_FINAL_GAIN,
-		CEM3394_FILTER_RESONANCE,
-		CEM3394_FILTER_FREQENCY,
-		CEM3394_MIXER_BALANCE,
-		CEM3394_MODULATION_AMOUNT,
-		CEM3394_PULSE_WIDTH,
-		CEM3394_WAVE_SELECT
-=======
 	static constexpr uint8_t register_map[8] =
 	{
 		cem3394_device::VCO_FREQUENCY,
@@ -1068,7 +997,6 @@ WRITE8_MEMBER(balsente_state::balsente_chip_select_w)
 		cem3394_device::MODULATION_AMOUNT,
 		cem3394_device::PULSE_WIDTH,
 		cem3394_device::WAVE_SELECT
->>>>>>> upstream/master
 	};
 
 	double voltage = (double)m_dac_value * (8.0 / 4096.0) - 4.0;
@@ -1131,11 +1059,7 @@ WRITE8_MEMBER(balsente_state::balsente_dac_data_w)
 	/* if there are open channels, force the values in */
 	if ((m_chip_select & 0x3f) != 0x3f)
 	{
-<<<<<<< HEAD
-		UINT8 temp = m_chip_select;
-=======
 		uint8_t temp = m_chip_select;
->>>>>>> upstream/master
 		balsente_chip_select_w(space, 0, 0x3f);
 		balsente_chip_select_w(space, 0, temp);
 	}
@@ -1176,16 +1100,9 @@ WRITE8_MEMBER(balsente_state::spiker_expand_w)
 		m_spiker_expand_color = data;
 }
 
-<<<<<<< HEAD
-
-READ8_MEMBER(balsente_state::spiker_expand_r)
-{
-	UINT8 left, right;
-=======
 READ8_MEMBER(balsente_state::spiker_expand_r)
 {
 	uint8_t left, right;
->>>>>>> upstream/master
 
 	/* first rotate each nibble */
 	m_spiker_expand_bits = ((m_spiker_expand_bits << 1) & 0xee) | ((m_spiker_expand_bits >> 3) & 0x11);
@@ -1204,13 +1121,8 @@ READ8_MEMBER(balsente_state::spiker_expand_r)
 
 void balsente_state::update_grudge_steering()
 {
-<<<<<<< HEAD
-	UINT8 wheel[3];
-	INT8 diff[3];
-=======
 	uint8_t wheel[3];
 	int8_t diff[3];
->>>>>>> upstream/master
 
 	/* read the current steering values */
 	wheel[0] = ioport("AN0")->read();
@@ -1265,11 +1177,7 @@ READ8_MEMBER(balsente_state::grudge_steering_r)
 
 READ8_MEMBER(balsente_state::shrike_shared_6809_r)
 {
-<<<<<<< HEAD
-	UINT16 mem_mask_int = offset & 1 ? 0xff00 : 0x00ff;
-=======
 	uint16_t mem_mask_int = offset & 1 ? 0xff00 : 0x00ff;
->>>>>>> upstream/master
 
 	switch( offset )
 	{
@@ -1283,11 +1191,7 @@ READ8_MEMBER(balsente_state::shrike_shared_6809_r)
 
 WRITE8_MEMBER(balsente_state::shrike_shared_6809_w)
 {
-<<<<<<< HEAD
-	UINT16 mem_mask_int = offset & 1 ? 0xff00 : 0x00ff;
-=======
 	uint16_t mem_mask_int = offset & 1 ? 0xff00 : 0x00ff;
->>>>>>> upstream/master
 	m_shrike_shared[offset >> 1] = ( m_shrike_shared[offset >> 1] & mem_mask_int ) | ( data << ( mem_mask_int & 0x8 ) );
 }
 

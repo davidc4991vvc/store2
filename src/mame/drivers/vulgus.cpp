@@ -44,11 +44,6 @@ All Clocks and Vsync verified by Corrado Tomaselli (August 2012)
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/z80/z80.h"
-#include "sound/ay8910.h"
-#include "includes/vulgus.h"
-=======
 #include "includes/vulgus.h"
 
 #include "cpu/z80/z80.h"
@@ -56,7 +51,6 @@ All Clocks and Vsync verified by Corrado Tomaselli (August 2012)
 #include "sound/ay8910.h"
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 INTERRUPT_GEN_MEMBER(vulgus_state::vblank_irq)
@@ -71,11 +65,7 @@ static ADDRESS_MAP_START( main_map, AS_PROGRAM, 8, vulgus_state )
 	AM_RANGE(0xc002, 0xc002) AM_READ_PORT("P2")
 	AM_RANGE(0xc003, 0xc003) AM_READ_PORT("DSW1")
 	AM_RANGE(0xc004, 0xc004) AM_READ_PORT("DSW2")
-<<<<<<< HEAD
-	AM_RANGE(0xc800, 0xc800) AM_WRITE(soundlatch_byte_w)
-=======
 	AM_RANGE(0xc800, 0xc800) AM_DEVWRITE("soundlatch", generic_latch_8_device, write)
->>>>>>> upstream/master
 	AM_RANGE(0xc801, 0xc801) AM_WRITENOP // ?
 	AM_RANGE(0xc802, 0xc803) AM_RAM AM_SHARE("scroll_low")
 	AM_RANGE(0xc804, 0xc804) AM_WRITE(c804_w)
@@ -90,11 +80,7 @@ ADDRESS_MAP_END
 static ADDRESS_MAP_START( sound_map, AS_PROGRAM, 8, vulgus_state )
 	AM_RANGE(0x0000, 0x1fff) AM_ROM
 	AM_RANGE(0x4000, 0x47ff) AM_RAM
-<<<<<<< HEAD
-	AM_RANGE(0x6000, 0x6000) AM_READ(soundlatch_byte_r)
-=======
 	AM_RANGE(0x6000, 0x6000) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
->>>>>>> upstream/master
 	AM_RANGE(0x8000, 0x8001) AM_DEVWRITE("ay1", ay8910_device, address_data_w)
 	AM_RANGE(0xc000, 0xc001) AM_DEVWRITE("ay2", ay8910_device, address_data_w)
 ADDRESS_MAP_END
@@ -228,11 +214,7 @@ GFXDECODE_END
 
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( vulgus, vulgus_state )
-=======
 static MACHINE_CONFIG_START( vulgus )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, XTAL_12MHz/4)  /* 3 MHz */
@@ -261,11 +243,8 @@ static MACHINE_CONFIG_START( vulgus )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 
->>>>>>> upstream/master
 	MCFG_SOUND_ADD("ay1", AY8910, XTAL_12MHz/8) /* 1.5 MHz */
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.25)
 
@@ -398,13 +377,6 @@ ROM_START( vulgusj )
 	ROM_LOAD( "82s129.8n",    0x0700, 0x0100, CRC(4921635c) SHA1(aee37d6cdc36acf0f11ff5f93e7b16e4b12f6c39) )    /* video timing? (not used) */
 ROM_END
 
-<<<<<<< HEAD
-
-
-GAME( 1984, vulgus,  0,      vulgus, vulgus, driver_device, 0, ROT270, "Capcom", "Vulgus (set 1)", MACHINE_SUPPORTS_SAVE )
-GAME( 1984, vulgusa, vulgus, vulgus, vulgus, driver_device, 0, ROT90,  "Capcom", "Vulgus (set 2)", MACHINE_SUPPORTS_SAVE )
-GAME( 1984, vulgusj, vulgus, vulgus, vulgus, driver_device, 0, ROT270, "Capcom", "Vulgus (Japan?)", MACHINE_SUPPORTS_SAVE )
-=======
 ROM_START( mach9 )
 	ROM_REGION( 0x1c000, "maincpu", 0 )
 	ROM_LOAD( "02_4n.bin",   0x0000, 0x2000, CRC(b3310b0c) SHA1(f083d8633da69acaa03e7566f28e87ef0482927d) )
@@ -448,4 +420,3 @@ GAME( 1984, vulgus,  0,      vulgus, vulgus, vulgus_state, 0, ROT270, "Capcom", 
 GAME( 1984, vulgusa, vulgus, vulgus, vulgus, vulgus_state, 0, ROT90,  "Capcom", "Vulgus (set 2)", MACHINE_SUPPORTS_SAVE )
 GAME( 1984, vulgusj, vulgus, vulgus, vulgus, vulgus_state, 0, ROT270, "Capcom", "Vulgus (Japan?)", MACHINE_SUPPORTS_SAVE )
 GAME( 1984, mach9,   vulgus, vulgus, vulgus, vulgus_state, 0, ROT270,  "bootleg (ITISA)", "Mach-9 (bootleg of Vulgus)", MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

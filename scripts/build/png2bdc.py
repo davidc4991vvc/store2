@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-#!/usr/bin/env python 
-=======
 #!/usr/bin/env python
->>>>>>> upstream/master
 ##
 ## license:BSD-3-Clause
 ## copyright-holders:Aaron Giles, Andrew Gardner
@@ -54,11 +50,7 @@
 ##
 ## Python note:
 ##   This is a near-literal translation of the original C++ code.  As such there
-<<<<<<< HEAD
-##   are some very non-pythonic things done throughout.  The conversion was done 
-=======
 ##   are some very non-pythonic things done throughout.  The conversion was done
->>>>>>> upstream/master
 ##   this way so as to insure compatibility as much as possible given the small
 ##   number of test cases.
 ##
@@ -74,12 +66,6 @@ else:
     def b2p(v):
         return chr(v)
 
-<<<<<<< HEAD
-g_totalNumChars = 0
-g_charTable = [0]
-
-=======
->>>>>>> upstream/master
 
 ########################################
 ## Helper classes
@@ -88,11 +74,7 @@ class RenderFontChar:
     """
     Contains information about a single character in a font.
     """
-<<<<<<< HEAD
-    
-=======
 
->>>>>>> upstream/master
     def __init__(self):
         """
         """
@@ -108,18 +90,11 @@ class RenderFont:
     """
     Contains information about a font
     """
-<<<<<<< HEAD
-    
-    def __init__(self):
-        self.height = 0         # height of the font, from ascent to descent
-        self.yOffs = 0          # y offset from baseline to descent
-=======
 
     def __init__(self):
         self.height = 0         # height of the font, from ascent to descent
         self.yOffs = 0          # y offset from baseline to descent
         self.defChar = -1       # default character for glyphs not present
->>>>>>> upstream/master
         self.chars = list()     # array of characters
         for i in range(0, 65536):
             self.chars.append(RenderFontChar())
@@ -133,60 +108,18 @@ def pixelIsSet(value):
     return (value & 0xffffff) == 0
 
 
-<<<<<<< HEAD
-def renderFontCreateTemporaryFile(filename):
-    """
-    """
-    global g_charTable
-    CACHED_CHAR_SIZE = 12
-    g_charTable = [0]*(65536 * CACHED_CHAR_SIZE)
-    fp = open(filename + ".tmp", "wb")
-    if not fp:
-        return 1
-
-    fp.close()
-    return 0
-
-def renderFontSaveCached(font, filename, hash32):
-    """
-    """
-    global g_totalNumChars
-    global g_charTable
-
-=======
 def renderFontSaveCached(font, filename, length64, hash32):
     """
     """
->>>>>>> upstream/master
     fp = open(filename, "wb")
     if not fp:
         return 1
 
-<<<<<<< HEAD
-    tmp_fp = open(filename + ".tmp", "r+b")
-    if not tmp_fp:
-        return 1
-    tmp_fp.seek(0, 2)
-
-=======
->>>>>>> upstream/master
     # Write the header
     numChars = 0
     for c in font.chars:
         if c.width > 0:
             numChars += 1
-<<<<<<< HEAD
-    g_totalNumChars += numChars
-
-    CACHED_CHAR_SIZE = 12
-    CACHED_HEADER_SIZE = 16
-    
-    try:
-        fp.write(b'f')
-        fp.write(b'o')
-        fp.write(b'n')
-        fp.write(b't')
-=======
 
     CACHED_CHAR_SIZE = 16
     CACHED_HEADER_SIZE = 32
@@ -208,37 +141,18 @@ def renderFontSaveCached(font, filename, length64, hash32):
         fp.write(b2p(length64 >> 16 & 0xff))
         fp.write(b2p(length64 >> 8 & 0xff))
         fp.write(b2p(length64 >> 0 & 0xff))
->>>>>>> upstream/master
         fp.write(b2p(hash32 >> 24 & 0xff))
         fp.write(b2p(hash32 >> 16 & 0xff))
         fp.write(b2p(hash32 >> 8 & 0xff))
         fp.write(b2p(hash32 >> 0 & 0xff))
-<<<<<<< HEAD
-=======
         fp.write(b2p(numChars >> 24 & 0xff))
         fp.write(b2p(numChars >> 16 & 0xff))
         fp.write(b2p(numChars >> 8 & 0xff))
         fp.write(b2p(numChars >> 0 & 0xff))
->>>>>>> upstream/master
         fp.write(b2p(font.height >> 8 & 0xff))
         fp.write(b2p(font.height >> 0 & 0xff))
         fp.write(b2p(font.yOffs >> 8 & 0xff))
         fp.write(b2p(font.yOffs >> 0 & 0xff))
-<<<<<<< HEAD
-        fp.write(b2p(g_totalNumChars >> 24 & 0xff))
-        fp.write(b2p(g_totalNumChars >> 16 & 0xff))
-        fp.write(b2p(g_totalNumChars >> 8 & 0xff))
-        fp.write(b2p(g_totalNumChars >> 0 & 0xff))
-        
-        # Write a blank table at first (?)
-        charTable = [0]*(g_totalNumChars * CACHED_CHAR_SIZE)
-        for i in range(g_totalNumChars * CACHED_CHAR_SIZE):
-            fp.write(b2p(charTable[i]))
-        
-        # Loop over all characters
-        tableIndex = g_totalNumChars - numChars
-        
-=======
         fp.write(b2p(font.defChar >> 24 & 0xff))
         fp.write(b2p(font.defChar >> 16 & 0xff))
         fp.write(b2p(font.defChar >> 8 & 0xff))
@@ -252,25 +166,16 @@ def renderFontSaveCached(font, filename, length64, hash32):
         # Loop over all characters
         tableIndex = 0
 
->>>>>>> upstream/master
         for i in range(len(font.chars)):
             c = font.chars[i]
             if c.width == 0:
                 continue
-<<<<<<< HEAD
-            
-=======
 
->>>>>>> upstream/master
             if c.bitmap:
                 dBuffer = list()
                 accum = 0
                 accbit = 7
-<<<<<<< HEAD
-    
-=======
 
->>>>>>> upstream/master
                 # Bit-encode the character data
                 for y in range(0, c.bmHeight):
                     src = None
@@ -285,50 +190,6 @@ def renderFontSaveCached(font, filename, length64, hash32):
                             dBuffer.append(accum)
                             accum = 0
                             accbit = 7
-<<<<<<< HEAD
-                
-                # Flush any extra
-                if accbit != 7:
-                    dBuffer.append(accum)
-                
-                # Write the data
-                for j in range(len(dBuffer)):
-                    tmp_fp.write(b2p(dBuffer[j]))
-
-                c.bitmap = None
-
-            destIndex = tableIndex * CACHED_CHAR_SIZE
-            g_charTable[destIndex +  0] = i >> 8 & 0xff
-            g_charTable[destIndex +  1] = i >> 0 & 0xff
-            g_charTable[destIndex +  2] = c.width >> 8 & 0xff
-            g_charTable[destIndex +  3] = c.width >> 0 & 0xff
-            g_charTable[destIndex +  4] = c.xOffs >> 8 & 0xff
-            g_charTable[destIndex +  5] = c.xOffs >> 0 & 0xff
-            g_charTable[destIndex +  6] = c.yOffs >> 8 & 0xff
-            g_charTable[destIndex +  7] = c.yOffs >> 0 & 0xff
-            g_charTable[destIndex +  8] = c.bmWidth >> 8 & 0xff
-            g_charTable[destIndex +  9] = c.bmWidth >> 0 & 0xff
-            g_charTable[destIndex + 10] = c.bmHeight >> 8 & 0xff
-            g_charTable[destIndex + 11] = c.bmHeight >> 0 & 0xff
-            tableIndex += 1
-
-            c.width = 0
-
-        # Seek back to the beginning and rewrite the table
-        fp.seek(CACHED_HEADER_SIZE, 0)
-        for i in range(len(charTable)):
-            charTable[i] = g_charTable[i]
-        for i in range(g_totalNumChars * CACHED_CHAR_SIZE):
-            fp.write(b2p(charTable[i]))
-
-        # mamep:copy from temporary file
-        tmp_fp.seek(0, 0)
-        tempbuffer = tmp_fp.read()
-        fp.write(tempbuffer)
-    
-        fp.close()
-        tmp_fp.close()
-=======
 
                 # Flush any extra
                 if accbit != 7:
@@ -361,17 +222,12 @@ def renderFontSaveCached(font, filename, length64, hash32):
             fp.write(b2p(charTable[i]))
 
         fp.close()
->>>>>>> upstream/master
         return 0
 
     except:
         print(sys.exc_info[1])
         return 1
-<<<<<<< HEAD
-    
-=======
 
->>>>>>> upstream/master
 
 def bitmapToChars(pngObject, font):
     """
@@ -388,11 +244,7 @@ def bitmapToChars(pngObject, font):
         for r,g,b,a in zip(irpd, irpd, irpd, irpd):
             cRow.append(a << 24 | r << 16 | g << 8 | b)
         bitmap.append(cRow)
-<<<<<<< HEAD
-    
-=======
 
->>>>>>> upstream/master
     rowStart = 0
     while rowStart < height:
         # Find the top of the row
@@ -484,11 +336,7 @@ def bitmapToChars(pngObject, font):
                 ch.yOffs = font.yOffs
                 ch.bmWidth = len(ch.bitmap[0])
                 ch.bmHeight = len(ch.bitmap)
-<<<<<<< HEAD
-                
-=======
 
->>>>>>> upstream/master
                 # Insert the character into the list
                 font.chars[chStart] = ch
 
@@ -498,11 +346,7 @@ def bitmapToChars(pngObject, font):
 
         # Next row
         rowStart = rowEnd + 1
-<<<<<<< HEAD
-    
-=======
 
->>>>>>> upstream/master
     # Return non-zero if we errored
     return rowStart < height
 
@@ -516,37 +360,10 @@ def main():
         sys.stderr.write("Usage:\n%s <input.png> [<input2.png> [...]] <output.bdc>\n" % sys.argv[0])
         return 1
     bdcName = sys.argv[-1]
-<<<<<<< HEAD
-    renderFontCreateTemporaryFile(bdcName)
-=======
->>>>>>> upstream/master
 
     font = RenderFont()
     for i in range(1, len(sys.argv)-1):
         filename = sys.argv[i]
-<<<<<<< HEAD
-        if not os.path.exists(filename):
-            sys.stderr.write("Error attempting to open PNG file.\n")
-            return 1
-
-        pngObject = png.Reader(filename)
-        try:
-            pngObject.validate_signature()
-        except:
-            sys.stderr.write("Error reading PNG file.\n")
-            return 1
-
-        error = bitmapToChars(pngObject, font)
-        if error:
-            return 1
-
-        pngObject = None
-
-        error = renderFontSaveCached(font, bdcName, 0)
-        if error:
-            return 1
-
-=======
     if not os.path.exists(filename):
         sys.stderr.write("Error attempting to open PNG file.\n")
         return 1
@@ -563,7 +380,6 @@ def main():
         return 1
 
     error = renderFontSaveCached(font, bdcName, 0, 0)
->>>>>>> upstream/master
     return error
 
 

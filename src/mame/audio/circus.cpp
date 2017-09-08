@@ -10,22 +10,14 @@ const char *const circus_sample_names[] =
 	"pop",
 	"miss",
 	"bounce",
-<<<<<<< HEAD
-	0
-=======
 	nullptr
->>>>>>> upstream/master
 };
 
 const char *const crash_sample_names[] =
 {
 	"*crash",
 	"crash",
-<<<<<<< HEAD
-	0
-=======
 	nullptr
->>>>>>> upstream/master
 };
 
 const char *const ripcord_sample_names[] =
@@ -35,11 +27,7 @@ const char *const ripcord_sample_names[] =
 	"scream",
 	"chute",
 	"whistle",
-<<<<<<< HEAD
-	0
-=======
 	nullptr
->>>>>>> upstream/master
 };
 
 const char *const robotbwl_sample_names[] =
@@ -50,11 +38,7 @@ const char *const robotbwl_sample_names[] =
 	"balldrop",
 	"demerit",
 	"reward",
-<<<<<<< HEAD
-	0
-=======
 	nullptr
->>>>>>> upstream/master
 };
 
 

@@ -58,16 +58,6 @@ and 1 SFX channel controlled by an 8039:
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/z80/z80.h"
-#include "cpu/m6809/m6809.h"
-#include "machine/konami1.h"
-#include "cpu/mcs48/mcs48.h"
-#include "sound/ay8910.h"
-#include "sound/discrete.h"
-#include "includes/konamipt.h"
-#include "includes/gyruss.h"
-=======
 #include "includes/gyruss.h"
 #include "includes/konamipt.h"
 
@@ -81,7 +71,6 @@ and 1 SFX channel controlled by an 8039:
 #include "sound/discrete.h"
 
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 #define MASTER_CLOCK    XTAL_18_432MHz
@@ -173,15 +162,9 @@ WRITE8_MEMBER(gyruss_state::gyruss_i8039_irq_w)
 	m_audiocpu_2->set_input_line(0, ASSERT_LINE);
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER(gyruss_state::master_nmi_mask_w)
-{
-	m_master_nmi_mask = data & 1;
-=======
 WRITE_LINE_MEMBER(gyruss_state::master_nmi_mask_w)
 {
 	m_master_nmi_mask = state;
->>>>>>> upstream/master
 	if (!m_master_nmi_mask)
 		m_maincpu->set_input_line(INPUT_LINE_NMI, CLEAR_LINE);
 }
@@ -193,8 +176,6 @@ WRITE8_MEMBER(gyruss_state::slave_irq_mask_w)
 		m_subcpu->set_input_line(0, CLEAR_LINE);
 }
 
-<<<<<<< HEAD
-=======
 WRITE_LINE_MEMBER(gyruss_state::coin_counter_1_w)
 {
 	machine().bookkeeping().coin_counter_w(0, state);
@@ -205,7 +186,6 @@ WRITE_LINE_MEMBER(gyruss_state::coin_counter_2_w)
 	machine().bookkeeping().coin_counter_w(1, state);
 }
 
->>>>>>> upstream/master
 static ADDRESS_MAP_START( main_cpu1_map, AS_PROGRAM, 8, gyruss_state )
 	AM_RANGE(0x0000, 0x7fff) AM_ROM
 	AM_RANGE(0x8000, 0x83ff) AM_RAM AM_SHARE("colorram")
@@ -217,14 +197,8 @@ static ADDRESS_MAP_START( main_cpu1_map, AS_PROGRAM, 8, gyruss_state )
 	AM_RANGE(0xc0a0, 0xc0a0) AM_READ_PORT("P1")
 	AM_RANGE(0xc0c0, 0xc0c0) AM_READ_PORT("P2")
 	AM_RANGE(0xc0e0, 0xc0e0) AM_READ_PORT("DSW1")
-<<<<<<< HEAD
-	AM_RANGE(0xc100, 0xc100) AM_READ_PORT("DSW3") AM_WRITE(soundlatch_byte_w)
-	AM_RANGE(0xc180, 0xc180) AM_WRITE(master_nmi_mask_w)
-	AM_RANGE(0xc185, 0xc185) AM_WRITEONLY AM_SHARE("flipscreen")
-=======
 	AM_RANGE(0xc100, 0xc100) AM_READ_PORT("DSW3") AM_DEVWRITE("soundlatch", generic_latch_8_device, write)
 	AM_RANGE(0xc180, 0xc187) AM_DEVWRITE("mainlatch", ls259_device, write_d0)
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( main_cpu2_map, AS_PROGRAM, 8, gyruss_state )
@@ -240,11 +214,7 @@ ADDRESS_MAP_END
 static ADDRESS_MAP_START( audio_cpu1_map, AS_PROGRAM, 8, gyruss_state )
 	AM_RANGE(0x0000, 0x5fff) AM_ROM
 	AM_RANGE(0x6000, 0x63ff) AM_RAM
-<<<<<<< HEAD
-	AM_RANGE(0x8000, 0x8000) AM_READ(soundlatch_byte_r)
-=======
 	AM_RANGE(0x8000, 0x8000) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( audio_cpu1_io_map, AS_IO, 8, gyruss_state )
@@ -265,11 +235,7 @@ static ADDRESS_MAP_START( audio_cpu1_io_map, AS_IO, 8, gyruss_state )
 	AM_RANGE(0x11, 0x11) AM_DEVREAD("ay5", ay8910_device, data_r)
 	AM_RANGE(0x12, 0x12) AM_DEVWRITE("ay5", ay8910_device, data_w)
 	AM_RANGE(0x14, 0x14) AM_WRITE(gyruss_i8039_irq_w)
-<<<<<<< HEAD
-	AM_RANGE(0x18, 0x18) AM_WRITE(soundlatch2_byte_w)
-=======
 	AM_RANGE(0x18, 0x18) AM_DEVWRITE("soundlatch2", generic_latch_8_device, write)
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( audio_cpu2_map, AS_PROGRAM, 8, gyruss_state )
@@ -277,13 +243,7 @@ static ADDRESS_MAP_START( audio_cpu2_map, AS_PROGRAM, 8, gyruss_state )
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( audio_cpu2_io_map, AS_IO, 8, gyruss_state )
-<<<<<<< HEAD
-	AM_RANGE(0x00, 0xff) AM_READ(soundlatch2_byte_r)
-	AM_RANGE(MCS48_PORT_P1, MCS48_PORT_P1) AM_WRITE(gyruss_dac_w)
-	AM_RANGE(MCS48_PORT_P2, MCS48_PORT_P2) AM_WRITE(gyruss_irq_clear_w)
-=======
 	AM_RANGE(0x00, 0xff) AM_DEVREAD("soundlatch2", generic_latch_8_device, read)
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -348,22 +308,14 @@ static INPUT_PORTS_START( gyruss )
 	PORT_DIPNAME( 0x01, 0x00, "Demo Music" )                PORT_DIPLOCATION("SW3:1")
 	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-<<<<<<< HEAD
-	PORT_BIT( 0xfe, IP_ACTIVE_LOW, IPT_UNUSED )
-=======
 	PORT_DIPUNUSED_DIPLOC(0xfe, IP_ACTIVE_LOW, "SW3:2,3,4,5,6,7,8")
->>>>>>> upstream/master
 INPUT_PORTS_END
 
 static INPUT_PORTS_START( gyrussce )
 	PORT_INCLUDE( gyruss )
 
 	PORT_MODIFY("DSW2")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x08, 0x00, DEF_STR( Bonus_Life ) )       PORT_DIPLOCATION("SW2:3")     /* tables at 0x1653 (15 bytes) or 0x4bf3 (13 bytes) */
-=======
 	PORT_DIPNAME( 0x08, 0x00, DEF_STR( Bonus_Life ) )       PORT_DIPLOCATION("SW2:4")     /* tables at 0x1653 (15 bytes) or 0x4bf3 (13 bytes) */
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x08, "50k 120k 70k+" )             /* last bonus life at 960k : max. 14 bonus lives */
 	PORT_DIPSETTING(    0x00, "60k 140k 80k+" )             /* last bonus life at 940k : max. 12 bonus lives */
 	PORT_DIPNAME( 0x70, 0x20, DEF_STR( Difficulty ) )       PORT_DIPLOCATION("SW2:5,6,7") /* "Difficult" default setting according to Centuri manual */
@@ -519,11 +471,7 @@ INTERRUPT_GEN_MEMBER(gyruss_state::slave_vblank_irq)
 		device.execute().set_input_line(0, ASSERT_LINE);
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( gyruss, gyruss_state )
-=======
 static MACHINE_CONFIG_START( gyruss )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, MASTER_CLOCK/6)    /* 3.072 MHz */
@@ -541,11 +489,6 @@ static MACHINE_CONFIG_START( gyruss )
 	MCFG_CPU_ADD("audio2", I8039, XTAL_8MHz)
 	MCFG_CPU_PROGRAM_MAP(audio_cpu2_map)
 	MCFG_CPU_IO_MAP(audio_cpu2_io_map)
-<<<<<<< HEAD
-
-	MCFG_QUANTUM_TIME(attotime::from_hz(6000))
-
-=======
 	MCFG_MCS48_PORT_P1_OUT_CB(WRITE8(gyruss_state, gyruss_dac_w))
 	MCFG_MCS48_PORT_P2_OUT_CB(WRITE8(gyruss_state, gyruss_irq_clear_w))
 
@@ -557,7 +500,6 @@ static MACHINE_CONFIG_START( gyruss )
 	MCFG_ADDRESSABLE_LATCH_Q3_OUT_CB(WRITELINE(gyruss_state, coin_counter_2_w))
 	MCFG_ADDRESSABLE_LATCH_Q5_OUT_CB(WRITELINE(gyruss_state, flipscreen_w))
 
->>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_RAW_PARAMS(PIXEL_CLOCK, HTOTAL, HBEND, HBSTART, VTOTAL, VBEND, VBSTART)
@@ -572,12 +514,9 @@ static MACHINE_CONFIG_START( gyruss )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
-<<<<<<< HEAD
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch2")
 
->>>>>>> upstream/master
 	MCFG_SOUND_ADD("ay1", AY8910, SOUND_CLOCK/8)
 	MCFG_AY8910_OUTPUT_TYPE(AY8910_DISCRETE_OUTPUT)
 	MCFG_AY8910_RES_LOADS(RES_K(3.3), RES_K(3.3), RES_K(3.3))
@@ -631,13 +570,6 @@ MACHINE_CONFIG_END
 ***************************************************************************/
 
 ROM_START( gyruss )
-<<<<<<< HEAD
-	ROM_REGION( 0x10000, "maincpu", 0 )
-	ROM_LOAD( "gyrussk.1",    0x0000, 0x2000, CRC(c673b43d) SHA1(7c464fb154bac35dd6e2f547e157addeb8798194) )
-	ROM_LOAD( "gyrussk.2",    0x2000, 0x2000, CRC(a4ec03e4) SHA1(08c33ad7fcc2ad5e5787a1050284e3f8164f4618) )
-	ROM_LOAD( "gyrussk.3",    0x4000, 0x2000, CRC(27454a98) SHA1(030c7df225652ee20d5ef64d005eb011dc89a27d) )
-	/* the diagnostics ROM would go here */
-=======
 	ROM_REGION( 0x8000, "maincpu", 0 )
 	ROM_LOAD( "gyrussk.1",    0x0000, 0x2000, CRC(c673b43d) SHA1(7c464fb154bac35dd6e2f547e157addeb8798194) )
 	ROM_LOAD( "gyrussk.2",    0x2000, 0x2000, CRC(a4ec03e4) SHA1(08c33ad7fcc2ad5e5787a1050284e3f8164f4618) )
@@ -647,22 +579,14 @@ ROM_START( gyruss )
 #if 0
 	ROM_LOAD( "gyrussk.4",    0x6000, 0x2000, CRC(6803b04d) SHA1(282fae01999eed919c128add67d940b340d0c78a) )
 #endif
->>>>>>> upstream/master
 
 	ROM_REGION( 0x10000, "sub", 0 )
 	ROM_LOAD( "gyrussk.9",    0xe000, 0x2000, CRC(822bf27e) SHA1(36d5bea2392a7d3476dd797dc05602705cfa23ef) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x10000, "audiocpu", 0 )
-	ROM_LOAD( "gyrussk.1a",   0x0000, 0x2000, CRC(f4ae1c17) SHA1(ae568c96a31d910afe30d2b7eeb9ed1ed07290e3) )
-	ROM_LOAD( "gyrussk.2a",   0x2000, 0x2000, CRC(ba498115) SHA1(9cd1f42898cc590f39ba7cb3c975b0b3d3062eba) )
-	/* the diagnostics ROM would go here */
-=======
 	ROM_REGION( 0x6000, "audiocpu", 0 )
 	ROM_LOAD( "gyrussk.1a",   0x0000, 0x2000, CRC(f4ae1c17) SHA1(ae568c96a31d910afe30d2b7eeb9ed1ed07290e3) )
 	ROM_LOAD( "gyrussk.2a",   0x2000, 0x2000, CRC(ba498115) SHA1(9cd1f42898cc590f39ba7cb3c975b0b3d3062eba) )
 	// 4000-5fff: Empty socket, not populated
->>>>>>> upstream/master
 
 	ROM_REGION( 0x1000, "audio2", 0 )   /* 8039 */
 	ROM_LOAD( "gyrussk.3a",   0x0000, 0x1000, CRC(3f9b5dea) SHA1(6e807da02c2885b18e8cc2199f12f6be9040bf75) )
@@ -683,33 +607,6 @@ ROM_START( gyruss )
 ROM_END
 
 ROM_START( gyrussce )
-<<<<<<< HEAD
-	ROM_REGION( 0x10000, "maincpu", 0 )
-	ROM_LOAD( "gya-1.bin",    0x0000, 0x2000, CRC(85f8b7c2) SHA1(5dde696b53efedee671d500feae1d314e95b1c96) )
-	ROM_LOAD( "gya-2.bin",    0x2000, 0x2000, CRC(1e1a970f) SHA1(5a2e391489608f7571bbb4f85549a79795e2177e) )
-	ROM_LOAD( "gya-3.bin",    0x4000, 0x2000, CRC(f6dbb33b) SHA1(19cab8e7f2f2358b6271ab402f132654e8be95d4) )
-	/* the diagnostics ROM would go here */
-
-	ROM_REGION( 0x10000, "sub", 0 )
-	ROM_LOAD( "gyrussk.9",    0xe000, 0x2000, CRC(822bf27e) SHA1(36d5bea2392a7d3476dd797dc05602705cfa23ef) )
-
-	ROM_REGION( 0x10000, "audiocpu", 0 )
-	ROM_LOAD( "gyrussk.1a",   0x0000, 0x2000, CRC(f4ae1c17) SHA1(ae568c96a31d910afe30d2b7eeb9ed1ed07290e3) )
-	ROM_LOAD( "gyrussk.2a",   0x2000, 0x2000, CRC(ba498115) SHA1(9cd1f42898cc590f39ba7cb3c975b0b3d3062eba) )
-	/* the diagnostics ROM would go here */
-
-	ROM_REGION( 0x1000, "audio2", 0 )   /* 8039 */
-	ROM_LOAD( "gyrussk.3a",   0x0000, 0x1000, CRC(3f9b5dea) SHA1(6e807da02c2885b18e8cc2199f12f6be9040bf75) )
-
-	ROM_REGION( 0x8000, "gfx1", 0 )
-	ROM_LOAD( "gyrussk.6",    0x0000, 0x2000, CRC(c949db10) SHA1(fcb8bcbd2bdd751fecb322a33c8a92fb6f07a7ab) )
-	ROM_LOAD( "gyrussk.5",    0x2000, 0x2000, CRC(4f22411a) SHA1(763bcd039f8c1838a0d7da7d4dadc14a26e25596) )
-	ROM_LOAD( "gyrussk.8",    0x4000, 0x2000, CRC(47cd1fbc) SHA1(8203c4ff0b1cd7b4dbc708e300bfeac1e7366e09) )
-	ROM_LOAD( "gyrussk.7",    0x6000, 0x2000, CRC(8e8d388c) SHA1(8f2928d71c02aba977d67575d6e34d69bda2b9d4) )
-
-	ROM_REGION( 0x2000, "gfx2", 0 )
-	ROM_LOAD( "gyrussk.4",    0x0000, 0x2000, CRC(27d8329b) SHA1(564ff945465a23d93a93137ad277298770dfa06a) )
-=======
 	ROM_REGION( 0x8000, "maincpu", 0 )
 	ROM_LOAD( "gya-1.11j",    0x0000, 0x2000, CRC(85f8b7c2) SHA1(5dde696b53efedee671d500feae1d314e95b1c96) )
 	ROM_LOAD( "gya-2.12j",    0x2000, 0x2000, CRC(1e1a970f) SHA1(5a2e391489608f7571bbb4f85549a79795e2177e) )
@@ -740,7 +637,6 @@ ROM_START( gyrussce )
 
 	ROM_REGION( 0x2000, "gfx2", 0 )
 	ROM_LOAD( "gy-6.1g",    0x0000, 0x2000, CRC(27d8329b) SHA1(564ff945465a23d93a93137ad277298770dfa06a) )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x0220, "proms", 0 )
 	ROM_LOAD( "gyrussk.pr3",  0x0000, 0x0020, CRC(98782db3) SHA1(b891e43b25187faca8002919ccb44d744daa3594) )    /* palette */
@@ -749,33 +645,6 @@ ROM_START( gyrussce )
 ROM_END
 
 ROM_START( gyrussb ) /* PCB has stickers stating "TAITO (NEW ZEALAND) LTD" */
-<<<<<<< HEAD
-	ROM_REGION( 0x10000, "maincpu", 0 )
-	ROM_LOAD( "1.bin",        0x0000, 0x2000, CRC(6bc21c10) SHA1(9d44f766398b9994f90edb2ffb272b4f22564854) ) /* Labeled as "1", minor code patch / redirection */
-	ROM_LOAD( "gyrussk.2",    0x2000, 0x2000, CRC(a4ec03e4) SHA1(08c33ad7fcc2ad5e5787a1050284e3f8164f4618) ) /* Labeled as "2" */
-	ROM_LOAD( "gyrussk.3",    0x4000, 0x2000, CRC(27454a98) SHA1(030c7df225652ee20d5ef64d005eb011dc89a27d) ) /* Labeled as "3" */
-	/* the diagnostics ROM would go here */
-
-	ROM_REGION( 0x10000, "sub", 0 )
-	ROM_LOAD( "gyrussk.9",    0xe000, 0x2000, CRC(822bf27e) SHA1(36d5bea2392a7d3476dd797dc05602705cfa23ef) ) /* Labeled as "9" */
-
-	ROM_REGION( 0x10000, "audiocpu", 0 )
-	ROM_LOAD( "gyrussk.1a",   0x0000, 0x2000, CRC(f4ae1c17) SHA1(ae568c96a31d910afe30d2b7eeb9ed1ed07290e3) ) /* Labeled as "11" */
-	ROM_LOAD( "gyrussk.2a",   0x2000, 0x2000, CRC(ba498115) SHA1(9cd1f42898cc590f39ba7cb3c975b0b3d3062eba) ) /* Labeled as "12" */
-	/* the diagnostics ROM would go here */
-
-	ROM_REGION( 0x1000, "audio2", 0 )   /* 8039 */
-	ROM_LOAD( "gyrussk.3a",   0x0000, 0x1000, CRC(3f9b5dea) SHA1(6e807da02c2885b18e8cc2199f12f6be9040bf75) ) /* Labeled as "13" */
-
-	ROM_REGION( 0x8000, "gfx1", 0 )
-	ROM_LOAD( "gyrussk.6",    0x0000, 0x2000, CRC(c949db10) SHA1(fcb8bcbd2bdd751fecb322a33c8a92fb6f07a7ab) ) /* Labeled as "6" */
-	ROM_LOAD( "gyrussk.5",    0x2000, 0x2000, CRC(4f22411a) SHA1(763bcd039f8c1838a0d7da7d4dadc14a26e25596) ) /* Labeled as "5" */
-	ROM_LOAD( "gyrussk.8",    0x4000, 0x2000, CRC(47cd1fbc) SHA1(8203c4ff0b1cd7b4dbc708e300bfeac1e7366e09) ) /* Labeled as "8" */
-	ROM_LOAD( "gyrussk.7",    0x6000, 0x2000, CRC(8e8d388c) SHA1(8f2928d71c02aba977d67575d6e34d69bda2b9d4) ) /* Labeled as "7" */
-
-	ROM_REGION( 0x2000, "gfx2", 0 )
-	ROM_LOAD( "gyrussk.4",    0x0000, 0x2000, CRC(27d8329b) SHA1(564ff945465a23d93a93137ad277298770dfa06a) ) /* Labeled as "4" */
-=======
 	ROM_REGION( 0x8000, "maincpu", 0 )
 	ROM_LOAD( "1.bin", 0x0000, 0x2000, CRC(6bc21c10) SHA1(9d44f766398b9994f90edb2ffb272b4f22564854) ) // minor code patch / redirection
 	ROM_LOAD( "2.bin", 0x2000, 0x2000, CRC(a4ec03e4) SHA1(08c33ad7fcc2ad5e5787a1050284e3f8164f4618) )
@@ -801,7 +670,6 @@ ROM_START( gyrussb ) /* PCB has stickers stating "TAITO (NEW ZEALAND) LTD" */
 
 	ROM_REGION( 0x2000, "gfx2", 0 )
 	ROM_LOAD( "4.bin", 0x0000, 0x2000, CRC(27d8329b) SHA1(564ff945465a23d93a93137ad277298770dfa06a) )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x0220, "proms", 0 )
 	ROM_LOAD( "gyrussk.pr3",  0x0000, 0x0020, CRC(98782db3) SHA1(b891e43b25187faca8002919ccb44d744daa3594) )    /* palette */
@@ -810,34 +678,19 @@ ROM_START( gyrussb ) /* PCB has stickers stating "TAITO (NEW ZEALAND) LTD" */
 ROM_END
 
 ROM_START( venus )
-<<<<<<< HEAD
-	ROM_REGION( 0x10000, "maincpu", 0 )
-	ROM_LOAD( "r1",           0x0000, 0x2000, CRC(d030abb1) SHA1(14a70e15f5df9ef957779771d8915203d3828532) )
-	ROM_LOAD( "r2",           0x2000, 0x2000, CRC(dbf65d4d) SHA1(a0ad0dc3420442f06691bda2115fadd961ce86a7) )
-	ROM_LOAD( "r3",           0x4000, 0x2000, CRC(db246fcd) SHA1(c0228b35591c9e1c778370a2abd3739c441f14aa) )
-	/* the diagnostics ROM would go here */
-=======
 	ROM_REGION( 0x8000, "maincpu", 0 )
 	ROM_LOAD( "r1",           0x0000, 0x2000, CRC(d030abb1) SHA1(14a70e15f5df9ef957779771d8915203d3828532) )
 	ROM_LOAD( "r2",           0x2000, 0x2000, CRC(dbf65d4d) SHA1(a0ad0dc3420442f06691bda2115fadd961ce86a7) )
 	ROM_LOAD( "r3",           0x4000, 0x2000, CRC(db246fcd) SHA1(c0228b35591c9e1c778370a2abd3739c441f14aa) )
 	// 6000-7fff: Empty socket, space for diagnostics ROM
->>>>>>> upstream/master
 
 	ROM_REGION( 0x10000, "sub", 0 )
 	ROM_LOAD( "gyrussk.9",    0xe000, 0x2000, CRC(822bf27e) SHA1(36d5bea2392a7d3476dd797dc05602705cfa23ef) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x10000, "audiocpu", 0 )
-	ROM_LOAD( "gyrussk.1a",   0x0000, 0x2000, CRC(f4ae1c17) SHA1(ae568c96a31d910afe30d2b7eeb9ed1ed07290e3) )
-	ROM_LOAD( "gyrussk.2a",   0x2000, 0x2000, CRC(ba498115) SHA1(9cd1f42898cc590f39ba7cb3c975b0b3d3062eba) )
-	/* the diagnostics ROM would go here */
-=======
 	ROM_REGION( 0x6000, "audiocpu", 0 )
 	ROM_LOAD( "gyrussk.1a",   0x0000, 0x2000, CRC(f4ae1c17) SHA1(ae568c96a31d910afe30d2b7eeb9ed1ed07290e3) )
 	ROM_LOAD( "gyrussk.2a",   0x2000, 0x2000, CRC(ba498115) SHA1(9cd1f42898cc590f39ba7cb3c975b0b3d3062eba) )
 	// 4000-5fff: Empty socket, not populated
->>>>>>> upstream/master
 
 	ROM_REGION( 0x1000, "audio2", 0 )   /* 8039 */
 	ROM_LOAD( "gyrussk.3a",   0x0000, 0x1000, CRC(3f9b5dea) SHA1(6e807da02c2885b18e8cc2199f12f6be9040bf75) )
@@ -858,19 +711,7 @@ ROM_START( venus )
 ROM_END
 
 
-<<<<<<< HEAD
-DRIVER_INIT_MEMBER(gyruss_state,gyruss)
-{
-}
-
-
-GAME( 1983, gyruss,   0,        gyruss,   gyruss, gyruss_state,   gyruss, ROT90, "Konami", "Gyruss", MACHINE_SUPPORTS_SAVE )
-GAME( 1983, gyrussce, gyruss,   gyruss,   gyrussce, gyruss_state, gyruss, ROT90, "Konami (Centuri license)", "Gyruss (Centuri)", MACHINE_SUPPORTS_SAVE )
-GAME( 1983, gyrussb,  gyruss,   gyruss,   gyruss, gyruss_state,   gyruss, ROT90, "bootleg?", "Gyruss (bootleg?)", MACHINE_SUPPORTS_SAVE ) /* Supposed Taito NZ license, but (c) Konami */
-GAME( 1983, venus,    gyruss,   gyruss,   gyruss, gyruss_state,   gyruss, ROT90, "bootleg", "Venus (bootleg of Gyruss)", MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1983, gyruss,   0,        gyruss,   gyruss,   gyruss_state, 0, ROT90, "Konami", "Gyruss", MACHINE_SUPPORTS_SAVE )
 GAME( 1983, gyrussce, gyruss,   gyruss,   gyrussce, gyruss_state, 0, ROT90, "Konami (Centuri license)", "Gyruss (Centuri)", MACHINE_SUPPORTS_SAVE )
 GAME( 1983, gyrussb,  gyruss,   gyruss,   gyruss,   gyruss_state, 0, ROT90, "bootleg?", "Gyruss (bootleg?)", MACHINE_SUPPORTS_SAVE ) /* Supposed Taito NZ license, but (c) Konami */
 GAME( 1983, venus,    gyruss,   gyruss,   gyruss,   gyruss_state, 0, ROT90, "bootleg", "Venus (bootleg of Gyruss)", MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

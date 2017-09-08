@@ -29,11 +29,7 @@ const attotime attotime::never(ATTOTIME_MAX_SECONDS, 0);
 //  constant
 //-------------------------------------------------
 
-<<<<<<< HEAD
-attotime &attotime::operator*=(UINT32 factor)
-=======
 attotime &attotime::operator*=(u32 factor)
->>>>>>> upstream/master
 {
 	// if one of the items is attotime::never, return attotime::never
 	if (m_seconds >= ATTOTIME_MAX_SECONDS)
@@ -44,30 +40,17 @@ attotime &attotime::operator*=(u32 factor)
 		return *this = zero;
 
 	// split attoseconds into upper and lower halves which fit into 32 bits
-<<<<<<< HEAD
-	UINT32 attolo;
-	UINT32 attohi = divu_64x32_rem(m_attoseconds, ATTOSECONDS_PER_SECOND_SQRT, &attolo);
-
-	// scale the lower half, then split into high/low parts
-	UINT64 temp = mulu_32x32(attolo, factor);
-	UINT32 reslo;
-=======
 	u32 attolo;
 	u32 attohi = divu_64x32_rem(m_attoseconds, ATTOSECONDS_PER_SECOND_SQRT, &attolo);
 
 	// scale the lower half, then split into high/low parts
 	u64 temp = mulu_32x32(attolo, factor);
 	u32 reslo;
->>>>>>> upstream/master
 	temp = divu_64x32_rem(temp, ATTOSECONDS_PER_SECOND_SQRT, &reslo);
 
 	// scale the upper half, then split into high/low parts
 	temp += mulu_32x32(attohi, factor);
-<<<<<<< HEAD
-	UINT32 reshi;
-=======
 	u32 reshi;
->>>>>>> upstream/master
 	temp = divu_64x32_rem(temp, ATTOSECONDS_PER_SECOND_SQRT, &reshi);
 
 	// scale the seconds
@@ -86,11 +69,7 @@ attotime &attotime::operator*=(u32 factor)
 //  operator/= - divide an attotime by a constant
 //-------------------------------------------------
 
-<<<<<<< HEAD
-attotime &attotime::operator/=(UINT32 factor)
-=======
 attotime &attotime::operator/=(u32 factor)
->>>>>>> upstream/master
 {
 	// if one of the items is attotime::never, return attotime::never
 	if (m_seconds >= ATTOTIME_MAX_SECONDS)
@@ -101,22 +80,6 @@ attotime &attotime::operator/=(u32 factor)
 		return *this;
 
 	// split attoseconds into upper and lower halves which fit into 32 bits
-<<<<<<< HEAD
-	UINT32 attolo;
-	UINT32 attohi = divu_64x32_rem(m_attoseconds, ATTOSECONDS_PER_SECOND_SQRT, &attolo);
-
-	// divide the seconds and get the remainder
-	UINT32 remainder;
-	m_seconds = divu_64x32_rem(m_seconds, factor, &remainder);
-
-	// combine the upper half of attoseconds with the remainder and divide that
-	UINT64 temp = (INT64)attohi + mulu_32x32(remainder, ATTOSECONDS_PER_SECOND_SQRT);
-	UINT32 reshi = divu_64x32_rem(temp, factor, &remainder);
-
-	// combine the lower half of attoseconds with the remainder and divide that
-	temp = attolo + mulu_32x32(remainder, ATTOSECONDS_PER_SECOND_SQRT);
-	UINT32 reslo = divu_64x32_rem(temp, factor, &remainder);
-=======
 	u32 attolo;
 	u32 attohi = divu_64x32_rem(m_attoseconds, ATTOSECONDS_PER_SECOND_SQRT, &attolo);
 
@@ -131,7 +94,6 @@ attotime &attotime::operator/=(u32 factor)
 	// combine the lower half of attoseconds with the remainder and divide that
 	temp = attolo + mulu_32x32(remainder, ATTOSECONDS_PER_SECOND_SQRT);
 	u32 reslo = divu_64x32_rem(temp, factor, &remainder);
->>>>>>> upstream/master
 
 	// round based on the remainder
 	m_attoseconds = (attoseconds_t)reslo + mulu_32x32(reshi, ATTOSECONDS_PER_SECOND_SQRT);
@@ -167,11 +129,7 @@ const char *attotime::as_string(int precision) const
 	// case 2: we want 9 or fewer digits of precision
 	else if (precision <= 9)
 	{
-<<<<<<< HEAD
-		UINT32 upper = m_attoseconds / ATTOSECONDS_PER_SECOND_SQRT;
-=======
 		u32 upper = m_attoseconds / ATTOSECONDS_PER_SECOND_SQRT;
->>>>>>> upstream/master
 		int temp = precision;
 		while (temp < 9)
 		{
@@ -184,13 +142,8 @@ const char *attotime::as_string(int precision) const
 	// case 3: more than 9 digits of precision
 	else
 	{
-<<<<<<< HEAD
-		UINT32 lower;
-		UINT32 upper = divu_64x32_rem(m_attoseconds, ATTOSECONDS_PER_SECOND_SQRT, &lower);
-=======
 		u32 lower;
 		u32 upper = divu_64x32_rem(m_attoseconds, ATTOSECONDS_PER_SECOND_SQRT, &lower);
->>>>>>> upstream/master
 		int temp = precision;
 		while (temp < 18)
 		{

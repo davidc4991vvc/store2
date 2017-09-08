@@ -1,19 +1,11 @@
 // DummyOutStream.h
 
-<<<<<<< HEAD
-#ifndef __DUMMYOUTSTREAM_H
-#define __DUMMYOUTSTREAM_H
-
-#include "../../IStream.h"
-#include "Common/MyCom.h"
-=======
 #ifndef __DUMMY_OUT_STREAM_H
 #define __DUMMY_OUT_STREAM_H
 
 #include "../../../Common/MyCom.h"
 
 #include "../../IStream.h"
->>>>>>> upstream/master
 
 class CDummyOutStream:
   public ISequentialOutStream,

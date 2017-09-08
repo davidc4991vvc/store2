@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-// license:???
-=======
 // license:BSD-3-Clause
->>>>>>> upstream/master
 // copyright-holders:Phil Stroffolino, Stefan Jokisch
 /***************************************************************************
 
@@ -11,17 +7,11 @@ Atari Ultra Tank driver
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/m6502/m6502.h"
-#include "includes/ultratnk.h"
-#include "audio/sprint4.h"
-=======
 #include "includes/ultratnk.h"
 #include "audio/sprint4.h"
 #include "cpu/m6502/m6502.h"
 #include "machine/74259.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 #define MASTER_CLOCK    XTAL_12_096MHz
 
@@ -34,21 +24,13 @@ Atari Ultra Tank driver
 
 CUSTOM_INPUT_MEMBER(ultratnk_state::get_collision)
 {
-<<<<<<< HEAD
-	return m_collision[(FPTR) param];
-=======
 	return m_collision[(uintptr_t) param];
->>>>>>> upstream/master
 }
 
 
 CUSTOM_INPUT_MEMBER(ultratnk_state::get_joystick)
 {
-<<<<<<< HEAD
-	UINT8 joy = ioport((const char *)param)->read() & 3;
-=======
 	uint8_t joy = ioport((const char *)param)->read() & 3;
->>>>>>> upstream/master
 
 	if (joy == 1)
 	{
@@ -71,11 +53,7 @@ void ultratnk_state::device_timer(emu_timer &timer, device_timer_id id, int para
 		nmi_callback(ptr, param);
 		break;
 	default:
-<<<<<<< HEAD
-		assert_always(FALSE, "Unknown id in ultratnk_state::device_timer");
-=======
 		assert_always(false, "Unknown id in ultratnk_state::device_timer");
->>>>>>> upstream/master
 	}
 }
 
@@ -89,18 +67,11 @@ TIMER_CALLBACK_MEMBER(ultratnk_state::nmi_callback)
 
 	/* NMI and watchdog are disabled during service mode */
 
-<<<<<<< HEAD
-	machine().watchdog_enable(ioport("IN0")->read() & 0x40);
-=======
 	m_watchdog->watchdog_enable(ioport("IN0")->read() & 0x40);
->>>>>>> upstream/master
 
 	if (ioport("IN0")->read() & 0x40)
 		m_maincpu->set_input_line(INPUT_LINE_NMI, PULSE_LINE);
 
-<<<<<<< HEAD
-	timer_set(m_screen->time_until_pos(scanline), TIMER_NMI, scanline);
-=======
 	m_nmi_timer->adjust(m_screen->time_until_pos(scanline), scanline);
 }
 
@@ -111,34 +82,11 @@ void ultratnk_state::machine_start()
 
 	save_item(NAME(m_da_latch));
 	save_item(NAME(m_collision));
->>>>>>> upstream/master
 }
 
 
 void ultratnk_state::machine_reset()
 {
-<<<<<<< HEAD
-	timer_set(m_screen->time_until_pos(32), TIMER_NMI, 32);
-}
-
-
-READ8_MEMBER(ultratnk_state::ultratnk_wram_r)
-{
-	UINT8 *videoram = m_videoram;
-	return videoram[0x380 + offset];
-}
-
-
-READ8_MEMBER(ultratnk_state::ultratnk_analog_r)
-{
-	return (ioport("ANALOG")->read() << (~offset & 7)) & 0x80;
-}
-READ8_MEMBER(ultratnk_state::ultratnk_coin_r)
-{
-	return (ioport("COIN")->read() << (~offset & 7)) & 0x80;
-}
-READ8_MEMBER(ultratnk_state::ultratnk_collision_r)
-=======
 	m_nmi_timer->adjust(m_screen->time_until_pos(32), 32);
 }
 
@@ -158,32 +106,17 @@ READ8_MEMBER(ultratnk_state::coin_r)
 	return (ioport("COIN")->read() << (~offset & 7)) & 0x80;
 }
 READ8_MEMBER(ultratnk_state::collision_r)
->>>>>>> upstream/master
 {
 	return (ioport("COLLISION")->read() << (~offset & 7)) & 0x80;
 }
 
 
-<<<<<<< HEAD
-READ8_MEMBER(ultratnk_state::ultratnk_options_r)
-=======
 READ8_MEMBER(ultratnk_state::options_r)
->>>>>>> upstream/master
 {
 	return (ioport("DIP")->read() >> (2 * (offset & 3))) & 3;
 }
 
 
-<<<<<<< HEAD
-WRITE8_MEMBER(ultratnk_state::ultratnk_wram_w)
-{
-	UINT8 *videoram = m_videoram;
-	videoram[0x380 + offset] = data;
-}
-
-
-WRITE8_MEMBER(ultratnk_state::ultratnk_collision_reset_w)
-=======
 WRITE8_MEMBER(ultratnk_state::wram_w)
 {
 	m_videoram[0x380 + offset] = data;
@@ -191,53 +124,17 @@ WRITE8_MEMBER(ultratnk_state::wram_w)
 
 
 WRITE8_MEMBER(ultratnk_state::collision_reset_w)
->>>>>>> upstream/master
 {
 	m_collision[(offset >> 1) & 3] = 0;
 }
 
 
-<<<<<<< HEAD
-WRITE8_MEMBER(ultratnk_state::ultratnk_da_latch_w)
-=======
 WRITE8_MEMBER(ultratnk_state::da_latch_w)
->>>>>>> upstream/master
 {
 	m_da_latch = data & 15;
 }
 
 
-<<<<<<< HEAD
-WRITE8_MEMBER(ultratnk_state::ultratnk_led_1_w)
-{
-	set_led_status(machine(), 0, offset & 1); /* left player start */
-}
-WRITE8_MEMBER(ultratnk_state::ultratnk_led_2_w)
-{
-	set_led_status(machine(), 1, offset & 1); /* right player start */
-}
-
-
-WRITE8_MEMBER(ultratnk_state::ultratnk_lockout_w)
-{
-	coin_lockout_global_w(machine(), ~offset & 1);
-}
-
-
-WRITE8_MEMBER(ultratnk_state::ultratnk_fire_1_w)
-{
-	m_discrete->write(space, ULTRATNK_FIRE_EN_1, offset & 1);
-}
-WRITE8_MEMBER(ultratnk_state::ultratnk_fire_2_w)
-{
-	m_discrete->write(space, ULTRATNK_FIRE_EN_2, offset & 1);
-}
-WRITE8_MEMBER(ultratnk_state::ultratnk_attract_w)
-{
-	m_discrete->write(space, ULTRATNK_ATTRACT_EN, data & 1);
-}
-WRITE8_MEMBER(ultratnk_state::ultratnk_explosion_w)
-=======
 WRITE_LINE_MEMBER(ultratnk_state::led_1_w)
 {
 	output().set_led_value(0, state); /* left player start */
@@ -259,7 +156,6 @@ WRITE8_MEMBER(ultratnk_state::attract_w)
 	m_discrete->write(space, ULTRATNK_ATTRACT_EN, data & 1);
 }
 WRITE8_MEMBER(ultratnk_state::explosion_w)
->>>>>>> upstream/master
 {
 	m_discrete->write(space, ULTRATNK_EXPLOSION_DATA, data & 15);
 }
@@ -270,34 +166,12 @@ static ADDRESS_MAP_START( ultratnk_cpu_map, AS_PROGRAM, 8, ultratnk_state )
 	ADDRESS_MAP_GLOBAL_MASK(0x3fff)
 
 	AM_RANGE(0x0000, 0x007f) AM_MIRROR(0x700) AM_RAM
-<<<<<<< HEAD
-	AM_RANGE(0x0080, 0x00ff) AM_MIRROR(0x700) AM_READWRITE(ultratnk_wram_r, ultratnk_wram_w)
-	AM_RANGE(0x0800, 0x0bff) AM_MIRROR(0x400) AM_RAM_WRITE(ultratnk_video_ram_w) AM_SHARE("videoram")
-=======
 	AM_RANGE(0x0080, 0x00ff) AM_MIRROR(0x700) AM_READWRITE(wram_r, wram_w)
 	AM_RANGE(0x0800, 0x0bff) AM_MIRROR(0x400) AM_RAM_WRITE(video_ram_w) AM_SHARE("videoram")
->>>>>>> upstream/master
 
 	AM_RANGE(0x1000, 0x17ff) AM_READ_PORT("IN0")
 	AM_RANGE(0x1800, 0x1fff) AM_READ_PORT("IN1")
 
-<<<<<<< HEAD
-	AM_RANGE(0x2000, 0x2007) AM_MIRROR(0x718) AM_READ(ultratnk_analog_r)
-	AM_RANGE(0x2020, 0x2027) AM_MIRROR(0x718) AM_READ(ultratnk_coin_r)
-	AM_RANGE(0x2040, 0x2047) AM_MIRROR(0x718) AM_READ(ultratnk_collision_r)
-	AM_RANGE(0x2060, 0x2063) AM_MIRROR(0x71c) AM_READ(ultratnk_options_r)
-
-	AM_RANGE(0x2000, 0x2000) AM_MIRROR(0x71f) AM_WRITE(ultratnk_attract_w)
-	AM_RANGE(0x2020, 0x2027) AM_MIRROR(0x718) AM_WRITE(ultratnk_collision_reset_w)
-	AM_RANGE(0x2040, 0x2041) AM_MIRROR(0x718) AM_WRITE(ultratnk_da_latch_w)
-	AM_RANGE(0x2042, 0x2043) AM_MIRROR(0x718) AM_WRITE(ultratnk_explosion_w)
-	AM_RANGE(0x2044, 0x2045) AM_MIRROR(0x718) AM_WRITE(watchdog_reset_w)
-	AM_RANGE(0x2066, 0x2067) AM_MIRROR(0x710) AM_WRITE(ultratnk_lockout_w)
-	AM_RANGE(0x2068, 0x2069) AM_MIRROR(0x710) AM_WRITE(ultratnk_led_1_w)
-	AM_RANGE(0x206a, 0x206b) AM_MIRROR(0x710) AM_WRITE(ultratnk_led_2_w)
-	AM_RANGE(0x206c, 0x206d) AM_MIRROR(0x710) AM_WRITE(ultratnk_fire_2_w)
-	AM_RANGE(0x206e, 0x206f) AM_MIRROR(0x710) AM_WRITE(ultratnk_fire_1_w)
-=======
 	AM_RANGE(0x2000, 0x2007) AM_MIRROR(0x718) AM_READ(analog_r)
 	AM_RANGE(0x2020, 0x2027) AM_MIRROR(0x718) AM_READ(coin_r)
 	AM_RANGE(0x2040, 0x2047) AM_MIRROR(0x718) AM_READ(collision_r)
@@ -309,7 +183,6 @@ static ADDRESS_MAP_START( ultratnk_cpu_map, AS_PROGRAM, 8, ultratnk_state )
 	AM_RANGE(0x2042, 0x2043) AM_MIRROR(0x718) AM_WRITE(explosion_w)
 	AM_RANGE(0x2044, 0x2045) AM_MIRROR(0x718) AM_DEVWRITE("watchdog", watchdog_timer_device, reset_w)
 	AM_RANGE(0x2060, 0x206f) AM_MIRROR(0x710) AM_DEVWRITE("latch", f9334_device, write_a0)
->>>>>>> upstream/master
 
 	AM_RANGE(0x2800, 0x2fff) AM_NOP /* diagnostic ROM */
 	AM_RANGE(0x3000, 0x3fff) AM_ROM
@@ -425,19 +298,12 @@ static GFXDECODE_START( ultratnk )
 GFXDECODE_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( ultratnk, ultratnk_state )
-=======
 static MACHINE_CONFIG_START( ultratnk )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6502, PIXEL_CLOCK / 8)
 	MCFG_CPU_PROGRAM_MAP(ultratnk_cpu_map)
 
-<<<<<<< HEAD
-	MCFG_WATCHDOG_VBLANK_INIT(8)
-=======
 	MCFG_DEVICE_ADD("latch", F9334, 0) // E11
 	MCFG_ADDRESSABLE_LATCH_Q3_OUT_CB(WRITELINE(ultratnk_state, lockout_w))
 	MCFG_ADDRESSABLE_LATCH_Q4_OUT_CB(WRITELINE(ultratnk_state, led_1_w))
@@ -447,18 +313,12 @@ static MACHINE_CONFIG_START( ultratnk )
 
 	MCFG_WATCHDOG_ADD("watchdog")
 	MCFG_WATCHDOG_VBLANK_INIT("screen", 8)
->>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_RAW_PARAMS(PIXEL_CLOCK, HTOTAL, 0, 256, VTOTAL, 0, 224)
-<<<<<<< HEAD
-	MCFG_SCREEN_UPDATE_DRIVER(ultratnk_state, screen_update_ultratnk)
-	MCFG_SCREEN_VBLANK_DRIVER(ultratnk_state, screen_eof_ultratnk)
-=======
 	MCFG_SCREEN_UPDATE_DRIVER(ultratnk_state, screen_update)
 	MCFG_SCREEN_VBLANK_CALLBACK(WRITELINE(ultratnk_state, screen_vblank))
->>>>>>> upstream/master
 	MCFG_SCREEN_PALETTE("palette")
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", ultratnk)
@@ -501,8 +361,4 @@ ROM_START( ultratnk )
 ROM_END
 
 
-<<<<<<< HEAD
-GAME( 1978, ultratnk, 0, ultratnk, ultratnk, driver_device, 0, 0, "Atari (Kee Games)", "Ultra Tank", 0 )
-=======
 GAME( 1978, ultratnk, 0, ultratnk, ultratnk, ultratnk_state, 0, 0, "Atari (Kee Games)", "Ultra Tank", MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

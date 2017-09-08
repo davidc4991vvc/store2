@@ -25,11 +25,7 @@ static const char *reg_names[32] =
 };
 
 // determines if right rotate or I/O field length is to be used
-<<<<<<< HEAD
-INLINE bool is_rot(UINT16 opcode)
-=======
 static inline bool is_rot(uint16_t opcode)
->>>>>>> upstream/master
 {
 	if((opcode & 0x1000) || (opcode & 0x0010))
 		return false;
@@ -37,11 +33,7 @@ static inline bool is_rot(uint16_t opcode)
 		return true;
 }
 
-<<<<<<< HEAD
-INLINE bool is_src_rot(UINT16 opcode)
-=======
 static inline bool is_src_rot(uint16_t opcode)
->>>>>>> upstream/master
 {
 	if((opcode & 0x1000))
 		return false;
@@ -49,118 +41,17 @@ static inline bool is_src_rot(uint16_t opcode)
 		return true;
 }
 
-<<<<<<< HEAD
-CPU_DISASSEMBLE( n8x300 )
-{
-	char tmp[16];
-	unsigned startpc = pc;
-	UINT16 opcode = (oprom[pc - startpc] << 8) | oprom[pc+1 - startpc];
-	UINT8 inst = opcode >> 13;
-=======
 CPU_DISASSEMBLE(n8x300)
 {
 	unsigned startpc = pc;
 	uint16_t opcode = (oprom[pc - startpc] << 8) | oprom[pc+1 - startpc];
 	uint8_t inst = opcode >> 13;
->>>>>>> upstream/master
 	pc+=2;
 
 	// determine instruction
 	switch (inst)
 	{
 	case 0x00:
-<<<<<<< HEAD
-		sprintf(buffer,"MOVE ");
-		strcat(buffer,reg_names[SRC]);
-		if(is_rot(opcode))
-			sprintf(tmp,"(%i),",ROTLEN);
-		else
-			sprintf(tmp,",%i,",ROTLEN);
-		strcat(buffer,tmp);
-		strcat(buffer,reg_names[DST]);
-		break;
-	case 0x01:
-		sprintf(buffer,"ADD  ");
-		strcat(buffer,reg_names[SRC]);
-		if(is_rot(opcode))
-			sprintf(tmp,"(%i),",ROTLEN);
-		else
-			sprintf(tmp,",%i,",ROTLEN);
-		strcat(buffer,tmp);
-		strcat(buffer,reg_names[DST]);
-		break;
-	case 0x02:
-		sprintf(buffer,"AND  ");
-		strcat(buffer,reg_names[SRC]);
-		if(is_rot(opcode))
-			sprintf(tmp,"(%i),",ROTLEN);
-		else
-			sprintf(tmp,",%i,",ROTLEN);
-		strcat(buffer,tmp);
-		strcat(buffer,reg_names[DST]);
-		break;
-	case 0x03:
-		sprintf(buffer,"XOR  ");
-		strcat(buffer,reg_names[SRC]);
-		if(is_rot(opcode))
-			sprintf(tmp,"(%i),",ROTLEN);
-		else
-			sprintf(tmp,",%i,",ROTLEN);
-		strcat(buffer,tmp);
-		strcat(buffer,reg_names[DST]);
-		break;
-	case 0x04:
-		sprintf(buffer,"XEC  ");
-		strcat(buffer,reg_names[SRC]);
-		if(is_src_rot(opcode))
-		{
-			sprintf(tmp,",%02XH",IMM8);
-			strcat(buffer,tmp);
-		}
-		else
-		{
-			sprintf(tmp,",%i",ROTLEN);
-			strcat(buffer,tmp);
-			sprintf(tmp,",%02XH",IMM5);
-			strcat(buffer,tmp);
-		}
-		break;
-	case 0x05:
-		sprintf(buffer,"NZT  ");
-		strcat(buffer,reg_names[SRC]);
-		if(is_src_rot(opcode))
-		{
-			sprintf(tmp,",%02XH",IMM8);
-			strcat(buffer,tmp);
-		}
-		else
-		{
-			sprintf(tmp,",%i",ROTLEN);
-			strcat(buffer,tmp);
-			sprintf(tmp,",%02XH",IMM5);
-			strcat(buffer,tmp);
-		}
-		break;
-	case 0x06:
-		sprintf(buffer,"XMIT ");
-		if(is_src_rot(opcode))
-		{
-			sprintf(tmp,"%02XH,",IMM8);
-			strcat(buffer,tmp);
-			strcat(buffer,reg_names[SRC]);
-		}
-		else
-		{
-			sprintf(tmp,"%02XH,",IMM5);
-			strcat(buffer,tmp);
-			strcat(buffer,reg_names[SRC]);
-			sprintf(tmp,",%i",ROTLEN);
-			strcat(buffer,tmp);
-		}
-		break;
-	case 0x07:
-		sprintf(buffer,"JMP  %04XH",opcode & 0x1fff);
-=======
 		stream << "MOVE " << reg_names[SRC];
 		if(is_rot(opcode))
 			util::stream_format(stream, "(%i),", ROTLEN);
@@ -232,7 +123,6 @@ CPU_DISASSEMBLE(n8x300)
 		break;
 	case 0x07:
 		util::stream_format(stream, "JMP  %04XH", (opcode & 0x1fff) << 1);
->>>>>>> upstream/master
 		break;
 	}
 

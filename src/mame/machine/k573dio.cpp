@@ -65,11 +65,7 @@
 
 */
 
-<<<<<<< HEAD
-const device_type KONAMI_573_DIGITAL_IO_BOARD = &device_creator<k573dio_device>;
-=======
 DEFINE_DEVICE_TYPE(KONAMI_573_DIGITAL_IO_BOARD, k573dio_device, "k573_dio", "Konami 573 digital I/O board")
->>>>>>> upstream/master
 
 DEVICE_ADDRESS_MAP_START(amap, 16, k573dio_device)
 	AM_RANGE(0x00, 0x01) AM_READ(a00_r)
@@ -104,18 +100,8 @@ DEVICE_ADDRESS_MAP_START(amap, 16, k573dio_device)
 	AM_RANGE(0xfe, 0xff) AM_WRITE(output_2_w)
 ADDRESS_MAP_END
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_FRAGMENT( k573dio )
-	MCFG_MAS3507D_ADD( "mpeg" )
-	MCFG_DS2401_ADD( "digital_id" )
-MACHINE_CONFIG_END
-
-k573dio_device::k573dio_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, KONAMI_573_DIGITAL_IO_BOARD, "Konami 573 digital I/O board", tag, owner, clock, "k573dio", __FILE__),
-=======
 k573dio_device::k573dio_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, KONAMI_573_DIGITAL_IO_BOARD, tag, owner, clock),
->>>>>>> upstream/master
 	mas3507d(*this, "mpeg"),
 	digital_id(*this, "digital_id"),
 	output_cb(*this)
@@ -125,13 +111,8 @@ k573dio_device::k573dio_device(const machine_config &mconfig, const char *tag, d
 void k573dio_device::device_start()
 {
 	output_cb.resolve_safe();
-<<<<<<< HEAD
-	ram = auto_alloc_array( machine(), UINT16, 12 * 1024 * 1024 );
-	save_pointer( NAME(ram), 12 * 1024 * 1024 );
-=======
 	ram = std::make_unique<uint16_t[]>(12 * 1024 * 1024 );
 	save_pointer( NAME(ram.get()), 12 * 1024 * 1024 );
->>>>>>> upstream/master
 }
 
 void k573dio_device::device_reset()
@@ -145,26 +126,15 @@ ROM_START( k573dio )
 	ROM_LOAD( "digital-id.bin",   0x000000, 0x000008, CRC(2b977f4d) SHA1(2b108a56653f91cb3351718c45dfcf979bc35ef1) )
 ROM_END
 
-<<<<<<< HEAD
-const rom_entry *k573dio_device::device_rom_region() const
-=======
 const tiny_rom_entry *k573dio_device::device_rom_region() const
->>>>>>> upstream/master
 {
 	return ROM_NAME(k573dio);
 }
 
-<<<<<<< HEAD
-machine_config_constructor k573dio_device::device_mconfig_additions() const
-{
-	return MACHINE_CONFIG_NAME( k573dio );
-}
-=======
 MACHINE_CONFIG_MEMBER( k573dio_device::device_add_mconfig )
 	MCFG_MAS3507D_ADD( "mpeg" )
 	MCFG_DS2401_ADD( "digital_id" )
 MACHINE_CONFIG_END
->>>>>>> upstream/master
 
 void k573dio_device::device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr)
 {
@@ -264,11 +234,7 @@ WRITE16_MEMBER(k573dio_device::ram_write_adr_low_w)
 
 READ16_MEMBER(k573dio_device::ram_r)
 {
-<<<<<<< HEAD
-	UINT16 res = ram[ram_adr >> 1];
-=======
 	uint16_t res = ram[ram_adr >> 1];
->>>>>>> upstream/master
 	ram_adr += 2;
 	return res;
 }
@@ -367,11 +333,7 @@ WRITE16_MEMBER(k573dio_device::output_2_w)
 	output(2, data);
 }
 
-<<<<<<< HEAD
-void k573dio_device::output(int offset, UINT16 data)
-=======
 void k573dio_device::output(int offset, uint16_t data)
->>>>>>> upstream/master
 {
 	data = (data >> 12) & 0x0f;
 	static const int shift[] = { 0, 2, 3, 1 };

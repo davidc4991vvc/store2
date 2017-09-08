@@ -10,10 +10,7 @@
 
 #include "emu.h"
 #include "includes/leland.h"
-<<<<<<< HEAD
-=======
 #include "audio/leland.h"
->>>>>>> upstream/master
 
 
 /* constants */
@@ -39,17 +36,10 @@ TIMER_CALLBACK_MEMBER(leland_state::scanline_callback)
 
 	/* update the DACs */
 	if (!(m_dac_control & 0x01))
-<<<<<<< HEAD
-		m_dac0->write_unsigned8(m_video_ram[(m_last_scanline) * 256 + 160]);
-
-	if (!(m_dac_control & 0x02))
-		m_dac1->write_unsigned8(m_video_ram[(m_last_scanline) * 256 + 161]);
-=======
 		m_dac0->write(m_video_ram[(m_last_scanline) * 256 + 160]);
 
 	if (!(m_dac_control & 0x02))
 		m_dac1->write(m_video_ram[(m_last_scanline) * 256 + 161]);
->>>>>>> upstream/master
 
 	m_last_scanline = scanline;
 
@@ -69,17 +59,11 @@ TIMER_CALLBACK_MEMBER(leland_state::scanline_callback)
 VIDEO_START_MEMBER(leland_state,leland)
 {
 	/* allocate memory */
-<<<<<<< HEAD
-	m_video_ram = auto_alloc_array_clear(machine(), UINT8, VRAM_SIZE);
-=======
 	m_video_ram = make_unique_clear<uint8_t[]>(VRAM_SIZE);
->>>>>>> upstream/master
 
 	/* scanline timer */
 	m_scanline_timer = machine().scheduler().timer_alloc(timer_expired_delegate(FUNC(leland_state::scanline_callback),this));
 	m_scanline_timer->adjust(m_screen->time_until_pos(0));
-<<<<<<< HEAD
-=======
 
 	save_item(NAME(m_gfx_control));
 	save_pointer(NAME(m_video_ram.get()), VRAM_SIZE);
@@ -92,18 +76,11 @@ VIDEO_START_MEMBER(leland_state,leland)
 		save_item(NAME(m_vram_state[i].m_addr), i);
 		save_item(NAME(m_vram_state[i].m_latch), i);
 	}
->>>>>>> upstream/master
 }
 
 VIDEO_START_MEMBER(leland_state,ataxx)
 {
 	/* first do the standard stuff */
-<<<<<<< HEAD
-	m_video_ram = auto_alloc_array_clear(machine(), UINT8, VRAM_SIZE);
-
-	/* allocate memory */
-	m_ataxx_qram = auto_alloc_array_clear(machine(), UINT8, QRAM_SIZE);
-=======
 	m_video_ram = make_unique_clear<uint8_t[]>(VRAM_SIZE);
 
 	/* allocate memory */
@@ -118,7 +95,6 @@ VIDEO_START_MEMBER(leland_state,ataxx)
 		save_item(NAME(m_vram_state[i].m_addr), i);
 		save_item(NAME(m_vram_state[i].m_latch), i);
 	}
->>>>>>> upstream/master
 }
 
 
@@ -244,11 +220,7 @@ int leland_state::leland_vram_port_r(address_space &space, int offset, int num)
 
 void leland_state::leland_vram_port_w(address_space &space, int offset, int data, int num)
 {
-<<<<<<< HEAD
-	UINT8 *video_ram = m_video_ram;
-=======
 	uint8_t *video_ram = m_video_ram.get();
->>>>>>> upstream/master
 	struct vram_state_data *state = m_vram_state + num;
 	int addr = state->m_addr;
 	int inc = (offset >> 2) & 2;
@@ -432,17 +404,10 @@ READ8_MEMBER(leland_state::ataxx_svram_port_r)
  *
  *************************************/
 
-<<<<<<< HEAD
-UINT32 leland_state::screen_update_leland(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-{
-	const UINT8 *bg_prom = memregion("user1")->base();
-	const UINT8 *bg_gfx = memregion("gfx1")->base();
-=======
 uint32_t leland_state::screen_update_leland(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
 	const uint8_t *bg_prom = memregion("user1")->base();
 	const uint8_t *bg_gfx = memregion("gfx1")->base();
->>>>>>> upstream/master
 	offs_t bg_gfx_bank_page_size = memregion("gfx1")->bytes() / 3;
 	offs_t char_bank = (((m_gfxbank >> 4) & 0x03) * 0x2000) & (bg_gfx_bank_page_size - 1);
 	offs_t prom_bank = ((m_gfxbank >> 3) & 0x01) * 0x2000;
@@ -450,29 +415,17 @@ uint32_t leland_state::screen_update_leland(screen_device &screen, bitmap_ind16 
 	/* for each scanline in the visible region */
 	for (int y = cliprect.min_y; y <= cliprect.max_y; y++)
 	{
-<<<<<<< HEAD
-		UINT8 fg_data = 0;
-
-		UINT16 *dst = &bitmap.pix16(y);
-		UINT8 *fg_src = &m_video_ram[y << 8];
-=======
 		uint8_t fg_data = 0;
 
 		uint16_t *dst = &bitmap.pix16(y);
 		uint8_t *fg_src = &m_video_ram[y << 8];
->>>>>>> upstream/master
 
 		/* for each pixel on the scanline */
 		for (int x = 0; x < VIDEO_WIDTH; x++)
 		{
 			/* compute the effective scrolled pixel coordinates */
-<<<<<<< HEAD
-			UINT16 sx = (x + m_xscroll) & 0x07ff;
-			UINT16 sy = (y + m_yscroll) & 0x07ff;
-=======
 			uint16_t sx = (x + m_xscroll) & 0x07ff;
 			uint16_t sy = (y + m_yscroll) & 0x07ff;
->>>>>>> upstream/master
 
 			/* get the byte address this background pixel comes from */
 			offs_t bg_prom_offs = (sx >> 3) |
@@ -515,44 +468,26 @@ uint32_t leland_state::screen_update_leland(screen_device &screen, bitmap_ind16 
  *
  *************************************/
 
-<<<<<<< HEAD
-UINT32 leland_state::screen_update_ataxx(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-{
-	const UINT8 *bg_gfx = memregion("gfx1")->base();
-=======
 uint32_t leland_state::screen_update_ataxx(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
 	const uint8_t *bg_gfx = memregion("gfx1")->base();
->>>>>>> upstream/master
 	offs_t bg_gfx_bank_page_size = memregion("gfx1")->bytes() / 6;
 	offs_t bg_gfx_offs_mask = bg_gfx_bank_page_size - 1;
 
 	/* for each scanline in the visible region */
 	for (int y = cliprect.min_y; y <= cliprect.max_y; y++)
 	{
-<<<<<<< HEAD
-		UINT8 fg_data = 0;
-
-		UINT16 *dst = &bitmap.pix16(y);
-		UINT8 *fg_src = &m_video_ram[y << 8];
-=======
 		uint8_t fg_data = 0;
 
 		uint16_t *dst = &bitmap.pix16(y);
 		uint8_t *fg_src = &m_video_ram[y << 8];
->>>>>>> upstream/master
 
 		/* for each pixel on the scanline */
 		for (int x = 0; x < VIDEO_WIDTH; x++)
 		{
 			/* compute the effective scrolled pixel coordinates */
-<<<<<<< HEAD
-			UINT16 sx = (x + m_xscroll) & 0x07ff;
-			UINT16 sy = (y + m_yscroll) & 0x07ff;
-=======
 			uint16_t sx = (x + m_xscroll) & 0x07ff;
 			uint16_t sy = (y + m_yscroll) & 0x07ff;
->>>>>>> upstream/master
 
 			/* get the byte address this background pixel comes from */
 			offs_t qram_offs = (sx >> 3) |
@@ -595,11 +530,7 @@ uint32_t leland_state::screen_update_ataxx(screen_device &screen, bitmap_ind16 &
  *
  *************************************/
 
-<<<<<<< HEAD
-MACHINE_CONFIG_FRAGMENT( leland_video )
-=======
 MACHINE_CONFIG_START( leland_video )
->>>>>>> upstream/master
 
 	MCFG_VIDEO_START_OVERRIDE(leland_state,leland)
 

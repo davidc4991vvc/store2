@@ -6,33 +6,16 @@
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-#ifndef _ALPHA8201_H_
-#define _ALPHA8201_H_
-
-#include "emu.h"
-=======
 #ifndef MAME_MACHINE_ALPHA8201_H
 #define MAME_MACHINE_ALPHA8201_H
 
->>>>>>> upstream/master
 
 class alpha_8201_device : public device_t
 {
 public:
-<<<<<<< HEAD
-	alpha_8201_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-	~alpha_8201_device() {}
-
-	DECLARE_READ8_MEMBER(mcu_data_r);
-	DECLARE_WRITE8_MEMBER(mcu_data_w);
-	DECLARE_WRITE16_MEMBER(mcu_d_w);
-
-=======
 	alpha_8201_device(const machine_config &mconfig, const char *tag, device_t *owner, u32 clock);
 	~alpha_8201_device() {}
 
->>>>>>> upstream/master
 	// external I/O
 	DECLARE_WRITE_LINE_MEMBER(bus_dir_w);
 	DECLARE_WRITE_LINE_MEMBER(mcu_start_w);
@@ -41,38 +24,14 @@ public:
 
 protected:
 	// device-level overrides
-<<<<<<< HEAD
-	virtual void device_start();
-	virtual void device_reset();
-	virtual machine_config_constructor device_mconfig_additions() const;
-
-=======
 	virtual void device_start() override;
 	virtual void device_reset() override;
 	virtual void device_add_mconfig(machine_config &config) override;
->>>>>>> upstream/master
 private:
 	// devices/pointers
 	required_device<cpu_device> m_mcu;
 
 	// internal state
-<<<<<<< HEAD
-	int m_bus;                      // shared RAM bus direction
-	UINT16 m_mcu_address;           // MCU side RAM address
-	UINT16 m_mcu_d;                 // MCU D output data
-	UINT8 m_mcu_r[4];               // MCU R0-R3 output data
-	UINT8* m_shared_ram;            // 1KB RAM
-
-	void mcu_update_address();
-	void mcu_writeram();
-};
-
-
-extern const device_type ALPHA_8201;
-
-
-#endif /* _ALPHA8201_H_ */
-=======
 	int m_bus;                  // shared RAM bus direction
 	u16 m_mcu_address;          // MCU side RAM address
 	u16 m_mcu_d;                // MCU D output data
@@ -92,4 +51,3 @@ DECLARE_DEVICE_TYPE(ALPHA_8201, alpha_8201_device)
 
 
 #endif // MAME_MACHINE_ALPHA8201_H
->>>>>>> upstream/master

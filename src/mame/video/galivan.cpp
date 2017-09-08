@@ -56,11 +56,7 @@ background: 0x4000 bytes of ROM:    76543210    tile code low bits
 
 PALETTE_INIT_MEMBER(galivan_state, galivan)
 {
-<<<<<<< HEAD
-	const UINT8 *color_prom = memregion("proms")->base();
-=======
 	const uint8_t *color_prom = memregion("proms")->base();
->>>>>>> upstream/master
 	int i;
 
 	/* create a lookup table for the palette */
@@ -86,11 +82,7 @@ PALETTE_INIT_MEMBER(galivan_state, galivan)
 	/* pens 0-7; the top two bits for pens 8-15. */
 	for (i = 0; i < 0x100; i++)
 	{
-<<<<<<< HEAD
-		UINT8 ctabentry;
-=======
 		uint8_t ctabentry;
->>>>>>> upstream/master
 
 		if (i & 0x08)
 			ctabentry = 0xc0 | (i & 0x0f) | ((i & 0xc0) >> 2);
@@ -107,11 +99,7 @@ PALETTE_INIT_MEMBER(galivan_state, galivan)
 	/* 8-15 (like for tiles). */
 	for (i = 0; i < 0x1000; i++)
 	{
-<<<<<<< HEAD
-		UINT8 ctabentry;
-=======
 		uint8_t ctabentry;
->>>>>>> upstream/master
 		int i_swapped = ((i & 0x0f) << 8) | ((i & 0xff0) >> 4);
 
 		if (i & 0x80)
@@ -133,11 +121,7 @@ PALETTE_INIT_MEMBER(galivan_state, galivan)
 
 TILE_GET_INFO_MEMBER(galivan_state::get_bg_tile_info)
 {
-<<<<<<< HEAD
-	UINT8 *BGROM = memregion("gfx4")->base();
-=======
 	uint8_t *BGROM = memregion("gfx4")->base();
->>>>>>> upstream/master
 	int attr = BGROM[tile_index + 0x4000];
 	int code = BGROM[tile_index] | ((attr & 0x03) << 8);
 	SET_TILE_INFO_MEMBER(1,
@@ -159,11 +143,7 @@ TILE_GET_INFO_MEMBER(galivan_state::get_tx_tile_info)
 
 TILE_GET_INFO_MEMBER(galivan_state::ninjemak_get_bg_tile_info)
 {
-<<<<<<< HEAD
-	UINT8 *BGROM = memregion("gfx4")->base();
-=======
 	uint8_t *BGROM = memregion("gfx4")->base();
->>>>>>> upstream/master
 	int attr = BGROM[tile_index + 0x4000];
 	int code = BGROM[tile_index] | ((attr & 0x03) << 8);
 	SET_TILE_INFO_MEMBER(1,
@@ -196,26 +176,16 @@ TILE_GET_INFO_MEMBER(galivan_state::ninjemak_get_tx_tile_info)
 
 VIDEO_START_MEMBER(galivan_state,galivan)
 {
-<<<<<<< HEAD
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(galivan_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 16, 16, 128, 128);
-	m_tx_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(galivan_state::get_tx_tile_info),this), TILEMAP_SCAN_COLS, 8, 8, 32, 32);
-=======
 	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(galivan_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 16, 16, 128, 128);
 	m_tx_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(galivan_state::get_tx_tile_info),this), TILEMAP_SCAN_COLS, 8, 8, 32, 32);
->>>>>>> upstream/master
 
 	m_tx_tilemap->set_transparent_pen(15);
 }
 
 VIDEO_START_MEMBER(galivan_state,ninjemak)
 {
-<<<<<<< HEAD
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(galivan_state::ninjemak_get_bg_tile_info),this), TILEMAP_SCAN_COLS, 16, 16, 512, 32);
-	m_tx_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(galivan_state::ninjemak_get_tx_tile_info),this), TILEMAP_SCAN_COLS, 8, 8, 32, 32);
-=======
 	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(galivan_state::ninjemak_get_bg_tile_info),this), TILEMAP_SCAN_COLS, 16, 16, 512, 32);
 	m_tx_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(galivan_state::ninjemak_get_tx_tile_info),this), TILEMAP_SCAN_COLS, 8, 8, 32, 32);
->>>>>>> upstream/master
 
 	m_tx_tilemap->set_transparent_pen(15);
 }
@@ -238,13 +208,8 @@ WRITE8_MEMBER(galivan_state::galivan_videoram_w)
 WRITE8_MEMBER(galivan_state::galivan_gfxbank_w)
 {
 	/* bits 0 and 1 coin counters */
-<<<<<<< HEAD
-	coin_counter_w(machine(), 0,data & 1);
-	coin_counter_w(machine(), 1,data & 2);
-=======
 	machine().bookkeeping().coin_counter_w(0,data & 1);
 	machine().bookkeeping().coin_counter_w(1,data & 2);
->>>>>>> upstream/master
 
 	/* bit 2 flip screen */
 	flip_screen_set(data & 0x04);
@@ -258,13 +223,8 @@ WRITE8_MEMBER(galivan_state::galivan_gfxbank_w)
 WRITE8_MEMBER(galivan_state::ninjemak_gfxbank_w)
 {
 	/* bits 0 and 1 coin counters */
-<<<<<<< HEAD
-	coin_counter_w(machine(), 0,data & 1);
-	coin_counter_w(machine(), 1,data & 2);
-=======
 	machine().bookkeeping().coin_counter_w(0,data & 1);
 	machine().bookkeeping().coin_counter_w(1,data & 2);
->>>>>>> upstream/master
 
 	/* bit 2 flip screen */
 	flip_screen_set(data & 0x04);
@@ -327,13 +287,8 @@ WRITE8_MEMBER(galivan_state::galivan_scrolly_w)
 
 void galivan_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect )
 {
-<<<<<<< HEAD
-	const UINT8 *spritepalettebank = memregion("user1")->base();
-	UINT8 *buffered_spriteram = m_spriteram->buffer();
-=======
 	const uint8_t *spritepalettebank = memregion("user1")->base();
 	uint8_t *buffered_spriteram = m_spriteram->buffer();
->>>>>>> upstream/master
 	int length = m_spriteram->bytes();
 	int flip = flip_screen();
 	gfx_element *gfx = m_gfxdecode->gfx(2);
@@ -370,11 +325,7 @@ void galivan_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprec
 }
 
 
-<<<<<<< HEAD
-UINT32 galivan_state::screen_update_galivan(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t galivan_state::screen_update_galivan(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	m_bg_tilemap->set_scrollx(0, m_galivan_scrollx[0] + 256 * (m_galivan_scrollx[1] & 0x07));
 	m_bg_tilemap->set_scrolly(0, m_galivan_scrolly[0] + 256 * (m_galivan_scrolly[1] & 0x07));
@@ -400,11 +351,7 @@ uint32_t galivan_state::screen_update_galivan(screen_device &screen, bitmap_ind1
 	return 0;
 }
 
-<<<<<<< HEAD
-UINT32 galivan_state::screen_update_ninjemak(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t galivan_state::screen_update_ninjemak(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	/* (scrollx[1] & 0x40) does something */
 	m_bg_tilemap->set_scrollx(0, m_scrollx);

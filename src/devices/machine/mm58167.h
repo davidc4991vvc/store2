@@ -6,21 +6,12 @@
 
 **********************************************************************/
 
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __MM58167_H__
-#define __MM58167_H__
-
-#include "emu.h"
-=======
 #ifndef MAME_MACHINE_MM58167_H
 #define MAME_MACHINE_MM58167_H
 
 #pragma once
 
 #include "dirtc.h"
->>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -42,34 +33,17 @@ class mm58167_device :  public device_t,
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	mm58167_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-=======
 	mm58167_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
->>>>>>> upstream/master
 
 	DECLARE_READ8_MEMBER(read);
 	DECLARE_WRITE8_MEMBER(write);
 
-<<<<<<< HEAD
-	template<class _Object> static devcb_base &set_irq_cb(device_t &device, _Object wr) { return downcast<mm58167_device &>(device).m_irq_w.set_callback(wr); }
-=======
 	template <class Object> static devcb_base &set_irq_cb(device_t &device, Object &&wr) { return downcast<mm58167_device &>(device).m_irq_w.set_callback(std::forward<Object>(wr)); }
->>>>>>> upstream/master
 
 	devcb_write_line m_irq_w;
 
 protected:
 	// device-level overrides
-<<<<<<< HEAD
-	virtual void device_start();
-	virtual void device_reset();
-	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
-
-	// device_rtc_interface overrides
-	virtual void rtc_clock_updated(int year, int month, int day, int day_of_week, int hour, int minute, int second);
-	virtual bool rtc_feature_leap_year() { return true; }
-=======
 	virtual void device_start() override;
 	virtual void device_reset() override;
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
@@ -77,7 +51,6 @@ protected:
 	// device_rtc_interface overrides
 	virtual void rtc_clock_updated(int year, int month, int day, int day_of_week, int hour, int minute, int second) override;
 	virtual bool rtc_feature_leap_year() const override { return true; }
->>>>>>> upstream/master
 
 	void set_irq(int bit);
 	void update_rtc();
@@ -92,12 +65,6 @@ private:
 };
 
 // device type definition
-<<<<<<< HEAD
-extern const device_type MM58167;
-
-#endif
-=======
 DECLARE_DEVICE_TYPE(MM58167, mm58167_device)
 
 #endif // MAME_MACHINE_MM58167_H
->>>>>>> upstream/master

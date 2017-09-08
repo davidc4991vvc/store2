@@ -7,19 +7,12 @@
  *
  */
 
-<<<<<<< HEAD
-#include <stdio.h>
-#include "emu.h"
-#include "ds1204.h"
-
-=======
 #include "emu.h"
 #include "ds1204.h"
 
 #include <stdio.h>
 
 
->>>>>>> upstream/master
 #define VERBOSE_LEVEL ( 0 )
 
 inline void ATTR_PRINTF( 3, 4 ) ds1204_device::verboselog( int n_level, const char *s_fmt, ... )
@@ -36,20 +29,12 @@ inline void ATTR_PRINTF( 3, 4 ) ds1204_device::verboselog( int n_level, const ch
 }
 
 // device type definition
-<<<<<<< HEAD
-const device_type DS1204 = &device_creator<ds1204_device>;
-
-ds1204_device::ds1204_device( const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock )
-	: device_t( mconfig, DS1204, "DS1204", tag, owner, clock, "ds1204", __FILE__ ),
-	device_nvram_interface(mconfig, *this),
-=======
 DEFINE_DEVICE_TYPE(DS1204, ds1204_device, "ds1204", "DS1204")
 
 ds1204_device::ds1204_device( const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock )
 	: device_t(mconfig, DS1204, tag, owner, clock),
 	device_nvram_interface(mconfig, *this),
 	m_region(*this, DEVICE_SELF),
->>>>>>> upstream/master
 	m_rst( 0 ),
 	m_clk( 0 ),
 	m_dqw( 0 ), m_dqr(0), m_state(0), m_bit(0)
@@ -87,11 +72,7 @@ void ds1204_device::nvram_default()
 
 	int expected_bytes = sizeof( m_unique_pattern ) + sizeof( m_identification ) + sizeof( m_security_match ) + sizeof( m_secure_memory );
 
-<<<<<<< HEAD
-	if( !m_region )
-=======
 	if (!m_region.found())
->>>>>>> upstream/master
 	{
 		logerror( "ds1204(%s) region not found\n", tag() );
 	}
@@ -101,11 +82,7 @@ void ds1204_device::nvram_default()
 	}
 	else
 	{
-<<<<<<< HEAD
-		UINT8 *region = m_region->base();
-=======
 		uint8_t *region = m_region->base();
->>>>>>> upstream/master
 
 		memcpy( m_unique_pattern, region, sizeof( m_unique_pattern ) ); region += sizeof( m_unique_pattern );
 		memcpy( m_identification, region, sizeof( m_identification ) ); region += sizeof( m_identification );
@@ -136,11 +113,7 @@ void ds1204_device::new_state( int state )
 	m_bit = 0;
 }
 
-<<<<<<< HEAD
-void ds1204_device::writebit( UINT8 *buffer )
-=======
 void ds1204_device::writebit( uint8_t *buffer )
->>>>>>> upstream/master
 {
 	if( m_clk )
 	{
@@ -160,11 +133,7 @@ void ds1204_device::writebit( uint8_t *buffer )
 	}
 }
 
-<<<<<<< HEAD
-void ds1204_device::readbit( UINT8 *buffer )
-=======
 void ds1204_device::readbit( uint8_t *buffer )
->>>>>>> upstream/master
 {
 	if( !m_clk )
 	{

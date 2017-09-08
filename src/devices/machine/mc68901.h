@@ -33,20 +33,11 @@
 
 **********************************************************************/
 
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __MC68901__
-#define __MC68901__
-
-#include "emu.h"
-=======
 #ifndef MAME_MACHINE_MC68901_H
 #define MAME_MACHINE_MC68901_H
 
 #pragma once
 
->>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -102,26 +93,11 @@ class mc68901_device :  public device_t,
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	mc68901_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-=======
 	mc68901_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
->>>>>>> upstream/master
 
 	static void set_timer_clock(device_t &device, int timer_clock) { downcast<mc68901_device &>(device).m_timer_clock = timer_clock; }
 	static void set_rx_clock(device_t &device, int rx_clock) { downcast<mc68901_device &>(device).m_rx_clock = rx_clock; }
 	static void set_tx_clock(device_t &device, int tx_clock) { downcast<mc68901_device &>(device).m_tx_clock = tx_clock; }
-<<<<<<< HEAD
-	template<class _Object> static devcb_base &set_out_irq_callback(device_t &device, _Object object) { return downcast<mc68901_device &>(device).m_out_irq_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_out_gpio_callback(device_t &device, _Object object) { return downcast<mc68901_device &>(device).m_out_gpio_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_out_tao_callback(device_t &device, _Object object) { return downcast<mc68901_device &>(device).m_out_tao_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_out_tbo_callback(device_t &device, _Object object) { return downcast<mc68901_device &>(device).m_out_tbo_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_out_tco_callback(device_t &device, _Object object) { return downcast<mc68901_device &>(device).m_out_tco_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_out_tdo_callback(device_t &device, _Object object) { return downcast<mc68901_device &>(device).m_out_tdo_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_out_so_callback(device_t &device, _Object object) { return downcast<mc68901_device &>(device).m_out_so_cb.set_callback(object); }
-	//template<class _Object> static devcb_base &set_rr_callback(device_t &device, _Object object) { return downcast<mc68901_device &>(device).m_out_rr_cb.set_callback(object); }
-	//template<class _Object> static devcb_base &set_tr_callback(device_t &device, _Object object) { return downcast<mc68901_device &>(device).m_out_tr_cb.set_callback(object); }
-=======
 	template <class Object> static devcb_base &set_out_irq_callback(device_t &device, Object &&cb) { return downcast<mc68901_device &>(device).m_out_irq_cb.set_callback(std::forward<Object>(cb)); }
 	template <class Object> static devcb_base &set_out_gpio_callback(device_t &device, Object &&cb) { return downcast<mc68901_device &>(device).m_out_gpio_cb.set_callback(std::forward<Object>(cb)); }
 	template <class Object> static devcb_base &set_out_tao_callback(device_t &device, Object &&cb) { return downcast<mc68901_device &>(device).m_out_tao_cb.set_callback(std::forward<Object>(cb)); }
@@ -131,7 +107,6 @@ public:
 	template <class Object> static devcb_base &set_out_so_callback(device_t &device, Object &&cb) { return downcast<mc68901_device &>(device).m_out_so_cb.set_callback(std::forward<Object>(cb)); }
 	//template <class Object> static devcb_base &set_rr_callback(device_t &device, Object &&cb) { return downcast<mc68901_device &>(device).m_out_rr_cb.set_callback(std::forward<Object>(cb)); }
 	//template <class Object> static devcb_base &set_tr_callback(device_t &device, Object &&cb) { return downcast<mc68901_device &>(device).m_out_tr_cb.set_callback(std::forward<Object>(cb)); }
->>>>>>> upstream/master
 
 	DECLARE_READ8_MEMBER( read );
 	DECLARE_WRITE8_MEMBER( write );
@@ -154,19 +129,6 @@ public:
 
 protected:
 	// device-level overrides
-<<<<<<< HEAD
-	virtual void device_start();
-	virtual void device_reset();
-	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
-
-	// device_serial_interface overrides
-	virtual void tra_callback();
-	virtual void tra_complete();
-	virtual void rcv_complete();
-
-	void check_interrupts();
-	void take_interrupt(UINT16 mask);
-=======
 	virtual void device_start() override;
 	virtual void device_reset() override;
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
@@ -178,18 +140,13 @@ protected:
 
 	void check_interrupts();
 	void take_interrupt(uint16_t mask);
->>>>>>> upstream/master
 	void rx_buffer_full();
 	void rx_error();
 	void timer_count(int index);
 	void timer_input(int index, int value);
 	void gpio_input(int bit, int state);
 	void gpio_output();
-<<<<<<< HEAD
-	void register_w(offs_t offset, UINT8 data);
-=======
 	void register_w(offs_t offset, uint8_t data);
->>>>>>> upstream/master
 
 private:
 	enum
@@ -302,36 +259,6 @@ private:
 	//int m_device_type;                      /* device type */
 
 	/* registers */
-<<<<<<< HEAD
-	UINT8 m_gpip;                           /* general purpose I/O register */
-	UINT8 m_aer;                            /* active edge register */
-	UINT8 m_ddr;                            /* data direction register */
-
-	UINT16 m_ier;                           /* interrupt enable register */
-	UINT16 m_ipr;                           /* interrupt pending register */
-	UINT16 m_isr;                           /* interrupt in-service register */
-	UINT16 m_imr;                           /* interrupt mask register */
-	UINT8 m_vr;                             /* vector register */
-
-	UINT8 m_tacr;                           /* timer A control register */
-	UINT8 m_tbcr;                           /* timer B control register */
-	UINT8 m_tcdcr;                          /* timers C and D control register */
-	UINT8 m_tdr[4];     /* timer data registers */
-
-	UINT8 m_scr;                            /* synchronous character register */
-	UINT8 m_ucr;                            /* USART control register */
-	UINT8 m_tsr;                            /* transmitter status register */
-	UINT8 m_rsr;                            /* receiver status register */
-	UINT8 m_transmit_buffer;                /* USART data register */
-	int m_transmit_pending;
-	UINT8 m_receive_buffer;
-	int m_receive_pending;
-	UINT8 m_gpio_input;
-	UINT8 m_gpio_output;
-
-	/* counter timer state */
-	UINT8 m_tmc[4];     /* timer main counters */
-=======
 	uint8_t m_gpip;                           /* general purpose I/O register */
 	uint8_t m_aer;                            /* active edge register */
 	uint8_t m_ddr;                            /* data direction register */
@@ -360,7 +287,6 @@ private:
 
 	/* counter timer state */
 	uint8_t m_tmc[4];     /* timer main counters */
->>>>>>> upstream/master
 	int m_ti[4];            /* timer in latch */
 	int m_to[4];            /* timer out latch */
 
@@ -368,11 +294,7 @@ private:
 	//int m_irqlevel;                         /* interrupt level latch */
 
 	/* serial state */
-<<<<<<< HEAD
-	UINT8 m_next_rsr;                       /* receiver status register latch */
-=======
 	uint8_t m_next_rsr;                       /* receiver status register latch */
->>>>>>> upstream/master
 	int m_rsr_read;                         /* receiver status register read flag */
 
 	// timers
@@ -381,14 +303,6 @@ private:
 
 
 // device type definition
-<<<<<<< HEAD
-extern const device_type MC68901;
-
-
-
-#endif
-=======
 DECLARE_DEVICE_TYPE(MC68901, mc68901_device)
 
 #endif // MAME_MACHINE_MC68901_H
->>>>>>> upstream/master

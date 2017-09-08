@@ -36,11 +36,6 @@ TODO:
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/i8085/i8085.h"
-#include "cpu/mcs48/mcs48.h"
-#include "includes/spcforce.h"
-=======
 #include "includes/spcforce.h"
 
 #include "cpu/i8085/i8085.h"
@@ -50,7 +45,6 @@ TODO:
 #include "screen.h"
 #include "speaker.h"
 
->>>>>>> upstream/master
 
 void spcforce_state::machine_start()
 {
@@ -100,11 +94,7 @@ WRITE8_MEMBER(spcforce_state::SN76496_select_w)
 	if (~data & 0x10) m_sn3->write(space, 0, m_sn76496_latch);
 }
 
-<<<<<<< HEAD
-READ8_MEMBER(spcforce_state::t0_r)
-=======
 READ_LINE_MEMBER(spcforce_state::t0_r)
->>>>>>> upstream/master
 {
 	/* SN76496 status according to Al - not supported by MAME?? */
 	return machine().rand() & 1;
@@ -116,11 +106,6 @@ WRITE8_MEMBER(spcforce_state::soundtrigger_w)
 	m_audiocpu->set_input_line(0, (~data & 0x08) ? ASSERT_LINE : CLEAR_LINE);
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER(spcforce_state::irq_mask_w)
-{
-	m_irq_mask = data & 1;
-=======
 WRITE8_MEMBER(spcforce_state::misc_outputs_w)
 {
 	machine().output().set_lamp_value(0, BIT(data, 0)); // 1P start lamp
@@ -137,54 +122,24 @@ WRITE_LINE_MEMBER(spcforce_state::irq_mask_w)
 WRITE_LINE_MEMBER(spcforce_state::unknown_w)
 {
 	// written very frequently
->>>>>>> upstream/master
 }
 
 static ADDRESS_MAP_START( spcforce_map, AS_PROGRAM, 8, spcforce_state )
 	AM_RANGE(0x0000, 0x3fff) AM_ROM
 	AM_RANGE(0x4000, 0x43ff) AM_RAM
-<<<<<<< HEAD
-	AM_RANGE(0x7000, 0x7000) AM_READ_PORT("DSW") AM_WRITE(soundlatch_byte_w)
-	AM_RANGE(0x7001, 0x7001) AM_READ_PORT("P1") AM_WRITE(soundtrigger_w)
-	AM_RANGE(0x7002, 0x7002) AM_READ_PORT("P2")
-	AM_RANGE(0x700b, 0x700b) AM_WRITE(flip_screen_w)
-	AM_RANGE(0x700e, 0x700e) AM_WRITE(irq_mask_w)
-	AM_RANGE(0x700f, 0x700f) AM_WRITENOP
-=======
 	AM_RANGE(0x7000, 0x7000) AM_READ_PORT("DSW") AM_DEVWRITE("soundlatch", generic_latch_8_device, write)
 	AM_RANGE(0x7001, 0x7001) AM_READ_PORT("P1") AM_WRITE(soundtrigger_w)
 	AM_RANGE(0x7002, 0x7002) AM_READ_PORT("P2") AM_WRITE(misc_outputs_w)
 	AM_RANGE(0x7008, 0x700f) AM_DEVWRITE("mainlatch", ls259_device, write_d0)
->>>>>>> upstream/master
 	AM_RANGE(0x8000, 0x83ff) AM_RAM AM_SHARE("videoram")
 	AM_RANGE(0x9000, 0x93ff) AM_RAM AM_SHARE("colorram")
 	AM_RANGE(0xa000, 0xa3ff) AM_RAM AM_SHARE("scrollram")
 ADDRESS_MAP_END
 
-<<<<<<< HEAD
-static ADDRESS_MAP_START( meteors_map, AS_PROGRAM, 8, spcforce_state )
-	AM_RANGE(0x700b, 0x700b) AM_WRITENOP
-	AM_RANGE(0x700d, 0x700d) AM_WRITE(irq_mask_w) // ??
-	AM_RANGE(0x700e, 0x700e) AM_WRITE(flip_screen_w) // irq mask isn't here, gets written too early causing the game to not boot, see startup code between sets
-	AM_IMPORT_FROM(spcforce_map)
-ADDRESS_MAP_END
-
-=======
->>>>>>> upstream/master
 static ADDRESS_MAP_START( spcforce_sound_map, AS_PROGRAM, 8, spcforce_state )
 	AM_RANGE(0x0000, 0x07ff) AM_ROM
 ADDRESS_MAP_END
 
-<<<<<<< HEAD
-static ADDRESS_MAP_START( spcforce_sound_io_map, AS_IO, 8, spcforce_state )
-	AM_RANGE(MCS48_PORT_BUS, MCS48_PORT_BUS) AM_READ(soundlatch_byte_r)
-	AM_RANGE(MCS48_PORT_P1, MCS48_PORT_P1) AM_WRITE(SN76496_latch_w)
-	AM_RANGE(MCS48_PORT_P2, MCS48_PORT_P2) AM_READWRITE(SN76496_select_r, SN76496_select_w)
-	AM_RANGE(MCS48_PORT_T0, MCS48_PORT_T0) AM_READ(t0_r)
-ADDRESS_MAP_END
-
-=======
->>>>>>> upstream/master
 
 static INPUT_PORTS_START( spcforce )
 	PORT_START("DSW")
@@ -324,11 +279,7 @@ INTERRUPT_GEN_MEMBER(spcforce_state::vblank_irq)
 		device.execute().set_input_line(3, HOLD_LINE);
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( spcforce, spcforce_state )
-=======
 static MACHINE_CONFIG_START( spcforce )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	/* FIXME: The 8085A had a max clock of 6MHz, internally divided by 2! */
@@ -338,9 +289,6 @@ static MACHINE_CONFIG_START( spcforce )
 
 	MCFG_CPU_ADD("audiocpu", I8035, 6144000)        /* divisor ??? */
 	MCFG_CPU_PROGRAM_MAP(spcforce_sound_map)
-<<<<<<< HEAD
-	MCFG_CPU_IO_MAP(spcforce_sound_io_map)
-=======
 	MCFG_MCS48_PORT_BUS_IN_CB(DEVREAD8("soundlatch", generic_latch_8_device, read))
 	MCFG_MCS48_PORT_P1_OUT_CB(WRITE8(spcforce_state, SN76496_latch_w))
 	MCFG_MCS48_PORT_P2_IN_CB(READ8(spcforce_state, SN76496_select_r))
@@ -351,7 +299,6 @@ static MACHINE_CONFIG_START( spcforce )
 	MCFG_ADDRESSABLE_LATCH_Q3_OUT_CB(WRITELINE(spcforce_state, flip_screen_w))
 	MCFG_ADDRESSABLE_LATCH_Q6_OUT_CB(WRITELINE(spcforce_state, irq_mask_w))
 	MCFG_ADDRESSABLE_LATCH_Q7_OUT_CB(WRITELINE(spcforce_state, unknown_w))
->>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
@@ -369,11 +316,8 @@ static MACHINE_CONFIG_START( spcforce )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 
->>>>>>> upstream/master
 	MCFG_SOUND_ADD("sn1", SN76496, 2000000)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 	MCFG_SN76496_READY_HANDLER(WRITELINE(spcforce_state, write_sn1_ready))
@@ -388,15 +332,10 @@ static MACHINE_CONFIG_START( spcforce )
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_DERIVED( meteors, spcforce )
-<<<<<<< HEAD
-	MCFG_CPU_MODIFY("maincpu")
-	MCFG_CPU_PROGRAM_MAP(meteors_map)
-=======
 	MCFG_DEVICE_MODIFY("mainlatch")
 	MCFG_ADDRESSABLE_LATCH_Q3_OUT_CB(NOOP)
 	MCFG_ADDRESSABLE_LATCH_Q5_OUT_CB(WRITELINE(spcforce_state, irq_mask_w)) // ??
 	MCFG_ADDRESSABLE_LATCH_Q6_OUT_CB(WRITELINE(spcforce_state, flip_screen_w)) // irq mask isn't here, gets written too early causing the game to not boot, see startup code
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
@@ -498,14 +437,7 @@ ROM_START( meteors )
 ROM_END
 
 
-<<<<<<< HEAD
-GAME( 1980, spcforce, 0,        spcforce, spcforce, driver_device, 0, ROT270, "Venture Line", "Space Force (set 1)", MACHINE_IMPERFECT_COLORS | MACHINE_SUPPORTS_SAVE )
-GAME( 19??, spcforc2, spcforce, spcforce, spcforc2, driver_device, 0, ROT270, "bootleg? (Elcon)", "Space Force (set 2)", MACHINE_IMPERFECT_COLORS | MACHINE_SUPPORTS_SAVE )
-GAME( 1981, meteor,   spcforce, spcforce, spcforc2, driver_device, 0, ROT270, "Venture Line", "Meteoroids", MACHINE_IMPERFECT_COLORS | MACHINE_SUPPORTS_SAVE )
-GAME( 19??, meteors,  spcforce, meteors,  spcforc2, driver_device, 0, ROT0,   "Amusement World", "Meteors", MACHINE_IMPERFECT_COLORS | MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1980, spcforce, 0,        spcforce, spcforce, spcforce_state, 0, ROT270, "Venture Line",     "Space Force (set 1)", MACHINE_IMPERFECT_COLORS | MACHINE_SUPPORTS_SAVE )
 GAME( 19??, spcforc2, spcforce, spcforce, spcforc2, spcforce_state, 0, ROT270, "bootleg? (Elcon)", "Space Force (set 2)", MACHINE_IMPERFECT_COLORS | MACHINE_SUPPORTS_SAVE )
 GAME( 1981, meteor,   spcforce, spcforce, spcforc2, spcforce_state, 0, ROT270, "Venture Line",     "Meteoroids",          MACHINE_IMPERFECT_COLORS | MACHINE_SUPPORTS_SAVE )
 GAME( 19??, meteors,  spcforce, meteors,  spcforc2, spcforce_state, 0, ROT0,   "Amusement World",  "Meteors",             MACHINE_IMPERFECT_COLORS | MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

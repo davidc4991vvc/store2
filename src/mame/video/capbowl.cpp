@@ -79,13 +79,8 @@ WRITE8_MEMBER(capbowl_state::bowlrama_blitter_w)
 
 READ8_MEMBER(capbowl_state::bowlrama_blitter_r)
 {
-<<<<<<< HEAD
-	UINT8 data = memregion("gfx1")->base()[m_blitter_addr];
-	UINT8 result = 0;
-=======
 	uint8_t data = memregion("gfx1")->base()[m_blitter_addr];
 	uint8_t result = 0;
->>>>>>> upstream/master
 
 	switch (offset)
 	{
@@ -122,11 +117,7 @@ READ8_MEMBER(capbowl_state::bowlrama_blitter_r)
  *
  *************************************/
 
-<<<<<<< HEAD
-inline rgb_t capbowl_state::pen_for_pixel( UINT8 *src, UINT8 pix )
-=======
 inline rgb_t capbowl_state::pen_for_pixel( uint8_t const *src, uint8_t pix )
->>>>>>> upstream/master
 {
 	return rgb_t(pal4bit(src[(pix << 1) + 0] >> 0),
 					pal4bit(src[(pix << 1) + 1] >> 4),
@@ -134,46 +125,27 @@ inline rgb_t capbowl_state::pen_for_pixel( uint8_t const *src, uint8_t pix )
 }
 
 
-<<<<<<< HEAD
-UINT32 capbowl_state::screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
-=======
 uint32_t capbowl_state::screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	/* first get the current display state */
 	m_tms34061->get_display_state();
 
 	/* if we're blanked, just fill with black */
-<<<<<<< HEAD
-	if (m_tms34061->m_display.blanked)
-	{
-		bitmap.fill(rgb_t::black, cliprect);
-=======
 	if (m_tms34061->blanked())
 	{
 		bitmap.fill(rgb_t::black(), cliprect);
->>>>>>> upstream/master
 		return 0;
 	}
 
 	/* now regenerate the bitmap */
 	for (int y = cliprect.min_y; y <= cliprect.max_y; y++)
 	{
-<<<<<<< HEAD
-		UINT8 *src = &m_tms34061->m_display.vram[256 * y];
-		UINT32 *dest = &bitmap.pix32(y);
-
-		for (int x = cliprect.min_x & ~1; x <= cliprect.max_x; x += 2)
-		{
-			UINT8 pix = src[32 + (x / 2)];
-=======
 		uint8_t const *src = &m_tms34061->vram(y);
 		uint32_t *dest = &bitmap.pix32(y);
 
 		for (int x = cliprect.min_x & ~1; x <= cliprect.max_x; x += 2)
 		{
 			uint8_t pix = src[32 + (x / 2)];
->>>>>>> upstream/master
 			*dest++ = pen_for_pixel(src, pix >> 4);
 			*dest++ = pen_for_pixel(src, pix & 0x0f);
 		}

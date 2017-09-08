@@ -1,16 +1,9 @@
 // license:BSD-3-Clause
 // copyright-holders:Wilbert Pol
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __MINX_H__
-#define __MINX_H__
-=======
 #ifndef MAME_CPU_MINX_MINX_H
 #define MAME_CPU_MINX_MINX_H
 
 #pragma once
->>>>>>> upstream/master
 
 
 enum
@@ -25,32 +18,6 @@ class minx_cpu_device :  public cpu_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	minx_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-protected:
-	// device-level overrides
-	virtual void device_start();
-	virtual void device_reset();
-
-	// device_execute_interface overrides
-	virtual UINT32 execute_min_cycles() const { return 1; }
-	virtual UINT32 execute_max_cycles() const { return 4; }
-	virtual UINT32 execute_input_lines() const { return 1; }
-	virtual void execute_run();
-	virtual void execute_set_input(int inputnum, int state);
-
-	// device_memory_interface overrides
-	virtual const address_space_config *memory_space_config(address_spacenum spacenum = AS_0) const { return (spacenum == AS_PROGRAM) ? &m_program_config : NULL; }
-
-	// device_state_interface overrides
-	void state_string_export(const device_state_entry &entry, std::string &str);
-
-	// device_disasm_interface overrides
-	virtual UINT32 disasm_min_opcode_bytes() const { return 1; }
-	virtual UINT32 disasm_max_opcode_bytes() const { return 5; }
-	virtual offs_t disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options);
-=======
 	minx_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 protected:
@@ -75,70 +42,10 @@ protected:
 	virtual uint32_t disasm_min_opcode_bytes() const override { return 1; }
 	virtual uint32_t disasm_max_opcode_bytes() const override { return 5; }
 	virtual offs_t disasm_disassemble(std::ostream &stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, uint32_t options) override;
->>>>>>> upstream/master
 
 private:
 	address_space_config m_program_config;
 
-<<<<<<< HEAD
-	UINT16  m_PC;
-	UINT16  m_SP;
-	UINT16  m_BA;
-	UINT16  m_HL;
-	UINT16  m_X;
-	UINT16  m_Y;
-	UINT8   m_U;
-	UINT8   m_V;
-	UINT8   m_F;
-	UINT8   m_E;
-	UINT8   m_N;
-	UINT8   m_I;
-	UINT8   m_XI;
-	UINT8   m_YI;
-	UINT8   m_halted;
-	UINT8   m_interrupt_pending;
-	address_space *m_program;
-	int m_icount;
-	// For debugger
-	UINT32 m_curpc;
-	UINT16 m_flags;
-
-	UINT16 rd16( UINT32 offset );
-	void wr16( UINT32 offset, UINT16 data );
-	UINT8 rdop();
-	UINT16 rdop16();
-	UINT8 ADD8( UINT8 arg1, UINT8 arg2 );
-	UINT16 ADD16( UINT16 arg1, UINT16 arg2 );
-	UINT8 ADDC8( UINT8 arg1, UINT8 arg2 );
-	UINT16 ADDC16( UINT16 arg1, UINT16 arg2 );
-	UINT8 INC8( UINT8 arg );
-	UINT16 INC16( UINT16 arg );
-	UINT8 SUB8( UINT8 arg1, UINT8 arg2 );
-	UINT16 SUB16( UINT16 arg1, UINT16 arg2 );
-	UINT8 SUBC8( UINT8 arg1, UINT8 arg2 );
-	UINT16 SUBC16( UINT16 arg1, UINT16 arg2 );
-	UINT8 DEC8( UINT8 arg );
-	UINT16 DEC16( UINT16 arg );
-	UINT8 AND8( UINT8 arg1, UINT8 arg2 );
-	UINT8 OR8( UINT8 arg1, UINT8 arg2 );
-	UINT8 XOR8( UINT8 arg1, UINT8 arg2 );
-	UINT8 NOT8( UINT8 arg );
-	UINT8 NEG8( UINT8 arg );
-	UINT8 SAL8( UINT8 arg );
-	UINT8 SAR8( UINT8 arg );
-	UINT8 SHL8( UINT8 arg );
-	UINT8 SHR8( UINT8 arg );
-	UINT8 ROLC8( UINT8 arg );
-	UINT8 RORC8( UINT8 arg );
-	UINT8 ROL8( UINT8 arg );
-	UINT8 ROR8( UINT8 arg );
-	void PUSH8( UINT8 arg );
-	void PUSH16( UINT16 arg );
-	UINT8 POP8();
-	UINT16 POP16();
-	void JMP( UINT16 arg );
-	void CALL( UINT16 arg );
-=======
 	uint16_t  m_PC;
 	uint16_t  m_SP;
 	uint16_t  m_BA;
@@ -196,7 +103,6 @@ private:
 	uint16_t POP16();
 	void JMP( uint16_t arg );
 	void CALL( uint16_t arg );
->>>>>>> upstream/master
 
 	void execute_one();
 	void execute_one_ce();
@@ -209,13 +115,6 @@ private:
 };
 
 
-<<<<<<< HEAD
-extern const device_type MINX;
-
-
-#endif /* __MINX_H__ */
-=======
 DECLARE_DEVICE_TYPE(MINX, minx_cpu_device)
 
 #endif // MAME_CPU_MINX_MINX_H
->>>>>>> upstream/master

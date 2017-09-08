@@ -6,10 +6,7 @@
 
 **********************************************************************/
 
-<<<<<<< HEAD
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #include "shark.h"
 #include "bus/rs232/rs232.h"
 #include "cpu/i8085/i8085.h"
@@ -30,11 +27,7 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type SHARK = &device_creator<mshark_device>;
-=======
 DEFINE_DEVICE_TYPE(MSHARK, mshark_device, "mshark", "Mator SHARK")
->>>>>>> upstream/master
 
 
 //-------------------------------------------------
@@ -58,11 +51,7 @@ ROM_END
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const rom_entry *mshark_device::device_rom_region() const
-=======
 const tiny_rom_entry *mshark_device::device_rom_region() const
->>>>>>> upstream/master
 {
 	return ROM_NAME( mshark );
 }
@@ -86,17 +75,10 @@ ADDRESS_MAP_END
 
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  MACHINE_CONFIG_FRAGMENT( mshark )
-//-------------------------------------------------
-
-static MACHINE_CONFIG_FRAGMENT( mshark )
-=======
 //  device_add_mconfig - add device configuration
 //-------------------------------------------------
 
 MACHINE_CONFIG_MEMBER( mshark_device::device_add_mconfig )
->>>>>>> upstream/master
 	// basic machine hardware
 	MCFG_CPU_ADD(I8085_TAG, I8085A, 1000000)
 	MCFG_CPU_PROGRAM_MAP(mshark_mem)
@@ -104,29 +86,11 @@ MACHINE_CONFIG_MEMBER( mshark_device::device_add_mconfig )
 
 	// devices
 	MCFG_HARDDISK_ADD("harddisk1")
-<<<<<<< HEAD
-	MCFG_RS232_PORT_ADD(RS232_TAG, default_rs232_devices, NULL)
-=======
 	MCFG_RS232_PORT_ADD(RS232_TAG, default_rs232_devices, nullptr)
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  machine_config_additions - device-specific
-//  machine configurations
-//-------------------------------------------------
-
-machine_config_constructor mshark_device::device_mconfig_additions() const
-{
-	return MACHINE_CONFIG_NAME( mshark );
-}
-
-
-//-------------------------------------------------
-=======
->>>>>>> upstream/master
 //  INPUT_PORTS( mshark )
 //-------------------------------------------------
 
@@ -153,17 +117,10 @@ ioport_constructor mshark_device::device_input_ports() const
 //  mshark_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-mshark_device::mshark_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, SHARK, "Mator SHARK", tag, owner, clock, "mshark", __FILE__),
-		device_ieee488_interface(mconfig, *this),
-		m_maincpu(*this, I8085_TAG)
-=======
 mshark_device::mshark_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, MSHARK, tag, owner, clock)
 	, device_ieee488_interface(mconfig, *this)
 	, m_maincpu(*this, I8085_TAG)
->>>>>>> upstream/master
 {
 }
 

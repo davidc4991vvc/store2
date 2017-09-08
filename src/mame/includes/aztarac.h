@@ -6,13 +6,9 @@
 
 *************************************************************************/
 
-<<<<<<< HEAD
-#include "video/vector.h"
-=======
 #include "machine/gen_latch.h"
 #include "video/vector.h"
 #include "screen.h"
->>>>>>> upstream/master
 
 class aztarac_state : public driver_device
 {
@@ -23,10 +19,7 @@ public:
 		m_audiocpu(*this, "audiocpu"),
 		m_vector(*this, "vector"),
 		m_screen(*this, "screen"),
-<<<<<<< HEAD
-=======
 		m_soundlatch(*this, "soundlatch"),
->>>>>>> upstream/master
 		m_nvram(*this, "nvram") ,
 		m_vectorram(*this, "vectorram") { }
 
@@ -34,16 +27,10 @@ public:
 	required_device<cpu_device> m_audiocpu;
 	required_device<vector_device> m_vector;
 	required_device<screen_device> m_screen;
-<<<<<<< HEAD
-
-	required_shared_ptr<UINT16> m_nvram;
-	required_shared_ptr<UINT16> m_vectorram;
-=======
 	required_device<generic_latch_8_device> m_soundlatch;
 
 	required_shared_ptr<uint16_t> m_nvram;
 	required_shared_ptr<uint16_t> m_vectorram;
->>>>>>> upstream/master
 
 	int m_sound_status;
 	int m_xcenter;
@@ -58,20 +45,11 @@ public:
 	DECLARE_READ8_MEMBER(snd_status_r);
 	DECLARE_WRITE8_MEMBER(snd_status_w);
 
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void video_start();
-=======
 	virtual void machine_start() override;
 	virtual void video_start() override;
->>>>>>> upstream/master
 
 	INTERRUPT_GEN_MEMBER(snd_timed_irq);
 	IRQ_CALLBACK_MEMBER(irq_callback);
 
-<<<<<<< HEAD
-	inline void read_vectorram(UINT16 *vectorram, int addr, int *x, int *y, int *c);
-=======
 	inline void read_vectorram(uint16_t *vectorram, int addr, int *x, int *y, int *c);
->>>>>>> upstream/master
 };

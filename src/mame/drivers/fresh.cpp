@@ -23,14 +23,9 @@ rom 5 and 6 are prg roms
 
 #include "emu.h"
 #include "cpu/m68000/m68000.h"
-<<<<<<< HEAD
-
-
-=======
 #include "sound/ym2413.h"
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 
@@ -50,17 +45,10 @@ public:
 	tilemap_t *m_bg_tilemap;
 	tilemap_t *m_bg_2_tilemap;
 
-<<<<<<< HEAD
-	required_shared_ptr<UINT16> m_bg_videoram;
-	required_shared_ptr<UINT16> m_bg_2_videoram;
-	required_shared_ptr<UINT16> m_attr_videoram;
-	required_shared_ptr<UINT16> m_attr_2_videoram;
-=======
 	required_shared_ptr<uint16_t> m_bg_videoram;
 	required_shared_ptr<uint16_t> m_bg_2_videoram;
 	required_shared_ptr<uint16_t> m_attr_videoram;
 	required_shared_ptr<uint16_t> m_attr_2_videoram;
->>>>>>> upstream/master
 
 
 	DECLARE_WRITE16_MEMBER(fresh_bg_videoram_w);
@@ -71,11 +59,7 @@ public:
 	TILE_GET_INFO_MEMBER(get_fresh_bg_2_tile_info);
 
 
-<<<<<<< HEAD
-	UINT16 m_d30000_value;
-=======
 	uint16_t m_d30000_value;
->>>>>>> upstream/master
 
 	DECLARE_WRITE16_MEMBER( d30000_write )
 	{
@@ -111,13 +95,8 @@ public:
 	TIMER_DEVICE_CALLBACK_MEMBER(fake_scanline);
 
 
-<<<<<<< HEAD
-	virtual void video_start();
-	UINT32 screen_update_fresh(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	virtual void video_start() override;
 	uint32_t screen_update_fresh(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	required_device<cpu_device> m_maincpu;
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
@@ -172,22 +151,13 @@ WRITE16_MEMBER(fresh_state::fresh_attr_2_videoram_w)
 
 void fresh_state::video_start()
 {
-<<<<<<< HEAD
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(fresh_state::get_fresh_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8,  64, 512);
-	m_bg_2_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(fresh_state::get_fresh_bg_2_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8,  64, 512);
-=======
 	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(fresh_state::get_fresh_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8,  64, 512);
 	m_bg_2_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(fresh_state::get_fresh_bg_2_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8,  64, 512);
->>>>>>> upstream/master
 
 	m_bg_tilemap->set_transparent_pen(255);
 }
 
-<<<<<<< HEAD
-UINT32 fresh_state::screen_update_fresh(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t fresh_state::screen_update_fresh(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	m_bg_2_tilemap->draw(screen, bitmap, cliprect, 0, 0);
 	m_bg_tilemap->draw(screen, bitmap, cliprect, 0, 0);
@@ -199,49 +169,6 @@ uint32_t fresh_state::screen_update_fresh(screen_device &screen, bitmap_ind16 &b
 static ADDRESS_MAP_START( fresh_map, AS_PROGRAM, 16, fresh_state )
 	AM_RANGE(0x000000, 0x03ffff) AM_ROM
 
-<<<<<<< HEAD
-	AM_RANGE(0xC00000, 0xC0ffff) AM_RAM_WRITE( fresh_bg_2_videoram_w ) AM_SHARE( "bg_videoram_2" )
-	AM_RANGE(0xC10000, 0xC1ffff) AM_RAM_WRITE( fresh_attr_2_videoram_w ) AM_SHARE( "attr_videoram_2" )
-	AM_RANGE(0xC20000, 0xC2ffff) AM_RAM_WRITE( fresh_bg_videoram_w ) AM_SHARE( "bg_videoram" )
-	AM_RANGE(0xC30000, 0xC3ffff) AM_RAM_WRITE( fresh_attr_videoram_w ) AM_SHARE( "attr_videoram" )
-
-//  AM_RANGE(0xC70000, 0xC70001) AM_RAM
-//  AM_RANGE(0xC70002, 0xC70003) AM_RAM
-	AM_RANGE(0xC71000, 0xC71001) AM_WRITE(c71000_write)
-//  AM_RANGE(0xC72000, 0xC72001) AM_RAM
-//  AM_RANGE(0xC72002, 0xC72003) AM_RAM
-//  AM_RANGE(0xC73000, 0xC73001) AM_RAM
-//  AM_RANGE(0xC73002, 0xC73003) AM_RAM
-	AM_RANGE(0xC74000, 0xC74001) AM_WRITE(c74000_write)
-	AM_RANGE(0xC75000, 0xC75001) AM_WRITE(c75000_write)
-	AM_RANGE(0xC76000, 0xC76001) AM_WRITE(c76000_write)
-//  AM_RANGE(0xC77000, 0xC77001) AM_RAM
-//  AM_RANGE(0xC77002, 0xC77003) AM_RAM
-
-
-	// written together
-	AM_RANGE(0xC40000, 0xC417ff) AM_RAM_DEVWRITE("palette", palette_device, write) AM_SHARE("palette")
-	AM_RANGE(0xC50000, 0xC517ff) AM_RAM_DEVWRITE("palette", palette_device, write_ext) AM_SHARE("palette_ext")
-
-//  AM_RANGE(0xD00000, 0xD00001) AM_RAM
-//  AM_RANGE(0xD10000, 0xD10001) AM_RAM
-	AM_RANGE(0xD30000, 0xD30001) AM_WRITE(d30000_write)
-	AM_RANGE(0xD40000, 0xD40001) AM_READ_PORT("IN0") //AM_WRITENOP // checks for 0x10
-//  AM_RANGE(0xD40002, 0xD40003) AM_WRITENOP
-	AM_RANGE(0xD70000, 0xD70001) AM_READ_PORT("IN1") // checks for 0x10, dead loop if fail
-
-	AM_RANGE(0xE00000, 0xE00001) AM_READ_PORT("DSW0") //AM_WRITENOP
-	AM_RANGE(0xE20000, 0xE20001) AM_READ_PORT("DSW1") //AM_WRITENOP
-	AM_RANGE(0xE40000, 0xE40001) AM_READ_PORT("DSW2")
-	AM_RANGE(0xE60000, 0xE60001) AM_READ_PORT("DSW3")
-	AM_RANGE(0xE80000, 0xE80001) AM_READ_PORT("IN6")
-	AM_RANGE(0xEA0000, 0xEA0001) AM_READ_PORT("IN7")
-	AM_RANGE(0xEC0000, 0xEC0001) AM_READ_PORT("IN8")
-	AM_RANGE(0xEE0000, 0xEE0001) AM_READ_PORT("IN9")
-
-
-	AM_RANGE(0xF00000, 0xF0FFFF) AM_RAM
-=======
 	AM_RANGE(0xc00000, 0xc0ffff) AM_RAM_WRITE(fresh_bg_2_videoram_w) AM_SHARE("bg_videoram_2")
 	AM_RANGE(0xc10000, 0xc1ffff) AM_RAM_WRITE(fresh_attr_2_videoram_w) AM_SHARE("attr_videoram_2")
 	AM_RANGE(0xc20000, 0xc2ffff) AM_RAM_WRITE(fresh_bg_videoram_w) AM_SHARE("bg_videoram")
@@ -284,7 +211,6 @@ static ADDRESS_MAP_START( fresh_map, AS_PROGRAM, 16, fresh_state )
 
 
 	AM_RANGE(0xf00000, 0xf0ffff) AM_RAM
->>>>>>> upstream/master
 
 
 ADDRESS_MAP_END
@@ -663,11 +589,7 @@ TIMER_DEVICE_CALLBACK_MEMBER(fresh_state::fake_scanline)
 }
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( fresh, fresh_state )
-=======
 static MACHINE_CONFIG_START( fresh )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, 24000000/2 )
@@ -689,13 +611,10 @@ static MACHINE_CONFIG_START( fresh )
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", fresh)
 
 	/* sound hw? */
-<<<<<<< HEAD
-=======
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
 	MCFG_SOUND_ADD("ymsnd", YM2413, 4000000) // actual clock and type unknown
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
@@ -715,8 +634,4 @@ ROM_END
 
 
 // title shows Fruit Fresh but on resetting you get text strings of 'Dream World V2.41SI 97. 1.28'
-<<<<<<< HEAD
-GAME( 1996, fresh, 0, fresh, fresh, driver_device, 0, ROT0, "Chain Leisure", "Fruit Fresh (Italy)", MACHINE_NOT_WORKING|MACHINE_NO_SOUND )
-=======
 GAME( 1996, fresh, 0, fresh, fresh, fresh_state, 0, ROT0, "Chain Leisure", "Fruit Fresh (Italy)", MACHINE_NOT_WORKING )
->>>>>>> upstream/master

@@ -28,15 +28,6 @@
 //  constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const device_type NES_BENSHIENG = &device_creator<nes_benshieng_device>;
-
-
-nes_benshieng_device::nes_benshieng_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: nes_nrom_device(mconfig, NES_BENSHIENG, "NES Cart Benshieng PCB", tag, owner, clock, "nes_benshieng", __FILE__),
-	m_dipsetting(0)
-				{
-=======
 DEFINE_DEVICE_TYPE(NES_BENSHIENG, nes_benshieng_device, "nes_benshieng", "NES Cart Benshieng PCB")
 
 
@@ -44,7 +35,6 @@ nes_benshieng_device::nes_benshieng_device(const machine_config &mconfig, const 
 	: nes_nrom_device(mconfig, NES_BENSHIENG, tag, owner, clock)
 	, m_dipsetting(0)
 {
->>>>>>> upstream/master
 }
 
 
@@ -98,11 +88,7 @@ void nes_benshieng_device::update_banks()
 
 WRITE8_MEMBER(nes_benshieng_device::write_h)
 {
-<<<<<<< HEAD
-	UINT8 helper = (offset & 0xc00) >> 10;
-=======
 	uint8_t helper = (offset & 0xc00) >> 10;
->>>>>>> upstream/master
 	LOG_MMC(("benshieng write_h, offset: %04x, data: %02x\n", offset, data));
 //  m_mmc_dipsetting = ioport("CARTDIPS")->read();
 

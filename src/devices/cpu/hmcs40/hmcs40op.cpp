@@ -3,26 +3,12 @@
 
 // HMCS40 opcode handlers
 
-<<<<<<< HEAD
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #include "hmcs40.h"
 
 
 // internal helpers
 
-<<<<<<< HEAD
-inline UINT8 hmcs40_cpu_device::ram_r()
-{
-	UINT8 address = (m_x << 4 | m_y) & m_datamask;
-	return m_data->read_byte(address) & 0xf;
-}
-
-inline void hmcs40_cpu_device::ram_w(UINT8 data)
-{
-	UINT8 address = (m_x << 4 | m_y) & m_datamask;
-=======
 inline u8 hmcs40_cpu_device::ram_r()
 {
 	u8 address = (m_x << 4 | m_y) & m_datamask;
@@ -32,7 +18,6 @@ inline u8 hmcs40_cpu_device::ram_r()
 inline void hmcs40_cpu_device::ram_w(u8 data)
 {
 	u8 address = (m_x << 4 | m_y) & m_datamask;
->>>>>>> upstream/master
 	m_data->write_byte(address, data & 0xf);
 }
 
@@ -97,11 +82,7 @@ void hmcs40_cpu_device::op_xamr()
 	// XAMR m: Exchange A and MR(m)
 
 	// determine MR(Memory Register) location
-<<<<<<< HEAD
-	UINT8 address = m_op & 0xf;
-=======
 	u8 address = m_op & 0xf;
->>>>>>> upstream/master
 
 	// HMCS42: MR0 on file 0, MR4-MR15 on file 4 (there is no file 1-3)
 	// HMCS43: MR0-MR3 on file 0-3, MR4-MR15 on file 4
@@ -113,11 +94,7 @@ void hmcs40_cpu_device::op_xamr()
 		address |= 0xf0;
 
 	address &= m_datamask;
-<<<<<<< HEAD
-	UINT8 old_a = m_a;
-=======
 	u8 old_a = m_a;
->>>>>>> upstream/master
 	m_a = m_data->read_byte(address) & 0xf;
 	m_data->write_byte(address, old_a & 0xf);
 }
@@ -184,21 +161,13 @@ void hmcs40_cpu_device::op_xsp()
 	// XSP (XY): Exchange X and SPX, Y and SPY, or NOP if 0
 	if (m_op & 1)
 	{
-<<<<<<< HEAD
-		UINT8 old_x = m_x;
-=======
 		u8 old_x = m_x;
->>>>>>> upstream/master
 		m_x = m_spx;
 		m_spx = old_x;
 	}
 	if (m_op & 2)
 	{
-<<<<<<< HEAD
-		UINT8 old_y = m_y;
-=======
 		u8 old_y = m_y;
->>>>>>> upstream/master
 		m_y = m_spy;
 		m_spy = old_y;
 	}
@@ -224,11 +193,7 @@ void hmcs40_cpu_device::op_lbm()
 void hmcs40_cpu_device::op_xma()
 {
 	// XMA (XY): Exchange Memory and A
-<<<<<<< HEAD
-	UINT8 old_a = m_a;
-=======
 	u8 old_a = m_a;
->>>>>>> upstream/master
 	m_a = ram_r();
 	ram_w(old_a);
 	op_xsp();
@@ -237,11 +202,7 @@ void hmcs40_cpu_device::op_xma()
 void hmcs40_cpu_device::op_xmb()
 {
 	// XMB (XY): Exchange Memory and B
-<<<<<<< HEAD
-	UINT8 old_b = m_b;
-=======
 	u8 old_b = m_b;
->>>>>>> upstream/master
 	m_b = ram_r();
 	ram_w(old_b);
 	op_xsp();
@@ -291,11 +252,7 @@ void hmcs40_cpu_device::op_lbi()
 void hmcs40_cpu_device::op_ai()
 {
 	// AI i: Add Immediate to A
-<<<<<<< HEAD
-	m_a += (m_i);
-=======
 	m_a += m_i;
->>>>>>> upstream/master
 	m_s = m_a >> 4 & 1;
 	m_a &= 0xf;
 }
@@ -401,22 +358,14 @@ void hmcs40_cpu_device::op_rotl()
 void hmcs40_cpu_device::op_rotr()
 {
 	// ROTR: Rotate Right A with Carry
-<<<<<<< HEAD
-	UINT8 c = m_a & 1;
-=======
 	u8 c = m_a & 1;
->>>>>>> upstream/master
 	m_a = m_a >> 1 | m_c << 3;
 	m_c = c;
 }
 
 void hmcs40_cpu_device::op_or()
 {
-<<<<<<< HEAD
-	// OR: OR A and B
-=======
 	// OR: OR A with B
->>>>>>> upstream/master
 	m_a |= m_b;
 }
 
@@ -426,21 +375,13 @@ void hmcs40_cpu_device::op_or()
 void hmcs40_cpu_device::op_mnei()
 {
 	// MNEI i: Memory Not Equal to Immediate
-<<<<<<< HEAD
-	m_s = (ram_r() != (m_i));
-=======
 	m_s = (ram_r() != m_i);
->>>>>>> upstream/master
 }
 
 void hmcs40_cpu_device::op_ynei()
 {
 	// YNEI i: Y Not Equal to Immediate
-<<<<<<< HEAD
-	m_s = (m_y != (m_i));
-=======
 	m_s = (m_y != m_i);
->>>>>>> upstream/master
 }
 
 void hmcs40_cpu_device::op_anem()
@@ -458,11 +399,7 @@ void hmcs40_cpu_device::op_bnem()
 void hmcs40_cpu_device::op_alei()
 {
 	// ALEI i: A Less or Equal to Immediate
-<<<<<<< HEAD
-	m_s = (m_a <= (m_i));
-=======
 	m_s = (m_a <= m_i);
->>>>>>> upstream/master
 }
 
 void hmcs40_cpu_device::op_alem()
@@ -528,21 +465,13 @@ void hmcs40_cpu_device::op_lpu()
 	if (m_s)
 		m_page = m_op & 0x1f;
 	else
-<<<<<<< HEAD
-		m_op = 0; // fake nop
-=======
 		m_op |= 0x400; // indicate unhandled LPU
->>>>>>> upstream/master
 }
 
 void hmcs40_cpu_device::op_tbr()
 {
 	// TBR p: Table Branch
-<<<<<<< HEAD
-	UINT16 address = m_a | m_b << 4 | m_c << 8 | (m_op & 7) << 9 | (m_pc & ~0x3f);
-=======
 	u16 address = m_a | m_b << 4 | m_c << 8 | (m_op & 7) << 9 | (m_pc & ~0x3f);
->>>>>>> upstream/master
 	m_pc = address & m_pcmask;
 }
 
@@ -696,21 +625,13 @@ void hmcs40_cpu_device::op_td()
 void hmcs40_cpu_device::op_sedd()
 {
 	// SEDD n: Set Discrete I/O Latch Direct
-<<<<<<< HEAD
-	write_d(m_op & 0xf, 1);
-=======
 	write_d(m_op & 3, 1);
->>>>>>> upstream/master
 }
 
 void hmcs40_cpu_device::op_redd()
 {
 	// REDD n: Reset Discrete I/O Latch Direct
-<<<<<<< HEAD
-	write_d(m_op & 0xf, 0);
-=======
 	write_d(m_op & 3, 0);
->>>>>>> upstream/master
 }
 
 void hmcs40_cpu_device::op_lar()
@@ -741,13 +662,8 @@ void hmcs40_cpu_device::op_p()
 {
 	// P p: Pattern Generation
 	m_icount--;
-<<<<<<< HEAD
-	UINT16 address = m_a | m_b << 4 | m_c << 8 | (m_op & 7) << 9 | (m_pc & ~0x3f);
-	UINT16 o = m_program->read_word((address & m_prgmask) << 1);
-=======
 	u16 address = m_a | m_b << 4 | m_c << 8 | (m_op & 7) << 9 | (m_pc & ~0x3f);
 	u16 o = m_program->read_word((address & m_prgmask) << 1);
->>>>>>> upstream/master
 
 	// destination is determined by the 2 highest bits
 	if (o & 0x100)

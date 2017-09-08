@@ -7,14 +7,10 @@
 
 #include "emu.h"
 #include "includes/mpu4.h"
-<<<<<<< HEAD
-#include "cpu/m68000/m68000.h"
-=======
 
 #include "cpu/m68000/m68000.h"
 #include "screen.h"
 
->>>>>>> upstream/master
 #include "mpu4plasma.lh"
 
 
@@ -27,11 +23,7 @@ public:
 	{
 	}
 
-<<<<<<< HEAD
-	required_shared_ptr<UINT16> m_plasmaram;
-=======
 	required_shared_ptr<uint16_t> m_plasmaram;
->>>>>>> upstream/master
 
 	DECLARE_READ16_MEMBER( mpu4plasma_unk_r )
 	{
@@ -41,11 +33,7 @@ public:
 	DECLARE_WRITE16_MEMBER( mpu4plasma_unk_w )
 	{
 	}
-<<<<<<< HEAD
-	UINT32 screen_update_mpu4plasma(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	uint32_t screen_update_mpu4plasma(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 };
 
 
@@ -64,22 +52,13 @@ static ADDRESS_MAP_START( mpu4plasma_map, AS_PROGRAM, 16, mpu4plasma_state )
 	AM_RANGE(0xffff04, 0xffff05) AM_WRITE( mpu4plasma_unk_w )
 ADDRESS_MAP_END
 
-<<<<<<< HEAD
-UINT32 mpu4plasma_state::screen_update_mpu4plasma(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t mpu4plasma_state::screen_update_mpu4plasma(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	// don't know if this really gets drawn straight from ram..
 	int base = 0x1600 / 2;
 
-<<<<<<< HEAD
-	UINT16* rambase = m_plasmaram;
-	UINT16* dst_bitmap;
-=======
 	uint16_t* rambase = m_plasmaram;
 	uint16_t* dst_bitmap;
->>>>>>> upstream/master
 
 	int i,y,x,p;
 	i = 0;
@@ -90,19 +69,11 @@ uint32_t mpu4plasma_state::screen_update_mpu4plasma(screen_device &screen, bitma
 
 		for (x=0;x<128/16;x++)
 		{
-<<<<<<< HEAD
-			UINT16 pix = rambase[base+i];
-
-			for (p=0;p<16;p++)
-			{
-				UINT16 bit = (pix << p)&0x8000;
-=======
 			uint16_t pix = rambase[base+i];
 
 			for (p=0;p<16;p++)
 			{
 				uint16_t bit = (pix << p)&0x8000;
->>>>>>> upstream/master
 				if (bit) dst_bitmap[x*16 + p] = 1;
 				else dst_bitmap[x*16 + p] = 0;
 			}
@@ -116,11 +87,7 @@ uint32_t mpu4plasma_state::screen_update_mpu4plasma(screen_device &screen, bitma
 }
 
 
-<<<<<<< HEAD
-MACHINE_CONFIG_DERIVED_CLASS( mpu4plasma    , mod2, mpu4plasma_state )
-=======
 MACHINE_CONFIG_DERIVED( mpu4plasma, mod2 )
->>>>>>> upstream/master
 	MCFG_CPU_ADD("plasmacpu", M68000, 10000000)
 	MCFG_CPU_PROGRAM_MAP(mpu4plasma_map)
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", mpu4plasma_state,  irq4_line_hold)
@@ -229,19 +196,6 @@ ROM_END
 
 #define GAME_FLAGS (MACHINE_NOT_WORKING|MACHINE_REQUIRES_ARTWORK|MACHINE_MECHANICAL)
 
-<<<<<<< HEAD
-GAMEL(199?, m4bigchf    ,0          ,mpu4plasma     ,mpu4               , mpu4_state,m4default          ,ROT0,   "Barcrest","Big Chief (Barcrest) (MPU4 w/ Plasma DMD) (set 1)",                        GAME_FLAGS|MACHINE_NO_SOUND,layout_mpu4plasma )
-GAMEL(199?, m4bigchfa   ,m4bigchf   ,mpu4plasma     ,mpu4               , mpu4_state,m4default          ,ROT0,   "Barcrest","Big Chief (Barcrest) (MPU4 w/ Plasma DMD) (set 2)",                        GAME_FLAGS|MACHINE_NO_SOUND,layout_mpu4plasma )
-GAMEL(199?, m4bigchfb   ,m4bigchf   ,mpu4plasma     ,mpu4               , mpu4_state,m4default          ,ROT0,   "Barcrest","Big Chief (Barcrest) (MPU4 w/ Plasma DMD) (set 3)",                        GAME_FLAGS|MACHINE_NO_SOUND,layout_mpu4plasma )
-GAMEL(199?, m4bigchfc   ,m4bigchf   ,mpu4plasma     ,mpu4               , mpu4_state,m4default          ,ROT0,   "Barcrest","Big Chief (Barcrest) (MPU4 w/ Plasma DMD) (set 4)",                        GAME_FLAGS|MACHINE_NO_SOUND,layout_mpu4plasma )
-
-GAMEL(199?, m4click     ,0          ,mpu4plasma     ,mpu4               , mpu4_state,m4default          ,ROT0,   "Barcrest","Clickity Click (Barcrest) (MPU4 w/ Plasma DMD)",                           GAME_FLAGS|MACHINE_NO_SOUND,layout_mpu4plasma )
-
-// not confirmed to be plasma, is this an alt version of big chief? maybe it uses the same plasma roms?
-GAMEL(199?, m4apach     ,0          ,mpu4plasma     ,mpu4               , mpu4_state,m4default          ,ROT0,   "Barcrest","Apache (Barcrest) (MPU4 w/ Plasma DMD?)",                      GAME_FLAGS|MACHINE_NO_SOUND,layout_mpu4plasma )
-// not confirmed to be plasma, but acts like it
-GAMEL(199?, m4elite     ,0          ,mpu4plasma     ,mpu4               , mpu4_state,m4default          ,ROT0,   "Barcrest","Elite (Barcrest) (MPU4 w/ Plasma DMD?)",                       GAME_FLAGS|MACHINE_NO_SOUND,layout_mpu4plasma )
-=======
 GAMEL(199?, m4bigchf    ,0          ,mpu4plasma     ,mpu4               , mpu4plasma_state,m4default          ,ROT0,   "Barcrest","Big Chief (Barcrest) (MPU4 w/ Plasma DMD) (set 1)",            GAME_FLAGS|MACHINE_NO_SOUND,layout_mpu4plasma )
 GAMEL(199?, m4bigchfa   ,m4bigchf   ,mpu4plasma     ,mpu4               , mpu4plasma_state,m4default          ,ROT0,   "Barcrest","Big Chief (Barcrest) (MPU4 w/ Plasma DMD) (set 2)",            GAME_FLAGS|MACHINE_NO_SOUND,layout_mpu4plasma )
 GAMEL(199?, m4bigchfb   ,m4bigchf   ,mpu4plasma     ,mpu4               , mpu4plasma_state,m4default          ,ROT0,   "Barcrest","Big Chief (Barcrest) (MPU4 w/ Plasma DMD) (set 3)",            GAME_FLAGS|MACHINE_NO_SOUND,layout_mpu4plasma )
@@ -253,4 +207,3 @@ GAMEL(199?, m4click     ,0          ,mpu4plasma     ,mpu4               , mpu4pl
 GAMEL(199?, m4apach     ,0          ,mpu4plasma     ,mpu4               , mpu4plasma_state,m4default          ,ROT0,   "Barcrest","Apache (Barcrest) (MPU4 w/ Plasma DMD?)",                      GAME_FLAGS|MACHINE_NO_SOUND,layout_mpu4plasma )
 // not confirmed to be plasma, but acts like it
 GAMEL(199?, m4elite     ,0          ,mpu4plasma     ,mpu4               , mpu4plasma_state,m4default          ,ROT0,   "Barcrest","Elite (Barcrest) (MPU4 w/ Plasma DMD?)",                       GAME_FLAGS|MACHINE_NO_SOUND,layout_mpu4plasma )
->>>>>>> upstream/master

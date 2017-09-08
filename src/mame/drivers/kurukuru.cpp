@@ -1,37 +1,21 @@
 // license:BSD-3-Clause
 // copyright-holders:Roberto Fresca, hap
-<<<<<<< HEAD
-/******************************************************************************
-
-  KURU KURU PYON PYON
-  Taiyo Jidoki / Success
-
-=======
 /***********************************************************************************
 
   KURU KURU PYON PYON
   Success / Taiyo Jidoki
->>>>>>> upstream/master
 
   Driver by Roberto Fresca & hap.
 
 
   This hardware seems to be a derivative of MSX2 'on steroids'.
-<<<<<<< HEAD
-  It has many similarites with sothello.c and tonton.c
-=======
   It has many similarities with sothello.cpp and tonton.cpp
->>>>>>> upstream/master
 
   Special thanks to Charles MacDonald, for all the hardware traces: clocks,
   ports, descriptions and a lot of things... :)
 
 
-<<<<<<< HEAD
-*******************************************************************************
-=======
 ************************************************************************************
->>>>>>> upstream/master
 
   Technical Notes....
 
@@ -117,54 +101,18 @@
   |                                    | ULN2003A |   +++RESNET+++    +++RESNET+++   |'----------'|  |
   |                                    '----------'   ||||||||||||    ||||||||||||   '------------'  |
   |                                                                                                  |
-<<<<<<< HEAD
-  | 7908-B                                                                             SUCCESS CORP. |
-=======
   | 7908-B                         hole                                                SUCCESS CORP. |
->>>>>>> upstream/master
   |         .----------.           .--.                                         .----------.         |
   |         |          | | | | | | |  | | | | | | | | | | | | | | | | | | | | | |          |         |
   |         |          | | | | | | |  | | | | | | | | | | | | | | | | | | | | | |          |         |
   '---------'          '-----------'  '-----------------------------------------'          '---------'
-<<<<<<< HEAD
-                       2x6 edge conn             2x21 edge connector
-=======
                         <-------- 2x28 JAMMA compatible edge connector -------->
->>>>>>> upstream/master
 
 
   AA =  Texas Instruments RC4558P T835AJ34.
   AB =  NEC C1663C 8926B.
 
 
-<<<<<<< HEAD
-*******************************************************************************
-
-  General Notes....
-
-  The game name could be translated as "Croak Croak Hop Hop"
-  Kuru is the frog sound, and Pyon is the sound of jumps.
-
-  Coin 1 (key 5) could be set either as Coin 1 or as Payout button, through
-  a DIP switch.
-
-  If you get a 'medal jam' error, and the game is not responding anymore, press
-  RESET (key 0), and the game will reset to default values (even all counters
-  will be cleared).
-
-
-*******************************************************************************
-
-  * How to play...
-
-  Insert tokens (medals)...
-
-  You can bet to any (or all) of the following 5 characters: Bote, Oume, Pyoko,
-  Kunio, and Pyon Pyon. Press start, and the reels start to roll. You'll win if
-  you can get 3 of the choosen character(s) in a row, column or diagonal.
-
-  The black tadpoles behave just like jokers... If you have 2 choosen characters
-=======
   Pinout:
 
                    solder side |##| components
@@ -331,23 +279,15 @@
   win if you can get 3 of the chosen character(s) in a row, column or diagonal.
 
   The black tadpoles behave just like jokers... If you have 2 chosen characters
->>>>>>> upstream/master
   in a row and the remaining one is a black tadpole, it will transform into another
   character to complete the 3 in a row, allowing you to win.
 
   Red tadpoles are a bonus. Once you get one, it will go to the right panel,
   revealing a number. This number represents the extra credits you won.
 
-<<<<<<< HEAD
-
-  * Bookkeeping...
-
-  Pressing Bookkeeping key (key 9), you enter the Bookkeeping Mode. There are
-=======
   Bookkeeping...
 
   Pressing Bookkeeping key (key 0), you enter the Bookkeeping Mode. There are
->>>>>>> upstream/master
   2 screens with all the game information like DIP switches and statistics...
 
   1st screen...
@@ -366,40 +306,6 @@
 
   Pressing the Bookkeeping key once more, you exit the mode and go back to the game.
 
-<<<<<<< HEAD
-
-*******************************************************************************
-
-  ADPCM Samples....
-
-  There are 14 samples in the system.
-
-  00: "Boterin"
-  01:
-  02: "Hakase" ("professor")
-  03: "Pyokorin"
-  04: "Kunio"
-  05: "Pyon Pyon"
-  06:
-  07:
-  08: "Oume"
-  09: "Haipaa" ("hyper")
-  10: "Ichi ni tsuite" ("on your marks")
-  11: "Youi" ("get ready")
-  12: Bang sound for the tadpoles landing in the right panel.
-  13: Sound effect for reels when running.
-
-
-******************************************************************************/
-
-#include "emu.h"
-#include "cpu/z80/z80.h"
-#include "sound/ay8910.h"
-#include "sound/msm5205.h"
-#include "video/v9938.h"
-#include "machine/ticket.h"
-#include "machine/nvram.h"
-=======
   ----------------------------------------------------------------------------------
 
   * Pyon Pyon Jump:
@@ -480,28 +386,12 @@
 
 #define UNICODE_10YEN   "\xC2\xA5" "10"
 #define UNICODE_100YEN  "\xC2\xA5" "100"
->>>>>>> upstream/master
 
 class kurukuru_state : public driver_device
 {
 public:
 	kurukuru_state(const machine_config &mconfig, device_type type, const char *tag)
 		: driver_device(mconfig, type, tag),
-<<<<<<< HEAD
-		m_audiocpu(*this, "audiocpu"),
-		m_v9938(*this, "v9938"),
-		m_maincpu(*this, "maincpu"),
-		m_adpcm(*this, "adpcm"),
-		m_hopper(*this, "hopper"),
-		m_bank1(*this, "bank1")
-	{ }
-
-	required_device<cpu_device> m_audiocpu;
-	required_device<v9938_device> m_v9938;
-
-	UINT8 m_sound_irq_cause;
-	UINT8 m_adpcm_data;
-=======
 		m_maincpu(*this, "maincpu"),
 		m_audiocpu(*this, "audiocpu"),
 		m_v9938(*this, "v9938"),
@@ -521,7 +411,6 @@ public:
 
 	uint8_t m_sound_irq_cause;
 	uint8_t m_adpcm_data;
->>>>>>> upstream/master
 
 	DECLARE_WRITE8_MEMBER(kurukuru_out_latch_w);
 	DECLARE_WRITE8_MEMBER(kurukuru_bankswitch_w);
@@ -533,22 +422,10 @@ public:
 	DECLARE_WRITE8_MEMBER(ym2149_aout_w);
 	DECLARE_WRITE8_MEMBER(ym2149_bout_w);
 
-<<<<<<< HEAD
-	void update_sound_irq(UINT8 cause);
-	virtual void machine_start();
-	virtual void machine_reset();
-	DECLARE_WRITE_LINE_MEMBER(kurukuru_msm5205_vck);
-	DECLARE_WRITE_LINE_MEMBER(kurukuru_vdp_interrupt);
-	required_device<cpu_device> m_maincpu;
-	required_device<msm5205_device> m_adpcm;
-	required_device<ticket_dispenser_device> m_hopper;
-	required_memory_bank m_bank1;
-=======
 	void update_sound_irq(uint8_t cause);
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
 	DECLARE_WRITE_LINE_MEMBER(kurukuru_msm5205_vck);
->>>>>>> upstream/master
 };
 
 #define MAIN_CLOCK      XTAL_21_4772MHz
@@ -564,18 +441,8 @@ public:
 *                  Interrupts                    *
 *************************************************/
 
-<<<<<<< HEAD
-WRITE_LINE_MEMBER(kurukuru_state::kurukuru_vdp_interrupt)
-{
-	m_maincpu->set_input_line(0, (state ? ASSERT_LINE : CLEAR_LINE));
-}
-
-
-void kurukuru_state::update_sound_irq(UINT8 cause)
-=======
 
 void kurukuru_state::update_sound_irq(uint8_t cause)
->>>>>>> upstream/master
 {
 	m_sound_irq_cause = cause & 3;
 	if (m_sound_irq_cause)
@@ -584,11 +451,7 @@ void kurukuru_state::update_sound_irq(uint8_t cause)
 		// latch irq vector is $ef (rst $28)
 		// timer irq vector is $f7 (rst $30)
 		// if both are asserted, the vector becomes $f7 AND $ef = $e7 (rst $20)
-<<<<<<< HEAD
-		const UINT8 irq_vector[4] = { 0x00, 0xef, 0xf7, 0xe7 };
-=======
 		const uint8_t irq_vector[4] = { 0x00, 0xef, 0xf7, 0xe7 };
->>>>>>> upstream/master
 		m_audiocpu->set_input_line_and_vector(0, ASSERT_LINE, irq_vector[m_sound_irq_cause]);
 	}
 	else
@@ -628,17 +491,10 @@ WRITE8_MEMBER(kurukuru_state::kurukuru_out_latch_w)
     07 | Not connected      | unused
 
 */
-<<<<<<< HEAD
-	coin_counter_w(machine(), 0, data & 0x01);      /* Coin Counter 1 */
-	coin_counter_w(machine(), 1, data & 0x20);      /* Coin Counter 2 */
-	coin_lockout_global_w(machine(), data & 0x40);  /* Coin Lock */
-	m_hopper->write(space, 0, (data & 0x40));    /* Hopper Motor */
-=======
 	machine().bookkeeping().coin_counter_w(0, data & 0x01);      /* Coin Counter 1 */
 	machine().bookkeeping().coin_counter_w(1, data & 0x20);      /* Coin Counter 2 */
 	machine().bookkeeping().coin_lockout_global_w(data & 0x40);  /* Coin Lock */
 	m_hopper->write(space, 0, (data & 0x40) ? 0x80 : 0);         /* Hopper Motor */
->>>>>>> upstream/master
 
 	if (data & 0x9e)
 		logerror("kurukuru_out_latch_w %02X @ %04X\n", data, space.device().safe_pc());
@@ -665,11 +521,7 @@ WRITE8_MEMBER(kurukuru_state::kurukuru_bankswitch_w)
 
 WRITE8_MEMBER(kurukuru_state::kurukuru_soundlatch_w)
 {
-<<<<<<< HEAD
-	soundlatch_byte_w(space, 0, data);
-=======
 	m_soundlatch->write(space, 0, data);
->>>>>>> upstream/master
 	update_sound_irq(m_sound_irq_cause | 1);
 }
 
@@ -693,8 +545,6 @@ static ADDRESS_MAP_START( kurukuru_io, AS_IO, 8, kurukuru_state )
 	AM_RANGE(0xd0, 0xd0) AM_MIRROR(0x0f) AM_DEVWRITE("ym2149", ay8910_device, data_w)
 ADDRESS_MAP_END
 
-<<<<<<< HEAD
-=======
 static ADDRESS_MAP_START( ppj_map, AS_PROGRAM, 8, kurukuru_state )
 	AM_RANGE(0x0000, 0x5fff) AM_ROM
 	AM_RANGE(0x6000, 0xdfff) AM_ROMBANK("bank1")
@@ -733,7 +583,6 @@ ADDRESS_MAP_END
  D0h  W --> YM2149 data W
 
 */
->>>>>>> upstream/master
 
 // Audio CPU
 
@@ -762,11 +611,7 @@ WRITE8_MEMBER(kurukuru_state::kurukuru_adpcm_reset_w)
 READ8_MEMBER(kurukuru_state::kurukuru_soundlatch_r)
 {
 	update_sound_irq(m_sound_irq_cause & ~1);
-<<<<<<< HEAD
-	return soundlatch_byte_r(space, 0);
-=======
 	return m_soundlatch->read(space, 0);
->>>>>>> upstream/master
 }
 
 READ8_MEMBER(kurukuru_state::kurukuru_adpcm_timer_irqack_r)
@@ -776,20 +621,12 @@ READ8_MEMBER(kurukuru_state::kurukuru_adpcm_timer_irqack_r)
 }
 
 
-<<<<<<< HEAD
-static ADDRESS_MAP_START( audio_map, AS_PROGRAM, 8, kurukuru_state )
-=======
 static ADDRESS_MAP_START( kurukuru_audio_map, AS_PROGRAM, 8, kurukuru_state )
->>>>>>> upstream/master
 	AM_RANGE(0x0000, 0xf7ff) AM_ROM
 	AM_RANGE(0xf800, 0xffff) AM_RAM
 ADDRESS_MAP_END
 
-<<<<<<< HEAD
-static ADDRESS_MAP_START( audio_io, AS_IO, 8, kurukuru_state )
-=======
 static ADDRESS_MAP_START( kurukuru_audio_io, AS_IO, 8, kurukuru_state )
->>>>>>> upstream/master
 	ADDRESS_MAP_GLOBAL_MASK(0x7f)
 	AM_RANGE(0x40, 0x40) AM_MIRROR(0x0f) AM_WRITE(kurukuru_adpcm_data_w)
 	AM_RANGE(0x50, 0x50) AM_MIRROR(0x0f) AM_WRITE(kurukuru_adpcm_reset_w)
@@ -797,8 +634,6 @@ static ADDRESS_MAP_START( kurukuru_audio_io, AS_IO, 8, kurukuru_state )
 	AM_RANGE(0x70, 0x70) AM_MIRROR(0x0f) AM_READ(kurukuru_adpcm_timer_irqack_r)
 ADDRESS_MAP_END
 
-<<<<<<< HEAD
-=======
 static ADDRESS_MAP_START( ppj_audio_map, AS_PROGRAM, 8, kurukuru_state )
 	AM_RANGE(0x0000, 0xf7ff) AM_ROM
 	AM_RANGE(0xf800, 0xffff) AM_RAM
@@ -816,7 +651,6 @@ ADDRESS_MAP_END
   40h R-  --> soundlatch...
   50h R-  --> adpcm irq ack
 */
->>>>>>> upstream/master
 
 /* YM2149 ports */
 WRITE8_MEMBER(kurukuru_state::ym2149_aout_w)
@@ -839,16 +673,6 @@ static INPUT_PORTS_START( kurukuru )
 /*  bits d0-d3 are JAMMA top side pins 20,21,22,23, bits d4-d7 are JAMMA bottom side pins 20,21,22,23
     so that's player 1 left/right/button1/button2 then player 2 left/right/button1/button2
 */
-<<<<<<< HEAD
-	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_BUTTON1 ) PORT_CODE(KEYCODE_Z) PORT_NAME("1st (Bote)")
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_BUTTON2 ) PORT_CODE(KEYCODE_X) PORT_NAME("2nd (Oume)")
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_BUTTON3 ) PORT_CODE(KEYCODE_C) PORT_NAME("3rd (Pyoko)")
-	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_BUTTON4 ) PORT_CODE(KEYCODE_V) PORT_NAME("4th (Kunio)")
-	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_BUTTON5 ) PORT_CODE(KEYCODE_B) PORT_NAME("5th (Pyon Pyon)")
-	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_BUTTON6 ) PORT_CODE(KEYCODE_N) PORT_NAME("Unknown A0h - bit5")
-	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_BUTTON7 ) PORT_CODE(KEYCODE_M) PORT_NAME("Unknown A0h - bit6")
-	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_START1 )
-=======
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_POKER_HOLD1 ) PORT_NAME("1st (Botechin)")                       // edge connector pin 20 top
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_POKER_HOLD2 ) PORT_NAME("2nd (Oume)")                           // edge connector pin 21 top
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_POKER_HOLD3 ) PORT_NAME("3rd (Pyokorin)")                       // edge connector pin 22 top
@@ -857,25 +681,11 @@ static INPUT_PORTS_START( kurukuru )
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_UNUSED )                                                        // edge connector pin 21 bottom
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_UNUSED )                                                        // edge connector pin 22 bottom
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_START1 )                                                        // edge connector pin 23 bottom
->>>>>>> upstream/master
 
 	PORT_START("IN1")
 /*  routed to JAMMA top side 15, bottom 15, top 16, bottom 16, top 17, bottom 17, top 24, bottom 24
     so that's test, tilt/slam, coin 1, coin 2, p1 start, p2 start, p1 button 3, p2 button 3
 */
-<<<<<<< HEAD
-	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_SERVICE ) PORT_CODE(KEYCODE_9) PORT_NAME("Bookkeeping")
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_COIN3 )   PORT_NAME("Medal In")
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SERVICE ) PORT_CODE(KEYCODE_0) PORT_NAME("Reset Button")
-	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_COIN2 )
-	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_OTHER )   PORT_CODE(KEYCODE_A) PORT_NAME("Unknown B0h - bit4")
-	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_COIN1 )   PORT_IMPULSE (2)
-	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_SPECIAL ) PORT_READ_LINE_DEVICE_MEMBER("hopper", ticket_dispenser_device, line_r)    // hopper feedback
-	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_GAMBLE_PAYOUT )
-
-	PORT_START("DSW1")  // found in the PCB: 11111111
-	PORT_DIPNAME( 0x07, 0x00, "Coinage A (100 Y)" ) PORT_DIPLOCATION("DSW1:1,2,3")
-=======
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_GAMBLE_BOOK )                                                   // edge connector pin 15 top
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_COIN1 )   PORT_NAME("Medal In")                                 // edge connector pin 15 bottom
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_MEMORY_RESET )                                                  // edge connector pin 16 top
@@ -887,7 +697,6 @@ static INPUT_PORTS_START( kurukuru )
 
 	PORT_START("DSW1")  // found in the PCB: 11111111
 	PORT_DIPNAME( 0x07, 0x00, "Coinage A (" UNICODE_100YEN ")" ) PORT_DIPLOCATION("DSW1:1,2,3")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x02, "1 Coin / 3 Medal" )
 	PORT_DIPSETTING(    0x06, "1 Coin / 4 Medal" )
 	PORT_DIPSETTING(    0x01, "1 Coin / 5 Medal" )
@@ -896,29 +705,17 @@ static INPUT_PORTS_START( kurukuru )
 	PORT_DIPSETTING(    0x07, "1 Coin / 11 Medal" )
 	PORT_DIPSETTING(    0x04, "1 Coin / 20 Medal" )
 	PORT_DIPSETTING(    0x00, "1 Coin / 50 Medal" )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x18, 0x00, "Coinage B (10 Y)" )  PORT_DIPLOCATION("DSW1:4,5")
-=======
 	PORT_DIPNAME( 0x18, 0x00, "Coinage B (" UNICODE_10YEN ")" )  PORT_DIPLOCATION("DSW1:4,5")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x00, "3 Coin / 1 Medal" )
 	PORT_DIPSETTING(    0x10, "2 Coin / 1 Medal" )
 	PORT_DIPSETTING(    0x18, "1 Coin / 1 Medal" )
 	PORT_DIPSETTING(    0x08, "1 Coin / 2 Medal" )
 	PORT_DIPNAME( 0x20, 0x00, "Coinage Config" )    PORT_DIPLOCATION("DSW1:6")
-<<<<<<< HEAD
-	PORT_DIPSETTING(    0x00, "Coin 1 = Normal; Medal In = 2 Credits by Medal" )
-	PORT_DIPSETTING(    0x20, "Coin 1 = Payout; Medal In = 1 Credit by Medal" )
-	PORT_DIPNAME( 0x40, 0x00, "Payout Mode" )       PORT_DIPLOCATION("DSW1:7")
-	PORT_DIPSETTING(    0x40, "Manual" )
-	PORT_DIPSETTING(    0x00, "Automatic" )
-=======
 	PORT_DIPSETTING(    0x00, UNICODE_100YEN " = Credits; Medal In = 2 Credits by Medal" )
 	PORT_DIPSETTING(    0x20, UNICODE_100YEN " = Exchange; Medal In = 1 Credit by Medal" )
 	PORT_DIPNAME( 0x40, 0x00, "Payout Mode" )       PORT_DIPLOCATION("DSW1:7")
 	PORT_DIPSETTING(    0x40, "Automatic" )
 	PORT_DIPSETTING(    0x00, "Manual" )
->>>>>>> upstream/master
 	PORT_DIPNAME( 0x80, 0x00, "Repeat Last Bet")    PORT_DIPLOCATION("DSW1:8")
 	PORT_DIPSETTING(    0x80, DEF_STR( No ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( Yes ) )
@@ -951,8 +748,6 @@ static INPUT_PORTS_START( kurukuru )
 INPUT_PORTS_END
 
 
-<<<<<<< HEAD
-=======
 static INPUT_PORTS_START( ppj )
 	PORT_START("IN0")
 /*  bits d0-d3 are JAMMA top side pins 20,21,22,23, bits d4-d7 are JAMMA bottom side pins 20,21,22,23
@@ -1035,7 +830,6 @@ static INPUT_PORTS_START( ppj )
 INPUT_PORTS_END
 
 
->>>>>>> upstream/master
 /*************************************************
 *        Machine Start & Reset Routines          *
 *************************************************/
@@ -1054,11 +848,7 @@ void kurukuru_state::machine_reset()
 *                 Machine Driver                 *
 *************************************************/
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( kurukuru, kurukuru_state )
-=======
 static MACHINE_CONFIG_START( kurukuru )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu",Z80, CPU_CLOCK)
@@ -1066,27 +856,13 @@ static MACHINE_CONFIG_START( kurukuru )
 	MCFG_CPU_IO_MAP(kurukuru_io)
 
 	MCFG_CPU_ADD("audiocpu", Z80, CPU_CLOCK)
-<<<<<<< HEAD
-	MCFG_CPU_PROGRAM_MAP(audio_map)
-	MCFG_CPU_IO_MAP(audio_io)
-=======
 	MCFG_CPU_PROGRAM_MAP(kurukuru_audio_map)
 	MCFG_CPU_IO_MAP(kurukuru_audio_io)
->>>>>>> upstream/master
 
 	MCFG_NVRAM_ADD_0FILL("nvram")
 
 	/* video hardware */
 	MCFG_V9938_ADD("v9938", "screen", VDP_MEM, MAIN_CLOCK)
-<<<<<<< HEAD
-	MCFG_V99X8_INTERRUPT_CALLBACK(WRITELINE(kurukuru_state,kurukuru_vdp_interrupt))
-	MCFG_V99X8_SCREEN_ADD_NTSC("screen", "v9938", MAIN_CLOCK)
-
-	MCFG_TICKET_DISPENSER_ADD("hopper", attotime::from_msec(HOPPER_PULSE), TICKET_MOTOR_ACTIVE_LOW, TICKET_STATUS_ACTIVE_LOW )
-
-	/* sound hardware */
-	MCFG_SPEAKER_STANDARD_MONO("mono")
-=======
 	MCFG_V99X8_INTERRUPT_CALLBACK(INPUTLINE("maincpu", 0))
 	MCFG_V99X8_SCREEN_ADD_NTSC("screen", "v9938", MAIN_CLOCK)
 
@@ -1097,7 +873,6 @@ static MACHINE_CONFIG_START( kurukuru )
 
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 
->>>>>>> upstream/master
 	MCFG_SOUND_ADD("ym2149", YM2149, YM2149_CLOCK)
 	MCFG_AY8910_PORT_B_READ_CB(IOPORT("DSW2"))
 	MCFG_AY8910_PORT_A_WRITE_CB(WRITE8(kurukuru_state, ym2149_aout_w))
@@ -1106,26 +881,11 @@ static MACHINE_CONFIG_START( kurukuru )
 
 	MCFG_SOUND_ADD("adpcm", MSM5205, M5205_CLOCK)
 	MCFG_MSM5205_VCLK_CB(WRITELINE(kurukuru_state, kurukuru_msm5205_vck))
-<<<<<<< HEAD
-	MCFG_MSM5205_PRESCALER_SELECTOR(MSM5205_S48_4B)      /* changed on the fly */
-=======
 	MCFG_MSM5205_PRESCALER_SELECTOR(S48_4B)      /* changed on the fly */
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.80)
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-/***************************************************************************
-
-  Game driver(s)
-
-***************************************************************************/
-
-ROM_START( kurukuru )
-	ROM_REGION( 0x08000, "maincpu", 0 )
-	ROM_LOAD( "kp_17l.ic17",  0x00000, 0x08000, CRC(9b552ebc) SHA1(07d0e62b7fdad381963a345376b72ad31eb7b96d) ) // program code
-=======
 static MACHINE_CONFIG_START( ppj )
 
 	/* basic machine hardware */
@@ -1175,7 +935,6 @@ ROM_START( kurukuru )
 	ROM_REGION( 0x08000, "maincpu", 0 )
 	ROM_LOAD( "kp_17l.ic17",  0x00000, 0x08000, CRC(9b552ebc) SHA1(07d0e62b7fdad381963a345376b72ad31eb7b96d) ) // program code
 	// Game ID string: "carp carp carp hiroshima ---"
->>>>>>> upstream/master
 
 	ROM_REGION( 0x40000, "user1", 0 ) // maincpu banked roms
 	ROM_FILL(                 0x00000, 0x10000, 0xff )                                                         // ic23: unpopulated
@@ -1193,11 +952,6 @@ ROM_START( kurukuru )
 	ROM_LOAD( "7908b-4.ic32", 0x0600, 0x0034, CRC(bddf925e) SHA1(861cf5966444d0c0392241e5cfa08db475fb439a) )
 ROM_END
 
-<<<<<<< HEAD
-
-/*    YEAR  NAME      PARENT  MACHINE   INPUT     STATE          INIT  ROT    COMPANY                   FULLNAME                       FLAGS  */
-GAME( 199?, kurukuru, 0,      kurukuru, kurukuru, driver_device, 0,    ROT0, "Success / Taiyo Jidoki", "Kuru Kuru Pyon Pyon (Japan)",  0 )
-=======
 /*  Pyon Pyon Jump.
     Ver 1.40.
     199?, Success / Taiyo Jidoki.
@@ -1236,4 +990,3 @@ GAME( 199?, ppj,      0,      ppj,      ppj,      kurukuru_state, 0,    ROT0, "S
 
 //    199?, Success / Taiyo Jidoki, Pyon Pyon
 //    1990, Success / Taiyo Jidoki, Sui Sui Pyon Pyon
->>>>>>> upstream/master

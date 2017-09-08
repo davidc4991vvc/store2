@@ -17,16 +17,11 @@
 
 */
 
-<<<<<<< HEAD
-#include "hsg.h"
-
-=======
 #include "emu.h"
 #include "hsg.h"
 
 #include "screen.h"
 
->>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -34,11 +29,7 @@
 //**************************************************************************
 
 #define EF9365_TAG  "ef9365"
-<<<<<<< HEAD
-#define EF9366_TAG  "ef9366"
-=======
 #define EF9366_TAG  EF9365_TAG
->>>>>>> upstream/master
 #define SCREEN_TAG  "screen"
 
 
@@ -47,13 +38,8 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type CBM8000_HSG_A = &device_creator<cbm8000_hsg_a_t>;
-const device_type CBM8000_HSG_B = &device_creator<cbm8000_hsg_b_t>;
-=======
 DEFINE_DEVICE_TYPE(CBM8000_HSG_A, cbm8000_hsg_a_device, "cbm8000_hsg_a", "CBM 8000 High Speed Graphics (A)")
 DEFINE_DEVICE_TYPE(CBM8000_HSG_B, cbm8000_hsg_b_device, "cbm8000_hsg_b", "CBM 8000 High Speed Graphics (B)")
->>>>>>> upstream/master
 
 
 //-------------------------------------------------
@@ -73,76 +59,13 @@ ROM_END
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const rom_entry *cbm8000_hsg_t::device_rom_region() const
-=======
 const tiny_rom_entry *cbm8000_hsg_device::device_rom_region() const
->>>>>>> upstream/master
 {
 	return ROM_NAME( cbm8000_hsg );
 }
 
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  screen_update -
-//-------------------------------------------------
-
-UINT32 cbm8000_hsg_t::screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
-{
-	return 0;
-}
-
-
-//-------------------------------------------------
-//  MACHINE_CONFIG_FRAGMENT( cbm8000_hsg_a )
-//-------------------------------------------------
-
-static MACHINE_CONFIG_FRAGMENT( cbm8000_hsg_a )
-	MCFG_SCREEN_ADD(SCREEN_TAG, RASTER)
-	MCFG_SCREEN_UPDATE_DEVICE(DEVICE_SELF, cbm8000_hsg_t, screen_update)
-	MCFG_SCREEN_SIZE(512, 512)
-	MCFG_SCREEN_VISIBLE_AREA(0, 512-1, 0, 512-1)
-	MCFG_SCREEN_REFRESH_RATE(25)
-	MCFG_PALETTE_ADD_MONOCHROME_GREEN("palette")
-
-	//MCFG_DEVICE_ADD(EF9365_TAG, EF9365, 0)
-MACHINE_CONFIG_END
-
-
-//-------------------------------------------------
-//  MACHINE_CONFIG_FRAGMENT( cbm8000_hsg_b )
-//-------------------------------------------------
-
-static MACHINE_CONFIG_FRAGMENT( cbm8000_hsg_b )
-	MCFG_SCREEN_ADD(SCREEN_TAG, RASTER)
-	MCFG_SCREEN_UPDATE_DEVICE(DEVICE_SELF, cbm8000_hsg_t, screen_update)
-	MCFG_SCREEN_SIZE(512, 256)
-	MCFG_SCREEN_VISIBLE_AREA(0, 512-1, 0, 256-1)
-	MCFG_SCREEN_REFRESH_RATE(50)
-	MCFG_PALETTE_ADD_MONOCHROME_GREEN("palette")
-
-	//MCFG_DEVICE_ADD(EF9366_TAG, EF9366, 0)
-MACHINE_CONFIG_END
-
-
-//-------------------------------------------------
-//  machine_config_additions - device-specific
-//  machine configurations
-//-------------------------------------------------
-
-machine_config_constructor cbm8000_hsg_a_t::device_mconfig_additions() const
-{
-	return MACHINE_CONFIG_NAME( cbm8000_hsg_a );
-}
-
-machine_config_constructor cbm8000_hsg_b_t::device_mconfig_additions() const
-{
-	return MACHINE_CONFIG_NAME( cbm8000_hsg_b );
-}
-
-
-=======
 //  ADDRESS_MAP( hsg_a_map )
 //-------------------------------------------------
 
@@ -199,21 +122,12 @@ MACHINE_CONFIG_MEMBER( cbm8000_hsg_b_device::device_add_mconfig )
 MACHINE_CONFIG_END
 
 
->>>>>>> upstream/master
 
 //**************************************************************************
 //  LIVE DEVICE
 //**************************************************************************
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  cbm8000_hsg_t - constructor
-//-------------------------------------------------
-
-cbm8000_hsg_t::cbm8000_hsg_t(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source) :
-	device_t(mconfig, type, name, tag, owner, clock, shortname, source),
-	device_pet_expansion_card_interface(mconfig, *this),
-=======
 //  cbm8000_hsg_device - constructor
 //-------------------------------------------------
 
@@ -221,23 +135,11 @@ cbm8000_hsg_device::cbm8000_hsg_device(const machine_config &mconfig, device_typ
 	device_t(mconfig, type, tag, owner, clock),
 	device_pet_expansion_card_interface(mconfig, *this),
 	m_gdc(*this, EF9365_TAG),
->>>>>>> upstream/master
 	m_9000(*this, "9000"),
 	m_a000(*this, "a000")
 {
 }
 
-<<<<<<< HEAD
-cbm8000_hsg_a_t::cbm8000_hsg_a_t(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-	cbm8000_hsg_t(mconfig, CBM8000_HSG_A, "CBM 8000 High Speed Graphics (A)", tag, owner, clock, "cbm8000_hsg_a", __FILE__)
-	//m_gdc(*this, EF9365_TAG)
-{
-}
-
-cbm8000_hsg_b_t::cbm8000_hsg_b_t(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-	cbm8000_hsg_t(mconfig, CBM8000_HSG_B, "CBM 8000 High Speed Graphics (B)", tag, owner, clock, "cbm8000_hsg_b", __FILE__)
-	//m_gdc(*this, EF9366_TAG)
-=======
 cbm8000_hsg_a_device::cbm8000_hsg_a_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	cbm8000_hsg_device(mconfig, CBM8000_HSG_A, tag, owner, clock)
 {
@@ -245,7 +147,6 @@ cbm8000_hsg_a_device::cbm8000_hsg_a_device(const machine_config &mconfig, const 
 
 cbm8000_hsg_b_device::cbm8000_hsg_b_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	cbm8000_hsg_device(mconfig, CBM8000_HSG_B, tag, owner, clock)
->>>>>>> upstream/master
 {
 }
 
@@ -254,11 +155,7 @@ cbm8000_hsg_b_device::cbm8000_hsg_b_device(const machine_config &mconfig, const 
 //  device_start - device-specific startup
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void cbm8000_hsg_t::device_start()
-=======
 void cbm8000_hsg_device::device_start()
->>>>>>> upstream/master
 {
 }
 
@@ -267,15 +164,9 @@ void cbm8000_hsg_device::device_start()
 //  device_reset - device-specific reset
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void cbm8000_hsg_t::device_reset()
-{
-	//m_gdc->reset();
-=======
 void cbm8000_hsg_device::device_reset()
 {
 	m_gdc->reset();
->>>>>>> upstream/master
 }
 
 
@@ -283,11 +174,7 @@ void cbm8000_hsg_device::device_reset()
 //  pet_norom_r - NO ROM read
 //-------------------------------------------------
 
-<<<<<<< HEAD
-int cbm8000_hsg_t::pet_norom_r(address_space &space, offs_t offset, int sel)
-=======
 int cbm8000_hsg_device::pet_norom_r(address_space &space, offs_t offset, int sel)
->>>>>>> upstream/master
 {
 	return !(offset >= 0x9000 && offset < 0xaf00);
 }
@@ -297,11 +184,7 @@ int cbm8000_hsg_device::pet_norom_r(address_space &space, offs_t offset, int sel
 //  pet_bd_r - buffered data read
 //-------------------------------------------------
 
-<<<<<<< HEAD
-UINT8 cbm8000_hsg_t::pet_bd_r(address_space &space, offs_t offset, UINT8 data, int &sel)
-=======
 uint8_t cbm8000_hsg_device::pet_bd_r(address_space &space, offs_t offset, uint8_t data, int &sel)
->>>>>>> upstream/master
 {
 	switch (sel)
 	{
@@ -337,11 +220,7 @@ uint8_t cbm8000_hsg_device::pet_bd_r(address_space &space, offs_t offset, uint8_
 		}
 		else if (offset >= 0xaf70 && offset < 0xaf80)
 		{
-<<<<<<< HEAD
-			//data = m_gdc->data_r(space, offset & 0x0f);
-=======
 			data = m_gdc->data_r(space, offset & 0x0f);
->>>>>>> upstream/master
 		}
 		break;
 	}
@@ -354,11 +233,7 @@ uint8_t cbm8000_hsg_device::pet_bd_r(address_space &space, offs_t offset, uint8_
 //  pet_bd_w - buffered data write
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void cbm8000_hsg_t::pet_bd_w(address_space &space, offs_t offset, UINT8 data, int &sel)
-=======
 void cbm8000_hsg_device::pet_bd_w(address_space &space, offs_t offset, uint8_t data, int &sel)
->>>>>>> upstream/master
 {
 	if (offset == 0xaf00)
 	{
@@ -379,10 +254,6 @@ void cbm8000_hsg_device::pet_bd_w(address_space &space, offs_t offset, uint8_t d
 	}
 	else if (offset >= 0xaf70 && offset < 0xaf80)
 	{
-<<<<<<< HEAD
-		//m_gdc->data_w(space, offset & 0x0f, data);
-=======
 		m_gdc->data_w(space, offset & 0x0f, data);
->>>>>>> upstream/master
 	}
 }

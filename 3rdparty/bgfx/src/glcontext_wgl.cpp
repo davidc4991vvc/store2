@@ -1,11 +1,6 @@
 /*
-<<<<<<< HEAD
- * Copyright 2011-2015 Branimir Karadzic. All rights reserved.
- * License: http://www.opensource.org/licenses/BSD-2-Clause
-=======
  * Copyright 2011-2017 Branimir Karadzic. All rights reserved.
  * License: https://github.com/bkaradzic/bgfx#license-bsd-2-clause
->>>>>>> upstream/master
  */
 
 #include "bgfx_p.h"
@@ -64,11 +59,7 @@ namespace bgfx { namespace gl
 	static HGLRC createContext(HDC _hdc)
 	{
 		PIXELFORMATDESCRIPTOR pfd;
-<<<<<<< HEAD
-		memset(&pfd, 0, sizeof(pfd) );
-=======
 		bx::memSet(&pfd, 0, sizeof(pfd) );
->>>>>>> upstream/master
 		pfd.nSize = sizeof(PIXELFORMATDESCRIPTOR);
 		pfd.nVersion = 1;
 		pfd.dwFlags = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER;
@@ -254,11 +245,7 @@ namespace bgfx { namespace gl
 				BGFX_FATAL(NULL != m_context, Fatal::UnableToInitialize, "Failed to create context 0x%08x.", GetLastError() );
 
 				BX_STATIC_ASSERT(sizeof(contextAttrs) == sizeof(m_contextAttrs) );
-<<<<<<< HEAD
-				memcpy(m_contextAttrs, contextAttrs, sizeof(contextAttrs) );
-=======
 				bx::memCopy(m_contextAttrs, contextAttrs, sizeof(contextAttrs) );
->>>>>>> upstream/master
 			}
 
 			wglMakeCurrent(NULL, NULL);
@@ -281,11 +268,8 @@ namespace bgfx { namespace gl
 		}
 
 		import();
-<<<<<<< HEAD
-=======
 
 		g_internalData.context = m_context;
->>>>>>> upstream/master
 	}
 
 	void GlContext::destroy()
@@ -334,10 +318,7 @@ namespace bgfx { namespace gl
 	void GlContext::destroySwapChain(SwapChainGL*  _swapChain)
 	{
 		BX_DELETE(g_allocator, _swapChain);
-<<<<<<< HEAD
-=======
 		wglMakeCurrent(m_hdc, m_context);
->>>>>>> upstream/master
 	}
 
 	void GlContext::swap(SwapChainGL* _swapChain)

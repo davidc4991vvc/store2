@@ -77,15 +77,9 @@
 */
 
 
-<<<<<<< HEAD
-inline int segag80v_state::adjust_xy(int rawx, int rawy, int *outx, int *outy)
-{
-	int clipped = FALSE;
-=======
 inline bool segag80v_state::adjust_xy(int rawx, int rawy, int *outx, int *outy)
 {
 	bool clipped = false;
->>>>>>> upstream/master
 
 	/* first apply the XOR at 0x200 */
 	*outx = (rawx & 0x7ff) ^ 0x200;
@@ -93,29 +87,17 @@ inline bool segag80v_state::adjust_xy(int rawx, int rawy, int *outx, int *outy)
 
 	/* apply clipping logic to X */
 	if ((*outx & 0x600) == 0x200)
-<<<<<<< HEAD
-		*outx = 0x000, clipped = TRUE;
-	else if ((*outx & 0x600) == 0x400)
-		*outx = 0x3ff, clipped = TRUE;
-=======
 		*outx = 0x000, clipped = true;
 	else if ((*outx & 0x600) == 0x400)
 		*outx = 0x3ff, clipped = true;
->>>>>>> upstream/master
 	else
 		*outx &= 0x3ff;
 
 	/* apply clipping logic to Y */
 	if ((*outy & 0x600) == 0x200)
-<<<<<<< HEAD
-		*outy = 0x000, clipped = TRUE;
-	else if ((*outy & 0x600) == 0x400)
-		*outy = 0x3ff, clipped = TRUE;
-=======
 		*outy = 0x000, clipped = true;
 	else if ((*outy & 0x600) == 0x400)
 		*outy = 0x3ff, clipped = true;
->>>>>>> upstream/master
 	else
 		*outy &= 0x3ff;
 
@@ -128,32 +110,19 @@ inline bool segag80v_state::adjust_xy(int rawx, int rawy, int *outx, int *outy)
 
 void segag80v_state::sega_generate_vector_list()
 {
-<<<<<<< HEAD
-	UINT8 *sintable = memregion("proms")->base();
-	double total_time = 1.0 / (double)IRQ_CLOCK;
-	UINT16 symaddr = 0;
-	UINT8 *vectorram = m_vectorram;
-=======
 	uint8_t *sintable = memregion("proms")->base();
 	double total_time = 1.0 / (double)IRQ_CLOCK;
 	uint16_t symaddr = 0;
 	uint8_t *vectorram = m_vectorram;
->>>>>>> upstream/master
 
 	m_vector->clear_list();
 
 	/* Loop until we run out of time. */
 	while (total_time > 0)
 	{
-<<<<<<< HEAD
-		UINT16 curx, cury, xaccum, yaccum;
-		UINT16 vecaddr, symangle;
-		UINT8 scale, draw;
-=======
 		uint16_t curx, cury, xaccum, yaccum;
 		uint16_t vecaddr, symangle;
 		uint8_t scale, draw;
->>>>>>> upstream/master
 
 		/* The "draw" flag is clocked at the end of phase 0. */
 		draw = vectorram[symaddr++ & 0xfff];
@@ -214,15 +183,9 @@ void segag80v_state::sega_generate_vector_list()
 			/* Loop until we run out of time. */
 			while (total_time > 0)
 			{
-<<<<<<< HEAD
-				UINT16 vecangle, length, deltax, deltay;
-				UINT8 attrib, intensity;
-				UINT32 color;
-=======
 				uint16_t vecangle, length, deltax, deltay;
 				uint8_t attrib, intensity;
 				uint32_t color;
->>>>>>> upstream/master
 
 				/* The 'attribute' byte is latched at the end of phase 10 into */
 				/* the tri-state flip flop at U2. The low bit controls whether */
@@ -272,11 +235,7 @@ void segag80v_state::sega_generate_vector_list()
 				total_time -= 4.0 / (double)U51_CLOCK;
 
 				/* Compute color/intensity values from the attributes */
-<<<<<<< HEAD
-				color = VECTOR_COLOR222((attrib >> 1) & 0x3f);
-=======
 				color = vector_device::color222((attrib >> 1) & 0x3f);
->>>>>>> upstream/master
 				if ((attrib & 1) && color)
 					intensity = 0xff;
 				else
@@ -373,11 +332,7 @@ void segag80v_state::video_start()
 }
 
 
-<<<<<<< HEAD
-UINT32 segag80v_state::screen_update_segag80v(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
-=======
 uint32_t segag80v_state::screen_update_segag80v(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	sega_generate_vector_list();
 	m_vector->screen_update(screen, bitmap, cliprect);

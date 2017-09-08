@@ -1,9 +1,6 @@
 // license:BSD-3-Clause
 // copyright-holders:smf
-<<<<<<< HEAD
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #include "t10spc.h"
 
 void t10spc::t10_start(device_t &device)
@@ -70,15 +67,12 @@ void t10spc::ExecCommand()
 		}
 		break;
 
-<<<<<<< HEAD
-=======
 	case T10SPC_CMD_START_STOP_UNIT:
 		m_phase = SCSI_PHASE_STATUS;
 		m_status_code = SCSI_STATUS_CODE_GOOD;
 		m_transfer_length = 0;
 		break;
 
->>>>>>> upstream/master
 	case T10SPC_CMD_SEND_DIAGNOSTIC:
 		m_phase = SCSI_PHASE_DATAOUT;
 		m_status_code = SCSI_STATUS_CODE_GOOD;
@@ -93,11 +87,7 @@ void t10spc::ExecCommand()
 	}
 }
 
-<<<<<<< HEAD
-void t10spc::ReadData( UINT8 *data, int dataLength )
-=======
 void t10spc::ReadData( uint8_t *data, int dataLength )
->>>>>>> upstream/master
 {
 	switch( command[ 0 ] )
 	{
@@ -140,11 +130,7 @@ void t10spc::ReadData( uint8_t *data, int dataLength )
 	}
 }
 
-<<<<<<< HEAD
-void t10spc::WriteData( UINT8 *data, int dataLength )
-=======
 void t10spc::WriteData( uint8_t *data, int dataLength )
->>>>>>> upstream/master
 {
 	switch( command[ 0 ] )
 	{
@@ -157,11 +143,7 @@ void t10spc::WriteData( uint8_t *data, int dataLength )
 	}
 }
 
-<<<<<<< HEAD
-void t10spc::SetCommand( UINT8 *_command, int _commandLength )
-=======
 void t10spc::SetCommand( uint8_t *_command, int _commandLength )
->>>>>>> upstream/master
 {
 	if( _commandLength > sizeof( command ) )
 	{

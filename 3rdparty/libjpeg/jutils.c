@@ -2,11 +2,7 @@
  * jutils.c
  *
  * Copyright (C) 1991-1996, Thomas G. Lane.
-<<<<<<< HEAD
- * Modified 2009 by Guido Vollbeding.
-=======
  * Modified 2009-2011 by Guido Vollbeding.
->>>>>>> upstream/master
  * This file is part of the Independent JPEG Group's software.
  * For conditions of distribution and use, see the accompanying README file.
  *
@@ -152,15 +148,6 @@ jround_up (long a, long b)
  * is not all that great, because these routines aren't very heavily used.)
  */
 
-<<<<<<< HEAD
-#ifndef NEED_FAR_POINTERS	/* normal case, same as regular macros */
-#define FMEMCOPY(dest,src,size)	MEMCOPY(dest,src,size)
-#define FMEMZERO(target,size)	MEMZERO(target,size)
-#else				/* 80x86 case, define if we can */
-#ifdef USE_FMEM
-#define FMEMCOPY(dest,src,size)	_fmemcpy((void FAR *)(dest), (const void FAR *)(src), (size_t)(size))
-#define FMEMZERO(target,size)	_fmemset((void FAR *)(target), 0, (size_t)(size))
-=======
 #ifndef NEED_FAR_POINTERS	/* normal case, same as regular macro */
 #define FMEMCOPY(dest,src,size)	MEMCOPY(dest,src,size)
 #else				/* 80x86 case, define if we can */
@@ -182,7 +169,6 @@ jzero_far (void FAR * target, size_t bytestozero)
     *ptr++ = 0;
   }
 }
->>>>>>> upstream/master
 #endif
 #endif
 
@@ -239,24 +225,3 @@ jcopy_block_row (JBLOCKROW input_row, JBLOCKROW output_row,
   }
 #endif
 }
-<<<<<<< HEAD
-
-
-GLOBAL(void)
-jzero_far (void FAR * target, size_t bytestozero)
-/* Zero out a chunk of FAR memory. */
-/* This might be sample-array data, block-array data, or alloc_large data. */
-{
-#ifdef FMEMZERO
-  FMEMZERO(target, bytestozero);
-#else
-  register char FAR * ptr = (char FAR *) target;
-  register size_t count;
-
-  for (count = bytestozero; count > 0; count--) {
-    *ptr++ = 0;
-  }
-#endif
-}
-=======
->>>>>>> upstream/master

@@ -32,8 +32,6 @@ device_disasm_interface::device_disasm_interface(const machine_config &mconfig, 
 device_disasm_interface::~device_disasm_interface()
 {
 }
-<<<<<<< HEAD
-=======
 
 
 //-------------------------------------------------
@@ -92,4 +90,3 @@ offs_t device_disasm_interface::disassemble(std::ostream &stream, offs_t pc, con
 
 	return result;
 }
->>>>>>> upstream/master

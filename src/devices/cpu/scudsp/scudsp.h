@@ -6,17 +6,10 @@
  *
  *****************************************************************************/
 
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __SCUDSP_H__
-#define __SCUDSP_H__
-=======
 #ifndef MAME_CPU_SCUDSP_SCUDSP_H
 #define MAME_CPU_SCUDSP_SCUDSP_H
 
 #pragma once
->>>>>>> upstream/master
 
 enum
 {
@@ -55,27 +48,6 @@ enum
 
 #define SCUDSP_RESET        INPUT_LINE_RESET    /* Non-Maskable */
 
-<<<<<<< HEAD
-union SCUDSPREG32 {
-	INT32  si;
-	UINT32 ui;
-};
-
-union SCUDSPREG16 {
-	INT16  si;
-	UINT16 ui;
-};
-
-class scudsp_cpu_device :  public cpu_device
-{
-public:
-	// construction/destruction
-	scudsp_cpu_device(const machine_config &mconfig, const char *_tag, device_t *_owner, UINT32 _clock);
-
-	template<class _Object> static devcb_base &set_out_irq_callback(device_t &device, _Object object) { return downcast<scudsp_cpu_device &>(device).m_out_irq_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_in_dma_callback(device_t &device, _Object object) { return downcast<scudsp_cpu_device &>(device).m_in_dma_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_out_dma_callback(device_t &device, _Object object) { return downcast<scudsp_cpu_device &>(device).m_out_dma_cb.set_callback(object); }
-=======
 class scudsp_cpu_device : public cpu_device
 {
 public:
@@ -85,7 +57,6 @@ public:
 	template <class Object> static devcb_base &set_out_irq_callback(device_t &device, Object &&cb) { return downcast<scudsp_cpu_device &>(device).m_out_irq_cb.set_callback(std::forward<Object>(cb)); }
 	template <class Object> static devcb_base &set_in_dma_callback(device_t &device, Object &&cb) { return downcast<scudsp_cpu_device &>(device).m_in_dma_cb.set_callback(std::forward<Object>(cb)); }
 	template <class Object> static devcb_base &set_out_dma_callback(device_t &device, Object &&cb) { return downcast<scudsp_cpu_device &>(device).m_out_dma_cb.set_callback(std::forward<Object>(cb)); }
->>>>>>> upstream/master
 
 	/* port 0 */
 	DECLARE_READ32_MEMBER( program_control_r );
@@ -97,32 +68,6 @@ public:
 	/* port 3 */
 	DECLARE_READ32_MEMBER( ram_address_r );
 	DECLARE_WRITE32_MEMBER( ram_address_w );
-<<<<<<< HEAD
-//  virtual DECLARE_ADDRESS_MAP(map, 32) = 0;
-
-protected:
-	// device-level overrides
-	virtual void device_start();
-	virtual void device_reset();
-
-	// device_execute_interface overrides
-	virtual UINT32 execute_min_cycles() const { return 1; }
-	virtual UINT32 execute_max_cycles() const { return 7; }
-	virtual UINT32 execute_input_lines() const { return 0; }
-	virtual void execute_run();
-	virtual void execute_set_input(int inputnum, int state);
-
-	// device_memory_interface overrides
-	virtual const address_space_config *memory_space_config(address_spacenum spacenum = AS_0) const { return (spacenum == AS_PROGRAM) ? &m_program_config : ( (spacenum == AS_DATA) ? &m_data_config : NULL ); }
-
-	// device_state_interface overrides
-	void state_string_export(const device_state_entry &entry, std::string &str);
-
-	// device_disasm_interface overrides
-	virtual UINT32 disasm_min_opcode_bytes() const { return 4; }
-	virtual UINT32 disasm_max_opcode_bytes() const { return 4; }
-	virtual offs_t disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options);
-=======
 
 protected:
 	// device-level overrides
@@ -146,29 +91,12 @@ protected:
 	virtual uint32_t disasm_min_opcode_bytes() const override { return 4; }
 	virtual uint32_t disasm_max_opcode_bytes() const override { return 4; }
 	virtual offs_t disasm_disassemble(std::ostream &stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, uint32_t options) override;
->>>>>>> upstream/master
 
 	devcb_write_line     m_out_irq_cb;
 	devcb_read16         m_in_dma_cb;
 	devcb_write16        m_out_dma_cb;
 
 private:
-<<<<<<< HEAD
-	address_space_config m_program_config;
-	address_space_config m_data_config;
-
-	UINT8   m_pc;   /* registers */
-	UINT32  m_flags;  /* flags */
-	UINT8   m_ra;
-	UINT8   m_ct0,m_ct1,m_ct2,m_ct3;
-	UINT8   m_delay;                                   /* Delay */
-	UINT8   m_top;                                     /*Jump Command memory*/
-	UINT16  m_lop;                                    /*Counter Register*/   /*12-bits*/
-	SCUDSPREG32 m_rx;                                /*X-Bus register*/
-	INT64   m_mul;                                     /*Multiplier register*//*48-bits*/
-	SCUDSPREG32 m_ry;                                /*Y-Bus register*/
-	INT64   m_alu;                                    /*ALU register*/       /*48-bits*/
-=======
 	union SCUDSPREG32 {
 		int32_t  si;
 		uint32_t ui;
@@ -193,47 +121,19 @@ private:
 	int64_t   m_mul;                                     /*Multiplier register*//*48-bits*/
 	SCUDSPREG32 m_ry;                                /*Y-Bus register*/
 	int64_t   m_alu;                                    /*ALU register*/       /*48-bits*/
->>>>>>> upstream/master
 	SCUDSPREG16 m_ph;                                /*ALU high register*/
 	SCUDSPREG32 m_pl;                                /*ALU low register*/
 	SCUDSPREG16 m_ach;                               /*ALU external high register*/
 	SCUDSPREG32 m_acl;                               /*ALU external low register*/
-<<<<<<< HEAD
-	UINT32  m_ra0,m_wa0;                                /*DSP DMA registers*/
-	struct{
-		UINT32 src, dst;
-		UINT16 add;
-		UINT16 size, update, ex, dir, count;
-=======
 	uint32_t  m_ra0,m_wa0;                                /*DSP DMA registers*/
 	struct{
 		uint32_t src, dst;
 		uint16_t add;
 		uint16_t size, update, ex, dir, count;
->>>>>>> upstream/master
 	}m_dma;
 	address_space *m_program;
 	address_space *m_data;
 	int m_icount;
-<<<<<<< HEAD
-	UINT8 m_update_mul;
-
-	UINT32 scudsp_get_source_mem_reg_value( UINT32 mode );
-	UINT32 scudsp_get_source_mem_value(UINT8 mode);
-	void scudsp_set_dest_mem_reg( UINT32 mode, UINT32 value );
-	void scudsp_set_dest_mem_reg_2( UINT32 mode, UINT32 value );
-	UINT32 scudsp_compute_condition( UINT32 condition );
-	UINT32 scudsp_get_mem_source_dma( UINT32 memcode, UINT32 counter );
-	void scudsp_set_dest_dma_mem( UINT32 memcode, UINT32 value, UINT32 counter );
-
-	void scudsp_illegal(UINT32 opcode);
-	void scudsp_operation(UINT32 opcode);
-	void scudsp_move_immediate(UINT32 opcode);
-	void scudsp_dma(UINT32 opcode);
-	void scudsp_jump(UINT32 opcode);
-	void scudsp_loop(UINT32 opcode);
-	void scudsp_end(UINT32 opcode);
-=======
 	uint8_t m_update_mul;
 
 	uint32_t scudsp_get_source_mem_reg_value( uint32_t mode );
@@ -251,22 +151,13 @@ private:
 	void scudsp_jump(uint32_t opcode);
 	void scudsp_loop(uint32_t opcode);
 	void scudsp_end(uint32_t opcode);
->>>>>>> upstream/master
 	void scudsp_exec_dma();
 };
 
 
-<<<<<<< HEAD
-extern const device_type SCUDSP;
-=======
 DECLARE_DEVICE_TYPE(SCUDSP, scudsp_cpu_device)
->>>>>>> upstream/master
 
 
 CPU_DISASSEMBLE( scudsp );
 
-<<<<<<< HEAD
-#endif /* __SCUDSP_H__ */
-=======
 #endif // MAME_CPU_SCUDSP_SCUDSP_H
->>>>>>> upstream/master

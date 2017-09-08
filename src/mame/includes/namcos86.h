@@ -1,37 +1,12 @@
 // license:BSD-3-Clause
 // copyright-holders:Nicola Salmoria
-<<<<<<< HEAD
-=======
 #include "machine/watchdog.h"
->>>>>>> upstream/master
 #include "sound/namco.h"
 
 class namcos86_state : public driver_device
 {
 public:
 	namcos86_state(const machine_config &mconfig, device_type type, const char *tag)
-<<<<<<< HEAD
-		: driver_device(mconfig, type, tag),
-		m_cpu1(*this, "cpu1"),
-		m_cpu2(*this, "cpu2"),
-		m_cus30(*this, "namco"),
-		m_gfxdecode(*this, "gfxdecode"),
-		m_palette(*this, "palette"),
-		m_rthunder_videoram1(*this, "videoram1"),
-		m_rthunder_videoram2(*this, "videoram2"),
-		m_rthunder_spriteram(*this, "spriteram") { }
-
-	required_device<cpu_device> m_cpu1;
-	required_device<cpu_device> m_cpu2;
-	required_device<namco_cus30_device> m_cus30;
-	required_device<gfxdecode_device> m_gfxdecode;
-	required_device<palette_device> m_palette;
-	required_shared_ptr<UINT8> m_rthunder_videoram1;
-	required_shared_ptr<UINT8> m_rthunder_videoram2;
-	required_shared_ptr<UINT8> m_rthunder_spriteram;
-
-	UINT8 *m_spriteram;
-=======
 		: driver_device(mconfig, type, tag)
 		, m_cpu1(*this, "cpu1")
 		, m_cpu2(*this, "cpu2")
@@ -58,18 +33,13 @@ public:
 	optional_region_ptr<uint8_t> m_user1_ptr;
 
 	uint8_t *m_spriteram;
->>>>>>> upstream/master
 	int m_wdog;
 	int m_tilebank;
 	int m_xscroll[4];
 	int m_yscroll[4];
 	tilemap_t *m_bg_tilemap[4];
 	int m_backcolor;
-<<<<<<< HEAD
-	const UINT8 *m_tile_address_prom;
-=======
 	const uint8_t *m_tile_address_prom;
->>>>>>> upstream/master
 	int m_copy_sprites;
 
 	DECLARE_WRITE8_MEMBER(bankswitch1_w);
@@ -101,29 +71,16 @@ public:
 	TILE_GET_INFO_MEMBER(get_tile_info3);
 
 	DECLARE_DRIVER_INIT(namco86);
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void video_start();
-	DECLARE_PALETTE_INIT(namcos86);
-
-	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	void screen_eof(screen_device &screen, bool state);
-=======
 	virtual void machine_start() override;
 	virtual void video_start() override;
 	DECLARE_PALETTE_INIT(namcos86);
 
 	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	DECLARE_WRITE_LINE_MEMBER(screen_vblank);
->>>>>>> upstream/master
 	void draw_sprites(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	void scroll_w(address_space &space, int offset, int data, int layer);
 
 private:
-<<<<<<< HEAD
-	inline void get_tile_info(tile_data &tileinfo,int tile_index,int layer,UINT8 *vram);
-=======
 	inline void get_tile_info(tile_data &tileinfo,int tile_index,int layer,uint8_t *vram);
->>>>>>> upstream/master
 	void set_scroll(int layer);
 };

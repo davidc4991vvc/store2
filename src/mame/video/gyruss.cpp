@@ -33,11 +33,7 @@
 
 PALETTE_INIT_MEMBER(gyruss_state, gyruss)
 {
-<<<<<<< HEAD
-	const UINT8 *color_prom = memregion("proms")->base();
-=======
 	const uint8_t *color_prom = memregion("proms")->base();
->>>>>>> upstream/master
 	static const int resistances_rg[3] = { 1000, 470, 220 };
 	static const int resistances_b [2] = { 470, 220 };
 	double weights_rg[3], weights_b[2];
@@ -47,11 +43,7 @@ PALETTE_INIT_MEMBER(gyruss_state, gyruss)
 	compute_resistor_weights(0, 255, -1.0,
 			3, resistances_rg, weights_rg, 470, 0,
 			2, resistances_b,  weights_b,  470, 0,
-<<<<<<< HEAD
-			0, 0, 0, 0, 0);
-=======
 			0, nullptr, nullptr, 0, 0);
->>>>>>> upstream/master
 
 	/* create a lookup table for the palette */
 	for (i = 0; i < 0x20; i++)
@@ -85,22 +77,14 @@ PALETTE_INIT_MEMBER(gyruss_state, gyruss)
 	/* sprites map to the lower 16 palette entries */
 	for (i = 0; i < 0x100; i++)
 	{
-<<<<<<< HEAD
-		UINT8 ctabentry = color_prom[i] & 0x0f;
-=======
 		uint8_t ctabentry = color_prom[i] & 0x0f;
->>>>>>> upstream/master
 		palette.set_pen_indirect(i, ctabentry);
 	}
 
 	/* characters map to the upper 16 palette entries */
 	for (i = 0x100; i < 0x140; i++)
 	{
-<<<<<<< HEAD
-		UINT8 ctabentry = color_prom[i] & 0x0f;
-=======
 		uint8_t ctabentry = color_prom[i] & 0x0f;
->>>>>>> upstream/master
 		palette.set_pen_indirect(i, ctabentry + 0x10);
 	}
 }
@@ -129,17 +113,11 @@ TILE_GET_INFO_MEMBER(gyruss_state::gyruss_get_tile_info)
 
 void gyruss_state::video_start()
 {
-<<<<<<< HEAD
-	m_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(gyruss_state::gyruss_get_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
-	m_tilemap->set_transmask(0, 0x00, 0);   /* opaque */
-	m_tilemap->set_transmask(1, 0x0f, 0);  /* transparent */
-=======
 	m_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(gyruss_state::gyruss_get_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
 	m_tilemap->set_transmask(0, 0x00, 0);   /* opaque */
 	m_tilemap->set_transmask(1, 0x0f, 0);  /* transparent */
 
 	save_item(NAME(m_flipscreen));
->>>>>>> upstream/master
 }
 
 
@@ -151,15 +129,12 @@ READ8_MEMBER(gyruss_state::gyruss_scanline_r)
 }
 
 
-<<<<<<< HEAD
-=======
 WRITE_LINE_MEMBER(gyruss_state::flipscreen_w)
 {
 	m_flipscreen = state;
 }
 
 
->>>>>>> upstream/master
 void gyruss_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect )
 {
 	int offs;
@@ -180,20 +155,12 @@ void gyruss_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect
 }
 
 
-<<<<<<< HEAD
-UINT32 gyruss_state::screen_update_gyruss(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t gyruss_state::screen_update_gyruss(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	if (cliprect.min_y == screen.visible_area().min_y)
 	{
 		machine().tilemap().mark_all_dirty();
-<<<<<<< HEAD
-		machine().tilemap().set_flip_all((*m_flipscreen & 0x01) ? (TILEMAP_FLIPX | TILEMAP_FLIPY) : 0);
-=======
 		machine().tilemap().set_flip_all(m_flipscreen ? (TILEMAP_FLIPX | TILEMAP_FLIPY) : 0);
->>>>>>> upstream/master
 	}
 
 	m_tilemap->draw(screen, bitmap, cliprect, TILEMAP_DRAW_OPAQUE, 0);

@@ -5,14 +5,6 @@
     rtc4543.c - Epson R4543 real-time clock chip emulation
     by R. Belmont
 
-<<<<<<< HEAD
-    TODO: writing (not done by System 12 or 23 so no test case)
-
-**********************************************************************/
-
-#include "rtc4543.h"
-
-=======
     JRC 6355E / NJU6355E is basically similar, but order of registers
     is reversed and readouts happen on falling CLK edge.
 
@@ -29,21 +21,10 @@
 #include "logmacro.h"
 
 
->>>>>>> upstream/master
 //**************************************************************************
 //  MACROS / CONSTANTS
 //**************************************************************************
 
-<<<<<<< HEAD
-#define VERBOSE 0
-
-//**************************************************************************
-//  LIVE DEVICE
-//**************************************************************************
-
-// device type definition
-const device_type RTC4543 = &device_creator<rtc4543_device>;
-=======
 const char *rtc4543_device::s_reg_names[7] =
 {
 	"second",
@@ -62,19 +43,12 @@ const char *rtc4543_device::s_reg_names[7] =
 
 // device type definition
 DEFINE_DEVICE_TYPE(RTC4543, rtc4543_device, "rtc4543", "Epson R4543 RTC")
->>>>>>> upstream/master
 
 
 //-------------------------------------------------
 //  rtc4543_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-rtc4543_device::rtc4543_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, RTC4543, "R4543 RTC", tag, owner, clock, "rtc4543", __FILE__),
-		device_rtc_interface(mconfig, *this),
-		data_cb(*this), m_ce(0), m_clk(0), m_wr(0), m_data(0), m_shiftreg(0), m_curreg(0), m_curbit(0), m_clock_timer(nullptr)
-=======
 rtc4543_device::rtc4543_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: rtc4543_device(mconfig, RTC4543, tag, owner, clock)
 {
@@ -86,7 +60,6 @@ rtc4543_device::rtc4543_device(const machine_config &mconfig, device_type type, 
 	, data_cb(*this)
 	, m_ce(0), m_clk(0), m_wr(0), m_data(0), m_curbit(0)
 	, m_clock_timer(nullptr)
->>>>>>> upstream/master
 {
 }
 
@@ -108,14 +81,8 @@ void rtc4543_device::device_start()
 	save_item(NAME(m_clk));
 	save_item(NAME(m_wr));
 	save_item(NAME(m_data));
-<<<<<<< HEAD
-	save_item(NAME(m_shiftreg));
-	save_item(NAME(m_regs));
-	save_item(NAME(m_curreg));
-=======
 	save_item(NAME(m_regs));
 	save_item(NAME(m_curbit));
->>>>>>> upstream/master
 }
 
 
@@ -125,20 +92,10 @@ void rtc4543_device::device_start()
 
 void rtc4543_device::device_reset()
 {
-<<<<<<< HEAD
-	set_current_time(machine());
-
-=======
->>>>>>> upstream/master
 	m_ce = 0;
 	m_wr = 0;
 	m_clk = 0;
 	m_data = 0;
-<<<<<<< HEAD
-	m_shiftreg = 0;
-	m_curreg = 0;
-=======
->>>>>>> upstream/master
 	m_curbit = 0;
 }
 
@@ -153,14 +110,6 @@ void rtc4543_device::device_timer(emu_timer &timer, device_timer_id id, int para
 }
 
 
-<<<<<<< HEAD
-INLINE UINT8 make_bcd(UINT8 data)
-{
-	return ((data / 10) << 4) | (data % 10);
-}
-
-=======
->>>>>>> upstream/master
 //-------------------------------------------------
 //  rtc_clock_updated -
 //-------------------------------------------------
@@ -169,20 +118,6 @@ void rtc4543_device::rtc_clock_updated(int year, int month, int day, int day_of_
 {
 	static const int weekday[7] = { 7, 1, 2, 3, 4, 5, 6 };
 
-<<<<<<< HEAD
-	m_regs[0] = make_bcd(second);                   // seconds (BCD, 0-59) in bits 0-6, bit 7 = battery low
-	m_regs[1] = make_bcd(minute);                   // minutes (BCD, 0-59)
-	m_regs[2] = make_bcd(hour);                     // hour (BCD, 0-23)
-	m_regs[3] = make_bcd(weekday[day_of_week - 1]); // low nibble = day of the week
-	m_regs[3] |= (make_bcd(day) & 0x0f) << 4;       // high nibble = low digit of day
-	m_regs[4] = (make_bcd(day) >> 4);               // low nibble = high digit of day
-	m_regs[4] |= (make_bcd(month & 0x0f) << 4);     // high nibble = low digit of month
-	m_regs[5] = make_bcd(month & 0x0f) >> 4;        // low nibble = high digit of month
-	m_regs[5] |= (make_bcd(year % 10) << 4);        // high nibble = low digit of year
-	m_regs[6] = make_bcd(year % 100) >> 4;          // low nibble = tens digit of year (BCD, 0-9)
-}
-
-=======
 	m_regs[0] = convert_to_bcd(second);                     // seconds (BCD, 0-59) in bits 0-6, bit 7 = battery low
 	m_regs[1] = convert_to_bcd(minute);                     // minutes (BCD, 0-59)
 	m_regs[2] = convert_to_bcd(hour);                       // hour (BCD, 0-23)
@@ -193,29 +128,12 @@ void rtc4543_device::rtc_clock_updated(int year, int month, int day, int day_of_
 }
 
 
->>>>>>> upstream/master
 //-------------------------------------------------
 //  ce_w - chip enable write
 //-------------------------------------------------
 
 WRITE_LINE_MEMBER( rtc4543_device::ce_w )
 {
-<<<<<<< HEAD
-	if (VERBOSE) printf("RTC4543 '%s' CE: %u\n", tag(), state);
-
-	if (!state && m_ce) // complete transfer
-	{
-	}
-	else if (state && !m_ce) // start new data transfer
-	{
-		m_curreg = 0;
-		m_curbit = 0; // force immediate reload of output data
-	}
-
-	m_ce = state;
-}
-
-=======
 	if (!state && m_ce) // complete transfer
 	{
 		LOG("CE falling edge\n");
@@ -253,62 +171,25 @@ void rtc4543_device::ce_falling()
 }
 
 
->>>>>>> upstream/master
 //-------------------------------------------------
 //  wr_w - data direction line write
 //-------------------------------------------------
 
 WRITE_LINE_MEMBER( rtc4543_device::wr_w )
 {
-<<<<<<< HEAD
-	if (VERBOSE) logerror("RTC4543 '%s' WR: %u\n", tag(), state);
-=======
 	if (state != m_wr)
 		LOG("WR: %u\n", state);
->>>>>>> upstream/master
 
 	m_wr = state;
 }
 
-<<<<<<< HEAD
-=======
 
->>>>>>> upstream/master
 //-------------------------------------------------
 //  clk_w - serial clock write
 //-------------------------------------------------
 
 WRITE_LINE_MEMBER( rtc4543_device::clk_w )
 {
-<<<<<<< HEAD
-	if (VERBOSE) logerror("RTC4543 '%s' CLK: %u\n", tag(), state);
-
-	if (!m_ce) return;
-
-	// rising edge - read data becomes valid here
-	if (!m_clk && state)
-	{
-		if (!m_wr)
-		{
-			// reload data?
-			if ((m_curbit & 7) == 0)
-			{
-				m_shiftreg = m_regs[m_curreg++];
-
-				if (VERBOSE)
-					logerror("RTC4543 '%s' sending byte: %02x\n", tag(), m_shiftreg);
-			}
-
-			// shift data bit
-			// note: output data does not change when clk at final bit
-			if (m_curbit != 55)
-			{
-				m_data = m_shiftreg & 1;
-				m_curbit++;
-				m_shiftreg >>= 1;
-				data_cb(m_data);
-			}
-=======
 	if (m_ce)
 	{
 		int bit = m_curbit;
@@ -321,7 +202,6 @@ WRITE_LINE_MEMBER( rtc4543_device::clk_w )
 		{
 			clk_falling();
 			LOG("CLK falling edge (I/O: %u, bit %d)\n", m_data, bit);
->>>>>>> upstream/master
 		}
 	}
 
@@ -330,8 +210,6 @@ WRITE_LINE_MEMBER( rtc4543_device::clk_w )
 
 
 //-------------------------------------------------
-<<<<<<< HEAD
-=======
 //  clk_rising - CLK rising edge trigger
 //-------------------------------------------------
 
@@ -365,17 +243,11 @@ void rtc4543_device::clk_falling()
 
 
 //-------------------------------------------------
->>>>>>> upstream/master
 //  data_w - I/O write
 //-------------------------------------------------
 
 WRITE_LINE_MEMBER( rtc4543_device::data_w )
 {
-<<<<<<< HEAD
-	if (VERBOSE) logerror("RTC4543 '%s' I/O: %u\n", tag(), state);
-
-=======
->>>>>>> upstream/master
 	m_data = state & 1;
 }
 
@@ -388,8 +260,6 @@ READ_LINE_MEMBER( rtc4543_device::data_r )
 {
 	return m_data;
 }
-<<<<<<< HEAD
-=======
 
 
 //-------------------------------------------------
@@ -542,4 +412,3 @@ void jrc6355e_device::clk_falling()
 	if (!m_wr && m_curbit != 56)
 		load_bit(6 - (m_curbit / 8));
 }
->>>>>>> upstream/master

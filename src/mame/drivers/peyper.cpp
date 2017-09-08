@@ -1,9 +1,5 @@
 // license:BSD-3-Clause
-<<<<<<< HEAD
-// copyright-holders:Stephh, Robbbert
-=======
 // copyright-holders:Robbbert,Stephane Humbert
->>>>>>> upstream/master
 /********************************************************************************************************
 
   PINBALL
@@ -18,16 +14,10 @@
   Wolf Man (Peyper)
   Nemesis (Peyper)
   Odisea Paris-Dakar (Peyper)
-<<<<<<< HEAD
-
-  Others not emulated (need roms):
-  Hang-On (Sonic)
-=======
   Hang-On (Sonic)
   Ator (Video Dens)
 
   Others not emulated (need roms):
->>>>>>> upstream/master
   Night Fever (Sonic)
   Storm (Sonic)
 
@@ -43,12 +33,6 @@ ToDo:
 
 *********************************************************************************************************/
 
-<<<<<<< HEAD
-#include "machine/genpin.h"
-#include "cpu/z80/z80.h"
-#include "machine/i8279.h"
-#include "sound/ay8910.h"
-=======
 #include "emu.h"
 #include "machine/genpin.h"
 
@@ -57,7 +41,6 @@ ToDo:
 #include "sound/ay8910.h"
 #include "speaker.h"
 
->>>>>>> upstream/master
 #include "peyper.lh"
 
 class peyper_state : public genpin_class
@@ -66,11 +49,7 @@ public:
 	peyper_state(const machine_config &mconfig, device_type type, const char *tag)
 		: genpin_class(mconfig, type, tag)
 		, m_maincpu(*this, "maincpu")
-<<<<<<< HEAD
-		, m_switch(*this, "SWITCH")
-=======
 		, m_switch(*this, "SWITCH.%u", 0)
->>>>>>> upstream/master
 	{ }
 
 	DECLARE_READ8_MEMBER(sw_r);
@@ -88,15 +67,9 @@ public:
 	DECLARE_DRIVER_INIT(odin);
 	DECLARE_DRIVER_INIT(wolfman);
 private:
-<<<<<<< HEAD
-	UINT8 m_digit;
-	UINT8 m_disp_layout[36];
-	virtual void machine_reset();
-=======
 	uint8_t m_digit;
 	uint8_t m_disp_layout[36];
 	virtual void machine_reset() override;
->>>>>>> upstream/master
 	required_device<cpu_device> m_maincpu;
 	required_ioport_array<4> m_switch;
 };
@@ -116,11 +89,7 @@ READ8_MEMBER( peyper_state::sw_r )
 
 WRITE8_MEMBER( peyper_state::disp_w )
 {
-<<<<<<< HEAD
-	static const UINT8 patterns[16] = { 0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7c,0x07,0x7f,0x67,0x58,0x4c,0x62,0x69,0x78,0 }; // 7448
-=======
 	static const uint8_t patterns[16] = { 0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7c,0x07,0x7f,0x67,0x58,0x4c,0x62,0x69,0x78,0 }; // 7448
->>>>>>> upstream/master
 /*
 0 -> XA0 DPL25,DPL27
 1 -> XA1 DPL26,DPL28
@@ -140,13 +109,8 @@ WRITE8_MEMBER( peyper_state::disp_w )
 15 -> DPL31,DPL32
 */
 
-<<<<<<< HEAD
-	UINT8 i,q,hex_a,a;
-	UINT8 p = m_digit << 1;
-=======
 	uint8_t i,q,hex_a,a;
 	uint8_t p = m_digit << 1;
->>>>>>> upstream/master
 
 	for (i = 0; i < 2; i++)
 	{
@@ -159,19 +123,6 @@ WRITE8_MEMBER( peyper_state::disp_w )
 		switch (q)
 		{
 			case 34: // player indicator lights (7-digit only)
-<<<<<<< HEAD
-				output_set_indexed_value("led_",1,BIT(a,0)); // PLAYER 1
-				output_set_indexed_value("led_",2,BIT(a,1)); // PLAYER 2
-				output_set_indexed_value("led_",3,BIT(a,2)); // PLAYER 3
-				output_set_indexed_value("led_",4,BIT(a,3)); // PLAYER 4
-				break;
-
-			case 35: // units digits show 0
-				if (!BIT(a,0)) output_set_indexed_value("dpl_",m_disp_layout[32], 0x3f);
-				if (!BIT(a,1)) output_set_indexed_value("dpl_",m_disp_layout[33], 0x3f);
-				if (!BIT(a,2)) output_set_indexed_value("dpl_",m_disp_layout[34], 0x3f);
-				if (!BIT(a,3)) output_set_indexed_value("dpl_",m_disp_layout[35], 0x3f);
-=======
 				output().set_indexed_value("led_",1,BIT(a,0)); // PLAYER 1
 				output().set_indexed_value("led_",2,BIT(a,1)); // PLAYER 2
 				output().set_indexed_value("led_",3,BIT(a,2)); // PLAYER 3
@@ -183,7 +134,6 @@ WRITE8_MEMBER( peyper_state::disp_w )
 				if (!BIT(a,1)) output().set_indexed_value("dpl_",m_disp_layout[33], 0x3f);
 				if (!BIT(a,2)) output().set_indexed_value("dpl_",m_disp_layout[34], 0x3f);
 				if (!BIT(a,3)) output().set_indexed_value("dpl_",m_disp_layout[35], 0x3f);
->>>>>>> upstream/master
 				break;
 
 			case 36: // game status indicators
@@ -199,22 +149,13 @@ WRITE8_MEMBER( peyper_state::disp_w )
 			case 38: // player 2 indicators (6-digit only)
 			case 39: // player 3 indicators (6-digit only)
 			case 40: // player 4 indicators (6-digit only)
-<<<<<<< HEAD
-				output_set_indexed_value("led_",q-36,BIT(a,1)); // player indicator
-				output_set_indexed_value("dpl_",q-7,BIT(a,2) ? 6:0); // million led (we show blank or 1 in millions digit)
-=======
 				output().set_indexed_value("led_",q-36,BIT(a,1)); // player indicator
 				output().set_indexed_value("dpl_",q-7,BIT(a,2) ? 6:0); // million led (we show blank or 1 in millions digit)
->>>>>>> upstream/master
 				// bit 3, looks like it turns on all the decimal points, reason unknown
 				break;
 
 			default: // display a digit
-<<<<<<< HEAD
-				output_set_indexed_value("dpl_",q,hex_a);
-=======
 				output().set_indexed_value("dpl_",q,hex_a);
->>>>>>> upstream/master
 		}
 	}
 }
@@ -238,11 +179,7 @@ WRITE8_MEMBER(peyper_state::sol_w)
 
 CUSTOM_INPUT_MEMBER(peyper_state::wolfman_replay_hs_r)
 {
-<<<<<<< HEAD
-	int bit_mask = (FPTR)param;
-=======
 	int bit_mask = (uintptr_t)param;
->>>>>>> upstream/master
 
 	switch (bit_mask)
 	{
@@ -266,20 +203,12 @@ ADDRESS_MAP_END
 static ADDRESS_MAP_START( peyper_io, AS_IO, 8, peyper_state )
 	ADDRESS_MAP_UNMAP_HIGH
 	ADDRESS_MAP_GLOBAL_MASK(0xff)
-<<<<<<< HEAD
-	AM_RANGE(0x00, 0x00) AM_DEVREADWRITE("i8279", i8279_device, data_r, data_w )
-	AM_RANGE(0x01, 0x01) AM_DEVREADWRITE("i8279", i8279_device, status_r, cmd_w)
-	AM_RANGE(0x04, 0x04) AM_DEVWRITE("ay1", ay8910_device, address_w)
-	AM_RANGE(0x06, 0x06) AM_DEVWRITE("ay1", ay8910_device, data_w)
-	AM_RANGE(0x08, 0x08) AM_DEVWRITE("ay2", ay8910_device, address_w)
-=======
 	AM_RANGE(0x00, 0x01) AM_DEVREADWRITE("i8279", i8279_device, read, write)
 	AM_RANGE(0x04, 0x04) AM_DEVWRITE("ay1", ay8910_device, address_w)
 	AM_RANGE(0x05, 0x05) AM_DEVREAD("ay1", ay8910_device, data_r) // only read by Ator?
 	AM_RANGE(0x06, 0x06) AM_DEVWRITE("ay1", ay8910_device, data_w)
 	AM_RANGE(0x08, 0x08) AM_DEVWRITE("ay2", ay8910_device, address_w)
 	AM_RANGE(0x09, 0x09) AM_DEVREAD("ay2", ay8910_device, data_r) // never actually read?
->>>>>>> upstream/master
 	AM_RANGE(0x0a, 0x0a) AM_DEVWRITE("ay2", ay8910_device, data_w)
 	AM_RANGE(0x0c, 0x0c) AM_WRITE(sol_w)
 	AM_RANGE(0x10, 0x18) AM_WRITE(lamp_w)
@@ -649,11 +578,7 @@ void peyper_state::machine_reset()
 {
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( peyper, peyper_state )
-=======
 static MACHINE_CONFIG_START( peyper )
->>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, 2500000)
 	MCFG_CPU_PROGRAM_MAP(peyper_map)
@@ -876,17 +801,12 @@ ROM_END
 /*-------------------------------------------------------------------
 / Hang-On (1988)
 /-------------------------------------------------------------------*/
-<<<<<<< HEAD
-
-
-=======
 ROM_START(hangonp)
 	ROM_REGION(0x6000, "maincpu", 0)
 	ROM_LOAD("hangon1.bin", 0x0000, 0x2000, CRC(b0672137) SHA1(e0bd0808a3a8c6df200b0edc7b5e8cf293a659b7))
 	ROM_LOAD("hangon2.bin", 0x2000, 0x2000, CRC(6e1e55c0) SHA1(473c882a0eb68807969894b82be2b86d7c463c93))
 	ROM_LOAD("hangon3.bin", 0x4000, 0x2000, CRC(26949f2f) SHA1(e3e1a436ce59c7f1c2904cd8f50f2ba4a4e37638))
 ROM_END
->>>>>>> upstream/master
 /*-------------------------------------------------------------------
 / Odisea Paris-Dakar (1987)
 /-------------------------------------------------------------------*/
@@ -917,19 +837,6 @@ ROM_START(wolfman)
 	ROM_LOAD("memoriac.bin", 0x4000, 0x2000, CRC(468f16f0) SHA1(66ce0464d82331cfc0ac1f6fbd871066e4e57262))
 ROM_END
 
-<<<<<<< HEAD
-
-GAME( 1985, odin,     0,        peyper,   odin_dlx, peyper_state, odin,     ROT0, "Peyper", "Odin", MACHINE_MECHANICAL)
-GAME( 1985, odin_dlx, 0,        peyper,   odin_dlx, peyper_state, odin,     ROT0, "Sonic",  "Odin De Luxe", MACHINE_MECHANICAL)
-GAME( 1986, solarwap, 0,        peyper,   solarwap, peyper_state, peyper,   ROT0, "Sonic",  "Solar Wars (Sonic)", MACHINE_MECHANICAL)
-GAME( 1986, gamatros, 0,        peyper,   solarwap, peyper_state, peyper,   ROT0, "Sonic",  "Gamatron (Sonic)",    MACHINE_IS_SKELETON_MECHANICAL)
-GAME( 1987, poleposn, 0,        peyper,   poleposn, peyper_state, peyper,   ROT0, "Sonic",  "Pole Position (Sonic)", MACHINE_MECHANICAL)
-GAME( 1987, sonstwar, 0,        peyper,   sonstwar, peyper_state, peyper,   ROT0, "Sonic",  "Star Wars (Sonic, set 1)", MACHINE_MECHANICAL)
-GAME( 1987, sonstwr2, sonstwar, peyper,   sonstwar, peyper_state, peyper,   ROT0, "Sonic",  "Star Wars (Sonic, set 2)", MACHINE_MECHANICAL)
-GAME( 1987, wolfman,  0,        peyper,   wolfman,  peyper_state, wolfman,  ROT0, "Peyper", "Wolf Man", MACHINE_MECHANICAL)
-GAME( 1986, nemesisp, 0,        peyper,   wolfman,  peyper_state, wolfman,  ROT0, "Peyper", "Nemesis", MACHINE_MECHANICAL)
-GAME( 1987, odisea,   0,        peyper,   odisea,   peyper_state, wolfman,  ROT0, "Peyper", "Odisea Paris-Dakar", MACHINE_MECHANICAL)
-=======
 /*-------------------------------------------------------------------
 / Ator (1985)
 /-------------------------------------------------------------------*/
@@ -968,4 +875,3 @@ GAME( 1987, odisea,   0,        peyper,   odisea,   peyper_state, wolfman,  ROT0
 GAME( 1988, hangonp,  0,        peyper,   sonstwar, peyper_state, peyper,   ROT0, "Sonic",      "Hang-On (Sonic)",          MACHINE_MECHANICAL | MACHINE_NOT_WORKING ) // inputs to be checked
 GAME( 1985, ator,     0,        peyper,   sonstwar, peyper_state, peyper,   ROT0, "Video Dens", "Ator",                     MACHINE_MECHANICAL | MACHINE_NOT_WORKING ) // initial program ROM missing; no manual found
 GAME( 1994, lancelot, 0,        peyper,   sonstwar, peyper_state, 0,        ROT0,  "Peyper",    "Sir Lancelot",             MACHINE_IS_SKELETON_MECHANICAL) // different hardware (see top of file)
->>>>>>> upstream/master

@@ -72,11 +72,7 @@ Address          Dir Data     Name      Description
 111110100-----00   W xxxxxxxx SOUND     command for sound CPU
 111110100-----01   W --------           n.c.
 111110100-----10   W --------           n.c.
-<<<<<<< HEAD
-111110100-----11   W -------x SRESET    reset sound CPU and sound chips
-=======
 111110100-----11   W -------x SRESET    reset sound CPU, sound chips, and sound CPU to CPU #1 semaphore
->>>>>>> upstream/master
 111110100-----00 R   xxxxxxxx           answer from sound CPU (not used)
 111110100-----01 R   -------x           message pending from sound CPU to CPU #1 (not used)
 111110100-----01 R   ------x-           message pending from CPU #1 to sound CPU (not used)
@@ -196,11 +192,7 @@ MC68705P5 - Motorola MC68705P5 Microcontroller with 2K Internal EPROM,
 
             A71_01.IC1     Sub CPU Program
 
-<<<<<<< HEAD
-            A71_24.IC57    68705 Microcontroller Program (Protected, Not Dumped)
-=======
             A71_24.IC57    68705 Microcontroller Program
->>>>>>> upstream/master
 
 
 
@@ -269,20 +261,11 @@ TODO:
     internal timers (similar to the HD63701). I've just mapped the I/O ports since
     that's the only thing required for normal operation, but the program does
     use some of the additional features in its special "test" mode.
-<<<<<<< HEAD
-- tokio: doesn't work due to missing MC68705 MCU protection emulation.
-- tokio: sound support is probably incomplete. There are a couple of unknown
-  accesses done by the CPU, including to the YM2203 I/O ports. At the
-  very least, there should be some filters.
-
- there are also Bubble Bobble bootlegs with a P8749H MCU, however the MCU
-=======
 - tokio: sound support is probably incomplete. There are a couple of unknown
   accesses done by the sound CPU to the YM2203 I/O ports. At the very least, there
   could be some filters.
 
  There are also Bubble Bobble bootlegs with a P8749H MCU, however the MCU
->>>>>>> upstream/master
  is protected against reading and the main code only differs by 1 byte from
  Bubble Bobble.  If the MCU were to be dumped that would also make for
  interesting comparisons.
@@ -290,14 +273,6 @@ TODO:
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/z80/z80.h"
-#include "cpu/m6800/m6800.h"
-#include "sound/2203intf.h"
-#include "sound/3526intf.h"
-#include "cpu/m6805/m6805.h"
-#include "includes/bublbobl.h"
-=======
 #include "includes/bublbobl.h"
 
 #include "cpu/m6800/m6801.h"
@@ -307,7 +282,6 @@ TODO:
 #include "sound/3526intf.h"
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 #define MAIN_XTAL   XTAL_24MHz
@@ -318,28 +292,13 @@ TODO:
  *  Address maps
  *
  *************************************/
-<<<<<<< HEAD
-
-static ADDRESS_MAP_START( master_map, AS_PROGRAM, 8, bublbobl_state )
-=======
 static ADDRESS_MAP_START( common_maincpu_map, AS_PROGRAM, 8, bublbobl_state )
->>>>>>> upstream/master
 	AM_RANGE(0x0000, 0x7fff) AM_ROM
 	AM_RANGE(0x8000, 0xbfff) AM_ROMBANK("bank1")
 	AM_RANGE(0xc000, 0xdcff) AM_RAM AM_SHARE("videoram")
 	AM_RANGE(0xdd00, 0xdfff) AM_RAM AM_SHARE("objectram")
 	AM_RANGE(0xe000, 0xf7ff) AM_RAM AM_SHARE("share1")
 	AM_RANGE(0xf800, 0xf9ff) AM_RAM_DEVWRITE("palette", palette_device, write) AM_SHARE("palette")
-<<<<<<< HEAD
-	AM_RANGE(0xfa00, 0xfa00) AM_READWRITE(bublbobl_sound_status_r, bublbobl_sound_command_w)
-	AM_RANGE(0xfa03, 0xfa03) AM_WRITE(bublbobl_soundcpu_reset_w)
-	AM_RANGE(0xfa80, 0xfa80) AM_WRITE(watchdog_reset_w)
-	AM_RANGE(0xfb40, 0xfb40) AM_WRITE(bublbobl_bankswitch_w)
-	AM_RANGE(0xfc00, 0xffff) AM_RAM AM_SHARE("mcu_sharedram")
-ADDRESS_MAP_END
-
-static ADDRESS_MAP_START( slave_map, AS_PROGRAM, 8, bublbobl_state )
-=======
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( bublbobl_maincpu_map, AS_PROGRAM, 8, bublbobl_state )
@@ -354,21 +313,10 @@ static ADDRESS_MAP_START( bublbobl_maincpu_map, AS_PROGRAM, 8, bublbobl_state )
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( subcpu_map, AS_PROGRAM, 8, bublbobl_state )
->>>>>>> upstream/master
 	AM_RANGE(0x0000, 0x7fff) AM_ROM
 	AM_RANGE(0xe000, 0xf7ff) AM_RAM AM_SHARE("share1")
 ADDRESS_MAP_END
 
-<<<<<<< HEAD
-static ADDRESS_MAP_START( sound_map, AS_PROGRAM, 8, bublbobl_state )
-	AM_RANGE(0x0000, 0x7fff) AM_ROM
-	AM_RANGE(0x8000, 0x8fff) AM_RAM
-	AM_RANGE(0x9000, 0x9001) AM_DEVREADWRITE("ym1", ym2203_device, read, write)
-	AM_RANGE(0xa000, 0xa001) AM_DEVREADWRITE("ym2", ym3526_device, read, write)
-	AM_RANGE(0xb000, 0xb000) AM_READ(soundlatch_byte_r) AM_WRITE(bublbobl_sound_status_w)
-	AM_RANGE(0xb001, 0xb001) AM_WRITE(bublbobl_sh_nmi_enable_w) AM_READNOP
-	AM_RANGE(0xb002, 0xb002) AM_WRITE(bublbobl_sh_nmi_disable_w)
-=======
 /* Sound cpu address map
            |           |           |
 15 14 13 12 11 10  9  8  7  6  5  4  3  2  1  0
@@ -403,7 +351,6 @@ static ADDRESS_MAP_START( sound_map, AS_PROGRAM, 8, bublbobl_state )
 	AM_RANGE(0xb000, 0xb000) AM_MIRROR(0x0ffc) AM_DEVREAD("main_to_sound", generic_latch_8_device, read) AM_DEVWRITE("sound_to_main", generic_latch_8_device, write)
 	AM_RANGE(0xb001, 0xb001) AM_MIRROR(0x0ffc) AM_READ(common_sound_semaphores_r) AM_DEVWRITE("soundnmi", input_merger_device, in_set<0>)
 	AM_RANGE(0xb002, 0xb002) AM_MIRROR(0x0ffc) AM_DEVWRITE("soundnmi", input_merger_device, in_clear<0>);
->>>>>>> upstream/master
 	AM_RANGE(0xe000, 0xffff) AM_ROM // space for diagnostic ROM?
 ADDRESS_MAP_END
 
@@ -420,32 +367,6 @@ static ADDRESS_MAP_START( mcu_map, AS_PROGRAM, 8, bublbobl_state )
 	AM_RANGE(0xf000, 0xffff) AM_ROM
 ADDRESS_MAP_END
 
-<<<<<<< HEAD
-// The 68705 is from a bootleg, the original MCU is a 6801U4
-static ADDRESS_MAP_START( bootlegmcu_map, AS_PROGRAM, 8, bublbobl_state )
-	ADDRESS_MAP_GLOBAL_MASK(0x7ff)
-	AM_RANGE(0x000, 0x000) AM_READWRITE(bublbobl_68705_port_a_r, bublbobl_68705_port_a_w)
-	AM_RANGE(0x001, 0x001) AM_READWRITE(bublbobl_68705_port_b_r, bublbobl_68705_port_b_w)
-	AM_RANGE(0x002, 0x002) AM_READ_PORT("IN0")  // COIN
-	AM_RANGE(0x004, 0x004) AM_WRITE(bublbobl_68705_ddr_a_w)
-	AM_RANGE(0x005, 0x005) AM_WRITE(bublbobl_68705_ddr_b_w)
-	AM_RANGE(0x006, 0x006) AM_WRITENOP // ???
-	AM_RANGE(0x010, 0x07f) AM_RAM
-	AM_RANGE(0x080, 0x7ff) AM_ROM
-ADDRESS_MAP_END
-
-static ADDRESS_MAP_START( bootleg_map, AS_PROGRAM, 8, bublbobl_state )
-	AM_RANGE(0x0000, 0x7fff) AM_ROM
-	AM_RANGE(0x8000, 0xbfff) AM_ROMBANK("bank1")
-	AM_RANGE(0xc000, 0xdcff) AM_RAM AM_SHARE("videoram")
-	AM_RANGE(0xdd00, 0xdfff) AM_RAM AM_SHARE("objectram")
-	AM_RANGE(0xe000, 0xf7ff) AM_RAM AM_SHARE("share1")
-	AM_RANGE(0xf800, 0xf9ff) AM_RAM_DEVWRITE("palette", palette_device, write) AM_SHARE("palette")
-	AM_RANGE(0xfa00, 0xfa00) AM_READWRITE(bublbobl_sound_status_r, bublbobl_sound_command_w)
-	AM_RANGE(0xfa03, 0xfa03) AM_WRITE(bublbobl_soundcpu_reset_w)
-	AM_RANGE(0xfa80, 0xfa80) AM_WRITENOP // ???
-	AM_RANGE(0xfb40, 0xfb40) AM_WRITE(bublbobl_bankswitch_w)
-=======
 static ADDRESS_MAP_START( bootleg_map, AS_PROGRAM, 8, bublbobl_state )
 	AM_IMPORT_FROM(common_maincpu_map)
 	AM_RANGE(0xfa00, 0xfa00) AM_MIRROR(0x007c) AM_DEVREAD("sound_to_main", generic_latch_8_device, read) AM_DEVWRITE("main_to_sound", generic_latch_8_device, write)
@@ -455,7 +376,6 @@ static ADDRESS_MAP_START( bootleg_map, AS_PROGRAM, 8, bublbobl_state )
 	AM_RANGE(0xfb00, 0xfb00) AM_MIRROR(0x003f) AM_WRITE(bublbobl_nmitrigger_w)
 	AM_RANGE(0xfb40, 0xfb40) AM_MIRROR(0x003f) AM_WRITE(bublbobl_bankswitch_w)
 	// above here is identical to non-bootleg
->>>>>>> upstream/master
 	AM_RANGE(0xfc00, 0xfcff) AM_RAM
 	AM_RANGE(0xfd00, 0xfdff) AM_RAM
 	AM_RANGE(0xfe00, 0xfe03) AM_READWRITE(boblbobl_ic43_a_r, boblbobl_ic43_a_w)
@@ -470,18 +390,8 @@ ADDRESS_MAP_END
 
 
 static ADDRESS_MAP_START( tokio_map, AS_PROGRAM, 8, bublbobl_state )
-<<<<<<< HEAD
-	AM_RANGE(0x0000, 0x7fff) AM_ROM
-	AM_RANGE(0x8000, 0xbfff) AM_ROMBANK("bank1")
-	AM_RANGE(0xc000, 0xdcff) AM_RAM AM_SHARE("videoram")
-	AM_RANGE(0xdd00, 0xdfff) AM_RAM AM_SHARE("objectram")
-	AM_RANGE(0xe000, 0xf7ff) AM_RAM AM_SHARE("share1")
-	AM_RANGE(0xf800, 0xf9ff) AM_RAM_DEVWRITE("palette", palette_device, write) AM_SHARE("palette")
-	AM_RANGE(0xfa00, 0xfa00) AM_WRITE(watchdog_reset_w)
-=======
 	AM_IMPORT_FROM(common_maincpu_map)
 	AM_RANGE(0xfa00, 0xfa00) AM_DEVWRITE("watchdog", watchdog_timer_device, reset_w)
->>>>>>> upstream/master
 	AM_RANGE(0xfa03, 0xfa03) AM_READ_PORT("DSW0")
 	AM_RANGE(0xfa04, 0xfa04) AM_READ_PORT("DSW1")
 	AM_RANGE(0xfa05, 0xfa05) AM_READ_PORT("IN0")
@@ -490,13 +400,6 @@ static ADDRESS_MAP_START( tokio_map, AS_PROGRAM, 8, bublbobl_state )
 	AM_RANGE(0xfa80, 0xfa80) AM_WRITE(tokio_bankswitch_w)
 	AM_RANGE(0xfb00, 0xfb00) AM_WRITE(tokio_videoctrl_w)
 	AM_RANGE(0xfb80, 0xfb80) AM_WRITE(bublbobl_nmitrigger_w)
-<<<<<<< HEAD
-	AM_RANGE(0xfc00, 0xfc00) AM_READWRITE(bublbobl_sound_status_r, bublbobl_sound_command_w)
-	AM_RANGE(0xfe00, 0xfe00) AM_READ(tokio_mcu_r) AM_WRITENOP // ???
-ADDRESS_MAP_END
-
-static ADDRESS_MAP_START( tokio_slave_map, AS_PROGRAM, 8, bublbobl_state )
-=======
 	AM_RANGE(0xfc00, 0xfc00) AM_DEVREAD("sound_to_main", generic_latch_8_device, read) AM_DEVWRITE("main_to_sound", generic_latch_8_device, write)
 ADDRESS_MAP_END
 
@@ -512,7 +415,6 @@ ADDRESS_MAP_END
 
 
 static ADDRESS_MAP_START( tokio_subcpu_map, AS_PROGRAM, 8, bublbobl_state )
->>>>>>> upstream/master
 	AM_RANGE(0x0000, 0x7fff) AM_ROM
 	AM_RANGE(0x8000, 0x97ff) AM_RAM AM_SHARE("share1")
 ADDRESS_MAP_END
@@ -520,17 +422,10 @@ ADDRESS_MAP_END
 static ADDRESS_MAP_START( tokio_sound_map, AS_PROGRAM, 8, bublbobl_state )
 	AM_RANGE(0x0000, 0x7fff) AM_ROM
 	AM_RANGE(0x8000, 0x8fff) AM_RAM
-<<<<<<< HEAD
-	AM_RANGE(0x9000, 0x9000) AM_READ(soundlatch_byte_r) AM_WRITE(bublbobl_sound_status_w)
-	AM_RANGE(0x9800, 0x9800) AM_READNOP // ???
-	AM_RANGE(0xa000, 0xa000) AM_WRITE(bublbobl_sh_nmi_disable_w)
-	AM_RANGE(0xa800, 0xa800) AM_WRITE(bublbobl_sh_nmi_enable_w)
-=======
 	AM_RANGE(0x9000, 0x9000) AM_DEVREAD("main_to_sound", generic_latch_8_device, read) AM_DEVWRITE("sound_to_main", generic_latch_8_device, write)
 	AM_RANGE(0x9800, 0x9800) AM_READ(common_sound_semaphores_r)
 	AM_RANGE(0xa000, 0xa000) AM_DEVWRITE("soundnmi", input_merger_device, in_clear<0>)
 	AM_RANGE(0xa800, 0xa800) AM_DEVWRITE("soundnmi", input_merger_device, in_set<0>)
->>>>>>> upstream/master
 	AM_RANGE(0xb000, 0xb001) AM_DEVREADWRITE("ymsnd", ym2203_device, read, write)
 	AM_RANGE(0xe000, 0xffff) AM_ROM // space for diagnostic ROM?
 ADDRESS_MAP_END
@@ -603,40 +498,22 @@ static INPUT_PORTS_START( bublbobl )
 	PORT_START("IN1")
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT  ) PORT_2WAY
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT ) PORT_2WAY
-<<<<<<< HEAD
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_UNKNOWN )
-	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_UNKNOWN )
-	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_BUTTON2 )
-	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_BUTTON1 )
-	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_START1 )
-	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNKNOWN )
-=======
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_UNKNOWN ) // joy down, present on connector and readable
 	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_UNKNOWN ) // joy up, present on connector and readable
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_BUTTON2 )
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_BUTTON1 )
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_START1 )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNKNOWN ) // tied to +5v
->>>>>>> upstream/master
 
 	PORT_START("IN2")
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT  ) PORT_2WAY PORT_PLAYER(2)
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT ) PORT_2WAY PORT_PLAYER(2)
-<<<<<<< HEAD
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_UNKNOWN )
-	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_UNKNOWN )
-	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_BUTTON2 ) PORT_PLAYER(2)
-	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_BUTTON1 ) PORT_PLAYER(2)
-	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_START2 )
-	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNKNOWN )
-=======
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_UNKNOWN ) // joy 2 down, present on connector and readable
 	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_UNKNOWN ) // joy 2 up, present on connector and readable
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_BUTTON2 ) PORT_PLAYER(2)
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_BUTTON1 ) PORT_PLAYER(2)
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_START2 )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNKNOWN ) // tied to +5v
->>>>>>> upstream/master
 INPUT_PORTS_END
 
 static INPUT_PORTS_START( boblbobl )
@@ -764,11 +641,7 @@ static INPUT_PORTS_START( dland )
 	PORT_DIPSETTING(    0x20, "100 (Cheat)")
 INPUT_PORTS_END
 
-<<<<<<< HEAD
-static INPUT_PORTS_START( tokio )
-=======
 static INPUT_PORTS_START( tokio_base )
->>>>>>> upstream/master
 	PORT_START("DSW0")
 	PORT_DIPNAME( 0x01, 0x00, DEF_STR( Cabinet ) )      PORT_DIPLOCATION("SW A:1")
 	PORT_DIPSETTING(    0x00, DEF_STR( Upright ) )
@@ -818,13 +691,8 @@ static INPUT_PORTS_START( tokio_base )
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_SERVICE1 )
 	PORT_BIT( 0x04, IP_ACTIVE_HIGH, IPT_COIN1 ) PORT_IMPULSE(1)
 	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_COIN2 ) PORT_IMPULSE(1)
-<<<<<<< HEAD
-	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_UNKNOWN )
-	PORT_BIT( 0x20, IP_ACTIVE_HIGH, IPT_SPECIAL )   // data ready from MCU
-=======
 	PORT_BIT( 0x10, IP_ACTIVE_HIGH, IPT_SPECIAL ) // see INPUT_PORTS_START( tokio )
 	PORT_BIT( 0x20, IP_ACTIVE_HIGH, IPT_SPECIAL ) // see INPUT_PORTS_START( tokio )
->>>>>>> upstream/master
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_UNKNOWN )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNKNOWN )
 
@@ -849,9 +717,6 @@ static INPUT_PORTS_START( tokio_base )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNKNOWN )
 INPUT_PORTS_END
 
-<<<<<<< HEAD
-
-=======
 static INPUT_PORTS_START( tokio )
 	PORT_INCLUDE( tokio_base )
 
@@ -909,7 +774,6 @@ static INPUT_PORTS_START( bublboblp )
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 INPUT_PORTS_END
->>>>>>> upstream/master
 
 /*************************************
  *
@@ -935,40 +799,12 @@ GFXDECODE_END
 
 /*************************************
  *
-<<<<<<< HEAD
- *  Sound interface
- *
- *************************************/
-
-// handler called by the 2203 emulator when the internal timers cause an IRQ
-WRITE_LINE_MEMBER(bublbobl_state::irqhandler)
-{
-	m_audiocpu->set_input_line(0, state ? ASSERT_LINE : CLEAR_LINE);
-}
-
-/*************************************
- *
-=======
->>>>>>> upstream/master
  *  Machine driver
  *
  *************************************/
 
 MACHINE_START_MEMBER(bublbobl_state,common)
 {
-<<<<<<< HEAD
-	save_item(NAME(m_sound_nmi_enable));
-	save_item(NAME(m_pending_nmi));
-	save_item(NAME(m_sound_status));
-	save_item(NAME(m_video_enable));
-}
-
-MACHINE_RESET_MEMBER(bublbobl_state,common)
-{
-	m_sound_nmi_enable = 0;
-	m_pending_nmi = 0;
-	m_sound_status = 0;
-=======
 	m_sreset_old = CLEAR_LINE;
 	save_item(NAME(m_video_enable));
 	save_item(NAME(m_sreset_old));
@@ -982,38 +818,17 @@ MACHINE_RESET_MEMBER(bublbobl_state,common) // things common on both tokio and b
 	m_maincpu->set_input_line(INPUT_LINE_RESET, PULSE_LINE); // maincpu is reset
 	m_subcpu->set_input_line(INPUT_LINE_RESET, PULSE_LINE); // subcpu is reset
 	common_sreset(PULSE_LINE); // /SRESET is pulsed
->>>>>>> upstream/master
 }
 
 
 MACHINE_START_MEMBER(bublbobl_state,tokio)
 {
 	MACHINE_START_CALL_MEMBER(common);
-<<<<<<< HEAD
-
-	save_item(NAME(m_tokio_prot_count));
-=======
->>>>>>> upstream/master
 }
 
 MACHINE_RESET_MEMBER(bublbobl_state,tokio)
 {
 	MACHINE_RESET_CALL_MEMBER(common);
-<<<<<<< HEAD
-
-	m_tokio_prot_count = 0;
-}
-
-static MACHINE_CONFIG_START( tokio, bublbobl_state )
-
-	/* basic machine hardware */
-	MCFG_CPU_ADD("maincpu", Z80, MAIN_XTAL/4) // 6 MHz
-	MCFG_CPU_PROGRAM_MAP(tokio_map)
-	MCFG_CPU_VBLANK_INT_DRIVER("screen", bublbobl_state, irq0_line_hold)
-
-	MCFG_CPU_ADD("slave", Z80, MAIN_XTAL/4) // 6 MHz
-	MCFG_CPU_PROGRAM_MAP(tokio_slave_map)
-=======
 	tokio_bankswitch_w(m_maincpu->device_t::memory().space(AS_PROGRAM), 0, 0x00, 0xFF); // force a bankswitch write of all zeroes, as /RESET clears the latch
 	tokio_videoctrl_w(m_maincpu->device_t::memory().space(AS_PROGRAM), 0, 0x00, 0xFF); // TODO: does /RESET clear this the same as above? probably yes, needs tracing...
 }
@@ -1027,22 +842,17 @@ static MACHINE_CONFIG_START( tokio )
 
 	MCFG_CPU_ADD("subcpu", Z80, MAIN_XTAL/4) // 6 MHz
 	MCFG_CPU_PROGRAM_MAP(tokio_subcpu_map)
->>>>>>> upstream/master
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", bublbobl_state, irq0_line_hold)
 
 	MCFG_CPU_ADD("audiocpu", Z80, MAIN_XTAL/8) // 3 MHz
 	MCFG_CPU_PROGRAM_MAP(tokio_sound_map) // NMIs are triggered by the main CPU, IRQs are triggered by the YM2203
 
-<<<<<<< HEAD
-	MCFG_QUANTUM_TIME(attotime::from_hz(6000)) // 100 CPU slices per frame - a high value to ensure proper synchronization of the CPUs
-=======
 	MCFG_DEVICE_ADD("bmcu", TAITO68705_MCU, MAIN_XTAL/8) // 3 Mhz
 
 	MCFG_QUANTUM_PERFECT_CPU("maincpu") // is this necessary?
 
 	MCFG_WATCHDOG_ADD("watchdog")
 	MCFG_WATCHDOG_VBLANK_INIT("screen", 128); // 74LS393, counts 128 vblanks before firing watchdog; same circuit as taitosj uses
->>>>>>> upstream/master
 
 	MCFG_MACHINE_START_OVERRIDE(bublbobl_state, tokio)
 	MCFG_MACHINE_RESET_OVERRIDE(bublbobl_state, tokio)
@@ -1061,10 +871,6 @@ static MACHINE_CONFIG_START( tokio )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-	MCFG_SOUND_ADD("ymsnd", YM2203, MAIN_XTAL/8)
-	MCFG_YM2203_IRQ_HANDLER(WRITELINE(bublbobl_state, irqhandler))
-=======
 	MCFG_INPUT_MERGER_ALL_HIGH("soundnmi")
 	MCFG_INPUT_MERGER_OUTPUT_HANDLER(INPUTLINE("audiocpu", INPUT_LINE_NMI))
 
@@ -1075,15 +881,12 @@ static MACHINE_CONFIG_START( tokio )
 
 	MCFG_SOUND_ADD("ymsnd", YM2203, MAIN_XTAL/8)
 	MCFG_YM2203_IRQ_HANDLER(INPUTLINE("audiocpu", 0))
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(0, "mono", 0.08)
 	MCFG_SOUND_ROUTE(1, "mono", 0.08)
 	MCFG_SOUND_ROUTE(2, "mono", 0.08)
 	MCFG_SOUND_ROUTE(3, "mono", 1.0)
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-=======
 static MACHINE_CONFIG_DERIVED( bublboblp, tokio )
 	MCFG_DEVICE_REMOVE("bmcu") // no mcu, socket is empty
 
@@ -1106,7 +909,6 @@ static MACHINE_CONFIG_DERIVED( tokiob, tokio )
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", bublbobl_state, irq0_line_hold)
 MACHINE_CONFIG_END
 
->>>>>>> upstream/master
 
 MACHINE_START_MEMBER(bublbobl_state,bublbobl)
 {
@@ -1129,10 +931,7 @@ MACHINE_START_MEMBER(bublbobl_state,bublbobl)
 MACHINE_RESET_MEMBER(bublbobl_state,bublbobl)
 {
 	MACHINE_RESET_CALL_MEMBER(common);
-<<<<<<< HEAD
-=======
 	bublbobl_bankswitch_w(m_maincpu->device_t::memory().space(AS_PROGRAM), 0, 0x00, 0xFF); // force a bankswitch write of all zeroes, as /RESET clears the latch
->>>>>>> upstream/master
 
 	m_ddr1 = 0;
 	m_ddr2 = 0;
@@ -1148,17 +947,6 @@ MACHINE_RESET_MEMBER(bublbobl_state,bublbobl)
 	m_port4_out = 0;
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( bublbobl, bublbobl_state )
-
-	/* basic machine hardware */
-	MCFG_CPU_ADD("maincpu", Z80, MAIN_XTAL/4) // 6 MHz
-	MCFG_CPU_PROGRAM_MAP(master_map)
-	// IRQs are triggered by the MCU
-
-	MCFG_CPU_ADD("slave", Z80, MAIN_XTAL/4) // 6 MHz
-	MCFG_CPU_PROGRAM_MAP(slave_map)
-=======
 static MACHINE_CONFIG_START( bublbobl )
 
 	/* basic machine hardware */
@@ -1168,7 +956,6 @@ static MACHINE_CONFIG_START( bublbobl )
 
 	MCFG_CPU_ADD("subcpu", Z80, MAIN_XTAL/4) // 6 MHz
 	MCFG_CPU_PROGRAM_MAP(subcpu_map)
->>>>>>> upstream/master
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", bublbobl_state, irq0_line_hold)
 
 	MCFG_CPU_ADD("audiocpu", Z80, MAIN_XTAL/8) // 3 MHz
@@ -1180,12 +967,9 @@ static MACHINE_CONFIG_START( bublbobl )
 
 	MCFG_QUANTUM_TIME(attotime::from_hz(6000)) // 100 CPU slices per frame - a high value to ensure proper synchronization of the CPUs
 
-<<<<<<< HEAD
-=======
 	MCFG_WATCHDOG_ADD("watchdog")
 	MCFG_WATCHDOG_VBLANK_INIT("screen", 128); // 74LS393, counts 128 vblanks before firing watchdog; same circuit as taitosj uses
 
->>>>>>> upstream/master
 	MCFG_MACHINE_START_OVERRIDE(bublbobl_state, bublbobl)
 	MCFG_MACHINE_RESET_OVERRIDE(bublbobl_state, bublbobl)
 
@@ -1203,17 +987,6 @@ static MACHINE_CONFIG_START( bublbobl )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-	MCFG_SOUND_ADD("ym1", YM2203, MAIN_XTAL/8)
-	MCFG_YM2203_IRQ_HANDLER(WRITELINE(bublbobl_state, irqhandler))
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.25)
-
-	MCFG_SOUND_ADD("ym2", YM3526, MAIN_XTAL/8)
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
-MACHINE_CONFIG_END
-
-
-=======
 	MCFG_INPUT_MERGER_ANY_HIGH("soundirq")
 	MCFG_INPUT_MERGER_OUTPUT_HANDLER(INPUTLINE("audiocpu", INPUT_LINE_IRQ0))
 
@@ -1234,7 +1007,6 @@ MACHINE_CONFIG_END
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
 MACHINE_CONFIG_END
 
->>>>>>> upstream/master
 MACHINE_START_MEMBER(bublbobl_state,boblbobl)
 {
 	MACHINE_START_CALL_MEMBER(common);
@@ -1246,10 +1018,7 @@ MACHINE_START_MEMBER(bublbobl_state,boblbobl)
 MACHINE_RESET_MEMBER(bublbobl_state,boblbobl)
 {
 	MACHINE_RESET_CALL_MEMBER(common);
-<<<<<<< HEAD
-=======
 	bublbobl_bankswitch_w(m_maincpu->device_t::memory().space(AS_PROGRAM), 0, 0x00, 0xff); // force a bankswitch write of all zeroes, as /RESET clears the latch
->>>>>>> upstream/master
 
 	m_ic43_a = 0;
 	m_ic43_b = 0;
@@ -1269,32 +1038,6 @@ static MACHINE_CONFIG_DERIVED( boblbobl, bublbobl )
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-MACHINE_START_MEMBER(bublbobl_state,bub68705)
-{
-	MACHINE_START_CALL_MEMBER(common);
-
-	save_item(NAME(m_port_a_in));
-	save_item(NAME(m_port_a_out));
-	save_item(NAME(m_ddr_a));
-	save_item(NAME(m_port_b_in));
-	save_item(NAME(m_port_b_out));
-	save_item(NAME(m_ddr_b));
-	save_item(NAME(m_address));
-	save_item(NAME(m_latch));
-}
-
-MACHINE_RESET_MEMBER(bublbobl_state,bub68705)
-{
-	MACHINE_RESET_CALL_MEMBER(common);
-
-	m_port_a_in = 0;
-	m_port_a_out = 0;
-	m_ddr_a = 0;
-	m_port_b_in = 0;
-	m_port_b_out = 0;
-	m_ddr_b = 0;
-=======
 MACHINE_START_MEMBER(bub68705_state, bub68705)
 {
 	MACHINE_START_CALL_MEMBER(common);
@@ -1313,7 +1056,6 @@ MACHINE_RESET_MEMBER(bub68705_state, bub68705)
 	MACHINE_RESET_CALL_MEMBER(common);
 	bublbobl_bankswitch_w(m_maincpu->device_t::memory().space(AS_PROGRAM), 0, 0x00, 0xff); // force a bankswitch write of all zeroes, as /RESET clears the latch
 
->>>>>>> upstream/master
 	m_address = 0;
 	m_latch = 0;
 }
@@ -1323,14 +1065,6 @@ static MACHINE_CONFIG_DERIVED( bub68705, bublbobl )
 	/* basic machine hardware */
 	MCFG_DEVICE_REMOVE("mcu")
 
-<<<<<<< HEAD
-	MCFG_CPU_ADD("mcu", M68705, XTAL_4MHz) // xtal is 4MHz, divided by 4 internally
-	MCFG_CPU_PROGRAM_MAP(bootlegmcu_map)
-	MCFG_CPU_VBLANK_INT_DRIVER("screen", bublbobl_state, bublbobl_m68705_interrupt) // ??? should come from the same clock which latches the INT pin on the second Z80
-
-	MCFG_MACHINE_START_OVERRIDE(bublbobl_state,bub68705)
-	MCFG_MACHINE_RESET_OVERRIDE(bublbobl_state,bub68705)
-=======
 	MCFG_CPU_ADD("mcu", M68705P3, XTAL_4MHz) // xtal is 4MHz, divided by 4 internally
 	MCFG_M68705_PORTC_R_CB(IOPORT("IN0"))
 	MCFG_M68705_PORTA_W_CB(WRITE8(bub68705_state, port_a_w))
@@ -1339,7 +1073,6 @@ static MACHINE_CONFIG_DERIVED( bub68705, bublbobl )
 
 	MCFG_MACHINE_START_OVERRIDE(bub68705_state, bub68705)
 	MCFG_MACHINE_RESET_OVERRIDE(bub68705_state, bub68705)
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
@@ -1358,23 +1091,14 @@ ROM_START( tokio ) // newer japan set, has -1 revision of roms 02, 03 and 06
 	ROM_LOAD( "a71-05.ic7",   0x20000, 0x8000, CRC(6da0b945) SHA1(6c80b8333dd95657f99e6ba5b6e877733ac02a8c) )
 	ROM_LOAD( "a71-06-1.ic8", 0x28000, 0x8000, CRC(56927b3f) SHA1(33fb4e71b95664ecff1f35f6782a14101982a56d) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x10000, "slave", 0 )   /* video CPU */
-=======
 	ROM_REGION( 0x10000, "subcpu", 0 )   /* video CPU */
->>>>>>> upstream/master
 	ROM_LOAD( "a71-01.ic1",   0x00000, 0x8000, CRC(0867c707) SHA1(7129974f1252b28e9e338bd3c7fcb87210dcf412) )
 
 	ROM_REGION( 0x10000, "audiocpu", 0 )    /* audio CPU */
 	ROM_LOAD( "a71-07.ic10",  0x0000, 0x08000, CRC(f298cc7b) SHA1(ebf5c804aa07b7f198ec3e1f8d1e111cd89ebdf3) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x0800, "cpu3", 0 ) /* 2k for the microcontroller (68705P5) */
-	ROM_LOAD( "a71-24.ic57",  0x0000, 0x0800, NO_DUMP )
-=======
 	ROM_REGION( 0x0800, "bmcu:mcu", 0 ) /* 2k for the microcontroller (68705P5) */
 	ROM_LOAD( "a71__24.ic57",  0x0000, 0x0800, CRC(0f4b25de) SHA1(e2d82aa8d8cc6a86aaf5715ef9cb62f526fd5b11) )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x80000, "gfx1", ROMREGION_INVERT ) /* gfx roms, on gfx board */
 	ROM_LOAD( "a71-08.ic12",  0x00000, 0x8000, CRC(0439ab13) SHA1(84142220a6a29f0e34f7c7c751b583bf394df8ce) )    /* 1st plane */
@@ -1410,23 +1134,14 @@ ROM_START( tokioo ) // older japan set, has older roms 02, 03, 06
 	ROM_LOAD( "a71-05.ic7",   0x20000, 0x8000, CRC(6da0b945) SHA1(6c80b8333dd95657f99e6ba5b6e877733ac02a8c) )
 	ROM_LOAD( "a71-06.ic8",   0x28000, 0x8000, CRC(447d6779) SHA1(5b329b221357a9cea777415d409a6423529a925c) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x10000, "slave", 0 )   /* video CPU */
-=======
 	ROM_REGION( 0x10000, "subcpu", 0 )   /* video CPU */
->>>>>>> upstream/master
 	ROM_LOAD( "a71-01.ic1",   0x00000, 0x8000, CRC(0867c707) SHA1(7129974f1252b28e9e338bd3c7fcb87210dcf412) )
 
 	ROM_REGION( 0x10000, "audiocpu", 0 )    /* audio CPU */
 	ROM_LOAD( "a71-07.ic10",  0x0000, 0x08000, CRC(f298cc7b) SHA1(ebf5c804aa07b7f198ec3e1f8d1e111cd89ebdf3) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x0800, "cpu3", 0 ) /* 2k for the microcontroller (68705P5) */
-	ROM_LOAD( "a71-24.ic57",  0x0000, 0x0800, NO_DUMP )
-=======
 	ROM_REGION( 0x0800, "bmcu:mcu", 0 ) /* 2k for the microcontroller (68705P5) */
 	ROM_LOAD( "a71__24.ic57",  0x0000, 0x0800, CRC(0f4b25de) SHA1(e2d82aa8d8cc6a86aaf5715ef9cb62f526fd5b11) )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x80000, "gfx1", ROMREGION_INVERT ) /* gfx roms, on gfx board */
 	ROM_LOAD( "a71-08.ic12",  0x00000, 0x8000, CRC(0439ab13) SHA1(84142220a6a29f0e34f7c7c751b583bf394df8ce) )    /* 1st plane */
@@ -1462,23 +1177,14 @@ ROM_START( tokiou )
 	ROM_LOAD( "a71-05.ic7",   0x20000, 0x8000, CRC(6da0b945) SHA1(6c80b8333dd95657f99e6ba5b6e877733ac02a8c) )
 	ROM_LOAD( "a71-06-1.ic8", 0x28000, 0x8000, CRC(56927b3f) SHA1(33fb4e71b95664ecff1f35f6782a14101982a56d) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x10000, "slave", 0 )   /* video CPU */
-=======
 	ROM_REGION( 0x10000, "subcpu", 0 )   /* video CPU */
->>>>>>> upstream/master
 	ROM_LOAD( "a71-01.ic1",   0x00000, 0x8000, CRC(0867c707) SHA1(7129974f1252b28e9e338bd3c7fcb87210dcf412) )
 
 	ROM_REGION( 0x10000, "audiocpu", 0 )    /* audio CPU */
 	ROM_LOAD( "a71-07.ic10",  0x0000, 0x08000, CRC(f298cc7b) SHA1(ebf5c804aa07b7f198ec3e1f8d1e111cd89ebdf3) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x0800, "cpu3", 0 ) /* 2k for the microcontroller (68705P5) */
-	ROM_LOAD( "a71-24.ic57",  0x0000, 0x0800, NO_DUMP )
-=======
 	ROM_REGION( 0x0800, "bmcu:mcu", 0 ) /* 2k for the microcontroller (68705P5) */
 	ROM_LOAD( "a71__24.ic57",  0x0000, 0x0800, CRC(0f4b25de) SHA1(e2d82aa8d8cc6a86aaf5715ef9cb62f526fd5b11) )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x80000, "gfx1", ROMREGION_INVERT ) /* gfx roms, on gfx board */
 	ROM_LOAD( "a71-08.ic12",  0x00000, 0x8000, CRC(0439ab13) SHA1(84142220a6a29f0e34f7c7c751b583bf394df8ce) )    /* 1st plane */
@@ -1514,11 +1220,7 @@ ROM_START( tokiob )
 	ROM_LOAD( "a71-05.ic7",   0x20000, 0x8000, CRC(6da0b945) SHA1(6c80b8333dd95657f99e6ba5b6e877733ac02a8c) )
 	ROM_LOAD( "6.ic8",        0x28000, 0x8000, CRC(1490e95b) SHA1(a73e1857a1029156f0b5f7f7fe34a37870e72209) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x10000, "slave", 0 )   /* video CPU */
-=======
 	ROM_REGION( 0x10000, "subcpu", 0 )   /* video CPU */
->>>>>>> upstream/master
 	ROM_LOAD( "a71-01.ic1",   0x00000, 0x8000, CRC(0867c707) SHA1(7129974f1252b28e9e338bd3c7fcb87210dcf412) )
 
 	ROM_REGION( 0x10000, "audiocpu", 0 )    /* audio CPU */
@@ -1546,8 +1248,6 @@ ROM_START( tokiob )
 	ROM_LOAD( "a71-25.ic41",  0x0000, 0x0100, CRC(2d0f8545) SHA1(089c31e2f614145ef2743164f7b52ae35bc06808) )    /* video timing, on gfx board */
 ROM_END
 
-<<<<<<< HEAD
-=======
 /*
    Bubble Bobble prototype on Tokio hardware
    14.MAY,1986VER 0.0
@@ -1593,7 +1293,6 @@ ROM_START( bublboblp )
 	ROM_REGION( 0x0200, "plds", 0 )
 	ROM_LOAD( "bublboblp.pal16l8.ic19",  0x0000, 0x0117, CRC(4e1f119c) SHA1(0ac8eb2fdb202951e5f7145f92dfd10fe96b294b) ) // under epoxy; unlabeled, but equations are identical to tokio a71-26.ic19. fusemap was not dumped.
 ROM_END
->>>>>>> upstream/master
 
 /*
 
@@ -1616,11 +1315,7 @@ ROM_START( bublbobl )
 	ROM_LOAD( "a78-05-1.52",    0x10000, 0x10000, CRC(9f8ee242) SHA1(924150d4e7e087a9b2b0a294c2d0e9903a266c6c) )
 	/* 20000-2ffff empty */
 
-<<<<<<< HEAD
-	ROM_REGION( 0x10000, "slave", 0 )   /* 64k for the second CPU */
-=======
 	ROM_REGION( 0x10000, "subcpu", 0 )   /* 64k for the second CPU */
->>>>>>> upstream/master
 	ROM_LOAD( "a78-08.37",    0x0000, 0x08000, CRC(ae11a07b) SHA1(af7a335c8da637103103cc274e077f123908ebb7) )
 
 	ROM_REGION( 0x10000, "audiocpu", 0 )    /* 64k for the third CPU */
@@ -1669,11 +1364,7 @@ ROM_START( bublbobl1 )
 	ROM_LOAD( "a78-05.52",    0x10000, 0x10000, CRC(53f4bc6e) SHA1(15a2e6d83438d4136b154b3d90dd2cf9f1ce572c) )
 	/* 20000-2ffff empty */
 
-<<<<<<< HEAD
-	ROM_REGION( 0x10000, "slave", 0 )   /* 64k for the second CPU */
-=======
 	ROM_REGION( 0x10000, "subcpu", 0 )   /* 64k for the second CPU */
->>>>>>> upstream/master
 	ROM_LOAD( "a78-08.37",    0x0000, 0x08000, CRC(ae11a07b) SHA1(af7a335c8da637103103cc274e077f123908ebb7) )
 
 	ROM_REGION( 0x10000, "audiocpu", 0 )    /* 64k for the third CPU */
@@ -1722,11 +1413,7 @@ ROM_START( bublboblr )
 	ROM_LOAD( "a78-24.52",    0x10000, 0x10000, CRC(b7afedc4) SHA1(6e4c8712f1fdf000e231cfd622dd3b514c61a6fd) )
 	/* 20000-2ffff empty */
 
-<<<<<<< HEAD
-	ROM_REGION( 0x10000, "slave", 0 )   /* 64k for the second CPU */
-=======
 	ROM_REGION( 0x10000, "subcpu", 0 )   /* 64k for the second CPU */
->>>>>>> upstream/master
 	ROM_LOAD( "a78-08.37",    0x0000, 0x08000, CRC(ae11a07b) SHA1(af7a335c8da637103103cc274e077f123908ebb7) )
 
 	ROM_REGION( 0x10000, "audiocpu", 0 )    /* 64k for the third CPU */
@@ -1775,11 +1462,7 @@ ROM_START( bublboblr1 )
 	ROM_LOAD( "a78-21.52",    0x10000, 0x10000, CRC(2844033d) SHA1(6ac0b09d0325990cf18935f35b0adbc033758947) )
 	/* 20000-2ffff empty */
 
-<<<<<<< HEAD
-	ROM_REGION( 0x10000, "slave", 0 )   /* 64k for the second CPU */
-=======
 	ROM_REGION( 0x10000, "subcpu", 0 )   /* 64k for the second CPU */
->>>>>>> upstream/master
 	ROM_LOAD( "a78-08.37",    0x0000, 0x08000, CRC(ae11a07b) SHA1(af7a335c8da637103103cc274e077f123908ebb7) )
 
 	ROM_REGION( 0x10000, "audiocpu", 0 )    /* 64k for the third CPU */
@@ -1822,11 +1505,7 @@ ROM_START( boblbobl )
 	ROM_LOAD( "bb4",          0x18000, 0x08000, CRC(afda99d8) SHA1(304324074ae726501bbb08e683850639d69939fb) )
 	/* 20000-2ffff empty */
 
-<<<<<<< HEAD
-	ROM_REGION( 0x10000, "slave", 0 )   /* 64k for the second CPU */
-=======
 	ROM_REGION( 0x10000, "subcpu", 0 )   /* 64k for the second CPU */
->>>>>>> upstream/master
 	ROM_LOAD( "a78-08.37",    0x0000, 0x08000, CRC(ae11a07b) SHA1(af7a335c8da637103103cc274e077f123908ebb7) )
 
 	ROM_REGION( 0x10000, "audiocpu", 0 )    /* 64k for the third CPU */
@@ -1864,11 +1543,7 @@ ROM_START( bbredux )
 	ROM_LOAD( "redux_bb5",          0x10000, 0x8000, CRC(d29d3444) SHA1(3db694a6ba2ba2ed85d31c2bc4c7c94911b99b85) )
 	ROM_LOAD( "redux_bb4",          0x18000, 0x8000, CRC(984149bd) SHA1(9a0f96eee038712277f652545a343587f711b9aa) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x10000, "slave", 0 )   /* 64k for the second CPU */
-=======
 	ROM_REGION( 0x10000, "subcpu", 0 )   /* 64k for the second CPU */
->>>>>>> upstream/master
 	ROM_LOAD( "a78-08.37",    0x0000, 0x08000, CRC(ae11a07b) SHA1(af7a335c8da637103103cc274e077f123908ebb7) )
 
 	ROM_REGION( 0x10000, "audiocpu", 0 )    /* 64k for the third CPU */
@@ -1907,11 +1582,7 @@ ROM_START( sboblbobl )
 	ROM_LOAD( "cpu2-4.bin",   0x18000, 0x08000, CRC(3f9fed10) SHA1(1cc18a58d9a27495048825836accfa81ebbc0c56) )
 	/* 20000-2ffff empty */
 
-<<<<<<< HEAD
-	ROM_REGION( 0x10000, "slave", 0 )   /* 64k for the second CPU */
-=======
 	ROM_REGION( 0x10000, "subcpu", 0 )   /* 64k for the second CPU */
->>>>>>> upstream/master
 	ROM_LOAD( "a78-08.37",    0x0000, 0x08000, CRC(ae11a07b) SHA1(af7a335c8da637103103cc274e077f123908ebb7) )
 
 	ROM_REGION( 0x10000, "audiocpu", 0 )    /* 64k for the third CPU */
@@ -1941,11 +1612,7 @@ ROM_START( sboblbobla )
 	ROM_LOAD( "1b.bin",          0x18000, 0x08000, CRC(1f29b5c0) SHA1(c15c84ca11cc10edac6340468bca463ecb2d89e6) )
 	/* 20000-2ffff empty */
 
-<<<<<<< HEAD
-	ROM_REGION( 0x10000, "slave", 0 )   /* 64k for the second CPU */
-=======
 	ROM_REGION( 0x10000, "subcpu", 0 )   /* 64k for the second CPU */
->>>>>>> upstream/master
 	ROM_LOAD( "1e.rom",    0x0000, 0x08000, CRC(ae11a07b) SHA1(af7a335c8da637103103cc274e077f123908ebb7) )
 
 	ROM_REGION( 0x10000, "audiocpu", 0 )    /* 64k for the third CPU */
@@ -1979,11 +1646,7 @@ ROM_START( sboblboblb )
 	ROM_LOAD( "bbb-4.rom",    0x18000, 0x08000, CRC(94c75591) SHA1(7698bc4b7d20e554a73a489cd3a15ae61b350e37) )
 	/* 20000-2ffff empty */
 
-<<<<<<< HEAD
-	ROM_REGION( 0x10000, "slave", 0 )   /* 64k for the second CPU */
-=======
 	ROM_REGION( 0x10000, "subcpu", 0 )   /* 64k for the second CPU */
->>>>>>> upstream/master
 	ROM_LOAD( "a78-08.37",    0x0000, 0x08000, CRC(ae11a07b) SHA1(af7a335c8da637103103cc274e077f123908ebb7) )
 
 	ROM_REGION( 0x10000, "audiocpu", 0 )    /* 64k for the third CPU */
@@ -2019,11 +1682,7 @@ ROM_START( sboblboblc )
 	ROM_LOAD( "4",          0x18000, 0x08000, CRC(1f29b5c0) SHA1(c15c84ca11cc10edac6340468bca463ecb2d89e6) )
 	/* 20000-2ffff empty */
 
-<<<<<<< HEAD
-	ROM_REGION( 0x10000, "slave", 0 )   /* 64k for the second CPU */
-=======
 	ROM_REGION( 0x10000, "subcpu", 0 )   /* 64k for the second CPU */
->>>>>>> upstream/master
 	ROM_LOAD( "1",    0x0000, 0x08000, CRC(ae11a07b) SHA1(af7a335c8da637103103cc274e077f123908ebb7) )
 
 	ROM_REGION( 0x10000, "audiocpu", 0 )    /* 64k for the third CPU */
@@ -2050,8 +1709,6 @@ ROM_START( sboblboblc )
 
 ROM_END
 
-<<<<<<< HEAD
-=======
 
 ROM_START( sboblbobld )
 	ROM_REGION( 0x30000, "maincpu", 0 )
@@ -2088,7 +1745,6 @@ ROM_START( sboblbobld )
 
 ROM_END
 
->>>>>>> upstream/master
 ROM_START( bub68705 )
 	ROM_REGION( 0x30000, "maincpu", 0 ) /* Program roms match Bubble Bobble (older) */
 	ROM_LOAD( "2.bin",    0x00000, 0x08000, CRC(32c8305b) SHA1(6bf69b3edfbefd33cd670a762b4bf0b39629a220) )
@@ -2097,11 +1753,7 @@ ROM_START( bub68705 )
 	ROM_LOAD( "3.bin",          0x18000, 0x08000, CRC(e6c698f2) SHA1(8df116075f5891f74d0da8966ed11c597b5f544f) )
 	/* 20000-2ffff empty */
 
-<<<<<<< HEAD
-	ROM_REGION( 0x10000, "slave", 0 )   /* 64k for the second CPU */
-=======
 	ROM_REGION( 0x10000, "subcpu", 0 )   /* 64k for the second CPU */
->>>>>>> upstream/master
 	ROM_LOAD( "4.bin",    0x0000, 0x08000, CRC(ae11a07b) SHA1(af7a335c8da637103103cc274e077f123908ebb7) )
 
 	ROM_REGION( 0x10000, "audiocpu", 0 )    /* 64k for the third CPU */
@@ -2139,11 +1791,7 @@ ROM_START( dland )
 	ROM_LOAD( "dl_4.u68",    0x18000, 0x08000, CRC(c6a3776f) SHA1(473fc8c990046f90517f2506f1ca59eeb7ea13e5) )
 	/* 20000-2ffff empty */
 
-<<<<<<< HEAD
-	ROM_REGION( 0x10000, "slave", 0 )   /* 64k for the second CPU */
-=======
 	ROM_REGION( 0x10000, "subcpu", 0 )   /* 64k for the second CPU */
->>>>>>> upstream/master
 	ROM_LOAD( "dl_1.u42",    0x0000, 0x08000, CRC(ae11a07b) SHA1(af7a335c8da637103103cc274e077f123908ebb7) )
 
 	ROM_REGION( 0x10000, "audiocpu", 0 )    /* 64k for the third CPU */
@@ -2169,11 +1817,7 @@ ROM_START( bublcave )
 	ROM_LOAD( "bublcave-06.51",    0x00000, 0x08000, CRC(e8b9af5e) SHA1(dec44e47634a402df212806e84e3a810f8442776) )
 	ROM_LOAD( "bublcave-05.52",    0x10000, 0x10000, CRC(cfe14cb8) SHA1(17d463c755f630ae9d05943515fa4828972bd7b0) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x10000, "slave", 0 )
-=======
 	ROM_REGION( 0x10000, "subcpu", 0 )
->>>>>>> upstream/master
 	ROM_LOAD( "bublcave-08.37",    0x0000, 0x08000, CRC(a9384086) SHA1(26e686671d6d3ba3759716bf46e7f951bbb8a291) )
 
 	ROM_REGION( 0x10000, "audiocpu", 0 )
@@ -2209,11 +1853,7 @@ ROM_START( boblcave )
 	ROM_LOAD( "lc12_bb4",          0x18000, 0x08000, CRC(bd7afdf4) SHA1(a9bcdc857b1f252c36a5a70f5027a11737f8dd59) )
 	/* 20000-2ffff empty */
 
-<<<<<<< HEAD
-	ROM_REGION( 0x10000, "slave", 0 )   /* 64k for the second CPU */
-=======
 	ROM_REGION( 0x10000, "subcpu", 0 )   /* 64k for the second CPU */
->>>>>>> upstream/master
 	ROM_LOAD( "bublcave-08.37",    0x0000, 0x08000, CRC(a9384086) SHA1(26e686671d6d3ba3759716bf46e7f951bbb8a291) )
 
 	ROM_REGION( 0x10000, "audiocpu", 0 )    /* 64k for the third CPU */
@@ -2248,11 +1888,7 @@ ROM_START( bublcave11 )
 	ROM_LOAD( "bublcave10-06.51",  0x00000, 0x08000, CRC(185cc219) SHA1(dfb312f144fb01c07581cb8ea55ab0dc92ccd5b2) )
 	ROM_LOAD( "bublcave11-05.52",  0x10000, 0x10000, CRC(b6b02df3) SHA1(542589544216a54f84c213b161d7145934875d2b) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x10000, "slave", 0 )
-=======
 	ROM_REGION( 0x10000, "subcpu", 0 )
->>>>>>> upstream/master
 	ROM_LOAD( "bublcave11-08.37",  0x0000, 0x08000, CRC(c5d14e62) SHA1(b32b1ca76b54755a69a7a346d01545f2699e1363) )
 
 	ROM_REGION( 0x10000, "audiocpu", 0 )
@@ -2284,11 +1920,7 @@ ROM_START( bublcave10 )
 	ROM_LOAD( "bublcave10-06.51",  0x00000, 0x08000, CRC(185cc219) SHA1(dfb312f144fb01c07581cb8ea55ab0dc92ccd5b2) )
 	ROM_LOAD( "bublcave10-05.52",  0x10000, 0x10000, CRC(381cdde7) SHA1(0c9de44d7dbad754e873af8ddb5a2736f5ec2096) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x10000, "slave", 0 )
-=======
 	ROM_REGION( 0x10000, "subcpu", 0 )
->>>>>>> upstream/master
 	ROM_LOAD( "bublcave10-08.37",  0x0000, 0x08000, CRC(026a68e1) SHA1(9e54310a9f1f5187ea6eb49d9189865b44708a7e) )
 
 	ROM_REGION( 0x10000, "audiocpu", 0 )
@@ -2322,11 +1954,7 @@ ROM_START( bublboblb )
 	ROM_LOAD( "bbaladar.5",   0x10000, 0x8000, CRC(16386e9a) SHA1(77fa3f5ecce5c79ba52098c0870482459926b415) )
 	ROM_LOAD( "bbaladar.4",   0x18000, 0x8000, CRC(0c4bcb07) SHA1(3e3f7fa098d6be61d265cab5258dbd0e279bd8ed) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x10000, "slave", 0 )   /* 64k for the second CPU */
-=======
 	ROM_REGION( 0x10000, "subcpu", 0 )   /* 64k for the second CPU */
->>>>>>> upstream/master
 	ROM_LOAD( "a78-08.37",    0x0000, 0x08000, CRC(ae11a07b) SHA1(af7a335c8da637103103cc274e077f123908ebb7) )
 
 	ROM_REGION( 0x10000, "audiocpu", 0 )    /* 64k for the third CPU */
@@ -2365,34 +1993,6 @@ ROM_END
 
 void bublbobl_state::configure_banks(  )
 {
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("maincpu")->base();
-	membank("bank1")->configure_entries(0, 8, &ROM[0x10000], 0x4000);
-}
-
-DRIVER_INIT_MEMBER(bublbobl_state,bublbobl)
-{
-	configure_banks();
-
-	/* we init this here, so that it does not conflict with tokio init, below */
-	m_video_enable = 0;
-}
-
-DRIVER_INIT_MEMBER(bublbobl_state,tokio)
-{
-	configure_banks();
-
-	/* preemptively enable video, the bit is not mapped for this game and */
-	/* I don't know if it even has it. */
-	m_video_enable = 1;
-}
-
-DRIVER_INIT_MEMBER(bublbobl_state,tokiob)
-{
-	DRIVER_INIT_CALL(tokio);
-
-	m_maincpu->space(AS_PROGRAM).install_read_handler(0xfe00, 0xfe00, read8_delegate(FUNC(bublbobl_state::tokiob_mcu_r),this) );
-=======
 	uint8_t *ROM = memregion("maincpu")->base();
 	membank("bank1")->configure_entries(0, 8, &ROM[0x10000], 0x4000);
 }
@@ -2400,29 +2000,20 @@ DRIVER_INIT_MEMBER(bublbobl_state,tokiob)
 DRIVER_INIT_MEMBER(bublbobl_state,common)
 {
 	configure_banks();
->>>>>>> upstream/master
 }
 
 DRIVER_INIT_MEMBER(bublbobl_state,dland)
 {
 	// rearrange gfx to original format
 	int i;
-<<<<<<< HEAD
-	UINT8* src = memregion("gfx1")->base();
-=======
 	uint8_t* src = memregion("gfx1")->base();
->>>>>>> upstream/master
 	for (i = 0; i < 0x40000; i++)
 		src[i] = BITSWAP8(src[i],7,6,5,4,0,1,2,3);
 
 	for (i = 0x40000; i < 0x80000; i++)
 		src[i] = BITSWAP8(src[i],7,4,5,6,3,0,1,2);
 
-<<<<<<< HEAD
-	DRIVER_INIT_CALL(bublbobl);
-=======
 	DRIVER_INIT_CALL(common);
->>>>>>> upstream/master
 }
 
 
@@ -2431,36 +2022,6 @@ DRIVER_INIT_MEMBER(bublbobl_state,dland)
  *  Game driver(s)
  *
  *************************************/
-<<<<<<< HEAD
-
-GAME( 1986, tokio,      0,        tokio,    tokio,      bublbobl_state, tokio,    ROT90, "Taito Corporation", "Tokio / Scramble Formation (newer)", MACHINE_NOT_WORKING | MACHINE_UNEMULATED_PROTECTION | MACHINE_SUPPORTS_SAVE )
-GAME( 1986, tokioo,     tokio,    tokio,    tokio,      bublbobl_state, tokio,    ROT90, "Taito Corporation", "Tokio / Scramble Formation (older)", MACHINE_NOT_WORKING | MACHINE_UNEMULATED_PROTECTION | MACHINE_SUPPORTS_SAVE )
-GAME( 1986, tokiou,     tokio,    tokio,    tokio,      bublbobl_state, tokio,    ROT90, "Taito America Corporation (Romstar license)", "Tokio / Scramble Formation (US)", MACHINE_NOT_WORKING | MACHINE_UNEMULATED_PROTECTION | MACHINE_SUPPORTS_SAVE )
-GAME( 1986, tokiob,     tokio,    tokio,    tokio,      bublbobl_state, tokiob,   ROT90, "bootleg", "Tokio / Scramble Formation (bootleg)", MACHINE_SUPPORTS_SAVE )
-
-GAME( 1986, bublbobl,   0,        bublbobl, bublbobl,   bublbobl_state, bublbobl, ROT0,  "Taito Corporation", "Bubble Bobble (Japan, Ver 0.1)", MACHINE_SUPPORTS_SAVE )
-GAME( 1986, bublbobl1,  bublbobl, bublbobl, bublbobl,   bublbobl_state, bublbobl, ROT0,  "Taito Corporation", "Bubble Bobble (Japan, Ver 0.0)", MACHINE_SUPPORTS_SAVE )
-GAME( 1986, bublboblr,  bublbobl, bublbobl, bublbobl,   bublbobl_state, bublbobl, ROT0,  "Taito America Corporation (Romstar license)", "Bubble Bobble (US, Ver 5.1)", MACHINE_SUPPORTS_SAVE ) // newest release, with mode select
-GAME( 1986, bublboblr1, bublbobl, bublbobl, bublbobl,   bublbobl_state, bublbobl, ROT0,  "Taito America Corporation (Romstar license)", "Bubble Bobble (US, Ver 1.0)", MACHINE_SUPPORTS_SAVE )
-
-GAME( 1986, boblbobl,   bublbobl, boblbobl, boblbobl,   bublbobl_state, bublbobl, ROT0,  "bootleg", "Bobble Bobble (bootleg of Bubble Bobble)", MACHINE_SUPPORTS_SAVE )
-GAME( 1986, sboblbobl,  bublbobl, boblbobl, sboblbobl,  bublbobl_state, bublbobl, ROT0,  "bootleg (Datsu)", "Super Bobble Bobble (bootleg, set 1)", MACHINE_SUPPORTS_SAVE )
-GAME( 1986, sboblbobla, bublbobl, boblbobl, boblbobl,   bublbobl_state, bublbobl, ROT0,  "bootleg", "Super Bobble Bobble (bootleg, set 2)", MACHINE_SUPPORTS_SAVE )
-GAME( 1986, sboblboblb, bublbobl, boblbobl, sboblboblb, bublbobl_state, bublbobl, ROT0,  "bootleg", "Super Bobble Bobble (bootleg, set 3)", MACHINE_SUPPORTS_SAVE )
-GAME( 1986, sboblboblc, bublbobl, boblbobl, sboblboblb, bublbobl_state, bublbobl, ROT0,  "bootleg", "Super Bubble Bobble (bootleg)", MACHINE_SUPPORTS_SAVE ) // the title screen on this one isn't hacked
-GAME( 1986, bub68705,   bublbobl, bub68705, bublbobl,   bublbobl_state, bublbobl, ROT0,  "bootleg", "Bubble Bobble (bootleg with 68705)", MACHINE_SUPPORTS_SAVE )
-
-GAME( 1987, dland,      bublbobl, boblbobl, dland,      bublbobl_state, dland,    ROT0,  "bootleg", "Dream Land / Super Dream Land (bootleg of Bubble Bobble)", MACHINE_SUPPORTS_SAVE )
-
-GAME( 2013, bbredux,    bublbobl, boblbobl, boblbobl, bublbobl_state, bublbobl, ROT0, "bootleg (Punji)",  "Bubble Bobble ('bootleg redux' hack for Bobble Bobble PCB)", MACHINE_SUPPORTS_SAVE ) // for use on non-MCU bootleg boards (Bobble Bobble etc.) has more faithful simulation of the protection device (JAN-04-2015 release)
-GAME( 2013, bublboblb,  bublbobl, boblbobl, boblcave, bublbobl_state, bublbobl, ROT0, "bootleg (Aladar)", "Bubble Bobble (for Bobble Bobble PCB)", MACHINE_SUPPORTS_SAVE ) // alt bootleg/hack to restore proper MCU behavior to bootleg boards
-
-GAME( 2013, bublcave,   bublbobl, bublbobl, bublbobl, bublbobl_state, bublbobl, ROT0, "hack (Bisboch and Aladar)", "Bubble Bobble: Lost Cave V1.2", MACHINE_SUPPORTS_SAVE )
-GAME( 2013, boblcave,   bublbobl, boblbobl, boblcave, bublbobl_state, bublbobl, ROT0, "hack (Bisboch and Aladar)", "Bubble Bobble: Lost Cave V1.2 (for Bobble Bobble PCB)", MACHINE_SUPPORTS_SAVE )
-
-GAME( 2012, bublcave11, bublbobl, bublbobl, bublbobl, bublbobl_state, bublbobl, ROT0, "hack (Bisboch and Aladar)", "Bubble Bobble: Lost Cave V1.1", MACHINE_SUPPORTS_SAVE )
-GAME( 2012, bublcave10, bublbobl, bublbobl, bublbobl, bublbobl_state, bublbobl, ROT0, "hack (Bisboch and Aladar)", "Bubble Bobble: Lost Cave V1.0", MACHINE_SUPPORTS_SAVE )
-=======
 //    YEAR  NAME        PARENT    MACHINE   INPUT       STATE           INIT    ROT    COMPANY     FULLNAME      FLAGS
 GAME( 1986, tokio,      0,        tokio,    tokio,      bublbobl_state, common, ROT90, "Taito Corporation",                           "Tokio / Scramble Formation (newer)",   MACHINE_SUPPORTS_SAVE )
 GAME( 1986, tokioo,     tokio,    tokio,    tokio,      bublbobl_state, common, ROT90, "Taito Corporation",                           "Tokio / Scramble Formation (older)",   MACHINE_SUPPORTS_SAVE )
@@ -2490,4 +2051,3 @@ GAME( 2013, bublcave,   bublbobl, bublbobl, bublbobl,   bublbobl_state, common, 
 GAME( 2013, boblcave,   bublbobl, boblbobl, boblcave,   bublbobl_state, common, ROT0,  "hack (Bisboch and Aladar)", "Bubble Bobble: Lost Cave V1.2 (for Bobble Bobble PCB)", MACHINE_SUPPORTS_SAVE )
 GAME( 2012, bublcave11, bublbobl, bublbobl, bublbobl,   bublbobl_state, common, ROT0,  "hack (Bisboch and Aladar)", "Bubble Bobble: Lost Cave V1.1",                         MACHINE_SUPPORTS_SAVE )
 GAME( 2012, bublcave10, bublbobl, bublbobl, bublbobl,   bublbobl_state, common, ROT0,  "hack (Bisboch and Aladar)", "Bubble Bobble: Lost Cave V1.0",                         MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

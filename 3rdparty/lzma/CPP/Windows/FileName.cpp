@@ -4,19 +4,14 @@
 
 #include "FileName.h"
 
-<<<<<<< HEAD
-=======
 #ifndef _UNICODE
 extern bool g_IsNT;
 #endif
 
->>>>>>> upstream/master
 namespace NWindows {
 namespace NFile {
 namespace NName {
 
-<<<<<<< HEAD
-=======
 #define IS_SEPAR(c) IS_PATH_SEPAR(c)
 
 int FindSepar(const wchar_t *s) throw()
@@ -46,34 +41,19 @@ int FindSepar(const FChar *s) throw()
 #endif
 
 #ifndef USE_UNICODE_FSTRING
->>>>>>> upstream/master
 void NormalizeDirPathPrefix(FString &dirPath)
 {
   if (dirPath.IsEmpty())
     return;
-<<<<<<< HEAD
-  if (dirPath.ReverseFind(FCHAR_PATH_SEPARATOR) != dirPath.Length() - 1)
-    dirPath += FCHAR_PATH_SEPARATOR;
-}
-
-#ifndef USE_UNICODE_FSTRING
-=======
   if (!IsPathSepar(dirPath.Back()))
     dirPath.Add_PathSepar();
 }
 #endif
 
->>>>>>> upstream/master
 void NormalizeDirPathPrefix(UString &dirPath)
 {
   if (dirPath.IsEmpty())
     return;
-<<<<<<< HEAD
-  if (dirPath.ReverseFind(WCHAR_PATH_SEPARATOR) != dirPath.Length() - 1)
-    dirPath += WCHAR_PATH_SEPARATOR;
-}
-#endif
-=======
   if (!IsPathSepar(dirPath.Back()))
     dirPath.Add_PathSepar();
 }
@@ -857,6 +837,5 @@ bool GetFullPath(CFSTR path, FString &fullPath)
 {
   return GetFullPath(NULL, path, fullPath);
 }
->>>>>>> upstream/master
 
 }}}

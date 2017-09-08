@@ -13,88 +13,10 @@
 
 #include "lh5801.h"
 
-<<<<<<< HEAD
-enum Adr
-{
-	Imp,
-	Reg,
-	Vec, // imm byte (vector at 0xffxx)
-	Vej,
-	Imm,
-	RegImm,
-	Imm16,
-	RegImm16,
-	ME0,
-	ME0Imm,
-	Abs,
-	AbsImm,
-	ME1,
-	ME1Imm,
-	ME1Abs,
-	ME1AbsImm,
-	RelP,
-	RelM
-};
-
-enum Regs
-{
-	RegNone,
-	A,
-	XL, XH, X,
-	YL, YH, Y,
-	UL, UH, U,
-	P, S
-};
-
-static const char *const RegNames[]= {
-	0, "A", "XL", "XH", "X", "YL", "YH", "Y", "UL", "UH", "U", "P", "S"
-};
-
-=======
->>>>>>> upstream/master
 #if defined(SEC)
 #undef SEC
 #endif
 
-<<<<<<< HEAD
-enum Ins
-{
-	ILL, ILL2, PREFD, NOP,
-
-	LDA, STA, LDI, LDX, STX,
-	LDE, SDE, LIN, SIN,
-	TIN, // (x++)->(y++)
-	ADC, ADI, ADR, SBC, SBI,
-	DCA, DCS, // bcd add and sub
-	CPA, CPI, CIN, // A compared with (x++)
-	AND, ANI, ORA, ORI, EOR, EAI, BIT, BII,
-	INC, DEC,
-	DRL, DRR, // digit rotates
-	ROL, ROR,
-	SHL, SHR,
-	AEX, // A nibble swap
-
-	BCR, BCS, BHR, BHS, BZR, BZS, BVR, BVS,
-	BCH, LOP, // loop with ul
-	JMP, SJP, RTN, RTI, HLT,
-	VCR, VCS, VHR, VHS, VVS, VZR, VZS,
-	VMJ, VEJ,
-	PSH, POP, ATT, TTA,
-	REC, SEC, RIE, SIE,
-
-	AM0, AM1, // load timer reg
-	ITA, // reads input port
-	ATP, // akku send to data bus
-	CDV, // clears internal divider
-	OFF, // clears bf flip flop
-	RDP, SDP,// reset display flip flop
-	RPU, SPU,// flip flop pu off
-	RPV, SPV // flip flop pv off
-};
-
-static const char *const InsNames[]={
-	"ILL", "ILL", 0, "NOP",
-=======
 namespace {
 
 class Entry
@@ -186,7 +108,6 @@ protected:
 
 const char *const Entry::ins_names[]={
 	"ILL", "ILL", nullptr, "NOP",
->>>>>>> upstream/master
 	"LDA", "STA", "LDI", "LDX", "STX",
 	"LDE", "SDE", "LIN", "SIN",
 	"TIN",
@@ -217,17 +138,11 @@ const char *const Entry::ins_names[]={
 	"RPV", "SPV",
 };
 
-<<<<<<< HEAD
-struct Entry { Ins ins; Adr adr; Regs reg; };
-
-static const Entry table[0x100]={
-=======
 const char *const Entry::reg_names[]= {
 	nullptr, "A", "XL", "XH", "X", "YL", "YH", "Y", "UL", "UH", "U", "P", "S"
 };
 
 const Entry Entry::table[0x100]={
->>>>>>> upstream/master
 	{ SBC, Reg, XL }, // 0
 	{ SBC, ME0, X },
 	{ ADC, Reg, XL },
@@ -485,12 +400,8 @@ const Entry Entry::table[0x100]={
 	{ ILL },
 	{ ILL }
 };
-<<<<<<< HEAD
-static const Entry table_fd[0x100]={
-=======
 
 const Entry Entry::table_fd[0x100]={
->>>>>>> upstream/master
 	{ ILL2 }, // 0x00
 	{ SBC, ME1, X },
 	{ ILL2 },
@@ -749,13 +660,6 @@ const Entry Entry::table_fd[0x100]={
 	{ ILL2 }
 };
 
-<<<<<<< HEAD
-CPU_DISASSEMBLE( lh5801 )
-{
-	int pos = 0;
-	int oper;
-	UINT16 absolut;
-=======
 } // anonymous namespace
 
 
@@ -764,82 +668,10 @@ CPU_DISASSEMBLE(lh5801)
 	int pos = 0;
 	int oper;
 	uint16_t absolut;
->>>>>>> upstream/master
 	const Entry *entry;
 	int temp;
 
 	oper=oprom[pos++];
-<<<<<<< HEAD
-	entry=table+oper;
-
-	if (table[oper].ins==PREFD) {
-		oper=oprom[pos++];
-		entry=table_fd+oper;
-	}
-	switch (entry->ins) {
-	case ILL:
-		sprintf(buffer,"%s %.2x", InsNames[entry->ins], oper);break;
-	case ILL2:
-		sprintf(buffer,"%s fd%.2x", InsNames[entry->ins], oper);break;
-	default:
-		switch(entry->adr) {
-		case Imp:
-			sprintf(buffer,"%s", InsNames[entry->ins]);break;
-		case Reg:
-			sprintf(buffer,"%s %s", InsNames[entry->ins],RegNames[entry->reg]);break;
-		case RegImm:
-			sprintf(buffer,"%s %s,%.2x", InsNames[entry->ins],
-					RegNames[entry->reg], oprom[pos++]);
-			break;
-		case RegImm16:
-			absolut=oprom[pos++]<<8;
-			absolut|=oprom[pos++];
-			sprintf(buffer,"%s %s,%.4x", InsNames[entry->ins],RegNames[entry->reg],absolut );
-			break;
-		case Vec:
-			sprintf(buffer,"%s (ff%.2x)", InsNames[entry->ins],oprom[pos++]);break;
-		case Vej:
-			sprintf(buffer,"%s (ff%.2x)", InsNames[entry->ins], oper);break;
-		case Imm:
-			sprintf(buffer,"%s %.2x", InsNames[entry->ins],oprom[pos++]);break;
-		case Imm16:
-			absolut=oprom[pos++]<<8;
-			absolut|=oprom[pos++];
-			sprintf(buffer,"%s %.4x", InsNames[entry->ins],absolut );break;
-		case RelP:
-			temp=oprom[pos++];
-			sprintf(buffer,"%s %.4x", InsNames[entry->ins],pc+pos+temp );break;
-		case RelM:
-			temp=oprom[pos++];
-			sprintf(buffer,"%s %.4x", InsNames[entry->ins],pc+pos-temp );break;
-		case Abs:
-			absolut=oprom[pos++]<<8;
-			absolut|=oprom[pos++];
-			sprintf(buffer,"%s (%.4x)", InsNames[entry->ins],absolut );break;
-		case ME1Abs:
-			absolut=oprom[pos++]<<8;
-			absolut|=oprom[pos++];
-			sprintf(buffer,"%s #(%.4x)", InsNames[entry->ins],absolut );break;
-		case AbsImm:
-			absolut=oprom[pos++]<<8;
-			absolut|=oprom[pos++];
-			sprintf(buffer,"%s (%.4x),%.2x", InsNames[entry->ins],absolut,
-					oprom[pos++]);break;
-		case ME1AbsImm:
-			absolut=oprom[pos++]<<8;
-			absolut|=oprom[pos++];
-			sprintf(buffer,"%s #(%.4x),%.2x", InsNames[entry->ins],absolut,
-					oprom[pos++]);break;
-		case ME0:
-			sprintf(buffer,"%s (%s)", InsNames[entry->ins],RegNames[entry->reg] );break;
-		case ME0Imm:
-			sprintf(buffer,"%s (%s),%.2x", InsNames[entry->ins],RegNames[entry->reg],oprom[pos++] );
-			break;
-		case ME1:
-			sprintf(buffer,"%s #(%s)", InsNames[entry->ins],RegNames[entry->reg] );break;
-		case ME1Imm:
-			sprintf(buffer,"%s #(%s),%.2x", InsNames[entry->ins],RegNames[entry->reg],oprom[pos++] );
-=======
 	entry=Entry::table+oper;
 
 	if (Entry::table[oper].ins==Entry::PREFD) {
@@ -909,7 +741,6 @@ CPU_DISASSEMBLE(lh5801)
 			util::stream_format(stream, "%s #(%s)", entry->ins_name(),entry->reg_name());break;
 		case Entry::ME1Imm:
 			util::stream_format(stream, "%s #(%s),%02x", entry->ins_name(),entry->reg_name(),oprom[pos++]);
->>>>>>> upstream/master
 			break;
 		}
 	}

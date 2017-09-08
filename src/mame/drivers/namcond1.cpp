@@ -9,73 +9,6 @@
             James Jenkins
             Walter Fath
 
-<<<<<<< HEAD
-    Currently Supported Games:
-        Namco Classic Vol #1
-        Namco Classic Vol #2
-
-PCB Layout
-----------
-
-8655960101 (8655970101)
-|----------------------------------------|
-|    LA4705        NC1_MAIN0B.14D  68000 |
-|   4558  LC78815  NC1_MAIN1B.13D        |
-|J  POT1                                 |
-|                      AT28C16           |
-|A                                       |
-|                                        |
-|M                                       |
-|                    NC1_CG0.10C    *    |
-|M       M9524LT                         |
-|               POT2                     |
-|A                                       |
-|                    YGV608-F            |
-|                                        |
-|                                        |
-|        NC1_VOICE.7B    49.152MHz       |
-|N                  25.326MHz            |
-|A                                       |
-|M       C352                            |
-|C                 MACH210         C416  |
-|O                                       |
-|4                                       |
-|8       H8/3002                 62256   |
-|                  NC1_SUB.1C    62256   |
-|----------------------------------------|
-Notes:
-      68000 clock  : 12.288MHz (49.152 / 4)
-      H8/3002 clock: 16.384MHz (49.152 / 3)
-      C352 clock:    24.576MHz (49.152 / 2)
-      VSync        : 60Hz
-
-      POT1    : Master volume
-      POT2    : Brightness adjustment (video level)
-      M9524LT : ? possibly some sort of RGB video output chip
-      AT28C16 : 2K x8 EEPROM
-      YGV608-F: Yamaha YVG608-F video controller
-      C352    : Namco custom QFP100
-      C416    : Namco custom QFP176
-      H8/3002 : Hitachi H8/3002 HD6413002F16 QFP100 microcontroller (H8/3002 has no internal ROM capability)
-      MACH210 : PLCC44 CPLD, Namco KEYCUS, stamped 'KC001'
-      62256   : 32K x8 SOJ28 SRAM
-      *       : Unpopulated position for SOP44 Mask ROM 'CG1'
-
-      NC1_MAIN0B.14D: 512K x16 EPROM type 27C240
-      NC1_MAIN1B.13D: 512K x16 EPROM type 27C240
-      NC1_SUB.1C    : 512K x16 EPROM type 27C240
-      NC1_CG0.10C   : 16MBit SOP44 Mask ROM
-      NC1_VOICE.7B  : 16MBit SOP44 Mask ROM
-
- *************************************************************/
-
-#include "emu.h"
-#include "cpu/m68000/m68000.h"
-#include "cpu/h8/h83002.h"
-#include "includes/namcond1.h"
-#include "sound/c352.h"
-#include "machine/at28c16.h"
-=======
     abcheck TODOs:
     - YGV608 brokenness
     - Where is the extra data ROM mapped?
@@ -260,23 +193,12 @@ Some logic, resistors/caps/transistors, some connectors etc.
 #include "screen.h"
 #include "speaker.h"
 
->>>>>>> upstream/master
 
 /*************************************************************/
 
 static ADDRESS_MAP_START( namcond1_map, AS_PROGRAM, 16, namcond1_state )
 	AM_RANGE(0x000000, 0x0fffff) AM_ROM
 	AM_RANGE(0x400000, 0x40ffff) AM_RAM AM_SHARE("shared_ram")
-<<<<<<< HEAD
-	AM_RANGE(0x800000, 0x80000f) AM_DEVREADWRITE("ygv608", ygv608_device, read, write)
-	AM_RANGE(0xa00000, 0xa00fff) AM_DEVREADWRITE8("at28c16", at28c16_device, read, write, 0xff00)
-#ifdef MAME_DEBUG
-	AM_RANGE(0xb00000, 0xb00001) AM_DEVREAD("ygv608", ygv608_device, debug_trigger_r)
-#endif
-	AM_RANGE(0xc3ff00, 0xc3ffff) AM_READWRITE(cuskey_r,cuskey_w)
-ADDRESS_MAP_END
-
-=======
 	AM_RANGE(0x800000, 0x80000f) AM_DEVICE8("ygv608", ygv608_device, port_map, 0xff00)
 	AM_RANGE(0xa00000, 0xa00fff) AM_DEVREADWRITE8("at28c16", at28c16_device, read, write, 0xff00)
 	AM_RANGE(0xc3ff00, 0xc3ffff) AM_READWRITE(cuskey_r,cuskey_w)
@@ -302,7 +224,6 @@ READ16_MEMBER(namcond1_state::printer_r)
 	return 0x0020;
 }
 
->>>>>>> upstream/master
 /*************************************************************/
 
 static INPUT_PORTS_START( namcond1 )
@@ -313,11 +234,7 @@ static INPUT_PORTS_START( namcond1 )
 	PORT_BIT( 0x0008, IP_ACTIVE_LOW, IPT_JOYSTICK_UP )
 	PORT_BIT( 0x0010, IP_ACTIVE_LOW, IPT_BUTTON1 )
 	PORT_BIT( 0x0020, IP_ACTIVE_LOW, IPT_BUTTON2 )
-<<<<<<< HEAD
-	PORT_BIT( 0x0040, IP_ACTIVE_LOW, IPT_UNUSED )
-=======
 	PORT_BIT( 0x0040, IP_ACTIVE_LOW, IPT_BUTTON3 )
->>>>>>> upstream/master
 	PORT_BIT( 0x0080, IP_ACTIVE_LOW, IPT_START1 )
 	PORT_BIT( 0x0100, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT ) PORT_PLAYER(2)
 	PORT_BIT( 0x0200, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT ) PORT_PLAYER(2)
@@ -325,11 +242,7 @@ static INPUT_PORTS_START( namcond1 )
 	PORT_BIT( 0x0800, IP_ACTIVE_LOW, IPT_JOYSTICK_UP ) PORT_PLAYER(2)
 	PORT_BIT( 0x1000, IP_ACTIVE_LOW, IPT_BUTTON1 ) PORT_PLAYER(2)
 	PORT_BIT( 0x2000, IP_ACTIVE_LOW, IPT_BUTTON2 ) PORT_PLAYER(2)
-<<<<<<< HEAD
-	PORT_BIT( 0x4000, IP_ACTIVE_LOW, IPT_UNUSED )
-=======
 	PORT_BIT( 0x4000, IP_ACTIVE_LOW, IPT_BUTTON3 ) PORT_PLAYER(2)
->>>>>>> upstream/master
 	PORT_BIT( 0x8000, IP_ACTIVE_LOW, IPT_START2 )
 
 	PORT_START("DSW")
@@ -346,106 +259,6 @@ static INPUT_PORTS_START( namcond1 )
 	PORT_BIT( 0x00ff, IP_ACTIVE_LOW, IPT_UNUSED )
 INPUT_PORTS_END
 
-<<<<<<< HEAD
-
-/* text-layer characters */
-
-static const UINT32 pts_4bits_layout_xoffset[64] =
-{
-	STEP8( 0*256, 4 ), STEP8( 1*256, 4 ), STEP8( 4*256, 4 ), STEP8( 5*256, 4 ),
-	STEP8( 16*256, 4 ), STEP8( 17*256, 4 ), STEP8( 20*256, 4 ), STEP8( 21*256, 4 )
-};
-
-static const UINT32 pts_4bits_layout_yoffset[64] =
-{
-	STEP8( 0*256, 8*4 ), STEP8( 2*256, 8*4 ), STEP8( 8*256, 8*4 ), STEP8( 10*256, 8*4 ),
-	STEP8( 32*256, 8*4 ), STEP8( 34*256, 8*4 ), STEP8( 40*256, 8*4 ), STEP8( 42*256, 8*4 )
-};
-
-static const gfx_layout pts_8x8_4bits_layout =
-{
-	8,8,          /* 8*8 pixels */
-	RGN_FRAC(1,1),        /* 65536 patterns */
-	4,            /* 4 bits per pixel */
-	{ 0, 1, 2, 3 },
-	EXTENDED_XOFFS,
-	EXTENDED_YOFFS,
-	8*8*4,
-	pts_4bits_layout_xoffset,
-	pts_4bits_layout_yoffset
-};
-
-static const gfx_layout pts_16x16_4bits_layout =
-{
-	16,16,        /* 16*16 pixels */
-	RGN_FRAC(1,1),        /* 16384 patterns */
-	4,            /* 4 bits per pixel */
-	{ 0, 1, 2, 3 },
-	EXTENDED_XOFFS,
-	EXTENDED_YOFFS,
-	16*16*4,
-	pts_4bits_layout_xoffset,
-	pts_4bits_layout_yoffset
-};
-
-static const gfx_layout pts_32x32_4bits_layout =
-{
-	32,32,        /* 32*32 pixels */
-	RGN_FRAC(1,1),         /* 4096 patterns */
-	4,            /* 4 bits per pixel */
-	{ 0, 1, 2, 3 },
-	EXTENDED_XOFFS,
-	EXTENDED_YOFFS,
-	32*32*4,
-	pts_4bits_layout_xoffset,
-	pts_4bits_layout_yoffset
-};
-
-static const gfx_layout pts_64x64_4bits_layout =
-{
-	64,64,        /* 32*32 pixels */
-	RGN_FRAC(1,1),         /* 1024 patterns */
-	4,            /* 4 bits per pixel */
-	{ 0, 1, 2, 3 },
-	EXTENDED_XOFFS,
-	EXTENDED_YOFFS,
-	64*64*4,
-	pts_4bits_layout_xoffset,
-	pts_4bits_layout_yoffset
-};
-
-
-static const gfx_layout pts_8x8_8bits_layout =
-{
-	8,8,          /* 8*8 pixels */
-	RGN_FRAC(1,1),        /* 32768 patterns */
-	8,            /* 8 bits per pixel */
-	{ 0, 1, 2, 3, 4, 5, 6, 7 },
-	{ STEP8( 0*512, 8 ) },
-	{ STEP8( 0*512, 8*8 ) },
-	8*8*8
-};
-
-static const gfx_layout pts_16x16_8bits_layout =
-{
-	16,16,        /* 16*16 pixels */
-	RGN_FRAC(1,1),         /* 8192 patterns */
-	8,            /* 8 bits per pixel */
-	{ 0, 1, 2, 3, 4, 5, 6, 7 },
-	{ STEP8( 0*512, 8 ), STEP8( 1*512, 8 ) },
-	{ STEP8( 0*512, 8*8 ), STEP8( 2*512, 8*8 ) },
-	16*16*8
-};
-
-static GFXDECODE_START( namcond1 )
-	GFXDECODE_ENTRY( "gfx1", 0x00000000, pts_8x8_4bits_layout,    0,  16 )
-	GFXDECODE_ENTRY( "gfx1", 0x00000000, pts_16x16_4bits_layout,  0,  16 )
-	GFXDECODE_ENTRY( "gfx1", 0x00000000, pts_32x32_4bits_layout,  0,  16 )
-	GFXDECODE_ENTRY( "gfx1", 0x00000000, pts_64x64_4bits_layout,  0,  16 )
-	GFXDECODE_ENTRY( "gfx1", 0x00000000, pts_8x8_8bits_layout,    0, 256 )
-	GFXDECODE_ENTRY( "gfx1", 0x00000000, pts_16x16_8bits_layout,  0, 256 )
-GFXDECODE_END
-=======
 static INPUT_PORTS_START( abcheck )
 	PORT_INCLUDE( namcond1 )
 
@@ -466,7 +279,6 @@ static INPUT_PORTS_START( abcheck )
 	PORT_BIT( 0x2000, IP_ACTIVE_LOW, IPT_COIN1 )
 INPUT_PORTS_END
 
->>>>>>> upstream/master
 
 READ16_MEMBER(namcond1_state::mcu_p7_read)
 {
@@ -493,21 +305,15 @@ static ADDRESS_MAP_START( nd1h8rwmap, AS_PROGRAM, 16, namcond1_state )
 	AM_RANGE(0xc00010, 0xc00011) AM_NOP
 	AM_RANGE(0xc00030, 0xc00031) AM_NOP
 	AM_RANGE(0xc00040, 0xc00041) AM_NOP
-<<<<<<< HEAD
-=======
 	AM_RANGE(0xffff1a, 0xffff1b) AM_NOP     // abcheck
 	AM_RANGE(0xffff1e, 0xffff1f) AM_NOP     // ^
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( nd1h8iomap, AS_IO, 16, namcond1_state )
 	AM_RANGE(h8_device::PORT_7, h8_device::PORT_7) AM_READ(mcu_p7_read )
 	AM_RANGE(h8_device::PORT_A, h8_device::PORT_A) AM_READWRITE(mcu_pa_read, mcu_pa_write )
 	AM_RANGE(h8_device::ADC_0,  h8_device::ADC_3)  AM_NOP // MCU reads these, but the games have no analog controls
-<<<<<<< HEAD
-=======
 	AM_RANGE(0x14, 0x17) AM_READNOP         // abcheck
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 INTERRUPT_GEN_MEMBER(namcond1_state::mcu_interrupt)
@@ -525,9 +331,6 @@ INTERRUPT_GEN_MEMBER(namcond1_state::mcu_interrupt)
   - The level 1 interrupt to the 68k has been measured at 60Hz.
 *******************************************/
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( namcond1, namcond1_state )
-=======
 WRITE_LINE_MEMBER( namcond1_state::vblank_irq_w )
 {
 	m_maincpu->set_input_line(1, state ? ASSERT_LINE : CLEAR_LINE);
@@ -539,23 +342,11 @@ WRITE_LINE_MEMBER( namcond1_state::raster_irq_w )
 }
 
 static MACHINE_CONFIG_START( namcond1 )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, XTAL_49_152MHz/4)
 	MCFG_CPU_PROGRAM_MAP(namcond1_map)
-<<<<<<< HEAD
-	MCFG_CPU_VBLANK_INT_DRIVER("screen", namcond1_state,  irq1_line_hold)
-
-	// I've disabled this for now, I don't think it's correct, it breaks ncv2 'game options' in test
-	// mode (and could also be responsible for the random resets?)
-	// also, if you log the timing of it and the scanlines on which the interrupt fires, it doesn't
-	// seem correct for the intended purpose?
-	//MCFG_DEVICE_PERIODIC_INT_DEVICE("ygv608", ygv608_device, timed_interrupt, 1000)
-
-=======
 //  MCFG_CPU_VBLANK_INT_DRIVER("screen", namcond1_state,  irq1_line_hold)
->>>>>>> upstream/master
 
 	MCFG_CPU_ADD("mcu", H83002, XTAL_49_152MHz/3 )
 	MCFG_CPU_PROGRAM_MAP( nd1h8rwmap)
@@ -565,18 +356,6 @@ static MACHINE_CONFIG_START( namcond1 )
 	MCFG_QUANTUM_TIME(attotime::from_hz(6000))
 
 
-<<<<<<< HEAD
-	/* video hardware */
-	MCFG_SCREEN_ADD("screen", RASTER)
-	MCFG_SCREEN_REFRESH_RATE(60.0)
-	MCFG_SCREEN_VBLANK_TIME(ATTOSECONDS_IN_USEC(2500) /* not accurate */)
-	MCFG_SCREEN_SIZE(288, 224)   // maximum display resolution (512x512 in theory)
-	MCFG_SCREEN_VISIBLE_AREA(0, 287, 0, 223)   // default visible area
-	MCFG_SCREEN_UPDATE_DEVICE("ygv608", ygv608_device, update_screen)
-	MCFG_SCREEN_PALETTE("palette")
-
-	MCFG_GFXDECODE_ADD("gfxdecode", "palette", namcond1)
-=======
 	MCFG_YGV608_ADD("ygv608")
 	MCFG_YGV608_PALETTE("palette")
 	MCFG_YGV608_VBLANK_HANDLER(WRITELINE(namcond1_state, vblank_irq_w))
@@ -592,25 +371,12 @@ static MACHINE_CONFIG_START( namcond1 )
 	MCFG_SCREEN_UPDATE_DEVICE("ygv608", ygv608_device, update_screen)
 	MCFG_SCREEN_PALETTE("palette")
 
->>>>>>> upstream/master
 	MCFG_PALETTE_ADD("palette", 256)
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
 	MCFG_C352_ADD("c352", XTAL_49_152MHz/2, 288)
-<<<<<<< HEAD
-	MCFG_SOUND_ROUTE(0, "rspeaker", 1.00)
-	MCFG_SOUND_ROUTE(1, "lspeaker", 1.00)
-	MCFG_SOUND_ROUTE(2, "rspeaker", 1.00)
-	MCFG_SOUND_ROUTE(3, "lspeaker", 1.00)
-
-	MCFG_AT28C16_ADD( "at28c16", NULL )
-
-	MCFG_YGV608_ADD("ygv608")
-	MCFG_YGV608_GFXDECODE("gfxdecode")
-	MCFG_YGV608_PALETTE("palette")
-=======
 	MCFG_SOUND_ROUTE(0, "lspeaker", 1.00)
 	MCFG_SOUND_ROUTE(1, "rspeaker", 1.00)
 	//MCFG_SOUND_ROUTE(2, "lspeaker", 1.00) // Second DAC not present.
@@ -628,7 +394,6 @@ static MACHINE_CONFIG_DERIVED( abcheck, namcond1 )
 
 	MCFG_NVRAM_ADD_0FILL("zpr1")
 	MCFG_NVRAM_ADD_0FILL("zpr2")
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 ROM_START( ncv1 )
@@ -639,11 +404,7 @@ ROM_START( ncv1 )
 	ROM_REGION( 0x80000,"mcu", 0 )      /* sub CPU */
 	ROM_LOAD( "nc1sub.1c",          0x00000, 0x80000, CRC(48ea0de2) SHA1(33e57c8d084a960ccbda462d18e355de44ec7ad9) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x200000,"gfx1", 0 )    /* 2MB character generator */
-=======
 	ROM_REGION( 0x200000,"ygv608", 0 )    /* 2MB character generator */
->>>>>>> upstream/master
 	ROM_LOAD( "nc1cg0.10c",         0x000000, 0x200000, CRC(355e7f29) SHA1(47d92c4e28c3610a620d3c9b3be558199477f6d8) )
 
 	ROM_REGION( 0x1000000, "c352", 0 ) // Samples
@@ -658,11 +419,7 @@ ROM_START( ncv1j )
 	ROM_REGION( 0x80000,"mcu", 0 )      /* sub CPU */
 	ROM_LOAD( "nc1sub.1c",          0x00000, 0x80000, CRC(48ea0de2) SHA1(33e57c8d084a960ccbda462d18e355de44ec7ad9) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x200000,"gfx1", 0 )    /* 2MB character generator */
-=======
 	ROM_REGION( 0x200000,"ygv608", 0 )    /* 2MB character generator */
->>>>>>> upstream/master
 	ROM_LOAD( "nc1cg0.10c",         0x000000, 0x200000, CRC(355e7f29) SHA1(47d92c4e28c3610a620d3c9b3be558199477f6d8) )
 
 	ROM_REGION( 0x1000000, "c352", 0 ) // Samples
@@ -677,11 +434,7 @@ ROM_START( ncv1j2 )
 	ROM_REGION( 0x80000,"mcu", 0 )      /* sub CPU */
 	ROM_LOAD( "nc1sub.1c",          0x00000, 0x80000, CRC(48ea0de2) SHA1(33e57c8d084a960ccbda462d18e355de44ec7ad9) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x200000,"gfx1", 0 )    /* 2MB character generator */
-=======
 	ROM_REGION( 0x200000,"ygv608", 0 )    /* 2MB character generator */
->>>>>>> upstream/master
 	ROM_LOAD( "nc1cg0.10c",         0x000000, 0x200000, CRC(355e7f29) SHA1(47d92c4e28c3610a620d3c9b3be558199477f6d8) )
 
 	ROM_REGION( 0x1000000, "c352", 0 ) // Samples
@@ -696,11 +449,7 @@ ROM_START( ncv2 )
 	ROM_REGION( 0x80000,"mcu", 0 )      /* sub CPU */
 	ROM_LOAD( "ncs1sub.1d",          0x00000, 0x80000, CRC(365cadbf) SHA1(7263220e1630239e3e88b828c00389d02628bd7d) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x400000,"gfx1", 0 )    /* 4MB character generator */
-=======
 	ROM_REGION( 0x400000,"ygv608", 0 )    /* 4MB character generator */
->>>>>>> upstream/master
 	ROM_LOAD( "ncs1cg0.10e",         0x000000, 0x200000, CRC(fdd24dbe) SHA1(4dceaae3d853075f58a7408be879afc91d80292e) )
 	ROM_LOAD( "ncs1cg1.10e",         0x200000, 0x200000, CRC(007b19de) SHA1(d3c093543511ec1dd2f8be6db45f33820123cabc) )
 
@@ -716,11 +465,7 @@ ROM_START( ncv2j )
 	ROM_REGION( 0x80000,"mcu", 0 )      /* sub CPU */
 	ROM_LOAD("ncs1sub.1d",          0x00000, 0x80000, CRC(365cadbf) SHA1(7263220e1630239e3e88b828c00389d02628bd7d) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x400000,"gfx1", 0 )    /* 4MB character generator */
-=======
 	ROM_REGION( 0x400000,"ygv608", 0 )    /* 4MB character generator */
->>>>>>> upstream/master
 	ROM_LOAD( "ncs1cg0.10e",         0x000000, 0x200000, CRC(fdd24dbe) SHA1(4dceaae3d853075f58a7408be879afc91d80292e) )
 	ROM_LOAD( "ncs1cg1.10e",         0x200000, 0x200000, CRC(007b19de) SHA1(d3c093543511ec1dd2f8be6db45f33820123cabc) )
 
@@ -728,13 +473,6 @@ ROM_START( ncv2j )
 	ROM_LOAD( "ncs1voic.7c",     0x000000, 0x200000, CRC(ed05fd88) SHA1(ad88632c89a9946708fc6b4c9247e1bae9b2944b) )
 ROM_END
 
-<<<<<<< HEAD
-GAME( 1995, ncv1,      0, namcond1, namcond1, driver_device, 0, ROT90, "Namco", "Namco Classic Collection Vol.1", MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
-GAME( 1995, ncv1j,  ncv1, namcond1, namcond1, driver_device, 0, ROT90, "Namco", "Namco Classic Collection Vol.1 (Japan, v1.00)", MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
-GAME( 1995, ncv1j2, ncv1, namcond1, namcond1, driver_device, 0, ROT90, "Namco", "Namco Classic Collection Vol.1 (Japan, v1.03)", MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
-GAME( 1996, ncv2,      0, namcond1, namcond1, driver_device, 0, ROT90, "Namco", "Namco Classic Collection Vol.2", MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_GRAPHICS | MACHINE_UNEMULATED_PROTECTION | MACHINE_SUPPORTS_SAVE )
-GAME( 1996, ncv2j,  ncv2, namcond1, namcond1, driver_device, 0, ROT90, "Namco", "Namco Classic Collection Vol.2 (Japan)", MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_GRAPHICS | MACHINE_UNEMULATED_PROTECTION | MACHINE_SUPPORTS_SAVE )
-=======
 ROM_START( abcheck )
 	ROM_REGION( 0x100000,"maincpu", 0 )     /* 16MB for Main CPU */
 	ROM_LOAD( "an1main0b.14e", 0x000000, 0x080000, CRC(f1b9777d) SHA1(b28f4106e1e145dc1aaa5af455b6f991d2b04c59) )
@@ -773,4 +511,3 @@ GAME( 1995, ncv1j2, ncv1, namcond1, namcond1, namcond1_state, 0, ROT90, "Namco",
 GAME( 1996, ncv2,      0, namcond1, namcond1, namcond1_state, 0, ROT90, "Namco", "Namco Classic Collection Vol.2", MACHINE_IMPERFECT_GRAPHICS | MACHINE_UNEMULATED_PROTECTION | MACHINE_SUPPORTS_SAVE )
 GAME( 1996, ncv2j,  ncv2, namcond1, namcond1, namcond1_state, 0, ROT90, "Namco", "Namco Classic Collection Vol.2 (Japan)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_UNEMULATED_PROTECTION | MACHINE_SUPPORTS_SAVE )
 GAME( 1996, abcheck,   0, abcheck,  abcheck,  namcond1_state, 0, ROT0,  "Namco", "Abnormal Check", MACHINE_NOT_WORKING|MACHINE_IMPERFECT_GRAPHICS | MACHINE_UNEMULATED_PROTECTION | MACHINE_NODEVICE_PRINTER | MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

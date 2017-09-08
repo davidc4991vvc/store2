@@ -14,11 +14,7 @@ INTRODUCTION
 
 These programs implement JPEG image encoding, decoding, and transcoding.
 JPEG (pronounced "jay-peg") is a standardized compression method for
-<<<<<<< HEAD
-full-color and gray-scale images.
-=======
 full-color and grayscale images.
->>>>>>> upstream/master
 
 
 GENERAL USAGE
@@ -51,14 +47,6 @@ or
 This syntax works on all systems, so it is useful for scripts.
 
 The currently supported image file formats are: PPM (PBMPLUS color format),
-<<<<<<< HEAD
-PGM (PBMPLUS gray-scale format), BMP, Targa, and RLE (Utah Raster Toolkit
-format).  (RLE is supported only if the URT library is available.)
-cjpeg recognizes the input image format automatically, with the exception
-of some Targa-format files.  You have to tell djpeg which format to generate.
-
-JPEG files are in the defacto standard JFIF file format.  There are other,
-=======
 PGM (PBMPLUS grayscale format), BMP, Targa, and RLE (Utah Raster Toolkit
 format).  (RLE is supported only if the URT library is available, which it
 isn't on most non-Unix systems.)  cjpeg recognizes the input image format
@@ -66,7 +54,6 @@ automatically, with the exception of some Targa-format files.  You have to
 tell djpeg which format to generate.
 
 JPEG files are in the standard JFIF file format.  There are other,
->>>>>>> upstream/master
 less widely used JPEG-based file formats, but we don't support them.
 
 All switch names may be abbreviated; for example, -grayscale may be written
@@ -91,8 +78,6 @@ The basic command line switches for cjpeg are:
 			saying -grayscale, you'll get a smaller JPEG file that
 			takes less time to process.
 
-<<<<<<< HEAD
-=======
 	-rgb		Create RGB JPEG file.
 			Using this switch suppresses the conversion from RGB
 			colorspace input to the default YCbCr JPEG colorspace.
@@ -100,7 +85,6 @@ The basic command line switches for cjpeg are:
 			-block N switch (see below) for lossless JPEG coding.
 			See also the -rgb1 switch below.
 
->>>>>>> upstream/master
 	-optimize	Perform optimization of entropy encoding parameters.
 			Without this, default encoding parameters are used.
 			-optimize usually makes the JPEG file a little smaller,
@@ -175,14 +159,11 @@ file size is about the same --- often a little smaller.
 
 Switches for advanced users:
 
-<<<<<<< HEAD
-=======
 	-arithmetic	Use arithmetic coding.
 			CAUTION: arithmetic coded JPEG is not yet widely
 			implemented, so many decoders will be unable to
 			view an arithmetic coded JPEG file at all.
 
->>>>>>> upstream/master
 	-block N	Set DCT block size.  All N from 1 to 16 are possible.
 			Default is 8 (baseline format).
 			Larger values produce higher compression,
@@ -196,8 +177,6 @@ Switches for advanced users:
 			decoders will be unable to view a SmartScale extended
 			JPEG file at all.
 
-<<<<<<< HEAD
-=======
 	-rgb1		Create RGB JPEG file with reversible color transform.
 			Works like the -rgb switch (see above) and inserts a
 			simple reversible color transform into the processing
@@ -229,7 +208,6 @@ Switches for advanced users:
 			In case of a granted decompression the old decoder
 			will display the image with half saturated colors.
 
->>>>>>> upstream/master
 	-dct int	Use integer DCT method (default).
 	-dct fast	Use fast integer DCT (less accurate).
 	-dct float	Use floating-point DCT method.
@@ -276,14 +254,6 @@ factor will visibly blur the image, however.
 
 Switches for wizards:
 
-<<<<<<< HEAD
-	-arithmetic	Use arithmetic coding.  CAUTION: arithmetic coded JPEG
-			is not yet widely implemented, so many decoders will
-			be unable to view an arithmetic coded JPEG file at
-			all.
-
-=======
->>>>>>> upstream/master
 	-baseline	Force baseline-compatible quantization tables to be
 			generated.  This clamps quantization values to 8 bits
 			even at low quality settings.  (This switch is poorly
@@ -323,12 +293,6 @@ The basic command line switches for djpeg are:
 			highest quality output.)  Currently, this is equivalent
 			to "-dct fast -nosmooth -onepass -dither ordered".
 
-<<<<<<< HEAD
-	-grayscale	Force gray-scale output even if JPEG file is color.
-			Useful for viewing on monochrome displays; also,
-			djpeg runs noticeably faster in this mode.
-
-=======
 	-grayscale	Force grayscale output even if JPEG file is color.
 			Useful for viewing on monochrome displays; also,
 			djpeg runs noticeably faster in this mode.
@@ -337,7 +301,6 @@ The basic command line switches for djpeg are:
 			This is provided to support applications that don't
 			want to cope with grayscale as a separate case.
 
->>>>>>> upstream/master
 	-scale M/N	Scale the output image by a factor M/N.  Currently
 			supported scale factors are M/N with all M from 1 to
 			16, where N is the source DCT size, which is 8 for
@@ -351,11 +314,7 @@ The basic command line switches for djpeg are:
 
 	-bmp		Select BMP output format (Windows flavor).  8-bit
 			colormapped format is emitted if -colors or -grayscale
-<<<<<<< HEAD
-			is specified, or if the JPEG file is gray-scale;
-=======
 			is specified, or if the JPEG file is grayscale;
->>>>>>> upstream/master
 			otherwise, 24-bit full-color format is emitted.
 
 	-gif		Select GIF output format.  Since GIF does not support
@@ -365,31 +324,18 @@ The basic command line switches for djpeg are:
 
 	-os2		Select BMP output format (OS/2 1.x flavor).  8-bit
 			colormapped format is emitted if -colors or -grayscale
-<<<<<<< HEAD
-			is specified, or if the JPEG file is gray-scale;
-=======
 			is specified, or if the JPEG file is grayscale;
->>>>>>> upstream/master
 			otherwise, 24-bit full-color format is emitted.
 
 	-pnm		Select PBMPLUS (PPM/PGM) output format (this is the
 			default format).  PGM is emitted if the JPEG file is
-<<<<<<< HEAD
-			gray-scale or if -grayscale is specified; otherwise
-=======
 			grayscale or if -grayscale is specified; otherwise
->>>>>>> upstream/master
 			PPM is emitted.
 
 	-rle		Select RLE output format.  (Requires URT library.)
 
-<<<<<<< HEAD
-	-targa		Select Targa output format.  Gray-scale format is
-			emitted if the JPEG file is gray-scale or if
-=======
 	-targa		Select Targa output format.  Grayscale format is
 			emitted if the JPEG file is grayscale or if
->>>>>>> upstream/master
 			-grayscale is specified; otherwise, colormapped format
 			is emitted if -colors is specified; otherwise, 24-bit
 			full-color format is emitted.
@@ -431,11 +377,7 @@ Switches for advanced users:
 			The one-pass method is faster and needs less memory,
 			but it produces a lower-quality image.  -onepass is
 			ignored unless you also say -colors N.  Also,
-<<<<<<< HEAD
-			the one-pass method is always used for gray-scale
-=======
 			the one-pass method is always used for grayscale
->>>>>>> upstream/master
 			output (the two-pass method is no improvement then).
 
 	-maxmemory N	Set limit for amount of memory to use in processing
@@ -469,12 +411,8 @@ quality settings to make very small JPEG files; the percentage improvement
 is often a lot more than it is on larger files.  (At present, -optimize
 mode is always selected when generating progressive JPEG files.)
 
-<<<<<<< HEAD
-GIF input files are no longer supported, to avoid the Unisys LZW patent.
-=======
 GIF input files are no longer supported, to avoid the Unisys LZW patent
 (now expired).
->>>>>>> upstream/master
 (Conversion of GIF files to JPEG is usually a bad idea anyway.)
 
 
@@ -502,14 +440,9 @@ it may run out of memory even with -maxmemory 0.  In that case you can still
 decompress, with some loss of image quality, by specifying -onepass for
 one-pass quantization.
 
-<<<<<<< HEAD
-To avoid the Unisys LZW patent, djpeg produces uncompressed GIF files.  These
-are larger than they should be, but are readable by standard GIF decoders.
-=======
 To avoid the Unisys LZW patent (now expired), djpeg produces uncompressed GIF
 files.  These are larger than they should be, but are readable by standard GIF
 decoders.
->>>>>>> upstream/master
 
 
 HINTS FOR BOTH PROGRAMS
@@ -551,24 +484,16 @@ jpegtran performs various useful transformations of JPEG files.
 It can translate the coded representation from one variant of JPEG to another,
 for example from baseline JPEG to progressive JPEG or vice versa.  It can also
 perform some rearrangements of the image data, for example turning an image
-<<<<<<< HEAD
-from landscape to portrait format by rotation.
-=======
 from landscape to portrait format by rotation.  For EXIF files and JPEG files
 containing Exif data, you may prefer to use exiftran instead.
->>>>>>> upstream/master
 
 jpegtran works by rearranging the compressed data (DCT coefficients), without
 ever fully decoding the image.  Therefore, its transformations are lossless:
 there is no image degradation at all, which would not be true if you used
 djpeg followed by cjpeg to accomplish the same conversion.  But by the same
 token, jpegtran cannot perform lossy operations such as changing the image
-<<<<<<< HEAD
-quality.
-=======
 quality.  However, while the image data is losslessly transformed, metadata
 can be removed.  See the -copy option for specifics.
->>>>>>> upstream/master
 
 jpegtran uses a command line syntax similar to cjpeg or djpeg.
 On Unix-like systems, you say:
@@ -581,15 +506,9 @@ To specify the coded JPEG representation used in the output file,
 jpegtran accepts a subset of the switches recognized by cjpeg:
 	-optimize	Perform optimization of entropy encoding parameters.
 	-progressive	Create progressive JPEG file.
-<<<<<<< HEAD
-	-restart N	Emit a JPEG restart marker every N MCU rows, or every
-			N MCU blocks if "B" is attached to the number.
-	-arithmetic	Use arithmetic coding.
-=======
 	-arithmetic	Use arithmetic coding.
 	-restart N	Emit a JPEG restart marker every N MCU rows, or every
 			N MCU blocks if "B" is attached to the number.
->>>>>>> upstream/master
 	-scans file	Use the scan script given in the specified text file.
 See the previous discussion of cjpeg for more details about these switches.
 If you specify none of these switches, you get a plain baseline-JPEG output
@@ -642,30 +561,21 @@ image region but losslessly preserves what is inside.  Like the rotate and
 flip transforms, lossless crop is restricted by the current JPEG format: the
 upper left corner of the selected region must fall on an iMCU boundary.  If
 this does not hold for the given crop parameters, we silently move the upper
-<<<<<<< HEAD
-left corner up and/or left to make it so, simultaneously increasing the region
-dimensions to keep the lower right crop corner unchanged.  (Thus, the output
-image covers at least the requested region, but may cover more.)
-=======
 left corner up and/or left to make it so, simultaneously increasing the
 region dimensions to keep the lower right crop corner unchanged.  (Thus, the
 output image covers at least the requested region, but may cover more.)
 The adjustment of the region dimensions may be optionally disabled by
 attaching an 'f' character ("force") to the width or height number.
->>>>>>> upstream/master
 
 The image can be losslessly cropped by giving the switch:
 	-crop WxH+X+Y	Crop to a rectangular subarea of width W, height H
 			starting at point X,Y.
 
-<<<<<<< HEAD
-=======
 A complementary lossless-wipe option is provided to discard (gray out) data
 inside a given image region while losslessly preserving what is outside:
 	-wipe WxH+X+Y	Wipe (gray out) a rectangular subarea of
 			width W, height H starting at point X,Y.
 
->>>>>>> upstream/master
 Other not-strictly-lossless transformation switches are:
 
 	-grayscale	Force grayscale output.
@@ -690,18 +600,6 @@ extended JPEG file at all.
 
 jpegtran also recognizes these switches that control what to do with "extra"
 markers, such as comment blocks:
-<<<<<<< HEAD
-	-copy none	Copy no extra markers from source file.  This setting
-			suppresses all comments and other excess baggage
-			present in the source file.
-	-copy comments	Copy only comment markers.  This setting copies
-			comments from the source file, but discards
-			any other inessential (for image display) data.
-	-copy all	Copy all extra markers.  This setting preserves
-			miscellaneous markers found in the source file, such
-			as JFIF thumbnails, Exif data, and Photoshop settings.
-			In some files these extra markers can be sizable.
-=======
 	-copy none	Copy no extra markers from source file.
 			This setting suppresses all comments
 			and other metadata in the source file.
@@ -714,7 +612,6 @@ markers, such as comment blocks:
 			In some files these extra markers can be sizable.
 			Note that this option will copy thumbnails as-is;
 			they will not be transformed.
->>>>>>> upstream/master
 The default behavior is -copy comments.  (Note: in IJG releases v6 and v6a,
 jpegtran always did the equivalent of -copy none.)
 

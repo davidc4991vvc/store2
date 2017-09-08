@@ -14,10 +14,7 @@
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-=======
 #include "imageutl.h"
->>>>>>> upstream/master
 #include "jvc_dsk.h"
 
 jvc_format::jvc_format()
@@ -41,18 +38,6 @@ const char *jvc_format::extensions() const
 
 bool jvc_format::parse_header(io_generic *io, int &header_size, int &tracks, int &heads, int &sectors, int &sector_size, int &base_sector_id)
 {
-<<<<<<< HEAD
-	UINT64 size = io_generic_size(io);
-	header_size = size % 256;
-	UINT8 header[5];
-
-	if (header_size > 0)
-		io_generic_read(io, header, 0, header_size);
-
-	if (header_size > 5)
-		return false;
-
-=======
 	// The JVC format has a header whose size is the size of the image modulo 256.  Currently, we only
 	// handle up to five header bytes
 	uint64_t size = io_generic_size(io);
@@ -66,7 +51,6 @@ bool jvc_format::parse_header(io_generic *io, int &header_size, int &tracks, int
 	if (header_size > 0)
 		io_generic_read(io, header, 0, header_size);
 
->>>>>>> upstream/master
 	// default values
 	heads = 1;
 	sectors = 18;
@@ -85,16 +69,6 @@ bool jvc_format::parse_header(io_generic *io, int &header_size, int &tracks, int
 		// no break
 	case 1: sectors = header[0];
 		// no break
-<<<<<<< HEAD
-	case 0: tracks = (size - header_size) / sector_size / sectors;
-		break;
-	}
-
-	return tracks * heads * sectors * sector_size == (size - header_size);
-}
-
-int jvc_format::identify(io_generic *io, UINT32 form_factor)
-=======
 	case 0: tracks = (size - header_size) / sector_size / sectors / heads;
 		break;
 	}
@@ -129,17 +103,12 @@ int jvc_format::identify(io_generic *io, UINT32 form_factor)
 }
 
 int jvc_format::identify(io_generic *io, uint32_t form_factor)
->>>>>>> upstream/master
 {
 	int header_size, tracks, heads, sectors, sector_size, sector_base_id;
 	return parse_header(io, header_size, tracks, heads, sectors, sector_size, sector_base_id) ? 50 : 0;
 }
 
-<<<<<<< HEAD
-bool jvc_format::load(io_generic *io, UINT32 form_factor, floppy_image *image)
-=======
 bool jvc_format::load(io_generic *io, uint32_t form_factor, floppy_image *image)
->>>>>>> upstream/master
 {
 	int header_size, track_count, head_count, sector_count, sector_size, sector_base_id;
 
@@ -157,11 +126,7 @@ bool jvc_format::load(io_generic *io, uint32_t form_factor, floppy_image *image)
 		for (int head = 0; head < head_count ; head++)
 		{
 			desc_pc_sector sectors[256];
-<<<<<<< HEAD
-			UINT8 sector_data[10000];
-=======
 			uint8_t sector_data[10000];
->>>>>>> upstream/master
 			int sector_offset = 0;
 
 			for (int i = 0; i < sector_count; i++)
@@ -190,17 +155,10 @@ bool jvc_format::load(io_generic *io, uint32_t form_factor, floppy_image *image)
 
 bool jvc_format::save(io_generic *io, floppy_image *image)
 {
-<<<<<<< HEAD
-	UINT8 bitstream[500000/8];
-	UINT8 sector_data[50000];
-	desc_xs sectors[256];
-	UINT64 file_offset = 0;
-=======
 	uint8_t bitstream[500000/8];
 	uint8_t sector_data[50000];
 	desc_xs sectors[256];
 	uint64_t file_offset = 0;
->>>>>>> upstream/master
 
 	int track_count, head_count;
 	image->get_actual_geometry(track_count, head_count);
@@ -208,11 +166,7 @@ bool jvc_format::save(io_generic *io, floppy_image *image)
 	// we'll write a header if the disk is two-sided
 	if (head_count == 2)
 	{
-<<<<<<< HEAD
-		UINT8 header[2];
-=======
 		uint8_t header[2];
->>>>>>> upstream/master
 		header[0] = 18;
 		header[1] = 2;
 		io_generic_write(io, header, file_offset, sizeof(header));

@@ -1,50 +1,5 @@
 // license:BSD-3-Clause
 // copyright-holders:Ernesto Corvi
-<<<<<<< HEAD
-#include "2203intf.h"
-#include "fm.h"
-
-static void psg_set_clock(void *param, int clock)
-{
-	ym2203_device *ym2203 = (ym2203_device *) param;
-	ym2203->ay_set_clock(clock);
-}
-
-static void psg_write(void *param, int address, int data)
-{
-	ym2203_device *ym2203 = (ym2203_device *) param;
-	ym2203->ay8910_write_ym(address, data);
-}
-
-static int psg_read(void *param)
-{
-	ym2203_device *ym2203 = (ym2203_device *) param;
-	return ym2203->ay8910_read_ym();
-}
-
-static void psg_reset(void *param)
-{
-	ym2203_device *ym2203 = (ym2203_device *) param;
-	ym2203->ay8910_reset_ym();
-}
-
-static const ssg_callbacks psgintf =
-{
-	psg_set_clock,
-	psg_write,
-	psg_read,
-	psg_reset
-};
-
-/* IRQ Handler */
-static void IRQHandler(void *param,int irq)
-{
-	ym2203_device *ym2203 = (ym2203_device *) param;
-	ym2203->_IRQHandler(irq);
-}
-
-void ym2203_device::_IRQHandler(int irq)
-=======
 #include "emu.h"
 #include "2203intf.h"
 #include "fm.h"
@@ -59,7 +14,6 @@ const ssg_callbacks ym2203_device::psgintf =
 
 /* IRQ Handler */
 void ym2203_device::irq_handler(int irq)
->>>>>>> upstream/master
 {
 	if (!m_irq_handler.isnull())
 		m_irq_handler(irq);
@@ -80,17 +34,7 @@ void ym2203_device::device_timer(emu_timer &timer, device_timer_id id, int param
 	}
 }
 
-<<<<<<< HEAD
-static void timer_handler(void *param,int c,int count,int clock)
-{
-	ym2203_device *ym2203 = (ym2203_device *) param;
-	ym2203->_timer_handler(c, count, clock);
-}
-
-void ym2203_device::_timer_handler(int c,int count,int clock)
-=======
 void ym2203_device::timer_handler(int c, int count, int clock)
->>>>>>> upstream/master
 {
 	if( count == 0 )
 	{   /* Reset FM Timer */
@@ -105,21 +49,6 @@ void ym2203_device::timer_handler(int c, int count, int clock)
 	}
 }
 
-<<<<<<< HEAD
-/* update request from fm.c */
-void ym2203_update_request(void *param)
-{
-	ym2203_device *ym2203 = (ym2203_device *) param;
-	ym2203->_ym2203_update_request();
-}
-
-void ym2203_device::_ym2203_update_request()
-{
-	m_stream->update();
-}
-
-=======
->>>>>>> upstream/master
 //-------------------------------------------------
 //  sound_stream_update - handle a stream update
 //-------------------------------------------------
@@ -145,11 +74,6 @@ void ym2203_device::device_start()
 {
 	ay8910_device::device_start();
 
-<<<<<<< HEAD
-	int rate = clock()/72; /* ??? */
-
-=======
->>>>>>> upstream/master
 	m_irq_handler.resolve();
 
 	/* Timer Handler set */
@@ -157,13 +81,6 @@ void ym2203_device::device_start()
 	m_timer[1] = timer_alloc(1);
 
 	/* stream system initialize */
-<<<<<<< HEAD
-	m_stream = machine().sound().stream_alloc(*this,0,1,rate, stream_update_delegate(FUNC(ym2203_device::stream_generate),this));
-
-	/* Initialize FM emurator */
-	m_chip = ym2203_init(this,this,clock(),rate,timer_handler,IRQHandler,&psgintf);
-	assert_always(m_chip != NULL, "Error creating YM2203 chip");
-=======
 	calculate_rates();
 
 	/* Initialize FM emurator */
@@ -186,7 +103,6 @@ void ym2203_device::calculate_rates()
 		m_stream->set_sample_rate(rate);
 	else
 		m_stream = machine().sound().stream_alloc(*this,0,1,rate, stream_update_delegate(&ym2203_device::stream_generate,this));
->>>>>>> upstream/master
 }
 
 //-------------------------------------------------
@@ -195,12 +111,8 @@ void ym2203_device::calculate_rates()
 
 void ym2203_device::device_stop()
 {
-<<<<<<< HEAD
-	ym2203_shutdown(m_chip);
-=======
 	if (m_chip)
 		ym2203_shutdown(m_chip);
->>>>>>> upstream/master
 }
 
 //-------------------------------------------------
@@ -243,13 +155,6 @@ WRITE8_MEMBER( ym2203_device::write_port_w )
 	write(space, 1, data);
 }
 
-<<<<<<< HEAD
-const device_type YM2203 = &device_creator<ym2203_device>;
-
-ym2203_device::ym2203_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: ay8910_device(mconfig, YM2203, "YM2203", tag, owner, clock, PSG_TYPE_YM, 3, 2, "ym2203", __FILE__),
-		m_irq_handler(*this)
-=======
 DEFINE_DEVICE_TYPE(YM2203, ym2203_device, "ym2203", "YM2203 OPN")
 
 ym2203_device::ym2203_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
@@ -258,6 +163,5 @@ ym2203_device::ym2203_device(const machine_config &mconfig, const char *tag, dev
 	, m_timer{ nullptr, nullptr }
 	, m_chip(nullptr)
 	, m_irq_handler(*this)
->>>>>>> upstream/master
 {
 }

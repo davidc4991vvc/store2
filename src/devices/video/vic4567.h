@@ -6,45 +6,16 @@
  *
  ****************************************************************************/
 
-<<<<<<< HEAD
-#ifndef __VIC4567_H__
-#define __VIC4567_H__
-=======
 #ifndef MAME_VIDEO_VIC4567_H
 #define MAME_VIDEO_VIC4567_H
 
 #pragma once
->>>>>>> upstream/master
 
 
 /***************************************************************************
     TYPE DEFINITIONS
 ***************************************************************************/
 
-<<<<<<< HEAD
-enum vic3_type
-{
-	VIC4567_NTSC,
-	VIC4567_PAL
-};
-
-#define SPRITE_BASE_X_SIZE      24
-#define SPRITE_BASE_Y_SIZE      21
-
-struct vic3_sprite
-{
-	int x, y;
-
-	int repeat;                         /* expand, line once drawn */
-	int line;                           /* 0 not painting, else painting */
-
-	/* buffer for currently painted line */
-	int paintedline[8];
-	UINT8 bitmap[8][SPRITE_BASE_X_SIZE * 2 / 8 + 1  /*for simplier sprite collision detection*/];
-};
-
-=======
->>>>>>> upstream/master
 
 /***************************************************************************
     CONSTANTS
@@ -134,21 +105,6 @@ class vic3_device : public device_t,
 					public device_video_interface
 {
 public:
-<<<<<<< HEAD
-	vic3_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-	~vic3_device() {}
-
-	static void static_set_cpu_tag(device_t &device, const char *tag) { downcast<vic3_device &>(device).m_cpu.set_tag(tag); }
-	static void set_vic3_type(device_t &device, vic3_type type) { downcast<vic3_device &>(device).m_type = type; }
-	template<class _Object> static devcb_base &set_dma_read_callback(device_t &device, _Object object) { return downcast<vic3_device &>(device).m_dma_read_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_dma_read_color_callback(device_t &device, _Object object) { return downcast<vic3_device &>(device).m_dma_read_color_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_interrupt_callback(device_t &device, _Object object) { return downcast<vic3_device &>(device).m_interrupt_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_port_changed_callback(device_t &device, _Object object) { return downcast<vic3_device &>(device).m_port_changed_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_lightpen_button_callback(device_t &device, _Object object) { return downcast<vic3_device &>(device).m_lightpen_button_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_lightpen_x_callback(device_t &device, _Object object) { return downcast<vic3_device &>(device).m_lightpen_x_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_lightpen_y_callback(device_t &device, _Object object) { return downcast<vic3_device &>(device).m_lightpen_y_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_c64_mem_r_callback(device_t &device, _Object object) { return downcast<vic3_device &>(device).m_c64_mem_r_cb.set_callback(object); }
-=======
 	enum class vic3_type { NTSC, PAL };
 
 	vic3_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
@@ -163,25 +119,12 @@ public:
 	template <class Object> static devcb_base &set_lightpen_x_callback(device_t &device, Object &&cb) { return downcast<vic3_device &>(device).m_lightpen_x_cb.set_callback(std::forward<Object>(cb)); }
 	template <class Object> static devcb_base &set_lightpen_y_callback(device_t &device, Object &&cb) { return downcast<vic3_device &>(device).m_lightpen_y_cb.set_callback(std::forward<Object>(cb)); }
 	template <class Object> static devcb_base &set_c64_mem_r_callback(device_t &device, Object &&cb) { return downcast<vic3_device &>(device).m_c64_mem_r_cb.set_callback(std::forward<Object>(cb)); }
->>>>>>> upstream/master
 
 	DECLARE_WRITE8_MEMBER(port_w);
 	DECLARE_WRITE8_MEMBER(palette_w);
 	DECLARE_READ8_MEMBER(port_r);
 
 	void raster_interrupt_gen();
-<<<<<<< HEAD
-	UINT32 video_update(bitmap_ind16 &bitmap, const rectangle &cliprect);
-
-protected:
-	// device-level overrides
-	virtual void device_start();
-	virtual void device_reset();
-	virtual machine_config_constructor device_mconfig_additions() const;
-private:
-	// internal state
-
-=======
 	uint32_t video_update(bitmap_ind16 &bitmap, const rectangle &cliprect);
 
 protected:
@@ -207,16 +150,11 @@ private:
 	};
 
 	// internal state
->>>>>>> upstream/master
 	inline int getforeground(int y, int x);
 	inline int getforeground16(int y, int x);
 	void set_interrupt(int mask);
 	void clear_interrupt(int mask);
-<<<<<<< HEAD
-	void draw_character(int ybegin, int yend, int ch, int yoff, int xoff, UINT16 *color, int start_x, int end_x);
-=======
 	void draw_character(int ybegin, int yend, int ch, int yoff, int xoff, uint16_t *color, int start_x, int end_x);
->>>>>>> upstream/master
 	void draw_character_multi(int ybegin, int yend, int ch, int yoff, int xoff, int start_x, int end_x);
 	void draw_bitmap(int ybegin, int yend, int ch, int yoff, int xoff, int start_x, int end_x);
 	void draw_bitmap_multi(int ybegin, int yend, int ch, int yoff, int xoff, int start_x, int end_x);
@@ -237,24 +175,11 @@ private:
 
 	required_device<cpu_device> m_cpu;
 
-<<<<<<< HEAD
-	UINT8 m_reg[0x80];
-=======
 	uint8_t m_reg[0x80];
->>>>>>> upstream/master
 	int m_on;                             /* rastering of the screen */
 
 	int m_lines;
 
-<<<<<<< HEAD
-	UINT16 m_chargenaddr, m_videoaddr, m_bitmapaddr;
-
-	bitmap_ind16 *m_bitmap;
-	int m_x_begin, m_x_end;
-	int m_y_begin, m_y_end;
-
-	UINT16 m_c64_bitmap[2], m_bitmapmulti[4], m_mono[2], m_multi[4], m_ecmcolor[2], m_colors[4], m_spritemulti[4];
-=======
 	uint16_t m_chargenaddr, m_videoaddr, m_bitmapaddr;
 
 	std::unique_ptr<bitmap_ind16> m_bitmap;
@@ -262,7 +187,6 @@ private:
 	int m_y_begin, m_y_end;
 
 	uint16_t m_c64_bitmap[2], m_bitmapmulti[4], m_mono[2], m_multi[4], m_ecmcolor[2], m_colors[4], m_spritemulti[4];
->>>>>>> upstream/master
 
 	int m_lastline, m_rasterline;
 
@@ -270,17 +194,6 @@ private:
 	int m_columns, m_rows;
 
 	/* background/foreground for sprite collision */
-<<<<<<< HEAD
-	UINT8 *m_screenptr[216], m_shift[216];
-
-	/* convert multicolor byte to background/foreground for sprite collision */
-	UINT8 m_foreground[256];
-	UINT16 m_expandx[256];
-	UINT16 m_expandx_multi[256];
-
-	/* converts sprite multicolor info to info for background collision checking */
-	UINT8 m_multi_collision[256];
-=======
 	uint8_t *m_screenptr[216], m_shift[216];
 
 	/* convert multicolor byte to background/foreground for sprite collision */
@@ -290,7 +203,6 @@ private:
 
 	/* converts sprite multicolor info to info for background collision checking */
 	uint8_t m_multi_collision[256];
->>>>>>> upstream/master
 
 	vic3_sprite m_sprites[8];
 
@@ -313,57 +225,14 @@ private:
 	devcb_read8      m_c64_mem_r_cb;
 
 	/* palette - vic3 specific items (the ones above are used for VIC II as well) */
-<<<<<<< HEAD
-	UINT8 m_palette_red[0x100];
-	UINT8 m_palette_green[0x100];
-	UINT8 m_palette_blue[0x100];
-=======
 	uint8_t m_palette_red[0x100];
 	uint8_t m_palette_green[0x100];
 	uint8_t m_palette_blue[0x100];
->>>>>>> upstream/master
 	int m_palette_dirty;
 
 	required_device<palette_device> m_palette;
 };
 
-<<<<<<< HEAD
-extern const device_type VIC3;
-
-
-#define MCFG_VIC3_CPU(_tag) \
-	vic3_device::static_set_cpu_tag(*device, "^" _tag);
-
-#define MCFG_VIC3_TYPE(_type) \
-	vic3_device::set_vic3_type(*device, _type);
-
-#define MCFG_VIC3_DMA_READ_CB(_devcb) \
-	devcb = &vic3_device::set_dma_read_callback(*device, DEVCB_##_devcb);
-
-#define MCFG_VIC3_DMA_READ_COLOR_CB(_devcb) \
-	devcb = &vic3_device::set_dma_read_color_callback(*device, DEVCB_##_devcb);
-
-#define MCFG_VIC3_INTERRUPT_CB(_devcb) \
-	devcb = &vic3_device::set_interrupt_callback(*device, DEVCB_##_devcb);
-
-#define MCFG_VIC3_PORT_CHANGED_CB(_devcb) \
-	devcb = &vic3_device::set_port_changed_callback(*device, DEVCB_##_devcb);
-
-#define MCFG_VIC3_LIGHTPEN_BUTTON_CB(_devcb) \
-	devcb = &vic3_device::set_lightpen_button_callback(*device, DEVCB_##_devcb);
-
-#define MCFG_VIC3_LIGHTPEN_X_CB(_devcb) \
-	devcb = &vic3_device::set_lightpen_x_callback(*device, DEVCB_##_devcb);
-
-#define MCFG_VIC3_LIGHTPEN_Y_CB(_devcb) \
-	devcb = &vic3_device::set_lightpen_y_callback(*device, DEVCB_##_devcb);
-
-#define MCFG_VIC3_C64_MEM_R_CB(_devcb) \
-	devcb = &vic3_device::set_c64_mem_r_callback(*device, DEVCB_##_devcb);
-
-
-#endif /* __VIC4567_H__ */
-=======
 DECLARE_DEVICE_TYPE(VIC3, vic3_device)
 
 
@@ -398,4 +267,3 @@ DECLARE_DEVICE_TYPE(VIC3, vic3_device)
 	devcb = &vic3_device::set_c64_mem_r_callback(*device, (DEVCB_##cb));
 
 #endif // MAME_VIDEO_VIC4567_H
->>>>>>> upstream/master

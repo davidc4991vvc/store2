@@ -5,21 +5,14 @@
     Run and Gun / Slam Dunk
 
 *************************************************************************/
-<<<<<<< HEAD
-=======
 
->>>>>>> upstream/master
 #include "sound/k054539.h"
 #include "machine/k053252.h"
 #include "video/k053246_k053247_k055673.h"
 #include "video/k053936.h"
-<<<<<<< HEAD
-#include "video/konami_helper.h"
-=======
 #include "machine/k054321.h"
 #include "video/konami_helper.h"
 #include "screen.h"
->>>>>>> upstream/master
 
 class rungun_state : public driver_device
 {
@@ -33,12 +26,6 @@ public:
 		m_k053936(*this, "k053936"),
 		m_k055673(*this, "k055673"),
 		m_k053252(*this, "k053252"),
-<<<<<<< HEAD
-		m_sysreg(*this, "sysreg"),
-		m_936_videoram(*this, "936_videoram"),
-		m_gfxdecode(*this, "gfxdecode"),
-		m_palette(*this, "palette") { }
-=======
 		m_gfxdecode(*this, "gfxdecode"),
 		m_palette(*this, "palette"),
 		m_palette2(*this, "palette2"),
@@ -46,7 +33,6 @@ public:
 		m_k054321(*this, "k054321"),
 		m_sysreg(*this, "sysreg")
 	{ }
->>>>>>> upstream/master
 
 	/* devices */
 	required_device<cpu_device> m_maincpu;
@@ -56,27 +42,6 @@ public:
 	required_device<k053936_device> m_k053936;
 	required_device<k055673_device> m_k055673;
 	required_device<k053252_device> m_k053252;
-<<<<<<< HEAD
-
-	/* memory pointers */
-	required_shared_ptr<UINT16> m_sysreg;
-	required_shared_ptr<UINT16> m_936_videoram;
-
-	required_device<gfxdecode_device> m_gfxdecode;
-	required_device<palette_device> m_palette;
-
-	/* video-related */
-	tilemap_t   *m_ttl_tilemap;
-	tilemap_t   *m_936_tilemap;
-	UINT16      m_ttl_vram[0x1000];
-	int         m_ttl_gfx_index;
-	int         m_sprite_colorbase;
-
-	/* sound */
-	UINT8       m_sound_ctrl;
-	UINT8       m_sound_status;
-	UINT8       m_sound_nmi_clk;
-=======
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
 	optional_device<palette_device> m_palette2;
@@ -108,7 +73,6 @@ public:
 	std::unique_ptr<uint16_t[]> m_banked_ram;
 	bool        m_single_screen_mode;
 	uint8_t       m_video_mux_bank;
->>>>>>> upstream/master
 
 	DECLARE_READ16_MEMBER(rng_sysregs_r);
 	DECLARE_WRITE16_MEMBER(rng_sysregs_w);
@@ -120,20 +84,6 @@ public:
 	DECLARE_WRITE8_MEMBER(sound_ctrl_w);
 	DECLARE_READ16_MEMBER(rng_ttl_ram_r);
 	DECLARE_WRITE16_MEMBER(rng_ttl_ram_w);
-<<<<<<< HEAD
-	DECLARE_WRITE16_MEMBER(rng_936_videoram_w);
-	TILE_GET_INFO_MEMBER(ttl_get_tile_info);
-	TILE_GET_INFO_MEMBER(get_rng_936_tile_info);
-	DECLARE_WRITE_LINE_MEMBER(k054539_nmi_gen);
-	K055673_CB_MEMBER(sprite_callback);
-
-	virtual void machine_start();
-	virtual void machine_reset();
-	virtual void video_start();
-	UINT32 screen_update_rng(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	INTERRUPT_GEN_MEMBER(rng_interrupt);
-	INTERRUPT_GEN_MEMBER(audio_interrupt);
-=======
 	DECLARE_READ16_MEMBER(rng_psac2_videoram_r);
 	DECLARE_WRITE16_MEMBER(rng_psac2_videoram_w);
 	DECLARE_READ8_MEMBER(rng_53936_rom_r);
@@ -158,5 +108,4 @@ public:
 	void   sprite_dma_trigger(void);
 
 	INTERRUPT_GEN_MEMBER(rng_interrupt);
->>>>>>> upstream/master
 };

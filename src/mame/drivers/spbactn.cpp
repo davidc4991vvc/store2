@@ -1,9 +1,5 @@
 // license:BSD-3-Clause
-<<<<<<< HEAD
-// copyright-holders:David Haywood, Stephh
-=======
 // copyright-holders:David Haywood
->>>>>>> upstream/master
 /*******************************************************************************
  Super Pinball Action (c) 1991 Tecmo
 ********************************************************************************
@@ -13,13 +9,8 @@
 -general info-------------------------------------------------------------------
 
  A Pinball Game from Tecmo, the Hardware seems to be somewhere between that used
-<<<<<<< HEAD
- for Tecmo's classic game Ninja Gaiden (see gaiden.c) and that used in Comad's
- Gals Pinball (see galspnbl.c) I imagine Comad took the hardware that this uses
-=======
  for Tecmo's classic game Ninja Gaiden (see gaiden.cpp) and that used in Comad's
  Gals Pinball (see galspnbl.cpp) I imagine Comad took the hardware that this uses
->>>>>>> upstream/master
  as a basis for writing their game on, adding a couple of features such as the
  pixel layer.
 
@@ -54,11 +45,7 @@ The manual defines the controls as 4 push buttons:
 
  a-u19 - Samples (27c1001)
 
-<<<<<<< HEAD
- 1 custom chip (u94, surface scrached)
-=======
  1 custom chip (u94, surface scratched)
->>>>>>> upstream/master
 
  ------
  9002-B
@@ -74,15 +61,9 @@ The manual defines the controls as 4 push buttons:
  b-u111 /
 
  Custom chips:
-<<<<<<< HEAD
- U101, U102, U106, U107: surface scrached
- probably 2 pairs of TECMO-3&4
- U133: surface scrached
-=======
  U101, U102, U106, U107: surface scratched
  probably 2 pairs of TECMO-3&4
  U133: surface scratched
->>>>>>> upstream/master
  probably TECMO-6
  U112: TECMO-5
 
@@ -101,18 +82,10 @@ The manual defines the controls as 4 push buttons:
  lev 6 : 0x78 : 0000 1ab2 - writes to 90031
  lev 7 : 0x7c : ffff ffff - invalid
 
-<<<<<<< HEAD
-TODO : (also check the notes from the galspnbl.c driver)
-
-  - coin insertion is not recognized consistently.
-  - rewrite video, do single pass sprite render, move sprite code to device, share with gaiden.c etc.
-  - convert to tilemaps
-=======
 TODO : (also check the notes from the galspnbl.cpp driver)
 
   - coin insertion is not recognized consistently.
    - convert to tilemaps
->>>>>>> upstream/master
   - all the unknown regs
 
 
@@ -159,23 +132,6 @@ cpu #0 (PC=00001A1A): unmapped memory word write to 00090030 = 00F7 & 00FF
 *******************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/z80/z80.h"
-#include "cpu/m68000/m68000.h"
-#include "sound/okim6295.h"
-#include "sound/3812intf.h"
-#include "includes/spbactn.h"
-
-
-WRITE16_MEMBER(spbactn_state::soundcommand_w)
-{
-	if (ACCESSING_BITS_0_7)
-	{
-		soundlatch_byte_w(space, offset, data & 0xff);
-		m_audiocpu->set_input_line(INPUT_LINE_NMI, PULSE_LINE);
-	}
-}
-=======
 #include "includes/spbactn.h"
 
 #include "cpu/m68000/m68000.h"
@@ -184,7 +140,6 @@ WRITE16_MEMBER(spbactn_state::soundcommand_w)
 #include "sound/okim6295.h"
 #include "speaker.h"
 
->>>>>>> upstream/master
 
 static ADDRESS_MAP_START( spbactn_map, AS_PROGRAM, 16, spbactn_state )
 	AM_RANGE(0x00000, 0x3ffff) AM_ROM
@@ -201,13 +156,8 @@ static ADDRESS_MAP_START( spbactn_map, AS_PROGRAM, 16, spbactn_state )
 
 	/* this are an awful lot of unknowns */
 	AM_RANGE(0x90000, 0x90001) AM_WRITENOP
-<<<<<<< HEAD
-	AM_RANGE(0x90010, 0x90011) AM_WRITE(soundcommand_w)
-//  AM_RANGE(0x90020, 0x90021) AM_WRITE(soundcommand_w)
-=======
 	AM_RANGE(0x90010, 0x90011) AM_DEVWRITE8("soundlatch", generic_latch_8_device, write, 0x00ff)
 //  AM_RANGE(0x90020, 0x90021) AM_DEVWRITE8("soundlatch", generic_latch_8_device, write, 0x00ff)
->>>>>>> upstream/master
 	AM_RANGE(0x90030, 0x90031) AM_WRITENOP
 
 	AM_RANGE(0x90080, 0x90081) AM_WRITENOP
@@ -269,11 +219,7 @@ static ADDRESS_MAP_START( spbactn_sound_map, AS_PROGRAM, 8, spbactn_state )
 	AM_RANGE(0xf810, 0xf811) AM_DEVWRITE("ymsnd", ym3812_device, write)
 
 	AM_RANGE(0xfc00, 0xfc00) AM_READNOP AM_WRITENOP /* irq ack ?? */
-<<<<<<< HEAD
-	AM_RANGE(0xfc20, 0xfc20) AM_READ(soundlatch_byte_r)
-=======
 	AM_RANGE(0xfc20, 0xfc20) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -450,11 +396,7 @@ static GFXDECODE_START( spbactnp )
 GFXDECODE_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( spbactn, spbactn_state )
-=======
 static MACHINE_CONFIG_START( spbactn )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, XTAL_12MHz)
@@ -483,40 +425,25 @@ static MACHINE_CONFIG_START( spbactn )
 	MCFG_TECMO_MIXER_SHIFTS(8,10,4)
 	MCFG_TECMO_MIXER_BLENDCOLS(   0x0000 + 0x300, 0x0000 + 0x200, 0x0000 + 0x100, 0x0000 + 0x000 )
 	MCFG_TECMO_MIXER_REGULARCOLS( 0x0800 + 0x300, 0x0800 + 0x200, 0x0800 + 0x100, 0x0800 + 0x000 )
-<<<<<<< HEAD
-	MCFG_TECMO_MIXER_BLENDSOUCE( 0x1000 + 0x000, 0x1000 + 0x100)
-=======
 	MCFG_TECMO_MIXER_BLENDSOURCE( 0x1000 + 0x000, 0x1000 + 0x100)
->>>>>>> upstream/master
 	MCFG_TECMO_MIXER_BGPEN(0x800 + 0x300)
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 	MCFG_GENERIC_LATCH_DATA_PENDING_CB(INPUTLINE("audiocpu", INPUT_LINE_NMI))
 
->>>>>>> upstream/master
 	MCFG_SOUND_ADD("ymsnd", YM3812, XTAL_4MHz) /* Was 3.579545MHz, a common clock, but no way to generate via on PCB OSCs */
 	MCFG_YM3812_IRQ_HANDLER(INPUTLINE("audiocpu", 0))
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki", XTAL_4MHz/4, OKIM6295_PIN7_HIGH) /* Was 1.056MHz, a common clock, but no way to generate via on PCB OSCs. clock frequency & pin 7 not verified */
-=======
 	MCFG_OKIM6295_ADD("oki", XTAL_4MHz/4, PIN7_HIGH) /* Was 1.056MHz, a common clock, but no way to generate via on PCB OSCs. clock frequency & pin 7 not verified */
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( spbactnp, spbactn_state )
-=======
 static MACHINE_CONFIG_START( spbactnp )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, XTAL_12MHz)
@@ -552,31 +479,20 @@ static MACHINE_CONFIG_START( spbactnp )
 	MCFG_TECMO_MIXER_SHIFTS(12,14,8)
 	MCFG_TECMO_MIXER_BLENDCOLS(   0x0000 + 0x300, 0x0000 + 0x200, 0x0000 + 0x100, 0x0000 + 0x000 )
 	MCFG_TECMO_MIXER_REGULARCOLS( 0x0800 + 0x300, 0x0800 + 0x200, 0x0800 + 0x100, 0x0800 + 0x000 )
-<<<<<<< HEAD
-	MCFG_TECMO_MIXER_BLENDSOUCE( 0x1000 + 0x000, 0x1000 + 0x100)
-=======
 	MCFG_TECMO_MIXER_BLENDSOURCE( 0x1000 + 0x000, 0x1000 + 0x100)
->>>>>>> upstream/master
 	MCFG_TECMO_MIXER_BGPEN(0x800 + 0x300)
 
 	/* sound hardware  - different? */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 	MCFG_GENERIC_LATCH_DATA_PENDING_CB(INPUTLINE("audiocpu", INPUT_LINE_NMI))
 
->>>>>>> upstream/master
 	MCFG_SOUND_ADD("ymsnd", YM3812, XTAL_4MHz)
 	MCFG_YM3812_IRQ_HANDLER(INPUTLINE("audiocpu", 0))
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki", XTAL_4MHz/4, OKIM6295_PIN7_HIGH)
-=======
 	MCFG_OKIM6295_ADD("oki", XTAL_4MHz/4, PIN7_HIGH)
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
 MACHINE_CONFIG_END
 
@@ -674,12 +590,6 @@ ROM_START( spbactnp )
 	ROM_LOAD( "tcm1.19g.bin", 0x00000, 0x53, CRC(2c54354a) SHA1(11d8b6cdaf052b5a9fbcf6b6fbf99c5f89575cfa) )
 ROM_END
 
-<<<<<<< HEAD
-GAME( 1991, spbactn, 0,        spbactn, spbactn, driver_device, 0, ROT90, "Tecmo", "Super Pinball Action (US)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
-GAME( 1991, spbactnj, spbactn, spbactn, spbactn, driver_device, 0, ROT90, "Tecmo", "Super Pinball Action (Japan)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
-GAME( 1989, spbactnp, spbactn, spbactnp, spbactn, driver_device, 0, ROT90, "Tecmo", "Super Pinball Action (prototype)", MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE ) // early proto, (c) date is 2 years earlier!
-=======
 GAME( 1991, spbactn,  0,       spbactn,  spbactn, spbactn_state, 0, ROT90, "Tecmo", "Super Pinball Action (US)",        MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
 GAME( 1991, spbactnj, spbactn, spbactn,  spbactn, spbactn_state, 0, ROT90, "Tecmo", "Super Pinball Action (Japan)",     MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
 GAME( 1989, spbactnp, spbactn, spbactnp, spbactn, spbactn_state, 0, ROT90, "Tecmo", "Super Pinball Action (prototype)", MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE ) // early proto, (c) date is 2 years earlier!
->>>>>>> upstream/master

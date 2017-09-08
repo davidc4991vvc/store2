@@ -23,20 +23,11 @@
 
 **********************************************************************/
 
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __MOS8706__
-#define __MOS8706__
-
-#include "emu.h"
-=======
 #ifndef MAME_MACHINE_MOS8706_H
 #define MAME_MACHINE_MOS8706_H
 
 #pragma once
 
->>>>>>> upstream/master
 
 
 
@@ -44,13 +35,8 @@
 //  INTERFACE CONFIGURATION MACROS
 //**************************************************************************
 
-<<<<<<< HEAD
-#define MCFG_MOS8706_ADD(_tag, _clock) \
-	MCFG_DEVICE_ADD((_tag), MOS8706, _clock)
-=======
 #define MCFG_MOS8706_ADD(tag, clock) \
 	MCFG_DEVICE_ADD((tag), MOS8706, (clock))
->>>>>>> upstream/master
 
 
 
@@ -63,37 +49,20 @@
 class mos8706_device : public device_t
 {
 public:
-<<<<<<< HEAD
-	mos8706_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-=======
 	mos8706_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
->>>>>>> upstream/master
 
 	DECLARE_READ8_MEMBER( read );
 	DECLARE_WRITE8_MEMBER( write );
 
 protected:
 	// device-level overrides
-<<<<<<< HEAD
-	virtual void device_start();
-	virtual void device_reset();
-=======
 	virtual void device_start() override;
 	virtual void device_reset() override;
->>>>>>> upstream/master
 };
 
 
 // device type definition
-<<<<<<< HEAD
-extern const device_type MOS8706;
-
-
-
-#endif
-=======
 DECLARE_DEVICE_TYPE(MOS8706, mos8706_device)
 
 
 #endif // MAME_MACHINE_MOS8706_H
->>>>>>> upstream/master

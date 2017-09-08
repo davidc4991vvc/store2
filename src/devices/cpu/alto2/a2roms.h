@@ -8,10 +8,6 @@
 #ifndef _CPU_A2ROMS_H_
 #define _CPU_A2ROMS_H_
 
-<<<<<<< HEAD
-#include "emu.h"
-=======
->>>>>>> upstream/master
 
 /**
  * @brief structure to define a ROM's or PROM's loading options
@@ -22,15 +18,6 @@ typedef struct {
 	const char *crc32;      //!< CRC32 hash of the file
 	const char *sha1;       //!< SHA1 hash of the file
 	size_t size;            //!< size of the file, and elements in destination memory
-<<<<<<< HEAD
-	const UINT8 amap[16];   //!< address bit mapping
-	UINT32 axor;            //!< address XOR mask (applied to source address)
-	UINT32 dxor;            //!< data XOR mask (applied before shifting and mapping)
-	UINT8 width;            //!< width in bits
-	UINT8 shift;            //!< left shift in bits
-	const UINT8 dmap[16];   //!< data bit mapping
-	UINT32 dand;            //!< ANDing destination with this value, before XORing the data
-=======
 	const uint8_t amap[16];   //!< address bit mapping
 	uint32_t axor;            //!< address XOR mask (applied to source address)
 	uint32_t dxor;            //!< data XOR mask (applied before shifting and mapping)
@@ -38,7 +25,6 @@ typedef struct {
 	uint8_t shift;            //!< left shift in bits
 	const uint8_t dmap[16];   //!< data bit mapping
 	uint32_t dand;            //!< ANDing destination with this value, before XORing the data
->>>>>>> upstream/master
 	size_t type;            //!< type of the destination, i.e. sizeof(type)
 }   prom_load_t;
 
@@ -52,9 +38,5 @@ typedef struct {
 #define DMAP_DEFAULT        {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15}
 #define DMAP_REVERSE_0_3    {3,2,1,0,}
 
-<<<<<<< HEAD
-extern UINT8* prom_load(running_machine& machine, const prom_load_t* prom, const UINT8* src, int pages = 1, int segments = 1);
-=======
 extern uint8_t* prom_load(running_machine& machine, const prom_load_t* prom, const uint8_t* src, int pages = 1, int segments = 1);
->>>>>>> upstream/master
 #endif // _CPU_A2ROMS_H_

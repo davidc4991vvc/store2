@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-// license:???
-=======
 // license:BSD-3-Clause
->>>>>>> upstream/master
 // copyright-holders:David Haywood, Sylvain Glaize, Paul Priest, Olivier Galibert
 /* Super Kaneko Nova System video */
 
@@ -12,11 +8,7 @@
 
 
 /* draws ROZ with linescroll OR columnscroll to 16-bit indexed bitmap */
-<<<<<<< HEAD
-void skns_state::suprnova_draw_roz(bitmap_ind16 &bitmap, bitmap_ind8& bitmapflags, const rectangle &cliprect, tilemap_t *tmap, UINT32 startx, UINT32 starty, int incxx, int incxy, int incyx, int incyy, int wraparound, int columnscroll, UINT32* scrollram)
-=======
 void skns_state::draw_roz(bitmap_ind16 &bitmap, bitmap_ind8& bitmapflags, const rectangle &cliprect, tilemap_t *tmap, uint32_t startx, uint32_t starty, int incxx, int incxy, int incyx, int incyy, int wraparound, int columnscroll, uint32_t* scrollram)
->>>>>>> upstream/master
 {
 	//bitmap_ind16 *destbitmap = bitmap;
 	bitmap_ind16 &srcbitmap = tmap->pixmap();
@@ -25,31 +17,18 @@ void skns_state::draw_roz(bitmap_ind16 &bitmap, bitmap_ind8& bitmapflags, const 
 	const int ymask = srcbitmap.height()-1;
 	const int widthshifted = srcbitmap.width() << 16;
 	const int heightshifted = srcbitmap.height() << 16;
-<<<<<<< HEAD
-	UINT32 cx;
-	UINT32 cy;
-=======
 	uint32_t cx;
 	uint32_t cy;
->>>>>>> upstream/master
 	int x;
 	int sx;
 	int sy;
 	int ex;
 	int ey;
-<<<<<<< HEAD
-	UINT16 *dest;
-	UINT8* destflags;
-//  UINT8 *pri;
-	//const UINT16 *src;
-	//const UINT8 *maskptr;
-=======
 	uint16_t *dest;
 	uint8_t* destflags;
 //  uint8_t *pri;
 	//const uint16_t *src;
 	//const uint8_t *maskptr;
->>>>>>> upstream/master
 	//int destadvance = destbitmap->bpp / 8;
 
 	/* pre-advance based on the cliprect */
@@ -110,11 +89,7 @@ void skns_state::draw_roz(bitmap_ind16 &bitmap, bitmap_ind8& bitmapflags, const 
 }
 
 
-<<<<<<< HEAD
-WRITE32_MEMBER(skns_state::skns_pal_regs_w)
-=======
 WRITE32_MEMBER(skns_state::pal_regs_w)
->>>>>>> upstream/master
 {
 	COMBINE_DATA(&m_pal_regs[offset]);
 	m_palette_updated =1;
@@ -201,11 +176,7 @@ WRITE32_MEMBER(skns_state::pal_regs_w)
 }
 
 
-<<<<<<< HEAD
-WRITE32_MEMBER(skns_state::skns_palette_ram_w)
-=======
 WRITE32_MEMBER(skns_state::palette_ram_w)
->>>>>>> upstream/master
 {
 	int r,g,b;
 	int brightness_r, brightness_g, brightness_b/*, alpha*/;
@@ -248,11 +219,7 @@ WRITE32_MEMBER(skns_state::palette_ram_w)
 }
 
 
-<<<<<<< HEAD
-void skns_state::palette_set_rgb_brightness (int offset, UINT8 brightness_r, UINT8 brightness_g, UINT8 brightness_b)
-=======
 void skns_state::palette_set_rgb_brightness (int offset, uint8_t brightness_r, uint8_t brightness_g, uint8_t brightness_b)
->>>>>>> upstream/master
 {
 	int use_bright, r, g, b/*, alpha*/;
 
@@ -324,11 +291,7 @@ TILE_GET_INFO_MEMBER(skns_state::get_tilemap_A_tile_info)
 	//if (pri) popmessage("pri A!! %02x\n", pri);
 }
 
-<<<<<<< HEAD
-WRITE32_MEMBER(skns_state::skns_tilemapA_w)
-=======
 WRITE32_MEMBER(skns_state::tilemapA_w)
->>>>>>> upstream/master
 {
 	COMBINE_DATA(&m_tilemapA_ram[offset]);
 	m_tilemap_A->mark_tile_dirty(offset);
@@ -354,21 +317,13 @@ TILE_GET_INFO_MEMBER(skns_state::get_tilemap_B_tile_info)
 	//if (pri) popmessage("pri B!! %02x\n", pri); // 02 on cyvern
 }
 
-<<<<<<< HEAD
-WRITE32_MEMBER(skns_state::skns_tilemapB_w)
-=======
 WRITE32_MEMBER(skns_state::tilemapB_w)
->>>>>>> upstream/master
 {
 	COMBINE_DATA(&m_tilemapB_ram[offset]);
 	m_tilemap_B->mark_tile_dirty(offset);
 }
 
-<<<<<<< HEAD
-WRITE32_MEMBER(skns_state::skns_v3_regs_w)
-=======
 WRITE32_MEMBER(skns_state::v3_regs_w)
->>>>>>> upstream/master
 {
 	COMBINE_DATA(&m_v3_regs[offset]);
 
@@ -390,19 +345,11 @@ WRITE32_MEMBER(skns_state::v3_regs_w)
 
 void skns_state::video_start()
 {
-<<<<<<< HEAD
-	m_tilemap_A = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(skns_state::get_tilemap_A_tile_info),this),TILEMAP_SCAN_ROWS,16,16,64, 64);
-		m_tilemap_A->set_transparent_pen(0);
-
-	m_tilemap_B = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(skns_state::get_tilemap_B_tile_info),this),TILEMAP_SCAN_ROWS,16,16,64, 64);
-		m_tilemap_B->set_transparent_pen(0);
-=======
 	m_tilemap_A = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(skns_state::get_tilemap_A_tile_info),this),TILEMAP_SCAN_ROWS,16,16,64, 64);
 	m_tilemap_A->set_transparent_pen(0);
 
 	m_tilemap_B = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(skns_state::get_tilemap_B_tile_info),this),TILEMAP_SCAN_ROWS,16,16,64, 64);
 	m_tilemap_B->set_transparent_pen(0);
->>>>>>> upstream/master
 
 	m_sprite_bitmap.allocate(1024,1024);
 
@@ -414,8 +361,6 @@ void skns_state::video_start()
 
 	m_gfxdecode->gfx(2)->set_granularity(256);
 	m_gfxdecode->gfx(3)->set_granularity(256);
-<<<<<<< HEAD
-=======
 
 
 	save_item(NAME(m_depthA));
@@ -439,7 +384,6 @@ void skns_state::video_start()
 	save_item(NAME(m_palette_updated));
 	save_item(NAME(m_alt_enable_background));
 	save_item(NAME(m_alt_enable_sprites));
->>>>>>> upstream/master
 }
 
 void skns_state::video_reset()
@@ -455,21 +399,13 @@ void skns_state::video_reset()
 	m_alt_enable_background = m_alt_enable_sprites = 1;
 }
 
-<<<<<<< HEAD
-void skns_state::supernova_draw_a( bitmap_ind16 &bitmap, bitmap_ind8 &bitmap_flags, const rectangle &cliprect, int tran )
-=======
 void skns_state::draw_a( bitmap_ind16 &bitmap, bitmap_ind8 &bitmap_flags, const rectangle &cliprect, int tran )
->>>>>>> upstream/master
 {
 	int enable_a  = (m_v3_regs[0x10/4] >> 0) & 0x0001;
 	int nowrap_a = (m_v3_regs[0x10/4] >> 0) & 0x0004;
 
 
-<<<<<<< HEAD
-	UINT32 startx,starty;
-=======
 	uint32_t startx,starty;
->>>>>>> upstream/master
 	int incxx,incxy,incyx,incyy;
 	int columnscroll;
 
@@ -488,30 +424,18 @@ void skns_state::draw_a( bitmap_ind16 &bitmap, bitmap_ind8 &bitmap_flags, const 
 
 		columnscroll = (m_v3_regs[0x0c/4] >> 1) & 0x0001;
 
-<<<<<<< HEAD
-		suprnova_draw_roz(bitmap,bitmap_flags,cliprect, m_tilemap_A, startx << 8,starty << 8,    incxx << 8,incxy << 8,incyx << 8,incyy << 8, !nowrap_a, columnscroll, &m_v3slc_ram[0]);
-=======
 		draw_roz(bitmap,bitmap_flags,cliprect, m_tilemap_A, startx << 8,starty << 8,    incxx << 8,incxy << 8,incyx << 8,incyy << 8, !nowrap_a, columnscroll, &m_v3slc_ram[0]);
->>>>>>> upstream/master
 		//tilemap_copy_bitmap(bitmap, m_tilemap_bitmap_lower, m_tilemap_bitmapflags_lower);
 	}
 }
 
-<<<<<<< HEAD
-void skns_state::supernova_draw_b( bitmap_ind16 &bitmap, bitmap_ind8 &bitmap_flags, const rectangle &cliprect, int tran )
-=======
 void skns_state::draw_b( bitmap_ind16 &bitmap, bitmap_ind8 &bitmap_flags, const rectangle &cliprect, int tran )
->>>>>>> upstream/master
 {
 	int enable_b  = (m_v3_regs[0x34/4] >> 0) & 0x0001;
 	int nowrap_b = (m_v3_regs[0x34/4] >> 0) & 0x0004;
 
 
-<<<<<<< HEAD
-	UINT32 startx,starty;
-=======
 	uint32_t startx,starty;
->>>>>>> upstream/master
 	int incxx,incxy,incyx,incyy;
 	int columnscroll;
 
@@ -528,22 +452,14 @@ void skns_state::draw_b( bitmap_ind16 &bitmap, bitmap_ind8 &bitmap_flags, const 
 		incxx  = m_v3_regs[0x48/4]&0x7ffff;
 		if (incxx&0x40000) incxx = incxx-0x80000;
 		columnscroll = (m_v3_regs[0x0c/4] >> 9) & 0x0001; // selects column scroll or rowscroll
-<<<<<<< HEAD
-		suprnova_draw_roz(bitmap,bitmap_flags, cliprect, m_tilemap_B, startx << 8,starty << 8,   incxx << 8,incxy << 8,incyx << 8,incyy << 8, !nowrap_b, columnscroll, &m_v3slc_ram[0x1000/4]);
-=======
 		draw_roz(bitmap,bitmap_flags, cliprect, m_tilemap_B, startx << 8,starty << 8,   incxx << 8,incxy << 8,incyx << 8,incyy << 8, !nowrap_b, columnscroll, &m_v3slc_ram[0x1000/4]);
->>>>>>> upstream/master
 
 		//popmessage("%08x %08x %08x %08x %08x %08x", startx, starty, incxx, incyy, incxy, incyx);
 
 	}
 }
 
-<<<<<<< HEAD
-UINT32 skns_state::screen_update_skns(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
-=======
 uint32_t skns_state::screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	palette_update();
 
@@ -564,18 +480,6 @@ uint32_t skns_state::screen_update(screen_device &screen, bitmap_rgb32 &bitmap, 
 		//popmessage("pri %d %d\n", supernova_pri_a, supernova_pri_b);
 
 		/*if (!supernova_pri_b) { */
-<<<<<<< HEAD
-		supernova_draw_b(m_tilemap_bitmap_lower, m_tilemap_bitmapflags_lower, cliprect,tran);// tran = 1;
-		supernova_draw_a(m_tilemap_bitmap_higher,m_tilemap_bitmapflags_higher,cliprect,tran);// tran = 1;
-
-		{
-			int x,y;
-			UINT8* srcflags, *src2flags;
-			UINT16* src, *src2, *src3;
-			UINT32* dst;
-			UINT16 pri, pri2, pri3;
-			UINT16 bgpri;
-=======
 		draw_b(m_tilemap_bitmap_lower, m_tilemap_bitmapflags_lower, cliprect,tran);// tran = 1;
 		draw_a(m_tilemap_bitmap_higher,m_tilemap_bitmapflags_higher,cliprect,tran);// tran = 1;
 
@@ -586,7 +490,6 @@ uint32_t skns_state::screen_update(screen_device &screen, bitmap_rgb32 &bitmap, 
 			uint32_t* dst;
 			uint16_t pri, pri2, pri3;
 			uint16_t bgpri;
->>>>>>> upstream/master
 			const pen_t *clut = &m_palette->pen(0);
 //          int drawpri;
 
@@ -606,21 +509,12 @@ uint32_t skns_state::screen_update(screen_device &screen, bitmap_rgb32 &bitmap, 
 
 				for (x=0;x<320;x++)
 				{
-<<<<<<< HEAD
-					UINT16 pendata  = src[x]&0x7fff;
-					UINT16 pendata2 = src2[x]&0x7fff;
-					UINT16 bgpendata;
-					UINT16 pendata3 = src3[x]&0x3fff;
-
-					UINT32 coldat;
-=======
 					uint16_t pendata  = src[x]&0x7fff;
 					uint16_t pendata2 = src2[x]&0x7fff;
 					uint16_t bgpendata;
 					uint16_t pendata3 = src3[x]&0x3fff;
 
 					uint32_t coldat;
->>>>>>> upstream/master
 
 					pri = ((srcflags[x] & 0x07)<<1) | (supernova_pri_b);
 					pri2= ((src2flags[x] & 0x07)<<1) | (supernova_pri_a);
@@ -675,23 +569,14 @@ uint32_t skns_state::screen_update(screen_device &screen, bitmap_rgb32 &bitmap, 
 					{
 						if (pendata3&0xff)
 						{
-<<<<<<< HEAD
-							UINT16 palvalue = m_palette_ram[pendata3];
-=======
 							uint16_t palvalue = m_palette_ram[pendata3];
->>>>>>> upstream/master
 
 							coldat = clut[pendata3];
 
 							if (palvalue&0x8000)
 							{
-<<<<<<< HEAD
-								UINT32 srccolour = clut[bgpendata&0x7fff];
-								UINT32 dstcolour = clut[pendata3&0x3fff];
-=======
 								uint32_t srccolour = clut[bgpendata&0x7fff];
 								uint32_t dstcolour = clut[pendata3&0x3fff];
->>>>>>> upstream/master
 
 								int r,g,b;
 								int r2,g2,b2;
@@ -753,10 +638,3 @@ uint32_t skns_state::screen_update(screen_device &screen, bitmap_rgb32 &bitmap, 
 
 	return 0;
 }
-<<<<<<< HEAD
-
-void skns_state::screen_eof_skns(screen_device &screen, bool state)
-{
-}
-=======
->>>>>>> upstream/master

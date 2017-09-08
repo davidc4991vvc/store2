@@ -1,9 +1,5 @@
 /*
-<<<<<<< HEAD
-** $Id: liolib.c,v 2.142 2015/01/02 12:50:28 roberto Exp $
-=======
 ** $Id: liolib.c,v 2.151 2016/12/20 18:37:00 roberto Exp $
->>>>>>> upstream/master
 ** Standard I/O (and system) library
 ** See Copyright Notice in lua.h
 */
@@ -27,20 +23,6 @@
 #include "lualib.h"
 
 
-<<<<<<< HEAD
-#if !defined(l_checkmode)
-
-/*
-** Check whether 'mode' matches '[rwa]%+?b?'.
-** Change this macro to accept other modes for 'fopen' besides
-** the standard ones.
-*/
-#define l_checkmode(mode) \
-	(*mode != '\0' && strchr("rwa", *(mode++)) != NULL &&	\
-	(*mode != '+' || ++mode) &&  /* skip if char is '+' */	\
-	(*mode != 'b' || ++mode) &&  /* skip if char is 'b' */	\
-	(*mode == '\0'))
-=======
 
 
 /*
@@ -60,7 +42,6 @@ static int l_checkmode (const char *mode) {
          (*mode != '+' || (++mode, 1)) &&  /* skip if char is '+' */
          (strspn(mode, L_MODEEXT) == strlen(mode)));  /* check extensions */
 }
->>>>>>> upstream/master
 
 #endif
 
@@ -202,11 +183,7 @@ static FILE *tofile (lua_State *L) {
 /*
 ** When creating file handles, always creates a 'closed' file handle
 ** before opening the actual file; so, if there is a memory error, the
-<<<<<<< HEAD
-** file is not left opened.
-=======
 ** handle is in a consistent state.
->>>>>>> upstream/master
 */
 static LStream *newprefile (lua_State *L) {
   LStream *p = (LStream *)lua_newuserdata(L, sizeof(LStream));
@@ -348,10 +325,6 @@ static int io_output (lua_State *L) {
 static int io_readline (lua_State *L);
 
 
-<<<<<<< HEAD
-static void aux_lines (lua_State *L, int toclose) {
-  int n = lua_gettop(L) - 1;  /* number of arguments to read */
-=======
 /*
 ** maximum number of arguments to 'f:lines'/'io.lines' (it + 3 must fit
 ** in the limit for upvalues of a closure)
@@ -361,7 +334,6 @@ static void aux_lines (lua_State *L, int toclose) {
 static void aux_lines (lua_State *L, int toclose) {
   int n = lua_gettop(L) - 1;  /* number of arguments to read */
   luaL_argcheck(L, n <= MAXARGLINE, MAXARGLINE + 2, "too many arguments");
->>>>>>> upstream/master
   lua_pushinteger(L, n);  /* number of arguments to read */
   lua_pushboolean(L, toclose);  /* close/not close file when finished */
   lua_rotate(L, 2, 2);  /* move 'n' and 'toclose' to their positions */
@@ -404,25 +376,17 @@ static int io_lines (lua_State *L) {
 
 
 /* maximum length of a numeral */
-<<<<<<< HEAD
-#define MAXRN		200
-=======
 #if !defined (L_MAXLENNUM)
 #define L_MAXLENNUM     200
 #endif
 
->>>>>>> upstream/master
 
 /* auxiliary structure used by 'read_number' */
 typedef struct {
   FILE *f;  /* file being read */
   int c;  /* current character (look ahead) */
   int n;  /* number of elements in buffer 'buff' */
-<<<<<<< HEAD
-  char buff[MAXRN + 1];  /* +1 for ending '\0' */
-=======
   char buff[L_MAXLENNUM + 1];  /* +1 for ending '\0' */
->>>>>>> upstream/master
 } RN;
 
 
@@ -430,11 +394,7 @@ typedef struct {
 ** Add current char to buffer (if not out of space) and read next one
 */
 static int nextc (RN *rn) {
-<<<<<<< HEAD
-  if (rn->n >= MAXRN) {  /* buffer overflow? */
-=======
   if (rn->n >= L_MAXLENNUM) {  /* buffer overflow? */
->>>>>>> upstream/master
     rn->buff[0] = '\0';  /* invalidate result */
     return 0;  /* fail */
   }
@@ -447,17 +407,10 @@ static int nextc (RN *rn) {
 
 
 /*
-<<<<<<< HEAD
-** Accept current char if it is in 'set' (of size 1 or 2)
-*/
-static int test2 (RN *rn, const char *set) {
-  if (rn->c == set[0] || (rn->c == set[1] && rn->c != '\0'))
-=======
 ** Accept current char if it is in 'set' (of size 2)
 */
 static int test2 (RN *rn, const char *set) {
   if (rn->c == set[0] || rn->c == set[1])
->>>>>>> upstream/master
     return nextc(rn);
   else return 0;
 }
@@ -474,15 +427,6 @@ static int readdigits (RN *rn, int hex) {
 }
 
 
-<<<<<<< HEAD
-/* access to locale "radix character" (decimal point) */
-#if !defined(l_getlocaledecpoint)
-#define l_getlocaledecpoint()     (localeconv()->decimal_point[0])
-#endif
-
-
-=======
->>>>>>> upstream/master
 /*
 ** Read a number: first reads a valid prefix of a numeral into a buffer.
 ** Then it calls 'lua_stringtonumber' to check whether the format is
@@ -492,15 +436,6 @@ static int read_number (lua_State *L, FILE *f) {
   RN rn;
   int count = 0;
   int hex = 0;
-<<<<<<< HEAD
-  char decp[2] = ".";
-  rn.f = f; rn.n = 0;
-  decp[0] = l_getlocaledecpoint();  /* get decimal point from locale */
-  l_lockfile(rn.f);
-  do { rn.c = l_getc(rn.f); } while (isspace(rn.c));  /* skip spaces */
-  test2(&rn, "-+");  /* optional signal */
-  if (test2(&rn, "0")) {
-=======
   char decp[2];
   rn.f = f; rn.n = 0;
   decp[0] = lua_getlocaledecpoint();  /* get decimal point from locale */
@@ -509,7 +444,6 @@ static int read_number (lua_State *L, FILE *f) {
   do { rn.c = l_getc(rn.f); } while (isspace(rn.c));  /* skip spaces */
   test2(&rn, "-+");  /* optional signal */
   if (test2(&rn, "00")) {
->>>>>>> upstream/master
     if (test2(&rn, "xX")) hex = 1;  /* numeral is hexadecimal */
     else count = 1;  /* count initial '0' as a valid digit */
   }
@@ -535,11 +469,7 @@ static int read_number (lua_State *L, FILE *f) {
 static int test_eof (lua_State *L, FILE *f) {
   int c = getc(f);
   ungetc(c, f);  /* no-op when c == EOF */
-<<<<<<< HEAD
-  lua_pushlstring(L, NULL, 0);
-=======
   lua_pushliteral(L, "");
->>>>>>> upstream/master
   return (c != EOF);
 }
 
@@ -549,11 +479,7 @@ static int read_line (lua_State *L, FILE *f, int chop) {
   int c = '\0';
   luaL_buffinit(L, &b);
   while (c != EOF && c != '\n') {  /* repeat until end of line */
-<<<<<<< HEAD
-    char *buff = luaL_prepbuffer(&b);  /* pre-allocate buffer */
-=======
     char *buff = luaL_prepbuffer(&b);  /* preallocate buffer */
->>>>>>> upstream/master
     int i = 0;
     l_lockfile(f);  /* no memory errors can happen inside the lock */
     while (i < LUAL_BUFFERSIZE && (c = l_getc(f)) != EOF && c != '\n')
@@ -574,11 +500,7 @@ static void read_all (lua_State *L, FILE *f) {
   luaL_Buffer b;
   luaL_buffinit(L, &b);
   do {  /* read file in chunks of LUAL_BUFFERSIZE bytes */
-<<<<<<< HEAD
-    char *p = luaL_prepbuffsize(&b, LUAL_BUFFERSIZE);
-=======
     char *p = luaL_prepbuffer(&b);
->>>>>>> upstream/master
     nr = fread(p, sizeof(char), LUAL_BUFFERSIZE, f);
     luaL_addsize(&b, nr);
   } while (nr == LUAL_BUFFERSIZE);
@@ -697,15 +619,10 @@ static int g_write (lua_State *L, FILE *f, int arg) {
     if (lua_type(L, arg) == LUA_TNUMBER) {
       /* optimization: could be done exactly as for strings */
       int len = lua_isinteger(L, arg)
-<<<<<<< HEAD
-                ? fprintf(f, LUA_INTEGER_FMT, lua_tointeger(L, arg))
-                : fprintf(f, LUA_NUMBER_FMT, lua_tonumber(L, arg));
-=======
                 ? fprintf(f, LUA_INTEGER_FMT,
                              (LUAI_UACINT)lua_tointeger(L, arg))
                 : fprintf(f, LUA_NUMBER_FMT,
                              (LUAI_UACNUMBER)lua_tonumber(L, arg));
->>>>>>> upstream/master
       status = status && (len > 0);
     }
     else {

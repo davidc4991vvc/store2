@@ -1,22 +1,14 @@
 // Windows/MemoryLock.h
 
-<<<<<<< HEAD
-#ifndef __WINDOWS_MEMORYLOCK_H
-#define __WINDOWS_MEMORYLOCK_H
-=======
 #ifndef __WINDOWS_MEMORY_LOCK_H
 #define __WINDOWS_MEMORY_LOCK_H
 
 #include "../Common/MyWindows.h"
->>>>>>> upstream/master
 
 namespace NWindows {
 namespace NSecurity {
 
 #ifndef UNDER_CE
-<<<<<<< HEAD
-bool EnableLockMemoryPrivilege(bool enable = true);
-=======
 
 bool EnablePrivilege(LPCTSTR privilegeName, bool enable = true);
 
@@ -39,7 +31,6 @@ inline void EnablePrivilege_SymLink()
   // Do we need to set SE_BACKUP_NAME ?
 }
 
->>>>>>> upstream/master
 #endif
 
 }}

@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-// license:???
-=======
 // license:BSD-3-Clause
->>>>>>> upstream/master
 // copyright-holders:Steve Baines, Frank Palazzolo
 /***************************************************************************
 
@@ -46,10 +42,6 @@ TIMER_CALLBACK_MEMBER(starwars_state::math_run_clear)
 	m_math_run = 0;
 }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> upstream/master
 /*************************************
  *
  *  X2212 nvram store
@@ -63,50 +55,6 @@ WRITE8_MEMBER(starwars_state::starwars_nstore_w)
 	machine().device<x2212_device>("x2212")->store(0);
 }
 
-<<<<<<< HEAD
-/*************************************
- *
- *  Output latch
- *
- *************************************/
-
-WRITE8_MEMBER(starwars_state::starwars_out_w)
-{
-	switch (offset & 7)
-	{
-		case 0:     /* Coin counter 1 */
-			coin_counter_w(machine(), 0, data);
-			break;
-
-		case 1:     /* Coin counter 2 */
-			coin_counter_w(machine(), 1, data);
-			break;
-
-		case 2:     /* LED 3 */
-			set_led_status(machine(), 2, ~data & 0x80);
-			break;
-
-		case 3:     /* LED 2 */
-			set_led_status(machine(), 1, ~data & 0x80);
-			break;
-
-		case 4:     /* bank switch */
-			membank("bank1")->set_entry((data >> 7) & 1);
-			if (m_is_esb)
-				membank("bank2")->set_entry((data >> 7) & 1);
-			break;
-		case 5:     /* reset PRNG */
-			break;
-
-		case 6:     /* LED 1 */
-			set_led_status(machine(), 0, ~data & 0x80);
-			break;
-
-		case 7:     /* NVRAM array recall */
-			machine().device<x2212_device>("x2212")->recall(~data & 0x80);
-			break;
-	}
-=======
 WRITE_LINE_MEMBER(starwars_state::recall_w)
 {
 	machine().device<x2212_device>("x2212")->recall(!state);
@@ -141,7 +89,6 @@ WRITE_LINE_MEMBER(starwars_state::led2_w)
 WRITE_LINE_MEMBER(starwars_state::led3_w)
 {
 	output().set_led_value(2, !state);
->>>>>>> upstream/master
 }
 
 
@@ -197,21 +144,12 @@ WRITE8_MEMBER(starwars_state::starwars_adc_select_w)
 
 void starwars_state::starwars_mproc_init()
 {
-<<<<<<< HEAD
-	UINT8 *src = memregion("user2")->base();
-	int cnt, val;
-
-	m_PROM_STR = auto_alloc_array(machine(), UINT8, 1024);
-	m_PROM_MAS = auto_alloc_array(machine(), UINT8, 1024);
-	m_PROM_AM = auto_alloc_array(machine(), UINT8, 1024);
-=======
 	uint8_t *src = memregion("user2")->base();
 	int cnt, val;
 
 	m_PROM_STR = std::make_unique<uint8_t[]>(1024);
 	m_PROM_MAS = std::make_unique<uint8_t[]>(1024);
 	m_PROM_AM = std::make_unique<uint8_t[]>(1024);
->>>>>>> upstream/master
 
 	for (cnt = 0; cnt < 1024; cnt++)
 	{
@@ -371,11 +309,7 @@ void starwars_state::run_mproc()
 			 * takes 33 clock pulses to do a full rotation.
 			 */
 
-<<<<<<< HEAD
-			m_ACC += (((INT32)(m_A - m_B) << 1) * m_C) << 1;
-=======
 			m_ACC += (((int32_t)(m_A - m_B) << 1) * m_C) << 1;
->>>>>>> upstream/master
 
 			/* A and B are sign extended (requred by the ls384). After
 			 * multiplication they just contain the sign.
@@ -438,13 +372,10 @@ READ8_MEMBER(starwars_state::starwars_prng_r)
 	return machine().rand();
 }
 
-<<<<<<< HEAD
-=======
 WRITE_LINE_MEMBER(starwars_state::prng_reset_w)
 {
 }
 
->>>>>>> upstream/master
 
 
 /*************************************
@@ -509,11 +440,7 @@ WRITE8_MEMBER(starwars_state::starwars_math_w)
 			for (i = 1; i < 16; i++)
 			{
 				m_quotient_shift <<= 1;
-<<<<<<< HEAD
-				if (((INT32)m_dvd_shift + (m_divisor ^ 0xffff) + 1) & 0x10000)
-=======
 				if (((int32_t)m_dvd_shift + (m_divisor ^ 0xffff) + 1) & 0x10000)
->>>>>>> upstream/master
 				{
 					m_quotient_shift |= 1;
 					m_dvd_shift = (m_dvd_shift + (m_divisor ^ 0xffff) + 1) << 1;

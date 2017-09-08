@@ -1,30 +1,20 @@
 // license:BSD-3-Clause
-<<<<<<< HEAD
-// copyright-holders:Uki
-/*****************************************************************************
-
-Himeshikibu (C) 1989 Hi-Soft
-=======
 // copyright-holders:Uki, David Haywood
 /*****************************************************************************
 
 Himeshikibu (C) 1989 Hi-Soft
 Android (C) 198? Nasco
->>>>>>> upstream/master
 
     Driver by Uki
 
 *****************************************************************************/
 
-<<<<<<< HEAD
-=======
 // Android uses PCBS MK-P102 and MK-P101 ONLY, there is no MK-P103 (extra sprites used on Himeshikibu)
 // Real hardware video of parent set can be seen at https://www.youtube.com/watch?v=5rtqZqMBACI (uploaded by Chris Hardy)
 // for some reason music fails to play the 2nd attract loop in MAME?
 
 
 
->>>>>>> upstream/master
 /*
 Himeshikibu
 (c)1989 Hi-Soft (distributed by Rollertron)
@@ -102,19 +92,6 @@ A                                                   12.000MHz
 */
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/z80/z80.h"
-#include "sound/2203intf.h"
-#include "includes/himesiki.h"
-
-#define MCLK    XTAL_12MHz
-
-WRITE8_MEMBER(himesiki_state::himesiki_rombank_w)
-{
-	membank("bank1")->set_entry(((data & 0x08) >> 3));
-
-	if (data & 0xf7)
-=======
 #include "includes/himesiki.h"
 
 #include "cpu/z80/z80.h"
@@ -135,17 +112,12 @@ WRITE8_MEMBER(himesiki_state::himesiki_rombank_w)
 	flip_screen_set(m_flipscreen);
 
 	if (data & 0xe3)
->>>>>>> upstream/master
 		logerror("p06_w %02x\n", data);
 }
 
 WRITE8_MEMBER(himesiki_state::himesiki_sound_w)
 {
-<<<<<<< HEAD
-	soundlatch_byte_w(space, offset, data);
-=======
 	m_soundlatch->write(space, offset, data);
->>>>>>> upstream/master
 	m_subcpu->set_input_line(INPUT_LINE_NMI, PULSE_LINE);
 }
 
@@ -154,12 +126,8 @@ WRITE8_MEMBER(himesiki_state::himesiki_sound_w)
 static ADDRESS_MAP_START( himesiki_prm0, AS_PROGRAM, 8, himesiki_state )
 	AM_RANGE(0x0000, 0x7fff) AM_ROM
 	AM_RANGE(0x8000, 0x9fff) AM_RAM
-<<<<<<< HEAD
-	AM_RANGE(0xa000, 0xa7ff) AM_RAM AM_SHARE("spriteram")
-=======
 	AM_RANGE(0xa000, 0xa0ff) AM_RAM AM_SHARE("spriteram")
 	AM_RANGE(0xa100, 0xa7ff) AM_RAM AM_SHARE("sprram_p103a") // not on Android
->>>>>>> upstream/master
 	AM_RANGE(0xa800, 0xafff) AM_RAM_DEVWRITE("palette", palette_device, write) AM_SHARE("palette")
 	AM_RANGE(0xb000, 0xbfff) AM_RAM_WRITE(himesiki_bg_ram_w) AM_SHARE("bg_ram")
 	AM_RANGE(0xc000, 0xffff) AM_ROMBANK("bank1")
@@ -167,31 +135,16 @@ ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( himesiki_iom0, AS_IO, 8, himesiki_state )
 	ADDRESS_MAP_GLOBAL_MASK(0xff)
-<<<<<<< HEAD
-	AM_RANGE(0x00, 0x00) AM_READ_PORT("1P")
-	AM_RANGE(0x01, 0x01) AM_READ_PORT("2P")
-	AM_RANGE(0x02, 0x02) AM_READ_PORT("OTHERS")
-	AM_RANGE(0x03, 0x03) AM_WRITENOP // 8255 cw
-	AM_RANGE(0x04, 0x04) AM_READ_PORT("DSW1")
-	AM_RANGE(0x05, 0x05) AM_READ_PORT("DSW2")
-	AM_RANGE(0x06, 0x06) AM_WRITE(himesiki_rombank_w)
-	AM_RANGE(0x07, 0x07) AM_WRITENOP // 8255 cw
-	AM_RANGE(0x08, 0x08) AM_WRITE(himesiki_flip_w)
-=======
 	AM_RANGE(0x00, 0x03) AM_DEVREADWRITE("ppi8255_0", i8255_device, read, write) // inputs
 	AM_RANGE(0x04, 0x07) AM_DEVREADWRITE("ppi8255_1", i8255_device, read, write) // dips + rombank
 	AM_RANGE(0x08, 0x08) AM_WRITE(himesiki_scrolly_w)
->>>>>>> upstream/master
 	AM_RANGE(0x09, 0x0a) AM_WRITE(himesiki_scrollx_w)
 	AM_RANGE(0x0b, 0x0b) AM_WRITE(himesiki_sound_w)
 ADDRESS_MAP_END
 
-<<<<<<< HEAD
-=======
 
 
 
->>>>>>> upstream/master
 static ADDRESS_MAP_START( himesiki_prm1, AS_PROGRAM, 8, himesiki_state )
 	AM_RANGE(0x0000, 0x7fff) AM_ROM
 	AM_RANGE(0xf800, 0xffff) AM_RAM
@@ -200,11 +153,7 @@ ADDRESS_MAP_END
 static ADDRESS_MAP_START( himesiki_iom1, AS_IO, 8, himesiki_state )
 	ADDRESS_MAP_GLOBAL_MASK(0xff)
 	AM_RANGE(0x00, 0x01) AM_DEVREADWRITE("ym2203", ym2203_device, read, write)
-<<<<<<< HEAD
-	AM_RANGE(0x04, 0x04) AM_READ(soundlatch_byte_r)
-=======
 	AM_RANGE(0x04, 0x04) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 /****************************************************************************/
@@ -291,11 +240,6 @@ static INPUT_PORTS_START( himesiki )
 	PORT_BIT(0x80, IP_ACTIVE_LOW, IPT_UNKNOWN )
 INPUT_PORTS_END
 
-<<<<<<< HEAD
-/****************************************************************************/
-
-static const gfx_layout layout1 =
-=======
 static INPUT_PORTS_START( androidpo )
 	PORT_START("DSW1")
 	PORT_DIPNAME( 0x01, 0x01, DEF_STR( Unknown ) )
@@ -417,7 +361,6 @@ INPUT_PORTS_END
 /****************************************************************************/
 
 static const gfx_layout layout_bg =
->>>>>>> upstream/master
 {
 	8,8,
 	RGN_FRAC(1,1),
@@ -428,11 +371,7 @@ static const gfx_layout layout_bg =
 	8*8*4
 };
 
-<<<<<<< HEAD
-static const gfx_layout layout2 =
-=======
 static const gfx_layout layout_p103a =
->>>>>>> upstream/master
 {
 	32,32,
 	RGN_FRAC(1,1),
@@ -443,11 +382,7 @@ static const gfx_layout layout_p103a =
 	32*32*4
 };
 
-<<<<<<< HEAD
-static const gfx_layout layout3 =
-=======
 static const gfx_layout layout_spr =
->>>>>>> upstream/master
 {
 	16,16,
 	RGN_FRAC(1,1),
@@ -459,28 +394,14 @@ static const gfx_layout layout_spr =
 };
 
 static GFXDECODE_START( himesiki )
-<<<<<<< HEAD
-	GFXDECODE_ENTRY( "bgtiles",   0, layout1, 0x000, 16 )
-	GFXDECODE_ENTRY( "sprites_1", 0, layout2, 0x200, 16 )
-	GFXDECODE_ENTRY( "sprites_2", 0, layout3, 0x200, 16 )
-=======
 	GFXDECODE_ENTRY( "bgtiles",   0, layout_bg, 0x000, 16 )
 	GFXDECODE_ENTRY( "sprites", 0, layout_spr, 0x200, 16 )
 	GFXDECODE_ENTRY( "spr_p103a", 0, layout_p103a, 0x200, 16 )
->>>>>>> upstream/master
 GFXDECODE_END
 
 
 void himesiki_state::machine_start()
 {
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("maincpu")->base();
-
-	membank("bank1")->configure_entries(0, 2, &ROM[0x10000], 0x4000);
-
-
-	save_item(NAME(m_scrollx));
-=======
 	uint8_t *ROM = memregion("banks")->base();
 
 	membank("bank1")->configure_entries(0, 4, ROM, 0x4000);
@@ -489,7 +410,6 @@ void himesiki_state::machine_start()
 	save_item(NAME(m_scrollx));
 	save_item(NAME(m_scrolly));
 
->>>>>>> upstream/master
 	save_item(NAME(m_flipscreen));
 }
 
@@ -497,15 +417,6 @@ void himesiki_state::machine_reset()
 {
 	m_scrollx[0] = 0;
 	m_scrollx[1] = 0;
-<<<<<<< HEAD
-	m_flipscreen = 0;
-}
-
-static MACHINE_CONFIG_START( himesiki, himesiki_state )
-
-	/* basic machine hardware */
-	MCFG_CPU_ADD("maincpu", Z80, MCLK/2) /* 6.000 MHz */
-=======
 	m_scrolly = 0;
 
 	m_flipscreen = 0;
@@ -515,17 +426,10 @@ static MACHINE_CONFIG_START( himesiki )
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, CLK2) /* it's a 6.000 MHz rated part, but near the 8 Mhz XTAL?? - Android skips lots of frames at 6, crashes at 4 */
->>>>>>> upstream/master
 	MCFG_CPU_PROGRAM_MAP(himesiki_prm0)
 	MCFG_CPU_IO_MAP(himesiki_iom0)
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", himesiki_state,  irq0_line_hold)
 
-<<<<<<< HEAD
-	MCFG_CPU_ADD("sub", Z80, MCLK/3) /* 4.000 MHz */
-	MCFG_CPU_PROGRAM_MAP(himesiki_prm1)
-	MCFG_CPU_IO_MAP(himesiki_iom1)
-
-=======
 	MCFG_CPU_ADD("sub", Z80, CLK2/2) /* 4.000 MHz (4Mhz rated part, near the 8 Mhz XTAL) */
 	MCFG_CPU_PROGRAM_MAP(himesiki_prm1)
 	MCFG_CPU_IO_MAP(himesiki_iom1)
@@ -539,7 +443,6 @@ static MACHINE_CONFIG_START( himesiki )
 	MCFG_I8255_IN_PORTA_CB(IOPORT("DSW1"))
 	MCFG_I8255_IN_PORTB_CB(IOPORT("DSW2"))
 	MCFG_I8255_OUT_PORTC_CB(WRITE8(himesiki_state, himesiki_rombank_w))
->>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
@@ -551,25 +454,17 @@ static MACHINE_CONFIG_START( himesiki )
 	MCFG_SCREEN_PALETTE("palette")
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", himesiki)
-<<<<<<< HEAD
-	MCFG_PALETTE_ADD("palette", 1024)
-=======
 	MCFG_PALETTE_ADD_INIT_BLACK("palette", 1024)
->>>>>>> upstream/master
 	MCFG_PALETTE_FORMAT(xRRRRRGGGGGBBBBB)
 
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
-<<<<<<< HEAD
-	MCFG_SOUND_ADD("ym2203", YM2203, MCLK/4)
-=======
 
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 
 	MCFG_SOUND_ADD("ym2203", YM2203, CLK2/4) // ??
 	MCFG_YM2203_IRQ_HANDLER(INPUTLINE("sub", 0))
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(0, "mono", 0.10)
 	MCFG_SOUND_ROUTE(1, "mono", 0.10)
 	MCFG_SOUND_ROUTE(2, "mono", 0.10)
@@ -580,11 +475,6 @@ MACHINE_CONFIG_END
 /****************************************************************************/
 
 ROM_START( himesiki )
-<<<<<<< HEAD
-	ROM_REGION( 0x018000, "maincpu", 0 ) /* z80 */
-	ROM_LOAD( "1.1k",  0x00000,  0x08000, CRC(fb4604b3) SHA1(e8155bbafb881125e1bf9a04808d6a6546887e90) )
-	ROM_LOAD( "2.1g",  0x10000,  0x08000, CRC(0c30ded1) SHA1(0ad67115fa15d0b6261a278a946a6d46c06430ef) )
-=======
 	ROM_REGION( 0x08000, "maincpu", 0 ) /* z80 */
 	ROM_LOAD( "1.1k",  0x00000,  0x08000, CRC(fb4604b3) SHA1(e8155bbafb881125e1bf9a04808d6a6546887e90) )
 
@@ -592,7 +482,6 @@ ROM_START( himesiki )
 	ROM_LOAD( "2.1g",  0x00000,  0x04000, CRC(0c30ded1) SHA1(0ad67115fa15d0b6261a278a946a6d46c06430ef) )
 	ROM_CONTINUE(      0x08000,  0x04000)
 	// 1j is unpopulated on this game
->>>>>>> upstream/master
 
 	ROM_REGION( 0x010000, "sub", 0 ) /* z80 */
 	ROM_LOAD( "5.6n",  0x00000,  0x08000, CRC(b1214ac7) SHA1(ee5459c28d9c3c2eb3467261716b1259ec486534) )
@@ -601,9 +490,6 @@ ROM_START( himesiki )
 	ROM_LOAD( "3.5f",  0x000000,  0x010000, CRC(73843e60) SHA1(0d8a397d8798e15f3fa7bf7a83e4c2ee44f6fa86) )
 	ROM_LOAD( "4.5d",  0x010000,  0x010000, CRC(443a3164) SHA1(08aa002214251a870581a01d775f497dd390957c) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x060000, "sprites_1", 0 ) /* sprites */
-=======
 	ROM_REGION( 0x040000, "sprites", 0 ) /* sprites */
 	ROM_LOAD16_BYTE( "13.9e", 0x000000,  0x010000, CRC(43102682) SHA1(0d4bde8bece0cbc6c06071aa8ad210a0636d862f) )
 	ROM_LOAD16_BYTE( "12.9c", 0x000001,  0x010000, CRC(19c8f9f4) SHA1(b14c8a6b94fd474be375e7a6a03d7f4517da2247) )
@@ -612,7 +498,6 @@ ROM_START( himesiki )
 
 
 	ROM_REGION( 0x060000, "spr_p103a", 0 ) /* sprites */
->>>>>>> upstream/master
 	ROM_LOAD16_BYTE( "6.1a",  0x000000,  0x010000, CRC(14989c22) SHA1(fe0c31df10237294ea8ef0ab8965ba5bb25113a2) )
 	ROM_LOAD16_BYTE( "7.1c",  0x000001,  0x010000, CRC(cec56e16) SHA1(836ff413301044313fdf7af5d304c145137b898a) )
 	ROM_LOAD16_BYTE( "8.2a",  0x020000,  0x010000, CRC(44ba127e) SHA1(d756b6c3075d75287f9c8be662c1eab02f4245a3) )
@@ -620,16 +505,6 @@ ROM_START( himesiki )
 	ROM_LOAD16_BYTE( "10.4a", 0x040000,  0x010000, CRC(0adda8d1) SHA1(dfee2c7921fdc972b4e95fdf89520f74a4e8b4ee) )
 	ROM_LOAD16_BYTE( "11.4c", 0x040001,  0x010000, CRC(aa032946) SHA1(bd8900e4a22580e3bfe33b8164909db19bb07a8f) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x040000, "sprites_2", 0 ) /* sprites */
-	ROM_LOAD16_BYTE( "13.9e", 0x000000,  0x010000, CRC(43102682) SHA1(0d4bde8bece0cbc6c06071aa8ad210a0636d862f) )
-	ROM_LOAD16_BYTE( "12.9c", 0x000001,  0x010000, CRC(19c8f9f4) SHA1(b14c8a6b94fd474be375e7a6a03d7f4517da2247) )
-	ROM_LOAD16_BYTE( "15.8e", 0x020000,  0x010000, CRC(2630d394) SHA1(b2e9e836b1f053fce3212912c53d3cdca3372439) )
-	ROM_LOAD16_BYTE( "14.8c", 0x020001,  0x010000, CRC(8103a207) SHA1(0dde8a0aaf2618d9c1589f35841db210439d0388) )
-ROM_END
-
-GAME( 1989, himesiki, 0, himesiki, himesiki, driver_device, 0, ROT90, "Hi-Soft", "Himeshikibu (Japan)", MACHINE_SUPPORTS_SAVE )
-=======
 ROM_END
 
 
@@ -693,4 +568,3 @@ GAME( 1989, himesiki, 0,         himesiki, himesiki,  himesiki_state, 0, ROT90, 
 // the game changed significantly between these 2 versions
 GAME( 198?, androidp,  0,          himesiki, androidp,  himesiki_state, 0, ROT90, "Nasco", "Android (prototype, later build)", MACHINE_SUPPORTS_SAVE )
 GAME( 198?, androidpo, androidp,   himesiki, androidpo, himesiki_state, 0, ROT90, "Nasco", "Android (prototype, early build)", MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

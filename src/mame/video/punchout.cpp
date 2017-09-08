@@ -96,16 +96,6 @@ TILEMAP_MAPPER_MEMBER(punchout_state::armwrest_bs1_scan_flipx)
 
 void punchout_state::video_start()
 {
-<<<<<<< HEAD
-	m_bg_top_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(punchout_state::top_get_info),this), TILEMAP_SCAN_ROWS,  8,8, 32,32);
-	m_bg_bot_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(punchout_state::bot_get_info),this), TILEMAP_SCAN_ROWS,  8,8, 64,32);
-	m_bg_bot_tilemap->set_scroll_rows(32);
-
-	m_spr1_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(punchout_state::bs1_get_info),this), TILEMAP_SCAN_ROWS,  8,8, 16,32);
-	m_spr2_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(punchout_state::bs2_get_info),this), TILEMAP_SCAN_ROWS,  8,8, 16,32);
-
-	m_fg_tilemap = NULL;
-=======
 	m_bg_top_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(punchout_state::top_get_info),this), TILEMAP_SCAN_ROWS,  8,8, 32,32);
 	m_bg_bot_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(punchout_state::bot_get_info),this), TILEMAP_SCAN_ROWS,  8,8, 64,32);
 	m_bg_bot_tilemap->set_scroll_rows(32);
@@ -114,7 +104,6 @@ void punchout_state::video_start()
 	m_spr2_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(punchout_state::bs2_get_info),this), TILEMAP_SCAN_ROWS,  8,8, 16,32);
 
 	m_fg_tilemap = nullptr;
->>>>>>> upstream/master
 
 	m_spr1_tilemap->set_transparent_pen(0x07);
 	m_spr2_tilemap->set_transparent_pen(0x03);
@@ -123,15 +112,6 @@ void punchout_state::video_start()
 
 VIDEO_START_MEMBER(punchout_state,armwrest)
 {
-<<<<<<< HEAD
-	m_bg_top_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(punchout_state::armwrest_top_get_info),this), TILEMAP_SCAN_ROWS,  8,8, 32,32);
-	m_bg_bot_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(punchout_state::armwrest_bot_get_info),this), TILEMAP_SCAN_ROWS,  8,8, 32,32);
-
-	m_spr1_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(punchout_state::bs1_get_info),this), tilemap_mapper_delegate(FUNC(punchout_state::armwrest_bs1_scan),this),  8,8, 32,16);
-	m_spr1_tilemap_flipx = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(punchout_state::bs1_get_info),this), tilemap_mapper_delegate(FUNC(punchout_state::armwrest_bs1_scan_flipx),this),  8,8, 32,16);
-	m_spr2_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(punchout_state::bs2_get_info),this), TILEMAP_SCAN_ROWS,  8,8, 16,32);
-	m_fg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(punchout_state::armwrest_fg_get_info),this), TILEMAP_SCAN_ROWS,  8,8, 32,32);
-=======
 	m_bg_top_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(punchout_state::armwrest_top_get_info),this), TILEMAP_SCAN_ROWS,  8,8, 32,32);
 	m_bg_bot_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(punchout_state::armwrest_bot_get_info),this), TILEMAP_SCAN_ROWS,  8,8, 32,32);
 
@@ -139,7 +119,6 @@ VIDEO_START_MEMBER(punchout_state,armwrest)
 	m_spr1_tilemap_flipx = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(punchout_state::bs1_get_info),this), tilemap_mapper_delegate(FUNC(punchout_state::armwrest_bs1_scan_flipx),this),  8,8, 32,16);
 	m_spr2_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(punchout_state::bs2_get_info),this), TILEMAP_SCAN_ROWS,  8,8, 16,32);
 	m_fg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(punchout_state::armwrest_fg_get_info),this), TILEMAP_SCAN_ROWS,  8,8, 32,32);
->>>>>>> upstream/master
 
 	m_spr1_tilemap->set_transparent_pen(0x07);
 	m_spr1_tilemap_flipx->set_transparent_pen(0x07);
@@ -191,11 +170,7 @@ void punchout_state::draw_big_sprite(screen_device &screen, bitmap_ind16 &bitmap
 	if (zoom)
 	{
 		int sx,sy;
-<<<<<<< HEAD
-		UINT32 startx,starty;
-=======
 		uint32_t startx,starty;
->>>>>>> upstream/master
 		int incxx,incyy;
 
 		sx = 4096 - (m_spr1_ctrlram[2] + 256 * (m_spr1_ctrlram[3] & 0x0f));
@@ -238,11 +213,7 @@ void punchout_state::armwrest_draw_big_sprite(screen_device &screen, bitmap_ind1
 	if (zoom)
 	{
 		int sx,sy;
-<<<<<<< HEAD
-		UINT32 startx,starty;
-=======
 		uint32_t startx,starty;
->>>>>>> upstream/master
 		int incxx,incyy;
 		tilemap_t *_tilemap;
 
@@ -314,11 +285,7 @@ void punchout_state::drawbs2(screen_device &screen, bitmap_ind16 &bitmap, const 
 void punchout_state::punchout_copy_top_palette(int bank)
 {
 	int i;
-<<<<<<< HEAD
-	const UINT8 *color_prom = memregion("proms")->base();
-=======
 	const uint8_t *color_prom = memregion("proms")->base();
->>>>>>> upstream/master
 
 	// top monitor palette
 	for (i = 0; i < 0x100; i++)
@@ -338,11 +305,7 @@ void punchout_state::punchout_copy_top_palette(int bank)
 void punchout_state::punchout_copy_bot_palette(int bank)
 {
 	int i;
-<<<<<<< HEAD
-	const UINT8 *color_prom = memregion("proms")->base() + 0x600;
-=======
 	const uint8_t *color_prom = memregion("proms")->base() + 0x600;
->>>>>>> upstream/master
 
 	// bottom monitor palette
 	for (i = 0; i < 0x100; i++)
@@ -360,11 +323,7 @@ void punchout_state::punchout_copy_bot_palette(int bank)
 }
 
 
-<<<<<<< HEAD
-UINT32 punchout_state::screen_update_punchout_top(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t punchout_state::screen_update_punchout_top(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	punchout_copy_top_palette(BIT(*m_palettebank,1));
 
@@ -376,11 +335,7 @@ uint32_t punchout_state::screen_update_punchout_top(screen_device &screen, bitma
 	return 0;
 }
 
-<<<<<<< HEAD
-UINT32 punchout_state::screen_update_punchout_bottom(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t punchout_state::screen_update_punchout_bottom(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int offs;
 
@@ -400,11 +355,7 @@ uint32_t punchout_state::screen_update_punchout_bottom(screen_device &screen, bi
 }
 
 
-<<<<<<< HEAD
-UINT32 punchout_state::screen_update_armwrest_top(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t punchout_state::screen_update_armwrest_top(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	punchout_copy_top_palette(BIT(*m_palettebank,1));
 
@@ -416,11 +367,7 @@ uint32_t punchout_state::screen_update_armwrest_top(screen_device &screen, bitma
 	return 0;
 }
 
-<<<<<<< HEAD
-UINT32 punchout_state::screen_update_armwrest_bottom(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t punchout_state::screen_update_armwrest_bottom(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	punchout_copy_bot_palette(BIT(*m_palettebank,0));
 

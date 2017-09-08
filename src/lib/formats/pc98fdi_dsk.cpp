@@ -30,20 +30,6 @@ const char *pc98fdi_format::extensions() const
 	return "fdi";
 }
 
-<<<<<<< HEAD
-int pc98fdi_format::identify(io_generic *io, UINT32 form_factor)
-{
-	UINT64 size = io_generic_size(io);
-	UINT8 h[32];
-
-	io_generic_read(io, h, 0, 32);
-	UINT32 hsize = LITTLE_ENDIANIZE_INT32(*(UINT32 *) (h + 0x8));
-	UINT32 psize = LITTLE_ENDIANIZE_INT32(*(UINT32 *) (h + 0xc));
-	UINT32 ssize = LITTLE_ENDIANIZE_INT32(*(UINT32 *) (h + 0x10));
-	UINT32 scnt = LITTLE_ENDIANIZE_INT32(*(UINT32 *) (h + 0x14));
-	UINT32 sides = LITTLE_ENDIANIZE_INT32(*(UINT32 *) (h + 0x18));
-	UINT32 ntrk = LITTLE_ENDIANIZE_INT32(*(UINT32 *) (h + 0x1c));
-=======
 int pc98fdi_format::identify(io_generic *io, uint32_t form_factor)
 {
 	uint64_t size = io_generic_size(io);
@@ -56,26 +42,12 @@ int pc98fdi_format::identify(io_generic *io, uint32_t form_factor)
 	uint32_t scnt = little_endianize_int32(*(uint32_t *) (h + 0x14));
 	uint32_t sides = little_endianize_int32(*(uint32_t *) (h + 0x18));
 	uint32_t ntrk = little_endianize_int32(*(uint32_t *) (h + 0x1c));
->>>>>>> upstream/master
 	if(size == hsize + psize && psize == ssize*scnt*sides*ntrk)
 		return 100;
 
 	return 0;
 }
 
-<<<<<<< HEAD
-bool pc98fdi_format::load(io_generic *io, UINT32 form_factor, floppy_image *image)
-{
-	UINT8 h[32];
-
-	io_generic_read(io, h, 0, 32);
-
-	UINT32 hsize         = LITTLE_ENDIANIZE_INT32(*(UINT32 *)(h+0x8));
-	UINT32 sector_size   = LITTLE_ENDIANIZE_INT32(*(UINT32 *)(h+0x10));
-	UINT32 sector_count  = LITTLE_ENDIANIZE_INT32(*(UINT32 *)(h+0x14));
-	UINT32 head_count    = LITTLE_ENDIANIZE_INT32(*(UINT32 *)(h+0x18));
-	UINT32 track_count   = LITTLE_ENDIANIZE_INT32(*(UINT32 *)(h+0x1c));
-=======
 bool pc98fdi_format::load(io_generic *io, uint32_t form_factor, floppy_image *image)
 {
 	uint8_t h[32];
@@ -87,22 +59,14 @@ bool pc98fdi_format::load(io_generic *io, uint32_t form_factor, floppy_image *im
 	uint32_t sector_count  = little_endianize_int32(*(uint32_t *)(h+0x14));
 	uint32_t head_count    = little_endianize_int32(*(uint32_t *)(h+0x18));
 	uint32_t track_count   = little_endianize_int32(*(uint32_t *)(h+0x1c));
->>>>>>> upstream/master
 
 	int cell_count = form_factor == floppy_image::FF_35 ? 200000 : 166666;
 
 	int ssize;
-<<<<<<< HEAD
-	for(ssize=0; (128 << ssize) < sector_size; ssize++);
-
-	desc_pc_sector sects[256];
-	UINT8 sect_data[65536];
-=======
 	for(ssize=0; (128 << ssize) < sector_size; ssize++) {};
 
 	desc_pc_sector sects[256];
 	uint8_t sect_data[65536];
->>>>>>> upstream/master
 
 	for(int track=0; track < track_count; track++)
 		for(int head=0; head < head_count; head++) {

@@ -758,8 +758,6 @@
 
 *****************************************************************************************/
 
-<<<<<<< HEAD
-=======
 #include "emu.h"
 #include "includes/lucky74.h"
 
@@ -774,7 +772,6 @@
 
 #include "lucky74.lh"
 
->>>>>>> upstream/master
 
 #define MASTER_CLOCK        XTAL_12MHz      /* confirmed */
 
@@ -800,19 +797,6 @@
 #define C_06B49P_CLKOUT_19  (MASTER_CLOCK/200000)   /* 60 Hz. (V-Sync) */
 
 
-<<<<<<< HEAD
-#include "emu.h"
-#include "cpu/z80/z80.h"
-#include "sound/ay8910.h"
-#include "sound/sn76496.h"
-#include "sound/msm5205.h"
-#include "machine/i8255.h"
-#include "machine/nvram.h"
-#include "lucky74.lh"
-#include "includes/lucky74.h"
-
-=======
->>>>>>> upstream/master
 void lucky74_state::machine_reset()
 {
 	m_copro_sm7831 = 0;
@@ -894,17 +878,10 @@ WRITE8_MEMBER(lucky74_state::lamps_a_w)
     ---- xx--  BIG + SMALL (need to be individualized)
 */
 
-<<<<<<< HEAD
-	output_set_lamp_value(8, (data >> 0) & 1);      /* D-UP */
-	output_set_lamp_value(9, (data >> 1) & 1);      /* TAKE SCORE */
-	output_set_lamp_value(10, (data >> 2) & 1);     /* BIG */
-	output_set_lamp_value(11, (data >> 3) & 1);     /* SMALL */
-=======
 	output().set_lamp_value(8, (data >> 0) & 1);      /* D-UP */
 	output().set_lamp_value(9, (data >> 1) & 1);      /* TAKE SCORE */
 	output().set_lamp_value(10, (data >> 2) & 1);     /* BIG */
 	output().set_lamp_value(11, (data >> 3) & 1);     /* SMALL */
->>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(lucky74_state::lamps_b_w)
@@ -921,16 +898,6 @@ WRITE8_MEMBER(lucky74_state::lamps_b_w)
     x--- ----  CANCEL (should lit start too?)
 */
 
-<<<<<<< HEAD
-	output_set_lamp_value(0, (data >> 0) & 1);                      /* HOLD1 */
-	output_set_lamp_value(1, (data >> 1) & 1);                      /* HOLD2 */
-	output_set_lamp_value(2, (data >> 2) & 1);                      /* HOLD3 */
-	output_set_lamp_value(3, (data >> 3) & 1);                      /* HOLD4 */
-	output_set_lamp_value(4, (data >> 4) & 1);                      /* HOLD5 */
-	output_set_lamp_value(5, (data >> 5) & 1);                      /* BET */
-	output_set_lamp_value(6, ((data >> 6) & 1)|((data >> 7) & 1));  /* START */
-	output_set_lamp_value(7, (data >> 7) & 1);                      /* CANCEL */
-=======
 	output().set_lamp_value(0, (data >> 0) & 1);                      /* HOLD1 */
 	output().set_lamp_value(1, (data >> 1) & 1);                      /* HOLD2 */
 	output().set_lamp_value(2, (data >> 2) & 1);                      /* HOLD3 */
@@ -939,7 +906,6 @@ WRITE8_MEMBER(lucky74_state::lamps_b_w)
 	output().set_lamp_value(5, (data >> 5) & 1);                      /* BET */
 	output().set_lamp_value(6, ((data >> 6) & 1)|((data >> 7) & 1));  /* START */
 	output().set_lamp_value(7, (data >> 7) & 1);                      /* CANCEL */
->>>>>>> upstream/master
 }
 
 
@@ -1091,11 +1057,7 @@ static INPUT_PORTS_START( lucky74 )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNKNOWN )
 
 	PORT_START("IN4")
-<<<<<<< HEAD
-	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_SERVICE ) PORT_NAME("Memory Reset Switch") PORT_CODE(KEYCODE_R)
-=======
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_MEMORY_RESET )
->>>>>>> upstream/master
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNKNOWN )
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_UNKNOWN )
 	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_UNKNOWN )
@@ -1138,24 +1100,6 @@ static INPUT_PORTS_START( lucky74 )
 	PORT_START("DSW2")
 	/* DIPs 1-4 handle the harcoded coinage for Coin A, B and Remote credits (B = A x 5; R = A x 10) */
 	PORT_DIPNAME( 0x0f, 0x0f, "Coinage A, B & Remote" ) PORT_DIPLOCATION("DSW2:1,2,3,4")
-<<<<<<< HEAD
-	PORT_DIPSETTING(    0x00, "A: 20 Coins/1 Credit; B: 4 Coins/1 Credit;   R: 2 Pulses/1 Credit   " )
-	PORT_DIPSETTING(    0x01, "A: 15 Coins/1 Credit; B: 3 Coins/1 Credit;   R: 15 Pulses/10 Credits" )
-	PORT_DIPSETTING(    0x02, "A: 10 Coins/1 Credit; B: 2 Coins/1 Credit;   R: 1 Pulse/1 Credit    " )
-	PORT_DIPSETTING(    0x03, "A: 4 Coins/1 Credit;  B: 5 Coins/5 Credits;  R: 4 Pulses/10 Credits " )
-	PORT_DIPSETTING(    0x04, "A: 3 Coins/2 Credits; B: 3 Coins/10 Credits; R: 3 Pulses/20 Credits " )
-	PORT_DIPSETTING(    0x05, "A: 3 Coins/1 Credit;  B: 3 Coins/5 Credits;  R: 3 Pulses/10 Credits " )
-	PORT_DIPSETTING(    0x06, "A: 2 Coins/1 Credit;  B: 2 Coins/5 Credits;  R: 1 Pulse/5 Credits   " )
-	PORT_DIPSETTING(    0x07, "A: 5 Coins/1 Credit;  B: 1 Coin/1 Credit;    R: 1 Pulse/2 Credits   " )
-	PORT_DIPSETTING(    0x08, "A: 5 Coins/2 Credits; B: 1 Coin/2 Credits;   R: 1 Pulse/4 Credits   " )
-	PORT_DIPSETTING(    0x09, "A: 5 Coins/3 Credits; B: 1 Coin/3 Credits;   R: 1 Pulse/6 Credits   " )
-	PORT_DIPSETTING(    0x0a, "A: 5 Coins/4 Credits; B: 1 Coin/4 Credits;   R: 1 Pulse/8 Credits   " )
-	PORT_DIPSETTING(    0x0b, "A: 1 Coin/1 Credit;   B: 1 Coin/5 Credits;   R: 1 Pulse/10 Credits  " )
-	PORT_DIPSETTING(    0x0c, "A: 5 Coins/6 Credits; B: 1 Coin/6 Credits;   R: 1 Pulse/12 Credits  " )
-	PORT_DIPSETTING(    0x0d, "A: 1 Coin/2 Credits;  B: 1 Coin/10 Credits;  R: 1 Pulse/20 Credits  " )
-	PORT_DIPSETTING(    0x0e, "A: 1 Coin/5 Credits;  B: 1 Coin/25 Credits;  R: 1 Pulse/50 Credits  " )
-	PORT_DIPSETTING(    0x0f, "A: 1 Coin/10 Credits; B: 1 Coin/50 Credits;  R: 1 Pulse/100 Credits " )
-=======
 	PORT_DIPSETTING(    0x00, "A: 20 Coins/1 Credit; B: 4 Coins/1 Credit;   R: 2 Pulses/1 Credit" )
 	PORT_DIPSETTING(    0x01, "A: 15 Coins/1 Credit; B: 3 Coins/1 Credit;   R: 15 Pulses/10 Credits" )
 	PORT_DIPSETTING(    0x02, "A: 10 Coins/1 Credit; B: 2 Coins/1 Credit;   R: 1 Pulse/1 Credit" )
@@ -1172,7 +1116,6 @@ static INPUT_PORTS_START( lucky74 )
 	PORT_DIPSETTING(    0x0d, "A: 1 Coin/2 Credits;  B: 1 Coin/10 Credits;  R: 1 Pulse/20 Credits" )
 	PORT_DIPSETTING(    0x0e, "A: 1 Coin/5 Credits;  B: 1 Coin/25 Credits;  R: 1 Pulse/50 Credits" )
 	PORT_DIPSETTING(    0x0f, "A: 1 Coin/10 Credits; B: 1 Coin/50 Credits;  R: 1 Pulse/100 Credits" )
->>>>>>> upstream/master
 	/* DIPs 5-8 handle the Coin C coinage */
 	PORT_DIPNAME( 0xf0, 0xf0, "Coinage C" )             PORT_DIPLOCATION("DSW2:5,6,7,8")
 	PORT_DIPSETTING(    0x00, "10 Coins/1 Credit" )
@@ -1459,11 +1402,7 @@ void lucky74_state::sound_start()
 {
 	/* cleaning all 09R81P registers */
 
-<<<<<<< HEAD
-	UINT8 i;
-=======
 	uint8_t i;
->>>>>>> upstream/master
 
 	for (i = 0; i < 6; i++)
 	{
@@ -1522,11 +1461,7 @@ WRITE_LINE_MEMBER(lucky74_state::lucky74_adpcm_int)
 *    Machine Drivers     *
 *************************/
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( lucky74, lucky74_state )
-=======
 static MACHINE_CONFIG_START( lucky74 )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, C_06B49P_CLKOUT_03)    /* 3 MHz. */
@@ -1591,11 +1526,7 @@ static MACHINE_CONFIG_START( lucky74 )
 
 	MCFG_SOUND_ADD("msm", MSM5205, C_06B49P_CLKOUT_06)  /* 375 kHz. */
 	MCFG_MSM5205_VCLK_CB(WRITELINE(lucky74_state, lucky74_adpcm_int))  /* interrupt function */
-<<<<<<< HEAD
-	MCFG_MSM5205_PRESCALER_SELECTOR(MSM5205_S48_4B)      /* 8KHz */
-=======
 	MCFG_MSM5205_PRESCALER_SELECTOR(S48_4B)      /* 8KHz */
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.70)
 
 MACHINE_CONFIG_END
@@ -1812,15 +1743,6 @@ ROM_END
 
 /*********************************************
 *                Game Drivers                *
-<<<<<<< HEAD
-**********************************************
-
-       YEAR  NAME      PARENT   MACHINE  INPUT     STATS           INIT  ROT    COMPANY           FULLNAME                    FLAGS             LAYOUT  */
-GAMEL( 1988, lucky74,  0,       lucky74, lucky74,  driver_device,  0,    ROT0, "Wing Co., Ltd.", "Lucky 74 (bootleg, set 1)", 0,                layout_lucky74 )
-GAMEL( 1988, lucky74a, lucky74, lucky74, lucky74a, driver_device,  0,    ROT0, "Wing Co., Ltd.", "Lucky 74 (bootleg, set 3)", 0,                layout_lucky74 )
-GAMEL( 1988, lucky74b, lucky74, lucky74, lucky74,  driver_device,  0,    ROT0, "Wing Co., Ltd.", "Lucky 74 (bootleg, set 2)", MACHINE_NOT_WORKING, layout_lucky74 )
-GAME(  1989, excitbj,  0,       lucky74, excitbj,  driver_device,  0,    ROT0, "Sega",           "Exciting Black Jack",       MACHINE_NOT_WORKING )
-=======
 **********************************************/
 
 //     YEAR  NAME      PARENT   MACHINE  INPUT     STATS           INIT  ROT   COMPANY            FULLNAME                    FLAGS                LAYOUT
@@ -1828,4 +1750,3 @@ GAMEL( 1988, lucky74,  0,       lucky74, lucky74,  lucky74_state,  0,    ROT0, "
 GAMEL( 1988, lucky74a, lucky74, lucky74, lucky74a, lucky74_state,  0,    ROT0, "Wing Co., Ltd.", "Lucky 74 (bootleg, set 3)", 0,                   layout_lucky74 )
 GAMEL( 1988, lucky74b, lucky74, lucky74, lucky74,  lucky74_state,  0,    ROT0, "Wing Co., Ltd.", "Lucky 74 (bootleg, set 2)", MACHINE_NOT_WORKING, layout_lucky74 )
 GAME(  1989, excitbj,  0,       lucky74, excitbj,  lucky74_state,  0,    ROT0, "Sega",           "Exciting Black Jack",       MACHINE_NOT_WORKING )
->>>>>>> upstream/master

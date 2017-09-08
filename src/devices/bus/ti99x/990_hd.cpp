@@ -38,27 +38,16 @@ for TI990. */
 /* machine-independent big-endian 32-bit integer */
 struct UINT32BE
 {
-<<<<<<< HEAD
-	UINT8 bytes[4];
-};
-
-INLINE UINT32 get_UINT32BE(UINT32BE word)
-=======
 	uint8_t bytes[4];
 };
 
 static inline uint32_t get_UINT32BE(UINT32BE word)
->>>>>>> upstream/master
 {
 	return (word.bytes[0] << 24) | (word.bytes[1] << 16) | (word.bytes[2] << 8) | word.bytes[3];
 }
 
 #ifdef UNUSED_FUNCTION
-<<<<<<< HEAD
-INLINE void set_UINT32BE(UINT32BE *word, UINT32 data)
-=======
 static inline void set_UINT32BE(UINT32BE *word, uint32_t data)
->>>>>>> upstream/master
 {
 	word->bytes[0] = (data >> 24) & 0xff;
 	word->bytes[1] = (data >> 16) & 0xff;
@@ -130,17 +119,10 @@ enum
 };
 
 /* masks for computer-controlled bit in each controller register  */
-<<<<<<< HEAD
-static const UINT16 w_mask[8] =
-{
-	0x000f,     /* Controllers should prevent overwriting of w0 status bits, and I know
-                that some controllers do so. */
-=======
 static const uint16_t w_mask[8] =
 {
 	0x000f,     /* Controllers should prevent overwriting of w0 status bits, and I know
 	            that some controllers do so. */
->>>>>>> upstream/master
 	0xffff,
 	0xffff,
 	0xffff,
@@ -214,11 +196,7 @@ DEVICE_IMAGE_LOAD_MEMBER( ti990_hdc_device, ti990_hd )
 
 		/* set file descriptor */
 		d->format = format_old;
-<<<<<<< HEAD
-		d->hd_handle = NULL;
-=======
 		d->hd_handle = nullptr;
->>>>>>> upstream/master
 
 		/* use custom image header. */
 		/* to convert old header-less images to this format, insert a 16-byte
@@ -230,11 +208,7 @@ DEVICE_IMAGE_LOAD_MEMBER( ti990_hdc_device, ti990_hd )
 			d->format = format_mame;    /* don't care */
 			d->wp = 1;
 			d->unsafe = 1;
-<<<<<<< HEAD
-			return IMAGE_INIT_FAIL;
-=======
 			return image_init_result::FAIL;
->>>>>>> upstream/master
 		}
 
 		d->cylinders = get_UINT32BE(custom_header.cylinders);
@@ -246,17 +220,10 @@ DEVICE_IMAGE_LOAD_MEMBER( ti990_hdc_device, ti990_hd )
 	if (d->bytes_per_sector > MAX_SECTOR_SIZE)
 	{
 		d->format = format_mame;
-<<<<<<< HEAD
-		d->hd_handle = NULL;
-		d->wp = 1;
-		d->unsafe = 1;
-		return IMAGE_INIT_FAIL;
-=======
 		d->hd_handle = nullptr;
 		d->wp = 1;
 		d->unsafe = 1;
 		return image_init_result::FAIL;
->>>>>>> upstream/master
 	}
 
 	/* tell whether the image is writable */
@@ -266,11 +233,7 @@ DEVICE_IMAGE_LOAD_MEMBER( ti990_hdc_device, ti990_hd )
 	/* set attention line */
 	m_w[0] |= (0x80 >> id);
 
-<<<<<<< HEAD
-	return IMAGE_INIT_PASS;
-=======
 	return image_init_result::PASS;
->>>>>>> upstream/master
 }
 
 /*
@@ -284,11 +247,7 @@ DEVICE_IMAGE_UNLOAD_MEMBER( ti990_hdc_device, ti990_hd )
 	d = &m_d[id];
 
 	d->format = format_mame;    /* don't care */
-<<<<<<< HEAD
-	d->hd_handle = NULL;
-=======
 	d->hd_handle = nullptr;
->>>>>>> upstream/master
 	d->wp = 1;
 	d->unsafe = 1;
 
@@ -306,11 +265,7 @@ int ti990_hdc_device::is_unit_loaded(int unit)
 	switch (m_d[unit].format)
 	{
 	case format_mame:
-<<<<<<< HEAD
-		reply = (m_d[unit].hd_handle != NULL);
-=======
 		reply = (m_d[unit].hd_handle != nullptr);
->>>>>>> upstream/master
 		break;
 
 	case format_old:
@@ -325,11 +280,7 @@ int ti990_hdc_device::is_unit_loaded(int unit)
     Parse the disk select lines, and return the corresponding tape unit.
     (-1 if none)
 */
-<<<<<<< HEAD
-int ti990_hdc_device::cur_disk_unit(void)
-=======
 int ti990_hdc_device::cur_disk_unit()
->>>>>>> upstream/master
 {
 	int reply;
 
@@ -471,11 +422,7 @@ void ti990_hdc_device::store_registers()
 	int dma_address;
 	int byte_count;
 
-<<<<<<< HEAD
-	UINT16 buffer[3];
-=======
 	uint16_t buffer[3];
->>>>>>> upstream/master
 	int i, real_word_count;
 
 	int dsk_sel = cur_disk_unit();
@@ -534,11 +481,7 @@ void ti990_hdc_device::write_format()
 	unsigned int cylinder, head, sector;
 	unsigned int lba;
 
-<<<<<<< HEAD
-	UINT8 buffer[MAX_SECTOR_SIZE];
-=======
 	uint8_t buffer[MAX_SECTOR_SIZE];
->>>>>>> upstream/master
 	int bytes_written;
 
 	int dsk_sel = cur_disk_unit();
@@ -611,11 +554,7 @@ void ti990_hdc_device::read_data()
 	unsigned int cylinder, head, sector;
 	unsigned int lba;
 
-<<<<<<< HEAD
-	UINT8 buffer[MAX_SECTOR_SIZE];
-=======
 	uint8_t buffer[MAX_SECTOR_SIZE];
->>>>>>> upstream/master
 	int bytes_to_read;
 	int bytes_read;
 	int i;
@@ -715,13 +654,8 @@ void ti990_hdc_device::write_data()
 	unsigned int cylinder, head, sector;
 	unsigned int lba;
 
-<<<<<<< HEAD
-	UINT8 buffer[MAX_SECTOR_SIZE];
-	UINT16 word;
-=======
 	uint8_t buffer[MAX_SECTOR_SIZE];
 	uint16_t word;
->>>>>>> upstream/master
 	int bytes_written;
 	int i;
 
@@ -831,11 +765,7 @@ void ti990_hdc_device::unformatted_read()
 
 	unsigned int cylinder, head, sector;
 
-<<<<<<< HEAD
-	UINT16 buffer[3];
-=======
 	uint16_t buffer[3];
->>>>>>> upstream/master
 	int i, real_word_count;
 
 	int dsk_sel = cur_disk_unit();
@@ -1012,11 +942,7 @@ WRITE16_MEMBER(ti990_hdc_device::write)
 		/* write protect if a command is in progress */
 		if (m_w[7] & w7_idle)
 		{
-<<<<<<< HEAD
-			UINT16 old_data = m_w[offset];
-=======
 			uint16_t old_data = m_w[offset];
->>>>>>> upstream/master
 
 			/* Only write writable bits AND honor byte accesses (ha!) */
 			m_w[offset] = (m_w[offset] & ((~w_mask[offset]) | mem_mask)) | (data & w_mask[offset] & ~mem_mask);
@@ -1033,33 +959,10 @@ WRITE16_MEMBER(ti990_hdc_device::write)
 }
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_FRAGMENT( ti990_hdc )
-	MCFG_HARDDISK_ADD( "harddisk1" )
-	MCFG_HARDDISK_LOAD(ti990_hdc_device, ti990_hd)
-	MCFG_HARDDISK_UNLOAD(ti990_hdc_device, ti990_hd)
-	MCFG_HARDDISK_ADD( "harddisk2" )
-	MCFG_HARDDISK_LOAD(ti990_hdc_device, ti990_hd)
-	MCFG_HARDDISK_UNLOAD(ti990_hdc_device, ti990_hd)
-	MCFG_HARDDISK_ADD( "harddisk3" )
-	MCFG_HARDDISK_LOAD(ti990_hdc_device, ti990_hd)
-	MCFG_HARDDISK_UNLOAD(ti990_hdc_device, ti990_hd)
-	MCFG_HARDDISK_ADD( "harddisk4" )
-	MCFG_HARDDISK_LOAD(ti990_hdc_device, ti990_hd)
-	MCFG_HARDDISK_UNLOAD(ti990_hdc_device, ti990_hd)
-MACHINE_CONFIG_END
-
-const device_type TI990_HDC = &device_creator<ti990_hdc_device>;
-
-ti990_hdc_device::ti990_hdc_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, TI990_HDC, "Generic TI-990 Hard Disk Controller", tag, owner, clock, "hdc_990", __FILE__),
-	m_interrupt_callback(*this)
-=======
 DEFINE_DEVICE_TYPE(TI990_HDC, ti990_hdc_device, "ti990_hdc", "Generic TI-990 Hard Disk Controller")
 
 ti990_hdc_device::ti990_hdc_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, TI990_HDC, tag, owner, clock), m_interrupt_callback(*this)
->>>>>>> upstream/master
 {
 }
 
@@ -1076,11 +979,7 @@ void ti990_hdc_device::device_start()
 	for (i=0; i<MAX_DISK_UNIT; i++)
 	{
 		m_d[i].format = format_mame;
-<<<<<<< HEAD
-		m_d[i].hd_handle = NULL;
-=======
 		m_d[i].hd_handle = nullptr;
->>>>>>> upstream/master
 		m_d[i].wp = 1;
 		m_d[i].unsafe = 1;
 	}
@@ -1100,16 +999,6 @@ void ti990_hdc_device::device_start()
 
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  device_mconfig_additions - return a pointer to
-//  the device's machine fragment
-//-------------------------------------------------
-
-machine_config_constructor ti990_hdc_device::device_mconfig_additions() const
-{
-	return MACHINE_CONFIG_NAME( ti990_hdc  );
-}
-=======
 //  device_add_mconfig - add device configuration
 //-------------------------------------------------
 
@@ -1127,4 +1016,3 @@ MACHINE_CONFIG_MEMBER( ti990_hdc_device::device_add_mconfig )
 	MCFG_HARDDISK_LOAD(ti990_hdc_device, ti990_hd)
 	MCFG_HARDDISK_UNLOAD(ti990_hdc_device, ti990_hd)
 MACHINE_CONFIG_END
->>>>>>> upstream/master

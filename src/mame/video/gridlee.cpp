@@ -22,11 +22,7 @@
 
 PALETTE_INIT_MEMBER(gridlee_state, gridlee)
 {
-<<<<<<< HEAD
-	const UINT8 *color_prom = memregion("proms")->base();
-=======
 	const uint8_t *color_prom = memregion("proms")->base();
->>>>>>> upstream/master
 	int i;
 
 	for (i = 0; i < palette.entries(); i++)
@@ -46,11 +42,7 @@ PALETTE_INIT_MEMBER(gridlee_state, gridlee)
 
 void gridlee_state::expand_pixels()
 {
-<<<<<<< HEAD
-	UINT8 *videoram = m_videoram;
-=======
 	uint8_t *videoram = m_videoram;
->>>>>>> upstream/master
 	int offset = 0;
 
 	for(offset = 0; offset < 0x77ff; offset++)
@@ -71,20 +63,12 @@ void gridlee_state::expand_pixels()
 void gridlee_state::video_start()
 {
 	/* allocate a local copy of video RAM */
-<<<<<<< HEAD
-	m_local_videoram = auto_alloc_array_clear(machine(), UINT8, 256 * 256);
-=======
 	m_local_videoram = make_unique_clear<uint8_t[]>(256 * 256);
->>>>>>> upstream/master
 
 	/* reset the palette */
 	m_palettebank_vis = 0;
 
-<<<<<<< HEAD
-	save_pointer(NAME(m_local_videoram), 256 * 256);
-=======
 	save_pointer(NAME(m_local_videoram.get()), 256 * 256);
->>>>>>> upstream/master
 	save_item(NAME(m_cocktail_flip));
 	save_item(NAME(m_palettebank_vis));
 	machine().save().register_postload(save_prepost_delegate(FUNC(gridlee_state::expand_pixels), this));
@@ -98,15 +82,9 @@ void gridlee_state::video_start()
  *
  *************************************/
 
-<<<<<<< HEAD
-WRITE8_MEMBER(gridlee_state::gridlee_cocktail_flip_w)
-{
-	m_cocktail_flip = data & 1;
-=======
 WRITE_LINE_MEMBER(gridlee_state::cocktail_flip_w)
 {
 	m_cocktail_flip = state;
->>>>>>> upstream/master
 }
 
 
@@ -119,11 +97,7 @@ WRITE_LINE_MEMBER(gridlee_state::cocktail_flip_w)
 
 WRITE8_MEMBER(gridlee_state::gridlee_videoram_w)
 {
-<<<<<<< HEAD
-	UINT8 *videoram = m_videoram;
-=======
 	uint8_t *videoram = m_videoram;
->>>>>>> upstream/master
 	videoram[offset] = data;
 
 	/* expand the two pixel values into two bytes */
@@ -157,17 +131,10 @@ WRITE8_MEMBER(gridlee_state::gridlee_palette_select_w)
 /* all the GRIDLEE_VBEND adjustments are needed because the hardware has a separate counting chain
    to address the video memory instead of using the video chain directly */
 
-<<<<<<< HEAD
-UINT32 gridlee_state::screen_update_gridlee(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-{
-	const pen_t *pens = &m_palette->pen(m_palettebank_vis * 32);
-	UINT8 *gfx;
-=======
 uint32_t gridlee_state::screen_update_gridlee(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
 	const pen_t *pens = &m_palette->pen(m_palettebank_vis * 32);
 	uint8_t *gfx;
->>>>>>> upstream/master
 	int x, y, i;
 
 	/* draw scanlines from the VRAM directly */
@@ -181,11 +148,7 @@ uint32_t gridlee_state::screen_update_gridlee(screen_device &screen, bitmap_ind1
 		else
 		{
 			int srcy = GRIDLEE_VBSTART - 1 - y;
-<<<<<<< HEAD
-			UINT8 temp[256];
-=======
 			uint8_t temp[256];
->>>>>>> upstream/master
 			int xx;
 
 			for (xx = 0; xx < 256; xx++)
@@ -198,13 +161,8 @@ uint32_t gridlee_state::screen_update_gridlee(screen_device &screen, bitmap_ind1
 	gfx = memregion("gfx1")->base();
 	for (i = 0; i < 32; i++)
 	{
-<<<<<<< HEAD
-		UINT8 *sprite = m_spriteram + i * 4;
-		UINT8 *src;
-=======
 		uint8_t *sprite = m_spriteram + i * 4;
 		uint8_t *src;
->>>>>>> upstream/master
 		int image = sprite[0];
 		int ypos = sprite[2] + 17 + GRIDLEE_VBEND;
 		int xpos = sprite[3];

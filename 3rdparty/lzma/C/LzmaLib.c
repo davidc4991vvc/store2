@@ -1,20 +1,4 @@
 /* LzmaLib.c -- LZMA library wrapper
-<<<<<<< HEAD
-2008-08-05
-Igor Pavlov
-Public domain */
-
-#include "LzmaEnc.h"
-#include "LzmaDec.h"
-#include "Alloc.h"
-#include "LzmaLib.h"
-
-static void *SzAlloc(void *p, size_t size) { p = p; return MyAlloc(size); }
-static void SzFree(void *p, void *address) { p = p; MyFree(address); }
-static ISzAlloc g_Alloc = { SzAlloc, SzFree };
-
-MY_STDAPI LzmaCompress(unsigned char *dest, size_t  *destLen, const unsigned char *src, size_t  srcLen,
-=======
 2015-06-13 : Igor Pavlov : Public domain */
 
 #include "Alloc.h"
@@ -23,7 +7,6 @@ MY_STDAPI LzmaCompress(unsigned char *dest, size_t  *destLen, const unsigned cha
 #include "LzmaLib.h"
 
 MY_STDAPI LzmaCompress(unsigned char *dest, size_t *destLen, const unsigned char *src, size_t srcLen,
->>>>>>> upstream/master
   unsigned char *outProps, size_t *outPropsSize,
   int level, /* 0 <= level <= 9, default = 5 */
   unsigned dictSize, /* use (1 << N) or (3 << N). 4 KB < dictSize <= 128 MB */
@@ -49,11 +32,7 @@ MY_STDAPI LzmaCompress(unsigned char *dest, size_t *destLen, const unsigned char
 }
 
 
-<<<<<<< HEAD
-MY_STDAPI LzmaUncompress(unsigned char *dest, size_t  *destLen, const unsigned char *src, size_t  *srcLen,
-=======
 MY_STDAPI LzmaUncompress(unsigned char *dest, size_t *destLen, const unsigned char *src, size_t *srcLen,
->>>>>>> upstream/master
   const unsigned char *props, size_t propsSize)
 {
   ELzmaStatus status;

@@ -1,9 +1,5 @@
 // license:BSD-3-Clause
-<<<<<<< HEAD
-// copyright-holders:Miodrag Milanovic
-=======
 // copyright-holders:Miodrag Milanovic, Robbbert
->>>>>>> upstream/master
 /****************************************************************************************
 
     Pinball
@@ -24,20 +20,6 @@ Note: To start a game, certain switches need to be activated.  You must first pr
 
 *****************************************************************************************/
 
-<<<<<<< HEAD
-
-#include "machine/genpin.h"
-#include "cpu/m6800/m6800.h"
-#include "cpu/m6809/m6809.h"
-#include "machine/6821pia.h"
-#include "sound/hc55516.h"
-#include "sound/2151intf.h"
-#include "sound/dac.h"
-#include "audio/s11c_bg.h"
-#include "includes/s11.h"
-#include "s11a.lh"
-
-=======
 #include "emu.h"
 #include "includes/s11a.h"
 
@@ -49,7 +31,6 @@ Note: To start a game, certain switches need to be activated.  You must first pr
 #include "s11a.lh"
 
 
->>>>>>> upstream/master
 static ADDRESS_MAP_START( s11a_main_map, AS_PROGRAM, 8, s11a_state )
 	AM_RANGE(0x0000, 0x0fff) AM_RAM AM_SHARE("nvram")
 	AM_RANGE(0x2100, 0x2103) AM_MIRROR(0x00fc) AM_DEVREADWRITE("pia21", pia6821_device, read, write) // sound+solenoids
@@ -170,15 +151,9 @@ WRITE8_MEMBER( s11a_state::dig0_w )
 	data &= 0x7f;
 	set_strobe(data & 15);
 	set_diag((data & 0x70) >> 4);
-<<<<<<< HEAD
-	output_set_digit_value(60, 0);  // +5VDC (always on)
-	output_set_digit_value(61, get_diag() & 0x01);  // connected to PA4
-	output_set_digit_value(62, 0);  // Blanking (pretty much always on)
-=======
 	output().set_digit_value(60, 0);  // +5VDC (always on)
 	output().set_digit_value(61, get_diag() & 0x01);  // connected to PA4
 	output().set_digit_value(62, 0);  // Blanking (pretty much always on)
->>>>>>> upstream/master
 	set_segment1(0);
 	set_segment2(0);
 }
@@ -190,21 +165,13 @@ WRITE8_MEMBER( s11a_state::bgbank_w )
 
 DRIVER_INIT_MEMBER( s11a_state, s11a )
 {
-<<<<<<< HEAD
-	UINT8 *BGROM = memregion("bgcpu")->base();
-=======
 	uint8_t *BGROM = memregion("bgcpu")->base();
->>>>>>> upstream/master
 	membank("bgbank")->configure_entries(0, 4, &BGROM[0x10000], 0x8000);
 	membank("bgbank")->set_entry(0);
 	s11_state::init_s11();
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( s11a, s11a_state )
-=======
 static MACHINE_CONFIG_START( s11a )
->>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6808, XTAL_4MHz)
 	MCFG_CPU_PROGRAM_MAP(s11a_main_map)
@@ -218,11 +185,7 @@ static MACHINE_CONFIG_START( s11a )
 
 	/* Devices */
 	MCFG_DEVICE_ADD("pia21", PIA6821, 0)
-<<<<<<< HEAD
-	MCFG_PIA_READPA_HANDLER(READ8(s11_state, dac_r))
-=======
 	MCFG_PIA_READPA_HANDLER(READ8(s11_state, sound_r))
->>>>>>> upstream/master
 	MCFG_PIA_WRITEPA_HANDLER(WRITE8(s11_state, sound_w))
 	MCFG_PIA_WRITEPB_HANDLER(WRITE8(s11_state, sol2_w))
 	MCFG_PIA_CA2_HANDLER(WRITELINE(s11_state, pia21_ca2_w))
@@ -272,38 +235,23 @@ static MACHINE_CONFIG_START( s11a )
 	MCFG_CPU_ADD("audiocpu", M6802, XTAL_4MHz)
 	MCFG_CPU_PROGRAM_MAP(s11a_audio_map)
 
-<<<<<<< HEAD
-	MCFG_SPEAKER_STANDARD_MONO("mono")
-	MCFG_DAC_ADD("dac")
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
-=======
 	MCFG_SPEAKER_STANDARD_MONO("speaker")
 	MCFG_SOUND_ADD("dac", MC1408, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.25)
 	MCFG_DEVICE_ADD("vref", VOLTAGE_REGULATOR, 0) MCFG_VOLTAGE_REGULATOR_OUTPUT(5.0)
 	MCFG_SOUND_ROUTE_EX(0, "dac", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "dac", -1.0, DAC_VREF_NEG_INPUT)
 	MCFG_SOUND_ROUTE_EX(0, "dac1", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "dac1", -1.0, DAC_VREF_NEG_INPUT)
->>>>>>> upstream/master
 
 	MCFG_SPEAKER_STANDARD_MONO("speech")
 	MCFG_SOUND_ADD("hc55516", HC55516, 0)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speech", 0.50)
 
 	MCFG_DEVICE_ADD("pias", PIA6821, 0)
-<<<<<<< HEAD
-	MCFG_PIA_READPA_HANDLER(READ8(s11_state, dac_r))
-	MCFG_PIA_WRITEPA_HANDLER(WRITE8(s11_state, sound_w))
-	MCFG_PIA_WRITEPB_HANDLER(WRITE8(s11_state, dac_w))
-	MCFG_PIA_CB2_HANDLER(WRITELINE(s11_state, pia40_cb2_w))
-	MCFG_PIA_IRQA_HANDLER(DEVWRITELINE("audiocpu", m6802_cpu_device, irq_line))
-	MCFG_PIA_IRQB_HANDLER(DEVWRITELINE("audiocpu", m6802_cpu_device, irq_line))
-=======
 	MCFG_PIA_READPA_HANDLER(READ8(s11_state, sound_r))
 	MCFG_PIA_WRITEPA_HANDLER(WRITE8(s11_state, sound_w))
 	MCFG_PIA_WRITEPB_HANDLER(DEVWRITE8("dac", dac_byte_interface, write))
 	MCFG_PIA_CB2_HANDLER(WRITELINE(s11_state, pia40_cb2_w))
 	MCFG_PIA_IRQA_HANDLER(INPUTLINE("audiocpu", M6802_IRQ_LINE))
 	MCFG_PIA_IRQB_HANDLER(INPUTLINE("audiocpu", M6802_IRQ_LINE))
->>>>>>> upstream/master
 
 	/* Add the background music card */
 	MCFG_CPU_ADD("bgcpu", M6809E, 8000000) // MC68B09E
@@ -314,18 +262,6 @@ static MACHINE_CONFIG_START( s11a )
 	MCFG_YM2151_IRQ_HANDLER(WRITELINE(s11a_state, ym2151_irq_w))
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "bg", 0.50)
 
-<<<<<<< HEAD
-	MCFG_DAC_ADD("dac1")
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "bg", 0.50)
-
-	MCFG_DEVICE_ADD("pia40", PIA6821, 0)
-	MCFG_PIA_WRITEPA_HANDLER(WRITE8(s11_state, pia40_pa_w))
-	MCFG_PIA_WRITEPB_HANDLER(WRITE8(s11_state, pia40_pb_w))
-	MCFG_PIA_CA2_HANDLER(WRITELINE(s11_state, pias_ca2_w))
-	MCFG_PIA_CB2_HANDLER(WRITELINE(s11_state, pias_cb2_w))
-	MCFG_PIA_IRQA_HANDLER(DEVWRITELINE("bgcpu", m6809e_device, firq_line))
-	MCFG_PIA_IRQB_HANDLER(DEVWRITELINE("bgcpu", m6809e_device, nmi_line))
-=======
 	MCFG_SOUND_ADD("dac1", MC1408, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "bg", 0.25)
 
 	MCFG_DEVICE_ADD("pia40", PIA6821, 0)
@@ -335,7 +271,6 @@ static MACHINE_CONFIG_START( s11a )
 	MCFG_PIA_CB2_HANDLER(WRITELINE(s11_state, pias_cb2_w))
 	MCFG_PIA_IRQA_HANDLER(INPUTLINE("bgcpu", M6809_FIRQ_LINE))
 	MCFG_PIA_IRQB_HANDLER(INPUTLINE("bgcpu", INPUT_LINE_NMI))
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 /*------------------------
@@ -414,8 +349,6 @@ ROM_START(fire_l3)
 	ROM_LOAD("fire_u4.l1", 0x10000, 0x8000, CRC(0e058918) SHA1(4d6bf2290141119174787f8dd653c47ea4c73693))
 ROM_END
 
-<<<<<<< HEAD
-=======
 ROM_START(fire_l2)
 	ROM_REGION(0x10000, "maincpu", 0)
 	ROM_LOAD("fire_u26.l2", 0x4000, 0x4000, CRC(05434ea7) SHA1(462808954de18fed25e6df8f4cc66acdd05a3d85))
@@ -429,7 +362,6 @@ ROM_START(fire_l2)
 	ROM_LOAD("fire_u4.l1", 0x10000, 0x8000, CRC(0e058918) SHA1(4d6bf2290141119174787f8dd653c47ea4c73693))
 ROM_END
 
->>>>>>> upstream/master
 /*--------------------------------------
 / Fire! Champagne Edition 9/87 (#556SE)
 /---------------------------------------*/
@@ -468,11 +400,6 @@ ROM_START(pb_l5)
 	ROM_LOAD("pbot_u19.l1", 0x18000, 0x8000, CRC(40eb4e9f) SHA1(07b0557b35599a2dd5aa66a306fbbe8f50eed998))
 ROM_END
 
-<<<<<<< HEAD
-ROM_START(pb_l2)
-	ROM_REGION(0x10000, "maincpu", 0)
-	ROM_LOAD("u26-l2.rom", 0x4000, 0x4000, CRC(e3b94ca4) SHA1(1db2acb025941cc165cc7ec70a160e07ab1eeb2e))
-=======
 ROM_START(pb_l1)
 	ROM_REGION(0x10000, "maincpu", 0)
 	ROM_LOAD("u26-l1.rom", 0x4000, 0x4000, CRC(e3b94ca4) SHA1(1db2acb025941cc165cc7ec70a160e07ab1eeb2e))
@@ -490,7 +417,6 @@ ROM_END
 ROM_START(pb_l2)
 	ROM_REGION(0x10000, "maincpu", 0)
 	ROM_LOAD("u26-l1.rom", 0x4000, 0x4000, CRC(e3b94ca4) SHA1(1db2acb025941cc165cc7ec70a160e07ab1eeb2e))
->>>>>>> upstream/master
 	ROM_LOAD("u27-l2.rom", 0x8000, 0x8000, CRC(0a334fc5) SHA1(d08afe6ddc141e37f97ea588d184a316ff7f6db7))
 
 	ROM_REGION(0x20000, "audiocpu", ROMREGION_ERASEFF)
@@ -504,11 +430,7 @@ ROM_END
 
 ROM_START(pb_l3)
 	ROM_REGION(0x10000, "maincpu", 0)
-<<<<<<< HEAD
-	ROM_LOAD("u26-l2.rom", 0x4000, 0x4000, CRC(e3b94ca4) SHA1(1db2acb025941cc165cc7ec70a160e07ab1eeb2e))
-=======
 	ROM_LOAD("u26-l1.rom", 0x4000, 0x4000, CRC(e3b94ca4) SHA1(1db2acb025941cc165cc7ec70a160e07ab1eeb2e))
->>>>>>> upstream/master
 	ROM_LOAD("u27-l3.rom", 0x8000, 0x8000, CRC(6f40ee84) SHA1(85453137e3fdb1e422e3903dd053e04c9f2b9607))
 
 	ROM_REGION(0x20000, "audiocpu", ROMREGION_ERASEFF)
@@ -534,18 +456,6 @@ ROM_START(pb_p4)
 	ROM_LOAD("pbot_u19.l1", 0x18000, 0x8000, CRC(40eb4e9f) SHA1(07b0557b35599a2dd5aa66a306fbbe8f50eed998))
 ROM_END
 
-<<<<<<< HEAD
-GAME(1987, f14_l1,   0,      s11a, s11a, s11a_state, s11a, ROT0, "Williams", "F14 Tomcat (L-1)", MACHINE_IS_SKELETON_MECHANICAL)
-GAME(1987, f14_p3,   f14_l1, s11a, s11a, s11a_state, s11a, ROT0, "Williams", "F14 Tomcat (P-3)", MACHINE_IS_SKELETON_MECHANICAL)
-GAME(1987, f14_p4,   f14_l1, s11a, s11a, s11a_state, s11a, ROT0, "Williams", "F14 Tomcat (P-4)", MACHINE_IS_SKELETON_MECHANICAL)
-GAME(1987, f14_p5,   f14_l1, s11a, s11a, s11a_state, s11a, ROT0, "Williams", "F14 Tomcat (P-5)", MACHINE_IS_SKELETON_MECHANICAL)
-GAME(1987, fire_l3,  0,      s11a, s11a, s11a_state, s11a, ROT0, "Williams", "Fire! (L-3)", MACHINE_IS_SKELETON_MECHANICAL)
-GAME(1987, milln_l3, 0,      s11a, s11a, s11a_state, s11a, ROT0, "Williams", "Millionaire (L-3)", MACHINE_IS_SKELETON_MECHANICAL)
-GAME(1986, pb_l5,    0,      s11a, s11a, s11a_state, s11a, ROT0, "Williams", "Pin-Bot (L-5)", MACHINE_IS_SKELETON_MECHANICAL)
-GAME(1986, pb_l2,    pb_l5,  s11a, s11a, s11a_state, s11a, ROT0, "Williams", "Pin-Bot (L-2)", MACHINE_IS_SKELETON_MECHANICAL)
-GAME(1986, pb_l3,    pb_l5,  s11a, s11a, s11a_state, s11a, ROT0, "Williams", "Pin-Bot (L-3)", MACHINE_IS_SKELETON_MECHANICAL)
-GAME(1986, pb_p4,    pb_l5,  s11a, s11a, s11a_state, s11a, ROT0, "Williams", "Pin-Bot (P-4)", MACHINE_IS_SKELETON_MECHANICAL)
-=======
 GAME(1987, f14_l1,   0,       s11a, s11a, s11a_state, s11a, ROT0, "Williams", "F-14 Tomcat (L-1)", MACHINE_IS_SKELETON_MECHANICAL)
 GAME(1987, f14_p3,   f14_l1,  s11a, s11a, s11a_state, s11a, ROT0, "Williams", "F-14 Tomcat (P-3)", MACHINE_IS_SKELETON_MECHANICAL)
 GAME(1987, f14_p4,   f14_l1,  s11a, s11a, s11a_state, s11a, ROT0, "Williams", "F-14 Tomcat (P-4)", MACHINE_IS_SKELETON_MECHANICAL)
@@ -558,4 +468,3 @@ GAME(1986, pb_l1,    pb_l5,   s11a, s11a, s11a_state, s11a, ROT0, "Williams", "P
 GAME(1986, pb_l2,    pb_l5,   s11a, s11a, s11a_state, s11a, ROT0, "Williams", "Pin-Bot (L-2)",     MACHINE_IS_SKELETON_MECHANICAL)
 GAME(1986, pb_l3,    pb_l5,   s11a, s11a, s11a_state, s11a, ROT0, "Williams", "Pin-Bot (L-3)",     MACHINE_IS_SKELETON_MECHANICAL)
 GAME(1986, pb_p4,    pb_l5,   s11a, s11a, s11a_state, s11a, ROT0, "Williams", "Pin-Bot (P-4)",     MACHINE_IS_SKELETON_MECHANICAL)
->>>>>>> upstream/master

@@ -10,13 +10,7 @@
 
  TODO:
 
-<<<<<<< HEAD
- - convert driver to use i8275 CRT device emulation
  - fix gfx glitches and banking
- - correct colors
-=======
- - fix gfx glitches and banking
->>>>>>> upstream/master
  - DIPs
  - layout(lamps)
  - NVRAM
@@ -28,10 +22,7 @@ Setting all dipswitches active and dipswitch 10 inactive allows game/gfx switchi
 are all corrupt/scrambled.
 Also the dipswitches are active low/inverted, since on the machine this was tested on dipswitches 2,3,5,6,8 were ON, and 1,4 and 7 were OFF.
 There are only 8 dipswitches populated on the Dwarf's den boards seen so far.
-<<<<<<< HEAD
-=======
 Pokeresp must be reset once to get the correct graphics (Why?).
->>>>>>> upstream/master
 
 
 
@@ -310,11 +301,8 @@ uPC1352C @ N3
 #include "cpu/i8085/i8085.h"
 #include "sound/ay8910.h"
 #include "video/i8275.h"
-<<<<<<< HEAD
-=======
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 class dwarfd_state : public driver_device
 {
@@ -326,31 +314,19 @@ public:
 		m_crtc(*this, "i8275"),
 		m_charmap(*this, "gfx1"),
 		m_dsw2(*this, "DSW2")
-<<<<<<< HEAD
-		{ }
-=======
 	{ }
->>>>>>> upstream/master
 
 	/* video-related */
 	int m_crt_access;
 	bool m_back_color;
 
 	/* memory */
-<<<<<<< HEAD
-	UINT8    m_dw_ram[0x1000];
-=======
 	uint8_t    m_dw_ram[0x1000];
->>>>>>> upstream/master
 
 	required_device<cpu_device> m_maincpu;
 	required_device<palette_device> m_palette;
 	required_device<i8275_device> m_crtc;
-<<<<<<< HEAD
-	required_region_ptr<UINT16> m_charmap;
-=======
 	required_region_ptr<uint16_t> m_charmap;
->>>>>>> upstream/master
 	required_ioport m_dsw2;
 
 	DECLARE_READ8_MEMBER(dwarfd_ram_r);
@@ -362,18 +338,11 @@ public:
 	DECLARE_WRITE_LINE_MEMBER(drq_w);
 	DECLARE_DRIVER_INIT(qc);
 	DECLARE_DRIVER_INIT(dwarfd);
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void machine_reset();
-	DECLARE_PALETTE_INIT(dwarfd);
-	I8275_DRAW_CHARACTER_MEMBER(display_pixels);
-=======
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
 	DECLARE_PALETTE_INIT(dwarfd);
 	I8275_DRAW_CHARACTER_MEMBER(display_pixels);
 	I8275_DRAW_CHARACTER_MEMBER(pesp_display_pixels);
->>>>>>> upstream/master
 	I8275_DRAW_CHARACTER_MEMBER(qc_display_pixels);
 };
 
@@ -437,14 +406,11 @@ static ADDRESS_MAP_START( mem_map, AS_PROGRAM, 8, dwarfd_state )
 	AM_RANGE(0x4000, 0x4fff) AM_READWRITE(dwarfd_ram_r, dwarfd_ram_w)
 ADDRESS_MAP_END
 
-<<<<<<< HEAD
-=======
 static ADDRESS_MAP_START( pokeresp_map, AS_PROGRAM, 8, dwarfd_state )
 	AM_RANGE(0x0000, 0x2fff) AM_ROM
 	AM_RANGE(0x3000, 0x3fff) AM_READWRITE(dwarfd_ram_r, dwarfd_ram_w)
 ADDRESS_MAP_END
 
->>>>>>> upstream/master
 static ADDRESS_MAP_START( io_map, AS_IO, 8, dwarfd_state )
 	ADDRESS_MAP_GLOBAL_MASK(0xff)
 	AM_RANGE(0x01, 0x01) AM_DEVREAD("aysnd", ay8910_device, data_r)
@@ -611,8 +577,6 @@ static INPUT_PORTS_START( quarterh )
 	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_POKER_CANCEL ) PORT_NAME("Unzap") //uz unzap
 INPUT_PORTS_END
 
-<<<<<<< HEAD
-=======
 I8275_DRAW_CHARACTER_MEMBER(dwarfd_state::pesp_display_pixels)
 {
 	int i;
@@ -636,18 +600,13 @@ I8275_DRAW_CHARACTER_MEMBER(dwarfd_state::pesp_display_pixels)
 		m_back_color = pixel & 1;
 	}
 }
->>>>>>> upstream/master
 
 I8275_DRAW_CHARACTER_MEMBER(dwarfd_state::display_pixels)
 {
 	int i;
 	int bank = ((gpa & 2) ? 0 : 4) + (gpa & 1) + ((m_dsw2->read() & 4) >> 1);
 	const rgb_t *palette = m_palette->palette()->entry_list_raw();
-<<<<<<< HEAD
-	UINT16 pixels = m_charmap[(linecount & 7) + ((charcode + (bank * 128)) << 3)];
-=======
 	uint16_t pixels = m_charmap[(linecount & 7) + ((charcode + (bank * 128)) << 3)];
->>>>>>> upstream/master
 	if(!x)
 		m_back_color = false;
 
@@ -656,13 +615,8 @@ I8275_DRAW_CHARACTER_MEMBER(dwarfd_state::display_pixels)
 
 	for(i=0;i<8;i+=2)
 	{
-<<<<<<< HEAD
-		UINT8 pixel = (pixels >> (i * 2)) & 0xf;
-		UINT8 value = (pixel >> 1) | (rvv << 4) | (vsp << 3);
-=======
 		uint8_t pixel = (pixels >> (i * 2)) & 0xf;
 		uint8_t value = (pixel >> 1) | (rvv << 4) | (vsp << 3);
->>>>>>> upstream/master
 		bitmap.pix32(y, x + i) = palette[value];
 		bitmap.pix32(y, x + i + 1) = palette[(pixel & 1) ? 0 : value];
 		if(m_back_color)
@@ -676,11 +630,7 @@ I8275_DRAW_CHARACTER_MEMBER(dwarfd_state::qc_display_pixels)
 	int i;
 	int bank = gpa;
 	const rgb_t *palette = m_palette->palette()->entry_list_raw();
-<<<<<<< HEAD
-	UINT16 pixels = m_charmap[(linecount & 7) + ((charcode + (bank * 128)) << 3)];
-=======
 	uint16_t pixels = m_charmap[(linecount & 7) + ((charcode + (bank * 128)) << 3)];
->>>>>>> upstream/master
 	if(!x)
 		m_back_color = false;
 
@@ -689,13 +639,8 @@ I8275_DRAW_CHARACTER_MEMBER(dwarfd_state::qc_display_pixels)
 
 	for(i=0;i<8;i+=2)
 	{
-<<<<<<< HEAD
-		UINT8 pixel = (pixels >> (i * 2)) & 0xf;
-		UINT8 value = (pixel >> 1) | (rvv << 4) | (vsp << 3);
-=======
 		uint8_t pixel = (pixels >> (i * 2)) & 0xf;
 		uint8_t value = (pixel >> 1) | (rvv << 4) | (vsp << 3);
->>>>>>> upstream/master
 		bitmap.pix32(y, x + i) = palette[value];
 		bitmap.pix32(y, x + i + 1) = palette[(pixel & 1) ? 0 : value];
 		if(m_back_color)
@@ -817,15 +762,9 @@ GFXDECODE_END
 
 PALETTE_INIT_MEMBER(dwarfd_state, dwarfd)
 {
-<<<<<<< HEAD
-	UINT8 rgb[3];
-	int i,j;
-	UINT8 *prom = memregion("proms")->base();
-=======
 	uint8_t rgb[3];
 	int i,j;
 	uint8_t *prom = memregion("proms")->base();
->>>>>>> upstream/master
 
 	for (i = 0; i < 32; i++)
 	{
@@ -851,11 +790,7 @@ void dwarfd_state::machine_reset()
 	m_back_color = false;
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( dwarfd, dwarfd_state )
-=======
 static MACHINE_CONFIG_START( dwarfd )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	/* FIXME: The 8085A had a max clock of 6MHz, internally divided by 2! */
@@ -888,8 +823,6 @@ static MACHINE_CONFIG_START( dwarfd )
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-=======
 static MACHINE_CONFIG_DERIVED( pokeresp, dwarfd )
 	MCFG_CPU_MODIFY("maincpu")
 	MCFG_CPU_PROGRAM_MAP(pokeresp_map)
@@ -899,7 +832,6 @@ static MACHINE_CONFIG_DERIVED( pokeresp, dwarfd )
 	MCFG_I8275_DRAW_CHARACTER_CALLBACK_OWNER(dwarfd_state, pesp_display_pixels)
 MACHINE_CONFIG_END
 
->>>>>>> upstream/master
 static MACHINE_CONFIG_DERIVED( qc, dwarfd )
 
 	MCFG_CPU_MODIFY("maincpu")
@@ -950,11 +882,7 @@ ROM_START( dwarfd )
 	ROM_LOAD16_BYTE( "6d_pd_50-1994_tms2732ajl.bin",0x2001, 0x1000, CRC(ef52b88c) SHA1(3405152da3194a71f6dac6492f275c746e781ee7) )
 
 	ROM_REGION( 0x4000*2, "gfx2", 0 )
-<<<<<<< HEAD
-	ROM_FILL(0,  0x4000*2, 0)
-=======
 	ROM_FILL(0,  0x4000*2, 0x00)
->>>>>>> upstream/master
 
 	ROM_REGION( 0x40, "proms", 0 )
 	/* ??? colors */
@@ -977,11 +905,7 @@ ROM_START( dwarfda )
 	ROM_LOAD16_BYTE( "50-1815-tms2732ajl.6d",0x2001, 0x1000, CRC(303d2d16) SHA1(885df57f253d92f96692256325ffcf2ca71dc64f) )
 
 	ROM_REGION( 0x4000*2, "gfx2", 0 )
-<<<<<<< HEAD
-	ROM_FILL(0,  0x4000*2, 0)
-=======
 	ROM_FILL(0,  0x4000*2, 0x00)
->>>>>>> upstream/master
 
 	ROM_REGION( 0x40, "proms", 0 )
 	/* ??? colors */
@@ -990,8 +914,6 @@ ROM_START( dwarfda )
 	ROM_LOAD( "74s188n.7h",0x20, 0x20, CRC(c9618de2) SHA1(d5636546dbc57e6aab01dab79b2ead1dfef8fa5c) )
 ROM_END
 
-<<<<<<< HEAD
-=======
 ROM_START( pokeresp )
 	ROM_REGION( 0x10000, "maincpu", 0 )
 	ROM_LOAD( "electro.9l",         0x0000, 0x0800, CRC(38b6be0d) SHA1(ce65db8465fc459d12a940d63b228bcc63616411) )
@@ -1016,7 +938,6 @@ ROM_START( pokeresp )
 	ROM_LOAD( "electro.6l",0x040, 0x100, CRC(37ffb79f) SHA1(59c1973f1a99bb380a1a05f5067b314206d4facb) )
 ROM_END
 
->>>>>>> upstream/master
 /*
 bp 32f9
 do pc=3319
@@ -1035,11 +956,7 @@ ROM_START( quarterh )
 	ROM_LOAD16_BYTE( "6d_qh_01-2398_11193.bin",0x0001, 0x0800, CRC(1db80656) SHA1(5cbfc2e4ba0c8028ff5e0ba2ec6220d8afb8cfc2) )
 
 	ROM_REGION( 0x4000*2, "gfx2", 0 )
-<<<<<<< HEAD
-	ROM_FILL(0,  0x4000*2, 0)
-=======
 	ROM_FILL(0,  0x4000*2, 0x00)
->>>>>>> upstream/master
 
 	ROM_REGION( 0x800, "ld_data", 0 )
 	ROM_LOAD( "-g_l-.bin",  0x0000, 0x0800, CRC(05c09fa6) SHA1(92ec4c225e477194d2c134403d9ebf922149b51c) )
@@ -1068,11 +985,7 @@ ROM_START( quarterha )
 	ROM_LOAD16_BYTE( "6d_qh_01-2398_11193.bin",0x0001, 0x0800, CRC(1db80656) SHA1(5cbfc2e4ba0c8028ff5e0ba2ec6220d8afb8cfc2) )
 
 	ROM_REGION( 0x4000*2, "gfx2", 0 )
-<<<<<<< HEAD
-	ROM_FILL(0,  0x4000*2, 0)
-=======
 	ROM_FILL(0,  0x4000*2, 0x00)
->>>>>>> upstream/master
 
 	ROM_REGION( 0x800, "ld_data", 0 )
 	ROM_LOAD( "-g_l-.bin",  0x0000, 0x0800, CRC(05c09fa6) SHA1(92ec4c225e477194d2c134403d9ebf922149b51c) )
@@ -1102,11 +1015,7 @@ ROM_START( quarterhb )
 	ROM_COPY("gfx_data", 0x1800, 0x0800, 0x0800 )
 
 	ROM_REGION( 0x4000*2, "gfx2", 0 )
-<<<<<<< HEAD
-	ROM_FILL(0,  0x4000*2, 0)
-=======
 	ROM_FILL(0,  0x4000*2, 0x00)
->>>>>>> upstream/master
 
 	ROM_REGION( 0x800, "ld_data", ROMREGION_ERASEFF )
 
@@ -1137,11 +1046,7 @@ ROM_START( qc )
 	ROM_COPY("gfx1", 0x0000, 0x2000, 0x2000 )
 
 	ROM_REGION( 0x4000*2, "gfx2", 0 )
-<<<<<<< HEAD
-	ROM_FILL(0,  0x4000*2, 0)
-=======
 	ROM_FILL(0,  0x4000*2, 0x00)
->>>>>>> upstream/master
 
 	// borrowed from above and slightly edited
 	ROM_REGION( 0x40, "proms", 0 )
@@ -1151,11 +1056,7 @@ ROM_END
 DRIVER_INIT_MEMBER(dwarfd_state,dwarfd)
 {
 	/* expand gfx roms */
-<<<<<<< HEAD
-	UINT8 *dst = memregion("gfx2")->base();
-=======
 	uint8_t *dst = memregion("gfx2")->base();
->>>>>>> upstream/master
 
 	for (int i = 0; i < 0x4000/2; i++)
 	{
@@ -1206,15 +1107,6 @@ DRIVER_INIT_MEMBER(dwarfd_state,qc)
 
 }
 
-<<<<<<< HEAD
-/*    YEAR  NAME      PARENT     MACHINE INPUT   INIT    ORENTATION,         COMPANY           FULLNAME            FLAGS */
-GAME( 1981, dwarfd,   0,         dwarfd, dwarfd, dwarfd_state, dwarfd, 0, "Electro-Sport", "Draw Poker III / Dwarfs Den (Dwarf Gfx)",            MACHINE_IMPERFECT_GRAPHICS | MACHINE_WRONG_COLORS | MACHINE_SUPPORTS_SAVE )
-GAME( 1981, dwarfda,   dwarfd,   dwarfd, dwarfd, dwarfd_state, dwarfd, 0, "Electro-Sport", "Draw Poker III / Dwarfs Den (Card Gfx)",            MACHINE_IMPERFECT_GRAPHICS | MACHINE_WRONG_COLORS | MACHINE_SUPPORTS_SAVE )
-GAME( 1983, quarterh, 0,         dwarfd, quarterh, dwarfd_state, dwarfd, 0, "Electro-Sport", "Quarter Horse (set 1, Pioneer PR-8210)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_WRONG_COLORS | MACHINE_SUPPORTS_SAVE | MACHINE_NOT_WORKING )
-GAME( 1983, quarterha, quarterh, dwarfd, quarterh, dwarfd_state, dwarfd, 0, "Electro-Sport", "Quarter Horse (set 2, Pioneer PR-8210)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_WRONG_COLORS | MACHINE_SUPPORTS_SAVE | MACHINE_NOT_WORKING )
-GAME( 1983, quarterhb, quarterh, dwarfd, quarterh, dwarfd_state, dwarfd, 0, "Electro-Sport", "Quarter Horse (set 3, Pioneer LD-V2000)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_WRONG_COLORS | MACHINE_SUPPORTS_SAVE | MACHINE_NOT_WORKING )
-GAME( 1995, qc,       0,         qc,     quarterh, dwarfd_state, qc,     0, "ArJay Exports/Prestige Games", "Quarter Horse Classic", MACHINE_IMPERFECT_GRAPHICS | MACHINE_NOT_WORKING )
-=======
 //    YEAR  NAME      PARENT     MACHINE   INPUT     STATE         INIT    ORENTATION,         COMPANY           FULLNAME            FLAGS
 GAME( 1979, pokeresp, 0,         pokeresp, dwarfd,   dwarfd_state, dwarfd, ROT0, "Electro-Sport", "Poker (Electro-Sport)",                   MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
 GAME( 1981, dwarfd,   0,         dwarfd,   dwarfd,   dwarfd_state, dwarfd, ROT0, "Electro-Sport", "Draw Poker III / Dwarfs Den (Dwarf Gfx)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
@@ -1223,4 +1115,3 @@ GAME( 1983, quarterh, 0,         dwarfd,   quarterh, dwarfd_state, dwarfd, ROT0,
 GAME( 1983, quarterha, quarterh, dwarfd,   quarterh, dwarfd_state, dwarfd, ROT0, "Electro-Sport", "Quarter Horse (set 2, Pioneer PR-8210)",  MACHINE_IMPERFECT_GRAPHICS | MACHINE_WRONG_COLORS | MACHINE_SUPPORTS_SAVE | MACHINE_NOT_WORKING )
 GAME( 1983, quarterhb, quarterh, dwarfd,   quarterh, dwarfd_state, dwarfd, ROT0, "Electro-Sport", "Quarter Horse (set 3, Pioneer LD-V2000)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_WRONG_COLORS | MACHINE_SUPPORTS_SAVE | MACHINE_NOT_WORKING )
 GAME( 1995, qc,       0,         qc,       quarterh, dwarfd_state, qc,     ROT0, "ArJay Exports/Prestige Games", "Quarter Horse Classic",    MACHINE_IMPERFECT_GRAPHICS | MACHINE_NOT_WORKING )
->>>>>>> upstream/master

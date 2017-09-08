@@ -35,13 +35,6 @@
 
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/m68000/m68000.h"
-#include "includes/amiga.h"
-#include "sound/es5503.h"
-#include "machine/nvram.h"
-#include "machine/amigafdc.h"
-=======
 #include "includes/amiga.h"
 
 #include "cpu/m68000/m68000.h"
@@ -49,22 +42,15 @@
 #include "machine/amigafdc.h"
 #include "sound/es5503.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 class mquake_state : public amiga_state
 {
 public:
 	mquake_state(const machine_config &mconfig, device_type type, const char *tag)
-<<<<<<< HEAD
-	: amiga_state(mconfig, type, tag),
-	m_es5503(*this, "es5503"),
-	m_es5503_rom(*this, "es5503")
-=======
 		: amiga_state(mconfig, type, tag),
 		m_es5503(*this, "es5503"),
 		m_es5503_rom(*this, "es5503")
->>>>>>> upstream/master
 	{ }
 
 	DECLARE_DRIVER_INIT(mquake);
@@ -76,11 +62,7 @@ public:
 
 private:
 	required_device<es5503_device> m_es5503;
-<<<<<<< HEAD
-	required_region_ptr<UINT8> m_es5503_rom;
-=======
 	required_region_ptr<uint8_t> m_es5503_rom;
->>>>>>> upstream/master
 };
 
 
@@ -97,11 +79,7 @@ READ8_MEMBER( mquake_state::es5503_sample_r )
 	return m_es5503_rom[offset + (m_es5503->get_channel_strobe() * 0x10000)];
 }
 
-<<<<<<< HEAD
-static ADDRESS_MAP_START( mquake_es5503_map, AS_0, 8, mquake_state )
-=======
 static ADDRESS_MAP_START( mquake_es5503_map, 0, 8, mquake_state )
->>>>>>> upstream/master
 	AM_RANGE(0x000000, 0x1ffff) AM_READ(es5503_sample_r)
 ADDRESS_MAP_END
 
@@ -185,19 +163,11 @@ static INPUT_PORTS_START( mquake )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_BUTTON1 ) PORT_PLAYER(2)         /* JS1SW */
 
 	PORT_START("joy_0_dat")
-<<<<<<< HEAD
-	PORT_BIT( 0x0303, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, mquake_state,amiga_joystick_convert, 0)
-	PORT_BIT( 0xfcfc, IP_ACTIVE_HIGH, IPT_UNKNOWN )
-
-	PORT_START("joy_1_dat")
-	PORT_BIT( 0x0303, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, mquake_state,amiga_joystick_convert, 1)
-=======
 	PORT_BIT( 0x0303, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, mquake_state,amiga_joystick_convert, (void *)0)
 	PORT_BIT( 0xfcfc, IP_ACTIVE_HIGH, IPT_UNKNOWN )
 
 	PORT_START("joy_1_dat")
 	PORT_BIT( 0x0303, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, mquake_state,amiga_joystick_convert, (void *)1)
->>>>>>> upstream/master
 	PORT_BIT( 0xfcfc, IP_ACTIVE_HIGH, IPT_UNKNOWN )
 
 	PORT_START("p1_joy")
@@ -332,11 +302,7 @@ INPUT_PORTS_END
  *
  *************************************/
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( mquake, mquake_state )
-=======
 static MACHINE_CONFIG_START( mquake )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, amiga_state::CLK_7M_NTSC)
@@ -362,28 +328,17 @@ static MACHINE_CONFIG_START( mquake )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
-<<<<<<< HEAD
-	MCFG_SOUND_ADD("amiga", AMIGA, amiga_state::CLK_C1_NTSC)
-=======
 	MCFG_SOUND_ADD("amiga", PAULA_8364, amiga_state::CLK_C1_NTSC)
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(0, "lspeaker", 0.50)
 	MCFG_SOUND_ROUTE(1, "rspeaker", 0.50)
 	MCFG_SOUND_ROUTE(2, "rspeaker", 0.50)
 	MCFG_SOUND_ROUTE(3, "lspeaker", 0.50)
-<<<<<<< HEAD
-
-	MCFG_ES5503_ADD("es5503", amiga_state::CLK_7M_NTSC)       /* ES5503 is likely mono due to channel strobe used as bank select */
-	MCFG_ES5503_OUTPUT_CHANNELS(1)
-	MCFG_DEVICE_ADDRESS_MAP(AS_0, mquake_es5503_map)
-=======
 	MCFG_PAULA_MEM_READ_CB(READ16(amiga_state, chip_ram_r))
 	MCFG_PAULA_INT_CB(WRITELINE(amiga_state, paula_int_w))
 
 	MCFG_ES5503_ADD("es5503", amiga_state::CLK_7M_NTSC)       /* ES5503 is likely mono due to channel strobe used as bank select */
 	MCFG_ES5503_OUTPUT_CHANNELS(1)
 	MCFG_DEVICE_ADDRESS_MAP(0, mquake_es5503_map)
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(0, "lspeaker", 0.50)
 	MCFG_SOUND_ROUTE(0, "rspeaker", 0.50)
 

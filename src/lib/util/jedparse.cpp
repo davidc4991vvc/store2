@@ -38,13 +38,8 @@
 
 struct jed_parse_info
 {
-<<<<<<< HEAD
-	UINT16      checksum;               /* checksum value */
-	UINT32      explicit_numfuses;      /* explicitly specified number of fuses */
-=======
 	uint16_t      checksum;               /* checksum value */
 	uint32_t      explicit_numfuses;      /* explicitly specified number of fuses */
->>>>>>> upstream/master
 };
 
 
@@ -91,17 +86,10 @@ static int isdelim(char c)
     character stream
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-static UINT32 suck_number(const UINT8 **psrc)
-{
-	const UINT8 *src = *psrc;
-	UINT32 value = 0;
-=======
 static uint32_t suck_number(const uint8_t **psrc)
 {
 	const uint8_t *src = *psrc;
 	uint32_t value = 0;
->>>>>>> upstream/master
 
 	/* skip delimiters */
 	while (isdelim(*src))
@@ -129,11 +117,7 @@ static uint32_t suck_number(const uint8_t **psrc)
     process_field - process a single JEDEC field
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-static void process_field(jed_data *data, const UINT8 *cursrc, const UINT8 *srcend, jed_parse_info *pinfo)
-=======
 static void process_field(jed_data *data, const uint8_t *cursrc, const uint8_t *srcend, jed_parse_info *pinfo)
->>>>>>> upstream/master
 {
 	/* switch off of the field type */
 	switch (*cursrc)
@@ -163,11 +147,7 @@ static void process_field(jed_data *data, const uint8_t *cursrc, const uint8_t *
 		/* fuse states */
 		case 'L':
 		{
-<<<<<<< HEAD
-			UINT32 curfuse;
-=======
 			uint32_t curfuse;
->>>>>>> upstream/master
 
 			/* read the fuse number */
 			cursrc++;
@@ -209,19 +189,11 @@ static void process_field(jed_data *data, const uint8_t *cursrc, const uint8_t *
 
 int jed_parse(const void *data, size_t length, jed_data *result)
 {
-<<<<<<< HEAD
-	const UINT8 *cursrc = (const UINT8 *)data;
-	const UINT8 *srcend = cursrc + length;
-	const UINT8 *scan;
-	jed_parse_info pinfo;
-	UINT16 checksum;
-=======
 	const uint8_t *cursrc = (const uint8_t *)data;
 	const uint8_t *srcend = cursrc + length;
 	const uint8_t *scan;
 	jed_parse_info pinfo;
 	uint16_t checksum;
->>>>>>> upstream/master
 	int i;
 
 	/* initialize the output and the intermediate info struct */
@@ -246,11 +218,7 @@ int jed_parse(const void *data, size_t length, jed_data *result)
 	checksum += *scan;
 	if (scan + 4 < srcend && ishex(scan[1]) && ishex(scan[2]) && ishex(scan[3]) && ishex(scan[4]))
 	{
-<<<<<<< HEAD
-		UINT16 dessum = (hexval(scan[1]) << 12) | (hexval(scan[2]) << 8) | (hexval(scan[3]) << 4) | hexval(scan[4] << 0);
-=======
 		uint16_t dessum = (hexval(scan[1]) << 12) | (hexval(scan[2]) << 8) | (hexval(scan[3]) << 4) | hexval(scan[4] << 0);
->>>>>>> upstream/master
 		if (dessum != 0 && dessum != checksum)
 			return JEDERR_BAD_XMIT_SUM;
 	}
@@ -315,15 +283,6 @@ int jed_parse(const void *data, size_t length, jed_data *result)
 
 size_t jed_output(const jed_data *data, void *result, size_t length)
 {
-<<<<<<< HEAD
-	UINT8 *curdst = (UINT8 *)result;
-	UINT8 *dstend = curdst + length;
-	int i, zeros, ones;
-	char tempbuf[256];
-	UINT16 checksum;
-	UINT8 defbyte;
-	UINT8 *temp;
-=======
 	uint8_t *curdst = (uint8_t *)result;
 	uint8_t *dstend = curdst + length;
 	int i, zeros, ones;
@@ -331,7 +290,6 @@ size_t jed_output(const jed_data *data, void *result, size_t length)
 	uint16_t checksum;
 	uint8_t defbyte;
 	uint8_t *temp;
->>>>>>> upstream/master
 
 	/* always start the DST with a standard header and an STX */
 	tempbuf[0] = 0x02;
@@ -397,11 +355,7 @@ size_t jed_output(const jed_data *data, void *result, size_t length)
 
 	/* now compute the transmission checksum */
 	checksum = 0;
-<<<<<<< HEAD
-	for (temp = (UINT8 *)result; temp < curdst && temp < dstend; temp++)
-=======
 	for (temp = (uint8_t *)result; temp < curdst && temp < dstend; temp++)
->>>>>>> upstream/master
 		checksum += *temp & 0x7f;
 	checksum += 0x03;
 
@@ -413,11 +367,7 @@ size_t jed_output(const jed_data *data, void *result, size_t length)
 	curdst += strlen(tempbuf);
 
 	/* return the final size */
-<<<<<<< HEAD
-	return curdst - (UINT8 *)result;
-=======
 	return curdst - (uint8_t *)result;
->>>>>>> upstream/master
 }
 
 
@@ -429,11 +379,7 @@ size_t jed_output(const jed_data *data, void *result, size_t length)
 
 int jedbin_parse(const void *data, size_t length, jed_data *result)
 {
-<<<<<<< HEAD
-	const UINT8 *cursrc = (const UINT8 *)data;
-=======
 	const uint8_t *cursrc = (const uint8_t *)data;
->>>>>>> upstream/master
 
 	/* initialize the output */
 	memset(result, 0, sizeof(*result));
@@ -464,11 +410,6 @@ int jedbin_parse(const void *data, size_t length, jed_data *result)
     based on the jed_data provided
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-size_t jedbin_output(const jed_data *data, void *result, size_t length)
-{
-	UINT8 *curdst = (UINT8 *)result;
-=======
 /**
  * @fn  size_t jedbin_output(const jed_data *data, void *result, size_t length)
  *
@@ -484,7 +425,6 @@ size_t jedbin_output(const jed_data *data, void *result, size_t length)
 size_t jedbin_output(const jed_data *data, void *result, size_t length)
 {
 	uint8_t *curdst = (uint8_t *)result;
->>>>>>> upstream/master
 
 	/* ensure we have enough room */
 	if (length >= 4 + (data->numfuses + 7) / 8)

@@ -33,12 +33,9 @@ namespace tinystl {
 
 	template<typename Key, typename Value>
 	struct pair {
-<<<<<<< HEAD
-=======
 		typedef Key first_type;
 		typedef Value second_type;
 
->>>>>>> upstream/master
 		pair();
 		pair(const Key& key, const Value& value);
 

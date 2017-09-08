@@ -9,16 +9,6 @@
 *******************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/arm7/arm7.h"
-#include "cpu/arm7/arm7core.h"
-#include "machine/s3c2410.h"
-#include "sound/dac.h"
-
-#define VERBOSE_LEVEL ( 0 )
-
-INLINE void ATTR_PRINTF(3,4) verboselog( device_t &device, int n_level, const char *s_fmt, ...)
-=======
 #include "machine/s3c2410.h"
 
 #include "cpu/arm7/arm7.h"
@@ -219,65 +209,28 @@ static const uint32_t MAP_SUBINT_TO_INT[11] =
 #define VERBOSE_LEVEL ( 0 )
 
 static inline void ATTR_PRINTF(3,4) verboselog(device_t &device, int n_level, const char *s_fmt, ...)
->>>>>>> upstream/master
 {
 	if (VERBOSE_LEVEL >= n_level)
 	{
 		va_list v;
 		char buf[32768];
-<<<<<<< HEAD
-		va_start( v, s_fmt);
-		vsprintf( buf, s_fmt, v);
-		va_end( v);
-		device.logerror( "%s: %s", device.machine().describe_context( ), buf);
-=======
 		va_start(v, s_fmt);
 		vsprintf(buf, s_fmt, v);
 		va_end(v);
 		device.logerror("%s: %s", device.machine().describe_context( ), buf);
->>>>>>> upstream/master
 	}
 }
 
 #define DEVICE_S3C2410
 #define S3C24_CLASS_NAME s3c2410_device
-<<<<<<< HEAD
-#include "machine/s3c24xx.inc"
-#undef DEVICE_S3C2410
-
-UINT32 s3c2410_device::screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
-=======
 #include "machine/s3c24xx.hxx"
 #undef DEVICE_S3C2410
 
 uint32_t s3c2410_device::screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	return s3c24xx_video_update(screen, bitmap, cliprect);
 }
 
-<<<<<<< HEAD
-const device_type S3C2410 = &device_creator<s3c2410_device>;
-
-s3c2410_device::s3c2410_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-		: device_t(mconfig, S3C2410, "S3C2410 MCU", tag, owner, clock, "s3c2410", __FILE__),
-		m_palette(*this),
-		m_cpu(*this, ":maincpu"),
-		m_pin_r_cb(*this),
-		m_pin_w_cb(*this),
-		m_port_r_cb(*this),
-		m_port_w_cb(*this),
-		m_scl_w_cb(*this),
-		m_sda_r_cb(*this),
-		m_sda_w_cb(*this),
-		m_data_r_cb(*this),
-		m_data_w_cb(*this),
-		m_command_w_cb(*this),
-		m_address_w_cb(*this),
-		m_nand_data_r_cb(*this),
-		m_nand_data_w_cb(*this),
-		m_flags(0)
-=======
 DEFINE_DEVICE_TYPE(S3C2410, s3c2410_device, "s3c2410", "Samsung S3C2410 SoC")
 
 s3c2410_device::s3c2410_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
@@ -298,7 +251,6 @@ s3c2410_device::s3c2410_device(const machine_config &mconfig, const char *tag, d
 	, m_nand_data_r_cb(*this)
 	, m_nand_data_w_cb(*this)
 	, m_flags(0)
->>>>>>> upstream/master
 {
 	memset(m_steppingstone, 0, sizeof(m_steppingstone));
 	memset(&m_memcon, 0, sizeof(m_memcon));
@@ -383,11 +335,7 @@ void s3c2410_device::device_reset()
 	s3c24xx_device_reset();
 }
 
-<<<<<<< HEAD
-void s3c2410_device::s3c2410_uart_fifo_w( int uart, UINT8 data)
-=======
 void s3c2410_device::s3c2410_uart_fifo_w( int uart, uint8_t data)
->>>>>>> upstream/master
 {
 	s3c24xx_uart_fifo_w( uart, data);
 }
@@ -402,21 +350,13 @@ WRITE_LINE_MEMBER( s3c2410_device::frnb_w )
 	s3c24xx_pin_frnb_w(state);
 }
 
-<<<<<<< HEAD
-void s3c2410_device::s3c2410_nand_calculate_mecc( UINT8 *data, UINT32 size, UINT8 *mecc)
-=======
 void s3c2410_device::s3c2410_nand_calculate_mecc( uint8_t *data, uint32_t size, uint8_t *mecc)
->>>>>>> upstream/master
 {
 	mecc[0] = mecc[1] = mecc[2] = mecc[3] = 0xFF;
 	for (int i = 0; i < size; i++) nand_update_mecc( mecc, i, data[i]);
 }
 
-<<<<<<< HEAD
-void s3c2410_device::s3c2410_request_eint(UINT32 number)
-=======
 void s3c2410_device::s3c2410_request_eint(uint32_t number)
->>>>>>> upstream/master
 {
 	s3c24xx_request_eint(number);
 }

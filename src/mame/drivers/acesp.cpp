@@ -17,11 +17,7 @@
 
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/m6800/m6800.h"
-=======
 #include "cpu/m6800/m6801.h"
->>>>>>> upstream/master
 #include "machine/6821pia.h"
 
 class ace_sp_state : public driver_device
@@ -83,11 +79,7 @@ static INPUT_PORTS_START( ace_sp )
 INPUT_PORTS_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( ace_sp, ace_sp_state )
-=======
 static MACHINE_CONFIG_START( ace_sp )
->>>>>>> upstream/master
 	MCFG_CPU_ADD("maincpu", HD6303Y, 1000000)
 	MCFG_CPU_PROGRAM_MAP(ace_sp_map)
 	MCFG_CPU_IO_MAP(ace_sp_portmap)
@@ -3856,19 +3848,11 @@ ROM_START( sp_cpal )
 	SP_CPAL_SOUND
 ROM_END
 
-<<<<<<< HEAD
-static void descramble_crystal( UINT8* region, int start, int end, UINT8 extra_xor)
-{
-	for (int i=start;i<end;i++)
-	{
-		UINT8 x = region[i];
-=======
 static void descramble_crystal( uint8_t* region, int start, int end, uint8_t extra_xor)
 {
 	for (int i=start;i<end;i++)
 	{
 		uint8_t x = region[i];
->>>>>>> upstream/master
 		switch (i & 0x58)
 		{
 		case 0x00: // same as 0x08

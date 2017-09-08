@@ -1,11 +1,6 @@
-<<<<<<< HEAD
-// license:???
-// copyright-holders:Oliver Bergmann, Bryan McPhail, Randy Mongenel
-=======
 // license:BSD-3-Clause
 // copyright-holders:Bryan McPhail
 // thanks-to:Oliver Bergmann,Randy Mongenel (for initial CPU core)
->>>>>>> upstream/master
 /***************************************************************************
 
     Seibu Raiden hardware
@@ -15,18 +10,6 @@
     Raiden (Korean license)         (c) 1990 Seibu Kaihatsu
     Raiden (Taiwanese license)      (c) 1990 Seibu Kaihatsu
 
-<<<<<<< HEAD
-    driver by Oliver Bergmann, Bryan McPhail, Randy Mongenel
-
-    The alternate hardware version is probably newer than the main sets.
-    It looks closer to the newer 68000 games, while the main set looks
-    closer to Dynamite Duke (1989 game) in terms of graphics registers used, etc.
-
-    As well as different graphics registers the alternate set has a
-    different memory map, and different fix char layer memory layout!
-
-=======
->>>>>>> upstream/master
     To access test mode, reset with both start buttons held.
 
     The country byte is stored at 0xffffd in the main cpu region,
@@ -47,16 +30,6 @@
     Sound: YM3812, OKI M6295
     Custom ICs:
     - SEI0160 QFP60 (2 on main PCB, 3 on OBJ1 PCB)
-<<<<<<< HEAD
-    - S1S6091 QFP80 (4 on main PCB, 4 on OBJ1 PCB)
-    - Altera EP910PC-40 EPLD, one next to each V30
-    - SEI0050BU DIP40
-    - SEI80BU DIP42
-    - SEI0100BU "YM3931"
-    - many CMOS Gate Arrays
-
-    One of the sets is SEI8904 with SEI9008 subboard.
-=======
     - S1S6091 or SEI0181 QFP80 (4 on main PCB, 4 on OBJ1 PCB)
     - Altera EP910PC-40 EPLD, one next to each V30
     - SEI0050BU DIP40
@@ -93,28 +66,19 @@
     with six TTL chips and two PLDs labeled S50P01 and S50P02. A bootleg
     set has been observed with a (larger) daughterboard likewise standing
     in for a Xilinx PLD.
->>>>>>> upstream/master
 
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-=======
 #include "includes/raiden.h"
 
->>>>>>> upstream/master
 #include "cpu/nec/nec.h"
 #include "cpu/z80/z80.h"
 #include "sound/3812intf.h"
 #include "sound/okim6295.h"
-<<<<<<< HEAD
-#include "includes/raiden.h"
-#include "video/seibu_crtc.h"
-=======
 #include "video/seibu_crtc.h"
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 /******************************************************************************/
@@ -123,11 +87,7 @@ static ADDRESS_MAP_START( main_map, AS_PROGRAM, 16, raiden_state )
 	AM_RANGE(0x00000, 0x06fff) AM_RAM
 	AM_RANGE(0x07000, 0x07fff) AM_RAM AM_SHARE("spriteram")
 	AM_RANGE(0x08000, 0x08fff) AM_RAM AM_SHARE("shared_ram")
-<<<<<<< HEAD
-	AM_RANGE(0x0a000, 0x0a00d) AM_DEVREADWRITE("seibu_sound", seibu_sound_device, main_word_r, main_word_w)
-=======
 	AM_RANGE(0x0a000, 0x0a00d) AM_DEVREADWRITE8("seibu_sound", seibu_sound_device, main_r, main_w, 0x00ff)
->>>>>>> upstream/master
 	AM_RANGE(0x0c000, 0x0c7ff) AM_WRITE(raiden_text_w) AM_SHARE("videoram")
 	AM_RANGE(0x0e000, 0x0e001) AM_READ_PORT("P1_P2")
 	AM_RANGE(0x0e002, 0x0e003) AM_READ_PORT("DSW")
@@ -162,11 +122,7 @@ static ADDRESS_MAP_START( raidenu_main_map, AS_PROGRAM, 16, raiden_state )
 	AM_RANGE(0x0b004, 0x0b005) AM_WRITENOP // watchdog?
 	AM_RANGE(0x0b006, 0x0b007) AM_WRITE8(raiden_control_w, 0x00ff)
 	AM_RANGE(0x0c000, 0x0c7ff) AM_WRITE(raiden_text_w) AM_SHARE("videoram")
-<<<<<<< HEAD
-	AM_RANGE(0x0d000, 0x0d00d) AM_DEVREADWRITE("seibu_sound", seibu_sound_device, main_word_r, main_word_w)
-=======
 	AM_RANGE(0x0d000, 0x0d00d) AM_DEVREADWRITE8("seibu_sound", seibu_sound_device, main_r, main_w, 0x00ff)
->>>>>>> upstream/master
 	AM_RANGE(0xa0000, 0xfffff) AM_ROM
 ADDRESS_MAP_END
 
@@ -193,11 +149,7 @@ static ADDRESS_MAP_START( raidenb_main_map, AS_PROGRAM, 16, raiden_state )
 	AM_RANGE(0x0b004, 0x0b005) AM_WRITENOP // watchdog?
 	AM_RANGE(0x0b006, 0x0b007) AM_WRITE8(raidenb_control_w, 0x00ff)
 	AM_RANGE(0x0c000, 0x0c7ff) AM_WRITE(raiden_text_w) AM_SHARE("videoram")
-<<<<<<< HEAD
-	AM_RANGE(0x0d000, 0x0d00d) AM_DEVREADWRITE("seibu_sound", seibu_sound_device, main_word_r, main_word_w)
-=======
 	AM_RANGE(0x0d000, 0x0d00d) AM_DEVREADWRITE8("seibu_sound", seibu_sound_device, main_r, main_w, 0x00ff)
->>>>>>> upstream/master
 	AM_RANGE(0x0d040, 0x0d08f) AM_DEVREADWRITE("crtc", seibu_crtc_device, read, write)
 	AM_RANGE(0xa0000, 0xfffff) AM_ROM
 ADDRESS_MAP_END
@@ -205,8 +157,6 @@ ADDRESS_MAP_END
 
 /*****************************************************************************/
 
-<<<<<<< HEAD
-=======
 static ADDRESS_MAP_START( raiden_sound_map, AS_PROGRAM, 8, raiden_state )
 	AM_RANGE(0x2000, 0x27ff) AM_RAM
 	AM_RANGE(0x4000, 0x4000) AM_DEVWRITE("seibu_sound", seibu_sound_device, pending_w)
@@ -236,7 +186,6 @@ ADDRESS_MAP_END
 
 /*****************************************************************************/
 
->>>>>>> upstream/master
 static INPUT_PORTS_START( raiden )
 	SEIBU_COIN_INPUTS /* coin inputs read through sound cpu */
 
@@ -369,11 +318,7 @@ INTERRUPT_GEN_MEMBER(raiden_state::raiden_interrupt)
 	device.execute().set_input_line_and_vector(0, HOLD_LINE, 0xc8/4); /* VBL */
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( raiden, raiden_state )
-=======
 static MACHINE_CONFIG_START( raiden )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", V30,XTAL_20MHz/2) /* NEC V30 CPU, 20MHz verified on pcb */
@@ -384,12 +329,8 @@ static MACHINE_CONFIG_START( raiden )
 	MCFG_CPU_PROGRAM_MAP(sub_map)
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", raiden_state, raiden_interrupt)
 
-<<<<<<< HEAD
-	SEIBU_SOUND_SYSTEM_CPU(XTAL_14_31818MHz/4) /* verified on pcb */
-=======
 	MCFG_CPU_ADD("audiocpu", Z80, XTAL_14_31818MHz/4) /* verified on pcb */
 	MCFG_CPU_PROGRAM_MAP(seibu_sound_map)
->>>>>>> upstream/master
 
 	MCFG_QUANTUM_TIME(attotime::from_hz(12000))
 
@@ -402,11 +343,7 @@ static MACHINE_CONFIG_START( raiden )
 	MCFG_SCREEN_SIZE(32*8, 32*8)
 	MCFG_SCREEN_VISIBLE_AREA(0*8, 32*8-1, 2*8, 30*8-1)
 	MCFG_SCREEN_UPDATE_DRIVER(raiden_state, screen_update_raiden)
-<<<<<<< HEAD
-	MCFG_SCREEN_VBLANK_DEVICE("spriteram", buffered_spriteram16_device, vblank_copy_rising)
-=======
 	MCFG_SCREEN_VBLANK_CALLBACK(DEVWRITELINE("spriteram", buffered_spriteram16_device, vblank_copy_rising))
->>>>>>> upstream/master
 	MCFG_SCREEN_PALETTE("palette")
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", raiden)
@@ -414,13 +351,6 @@ static MACHINE_CONFIG_START( raiden )
 	MCFG_PALETTE_FORMAT(xxxxBBBBGGGGRRRR)
 
 	/* sound hardware */
-<<<<<<< HEAD
-	SEIBU_SOUND_SYSTEM_YM3812_RAIDEN_INTERFACE(XTAL_14_31818MHz/4,XTAL_12MHz/12) // frequency and pin 7 verified (pin set in audio\seibu.h)
-MACHINE_CONFIG_END
-
-static MACHINE_CONFIG_DERIVED( raidene, raiden )
-	SEIBU_SOUND_SYSTEM_ENCRYPTED_FULL()
-=======
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
 	MCFG_SOUND_ADD("ymsnd", YM3812, XTAL_14_31818MHz/4)
@@ -444,7 +374,6 @@ static MACHINE_CONFIG_DERIVED( raidene, raiden )
 
 	MCFG_DEVICE_ADD("sei80bu", SEI80BU, 0)
 	MCFG_DEVICE_PROGRAM_MAP(sei80bu_encrypted_full_map)
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_DERIVED( raidenu, raidene )
@@ -505,11 +434,7 @@ ROM_START( raiden ) /* from a board with 2 daughter cards, no official board #s?
 	ROM_REGION( 0x20000, "audiocpu", 0 ) /* 64k code for sound Z80 */
 	ROM_LOAD( "8.u212",      0x000000, 0x08000, CRC(cbe055c7) SHA1(34a06a541d059c621d87fdf41546c9d052a61963) )
 	ROM_CONTINUE(            0x010000, 0x08000 )
-<<<<<<< HEAD
-	ROM_COPY( "audiocpu", 0, 0x018000, 0x08000 )
-=======
 	ROM_COPY( "audiocpu", 0x000000, 0x018000, 0x08000 )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x010000, "gfx1", 0 ) /* Chars */
 	ROM_LOAD( "9",  0x00000, 0x08000, CRC(1922b25e) SHA1(da27122dd1c43770e7385ad602ef397c64d2f754) ) /* On some PCBs there is no explicit */
@@ -526,13 +451,10 @@ ROM_START( raiden ) /* from a board with 2 daughter cards, no official board #s?
 
 	ROM_REGION( 0x40000, "oki", 0 )  /* ADPCM samples */
 	ROM_LOAD( "7.u203", 0x00000, 0x10000, CRC(8f927822) SHA1(592f2719f2c448c3b4b239eeaec078b411e12dbb) )
-<<<<<<< HEAD
-=======
 
 	ROM_REGION( 0x0200, "proms", 0 ) // N82S135N bipolar PROMs
 	ROM_LOAD( "rd010.u087", 0x0000, 0x0100, NO_DUMP )
 	ROM_LOAD( "rd012.u094", 0x0100, 0x0100, NO_DUMP )
->>>>>>> upstream/master
 ROM_END
 
 ROM_START( raidena )
@@ -549,11 +471,7 @@ ROM_START( raidena )
 	ROM_REGION( 0x20000, "audiocpu", 0 ) /* 64k code for sound Z80 */
 	ROM_LOAD( "8.u212",      0x000000, 0x08000, CRC(cbe055c7) SHA1(34a06a541d059c621d87fdf41546c9d052a61963) )
 	ROM_CONTINUE(            0x010000, 0x08000 )
-<<<<<<< HEAD
-	ROM_COPY( "audiocpu", 0, 0x018000, 0x08000 )
-=======
 	ROM_COPY( "audiocpu", 0x000000, 0x018000, 0x08000 )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x010000, "gfx1", 0 ) /* Chars */
 	ROM_LOAD( "9",  0x00000, 0x08000, CRC(1922b25e) SHA1(da27122dd1c43770e7385ad602ef397c64d2f754) ) /* On some PCBs there is no explicit */
@@ -570,13 +488,10 @@ ROM_START( raidena )
 
 	ROM_REGION( 0x40000, "oki", 0 )  /* ADPCM samples */
 	ROM_LOAD( "7.u203", 0x00000, 0x10000, CRC(8f927822) SHA1(592f2719f2c448c3b4b239eeaec078b411e12dbb) )
-<<<<<<< HEAD
-=======
 
 	ROM_REGION( 0x0200, "proms", 0 ) // N82S135N bipolar PROMs
 	ROM_LOAD( "rd010.u087", 0x0000, 0x0100, NO_DUMP )
 	ROM_LOAD( "rd012.u094", 0x0100, 0x0100, NO_DUMP )
->>>>>>> upstream/master
 ROM_END
 
 ROM_START( raident )
@@ -593,11 +508,7 @@ ROM_START( raident )
 	ROM_REGION( 0x20000, "audiocpu", 0 ) /* 64k code for sound Z80 */
 	ROM_LOAD( "8.u212",      0x000000, 0x08000, CRC(cbe055c7) SHA1(34a06a541d059c621d87fdf41546c9d052a61963) )
 	ROM_CONTINUE(            0x010000, 0x08000 )
-<<<<<<< HEAD
-	ROM_COPY( "audiocpu", 0, 0x018000, 0x08000 )
-=======
 	ROM_COPY( "audiocpu", 0x000000, 0x018000, 0x08000 )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x010000, "gfx1", 0 ) /* Chars */
 	ROM_LOAD( "9",  0x00000, 0x08000, CRC(1922b25e) SHA1(da27122dd1c43770e7385ad602ef397c64d2f754) ) /* On some PCBs there is no explicit */
@@ -614,13 +525,10 @@ ROM_START( raident )
 
 	ROM_REGION( 0x40000, "oki", 0 )  /* ADPCM samples */
 	ROM_LOAD( "7.u203", 0x00000, 0x10000, CRC(8f927822) SHA1(592f2719f2c448c3b4b239eeaec078b411e12dbb) )
-<<<<<<< HEAD
-=======
 
 	ROM_REGION( 0x0200, "proms", 0 ) // N82S135N bipolar PROMs
 	ROM_LOAD( "rd010.u087", 0x0000, 0x0100, NO_DUMP )
 	ROM_LOAD( "rd012.u094", 0x0100, 0x0100, NO_DUMP )
->>>>>>> upstream/master
 ROM_END
 
 ROM_START( raidenu )
@@ -637,11 +545,7 @@ ROM_START( raidenu )
 	ROM_REGION( 0x20000, "audiocpu", 0 ) /* 64k code for sound Z80 */
 	ROM_LOAD( "8.u212",      0x000000, 0x08000, CRC(cbe055c7) SHA1(34a06a541d059c621d87fdf41546c9d052a61963) )
 	ROM_CONTINUE(            0x010000, 0x08000 )
-<<<<<<< HEAD
-	ROM_COPY( "audiocpu", 0, 0x018000, 0x08000 )
-=======
 	ROM_COPY( "audiocpu", 0x000000, 0x018000, 0x08000 )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x010000, "gfx1", 0 ) /* Chars */
 	ROM_LOAD( "9",  0x00000, 0x08000, CRC(1922b25e) SHA1(da27122dd1c43770e7385ad602ef397c64d2f754) ) /* On some PCBs there is no explicit */
@@ -658,13 +562,10 @@ ROM_START( raidenu )
 
 	ROM_REGION( 0x40000, "oki", 0 )  /* ADPCM samples */
 	ROM_LOAD( "7.u203", 0x00000, 0x10000, CRC(8f927822) SHA1(592f2719f2c448c3b4b239eeaec078b411e12dbb) )
-<<<<<<< HEAD
-=======
 
 	ROM_REGION( 0x0200, "proms", 0 ) // N82S135N bipolar PROMs
 	ROM_LOAD( "rd010.u087", 0x0000, 0x0100, NO_DUMP )
 	ROM_LOAD( "rd012.u094", 0x0100, 0x0100, NO_DUMP )
->>>>>>> upstream/master
 ROM_END
 
 ROM_START( raidenk ) /* Same board as above. Not sure why the sound CPU would be decrypted */
@@ -681,11 +582,7 @@ ROM_START( raidenk ) /* Same board as above. Not sure why the sound CPU would be
 	ROM_REGION( 0x20000, "audiocpu", 0 ) /* 64k code for sound Z80 */
 	ROM_LOAD( "8b.u212",     0x000000, 0x08000, CRC(99ee7505) SHA1(b97c8ee5e26e8554b5de506fba3b32cc2fde53c9) ) /* Not encrypted */
 	ROM_CONTINUE(            0x010000, 0x08000 )
-<<<<<<< HEAD
-	ROM_COPY( "audiocpu", 0, 0x018000, 0x08000 )
-=======
 	ROM_COPY( "audiocpu", 0x000000, 0x018000, 0x08000 )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x010000, "gfx1", 0 ) /* Chars */
 	ROM_LOAD( "9",  0x00000, 0x08000, CRC(1922b25e) SHA1(da27122dd1c43770e7385ad602ef397c64d2f754) ) /* On some PCBs there is no explicit */
@@ -702,8 +599,6 @@ ROM_START( raidenk ) /* Same board as above. Not sure why the sound CPU would be
 
 	ROM_REGION( 0x40000, "oki", 0 )  /* ADPCM samples */
 	ROM_LOAD( "7.u203", 0x00000, 0x10000, CRC(8f927822) SHA1(592f2719f2c448c3b4b239eeaec078b411e12dbb) )
-<<<<<<< HEAD
-=======
 
 	ROM_REGION( 0x0200, "proms", 0 ) // N82S135N bipolar PROMs
 	ROM_LOAD( "rd010.u087", 0x0000, 0x0100, NO_DUMP )
@@ -754,7 +649,6 @@ ROM_START( raidenkb ) /* Korean bootleg board. ROMs for main, sub, audiocpu, cha
 
 	ROM_REGION( 0x0200, "proms", 0 )
 	ROM_LOAD( "82s147.h7", 0x0000, 0x0200, NO_DUMP )
->>>>>>> upstream/master
 ROM_END
 
 ROM_START( raidenb )/* Different hardware, Main & Sub CPU code not encrypted. */
@@ -771,11 +665,7 @@ ROM_START( raidenb )/* Different hardware, Main & Sub CPU code not encrypted. */
 	ROM_REGION( 0x20000, "audiocpu", 0 ) /* 64k code for sound Z80 */
 	ROM_LOAD( "rai6.u212",   0x000000, 0x08000, CRC(723a483b) SHA1(50e67945e83ea1748fb748de3287d26446d4e0a0) ) /* Should be labeled "8" ??? */
 	ROM_CONTINUE(            0x010000, 0x08000 )
-<<<<<<< HEAD
-	ROM_COPY( "audiocpu", 0, 0x018000, 0x08000 )
-=======
 	ROM_COPY( "audiocpu", 0x000000, 0x018000, 0x08000 )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x010000, "gfx1", 0 ) /* Chars */
 	ROM_LOAD( "9",  0x00000, 0x08000, CRC(1922b25e) SHA1(da27122dd1c43770e7385ad602ef397c64d2f754) ) /* On some PCBs there is no explicit */
@@ -812,11 +702,7 @@ ROM_START( raidenua )/* Different hardware, Main, Sub & sound CPU code not encry
 	ROM_REGION( 0x20000, "audiocpu", 0 ) /* 64k code for sound Z80 */
 	ROM_LOAD( "8.w8",        0x00000, 0x08000, CRC(105b9c11) SHA1(eb142806f8410d584d914b91207361a15ab18e6f) )
 	ROM_CONTINUE(            0x10000, 0x08000 )
-<<<<<<< HEAD
-	ROM_COPY( "audiocpu", 0, 0x18000, 0x08000 )
-=======
 	ROM_COPY( "audiocpu", 0x000000, 0x18000, 0x08000 )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x010000, "gfx1", 0 ) /* Chars */
 	ROM_LOAD( "9",  0x00000, 0x08000, CRC(1922b25e) SHA1(da27122dd1c43770e7385ad602ef397c64d2f754) ) /* U016 on this PCB */
@@ -833,13 +719,10 @@ ROM_START( raidenua )/* Different hardware, Main, Sub & sound CPU code not encry
 
 	ROM_REGION( 0x40000, "oki", 0 )  /* ADPCM samples */
 	ROM_LOAD( "7.x10", 0x00000, 0x10000, CRC(2051263e) SHA1(dff96caa11adf619360d88704e3af8427ddfe524) )
-<<<<<<< HEAD
-=======
 
 	ROM_REGION( 0x0200, "proms", 0 )
 	ROM_LOAD( "prom.n2", 0x0000, 0x0100, NO_DUMP )
 	ROM_LOAD( "prom.u3", 0x0100, 0x0100, NO_DUMP )
->>>>>>> upstream/master
 ROM_END
 
 
@@ -850,42 +733,24 @@ encryption method! The technique is a combination of a XOR table plus
 bit-swapping */
 void raiden_state::common_decrypt()
 {
-<<<<<<< HEAD
-	UINT16 *RAM = (UINT16 *)memregion("maincpu")->base();
-=======
 	uint16_t *RAM = (uint16_t *)memregion("maincpu")->base();
->>>>>>> upstream/master
 	int i;
 
 	for (i = 0; i < 0x20000; i++)
 	{
-<<<<<<< HEAD
-		static const UINT16 xor_table[] = { 0x200e,0x0006,0x000a,0x0002,0x240e,0x000e,0x04c2,0x00c2,0x008c,0x0004,0x0088,0x0000,0x048c,0x000c,0x04c0,0x00c0 };
-		UINT16 data = RAM[0xc0000/2 + i];
-=======
 		static const uint16_t xor_table[] = { 0x200e,0x0006,0x000a,0x0002,0x240e,0x000e,0x04c2,0x00c2,0x008c,0x0004,0x0088,0x0000,0x048c,0x000c,0x04c0,0x00c0 };
 		uint16_t data = RAM[0xc0000/2 + i];
->>>>>>> upstream/master
 		data ^= xor_table[i & 0x0f];
 		data = BITSWAP16(data, 15,14,10,12,11,13,9,8,3,2,5,4,7,1,6,0);
 		RAM[0xc0000/2 + i] = data;
 	}
 
-<<<<<<< HEAD
-	RAM = (UINT16 *)memregion("sub")->base();
-
-	for (i = 0; i < 0x20000; i++)
-	{
-		static const UINT16 xor_table[] = { 0x0080,0x0080,0x0244,0x0288,0x0288,0x0288,0x1041,0x1009 };
-		UINT16 data = RAM[0xc0000/2 + i];
-=======
 	RAM = (uint16_t *)memregion("sub")->base();
 
 	for (i = 0; i < 0x20000; i++)
 	{
 		static const uint16_t xor_table[] = { 0x0080,0x0080,0x0244,0x0288,0x0288,0x0288,0x1041,0x1009 };
 		uint16_t data = RAM[0xc0000/2 + i];
->>>>>>> upstream/master
 		data ^= xor_table[i & 0x07];
 		data = BITSWAP16(data, 15,14,13,9,11,10,12,8,2,0,5,4,7,3,1,6);
 		RAM[0xc0000/2 + i] = data;
@@ -898,18 +763,6 @@ DRIVER_INIT_MEMBER(raiden_state,raiden)
 	common_decrypt();
 }
 
-<<<<<<< HEAD
-DRIVER_INIT_MEMBER(raiden_state,raidenk)
-{
-	common_decrypt();
-}
-
-DRIVER_INIT_MEMBER(raiden_state,raidenu)
-{
-}
-
-=======
->>>>>>> upstream/master
 
 /***************************************************************************/
 
@@ -920,15 +773,6 @@ GAME( 1990, raidenu,  raiden, raidene, raiden, raiden_state,  raiden,  ROT270, "
 GAME( 1990, raident,  raiden, raidene, raiden, raiden_state,  raiden,  ROT270, "Seibu Kaihatsu (Liang HWA Electronics license)", "Raiden (Taiwan)", MACHINE_SUPPORTS_SAVE )
 
 /* Same as above, but the sound CPU code is not encrypted */
-<<<<<<< HEAD
-GAME( 1990, raidenk,  raiden, raiden,  raiden, raiden_state,  raidenk, ROT270, "Seibu Kaihatsu (IBL Corporation license)", "Raiden (Korea)", MACHINE_SUPPORTS_SAVE )
-
-/* Alternate hardware; SEI8904 + SEI9008 PCBs. Main & Sub CPU code not encrypted */
-GAME( 1990, raidenua, raiden, raidenu, raiden, raiden_state,  raidenu, ROT270, "Seibu Kaihatsu (Fabtek license)", "Raiden (US set 2)", MACHINE_SUPPORTS_SAVE )
-
-/* Alternate hardware. Main, Sub & Sound CPU code not encrypted - could possibly be a bootleg?? It also sports Seibu custom CRTC. */
-GAME( 1990, raidenb,  raiden, raidenb, raiden, driver_device, 0,       ROT270, "Seibu Kaihatsu", "Raiden (set 3)", MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1990, raidenk,  raiden, raiden,  raiden, raiden_state,  raiden,  ROT270, "Seibu Kaihatsu (IBL Corporation license)", "Raiden (Korea)", MACHINE_SUPPORTS_SAVE )
 
 /* Bootleg of the Korean release */
@@ -939,4 +783,3 @@ GAME( 1990, raidenua, raiden, raidenu, raiden, raiden_state,  0,       ROT270, "
 
 /* Alternate hardware. Main, Sub & Sound CPU code not encrypted. It also sports Seibu custom CRTC. */
 GAME( 1990, raidenb,  raiden, raidenb, raiden, raiden_state,  0,       ROT270, "Seibu Kaihatsu", "Raiden (set 3)", MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

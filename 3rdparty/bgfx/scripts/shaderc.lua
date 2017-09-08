@@ -1,26 +1,4 @@
 --
-<<<<<<< HEAD
--- Copyright 2010-2015 Branimir Karadzic. All rights reserved.
--- License: http://www.opensource.org/licenses/BSD-2-Clause
---
-
-project "shaderc"
-	uuid "f3cd2e90-52a4-11e1-b86c-0800200c9a66"
-	kind "ConsoleApp"
-
-	local GLSL_OPTIMIZER = path.join(BGFX_DIR, "3rdparty/glsl-optimizer")
-	local FCPP_DIR = path.join(BGFX_DIR, "3rdparty/fcpp")
-
-	includedirs {
-		path.join(GLSL_OPTIMIZER, "src"),
-	}
-
-	removeflags {
-		-- GCC 4.9 -O2 + -fno-strict-aliasing don't work together...
-		"OptimizeSpeed",
-	}
-
-=======
 -- Copyright 2010-2017 Branimir Karadzic. All rights reserved.
 -- License: https://github.com/bkaradzic/bgfx#license-bsd-2-clause
 --
@@ -165,7 +143,6 @@ project "glsl-optimizer"
 			"OptimizeSpeed",
 		}
 
->>>>>>> upstream/master
 	configuration { "vs*" }
 		includedirs {
 			path.join(GLSL_OPTIMIZER, "src/glsl/msvc"),
@@ -180,8 +157,6 @@ project "glsl-optimizer"
 		}
 
 		buildoptions {
-<<<<<<< HEAD
-=======
 			"/wd4100", -- error C4100: '' : unreferenced formal parameter
 			"/wd4127", -- warning C4127: conditional expression is constant
 			"/wd4132", -- warning C4132: 'deleted_key_value': const object should be initialized
@@ -193,7 +168,6 @@ project "glsl-optimizer"
 			"/wd4701", -- warning C4701: potentially uninitialized local variable 'lower' used
 			"/wd4702", -- warning C4702: unreachable code
 			"/wd4706", -- warning C4706: assignment within conditional expression
->>>>>>> upstream/master
 			"/wd4996" -- warning C4996: 'strdup': The POSIX name for this item is deprecated. Instead, use the ISO C++ conformant name: _strdup.
 		}
 
@@ -202,39 +176,16 @@ project "glsl-optimizer"
 			"-fno-strict-aliasing", -- glsl-optimizer has bugs if strict aliasing is used.
 			"-Wno-unused-parameter",
 		}
-<<<<<<< HEAD
-=======
 
->>>>>>> upstream/master
 		removebuildoptions {
 			"-Wshadow", -- glsl-optimizer is full of -Wshadow warnings ignore it.
 		}
 
-<<<<<<< HEAD
-	configuration { "osx" }
-		links {
-			"Cocoa.framework",
-		}
-
-	configuration { "vs*" }
-		includedirs {
-			path.join(GLSL_OPTIMIZER, "include/c99"),
-		}
-
-	configuration { "vs* or mingw*" }
-		links {
-			"d3dcompiler",
-		}
-
-	configuration {}
-
-=======
 	configuration {}
 
 project "fcpp"
 	kind "StaticLib"
 
->>>>>>> upstream/master
 	defines { -- fcpp
 		"NINCLUDE=64",
 		"NWORK=65536",
@@ -242,8 +193,6 @@ project "fcpp"
 		"OLD_PREPROCESSOR=0",
 	}
 
-<<<<<<< HEAD
-=======
 	files {
 		path.join(FCPP_DIR, "**.h"),
 		path.join(FCPP_DIR, "cpp1.c"),
@@ -269,21 +218,10 @@ project "fcpp"
 project "shaderc"
 	kind "ConsoleApp"
 
->>>>>>> upstream/master
 	includedirs {
 		path.join(BX_DIR, "include"),
 		path.join(BGFX_DIR, "include"),
 
-<<<<<<< HEAD
-		FCPP_DIR,
-
-		path.join(GLSL_OPTIMIZER, "include"),
-		path.join(GLSL_OPTIMIZER, "src/mesa"),
-		path.join(GLSL_OPTIMIZER, "src/mapi"),
-		path.join(GLSL_OPTIMIZER, "src/glsl"),
-	}
-
-=======
 		path.join(BGFX_DIR, "3rdparty/dxsdk/include"),
 		FCPP_DIR,
 
@@ -302,44 +240,10 @@ project "shaderc"
 		"glsl-optimizer",
 	}
 
->>>>>>> upstream/master
 	files {
 		path.join(BGFX_DIR, "tools/shaderc/**.cpp"),
 		path.join(BGFX_DIR, "tools/shaderc/**.h"),
 		path.join(BGFX_DIR, "src/vertexdecl.**"),
-<<<<<<< HEAD
-
-		path.join(FCPP_DIR, "**.h"),
-		path.join(FCPP_DIR, "cpp1.c"),
-		path.join(FCPP_DIR, "cpp2.c"),
-		path.join(FCPP_DIR, "cpp3.c"),
-		path.join(FCPP_DIR, "cpp4.c"),
-		path.join(FCPP_DIR, "cpp5.c"),
-		path.join(FCPP_DIR, "cpp6.c"),
-		path.join(FCPP_DIR, "cpp6.c"),
-
-		path.join(GLSL_OPTIMIZER, "src/mesa/**.c"),
-		path.join(GLSL_OPTIMIZER, "src/glsl/**.cpp"),
-		path.join(GLSL_OPTIMIZER, "src/mesa/**.h"),
-		path.join(GLSL_OPTIMIZER, "src/glsl/**.c"),
-		path.join(GLSL_OPTIMIZER, "src/glsl/**.cpp"),
-		path.join(GLSL_OPTIMIZER, "src/glsl/**.h"),
-		path.join(GLSL_OPTIMIZER, "src/util/**.c"),
-		path.join(GLSL_OPTIMIZER, "src/util/**.h"),
-	}
-
-	removefiles {
-		path.join(GLSL_OPTIMIZER, "src/glsl/glcpp/glcpp.c"),
-		path.join(GLSL_OPTIMIZER, "src/glsl/glcpp/tests/**"),
-		path.join(GLSL_OPTIMIZER, "src/glsl/glcpp/**.l"),
-		path.join(GLSL_OPTIMIZER, "src/glsl/glcpp/**.y"),
-		path.join(GLSL_OPTIMIZER, "src/glsl/ir_set_program_inouts.cpp"),
-		path.join(GLSL_OPTIMIZER, "src/glsl/main.cpp"),
-		path.join(GLSL_OPTIMIZER, "src/glsl/builtin_stubs.cpp"),
-	}
-
-	strip()
-=======
 		path.join(BGFX_DIR, "src/shader_spirv.**"),
 	}
 
@@ -387,4 +291,3 @@ project "shaderc"
 	strip()
 
 group "tools"
->>>>>>> upstream/master

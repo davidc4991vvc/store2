@@ -49,24 +49,15 @@ WRITE8_MEMBER(cloak_state::cloak_paletteram_w)
 
 void cloak_state::set_pen(int i)
 {
-<<<<<<< HEAD
-	UINT16 *palette_ram = m_palette_ram;
-=======
 	uint16_t *palette_ram = m_palette_ram.get();
->>>>>>> upstream/master
 	static const int resistances[3] = { 10000, 4700, 2200 };
 	double weights[3];
 
 	/* compute the color output resistor weights */
 	compute_resistor_weights(0, 255, -1.0,
 								3, resistances, weights, 0, 1000,
-<<<<<<< HEAD
-								0, 0, 0, 0, 0,
-								0, 0, 0, 0, 0);
-=======
 								0, nullptr, nullptr, 0, 0,
 								0, nullptr, nullptr, 0, 0);
->>>>>>> upstream/master
 
 	int r, g, b;
 	int bit0, bit1, bit2;
@@ -95,13 +86,8 @@ void cloak_state::set_pen(int i)
 
 void cloak_state::set_current_bitmap_videoram_pointer()
 {
-<<<<<<< HEAD
-	m_current_bitmap_videoram_accessed  = m_bitmap_videoram_selected ? m_bitmap_videoram1 : m_bitmap_videoram2;
-	m_current_bitmap_videoram_displayed = m_bitmap_videoram_selected ? m_bitmap_videoram2 : m_bitmap_videoram1;
-=======
 	m_current_bitmap_videoram_accessed  = m_bitmap_videoram_selected ? m_bitmap_videoram1.get() : m_bitmap_videoram2.get();
 	m_current_bitmap_videoram_displayed = m_bitmap_videoram_selected ? m_bitmap_videoram2.get() : m_bitmap_videoram1.get();
->>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(cloak_state::cloak_clearbmp_w)
@@ -131,11 +117,7 @@ void cloak_state::adjust_xy(int offset)
 
 READ8_MEMBER(cloak_state::graph_processor_r)
 {
-<<<<<<< HEAD
-	UINT8 ret = m_current_bitmap_videoram_displayed[(m_bitmap_videoram_address_y << 8) | m_bitmap_videoram_address_x];
-=======
 	uint8_t ret = m_current_bitmap_videoram_displayed[(m_bitmap_videoram_address_y << 8) | m_bitmap_videoram_address_x];
->>>>>>> upstream/master
 
 	adjust_xy(offset);
 
@@ -158,34 +140,20 @@ WRITE8_MEMBER(cloak_state::graph_processor_w)
 
 WRITE8_MEMBER(cloak_state::cloak_videoram_w)
 {
-<<<<<<< HEAD
-	UINT8 *videoram = m_videoram;
-=======
 	uint8_t *videoram = m_videoram;
->>>>>>> upstream/master
 
 	videoram[offset] = data;
 	m_bg_tilemap->mark_tile_dirty(offset);
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER(cloak_state::cloak_flipscreen_w)
-{
-	flip_screen_set(data & 0x80);
-=======
 WRITE_LINE_MEMBER(cloak_state::cocktail_w)
 {
 	flip_screen_set(state);
->>>>>>> upstream/master
 }
 
 TILE_GET_INFO_MEMBER(cloak_state::get_bg_tile_info)
 {
-<<<<<<< HEAD
-	UINT8 *videoram = m_videoram;
-=======
 	uint8_t *videoram = m_videoram;
->>>>>>> upstream/master
 	int code = videoram[tile_index];
 
 	SET_TILE_INFO_MEMBER(0, code, 0, 0);
@@ -193,34 +161,20 @@ TILE_GET_INFO_MEMBER(cloak_state::get_bg_tile_info)
 
 void cloak_state::video_start()
 {
-<<<<<<< HEAD
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(cloak_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
-
-	m_bitmap_videoram1 = auto_alloc_array(machine(), UINT8, 256*256);
-	m_bitmap_videoram2 = auto_alloc_array(machine(), UINT8, 256*256);
-	m_palette_ram = auto_alloc_array(machine(), UINT16, NUM_PENS);
-=======
 	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(cloak_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
 
 	m_bitmap_videoram1 = std::make_unique<uint8_t[]>(256*256);
 	m_bitmap_videoram2 = std::make_unique<uint8_t[]>(256*256);
 	m_palette_ram = std::make_unique<uint16_t[]>(NUM_PENS);
->>>>>>> upstream/master
 
 	set_current_bitmap_videoram_pointer();
 
 	save_item(NAME(m_bitmap_videoram_address_x));
 	save_item(NAME(m_bitmap_videoram_address_y));
 	save_item(NAME(m_bitmap_videoram_selected));
-<<<<<<< HEAD
-	save_pointer(NAME(m_bitmap_videoram1), 256*256);
-	save_pointer(NAME(m_bitmap_videoram2), 256*256);
-	save_pointer(NAME(m_palette_ram), NUM_PENS);
-=======
 	save_pointer(NAME(m_bitmap_videoram1.get()), 256*256);
 	save_pointer(NAME(m_bitmap_videoram2.get()), 256*256);
 	save_pointer(NAME(m_palette_ram.get()), NUM_PENS);
->>>>>>> upstream/master
 	machine().save().register_postload(save_prepost_delegate(FUNC(cloak_state::set_current_bitmap_videoram_pointer), this));
 }
 
@@ -240,11 +194,7 @@ void cloak_state::draw_bitmap(bitmap_ind16 &bitmap, const rectangle &cliprect)
 
 void cloak_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
-<<<<<<< HEAD
-	UINT8 *spriteram = m_spriteram;
-=======
 	uint8_t *spriteram = m_spriteram;
->>>>>>> upstream/master
 	int offs;
 
 	for (offs = (0x100 / 4) - 1; offs >= 0; offs--)
@@ -267,11 +217,7 @@ void cloak_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect)
 	}
 }
 
-<<<<<<< HEAD
-UINT32 cloak_state::screen_update_cloak(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t cloak_state::screen_update_cloak(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	m_bg_tilemap->draw(screen, bitmap, cliprect, 0, 0);
 	draw_bitmap(bitmap, cliprect);

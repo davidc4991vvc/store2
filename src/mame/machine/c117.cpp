@@ -26,29 +26,13 @@ two 6809s and as the reset generator for the entire system.
 #include "machine/c117.h"
 
 
-<<<<<<< HEAD
-const device_type NAMCO_C117 = &device_creator<namco_c117_device>;
-=======
 DEFINE_DEVICE_TYPE(NAMCO_C117, namco_c117_device, "namco_c117", "Namco C117 MMU")
->>>>>>> upstream/master
 
 
 //-------------------------------------------------
 //  namco_c117_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-namco_c117_device::namco_c117_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, NAMCO_C117, "Namco C117 MMU", tag, owner, clock, "namco_c117", __FILE__),
-	device_memory_interface(mconfig, *this),
-	m_subres_cb(*this),
-	m_program_config("program", ENDIANNESS_BIG, 8, 23),
-	m_maincpu_tag(NULL),
-	m_subcpu_tag(NULL)
-{
-}
-
-=======
 namco_c117_device::namco_c117_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, NAMCO_C117, tag, owner, clock),
 	device_memory_interface(mconfig, *this),
@@ -67,7 +51,6 @@ device_memory_interface::space_config_vector namco_c117_device::memory_space_con
 	};
 }
 
->>>>>>> upstream/master
 //-------------------------------------------------
 //  set_cpu_tags - set the tags of the two CPUs
 //  connected to the device
@@ -133,8 +116,6 @@ void namco_c117_device::device_reset()
 }
 
 
-<<<<<<< HEAD
-=======
 //-------------------------------------------------
 //  device_add_mconfig - add device configuration
 //-------------------------------------------------
@@ -144,7 +125,6 @@ MACHINE_CONFIG_MEMBER( namco_c117_device::device_add_mconfig )
 MACHINE_CONFIG_END
 
 
->>>>>>> upstream/master
 READ8_MEMBER(namco_c117_device::main_r)
 {
 	return m_program->read_byte(remap(0, offset));
@@ -180,11 +160,7 @@ WRITE8_MEMBER(namco_c117_device::sound_watchdog_w)
 }
 
 
-<<<<<<< HEAD
-void namco_c117_device::register_w(int whichcpu, offs_t offset, UINT8 data)
-=======
 void namco_c117_device::register_w(int whichcpu, offs_t offset, uint8_t data)
->>>>>>> upstream/master
 {
 	int reg = (offset >> 9) & 0xf;
 	bool unknown_reg = false;
@@ -243,15 +219,9 @@ void namco_c117_device::register_w(int whichcpu, offs_t offset, uint8_t data)
 		logerror("'%s' writing to unknown CUS117 register %04X = %02X\n", (whichcpu ? m_subcpu_tag : m_maincpu_tag), offset, data);
 }
 
-<<<<<<< HEAD
-void namco_c117_device::bankswitch(int whichcpu, int whichbank, int a0, UINT8 data)
-{
-	UINT32 &bank = m_offsets[whichcpu][whichbank];
-=======
 void namco_c117_device::bankswitch(int whichcpu, int whichbank, int a0, uint8_t data)
 {
 	uint32_t &bank = m_offsets[whichcpu][whichbank];
->>>>>>> upstream/master
 
 	// even writes set a22-a21; odd writes set a20-a13
 	if (a0 == 0)
@@ -272,10 +242,6 @@ void namco_c117_device::kick_watchdog(int whichcpu)
 	if (m_wdog == ALL_CPU_MASK || !m_subres)
 	{
 		m_wdog = 0;
-<<<<<<< HEAD
-		machine().watchdog_reset();
-=======
 		m_watchdog->watchdog_reset();
->>>>>>> upstream/master
 	}
 }

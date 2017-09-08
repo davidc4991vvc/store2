@@ -2,11 +2,7 @@
 // copyright-holders:Bryan McPhail, Nicola Salmoria
 /*******************************************************************************
 
-<<<<<<< HEAD
-    Input port macros used by many games in mutiple IREM drivers
-=======
     Input port macros used by many games in multiple IREM drivers
->>>>>>> upstream/master
 
 *******************************************************************************/
 
@@ -45,15 +41,12 @@
 	IREM_INPUT_JOY_HIGH(PL_H, IP_ACTIVE_LOW, PORT_8WAY, RIGHT, LEFT, DOWN, UP) \
 	IREM_INPUT_BUTTONS_HIGH(PL_H, IP_ACTIVE_LOW, UNUSED, UNUSED, BUTTON2, BUTTON1)
 
-<<<<<<< HEAD
-=======
 #define IREM_GENERIC_JOYSTICKS_2_BUTTONS_4WAY(PL_L, PL_H) \
 	IREM_INPUT_JOY_LOW(PL_L, IP_ACTIVE_LOW, PORT_4WAY, RIGHT, LEFT, DOWN, UP) \
 	IREM_INPUT_BUTTONS_LOW(PL_L, IP_ACTIVE_LOW, UNUSED, UNUSED, BUTTON2, BUTTON1) \
 	IREM_INPUT_JOY_HIGH(PL_H, IP_ACTIVE_LOW, PORT_4WAY, RIGHT, LEFT, DOWN, UP) \
 	IREM_INPUT_BUTTONS_HIGH(PL_H, IP_ACTIVE_LOW, UNUSED, UNUSED, BUTTON2, BUTTON1)
 
->>>>>>> upstream/master
 #define IREM_GENERIC_JOYSTICKS_3_BUTTONS(PL_L, PL_H) \
 	IREM_INPUT_JOY_LOW(PL_L, IP_ACTIVE_LOW, PORT_8WAY, RIGHT, LEFT, DOWN, UP) \
 	IREM_INPUT_BUTTONS_LOW(PL_L, IP_ACTIVE_LOW, UNUSED, BUTTON3, BUTTON2, BUTTON1) \
@@ -81,8 +74,6 @@
 	PORT_BIT( 0x0020, IP_ACTIVE_LOW, IPT_COIN3 ) \
 	PORT_BIT( 0x0040, IP_ACTIVE_LOW, IPT_BUTTON2 ) PORT_PLAYER(3) \
 	PORT_BIT( 0x0080, IP_ACTIVE_LOW, IPT_BUTTON1 ) PORT_PLAYER(3)
-<<<<<<< HEAD
-=======
 #define IREM_INPUT_PLAYER_3_4WAY \
 	PORT_BIT( 0x0001, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT ) PORT_4WAY PORT_PLAYER(3) \
 	PORT_BIT( 0x0002, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT ) PORT_4WAY PORT_PLAYER(3) \
@@ -92,7 +83,6 @@
 	PORT_BIT( 0x0020, IP_ACTIVE_LOW, IPT_COIN3 ) \
 	PORT_BIT( 0x0040, IP_ACTIVE_LOW, IPT_BUTTON2 ) PORT_PLAYER(3) \
 	PORT_BIT( 0x0080, IP_ACTIVE_LOW, IPT_BUTTON1 ) PORT_PLAYER(3)
->>>>>>> upstream/master
 #define IREM_INPUT_PLAYER_4 \
 	PORT_BIT( 0x0100, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT ) PORT_8WAY PORT_PLAYER(4) \
 	PORT_BIT( 0x0200, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT ) PORT_8WAY PORT_PLAYER(4) \
@@ -102,8 +92,6 @@
 	PORT_BIT( 0x2000, IP_ACTIVE_LOW, IPT_COIN4 ) \
 	PORT_BIT( 0x4000, IP_ACTIVE_LOW, IPT_BUTTON2 ) PORT_PLAYER(4) \
 	PORT_BIT( 0x8000, IP_ACTIVE_LOW, IPT_BUTTON1 ) PORT_PLAYER(4)
-<<<<<<< HEAD
-=======
 #define IREM_INPUT_PLAYER_4_4WAY \
 	PORT_BIT( 0x0100, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT ) PORT_4WAY PORT_PLAYER(4) \
 	PORT_BIT( 0x0200, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT ) PORT_4WAY PORT_PLAYER(4) \
@@ -113,7 +101,6 @@
 	PORT_BIT( 0x2000, IP_ACTIVE_LOW, IPT_COIN4 ) \
 	PORT_BIT( 0x4000, IP_ACTIVE_LOW, IPT_BUTTON2 ) PORT_PLAYER(4) \
 	PORT_BIT( 0x8000, IP_ACTIVE_LOW, IPT_BUTTON1 ) PORT_PLAYER(4)
->>>>>>> upstream/master
 
 
 #define IREM_COINS \
@@ -126,11 +113,7 @@
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_UNUSED )  \
 	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_SPECIAL ) /* Actually vblank, handled above */
 
-<<<<<<< HEAD
-/**************************** Coinage Dip Swicthes ****************************/
-=======
 /**************************** Coinage Dip Switches ****************************/
->>>>>>> upstream/master
 
 /* Mode 2 Coinage */
 

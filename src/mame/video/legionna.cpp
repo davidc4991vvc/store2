@@ -4,11 +4,7 @@
 
     Legionnaire / Heated Barrel video hardware (derived from D-Con)
 
-<<<<<<< HEAD
-    priority test (preliminary):
-=======
     priority test (used by Legionnaire, front to bottom):
->>>>>>> upstream/master
     - OBJ 0
     - TXT
     - OBJ 1
@@ -17,20 +13,14 @@
     - MBK
     - OBJ 3
     - LBK
-<<<<<<< HEAD
-=======
     TODO: Anything else doesn't match this scheme (most notably Denjin Makai),
           guess it's selectable by PROM, CRTC or COP ...
->>>>>>> upstream/master
 
 ***************************************************************************/
 
 #include "emu.h"
 #include "includes/legionna.h"
-<<<<<<< HEAD
-=======
 #include "screen.h"
->>>>>>> upstream/master
 
 
 /******************************************************************************/
@@ -46,11 +36,7 @@ WRITE16_MEMBER(legionna_state::tile_scroll_w)
 	COMBINE_DATA(scrollvals + offset);
 	data = scrollvals[offset];
 
-<<<<<<< HEAD
-	tilemap_t *tm = 0;
-=======
 	tilemap_t *tm = nullptr;
->>>>>>> upstream/master
 	switch(offset/2) {
 	case 0: tm = m_background_layer; break;
 	case 1: tm = m_midground_layer; break;
@@ -62,8 +48,6 @@ WRITE16_MEMBER(legionna_state::tile_scroll_w)
 		tm->set_scrollx(0, data);
 }
 
-<<<<<<< HEAD
-=======
 WRITE16_MEMBER(legionna_state::tile_vreg_1a_w)
 {
 	flip_screen_set(data & 1);
@@ -79,7 +63,6 @@ WRITE16_MEMBER(legionna_state::tile_scroll_base_w)
 	printf("%02x %04x\n",offset,data);
 }
 
->>>>>>> upstream/master
 WRITE16_MEMBER(legionna_state::heatbrl_setgfxbank)
 {
 	m_back_gfx_bank = (data &0x4000) >> 2;
@@ -126,8 +109,6 @@ WRITE16_MEMBER(legionna_state::videowrite_cb_w)
 	}
 }
 
-<<<<<<< HEAD
-=======
 // TODO: move to COP device
 WRITE16_MEMBER(legionna_state::grainbow_layer_config_w)
 {
@@ -135,7 +116,6 @@ WRITE16_MEMBER(legionna_state::grainbow_layer_config_w)
 	COMBINE_DATA(&m_layer_config[offset]);
 }
 
->>>>>>> upstream/master
 WRITE16_MEMBER(legionna_state::legionna_background_w)
 {
 	COMBINE_DATA(&m_back_data[offset]);
@@ -205,19 +185,11 @@ TILE_GET_INFO_MEMBER(legionna_state::get_mid_tile_info_cupsoc)
 	SET_TILE_INFO_MEMBER(1,tile,color,0);
 }
 
-<<<<<<< HEAD
-TILE_GET_INFO_MEMBER(legionna_state::get_fore_tile_info)/* this is giving bad tiles... */
-=======
 TILE_GET_INFO_MEMBER(legionna_state::get_fore_tile_info)
->>>>>>> upstream/master
 {
 	int tile=m_fore_data[tile_index];
 	int color=(tile>>12)&0xf;
 
-<<<<<<< HEAD
-	// legionnaire tile numbers / gfx set wrong, see screen after coin insertion
-=======
->>>>>>> upstream/master
 	tile &= 0xfff;
 
 	SET_TILE_INFO_MEMBER(4,tile,color,0);
@@ -244,25 +216,6 @@ TILE_GET_INFO_MEMBER(legionna_state::get_text_tile_info)
 	SET_TILE_INFO_MEMBER(0,tile,color,0);
 }
 
-<<<<<<< HEAD
-
-
-VIDEO_START_MEMBER(legionna_state,legionna)
-{
-	m_back_data = auto_alloc_array_clear(machine(), UINT16, 0x800/2);
-	m_fore_data =  auto_alloc_array_clear(machine(), UINT16, 0x800/2);
-	m_mid_data =  auto_alloc_array_clear(machine(), UINT16, 0x800/2);
-	m_textram =  auto_alloc_array_clear(machine(), UINT16, 0x1000/2);
-
-	m_background_layer = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(legionna_state::get_back_tile_info),this),TILEMAP_SCAN_ROWS,16,16,32,32);
-	m_foreground_layer = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(legionna_state::get_fore_tile_info),this),TILEMAP_SCAN_ROWS,16,16,32,32);
-	m_midground_layer =  &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(legionna_state::get_mid_tile_info),this), TILEMAP_SCAN_ROWS,16,16,32,32);
-	m_text_layer =       &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(legionna_state::get_text_tile_info),this),TILEMAP_SCAN_ROWS,  8,8,64,32);
-
-	m_scrollram16 = auto_alloc_array(machine(), UINT16, 0x60/2);
-	m_sprite_xoffs = 0;
-	m_sprite_yoffs = 0;
-=======
 void legionna_state::common_video_allocate_ptr()
 {
 	m_back_data = make_unique_clear<uint16_t[]>(0x800/2);
@@ -293,7 +246,6 @@ void legionna_state::common_video_start()
 	m_midground_layer =  &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(legionna_state::get_mid_tile_info),this), TILEMAP_SCAN_ROWS,16,16,32,32);
 	m_foreground_layer = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(legionna_state::get_fore_tile_info),this),TILEMAP_SCAN_ROWS,16,16,32,32);
 	m_text_layer =       &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(legionna_state::get_text_tile_info),this),TILEMAP_SCAN_ROWS,  8,8,64,32);
->>>>>>> upstream/master
 
 	m_has_extended_banking = 0;
 	m_has_extended_priority = 0;
@@ -304,23 +256,6 @@ void legionna_state::common_video_start()
 	m_text_layer->set_transparent_pen(15);
 }
 
-<<<<<<< HEAD
-VIDEO_START_MEMBER(legionna_state,denjinmk)
-{
-	m_back_data = auto_alloc_array_clear(machine(), UINT16, 0x800/2);
-	m_fore_data =  auto_alloc_array_clear(machine(), UINT16, 0x800/2);
-	m_mid_data =  auto_alloc_array_clear(machine(), UINT16, 0x800/2);
-	m_textram =  auto_alloc_array_clear(machine(), UINT16, 0x1000/2);
-
-	m_background_layer = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(legionna_state::get_back_tile_info),this),TILEMAP_SCAN_ROWS,16,16,32,32);
-	m_foreground_layer = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(legionna_state::get_fore_tile_info_denji),this),TILEMAP_SCAN_ROWS,16,16,32,32);
-	m_midground_layer =  &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(legionna_state::get_mid_tile_info_denji),this), TILEMAP_SCAN_ROWS,16,16,32,32);
-	m_text_layer =       &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(legionna_state::get_text_tile_info),this),TILEMAP_SCAN_ROWS,  8,8,64,32);
-
-	m_scrollram16 = auto_alloc_array(machine(), UINT16, 0x60/2);
-	m_sprite_xoffs = 0;
-	m_sprite_yoffs = 0;
-=======
 VIDEO_START_MEMBER(legionna_state,legionna)
 {
 	common_video_start();
@@ -345,13 +280,10 @@ VIDEO_START_MEMBER(legionna_state,heatbrl)
 VIDEO_START_MEMBER(legionna_state,godzilla)
 {
 	VIDEO_START_CALL_MEMBER(legionna);
->>>>>>> upstream/master
 
 	m_has_extended_banking = 1;
 	m_has_extended_priority = 0;
 
-<<<<<<< HEAD
-=======
 	m_sprite_pri_mask[0] = 0xfff0;
 	m_sprite_pri_mask[1] = 0xfffc;
 	m_sprite_pri_mask[2] = 0xfffe;
@@ -376,7 +308,6 @@ VIDEO_START_MEMBER(legionna_state,denjinmk)
 	m_sprite_pri_mask[2] = 0xfffe; // door at the end of sewers part in level 1
 	m_sprite_pri_mask[3] = 0x0000; // briefing guy in pre-stage and portraits before a boss fight
 
->>>>>>> upstream/master
 //  m_background_layer->set_transparent_pen(15);
 	m_midground_layer->set_transparent_pen(15);
 	m_foreground_layer->set_transparent_pen(15);
@@ -385,28 +316,12 @@ VIDEO_START_MEMBER(legionna_state,denjinmk)
 
 VIDEO_START_MEMBER(legionna_state,cupsoc)
 {
-<<<<<<< HEAD
-	m_back_data = auto_alloc_array_clear(machine(), UINT16, 0x800/2);
-	m_fore_data =  auto_alloc_array_clear(machine(), UINT16, 0x800/2);
-	m_mid_data =  auto_alloc_array_clear(machine(), UINT16, 0x800/2);
-	m_textram =  auto_alloc_array_clear(machine(), UINT16, 0x1000/2);
-
-	m_background_layer = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(legionna_state::get_back_tile_info),this),TILEMAP_SCAN_ROWS,16,16,32,32);
-	m_foreground_layer = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(legionna_state::get_fore_tile_info),this),TILEMAP_SCAN_ROWS,16,16,32,32);
-	m_midground_layer =  &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(legionna_state::get_mid_tile_info_cupsoc),this), TILEMAP_SCAN_ROWS,16,16,32,32);
-	m_text_layer =       &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(legionna_state::get_text_tile_info),this),TILEMAP_SCAN_ROWS,  8,8,64,32);
-
-	m_scrollram16 = auto_alloc_array(machine(), UINT16, 0x60/2);
-	m_sprite_xoffs = 0;
-	m_sprite_yoffs = 0;
-=======
 	common_video_allocate_ptr();
 
 	m_background_layer = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(legionna_state::get_back_tile_info),this),TILEMAP_SCAN_ROWS,16,16,32,32);
 	m_midground_layer =  &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(legionna_state::get_mid_tile_info_cupsoc),this), TILEMAP_SCAN_ROWS,16,16,32,32);
 	m_foreground_layer = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(legionna_state::get_fore_tile_info),this),TILEMAP_SCAN_ROWS,16,16,32,32);
 	m_text_layer =       &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(legionna_state::get_text_tile_info),this),TILEMAP_SCAN_ROWS,  8,8,64,32);
->>>>>>> upstream/master
 
 	m_has_extended_banking = 0;
 	m_has_extended_priority = 1;
@@ -424,20 +339,8 @@ VIDEO_START_MEMBER(legionna_state,grainbow)
 
 	m_has_extended_banking = 0;
 	m_has_extended_priority = 1;
-<<<<<<< HEAD
-}
-
-VIDEO_START_MEMBER(legionna_state,godzilla)
-{
-	VIDEO_START_CALL_MEMBER(legionna);
-
-	m_has_extended_banking = 1;
-	m_has_extended_priority = 0;
-
-=======
 
 	m_layer_config = std::make_unique<uint16_t[]>(0x8/2);
->>>>>>> upstream/master
 }
 
 /*************************************************************************
@@ -468,22 +371,14 @@ VIDEO_START_MEMBER(legionna_state,godzilla)
 
 void legionna_state::draw_sprites(screen_device &screen, bitmap_ind16 &bitmap,const rectangle &cliprect)
 {
-<<<<<<< HEAD
-	UINT16 *spriteram16 = m_spriteram;
-=======
 	uint16_t *spriteram16 = m_spriteram;
->>>>>>> upstream/master
 	int offs,fx,fy,x,y,color,sprite,cur_pri;
 	int dx,dy,ax,ay;
 	int pri_mask;
 
 	for (offs = 0;offs < 0x400;offs += 4)
 	{
-<<<<<<< HEAD
-		UINT16 data = spriteram16[offs];
-=======
 		uint16_t data = spriteram16[offs];
->>>>>>> upstream/master
 		if (!(data &0x8000)) continue;
 
 		pri_mask = 0;
@@ -523,17 +418,6 @@ void legionna_state::draw_sprites(screen_device &screen, bitmap_ind16 &bitmap,co
 		else
 		{
 			cur_pri = (spriteram16[offs+1] & 0xc000) >> 14;
-<<<<<<< HEAD
-
-			switch (cur_pri)
-			{
-				case 0: pri_mask = 0xfffc; break; //?
-				case 1: pri_mask = 0xfffc; break; //?
-				case 2: pri_mask = 0xfffc; break; // player sprites in legionnaire
-				case 3: pri_mask = 0xfffe; break; // stuff that goes behind the playfield (barriers on train level in legionnaire)
-			}
-
-=======
 			pri_mask = m_sprite_pri_mask[cur_pri];
 			#if 0
 			static uint8_t pri_test;
@@ -582,7 +466,6 @@ void legionna_state::draw_sprites(screen_device &screen, bitmap_ind16 &bitmap,co
 				//pri_mask = test;
 			}
 			#endif
->>>>>>> upstream/master
 		}
 
 		sprite = spriteram16[offs+1];
@@ -685,28 +568,12 @@ void legionna_state::draw_sprites(screen_device &screen, bitmap_ind16 &bitmap,co
 	}
 }
 
-<<<<<<< HEAD
-#define LAYER_DB 0
-
-UINT32 legionna_state::screen_update_legionna(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t legionna_state::screen_update_legionna(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	/* Setup the tilemaps */
 	screen.priority().fill(0, cliprect);
 	bitmap.fill(m_palette->black_pen(), cliprect);    /* wrong color? */
 
-<<<<<<< HEAD
-	/* m_layer_disable is a guess based on 'stage 1' screen in heatbrl  */
-
-	if (!(m_layer_disable&0x0020)) m_foreground_layer->draw(screen, bitmap, cliprect, 0, 0);
-	if (!(m_layer_disable&0x0010)) m_midground_layer->draw(screen, bitmap, cliprect, 0, 0);
-	if (!(m_layer_disable&0x0002)) m_background_layer->draw(screen, bitmap, cliprect, 0, 1);
-	if (!(m_layer_disable&0x0001)) m_text_layer->draw(screen, bitmap, cliprect, 0, 2);
-
-	draw_sprites(screen,bitmap,cliprect);
-=======
 	if (!(m_layer_disable&0x0001)) m_midground_layer->draw(screen, bitmap, cliprect, 0, 0);
 	if (!(m_layer_disable&0x0002)) m_background_layer->draw(screen, bitmap, cliprect, 0, 1);
 	if (!(m_layer_disable&0x0004)) m_foreground_layer->draw(screen, bitmap, cliprect, 0, 2);
@@ -735,7 +602,6 @@ uint32_t legionna_state::screen_update_heatbrl(screen_device &screen, bitmap_ind
 
 	if (!(m_layer_disable&0x0010))
 		draw_sprites(screen,bitmap,cliprect);
->>>>>>> upstream/master
 
 	if (machine().input().code_pressed_once(KEYCODE_Z))
 		if (m_raiden2cop) m_raiden2cop->dump_table();
@@ -744,23 +610,11 @@ uint32_t legionna_state::screen_update_heatbrl(screen_device &screen, bitmap_ind
 }
 
 
-<<<<<<< HEAD
-UINT32 legionna_state::screen_update_godzilla(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t legionna_state::screen_update_godzilla(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	bitmap.fill(0x0200, cliprect);
 	screen.priority().fill(0, cliprect);
 
-<<<<<<< HEAD
-	if (!(m_layer_disable&0x0001)) m_background_layer->draw(screen, bitmap, cliprect, 0,0);
-	if (!(m_layer_disable&0x0002)) m_midground_layer->draw(screen, bitmap, cliprect, 0,0);
-	if (!(m_layer_disable&0x0004)) m_foreground_layer->draw(screen, bitmap, cliprect, 0,1);
-	if (!(m_layer_disable&0x0008)) m_text_layer->draw(screen, bitmap, cliprect, 0,2);
-
-	draw_sprites(screen,bitmap,cliprect);
-=======
 	if (!(m_layer_disable&0x0001)) m_background_layer->draw(screen, bitmap, cliprect, 0, 0);
 	if (!(m_layer_disable&0x0002)) m_midground_layer->draw(screen, bitmap, cliprect, 0, 1);
 	if (!(m_layer_disable&0x0004)) m_foreground_layer->draw(screen, bitmap, cliprect, 0, 2);
@@ -768,7 +622,6 @@ uint32_t legionna_state::screen_update_godzilla(screen_device &screen, bitmap_in
 
 	if (!(m_layer_disable&0x0010))
 		draw_sprites(screen,bitmap,cliprect);
->>>>>>> upstream/master
 
 	if (machine().input().code_pressed_once(KEYCODE_Z))
 		if (m_raiden2cop) m_raiden2cop->dump_table();
@@ -777,11 +630,7 @@ uint32_t legionna_state::screen_update_godzilla(screen_device &screen, bitmap_in
 	return 0;
 }
 
-<<<<<<< HEAD
-UINT32 legionna_state::screen_update_grainbow(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t legionna_state::screen_update_grainbow(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	bitmap.fill(m_palette->black_pen(), cliprect);
 	screen.priority().fill(0, cliprect);
@@ -798,12 +647,8 @@ uint32_t legionna_state::screen_update_grainbow(screen_device &screen, bitmap_in
 	if(!(m_layer_disable & 8))
 		m_text_layer->draw(screen, bitmap, cliprect, 0,8);
 
-<<<<<<< HEAD
-	draw_sprites(screen,bitmap,cliprect);
-=======
 	if (!(m_layer_disable&0x0010))
 		draw_sprites(screen,bitmap,cliprect);
->>>>>>> upstream/master
 
 	if (machine().input().code_pressed_once(KEYCODE_Z))
 		if (m_raiden2cop) m_raiden2cop->dump_table();

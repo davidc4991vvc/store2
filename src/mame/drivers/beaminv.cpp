@@ -55,11 +55,8 @@ Stephh's notes (based on the games Z80 code and some tests) :
 
 #include "emu.h"
 #include "cpu/z80/z80.h"
-<<<<<<< HEAD
-=======
 #include "screen.h"
 
->>>>>>> upstream/master
 #include "beaminv.lh"
 
 
@@ -73,21 +70,13 @@ public:
 		m_screen(*this, "screen") { }
 
 	/* memory pointers */
-<<<<<<< HEAD
-	required_shared_ptr<UINT8> m_videoram;
-=======
 	required_shared_ptr<uint8_t> m_videoram;
->>>>>>> upstream/master
 
 	/* misc */
 	emu_timer  *m_interrupt_timer;
 
 	/* input-related */
-<<<<<<< HEAD
-	UINT8      m_controller_select;
-=======
 	uint8_t      m_controller_select;
->>>>>>> upstream/master
 
 	/* devices */
 	required_device<cpu_device> m_maincpu;
@@ -95,15 +84,9 @@ public:
 	DECLARE_READ8_MEMBER(v128_r);
 	DECLARE_WRITE8_MEMBER(controller_select_w);
 	DECLARE_READ8_MEMBER(controller_r);
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void machine_reset();
-	UINT32 screen_update_beaminv(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
-=======
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
 	uint32_t screen_update_beaminv(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	TIMER_CALLBACK_MEMBER(interrupt_callback);
 	void create_interrupt_timer();
 	void start_interrupt_timer();
@@ -192,11 +175,7 @@ void beaminv_state::machine_reset()
  *
  *************************************/
 
-<<<<<<< HEAD
-UINT32 beaminv_state::screen_update_beaminv(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
-=======
 uint32_t beaminv_state::screen_update_beaminv(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	offs_t offs;
 
@@ -204,15 +183,6 @@ uint32_t beaminv_state::screen_update_beaminv(screen_device &screen, bitmap_rgb3
 	{
 		int i;
 
-<<<<<<< HEAD
-		UINT8 y = offs;
-		UINT8 x = offs >> 8 << 3;
-		UINT8 data = m_videoram[offs];
-
-		for (i = 0; i < 8; i++)
-		{
-			pen_t pen = (data & 0x01) ? rgb_t::white : rgb_t::black;
-=======
 		uint8_t y = offs;
 		uint8_t x = offs >> 8 << 3;
 		uint8_t data = m_videoram[offs];
@@ -220,7 +190,6 @@ uint32_t beaminv_state::screen_update_beaminv(screen_device &screen, bitmap_rgb3
 		for (i = 0; i < 8; i++)
 		{
 			pen_t pen = (data & 0x01) ? rgb_t::white() : rgb_t::black();
->>>>>>> upstream/master
 			bitmap.pix32(y, x) = pen;
 
 			data = data >> 1;
@@ -366,11 +335,7 @@ INPUT_PORTS_END
  *
  *************************************/
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( beaminv, beaminv_state )
-=======
 static MACHINE_CONFIG_START( beaminv )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, 2000000)   /* 2 MHz ? */
@@ -424,10 +389,5 @@ ROM_END
  *
  *************************************/
 
-<<<<<<< HEAD
-GAMEL( 1979, beaminv,  0,       beaminv, beaminv,  driver_device, 0, ROT270, "Teknon Kogyo", "Beam Invader", MACHINE_NO_SOUND | MACHINE_SUPPORTS_SAVE, layout_beaminv )
-GAMEL( 1979, pacominv, beaminv, beaminv, pacominv, driver_device, 0, ROT270, "Pacom Corporation", "Pacom Invader", MACHINE_NO_SOUND | MACHINE_SUPPORTS_SAVE, layout_beaminv )
-=======
 GAMEL( 1979, beaminv,  0,       beaminv, beaminv,  beaminv_state, 0, ROT270, "Teknon Kogyo",      "Beam Invader",  MACHINE_NO_SOUND | MACHINE_SUPPORTS_SAVE, layout_beaminv )
 GAMEL( 1979, pacominv, beaminv, beaminv, pacominv, beaminv_state, 0, ROT270, "Pacom Corporation", "Pacom Invader", MACHINE_NO_SOUND | MACHINE_SUPPORTS_SAVE, layout_beaminv )
->>>>>>> upstream/master

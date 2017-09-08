@@ -52,11 +52,7 @@ struct video_info
 	int last_frame;
 	int last_chapter;
 	int cadence;
-<<<<<<< HEAD
-	UINT32 cadence_history;
-=======
 	uint32_t cadence_history;
->>>>>>> upstream/master
 	int prev_whitefield;
 	int min_overall;
 	int max_overall;
@@ -106,25 +102,6 @@ static bool chdinterlaced;
 static void *open_avi(const char *filename, movie_info &info)
 {
 	// open the file
-<<<<<<< HEAD
-	avi_file *avi;
-	avi_error avierr = avi_open(filename, &avi);
-	if (avierr != AVIERR_NONE)
-	{
-		fprintf(stderr, "Error opening AVI file: %s\n", avi_error_string(avierr));
-		return NULL;
-	}
-
-	// extract movie info
-	const avi_movie_info *aviinfo = avi_get_movie_info(avi);
-	info.framerate = (double)aviinfo->video_timescale / (double)aviinfo->video_sampletime;
-	info.numframes = aviinfo->video_numsamples;
-	info.width = aviinfo->video_width;
-	info.height = aviinfo->video_height;
-	info.samplerate = aviinfo->audio_samplerate;
-	info.channels = aviinfo->audio_channels;
-	return avi;
-=======
 	avi_file::ptr avi;
 	avi_file::error avierr = avi_file::open(filename, avi);
 	if (avierr != avi_file::error::NONE)
@@ -142,7 +119,6 @@ static void *open_avi(const char *filename, movie_info &info)
 	info.samplerate = aviinfo.audio_samplerate;
 	info.channels = aviinfo.audio_channels;
 	return avi.release();
->>>>>>> upstream/master
 }
 
 
@@ -150,28 +126,11 @@ static void *open_avi(const char *filename, movie_info &info)
 //  read_avi - read a frame from an AVI file
 //-------------------------------------------------
 
-<<<<<<< HEAD
-static bool read_avi(void *file, int frame, bitmap_yuy16 &bitmap, INT16 *lsound, INT16 *rsound, int &samples)
-=======
 static bool read_avi(void *file, int frame, bitmap_yuy16 &bitmap, int16_t *lsound, int16_t *rsound, int &samples)
->>>>>>> upstream/master
 {
 	avi_file *avifile = reinterpret_cast<avi_file *>(file);
 
 	// read the frame
-<<<<<<< HEAD
-	avi_error avierr = avi_read_video_frame(avifile, frame, bitmap);
-	if (avierr != AVIERR_NONE)
-		return FALSE;
-
-	// read the samples
-	const avi_movie_info *aviinfo = avi_get_movie_info(avifile);
-	UINT32 firstsample = (UINT64(aviinfo->audio_samplerate) * UINT64(frame) * UINT64(aviinfo->video_sampletime) + aviinfo->video_timescale - 1) / UINT64(aviinfo->video_timescale);
-	UINT32 lastsample = (UINT64(aviinfo->audio_samplerate) * UINT64(frame + 1) * UINT64(aviinfo->video_sampletime) + aviinfo->video_timescale - 1) / UINT64(aviinfo->video_timescale);
-	avierr = avi_read_sound_samples(avifile, 0, firstsample, lastsample - firstsample, lsound);
-	avierr = avi_read_sound_samples(avifile, 1, firstsample, lastsample - firstsample, rsound);
-	if (avierr != AVIERR_NONE)
-=======
 	avi_file::error avierr = avifile->read_video_frame(frame, bitmap);
 	if (avierr != avi_file::error::NONE)
 		return false;
@@ -183,7 +142,6 @@ static bool read_avi(void *file, int frame, bitmap_yuy16 &bitmap, int16_t *lsoun
 	avierr = avifile->read_sound_samples(0, firstsample, lastsample - firstsample, lsound);
 	avierr = avifile->read_sound_samples(1, firstsample, lastsample - firstsample, rsound);
 	if (avierr != avi_file::error::NONE)
->>>>>>> upstream/master
 		return false;
 	samples = lastsample - firstsample;
 	return true;
@@ -197,11 +155,7 @@ static bool read_avi(void *file, int frame, bitmap_yuy16 &bitmap, int16_t *lsoun
 static void close_avi(void *file)
 {
 	avi_file *avifile = reinterpret_cast<avi_file *>(file);
-<<<<<<< HEAD
-	avi_close(avifile);
-=======
 	delete avifile;
->>>>>>> upstream/master
 }
 
 
@@ -217,11 +171,7 @@ static void close_avi(void *file)
 
 static void *open_chd(const char *filename, movie_info &info)
 {
-<<<<<<< HEAD
-	chd_file *chd = new chd_file;
-=======
 	auto chd = new chd_file;
->>>>>>> upstream/master
 
 	// open the file
 	chd_error chderr = chd->open(filename);
@@ -229,11 +179,7 @@ static void *open_chd(const char *filename, movie_info &info)
 	{
 		fprintf(stderr, "Error opening CHD file: %s\n", chd_file::error_string(chderr));
 		delete chd;
-<<<<<<< HEAD
-		return NULL;
-=======
 		return nullptr;
->>>>>>> upstream/master
 	}
 
 	// get the metadata
@@ -243,11 +189,7 @@ static void *open_chd(const char *filename, movie_info &info)
 	{
 		fprintf(stderr, "Error getting A/V metadata: %s\n", chd_file::error_string(chderr));
 		delete chd;
-<<<<<<< HEAD
-		return NULL;
-=======
 		return nullptr;
->>>>>>> upstream/master
 	}
 
 	// extract the info
@@ -256,11 +198,7 @@ static void *open_chd(const char *filename, movie_info &info)
 	{
 		fprintf(stderr, "Improperly formatted metadata\n");
 		delete chd;
-<<<<<<< HEAD
-		return NULL;
-=======
 		return nullptr;
->>>>>>> upstream/master
 	}
 
 	// extract movie info
@@ -287,11 +225,7 @@ static void *open_chd(const char *filename, movie_info &info)
 //  read_chd - read a frame from a CHD file
 //-------------------------------------------------
 
-<<<<<<< HEAD
-static int read_chd(void *file, int frame, bitmap_yuy16 &bitmap, INT16 *lsound, INT16 *rsound, int &samples)
-=======
 static int read_chd(void *file, int frame, bitmap_yuy16 &bitmap, int16_t *lsound, int16_t *rsound, int &samples)
->>>>>>> upstream/master
 {
 	chd_file *chdfile = reinterpret_cast<chd_file *>(file);
 
@@ -305,11 +239,7 @@ static int read_chd(void *file, int frame, bitmap_yuy16 &bitmap, int16_t *lsound
 		avconfig.video.wrap(&bitmap.pix16(fieldnum), bitmap.width(), bitmap.height() / interlace_factor, bitmap.rowpixels() * interlace_factor);
 
 		// configure the codec
-<<<<<<< HEAD
-		UINT32 numsamples;
-=======
 		uint32_t numsamples;
->>>>>>> upstream/master
 		avconfig.maxsamples = 48000;
 		avconfig.actsamples = &numsamples;
 		avconfig.audio[0] = &lsound[samples];
@@ -319,11 +249,7 @@ static int read_chd(void *file, int frame, bitmap_yuy16 &bitmap, int16_t *lsound
 		chdfile->codec_configure(CHD_CODEC_AVHUFF, AVHUFF_CODEC_DECOMPRESS_CONFIG, &avconfig);
 
 		// read the frame
-<<<<<<< HEAD
-		chd_error chderr = chdfile->read_hunk(frame * interlace_factor + fieldnum, NULL);
-=======
 		chd_error chderr = chdfile->read_hunk(frame * interlace_factor + fieldnum, nullptr);
->>>>>>> upstream/master
 		if (chderr != CHDERR_NONE)
 			return false;
 
@@ -409,11 +335,7 @@ static void verify_video(video_info &video, int frame, bitmap_yuy16 &bitmap)
 			// if we haven't seen lead-in yet, detect it
 			if (!video.saw_leadin)
 			{
-<<<<<<< HEAD
-				video.saw_leadin = TRUE;
-=======
 				video.saw_leadin = true;
->>>>>>> upstream/master
 				printf("%6d.%d: lead-in code detected\n", frame, fieldnum);
 			}
 
@@ -428,11 +350,7 @@ static void verify_video(video_info &video, int frame, bitmap_yuy16 &bitmap)
 			// if we haven't seen lead-in yet, detect it
 			if (!video.saw_leadout)
 			{
-<<<<<<< HEAD
-				video.saw_leadout = TRUE;
-=======
 				video.saw_leadout = true;
->>>>>>> upstream/master
 				printf("%6d.%d: lead-out code detected\n", frame, fieldnum);
 				if (video.last_frame != -1)
 					printf("%6d.%d: final frame number was %d\n", frame, fieldnum, video.last_frame);
@@ -454,11 +372,7 @@ static void verify_video(video_info &video, int frame, bitmap_yuy16 &bitmap)
 			if (!video.saw_leadin)
 			{
 				printf("%6d.%d: detected frame number but never saw any lead-in (WARNING)\n", frame, fieldnum);
-<<<<<<< HEAD
-				video.saw_leadin = TRUE;
-=======
 				video.saw_leadin = true;
->>>>>>> upstream/master
 			}
 
 			// if this is the first frame, make sure it's 1
@@ -562,15 +476,9 @@ static void verify_video(video_info &video, int frame, bitmap_yuy16 &bitmap)
 		}
 
 		// now examine the active video signal
-<<<<<<< HEAD
-		UINT32 yhisto[256] = { 0 };
-		UINT32 crhisto[256] = { 0 };
-		UINT32 cbhisto[256] = { 0 };
-=======
 		uint32_t yhisto[256] = { 0 };
 		uint32_t crhisto[256] = { 0 };
 		uint32_t cbhisto[256] = { 0 };
->>>>>>> upstream/master
 		int pixels = 0;
 		for (int y = 22*2 + fieldnum; y < bitmap.height(); y += 2)
 		{
@@ -628,13 +536,8 @@ static void verify_video(video_info &video, int frame, bitmap_yuy16 &bitmap)
 		}
 
 		// update the overall min/max
-<<<<<<< HEAD
-		video.min_overall = MIN(yminval, video.min_overall);
-		video.max_overall = MAX(ymaxval, video.max_overall);
-=======
 		video.min_overall = std::min(yminval, video.min_overall);
 		video.max_overall = std::max(ymaxval, video.max_overall);
->>>>>>> upstream/master
 
 		// track low fields
 		if (yminval <= 0)
@@ -726,11 +629,7 @@ static void init_audio(audio_info &audio)
 //  verify_audio - verify audio data
 //-------------------------------------------------
 
-<<<<<<< HEAD
-static void verify_audio(audio_info &audio, const INT16 *lsound, const INT16 *rsound, int samples)
-=======
 static void verify_audio(audio_info &audio, const int16_t *lsound, const int16_t *rsound, int samples)
->>>>>>> upstream/master
 {
 	// count the overall samples
 	audio.sample_count += samples;
@@ -784,13 +683,8 @@ static void verify_audio(audio_info &audio, const int16_t *lsound, const int16_t
 static void verify_audio_final(audio_info &audio)
 {
 	printf("\nAudio summary:\n");
-<<<<<<< HEAD
-	printf("  Overall channel 0 range: %d-%d (%04X-%04X)\n", audio.min_lsample, audio.max_lsample, UINT16(audio.min_lsample), UINT16(audio.max_lsample));
-	printf("  Overall channel 1 range: %d-%d (%04X-%04X)\n", audio.min_rsample, audio.max_rsample, UINT16(audio.min_rsample), UINT16(audio.max_rsample));
-=======
 	printf("  Overall channel 0 range: %d-%d (%04X-%04X)\n", audio.min_lsample, audio.max_lsample, uint16_t(audio.min_lsample), uint16_t(audio.max_lsample));
 	printf("  Overall channel 1 range: %d-%d (%04X-%04X)\n", audio.min_rsample, audio.max_rsample, uint16_t(audio.min_rsample), uint16_t(audio.max_rsample));
->>>>>>> upstream/master
 }
 
 
@@ -830,15 +724,9 @@ int main(int argc, char *argv[])
 		if (srcfilelen < 4)
 			return usage();
 		bool isavi;
-<<<<<<< HEAD
-		if (tolower((UINT8)srcfile[srcfilelen-3]) == 'a' && tolower((UINT8)srcfile[srcfilelen-2]) == 'v' && tolower((UINT8)srcfile[srcfilelen-1]) == 'i')
-			isavi = true;
-		else if (tolower((UINT8)srcfile[srcfilelen-3]) == 'c' && tolower((UINT8)srcfile[srcfilelen-2]) == 'h' && tolower((UINT8)srcfile[srcfilelen-1]) == 'd')
-=======
 		if (tolower((uint8_t)srcfile[srcfilelen-3]) == 'a' && tolower((uint8_t)srcfile[srcfilelen-2]) == 'v' && tolower((uint8_t)srcfile[srcfilelen-1]) == 'i')
 			isavi = true;
 		else if (tolower((uint8_t)srcfile[srcfilelen-3]) == 'c' && tolower((uint8_t)srcfile[srcfilelen-2]) == 'h' && tolower((uint8_t)srcfile[srcfilelen-1]) == 'd')
->>>>>>> upstream/master
 			isavi = false;
 		else
 			return usage();
@@ -847,11 +735,7 @@ int main(int argc, char *argv[])
 		printf("Processing file: %s\n", srcfile);
 		movie_info info = { 0 };
 		void *file = isavi ? open_avi(srcfile, info) : open_chd(srcfile, info);
-<<<<<<< HEAD
-		if (file == NULL)
-=======
 		if (file == nullptr)
->>>>>>> upstream/master
 		{
 			fprintf(stderr, "Unable to open file '%s'\n", srcfile);
 			return 1;
@@ -878,13 +762,8 @@ int main(int argc, char *argv[])
 		bitmap_yuy16 bitmap(info.width, info.height);
 
 		// allocate sound buffers
-<<<<<<< HEAD
-		std::vector<INT16> lsound(info.samplerate);
-		std::vector<INT16> rsound(info.samplerate);
-=======
 		std::vector<int16_t> lsound(info.samplerate);
 		std::vector<int16_t> rsound(info.samplerate);
->>>>>>> upstream/master
 
 		// loop over frames
 		int frame = 0;

@@ -34,11 +34,7 @@ WRITE8_MEMBER(metlclsh_state::metlclsh_rambank_w)
 	else
 	{
 		m_write_mask = 1 << (data >> 1);
-<<<<<<< HEAD
-		membank("bank1")->set_base(m_otherram);
-=======
 		membank("bank1")->set_base(m_otherram.get());
->>>>>>> upstream/master
 	}
 }
 
@@ -116,13 +112,8 @@ WRITE8_MEMBER(metlclsh_state::metlclsh_bgram_w)
 
 TILE_GET_INFO_MEMBER(metlclsh_state::get_fg_tile_info)
 {
-<<<<<<< HEAD
-	UINT8 code = m_fgram[tile_index + 0x000];
-	UINT8 attr = m_fgram[tile_index + 0x400];
-=======
 	uint8_t code = m_fgram[tile_index + 0x000];
 	uint8_t attr = m_fgram[tile_index + 0x400];
->>>>>>> upstream/master
 	SET_TILE_INFO_MEMBER(2, code + ((attr & 0x03) << 8), (attr >> 5) & 3, 0);
 	tileinfo.category = ((attr & 0x80) ? 1 : 2);
 }
@@ -142,26 +133,15 @@ WRITE8_MEMBER(metlclsh_state::metlclsh_fgram_w)
 
 void metlclsh_state::video_start()
 {
-<<<<<<< HEAD
-	m_otherram = auto_alloc_array(machine(), UINT8, 0x800); // banked ram
-
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(metlclsh_state::get_bg_tile_info),this), tilemap_mapper_delegate(FUNC(metlclsh_state::metlclsh_bgtilemap_scan),this), 16, 16, 32, 16);
-	m_fg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(metlclsh_state::get_fg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
-=======
 	m_otherram = std::make_unique<uint8_t[]>(0x800); // banked ram
 
 	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(metlclsh_state::get_bg_tile_info),this), tilemap_mapper_delegate(FUNC(metlclsh_state::metlclsh_bgtilemap_scan),this), 16, 16, 32, 16);
 	m_fg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(metlclsh_state::get_fg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
->>>>>>> upstream/master
 
 	m_bg_tilemap->set_transparent_pen(0);
 	m_fg_tilemap->set_transparent_pen(0);
 
-<<<<<<< HEAD
-	save_pointer(NAME(m_otherram), 0x800);
-=======
 	save_pointer(NAME(m_otherram.get()), 0x800);
->>>>>>> upstream/master
 }
 
 
@@ -187,11 +167,7 @@ void metlclsh_state::video_start()
 
 void metlclsh_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect )
 {
-<<<<<<< HEAD
-	UINT8 *spriteram = m_spriteram;
-=======
 	uint8_t *spriteram = m_spriteram;
->>>>>>> upstream/master
 	gfx_element *gfx = m_gfxdecode->gfx(0);
 	int offs;
 
@@ -256,11 +232,7 @@ void metlclsh_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &clipre
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-UINT32 metlclsh_state::screen_update_metlclsh(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t metlclsh_state::screen_update_metlclsh(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	bitmap.fill(0x10, cliprect);
 

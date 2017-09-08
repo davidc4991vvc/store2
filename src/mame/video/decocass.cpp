@@ -11,15 +11,10 @@
     with semi-independent scrolling, and the ability to transition
     between scrolling different sections.
 
-<<<<<<< HEAD
-    Additionally it supports the headlight effect also needed for
-    a Highway Chase style game.
-=======
     Additionally it supports the headlight and tunnel effects also
     needed for a Highway Chase style game. These both produce a pen
     modification effect mapped to bit 4 of the palette, unless bit
     5 of the mode register is set.
->>>>>>> upstream/master
 
     ---
 
@@ -39,24 +34,6 @@
         - different game revision to emulated version, main
           boss enemy shown at the top of the scoreboard differs
           so notes below could be invalid
-<<<<<<< HEAD
-
-        - bullets should be white, not black
-        - BG layer changes to orange colours for first level
-          (this would require a palette bitplane re-order we
-           don't currently support)
-
-    mamedev.emulab.it/haze/reference/sm18975592-HWY_CHASE.mp4
-        - road / bg colour should be darkish blue outside of tunnels
-        - road / bg colour should be black in tunnels
-        - headlight should be the same darkish blue as the road
-          at all times, so only visible in tunnels
-        - our headlight is misplaced (should be simple fix)
-        - center line of road does not exist on hw!
-        - enemies are hidden in tunnels (like madalien)
-        - road / bg flashs regular blue when enemy is hit revealing
-          them
-=======
         - bullets should be white, not black (OK)
         - BG layer changes to orange colours for first level, but
           reverts to red when player explodes
@@ -70,17 +47,12 @@
         - enemies are hidden in tunnels (like madalien) (OK)
         - road / bg flashs regular blue when enemy is hit revealing
           them (OK)
->>>>>>> upstream/master
         - some glitchy enemies visible even over tunnel bg for
           some frames
         - colours of BG tilemap are glitchy even on hardware eg.
           Pink desert after first tunnel, Green water after 2nd
           tunnel even when the right palettes exist!
-<<<<<<< HEAD
-        - enemy bullets are red
-=======
         - player bullets are yellow, enemy bullets are red (OK)
->>>>>>> upstream/master
 
     mamedev.emulab.it/haze/reference/sm17433759-PRO_BOWLING.mp4
         - no notes
@@ -105,18 +77,10 @@
 
     mamedev.emulab.it/haze/reference/sm17202585-SUPER_DOUBLE_TENNIS.mp4
         - background colours during high-score / title ar shades of
-<<<<<<< HEAD
-          blue, they appear green in our emulation
-
-    mamedev.emulab.it/haze/reference/sm17202201-SKATER.mp4
-        - shadow handling (headlight sprite) positioning is wrong, the
-          game also turns on the 'cross' bit, why?
-=======
           blue, not green as in previous emulation (OK now)
 
     mamedev.emulab.it/haze/reference/sm17202201-SKATER.mp4
         - the game turns on the 'cross' bit, why?
->>>>>>> upstream/master
 
     mamedev.emulab.it/haze/reference/sm17201813-ZEROIZE.mp4
         - no notes
@@ -163,11 +127,7 @@
 #include "includes/decocass.h"
 
 
-<<<<<<< HEAD
-static const UINT32 tile_offset[32*32] = {
-=======
 static const uint32_t tile_offset[32*32] = {
->>>>>>> upstream/master
 	0x078,0x079,0x07a,0x07b,0x07c,0x07d,0x07e,0x07f,0x0ff,0x0fe,0x0fd,0x0fc,0x0fb,0x0fa,0x0f9,0x0f8,0x278,0x279,0x27a,0x27b,0x27c,0x27d,0x27e,0x27f,0x2ff,0x2fe,0x2fd,0x2fc,0x2fb,0x2fa,0x2f9,0x2f8,
 	0x070,0x071,0x072,0x073,0x074,0x075,0x076,0x077,0x0f7,0x0f6,0x0f5,0x0f4,0x0f3,0x0f2,0x0f1,0x0f0,0x270,0x271,0x272,0x273,0x274,0x275,0x276,0x277,0x2f7,0x2f6,0x2f5,0x2f4,0x2f3,0x2f2,0x2f1,0x2f0,
 	0x068,0x069,0x06a,0x06b,0x06c,0x06d,0x06e,0x06f,0x0ef,0x0ee,0x0ed,0x0ec,0x0eb,0x0ea,0x0e9,0x0e8,0x268,0x269,0x26a,0x26b,0x26c,0x26d,0x26e,0x26f,0x2ef,0x2ee,0x2ed,0x2ec,0x2eb,0x2ea,0x2e9,0x2e8,
@@ -242,11 +202,7 @@ TILE_GET_INFO_MEMBER(decocass_state::get_bg_l_tile_info)
 	int color = (m_color_center_bot >> 7) & 1;
 	SET_TILE_INFO_MEMBER(2,
 			m_bgvideoram[tile_index] >> 4,
-<<<<<<< HEAD
-			color,
-=======
 			color * 4 + 1,
->>>>>>> upstream/master
 			0);
 	if (tile_index & 0x80)
 		tileinfo.pen_data = m_empty_tile;
@@ -257,11 +213,7 @@ TILE_GET_INFO_MEMBER(decocass_state::get_bg_r_tile_info )
 	int color = (m_color_center_bot >> 7) & 1;
 	SET_TILE_INFO_MEMBER(2,
 			m_bgvideoram[tile_index] >> 4,
-<<<<<<< HEAD
-			color,
-=======
 			color * 4 + 1,
->>>>>>> upstream/master
 			TILE_FLIPY);
 	if (!(tile_index & 0x80))
 		tileinfo.pen_data = m_empty_tile;
@@ -269,19 +221,11 @@ TILE_GET_INFO_MEMBER(decocass_state::get_bg_r_tile_info )
 
 TILE_GET_INFO_MEMBER(decocass_state::get_fg_tile_info )
 {
-<<<<<<< HEAD
-	UINT8 code = m_fgvideoram[tile_index];
-	UINT8 attr = m_colorram[tile_index];
-	SET_TILE_INFO_MEMBER(0,
-			256 * (attr & 3) + code,
-			m_color_center_bot & 1,
-=======
 	uint8_t code = m_fgvideoram[tile_index];
 	uint8_t attr = m_colorram[tile_index];
 	SET_TILE_INFO_MEMBER(0,
 			256 * (attr & 3) + code,
 			BIT(m_color_center_bot, 0),
->>>>>>> upstream/master
 			0);
 }
 
@@ -289,28 +233,6 @@ TILE_GET_INFO_MEMBER(decocass_state::get_fg_tile_info )
     big object
  ********************************************/
 
-<<<<<<< HEAD
-void decocass_state::draw_object(bitmap_ind16 &bitmap, const rectangle &cliprect)
-{
-	int sx, sy, color;
-
-	if (0 == (m_mode_set & 0x80))  /* part_h_enable off? */
-		return;
-
-	color = (m_color_center_bot >> 4) & 15;
-
-	sy = 192 - (m_part_v_shift & 0x7f);
-
-	if (m_part_h_shift & 0x80)
-		sx = (m_part_h_shift & 0x7f) + 1;
-	else
-		sx = 91 - (m_part_h_shift & 0x7f);
-
-	m_gfxdecode->gfx(3)->transpen(bitmap,cliprect, 0, color, 0, 0, sx + 64, sy, 0);
-	m_gfxdecode->gfx(3)->transpen(bitmap,cliprect, 1, color, 0, 0, sx, sy, 0);
-	m_gfxdecode->gfx(3)->transpen(bitmap,cliprect, 0, color, 0, 1, sx + 64, sy - 64, 0);
-	m_gfxdecode->gfx(3)->transpen(bitmap,cliprect, 1, color, 0, 1, sx, sy - 64, 0);
-=======
 void decocass_state::draw_special_priority(bitmap_ind16 &bitmap, bitmap_ind8 &priority, const rectangle &cliprect)
 {
 	int crossing = m_mode_set & 3;
@@ -366,7 +288,6 @@ void decocass_state::draw_special_priority(bitmap_ind16 &bitmap, bitmap_ind8 &pr
 				bitmap.pix16(y, x) |= 0x10;
 		}
 	}
->>>>>>> upstream/master
 }
 
 void decocass_state::draw_center(bitmap_ind16 &bitmap, const rectangle &cliprect)
@@ -489,13 +410,8 @@ WRITE8_MEMBER(decocass_state::decocass_color_missiles_w )
 }
 
 /*
-<<<<<<< HEAD
- * D0 - ??
- * D1 - ??
-=======
  * D0 - bg paging
  * D1 - bg paging
->>>>>>> upstream/master
  * D2 - ptn 1/2
  * D3 - BKG ena
  * D4 - center L on
@@ -572,11 +488,7 @@ WRITE8_MEMBER(decocass_state::decocass_back_vr_shift_w )
 
 WRITE8_MEMBER(decocass_state::decocass_part_h_shift_w )
 {
-<<<<<<< HEAD
-	if (data == m_part_v_shift )
-=======
 	if (data == m_part_h_shift )
->>>>>>> upstream/master
 		return;
 	LOG(1,("decocass_part_h_shift_w: $%02x\n", data));
 	m_part_h_shift = data;
@@ -608,15 +520,9 @@ WRITE8_MEMBER(decocass_state::decocass_center_v_shift_w )
     memory handlers
  ********************************************/
 
-<<<<<<< HEAD
-void decocass_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect, int color,
-						int sprite_y_adjust, int sprite_y_adjust_flip_screen,
-						UINT8 *sprite_ram, int interleave)
-=======
 void decocass_state::draw_sprites(bitmap_ind16 &bitmap, bitmap_ind8 &priority, const rectangle &cliprect, int color,
 						int sprite_y_adjust, int sprite_y_adjust_flip_screen,
 						uint8_t *sprite_ram, int interleave)
->>>>>>> upstream/master
 {
 	int i,offs;
 
@@ -645,49 +551,27 @@ void decocass_state::draw_sprites(bitmap_ind16 &bitmap, bitmap_ind8 &priority, c
 
 		sy -= sprite_y_adjust;
 
-<<<<<<< HEAD
-		m_gfxdecode->gfx(1)->transpen(bitmap,cliprect,
-				sprite_ram[offs + interleave],
-				color,
-				flipx,flipy,
-				sx,sy, 0);
-=======
 		m_gfxdecode->gfx(1)->prio_transpen(bitmap,cliprect,
 				sprite_ram[offs + interleave],
 				color,
 				flipx,flipy,
 				sx,sy, priority, 1 << 1, 0);
->>>>>>> upstream/master
 
 		sy += (flip_screen() ? -256 : 256);
 
 		// Wrap around
-<<<<<<< HEAD
-		m_gfxdecode->gfx(1)->transpen(bitmap,cliprect,
-				sprite_ram[offs + interleave],
-				color,
-				flipx,flipy,
-				sx,sy, 0);
-=======
 		m_gfxdecode->gfx(1)->prio_transpen(bitmap,cliprect,
 				sprite_ram[offs + interleave],
 				color,
 				flipx,flipy,
 				sx,sy, priority, 1 << 1, 0);
->>>>>>> upstream/master
 	}
 }
 
 
-<<<<<<< HEAD
-void decocass_state::draw_missiles(bitmap_ind16 &bitmap, const rectangle &cliprect,
-						int missile_y_adjust, int missile_y_adjust_flip_screen,
-						UINT8 *missile_ram, int interleave)
-=======
 void decocass_state::draw_missiles(bitmap_ind16 &bitmap, bitmap_ind8 &priority, const rectangle &cliprect,
 						int missile_y_adjust, int missile_y_adjust_flip_screen,
 						uint8_t *missile_ram, int interleave)
->>>>>>> upstream/master
 {
 	int i, offs, x;
 
@@ -709,14 +593,10 @@ void decocass_state::draw_missiles(bitmap_ind16 &bitmap, bitmap_ind8 &priority, 
 			for (x = 0; x < 4; x++)
 			{
 				if (sx >= cliprect.min_x && sx <= cliprect.max_x)
-<<<<<<< HEAD
-					bitmap.pix16(sy, sx) = (m_color_missiles >> 4) & 7;
-=======
 				{
 					bitmap.pix16(sy, sx) = (m_color_missiles & 7) | 8;
 					priority.pix8(sy, sx) |= 1 << 2;
 				}
->>>>>>> upstream/master
 				sx++;
 			}
 
@@ -732,14 +612,10 @@ void decocass_state::draw_missiles(bitmap_ind16 &bitmap, bitmap_ind8 &priority, 
 			for (x = 0; x < 4; x++)
 			{
 				if (sx >= cliprect.min_x && sx <= cliprect.max_x)
-<<<<<<< HEAD
-					bitmap.pix16(sy, sx) = m_color_missiles & 7;
-=======
 				{
 					bitmap.pix16(sy, sx) = ((m_color_missiles >> 4) & 7) | 8;
 					priority.pix8(sy, sx) |= 1 << 3;
 				}
->>>>>>> upstream/master
 				sx++;
 			}
 	}
@@ -791,13 +667,8 @@ void decocass_state::draw_edge(bitmap_ind16 &bitmap, const rectangle &cliprect, 
 	for (y=clip.min_y; y<=clip.max_y;y++)
 	{
 		int srcline = (y + scrolly) & 0x1ff;
-<<<<<<< HEAD
-		UINT16* src = &srcbitmap->pix16(srcline);
-		UINT16* dst = &bitmap.pix16(y);
-=======
 		uint16_t* src = &srcbitmap->pix16(srcline);
 		uint16_t* dst = &bitmap.pix16(y);
->>>>>>> upstream/master
 
 		for (x=clip.min_x; x<=clip.max_x;x++)
 		{
@@ -813,19 +684,10 @@ void decocass_state::draw_edge(bitmap_ind16 &bitmap, const rectangle &cliprect, 
 				case 0x03: srccol = (x + scrollx) & 0x1ff; break; // hwy, burnrub etc.
 			}
 
-<<<<<<< HEAD
-			UINT16 pix = src[srccol];
-
-			if ((pix & 0x3) || opaque)
-			{
-				dst[x] = pix;
-			}
-=======
 			uint16_t pix = src[srccol];
 
 			if ((pix & 0x3) || opaque)
 				dst[x] = pix;
->>>>>>> upstream/master
 		}
 	}
 
@@ -834,15 +696,9 @@ void decocass_state::draw_edge(bitmap_ind16 &bitmap, const rectangle &cliprect, 
 
 void decocass_state::video_start()
 {
-<<<<<<< HEAD
-	m_bg_tilemap_l = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(decocass_state::get_bg_l_tile_info),this), tilemap_mapper_delegate(FUNC(decocass_state::bgvideoram_scan_cols),this), 16, 16, 32, 32);
-	m_bg_tilemap_r = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(decocass_state::get_bg_r_tile_info),this), tilemap_mapper_delegate(FUNC(decocass_state::bgvideoram_scan_cols),this), 16, 16, 32, 32);
-	m_fg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(decocass_state::get_fg_tile_info),this), tilemap_mapper_delegate(FUNC(decocass_state::fgvideoram_scan_cols),this), 8, 8, 32, 32);
-=======
 	m_bg_tilemap_l = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(decocass_state::get_bg_l_tile_info),this), tilemap_mapper_delegate(FUNC(decocass_state::bgvideoram_scan_cols),this), 16, 16, 32, 32);
 	m_bg_tilemap_r = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(decocass_state::get_bg_r_tile_info),this), tilemap_mapper_delegate(FUNC(decocass_state::bgvideoram_scan_cols),this), 16, 16, 32, 32);
 	m_fg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(decocass_state::get_fg_tile_info),this), tilemap_mapper_delegate(FUNC(decocass_state::fgvideoram_scan_cols),this), 8, 8, 32, 32);
->>>>>>> upstream/master
 
 	m_bg_tilemap_l->set_transparent_pen(0);
 	m_bg_tilemap_r->set_transparent_pen(0);
@@ -867,11 +723,7 @@ void decocass_state::video_start()
 	memset(m_empty_tile, 0, sizeof(m_empty_tile));
 }
 
-<<<<<<< HEAD
-UINT32 decocass_state::screen_update_decocass(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t decocass_state::screen_update_decocass(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	/* THIS CODE SHOULD NOT BE IN SCREEN UPDATE !! */
 
@@ -879,15 +731,9 @@ uint32_t decocass_state::screen_update_decocass(screen_device &screen, bitmap_in
 		m_maincpu->set_input_line(INPUT_LINE_NMI, ASSERT_LINE);
 
 	if (0 == (m_watchdog_flip & 0x04))
-<<<<<<< HEAD
-		machine().watchdog_reset();
-	else if (m_watchdog_count-- > 0)
-		machine().watchdog_reset();
-=======
 		m_watchdog->watchdog_reset();
 	else if (m_watchdog_count-- > 0)
 		m_watchdog->watchdog_reset();
->>>>>>> upstream/master
 
 	/* (end) THIS CODE SHOULD NOT BE IN SCREEN UPDATE !! */
 
@@ -911,14 +757,6 @@ uint32_t decocass_state::screen_update_decocass(screen_device &screen, bitmap_in
 	}
 #endif
 
-<<<<<<< HEAD
-	bitmap.fill(0, cliprect);
-
-	if (m_mode_set & 0x08)  /* bkg_ena on ? */
-	{
-		draw_edge(bitmap,cliprect,0,true);
-		draw_edge(bitmap,cliprect,1,true);
-=======
 	bitmap_ind8 &priority = screen.priority();
 	bitmap.fill(8, cliprect);
 	priority.fill(0, cliprect);
@@ -927,32 +765,14 @@ uint32_t decocass_state::screen_update_decocass(screen_device &screen, bitmap_in
 	{
 		draw_edge(bitmap, cliprect, 0, true);
 		draw_edge(bitmap, cliprect, 1, true);
->>>>>>> upstream/master
 	}
 
 	if (m_mode_set & 0x20)
 	{
-<<<<<<< HEAD
-		draw_object(bitmap, cliprect);
-=======
->>>>>>> upstream/master
 		draw_center(bitmap, cliprect);
 	}
 	else
 	{
-<<<<<<< HEAD
-		draw_object(bitmap, cliprect);
-		draw_center(bitmap, cliprect);
-		if (m_mode_set & 0x08)  /* bkg_ena on ? */
-		{
-			draw_edge(bitmap,cliprect,0,false);
-			draw_edge(bitmap,cliprect,1,false);
-		}
-	}
-	m_fg_tilemap->draw(screen, bitmap, cliprect, 0, 0);
-	draw_sprites(bitmap, cliprect, (m_color_center_bot >> 1) & 1, 0, 0, m_fgvideoram, 0x20);
-	draw_missiles(bitmap, cliprect, 1, 0, m_colorram, 0x20);
-=======
 		draw_center(bitmap, cliprect);
 		if (m_mode_set & 0x08)  /* bkg_ena on ? */
 		{
@@ -976,6 +796,5 @@ uint32_t decocass_state::screen_update_decocass(screen_device &screen, bitmap_in
 	// PRI1 & PRI2: special handling for 1bpp object and tunnel sections
 	draw_special_priority(bitmap, priority, cliprect);
 
->>>>>>> upstream/master
 	return 0;
 }

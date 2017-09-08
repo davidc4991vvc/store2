@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-// license:???
-=======
 // license:BSD-3-Clause
->>>>>>> upstream/master
 // copyright-holders:Stefan Jokisch
 /***************************************************************************
 
@@ -19,11 +15,7 @@
     Liberator Memory Map (for the main set, the other one is rearranged)
      (from the schematics/manual)
 
-<<<<<<< HEAD
-    HEX        R/W   D7 D6 D5 D4 D3 D2 D2 D0  function
-=======
     HEX        R/W   D7 D6 D5 D4 D3 D2 D1 D0  function
->>>>>>> upstream/master
     ---------+-----+------------------------+------------------------
     0000             D  D  D  D  D  D  D  D   XCOORD
     0001             D  D  D  D  D  D  D  D   YCOORD
@@ -146,22 +138,15 @@
 
 #include "emu.h"
 #include "includes/liberatr.h"
-<<<<<<< HEAD
-=======
 #include "speaker.h"
->>>>>>> upstream/master
 
 #define MASTER_CLOCK 20000000 /* 20Mhz Main Clock Xtal */
 
 
 void liberatr_state::machine_start()
 {
-<<<<<<< HEAD
-	atarigen_state::machine_start();
-=======
 	save_item(NAME(m_earom_data));
 	save_item(NAME(m_earom_control));
->>>>>>> upstream/master
 
 	save_item(NAME(m_trackball_offset));
 	save_item(NAME(m_ctrld));
@@ -169,8 +154,6 @@ void liberatr_state::machine_start()
 }
 
 
-<<<<<<< HEAD
-=======
 void liberatr_state::machine_reset()
 {
 	// reset the control latch on the EAROM
@@ -178,7 +161,6 @@ void liberatr_state::machine_reset()
 }
 
 
->>>>>>> upstream/master
 
 /*************************************
  *
@@ -186,17 +168,6 @@ void liberatr_state::machine_reset()
  *
  *************************************/
 
-<<<<<<< HEAD
-WRITE8_MEMBER( liberatr_state::led_w )
-{
-	set_led_status(machine(), offset, ~data & 0x10);
-}
-
-
-WRITE8_MEMBER( liberatr_state::coin_counter_w )
-{
-	::coin_counter_w(machine(), offset ^ 0x01, data & 0x10);
-=======
 WRITE8_MEMBER(liberatr_state::output_latch_w)
 {
 	m_outlatch->write_bit(offset, BIT(data, 4));
@@ -224,7 +195,6 @@ WRITE_LINE_MEMBER(liberatr_state::coin_counter_left_w)
 WRITE_LINE_MEMBER(liberatr_state::coin_counter_right_w)
 {
 	machine().bookkeeping().coin_counter_w(1, state);
->>>>>>> upstream/master
 }
 
 
@@ -235,19 +205,6 @@ WRITE_LINE_MEMBER(liberatr_state::coin_counter_right_w)
  *
  *************************************/
 
-<<<<<<< HEAD
-WRITE8_MEMBER( liberatr_state::trackball_reset_w )
-{
-	/* on the rising edge of /ctrld, the /ld signal on the LS191 is released and the value of the switches */
-	/* input becomes the starting point for the trackball counters */
-	if (((data ^ m_ctrld) & 0x10) && (data & 0x10))
-	{
-		UINT8 trackball = ioport("FAKE")->read();
-		UINT8 switches = ioport("IN0")->read();
-		m_trackball_offset = ((trackball & 0xf0) - (switches & 0xf0)) | ((trackball - switches) & 0x0f);
-	}
-	m_ctrld = data & 0x10;
-=======
 WRITE_LINE_MEMBER(liberatr_state::trackball_reset_w)
 {
 	/* on the rising edge of /ctrld, the /ld signal on the LS191 is released and the value of the switches */
@@ -259,7 +216,6 @@ WRITE_LINE_MEMBER(liberatr_state::trackball_reset_w)
 		m_trackball_offset = ((trackball & 0xf0) - (switches & 0xf0)) | ((trackball - switches) & 0x0f);
 	}
 	m_ctrld = state;
->>>>>>> upstream/master
 }
 
 
@@ -268,11 +224,7 @@ READ8_MEMBER( liberatr_state::port0_r )
 	/* if ctrld is high, the /ld signal on the LS191 is NOT set, meaning that the trackball is counting */
 	if (m_ctrld)
 	{
-<<<<<<< HEAD
-		UINT8 trackball = ioport("FAKE")->read();
-=======
 		uint8_t trackball = ioport("FAKE")->read();
->>>>>>> upstream/master
 		return ((trackball & 0xf0) - (m_trackball_offset & 0xf0)) | ((trackball - m_trackball_offset) & 0x0f);
 	}
 
@@ -285,8 +237,6 @@ READ8_MEMBER( liberatr_state::port0_r )
 
 /*************************************
  *
-<<<<<<< HEAD
-=======
  *  Early raster EAROM interface
  *
  *************************************/
@@ -329,7 +279,6 @@ WRITE8_MEMBER( liberatr_state::earom_control_w )
 
 /*************************************
  *
->>>>>>> upstream/master
  *  Main CPU memory handlers
  *
  *************************************/
@@ -347,16 +296,8 @@ static ADDRESS_MAP_START( liberatr_map, AS_PROGRAM, 8, liberatr_state )
 	AM_RANGE(0x6400, 0x6400) AM_WRITENOP
 	AM_RANGE(0x6600, 0x6600) AM_WRITE(earom_control_w)
 	AM_RANGE(0x6800, 0x6800) AM_WRITEONLY AM_SHARE("planet_frame")
-<<<<<<< HEAD
-	AM_RANGE(0x6a00, 0x6a00) AM_WRITE(watchdog_reset_w)
-	AM_RANGE(0x6c00, 0x6c01) AM_WRITE(led_w)
-	AM_RANGE(0x6c04, 0x6c04) AM_WRITE(trackball_reset_w)
-	AM_RANGE(0x6c05, 0x6c06) AM_WRITE(coin_counter_w)
-	AM_RANGE(0x6c07, 0x6c07) AM_WRITEONLY AM_SHARE("planet_select")
-=======
 	AM_RANGE(0x6a00, 0x6a00) AM_DEVWRITE("watchdog", watchdog_timer_device, reset_w)
 	AM_RANGE(0x6c00, 0x6c07) AM_WRITE(output_latch_w)
->>>>>>> upstream/master
 	AM_RANGE(0x6e00, 0x6e3f) AM_WRITE(earom_w)
 	AM_RANGE(0x7000, 0x701f) AM_DEVREADWRITE("pokey2", pokey_device, read, write)
 	AM_RANGE(0x7800, 0x781f) AM_DEVREADWRITE("pokey1", pokey_device, read, write)
@@ -385,16 +326,8 @@ static ADDRESS_MAP_START( liberat2_map, AS_PROGRAM, 8, liberatr_state )
 	AM_RANGE(0x4600, 0x4600) AM_WRITE(earom_control_w)
 	AM_RANGE(0x4800, 0x483f) AM_READ(earom_r)
 	AM_RANGE(0x4800, 0x4800) AM_WRITEONLY AM_SHARE("planet_frame")
-<<<<<<< HEAD
-	AM_RANGE(0x4a00, 0x4a00) AM_WRITE(watchdog_reset_w)
-	AM_RANGE(0x4c00, 0x4c01) AM_WRITE(led_w)
-	AM_RANGE(0x4c04, 0x4c04) AM_WRITE(trackball_reset_w)
-	AM_RANGE(0x4c05, 0x4c06) AM_WRITE(coin_counter_w)
-	AM_RANGE(0x4c07, 0x4c07) AM_WRITEONLY AM_SHARE("planet_select")
-=======
 	AM_RANGE(0x4a00, 0x4a00) AM_DEVWRITE("watchdog", watchdog_timer_device, reset_w)
 	AM_RANGE(0x4c00, 0x4c07) AM_WRITE(output_latch_w)
->>>>>>> upstream/master
 	AM_RANGE(0x4e00, 0x4e3f) AM_WRITE(earom_w)
 	AM_RANGE(0x5000, 0x501f) AM_DEVREADWRITE("pokey2", pokey_device, read, write)
 	AM_RANGE(0x5800, 0x581f) AM_DEVREADWRITE("pokey1", pokey_device, read, write)
@@ -494,11 +427,7 @@ INPUT_PORTS_END
  *
  *************************************/
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( liberatr, liberatr_state )
-=======
 static MACHINE_CONFIG_START( liberatr )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6502, MASTER_CLOCK/16) /* 1.25Mhz divided from 20Mhz master clock */
@@ -507,8 +436,6 @@ static MACHINE_CONFIG_START( liberatr )
 
 	MCFG_ER2055_ADD("earom")
 
-<<<<<<< HEAD
-=======
 	MCFG_DEVICE_ADD("outlatch", LS259, 0)
 	MCFG_ADDRESSABLE_LATCH_Q0_OUT_CB(WRITELINE(liberatr_state, start_led_1_w))
 	MCFG_ADDRESSABLE_LATCH_Q1_OUT_CB(WRITELINE(liberatr_state, start_led_2_w))
@@ -521,7 +448,6 @@ static MACHINE_CONFIG_START( liberatr )
 
 	MCFG_WATCHDOG_ADD("watchdog")
 
->>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE(60)
@@ -628,10 +554,5 @@ ROM_END
  *
  *************************************/
 
-<<<<<<< HEAD
-GAME( 1982, liberatr, 0,        liberatr, liberatr, driver_device, 0, ROT0, "Atari", "Liberator (set 1)", MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
-GAME( 1982, liberatr2,liberatr, liberat2, liberatr, driver_device, 0, ROT0, "Atari", "Liberator (set 2)", MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1982, liberatr, 0,        liberatr, liberatr, liberatr_state, 0, ROT0, "Atari", "Liberator (set 1)", MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
 GAME( 1982, liberatr2,liberatr, liberat2, liberatr, liberatr_state, 0, ROT0, "Atari", "Liberator (set 2)", MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

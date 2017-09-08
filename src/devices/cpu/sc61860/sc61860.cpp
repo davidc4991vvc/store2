@@ -18,17 +18,10 @@
  *****************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "debugger.h"
-
-#include "sc61860.h"
-
-=======
 #include "sc61860.h"
 
 #include "debugger.h"
 
->>>>>>> upstream/master
 
 #define I 0
 #define J 1
@@ -48,18 +41,6 @@
 #define C 95
 
 
-<<<<<<< HEAD
-#define VERBOSE 0
-
-#define LOG(x)  do { if (VERBOSE) logerror x; } while (0)
-
-
-const device_type SC61860 = &device_creator<sc61860_device>;
-
-
-sc61860_device::sc61860_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: cpu_device(mconfig, SC61860, "SC61860", tag, owner, clock, "sc61860", __FILE__)
-=======
 //#define VERBOSE 1
 #include "logmacro.h"
 
@@ -69,7 +50,6 @@ DEFINE_DEVICE_TYPE(SC61860, sc61860_device, "sc61860", "SC61860")
 
 sc61860_device::sc61860_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: cpu_device(mconfig, SC61860, tag, owner, clock)
->>>>>>> upstream/master
 	, m_program_config("program", ENDIANNESS_BIG, 8, 16, 0)
 	, m_reset(*this)
 	, m_brk(*this)
@@ -82,17 +62,6 @@ sc61860_device::sc61860_device(const machine_config &mconfig, const char *tag, d
 {
 }
 
-<<<<<<< HEAD
-
-offs_t sc61860_device::disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options)
-{
-	extern CPU_DISASSEMBLE( sc61860 );
-	return CPU_DISASSEMBLE_NAME(sc61860)(this, buffer, pc, oprom, opram, options);
-}
-
-
-UINT8 *sc61860_device::internal_ram()
-=======
 device_memory_interface::space_config_vector sc61860_device::memory_space_config() const
 {
 	return space_config_vector {
@@ -109,7 +78,6 @@ offs_t sc61860_device::disasm_disassemble(std::ostream &stream, offs_t pc, const
 
 
 uint8_t *sc61860_device::internal_ram()
->>>>>>> upstream/master
 {
 	return m_ram;
 }
@@ -127,13 +95,8 @@ TIMER_CALLBACK_MEMBER(sc61860_device::sc61860_2ms_tick)
 /***************************************************************
  * include the opcode macros, functions and tables
  ***************************************************************/
-<<<<<<< HEAD
-#include "scops.inc"
-#include "sctable.inc"
-=======
 #include "scops.hxx"
 #include "sctable.hxx"
->>>>>>> upstream/master
 
 void sc61860_device::device_reset()
 {
@@ -145,12 +108,8 @@ void sc61860_device::device_reset()
 
 void sc61860_device::device_start()
 {
-<<<<<<< HEAD
-	machine().scheduler().timer_pulse(attotime::from_hz(500), timer_expired_delegate( FUNC(sc61860_device::sc61860_2ms_tick), this));
-=======
 	m_2ms_tick_timer = machine().scheduler().timer_alloc(timer_expired_delegate(FUNC(sc61860_device::sc61860_2ms_tick), this));
 	m_2ms_tick_timer->adjust(attotime::from_hz(500), 0, attotime::from_hz(500));
->>>>>>> upstream/master
 
 	m_program = &space(AS_PROGRAM);
 	m_direct = &m_program->direct();
@@ -211,34 +170,20 @@ void sc61860_device::device_start()
 	state_add( SC61860_ZERO,  "Zero" , m_zero          ).mask(1).formatstr("%1u");
 
 	state_add(STATE_GENPC, "GENPC", m_pc).formatstr("%04X").noshow();
-<<<<<<< HEAD
-	state_add(STATE_GENFLAGS, "GENFLAGS",  m_debugger_temp).formatstr("%2s").noshow();
-	state_add(STATE_GENSP, "GENSP", m_r).mask(0x7f).formatstr("%02X").noshow();
-	state_add(STATE_GENPCBASE, "GENPCBASE", m_oldpc).formatstr("%04X").noshow();
-=======
 	state_add(STATE_GENPCBASE, "CURPC", m_oldpc).formatstr("%04X").noshow();
 	state_add(STATE_GENFLAGS, "GENFLAGS",  m_debugger_temp).formatstr("%2s").noshow();
 	state_add(STATE_GENSP, "GENSP", m_r).mask(0x7f).formatstr("%02X").noshow();
->>>>>>> upstream/master
 
 	m_icountptr = &m_icount;
 }
 
 
-<<<<<<< HEAD
-void sc61860_device::state_string_export(const device_state_entry &entry, std::string &str)
-=======
 void sc61860_device::state_string_export(const device_state_entry &entry, std::string &str) const
->>>>>>> upstream/master
 {
 	switch (entry.index())
 	{
 		case STATE_GENFLAGS:
-<<<<<<< HEAD
-			strprintf(str, "%c%c", m_zero ? 'Z' : '.', m_carry ? 'C' : '.');
-=======
 			str = string_format("%c%c", m_zero ? 'Z' : '.', m_carry ? 'C' : '.');
->>>>>>> upstream/master
 			break;
 	}
 }

@@ -7,38 +7,20 @@
  *
  */
 
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __DS1204_H__
-#define __DS1204_H__
-
-#include "emu.h"
-=======
 #ifndef MAME_MACHINE_DS1204_H
 #define MAME_MACHINE_DS1204_H
 
 #pragma once
 
->>>>>>> upstream/master
 
 #define MCFG_DS1204_ADD( _tag ) \
 	MCFG_DEVICE_ADD( _tag, DS1204, 0 )
 
-<<<<<<< HEAD
-class ds1204_device : public device_t,
-	public device_nvram_interface
-{
-public:
-	// construction/destruction
-	ds1204_device( const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock );
-=======
 class ds1204_device : public device_t, public device_nvram_interface
 {
 public:
 	// construction/destruction
 	ds1204_device( const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock );
->>>>>>> upstream/master
 
 	DECLARE_WRITE_LINE_MEMBER( write_rst );
 	DECLARE_WRITE_LINE_MEMBER( write_clk );
@@ -47,32 +29,18 @@ public:
 
 protected:
 	// device-level overrides
-<<<<<<< HEAD
-	virtual void device_start();
-
-	// device_nvram_interface overrides
-	virtual void nvram_default();
-	virtual void nvram_read( emu_file &file );
-	virtual void nvram_write( emu_file &file );
-=======
 	virtual void device_start() override;
 
 	// device_nvram_interface overrides
 	virtual void nvram_default() override;
 	virtual void nvram_read( emu_file &file ) override;
 	virtual void nvram_write( emu_file &file ) override;
->>>>>>> upstream/master
 
 private:
 	inline void ATTR_PRINTF( 3, 4 ) verboselog( int n_level, const char *s_fmt, ... );
 	void new_state(int state);
-<<<<<<< HEAD
-	void writebit(UINT8 *buffer);
-	void readbit(UINT8 *buffer);
-=======
 	void writebit(uint8_t *buffer);
 	void readbit(uint8_t *buffer);
->>>>>>> upstream/master
 
 	enum state_t
 	{
@@ -102,42 +70,24 @@ private:
 
 	static const int DQ_HIGH_IMPEDANCE = -1;
 
-<<<<<<< HEAD
-=======
 	optional_memory_region m_region;
 
->>>>>>> upstream/master
 	int m_rst;
 	int m_clk;
 	int m_dqw;
 	int m_dqr;
 	int m_state;
 	int m_bit;
-<<<<<<< HEAD
-	UINT8 m_command[3];
-	UINT8 m_compare_register[8];
-	UINT8 m_unique_pattern[2];
-	UINT8 m_identification[8];
-	UINT8 m_security_match[8];
-	UINT8 m_secure_memory[16];
-=======
 	uint8_t m_command[3];
 	uint8_t m_compare_register[8];
 	uint8_t m_unique_pattern[2];
 	uint8_t m_identification[8];
 	uint8_t m_security_match[8];
 	uint8_t m_secure_memory[16];
->>>>>>> upstream/master
 };
 
 
 // device type definition
-<<<<<<< HEAD
-extern const device_type DS1204;
-
-#endif
-=======
 DECLARE_DEVICE_TYPE(DS1204, ds1204_device)
 
 #endif // MAME_MACHINE_DS1204_H
->>>>>>> upstream/master

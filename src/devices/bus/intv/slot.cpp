@@ -86,11 +86,7 @@
 //  GLOBAL VARIABLES
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type INTV_CART_SLOT = &device_creator<intv_cart_slot_device>;
-=======
 DEFINE_DEVICE_TYPE(INTV_CART_SLOT, intv_cart_slot_device, "intv_cart_slot", "Intellivision Cartridge Slot")
->>>>>>> upstream/master
 
 //**************************************************************************
 //    Intellivision Cartridges Interface
@@ -102,11 +98,7 @@ DEFINE_DEVICE_TYPE(INTV_CART_SLOT, intv_cart_slot_device, "intv_cart_slot", "Int
 
 device_intv_cart_interface::device_intv_cart_interface(const machine_config &mconfig, device_t &device)
 	: device_slot_card_interface(mconfig, device),
-<<<<<<< HEAD
-		m_rom(NULL),
-=======
 		m_rom(nullptr),
->>>>>>> upstream/master
 		m_rom_size(0)
 {
 }
@@ -124,15 +116,9 @@ device_intv_cart_interface::~device_intv_cart_interface()
 //  rom_alloc - alloc the space for the cart
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void device_intv_cart_interface::rom_alloc(UINT32 size, const char *tag)
-{
-	if (m_rom == NULL)
-=======
 void device_intv_cart_interface::rom_alloc(uint32_t size, const char *tag)
 {
 	if (m_rom == nullptr)
->>>>>>> upstream/master
 	{
 		m_rom = device().machine().memory().region_alloc(std::string(tag).append(INTVSLOT_ROM_REGION_TAG).c_str(), size, 1, ENDIANNESS_LITTLE)->base();
 		memset(m_rom, 0xff, size);
@@ -145,11 +131,7 @@ void device_intv_cart_interface::rom_alloc(uint32_t size, const char *tag)
 //  ram_alloc - alloc the space for the ram
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void device_intv_cart_interface::ram_alloc(UINT32 size)
-=======
 void device_intv_cart_interface::ram_alloc(uint32_t size)
->>>>>>> upstream/master
 {
 	m_ram.resize(size);
 }
@@ -162,20 +144,12 @@ void device_intv_cart_interface::ram_alloc(uint32_t size)
 //-------------------------------------------------
 //  intv_cart_slot_device - constructor
 //-------------------------------------------------
-<<<<<<< HEAD
-intv_cart_slot_device::intv_cart_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-						device_t(mconfig, INTV_CART_SLOT, "Intellivision Cartridge Slot", tag, owner, clock, "intv_cart_slot", __FILE__),
-						device_image_interface(mconfig, *this),
-						device_slot_interface(mconfig, *this),
-						m_type(INTV_STD), m_cart(nullptr)
-=======
 intv_cart_slot_device::intv_cart_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	device_t(mconfig, INTV_CART_SLOT, tag, owner, clock),
 	device_image_interface(mconfig, *this),
 	device_slot_interface(mconfig, *this),
 	m_type(INTV_STD),
 	m_cart(nullptr)
->>>>>>> upstream/master
 {
 }
 
@@ -197,21 +171,6 @@ void intv_cart_slot_device::device_start()
 	m_cart = dynamic_cast<device_intv_cart_interface *>(get_card_device());
 }
 
-<<<<<<< HEAD
-//-------------------------------------------------
-//  device_config_complete - perform any
-//  operations now that the configuration is
-//  complete
-//-------------------------------------------------
-
-void intv_cart_slot_device::device_config_complete()
-{
-	// set brief and instance name
-	update_names();
-}
-
-=======
->>>>>>> upstream/master
 
 //-------------------------------------------------
 //  INTV PCB
@@ -237,17 +196,10 @@ static const intv_slot slot_list[] =
 
 static int intv_get_pcb_id(const char *slot)
 {
-<<<<<<< HEAD
-	for (int i = 0; i < ARRAY_LENGTH(slot_list); i++)
-	{
-		if (!core_stricmp(slot_list[i].slot_option, slot))
-			return slot_list[i].pcb_id;
-=======
 	for (auto & elem : slot_list)
 	{
 		if (!core_stricmp(elem.slot_option, slot))
 			return elem.pcb_id;
->>>>>>> upstream/master
 	}
 
 	return 0;
@@ -256,17 +208,10 @@ static int intv_get_pcb_id(const char *slot)
 #if 1
 static const char *intv_get_slot(int type)
 {
-<<<<<<< HEAD
-	for (int i = 0; i < ARRAY_LENGTH(slot_list); i++)
-	{
-		if (slot_list[i].pcb_id == type)
-			return slot_list[i].slot_option;
-=======
 	for (auto & elem : slot_list)
 	{
 		if (elem.pcb_id == type)
 			return elem.slot_option;
->>>>>>> upstream/master
 	}
 
 	return "intv_rom";
@@ -277,26 +222,6 @@ static const char *intv_get_slot(int type)
  call load
  -------------------------------------------------*/
 
-<<<<<<< HEAD
-int intv_cart_slot_device::load_fullpath()
-{
-	UINT8 temp;
-	UINT8 num_segments;
-	UINT8 start_seg;
-	UINT8 end_seg;
-
-	UINT32 current_address;
-	UINT32 end_address;
-
-	UINT8 high_byte;
-	UINT8 low_byte;
-
-	UINT8 *ROM;
-	const char *file_type = filetype();
-
-	/* if it is in .rom format, we enter here */
-	if (!core_stricmp (file_type, "rom"))
-=======
 image_init_result intv_cart_slot_device::load_fullpath()
 {
 	uint8_t temp;
@@ -314,32 +239,20 @@ image_init_result intv_cart_slot_device::load_fullpath()
 
 	/* if it is in .rom format, we enter here */
 	if (is_filetype("rom"))
->>>>>>> upstream/master
 	{
 		// header
 		fread(&temp, 1);
 		if (temp != 0xa8)
-<<<<<<< HEAD
-			return IMAGE_INIT_FAIL;
-=======
 			return image_init_result::FAIL;
->>>>>>> upstream/master
 
 		fread(&num_segments, 1);
 
 		fread(&temp, 1);
 		if (temp != (num_segments ^ 0xff))
-<<<<<<< HEAD
-			return IMAGE_INIT_FAIL;
-
-		m_cart->rom_alloc(0x20000, tag());
-		ROM = (UINT8 *)m_cart->get_rom_base();
-=======
 			return image_init_result::FAIL;
 
 		m_cart->rom_alloc(0x20000, tag());
 		ROM = (uint8_t *)m_cart->get_rom_base();
->>>>>>> upstream/master
 
 		for (int i = 0; i < num_segments; i++)
 		{
@@ -368,11 +281,7 @@ image_init_result intv_cart_slot_device::load_fullpath()
 		{
 			fread(&temp, 1);
 		}
-<<<<<<< HEAD
-		return IMAGE_INIT_PASS;
-=======
 		return image_init_result::PASS;
->>>>>>> upstream/master
 	}
 	/* otherwise, we load it as a .bin file, using extrainfo from intv.hsi in place of .cfg */
 	else
@@ -392,11 +301,7 @@ image_init_result intv_cart_slot_device::load_fullpath()
 		std::string extrainfo;
 
 		m_cart->rom_alloc(0x20000, tag());
-<<<<<<< HEAD
-		ROM = (UINT8 *)m_cart->get_rom_base();
-=======
 		ROM = (uint8_t *)m_cart->get_rom_base();
->>>>>>> upstream/master
 
 		if (!hashfile_extrainfo(*this, extrainfo))
 		{
@@ -467,22 +372,6 @@ image_init_result intv_cart_slot_device::load_fullpath()
 			}
 		}
 
-<<<<<<< HEAD
-		return IMAGE_INIT_PASS;
-	}
-}
-
-bool intv_cart_slot_device::call_load()
-{
-	if (m_cart)
-	{
-		if (software_entry() == NULL)
-			return load_fullpath();
-		else
-		{
-			UINT16 offset[] = { 0x400, 0x2000, 0x4000, 0x4800, 0x5000, 0x6000, 0x7000, 0x8000, 0x9000, 0xa000, 0xb000, 0xc000, 0xd000, 0xe000, 0xf000};
-			const char* region_name[] = {"0400", "2000", "4000", "4800", "5000", "6000", "7000", "8000", "9000", "A000", "B000", "C000", "D000", "E000", "F000"};
-=======
 		return image_init_result::PASS;
 	}
 }
@@ -497,7 +386,6 @@ image_init_result intv_cart_slot_device::call_load()
 		{
 			uint16_t offset[] = { 0x400, 0x2000, 0x4000, 0x4800, 0x5000, 0x6000, 0x7000, 0x8000, 0x8800, 0x9000, 0xa000, 0xb000, 0xc000, 0xd000, 0xe000, 0xf000};
 			const char* region_name[] = {"0400", "2000", "4000", "4800", "5000", "6000", "7000", "8000", "8800", "9000", "A000", "B000", "C000", "D000", "E000", "F000"};
->>>>>>> upstream/master
 			const char *pcb_name = get_feature("slot");
 			bool extra_bank = false;
 
@@ -509,24 +397,14 @@ image_init_result intv_cart_slot_device::call_load()
 			if (m_type == INTV_WSMLB)
 				extra_bank = true;
 
-<<<<<<< HEAD
-			UINT32 size = 0;
-			UINT16 address = 0;
-			UINT8 *ROM, *region;
-=======
 			uint32_t size;
 			uint16_t address;
 			uint8_t *ROM, *region;
->>>>>>> upstream/master
 
 			m_cart->rom_alloc(extra_bank ? 0x22000 : 0x20000, tag());
 			ROM = m_cart->get_rom_base();
 
-<<<<<<< HEAD
-			for (int i = 0; i < 15; i++)
-=======
 			for (int i = 0; i < 16; i++)
->>>>>>> upstream/master
 			{
 				address = offset[i];
 				size = get_software_region_length(region_name[i]);
@@ -546,30 +424,11 @@ image_init_result intv_cart_slot_device::call_load()
 				m_cart->ram_alloc(get_software_region_length("ram"));
 
 			//printf("Type: %s\n", intv_get_slot(m_type));
-<<<<<<< HEAD
-			return IMAGE_INIT_PASS;
-		}
-	}
-
-	return IMAGE_INIT_PASS;
-}
-
-
-/*-------------------------------------------------
- call softlist load
- -------------------------------------------------*/
-
-bool intv_cart_slot_device::call_softlist_load(software_list_device &swlist, const char *swname, const rom_entry *start_entry)
-{
-	load_software_part_region(*this, swlist, swname, start_entry);
-	return TRUE;
-=======
 			return image_init_result::PASS;
 		}
 	}
 
 	return image_init_result::PASS;
->>>>>>> upstream/master
 }
 
 
@@ -577,18 +436,6 @@ bool intv_cart_slot_device::call_softlist_load(software_list_device &swlist, con
  get default card software
  -------------------------------------------------*/
 
-<<<<<<< HEAD
-void intv_cart_slot_device::get_default_card_software(std::string &result)
-{
-	if (open_image_file(mconfig().options()))
-	{
-		const char *slot_string = "intv_rom";
-		UINT32 len = core_fsize(m_file);
-		dynamic_buffer rom(len);
-		int type = INTV_STD;
-
-		core_fread(m_file, &rom[0], len);
-=======
 std::string intv_cart_slot_device::get_default_card_software(get_default_card_software_hook &hook) const
 {
 	if (hook.image_file())
@@ -599,7 +446,6 @@ std::string intv_cart_slot_device::get_default_card_software(get_default_card_so
 		int type = INTV_STD;
 
 		hook.image_file()->read(&rom[0], len);
->>>>>>> upstream/master
 
 		if (rom[0] == 0xa8 && (rom[1] == (rom[2] ^ 0xff)))
 		{
@@ -612,11 +458,7 @@ std::string intv_cart_slot_device::get_default_card_software(get_default_card_so
 			int mapper, rom[5], ram, extra;
 			std::string extrainfo;
 
-<<<<<<< HEAD
-			if (hashfile_extrainfo(*this, extrainfo))
-=======
 			if (hook.hashfile_extrainfo(extrainfo))
->>>>>>> upstream/master
 			{
 				sscanf(extrainfo.c_str() ,"%d %d %d %d %d %d %d", &mapper, &rom[0], &rom[1], &rom[2],
 						&rom[3], &ram, &extra);
@@ -636,19 +478,10 @@ std::string intv_cart_slot_device::get_default_card_software(get_default_card_so
 		slot_string = intv_get_slot(type);
 
 		//printf("type: %s\n", slot_string);
-<<<<<<< HEAD
-		clear();
-
-		result.assign(slot_string);
-		return;
-	}
-	software_get_default_slot(result, "intv_rom");
-=======
 
 		return std::string(slot_string);
 	}
 	return software_get_default_slot("intv_rom");
->>>>>>> upstream/master
 }
 
 /*-------------------------------------------------

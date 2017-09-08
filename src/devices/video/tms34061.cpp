@@ -15,16 +15,11 @@
 #include "emu.h"
 #include "tms34061.h"
 
-<<<<<<< HEAD
-
-#define VERBOSE     (0)
-=======
 #include "screen.h"
 
 //#define VERBOSE 1
 #include "logmacro.h"
 
->>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -35,17 +30,10 @@
 //  tms34061_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const device_type TMS34061 = &device_creator<tms34061_device>;
-
-tms34061_device::tms34061_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, TMS34061, "TMS34061 VSC", tag, owner, clock, "tms34061", __FILE__),
-=======
 DEFINE_DEVICE_TYPE(TMS34061, tms34061_device, "tms34061", "TI TMS34061 VSC")
 
 tms34061_device::tms34061_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, TMS34061, tag, owner, clock),
->>>>>>> upstream/master
 	device_video_interface(mconfig, *this),
 	m_rowshift(0),
 	m_vramsize(0),
@@ -53,19 +41,11 @@ tms34061_device::tms34061_device(const machine_config &mconfig, const char *tag,
 	m_xmask(0),
 	m_yshift(0),
 	m_vrammask(0),
-<<<<<<< HEAD
-	m_vram(NULL),
-	m_latchram(NULL),
-	m_latchdata(0),
-	m_shiftreg(NULL),
-	m_timer(NULL)
-=======
 	m_vram(nullptr),
 	m_latchram(nullptr),
 	m_latchdata(0),
 	m_shiftreg(nullptr),
 	m_timer(nullptr)
->>>>>>> upstream/master
 {
 	memset(m_regs, 0, sizeof(m_regs));
 	memset(&m_display, 0, sizeof(m_display));
@@ -84,17 +64,10 @@ void tms34061_device::device_start()
 	m_vrammask = m_vramsize - 1;
 
 	/* allocate memory for VRAM */
-<<<<<<< HEAD
-	m_vram = auto_alloc_array_clear(machine(), UINT8, m_vramsize + 256 * 2);
-
-	/* allocate memory for latch RAM */
-	m_latchram = auto_alloc_array_clear(machine(), UINT8, m_vramsize + 256 * 2);
-=======
 	m_vram = auto_alloc_array_clear(machine(), uint8_t, m_vramsize + 256 * 2);
 
 	/* allocate memory for latch RAM */
 	m_latchram = auto_alloc_array_clear(machine(), uint8_t, m_vramsize + 256 * 2);
->>>>>>> upstream/master
 
 	/* add some buffer space for VRAM and latch RAM */
 	m_vram += 256;
@@ -198,11 +171,7 @@ TIMER_CALLBACK_MEMBER( tms34061_device::interrupt )
  *
  *************************************/
 
-<<<<<<< HEAD
-void tms34061_device::register_w(address_space &space, offs_t offset, UINT8 data)
-=======
 void tms34061_device::register_w(address_space &space, offs_t offset, uint8_t data)
->>>>>>> upstream/master
 {
 	int scanline;
 	int regnum = offset >> 2;
@@ -222,11 +191,7 @@ void tms34061_device::register_w(address_space &space, offs_t offset, uint8_t da
 	}
 
 	/* log it */
-<<<<<<< HEAD
-	if (VERBOSE) logerror("%s:tms34061 %s = %04x\n", space.machine().describe_context(), regnames[regnum], m_regs[regnum]);
-=======
 	LOG("%s:tms34061 %s = %04x\n", space.machine().describe_context(), regnames[regnum], m_regs[regnum]);
->>>>>>> upstream/master
 
 	/* update the state of things */
 	switch (regnum)
@@ -277,17 +242,10 @@ void tms34061_device::register_w(address_space &space, offs_t offset, uint8_t da
  *
  *************************************/
 
-<<<<<<< HEAD
-UINT8 tms34061_device::register_r(address_space &space, offs_t offset)
-{
-	int regnum = offset >> 2;
-	UINT16 result;
-=======
 uint8_t tms34061_device::register_r(address_space &space, offs_t offset)
 {
 	int regnum = offset >> 2;
 	uint16_t result;
->>>>>>> upstream/master
 
 	/* extract the correct portion of the register */
 	if (regnum < ARRAY_LENGTH(m_regs))
@@ -311,11 +269,7 @@ uint8_t tms34061_device::register_r(address_space &space, offs_t offset)
 	}
 
 	/* log it */
-<<<<<<< HEAD
-	if (VERBOSE) logerror("%s:tms34061 %s read = %04X\n", space.machine().describe_context(), regnames[regnum], result);
-=======
 	LOG("%s:tms34061 %s read = %04X\n", space.machine().describe_context(), regnames[regnum], result);
->>>>>>> upstream/master
 	return (offset & 0x02) ? (result >> 8) : result;
 }
 
@@ -410,11 +364,7 @@ void tms34061_device::adjust_xyaddress(int offset)
 }
 
 
-<<<<<<< HEAD
-void tms34061_device::xypixel_w(address_space &space, int offset, UINT8 data)
-=======
 void tms34061_device::xypixel_w(address_space &space, int offset, uint8_t data)
->>>>>>> upstream/master
 {
 	/* determine the offset, then adjust it */
 	offs_t pixeloffs = m_regs[TMS34061_XYADDRESS];
@@ -426,11 +376,7 @@ void tms34061_device::xypixel_w(address_space &space, int offset, uint8_t data)
 
 	/* mask to the VRAM size */
 	pixeloffs &= m_vrammask;
-<<<<<<< HEAD
-	if (VERBOSE) logerror("%s:tms34061 xy (%04x) = %02x/%02x\n", space.machine().describe_context(), pixeloffs, data, m_latchdata);
-=======
 	LOG("%s:tms34061 xy (%04x) = %02x/%02x\n", space.machine().describe_context(), pixeloffs, data, m_latchdata);
->>>>>>> upstream/master
 
 	/* set the pixel data */
 	m_vram[pixeloffs] = data;
@@ -438,11 +384,7 @@ void tms34061_device::xypixel_w(address_space &space, int offset, uint8_t data)
 }
 
 
-<<<<<<< HEAD
-UINT8 tms34061_device::xypixel_r(address_space &space, int offset)
-=======
 uint8_t tms34061_device::xypixel_r(address_space &space, int offset)
->>>>>>> upstream/master
 {
 	/* determine the offset, then adjust it */
 	offs_t pixeloffs = m_regs[TMS34061_XYADDRESS];
@@ -467,11 +409,7 @@ uint8_t tms34061_device::xypixel_r(address_space &space, int offset)
  *
  *************************************/
 
-<<<<<<< HEAD
-void tms34061_device::write(address_space &space, int col, int row, int func, UINT8 data)
-=======
 void tms34061_device::write(address_space &space, int col, int row, int func, uint8_t data)
->>>>>>> upstream/master
 {
 	offs_t offs;
 
@@ -494,11 +432,7 @@ void tms34061_device::write(address_space &space, int col, int row, int func, ui
 			offs = ((row << m_rowshift) | col) & m_vrammask;
 			if (m_regs[TMS34061_CONTROL2] & 0x0040)
 				offs |= (m_regs[TMS34061_CONTROL2] & 3) << 16;
-<<<<<<< HEAD
-			if (VERBOSE) logerror("%s:tms34061 direct (%04x) = %02x/%02x\n", space.machine().describe_context(), offs, data, m_latchdata);
-=======
 			LOG("%s:tms34061 direct (%04x) = %02x/%02x\n", space.machine().describe_context(), offs, data, m_latchdata);
->>>>>>> upstream/master
 			if (m_vram[offs] != data || m_latchram[offs] != m_latchdata)
 			{
 				m_vram[offs] = data;
@@ -512,11 +446,7 @@ void tms34061_device::write(address_space &space, int col, int row, int func, ui
 			if (m_regs[TMS34061_CONTROL2] & 0x0040)
 				offs |= (m_regs[TMS34061_CONTROL2] & 3) << 16;
 			offs &= m_vrammask;
-<<<<<<< HEAD
-			if (VERBOSE) logerror("%s:tms34061 shiftreg write (%04x)\n", space.machine().describe_context(), offs);
-=======
 			LOG("%s:tms34061 shiftreg write (%04x)\n", space.machine().describe_context(), offs);
->>>>>>> upstream/master
 
 			memcpy(&m_vram[offs], m_shiftreg, (size_t)1 << m_rowshift);
 			memset(&m_latchram[offs], m_latchdata, (size_t)1 << m_rowshift);
@@ -528,11 +458,7 @@ void tms34061_device::write(address_space &space, int col, int row, int func, ui
 			if (m_regs[TMS34061_CONTROL2] & 0x0040)
 				offs |= (m_regs[TMS34061_CONTROL2] & 3) << 16;
 			offs &= m_vrammask;
-<<<<<<< HEAD
-			if (VERBOSE) logerror("%s:tms34061 shiftreg read (%04x)\n", space.machine().describe_context(), offs);
-=======
 			LOG("%s:tms34061 shiftreg read (%04x)\n", space.machine().describe_context(), offs);
->>>>>>> upstream/master
 
 			m_shiftreg = &m_vram[offs];
 			break;
@@ -545,11 +471,7 @@ void tms34061_device::write(address_space &space, int col, int row, int func, ui
 }
 
 
-<<<<<<< HEAD
-UINT8 tms34061_device::read(address_space &space, int col, int row, int func)
-=======
 uint8_t tms34061_device::read(address_space &space, int col, int row, int func)
->>>>>>> upstream/master
 {
 	int result = 0;
 	offs_t offs;
@@ -568,11 +490,7 @@ uint8_t tms34061_device::read(address_space &space, int col, int row, int func)
 			result = xypixel_r(space, col);
 			break;
 
-<<<<<<< HEAD
-		/* funtion 3 maps to direct access */
-=======
 		/* function 3 maps to direct access */
->>>>>>> upstream/master
 		case 3:
 			offs = ((row << m_rowshift) | col) & m_vrammask;
 			result = m_vram[offs];
@@ -625,11 +543,7 @@ READ8_MEMBER( tms34061_device::latch_r )
 
 WRITE8_MEMBER( tms34061_device::latch_w )
 {
-<<<<<<< HEAD
-	if (VERBOSE) logerror("tms34061_latch = %02X\n", data);
-=======
 	LOG("tms34061_latch = %02X\n", data);
->>>>>>> upstream/master
 	m_latchdata = data;
 }
 

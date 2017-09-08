@@ -1,9 +1,5 @@
 /*
-<<<<<<< HEAD
-** $Id: lundump.c,v 2.41 2014/11/02 19:19:04 roberto Exp $
-=======
 ** $Id: lundump.c,v 2.44 2015/11/02 16:09:30 roberto Exp $
->>>>>>> upstream/master
 ** load precompiled Lua chunks
 ** See Copyright Notice in lua.h
 */
@@ -36,10 +32,6 @@
 typedef struct {
   lua_State *L;
   ZIO *Z;
-<<<<<<< HEAD
-  Mbuffer *b;
-=======
->>>>>>> upstream/master
   const char *name;
 } LoadState;
 
@@ -99,12 +91,6 @@ static TString *LoadString (LoadState *S) {
     LoadVar(S, size);
   if (size == 0)
     return NULL;
-<<<<<<< HEAD
-  else {
-    char *s = luaZ_openspace(S->L, S->b, --size);
-    LoadVector(S, s, size);
-    return luaS_newlstr(S->L, s, size);
-=======
   else if (--size <= LUAI_MAXSHORTLEN) {  /* short string? */
     char buff[LUAI_MAXSHORTLEN];
     LoadVector(S, buff, size);
@@ -114,7 +100,6 @@ static TString *LoadString (LoadState *S) {
     TString *ts = luaS_createlngstrobj(S->L, size);
     LoadVector(S, getstr(ts), size);  /* load directly in final place */
     return ts;
->>>>>>> upstream/master
   }
 }
 
@@ -270,12 +255,7 @@ static void checkHeader (LoadState *S) {
 /*
 ** load precompiled chunk
 */
-<<<<<<< HEAD
-LClosure *luaU_undump(lua_State *L, ZIO *Z, Mbuffer *buff,
-                      const char *name) {
-=======
 LClosure *luaU_undump(lua_State *L, ZIO *Z, const char *name) {
->>>>>>> upstream/master
   LoadState S;
   LClosure *cl;
   if (*name == '@' || *name == '=')
@@ -286,18 +266,10 @@ LClosure *luaU_undump(lua_State *L, ZIO *Z, const char *name) {
     S.name = name;
   S.L = L;
   S.Z = Z;
-<<<<<<< HEAD
-  S.b = buff;
-  checkHeader(&S);
-  cl = luaF_newLclosure(L, LoadByte(&S));
-  setclLvalue(L, L->top, cl);
-  incr_top(L);
-=======
   checkHeader(&S);
   cl = luaF_newLclosure(L, LoadByte(&S));
   setclLvalue(L, L->top, cl);
   luaD_inctop(L);
->>>>>>> upstream/master
   cl->p = luaF_newproto(L);
   LoadFunction(&S, cl->p, NULL);
   lua_assert(cl->nupvalues == cl->p->sizeupvalues);

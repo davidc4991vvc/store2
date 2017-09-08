@@ -1,32 +1,13 @@
 // license:GPL-2.0+
 // copyright-holders:Juergen Buchmueller, David Haywood
-<<<<<<< HEAD
-#ifndef __DECOCASS_TAPE_H__
-#define __DECOCASS_TAPE_H__
-=======
 #ifndef MAME_MACHINE_DECOCASS_TAPE_H
 #define MAME_MACHINE_DECOCASS_TAPE_H
 
 #pragma once
->>>>>>> upstream/master
 
 class decocass_tape_device : public device_t
 {
 public:
-<<<<<<< HEAD
-	decocass_tape_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-	~decocass_tape_device() {}
-
-	UINT8 get_status_bits();
-	UINT8 is_present();
-	void change_speed(INT8 newspeed);
-
-protected:
-	// device-level overrides
-	virtual void device_config_complete();
-	virtual void device_start();
-	virtual void device_reset();
-=======
 	decocass_tape_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 	~decocass_tape_device() {}
 
@@ -38,7 +19,6 @@ protected:
 	// device-level overrides
 	virtual void device_start() override;
 	virtual void device_reset() override;
->>>>>>> upstream/master
 
 private:
 	/* regions within the virtual tape */
@@ -78,15 +58,6 @@ private:
 
 	// internal state
 	emu_timer *         m_tape_timer;              /* timer for running the tape */
-<<<<<<< HEAD
-	INT8                m_speed;              /* speed: <-1=fast rewind, -1=reverse, 0=stopped, 1=normal, >1=fast forward */
-	tape_region         m_region;             /* current region */
-	tape_byte           m_bytenum;            /* byte number within a datablock */
-	UINT8               m_bitnum;             /* bit number within a byte */
-	UINT32              m_clockpos;           /* the current clock position of the tape */
-	UINT32              m_numclocks;          /* total number of clocks on the entire tape */
-	UINT16              m_crc16[256];         /* CRC16 for each block */
-=======
 	int8_t                m_speed;              /* speed: <-1=fast rewind, -1=reverse, 0=stopped, 1=normal, >1=fast forward */
 	tape_region         m_region;             /* current region */
 	tape_byte           m_bytenum;            /* byte number within a datablock */
@@ -95,23 +66,14 @@ private:
 	uint32_t              m_numclocks;          /* total number of clocks on the entire tape */
 	uint16_t              m_crc16[256];         /* CRC16 for each block */
 	optional_region_ptr<uint8_t> m_tape_data;
->>>>>>> upstream/master
 
 	const char *describe_state();
 	TIMER_CALLBACK_MEMBER( tape_clock_callback );
 };
 
-<<<<<<< HEAD
-extern const device_type DECOCASS_TAPE;
-=======
 DECLARE_DEVICE_TYPE(DECOCASS_TAPE, decocass_tape_device)
->>>>>>> upstream/master
 
 #define MCFG_DECOCASS_TAPE_ADD(_tag) \
 	MCFG_DEVICE_ADD(_tag, DECOCASS_TAPE, 0)
 
-<<<<<<< HEAD
-#endif
-=======
 #endif // MAME_MACHINE_DECOCASS_TAPE_H
->>>>>>> upstream/master

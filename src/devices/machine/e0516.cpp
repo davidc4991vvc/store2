@@ -32,27 +32,17 @@ enum
 //**************************************************************************
 
 // device type definition
-<<<<<<< HEAD
-const device_type E0516 = &device_creator<e0516_device>;
-=======
 DEFINE_DEVICE_TYPE(E0516, e0516_device, "e0516", "E05-16 RTC")
->>>>>>> upstream/master
 
 //-------------------------------------------------
 //  e0516_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-e0516_device::e0516_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, E0516, "E05-16", tag, owner, clock, "e0516", __FILE__),
-		device_rtc_interface(mconfig, *this), m_cs(0), m_clk(0), m_data_latch(0), m_reg_latch(0), m_read_write(0), m_state(0), m_bits(0), m_dio(0), m_timer(nullptr)
-=======
 e0516_device::e0516_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, E0516, tag, owner, clock)
 	, device_rtc_interface(mconfig, *this)
 	, m_cs(0), m_clk(0), m_data_latch(0), m_reg_latch(0), m_read_write(0), m_state(0), m_bits(0), m_dio(0)
 	, m_timer(nullptr)
->>>>>>> upstream/master
 {
 }
 
@@ -80,19 +70,6 @@ void e0516_device::device_start()
 
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  device_reset - device-specific reset
-//-------------------------------------------------
-
-void e0516_device::device_reset()
-{
-	set_current_time(machine());
-}
-
-
-//-------------------------------------------------
-=======
->>>>>>> upstream/master
 //  device_timer - handler timer events
 //-------------------------------------------------
 
@@ -211,8 +188,6 @@ READ_LINE_MEMBER( e0516_device::dio_r )
 {
 	return m_dio;
 }
-<<<<<<< HEAD
-=======
 
 
 //-------------------------------------------------
@@ -222,4 +197,3 @@ READ_LINE_MEMBER( e0516_device::dio_r )
 void e0516_device::rtc_clock_updated(int year, int month, int day, int day_of_week, int hour, int minute, int second)
 {
 }
->>>>>>> upstream/master

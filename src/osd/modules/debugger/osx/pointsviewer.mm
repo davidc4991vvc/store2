@@ -6,37 +6,23 @@
 //
 //============================================================
 
-<<<<<<< HEAD
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #import "pointsviewer.h"
 
 #import "breakpointsview.h"
 #import "watchpointsview.h"
 
-<<<<<<< HEAD
-=======
 #include "util/xmlfile.h"
 
->>>>>>> upstream/master
 
 @implementation MAMEPointsViewer
 
 - (id)initWithMachine:(running_machine &)m console:(MAMEDebugConsole *)c {
-<<<<<<< HEAD
-	MAMEDebugView	*breakView, *watchView;
-	NSScrollView	*breakScroll, *watchScroll;
-	NSTabViewItem	*breakTab, *watchTab;
-	NSPopUpButton	*actionButton, *subviewButton;
-	NSRect			subviewFrame;
-=======
 	MAMEDebugView   *breakView, *watchView;
 	NSScrollView    *breakScroll, *watchScroll;
 	NSTabViewItem   *breakTab, *watchTab;
 	NSPopUpButton   *actionButton;
 	NSRect          subviewFrame;
->>>>>>> upstream/master
 
 	if (!(self = [super initWithMachine:m title:@"(Break|Watch)points" console:c]))
 		return nil;
@@ -89,10 +75,7 @@
 	[breakScroll setHasVerticalScroller:YES];
 	[breakScroll setAutohidesScrollers:YES];
 	[breakScroll setBorderType:NSNoBorder];
-<<<<<<< HEAD
-=======
 	[breakScroll setDrawsBackground:NO];
->>>>>>> upstream/master
 	[breakScroll setDocumentView:breakView];
 	[breakView release];
 	breakTab = [[NSTabViewItem alloc] initWithIdentifier:@""];
@@ -108,10 +91,7 @@
 	[watchScroll setHasVerticalScroller:YES];
 	[watchScroll setAutohidesScrollers:YES];
 	[watchScroll setBorderType:NSNoBorder];
-<<<<<<< HEAD
-=======
 	[watchScroll setDrawsBackground:NO];
->>>>>>> upstream/master
 	[watchScroll setDocumentView:watchView];
 	[watchView release];
 	watchTab = [[NSTabViewItem alloc] initWithIdentifier:@""];
@@ -144,13 +124,8 @@
 												hasHorizontalScroller:YES
 												  hasVerticalScroller:YES
 														   borderType:[watchScroll borderType]];
-<<<<<<< HEAD
-	NSSize const desired = NSMakeSize(MAX(breakDesired.width, watchDesired.width),
-									  MAX(breakDesired.height, watchDesired.height));
-=======
 	NSSize const desired = NSMakeSize(std::max(breakDesired.width, watchDesired.width),
 									  std::max(breakDesired.height, watchDesired.height));
->>>>>>> upstream/master
 	[self cascadeWindowWithDesiredSize:desired forView:tabs];
 
 	// don't forget the result
@@ -168,8 +143,6 @@
 	[window setTitle:[[sender selectedItem] title]];
 }
 
-<<<<<<< HEAD
-=======
 
 - (void)saveConfigurationToNode:(util::xml::data_node *)node {
 	[super saveConfigurationToNode:node];
@@ -188,5 +161,4 @@
 	}
 }
 
->>>>>>> upstream/master
 @end

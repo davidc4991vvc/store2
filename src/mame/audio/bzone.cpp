@@ -25,12 +25,9 @@ D0  explosion enable        gates a noise generator
 #include "sound/discrete.h"
 #include "sound/pokey.h"
 
-<<<<<<< HEAD
-=======
 #include "speaker.h"
 
 
->>>>>>> upstream/master
 /* This sets an amount of gain boost to apply to the final signal
  * that will drive it into clipping.  The slider is ajusted by the
  * reverse factor, so that the final result is not clipped.
@@ -323,11 +320,7 @@ static DISCRETE_SOUND_START(bzone)
 		BZ_R12, BZ_R13, BZ_R14, BZ_R15, BZ_R32,
 		BZ_C21,
 		22,                                         /* B+ of op-amp */
-<<<<<<< HEAD
-		NULL)
-=======
 		nullptr)
->>>>>>> upstream/master
 
 	/************************************************/
 	/* Explosion                                    */
@@ -341,11 +334,7 @@ static DISCRETE_SOUND_START(bzone)
 		BZ_R19, BZ_R18, BZ_R17, BZ_R16, BZ_R33,
 		BZ_C22,
 		22,                                         /* B+ of op-amp */
-<<<<<<< HEAD
-		NULL)
-=======
 		nullptr)
->>>>>>> upstream/master
 	/************************************************/
 	/* Engine                                       */
 	/************************************************/
@@ -403,20 +392,12 @@ WRITE8_MEMBER(bzone_state::bzone_sounds_w)
 {
 	m_discrete->write(space, BZ_INPUT, data);
 
-<<<<<<< HEAD
-	output_set_value("startled", (data >> 6) & 1);
-=======
 	output().set_value("startled", (data >> 6) & 1);
->>>>>>> upstream/master
 	machine().sound().system_enable(data & 0x20);
 }
 
 
-<<<<<<< HEAD
-MACHINE_CONFIG_FRAGMENT( bzone_audio )
-=======
 MACHINE_CONFIG_START( bzone_audio )
->>>>>>> upstream/master
 
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 

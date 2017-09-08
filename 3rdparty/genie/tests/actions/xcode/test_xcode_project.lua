@@ -147,8 +147,6 @@
 	end
 
 
-<<<<<<< HEAD
-=======
 	function suite.PBXFileReference_ListsBundleTarget()
 		kind "Bundle"
 		prepare()
@@ -161,7 +159,6 @@
 	end
 
 
->>>>>>> upstream/master
 	function suite.PBXFileReference_ListsSourceFiles()
 		files { "source.c" }
 		prepare()
@@ -626,8 +623,6 @@
 	end
 
 
-<<<<<<< HEAD
-=======
 	function suite.PBXNativeTarget_OnBundle()
 		kind "Bundle"
 		prepare()
@@ -656,7 +651,6 @@
 	end
 
 
->>>>>>> upstream/master
 	function suite.PBXNativeTarget_OnBuildCommands()
 		prebuildcommands { "prebuildcmd" }
 		prelinkcommands { "prelinkcmd" }
@@ -984,8 +978,6 @@
 	end
 
 
-<<<<<<< HEAD
-=======
 	function suite.XCBuildConfigurationTarget_OnBundle()
 		kind "Bundle"
 		prepare()
@@ -1009,7 +1001,6 @@
 	end
 
 
->>>>>>> upstream/master
 	function suite.XCBuildConfigurationTarget_OnTargetPrefix()
 		kind "SharedLib"
 		targetprefix "xyz"

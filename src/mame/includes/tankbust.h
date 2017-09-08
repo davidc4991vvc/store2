@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-// license:???
-=======
 // license:GPL-2.0+
->>>>>>> upstream/master
 // copyright-holders:Jarek Burczynski
 class tankbust_state : public driver_device
 {
@@ -23,22 +19,6 @@ public:
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
 
-<<<<<<< HEAD
-	required_shared_ptr<UINT8> m_txtram;
-	required_shared_ptr<UINT8> m_videoram;
-	required_shared_ptr<UINT8> m_colorram;
-	required_shared_ptr<UINT8> m_spriteram;
-
-	int m_latch;
-	UINT32 m_timer1;
-	int m_e0xx_data[8];
-	UINT8 m_variable_data;
-	tilemap_t *m_bg_tilemap;
-	tilemap_t *m_txt_tilemap;
-	UINT8 m_xscroll[2];
-	UINT8 m_yscroll[2];
-	UINT8 m_irq_mask;
-=======
 	required_shared_ptr<uint8_t> m_txtram;
 	required_shared_ptr<uint8_t> m_videoram;
 	required_shared_ptr<uint8_t> m_colorram;
@@ -53,15 +33,10 @@ public:
 	uint8_t m_xscroll[2];
 	uint8_t m_yscroll[2];
 	uint8_t m_irq_mask;
->>>>>>> upstream/master
 
 	DECLARE_WRITE8_MEMBER(soundlatch_w);
 	DECLARE_WRITE8_MEMBER(e0xx_w);
 	DECLARE_READ8_MEMBER(debug_output_area_r);
-<<<<<<< HEAD
-	DECLARE_READ8_MEMBER(read_from_unmapped_memory);
-=======
->>>>>>> upstream/master
 	DECLARE_READ8_MEMBER(some_changing_input);
 	DECLARE_WRITE8_MEMBER(background_videoram_w);
 	DECLARE_WRITE8_MEMBER(background_colorram_w);
@@ -74,21 +49,12 @@ public:
 	TILE_GET_INFO_MEMBER(get_bg_tile_info);
 	TILE_GET_INFO_MEMBER(get_txt_tile_info);
 
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void machine_reset();
-	virtual void video_start();
-	DECLARE_PALETTE_INIT(tankbust);
-
-	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
 	virtual void video_start() override;
 	DECLARE_PALETTE_INIT(tankbust);
 
 	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	void draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect);
 
 	INTERRUPT_GEN_MEMBER(vblank_irq);

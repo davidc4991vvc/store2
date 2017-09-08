@@ -10,30 +10,18 @@
 
 **********************************************************************/
 
-<<<<<<< HEAD
-#include "machine/7200fifo.h"
-
-
-const device_type FIFO7200 = &device_creator<fifo7200_device>;
-=======
 #include "emu.h"
 #include "machine/7200fifo.h"
 
 
 DEFINE_DEVICE_TYPE(FIFO7200, fifo7200_device, "fifo7200", "IDT7200 FIFO")
->>>>>>> upstream/master
 
 //-------------------------------------------------
 //  fifo7200_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-fifo7200_device::fifo7200_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, FIFO7200, "IDT7200 FIFO", tag, owner, clock, "fifo7200", __FILE__),
-=======
 fifo7200_device::fifo7200_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, FIFO7200, tag, owner, clock),
->>>>>>> upstream/master
 		m_ram_size(0), m_read_ptr(0), m_write_ptr(0), m_ef(0), m_ff(0), m_hf(0),
 		m_ef_handler(*this),
 		m_ff_handler(*this),
@@ -71,11 +59,7 @@ void fifo7200_device::device_start()
 void fifo7200_device::device_reset()
 {
 	// master reset
-<<<<<<< HEAD
-	m_buffer.clear();
-=======
 	std::fill(m_buffer.begin(), m_buffer.end(), 0);
->>>>>>> upstream/master
 	m_read_ptr = 0;
 	m_write_ptr = 0;
 
@@ -90,11 +74,7 @@ void fifo7200_device::device_reset()
 
 
 
-<<<<<<< HEAD
-void fifo7200_device::fifo_write(UINT16 data)
-=======
 void fifo7200_device::fifo_write(uint16_t data)
->>>>>>> upstream/master
 {
 	if (m_ff)
 	{
@@ -125,11 +105,7 @@ void fifo7200_device::fifo_write(uint16_t data)
 	}
 }
 
-<<<<<<< HEAD
-UINT16 fifo7200_device::fifo_read()
-=======
 uint16_t fifo7200_device::fifo_read()
->>>>>>> upstream/master
 {
 	if (m_ef)
 	{
@@ -137,11 +113,7 @@ uint16_t fifo7200_device::fifo_read()
 		return 0x1ff;
 	}
 
-<<<<<<< HEAD
-	UINT16 ret = m_buffer[m_read_ptr];
-=======
 	uint16_t ret = m_buffer[m_read_ptr];
->>>>>>> upstream/master
 	m_read_ptr = (m_read_ptr + 1) % m_ram_size;
 
 	// update flags

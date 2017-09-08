@@ -10,10 +10,6 @@
 
 #include "osdepend.h"
 #include "modules/osdmodule.h"
-<<<<<<< HEAD
-#include "emu.h"
-=======
->>>>>>> upstream/master
 
 //============================================================
 //  CONSTANTS

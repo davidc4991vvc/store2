@@ -8,12 +8,6 @@
 
     See also deco32.c, deco_mlc.c, backfire.c
 
-<<<<<<< HEAD
-    Todo:
-        complete co-processor emulation for wcvol95
-
-=======
->>>>>>> upstream/master
     Emulation by Bryan McPhail, mish@tendril.co.uk
 */
 
@@ -21,22 +15,15 @@
 
 #include "emu.h"
 #include "cpu/arm/arm.h"
-<<<<<<< HEAD
-#include "includes/decocrpt.h"
-=======
 #include "machine/decocrpt.h"
 #include "machine/deco156.h"
->>>>>>> upstream/master
 #include "machine/eepromser.h"
 #include "sound/okim6295.h"
 #include "sound/ymz280b.h"
 #include "video/deco16ic.h"
 #include "video/decospr.h"
-<<<<<<< HEAD
-=======
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 class deco156_state : public driver_device
 {
@@ -59,21 +46,12 @@ public:
 	optional_device<okim6295_device> m_oki2;
 	optional_device<decospr_device> m_sprgen;
 	required_device<palette_device> m_palette;
-<<<<<<< HEAD
-	required_shared_ptr<UINT32> m_generic_paletteram_32;
-
-	/* memory */
-	UINT16   m_pf1_rowscroll[0x800/2];
-	UINT16   m_pf2_rowscroll[0x800/2];
-	UINT16* m_spriteram;
-=======
 	required_shared_ptr<uint32_t> m_generic_paletteram_32;
 
 	/* memory */
 	uint16_t   m_pf1_rowscroll[0x800/2];
 	uint16_t   m_pf2_rowscroll[0x800/2];
 	std::unique_ptr<uint16_t[]> m_spriteram;
->>>>>>> upstream/master
 	DECLARE_WRITE32_MEMBER(hvysmsh_eeprom_w);
 	DECLARE_WRITE32_MEMBER(wcvol95_nonbuffered_palette_w);
 	DECLARE_WRITE32_MEMBER(deco156_nonbuffered_palette_w);
@@ -86,13 +64,8 @@ public:
 	DECLARE_WRITE32_MEMBER(hvysmsh_oki_0_bank_w);
 	DECLARE_DRIVER_INIT(hvysmsh);
 	DECLARE_DRIVER_INIT(wcvol95);
-<<<<<<< HEAD
-	virtual void video_start();
-	UINT32 screen_update_wcvol95(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
-=======
 	virtual void video_start() override;
 	uint32_t screen_update_wcvol95(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	INTERRUPT_GEN_MEMBER(deco32_vbl_interrupt);
 	void descramble_sound( const char *tag );
 	DECO16IC_BANK_CB_MEMBER(bank_callback);
@@ -102,28 +75,16 @@ public:
 
 void deco156_state::video_start()
 {
-<<<<<<< HEAD
-	m_spriteram = auto_alloc_array(machine(), UINT16, 0x2000/2);
-=======
 	m_spriteram = std::make_unique<uint16_t[]>(0x2000/2);
->>>>>>> upstream/master
 
 	/* and register the allocated ram so that save states still work */
 	save_item(NAME(m_pf1_rowscroll));
 	save_item(NAME(m_pf2_rowscroll));
-<<<<<<< HEAD
-	save_pointer(NAME(m_spriteram), 0x2000/2);
-}
-
-
-UINT32 deco156_state::screen_update_wcvol95(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
-=======
 	save_pointer(NAME(m_spriteram.get()), 0x2000/2);
 }
 
 
 uint32_t deco156_state::screen_update_wcvol95(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	//FIXME: flip_screen_x should not be written!
 	flip_screen_set_no_update(1);
@@ -134,11 +95,7 @@ uint32_t deco156_state::screen_update_wcvol95(screen_device &screen, bitmap_rgb3
 	m_deco_tilegen1->pf_update(m_pf1_rowscroll, m_pf2_rowscroll);
 
 	m_deco_tilegen1->tilemap_2_draw(screen, bitmap, cliprect, TILEMAP_DRAW_OPAQUE, 0);
-<<<<<<< HEAD
-	m_sprgen->draw_sprites(bitmap, cliprect, m_spriteram, 0x800);
-=======
 	m_sprgen->draw_sprites(bitmap, cliprect, m_spriteram.get(), 0x800);
->>>>>>> upstream/master
 	m_deco_tilegen1->tilemap_1_draw(screen, bitmap, cliprect, 0, 0);
 	return 0;
 }
@@ -149,22 +106,14 @@ WRITE32_MEMBER(deco156_state::hvysmsh_eeprom_w)
 {
 	if (ACCESSING_BITS_0_7)
 	{
-<<<<<<< HEAD
-		m_oki2->set_bank_base(0x40000 * (data & 0x7));
-=======
 		m_oki2->set_rom_bank(data & 0x7);
->>>>>>> upstream/master
 		ioport("EEPROMOUT")->write(data, 0xff);
 	}
 }
 
 WRITE32_MEMBER(deco156_state::hvysmsh_oki_0_bank_w)
 {
-<<<<<<< HEAD
-	m_oki1->set_bank_base((data & 1) * 0x40000);
-=======
 	m_oki1->set_rom_bank(data & 1);
->>>>>>> upstream/master
 }
 
 WRITE32_MEMBER(deco156_state::wcvol95_nonbuffered_palette_w)
@@ -390,11 +339,7 @@ DECOSPR_PRIORITY_CB_MEMBER(deco156_state::pri_callback)
 	return 0;
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( hvysmsh, deco156_state )
-=======
 static MACHINE_CONFIG_START( hvysmsh )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", ARM, 28000000) /* Unconfirmed */
@@ -427,45 +372,25 @@ static MACHINE_CONFIG_START( hvysmsh )
 	MCFG_DECO16IC_PF12_8X8_BANK(0)
 	MCFG_DECO16IC_PF12_16X16_BANK(1)
 	MCFG_DECO16IC_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_DECO16IC_PALETTE("palette")
-=======
->>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("spritegen", DECO_SPRITE, 0)
 	MCFG_DECO_SPRITE_GFX_REGION(2)
 	MCFG_DECO_SPRITE_PRIORITY_CB(deco156_state, pri_callback)
 	MCFG_DECO_SPRITE_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_DECO_SPRITE_PALETTE("palette")
-=======
->>>>>>> upstream/master
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki1", 28000000/28, OKIM6295_PIN7_HIGH)
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 1.0)
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 1.0)
-
-	MCFG_OKIM6295_ADD("oki2", 28000000/14, OKIM6295_PIN7_HIGH)
-=======
 	MCFG_OKIM6295_ADD("oki1", 28000000/28, PIN7_HIGH)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 1.0)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 1.0)
 
 	MCFG_OKIM6295_ADD("oki2", 28000000/14, PIN7_HIGH)
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 0.35)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 0.35)
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( wcvol95, deco156_state )
-=======
 static MACHINE_CONFIG_START( wcvol95 )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", ARM, 28000000) /* Unconfirmed */
@@ -498,19 +423,11 @@ static MACHINE_CONFIG_START( wcvol95 )
 	MCFG_DECO16IC_PF12_8X8_BANK(0)
 	MCFG_DECO16IC_PF12_16X16_BANK(1)
 	MCFG_DECO16IC_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_DECO16IC_PALETTE("palette")
-=======
->>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("spritegen", DECO_SPRITE, 0)
 	MCFG_DECO_SPRITE_GFX_REGION(2)
 	MCFG_DECO_SPRITE_PRIORITY_CB(deco156_state, pri_callback)
 	MCFG_DECO_SPRITE_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_DECO_SPRITE_PALETTE("palette")
-=======
->>>>>>> upstream/master
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
@@ -707,10 +624,6 @@ ROM_START( wcvol95 )
 
 //  ROM_REGION( 0x80, "user1", 0 ) /* eeprom */
 //  ROM_LOAD( "93c46.3k",    0x00, 0x80, CRC(88f8e270) SHA1(cb82203ad38e0c12ea998562b7b785979726afe5) )
-<<<<<<< HEAD
-ROM_END
-
-=======
 
 	ROM_REGION( 0x200, "gals", 0 )
 	ROM_LOAD( "GAL16V8B.10J.bin",    0x000, 0x117,  CRC(06bbcbd5) SHA1(f7adb4bca13bb799bc42411eb178edfdc11a76c7) )
@@ -741,21 +654,10 @@ ROM_START( wcvol95x )
 ROM_END
 
 
->>>>>>> upstream/master
 /**********************************************************************************/
 
 void deco156_state::descramble_sound( const char *tag )
 {
-<<<<<<< HEAD
-	UINT8 *rom = memregion(tag)->base();
-	int length = memregion(tag)->bytes();
-	dynamic_buffer buf1(length);
-	UINT32 x;
-
-	for (x = 0; x < length; x++)
-	{
-		UINT32 addr;
-=======
 	uint8_t *rom = memregion(tag)->base();
 	int length = memregion(tag)->bytes();
 	std::vector<uint8_t> buf1(length);
@@ -764,7 +666,6 @@ void deco156_state::descramble_sound( const char *tag )
 	for (x = 0; x < length; x++)
 	{
 		uint32_t addr;
->>>>>>> upstream/master
 
 		addr = BITSWAP24 (x,23,22,21,0, 20,
 							19,18,17,16,
@@ -800,7 +701,4 @@ GAME( 1993, hvysmsh,  0,       hvysmsh, hvysmsh, deco156_state, hvysmsh,  ROT0, 
 GAME( 1993, hvysmsha, hvysmsh, hvysmsh, hvysmsh, deco156_state, hvysmsh,  ROT0, "Data East Corporation", "Heavy Smash (Asia version -4)", MACHINE_SUPPORTS_SAVE )
 GAME( 1993, hvysmshj, hvysmsh, hvysmsh, hvysmsh, deco156_state, hvysmsh,  ROT0, "Data East Corporation", "Heavy Smash (Japan version -2)", MACHINE_SUPPORTS_SAVE )
 GAME( 1995, wcvol95,  0,       wcvol95, wcvol95, deco156_state, wcvol95,  ROT0, "Data East Corporation", "World Cup Volley '95 (Japan v1.0)", MACHINE_SUPPORTS_SAVE )
-<<<<<<< HEAD
-=======
 GAME( 1995, wcvol95x, wcvol95, wcvol95, wcvol95, deco156_state, wcvol95,  ROT0, "Data East Corporation", "World Cup Volley '95 Extra Version (Asia v2.0B)", MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

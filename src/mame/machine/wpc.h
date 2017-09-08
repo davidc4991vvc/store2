@@ -6,18 +6,11 @@
  *  Created on: 7/10/2013
  */
 
-<<<<<<< HEAD
-#ifndef WPC_H_
-#define WPC_H_
-
-#include "emu.h"
-=======
 #ifndef MAME_MACHINE_WPC_H
 #define MAME_MACHINE_WPC_H
 
 #pragma once
 
->>>>>>> upstream/master
 
 /* A = Alpha-numeric
  * M = DMD
@@ -46,15 +39,9 @@
 #define WPC_FLIPPERS      (0x24) /*   xxx  R: switches W: Solenoids */
 
 /* Sound board */
-<<<<<<< HEAD
-#define WPC_SOUNDS11      (0x21) /* xxx    RW: R: Sound data availble, W: Reset soundboard ? */
-#define WPC_SOUNDIF       (0x2c) /* xxx    RW: Sound board interface */
-#define WPC_SOUNDBACK     (0x2d) /* xxx    RW: R: Sound data availble, W: Reset soundboard ? */
-=======
 #define WPC_SOUNDS11      (0x21) /* xxx    RW: R: Sound data available, W: Reset soundboard ? */
 #define WPC_SOUNDIF       (0x2c) /* xxx    RW: Sound board interface */
 #define WPC_SOUNDBACK     (0x2d) /* xxx    RW: R: Sound data available, W: Reset soundboard ? */
->>>>>>> upstream/master
 
 #define WPC_SOLENOID1     (0x30) /* xxxxxx W: Solenoid 25-28 */
 #define WPC_SOLENOID2     (0x31) /* xxxxxx W: Solenoid  1- 8 */
@@ -116,73 +103,24 @@
 class wpc_device : public device_t
 {
 public:
-<<<<<<< HEAD
-	wpc_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-=======
 	static constexpr device_timer_id TIMER_IRQ = 1;
 	static constexpr device_timer_id TIMER_ZEROCROSS = 2;
 
 	wpc_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
->>>>>>> upstream/master
 
 	DECLARE_READ8_MEMBER(read);
 	DECLARE_WRITE8_MEMBER(write);
 
-<<<<<<< HEAD
-	UINT16 get_memprotect_mask() { return m_memprotect_mask; }
-	bool memprotect_active() { if(m_memprotect == 0xb4) return false; else return true; }
-	UINT16 get_alphanumeric(UINT8 offset) { if(offset < 40) return m_alpha_data[offset]; else return 0; }
-	void reset_alphanumeric() { memset(m_alpha_data,0,40*2); }
-	UINT8 get_visible_page() { return m_dmd_visiblepage; }
-	UINT8 get_dmd_firq_line() { return m_dmd_irqline; }
-=======
 	uint16_t get_memprotect_mask() { return m_memprotect_mask; }
 	bool memprotect_active() { return m_memprotect != 0xb4; }
 	uint16_t get_alphanumeric(uint8_t offset) { return (offset < 40) ? m_alpha_data[offset] : 0; }
 	void reset_alphanumeric() { std::fill(std::begin(m_alpha_data), std::end(m_alpha_data), 0); }
 	uint8_t get_visible_page() { return m_dmd_visiblepage; }
 	uint8_t get_dmd_firq_line() { return m_dmd_irqline; }
->>>>>>> upstream/master
 	void set_dmd_firq() { m_dmd_irqsrc = true; }
 	void set_snd_firq() { m_snd_irqsrc = true; }
 
 	// callbacks
-<<<<<<< HEAD
-	template<class _irq> void set_irq_callback(_irq irq) { m_irq_cb.set_callback(irq); }
-	template<class _firq> void set_firq_callback(_firq firq) { m_firq_cb.set_callback(firq); }
-	template<class _sounddata_r> void set_sound_data_read(_sounddata_r sounddata_r) { m_sounddata_r.set_callback(sounddata_r); }
-	template<class _sounddata_w> void set_sound_data_write(_sounddata_w sounddata_w) { m_sounddata_w.set_callback(sounddata_w); }
-	template<class _soundctrl_r> void set_sound_ctrl_read(_soundctrl_r soundctrl_r) { m_soundctrl_r.set_callback(soundctrl_r); }
-	template<class _soundctrl_w> void set_sound_ctrl_write(_soundctrl_w soundctrl_w) { m_soundctrl_w.set_callback(soundctrl_w); }
-	template<class _sounds11> void set_sound_s11_write(_sounds11 sounds11) { m_sounds11_w.set_callback(sounds11); }
-	template<class _bank_w> void set_bank_write(_bank_w bank_w) { m_bank_w.set_callback(bank_w); }
-	template<class _dmdbank_w> void set_dmdbank_write(_dmdbank_w dmdbank_w) { m_dmdbank_w.set_callback(dmdbank_w); }
-
-	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
-	static const device_timer_id TIMER_IRQ = 1;
-	static const device_timer_id TIMER_ZEROCROSS = 2;
-protected:
-	// overrides
-	virtual void device_start();
-	virtual void device_reset();
-
-private:
-	UINT8 m_shift_addr_high;
-	UINT8 m_shift_addr_low;
-	UINT8 m_shift_bit1;
-	UINT8 m_shift_bit2;
-	UINT8 m_memprotect;
-	UINT16 m_memprotect_mask;
-	UINT8 m_switch_col;  // select switch column
-	UINT8 m_alpha_pos;  // selected LED position
-	UINT16 m_alpha_data[40];
-	bool m_zerocross;
-	UINT32 m_irq_count;
-	UINT8 m_dmd_visiblepage;
-	bool m_dmd_irqsrc;
-	bool m_snd_irqsrc;
-	UINT8 m_dmd_irqline;
-=======
 	template <class Object> void set_irq_callback(Object &&cb) { m_irq_cb.set_callback(std::forward<Object>(cb)); }
 	template <class Object> void set_firq_callback(Object &&cb) { m_firq_cb.set_callback(std::forward<Object>(cb)); }
 	template <class Object> void set_sound_data_read(Object &&cb) { m_sounddata_r.set_callback(std::forward<Object>(cb)); }
@@ -216,7 +154,6 @@ private:
 	bool m_dmd_irqsrc;
 	bool m_snd_irqsrc;
 	uint8_t m_dmd_irqline;
->>>>>>> upstream/master
 	emu_timer* m_zc_timer;
 
 	devcb_write_line m_irq_cb;
@@ -230,12 +167,6 @@ private:
 	devcb_write8 m_dmdbank_w;
 };
 
-<<<<<<< HEAD
-extern const device_type WPCASIC;
-
-#endif /* WPC_H_ */
-=======
 DECLARE_DEVICE_TYPE(WPCASIC, wpc_device)
 
 #endif // MAME_MACHINE_WPC_H
->>>>>>> upstream/master

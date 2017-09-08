@@ -9,8 +9,6 @@
 #ifndef S11_H_
 #define S11_H_
 
-<<<<<<< HEAD
-=======
 #include "audio/s11c_bg.h"
 #include "machine/6821pia.h"
 #include "machine/genpin.h"
@@ -18,7 +16,6 @@
 #include "sound/hc55516.h"
 #include "sound/ym2151.h"
 
->>>>>>> upstream/master
 // 6802/8 CPU's input clock is 4MHz
 // but because it has an internal /4 divider, its E clock runs at 1/4 that frequency
 #define E_CLOCK (XTAL_4MHz/4)
@@ -37,11 +34,6 @@ public:
 	m_maincpu(*this, "maincpu"),
 	m_audiocpu(*this, "audiocpu"),
 	m_bgcpu(*this, "bgcpu"),
-<<<<<<< HEAD
-	m_dac(*this, "dac"),
-	m_dac1(*this, "dac1"),
-=======
->>>>>>> upstream/master
 	m_hc55516(*this, "hc55516"),
 	m_pias(*this, "pias"),
 	m_pia21(*this, "pia21"),
@@ -55,12 +47,7 @@ public:
 	m_bg(*this, "bgm")
 	{ }
 
-<<<<<<< HEAD
-	DECLARE_READ8_MEMBER(dac_r);
-	DECLARE_WRITE8_MEMBER(dac_w);
-=======
 	DECLARE_READ8_MEMBER(sound_r);
->>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(bank_w);
 	DECLARE_WRITE8_MEMBER(dig0_w);
 	DECLARE_WRITE8_MEMBER(dig1_w);
@@ -74,20 +61,10 @@ public:
 	DECLARE_WRITE8_MEMBER(pia34_pa_w);
 	DECLARE_WRITE8_MEMBER(pia34_pb_w);
 	DECLARE_WRITE_LINE_MEMBER(pia34_cb2_w);
-<<<<<<< HEAD
-	DECLARE_WRITE8_MEMBER(pia40_pa_w);
-	DECLARE_WRITE8_MEMBER(pia40_pb_w);
-	DECLARE_WRITE_LINE_MEMBER(pia40_cb2_w);
-	DECLARE_READ8_MEMBER(dips_r);
-	DECLARE_READ8_MEMBER(switch_r);
-	DECLARE_WRITE8_MEMBER(switch_w);
-	DECLARE_READ_LINE_MEMBER(pia21_ca1_r);
-=======
 	DECLARE_WRITE8_MEMBER(pia40_pb_w);
 	DECLARE_WRITE_LINE_MEMBER(pia40_cb2_w);
 	DECLARE_READ8_MEMBER(switch_r);
 	DECLARE_WRITE8_MEMBER(switch_w);
->>>>>>> upstream/master
 	DECLARE_READ8_MEMBER(pia28_w7_r);
 	DECLARE_WRITE_LINE_MEMBER(pias_ca2_w);
 	DECLARE_WRITE_LINE_MEMBER(pias_cb2_w);
@@ -108,11 +85,6 @@ protected:
 	required_device<cpu_device> m_maincpu;
 	optional_device<cpu_device> m_audiocpu;
 	optional_device<cpu_device> m_bgcpu;
-<<<<<<< HEAD
-	optional_device<dac_device> m_dac;
-	optional_device<dac_device> m_dac1;
-=======
->>>>>>> upstream/master
 	optional_device<hc55516_device> m_hc55516;
 	optional_device<pia6821_device> m_pias;
 	required_device<pia6821_device> m_pia21;
@@ -126,27 +98,6 @@ protected:
 	optional_device<s11c_bg_device> m_bg;
 
 	// getters/setters
-<<<<<<< HEAD
-	UINT8 get_strobe() { return m_strobe; }
-	void set_strobe(UINT8 s) { m_strobe = s; }
-	UINT8 get_diag() { return m_diag; }
-	void set_diag(UINT8 d) { m_diag = d; }
-	UINT32 get_segment1() { return m_segment1; }
-	void set_segment1(UINT32 s) { m_segment1 = s; }
-	UINT32 get_segment2() { return m_segment2; }
-	void set_segment2(UINT32 s) { m_segment2 = s; }
-	void set_timer(emu_timer* t) { m_irq_timer = t; }
-
-	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
-	static const device_timer_id TIMER_IRQ = 0;
-private:
-	UINT8 m_sound_data;
-	UINT8 m_strobe;
-	UINT8 m_kbdrow;
-	UINT8 m_diag;
-	UINT32 m_segment1;
-	UINT32 m_segment2;
-=======
 	uint8_t get_strobe() { return m_strobe; }
 	void set_strobe(uint8_t s) { m_strobe = s; }
 	uint8_t get_diag() { return m_diag; }
@@ -166,83 +117,8 @@ private:
 	uint8_t m_diag;
 	uint32_t m_segment1;
 	uint32_t m_segment2;
->>>>>>> upstream/master
 	emu_timer* m_irq_timer;
 	bool m_irq_active;
 };
 
-<<<<<<< HEAD
-class s11a_state : public s11_state
-{
-public:
-	s11a_state(const machine_config &mconfig, device_type type, const char *tag)
-		: s11_state(mconfig, type, tag)
-	{ }
-
-	DECLARE_WRITE8_MEMBER(bgbank_w);
-	DECLARE_WRITE8_MEMBER(dig0_w);
-	DECLARE_MACHINE_RESET(s11a);
-	DECLARE_DRIVER_INIT(s11a);
-
-protected:
-
-private:
-
-};
-
-class s11b_state : public s11a_state
-{
-public:
-	s11b_state(const machine_config &mconfig, device_type type, const char *tag)
-		: s11a_state(mconfig, type, tag),
-		m_bg_hc55516(*this, "hc55516_bg")
-
-	{ }
-
-	DECLARE_WRITE8_MEMBER(dig1_w);
-	DECLARE_WRITE8_MEMBER(pia2c_pa_w);
-	DECLARE_WRITE8_MEMBER(pia2c_pb_w);
-	DECLARE_WRITE8_MEMBER(pia34_pa_w);
-	DECLARE_WRITE_LINE_MEMBER(pia40_ca2_w);
-
-	DECLARE_WRITE8_MEMBER(bg_speech_clock_w);
-	DECLARE_WRITE8_MEMBER(bg_speech_digit_w);
-
-	DECLARE_MACHINE_RESET(s11b);
-	DECLARE_DRIVER_INIT(s11b);
-	DECLARE_DRIVER_INIT(s11b_invert);
-
-protected:
-	optional_device<hc55516_device> m_bg_hc55516;
-
-	void set_invert(bool inv) { m_invert = inv; }
-
-private:
-	bool m_invert;  // later System 11B games start expecting inverted data to the display LED segments.
-
-
-};
-
-class s11c_state : public s11b_state
-{
-public:
-	s11c_state(const machine_config &mconfig, device_type type, const char *tag)
-		: s11b_state(mconfig, type, tag)
-	{ }
-
-	DECLARE_WRITE8_MEMBER(bgbank_w);
-
-	DECLARE_MACHINE_RESET(s11c);
-	DECLARE_DRIVER_INIT(s11c);
-
-protected:
-
-private:
-
-
-};
-
-
-=======
->>>>>>> upstream/master
 #endif /* S11_H_ */

@@ -25,11 +25,6 @@ CPUS["M6809"] = true
 CPUS["M680X0"] = true
 CPUS["TMS9900"] = true
 CPUS["COP400"] = true
-<<<<<<< HEAD
-CPUS["SH2"] = true
-CPUS["SH4"] = true
-=======
->>>>>>> upstream/master
 
 --------------------------------------------------
 -- Specify all the sound cores necessary for the
@@ -48,30 +43,12 @@ SOUNDS["HC55516"] = true
 SOUNDS["YM3812"] = true
 SOUNDS["CEM3394"] = true
 SOUNDS["VOTRAX"] = true
-<<<<<<< HEAD
-SOUNDS["YMZ770"] = true
-SOUNDS["YMF278B"] = true
-SOUNDS["YMZ280B"] = true
-SOUNDS["YM2610"] = true
-SOUNDS["YM2203"] = true
-SOUNDS["YM2608"] = true
-if _OPTIONS["WINUI"] == "1" then
-SOUNDS["VLM5030"] = true
-end
-=======
 SOUNDS["VOLT_REG"] = true
->>>>>>> upstream/master
 
 --------------------------------------------------
 -- specify available video cores
 --------------------------------------------------
 
-<<<<<<< HEAD
-VIDEOS["BUFSPRITE"] = true
-VIDEOS["EPIC12"] = true
-
-=======
->>>>>>> upstream/master
 --------------------------------------------------
 -- specify available machine cores
 --------------------------------------------------
@@ -80,16 +57,6 @@ MACHINES["6821PIA"] = true
 MACHINES["TTL74148"] = true
 MACHINES["TTL74153"] = true
 MACHINES["TTL7474"] = true
-<<<<<<< HEAD
-MACHINES["RIOT6532"] = true
-MACHINES["PIT8253"] = true
-MACHINES["Z80CTC"] = true
-MACHINES["68681"] = true
-MACHINES["BANKDEV"] = true
-MACHINES["EEPROMDEV"] = true
-MACHINES["SERFLASH"] = true
-MACHINES["RTC9701"] = true
-=======
 MACHINES["TTL74259"] = true
 MACHINES["RIOT6532"] = true
 MACHINES["PIT8253"] = true
@@ -99,7 +66,6 @@ MACHINES["68681"] = true
 MACHINES["BANKDEV"] = true
 MACHINES["GEN_LATCH"] = true
 MACHINES["WATCHDOG"] = true
->>>>>>> upstream/master
 
 
 --------------------------------------------------
@@ -114,51 +80,14 @@ BUSES["CENTRONICS"] = true
 -- in tiny.lst
 --------------------------------------------------
 
-<<<<<<< HEAD
-function createMAMEProjects(_target, _subtarget, _name)
-	project (_name)
-	targetsubdir(_target .."_" .. _subtarget)
-	kind "StaticLib"
-	uuid (os.uuid("drv-" .. _target .."_" .. _subtarget .. "_" .._name))
-	
-	options {
-		"ForceCPP",
-	}
-	
-	includedirs {
-		MAME_DIR .. "src/osd",
-		MAME_DIR .. "src/emu",
-		MAME_DIR .. "src/mame",
-		MAME_DIR .. "src/lib",
-		MAME_DIR .. "src/lib/util",
-		MAME_DIR .. "3rdparty",
-		GEN_DIR  .. "mame/layout",
-	}
-	if _OPTIONS["with-bundled-zlib"] then
-		includedirs {
-			MAME_DIR .. "3rdparty/zlib",
-		}
-	end
-end
-
-=======
->>>>>>> upstream/master
 function createProjects_mame_tiny(_target, _subtarget)
 	project ("mame_tiny")
 	targetsubdir(_target .."_" .. _subtarget)
 	kind (LIBTYPE)
 	uuid (os.uuid("drv-mame-tiny"))
-<<<<<<< HEAD
-	
-	options {
-		"ForceCPP",
-	}
-	
-=======
 	addprojectflags()
 	precompiledheaders()
 
->>>>>>> upstream/master
 	includedirs {
 		MAME_DIR .. "src/osd",
 		MAME_DIR .. "src/emu",
@@ -212,11 +141,6 @@ files{
 	MAME_DIR .. "src/mame/audio/williams.cpp",
 	MAME_DIR .. "src/mame/audio/williams.h",
 	MAME_DIR .. "src/mame/video/williams.cpp",
-<<<<<<< HEAD
-	MAME_DIR .. "src/mame/audio/gorf.cpp",
-	MAME_DIR .. "src/mame/audio/wow.cpp",
-=======
->>>>>>> upstream/master
 	MAME_DIR .. "src/mame/drivers/gaelco.cpp",
 	MAME_DIR .. "src/mame/includes/gaelco.h",
 	MAME_DIR .. "src/mame/video/gaelco.cpp",
@@ -225,72 +149,15 @@ files{
 	MAME_DIR .. "src/mame/includes/wrally.h",
 	MAME_DIR .. "src/mame/machine/wrally.cpp",
 	MAME_DIR .. "src/mame/video/wrally.cpp",
-<<<<<<< HEAD
-	MAME_DIR .. "src/mame/drivers/looping.cpp",
-	MAME_DIR .. "src/mame/drivers/supertnk.cpp",
-}
-
-createMAMEProjects(_target, _subtarget, "psikyo")
-files {
-	MAME_DIR .. "src/mame/drivers/psikyo.*",
-	MAME_DIR .. "src/mame/video/psikyo.*",
-	MAME_DIR .. "src/mame/drivers/psikyo4.*",
-	MAME_DIR .. "src/mame/video/psikyo4.*",
-	MAME_DIR .. "src/mame/drivers/psikyosh.*",
-	MAME_DIR .. "src/mame/video/psikyosh.*",
-}
-
-createMAMEProjects(_target, _subtarget, "misc")
-files {
-	MAME_DIR .. "src/mame/drivers/cave.*",
-	MAME_DIR .. "src/mame/video/cave.*",
-	MAME_DIR .. "src/mame/drivers/cavepc.*",
-	MAME_DIR .. "src/mame/drivers/cv1k.*",
-}
-
-createMAMEProjects(_target, _subtarget, "shared")
-files {
-	MAME_DIR .. "src/mame/machine/nmk112.*",
-}
-	
-	--------------------------------------------------
-	-- layout dependencies
-	--------------------------------------------------
-
-	dependency {
-		{ MAME_DIR .. "src/mame/drivers/astrocde.cpp", GEN_DIR .. "mame/layout/gorf.lh" },
-		{ MAME_DIR .. "src/mame/drivers/astrocde.cpp", GEN_DIR .. "mame/layout/seawolf2.lh" },
-		{ MAME_DIR .. "src/mame/drivers/astrocde.cpp", GEN_DIR .. "mame/layout/spacezap.lh" },
-		{ MAME_DIR .. "src/mame/drivers/astrocde.cpp", GEN_DIR .. "mame/layout/tenpindx.lh" },
-		{ MAME_DIR .. "src/mame/drivers/circus.cpp", GEN_DIR .. "mame/layout/circus.lh" },
-		{ MAME_DIR .. "src/mame/drivers/circus.cpp", GEN_DIR .. "mame/layout/crash.lh" },	
-	}
-
-	custombuildtask {
-		layoutbuildtask("mame/layout", "crash"),
-		layoutbuildtask("mame/layout", "circus"),
-		layoutbuildtask("mame/layout", "tenpindx"),
-		layoutbuildtask("mame/layout", "spacezap"),
-		layoutbuildtask("mame/layout", "seawolf2"),
-		layoutbuildtask("mame/layout", "gorf"),
-	}	
-=======
 	MAME_DIR .. "src/mame/machine/gaelco_ds5002fp.cpp",
 	MAME_DIR .. "src/mame/machine/gaelco_ds5002fp.h",
 	MAME_DIR .. "src/mame/drivers/looping.cpp",
 	MAME_DIR .. "src/mame/drivers/supertnk.cpp",
 }
->>>>>>> upstream/master
 end
 
 function linkProjects_mame_tiny(_target, _subtarget)
 	links {
 		"mame_tiny",
-<<<<<<< HEAD
-		"psikyo",
-		"misc",
-		"shared",
-=======
->>>>>>> upstream/master
 	}
 end

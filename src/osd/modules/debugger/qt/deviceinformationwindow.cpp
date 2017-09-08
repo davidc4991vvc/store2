@@ -1,31 +1,19 @@
 // license:BSD-3-Clause
 // copyright-holders:Andrew Gardner
-<<<<<<< HEAD
-#define NO_MEM_TRACKING
-=======
 #include "emu.h"
 #include <QtWidgets/QFrame>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QVBoxLayout>
->>>>>>> upstream/master
 
 #include "deviceinformationwindow.h"
 
 
 DeviceInformationWindow::DeviceInformationWindow(running_machine* machine, device_t* device, QWidget* parent) :
-<<<<<<< HEAD
-	WindowQt(machine, NULL)
-{
-	m_device = device;
-
-	if (parent != NULL)
-=======
 	WindowQt(machine, nullptr)
 {
 	m_device = device;
 
 	if (parent != nullptr)
->>>>>>> upstream/master
 	{
 		QPoint parentPos = parent->pos();
 		setGeometry(parentPos.x()+100, parentPos.y()+100, 600, 400);
@@ -64,11 +52,7 @@ void DeviceInformationWindow::fill_device_information()
 	gl1->addWidget(new QLabel(QString(m_device->shortname()), primaryFrame), 2, 1);
 
 	int cpos = 3;
-<<<<<<< HEAD
-	device_interface *intf = m_device->first_interface();
-=======
 	device_interface *intf = m_device->interfaces().first();
->>>>>>> upstream/master
 	if(intf) {
 		gl1->addWidget(new QLabel(QString("Interfaces"), primaryFrame), cpos, 0);
 		while(intf) {
@@ -86,11 +70,7 @@ void DeviceInformationWindow::fill_device_information()
 		f->setFrameStyle(QFrame::StyledPanel | QFrame::Sunken);
 		QVBoxLayout *vb = new QVBoxLayout(f);
 		bool first = true;
-<<<<<<< HEAD
-		for(address_spacenum i=AS_0; i<ADDRESS_SPACES; i++)
-=======
 		for(int i=0; i<d_memory->max_space_count(); i++)
->>>>>>> upstream/master
 			if(d_memory->has_space(i)) {
 				QFrame *ff = new QFrame(f);
 				QHBoxLayout *hb = new QHBoxLayout(ff);
@@ -143,19 +123,6 @@ void DeviceInformationWindowQtConfig::applyToQWidget(QWidget* widget)
 }
 
 
-<<<<<<< HEAD
-void DeviceInformationWindowQtConfig::addToXmlDataNode(xml_data_node* node) const
-{
-	WindowQtConfig::addToXmlDataNode(node);
-	xml_set_attribute(node, "device-tag", m_device_tag.c_str());
-}
-
-
-void DeviceInformationWindowQtConfig::recoverFromXmlNode(xml_data_node* node)
-{
-	WindowQtConfig::recoverFromXmlNode(node);
-	m_device_tag = xml_get_attribute_string(node, "device-tag", ":");
-=======
 void DeviceInformationWindowQtConfig::addToXmlDataNode(util::xml::data_node &node) const
 {
 	WindowQtConfig::addToXmlDataNode(node);
@@ -167,5 +134,4 @@ void DeviceInformationWindowQtConfig::recoverFromXmlNode(util::xml::data_node co
 {
 	WindowQtConfig::recoverFromXmlNode(node);
 	m_device_tag = node.get_attribute_string("device-tag", ":");
->>>>>>> upstream/master
 }

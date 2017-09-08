@@ -53,13 +53,8 @@ VIDEO_START_MEMBER(xmen_state,xmen6p)
 {
 	m_k053246->k053247_get_ram( &m_k053247_ram);
 
-<<<<<<< HEAD
-	m_screen_left  = auto_bitmap_ind16_alloc(machine(), 64 * 8, 32 * 8);
-	m_screen_right = auto_bitmap_ind16_alloc(machine(), 64 * 8, 32 * 8);
-=======
 	m_screen_left  = std::make_unique<bitmap_ind16>(64 * 8, 32 * 8);
 	m_screen_right = std::make_unique<bitmap_ind16>(64 * 8, 32 * 8);
->>>>>>> upstream/master
 
 	save_item(NAME(*m_screen_left));
 	save_item(NAME(*m_screen_right));
@@ -72,17 +67,6 @@ VIDEO_START_MEMBER(xmen_state,xmen6p)
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-UINT32 xmen_state::screen_update_xmen(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-{
-	int layer[3], bg_colorbase;
-
-	bg_colorbase = m_k053251->get_palette_index(K053251_CI4);
-	m_sprite_colorbase = m_k053251->get_palette_index(K053251_CI1);
-	m_layer_colorbase[0] = m_k053251->get_palette_index(K053251_CI3);
-	m_layer_colorbase[1] = m_k053251->get_palette_index(K053251_CI0);
-	m_layer_colorbase[2] = m_k053251->get_palette_index(K053251_CI2);
-=======
 uint32_t xmen_state::screen_update_xmen(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
 	int layer[3], bg_colorbase;
@@ -92,24 +76,15 @@ uint32_t xmen_state::screen_update_xmen(screen_device &screen, bitmap_ind16 &bit
 	m_layer_colorbase[0] = m_k053251->get_palette_index(k053251_device::CI3);
 	m_layer_colorbase[1] = m_k053251->get_palette_index(k053251_device::CI0);
 	m_layer_colorbase[2] = m_k053251->get_palette_index(k053251_device::CI2);
->>>>>>> upstream/master
 
 	m_k052109->tilemap_update();
 
 	layer[0] = 0;
-<<<<<<< HEAD
-	m_layerpri[0] = m_k053251->get_priority(K053251_CI3);
-	layer[1] = 1;
-	m_layerpri[1] = m_k053251->get_priority(K053251_CI0);
-	layer[2] = 2;
-	m_layerpri[2] = m_k053251->get_priority(K053251_CI2);
-=======
 	m_layerpri[0] = m_k053251->get_priority(k053251_device::CI3);
 	layer[1] = 1;
 	m_layerpri[1] = m_k053251->get_priority(k053251_device::CI0);
 	layer[2] = 2;
 	m_layerpri[2] = m_k053251->get_priority(k053251_device::CI2);
->>>>>>> upstream/master
 
 	konami_sortlayers3(layer, m_layerpri);
 
@@ -127,23 +102,14 @@ uint32_t xmen_state::screen_update_xmen(screen_device &screen, bitmap_ind16 &bit
 }
 
 
-<<<<<<< HEAD
-UINT32 xmen_state::screen_update_xmen6p_left(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t xmen_state::screen_update_xmen6p_left(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int x, y;
 
 	for(y = 0; y < 32 * 8; y++)
 	{
-<<<<<<< HEAD
-		UINT16* line_dest = &bitmap.pix16(y);
-		UINT16* line_src = &m_screen_left->pix16(y);
-=======
 		uint16_t* line_dest = &bitmap.pix16(y);
 		uint16_t* line_src = &m_screen_left->pix16(y);
->>>>>>> upstream/master
 
 		for (x = 12 * 8; x < 52 * 8; x++)
 			line_dest[x] = line_src[x];
@@ -152,23 +118,14 @@ uint32_t xmen_state::screen_update_xmen6p_left(screen_device &screen, bitmap_ind
 	return 0;
 }
 
-<<<<<<< HEAD
-UINT32 xmen_state::screen_update_xmen6p_right(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t xmen_state::screen_update_xmen6p_right(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int x, y;
 
 	for(y = 0; y < 32 * 8; y++)
 	{
-<<<<<<< HEAD
-		UINT16* line_dest = &bitmap.pix16(y);
-		UINT16* line_src = &m_screen_right->pix16(y);
-=======
 		uint16_t* line_dest = &bitmap.pix16(y);
 		uint16_t* line_src = &m_screen_right->pix16(y);
->>>>>>> upstream/master
 
 		for (x = 12 * 8; x < 52 * 8; x++)
 			line_dest[x] = line_src[x];
@@ -178,11 +135,7 @@ uint32_t xmen_state::screen_update_xmen6p_right(screen_device &screen, bitmap_in
 }
 
 /* my lefts and rights are mixed up in several places.. */
-<<<<<<< HEAD
-void xmen_state::screen_eof_xmen6p(screen_device &screen, bool state)
-=======
 WRITE_LINE_MEMBER(xmen_state::screen_vblank_xmen6p)
->>>>>>> upstream/master
 {
 	// rising edge
 	if (state)
@@ -198,11 +151,7 @@ WRITE_LINE_MEMBER(xmen_state::screen_vblank_xmen6p)
 		cliprect.set(0, 64 * 8 - 1, 2 * 8, 30 * 8 - 1);
 
 
-<<<<<<< HEAD
-		address_space &space = machine().driver_data()->generic_space();
-=======
 		address_space &space = machine().dummy_space();
->>>>>>> upstream/master
 		if (m_screen->frame_number() & 0x01)
 		{
 			/* copy the desired spritelist to the chip */
@@ -219,11 +168,7 @@ WRITE_LINE_MEMBER(xmen_state::screen_vblank_xmen6p)
 			}
 
 
-<<<<<<< HEAD
-			renderbitmap = m_screen_right;
-=======
 			renderbitmap = m_screen_right.get();
->>>>>>> upstream/master
 		}
 		else
 		{
@@ -242,17 +187,6 @@ WRITE_LINE_MEMBER(xmen_state::screen_vblank_xmen6p)
 			}
 
 
-<<<<<<< HEAD
-			renderbitmap = m_screen_left;
-		}
-
-
-		bg_colorbase = m_k053251->get_palette_index(K053251_CI4);
-		m_sprite_colorbase = m_k053251->get_palette_index(K053251_CI1);
-		m_layer_colorbase[0] = m_k053251->get_palette_index(K053251_CI3);
-		m_layer_colorbase[1] = m_k053251->get_palette_index(K053251_CI0);
-		m_layer_colorbase[2] = m_k053251->get_palette_index(K053251_CI2);
-=======
 			renderbitmap = m_screen_left.get();
 		}
 
@@ -262,39 +196,24 @@ WRITE_LINE_MEMBER(xmen_state::screen_vblank_xmen6p)
 		m_layer_colorbase[0] = m_k053251->get_palette_index(k053251_device::CI3);
 		m_layer_colorbase[1] = m_k053251->get_palette_index(k053251_device::CI0);
 		m_layer_colorbase[2] = m_k053251->get_palette_index(k053251_device::CI2);
->>>>>>> upstream/master
 
 		m_k052109->tilemap_update();
 
 		layer[0] = 0;
-<<<<<<< HEAD
-		m_layerpri[0] = m_k053251->get_priority(K053251_CI3);
-		layer[1] = 1;
-		m_layerpri[1] = m_k053251->get_priority(K053251_CI0);
-		layer[2] = 2;
-		m_layerpri[2] = m_k053251->get_priority(K053251_CI2);
-=======
 		m_layerpri[0] = m_k053251->get_priority(k053251_device::CI3);
 		layer[1] = 1;
 		m_layerpri[1] = m_k053251->get_priority(k053251_device::CI0);
 		layer[2] = 2;
 		m_layerpri[2] = m_k053251->get_priority(k053251_device::CI2);
->>>>>>> upstream/master
 
 		konami_sortlayers3(layer, m_layerpri);
 
 		m_screen->priority().fill(0, cliprect);
 		/* note the '+1' in the background color!!! */
 		renderbitmap->fill(16 * bg_colorbase + 1, cliprect);
-<<<<<<< HEAD
-		m_k052109->tilemap_draw(m_screen, *renderbitmap, cliprect, layer[0], 0, 1);
-		m_k052109->tilemap_draw(m_screen, *renderbitmap, cliprect, layer[1], 0, 2);
-		m_k052109->tilemap_draw(m_screen, *renderbitmap, cliprect, layer[2], 0, 4);
-=======
 		m_k052109->tilemap_draw(*m_screen, *renderbitmap, cliprect, layer[0], 0, 1);
 		m_k052109->tilemap_draw(*m_screen, *renderbitmap, cliprect, layer[1], 0, 2);
 		m_k052109->tilemap_draw(*m_screen, *renderbitmap, cliprect, layer[2], 0, 4);
->>>>>>> upstream/master
 
 	/* this isn't supported anymore and it is unsure if still needed; keeping here for reference
 	    pdrawgfx_shadow_lowpri = 1; fix shadows of boulders in front of feet */

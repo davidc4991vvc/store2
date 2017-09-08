@@ -5,10 +5,7 @@
     Jaleco Exerion
 
 *************************************************************************/
-<<<<<<< HEAD
-=======
 #include "screen.h"
->>>>>>> upstream/master
 
 
 #define EXERION_MASTER_CLOCK      (XTAL_19_968MHz)   /* verified on pcb */
@@ -38,24 +35,6 @@ public:
 		m_palette(*this, "palette") { }
 
 	/* memory pointers */
-<<<<<<< HEAD
-	required_shared_ptr<UINT8> m_main_ram;
-	required_shared_ptr<UINT8> m_videoram;
-	required_shared_ptr<UINT8> m_spriteram;
-
-	/* video-related */
-	UINT8    m_cocktail_flip;
-	UINT8    m_char_palette;
-	UINT8    m_sprite_palette;
-	UINT8    m_char_bank;
-	UINT16   *m_background_gfx[4];
-	UINT8    *m_background_mixer;
-	UINT8    m_background_latches[13];
-
-	/* protection? */
-	UINT8 m_porta;
-	UINT8 m_portb;
-=======
 	required_shared_ptr<uint8_t> m_main_ram;
 	required_shared_ptr<uint8_t> m_videoram;
 	required_shared_ptr<uint8_t> m_spriteram;
@@ -72,7 +51,6 @@ public:
 	/* protection? */
 	uint8_t m_porta;
 	uint8_t m_portb;
->>>>>>> upstream/master
 
 	/* devices */
 	required_device<cpu_device> m_maincpu;
@@ -90,18 +68,10 @@ public:
 	DECLARE_WRITE8_MEMBER(exerion_portb_w);
 	DECLARE_DRIVER_INIT(exerion);
 	DECLARE_DRIVER_INIT(exerionb);
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void machine_reset();
-	virtual void video_start();
-	DECLARE_PALETTE_INIT(exerion);
-	UINT32 screen_update_exerion(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
 	virtual void video_start() override;
 	DECLARE_PALETTE_INIT(exerion);
 	uint32_t screen_update_exerion(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	void draw_background( bitmap_ind16 &bitmap, const rectangle &cliprect);
 };

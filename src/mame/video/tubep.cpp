@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-// license:???
-=======
 // license:GPL-2.0+
->>>>>>> upstream/master
 // copyright-holders:Jarek Burczynski
 /***************************************************************************
 
@@ -139,11 +135,7 @@
 
 PALETTE_INIT_MEMBER(tubep_state,tubep)
 {
-<<<<<<< HEAD
-	const UINT8 *color_prom = memregion("proms")->base();
-=======
 	const uint8_t *color_prom = memregion("proms")->base();
->>>>>>> upstream/master
 	int i,r,g,b;
 
 	/* background/sprites palette variables */
@@ -176,11 +168,7 @@ PALETTE_INIT_MEMBER(tubep_state,tubep)
 	compute_resistor_weights(0, 255,    -1.0,
 			3,  resistors_txt_rg,   weights_txt_rg, 470,    0,
 			2,  resistors_txt_b,    weights_txt_b,  470,    0,
-<<<<<<< HEAD
-			0,  0,  0,  0,  0   );
-=======
 			0,  nullptr,  nullptr,  0,  0   );
->>>>>>> upstream/master
 
 	/* create text palette */
 
@@ -350,17 +338,11 @@ PALETTE_INIT_MEMBER(tubep_state,tubep)
 }
 
 
-<<<<<<< HEAD
-VIDEO_START_MEMBER(tubep_state,tubep)
-{
-	m_spritemap = auto_alloc_array(machine(), UINT8, 256*256*2);
-=======
 void tubep_state::video_start()
 {
 	m_spritemap = std::make_unique<uint8_t[]>(256*256*2);
 
 	m_sprite_timer = timer_alloc(TIMER_SPRITE);
->>>>>>> upstream/master
 
 	/* Set up save state */
 	save_item(NAME(m_romD_addr));
@@ -387,15 +369,9 @@ void tubep_state::video_start()
 }
 
 
-<<<<<<< HEAD
-VIDEO_RESET_MEMBER(tubep_state,tubep)
-{
-	memset(m_spritemap,0,256*256*2);
-=======
 void tubep_state::video_reset()
 {
 	memset(m_spritemap.get(),0,256*256*2);
->>>>>>> upstream/master
 
 	m_romD_addr = 0;
 	m_romEF_addr = 0;
@@ -427,17 +403,6 @@ WRITE8_MEMBER(tubep_state::tubep_textram_w)
 }
 
 
-<<<<<<< HEAD
-WRITE8_MEMBER(tubep_state::tubep_background_romselect_w)
-{
-	m_background_romsel = data & 1;
-}
-
-
-WRITE8_MEMBER(tubep_state::tubep_colorproms_A4_line_w)
-{
-	m_color_A4 = (data & 1)<<4;
-=======
 WRITE_LINE_MEMBER(tubep_state::screen_flip_w)
 {
 	// screen flip, active high
@@ -455,7 +420,6 @@ WRITE_LINE_MEMBER(tubep_state::colorproms_A4_line_w)
 {
 	// line A4 (color proms address) state
 	m_color_A4 = state << 4;
->>>>>>> upstream/master
 }
 
 
@@ -473,48 +437,17 @@ WRITE8_MEMBER(tubep_state::tubep_background_c000_w)
 
 void tubep_state::draw_sprite()
 {
-<<<<<<< HEAD
-	UINT32  XDOT;
-	UINT32  YDOT;
-	UINT8 * romCxx  = memregion("user2")->base()+0x00000;
-	UINT8 * romD10  = romCxx+0x10000;
-	UINT8 * romEF13 = romCxx+0x12000;
-	UINT8 * romHI2  = romCxx+0x14000;
-=======
 	uint32_t  XDOT;
 	uint32_t  YDOT;
 	uint8_t * romCxx  = memregion("user2")->base()+0x00000;
 	uint8_t * romD10  = romCxx+0x10000;
 	uint8_t * romEF13 = romCxx+0x12000;
 	uint8_t * romHI2  = romCxx+0x14000;
->>>>>>> upstream/master
 
 
 	for (YDOT=0; (YDOT^m_YSize) != 0x00; YDOT++)
 	{
 	/* upper part of the schematic */
-<<<<<<< HEAD
-		UINT32 ls273_e12 = romD10[ m_romD_addr | YDOT ] & 0x7f;
-		UINT32 romEF_addr_now = m_romEF_addr | ls273_e12;
-		UINT32 E16_add_a = romEF13[ romEF_addr_now ] |
-							((romEF13[0x1000 + romEF_addr_now ]&0x0f)<<8);
-		UINT32 F16_add_b = E16_add_a + m_E16_add_b;
-
-	/* lower part of the schematic */
-		UINT32 romHI_addr = (YDOT) | (m_romHI_addr_mid) | (((m_romHI_addr_msb + 0x800) )&0x1800);
-		UINT32 ls273_g4 = romHI2[ romHI_addr ];
-		UINT32 ls273_j4 = romHI2[0x2000+ romHI_addr ];
-		UINT32 ls86_gh5 = ls273_g4 ^ m_VINV;
-		UINT32 ls86_ij5 = ls273_j4 ^ m_VINV;
-
-		UINT32 ls157_gh7= m_ls273_g6 | (m_mark_2);
-		UINT32 ls157_ij7= m_ls273_j6 | (m_mark_1);
-		UINT32 ls283_gh8= (m_VINV & 1) + ls86_gh5 + ((ls86_gh5 & 0x80)<<1) + ls157_gh7;
-		UINT32 ls283_ij8= (m_VINV & 1) + ls86_ij5 + ((ls86_ij5 & 0x80)<<1) + ls157_ij7;
-
-		UINT32 ls273_g9 = ls283_gh8;
-		UINT32 ls273_j9 = ls283_ij8;
-=======
 		uint32_t ls273_e12 = romD10[ m_romD_addr | YDOT ] & 0x7f;
 		uint32_t romEF_addr_now = m_romEF_addr | ls273_e12;
 		uint32_t E16_add_a = romEF13[ romEF_addr_now ] |
@@ -535,21 +468,10 @@ void tubep_state::draw_sprite()
 
 		uint32_t ls273_g9 = ls283_gh8;
 		uint32_t ls273_j9 = ls283_ij8;
->>>>>>> upstream/master
 
 		for (XDOT=0; (XDOT^m_XSize) != 0x00; XDOT++)
 		{
 	/* upper part of the schematic */
-<<<<<<< HEAD
-			UINT32 romD10_out = romD10[ m_romD_addr | XDOT ];
-			UINT32 F16_add_a = (romD10_out & 0x7e) >>1;
-			UINT32 romCxx_addr = (F16_add_a + F16_add_b ) & 0xffff;
-			UINT32 romCxx_out = romCxx[ romCxx_addr ];
-
-			UINT32 colorram_addr_lo = (romD10_out&1) ? (romCxx_out>>4)&0x0f: (romCxx_out>>0)&0x0f;
-
-			UINT8 sp_data = m_sprite_colorsharedram[ m_colorram_addr_hi | colorram_addr_lo ] & 0x0f; /* 2114 4-bit RAM */
-=======
 			uint32_t romD10_out = romD10[ m_romD_addr | XDOT ];
 			uint32_t F16_add_a = (romD10_out & 0x7e) >>1;
 			uint32_t romCxx_addr = (F16_add_a + F16_add_b ) & 0xffff;
@@ -558,7 +480,6 @@ void tubep_state::draw_sprite()
 			uint32_t colorram_addr_lo = (romD10_out&1) ? (romCxx_out>>4)&0x0f: (romCxx_out>>0)&0x0f;
 
 			uint8_t sp_data = m_sprite_colorsharedram[ m_colorram_addr_hi | colorram_addr_lo ] & 0x0f; /* 2114 4-bit RAM */
->>>>>>> upstream/master
 
 	/* lower part of the schematic */
 			romHI_addr = (XDOT) | (m_romHI_addr_mid) | (m_romHI_addr_msb);
@@ -642,11 +563,7 @@ WRITE8_MEMBER(tubep_state::tubep_sprite_control_w)
 			m_mcu->set_input_line(0, CLEAR_LINE);
 
 			/* 2.assert /SINT again after this time */
-<<<<<<< HEAD
-			timer_set( attotime::from_hz(19968000/8) * ((m_XSize+1)*(m_YSize+1)), TIMER_SPRITE);
-=======
 			m_sprite_timer->adjust(attotime::from_hz(19968000/8) * ((m_XSize+1)*(m_YSize+1)));
->>>>>>> upstream/master
 
 			/* 3.clear of /SINT starts sprite drawing circuit */
 			draw_sprite();
@@ -660,47 +577,24 @@ void tubep_state::tubep_vblank_end()
 	m_DISP = m_DISP ^ 1;
 	/* logerror("EOF: DISP after this is=%i, and clearing it now.\n", m_DISP); */
 	/* clear the new frame (the one that was (just) displayed)*/
-<<<<<<< HEAD
-	memset(m_spritemap+m_DISP*256*256, 0x0f, 256*256);
-}
-
-
-UINT32 tubep_state::screen_update_tubep(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 	memset(m_spritemap.get()+m_DISP*256*256, 0x0f, 256*256);
 }
 
 
 uint32_t tubep_state::screen_update_tubep(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int DISP_ = m_DISP^1;
 
 	pen_t pen_base = 32; //change it later
 
-<<<<<<< HEAD
-	UINT32 v;
-	UINT8 *text_gfx_base = memregion("gfx1")->base();
-	UINT8 *romBxx = memregion("user1")->base() + 0x2000*m_background_romsel;
-=======
 	uint32_t v;
 	uint8_t *text_gfx_base = memregion("gfx1")->base();
 	uint8_t *romBxx = memregion("user1")->base() + 0x2000*m_background_romsel;
->>>>>>> upstream/master
 
 	/* logerror(" update: from DISP=%i y_min=%3i y_max=%3i\n", DISP_, cliprect.min_y, cliprect.max_y+1); */
 
 	for (v = cliprect.min_y; v <= cliprect.max_y; v++)  /* only for current scanline */
 	{
-<<<<<<< HEAD
-		UINT32 h;
-		UINT32 sp_data0=0,sp_data1=0,sp_data2=0;
-		for (h = 0*8; h < 32*8; h++)
-		{
-			offs_t text_offs;
-			UINT8 text_code;
-			UINT8 text_gfx_data;
-=======
 		uint32_t h;
 		uint32_t sp_data0=0,sp_data1=0,sp_data2=0;
 		for (h = 0*8; h < 32*8; h++)
@@ -708,7 +602,6 @@ uint32_t tubep_state::screen_update_tubep(screen_device &screen, bitmap_ind16 &b
 			offs_t text_offs;
 			uint8_t text_code;
 			uint8_t text_gfx_data;
->>>>>>> upstream/master
 
 			sp_data2 = sp_data1;
 			sp_data1 = sp_data0;
@@ -722,31 +615,6 @@ uint32_t tubep_state::screen_update_tubep(screen_device &screen, bitmap_ind16 &b
 				bitmap.pix16(v, h) = (m_textram[text_offs + 1] & 0x0f) | m_color_A4;
 			else
 			{
-<<<<<<< HEAD
-				UINT32 bg_data;
-				UINT32 sp_data;
-
-				UINT32 romB_addr = (((h>>1)&0x3f)^((h&0x80)?0x00:0x3f)) | (((v&0x7f)^((v&0x80)?0x00:0x7f))<<6);
-
-				UINT8  rom_select = (h&0x01) ^ (((h&0x80)>>7)^1);
-
-				/* read from ROMs: B3/4 or B5/6 */
-				UINT8 romB_data_h = romBxx[ 0x4000 + 0x4000*rom_select + romB_addr ];
-				/* romB_data_h = output of LS374 @B3 or @B4 */
-
-				UINT32 VR_addr = ((romB_data_h + m_ls175_b7) & 0xfe) << 2;
-				/* VR_addr = output of LS157s @B1 and @B6 */
-
-				UINT8 xor_logic = (((h^v)&0x80)>>7) ^ (m_background_romsel & (((v&0x80)>>7)^1));
-
-				/* read from ROMs: B1/2 */
-				UINT8 romB_data_l = romBxx[ romB_addr ] ^ (xor_logic?0xff:0x00);
-				/* romB_data_l = output of LS273 @B10 */
-
-				UINT8 ls157_b11 = (romB_data_l >> ((rom_select==0)?4:0))&0x0f;
-
-				UINT8 ls283_b12 = (ls157_b11 + m_ls175_e8) & 0x0f;
-=======
 				uint32_t bg_data;
 				uint32_t sp_data;
 
@@ -770,7 +638,6 @@ uint32_t tubep_state::screen_update_tubep(screen_device &screen, bitmap_ind16 &b
 				uint8_t ls157_b11 = (romB_data_l >> ((rom_select==0)?4:0))&0x0f;
 
 				uint8_t ls283_b12 = (ls157_b11 + m_ls175_e8) & 0x0f;
->>>>>>> upstream/master
 
 				VR_addr |= (ls283_b12>>1);
 
@@ -819,11 +686,7 @@ uint32_t tubep_state::screen_update_tubep(screen_device &screen, bitmap_ind16 &b
 
 PALETTE_INIT_MEMBER(tubep_state,rjammer)
 {
-<<<<<<< HEAD
-	const UINT8 *color_prom = memregion("proms")->base();
-=======
 	const uint8_t *color_prom = memregion("proms")->base();
->>>>>>> upstream/master
 	int i;
 
 	static const int resistors_rg[3] = { 1000, 470, 220 };
@@ -834,11 +697,7 @@ PALETTE_INIT_MEMBER(tubep_state,rjammer)
 	compute_resistor_weights(0, 255,    -1.0,
 			3,  resistors_rg,   weights_rg, 470,    0,
 			2,  resistors_b,    weights_b,  470,    0,
-<<<<<<< HEAD
-			0,  0,  0,  0,  0   );
-=======
 			0,  nullptr,  nullptr,  0,  0   );
->>>>>>> upstream/master
 
 	for (i = 0;i < palette.entries();i++)
 	{
@@ -878,17 +737,6 @@ WRITE8_MEMBER(tubep_state::rjammer_background_page_w)
 }
 
 
-<<<<<<< HEAD
-UINT32 tubep_state::screen_update_rjammer(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-{
-	int DISP_ = m_DISP^1;
-
-	UINT32 v;
-	UINT8 *text_gfx_base = memregion("gfx1")->base();
-	UINT8 *rom13D  = memregion("user1")->base();
-	UINT8 *rom11BD = rom13D+0x1000;
-	UINT8 *rom19C  = rom13D+0x5000;
-=======
 uint32_t tubep_state::screen_update_rjammer(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
 	int DISP_ = m_DISP^1;
@@ -898,7 +746,6 @@ uint32_t tubep_state::screen_update_rjammer(screen_device &screen, bitmap_ind16 
 	uint8_t *rom13D  = memregion("user1")->base();
 	uint8_t *rom11BD = rom13D+0x1000;
 	uint8_t *rom19C  = rom13D+0x5000;
->>>>>>> upstream/master
 
 	/* this can be optimized further by extracting constants out of the loop */
 	/* especially read from ROM19C can be done once per 8 pixels*/
@@ -906,16 +753,6 @@ uint32_t tubep_state::screen_update_rjammer(screen_device &screen, bitmap_ind16 
 
 	for (v = cliprect.min_y; v <= cliprect.max_y; v++)  /* only for current scanline */
 	{
-<<<<<<< HEAD
-		UINT32 h;
-		UINT32 sp_data0=0,sp_data1=0,sp_data2=0;
-		UINT8 pal14h4_pin19;
-		UINT8 pal14h4_pin18;
-		UINT8 pal14h4_pin13;
-
-		UINT32 addr = (v*2) | m_page;
-		UINT32 ram_data = m_rjammer_backgroundram[ addr ] + 256*(m_rjammer_backgroundram[ addr+1 ]&0x2f);
-=======
 		uint32_t h;
 		uint32_t sp_data0=0,sp_data1=0,sp_data2=0;
 		uint8_t pal14h4_pin19;
@@ -924,7 +761,6 @@ uint32_t tubep_state::screen_update_rjammer(screen_device &screen, bitmap_ind16 
 
 		uint32_t addr = (v*2) | m_page;
 		uint32_t ram_data = m_rjammer_backgroundram[ addr ] + 256*(m_rjammer_backgroundram[ addr+1 ]&0x2f);
->>>>>>> upstream/master
 
 		addr = (v>>3) | ((m_ls377_data&0x1f)<<5);
 		pal14h4_pin13 = (rom19C[addr] >> ((v&7)^7) ) &1;
@@ -933,13 +769,8 @@ uint32_t tubep_state::screen_update_rjammer(screen_device &screen, bitmap_ind16 
 		for (h = 0*8; h < 32*8; h++)
 		{
 			offs_t text_offs;
-<<<<<<< HEAD
-			UINT8 text_code;
-			UINT8 text_gfx_data;
-=======
 			uint8_t text_code;
 			uint8_t text_gfx_data;
->>>>>>> upstream/master
 
 			sp_data2 = sp_data1;
 			sp_data1 = sp_data0;
@@ -953,11 +784,7 @@ uint32_t tubep_state::screen_update_rjammer(screen_device &screen, bitmap_ind16 
 				bitmap.pix16(v, h) = 0x10 | (m_textram[text_offs + 1] & 0x0f);
 			else
 			{
-<<<<<<< HEAD
-				UINT32 sp_data;
-=======
 				uint32_t sp_data;
->>>>>>> upstream/master
 
 				if ((sp_data0 != 0x0f) && (sp_data1 == 0x0f) && (sp_data2 != 0x0f))
 					sp_data = sp_data2;
@@ -968,38 +795,21 @@ uint32_t tubep_state::screen_update_rjammer(screen_device &screen, bitmap_ind16 
 					bitmap.pix16(v, h) = 0x00 + sp_data;
 				else
 				{
-<<<<<<< HEAD
-					UINT32 bg_data;
-					UINT8 color_bank;
-
-					UINT32 ls283 = (ram_data & 0xfff) + h;
-					UINT32 rom13D_addr = ((ls283>>4)&0x00f) | (v&0x0f0) | (ls283&0xf00);
-=======
 					uint32_t bg_data;
 					uint8_t color_bank;
 
 					uint32_t ls283 = (ram_data & 0xfff) + h;
 					uint32_t rom13D_addr = ((ls283>>4)&0x00f) | (v&0x0f0) | (ls283&0xf00);
->>>>>>> upstream/master
 
 					/* note: there is a jumper between bit 7 and bit 6 lines (bit 7 line is unused by default) */
 					/* default: bit 6 is rom select signal 0=rom @11B, 1=rom @11D */
 
-<<<<<<< HEAD
-					UINT32 rom13D_data = rom13D[ rom13D_addr ] & 0x7f;
-					/* rom13d_data is actually a content of LS377 @14C */
-
-
-					UINT32 rom11BD_addr = (rom13D_data<<7) | ((v&0x0f)<<3) | ((ls283>>1)&0x07);
-					UINT32 rom11_data = rom11BD[ rom11BD_addr];
-=======
 					uint32_t rom13D_data = rom13D[ rom13D_addr ] & 0x7f;
 					/* rom13d_data is actually a content of LS377 @14C */
 
 
 					uint32_t rom11BD_addr = (rom13D_data<<7) | ((v&0x0f)<<3) | ((ls283>>1)&0x07);
 					uint32_t rom11_data = rom11BD[ rom11BD_addr];
->>>>>>> upstream/master
 
 					if ((ls283&1)==0)
 						bg_data = rom11_data & 0x0f;

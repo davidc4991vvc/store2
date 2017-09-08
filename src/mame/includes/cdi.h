@@ -8,10 +8,7 @@
 #include "machine/cdicdic.h"
 #include "sound/dmadac.h"
 #include "video/mcd212.h"
-<<<<<<< HEAD
-=======
 #include "cpu/mcs51/mcs51.h"
->>>>>>> upstream/master
 
 /*----------- driver state -----------*/
 
@@ -22,26 +19,6 @@ class cdi_state : public driver_device
 {
 public:
 	cdi_state(const machine_config &mconfig, device_type type, const char *tag)
-<<<<<<< HEAD
-		: driver_device(mconfig, type, tag),
-		m_maincpu(*this, "maincpu"),
-		m_planea(*this, "planea"),
-		m_planeb(*this, "planeb"),
-		m_input1(*this, "INPUT1"),
-		m_input2(*this, "INPUT2"),
-		m_mousex(*this, "MOUSEX"),
-		m_mousey(*this, "MOUSEY"),
-		m_mousebtn(*this, "MOUSEBTN"),
-		m_slave(*this, "slave"),
-		m_scc(*this, "scc68070"),
-		m_cdic(*this, "cdic"),
-		m_cdda(*this, "cdda"),
-		m_mcd212(*this, "mcd212"){ }
-
-	required_device<cpu_device> m_maincpu;
-	required_shared_ptr<UINT16> m_planea;
-	required_shared_ptr<UINT16> m_planeb;
-=======
 		: driver_device(mconfig, type, tag)
 		, m_maincpu(*this, "maincpu")
 		, m_planea(*this, "planea")
@@ -98,23 +75,16 @@ public:
 	required_device<cpu_device> m_maincpu;
 	required_shared_ptr<uint16_t> m_planea;
 	required_shared_ptr<uint16_t> m_planeb;
->>>>>>> upstream/master
 	optional_ioport m_input1;
 	optional_ioport m_input2;
 	required_ioport m_mousex;
 	required_ioport m_mousey;
 	required_ioport m_mousebtn;
-<<<<<<< HEAD
-	required_device<cdislave_device> m_slave;
-	required_device<cdi68070_device> m_scc;
-	required_device<cdicdic_device> m_cdic;
-=======
 	optional_device<cdislave_device> m_slave_hle;
 	optional_device<cpu_device> m_servo;
 	optional_device<cpu_device> m_slave;
 	required_device<cdi68070_device> m_scc;
 	optional_device<cdicdic_device> m_cdic;
->>>>>>> upstream/master
 	required_device<cdda_device> m_cdda;
 	required_device<mcd212_device> m_mcd212;
 
@@ -122,27 +92,6 @@ public:
 
 	INTERRUPT_GEN_MEMBER( mcu_frame );
 
-<<<<<<< HEAD
-	UINT8 m_timer_set;
-	emu_timer *m_test_timer;
-	bitmap_rgb32 m_lcdbitmap;
-	DECLARE_INPUT_CHANGED_MEMBER(mcu_input);
-	virtual void machine_start();
-	virtual void video_start();
-	DECLARE_MACHINE_RESET(cdi);
-	DECLARE_MACHINE_RESET(quizard12);
-	DECLARE_MACHINE_RESET(quizard17);
-	DECLARE_MACHINE_RESET(quizard18);
-	DECLARE_MACHINE_RESET(quizard22);
-	DECLARE_MACHINE_RESET(quizard23);
-	DECLARE_MACHINE_RESET(quizard32);
-	DECLARE_MACHINE_RESET(quizard34);
-	DECLARE_MACHINE_RESET(quizard4r40);
-	DECLARE_MACHINE_RESET(quizard4r41);
-	DECLARE_MACHINE_RESET(quizard4r42);
-	UINT32 screen_update_cdimono1(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
-	UINT32 screen_update_cdimono1_lcd(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
-=======
 	uint8_t m_servo_io_regs[0x20];
 	uint8_t m_slave_io_regs[0x20];
 
@@ -171,16 +120,11 @@ public:
 
 	uint32_t screen_update_cdimono1(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
 	uint32_t screen_update_cdimono1_lcd(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 };
 
 /*----------- debug defines -----------*/
 
-<<<<<<< HEAD
-#define VERBOSE_LEVEL   (0)
-=======
 #define VERBOSE_LEVEL   (1)
->>>>>>> upstream/master
 
 #define ENABLE_VERBOSE_LOG (0)
 

@@ -43,10 +43,6 @@
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "emuopts.h"
-=======
->>>>>>> upstream/master
 #include "bml3bus.h"
 
 
@@ -54,11 +50,7 @@
 //  GLOBAL VARIABLES
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type BML3BUS_SLOT = &device_creator<bml3bus_slot_device>;
-=======
 DEFINE_DEVICE_TYPE(BML3BUS_SLOT, bml3bus_slot_device, "bml3bus_slot", "Hitachi MB-6890 Slot")
->>>>>>> upstream/master
 
 //**************************************************************************
 //  LIVE DEVICE
@@ -67,17 +59,6 @@ DEFINE_DEVICE_TYPE(BML3BUS_SLOT, bml3bus_slot_device, "bml3bus_slot", "Hitachi M
 //-------------------------------------------------
 //  bml3bus_slot_device - constructor
 //-------------------------------------------------
-<<<<<<< HEAD
-bml3bus_slot_device::bml3bus_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-		device_t(mconfig, BML3BUS_SLOT, "Hitachi MB-6890 Slot", tag, owner, clock, "bml3bus_slot", __FILE__),
-		device_slot_interface(mconfig, *this), m_bml3bus_tag(nullptr), m_bml3bus_slottag(nullptr)
-{
-}
-
-bml3bus_slot_device::bml3bus_slot_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source) :
-		device_t(mconfig, type, name, tag, owner, clock, shortname, source),
-		device_slot_interface(mconfig, *this), m_bml3bus_tag(nullptr), m_bml3bus_slottag(nullptr)
-=======
 bml3bus_slot_device::bml3bus_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	bml3bus_slot_device(mconfig, BML3BUS_SLOT, tag, owner, clock)
 {
@@ -86,7 +67,6 @@ bml3bus_slot_device::bml3bus_slot_device(const machine_config &mconfig, const ch
 bml3bus_slot_device::bml3bus_slot_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock) :
 	device_t(mconfig, type, tag, owner, clock),
 	device_slot_interface(mconfig, *this), m_bml3bus_tag(nullptr), m_bml3bus_slottag(nullptr)
->>>>>>> upstream/master
 {
 }
 
@@ -112,11 +92,7 @@ void bml3bus_slot_device::device_start()
 //  GLOBAL VARIABLES
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type BML3BUS = &device_creator<bml3bus_device>;
-=======
 DEFINE_DEVICE_TYPE(BML3BUS, bml3bus_device, "bml3bus", "Hitachi MB-6890 Bus")
->>>>>>> upstream/master
 
 void bml3bus_device::static_set_cputag(device_t &device, const char *tag)
 {
@@ -132,21 +108,6 @@ void bml3bus_device::static_set_cputag(device_t &device, const char *tag)
 //  bml3bus_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-bml3bus_device::bml3bus_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-		device_t(mconfig, BML3BUS, "Hitachi MB-6890 Bus", tag, owner, clock, "bml3bus", __FILE__), m_maincpu(nullptr),
-		m_out_nmi_cb(*this),
-		m_out_irq_cb(*this),
-		m_out_firq_cb(*this), m_cputag(nullptr)
-{
-}
-
-bml3bus_device::bml3bus_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source) :
-		device_t(mconfig, type, name, tag, owner, clock, shortname, source), m_maincpu(nullptr),
-		m_out_nmi_cb(*this),
-		m_out_irq_cb(*this),
-		m_out_firq_cb(*this), m_cputag(nullptr)
-=======
 bml3bus_device::bml3bus_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	bml3bus_device(mconfig, BML3BUS, tag, owner, clock)
 {
@@ -159,7 +120,6 @@ bml3bus_device::bml3bus_device(const machine_config &mconfig, device_type type, 
 	m_out_irq_cb(*this),
 	m_out_firq_cb(*this),
 	m_cputag(nullptr)
->>>>>>> upstream/master
 {
 }
 //-------------------------------------------------
@@ -176,15 +136,9 @@ void bml3bus_device::device_start()
 	m_out_firq_cb.resolve_safe();
 
 	// clear slots
-<<<<<<< HEAD
-	for (int i = 0; i < BML3BUS_MAX_SLOTS; i++)
-	{
-		m_device_list[i] = NULL;
-=======
 	for (auto & elem : m_device_list)
 	{
 		elem = nullptr;
->>>>>>> upstream/master
 	}
 }
 
@@ -200,11 +154,7 @@ device_bml3bus_card_interface *bml3bus_device::get_bml3bus_card(int slot)
 {
 	if (slot < 0)
 	{
-<<<<<<< HEAD
-		return NULL;
-=======
 		return nullptr;
->>>>>>> upstream/master
 	}
 
 	return m_device_list[slot];

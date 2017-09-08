@@ -22,13 +22,6 @@ ToDO:
 
 *************************************************************************************/
 
-<<<<<<< HEAD
-#include "machine/genpin.h"
-#include "cpu/z80/z80.h"
-#include "sound/dac.h"
-#include "rowamet.lh"
-
-=======
 #include "emu.h"
 #include "machine/genpin.h"
 
@@ -40,7 +33,6 @@ ToDO:
 #include "rowamet.lh"
 
 
->>>>>>> upstream/master
 class rowamet_state : public driver_device
 {
 public:
@@ -57,15 +49,6 @@ public:
 	DECLARE_WRITE8_MEMBER(io_w);
 	TIMER_DEVICE_CALLBACK_MEMBER(timer_a);
 private:
-<<<<<<< HEAD
-	UINT8 m_out_offs;
-	UINT8 m_sndcmd;
-	UINT8 m_io[16];
-	virtual void machine_reset();
-	required_device<cpu_device> m_maincpu;
-	required_device<cpu_device> m_cpu2;
-	required_shared_ptr<UINT8> m_p_ram;
-=======
 	uint8_t m_out_offs;
 	uint8_t m_sndcmd;
 	uint8_t m_io[16];
@@ -73,7 +56,6 @@ private:
 	required_device<cpu_device> m_maincpu;
 	required_device<cpu_device> m_cpu2;
 	required_shared_ptr<uint8_t> m_p_ram;
->>>>>>> upstream/master
 };
 
 
@@ -102,11 +84,7 @@ ADDRESS_MAP_END
 static ADDRESS_MAP_START( rowamet_sub_io, AS_IO, 8, rowamet_state )
 	ADDRESS_MAP_GLOBAL_MASK(0xff)
 	AM_RANGE(0x00, 0x00) AM_READWRITE(sound_r,mute_w)
-<<<<<<< HEAD
-	AM_RANGE(0x01, 0x01) AM_DEVWRITE("dac", dac_device, write_unsigned8)
-=======
 	AM_RANGE(0x01, 0x01) AM_DEVWRITE("dac", dac_byte_interface, write)
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 static INPUT_PORTS_START( rowamet )
@@ -189,11 +167,7 @@ READ8_MEMBER( rowamet_state::sound_r )
 
 WRITE8_MEMBER( rowamet_state::mute_w )
 {
-<<<<<<< HEAD
-	machine().sound().system_enable(~data);
-=======
 	machine().sound().system_enable(data ? 0 : 1);
->>>>>>> upstream/master
 }
 
 READ8_MEMBER( rowamet_state::io_r )
@@ -207,11 +181,7 @@ WRITE8_MEMBER( rowamet_state::io_w )
 
 	if (offset == 2)
 	{
-<<<<<<< HEAD
-		UINT8 cmd = (m_io[2]>>4) | (m_io[3] & 0xf0);
-=======
 		uint8_t cmd = (m_io[2]>>4) | (m_io[3] & 0xf0);
->>>>>>> upstream/master
 		if (cmd != m_sndcmd)
 		{
 			m_sndcmd = cmd;
@@ -222,11 +192,7 @@ WRITE8_MEMBER( rowamet_state::io_w )
 
 void rowamet_state::machine_reset()
 {
-<<<<<<< HEAD
-	UINT8 i;
-=======
 	uint8_t i;
->>>>>>> upstream/master
 	m_out_offs = 0;
 	m_sndcmd = 0;
 	for (i = 0; i < 16; i++)
@@ -235,17 +201,6 @@ void rowamet_state::machine_reset()
 
 TIMER_DEVICE_CALLBACK_MEMBER( rowamet_state::timer_a )
 {
-<<<<<<< HEAD
-	static const UINT8 patterns[16] = { 0x3f, 0x06, 0x5b, 0x4f, 0x66, 0x6d, 0x7c, 0x07, 0x7f, 0x67, 0x58, 0x4c, 0x62, 0x69, 0x78, 0 }; // 7446
-	m_out_offs &= 15;
-
-	UINT8 digit = m_out_offs << 1;
-	output_set_digit_value(digit, patterns[m_p_ram[m_out_offs]>>4]);
-	output_set_digit_value(++digit, patterns[m_p_ram[m_out_offs++]&15]);
-}
-
-static MACHINE_CONFIG_START( rowamet, rowamet_state )
-=======
 	static const uint8_t patterns[16] = { 0x3f, 0x06, 0x5b, 0x4f, 0x66, 0x6d, 0x7c, 0x07, 0x7f, 0x67, 0x58, 0x4c, 0x62, 0x69, 0x78, 0 }; // 7446
 	m_out_offs &= 15;
 
@@ -255,7 +210,6 @@ static MACHINE_CONFIG_START( rowamet, rowamet_state )
 }
 
 static MACHINE_CONFIG_START( rowamet )
->>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, 1888888)
 	MCFG_CPU_PROGRAM_MAP(rowamet_map)
@@ -268,16 +222,10 @@ static MACHINE_CONFIG_START( rowamet )
 	MCFG_DEFAULT_LAYOUT(layout_rowamet)
 
 	/* Sound */
-<<<<<<< HEAD
-	MCFG_SPEAKER_STANDARD_MONO("mono")
-	MCFG_DAC_ADD("dac")
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
-=======
 	MCFG_SPEAKER_STANDARD_MONO("speaker")
 	MCFG_SOUND_ADD("dac", DAC_8BIT_R2R, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.25) // unknown DAC
 	MCFG_DEVICE_ADD("vref", VOLTAGE_REGULATOR, 0) MCFG_VOLTAGE_REGULATOR_OUTPUT(5.0)
 	MCFG_SOUND_ROUTE_EX(0, "dac", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "dac", -1.0, DAC_VREF_NEG_INPUT)
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 /*-------------------------------------------------------------------
@@ -301,8 +249,4 @@ ROM_END
 /-------------------------------------------------------------------*/
 
 
-<<<<<<< HEAD
-GAME(198?, heavymtl, 0, rowamet, rowamet, driver_device, 0,  ROT0,  "Rowamet", "Heavy Metal", MACHINE_MECHANICAL | MACHINE_IMPERFECT_SOUND )
-=======
 GAME(198?, heavymtl, 0, rowamet, rowamet, rowamet_state, 0,  ROT0,  "Rowamet", "Heavy Metal", MACHINE_MECHANICAL | MACHINE_NOT_WORKING | MACHINE_IMPERFECT_SOUND )
->>>>>>> upstream/master

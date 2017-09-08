@@ -6,12 +6,9 @@
 
 *************************************************************************/
 
-<<<<<<< HEAD
-=======
 #include "machine/gen_latch.h"
 #include "screen.h"
 
->>>>>>> upstream/master
 class skyfox_state : public driver_device
 {
 public:
@@ -22,10 +19,7 @@ public:
 		m_gfxdecode(*this, "gfxdecode"),
 		m_screen(*this, "screen"),
 		m_palette(*this, "palette"),
-<<<<<<< HEAD
-=======
 		m_soundlatch(*this, "soundlatch"),
->>>>>>> upstream/master
 		m_spriteram(*this, "spriteram")
 	{ }
 
@@ -35,12 +29,8 @@ public:
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<screen_device> m_screen;
 	required_device<palette_device> m_palette;
-<<<<<<< HEAD
-	required_shared_ptr<UINT8> m_spriteram;
-=======
 	required_device<generic_latch_8_device> m_soundlatch;
 	required_shared_ptr<uint8_t> m_spriteram;
->>>>>>> upstream/master
 
 	int m_bg_pos;
 	int m_bg_ctrl;
@@ -48,17 +38,10 @@ public:
 	DECLARE_WRITE8_MEMBER(skyfox_vregs_w);
 	DECLARE_INPUT_CHANGED_MEMBER(coin_inserted);
 	DECLARE_DRIVER_INIT(skyfox);
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void machine_reset();
-	DECLARE_PALETTE_INIT(skyfox);
-	UINT32 screen_update_skyfox(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
 	DECLARE_PALETTE_INIT(skyfox);
 	uint32_t screen_update_skyfox(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	INTERRUPT_GEN_MEMBER(skyfox_interrupt);
 	void draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect );
 	void draw_background(bitmap_ind16 &bitmap, const rectangle &cliprect);

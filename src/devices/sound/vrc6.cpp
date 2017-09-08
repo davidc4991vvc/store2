@@ -19,11 +19,7 @@
 #define DISABLE_VRC6_SOUND      // not ready yet
 
 // device type definition
-<<<<<<< HEAD
-const device_type VRC6 = &device_creator<vrc6snd_device>;
-=======
 DEFINE_DEVICE_TYPE(VRC6, vrc6snd_device, "vrc6snd", "Konami VRC6 (Sound)")
->>>>>>> upstream/master
 
 //**************************************************************************
 //  LIVE DEVICE
@@ -33,11 +29,6 @@ DEFINE_DEVICE_TYPE(VRC6, vrc6snd_device, "vrc6snd", "Konami VRC6 (Sound)")
 //  vrc6snd_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-vrc6snd_device::vrc6snd_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, VRC6, "VRC6 sound", tag, owner, clock, "vrc6snd", __FILE__),
-		device_sound_interface(mconfig, *this), m_freqctrl(0), m_sawrate(0), m_sawfrql(0), m_sawfrqh(0), m_sawclock(0), m_sawaccum(0), m_stream(nullptr)
-=======
 vrc6snd_device::vrc6snd_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, VRC6, tag, owner, clock)
 	, device_sound_interface(mconfig, *this)
@@ -47,7 +38,6 @@ vrc6snd_device::vrc6snd_device(const machine_config &mconfig, const char *tag, d
 	, m_ticks{ 0, 0, 0 }
 	, m_output{ 0, 0, 0 }
 	, m_stream(nullptr)
->>>>>>> upstream/master
 {
 }
 
@@ -105,11 +95,7 @@ void vrc6snd_device::device_reset()
 void vrc6snd_device::sound_stream_update(sound_stream &stream, stream_sample_t **inputs, stream_sample_t **outputs, int samples)
 {
 	stream_sample_t *out = outputs[0];
-<<<<<<< HEAD
-	INT16 tmp;
-=======
 	int16_t tmp;
->>>>>>> upstream/master
 	int i;
 
 	// check global halt bit
@@ -221,11 +207,7 @@ void vrc6snd_device::sound_stream_update(sound_stream &stream, stream_sample_t *
 		}
 
 		// sum 2 4-bit pulses, 1 5-bit saw = unsigned 6 bit output
-<<<<<<< HEAD
-		tmp = (INT16)(UINT8)(m_output[0] + m_output[1] + m_output[2]);
-=======
 		tmp = (int16_t)(uint8_t)(m_output[0] + m_output[1] + m_output[2]);
->>>>>>> upstream/master
 		tmp <<= 8;
 
 		out[i] = tmp;

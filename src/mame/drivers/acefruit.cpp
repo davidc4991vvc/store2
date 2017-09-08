@@ -1,9 +1,5 @@
 // license:BSD-3-Clause
-<<<<<<< HEAD
-// copyright-holders:smf
-=======
 // copyright-holders:smf,Stephane Humbert
->>>>>>> upstream/master
 /***************************************************************************
 
 Ace Video Fruit Machine hardware
@@ -17,11 +13,8 @@ Inputs and Dip Switches by Stephh
 #include "emu.h"
 #include "cpu/z80/z80.h"
 #include "machine/nvram.h"
-<<<<<<< HEAD
-=======
 #include "machine/watchdog.h"
 #include "screen.h"
->>>>>>> upstream/master
 
 #include "sidewndr.lh"
 
@@ -40,15 +33,9 @@ public:
 		m_palette(*this, "palette") { }
 
 	required_device<cpu_device> m_maincpu;
-<<<<<<< HEAD
-	required_shared_ptr<UINT8> m_videoram;
-	required_shared_ptr<UINT8> m_colorram;
-	required_shared_ptr<UINT8> m_spriteram;
-=======
 	required_shared_ptr<uint8_t> m_videoram;
 	required_shared_ptr<uint8_t> m_colorram;
 	required_shared_ptr<uint8_t> m_spriteram;
->>>>>>> upstream/master
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<screen_device> m_screen;
 	required_device<palette_device> m_palette;
@@ -62,15 +49,9 @@ public:
 	DECLARE_CUSTOM_INPUT_MEMBER(starspnr_coinage_r);
 	DECLARE_CUSTOM_INPUT_MEMBER(starspnr_payout_r);
 	DECLARE_DRIVER_INIT(sidewndr);
-<<<<<<< HEAD
-	virtual void video_start();
-	DECLARE_PALETTE_INIT(acefruit);
-	UINT32 screen_update_acefruit(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	virtual void video_start() override;
 	DECLARE_PALETTE_INIT(acefruit);
 	uint32_t screen_update_acefruit(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	INTERRUPT_GEN_MEMBER(acefruit_vblank);
 	void acefruit_update_irq(int vpos);
 
@@ -80,11 +61,7 @@ public:
 	};
 
 protected:
-<<<<<<< HEAD
-	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
-=======
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
->>>>>>> upstream/master
 };
 
 
@@ -125,11 +102,7 @@ void acefruit_state::device_timer(emu_timer &timer, device_timer_id id, int para
 			m_refresh_timer->adjust( m_screen->time_until_pos(vpos) );
 			break;
 	default:
-<<<<<<< HEAD
-			assert_always(FALSE, "Unknown id in acefruit_state::device_timer");
-=======
 			assert_always(false, "Unknown id in acefruit_state::device_timer");
->>>>>>> upstream/master
 	}
 }
 
@@ -144,11 +117,7 @@ INTERRUPT_GEN_MEMBER(acefruit_state::acefruit_vblank)
 	m_refresh_timer->adjust( attotime::zero );
 }
 
-<<<<<<< HEAD
-UINT32 acefruit_state::screen_update_acefruit(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t acefruit_state::screen_update_acefruit(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int startrow = cliprect.min_y / 8;
 	int endrow = cliprect.max_y / 8;
@@ -182,19 +151,11 @@ uint32_t acefruit_state::screen_update_acefruit(screen_device &screen, bitmap_in
 				for( x = 0; x < 16; x++ )
 				{
 					int sprite = ( m_spriteram[ ( spriteindex / 64 ) % 6 ] & 0xf ) ^ 0xf;
-<<<<<<< HEAD
-					const UINT8 *gfxdata = gfx->get_data(sprite);
-
-					for( y = 0; y < 8; y++ )
-					{
-						UINT16 *dst = &bitmap.pix16(y + ( row * 8 ), x + ( col * 16 ) );
-=======
 					const uint8_t *gfxdata = gfx->get_data(sprite);
 
 					for( y = 0; y < 8; y++ )
 					{
 						uint16_t *dst = &bitmap.pix16(y + ( row * 8 ), x + ( col * 16 ) );
->>>>>>> upstream/master
 						*( dst ) = *( gfxdata + ( ( spriterow + y ) * gfx->rowbytes() ) + ( ( spriteindex % 64 ) >> 1 ) );
 					}
 
@@ -210,11 +171,7 @@ uint32_t acefruit_state::screen_update_acefruit(screen_device &screen, bitmap_in
 				{
 					for( y = 0; y < 8; y++ )
 					{
-<<<<<<< HEAD
-						UINT16 *dst = &bitmap.pix16(y + ( row * 8 ), x + ( col * 16 ) );
-=======
 						uint16_t *dst = &bitmap.pix16(y + ( row * 8 ), x + ( col * 16 ) );
->>>>>>> upstream/master
 						*( dst ) = 0;
 					}
 				}
@@ -246,11 +203,7 @@ uint32_t acefruit_state::screen_update_acefruit(screen_device &screen, bitmap_in
 
 CUSTOM_INPUT_MEMBER(acefruit_state::sidewndr_payout_r)
 {
-<<<<<<< HEAD
-	int bit_mask = (FPTR)param;
-=======
 	int bit_mask = (uintptr_t)param;
->>>>>>> upstream/master
 
 	switch (bit_mask)
 	{
@@ -266,11 +219,7 @@ CUSTOM_INPUT_MEMBER(acefruit_state::sidewndr_payout_r)
 
 CUSTOM_INPUT_MEMBER(acefruit_state::starspnr_coinage_r)
 {
-<<<<<<< HEAD
-	int bit_mask = (FPTR)param;
-=======
 	int bit_mask = (uintptr_t)param;
->>>>>>> upstream/master
 
 	switch (bit_mask)
 	{
@@ -290,11 +239,7 @@ CUSTOM_INPUT_MEMBER(acefruit_state::starspnr_coinage_r)
 
 CUSTOM_INPUT_MEMBER(acefruit_state::starspnr_payout_r)
 {
-<<<<<<< HEAD
-	int bit_mask = (FPTR)param;
-=======
 	int bit_mask = (uintptr_t)param;
->>>>>>> upstream/master
 
 	switch (bit_mask)
 	{
@@ -331,11 +276,7 @@ WRITE8_MEMBER(acefruit_state::acefruit_lamp_w)
 
 	for( i = 0; i < 8; i++ )
 	{
-<<<<<<< HEAD
-		output_set_lamp_value( ( offset * 8 ) + i, ( data >> i ) & 1 );
-=======
 		output().set_lamp_value( ( offset * 8 ) + i, ( data >> i ) & 1 );
->>>>>>> upstream/master
 	}
 }
 
@@ -345,11 +286,7 @@ WRITE8_MEMBER(acefruit_state::acefruit_solenoid_w)
 
 	for( i = 0; i < 8; i++ )
 	{
-<<<<<<< HEAD
-		output_set_indexed_value( "solenoid", i, ( data >> i ) & 1 );
-=======
 		output().set_indexed_value( "solenoid", i, ( data >> i ) & 1 );
->>>>>>> upstream/master
 	}
 }
 
@@ -394,11 +331,7 @@ static ADDRESS_MAP_START( acefruit_map, AS_PROGRAM, 8, acefruit_state )
 	AM_RANGE(0xa002, 0xa003) AM_WRITE(acefruit_coin_w)
 	AM_RANGE(0xa004, 0xa004) AM_WRITE(acefruit_solenoid_w)
 	AM_RANGE(0xa005, 0xa006) AM_WRITE(acefruit_sound_w)
-<<<<<<< HEAD
-	AM_RANGE(0xc000, 0xc000) AM_WRITE(watchdog_reset_w)
-=======
 	AM_RANGE(0xc000, 0xc000) AM_DEVWRITE("watchdog", watchdog_timer_device, reset_w)
->>>>>>> upstream/master
 	AM_RANGE(0xe000, 0xffff) AM_ROM
 ADDRESS_MAP_END
 
@@ -671,11 +604,7 @@ static GFXDECODE_START( acefruit )
 	GFXDECODE_ENTRY( "gfx1", 0x1800, charlayout, 8, 4 )
 GFXDECODE_END
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( acefruit, acefruit_state )
-=======
 static MACHINE_CONFIG_START( acefruit )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, 2500000) /* 2.5MHz */
@@ -683,11 +612,8 @@ static MACHINE_CONFIG_START( acefruit )
 	MCFG_CPU_IO_MAP(acefruit_io)
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", acefruit_state,  acefruit_vblank)
 
-<<<<<<< HEAD
-=======
 	MCFG_WATCHDOG_ADD("watchdog")
 
->>>>>>> upstream/master
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", acefruit)
 
 	/* video hardware */
@@ -710,11 +636,7 @@ MACHINE_CONFIG_END
 
 DRIVER_INIT_MEMBER(acefruit_state,sidewndr)
 {
-<<<<<<< HEAD
-	UINT8 *ROM = memregion( "maincpu" )->base();
-=======
 	uint8_t *ROM = memregion( "maincpu" )->base();
->>>>>>> upstream/master
 	/* replace "ret nc" ( 0xd0 ) with "di" */
 	ROM[ 0 ] = 0xf3;
 	/* this is either a bad dump or the cpu core should set the carry flag on reset */
@@ -851,13 +773,7 @@ ROM_END
 
 
 GAMEL( 1981?, sidewndr, 0,        acefruit, sidewndr, acefruit_state, sidewndr, ROT270, "ACE", "Sidewinder", MACHINE_IMPERFECT_GRAPHICS | MACHINE_NO_SOUND, layout_sidewndr )
-<<<<<<< HEAD
-GAMEL( 1981?, spellbnd, 0,        acefruit, spellbnd, driver_device, 0,        ROT270, "ACE", "Spellbound", MACHINE_IMPERFECT_GRAPHICS | MACHINE_NO_SOUND, layout_sidewndr )
-GAME ( 1982?, starspnr, 0,        acefruit, starspnr, driver_device, 0,        ROT270, "ACE", "Starspinner (Dutch/Nederlands)", MACHINE_NOT_WORKING | MACHINE_NO_SOUND )
-GAME ( 1982?, acefruit, 0,        acefruit, spellbnd, driver_device, 0,        ROT270, "ACE", "Silhouette", MACHINE_NOT_WORKING | MACHINE_NO_SOUND ) // inputs and video in bonus game need fixing on this one
-=======
 GAMEL( 1981?, spellbnd, 0,        acefruit, spellbnd, acefruit_state, 0,        ROT270, "ACE", "Spellbound", MACHINE_IMPERFECT_GRAPHICS | MACHINE_NO_SOUND, layout_sidewndr )
 GAME ( 1982?, starspnr, 0,        acefruit, starspnr, acefruit_state, 0,        ROT270, "ACE", "Starspinner (Dutch/Nederlands)", MACHINE_NOT_WORKING | MACHINE_NO_SOUND )
 GAME ( 1982?, acefruit, 0,        acefruit, spellbnd, acefruit_state, 0,        ROT270, "ACE", "Silhouette", MACHINE_NOT_WORKING | MACHINE_NO_SOUND ) // inputs and video in bonus game need fixing on this one
->>>>>>> upstream/master
 // not dumped: Magnum?

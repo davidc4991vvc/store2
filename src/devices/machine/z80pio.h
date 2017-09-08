@@ -29,15 +29,10 @@
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-#ifndef __Z80PIO__
-#define __Z80PIO__
-=======
 #ifndef MAME_MACHINE_Z80PIO_H
 #define MAME_MACHINE_Z80PIO_H
 
 #pragma once
->>>>>>> upstream/master
 
 #include "cpu/z80/z80daisy.h"
 
@@ -87,17 +82,6 @@ public:
 	};
 
 	// construction/destruction
-<<<<<<< HEAD
-	z80pio_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	template<class _Object> static devcb_base &set_out_int_callback(device_t &device, _Object object) { return downcast<z80pio_device &>(device).m_out_int_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_in_pa_callback(device_t &device, _Object object) { return downcast<z80pio_device &>(device).m_in_pa_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_out_pa_callback(device_t &device, _Object object) { return downcast<z80pio_device &>(device).m_out_pa_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_out_ardy_callback(device_t &device, _Object object) { return downcast<z80pio_device &>(device).m_out_ardy_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_in_pb_callback(device_t &device, _Object object) { return downcast<z80pio_device &>(device).m_in_pb_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_out_pb_callback(device_t &device, _Object object) { return downcast<z80pio_device &>(device).m_out_pb_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_out_brdy_callback(device_t &device, _Object object) { return downcast<z80pio_device &>(device).m_out_brdy_cb.set_callback(object); }
-=======
 	z80pio_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	template <class Object> static devcb_base &set_out_int_callback(device_t &device, Object &&cb) { return downcast<z80pio_device &>(device).m_out_int_cb.set_callback(std::forward<Object>(cb)); }
@@ -107,7 +91,6 @@ public:
 	template <class Object> static devcb_base &set_in_pb_callback(device_t &device, Object &&cb) { return downcast<z80pio_device &>(device).m_in_pb_cb.set_callback(std::forward<Object>(cb)); }
 	template <class Object> static devcb_base &set_out_pb_callback(device_t &device, Object &&cb) { return downcast<z80pio_device &>(device).m_out_pb_cb.set_callback(std::forward<Object>(cb)); }
 	template <class Object> static devcb_base &set_out_brdy_callback(device_t &device, Object &&cb) { return downcast<z80pio_device &>(device).m_out_brdy_cb.set_callback(std::forward<Object>(cb)); }
->>>>>>> upstream/master
 
 	// I/O line access
 	int rdy(int which) { return m_port[which].rdy(); }
@@ -118,29 +101,6 @@ public:
 	DECLARE_WRITE_LINE_MEMBER( strobe_b ) { strobe(PORT_B, state); }
 
 	// control register I/O
-<<<<<<< HEAD
-	UINT8 control_read();
-	void control_write(int offset, UINT8 data) { m_port[offset & 1].control_write(data); }
-	void control_a_write(UINT8 data) { control_write(PORT_A, data); }
-	void control_b_write(UINT8 data) { control_write(PORT_B, data); }
-
-	// data register I/O
-	UINT8 data_read(int offset) { return m_port[offset & 1].data_read(); }
-	void data_write(int offset, UINT8 data) { m_port[offset & 1].data_write(data); }
-	UINT8 data_a_read() { return data_read(PORT_A); }
-	UINT8 data_b_read() { return data_read(PORT_B); }
-	void data_a_write(UINT8 data) { data_write(PORT_A, data); }
-	void data_b_write(UINT8 data) { data_write(PORT_B, data); }
-
-	// port I/O
-	UINT8 port_read(int offset) { return m_port[offset & 1].read(); }
-	void port_write(int offset, UINT8 data) { m_port[offset & 1].write(data); }
-	void port_write(int offset, int bit, int state) { port_write(offset, (m_port[offset & 1].m_input & ~(1 << bit)) | (state << bit));  }
-	UINT8 port_a_read() { return port_read(PORT_A); }
-	UINT8 port_b_read() { return port_read(PORT_B); }
-	void port_a_write(UINT8 data) { port_write(PORT_A, data); }
-	void port_b_write(UINT8 data) { port_write(PORT_B, data); }
-=======
 	uint8_t control_read();
 	void control_write(int offset, uint8_t data) { m_port[offset & 1].control_write(data); }
 	void control_a_write(uint8_t data) { control_write(PORT_A, data); }
@@ -162,7 +122,6 @@ public:
 	uint8_t port_b_read() { return port_read(PORT_B); }
 	void port_a_write(uint8_t data) { port_write(PORT_A, data); }
 	void port_b_write(uint8_t data) { port_write(PORT_B, data); }
->>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER( pa_w ) { port_a_write(data); }
 	DECLARE_READ8_MEMBER( pa_r ) { return port_a_read(); }
 	DECLARE_WRITE8_MEMBER( pb_w ) { port_b_write(data); }
@@ -221,15 +180,6 @@ private:
 	};
 
 	// device-level overrides
-<<<<<<< HEAD
-	virtual void device_start();
-	virtual void device_reset();
-
-	// device_z80daisy_interface overrides
-	virtual int z80daisy_irq_state();
-	virtual int z80daisy_irq_ack();
-	virtual void z80daisy_irq_reti();
-=======
 	virtual void device_start() override;
 	virtual void device_reset() override;
 
@@ -237,7 +187,6 @@ private:
 	virtual int z80daisy_irq_state() override;
 	virtual int z80daisy_irq_ack() override;
 	virtual void z80daisy_irq_reti() override;
->>>>>>> upstream/master
 
 	// internal helpers
 	void check_interrupts();
@@ -260,15 +209,6 @@ private:
 		void set_mode(int mode);
 		void strobe(bool state);
 
-<<<<<<< HEAD
-		UINT8 read();
-		void write(UINT8 data);
-
-		void control_write(UINT8 data);
-
-		UINT8 data_read();
-		void data_write(UINT8 data);
-=======
 		uint8_t read();
 		void write(uint8_t data);
 
@@ -276,7 +216,6 @@ private:
 
 		uint8_t data_read();
 		void data_write(uint8_t data);
->>>>>>> upstream/master
 
 	private:
 		void check_interrupts() { m_device->check_interrupts(); }
@@ -286,15 +225,9 @@ private:
 
 		int m_mode;                 // mode register
 		int m_next_control_word;    // next control word
-<<<<<<< HEAD
-		UINT8 m_input;              // input latch
-		UINT8 m_output;             // output latch
-		UINT8 m_ior;                // input/output register
-=======
 		uint8_t m_input;              // input latch
 		uint8_t m_output;             // output latch
 		uint8_t m_ior;                // input/output register
->>>>>>> upstream/master
 		bool m_rdy;                 // ready
 		bool m_stb;                 // strobe
 
@@ -302,15 +235,9 @@ private:
 		bool m_ie;                  // interrupt enabled
 		bool m_ip;                  // interrupt pending
 		bool m_ius;                 // interrupt under service
-<<<<<<< HEAD
-		UINT8 m_icw;                // interrupt control word
-		UINT8 m_vector;             // interrupt vector
-		UINT8 m_mask;               // interrupt mask
-=======
 		uint8_t m_icw;                // interrupt control word
 		uint8_t m_vector;             // interrupt vector
 		uint8_t m_mask;               // interrupt mask
->>>>>>> upstream/master
 		bool m_match;               // logic equation match
 	};
 
@@ -329,13 +256,6 @@ private:
 
 
 // device type definition
-<<<<<<< HEAD
-extern const device_type Z80PIO;
-
-
-#endif
-=======
 DECLARE_DEVICE_TYPE(Z80PIO, z80pio_device)
 
 #endif // MAME_MACHINE_Z80PIO_H
->>>>>>> upstream/master

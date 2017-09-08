@@ -7,52 +7,6 @@
 //============================================================
 
 // standard windows headers
-<<<<<<< HEAD
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
-
-// MAMEOS headers
-#include "winutil.h"
-
-//============================================================
-//  win_error_to_file_error
-//============================================================
-
-file_error win_error_to_file_error(DWORD error)
-{
-	file_error filerr;
-
-	// convert a Windows error to a file_error
-	switch (error)
-	{
-		case ERROR_SUCCESS:
-			filerr = FILERR_NONE;
-			break;
-
-		case ERROR_OUTOFMEMORY:
-			filerr = FILERR_OUT_OF_MEMORY;
-			break;
-
-		case ERROR_FILE_NOT_FOUND:
-		case ERROR_FILENAME_EXCED_RANGE:
-		case ERROR_PATH_NOT_FOUND:
-			filerr = FILERR_NOT_FOUND;
-			break;
-
-		case ERROR_ACCESS_DENIED:
-			filerr = FILERR_ACCESS_DENIED;
-			break;
-
-		case ERROR_SHARING_VIOLATION:
-			filerr = FILERR_ALREADY_OPEN;
-			break;
-
-		default:
-			filerr = FILERR_FAILURE;
-			break;
-	}
-	return filerr;
-=======
 #include <windows.h>
 #include <direct.h>
 
@@ -77,25 +31,11 @@ osd::directory::entry::entry_type win_attributes_to_entry_type(DWORD attributes)
 		return osd::directory::entry::entry_type::DIR;
 	else
 		return osd::directory::entry::entry_type::FILE;
->>>>>>> upstream/master
 }
 
 
 
 //============================================================
-<<<<<<< HEAD
-//  win_attributes_to_entry_type
-//============================================================
-
-osd_dir_entry_type win_attributes_to_entry_type(DWORD attributes)
-{
-	if (attributes == 0xFFFFFFFF)
-		return ENTTYPE_NONE;
-	else if (attributes & FILE_ATTRIBUTE_DIRECTORY)
-		return ENTTYPE_DIR;
-	else
-		return ENTTYPE_FILE;
-=======
 //  win_time_point_from_filetime
 //============================================================
 
@@ -103,7 +43,6 @@ std::chrono::system_clock::time_point win_time_point_from_filetime(LPFILETIME fi
 {
 	auto converted_file_time = util::ntfs_duration_from_filetime(file_time->dwHighDateTime, file_time->dwLowDateTime);
 	return util::system_clock_time_point_from_ntfs_duration(converted_file_time);
->>>>>>> upstream/master
 }
 
 
@@ -159,8 +98,6 @@ BOOL win_is_gui_application(void)
 	return is_gui_frontend;
 }
 
-<<<<<<< HEAD
-=======
 //============================================================
 //  osd_subst_env
 //============================================================
@@ -177,7 +114,6 @@ void osd_subst_env(std::string &dst, const std::string &src)
 	osd::text::from_tstring(dst, buffer);
 }
 
->>>>>>> upstream/master
 //-------------------------------------------------
 //  Universal way to get module handle
 //-------------------------------------------------

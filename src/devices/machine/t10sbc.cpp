@@ -1,9 +1,6 @@
 // license:BSD-3-Clause
 // copyright-holders:smf
-<<<<<<< HEAD
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #include "t10sbc.h"
 
 void t10sbc::t10_start(device_t &device)
@@ -142,11 +139,7 @@ void t10sbc::ExecCommand()
 	}
 }
 
-<<<<<<< HEAD
-void t10sbc::ReadData( UINT8 *data, int dataLength )
-=======
 void t10sbc::ReadData( uint8_t *data, int dataLength )
->>>>>>> upstream/master
 {
 	// if we're a drive without a disk, return all zeroes
 	if (!m_disk)
@@ -203,11 +196,7 @@ void t10sbc::ReadData( uint8_t *data, int dataLength )
 	case T10SBC_CMD_READ_CAPACITY: // READ CAPACITY
 		{
 			hard_disk_info *info;
-<<<<<<< HEAD
-			UINT32 temp;
-=======
 			uint32_t temp;
->>>>>>> upstream/master
 
 			info = hard_disk_get_info(m_disk);
 
@@ -234,11 +223,7 @@ void t10sbc::ReadData( uint8_t *data, int dataLength )
 	}
 }
 
-<<<<<<< HEAD
-void t10sbc::WriteData( UINT8 *data, int dataLength )
-=======
 void t10sbc::WriteData( uint8_t *data, int dataLength )
->>>>>>> upstream/master
 {
 	if (!m_disk)
 	{

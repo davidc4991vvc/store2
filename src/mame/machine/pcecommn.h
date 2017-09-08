@@ -30,17 +30,6 @@ public:
 
 	required_device<cpu_device> m_maincpu;
 
-<<<<<<< HEAD
-	virtual UINT8 joy_read();
-	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	required_device<huc6260_device> m_huc6260;
-	DECLARE_WRITE_LINE_MEMBER(pce_irq_changed);
-private:
-	UINT8 m_io_port_options;    /*driver-specific options for the PCE*/
-	int m_joystick_port_select; /* internal index of joystick ports */
-	int m_joystick_data_select; /* which nibble of joystick data we want */
-};
-=======
 	virtual uint8_t joy_read();
 	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	required_device<huc6260_device> m_huc6260;
@@ -65,5 +54,4 @@ private:
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT ) PORT_PLAYER(1) \
 
 
->>>>>>> upstream/master
 #endif

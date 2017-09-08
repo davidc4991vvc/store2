@@ -5,178 +5,6 @@
 // ********************************************************************************
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "debugger.h"
-#include "hphybrid.h"
-
-typedef void (*fn_dis_param)(char *buffer , offs_t pc , UINT16 opcode);
-
-typedef struct {
-		UINT16 m_op_mask;
-		UINT16 m_opcode;
-		const char *m_mnemonic;
-		fn_dis_param m_param_fn;
-		UINT32 m_dasm_flags;
-} dis_entry_t;
-
-static void addr_2_str(char *buffer , UINT16 addr , bool indirect)
-{
-		char *s = buffer + strlen(buffer);
-
-		s += sprintf(s , "$%04x" , addr);
-
-		switch (addr) {
-		case HP_REG_A_ADDR:
-				strcpy(s , "(A)");
-				break;
-
-		case HP_REG_B_ADDR:
-				strcpy(s , "(B)");
-				break;
-
-		case HP_REG_P_ADDR:
-				strcpy(s , "(P)");
-				break;
-
-		case HP_REG_R_ADDR:
-				strcpy(s , "(R)");
-				break;
-
-		case HP_REG_R4_ADDR:
-				strcpy(s , "(R4)");
-				break;
-
-		case HP_REG_R5_ADDR:
-				strcpy(s , "(R5)");
-				break;
-
-		case HP_REG_R6_ADDR:
-				strcpy(s , "(R6)");
-				break;
-
-		case HP_REG_R7_ADDR:
-				strcpy(s , "(R7)");
-				break;
-
-		case HP_REG_IV_ADDR:
-				strcpy(s , "(IV)");
-				break;
-
-		case HP_REG_PA_ADDR:
-				strcpy(s , "(PA)");
-				break;
-
-		case HP_REG_DMAPA_ADDR:
-				strcpy(s , "(DMAPA)");
-				break;
-
-		case HP_REG_DMAMA_ADDR:
-				strcpy(s , "(DMAMA)");
-				break;
-
-		case HP_REG_DMAC_ADDR:
-				strcpy(s , "(DMAC)");
-				break;
-
-		case HP_REG_C_ADDR:
-				strcpy(s , "(C)");
-				break;
-
-		case HP_REG_D_ADDR:
-				strcpy(s , "(D)");
-				break;
-		}
-
-		if (indirect) {
-				strcat(s , ",I");
-		}
-}
-
-static void param_none(char *buffer , offs_t pc , UINT16 opcode)
-{
-}
-
-static void param_loc(char *buffer , offs_t pc , UINT16 opcode)
-{
-		UINT16 base;
-		UINT16 off;
-
-		if (opcode & 0x0400) {
-				// Current page
-				base = pc;
-		} else {
-				// Base page
-				base = 0;
-		}
-
-		off = opcode & 0x3ff;
-		if (off & 0x200) {
-				off -= 0x400;
-		}
-
-		addr_2_str(buffer , base + off , (opcode & 0x8000) != 0);
-}
-
-static void param_addr32(char *buffer , offs_t pc , UINT16 opcode)
-{
-		addr_2_str(buffer , opcode & 0x1f , (opcode & 0x8000) != 0);
-}
-
-static void param_skip(char *buffer , offs_t pc , UINT16 opcode)
-{
-		UINT16 off = opcode & 0x3f;
-		if (off & 0x20) {
-				off -= 0x40;
-		}
-		addr_2_str(buffer , pc + off , false);
-}
-
-static void param_skip_sc(char *buffer , offs_t pc , UINT16 opcode)
-{
-		param_skip(buffer, pc, opcode);
-
-		if (opcode & 0x80) {
-				if (opcode & 0x40) {
-						strcat(buffer , ",S");
-				} else {
-						strcat(buffer , ",C");
-				}
-		}
-}
-
-static void param_ret(char *buffer , offs_t pc , UINT16 opcode)
-{
-		char *s = buffer + strlen(buffer);
-
-		int off = opcode & 0x3f;
-
-		if (off & 0x20) {
-				off -= 0x40;
-		}
-
-		s += sprintf(s , "%d" , off);
-		if (opcode & 0x40) {
-				strcpy(s , ",P");
-		}
-}
-
-static void param_n16(char *buffer , offs_t pc , UINT16 opcode)
-{
-		char *s = buffer + strlen(buffer);
-
-		sprintf(s , "%u" , (opcode & 0xf) + 1);
-}
-
-static void param_reg_id(char *buffer , offs_t pc , UINT16 opcode)
-{
-		addr_2_str(buffer, opcode & 7, false);
-
-		if (opcode & 0x80) {
-				strcat(buffer , ",D");
-		} else {
-				strcat(buffer , ",I");
-		}
-=======
 #include "hphybrid.h"
 #include "debugger.h"
 
@@ -420,7 +248,6 @@ static void param_reg_id(std::ostream &stream, offs_t pc , uint16_t opcode , boo
 	} else {
 		stream << ",I";
 	}
->>>>>>> upstream/master
 }
 
 static const dis_entry_t dis_table[] = {
@@ -503,29 +330,6 @@ static const dis_entry_t dis_table[] = {
 		{0xff78 , 0x7970 , "WBC" , param_reg_id , 0 },
 		{0xff78 , 0x7978 , "WBD" , param_reg_id , 0 },
 		// *** END ***
-<<<<<<< HEAD
-		{0 , 0 , NULL , NULL , 0 }
-};
-
-CPU_DISASSEMBLE(hp_hybrid)
-{
-		UINT16 opcode = ((UINT16)oprom[ 0 ] << 8) | oprom[ 1 ];
-		const dis_entry_t *p;
-
-		for (p = dis_table; p->m_op_mask; p++) {
-				if ((opcode & p->m_op_mask) == p->m_opcode) {
-						strcpy(buffer , p->m_mnemonic);
-						strcat(buffer , " ");
-						p->m_param_fn(buffer , pc , opcode);
-						return 1 | p->m_dasm_flags | DASMFLAG_SUPPORTED;
-				}
-		}
-
-		// Unknown opcode
-		strcpy(buffer , "???");
-
-		return 1 | DASMFLAG_SUPPORTED;
-=======
 		{0 , 0 , nullptr , nullptr , 0 }
 };
 
@@ -607,5 +411,4 @@ CPU_DISASSEMBLE(hp_5061_3001)
 	}
 
 	return res;
->>>>>>> upstream/master
 }

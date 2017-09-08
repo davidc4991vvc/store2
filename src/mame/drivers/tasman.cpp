@@ -14,36 +14,14 @@
   Thanks to palindrome for PCB scans.
 
     0x38606
-<<<<<<< HEAD
-=======
 
   TODO:
   - dual port sound RAM;
   - interrupt sources / irq masking;
->>>>>>> upstream/master
 */
 
 #include "emu.h"
 #include "video/konami_helper.h"
-<<<<<<< HEAD
-#include "includes/konamigx.h"
-#include "cpu/m68000/m68000.h"
-#include "machine/eepromser.h"
-
-#define CUSTOM_DRAW 1
-
-class kongambl_state : public konamigx_state
-{
-public:
-	kongambl_state(const machine_config &mconfig, device_type type, const char *tag)
-		: konamigx_state(mconfig, type, tag),
-		m_vram(*this, "vram")
-		{ }
-
-	optional_shared_ptr<UINT32> m_vram;
-	DECLARE_READ32_MEMBER(eeprom_r);
-	DECLARE_WRITE32_MEMBER(eeprom_w);
-=======
 #include "cpu/m68000/m68000.h"
 #include "machine/k053252.h"
 #include "video/k053246_k053247_k055673.h"
@@ -87,22 +65,17 @@ public:
 	optional_shared_ptr<uint32_t> m_vram;
 	DECLARE_READ32_MEMBER(eeprom_r);
 	DECLARE_WRITE8_MEMBER(eeprom_w);
->>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(kongambl_ff_w);
 	DECLARE_READ32_MEMBER(test_r);
 	// DECLARE_READ32_MEMBER(rng_r);
 	DECLARE_DRIVER_INIT(kingtut);
 	DECLARE_VIDEO_START(kongambl);
-<<<<<<< HEAD
-	UINT32 screen_update_kongambl(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	uint8_t m_irq_mask;
 
 	virtual void machine_reset() override { m_irq_mask = 0; };
 	uint32_t screen_update_kongambl(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	WRITE_LINE_MEMBER(vblank_irq_ack_w);
 	WRITE_LINE_MEMBER(hblank_irq_ack_w);
->>>>>>> upstream/master
 	TIMER_DEVICE_CALLBACK_MEMBER(kongambl_vblank);
 	K056832_CB_MEMBER(tile_callback);
 	K053246_CB_MEMBER(sprite_callback);
@@ -122,19 +95,11 @@ VIDEO_START_MEMBER(kongambl_state,kongambl)
 	#endif
 }
 
-<<<<<<< HEAD
-UINT32 kongambl_state::screen_update_kongambl(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-{
-	#if CUSTOM_DRAW
-	gfx_element *gfx = m_gfxdecode->gfx(0);
-	UINT32 count;
-=======
 uint32_t kongambl_state::screen_update_kongambl(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
 	#if CUSTOM_DRAW
 	gfx_element *gfx = m_gfxdecode->gfx(0);
 	uint32_t count;
->>>>>>> upstream/master
 
 	count = 0;
 
@@ -142,11 +107,7 @@ uint32_t kongambl_state::screen_update_kongambl(screen_device &screen, bitmap_in
 	{
 		for (int x=0;x<128;x++)
 		{
-<<<<<<< HEAD
-			UINT32 tile = m_vram[count] & 0xffff;
-=======
 			uint32_t tile = m_vram[count] & 0xffff;
->>>>>>> upstream/master
 
 			if(m_screen->visible_area().contains(x*8, y*8))
 				gfx->opaque(bitmap,cliprect,tile,0,0,0,x*8,y*8);
@@ -161,11 +122,7 @@ uint32_t kongambl_state::screen_update_kongambl(screen_device &screen, bitmap_in
 	{
 		for (int x=0;x<128;x++)
 		{
-<<<<<<< HEAD
-			UINT32 tile = m_vram[count] & 0xffff;
-=======
 			uint32_t tile = m_vram[count] & 0xffff;
->>>>>>> upstream/master
 
 			if(m_screen->visible_area().contains(x*8, y*8))
 				gfx->transpen(bitmap,cliprect,tile,0,0,0,x*8,y*8,0);
@@ -190,11 +147,7 @@ uint32_t kongambl_state::screen_update_kongambl(screen_device &screen, bitmap_in
 READ32_MEMBER(kongambl_state::eeprom_r)
 {
 	//return machine().rand();
-<<<<<<< HEAD
-	UINT32 retval = 0;
-=======
 	uint32_t retval = 0;
->>>>>>> upstream/master
 
 	if (ACCESSING_BITS_24_31)
 		retval |= ioport("IN0")->read() << 24; // bit 0 freezes the system if 1
@@ -213,14 +166,6 @@ READ32_MEMBER(kongambl_state::eeprom_r)
 
 	return retval;
 }
-<<<<<<< HEAD
-WRITE32_MEMBER(kongambl_state::eeprom_w)
-{
-	if (ACCESSING_BITS_8_15)
-	{
-		ioport("EEPROMOUT")->write((data>>8)&0xf, 0xff);
-	}
-=======
 WRITE8_MEMBER(kongambl_state::eeprom_w)
 {
 	// offset == 3 seems mux writes (active low)
@@ -236,7 +181,6 @@ WRITE8_MEMBER(kongambl_state::eeprom_w)
 
 	if(offset == 0)
 		m_irq_mask = data;
->>>>>>> upstream/master
 }
 
 READ32_MEMBER(kongambl_state::test_r)
@@ -271,11 +215,7 @@ static ADDRESS_MAP_START( kongambl_map, AS_PROGRAM, 32, kongambl_state )
 	// override konami chips with custom areas until that code is removed
 	AM_RANGE(0x400000, 0x401fff) AM_ROM AM_REGION("gfx1",0)
 	AM_RANGE(0x420000, 0x43ffff) AM_RAM AM_SHARE("vram")
-<<<<<<< HEAD
-	AM_RANGE(0x480000, 0x48003f) AM_RAM // vregs
-=======
 	//AM_RANGE(0x480000, 0x48003f) AM_RAM // vregs
->>>>>>> upstream/master
 
 	//0x400000 0x400001 "13M" even addresses
 	//0x400002,0x400003 "13J" odd addresses
@@ -289,15 +229,6 @@ static ADDRESS_MAP_START( kongambl_map, AS_PROGRAM, 32, kongambl_state )
 
 	AM_RANGE(0x460000, 0x47ffff) AM_RAM_DEVWRITE("palette", palette_device, write) AM_SHARE("palette")
 
-<<<<<<< HEAD
-	AM_RANGE(0x4b001c, 0x4b001f) AM_WRITENOP
-
-	AM_RANGE(0x4c0000, 0x4c0007) AM_DEVWRITE16("k055673", k055673_device, k053246_word_w, 0xffffffff)
-	AM_RANGE(0x4c4000, 0x4c4003) AM_WRITENOP
-	AM_RANGE(0x4c4004, 0x4c4007) AM_WRITENOP
-	AM_RANGE(0x4c801c, 0x4c801f) AM_WRITENOP
-	AM_RANGE(0x4cc01c, 0x4cc01f) AM_WRITENOP
-=======
 	AM_RANGE(0x4b0000, 0x4b001f) AM_DEVREADWRITE8("k053252", k053252_device, read, write, 0xff00ff00)
 
 	AM_RANGE(0x4c0000, 0x4c0007) AM_DEVWRITE16("k055673", k055673_device, k053246_word_w, 0xffffffff)
@@ -305,7 +236,6 @@ static ADDRESS_MAP_START( kongambl_map, AS_PROGRAM, 32, kongambl_state )
 	//AM_RANGE(0x4c4004, 0x4c4007) AM_WRITENOP
 	//AM_RANGE(0x4c801c, 0x4c801f) AM_WRITENOP
 	//AM_RANGE(0x4cc01c, 0x4cc01f) AM_WRITENOP
->>>>>>> upstream/master
 
 	AM_RANGE(0x4cc000, 0x4cc00f) AM_DEVREAD16("k055673", k055673_device, k055673_rom_word_r, 0xffffffff)
 
@@ -313,15 +243,9 @@ static ADDRESS_MAP_START( kongambl_map, AS_PROGRAM, 32, kongambl_state )
 
 	AM_RANGE(0x500380, 0x500383) AM_READ(test_r)
 	AM_RANGE(0x500000, 0x5007ff) AM_RAM
-<<<<<<< HEAD
-//  AM_RANGE(0x500400, 0x500403) AM_NOP //dual port?
-//  AM_RANGE(0x500420, 0x500423) AM_NOP //dual port?
-//  AM_RANGE(0x500500, 0x500503) AM_NOP // reads sound ROM in here, polled from m68k?
-=======
 	AM_RANGE(0x500400, 0x500403) AM_NOP //dual port?
 	AM_RANGE(0x500420, 0x500423) AM_NOP //dual port?
 	AM_RANGE(0x500500, 0x500503) AM_NOP // reads sound ROM in here, polled from m68k?
->>>>>>> upstream/master
 	AM_RANGE(0x580000, 0x580007) AM_READ(test_r)
 
 	AM_RANGE(0x600000, 0x60000f) AM_READ(test_r)
@@ -329,13 +253,8 @@ static ADDRESS_MAP_START( kongambl_map, AS_PROGRAM, 32, kongambl_state )
 	AM_RANGE(0x700000, 0x700003) AM_READ(eeprom_r)
 	AM_RANGE(0x700004, 0x700007) AM_READ_PORT("IN1")
 	AM_RANGE(0x700008, 0x70000b) AM_READ_PORT("IN3")
-<<<<<<< HEAD
-	AM_RANGE(0x780000, 0x780003) AM_WRITE(eeprom_w)
-	AM_RANGE(0x780004, 0x780007) AM_WRITENOP
-=======
 	AM_RANGE(0x780000, 0x780003) AM_WRITE8(eeprom_w,0xffffffff)
 	//AM_RANGE(0x780004, 0x780007) AM_WRITENOP
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( kongamaud_map, AS_PROGRAM, 16, kongambl_state )
@@ -673,25 +592,14 @@ static const gfx_layout charlayout8_tasman =
 	8,8,
 	RGN_FRAC(1,1),
 	8,
-<<<<<<< HEAD
-	{ 0,8,16,24,32,40,48,56 },
-	{ 0,1,2,3,4,5,6,7 },    // bit order probably not exact - note ramp in first 16 tiles
-=======
 	// 0,8,16,24,32,40,48,56
 	{ 56,24,40,8,48,16,32,0 },
 	{ 0,1,2,3,4,5,6,7 },
->>>>>>> upstream/master
 	{ 0*64, 1*64, 2*64, 3*64, 4*64, 5*64, 6*64, 7*64},
 	8*64
 };
 
 static GFXDECODE_START( tasman )
-<<<<<<< HEAD
-	GFXDECODE_ENTRY( "gfx1", 0, charlayout8_tasman, 0, 0x8000/256 )
-GFXDECODE_END
-
-
-=======
 	GFXDECODE_ENTRY( "gfx1", 0, charlayout8_tasman, 0, 0x8000/(1 << 8) )
 GFXDECODE_END
 
@@ -706,22 +614,11 @@ WRITE_LINE_MEMBER(kongambl_state::hblank_irq_ack_w)
 	m_maincpu->set_input_line(2, CLEAR_LINE);
 }
 
->>>>>>> upstream/master
 TIMER_DEVICE_CALLBACK_MEMBER(kongambl_state::kongambl_vblank)
 {
 	int scanline = param;
 
 	// disabled for now since it interferes with the ROM tests
-<<<<<<< HEAD
-//  if(scanline == 512)
-//      m_maincpu->set_input_line(1, HOLD_LINE); // vblank?
-
-	if(scanline == 0)
-		m_maincpu->set_input_line(3, HOLD_LINE); // sprite irq?
-}
-
-static MACHINE_CONFIG_START( kongambl, kongambl_state )
-=======
 	if(scanline == 384 && m_irq_mask & 1)
 		m_maincpu->set_input_line(1, HOLD_LINE); // vblank?
 
@@ -737,7 +634,6 @@ static MACHINE_CONFIG_START( kongambl, kongambl_state )
 }
 
 static MACHINE_CONFIG_START( kongambl )
->>>>>>> upstream/master
 	MCFG_CPU_ADD("maincpu", M68EC020, 25000000)
 	MCFG_CPU_PROGRAM_MAP(kongambl_map)
 	MCFG_TIMER_DRIVER_ADD_SCANLINE("scantimer", kongambl_state, kongambl_vblank, "screen", 0, 1)
@@ -746,15 +642,6 @@ static MACHINE_CONFIG_START( kongambl )
 	MCFG_CPU_PROGRAM_MAP(kongamaud_map)
 	MCFG_CPU_PERIODIC_INT_DRIVER(kongambl_state, irq2_line_hold,  480)
 
-<<<<<<< HEAD
-	MCFG_EEPROM_SERIAL_93C46_ADD("eeprom")
-
-	MCFG_SCREEN_ADD("screen", RASTER)
-	MCFG_SCREEN_REFRESH_RATE(60)
-	MCFG_SCREEN_VBLANK_TIME(ATTOSECONDS_IN_USEC(2500))
-	MCFG_SCREEN_SIZE(96*8, 64*8+16)
-	MCFG_SCREEN_VISIBLE_AREA(0*8, 80*8-1, 0*8, 64*8-1)
-=======
 	MCFG_DEVICE_ADD("k053252", K053252, 25000000)
 	MCFG_K053252_OFFSETS(0, 16) // TBD
 	MCFG_K053252_INT1_ACK_CB(WRITELINE(kongambl_state, vblank_irq_ack_w))
@@ -765,7 +652,6 @@ static MACHINE_CONFIG_START( kongambl )
 
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_RAW_PARAMS(25000000, 288+16+32+48, 0, 287, 224+16+8+16, 0, 223) // fake, they'll be changed by CCU anyway, TBD
->>>>>>> upstream/master
 	MCFG_SCREEN_UPDATE_DRIVER(kongambl_state, screen_update_kongambl)
 	MCFG_SCREEN_PALETTE("palette")
 
@@ -778,18 +664,6 @@ static MACHINE_CONFIG_START( kongambl )
 
 	MCFG_DEVICE_ADD("k055673", K055673, 0)
 	MCFG_K055673_CB(kongambl_state, sprite_callback)
-<<<<<<< HEAD
-	MCFG_K055673_CONFIG("gfx2", 1, K055673_LAYOUT_LE2, -48+1, -23)
-	MCFG_K055673_GFXDECODE("gfxdecode")
-	MCFG_K055673_PALETTE("palette")
-
-	MCFG_GFXDECODE_ADD("gfxdecode", "palette", tasman)
-
-	MCFG_DEVICE_ADD("k056832", K056832, 0)
-	MCFG_K056832_CB(kongambl_state, tile_callback)
-	MCFG_K056832_CONFIG("gfx1", 0, K056832_BPP_8TASMAN, 0, 0, "none")
-	MCFG_K056832_GFXDECODE("gfxdecode")
-=======
 	MCFG_K055673_CONFIG("gfx2", K055673_LAYOUT_LE2, -48+1, -23)
 	MCFG_K055673_PALETTE("palette")
 
@@ -800,7 +674,6 @@ static MACHINE_CONFIG_START( kongambl )
 	MCFG_DEVICE_ADD("k056832", K056832, 0)
 	MCFG_K056832_CB(kongambl_state, tile_callback)
 	MCFG_K056832_CONFIG("gfx1", K056832_BPP_8TASMAN, 0, 0, "none")
->>>>>>> upstream/master
 	MCFG_K056832_PALETTE("palette")
 
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
@@ -935,21 +808,6 @@ ROM_END
 
 DRIVER_INIT_MEMBER(kongambl_state,kingtut)
 {
-<<<<<<< HEAD
-	UINT32 *rom = (UINT32*)memregion("maincpu")->base();
-
-//  rom[0x3986c/4] = (rom[0x3986c/4] & 0xffff0000) | 0x600e; // patch ROM check
-//  rom[0x2bfc8/4] = (rom[0x2bfc8/4] & 0xffff0000) | 0x6612; // patch VRAM ROM checks
-//  rom[0x2acd0/4] = (rom[0x2acd0/4] & 0xffff) | 0x6612<<16; // patch OBJ ROM checks
-	rom[0x55e40/4] = (rom[0x55e40/4] & 0xffff0000) | 0x4e71; // goes away from the POST
-}
-
-GAME( 199?, kingtut,    0,        kongambl,    kongambl, kongambl_state,    kingtut, ROT0,  "Konami", "King Tut (NSW, Australia)", MACHINE_NOT_WORKING | MACHINE_NO_SOUND )
-GAME( 199?, moneybnk,   0,        kongambl,    kongambl, driver_device,    0, ROT0,  "Konami", "Money In The Bank (NSW, Australia)", MACHINE_NOT_WORKING | MACHINE_NO_SOUND )
-GAME( 199?, dragsphr,   0,        kongambl,    kongambl, driver_device,    0, ROT0,  "Konami", "Dragon Sphere", MACHINE_NOT_WORKING | MACHINE_NO_SOUND )
-GAME( 199?, ivorytsk,   0,        kongambl,    kongambl, driver_device,    0, ROT0,  "Konami", "Ivory Tusk", MACHINE_NOT_WORKING | MACHINE_NO_SOUND )
-GAME( 199?, vikingt,    0,        kongambl,    kongambl, driver_device,    0, ROT0,  "Konami", "Viking Treasure", MACHINE_NOT_WORKING | MACHINE_NO_SOUND )
-=======
 	//uint32_t *rom = (uint32_t*)memregion("maincpu")->base();
 
 	//rom[0x3986c/4] = (rom[0x3986c/4] & 0xffff0000) | 0x600e; // patch ROM check
@@ -963,4 +821,3 @@ GAME( 199?, moneybnk,   0,        kongambl,    kongambl, kongambl_state,  0,    
 GAME( 199?, dragsphr,   0,        kongambl,    kongambl, kongambl_state,  0,       ROT0,  "Konami", "Dragon Sphere", MACHINE_NOT_WORKING | MACHINE_NO_SOUND )
 GAME( 199?, ivorytsk,   0,        kongambl,    kongambl, kongambl_state,  0,       ROT0,  "Konami", "Ivory Tusk", MACHINE_NOT_WORKING | MACHINE_NO_SOUND )
 GAME( 199?, vikingt,    0,        kongambl,    kongambl, kongambl_state,  0,       ROT0,  "Konami", "Viking Treasure", MACHINE_NOT_WORKING | MACHINE_NO_SOUND )
->>>>>>> upstream/master

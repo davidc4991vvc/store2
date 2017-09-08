@@ -8,22 +8,7 @@
 
 #include "emu.h"
 
-<<<<<<< HEAD
-static char *output;
-
-static void ATTR_PRINTF(1,2) print(const char *fmt, ...)
-{
-	va_list vl;
-
-	va_start(vl, fmt);
-	output += vsprintf(output, fmt, vl);
-	va_end(vl);
-}
-
-INLINE UINT32 reverse(UINT32 v)
-=======
 static inline uint32_t reverse(uint32_t v)
->>>>>>> upstream/master
 {
 	// Taken from http://www-graphics.stanford.edu/~seander/bithacks.html#ReverseParallel
 	// swap odd and even bits
@@ -40,48 +25,14 @@ static inline uint32_t reverse(uint32_t v)
 	return v;
 }
 
-<<<<<<< HEAD
-offs_t ssem_dasm_one(char *buffer, offs_t pc, UINT32 op)
-{
-	UINT8 instr = (reverse(op) >> 13) & 7;
-	UINT8 addr = reverse(op) & 0x1f;
-
-	output = buffer;
-=======
 static offs_t ssem_dasm_one(std::ostream &stream, offs_t pc, uint32_t op)
 {
 	uint8_t instr = (reverse(op) >> 13) & 7;
 	uint8_t addr = reverse(op) & 0x1f;
->>>>>>> upstream/master
 
 	switch (instr)
 	{
 		case 0: // JMP S
-<<<<<<< HEAD
-			print("JMP %d", addr);
-			break;
-		case 1: // JRP S
-			print("JRP %d", addr);
-			break;
-		case 2: // LDN S
-			print("LDN %d", addr);
-			break;
-		case 3: // STO S
-			print("STO %d", addr);
-			break;
-		case 4: // SUB S
-		case 5:
-			print("SUB %d", addr);
-			break;
-		case 6: // CMP
-			print("CMP");
-			break;
-		case 7: // STP
-			print("STP");
-			break;
-		default:
-			print("???");
-=======
 			util::stream_format(stream, "JMP %d", addr);
 			break;
 		case 1: // JRP S
@@ -105,7 +56,6 @@ static offs_t ssem_dasm_one(std::ostream &stream, offs_t pc, uint32_t op)
 			break;
 		default:
 			util::stream_format(stream, "???");
->>>>>>> upstream/master
 			break;
 	}
 
@@ -116,17 +66,9 @@ static offs_t ssem_dasm_one(std::ostream &stream, offs_t pc, uint32_t op)
 
 CPU_DISASSEMBLE( ssem )
 {
-<<<<<<< HEAD
-	UINT32 op = (*(UINT8 *)(opram + 0) << 24) |
-				(*(UINT8 *)(opram + 1) << 16) |
-				(*(UINT8 *)(opram + 2) <<  8) |
-				(*(UINT8 *)(opram + 3) <<  0);
-	return ssem_dasm_one(buffer, pc, op);
-=======
 	uint32_t op = (*(uint8_t *)(opram + 0) << 24) |
 				(*(uint8_t *)(opram + 1) << 16) |
 				(*(uint8_t *)(opram + 2) <<  8) |
 				(*(uint8_t *)(opram + 3) <<  0);
 	return ssem_dasm_one(stream, pc, op);
->>>>>>> upstream/master
 }

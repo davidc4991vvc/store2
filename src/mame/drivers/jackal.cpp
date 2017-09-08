@@ -1,19 +1,9 @@
-<<<<<<< HEAD
-// license:???
-// copyright-holders:Kenneth Lin
-/***************************************************************************
-
-  jackal.c
-
-  Written by Kenneth Lin (kenneth_lin@ai.vancouver.bc.ca)
-=======
 // license:BSD-3-Clause
 // copyright-holders:Curt Coder
 // thanks-to:Kenneth Lin (original driver author)
 /***************************************************************************
 
   jackal.cpp
->>>>>>> upstream/master
 
 Notes:
 - This game uses two 005885 gfx chip in parallel. The unique thing about it is
@@ -24,11 +14,6 @@ Notes:
   necessarily mean anything.
 
 TODO:
-<<<<<<< HEAD
-- Coin counters don't work correctly, because the register is overwritten by
-  other routines and the coin counter bits rapidly toggle between 0 and 1.
-=======
->>>>>>> upstream/master
 - running the sound CPU at the nominal clock rate, music stops working at the
   beginning of the game. This is kludged by overclocking the sound CPU. This
   looks like a CPU communication timing issue however fiddling with the
@@ -85,13 +70,6 @@ Address          Dir Data     Description
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/m6809/m6809.h"
-#include "sound/2151intf.h"
-#include "includes/jackal.h"
-#include "includes/konamipt.h"
-
-=======
 #include "includes/jackal.h"
 #include "includes/konamipt.h"
 
@@ -101,7 +79,6 @@ Address          Dir Data     Description
 #include "screen.h"
 #include "speaker.h"
 
->>>>>>> upstream/master
 
 /*************************************
  *
@@ -111,11 +88,7 @@ Address          Dir Data     Description
 
 READ8_MEMBER(jackal_state::jackalr_rotary_r)
 {
-<<<<<<< HEAD
-	return (1 << read_safe(ioport(offset ? "DIAL1" : "DIAL0"), 0x00)) ^ 0xff;
-=======
 	return (1 << m_dials[offset].read_safe(0x00)) ^ 0xff;
->>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(jackal_state::jackal_flipscreen_w)
@@ -144,19 +117,11 @@ READ8_MEMBER(jackal_state::jackal_spriteram_r)
 
 WRITE8_MEMBER(jackal_state::jackal_rambank_w)
 {
-<<<<<<< HEAD
-	UINT8 *rgn = memregion("master")->base();
-=======
 	uint8_t *rgn = memregion("master")->base();
->>>>>>> upstream/master
 
 	if (data & 0x04)
 		popmessage("jackal_rambank_w %02x", data);
 
-<<<<<<< HEAD
-	coin_counter_w(machine(), 0, data & 0x01);
-	coin_counter_w(machine(), 1, data & 0x02);
-=======
 	// all revisions flips the coin counter bit between 1 -> 0 five times, causing the bookkeeping to report 5 coins inserted.
 	// most likely solution in HW is a f/f that disables coin counters when any of the other bits are enabled.
 	if((data & 0xfc) == 0)
@@ -164,7 +129,6 @@ WRITE8_MEMBER(jackal_state::jackal_rambank_w)
 		machine().bookkeeping().coin_counter_w(0, data & 0x01);
 		machine().bookkeeping().coin_counter_w(1, data & 0x02);
 	}
->>>>>>> upstream/master
 
 	m_spritebank = &rgn[((data & 0x08) << 13)];
 	m_rambank = &rgn[((data & 0x10) << 12)];
@@ -207,11 +171,7 @@ static ADDRESS_MAP_START( master_map, AS_PROGRAM, 8, jackal_state )
 	AM_RANGE(0x0013, 0x0013) AM_READ_PORT("IN0")
 	AM_RANGE(0x0014, 0x0015) AM_READ(jackalr_rotary_r)
 	AM_RANGE(0x0018, 0x0018) AM_READ_PORT("DSW2")
-<<<<<<< HEAD
-	AM_RANGE(0x0019, 0x0019) AM_WRITE(watchdog_reset_w)
-=======
 	AM_RANGE(0x0019, 0x0019) AM_DEVWRITE("watchdog", watchdog_timer_device, reset_w)
->>>>>>> upstream/master
 	AM_RANGE(0x001c, 0x001c) AM_WRITE(jackal_rambank_w)
 	AM_RANGE(0x0020, 0x005f) AM_READWRITE(jackal_zram_r, jackal_zram_w)             // MAIN   Z RAM,SUB    Z RAM
 	AM_RANGE(0x0060, 0x1fff) AM_RAM AM_SHARE("share1")                          // M COMMON RAM,S COMMON RAM
@@ -372,11 +332,7 @@ INTERRUPT_GEN_MEMBER(jackal_state::jackal_interrupt)
 
 void jackal_state::machine_start()
 {
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("master")->base();
-=======
 	uint8_t *ROM = memregion("master")->base();
->>>>>>> upstream/master
 
 	membank("bank1")->configure_entry(0, &ROM[0x04000]);
 	membank("bank1")->configure_entry(1, &ROM[0x14000]);
@@ -387,11 +343,7 @@ void jackal_state::machine_start()
 
 void jackal_state::machine_reset()
 {
-<<<<<<< HEAD
-	UINT8 *rgn = memregion("master")->base();
-=======
 	uint8_t *rgn = memregion("master")->base();
->>>>>>> upstream/master
 
 	// HACK: running at the nominal clock rate, music stops working
 	// at the beginning of the game. This fixes it.
@@ -403,11 +355,7 @@ void jackal_state::machine_reset()
 	m_irq_enable = 0;
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( jackal, jackal_state )
-=======
 static MACHINE_CONFIG_START( jackal )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("master", M6809, MASTER_CLOCK/12) // verified on pcb
@@ -419,10 +367,7 @@ static MACHINE_CONFIG_START( jackal )
 
 	MCFG_QUANTUM_TIME(attotime::from_hz(6000))
 
-<<<<<<< HEAD
-=======
 	MCFG_WATCHDOG_ADD("watchdog")
->>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
@@ -543,8 +488,6 @@ ROM_START( jackalj ) /* 8-Way Joystick: You can only shoot in the direction you'
 	ROM_LOAD( "631r09.14h", 0x0100, 0x0100, CRC(a74dd86c) SHA1(571f606f8fc0fd3d98d26761de79ccb4cc9ab044) ) /* MMI 63S141AN or compatible (silkscreened 6301) */
 ROM_END
 
-<<<<<<< HEAD
-=======
 ROM_START( jackalbl ) // This is based on jackalr. Was dumped from 2 different PCBs.
 	ROM_REGION( 0x20000, "master", 0 )  /* Banked 64k for 1st CPU */
 	ROM_LOAD( "EPR-A-3.BIN", 0x04000, 0x8000, CRC(5fffee27) SHA1(224d5fd26dd1e0f15a3c99fd2fffbb76f641416e) ) // also found labeled "3.17"
@@ -588,7 +531,6 @@ ROM_START( jackalbl ) // This is based on jackalr. Was dumped from 2 different P
 	ROM_LOAD( "d5c121.ep1200",      0x0e00, 0x0200, NO_DUMP ) // not dumped yet
 ROM_END
 
->>>>>>> upstream/master
 ROM_START( topgunbl ) /* Rotary Joystick: Shot direction is controlled via the Rotary function of the joystick */
 	ROM_REGION( 0x20000, "master", 0 )  /* Banked 64k for 1st CPU */
 	ROM_LOAD( "t-3.c5", 0x04000, 0x8000, CRC(7826ad38) SHA1(875e87867924905b9b83bc203eb7ffe81cf72233) )
@@ -629,17 +571,9 @@ ROM_END
  *
  *************************************/
 
-<<<<<<< HEAD
-GAME( 1986, jackal,   0,      jackal, jackal,  driver_device, 0, ROT90, "Konami",  "Jackal (World, 8-way Joystick)", 0 )
-GAME( 1986, jackalr,  jackal, jackal, jackalr, driver_device, 0, ROT90, "Konami",  "Jackal (World, Rotary Joystick)", 0 )
-GAME( 1986, topgunr,  jackal, jackal, jackal,  driver_device, 0, ROT90, "Konami",  "Top Gunner (US, 8-way Joystick)", 0 )
-GAME( 1986, jackalj,  jackal, jackal, jackal,  driver_device, 0, ROT90, "Konami",  "Tokushu Butai Jackal (Japan, 8-way Joystick)", 0 )
-GAME( 1986, topgunbl, jackal, jackal, jackalr, driver_device, 0, ROT90, "bootleg", "Top Gunner (bootleg, Rotary Joystick)", 0 )
-=======
 GAME( 1986, jackal,   0,      jackal, jackal,  jackal_state, 0, ROT90, "Konami",  "Jackal (World, 8-way Joystick)",               0 )
 GAME( 1986, jackalr,  jackal, jackal, jackalr, jackal_state, 0, ROT90, "Konami",  "Jackal (World, Rotary Joystick)",              0 )
 GAME( 1986, topgunr,  jackal, jackal, jackal,  jackal_state, 0, ROT90, "Konami",  "Top Gunner (US, 8-way Joystick)",              0 )
 GAME( 1986, jackalj,  jackal, jackal, jackal,  jackal_state, 0, ROT90, "Konami",  "Tokushu Butai Jackal (Japan, 8-way Joystick)", 0 )
 GAME( 1986, jackalbl, jackal, jackal, jackalr, jackal_state, 0, ROT90, "bootleg", "Jackal (bootleg, Rotary Joystick)",            0 )
 GAME( 1986, topgunbl, jackal, jackal, jackalr, jackal_state, 0, ROT90, "bootleg", "Top Gunner (bootleg, Rotary Joystick)",        0 )
->>>>>>> upstream/master

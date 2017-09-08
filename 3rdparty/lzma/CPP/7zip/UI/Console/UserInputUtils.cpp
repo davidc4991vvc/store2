@@ -2,21 +2,6 @@
 
 #include "StdAfx.h"
 
-<<<<<<< HEAD
-#include "Common/StdInStream.h"
-#include "Common/StringConvert.h"
-
-#include "UserInputUtils.h"
-
-static const char kYes = 'Y';
-static const char kNo = 'N';
-static const char kYesAll = 'A';
-static const char kNoAll = 'S';
-static const char kAutoRenameAll = 'U';
-static const char kQuit = 'Q';
-
-static const char *kFirstQuestionMessage = "?\n";
-=======
 #include "../../../Common/StdInStream.h"
 #include "../../../Common/StringConvert.h"
 
@@ -30,7 +15,6 @@ static const char kAutoRenameAll = 'u';
 static const char kQuit = 'q';
 
 static const char *kFirstQuestionMessage = "? ";
->>>>>>> upstream/master
 static const char *kHelpQuestionMessage =
   "(Y)es / (N)o / (A)lways / (S)kip all / A(u)to rename all / (Q)uit? ";
 
@@ -38,35 +22,6 @@ static const char *kHelpQuestionMessage =
 
 NUserAnswerMode::EEnum ScanUserYesNoAllQuit(CStdOutStream *outStream)
 {
-<<<<<<< HEAD
-  (*outStream) << kFirstQuestionMessage;
-  for (;;)
-  {
-    (*outStream) << kHelpQuestionMessage;
-    outStream->Flush();
-    AString scannedString = g_StdIn.ScanStringUntilNewLine();
-    scannedString.Trim();
-    if (!scannedString.IsEmpty())
-      switch(
-        ::MyCharUpper(
-        #ifdef UNDER_CE
-        (wchar_t)
-        #endif
-        scannedString[0]))
-      {
-        case kYes:
-          return NUserAnswerMode::kYes;
-        case kNo:
-          return NUserAnswerMode::kNo;
-        case kYesAll:
-          return NUserAnswerMode::kYesAll;
-        case kNoAll:
-          return NUserAnswerMode::kNoAll;
-        case kAutoRenameAll:
-          return NUserAnswerMode::kAutoRenameAll;
-        case kQuit:
-          return NUserAnswerMode::kQuit;
-=======
   if (outStream)
     *outStream << kFirstQuestionMessage;
   for (;;)
@@ -87,7 +42,6 @@ NUserAnswerMode::EEnum ScanUserYesNoAllQuit(CStdOutStream *outStream)
         case kNoAll:  return NUserAnswerMode::kNoAll;
         case kAutoRenameAll: return NUserAnswerMode::kAutoRenameAll;
         case kQuit:   return NUserAnswerMode::kQuit;
->>>>>>> upstream/master
       }
   }
 }
@@ -100,28 +54,18 @@ NUserAnswerMode::EEnum ScanUserYesNoAllQuit(CStdOutStream *outStream)
 
 UString GetPassword(CStdOutStream *outStream)
 {
-<<<<<<< HEAD
-  (*outStream) << "\nEnter password"
-=======
   if (outStream)
   {
     *outStream << "\nEnter password"
->>>>>>> upstream/master
       #ifdef MY_DISABLE_ECHO
       " (will not be echoed)"
       #endif
       ":";
-<<<<<<< HEAD
-  outStream->Flush();
-
-  #ifdef MY_DISABLE_ECHO
-=======
     outStream->Flush();
   }
 
   #ifdef MY_DISABLE_ECHO
   
->>>>>>> upstream/master
   HANDLE console = GetStdHandle(STD_INPUT_HANDLE);
   bool wasChanged = false;
   DWORD mode = 0;
@@ -131,13 +75,6 @@ UString GetPassword(CStdOutStream *outStream)
   UString res = g_StdIn.ScanUStringUntilNewLine();
   if (wasChanged)
     SetConsoleMode(console, mode);
-<<<<<<< HEAD
-  (*outStream) << "\n";
-  outStream->Flush();
-  return res;
-  #else
-  return g_StdIn.ScanUStringUntilNewLine();
-=======
   if (outStream)
   {
     *outStream << endl;
@@ -149,6 +86,5 @@ UString GetPassword(CStdOutStream *outStream)
   
   return g_StdIn.ScanUStringUntilNewLine();
   
->>>>>>> upstream/master
   #endif
 }

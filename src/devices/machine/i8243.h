@@ -8,20 +8,10 @@
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __I8243_H__
-#define __I8243_H__
-
-#include "emu.h"
-#include "cpu/mcs48/mcs48.h"
-=======
 #ifndef MAME_MACHINE_I8243_H
 #define MAME_MACHINE_I8243_H
 
 #pragma once
->>>>>>> upstream/master
 
 
 
@@ -48,33 +38,6 @@ class i8243_device :  public device_t
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	i8243_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// static configuration helpers
-	template<class _Object> static devcb_base &set_read_handler(device_t &device, _Object object) { return downcast<i8243_device &>(device).m_readhandler.set_callback(object); }
-	template<class _Object> static devcb_base &set_write_handler(device_t &device, _Object object) { return downcast<i8243_device &>(device).m_writehandler.set_callback(object); }
-
-	DECLARE_READ8_MEMBER(i8243_p2_r);
-	DECLARE_WRITE8_MEMBER(i8243_p2_w);
-
-	DECLARE_WRITE8_MEMBER(i8243_prog_w);
-
-protected:
-	// device-level overrides
-	virtual void device_start();
-	virtual void device_reset();
-	virtual void device_post_load() { }
-	virtual void device_clock_changed() { }
-
-private:
-
-	UINT8       m_p[4];             /* 4 ports' worth of data */
-	UINT8       m_p2out;            /* port 2 bits that will be returned */
-	UINT8       m_p2;               /* most recent port 2 value */
-	UINT8       m_opcode;           /* latched opcode */
-	UINT8       m_prog;             /* previous PROG state */
-=======
 	i8243_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	// static configuration helpers
@@ -100,7 +63,6 @@ private:
 	uint8_t       m_p2;               /* most recent port 2 value */
 	uint8_t       m_opcode;           /* latched opcode */
 	uint8_t       m_prog;             /* previous PROG state */
->>>>>>> upstream/master
 
 	devcb_read8    m_readhandler;
 	devcb_write8   m_writehandler;
@@ -108,12 +70,6 @@ private:
 
 
 // device type definition
-<<<<<<< HEAD
-extern const device_type I8243;
-
-#endif  /* __I8243_H__ */
-=======
 DECLARE_DEVICE_TYPE(I8243, i8243_device)
 
 #endif /* __I8243_H__ */
->>>>>>> upstream/master

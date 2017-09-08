@@ -22,17 +22,11 @@ TODO:
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/m6809/m6809.h"
-#include "cpu/mb88xx/mb88xx.h"
-#include "audio/namco52.h"
-=======
 #include "audio/namco52.h"
 
 #include "cpu/m6809/m6809.h"
 #include "cpu/mb88xx/mb88xx.h"
 #include "screen.h"
->>>>>>> upstream/master
 
 
 class cswat_state : public driver_device
@@ -48,17 +42,10 @@ public:
 
 	required_device<cpu_device> m_maincpu;
 	required_device<gfxdecode_device> m_gfxdecode;
-<<<<<<< HEAD
-	required_shared_ptr<UINT8> m_videoram;
-	required_ioport m_dips_inp;
-
-	UINT8 m_nmi_enabled;
-=======
 	required_shared_ptr<uint8_t> m_videoram;
 	required_ioport m_dips_inp;
 
 	uint8_t m_nmi_enabled;
->>>>>>> upstream/master
 	tilemap_t *m_tilemap;
 
 	DECLARE_WRITE8_MEMBER(videoram_w);
@@ -70,19 +57,11 @@ public:
 
 	TILEMAP_MAPPER_MEMBER(tilemap_scan_rows);
 	TILE_GET_INFO_MEMBER(get_tile_info);
-<<<<<<< HEAD
-	UINT32 screen_update_cswat(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-
-	virtual void video_start();
-	virtual void machine_reset();
-	virtual void machine_start();
-=======
 	uint32_t screen_update_cswat(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 
 	virtual void video_start() override;
 	virtual void machine_reset() override;
 	virtual void machine_start() override;
->>>>>>> upstream/master
 };
 
 
@@ -115,17 +94,10 @@ TILE_GET_INFO_MEMBER(cswat_state::get_tile_info)
 
 void cswat_state::video_start()
 {
-<<<<<<< HEAD
-	m_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(cswat_state::get_tile_info),this), tilemap_mapper_delegate(FUNC(cswat_state::tilemap_scan_rows),this), 8, 8, 36, 28);
-}
-
-UINT32 cswat_state::screen_update_cswat(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 	m_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(cswat_state::get_tile_info),this), tilemap_mapper_delegate(FUNC(cswat_state::tilemap_scan_rows),this), 8, 8, 36, 28);
 }
 
 uint32_t cswat_state::screen_update_cswat(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	m_tilemap->draw(screen, bitmap, cliprect, 0, 0);
 	return 0;
@@ -153,22 +125,14 @@ WRITE8_MEMBER(cswat_state::irq_ack_w)
 
 READ8_MEMBER(cswat_state::dipswitch_r)
 {
-<<<<<<< HEAD
-	UINT16 dips = m_dips_inp->read();
-=======
 	uint16_t dips = m_dips_inp->read();
->>>>>>> upstream/master
 	return offset ? dips >> 8 : dips & 0xff;
 }
 
 READ8_MEMBER(cswat_state::sensors_r)
 {
 	// ?
-<<<<<<< HEAD
-	return rand();
-=======
 	return machine().rand();
->>>>>>> upstream/master
 }
 
 static ADDRESS_MAP_START( cswat_map, AS_PROGRAM, 8, cswat_state )
@@ -289,11 +253,7 @@ void cswat_state::machine_start()
 	save_item(NAME(m_nmi_enabled));
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( cswat, cswat_state )
-=======
 static MACHINE_CONFIG_START( cswat )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6809E, XTAL_18_432MHz/3/4) // HD68A09EP, 1.5MHz?
@@ -344,8 +304,4 @@ ROM_START( cswat )
 ROM_END
 
 
-<<<<<<< HEAD
-GAME( 1984, cswat, 0, cswat, cswat, driver_device, 0, ROT0, "Namco", "Cosmoswat", MACHINE_SUPPORTS_SAVE | MACHINE_MECHANICAL | MACHINE_NOT_WORKING | MACHINE_NO_SOUND | MACHINE_WRONG_COLORS | MACHINE_IMPERFECT_GRAPHICS )
-=======
 GAME( 1984, cswat, 0, cswat, cswat, cswat_state, 0, ROT0, "Namco", "Cosmoswat", MACHINE_SUPPORTS_SAVE | MACHINE_MECHANICAL | MACHINE_NOT_WORKING | MACHINE_NO_SOUND | MACHINE_WRONG_COLORS | MACHINE_IMPERFECT_GRAPHICS )
->>>>>>> upstream/master

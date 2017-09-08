@@ -89,11 +89,6 @@ Notes:
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/z80/z80.h"
-#include "sound/ay8910.h"
-#include "includes/zodiack.h"
-=======
 #include "includes/zodiack.h"
 
 #include "cpu/z80/z80.h"
@@ -102,7 +97,6 @@ Notes:
 #include "screen.h"
 #include "speaker.h"
 
->>>>>>> upstream/master
 
 #define PIXEL_CLOCK         (XTAL_18_432MHz/3)
 
@@ -140,24 +134,15 @@ INTERRUPT_GEN_MEMBER(zodiack_state::zodiack_sound_nmi_gen)
 
 WRITE8_MEMBER( zodiack_state::master_soundlatch_w )
 {
-<<<<<<< HEAD
-	soundlatch_byte_w(space, offset, data);
-=======
 	m_soundlatch->write(space, offset, data);
->>>>>>> upstream/master
 	m_audiocpu->set_input_line(0, HOLD_LINE);
 }
 
 WRITE8_MEMBER( zodiack_state::control_w )
 {
 	/* Bit 0-1 - coin counters */
-<<<<<<< HEAD
-	coin_counter_w(machine(), 0, data & 0x02);
-	coin_counter_w(machine(), 1, data & 0x01);
-=======
 	machine().bookkeeping().coin_counter_w(0, data & 0x02);
 	machine().bookkeeping().coin_counter_w(1, data & 0x01);
->>>>>>> upstream/master
 	/* Bit 2 - ???? */
 }
 
@@ -169,13 +154,8 @@ static ADDRESS_MAP_START( main_map, AS_PROGRAM, 8, zodiack_state )
 	AM_RANGE(0x6082, 0x6082) AM_READ_PORT("DSW1")
 	AM_RANGE(0x6083, 0x6083) AM_READ_PORT("IN0")
 	AM_RANGE(0x6084, 0x6084) AM_READ_PORT("IN1")
-<<<<<<< HEAD
-	AM_RANGE(0x6090, 0x6090) AM_READWRITE(soundlatch_byte_r, master_soundlatch_w)
-	AM_RANGE(0x7000, 0x7000) AM_READNOP AM_WRITE(watchdog_reset_w)  /* NOP??? */
-=======
 	AM_RANGE(0x6090, 0x6090) AM_DEVREAD("soundlatch", generic_latch_8_device, read) AM_WRITE(master_soundlatch_w)
 	AM_RANGE(0x7000, 0x7000) AM_READNOP AM_DEVWRITE("watchdog", watchdog_timer_device, reset_w)  /* NOP??? */
->>>>>>> upstream/master
 	AM_RANGE(0x7100, 0x7100) AM_WRITE(nmi_mask_w)
 	AM_RANGE(0x7200, 0x7200) AM_WRITE(flipscreen_w)
 	AM_RANGE(0x9000, 0x903f) AM_RAM_WRITE(attributes_w) AM_SHARE("attributeram")
@@ -191,11 +171,7 @@ static ADDRESS_MAP_START( sound_map, AS_PROGRAM, 8, zodiack_state )
 	AM_RANGE(0x0000, 0x1fff) AM_ROM
 	AM_RANGE(0x2000, 0x23ff) AM_RAM
 	AM_RANGE(0x4000, 0x4000) AM_WRITE(sound_nmi_enable_w)
-<<<<<<< HEAD
-	AM_RANGE(0x6000, 0x6000) AM_READWRITE(soundlatch_byte_r, soundlatch_byte_w)
-=======
 	AM_RANGE(0x6000, 0x6000) AM_DEVREADWRITE("soundlatch", generic_latch_8_device, read, write)
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( io_map, AS_IO, 8, zodiack_state  )
@@ -587,11 +563,7 @@ void zodiack_state::machine_reset()
 }
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( zodiack, zodiack_state )
-=======
 static MACHINE_CONFIG_START( zodiack )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, XTAL_18_432MHz/6)
@@ -604,11 +576,8 @@ static MACHINE_CONFIG_START( zodiack )
 	MCFG_CPU_IO_MAP(io_map)
 	MCFG_CPU_PERIODIC_INT_DRIVER(zodiack_state, zodiack_sound_nmi_gen, 8*60) // sound tempo - unknown source, timing is guessed
 
-<<<<<<< HEAD
-=======
 	MCFG_WATCHDOG_ADD("watchdog")
 
->>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_RAW_PARAMS(PIXEL_CLOCK, HTOTAL, HBEND, HBSTART, VTOTAL, VBEND, VBSTART)
@@ -623,11 +592,8 @@ static MACHINE_CONFIG_START( zodiack )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 
->>>>>>> upstream/master
 	MCFG_SOUND_ADD("aysnd", AY8910, XTAL_18_432MHz/12)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
 MACHINE_CONFIG_END
@@ -739,8 +705,6 @@ ROM_START( bounty )
 	ROM_LOAD( "mb7051.2b",   0x0020, 0x0020, CRC(465e31d4) SHA1(d47a4aa0e8931dcd8f85017ef04c2f6ad79f5725) )
 ROM_END
 
-<<<<<<< HEAD
-=======
 ROM_START( bounty2 ) // The PCB uses a large CPU epoxy module marked "CPU PACKII". A battery can be spotted through the epoxy.
 	ROM_REGION( 0x10000, "maincpu", 0 )
 	ROM_LOAD( "1.4f",      0x0000, 0x1000, CRC(edc26413) SHA1(c5ac7362a0e0d98eca53b3cd76d28a705c7d6917) )
@@ -761,7 +725,6 @@ ROM_START( bounty2 ) // The PCB uses a large CPU epoxy module marked "CPU PACKII
 	ROM_LOAD( "mb7051.2a",   0x0000, 0x0020, CRC(0de11a46) SHA1(3bc81571832dd78b29654e86479815ee5f97a4d3) )
 	ROM_LOAD( "mb7051.2b",   0x0020, 0x0020, CRC(465e31d4) SHA1(d47a4aa0e8931dcd8f85017ef04c2f6ad79f5725) )
 ROM_END
->>>>>>> upstream/master
 
 DRIVER_INIT_MEMBER(zodiack_state,zodiack)
 {
@@ -773,17 +736,9 @@ DRIVER_INIT_MEMBER(zodiack_state,percuss)
 	m_percuss_hardware = true;
 }
 
-<<<<<<< HEAD
-GAME( 1983, zodiack,  0, zodiack, zodiack,  zodiack_state, zodiack, ROT270, "Orca (Esco Trading Co., Inc. license)", "Zodiack", MACHINE_IMPERFECT_COLORS | MACHINE_SUPPORTS_SAVE ) /* bullet color needs to be verified */
-GAME( 1983, dogfight, 0, zodiack, dogfight, zodiack_state, zodiack, ROT270, "Orca / Thunderbolt", "Dog Fight (Thunderbolt)", MACHINE_IMPERFECT_COLORS | MACHINE_SUPPORTS_SAVE ) /* bullet color needs to be verified */
-GAME( 1982, moguchan, 0, zodiack, moguchan, zodiack_state, percuss, ROT270, "Orca (Eastern Commerce Inc. license)", "Mogu Chan (bootleg?)", MACHINE_WRONG_COLORS | MACHINE_SUPPORTS_SAVE ) /* license copyright taken from ROM string at $0b5c */
-GAME( 1981, percuss,  0, zodiack, percuss,  zodiack_state, percuss, ROT270, "Orca", "The Percussor", MACHINE_SUPPORTS_SAVE )
-GAME( 1982, bounty,   0, zodiack, bounty,   zodiack_state, percuss, ROT180, "Orca", "The Bounty", MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1983, zodiack,  0,      zodiack, zodiack,  zodiack_state, zodiack, ROT270, "Orca (Esco Trading Co., Inc. license)", "Zodiack",                 MACHINE_IMPERFECT_COLORS | MACHINE_SUPPORTS_SAVE ) /* bullet color needs to be verified */
 GAME( 1983, dogfight, 0,      zodiack, dogfight, zodiack_state, zodiack, ROT270, "Orca / Thunderbolt",                    "Dog Fight (Thunderbolt)", MACHINE_IMPERFECT_COLORS | MACHINE_SUPPORTS_SAVE ) /* bullet color needs to be verified */
 GAME( 1982, moguchan, 0,      zodiack, moguchan, zodiack_state, percuss, ROT270, "Orca (Eastern Commerce Inc. license)",  "Mogu Chan (bootleg?)",    MACHINE_WRONG_COLORS | MACHINE_SUPPORTS_SAVE ) /* license copyright taken from ROM string at $0b5c */
 GAME( 1981, percuss,  0,      zodiack, percuss,  zodiack_state, percuss, ROT270, "Orca",                                  "The Percussor",           MACHINE_SUPPORTS_SAVE )
 GAME( 1982, bounty,   0,      zodiack, bounty,   zodiack_state, percuss, ROT180, "Orca",                                  "The Bounty (set 1)",      MACHINE_SUPPORTS_SAVE )
 GAME( 1982, bounty2,  bounty, zodiack, bounty,   zodiack_state, percuss, ROT180, "Orca",                                  "The Bounty (set 2)",      MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE ) // seems to use a different memory map
->>>>>>> upstream/master

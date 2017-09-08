@@ -14,34 +14,19 @@
     IMPLEMENTATION
 ***************************************************************************/
 
-<<<<<<< HEAD
-const device_type VT82C505 = &device_creator<vt82c505_device>;
-
-
-vt82c505_device::vt82c505_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-		: device_t(mconfig, VT82C505, "VIA VT82C505 PCI bridge", tag, owner, clock, "vt82c505", __FILE__),
-		pci_device_interface( mconfig, *this )
-=======
 DEFINE_DEVICE_TYPE(VT82C505, vt82c505_device, "vt82c505_device", "VIA VT82C505 PCI bridge")
 
 
 vt82c505_device::vt82c505_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, VT82C505, tag, owner, clock)
 	, pci_device_interface(mconfig, *this)
->>>>>>> upstream/master
 {
 }
 
 
-<<<<<<< HEAD
-UINT32 vt82c505_device::pci_read(pci_bus_device *pcibus, int function, int offset, UINT32 mem_mask)
-{
-	UINT32 result = 0;
-=======
 uint32_t vt82c505_device::pci_read(pci_bus_device *pcibus, int function, int offset, uint32_t mem_mask)
 {
 	uint32_t result = 0;
->>>>>>> upstream/master
 
 	if (function != 0)
 		return result;
@@ -63,11 +48,7 @@ uint32_t vt82c505_device::pci_read(pci_bus_device *pcibus, int function, int off
 	return result;
 }
 
-<<<<<<< HEAD
-void vt82c505_device::pci_write(pci_bus_device *pcibus, int function, int offset, UINT32 data, UINT32 mem_mask)
-=======
 void vt82c505_device::pci_write(pci_bus_device *pcibus, int function, int offset, uint32_t data, uint32_t mem_mask)
->>>>>>> upstream/master
 {
 	if (function != 0)
 		return;

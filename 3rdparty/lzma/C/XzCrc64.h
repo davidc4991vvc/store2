@@ -1,20 +1,12 @@
 /* XzCrc64.h -- CRC64 calculation
-<<<<<<< HEAD
-2010-04-16 : Igor Pavlov : Public domain */
-=======
 2013-01-18 : Igor Pavlov : Public domain */
->>>>>>> upstream/master
 
 #ifndef __XZ_CRC64_H
 #define __XZ_CRC64_H
 
 #include <stddef.h>
 
-<<<<<<< HEAD
-#include "Types.h"
-=======
 #include "7zTypes.h"
->>>>>>> upstream/master
 
 EXTERN_C_BEGIN
 

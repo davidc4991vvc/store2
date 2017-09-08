@@ -2,10 +2,7 @@
  * jdapistd.c
  *
  * Copyright (C) 1994-1996, Thomas G. Lane.
-<<<<<<< HEAD
-=======
  * Modified 2002-2013 by Guido Vollbeding.
->>>>>>> upstream/master
  * This file is part of the Independent JPEG Group's software.
  * For conditions of distribution and use, see the accompanying README file.
  *

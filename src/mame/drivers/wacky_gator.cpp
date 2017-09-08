@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-// license:GPL2+
-=======
 // license:GPL-2.0+
->>>>>>> upstream/master
 // copyright-holders:FelipeSanches, Sandro Ronco
 //
 // Wacky Gator
@@ -25,14 +21,9 @@
 #include "machine/i8255.h"
 #include "machine/pit8253.h"
 #include "machine/ticket.h"
-<<<<<<< HEAD
-#include "sound/2413intf.h"
-#include "sound/msm5205.h"
-=======
 #include "sound/msm5205.h"
 #include "sound/ym2413.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 #include "wackygtr.lh"
 
@@ -58,11 +49,7 @@ public:
 	required_memory_region m_samples;
 
 	DECLARE_DRIVER_INIT(wackygtr);
-<<<<<<< HEAD
-	void machine_reset();
-=======
 	void machine_reset() override;
->>>>>>> upstream/master
 
 	DECLARE_WRITE_LINE_MEMBER(adpcm_int);
 	DECLARE_WRITE8_MEMBER(sample_ctrl_w);
@@ -71,21 +58,13 @@ public:
 	DECLARE_CUSTOM_INPUT_MEMBER(alligators_rear_sensors_r);
 	DECLARE_CUSTOM_INPUT_MEMBER(alligators_front_sensors_r);
 
-<<<<<<< HEAD
-	void set_lamps(int p, UINT8 value);
-=======
 	void set_lamps(int p, uint8_t value);
->>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(status_lamps_w);
 	DECLARE_WRITE8_MEMBER(timing_lamps_0_w)     { set_lamps(8 , data); }
 	DECLARE_WRITE8_MEMBER(timing_lamps_1_w)     { set_lamps(16, data); }
 	DECLARE_WRITE8_MEMBER(timing_lamps_2_w)     { set_lamps(24, data); }
 
-<<<<<<< HEAD
-	void set_digits(int p, UINT8 value);
-=======
 	void set_digits(int p, uint8_t value);
->>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(disp0_w)              { set_digits(0, data); }
 	DECLARE_WRITE8_MEMBER(disp1_w)              { set_digits(2, data); }
 	DECLARE_WRITE8_MEMBER(disp2_w)              { set_digits(4, data); }
@@ -105,17 +84,10 @@ public:
 
 private:
 	int     m_adpcm_sel;
-<<<<<<< HEAD
-	UINT16  m_adpcm_pos;
-	UINT8   m_adpcm_ctrl;
-
-	UINT8   m_alligators_ctrl;
-=======
 	uint16_t  m_adpcm_pos;
 	uint8_t   m_adpcm_ctrl;
 
 	uint8_t   m_alligators_ctrl;
->>>>>>> upstream/master
 	int     m_motors_pos[5];
 };
 
@@ -135,11 +107,7 @@ WRITE8_MEMBER(wackygtr_state::status_lamps_w)
 
 	set_lamps(0, data & 0x3f);
 
-<<<<<<< HEAD
-	coin_counter_w(machine(), 0, BIT(data, 6));
-=======
 	machine().bookkeeping().coin_counter_w(0, BIT(data, 6));
->>>>>>> upstream/master
 	m_ticket->write(space, 0, data & 0x80);
 }
 
@@ -165,11 +133,7 @@ WRITE8_MEMBER(wackygtr_state::alligators_ctrl1_w)
 	m_pit8253_1->write_gate1(BIT(data, 3));
 	m_pit8253_1->write_gate2(BIT(data, 4));
 
-<<<<<<< HEAD
-	coin_lockout_w(machine(), 0, data & 0x40 ? 0 : 1);
-=======
 	machine().bookkeeping().coin_lockout_w(0, data & 0x40 ? 0 : 1);
->>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(wackygtr_state::alligators_ctrl2_w)
@@ -194,11 +158,7 @@ void wackygtr_state::pmm8713_ck(int i, int state)
 		int alligator_state = m_motors_pos[i] / 10;
 		if (alligator_state > 5)    alligator_state = 5;
 		if (alligator_state < 0)    alligator_state = 0;
-<<<<<<< HEAD
-		output_set_indexed_value("alligator", i, alligator_state);
-=======
 		output().set_indexed_value("alligator", i, alligator_state);
->>>>>>> upstream/master
 	}
 }
 
@@ -228,19 +188,6 @@ void wackygtr_state::machine_reset()
 	m_adpcm_ctrl = 0x80;
 }
 
-<<<<<<< HEAD
-void wackygtr_state::set_digits(int p, UINT8 value)
-{
-	static UINT8 bcd2hex[] = { 0x3f, 0x06, 0x5b, 0x4f, 0x66, 0x6d, 0x7d, 0x07, 0x7f, 0x67, 0, 0, 0, 0, 0, 0 };  // not accurate
-	output_set_digit_value(p + 0, bcd2hex[value & 0x0f]);
-	output_set_digit_value(p + 1, bcd2hex[(value >> 4) & 0x0f]);
-}
-
-void wackygtr_state::set_lamps(int p, UINT8 value)
-{
-	for(int i=0; i<8; i++)
-		output_set_lamp_value(p + i, BIT(value, i));
-=======
 void wackygtr_state::set_digits(int p, uint8_t value)
 {
 	static uint8_t bcd2hex[] = { 0x3f, 0x06, 0x5b, 0x4f, 0x66, 0x6d, 0x7d, 0x07, 0x7f, 0x67, 0, 0, 0, 0, 0, 0 };  // not accurate
@@ -252,26 +199,17 @@ void wackygtr_state::set_lamps(int p, uint8_t value)
 {
 	for(int i=0; i<8; i++)
 		output().set_lamp_value(p + i, BIT(value, i));
->>>>>>> upstream/master
 }
 
 static INPUT_PORTS_START( wackygtr )
 	PORT_START("IN0")
-<<<<<<< HEAD
-	PORT_BIT(0x1f, IP_ACTIVE_LOW, IPT_SPECIAL)  PORT_CUSTOM_MEMBER(DEVICE_SELF, wackygtr_state, alligators_rear_sensors_r, NULL)
-=======
 	PORT_BIT(0x1f, IP_ACTIVE_LOW, IPT_SPECIAL)  PORT_CUSTOM_MEMBER(DEVICE_SELF, wackygtr_state, alligators_rear_sensors_r, nullptr)
->>>>>>> upstream/master
 	PORT_BIT(0x20, IP_ACTIVE_LOW, IPT_SERVICE)
 	PORT_BIT(0x40, IP_ACTIVE_LOW, IPT_SERVICE1)
 	PORT_BIT(0x80, IP_ACTIVE_LOW, IPT_COIN1)
 
 	PORT_START("IN1")
-<<<<<<< HEAD
-	PORT_BIT(0x1f, IP_ACTIVE_LOW, IPT_SPECIAL)   PORT_CUSTOM_MEMBER(DEVICE_SELF, wackygtr_state, alligators_front_sensors_r, NULL)
-=======
 	PORT_BIT(0x1f, IP_ACTIVE_LOW, IPT_SPECIAL)   PORT_CUSTOM_MEMBER(DEVICE_SELF, wackygtr_state, alligators_front_sensors_r, nullptr)
->>>>>>> upstream/master
 	PORT_DIPNAME( 0xe0, 0x00, DEF_STR( Coin_A ) ) PORT_DIPLOCATION("SW:1,2,3")
 	PORT_DIPSETTING(    0x00, DEF_STR( 1C_1C ) )
 	PORT_DIPSETTING(    0x20, DEF_STR( 1C_1C ) )
@@ -303,11 +241,7 @@ WRITE_LINE_MEMBER(wackygtr_state::adpcm_int)
 {
 	if (!(m_adpcm_ctrl & 0x80))
 	{
-<<<<<<< HEAD
-		UINT8 data = m_samples->base()[m_adpcm_pos & 0xffff];
-=======
 		uint8_t data = m_samples->base()[m_adpcm_pos & 0xffff];
->>>>>>> upstream/master
 		m_msm->data_w((m_adpcm_sel ? data : (data >> 4)) & 0x0f);
 		m_adpcm_pos += m_adpcm_sel;
 		m_adpcm_sel ^= 1;
@@ -336,11 +270,7 @@ static ADDRESS_MAP_START( program_map, AS_PROGRAM, 8, wackygtr_state )
 	AM_RANGE(0x8000, 0xffff) AM_ROM
 ADDRESS_MAP_END
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( wackygtr, wackygtr_state )
-=======
 static MACHINE_CONFIG_START( wackygtr )
->>>>>>> upstream/master
 
 	MCFG_CPU_ADD("maincpu", M6809E, XTAL_3_579545MHz)   // HD68B09P
 	MCFG_CPU_PROGRAM_MAP(program_map)
@@ -355,11 +285,7 @@ static MACHINE_CONFIG_START( wackygtr )
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 	MCFG_SOUND_ADD("msm", MSM5205, XTAL_384kHz )
 	MCFG_MSM5205_VCLK_CB(WRITELINE(wackygtr_state, adpcm_int))   /* IRQ handler */
-<<<<<<< HEAD
-	MCFG_MSM5205_PRESCALER_SELECTOR(MSM5205_S48_4B)      /* 8 KHz, 4 Bits  */
-=======
 	MCFG_MSM5205_PRESCALER_SELECTOR(S48_4B)      /* 8 KHz, 4 Bits  */
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 
 	MCFG_SOUND_ADD("ymsnd", YM2413, XTAL_3_579545MHz )

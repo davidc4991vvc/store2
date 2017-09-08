@@ -1,9 +1,5 @@
 // license:BSD-3-Clause
-<<<<<<< HEAD
-// copyright-holders:Takahiro Nogi
-=======
 // copyright-holders:Takahiro Nogi, hap
->>>>>>> upstream/master
 /***************************************************************************
 
 Dottori Kun (Head On's mini game)
@@ -24,23 +20,17 @@ SOUND : (none)
 * On the NEW version, push COIN-SW as TEST MODE.
 * 0000-3FFF:ROM 8000-85FF:VRAM(128x96) 8600-87FF:WORK-RAM
 
-<<<<<<< HEAD
-=======
 
 TODO:
 - improve video timing more (see http://www.chrismcovell.com/dottorikun.html)
 
->>>>>>> upstream/master
 ***************************************************************************/
 
 #include "emu.h"
 #include "cpu/z80/z80.h"
-<<<<<<< HEAD
-=======
 #include "screen.h"
 
 #include "dotrikun.lh"
->>>>>>> upstream/master
 
 
 class dotrikun_state : public driver_device
@@ -48,25 +38,6 @@ class dotrikun_state : public driver_device
 public:
 	dotrikun_state(const machine_config &mconfig, device_type type, const char *tag)
 		: driver_device(mconfig, type, tag),
-<<<<<<< HEAD
-		m_dotrikun_bitmap(*this, "dotrikun_bitmap"),
-		m_maincpu(*this, "maincpu"),
-		m_screen(*this, "screen") { }
-
-	/* memory pointers */
-	required_shared_ptr<UINT8> m_dotrikun_bitmap;
-
-	/* video-related */
-	UINT8          m_color;
-	DECLARE_WRITE8_MEMBER(dotrikun_color_w);
-	virtual void machine_start();
-	virtual void machine_reset();
-	UINT32 screen_update_dotrikun(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
-	required_device<cpu_device> m_maincpu;
-	required_device<screen_device> m_screen;
-};
-
-=======
 		m_maincpu(*this, "maincpu"),
 		m_screen(*this, "screen"),
 		m_vram(*this, "vram"),
@@ -118,7 +89,6 @@ TIMER_DEVICE_CALLBACK_MEMBER(dotrikun_state::scanline_on)
 		m_interrupt_timer->adjust(m_screen->time_until_pos(param, 128+64));
 }
 
->>>>>>> upstream/master
 
 /*************************************
  *
@@ -126,45 +96,6 @@ TIMER_DEVICE_CALLBACK_MEMBER(dotrikun_state::scanline_on)
  *
  *************************************/
 
-<<<<<<< HEAD
-WRITE8_MEMBER(dotrikun_state::dotrikun_color_w)
-{
-	/*
-	x--- ---- screen color swap?
-	---- -x-- B
-	---- --x- G
-	---- ---x R
-	*/
-
-	m_color = data;
-	m_screen->update_partial(m_screen->vpos());
-}
-
-
-UINT32 dotrikun_state::screen_update_dotrikun(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
-{
-	int x,y,i;
-
-	pen_t back_pen = rgb_t(pal1bit(m_color >> 3), pal1bit(m_color >> 4), pal1bit(m_color >> 5));
-	pen_t fore_pen = rgb_t(pal1bit(m_color >> 0), pal1bit(m_color >> 1), pal1bit(m_color >> 2));
-
-	for(y = (cliprect.min_y & ~1); y < cliprect.max_y; y+=2)
-	{
-		for (x = 0; x < 256; x+=16)
-		{
-			UINT8 data = m_dotrikun_bitmap[((x/16)+((y/2)*16))];
-
-			for (i = 0; i < 8; i++)
-			{
-				pen_t pen = ((data >> (7 - i)) & 1) ? fore_pen : back_pen;
-
-				/* I think the video hardware doubles pixels, screen would be too small otherwise */
-				bitmap.pix32(y + 0, (x + 0) + i*2) = pen;
-				bitmap.pix32(y + 0, (x + 1) + i*2) = pen;
-				bitmap.pix32(y + 1, (x + 0) + i*2) = pen;
-				bitmap.pix32(y + 1, (x + 1) + i*2) = pen;
-			}
-=======
 WRITE8_MEMBER(dotrikun_state::vram_w)
 {
 	m_screen->update_now();
@@ -192,7 +123,6 @@ uint32_t dotrikun_state::screen_update(screen_device &screen, bitmap_ind16 &bitm
 				m_vram_latch = m_vram[x >> 3 | y >> 1 << 4];
 
 			bitmap.pix16(y, x) = (m_vram_latch >> (~x & 7) & 1) ? m_color & 7 : m_color >> 3;
->>>>>>> upstream/master
 		}
 	}
 
@@ -208,21 +138,13 @@ uint32_t dotrikun_state::screen_update(screen_device &screen, bitmap_ind16 &bitm
 
 static ADDRESS_MAP_START( dotrikun_map, AS_PROGRAM, 8, dotrikun_state )
 	AM_RANGE(0x0000, 0x3fff) AM_ROM
-<<<<<<< HEAD
-	AM_RANGE(0x8000, 0x85ff) AM_RAM AM_SHARE("dotrikun_bitmap")
-=======
 	AM_RANGE(0x8000, 0x85ff) AM_RAM_WRITE(vram_w) AM_SHARE("vram")
->>>>>>> upstream/master
 	AM_RANGE(0x8600, 0x87ff) AM_RAM
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( io_map, AS_IO, 8, dotrikun_state )
 	ADDRESS_MAP_GLOBAL_MASK(0xff)
-<<<<<<< HEAD
-	AM_RANGE(0x00, 0x00) AM_READ_PORT("INPUTS") AM_WRITE(dotrikun_color_w)
-=======
 	AM_RANGE(0x00, 0x00) AM_MIRROR(0xff) AM_READ_PORT("INPUTS") AM_WRITE(color_w)
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -253,37 +175,12 @@ INPUT_PORTS_END
 
 void dotrikun_state::machine_start()
 {
-<<<<<<< HEAD
-=======
 	save_item(NAME(m_vram_latch));
->>>>>>> upstream/master
 	save_item(NAME(m_color));
 }
 
 void dotrikun_state::machine_reset()
 {
-<<<<<<< HEAD
-	m_color = 0;
-}
-
-#define MASTER_CLOCK XTAL_4MHz
-
-static MACHINE_CONFIG_START( dotrikun, dotrikun_state )
-
-	/* basic machine hardware */
-	MCFG_CPU_ADD("maincpu", Z80, MASTER_CLOCK)       /* 4 MHz */
-	MCFG_CPU_PROGRAM_MAP(dotrikun_map)
-	MCFG_CPU_IO_MAP(io_map)
-	MCFG_CPU_VBLANK_INT_DRIVER("screen", dotrikun_state,  irq0_line_hold)
-
-
-	/* video hardware */
-	MCFG_SCREEN_ADD("screen", RASTER)
-	MCFG_SCREEN_RAW_PARAMS(MASTER_CLOCK, 256+32, 0, 256, 192+32, 0, 192) // FIXME: h/v params of this are completely inaccurate, shows it especially under the "CRT test"
-	MCFG_SCREEN_UPDATE_DRIVER(dotrikun_state, screen_update_dotrikun)
-
-	/* sound hardware */
-=======
 	m_vram_latch = 0;
 	m_color = 0;
 }
@@ -307,7 +204,6 @@ static MACHINE_CONFIG_START( dotrikun )
 	MCFG_PALETTE_ADD_3BIT_RGB("palette")
 
 	/* no sound hardware */
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
@@ -327,11 +223,6 @@ ROM_START( dotrikun2 )
 	ROM_LOAD( "14479.mpr",  0x0000, 0x4000, CRC(a6aa7fa5) SHA1(4dbea33fb3541fdacf2195355751078a33bb30d5) )
 ROM_END
 
-<<<<<<< HEAD
-
-GAME( 1990, dotrikun, 0,        dotrikun, dotrikun, driver_device, 0, ROT0, "Sega", "Dottori Kun (new version)", MACHINE_SUPPORTS_SAVE | MACHINE_NO_SOUND_HW | MACHINE_IMPERFECT_GRAPHICS )
-GAME( 1990, dotrikun2,dotrikun, dotrikun, dotrikun, driver_device, 0, ROT0, "Sega", "Dottori Kun (old version)", MACHINE_SUPPORTS_SAVE | MACHINE_NO_SOUND_HW | MACHINE_IMPERFECT_GRAPHICS )
-=======
 ROM_START( dotriman )
 	ROM_REGION( 0x10000, "maincpu", 0 )
 	ROM_LOAD( "14479a.mpr", 0x0000, 0x4000, CRC(4ba6d2f5) SHA1(db805e9121ecbd41fac4593b58d7f071e7dbc720) )
@@ -341,4 +232,3 @@ ROM_END
 GAMEL(1990, dotrikun,  0,        dotrikun, dotrikun, dotrikun_state, 0, ROT0, "Sega", "Dottori Kun (new version)", MACHINE_SUPPORTS_SAVE | MACHINE_NO_SOUND_HW, layout_dotrikun )
 GAMEL(1990, dotrikun2, dotrikun, dotrikun, dotrikun, dotrikun_state, 0, ROT0, "Sega", "Dottori Kun (old version)", MACHINE_SUPPORTS_SAVE | MACHINE_NO_SOUND_HW, layout_dotrikun )
 GAMEL(2016, dotriman,  dotrikun, dotrikun, dotrikun, dotrikun_state, 0, ROT0, "hack (Chris Covell)", "Dottori-Man Jr.", MACHINE_SUPPORTS_SAVE | MACHINE_NO_SOUND_HW, layout_dotrikun )
->>>>>>> upstream/master

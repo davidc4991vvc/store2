@@ -26,20 +26,12 @@ public:
 	required_device<tilemap_device> m_alpha_tilemap;
 	required_device<atari_motion_objects_device> m_mob;
 
-<<<<<<< HEAD
-	required_shared_ptr<UINT16> m_interrupt_scan;
-=======
 	required_shared_ptr<uint16_t> m_interrupt_scan;
->>>>>>> upstream/master
 
 	double          m_brightness;
 	bitmap_ind16 m_pfbitmap;
 
-<<<<<<< HEAD
-	virtual void update_interrupts();
-=======
 	virtual void update_interrupts() override;
->>>>>>> upstream/master
 
 	DECLARE_WRITE16_MEMBER(interrupt_scan_w);
 	DECLARE_WRITE16_MEMBER(paletteram_w);
@@ -55,11 +47,7 @@ public:
 	DECLARE_MACHINE_RESET(toobin);
 	DECLARE_VIDEO_START(toobin);
 
-<<<<<<< HEAD
-	UINT32 screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
-=======
 	uint32_t screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 
 	static const atari_motion_objects_config s_mob_config;
 };

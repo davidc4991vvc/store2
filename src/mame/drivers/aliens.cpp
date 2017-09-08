@@ -10,13 +10,6 @@ Preliminary driver by:
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/z80/z80.h"
-#include "cpu/m6809/konami.h" /* for the callback and the firq irq definition */
-#include "sound/2151intf.h"
-#include "includes/konamipt.h"
-#include "includes/aliens.h"
-=======
 #include "includes/aliens.h"
 #include "includes/konamipt.h"
 
@@ -25,19 +18,13 @@ Preliminary driver by:
 #include "machine/watchdog.h"
 #include "sound/ym2151.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 WRITE8_MEMBER(aliens_state::aliens_coin_counter_w)
 {
 	/* bits 0-1 = coin counters */
-<<<<<<< HEAD
-	coin_counter_w(machine(), 0, data & 0x01);
-	coin_counter_w(machine(), 1, data & 0x02);
-=======
 	machine().bookkeeping().coin_counter_w(0, data & 0x01);
 	machine().bookkeeping().coin_counter_w(1, data & 0x02);
->>>>>>> upstream/master
 
 	/* bit 5 = select work RAM or palette */
 	m_bank0000->set_bank((data & 0x20) >> 5);
@@ -57,11 +44,7 @@ WRITE8_MEMBER(aliens_state::aliens_coin_counter_w)
 
 WRITE8_MEMBER(aliens_state::aliens_sh_irqtrigger_w)
 {
-<<<<<<< HEAD
-	soundlatch_byte_w(space, offset, data);
-=======
 	m_soundlatch->write(space, offset, data);
->>>>>>> upstream/master
 	m_audiocpu->set_input_line(0, HOLD_LINE);
 }
 
@@ -111,11 +94,7 @@ static ADDRESS_MAP_START( aliens_map, AS_PROGRAM, 8, aliens_state )
 	AM_RANGE(0x5f82, 0x5f82) AM_READ_PORT("P2")
 	AM_RANGE(0x5f83, 0x5f83) AM_READ_PORT("DSW2")
 	AM_RANGE(0x5f84, 0x5f84) AM_READ_PORT("DSW1")
-<<<<<<< HEAD
-	AM_RANGE(0x5f88, 0x5f88) AM_READ(watchdog_reset_r) AM_WRITE(aliens_coin_counter_w)      /* coin counters */
-=======
 	AM_RANGE(0x5f88, 0x5f88) AM_DEVREAD("watchdog", watchdog_timer_device, reset_r) AM_WRITE(aliens_coin_counter_w)      /* coin counters */
->>>>>>> upstream/master
 	AM_RANGE(0x5f8c, 0x5f8c) AM_WRITE(aliens_sh_irqtrigger_w)                       /* cause interrupt on audio CPU */
 	AM_RANGE(0x4000, 0x7fff) AM_READWRITE(k052109_051960_r, k052109_051960_w)
 	AM_RANGE(0x8000, 0xffff) AM_ROM AM_REGION("maincpu", 0x28000)                   /* ROM e24_j02.bin */
@@ -130,11 +109,7 @@ static ADDRESS_MAP_START( aliens_sound_map, AS_PROGRAM, 8, aliens_state )
 	AM_RANGE(0x0000, 0x7fff) AM_ROM                                     /* ROM g04_b03.bin */
 	AM_RANGE(0x8000, 0x87ff) AM_RAM                                     /* RAM */
 	AM_RANGE(0xa000, 0xa001) AM_DEVREADWRITE("ymsnd", ym2151_device, read, write)
-<<<<<<< HEAD
-	AM_RANGE(0xc000, 0xc000) AM_READ(soundlatch_byte_r)                         /* soundlatch_byte_r */
-=======
 	AM_RANGE(0xc000, 0xc000) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
->>>>>>> upstream/master
 	AM_RANGE(0xe000, 0xe00d) AM_DEVREADWRITE("k007232", k007232_device, read, write)
 ADDRESS_MAP_END
 
@@ -175,11 +150,7 @@ static INPUT_PORTS_START( aliens )
 	PORT_DIPUNUSED_DIPLOC( 0x02, 0x02, "SW3:2" )        /* Listed as "Unused" */
 	PORT_SERVICE_DIPLOC( 0x04, IP_ACTIVE_LOW, "SW3:3" )
 	PORT_DIPUNUSED_DIPLOC( 0x08, 0x08, "SW3:4" )        /* Listed as "Unused" */
-<<<<<<< HEAD
-	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_COIN3 )
-=======
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_SERVICE1 )
->>>>>>> upstream/master
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_UNKNOWN )
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_UNKNOWN )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNKNOWN )
@@ -220,11 +191,7 @@ WRITE8_MEMBER( aliens_state::banking_callback )
 	m_rombank->set_entry(data & 0x1f);
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( aliens, aliens_state )
-=======
 static MACHINE_CONFIG_START( aliens )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", KONAMI, XTAL_24MHz/2/4)       /* 052001 (verified on pcb) */
@@ -241,11 +208,8 @@ static MACHINE_CONFIG_START( aliens )
 	MCFG_ADDRESS_MAP_BANK_ADDRBUS_WIDTH(11)
 	MCFG_ADDRESS_MAP_BANK_STRIDE(0x400)
 
-<<<<<<< HEAD
-=======
 	MCFG_WATCHDOG_ADD("watchdog")
 
->>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_RAW_PARAMS(XTAL_24MHz/3, 528, 112, 400, 256, 16, 240) // measured 59.17
@@ -271,11 +235,8 @@ static MACHINE_CONFIG_START( aliens )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 
->>>>>>> upstream/master
 	MCFG_YM2151_ADD("ymsnd", XTAL_3_579545MHz)  /* verified on pcb */
 	MCFG_YM2151_PORT_WRITE_HANDLER(WRITE8(aliens_state,aliens_snd_bankswitch_w))
 	MCFG_SOUND_ROUTE(0, "mono", 0.60)
@@ -518,15 +479,6 @@ ROM_END
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-GAME( 1990, aliens,   0,      aliens, aliens, driver_device, 0, ROT0, "Konami", "Aliens (World set 1)", MACHINE_SUPPORTS_SAVE )
-GAME( 1990, aliens2,  aliens, aliens, aliens, driver_device, 0, ROT0, "Konami", "Aliens (World set 2)", MACHINE_SUPPORTS_SAVE )
-GAME( 1990, aliens3,  aliens, aliens, aliens, driver_device, 0, ROT0, "Konami", "Aliens (World set 3)", MACHINE_SUPPORTS_SAVE )
-GAME( 1990, aliensu,  aliens, aliens, aliens, driver_device, 0, ROT0, "Konami", "Aliens (US)",          MACHINE_SUPPORTS_SAVE )
-GAME( 1990, aliensj,  aliens, aliens, aliens, driver_device, 0, ROT0, "Konami", "Aliens (Japan set 1)", MACHINE_SUPPORTS_SAVE )
-GAME( 1990, aliensj2, aliens, aliens, aliens, driver_device, 0, ROT0, "Konami", "Aliens (Japan set 2)", MACHINE_SUPPORTS_SAVE )
-GAME( 1990, aliensa,  aliens, aliens, aliens, driver_device, 0, ROT0, "Konami", "Aliens (Asia)",        MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1990, aliens,   0,      aliens, aliens, aliens_state, 0, ROT0, "Konami", "Aliens (World set 1)", MACHINE_SUPPORTS_SAVE )
 GAME( 1990, aliens2,  aliens, aliens, aliens, aliens_state, 0, ROT0, "Konami", "Aliens (World set 2)", MACHINE_SUPPORTS_SAVE )
 GAME( 1990, aliens3,  aliens, aliens, aliens, aliens_state, 0, ROT0, "Konami", "Aliens (World set 3)", MACHINE_SUPPORTS_SAVE )
@@ -534,4 +486,3 @@ GAME( 1990, aliensu,  aliens, aliens, aliens, aliens_state, 0, ROT0, "Konami", "
 GAME( 1990, aliensj,  aliens, aliens, aliens, aliens_state, 0, ROT0, "Konami", "Aliens (Japan set 1)", MACHINE_SUPPORTS_SAVE )
 GAME( 1990, aliensj2, aliens, aliens, aliens, aliens_state, 0, ROT0, "Konami", "Aliens (Japan set 2)", MACHINE_SUPPORTS_SAVE )
 GAME( 1990, aliensa,  aliens, aliens, aliens, aliens_state, 0, ROT0, "Konami", "Aliens (Asia)",        MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

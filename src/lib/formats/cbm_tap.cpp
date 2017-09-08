@@ -130,20 +130,12 @@ below could be not working.  FP ]
 
 #define CBM_HEADER_SIZE 20
 
-<<<<<<< HEAD
-static INT16    wave_data = 0;
-=======
 static int16_t    wave_data = 0;
->>>>>>> upstream/master
 static int      len;
 
 
 /* This in fact gives the number of samples for half of the pulse */
-<<<<<<< HEAD
-INLINE int tap_data_to_samplecount(int data, int frequency)
-=======
 static inline int tap_data_to_samplecount(int data, int frequency)
->>>>>>> upstream/master
 {
 //  return (int) (0.5 * (0.5 + (((double)CBM_WAV_FREQUENCY / frequency) * (double)data)));      // MESS TZX formula
 	return (int) (0.5 * (((double)CBM_WAV_FREQUENCY / frequency) * (double)((data) + 0.5)));    // tap2wav formula
@@ -163,15 +155,9 @@ static void toggle_wave_data(void )
 	wave_data = (wave_data == WAVE_HIGH) ? WAVE_LOW : WAVE_HIGH;
 }
 
-<<<<<<< HEAD
-static void cbm_output_wave( INT16 **buffer, int length )
-{
-	if (buffer == NULL)
-=======
 static void cbm_output_wave( int16_t **buffer, int length )
 {
 	if (buffer == nullptr)
->>>>>>> upstream/master
 		return;
 
 	for( ; length > 0; length-- )
@@ -182,40 +168,22 @@ static void cbm_output_wave( int16_t **buffer, int length )
 }
 
 
-<<<<<<< HEAD
-static int cbm_tap_do_work( INT16 **buffer, int length, const UINT8 *data )
-=======
 static int cbm_tap_do_work( int16_t **buffer, int length, const uint8_t *data )
->>>>>>> upstream/master
 {
 	int i, j = 0;
 	int size = 0;
 
-<<<<<<< HEAD
-	int version = data[0x0c];
-	int system = data[0x0d];
-	int video_standard = data[0x0e];
-	int tap_frequency = 0;
-
-	int byte_samples = 0;
-	UINT8 over_pulse_bytes[3] = {0 , 0, 0 };
-=======
 	int version, system, video_standard;
 	int tap_frequency = 0;
 
 	int byte_samples = 0;
 	uint8_t over_pulse_bytes[3] = {0 , 0, 0 };
->>>>>>> upstream/master
 	int over_pulse_length = 0;
 	/* These waveamp_* values are currently stored but not used.
 	  Further investigations are needed to find real pulse amplitude
 	  in Commodore tapes. Implementation here would follow */
 	/* int waveamp_high, waveamp_low; */
 
-<<<<<<< HEAD
-	/* Log .TAP info but only once */
-	if (!(buffer == NULL))
-=======
 	/* is the .tap file corrupted? */
 	if ((data == nullptr) || (length <= CBM_HEADER_SIZE))
 		return -1;
@@ -226,7 +194,6 @@ static int cbm_tap_do_work( int16_t **buffer, int length, const uint8_t *data )
 
 	/* Log .TAP info but only once */
 	if (!(buffer == nullptr))
->>>>>>> upstream/master
 	{
 		LOG_FORMATS("TAP version    : %d\n", version);
 		LOG_FORMATS("Machine type   : %d\n", system);
@@ -242,13 +209,6 @@ static int cbm_tap_do_work( int16_t **buffer, int length, const uint8_t *data )
 		return -1;
 	}
 
-<<<<<<< HEAD
-	/* is the .tap file corrupted? */
-	if ((data == NULL) || (length <= CBM_HEADER_SIZE))
-		return -1;
-
-=======
->>>>>>> upstream/master
 
 	/* read the frequency from the .tap header */
 	switch (system)
@@ -270,11 +230,7 @@ static int cbm_tap_do_work( int16_t **buffer, int length, const uint8_t *data )
 
 	for (i = CBM_HEADER_SIZE; i < length; i++)
 	{
-<<<<<<< HEAD
-		UINT8 byte = data[i];
-=======
 		uint8_t byte = data[i];
->>>>>>> upstream/master
 
 		/* .TAP v0 */
 		/* Here is simple:
@@ -365,33 +321,19 @@ static int cbm_tap_do_work( int16_t **buffer, int length, const uint8_t *data )
 }
 
 
-<<<<<<< HEAD
-static int cbm_tap_to_wav_size( const UINT8 *tapdata, int taplen )
-{
-	int size = cbm_tap_do_work(NULL, taplen, tapdata);
-=======
 static int cbm_tap_to_wav_size( const uint8_t *tapdata, int taplen )
 {
 	int size = cbm_tap_do_work(nullptr, taplen, tapdata);
->>>>>>> upstream/master
 	len = taplen;
 
 	return size;
 }
 
-<<<<<<< HEAD
-static int cbm_tap_fill_wave( INT16 *buffer, int length, UINT8 *bytes )
-{
-	INT16 *p = buffer;
-
-	return cbm_tap_do_work(&p, len, (const UINT8 *)bytes);
-=======
 static int cbm_tap_fill_wave( int16_t *buffer, int length, uint8_t *bytes )
 {
 	int16_t *p = buffer;
 
 	return cbm_tap_do_work(&p, len, (const uint8_t *)bytes);
->>>>>>> upstream/master
 }
 
 
@@ -408,21 +350,13 @@ static const struct CassetteLegacyWaveFiller cbm_legacy_fill_wave = {
 };
 
 
-<<<<<<< HEAD
-static casserr_t cbm_cassette_identify( cassette_image *cassette, struct CassetteOptions *opts )
-=======
 static cassette_image::error cbm_cassette_identify( cassette_image *cassette, struct CassetteOptions *opts )
->>>>>>> upstream/master
 {
 	return cassette_legacy_identify( cassette, opts, &cbm_legacy_fill_wave );
 }
 
 
-<<<<<<< HEAD
-static casserr_t cbm_cassette_load( cassette_image *cassette )
-=======
 static cassette_image::error cbm_cassette_load( cassette_image *cassette )
->>>>>>> upstream/master
 {
 	return cassette_legacy_construct( cassette, &cbm_legacy_fill_wave );
 }
@@ -432,11 +366,7 @@ static const struct CassetteFormat cbm_tap_cassette_format = {
 	"tap",
 	cbm_cassette_identify,
 	cbm_cassette_load,
-<<<<<<< HEAD
-	NULL
-=======
 	nullptr
->>>>>>> upstream/master
 };
 
 

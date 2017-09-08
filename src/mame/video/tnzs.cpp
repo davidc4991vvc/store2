@@ -31,16 +31,6 @@
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-PALETTE_INIT_MEMBER(tnzs_state,arknoid2)
-{
-	const UINT8 *color_prom = memregion("proms")->base();
-	int i, col;
-
-	for (i = 0; i < palette.entries(); i++)
-	{
-		col = (color_prom[i] << 8) + color_prom[i + 512];
-=======
 PALETTE_INIT_MEMBER(tnzs_base_state, prompalette)
 {
 	const uint8_t *color_prom = memregion("proms")->base();
@@ -48,17 +38,12 @@ PALETTE_INIT_MEMBER(tnzs_base_state, prompalette)
 	for (int i = 0; i < palette.entries(); i++)
 	{
 		int col = (color_prom[i] << 8) + color_prom[i + 512];
->>>>>>> upstream/master
 		palette.set_pen_color(i, pal5bit(col >> 10), pal5bit(col >> 5), pal5bit(col >> 0));
 	}
 }
 
 
-<<<<<<< HEAD
-UINT32 tnzs_state::screen_update_tnzs(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t tnzs_base_state::screen_update_tnzs(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	bitmap.fill(0x1f0, cliprect);
 
@@ -69,11 +54,7 @@ uint32_t tnzs_base_state::screen_update_tnzs(screen_device &screen, bitmap_ind16
 	return 0;
 }
 
-<<<<<<< HEAD
-void tnzs_state::screen_eof_tnzs(screen_device &screen, bool state)
-=======
 WRITE_LINE_MEMBER(tnzs_base_state::screen_vblank_tnzs)
->>>>>>> upstream/master
 {
 	// rising edge
 	if (state)

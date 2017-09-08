@@ -34,11 +34,7 @@ static const char *const em_name[] =
 #define _OVER DASMFLAG_STEP_OVER
 #define _OUT  DASMFLAG_STEP_OUT
 
-<<<<<<< HEAD
-static const UINT32 em_flags[] =
-=======
 static const u32 em_flags[] =
->>>>>>> upstream/master
 {
 	0, _OUT, _OVER, _OVER,
 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -60,11 +56,7 @@ enum e_params
 
 // 0-digit is number of bits per opcode parameter, 0 bits is literal,
 // 0x10-digit is for shift-right, 0x100-digit is special flag for r/q param
-<<<<<<< HEAD
-static const UINT16 ep_bits[] =
-=======
 static const u16 ep_bits[] =
->>>>>>> upstream/master
 {
 	8, 8, 4, 0x102, 0x122, 0x142, 0x102,
 	0, 0, 0, 0,
@@ -73,11 +65,7 @@ static const u16 ep_bits[] =
 };
 
 // redirect for r/q param
-<<<<<<< HEAD
-static const UINT8 ep_redirect_r[4] = { ep_A, ep_B, ep_MX, ep_MY };
-=======
 static const u8 ep_redirect_r[4] = { ep_A, ep_B, ep_MX, ep_MY };
->>>>>>> upstream/master
 
 // literal opcode parameter
 static const char *const ep_name[] =
@@ -89,19 +77,11 @@ static const char *const ep_name[] =
 };
 
 
-<<<<<<< HEAD
-static char* decode_param(UINT16 opcode, int param, char* buffer)
-{
-	int bits = ep_bits[param] & 0xf;
-	int shift = ep_bits[param] >> 4 & 0xf;
-	UINT16 opmask = opcode >> shift & ((1 << bits) - 1);
-=======
 static char* decode_param(u16 opcode, int param, char* buffer)
 {
 	int bits = ep_bits[param] & 0xf;
 	int shift = ep_bits[param] >> 4 & 0xf;
 	u16 opmask = opcode >> shift & ((1 << bits) - 1);
->>>>>>> upstream/master
 
 	// redirect r/q to A/B/MX/MY
 	if (ep_bits[param] & 0x100)
@@ -132,15 +112,9 @@ static char* decode_param(u16 opcode, int param, char* buffer)
 
 CPU_DISASSEMBLE(e0c6200)
 {
-<<<<<<< HEAD
-	UINT16 op = (oprom[1] | oprom[0] << 8) & 0xfff;
-
-	int m = -1;
-=======
 	u16 op = (oprom[1] | oprom[0] << 8) & 0xfff;
 
 	int m;
->>>>>>> upstream/master
 	int p1 = -1;
 	int p2 = -1;
 
@@ -716,28 +690,16 @@ CPU_DISASSEMBLE(e0c6200)
 
 
 	// fetch mnemonic
-<<<<<<< HEAD
-	char *dst = buffer;
-	dst += sprintf(dst, "%-6s", em_name[m]);
-=======
 	util::stream_format(stream, "%-6s", em_name[m]);
->>>>>>> upstream/master
 
 	// fetch param(s)
 	char pbuffer[10];
 	if (p1 != -1)
 	{
-<<<<<<< HEAD
-		dst += sprintf(dst, "%s", decode_param(op, p1, pbuffer));
-		if (p2 != -1)
-		{
-			dst += sprintf(dst, ",%s", decode_param(op, p2, pbuffer));
-=======
 		util::stream_format(stream, "%s", decode_param(op, p1, pbuffer));
 		if (p2 != -1)
 		{
 			util::stream_format(stream, ",%s", decode_param(op, p2, pbuffer));
->>>>>>> upstream/master
 		}
 	}
 

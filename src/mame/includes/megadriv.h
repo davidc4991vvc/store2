@@ -8,15 +8,12 @@
 #include "sound/sn76496.h"
 #include "video/315_5313.h"
 
-<<<<<<< HEAD
-=======
 /* Megadrive Console Specific */
 #include "bus/megadrive/md_slot.h"
 #include "bus/megadrive/md_carts.h"
 #include "machine/mega32x.h"
 #include "machine/megacd.h"
 
->>>>>>> upstream/master
 #define MASTER_CLOCK_NTSC 53693175
 #define MASTER_CLOCK_PAL  53203424
 
@@ -35,23 +32,14 @@ MACHINE_CONFIG_EXTERN( megadriv_timers );
 MACHINE_CONFIG_EXTERN( md_ntsc );
 MACHINE_CONFIG_EXTERN( md_pal );
 MACHINE_CONFIG_EXTERN( md_bootleg );    // for topshoot.c & hshavoc.c
-<<<<<<< HEAD
-
-=======
 MACHINE_CONFIG_EXTERN( dcat16_megadriv_base );
->>>>>>> upstream/master
 
 struct genesis_z80_vars
 {
 	int z80_is_reset;
 	int z80_has_bus;
-<<<<<<< HEAD
-	UINT32 z80_bank_addr;
-	UINT8* z80_prgram;
-=======
 	uint32_t z80_bank_addr;
 	std::unique_ptr<uint8_t[]> z80_prgram;
->>>>>>> upstream/master
 };
 
 
@@ -65,28 +53,18 @@ public:
 		m_ymsnd(*this,"ymsnd"),
 		m_vdp(*this,"gen_vdp"),
 		m_snsnd(*this, "snsnd"),
-<<<<<<< HEAD
-		m_megadrive_ram(*this,"megadrive_ram")
-=======
 		m_megadrive_ram(*this,"megadrive_ram"),
 		m_io_reset(*this, "RESET")
->>>>>>> upstream/master
 	{ }
 	required_device<m68000_base_device> m_maincpu;
 	optional_device<cpu_device> m_z80snd;
 	optional_device<ym2612_device> m_ymsnd;
 	required_device<sega315_5313_device> m_vdp;
 	required_device<sn76496_base_device> m_snsnd;
-<<<<<<< HEAD
-	optional_shared_ptr<UINT16> m_megadrive_ram;
-
-	ioport_port *m_io_reset;
-=======
 	optional_shared_ptr<uint16_t> m_megadrive_ram;
 
 
 	optional_ioport m_io_reset;
->>>>>>> upstream/master
 	ioport_port *m_io_pad_3b[4];
 	ioport_port *m_io_pad_6b[4];
 
@@ -103,11 +81,7 @@ public:
 	IRQ_CALLBACK_MEMBER(genesis_int_callback);
 	void megadriv_init_common();
 
-<<<<<<< HEAD
-	void megadriv_z80_bank_w(UINT16 data);
-=======
 	void megadriv_z80_bank_w(uint16_t data);
->>>>>>> upstream/master
 	DECLARE_WRITE16_MEMBER( megadriv_68k_z80_bank_write );
 	DECLARE_WRITE8_MEMBER(megadriv_z80_z80_bank_w);
 	DECLARE_READ16_MEMBER( megadriv_68k_io_read );
@@ -127,15 +101,9 @@ public:
 	/* Megadrive / Genesis has 3 I/O ports */
 	emu_timer *m_io_timeout[3];
 	int m_io_stage[3];
-<<<<<<< HEAD
-	UINT8 m_megadrive_io_data_regs[3];
-	UINT8 m_megadrive_io_ctrl_regs[3];
-	UINT8 m_megadrive_io_tx_regs[3];
-=======
 	uint8_t m_megadrive_io_data_regs[3];
 	uint8_t m_megadrive_io_ctrl_regs[3];
 	uint8_t m_megadrive_io_tx_regs[3];
->>>>>>> upstream/master
 	read8_delegate m_megadrive_io_read_data_port_ptr;
 	write16_delegate m_megadrive_io_write_data_port_ptr;
 
@@ -147,19 +115,6 @@ public:
 	void megadrive_reset_io();
 	DECLARE_READ8_MEMBER(megadrive_io_read_data_port_6button);
 	DECLARE_READ8_MEMBER(megadrive_io_read_data_port_3button);
-<<<<<<< HEAD
-	UINT8 megadrive_io_read_ctrl_port(int portnum);
-	UINT8 megadrive_io_read_tx_port(int portnum);
-	UINT8 megadrive_io_read_rx_port(int portnum);
-	UINT8 megadrive_io_read_sctrl_port(int portnum);
-
-	DECLARE_WRITE16_MEMBER(megadrive_io_write_data_port_3button);
-	DECLARE_WRITE16_MEMBER(megadrive_io_write_data_port_6button);
-	void megadrive_io_write_ctrl_port(int portnum, UINT16 data);
-	void megadrive_io_write_tx_port(int portnum, UINT16 data);
-	void megadrive_io_write_rx_port(int portnum, UINT16 data);
-	void megadrive_io_write_sctrl_port(int portnum, UINT16 data);
-=======
 	uint8_t megadrive_io_read_ctrl_port(int portnum);
 	uint8_t megadrive_io_read_tx_port(int portnum);
 	uint8_t megadrive_io_read_rx_port(int portnum);
@@ -171,58 +126,18 @@ public:
 	void megadrive_io_write_tx_port(int portnum, uint16_t data);
 	void megadrive_io_write_rx_port(int portnum, uint16_t data);
 	void megadrive_io_write_sctrl_port(int portnum, uint16_t data);
->>>>>>> upstream/master
 
 	void megadriv_stop_scanline_timer();
 
 	DECLARE_MACHINE_START( megadriv );
 	DECLARE_MACHINE_RESET( megadriv );
 	DECLARE_VIDEO_START( megadriv );
-<<<<<<< HEAD
-	UINT32 screen_update_megadriv(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
-	void screen_eof_megadriv(screen_device &screen, bool state);
-=======
 	uint32_t screen_update_megadriv(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
 	DECLARE_WRITE_LINE_MEMBER(screen_vblank_megadriv);
->>>>>>> upstream/master
 
 	DECLARE_WRITE8_MEMBER(megadriv_tas_callback);
 };
 
-<<<<<<< HEAD
-
-class md_boot_state : public md_base_state
-{
-public:
-	md_boot_state(const machine_config &mconfig, device_type type, const char *tag)
-	: md_base_state(mconfig, type, tag) { m_protcount = 0;}
-
-	// bootleg specific
-	int m_aladmdb_mcu_port;
-
-	int m_protcount;
-
-	DECLARE_DRIVER_INIT(aladmdb);
-	DECLARE_DRIVER_INIT(mk3mdb);
-	DECLARE_DRIVER_INIT(ssf2mdb);
-	DECLARE_DRIVER_INIT(srmdb);
-	DECLARE_DRIVER_INIT(topshoot);
-	DECLARE_DRIVER_INIT(puckpkmn);
-	DECLARE_DRIVER_INIT(hshavoc);
-	DECLARE_WRITE16_MEMBER(bl_710000_w);
-	DECLARE_READ16_MEMBER(bl_710000_r);
-	DECLARE_WRITE16_MEMBER(aladmdb_w);
-	DECLARE_READ16_MEMBER(aladmdb_r);
-	DECLARE_READ16_MEMBER(mk3mdb_dsw_r);
-	DECLARE_READ16_MEMBER(ssf2mdb_dsw_r);
-	DECLARE_READ16_MEMBER(srmdb_dsw_r);
-	DECLARE_READ16_MEMBER(topshoot_200051_r);
-	DECLARE_READ16_MEMBER(puckpkmna_70001c_r);
-	DECLARE_READ16_MEMBER(puckpkmna_4b2476_r);
-
-	DECLARE_MACHINE_START(md_bootleg) { MACHINE_START_CALL_MEMBER(megadriv); m_vdp->stop_timers(); }
-	DECLARE_MACHINE_START(md_6button);
-=======
 class md_cons_state : public md_base_state
 {
 public:
@@ -268,5 +183,4 @@ public:
 	void install_tmss();
 	DECLARE_READ16_MEMBER(tmss_r);
 	DECLARE_WRITE16_MEMBER(tmss_swap_w);
->>>>>>> upstream/master
 };

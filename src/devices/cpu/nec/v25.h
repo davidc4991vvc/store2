@@ -1,15 +1,10 @@
 // license:BSD-3-Clause
 // copyright-holders:Bryan McPhail, Alex W. Jackson
 /* ASG 971222 -- rewrote this interface */
-<<<<<<< HEAD
-#ifndef __NEC_V25_H_
-#define __NEC_V25_H_
-=======
 #ifndef MAME_CPU_NEC_V25_H
 #define MAME_CPU_NEC_V25_H
 
 #pragma once
->>>>>>> upstream/master
 
 
 #define NEC_INPUT_LINE_INTP0 10
@@ -17,23 +12,12 @@
 #define NEC_INPUT_LINE_INTP2 12
 #define NEC_INPUT_LINE_POLL 20
 
-<<<<<<< HEAD
-#define V25_PORT_P0 0x10000
-#define V25_PORT_P1 0x10002
-#define V25_PORT_P2 0x10004
-#define V25_PORT_PT 0x10006
-
-=======
->>>>>>> upstream/master
 enum
 {
 	V25_PC=0,
 	V25_IP, V25_AW, V25_CW, V25_DW, V25_BW, V25_SP, V25_BP, V25_IX, V25_IY,
 	V25_FLAGS, V25_ES, V25_CS, V25_SS, V25_DS,
-<<<<<<< HEAD
-=======
 	V25_IDB,
->>>>>>> upstream/master
 	V25_PENDING
 };
 
@@ -42,16 +26,6 @@ enum
 	v25_common_device::set_decryption_table(*device, _table);
 
 
-<<<<<<< HEAD
-class v25_common_device : public cpu_device
-{
-public:
-	// construction/destruction
-	v25_common_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, bool is_16bit, offs_t fetch_xor, UINT8 prefetch_size, UINT8 prefetch_cycles, UINT32 chip_type);
-
-	// static configuration helpers
-	static void set_decryption_table(device_t &device, const UINT8 *decryption_table) { downcast<v25_common_device &>(device).m_v25v35_decryptiontable = decryption_table; }
-=======
 #define MCFG_V25_PORT_PT_READ_CB(_devcb) \
 	devcb = &v25_common_device::set_pt_in_cb(*device, DEVCB_##_devcb);
 
@@ -88,40 +62,10 @@ public:
 	template <class Object> static devcb_base & set_p0_out_cb(device_t &device, Object &&cb) { return downcast<v25_common_device &>(device).m_p0_out.set_callback(std::forward<Object>(cb)); }
 	template <class Object> static devcb_base & set_p1_out_cb(device_t &device, Object &&cb) { return downcast<v25_common_device &>(device).m_p1_out.set_callback(std::forward<Object>(cb)); }
 	template <class Object> static devcb_base & set_p2_out_cb(device_t &device, Object &&cb) { return downcast<v25_common_device &>(device).m_p2_out.set_callback(std::forward<Object>(cb)); }
->>>>>>> upstream/master
 
 	TIMER_CALLBACK_MEMBER(v25_timer_callback);
 
 protected:
-<<<<<<< HEAD
-	// device-level overrides
-	virtual void device_start();
-	virtual void device_reset();
-	virtual void device_post_load() { notify_clock_changed(); }
-
-	// device_execute_interface overrides
-	virtual UINT64 execute_clocks_to_cycles(UINT64 clocks) const { return clocks / m_PCK; }
-	virtual UINT64 execute_cycles_to_clocks(UINT64 cycles) const { return cycles * m_PCK; }
-	virtual UINT32 execute_min_cycles() const { return 1; }
-	virtual UINT32 execute_max_cycles() const { return 80; }
-	virtual UINT32 execute_input_lines() const { return 1; }
-	virtual UINT32 execute_default_irq_vector() const { return 0xff; }
-	virtual void execute_run();
-	virtual void execute_set_input(int inputnum, int state);
-
-	// device_memory_interface overrides
-	virtual const address_space_config *memory_space_config(address_spacenum spacenum = AS_0) const { return (spacenum == AS_PROGRAM) ? &m_program_config : ( (spacenum == AS_IO) ? &m_io_config : NULL); }
-
-	// device_state_interface overrides
-	void state_string_export(const device_state_entry &entry, std::string &str);
-	virtual void state_import(const device_state_entry &entry);
-	virtual void state_export(const device_state_entry &entry);
-
-	// device_disasm_interface overrides
-	virtual UINT32 disasm_min_opcode_bytes() const { return 1; }
-	virtual UINT32 disasm_max_opcode_bytes() const { return 8; }
-	virtual offs_t disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options);
-=======
 	// construction/destruction
 	v25_common_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock, bool is_16bit, offs_t fetch_xor, uint8_t prefetch_size, uint8_t prefetch_cycles, uint32_t chip_type);
 
@@ -152,63 +96,21 @@ protected:
 	virtual uint32_t disasm_min_opcode_bytes() const override { return 1; }
 	virtual uint32_t disasm_max_opcode_bytes() const override { return 8; }
 	virtual offs_t disasm_disassemble(std::ostream &stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, uint32_t options) override;
->>>>>>> upstream/master
 
 private:
 	address_space_config m_program_config;
 	address_space_config m_io_config;
 
-<<<<<<< HEAD
-/* internal RAM and register banks */
-union internalram
-{
-	UINT16 w[128];
-	UINT8  b[256];
-};
-=======
 	/* internal RAM and register banks */
 	union internalram
 	{
 		uint16_t w[128];
 		uint8_t  b[256];
 	};
->>>>>>> upstream/master
 
 	internalram m_ram;
 	offs_t  m_fetch_xor;
 
-<<<<<<< HEAD
-	UINT16  m_ip;
-
-	/* PSW flags */
-	INT32   m_SignVal;
-	UINT32  m_AuxVal, m_OverVal, m_ZeroVal, m_CarryVal, m_ParityVal;  /* 0 or non-0 valued flags */
-	UINT8   m_IBRK, m_F0, m_F1, m_TF, m_IF, m_DF, m_MF;   /* 0 or 1 valued flags */
-	UINT8   m_RBW, m_RBB;   /* current register bank base, preshifted for word and byte registers */
-
-	/* interrupt related */
-	UINT32  m_pending_irq;
-	UINT32  m_unmasked_irq;
-	UINT32  m_bankswitch_irq;
-	UINT8   m_priority_inttu, m_priority_intd, m_priority_intp, m_priority_ints0, m_priority_ints1;
-	UINT8   m_IRQS, m_ISPR;
-	UINT32  m_nmi_state;
-	UINT32  m_irq_state;
-	UINT32  m_poll_state;
-	UINT32  m_mode_state;
-	UINT32  m_intp_state[3];
-	UINT8   m_no_interrupt;
-	UINT8   m_halted;
-
-	/* timer related */
-	UINT16  m_TM0, m_MD0, m_TM1, m_MD1;
-	UINT8   m_TMC0, m_TMC1;
-	emu_timer *m_timers[4];
-
-	/* system control */
-	UINT8   m_RAMEN, m_TB, m_PCK; /* PRC register */
-	UINT32  m_IDB;
-=======
 	uint16_t  m_ip;
 
 	/* PSW flags */
@@ -239,34 +141,12 @@ union internalram
 	/* system control */
 	uint8_t   m_RAMEN, m_TB, m_PCK; /* PRC register */
 	uint32_t  m_IDB;
->>>>>>> upstream/master
 
 	address_space *m_program;
 	direct_read_data *m_direct;
 	address_space *m_io;
 	int     m_icount;
 
-<<<<<<< HEAD
-	UINT8   m_prefetch_size;
-	UINT8   m_prefetch_cycles;
-	INT8    m_prefetch_count;
-	UINT8   m_prefetch_reset;
-	UINT32  m_chip_type;
-
-	UINT32  m_prefix_base;    /* base address of the latest prefix segment */
-	UINT8   m_seg_prefix;     /* prefix segment indicator */
-
-	UINT32 m_EA;
-	UINT16 m_EO;
-	UINT16 m_E16;
-
-	UINT32 m_debugger_temp;
-
-	const UINT8 *m_v25v35_decryptiontable;  // internal decryption table
-
-	typedef void (v25_common_device::*nec_ophandler)();
-	typedef UINT32 (v25_common_device::*nec_eahandler)();
-=======
 	/* callbacks */
 	devcb_read8 m_pt_in;
 	devcb_read8 m_p0_in;
@@ -296,37 +176,18 @@ union internalram
 
 	typedef void (v25_common_device::*nec_ophandler)();
 	typedef uint32_t (v25_common_device::*nec_eahandler)();
->>>>>>> upstream/master
 	static const nec_ophandler s_nec_instruction[256];
 	static const nec_eahandler s_GetEA[192];
 
 	inline void prefetch();
 	void do_prefetch(int previous_ICount);
-<<<<<<< HEAD
-	inline UINT8 fetch();
-	inline UINT16 fetchword();
-	inline UINT8 fetchop();
-=======
 	inline uint8_t fetch();
 	inline uint16_t fetchword();
 	inline uint8_t fetchop();
->>>>>>> upstream/master
 	void nec_interrupt(unsigned int_num, int /*INTSOURCES*/ source);
 	void nec_bankswitch(unsigned bank_num);
 	void nec_trap();
 	void external_int();
-<<<<<<< HEAD
-	UINT8 read_irqcontrol(int /*INTSOURCES*/ source, UINT8 priority);
-	UINT8 read_sfr(unsigned o);
-	UINT16 read_sfr_word(unsigned o);
-	void write_irqcontrol(int /*INTSOURCES*/ source, UINT8 d);
-	void write_sfr(unsigned o, UINT8 d);
-	void write_sfr_word(unsigned o, UINT16 d);
-	UINT8 v25_read_byte(unsigned a);
-	UINT16 v25_read_word(unsigned a);
-	void v25_write_byte(unsigned a, UINT8 d);
-	void v25_write_word(unsigned a, UINT16 d);
-=======
 	uint8_t read_irqcontrol(int /*INTSOURCES*/ source, uint8_t priority);
 	uint8_t read_sfr(unsigned o);
 	uint16_t read_sfr_word(unsigned o);
@@ -337,7 +198,6 @@ union internalram
 	uint16_t v25_read_word(unsigned a);
 	void v25_write_byte(unsigned a, uint8_t d);
 	void v25_write_word(unsigned a, uint16_t d);
->>>>>>> upstream/master
 
 	void i_add_br8();
 	void i_add_wr16();
@@ -589,32 +449,6 @@ union internalram
 	void i_brkn();
 	void i_brks();
 
-<<<<<<< HEAD
-	UINT32 EA_000();
-	UINT32 EA_001();
-	UINT32 EA_002();
-	UINT32 EA_003();
-	UINT32 EA_004();
-	UINT32 EA_005();
-	UINT32 EA_006();
-	UINT32 EA_007();
-	UINT32 EA_100();
-	UINT32 EA_101();
-	UINT32 EA_102();
-	UINT32 EA_103();
-	UINT32 EA_104();
-	UINT32 EA_105();
-	UINT32 EA_106();
-	UINT32 EA_107();
-	UINT32 EA_200();
-	UINT32 EA_201();
-	UINT32 EA_202();
-	UINT32 EA_203();
-	UINT32 EA_204();
-	UINT32 EA_205();
-	UINT32 EA_206();
-	UINT32 EA_207();
-=======
 	uint32_t EA_000();
 	uint32_t EA_001();
 	uint32_t EA_002();
@@ -639,35 +473,19 @@ union internalram
 	uint32_t EA_205();
 	uint32_t EA_206();
 	uint32_t EA_207();
->>>>>>> upstream/master
 };
 
 
 class v25_device : public v25_common_device
 {
 public:
-<<<<<<< HEAD
-	v25_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-=======
 	v25_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
->>>>>>> upstream/master
 };
 
 
 class v35_device : public v25_common_device
 {
 public:
-<<<<<<< HEAD
-	v35_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-};
-
-
-extern const device_type V25;
-extern const device_type V35;
-
-
-#endif
-=======
 	v35_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 };
 
@@ -677,4 +495,3 @@ DECLARE_DEVICE_TYPE(V35, v35_device)
 
 
 #endif // MAME_CPU_NEC_V25_H
->>>>>>> upstream/master

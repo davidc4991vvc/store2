@@ -11,36 +11,15 @@
 //
 //    - osd_ticks
 //    - osd_sleep
-<<<<<<< HEAD
-//    - osd_malloc
-//    - osd_malloc_array
-//    - osd_free
-=======
->>>>>>> upstream/master
 //============================================================
 
 #ifndef __OSDLIB__
 #define __OSDLIB__
 
-<<<<<<< HEAD
-/*-----------------------------------------------------------------------------
-    osd_num_processors: return the number of processors
-
-    Parameters:
-
-        None.
-
-    Return value:
-
-        Number of processors
------------------------------------------------------------------------------*/
-int osd_get_num_processors(void);
-=======
 #include <string>
 #include <type_traits>
 #include <vector>
 #include <memory>
->>>>>>> upstream/master
 
 /*-----------------------------------------------------------------------------
     osd_process_kill: kill the current process
@@ -53,15 +32,10 @@ int osd_get_num_processors(void);
 
         None.
 -----------------------------------------------------------------------------*/
-<<<<<<< HEAD
-void osd_process_kill(void);
-
-=======
 
 void osd_process_kill(void);
 
 
->>>>>>> upstream/master
 /*-----------------------------------------------------------------------------
     osd_setenv: set environment variable
 
@@ -78,8 +52,6 @@ void osd_process_kill(void);
 
 int osd_setenv(const char *name, const char *value, int overwrite);
 
-<<<<<<< HEAD
-=======
 
 /*-----------------------------------------------------------------------------
     osd_get_clipboard_text: retrieves text from the clipboard
@@ -152,5 +124,4 @@ protected:
 
 #endif
 
->>>>>>> upstream/master
 #endif  /* __OSDLIB__ */

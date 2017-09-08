@@ -40,13 +40,8 @@
 
 struct basictoken_tableent
 {
-<<<<<<< HEAD
-	UINT8 shift;
-	UINT8 base;
-=======
 	uint8_t shift;
 	uint8_t base;
->>>>>>> upstream/master
 	const char *const *tokens;
 	int num_tokens;
 };
@@ -55,11 +50,7 @@ struct basictoken_tableent
 
 struct basictokens
 {
-<<<<<<< HEAD
-	UINT16 baseaddress;
-=======
 	uint16_t baseaddress;
->>>>>>> upstream/master
 	unsigned int skip_bytes : 15;
 	unsigned int be : 1;
 	const basictoken_tableent *entries;
@@ -78,18 +69,6 @@ struct basictokens
 -------------------------------------------------*/
 
 static imgtoolerr_t basic_readfile(const basictokens *tokens,
-<<<<<<< HEAD
-	imgtool_partition *partition, const char *filename,
-	const char *fork, imgtool_stream *destf)
-{
-	imgtoolerr_t err;
-	imgtool_stream *mem_stream;
-	UINT8 line_header[4];
-	UINT16 line_number; //, address;
-	UINT8 b, shift;
-	int i;
-	int in_string = FALSE;
-=======
 	imgtool::partition &partition, const char *filename,
 	const char *fork, imgtool::stream &destf)
 {
@@ -100,30 +79,10 @@ static imgtoolerr_t basic_readfile(const basictokens *tokens,
 	uint8_t b, shift;
 	int i;
 	int in_string = false;
->>>>>>> upstream/master
 	const basictoken_tableent *token_table;
 	const char *token;
 
 	/* open a memory stream */
-<<<<<<< HEAD
-	mem_stream = stream_open_mem(NULL, 0);
-	if (mem_stream == NULL)
-	{
-		err = IMGTOOLERR_OUTOFMEMORY;
-		goto done;
-	}
-
-	/* read actual file */
-	err = imgtool_partition_read_file(partition, filename, fork, mem_stream, NULL);
-	if (err)
-		goto done;
-
-	/* skip first few bytes */
-	stream_seek(mem_stream, tokens->skip_bytes, SEEK_SET);
-
-	/* keep reading line headers */
-	while(stream_read(mem_stream, line_header, sizeof(line_header)) == sizeof(line_header))
-=======
 	mem_stream = imgtool::stream::open_mem(nullptr, 0);
 	if (!mem_stream)
 		return IMGTOOLERR_OUTOFMEMORY;
@@ -138,36 +97,10 @@ static imgtoolerr_t basic_readfile(const basictokens *tokens,
 
 	/* keep reading line headers */
 	while(mem_stream->read(line_header, sizeof(line_header)) == sizeof(line_header))
->>>>>>> upstream/master
 	{
 		/* pluck the address and line number out */
 		if (tokens->be)
 		{
-<<<<<<< HEAD
-			//address = (UINT16)
-			pick_integer_be(line_header, 0, 2);
-			line_number = (UINT16) pick_integer_be(line_header, 2, 2);
-		}
-		else
-		{
-			//address = (UINT16)
-			pick_integer_le(line_header, 0, 2);
-			line_number = (UINT16) pick_integer_le(line_header, 2, 2);
-		}
-
-		/* write the line number */
-		stream_printf(destf, "%u ", (unsigned) line_number);
-		shift = 0x00;
-
-		while((stream_read(mem_stream, &b, 1) > 0) && (b != 0x00))
-		{
-			if (b == 0x22)
-				in_string = in_string ? FALSE : TRUE;
-
-			if ((b & 0x80) && (!in_string))
-			{
-				token = NULL;
-=======
 			//address = (uint16_t)
 			pick_integer_be(line_header, 0, 2);
 			line_number = (uint16_t) pick_integer_be(line_header, 2, 2);
@@ -191,7 +124,6 @@ static imgtoolerr_t basic_readfile(const basictokens *tokens,
 			if ((b & 0x80) && (!in_string))
 			{
 				token = nullptr;
->>>>>>> upstream/master
 
 				for (i = 0; i < tokens->num_entries; i++)
 				{
@@ -214,22 +146,6 @@ static imgtoolerr_t basic_readfile(const basictokens *tokens,
 				}
 
 				if (shift == 0x00)
-<<<<<<< HEAD
-					stream_puts(destf, token ? token : "!");
-			}
-			else
-			{
-				stream_putc(destf, (char) b);
-			}
-		}
-
-		stream_puts(destf, EOLN);
-	}
-
-done:
-	if (mem_stream != NULL)
-		stream_close(mem_stream);
-=======
 					destf.puts(token ? token : "!");
 			}
 			else
@@ -241,7 +157,6 @@ done:
 		destf.puts(EOLN);
 	}
 
->>>>>>> upstream/master
 	return err;
 }
 
@@ -253,36 +168,6 @@ done:
 -------------------------------------------------*/
 
 static imgtoolerr_t basic_writefile(const basictokens *tokens,
-<<<<<<< HEAD
-	imgtool_partition *partition, const char *filename,
-	const char *fork, imgtool_stream *sourcef, option_resolution *opts)
-{
-	imgtoolerr_t err;
-	imgtool_stream *mem_stream;
-	char buf[1024];
-	int eof = FALSE;
-	UINT32 len;
-	char c;
-	int i, j, pos, in_quotes;
-	UINT16 line_number;
-	UINT8 line_header[4];
-	UINT8 file_header[3];
-	const basictoken_tableent *token_table;
-	const char *token;
-	UINT8 token_shift, token_value;
-	UINT16 address;
-
-	/* open a memory stream */
-	mem_stream = stream_open_mem(NULL, 0);
-	if (mem_stream == NULL)
-	{
-		err = IMGTOOLERR_OUTOFMEMORY;
-		goto done;
-	}
-
-	/* skip first few bytes */
-	stream_fill(mem_stream, 0x00, tokens->skip_bytes);
-=======
 	imgtool::partition &partition, const char *filename,
 	const char *fork, imgtool::stream &sourcef, util::option_resolution *opts)
 {
@@ -307,18 +192,13 @@ static imgtoolerr_t basic_writefile(const basictokens *tokens,
 
 	/* skip first few bytes */
 	mem_stream->fill(0x00, tokens->skip_bytes);
->>>>>>> upstream/master
 
 	/* loop until the file is complete */
 	while(!eof)
 	{
 		/* read a line */
 		pos = 0;
-<<<<<<< HEAD
-		while((len = stream_read(sourcef, &c, 1)) > 0)
-=======
 		while((len = sourcef.read(&c, 1)) > 0)
->>>>>>> upstream/master
 		{
 			/* break if at end of line */
 			if ((c == '\r') || (c == '\n'))
@@ -349,11 +229,7 @@ static imgtoolerr_t basic_writefile(const basictokens *tokens,
 			/* determine address */
 			if (tokens->baseaddress != 0)
 			{
-<<<<<<< HEAD
-				address = tokens->baseaddress + (UINT16)stream_size(mem_stream) + 4;
-=======
 				address = tokens->baseaddress + (uint16_t)mem_stream->size() + 4;
->>>>>>> upstream/master
 			}
 			else
 			{
@@ -374,31 +250,19 @@ static imgtoolerr_t basic_writefile(const basictokens *tokens,
 			}
 
 			/* emit line header */
-<<<<<<< HEAD
-			stream_write(mem_stream, line_header, sizeof(line_header));
-=======
 			mem_stream->write(line_header, sizeof(line_header));
->>>>>>> upstream/master
 
 			/* skip spaces */
 			while(isspace(buf[pos]))
 				pos++;
 
 			/* when we start out, we are not within quotation marks */
-<<<<<<< HEAD
-			in_quotes = FALSE;
-=======
 			in_quotes = false;
->>>>>>> upstream/master
 
 			/* read until end of line */
 			while(buf[pos] != '\0')
 			{
-<<<<<<< HEAD
-				token = NULL;
-=======
 				token = nullptr;
->>>>>>> upstream/master
 				token_shift = 0;
 				token_value = 0;
 
@@ -409,17 +273,10 @@ static imgtoolerr_t basic_writefile(const basictokens *tokens,
 				}
 				else if (!in_quotes)
 				{
-<<<<<<< HEAD
-					for (i = 0; (token == NULL) && (i < tokens->num_entries); i++)
-					{
-						token_table = &tokens->entries[i];
-						for (j = 0; (token == NULL) && (j < token_table->num_tokens); j++)
-=======
 					for (i = 0; (token == nullptr) && (i < tokens->num_entries); i++)
 					{
 						token_table = &tokens->entries[i];
 						for (j = 0; (token == nullptr) && (j < token_table->num_tokens); j++)
->>>>>>> upstream/master
 						{
 							if (!strncmp(&buf[pos], token_table->tokens[j], strlen(token_table->tokens[j])))
 							{
@@ -433,54 +290,30 @@ static imgtoolerr_t basic_writefile(const basictokens *tokens,
 				}
 
 				/* did we find a token? */
-<<<<<<< HEAD
-				if (token != NULL)
-				{
-					/* emit the token */
-					if (token_shift != 0)
-						stream_write(mem_stream, &token_shift, 1);
-					stream_write(mem_stream, &token_value, 1);
-=======
 				if (token != nullptr)
 				{
 					/* emit the token */
 					if (token_shift != 0)
 						mem_stream->write(&token_shift, 1);
 					mem_stream->write(&token_value, 1);
->>>>>>> upstream/master
 				}
 				else
 				{
 					/* no token; emit the byte */
-<<<<<<< HEAD
-					stream_write(mem_stream, &buf[pos++], 1);
-=======
 					mem_stream->write(&buf[pos++], 1);
->>>>>>> upstream/master
 				}
 			}
 
 			/* emit line terminator */
-<<<<<<< HEAD
-			stream_fill(mem_stream, 0x00, 1);
-=======
 			mem_stream->fill(0x00, 1);
->>>>>>> upstream/master
 		}
 	}
 
 	/* emit program terminator */
-<<<<<<< HEAD
-	stream_fill(mem_stream, 0x00, 2);
-
-	/* reset stream */
-	stream_seek(mem_stream, 0, SEEK_SET);
-=======
 	mem_stream->fill(0x00, 2);
 
 	/* reset stream */
 	mem_stream->seek(0, SEEK_SET);
->>>>>>> upstream/master
 
 	/* this is somewhat gross */
 	if (tokens->skip_bytes >= 3)
@@ -488,32 +321,11 @@ static imgtoolerr_t basic_writefile(const basictokens *tokens,
 		if (tokens->be)
 		{
 			place_integer_be(file_header, 0, 1, 0xFF);
-<<<<<<< HEAD
-			place_integer_be(file_header, 1, 2, stream_size(mem_stream));
-=======
 			place_integer_be(file_header, 1, 2, mem_stream->size());
->>>>>>> upstream/master
 		}
 		else
 		{
 			place_integer_le(file_header, 0, 1, 0xFF);
-<<<<<<< HEAD
-			place_integer_le(file_header, 1, 2, stream_size(mem_stream));
-		}
-		stream_write(mem_stream, file_header, 3);
-		stream_seek(mem_stream, 0, SEEK_SET);
-	}
-
-	/* write actual file */
-	err = imgtool_partition_write_file(partition, filename, fork, mem_stream, opts, NULL);
-	if (err)
-		goto done;
-
-done:
-	if (mem_stream != NULL)
-		stream_close(mem_stream);
-	return err;
-=======
 			place_integer_le(file_header, 1, 2, mem_stream->size());
 		}
 		mem_stream->write(file_header, 3);
@@ -522,7 +334,6 @@ done:
 
 	/* write actual file */
 	return partition.write_file(filename, fork, *mem_stream, opts, nullptr);
->>>>>>> upstream/master
 }
 
 
@@ -841,11 +652,7 @@ static const char *const dragonbas_functions[] =
 	"TIMER",    /* 0xff9e */
 	"PPOINT",   /* 0xff9f */
 	"STRING$",  /* 0xffa0 */
-<<<<<<< HEAD
-	"USR"       /* 0xffa1 */
-=======
 	"USR",      /* 0xffa1 */
->>>>>>> upstream/master
 	"CVN",      /* 0xffa2 */
 	"FREE",     /* 0xffa3 */
 	"LOC",      /* 0xffa4 */
@@ -860,11 +667,7 @@ static const char *const vzbas[] =
 	"RESET",    /* 0x82 */
 	"SET",      /* 0x83 */
 	"CLS",      /* 0x84 */
-<<<<<<< HEAD
-	NULL,       /* 0x85 */
-=======
 	nullptr,       /* 0x85 */
->>>>>>> upstream/master
 	"RANDOM",   /* 0x86 */
 	"NEXT",     /* 0x87 */
 	"DATA",     /* 0x88 */
@@ -893,23 +696,6 @@ static const char *const vzbas[] =
 	"RESUME",   /* 0x9f */
 	"OUT",      /* 0xa0 */
 	"IN",       /* 0xa1 */
-<<<<<<< HEAD
-	NULL,       /* 0xa2 */
-	NULL,       /* 0xa3 */
-	NULL,       /* 0xa4 */
-	NULL,       /* 0xa5 */
-	NULL,       /* 0xa6 */
-	NULL,       /* 0xa7 */
-	NULL,       /* 0xa8 */
-	NULL,       /* 0xa9 */
-	NULL,       /* 0xaa */
-	NULL,       /* 0xab */
-	NULL,       /* 0xac */
-	NULL,       /* 0xad */
-	"(RESET)",  /* 0xae */
-	"LPRINT",   /* 0xaf */
-	NULL,       /* 0xb0 */
-=======
 	nullptr,       /* 0xa2 */
 	nullptr,       /* 0xa3 */
 	nullptr,       /* 0xa4 */
@@ -925,7 +711,6 @@ static const char *const vzbas[] =
 	"(RESET)",  /* 0xae */
 	"LPRINT",   /* 0xaf */
 	nullptr,       /* 0xb0 */
->>>>>>> upstream/master
 	"POKE",     /* 0xb1 */
 	"PRINT",    /* 0xb2 */
 	"CONT",     /* 0xb3 */
@@ -939,26 +724,16 @@ static const char *const vzbas[] =
 	"NEW",      /* 0xbb */
 	"TAB(",     /* 0xbc */
 	"TO",       /* 0xbd */
-<<<<<<< HEAD
-	NULL,       /* 0xbe */
-=======
 	nullptr,       /* 0xbe */
->>>>>>> upstream/master
 	"USING",    /* 0xbf */
 	"VARPTR",   /* 0xc0 */
 	"USR",      /* 0xc1 */
 	"ERL",      /* 0xc2 */
 	"ERR",      /* 0xc3 */
 	"STRING$",  /* 0xc4 */
-<<<<<<< HEAD
-	NULL,       /* 0xc5 */
-	"POINT",    /* 0xc6 */
-	NULL,       /* 0xc7 */
-=======
 	nullptr,       /* 0xc5 */
 	"POINT",    /* 0xc6 */
 	nullptr,       /* 0xc7 */
->>>>>>> upstream/master
 	"MEM",      /* 0xc8 */
 	"INKEY$",   /* 0xc9 */
 	"THEN",     /* 0xca */
@@ -989,17 +764,6 @@ static const char *const vzbas[] =
 	"TAN",      /* 0xe3 */
 	"ATN",      /* 0xe4 */
 	"PEEK",     /* 0xe5 */
-<<<<<<< HEAD
-	NULL,       /* 0xe6 */
-	NULL,       /* 0xe7 */
-	NULL,       /* 0xe8 */
-	NULL,       /* 0xe9 */
-	NULL,       /* 0xea */
-	NULL,       /* 0xeb */
-	NULL,       /* 0xec */
-	NULL,       /* 0xed */
-	NULL,       /* 0xee */
-=======
 	nullptr,       /* 0xe6 */
 	nullptr,       /* 0xe7 */
 	nullptr,       /* 0xe8 */
@@ -1009,7 +773,6 @@ static const char *const vzbas[] =
 	nullptr,       /* 0xec */
 	nullptr,       /* 0xed */
 	nullptr,       /* 0xee */
->>>>>>> upstream/master
 	"CINT",     /* 0xef */
 	"CSNG",     /* 0xf0 */
 	"CDBL",     /* 0xf1 */
@@ -1022,19 +785,11 @@ static const char *const vzbas[] =
 	"LEFT$",    /* 0xf8 */
 	"RIGHT$",   /* 0xf9 */
 	"MID$",     /* 0xfa */
-<<<<<<< HEAD
-	NULL,       /* 0xfb */
-	NULL,       /* 0xfc */
-	NULL,       /* 0xfd */
-	NULL,       /* 0xfe */
-	NULL        /* 0xff */
-=======
 	nullptr,       /* 0xfb */
 	nullptr,       /* 0xfc */
 	nullptr,       /* 0xfd */
 	nullptr,       /* 0xfe */
 	nullptr        /* 0xff */
->>>>>>> upstream/master
 };
 
 static const char *const bml3bas_statements[] =
@@ -3181,42 +2936,24 @@ static const basictokens cocobas_tokens =
 {
 	0x2600,
 	3,
-<<<<<<< HEAD
-	TRUE,
-=======
 	true,
->>>>>>> upstream/master
 	cocobas_tokenents,
 	ARRAY_LENGTH(cocobas_tokenents)
 };
 
-<<<<<<< HEAD
-static imgtoolerr_t cocobas_readfile(imgtool_partition *partition, const char *filename,
-	const char *fork, imgtool_stream *destf)
-=======
 static imgtoolerr_t cocobas_readfile(imgtool::partition &partition, const char *filename,
 	const char *fork, imgtool::stream &destf)
->>>>>>> upstream/master
 {
 	return basic_readfile(&cocobas_tokens, partition, filename, fork, destf);
 }
 
-<<<<<<< HEAD
-static imgtoolerr_t cocobas_writefile(imgtool_partition *partition, const char *filename,
-	const char *fork, imgtool_stream *sourcef, option_resolution *opts)
-=======
 static imgtoolerr_t cocobas_writefile(imgtool::partition &partition, const char *filename,
 	const char *fork, imgtool::stream &sourcef, util::option_resolution *opts)
->>>>>>> upstream/master
 {
 	return basic_writefile(&cocobas_tokens, partition, filename, fork, sourcef, opts);
 }
 
-<<<<<<< HEAD
-void filter_cocobas_getinfo(UINT32 state, union filterinfo *info)
-=======
 void filter_cocobas_getinfo(uint32_t state, union filterinfo *info)
->>>>>>> upstream/master
 {
 	switch(state)
 	{
@@ -3243,42 +2980,24 @@ static const basictokens dragonbas_tokens =
 {
 	0x2600,
 	4,
-<<<<<<< HEAD
-	TRUE,
-=======
 	true,
->>>>>>> upstream/master
 	dragonbas_tokenents,
 	ARRAY_LENGTH(dragonbas_tokenents)
 };
 
-<<<<<<< HEAD
-static imgtoolerr_t dragonbas_readfile(imgtool_partition *partition, const char *filename,
-	const char *fork, imgtool_stream *destf)
-=======
 static imgtoolerr_t dragonbas_readfile(imgtool::partition &partition, const char *filename,
 	const char *fork, imgtool::stream &destf)
->>>>>>> upstream/master
 {
 	return basic_readfile(&dragonbas_tokens, partition, filename, fork, destf);
 }
 
-<<<<<<< HEAD
-static imgtoolerr_t dragonbas_writefile(imgtool_partition *partition, const char *filename,
-	const char *fork, imgtool_stream *sourcef, option_resolution *opts)
-=======
 static imgtoolerr_t dragonbas_writefile(imgtool::partition &partition, const char *filename,
 	const char *fork, imgtool::stream &sourcef, util::option_resolution *opts)
->>>>>>> upstream/master
 {
 	return basic_writefile(&dragonbas_tokens, partition, filename, fork, sourcef, opts);
 }
 
-<<<<<<< HEAD
-void filter_dragonbas_getinfo(UINT32 state, union filterinfo *info)
-=======
 void filter_dragonbas_getinfo(uint32_t state, union filterinfo *info)
->>>>>>> upstream/master
 {
 	switch(state)
 	{
@@ -3306,42 +3025,24 @@ static const basictokens vzbas_tokens =
 {
 	0x7ae9,
 	0,
-<<<<<<< HEAD
-	FALSE,
-=======
 	false,
->>>>>>> upstream/master
 	vzbas_tokenents,
 	ARRAY_LENGTH(vzbas_tokenents)
 };
 
-<<<<<<< HEAD
-static imgtoolerr_t vzbas_readfile(imgtool_partition *partition, const char *filename,
-	const char *fork, imgtool_stream *destf)
-=======
 static imgtoolerr_t vzbas_readfile(imgtool::partition &partition, const char *filename,
 	const char *fork, imgtool::stream &destf)
->>>>>>> upstream/master
 {
 	return basic_readfile(&vzbas_tokens, partition, filename, fork, destf);
 }
 
-<<<<<<< HEAD
-static imgtoolerr_t vzbas_writefile(imgtool_partition *partition, const char *filename,
-	const char *fork, imgtool_stream *sourcef, option_resolution *opts)
-=======
 static imgtoolerr_t vzbas_writefile(imgtool::partition &partition, const char *filename,
 	const char *fork, imgtool::stream &sourcef, util::option_resolution *opts)
->>>>>>> upstream/master
 {
 	return basic_writefile(&vzbas_tokens, partition, filename, fork, sourcef, opts);
 }
 
-<<<<<<< HEAD
-void filter_vzbas_getinfo(UINT32 state, union filterinfo *info)
-=======
 void filter_vzbas_getinfo(uint32_t state, union filterinfo *info)
->>>>>>> upstream/master
 {
 	switch(state)
 	{
@@ -3368,42 +3069,24 @@ static const basictokens bml3bas_tokens =
 {
 	0x2600,
 	3,
-<<<<<<< HEAD
-	TRUE,
-=======
 	true,
->>>>>>> upstream/master
 	bml3bas_tokenents,
 	ARRAY_LENGTH(bml3bas_tokenents)
 };
 
-<<<<<<< HEAD
-static imgtoolerr_t bml3bas_readfile(imgtool_partition *partition, const char *filename,
-	const char *fork, imgtool_stream *destf)
-=======
 static imgtoolerr_t bml3bas_readfile(imgtool::partition &partition, const char *filename,
 	const char *fork, imgtool::stream &destf)
->>>>>>> upstream/master
 {
 	return basic_readfile(&bml3bas_tokens, partition, filename, fork, destf);
 }
 
-<<<<<<< HEAD
-static imgtoolerr_t bml3bas_writefile(imgtool_partition *partition, const char *filename,
-	const char *fork, imgtool_stream *sourcef, option_resolution *opts)
-=======
 static imgtoolerr_t bml3bas_writefile(imgtool::partition &partition, const char *filename,
 	const char *fork, imgtool::stream &sourcef, util::option_resolution *opts)
->>>>>>> upstream/master
 {
 	return basic_writefile(&bml3bas_tokens, partition, filename, fork, sourcef, opts);
 }
 
-<<<<<<< HEAD
-void filter_bml3bas_getinfo(UINT32 state, union filterinfo *info)
-=======
 void filter_bml3bas_getinfo(uint32_t state, union filterinfo *info)
->>>>>>> upstream/master
 {
 	switch(state)
 	{

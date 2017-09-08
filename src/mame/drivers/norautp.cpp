@@ -95,11 +95,7 @@
   0v            15   Half Gamble switch
   0v            16   Change Card switch
   Refil         17   Coin count/sense from hopper
-<<<<<<< HEAD
-  Low Switch    18   High swicth
-=======
   Low Switch    18   High switch
->>>>>>> upstream/master
   Hold 3 Switch 19   Hold 2 switch
   Hold 5 Switch 20   Hold 4 switch
   10p coin      21   Deflect
@@ -254,11 +250,7 @@
   7654 3210
   ---- ---x  * DEAL / DRAW Lamp.
   ---- --x-  * BET / COLLECT Lamp.
-<<<<<<< HEAD
-  ---- -x--  + PANEL LIGHTS RESET (always activated after initalize).
-=======
   ---- -x--  + PANEL LIGHTS RESET (always activated after initialize).
->>>>>>> upstream/master
   ---- x---  + PANEL LAMPS CLOCK
   xxxx ----  * Discrete Sound Lines.
 
@@ -389,11 +381,7 @@
   [2009-08-23/26]
 
   - Added a default NVRAM to Noraut Joker Poker to bypass the 'F U' screen.
-<<<<<<< HEAD
-    This is due to the phisical keyboard limitation when needs to enter
-=======
     This is due to the physical keyboard limitation when needs to enter
->>>>>>> upstream/master
     4 simultaneous inputs.
   - Executed a trojan on 2 noraut systems to confirm the way 16x32 tiles are decoded.
   - Fixed the x-offset for 32x32 tiles lines.
@@ -493,11 +481,7 @@
   - Added Poker / Black Jack (Model 7521).
   - Added Kimble Joker Poker.
   - Added DRHL Poker (v.2.89).
-<<<<<<< HEAD
-  - Renamed norautpn descripion to Noraut Deluxe Poker (bootleg).
-=======
   - Renamed norautpn description to Noraut Deluxe Poker (bootleg).
->>>>>>> upstream/master
   - Added a placeholder for tpoker2's undumped 68705 MCU.
   - Reorganized the driver, plus some clean-ups.
   - Renamed kimblejp to kimbldhl. Changed game description to Kimble Double HI-LO.
@@ -560,20 +544,6 @@
 
 *******************************************************************************/
 
-<<<<<<< HEAD
-
-#define NORAUT_MASTER_CLOCK     XTAL_18_432MHz
-#define DPHL_MASTER_CLOCK       XTAL_18MHz
-#define NORAUT_CPU_CLOCK        NORAUT_MASTER_CLOCK / 8     /* 2.30275 MHz - Measured: 2.305 MHz */
-#define DPHL_CPU_CLOCK          DPHL_MASTER_CLOCK / 9       /* 2 MHz (from 8224) */
-
-#include "emu.h"
-#include "cpu/z80/z80.h"
-#include "cpu/i8085/i8085.h"
-#include "machine/i8255.h"
-#include "machine/nvram.h"
-#include "includes/norautp.h"
-=======
 #include "emu.h"
 #include "includes/norautp.h"
 
@@ -582,40 +552,28 @@
 #include "machine/nvram.h"
 
 #include "speaker.h"
->>>>>>> upstream/master
 
 #include "noraut11.lh"
 #include "noraut12.lh"
 
 
-<<<<<<< HEAD
-=======
 #define NORAUT_MASTER_CLOCK     XTAL_18_432MHz
 #define DPHL_MASTER_CLOCK       XTAL_18MHz
 #define NORAUT_CPU_CLOCK        NORAUT_MASTER_CLOCK / 8     /* 2.30275 MHz - Measured: 2.305 MHz */
 #define DPHL_CPU_CLOCK          DPHL_MASTER_CLOCK / 9       /* 2 MHz (from 8224) */
 
 
->>>>>>> upstream/master
 /*************************
 *     Video Hardware     *
 *************************/
 
 void norautp_state::video_start()
 {
-<<<<<<< HEAD
-	m_np_vram = auto_alloc_array_clear(machine(), UINT16, 0x1000/2);
-}
-
-
-UINT32 norautp_state::screen_update_norautp(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 	m_np_vram = make_unique_clear<uint16_t[]>(0x1000/2);
 }
 
 
 uint32_t norautp_state::screen_update_norautp(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int x, y, count;
 
@@ -689,16 +647,6 @@ WRITE8_MEMBER(norautp_state::mainlamps_w)
     -x-- ----  * HOLD 5 lamp.
     x--- ----  * CANCEL lamp.
 */
-<<<<<<< HEAD
-	output_set_lamp_value(0, (data >> 0) & 1);  /* CHANGE CARD lamp */
-	output_set_lamp_value(1, (data >> 1) & 1);  /* SAVE / HALF GAMBLE lamp */
-	output_set_lamp_value(2, (data >> 2) & 1);  /* HOLD 1 lamp */
-	output_set_lamp_value(3, (data >> 3) & 1);  /* HOLD 2 lamp */
-	output_set_lamp_value(4, (data >> 4) & 1);  /* HOLD 3 lamp */
-	output_set_lamp_value(5, (data >> 5) & 1);  /* HOLD 4 lamp */
-	output_set_lamp_value(6, (data >> 6) & 1);  /* HOLD 5 lamp */
-	output_set_lamp_value(7, (data >> 7) & 1);  /* CANCEL lamp */
-=======
 	output().set_lamp_value(0, (data >> 0) & 1);  /* CHANGE CARD lamp */
 	output().set_lamp_value(1, (data >> 1) & 1);  /* SAVE / HALF GAMBLE lamp */
 	output().set_lamp_value(2, (data >> 2) & 1);  /* HOLD 1 lamp */
@@ -707,7 +655,6 @@ WRITE8_MEMBER(norautp_state::mainlamps_w)
 	output().set_lamp_value(5, (data >> 5) & 1);  /* HOLD 4 lamp */
 	output().set_lamp_value(6, (data >> 6) & 1);  /* HOLD 5 lamp */
 	output().set_lamp_value(7, (data >> 7) & 1);  /* CANCEL lamp */
->>>>>>> upstream/master
 
 //  popmessage("lamps: %02x", data);
 }
@@ -720,22 +667,13 @@ WRITE8_MEMBER(norautp_state::soundlamps_w)
   7654 3210
   ---- ---x  * DEAL / DRAW Lamp.
   ---- --x-  * BET / COLLECT Lamp.
-<<<<<<< HEAD
-  ---- -x--  + PANEL LIGHTS RESET (always activated after initalize).
-=======
   ---- -x--  + PANEL LIGHTS RESET (always activated after initialize).
->>>>>>> upstream/master
   ---- x---  + PANEL LAMPS CLOCK
   xxxx ----  * Discrete Sound Lines.
 */
 
-<<<<<<< HEAD
-	output_set_lamp_value(8, (data >> 0) & 1);  /* DEAL / DRAW lamp */
-	output_set_lamp_value(9, (data >> 1) & 1);  /* BET / COLLECT lamp */
-=======
 	output().set_lamp_value(8, (data >> 0) & 1);  /* DEAL / DRAW lamp */
 	output().set_lamp_value(9, (data >> 1) & 1);  /* BET / COLLECT lamp */
->>>>>>> upstream/master
 
 	/* the 4 MSB are for discrete sound */
 	m_discrete->write(space, NORAUTP_SND_EN, (data >> 7) & 0x01);
@@ -759,21 +697,12 @@ WRITE8_MEMBER(norautp_state::counterlamps_w)
     -x-- ----  + Coin counter related.
     x--- ----  + DEFLECT (always activated).
 */
-<<<<<<< HEAD
-	output_set_lamp_value(10, (data >> 0) & 1); /* HI lamp */
-	output_set_lamp_value(11, (data >> 1) & 1); /* LO lamp */
-
-	coin_counter_w(machine(), 0, data & 0x10);  /* Coin1/3 counter */
-	coin_counter_w(machine(), 1, data & 0x20);  /* Coin2 counter */
-	coin_counter_w(machine(), 2, data & 0x08);  /* Payout pulse */
-=======
 	output().set_lamp_value(10, (data >> 0) & 1); /* HI lamp */
 	output().set_lamp_value(11, (data >> 1) & 1); /* LO lamp */
 
 	machine().bookkeeping().coin_counter_w(0, data & 0x10);  /* Coin1/3 counter */
 	machine().bookkeeping().coin_counter_w(1, data & 0x20);  /* Coin2 counter */
 	machine().bookkeeping().coin_counter_w(2, data & 0x08);  /* Payout pulse */
->>>>>>> upstream/master
 }
 
 
@@ -793,8 +722,6 @@ WRITE8_MEMBER(norautp_state::counterlamps_w)
 //}
 
 
-<<<<<<< HEAD
-=======
 WRITE_LINE_MEMBER(norautp_state::ppi2_obf_w)
 {
 	machine().scheduler().synchronize(timer_expired_delegate(FUNC(norautp_state::ppi2_ack), this), state);
@@ -812,7 +739,6 @@ TIMER_CALLBACK_MEMBER(norautp_state::ppi2_ack)
 }
 
 #ifdef UNUSED_FUNCTION // old implementation
->>>>>>> upstream/master
 /*game waits for /OBF signal (bit 7) to be set.*/
 READ8_MEMBER(norautp_state::test_r)
 {
@@ -838,10 +764,7 @@ WRITE8_MEMBER(norautp_state::vram_addr_w)
 {
 	m_np_addr = data;
 }
-<<<<<<< HEAD
-=======
 #endif
->>>>>>> upstream/master
 
 /* game waits for bit 4 (0x10) to be reset.*/
 READ8_MEMBER(norautp_state::test2_r)
@@ -916,17 +839,10 @@ static ADDRESS_MAP_START( norautp_portmap, AS_IO, 8, norautp_state )
 	ADDRESS_MAP_GLOBAL_MASK(0xff)
 	AM_RANGE(0x60, 0x63) AM_MIRROR(0x1c) AM_DEVREADWRITE("ppi8255_0", i8255_device, read, write)
 	AM_RANGE(0xa0, 0xa3) AM_MIRROR(0x1c) AM_DEVREADWRITE("ppi8255_1", i8255_device, read, write)
-<<<<<<< HEAD
-//  AM_RANGE(0xc0, 0xc3) AM_MIRROR(0x3c) AM_DEVREADWRITE("ppi8255_2", i8255_device, read, write)
-	AM_RANGE(0xc0, 0xc0) AM_MIRROR(0x3c) AM_READWRITE(vram_data_r, vram_data_w)
-	AM_RANGE(0xc1, 0xc1) AM_MIRROR(0x3c) AM_WRITE(vram_addr_w)
-	AM_RANGE(0xc2, 0xc2) AM_MIRROR(0x3c) AM_READ(test_r)
-=======
 	AM_RANGE(0xc0, 0xc3) AM_MIRROR(0x3c) AM_DEVREADWRITE("ppi8255_2", i8255_device, read, write)
 	//AM_RANGE(0xc0, 0xc0) AM_MIRROR(0x3c) AM_READWRITE(vram_data_r, vram_data_w)
 	//AM_RANGE(0xc1, 0xc1) AM_MIRROR(0x3c) AM_WRITE(vram_addr_w)
 	//AM_RANGE(0xc2, 0xc2) AM_MIRROR(0x3c) AM_READ(test_r)
->>>>>>> upstream/master
 	AM_RANGE(0xef, 0xef) AM_READ(test2_r)
 ADDRESS_MAP_END
 
@@ -1067,11 +983,7 @@ static INPUT_PORTS_START( norautp )
 
 	PORT_START("IN2")   /* Only 3 lines: PPI-2; PC0-PC2 */
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_OTHER )       PORT_CODE(KEYCODE_J) PORT_NAME("IN2-1")
-<<<<<<< HEAD
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_SERVICE )     PORT_CODE(KEYCODE_9) PORT_NAME("Readout")
-=======
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_GAMBLE_SERVICE ) PORT_NAME("Readout")
->>>>>>> upstream/master
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_OTHER )       PORT_CODE(KEYCODE_L) PORT_NAME("Low Level Hopper")
 
 
@@ -1109,11 +1021,7 @@ static INPUT_PORTS_START( norautrh )
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_POKER_BET )   PORT_NAME("Bet / Change Card")
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_COIN1 ) PORT_IMPULSE(2)  /* Coin A */
 	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_COIN2 ) PORT_IMPULSE(2)  /* Coin B */
-<<<<<<< HEAD
-	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_SERVICE )     PORT_NAME("Readout") PORT_CODE(KEYCODE_9)
-=======
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_GAMBLE_SERVICE ) PORT_NAME("Readout")
->>>>>>> upstream/master
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_GAMBLE_HIGH ) PORT_NAME("Hi")
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_GAMBLE_LOW )  PORT_NAME("Lo")
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_GAMBLE_PAYOUT )
@@ -1167,11 +1075,7 @@ static INPUT_PORTS_START( norautpn )
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_POKER_BET )   PORT_NAME("Bet / Change Card")
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_COIN1 ) PORT_IMPULSE(2)  /* Coin A */
 	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_COIN2 ) PORT_IMPULSE(2)  /* Coin B */
-<<<<<<< HEAD
-	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_SERVICE )     PORT_NAME("Readout") PORT_CODE(KEYCODE_9)
-=======
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_GAMBLE_SERVICE ) PORT_NAME("Readout")
->>>>>>> upstream/master
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_GAMBLE_HIGH ) PORT_NAME("Hi")
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_GAMBLE_LOW )  PORT_NAME("Lo")
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_GAMBLE_PAYOUT )
@@ -1321,11 +1225,7 @@ GFXDECODE_END
 *    Machine Drivers     *
 *************************/
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( noraut_base, norautp_state )
-=======
 static MACHINE_CONFIG_START( noraut_base )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, NORAUT_CPU_CLOCK)
@@ -1346,22 +1246,11 @@ static MACHINE_CONFIG_START( noraut_base )
 	MCFG_I8255_IN_PORTB_CB(IOPORT("IN1"))
 	MCFG_I8255_OUT_PORTC_CB(WRITE8(norautp_state, soundlamps_w))
 
-<<<<<<< HEAD
-	//MCFG_DEVICE_ADD("ppi8255_2", I8255, 0)
-	/* (c0-c3) Group A Mode 2 (5-lines handshacked bidirectional port)
-	 Group B Mode 0, output;  (see below for lines PC0-PC2) */
-	//MCFG_I8255_IN_PORTA_CB(READ8(norautp_state, vram_data_r)) // VRAM data read
-	//MCFG_I8255_OUT_PORTA_CB(WRITE8(norautp_state, vram_data_w))   // VRAM data write
-	//MCFG_I8255_OUT_PORTB_CB(WRITE8(norautp_state, vram_addr_w))   // VRAM address write
-	//MCFG_I8255_IN_PORTC_CB(READ8(norautp_state, ppi2_portc_r))
-	//MCFG_I8255_OUT_PORTC_CB(WRITE8(norautp_state, ppi2_portc_w))
-=======
 	MCFG_DEVICE_ADD("ppi8255_2", I8255, 0)
 	/* (c0-c3) Group A Mode 2 (5-lines handshacked bidirectional port)
 	 Group B Mode 0, output;  (see below for lines PC0-PC2) */
 	MCFG_I8255_IN_PORTC_CB(IOPORT("IN2"))
 	MCFG_I8255_OUT_PORTC_CB(WRITELINE(norautp_state, ppi2_obf_w)) MCFG_DEVCB_BIT(7)
->>>>>>> upstream/master
 	/*  PPI-2 is configured as mixed mode2 and mode0 output.
 	 It means that port A should be bidirectional and port B just as output.
 	 Port C as hshk regs, and P0-P2 as input (norautp, norautjp) or output (other sets). */
@@ -2534,15 +2423,6 @@ ROM_END
   PCB Layout:                                                                           Edge Connector 36x2
    ________________________________________________________________________________________________________
   |              _________    _____      _____       _________   _________   _________    _________        |
-<<<<<<< HEAD
-  |             |SN74LS12 |  | ??? |    |NE555|     |077B PROM| |SN74174N | |SN74LS???|  |ULN2003AN|       |
-  |    NO IC    |_________|  |_____|    |_____|     |_________| |_________| |_________|  |_________|       |
-  |     U64         U63        U62        U61           U51         U60         U59          U58           |
-  |                                                                                                        |
-  |  _________                                                                                             |
-  | | Dallas  |  _________   _________   _________   _________   _________   _________    _________        |
-  | | DS1220Y | |SN74LS00N| |TC4040BP | |ITT7402N | |SN74157N | | RESNET  | | RESNET  |  |ULN2003AN|       |
-=======
   |             |SN74LS12 |  |LM393|    |NE555|     |077B PROM| |SN74174N | |SN74LS86 |  |ULN2003AN|       |
   |    NO IC    |_________|  |_____|    |_____|     |_82S129__| |_________| |_________|  |_________|       |
   |     U64         U63        U62        U61           U51         U60         U59          U58           |
@@ -2550,35 +2430,10 @@ ROM_END
   |  _________                                    VR1                                                      |
   | | Dallas  |  _________   _________   _________   _________   _________   _________    _________        |
   | | DS1220Y | |SN74LS00N| |TC4040BP | |ITT7402N | |SN74157N | |471RESNET| |472RESNET|  |ULN2003AN|       |
->>>>>>> upstream/master
   | |_________| |_________| |_________| |_________| |_________| |_________| |_________|  |_________|       |
   |     U57         U56         U55         U54         U53         U52         U50          U49           | 36
   |                                                                                                        |___
   |  _________   _________   _________   _________   _________   _________   _________    _________         ___|
-<<<<<<< HEAD
-  | |47F9 PAL?| |SN74LS32N| |   ???   | |   ???   | |SN74166N | |DIP SW x8| |DIP SW x8|  |ULN2003AN|        ___|
-  | |_________| |_________| |_________| |_________| |_________| |_________| |_________|  |_________|        ___|
-  |     U48         U47         U46         U45         U44         U43         U42          U41            ___|
-  |                         _______________    ______________                            ________________   ___|
-  |              _______   |               |  |              |   _________   _________  |                |  ___|
-  |    NO IC    |  ???  |  |  CDM 6116     |  | CF7B U31 ROM |  |   ???   | |   ???   | |   AMD P8255A   |  ___|
-  |     U26     |_______|  |_______________|  |______________|  |_________| |_________| |________________|  ___|
-  |                U40            U39                U31            U38         U37            U36          ___|
-  |  __________                          ____________________                            ________________   ___|
-  | |   ROM    |  _______   _________   |                    |   _________   _________  |                |  ___|
-  | |   U19    | |74161PC| |SN74157N |  |     AMD P8255A     |  | 74LS??? | |DIP SW x8| |   AMD P8255A   |  ___|
-  | |__________| |_______| |_________|  |____________________|  |_________| |_________| |________________|  ___|
-  |     U19         U35        U34               U33                U32         U30            U29          ___|
-  |  __________                                                                                             ___|
-  | |   ROM    |  _________   ________   _________   _________   _________   ________   _________   ______  ___|
-  | |   U18    | |SN74LS32N| |DM7414N | |SN74157N | |SN74157N | |SN74LS32N| |DM7411N | |SN74LS00N| |RESNET| ___|
-  | |__________| |_________| |________| |_________| |_________| |_________| |________| |_________| |______| ___|
-  |     U18          U28        U27         U25         U24         U23         U22        U21       U20    ___|
-  |  __________                                                                                             ___|
-  | |   ROM    |  _________   ________   _________   _________   _________   _________   _______   _______  ___|
-  | |   U12    | |SN74LS155| | RESNET | | 74161PC | | 74161PC | | 74161PC | | 74161PC | |DM7414N| |SN7486N| ___|
-  | |__________| |_________| |________| |_________| |_________| |_________| |_________| |_______| |_______||
-=======
   | |   4F79  | |SN74LS32N| |SN74LS157| |  74161  | |SN74166N | |DIP SW x8| |DIP SW x8|  |ULN2003AN|        ___|
   | |_PAL20L10| |_________| |_________| |_________| |_________| |_________| |_________|  |_________|        ___|
   |     U48         U47         U46         U45         U44         U43         U42          U41            ___|
@@ -2601,16 +2456,11 @@ ROM_END
   | |EPROM 2764|  _________   ________   _________   _________   _________   _________   _______   _______  ___|
   | |   U12    | |SN74LS155| | RESNET | | 74161PC | | 74161PC | | 74161PC | | 74161PC | |DM7414N| |SN7486N| ___|
   | |__________| |_________| |__472___| |_________| |_________| |_________| |_________| |_______| |_______||
->>>>>>> upstream/master
   |     U12         U17         U16         U15         U14         U13         U11        U10        U9   | 01
   |                                                                                                        |
   |  ___________________                                                                                   |
   | |                   |  __________   ________   _______   _________   _________   _______   __________  |
-<<<<<<< HEAD
-  | | SGS Z8400B1 (Z80) | |DM74LS245N| |SM7474N | |74S04N | |SN74LS161| |SN74LS32N| |DM7414N| |SN74LS123N| |
-=======
   | | SGS Z8400B1 (Z80) | |DM74LS245N| |SN7474N | |74S04N | |SN74LS161| |SN74LS32N| |DM7414N| |SN74LS123N| |
->>>>>>> upstream/master
   | |___________________| |__________| |________| |_______| |_________| |_________| |_______| |__________| |
   |          U8                U7          U6        U5         U4          U3         U2          U1      |
   |                                                 _____                                                  |
@@ -2630,10 +2480,6 @@ ROM_END
   |   U30    | OFF | OFF | OFF | ON  | OFF | OFF | OFF | OFF |
   +----------+-----+-----+-----+-----+-----+-----+-----+-----+
 
-<<<<<<< HEAD
-
-=======
->>>>>>> upstream/master
   Discrete audio circuitry: UNKNOWN.
 
 */
@@ -2648,17 +2494,10 @@ ROM_START( bjpoker )
 	ROM_LOAD( "cf7b.u31",  0x0000, 0x1000, CRC(fcfc4d25) SHA1(31455903244ec8ef9005748f265f561b7a082a9c) )
 
 	ROM_REGION( 0x0100,  "proms", 0 )
-<<<<<<< HEAD
-	ROM_LOAD( "077b_bprom.u51", 0x0000, 0x0100, NO_DUMP )
-
-	ROM_REGION( 0x0200,  "plds", 0 )
-	ROM_LOAD( "47f9_pld.u48",   0x0000, 0x0200, NO_DUMP )
-=======
 	ROM_LOAD( "82s129_077b.u51", 0x0000, 0x0100, CRC(920e8394) SHA1(309729db53b94f8ee5d3d32003288729757b140f) )
 
 	ROM_REGION( 0x083f,  "plds", 0 )
 	ROM_LOAD( "pal20l10_4f79.u48",   0x0000, 0x083f, CRC(c7f4aa8f) SHA1(a15cc8f075035a70af42eb3873faa5ebedab5dc8) )
->>>>>>> upstream/master
 
 ROM_END
 
@@ -3644,33 +3483,21 @@ ROM_END
 */
 //static DRIVER_INIT( norautrh )
 //{
-<<<<<<< HEAD
-//  UINT8 *ROM = machine.root_device().memregion("maincpu")->base();
-=======
 //  uint8_t *ROM = machine.root_device().memregion("maincpu")->base();
->>>>>>> upstream/master
 //  ROM[0x1110] = 0x00;
 //  ROM[0x1111] = 0x00;
 //}
 
 //static DRIVER_INIT( norautpn )
 //{
-<<<<<<< HEAD
-//  UINT8 *ROM = machine.root_device().memregion("maincpu")->base();
-=======
 //  uint8_t *ROM = machine.root_device().memregion("maincpu")->base();
->>>>>>> upstream/master
 //  ROM[0x0827] = 0x00;
 //  ROM[0x0828] = 0x00;
 //}
 
 //static DRIVER_INIT( norautu )
 //{
-<<<<<<< HEAD
-//  UINT8 *ROM = machine.root_device().memregion("maincpu")->base();
-=======
 //  uint8_t *ROM = machine.root_device().memregion("maincpu")->base();
->>>>>>> upstream/master
 //  ROM[0x083c] = 0x00;
 //  ROM[0x083d] = 0x00;
 //  ROM[0x083e] = 0x00;
@@ -3678,11 +3505,7 @@ ROM_END
 
 //static DRIVER_INIT( gtipoker )
 //{
-<<<<<<< HEAD
-//  UINT8 *ROM = machine.root_device().memregion("maincpu")->base();
-=======
 //  uint8_t *ROM = machine.root_device().memregion("maincpu")->base();
->>>>>>> upstream/master
 //  ROM[0x0cc6] = 0x00;
 //  ROM[0x0cc7] = 0x00;
 //  ROM[0x0cc8] = 0x00;
@@ -3693,11 +3516,7 @@ ROM_END
 
 //static DRIVER_INIT( dphl )
 //{
-<<<<<<< HEAD
-//  UINT8 *ROM = machine.root_device().memregion("maincpu")->base();
-=======
 //  uint8_t *ROM = machine.root_device().memregion("maincpu")->base();
->>>>>>> upstream/master
 //  ROM[0x1510] = 0x00;
 //  ROM[0x1511] = 0x00;
 //  ROM[0x1512] = 0x00;
@@ -3705,11 +3524,7 @@ ROM_END
 
 //static DRIVER_INIT( dphla )
 //{
-<<<<<<< HEAD
-//  UINT8 *ROM = machine.root_device().memregion("maincpu")->base();
-=======
 //  uint8_t *ROM = machine.root_device().memregion("maincpu")->base();
->>>>>>> upstream/master
 //  ROM[0x0b09] = 0x00;
 //  ROM[0x0b0a] = 0x00;
 //  ROM[0x0b0b] = 0x00;
@@ -3719,13 +3534,8 @@ DRIVER_INIT_MEMBER(norautp_state,enc)
 {
 /* Attempt to decrypt the program ROM */
 
-<<<<<<< HEAD
-//  UINT8 *rom = memregion("maincpu")->base();
-//  UINT8 *buffer;
-=======
 //  uint8_t *rom = memregion("maincpu")->base();
 //  uint8_t *buffer;
->>>>>>> upstream/master
 //  int size = 0x2000; //memregion("maincpu")->bytes();
 //  int start = 0;
 //  int i;
@@ -3753,11 +3563,7 @@ DRIVER_INIT_MEMBER(norautp_state,enc)
 //      i = i + 16;
 //  }
 
-<<<<<<< HEAD
-//  buffer = alloc_array_or_die(UINT8, size);
-=======
 //  buffer = alloc_array_or_die(uint8_t, size);
->>>>>>> upstream/master
 //  memcpy(buffer, rom, size);
 
 //  free(buffer);
@@ -3767,11 +3573,7 @@ DRIVER_INIT_MEMBER(norautp_state,deb)
 /* Just for debugging purposes */
 /*   Should be removed soon    */
 {
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("maincpu")->base();
-=======
 	uint8_t *ROM = memregion("maincpu")->base();
->>>>>>> upstream/master
 	ROM[0x02f7] = 0xca;
 	ROM[0x02f8] = 0x18;
 	ROM[0x206c] = 0xff;
@@ -3781,11 +3583,7 @@ DRIVER_INIT_MEMBER(norautp_state,ssa)
 /* Passing the video PPI handshaking lines */
 /* Just for debugging purposes */
 {
-<<<<<<< HEAD
-//  UINT8 *ROM = memregion("maincpu")->base();
-=======
 //  uint8_t *ROM = memregion("maincpu")->base();
->>>>>>> upstream/master
 
 //  ROM[0x073b] = 0x00;
 //  ROM[0x073c] = 0x00;
@@ -3805,31 +3603,6 @@ DRIVER_INIT_MEMBER(norautp_state,ssa)
 /*  The following ones are 'Draw Poker HI-LO' type, running in a Z80 based hardware   */
 /**************************************************************************************/
 
-<<<<<<< HEAD
-/*     YEAR  NAME      PARENT   MACHINE   INPUT     STATE          INIT ROT    COMPANY                     FULLNAME                              FLAGS             LAYOUT */
-
-GAMEL( 1988, norautp,  0,       norautp,  norautp,  driver_device, 0,   ROT0, "Noraut Ltd.",              "Noraut Poker",                        0,                layout_noraut11 )
-GAMEL( 198?, norautdx, 0,       norautp,  norautpn, driver_device, 0,   ROT0, "Noraut Ltd.",              "Noraut Deluxe Poker (console)",       0,                layout_noraut12 )
-GAMEL( 198?, norautpn, norautp, norautp,  norautpn, driver_device, 0,   ROT0, "bootleg",                  "Noraut Deluxe Poker (bootleg)",       0,                layout_noraut12 )
-GAMEL( 198?, norautjo, 0,       norautp,  mainline, driver_device, 0,   ROT0, "Noraut Ltd.",              "Noraut Joker Poker (original)",       0,                layout_noraut12 )
-GAMEL( 198?, norautpl, 0,       norautpl, mainline, driver_device, 0,   ROT0, "Video Fun Games Ltd.",     "Noraut Joker Poker (Prologic HW)",    0,                layout_noraut12 )
-GAMEL( 1988, norautjp, norautp, norautp,  norautp,  driver_device, 0,   ROT0, "Noraut Ltd.",              "Noraut Joker Poker (alt)",            0,                layout_noraut11 )
-GAMEL( 1988, norautrh, 0,       norautp,  norautrh, driver_device, 0,   ROT0, "Noraut Ltd.",              "Noraut Red Hot Joker Poker",          0,                layout_noraut12 )
-GAMEL( 198?, norautra, 0,       norautp,  norautrh, driver_device, 0,   ROT0, "Noraut Ltd.",              "Noraut Red Hot Joker Poker (alt HW)", 0,                layout_noraut12 ) // 1-bet?? where??...
-GAME(  1988, norautu,  0,       norautxp, norautp,  driver_device, 0,   ROT0, "Noraut Ltd.",              "Noraut Poker (NTX10A)",               MACHINE_NOT_WORKING )
-GAME(  2002, noraut3a, 0,       norautxp, norautp,  driver_device, 0,   ROT0, "Noraut Ltd.",              "Noraut Joker Poker (V3.010a)",        MACHINE_NOT_WORKING )
-GAME(  2003, noraut3b, 0,       norautxp, norautp,  driver_device, 0,   ROT0, "Noraut Ltd.",              "Noraut Joker Poker (V3.011a)",        MACHINE_NOT_WORKING )
-GAMEL( 198?, norautua, 0,       norautp,  norautp,  norautp_state, enc, ROT0, "Noraut Ltd.",              "Noraut unknown set 1 (console)",      MACHINE_NOT_WORKING, layout_noraut12 )
-GAMEL( 198?, norautub, 0,       norautp,  norautp,  norautp_state, enc, ROT0, "Noraut Ltd.",              "Noraut unknown set 2 (console)",      MACHINE_NOT_WORKING, layout_noraut12 )
-GAMEL( 198?, mainline, 0,       norautp,  mainline, driver_device, 0,   ROT0, "Mainline London",          "Mainline Double Joker Poker",         0,                layout_noraut12 )
-GAMEL( 199?, df_djpkr, 0,       norautp,  mainline, driver_device, 0,   ROT0, "DellFern Ltd.",            "Double Joker Poker (45%-75% payout)", 0,                layout_noraut12 )
-GAMEL( 2005, ndxron10, 0,       norautp,  ndxron10, driver_device, 0,   ROT0, "<unknown>",                "Royal on Ten (Noraut Deluxe hack)",   0,                layout_noraut12 )
-GAMEL( 1999, cgip30cs, 0,       norautx4, norautkl, norautp_state, deb, ROT0, "CGI",                      "Credit Poker (ver.30c, standard)",    0,                layout_noraut12 )
-GAME(  198?, kimblz80, 0,       kimble,   norautp,  driver_device, 0,   ROT0, "Kimble Ireland",           "Kimble Double HI-LO (z80 version)",   MACHINE_NOT_WORKING )
-GAME(  1983, pma,      0,       nortest1, norautp,  driver_device, 0,   ROT0, "PMA",                      "PMA Poker",                           MACHINE_NOT_WORKING )
-GAMEL( 198?, bjpoker,  0,       norautxp, norautrh, driver_device, 0,   ROT0, "M.Kramer Manufacturing.",  "Poker / Black Jack (Model 7521)",     MACHINE_NOT_WORKING, layout_noraut12 )
-GAME(  19??, newhilop, 0,       newhilop, norautp,  driver_device, 0,   ROT0, "Song Won?",                "New Hi-Low Poker",                    MACHINE_NOT_WORKING )
-=======
 //     YEAR  NAME      PARENT   MACHINE   INPUT     STATE           INIT ROT   COMPANY                     FULLNAME                               FLAGS                LAYOUT
 
 GAMEL( 1988, norautp,  0,       norautp,  norautp,  norautp_state,  0,   ROT0, "Noraut Ltd.",              "Noraut Poker",                        0,                   layout_noraut11 )
@@ -3853,30 +3626,12 @@ GAME(  198?, kimblz80, 0,       kimble,   norautp,  norautp_state,  0,   ROT0, "
 GAME(  1983, pma,      0,       nortest1, norautp,  norautp_state,  0,   ROT0, "PMA",                      "PMA Poker",                           MACHINE_NOT_WORKING )
 GAMEL( 198?, bjpoker,  0,       norautxp, norautrh, norautp_state,  0,   ROT0, "M.Kramer Manufacturing.",  "Poker / Black Jack (Model 7521)",     MACHINE_NOT_WORKING, layout_noraut12 )
 GAME(  19??, newhilop, 0,       newhilop, norautp,  norautp_state,  0,   ROT0, "Song Won?",                "New Hi-Low Poker",                    MACHINE_NOT_WORKING )
->>>>>>> upstream/master
 
 
 /************************************* 8080 sets **************************************/
 /*  The following ones are 'Draw Poker HI-LO' type, running in a 8080 based hardware  */
 /**************************************************************************************/
 
-<<<<<<< HEAD
-/*     YEAR  NAME      PARENT   MACHINE   INPUT    STATE           INIT ROT    COMPANY                        FULLNAME                           FLAGS             LAYOUT */
-
-GAME(  1983, dphl,     0,       dphl,     norautp, driver_device,  0,   ROT0, "M.Kramer Manufacturing.",     "Draw Poker HI-LO (M.Kramer)",      MACHINE_NOT_WORKING )
-GAME(  1983, dphla,    0,       dphla,    norautp, driver_device,  0,   ROT0, "<unknown>",                   "Draw Poker HI-LO (Alt)",           MACHINE_NOT_WORKING )
-GAME(  1983, dphljp,   0,       dphl,     norautp, driver_device,  0,   ROT0, "<unknown>",                   "Draw Poker HI-LO (Japanese)",      MACHINE_NOT_WORKING )
-GAME(  198?, kimbldhl, 0,       kimbldhl, norautp, driver_device,  0,   ROT0, "Kimble Ireland",              "Kimble Double HI-LO",              MACHINE_NOT_WORKING )
-GAME(  1983, gtipoker, 0,       dphl,     norautp, driver_device,  0,   ROT0, "GTI Inc",                     "GTI Poker",                        MACHINE_NOT_WORKING )
-GAME(  1983, gtipokra, 0,       dphla,    norautp, driver_device,  0,   ROT0, "GTI Inc",                     "GTI Poker? (SMS hardware)",        MACHINE_NOT_WORKING )
-GAME(  1983, smshilo,  0,       dphla,    norautp, driver_device,  0,   ROT0, "SMS Manufacturing Corp.",     "HI-LO Double Up Joker Poker",      MACHINE_NOT_WORKING )
-GAME(  1986, drhl,     0,       drhl,     norautp, driver_device,  0,   ROT0, "Drews Inc.",                  "Drews Revenge (v.2.89, set 1)",    MACHINE_NOT_WORKING )
-GAME(  1986, drhla,    0,       drhl,     norautp, driver_device,  0,   ROT0, "Drews Inc.",                  "Drews Revenge (v.2.89, set 2)",    MACHINE_NOT_WORKING )
-GAME(  1982, ssjkrpkr, 0,       ssjkrpkr, norautp, norautp_state,  ssa, ROT0, "Southern Systems & Assembly", "Southern Systems Joker Poker",     MACHINE_NOT_WORKING )
-
-/* The following one also has a custom 68705 MCU */
-GAME(  1993, tpoker2,  0,       dphltest, norautp, driver_device,  0,   ROT0, "Micro Manufacturing",         "Turbo Poker 2",                    MACHINE_NOT_WORKING )
-=======
 //     YEAR  NAME      PARENT   MACHINE   INPUT    STATE           INIT ROT   COMPANY                        FULLNAME                            FLAGS             LAYOUT
 
 GAME(  1983, dphl,     0,       dphl,     norautp, norautp_state,  0,   ROT0, "M.Kramer Manufacturing.",     "Draw Poker HI-LO (M.Kramer)",      MACHINE_NOT_WORKING )
@@ -3892,25 +3647,15 @@ GAME(  1982, ssjkrpkr, 0,       ssjkrpkr, norautp, norautp_state,  ssa, ROT0, "S
 
 /* The following one also has a custom 68705 MCU */
 GAME(  1993, tpoker2,  0,       dphltest, norautp, norautp_state,  0,   ROT0, "Micro Manufacturing",         "Turbo Poker 2",                    MACHINE_NOT_WORKING )
->>>>>>> upstream/master
 
 
 /************************************ unknown sets ************************************/
 /* The following ones are still unknown. No info about name, CPU, manufacturer, or HW */
 /**************************************************************************************/
 
-<<<<<<< HEAD
-/*     YEAR  NAME      PARENT   MACHINE   INPUT    STATE           INIT ROT    COMPANY                     FULLNAME                              FLAGS             LAYOUT */
-
-GAME(  198?, fastdrwp, 0,       dphl,     norautp, driver_device,  0,   ROT0, "Stern Electronics?",       "Fast Draw (poker conversion kit)?",   MACHINE_NOT_WORKING )
-GAME(  198?, dphlunka, 0,       dphl,     norautp, driver_device,  0,   ROT0, "SMS Manufacturing Corp.",  "Draw Poker HI-LO (unknown, rev 1)",   MACHINE_NOT_WORKING )
-GAME(  198?, dphlunkb, 0,       dphl,     norautp, driver_device,  0,   ROT0, "SMS Manufacturing Corp.",  "Draw Poker HI-LO (unknown, rev 2)",   MACHINE_NOT_WORKING )
-GAME(  198?, pkii_dm,  0,       nortest1, norautp, driver_device,  0,   ROT0, "<unknown>",                "Unknown Poker PKII/DM",               MACHINE_NOT_WORKING )
-=======
 //     YEAR  NAME      PARENT   MACHINE   INPUT    STATE           INIT ROT   COMPANY                     FULLNAME                               FLAGS             LAYOUT
 
 GAME(  198?, fastdrwp, 0,       dphl,     norautp, norautp_state,  0,   ROT0, "Stern Electronics?",       "Fast Draw (poker conversion kit)?",   MACHINE_NOT_WORKING )
 GAME(  198?, dphlunka, 0,       dphl,     norautp, norautp_state,  0,   ROT0, "SMS Manufacturing Corp.",  "Draw Poker HI-LO (unknown, rev 1)",   MACHINE_NOT_WORKING )
 GAME(  198?, dphlunkb, 0,       dphl,     norautp, norautp_state,  0,   ROT0, "SMS Manufacturing Corp.",  "Draw Poker HI-LO (unknown, rev 2)",   MACHINE_NOT_WORKING )
 GAME(  198?, pkii_dm,  0,       nortest1, norautp, norautp_state,  0,   ROT0, "<unknown>",                "Unknown Poker PKII/DM",               MACHINE_NOT_WORKING )
->>>>>>> upstream/master

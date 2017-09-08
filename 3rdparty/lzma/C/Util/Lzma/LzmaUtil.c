@@ -1,13 +1,7 @@
 /* LzmaUtil.c -- Test application for LZMA compression
-<<<<<<< HEAD
-2010-09-20 : Igor Pavlov : Public domain */
-
-#define _CRT_SECURE_NO_WARNINGS
-=======
 2015-11-08 : Igor Pavlov : Public domain */
 
 #include "../../Precomp.h"
->>>>>>> upstream/master
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -24,13 +18,6 @@ const char *kCantWriteMessage = "Can not write output file";
 const char *kCantAllocateMessage = "Can not allocate memory";
 const char *kDataErrorMessage = "Data error";
 
-<<<<<<< HEAD
-static void *SzAlloc(void *p, size_t size) { p = p; return MyAlloc(size); }
-static void SzFree(void *p, void *address) { p = p; MyFree(address); }
-static ISzAlloc g_Alloc = { SzAlloc, SzFree };
-
-=======
->>>>>>> upstream/master
 void PrintHelp(char *buffer)
 {
   strcat(buffer, "\nLZMA Utility " MY_VERSION_COPYRIGHT_DATE "\n"
@@ -101,11 +88,7 @@ static SRes Decode2(CLzmaDec *state, ISeqOutStream *outStream, ISeqInStream *inS
         
       outPos = 0;
       
-<<<<<<< HEAD
-      if (res != SZ_OK || thereIsSize && unpackSize == 0)
-=======
       if (res != SZ_OK || (thereIsSize && unpackSize == 0))
->>>>>>> upstream/master
         return res;
       
       if (inProcessed == 0 && outProcessed == 0)
@@ -150,11 +133,7 @@ static SRes Encode(ISeqOutStream *outStream, ISeqInStream *inStream, UInt64 file
   SRes res;
   CLzmaEncProps props;
 
-<<<<<<< HEAD
-  rs = rs;
-=======
   UNUSED_VAR(rs);
->>>>>>> upstream/master
 
   enc = LzmaEnc_Create(&g_Alloc);
   if (enc == 0)

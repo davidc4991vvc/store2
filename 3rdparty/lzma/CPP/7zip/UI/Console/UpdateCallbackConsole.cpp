@@ -2,28 +2,17 @@
 
 #include "StdAfx.h"
 
-<<<<<<< HEAD
-#include "UpdateCallbackConsole.h"
-
-#include "Windows/Error.h"
-#ifndef _7ZIP_ST
-#include "Windows/Synchronization.h"
-=======
 #include "../../../Common/IntToString.h"
 
 #include "../../../Windows/ErrorMsg.h"
 
 #ifndef _7ZIP_ST
 #include "../../../Windows/Synchronization.h"
->>>>>>> upstream/master
 #endif
 
 #include "ConsoleClose.h"
 #include "UserInputUtils.h"
-<<<<<<< HEAD
-=======
 #include "UpdateCallbackConsole.h"
->>>>>>> upstream/master
 
 using namespace NWindows;
 
@@ -36,18 +25,6 @@ static NSynchronization::CCriticalSection g_CriticalSection;
 
 static const wchar_t *kEmptyFileAlias = L"[Content]";
 
-<<<<<<< HEAD
-static const char *kCreatingArchiveMessage = "Creating archive ";
-static const char *kUpdatingArchiveMessage = "Updating archive ";
-static const char *kScanningMessage = "Scanning";
-
-
-HRESULT CUpdateCallbackConsole::OpenResult(const wchar_t *name, HRESULT result)
-{
-  (*OutStream) << endl;
-  if (result != S_OK)
-    (*OutStream) << "Error: " << name << " is not supported archive" << endl;
-=======
 static const char *kOpenArchiveMessage = "Open archive: ";
 static const char *kCreatingArchiveMessage = "Creating archive: ";
 static const char *kUpdatingArchiveMessage = "Updating archive: ";
@@ -173,44 +150,11 @@ HRESULT CUpdateCallbackConsole::OpenResult(
     }
   }
 
->>>>>>> upstream/master
   return S_OK;
 }
 
 HRESULT CUpdateCallbackConsole::StartScanning()
 {
-<<<<<<< HEAD
-  (*OutStream) << kScanningMessage;
-  return S_OK;
-}
-
-HRESULT CUpdateCallbackConsole::ScanProgress(UInt64 /* numFolders */, UInt64 /* numFiles */, const wchar_t * /* path */)
-{
-  return CheckBreak();
-}
-
-HRESULT CUpdateCallbackConsole::CanNotFindError(const wchar_t *name, DWORD systemError)
-{
-  CantFindFiles.Add(name);
-  CantFindCodes.Add(systemError);
-  // m_PercentPrinter.ClosePrint();
-  if (!m_WarningsMode)
-  {
-    (*OutStream) << endl << endl;
-    m_PercentPrinter.PrintNewLine();
-    m_WarningsMode = true;
-  }
-  m_PercentPrinter.PrintString(name);
-  m_PercentPrinter.PrintString(":  WARNING: ");
-  m_PercentPrinter.PrintString(NError::MyFormatMessageW(systemError));
-  m_PercentPrinter.PrintNewLine();
-  return S_OK;
-}
-
-HRESULT CUpdateCallbackConsole::FinishScanning()
-{
-  (*OutStream) << endl << endl;
-=======
   if (_so)
     *_so << kScanningMessage << endl;
   _percent.Command = "Scan ";
@@ -328,60 +272,11 @@ HRESULT CUpdateCallbackConsole::StartOpenArchive(const wchar_t *name)
       *_so << k_StdOut_ArcName;
     *_so << endl;
   }
->>>>>>> upstream/master
   return S_OK;
 }
 
 HRESULT CUpdateCallbackConsole::StartArchive(const wchar_t *name, bool updating)
 {
-<<<<<<< HEAD
-  if(updating)
-    (*OutStream) << kUpdatingArchiveMessage;
-  else
-    (*OutStream) << kCreatingArchiveMessage;
-  if (name != 0)
-    (*OutStream) << name;
-  else
-    (*OutStream) << "StdOut";
-  (*OutStream) << endl << endl;
-  return S_OK;
-}
-
-HRESULT CUpdateCallbackConsole::FinishArchive()
-{
-  (*OutStream) << endl;
-  return S_OK;
-}
-
-HRESULT CUpdateCallbackConsole::CheckBreak()
-{
-  if (NConsoleClose::TestBreakSignal())
-    return E_ABORT;
-  return S_OK;
-}
-
-HRESULT CUpdateCallbackConsole::Finilize()
-{
-  MT_LOCK
-  if (m_NeedBeClosed)
-  {
-    if (EnablePercents)
-    {
-      m_PercentPrinter.ClosePrint();
-    }
-    if (!StdOutMode && m_NeedNewLine)
-    {
-      m_PercentPrinter.PrintNewLine();
-      m_NeedNewLine = false;
-    }
-    m_NeedBeClosed = false;
-  }
-  return S_OK;
-}
-
-HRESULT CUpdateCallbackConsole::SetNumFiles(UInt64 /* numFiles */)
-{
-=======
   if (_so)
   {
     *_so << (updating ? kUpdatingArchiveMessage : kCreatingArchiveMessage);
@@ -512,43 +407,23 @@ HRESULT CUpdateCallbackConsole::SetNumItems(UInt64 numItems)
     PrintPropPair(s, "Items to compress", numItems);
     *_so << s << endl << endl;
   }
->>>>>>> upstream/master
   return S_OK;
 }
 
 HRESULT CUpdateCallbackConsole::SetTotal(UInt64 size)
 {
   MT_LOCK
-<<<<<<< HEAD
-  if (EnablePercents)
-    m_PercentPrinter.SetTotal(size);
-=======
   if (NeedPercents())
   {
     _percent.Total = size;
     _percent.Print();
   }
->>>>>>> upstream/master
   return S_OK;
 }
 
 HRESULT CUpdateCallbackConsole::SetCompleted(const UInt64 *completeValue)
 {
   MT_LOCK
-<<<<<<< HEAD
-  if (completeValue != NULL)
-  {
-    if (EnablePercents)
-    {
-      m_PercentPrinter.SetRatio(*completeValue);
-      m_PercentPrinter.PrintRatio();
-      m_NeedBeClosed = true;
-    }
-  }
-  if (NConsoleClose::TestBreakSignal())
-    return E_ABORT;
-  return S_OK;
-=======
   if (completeValue)
   {
     if (NeedPercents())
@@ -558,60 +433,10 @@ HRESULT CUpdateCallbackConsole::SetCompleted(const UInt64 *completeValue)
     }
   }
   return CheckBreak2();
->>>>>>> upstream/master
 }
 
 HRESULT CUpdateCallbackConsole::SetRatioInfo(const UInt64 * /* inSize */, const UInt64 * /* outSize */)
 {
-<<<<<<< HEAD
-  if (NConsoleClose::TestBreakSignal())
-    return E_ABORT;
-  return S_OK;
-}
-
-HRESULT CUpdateCallbackConsole::GetStream(const wchar_t *name, bool isAnti)
-{
-  MT_LOCK
-  if (StdOutMode)
-    return S_OK;
-  if(isAnti)
-    m_PercentPrinter.PrintString("Anti item    ");
-  else
-    m_PercentPrinter.PrintString("Compressing  ");
-  if (name[0] == 0)
-    name = kEmptyFileAlias;
-  m_PercentPrinter.PrintString(name);
-  if (EnablePercents)
-    m_PercentPrinter.RePrintRatio();
-  return S_OK;
-}
-
-HRESULT CUpdateCallbackConsole::OpenFileError(const wchar_t *name, DWORD systemError)
-{
-  MT_LOCK
-  FailedCodes.Add(systemError);
-  FailedFiles.Add(name);
-  // if (systemError == ERROR_SHARING_VIOLATION)
-  {
-    m_PercentPrinter.ClosePrint();
-    m_PercentPrinter.PrintNewLine();
-    m_PercentPrinter.PrintString("WARNING: ");
-    m_PercentPrinter.PrintString(NError::MyFormatMessageW(systemError));
-    return S_FALSE;
-  }
-  // return systemError;
-}
-
-HRESULT CUpdateCallbackConsole::SetOperationResult(Int32 )
-{
-  m_NeedBeClosed = true;
-  m_NeedNewLine = true;
-  return S_OK;
-}
-
-HRESULT CUpdateCallbackConsole::CryptoGetTextPassword2(Int32 *passwordIsDefined, BSTR *password)
-{
-=======
   return CheckBreak2();
 }
 
@@ -784,7 +609,6 @@ HRESULT CUpdateCallbackConsole::CryptoGetTextPassword2(Int32 *passwordIsDefined,
 {
   COM_TRY_BEGIN
 
->>>>>>> upstream/master
   *password = NULL;
 
   #ifdef _NO_CRYPTO
@@ -798,11 +622,7 @@ HRESULT CUpdateCallbackConsole::CryptoGetTextPassword2(Int32 *passwordIsDefined,
   {
     if (AskPassword)
     {
-<<<<<<< HEAD
-      Password = GetPassword(OutStream);
-=======
       Password = GetPassword(_so);
->>>>>>> upstream/master
       PasswordIsDefined = true;
     }
   }
@@ -810,20 +630,14 @@ HRESULT CUpdateCallbackConsole::CryptoGetTextPassword2(Int32 *passwordIsDefined,
   return StringToBstr(Password, password);
   
   #endif
-<<<<<<< HEAD
-=======
 
   COM_TRY_END
->>>>>>> upstream/master
 }
 
 HRESULT CUpdateCallbackConsole::CryptoGetTextPassword(BSTR *password)
 {
-<<<<<<< HEAD
-=======
   COM_TRY_BEGIN
   
->>>>>>> upstream/master
   *password = NULL;
 
   #ifdef _NO_CRYPTO
@@ -835,39 +649,13 @@ HRESULT CUpdateCallbackConsole::CryptoGetTextPassword(BSTR *password)
   if (!PasswordIsDefined)
   {
     {
-<<<<<<< HEAD
-      Password = GetPassword(OutStream);
-=======
       Password = GetPassword(_so);
->>>>>>> upstream/master
       PasswordIsDefined = true;
     }
   }
   return StringToBstr(Password, password);
   
   #endif
-<<<<<<< HEAD
-}
-
-/*
-HRESULT CUpdateCallbackConsole::ShowDeleteFile(const wchar_t *name)
-{
-  // MT_LOCK
-  if (StdOutMode)
-    return S_OK;
-  RINOK(Finilize());
-  m_PercentPrinter.PrintString("Deleting  ");
-  if (name[0] == 0)
-    name = kEmptyFileAlias;
-  m_PercentPrinter.PrintString(name);
-  if (EnablePercents)
-    m_PercentPrinter.RePrintRatio();
-  m_NeedBeClosed = true;
-  m_NeedNewLine = true;
-  return S_OK;
-}
-*/
-=======
   COM_TRY_END
 }
 
@@ -884,4 +672,3 @@ HRESULT CUpdateCallbackConsole::ShowDeleteFile(const wchar_t *name, bool /* isDi
   }
   return S_OK;
 }
->>>>>>> upstream/master

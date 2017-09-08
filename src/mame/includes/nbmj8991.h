@@ -1,13 +1,9 @@
 // license:BSD-3-Clause
 // copyright-holders:Takahiro Nogi
-<<<<<<< HEAD
-#include "includes/nb1413m3.h"
-=======
 
 #include "includes/nb1413m3.h"
 #include "machine/gen_latch.h"
 #include "screen.h"
->>>>>>> upstream/master
 
 class nbmj8991_state : public driver_device
 {
@@ -19,10 +15,7 @@ public:
 		m_nb1413m3(*this, "nb1413m3"),
 		m_screen(*this, "screen"),
 		m_palette(*this, "palette"),
-<<<<<<< HEAD
-=======
 		m_soundlatch(*this, "soundlatch"),
->>>>>>> upstream/master
 		m_generic_paletteram_8(*this, "paletteram") { }
 
 	required_device<cpu_device> m_maincpu;
@@ -30,14 +23,9 @@ public:
 	required_device<nb1413m3_device> m_nb1413m3;
 	required_device<screen_device> m_screen;
 	required_device<palette_device> m_palette;
-<<<<<<< HEAD
-
-	required_shared_ptr<UINT8> m_generic_paletteram_8;
-=======
 	optional_device<generic_latch_8_device> m_soundlatch;
 
 	required_shared_ptr<uint8_t> m_generic_paletteram_8;
->>>>>>> upstream/master
 
 	enum
 	{
@@ -59,13 +47,8 @@ public:
 	int m_clutsel;
 	int m_screen_refresh;
 	bitmap_ind16 m_tmpbitmap;
-<<<<<<< HEAD
-	UINT8 *m_videoram;
-	UINT8 *m_clut;
-=======
 	std::unique_ptr<uint8_t[]> m_videoram;
 	std::unique_ptr<uint8_t[]> m_clut;
->>>>>>> upstream/master
 	int m_flipscreen_old;
 	emu_timer *m_blitter_timer;
 
@@ -82,19 +65,11 @@ public:
 	DECLARE_DRIVER_INIT(tokimbsj);
 	DECLARE_DRIVER_INIT(tokyogal);
 	DECLARE_DRIVER_INIT(finalbny);
-<<<<<<< HEAD
-	virtual void machine_reset();
-	virtual void video_start();
-
-	UINT32 screen_update_type1(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	UINT32 screen_update_type2(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	virtual void machine_reset() override;
 	virtual void video_start() override;
 
 	uint32_t screen_update_type1(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	uint32_t screen_update_type2(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	void vramflip();
 	void update_pixel(int x, int y);
 	void gfxdraw();
@@ -102,9 +77,5 @@ public:
 	void postload();
 
 protected:
-<<<<<<< HEAD
-	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
-=======
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
->>>>>>> upstream/master
 };

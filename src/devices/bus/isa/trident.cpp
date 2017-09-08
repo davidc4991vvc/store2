@@ -10,11 +10,6 @@
 
 #include "emu.h"
 #include "trident.h"
-<<<<<<< HEAD
-#include "debugger.h"
-
-const device_type TRIDENT_VGA = &device_creator<trident_vga_device>;
-=======
 
 #include "debugger.h"
 #include "screen.h"
@@ -22,21 +17,12 @@ const device_type TRIDENT_VGA = &device_creator<trident_vga_device>;
 
 DEFINE_DEVICE_TYPE(TRIDENT_VGA,  tgui9860_device, "trident_vga",  "Trident TGUI9860")
 DEFINE_DEVICE_TYPE(TVGA9000_VGA, tvga9000_device, "tvga9000_vga", "Trident TVGA9000")
->>>>>>> upstream/master
 
 #define CRTC_PORT_ADDR ((vga.miscellaneous_output&1)?0x3d0:0x3b0)
 
 #define LOG (1)
 #define LOG_ACCEL (1)
 
-<<<<<<< HEAD
-trident_vga_device::trident_vga_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: svga_device(mconfig, TRIDENT_VGA, "Trident TGUI9680", tag, owner, clock, "trident_vga", __FILE__)
-{
-}
-
-UINT8 trident_vga_device::READPIXEL8(INT16 x, INT16 y)
-=======
 trident_vga_device::trident_vga_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock)
 	: svga_device(mconfig, type, tag, owner, clock)
 {
@@ -55,36 +41,23 @@ tvga9000_device::tvga9000_device(const machine_config &mconfig, const char *tag,
 }
 
 uint8_t trident_vga_device::READPIXEL8(int16_t x, int16_t y)
->>>>>>> upstream/master
 {
 	return (vga.memory[((y & 0xfff)*offset() + (x & 0xfff)) % vga.svga_intf.vram_size]);
 }
 
-<<<<<<< HEAD
-UINT16 trident_vga_device::READPIXEL15(INT16 x, INT16 y)
-=======
 uint16_t trident_vga_device::READPIXEL15(int16_t x, int16_t y)
->>>>>>> upstream/master
 {
 	return (vga.memory[((y & 0xfff)*offset() + (x & 0xfff)*2) % vga.svga_intf.vram_size] |
 			(vga.memory[((y & 0xfff)*offset() + ((x & 0xfff)*2)+1) % vga.svga_intf.vram_size] << 8));
 }
 
-<<<<<<< HEAD
-UINT16 trident_vga_device::READPIXEL16(INT16 x, INT16 y)
-=======
 uint16_t trident_vga_device::READPIXEL16(int16_t x, int16_t y)
->>>>>>> upstream/master
 {
 	return (vga.memory[((y & 0xfff)*offset() + (x & 0xfff)*2) % vga.svga_intf.vram_size] |
 			(vga.memory[((y & 0xfff)*offset() + ((x & 0xfff)*2)+1) % vga.svga_intf.vram_size] << 8));
 }
 
-<<<<<<< HEAD
-UINT32 trident_vga_device::READPIXEL32(INT16 x, INT16 y)
-=======
 uint32_t trident_vga_device::READPIXEL32(int16_t x, int16_t y)
->>>>>>> upstream/master
 {
 	return (vga.memory[((y & 0xfff)*offset() + (x & 0xfff)*4) % vga.svga_intf.vram_size] |
 			(vga.memory[((y & 0xfff)*offset() + ((x & 0xfff)*4)+1) % vga.svga_intf.vram_size] << 8) |
@@ -92,11 +65,7 @@ uint32_t trident_vga_device::READPIXEL32(int16_t x, int16_t y)
 			(vga.memory[((y & 0xfff)*offset() + ((x & 0xfff)*4)+3) % vga.svga_intf.vram_size] << 24));
 }
 
-<<<<<<< HEAD
-void trident_vga_device::WRITEPIXEL8(INT16 x, INT16 y, UINT8 data)
-=======
 void trident_vga_device::WRITEPIXEL8(int16_t x, int16_t y, uint8_t data)
->>>>>>> upstream/master
 {
 	if((x & 0xfff)<tri.accel_dest_x_clip && (y & 0xfff)<tri.accel_dest_y_clip)
 	{
@@ -105,11 +74,7 @@ void trident_vga_device::WRITEPIXEL8(int16_t x, int16_t y, uint8_t data)
 	}
 }
 
-<<<<<<< HEAD
-void trident_vga_device::WRITEPIXEL15(INT16 x, INT16 y, UINT16 data)
-=======
 void trident_vga_device::WRITEPIXEL15(int16_t x, int16_t y, uint16_t data)
->>>>>>> upstream/master
 {
 	if((x & 0xfff)<tri.accel_dest_x_clip && (y & 0xfff)<tri.accel_dest_y_clip)
 	{
@@ -119,11 +84,7 @@ void trident_vga_device::WRITEPIXEL15(int16_t x, int16_t y, uint16_t data)
 	}
 }
 
-<<<<<<< HEAD
-void trident_vga_device::WRITEPIXEL16(INT16 x, INT16 y, UINT16 data)
-=======
 void trident_vga_device::WRITEPIXEL16(int16_t x, int16_t y, uint16_t data)
->>>>>>> upstream/master
 {
 	if((x & 0xfff)<tri.accel_dest_x_clip && (y & 0xfff)<tri.accel_dest_y_clip)
 	{
@@ -133,11 +94,7 @@ void trident_vga_device::WRITEPIXEL16(int16_t x, int16_t y, uint16_t data)
 	}
 }
 
-<<<<<<< HEAD
-void trident_vga_device::WRITEPIXEL32(INT16 x, INT16 y, UINT32 data)
-=======
 void trident_vga_device::WRITEPIXEL32(int16_t x, int16_t y, uint32_t data)
->>>>>>> upstream/master
 {
 	if((x & 0xfff)<tri.accel_dest_x_clip && (y & 0xfff)<tri.accel_dest_y_clip)
 	{
@@ -149,11 +106,7 @@ void trident_vga_device::WRITEPIXEL32(int16_t x, int16_t y, uint32_t data)
 	}
 }
 
-<<<<<<< HEAD
-UINT32 trident_vga_device::handle_rop(UINT32 src, UINT32 dst)
-=======
 uint32_t trident_vga_device::handle_rop(uint32_t src, uint32_t dst)
->>>>>>> upstream/master
 {
 	switch(tri.accel_fmix)  // TODO: better understand this register
 	{
@@ -177,11 +130,7 @@ uint32_t trident_vga_device::handle_rop(uint32_t src, uint32_t dst)
 	return src;
 }
 
-<<<<<<< HEAD
-UINT32 trident_vga_device::READPIXEL(INT16 x,INT16 y)
-=======
 uint32_t trident_vga_device::READPIXEL(int16_t x,int16_t y)
->>>>>>> upstream/master
 {
 	if(svga.rgb8_en)
 		return READPIXEL8(x,y) & 0xff;
@@ -194,11 +143,7 @@ uint32_t trident_vga_device::READPIXEL(int16_t x,int16_t y)
 	return 0;  // should never reach here
 }
 
-<<<<<<< HEAD
-void trident_vga_device::WRITEPIXEL(INT16 x,INT16 y, UINT32 data)
-=======
 void trident_vga_device::WRITEPIXEL(int16_t x,int16_t y, uint32_t data)
->>>>>>> upstream/master
 {
 	if(svga.rgb8_en)
 		WRITEPIXEL8(x,y,(((data >> 8) & 0xff) | (data & 0xff)));  // XFree86 3.3 sets bits 0-7 to 0 when using mono patterns, does it OR each byte?
@@ -245,11 +190,7 @@ void trident_vga_device::device_start()
 void trident_vga_device::device_reset()
 {
 	svga_device::device_reset();
-<<<<<<< HEAD
-	svga.id = 0xd3;  // 0xd3 identifies at TGUI9660XGi (set to 0xe3 to identify at TGUI9440AGi)
-=======
 	svga.id = m_version;
->>>>>>> upstream/master
 	tri.revision = 0x01;  // revision identifies as TGUI9680
 	tri.new_mode = false;  // start up in old mode
 	tri.dac_active = false;
@@ -266,20 +207,12 @@ void trident_vga_device::device_reset()
 	// Windows 3.1 TGUI9440AGi drivers do not set the pointer colour registers?
 	tri.cursor_bg = 0x00000000;
 	tri.cursor_fg = 0xffffffff;
-<<<<<<< HEAD
-}
-
-UINT32 trident_vga_device::screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
-{
-	UINT8 cur_mode = 0;
-=======
 	tri.pixel_depth = 0x10;  //disable 8bpp mode by default
 }
 
 uint32_t trident_vga_device::screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
 {
 	uint8_t cur_mode;
->>>>>>> upstream/master
 
 	svga_device::screen_update(screen,bitmap,cliprect);
 	cur_mode = pc_vga_choosevideomode();
@@ -287,17 +220,6 @@ uint32_t trident_vga_device::screen_update(screen_device &screen, bitmap_rgb32 &
 	// draw hardware graphics cursor
 	if(tri.cursor_ctrl & 0x80)  // if cursor is enabled
 	{
-<<<<<<< HEAD
-		UINT32 src;
-		UINT32* dst;
-		UINT8 val;
-		int x,y;
-		UINT16 cx = tri.cursor_x & 0x0fff;
-		UINT16 cy = tri.cursor_y & 0x0fff;
-		UINT32 bg_col;
-		UINT32 fg_col;
-		UINT8 cursor_size = (tri.cursor_ctrl & 0x01) ? 64 : 32;
-=======
 		uint32_t src;
 		uint32_t* dst;
 		uint8_t val;
@@ -307,7 +229,6 @@ uint32_t trident_vga_device::screen_update(screen_device &screen, bitmap_rgb32 &
 		uint32_t bg_col;
 		uint32_t fg_col;
 		uint8_t cursor_size = (tri.cursor_ctrl & 0x01) ? 64 : 32;
->>>>>>> upstream/master
 
 		if(cur_mode == SCREEN_OFF || cur_mode == TEXT_MODE || cur_mode == MONO_MODE || cur_mode == CGA_MODE || cur_mode == EGA_MODE)
 			return 0;  // cursor only works in VGA or SVGA modes
@@ -327,17 +248,6 @@ uint32_t trident_vga_device::screen_update(screen_device &screen, bitmap_rgb32 &
 
 		for(y=0;y<cursor_size;y++)
 		{
-<<<<<<< HEAD
-			UINT8 bitcount = 31;
-			dst = &bitmap.pix32(cy + y, cx);
-			for(x=0;x<cursor_size;x++)
-			{
-				UINT32 bitb = (vga.memory[(src+3) % vga.svga_intf.vram_size]
-							| ((vga.memory[(src+2) % vga.svga_intf.vram_size]) << 8)
-							| ((vga.memory[(src+1) % vga.svga_intf.vram_size]) << 16)
-							| ((vga.memory[(src+0) % vga.svga_intf.vram_size]) << 24));
-				UINT32 bita = (vga.memory[(src+7) % vga.svga_intf.vram_size]
-=======
 			uint8_t bitcount = 31;
 			dst = &bitmap.pix32(cy + y, cx);
 			for(x=0;x<cursor_size;x++)
@@ -347,7 +257,6 @@ uint32_t trident_vga_device::screen_update(screen_device &screen, bitmap_rgb32 &
 							| ((vga.memory[(src+1) % vga.svga_intf.vram_size]) << 16)
 							| ((vga.memory[(src+0) % vga.svga_intf.vram_size]) << 24));
 				uint32_t bita = (vga.memory[(src+7) % vga.svga_intf.vram_size]
->>>>>>> upstream/master
 							| ((vga.memory[(src+6) % vga.svga_intf.vram_size]) << 8)
 							| ((vga.memory[(src+5) % vga.svga_intf.vram_size]) << 16)
 							| ((vga.memory[(src+4) % vga.svga_intf.vram_size]) << 24));
@@ -401,15 +310,9 @@ uint32_t trident_vga_device::screen_update(screen_device &screen, bitmap_rgb32 &
 	return 0;
 }
 
-<<<<<<< HEAD
-UINT16 trident_vga_device::offset()
-{
-	UINT16 off = svga_device::offset();
-=======
 uint16_t trident_vga_device::offset()
 {
 	uint16_t off = svga_device::offset();
->>>>>>> upstream/master
 
 	if (svga.rgb8_en || svga.rgb15_en || svga.rgb16_en || svga.rgb32_en)
 		return vga.crtc.offset << 3;  // don't know if this is right, but Eggs Playing Chicken switches off doubleword mode, but expects the same offset length
@@ -424,11 +327,7 @@ int trident_vga_device::calculate_clock()
 	// Bit 12: K
 	// Later formula extends each variable by one extra bit (Providia 9685 and later)
 	double freq;
-<<<<<<< HEAD
-	UINT8 m,n,k;
-=======
 	uint8_t m,n,k;
->>>>>>> upstream/master
 
 	m = tri.vid_clock & 0x007f;
 	n = (tri.vid_clock & 0x0f80) >> 7;
@@ -494,23 +393,11 @@ void trident_vga_device::trident_define_video_mode()
 	switch((tri.pixel_depth & 0x0c) >> 2)
 	{
 	case 0:
-<<<<<<< HEAD
-	default: if(!(tri.pixel_depth & 0x10)) svga.rgb8_en = 1; break;
-=======
 	default: if(!(tri.pixel_depth & 0x10) || (tri.cr1e & 0x80)) svga.rgb8_en = 1; break;
->>>>>>> upstream/master
 	case 1:  if((tri.dac & 0xf0) == 0x30) svga.rgb16_en = 1; else svga.rgb15_en = 1; break;
 	case 2:  svga.rgb32_en = 1; break;
 	}
 
-<<<<<<< HEAD
-	recompute_params_clock(divisor, xtal);
-}
-
-UINT8 trident_vga_device::trident_seq_reg_read(UINT8 index)
-{
-	UINT8 res;
-=======
 	if((tri.cr1e & 0x80) && (svga.id == 0x43))
 		divisor = 2;
 
@@ -520,7 +407,6 @@ UINT8 trident_vga_device::trident_seq_reg_read(UINT8 index)
 uint8_t trident_vga_device::trident_seq_reg_read(uint8_t index)
 {
 	uint8_t res;
->>>>>>> upstream/master
 
 	res = 0xff;
 
@@ -567,11 +453,7 @@ uint8_t trident_vga_device::trident_seq_reg_read(uint8_t index)
 	return res;
 }
 
-<<<<<<< HEAD
-void trident_vga_device::trident_seq_reg_write(UINT8 index, UINT8 data)
-=======
 void trident_vga_device::trident_seq_reg_write(uint8_t index, uint8_t data)
->>>>>>> upstream/master
 {
 	vga.sequencer.data[vga.sequencer.index] = data;
 	if(index <= 0x04)
@@ -581,10 +463,6 @@ void trident_vga_device::trident_seq_reg_write(uint8_t index, uint8_t data)
 	}
 	else
 	{
-<<<<<<< HEAD
-		if(LOG) logerror("Trident SR%02X: %s mode write %02x\n",index,tri.new_mode ? "new" : "old",data);
-=======
->>>>>>> upstream/master
 		switch(index)
 		{
 			case 0x0b:
@@ -631,20 +509,12 @@ void trident_vga_device::trident_seq_reg_write(uint8_t index, uint8_t data)
 				if(!LOG) logerror("Trident: Sequencer index %02x read\n",index);
 		}
 	}
-<<<<<<< HEAD
-}
-
-UINT8 trident_vga_device::trident_crtc_reg_read(UINT8 index)
-{
-	UINT8 res = 0;
-=======
 	if(LOG) logerror("Trident SR%02X: %s mode write %02x\n",index,tri.new_mode ? "new" : "old",data);
 }
 
 uint8_t trident_vga_device::trident_crtc_reg_read(uint8_t index)
 {
 	uint8_t res = 0;
->>>>>>> upstream/master
 
 	if(index <= 0x18)
 		res = crtc_reg_read(index);
@@ -746,11 +616,7 @@ uint8_t trident_vga_device::trident_crtc_reg_read(uint8_t index)
 	if(LOG) logerror("Trident CR%02X: read %02x\n",index,res);
 	return res;
 }
-<<<<<<< HEAD
-void trident_vga_device::trident_crtc_reg_write(UINT8 index, UINT8 data)
-=======
 void trident_vga_device::trident_crtc_reg_write(uint8_t index, uint8_t data)
->>>>>>> upstream/master
 {
 	if(index <= 0x18)
 	{
@@ -759,10 +625,6 @@ void trident_vga_device::trident_crtc_reg_write(uint8_t index, uint8_t data)
 	}
 	else
 	{
-<<<<<<< HEAD
-		if(LOG) logerror("Trident CR%02X: write %02x\n",index,data);
-=======
->>>>>>> upstream/master
 		switch(index)
 		{
 		case 0x1e:  // Module Testing Register
@@ -861,20 +723,12 @@ void trident_vga_device::trident_crtc_reg_write(uint8_t index, uint8_t data)
 			break;
 		}
 	}
-<<<<<<< HEAD
-}
-
-UINT8 trident_vga_device::trident_gc_reg_read(UINT8 index)
-{
-	UINT8 res;
-=======
 	if(LOG) logerror("Trident CR%02X: write %02x\n",index,data);
 }
 
 uint8_t trident_vga_device::trident_gc_reg_read(uint8_t index)
 {
 	uint8_t res;
->>>>>>> upstream/master
 
 	if(index <= 0x0d)
 		res = gc_reg_read(index);
@@ -901,11 +755,7 @@ uint8_t trident_vga_device::trident_gc_reg_read(uint8_t index)
 	return res;
 }
 
-<<<<<<< HEAD
-void trident_vga_device::trident_gc_reg_write(UINT8 index, UINT8 data)
-=======
 void trident_vga_device::trident_gc_reg_write(uint8_t index, uint8_t data)
->>>>>>> upstream/master
 {
 	if(index <= 0x0d)
 		gc_reg_write(index,data);
@@ -934,19 +784,12 @@ void trident_vga_device::trident_gc_reg_write(uint8_t index, uint8_t data)
 			break;
 		}
 	}
-<<<<<<< HEAD
-=======
 	if(LOG) logerror("Trident GC%02X: write %02x\n",index,data);
->>>>>>> upstream/master
 }
 
 READ8_MEMBER(trident_vga_device::port_03c0_r)
 {
-<<<<<<< HEAD
-	UINT8 res;
-=======
 	uint8_t res;
->>>>>>> upstream/master
 
 	switch(offset)
 	{
@@ -1017,11 +860,7 @@ WRITE8_MEMBER(trident_vga_device::port_03c0_w)
 
 READ8_MEMBER(trident_vga_device::port_03d0_r)
 {
-<<<<<<< HEAD
-	UINT8 res = 0xff;
-=======
 	uint8_t res = 0xff;
->>>>>>> upstream/master
 
 	if (CRTC_PORT_ADDR == 0x3d0)
 	{
@@ -1103,11 +942,7 @@ WRITE8_MEMBER(trident_vga_device::port_03d0_w)
 
 READ8_MEMBER(trident_vga_device::port_43c6_r)
 {
-<<<<<<< HEAD
-	UINT8 res = 0xff;
-=======
 	uint8_t res = 0xff;
->>>>>>> upstream/master
 	switch(offset)
 	{
 	case 2:
@@ -1165,11 +1000,7 @@ WRITE8_MEMBER(trident_vga_device::port_43c6_w)
 // Not much else is known.  XFree86 uses register 4 for something related to DPMS
 READ8_MEMBER(trident_vga_device::port_83c6_r)
 {
-<<<<<<< HEAD
-	UINT8 res = 0xff;
-=======
 	uint8_t res = 0xff;
->>>>>>> upstream/master
 	switch(offset)
 	{
 	case 2:
@@ -1282,21 +1113,13 @@ WRITE8_MEMBER(trident_vga_device::mem_w)
 }
 
 // Old style MMIO (maps to 0xbff00)
-<<<<<<< HEAD
-void trident_vga_device::old_mmio_w(address_space& space, UINT32 offset, UINT8 data)
-=======
 void trident_vga_device::old_mmio_w(address_space& space, uint32_t offset, uint8_t data)
->>>>>>> upstream/master
 {
 	if(offset >= 0x20)
 		accel_w(space,offset-0x20,data);
 }
 
-<<<<<<< HEAD
-UINT8 trident_vga_device::old_mmio_r(address_space& space, UINT32 offset)
-=======
 uint8_t trident_vga_device::old_mmio_r(address_space& space, uint32_t offset)
->>>>>>> upstream/master
 {
 	if(offset == 0x20)
 	{
@@ -1374,11 +1197,7 @@ Graphics Engine for 9440/9660/9680
 
 READ8_MEMBER(trident_vga_device::accel_r)
 {
-<<<<<<< HEAD
-	UINT8 res = 0xff;
-=======
 	uint8_t res = 0xff;
->>>>>>> upstream/master
 
 	if(offset >= 0x60)
 		return tri.accel_pattern[(offset-0x60) % 0x80];
@@ -1745,15 +1564,6 @@ void trident_vga_device::accel_bitblt()
 
 void trident_vga_device::accel_line()
 {
-<<<<<<< HEAD
-	UINT32 col = tri.accel_fgcolour;
-//    TGUI_SRC_XY(dmin-dmaj,dmin);
-//    TGUI_DEST_XY(x,y);
-//    TGUI_DIM_XY(dmin+e,len);
-	INT16 dx = tri.accel_source_y - tri.accel_source_x;
-	INT16 dy = tri.accel_source_y;
-	INT16 err = tri.accel_dim_x + tri.accel_source_y;
-=======
 	uint32_t col = tri.accel_fgcolour;
 //    TGUI_SRC_XY(dmin-dmaj,dmin);
 //    TGUI_DEST_XY(x,y);
@@ -1761,7 +1571,6 @@ void trident_vga_device::accel_line()
 	int16_t dx = tri.accel_source_y - tri.accel_source_x;
 	int16_t dy = tri.accel_source_y;
 	int16_t err = tri.accel_dim_x + tri.accel_source_y;
->>>>>>> upstream/master
 	int sx = (tri.accel_drawflags & 0x0200) ? -1 : 1;
 	int sy = (tri.accel_drawflags & 0x0100) ? -1 : 1;
 	int x,y,z;
@@ -1794,11 +1603,7 @@ void trident_vga_device::accel_line()
 }
 
 // feed data written to VRAM to an active BitBLT command
-<<<<<<< HEAD
-void trident_vga_device::accel_data_write(UINT32 data)
-=======
 void trident_vga_device::accel_data_write(uint32_t data)
->>>>>>> upstream/master
 {
 	int xdir = 1,ydir = 1;
 

@@ -5,11 +5,7 @@
 	@author Phil Burk <philburk@softsynth.com>
 */
 /*
-<<<<<<< HEAD
- * $Id: patest_maxsines.c 1368 2008-03-01 00:38:27Z rossb $
-=======
  * $Id$
->>>>>>> upstream/master
  *
  * This program uses the PortAudio Portable Audio Library.
  * For more information see: http://www.portaudio.com
@@ -50,13 +46,8 @@
 #include <math.h>
 #include "portaudio.h"
 
-<<<<<<< HEAD
-#define MAX_SINES     (500)
-#define MAX_USAGE     (0.8)
-=======
 #define MAX_SINES     (2000)
 #define MAX_USAGE     (0.5)
->>>>>>> upstream/master
 #define SAMPLE_RATE   (44100)
 #define FREQ_TO_PHASE_INC(freq)   (freq/(float)SAMPLE_RATE)
 
@@ -69,11 +60,7 @@
 #endif
 #define TWOPI (M_PI * 2.0)
 
-<<<<<<< HEAD
-#define TABLE_SIZE   (512)
-=======
 #define TABLE_SIZE   (1024)
->>>>>>> upstream/master
 
 typedef struct paTestData
 {
@@ -83,11 +70,7 @@ typedef struct paTestData
 }
 paTestData;
 
-<<<<<<< HEAD
-/* Convert phase between and 1.0 to sine value
-=======
 /* Convert phase between 0.0 and 1.0 to sine value
->>>>>>> upstream/master
  * using linear interpolation.
  */
 float LookupSine( paTestData *data, float phase );
@@ -204,22 +187,14 @@ int main(void)
 
     /* Play an increasing number of sine waves until we hit MAX_USAGE */
     do  {
-<<<<<<< HEAD
-        data.numSines++;
-=======
         data.numSines += 10;
->>>>>>> upstream/master
         Pa_Sleep(200);
         load = Pa_GetStreamCpuLoad(stream);
         printf("numSines = %d, CPU load = %f\n", data.numSines, load );
         fflush(stdout);
         } while((load < MAX_USAGE) && (data.numSines < MAX_SINES));
 
-<<<<<<< HEAD
-    Pa_Sleep(2000);     /* Stay for 2 seconds around 80% CPU. */
-=======
     Pa_Sleep(2000);     /* Stay for 2 seconds at max CPU. */
->>>>>>> upstream/master
 
     err = Pa_StopStream( stream );
     if( err != paNoError )

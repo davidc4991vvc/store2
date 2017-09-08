@@ -6,10 +6,7 @@
 
 **********************************************************************/
 
-<<<<<<< HEAD
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #include "ds75161a.h"
 
 
@@ -18,11 +15,7 @@
 //  DEVICE TYPE DEFINITIONS
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type DS75161A = &device_creator<ds75161a_device>;
-=======
 DEFINE_DEVICE_TYPE(DS75161A, ds75161a_device, "ds75161a", "DS75161A GPIB Transceiver")
->>>>>>> upstream/master
 
 
 
@@ -34,13 +27,8 @@ DEFINE_DEVICE_TYPE(DS75161A, ds75161a_device, "ds75161a", "DS75161A GPIB Transce
 //  ds75161a_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-ds75161a_device::ds75161a_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, DS75161A, "DS75161A", tag, owner, clock, "ds75161a", __FILE__),
-=======
 ds75161a_device::ds75161a_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, DS75161A, tag, owner, clock),
->>>>>>> upstream/master
 		m_in_ren_cb(*this),
 		m_in_ifc_cb(*this),
 		m_in_ndac_cb(*this),

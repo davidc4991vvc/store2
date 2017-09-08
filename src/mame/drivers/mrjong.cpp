@@ -46,18 +46,12 @@ ROMs 6A, 7A, 8A, 9A: 2764
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/z80/z80.h"
-#include "sound/sn76496.h"
-#include "includes/mrjong.h"
-=======
 #include "includes/mrjong.h"
 
 #include "cpu/z80/z80.h"
 #include "sound/sn76496.h"
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 /*************************************
@@ -189,11 +183,7 @@ GFXDECODE_END
  *
  *************************************/
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( mrjong, mrjong_state )
-=======
 static MACHINE_CONFIG_START( mrjong )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80,15468000/6) /* 2.578 MHz?? */
@@ -286,12 +276,6 @@ ROM_END
  *
  *************************************/
 
-<<<<<<< HEAD
-GAME( 1983, mrjong,   0,      mrjong, mrjong, driver_device, 0, ROT90, "Kiwako", "Mr. Jong (Japan)", MACHINE_SUPPORTS_SAVE )
-GAME( 1983, crazyblk, mrjong, mrjong, mrjong, driver_device, 0, ROT90, "Kiwako (ECI license)", "Crazy Blocks", MACHINE_SUPPORTS_SAVE )
-GAME( 1983, blkbustr, mrjong, mrjong, mrjong, driver_device, 0, ROT90, "Kiwako (ECI license)", "BlockBuster", MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1983, mrjong,   0,      mrjong, mrjong, mrjong_state, 0, ROT90, "Kiwako",               "Mr. Jong (Japan)", MACHINE_SUPPORTS_SAVE )
 GAME( 1983, crazyblk, mrjong, mrjong, mrjong, mrjong_state, 0, ROT90, "Kiwako (ECI license)", "Crazy Blocks",     MACHINE_SUPPORTS_SAVE )
 GAME( 1983, blkbustr, mrjong, mrjong, mrjong, mrjong_state, 0, ROT90, "Kiwako (ECI license)", "BlockBuster",      MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

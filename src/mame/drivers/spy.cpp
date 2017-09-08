@@ -20,14 +20,6 @@
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/z80/z80.h"
-#include "cpu/m6809/m6809.h"
-
-#include "sound/3812intf.h"
-#include "includes/konamipt.h"
-#include "includes/spy.h"
-=======
 #include "includes/spy.h"
 #include "includes/konamipt.h"
 
@@ -38,7 +30,6 @@
 #include "sound/3812intf.h"
 #include "speaker.h"
 
->>>>>>> upstream/master
 
 INTERRUPT_GEN_MEMBER(spy_state::spy_interrupt)
 {
@@ -297,13 +288,8 @@ WRITE8_MEMBER(spy_state::spy_3f90_w)
 	********************************************************************/
 
 	/* bits 0/1 = coin counters */
-<<<<<<< HEAD
-	coin_counter_w(machine(), 0, data & 0x01);
-	coin_counter_w(machine(), 1, data & 0x02);
-=======
 	machine().bookkeeping().coin_counter_w(0, data & 0x01);
 	machine().bookkeeping().coin_counter_w(1, data & 0x02);
->>>>>>> upstream/master
 
 	/* bit 2 = enable char ROM reading through the video RAM */
 	m_k052109->set_rmrd_line((data & 0x04) ? ASSERT_LINE : CLEAR_LINE);
@@ -393,13 +379,8 @@ static ADDRESS_MAP_START( spy_map, AS_PROGRAM, 8, spy_state )
 	AM_RANGE(0x0800, 0x1aff) AM_RAM
 	AM_RANGE(0x3f80, 0x3f80) AM_WRITE(bankswitch_w)
 	AM_RANGE(0x3f90, 0x3f90) AM_WRITE(spy_3f90_w)
-<<<<<<< HEAD
-	AM_RANGE(0x3fa0, 0x3fa0) AM_WRITE(watchdog_reset_w)
-	AM_RANGE(0x3fb0, 0x3fb0) AM_WRITE(soundlatch_byte_w)
-=======
 	AM_RANGE(0x3fa0, 0x3fa0) AM_DEVWRITE("watchdog", watchdog_timer_device, reset_w)
 	AM_RANGE(0x3fb0, 0x3fb0) AM_DEVWRITE("soundlatch", generic_latch_8_device, write)
->>>>>>> upstream/master
 	AM_RANGE(0x3fc0, 0x3fc0) AM_WRITE(spy_sh_irqtrigger_w)
 	AM_RANGE(0x3fd0, 0x3fd0) AM_READ_PORT("SYSTEM")
 	AM_RANGE(0x3fd1, 0x3fd1) AM_READ_PORT("P1")
@@ -418,11 +399,7 @@ static ADDRESS_MAP_START( spy_sound_map, AS_PROGRAM, 8, spy_state )
 	AM_RANGE(0xa000, 0xa00d) AM_DEVREADWRITE("k007232_1", k007232_device, read, write)
 	AM_RANGE(0xb000, 0xb00d) AM_DEVREADWRITE("k007232_2", k007232_device, read, write)
 	AM_RANGE(0xc000, 0xc001) AM_DEVREADWRITE("ymsnd", ym3812_device, read, write)
-<<<<<<< HEAD
-	AM_RANGE(0xd000, 0xd000) AM_READ(soundlatch_byte_r)
-=======
 	AM_RANGE(0xd000, 0xd000) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -490,11 +467,7 @@ WRITE8_MEMBER(spy_state::volume_callback1)
 
 void spy_state::machine_start()
 {
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("maincpu")->base();
-=======
 	uint8_t *ROM = memregion("maincpu")->base();
->>>>>>> upstream/master
 
 	membank("bank1")->configure_entries(0, 12, &ROM[0x10000], 0x2000);
 
@@ -519,11 +492,7 @@ void spy_state::machine_reset()
 	m_old_3f90 = -1;
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( spy, spy_state )
-=======
 static MACHINE_CONFIG_START( spy )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6809, 3000000) /* ? */
@@ -533,11 +502,8 @@ static MACHINE_CONFIG_START( spy )
 	MCFG_CPU_ADD("audiocpu", Z80, 3579545)
 	MCFG_CPU_PROGRAM_MAP(spy_sound_map) /* nmi by the sound chip */
 
-<<<<<<< HEAD
-=======
 	MCFG_WATCHDOG_ADD("watchdog")
 
->>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE(60)
@@ -551,11 +517,6 @@ static MACHINE_CONFIG_START( spy )
 	MCFG_PALETTE_ENABLE_SHADOWS()
 	MCFG_PALETTE_FORMAT(xBBBBBGGGGGRRRRR)
 
-<<<<<<< HEAD
-	MCFG_GFXDECODE_ADD("gfxdecode", "palette", empty)
-
-=======
->>>>>>> upstream/master
 	MCFG_DEVICE_ADD("k052109", K052109, 0)
 	MCFG_GFX_PALETTE("palette")
 	MCFG_K052109_CB(spy_state, tile_callback)
@@ -568,11 +529,8 @@ static MACHINE_CONFIG_START( spy )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 
->>>>>>> upstream/master
 	MCFG_SOUND_ADD("ymsnd", YM3812, 3579545)
 	MCFG_YM3812_IRQ_HANDLER(INPUTLINE("audiocpu", INPUT_LINE_NMI))
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
@@ -650,10 +608,5 @@ ROM_START( spyu )
 ROM_END
 
 
-<<<<<<< HEAD
-GAME( 1989, spy,  0,   spy, spy, driver_device, 0, ROT0, "Konami", "S.P.Y. - Special Project Y (World ver. N)", MACHINE_SUPPORTS_SAVE )
-GAME( 1989, spyu, spy, spy, spy, driver_device, 0, ROT0, "Konami", "S.P.Y. - Special Project Y (US ver. M)", MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1989, spy,  0,   spy, spy, spy_state, 0, ROT0, "Konami", "S.P.Y. - Special Project Y (World ver. N)", MACHINE_SUPPORTS_SAVE )
 GAME( 1989, spyu, spy, spy, spy, spy_state, 0, ROT0, "Konami", "S.P.Y. - Special Project Y (US ver. M)", MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

@@ -25,8 +25,6 @@
 
 
 --
-<<<<<<< HEAD
-=======
 -- Make a complete copy of a table, including any child tables it contains.
 --
 
@@ -55,7 +53,6 @@
 	end
 
 --
->>>>>>> upstream/master
 -- Enumerates an array of objects and returns a new table containing
 -- only the value of one particular field.
 --
@@ -215,10 +212,6 @@
 		end
 		return result
 	end
-<<<<<<< HEAD
-
-
-=======
 	
 	
 	--
@@ -247,4 +240,3 @@
 			return ""
 		end
 	end
->>>>>>> upstream/master

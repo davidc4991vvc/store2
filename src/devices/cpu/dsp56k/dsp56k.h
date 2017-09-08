@@ -9,20 +9,11 @@
 ***************************************************************************/
 
 
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __DSP56K_H__
-#define __DSP56K_H__
-
-#include "emu.h"
-=======
 #ifndef MAME_CPU_DSP56K_DSP56K_H
 #define MAME_CPU_DSP56K_DSP56K_H
 
 #pragma once
 
->>>>>>> upstream/master
 
 
 // IRQ Lines
@@ -33,11 +24,8 @@
 #define DSP56K_IRQ_RESET 3  /* Is this needed? */
 
 
-<<<<<<< HEAD
-=======
 namespace DSP56K {
 
->>>>>>> upstream/master
 /***************************************************************************
     STRUCTURES & TYPEDEFS
 ***************************************************************************/
@@ -46,35 +34,6 @@ struct dsp56k_host_interface
 {
 	// **** Dsp56k side **** //
 	// Host Control Register
-<<<<<<< HEAD
-	UINT16* hcr;
-
-	// Host Status Register
-	UINT16* hsr;
-
-	// Host Transmit/Receive Data
-	UINT16* htrx;
-
-	// **** Host CPU side **** //
-	// Interrupt Control Register
-	UINT8 icr;
-
-	// Command Vector Register
-	UINT8 cvr;
-
-	// Interrupt Status Register
-	UINT8 isr;
-
-	// Interrupt Vector Register
-	UINT8 ivr;
-
-	// Transmit / Receive Registers
-	UINT8 trxh;
-	UINT8 trxl;
-
-	// HACK - Host interface bootstrap write offset
-	UINT16 bootstrap_offset;
-=======
 	uint16_t* hcr;
 
 	// Host Status Register
@@ -102,7 +61,6 @@ struct dsp56k_host_interface
 
 	// HACK - Host interface bootstrap write offset
 	uint16_t bootstrap_offset;
->>>>>>> upstream/master
 
 };
 
@@ -127,30 +85,6 @@ struct dsp56k_data_alu
 struct dsp56k_agu
 {
 	// Four address registers
-<<<<<<< HEAD
-	UINT16 r0;
-	UINT16 r1;
-	UINT16 r2;
-	UINT16 r3;
-
-	// Four offset registers
-	UINT16 n0;
-	UINT16 n1;
-	UINT16 n2;
-	UINT16 n3;
-
-	// Four modifier registers
-	UINT16 m0;
-	UINT16 m1;
-	UINT16 m2;
-	UINT16 m3;
-
-	// Used in loop processing
-	UINT16 temp;
-
-	// FM.4-5 - hmmm?
-	// UINT8 status;
-=======
 	uint16_t r0;
 	uint16_t r1;
 	uint16_t r2;
@@ -173,7 +107,6 @@ struct dsp56k_agu
 
 	// FM.4-5 - hmmm?
 	// uint8_t status;
->>>>>>> upstream/master
 
 	// Basics
 };
@@ -182,24 +115,6 @@ struct dsp56k_agu
 struct dsp56k_pcu
 {
 	// Program Counter
-<<<<<<< HEAD
-	UINT16 pc;
-
-	// Loop Address
-	UINT16 la;
-
-	// Loop Counter
-	UINT16 lc;
-
-	// Status Register
-	UINT16 sr;
-
-	// Operating Mode Register
-	UINT16 omr;
-
-	// Stack Pointer
-	UINT16 sp;
-=======
 	uint16_t pc;
 
 	// Loop Address
@@ -216,7 +131,6 @@ struct dsp56k_pcu
 
 	// Stack Pointer
 	uint16_t sp;
->>>>>>> upstream/master
 
 	// Stack (TODO: 15-level?)
 	PAIR ss[16];
@@ -225,20 +139,12 @@ struct dsp56k_pcu
 	void (*service_interrupts)(void);
 
 	// A list of pending interrupts (indices into dsp56k_interrupt_sources array)
-<<<<<<< HEAD
-	INT8 pending_interrupts[32];
-=======
 	int8_t pending_interrupts[32];
->>>>>>> upstream/master
 
 	// Basics
 
 	// Other PCU internals
-<<<<<<< HEAD
-	UINT16 reset_vector;
-=======
 	uint16_t reset_vector;
->>>>>>> upstream/master
 
 };
 
@@ -265,18 +171,6 @@ struct dsp56k_core
 	dsp56k_host_interface HI;
 
 	// IRQ line states
-<<<<<<< HEAD
-	UINT8 modA_state;
-	UINT8 modB_state;
-	UINT8 modC_state;
-	UINT8 reset_state;
-
-	// HACK - Bootstrap mode state variable.
-	UINT8 bootstrap_mode;
-
-	UINT8   repFlag;    // Knowing if we're in a 'repeat' state (dunno how the processor does this)
-	UINT32  repAddr;    // The address of the instruction to repeat...
-=======
 	bool modA_state;
 	bool modB_state;
 	bool modC_state;
@@ -287,80 +181,28 @@ struct dsp56k_core
 
 	uint8_t   repFlag;    // Knowing if we're in a 'repeat' state (dunno how the processor does this)
 	uint32_t  repAddr;    // The address of the instruction to repeat...
->>>>>>> upstream/master
 
 
 	/* MAME internal stuff */
 	int icount;
 
-<<<<<<< HEAD
-	UINT32          ppc;
-	UINT32          op;
-	int             interrupt_cycles;
-	void            (*output_pins_changed)(UINT32 pins);
-=======
 	uint32_t          ppc;
 	uint32_t          op;
 	int             interrupt_cycles;
 	void            (*output_pins_changed)(uint32_t pins);
->>>>>>> upstream/master
 	cpu_device *device;
 	address_space *program;
 	direct_read_data *direct;
 	address_space *data;
 
-<<<<<<< HEAD
-	UINT16 peripheral_ram[0x40];
-	UINT16 *program_ram;
-=======
 	uint16_t peripheral_ram[0x40];
 	uint16_t *program_ram;
->>>>>>> upstream/master
 };
 
 
 class dsp56k_device : public cpu_device
 {
 public:
-<<<<<<< HEAD
-	dsp56k_device(const machine_config &mconfig, const char *_tag, device_t *_owner, UINT32 _clock);
-
-	DECLARE_READ16_MEMBER( program_r );
-	DECLARE_WRITE16_MEMBER( program_w );
-	DECLARE_READ16_MEMBER( peripheral_register_r );
-	DECLARE_WRITE16_MEMBER( peripheral_register_w );
-
-	void  host_interface_write(UINT8 offset, UINT8 data);
-	UINT8 host_interface_read(UINT8 offset);
-
-	UINT16 get_peripheral_memory(UINT16 addr);
-
-protected:
-	// device-level overrides
-	virtual void device_start();
-	virtual void device_reset();
-
-	// device_execute_interface overrides
-	virtual UINT64 execute_clocks_to_cycles(UINT64 clocks) const { return (clocks + 2 - 1) / 2; }
-	virtual UINT64 execute_cycles_to_clocks(UINT64 cycles) const { return (cycles * 2); }
-	virtual UINT32 execute_min_cycles() const { return 1; }
-	virtual UINT32 execute_max_cycles() const { return 8; }
-	virtual UINT32 execute_input_lines() const { return 4; }
-	virtual UINT32 execute_default_irq_vector() const { return 0; }
-	virtual void execute_run();
-	virtual void execute_set_input(int inputnum, int state);
-
-	// device_memory_interface overrides
-	virtual const address_space_config *memory_space_config(address_spacenum spacenum = AS_0) const { return (spacenum == AS_PROGRAM) ? &m_program_config : ((spacenum == AS_DATA) ? &m_data_config : NULL ); }
-
-	// device_state_interface overrides
-	void state_string_export(const device_state_entry &entry, std::string &str);
-
-	// device_disasm_interface overrides
-	virtual UINT32 disasm_min_opcode_bytes() const { return 2; }
-	virtual UINT32 disasm_max_opcode_bytes() const { return 4; }
-	virtual offs_t disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options);
-=======
 	dsp56k_device(const machine_config &mconfig, const char *_tag, device_t *_owner, uint32_t _clock);
 
 	DECLARE_READ16_MEMBER( peripheral_register_r );
@@ -396,31 +238,16 @@ protected:
 	virtual uint32_t disasm_min_opcode_bytes() const override { return 2; }
 	virtual uint32_t disasm_max_opcode_bytes() const override { return 4; }
 	virtual offs_t disasm_disassemble(std::ostream &stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, uint32_t options) override;
->>>>>>> upstream/master
 
 private:
 	address_space_config m_program_config;
 	address_space_config m_data_config;
-<<<<<<< HEAD
-	required_shared_ptr<UINT16> m_program_ram;
-=======
 	required_shared_ptr<uint16_t> m_program_ram;
->>>>>>> upstream/master
 
 	dsp56k_core m_dsp56k_core;
 
 	void agu_init();
 	void alu_init();
-<<<<<<< HEAD
-
-};
-
-
-extern const device_type DSP56156;
-
-
-#endif /* __DSP56K_H__ */
-=======
 };
 
 } // namespace DSP56K
@@ -432,4 +259,3 @@ using DSP56K::dsp56k_device;
 extern CPU_DISASSEMBLE( dsp56k );
 
 #endif // MAME_CPU_DSP56K_DSP56K_H
->>>>>>> upstream/master

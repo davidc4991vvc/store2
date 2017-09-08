@@ -21,23 +21,14 @@
 ***************************************************************************/
 
 int bcd_adjust(int value);
-<<<<<<< HEAD
-UINT32 dec_2_bcd(UINT32 a);
-UINT32 bcd_2_dec(UINT32 a);
-=======
 uint32_t dec_2_bcd(uint32_t a);
 uint32_t bcd_2_dec(uint32_t a);
->>>>>>> upstream/master
 
 
 /***************************************************************************
     GREGORIAN CALENDAR HELPERS
 ***************************************************************************/
 
-<<<<<<< HEAD
-int gregorian_is_leap_year(int year);
-int gregorian_days_in_month(int month, int year);
-=======
 constexpr bool gregorian_is_leap_year(int year)
 {
 	return !((year % 100) ? (year % 4) : (year % 400));
@@ -80,7 +71,6 @@ inline int gregorian_days_in_month(int month, int year)
 	}
 	return result;
 }
->>>>>>> upstream/master
 
 
 /***************************************************************************
@@ -89,10 +79,6 @@ inline int gregorian_days_in_month(int month, int year)
 
 void rand_memory(void *memory, size_t length);
 
-<<<<<<< HEAD
-UINT32 core_crc32(UINT32 crc, const UINT8 *buf, UINT32 len);
-=======
 uint32_t core_crc32(uint32_t crc, const uint8_t *buf, uint32_t len);
->>>>>>> upstream/master
 
 #endif /* __COREUTIL_H__ */

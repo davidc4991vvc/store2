@@ -61,16 +61,6 @@
 *******************************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/m68000/m68000.h"
-#include "sound/okim6295.h"
-#include "includes/sderby.h"
-#include "machine/nvram.h"
-
-#include "sderby.lh"
-#include "spacewin.lh"
-#include "pmroulet.lh"
-=======
 #include "includes/sderby.h"
 
 #include "cpu/m68000/m68000.h"
@@ -83,7 +73,6 @@
 #include "sderby.lh"
 #include "spacewin.lh"
 
->>>>>>> upstream/master
 
 /***************************
 *       R/W Handlers       *
@@ -217,19 +206,11 @@ WRITE16_MEMBER(sderby_state::sderby_out_w)
     x--- ----  End of Race lamp.
 
 */
-<<<<<<< HEAD
-	output_set_lamp_value(1, (data & 1));           /* Lamp 1 - START */
-	output_set_lamp_value(2, (data >> 1) & 1);      /* Lamp 2 - BET */
-	output_set_lamp_value(3, (data >> 15) & 1);     /* Lamp 3 - END OF RACE */
-
-	coin_counter_w(machine(), 0, data & 0x2000);
-=======
 	output().set_lamp_value(1, (data & 1));           /* Lamp 1 - START */
 	output().set_lamp_value(2, (data >> 1) & 1);      /* Lamp 2 - BET */
 	output().set_lamp_value(3, (data >> 15) & 1);     /* Lamp 3 - END OF RACE */
 
 	machine().bookkeeping().coin_counter_w(0, data & 0x2000);
->>>>>>> upstream/master
 }
 
 
@@ -270,17 +251,6 @@ WRITE16_MEMBER(sderby_state::scmatto_out_w)
     --x- ----  Coin counter.
 
 */
-<<<<<<< HEAD
-	output_set_lamp_value(1, (data & 1));           /* Lamp 1 - HOLD 1 */
-	output_set_lamp_value(2, (data >> 1) & 1);      /* Lamp 2 - HOLD 2 */
-	output_set_lamp_value(3, (data >> 2) & 1);      /* Lamp 3 - HOLD 3 */
-	output_set_lamp_value(4, (data >> 3) & 1);      /* Lamp 4 - HOLD 4 */
-	output_set_lamp_value(5, (data >> 4) & 1);      /* Lamp 5 - HOLD 5 */
-	output_set_lamp_value(6, (data >> 5) & 1);      /* Lamp 6 - START  */
-	output_set_lamp_value(7, (data >> 6) & 1);      /* Lamp 7 - BET    */
-
-	coin_counter_w(machine(), 0, data & 0x2000);
-=======
 	output().set_lamp_value(1, (data & 1));           /* Lamp 1 - HOLD 1 */
 	output().set_lamp_value(2, (data >> 1) & 1);      /* Lamp 2 - HOLD 2 */
 	output().set_lamp_value(3, (data >> 2) & 1);      /* Lamp 3 - HOLD 3 */
@@ -290,7 +260,6 @@ WRITE16_MEMBER(sderby_state::scmatto_out_w)
 	output().set_lamp_value(7, (data >> 6) & 1);      /* Lamp 7 - BET    */
 
 	machine().bookkeeping().coin_counter_w(0, data & 0x2000);
->>>>>>> upstream/master
 }
 
 
@@ -318,13 +287,8 @@ WRITE16_MEMBER(sderby_state::roulette_out_w)
     ---- x---  Unknown (always activated).
 
 */
-<<<<<<< HEAD
-	output_set_lamp_value(1, (data & 1));           /* Lamp 1 - START */
-	output_set_lamp_value(2, (data >> 1) & 1);      /* Lamp 2 - BET   */
-=======
 	output().set_lamp_value(1, (data & 1));           /* Lamp 1 - START */
 	output().set_lamp_value(2, (data >> 1) & 1);      /* Lamp 2 - BET   */
->>>>>>> upstream/master
 }
 
 
@@ -408,8 +372,6 @@ static ADDRESS_MAP_START( spacewin_map, AS_PROGRAM, 16, sderby_state )
 	AM_RANGE(0x8fc000, 0x8fffff) AM_RAM
 ADDRESS_MAP_END
 
-<<<<<<< HEAD
-=======
 static ADDRESS_MAP_START( shinygld_map, AS_PROGRAM, 16, sderby_state )
 	AM_RANGE(0x000000, 0x03ffff) AM_ROM
 	AM_RANGE(0x100000, 0x100fff) AM_RAM_WRITE(sderby_videoram_w) AM_SHARE("videoram")       /* bg */
@@ -430,7 +392,6 @@ static ADDRESS_MAP_START( shinygld_map, AS_PROGRAM, 16, sderby_state )
 	AM_RANGE(0x7f0000, 0x7fffff) AM_RAM
 ADDRESS_MAP_END
 
->>>>>>> upstream/master
 static ADDRESS_MAP_START( roulette_map, AS_PROGRAM, 16, sderby_state )
 	AM_RANGE(0x000000, 0x03ffff) AM_ROM
 	AM_RANGE(0x440000, 0x440fff) AM_WRITEONLY AM_SHARE("spriteram")
@@ -537,8 +498,6 @@ static INPUT_PORTS_START( spacewin )
 	PORT_BIT( 0x8000, IP_ACTIVE_LOW, IPT_UNKNOWN )
 INPUT_PORTS_END
 
-<<<<<<< HEAD
-=======
 static INPUT_PORTS_START( shinygld )
 	PORT_START("IN0")   /* 0x308000.w */
 	PORT_BIT( 0x0001, IP_ACTIVE_LOW, IPT_SLOT_STOP1 )
@@ -559,7 +518,6 @@ static INPUT_PORTS_START( shinygld )
 	PORT_BIT( 0x8000, IP_ACTIVE_LOW, IPT_UNKNOWN )
 INPUT_PORTS_END
 
->>>>>>> upstream/master
 static INPUT_PORTS_START( pmroulet )
 	PORT_START("IN0")
 	PORT_BIT( 0x000f, IP_ACTIVE_LOW, IPT_UNKNOWN )
@@ -635,11 +593,7 @@ GFXDECODE_END
 *      Machine Drivers      *
 ****************************/
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( sderby, sderby_state )
-=======
 static MACHINE_CONFIG_START( sderby )
->>>>>>> upstream/master
 
 	MCFG_CPU_ADD("maincpu", M68000, 12000000)
 	MCFG_CPU_PROGRAM_MAP(sderby_map)
@@ -660,19 +614,11 @@ static MACHINE_CONFIG_START( sderby )
 	MCFG_PALETTE_FORMAT(RRRRRGGGGGBBBBBx)
 
 	MCFG_SPEAKER_STANDARD_MONO("mono")
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki", 1056000, OKIM6295_PIN7_HIGH) /* clock frequency & pin 7 not verified */
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
-MACHINE_CONFIG_END
-
-static MACHINE_CONFIG_START( sderbya, sderby_state )
-=======
 	MCFG_OKIM6295_ADD("oki", 1056000, PIN7_HIGH) /* clock frequency & pin 7 not verified */
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_START( sderbya )
->>>>>>> upstream/master
 
 	MCFG_CPU_ADD("maincpu", M68000, 12000000)
 	MCFG_CPU_PROGRAM_MAP(sderbya_map)
@@ -693,21 +639,11 @@ static MACHINE_CONFIG_START( sderbya )
 	MCFG_PALETTE_FORMAT(RRRRRGGGGGBBBBBx)
 
 	MCFG_SPEAKER_STANDARD_MONO("mono")
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki", 1056000, OKIM6295_PIN7_HIGH) /* clock frequency & pin 7 not verified */
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
-MACHINE_CONFIG_END
-
-
-
-static MACHINE_CONFIG_START( luckboom, sderby_state )
-=======
 	MCFG_OKIM6295_ADD("oki", 1056000, PIN7_HIGH) /* clock frequency & pin 7 not verified */
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_START( luckboom )
->>>>>>> upstream/master
 
 	MCFG_CPU_ADD("maincpu", M68000, 12000000)
 	MCFG_CPU_PROGRAM_MAP(luckboom_map)
@@ -728,19 +664,11 @@ static MACHINE_CONFIG_START( luckboom )
 	MCFG_PALETTE_FORMAT(RRRRRGGGGGBBBBBx)
 
 	MCFG_SPEAKER_STANDARD_MONO("mono")
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki", 1056000, OKIM6295_PIN7_HIGH) /* clock frequency & pin 7 not verified */
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
-MACHINE_CONFIG_END
-
-static MACHINE_CONFIG_START( spacewin, sderby_state )
-=======
 	MCFG_OKIM6295_ADD("oki", 1056000, PIN7_HIGH) /* clock frequency & pin 7 not verified */
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_START( spacewin )
->>>>>>> upstream/master
 
 	MCFG_CPU_ADD("maincpu", M68000, 12000000)
 	MCFG_CPU_PROGRAM_MAP(spacewin_map)
@@ -761,13 +689,6 @@ static MACHINE_CONFIG_START( spacewin )
 	MCFG_PALETTE_FORMAT(RRRRRGGGGGBBBBBx)
 
 	MCFG_SPEAKER_STANDARD_MONO("mono")
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki", 1056000, OKIM6295_PIN7_HIGH) /* clock frequency & pin 7 not verified */
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
-MACHINE_CONFIG_END
-
-static MACHINE_CONFIG_START( pmroulet, sderby_state )
-=======
 	MCFG_OKIM6295_ADD("oki", 1056000, PIN7_HIGH) /* clock frequency & pin 7 not verified */
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
@@ -798,7 +719,6 @@ static MACHINE_CONFIG_START( shinygld)
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_START( pmroulet )
->>>>>>> upstream/master
 
 	MCFG_CPU_ADD("maincpu", M68000, 12000000)
 	MCFG_CPU_PROGRAM_MAP(roulette_map)
@@ -819,11 +739,7 @@ static MACHINE_CONFIG_START( pmroulet )
 	MCFG_PALETTE_FORMAT(RRRRRGGGGGBBBBBx)
 
 	MCFG_SPEAKER_STANDARD_MONO("mono")
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki", 1056000, OKIM6295_PIN7_HIGH) /* clock frequency & pin 7 not verified */
-=======
 	MCFG_OKIM6295_ADD("oki", 1056000, PIN7_HIGH) /* clock frequency & pin 7 not verified */
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
 
@@ -943,8 +859,6 @@ ROM_START( spacewin )
 	ROM_LOAD( "8.u145", 0x080000, 0x20000, CRC(541a73fd) SHA1(fede5e2fcbb18e90cc50995d44e831c3f9b56614) )
 ROM_END
 
-<<<<<<< HEAD
-=======
 // This board seems very similar to the spacewin's one.
 ROM_START( shinygld )
 	ROM_REGION( 0x40000, "maincpu", 0 ) /* 68000 Code */
@@ -970,7 +884,6 @@ ROM_START( shinygld )
 	ROM_LOAD( "palce22v10_3.bin",   0x2dd, 0x2dd, NO_DUMP ) // soldered
 	ROM_LOAD( "palce16v8h.bin", 0x0200, 0x0117, NO_DUMP ) // soldered
 ROM_END
->>>>>>> upstream/master
 
 /*
 Croupier (PlaYMark)
@@ -1037,12 +950,9 @@ ROM_START( croupier )
 	ROM_LOAD16_BYTE( "2.bin", 0x00000, 0x20000, CRC(e7941975) SHA1(ea32cd51b8d87205a1d6c6a83ebf8b50e03c55fc))
 	ROM_LOAD16_BYTE( "3.bin", 0x00001, 0x20000, CRC(29d06a38) SHA1(c6fdca1a31fad9abf854e521e593f3ec8018ae6d))
 
-<<<<<<< HEAD
-=======
 	ROM_REGION( 0x4008, "pic16c74", 0 )
 	ROM_LOAD( "pic16c74.u39", 0x00000, 0x4008, CRC(9cb88e5b) SHA1(3c6b371efeda757f2bcab6c860e7585b628c210a))
 
->>>>>>> upstream/master
 	ROM_REGION( 0x080000, "oki", 0 ) /* samples are ok */
 	ROM_LOAD( "1.bin", 0x00000, 0x40000, CRC(6673de85) SHA1(df390cd6268efc0e743a9020f19bc0cbeb757cfa))
 
@@ -1059,12 +969,9 @@ ROM_START( croupiera )
 	ROM_LOAD16_BYTE( "2.bin", 0x00000, 0x20000, CRC(1677a2de) SHA1(4dcbb3c1ce9b65e06ba7e0cffa00c0c8016538f5)) // sldh
 	ROM_LOAD16_BYTE( "3.bin", 0x00001, 0x20000, CRC(11acaac2) SHA1(19e7bbbf4356fc9a866f9f36d0568c42d6a36c07)) // sldh
 
-<<<<<<< HEAD
-=======
 	ROM_REGION( 0x4008, "pic16c74", 0 )
 	ROM_LOAD( "pic16c74.u39", 0x00000, 0x4008, CRC(9cb88e5b) SHA1(3c6b371efeda757f2bcab6c860e7585b628c210a))
 
->>>>>>> upstream/master
 	ROM_REGION( 0x080000, "oki", 0 ) /* samples are ok */
 	ROM_LOAD( "1.bin", 0x00000, 0x40000, CRC(6673de85) SHA1(df390cd6268efc0e743a9020f19bc0cbeb757cfa))
 
@@ -1128,15 +1035,6 @@ ROM_END
 *        Game Drivers         *
 ******************************/
 
-<<<<<<< HEAD
-/*     YEAR  NAME       PARENT    MACHINE   INPUT     INIT           ROT    COMPANY            FULLNAME                               FLAGS                                          LAYOUT  */
-GAMEL( 1996, sderby,    0,        sderby,   sderby,   driver_device, 0,     ROT0, "Playmark", "Super Derby (v.07.03)",                0,                                             layout_sderby   )
-GAMEL( 1996, sderbya,   sderby,   sderbya,  sderbya,  driver_device, 0,     ROT0, "Playmark", "Super Derby (v.10.04)",                0,                                             layout_sderby   )
-GAMEL( 1996, spacewin,  0,        spacewin, spacewin, driver_device, 0,     ROT0, "Playmark", "Scacco Matto / Space Win",             0,                                             layout_spacewin )
-GAMEL( 1997, croupier,  0,        pmroulet, pmroulet, driver_device, 0,     ROT0, "Playmark", "Croupier (Playmark Roulette v.20.05)", MACHINE_UNEMULATED_PROTECTION | MACHINE_NOT_WORKING, layout_pmroulet )
-GAMEL( 1997, croupiera, croupier, pmroulet, pmroulet, driver_device, 0,     ROT0, "Playmark", "Croupier (Playmark Roulette v.09.04)", MACHINE_UNEMULATED_PROTECTION | MACHINE_NOT_WORKING, layout_pmroulet )
-GAME ( 1996, luckboom,  0,        luckboom, luckboom, driver_device, 0,     ROT0, "Playmark", "Lucky Boom",                           0 )
-=======
 //     YEAR  NAME       PARENT    MACHINE   INPUT     STATE         INIT   ROT   COMPANY     FULLNAME                                FLAGS                                                LAYOUT
 GAMEL( 1996, sderby,    0,        sderby,   sderby,   sderby_state, 0,     ROT0, "Playmark", "Super Derby (v.07.03)",                0,                                                   layout_sderby   )
 GAMEL( 1996, sderbya,   sderby,   sderbya,  sderbya,  sderby_state, 0,     ROT0, "Playmark", "Super Derby (v.10.04)",                0,                                                   layout_sderby   )
@@ -1145,4 +1043,3 @@ GAME ( 1996, shinygld,  0,        shinygld, shinygld, sderby_state, 0,     ROT0,
 GAMEL( 1997, croupier,  0,        pmroulet, pmroulet, sderby_state, 0,     ROT0, "Playmark", "Croupier (Playmark Roulette v.20.05)", MACHINE_UNEMULATED_PROTECTION | MACHINE_NOT_WORKING, layout_pmroulet )
 GAMEL( 1997, croupiera, croupier, pmroulet, pmroulet, sderby_state, 0,     ROT0, "Playmark", "Croupier (Playmark Roulette v.09.04)", MACHINE_UNEMULATED_PROTECTION | MACHINE_NOT_WORKING, layout_pmroulet )
 GAME ( 1996, luckboom,  0,        luckboom, luckboom, sderby_state, 0,     ROT0, "Playmark", "Lucky Boom",                           0                                                                    )
->>>>>>> upstream/master

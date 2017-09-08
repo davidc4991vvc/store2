@@ -6,10 +6,7 @@
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #include "includes/gottlieb.h"
 #include "video/resnet.h"
 
@@ -73,13 +70,8 @@ WRITE8_MEMBER(gottlieb_state::gottlieb_laserdisc_video_control_w)
 
 	/* bit 2 video enable (0 = black screen) */
 	/* bit 3 genlock control (1 = show laserdisc image) */
-<<<<<<< HEAD
-	m_laserdisc->overlay_enable((data & 0x04) ? TRUE : FALSE);
-	m_laserdisc->video_enable(((data & 0x0c) == 0x0c) ? TRUE : FALSE);
-=======
 	m_laserdisc->overlay_enable((data & 0x04) ? true : false);
 	m_laserdisc->video_enable(((data & 0x0c) == 0x0c) ? true : false);
->>>>>>> upstream/master
 
 	/* configure the palette if the laserdisc is enabled */
 	m_transparent0 = (data >> 3) & 1;
@@ -96,11 +88,7 @@ WRITE8_MEMBER(gottlieb_state::gottlieb_laserdisc_video_control_w)
 
 WRITE8_MEMBER(gottlieb_state::gottlieb_videoram_w)
 {
-<<<<<<< HEAD
-	UINT8 *videoram = m_videoram;
-=======
 	uint8_t *videoram = m_videoram;
->>>>>>> upstream/master
 	videoram[offset] = data;
 	m_bg_tilemap->mark_tile_dirty(offset);
 }
@@ -125,11 +113,7 @@ WRITE8_MEMBER(gottlieb_state::gottlieb_charram_w)
 
 TILE_GET_INFO_MEMBER(gottlieb_state::get_bg_tile_info)
 {
-<<<<<<< HEAD
-	UINT8 *videoram = m_videoram;
-=======
 	uint8_t *videoram = m_videoram;
->>>>>>> upstream/master
 	int code = videoram[tile_index];
 	if ((code & 0x80) == 0)
 		SET_TILE_INFO_MEMBER(m_gfxcharlo, code, 0, 0);
@@ -139,11 +123,7 @@ TILE_GET_INFO_MEMBER(gottlieb_state::get_bg_tile_info)
 
 TILE_GET_INFO_MEMBER(gottlieb_state::get_screwloo_bg_tile_info)
 {
-<<<<<<< HEAD
-	UINT8 *videoram = m_videoram;
-=======
 	uint8_t *videoram = m_videoram;
->>>>>>> upstream/master
 	int code = videoram[tile_index];
 	if ((code & 0xc0) == 0)
 		SET_TILE_INFO_MEMBER(m_gfxcharlo, code, 0, 0);
@@ -163,17 +143,10 @@ void gottlieb_state::video_start()
 			4, resistances, m_weights, 180, 0,
 			4, resistances, m_weights, 180, 0,
 			4, resistances, m_weights, 180, 0);
-<<<<<<< HEAD
-	m_transparent0 = FALSE;
-
-	/* configure the background tilemap */
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(gottlieb_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
-=======
 	m_transparent0 = false;
 
 	/* configure the background tilemap */
 	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(gottlieb_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
->>>>>>> upstream/master
 	m_bg_tilemap->set_transparent_pen(0);
 
 	m_gfxdecode->gfx(0)->set_source(m_charram);
@@ -195,17 +168,10 @@ VIDEO_START_MEMBER(gottlieb_state,screwloo)
 			4, resistances, m_weights, 180, 0,
 			4, resistances, m_weights, 180, 0,
 			4, resistances, m_weights, 180, 0);
-<<<<<<< HEAD
-	m_transparent0 = FALSE;
-
-	/* configure the background tilemap */
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(gottlieb_state::get_screwloo_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
-=======
 	m_transparent0 = false;
 
 	/* configure the background tilemap */
 	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(gottlieb_state::get_screwloo_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
->>>>>>> upstream/master
 	m_bg_tilemap->set_transparent_pen(0);
 
 	m_gfxdecode->gfx(0)->set_source(m_charram);
@@ -226,11 +192,7 @@ VIDEO_START_MEMBER(gottlieb_state,screwloo)
 
 void gottlieb_state::draw_sprites(bitmap_rgb32 &bitmap, const rectangle &cliprect)
 {
-<<<<<<< HEAD
-	UINT8 *spriteram = m_spriteram;
-=======
 	uint8_t *spriteram = m_spriteram;
->>>>>>> upstream/master
 	rectangle clip = cliprect;
 	int offs;
 
@@ -265,11 +227,7 @@ void gottlieb_state::draw_sprites(bitmap_rgb32 &bitmap, const rectangle &cliprec
  *
  *************************************/
 
-<<<<<<< HEAD
-UINT32 gottlieb_state::screen_update_gottlieb(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
-=======
 uint32_t gottlieb_state::screen_update_gottlieb(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	/* if the background has lower priority, render it first, else clear the screen */
 	if (!m_background_priority)

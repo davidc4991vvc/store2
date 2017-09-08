@@ -6,24 +6,14 @@
 
 TODO:
 - Ugly text flickering in various places, namely the text when you finish level 1.
-<<<<<<< HEAD
-  This is due of completely busted sprite limit hook-up. (check konicdev.c and MT #00185)
-=======
   This is due of completely busted sprite limit hook-up. (check k007121.cpp and MT #00185)
 - understand how the trackball really works for clone sets.
->>>>>>> upstream/master
 - it seems that to get correct target colors in firing range III we have to
   use the WRONG lookup table (the one for tiles instead of the one for
   sprites).
 - in combatscb, wrong sprite/char priority (see cpu head at beginning of arm
   wrestling, and heads in intermission after firing range III)
-<<<<<<< HEAD
-- hook up sound in bootleg (the current sound is a hack, making use of the
-  Konami ROMset)
-- understand how the trackball really works
-=======
 - improve sound hook up in bootleg.
->>>>>>> upstream/master
 - YM2203 pitch is wrong. Fixing it screws up the tempo.
 
   Update: 3MHz(24MHz/8) is the more appropriate clock speed for the 2203.
@@ -121,11 +111,7 @@ SOUND CPU:
 9000        uPD7759
 b000        uPD7759
 c000        uPD7759
-<<<<<<< HEAD
-d000        soundlatch_byte_r
-=======
 d000        soundlatch read
->>>>>>> upstream/master
 e000-e001   YM2203
 
 
@@ -135,12 +121,6 @@ Dip location and recommended settings verified with the US manual
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/m6809/hd6309.h"
-#include "cpu/z80/z80.h"
-#include "sound/2203intf.h"
-#include "includes/combatsc.h"
-=======
 #include "includes/combatsc.h"
 
 #include "cpu/m6809/hd6309.h"
@@ -148,7 +128,6 @@ Dip location and recommended settings verified with the US manual
 #include "machine/watchdog.h"
 #include "sound/2203intf.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 /*************************************
@@ -170,15 +149,6 @@ WRITE8_MEMBER(combatsc_state::combatsc_vreg_w)
 	}
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER(combatsc_state::combatscb_sh_irqtrigger_w)
-{
-	soundlatch_byte_w(space, offset, data);
-	m_audiocpu->set_input_line(INPUT_LINE_NMI, PULSE_LINE);
-}
-
-=======
->>>>>>> upstream/master
 READ8_MEMBER(combatsc_state::combatscb_io_r)
 {
 	static const char *const portnames[] = { "IN0", "IN1", "DSW1", "DSW2" };
@@ -232,11 +202,7 @@ WRITE8_MEMBER(combatsc_state::combatscb_io_w)
 	switch (offset)
 	{
 		case 0x400: combatscb_priority_w(space, 0, data); break;
-<<<<<<< HEAD
-		case 0x800: combatscb_sh_irqtrigger_w(space, 0, data); break;
-=======
 		case 0x800: m_soundlatch->write(space, offset, data); break;
->>>>>>> upstream/master
 		case 0xc00: combatsc_vreg_w(space, 0, data); break;
 		default: m_io_ram[offset] = data; break;
 	}
@@ -288,13 +254,8 @@ WRITE8_MEMBER(combatsc_state::combatsc_coin_counter_w)
 	/* b1: coin counter 2 */
 	/* b0: coin counter 1 */
 
-<<<<<<< HEAD
-	coin_counter_w(machine(), 0, data & 0x01);
-	coin_counter_w(machine(), 1, data & 0x02);
-=======
 	machine().bookkeeping().coin_counter_w(0, data & 0x01);
 	machine().bookkeeping().coin_counter_w(1, data & 0x02);
->>>>>>> upstream/master
 }
 
 READ8_MEMBER(combatsc_state::trackball_r)
@@ -302,22 +263,12 @@ READ8_MEMBER(combatsc_state::trackball_r)
 	if (offset == 0)
 	{
 		int i, dir[4];
-<<<<<<< HEAD
-		static const char *const tracknames[] = { "TRACK0_Y", "TRACK0_X", "TRACK1_Y", "TRACK1_X" };
-
-		for (i = 0; i < 4; i++)
-		{
-			UINT8 curr;
-
-			curr = read_safe(ioport(tracknames[i]), 0xff);
-=======
 
 		for (i = 0; i < 4; i++)
 		{
 			uint8_t curr;
 
 			curr = m_track_ports[i].read_safe(0xff);
->>>>>>> upstream/master
 
 			dir[i] = curr - m_pos[i];
 			m_sign[i] = dir[i] & 0x80;
@@ -383,14 +334,11 @@ WRITE8_MEMBER(combatsc_state::combatsc_portA_w)
 	/* unknown. always write 0 */
 }
 
-<<<<<<< HEAD
-=======
 // causes scores to disappear during fire ranges, either sprite busy flag or screen frame number related
 READ8_MEMBER(combatsc_state::unk_r)
 {
 	return 0; //m_screen->frame_number() & 1;
 }
->>>>>>> upstream/master
 
 /*************************************
  *
@@ -400,10 +348,7 @@ READ8_MEMBER(combatsc_state::unk_r)
 
 static ADDRESS_MAP_START( combatsc_map, AS_PROGRAM, 8, combatsc_state )
 	AM_RANGE(0x0000, 0x0007) AM_WRITE(combatsc_pf_control_w)
-<<<<<<< HEAD
-=======
 	AM_RANGE(0x001f, 0x001f) AM_READ(unk_r)
->>>>>>> upstream/master
 	AM_RANGE(0x0020, 0x005f) AM_READWRITE(combatsc_scrollram_r, combatsc_scrollram_w)
 //  AM_RANGE(0x0060, 0x00ff) AM_WRITEONLY                 /* RAM */
 
@@ -417,17 +362,10 @@ static ADDRESS_MAP_START( combatsc_map, AS_PROGRAM, 8, combatsc_state )
 	AM_RANGE(0x0404, 0x0407) AM_READ(trackball_r)           /* 1P & 2P controls / trackball */
 	AM_RANGE(0x0408, 0x0408) AM_WRITE(combatsc_coin_counter_w)  /* coin counters */
 	AM_RANGE(0x040c, 0x040c) AM_WRITE(combatsc_vreg_w)
-<<<<<<< HEAD
-	AM_RANGE(0x0410, 0x0410) AM_WRITE(combatsc_bankselect_w)
-	AM_RANGE(0x0414, 0x0414) AM_WRITE(soundlatch_byte_w)
-	AM_RANGE(0x0418, 0x0418) AM_WRITE(combatsc_sh_irqtrigger_w)
-	AM_RANGE(0x041c, 0x041c) AM_WRITE(watchdog_reset_w)         /* watchdog reset? */
-=======
 	AM_RANGE(0x0410, 0x0410) AM_READNOP AM_WRITE(combatsc_bankselect_w) // read is clr a (discarded)
 	AM_RANGE(0x0414, 0x0414) AM_DEVWRITE("soundlatch", generic_latch_8_device, write)
 	AM_RANGE(0x0418, 0x0418) AM_WRITE(combatsc_sh_irqtrigger_w)
 	AM_RANGE(0x041c, 0x041c) AM_DEVWRITE("watchdog", watchdog_timer_device, reset_w) /* watchdog reset? */
->>>>>>> upstream/master
 
 	AM_RANGE(0x0600, 0x06ff) AM_RAM_DEVWRITE("palette", palette_device, write_indirect) AM_SHARE("palette")
 	AM_RANGE(0x0800, 0x1fff) AM_RAM                             /* RAM */
@@ -455,23 +393,6 @@ static ADDRESS_MAP_START( combatsc_sound_map, AS_PROGRAM, 8, combatsc_state )
 	AM_RANGE(0xb000, 0xb000) AM_READ(combatsc_busy_r)                   /* upd7759 busy? */
 	AM_RANGE(0xc000, 0xc000) AM_WRITE(combatsc_voice_reset_w)           /* upd7759 reset? */
 
-<<<<<<< HEAD
-	AM_RANGE(0xd000, 0xd000) AM_READ(soundlatch_byte_r)                             /* soundlatch_byte_r? */
-	AM_RANGE(0xe000, 0xe001) AM_DEVREADWRITE("ymsnd", ym2203_device, read, write)   /* YM 2203 intercepted */
-ADDRESS_MAP_END
-
-WRITE8_MEMBER(combatsc_state::combatscb_dac_w)
-{
-	if(data & 0x60)
-		printf("%02x\n",data);
-
-	membank("bl_abank")->set_entry((data & 0x80) >> 7);
-
-	//m_msm5205->reset_w(BIT(data, 4));
-	m_msm5205->data_w(data & 0x0f);
-	m_msm5205->vclk_w(1);
-	m_msm5205->vclk_w(0);
-=======
 	AM_RANGE(0xd000, 0xd000) AM_DEVREAD("soundlatch", generic_latch_8_device, read) /* soundlatch read? */
 	AM_RANGE(0xe000, 0xe001) AM_DEVREADWRITE("ymsnd", ym2203_device, read, write)   /* YM 2203 intercepted */
 ADDRESS_MAP_END
@@ -487,7 +408,6 @@ WRITE8_MEMBER(combatsc_state::combatscb_msm_w)
 WRITE8_MEMBER(combatsc_state::combatscb_sound_irq_ack)
 {
 	m_audiocpu->set_input_line(0, CLEAR_LINE);
->>>>>>> upstream/master
 }
 
 static ADDRESS_MAP_START( combatscb_sound_map, AS_PROGRAM, 8, combatsc_state )
@@ -495,14 +415,9 @@ static ADDRESS_MAP_START( combatscb_sound_map, AS_PROGRAM, 8, combatsc_state )
 	AM_RANGE(0x8000, 0x87ff) AM_RAM                                     /* RAM */
 	AM_RANGE(0x9000, 0x9001) AM_DEVREADWRITE("ymsnd", ym2203_device, read, write)   /* YM 2203 */
 	AM_RANGE(0x9008, 0x9009) AM_DEVREAD("ymsnd", ym2203_device, read)               /* ??? */
-<<<<<<< HEAD
-	AM_RANGE(0x9800, 0x9800) AM_WRITE(combatscb_dac_w)
-	AM_RANGE(0xa000, 0xa000) AM_READ(soundlatch_byte_r)                     /* soundlatch_byte_r? */
-=======
 	AM_RANGE(0x9800, 0x9800) AM_WRITE(combatscb_msm_w)
 	AM_RANGE(0xa000, 0xa000) AM_DEVREAD("soundlatch", generic_latch_8_device, read) /* soundlatch read? */
 	AM_RANGE(0xa800, 0xa800) AM_WRITE(combatscb_sound_irq_ack)
->>>>>>> upstream/master
 	AM_RANGE(0xc000, 0xffff) AM_ROMBANK("bl_abank")
 ADDRESS_MAP_END
 
@@ -726,21 +641,13 @@ GFXDECODE_END
 
 MACHINE_START_MEMBER(combatsc_state,combatsc)
 {
-<<<<<<< HEAD
-	UINT8 *MEM = memregion("maincpu")->base() + 0x38000;
-=======
 	uint8_t *MEM = memregion("maincpu")->base() + 0x38000;
->>>>>>> upstream/master
 
 	m_io_ram  = MEM + 0x0000;
 	m_page[0] = MEM + 0x4000;
 	m_page[1] = MEM + 0x6000;
 
-<<<<<<< HEAD
-	m_interleave_timer = machine().scheduler().timer_alloc(FUNC_NULL);
-=======
 	m_interleave_timer = machine().scheduler().timer_alloc(timer_expired_delegate());
->>>>>>> upstream/master
 
 	membank("bank1")->configure_entries(0, 10, memregion("maincpu")->base() + 0x10000, 0x4000);
 
@@ -785,11 +692,7 @@ void combatsc_state::machine_reset()
 }
 
 /* combat school (original) */
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( combatsc, combatsc_state )
-=======
 static MACHINE_CONFIG_START( combatsc )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", HD6309, 3000000*4)  /* 3 MHz? */
@@ -803,14 +706,6 @@ static MACHINE_CONFIG_START( combatsc )
 
 	MCFG_MACHINE_START_OVERRIDE(combatsc_state,combatsc)
 
-<<<<<<< HEAD
-	/* video hardware */
-	MCFG_SCREEN_ADD("screen", RASTER)
-	MCFG_SCREEN_REFRESH_RATE(60)
-	MCFG_SCREEN_VBLANK_TIME(ATTOSECONDS_IN_USEC(2500) /* not accurate */)
-	MCFG_SCREEN_SIZE(32*8, 32*8)
-	MCFG_SCREEN_VISIBLE_AREA(0*8, 32*8-1, 2*8, 30*8-1)
-=======
 	MCFG_WATCHDOG_ADD("watchdog")
 
 	/* video hardware */
@@ -820,7 +715,6 @@ static MACHINE_CONFIG_START( combatsc )
 //  MCFG_SCREEN_SIZE(32*8, 32*8)
 //  MCFG_SCREEN_VISIBLE_AREA(0*8, 32*8-1, 2*8, 30*8-1)
 	MCFG_SCREEN_RAW_PARAMS(XTAL_24MHz/3, 528, 0, 256, 256, 16, 240) // not accurate, assuming same to other Konami games (59.17)
->>>>>>> upstream/master
 	MCFG_SCREEN_UPDATE_DRIVER(combatsc_state, screen_update_combatsc)
 	MCFG_SCREEN_PALETTE("palette")
 
@@ -840,11 +734,8 @@ static MACHINE_CONFIG_START( combatsc )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 
->>>>>>> upstream/master
 	MCFG_SOUND_ADD("ymsnd", YM2203, 3000000)
 	MCFG_AY8910_PORT_A_WRITE_CB(WRITE8(combatsc_state, combatsc_portA_w))
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.20)
@@ -855,11 +746,7 @@ MACHINE_CONFIG_END
 
 
 /* combat school (bootleg on different hardware) */
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( combatscb, combatsc_state )
-=======
 static MACHINE_CONFIG_START( combatscb )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", HD6309, 3000000*4)  /* 3 MHz? */
@@ -868,10 +755,6 @@ static MACHINE_CONFIG_START( combatscb )
 
 	MCFG_CPU_ADD("audiocpu", Z80,3579545)   /* 3.579545 MHz */
 	MCFG_CPU_PROGRAM_MAP(combatscb_sound_map)
-<<<<<<< HEAD
-	MCFG_CPU_PERIODIC_INT_DRIVER(combatsc_state, irq0_line_hold, 3800) // controls BGM tempo
-=======
->>>>>>> upstream/master
 
 	MCFG_QUANTUM_TIME(attotime::from_hz(1200))
 
@@ -896,14 +779,6 @@ static MACHINE_CONFIG_START( combatscb )
 
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-	MCFG_SOUND_ADD("ymsnd", YM2203, 3000000)
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.20)
-
-	MCFG_SOUND_ADD("msm5205", MSM5205, 384000)
-	MCFG_MSM5205_PRESCALER_SELECTOR(MSM5205_SEX_4B)  /* 8KHz playback ?    */
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.30)
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 	MCFG_GENERIC_LATCH_DATA_PENDING_CB(INPUTLINE("audiocpu", INPUT_LINE_NMI))
 
@@ -914,7 +789,6 @@ static MACHINE_CONFIG_START( combatscb )
 	MCFG_MSM5205_PRESCALER_SELECTOR(S96_4B)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.30)
 	MCFG_MSM5205_VCK_CALLBACK(ASSERTLINE("audiocpu", 0))
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
@@ -1126,18 +1000,9 @@ DRIVER_INIT_MEMBER(combatsc_state,combatsc)
  *
  *************************************/
 
-<<<<<<< HEAD
-GAME( 1988, combatsc,  0,        combatsc,  combatsc, combatsc_state,  combatsc,  ROT0, "Konami",  "Combat School (joystick)", 0 )
-GAME( 1987, combatsct, combatsc, combatsc,  combatsct, driver_device, 0,         ROT0, "Konami",  "Combat School (trackball)", 0 )
-GAME( 1987, combatscj, combatsc, combatsc,  combatsct, driver_device, 0,         ROT0, "Konami",  "Combat School (Japan trackball)", 0 )
-GAME( 1987, bootcamp,  combatsc, combatsc,  combatsct, driver_device, 0,         ROT0, "Konami",  "Boot Camp (set 1)", 0 )
-GAME( 1987, bootcampa, combatsc, combatsc,  combatsct, driver_device, 0,         ROT0, "Konami",  "Boot Camp (set 2)", 0 )
-GAME( 1988, combatscb, combatsc, combatscb, combatscb, driver_device, 0,         ROT0, "bootleg", "Combat School (bootleg)", MACHINE_IMPERFECT_COLORS | MACHINE_IMPERFECT_SOUND )
-=======
 GAME( 1988, combatsc,  0,        combatsc,  combatsc,  combatsc_state, combatsc,  ROT0, "Konami",  "Combat School (joystick)",        0 )
 GAME( 1987, combatsct, combatsc, combatsc,  combatsct, combatsc_state, 0,         ROT0, "Konami",  "Combat School (trackball)",       MACHINE_NOT_WORKING )
 GAME( 1987, combatscj, combatsc, combatsc,  combatsct, combatsc_state, 0,         ROT0, "Konami",  "Combat School (Japan trackball)", MACHINE_NOT_WORKING )
 GAME( 1987, bootcamp,  combatsc, combatsc,  combatsct, combatsc_state, 0,         ROT0, "Konami",  "Boot Camp (set 1)",               MACHINE_NOT_WORKING )
 GAME( 1987, bootcampa, combatsc, combatsc,  combatsct, combatsc_state, 0,         ROT0, "Konami",  "Boot Camp (set 2)",               MACHINE_NOT_WORKING )
 GAME( 1988, combatscb, combatsc, combatscb, combatscb, combatsc_state, 0,         ROT0, "bootleg", "Combat School (bootleg)",         MACHINE_IMPERFECT_COLORS | MACHINE_IMPERFECT_SOUND )
->>>>>>> upstream/master

@@ -11,12 +11,8 @@ struct CCompressProgressWrap
   ICompressProgress p;
   ICompressProgressInfo *Progress;
   HRESULT Res;
-<<<<<<< HEAD
-  CCompressProgressWrap(ICompressProgressInfo *progress);
-=======
   
   CCompressProgressWrap(ICompressProgressInfo *progress) throw();
->>>>>>> upstream/master
 };
 
 struct CSeqInStreamWrap
@@ -24,13 +20,9 @@ struct CSeqInStreamWrap
   ISeqInStream p;
   ISequentialInStream *Stream;
   HRESULT Res;
-<<<<<<< HEAD
-  CSeqInStreamWrap(ISequentialInStream *stream);
-=======
   UInt64 Processed;
   
   CSeqInStreamWrap(ISequentialInStream *stream) throw();
->>>>>>> upstream/master
 };
 
 struct CSeekInStreamWrap
@@ -38,12 +30,8 @@ struct CSeekInStreamWrap
   ISeekInStream p;
   IInStream *Stream;
   HRESULT Res;
-<<<<<<< HEAD
-  CSeekInStreamWrap(IInStream *stream);
-=======
   
   CSeekInStreamWrap(IInStream *stream) throw();
->>>>>>> upstream/master
 };
 
 struct CSeqOutStreamWrap
@@ -52,18 +40,11 @@ struct CSeqOutStreamWrap
   ISequentialOutStream *Stream;
   HRESULT Res;
   UInt64 Processed;
-<<<<<<< HEAD
-  CSeqOutStreamWrap(ISequentialOutStream *stream);
-};
-
-HRESULT SResToHRESULT(SRes res);
-=======
   
   CSeqOutStreamWrap(ISequentialOutStream *stream) throw();
 };
 
 HRESULT SResToHRESULT(SRes res) throw();
->>>>>>> upstream/master
 
 struct CByteInBufWrap
 {
@@ -78,15 +59,9 @@ struct CByteInBufWrap
   HRESULT Res;
   
   CByteInBufWrap();
-<<<<<<< HEAD
-  ~CByteInBufWrap() { Free();  }
-  void Free();
-  bool Alloc(UInt32 size);
-=======
   ~CByteInBufWrap() { Free(); }
   void Free() throw();
   bool Alloc(UInt32 size) throw();
->>>>>>> upstream/master
   void Init()
   {
     Lim = Cur = Buf;
@@ -95,11 +70,7 @@ struct CByteInBufWrap
     Res = S_OK;
   }
   UInt64 GetProcessed() const { return Processed + (Cur - Buf); }
-<<<<<<< HEAD
-  Byte ReadByteFromNewBlock();
-=======
   Byte ReadByteFromNewBlock() throw();
->>>>>>> upstream/master
   Byte ReadByte()
   {
     if (Cur != Lim)
@@ -119,17 +90,10 @@ struct CByteOutBufWrap
   UInt64 Processed;
   HRESULT Res;
   
-<<<<<<< HEAD
-  CByteOutBufWrap();
-  ~CByteOutBufWrap() { Free();  }
-  void Free();
-  bool Alloc(size_t size);
-=======
   CByteOutBufWrap() throw();
   ~CByteOutBufWrap() { Free(); }
   void Free() throw();
   bool Alloc(size_t size) throw();
->>>>>>> upstream/master
   void Init()
   {
     Cur = Buf;
@@ -138,11 +102,7 @@ struct CByteOutBufWrap
     Res = S_OK;
   }
   UInt64 GetProcessed() const { return Processed + (Cur - Buf); }
-<<<<<<< HEAD
-  HRESULT Flush();
-=======
   HRESULT Flush() throw();
->>>>>>> upstream/master
   void WriteByte(Byte b)
   {
     *Cur++ = b;

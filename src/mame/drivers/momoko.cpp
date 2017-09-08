@@ -46,11 +46,6 @@ Stephh's notes (based on the game Z80 code and some tests) :
 *****************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/z80/z80.h"
-#include "sound/2203intf.h"
-#include "includes/momoko.h"
-=======
 #include "includes/momoko.h"
 
 #include "cpu/z80/z80.h"
@@ -59,7 +54,6 @@ Stephh's notes (based on the game Z80 code and some tests) :
 #include "sound/2203intf.h"
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 WRITE8_MEMBER(momoko_state::momoko_bg_read_bank_w)
@@ -75,13 +69,8 @@ static ADDRESS_MAP_START( momoko_map, AS_PROGRAM, 8, momoko_state )
 	AM_RANGE(0xd064, 0xd0ff) AM_RAM AM_SHARE("spriteram")
 	AM_RANGE(0xd400, 0xd400) AM_READ_PORT("IN0") AM_WRITENOP /* interrupt ack? */
 	AM_RANGE(0xd402, 0xd402) AM_READ_PORT("IN1") AM_WRITE(momoko_flipscreen_w)
-<<<<<<< HEAD
-	AM_RANGE(0xd404, 0xd404) AM_WRITE(watchdog_reset_w)
-	AM_RANGE(0xd406, 0xd406) AM_READ_PORT("DSW0") AM_WRITE(soundlatch_byte_w)
-=======
 	AM_RANGE(0xd404, 0xd404) AM_DEVWRITE("watchdog", watchdog_timer_device, reset_w)
 	AM_RANGE(0xd406, 0xd406) AM_READ_PORT("DSW0") AM_DEVWRITE("soundlatch", generic_latch_8_device, write)
->>>>>>> upstream/master
 	AM_RANGE(0xd407, 0xd407) AM_READ_PORT("DSW1")
 	AM_RANGE(0xd800, 0xdbff) AM_RAM_DEVWRITE("palette", palette_device, write) AM_SHARE("palette")
 	AM_RANGE(0xdc00, 0xdc00) AM_WRITE(momoko_fg_scrolly_w)
@@ -234,11 +223,7 @@ GFXDECODE_END
 
 void momoko_state::machine_start()
 {
-<<<<<<< HEAD
-	UINT8 *BG_MAP = memregion("user1")->base();
-=======
 	uint8_t *BG_MAP = memregion("user1")->base();
->>>>>>> upstream/master
 
 	membank("bank1")->configure_entries(0, 32, &BG_MAP[0x0000], 0x1000);
 
@@ -268,18 +253,6 @@ void momoko_state::machine_reset()
 	m_flipscreen = 0;
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( momoko, momoko_state )
-
-	/* basic machine hardware */
-	MCFG_CPU_ADD("maincpu", Z80, 5000000)   /* 5.0MHz */
-	MCFG_CPU_PROGRAM_MAP(momoko_map)
-	MCFG_CPU_VBLANK_INT_DRIVER("screen", momoko_state,  irq0_line_hold)
-
-	MCFG_CPU_ADD("audiocpu", Z80, 2500000)  /* 2.5MHz */
-	MCFG_CPU_PROGRAM_MAP(momoko_sound_map)
-
-=======
 static MACHINE_CONFIG_START( momoko )
 
 	/* basic machine hardware */
@@ -292,7 +265,6 @@ static MACHINE_CONFIG_START( momoko )
 
 	MCFG_WATCHDOG_ADD("watchdog")
 
->>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE(60)
@@ -310,25 +282,16 @@ static MACHINE_CONFIG_START( momoko )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-	MCFG_SOUND_ADD("ym1", YM2203, 1250000)
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 
 	MCFG_SOUND_ADD("ym1", YM2203, XTAL_10MHz/8)
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(0, "mono", 0.15)
 	MCFG_SOUND_ROUTE(1, "mono", 0.15)
 	MCFG_SOUND_ROUTE(2, "mono", 0.15)
 	MCFG_SOUND_ROUTE(3, "mono", 0.40)
 
-<<<<<<< HEAD
-	MCFG_SOUND_ADD("ym2", YM2203, 1250000)
-	MCFG_AY8910_PORT_A_READ_CB(READ8(driver_device, soundlatch_byte_r))
-=======
 	MCFG_SOUND_ADD("ym2", YM2203, XTAL_10MHz/8)
 	MCFG_AY8910_PORT_A_READ_CB(DEVREAD8("soundlatch", generic_latch_8_device, read))
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(0, "mono", 0.15)
 	MCFG_SOUND_ROUTE(1, "mono", 0.15)
 	MCFG_SOUND_ROUTE(2, "mono", 0.15)
@@ -339,41 +302,6 @@ MACHINE_CONFIG_END
 
 ROM_START( momoko )
 	ROM_REGION( 0x10000, "maincpu", 0 ) /* main CPU */
-<<<<<<< HEAD
-	ROM_LOAD( "momoko03.bin", 0x0000,  0x8000, CRC(386e26ed) SHA1(ad746ed1b87bafc5b4df9a28aade58cf894f4e7b) )
-	ROM_LOAD( "momoko02.bin", 0x8000,  0x4000, CRC(4255e351) SHA1(27a0e8d8aea223d2128139582e3b66106f3608ef) )
-
-	ROM_REGION( 0x10000, "audiocpu", 0 ) /* sound CPU */
-	ROM_LOAD( "momoko01.bin", 0x0000,  0x8000, CRC(e8a6673c) SHA1(f8984b063929305c9058801202405e6d45254b5b) )
-
-	ROM_REGION( 0x2000, "gfx1", 0 ) /* text */
-	ROM_LOAD( "momoko13.bin", 0x0000,  0x2000, CRC(2745cf5a) SHA1(3db7c6319cac63df1620ef25508c5c45eaa4b141) )
-
-	ROM_REGION( 0x2000, "gfx3", 0 ) /* FG */
-	ROM_LOAD( "momoko14.bin", 0x0000,  0x2000, CRC(cfccca05) SHA1(4ecff488a37ac76ecb9ecf8980bea30dcc9c9951) )
-
-	ROM_REGION( 0x10000, "gfx4", 0 ) /* sprite */
-	ROM_LOAD16_BYTE( "momoko16.bin", 0x0000,  0x8000, CRC(fc6876fc) SHA1(b2d06bc01ef9f4db9bf8902d67f31ccbb0fea61a) )
-	ROM_LOAD16_BYTE( "momoko17.bin", 0x0001,  0x8000, CRC(45dc0247) SHA1(1b2bd4197ab7d237966e037c249b5bd623646c0b) )
-
-	ROM_REGION( 0x20000, "gfx2", 0 ) /* BG */
-	ROM_LOAD16_BYTE( "momoko09.bin", 0x00000, 0x8000, CRC(9f5847c7) SHA1(6bc9a00622d8a23446294a8d5d467375c5719125) )
-	ROM_LOAD16_BYTE( "momoko11.bin", 0x00001, 0x8000, CRC(9c9fbd43) SHA1(7adfd7ea3dd6745c14e719883f1a86e0a3b3c0ff) )
-	ROM_LOAD16_BYTE( "momoko10.bin", 0x10000, 0x8000, CRC(ae17e74b) SHA1(f52657ea6b6ac518b70fd7b811d9699da27f67d9) )
-	ROM_LOAD16_BYTE( "momoko12.bin", 0x10001, 0x8000, CRC(1e29c9c4) SHA1(d78f102cefc9852b529dd317a76c7003ec2ad3d5) )
-
-	ROM_REGION( 0x20000, "user1", 0 ) /* BG map */
-	ROM_LOAD( "momoko04.bin", 0x0000,  0x8000, CRC(3ab3c2c3) SHA1(d4a0d7f83bf64769e90a2c264c6114ac308cb8b5) )
-	ROM_LOAD( "momoko05.bin", 0x8000,  0x8000, CRC(757cdd2b) SHA1(3471b42dc6458a18894dbd0638f4fe43c86dd70d) )
-	ROM_LOAD( "momoko06.bin", 0x10000, 0x8000, CRC(20cacf8b) SHA1(e2b39abfc960e1c472e2bcf0cf06825c39941c03) )
-	ROM_LOAD( "momoko07.bin", 0x18000, 0x8000, CRC(b94b38db) SHA1(9c9e45bbeca7b6b8b0051b144fb31fceaf5d6906) )
-
-	ROM_REGION( 0x2000, "user2", 0 ) /* BG color/priority table */
-	ROM_LOAD( "momoko08.bin", 0x0000,  0x2000, CRC(69b41702) SHA1(21b33b243dd6eaec8d41d9fd4d9e7faf2bd7f4d2) )
-
-	ROM_REGION( 0x4000, "user3", 0 ) /* FG map */
-	ROM_LOAD( "momoko15.bin", 0x0000,  0x4000, CRC(8028f806) SHA1(c7450d48803082f64af67fe752b6f49b71b6ff48) )
-=======
 	ROM_LOAD( "momoko03.m6", 0x0000,  0x8000, CRC(386e26ed) SHA1(ad746ed1b87bafc5b4df9a28aade58cf894f4e7b) ) // age progression text in Japanese
 	ROM_LOAD( "momoko02.m5", 0x8000,  0x4000, CRC(4255e351) SHA1(27a0e8d8aea223d2128139582e3b66106f3608ef) )
 
@@ -489,17 +417,12 @@ ROM_START( momokob ) // bootleg board, almost exact copy of an original one
 
 	ROM_REGION( 0x4000, "user3", 0 ) /* FG map */
 	ROM_LOAD( "momoko15.k2", 0x0000,  0x4000, CRC(8028f806) SHA1(c7450d48803082f64af67fe752b6f49b71b6ff48) )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x0120, "proms", 0 ) /* TEXT color */
 	ROM_LOAD( "momoko-c.bin", 0x0000,  0x0100, CRC(f35ccae0) SHA1(60b99dd3c96637dacba7e96a143b1a2d6ffd28b9) )
 	ROM_LOAD( "momoko-b.bin", 0x0100,  0x0020, CRC(427b0e5c) SHA1(aa2797b899571527cc96013fd3420b841954ee67) )
 ROM_END
 
-<<<<<<< HEAD
-GAME( 1986, momoko, 0, momoko, momoko, driver_device, 0, ROT0, "Jaleco", "Momoko 120%", MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1986, momoko,       0, momoko, momoko, momoko_state, 0, ROT0, "Jaleco",  "Momoko 120% (Japanese text)", MACHINE_SUPPORTS_SAVE )
 GAME( 1986, momokoe, momoko, momoko, momoko, momoko_state, 0, ROT0, "Jaleco",  "Momoko 120% (English text)",  MACHINE_SUPPORTS_SAVE )
 GAME( 1986, momokob, momoko, momoko, momoko, momoko_state, 0, ROT0, "bootleg", "Momoko 120% (bootleg)",       MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

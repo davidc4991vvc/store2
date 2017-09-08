@@ -22,18 +22,6 @@
 
 #define ARCOMPACT_OPERATION ((op & 0xf800) >> 11)
 
-<<<<<<< HEAD
-extern char *output;
-
-CPU_DISASSEMBLE(arcompact)
-{
-	int size = 2;
-
-	UINT32 op = oprom[0] | (oprom[1] << 8);
-	output = buffer;
-
-	UINT8 instruction = ARCOMPACT_OPERATION;
-=======
 CPU_DISASSEMBLE(arcompact)
 {
 	int size;
@@ -41,7 +29,6 @@ CPU_DISASSEMBLE(arcompact)
 	uint32_t op = oprom[0] | (oprom[1] << 8);
 
 	uint8_t instruction = ARCOMPACT_OPERATION;
->>>>>>> upstream/master
 
 	if (instruction < 0x0c)
 	{

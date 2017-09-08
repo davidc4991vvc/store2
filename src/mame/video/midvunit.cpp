@@ -47,11 +47,7 @@ void midvunit_state::device_timer(emu_timer &timer, device_timer_id id, int para
 		scanline_timer_cb(ptr, param);
 		break;
 	default:
-<<<<<<< HEAD
-		assert_always(FALSE, "Unknown id in midvunit_state::device_timer");
-=======
 		assert_always(false, "Unknown id in midvunit_state::device_timer");
->>>>>>> upstream/master
 	}
 }
 
@@ -74,32 +70,20 @@ void midvunit_state::video_start()
 {
 	m_scanline_timer = timer_alloc(TIMER_SCANLINE);
 
-<<<<<<< HEAD
-	m_poly = auto_alloc(machine(), midvunit_renderer(*this));
-=======
 	m_poly = std::make_unique<midvunit_renderer>(*this);
->>>>>>> upstream/master
 
 	save_item(NAME(m_video_regs));
 	save_item(NAME(m_dma_data));
 	save_item(NAME(m_dma_data_index));
 	save_item(NAME(m_page_control));
 
-<<<<<<< HEAD
-	m_video_changed = TRUE;
-=======
 	m_video_changed = true;
->>>>>>> upstream/master
 	machine().save().register_postload(save_prepost_delegate(FUNC(midvunit_state::postload), this));
 }
 
 void midvunit_state::postload()
 {
-<<<<<<< HEAD
-	m_video_changed = TRUE;
-=======
 	m_video_changed = true;
->>>>>>> upstream/master
 }
 
 /*************************************
@@ -108,19 +92,11 @@ void midvunit_state::postload()
  *
  *************************************/
 
-<<<<<<< HEAD
-void midvunit_renderer::render_flat(INT32 scanline, const extent_t &extent, const midvunit_object_data &objectdata, int threadid)
-{
-	UINT16 pixdata = objectdata.pixdata;
-	int xstep = objectdata.dither + 1;
-	UINT16 *dest = objectdata.destbase + scanline * 512;
-=======
 void midvunit_renderer::render_flat(int32_t scanline, const extent_t &extent, const midvunit_object_data &objectdata, int threadid)
 {
 	uint16_t pixdata = objectdata.pixdata;
 	int xstep = objectdata.dither + 1;
 	uint16_t *dest = objectdata.destbase + scanline * 512;
->>>>>>> upstream/master
 	int startx = extent.startx;
 	int x;
 
@@ -147,20 +123,6 @@ void midvunit_renderer::render_flat(int32_t scanline, const extent_t &extent, co
  *
  *************************************/
 
-<<<<<<< HEAD
-void midvunit_renderer::render_tex(INT32 scanline, const extent_t &extent, const midvunit_object_data &objectdata, int threadid)
-{
-	UINT16 pixdata = objectdata.pixdata;
-	const UINT8 *texbase = objectdata.texbase;
-	int xstep = objectdata.dither + 1;
-	UINT16 *dest = objectdata.destbase + scanline * 512;
-	int startx = extent.startx;
-	int stopx = extent.stopx;
-	INT32 u = extent.param[0].start;
-	INT32 v = extent.param[1].start;
-	INT32 dudx = extent.param[0].dpdx;
-	INT32 dvdx = extent.param[1].dpdx;
-=======
 void midvunit_renderer::render_tex(int32_t scanline, const extent_t &extent, const midvunit_object_data &objectdata, int threadid)
 {
 	uint16_t pixdata = objectdata.pixdata;
@@ -173,7 +135,6 @@ void midvunit_renderer::render_tex(int32_t scanline, const extent_t &extent, con
 	int32_t v = extent.param[1].start;
 	int32_t dudx = extent.param[0].dpdx;
 	int32_t dvdx = extent.param[1].dpdx;
->>>>>>> upstream/master
 	int x;
 
 	/* if dithering, we advance by 2x; also ensure that we start on an appropriate pixel */
@@ -199,20 +160,6 @@ void midvunit_renderer::render_tex(int32_t scanline, const extent_t &extent, con
 }
 
 
-<<<<<<< HEAD
-void midvunit_renderer::render_textrans(INT32 scanline, const extent_t &extent, const midvunit_object_data &objectdata, int threadid)
-{
-	UINT16 pixdata = objectdata.pixdata;
-	const UINT8 *texbase = objectdata.texbase;
-	int xstep = objectdata.dither + 1;
-	UINT16 *dest = objectdata.destbase + scanline * 512;
-	int startx = extent.startx;
-	int stopx = extent.stopx;
-	INT32 u = extent.param[0].start;
-	INT32 v = extent.param[1].start;
-	INT32 dudx = extent.param[0].dpdx;
-	INT32 dvdx = extent.param[1].dpdx;
-=======
 void midvunit_renderer::render_textrans(int32_t scanline, const extent_t &extent, const midvunit_object_data &objectdata, int threadid)
 {
 	uint16_t pixdata = objectdata.pixdata;
@@ -225,7 +172,6 @@ void midvunit_renderer::render_textrans(int32_t scanline, const extent_t &extent
 	int32_t v = extent.param[1].start;
 	int32_t dudx = extent.param[0].dpdx;
 	int32_t dvdx = extent.param[1].dpdx;
->>>>>>> upstream/master
 	int x;
 
 	/* if dithering, we advance by 2x; also ensure that we start on an appropriate pixel */
@@ -244,11 +190,7 @@ void midvunit_renderer::render_textrans(int32_t scanline, const extent_t &extent
 	/* general case; render every non-zero texel */
 	for (x = startx; x < stopx; x += xstep)
 	{
-<<<<<<< HEAD
-		UINT8 pix = texbase[((v >> 8) & 0xff00) + (u >> 16)];
-=======
 		uint8_t pix = texbase[((v >> 8) & 0xff00) + (u >> 16)];
->>>>>>> upstream/master
 		if (pix != 0)
 			dest[x] = pixdata + pix;
 		u += dudx;
@@ -257,20 +199,6 @@ void midvunit_renderer::render_textrans(int32_t scanline, const extent_t &extent
 }
 
 
-<<<<<<< HEAD
-void midvunit_renderer::render_textransmask(INT32 scanline, const extent_t &extent, const midvunit_object_data &objectdata, int threadid)
-{
-	UINT16 pixdata = objectdata.pixdata;
-	const UINT8 *texbase = objectdata.texbase;
-	int xstep = objectdata.dither + 1;
-	UINT16 *dest = objectdata.destbase + scanline * 512;
-	int startx = extent.startx;
-	int stopx = extent.stopx;
-	INT32 u = extent.param[0].start;
-	INT32 v = extent.param[1].start;
-	INT32 dudx = extent.param[0].dpdx;
-	INT32 dvdx = extent.param[1].dpdx;
-=======
 void midvunit_renderer::render_textransmask(int32_t scanline, const extent_t &extent, const midvunit_object_data &objectdata, int threadid)
 {
 	uint16_t pixdata = objectdata.pixdata;
@@ -283,7 +211,6 @@ void midvunit_renderer::render_textransmask(int32_t scanline, const extent_t &ex
 	int32_t v = extent.param[1].start;
 	int32_t dudx = extent.param[0].dpdx;
 	int32_t dvdx = extent.param[1].dpdx;
->>>>>>> upstream/master
 	int x;
 
 	/* if dithering, we advance by 2x; also ensure that we start on an appropriate pixel */
@@ -302,11 +229,7 @@ void midvunit_renderer::render_textransmask(int32_t scanline, const extent_t &ex
 	/* general case; every non-zero texel renders pixdata */
 	for (x = startx; x < stopx; x += xstep)
 	{
-<<<<<<< HEAD
-		UINT8 pix = texbase[((v >> 8) & 0xff00) + (u >> 16)];
-=======
 		uint8_t pix = texbase[((v >> 8) & 0xff00) + (u >> 16)];
->>>>>>> upstream/master
 		if (pix != 0)
 			dest[x] = pixdata;
 		u += dudx;
@@ -326,11 +249,7 @@ void midvunit_renderer::make_vertices_inclusive(vertex_t *vert)
 {
 	/* build up a mask of right and bottom points */
 	/* note we assume clockwise orientation here */
-<<<<<<< HEAD
-	UINT8 rmask = 0, bmask = 0, eqmask = 0;
-=======
 	uint8_t rmask = 0, bmask = 0, eqmask = 0;
->>>>>>> upstream/master
 	for (int vnum = 0; vnum < 4; vnum++)
 	{
 		vertex_t *currv = &vert[vnum];
@@ -376,20 +295,6 @@ void midvunit_renderer::process_dma_queue()
 {
 	/* if we're rendering to the same page we're viewing, it has changed */
 	if ((((m_state.m_page_control >> 2) ^ m_state.m_page_control) & 1) == 0 || WATCH_RENDER)
-<<<<<<< HEAD
-		m_state.m_video_changed = TRUE;
-
-	/* fill in the vertex data */
-	vertex_t vert[4];
-	vert[0].x = (float)(INT16)m_state.m_dma_data[2] + 0.5f;
-	vert[0].y = (float)(INT16)m_state.m_dma_data[3] + 0.5f;
-	vert[1].x = (float)(INT16)m_state.m_dma_data[4] + 0.5f;
-	vert[1].y = (float)(INT16)m_state.m_dma_data[5] + 0.5f;
-	vert[2].x = (float)(INT16)m_state.m_dma_data[6] + 0.5f;
-	vert[2].y = (float)(INT16)m_state.m_dma_data[7] + 0.5f;
-	vert[3].x = (float)(INT16)m_state.m_dma_data[8] + 0.5f;
-	vert[3].y = (float)(INT16)m_state.m_dma_data[9] + 0.5f;
-=======
 		m_state.m_video_changed = true;
 
 	/* fill in the vertex data */
@@ -402,17 +307,12 @@ void midvunit_renderer::process_dma_queue()
 	vert[2].y = (float)(int16_t)m_state.m_dma_data[7] + 0.5f;
 	vert[3].x = (float)(int16_t)m_state.m_dma_data[8] + 0.5f;
 	vert[3].y = (float)(int16_t)m_state.m_dma_data[9] + 0.5f;
->>>>>>> upstream/master
 
 	/* make the vertices inclusive of right/bottom points */
 	make_vertices_inclusive(vert);
 
 	/* set the palette base */
-<<<<<<< HEAD
-	UINT16 pixdata = m_state.m_dma_data[1];
-=======
 	uint16_t pixdata = m_state.m_dma_data[1];
->>>>>>> upstream/master
 
 	render_delegate callback;
 	bool textured = ((m_state.m_dma_data[0] & 0x300) == 0x100);
@@ -420,11 +320,7 @@ void midvunit_renderer::process_dma_queue()
 	/* handle flat-shaded quads here */
 	if (!textured)
 	{
-<<<<<<< HEAD
-		callback = render_delegate(FUNC(midvunit_renderer::render_flat), this);
-=======
 		callback = render_delegate(&midvunit_renderer::render_flat, this);
->>>>>>> upstream/master
 		pixdata += (m_state.m_dma_data[0] & 0x00ff);
 	}
 	/* handle textured quads here */
@@ -443,39 +339,23 @@ void midvunit_renderer::process_dma_queue()
 		/* handle non-masked, non-transparent quads */
 		if ((m_state.m_dma_data[0] & 0xc00) == 0x000)
 		{
-<<<<<<< HEAD
-			callback = render_delegate(FUNC(midvunit_renderer::render_tex), this);
-=======
 			callback = render_delegate(&midvunit_renderer::render_tex, this);
->>>>>>> upstream/master
 		}
 		/* handle non-masked, transparent quads */
 		else if ((m_state.m_dma_data[0] & 0xc00) == 0x800)
 		{
-<<<<<<< HEAD
-			callback = render_delegate(FUNC(midvunit_renderer::render_textrans), this);
-=======
 			callback = render_delegate(&midvunit_renderer::render_textrans, this);
->>>>>>> upstream/master
 		}
 		/* handle masked, transparent quads */
 		else if ((m_state.m_dma_data[0] & 0xc00) == 0xc00)
 		{
-<<<<<<< HEAD
-			callback = render_delegate(FUNC(midvunit_renderer::render_textransmask), this);
-=======
 			callback = render_delegate(&midvunit_renderer::render_textransmask, this);
->>>>>>> upstream/master
 			pixdata += (m_state.m_dma_data[0] & 0x00ff);
 		}
 		/* handle masked, non-transparent quads (invalid?) */
 		else
 		{
-<<<<<<< HEAD
-			callback = render_delegate(FUNC(midvunit_renderer::render_flat), this);
-=======
 			callback = render_delegate(&midvunit_renderer::render_flat, this);
->>>>>>> upstream/master
 			pixdata += (m_state.m_dma_data[0] & 0x00ff);
 		}
 	}
@@ -483,11 +363,7 @@ void midvunit_renderer::process_dma_queue()
 	/* set up the object data for this triangle */
 	midvunit_object_data &objectdata = object_data_alloc();
 	objectdata.destbase = &m_state.m_videoram[(m_state.m_page_control & 4) ? 0x40000 : 0x00000];
-<<<<<<< HEAD
-	objectdata.texbase = (UINT8 *)m_state.m_textureram.target() + (m_state.m_dma_data[14] * 256);
-=======
 	objectdata.texbase = (uint8_t *)m_state.m_textureram.target() + (m_state.m_dma_data[14] * 256);
->>>>>>> upstream/master
 	objectdata.pixdata = pixdata;
 	objectdata.dither = ((m_state.m_dma_data[0] & 0x2000) != 0);
 
@@ -544,11 +420,7 @@ WRITE32_MEMBER(midvunit_state::midvunit_page_control_w)
 	/* watch for the display page to change */
 	if ((m_page_control ^ data) & 1)
 	{
-<<<<<<< HEAD
-		m_video_changed = TRUE;
-=======
 		m_video_changed = true;
->>>>>>> upstream/master
 		if (LOG_DMA && machine().input().code_pressed(KEYCODE_L))
 			logerror("##########################################################\n");
 		m_screen->update_partial(m_screen->vpos() - 1);
@@ -572,11 +444,7 @@ READ32_MEMBER(midvunit_state::midvunit_page_control_r)
 
 WRITE32_MEMBER(midvunit_state::midvunit_video_control_w)
 {
-<<<<<<< HEAD
-	UINT16 old = m_video_regs[offset];
-=======
 	uint16_t old = m_video_regs[offset];
->>>>>>> upstream/master
 
 	/* update the data */
 	COMBINE_DATA(&m_video_regs[offset]);
@@ -620,11 +488,7 @@ WRITE32_MEMBER(midvunit_state::midvunit_videoram_w)
 	{
 		int visbase = (m_page_control & 1) ? 0x40000 : 0x00000;
 		if ((offset & 0x40000) == visbase)
-<<<<<<< HEAD
-			m_video_changed = TRUE;
-=======
 			m_video_changed = true;
->>>>>>> upstream/master
 	}
 	COMBINE_DATA(&m_videoram[offset]);
 }
@@ -663,11 +527,7 @@ WRITE32_MEMBER(midvunit_state::midvunit_paletteram_w)
 
 WRITE32_MEMBER(midvunit_state::midvunit_textureram_w)
 {
-<<<<<<< HEAD
-	UINT8 *base = (UINT8 *)m_textureram.target();
-=======
 	uint8_t *base = (uint8_t *)m_textureram.target();
->>>>>>> upstream/master
 	m_poly->wait("Texture RAM write");
 	base[offset * 2] = data;
 	base[offset * 2 + 1] = data >> 8;
@@ -676,11 +536,7 @@ WRITE32_MEMBER(midvunit_state::midvunit_textureram_w)
 
 READ32_MEMBER(midvunit_state::midvunit_textureram_r)
 {
-<<<<<<< HEAD
-	UINT8 *base = (UINT8 *)m_textureram.target();
-=======
 	uint8_t *base = (uint8_t *)m_textureram.target();
->>>>>>> upstream/master
 	return (base[offset * 2 + 1] << 8) | base[offset * 2];
 }
 
@@ -693,28 +549,17 @@ READ32_MEMBER(midvunit_state::midvunit_textureram_r)
  *
  *************************************/
 
-<<<<<<< HEAD
-UINT32 midvunit_state::screen_update_midvunit(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-{
-	int x, y, width, xoffs;
-	UINT32 offset;
-=======
 uint32_t midvunit_state::screen_update_midvunit(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
 	int x, y, width, xoffs;
 	uint32_t offset;
->>>>>>> upstream/master
 
 	m_poly->wait("Refresh Time");
 
 	/* if the video didn't change, indicate as much */
 	if (!m_video_changed)
 		return UPDATE_HAS_NOT_CHANGED;
-<<<<<<< HEAD
-	m_video_changed = FALSE;
-=======
 	m_video_changed = false;
->>>>>>> upstream/master
 
 	/* determine the base of the videoram */
 #if WATCH_RENDER
@@ -734,11 +579,7 @@ uint32_t midvunit_state::screen_update_midvunit(screen_device &screen, bitmap_in
 	/* loop over rows */
 	for (y = cliprect.min_y; y <= cliprect.max_y; y++)
 	{
-<<<<<<< HEAD
-		UINT16 *dest = &bitmap.pix16(y, cliprect.min_x);
-=======
 		uint16_t *dest = &bitmap.pix16(y, cliprect.min_x);
->>>>>>> upstream/master
 		for (x = 0; x < width; x++)
 			*dest++ = m_videoram[offset + x] & 0x7fff;
 		offset += 512;

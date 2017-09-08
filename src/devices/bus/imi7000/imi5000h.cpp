@@ -8,10 +8,7 @@
 
 **********************************************************************/
 
-<<<<<<< HEAD
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #include "imi5000h.h"
 
 
@@ -32,11 +29,7 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type IMI5000H = &device_creator<imi5000h_device>;
-=======
 DEFINE_DEVICE_TYPE(IMI5000H, imi5000h_device, "imi5000h", "IMI 5000H")
->>>>>>> upstream/master
 
 
 //-------------------------------------------------
@@ -59,11 +52,7 @@ ROM_END
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const rom_entry *imi5000h_device::device_rom_region() const
-=======
 const tiny_rom_entry *imi5000h_device::device_rom_region() const
->>>>>>> upstream/master
 {
 	return ROM_NAME( imi5000h );
 }
@@ -93,11 +82,7 @@ static ADDRESS_MAP_START( imi5000h_io, AS_IO, 8, imi5000h_device )
 	AM_RANGE(0x00, 0x03) AM_DEVREADWRITE(Z80PIO_0_TAG, z80pio_device, read, write)
 	AM_RANGE(0x08, 0x0b) AM_DEVREADWRITE(Z80PIO_2_TAG, z80pio_device, read, write)
 	AM_RANGE(0x0c, 0x0f) AM_DEVREADWRITE(Z80PIO_3_TAG, z80pio_device, read, write)
-<<<<<<< HEAD
-	AM_RANGE(0x10, 0x13) AM_MIRROR(0x03) // BEGRDY
-=======
 	AM_RANGE(0x10, 0x10) AM_MIRROR(0x03) // BEGRDY
->>>>>>> upstream/master
 	AM_RANGE(0x14, 0x14) AM_MIRROR(0x03) // HSXCLR
 	AM_RANGE(0x18, 0x18) AM_MIRROR(0x03) // XFERSTB
 	AM_RANGE(0x1c, 0x1f) AM_DEVREADWRITE(Z80CTC_TAG, z80ctc_device, read, write)
@@ -113,11 +98,7 @@ static const z80_daisy_config z80_daisy_chain[] =
 	{ Z80PIO_0_TAG },
 	{ Z80CTC_TAG },
 	{ Z80PIO_2_TAG },
-<<<<<<< HEAD
-	{ NULL }
-=======
 	{ nullptr }
->>>>>>> upstream/master
 };
 
 
@@ -356,21 +337,12 @@ WRITE8_MEMBER( imi5000h_device::pio3_pb_w )
 }
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  MACHINE_DRIVER( imi5000h )
-//-------------------------------------------------
-
-static MACHINE_CONFIG_FRAGMENT( imi5000h )
-	MCFG_CPU_ADD(Z80_TAG, Z80, XTAL_8MHz/2)
-	MCFG_CPU_CONFIG(z80_daisy_chain)
-=======
 //  device_add_mconfig - add device configuration
 //-------------------------------------------------
 
 MACHINE_CONFIG_MEMBER( imi5000h_device::device_add_mconfig )
 	MCFG_CPU_ADD(Z80_TAG, Z80, XTAL_8MHz/2)
 	MCFG_Z80_DAISY_CHAIN(z80_daisy_chain)
->>>>>>> upstream/master
 	MCFG_CPU_PROGRAM_MAP(imi5000h_mem)
 	MCFG_CPU_IO_MAP(imi5000h_io)
 
@@ -410,20 +382,6 @@ MACHINE_CONFIG_END
 
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  machine_config_additions - device-specific
-//  machine configurations
-//-------------------------------------------------
-
-machine_config_constructor imi5000h_device::device_mconfig_additions() const
-{
-	return MACHINE_CONFIG_NAME( imi5000h );
-}
-
-
-//-------------------------------------------------
-=======
->>>>>>> upstream/master
 //  INPUT_PORTS( imi5000h )
 //-------------------------------------------------
 
@@ -477,13 +435,8 @@ ioport_constructor imi5000h_device::device_input_ports() const
 //  imi5000h_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-imi5000h_device::imi5000h_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-	device_t(mconfig, IMI5000H, "IMI 5000H", tag, owner, clock, "imi5000h", __FILE__),
-=======
 imi5000h_device::imi5000h_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	device_t(mconfig, IMI5000H, tag, owner, clock),
->>>>>>> upstream/master
 	device_imi7000_interface(mconfig, *this),
 	m_maincpu(*this, Z80_TAG),
 	m_ctc(*this, Z80CTC_TAG),

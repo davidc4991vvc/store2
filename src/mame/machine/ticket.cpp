@@ -26,11 +26,7 @@
 //**************************************************************************
 
 // device type definition
-<<<<<<< HEAD
-const device_type TICKET_DISPENSER = &device_creator<ticket_dispenser_device>;
-=======
 DEFINE_DEVICE_TYPE(TICKET_DISPENSER, ticket_dispenser_device, "ticket_dispenser", "Ticket Dispenser")
->>>>>>> upstream/master
 
 
 
@@ -42,31 +38,19 @@ DEFINE_DEVICE_TYPE(TICKET_DISPENSER, ticket_dispenser_device, "ticket_dispenser"
 //  ticket_dispenser_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-ticket_dispenser_device::ticket_dispenser_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, TICKET_DISPENSER, "Ticket Dispenser", tag, owner, clock, "ticket_dispenser", __FILE__),
-		m_motor_sense(TICKET_MOTOR_ACTIVE_LOW),
-		m_status_sense(TICKET_STATUS_ACTIVE_LOW),
-		m_period(attotime::from_msec(100)),
-=======
 ticket_dispenser_device::ticket_dispenser_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, TICKET_DISPENSER, tag, owner, clock),
 		m_motor_sense(TICKET_MOTOR_ACTIVE_LOW),
 		m_status_sense(TICKET_STATUS_ACTIVE_LOW),
 		m_period(attotime::from_msec(100)),
 		m_hopper_type(false),
->>>>>>> upstream/master
 		m_active_bit(0x80),
 		m_motoron(0),
 		m_ticketdispensed(0),
 		m_ticketnotdispensed(0),
 		m_status(0),
 		m_power(0),
-<<<<<<< HEAD
-		m_timer(NULL)
-=======
 		m_timer(nullptr)
->>>>>>> upstream/master
 {
 }
 
@@ -100,19 +84,12 @@ void ticket_dispenser_device::static_set_period(device_t &device, const attotime
 //  the motor and status bits
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void ticket_dispenser_device::static_set_senses(device_t &device, UINT8 motor_sense, UINT8 status_sense)
-=======
 void ticket_dispenser_device::static_set_senses(device_t &device, uint8_t motor_sense, uint8_t status_sense, bool hopper_type)
->>>>>>> upstream/master
 {
 	ticket_dispenser_device &ticket = downcast<ticket_dispenser_device &>(device);
 	ticket.m_motor_sense = motor_sense;
 	ticket.m_status_sense = status_sense;
-<<<<<<< HEAD
-=======
 	ticket.m_hopper_type = hopper_type;
->>>>>>> upstream/master
 }
 
 
@@ -123,10 +100,7 @@ void ticket_dispenser_device::static_set_senses(device_t &device, uint8_t motor_
 
 //-------------------------------------------------
 //  read - read the status line via the active bit
-<<<<<<< HEAD
-=======
 //  (legacy method)
->>>>>>> upstream/master
 //-------------------------------------------------
 
 READ8_MEMBER( ticket_dispenser_device::read )
@@ -148,11 +122,7 @@ READ_LINE_MEMBER( ticket_dispenser_device::line_r )
 
 //-------------------------------------------------
 //  write - write the control line via the active
-<<<<<<< HEAD
-//  bit
-=======
 //  bit (legacy method)
->>>>>>> upstream/master
 //-------------------------------------------------
 
 WRITE8_MEMBER( ticket_dispenser_device::write )
@@ -172,25 +142,17 @@ WRITE8_MEMBER( ticket_dispenser_device::write )
 	{
 		if (m_power)
 		{
-<<<<<<< HEAD
-			LOG(("%s: Ticket Power Off\n", machine().describe_context()));
-			m_timer->adjust(attotime::never);
-			set_led_status(machine(), 2,0);
-=======
 			if (m_hopper_type == false || m_status == m_ticketnotdispensed)
 			{
 				LOG(("%s: Ticket Power Off\n", machine().describe_context()));
 				m_timer->adjust(attotime::never);
 				machine().output().set_led_value(2, 0);
 			}
->>>>>>> upstream/master
 			m_power = 0;
 		}
 	}
 }
 
-<<<<<<< HEAD
-=======
 //-------------------------------------------------
 //  motor_w - write the control line as a proper
 //  line
@@ -200,7 +162,6 @@ WRITE_LINE_MEMBER( ticket_dispenser_device::motor_w )
 {
 	write(machine().dummy_space(), 0, state ? m_active_bit : 0);
 }
->>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -249,11 +210,6 @@ void ticket_dispenser_device::device_timer(emu_timer &timer, device_timer_id id,
 		LOG(("Ticket Status Changed to %02X\n", m_status));
 		m_timer->adjust(m_period);
 	}
-<<<<<<< HEAD
-
-	// update LED status (fixme: should map to an output)
-	set_led_status(machine(), 2, (m_status == m_ticketdispensed));
-=======
 	else if (m_hopper_type)
 	{
 		m_status ^= m_active_bit;
@@ -264,16 +220,11 @@ void ticket_dispenser_device::device_timer(emu_timer &timer, device_timer_id id,
 
 	// update LED status (fixme: should map to an output)
 	machine().output().set_led_value(2, (m_status == m_ticketdispensed));
->>>>>>> upstream/master
 
 	// if we just dispensed, increment global count
 	if (m_status == m_ticketdispensed)
 	{
-<<<<<<< HEAD
-		increment_dispensed_tickets(machine(), 1);
-=======
 		machine().bookkeeping().increment_dispensed_tickets(1);
->>>>>>> upstream/master
 		LOG(("Ticket Dispensed\n"));
 	}
 }

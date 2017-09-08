@@ -10,20 +10,11 @@
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __A2232_H__
-#define __A2232_H__
-
-#include "emu.h"
-=======
 #ifndef MAME_BUS_AMIGA_ZORRO_A2232_H
 #define MAME_BUS_AMIGA_ZORRO_A2232_H
 
 #pragma once
 
->>>>>>> upstream/master
 #include "zorro.h"
 #include "machine/autoconfig.h"
 #include "cpu/m6502/m65ce02.h"
@@ -42,11 +33,7 @@ class a2232_device : public device_t, public device_zorro2_card_interface, publi
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	a2232_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-=======
 	a2232_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
->>>>>>> upstream/master
 
 	// cpu
 	WRITE8_MEMBER( int2_w );
@@ -67,27 +54,6 @@ public:
 	// acia
 	DECLARE_READ8_MEMBER( acia_0_r );
 	DECLARE_WRITE8_MEMBER( acia_0_w );
-<<<<<<< HEAD
-	DECLARE_WRITE_LINE_MEMBER( acia_0_irq_w );
-	DECLARE_READ8_MEMBER( acia_1_r );
-	DECLARE_WRITE8_MEMBER( acia_1_w );
-	DECLARE_WRITE_LINE_MEMBER( acia_1_irq_w );
-	DECLARE_READ8_MEMBER( acia_2_r );
-	DECLARE_WRITE8_MEMBER( acia_2_w );
-	DECLARE_WRITE_LINE_MEMBER( acia_2_irq_w );
-	DECLARE_READ8_MEMBER( acia_3_r );
-	DECLARE_WRITE8_MEMBER( acia_3_w );
-	DECLARE_WRITE_LINE_MEMBER( acia_3_irq_w );
-	DECLARE_READ8_MEMBER( acia_4_r );
-	DECLARE_WRITE8_MEMBER( acia_4_w );
-	DECLARE_WRITE_LINE_MEMBER( acia_4_irq_w );
-	DECLARE_READ8_MEMBER( acia_5_r );
-	DECLARE_WRITE8_MEMBER( acia_5_w );
-	DECLARE_WRITE_LINE_MEMBER( acia_5_irq_w );
-	DECLARE_READ8_MEMBER( acia_6_r );
-	DECLARE_WRITE8_MEMBER( acia_6_w );
-	DECLARE_WRITE_LINE_MEMBER( acia_6_irq_w );
-=======
 	DECLARE_READ8_MEMBER( acia_1_r );
 	DECLARE_WRITE8_MEMBER( acia_1_w );
 	DECLARE_READ8_MEMBER( acia_2_r );
@@ -100,45 +66,10 @@ public:
 	DECLARE_WRITE8_MEMBER( acia_5_w );
 	DECLARE_READ8_MEMBER( acia_6_r );
 	DECLARE_WRITE8_MEMBER( acia_6_w );
->>>>>>> upstream/master
 
 	// cia
 	DECLARE_READ8_MEMBER( cia_r );
 	DECLARE_WRITE8_MEMBER( cia_w );
-<<<<<<< HEAD
-	DECLARE_WRITE_LINE_MEMBER( cia_irq_w );
-	DECLARE_READ8_MEMBER( cia_port_a_r );
-	DECLARE_READ8_MEMBER( cia_port_b_r );
-	DECLARE_WRITE8_MEMBER( cia_port_b_w );
-
-	// rs232
-	DECLARE_WRITE_LINE_MEMBER( rs232_1_rxd_w );
-	DECLARE_WRITE_LINE_MEMBER( rs232_1_dcd_w );
-	DECLARE_WRITE_LINE_MEMBER( rs232_1_cts_w );
-	DECLARE_WRITE_LINE_MEMBER( rs232_2_dcd_w );
-	DECLARE_WRITE_LINE_MEMBER( rs232_2_cts_w );
-	DECLARE_WRITE_LINE_MEMBER( rs232_3_dcd_w );
-	DECLARE_WRITE_LINE_MEMBER( rs232_3_cts_w );
-	DECLARE_WRITE_LINE_MEMBER( rs232_4_dcd_w );
-	DECLARE_WRITE_LINE_MEMBER( rs232_4_cts_w );
-	DECLARE_WRITE_LINE_MEMBER( rs232_5_dcd_w );
-	DECLARE_WRITE_LINE_MEMBER( rs232_5_cts_w );
-	DECLARE_WRITE_LINE_MEMBER( rs232_6_dcd_w );
-	DECLARE_WRITE_LINE_MEMBER( rs232_6_cts_w );
-	DECLARE_WRITE_LINE_MEMBER( rs232_7_dcd_w );
-	DECLARE_WRITE_LINE_MEMBER( rs232_7_cts_w );
-
-protected:
-	virtual machine_config_constructor device_mconfig_additions() const;
-	virtual void device_start();
-	virtual void device_reset_after_children();
-
-	// device_zorro2_card_interface overrides
-	virtual DECLARE_WRITE_LINE_MEMBER( cfgin_w );
-
-	// amiga_autoconfig overrides
-	virtual void autoconfig_base_address(offs_t address);
-=======
 
 protected:
 	virtual void device_add_mconfig(machine_config &config) override;
@@ -150,7 +81,6 @@ protected:
 
 	// amiga_autoconfig overrides
 	virtual void autoconfig_base_address(offs_t address) override;
->>>>>>> upstream/master
 
 private:
 	enum
@@ -169,8 +99,6 @@ private:
 
 	void update_irqs();
 
-<<<<<<< HEAD
-=======
 	// acia
 	DECLARE_WRITE_LINE_MEMBER( acia_0_irq_w );
 	DECLARE_WRITE_LINE_MEMBER( acia_1_irq_w );
@@ -203,7 +131,6 @@ private:
 	DECLARE_WRITE_LINE_MEMBER( rs232_7_dcd_w );
 	DECLARE_WRITE_LINE_MEMBER( rs232_7_cts_w );
 
->>>>>>> upstream/master
 	required_device<m65ce02_device> m_iocpu;
 	required_device<mos6551_device> m_acia_0;
 	required_device<mos6551_device> m_acia_1;
@@ -213,20 +140,6 @@ private:
 	required_device<mos6551_device> m_acia_5;
 	required_device<mos6551_device> m_acia_6;
 	required_device<mos8520_device> m_cia;
-<<<<<<< HEAD
-	required_shared_ptr<UINT8> m_shared_ram;
-
-	int m_irqs[IRQ_SOURCE_COUNT];
-
-	UINT8 m_cia_port_a;
-	UINT8 m_cia_port_b;
-};
-
-// device type definition
-extern const device_type A2232;
-
-#endif // __A2232_H__
-=======
 	required_shared_ptr<uint8_t> m_shared_ram;
 
 	int m_irqs[IRQ_SOURCE_COUNT];
@@ -239,4 +152,3 @@ extern const device_type A2232;
 DECLARE_DEVICE_TYPE(A2232, a2232_device)
 
 #endif // MAME_BUS_AMIGA_ZORRO_A2232_H
->>>>>>> upstream/master

@@ -19,15 +19,9 @@ public:
 		m_palette(*this, "palette") { }
 
 	/* memory pointers */
-<<<<<<< HEAD
-	required_shared_ptr<UINT8> m_videoram;
-	required_shared_ptr<UINT8> m_bg_ram;
-	required_shared_ptr<UINT8> m_spriteram;
-=======
 	required_shared_ptr<uint8_t> m_videoram;
 	required_shared_ptr<uint8_t> m_bg_ram;
 	required_shared_ptr<uint8_t> m_spriteram;
->>>>>>> upstream/master
 
 	/* video-related */
 	tilemap_t        *m_text_tilemap;
@@ -48,16 +42,6 @@ public:
 	TILE_GET_INFO_MEMBER(get_text_info);
 	TILEMAP_MAPPER_MEMBER(back_scan);
 	TILE_GET_INFO_MEMBER(get_back_info);
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void machine_reset();
-	virtual void video_start();
-	DECLARE_PALETTE_INIT(compgolf);
-	UINT32 screen_update_compgolf(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	void draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect );
-	void compgolf_expand_bg();
-	DECLARE_WRITE_LINE_MEMBER(sound_irq);
-=======
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
 	virtual void video_start() override;
@@ -65,7 +49,6 @@ public:
 	uint32_t screen_update_compgolf(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	void draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect );
 	void compgolf_expand_bg();
->>>>>>> upstream/master
 	required_device<cpu_device> m_maincpu;
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;

@@ -24,13 +24,8 @@ WRITE16_MEMBER(niyanpai_state::palette_w)
 {
 	int r, g, b;
 	int offs_h, offs_l;
-<<<<<<< HEAD
-	UINT16 oldword = m_palette_ptr[offset];
-	UINT16 newword;
-=======
 	uint16_t oldword = m_palette_ptr[offset];
 	uint16_t newword;
->>>>>>> upstream/master
 
 	COMBINE_DATA(&m_palette_ptr[offset]);
 	newword = m_palette_ptr[offset];
@@ -67,11 +62,7 @@ WRITE16_MEMBER(niyanpai_state::palette_w)
 int niyanpai_state::blitter_r(int vram, int offset)
 {
 	int ret;
-<<<<<<< HEAD
-	UINT8 *GFXROM = memregion("gfx1")->base();
-=======
 	uint8_t *GFXROM = memregion("gfx1")->base();
->>>>>>> upstream/master
 
 	switch (offset)
 	{
@@ -83,11 +74,7 @@ int niyanpai_state::blitter_r(int vram, int offset)
 	return ret;
 }
 
-<<<<<<< HEAD
-void niyanpai_state::blitter_w(int vram, int offset, UINT8 data)
-=======
 void niyanpai_state::blitter_w(int vram, int offset, uint8_t data)
->>>>>>> upstream/master
 {
 	switch (offset)
 	{
@@ -120,20 +107,12 @@ void niyanpai_state::blitter_w(int vram, int offset, uint8_t data)
 	}
 }
 
-<<<<<<< HEAD
-void niyanpai_state::clutsel_w(int vram, UINT8 data)
-=======
 void niyanpai_state::clutsel_w(int vram, uint8_t data)
->>>>>>> upstream/master
 {
 	m_clutsel[vram] = data;
 }
 
-<<<<<<< HEAD
-void niyanpai_state::clut_w(int vram, int offset, UINT8 data)
-=======
 void niyanpai_state::clut_w(int vram, int offset, uint8_t data)
->>>>>>> upstream/master
 {
 	m_clut[vram][((m_clutsel[vram] & 0xff) * 0x10) + (offset & 0x0f)] = data;
 }
@@ -145,11 +124,7 @@ void niyanpai_state::clut_w(int vram, int offset, uint8_t data)
 void niyanpai_state::vramflip(int vram)
 {
 	int x, y;
-<<<<<<< HEAD
-	UINT16 color1, color2;
-=======
 	uint16_t color1, color2;
->>>>>>> upstream/master
 	int width = m_screen->width();
 	int height = m_screen->height();
 
@@ -183,11 +158,7 @@ void niyanpai_state::vramflip(int vram)
 
 void niyanpai_state::update_pixel(int vram, int x, int y)
 {
-<<<<<<< HEAD
-	UINT16 color = m_videoram[vram][(y * m_screen->width()) + x];
-=======
 	uint16_t color = m_videoram[vram][(y * m_screen->width()) + x];
->>>>>>> upstream/master
 	m_tmpbitmap[vram].pix16(y, x) = color;
 }
 
@@ -199,21 +170,13 @@ void niyanpai_state::device_timer(emu_timer &timer, device_timer_id id, int para
 		m_nb19010_busyflag = 1;
 		break;
 	default:
-<<<<<<< HEAD
-		assert_always(FALSE, "Unknown id in niyanpai_state::device_timer");
-=======
 		assert_always(false, "Unknown id in niyanpai_state::device_timer");
->>>>>>> upstream/master
 	}
 }
 
 void niyanpai_state::gfxdraw(int vram)
 {
-<<<<<<< HEAD
-	UINT8 *GFX = memregion("gfx1")->base();
-=======
 	uint8_t *GFX = memregion("gfx1")->base();
->>>>>>> upstream/master
 	int width = m_screen->width();
 
 	int x, y;
@@ -222,11 +185,7 @@ void niyanpai_state::gfxdraw(int vram)
 	int sizex, sizey;
 	int skipx, skipy;
 	int ctrx, ctry;
-<<<<<<< HEAD
-	UINT16 color, color1, color2;
-=======
 	uint16_t color, color1, color2;
->>>>>>> upstream/master
 	int gfxaddr, gfxlen;
 
 	m_nb19010_busyctr = 0;
@@ -402,18 +361,6 @@ void niyanpai_state::video_start()
 	m_screen->register_screen_bitmap(m_tmpbitmap[0]);
 	m_screen->register_screen_bitmap(m_tmpbitmap[1]);
 	m_screen->register_screen_bitmap(m_tmpbitmap[2]);
-<<<<<<< HEAD
-	m_videoram[0] = auto_alloc_array_clear(machine(), UINT16, width * height);
-	m_videoram[1] = auto_alloc_array_clear(machine(), UINT16, width * height);
-	m_videoram[2] = auto_alloc_array_clear(machine(), UINT16, width * height);
-	m_videoworkram[0] = auto_alloc_array_clear(machine(), UINT16, width * height);
-	m_videoworkram[1] = auto_alloc_array_clear(machine(), UINT16, width * height);
-	m_videoworkram[2] = auto_alloc_array_clear(machine(), UINT16, width * height);
-	m_palette_ptr = auto_alloc_array(machine(), UINT16, 0x480);
-	m_clut[0] = auto_alloc_array(machine(), UINT8, 0x1000);
-	m_clut[1] = auto_alloc_array(machine(), UINT8, 0x1000);
-	m_clut[2] = auto_alloc_array(machine(), UINT8, 0x1000);
-=======
 	m_videoram[0] = make_unique_clear<uint16_t[]>(width * height);
 	m_videoram[1] = make_unique_clear<uint16_t[]>(width * height);
 	m_videoram[2] = make_unique_clear<uint16_t[]>(width * height);
@@ -424,7 +371,6 @@ void niyanpai_state::video_start()
 	m_clut[0] = std::make_unique<uint8_t[]>(0x1000);
 	m_clut[1] = std::make_unique<uint8_t[]>(0x1000);
 	m_clut[2] = std::make_unique<uint8_t[]>(0x1000);
->>>>>>> upstream/master
 	m_nb19010_busyflag = 1;
 	m_blitter_timer = timer_alloc(TIMER_BLITTER);
 
@@ -446,18 +392,6 @@ void niyanpai_state::video_start()
 	save_item(NAME(m_nb19010_busyctr));
 	save_item(NAME(m_nb19010_busyflag));
 	save_item(NAME(m_flipscreen_old));
-<<<<<<< HEAD
-	save_pointer(NAME(m_palette_ptr), 0x480);
-	save_pointer(NAME(m_videoram[0]), width * height);
-	save_pointer(NAME(m_videoram[1]), width * height);
-	save_pointer(NAME(m_videoram[2]), width * height);
-	save_pointer(NAME(m_videoworkram[0]), width * height);
-	save_pointer(NAME(m_videoworkram[1]), width * height);
-	save_pointer(NAME(m_videoworkram[2]), width * height);
-	save_pointer(NAME(m_clut[0]), 0x1000);
-	save_pointer(NAME(m_clut[1]), 0x1000);
-	save_pointer(NAME(m_clut[2]), 0x1000);
-=======
 	save_pointer(NAME(m_palette_ptr.get()), 0x480);
 	save_pointer(NAME(m_videoram[0].get()), width * height);
 	save_pointer(NAME(m_videoram[1].get()), width * height);
@@ -468,7 +402,6 @@ void niyanpai_state::video_start()
 	save_pointer(NAME(m_clut[0].get()), 0x1000);
 	save_pointer(NAME(m_clut[1].get()), 0x1000);
 	save_pointer(NAME(m_clut[2].get()), 0x1000);
->>>>>>> upstream/master
 	save_item(NAME(m_tmpbitmap[0]));
 	save_item(NAME(m_tmpbitmap[1]));
 	save_item(NAME(m_tmpbitmap[2]));
@@ -478,11 +411,7 @@ void niyanpai_state::video_start()
 
 
 ******************************************************************************/
-<<<<<<< HEAD
-UINT32 niyanpai_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t niyanpai_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int i;
 	int x, y;

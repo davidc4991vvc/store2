@@ -8,17 +8,10 @@
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __X2212_H__
-#define __X2212_H__
-=======
 #ifndef MAME_MACHINE_X2212_H
 #define MAME_MACHINE_X2212_H
 
 #pragma once
->>>>>>> upstream/master
 
 
 
@@ -55,12 +48,7 @@ class x2212_device :    public device_t,
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	x2212_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-	x2212_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source);
-=======
 	x2212_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
->>>>>>> upstream/master
 
 	// inline configuration helpers
 	static void static_set_auto_save(device_t &device);
@@ -73,29 +61,13 @@ public:
 	DECLARE_WRITE_LINE_MEMBER( recall );
 
 protected:
-<<<<<<< HEAD
-=======
 	x2212_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock, int size_data);
 
->>>>>>> upstream/master
 	// internal helpers
 	void store();
 	void recall();
 
 	// device-level overrides
-<<<<<<< HEAD
-	virtual void device_start();
-
-	// device_memory_interface overrides
-	virtual const address_space_config *memory_space_config(address_spacenum spacenum = AS_0) const;
-
-	// device_nvram_interface overrides
-	virtual void nvram_default();
-	virtual void nvram_read(emu_file &file);
-	virtual void nvram_write(emu_file &file);
-
-	int SIZE_DATA;
-=======
 	virtual void device_start() override;
 
 	// device_memory_interface overrides
@@ -105,7 +77,6 @@ protected:
 	virtual void nvram_default() override;
 	virtual void nvram_read(emu_file &file) override;
 	virtual void nvram_write(emu_file &file) override;
->>>>>>> upstream/master
 
 	// configuration state
 	bool                        m_auto_save;
@@ -120,18 +91,6 @@ protected:
 
 	bool        m_store;
 	bool        m_array_recall;
-<<<<<<< HEAD
-};
-
-class x2210_device :    public x2212_device
-{
-public:
-	x2210_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-protected:
-	// device-level overrides
-	virtual void device_start();
-=======
 
 	int const m_size_data;
 	optional_region_ptr<uint8_t> m_default_data;
@@ -141,20 +100,11 @@ class x2210_device : public x2212_device
 {
 public:
 	x2210_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
->>>>>>> upstream/master
 };
 
 
 // device type definition
-<<<<<<< HEAD
-extern const device_type X2212;
-extern const device_type X2210;
-
-
-#endif
-=======
 DECLARE_DEVICE_TYPE(X2212, x2212_device)
 DECLARE_DEVICE_TYPE(X2210, x2210_device)
 
 #endif // MAME_MACHINE_X2212_H
->>>>>>> upstream/master

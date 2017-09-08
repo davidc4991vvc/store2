@@ -60,11 +60,7 @@ INPUT_PORTS_END
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( caprcyc, caprcyc_state )
-=======
 static MACHINE_CONFIG_START( caprcyc )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", VR4300BE, 100000000) // cpu configuration is unknown
@@ -96,8 +92,4 @@ ROM_START( caprcyc )
 ROM_END
 
 
-<<<<<<< HEAD
-GAME (1999, caprcyc, 0, caprcyc, caprcyc, driver_device, 0, ROT0, "Taito", "Capriccio Cyclone", MACHINE_IS_SKELETON_MECHANICAL )
-=======
 GAME (1999, caprcyc, 0, caprcyc, caprcyc, caprcyc_state, 0, ROT0, "Taito", "Capriccio Cyclone", MACHINE_IS_SKELETON_MECHANICAL )
->>>>>>> upstream/master

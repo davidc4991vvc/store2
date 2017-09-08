@@ -139,11 +139,7 @@ void mfmhd_image_format_t::set_layout_params(mfmhd_layout_params param)
 /*
     Encode some value with data-type clock bits.
 */
-<<<<<<< HEAD
-void mfmhd_image_format_t::mfm_encode(UINT16* trackimage, int& position, UINT8 byte, int count)
-=======
 void mfmhd_image_format_t::mfm_encode(uint16_t* trackimage, int& position, uint8_t byte, int count)
->>>>>>> upstream/master
 {
 	mfm_encode_mask(trackimage, position, byte, count, 0x00);
 }
@@ -151,11 +147,7 @@ void mfmhd_image_format_t::mfm_encode(uint16_t* trackimage, int& position, uint8
 /*
     Encode an A1 value with mark-type clock bits.
 */
-<<<<<<< HEAD
-void mfmhd_image_format_t::mfm_encode_a1(UINT16* trackimage, int& position)
-=======
 void mfmhd_image_format_t::mfm_encode_a1(uint16_t* trackimage, int& position)
->>>>>>> upstream/master
 {
 	m_current_crc = 0xffff;
 	mfm_encode_mask(trackimage, position, 0xa1, 1, 0x04);
@@ -165,19 +157,11 @@ void mfmhd_image_format_t::mfm_encode_a1(uint16_t* trackimage, int& position)
     Encode a byte value with a given clock bit mask. Used by both mfm_encode
     and mfm_encode_a1 methods.
 */
-<<<<<<< HEAD
-void mfmhd_image_format_t::mfm_encode_mask(UINT16* trackimage, int& position, UINT8 byte, int count, int mask)
-{
-	UINT16 encclock = 0;
-	UINT16 encdata = 0;
-	UINT8 thisbyte = byte;
-=======
 void mfmhd_image_format_t::mfm_encode_mask(uint16_t* trackimage, int& position, uint8_t byte, int count, int mask)
 {
 	uint16_t encclock = 0;
 	uint16_t encdata = 0;
 	uint8_t thisbyte = byte;
->>>>>>> upstream/master
 	bool mark = (mask != 0x00);
 
 	m_current_crc = ccitt_crc16_one(m_current_crc, byte);
@@ -242,11 +226,7 @@ void mfmhd_image_format_t::mfm_encode_mask(uint16_t* trackimage, int& position, 
     Clock bits and data bits are assumed to be interleaved (cdcdcdcdcdcdcdcd);
     the 8 data bits are returned.
 */
-<<<<<<< HEAD
-UINT8 mfmhd_image_format_t::mfm_decode(UINT16 raw)
-=======
 uint8_t mfmhd_image_format_t::mfm_decode(uint16_t raw)
->>>>>>> upstream/master
 {
 	unsigned int value = 0;
 
@@ -263,11 +243,7 @@ uint8_t mfmhd_image_format_t::mfm_decode(uint16_t raw)
 /*
     For debugging. Outputs the byte array in a xxd-like way.
 */
-<<<<<<< HEAD
-void mfmhd_image_format_t::showtrack(UINT16* enctrack, int length)
-=======
 void mfmhd_image_format_t::showtrack(uint16_t* enctrack, int length)
->>>>>>> upstream/master
 {
 	for (int i=0; i < length; i+=16)
 	{
@@ -292,11 +268,7 @@ const mfmhd_format_type MFMHD_GEN_FORMAT = &mfmhd_image_format_creator<mfmhd_gen
     define idents beyond cylinder 1023, but formatting programs seem to
     continue with 0xfd for cylinders between 1024 and 2047.
 */
-<<<<<<< HEAD
-UINT8 mfmhd_generic_format::cylinder_to_ident(int cylinder)
-=======
 uint8_t mfmhd_generic_format::cylinder_to_ident(int cylinder)
->>>>>>> upstream/master
 {
 	if (cylinder < 256) return 0xfe;
 	if (cylinder < 512) return 0xff;
@@ -323,17 +295,10 @@ int mfmhd_generic_format::chs_to_lba(int cylinder, int head, int sector)
 	else return -1;
 }
 
-<<<<<<< HEAD
-chd_error mfmhd_generic_format::load(chd_file* chdfile, UINT16* trackimage, int tracksize, int cylinder, int head)
-{
-	chd_error state = CHDERR_NONE;
-	UINT8 sector_content[16384];
-=======
 chd_error mfmhd_generic_format::load(chd_file* chdfile, uint16_t* trackimage, int tracksize, int cylinder, int head)
 {
 	chd_error state = CHDERR_NONE;
 	uint8_t sector_content[16384];
->>>>>>> upstream/master
 
 	int sectorcount = m_param.sectors_per_track;
 	int size = m_param.sector_size;
@@ -469,31 +434,18 @@ enum
 	CHECK_CRC
 };
 
-<<<<<<< HEAD
-chd_error mfmhd_generic_format::save(chd_file* chdfile, UINT16* trackimage, int tracksize, int current_cylinder, int current_head)
-{
-	if (TRACE_RWTRACK) osd_printf_verbose("%s: write back (c=%d,h=%d) to CHD\n", tag(), current_cylinder, current_head);
-
-	UINT8 buffer[16384]; // for header or sector content
-=======
 chd_error mfmhd_generic_format::save(chd_file* chdfile, uint16_t* trackimage, int tracksize, int current_cylinder, int current_head)
 {
 	if (TRACE_RWTRACK) osd_printf_verbose("%s: write back (c=%d,h=%d) to CHD\n", tag(), current_cylinder, current_head);
 
 	uint8_t buffer[16384]; // for header or sector content
->>>>>>> upstream/master
 
 	int bytepos = 0;
 	int state = SEARCH_A1;
 	int count = 0;
 	int pos = 0;
-<<<<<<< HEAD
-	UINT16 crc = 0;
-	UINT8 byte;
-=======
 	uint16_t crc = 0;
 	uint8_t byte;
->>>>>>> upstream/master
 	bool search_header = true;
 
 	int ident = 0;

@@ -1,10 +1,5 @@
-<<<<<<< HEAD
-// license:???
-// copyright-holders:John Butler, Ed Mueller, Aaron Giles
-=======
 // license:BSD-3-Clause
 // copyright-holders:Derrick Renaud,Couriersud
->>>>>>> upstream/master
 /*************************************************************************
 
     audio/qix.c
@@ -12,13 +7,6 @@
 *************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/m6800/m6800.h"
-#include "cpu/m6809/m6809.h"
-#include "includes/qix.h"
-#include "sound/sn76496.h"
-#include "sound/discrete.h"
-=======
 #include "includes/qix.h"
 
 #include "cpu/m6800/m6800.h"
@@ -28,7 +16,6 @@
 #include "speaker.h"
 
 
->>>>>>> upstream/master
 
 /* Discrete Sound Input Nodes */
 #define QIX_DAC_DATA        NODE_01
@@ -38,12 +25,6 @@
 
 
 
-<<<<<<< HEAD
-
-
-
-=======
->>>>>>> upstream/master
 /***************************************************************************
 Audio handlers
 ***************************************************************************/
@@ -136,13 +117,8 @@ WRITE8_MEMBER(qix_state::sync_sndpia1_porta_w)
 
 WRITE8_MEMBER(qix_state::slither_coinctl_w)
 {
-<<<<<<< HEAD
-	coin_lockout_w(machine(), 0, (~data >> 6) & 1);
-	coin_counter_w(machine(), 0, (data >> 5) & 1);
-=======
 	machine().bookkeeping().coin_lockout_w(0, (~data >> 6) & 1);
 	machine().bookkeeping().coin_counter_w(0, (data >> 5) & 1);
->>>>>>> upstream/master
 }
 
 
@@ -167,11 +143,7 @@ WRITE_LINE_MEMBER(qix_state::qix_pia_sint)
 	int combined_state = m_sndpia1->irq_a_state() | m_sndpia1->irq_b_state();
 
 	/* SINT is connected to the sound CPU's IRQ line */
-<<<<<<< HEAD
-	m_audiocpu->set_input_line(M6800_IRQ_LINE, combined_state ? ASSERT_LINE : CLEAR_LINE);
-=======
 	m_audiocpu->set_input_line(M6802_IRQ_LINE, combined_state ? ASSERT_LINE : CLEAR_LINE);
->>>>>>> upstream/master
 }
 
 
@@ -182,11 +154,7 @@ WRITE_LINE_MEMBER(qix_state::qix_pia_sint)
  *
  *************************************/
 
-<<<<<<< HEAD
-static ADDRESS_MAP_START( audio_map, AS_PROGRAM, 8, driver_device )
-=======
 static ADDRESS_MAP_START( audio_map, AS_PROGRAM, 8, qix_state )
->>>>>>> upstream/master
 	AM_RANGE(0x0000, 0x007f) AM_RAM
 	AM_RANGE(0x2000, 0x2003) AM_MIRROR(0x5ffc) AM_DEVREADWRITE("sndpia2", pia6821_device, read, write)
 	AM_RANGE(0x4000, 0x4003) AM_MIRROR(0x3ffc) AM_DEVREADWRITE("sndpia1", pia6821_device, read, write)
@@ -202,11 +170,7 @@ ADDRESS_MAP_END
  *
  *************************************/
 
-<<<<<<< HEAD
-MACHINE_CONFIG_FRAGMENT( qix_audio )
-=======
 MACHINE_CONFIG_START( qix_audio )
->>>>>>> upstream/master
 	MCFG_CPU_ADD("audiocpu", M6802, SOUND_CLOCK_OSC/2)      /* 0.92 MHz */
 	MCFG_CPU_PROGRAM_MAP(audio_map)
 
@@ -240,11 +204,7 @@ MACHINE_CONFIG_START( qix_audio )
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-MACHINE_CONFIG_FRAGMENT( slither_audio )
-=======
 MACHINE_CONFIG_START( slither_audio )
->>>>>>> upstream/master
 	MCFG_DEVICE_ADD("sndpia0", PIA6821, 0)
 	MCFG_PIA_READPA_HANDLER(IOPORT("P2"))
 	MCFG_PIA_WRITEPB_HANDLER(WRITE8(qix_state, slither_coinctl_w))

@@ -1,11 +1,6 @@
-<<<<<<< HEAD
-// license:???
-// copyright-holders:Enrique Sanchez
-=======
 // license:BSD-3-Clause
 // copyright-holders:Phil Stroffolino
 // thanks-to:Enrique Sanchez
->>>>>>> upstream/master
 /***************************************************************************
 
   video.c
@@ -38,11 +33,7 @@
 
 PALETTE_INIT_MEMBER(yiear_state, yiear)
 {
-<<<<<<< HEAD
-	const UINT8 *color_prom = memregion("proms")->base();
-=======
 	const uint8_t *color_prom = memregion("proms")->base();
->>>>>>> upstream/master
 	int i;
 
 	for (i = 0; i < palette.entries(); i++)
@@ -94,13 +85,8 @@ WRITE8_MEMBER(yiear_state::yiear_control_w)
 	m_yiear_irq_enable = data & 0x04;
 
 	/* bits 3 and 4 are coin counters */
-<<<<<<< HEAD
-	coin_counter_w(machine(), 0, data & 0x08);
-	coin_counter_w(machine(), 1, data & 0x10);
-=======
 	machine().bookkeeping().coin_counter_w(0, data & 0x08);
 	machine().bookkeeping().coin_counter_w(1, data & 0x10);
->>>>>>> upstream/master
 }
 
 TILE_GET_INFO_MEMBER(yiear_state::get_bg_tile_info)
@@ -116,22 +102,13 @@ TILE_GET_INFO_MEMBER(yiear_state::get_bg_tile_info)
 
 void yiear_state::video_start()
 {
-<<<<<<< HEAD
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(yiear_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
-=======
 	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(yiear_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
->>>>>>> upstream/master
 }
 
 void yiear_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect )
 {
-<<<<<<< HEAD
-	UINT8 *spriteram = m_spriteram;
-	UINT8 *spriteram_2 = m_spriteram2;
-=======
 	uint8_t *spriteram = m_spriteram;
 	uint8_t *spriteram_2 = m_spriteram2;
->>>>>>> upstream/master
 	int offs;
 
 	for (offs = m_spriteram.bytes() - 2; offs >= 0; offs -= 2)
@@ -163,11 +140,7 @@ void yiear_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect 
 	}
 }
 
-<<<<<<< HEAD
-UINT32 yiear_state::screen_update_yiear(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t yiear_state::screen_update_yiear(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	m_bg_tilemap->draw(screen, bitmap, cliprect, 0, 0);
 	draw_sprites(bitmap, cliprect);

@@ -1,32 +1,13 @@
 PROG = lzma
-<<<<<<< HEAD
-CXX = g++ -O2 -Wall
-CXX_C = gcc -O2 -Wall
-LIB = -lm
-RM = rm -f
-CFLAGS = -c -D_7ZIP_ST
-=======
 CXX = g++ -O2
 # -Wall -Werror -Wno-delete-non-virtual-dtor
 CXX_C = gcc -O2 -Wall -Werror
->>>>>>> upstream/master
 
 ifdef SystemDrive
 IS_MINGW = 1
 endif
 
 ifdef IS_MINGW
-<<<<<<< HEAD
-FILE_IO =FileIO
-FILE_IO_2 =Windows/$(FILE_IO)
-LIB2 = -luuid
-else
-FILE_IO =C_FileIO
-FILE_IO_2 =Common/$(FILE_IO)
-endif
-
-OBJS = \
-=======
 
 RM = del
 CFLAGS = -c
@@ -55,7 +36,6 @@ endif
 OBJS = \
   $(MT_FILES) \
   $(FILE_IO).o \
->>>>>>> upstream/master
   LzmaAlone.o \
   Bench.o \
   BenchCon.o \
@@ -69,15 +49,9 @@ OBJS = \
   FilterCoder.o \
   MethodProps.o \
   StreamUtils.o \
-<<<<<<< HEAD
-  $(FILE_IO).o \
-  CommandLineParser.o \
-  CRC.o \
-=======
   CommandLineParser.o \
   CRC.o \
   CrcReg.o \
->>>>>>> upstream/master
   IntToString.o \
   MyString.o \
   MyVector.o \
@@ -85,10 +59,7 @@ OBJS = \
   StringConvert.o \
   StringToInt.o \
   PropVariant.o \
-<<<<<<< HEAD
-=======
   System.o \
->>>>>>> upstream/master
   7zCrc.o \
   7zCrcOpt.o \
   Alloc.o \
@@ -104,11 +75,7 @@ OBJS = \
 all: $(PROG)
 
 $(PROG): $(OBJS)
-<<<<<<< HEAD
-	$(CXX) -o $(PROG) $(LDFLAGS) $(OBJS) $(LIB) $(LIB2)
-=======
 	$(CXX) -o $(PROG) $(LDFLAGS) $(OBJS) $(LIB2)
->>>>>>> upstream/master
 
 LzmaAlone.o: LzmaAlone.cpp
 	$(CXX) $(CFLAGS) LzmaAlone.cpp
@@ -159,12 +126,9 @@ CommandLineParser.o: ../../../Common/CommandLineParser.cpp
 CRC.o: ../../../Common/CRC.cpp
 	$(CXX) $(CFLAGS) ../../../Common/CRC.cpp
 
-<<<<<<< HEAD
-=======
 CrcReg.o: ../../../Common/CrcReg.cpp
 	$(CXX) $(CFLAGS) ../../../Common/CrcReg.cpp
 
->>>>>>> upstream/master
 IntToString.o: ../../../Common/IntToString.cpp
 	$(CXX) $(CFLAGS) ../../../Common/IntToString.cpp
 
@@ -186,12 +150,9 @@ StringToInt.o: ../../../Common/StringToInt.cpp
 PropVariant.o: ../../../Windows/PropVariant.cpp
 	$(CXX) $(CFLAGS) ../../../Windows/PropVariant.cpp
 
-<<<<<<< HEAD
-=======
 System.o: ../../../Windows/System.cpp
 	$(CXX) $(CFLAGS) ../../../Windows/System.cpp
 
->>>>>>> upstream/master
 7zCrc.o: ../../../../C/7zCrc.c
 	$(CXX_C) $(CFLAGS) ../../../../C/7zCrc.c
 
@@ -210,8 +171,6 @@ CpuArch.o: ../../../../C/CpuArch.c
 LzFind.o: ../../../../C/LzFind.c
 	$(CXX_C) $(CFLAGS) ../../../../C/LzFind.c
 
-<<<<<<< HEAD
-=======
 ifdef MT_FILES
 LzFindMt.o: ../../../../C/LzFindMt.c
 	$(CXX_C) $(CFLAGS) ../../../../C/LzFindMt.c
@@ -220,7 +179,6 @@ Threads.o: ../../../../C/Threads.c
 	$(CXX_C) $(CFLAGS) ../../../../C/Threads.c
 endif
 
->>>>>>> upstream/master
 LzmaDec.o: ../../../../C/LzmaDec.c
 	$(CXX_C) $(CFLAGS) ../../../../C/LzmaDec.c
 
@@ -235,7 +193,3 @@ Lzma86Enc.o: ../../../../C/Lzma86Enc.c
 
 clean:
 	-$(RM) $(PROG) $(OBJS)
-<<<<<<< HEAD
-
-=======
->>>>>>> upstream/master

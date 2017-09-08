@@ -4,10 +4,6 @@
 -- Copyright (c) 2002-2011 Jason Perkins and the Premake project
 --
 
-<<<<<<< HEAD
-
-=======
->>>>>>> upstream/master
 	_WORKING_DIR        = os.getcwd()
 
 
@@ -19,50 +15,28 @@
 	local function injectplatform(platform)
 		if not platform then return true end
 		platform = premake.checkvalue(platform, premake.fields.platforms.allowed)
-<<<<<<< HEAD
-		
-		for sln in premake.solution.each() do
-			local platforms = sln.platforms or { }
-			
-=======
 
 		for sln in premake.solution.each() do
 			local platforms = sln.platforms or { }
 
->>>>>>> upstream/master
 			-- an empty table is equivalent to a native build
 			if #platforms == 0 then
 				table.insert(platforms, "Native")
 			end
-<<<<<<< HEAD
-			
-=======
 
->>>>>>> upstream/master
 			-- the solution must provide a native build in order to support this feature
 			if not table.contains(platforms, "Native") then
 				return false, sln.name .. " does not target native platform\nNative platform settings are required for the --platform feature."
 			end
-<<<<<<< HEAD
-			
-=======
 
->>>>>>> upstream/master
 			-- add it to the end of the list, if it isn't in there already
 			if not table.contains(platforms, platform) then
 				table.insert(platforms, platform)
 			end
-<<<<<<< HEAD
-			
-			sln.platforms = platforms
-		end
-		
-=======
 
 			sln.platforms = platforms
 		end
 
->>>>>>> upstream/master
 		return true
 	end
 
@@ -71,49 +45,16 @@
 --
 
 	function _premake_main(scriptpath)
-<<<<<<< HEAD
-		
-		-- if running off the disk (in debug mode), load everything 
-		-- listed in _manifest.lua; the list divisions make sure
-		-- everything gets initialized in the proper order.
-		
-=======
 
 		-- if running off the disk (in debug mode), load everything
 		-- listed in _manifest.lua; the list divisions make sure
 		-- everything gets initialized in the proper order.
->>>>>>> upstream/master
 		if (scriptpath) then
 			local scripts  = dofile(scriptpath .. "/_manifest.lua")
 			for _,v in ipairs(scripts) do
 				dofile(scriptpath .. "/" .. v)
 			end
 		end
-<<<<<<< HEAD
-		
-
-		-- Now that the scripts are loaded, I can use path.getabsolute() to properly
-		-- canonicalize the executable path.
-		
-		_PREMAKE_COMMAND = path.getabsolute(_PREMAKE_COMMAND)
-
-
-		-- Set up the environment for the chosen action early, so side-effects
-		-- can be picked up by the scripts.
-
-		premake.action.set(_ACTION)
-
-		
-		-- Seed the random number generator so actions don't have to do it themselves
-		
-		math.randomseed(os.time())
-		
-		
-		-- If there is a project script available, run it to get the
-		-- project information, available options and actions, etc.
-		
-
-=======
 
 		local profiler = newProfiler()
 		if (nil ~= _OPTIONS["debug-profiler"]) then
@@ -133,7 +74,6 @@
 
 		-- If there is a project script available, run it to get the
 		-- project information, available options and actions, etc.
->>>>>>> upstream/master
 		if (nil ~= _OPTIONS["file"]) then
 			local fname = _OPTIONS["file"]
 			if (os.isfile(fname)) then
@@ -150,16 +90,9 @@
 		end
 
 		-- Process special options
-<<<<<<< HEAD
-		
-		if (_OPTIONS["version"] or _OPTIONS["help"] or not _ACTION) then
-			printf("GENie - Project generator tool %s", _GENIE_VERSION_STR)
-			printf("https://github.com/bkaradzic/genie")
-=======
 		if (_OPTIONS["version"] or _OPTIONS["help"] or not _ACTION) then
 			printf("GENie - Project generator tool %s", _GENIE_VERSION_STR)
 			printf("https://github.com/bkaradzic/GENie")
->>>>>>> upstream/master
 			if (not _OPTIONS["version"]) then
 				premake.showhelp()
 			end
@@ -168,10 +101,6 @@
 
 		-- Validate the command-line arguments. This has to happen after the
 		-- script has run to allow for project-specific options
-<<<<<<< HEAD
-		
-=======
->>>>>>> upstream/master
 		action = premake.action.current()
 		if (not action) then
 			error("Error: no such action '" .. _ACTION .. "'", 0)
@@ -179,30 +108,6 @@
 
 		ok, err = premake.option.validate(_OPTIONS)
 		if (not ok) then error("Error: " .. err, 0) end
-<<<<<<< HEAD
-		
-
-		-- Sanity check the current project setup
-
-		ok, err = premake.checktools()
-		if (not ok) then error("Error: " .. err, 0) end
-		
-		
-		-- If a platform was specified on the command line, inject it now
-
-		ok, err = injectplatform(_OPTIONS["platform"])
-		if (not ok) then error("Error: " .. err, 0) end
-
-		
-		-- work-in-progress: build the configurations
-		print("Building configurations...")
-		premake.bake.buildconfigs()
-		
-		ok, err = premake.checkprojects()
-		if (not ok) then error("Error: " .. err, 0) end
-		
-		
-=======
 
 		-- Sanity check the current project setup
 		ok, err = premake.checktools()
@@ -224,18 +129,10 @@
 		premake.stats.num_generated = 0
 		premake.stats.num_skipped   = 0
 
->>>>>>> upstream/master
 		-- Hand over control to the action
 		printf("Running action '%s'...", action.trigger)
 		premake.action.call(action.trigger)
 
-<<<<<<< HEAD
-		print("Done.")
-		return 0
-
-	end
-	
-=======
 		if (nil ~= _OPTIONS["debug-profiler"]) then
 			profiler:stop()
 
@@ -254,4 +151,3 @@
 		return 0
 
 	end
->>>>>>> upstream/master

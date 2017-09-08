@@ -13,14 +13,7 @@
 #include "palette.h"
 #include <stdlib.h>
 #include <math.h>
-<<<<<<< HEAD
-
-
-const rgb_t rgb_t::black(0,0,0);
-const rgb_t rgb_t::white(255,255,255);
-=======
 #include <algorithm>
->>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -32,11 +25,7 @@ const rgb_t rgb_t::white(255,255,255);
 //  entry for brightness
 //-------------------------------------------------
 
-<<<<<<< HEAD
-inline rgb_t palette_t::adjust_palette_entry(rgb_t entry, float brightness, float contrast, const UINT8 *gamma_map)
-=======
 inline rgb_t palette_t::adjust_palette_entry(rgb_t entry, float brightness, float contrast, const uint8_t *gamma_map)
->>>>>>> upstream/master
 {
 	int r = rgb_t::clamp(float(gamma_map[entry.r()]) * contrast + brightness);
 	int g = rgb_t::clamp(float(gamma_map[entry.g()]) * contrast + brightness);
@@ -67,22 +56,14 @@ palette_client::dirty_state::dirty_state()
 //  min/max values
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const UINT32 *palette_client::dirty_state::dirty_list(UINT32 &mindirty, UINT32 &maxdirty)
-=======
 const uint32_t *palette_client::dirty_state::dirty_list(uint32_t &mindirty, uint32_t &maxdirty)
->>>>>>> upstream/master
 {
 	// fill in the mindirty/maxdirty
 	mindirty = m_mindirty;
 	maxdirty = m_maxdirty;
 
 	// if nothing to report, report nothing
-<<<<<<< HEAD
-	return (m_mindirty > m_maxdirty) ? NULL : &m_dirty[0];
-=======
 	return (m_mindirty > m_maxdirty) ? nullptr : &m_dirty[0];
->>>>>>> upstream/master
 }
 
 
@@ -91,17 +72,10 @@ const uint32_t *palette_client::dirty_state::dirty_list(uint32_t &mindirty, uint
 //  dirty
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void palette_client::dirty_state::resize(UINT32 colors)
-{
-	// resize to the correct number of dwords and mark all entries dirty
-	UINT32 dirty_dwords = (colors + 31) / 32;
-=======
 void palette_client::dirty_state::resize(uint32_t colors)
 {
 	// resize to the correct number of dwords and mark all entries dirty
 	uint32_t dirty_dwords = (colors + 31) / 32;
->>>>>>> upstream/master
 	m_dirty.resize(dirty_dwords);
 	memset(&m_dirty[0], 0xff, dirty_dwords*4);
 
@@ -118,19 +92,11 @@ void palette_client::dirty_state::resize(uint32_t colors)
 //  mark_dirty - mark a single entry dirty
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void palette_client::dirty_state::mark_dirty(UINT32 index)
-{
-	m_dirty[index / 32] |= 1 << (index % 32);
-	m_mindirty = MIN(m_mindirty, index);
-	m_maxdirty = MAX(m_maxdirty, index);
-=======
 void palette_client::dirty_state::mark_dirty(uint32_t index)
 {
 	m_dirty[index / 32] |= 1 << (index % 32);
 	m_mindirty = std::min(m_mindirty, index);
 	m_maxdirty = std::max(m_maxdirty, index);
->>>>>>> upstream/master
 }
 
 
@@ -142,11 +108,7 @@ void palette_client::dirty_state::mark_dirty(uint32_t index)
 void palette_client::dirty_state::reset()
 {
 	// erase relevant entries in the new live one
-<<<<<<< HEAD
-	memset(&m_dirty[m_mindirty / 32], 0, ((m_maxdirty / 32) + 1 - (m_mindirty / 32)) * sizeof(UINT32));
-=======
 	memset(&m_dirty[m_mindirty / 32], 0, ((m_maxdirty / 32) + 1 - (m_mindirty / 32)) * sizeof(uint32_t));
->>>>>>> upstream/master
 	m_mindirty = m_dirty.size() * 32 - 1;
 	m_maxdirty = 0;
 }
@@ -163,11 +125,7 @@ void palette_client::dirty_state::reset()
 
 palette_client::palette_client(palette_t &palette)
 	: m_palette(palette),
-<<<<<<< HEAD
-		m_next(NULL),
-=======
 		m_next(nullptr),
->>>>>>> upstream/master
 		m_live(&m_dirty[0]),
 		m_previous(&m_dirty[1])
 {
@@ -175,11 +133,7 @@ palette_client::palette_client(palette_t &palette)
 	palette.ref();
 
 	// resize the dirty lists
-<<<<<<< HEAD
-	UINT32 total_colors = palette.num_colors() * palette.num_groups();
-=======
 	uint32_t total_colors = palette.num_colors() * palette.num_groups();
->>>>>>> upstream/master
 	m_dirty[0].resize(total_colors);
 	m_dirty[1].resize(total_colors);
 
@@ -196,11 +150,7 @@ palette_client::palette_client(palette_t &palette)
 palette_client::~palette_client()
 {
 	// first locate and remove ourself from our palette's list
-<<<<<<< HEAD
-	for (palette_client **curptr = &m_palette.m_client_list; *curptr != NULL; curptr = &(*curptr)->m_next)
-=======
 	for (palette_client **curptr = &m_palette.m_client_list; *curptr != nullptr; curptr = &(*curptr)->m_next)
->>>>>>> upstream/master
 		if (*curptr == this)
 		{
 			*curptr = m_next;
@@ -217,21 +167,12 @@ palette_client::~palette_client()
 //  list for a client
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const UINT32 *palette_client::dirty_list(UINT32 &mindirty, UINT32 &maxdirty)
-{
-	// if nothing to report, report nothing and don't swap
-	const UINT32 *result = m_live->dirty_list(mindirty, maxdirty);
-	if (result == NULL)
-		return NULL;
-=======
 const uint32_t *palette_client::dirty_list(uint32_t &mindirty, uint32_t &maxdirty)
 {
 	// if nothing to report, report nothing and don't swap
 	const uint32_t *result = m_live->dirty_list(mindirty, maxdirty);
 	if (result == nullptr)
 		return nullptr;
->>>>>>> upstream/master
 
 	// swap the live and previous lists
 	dirty_state *temp = m_live;
@@ -253,11 +194,7 @@ const uint32_t *palette_client::dirty_list(uint32_t &mindirty, uint32_t &maxdirt
 //  alloc - static allocator
 //-------------------------------------------------
 
-<<<<<<< HEAD
-palette_t *palette_t::alloc(UINT32 numcolors, UINT32 numgroups)
-=======
 palette_t *palette_t::alloc(uint32_t numcolors, uint32_t numgroups)
->>>>>>> upstream/master
 {
 	return new palette_t(numcolors, numgroups);
 }
@@ -267,11 +204,7 @@ palette_t *palette_t::alloc(uint32_t numcolors, uint32_t numgroups)
 //  palette_t - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-palette_t::palette_t(UINT32 numcolors, UINT32 numgroups)
-=======
 palette_t::palette_t(uint32_t numcolors, uint32_t numgroups)
->>>>>>> upstream/master
 	: m_refcount(1),
 		m_numcolors(numcolors),
 		m_numgroups(numgroups),
@@ -284,18 +217,6 @@ palette_t::palette_t(uint32_t numcolors, uint32_t numgroups)
 		m_adjusted_rgb15(numcolors * numgroups + 2),
 		m_group_bright(numgroups),
 		m_group_contrast(numgroups),
-<<<<<<< HEAD
-		m_client_list(NULL)
-{
-	// initialize gamma map
-	for (UINT32 index = 0; index < 256; index++)
-		m_gamma_map[index] = index;
-
-	// initialize the per-entry data
-	for (UINT32 index = 0; index < numcolors; index++)
-	{
-		m_entry_color[index] = rgb_t::black;
-=======
 		m_client_list(nullptr)
 {
 	// initialize gamma map
@@ -306,35 +227,17 @@ palette_t::palette_t(uint32_t numcolors, uint32_t numgroups)
 	for (uint32_t index = 0; index < numcolors; index++)
 	{
 		m_entry_color[index] = rgb_t::black();
->>>>>>> upstream/master
 		m_entry_contrast[index] = 1.0f;
 	}
 
 	// initialize the per-group data
-<<<<<<< HEAD
-	for (UINT32 index = 0; index < numgroups; index++)
-=======
 	for (uint32_t index = 0; index < numgroups; index++)
->>>>>>> upstream/master
 	{
 		m_group_bright[index] = 0.0f;
 		m_group_contrast[index] = 1.0f;
 	}
 
 	// initialize the expanded data
-<<<<<<< HEAD
-	for (UINT32 index = 0; index < numcolors * numgroups; index++)
-	{
-		m_adjusted_color[index] = rgb_t::black;
-		m_adjusted_rgb15[index] = rgb_t::black.as_rgb15();
-	}
-
-	// add black and white as the last two colors
-	m_adjusted_color[numcolors * numgroups + 0] = rgb_t::black;
-	m_adjusted_rgb15[numcolors * numgroups + 0] = rgb_t::black.as_rgb15();
-	m_adjusted_color[numcolors * numgroups + 1] = rgb_t::white;
-	m_adjusted_rgb15[numcolors * numgroups + 1] = rgb_t::white.as_rgb15();
-=======
 	for (uint32_t index = 0; index < numcolors * numgroups; index++)
 	{
 		m_adjusted_color[index] = rgb_t::black();
@@ -346,7 +249,6 @@ palette_t::palette_t(uint32_t numcolors, uint32_t numgroups)
 	m_adjusted_rgb15[numcolors * numgroups + 0] = rgb_t::black().as_rgb15();
 	m_adjusted_color[numcolors * numgroups + 1] = rgb_t::white();
 	m_adjusted_rgb15[numcolors * numgroups + 1] = rgb_t::white().as_rgb15();
->>>>>>> upstream/master
 }
 
 
@@ -444,11 +346,7 @@ void palette_t::set_gamma(float gamma)
 //  given palette index
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void palette_t::entry_set_color(UINT32 index, rgb_t rgb)
-=======
 void palette_t::entry_set_color(uint32_t index, rgb_t rgb)
->>>>>>> upstream/master
 {
 	// if out of range, or unchanged, ignore
 	if (index >= m_numcolors || m_entry_color[index] == rgb)
@@ -468,11 +366,7 @@ void palette_t::entry_set_color(uint32_t index, rgb_t rgb)
 //  given palette index
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void palette_t::entry_set_red_level(UINT32 index, UINT8 level)
-=======
 void palette_t::entry_set_red_level(uint32_t index, uint8_t level)
->>>>>>> upstream/master
 {
 	// if out of range, or unchanged, ignore
 	if (index >= m_numcolors || m_entry_color[index].r() == level)
@@ -492,11 +386,7 @@ void palette_t::entry_set_red_level(uint32_t index, uint8_t level)
 //  given palette index
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void palette_t::entry_set_green_level(UINT32 index, UINT8 level)
-=======
 void palette_t::entry_set_green_level(uint32_t index, uint8_t level)
->>>>>>> upstream/master
 {
 	// if out of range, or unchanged, ignore
 	if (index >= m_numcolors || m_entry_color[index].g() == level)
@@ -516,11 +406,7 @@ void palette_t::entry_set_green_level(uint32_t index, uint8_t level)
 //  given palette index
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void palette_t::entry_set_blue_level(UINT32 index, UINT8 level)
-=======
 void palette_t::entry_set_blue_level(uint32_t index, uint8_t level)
->>>>>>> upstream/master
 {
 	// if out of range, or unchanged, ignore
 	if (index >= m_numcolors || m_entry_color[index].b() == level)
@@ -540,11 +426,7 @@ void palette_t::entry_set_blue_level(uint32_t index, uint8_t level)
 //  adjustment for a single palette index
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void palette_t::entry_set_contrast(UINT32 index, float contrast)
-=======
 void palette_t::entry_set_contrast(uint32_t index, float contrast)
->>>>>>> upstream/master
 {
 	// if out of range, or unchanged, ignore
 	if (index >= m_numcolors || m_entry_contrast[index] == contrast)
@@ -564,11 +446,7 @@ void palette_t::entry_set_contrast(uint32_t index, float contrast)
 //  brightness for a palette group
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void palette_t::group_set_brightness(UINT32 group, float brightness)
-=======
 void palette_t::group_set_brightness(uint32_t group, float brightness)
->>>>>>> upstream/master
 {
 	// convert incoming value to normalized result
 	brightness = (brightness - 1.0f) * 256.0f;
@@ -591,11 +469,7 @@ void palette_t::group_set_brightness(uint32_t group, float brightness)
 //  contrast for a palette group
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void palette_t::group_set_contrast(UINT32 group, float contrast)
-=======
 void palette_t::group_set_contrast(uint32_t group, float contrast)
->>>>>>> upstream/master
 {
 	// if out of range, or unchanged, ignore
 	if (group >= m_numgroups || m_group_contrast[group] == contrast)
@@ -615,39 +489,6 @@ void palette_t::group_set_contrast(uint32_t group, float contrast)
 //  entries
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void palette_t::normalize_range(UINT32 start, UINT32 end, int lum_min, int lum_max)
-{
-	// clamp within range
-	start = MAX(start, 0);
-	end = MIN(end, m_numcolors - 1);
-
-	// find the minimum and maximum brightness of all the colors in the range
-	INT32 ymin = 1000 * 255, ymax = 0;
-	for (UINT32 index = start; index <= end; index++)
-	{
-		rgb_t rgb = m_entry_color[index];
-		UINT32 y = 299 * rgb.r() + 587 * rgb.g() + 114 * rgb.b();
-		ymin = MIN(ymin, y);
-		ymax = MAX(ymax, y);
-	}
-
-	// determine target minimum/maximum
-	INT32 tmin = (lum_min < 0) ? ((ymin + 500) / 1000) : lum_min;
-	INT32 tmax = (lum_max < 0) ? ((ymax + 500) / 1000) : lum_max;
-
-	// now normalize the palette
-	for (UINT32 index = start; index <= end; index++)
-	{
-		rgb_t rgb = m_entry_color[index];
-		INT32 y = 299 * rgb.r() + 587 * rgb.g() + 114 * rgb.b();
-		INT32 u = ((INT32)rgb.b()-y /1000)*492 / 1000;
-		INT32 v = ((INT32)rgb.r()-y / 1000)*877 / 1000;
-		INT32 target = tmin + ((y - ymin) * (tmax - tmin + 1)) / (ymax - ymin);
-		UINT8 r = rgb_t::clamp(target + 1140 * v / 1000);
-		UINT8 g = rgb_t::clamp(target -  395 * u / 1000 - 581 * v / 1000);
-		UINT8 b = rgb_t::clamp(target + 2032 * u / 1000);
-=======
 void palette_t::normalize_range(uint32_t start, uint32_t end, int lum_min, int lum_max)
 {
 	// clamp within range
@@ -679,20 +520,10 @@ void palette_t::normalize_range(uint32_t start, uint32_t end, int lum_min, int l
 		uint8_t r = rgb_t::clamp(target + 1140 * v / 1000);
 		uint8_t g = rgb_t::clamp(target -  395 * u / 1000 - 581 * v / 1000);
 		uint8_t b = rgb_t::clamp(target + 2032 * u / 1000);
->>>>>>> upstream/master
 		entry_set_color(index, rgb_t(r, g, b));
 	}
 }
 
-<<<<<<< HEAD
-
-//-------------------------------------------------
-//  update_adjusted_color - update a color index
-//  by group and index pair
-//-------------------------------------------------
-
-void palette_t::update_adjusted_color(UINT32 group, UINT32 index)
-=======
 /**
  * @fn  void palette_t::update_adjusted_color(uint32_t group, uint32_t index)
  *
@@ -705,7 +536,6 @@ void palette_t::update_adjusted_color(UINT32 group, UINT32 index)
  */
 
 void palette_t::update_adjusted_color(uint32_t group, uint32_t index)
->>>>>>> upstream/master
 {
 	// compute the adjusted value
 	rgb_t adjusted = adjust_palette_entry(m_entry_color[index],
@@ -714,11 +544,7 @@ void palette_t::update_adjusted_color(uint32_t group, uint32_t index)
 											m_gamma_map);
 
 	// if not different, ignore
-<<<<<<< HEAD
-	UINT32 finalindex = group * m_numcolors + index;
-=======
 	uint32_t finalindex = group * m_numcolors + index;
->>>>>>> upstream/master
 	if (m_adjusted_color[finalindex] == adjusted)
 		return;
 
@@ -727,10 +553,6 @@ void palette_t::update_adjusted_color(uint32_t group, uint32_t index)
 	m_adjusted_rgb15[finalindex] = adjusted.as_rgb15();
 
 	// mark dirty in all clients
-<<<<<<< HEAD
-	for (palette_client *client = m_client_list; client != NULL; client = client->next())
-=======
 	for (palette_client *client = m_client_list; client != nullptr; client = client->next())
->>>>>>> upstream/master
 		client->mark_dirty(finalindex);
 }

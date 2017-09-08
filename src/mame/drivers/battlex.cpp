@@ -19,8 +19,6 @@
 
      - Setting the flipscreen dip to ON also hides the copyright message (?)
 
-<<<<<<< HEAD
-=======
     Notes from Tomasz Slanina:
 
     Tile decoding:
@@ -55,7 +53,6 @@
 
 
 
->>>>>>> upstream/master
     TO DO :
 
     - missing starfield
@@ -63,14 +60,10 @@
     - game speed, its seems to be controlled by the IRQ's, how fast should it
       be? firing seems frustratingly inconsistant (better with PORT_IMPULSE)
 
-<<<<<<< HEAD
-    - background tile colors, not understood well
-=======
     - BG tilemap palette bits (in most cases paltte 0 is used,
       only highlights ( battlex logo, hiscore table) uses different palettes(?).
       Current implementation gives different highlight colors than on real
       hardware (i.e. battlex logo should have yellow highights)
->>>>>>> upstream/master
 
 ****************************************************************************
 
@@ -89,18 +82,12 @@
 
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/z80/z80.h"
-#include "sound/ay8910.h"
-#include "includes/battlex.h"
-=======
 #include "includes/battlex.h"
 
 #include "cpu/z80/z80.h"
 #include "sound/ay8910.h"
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 INTERRUPT_GEN_MEMBER(battlex_state::battlex_interrupt)
@@ -111,11 +98,7 @@ INTERRUPT_GEN_MEMBER(battlex_state::battlex_interrupt)
 
 CUSTOM_INPUT_MEMBER(battlex_state::battlex_in0_b4_r)
 {
-<<<<<<< HEAD
-	UINT32 ret = m_in0_b4;
-=======
 	uint32_t ret = m_in0_b4;
->>>>>>> upstream/master
 	if (m_in0_b4)
 	{
 		m_maincpu->set_input_line(0, CLEAR_LINE);
@@ -150,23 +133,16 @@ static ADDRESS_MAP_START( io_map, AS_IO, 8, battlex_state )
 	AM_RANGE(0x10, 0x10) AM_WRITE(battlex_flipscreen_w)
 
 	/* verify all of these */
-<<<<<<< HEAD
-	AM_RANGE(0x22, 0x23) AM_DEVWRITE("aysnd", ay8910_device, data_address_w)
-=======
 	AM_RANGE(0x22, 0x23) AM_DEVWRITE("ay1", ay8910_device, data_address_w)
->>>>>>> upstream/master
 	AM_RANGE(0x30, 0x30) AM_WRITE(battlex_scroll_starfield_w)
 	AM_RANGE(0x32, 0x32) AM_WRITE(battlex_scroll_x_lsb_w)
 	AM_RANGE(0x33, 0x33) AM_WRITE(battlex_scroll_x_msb_w)
 ADDRESS_MAP_END
 
-<<<<<<< HEAD
-=======
 static ADDRESS_MAP_START( dodgeman_io_map, AS_IO, 8, battlex_state )
 	AM_IMPORT_FROM(io_map)
 	AM_RANGE(0x26, 0x27) AM_DEVWRITE("ay2", ay8910_device, data_address_w)
 ADDRESS_MAP_END
->>>>>>> upstream/master
 
 /*************************************
  *
@@ -187,11 +163,7 @@ static INPUT_PORTS_START( battlex )
 	PORT_DIPNAME( 0x08, 0x08, DEF_STR( Demo_Sounds ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x08, DEF_STR( On ) )
-<<<<<<< HEAD
-	PORT_BIT( 0x10, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, battlex_state,battlex_in0_b4_r, NULL)
-=======
 	PORT_BIT( 0x10, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, battlex_state,battlex_in0_b4_r, nullptr)
->>>>>>> upstream/master
 	PORT_DIPNAME( 0x20, 0x20, DEF_STR( Cabinet ) )
 	PORT_DIPSETTING(    0x20, DEF_STR( Upright ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( Cocktail ) )
@@ -203,10 +175,7 @@ static INPUT_PORTS_START( battlex )
 	PORT_START("SYSTEM")    /* IN1 */
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_COIN1 )
 	PORT_BIT( 0x02, IP_ACTIVE_HIGH, IPT_COIN2 )
-<<<<<<< HEAD
-=======
 	// TODO: PORT_IMPULSE?
->>>>>>> upstream/master
 	PORT_BIT( 0x04, IP_ACTIVE_HIGH, IPT_BUTTON1 ) PORT_IMPULSE(4)
 	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_BUTTON1 ) PORT_IMPULSE(4) PORT_COCKTAIL
 	PORT_BIT( 0x10, IP_ACTIVE_HIGH, IPT_START1 )
@@ -249,8 +218,6 @@ static INPUT_PORTS_START( battlex )
 	PORT_DIPSETTING(    0x80, DEF_STR( On ) )
 INPUT_PORTS_END
 
-<<<<<<< HEAD
-=======
 static INPUT_PORTS_START( dodgeman )
 	PORT_INCLUDE( battlex )
 
@@ -261,7 +228,6 @@ static INPUT_PORTS_START( dodgeman )
 	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_BUTTON2 ) PORT_COCKTAIL
 INPUT_PORTS_END
 
->>>>>>> upstream/master
 
 /*************************************
  *
@@ -272,21 +238,12 @@ INPUT_PORTS_END
 static const gfx_layout battlex_charlayout =
 {
 	8,8,
-<<<<<<< HEAD
-	RGN_FRAC(1,3),
-	3,
-	{ 0,RGN_FRAC(1,3),RGN_FRAC(2,3) },
-	{ 7,6,5,4,3,2,1,0 },
-	{ 0*8, 1*8, 2*8, 3*8, 4*8, 5*8, 6*8, 7*8 },
-	8*8
-=======
 	RGN_FRAC(1,1),
 	4,
 	{ 0,1,2,3 },
 	{ 0, 4, 8, 12, 16, 20, 24, 28  },
 	{ 0*32, 1*32, 2*32, 3*32, 4*32, 5*32, 6*32, 7*32 },
 	8*8*4
->>>>>>> upstream/master
 };
 
 static const gfx_layout battlex_spritelayout =
@@ -294,11 +251,7 @@ static const gfx_layout battlex_spritelayout =
 	16,16,
 	RGN_FRAC(1,3),
 	3,
-<<<<<<< HEAD
-	{ 0,RGN_FRAC(1,3),RGN_FRAC(2,3) },
-=======
 	{ RGN_FRAC(0,3), RGN_FRAC(1,3), RGN_FRAC(2,3) },
->>>>>>> upstream/master
 	{ 7,6,5,4,3,2,1,0,
 		15,14,13,12,11,10,9,8 },
 	{ 0*16, 1*16, 2*16, 3*16, 4*16, 5*16, 6*16, 7*16,
@@ -307,11 +260,7 @@ static const gfx_layout battlex_spritelayout =
 };
 
 static GFXDECODE_START( battlex )
-<<<<<<< HEAD
-	GFXDECODE_ENTRY( "gfx1", 0, battlex_charlayout,   0, 8 )
-=======
 	GFXDECODE_ENTRY( "gfx1", 0, battlex_charlayout,   64, 8 )
->>>>>>> upstream/master
 	GFXDECODE_ENTRY( "gfx2", 0, battlex_spritelayout, 0, 8 )
 GFXDECODE_END
 
@@ -339,11 +288,7 @@ void battlex_state::machine_reset()
 	m_in0_b4 = 0;
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( battlex, battlex_state )
-=======
 static MACHINE_CONFIG_START( battlex )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80,XTAL_10MHz/4 )      // ?
@@ -362,13 +307,6 @@ static MACHINE_CONFIG_START( battlex )
 	MCFG_SCREEN_PALETTE("palette")
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", battlex)
-<<<<<<< HEAD
-	MCFG_PALETTE_ADD("palette", 64)
-
-	/* sound hardware */
-	MCFG_SPEAKER_STANDARD_MONO("mono")
-	MCFG_SOUND_ADD("aysnd", AY8910, XTAL_10MHz/8)   // ?
-=======
 	MCFG_PALETTE_ADD("palette", 64 + 128)
 
 	/* sound hardware */
@@ -385,7 +323,6 @@ static MACHINE_CONFIG_DERIVED( dodgeman, battlex )
 	MCFG_VIDEO_START_OVERRIDE(battlex_state, dodgeman)
 
 	MCFG_SOUND_ADD("ay2", AY8910, XTAL_10MHz/8)   // ?
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.40)
 MACHINE_CONFIG_END
 
@@ -405,25 +342,13 @@ ROM_START( battlex )
 	ROM_LOAD( "p-rom5.2",    0x4000, 0x1000, CRC(ceb63d38) SHA1(92cab905d009c59115f52172ba7d01c8ff8991d7) )
 	ROM_LOAD( "p-rom6.1",    0x5000, 0x1000, CRC(6923f601) SHA1(e6c33cbd8d8679299d7b2c568d56f96ed3073971) )
 
-<<<<<<< HEAD
-=======
 	ROM_REGION( 0x4000, "gfx1", ROMREGION_ERASE00 ) // filled in later
 
->>>>>>> upstream/master
 	ROM_REGION( 0x3000, "gfx2", 0 )
 	ROM_LOAD( "1a_f.6f",     0x0000, 0x1000, CRC(2b69287a) SHA1(30c0edaec44118b95ec390bd41c1bd49a2802451) )
 	ROM_LOAD( "1a_h.6h",     0x1000, 0x1000, CRC(9f4c3bdd) SHA1(e921ecafefe54c033d05d9cd289808e971ac7940) )
 	ROM_LOAD( "1a_j.6j",     0x2000, 0x1000, CRC(c1345b05) SHA1(17194c8ec961990222bd295ff1d036a64f497b0e) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x3000, "gfx1", ROMREGION_ERASE00 ) // filled in later
-
-	ROM_REGION( 0x1000, "user2", 0 )                // gfx1 1bpp gfxdata
-	ROM_LOAD( "1a_e.6e",     0x0000, 0x1000, CRC(126842b7) SHA1(2da4f64e077232c1dd0853d07d801f9781517850) )
-
-	ROM_REGION( 0x1000, "user1", 0 )                // gfx1 colormask, bad?
-	ROM_LOAD( "1a_d.6d",     0x0000, 0x1000, CRC(750a46ef) SHA1(b6ab93e084ab0b7c6ad90ee6431bc1b7ab9ed46d) )
-=======
 	ROM_REGION( 0x1000, "user1", 0 )                // gfx1 colormask, bad?
 	ROM_LOAD( "1a_d.6d",     0x0000, 0x1000, CRC(750a46ef) SHA1(b6ab93e084ab0b7c6ad90ee6431bc1b7ab9ed46d) )
 
@@ -452,7 +377,6 @@ ROM_START( dodgeman )
 
 	ROM_REGION( 0x2000, "user2", 0 )                // gfx1 colormask, bad?
 	ROM_LOAD( "e.6e",         0x0000, 0x002000, CRC(c9a515df) SHA1(5232d2d1bd02b89cb651d817995daf33469f0e2f) )
->>>>>>> upstream/master
 ROM_END
 
 
@@ -464,16 +388,6 @@ ROM_END
 
 DRIVER_INIT_MEMBER(battlex_state,battlex)
 {
-<<<<<<< HEAD
-	UINT8 *colormask = memregion("user1")->base();
-	UINT8 *gfxdata = memregion("user2")->base();
-	UINT8 *dest = memregion("gfx1")->base();
-
-	int tile, line, bit;
-
-	/* convert gfx data from 1bpp + color block mask to straight 3bpp */
-	for (tile = 0; tile < 512; tile++)
-=======
 	uint8_t *colormask = memregion("user1")->base();
 	uint8_t *gfxdata = memregion("user2")->base();
 	uint8_t *dest = memregion("gfx1")->base();
@@ -483,24 +397,11 @@ DRIVER_INIT_MEMBER(battlex_state,battlex)
 	int offset = 0;
 
 	for (tile = 0; tile < tile_size; tile++)
->>>>>>> upstream/master
 	{
 		for (line = 0; line < 8; line ++)
 		{
 			for (bit = 0; bit < 8 ; bit ++)
 			{
-<<<<<<< HEAD
-				int plane;
-				int color = colormask[tile << 3 | line];
-				int data = gfxdata[tile << 3 | line] >> bit & 1;
-				if (!data) color >>= 4;
-
-				for (plane = 2; plane >= 0; plane--)
-				{
-					dest[tile << 3 | line | (plane << 12)] |= (color & 1) << bit;
-					color >>= 1;
-				}
-=======
 
 				int color = colormask[(tile << 3 )| ((line&0x6) + (bit>3?1:0))  ];
 				int data = (gfxdata[(tile << 3 )| line] >> bit) & 1;
@@ -517,25 +418,16 @@ DRIVER_INIT_MEMBER(battlex_state,battlex)
 					dest[ offset>>1 ] = color<<4;
 				}
 				++offset;
->>>>>>> upstream/master
 			}
 		}
 	}
 }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> upstream/master
 /*************************************
  *
  *  Game driver
  *
  *************************************/
 
-<<<<<<< HEAD
-GAME( 1982, battlex, 0, battlex, battlex, battlex_state, battlex, ROT180, "Omori Electric Co., Ltd.", "Battle Cross", MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_COLORS | MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1982, battlex,   0,   battlex,  battlex,  battlex_state,  battlex, ROT180, "Omori Electric Co., Ltd.", "Battle Cross", MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_COLORS | MACHINE_SUPPORTS_SAVE | MACHINE_NO_COCKTAIL )
 GAME( 1983, dodgeman,  0,   dodgeman, dodgeman, battlex_state,  battlex, ROT180, "Omori Electric Co., Ltd.", "Dodge Man",    MACHINE_IMPERFECT_COLORS | MACHINE_SUPPORTS_SAVE | MACHINE_NO_COCKTAIL )
->>>>>>> upstream/master

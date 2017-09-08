@@ -21,13 +21,8 @@ public:
 	required_device<gfxdecode_device> m_gfxdecode;
 
 	/* memory pointers */
-<<<<<<< HEAD
-	required_shared_ptr<UINT8> m_fgvideoram;
-	required_shared_ptr<UINT8> m_bgvideoram;
-=======
 	required_shared_ptr<uint8_t> m_fgvideoram;
 	required_shared_ptr<uint8_t> m_bgvideoram;
->>>>>>> upstream/master
 
 	/* video-related */
 	tilemap_t      *m_bg_tilemap;
@@ -46,17 +41,9 @@ public:
 	TILE_GET_INFO_MEMBER(get_fg_tile_info);
 	TILE_GET_INFO_MEMBER(get_bg_tile_info);
 
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void machine_reset();
-	virtual void video_start();
-
-	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
 	virtual void video_start() override;
 
 	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 };

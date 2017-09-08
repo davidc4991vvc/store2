@@ -1,9 +1,5 @@
 // license:BSD-3-Clause
-<<<<<<< HEAD
-// copyright-holders:Zsolt Vasvari
-=======
 // copyright-holders:Derrick Renaud
->>>>>>> upstream/master
 /************************************************************************
  * copsnrob Sound System Analog emulation
  * Nov 2010, Derrick Renaud
@@ -11,10 +7,7 @@
 #include "emu.h"
 #include "includes/copsnrob.h"
 #include "sound/discrete.h"
-<<<<<<< HEAD
-=======
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 /* Discrete Sound Input Nodes */
@@ -278,13 +271,8 @@ DISCRETE_CLASS_STEP_RESET(copsnrob_custom_noise, 2,
 	int     m_flip_flop;
 	int     m_noise1_had_xtime;
 	int     m_noise2_had_xtime;
-<<<<<<< HEAD
-	UINT8   m_high_byte;
-	UINT8   m_low_byte;
-=======
 	uint8_t   m_high_byte;
 	uint8_t   m_low_byte;
->>>>>>> upstream/master
 	double  m_t_used;
 	double  m_t1;
 );
@@ -296,15 +284,9 @@ DISCRETE_STEP(copsnrob_custom_noise)
 	double  t_used = m_t_used;
 	double  t1 = m_t1;
 	double  x_time = 0;
-<<<<<<< HEAD
-	UINT8   low_byte = m_low_byte;
-	UINT8   high_byte = m_high_byte;
-	UINT8   xnor_out;                           /* IC F2, pin 2 */
-=======
 	uint8_t   low_byte = m_low_byte;
 	uint8_t   high_byte = m_high_byte;
 	uint8_t   xnor_out;                           /* IC F2, pin 2 */
->>>>>>> upstream/master
 	int     last_noise1_bit = (low_byte >> 4) & 0x01;
 	int     last_noise2_bit = (low_byte >> 5) & 0x01;
 
@@ -608,11 +590,7 @@ DISCRETE_RESET(copsnrob_zings_555_astable)
  ************************************************/
 
 
-<<<<<<< HEAD
-DISCRETE_SOUND_START(copsnrob)
-=======
 static DISCRETE_SOUND_START(copsnrob)
->>>>>>> upstream/master
 
 	/************************************************
 	 * Input register mapping
@@ -651,11 +629,7 @@ static DISCRETE_SOUND_START(copsnrob)
 	 ************************************************/
 	DISCRETE_CUSTOM1(COPSNROB_NOISE_1,  copsnrob_custom_noise,                  /* IC J2, pin 10 */
 		COPSNROB_2V,                                        /* CLK */
-<<<<<<< HEAD
-		NULL)
-=======
 		nullptr)
->>>>>>> upstream/master
 	/* COPSNROB_NOISE_2 derived from sub out of above custom module - IC J2, pin 11 */
 	/* We use the measured 555 timer frequency (IC M3) for speed */
 	DISCRETE_COUNTER(NODE_40,                               /* IC L2 */
@@ -683,20 +657,12 @@ static DISCRETE_SOUND_START(copsnrob)
 		/* We can ignore R47 & R48 */
 		COPSNROB_ZINGS_INV,                             /* IC D3, pin 6 */
 		COPSNROB_R38, COPSNROB_C19,
-<<<<<<< HEAD
-		NULL)
-=======
 		nullptr)
->>>>>>> upstream/master
 	DISCRETE_CUSTOM5(NODE_61, copsnrob_zings_555_astable,                           /* IC D3, pin 8 & 12 */
 		NODE_60,                                        /* IC D3, pin 10 */
 		COPSNROB_R36, COPSNROB_R37,
 		COPSNROB_C3, COPSNROB_C13,
-<<<<<<< HEAD
-		NULL)
-=======
 		nullptr)
->>>>>>> upstream/master
 	/* FIX - do a better implemetation of IC L4 */
 	DISCRETE_CRFILTER_VREF(NODE_62,                     /* IC L4, pin 9 */
 		NODE_61,                                        /* IN0 */
@@ -722,62 +688,6 @@ static DISCRETE_SOUND_START(copsnrob)
 DISCRETE_SOUND_END
 
 
-<<<<<<< HEAD
-WRITE8_MEMBER(copsnrob_state::copsnrob_misc_w)
-{
-	UINT8 latched_data = m_ic_h3_data;
-	UINT8 special_data = data & 0x01;
-
-	/* ignore if no change */
-	if (((latched_data >> offset) & 0x01) == special_data)
-		return;
-
-	if (special_data)
-		latched_data |= 1 << offset;
-	else
-		latched_data &= ~(1 << offset);
-
-	switch (offset)
-	{
-		case 0x00:
-			m_discrete->write(space, COPSNROB_MOTOR3_INV, special_data);
-			break;
-
-		case 0x01:
-			m_discrete->write(space, COPSNROB_MOTOR2_INV, special_data);
-			break;
-
-		case 0x02:
-			m_discrete->write(space, COPSNROB_MOTOR1_INV, special_data);
-			break;
-
-		case 0x03:
-			m_discrete->write(space, COPSNROB_MOTOR0_INV, special_data);
-			break;
-
-		case 0x04:
-			m_discrete->write(space, COPSNROB_SCREECH_INV, special_data);
-			break;
-
-		case 0x05:
-			m_discrete->write(space, COPSNROB_CRASH_INV, special_data);
-			break;
-
-		case 0x06:
-			/* One Start */
-			set_led_status(machine(), 0, !special_data);
-			break;
-
-		case 0x07:
-			m_discrete->write(space, COPSNROB_AUDIO_ENABLE, special_data);
-			//machine().sound().system_mute(special_data);
-			break;
-
-	}
-
-	m_ic_h3_data = latched_data;
-}
-=======
 WRITE_LINE_MEMBER(copsnrob_state::one_start_w)
 {
 	/* One Start */
@@ -804,4 +714,3 @@ MACHINE_CONFIG_START( copsnrob_audio )
 	MCFG_ADDRESSABLE_LATCH_Q6_OUT_CB(WRITELINE(copsnrob_state, one_start_w))
 	MCFG_ADDRESSABLE_LATCH_Q7_OUT_CB(DEVWRITELINE("discrete", discrete_device, write_line<COPSNROB_AUDIO_ENABLE>))
 MACHINE_CONFIG_END
->>>>>>> upstream/master

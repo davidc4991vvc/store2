@@ -22,30 +22,18 @@
 
 **********************************************************************/
 
-<<<<<<< HEAD
-#include "machine/315_5296.h"
-
-
-const device_type SEGA_315_5296 = &device_creator<sega_315_5296_device>;
-=======
 #include "emu.h"
 #include "machine/315_5296.h"
 
 
 DEFINE_DEVICE_TYPE(SEGA_315_5296, sega_315_5296_device, "315_5296", "Sega 315-5296 I/O")
->>>>>>> upstream/master
 
 //-------------------------------------------------
 //  sega_315_5296_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-sega_315_5296_device::sega_315_5296_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, SEGA_315_5296, "Sega 315-5296 I/O", tag, owner, clock, "315_5296", __FILE__),
-=======
 sega_315_5296_device::sega_315_5296_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, SEGA_315_5296, tag, owner, clock),
->>>>>>> upstream/master
 	m_in_pa_cb(*this),
 	m_in_pb_cb(*this),
 	m_in_pc_cb(*this),
@@ -118,13 +106,8 @@ void sega_315_5296_device::device_reset()
 
 	for (int i = 0; i < 8; i++)
 		(*m_out_port_cb[i])((offs_t)i, 0);
-<<<<<<< HEAD
-	for (int i = 0; i < 3; i++)
-		(*m_out_cnt_cb[i])(0);
-=======
 	for (auto & elem : m_out_cnt_cb)
 		(*elem)(0);
->>>>>>> upstream/master
 }
 
 
@@ -207,14 +190,10 @@ WRITE8_MEMBER( sega_315_5296_device::write )
 			for (int i = 0; i < 8; i++)
 			{
 				if ((m_dir ^ data) & (1 << i))
-<<<<<<< HEAD
-					(*m_out_port_cb[i])((offs_t)i, (data & 1 << i) ? m_output_latch[i] : 0);
-=======
 				{
 					logerror("Port %c configured for output\n", 'A' + i);
 					(*m_out_port_cb[i])((offs_t)i, (data & 1 << i) ? m_output_latch[i] : 0);
 				}
->>>>>>> upstream/master
 			}
 
 			m_dir = data;

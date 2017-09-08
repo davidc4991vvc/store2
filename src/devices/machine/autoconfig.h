@@ -6,20 +6,11 @@
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __AUTOCONFIG_H__
-#define __AUTOCONFIG_H__
-
-#include "emu.h"
-=======
 #ifndef MAME_MACHINE_AUTOCONFIG_H
 #define MAME_MACHINE_AUTOCONFIG_H
 
 #pragma once
 
->>>>>>> upstream/master
 
 class amiga_autoconfig
 {
@@ -64,35 +55,19 @@ protected:
 	void autoconfig_can_shutup(bool state);
 
 	// product number, manufacturer number, serial number
-<<<<<<< HEAD
-	void autoconfig_product(UINT8 data);
-	void autoconfig_manufacturer(UINT16 data);
-	void autoconfig_serial(UINT32 data);
-
-	// rom vector
-	void autoconfig_rom_vector(UINT16 data);
-=======
 	void autoconfig_product(uint8_t data);
 	void autoconfig_manufacturer(uint16_t data);
 	void autoconfig_serial(uint32_t data);
 
 	// rom vector
 	void autoconfig_rom_vector(uint16_t data);
->>>>>>> upstream/master
 
 	// called once we have received a valid base address from the host system
 	virtual void autoconfig_base_address(offs_t address) = 0;
 
 private:
 	// configuration information about our autoconfig board, 256 nibbles
-<<<<<<< HEAD
-	UINT16 m_cfg[0x40];
-};
-
-#endif // __AUTOCONFIG_H__
-=======
 	uint16_t m_cfg[0x40];
 };
 
 #endif // MAME_MACHINE_AUTOCONFIG_H
->>>>>>> upstream/master

@@ -13,31 +13,19 @@
 #define TGP_FUNCTION(name) void name()
 
 
-<<<<<<< HEAD
-UINT32 model1_state::fifoout_pop()
-=======
 uint32_t model1_state::fifoout_pop()
->>>>>>> upstream/master
 {
 	if(m_fifoout_wpos == m_fifoout_rpos) {
 		fatalerror("TGP FIFOOUT underflow (%x)\n", safe_pc());
 	}
-<<<<<<< HEAD
-	UINT32 v = m_fifoout_data[m_fifoout_rpos++];
-=======
 	uint32_t v = m_fifoout_data[m_fifoout_rpos++];
->>>>>>> upstream/master
 	if(m_fifoout_rpos == FIFO_SIZE)
 		m_fifoout_rpos = 0;
 	return v;
 }
 
 
-<<<<<<< HEAD
-void model1_state::fifoout_push(UINT32 data)
-=======
 void model1_state::fifoout_push(uint32_t data)
->>>>>>> upstream/master
 {
 	if(!m_puuu)
 		logerror("TGP: Push %d\n", data);
@@ -58,29 +46,17 @@ void model1_state::fifoout_push_f(float data)
 	fifoout_push(f2u(data));
 }
 
-<<<<<<< HEAD
-UINT32 model1_state::fifoin_pop()
-{
-	if(m_fifoin_wpos == m_fifoin_rpos)
-		logerror("TGP FIFOIN underflow\n");
-	UINT32 v = m_fifoin_data[m_fifoin_rpos++];
-=======
 uint32_t model1_state::fifoin_pop()
 {
 	if(m_fifoin_wpos == m_fifoin_rpos)
 		logerror("TGP FIFOIN underflow\n");
 	uint32_t v = m_fifoin_data[m_fifoin_rpos++];
->>>>>>> upstream/master
 	if(m_fifoin_rpos == FIFO_SIZE)
 		m_fifoin_rpos = 0;
 	return v;
 }
 
-<<<<<<< HEAD
-void model1_state::fifoin_push(UINT32 data)
-=======
 void model1_state::fifoin_push(uint32_t data)
->>>>>>> upstream/master
 {
 	//  logerror("TGP FIFOIN write %08x (%x)\n", data, safe_pc());
 	m_fifoin_data[m_fifoin_wpos++] = data;
@@ -104,11 +80,7 @@ void model1_state::next_fn()
 	m_fifoin_cb = m_swa ? &model1_state::function_get_swa : &model1_state::function_get_vf;
 }
 
-<<<<<<< HEAD
-static float tcos(INT16 a)
-=======
 static float tcos(int16_t a)
->>>>>>> upstream/master
 {
 	if(a == 16384 || a == -16384)
 		return 0;
@@ -120,11 +92,7 @@ static float tcos(int16_t a)
 		return cos(a*(2*M_PI/65536.0));
 }
 
-<<<<<<< HEAD
-static float tsin(INT16 a)
-=======
 static float tsin(int16_t a)
->>>>>>> upstream/master
 {
 	if(a == 0 || a == -32768)
 		return 0;
@@ -136,11 +104,7 @@ static float tsin(int16_t a)
 		return sin(a*(2*M_PI/65536.0));
 }
 
-<<<<<<< HEAD
-UINT16 model1_state::ram_get_i()
-=======
 uint16_t model1_state::ram_get_i()
->>>>>>> upstream/master
 {
 	return m_ram_data[m_ram_scanadr++];
 }
@@ -165,11 +129,7 @@ TGP_FUNCTION( model1_state::fsub )
 	float a = fifoin_pop_f();
 	float b = fifoin_pop_f();
 	float r = a-b;
-<<<<<<< HEAD
-	m_dump = 1;
-=======
 	m_dump = true;
->>>>>>> upstream/master
 	logerror("TGP fsub %f-%f=%f (%x)\n", a, b, r, m_pushpc);
 	fifoout_push_f(r);
 	next_fn();
@@ -276,47 +236,11 @@ TGP_FUNCTION( model1_state::anglev )
 		if(a>=0)
 			fifoout_push(0);
 		else
-<<<<<<< HEAD
-			fifoout_push((UINT32)-32768);
-=======
 			fifoout_push((uint32_t)-32768);
->>>>>>> upstream/master
 	} else if(!a) {
 		if(b>=0)
 			fifoout_push(16384);
 		else
-<<<<<<< HEAD
-			fifoout_push((UINT32)-16384);
-	} else
-		fifoout_push((INT16)(atan2(b, a)*32768/M_PI));
-	next_fn();
-}
-
-TGP_FUNCTION( model1_state::f11 )
-{
-	float a = fifoin_pop_f();
-	float b = fifoin_pop_f();
-	float c = fifoin_pop_f();
-	float d = fifoin_pop_f();
-	float e = fifoin_pop_f();
-	float f = fifoin_pop_f();
-	float g = fifoin_pop_f();
-	float h = fifoin_pop_f();
-	float i = fifoin_pop_f();
-	(void)a;
-	(void)b;
-	(void)c;
-	(void)d;
-	(void)e;
-	(void)f;
-	(void)g;
-	(void)h;
-	(void)i;
-	logerror("TGP f11 %f, %f, %f, %f, %f, %f, %f, %f, %f (%x)\n", a, b, c, d, e, f, g, h, i, m_pushpc);
-	fifoout_push_f(0);
-	fifoout_push_f(0);
-	fifoout_push_f(0);
-=======
 			fifoout_push((uint32_t)-16384);
 	} else
 		fifoout_push((int16_t)(atan2(b, a)*32768/M_PI));
@@ -353,7 +277,6 @@ TGP_FUNCTION( model1_state::triangle_normal )
 	fifoout_push_f(nx);
 	fifoout_push_f(ny);
 	fifoout_push_f(nz);
->>>>>>> upstream/master
 	next_fn();
 }
 
@@ -372,13 +295,8 @@ TGP_FUNCTION( model1_state::normalize )
 
 TGP_FUNCTION( model1_state::acc_seti )
 {
-<<<<<<< HEAD
-	INT32 a = fifoin_pop();
-	m_dump = 1;
-=======
 	int32_t a = fifoin_pop();
 	m_dump = true;
->>>>>>> upstream/master
 	logerror("TGP acc_seti %d (%x)\n", a, m_pushpc);
 	m_acc = a;
 	next_fn();
@@ -386,35 +304,19 @@ TGP_FUNCTION( model1_state::acc_seti )
 
 TGP_FUNCTION( model1_state::track_select )
 {
-<<<<<<< HEAD
-	INT32 a = fifoin_pop();
-=======
 	int32_t a = fifoin_pop();
->>>>>>> upstream/master
 	logerror("TGP track_select %d (%x)\n", a, m_pushpc);
 	m_tgp_vr_select = a;
 	next_fn();
 }
 
-<<<<<<< HEAD
-TGP_FUNCTION( model1_state::f14 )
-=======
 TGP_FUNCTION( model1_state::load_base )
->>>>>>> upstream/master
 {
 	m_tgp_vr_base[0] = fifoin_pop_f();
 	m_tgp_vr_base[1] = fifoin_pop_f();
 	m_tgp_vr_base[2] = fifoin_pop_f();
 	m_tgp_vr_base[3] = fifoin_pop_f();
 
-<<<<<<< HEAD
-	next_fn();
-}
-
-TGP_FUNCTION( model1_state::f15_swa )
-{
-	logerror("TGP f15_swa (%x)\n", m_pushpc);
-=======
 	logerror("TGP load_base %f, %f, %f, %f (%x)\n", m_tgp_vr_base[0], m_tgp_vr_base[1], m_tgp_vr_base[2], m_tgp_vr_base[3], m_pushpc);
 	next_fn();
 }
@@ -427,7 +329,6 @@ TGP_FUNCTION( model1_state::transpose )
 	t = m_cmat[1]; m_cmat[1] = m_cmat[3]; m_cmat[3] = t;
 	t = m_cmat[2]; m_cmat[2] = m_cmat[6]; m_cmat[6] = t;
 	t = m_cmat[5]; m_cmat[5] = m_cmat[7]; m_cmat[7] = t;
->>>>>>> upstream/master
 
 	next_fn();
 }
@@ -445,24 +346,14 @@ TGP_FUNCTION( model1_state::anglep )
 		if(c>=0)
 			fifoout_push(0);
 		else
-<<<<<<< HEAD
-			fifoout_push((UINT32)-32768);
-=======
 			fifoout_push((uint32_t)-32768);
->>>>>>> upstream/master
 	} else if(!c) {
 		if(d>=0)
 			fifoout_push(16384);
 		else
-<<<<<<< HEAD
-			fifoout_push((UINT32)-16384);
-	} else
-		fifoout_push((INT16)(atan2(d, c)*32768/M_PI));
-=======
 			fifoout_push((uint32_t)-16384);
 	} else
 		fifoout_push((int16_t)(atan2(d, c)*32768/M_PI));
->>>>>>> upstream/master
 	next_fn();
 }
 
@@ -492,11 +383,8 @@ TGP_FUNCTION( model1_state::matrix_trans )
 	float b = fifoin_pop_f();
 	float c = fifoin_pop_f();
 
-<<<<<<< HEAD
-=======
 	logerror("TCP matrix_trans %f %f %f (%x)\n", a, b, c, m_pushpc);
 
->>>>>>> upstream/master
 	m_cmat[ 9] += m_cmat[0]*a+m_cmat[3]*b+m_cmat[6]*c;
 	m_cmat[10] += m_cmat[1]*a+m_cmat[4]*b+m_cmat[7]*c;
 	m_cmat[11] += m_cmat[2]*a+m_cmat[5]*b+m_cmat[8]*c;
@@ -523,11 +411,7 @@ TGP_FUNCTION( model1_state::matrix_scale )
 
 TGP_FUNCTION( model1_state::matrix_rotx )
 {
-<<<<<<< HEAD
-	INT16 a = fifoin_pop();
-=======
 	int16_t a = fifoin_pop();
->>>>>>> upstream/master
 	float s = tsin(a);
 	float c = tcos(a);
 	float t1, t2;
@@ -549,11 +433,7 @@ TGP_FUNCTION( model1_state::matrix_rotx )
 
 TGP_FUNCTION( model1_state::matrix_roty )
 {
-<<<<<<< HEAD
-	INT16 a = fifoin_pop();
-=======
 	int16_t a = fifoin_pop();
->>>>>>> upstream/master
 	float s = tsin(a);
 	float c = tcos(a);
 	float t1, t2;
@@ -576,11 +456,7 @@ TGP_FUNCTION( model1_state::matrix_roty )
 
 TGP_FUNCTION( model1_state::matrix_rotz )
 {
-<<<<<<< HEAD
-	INT16 a = fifoin_pop();
-=======
 	int16_t a = fifoin_pop();
->>>>>>> upstream/master
 	float s = tsin(a);
 	float c = tcos(a);
 	float t1, t2;
@@ -603,13 +479,8 @@ TGP_FUNCTION( model1_state::matrix_rotz )
 
 TGP_FUNCTION( model1_state::track_read_quad )
 {
-<<<<<<< HEAD
-	const UINT32 *tgp_data = (const UINT32 *)memregion("user2")->base();
-	UINT32 a = fifoin_pop();
-=======
 	const uint32_t *tgp_data = (const uint32_t *)memregion("user2")->base();
 	uint32_t a = fifoin_pop();
->>>>>>> upstream/master
 	int offd;
 
 	logerror("TGP track_read_quad %d (%x)\n", a, m_pushpc);
@@ -630,26 +501,6 @@ TGP_FUNCTION( model1_state::track_read_quad )
 	next_fn();
 }
 
-<<<<<<< HEAD
-TGP_FUNCTION( model1_state::f24_swa )
-{
-	float a = fifoin_pop_f();
-	float b = fifoin_pop_f();
-	float c = fifoin_pop_f();
-	float d = fifoin_pop_f();
-	float e = fifoin_pop_f();
-	float f = fifoin_pop_f();
-	UINT32 g = fifoin_pop();
-	(void)a;
-	(void)b;
-	(void)c;
-	(void)d;
-	(void)e;
-	(void)f;
-	(void)g;
-	logerror("TGP f24_swa %f, %f, %f, %f, %f, %f, %x (%x)\n", a, b, c, d, e, f, g, m_pushpc);
-	fifoout_push_f(0);
-=======
 TGP_FUNCTION( model1_state::intercept )
 {
 	const uint32_t *tgp_data = (const uint32_t *)memregion("user2")->base();
@@ -718,7 +569,6 @@ TGP_FUNCTION( model1_state::intercept )
 
 	m_tgp_int_adr = adr;
 	fifoout_push(ret);
->>>>>>> upstream/master
 	next_fn();
 }
 
@@ -728,10 +578,6 @@ TGP_FUNCTION( model1_state::transform_point )
 	float y = fifoin_pop_f();
 	float z = fifoin_pop_f();
 	logerror("TGP transform_point %f, %f, %f (%x)\n", x, y, z, m_pushpc);
-<<<<<<< HEAD
-
-=======
->>>>>>> upstream/master
 	fifoout_push_f(m_cmat[0]*x+m_cmat[3]*y+m_cmat[6]*z+m_cmat[9]);
 	fifoout_push_f(m_cmat[1]*x+m_cmat[4]*y+m_cmat[7]*z+m_cmat[10]);
 	fifoout_push_f(m_cmat[2]*x+m_cmat[5]*y+m_cmat[8]*z+m_cmat[11]);
@@ -740,11 +586,7 @@ TGP_FUNCTION( model1_state::transform_point )
 
 TGP_FUNCTION( model1_state::fcos_m1 )
 {
-<<<<<<< HEAD
-	INT16 a = fifoin_pop();
-=======
 	int16_t a = fifoin_pop();
->>>>>>> upstream/master
 	logerror("TGP fcos %d (%x)\n", a, m_pushpc);
 	fifoout_push_f(tcos(a));
 	next_fn();
@@ -752,11 +594,7 @@ TGP_FUNCTION( model1_state::fcos_m1 )
 
 TGP_FUNCTION( model1_state::fsin_m1 )
 {
-<<<<<<< HEAD
-	INT16 a = fifoin_pop();
-=======
 	int16_t a = fifoin_pop();
->>>>>>> upstream/master
 	logerror("TGP fsin %d (%x)\n", a, m_pushpc);
 	fifoout_push_f(tsin(a));
 	next_fn();
@@ -764,11 +602,7 @@ TGP_FUNCTION( model1_state::fsin_m1 )
 
 TGP_FUNCTION( model1_state::fcosm_m1 )
 {
-<<<<<<< HEAD
-	INT16 a = fifoin_pop();
-=======
 	int16_t a = fifoin_pop();
->>>>>>> upstream/master
 	float b = fifoin_pop_f();
 	logerror("TGP fcosm %d, %f (%x)\n", a, b, m_pushpc);
 	fifoout_push_f(b*tcos(a));
@@ -777,15 +611,9 @@ TGP_FUNCTION( model1_state::fcosm_m1 )
 
 TGP_FUNCTION( model1_state::fsinm_m1 )
 {
-<<<<<<< HEAD
-	INT16 a = fifoin_pop();
-	float b = fifoin_pop_f();
-	m_dump = 1;
-=======
 	int16_t a = fifoin_pop();
 	float b = fifoin_pop_f();
 	m_dump = true;
->>>>>>> upstream/master
 	logerror("TGP fsinm %d, %f (%x)\n", a, b, m_pushpc);
 	fifoout_push_f(b*tsin(a));
 	next_fn();
@@ -803,11 +631,7 @@ TGP_FUNCTION( model1_state::distance3 )
 	a -= d;
 	b -= e;
 	c -= f;
-<<<<<<< HEAD
-	fifoout_push_f((a*a+b*b+c*c)/sqrtf(a*a+b*b+c*c));
-=======
 	fifoout_push_f(sqrtf(a*a+b*b+c*c));
->>>>>>> upstream/master
 	next_fn();
 }
 
@@ -821,11 +645,7 @@ TGP_FUNCTION( model1_state::ftoi )
 
 TGP_FUNCTION( model1_state::itof )
 {
-<<<<<<< HEAD
-	INT32 a = fifoin_pop();
-=======
 	int32_t a = fifoin_pop();
->>>>>>> upstream/master
 	logerror("TGP itof %d (%x)\n", a, m_pushpc);
 	fifoout_push_f(a);
 	next_fn();
@@ -906,40 +726,21 @@ TGP_FUNCTION( model1_state::xyz2rqf )
 	float b = fifoin_pop_f();
 	float c = fifoin_pop_f();
 	float norm;
-<<<<<<< HEAD
-	(void)a;
-	(void)b;
-	(void)c;
-	logerror("TGP xyz2rqf %f, %f, %f (%x)\n", a, b, c, m_pushpc);
-	fifoout_push_f((a*a+b*b+c*c)/sqrtf(a*a+b*b+c*c));
-	norm = sqrt(a*a+c*c);
-=======
 	logerror("TGP xyz2rqf %f, %f, %f (%x)\n", a, b, c, m_pushpc);
 	fifoout_push_f(sqrtf(a*a+b*b+c*c));
 	norm = sqrtf(a*a+c*c);
->>>>>>> upstream/master
 	if(!c) {
 		if(a>=0)
 			fifoout_push(0);
 		else
-<<<<<<< HEAD
-			fifoout_push((UINT32)-32768);
-=======
 			fifoout_push((uint32_t)-32768);
->>>>>>> upstream/master
 	} else if(!a) {
 		if(c>=0)
 			fifoout_push(16384);
 		else
-<<<<<<< HEAD
-			fifoout_push((UINT32)-16384);
-	} else
-		fifoout_push((INT16)(atan2(c, a)*32768/M_PI));
-=======
 			fifoout_push((uint32_t)-16384);
 	} else
 		fifoout_push((int16_t)(atan2(c, a)*32768/M_PI));
->>>>>>> upstream/master
 
 	if(!b)
 		fifoout_push(0);
@@ -947,15 +748,9 @@ TGP_FUNCTION( model1_state::xyz2rqf )
 		if(b>=0)
 			fifoout_push(16384);
 		else
-<<<<<<< HEAD
-			fifoout_push((UINT32)-16384);
-	} else
-		fifoout_push((INT16)(atan2(b, norm)*32768/M_PI));
-=======
 			fifoout_push((uint32_t)-16384);
 	} else
 		fifoout_push((int16_t)(atan2(b, norm)*32768/M_PI));
->>>>>>> upstream/master
 
 	next_fn();
 }
@@ -997,16 +792,6 @@ TGP_FUNCTION( model1_state::f43_swa )
 	next_fn();
 }
 
-<<<<<<< HEAD
-TGP_FUNCTION( model1_state::f44 )
-{
-	float a = fifoin_pop_f();
-	(void)a;
-	logerror("TGP f44 %f (%x)\n", a, m_pushpc);
-	fifoout_push_f(0);
-	fifoout_push_f(0);
-	fifoout_push_f(0);
-=======
 TGP_FUNCTION( model1_state::track_read_tri )
 {
 	const uint32_t *tgp_data = (const uint32_t *)memregion("user2")->base();
@@ -1019,7 +804,6 @@ TGP_FUNCTION( model1_state::track_read_tri )
 	fifoout_push(tgp_data[offd+12]);
 	fifoout_push(tgp_data[offd+13]);
 	fifoout_push(tgp_data[offd+14]);
->>>>>>> upstream/master
 	next_fn();
 }
 
@@ -1028,11 +812,7 @@ TGP_FUNCTION( model1_state::matrix_sdir )
 	float a = fifoin_pop_f();
 	float b = fifoin_pop_f();
 	float c = fifoin_pop_f();
-<<<<<<< HEAD
-	float norm = sqrt(a*a+b*b+c*c);
-=======
 	float norm = sqrtf(a*a+b*b+c*c);
->>>>>>> upstream/master
 	float t[9], m[9];
 	logerror("TGP matrix_sdir %f, %f, %f (%x)\n", a, b, c, m_pushpc);
 
@@ -1048,11 +828,7 @@ TGP_FUNCTION( model1_state::matrix_sdir )
 		t[1] = b / norm;
 		t[2] = a / norm;
 
-<<<<<<< HEAD
-		norm = sqrt(a*a+c*c);
-=======
 		norm = sqrtf(a*a+c*c);
->>>>>>> upstream/master
 		t[6] = a/norm;
 		t[7] = 0;
 		t[8] = c/norm;
@@ -1060,11 +836,7 @@ TGP_FUNCTION( model1_state::matrix_sdir )
 		t[3] = -b*c;
 		t[4] = a*a+c*c;
 		t[5] = -b*a;
-<<<<<<< HEAD
-		norm = sqrt(t[3]*t[3]+t[4]*t[4]+t[5]*t[5]);
-=======
 		norm = sqrtf(t[3]*t[3]+t[4]*t[4]+t[5]*t[5]);
->>>>>>> upstream/master
 		t[3] /= norm;
 		t[4] /= norm;
 		t[5] /= norm;
@@ -1085,37 +857,16 @@ TGP_FUNCTION( model1_state::matrix_sdir )
 	next_fn();
 }
 
-<<<<<<< HEAD
-TGP_FUNCTION( model1_state::f45 )
-{
-	float a = fifoin_pop_f();
-	(void)a;
-	logerror("TGP f45 %f (%x)\n", a, m_pushpc);
-	fifoout_push_f(0);
-=======
 TGP_FUNCTION( model1_state::fsqrt )
 {
 	float a = fifoin_pop_f();
 	logerror("TGP fsqrt %f (%x)\n", a, m_pushpc);
 	fifoout_push_f(sqrtf(a));
->>>>>>> upstream/master
 	next_fn();
 }
 
 TGP_FUNCTION( model1_state::vlength )
 {
-<<<<<<< HEAD
-	float a = fifoin_pop_f() - m_tgp_vr_base[0];
-	float b = fifoin_pop_f() - m_tgp_vr_base[1];
-	float c = fifoin_pop_f() - m_tgp_vr_base[2];
-	logerror("TGP vlength %f, %f, %f (%x)\n", a, b, c, m_pushpc);
-
-	a = (a*a+b*b+c*c);
-	b = 1/sqrt(a);
-	c = a * b;
-	c -= m_tgp_vr_base[3];
-	fifoout_push_f(c);
-=======
 	float x = fifoin_pop_f();
 	float y = fifoin_pop_f();
 	float z = fifoin_pop_f();
@@ -1125,7 +876,6 @@ TGP_FUNCTION( model1_state::vlength )
 	y -= m_tgp_vr_base[1];
 	z -= m_tgp_vr_base[2];
 	fifoout_push_f(sqrtf(x*x + y*y + z*z) - m_tgp_vr_base[3]);
->>>>>>> upstream/master
 	next_fn();
 }
 
@@ -1142,13 +892,8 @@ TGP_FUNCTION( model1_state::f47 )
 
 TGP_FUNCTION( model1_state::track_read_info )
 {
-<<<<<<< HEAD
-	const UINT32 *tgp_data = (const UINT32 *)memregion("user2")->base();
-	UINT16 a = fifoin_pop();
-=======
 	const uint32_t *tgp_data = (const uint32_t *)memregion("user2")->base();
 	uint16_t a = fifoin_pop();
->>>>>>> upstream/master
 	int offd;
 
 	logerror("TGP track_read_info %d (%x)\n", a, m_pushpc);
@@ -1248,11 +993,7 @@ TGP_FUNCTION( model1_state::matrix_rdir )
 	float a = fifoin_pop_f();
 	float b = fifoin_pop_f();
 	float c = fifoin_pop_f();
-<<<<<<< HEAD
-	float norm = sqrt(a*a+c*c);
-=======
 	float norm = sqrtf(a*a+c*c);
->>>>>>> upstream/master
 	float t1, t2;
 	(void)b;
 
@@ -1298,25 +1039,15 @@ static void tri_calc_pq(float ax, float ay, float bx, float by, float cx, float 
 
 TGP_FUNCTION( model1_state::track_lookup )
 {
-<<<<<<< HEAD
-	const UINT32 *tgp_data = (const UINT32 *)memregion("user2")->base();
-	float a = fifoin_pop_f();
-	UINT32 b = fifoin_pop();
-=======
 	const uint32_t *tgp_data = (const uint32_t *)memregion("user2")->base();
 	float a = fifoin_pop_f();
 	uint32_t b = fifoin_pop();
->>>>>>> upstream/master
 	float c = fifoin_pop_f();
 	float d = fifoin_pop_f();
 	int offi, offd, len;
 	float dist;
 	int i;
-<<<<<<< HEAD
-	UINT32 entry;
-=======
 	uint32_t entry;
->>>>>>> upstream/master
 	float height;
 
 	logerror("TGP track_lookup %f, 0x%x, %f, %f (%x)\n", a, b, c, d, m_pushpc);
@@ -1372,11 +1103,7 @@ TGP_FUNCTION( model1_state::f56 )
 	float d = fifoin_pop_f();
 	float e = fifoin_pop_f();
 	float f = fifoin_pop_f();
-<<<<<<< HEAD
-	UINT32 g = fifoin_pop();
-=======
 	uint32_t g = fifoin_pop();
->>>>>>> upstream/master
 	(void)a;
 	(void)b;
 	(void)c;
@@ -1390,14 +1117,6 @@ TGP_FUNCTION( model1_state::f56 )
 	next_fn();
 }
 
-<<<<<<< HEAD
-TGP_FUNCTION( model1_state::f57 )
-{
-	logerror("TGP f57 (%x)\n", m_pushpc);
-	fifoout_push_f(0);
-	fifoout_push_f(0);
-	fifoout_push_f(0);
-=======
 TGP_FUNCTION( model1_state::int_normal )
 {
 	const uint32_t *tgp_data = (const uint32_t *)memregion("user2")->base();
@@ -1405,7 +1124,6 @@ TGP_FUNCTION( model1_state::int_normal )
 	fifoout_push_f(u2f(tgp_data[m_tgp_int_adr+12]));
 	fifoout_push_f(u2f(tgp_data[m_tgp_int_adr+13]));
 	fifoout_push_f(u2f(tgp_data[m_tgp_int_adr+14]));
->>>>>>> upstream/master
 	next_fn();
 }
 
@@ -1425,21 +1143,12 @@ TGP_FUNCTION( model1_state::acc_geti )
 	next_fn();
 }
 
-<<<<<<< HEAD
-TGP_FUNCTION( model1_state::f60 )
-{
-	logerror("TGP f60 (%x)\n", m_pushpc);
-	fifoout_push_f(0);
-	fifoout_push_f(0);
-	fifoout_push_f(0);
-=======
 TGP_FUNCTION( model1_state::int_point )
 {
 	logerror("TGP int_point (%x)\n", m_pushpc);
 	fifoout_push_f(m_tgp_int_px);
 	fifoout_push_f(m_tgp_int_py);
 	fifoout_push_f(m_tgp_int_pz);
->>>>>>> upstream/master
 	next_fn();
 }
 
@@ -1463,11 +1172,7 @@ TGP_FUNCTION( model1_state::col_testpt )
 	logerror("TGP col_testpt %f, %f (%x)\n", a, b, m_pushpc);
 	x = a - m_tgp_vr_circx;
 	y = b - m_tgp_vr_circy;
-<<<<<<< HEAD
-	fifoout_push_f(((x*x+y*y)/sqrtf(x*x+y*y)) - m_tgp_vr_circrad);
-=======
 	fifoout_push_f(sqrtf(x*x+y*y) - m_tgp_vr_circrad);
->>>>>>> upstream/master
 	next_fn();
 }
 
@@ -1528,21 +1233,13 @@ TGP_FUNCTION( model1_state::distance )
 	logerror("TGP distance (%f, %f), (%f, %f) (%x)\n", a, b, c, d, m_pushpc);
 	c -= a;
 	d -= b;
-<<<<<<< HEAD
-	fifoout_push_f((c*c+d*d)/sqrtf(c*c+d*d));
-=======
 	fifoout_push_f(sqrtf(c*c+d*d));
->>>>>>> upstream/master
 	next_fn();
 }
 
 TGP_FUNCTION( model1_state::car_move )
 {
-<<<<<<< HEAD
-	INT16 a = fifoin_pop();
-=======
 	int16_t a = fifoin_pop();
->>>>>>> upstream/master
 	float b = fifoin_pop_f();
 	float c = fifoin_pop_f();
 	float d = fifoin_pop_f();
@@ -1599,21 +1296,13 @@ TGP_FUNCTION( model1_state::cpa )
 	dv_z = (i-k)*(1-dt) + (j-l)*dt;
 	dv2 = dv_x*dv_x + dv_y*dv_y + dv_z*dv_z;
 
-<<<<<<< HEAD
-	fifoout_push_f(sqrt(dv2));
-=======
 	fifoout_push_f(sqrtf(dv2));
->>>>>>> upstream/master
 	next_fn();
 }
 
 TGP_FUNCTION( model1_state::vmat_store )
 {
-<<<<<<< HEAD
-	UINT32 a = fifoin_pop();
-=======
 	uint32_t a = fifoin_pop();
->>>>>>> upstream/master
 	if(a<21)
 		memcpy(m_mat_vector[a], m_cmat, sizeof(m_cmat));
 	else
@@ -1624,11 +1313,7 @@ TGP_FUNCTION( model1_state::vmat_store )
 
 TGP_FUNCTION( model1_state::vmat_restore )
 {
-<<<<<<< HEAD
-	UINT32 a = fifoin_pop();
-=======
 	uint32_t a = fifoin_pop();
->>>>>>> upstream/master
 	if(a<21)
 		memcpy(m_cmat, m_mat_vector[a], sizeof(m_cmat));
 	else
@@ -1639,13 +1324,8 @@ TGP_FUNCTION( model1_state::vmat_restore )
 
 TGP_FUNCTION( model1_state::vmat_mul )
 {
-<<<<<<< HEAD
-	UINT32 a = fifoin_pop();
-	UINT32 b = fifoin_pop();
-=======
 	uint32_t a = fifoin_pop();
 	uint32_t b = fifoin_pop();
->>>>>>> upstream/master
 	if(a<21 && b<21) {
 		m_mat_vector[b][0]  = m_mat_vector[a][ 0]*m_cmat[0] + m_mat_vector[a][ 1]*m_cmat[3] + m_mat_vector[a][ 2]*m_cmat[6];
 		m_mat_vector[b][1]  = m_mat_vector[a][ 0]*m_cmat[1] + m_mat_vector[a][ 1]*m_cmat[4] + m_mat_vector[a][ 2]*m_cmat[7];
@@ -1667,11 +1347,7 @@ TGP_FUNCTION( model1_state::vmat_mul )
 
 TGP_FUNCTION( model1_state::vmat_read )
 {
-<<<<<<< HEAD
-	UINT32 a = fifoin_pop();
-=======
 	uint32_t a = fifoin_pop();
->>>>>>> upstream/master
 	logerror("TGP vmat_read %d (%x)\n", a, m_pushpc);
 	if(a<21) {
 		int i;
@@ -1714,37 +1390,21 @@ TGP_FUNCTION( model1_state::f80 )
 
 TGP_FUNCTION( model1_state::vmat_save )
 {
-<<<<<<< HEAD
-	UINT32 a = fifoin_pop();
-	int i;
-	logerror("TGP vmat_save 0x%x (%x)\n", a, m_pushpc);
-	for(i=0; i<16; i++)
-		memcpy(m_ram_data+a+0x10*i, m_mat_vector[i], sizeof(m_cmat));
-=======
 	uint32_t a = fifoin_pop();
 	int i;
 	logerror("TGP vmat_save 0x%x (%x)\n", a, m_pushpc);
 	for(i=0; i<16; i++)
 		memcpy(m_ram_data.get()+a+0x10*i, m_mat_vector[i], sizeof(m_cmat));
->>>>>>> upstream/master
 	next_fn();
 }
 
 TGP_FUNCTION( model1_state::vmat_load )
 {
-<<<<<<< HEAD
-	UINT32 a = fifoin_pop();
-	int i;
-	logerror("TGP vmat_load 0x%x (%x)\n", a, m_pushpc);
-	for(i=0; i<16; i++)
-		memcpy(m_mat_vector[i], m_ram_data+a+0x10*i, sizeof(m_cmat));
-=======
 	uint32_t a = fifoin_pop();
 	int i;
 	logerror("TGP vmat_load 0x%x (%x)\n", a, m_pushpc);
 	for(i=0; i<16; i++)
 		memcpy(m_mat_vector[i], m_ram_data.get()+a+0x10*i, sizeof(m_cmat));
->>>>>>> upstream/master
 	next_fn();
 }
 
@@ -1780,17 +1440,10 @@ TGP_FUNCTION( model1_state::groundbox_test )
 
 TGP_FUNCTION( model1_state::f89 )
 {
-<<<<<<< HEAD
-	UINT32 a = fifoin_pop();
-	UINT32 b = fifoin_pop();
-	UINT32 c = fifoin_pop();
-	UINT32 d = fifoin_pop();
-=======
 	uint32_t a = fifoin_pop();
 	uint32_t b = fifoin_pop();
 	uint32_t c = fifoin_pop();
 	uint32_t d = fifoin_pop();
->>>>>>> upstream/master
 	(void)a;
 	(void)b;
 	(void)c;
@@ -1823,11 +1476,7 @@ TGP_FUNCTION( model1_state::f93 )
 
 TGP_FUNCTION( model1_state::f94 )
 {
-<<<<<<< HEAD
-	UINT32 a = fifoin_pop();
-=======
 	uint32_t a = fifoin_pop();
->>>>>>> upstream/master
 	(void)a;
 	logerror("TGP f94 %d (%x)\n", a, m_pushpc);
 	next_fn();
@@ -1861,15 +1510,9 @@ TGP_FUNCTION( model1_state::vmat_flatten )
 
 TGP_FUNCTION( model1_state::vmat_load1 )
 {
-<<<<<<< HEAD
-	UINT32 a = fifoin_pop();
-	logerror("TGP vmat_load1 0x%x (%x)\n", a, m_pushpc);
-	memcpy(m_cmat, m_ram_data+a, sizeof(m_cmat));
-=======
 	uint32_t a = fifoin_pop();
 	logerror("TGP vmat_load1 0x%x (%x)\n", a, m_pushpc);
 	memcpy(m_cmat, m_ram_data.get()+a, sizeof(m_cmat));
->>>>>>> upstream/master
 	next_fn();
 }
 
@@ -1898,11 +1541,7 @@ TGP_FUNCTION( model1_state::f98_load )
 
 TGP_FUNCTION( model1_state::f98 )
 {
-<<<<<<< HEAD
-	UINT32 a = fifoin_pop();
-=======
 	uint32_t a = fifoin_pop();
->>>>>>> upstream/master
 	(void)a;
 	logerror("TGP load list start %d (%x)\n", a, m_pushpc);
 	m_fifoin_cbcount = m_list_length;
@@ -1953,15 +1592,9 @@ TGP_FUNCTION( model1_state::f102 )
 	float c = fifoin_pop_f();
 	float d = fifoin_pop_f();
 	float e = fifoin_pop_f();
-<<<<<<< HEAD
-	UINT32 f = fifoin_pop();
-	UINT32 g = fifoin_pop();
-	UINT32 h = fifoin_pop();
-=======
 	uint32_t f = fifoin_pop();
 	uint32_t g = fifoin_pop();
 	uint32_t h = fifoin_pop();
->>>>>>> upstream/master
 
 	m_ccount++;
 
@@ -2011,90 +1644,6 @@ TGP_FUNCTION( model1_state::f103 )
 	next_fn();
 }
 
-<<<<<<< HEAD
-const struct model1_state::function model1_state::ftab_vf[] = {
-	{ &model1_state::fadd,            2 }, /* 0x00 */
-	{ &model1_state::fsub,            2 },
-	{ &model1_state::fmul,            2 },
-	{ &model1_state::fdiv,            2 },
-	{ NULL,                           0 },
-	{ &model1_state::matrix_push,     0 },
-	{ &model1_state::matrix_pop,      0 },
-	{ &model1_state::matrix_write,   12 },
-	{ &model1_state::clear_stack,     0 },
-	{ NULL,                           0 },
-	{ &model1_state::anglev,          2 },
-	{ NULL,                           0 },
-	{ NULL,                           0 },
-	{ &model1_state::track_select,    1 },
-	{ &model1_state::f14,             4 },
-	{ &model1_state::anglep,          4 },
-
-	{ &model1_state::matrix_ident,    0 },  /* 0x10 */
-	{ &model1_state::matrix_read,     0 },
-	{ &model1_state::matrix_trans,    3 },
-	{ &model1_state::matrix_scale,    3 },
-	{ &model1_state::matrix_rotx,     1 },
-	{ &model1_state::matrix_roty,     1 },
-	{ &model1_state::matrix_rotz,     1 },
-	{ NULL,                           0 },
-	{ &model1_state::track_read_quad, 1 },
-	{ NULL,                           0 },
-	{ &model1_state::transform_point, 3 },
-	{ &model1_state::fsin_m1,         1 },
-	{ &model1_state::fcos_m1,         1 },
-	{ &model1_state::fsinm_m1,        2 },
-	{ &model1_state::fcosm_m1,        2 },
-	{ &model1_state::distance3,       6 },
-
-	{ NULL,                           0 },  /* 0x20 */
-	{ NULL,                           0 },
-	{ NULL,                           0 },
-	{ NULL,                           0 },
-	{ &model1_state::acc_set,         1 },
-	{ &model1_state::acc_get,         0 },
-	{ &model1_state::acc_add,         1 },
-	{ &model1_state::acc_sub,         1 },
-	{ &model1_state::acc_mul,         1 },
-	{ &model1_state::acc_div,         1 }, // not used ?
-	{ &model1_state::f42,             3 },
-	{ &model1_state::f43,             6 },
-	{ &model1_state::f44,             1 },
-	{ &model1_state::f45,             1 },
-	{ &model1_state::vlength,         3 },
-	{ NULL,                           0 },
-
-	{ &model1_state::track_read_info, 1 },  /* 0x30 */
-	{ &model1_state::colbox_set,     12 },
-	{ &model1_state::colbox_test,     3 },
-	{ NULL,                           0 },
-	{ NULL,                           0 },
-	{ NULL,                           0 },
-	{ &model1_state::track_lookup,    4 },
-	{ NULL,                           0 },
-	{ NULL,                           0 },
-	{ NULL,                           0 },
-	{ NULL,                           0 },
-	{ NULL,                           0 },
-	{ NULL,                           0 },
-	{ NULL,                           0 },
-	{ NULL,                           0 },
-	{ NULL,                           0 },
-
-	{ &model1_state::col_setcirc,     3 },  /* 0x40 */
-	{ &model1_state::col_testpt,      2 },
-	{ NULL,                           0 },
-	{ &model1_state::distance,        4 },
-	{ NULL,                           0 },
-	{ NULL,                           0 },
-	{ NULL,                           0 },
-	{ &model1_state::car_move,        4 },
-	{ &model1_state::cpa,            12 },
-	{ NULL,                           0 },
-	{ &model1_state::vmat_store,      1 },
-	{ &model1_state::vmat_restore,    1 },
-	{ NULL,                           0 },
-=======
 // Addresses in daytona's TGP program
 const struct model1_state::function model1_state::ftab_vf[] = {
 	{ &model1_state::fadd,            2 }, /* 0x00 */ // 0b5
@@ -2178,47 +1727,28 @@ const struct model1_state::function model1_state::ftab_vf[] = {
 	{ &model1_state::vmat_store,      1 },
 	{ &model1_state::vmat_restore,    1 },
 	{ nullptr,                        0 },
->>>>>>> upstream/master
 	{ &model1_state::vmat_mul,        2 },
 	{ &model1_state::vmat_read,       1 },
 	{ &model1_state::matrix_unrot,    0 },
 
-<<<<<<< HEAD
-	{ &model1_state::f80,             0 },  /* 0x50 */
-	{ NULL,                           0 },
-	{ &model1_state::matrix_rtrans,   0 },
-	{ NULL,                           0 },
-=======
 	{ &model1_state::f80,             0 }, /* 0x50 */
 	{ nullptr,                        0 },
 	{ &model1_state::matrix_rtrans,   0 },
 	{ nullptr,                        0 },
->>>>>>> upstream/master
 	{ &model1_state::vmat_save,       1 },
 	{ &model1_state::vmat_load,       1 },
 	{ &model1_state::ram_setadr,      1 },
 	{ &model1_state::groundbox_test,  3 },
-<<<<<<< HEAD
-	{ NULL,                           0 },
-	{ &model1_state::f89,             4 },
-	{ NULL,                           0 },
-	{ NULL,                           0 },
-=======
 	{ nullptr,                        0 },
 	{ &model1_state::f89,             4 },
 	{ nullptr,                        0 },
 	{ nullptr,                        0 },
->>>>>>> upstream/master
 	{ &model1_state::f92,             4 },
 	{ &model1_state::f93,             1 },
 	{ &model1_state::f94,             1 },
 	{ &model1_state::vmat_flatten,    0 },
 
-<<<<<<< HEAD
-	{ &model1_state::vmat_load1,      1 },  /* 0x60 */
-=======
 	{ &model1_state::vmat_load1,      1 }, /* 0x60 */
->>>>>>> upstream/master
 	{ &model1_state::ram_trans,       0 },
 	{ &model1_state::f98,             1 },
 	{ &model1_state::f99,             0 },
@@ -2229,43 +1759,25 @@ const struct model1_state::function model1_state::ftab_vf[] = {
 };
 
 // Used in swa scene 1 and unemulated:
-<<<<<<< HEAD
-//   f14
 //   f49_swa
-//   f15_swa
-=======
-//   f49_swa
->>>>>>> upstream/master
 
 const struct model1_state::function model1_state::ftab_swa[] = {
 	{ &model1_state::fadd,            2 },  /* 0x00 */
 	{ &model1_state::fsub,            2 },
 	{ &model1_state::fmul,            2 },
 	{ &model1_state::fdiv,            2 },
-<<<<<<< HEAD
-	{ NULL,                           0 },
-=======
 	{ nullptr,                        0 },
->>>>>>> upstream/master
 	{ &model1_state::matrix_push,     0 },
 	{ &model1_state::matrix_pop,      0 },
 	{ &model1_state::matrix_write,   12 },
 	{ &model1_state::clear_stack,     0 },
 	{ &model1_state::matrix_mul,     12 },
 	{ &model1_state::anglev,          2 },
-<<<<<<< HEAD
-	{ &model1_state::f11,             9 },
-	{ &model1_state::normalize,       3 },
-	{ &model1_state::acc_seti,        1 },
-	{ &model1_state::f14,             4 },
-	{ &model1_state::f15_swa,         0 },
-=======
 	{ &model1_state::triangle_normal, 9 },
 	{ &model1_state::normalize,       3 },
 	{ &model1_state::acc_seti,        1 },
 	{ &model1_state::load_base,       4 },
 	{ &model1_state::transpose,       0 },
->>>>>>> upstream/master
 
 	{ &model1_state::matrix_ident,    0 }, /* 0x10 */
 	{ &model1_state::matrix_read,     0 },
@@ -2274,15 +1786,9 @@ const struct model1_state::function model1_state::ftab_swa[] = {
 	{ &model1_state::matrix_rotx,     1 },
 	{ &model1_state::matrix_roty,     1 },
 	{ &model1_state::matrix_rotz,     1 },
-<<<<<<< HEAD
-	{ NULL,                           0 },
-	{ &model1_state::f24_swa,         7 },
-	{ NULL,                           0 },
-=======
 	{ nullptr,                        0 },
 	{ &model1_state::intercept,       7 },
 	{ nullptr,                        0 },
->>>>>>> upstream/master
 	{ &model1_state::transform_point, 3 },
 	{ &model1_state::fsin_m1,         1 },
 	{ &model1_state::fcos_m1,         1 },
@@ -2290,13 +1796,8 @@ const struct model1_state::function model1_state::ftab_swa[] = {
 	{ &model1_state::fcosm_m1,        2 },
 	{ &model1_state::distance3,       6 },
 
-<<<<<<< HEAD
-	{ NULL,                           0 }, /* 0x20 */
-	{ NULL,                           0 },
-=======
 	{ nullptr,                        0 }, /* 0x20 */
 	{ nullptr,                        0 },
->>>>>>> upstream/master
 	{ &model1_state::ftoi,            1 },
 	{ &model1_state::itof,            1 },
 	{ &model1_state::acc_set,         1 },
@@ -2308,32 +1809,6 @@ const struct model1_state::function model1_state::ftab_swa[] = {
 	{ &model1_state::xyz2rqf,         3 },
 	{ &model1_state::f43_swa,         3 },
 	{ &model1_state::matrix_sdir,     3 },
-<<<<<<< HEAD
-	{ &model1_state::f45,             1 },
-	{ &model1_state::vlength,         3 },
-	{ &model1_state::f47,             3 },
-
-	{ NULL,                           0 }, /* 0x30 */
-	{ &model1_state::f49_swa,         6 },
-	{ &model1_state::f50_swa,         4 },
-	{ NULL,                           0 },
-	{ &model1_state::f52,             0 },
-	{ &model1_state::matrix_rdir,     3 },
-	{ NULL,                           0 },
-	{ NULL,                           0 },
-	{ &model1_state::f56,             7 },
-	{ &model1_state::f57,             0 },
-	{ &model1_state::matrix_readt,    0 },
-	{ &model1_state::acc_geti,        0 },
-	{ &model1_state::f60,             0 },
-	{ NULL,                           0 },
-	{ NULL,                           0 },
-	{ NULL,                           0 },
-	{ NULL,                           0 },
-
-	{ &model1_state::push_and_ident,  0 }, /* 0x40 */
-	{ NULL,                           0 },
-=======
 	{ &model1_state::fsqrt,           1 },
 	{ &model1_state::vlength,         3 },
 	{ &model1_state::f47,             3 },
@@ -2358,7 +1833,6 @@ const struct model1_state::function model1_state::ftab_swa[] = {
 
 	{ &model1_state::push_and_ident,  0 }, /* 0x40 */
 	{ nullptr,                        0 },
->>>>>>> upstream/master
 	{ &model1_state::catmull_rom,    13 }
 };
 
@@ -2372,11 +1846,7 @@ TGP_FUNCTION( model1_state::dump )
 
 TGP_FUNCTION( model1_state::function_get_vf )
 {
-<<<<<<< HEAD
-	UINT32 f = fifoin_pop() >> 23;
-=======
 	uint32_t f = fifoin_pop() >> 23;
->>>>>>> upstream/master
 
 	if(m_fifoout_rpos != m_fifoout_wpos) {
 		int count = m_fifoout_wpos - m_fifoout_rpos;
@@ -2384,11 +1854,7 @@ TGP_FUNCTION( model1_state::function_get_vf )
 			count += FIFO_SIZE;
 		logerror("TGP function called with sizeout = %d\n", count);
 	}
-<<<<<<< HEAD
-	if(ARRAY_LENGTH(ftab_vf) > f && NULL != ftab_vf[f].cb) {
-=======
 	if(ARRAY_LENGTH(ftab_vf) > f && nullptr != ftab_vf[f].cb) {
->>>>>>> upstream/master
 		m_fifoin_cbcount = ftab_vf[f].count;
 		m_fifoin_cb = model1_state::ftab_vf[f].cb;
 		//      logerror("TGP function %d request, %d parameters\n", f, m_fifoin_cbcount);
@@ -2403,11 +1869,7 @@ TGP_FUNCTION( model1_state::function_get_vf )
 
 TGP_FUNCTION( model1_state::function_get_swa )
 {
-<<<<<<< HEAD
-	UINT32 f = fifoin_pop();
-=======
 	uint32_t f = fifoin_pop();
->>>>>>> upstream/master
 
 	if(m_fifoout_rpos != m_fifoout_wpos) {
 		int count = m_fifoout_wpos - m_fifoout_rpos;
@@ -2415,11 +1877,7 @@ TGP_FUNCTION( model1_state::function_get_swa )
 			count += FIFO_SIZE;
 		logerror("TGP function called with sizeout = %d\n", count);
 	}
-<<<<<<< HEAD
-	if(ARRAY_LENGTH(ftab_swa) > f && NULL != ftab_swa[f].cb) {
-=======
 	if(ARRAY_LENGTH(ftab_swa) > f && nullptr != ftab_swa[f].cb) {
->>>>>>> upstream/master
 		m_fifoin_cbcount = ftab_swa[f].count;
 		m_fifoin_cb = model1_state::ftab_swa[f].cb;
 		//      logerror("TGP function %d request, %d parameters\n", f, m_fifoin_cbcount);
@@ -2474,11 +1932,7 @@ WRITE16_MEMBER(model1_state::model1_tgp_copro_ram_w)
 {
 	COMBINE_DATA(m_ram_latch+offset);
 	if(offset) {
-<<<<<<< HEAD
-		UINT32 v = m_ram_latch[0]|(m_ram_latch[1]<<16);
-=======
 		uint32_t v = m_ram_latch[0]|(m_ram_latch[1]<<16);
->>>>>>> upstream/master
 		logerror("TGP f0 ram write %04x, %08x (%f) (%x)\n", m_ram_adr, v, u2f(v), space.device().safe_pc());
 		m_ram_data[m_ram_adr] = v;
 		m_ram_adr++;
@@ -2487,16 +1941,10 @@ WRITE16_MEMBER(model1_state::model1_tgp_copro_ram_w)
 
 MACHINE_START_MEMBER(model1_state,model1)
 {
-<<<<<<< HEAD
-	m_ram_data = auto_alloc_array(machine(), UINT32, 0x10000);
-
-	save_pointer(NAME(m_ram_data), 0x10000);
-=======
 	m_ram_data = std::make_unique<uint32_t[]>(0x10000);
 	m_io_command = 0;
 
 	save_pointer(NAME(m_ram_data.get()), 0x10000);
->>>>>>> upstream/master
 	save_item(NAME(m_ram_adr));
 	save_item(NAME(m_ram_scanadr));
 	save_item(NAME(m_ram_latch));
@@ -2512,14 +1960,6 @@ MACHINE_START_MEMBER(model1_state,model1)
 	save_item(NAME(m_mat_stack_pos));
 	save_item(NAME(m_acc));
 	save_item(NAME(m_list_length));
-<<<<<<< HEAD
-}
-
-void model1_state::tgp_reset(int swa)
-{
-	m_ram_adr = 0;
-	memset(m_ram_data, 0, 0x10000*4);
-=======
 	save_item(NAME(m_io_command));
 }
 
@@ -2527,7 +1967,6 @@ void model1_state::tgp_reset(bool swa)
 {
 	m_ram_adr = 0;
 	memset(m_ram_data.get(), 0, 0x10000*4);
->>>>>>> upstream/master
 
 	m_fifoout_rpos = 0;
 	m_fifoout_wpos = 0;
@@ -2541,11 +1980,7 @@ void model1_state::tgp_reset(bool swa)
 	m_cmat[4] = 1.0;
 	m_cmat[8] = 1.0;
 
-<<<<<<< HEAD
-	m_dump = 0;
-=======
 	m_dump = false;
->>>>>>> upstream/master
 	m_swa = swa;
 	next_fn();
 }
@@ -2556,11 +1991,7 @@ void model1_state::tgp_reset(bool swa)
 void model1_state::vr_tgp_reset()
 {
 	m_ram_adr = 0;
-<<<<<<< HEAD
-	memset(m_ram_data, 0, 0x8000*4);
-=======
 	memset(m_ram_data.get(), 0, 0x8000*4);
->>>>>>> upstream/master
 
 	m_copro_fifoout_rpos = 0;
 	m_copro_fifoout_wpos = 0;
@@ -2583,11 +2014,7 @@ READ_LINE_MEMBER(model1_state::copro_fifoin_pop_ok)
 
 READ32_MEMBER(model1_state::copro_fifoin_pop)
 {
-<<<<<<< HEAD
-	UINT32 r = m_copro_fifoin_data[m_copro_fifoin_rpos++];
-=======
 	uint32_t r = m_copro_fifoin_data[m_copro_fifoin_rpos++];
->>>>>>> upstream/master
 
 	if (m_copro_fifoin_rpos == FIFO_SIZE)
 	{
@@ -2600,11 +2027,7 @@ READ32_MEMBER(model1_state::copro_fifoin_pop)
 }
 
 
-<<<<<<< HEAD
-void model1_state::copro_fifoin_push(UINT32 data)
-=======
 void model1_state::copro_fifoin_push(uint32_t data)
->>>>>>> upstream/master
 {
 	if (m_copro_fifoin_num == FIFO_SIZE)
 	{
@@ -2621,11 +2044,7 @@ void model1_state::copro_fifoin_push(uint32_t data)
 	m_copro_fifoin_num++;
 }
 
-<<<<<<< HEAD
-UINT32 model1_state::copro_fifoout_pop()
-=======
 uint32_t model1_state::copro_fifoout_pop()
->>>>>>> upstream/master
 {
 	if (m_copro_fifoout_num == 0)
 	{
@@ -2637,11 +2056,7 @@ uint32_t model1_state::copro_fifoout_pop()
 		return 0;
 	}
 
-<<<<<<< HEAD
-	UINT32 r = m_copro_fifoout_data[m_copro_fifoout_rpos++];
-=======
 	uint32_t r = m_copro_fifoout_data[m_copro_fifoout_rpos++];
->>>>>>> upstream/master
 
 	if (m_copro_fifoout_rpos == FIFO_SIZE)
 	{
@@ -2698,11 +2113,7 @@ WRITE16_MEMBER(model1_state::model1_tgp_vr_adr_w)
 
 READ16_MEMBER(model1_state::model1_vr_tgp_ram_r)
 {
-<<<<<<< HEAD
-	UINT16  r;
-=======
 	uint16_t  r;
->>>>>>> upstream/master
 
 	if (!offset)
 	{
@@ -2731,11 +2142,7 @@ WRITE16_MEMBER(model1_state::model1_vr_tgp_ram_w)
 
 	if (offset)
 	{
-<<<<<<< HEAD
-		UINT32 v = m_ram_latch[0]|(m_ram_latch[1]<<16);
-=======
 		uint32_t v = m_ram_latch[0]|(m_ram_latch[1]<<16);
->>>>>>> upstream/master
 		m_ram_data[m_ram_adr&0x7fff] = v;
 		if ( m_ram_adr & 0x8000 )
 			m_ram_adr++;

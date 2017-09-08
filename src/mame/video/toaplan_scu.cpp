@@ -6,20 +6,12 @@
 */
 
 
-<<<<<<< HEAD
-
-#include "emu.h"
-#include "toaplan_scu.h"
-
-const device_type TOAPLAN_SCU = &device_creator<toaplan_scu_device>;
-=======
 #include "emu.h"
 #include "toaplan_scu.h"
 #include "screen.h"
 
 
 DEFINE_DEVICE_TYPE(TOAPLAN_SCU, toaplan_scu_device, "toaplan_scu", "Toaplan SCU")
->>>>>>> upstream/master
 
 const gfx_layout toaplan_scu_device::spritelayout =
 {
@@ -37,15 +29,9 @@ GFXDECODE_MEMBER( toaplan_scu_device::gfxinfo )
 GFXDECODE_END
 
 
-<<<<<<< HEAD
-toaplan_scu_device::toaplan_scu_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, TOAPLAN_SCU, "Toaplan SCU", tag, owner, clock, "toaplan_scu", __FILE__),
-	device_gfx_interface(mconfig, *this, gfxinfo )
-=======
 toaplan_scu_device::toaplan_scu_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, TOAPLAN_SCU, tag, owner, clock)
 	, device_gfx_interface(mconfig, *this, gfxinfo)
->>>>>>> upstream/master
 {
 }
 
@@ -73,11 +59,7 @@ void toaplan_scu_device::alloc_sprite_bitmap(screen_device &screen)
     Sprite Handlers
 ***************************************************************************/
 
-<<<<<<< HEAD
-void toaplan_scu_device::draw_sprites_to_tempbitmap(const rectangle &cliprect, UINT16* spriteram, UINT32 bytes )
-=======
 void toaplan_scu_device::draw_sprites_to_tempbitmap(const rectangle &cliprect, uint16_t* spriteram, uint32_t bytes )
->>>>>>> upstream/master
 {
 	int offs;
 	m_temp_spritebitmap.fill(0,cliprect);
@@ -104,11 +86,7 @@ void toaplan_scu_device::draw_sprites_to_tempbitmap(const rectangle &cliprect, u
 			if (flipx) sx -= m_xoffs_flipped;
 
 			flipy = attribute & 0x200;
-<<<<<<< HEAD
-			m_gfx[0]->transpen_raw(m_temp_spritebitmap,cliprect,
-=======
 			gfx(0)->transpen_raw(m_temp_spritebitmap,cliprect,
->>>>>>> upstream/master
 				sprite,
 				color << 4 /* << 4 because using _raw */ ,
 				flipx,flipy,
@@ -126,18 +104,6 @@ void toaplan_scu_device::draw_sprites_to_tempbitmap(const rectangle &cliprect, u
 void toaplan_scu_device::copy_sprites_from_tempbitmap(bitmap_ind16 &bitmap, const rectangle &cliprect, int priority)
 {
 	int y, x;
-<<<<<<< HEAD
-	int colourbase = m_gfx[0]->colorbase();
-
-	for (y=cliprect.min_y;y<=cliprect.max_y;y++)
-	{
-		UINT16* srcline = &m_temp_spritebitmap.pix16(y);
-		UINT16* dstline = &bitmap.pix16(y);
-
-		for (x=cliprect.min_x;x<=cliprect.max_x;x++)
-		{
-			UINT16 pix = srcline[x];
-=======
 	int colourbase = gfx(0)->colorbase();
 
 	for (y=cliprect.min_y;y<=cliprect.max_y;y++)
@@ -148,7 +114,6 @@ void toaplan_scu_device::copy_sprites_from_tempbitmap(bitmap_ind16 &bitmap, cons
 		for (x=cliprect.min_x;x<=cliprect.max_x;x++)
 		{
 			uint16_t pix = srcline[x];
->>>>>>> upstream/master
 
 			if ( (pix>>(4+6)) == priority )
 			{

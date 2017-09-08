@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-// license:???
-=======
 // license:BSD-3-Clause
->>>>>>> upstream/master
 // copyright-holders:Stefan Jokisch
 /***************************************************************************
 
@@ -11,12 +7,6 @@ Atari Poolshark Driver
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/m6800/m6800.h"
-#include "includes/poolshrk.h"
-#include "sound/discrete.h"
-
-=======
 #include "includes/poolshrk.h"
 
 #include "cpu/m6800/m6800.h"
@@ -24,19 +14,13 @@ Atari Poolshark Driver
 
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 
 DRIVER_INIT_MEMBER(poolshrk_state,poolshrk)
 {
-<<<<<<< HEAD
-	UINT8* pSprite = memregion("gfx1")->base();
-	UINT8* pOffset = memregion("proms")->base();
-=======
 	uint8_t* pSprite = memregion("gfx1")->base();
 	uint8_t* pOffset = memregion("proms")->base();
->>>>>>> upstream/master
 
 	/* re-arrange sprite data using the PROM */
 
@@ -44,11 +28,7 @@ DRIVER_INIT_MEMBER(poolshrk_state,poolshrk)
 	{
 		for (int j = 0; j < 16; j++)
 		{
-<<<<<<< HEAD
-			UINT16 v =
-=======
 			uint16_t v =
->>>>>>> upstream/master
 				(pSprite[0] << 0xC) |
 				(pSprite[1] << 0x8) |
 				(pSprite[2] << 0x4) |
@@ -78,15 +58,9 @@ WRITE8_MEMBER(poolshrk_state::da_latch_w)
 WRITE8_MEMBER(poolshrk_state::led_w)
 {
 	if (offset & 2)
-<<<<<<< HEAD
-		set_led_status(machine(), 0, offset & 1);
-	if (offset & 4)
-		set_led_status(machine(), 1, offset & 1);
-=======
 		output().set_led_value(0, offset & 1);
 	if (offset & 4)
 		output().set_led_value(1, offset & 1);
->>>>>>> upstream/master
 }
 
 
@@ -94,11 +68,7 @@ WRITE8_MEMBER(poolshrk_state::watchdog_w)
 {
 	if ((offset & 3) == 3)
 	{
-<<<<<<< HEAD
-		watchdog_reset_w(space, 0, 0);
-=======
 		m_watchdog->reset_w(space, 0, 0);
->>>>>>> upstream/master
 	}
 }
 
@@ -106,11 +76,7 @@ WRITE8_MEMBER(poolshrk_state::watchdog_w)
 READ8_MEMBER(poolshrk_state::input_r)
 {
 	static const char *const portnames[] = { "IN0", "IN1", "IN2", "IN3" };
-<<<<<<< HEAD
-	UINT8 val = ioport(portnames[offset & 3])->read();
-=======
 	uint8_t val = ioport(portnames[offset & 3])->read();
->>>>>>> upstream/master
 
 	int x = ioport((offset & 1) ? "AN1" : "AN0")->read();
 	int y = ioport((offset & 1) ? "AN3" : "AN2")->read();
@@ -120,11 +86,7 @@ READ8_MEMBER(poolshrk_state::input_r)
 
 	if ((offset & 3) == 3)
 	{
-<<<<<<< HEAD
-		watchdog_reset_r(space, 0);
-=======
 		m_watchdog->reset_r(space, 0);
->>>>>>> upstream/master
 	}
 
 	return val;
@@ -253,22 +215,15 @@ PALETTE_INIT_MEMBER(poolshrk_state, poolshrk)
 }
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( poolshrk, poolshrk_state )
-=======
 static MACHINE_CONFIG_START( poolshrk )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6800, 11055000 / 8) /* ? */
 	MCFG_CPU_PROGRAM_MAP(poolshrk_cpu_map)
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", poolshrk_state,  irq0_line_assert)
 
-<<<<<<< HEAD
-=======
 	MCFG_WATCHDOG_ADD("watchdog")
 
->>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE(60)

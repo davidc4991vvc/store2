@@ -27,11 +27,8 @@ TODO:
 #include "cpu/z80/z80.h"
 #include "cpu/i8085/i8085.h"
 #include "sound/ay8910.h"
-<<<<<<< HEAD
-=======
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 #define LOG_PROT    (0)
 
@@ -74,16 +71,6 @@ public:
 		m_stars(*this, "stars"){ }
 
 	/* memory pointers */
-<<<<<<< HEAD
-	required_shared_ptr<UINT8> m_videoram;
-
-	/* misc */
-	int m_blink_count;
-	UINT8 m_sound_latch;
-	UINT8 m_last_sound_data;
-	UINT8 m_protection_data;
-	UINT8 m_flip_screen;
-=======
 	required_shared_ptr<uint8_t> m_videoram;
 
 	/* misc */
@@ -92,7 +79,6 @@ public:
 	uint8_t m_last_sound_data;
 	uint8_t m_protection_data;
 	uint8_t m_flip_screen;
->>>>>>> upstream/master
 
 	emu_timer *m_interrupt_clear_timer;
 	emu_timer *m_interrupt_assert_timer;
@@ -102,13 +88,8 @@ public:
 	required_device<cpu_device> m_audiocpu;
 	required_device<screen_device> m_screen;
 	optional_device<palette_device> m_palette;
-<<<<<<< HEAD
-	optional_region_ptr<UINT8> m_colors;
-	optional_region_ptr<UINT8> m_stars;
-=======
 	optional_region_ptr<uint8_t> m_colors;
 	optional_region_ptr<uint8_t> m_stars;
->>>>>>> upstream/master
 
 	DECLARE_READ8_MEMBER(dip_switch_r);
 	DECLARE_WRITE8_MEMBER(sound_data_w);
@@ -118,16 +99,6 @@ public:
 	DECLARE_READ8_MEMBER(sound_latch_r);
 	DECLARE_WRITE8_MEMBER(protection_data_w);
 	DECLARE_DRIVER_INIT(enigma2);
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void machine_reset();
-	UINT32 screen_update_enigma2(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
-	UINT32 screen_update_enigma2a(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
-	TIMER_CALLBACK_MEMBER(interrupt_clear_callback);
-	TIMER_CALLBACK_MEMBER(interrupt_assert_callback);
-	inline UINT16 vpos_to_vysnc_chain_counter( int vpos );
-	inline int vysnc_chain_counter_to_vpos( UINT16 counter );
-=======
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
 	uint32_t screen_update_enigma2(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
@@ -136,7 +107,6 @@ public:
 	TIMER_CALLBACK_MEMBER(interrupt_assert_callback);
 	inline uint16_t vpos_to_vysnc_chain_counter( int vpos );
 	inline int vysnc_chain_counter_to_vpos( uint16_t counter );
->>>>>>> upstream/master
 	void create_interrupt_timers(  );
 	void start_interrupt_timers(  );
 };
@@ -149,21 +119,13 @@ public:
  *************************************/
 
 
-<<<<<<< HEAD
-UINT16 enigma2_state::vpos_to_vysnc_chain_counter( int vpos )
-=======
 uint16_t enigma2_state::vpos_to_vysnc_chain_counter( int vpos )
->>>>>>> upstream/master
 {
 	return vpos + VCOUNTER_START;
 }
 
 
-<<<<<<< HEAD
-int enigma2_state::vysnc_chain_counter_to_vpos( UINT16 counter )
-=======
 int enigma2_state::vysnc_chain_counter_to_vpos( uint16_t counter )
->>>>>>> upstream/master
 {
 	return counter - VCOUNTER_START;
 }
@@ -177,22 +139,13 @@ TIMER_CALLBACK_MEMBER(enigma2_state::interrupt_clear_callback)
 
 TIMER_CALLBACK_MEMBER(enigma2_state::interrupt_assert_callback)
 {
-<<<<<<< HEAD
-	UINT16 next_counter;
-=======
 	uint16_t next_counter;
->>>>>>> upstream/master
 	int next_vpos;
 
 	/* compute vector and set the interrupt line */
 	int vpos = m_screen->vpos();
-<<<<<<< HEAD
-	UINT16 counter = vpos_to_vysnc_chain_counter(vpos);
-	UINT8 vector = 0xc7 | ((counter & 0x80) >> 3) | ((~counter & 0x80) >> 4);
-=======
 	uint16_t counter = vpos_to_vysnc_chain_counter(vpos);
 	uint8_t vector = 0xc7 | ((counter & 0x80) >> 3) | ((~counter & 0x80) >> 4);
->>>>>>> upstream/master
 	m_maincpu->set_input_line_and_vector(0, ASSERT_LINE, vector);
 
 	/* set up for next interrupt */
@@ -254,23 +207,6 @@ void enigma2_state::machine_reset()
  *
  *************************************/
 
-<<<<<<< HEAD
-UINT32 enigma2_state::screen_update_enigma2(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
-{
-	const rectangle &visarea = screen.visible_area();
-
-	UINT8 x = 0;
-	UINT16 bitmap_y = visarea.min_y;
-	UINT8 y = (UINT8)vpos_to_vysnc_chain_counter(bitmap_y);
-	UINT8 video_data = 0;
-	UINT8 fore_color = 0;
-	UINT8 star_color = 0;
-
-	while (1)
-	{
-		UINT8 bit;
-		UINT8 color;
-=======
 uint32_t enigma2_state::screen_update_enigma2(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
 {
 	const rectangle &visarea = screen.visible_area();
@@ -286,7 +222,6 @@ uint32_t enigma2_state::screen_update_enigma2(screen_device &screen, bitmap_rgb3
 	{
 		uint8_t bit;
 		uint8_t color;
->>>>>>> upstream/master
 
 		/* read the video RAM */
 		if ((x & 0x07) == 0x00)
@@ -359,19 +294,6 @@ uint32_t enigma2_state::screen_update_enigma2(screen_device &screen, bitmap_rgb3
 }
 
 
-<<<<<<< HEAD
-UINT32 enigma2_state::screen_update_enigma2a(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
-{
-	UINT8 x = 0;
-	const rectangle &visarea = screen.visible_area();
-	UINT16 bitmap_y = visarea.min_y;
-	UINT8 y = (UINT8)vpos_to_vysnc_chain_counter(bitmap_y);
-	UINT8 video_data = 0;
-
-	while (1)
-	{
-		UINT8 bit;
-=======
 uint32_t enigma2_state::screen_update_enigma2a(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
 {
 	uint8_t x = 0;
@@ -383,7 +305,6 @@ uint32_t enigma2_state::screen_update_enigma2a(screen_device &screen, bitmap_rgb
 	while (1)
 	{
 		uint8_t bit;
->>>>>>> upstream/master
 		pen_t pen;
 
 		/* read the video RAM */
@@ -410,11 +331,7 @@ uint32_t enigma2_state::screen_update_enigma2a(screen_device &screen, bitmap_rgb
 			video_data = video_data >> 1;
 		}
 
-<<<<<<< HEAD
-		pen = bit ? rgb_t::white : rgb_t::black;
-=======
 		pen = bit ? rgb_t::white() : rgb_t::black();
->>>>>>> upstream/master
 		bitmap.pix32(bitmap_y, x) = pen;
 
 		/* next pixel */
@@ -440,11 +357,7 @@ uint32_t enigma2_state::screen_update_enigma2a(screen_device &screen, bitmap_rgb
 
 READ8_MEMBER(enigma2_state::dip_switch_r)
 {
-<<<<<<< HEAD
-	UINT8 ret = 0x00;
-=======
 	uint8_t ret = 0x00;
->>>>>>> upstream/master
 
 	if (LOG_PROT) logerror("DIP SW Read: %x at %x (prot data %x)\n", offset, space.device().safe_pc(), m_protection_data);
 	switch (offset)
@@ -573,22 +486,14 @@ static INPUT_PORTS_START( enigma2 )
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_COIN1 )
 	PORT_BIT( 0x02, IP_ACTIVE_HIGH, IPT_START2 )
 	PORT_BIT( 0x04, IP_ACTIVE_HIGH, IPT_START1 )
-<<<<<<< HEAD
-	PORT_BIT( 0x78, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, enigma2_state,p1_controls_r, NULL)
-=======
 	PORT_BIT( 0x78, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, enigma2_state,p1_controls_r, nullptr)
->>>>>>> upstream/master
 	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_UNUSED )
 
 	PORT_START("IN1")
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_UNUSED )
 	PORT_BIT( 0x02, IP_ACTIVE_HIGH, IPT_UNUSED )
 	PORT_BIT( 0x04, IP_ACTIVE_HIGH, IPT_UNUSED )
-<<<<<<< HEAD
-	PORT_BIT( 0x78, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, enigma2_state,p2_controls_r, NULL)
-=======
 	PORT_BIT( 0x78, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, enigma2_state,p2_controls_r, nullptr)
->>>>>>> upstream/master
 	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_UNUSED )
 
 	PORT_START("DSW")
@@ -636,11 +541,7 @@ static INPUT_PORTS_START( enigma2a )
 	PORT_BIT( 0x02, IP_ACTIVE_HIGH, IPT_START2 )
 	PORT_BIT( 0x04, IP_ACTIVE_HIGH, IPT_START1 )
 	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_UNUSED )
-<<<<<<< HEAD
-	PORT_BIT( 0x70, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, enigma2_state,p1_controls_r, NULL)
-=======
 	PORT_BIT( 0x70, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, enigma2_state,p1_controls_r, nullptr)
->>>>>>> upstream/master
 	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_UNUSED )
 
 	PORT_START("IN1")
@@ -648,11 +549,7 @@ static INPUT_PORTS_START( enigma2a )
 	PORT_BIT( 0x02, IP_ACTIVE_HIGH, IPT_UNUSED )
 	PORT_BIT( 0x04, IP_ACTIVE_HIGH, IPT_UNUSED )
 	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_UNUSED )
-<<<<<<< HEAD
-	PORT_BIT( 0x70, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, enigma2_state,p2_controls_r, NULL)
-=======
 	PORT_BIT( 0x70, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, enigma2_state,p2_controls_r, nullptr)
->>>>>>> upstream/master
 	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_UNUSED )
 
 	PORT_START("DSW")
@@ -692,11 +589,7 @@ static INPUT_PORTS_START( enigma2a )
 INPUT_PORTS_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( enigma2, enigma2_state )
-=======
 static MACHINE_CONFIG_START( enigma2 )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, CPU_CLOCK)
@@ -724,11 +617,7 @@ static MACHINE_CONFIG_START( enigma2 )
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( enigma2a, enigma2_state )
-=======
 static MACHINE_CONFIG_START( enigma2a )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", I8080, CPU_CLOCK)
@@ -807,11 +696,7 @@ ROM_END
 DRIVER_INIT_MEMBER(enigma2_state,enigma2)
 {
 	offs_t i;
-<<<<<<< HEAD
-	UINT8 *rom = memregion("audiocpu")->base();
-=======
 	uint8_t *rom = memregion("audiocpu")->base();
->>>>>>> upstream/master
 
 	for(i = 0; i < 0x2000; i++)
 	{
@@ -821,12 +706,6 @@ DRIVER_INIT_MEMBER(enigma2_state,enigma2)
 
 
 
-<<<<<<< HEAD
-GAME( 1981, enigma2,  0,       enigma2,  enigma2, enigma2_state,  enigma2, ROT270, "Game Plan (Zilec Electronics license)", "Enigma II", MACHINE_SUPPORTS_SAVE )
-GAME( 1984, enigma2a, enigma2, enigma2a, enigma2a, enigma2_state, enigma2, ROT270, "Zilec Electronics", "Enigma II (Space Invaders hardware)", MACHINE_SUPPORTS_SAVE )
-GAME( 1981, enigma2b, enigma2, enigma2a, enigma2a, enigma2_state, enigma2, ROT270, "Zilec Electronics", "Phantoms II (Space Invaders hardware)", MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1981, enigma2,  0,       enigma2,  enigma2,  enigma2_state, enigma2, ROT270, "Game Plan (Zilec Electronics license)", "Enigma II",                             MACHINE_SUPPORTS_SAVE )
 GAME( 1984, enigma2a, enigma2, enigma2a, enigma2a, enigma2_state, enigma2, ROT270, "Zilec Electronics",                     "Enigma II (Space Invaders hardware)",   MACHINE_SUPPORTS_SAVE )
 GAME( 1981, enigma2b, enigma2, enigma2a, enigma2a, enigma2_state, enigma2, ROT270, "Zilec Electronics",                     "Phantoms II (Space Invaders hardware)", MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

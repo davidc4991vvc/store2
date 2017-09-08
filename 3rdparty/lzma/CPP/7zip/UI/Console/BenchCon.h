@@ -9,10 +9,6 @@
 #include "../../UI/Common/Property.h"
 
 HRESULT BenchCon(DECL_EXTERNAL_CODECS_LOC_VARS
-<<<<<<< HEAD
-    const CObjectVector<CProperty> props, UInt32 numIterations, FILE *f);
-=======
     const CObjectVector<CProperty> &props, UInt32 numIterations, FILE *f);
->>>>>>> upstream/master
 
 #endif

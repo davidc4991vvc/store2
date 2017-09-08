@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-// license:LGPL-2.1+
-=======
 // license:BSD-3-Clause
->>>>>>> upstream/master
 // copyright-holders:Tomasz Slanina,David Haywood
 /***************************************************************************
 
@@ -46,13 +42,6 @@ TODO:
 */
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/z80/z80.h"
-#include "machine/i8255.h"
-#include "machine/mc8123.h"
-#include "sound/sn76496.h"
-#include "includes/freekick.h"
-=======
 #include "includes/freekick.h"
 
 #include "cpu/z80/z80.h"
@@ -62,7 +51,6 @@ TODO:
 #include "sound/sn76496.h"
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 /*************************************
@@ -71,23 +59,6 @@ TODO:
  *
  *************************************/
 
-<<<<<<< HEAD
-WRITE8_MEMBER(freekick_state::flipscreen_w)
-{
-	/* flip Y/X could be the other way round... */
-	if (offset)
-		flip_screen_y_set(~data & 1);
-	else
-		flip_screen_x_set(~data & 1);
-}
-
-WRITE8_MEMBER(freekick_state::coin_w)
-{
-	coin_counter_w(machine(), offset, ~data & 1);
-}
-
-WRITE8_MEMBER(freekick_state::spinner_select_w)
-=======
 WRITE_LINE_MEMBER(freekick_state::flipscreen_x_w)
 {
 	flip_screen_x_set(!state);
@@ -120,7 +91,6 @@ WRITE_LINE_MEMBER(freekick_state::spinner_select_w)
 }
 
 WRITE8_MEMBER(freekick_state::gigas_spinner_select_w)
->>>>>>> upstream/master
 {
 	m_spinner = data & 1;
 }
@@ -137,15 +107,9 @@ WRITE8_MEMBER(freekick_state::pbillrd_bankswitch_w)
 		m_bank1d->set_entry(data & 1);
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER(freekick_state::nmi_enable_w)
-{
-	m_nmi_en = data & 1;
-=======
 WRITE_LINE_MEMBER(freekick_state::nmi_enable_w)
 {
 	m_nmi_en = state;
->>>>>>> upstream/master
 }
 
 INTERRUPT_GEN_MEMBER(freekick_state::freekick_irqgen)
@@ -226,8 +190,6 @@ WRITE8_MEMBER(freekick_state::freekick_ff_w)
  *
  *************************************/
 
-<<<<<<< HEAD
-=======
 static ADDRESS_MAP_START( omega_map, AS_PROGRAM, 8, freekick_state )
 	AM_RANGE(0x0000, 0xbfff) AM_ROM
 	AM_RANGE(0xc000, 0xcfff) AM_RAM // ram is 2x sony cxk5813d-55
@@ -245,7 +207,6 @@ static ADDRESS_MAP_START( omega_map, AS_PROGRAM, 8, freekick_state )
 	AM_RANGE(0xfc03, 0xfc03) AM_DEVWRITE("sn4", sn76489a_device, write)
 ADDRESS_MAP_END
 
->>>>>>> upstream/master
 static ADDRESS_MAP_START( pbillrd_map, AS_PROGRAM, 8, freekick_state )
 	AM_RANGE(0x0000, 0x7fff) AM_ROM
 	AM_RANGE(0x8000, 0xbfff) AM_ROMBANK("bank1")
@@ -254,13 +215,7 @@ static ADDRESS_MAP_START( pbillrd_map, AS_PROGRAM, 8, freekick_state )
 	AM_RANGE(0xd800, 0xd8ff) AM_RAM AM_SHARE("spriteram")
 	AM_RANGE(0xd900, 0xdfff) AM_RAM
 	AM_RANGE(0xe000, 0xe000) AM_READ_PORT("IN0")
-<<<<<<< HEAD
-	AM_RANGE(0xe000, 0xe001) AM_WRITE(flipscreen_w)
-	AM_RANGE(0xe002, 0xe003) AM_WRITE(coin_w)
-	AM_RANGE(0xe004, 0xe004) AM_WRITE(nmi_enable_w)
-=======
 	AM_RANGE(0xe000, 0xe007) AM_DEVWRITE("outlatch", ls259_device, write_d0)
->>>>>>> upstream/master
 	AM_RANGE(0xe800, 0xe800) AM_READ_PORT("IN1")
 	AM_RANGE(0xf000, 0xf000) AM_READ_PORT("DSW1") AM_WRITE(pbillrd_bankswitch_w)
 	AM_RANGE(0xf800, 0xf800) AM_READ_PORT("DSW2")
@@ -270,41 +225,23 @@ static ADDRESS_MAP_START( pbillrd_map, AS_PROGRAM, 8, freekick_state )
 	AM_RANGE(0xfc03, 0xfc03) AM_DEVWRITE("sn4", sn76489a_device, write)
 ADDRESS_MAP_END
 
-<<<<<<< HEAD
-static ADDRESS_MAP_START( decrypted_opcodes_map, AS_DECRYPTED_OPCODES, 8, freekick_state )
-=======
 static ADDRESS_MAP_START( decrypted_opcodes_map, AS_OPCODES, 8, freekick_state )
->>>>>>> upstream/master
 	AM_RANGE(0x0000, 0x7fff) AM_ROMBANK("bank0d")
 	AM_RANGE(0x8000, 0xbfff) AM_ROMBANK("bank1d")
 ADDRESS_MAP_END
 
-<<<<<<< HEAD
-static ADDRESS_MAP_START( freekickb_map, AS_PROGRAM, 8, freekick_state )
-=======
 static ADDRESS_MAP_START( freekick_map, AS_PROGRAM, 8, freekick_state )
->>>>>>> upstream/master
 	AM_RANGE(0x0000, 0xcfff) AM_ROM
 	AM_RANGE(0xd000, 0xdfff) AM_RAM
 	AM_RANGE(0xe000, 0xe7ff) AM_RAM_WRITE(freek_videoram_w) AM_SHARE("videoram")    // tilemap
 	AM_RANGE(0xe800, 0xe8ff) AM_RAM AM_SHARE("spriteram")   // sprites
 	AM_RANGE(0xec00, 0xec03) AM_DEVREADWRITE("ppi8255_0", i8255_device, read, write)
 	AM_RANGE(0xf000, 0xf003) AM_DEVREADWRITE("ppi8255_1", i8255_device, read, write)
-<<<<<<< HEAD
-	AM_RANGE(0xf800, 0xf800) AM_READ_PORT("IN0") AM_WRITE(flipscreen_w)
-	AM_RANGE(0xf801, 0xf801) AM_READ_PORT("IN1")
-	AM_RANGE(0xf802, 0xf802) AM_READNOP //MUST return bit 0 = 0, otherwise game resets
-	AM_RANGE(0xf803, 0xf803) AM_READ(spinner_r)
-	AM_RANGE(0xf802, 0xf803) AM_WRITE(coin_w)
-	AM_RANGE(0xf804, 0xf804) AM_WRITE(nmi_enable_w)
-	AM_RANGE(0xf806, 0xf806) AM_WRITE(spinner_select_w)
-=======
 	AM_RANGE(0xf800, 0xf800) AM_READ_PORT("IN0")
 	AM_RANGE(0xf801, 0xf801) AM_READ_PORT("IN1")
 	AM_RANGE(0xf802, 0xf802) AM_READNOP //MUST return bit 0 = 0, otherwise game resets
 	AM_RANGE(0xf803, 0xf803) AM_READ(spinner_r)
 	AM_RANGE(0xf800, 0xf807) AM_DEVWRITE("outlatch", ls259_device, write_d0)
->>>>>>> upstream/master
 	AM_RANGE(0xfc00, 0xfc00) AM_DEVWRITE("sn1", sn76489a_device, write)
 	AM_RANGE(0xfc01, 0xfc01) AM_DEVWRITE("sn2", sn76489a_device, write)
 	AM_RANGE(0xfc02, 0xfc02) AM_DEVWRITE("sn3", sn76489a_device, write)
@@ -317,15 +254,8 @@ static ADDRESS_MAP_START( gigas_map, AS_PROGRAM, 8, freekick_state )
 	AM_RANGE(0xd000, 0xd7ff) AM_RAM_WRITE(freek_videoram_w) AM_SHARE("videoram")
 	AM_RANGE(0xd800, 0xd8ff) AM_RAM AM_SHARE("spriteram")
 	AM_RANGE(0xd900, 0xdfff) AM_RAM
-<<<<<<< HEAD
-	AM_RANGE(0xe000, 0xe000) AM_READ_PORT("IN0") AM_WRITENOP // probably not flipscreen
-	AM_RANGE(0xe002, 0xe003) AM_WRITE(coin_w)
-	AM_RANGE(0xe004, 0xe004) AM_WRITE(nmi_enable_w)
-	AM_RANGE(0xe005, 0xe005) AM_WRITENOP
-=======
 	AM_RANGE(0xe000, 0xe000) AM_READ_PORT("IN0")
 	AM_RANGE(0xe000, 0xe007) AM_DEVWRITE("outlatch", ls259_device, write_d0)
->>>>>>> upstream/master
 	AM_RANGE(0xe800, 0xe800) AM_READ_PORT("IN1")
 	AM_RANGE(0xf000, 0xf000) AM_READ_PORT("DSW1") AM_WRITENOP //bankswitch ?
 	AM_RANGE(0xf800, 0xf800) AM_READ_PORT("DSW2")
@@ -335,11 +265,6 @@ static ADDRESS_MAP_START( gigas_map, AS_PROGRAM, 8, freekick_state )
 	AM_RANGE(0xfc03, 0xfc03) AM_DEVWRITE("sn4", sn76489a_device, write)
 ADDRESS_MAP_END
 
-<<<<<<< HEAD
-static ADDRESS_MAP_START( gigas_io_map, AS_IO, 8, freekick_state )
-	ADDRESS_MAP_GLOBAL_MASK(0xff)
-	AM_RANGE(0x00, 0x00) AM_READWRITE(spinner_r, spinner_select_w)
-=======
 static ADDRESS_MAP_START( omega_io_map, AS_IO, 8, freekick_state )
 	ADDRESS_MAP_GLOBAL_MASK(0xff)
 	AM_RANGE(0x00, 0x00) AM_READWRITE(spinner_r, gigas_spinner_select_w)
@@ -349,28 +274,19 @@ ADDRESS_MAP_END
 static ADDRESS_MAP_START( gigas_io_map, AS_IO, 8, freekick_state )
 	ADDRESS_MAP_GLOBAL_MASK(0xff)
 	AM_RANGE(0x00, 0x00) AM_READWRITE(spinner_r, gigas_spinner_select_w)
->>>>>>> upstream/master
 	AM_RANGE(0x01, 0x01) AM_READNOP //unused dip 3
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( oigas_io_map, AS_IO, 8, freekick_state )
 	ADDRESS_MAP_GLOBAL_MASK(0xff)
-<<<<<<< HEAD
-	AM_RANGE(0x00, 0x00) AM_READWRITE(spinner_r, spinner_select_w)
-=======
 	AM_RANGE(0x00, 0x00) AM_READWRITE(spinner_r, gigas_spinner_select_w)
->>>>>>> upstream/master
 	AM_RANGE(0x01, 0x01) AM_READNOP //unused dip 3
 	AM_RANGE(0x02, 0x02) AM_READ(oigas_2_r)
 	AM_RANGE(0x03, 0x03) AM_READ(oigas_3_r)
 	AM_RANGE(0x05, 0x05) AM_WRITE(oigas_5_w)
 ADDRESS_MAP_END
 
-<<<<<<< HEAD
-static ADDRESS_MAP_START( freekickb_io_map, AS_IO, 8, freekick_state )
-=======
 static ADDRESS_MAP_START( freekick_io_map, AS_IO, 8, freekick_state )
->>>>>>> upstream/master
 	ADDRESS_MAP_GLOBAL_MASK(0xff)
 	AM_RANGE(0xff, 0xff) AM_READWRITE(freekick_ff_r, freekick_ff_w)
 ADDRESS_MAP_END
@@ -508,9 +424,6 @@ static INPUT_PORTS_START( gigasm2 )
 	PORT_DIPSETTING(    0x00, "Only 20000 Points" )
 INPUT_PORTS_END
 
-<<<<<<< HEAD
-static INPUT_PORTS_START( freekck )
-=======
 static INPUT_PORTS_START( omega )
 	PORT_INCLUDE( gigas ) // this covers in0 in1 in2 in3 which match gigas exactly
 
@@ -577,7 +490,6 @@ static INPUT_PORTS_START( omega )
 INPUT_PORTS_END
 
 static INPUT_PORTS_START( freekick )
->>>>>>> upstream/master
 	PORT_START("DSW1")
 	PORT_DIPNAME( 0x01, 0x01, DEF_STR( Lives ) )        PORT_DIPLOCATION("SW1:1")
 	PORT_DIPSETTING(    0x01, "3" )
@@ -680,11 +592,7 @@ static INPUT_PORTS_START( freekick )
 INPUT_PORTS_END
 
 static INPUT_PORTS_START( countrun )
-<<<<<<< HEAD
-	PORT_INCLUDE( freekck )
-=======
 	PORT_INCLUDE( freekick )
->>>>>>> upstream/master
 
 	PORT_MODIFY("DSW1")
 	PORT_DIPNAME( 0x01, 0x01, DEF_STR( Lives ) )        PORT_DIPLOCATION("SW1:1")
@@ -778,15 +686,10 @@ MACHINE_RESET_MEMBER(freekick_state,freekick)
 {
 	m_romaddr = 0;
 	m_spinner = 0;
-<<<<<<< HEAD
-	m_nmi_en = 0;
-	m_ff_data = 0;
-=======
 	m_ff_data = 0;
 
 	machine().bookkeeping().coin_counter_w(0, 0);
 	machine().bookkeeping().coin_counter_w(1, 0);
->>>>>>> upstream/master
 }
 
 MACHINE_START_MEMBER(freekick_state,pbillrd)
@@ -814,9 +717,6 @@ MACHINE_RESET_MEMBER(freekick_state,oigas)
 	m_cnt = 0;
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( base, freekick_state )
-=======
 static MACHINE_CONFIG_START( omega )
 	MCFG_CPU_ADD("maincpu", MC8123, XTAL_18_432MHz/6) // unknown divisor
 	MCFG_CPU_PROGRAM_MAP(omega_map)
@@ -858,7 +758,6 @@ static MACHINE_CONFIG_START( omega )
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_START( base )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, XTAL_12MHz/4)
@@ -866,14 +765,11 @@ static MACHINE_CONFIG_START( base )
 	MCFG_CPU_PERIODIC_INT_DRIVER(freekick_state, irq0_line_hold, 120) // measured on PCB
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", freekick_state,  freekick_irqgen)
 
-<<<<<<< HEAD
-=======
 	MCFG_DEVICE_ADD("outlatch", LS259, 0)
 	MCFG_ADDRESSABLE_LATCH_Q2_OUT_CB(WRITELINE(freekick_state, coin1_w))
 	MCFG_ADDRESSABLE_LATCH_Q3_OUT_CB(WRITELINE(freekick_state, coin2_w))
 	MCFG_ADDRESSABLE_LATCH_Q4_OUT_CB(WRITELINE(freekick_state, nmi_enable_w))
 
->>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_RAW_PARAMS(XTAL_12MHz/2, 768/2, 0, 512/2, 263, 0+16, 224+16)
@@ -881,11 +777,7 @@ static MACHINE_CONFIG_START( base )
 	MCFG_SCREEN_PALETTE("palette")
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", freekick)
-<<<<<<< HEAD
-	MCFG_PALETTE_ADD_RRRRGGGGBBBB_PROMS("palette", 0x200)
-=======
 	MCFG_PALETTE_ADD_RRRRGGGGBBBB_PROMS("palette", "proms", 0x200)
->>>>>>> upstream/master
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
@@ -904,33 +796,16 @@ static MACHINE_CONFIG_START( base )
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_DERIVED( pbillrd, base )
-<<<<<<< HEAD
-
-	/* basic machine hardware */
-=======
 	MCFG_DEVICE_MODIFY("outlatch") // 10K
 	MCFG_ADDRESSABLE_LATCH_Q0_OUT_CB(WRITELINE(freekick_state, flipscreen_x_w))
 	MCFG_ADDRESSABLE_LATCH_Q1_OUT_CB(WRITELINE(freekick_state, flipscreen_y_w))
 	/* flip Y/X could be the other way round... */
 
->>>>>>> upstream/master
 	MCFG_MACHINE_START_OVERRIDE(freekick_state,pbillrd)
 	MCFG_MACHINE_RESET_OVERRIDE(freekick_state,freekick)
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_DERIVED( pbillrdm, pbillrd )
-<<<<<<< HEAD
-	MCFG_CPU_MODIFY("maincpu")
-	MCFG_CPU_DECRYPTED_OPCODES_MAP(decrypted_opcodes_map)
-MACHINE_CONFIG_END
-
-static MACHINE_CONFIG_DERIVED( freekickb, base )
-
-	/* basic machine hardware */
-	MCFG_CPU_MODIFY("maincpu")
-	MCFG_CPU_PROGRAM_MAP(freekickb_map)
-	MCFG_CPU_IO_MAP(freekickb_io_map)
-=======
 	MCFG_CPU_REPLACE("maincpu", MC8123, XTAL_12MHz/4)
 	MCFG_CPU_PROGRAM_MAP(pbillrd_map)
 	MCFG_CPU_DECRYPTED_OPCODES_MAP(decrypted_opcodes_map)
@@ -948,7 +823,6 @@ static MACHINE_CONFIG_DERIVED( freekick, base )
 	MCFG_DEVICE_MODIFY("outlatch") // 5C
 	MCFG_ADDRESSABLE_LATCH_Q0_OUT_CB(WRITELINE(freekick_state, flipscreen_w))
 	MCFG_ADDRESSABLE_LATCH_Q6_OUT_CB(WRITELINE(freekick_state, spinner_select_w))
->>>>>>> upstream/master
 
 	MCFG_MACHINE_START_OVERRIDE(freekick_state,freekick)
 	MCFG_MACHINE_RESET_OVERRIDE(freekick_state,freekick)
@@ -976,8 +850,6 @@ static MACHINE_CONFIG_DERIVED( gigas, base )
 	MCFG_CPU_IO_MAP(gigas_io_map)
 	MCFG_CPU_DECRYPTED_OPCODES_MAP(decrypted_opcodes_map)
 
-<<<<<<< HEAD
-=======
 	MCFG_DEVICE_MODIFY("outlatch")
 	MCFG_ADDRESSABLE_LATCH_Q0_OUT_CB(WRITELINE(freekick_state, flipscreen_w))
 	MCFG_ADDRESSABLE_LATCH_Q5_OUT_CB(NOOP) // ???
@@ -1004,7 +876,6 @@ static MACHINE_CONFIG_DERIVED( gigasm, base )
 	MCFG_ADDRESSABLE_LATCH_Q0_OUT_CB(WRITELINE(freekick_state, flipscreen_w))
 	MCFG_ADDRESSABLE_LATCH_Q5_OUT_CB(NOOP) // ???
 
->>>>>>> upstream/master
 	MCFG_MACHINE_START_OVERRIDE(freekick_state,freekick)
 	MCFG_MACHINE_RESET_OVERRIDE(freekick_state,freekick)
 
@@ -1062,11 +933,7 @@ ROM_START( pbillrds ) /* Encrytped with a Sega MC-8123 (317-0030) CPU module */
 	ROM_LOAD( "10625.8r",  0x4000, 0x8000, CRC(8977c724) SHA1(f00835a04dc6fa7d8c1e382dace515f2aa7d6f44) ) /* encrypted */
 	ROM_LOAD( "10627.10n", 0xc000, 0x4000, CRC(2335e6dd) SHA1(82352b6f4abea88aad3a96ca63cccccb6e278f48) ) /* encrypted */
 
-<<<<<<< HEAD
-	ROM_REGION( 0x2000, "user1", 0 ) /* MC8123 key */
-=======
 	ROM_REGION( 0x2000, "maincpu:key", 0 ) /* MC8123 key */
->>>>>>> upstream/master
 	ROM_LOAD( "317-0030.key", 0x0000, 0x2000, CRC(9223f06d) SHA1(51a22a4c80fe273526bde68918c13c6476cec383) )
 
 	ROM_REGION( 0xc000, "gfx1", 0 ) /* GFX */
@@ -1088,17 +955,6 @@ ROM_START( pbillrds ) /* Encrytped with a Sega MC-8123 (317-0030) CPU module */
 	ROM_LOAD( "82s129.3c", 0x0500, 0x0100, CRC(cc1657e5) SHA1(358f20dce376c2389009f9673ce38b297af863f6) )
 ROM_END
 
-<<<<<<< HEAD
-// all ROMs were HN4827128G-25, except 17, HN27256G-25
-// CPU module marked 3?7-500B, but seems to act the same as above
-ROM_START( pbillrdsa )
-	ROM_REGION( 0x10000, "maincpu", 0 ) /* Z80 Code */
-	ROM_LOAD( "29",  0x0000, 0x4000, CRC(da020258) SHA1(172276061c2e06bcf3477488734a72598412181b) ) /* encrypted */ // label scraped off, might be 20
-	ROM_LOAD( "17",  0x4000, 0x8000, CRC(9bb3d467) SHA1(5d61c80c920363cbcb548f4a08434e2a05b3d5f3) ) /* encrypted */
-	ROM_LOAD( "19", 0xc000, 0x4000, CRC(2335e6dd) SHA1(82352b6f4abea88aad3a96ca63cccccb6e278f48) ) /* encrypted */
-
-	ROM_REGION( 0x2000, "user1", 0 ) /* MC8123 key */
-=======
 ROM_START( pbillrdsa ) /* all ROMs were HN4827128G-25, except 17, HN27256G-25, CPU module marked 317-5008, but seems to act the same as above */
 	ROM_REGION( 0x10000, "maincpu", 0 ) /* Z80 Code */
 	ROM_LOAD( "20", 0x0000, 0x4000, CRC(da020258) SHA1(172276061c2e06bcf3477488734a72598412181b) ) /* encrypted */
@@ -1106,7 +962,6 @@ ROM_START( pbillrdsa ) /* all ROMs were HN4827128G-25, except 17, HN27256G-25, C
 	ROM_LOAD( "19", 0xc000, 0x4000, CRC(2335e6dd) SHA1(82352b6f4abea88aad3a96ca63cccccb6e278f48) ) /* encrypted */
 
 	ROM_REGION( 0x2000, "maincpu:key", 0 ) /* MC8123 key */
->>>>>>> upstream/master
 	ROM_LOAD( "317-0030.key", 0x0000, 0x2000, CRC(9223f06d) SHA1(51a22a4c80fe273526bde68918c13c6476cec383) )
 
 	ROM_REGION( 0xc000, "gfx1", 0 ) /* GFX */
@@ -1161,11 +1016,7 @@ ROM_START( freekick )
 	ROM_LOAD( "24s10n.7h", 0x0500, 0x0100, CRC(a507f941) SHA1(97619959ee4c366cb010525636ab5eefe5a3127a) )
 ROM_END
 
-<<<<<<< HEAD
-ROM_START( freekicka ) /* The bootlegs are derived from this set, "freekbl8.q7" is identical but includes more addresss space then needed */
-=======
 ROM_START( freekicka ) /* The bootlegs are derived from this set, "freekbl8.q7" is identical but includes more address space then needed */
->>>>>>> upstream/master
 	ROM_REGION( 0x0d000, "maincpu", 0 ) /* Z80 Code, internal program RAM is 52K in custom cpu module */
 	ROM_LOAD( "ns6201-a_1987.9_free_kick.cpu", 0x00000, 0x0d000, CRC(acc0a278) SHA1(27675870ece29ccd5135ca20fb2fa91125945ec5) )
 
@@ -1376,50 +1227,6 @@ ROM_START( countrunb2 )
 	ROM_LOAD( "24s10n.7h", 0x0500, 0x0100, CRC(c77d0077) SHA1(4cbbf625ad5e45d00ca6aebe9566538ff0a3348d) )
 ROM_END
 
-<<<<<<< HEAD
-ROM_START( gigasm2b )
-	ROM_REGION( 2*0xc000, "maincpu", 0 )
-	ROM_LOAD( "8.rom", 0x0c000, 0x4000, CRC(c00a4a6c) SHA1(0d1bb849c9bfe4e92ad70e4ef19da494c0bd7ba8) )
-	ROM_CONTINUE(      0x00000, 0x4000 )
-	ROM_LOAD( "7.rom", 0x10000, 0x4000, CRC(92bd9045) SHA1(e4d8a94deeb795bb284ca0bd211ed40ed498b172) )
-	ROM_CONTINUE(      0x04000, 0x4000 )
-	ROM_LOAD( "9.rom", 0x14000, 0x4000, CRC(a3ef809c) SHA1(6d4098658aa124e10e5edb8e8e3abe0aa26741a1) )
-	ROM_CONTINUE(      0x08000, 0x4000 )
-
-	ROM_REGION( 0xc000, "gfx1", 0 ) /* GFX */
-	ROM_LOAD( "4.rom", 0x00000, 0x04000, CRC(20b3405f) SHA1(32120d7b40e74648eb4ac4ab3ad3d2125033f6b1) )
-	ROM_LOAD( "5.rom", 0x04000, 0x04000, CRC(d04ecfa8) SHA1(10bfb1d075da768f31a8c34cdfe1a1bf01e89f94) )
-	ROM_LOAD( "6.rom", 0x08000, 0x04000, CRC(33776801) SHA1(29952818038a08c98b95ac801b8929cf1647049c) )
-
-	ROM_REGION( 0xc000, "gfx2", 0 ) /* GFX */
-	ROM_LOAD( "1.rom", 0x00000, 0x04000, CRC(f64cbd1e) SHA1(f8d9b110cdac6ef524e35bec9a5d406651cd7bab) )
-	ROM_LOAD( "3.rom", 0x04000, 0x04000, CRC(c228df19) SHA1(584f269f7de2d531f2b038b4b7318f813c329f7f) )
-	ROM_LOAD( "2.rom", 0x08000, 0x04000, CRC(a6ad9ce2) SHA1(db0338385208df9e9cf43efc11383412dec493e6) )
-
-	ROM_REGION( 0x0600, "proms", 0 )
-	ROM_LOAD( "1.pr", 0x0000, 0x0100, CRC(a784e71f) SHA1(1741ce98d719bad6cc5ea42337ef897f2435bbab) )
-	ROM_LOAD( "6.pr", 0x0100, 0x0100, CRC(376df30c) SHA1(cc95920cd1c133da1becc7d92f4b187b56a90ec7) )
-	ROM_LOAD( "5.pr", 0x0200, 0x0100, CRC(4edff5bd) SHA1(305efc7ad7f86635489a655e214e216ac02b904d) )
-	ROM_LOAD( "4.pr", 0x0300, 0x0100, CRC(fe201a4e) SHA1(15f8ecfcf6c63ffbf9777bec9b203c319ba1b96c) )
-	ROM_LOAD( "2.pr", 0x0400, 0x0100, CRC(5796cc4a) SHA1(39576c4e48fd7ac52fc652a1ae0573db3d878878) )
-	ROM_LOAD( "3.pr", 0x0500, 0x0100, CRC(28b5ee4c) SHA1(e21b9c38f433dca1e8894619b1d9f0389a81b48a) )
-ROM_END
-
-
-
-ROM_START( gigas ) /* From an actual Sega board 834-6167 with mc-8123: 317-5002 */
-/* The MC-8123 is located on a small daughterboard which plugs into the z80 socket;
- * the daughterboard also has an input for the spinner control the game uses,
- * It is also possible that the 7 and 8 labels were switched on the files submitted;
- * the load order as it is now is definitely correct, and opposite of the bootlegs.
- * 7 is at location 8p, 8 at location 8n according to pcb pics.
- * An empty socket marked 27256 is at location 10n */
-	ROM_REGION( 0x10000, "maincpu", 0 )
-	ROM_LOAD( "8.8n",   0x00000, 0x4000, NO_DUMP ) /* 27128, dumped as all 0x00s, bad eprom */
-	ROM_LOAD( "7.8p",   0x04000, 0x8000, CRC(43653909) SHA1(30f6666ba5c0f016299f462c4c07c81ee4832808) ) /* 27256 */
-
-	ROM_REGION( 0x2000, "user1", 0 ) /* MC8123 key */
-=======
 ROM_START( gigas ) /* From an actual Sega board 834-6167 with mc-8123: 317-5002 */
 /* The MC-8123 is located on a small daughterboard which plugs into the z80 socket;
  * the daughterboard also has an input for the spinner control the game uses
@@ -1429,7 +1236,6 @@ ROM_START( gigas ) /* From an actual Sega board 834-6167 with mc-8123: 317-5002 
 	ROM_LOAD( "7.8r",   0x04000, 0x8000, CRC(43653909) SHA1(30f6666ba5c0f016299f462c4c07c81ee4832808) ) /* 27256 */
 
 	ROM_REGION( 0x2000, "maincpu:key", 0 ) /* MC8123 key */
->>>>>>> upstream/master
 	ROM_LOAD( "317-5002.key", 0x0000, 0x2000, CRC(86a7e5f6) SHA1(3ff3a17c02eb5610182b6febfada4e8eca0c5eea) )
 
 	ROM_REGION( 0xc000, "gfx1", 0 ) /* GFX */
@@ -1443,22 +1249,12 @@ ROM_START( gigas ) /* From an actual Sega board 834-6167 with mc-8123: 317-5002 
 	ROM_LOAD( "2.3n", 0x08000, 0x04000, CRC(3a46e354) SHA1(ebd6a5db4c9cdfc6fabe6b412a704aaf03c32d7c) )
 
 	ROM_REGION( 0x0600, "proms", 0 ) /* not dumped yet; assumed to be the same */
-<<<<<<< HEAD
-	/* fill in which locations for each prom when redumping; the chips have no labels, but are clearly located at 3a 3b 3c 3d 4a and 4d */
-	ROM_LOAD( "1.pr", 0x0000, 0x0100, CRC(a784e71f) SHA1(1741ce98d719bad6cc5ea42337ef897f2435bbab) )
-	ROM_LOAD( "6.pr", 0x0100, 0x0100, CRC(376df30c) SHA1(cc95920cd1c133da1becc7d92f4b187b56a90ec7) )
-	ROM_LOAD( "5.pr", 0x0200, 0x0100, CRC(4edff5bd) SHA1(305efc7ad7f86635489a655e214e216ac02b904d) )
-	ROM_LOAD( "4.pr", 0x0300, 0x0100, CRC(fe201a4e) SHA1(15f8ecfcf6c63ffbf9777bec9b203c319ba1b96c) )
-	ROM_LOAD( "2.pr", 0x0400, 0x0100, CRC(5796cc4a) SHA1(39576c4e48fd7ac52fc652a1ae0573db3d878878) )
-	ROM_LOAD( "3.pr", 0x0500, 0x0100, CRC(28b5ee4c) SHA1(e21b9c38f433dca1e8894619b1d9f0389a81b48a) )
-=======
 	ROM_LOAD( "3a.bin", 0x0000, 0x0100, CRC(a784e71f) SHA1(1741ce98d719bad6cc5ea42337ef897f2435bbab) )
 	ROM_LOAD( "4d.bin", 0x0100, 0x0100, CRC(376df30c) SHA1(cc95920cd1c133da1becc7d92f4b187b56a90ec7) )
 	ROM_LOAD( "4a.bin", 0x0200, 0x0100, CRC(4edff5bd) SHA1(305efc7ad7f86635489a655e214e216ac02b904d) )
 	ROM_LOAD( "3d.bin", 0x0300, 0x0100, CRC(fe201a4e) SHA1(15f8ecfcf6c63ffbf9777bec9b203c319ba1b96c) )
 	ROM_LOAD( "3b.bin", 0x0400, 0x0100, CRC(5796cc4a) SHA1(39576c4e48fd7ac52fc652a1ae0573db3d878878) )
 	ROM_LOAD( "3c.bin", 0x0500, 0x0100, CRC(28b5ee4c) SHA1(e21b9c38f433dca1e8894619b1d9f0389a81b48a) )
->>>>>>> upstream/master
 ROM_END
 
 /*
@@ -1471,14 +1267,8 @@ RAM: 6116 x2 (near ROMs 1-6), 6264 x1 (near ROMs 7-8), 2018 x2 (located in cente
 XTAL: 18.432MHz
 PROMs: 82s129 x6 (not dumped yet, probably match existing archives....)
 
-<<<<<<< HEAD
-Note: MCU dump has fixed bits, but read is good. If not correct, it's protected.
-*/
-
-=======
 Note: MCU dump (in oigas?) has fixed bits, but read is good. If not correct, it's protected.
 */
->>>>>>> upstream/master
 ROM_START( gigasb )
 	ROM_REGION( 2*0xc000, "maincpu", 0 )
 	ROM_LOAD( "g-7",   0x0c000, 0x4000, CRC(daf4e88d) SHA1(391dff914ce8e9b7975fc8827c066d7db16c4171) )
@@ -1533,8 +1323,6 @@ ROM_START( oigas )
 	ROM_LOAD( "3.pr", 0x0500, 0x0100, CRC(28b5ee4c) SHA1(e21b9c38f433dca1e8894619b1d9f0389a81b48a) )
 ROM_END
 
-<<<<<<< HEAD
-=======
 //gigas MarkII is a romswap/upgrade to gigas, and uses the same mc8123 (317-5002).
 //the original, mc8123-protected version of gigas MarkII is undumped, we only have the bootleg below.
 ROM_START( gigasm2b )
@@ -1594,7 +1382,6 @@ ROM_START( omega )
 	ROM_LOAD("tbp24s10n.3e", 0x0400, 0x100, CRC(899e089d) SHA1(5a485d3ef7d2102451ff76452cac106061cc5cd6) )
 	ROM_LOAD("tbp24s10n.4e", 0x0500, 0x100, CRC(28321dd8) SHA1(4ba0f6c381ef929a476d4d7aa71b1397c48a644e) )
 ROM_END
->>>>>>> upstream/master
 
 
 /*************************************
@@ -1612,59 +1399,27 @@ DRIVER_INIT_MEMBER(freekick_state,gigasb)
 
 DRIVER_INIT_MEMBER(freekick_state,pbillrds)
 {
-<<<<<<< HEAD
-	UINT8 *decrypted_opcodes = auto_alloc_array(machine(), UINT8, 0x10000);
-	mc8123_decode(memregion("maincpu")->base(), decrypted_opcodes, memregion("user1")->base(), 0x10000);
-=======
 	uint8_t *decrypted_opcodes = auto_alloc_array(machine(), uint8_t, 0x10000);
 	downcast<mc8123_device &>(*m_maincpu).decode(memregion("maincpu")->base(), decrypted_opcodes, 0x10000);
->>>>>>> upstream/master
 	membank("bank0d")->set_base(decrypted_opcodes);
 	m_bank1d->configure_entries(0, 2, decrypted_opcodes + 0x8000, 0x4000);
 }
 
 DRIVER_INIT_MEMBER(freekick_state,gigas)
 {
-<<<<<<< HEAD
-	UINT8 *decrypted_opcodes = auto_alloc_array(machine(), UINT8, 0xc000);
-	mc8123_decode(memregion("maincpu")->base(), decrypted_opcodes, memregion("user1")->base(), 0xc000);
-=======
 	uint8_t *decrypted_opcodes = auto_alloc_array(machine(), uint8_t, 0xc000);
 	downcast<mc8123_device &>(*m_maincpu).decode(memregion("maincpu")->base(), decrypted_opcodes, 0xc000);
->>>>>>> upstream/master
 	membank("bank0d")->set_base(decrypted_opcodes);
 	m_bank1d->set_base(decrypted_opcodes + 0x8000);
 }
 
 
 
-<<<<<<< HEAD
-
-=======
->>>>>>> upstream/master
 /*************************************
  *
  *  Game driver(s)
  *
  *************************************/
-<<<<<<< HEAD
-/*    YEAR  NAME       PARENT    MACHINE    INPUT     INIT      ROT     COMPANY                         FULLNAME        FLAGS  */
-GAME( 1986, gigas,     0,        gigas,     gigas,    freekick_state, gigas,   ROT270, "Sega",                         "Gigas (MC-8123, 317-5002)", MACHINE_NO_COCKTAIL | MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE ) // Missing a dump of one of the program roms
-GAME( 1986, gigasb,    gigas,    gigas,     gigas,    freekick_state, gigasb,  ROT270, "bootleg",                      "Gigas (bootleg)", MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
-GAME( 1986, oigas,     gigas ,   oigas,     gigas,    freekick_state, gigasb,  ROT270, "bootleg",                      "Oigas (bootleg)", MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
-GAME( 1986, gigasm2b,  0,        gigas,     gigasm2,  freekick_state, gigasb,  ROT270, "bootleg",                      "Gigas Mark II (bootleg)", MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
-GAME( 1987, pbillrd,   0,        pbillrd,   pbillrd,  driver_device,  0,       ROT0,   "Nihon System",                 "Perfect Billiard", MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
-GAME( 1987, pbillrds,  pbillrd,  pbillrdm,  pbillrd,  freekick_state, pbillrds,ROT0,   "Nihon System",                 "Perfect Billiard (MC-8123, 317-0030)", MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
-GAME( 1987, pbillrdsa, pbillrd,  pbillrdm,  pbillrd,  freekick_state, pbillrds,ROT0,   "Nihon System",                 "Perfect Billiard (MC-8123, 317-5008)", MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE ) // sticker on CPU module different (wrong?) functionality the same
-GAME( 1987, freekick,  0,        freekickb, freekck,  driver_device, 0,        ROT270, "Nihon System (Merit license)", "Free Kick (NS6201-A 1987.10)", MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
-GAME( 1987, freekicka, freekick, freekickb, freekck,  driver_device, 0,        ROT270, "Nihon System",                 "Free Kick (NS6201-A 1987.9)", MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
-GAME( 1987, freekickb1,freekick, freekickb, freekck,  driver_device, 0,        ROT270, "bootleg",                      "Free Kick (bootleg set 1)", MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
-GAME( 1987, freekickb2,freekick, freekickb, freekck,  driver_device, 0,        ROT270, "bootleg",                      "Free Kick (bootleg set 2)", MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
-GAME( 1987, freekickb3,freekick, freekickb, freekck,  driver_device, 0,        ROT270, "bootleg",                      "Free Kick (bootleg set 3)", MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
-GAME( 1988, countrun,  0,        freekickb, countrun, driver_device, 0,        ROT0,   "Nihon System (Sega license)",  "Counter Run (NS6201-A 1988.3)", MACHINE_NO_COCKTAIL | MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE ) // CPU module not dumped
-GAME( 1988, countrunb, countrun, freekickb, countrun, driver_device, 0,        ROT0,   "bootleg",                      "Counter Run (bootleg set 1)", MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
-GAME( 1988, countrunb2,countrun, freekickb, countrun, driver_device, 0,        ROT0,   "bootleg",                      "Counter Run (bootleg set 2)", MACHINE_NO_COCKTAIL | MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE )
-=======
 //    YEAR  NAME        PARENT    MACHINE    INPUT     STATE           INIT      ROT     COMPANY                         FULLNAME                                FLAGS
 GAME( 1986, gigas,      0,        gigasm,    gigas,    freekick_state, gigas,    ROT270, "Sega",                         "Gigas (MC-8123, 317-5002)",            MACHINE_SUPPORTS_SAVE )
 GAME( 1986, gigasb,     gigas,    gigas,     gigas,    freekick_state, gigasb,   ROT270, "bootleg",                      "Gigas (bootleg)",                      MACHINE_SUPPORTS_SAVE )
@@ -1682,4 +1437,3 @@ GAME( 1987, freekickb3, freekick, freekick,  freekick, freekick_state, 0,       
 GAME( 1988, countrun,   0,        freekick,  countrun, freekick_state, 0,        ROT0,   "Nihon System (Sega license)",  "Counter Run (NS6201-A 1988.3)",        MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE ) // CPU module not dumped
 GAME( 1988, countrunb,  countrun, freekick,  countrun, freekick_state, 0,        ROT0,   "bootleg",                      "Counter Run (bootleg set 1)",          MACHINE_SUPPORTS_SAVE )
 GAME( 1988, countrunb2, countrun, freekick,  countrun, freekick_state, 0,        ROT0,   "bootleg",                      "Counter Run (bootleg set 2)",          MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

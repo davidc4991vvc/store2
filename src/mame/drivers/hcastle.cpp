@@ -9,14 +9,6 @@
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/m6809/konami.h"
-#include "cpu/z80/z80.h"
-#include "sound/3812intf.h"
-#include "sound/k051649.h"
-#include "includes/konamipt.h"
-#include "includes/hcastle.h"
-=======
 #include "includes/hcastle.h"
 #include "includes/konamipt.h"
 
@@ -29,7 +21,6 @@
 
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 WRITE8_MEMBER(hcastle_state::hcastle_bankswitch_w)
@@ -44,13 +35,8 @@ WRITE8_MEMBER(hcastle_state::hcastle_soundirq_w)
 
 WRITE8_MEMBER(hcastle_state::hcastle_coin_w)
 {
-<<<<<<< HEAD
-	coin_counter_w(machine(), 0, data & 0x40);
-	coin_counter_w(machine(), 1, data & 0x80);
-=======
 	machine().bookkeeping().coin_counter_w(0, data & 0x40);
 	machine().bookkeeping().coin_counter_w(1, data & 0x80);
->>>>>>> upstream/master
 }
 
 
@@ -61,15 +47,9 @@ static ADDRESS_MAP_START( hcastle_map, AS_PROGRAM, 8, hcastle_state )
 	AM_RANGE(0x0200, 0x0207) AM_WRITE(hcastle_pf2_control_w)
 	AM_RANGE(0x0220, 0x023f) AM_RAM /* rowscroll? */
 	AM_RANGE(0x0400, 0x0400) AM_WRITE(hcastle_bankswitch_w)
-<<<<<<< HEAD
-	AM_RANGE(0x0404, 0x0404) AM_WRITE(soundlatch_byte_w)
-	AM_RANGE(0x0408, 0x0408) AM_WRITE(hcastle_soundirq_w)
-	AM_RANGE(0x040c, 0x040c) AM_WRITE(watchdog_reset_w)
-=======
 	AM_RANGE(0x0404, 0x0404) AM_DEVWRITE("soundlatch", generic_latch_8_device, write)
 	AM_RANGE(0x0408, 0x0408) AM_WRITE(hcastle_soundirq_w)
 	AM_RANGE(0x040c, 0x040c) AM_DEVWRITE("watchdog", watchdog_timer_device, reset_w)
->>>>>>> upstream/master
 	AM_RANGE(0x0410, 0x0410) AM_READ_PORT("SYSTEM") AM_WRITE(hcastle_coin_w)
 	AM_RANGE(0x0411, 0x0411) AM_READ_PORT("P1")
 	AM_RANGE(0x0412, 0x0412) AM_READ_PORT("P2")
@@ -107,11 +87,7 @@ static ADDRESS_MAP_START( sound_map, AS_PROGRAM, 8, hcastle_state )
 	AM_RANGE(0xa000, 0xa001) AM_DEVREADWRITE("ymsnd", ym3812_device, read, write)
 	AM_RANGE(0xb000, 0xb00d) AM_DEVREADWRITE("k007232", k007232_device, read, write)
 	AM_RANGE(0xc000, 0xc000) AM_WRITE(sound_bank_w) /* 7232 bankswitch */
-<<<<<<< HEAD
-	AM_RANGE(0xd000, 0xd000) AM_READ(soundlatch_byte_r)
-=======
 	AM_RANGE(0xd000, 0xd000) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 /*****************************************************************************/
@@ -192,11 +168,7 @@ WRITE8_MEMBER(hcastle_state::volume_callback)
 
 void hcastle_state::machine_start()
 {
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("maincpu")->base();
-=======
 	uint8_t *ROM = memregion("maincpu")->base();
->>>>>>> upstream/master
 
 	membank("bank1")->configure_entries(0, 16, &ROM[0x10000], 0x2000);
 
@@ -216,11 +188,7 @@ void hcastle_state::machine_reset()
 	m_old_pf2 = -1;
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( hcastle, hcastle_state )
-=======
 static MACHINE_CONFIG_START( hcastle )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", KONAMI, 3000000)    /* Derived from 24 MHz clock */
@@ -230,10 +198,7 @@ static MACHINE_CONFIG_START( hcastle )
 	MCFG_CPU_ADD("audiocpu", Z80, 3579545)
 	MCFG_CPU_PROGRAM_MAP(sound_map)
 
-<<<<<<< HEAD
-=======
 	MCFG_WATCHDOG_ADD("watchdog")
->>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_BUFFERED_SPRITERAM8_ADD("spriteram")
@@ -262,11 +227,8 @@ static MACHINE_CONFIG_START( hcastle )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 
->>>>>>> upstream/master
 	MCFG_SOUND_ADD("k007232", K007232, 3579545)
 	MCFG_K007232_PORT_WRITE_HANDLER(WRITE8(hcastle_state, volume_callback))
 	MCFG_SOUND_ROUTE(0, "mono", 0.44)
@@ -419,16 +381,8 @@ ROM_END
 
 
 
-<<<<<<< HEAD
-GAME( 1988, hcastle,   0,       hcastle, hcastle, driver_device, 0, ROT0, "Konami", "Haunted Castle (version M)", MACHINE_SUPPORTS_SAVE )
-GAME( 1988, hcastlek,  hcastle, hcastle, hcastle, driver_device, 0, ROT0, "Konami", "Haunted Castle (version K)", MACHINE_SUPPORTS_SAVE )
-GAME( 1988, hcastlee,  hcastle, hcastle, hcastle, driver_device, 0, ROT0, "Konami", "Haunted Castle (version E)", MACHINE_SUPPORTS_SAVE )
-GAME( 1988, akumajou,  hcastle, hcastle, hcastle, driver_device, 0, ROT0, "Konami", "Akuma-Jou Dracula (Japan version P)", MACHINE_SUPPORTS_SAVE )
-GAME( 1988, akumajoun, hcastle, hcastle, hcastle, driver_device, 0, ROT0, "Konami", "Akuma-Jou Dracula (Japan version N)", MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1988, hcastle,   0,       hcastle, hcastle, hcastle_state, 0, ROT0, "Konami", "Haunted Castle (version M)",          MACHINE_SUPPORTS_SAVE )
 GAME( 1988, hcastlek,  hcastle, hcastle, hcastle, hcastle_state, 0, ROT0, "Konami", "Haunted Castle (version K)",          MACHINE_SUPPORTS_SAVE )
 GAME( 1988, hcastlee,  hcastle, hcastle, hcastle, hcastle_state, 0, ROT0, "Konami", "Haunted Castle (version E)",          MACHINE_SUPPORTS_SAVE )
 GAME( 1988, akumajou,  hcastle, hcastle, hcastle, hcastle_state, 0, ROT0, "Konami", "Akuma-Jou Dracula (Japan version P)", MACHINE_SUPPORTS_SAVE )
 GAME( 1988, akumajoun, hcastle, hcastle, hcastle, hcastle_state, 0, ROT0, "Konami", "Akuma-Jou Dracula (Japan version N)", MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

@@ -36,11 +36,6 @@ dip: 6.7 7.7
 
 ***************************************************************************/
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/z80/z80.h"
-#include "audio/wiping.h"
-#include "includes/wiping.h"
-=======
 #include "includes/wiping.h"
 #include "audio/wiping.h"
 
@@ -49,7 +44,6 @@ dip: 6.7 7.7
 #include "machine/watchdog.h"
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 void wiping_state::machine_start()
@@ -72,21 +66,6 @@ READ8_MEMBER(wiping_state::ports_r)
 	return res;
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER(wiping_state::subcpu_reset_w)
-{
-	m_audiocpu->set_input_line(INPUT_LINE_RESET, (data & 1) ? CLEAR_LINE : ASSERT_LINE);
-}
-
-WRITE8_MEMBER(wiping_state::main_irq_mask_w)
-{
-	m_main_irq_mask = data & 1;
-}
-
-WRITE8_MEMBER(wiping_state::sound_irq_mask_w)
-{
-	m_sound_irq_mask = data & 1;
-=======
 // irq/reset controls like in clshroad.cpp
 
 WRITE_LINE_MEMBER(wiping_state::main_irq_mask_w)
@@ -97,7 +76,6 @@ WRITE_LINE_MEMBER(wiping_state::main_irq_mask_w)
 WRITE_LINE_MEMBER(wiping_state::sound_irq_mask_w)
 {
 	m_sound_irq_mask = state;
->>>>>>> upstream/master
 }
 
 static ADDRESS_MAP_START( main_map, AS_PROGRAM, 8, wiping_state )
@@ -108,19 +86,10 @@ static ADDRESS_MAP_START( main_map, AS_PROGRAM, 8, wiping_state )
 	AM_RANGE(0x8000, 0x8bff) AM_RAM
 	AM_RANGE(0x9000, 0x93ff) AM_RAM AM_SHARE("share1")
 	AM_RANGE(0x9800, 0x9bff) AM_RAM AM_SHARE("share2")
-<<<<<<< HEAD
-	AM_RANGE(0xa000, 0xa000) AM_WRITE(main_irq_mask_w)
-	AM_RANGE(0xa002, 0xa002) AM_WRITE(flipscreen_w)
-	AM_RANGE(0xa003, 0xa003) AM_WRITE(subcpu_reset_w)
-	AM_RANGE(0xa800, 0xa807) AM_READ(ports_r)
-	AM_RANGE(0xb000, 0xb7ff) AM_RAM
-	AM_RANGE(0xb800, 0xb800) AM_WRITE(watchdog_reset_w)
-=======
 	AM_RANGE(0xa000, 0xa007) AM_DEVWRITE("mainlatch", ls259_device, write_d0)
 	AM_RANGE(0xa800, 0xa807) AM_READ(ports_r)
 	AM_RANGE(0xb000, 0xb7ff) AM_RAM
 	AM_RANGE(0xb800, 0xb800) AM_DEVWRITE("watchdog", watchdog_timer_device, reset_w)
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( sound_map, AS_PROGRAM, 8, wiping_state )
@@ -128,11 +97,7 @@ static ADDRESS_MAP_START( sound_map, AS_PROGRAM, 8, wiping_state )
 	AM_RANGE(0x4000, 0x7fff) AM_DEVWRITE("wiping", wiping_sound_device, sound_w)
 	AM_RANGE(0x9000, 0x93ff) AM_RAM AM_SHARE("share1")
 	AM_RANGE(0x9800, 0x9bff) AM_RAM AM_SHARE("share2")
-<<<<<<< HEAD
-	AM_RANGE(0xa001, 0xa001) AM_WRITE(sound_irq_mask_w)
-=======
 	AM_RANGE(0xa000, 0xa007) AM_DEVWRITE("mainlatch", ls259_device, write_d0)
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -318,11 +283,7 @@ INTERRUPT_GEN_MEMBER(wiping_state::sound_timer_irq)
 
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( wiping, wiping_state )
-=======
 static MACHINE_CONFIG_START( wiping )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80,18432000/6) /* 3.072 MHz */
@@ -333,8 +294,6 @@ static MACHINE_CONFIG_START( wiping )
 	MCFG_CPU_PROGRAM_MAP(sound_map)
 	MCFG_CPU_PERIODIC_INT_DRIVER(wiping_state, sound_timer_irq, 120)    /* periodic interrupt, don't know about the frequency */
 
-<<<<<<< HEAD
-=======
 	MCFG_DEVICE_ADD("mainlatch", LS259, 0) // 5A
 	MCFG_ADDRESSABLE_LATCH_Q0_OUT_CB(WRITELINE(wiping_state, main_irq_mask_w)) // INT1
 	MCFG_ADDRESSABLE_LATCH_Q1_OUT_CB(WRITELINE(wiping_state, sound_irq_mask_w)) // INT2
@@ -343,7 +302,6 @@ static MACHINE_CONFIG_START( wiping )
 
 	MCFG_WATCHDOG_ADD("watchdog")
 
->>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE(60)
@@ -433,10 +391,5 @@ ROM_END
 
 
 
-<<<<<<< HEAD
-GAME( 1982, wiping,  0,      wiping, wiping, driver_device,  0, ROT90, "Nichibutsu", "Wiping", MACHINE_SUPPORTS_SAVE )
-GAME( 1983, rugrats, wiping, wiping, rugrats, driver_device, 0, ROT90, "Nichibutsu", "Rug Rats", MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1982, wiping,  0,      wiping, wiping,  wiping_state, 0, ROT90, "Nichibutsu", "Wiping",   MACHINE_SUPPORTS_SAVE )
 GAME( 1983, rugrats, wiping, wiping, rugrats, wiping_state, 0, ROT90, "Nichibutsu", "Rug Rats", MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

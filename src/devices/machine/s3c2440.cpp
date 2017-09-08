@@ -9,16 +9,6 @@
 *******************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/arm7/arm7.h"
-#include "cpu/arm7/arm7core.h"
-#include "machine/s3c2440.h"
-#include "sound/dac.h"
-
-#define VERBOSE_LEVEL ( 0 )
-
-INLINE void ATTR_PRINTF(3,4) verboselog( device_t &device, int n_level, const char *s_fmt, ...)
-=======
 #include "machine/s3c2440.h"
 
 #include "cpu/arm7/arm7.h"
@@ -234,65 +224,28 @@ static const uint32_t MAP_SUBINT_TO_INT[15] =
 #define VERBOSE_LEVEL ( 0 )
 
 static inline void ATTR_PRINTF(3,4) verboselog( device_t &device, int n_level, const char *s_fmt, ...)
->>>>>>> upstream/master
 {
 	if (VERBOSE_LEVEL >= n_level)
 	{
 		va_list v;
 		char buf[32768];
-<<<<<<< HEAD
-		va_start( v, s_fmt);
-		vsprintf( buf, s_fmt, v);
-		va_end( v);
-		device.logerror( "%s: %s", device.machine().describe_context( ), buf);
-=======
 		va_start(v, s_fmt);
 		vsprintf(buf, s_fmt, v);
 		va_end(v);
 		device.logerror("%s: %s", device.machine().describe_context( ), buf);
->>>>>>> upstream/master
 	}
 }
 
 #define DEVICE_S3C2440
 #define S3C24_CLASS_NAME s3c2440_device
-<<<<<<< HEAD
-#include "machine/s3c24xx.inc"
-#undef DEVICE_S3C2440
-
-UINT32 s3c2440_device::screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
-=======
 #include "machine/s3c24xx.hxx"
 #undef DEVICE_S3C2440
 
 uint32_t s3c2440_device::screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	return s3c24xx_video_update( screen, bitmap, cliprect);
 }
 
-<<<<<<< HEAD
-const device_type S3C2440 = &device_creator<s3c2440_device>;
-
-s3c2440_device::s3c2440_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-		: device_t(mconfig, S3C2440, "Samsung S3C2440", tag, owner, clock, "s3c2440", __FILE__),
-		m_palette(*this),
-		m_cpu(*this, ":maincpu"),
-		m_pin_r_cb(*this),
-		m_pin_w_cb(*this),
-		m_port_r_cb(*this),
-		m_port_w_cb(*this),
-		m_scl_w_cb(*this),
-		m_sda_r_cb(*this),
-		m_sda_w_cb(*this),
-		m_data_r_cb(*this),
-		m_data_w_cb(*this),
-		m_command_w_cb(*this),
-		m_address_w_cb(*this),
-		m_nand_data_r_cb(*this),
-		m_nand_data_w_cb(*this),
-		m_flags(0)
-=======
 DEFINE_DEVICE_TYPE(S3C2440, s3c2440_device, "s3c2440", "Samsung S3C2440 SoC")
 
 s3c2440_device::s3c2440_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
@@ -313,7 +266,6 @@ s3c2440_device::s3c2440_device(const machine_config &mconfig, const char *tag, d
 	, m_nand_data_r_cb(*this)
 	, m_nand_data_w_cb(*this)
 	, m_flags(0)
->>>>>>> upstream/master
 {
 	memset(m_steppingstone, 0, sizeof(m_steppingstone));
 	memset(&m_memcon, 0, sizeof(m_memcon));
@@ -404,11 +356,7 @@ void s3c2440_device::device_reset()
 }
 
 
-<<<<<<< HEAD
-void s3c2440_device::s3c2440_uart_fifo_w(int uart, UINT8 data)
-=======
 void s3c2440_device::s3c2440_uart_fifo_w(int uart, uint8_t data)
->>>>>>> upstream/master
 {
 	s3c24xx_uart_fifo_w( uart, data);
 }
@@ -418,20 +366,12 @@ void s3c2440_device::s3c2440_touch_screen(int state)
 	s3c24xx_touch_screen( state);
 }
 
-<<<<<<< HEAD
-void s3c2440_device::s3c2440_request_irq(UINT32 int_type)
-=======
 void s3c2440_device::s3c2440_request_irq(uint32_t int_type)
->>>>>>> upstream/master
 {
 	s3c24xx_request_irq( int_type);
 }
 
-<<<<<<< HEAD
-void s3c2440_device::s3c2440_request_eint(UINT32 number)
-=======
 void s3c2440_device::s3c2440_request_eint(uint32_t number)
->>>>>>> upstream/master
 {
 	s3c24xx_request_eint( number);
 }

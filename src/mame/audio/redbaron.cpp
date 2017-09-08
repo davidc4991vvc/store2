@@ -17,27 +17,17 @@
 */
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "includes/bzone.h"
-#include "sound/pokey.h"
-
-=======
 #include "audio/redbaron.h"
 #include "sound/pokey.h"
 
 #include <algorithm>
 
 
->>>>>>> upstream/master
 #define OUTPUT_RATE     (48000)
 
 
 // device type definition
-<<<<<<< HEAD
-const device_type REDBARON = &device_creator<redbaron_sound_device>;
-=======
 DEFINE_DEVICE_TYPE(REDBARON, redbaron_sound_device, "redbaron_custom", "Red Baron Audio Custom")
->>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -48,19 +38,11 @@ DEFINE_DEVICE_TYPE(REDBARON, redbaron_sound_device, "redbaron_custom", "Red Baro
 //  redbaron_sound_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-redbaron_sound_device::redbaron_sound_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, REDBARON, "Red Baron Audio Custom", tag, owner, clock, "redbaron_custom", __FILE__),
-		device_sound_interface(mconfig, *this),
-		m_vol_lookup(NULL),
-		m_channel(NULL),
-=======
 redbaron_sound_device::redbaron_sound_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, REDBARON, tag, owner, clock),
 		device_sound_interface(mconfig, *this),
 		m_vol_lookup(nullptr),
 		m_channel(nullptr),
->>>>>>> upstream/master
 		m_latch(0),
 		m_poly_counter(0),
 		m_poly_shift(0),
@@ -74,11 +56,7 @@ redbaron_sound_device::redbaron_sound_device(const machine_config &mconfig, cons
 		m_squeal_on_counter(0),
 		m_squeal_out(0)
 {
-<<<<<<< HEAD
-		memset(m_vol_crash, 0, sizeof(INT16)*16);
-=======
 	std::fill(std::begin(m_vol_crash), std::end(m_vol_crash), 0);
->>>>>>> upstream/master
 }
 
 
@@ -90,15 +68,9 @@ void redbaron_sound_device::device_start()
 {
 	int i;
 
-<<<<<<< HEAD
-	m_vol_lookup = auto_alloc_array(machine(), INT16, 32768);
-	for( i = 0; i < 0x8000; i++ )
-		m_vol_lookup[0x7fff-i] = (INT16) (0x7fff/exp(1.0*i/4096));
-=======
 	m_vol_lookup = std::make_unique<int16_t[]>(32768);
 	for( i = 0; i < 0x8000; i++ )
 		m_vol_lookup[0x7fff-i] = (int16_t) (0x7fff/exp(1.0*i/4096));
->>>>>>> upstream/master
 
 	for( i = 0; i < 16; i++ )
 	{
@@ -146,11 +118,7 @@ void redbaron_sound_device::sound_stream_update(sound_stream &stream, stream_sam
 	{
 		int sum = 0;
 
-<<<<<<< HEAD
-		/* polynome shifter E5 and F4 (LS164) clocked with 12kHz */
-=======
 		/* polynomial shifter E5 and F4 (LS164) clocked with 12kHz */
->>>>>>> upstream/master
 		m_poly_counter -= 12000;
 		while( m_poly_counter <= 0 )
 		{

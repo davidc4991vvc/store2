@@ -14,10 +14,6 @@
 #error Dont include this file directly; include emu.h instead.
 #endif
 
-<<<<<<< HEAD
-#ifndef __DEVICE_H__
-#define __DEVICE_H__
-=======
 #ifndef MAME_EMU_DEVICE_H
 #define MAME_EMU_DEVICE_H
 
@@ -28,7 +24,6 @@
 #include <typeinfo>
 #include <unordered_map>
 #include <vector>
->>>>>>> upstream/master
 
 
 
@@ -46,11 +41,6 @@
 //**************************************************************************
 
 // configure devices
-<<<<<<< HEAD
-#define MCFG_DEVICE_CONFIG(_config) \
-	device_t::static_set_static_config(*device, &(_config));
-=======
->>>>>>> upstream/master
 #define MCFG_DEVICE_CLOCK(_clock) \
 	device_t::static_set_clock(*device, _clock);
 #define MCFG_DEVICE_INPUT_DEFAULTS(_config) \
@@ -64,45 +54,6 @@
 
 
 //**************************************************************************
-<<<<<<< HEAD
-//  TYPE DEFINITIONS
-//**************************************************************************
-
-// forward references
-class memory_region;
-class device_debug;
-class device_t;
-class device_interface;
-class device_execute_interface;
-class device_memory_interface;
-class device_state_interface;
-class validity_checker;
-struct rom_entry;
-class machine_config;
-class emu_timer;
-struct input_device_default;
-class finder_base;
-
-
-// exception classes
-class device_missing_dependencies : public emu_exception { };
-
-
-// a device_type is simply a pointer to its alloc function
-typedef device_t *(*device_type)(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-
-// this template function creates a stub which constructs a device
-template<class _DeviceClass>
-device_t *device_creator(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-{
-	return global_alloc(_DeviceClass(mconfig, tag, owner, clock));
-}
-
-
-// timer IDs for devices
-typedef UINT32 device_timer_id;
-=======
 //  GLOBAL VARIABLES
 //**************************************************************************
 
@@ -368,7 +319,6 @@ class device_missing_dependencies : public emu_exception { };
 
 // timer IDs for devices
 typedef u32 device_timer_id;
->>>>>>> upstream/master
 
 // ======================> device_t
 
@@ -377,67 +327,6 @@ class device_t : public delegate_late_bind
 {
 	DISABLE_COPYING(device_t);
 
-<<<<<<< HEAD
-	friend class device_interface;
-	friend class device_memory_interface;
-	friend class device_state_interface;
-	friend class device_execute_interface;
-	friend class simple_list<device_t>;
-	friend class device_list;
-	friend class machine_config;
-	friend class running_machine;
-	friend class finder_base;
-
-protected:
-	// construction/destruction
-	device_t(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source);
-public:
-	virtual ~device_t();
-
-	// getters
-	running_machine &machine() const { /*assert(m_machine != NULL);*/ return *m_machine; }
-	const char *tag() const { return m_tag.c_str(); }
-	const char *basetag() const { return m_basetag.c_str(); }
-	device_type type() const { return m_type; }
-	const char *name() const { return m_name.c_str(); }
-	const char *shortname() const { return m_shortname.c_str(); }
-	const char *searchpath() const { return m_searchpath.c_str(); }
-	const char *source() const { return m_source.c_str(); }
-	device_t *owner() const { return m_owner; }
-	device_t *next() const { return m_next; }
-	UINT32 configured_clock() const { return m_configured_clock; }
-	const void *static_config() const { return m_static_config; }
-	const machine_config &mconfig() const { return m_machine_config; }
-	const input_device_default *input_ports_defaults() const { return m_input_defaults; }
-	const rom_entry *rom_region() const { return device_rom_region(); }
-	machine_config_constructor machine_config_additions() const { return device_mconfig_additions(); }
-	ioport_constructor input_ports() const { return device_input_ports(); }
-	UINT8 default_bios() const { return m_default_bios; }
-	UINT8 system_bios() const { return m_system_bios; }
-	std::string default_bios_tag() const { return m_default_bios_tag; }
-	std::string parameter(const char *tag) const;
-
-	// interface helpers
-	device_interface *first_interface() const { return m_interface_list; }
-	template<class _DeviceClass> bool interface(_DeviceClass *&intf) { intf = dynamic_cast<_DeviceClass *>(this); return (intf != NULL); }
-	template<class _DeviceClass> bool interface(_DeviceClass *&intf) const { intf = dynamic_cast<const _DeviceClass *>(this); return (intf != NULL); }
-
-	// specialized helpers for common core interfaces
-	bool interface(device_execute_interface *&intf) { intf = m_execute; return (intf != NULL); }
-	bool interface(device_execute_interface *&intf) const { intf = m_execute; return (intf != NULL); }
-	bool interface(device_memory_interface *&intf) { intf = m_memory; return (intf != NULL); }
-	bool interface(device_memory_interface *&intf) const { intf = m_memory; return (intf != NULL); }
-	bool interface(device_state_interface *&intf) { intf = m_state; return (intf != NULL); }
-	bool interface(device_state_interface *&intf) const { intf = m_state; return (intf != NULL); }
-	device_execute_interface &execute() const { assert(m_execute != NULL); return *m_execute; }
-	device_memory_interface &memory() const { assert(m_memory != NULL); return *m_memory; }
-	device_state_interface &state() const { assert(m_state != NULL); return *m_state; }
-
-	// owned object helpers
-	device_t *first_subdevice() const { return m_subdevice_list.first(); }
-	std::string subtag(const char *tag) const;
-	std::string siblingtag(const char *tag) const { return (this != NULL && m_owner != NULL) ? m_owner->subtag(tag) : std::string(tag); }
-=======
 	friend class simple_list<device_t>;
 	friend class running_machine;
 	friend class finder_base;
@@ -592,7 +481,6 @@ public:
 	// device-relative tag lookups
 	std::string subtag(const char *tag) const;
 	std::string siblingtag(const char *tag) const { return (m_owner != nullptr) ? m_owner->subtag(tag) : std::string(tag); }
->>>>>>> upstream/master
 	memory_region *memregion(const char *tag) const;
 	memory_share *memshare(const char *tag) const;
 	memory_bank *membank(const char *tag) const;
@@ -601,15 +489,6 @@ public:
 	device_t *siblingdevice(const char *tag) const;
 	template<class _DeviceClass> inline _DeviceClass *subdevice(const char *tag) const { return downcast<_DeviceClass *>(subdevice(tag)); }
 	template<class _DeviceClass> inline _DeviceClass *siblingdevice(const char *tag) const { return downcast<_DeviceClass *>(siblingdevice(tag)); }
-<<<<<<< HEAD
-	memory_region *region() const { return m_region; }
-
-	// configuration helpers
-	static void static_set_clock(device_t &device, UINT32 clock);
-	static void static_set_static_config(device_t &device, const void *config) { device.m_static_config = config; }
-	static void static_set_input_default(device_t &device, const input_device_default *config) { device.m_input_defaults = config; }
-	static void static_set_default_bios_tag(device_t &device, const char *tag) { std::string default_bios_tag(tag); device.m_default_bios_tag = default_bios_tag; }
-=======
 	std::string parameter(const char *tag) const;
 
 	// configuration helpers
@@ -617,7 +496,6 @@ public:
 	static void static_set_clock(device_t &device, u32 clock);
 	static void static_set_input_default(device_t &device, const input_device_default *config) { device.m_input_defaults = config; }
 	static void static_set_default_bios_tag(device_t &device, const char *tag) { device.m_default_bios_tag = tag; }
->>>>>>> upstream/master
 
 	// state helpers
 	void config_complete();
@@ -627,20 +505,6 @@ public:
 	void reset();
 
 	// clock/timing accessors
-<<<<<<< HEAD
-	UINT32 clock() const { return m_clock; }
-	UINT32 unscaled_clock() const { return m_unscaled_clock; }
-	void set_unscaled_clock(UINT32 clock);
-	double clock_scale() const { return m_clock_scale; }
-	void set_clock_scale(double clockscale);
-	attotime clocks_to_attotime(UINT64 clocks) const;
-	UINT64 attotime_to_clocks(const attotime &duration) const;
-
-	// timer interfaces
-	emu_timer *timer_alloc(device_timer_id id = 0, void *ptr = NULL);
-	void timer_set(const attotime &duration, device_timer_id id = 0, int param = 0, void *ptr = NULL);
-	void synchronize(device_timer_id id = 0, int param = 0, void *ptr = NULL) { timer_set(attotime::zero, id, param, ptr); }
-=======
 	u32 clock() const { return m_clock; }
 	u32 unscaled_clock() const { return m_unscaled_clock; }
 	void set_unscaled_clock(u32 clock);
@@ -653,30 +517,10 @@ public:
 	emu_timer *timer_alloc(device_timer_id id = 0, void *ptr = nullptr);
 	void timer_set(const attotime &duration, device_timer_id id = 0, int param = 0, void *ptr = nullptr);
 	void synchronize(device_timer_id id = 0, int param = 0, void *ptr = nullptr) { timer_set(attotime::zero, id, param, ptr); }
->>>>>>> upstream/master
 	void timer_expired(emu_timer &timer, device_timer_id id, int param, void *ptr) { device_timer(timer, id, param, ptr); }
 
 	// state saving interfaces
 	template<typename _ItemType>
-<<<<<<< HEAD
-	void ATTR_COLD save_item(_ItemType &value, const char *valname, int index = 0) { assert(m_save != NULL); m_save->save_item(this, name(), tag(), index, value, valname); }
-	template<typename _ItemType>
-	void ATTR_COLD save_pointer(_ItemType *value, const char *valname, UINT32 count, int index = 0) { assert(m_save != NULL); m_save->save_pointer(this, name(), tag(), index, value, valname, count); }
-
-	// debugging
-	device_debug *debug() const { return m_debug; }
-	offs_t safe_pc() const;
-	offs_t safe_pcbase() const;
-
-	void set_default_bios(UINT8 bios) { m_default_bios = bios; }
-	void set_system_bios(UINT8 bios) { m_system_bios = bios; }
-	bool findit(bool isvalidation = false) const;
-
-	// misc
-	void popmessage(const char *format, ...) const;
-	void logerror(const char *format, ...) const;
-	void vlogerror(const char *format, va_list args) const;
-=======
 	void ATTR_COLD save_item(_ItemType &value, const char *valname, int index = 0) { assert(m_save != nullptr); m_save->save_item(this, name(), tag(), index, value, valname); }
 	template<typename _ItemType>
 	void ATTR_COLD save_pointer(_ItemType *value, const char *valname, u32 count, int index = 0) { assert(m_save != nullptr); m_save->save_pointer(this, name(), tag(), index, value, valname, count); }
@@ -693,7 +537,6 @@ public:
 	// misc
 	template <typename Format, typename... Params> void popmessage(Format &&fmt, Params &&... args) const;
 	template <typename Format, typename... Params> void logerror(Format &&fmt, Params &&... args) const;
->>>>>>> upstream/master
 
 protected:
 	// miscellaneous helpers
@@ -709,13 +552,8 @@ protected:
 	//------------------- begin derived class overrides
 
 	// device-level overrides
-<<<<<<< HEAD
-	virtual const rom_entry *device_rom_region() const;
-	virtual machine_config_constructor device_mconfig_additions() const;
-=======
 	virtual const tiny_rom_entry *device_rom_region() const;
 	virtual void device_add_mconfig(machine_config &config);
->>>>>>> upstream/master
 	virtual ioport_constructor device_input_ports() const;
 	virtual void device_config_complete();
 	virtual void device_validity_check(validity_checker &valid) const ATTR_COLD;
@@ -732,49 +570,6 @@ protected:
 	//------------------- end derived class overrides
 
 	// core device properties
-<<<<<<< HEAD
-	const device_type       m_type;                 // device type
-	std::string             m_name;                 // name of the device
-	std::string             m_shortname;            // short name of the device
-	std::string             m_searchpath;           // search path, used for media loading
-	std::string             m_source;               // device source file name
-
-	// device relationships
-	device_t *              m_owner;                // device that owns us
-	device_t *              m_next;                 // next device by the same owner (of any type/class)
-	simple_list<device_t>   m_subdevice_list;       // list of sub-devices we own
-	mutable tagmap_t<device_t *> m_device_map;      // map of device names looked up and found
-
-	// device interfaces
-	device_interface *      m_interface_list;       // head of interface list
-	device_execute_interface *m_execute;            // pre-cached pointer to execute interface
-	device_memory_interface *m_memory;              // pre-cached pointer to memory interface
-	device_state_interface *m_state;                // pre-cached pointer to state interface
-
-	// device clocks
-	UINT32                  m_configured_clock;     // originally configured device clock
-	UINT32                  m_unscaled_clock;       // current unscaled device clock
-	UINT32                  m_clock;                // current device clock, after scaling
-	double                  m_clock_scale;          // clock scale factor
-	attoseconds_t           m_attoseconds_per_clock;// period in attoseconds
-
-	auto_pointer<device_debug> m_debug;
-	memory_region *         m_region;               // our device-local region
-	const machine_config &  m_machine_config;       // reference to the machine's configuration
-	const void *            m_static_config;        // static device configuration
-	const input_device_default *m_input_defaults;   // devices input ports default overrides
-
-	UINT8                   m_system_bios;          // the system BIOS we wish to load
-	UINT8                   m_default_bios;         // the default system BIOS
-	std::string             m_default_bios_tag;     // tag of the default system BIOS
-
-private:
-	// private helpers
-	device_t *add_subdevice(device_type type, const char *tag, UINT32 clock);
-	device_t *replace_subdevice(device_t &old, device_type type, const char *tag, UINT32 clock);
-	void remove_subdevice(device_t &device);
-	device_t *subdevice_slow(const char *tag) const;
-=======
 	device_type             m_type;                 // device type
 	std::string             m_searchpath;           // search path, used for media loading
 
@@ -803,7 +598,6 @@ private:
 	// internal helpers
 	device_t *subdevice_slow(const char *tag) const;
 	void calculate_derived_clock();
->>>>>>> upstream/master
 
 	// private state; accessor use required
 	running_machine *       m_machine;
@@ -813,13 +607,10 @@ private:
 	bool                    m_config_complete;      // have we completed our configuration?
 	bool                    m_started;              // true if the start function has succeeded
 	finder_base *           m_auto_finder_list;     // list of objects to auto-find
-<<<<<<< HEAD
-=======
 	mutable std::vector<rom_entry>  m_rom_entries;
 
 	// string formatting buffer for logerror
 	mutable util::ovectorstream m_string_buffer;
->>>>>>> upstream/master
 };
 
 
@@ -846,10 +637,6 @@ public:
 
 	// iteration helpers
 	device_interface *interface_next() const { return m_interface_next; }
-<<<<<<< HEAD
-	template<class _InterfaceClass> bool next(_InterfaceClass *&intf) const { return m_device.next(intf); }
-=======
->>>>>>> upstream/master
 
 	// optional operation overrides
 	//
@@ -883,67 +670,6 @@ protected:
 class device_iterator
 {
 public:
-<<<<<<< HEAD
-	// construction
-	device_iterator(device_t &root, int maxdepth = 255)
-		: m_root(&root),
-			m_current(NULL),
-			m_curdepth(0),
-			m_maxdepth(maxdepth) { }
-
-	// getters
-	device_t *current() const { return m_current; }
-
-	// reset and return first item
-	device_t *first()
-	{
-		m_current = m_root;
-		return m_current;
-	}
-
-	// advance depth-first
-	device_t *next()
-	{
-		// remember our starting position, and end immediately if we're NULL
-		device_t *start = m_current;
-		if (start == NULL)
-			return NULL;
-
-		// search down first
-		if (m_curdepth < m_maxdepth)
-		{
-			m_current = start->first_subdevice();
-			if (m_current != NULL)
-			{
-				m_curdepth++;
-				return m_current;
-			}
-		}
-
-		// search next for neighbors up the ownership chain
-		while (m_curdepth > 0)
-		{
-			// found a neighbor? great!
-			m_current = start->next();
-			if (m_current != NULL)
-				return m_current;
-
-			// no? try our parent
-			start = start->owner();
-			m_curdepth--;
-		}
-
-		// returned to the top; we're done
-		return m_current = NULL;
-	}
-
-	// return the number of items available
-	int count()
-	{
-		int result = 0;
-		for (device_t *item = first(); item != NULL; item = next())
-			result++;
-=======
 	class auto_iterator
 	{
 	public:
@@ -1037,19 +763,10 @@ public:
 			(void)&item;
 			result++;
 		}
->>>>>>> upstream/master
 		return result;
 	}
 
 	// return the index of a given item in the virtual list
-<<<<<<< HEAD
-	int indexof(device_t &device)
-	{
-		int index = 0;
-		for (device_t *item = first(); item != NULL; item = next(), index++)
-			if (item == &device)
-				return index;
-=======
 	int indexof(device_t &device) const
 	{
 		int index = 0;
@@ -1060,37 +777,21 @@ public:
 			else
 				index++;
 		}
->>>>>>> upstream/master
 		return -1;
 	}
 
 	// return the indexed item in the list
-<<<<<<< HEAD
-	device_t *byindex(int index)
-	{
-		for (device_t *item = first(); item != NULL; item = next(), index--)
-			if (index == 0)
-				return item;
-		return NULL;
-=======
 	device_t *byindex(int index) const
 	{
 		for (device_t &item : *this)
 			if (index-- == 0)
 				return &item;
 		return nullptr;
->>>>>>> upstream/master
 	}
 
 private:
 	// internal state
-<<<<<<< HEAD
-	device_t *      m_root;
-	device_t *      m_current;
-	int             m_curdepth;
-=======
 	device_t &      m_root;
->>>>>>> upstream/master
 	int             m_maxdepth;
 };
 
@@ -1098,53 +799,6 @@ private:
 // ======================> device_type_iterator
 
 // helper class to find devices of a given type in the device hierarchy
-<<<<<<< HEAD
-template<device_type _DeviceType, class _DeviceClass = device_t>
-class device_type_iterator
-{
-public:
-	// construction
-	device_type_iterator(device_t &root, int maxdepth = 255)
-		: m_iterator(root, maxdepth) { }
-
-	// getters
-	_DeviceClass *current() const { return downcast<_DeviceClass *>(m_iterator.current()); }
-
-	// reset and return first item
-	_DeviceClass *first()
-	{
-		for (device_t *device = m_iterator.first(); device != NULL; device = m_iterator.next())
-			if (device->type() == _DeviceType)
-				return downcast<_DeviceClass *>(device);
-		return NULL;
-	}
-
-	// advance depth-first
-	_DeviceClass *next()
-	{
-		for (device_t *device = m_iterator.next(); device != NULL; device = m_iterator.next())
-			if (device->type() == _DeviceType)
-				return downcast<_DeviceClass *>(device);
-		return NULL;
-	}
-
-	// return the number of items available
-	int count()
-	{
-		int result = 0;
-		for (_DeviceClass *item = first(); item != NULL; item = next())
-			result++;
-		return result;
-	}
-
-	// return the index of a given item in the virtual list
-	int indexof(_DeviceClass &device)
-	{
-		int index = 0;
-		for (_DeviceClass *item = first(); item != NULL; item = next(), index++)
-			if (item == &device)
-				return index;
-=======
 template <class DeviceType, class DeviceClass = DeviceType>
 class device_type_iterator
 {
@@ -1216,85 +870,33 @@ public:
 			else
 				index++;
 		}
->>>>>>> upstream/master
 		return -1;
 	}
 
 	// return the indexed item in the list
-<<<<<<< HEAD
-	_DeviceClass *byindex(int index)
-	{
-		for (_DeviceClass *item = first(); item != NULL; item = next(), index--)
-			if (index == 0)
-				return item;
-		return NULL;
-=======
 	DeviceClass *byindex(int index) const
 	{
 		for (DeviceClass &item : *this)
 			if (index-- == 0)
 				return &item;
 		return nullptr;
->>>>>>> upstream/master
 	}
 
 private:
 	// internal state
-<<<<<<< HEAD
-	device_iterator     m_iterator;
-=======
 	device_t &      m_root;
 	int             m_maxdepth;
->>>>>>> upstream/master
 };
 
 
 // ======================> device_interface_iterator
 
 // helper class to find devices with a given interface in the device hierarchy
-<<<<<<< HEAD
-// also works for findnig devices derived from a given subclass
-=======
 // also works for finding devices derived from a given subclass
->>>>>>> upstream/master
 template<class _InterfaceClass>
 class device_interface_iterator
 {
 public:
-<<<<<<< HEAD
-	// construction
-	device_interface_iterator(device_t &root, int maxdepth = 255)
-		: m_iterator(root, maxdepth),
-			m_current(NULL) { }
-
-	// getters
-	_InterfaceClass *current() const { return m_current; }
-
-	// reset and return first item
-	_InterfaceClass *first()
-	{
-		for (device_t *device = m_iterator.first(); device != NULL; device = m_iterator.next())
-			if (device->interface(m_current))
-				return m_current;
-		return NULL;
-	}
-
-	// advance depth-first
-	_InterfaceClass *next()
-	{
-		for (device_t *device = m_iterator.next(); device != NULL; device = m_iterator.next())
-			if (device->interface(m_current))
-				return m_current;
-		return NULL;
-	}
-
-	// return the number of items available
-	int count()
-	{
-		int result = 0;
-		for (_InterfaceClass *item = first(); item != NULL; item = next())
-			result++;
-=======
 	class auto_iterator : public device_iterator::auto_iterator
 	{
 public:
@@ -1351,19 +953,10 @@ public:
 			(void)&item;
 			result++;
 		}
->>>>>>> upstream/master
 		return result;
 	}
 
 	// return the index of a given item in the virtual list
-<<<<<<< HEAD
-	int indexof(_InterfaceClass &intrf)
-	{
-		int index = 0;
-		for (_InterfaceClass *item = first(); item != NULL; item = next(), index++)
-			if (item == &intrf)
-				return index;
-=======
 	int indexof(_InterfaceClass &intrf) const
 	{
 		int index = 0;
@@ -1374,37 +967,22 @@ public:
 			else
 				index++;
 		}
->>>>>>> upstream/master
 		return -1;
 	}
 
 	// return the indexed item in the list
-<<<<<<< HEAD
-	_InterfaceClass *byindex(int index)
-	{
-		for (_InterfaceClass *item = first(); item != NULL; item = next(), index--)
-			if (index == 0)
-				return item;
-		return NULL;
-=======
 	_InterfaceClass *byindex(int index) const
 	{
 		for (_InterfaceClass &item : *this)
 			if (index-- == 0)
 				return &item;
 		return nullptr;
->>>>>>> upstream/master
 	}
 
 private:
 	// internal state
-<<<<<<< HEAD
-	device_iterator     m_iterator;
-	_InterfaceClass *   m_current;
-=======
 	device_t &      m_root;
 	int             m_maxdepth;
->>>>>>> upstream/master
 };
 
 
@@ -1420,19 +998,6 @@ private:
 
 inline device_t *device_t::subdevice(const char *tag) const
 {
-<<<<<<< HEAD
-	// safety first
-	if (this == NULL)
-		return NULL;
-
-	// empty string or NULL means this device
-	if (tag == NULL || *tag == 0)
-		return const_cast<device_t *>(this);
-
-	// do a quick lookup and return that if possible
-	device_t *quick = m_device_map.find(tag);
-	return (quick != NULL) ? quick : subdevice_slow(tag);
-=======
 	// empty string or nullptr means this device
 	if (tag == nullptr || *tag == 0)
 		return const_cast<device_t *>(this);
@@ -1440,7 +1005,6 @@ inline device_t *device_t::subdevice(const char *tag) const
 	// do a quick lookup and return that if possible
 	auto quick = m_subdevices.m_tagmap.find(tag);
 	return (quick != m_subdevices.m_tagmap.end()) ? quick->second : subdevice_slow(tag);
->>>>>>> upstream/master
 }
 
 
@@ -1451,33 +1015,14 @@ inline device_t *device_t::subdevice(const char *tag) const
 
 inline device_t *device_t::siblingdevice(const char *tag) const
 {
-<<<<<<< HEAD
-	// safety first
-	if (this == NULL)
-		return NULL;
-
-	// empty string or NULL means this device
-	if (tag == NULL || *tag == 0)
-=======
 	// empty string or nullptr means this device
 	if (tag == nullptr || *tag == 0)
->>>>>>> upstream/master
 		return const_cast<device_t *>(this);
 
 	// leading caret implies the owner, just skip it
 	if (tag[0] == '^') tag++;
 
 	// query relative to the parent, if we have one
-<<<<<<< HEAD
-	if (m_owner != NULL)
-		return m_owner->subdevice(tag);
-
-	// otherwise, it's NULL unless the tag is absolute
-	return (tag[0] == ':') ? subdevice(tag) : NULL;
-}
-
-#endif  /* __DEVICE_H__ */
-=======
 	if (m_owner != nullptr)
 		return m_owner->subdevice(tag);
 
@@ -1502,4 +1047,3 @@ inline device_t::interface_list::auto_iterator device_t::interface_list::auto_it
 
 
 #endif  /* MAME_EMU_DEVICE_H */
->>>>>>> upstream/master

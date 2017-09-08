@@ -6,13 +6,9 @@
 
 **********************************************************************/
 
-<<<<<<< HEAD
-#include "sfx_sound_expander.h"
-=======
 #include "emu.h"
 #include "sfx_sound_expander.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 
@@ -28,11 +24,7 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type C64_SFX_SOUND_EXPANDER = &device_creator<c64_sfx_sound_expander_cartridge_device>;
-=======
 DEFINE_DEVICE_TYPE(C64_SFX_SOUND_EXPANDER, c64_sfx_sound_expander_cartridge_device, "c64_sfxse", "C64 SFX Sound Expander cartridge")
->>>>>>> upstream/master
 
 
 //-------------------------------------------------
@@ -46,17 +38,10 @@ WRITE_LINE_MEMBER( c64_sfx_sound_expander_cartridge_device::opl_irq_w )
 
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  MACHINE_CONFIG_FRAGMENT( c64_sfx_sound_expander )
-//-------------------------------------------------
-
-static MACHINE_CONFIG_FRAGMENT( c64_sfx_sound_expander )
-=======
 //  device_add_mconfig - add device configuration
 //-------------------------------------------------
 
 MACHINE_CONFIG_MEMBER( c64_sfx_sound_expander_cartridge_device::device_add_mconfig )
->>>>>>> upstream/master
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 	MCFG_SOUND_ADD(YM3526_TAG, YM3526, XTAL_3_579545MHz)
 	MCFG_YM3526_IRQ_HANDLER(WRITELINE(c64_sfx_sound_expander_cartridge_device, opl_irq_w))
@@ -67,20 +52,6 @@ MACHINE_CONFIG_END
 
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  machine_config_additions - device-specific
-//  machine configurations
-//-------------------------------------------------
-
-machine_config_constructor c64_sfx_sound_expander_cartridge_device::device_mconfig_additions() const
-{
-	return MACHINE_CONFIG_NAME( c64_sfx_sound_expander );
-}
-
-
-//-------------------------------------------------
-=======
->>>>>>> upstream/master
 //  INPUT_PORTS( c64_sfx_sound_expander )
 //-------------------------------------------------
 
@@ -200,28 +171,12 @@ inline offs_t c64_sfx_sound_expander_cartridge_device::get_offset(offs_t offset,
 //  c64_sfx_sound_expander_cartridge_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-c64_sfx_sound_expander_cartridge_device::c64_sfx_sound_expander_cartridge_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-	device_t(mconfig, C64_SFX_SOUND_EXPANDER, "C64 SFX Sound Expander cartridge", tag, owner, clock, "c64_sfxse", __FILE__),
-	device_c64_expansion_card_interface(mconfig, *this),
-	m_opl(*this, YM3526_TAG),
-	m_exp(*this, C64_EXPANSION_SLOT_TAG),
-	m_kb0(*this, "KB0"),
-	m_kb1(*this, "KB1"),
-	m_kb2(*this, "KB2"),
-	m_kb3(*this, "KB3"),
-	m_kb4(*this, "KB4"),
-	m_kb5(*this, "KB5"),
-	m_kb6(*this, "KB6"),
-	m_kb7(*this, "KB7")
-=======
 c64_sfx_sound_expander_cartridge_device::c64_sfx_sound_expander_cartridge_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	device_t(mconfig, C64_SFX_SOUND_EXPANDER, tag, owner, clock),
 	device_c64_expansion_card_interface(mconfig, *this),
 	m_opl(*this, YM3526_TAG),
 	m_exp(*this, C64_EXPANSION_SLOT_TAG),
 	m_kb(*this, "KB%u", 0)
->>>>>>> upstream/master
 {
 }
 
@@ -249,11 +204,7 @@ void c64_sfx_sound_expander_cartridge_device::device_reset()
 //  c64_cd_r - cartridge data read
 //-------------------------------------------------
 
-<<<<<<< HEAD
-UINT8 c64_sfx_sound_expander_cartridge_device::c64_cd_r(address_space &space, offs_t offset, UINT8 data, int sphi2, int ba, int roml, int romh, int io1, int io2)
-=======
 uint8_t c64_sfx_sound_expander_cartridge_device::c64_cd_r(address_space &space, offs_t offset, uint8_t data, int sphi2, int ba, int roml, int romh, int io1, int io2)
->>>>>>> upstream/master
 {
 	data = m_exp->cd_r(space, get_offset(offset, 1), data, sphi2, ba, roml, romh, io1, io2);
 
@@ -261,21 +212,7 @@ uint8_t c64_sfx_sound_expander_cartridge_device::c64_cd_r(address_space &space, 
 	{
 		if (BIT(offset, 3))
 		{
-<<<<<<< HEAD
-			switch (offset & 0x07)
-			{
-			case 0: data = m_kb0->read(); break;
-			case 1: data = m_kb1->read(); break;
-			case 2: data = m_kb2->read(); break;
-			case 3: data = m_kb3->read(); break;
-			case 4: data = m_kb4->read(); break;
-			case 5: data = m_kb5->read(); break;
-			case 6: data = m_kb6->read(); break;
-			case 7: data = m_kb7->read(); break;
-			}
-=======
 			data = m_kb[offset & 0x07]->read();
->>>>>>> upstream/master
 		}
 
 		if (BIT(offset, 5))
@@ -292,11 +229,7 @@ uint8_t c64_sfx_sound_expander_cartridge_device::c64_cd_r(address_space &space, 
 //  c64_cd_w - cartridge data write
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void c64_sfx_sound_expander_cartridge_device::c64_cd_w(address_space &space, offs_t offset, UINT8 data, int sphi2, int ba, int roml, int romh, int io1, int io2)
-=======
 void c64_sfx_sound_expander_cartridge_device::c64_cd_w(address_space &space, offs_t offset, uint8_t data, int sphi2, int ba, int roml, int romh, int io1, int io2)
->>>>>>> upstream/master
 {
 	if (!io2 && sphi2)
 	{

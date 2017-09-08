@@ -5,17 +5,10 @@
     decocomn.h
 
 **************************************************************************/
-<<<<<<< HEAD
-
-#pragma once
-#ifndef __DECOCOMN_H__
-#define __DECOCOMN_H__
-=======
 #ifndef MAME_VIDEO_DECOCOMN_H
 #define MAME_VIDEO_DECOCOMN_H
 
 #pragma once
->>>>>>> upstream/master
 
 
 /***************************************************************************
@@ -27,12 +20,7 @@ class decocomn_device : public device_t,
 						public device_video_interface
 {
 public:
-<<<<<<< HEAD
-	decocomn_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-	~decocomn_device() {}
-=======
 	decocomn_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
->>>>>>> upstream/master
 
 	// static configuration
 	static void static_set_palette_tag(device_t &device, const char *tag);
@@ -46,21 +34,6 @@ public:
 
 protected:
 	// device-level overrides
-<<<<<<< HEAD
-	virtual void device_config_complete();
-	virtual void device_start();
-	virtual void device_reset();
-
-private:
-	// internal state
-	UINT8 *m_dirty_palette;
-	UINT16 m_priority;
-	required_device<palette_device> m_palette;
-	required_shared_ptr<UINT16> m_generic_paletteram_16;
-};
-
-extern const device_type DECOCOMN;
-=======
 	virtual void device_start() override;
 	virtual void device_reset() override;
 
@@ -73,7 +46,6 @@ private:
 };
 
 DECLARE_DEVICE_TYPE(DECOCOMN, decocomn_device)
->>>>>>> upstream/master
 
 
 
@@ -87,8 +59,4 @@ DECLARE_DEVICE_TYPE(DECOCOMN, decocomn_device)
 #define MCFG_DECOCOMN_PALETTE(_palette_tag) \
 	decocomn_device::static_set_palette_tag(*device, "^" _palette_tag);
 
-<<<<<<< HEAD
-#endif
-=======
 #endif // MAME_VIDEO_DECOCOMN_H
->>>>>>> upstream/master

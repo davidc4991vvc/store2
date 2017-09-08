@@ -27,19 +27,11 @@ public:
 		m_palette(*this, "palette") { }
 
 	/* memory pointers */
-<<<<<<< HEAD
-	required_shared_ptr<UINT16> m_fgram;
-	required_shared_ptr<UINT16> m_bgram;
-	required_shared_ptr<UINT16> m_bg2ram;
-	required_shared_ptr<UINT16> m_scrram;
-	required_shared_ptr<UINT16> m_spriteram;
-=======
 	required_shared_ptr<uint16_t> m_fgram;
 	required_shared_ptr<uint16_t> m_bgram;
 	required_shared_ptr<uint16_t> m_bg2ram;
 	required_shared_ptr<uint16_t> m_scrram;
 	required_shared_ptr<uint16_t> m_spriteram;
->>>>>>> upstream/master
 
 	/* video-related */
 	tilemap_t     *m_fgtm;
@@ -52,11 +44,7 @@ public:
 	int         m_snd_sam[4];
 	int         m_m6295_comm;
 	int         m_m6295_bank;
-<<<<<<< HEAD
-	UINT16      m_m6295_key_delay;
-=======
 	uint16_t      m_m6295_key_delay;
->>>>>>> upstream/master
 
 	int m_fg_base;
 
@@ -77,10 +65,6 @@ public:
 	DECLARE_WRITE16_MEMBER(kickgoal_fgram_w);
 	DECLARE_WRITE16_MEMBER(kickgoal_bgram_w);
 	DECLARE_WRITE16_MEMBER(kickgoal_bg2ram_w);
-<<<<<<< HEAD
-	DECLARE_WRITE16_MEMBER(kickgoal_snd_w);
-=======
->>>>>>> upstream/master
 	DECLARE_WRITE16_MEMBER(actionhw_snd_w);
 	DECLARE_DRIVER_INIT(kickgoal);
 	TILE_GET_INFO_MEMBER(get_kickgoal_fg_tile_info);
@@ -90,16 +74,6 @@ public:
 	TILEMAP_MAPPER_MEMBER(tilemap_scan_kicksbg);
 	TILEMAP_MAPPER_MEMBER(tilemap_scan_kicksbg2);
 	TILEMAP_MAPPER_MEMBER(tilemap_scan_actionhwbg2);
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void machine_reset();
-	DECLARE_VIDEO_START(kickgoal);
-	DECLARE_VIDEO_START(actionhw);
-	UINT32 screen_update_kickgoal(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	INTERRUPT_GEN_MEMBER(kickgoal_interrupt);
-	void kickgoal_draw_sprites(bitmap_ind16 &bitmap,const rectangle &cliprect);
-	void kickgoal_play(okim6295_device *oki, int melody, int data);
-=======
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
 	DECLARE_VIDEO_START(kickgoal);
@@ -107,7 +81,6 @@ public:
 	uint32_t screen_update_kickgoal(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	INTERRUPT_GEN_MEMBER(kickgoal_interrupt);
 	void kickgoal_draw_sprites(bitmap_ind16 &bitmap,const rectangle &cliprect);
->>>>>>> upstream/master
 	required_device<cpu_device> m_maincpu;
 	required_device<okim6295_device> m_oki;
 	required_device<gfxdecode_device> m_gfxdecode;

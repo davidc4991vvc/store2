@@ -1,17 +1,10 @@
 // license:BSD-3-Clause
 // copyright-holders:smf
-<<<<<<< HEAD
-#include "atapihle.h"
-
-atapi_hle_device::atapi_hle_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock,const char *shortname, const char *source)
-	: ata_hle_device(mconfig, type, name, tag, owner, clock, shortname, source),
-=======
 #include "emu.h"
 #include "atapihle.h"
 
 atapi_hle_device::atapi_hle_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock)
 	: ata_hle_device(mconfig, type, tag, owner, clock),
->>>>>>> upstream/master
 	m_packet(0),
 	m_data_size(0)
 {
@@ -105,11 +98,6 @@ void atapi_hle_device::fill_buffer()
 		{
 			m_buffer_size = m_data_size;
 		}
-<<<<<<< HEAD
-		else if (m_buffer_size & 1)
-		{
-			m_buffer_size--;
-=======
 		else
 		{
 			if (m_buffer_size & 1)
@@ -117,7 +105,6 @@ void atapi_hle_device::fill_buffer()
 			// if it is transferring less than the remaining data, make sure the size is a multiple of the sector size, otherwise data will be lost
 			if (m_buffer_size % m_sector_bytes)
 				m_buffer_size = m_buffer_size - (m_buffer_size % m_sector_bytes);
->>>>>>> upstream/master
 		}
 
 		m_cylinder_low = m_buffer_size & 0xff;

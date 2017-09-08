@@ -812,11 +812,7 @@ Notes:
       PIC16F84 - Microchip PIC16F84 PIC (SOIC20)
                   - For 500GP and Angler King stamped 'CAP10'
                   - For Ridge Racer V (on System 246) stamped 'CAP11'
-<<<<<<< HEAD
-      MCU      - Fujitsu MB90F574 Microcontroller (QFP120)
-=======
       MCU      - Fujitsu MB90F574 F2MC-16LX Family Microcontroller (QFP120)
->>>>>>> upstream/master
                   - For 500 GP and Angler King stamped 'FCAF10'
                   - For Ridge Racer V (on System 246) stamped 'FCAF11'
       ADM485   - Analog Devices ADM485 +5V Low Power EIA RS-485 Transceiver (SOIC8)
@@ -1259,24 +1255,6 @@ Notes:
 */
 
 #include "emu.h"
-<<<<<<< HEAD
-#include <float.h>
-#include "video/poly.h"
-#include "cpu/mips/mips3.h"
-#include "cpu/h8/h83002.h"
-#include "cpu/h8/h83337.h"
-#include "cpu/sh2/sh2.h"
-#include "sound/c352.h"
-#include "machine/nvram.h"
-#include "machine/rtc4543.h"
-#include "machine/namco_settings.h"
-
-#define JVSCLOCK    (XTAL_14_7456MHz)
-#define H8CLOCK     (16737350)      /* from 2061 */
-#define BUSCLOCK    (16737350*2)    /* 33MHz CPU bus clock / input */
-#define C352CLOCK   (25992000)  /* measured at 25.992MHz from 2061 pin 9  */
-#define C352DIV     (296)
-=======
 #include "cpu/h8/h83002.h"
 #include "cpu/h8/h83337.h"
 #include "cpu/mips/mips3.h"
@@ -1303,7 +1281,6 @@ Notes:
 #define C352CLOCK   (25401600)
 #define C352DIV     (288)
 
->>>>>>> upstream/master
 #define VSYNC1      (59.8824)
 #define VSYNC2      (59.915)
 #define HSYNC       (16666150)
@@ -1329,15 +1306,9 @@ struct namcos23_render_entry
 	{
 		struct
 		{
-<<<<<<< HEAD
-			UINT16 model;
-			INT16 m[9];
-			INT32 v[3];
-=======
 			uint16_t model;
 			int16_t m[9];
 			int32_t v[3];
->>>>>>> upstream/master
 			float scaling;
 		} model;
 	};
@@ -1348,11 +1319,7 @@ struct namcos23_render_data
 	running_machine *machine;
 	const pen_t *pens;
 	bitmap_rgb32 *bitmap;
-<<<<<<< HEAD
-	UINT32 (*texture_lookup)(running_machine &machine, const pen_t *pens, float x, float y);
-=======
 	uint32_t (*texture_lookup)(running_machine &machine, const pen_t *pens, float x, float y);
->>>>>>> upstream/master
 };
 
 class namcos23_state;
@@ -1362,11 +1329,7 @@ class namcos23_renderer : public poly_manager<float, namcos23_render_data, 4, PO
 public:
 	namcos23_renderer(namcos23_state &state);
 	void render_flush(bitmap_rgb32& bitmap);
-<<<<<<< HEAD
-	void render_scanline(INT32 scanline, const extent_t& extent, const namcos23_render_data& object, int threadid);
-=======
 	void render_scanline(int32_t scanline, const extent_t& extent, const namcos23_render_data& object, int threadid);
->>>>>>> upstream/master
 	float* zBuffer() { return m_zBuffer; }
 
 private:
@@ -1388,58 +1351,32 @@ struct namcos23_poly_entry
 
 struct c417_t
 {
-<<<<<<< HEAD
-	UINT16 ram[0x10000];
-	UINT16 adr;
-	UINT32 pointrom_adr;
-=======
 	uint16_t ram[0x10000];
 	uint16_t adr;
 	uint32_t pointrom_adr;
->>>>>>> upstream/master
 };
 
 struct c412_t
 {
-<<<<<<< HEAD
-	UINT16 sdram_a[0x100000]; // Framebuffers, probably
-	UINT16 sdram_b[0x100000];
-	UINT16 sram[0x20000];     // Ram-based tiles for rendering
-	UINT16 pczram[0x200];     // Ram-based tilemap for rendering, or something else
-	UINT32 adr;
-	UINT16 status_c;
-=======
 	uint16_t sdram_a[0x100000]; // Framebuffers, probably
 	uint16_t sdram_b[0x100000];
 	uint16_t sram[0x20000];     // Ram-based tiles for rendering
 	uint16_t pczram[0x200];     // Ram-based tilemap for rendering, or something else
 	uint32_t adr;
 	uint16_t status_c;
->>>>>>> upstream/master
 };
 
 struct c421_t
 {
-<<<<<<< HEAD
-	UINT16 dram_a[0x40000];
-	UINT16 dram_b[0x40000];
-	UINT16 sram[0x8000];
-	UINT32 adr;
-=======
 	uint16_t dram_a[0x40000];
 	uint16_t dram_b[0x40000];
 	uint16_t sram[0x8000];
 	uint32_t adr;
->>>>>>> upstream/master
 };
 
 struct c422_t
 {
-<<<<<<< HEAD
-	INT16 regs[0x10];
-=======
 	int16_t regs[0x10];
->>>>>>> upstream/master
 };
 
 struct c361_t
@@ -1451,22 +1388,13 @@ struct c361_t
 struct c404_t
 {
 	rgb_t bgcolor;
-<<<<<<< HEAD
-	UINT16 palbase;
-	UINT8 layer;
-=======
 	uint16_t palbase;
 	uint8_t layer;
->>>>>>> upstream/master
 };
 
 struct render_t
 {
-<<<<<<< HEAD
-	namcos23_renderer *polymgr;
-=======
 	std::unique_ptr<namcos23_renderer> polymgr;
->>>>>>> upstream/master
 	int cur;
 	int poly_count;
 	int count[2];
@@ -1502,11 +1430,7 @@ public:
 		m_screen(*this, "screen"),
 		m_palette(*this, "palette"),
 		m_generic_paletteram_32(*this, "paletteram"),
-<<<<<<< HEAD
-		m_adc_ports(*this, "ADC")
-=======
 		m_adc_ports(*this, "ADC.%u", 0)
->>>>>>> upstream/master
 	{ }
 
 	required_device<mips3_device> m_maincpu;
@@ -1515,16 +1439,6 @@ public:
 	optional_device<h83334_device> m_iocpu;
 	required_device<rtc4543_device> m_rtc;
 	required_device<namco_settings_device> m_settings;
-<<<<<<< HEAD
-	required_shared_ptr<UINT32> m_mainram;
-	required_shared_ptr<UINT32> m_shared_ram;
-	required_shared_ptr<UINT32> m_gammaram;
-	required_shared_ptr<UINT32> m_charram;
-	required_shared_ptr<UINT32> m_textram;
-	optional_shared_ptr<UINT32> m_czattr;
-	optional_device<cpu_device> m_gmen_sh2;
-	optional_shared_ptr<UINT32> m_gmen_sh2_shared;
-=======
 	required_shared_ptr<uint32_t> m_mainram;
 	required_shared_ptr<uint32_t> m_shared_ram;
 	required_shared_ptr<uint32_t> m_gammaram;
@@ -1533,7 +1447,6 @@ public:
 	optional_shared_ptr<uint32_t> m_czattr;
 	optional_device<cpu_device> m_gmen_sh2;
 	optional_shared_ptr<uint32_t> m_gmen_sh2_shared;
->>>>>>> upstream/master
 	required_device<gfxdecode_device> m_gfxdecode;
 	optional_ioport m_lightx;
 	optional_ioport m_lighty;
@@ -1541,11 +1454,7 @@ public:
 	required_ioport m_p2;
 	required_device<screen_device> m_screen;
 	required_device<palette_device> m_palette;
-<<<<<<< HEAD
-	required_shared_ptr<UINT32> m_generic_paletteram_32;
-=======
 	required_shared_ptr<uint32_t> m_generic_paletteram_32;
->>>>>>> upstream/master
 	optional_ioport_array<4> m_adc_ports;
 
 	c404_t m_c404;
@@ -1557,24 +1466,6 @@ public:
 	render_t m_render;
 
 	tilemap_t *m_bgtilemap;
-<<<<<<< HEAD
-	UINT8 m_jvssense;
-	INT32 m_has_jvsio;
-	UINT32 m_main_irqcause;
-	bool m_ctl_vbl_active;
-	UINT8 m_ctl_led;
-	UINT16 m_ctl_inp_buffer[2];
-	bool m_subcpu_running;
-	UINT32 m_c435_address;
-	UINT32 m_c435_size;
-	const UINT32 *m_ptrom;
-	const UINT16 *m_tmlrom;
-	const UINT8 *m_tmhrom;
-	const UINT8 *m_texrom;
-	UINT32 m_tileid_mask;
-	UINT32 m_tile_mask;
-	UINT32 m_ptrom_limit;
-=======
 	uint8_t m_jvssense;
 	int32_t m_has_jvsio;
 	uint32_t m_main_irqcause;
@@ -1591,7 +1482,6 @@ public:
 	uint32_t m_tileid_mask;
 	uint32_t m_tile_mask;
 	uint32_t m_ptrom_limit;
->>>>>>> upstream/master
 
 	int m_vblank_count;
 
@@ -1603,23 +1493,6 @@ public:
 // Matrices are stored in signed 2.14 fixed point
 // Vectors are stored in signed 10.14 fixed point
 
-<<<<<<< HEAD
-	INT16 m_matrices[256][9];
-	INT32 m_vectors[256][3];
-	INT32 m_light_vector[3];
-	UINT16 m_scaling;
-	INT32 m_spv[3];
-	INT16 m_spm[3];
-
-	UINT16 m_c435_buffer[256];
-	int m_c435_buffer_pos;
-
-	UINT8 m_sub_porta;
-	UINT8 m_sub_portb;
-	UINT8 m_tssio_port_4;
-
-	void update_main_interrupts(UINT32 cause);
-=======
 	int16_t m_matrices[256][9];
 	int32_t m_vectors[256][3];
 	int32_t m_light_vector[3];
@@ -1635,7 +1508,6 @@ public:
 	uint8_t m_tssio_port_4;
 
 	void update_main_interrupts(uint32_t cause);
->>>>>>> upstream/master
 	void update_mixer();
 
 	DECLARE_WRITE32_MEMBER(textram_w);
@@ -1672,10 +1544,6 @@ public:
 	DECLARE_WRITE16_MEMBER(mcu_p8_w);
 	DECLARE_READ16_MEMBER(mcu_pa_r);
 	DECLARE_WRITE16_MEMBER(mcu_pa_w);
-<<<<<<< HEAD
-	DECLARE_READ16_MEMBER(mcu_rtc_r);
-=======
->>>>>>> upstream/master
 	DECLARE_READ16_MEMBER(mcu_pb_r);
 	DECLARE_WRITE16_MEMBER(mcu_pb_w);
 	DECLARE_READ16_MEMBER(mcu_p6_r);
@@ -1692,27 +1560,6 @@ public:
 	TILE_GET_INFO_MEMBER(TextTilemapGetInfo);
 	DECLARE_VIDEO_START(s23);
 	DECLARE_MACHINE_RESET(gmen);
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void machine_reset();
-	UINT32 screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
-	INTERRUPT_GEN_MEMBER(interrupt);
-	TIMER_CALLBACK_MEMBER(c361_timer_cb);
-	void sub_irq(screen_device &screen, bool vblank_state);
-	UINT8 nthbyte(const UINT32 *pSource, int offs);
-	UINT16 nthword(const UINT32 *pSource, int offs);
-	inline INT32 u32_to_s24(UINT32 v);
-	inline INT32 u32_to_s10(UINT32 v);
-	float f24_to_f32(UINT32 v);
-
-	INT32 *c435_getv(UINT16 id);
-	INT16 *c435_getm(UINT16 id);
-
-	void c435_state_set_interrupt(const UINT16 *param);
-	void c435_state_set_projection_matrix_line(const UINT16 *param);
-	void c435_state_set(UINT16 type, const UINT16 *param);
-	int c435_get_state_entry_size(UINT16 type);
-=======
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
 	uint32_t screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
@@ -1732,55 +1579,34 @@ public:
 	void c435_state_set_projection_matrix_line(const uint16_t *param);
 	void c435_state_set(uint16_t type, const uint16_t *param);
 	int c435_get_state_entry_size(uint16_t type);
->>>>>>> upstream/master
 
 	void c435_matrix_matrix_mul();
 	void c435_matrix_set();
 	void c435_vector_set();
 	void c435_matrix_vector_mul();
-<<<<<<< HEAD
-	void c435_vector_matrix_mul();
-=======
->>>>>>> upstream/master
 	void c435_state_set();
 	void c435_scaling_set();
 	void c435_render();
 	void c435_flush();
 
-<<<<<<< HEAD
-	void c435_pio_w(UINT16 data);
-	void c435_dma(address_space &space, UINT32 adr, UINT32 size);
-
-	void render_apply_transform(INT32 xi, INT32 yi, INT32 zi, const namcos23_render_entry *re, poly_vertex &pv);
-	void render_apply_matrot(INT32 xi, INT32 yi, INT32 zi, const namcos23_render_entry *re, INT32 &x, INT32 &y, INT32 &z);
-=======
 	void c435_pio_w(uint16_t data);
 	void c435_dma(address_space &space, uint32_t adr, uint32_t size);
 
 	void render_apply_transform(int32_t xi, int32_t yi, int32_t zi, const namcos23_render_entry *re, poly_vertex &pv);
 	void render_apply_matrot(int32_t xi, int32_t yi, int32_t zi, const namcos23_render_entry *re, int32_t &x, int32_t &y, int32_t &z);
->>>>>>> upstream/master
 	void render_project(poly_vertex &pv);
 	void render_one_model(const namcos23_render_entry *re);
 	void render_run(bitmap_rgb32 &bitmap);
 };
 
 
-<<<<<<< HEAD
-UINT8 namcos23_state::nthbyte(const UINT32 *pSource, int offs)
-=======
 uint8_t namcos23_state::nthbyte(const uint32_t *pSource, int offs)
->>>>>>> upstream/master
 {
 	pSource += offs/4;
 	return (pSource[0]<<((offs&3)*8))>>24;
 }
 
-<<<<<<< HEAD
-UINT16 namcos23_state::nthword(const UINT32 *pSource, int offs)
-=======
 uint16_t namcos23_state::nthword(const uint32_t *pSource, int offs)
->>>>>>> upstream/master
 {
 	pSource += offs/2;
 	return (pSource[0]<<((offs&1)*16))>>16;
@@ -1804,29 +1630,17 @@ namcos23_renderer::namcos23_renderer(namcos23_state &state)
 
 // 3D hardware, to throw at least in part in video/namcos23.c
 
-<<<<<<< HEAD
-inline INT32 namcos23_state::u32_to_s24(UINT32 v)
-=======
 inline int32_t namcos23_state::u32_to_s24(uint32_t v)
->>>>>>> upstream/master
 {
 	return v & 0x800000 ? v | 0xff000000 : v & 0xffffff;
 }
 
-<<<<<<< HEAD
-inline INT32 namcos23_state::u32_to_s10(UINT32 v)
-=======
 inline int32_t namcos23_state::u32_to_s10(uint32_t v)
->>>>>>> upstream/master
 {
 	return v & 0x200 ? v | 0xfffffe00 : v & 0x1ff;
 }
 
-<<<<<<< HEAD
-float namcos23_state::f24_to_f32(UINT32 v)
-=======
 float namcos23_state::f24_to_f32(uint32_t v)
->>>>>>> upstream/master
 {
 	// 8 bits exponent, 16 mantissa
 	// mantissa is 16-bits signed, 2-complement
@@ -1837,15 +1651,9 @@ float namcos23_state::f24_to_f32(uint32_t v)
 	if(!v)
 		return 0;
 
-<<<<<<< HEAD
-	UINT32 r = v & 0x8000 ? 0x80000000 : 0;
-	UINT16 m = r ? -v : v;
-	UINT8 e = (v >> 16) + 0x60;
-=======
 	uint32_t r = v & 0x8000 ? 0x80000000 : 0;
 	uint16_t m = r ? -v : v;
 	uint8_t e = (v >> 16) + 0x60;
->>>>>>> upstream/master
 	while(!(m & 0x8000)) {
 		m <<= 1;
 		e--;
@@ -1855,27 +1663,16 @@ float namcos23_state::f24_to_f32(uint32_t v)
 	return *(float *)&r;
 }
 
-<<<<<<< HEAD
-INLINE UINT8 light(UINT8 c, float l)
-=======
 static inline uint8_t light(uint8_t c, float l)
->>>>>>> upstream/master
 {
 	if(l < 1)
 		l = l*c;
 	else
 		l = 255 - (255-c)/l;
-<<<<<<< HEAD
-	return UINT8(l);
-}
-
-INT32 *namcos23_state::c435_getv(UINT16 id)
-=======
 	return uint8_t(l);
 }
 
 int32_t *namcos23_state::c435_getv(uint16_t id)
->>>>>>> upstream/master
 {
 	if(id == 0x8000)
 		return m_light_vector;
@@ -1886,11 +1683,7 @@ int32_t *namcos23_state::c435_getv(uint16_t id)
 	return m_vectors[id];
 }
 
-<<<<<<< HEAD
-INT16 *namcos23_state::c435_getm(UINT16 id)
-=======
 int16_t *namcos23_state::c435_getm(uint16_t id)
->>>>>>> upstream/master
 {
 	if(id >= 0x100) {
 		memset(m_spm, 0, sizeof(m_spm));
@@ -1899,11 +1692,7 @@ int16_t *namcos23_state::c435_getm(uint16_t id)
 	return m_matrices[id];
 }
 
-<<<<<<< HEAD
-void namcos23_state::c435_state_set_interrupt(const UINT16 *param)
-=======
 void namcos23_state::c435_state_set_interrupt(const uint16_t *param)
->>>>>>> upstream/master
 {
 	if(param[0] & 1)
 		update_main_interrupts(m_main_irqcause | MAIN_C435_IRQ);
@@ -1911,11 +1700,7 @@ void namcos23_state::c435_state_set_interrupt(const uint16_t *param)
 		update_main_interrupts(m_main_irqcause & ~MAIN_C435_IRQ);
 }
 
-<<<<<<< HEAD
-void namcos23_state::c435_state_set_projection_matrix_line(const UINT16 *param)
-=======
 void namcos23_state::c435_state_set_projection_matrix_line(const uint16_t *param)
->>>>>>> upstream/master
 {
 	// timecrs2:
 	//   sx = 640/2, sy = 480/2, t = tan(fov/2) (fov=45 degrees)
@@ -1932,11 +1717,7 @@ void namcos23_state::c435_state_set_projection_matrix_line(const uint16_t *param
 	logerror(buf);
 }
 
-<<<<<<< HEAD
-void namcos23_state::c435_state_set(UINT16 type, const UINT16 *param)
-=======
 void namcos23_state::c435_state_set(uint16_t type, const uint16_t *param)
->>>>>>> upstream/master
 {
 	switch(type) {
 	case 0x0001: c435_state_set_interrupt(param); break;
@@ -1969,11 +1750,7 @@ WRITE16_MEMBER(namcos23_state::c435_state_pio_w)
 	m_c435_buffer_pos = 0;
 }
 
-<<<<<<< HEAD
-int namcos23_state::c435_get_state_entry_size(UINT16 type)
-=======
 int namcos23_state::c435_get_state_entry_size(uint16_t type)
->>>>>>> upstream/master
 {
 	switch(type) {
 	case 0x0001: return 1;
@@ -2000,21 +1777,6 @@ void namcos23_state::c435_matrix_matrix_mul() // 0.0
 	if(m_c435_buffer[3] != 0xffff)
 		logerror("WARNING: c435_matrix_matrix_mul with +2=%04x\n", m_c435_buffer[3]);
 
-<<<<<<< HEAD
-	INT16 *t        = c435_getm(m_c435_buffer[1]);
-	const INT16 *m2 = c435_getm(m_c435_buffer[2]);
-	const INT16 *m1 = c435_getm(m_c435_buffer[4]);
-
-	t[0] = INT16((m1[0]*m2[0] + m1[1]*m2[1] + m1[2]*m2[2]) >> 14);
-	t[1] = INT16((m1[0]*m2[3] + m1[1]*m2[4] + m1[2]*m2[5]) >> 14);
-	t[2] = INT16((m1[0]*m2[6] + m1[1]*m2[7] + m1[2]*m2[8]) >> 14);
-	t[3] = INT16((m1[3]*m2[0] + m1[4]*m2[1] + m1[5]*m2[2]) >> 14);
-	t[4] = INT16((m1[3]*m2[3] + m1[4]*m2[4] + m1[5]*m2[5]) >> 14);
-	t[5] = INT16((m1[3]*m2[6] + m1[4]*m2[7] + m1[5]*m2[8]) >> 14);
-	t[6] = INT16((m1[6]*m2[0] + m1[7]*m2[1] + m1[8]*m2[2]) >> 14);
-	t[7] = INT16((m1[6]*m2[3] + m1[7]*m2[4] + m1[8]*m2[5]) >> 14);
-	t[8] = INT16((m1[6]*m2[6] + m1[7]*m2[7] + m1[8]*m2[8]) >> 14);
-=======
 	int16_t *t        = c435_getm(m_c435_buffer[1]);
 	const int16_t *m2 = c435_getm(m_c435_buffer[2]);
 	const int16_t *m1 = c435_getm(m_c435_buffer[4]);
@@ -2028,7 +1790,6 @@ void namcos23_state::c435_matrix_matrix_mul() // 0.0
 	t[6] = int16_t((m1[6]*m2[0] + m1[7]*m2[1] + m1[8]*m2[2]) >> 14);
 	t[7] = int16_t((m1[6]*m2[3] + m1[7]*m2[4] + m1[8]*m2[5]) >> 14);
 	t[8] = int16_t((m1[6]*m2[6] + m1[7]*m2[7] + m1[8]*m2[8]) >> 14);
->>>>>>> upstream/master
 }
 
 void namcos23_state::c435_matrix_vector_mul() // 0.1
@@ -2043,25 +1804,6 @@ void namcos23_state::c435_matrix_vector_mul() // 0.1
 
 
 	if(m_c435_buffer[3] != 0xffff) {
-<<<<<<< HEAD
-		INT32 *t        = c435_getv(m_c435_buffer[1]);
-		const INT16 *m  = c435_getm(m_c435_buffer[2]);
-		const INT32 *vt = c435_getv(m_c435_buffer[3]);
-		const INT32 *v  = c435_getv(m_c435_buffer[4]);
-
-		t[0] = INT32((m[0]*INT64(v[0]) + m[1]*INT64(v[1]) + m[2]*INT64(v[2])) >> 14) + vt[0];
-		t[1] = INT32((m[3]*INT64(v[0]) + m[4]*INT64(v[1]) + m[5]*INT64(v[2])) >> 14) + vt[1];
-		t[2] = INT32((m[6]*INT64(v[0]) + m[7]*INT64(v[1]) + m[8]*INT64(v[2])) >> 14) + vt[2];
-
-	} else {
-		INT32 *t       = c435_getv(m_c435_buffer[1]);
-		const INT16 *m = c435_getm(m_c435_buffer[2]);
-		const INT32 *v = c435_getv(m_c435_buffer[4]);
-
-		t[0] = INT32((m[0]*INT64(v[0]) + m[1]*INT64(v[1]) + m[2]*INT64(v[2])) >> 14);
-		t[1] = INT32((m[3]*INT64(v[0]) + m[4]*INT64(v[1]) + m[5]*INT64(v[2])) >> 14);
-		t[2] = INT32((m[6]*INT64(v[0]) + m[7]*INT64(v[1]) + m[8]*INT64(v[2])) >> 14);
-=======
 		int32_t *t        = c435_getv(m_c435_buffer[1]);
 		const int16_t *m  = c435_getm(m_c435_buffer[2]);
 		const int32_t *vt = c435_getv(m_c435_buffer[3]);
@@ -2079,7 +1821,6 @@ void namcos23_state::c435_matrix_vector_mul() // 0.1
 		t[0] = int32_t((m[0]*int64_t(v[0]) + m[1]*int64_t(v[1]) + m[2]*int64_t(v[2])) >> 14);
 		t[1] = int32_t((m[3]*int64_t(v[0]) + m[4]*int64_t(v[1]) + m[5]*int64_t(v[2])) >> 14);
 		t[2] = int32_t((m[6]*int64_t(v[0]) + m[7]*int64_t(v[1]) + m[8]*int64_t(v[2])) >> 14);
->>>>>>> upstream/master
 	}
 }
 
@@ -2093,11 +1834,7 @@ void namcos23_state::c435_matrix_set() // 0.4
 	if(m_c435_buffer[0] != 0x004a)
 		logerror("WARNING: c435_matrix_set header %04x\n", m_c435_buffer[0]);
 
-<<<<<<< HEAD
-	INT16 *t = c435_getm(m_c435_buffer[1]);
-=======
 	int16_t *t = c435_getm(m_c435_buffer[1]);
->>>>>>> upstream/master
 	for(int i=0; i<9; i++)
 		t[i] = m_c435_buffer[i+2];
 }
@@ -2111,11 +1848,7 @@ void namcos23_state::c435_vector_set() // 0.5
 	if(m_c435_buffer[0] != 0x057)
 		logerror("WARNING: c435_vector_set header %04x\n", m_c435_buffer[0]);
 
-<<<<<<< HEAD
-	INT32 *t = c435_getv(m_c435_buffer[1]);
-=======
 	int32_t *t = c435_getv(m_c435_buffer[1]);
->>>>>>> upstream/master
 	for(int i=0; i<3; i++)
 		t[i] = u32_to_s24((m_c435_buffer[2*i+2] << 16) | m_c435_buffer[2*i+3]);
 }
@@ -2163,13 +1896,8 @@ void namcos23_state::c435_render() // 8
 	}
 
 	// Vector and matrix may be inverted
-<<<<<<< HEAD
-	const INT16 *m = c435_getm(m_c435_buffer[2]);
-	const INT32 *v = c435_getv(m_c435_buffer[3]);
-=======
 	const int16_t *m = c435_getm(m_c435_buffer[2]);
 	const int32_t *v = c435_getv(m_c435_buffer[3]);
->>>>>>> upstream/master
 
 	namcos23_render_entry *re = render.entries[render.cur] + render.count[render.cur];
 	re->type = MODEL;
@@ -2205,17 +1933,10 @@ void namcos23_state::c435_flush() // c
 }
 
 
-<<<<<<< HEAD
-void namcos23_state::c435_pio_w(UINT16 data)
-{
-	m_c435_buffer[m_c435_buffer_pos++] = data;
-	UINT16 h = m_c435_buffer[0];
-=======
 void namcos23_state::c435_pio_w(uint16_t data)
 {
 	m_c435_buffer[m_c435_buffer_pos++] = data;
 	uint16_t h = m_c435_buffer[0];
->>>>>>> upstream/master
 	int psize;
 	if((h & 0x4000) == 0x4000)
 		psize = h & 0xff;
@@ -2261,11 +1982,7 @@ void namcos23_state::c435_pio_w(uint16_t data)
 	m_c435_buffer_pos = 0;
 }
 
-<<<<<<< HEAD
-void namcos23_state::c435_dma(address_space &space, UINT32 adr, UINT32 size)
-=======
 void namcos23_state::c435_dma(address_space &space, uint32_t adr, uint32_t size)
->>>>>>> upstream/master
 {
 	adr &= 0x1fffffff;
 
@@ -2306,11 +2023,7 @@ WRITE32_MEMBER(namcos23_state::c435_w)
 
 
 
-<<<<<<< HEAD
-void namcos23_renderer::render_scanline(INT32 scanline, const extent_t& extent, const namcos23_render_data& object, int threadid)
-=======
 void namcos23_renderer::render_scanline(int32_t scanline, const extent_t& extent, const namcos23_render_data& object, int threadid)
->>>>>>> upstream/master
 {
 	const namcos23_render_data& rd = object;
 
@@ -2323,19 +2036,11 @@ void namcos23_renderer::render_scanline(int32_t scanline, const extent_t& extent
 	float dv = extent.param[2].dpdx;
 	float dl = extent.param[3].dpdx;
 
-<<<<<<< HEAD
-	UINT32 *img = &object.bitmap->pix32(scanline, extent.startx);
-
-	for(int x = extent.startx; x < extent.stopx; x++) {
-		float z = w ? 1/w : 0;
-		UINT32 pcol = rd.texture_lookup(*rd.machine, rd.pens, u*z, v*z);
-=======
 	uint32_t *img = &object.bitmap->pix32(scanline, extent.startx);
 
 	for(int x = extent.startx; x < extent.stopx; x++) {
 		float z = w ? 1/w : 0;
 		uint32_t pcol = rd.texture_lookup(*rd.machine, rd.pens, u*z, v*z);
->>>>>>> upstream/master
 		float ll = l*z;
 		*img = (light(pcol >> 16, ll) << 16) | (light(pcol >> 8, ll) << 8) | light(pcol, ll);
 
@@ -2347,16 +2052,6 @@ void namcos23_renderer::render_scanline(int32_t scanline, const extent_t& extent
 	}
 }
 
-<<<<<<< HEAD
-void namcos23_state::render_apply_transform(INT32 xi, INT32 yi, INT32 zi, const namcos23_render_entry *re, poly_vertex &pv)
-{
-	pv.x =    (INT32((re->model.m[0]*INT64(xi) + re->model.m[1]*INT64(yi) + re->model.m[2]*INT64(zi)) >> 14)*re->model.scaling + re->model.v[0])/16384.0f;
-	pv.y =    (INT32((re->model.m[3]*INT64(xi) + re->model.m[4]*INT64(yi) + re->model.m[5]*INT64(zi)) >> 14)*re->model.scaling + re->model.v[1])/16384.0f;
-	pv.p[0] = (INT32((re->model.m[6]*INT64(xi) + re->model.m[7]*INT64(yi) + re->model.m[8]*INT64(zi)) >> 14)*re->model.scaling + re->model.v[2])/16384.0f;
-}
-
-void namcos23_state::render_apply_matrot(INT32 xi, INT32 yi, INT32 zi, const namcos23_render_entry *re, INT32 &x, INT32 &y, INT32 &z)
-=======
 void namcos23_state::render_apply_transform(int32_t xi, int32_t yi, int32_t zi, const namcos23_render_entry *re, poly_vertex &pv)
 {
 	pv.x =    (int32_t((re->model.m[0]*int64_t(xi) + re->model.m[1]*int64_t(yi) + re->model.m[2]*int64_t(zi)) >> 14)*re->model.scaling + re->model.v[0])/16384.0f;
@@ -2365,7 +2060,6 @@ void namcos23_state::render_apply_transform(int32_t xi, int32_t yi, int32_t zi, 
 }
 
 void namcos23_state::render_apply_matrot(int32_t xi, int32_t yi, int32_t zi, const namcos23_render_entry *re, int32_t &x, int32_t &y, int32_t &z)
->>>>>>> upstream/master
 {
 	x = (re->model.m[0]*xi + re->model.m[3]*yi + re->model.m[6]*zi) >> 14;
 	y = (re->model.m[1]*xi + re->model.m[4]*yi + re->model.m[7]*zi) >> 14;
@@ -2390,15 +2084,6 @@ void namcos23_state::render_project(poly_vertex &pv)
 	pv.p[0] = 1.0f / pv.p[0];
 }
 
-<<<<<<< HEAD
-static UINT32 render_texture_lookup_nocache_point(running_machine &machine, const pen_t *pens, float x, float y)
-{
-	namcos23_state *state = machine.driver_data<namcos23_state>();
-	UINT32 xx = UINT32(x);
-	UINT32 yy = UINT32(y);
-	UINT32 tileid = ((xx >> 4) & 0xff) | ((yy << 4) & state->m_tileid_mask);
-	UINT8 attr = state->m_tmhrom[tileid >> 1];
-=======
 static uint32_t render_texture_lookup_nocache_point(running_machine &machine, const pen_t *pens, float x, float y)
 {
 	namcos23_state *state = machine.driver_data<namcos23_state>();
@@ -2406,24 +2091,15 @@ static uint32_t render_texture_lookup_nocache_point(running_machine &machine, co
 	uint32_t yy = uint32_t(y);
 	uint32_t tileid = ((xx >> 4) & 0xff) | ((yy << 4) & state->m_tileid_mask);
 	uint8_t attr = state->m_tmhrom[tileid >> 1];
->>>>>>> upstream/master
 	if(tileid & 1)
 		attr &= 15;
 	else
 		attr >>= 4;
-<<<<<<< HEAD
-	UINT32 tile = (state->m_tmlrom[tileid] | (attr << 16)) & state->m_tile_mask;
-
-	// Probably swapx/swapy to add on bits 2-3 of attr
-	// Bits used by motoxgo at least
-	UINT8 color = state->m_texrom[(tile << 8) | ((yy << 4) & 0xf0) | (xx & 0x0f)];
-=======
 	uint32_t tile = (state->m_tmlrom[tileid] | (attr << 16)) & state->m_tile_mask;
 
 	// Probably swapx/swapy to add on bits 2-3 of attr
 	// Bits used by motoxgo at least
 	uint8_t color = state->m_texrom[(tile << 8) | ((yy << 4) & 0xf0) | (xx & 0x0f)];
->>>>>>> upstream/master
 	return pens[color];
 }
 
@@ -2438,11 +2114,7 @@ void namcos23_state::render_one_model(const namcos23_render_entry *re)
 	if(re->model.model == 3486)
 		return;
 
-<<<<<<< HEAD
-	UINT32 adr = m_ptrom[re->model.model];
-=======
 	uint32_t adr = m_ptrom[re->model.model];
->>>>>>> upstream/master
 	if(adr >= m_ptrom_limit) {
 		logerror("WARNING: model %04x base address %08x out-of-bounds - pointram?\n", re->model.model, adr);
 		return;
@@ -2451,19 +2123,11 @@ void namcos23_state::render_one_model(const namcos23_render_entry *re)
 	while(adr < m_ptrom_limit) {
 		poly_vertex pv[15];
 
-<<<<<<< HEAD
-		UINT32 type = m_ptrom[adr++];
-		UINT32 h    = m_ptrom[adr++];
-
-		float tbase = (type >> 24) << 12;
-		UINT8 color = (h >> 24) & 0x7f;
-=======
 		uint32_t type = m_ptrom[adr++];
 		uint32_t h    = m_ptrom[adr++];
 
 		float tbase = (type >> 24) << 12;
 		uint8_t color = (h >> 24) & 0x7f;
->>>>>>> upstream/master
 		int lmode = (type >> 19) & 3;
 		int ne = (type >> 8) & 15;
 
@@ -2471,13 +2135,8 @@ void namcos23_state::render_one_model(const namcos23_render_entry *re)
 		if(type & 0x00001000)
 			adr++;
 
-<<<<<<< HEAD
-		UINT32 light = 0;
-		UINT32 extptr = 0;
-=======
 		uint32_t light = 0;
 		uint32_t extptr = 0;
->>>>>>> upstream/master
 
 		if(lmode == 3) {
 			extptr = adr;
@@ -2490,15 +2149,9 @@ void namcos23_state::render_one_model(const namcos23_render_entry *re)
 		float maxz = FLT_MIN;
 
 		for(int i=0; i<ne; i++) {
-<<<<<<< HEAD
-			UINT32 v1 = m_ptrom[adr++];
-			UINT32 v2 = m_ptrom[adr++];
-			UINT32 v3 = m_ptrom[adr++];
-=======
 			uint32_t v1 = m_ptrom[adr++];
 			uint32_t v2 = m_ptrom[adr++];
 			uint32_t v3 = m_ptrom[adr++];
->>>>>>> upstream/master
 
 			render_apply_transform(u32_to_s24(v1), u32_to_s24(v2), u32_to_s24(v3), re, pv[i]);
 			pv[i].p[1] = (((v1 >> 20) & 0xf00) | ((v2 >> 24 & 0xff))) + 0.5;
@@ -2520,19 +2173,11 @@ void namcos23_state::render_one_model(const namcos23_render_entry *re)
 				pv[i].p[3] = 1.0;
 				break;
 			case 3: {
-<<<<<<< HEAD
-				UINT32 norm = m_ptrom[extptr++];
-				INT32 nx = u32_to_s10(norm >> 20);
-				INT32 ny = u32_to_s10(norm >> 10);
-				INT32 nz = u32_to_s10(norm);
-				INT32 nrx, nry, nrz;
-=======
 				uint32_t norm = m_ptrom[extptr++];
 				int32_t nx = u32_to_s10(norm >> 20);
 				int32_t ny = u32_to_s10(norm >> 10);
 				int32_t nz = u32_to_s10(norm);
 				int32_t nrx, nry, nrz;
->>>>>>> upstream/master
 				render_apply_matrot(nx, ny, nz, re, nrx, nry, nrz);
 				float lsi = float(nrx*m_light_vector[0] + nry*m_light_vector[1] + nrz*m_light_vector[2])/4194304.0f;
 				if(lsi < 0)
@@ -2642,15 +2287,6 @@ void namcos23_renderer::render_flush(bitmap_rgb32& bitmap)
 
 		// We should probably split the polygons into triangles ourselves to insure everything is being rendered properly
 		if (p->vertex_count == 3)
-<<<<<<< HEAD
-			render_triangle(scissor, render_delegate(FUNC(namcos23_renderer::render_scanline), this), 4, p->pv[0], p->pv[1], p->pv[2]);
-		else if (p->vertex_count == 4)
-			render_polygon<4>(scissor, render_delegate(FUNC(namcos23_renderer::render_scanline), this), 4, p->pv);
-		else if (p->vertex_count == 5)
-			render_polygon<5>(scissor, render_delegate(FUNC(namcos23_renderer::render_scanline), this), 4, p->pv);
-		else if (p->vertex_count == 6)
-			render_polygon<6>(scissor, render_delegate(FUNC(namcos23_renderer::render_scanline), this), 4, p->pv);
-=======
 			render_triangle(scissor, render_delegate(&namcos23_renderer::render_scanline, this), 4, p->pv[0], p->pv[1], p->pv[2]);
 		else if (p->vertex_count == 4)
 			render_polygon<4>(scissor, render_delegate(&namcos23_renderer::render_scanline, this), 4, p->pv);
@@ -2658,7 +2294,6 @@ void namcos23_renderer::render_flush(bitmap_rgb32& bitmap)
 			render_polygon<5>(scissor, render_delegate(&namcos23_renderer::render_scanline, this), 4, p->pv);
 		else if (p->vertex_count == 6)
 			render_polygon<6>(scissor, render_delegate(&namcos23_renderer::render_scanline, this), 4, p->pv);
->>>>>>> upstream/master
 	}
 	render.poly_count = 0;
 }
@@ -2721,11 +2356,7 @@ WRITE32_MEMBER(namcos23_state::paletteram_w)
 
 TILE_GET_INFO_MEMBER(namcos23_state::TextTilemapGetInfo)
 {
-<<<<<<< HEAD
-	UINT16 data = nthword( m_textram,tile_index );
-=======
 	uint16_t data = nthword( m_textram,tile_index );
->>>>>>> upstream/master
 	/**
 	* xxxx.----.----.---- palette select
 	* ----.xx--.----.---- flip
@@ -2753,17 +2384,6 @@ WRITE32_MEMBER(namcos23_state::textchar_w)
 
 VIDEO_START_MEMBER(namcos23_state,s23)
 {
-<<<<<<< HEAD
-	m_gfxdecode->gfx(0)->set_source(reinterpret_cast<UINT8 *>(m_charram.target()));
-	m_bgtilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(namcos23_state::TextTilemapGetInfo),this), TILEMAP_SCAN_ROWS, 16, 16, 64, 64);
-	m_bgtilemap->set_transparent_pen(0xf);
-	m_bgtilemap->set_scrolldx(860, 860);
-	m_render.polymgr = auto_alloc(machine(), namcos23_renderer(*this));
-}
-
-
-UINT32 namcos23_state::screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
-=======
 	m_gfxdecode->gfx(0)->set_source(reinterpret_cast<uint8_t *>(m_charram.target()));
 	m_bgtilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(namcos23_state::TextTilemapGetInfo),this), TILEMAP_SCAN_ROWS, 16, 16, 64, 64);
 	m_bgtilemap->set_transparent_pen(0xf);
@@ -2773,7 +2393,6 @@ UINT32 namcos23_state::screen_update(screen_device &screen, bitmap_rgb32 &bitmap
 
 
 uint32_t namcos23_state::screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	update_mixer();
 	bitmap.fill(m_c404.bgcolor, cliprect);
@@ -2802,15 +2421,9 @@ uint32_t namcos23_state::screen_update(screen_device &screen, bitmap_rgb32 &bitm
 
 // Interrupts
 
-<<<<<<< HEAD
-void namcos23_state::update_main_interrupts(UINT32 cause)
-{
-	UINT32 changed = cause ^ m_main_irqcause;
-=======
 void namcos23_state::update_main_interrupts(uint32_t cause)
 {
 	uint32_t changed = cause ^ m_main_irqcause;
->>>>>>> upstream/master
 	m_main_irqcause = cause;
 
 	// level 2: vblank
@@ -2847,19 +2460,11 @@ INTERRUPT_GEN_MEMBER(namcos23_state::interrupt)
 	m_render.count[m_render.cur] = 0;
 }
 
-<<<<<<< HEAD
-void namcos23_state::sub_irq(screen_device &screen, bool vblank_state)
-{
-	m_subcpu->set_input_line(1, vblank_state ? ASSERT_LINE : CLEAR_LINE);
-	m_adc->adtrg_w(vblank_state);
-	m_sub_portb = (m_sub_portb & 0x7f) | (vblank_state << 7);
-=======
 WRITE_LINE_MEMBER(namcos23_state::sub_irq)
 {
 	m_subcpu->set_input_line(1, state ? ASSERT_LINE : CLEAR_LINE);
 	m_adc->adtrg_w(state);
 	m_sub_portb = (m_sub_portb & 0x7f) | (state << 7);
->>>>>>> upstream/master
 }
 
 
@@ -3171,11 +2776,7 @@ WRITE16_MEMBER(namcos23_state::ctl_w)
 		if(m_ctl_led != (data & 0xff)) {
 			m_ctl_led = data & 0xff;
 			for(int i = 0; i < 8; i++)
-<<<<<<< HEAD
-				output_set_lamp_value(i, (~data<<i & 0x80) ? 0 : 1);
-=======
 				output().set_lamp_value(i, (~data<<i & 0x80) ? 0 : 1);
->>>>>>> upstream/master
 		}
 		break;
 
@@ -3208,11 +2809,7 @@ READ16_MEMBER(namcos23_state::ctl_r)
 	case 1:
 		return 0x0000 | ioport("DSW")->read() | ((m_main_irqcause & MAIN_C361_IRQ) ? 0x400 : 0);
 	case 2: case 3: {
-<<<<<<< HEAD
-		UINT16 res = m_ctl_inp_buffer[offset-2] & 0x800 ? 0xffff : 0x0000;
-=======
 		uint16_t res = m_ctl_inp_buffer[offset-2] & 0x800 ? 0xffff : 0x0000;
->>>>>>> upstream/master
 		m_ctl_inp_buffer[offset-2] = (m_ctl_inp_buffer[offset-2] << 1) | 1;
 		return res;
 	}
@@ -3380,11 +2977,7 @@ ADDRESS_MAP_END
 
 WRITE16_MEMBER(namcos23_state::sharedram_sub_w)
 {
-<<<<<<< HEAD
-	UINT16 *shared16 = reinterpret_cast<UINT16 *>(m_shared_ram.target());
-=======
 	uint16_t *shared16 = reinterpret_cast<uint16_t *>(m_shared_ram.target());
->>>>>>> upstream/master
 
 	// fake that an I/O board is connected for games w/o a dump or that aren't properly communicating with it yet
 	if(!m_has_jvsio) {
@@ -3398,11 +2991,7 @@ WRITE16_MEMBER(namcos23_state::sharedram_sub_w)
 
 READ16_MEMBER(namcos23_state::sharedram_sub_r)
 {
-<<<<<<< HEAD
-	UINT16 *shared16 = reinterpret_cast<UINT16 *>(m_shared_ram.target());
-=======
 	uint16_t *shared16 = reinterpret_cast<uint16_t *>(m_shared_ram.target());
->>>>>>> upstream/master
 
 	return shared16[BYTE_XOR_BE(offset)];
 }
@@ -3534,11 +3123,7 @@ WRITE16_MEMBER(namcos23_state::iob_p4_w)
 READ16_MEMBER(namcos23_state::iob_p6_r)
 {
 	// d4 is service button
-<<<<<<< HEAD
-	UINT8 sb = (ioport("SERVICE")->read() & 1) << 4;
-=======
 	uint8_t sb = (ioport("SERVICE")->read() & 1) << 4;
->>>>>>> upstream/master
 	// other bits: unknown
 
 	return sb | 0;
@@ -3554,11 +3139,7 @@ WRITE16_MEMBER(namcos23_state::iob_p6_w)
 
 READ16_MEMBER(namcos23_state::iob_analog_r)
 {
-<<<<<<< HEAD
-	return read_safe(m_adc_ports[offset], 0);
-=======
 	return m_adc_ports[offset].read_safe(0);
->>>>>>> upstream/master
 }
 
 
@@ -3585,13 +3166,8 @@ ADDRESS_MAP_END
 
 READ8_MEMBER(namcos23_state::iob_gun_r)
 {
-<<<<<<< HEAD
-	UINT16 xpos = m_lightx->read();
-	UINT16 ypos = m_lighty->read();
-=======
 	uint16_t xpos = m_lightx->read();
 	uint16_t ypos = m_lighty->read();
->>>>>>> upstream/master
 	// ypos is not completely understood yet, there should be a difference between case 1/4 and 2/5
 
 	switch(offset) {
@@ -3869,11 +3445,7 @@ void namcos23_state::machine_start()
 	m_c361.timer = machine().scheduler().timer_alloc(timer_expired_delegate(FUNC(namcos23_state::c361_timer_cb),this));
 	m_c361.timer->adjust(attotime::never);
 
-<<<<<<< HEAD
-	m_maincpu->add_fastram(0, m_mainram.bytes()-1, FALSE, reinterpret_cast<UINT32 *>(memshare("mainram")->ptr()));
-=======
 	m_maincpu->add_fastram(0, m_mainram.bytes()-1, false, reinterpret_cast<uint32_t *>(memshare("mainram")->ptr()));
->>>>>>> upstream/master
 }
 
 
@@ -3896,13 +3468,8 @@ MACHINE_RESET_MEMBER(namcos23_state,gmen)
 
 DRIVER_INIT_MEMBER(namcos23_state,s23)
 {
-<<<<<<< HEAD
-	m_ptrom  = (const UINT32 *)memregion("pointrom")->base();
-	m_tmlrom = (const UINT16 *)memregion("textilemapl")->base();
-=======
 	m_ptrom  = (const uint32_t *)memregion("pointrom")->base();
 	m_tmlrom = (const uint16_t *)memregion("textilemapl")->base();
->>>>>>> upstream/master
 	m_tmhrom = memregion("textilemaph")->base();
 	m_texrom = memregion("textile")->base();
 
@@ -3940,10 +3507,7 @@ DRIVER_INIT_MEMBER(namcos23_state,s23)
 		(!strcmp(machine().system().name, "crszonev3a")) ||
 		(!strcmp(machine().system().name, "crszonev2a")) ||
 		(!strcmp(machine().system().name, "timecrs2v2b")) ||
-<<<<<<< HEAD
-=======
 		(!strcmp(machine().system().name, "timecrs2v1b")) ||
->>>>>>> upstream/master
 		(!strcmp(machine().system().name, "timecrs2"))) {
 		m_has_jvsio = 1;
 	} else {
@@ -3968,19 +3532,11 @@ static const gfx_layout namcos23_cg_layout =
 }; /* cg_layout */
 
 static GFXDECODE_START( namcos23 )
-<<<<<<< HEAD
-	GFXDECODE_ENTRY( NULL, 0, namcos23_cg_layout, 0, 0x800 )
-GFXDECODE_END
-
-
-static MACHINE_CONFIG_START( gorgon, namcos23_state )
-=======
 	GFXDECODE_ENTRY( nullptr, 0, namcos23_cg_layout, 0, 0x800 )
 GFXDECODE_END
 
 
 static MACHINE_CONFIG_START( gorgon )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", R4650BE, BUSCLOCK*4)
@@ -4013,20 +3569,10 @@ static MACHINE_CONFIG_START( gorgon )
 	MCFG_RTC4543_ADD("rtc", XTAL_32_768kHz)
 	MCFG_RTC4543_DATA_CALLBACK(DEVWRITELINE("subcpu:sci1", h8_sci_device, rx_w))
 
-<<<<<<< HEAD
-	MCFG_LINE_DISPATCH_ADD("clk_dispatch", 2)
-	MCFG_LINE_DISPATCH_FWD_CB(0, 2, DEVWRITELINE(":rtc", rtc4543_device, clk_w)) MCFG_DEVCB_INVERT
-	MCFG_LINE_DISPATCH_FWD_CB(1, 2, DEVWRITELINE(":namco_settings", namco_settings_device, clk_w))
-
-	MCFG_DEVICE_MODIFY("subcpu:sci1")
-	MCFG_H8_SCI_TX_CALLBACK(DEVWRITELINE(":namco_settings", namco_settings_device, data_w))
-	MCFG_H8_SCI_CLK_CALLBACK(DEVWRITELINE(":clk_dispatch", devcb_line_dispatch_device<2>, in_w))
-=======
 	MCFG_DEVICE_MODIFY("subcpu:sci1")
 	MCFG_H8_SCI_TX_CALLBACK(DEVWRITELINE(":namco_settings", namco_settings_device, data_w))
 	MCFG_H8_SCI_CLK_CALLBACK(DEVWRITELINE(":rtc", rtc4543_device, clk_w)) MCFG_DEVCB_INVERT
 	MCFG_DEVCB_CHAIN_OUTPUT(DEVWRITELINE(":namco_settings", namco_settings_device, clk_w))
->>>>>>> upstream/master
 
 	MCFG_NVRAM_ADD_0FILL("nvram")
 
@@ -4037,11 +3583,7 @@ static MACHINE_CONFIG_START( gorgon )
 	MCFG_SCREEN_SIZE(640, 480)
 	MCFG_SCREEN_VISIBLE_AREA(0, 639, 0, 479)
 	MCFG_SCREEN_UPDATE_DRIVER(namcos23_state, screen_update)
-<<<<<<< HEAD
-	MCFG_SCREEN_VBLANK_DRIVER(namcos23_state, sub_irq)
-=======
 	MCFG_SCREEN_VBLANK_CALLBACK(WRITELINE(namcos23_state, sub_irq))
->>>>>>> upstream/master
 
 	MCFG_PALETTE_ADD("palette", 0x8000)
 
@@ -4053,16 +3595,6 @@ static MACHINE_CONFIG_START( gorgon )
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
 	MCFG_C352_ADD("c352", C352CLOCK, C352DIV)
-<<<<<<< HEAD
-	MCFG_SOUND_ROUTE(0, "rspeaker", 1.00)
-	MCFG_SOUND_ROUTE(1, "lspeaker", 1.00)
-	MCFG_SOUND_ROUTE(2, "rspeaker", 1.00)
-	MCFG_SOUND_ROUTE(3, "lspeaker", 1.00)
-MACHINE_CONFIG_END
-
-
-static MACHINE_CONFIG_START( s23, namcos23_state )
-=======
 	MCFG_SOUND_ROUTE(0, "lspeaker", 1.00)
 	MCFG_SOUND_ROUTE(1, "rspeaker", 1.00)
 	MCFG_SOUND_ROUTE(2, "lspeaker", 1.00)
@@ -4071,7 +3603,6 @@ MACHINE_CONFIG_END
 
 
 static MACHINE_CONFIG_START( s23 )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", R4650BE, BUSCLOCK*4)
@@ -4104,20 +3635,10 @@ static MACHINE_CONFIG_START( s23 )
 	MCFG_RTC4543_ADD("rtc", XTAL_32_768kHz)
 	MCFG_RTC4543_DATA_CALLBACK(DEVWRITELINE("subcpu:sci1", h8_sci_device, rx_w))
 
-<<<<<<< HEAD
-	MCFG_LINE_DISPATCH_ADD("clk_dispatch", 2)
-	MCFG_LINE_DISPATCH_FWD_CB(0, 2, DEVWRITELINE(":rtc", rtc4543_device, clk_w)) MCFG_DEVCB_INVERT
-	MCFG_LINE_DISPATCH_FWD_CB(1, 2, DEVWRITELINE(":namco_settings", namco_settings_device, clk_w))
-
-	MCFG_DEVICE_MODIFY("subcpu:sci1")
-	MCFG_H8_SCI_TX_CALLBACK(DEVWRITELINE(":namco_settings", namco_settings_device, data_w))
-	MCFG_H8_SCI_CLK_CALLBACK(DEVWRITELINE(":clk_dispatch", devcb_line_dispatch_device<2>, in_w))
-=======
 	MCFG_DEVICE_MODIFY("subcpu:sci1")
 	MCFG_H8_SCI_TX_CALLBACK(DEVWRITELINE(":namco_settings", namco_settings_device, data_w))
 	MCFG_H8_SCI_CLK_CALLBACK(DEVWRITELINE(":rtc", rtc4543_device, clk_w)) MCFG_DEVCB_INVERT
 	MCFG_DEVCB_CHAIN_OUTPUT(DEVWRITELINE(":namco_settings", namco_settings_device, clk_w))
->>>>>>> upstream/master
 
 	MCFG_NVRAM_ADD_0FILL("nvram")
 
@@ -4128,11 +3649,7 @@ static MACHINE_CONFIG_START( s23 )
 	MCFG_SCREEN_SIZE(640, 480)
 	MCFG_SCREEN_VISIBLE_AREA(0, 639, 0, 479)
 	MCFG_SCREEN_UPDATE_DRIVER(namcos23_state, screen_update)
-<<<<<<< HEAD
-	MCFG_SCREEN_VBLANK_DRIVER(namcos23_state, sub_irq)
-=======
 	MCFG_SCREEN_VBLANK_CALLBACK(WRITELINE(namcos23_state, sub_irq))
->>>>>>> upstream/master
 
 	MCFG_PALETTE_ADD("palette", 0x8000)
 
@@ -4171,11 +3688,7 @@ static MACHINE_CONFIG_DERIVED( gmen, s23 )
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( ss23, namcos23_state )
-=======
 static MACHINE_CONFIG_START( ss23 )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", R4650BE, BUSCLOCK*5)
@@ -4199,20 +3712,10 @@ static MACHINE_CONFIG_START( ss23 )
 	MCFG_RTC4543_ADD("rtc", XTAL_32_768kHz)
 	MCFG_RTC4543_DATA_CALLBACK(DEVWRITELINE("subcpu:sci1", h8_sci_device, rx_w))
 
-<<<<<<< HEAD
-	MCFG_LINE_DISPATCH_ADD("clk_dispatch", 2)
-	MCFG_LINE_DISPATCH_FWD_CB(0, 2, DEVWRITELINE(":rtc", rtc4543_device, clk_w)) MCFG_DEVCB_INVERT
-	MCFG_LINE_DISPATCH_FWD_CB(1, 2, DEVWRITELINE(":namco_settings", namco_settings_device, clk_w))
-
-	MCFG_DEVICE_MODIFY("subcpu:sci1")
-	MCFG_H8_SCI_TX_CALLBACK(DEVWRITELINE(":namco_settings", namco_settings_device, data_w))
-	MCFG_H8_SCI_CLK_CALLBACK(DEVWRITELINE(":clk_dispatch", devcb_line_dispatch_device<2>, in_w))
-=======
 	MCFG_DEVICE_MODIFY("subcpu:sci1")
 	MCFG_H8_SCI_TX_CALLBACK(DEVWRITELINE(":namco_settings", namco_settings_device, data_w))
 	MCFG_H8_SCI_CLK_CALLBACK(DEVWRITELINE(":rtc", rtc4543_device, clk_w)) MCFG_DEVCB_INVERT
 	MCFG_DEVCB_CHAIN_OUTPUT(DEVWRITELINE(":namco_settings", namco_settings_device, clk_w))
->>>>>>> upstream/master
 
 	MCFG_NVRAM_ADD_0FILL("nvram")
 
@@ -4223,11 +3726,7 @@ static MACHINE_CONFIG_START( ss23 )
 	MCFG_SCREEN_SIZE(640, 480)
 	MCFG_SCREEN_VISIBLE_AREA(0, 639, 0, 479)
 	MCFG_SCREEN_UPDATE_DRIVER(namcos23_state, screen_update)
-<<<<<<< HEAD
-	MCFG_SCREEN_VBLANK_DRIVER(namcos23_state, sub_irq)
-=======
 	MCFG_SCREEN_VBLANK_CALLBACK(WRITELINE(namcos23_state, sub_irq))
->>>>>>> upstream/master
 
 	MCFG_PALETTE_ADD("palette", 0x8000)
 
@@ -4608,8 +4107,6 @@ ROM_START( motoxgov2a )
 	ROM_LOAD( "mg1ccrh.7k",   0x400000, 0x200000, CRC(2e77597d) SHA1(58dd83c1b0c08115e728c5e7dea5e62135b821ba) )
 ROM_END
 
-<<<<<<< HEAD
-=======
 ROM_START( motoxgov2a2 )
 	ROM_REGION32_BE( 0x400000, "user1", 0 ) /* 4 megs for main R4650 code */
 	ROM_LOAD16_BYTE( "mg2vera1.ic2",  0x000000, 0x200000, CRC(0deab179) SHA1(9b45c0db3921bdfcd0eb220939a1197d8dd2860b) )
@@ -4656,7 +4153,6 @@ ROM_START( motoxgov2a2 )
 	ROM_LOAD( "mg1ccrl.7m",   0x000000, 0x400000, CRC(5372e300) SHA1(63a49782289ed93a321ca7d193241fb83ca97e6b) )
 	ROM_LOAD( "mg1ccrh.7k",   0x400000, 0x200000, CRC(2e77597d) SHA1(58dd83c1b0c08115e728c5e7dea5e62135b821ba) )
 ROM_END
->>>>>>> upstream/master
 
 ROM_START( motoxgov1a )
 	ROM_REGION32_BE( 0x400000, "user1", 0 ) /* 4 megs for main R4650 code */
@@ -4760,11 +4256,7 @@ ROM_START( timecrs2 )
 	ROM_LOAD16_BYTE( "tss3verb.1",   0x000001, 0x200000, CRC(6e3f232b) SHA1(8007d8f31a605a5df89938d7c9f9d3d209c934be) )
 
 	ROM_REGION( 0x80000, "subcpu", 0 )  /* Hitachi H8/3002 MCU code */
-<<<<<<< HEAD
-	ROM_LOAD16_WORD_SWAP( "tss3verb.3",   0x000000, 0x080000, CRC(41e41994) SHA1(eabc1a307c329070bfc6486cb68169c94ff8a162) )
-=======
 	ROM_LOAD16_WORD_SWAP( "tss1vera.3",   0x000000, 0x080000, CRC(41e41994) SHA1(eabc1a307c329070bfc6486cb68169c94ff8a162) ) /* Flash ROM type 29F400TC - Common code throughout all versions */
->>>>>>> upstream/master
 
 	ROM_REGION( 0x40000, "iocpu", 0 )   /* I/O board HD643334 H8/3334 MCU code */
 	ROM_LOAD( "tssioprog.ic3", 0x000000, 0x040000, CRC(edad4538) SHA1(1330189184a636328d956c0e435f8d9ad2e96a80) )
@@ -4803,13 +4295,6 @@ ROM_END
 
 ROM_START( timecrs2v2b )
 	ROM_REGION32_BE( 0x400000, "user1", 0 ) /* 4 megs for main R4650 code */
-<<<<<<< HEAD
-	ROM_LOAD16_BYTE( "tss2verb.ic2", 0x000000, 0x200000, BAD_DUMP CRC(9f56a4df) SHA1(5ecb3cd93726ab6be02762853fd6a45266d6c0bc) )
-	ROM_LOAD16_BYTE( "tss2verb.ic1", 0x000001, 0x200000, BAD_DUMP CRC(aa147f71) SHA1(e00267d1a8286942c83dc35289ad65bd3cb6d8db) )
-
-	ROM_REGION( 0x80000, "subcpu", 0 )  /* Hitachi H8/3002 MCU code */
-	ROM_LOAD16_WORD_SWAP( "tss3verb.3",   0x000000, 0x080000, CRC(41e41994) SHA1(eabc1a307c329070bfc6486cb68169c94ff8a162) )
-=======
 	ROM_LOAD16_BYTE( "tss2verb.2", 0x000000, 0x200000, BAD_DUMP CRC(9f56a4df) SHA1(5ecb3cd93726ab6be02762853fd6a45266d6c0bc) )
 	ROM_LOAD16_BYTE( "tss2verb.1", 0x000001, 0x200000, BAD_DUMP CRC(aa147f71) SHA1(e00267d1a8286942c83dc35289ad65bd3cb6d8db) )
 
@@ -4858,7 +4343,6 @@ ROM_START( timecrs2v1b )
 
 	ROM_REGION( 0x80000, "subcpu", 0 )  /* Hitachi H8/3002 MCU code */
 	ROM_LOAD16_WORD_SWAP( "tss1vera.3",   0x000000, 0x080000, CRC(41e41994) SHA1(eabc1a307c329070bfc6486cb68169c94ff8a162) ) /* Flash ROM type 29F400TC - Common code throughout all versions */
->>>>>>> upstream/master
 
 	ROM_REGION( 0x40000, "iocpu", 0 )   /* I/O board HD643334 H8/3334 MCU code */
 	ROM_LOAD( "tssioprog.ic3", 0x000000, 0x040000, CRC(edad4538) SHA1(1330189184a636328d956c0e435f8d9ad2e96a80) )
@@ -4901,9 +4385,6 @@ ROM_START( timecrs2v4a )
 	ROM_LOAD16_BYTE( "tss4vera.1",   0x000001, 0x200000, CRC(26f57c83) SHA1(c8983c26b7524a35257a242b66a9413eb354ca0d) )
 
 	ROM_REGION( 0x80000, "subcpu", 0 )  /* Hitachi H8/3002 MCU code */
-<<<<<<< HEAD
-	ROM_LOAD16_WORD_SWAP( "tss4vera.3",   0x000000, 0x080000, CRC(41e41994) SHA1(eabc1a307c329070bfc6486cb68169c94ff8a162) )
-=======
 	ROM_LOAD16_WORD_SWAP( "tss1vera.3",   0x000000, 0x080000, CRC(41e41994) SHA1(eabc1a307c329070bfc6486cb68169c94ff8a162) ) /* Flash ROM type 29F400TC - Common code throughout all versions */
 
 	ROM_REGION( 0x40000, "iocpu", 0 )   /* I/O board HD643334 H8/3334 MCU code */
@@ -4948,7 +4429,6 @@ ROM_START( timecrs2v5a )
 
 	ROM_REGION( 0x80000, "subcpu", 0 )  /* Hitachi H8/3002 MCU code */
 	ROM_LOAD16_WORD_SWAP( "tss5vera.3",   0x000000, 0x080000, CRC(41e41994) SHA1(eabc1a307c329070bfc6486cb68169c94ff8a162) ) /* Flash ROM type 29F400TC - Common code throughout all versions */
->>>>>>> upstream/master
 
 	ROM_REGION( 0x40000, "iocpu", 0 )   /* I/O board HD643334 H8/3334 MCU code */
 	ROM_LOAD( "tssioprog.ic3", 0x000000, 0x040000, CRC(edad4538) SHA1(1330189184a636328d956c0e435f8d9ad2e96a80) )
@@ -5773,11 +5253,7 @@ ROM_END
 
 
 /* Games */
-<<<<<<< HEAD
-#define GAME_FLAGS (MACHINE_NOT_WORKING | MACHINE_UNEMULATED_PROTECTION | MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_SOUND)
-=======
 #define GAME_FLAGS (MACHINE_NOT_WORKING | MACHINE_UNEMULATED_PROTECTION | MACHINE_IMPERFECT_GRAPHICS )
->>>>>>> upstream/master
 //    YEAR, NAME,        PARENT,   MACHINE,     INPUT,     INIT,                MNTR,  COMPANY, FULLNAME,                      FLAGS
 GAME( 1997, rapidrvr,    0,        gorgon,      rapidrvr,  namcos23_state, s23, ROT0, "Namco", "Rapid River (RD3 Ver. C)",     GAME_FLAGS ) // 97/11/27, USA
 GAME( 1997, rapidrvrv2c, rapidrvr, gorgon,      rapidrvr,  namcos23_state, s23, ROT0, "Namco", "Rapid River (RD2 Ver. C)",     GAME_FLAGS ) // 97/11/27, Europe
@@ -5785,14 +5261,6 @@ GAME( 1997, rapidrvrp,   rapidrvr, gorgon,      rapidrvrp, namcos23_state, s23, 
 GAME( 1997, finfurl,     0,        gorgon,      finfurl,   namcos23_state, s23, ROT0, "Namco", "Final Furlong (FF2 Ver. A)",   GAME_FLAGS )
 GAME( 1997, downhill,    0,        s23,         downhill,  namcos23_state, s23, ROT0, "Namco", "Downhill Bikers (DH3 Ver. A)", GAME_FLAGS )
 GAME( 1997, motoxgo,     0,        s23,         s23,       namcos23_state, s23, ROT0, "Namco", "Motocross Go! (MG3 Ver. A)",   GAME_FLAGS )
-<<<<<<< HEAD
-GAME( 1997, motoxgov2a,  motoxgo,  s23,         s23,       namcos23_state, s23, ROT0, "Namco", "Motocross Go! (MG2 Ver. A)",   GAME_FLAGS )
-GAME( 1997, motoxgov1a,  motoxgo,  s23,         s23,       namcos23_state, s23, ROT0, "Namco", "Motocross Go! (MG1 Ver. A, set 1)", GAME_FLAGS )
-GAME( 1997, motoxgov1a2, motoxgo,  s23,         s23,       namcos23_state, s23, ROT0, "Namco", "Motocross Go! (MG1 Ver. A, set 2)", GAME_FLAGS )
-GAME( 1997, timecrs2,    0,        timecrs2,    timecrs2,  namcos23_state, s23, ROT0, "Namco", "Time Crisis II (TSS3 Ver. B)", GAME_FLAGS )
-GAME( 1997, timecrs2v2b, timecrs2, timecrs2,    timecrs2,  namcos23_state, s23, ROT0, "Namco", "Time Crisis II (TSS2 Ver. B)", GAME_FLAGS )
-GAME( 1997, timecrs2v4a, timecrs2, timecrs2v4a, timecrs2,  namcos23_state, s23, ROT0, "Namco", "Time Crisis II (TSS4 Ver. A)", GAME_FLAGS )
-=======
 GAME( 1997, motoxgov2a,  motoxgo,  s23,         s23,       namcos23_state, s23, ROT0, "Namco", "Motocross Go! (MG2 Ver. A, set 1)",   GAME_FLAGS )
 GAME( 1997, motoxgov2a2, motoxgo,  s23,         s23,       namcos23_state, s23, ROT0, "Namco", "Motocross Go! (MG2 Ver. A, set 2)",   GAME_FLAGS )
 GAME( 1997, motoxgov1a,  motoxgo,  s23,         s23,       namcos23_state, s23, ROT0, "Namco", "Motocross Go! (MG1 Ver. A, set 1)", GAME_FLAGS )
@@ -5802,7 +5270,6 @@ GAME( 1997, timecrs2v2b, timecrs2, timecrs2,    timecrs2,  namcos23_state, s23, 
 GAME( 1997, timecrs2v1b, timecrs2, timecrs2,    timecrs2,  namcos23_state, s23, ROT0, "Namco", "Time Crisis II (Japan, TSS1 Ver. B)", GAME_FLAGS )
 GAME( 1997, timecrs2v4a, timecrs2, timecrs2v4a, timecrs2,  namcos23_state, s23, ROT0, "Namco", "Time Crisis II (World, TSS4 Ver. A)", GAME_FLAGS )
 GAME( 1997, timecrs2v5a, timecrs2, timecrs2v4a, timecrs2,  namcos23_state, s23, ROT0, "Namco", "Time Crisis II (US, TSS5 Ver. A)", GAME_FLAGS )
->>>>>>> upstream/master
 GAME( 1998, panicprk,    0,        s23,         s23,       namcos23_state, s23, ROT0, "Namco", "Panic Park (PNP2 Ver. A)",     GAME_FLAGS )
 GAME( 1998, panicprkj,   panicprk, s23,         s23,       namcos23_state, s23, ROT0, "Namco", "Panic Park (PNP1 Ver. B)",     GAME_FLAGS )
 GAME( 1998, gunwars,     0,        gmen,        s23,       namcos23_state, s23, ROT0, "Namco", "Gunmen Wars (GM1 Ver. B)",     GAME_FLAGS )

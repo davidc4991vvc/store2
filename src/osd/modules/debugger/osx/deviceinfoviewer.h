@@ -10,10 +10,6 @@
 
 #import "debugwindowhandler.h"
 
-<<<<<<< HEAD
-#include "emu.h"
-=======
->>>>>>> upstream/master
 
 #import <Cocoa/Cocoa.h>
 
@@ -27,9 +23,6 @@
 
 - (id)initWithDevice:(device_t &)d machine:(running_machine &)m console:(MAMEDebugConsole *)c;
 
-<<<<<<< HEAD
-=======
 - (void)saveConfigurationToNode:(util::xml::data_node *)node;
 
->>>>>>> upstream/master
 @end

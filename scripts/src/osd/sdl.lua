@@ -12,11 +12,7 @@
 dofile("modules.lua")
 
 
-<<<<<<< HEAD
-function maintargetosdoptions(_target)
-=======
 function maintargetosdoptions(_target,_subtarget)
->>>>>>> upstream/master
 	osdmodulestargetconf()
 
 	if _OPTIONS["USE_DISPATCH_GL"]~="1" and _OPTIONS["MESA_INSTALL_ROOT"] then
@@ -42,40 +38,16 @@ function maintargetosdoptions(_target,_subtarget)
 		}
 	end
 
-<<<<<<< HEAD
-	if BASE_TARGETOS=="unix" and _OPTIONS["targetos"]~="macosx" then
-		if _OPTIONS["SDL_LIBVER"]=="sdl2" then
-			links {
-				"SDL2_ttf",
-			}
-		else
-			links {
-				"SDL_ttf",
-			}
-		end
-		local str = backtick("pkg-config --libs fontconfig")
-=======
 	if BASE_TARGETOS=="unix" and _OPTIONS["targetos"]~="macosx" and _OPTIONS["targetos"]~="android" then
 		links {
 			"SDL2_ttf",
 		}
 		local str = backtick(pkgconfigcmd() .. " --libs fontconfig")
->>>>>>> upstream/master
 		addlibfromstring(str)
 		addoptionsfromstring(str)
 	end
 
 	if _OPTIONS["targetos"]=="windows" then
-<<<<<<< HEAD
-		if _OPTIONS["SDL_LIBVER"]=="sdl2" then
-			links {
-				"SDL2.dll",
-			}
-		else
-			links {
-				"SDL.dll",
-			}
-=======
 		if _OPTIONS["with-bundled-sdl2"]~=nil then
 			configuration { "mingw*"}
 				links {
@@ -118,17 +90,11 @@ function maintargetosdoptions(_target,_subtarget)
 				libdirs {
 					path.join(_OPTIONS["SDL_INSTALL_ROOT"],"lib","x64")
 				}
->>>>>>> upstream/master
 		end
 		links {
 			"psapi",
 		}
-<<<<<<< HEAD
-
-		configuration { "mingw*-gcc" }
-=======
 		configuration { "mingw*" }
->>>>>>> upstream/master
 			linkoptions{
 				"-municode",
 			}
@@ -136,17 +102,6 @@ function maintargetosdoptions(_target,_subtarget)
 			flags {
 				"Unicode",
 			}
-<<<<<<< HEAD
-		configuration { "x32", "vs*" }
-			libdirs {
-				path.join(_OPTIONS["SDL_INSTALL_ROOT"],"lib","x86")
-			}
-		configuration { "x64", "vs*" }
-			libdirs {
-				path.join(_OPTIONS["SDL_INSTALL_ROOT"],"lib","x64")
-			}
-=======
->>>>>>> upstream/master
 		configuration {}
 	elseif _OPTIONS["targetos"]=="haiku" then
 		links {
@@ -157,10 +112,6 @@ function maintargetosdoptions(_target,_subtarget)
 
 	configuration { "mingw*" or "vs*" }
 		targetprefix "sdl"
-<<<<<<< HEAD
-
-	configuration { }
-=======
 		links {
 			"psapi",
 			"Ole32",
@@ -175,24 +126,16 @@ function maintargetosdoptions(_target,_subtarget)
 		end
 	end
 
->>>>>>> upstream/master
 end
 
 
 function sdlconfigcmd()
-<<<<<<< HEAD
-	if not _OPTIONS["SDL_INSTALL_ROOT"] then
-		return _OPTIONS["SDL_LIBVER"] .. "-config"
-	else
-		return path.join(_OPTIONS["SDL_INSTALL_ROOT"],"bin",_OPTIONS["SDL_LIBVER"]) .. "-config"
-=======
 	if _OPTIONS["targetos"]=="asmjs" then
 		return "sdl2-config"
 	elseif not _OPTIONS["SDL_INSTALL_ROOT"] then
 		return pkgconfigcmd() .. " sdl2"
 	else
 		return path.join(_OPTIONS["SDL_INSTALL_ROOT"],"bin","sdl2") .. "-config"
->>>>>>> upstream/master
 	end
 end
 
@@ -217,11 +160,7 @@ newoption {
 }
 
 if not _OPTIONS["NO_X11"] then
-<<<<<<< HEAD
-	if _OPTIONS["targetos"]=="windows" or _OPTIONS["targetos"]=="macosx" or _OPTIONS["targetos"]=="haiku" or _OPTIONS["targetos"]=="asmjs" or _OPTIONS["targetos"]=="os2" then
-=======
 	if _OPTIONS["targetos"]=="windows" or _OPTIONS["targetos"]=="macosx" or _OPTIONS["targetos"]=="haiku" or _OPTIONS["targetos"]=="asmjs" then
->>>>>>> upstream/master
 		_OPTIONS["NO_X11"] = "1"
 	else
 		_OPTIONS["NO_X11"] = "0"
@@ -242,26 +181,6 @@ if not _OPTIONS["NO_USE_XINPUT"] then
 end
 
 newoption {
-<<<<<<< HEAD
-	trigger = "SDL_LIBVER",
-	description = "Choose SDL version",
-	allowed = {
-		{ "sdl",   "SDL"   },
-		{ "sdl2",  "SDL 2" },
-	},
-}
-
-if not _OPTIONS["SDL_LIBVER"] then
-	if _OPTIONS["targetos"]=="os2" then
-		_OPTIONS["SDL_LIBVER"] = "sdl"
-	else
-		_OPTIONS["SDL_LIBVER"] = "sdl2"
-	end
-end
-
-newoption {
-=======
->>>>>>> upstream/master
 	trigger = "SDL2_MULTIAPI",
 	description = "Use couriersud's multi-keyboard patch for SDL 2.1? (this API was removed prior to the 2.0 release)",
 	allowed = {
@@ -289,80 +208,25 @@ if not _OPTIONS["SDL_FRAMEWORK_PATH"] then
 end
 
 newoption {
-<<<<<<< HEAD
-	trigger = "MACOSX_USE_LIBSDL",
-	description = "Use SDL library on OS (rather than framework)",
-	allowed = {
-		{ "0",  "Use framework"  },
-=======
 	trigger = "USE_LIBSDL",
 	description = "Use SDL library on OS (rather than framework/dll)",
 	allowed = {
 		{ "0",  "Use framework/dll"  },
->>>>>>> upstream/master
 		{ "1",  "Use library" },
 	},
 }
 
-<<<<<<< HEAD
-if not _OPTIONS["MACOSX_USE_LIBSDL"] then
-	_OPTIONS["MACOSX_USE_LIBSDL"] = "0"
-=======
 if not _OPTIONS["USE_LIBSDL"] then
 	_OPTIONS["USE_LIBSDL"] = "0"
->>>>>>> upstream/master
 end
 
 
 BASE_TARGETOS       = "unix"
 SDLOS_TARGETOS      = "unix"
-<<<<<<< HEAD
-SYNC_IMPLEMENTATION = "tc"
-=======
->>>>>>> upstream/master
 SDL_NETWORK         = ""
 if _OPTIONS["targetos"]=="linux" then
 	SDL_NETWORK         = "taptun"
 elseif _OPTIONS["targetos"]=="openbsd" then
-<<<<<<< HEAD
-	SYNC_IMPLEMENTATION = "ntc"
-elseif _OPTIONS["targetos"]=="netbsd" then
-	SYNC_IMPLEMENTATION = "ntc"
-	SDL_NETWORK         = "pcap"
-elseif _OPTIONS["targetos"]=="haiku" then
-	SYNC_IMPLEMENTATION = "ntc"
-elseif _OPTIONS["targetos"]=="asmjs" then
-	SYNC_IMPLEMENTATION = "mini"
-elseif _OPTIONS["targetos"]=="windows" then
-	BASE_TARGETOS       = "win32"
-	SDLOS_TARGETOS      = "win32"
-	SYNC_IMPLEMENTATION = "windows"
-	SDL_NETWORK         = "pcap"
-elseif _OPTIONS["targetos"]=="macosx" then
-	SDLOS_TARGETOS      = "macosx"
-	SYNC_IMPLEMENTATION = "ntc"
-	SDL_NETWORK         = "pcap"
-elseif _OPTIONS["targetos"]=="os2" then
-	BASE_TARGETOS       = "os2"
-	SDLOS_TARGETOS      = "os2"
-	SYNC_IMPLEMENTATION = "os2"
-end
-
-if _OPTIONS["SDL_LIBVER"]=="sdl" then
-	USE_BGFX = 0
-end
-
-if BASE_TARGETOS=="unix" then
-	if _OPTIONS["targetos"]=="macosx" then
-		links {
-			"Cocoa.framework",
-		}
-		if _OPTIONS["MACOSX_USE_LIBSDL"]~="1" then
-			linkoptions {
-				"-F" .. _OPTIONS["SDL_FRAMEWORK_PATH"],
-			}
-			if _OPTIONS["SDL_LIBVER"]=="sdl2" then
-=======
 elseif _OPTIONS["targetos"]=="netbsd" then
 	SDL_NETWORK         = "pcap"
 elseif _OPTIONS["targetos"]=="haiku" then
@@ -413,52 +277,24 @@ if BASE_TARGETOS=="unix" then
 				linkoptions {
 					"-F" .. _OPTIONS["SDL_FRAMEWORK_PATH"],
 				}
->>>>>>> upstream/master
 				links {
 					"SDL2.framework",
 				}
 			else
-<<<<<<< HEAD
-				links {
-					"SDL.framework",
-				}
-			end
-		else
-			local str = backtick(sdlconfigcmd() .. " --libs | sed 's/-lSDLmain//'")
-			addlibfromstring(str)
-			addoptionsfromstring(str)
-=======
 				local str = backtick(sdlconfigcmd() .. " --libs --static | sed 's/-lSDLmain//'")
 				addlibfromstring(str)
 				addoptionsfromstring(str)
 			end
->>>>>>> upstream/master
 		end
 	else
 		if _OPTIONS["NO_X11"]=="1" then
 			_OPTIONS["USE_QTDEBUG"] = "0"
-<<<<<<< HEAD
-			USE_BGFX = 0
-=======
->>>>>>> upstream/master
 		else
 			libdirs {
 				"/usr/X11/lib",
 				"/usr/X11R6/lib",
 				"/usr/openwin/lib",
 			}
-<<<<<<< HEAD
-			if _OPTIONS["SDL_LIBVER"]=="sdl" then
-				links {
-					"X11",
-				}
-			end
-		end
-		local str = backtick(sdlconfigcmd() .. " --libs")
-		addlibfromstring(str)
-		addoptionsfromstring(str)
-		if _OPTIONS["targetos"]~="haiku" then
-=======
 		end
 		if _OPTIONS["with-bundled-sdl2"]~=nil then
 			if _OPTIONS["targetos"]~="android" then
@@ -473,7 +309,6 @@ if BASE_TARGETOS=="unix" then
 		end
 
 		if _OPTIONS["targetos"]~="haiku" and _OPTIONS["targetos"]~="android" then
->>>>>>> upstream/master
 			links {
 				"m",
 				"pthread",
@@ -490,19 +325,6 @@ if BASE_TARGETOS=="unix" then
 			end
 		end
 	end
-<<<<<<< HEAD
-elseif BASE_TARGETOS=="os2" then
-	local str = backtick(sdlconfigcmd() .. " --libs")
-	addlibfromstring(str)
-	addoptionsfromstring(str)
-	links {
-		"pthread"
-	}
-end
-
-
-project ("osd_" .. _OPTIONS["osd"])
-=======
 end
 
 project ("qtdbg_" .. _OPTIONS["osd"])
@@ -529,7 +351,6 @@ project ("qtdbg_" .. _OPTIONS["osd"])
 
 project ("osd_" .. _OPTIONS["osd"])
 	targetsubdir(_OPTIONS["target"] .."_" .._OPTIONS["subtarget"])
->>>>>>> upstream/master
 	uuid (os.uuid("osd_" .. _OPTIONS["osd"]))
 	kind (LIBTYPE)
 
@@ -542,10 +363,7 @@ project ("osd_" .. _OPTIONS["osd"])
 		MAME_DIR .. "src/osd",
 		MAME_DIR .. "src/lib",
 		MAME_DIR .. "src/lib/util",
-<<<<<<< HEAD
-=======
 		MAME_DIR .. "src/osd/modules/file",
->>>>>>> upstream/master
 		MAME_DIR .. "src/osd/modules/render",
 		MAME_DIR .. "3rdparty",
 		MAME_DIR .. "src/osd/sdl",
@@ -553,11 +371,7 @@ project ("osd_" .. _OPTIONS["osd"])
 
 	if _OPTIONS["targetos"]=="windows" then
 		files {
-<<<<<<< HEAD
-			MAME_DIR .. "src/osd/sdl/main.cpp",
-=======
 			MAME_DIR .. "src/osd/windows/main.cpp",
->>>>>>> upstream/master
 		}
 	end
 
@@ -597,53 +411,13 @@ project ("osd_" .. _OPTIONS["osd"])
 			MAME_DIR .. "src/osd/modules/debugger/osx/registersview.mm",
 			MAME_DIR .. "src/osd/modules/debugger/osx/registersview.h",
 			MAME_DIR .. "src/osd/modules/debugger/osx/watchpointsview.mm",
-<<<<<<< HEAD
-			MAME_DIR .. "src/osd/modules/debugger/osx/watchpointsview.h",		
-			MAME_DIR .. "src/osd/modules/debugger/osx/debugosx.h",
-		}
-		if _OPTIONS["SDL_LIBVER"]=="sdl" then
-			-- SDLMain_tmpl isn't necessary for SDL2
-			files {
-				MAME_DIR .. "src/osd/sdl/SDLMain_tmpl.mm",
-				MAME_DIR .. "src/osd/sdl/SDLMain_tmpl.h",
-			}
-		end
-=======
 			MAME_DIR .. "src/osd/modules/debugger/osx/watchpointsview.h",
 			MAME_DIR .. "src/osd/modules/debugger/osx/debugosx.h",
 		}
->>>>>>> upstream/master
 	end
 
 	files {
 		MAME_DIR .. "src/osd/sdl/osdsdl.h",
-<<<<<<< HEAD
-		MAME_DIR .. "src/osd/sdl/sdlinc.h",
-		MAME_DIR .. "src/osd/sdl/sdlprefix.h",
-		MAME_DIR .. "src/osd/sdl/sdlmain.cpp",
-		MAME_DIR .. "src/osd/osdepend.h",
-		MAME_DIR .. "src/osd/sdl/input.cpp",
-		MAME_DIR .. "src/osd/sdl/input.h",
-		MAME_DIR .. "src/osd/sdl/video.cpp",
-		MAME_DIR .. "src/osd/sdl/video.h",
-		MAME_DIR .. "src/osd/sdl/window.cpp",
-		MAME_DIR .. "src/osd/sdl/window.h",
-		MAME_DIR .. "src/osd/modules/osdwindow.h",
-		MAME_DIR .. "src/osd/sdl/output.cpp",
-		MAME_DIR .. "src/osd/sdl/watchdog.cpp",
-		MAME_DIR .. "src/osd/sdl/watchdog.h",
-		MAME_DIR .. "src/osd/modules/render/drawsdl.cpp",
-	}
-	if _OPTIONS["SDL_LIBVER"]=="sdl2" then
-		files {
-			MAME_DIR .. "src/osd/modules/render/draw13.cpp",
-			MAME_DIR .. "src/osd/modules/render/blit13.h",
-		}
-	end
-
-
-project ("ocore_" .. _OPTIONS["osd"])
-=======
 		MAME_DIR .. "src/osd/sdl/sdlprefix.h",
 		MAME_DIR .. "src/osd/sdl/sdlmain.cpp",
 		MAME_DIR .. "src/osd/osdepend.h",
@@ -662,7 +436,6 @@ project ("ocore_" .. _OPTIONS["osd"])
 
 project ("ocore_" .. _OPTIONS["osd"])
 	targetsubdir(_OPTIONS["target"] .."_" .. _OPTIONS["subtarget"])
->>>>>>> upstream/master
 	uuid (os.uuid("ocore_" .. _OPTIONS["osd"]))
 	kind (LIBTYPE)
 
@@ -685,140 +458,6 @@ project ("ocore_" .. _OPTIONS["osd"])
 		MAME_DIR .. "src/osd/osdcore.h",
 		MAME_DIR .. "src/osd/strconv.cpp",
 		MAME_DIR .. "src/osd/strconv.h",
-<<<<<<< HEAD
-		MAME_DIR .. "src/osd/sdl/sdldir.cpp",
-		MAME_DIR .. "src/osd/sdl/sdlfile.cpp",
-		MAME_DIR .. "src/osd/sdl/sdlfile.h",
-		MAME_DIR .. "src/osd/sdl/sdlptty_" .. BASE_TARGETOS ..".cpp",
-		MAME_DIR .. "src/osd/sdl/sdlsocket.cpp",
-		MAME_DIR .. "src/osd/sdl/sdlos_" .. SDLOS_TARGETOS .. ".cpp",
-		MAME_DIR .. "src/osd/modules/osdmodule.cpp",
-		MAME_DIR .. "src/osd/modules/osdmodule.h",		
-		MAME_DIR .. "src/osd/modules/lib/osdlib_" .. SDLOS_TARGETOS .. ".cpp",
-		MAME_DIR .. "src/osd/modules/lib/osdlib.h",
-		MAME_DIR .. "src/osd/modules/sync/sync_" .. SYNC_IMPLEMENTATION .. ".cpp",
-		MAME_DIR .. "src/osd/modules/sync/osdsync.h",
-	}
-
-	if _OPTIONS["NOASM"]=="1" then
-		files {
-			MAME_DIR .. "src/osd/modules/sync/work_mini.cpp",
-		}
-	else
-		files {
-			MAME_DIR .. "src/osd/modules/sync/work_osd.cpp",
-		}
-	end
-
-	if _OPTIONS["targetos"]=="macosx" then
-		files {
-			MAME_DIR .. "src/osd/sdl/osxutils.h",
-			MAME_DIR .. "src/osd/sdl/osxutils.mm",
-		}
-	end
-
-
---------------------------------------------------
--- testkeys
---------------------------------------------------
-
-if _OPTIONS["with-tools"] then
-	project("testkeys")
-		uuid ("744cec21-c3b6-4d69-93cb-6811fed0ffe3")
-		kind "ConsoleApp"
-
-		flags {
-			"Symbols", -- always include minimum symbols for executables 	
-		}
-
-		dofile("sdl_cfg.lua")
-
-		includedirs {
-			MAME_DIR .. "src/osd",
-			MAME_DIR .. "src/lib/util",
-		}
-
-		if _OPTIONS["SEPARATE_BIN"]~="1" then 
-			targetdir(MAME_DIR)
-		end
-
-		links {
-			"utils",
-			"ocore_" .. _OPTIONS["osd"],
-		}
-
-		files {
-			MAME_DIR .. "src/osd/sdl/testkeys.cpp",
-		}
-
-		if _OPTIONS["targetos"] == "windows" then
-			if _OPTIONS["SDL_LIBVER"] == "sdl2" then
-				links {
-					"SDL2.dll",
-				}
-			else
-				links {
-					"SDL.dll",
-				}
-			end
-			links {
-				"psapi",
-			}
-			linkoptions{
-				"-municode",
-			}
-			files {
-				MAME_DIR .. "src/osd/sdl/main.cpp",
-			}
-		elseif _OPTIONS["targetos"] == "macosx" and _OPTIONS["SDL_LIBVER"] == "sdl" then
-			-- SDLMain_tmpl isn't necessary for SDL2
-			files {
-				MAME_DIR .. "src/osd/sdl/SDLMain_tmpl.mm",
-			}
-		end
-end
-
-
---------------------------------------------------
--- aueffectutil
---------------------------------------------------
-
-if _OPTIONS["targetos"] == "macosx" and _OPTIONS["with-tools"] then
-	project("aueffectutil")
-		uuid ("3db8316d-fad7-4f5b-b46a-99373c91550e")
-		kind "ConsoleApp"
-
-		flags {
-			"Symbols", -- always include minimum symbols for executables 	
-		}
-
-		dofile("sdl_cfg.lua")
-
-		if _OPTIONS["SEPARATE_BIN"]~="1" then 
-			targetdir(MAME_DIR)
-		end
-
-		linkoptions {
-			"-sectcreate __TEXT __info_plist " .. MAME_DIR .. "src/osd/sdl/aueffectutil-Info.plist",
-		}
-
-		dependency {
-			{ "aueffectutil",  MAME_DIR .. "src/osd/sdl/aueffectutil-Info.plist", true  },
-		}
-
-		links {
-			"AudioUnit.framework",
-			"AudioToolbox.framework",
-			"CoreAudio.framework",
-			"CoreAudioKit.framework",
-			"CoreServices.framework",
-		}
-
-		files {
-			MAME_DIR .. "src/osd/sdl/aueffectutil.mm",
-		}
-end
-=======
 		MAME_DIR .. "src/osd/osdsync.cpp",
 		MAME_DIR .. "src/osd/osdsync.h",
 		MAME_DIR .. "src/osd/modules/osdmodule.cpp",
@@ -854,4 +493,3 @@ end
 	end
 
 
->>>>>>> upstream/master

@@ -8,15 +8,10 @@
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-#ifndef __MCS96_H__
-#define __MCS96_H__
-=======
 #ifndef MAME_CPU_MCS96_MCS96_H
 #define MAME_CPU_MCS96_MCS96_H
 
 #pragma once
->>>>>>> upstream/master
 
 class mcs96_device : public cpu_device {
 public:
@@ -24,15 +19,11 @@ public:
 		EXINT_LINE = 1
 	};
 
-<<<<<<< HEAD
-	mcs96_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, int data_width, const char *shortname, const char *source);
-=======
 	enum {
 		MCS96_PC = 1,
 		MCS96_PSW,
 		MCS96_R       // 0x74 entries
 	};
->>>>>>> upstream/master
 
 protected:
 	enum {
@@ -83,31 +74,6 @@ protected:
 		DASM_indexed_3         /* Indexed, short or long, 3 operators */
 	};
 
-<<<<<<< HEAD
-	// device-level overrides
-	virtual void device_start();
-	virtual void device_reset();
-
-	// device_execute_interface overrides
-	virtual UINT32 execute_min_cycles() const;
-	virtual UINT32 execute_max_cycles() const;
-	virtual UINT32 execute_input_lines() const;
-	virtual void execute_run();
-	virtual void execute_set_input(int inputnum, int state);
-
-	// device_memory_interface overrides
-	virtual const address_space_config *memory_space_config(address_spacenum spacenum = AS_0) const;
-
-	// device_state_interface overrides
-	virtual void state_import(const device_state_entry &entry);
-	virtual void state_export(const device_state_entry &entry);
-	virtual void state_string_export(const device_state_entry &entry, std::string &str);
-
-	// device_disasm_interface overrides
-	virtual UINT32 disasm_min_opcode_bytes() const;
-	virtual UINT32 disasm_max_opcode_bytes() const;
-	virtual offs_t disasm_generic(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options, const disasm_entry *entries);
-=======
 	mcs96_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock, int data_width);
 
 	// device-level overrides
@@ -133,42 +99,22 @@ protected:
 	virtual uint32_t disasm_min_opcode_bytes() const override;
 	virtual uint32_t disasm_max_opcode_bytes() const override;
 	virtual offs_t disasm_generic(std::ostream &stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, uint32_t options, const disasm_entry *entries);
->>>>>>> upstream/master
 
 	address_space_config program_config;
 	address_space *program;
 	direct_read_data *direct;
 
 	int icount, bcount, inst_state, cycles_scaling;
-<<<<<<< HEAD
-	UINT8 pending_irq;
-	UINT16 PC, PPC, PSW;
-	UINT16 OP1;
-	UINT8 OP2, OP3, OPI;
-	UINT32 TMP;
-	UINT16 R[0x74];
-=======
 	uint8_t pending_irq;
 	uint16_t PC, PPC, PSW;
 	uint16_t OP1;
 	uint8_t OP2, OP3, OPI;
 	uint32_t TMP;
 	uint16_t R[0x74];
->>>>>>> upstream/master
 	bool irq_requested;
 
 	virtual void do_exec_full() = 0;
 	virtual void do_exec_partial() = 0;
-<<<<<<< HEAD
-	virtual void internal_update(UINT64 current_time) = 0;
-	virtual void io_w8(UINT8 adr, UINT8 data) = 0;
-	virtual void io_w16(UINT8 adr, UINT16 data) = 0;
-	virtual UINT8 io_r8(UINT8 adr) = 0;
-	virtual UINT16 io_r16(UINT8 adr) = 0;
-
-	void recompute_bcount(UINT64 event_time);
-	static std::string regname(UINT8 reg);
-=======
 	virtual void internal_update(uint64_t current_time) = 0;
 	virtual void io_w8(uint8_t adr, uint8_t data) = 0;
 	virtual void io_w16(uint8_t adr, uint16_t data) = 0;
@@ -177,37 +123,10 @@ protected:
 
 	void recompute_bcount(uint64_t event_time);
 	static std::string regname(uint8_t reg);
->>>>>>> upstream/master
 
 	inline void next(int cycles) { icount -= cycles_scaling*cycles; inst_state = STATE_FETCH; }
 	inline void next_noirq(int cycles) { icount -= cycles_scaling*cycles; inst_state = STATE_FETCH_NOIRQ; }
 	void check_irq();
-<<<<<<< HEAD
-	inline UINT8 read_pc() { return direct->read_byte(PC++); }
-
-	void reg_w8(UINT8 adr, UINT8 data);
-	void reg_w16(UINT8 adr, UINT16 data);
-	void any_w8(UINT16 adr, UINT8 data);
-	void any_w16(UINT16 adr, UINT16 data);
-
-	UINT8 reg_r8(UINT8 adr);
-	UINT16 reg_r16(UINT8 adr);
-	UINT8 any_r8(UINT16 adr);
-	UINT16 any_r16(UINT16 adr);
-
-	UINT8 do_addb(UINT8 v1, UINT8 v2);
-	UINT16 do_add(UINT16 v1, UINT16 v2);
-	UINT8 do_subb(UINT8 v1, UINT8 v2);
-	UINT16 do_sub(UINT16 v1, UINT16 v2);
-
-	UINT8 do_addcb(UINT8 v1, UINT8 v2);
-	UINT16 do_addc(UINT16 v1, UINT16 v2);
-	UINT8 do_subcb(UINT8 v1, UINT8 v2);
-	UINT16 do_subc(UINT16 v1, UINT16 v2);
-
-	void set_nz8(UINT8 v);
-	void set_nz16(UINT16 v);
-=======
 	inline uint8_t read_pc() { return direct->read_byte(PC++); }
 
 	void reg_w8(uint8_t adr, uint8_t data);
@@ -232,7 +151,6 @@ protected:
 
 	void set_nz8(uint8_t v);
 	void set_nz16(uint16_t v);
->>>>>>> upstream/master
 
 #define O(o) void o ## _full(); void o ## _partial()
 
@@ -337,14 +255,4 @@ protected:
 #undef O
 };
 
-<<<<<<< HEAD
-enum {
-	MCS96_PC = 1,
-	MCS96_PSW,
-	MCS96_R       // 0x74 entries
-};
-
-#endif
-=======
 #endif // MAME_CPU_MCS96_MCS96_H
->>>>>>> upstream/master

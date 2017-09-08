@@ -1,28 +1,17 @@
-<<<<<<< HEAD
-// license:LGPL-2.1+
-=======
 // license:BSD-3-Clause
->>>>>>> upstream/master
 // copyright-holders:Tomasz Slanina, Pierpaolo Prazzoli
 /****************************************************
    Pit&Run - Taito 1984
 
  driver by  Tomasz Slanina and  Pierpaolo Prazzoli
 
-<<<<<<< HEAD
-=======
  hardware is very similar to suprridr.cpp, thepit.cpp, timelimt.cpp
->>>>>>> upstream/master
 
 TODO:
 
  - analog sound
    writes to $a8xx triggering analog sound :
-<<<<<<< HEAD
-    $a800 - drivers are gettin into the cars
-=======
     $a800 - drivers are getting into the cars
->>>>>>> upstream/master
     $a801 - collisions
     $a802 - same as above
     $a803 - slide on water
@@ -78,12 +67,6 @@ K1000233A
 */
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/z80/z80.h"
-#include "cpu/m6805/m6805.h"
-#include "sound/ay8910.h"
-#include "includes/pitnrun.h"
-=======
 #include "includes/pitnrun.h"
 
 #include "cpu/m6805/m68705.h"
@@ -96,25 +79,16 @@ K1000233A
 
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 INTERRUPT_GEN_MEMBER(pitnrun_state::nmi_source)
 {
-<<<<<<< HEAD
-	if(m_nmi) device.execute().set_input_line(INPUT_LINE_NMI, PULSE_LINE);
-=======
 	if (m_nmi) device.execute().set_input_line(INPUT_LINE_NMI, PULSE_LINE);
->>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(pitnrun_state::nmi_enable_w)
 {
-<<<<<<< HEAD
-		m_nmi = data & 1;
-=======
 	m_nmi = data & 1;
->>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(pitnrun_state::hflip_w)
@@ -141,18 +115,6 @@ static ADDRESS_MAP_START( pitnrun_map, AS_PROGRAM, 8, pitnrun_state )
 	AM_RANGE(0xb005, 0xb005) AM_WRITE(char_bank_select)
 	AM_RANGE(0xb006, 0xb006) AM_WRITE(hflip_w)
 	AM_RANGE(0xb007, 0xb007) AM_WRITE(vflip_w)
-<<<<<<< HEAD
-	AM_RANGE(0xb800, 0xb800) AM_READ_PORT("INPUTS") AM_WRITE(soundlatch_byte_w)
-	AM_RANGE(0xc800, 0xc801) AM_WRITE(scroll_w)
-	AM_RANGE(0xc802, 0xc802) AM_WRITENOP/* VP(VF?)MCV - not used ?*/
-	AM_RANGE(0xc804, 0xc804) AM_WRITE(mcu_data_w)
-	AM_RANGE(0xc805, 0xc805) AM_WRITE(h_heed_w)
-	AM_RANGE(0xc806, 0xc806) AM_WRITE(v_heed_w)
-	AM_RANGE(0xc807, 0xc807) AM_WRITE(ha_w)
-	AM_RANGE(0xd800, 0xd800) AM_READ(mcu_status_r)
-	AM_RANGE(0xd000, 0xd000) AM_READ(mcu_data_r)
-	AM_RANGE(0xf000, 0xf000) AM_READ(watchdog_reset_r)
-=======
 	AM_RANGE(0xb800, 0xb800) AM_READ_PORT("INPUTS") AM_DEVWRITE("soundlatch", generic_latch_8_device, write)
 	AM_RANGE(0xc800, 0xc801) AM_WRITE(scroll_w)
 	AM_RANGE(0xc802, 0xc802) AM_WRITE(scroll_y_w)
@@ -170,7 +132,6 @@ static ADDRESS_MAP_START( pitnrun_map_mcu, AS_PROGRAM, 8, pitnrun_state )
 	AM_RANGE(0xc804, 0xc804) AM_WRITE(mcu_data_w)
 	AM_RANGE(0xd000, 0xd000) AM_READ(mcu_data_r)
 	AM_RANGE(0xd800, 0xd800) AM_READ(mcu_status_r)
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( pitnrun_sound_map, AS_PROGRAM, 8, pitnrun_state )
@@ -180,11 +141,7 @@ ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( pitnrun_sound_io_map, AS_IO, 8, pitnrun_state )
 	ADDRESS_MAP_GLOBAL_MASK(0xff)
-<<<<<<< HEAD
-	AM_RANGE(0x00, 0x00) AM_WRITE(soundlatch_clear_byte_w)
-=======
 	AM_RANGE(0x00, 0x00) AM_DEVWRITE("soundlatch", generic_latch_8_device, clear_w)
->>>>>>> upstream/master
 	AM_RANGE(0x8c, 0x8d) AM_DEVWRITE("ay2", ay8910_device, address_data_w)
 	AM_RANGE(0x8e, 0x8f) AM_DEVWRITE("ay1", ay8910_device, address_data_w)
 	AM_RANGE(0x8f, 0x8f) AM_DEVREAD("ay1", ay8910_device, data_r)
@@ -193,18 +150,6 @@ static ADDRESS_MAP_START( pitnrun_sound_io_map, AS_IO, 8, pitnrun_state )
 	AM_RANGE(0x98, 0x98) AM_WRITENOP
 ADDRESS_MAP_END
 
-<<<<<<< HEAD
-static ADDRESS_MAP_START( pitnrun_mcu_map, AS_PROGRAM, 8, pitnrun_state )
-	ADDRESS_MAP_GLOBAL_MASK(0x7ff)
-	AM_RANGE(0x0000, 0x0000) AM_READWRITE(m68705_portA_r,m68705_portA_w)
-	AM_RANGE(0x0001, 0x0001) AM_READWRITE(m68705_portB_r,m68705_portB_w)
-	AM_RANGE(0x0002, 0x0002) AM_READ(m68705_portC_r)
-	AM_RANGE(0x0003, 0x007f) AM_RAM
-	AM_RANGE(0x0080, 0x07ff) AM_ROM
-ADDRESS_MAP_END
-
-=======
->>>>>>> upstream/master
 
 static INPUT_PORTS_START( pitnrun )
 	PORT_START("SYSTEM")
@@ -250,8 +195,6 @@ static INPUT_PORTS_START( pitnrun )
 	PORT_DIPSETTING(    0x80, DEF_STR( On ) )       // also enables bootup test
 INPUT_PORTS_END
 
-<<<<<<< HEAD
-=======
 static INPUT_PORTS_START( jumpkun )
 	PORT_START("SYSTEM")
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_COIN1  )
@@ -300,7 +243,6 @@ static INPUT_PORTS_START( jumpkun )
 	PORT_DIPSETTING(    0x80, DEF_STR( On ) )
 INPUT_PORTS_END
 
->>>>>>> upstream/master
 
 static const gfx_layout spritelayout =
 {
@@ -332,11 +274,7 @@ static GFXDECODE_START( pitnrun )
 	GFXDECODE_ENTRY( "gfx1", 0, spritelayout,  0, 4 )
 GFXDECODE_END
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( pitnrun, pitnrun_state )
-=======
 static MACHINE_CONFIG_START( pitnrun )
->>>>>>> upstream/master
 	MCFG_CPU_ADD("maincpu", Z80,XTAL_18_432MHz/6)       /* verified on pcb */
 	MCFG_CPU_PROGRAM_MAP(pitnrun_map)
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", pitnrun_state,  nmi_source)
@@ -346,13 +284,7 @@ static MACHINE_CONFIG_START( pitnrun )
 	MCFG_CPU_IO_MAP(pitnrun_sound_io_map)
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", pitnrun_state,  irq0_line_hold)
 
-<<<<<<< HEAD
-	MCFG_CPU_ADD("mcu", M68705,XTAL_18_432MHz/6)        /* verified on pcb */
-	MCFG_CPU_PROGRAM_MAP(pitnrun_mcu_map)
-
-=======
 	MCFG_WATCHDOG_ADD("watchdog")
->>>>>>> upstream/master
 
 	MCFG_QUANTUM_TIME(attotime::from_hz(6000))
 
@@ -372,19 +304,6 @@ static MACHINE_CONFIG_START( pitnrun )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-	MCFG_SOUND_ADD("ay1", AY8910, XTAL_18_432MHz/12)    /* verified on pcb */
-	MCFG_AY8910_PORT_A_READ_CB(READ8(driver_device, soundlatch_byte_r))
-	MCFG_AY8910_PORT_B_READ_CB(READ8(driver_device, soundlatch_byte_r))
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
-
-	MCFG_SOUND_ADD("ay2", AY8910, XTAL_18_432MHz/12)    /* verified on pcb */
-	MCFG_AY8910_PORT_A_READ_CB(READ8(driver_device, soundlatch_byte_r))
-	MCFG_AY8910_PORT_B_READ_CB(READ8(driver_device, soundlatch_byte_r))
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
-MACHINE_CONFIG_END
-
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 
 	MCFG_SOUND_ADD("ay1", AY8910, XTAL_18_432MHz/12)    /* verified on pcb */
@@ -409,7 +328,6 @@ static MACHINE_CONFIG_DERIVED( pitnrun_mcu, pitnrun )
 	MCFG_M68705_PORTA_W_CB(WRITE8(pitnrun_state, m68705_portA_w))
 	MCFG_M68705_PORTB_W_CB(WRITE8(pitnrun_state, m68705_portB_w))
 MACHINE_CONFIG_END
->>>>>>> upstream/master
 
 ROM_START( pitnrun )
 	ROM_REGION( 0x10000, "maincpu", 0 )
@@ -437,11 +355,7 @@ ROM_START( pitnrun )
 	ROM_LOAD( "pr6", 0x0000, 0x1000, CRC(c53cb897) SHA1(81a73e6031b52fa45ec507ff4264b14474ef42a2) )
 	ROM_LOAD( "pr7", 0x1000, 0x1000, CRC(7cdf9a55) SHA1(404dface7e09186e486945981e39063929599efc) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x2000, "user1", 0 )
-=======
 	ROM_REGION( 0x2000, "spot", 0 )
->>>>>>> upstream/master
 	ROM_LOAD( "pr8", 0x0000, 0x2000, CRC(8e346d10) SHA1(1362ce4362c2d28c48fbd8a33da0cec5ef8e321f) )
 
 	ROM_REGION( 0x0060, "proms", 0 )
@@ -476,11 +390,7 @@ ROM_START( pitnruna )
 	ROM_LOAD( "pr-6.3m", 0x0000, 0x1000, CRC(c53cb897) SHA1(81a73e6031b52fa45ec507ff4264b14474ef42a2) )
 	ROM_LOAD( "pr-7.3p", 0x1000, 0x1000, CRC(7cdf9a55) SHA1(404dface7e09186e486945981e39063929599efc) )
 
-<<<<<<< HEAD
-	ROM_REGION( 0x2000, "user1", 0 )
-=======
 	ROM_REGION( 0x2000, "spot", 0 )
->>>>>>> upstream/master
 	ROM_LOAD( "pr-8.4j", 0x0000, 0x2000, CRC(8e346d10) SHA1(1362ce4362c2d28c48fbd8a33da0cec5ef8e321f) )
 
 	ROM_REGION( 0x0060, "proms", 0 )
@@ -489,10 +399,6 @@ ROM_START( pitnruna )
 	ROM_LOAD( "clr.3",  0x0040, 0x0020, CRC(25e70e5e) SHA1(fdb9c69e9568a725dd0e3ac25835270fb4f49280) )
 ROM_END
 
-<<<<<<< HEAD
-GAME( 1984, pitnrun,  0,       pitnrun, pitnrun, driver_device, 0, ROT90, "Taito Corporation", "Pit & Run - F-1 Race (set 1)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 1984, pitnruna, pitnrun, pitnrun, pitnrun, driver_device, 0, ROT90, "Taito Corporation", "Pit & Run - F-1 Race (set 2)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-=======
 ROM_START( jumpkun )
 	ROM_REGION( 0x10000, "maincpu", 0 )
 	ROM_LOAD( "PR1.5D.2764", 0x00000, 0x02000, CRC(b0eabe9f) SHA1(e662f3946efe72b0bbf6c6934201163f765bb7aa) )
@@ -532,4 +438,3 @@ ROM_END
 GAME( 1984, pitnrun,  0,       pitnrun_mcu, pitnrun, pitnrun_state, 0, ROT90, "Taito Corporation", "Pit & Run - F-1 Race (set 1)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
 GAME( 1984, pitnruna, pitnrun, pitnrun_mcu, pitnrun, pitnrun_state, 0, ROT90, "Taito Corporation", "Pit & Run - F-1 Race (set 2)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
 GAME( 1984, jumpkun,  0,       pitnrun,     jumpkun, pitnrun_state, 0, ROT90, "Kaneko",            "Jump Kun (prototype)",         MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE ) // no copyright message
->>>>>>> upstream/master

@@ -23,14 +23,6 @@ WRITE8_MEMBER(bsktball_state::bsktball_note_w)
 	m_discrete->write(space, BSKTBALL_NOTE_DATA, data);  // Note
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER(bsktball_state::bsktball_noise_reset_w)
-{
-	m_discrete->write(space, BSKTBALL_NOISE_EN, offset & 0x01);
-}
-
-=======
->>>>>>> upstream/master
 
 /************************************************************************/
 /* bsktball Sound System Analog emulation                               */

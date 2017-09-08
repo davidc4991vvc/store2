@@ -1,11 +1,6 @@
 /*
-<<<<<<< HEAD
- * Copyright 2011-2015 Branimir Karadzic. All rights reserved.
- * License: http://www.opensource.org/licenses/BSD-2-Clause
-=======
  * Copyright 2011-2017 Branimir Karadzic. All rights reserved.
  * License: https://github.com/bkaradzic/bgfx#license-bsd-2-clause
->>>>>>> upstream/master
  */
 
 #include "common.h"
@@ -32,11 +27,7 @@ struct PosColorVertex
 
 bgfx::VertexDecl PosColorVertex::ms_decl;
 
-<<<<<<< HEAD
-static PosColorVertex s_cubeVertices[8] =
-=======
 static PosColorVertex s_cubeVertices[] =
->>>>>>> upstream/master
 {
 	{-1.0f,  1.0f,  1.0f, 0xff000000 },
 	{ 1.0f,  1.0f,  1.0f, 0xff0000ff },
@@ -48,11 +39,7 @@ static PosColorVertex s_cubeVertices[] =
 	{ 1.0f, -1.0f, -1.0f, 0xffffffff },
 };
 
-<<<<<<< HEAD
-static const uint16_t s_cubeIndices[36] =
-=======
 static const uint16_t s_cubeTriList[] =
->>>>>>> upstream/master
 {
 	0, 1, 2, // 0
 	1, 3, 2,
@@ -68,14 +55,6 @@ static const uint16_t s_cubeTriList[] =
 	6, 3, 7,
 };
 
-<<<<<<< HEAD
-class Cubes : public entry::AppI
-{
-	void init(int _argc, char** _argv) BX_OVERRIDE
-	{
-		Args args(_argc, _argv);
-		
-=======
 static const uint16_t s_cubeTriStrip[] =
 {
 	0, 1, 2,
@@ -100,7 +79,6 @@ class ExampleCubes : public entry::AppI
 
 		Args args(_argc, _argv);
 
->>>>>>> upstream/master
 		m_width  = 1280;
 		m_height = 720;
 		m_debug  = BGFX_DEBUG_TEXT;
@@ -133,11 +111,7 @@ class ExampleCubes : public entry::AppI
 		// Create static index buffer.
 		m_ibh = bgfx::createIndexBuffer(
 				// Static data can be passed with bgfx::makeRef
-<<<<<<< HEAD
-				bgfx::makeRef(s_cubeIndices, sizeof(s_cubeIndices) )
-=======
 				bgfx::makeRef(s_cubeTriStrip, sizeof(s_cubeTriStrip) )
->>>>>>> upstream/master
 				);
 
 		// Create program from shaders.
@@ -187,15 +161,7 @@ class ExampleCubes : public entry::AppI
 			{
 				float view[16];
 				bx::mtxQuatTranslationHMD(view, hmd->eye[0].rotation, eye);
-<<<<<<< HEAD
-
-				float proj[16];
-				bx::mtxProj(proj, hmd->eye[0].fov, 0.1f, 100.0f);
-
-				bgfx::setViewTransform(0, view, proj);
-=======
 				bgfx::setViewTransform(0, view, hmd->eye[0].projection, BGFX_VIEW_STEREO, hmd->eye[1].projection);
->>>>>>> upstream/master
 
 				// Set view 0 default viewport.
 				//
@@ -209,19 +175,11 @@ class ExampleCubes : public entry::AppI
 				bx::mtxLookAt(view, eye, at);
 
 				float proj[16];
-<<<<<<< HEAD
-				bx::mtxProj(proj, 60.0f, float(m_width)/float(m_height), 0.1f, 100.0f);
-				bgfx::setViewTransform(0, view, proj);
-
-				// Set view 0 default viewport.
-				bgfx::setViewRect(0, 0, 0, m_width, m_height);
-=======
 				bx::mtxProj(proj, 60.0f, float(m_width)/float(m_height), 0.1f, 100.0f, bgfx::getCaps()->homogeneousDepth);
 				bgfx::setViewTransform(0, view, proj);
 
 				// Set view 0 default viewport.
 				bgfx::setViewRect(0, 0, 0, uint16_t(m_width), uint16_t(m_height) );
->>>>>>> upstream/master
 			}
 
 			// This dummy draw call is here to make sure that view 0 is cleared
@@ -247,14 +205,10 @@ class ExampleCubes : public entry::AppI
 					bgfx::setIndexBuffer(m_ibh);
 
 					// Set render states.
-<<<<<<< HEAD
-					bgfx::setState(BGFX_STATE_DEFAULT);
-=======
 					bgfx::setState(0
 						| BGFX_STATE_DEFAULT
 						| BGFX_STATE_PT_TRISTRIP
 						);
->>>>>>> upstream/master
 
 					// Submit primitive for rendering to view 0.
 					bgfx::submit(0, m_program);
@@ -281,8 +235,4 @@ class ExampleCubes : public entry::AppI
 	int64_t m_timeOffset;
 };
 
-<<<<<<< HEAD
-ENTRY_IMPLEMENT_MAIN(Cubes);
-=======
 ENTRY_IMPLEMENT_MAIN(ExampleCubes);
->>>>>>> upstream/master

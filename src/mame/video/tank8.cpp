@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-// license:???
-=======
 // license:BSD-3-Clause
->>>>>>> upstream/master
 // copyright-holders:Stefan Jokisch
 /***************************************************************************
 
@@ -74,11 +70,7 @@ WRITE8_MEMBER(tank8_state::video_ram_w)
 
 TILE_GET_INFO_MEMBER(tank8_state::get_tile_info)
 {
-<<<<<<< HEAD
-	UINT8 code = m_video_ram[tile_index];
-=======
 	uint8_t code = m_video_ram[tile_index];
->>>>>>> upstream/master
 
 	int color = 0;
 
@@ -114,11 +106,7 @@ void tank8_state::video_start()
 	m_screen->register_screen_bitmap(m_helper2);
 	m_screen->register_screen_bitmap(m_helper3);
 
-<<<<<<< HEAD
-	m_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(tank8_state::get_tile_info),this), TILEMAP_SCAN_ROWS, 16, 16, 32, 32);
-=======
 	m_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(tank8_state::get_tile_info),this), TILEMAP_SCAN_ROWS, 16, 16, 32, 32);
->>>>>>> upstream/master
 
 	/* VBLANK starts on scanline #256 and ends on scanline #24 */
 
@@ -146,11 +134,7 @@ void tank8_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect)
 
 	for (i = 0; i < 8; i++)
 	{
-<<<<<<< HEAD
-		UINT8 code = ~m_pos_d_ram[i];
-=======
 		uint8_t code = ~m_pos_d_ram[i];
->>>>>>> upstream/master
 
 		int x = get_x_pos(i);
 		int y = get_y_pos(i);
@@ -193,20 +177,12 @@ void tank8_state::device_timer(emu_timer &timer, device_timer_id id, int param, 
 		set_collision(param);
 		break;
 	default:
-<<<<<<< HEAD
-		assert_always(FALSE, "Unknown id in tank8_state::device_timer");
-=======
 		assert_always(false, "Unknown id in tank8_state::device_timer");
->>>>>>> upstream/master
 	}
 }
 
 
-<<<<<<< HEAD
-UINT32 tank8_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t tank8_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	set_pens();
 	m_tilemap->draw(screen, bitmap, cliprect, 0, 0);
@@ -217,11 +193,7 @@ uint32_t tank8_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap,
 }
 
 
-<<<<<<< HEAD
-void tank8_state::screen_eof(screen_device &screen, bool state)
-=======
 WRITE_LINE_MEMBER(tank8_state::screen_vblank)
->>>>>>> upstream/master
 {
 	// on falling edge
 	if (!state)
@@ -230,11 +202,7 @@ WRITE_LINE_MEMBER(tank8_state::screen_vblank)
 		int y;
 		const rectangle &visarea = m_screen->visible_area();
 
-<<<<<<< HEAD
-		m_tilemap->draw(screen, m_helper1, visarea, 0, 0);
-=======
 		m_tilemap->draw(*m_screen, m_helper1, visarea, 0, 0);
->>>>>>> upstream/master
 
 		m_helper2.fill(8, visarea);
 		m_helper3.fill(8, visarea);
@@ -246,26 +214,16 @@ WRITE_LINE_MEMBER(tank8_state::screen_vblank)
 		{
 			int _state = 0;
 
-<<<<<<< HEAD
-			const UINT16* p1 = &m_helper1.pix16(y);
-			const UINT16* p2 = &m_helper2.pix16(y);
-			const UINT16* p3 = &m_helper3.pix16(y);
-=======
 			const uint16_t* p1 = &m_helper1.pix16(y);
 			const uint16_t* p2 = &m_helper2.pix16(y);
 			const uint16_t* p3 = &m_helper3.pix16(y);
->>>>>>> upstream/master
 
 			if ((m_screen->frame_number() ^ y) & 1)
 				continue; /* video display is interlaced */
 
 			for (x = visarea.min_x; x <= visarea.max_x; x++)
 			{
-<<<<<<< HEAD
-				UINT8 index;
-=======
 				uint8_t index;
->>>>>>> upstream/master
 
 				/* neither wall nor mine */
 				if ((p1[x] != 0x11) && (p1[x] != 0x13))
@@ -319,11 +277,7 @@ WRITE_LINE_MEMBER(tank8_state::screen_vblank)
 						index |= 0x80; /* collision on right side */
 				}
 
-<<<<<<< HEAD
-				m_collision_timer->adjust(screen.time_until_pos(y, x), index);
-=======
 				m_collision_timer->adjust(m_screen->time_until_pos(y, x), index);
->>>>>>> upstream/master
 
 				_state = 1;
 			}

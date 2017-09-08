@@ -1,13 +1,5 @@
 // license:BSD-3-Clause
 // copyright-holders:Olivier Galibert
-<<<<<<< HEAD
-#include "machine/nscsi_s1410.h"
-
-const device_type NSCSI_S1410 = &device_creator<nscsi_s1410_device>;
-
-nscsi_s1410_device::nscsi_s1410_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-	nscsi_harddisk_device(mconfig, NSCSI_S1410, "S1410", tag, owner, clock, "scsi_s1410", __FILE__)
-=======
 #include "emu.h"
 #include "machine/nscsi_s1410.h"
 
@@ -15,7 +7,6 @@ DEFINE_DEVICE_TYPE(NSCSI_S1410, nscsi_s1410_device, "scsi_s1410", "S1410 Hard Di
 
 nscsi_s1410_device::nscsi_s1410_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	nscsi_harddisk_device(mconfig, NSCSI_S1410, tag, owner, clock)
->>>>>>> upstream/master
 {
 }
 
@@ -70,11 +61,7 @@ void nscsi_s1410_device::scsi_command()
 		blocks = (bytes_per_sector == 256) ? 32 : 17;
 
 		int track_length = blocks*bytes_per_sector;
-<<<<<<< HEAD
-		dynamic_buffer data(track_length);
-=======
 		std::vector<uint8_t> data(track_length);
->>>>>>> upstream/master
 		memset(&data[0], 0xc6, track_length);
 
 		if(!hard_disk_write(harddisk, lba, &data[0])) {
@@ -134,11 +121,7 @@ void nscsi_s1410_device::scsi_command()
 	}
 }
 
-<<<<<<< HEAD
-UINT8 nscsi_s1410_device::scsi_get_data(int id, int pos)
-=======
 uint8_t nscsi_s1410_device::scsi_get_data(int id, int pos)
->>>>>>> upstream/master
 {
 	switch(scsi_cmdbuf[0]) {
 	case SC_READ_SECTOR_BUFFER:
@@ -149,11 +132,7 @@ uint8_t nscsi_s1410_device::scsi_get_data(int id, int pos)
 	}
 }
 
-<<<<<<< HEAD
-void nscsi_s1410_device::scsi_put_data(int id, int pos, UINT8 data)
-=======
 void nscsi_s1410_device::scsi_put_data(int id, int pos, uint8_t data)
->>>>>>> upstream/master
 {
 	switch(scsi_cmdbuf[0]) {
 	case SC_FORMAT_ALT_TRACK:

@@ -1,15 +1,5 @@
 // license:BSD-3-Clause
 // copyright-holders:Ariane Fugmann
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __M2COMM_H__
-#define __M2COMM_H__
-
-#define __M2COMM_SIMULATION__
-
-#include "emu.h"
-=======
 #ifndef MAME_MACHINE_M2COMM_H
 #define MAME_MACHINE_M2COMM_H
 
@@ -17,7 +7,6 @@
 
 #define M2COMM_SIMULATION
 
->>>>>>> upstream/master
 
 #define MCFG_M2COMM_ADD(_tag ) \
 	MCFG_DEVICE_ADD(_tag, M2COMM, 0)
@@ -30,23 +19,12 @@ class m2comm_device : public device_t
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	m2comm_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// optional information overrides
-	virtual machine_config_constructor device_mconfig_additions() const;
-=======
 	m2comm_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
->>>>>>> upstream/master
 
 	// single bit registers (74LS74)
 	DECLARE_READ8_MEMBER(zfg_r);
 	DECLARE_WRITE8_MEMBER(zfg_w);
-<<<<<<< HEAD
-	// shared memory 2k
-=======
 	// shared memory 16k (these are actually 2x 16k bank switched)
->>>>>>> upstream/master
 	DECLARE_READ8_MEMBER(share_r);
 	DECLARE_WRITE8_MEMBER(share_w);
 
@@ -65,41 +43,6 @@ public:
 
 	// IRQ logic - 5 = VINT, 7 = DLC
 	void check_vint_irq();
-<<<<<<< HEAD
-#ifdef __M2COMM_SIMULATION__
-	void set_linktype(UINT16 linktype);
-#endif
-
-protected:
-	// device-level overrides
-	virtual void device_start();
-	virtual void device_reset();
-
-private:
-	UINT8 m_shared[0x4000]; // 16k shared memory
-	UINT8   m_zfg;                      // z80 flip gate? purpose unknown, bit0 is stored
-	UINT8   m_cn;                           // bit0 is used to enable/disable the comm board
-	UINT8   m_fg;                           // flip gate? purpose unknown, bit0 is stored, bit7 is connected to ZFG bit 0
-
-	emu_file m_line_rx;    // rx line - can be either differential, simple serial or toslink
-	emu_file m_line_tx;    // tx line - is differential, simple serial and toslink
-	char m_localhost[256];
-	char m_remotehost[256];
-	UINT8 m_buffer[0x4000];
-
-#ifdef __M2COMM_SIMULATION__
-	UINT8 m_linkenable;
-	UINT16 m_linktimer;
-	UINT8 m_linkalive;
-	UINT8 m_linkid;
-	UINT8 m_linkcount;
-
-	UINT16 m_linktype;
-
-	void comm_tick();
-
-	void comm_tick_16726();
-=======
 
 protected:
 	// device-level overrides
@@ -127,17 +70,10 @@ private:
 	uint8_t m_linkcount;
 
 	void comm_tick();
->>>>>>> upstream/master
 #endif
 };
 
 // device type definition
-<<<<<<< HEAD
-extern const device_type M2COMM;
-
-#endif  /* __M2COMM_H__ */
-=======
 DECLARE_DEVICE_TYPE(M2COMM, m2comm_device)
 
 #endif  // MAME_MACHINE_M2COMM_H
->>>>>>> upstream/master

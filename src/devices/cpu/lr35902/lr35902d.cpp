@@ -36,11 +36,7 @@ static const char *const s_mnemonic[] =
 #define _OVER DASMFLAG_STEP_OVER
 #define _OUT  DASMFLAG_STEP_OUT
 
-<<<<<<< HEAD
-static const UINT32 s_flags[] = {
-=======
 static const uint32_t s_flags[] = {
->>>>>>> upstream/master
 	0    ,0    ,0    ,0    ,_OVER,0    ,0    ,
 	0    ,0    ,0    ,0    ,0    ,0    ,_OVER,
 	0    ,0    ,0    ,0    ,0    ,0    ,0    ,
@@ -52,11 +48,7 @@ static const uint32_t s_flags[] = {
 
 struct lr35902dasm
 {
-<<<<<<< HEAD
-	UINT8   mnemonic;
-=======
 	uint8_t   mnemonic;
->>>>>>> upstream/master
 	const char *arguments;
 };
 
@@ -128,24 +120,6 @@ static const lr35902dasm mnemonic_cb[256] = {
 };
 
 static const lr35902dasm mnemonic_main[256]= {
-<<<<<<< HEAD
-	{zNOP,0},       {zLD,"bc,N"},   {zLD,"(bc),a"}, {zINC,"bc"},
-	{zINC,"b"},     {zDEC,"b"},     {zLD,"b,B"},    {zRLCA,0},
-	{zLD,"(W),sp"}, {zADD,"hl,bc"}, {zLD,"a,(bc)"}, {zDEC,"bc"},
-	{zINC,"c"},     {zDEC,"c"},     {zLD,"c,B"},    {zRRCA,0},
-	{zSTOP,0},      {zLD,"de,N"},   {zLD,"(de),a"}, {zINC,"de"},
-	{zINC,"d"},     {zDEC,"d"},     {zLD,"d,B"},    {zRLA,0},
-	{zJR,"O"},      {zADD,"hl,de"}, {zLD,"a,(de)"}, {zDEC,"de"},
-	{zINC,"e"},     {zDEC,"e"},     {zLD,"e,B"},    {zRRA,0},
-	{zJR,"nz,O"},   {zLD,"hl,N"},   {zLD,"(hl+),a"},{zINC,"hl"},
-	{zINC,"h"},     {zDEC,"h"},     {zLD,"h,B"},    {zDAA,0},
-	{zJR,"z,O"},    {zADD,"hl,hl"}, {zLD,"a,(hl+)"},{zDEC,"hl"},
-	{zINC,"l"},     {zDEC,"l"},     {zLD,"l,B"},    {zCPL,0},
-	{zJR,"nc,O"},   {zLD,"sp,N"},   {zLD,"(hl-),a"},{zINC,"sp"},
-	{zINC,"(hl)"},  {zDEC,"(hl)"},  {zLD,"(hl),B"}, {zSCF,0},
-	{zJR,"c,O"},    {zADD,"hl,sp"}, {zLD,"a,(hl-)"},{zDEC,"sp"},
-	{zINC,"a"},     {zDEC,"a"},     {zLD,"a,B"},    {zCCF,0},
-=======
 	{zNOP,nullptr},       {zLD,"bc,N"},   {zLD,"(bc),a"}, {zINC,"bc"},
 	{zINC,"b"},     {zDEC,"b"},     {zLD,"b,B"},    {zRLCA,nullptr},
 	{zLD,"(W),sp"}, {zADD,"hl,bc"}, {zLD,"a,(bc)"}, {zDEC,"bc"},
@@ -162,7 +136,6 @@ static const lr35902dasm mnemonic_main[256]= {
 	{zINC,"(hl)"},  {zDEC,"(hl)"},  {zLD,"(hl),B"}, {zSCF,nullptr},
 	{zJR,"c,O"},    {zADD,"hl,sp"}, {zLD,"a,(hl-)"},{zDEC,"sp"},
 	{zINC,"a"},     {zDEC,"a"},     {zLD,"a,B"},    {zCCF,nullptr},
->>>>>>> upstream/master
 	{zLD,"b,b"},    {zLD,"b,c"},    {zLD,"b,d"},    {zLD,"b,e"},
 	{zLD,"b,h"},    {zLD,"b,l"},    {zLD,"b,(hl)"}, {zLD,"b,a"},
 	{zLD,"c,b"},    {zLD,"c,c"},    {zLD,"c,d"},    {zLD,"c,e"},
@@ -176,11 +149,7 @@ static const lr35902dasm mnemonic_main[256]= {
 	{zLD,"l,b"},    {zLD,"l,c"},    {zLD,"l,d"},    {zLD,"l,e"},
 	{zLD,"l,h"},    {zLD,"l,l"},    {zLD,"l,(hl)"}, {zLD,"l,a"},
 	{zLD,"(hl),b"}, {zLD,"(hl),c"}, {zLD,"(hl),d"}, {zLD,"(hl),e"},
-<<<<<<< HEAD
-	{zLD,"(hl),h"}, {zLD,"(hl),l"}, {zHLT,0},       {zLD,"(hl),a"},
-=======
 	{zLD,"(hl),h"}, {zLD,"(hl),l"}, {zHLT,nullptr},       {zLD,"(hl),a"},
->>>>>>> upstream/master
 	{zLD,"a,b"},    {zLD,"a,c"},    {zLD,"a,d"},    {zLD,"a,e"},
 	{zLD,"a,h"},    {zLD,"a,l"},    {zLD,"a,(hl)"}, {zLD,"a,a"},
 	{zADD,"a,b"},   {zADD,"a,c"},   {zADD,"a,d"},   {zADD,"a,e"},
@@ -201,33 +170,19 @@ static const lr35902dasm mnemonic_main[256]= {
 	{zCP,"h"},      {zCP,"l"},      {zCP,"(hl)"},   {zCP,"a"},
 	{zRET,"nz"},    {zPOP,"bc"},    {zJP,"nz,A"},   {zJP,"A"},
 	{zCALL,"nz,A"}, {zPUSH,"bc"},   {zADD,"a,B"},   {zRST,"V"},
-<<<<<<< HEAD
-	{zRET,"z"},     {zRET,0},       {zJP,"z,A"},    {zDB,"cb"},
-	{zCALL,"z,A"},  {zCALL,"A"},    {zADC,"a,B"},   {zRST,"V"},
-	{zRET,"nc"},    {zPOP,"de"},    {zJP,"nc,A"},   {zDB,"d3"},
-	{zCALL,"nc,A"}, {zPUSH,"de"},   {zSUB,"B"},     {zRST,"V"},
-	{zRET,"c"},     {zRETI,0},      {zJP,"c,A"},    {zDB,"db"},
-=======
 	{zRET,"z"},     {zRET,nullptr},       {zJP,"z,A"},    {zDB,"cb"},
 	{zCALL,"z,A"},  {zCALL,"A"},    {zADC,"a,B"},   {zRST,"V"},
 	{zRET,"nc"},    {zPOP,"de"},    {zJP,"nc,A"},   {zDB,"d3"},
 	{zCALL,"nc,A"}, {zPUSH,"de"},   {zSUB,"B"},     {zRST,"V"},
 	{zRET,"c"},     {zRETI,nullptr},      {zJP,"c,A"},    {zDB,"db"},
->>>>>>> upstream/master
 	{zCALL,"c,A"},  {zDB,"dd"},     {zSBC,"a,B"},   {zRST,"V"},
 	{zLD,"(F),a"},  {zPOP,"hl"},    {zLD,"(C),a"},  {zDB,"e3"},
 	{zDB,"e4"},     {zPUSH,"hl"},   {zAND,"B"},     {zRST,"V"},
 	{zADD,"SP,B"},  {zJP,"(hl)"},   {zLD,"(W),a"},  {zDB,"eb"},
 	{zDB,"ec"},     {zDB,"ed"},     {zXOR,"B"},     {zRST,"V"},
-<<<<<<< HEAD
-	{zLD,"a,(F)"},  {zPOP,"af"},    {zLD,"a,(C)"},  {zDI,0},
-	{zDB,"f4"},     {zPUSH,"af"},   {zOR,"B"},      {zRST,"V"},
-	{zLD,"hl,sp+B"},{zLD,"sp,hl"},  {zLD,"a,(W)"},  {zEI,0},
-=======
 	{zLD,"a,(F)"},  {zPOP,"af"},    {zLD,"a,(C)"},  {zDI,nullptr},
 	{zDB,"f4"},     {zPUSH,"af"},   {zOR,"B"},      {zRST,"V"},
 	{zLD,"hl,sp+B"},{zLD,"sp,hl"},  {zLD,"a,(W)"},  {zEI,nullptr},
->>>>>>> upstream/master
 	{zDB,"fc"},     {zDB,"fd"},     {zCP,"B"},      {zRST,"V"}
 };
 
@@ -235,20 +190,6 @@ static const lr35902dasm mnemonic_main[256]= {
  * Disassemble opcode at PC and return number of bytes it takes
  ****************************************************************************/
 
-<<<<<<< HEAD
-CPU_DISASSEMBLE( lr35902 )
-{
-	const lr35902dasm *d;
-	const char /* *symbol,*/ *src;
-	char *dst;
-	INT8 offset = 0;
-	UINT8 op, op1;
-	UINT16 ea = 0;
-	int pos = 0;
-
-	dst = buffer;
-	//symbol = NULL;
-=======
 CPU_DISASSEMBLE(lr35902)
 {
 	const lr35902dasm *d;
@@ -259,7 +200,6 @@ CPU_DISASSEMBLE(lr35902)
 	int pos = 0;
 
 	//symbol = nullptr;
->>>>>>> upstream/master
 
 	op = oprom[pos++];
 	op1 = 0; /* keep GCC happy */
@@ -272,30 +212,11 @@ CPU_DISASSEMBLE(lr35902)
 	}
 
 	if( d->arguments ) {
-<<<<<<< HEAD
-		dst += sprintf(dst, "%-4s ", s_mnemonic[d->mnemonic]);
-=======
 		util::stream_format(stream, "%-4s ", s_mnemonic[d->mnemonic]);
->>>>>>> upstream/master
 		src = d->arguments;
 		while( *src ) {
 			switch( *src ) {
 			case '?':   /* illegal opcode */
-<<<<<<< HEAD
-				dst += sprintf( dst, "$%02X,$%02X", op, op1);
-				break;
-			case 'A':
-				ea = opram[pos] + ( opram[pos+1] << 8);
-				pos += 2;
-				dst += sprintf( dst, "$%04X", ea );
-				break;
-			case 'B':   /* Byte op arg */
-				ea = opram[pos++];
-				dst += sprintf( dst, "$%02X", ea );
-				break;
-			case '(':   /* Memory byte at (...) */
-				*dst++ = *src;
-=======
 				util::stream_format(stream, "$%02X,$%02X", op, op1);
 				break;
 			case 'A':
@@ -309,55 +230,20 @@ CPU_DISASSEMBLE(lr35902)
 				break;
 			case '(':   /* Memory byte at (...) */
 				stream << *src;
->>>>>>> upstream/master
 				if( !strncmp( src, "(bc)", 4) ) {
 				} else if( !strncmp( src, "(de)", 4) ) {
 				} else if( !strncmp( src, "(hl)", 4) ) {
 				} else if( !strncmp( src, "(sp)", 4) ) {
 				} else if( !strncmp( src, "(F)", 3) ) {
 					ea = 0xFF00 + opram[pos++];
-<<<<<<< HEAD
-					dst += sprintf( dst, "$%02X", ea );
-					src++;
-				} else if( !strncmp( src, "(C)", 3) ) {
-					dst += sprintf( dst, "$FF00+c" );
-=======
 					util::stream_format(stream, "$%02X", ea);
 					src++;
 				} else if( !strncmp( src, "(C)", 3) ) {
 					util::stream_format(stream, "$FF00+c");
->>>>>>> upstream/master
 					src++;
 				}
 				break;
 			case 'N':   /* Immediate 16 bit */
-<<<<<<< HEAD
-				ea = opram[pos] + ( opram[pos+1] << 8 );
-				pos += 2;
-				dst += sprintf( dst, "$%04X", ea );
-				break;
-			case 'O':   /* Offset relative to PC */
-				offset = (INT8) opram[pos++];
-				dst += sprintf( dst, "$%04X", pc + offset + 2 );
-				break;
-			case 'V':   /* Restart vector */
-				ea = op & 0x38;
-				dst += sprintf( dst, "$%02X", ea );
-				break;
-			case 'W':   /* Memory address word */
-				ea = opram[pos] + ( opram[pos+1] << 8 );
-				pos += 2;
-				dst += sprintf( dst, "$%04X", ea );
-				break;
-			default:
-				*dst++ = *src;
-			}
-			src++;
-		}
-		*dst = '\0';
-	} else {
-		dst += sprintf(dst, "%s", s_mnemonic[d->mnemonic]);
-=======
 				ea = opram[pos] + (opram[pos+1] << 8);
 				pos += 2;
 				util::stream_format(stream, "$%04X", ea);
@@ -383,7 +269,6 @@ CPU_DISASSEMBLE(lr35902)
 		}
 	} else {
 		util::stream_format(stream, "%s", s_mnemonic[d->mnemonic]);
->>>>>>> upstream/master
 	}
 
 	return pos | s_flags[d->mnemonic] | DASMFLAG_SUPPORTED;

@@ -6,11 +6,7 @@
 	@author Ross Bencina <rossb@audiomulch.com>
 */
 /*
-<<<<<<< HEAD
- * $Id: patest_stop_playout.c 1446 2010-01-24 12:27:31Z rossb $
-=======
  * $Id$
->>>>>>> upstream/master
  *
  * This program uses the PortAudio Portable Audio Library.
  * For more information see: http://www.portaudio.com/

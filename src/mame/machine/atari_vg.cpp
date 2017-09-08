@@ -35,23 +35,14 @@
 
 
 // device type definition
-<<<<<<< HEAD
-const device_type ATARIVGEAROM = &device_creator<atari_vg_earom_device>;
-=======
 DEFINE_DEVICE_TYPE(ATARIVGEAROM, atari_vg_earom_device, "atari_vg_earom", "Atari VG EAROM")
->>>>>>> upstream/master
 
 //-------------------------------------------------
 //  atari_vg_earom_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-atari_vg_earom_device::atari_vg_earom_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, ATARIVGEAROM, "Atari VG EAROM", tag, owner, clock, "atari_vg_earom", __FILE__),
-=======
 atari_vg_earom_device::atari_vg_earom_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, ATARIVGEAROM, tag, owner, clock),
->>>>>>> upstream/master
 		device_nvram_interface(mconfig, *this)
 {
 }

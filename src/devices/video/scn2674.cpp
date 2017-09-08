@@ -4,38 +4,6 @@
     SCN2674 - Advanced Video Display Controller (AVDC)  (Video Chip)
 */
 
-<<<<<<< HEAD
-#include "scn2674.h"
-
-#define S674VERBOSE 0
-#define LOG2674(x) do { if (S674VERBOSE) logerror x; } while (0)
-
-const device_type SCN2674_VIDEO = &device_creator<scn2674_device>;
-
-
-// default address map
-static ADDRESS_MAP_START( scn2674_vram, AS_0, 8, scn2674_device )
-	AM_RANGE(0x0000, 0xffff) AM_NOP
-ADDRESS_MAP_END
-
-scn2674_device::scn2674_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, SCN2674_VIDEO, "Signetics SCN2674 AVDC", tag, owner, clock, "scn2674_device", __FILE__),
-		device_video_interface(mconfig, *this),
-		device_memory_interface(mconfig, *this),
-		m_irq_cb(*this), m_IR_pointer(0), m_screen1_l(0), m_screen1_h(0), m_cursor_l(0), m_cursor_h(0), m_screen2_l(0), m_screen2_h(0), m_irq_register(0), m_status_register(0), m_irq_mask(0),
-	m_gfx_enabled(0), m_display_enabled(0), m_display_enabled_field(0), m_display_enabled_scanline(0), m_cursor_enabled(0), m_hpixels_per_column(0), m_text_hpixels_per_column(0),
-	m_gfx_hpixels_per_column(0), m_IR0_double_ht_wd(0), m_IR0_scanline_per_char_row(0), m_IR0_sync_select(0), m_IR0_buffer_mode_select(0), m_IR1_interlace_enable(0), m_IR1_equalizing_constant(0),
-	m_IR2_row_table(0), m_IR2_horz_sync_width(0), m_IR2_horz_back_porch(0), m_IR3_vert_front_porch(0), m_IR3_vert_back_porch(0), m_IR4_rows_per_screen(0), m_IR4_character_blink_rate_divisor(0),
-	m_IR5_character_per_row(0), m_IR6_cursor_first_scanline(0), m_IR6_cursor_last_scanline(0), m_IR7_cursor_underline_position(0), m_IR7_cursor_rate_divisor(0), m_IR7_cursor_blink(0),
-	m_IR7_vsync_width(0), m_IR8_display_buffer_first_address_LSB(0), m_IR9_display_buffer_first_address_MSB(0), m_IR9_display_buffer_last_address(0), m_IR10_display_pointer_address_lower(0),
-	m_IR11_display_pointer_address_upper(0), m_IR11_reset_scanline_counter_on_scrollup(0), m_IR11_reset_scanline_counter_on_scrolldown(0), m_IR12_scroll_start(0), m_IR12_split_register_1(0),
-	m_IR13_scroll_end(0), m_IR13_split_register_2(0), m_IR14_scroll_lines(0), m_IR14_double_1(0), m_IR14_double_2(0), m_spl1(0), m_spl2(0), m_dbl1(0), m_buffer(0), m_linecounter(0), m_address(0),
-	m_start1change(0), m_irq_state(0), m_scanline_timer(nullptr),
-		m_space_config("videoram", ENDIANNESS_LITTLE, 8, 16, 0, NULL, *ADDRESS_MAP_NAME(scn2674_vram))
-{
-}
-
-=======
 #include "emu.h"
 #include "scn2674.h"
 
@@ -92,7 +60,6 @@ device_memory_interface::space_config_vector scn2674_device::memory_space_config
 	};
 }
 
->>>>>>> upstream/master
 void scn2674_device::device_start()
 {
 	// resolve callbacks
@@ -172,15 +139,9 @@ void scn2674_device::device_reset()
 }
 
 // 15 Initialization Registers (8-bit each)
-<<<<<<< HEAD
-void scn2674_device::write_init_regs(UINT8 data)
-{
-	LOG2674(("scn2674_write_init_regs %02x %02x\n",m_IR_pointer,data));
-=======
 void scn2674_device::write_init_regs(uint8_t data)
 {
 	LOG("scn2674_write_init_regs %02x %02x\n",m_IR_pointer,data);
->>>>>>> upstream/master
 
 	switch ( m_IR_pointer) /* display some debug info, set mame specific variables */
 	{
@@ -190,30 +151,18 @@ void scn2674_device::write_init_regs(uint8_t data)
 			m_IR0_sync_select = (data&0x04)>>2;
 			m_IR0_buffer_mode_select = (data&0x03);
 
-<<<<<<< HEAD
-			LOG2674(("IR0 - Double Ht Wd %02x\n",m_IR0_double_ht_wd));//affects IR14 as well
-			LOG2674(("IR0 - Scanlines per Character Row %02x\n",m_IR0_scanline_per_char_row));//value+1 = scanlines
-			LOG2674(("IR0 - Sync Select %02x\n",m_IR0_sync_select));//1 = csync
-			LOG2674(("IR0 - Buffer Mode Select %02x\n",m_IR0_buffer_mode_select)); //0 independent 1 transparent 2 shared 3 row
-=======
 			LOG("IR0 - Double Ht Wd %02x\n",m_IR0_double_ht_wd);//affects IR14 as well
 			LOG("IR0 - Scanlines per Character Row %02x\n",m_IR0_scanline_per_char_row);//value+1 = scanlines
 			LOG("IR0 - Sync Select %02x\n",m_IR0_sync_select);//1 = csync
 			LOG("IR0 - Buffer Mode Select %02x\n",m_IR0_buffer_mode_select); //0 independent 1 transparent 2 shared 3 row
->>>>>>> upstream/master
 			break;
 
 		case 1:
 			m_IR1_interlace_enable = (data&0x80)>>7;
 			m_IR1_equalizing_constant = (data&0x7f)+1;
 
-<<<<<<< HEAD
-			LOG2674(("IR1 - Interlace Enable %02x\n",m_IR1_interlace_enable));
-			LOG2674(("IR1 - Equalizing Constant %02i CCLKs\n",m_IR1_equalizing_constant));
-=======
 			LOG("IR1 - Interlace Enable %02x\n",m_IR1_interlace_enable);
 			LOG("IR1 - Equalizing Constant %02i CCLKs\n",m_IR1_equalizing_constant);
->>>>>>> upstream/master
 			break;
 
 		case 2:
@@ -221,41 +170,25 @@ void scn2674_device::write_init_regs(uint8_t data)
 			m_IR2_horz_sync_width = (((data&0x78)>>3)*2) + 2;
 			m_IR2_horz_back_porch = ((data&0x07)*4) - 1;
 
-<<<<<<< HEAD
-			LOG2674(("IR2 - Row Table %02x\n",m_IR2_row_table));
-			LOG2674(("IR2 - Horizontal Sync Width %02i CCLKs\n",m_IR2_horz_sync_width));
-			LOG2674(("IR2 - Horizontal Back Porch %02i CCLKs\n",m_IR2_horz_back_porch));
-=======
 			LOG("IR2 - Row Table %02x\n",m_IR2_row_table);
 			LOG("IR2 - Horizontal Sync Width %02i CCLKs\n",m_IR2_horz_sync_width);
 			LOG("IR2 - Horizontal Back Porch %02i CCLKs\n",m_IR2_horz_back_porch);
->>>>>>> upstream/master
 			break;
 
 		case 3:
 			m_IR3_vert_front_porch =  (((data&0xe0)>>5) * 4)+4 ;
 			m_IR3_vert_back_porch = ((data&0x1f) * 2) + 4;
 
-<<<<<<< HEAD
-			LOG2674(("IR3 - Vertical Front Porch %02i Lines\n",m_IR3_vert_front_porch));
-			LOG2674(("IR3 - Vertical Back Porch %02i Lines\n",m_IR3_vert_back_porch));
-=======
 			LOG("IR3 - Vertical Front Porch %02i Lines\n",m_IR3_vert_front_porch);
 			LOG("IR3 - Vertical Back Porch %02i Lines\n",m_IR3_vert_back_porch);
->>>>>>> upstream/master
 			break;
 
 		case 4:
 			m_IR4_rows_per_screen = (data&0x7f) + 1;
 			m_IR4_character_blink_rate_divisor = ((data & 0x80)>>7 ? 128:64);
 
-<<<<<<< HEAD
-			LOG2674(("IR4 - Rows Per Screen %02i\n",m_IR4_rows_per_screen));
-			LOG2674(("IR4 - Character Blink Rate = 1/%02i\n",m_IR4_character_blink_rate_divisor));
-=======
 			LOG("IR4 - Rows Per Screen %02i\n",m_IR4_rows_per_screen);
 			LOG("IR4 - Character Blink Rate = 1/%02i\n",m_IR4_character_blink_rate_divisor);
->>>>>>> upstream/master
 			break;
 
 		case 5:
@@ -263,80 +196,47 @@ void scn2674_device::write_init_regs(uint8_t data)
 			 cccc cccc
 			 c = Characters Per Row */
 			m_IR5_character_per_row = data + 1;
-<<<<<<< HEAD
-			LOG2674(("IR5 - Active Characters Per Row %02i\n",m_IR5_character_per_row));
-=======
 			LOG("IR5 - Active Characters Per Row %02i\n",m_IR5_character_per_row);
->>>>>>> upstream/master
 			break;
 
 		case 6:
 			m_IR6_cursor_last_scanline = (data & 0x0f);
 			m_IR6_cursor_first_scanline = (data & 0xf0)>>4;
-<<<<<<< HEAD
-			LOG2674(("IR6 - First Line of Cursor %02x\n",m_IR6_cursor_first_scanline));
-			LOG2674(("IR6 - Last Line of Cursor %02x\n",m_IR6_cursor_last_scanline));
-=======
 			LOG("IR6 - First Line of Cursor %02x\n",m_IR6_cursor_first_scanline);
 			LOG("IR6 - Last Line of Cursor %02x\n",m_IR6_cursor_last_scanline);
->>>>>>> upstream/master
 			break;
 
 		case 7:
 		{
-<<<<<<< HEAD
-			const UINT8 vsync_table[4] = {3,1,5,7};
-=======
 			const uint8_t vsync_table[4] = {3,1,5,7};
->>>>>>> upstream/master
 			m_IR7_cursor_underline_position = (data & 0x0f);
 			m_IR7_cursor_rate_divisor = ((data & 0x10)>>4 ? 64:32);
 			m_IR7_cursor_blink = (data & 0x20)>>5;
 
 			m_IR7_vsync_width = vsync_table[(data & 0xC0)>>6];
 
-<<<<<<< HEAD
-			LOG2674(("IR7 - Underline Position %02x\n",m_IR7_cursor_underline_position));
-			LOG2674(("IR7 - Cursor rate 1/%02i\n",m_IR7_cursor_rate_divisor));
-			LOG2674(("IR7 - Cursor blink %02x\n",m_IR7_cursor_blink));
-			LOG2674(("IR7 - Vsync Width  %02i Lines\n",m_IR7_vsync_width));
-=======
 			LOG("IR7 - Underline Position %02x\n",m_IR7_cursor_underline_position);
 			LOG("IR7 - Cursor rate 1/%02i\n",m_IR7_cursor_rate_divisor);
 			LOG("IR7 - Cursor blink %02x\n",m_IR7_cursor_blink);
 			LOG("IR7 - Vsync Width  %02i Lines\n",m_IR7_vsync_width);
->>>>>>> upstream/master
 			break;
 		}
 
 		case 8:
 			m_IR8_display_buffer_first_address_LSB = data;
-<<<<<<< HEAD
-			LOG2674(("IR8 - Display Buffer First Address LSB %02x\n",m_IR8_display_buffer_first_address_LSB));
-=======
 			LOG("IR8 - Display Buffer First Address LSB %02x\n",m_IR8_display_buffer_first_address_LSB);
->>>>>>> upstream/master
 			break;
 
 		case 9:
 			m_IR9_display_buffer_first_address_MSB = data & 0x0f;
 			m_IR9_display_buffer_last_address = (data & 0xf0)>>4;
-<<<<<<< HEAD
-			LOG2674(("IR9 - Display Buffer First Address MSB %02x\n",m_IR9_display_buffer_first_address_MSB));
-			LOG2674(("IR9 - Display Buffer Last Address %02x\n",m_IR9_display_buffer_last_address));
-=======
 			LOG("IR9 - Display Buffer First Address MSB %02x\n",m_IR9_display_buffer_first_address_MSB);
 			LOG("IR9 - Display Buffer Last Address %02x\n",m_IR9_display_buffer_last_address);
->>>>>>> upstream/master
 			break;
 
 		case 10:
 			m_IR10_display_pointer_address_lower = data;
-<<<<<<< HEAD
-			LOG2674(("IR10 - Display Pointer Address Lower %02x\n",m_IR10_display_pointer_address_lower));
-=======
 			LOG("IR10 - Display Pointer Address Lower %02x\n",m_IR10_display_pointer_address_lower);
->>>>>>> upstream/master
 			break;
 
 		case 11:
@@ -344,39 +244,23 @@ void scn2674_device::write_init_regs(uint8_t data)
 			m_IR11_reset_scanline_counter_on_scrollup= (data&0x40 >> 6);
 			m_IR11_reset_scanline_counter_on_scrolldown= (data&0x80 >> 7);
 
-<<<<<<< HEAD
-			LOG2674(("IR11 - Display Pointer Address Lower %02x\n",m_IR11_display_pointer_address_upper));
-			LOG2674(("IR11 - Reset Scanline Counter on Scroll Up %02x\n",m_IR11_reset_scanline_counter_on_scrollup));
-			LOG2674(("IR11 - Reset Scanline Counter on Scroll Down %02x\n",m_IR11_reset_scanline_counter_on_scrolldown));
-=======
 			LOG("IR11 - Display Pointer Address Lower %02x\n",m_IR11_display_pointer_address_upper);
 			LOG("IR11 - Reset Scanline Counter on Scroll Up %02x\n",m_IR11_reset_scanline_counter_on_scrollup);
 			LOG("IR11 - Reset Scanline Counter on Scroll Down %02x\n",m_IR11_reset_scanline_counter_on_scrolldown);
->>>>>>> upstream/master
 			break;
 
 		case 12:
 			m_IR12_scroll_start = (data & 0x80)>>7;
 			m_IR12_split_register_1 = (data & 0x7f);
-<<<<<<< HEAD
-			LOG2674(("IR12 - Scroll Start %02x\n",m_IR12_scroll_start));
-			LOG2674(("IR12 - Split Register 1 %02x\n",m_IR12_split_register_1));
-=======
 			LOG("IR12 - Scroll Start %02x\n",m_IR12_scroll_start);
 			LOG("IR12 - Split Register 1 %02x\n",m_IR12_split_register_1);
->>>>>>> upstream/master
 			break;
 
 		case 13:
 			m_IR13_scroll_end = (data & 0x80)>>7;
 			m_IR13_split_register_2 = (data & 0x7f);
-<<<<<<< HEAD
-			LOG2674(("IR13 - Scroll End %02x\n",m_IR13_scroll_end));
-			LOG2674(("IR13 - Split Register 2 %02x\n",m_IR13_split_register_2));
-=======
 			LOG("IR13 - Scroll End %02x\n",m_IR13_scroll_end);
 			LOG("IR13 - Split Register 2 %02x\n",m_IR13_split_register_2);
->>>>>>> upstream/master
 			break;
 
 		case 14:
@@ -384,25 +268,15 @@ void scn2674_device::write_init_regs(uint8_t data)
 			if (!m_IR0_double_ht_wd)
 			{
 				m_IR14_double_2 = (data & 0x30)>>4;
-<<<<<<< HEAD
-				LOG2674(("IR14 - Double 2 %02x\n",m_IR14_double_2));
-=======
 				LOG("IR14 - Double 2 %02x\n",m_IR14_double_2);
->>>>>>> upstream/master
 			}
 			//0 normal, 1, double width, 2, double width and double tops 3, double width and double bottoms
 			//1 affects SSR1, 2 affects SSR2
 			//If Double Height enabled in IR0, Screen start 1 upper (bits 7 and 6)replace Double 1, and Double 2 is unused
 			m_IR14_double_1 = (data & 0xc0)>>6;
-<<<<<<< HEAD
-			LOG2674(("IR14 - Double 1 %02x\n",m_IR14_double_1));
-
-			LOG2674(("IR14 - Scroll Lines %02i\n",m_IR14_scroll_lines));
-=======
 			LOG("IR14 - Double 1 %02x\n",m_IR14_double_1);
 
 			LOG("IR14 - Scroll Lines %02i\n",m_IR14_scroll_lines);
->>>>>>> upstream/master
 			break;
 
 		case 15: /* not valid! */
@@ -415,26 +289,16 @@ void scn2674_device::write_init_regs(uint8_t data)
 	if (m_IR_pointer>14)m_IR_pointer=14;
 }
 
-<<<<<<< HEAD
-void scn2674_device::write_command(UINT8 data)
-{
-	UINT8 operand;
-=======
 void scn2674_device::write_command(uint8_t data)
 {
 	uint8_t operand;
->>>>>>> upstream/master
 	int i;
 
 
 	if (data==0x00)
 	{
 		/* master reset, configures registers */
-<<<<<<< HEAD
-		LOG2674(("master reset\n"));
-=======
 		LOG("master reset\n");
->>>>>>> upstream/master
 		m_IR_pointer=0;
 		m_irq_register = 0x00;
 		m_status_register = 0x20;//RDFLG activated
@@ -450,11 +314,7 @@ void scn2674_device::write_command(uint8_t data)
 	{
 		/* set IR pointer */
 		operand = data & 0x0f;
-<<<<<<< HEAD
-		LOG2674(("set IR pointer %02x\n",operand));
-=======
 		LOG("set IR pointer %02x\n",operand);
->>>>>>> upstream/master
 
 		m_IR_pointer=operand;
 
@@ -465,11 +325,7 @@ void scn2674_device::write_command(uint8_t data)
 	if ((data&0xe3)==0x22)
 	{
 		/* Disable GFX */
-<<<<<<< HEAD
-		LOG2674(("disable GFX %02x\n",data));
-=======
 		LOG("disable GFX %02x\n",data);
->>>>>>> upstream/master
 		m_gfx_enabled = 0;
 		recompute_parameters();
 	}
@@ -477,11 +333,7 @@ void scn2674_device::write_command(uint8_t data)
 	if ((data&0xe3)==0x23)
 	{
 		/* Enable GFX */
-<<<<<<< HEAD
-		LOG2674(("enable GFX %02x\n",data));
-=======
 		LOG("enable GFX %02x\n",data);
->>>>>>> upstream/master
 		m_gfx_enabled = 1;
 		recompute_parameters();
 	}
@@ -494,15 +346,9 @@ void scn2674_device::write_command(uint8_t data)
 		m_display_enabled = 0;
 
 		if (operand)
-<<<<<<< HEAD
-			LOG2674(("display OFF - float DADD bus %02x\n",data));
-		else
-			LOG2674(("display OFF - no float DADD bus %02x\n",data));
-=======
 			LOG("display OFF - float DADD bus %02x\n",data);
 		else
 			LOG("display OFF - no float DADD bus %02x\n",data);
->>>>>>> upstream/master
 	}
 
 	if ((data&0xe9)==0x29)
@@ -513,20 +359,12 @@ void scn2674_device::write_command(uint8_t data)
 		if (operand)
 		{
 			m_display_enabled_field = 1;
-<<<<<<< HEAD
-			LOG2674(("display ON - next field %02x\n",data));
-=======
 			LOG("display ON - next field %02x\n",data);
->>>>>>> upstream/master
 		}
 		else
 		{
 			m_display_enabled_scanline = 1;
-<<<<<<< HEAD
-			LOG2674(("display ON - next scanline %02x\n",data));
-=======
 			LOG("display ON - next scanline %02x\n",data);
->>>>>>> upstream/master
 		}
 		recompute_parameters(); // start the scanline timer
 	}
@@ -534,22 +372,14 @@ void scn2674_device::write_command(uint8_t data)
 	if ((data&0xf1)==0x30)
 	{
 		/* Cursor Off */
-<<<<<<< HEAD
-		LOG2674(("cursor off %02x\n",data));
-=======
 		LOG("cursor off %02x\n",data);
->>>>>>> upstream/master
 		m_cursor_enabled = 0;
 	}
 
 	if ((data&0xf1)==0x31)
 	{
 		/* Cursor On */
-<<<<<<< HEAD
-		LOG2674(("cursor on %02x\n",data));
-=======
 		LOG("cursor on %02x\n",data);
->>>>>>> upstream/master
 		m_cursor_enabled = 1;
 	}
 
@@ -559,30 +389,17 @@ void scn2674_device::write_command(uint8_t data)
 	{
 		/* Reset Interrupt / Status bit */
 		operand = data & 0x1f;
-<<<<<<< HEAD
-		LOG2674(("reset interrupt / status bit %02x\n",operand));
-=======
 		LOG("reset interrupt / status bit %02x\n",operand);
->>>>>>> upstream/master
 
 		m_irq_register &= ~(data & 0x1f);
 		m_status_register &= ~(data & 0x1f);
 
-<<<<<<< HEAD
-		LOG2674(("IRQ Status after reset\n"));
-		LOG2674(("Split 2   IRQ: %d Active\n",(m_irq_register>>0)&1));
-		LOG2674(("Ready     IRQ: %d Active\n",(m_irq_register>>1)&1));
-		LOG2674(("Split 1   IRQ: %d Active\n",(m_irq_register>>2)&1));
-		LOG2674(("Line Zero IRQ: %d Active\n",(m_irq_register>>3)&1));
-		LOG2674(("V-Blank   IRQ: %d Active\n",(m_irq_register>>4)&1));
-=======
 		LOG("IRQ Status after reset\n");
 		LOG("Split 2   IRQ: %d Active\n",(m_irq_register>>0)&1);
 		LOG("Ready     IRQ: %d Active\n",(m_irq_register>>1)&1);
 		LOG("Split 1   IRQ: %d Active\n",(m_irq_register>>2)&1);
 		LOG("Line Zero IRQ: %d Active\n",(m_irq_register>>3)&1);
 		LOG("V-Blank   IRQ: %d Active\n",(m_irq_register>>4)&1);
->>>>>>> upstream/master
 
 		m_irq_state = 0;
 
@@ -601,21 +418,12 @@ void scn2674_device::write_command(uint8_t data)
 		/* Disable Interrupt mask*/
 		operand = data & 0x1f;
 		m_irq_mask &= ~(operand);
-<<<<<<< HEAD
-		LOG2674(("IRQ Mask after disable %x\n",operand));
-		LOG2674(("Split 2   IRQ: %d Unmasked\n",(m_irq_mask>>0)&1));
-		LOG2674(("Ready     IRQ: %d Unmasked\n",(m_irq_mask>>1)&1));
-		LOG2674(("Split 1   IRQ: %d Unmasked\n",(m_irq_mask>>2)&1));
-		LOG2674(("Line Zero IRQ: %d Unmasked\n",(m_irq_mask>>3)&1));
-		LOG2674(("V-Blank   IRQ: %d Unmasked\n",(m_irq_mask>>4)&1));
-=======
 		LOG("IRQ Mask after disable %x\n",operand);
 		LOG("Split 2   IRQ: %d Unmasked\n",(m_irq_mask>>0)&1);
 		LOG("Ready     IRQ: %d Unmasked\n",(m_irq_mask>>1)&1);
 		LOG("Split 1   IRQ: %d Unmasked\n",(m_irq_mask>>2)&1);
 		LOG("Line Zero IRQ: %d Unmasked\n",(m_irq_mask>>3)&1);
 		LOG("V-Blank   IRQ: %d Unmasked\n",(m_irq_mask>>4)&1);
->>>>>>> upstream/master
 
 	}
 
@@ -625,21 +433,12 @@ void scn2674_device::write_command(uint8_t data)
 		operand = data & 0x1f;
 		m_irq_mask |= (data & 0x1f);
 
-<<<<<<< HEAD
-		LOG2674(("IRQ Mask after enable %x\n",operand));
-		LOG2674(("Split 2   IRQ: %d Unmasked\n",(m_irq_mask>>0)&1));
-		LOG2674(("Ready     IRQ: %d Unmasked\n",(m_irq_mask>>1)&1));
-		LOG2674(("Split 1   IRQ: %d Unmasked\n",(m_irq_mask>>2)&1));
-		LOG2674(("Line Zero IRQ: %d Unmasked\n",(m_irq_mask>>3)&1));
-		LOG2674(("V-Blank   IRQ: %d Unmasked\n",(m_irq_mask>>4)&1));
-=======
 		LOG("IRQ Mask after enable %x\n",operand);
 		LOG("Split 2   IRQ: %d Unmasked\n",(m_irq_mask>>0)&1);
 		LOG("Ready     IRQ: %d Unmasked\n",(m_irq_mask>>1)&1);
 		LOG("Split 1   IRQ: %d Unmasked\n",(m_irq_mask>>2)&1);
 		LOG("Line Zero IRQ: %d Unmasked\n",(m_irq_mask>>3)&1);
 		LOG("V-Blank   IRQ: %d Unmasked\n",(m_irq_mask>>4)&1);
->>>>>>> upstream/master
 
 	}
 
@@ -651,19 +450,12 @@ void scn2674_device::write_command(uint8_t data)
 		case 0xa4:
 			/* read at pointer address */
 			m_buffer = space().read_byte(m_screen2_l | (m_screen2_h << 8));
-<<<<<<< HEAD
-			LOG2674(("DELAYED read at pointer address %02x\n",data));
-=======
 			LOG("DELAYED read at pointer address %02x\n",data);
->>>>>>> upstream/master
 			break;
 
 		case 0xa2:
 			/* write at pointer address */
 			space().write_byte(m_screen2_l | (m_screen2_h << 8), m_buffer);
-<<<<<<< HEAD
-			LOG2674(("DELAYED write at pointer address %02x\n",data));
-=======
 			LOG("DELAYED write at pointer address %02x\n",data);
 			break;
 
@@ -671,38 +463,25 @@ void scn2674_device::write_command(uint8_t data)
 			/* write at pointer address */
 			space().write_byte((m_IR10_display_pointer_address_lower | (m_IR11_display_pointer_address_upper << 8)), m_buffer);
 			LOG("DELAYED write at display pointer address %02x\n",data);
->>>>>>> upstream/master
 			break;
 
 		case 0xa9:
 			/* increment cursor address */
 			if(!(++m_cursor_l))
 				m_cursor_h++;
-<<<<<<< HEAD
-			LOG2674(("DELAYED increase cursor address %02x\n",data));
-=======
 			LOG("DELAYED increase cursor address %02x\n",data);
->>>>>>> upstream/master
 			break;
 
 		case 0xac:
 			/* read at cursor address */
 			m_buffer = space().read_byte(m_cursor_l | (m_cursor_h << 8));
-<<<<<<< HEAD
-			LOG2674(("DELAYED read at cursor address %02x\n",data));
-=======
 			LOG("DELAYED read at cursor address %02x\n",data);
->>>>>>> upstream/master
 			break;
 
 		case 0xaa:
 			/* write at cursor address */
 			space().write_byte(m_cursor_l | (m_cursor_h << 8), m_buffer);
-<<<<<<< HEAD
-			LOG2674(("DELAYED write at cursor address %02x\n",data));
-=======
 			LOG("DELAYED write at cursor address %02x\n",data);
->>>>>>> upstream/master
 			break;
 
 		case 0xad:
@@ -710,27 +489,16 @@ void scn2674_device::write_command(uint8_t data)
 			m_buffer = space().read_byte(m_cursor_l | (m_cursor_h << 8));
 			if(!(++m_cursor_l))
 				m_cursor_h++;
-<<<<<<< HEAD
-			LOG2674(("DELAYED read at cursor address+increment %02x\n",data));
-			break;
-
-		case 0xab:
-=======
 			LOG("DELAYED read at cursor address+increment %02x\n",data);
 			break;
 
 		case 0xab:
 		case 0xaf:  // LSI Octopus sends command 0xAF
->>>>>>> upstream/master
 			/* write at cursor address + increment */
 			space().write_byte(m_cursor_l | (m_cursor_h << 8), m_buffer);
 			if(!(++m_cursor_l))
 				m_cursor_h++;
-<<<<<<< HEAD
-			LOG2674(("DELAYED write at cursor address+increment %02x\n",data));
-=======
 			LOG("DELAYED write at cursor address+increment %02x\n",data);
->>>>>>> upstream/master
 			break;
 
 		case 0xbb:
@@ -740,18 +508,11 @@ void scn2674_device::write_command(uint8_t data)
 			space().write_byte(i, m_buffer); // get the last
 			m_cursor_l = m_screen2_l;
 			m_cursor_h = m_screen2_h;
-<<<<<<< HEAD
-			LOG2674(("DELAYED write from cursor address to pointer address %02x\n",data));
-=======
 			LOG("DELAYED write from cursor address to pointer address %02x\n",data);
->>>>>>> upstream/master
 			break;
 
 		case 0xbd:
 			/* read from cursor address to pointer address */
-<<<<<<< HEAD
-			LOG2674(("DELAYED read from cursor address to pointer address %02x\n",data));
-=======
 			LOG("DELAYED read from cursor address to pointer address %02x\n",data);
 			break;
 
@@ -763,7 +524,6 @@ void scn2674_device::write_command(uint8_t data)
 			m_cursor_l = m_IR10_display_pointer_address_lower;
 			m_cursor_h = m_IR11_display_pointer_address_upper;
 			LOG("DELAYED write from cursor address to pointer address %02x\n",data);
->>>>>>> upstream/master
 			break;
 	}
 }
@@ -799,21 +559,6 @@ READ8_MEMBER( scn2674_device::read )
 		*/
 
 		case 0:
-<<<<<<< HEAD
-			LOG2674(("Read Irq Register %02x %06x\n",m_irq_register,space.device().safe_pc()));
-			return m_irq_register;
-
-		case 1:
-			LOG2674(("Read Status Register %02X %06x\n",m_status_register,space.device().safe_pc()));
-			return m_status_register;
-
-		case 2: LOG2674(("Read Screen1_l Register %06x\n",space.device().safe_pc()));return m_screen1_l;
-		case 3: LOG2674(("Read Screen1_h Register %06x\n",space.device().safe_pc()));return m_screen1_h & 0x3f;
-		case 4: LOG2674(("Read Cursor_l Register %06x\n",space.device().safe_pc()));return m_cursor_l;
-		case 5: LOG2674(("Read Cursor_h Register %06x\n",space.device().safe_pc()));return m_cursor_h;
-		case 6: LOG2674(("Read Screen2_l Register %06x\n",space.device().safe_pc()));return m_screen2_l;
-		case 7: LOG2674(("Read Screen2_h Register %06x\n",space.device().safe_pc()));return m_screen2_h;
-=======
 			LOG("Read Irq Register %02x %06x\n",m_irq_register,space.device().safe_pc());
 			return m_irq_register;
 
@@ -827,7 +572,6 @@ READ8_MEMBER( scn2674_device::read )
 		case 5: LOG("Read Cursor_h Register %06x\n",space.device().safe_pc());return m_cursor_h;
 		case 6: LOG("Read Screen2_l Register %06x\n",space.device().safe_pc());return m_screen2_l;
 		case 7: LOG("Read Screen2_h Register %06x\n",space.device().safe_pc());return m_screen2_h;
->>>>>>> upstream/master
 	}
 
 	return 0xff;
@@ -870,11 +614,7 @@ WRITE8_MEMBER( scn2674_device::write )
 			{
 				m_IR14_double_1 = m_dbl1;
 				m_screen1_h &= 0x3f;
-<<<<<<< HEAD
-				LOG2674(("IR14 - Double 1 overridden %02x\n",m_IR14_double_1));
-=======
 				LOG("IR14 - Double 1 overridden %02x\n",m_IR14_double_1);
->>>>>>> upstream/master
 			}
 			if(!m_screen->vblank())
 				m_start1change = (m_linecounter / m_IR0_scanline_per_char_row) + 1;
@@ -906,11 +646,7 @@ void scn2674_device::recompute_parameters()
 		return;
 	}
 
-<<<<<<< HEAD
-	LOG2674(("width %u height %u max_x %u max_y %u refresh %f\n", horiz_pix_total, vert_pix_total, max_visible_x, max_visible_y, 1 / ATTOSECONDS_TO_DOUBLE(refresh)));
-=======
 	LOG("width %u height %u max_x %u max_y %u refresh %f\n", horiz_pix_total, vert_pix_total, max_visible_x, max_visible_y, 1 / ATTOSECONDS_TO_DOUBLE(refresh));
->>>>>>> upstream/master
 
 	rectangle visarea;
 	visarea.set(0, max_visible_x, 0, max_visible_y);
@@ -946,11 +682,7 @@ void scn2674_device::device_timer(emu_timer &timer, device_timer_id id, int para
 				m_status_register |= 0x10;
 				if(m_irq_mask & 0x10)
 				{
-<<<<<<< HEAD
-					LOG2674(("vblank irq\n"));
-=======
 					LOG("vblank irq\n");
->>>>>>> upstream/master
 					m_irq_state = 1;
 					m_irq_register |= 0x10;
 					m_irq_cb(1);
@@ -969,31 +701,19 @@ void scn2674_device::device_timer(emu_timer &timer, device_timer_id id, int para
 				m_status_register |= 0x08;
 				if (m_irq_mask & 0x08)
 				{
-<<<<<<< HEAD
-					LOG2674(("SCN2674 Line Zero\n"));
-=======
 					LOG("SCN2674 Line Zero\n");
->>>>>>> upstream/master
 					m_irq_state = 1;
 					m_irq_register |= 0x08;
 					m_irq_cb(1);
 				}
 			}
 
-<<<<<<< HEAD
-			if((m_linecounter == (m_IR12_split_register_1 * m_IR0_scanline_per_char_row)) && m_linecounter) /* Split Screen 1 */
-=======
 			if((m_linecounter == ((m_IR12_split_register_1+1) * m_IR0_scanline_per_char_row)) && m_linecounter) /* Split Screen 1 */
->>>>>>> upstream/master
 			{
 				m_status_register |= 0x04;
 				if(m_irq_mask & 0x04)
 				{
-<<<<<<< HEAD
-					LOG2674(("SCN2674 Split Screen 1 irq\n"));
-=======
 					LOG("SCN2674 Split Screen 1 irq\n");
->>>>>>> upstream/master
 					m_irq_state = 1;
 					m_irq_register |= 0x04;
 					m_irq_cb(1);
@@ -1004,20 +724,12 @@ void scn2674_device::device_timer(emu_timer &timer, device_timer_id id, int para
 					dw = m_IR14_double_1;
 			}
 
-<<<<<<< HEAD
-			if((m_linecounter == (m_IR13_split_register_2 * m_IR0_scanline_per_char_row)) && m_linecounter) /* Split Screen 2 */
-=======
 			if((m_linecounter == ((m_IR13_split_register_2+1) * m_IR0_scanline_per_char_row)) && m_linecounter) /* Split Screen 2 */
->>>>>>> upstream/master
 			{
 				m_status_register |= 0x01;
 				if(m_irq_mask & 0x01)
 				{
-<<<<<<< HEAD
-					LOG2674(("SCN2674 Split Screen 2 irq\n"));
-=======
 					LOG("SCN2674 Split Screen 2 irq\n");
->>>>>>> upstream/master
 					m_irq_state = 1;
 					m_irq_register |= 0x01;
 					m_irq_cb(1);
@@ -1037,13 +749,8 @@ void scn2674_device::device_timer(emu_timer &timer, device_timer_id id, int para
 					dw = m_screen1_h >> 6;
 				if(!charrow)
 				{
-<<<<<<< HEAD
-					UINT16 addr = (m_screen2_h << 8) | m_screen2_l;
-					UINT16 line = space().read_word(addr);
-=======
 					uint16_t addr = (m_screen2_h << 8) | m_screen2_l;
 					uint16_t line = space().read_word(addr);
->>>>>>> upstream/master
 					m_screen1_h = (line >> 8);
 					m_screen1_l = line & 0xff;
 					if(m_IR0_double_ht_wd)
@@ -1068,11 +775,7 @@ void scn2674_device::device_timer(emu_timer &timer, device_timer_id id, int para
 			else if(dw == 3)
 				tilerow = (charrow + m_IR0_scanline_per_char_row) >> 1;
 
-<<<<<<< HEAD
-			UINT16 address = m_address;
-=======
 			uint16_t address = m_address;
->>>>>>> upstream/master
 
 			for(int i = 0; i < m_IR5_character_per_row; i++)
 			{
@@ -1102,17 +805,10 @@ void scn2674_device::device_timer(emu_timer &timer, device_timer_id id, int para
 	}
 }
 
-<<<<<<< HEAD
-UINT32 scn2674_device::screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
-{
-	if (!m_display_enabled)
-		m_bitmap.fill(rgb_t::black);
-=======
 uint32_t scn2674_device::screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
 {
 	if (!m_display_enabled)
 		m_bitmap.fill(rgb_t::black(), cliprect);
->>>>>>> upstream/master
 	else
 		copybitmap(bitmap, m_bitmap, 0, 0, 0, 0, cliprect);
 

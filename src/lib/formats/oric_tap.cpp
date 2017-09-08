@@ -51,11 +51,7 @@ static oric_t oric;
 /* 8 periods at 2400Hz */
 /* hi,lo, hi,lo, hi,lo, hi,lo */
 
-<<<<<<< HEAD
-static INT16 *oric_emit_level(INT16 *p, int count, INT16 wave_state)
-=======
 static int16_t *oric_emit_level(int16_t *p, int count, int16_t wave_state)
->>>>>>> upstream/master
 {
 	int i;
 
@@ -67,11 +63,7 @@ static int16_t *oric_emit_level(int16_t *p, int count, int16_t wave_state)
 }
 
 /* 4 periods at 1200Hz */
-<<<<<<< HEAD
-static INT16* oric_output_bit(INT16 *p, UINT8 b)
-=======
 static int16_t* oric_output_bit(int16_t *p, uint8_t b)
->>>>>>> upstream/master
 {
 	p = oric_emit_level(p, 1, WAVEENTRY_HIGH);
 	p = oric_emit_level(p, b ? 1 : 2, WAVEENTRY_LOW);
@@ -79,11 +71,7 @@ static int16_t* oric_output_bit(int16_t *p, uint8_t b)
 	return p;
 }
 
-<<<<<<< HEAD
-static int oric_get_bit_size_in_samples(UINT8 b)
-=======
 static int oric_get_bit_size_in_samples(uint8_t b)
->>>>>>> upstream/master
 {
 	int count;
 
@@ -131,21 +119,12 @@ static int oric_get_bit_size_in_samples(uint8_t b)
     1   * ?         ->      ???
 */
 
-<<<<<<< HEAD
-static int oric_calculate_byte_size_in_samples(UINT8 byte)
-{
-	int count;
-	int i;
-	UINT8 parity;
-	UINT8 data;
-=======
 static int oric_calculate_byte_size_in_samples(uint8_t byte)
 {
 	int count;
 	int i;
 	uint8_t parity;
 	uint8_t data;
->>>>>>> upstream/master
 
 	count = 0;
 
@@ -160,11 +139,7 @@ static int oric_calculate_byte_size_in_samples(uint8_t byte)
 	data = byte;
 	for (i=0; i<8; i++)
 	{
-<<<<<<< HEAD
-		UINT8 data_bit;
-=======
 		uint8_t data_bit;
->>>>>>> upstream/master
 
 		data_bit = data & 0x01;
 
@@ -187,19 +162,11 @@ static int oric_calculate_byte_size_in_samples(uint8_t byte)
 }
 
 
-<<<<<<< HEAD
-static INT16 *oric_output_byte(INT16 *p, UINT8 byte)
-{
-	int i;
-	UINT8 parity;
-	UINT8 data;
-=======
 static int16_t *oric_output_byte(int16_t *p, uint8_t byte)
 {
 	int i;
 	uint8_t parity;
 	uint8_t data;
->>>>>>> upstream/master
 
 	/* start bit */
 	p = oric_output_bit(p, 0);
@@ -211,11 +178,7 @@ static int16_t *oric_output_byte(int16_t *p, uint8_t byte)
 	data = byte;
 	for (i=0; i<8; i++)
 	{
-<<<<<<< HEAD
-		UINT8 data_bit;
-=======
 		uint8_t data_bit;
->>>>>>> upstream/master
 
 		data_bit = data & 0x01;
 
@@ -237,11 +200,7 @@ static int16_t *oric_output_byte(int16_t *p, uint8_t byte)
 	return p;
 }
 
-<<<<<<< HEAD
-static INT16 *oric_fill_pause(INT16 *p, int sample_count)
-=======
 static int16_t *oric_fill_pause(int16_t *p, int sample_count)
->>>>>>> upstream/master
 {
 	int i;
 
@@ -259,24 +218,14 @@ static int oric_seconds_to_samples(float seconds)
 }
 
 /* length is length of .tap file! */
-<<<<<<< HEAD
-static int oric_cassette_calculate_size_in_samples(const UINT8 *bytes, int length)
-=======
 static int oric_cassette_calculate_size_in_samples(const uint8_t *bytes, int length)
->>>>>>> upstream/master
 {
 	unsigned char header[9];
 	int count;
 
-<<<<<<< HEAD
-	const UINT8 *data_ptr;
-	int i;
-	UINT8 data;
-=======
 	const uint8_t *data_ptr;
 	int i;
 	uint8_t data;
->>>>>>> upstream/master
 
 	oric.tap_size = length;
 
@@ -353,11 +302,7 @@ static int oric_cassette_calculate_size_in_samples(const uint8_t *bytes, int len
 				/* got end of filename? */
 				if (data==0)
 				{
-<<<<<<< HEAD
-					UINT16 end, start;
-=======
 					uint16_t end, start;
->>>>>>> upstream/master
 					LOG_FORMATS("got end of filename\n");
 
 					/* 100 1 bits to separate header from data */
@@ -398,15 +343,6 @@ static int oric_cassette_calculate_size_in_samples(const uint8_t *bytes, int len
 }
 
 /* length is length of sample buffer to fill! */
-<<<<<<< HEAD
-static int oric_cassette_fill_wave(INT16 *buffer, int length, UINT8 *bytes)
-{
-	unsigned char header[9];
-	UINT8 *data_ptr;
-	INT16 *p;
-	int i;
-	UINT8 data;
-=======
 static int oric_cassette_fill_wave(int16_t *buffer, int length, uint8_t *bytes)
 {
 	unsigned char header[9];
@@ -414,7 +350,6 @@ static int oric_cassette_fill_wave(int16_t *buffer, int length, uint8_t *bytes)
 	int16_t *p;
 	int i;
 	uint8_t data;
->>>>>>> upstream/master
 
 	p = buffer;
 
@@ -503,11 +438,7 @@ static int oric_cassette_fill_wave(int16_t *buffer, int length, uint8_t *bytes)
 				/* got end of filename? */
 				if (data==0)
 				{
-<<<<<<< HEAD
-					UINT16 end, start;
-=======
 					uint16_t end, start;
->>>>>>> upstream/master
 					LOG_FORMATS("got end of filename\n");
 
 					/* oric includes a small delay, but I don't see
@@ -563,22 +494,14 @@ static const struct CassetteLegacyWaveFiller oric_legacy_fill_wave =
 
 
 
-<<<<<<< HEAD
-static casserr_t oric_tap_identify(cassette_image *cassette, struct CassetteOptions *opts)
-=======
 static cassette_image::error oric_tap_identify(cassette_image *cassette, struct CassetteOptions *opts)
->>>>>>> upstream/master
 {
 	return cassette_legacy_identify(cassette, opts, &oric_legacy_fill_wave);
 }
 
 
 
-<<<<<<< HEAD
-static casserr_t oric_tap_load(cassette_image *cassette)
-=======
 static cassette_image::error oric_tap_load(cassette_image *cassette)
->>>>>>> upstream/master
 {
 	return cassette_legacy_construct(cassette, &oric_legacy_fill_wave);
 }
@@ -590,11 +513,7 @@ static const struct CassetteFormat oric_tap_format =
 	"tap",
 	oric_tap_identify,
 	oric_tap_load,
-<<<<<<< HEAD
-	NULL
-=======
 	nullptr
->>>>>>> upstream/master
 };
 
 

@@ -1,11 +1,6 @@
 /*
-<<<<<<< HEAD
- * Copyright 2011-2015 Branimir Karadzic. All rights reserved.
- * License: http://www.opensource.org/licenses/BSD-2-Clause
-=======
  * Copyright 2011-2017 Branimir Karadzic. All rights reserved.
  * License: https://github.com/bkaradzic/bgfx#license-bsd-2-clause
->>>>>>> upstream/master
  */
 
 #include "common.h"
@@ -108,20 +103,12 @@ static const uint16_t s_cubeIndices[36] =
 	21, 23, 22,
 };
 
-<<<<<<< HEAD
-class Bump : public entry::AppI
-=======
 class ExampleBump : public entry::AppI
->>>>>>> upstream/master
 {
 	void init(int _argc, char** _argv) BX_OVERRIDE
 	{
 		Args args(_argc, _argv);
-<<<<<<< HEAD
-		
-=======
 
->>>>>>> upstream/master
 		m_width  = 1280;
 		m_height = 720;
 		m_debug  = BGFX_DEBUG_TEXT;
@@ -176,17 +163,10 @@ class ExampleBump : public entry::AppI
 		m_program = loadProgram(m_instancingSupported ? "vs_bump_instanced" : "vs_bump", "fs_bump");
 
 		// Load diffuse texture.
-<<<<<<< HEAD
-		m_textureColor = loadTexture("fieldstone-rgba.dds");
-
-		// Load normal texture.
-		m_textureNormal = loadTexture("fieldstone-n.dds");
-=======
 		m_textureColor = loadTexture("textures/fieldstone-rgba.dds");
 
 		// Load normal texture.
 		m_textureNormal = loadTexture("textures/fieldstone-n.dds");
->>>>>>> upstream/master
 
 		m_timeOffset = bx::getHPCounter();
 	}
@@ -215,11 +195,7 @@ class ExampleBump : public entry::AppI
 		if (!entry::processEvents(m_width, m_height, m_debug, m_reset) )
 		{
 			// Set view 0 default viewport.
-<<<<<<< HEAD
-			bgfx::setViewRect(0, 0, 0, m_width, m_height);
-=======
 			bgfx::setViewRect(0, 0, 0, uint16_t(m_width), uint16_t(m_height) );
->>>>>>> upstream/master
 
 			// This dummy draw call is here to make sure that view 0 is cleared
 			// if no other draw calls are submitted to view 0.
@@ -249,15 +225,7 @@ class ExampleBump : public entry::AppI
 			{
 				float view[16];
 				bx::mtxQuatTranslationHMD(view, hmd->eye[0].rotation, eye);
-<<<<<<< HEAD
-
-				float proj[16];
-				bx::mtxProj(proj, hmd->eye[0].fov, 0.1f, 100.0f);
-
-				bgfx::setViewTransform(0, view, proj);
-=======
 				bgfx::setViewTransform(0, view, hmd->eye[0].projection, BGFX_VIEW_STEREO, hmd->eye[1].projection);
->>>>>>> upstream/master
 
 				// Set view 0 default viewport.
 				//
@@ -271,31 +239,18 @@ class ExampleBump : public entry::AppI
 				bx::mtxLookAt(view, eye, at);
 
 				float proj[16];
-<<<<<<< HEAD
-				bx::mtxProj(proj, 60.0f, float(m_width)/float(m_height), 0.1f, 100.0f);
-				bgfx::setViewTransform(0, view, proj);
-
-				// Set view 0 default viewport.
-				bgfx::setViewRect(0, 0, 0, m_width, m_height);
-=======
 				bx::mtxProj(proj, 60.0f, float(m_width) / float(m_height), 0.1f, 100.0f, bgfx::getCaps()->homogeneousDepth);
 				bgfx::setViewTransform(0, view, proj);
 
 				// Set view 0 default viewport.
 				bgfx::setViewRect(0, 0, 0, uint16_t(m_width), uint16_t(m_height) );
->>>>>>> upstream/master
 			}
 
 			float lightPosRadius[4][4];
 			for (uint32_t ii = 0; ii < m_numLights; ++ii)
 			{
-<<<<<<< HEAD
-				lightPosRadius[ii][0] = sinf( (time*(0.1f + ii*0.17f) + ii*bx::piHalf*1.37f ) )*3.0f;
-				lightPosRadius[ii][1] = cosf( (time*(0.2f + ii*0.29f) + ii*bx::piHalf*1.49f ) )*3.0f;
-=======
 				lightPosRadius[ii][0] = bx::fsin( (time*(0.1f + ii*0.17f) + ii*bx::piHalf*1.37f ) )*3.0f;
 				lightPosRadius[ii][1] = bx::fcos( (time*(0.2f + ii*0.29f) + ii*bx::piHalf*1.49f ) )*3.0f;
->>>>>>> upstream/master
 				lightPosRadius[ii][2] = -2.5f;
 				lightPosRadius[ii][3] = 3.0f;
 			}
@@ -428,8 +383,4 @@ class ExampleBump : public entry::AppI
 	int64_t m_timeOffset;
 };
 
-<<<<<<< HEAD
-ENTRY_IMPLEMENT_MAIN(Bump);
-=======
 ENTRY_IMPLEMENT_MAIN(ExampleBump);
->>>>>>> upstream/master

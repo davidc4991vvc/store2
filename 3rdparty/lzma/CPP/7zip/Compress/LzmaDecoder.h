@@ -14,10 +14,7 @@ namespace NLzma {
 class CDecoder:
   public ICompressCoder,
   public ICompressSetDecoderProperties2,
-<<<<<<< HEAD
-=======
   public ICompressSetFinishMode,
->>>>>>> upstream/master
   public ICompressSetBufSize,
   #ifndef NO_READ_FROM_CODER
   public ICompressSetInStream,
@@ -49,10 +46,7 @@ class CDecoder:
 public:
   MY_QUERYINTERFACE_BEGIN2(ICompressCoder)
   MY_QUERYINTERFACE_ENTRY(ICompressSetDecoderProperties2)
-<<<<<<< HEAD
-=======
   MY_QUERYINTERFACE_ENTRY(ICompressSetFinishMode)
->>>>>>> upstream/master
   MY_QUERYINTERFACE_ENTRY(ICompressSetBufSize)
   #ifndef NO_READ_FROM_CODER
   MY_QUERYINTERFACE_ENTRY(ICompressSetInStream)
@@ -65,10 +59,7 @@ public:
   STDMETHOD(Code)(ISequentialInStream *inStream, ISequentialOutStream *outStream,
       const UInt64 *inSize, const UInt64 *outSize, ICompressProgressInfo *progress);
   STDMETHOD(SetDecoderProperties2)(const Byte *data, UInt32 size);
-<<<<<<< HEAD
-=======
   STDMETHOD(SetFinishMode)(UInt32 finishMode);
->>>>>>> upstream/master
   STDMETHOD(SetOutStreamSize)(const UInt64 *outSize);
   STDMETHOD(SetInBufSize)(UInt32 streamIndex, UInt32 size);
   STDMETHOD(SetOutBufSize)(UInt32 streamIndex, UInt32 size);
@@ -85,12 +76,6 @@ public:
 
   #endif
 
-<<<<<<< HEAD
-  bool FinishStream;
-
-  CDecoder();
-  virtual ~CDecoder();
-=======
   bool FinishStream; // set it before decoding, if you need to decode full LZMA stream
   
   bool NeedMoreInput; // it's set by decoder, if it needs more input data to decode stream
@@ -99,7 +84,6 @@ public:
   virtual ~CDecoder();
 
   UInt64 GetOutputProcessedSize() const { return _outSizeProcessed; }
->>>>>>> upstream/master
 };
 
 }}

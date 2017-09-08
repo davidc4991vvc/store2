@@ -6,10 +6,7 @@
 
 **********************************************************************/
 
-<<<<<<< HEAD
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #include "megacart.h"
 
 
@@ -18,16 +15,6 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type VIC20_MEGACART = &device_creator<vic20_megacart_device>;
-
-
-//-------------------------------------------------
-//  MACHINE_DRIVER( vic20_megacart )
-//-------------------------------------------------
-
-static MACHINE_CONFIG_FRAGMENT( vic20_megacart )
-=======
 DEFINE_DEVICE_TYPE(VIC20_MEGACART, vic20_megacart_device, "vic20_megacart", "VIC-20 Mega-Cart")
 
 
@@ -36,25 +23,10 @@ DEFINE_DEVICE_TYPE(VIC20_MEGACART, vic20_megacart_device, "vic20_megacart", "VIC
 //-------------------------------------------------
 
 MACHINE_CONFIG_MEMBER( vic20_megacart_device::device_add_mconfig )
->>>>>>> upstream/master
 
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-//-------------------------------------------------
-//  machine_config_additions - device-specific
-//  machine configurations
-//-------------------------------------------------
-
-machine_config_constructor vic20_megacart_device::device_mconfig_additions() const
-{
-	return MACHINE_CONFIG_NAME( vic20_megacart );
-}
-
-
-=======
->>>>>>> upstream/master
 
 //**************************************************************************
 //  LIVE DEVICE
@@ -64,19 +36,11 @@ machine_config_constructor vic20_megacart_device::device_mconfig_additions() con
 //  vic20_megacart_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-vic20_megacart_device::vic20_megacart_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, VIC20_MEGACART, "Mega-Cart", tag, owner, clock, "megacart", __FILE__),
-		device_vic20_expansion_card_interface(mconfig, *this),
-		device_nvram_interface(mconfig, *this),
-		m_nvram_en(0)
-=======
 vic20_megacart_device::vic20_megacart_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, VIC20_MEGACART, tag, owner, clock)
 	, device_vic20_expansion_card_interface(mconfig, *this)
 	, device_nvram_interface(mconfig, *this)
 	, m_nvram_en(0)
->>>>>>> upstream/master
 {
 }
 
@@ -107,11 +71,7 @@ void vic20_megacart_device::device_reset()
 //  vic20_cd_r - cartridge data read
 //-------------------------------------------------
 
-<<<<<<< HEAD
-UINT8 vic20_megacart_device::vic20_cd_r(address_space &space, offs_t offset, UINT8 data, int ram1, int ram2, int ram3, int blk1, int blk2, int blk3, int blk5, int io2, int io3)
-=======
 uint8_t vic20_megacart_device::vic20_cd_r(address_space &space, offs_t offset, uint8_t data, int ram1, int ram2, int ram3, int blk1, int blk2, int blk3, int blk5, int io2, int io3)
->>>>>>> upstream/master
 {
 	if (!ram1 || !ram2 || !ram3 || !io2 || !io3)
 	{
@@ -135,11 +95,7 @@ uint8_t vic20_megacart_device::vic20_cd_r(address_space &space, offs_t offset, u
 //  vic20_cd_w - cartridge data write
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void vic20_megacart_device::vic20_cd_w(address_space &space, offs_t offset, UINT8 data, int ram1, int ram2, int ram3, int blk1, int blk2, int blk3, int blk5, int io2, int io3)
-=======
 void vic20_megacart_device::vic20_cd_w(address_space &space, offs_t offset, uint8_t data, int ram1, int ram2, int ram3, int blk1, int blk2, int blk3, int blk5, int io2, int io3)
->>>>>>> upstream/master
 {
 	if (!ram1 || !ram2 || !ram3 || !io2)
 	{

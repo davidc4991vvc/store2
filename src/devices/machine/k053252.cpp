@@ -54,10 +54,7 @@ TODO:
 - dual screen support (for Konami GX types 3/4)
 - viostorm and dbz reads the VCT port, but their usage is a side effect to send an irq ack thru the same port:
   i.e. first one uses move.b $26001d.l, $26001d.l, second one clr.b
-<<<<<<< HEAD
-=======
 - le2 sets int-time but never ever enables hblank irq?
->>>>>>> upstream/master
 
 ***************************************************************************************************************************/
 
@@ -66,20 +63,6 @@ TODO:
 #include "k053252.h"
 
 
-<<<<<<< HEAD
-const device_type K053252 = &device_creator<k053252_device>;
-
-k053252_device::k053252_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, K053252, "K053252 Timing/Interrupt", tag, owner, clock, "k053252", __FILE__),
-		device_video_interface(mconfig, *this),
-		m_int1_en_cb(*this),
-		m_int2_en_cb(*this),
-		m_int1_ack_cb(*this),
-		m_int2_ack_cb(*this),
-		//m_int_time_cb(*this),
-		m_offsx(0),
-		m_offsy(0)
-=======
 DEFINE_DEVICE_TYPE(K053252, k053252_device, "k053252", "K053252 Timing/Interrupt Controller")
 
 k053252_device::k053252_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
@@ -93,7 +76,6 @@ k053252_device::k053252_device(const machine_config &mconfig, const char *tag, d
 	, m_offsx(0)
 	, m_offsy(0)
 	, m_slave_screen(*this, finder_base::DUMMY_TAG) // ugly, needed to work with the rungun etc. video demux board
->>>>>>> upstream/master
 {
 }
 
@@ -134,14 +116,11 @@ void k053252_device::device_reset()
 
 	m_regs[0x08] = 1; // Xexex apparently does a wrong assignment for VC (sets up the INT enable register instead)
 
-<<<<<<< HEAD
-=======
 	reset_internal_state();
 }
 
 void k053252_device::reset_internal_state()
 {
->>>>>>> upstream/master
 	m_hc=0;
 	m_hfp=0;
 	m_hbp=0;
@@ -152,10 +131,6 @@ void k053252_device::reset_internal_state()
 	m_hsw=0;
 }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> upstream/master
 /*****************************************************************************
     DEVICE HANDLERS
 *****************************************************************************/
@@ -165,20 +140,12 @@ READ8_MEMBER( k053252_device::read )
 	//TODO: debugger_access()
 	switch(offset)
 	{
-<<<<<<< HEAD
-		/* VCT read-back (TODO: values not extensively tested) */
-		case 0x0e:
-			return (m_screen->vpos() >> 8) & 1;
-		case 0x0f:
-			return m_screen->vpos() & 0xff;
-=======
 		/* VCT read-back */
 		// TODO: correct?
 		case 0x0e:
 			return ((m_screen->vpos()-m_vc) >> 8) & 1;
 		case 0x0f:
 			return (m_screen->vpos()-m_vc) & 0xff;
->>>>>>> upstream/master
 		default:
 			//popmessage("Warning: k053252 read %02x, contact MAMEdev",offset);
 			break;
@@ -199,20 +166,12 @@ void k053252_device::res_change()
 		//VC - VFP - VBP - (VSW+1)
 		attoseconds_t refresh = HZ_TO_ATTOSECONDS(clock()) * (m_hc) * m_vc;
 
-<<<<<<< HEAD
-		//printf("H %d %d %d %d\n",m_hc,m_hfp,m_hbp,m_hsw);
-		//printf("V %d %d %d %d\n",m_vc,m_vfp,m_vbp,m_vsw);
-
-=======
->>>>>>> upstream/master
 		visarea.min_x = m_offsx;
 		visarea.min_y = m_offsy;
 		visarea.max_x = m_offsx + m_hc - m_hfp - m_hbp - 8*(m_hsw) - 1;
 		visarea.max_y = m_offsy + m_vc - m_vfp - m_vbp - (m_vsw) - 1;
 
 		m_screen->configure(m_hc, m_vc, visarea, refresh);
-<<<<<<< HEAD
-=======
 
 		if (m_slave_screen.found())
 			m_slave_screen->configure(m_hc, m_vc, visarea, refresh);
@@ -226,7 +185,6 @@ void k053252_device::res_change()
 		printf("Screen params: Clock: %u V-Sync %.2f H-Sync %.f\n",clock(),ATTOSECONDS_TO_HZ(refresh),ATTOSECONDS_TO_HZ(hsync));
 		printf("visible screen area: %d x %d\n\n",(visarea.max_x - visarea.min_x) + 1,(visarea.max_y - visarea.min_y) + 1);
 #endif
->>>>>>> upstream/master
 	}
 }
 
@@ -285,17 +243,12 @@ WRITE8_MEMBER( k053252_device::write )
 			logerror("%02x VSW / %02x HSW set\n",m_vsw,m_hsw);
 			res_change();
 			break;
-<<<<<<< HEAD
-=======
 
->>>>>>> upstream/master
 		//case 0x0d: m_int_time(data); break;
 		case 0x0e: m_int1_ack_cb(1); break;
 		case 0x0f: m_int2_ack_cb(1); break;
 	}
 }
-<<<<<<< HEAD
-=======
 
 
 void k053252_device::static_set_slave_screen(device_t &device, const char *tag)
@@ -303,4 +256,3 @@ void k053252_device::static_set_slave_screen(device_t &device, const char *tag)
 	k053252_device &dev = downcast<k053252_device &>(device);
 	dev.m_slave_screen.set_tag(tag);
 }
->>>>>>> upstream/master

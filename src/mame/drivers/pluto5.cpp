@@ -179,10 +179,7 @@
 
 #include "emu.h"
 #include "machine/68340.h"
-<<<<<<< HEAD
-=======
 #include "speaker.h"
->>>>>>> upstream/master
 
 class pluto5_state : public driver_device
 {
@@ -192,13 +189,8 @@ public:
 			m_maincpu(*this, "maincpu")
 	{ }
 
-<<<<<<< HEAD
-	UINT32* m_cpuregion;
-	UINT32* m_mainram;
-=======
 	uint32_t* m_cpuregion;
 	std::unique_ptr<uint32_t[]> m_mainram;
->>>>>>> upstream/master
 
 	DECLARE_READ32_MEMBER(pluto5_mem_r);
 	DECLARE_WRITE32_MEMBER(pluto5_mem_w);
@@ -206,27 +198,16 @@ public:
 protected:
 
 	// devices
-<<<<<<< HEAD
-	required_device<m68340cpu_device> m_maincpu;
-public:
-	DECLARE_DRIVER_INIT(hb);
-	virtual void machine_start();
-=======
 	required_device<m68340_cpu_device> m_maincpu;
 public:
 	DECLARE_DRIVER_INIT(hb);
 	virtual void machine_start() override;
->>>>>>> upstream/master
 };
 
 READ32_MEMBER(pluto5_state::pluto5_mem_r)
 {
 	int pc = space.device().safe_pc();
-<<<<<<< HEAD
-	int cs = m68340_get_cs(m_maincpu, offset * 4);
-=======
 	int cs = m_maincpu->get_cs(offset * 4);
->>>>>>> upstream/master
 
 	switch ( cs )
 	{
@@ -244,11 +225,7 @@ READ32_MEMBER(pluto5_state::pluto5_mem_r)
 WRITE32_MEMBER(pluto5_state::pluto5_mem_w)
 {
 	int pc = space.device().safe_pc();
-<<<<<<< HEAD
-	int cs = m68340_get_cs(m_maincpu, offset * 4);
-=======
 	int cs = m_maincpu->get_cs(offset * 4);
->>>>>>> upstream/master
 
 	switch ( cs )
 	{
@@ -269,21 +246,12 @@ INPUT_PORTS_END
 
 void pluto5_state::machine_start()
 {
-<<<<<<< HEAD
-	m_cpuregion = (UINT32*)memregion( "maincpu" )->base();
-	m_mainram = (UINT32*)auto_alloc_array_clear(machine(), UINT32, 0x10000);
-
-}
-
-static MACHINE_CONFIG_START( pluto5, pluto5_state )
-=======
 	m_cpuregion = (uint32_t*)memregion( "maincpu" )->base();
 	m_mainram = make_unique_clear<uint32_t[]>(0x10000);
 
 }
 
 static MACHINE_CONFIG_START( pluto5 )
->>>>>>> upstream/master
 	MCFG_CPU_ADD("maincpu", M68340, 16000000)
 	MCFG_CPU_PROGRAM_MAP(pluto5_map)
 
@@ -864,10 +832,6 @@ ROM_END
 
 
 
-<<<<<<< HEAD
-extern void astra_addresslines( UINT16* src, size_t srcsize, int small );
-
-=======
 static void astra_addresslines( uint16_t* src, size_t srcsize, int small )
 {
 	std::vector<uint16_t> dst(srcsize/2);
@@ -888,24 +852,15 @@ static void astra_addresslines( uint16_t* src, size_t srcsize, int small )
 
 	memcpy(src,&dst[0], srcsize);
 }
->>>>>>> upstream/master
 
 
 DRIVER_INIT_MEMBER(pluto5_state,hb)
 {
-<<<<<<< HEAD
-	astra_addresslines( (UINT16*)memregion( "maincpu" )->base(), memregion( "maincpu" )->bytes(), 0 );
-
-	#if 0
-	{
-		UINT8* ROM = memregion( "maincpu" )->base();
-=======
 	astra_addresslines( (uint16_t*)memregion( "maincpu" )->base(), memregion( "maincpu" )->bytes(), 0 );
 
 	#if 0
 	{
 		uint8_t* ROM = memregion( "maincpu" )->base();
->>>>>>> upstream/master
 		FILE *fp;
 		char filename[256];
 		sprintf(filename,"%s", machine().system().name);

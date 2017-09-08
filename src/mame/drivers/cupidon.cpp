@@ -15,12 +15,8 @@
 
 #include "emu.h"
 #include "machine/68340.h"
-<<<<<<< HEAD
-
-=======
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 class cupidon_state : public driver_device
@@ -33,17 +29,10 @@ public:
 	{ }
 
 	// devices
-<<<<<<< HEAD
-	required_device<m68340cpu_device> m_maincpu;
-	required_shared_ptr<UINT32> m_gfxram;
-
-	UINT32 screen_update_cupidon(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	required_device<m68340_cpu_device> m_maincpu;
 	required_shared_ptr<uint32_t> m_gfxram;
 
 	uint32_t screen_update_cupidon(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 
 	DECLARE_DRIVER_INIT(cupidon);
 	DECLARE_DRIVER_INIT(funnyfm);
@@ -58,11 +47,7 @@ protected:
 
 };
 
-<<<<<<< HEAD
-UINT32 cupidon_state::screen_update_cupidon(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t cupidon_state::screen_update_cupidon(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int count = 0;
 
@@ -72,19 +57,11 @@ uint32_t cupidon_state::screen_update_cupidon(screen_device &screen, bitmap_ind1
 		{
 			for (int y=0;y<16;y++)
 			{
-<<<<<<< HEAD
-				UINT16* destline = &bitmap.pix16(ytile*16 + y);
-
-				for (int x=0;x<8;x++)
-				{
-					UINT32 gfx = m_gfxram[count];
-=======
 				uint16_t* destline = &bitmap.pix16(ytile*16 + y);
 
 				for (int x=0;x<8;x++)
 				{
 					uint32_t gfx = m_gfxram[count];
->>>>>>> upstream/master
 
 					destline[(xtile*16)+(x*2)+0] = (gfx >> 16)&0xffff;
 					destline[(xtile*16)+(x*2)+1] = (gfx >> 0)&0xffff;
@@ -122,11 +99,7 @@ static INPUT_PORTS_START(  cupidon )
 INPUT_PORTS_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( cupidon, cupidon_state )
-=======
 static MACHINE_CONFIG_START( cupidon )
->>>>>>> upstream/master
 	MCFG_CPU_ADD("maincpu", M68340, 16000000)    // The access to 3FF00 at the start would suggest this is a 68340 so probably 16 or 25 mhz?
 	MCFG_CPU_PROGRAM_MAP(cupidon_map)
 
@@ -199,18 +172,6 @@ DRIVER_INIT_MEMBER(cupidon_state,funnyfm)
 }
 
 /* (c) date is from string in ROM, revision date is noted next to sets - Spellings are as found in ROM */
-<<<<<<< HEAD
-GAME( 2004, tsarevna        ,0,         cupidon, cupidon, cupidon_state, cupidon, ROT0, "Kupidon","Tsarevna (v1.29)", MACHINE_IS_SKELETON ) // 12 Oct 2005
-GAME( 2004, tsarevnaa       ,tsarevna,  cupidon, cupidon, cupidon_state, cupidon, ROT0, "Kupidon","Tsarevna (v1.31)", MACHINE_IS_SKELETON ) // 17 Jan 2007
-
-GAME( 2004, gangrose        ,0,         cupidon, cupidon, cupidon_state, cupidon, ROT0, "Kupidon","Gangster's Roses (v4.70)", MACHINE_IS_SKELETON ) // 01 Sep 2004
-
-GAME( 2004, funnyfm         ,0,         cupidon, cupidon, cupidon_state, funnyfm, ROT0, "Kupidon","Funny Farm (v1.17)", MACHINE_IS_SKELETON ) // 02 Mar 2005
-GAME( 2004, funnyfma        ,funnyfm,   cupidon, cupidon, cupidon_state, cupidon, ROT0, "Kupidon","Funny Farm (v1.26)", MACHINE_IS_SKELETON ) // 08 Aug 2005
-GAME( 2004, funnyfmb        ,funnyfm,   cupidon, cupidon, cupidon_state, cupidon, ROT0, "Kupidon","Funny Farm (v1.30)", MACHINE_IS_SKELETON ) // 16 May 2006
-
-GAME( 2005, cashtrn         ,0,         cupidon, cupidon, cupidon_state, cupidon, ROT0, "Kupidon","Cash Train (v1.10)", MACHINE_IS_SKELETON ) // 09 Jan 2006
-=======
 GAME( 2004, tsarevna,   0,         cupidon, cupidon, cupidon_state, cupidon, ROT0, "Kupidon", "Tsarevna (v1.29)",         MACHINE_IS_SKELETON ) // 12 Oct 2005
 GAME( 2004, tsarevnaa,  tsarevna,  cupidon, cupidon, cupidon_state, cupidon, ROT0, "Kupidon", "Tsarevna (v1.31)",         MACHINE_IS_SKELETON ) // 17 Jan 2007
 
@@ -221,4 +182,3 @@ GAME( 2004, funnyfma,   funnyfm,   cupidon, cupidon, cupidon_state, cupidon, ROT
 GAME( 2004, funnyfmb,   funnyfm,   cupidon, cupidon, cupidon_state, cupidon, ROT0, "Kupidon", "Funny Farm (v1.30)",       MACHINE_IS_SKELETON ) // 16 May 2006
 
 GAME( 2005, cashtrn,    0,         cupidon, cupidon, cupidon_state, cupidon, ROT0, "Kupidon", "Cash Train (v1.10)",       MACHINE_IS_SKELETON ) // 09 Jan 2006
->>>>>>> upstream/master

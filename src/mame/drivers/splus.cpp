@@ -21,15 +21,6 @@
 
 ***********************************************************************************/
 #include "emu.h"
-<<<<<<< HEAD
-#include "sound/ay8910.h"
-#include "machine/nvram.h"
-#include "cpu/mcs51/mcs51.h"
-#include "machine/i2cmem.h"
-
-#include "splus.lh"
-
-=======
 
 #include "cpu/mcs51/mcs51.h"
 #include "machine/i2cmem.h"
@@ -41,7 +32,6 @@
 #include "splus.lh"
 
 
->>>>>>> upstream/master
 #define DEBUG_OUTPUT 0
 
 class splus_state : public driver_device
@@ -74,27 +64,12 @@ public:
 		m_p1_unknown = 0x00;
 	}
 
-<<<<<<< HEAD
-	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 	{
 		return 0;
 	}
 
 	// Pointers to External RAM
-<<<<<<< HEAD
-	required_shared_ptr<UINT8> m_cmosl_ram;
-	required_shared_ptr<UINT8> m_cmosh_ram;
-
-	// Program and Reel Data
-	optional_shared_ptr<UINT8> m_program_ram;
-	required_shared_ptr<UINT8> m_reel_ram;
-
-	// IO Ports
-	required_shared_ptr<UINT8> m_io_port;
-=======
 	required_shared_ptr<uint8_t> m_cmosl_ram;
 	required_shared_ptr<uint8_t> m_cmosh_ram;
 
@@ -104,7 +79,6 @@ public:
 
 	// IO Ports
 	required_shared_ptr<uint8_t> m_io_port;
->>>>>>> upstream/master
 	required_ioport m_i10;
 	required_ioport m_i20;
 	required_ioport m_i30;
@@ -114,23 +88,6 @@ public:
 	int m_sda_dir;
 
 	// Coin-In States
-<<<<<<< HEAD
-	UINT8 m_coin_state;
-	UINT64 m_last_cycles;
-	UINT64 m_last_coin_out;
-	UINT8 m_coin_out_state;
-
-	UINT8 m_bank10;
-	UINT8 m_bank20;
-	UINT8 m_bank30;
-	UINT8 m_bank40;
-
-	UINT8 m_p1_reels;
-	UINT8 m_p1_unknown;
-
-	INT16 m_stepper_pos[5];
-	UINT8 m_stop_pos[5];
-=======
 	uint8_t m_coin_state;
 	uint64_t m_last_cycles;
 	uint64_t m_last_coin_out;
@@ -146,7 +103,6 @@ public:
 
 	int16_t m_stepper_pos[5];
 	uint8_t m_stop_pos[5];
->>>>>>> upstream/master
 
 	DECLARE_WRITE8_MEMBER(splus_io_w);
 	DECLARE_WRITE8_MEMBER(splus_load_pulse_w);
@@ -170,11 +126,7 @@ public:
 #define MAX_STEPPER         200     // 1.8 Degree Stepper Motor = 200 full-steps per revolution, but 400 when in half-step mode
 #define STEPPER_DIVISOR     9.09 //18.18    // To allow for 22 stop positions
 
-<<<<<<< HEAD
-static const UINT8 optics[200] = {
-=======
 static const uint8_t optics[200] = {
->>>>>>> upstream/master
 	0x07, 0x07, 0x00, 0x07, 0x07, 0x07, 0x07, 0x07, 0x07, 0x07, 0x07, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
 	0x07, 0x07, 0x00, 0x07, 0x07, 0x07, 0x07, 0x07, 0x07, 0x07, 0x07, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
 	0x07, 0x07, 0x00, 0x07, 0x07, 0x07, 0x07, 0x07, 0x07, 0x07, 0x07, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -247,21 +199,13 @@ WRITE8_MEMBER(splus_state::splus_io_w)
 
 WRITE8_MEMBER(splus_state::splus_load_pulse_w)
 {
-<<<<<<< HEAD
-//  UINT8 out = 0;
-=======
 //  uint8_t out = 0;
->>>>>>> upstream/master
 //    out = ((~m_io_port[1] & 0xf0)>>4); // Output Bank
 }
 
 WRITE8_MEMBER(splus_state::splus_serial_w)
 {
-<<<<<<< HEAD
-	UINT8 out = 0;
-=======
 	uint8_t out = 0;
->>>>>>> upstream/master
 	out = ((~m_io_port[1] & 0xe0)>>5); // Output Bank
 
 	switch (out)
@@ -307,16 +251,6 @@ WRITE8_MEMBER(splus_state::splus_serial_w)
 			}
 			m_bank10 = data;
 
-<<<<<<< HEAD
-			output_set_value("s_bnk10",(data >> 0) & 1); // Coin Drop Meter
-			output_set_value("s_bnk11",(data >> 1) & 1); // Coin Out Meter
-			output_set_value("s_bnk12",(data >> 2) & 1); // Coin In Meter
-			output_set_value("s_bnk13",(data >> 3) & 1); // B Switch for SDS
-			output_set_value("s_bnk14",(data >> 4) & 1); // Hopper Drive 2
-			output_set_value("s_bnk15",(data >> 5) & 1); // Stepper Motor Direction
-			output_set_value("s_bnk16",(data >> 6) & 1); // Mechanical Bell
-			output_set_value("s_bnk17",(data >> 7) & 1); // Cancelled Credits Meter
-=======
 			output().set_value("s_bnk10",(data >> 0) & 1); // Coin Drop Meter
 			output().set_value("s_bnk11",(data >> 1) & 1); // Coin Out Meter
 			output().set_value("s_bnk12",(data >> 2) & 1); // Coin In Meter
@@ -325,7 +259,6 @@ WRITE8_MEMBER(splus_state::splus_serial_w)
 			output().set_value("s_bnk15",(data >> 5) & 1); // Stepper Motor Direction
 			output().set_value("s_bnk16",(data >> 6) & 1); // Mechanical Bell
 			output().set_value("s_bnk17",(data >> 7) & 1); // Cancelled Credits Meter
->>>>>>> upstream/master
 			break;
 		case 0x01: // Bank 20
 			if (((m_bank20 >> 5) & 1) != ((data >> 5) & 1)) {
@@ -345,16 +278,6 @@ WRITE8_MEMBER(splus_state::splus_serial_w)
 			}
 			m_bank20 = data;
 
-<<<<<<< HEAD
-			output_set_value("s_bnk20",(data >> 0) & 1); // Payline Lamp 3
-			output_set_value("s_bnk21",(data >> 1) & 1); // Payline Lamp 4
-			output_set_value("s_bnk22",(data >> 2) & 1); // Payline Lamp 5
-			output_set_value("s_bnk23",(data >> 3) & 1); // Payline Lamp 6
-			output_set_value("s_bnk24",(data >> 4) & 1); // Door Optics Transmitter
-			output_set_value("s_bnk25",(data >> 5) & 1); // Games Played Meter
-			output_set_value("s_bnk26",(data >> 6) & 1); // Bill Acceptor Enable
-			output_set_value("s_bnk27",(data >> 7) & 1); // Jackpots Meter
-=======
 			output().set_value("s_bnk20",(data >> 0) & 1); // Payline Lamp 3
 			output().set_value("s_bnk21",(data >> 1) & 1); // Payline Lamp 4
 			output().set_value("s_bnk22",(data >> 2) & 1); // Payline Lamp 5
@@ -363,7 +286,6 @@ WRITE8_MEMBER(splus_state::splus_serial_w)
 			output().set_value("s_bnk25",(data >> 5) & 1); // Games Played Meter
 			output().set_value("s_bnk26",(data >> 6) & 1); // Bill Acceptor Enable
 			output().set_value("s_bnk27",(data >> 7) & 1); // Jackpots Meter
->>>>>>> upstream/master
 			break;
 		case 0x02: // Bank 30
 			if (((m_bank30 >> 2) & 1) != ((data >> 2) & 1)) {
@@ -388,16 +310,6 @@ WRITE8_MEMBER(splus_state::splus_serial_w)
 			}
 			m_bank30 = data;
 
-<<<<<<< HEAD
-			output_set_value("s_bnk30",(data >> 0) & 1); // Change Candle Lamp Bottom
-			output_set_value("s_bnk31",(data >> 1) & 1); // Change Candle Lamp Top
-			output_set_value("s_bnk32",(data >> 2) & 1); // Handle Release
-			output_set_value("s_bnk33",(data >> 3) & 1); // Diverter
-			output_set_value("s_bnk34",(data >> 4) & 1); // Coin Lockout
-			output_set_value("s_bnk35",(data >> 5) & 1); // Hopper Drive 1
-			output_set_value("s_bnk36",(data >> 6) & 1); // Payline Lamp 1
-			output_set_value("s_bnk37",(data >> 7) & 1); // Payline Lamp 2
-=======
 			output().set_value("s_bnk30",(data >> 0) & 1); // Change Candle Lamp Bottom
 			output().set_value("s_bnk31",(data >> 1) & 1); // Change Candle Lamp Top
 			output().set_value("s_bnk32",(data >> 2) & 1); // Handle Release
@@ -406,7 +318,6 @@ WRITE8_MEMBER(splus_state::splus_serial_w)
 			output().set_value("s_bnk35",(data >> 5) & 1); // Hopper Drive 1
 			output().set_value("s_bnk36",(data >> 6) & 1); // Payline Lamp 1
 			output().set_value("s_bnk37",(data >> 7) & 1); // Payline Lamp 2
->>>>>>> upstream/master
 			break;
 		case 0x04: // Bank 40
 			if (((m_bank40 >> 0) & 1) != ((data >> 0) & 1)) {
@@ -421,16 +332,6 @@ WRITE8_MEMBER(splus_state::splus_serial_w)
 			}
 			m_bank40 = data;
 
-<<<<<<< HEAD
-			output_set_value("s_bnk40",(data >> 0) & 1); // Stepper Motor Power Supply
-			output_set_value("s_bnk41",(data >> 1) & 1); // Insert Coin Lamp
-			output_set_value("s_bnk42",(data >> 2) & 1); // Coin Accepted Lamp
-			output_set_value("s_bnk43",(data >> 3) & 1); // Jackpot/Hand Pay Lamp
-			output_set_value("s_bnk44",(data >> 4) & 1); // Play Max Credits Lamp
-			output_set_value("s_bnk45",(data >> 5) & 1); // Bet One Credit Lamp
-			output_set_value("s_bnk46",(data >> 6) & 1); // Cashout Credit Lamp
-			output_set_value("s_bnk47",(data >> 7) & 1); // Spin Button Lamp
-=======
 			output().set_value("s_bnk40",(data >> 0) & 1); // Stepper Motor Power Supply
 			output().set_value("s_bnk41",(data >> 1) & 1); // Insert Coin Lamp
 			output().set_value("s_bnk42",(data >> 2) & 1); // Coin Accepted Lamp
@@ -439,35 +340,23 @@ WRITE8_MEMBER(splus_state::splus_serial_w)
 			output().set_value("s_bnk45",(data >> 5) & 1); // Bet One Credit Lamp
 			output().set_value("s_bnk46",(data >> 6) & 1); // Cashout Credit Lamp
 			output().set_value("s_bnk47",(data >> 7) & 1); // Spin Button Lamp
->>>>>>> upstream/master
 			break;
 	}
 }
 
 WRITE8_MEMBER(splus_state::splus_7seg_w)
 {
-<<<<<<< HEAD
-	static const UINT8 ls48_map[16] = { 0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7c,0x07,0x7f,0x67,0x58,0x4c,0x62,0x69,0x78,0x00 };
-
-	UINT8 seg;
-	UINT8 val;
-=======
 	static const uint8_t ls48_map[16] = { 0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7c,0x07,0x7f,0x67,0x58,0x4c,0x62,0x69,0x78,0x00 };
 
 	uint8_t seg;
 	uint8_t val;
->>>>>>> upstream/master
 
 	seg = ((~data & 0xf0)>>4); // Segment Number
 	val = (~data & 0x0f); // Digit Value
 
 	// Need to add ~m_io_port[1]-1 to seg value
 	if (seg < 0x0a && (m_io_port[1] & 0xe0) == 0xe0)
-<<<<<<< HEAD
-		output_set_digit_value(seg, ls48_map[val]);
-=======
 		output().set_digit_value(seg, ls48_map[val]);
->>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(splus_state::splus_duart_w)
@@ -488,15 +377,6 @@ WRITE8_MEMBER(splus_state::i2c_nvram_w)
 
 READ8_MEMBER(splus_state::splus_serial_r)
 {
-<<<<<<< HEAD
-	UINT8 coin_out = 0x00;
-	UINT8 coin_optics = 0x00;
-	UINT8 door_optics = 0x00;
-	UINT32 curr_cycles = m_maincpu->total_cycles();
-
-	UINT8 in = 0x00;
-	UINT8 val = 0x00;
-=======
 	uint8_t coin_out = 0x00;
 	uint8_t coin_optics = 0x00;
 	uint8_t door_optics = 0x00;
@@ -504,7 +384,6 @@ READ8_MEMBER(splus_state::splus_serial_r)
 
 	uint8_t in = 0x00;
 	uint8_t val = 0x00;
->>>>>>> upstream/master
 	in = ((~m_io_port[1] & 0xe0)>>5); // Input Bank
 
 	switch (in)
@@ -678,13 +557,8 @@ READ8_MEMBER(splus_state::splus_reel_optics_r)
         Bit 6 = ???
         Bit 7 = I2C EEPROM SDA
 */
-<<<<<<< HEAD
-	UINT8 reel_optics = 0x00;
-	UINT8 sda = 0;
-=======
 	uint8_t reel_optics = 0x00;
 	uint8_t sda = 0;
->>>>>>> upstream/master
 
 	// Return Reel Positions
 	reel_optics = (optics[199-(m_stepper_pos[4])] & 0x10) | (optics[199-(m_stepper_pos[3])] & 0x08) | (optics[199-(m_stepper_pos[2])] & 0x04) | (optics[199-(m_stepper_pos[1])] & 0x02) | (optics[199-(m_stepper_pos[0])] & 0x01);
@@ -705,11 +579,7 @@ READ8_MEMBER(splus_state::splus_reel_optics_r)
 
 DRIVER_INIT_MEMBER(splus_state,splus)
 {
-<<<<<<< HEAD
-	UINT8 *reel_data = memregion( "reeldata" )->base();
-=======
 	uint8_t *reel_data = memregion( "reeldata" )->base();
->>>>>>> upstream/master
 
 	// Load Reel Data
 	memcpy(m_reel_ram, &reel_data[0x0000], 0x2000);
@@ -812,11 +682,7 @@ INPUT_PORTS_END
 *     Machine Driver     *
 *************************/
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( splus, splus_state )   // basic machine hardware
-=======
 static MACHINE_CONFIG_START( splus )   // basic machine hardware
->>>>>>> upstream/master
 	MCFG_CPU_ADD("maincpu", I80C32, CPU_CLOCK)
 	MCFG_CPU_PROGRAM_MAP(splus_map)
 	MCFG_CPU_IO_MAP(splus_iomap)
@@ -860,9 +726,5 @@ ROM_END
 *      Game Drivers      *
 *************************/
 
-<<<<<<< HEAD
-/*     YEAR  NAME        PARENT  MACHINE  INPUT   INIT     ROT    COMPANY                                  FULLNAME                       FLAGS             LAYOUT  */
-=======
 //     YEAR  NAME        PARENT  MACHINE  INPUT  STATE         INIT     ROT    COMPANY                                FULLNAME                       FLAGS                LAYOUT
->>>>>>> upstream/master
 GAMEL( 1994, spss4240,   0,      splus,   splus, splus_state,  splus,   ROT0,  "IGT - International Game Technology", "S-Plus (SS4240) Coral Reef",  MACHINE_NOT_WORKING, layout_splus )

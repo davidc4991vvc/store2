@@ -2,10 +2,7 @@
  * jdct.h
  *
  * Copyright (C) 1994-1996, Thomas G. Lane.
-<<<<<<< HEAD
-=======
  * Modified 2002-2015 by Guido Vollbeding.
->>>>>>> upstream/master
  * This file is part of the Independent JPEG Group's software.
  * For conditions of distribution and use, see the accompanying README file.
  *
@@ -82,15 +79,6 @@ typedef FAST_FLOAT FLOAT_MULT_TYPE; /* preferred floating type */
  * converting them to unsigned form (0..MAXJSAMPLE).  The raw outputs could
  * be quite far out of range if the input data is corrupt, so a bulletproof
  * range-limiting step is required.  We use a mask-and-table-lookup method
-<<<<<<< HEAD
- * to do the combined operations quickly.  See the comments with
- * prepare_range_limit_table (in jdmaster.c) for more info.
- */
-
-#define IDCT_range_limit(cinfo)  ((cinfo)->sample_range_limit + CENTERJSAMPLE)
-
-#define RANGE_MASK  (MAXJSAMPLE * 4 + 3) /* 2 bits wider than legal samples */
-=======
  * to do the combined operations quickly, assuming that MAXJSAMPLE+1
  * is a power of 2.  See the comments with prepare_range_limit_table
  * (in jdmaster.c) for more info.
@@ -101,7 +89,6 @@ typedef FAST_FLOAT FLOAT_MULT_TYPE; /* preferred floating type */
 #define RANGE_SUBSET  (RANGE_CENTER - CENTERJSAMPLE)
 
 #define IDCT_range_limit(cinfo)  ((cinfo)->sample_range_limit - RANGE_SUBSET)
->>>>>>> upstream/master
 
 
 /* Short forms of external names for systems with brain-damaged linkers. */
@@ -408,8 +395,6 @@ EXTERN(void) jpeg_idct_1x2
 #ifndef MULTIPLY16V16		/* default definition */
 #define MULTIPLY16V16(var1,var2)  ((var1) * (var2))
 #endif
-<<<<<<< HEAD
-=======
 
 /* Like RIGHT_SHIFT, but applies to a DCTELEM.
  * We assume that int right shift is unsigned if INT32 right shift is.
@@ -430,4 +415,3 @@ EXTERN(void) jpeg_idct_1x2
 #define ISHIFT_TEMPS
 #define IRIGHT_SHIFT(x,shft)	((x) >> (shft))
 #endif
->>>>>>> upstream/master

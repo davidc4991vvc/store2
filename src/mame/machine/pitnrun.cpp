@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-// license:LGPL-2.1+
-=======
 // license:BSD-3-Clause
->>>>>>> upstream/master
 // copyright-holders:Tomasz Slanina, Pierpaolo Prazzoli
 /***************************************************************************
 
@@ -34,11 +30,7 @@ void pitnrun_state::machine_reset()
 {
 	m_zaccept = 1;
 	m_zready = 0;
-<<<<<<< HEAD
-	m_mcu->set_input_line(0, CLEAR_LINE);
-=======
 	if (m_mcu) m_mcu->set_input_line(0, CLEAR_LINE);
->>>>>>> upstream/master
 }
 
 TIMER_CALLBACK_MEMBER(pitnrun_state::mcu_real_data_r)

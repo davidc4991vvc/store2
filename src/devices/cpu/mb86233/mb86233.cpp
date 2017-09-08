@@ -20,29 +20,6 @@
 #include "mb86233.h"
 
 
-<<<<<<< HEAD
-const device_type MB86233 = &device_creator<mb86233_cpu_device>;
-
-
-mb86233_cpu_device::mb86233_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: cpu_device(mconfig, MB86233, "MB86233", tag, owner, clock, "mb86233", __FILE__)
-	, m_program_config("program", ENDIANNESS_LITTLE, 32, 32, -2)
-	, m_data_config("data", ENDIANNESS_LITTLE, 32, 32, 0), m_pc(0), m_reps(0), m_pcsp(0), m_eb(0), m_shift(0), m_repcnt(0), m_sr(0),
-	m_fpucontrol(0), m_program(nullptr), m_direct(nullptr), m_icount(0), m_fifo_wait(0)
-		, m_fifo_read_cb(*this)
-	, m_fifo_read_ok_cb(*this)
-	, m_fifo_write_cb(*this)
-	, m_tablergn(nullptr), m_ARAM(nullptr), m_BRAM(nullptr)
-		, m_Tables(nullptr)
-{
-}
-
-
-offs_t mb86233_cpu_device::disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options)
-{
-	extern CPU_DISASSEMBLE( mb86233 );
-	return CPU_DISASSEMBLE_NAME(mb86233)(this, buffer, pc, oprom, opram, options);
-=======
 DEFINE_DEVICE_TYPE(MB86233, mb86233_cpu_device, "mb86233", "MB86233")
 
 
@@ -73,7 +50,6 @@ offs_t mb86233_cpu_device::disasm_disassemble(std::ostream &stream, offs_t pc, c
 {
 	extern CPU_DISASSEMBLE( mb86233 );
 	return CPU_DISASSEMBLE_NAME(mb86233)(this, stream, pc, oprom, opram, options);
->>>>>>> upstream/master
 }
 
 
@@ -138,17 +114,10 @@ void mb86233_cpu_device::device_start()
 
 	if ( m_tablergn )
 	{
-<<<<<<< HEAD
-		m_Tables = (UINT32*) machine().root_device().memregion(m_tablergn)->base();
-	}
-
-	memset( m_RAM, 0, 2 * 0x200 * sizeof(UINT32) );
-=======
 		m_Tables = (uint32_t*) machine().root_device().memregion(m_tablergn)->base();
 	}
 
 	memset( m_RAM, 0, 2 * 0x200 * sizeof(uint32_t) );
->>>>>>> upstream/master
 	m_ARAM = &m_RAM[0];
 	m_BRAM = &m_RAM[0x200];
 
@@ -195,30 +164,19 @@ void mb86233_cpu_device::device_start()
 	state_add( MB86233_R15,   "R15", m_gpr[15]).formatstr("%08X");
 
 	state_add( STATE_GENPC, "GENPC", m_pc).noshow();
-<<<<<<< HEAD
-=======
 	state_add( STATE_GENPCBASE, "CURPC", m_pc).noshow();
->>>>>>> upstream/master
 	state_add( STATE_GENFLAGS, "GENFLAGS", m_sr).formatstr("%2s").noshow();
 
 	m_icountptr = &m_icount;
 }
 
 
-<<<<<<< HEAD
-void mb86233_cpu_device::state_string_export(const device_state_entry &entry, std::string &str)
-=======
 void mb86233_cpu_device::state_string_export(const device_state_entry &entry, std::string &str) const
->>>>>>> upstream/master
 {
 	switch (entry.index())
 	{
 		case STATE_GENFLAGS:
-<<<<<<< HEAD
-			strprintf(str, "%c%c", (m_sr & SIGN_FLAG) ? 'N' : 'n', (m_sr & ZERO_FLAG) ? 'Z' : 'z');
-=======
 			str = string_format("%c%c", (m_sr & SIGN_FLAG) ? 'N' : 'n', (m_sr & ZERO_FLAG) ? 'Z' : 'z');
->>>>>>> upstream/master
 			break;
 	}
 }
@@ -256,11 +214,7 @@ void mb86233_cpu_device::FLAGSF( float v )
 		GETSR() |= SIGN_FLAG;
 }
 
-<<<<<<< HEAD
-void mb86233_cpu_device::FLAGSI( UINT32 v )
-=======
 void mb86233_cpu_device::FLAGSI( uint32_t v )
->>>>>>> upstream/master
 {
 	GETSR() &= ~(ZERO_FLAG|SIGN_FLAG);
 
@@ -277,11 +231,7 @@ void mb86233_cpu_device::FLAGSI( uint32_t v )
     Condition Codes
 ***************************************************************************/
 
-<<<<<<< HEAD
-int mb86233_cpu_device::COND( UINT32 cond )
-=======
 int mb86233_cpu_device::COND( uint32_t cond )
->>>>>>> upstream/master
 {
 	switch( cond )
 	{
@@ -331,11 +281,7 @@ int mb86233_cpu_device::COND( uint32_t cond )
     ALU
 ***************************************************************************/
 
-<<<<<<< HEAD
-void mb86233_cpu_device::ALU( UINT32 alu)
-=======
 void mb86233_cpu_device::ALU( uint32_t alu)
->>>>>>> upstream/master
 {
 	float   ftmp;
 
@@ -432,11 +378,7 @@ void mb86233_cpu_device::ALU( uint32_t alu)
 				//case 0: GETD().i = floor(GETD().f+0.5f); break;
 				//case 1: GETD().i = ceil(GETD().f); break;
 				case 2: GETD().i = floor(GETD().f); break; // Manx TT
-<<<<<<< HEAD
-				case 3: GETD().i = (INT32)GETD().f; break;
-=======
 				case 3: GETD().i = (int32_t)GETD().f; break;
->>>>>>> upstream/master
 				default: popmessage("TGP uses D = int(D) with FPU control = %02x, contact MAMEdev",m_fpucontrol>>1); break;
 			}
 
@@ -505,11 +447,7 @@ void mb86233_cpu_device::ALU( uint32_t alu)
     Memory Access
 ***************************************************************************/
 
-<<<<<<< HEAD
-UINT32 mb86233_cpu_device::ScaleExp(unsigned int v,int scale)
-=======
 uint32_t mb86233_cpu_device::ScaleExp(unsigned int v,int scale)
->>>>>>> upstream/master
 {
 	int exp=(v>>23)&0xff;
 	exp+=scale;
@@ -518,29 +456,17 @@ uint32_t mb86233_cpu_device::ScaleExp(unsigned int v,int scale)
 }
 
 
-<<<<<<< HEAD
-UINT32 mb86233_cpu_device::GETEXTERNAL( UINT32 EB, UINT32 offset )
-{
-	UINT32      addr;
-=======
 uint32_t mb86233_cpu_device::GETEXTERNAL( uint32_t EB, uint32_t offset )
 {
 	uint32_t      addr;
->>>>>>> upstream/master
 
 	if ( EB == 0 && offset >= 0x20 && offset <= 0x2f )  /* TGP Tables in ROM - FIXME - */
 	{
 		if(offset>=0x20 && offset<=0x23)    //SIN from value at RAM(0x20) in 0x4000/PI steps
 		{
-<<<<<<< HEAD
-			UINT32 r;
-			UINT32 value=GETEXTPORT()[0x20];
-			UINT32 off;
-=======
 			uint32_t r;
 			uint32_t value=GETEXTPORT()[0x20];
 			uint32_t off;
->>>>>>> upstream/master
 			value+=(offset-0x20)<<14;
 			off=value&0x3fff;
 			if((value&0x7fff)==0)
@@ -562,11 +488,7 @@ uint32_t mb86233_cpu_device::GETEXTERNAL( uint32_t EB, uint32_t offset )
 		{
 			unsigned int value=GETEXTPORT()[0x27];
 			int exp=(value>>23)&0xff;
-<<<<<<< HEAD
-			unsigned int res=0;
-=======
 			unsigned int res;
->>>>>>> upstream/master
 			unsigned int sign=0;
 			MB86233_REG a,b;
 			int index;
@@ -644,15 +566,9 @@ uint32_t mb86233_cpu_device::GETEXTERNAL( uint32_t EB, uint32_t offset )
 
 		if(offset==0x28)
 		{
-<<<<<<< HEAD
-			UINT32 offset=(GETEXTPORT()[0x28]>>10)&0x1fff;
-			UINT32 value=m_Tables[offset*2+0x20000/4];
-			UINT32 srcexp=(GETEXTPORT()[0x28]>>23)&0xff;
-=======
 			uint32_t offset=(GETEXTPORT()[0x28]>>10)&0x1fff;
 			uint32_t value=m_Tables[offset*2+0x20000/4];
 			uint32_t srcexp=(GETEXTPORT()[0x28]>>23)&0xff;
->>>>>>> upstream/master
 
 			value&=0x7FFFFFFF;
 
@@ -660,15 +576,9 @@ uint32_t mb86233_cpu_device::GETEXTERNAL( uint32_t EB, uint32_t offset )
 		}
 		if(offset==0x29)
 		{
-<<<<<<< HEAD
-			UINT32 offset=(GETEXTPORT()[0x28]>>10)&0x1fff;
-			UINT32 value=m_Tables[offset*2+(0x20000/4)+1];
-			UINT32 srcexp=(GETEXTPORT()[0x28]>>23)&0xff;
-=======
 			uint32_t offset=(GETEXTPORT()[0x28]>>10)&0x1fff;
 			uint32_t value=m_Tables[offset*2+(0x20000/4)+1];
 			uint32_t srcexp=(GETEXTPORT()[0x28]>>23)&0xff;
->>>>>>> upstream/master
 
 			value&=0x7FFFFFFF;
 			if(GETEXTPORT()[0x28]&(1<<31))
@@ -678,15 +588,9 @@ uint32_t mb86233_cpu_device::GETEXTERNAL( uint32_t EB, uint32_t offset )
 		}
 		if(offset==0x2a)
 		{
-<<<<<<< HEAD
-			UINT32 offset=((GETEXTPORT()[0x2a]>>11)&0x1fff)^0x1000;
-			UINT32 value=m_Tables[offset*2+0x30000/4];
-			UINT32 srcexp=(GETEXTPORT()[0x2a]>>24)&0x7f;
-=======
 			uint32_t offset=((GETEXTPORT()[0x2a]>>11)&0x1fff)^0x1000;
 			uint32_t value=m_Tables[offset*2+0x30000/4];
 			uint32_t srcexp=(GETEXTPORT()[0x2a]>>24)&0x7f;
->>>>>>> upstream/master
 
 			value&=0x7FFFFFFF;
 
@@ -694,15 +598,9 @@ uint32_t mb86233_cpu_device::GETEXTERNAL( uint32_t EB, uint32_t offset )
 		}
 		if(offset==0x2b)
 		{
-<<<<<<< HEAD
-			UINT32 offset=((GETEXTPORT()[0x2a]>>11)&0x1fff)^0x1000;
-			UINT32 value=m_Tables[offset*2+(0x30000/4)+1];
-			UINT32 srcexp=(GETEXTPORT()[0x2a]>>24)&0x7f;
-=======
 			uint32_t offset=((GETEXTPORT()[0x2a]>>11)&0x1fff)^0x1000;
 			uint32_t value=m_Tables[offset*2+(0x30000/4)+1];
 			uint32_t srcexp=(GETEXTPORT()[0x2a]>>24)&0x7f;
->>>>>>> upstream/master
 
 			value&=0x7FFFFFFF;
 			if(GETEXTPORT()[0x2a]&(1<<31))
@@ -719,15 +617,9 @@ uint32_t mb86233_cpu_device::GETEXTERNAL( uint32_t EB, uint32_t offset )
 	return RDMEM(addr);
 }
 
-<<<<<<< HEAD
-void mb86233_cpu_device::SETEXTERNAL( UINT32 EB, UINT32 offset, UINT32 value )
-{
-	UINT32  addr;
-=======
 void mb86233_cpu_device::SETEXTERNAL( uint32_t EB, uint32_t offset, uint32_t value )
 {
 	uint32_t  addr;
->>>>>>> upstream/master
 
 	if ( EB == 0 && offset >= 0x20 && offset <= 0x2f )  /* TGP Tables in ROM - FIXME - */
 	{
@@ -758,15 +650,9 @@ void mb86233_cpu_device::SETEXTERNAL( uint32_t EB, uint32_t offset, uint32_t val
     Register Access
 ***************************************************************************/
 
-<<<<<<< HEAD
-UINT32 mb86233_cpu_device::GETREGS( UINT32 reg, int source )
-{
-	UINT32  mode = ( reg >> 6 ) & 0x07;
-=======
 uint32_t mb86233_cpu_device::GETREGS( uint32_t reg, int source )
 {
 	uint32_t  mode = ( reg >> 6 ) & 0x07;
->>>>>>> upstream/master
 
 	reg &= 0x3f;
 
@@ -848,11 +734,7 @@ uint32_t mb86233_cpu_device::GETREGS( uint32_t reg, int source )
 	}
 	else if ( mode == 2 )   /* Indexed */
 	{
-<<<<<<< HEAD
-		UINT32  addr = reg & 0x1f;
-=======
 		uint32_t  addr = reg & 0x1f;
->>>>>>> upstream/master
 
 		if ( source )
 		{
@@ -873,11 +755,7 @@ uint32_t mb86233_cpu_device::GETREGS( uint32_t reg, int source )
 	}
 	else if( mode == 6 )    /* Indexed with postop */
 	{
-<<<<<<< HEAD
-		UINT32  addr = 0;
-=======
 		uint32_t  addr = 0;
->>>>>>> upstream/master
 
 		if ( source )
 		{
@@ -920,11 +798,7 @@ uint32_t mb86233_cpu_device::GETREGS( uint32_t reg, int source )
 	//return 0;
 }
 
-<<<<<<< HEAD
-void mb86233_cpu_device::SETREGS( UINT32 reg, UINT32 val )
-=======
 void mb86233_cpu_device::SETREGS( uint32_t reg, uint32_t val )
->>>>>>> upstream/master
 {
 	int     mode = ( reg >> 6) & 0x07;
 
@@ -1038,15 +912,9 @@ void mb86233_cpu_device::SETREGS( uint32_t reg, uint32_t val )
     Addressing Modes
 ***************************************************************************/
 
-<<<<<<< HEAD
-UINT32 mb86233_cpu_device::INDIRECT( UINT32 reg, int source )
-{
-	UINT32  mode = ( reg >> 6 ) & 0x07;
-=======
 uint32_t mb86233_cpu_device::INDIRECT( uint32_t reg, int source )
 {
 	uint32_t  mode = ( reg >> 6 ) & 0x07;
->>>>>>> upstream/master
 
 	if ( mode == 0 || mode == 1 || mode == 3 )
 	{
@@ -1054,11 +922,7 @@ uint32_t mb86233_cpu_device::INDIRECT( uint32_t reg, int source )
 	}
 	else if ( mode == 2 )
 	{
-<<<<<<< HEAD
-		UINT32  addr = reg & 0x3f;
-=======
 		uint32_t  addr = reg & 0x3f;
->>>>>>> upstream/master
 
 		if ( source )
 		{
@@ -1079,11 +943,7 @@ uint32_t mb86233_cpu_device::INDIRECT( uint32_t reg, int source )
 	}
 	else if ( mode == 6 || mode == 7 )
 	{
-<<<<<<< HEAD
-		UINT32  addr = 0;
-=======
 		uint32_t  addr = 0;
->>>>>>> upstream/master
 
 		if ( source )
 		{
@@ -1141,13 +1001,8 @@ void mb86233_cpu_device::execute_run()
 {
 	while( m_icount > 0 )
 	{
-<<<<<<< HEAD
-		UINT32      val;
-		UINT32      opcode;
-=======
 		uint32_t      val;
 		uint32_t      opcode;
->>>>>>> upstream/master
 
 		debugger_instruction_hook(this, GETPC());
 
@@ -1159,17 +1014,10 @@ void mb86233_cpu_device::execute_run()
 		{
 			case 0x00:  /* dual move */
 			{
-<<<<<<< HEAD
-				UINT32      r1 = opcode & 0x1ff;
-				UINT32      r2 = ( opcode >> 9 ) & 0x7f;
-				UINT32      alu = ( opcode >> 21 ) & 0x1f;
-				UINT32      op = ( opcode >> 16 ) & 0x1f;
-=======
 				uint32_t      r1 = opcode & 0x1ff;
 				uint32_t      r2 = ( opcode >> 9 ) & 0x7f;
 				uint32_t      alu = ( opcode >> 21 ) & 0x1f;
 				uint32_t      op = ( opcode >> 16 ) & 0x1f;
->>>>>>> upstream/master
 
 				ALU( alu );
 
@@ -1219,17 +1067,10 @@ void mb86233_cpu_device::execute_run()
 
 			case 0x7:   /* LD/MOV */
 			{
-<<<<<<< HEAD
-				UINT32      r1 = opcode & 0x1ff;
-				UINT32      r2 = ( opcode >> 9 ) & 0x7f;
-				UINT32      alu = ( opcode >> 21 ) & 0x1f;
-				UINT32      op = ( opcode >> 16 ) & 0x1f;
-=======
 				uint32_t      r1 = opcode & 0x1ff;
 				uint32_t      r2 = ( opcode >> 9 ) & 0x7f;
 				uint32_t      alu = ( opcode >> 21 ) & 0x1f;
 				uint32_t      op = ( opcode >> 16 ) & 0x1f;
->>>>>>> upstream/master
 
 				switch( op )
 				{
@@ -1343,11 +1184,7 @@ void mb86233_cpu_device::execute_run()
 
 					case 0x1e:  /* External->Reg */
 					{
-<<<<<<< HEAD
-						UINT32  offset;
-=======
 						uint32_t  offset;
->>>>>>> upstream/master
 
 						if ( (( r2 >> 6 ) & 7) == 1 )
 						{
@@ -1399,11 +1236,7 @@ void mb86233_cpu_device::execute_run()
 
 					case 0x17: /* External r2-> RAMInd r3 */
 					{
-<<<<<<< HEAD
-						UINT32  offset;
-=======
 						uint32_t  offset;
->>>>>>> upstream/master
 
 						offset = INDIRECT(r1,1);
 
@@ -1414,11 +1247,7 @@ void mb86233_cpu_device::execute_run()
 					break;
 					case 0x14:
 					{
-<<<<<<< HEAD
-						UINT32  offset;
-=======
 						uint32_t  offset;
->>>>>>> upstream/master
 
 						offset = INDIRECT(r1,1);
 
@@ -1436,11 +1265,7 @@ void mb86233_cpu_device::execute_run()
 
 			case 0x0d: /* CONTROL? */
 			{
-<<<<<<< HEAD
-				UINT32  sub = (opcode>>16) & 0xff;
-=======
 				uint32_t  sub = (opcode>>16) & 0xff;
->>>>>>> upstream/master
 
 				switch(sub)
 				{
@@ -1458,13 +1283,8 @@ void mb86233_cpu_device::execute_run()
 
 			case 0x0e:  /* LDIMM24 */
 			{
-<<<<<<< HEAD
-				UINT32  sub = (opcode>>24) & 0x03;
-				UINT32  imm = opcode & 0xffffff;
-=======
 				uint32_t  sub = (opcode>>24) & 0x03;
 				uint32_t  imm = opcode & 0xffffff;
->>>>>>> upstream/master
 
 				/* sign extend 24->32 */
 				if ( imm & 0x800000 )
@@ -1493,23 +1313,14 @@ void mb86233_cpu_device::execute_run()
 
 			case 0x0f:  /* REP/CLEAR/FLAGS */
 			{
-<<<<<<< HEAD
-				UINT32      alu = ( opcode >> 20 ) & 0x1f;
-				UINT32      sub2 = ( opcode >> 16 ) & 0x0f;
-=======
 				uint32_t      alu = ( opcode >> 20 ) & 0x1f;
 				uint32_t      sub2 = ( opcode >> 16 ) & 0x0f;
->>>>>>> upstream/master
 
 				ALU(alu);
 
 				if( sub2 == 0x00 )          /* CLEAR reg */
 				{
-<<<<<<< HEAD
-					UINT32  reg = opcode & 0x1f;
-=======
 					uint32_t  reg = opcode & 0x1f;
->>>>>>> upstream/master
 
 					switch( reg )
 					{
@@ -1528,11 +1339,7 @@ void mb86233_cpu_device::execute_run()
 				}
 				else if ( sub2 == 0x04 )    /* REP xxx */
 				{
-<<<<<<< HEAD
-					UINT32 sub3 = ( opcode >> 12 ) & 0x0f;
-=======
 					uint32_t sub3 = ( opcode >> 12 ) & 0x0f;
->>>>>>> upstream/master
 
 					if ( sub3 == 0 )
 					{
@@ -1562,13 +1369,8 @@ void mb86233_cpu_device::execute_run()
 
 			case 0x10:  /* LDIMM rx */
 			{
-<<<<<<< HEAD
-				UINT32  sub = (opcode>>24) & 0x03;
-				UINT32  imm = opcode & 0xffff;
-=======
 				uint32_t  sub = (opcode>>24) & 0x03;
 				uint32_t  imm = opcode & 0xffff;
->>>>>>> upstream/master
 
 				GETGPR(sub) = imm;
 			}
@@ -1576,13 +1378,8 @@ void mb86233_cpu_device::execute_run()
 
 			case 0x13:  /* LDIMM r1x */
 			{
-<<<<<<< HEAD
-				UINT32  sub = (opcode>>24) & 0x03;
-				UINT32  imm = opcode & 0xffffff;
-=======
 				uint32_t  sub = (opcode>>24) & 0x03;
 				uint32_t  imm = opcode & 0xffffff;
->>>>>>> upstream/master
 
 				if ( sub == 0 ) /* R12 */
 					GETGPR(12) = imm;
@@ -1595,13 +1392,8 @@ void mb86233_cpu_device::execute_run()
 
 			case 0x14:  /* LDIMM m,e */
 			{
-<<<<<<< HEAD
-				UINT32  sub = (opcode>>24) & 0x03;
-				UINT32  imm = opcode & 0xffffff;
-=======
 				uint32_t  sub = (opcode>>24) & 0x03;
 				uint32_t  imm = opcode & 0xffffff;
->>>>>>> upstream/master
 
 				if ( sub == 0 ) /* A */
 				{
@@ -1626,13 +1418,8 @@ void mb86233_cpu_device::execute_run()
 
 			case 0x15:  /* LDIMM m,e */
 			{
-<<<<<<< HEAD
-				UINT32  sub = (opcode>>24) & 0x03;
-				UINT32  imm = opcode & 0xffffff;
-=======
 				uint32_t  sub = (opcode>>24) & 0x03;
 				uint32_t  imm = opcode & 0xffffff;
->>>>>>> upstream/master
 
 				if ( sub == 0 ) /* B.e again? */
 				{
@@ -1659,13 +1446,8 @@ void mb86233_cpu_device::execute_run()
 
 			case 0x16:  /* LDIMM m,e */
 			{
-<<<<<<< HEAD
-				UINT32  sub = (opcode>>24) & 0x03;
-				UINT32  imm = opcode & 0xffffff;
-=======
 				uint32_t  sub = (opcode>>24) & 0x03;
 				uint32_t  imm = opcode & 0xffffff;
->>>>>>> upstream/master
 
 				if ( sub == 1 ) /* clear + D.m */
 				{
@@ -1690,13 +1472,8 @@ void mb86233_cpu_device::execute_run()
 
 			case 0x17:  /* LDIMM special reg */
 			{
-<<<<<<< HEAD
-				UINT32  sub = (opcode>>24) & 0x03;
-				UINT32  imm = opcode & 0xffffff;
-=======
 				uint32_t  sub = (opcode>>24) & 0x03;
 				uint32_t  imm = opcode & 0xffffff;
->>>>>>> upstream/master
 
 				if ( sub == 0x03 )
 				{
@@ -1711,13 +1488,8 @@ void mb86233_cpu_device::execute_run()
 
 			case 0x18:  /* LDIMM external reg */
 			{
-<<<<<<< HEAD
-				UINT32  sub = (opcode>>24) & 0x03;
-				UINT32  imm = opcode & 0xffffff;
-=======
 				uint32_t  sub = (opcode>>24) & 0x03;
 				uint32_t  imm = opcode & 0xffffff;
->>>>>>> upstream/master
 
 				if ( sub == 0x03 )
 				{
@@ -1732,13 +1504,8 @@ void mb86233_cpu_device::execute_run()
 
 			case 0x1d:  //LDIMM to Rep regs
 			{
-<<<<<<< HEAD
-				UINT32 sub = (opcode>>24)&0x3;
-				UINT32 imm = opcode&0xffffff;
-=======
 				uint32_t sub = (opcode>>24)&0x3;
 				uint32_t imm = opcode&0xffffff;
->>>>>>> upstream/master
 				if(sub == 0x00)
 				{
 					GETREPCNT() = imm;
@@ -1752,15 +1519,9 @@ void mb86233_cpu_device::execute_run()
 
 			case 0x2f:  /* Conditional Branches */
 			{
-<<<<<<< HEAD
-				UINT32  cond = ( opcode >> 20 ) & 0x1f;
-				UINT32  subtype = ( opcode >> 16 ) & 0x0f;
-				UINT32  data = opcode & 0xffff;
-=======
 				uint32_t  cond = ( opcode >> 20 ) & 0x1f;
 				uint32_t  subtype = ( opcode >> 16 ) & 0x0f;
 				uint32_t  data = opcode & 0xffff;
->>>>>>> upstream/master
 
 				if( COND( cond) )
 				{
@@ -1822,15 +1583,9 @@ void mb86233_cpu_device::execute_run()
 
 			case 0x3f:  /* Inverse Conditional Branches */
 			{
-<<<<<<< HEAD
-				UINT32  cond = ( opcode >> 20 ) & 0x1f;
-				UINT32  subtype = ( opcode >> 16 ) & 0x0f;
-				UINT32  data = opcode & 0xffff;
-=======
 				uint32_t  cond = ( opcode >> 20 ) & 0x1f;
 				uint32_t  subtype = ( opcode >> 16 ) & 0x0f;
 				uint32_t  data = opcode & 0xffff;
->>>>>>> upstream/master
 
 				if( !COND( cond) )
 				{

@@ -3,17 +3,6 @@
 #include "emu.h"
 #include "msx_matsushita.h"
 
-<<<<<<< HEAD
-
-const device_type MSX_MATSUSHITA = &device_creator<msx_matsushita_device>;
-
-
-msx_matsushita_device::msx_matsushita_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: msx_switched_device(mconfig, MSX_MATSUSHITA, "Matsushita switched device", tag, owner, clock, "msx_matsushita", __FILE__)
-	, m_io_config(*this, "CONFIG")
-	, m_nvram(*this, "nvram")
-	, m_turbo_out_cb(*this)
-=======
 const uint8_t manufacturer_id = 0x08;
 
 DEFINE_DEVICE_TYPE(MSX_MATSUSHITA, msx_matsushita_device, "msx_matsushita", "Matsushita switched device")
@@ -24,7 +13,6 @@ msx_matsushita_device::msx_matsushita_device(const machine_config &mconfig, cons
 	, m_io_config(*this, "CONFIG")
 	, m_turbo_out_cb(*this)
 	, m_selected(false)
->>>>>>> upstream/master
 	, m_address(0)
 	, m_nibble1(0)
 	, m_nibble2(0)
@@ -33,26 +21,6 @@ msx_matsushita_device::msx_matsushita_device(const machine_config &mconfig, cons
 }
 
 
-<<<<<<< HEAD
-UINT8 msx_matsushita_device::get_id()
-{
-	return 0x08;
-}
-
-
-static MACHINE_CONFIG_FRAGMENT( matsushita )
-	MCFG_NVRAM_ADD_0FILL("nvram")
-MACHINE_CONFIG_END
-
-
-machine_config_constructor msx_matsushita_device::device_mconfig_additions() const
-{
-	return MACHINE_CONFIG_NAME( matsushita );
-}
-
-
-=======
->>>>>>> upstream/master
 static INPUT_PORTS_START( matsushita )
 	PORT_START("CONFIG")
 	PORT_CONFNAME( 0x80, 0x00, "Firmware switch")
@@ -70,27 +38,10 @@ ioport_constructor msx_matsushita_device::device_input_ports() const
 
 void msx_matsushita_device::device_start()
 {
-<<<<<<< HEAD
-	msx_switched_device::device_start();
-
-=======
->>>>>>> upstream/master
 	m_turbo_out_cb.resolve_safe();
 
 	m_sram.resize(0x800);
 
-<<<<<<< HEAD
-	m_nvram->set_base(&m_sram[0], 0x000);
-}
-
-
-READ8_MEMBER(msx_matsushita_device::io_read)
-{
-	switch (offset)
-	{
-		case 0x00:
-			return ~get_id();
-=======
 	save_item(NAME(m_selected));
 	save_item(NAME(m_address));
 	save_item(NAME(m_sram));
@@ -126,19 +77,11 @@ READ8_MEMBER(msx_matsushita_device::switched_read)
 		{
 		case 0x00:
 			return manufacturer_id ^ 0xff;
->>>>>>> upstream/master
 
 		case 0x01:
 			return m_io_config->read();
 
 		case 0x03:
-<<<<<<< HEAD
-			{
-				UINT8 result = (((m_pattern & 0x80) ? m_nibble1 : m_nibble2) << 4) | ((m_pattern & 0x40) ? m_nibble1 : m_nibble2);
-				m_pattern = (m_pattern << 2) | (m_pattern >> 6);
-				return result;
-			}
-=======
 		{
 			uint8_t result = (((m_pattern & 0x80) ? m_nibble1 : m_nibble2) << 4) | ((m_pattern & 0x40) ? m_nibble1 : m_nibble2);
 
@@ -147,7 +90,6 @@ READ8_MEMBER(msx_matsushita_device::switched_read)
 
 			return result;
 		}
->>>>>>> upstream/master
 
 		case 0x09:   // Data
 			if (m_address < m_sram.size())
@@ -159,16 +101,10 @@ READ8_MEMBER(msx_matsushita_device::switched_read)
 		default:
 			logerror("msx_matsushita: unhandled read from offset %02x\n", offset);
 			break;
-<<<<<<< HEAD
-	}
-
-	return 0xFF;
-=======
 		}
 	}
 
 	return 0xff;
->>>>>>> upstream/master
 }
 
 
@@ -201,16 +137,6 @@ READ8_MEMBER(msx_matsushita_device::switched_read)
 */
 
 
-<<<<<<< HEAD
-WRITE8_MEMBER(msx_matsushita_device::io_write)
-{
-	switch (offset)
-	{
-		// bit 0: CPU clock select
-		//        0 - 5.369317 MHz
-		//        1 - 3.579545 MHz
-		case 0x01:
-=======
 WRITE8_MEMBER(msx_matsushita_device::switched_write)
 {
 	if (offset == 0)
@@ -225,7 +151,6 @@ WRITE8_MEMBER(msx_matsushita_device::switched_write)
 			// bit 0: CPU clock select
 			//        0 - 5.369317 MHz
 			//        1 - 3.579545 MHz
->>>>>>> upstream/master
 			m_turbo_out_cb((data & 1) ? ASSERT_LINE : CLEAR_LINE);
 			break;
 
@@ -256,9 +181,6 @@ WRITE8_MEMBER(msx_matsushita_device::switched_write)
 		default:
 			logerror("msx_matsushita: unhandled write %02x to offset %02x\n", data, offset);
 			break;
-<<<<<<< HEAD
-=======
 		}
->>>>>>> upstream/master
 	}
 }

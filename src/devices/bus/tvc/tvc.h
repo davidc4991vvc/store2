@@ -53,15 +53,10 @@
                    +----------+
 *********************************************************************/
 
-<<<<<<< HEAD
-#ifndef __TVCEXP_H__
-#define __TVCEXP_H__
-=======
 #ifndef MAME_BUS_TVC_TVC_H
 #define MAME_BUS_TVC_TVC_H
 
 #pragma once
->>>>>>> upstream/master
 
 
 /***************************************************************************
@@ -74,19 +69,6 @@ class device_tvcexp_interface : public device_slot_card_interface
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	device_tvcexp_interface(const machine_config &mconfig, device_t &device);
-	virtual ~device_tvcexp_interface();
-
-	// reading and writing
-	virtual UINT8 id_r() { return 0x00; }   // ID_A and ID_B lines
-	virtual void int_ack() { }
-	virtual UINT8 int_r() { return 1; }
-	virtual DECLARE_READ8_MEMBER(read) { return 0x00; }
-	virtual DECLARE_WRITE8_MEMBER(write) {}
-	virtual DECLARE_READ8_MEMBER(io_read) { return 0x00; }
-	virtual DECLARE_WRITE8_MEMBER(io_write) {}
-=======
 	virtual ~device_tvcexp_interface();
 
 	// reading and writing
@@ -100,7 +82,6 @@ public:
 
 protected:
 	device_tvcexp_interface(const machine_config &mconfig, device_t &device);
->>>>>>> upstream/master
 };
 
 // ======================> tvcexp_slot_device
@@ -110,21 +91,6 @@ class tvcexp_slot_device : public device_t,
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	tvcexp_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-	virtual ~tvcexp_slot_device();
-
-	template<class _Object> static devcb_base &set_out_irq_callback(device_t &device, _Object object) { return downcast<tvcexp_slot_device &>(device).m_out_irq_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_out_nmi_callback(device_t &device, _Object object) { return downcast<tvcexp_slot_device &>(device).m_out_nmi_cb.set_callback(object); }
-
-	// device-level overrides
-	virtual void device_start();
-
-	// reading and writing
-	virtual UINT8 id_r();
-	virtual void int_ack();
-	virtual UINT8 int_r();
-=======
 	tvcexp_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 	virtual ~tvcexp_slot_device();
 
@@ -135,33 +101,23 @@ public:
 	virtual uint8_t id_r();
 	virtual void int_ack();
 	virtual uint8_t int_r();
->>>>>>> upstream/master
 	virtual DECLARE_READ8_MEMBER(read);
 	virtual DECLARE_WRITE8_MEMBER(write);
 	virtual DECLARE_READ8_MEMBER(io_read);
 	virtual DECLARE_WRITE8_MEMBER(io_write);
 
-<<<<<<< HEAD
-	devcb_write_line                m_out_irq_cb;
-	devcb_write_line                m_out_nmi_cb;
-=======
 protected:
 	// device-level overrides
 	virtual void device_start() override;
 
 	devcb_write_line            m_out_irq_cb;
 	devcb_write_line            m_out_nmi_cb;
->>>>>>> upstream/master
 
 	device_tvcexp_interface*    m_cart;
 };
 
 // device type definition
-<<<<<<< HEAD
-extern const device_type TVCEXP_SLOT;
-=======
 DECLARE_DEVICE_TYPE(TVCEXP_SLOT, tvcexp_slot_device)
->>>>>>> upstream/master
 
 
 /***************************************************************************
@@ -174,8 +130,4 @@ DECLARE_DEVICE_TYPE(TVCEXP_SLOT, tvcexp_slot_device)
 #define MCFG_TVCEXP_SLOT_OUT_NMI_CB(_devcb) \
 	devcb = &tvcexp_slot_device::set_out_nmi_callback(*device, DEVCB_##_devcb);
 
-<<<<<<< HEAD
-#endif /* __TVCEXP_H__ */
-=======
 #endif // MAME_BUS_TVC_TVC_H
->>>>>>> upstream/master

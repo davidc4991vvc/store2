@@ -108,16 +108,6 @@ enum
 
 struct cbm_crt_header
 {
-<<<<<<< HEAD
-	UINT8 signature[16];
-	UINT8 header_length[4];
-	UINT8 version[2];
-	UINT8 hardware[2];
-	UINT8 exrom;
-	UINT8 game;
-	UINT8 reserved[6];
-	UINT8 name[32];
-=======
 	uint8_t signature[16];
 	uint8_t header_length[4];
 	uint8_t version[2];
@@ -126,27 +116,17 @@ struct cbm_crt_header
 	uint8_t game;
 	uint8_t reserved[6];
 	uint8_t name[32];
->>>>>>> upstream/master
 };
 
 
 struct cbm_crt_chip
 {
-<<<<<<< HEAD
-	UINT8 signature[4];
-	UINT8 packet_length[4];
-	UINT8 chip_type[2];
-	UINT8 bank[2];
-	UINT8 start_address[2];
-	UINT8 image_size[2];
-=======
 	uint8_t signature[4];
 	uint8_t packet_length[4];
 	uint8_t chip_type[2];
 	uint8_t bank[2];
 	uint8_t start_address[2];
 	uint8_t image_size[2];
->>>>>>> upstream/master
 };
 
 
@@ -155,15 +135,9 @@ struct cbm_crt_chip
 //  FUNCTION PROTOTYPES
 //**************************************************************************
 
-<<<<<<< HEAD
-void cbm_crt_get_card(std::string &result, core_file *file);
-bool cbm_crt_read_header(core_file* file, size_t *roml_size, size_t *romh_size, int *exrom, int *game);
-bool cbm_crt_read_data(core_file* file, UINT8 *roml, UINT8 *romh);
-=======
 std::string cbm_crt_get_card(util::core_file &file);
 bool cbm_crt_read_header(util::core_file &file, size_t *roml_size, size_t *romh_size, int *exrom, int *game);
 bool cbm_crt_read_data(util::core_file &file, uint8_t *roml, uint8_t *romh);
->>>>>>> upstream/master
 
 
 #endif

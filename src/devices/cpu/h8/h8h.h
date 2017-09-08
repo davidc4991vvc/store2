@@ -11,34 +11,14 @@
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-#ifndef __H8H_H__
-#define __H8H_H__
-=======
 #ifndef MAME_CPU_H8_H8H_H
 #define MAME_CPU_H8_H8H_H
 
 #pragma once
->>>>>>> upstream/master
 
 #include "h8.h"
 
 class h8h_device : public h8_device {
-<<<<<<< HEAD
-public:
-	h8h_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source, address_map_delegate map_delegate);
-
-protected:
-	static const disasm_entry disasm_entries[];
-
-	virtual offs_t disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options);
-
-	virtual void do_exec_full();
-	virtual void do_exec_partial();
-
-	inline void r32_w(int reg, UINT32 val) { R[reg & 7] = val; R[(reg & 7) | 8] = val >> 16; }
-	inline UINT32 r32_r(int reg) const { return R[reg & 7] | (R[(reg & 7) | 8] << 16); }
-=======
 protected:
 	static const disasm_entry disasm_entries[];
 
@@ -51,7 +31,6 @@ protected:
 
 	inline void r32_w(int reg, uint32_t val) { R[reg & 7] = val; R[(reg & 7) | 8] = val >> 16; }
 	inline uint32_t r32_r(int reg) const { return R[reg & 7] | (R[(reg & 7) | 8] << 16); }
->>>>>>> upstream/master
 
 #define O(o) void o ## _full(); void o ## _partial()
 
@@ -128,8 +107,4 @@ protected:
 #undef O
 };
 
-<<<<<<< HEAD
-#endif
-=======
 #endif // MAME_CPU_H8_H8H_H
->>>>>>> upstream/master

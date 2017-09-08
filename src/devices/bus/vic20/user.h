@@ -21,24 +21,13 @@
 
 **********************************************************************/
 
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __VIC20_USER_PORT__
-#define __VIC20_USER_PORT__
-=======
 #ifndef MAME_BUS_VIC20_USER_H
 #define MAME_BUS_VIC20_USER_H
 
 #pragma once
->>>>>>> upstream/master
 
 #include "bus/pet/user.h"
 
 SLOT_INTERFACE_EXTERN( vic20_user_port_cards );
 
-<<<<<<< HEAD
-#endif
-=======
 #endif // MAME_BUS_VIC20_USER_H
->>>>>>> upstream/master

@@ -36,12 +36,6 @@ Notes/Tidbits:
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/z80/z80.h"
-#include "machine/i8255.h"
-#include "sound/ay8910.h"
-#include "includes/scramble.h"
-=======
 #include "includes/scramble.h"
 
 #include "cpu/z80/z80.h"
@@ -49,7 +43,6 @@ Notes/Tidbits:
 #include "machine/watchdog.h"
 #include "sound/ay8910.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 class scobra_state : public scramble_state
@@ -59,11 +52,7 @@ public:
 		: scramble_state(mconfig, type, tag),
 			m_soundram(*this, "soundram") { }
 
-<<<<<<< HEAD
-	optional_shared_ptr<UINT8> m_soundram;
-=======
 	optional_shared_ptr<uint8_t> m_soundram;
->>>>>>> upstream/master
 	DECLARE_READ8_MEMBER(scobra_soundram_r);
 	DECLARE_WRITE8_MEMBER(scobra_soundram_w);
 	DECLARE_READ8_MEMBER(scobra_type2_ppi8255_0_r);
@@ -136,11 +125,7 @@ static ADDRESS_MAP_START( type1_map, AS_PROGRAM, 8, scobra_state )
 	AM_RANGE(0xa804, 0xa804) AM_WRITE(galaxold_stars_enable_w)
 	AM_RANGE(0xa806, 0xa806) AM_WRITE(galaxold_flip_screen_x_w)
 	AM_RANGE(0xa807, 0xa807) AM_WRITE(galaxold_flip_screen_y_w)
-<<<<<<< HEAD
-	AM_RANGE(0xb000, 0xb000) AM_READ(watchdog_reset_r)
-=======
 	AM_RANGE(0xb000, 0xb000) AM_DEVREAD("watchdog", watchdog_timer_device, reset_r)
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( type2_map, AS_PROGRAM, 8, scobra_state )
@@ -152,11 +137,7 @@ static ADDRESS_MAP_START( type2_map, AS_PROGRAM, 8, scobra_state )
 	AM_RANGE(0x8880, 0x88ff) AM_RAM
 	AM_RANGE(0x9000, 0x93ff) AM_RAM_WRITE(galaxold_videoram_w) AM_SHARE("videoram")
 	AM_RANGE(0x9400, 0x97ff) AM_READWRITE(galaxold_videoram_r, galaxold_videoram_w) /* mirror */
-<<<<<<< HEAD
-	AM_RANGE(0x9800, 0x9800) AM_READ(watchdog_reset_r)
-=======
 	AM_RANGE(0x9800, 0x9800) AM_DEVREAD("watchdog", watchdog_timer_device, reset_r)
->>>>>>> upstream/master
 	AM_RANGE(0xa000, 0xa00f) AM_READWRITE(scobra_type2_ppi8255_0_r, scobra_type2_ppi8255_0_w)
 	AM_RANGE(0xa800, 0xa80f) AM_READWRITE(scobra_type2_ppi8255_1_r, scobra_type2_ppi8255_1_w)
 	AM_RANGE(0xb000, 0xb000) AM_WRITE(galaxold_stars_enable_w)
@@ -179,11 +160,7 @@ static ADDRESS_MAP_START( hustler_map, AS_PROGRAM, 8, scobra_state )
 	AM_RANGE(0xa804, 0xa804) AM_WRITE(galaxold_nmi_enable_w)
 	AM_RANGE(0xa806, 0xa806) AM_WRITE(galaxold_flip_screen_y_w)
 	AM_RANGE(0xa80e, 0xa80e) AM_WRITENOP    /* coin counters */
-<<<<<<< HEAD
-	AM_RANGE(0xb800, 0xb800) AM_READ(watchdog_reset_r)
-=======
 	AM_RANGE(0xb800, 0xb800) AM_DEVREAD("watchdog", watchdog_timer_device, reset_r)
->>>>>>> upstream/master
 	AM_RANGE(0xd000, 0xd01f) AM_READWRITE(hustler_ppi8255_0_r, hustler_ppi8255_0_w)
 	AM_RANGE(0xe000, 0xe01f) AM_READWRITE(hustler_ppi8255_1_r, hustler_ppi8255_1_w)
 ADDRESS_MAP_END
@@ -200,11 +177,7 @@ static ADDRESS_MAP_START( hustlerb_map, AS_PROGRAM, 8, scobra_state )
 	AM_RANGE(0xa802, 0xa802) AM_WRITENOP    /* coin counters */
 	AM_RANGE(0xa806, 0xa806) AM_WRITE(galaxold_flip_screen_y_w)
 	AM_RANGE(0xa807, 0xa807) AM_WRITE(galaxold_flip_screen_x_w)
-<<<<<<< HEAD
-	AM_RANGE(0xb000, 0xb000) AM_READ(watchdog_reset_r)
-=======
 	AM_RANGE(0xb000, 0xb000) AM_DEVREAD("watchdog", watchdog_timer_device, reset_r)
->>>>>>> upstream/master
 	AM_RANGE(0xc100, 0xc103) AM_DEVREADWRITE("ppi8255_0", i8255_device, read, write)
 	AM_RANGE(0xc200, 0xc203) AM_DEVREADWRITE("ppi8255_1", i8255_device, read, write)
 ADDRESS_MAP_END
@@ -225,11 +198,7 @@ static ADDRESS_MAP_START( mimonkey_map, AS_PROGRAM, 8, scobra_state )
 	AM_RANGE(0xa800, 0xa802) AM_WRITE(galaxold_gfxbank_w)
 	AM_RANGE(0xa806, 0xa806) AM_WRITE(galaxold_flip_screen_x_w)
 	AM_RANGE(0xa807, 0xa807) AM_WRITE(galaxold_flip_screen_y_w)
-<<<<<<< HEAD
-	AM_RANGE(0xb000, 0xb000) AM_READ(watchdog_reset_r)
-=======
 	AM_RANGE(0xb000, 0xb000) AM_DEVREAD("watchdog", watchdog_timer_device, reset_r)
->>>>>>> upstream/master
 	AM_RANGE(0xc000, 0xffff) AM_ROM
 ADDRESS_MAP_END
 
@@ -266,11 +235,7 @@ static ADDRESS_MAP_START( rescuefe_map, AS_PROGRAM, 8, scobra_state )
 
 	// addresses below are WRONG, just moved to keep things out the way while the rom mapping is figured out
 //  AM_RANGE(0xf802, 0xf802) AM_WRITE(galaxold_coin_counter_w)
-<<<<<<< HEAD
-//  AM_RANGE(0xf000, 0xf000) AM_READ(watchdog_reset_r)
-=======
 //  AM_RANGE(0xf000, 0xf000) AM_DEVREAD("watchdog", watchdog_timer_device, reset_r)
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( minefldfe_map, AS_PROGRAM, 8, scobra_state )
@@ -298,11 +263,7 @@ static ADDRESS_MAP_START( minefldfe_map, AS_PROGRAM, 8, scobra_state )
 
 
 
-<<<<<<< HEAD
-	AM_RANGE(0x1D98, 0x1D98) AM_READ(watchdog_reset_r) // 0xb000
-=======
 	AM_RANGE(0x1D98, 0x1D98) AM_DEVREAD("watchdog", watchdog_timer_device, reset_r) // 0xb000
->>>>>>> upstream/master
 
 
 	// addresses below are WRONG, just moved to keep things out the way while the rom mapping is figured out
@@ -365,11 +326,7 @@ ADDRESS_MAP_END
 /* stratgyx coinage DIPs are spread across two input ports */
 CUSTOM_INPUT_MEMBER(scobra_state::stratgyx_coinage_r)
 {
-<<<<<<< HEAD
-	int bit_mask = (FPTR)param;
-=======
 	int bit_mask = (uintptr_t)param;
->>>>>>> upstream/master
 	return (ioport("IN4")->read() & bit_mask) ? 0x01 : 0x00;
 }
 
@@ -804,11 +761,7 @@ static INPUT_PORTS_START( mimonsco )
 INPUT_PORTS_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( type1, scobra_state )
-=======
 static MACHINE_CONFIG_START( type1 )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, 18432000/6)    /* 3.072 MHz */
@@ -830,11 +783,7 @@ static MACHINE_CONFIG_START( type1 )
 	MCFG_I8255_IN_PORTC_CB(IOPORT("IN2"))
 
 	MCFG_DEVICE_ADD("ppi8255_1", I8255A, 0)
-<<<<<<< HEAD
-	MCFG_I8255_OUT_PORTA_CB(WRITE8(driver_device, soundlatch_byte_w))
-=======
 	MCFG_I8255_OUT_PORTA_CB(DEVWRITE8("soundlatch", generic_latch_8_device, write))
->>>>>>> upstream/master
 	MCFG_I8255_OUT_PORTB_CB(WRITE8(scramble_state, scramble_sh_irqtrigger_w))
 
 	MCFG_DEVICE_ADD("7474_9m_1", TTL7474, 0)
@@ -845,11 +794,8 @@ static MACHINE_CONFIG_START( type1 )
 
 	MCFG_TIMER_DRIVER_ADD("int_timer", scobra_state, galaxold_interrupt_timer)
 
-<<<<<<< HEAD
-=======
 	MCFG_WATCHDOG_ADD("watchdog")
 
->>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE(16000.0/132/2)
@@ -867,21 +813,14 @@ static MACHINE_CONFIG_START( type1 )
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
-<<<<<<< HEAD
-=======
 
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 
->>>>>>> upstream/master
 	MCFG_SOUND_ADD("ay1", AY8910, 14318000/8)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.16)
 
 	MCFG_SOUND_ADD("ay2", AY8910, 14318000/8)
-<<<<<<< HEAD
-	MCFG_AY8910_PORT_A_READ_CB(READ8(driver_device, soundlatch_byte_r))
-=======
 	MCFG_AY8910_PORT_A_READ_CB(DEVREAD8("soundlatch", generic_latch_8_device, read))
->>>>>>> upstream/master
 	MCFG_AY8910_PORT_B_READ_CB(READ8(scramble_state, scramble_portB_r))
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.16)
 MACHINE_CONFIG_END
@@ -959,11 +898,7 @@ static MACHINE_CONFIG_DERIVED( stratgyx, type2 )
 
 	MCFG_DEVICE_REMOVE("ppi8255_1")
 	MCFG_DEVICE_ADD("ppi8255_1", I8255A, 0)
-<<<<<<< HEAD
-	MCFG_I8255_OUT_PORTA_CB(WRITE8(driver_device, soundlatch_byte_w))
-=======
 	MCFG_I8255_OUT_PORTA_CB(DEVWRITE8("soundlatch", generic_latch_8_device, write))
->>>>>>> upstream/master
 	MCFG_I8255_OUT_PORTB_CB(WRITE8(scramble_state, scramble_sh_irqtrigger_w))
 	MCFG_I8255_IN_PORTC_CB(IOPORT("IN3"))
 
@@ -989,11 +924,7 @@ static MACHINE_CONFIG_DERIVED( darkplnt, type2 )
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( hustler, scobra_state )
-=======
 static MACHINE_CONFIG_START( hustler )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, 18432000/6)    /* 3.072 MHz */
@@ -1017,22 +948,15 @@ static MACHINE_CONFIG_START( hustler )
 
 	MCFG_TIMER_DRIVER_ADD("int_timer", scobra_state, galaxold_interrupt_timer)
 
-<<<<<<< HEAD
-=======
 	MCFG_WATCHDOG_ADD("watchdog")
 
->>>>>>> upstream/master
 	MCFG_DEVICE_ADD("ppi8255_0", I8255A, 0)
 	MCFG_I8255_IN_PORTA_CB(IOPORT("IN0"))
 	MCFG_I8255_IN_PORTB_CB(IOPORT("IN1"))
 	MCFG_I8255_IN_PORTC_CB(IOPORT("IN2"))
 
 	MCFG_DEVICE_ADD("ppi8255_1", I8255A, 0)
-<<<<<<< HEAD
-	MCFG_I8255_OUT_PORTA_CB(WRITE8(driver_device, soundlatch_byte_w))
-=======
 	MCFG_I8255_OUT_PORTA_CB(DEVWRITE8("soundlatch", generic_latch_8_device, write))
->>>>>>> upstream/master
 	MCFG_I8255_OUT_PORTB_CB(WRITE8(scramble_state, scramble_sh_irqtrigger_w))
 
 	/* video hardware */
@@ -1052,14 +976,9 @@ static MACHINE_CONFIG_START( hustler )
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
-<<<<<<< HEAD
-	MCFG_SOUND_ADD("aysnd", AY8910, 14318000/8)
-	MCFG_AY8910_PORT_A_READ_CB(READ8(driver_device, soundlatch_byte_r))
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 	MCFG_SOUND_ADD("aysnd", AY8910, 14318000/8)
 	MCFG_AY8910_PORT_A_READ_CB(DEVREAD8("soundlatch", generic_latch_8_device, read))
->>>>>>> upstream/master
 	MCFG_AY8910_PORT_B_READ_CB(READ8(scramble_state, hustler_portB_r))
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.33)
 MACHINE_CONFIG_END
@@ -1204,8 +1123,6 @@ ROM_START( tazmani2 )
 	ROM_LOAD( "colr6f.cpu",   0x0000, 0x0020, CRC(fce333c7) SHA1(f63a214dc47c5e7c80db000b0b6a261ca8da6629) )
 ROM_END
 
-<<<<<<< HEAD
-=======
 ROM_START( tazmani3 )
 	ROM_REGION( 0x10000, "maincpu", 0 )
 	ROM_LOAD( "2ck.cpu",      0x0000, 0x1000, CRC(e8b6f9c3) SHA1(121f83274b3fdb4b2cb4bd0160d61886825c8793) ) // sldh
@@ -1226,7 +1143,6 @@ ROM_START( tazmani3 )
 	ROM_LOAD( "colr6f.cpu",   0x0000, 0x0020, CRC(6a0c7d87) SHA1(140335d85c67c75b65689d4e76d29863c209cf32) ) // sldh
 ROM_END
 
->>>>>>> upstream/master
 /*
     Rescue
 
@@ -1593,11 +1509,7 @@ ROM_START( hustlerb2 )
 	/* 3000-3fff space for diagnostics ROM */
 
 	ROM_REGION( 0x10000, "audiocpu", 0 )
-<<<<<<< HEAD
-	ROM_LOAD( "b6.bin",    0x0000, 0x0800, CRC(7a946544) SHA1(7ee2ad3fdf996f08534fb87fc02b619c168f420c) )
-=======
 	ROM_LOAD( "b6.bin",    0x0000, 0x0800, CRC(7a946544) SHA1(7ee2ad3fdf996f08534fb87fc02b619c168f420c) ) // sldh
->>>>>>> upstream/master
 	ROM_LOAD( "b7.bin",    0x0800, 0x0800, CRC(3db57351) SHA1(e5075a7130a80d2bf24f0556c2589dff0625ee60) )
 
 	ROM_REGION( 0x1000, "gfx1", 0 )
@@ -1634,8 +1546,6 @@ ROM_START( hustlerb4 )
 	ROM_LOAD( "top.c5",  0x0000, 0x0800, CRC(88226086) SHA1(fe2da172313063e5b056fc8c8d8b2a5c64db5179) )
 ROM_END
 
-<<<<<<< HEAD
-=======
 // the following romset came from a blister, so no PCB infos. It's a mix between hustlerb4's main CPU and GFX ROMs and hustlerb's audio CPU ROMs.
 
 ROM_START( hustlerb5 )
@@ -1659,7 +1569,6 @@ ROM_START( hustlerb5 )
 	ROM_LOAD( "mni6331.e6",  0x0000, 0x0020, CRC(aa1f7f5e) SHA1(311dd17aa11490a1173c76223e4ccccf8ea29850) )
 ROM_END
 
->>>>>>> upstream/master
 ROM_START( mimonkey )
 	ROM_REGION( 0x10000, "maincpu", 0 )
 	ROM_LOAD( "mm1.2e",       0x0000, 0x1000, CRC(9019f1b1) SHA1(0c45f64e39b9a182f6162ab520ced6ef0686466c) )
@@ -1709,33 +1618,6 @@ ROM_START( mimonsco )
 ROM_END
 
 
-<<<<<<< HEAD
-GAME( 1981, stratgyx,  0,        stratgyx,  stratgyx,  scramble_state,  stratgyx,     ROT0,   "Konami",                             "Strategy X", MACHINE_SUPPORTS_SAVE )
-GAME( 1981, stratgys,  stratgyx, stratgyx,  stratgyx,  scramble_state,  stratgyx,     ROT0,   "Konami (Stern Electronics license)", "Strategy X (Stern Electronics)", MACHINE_SUPPORTS_SAVE )
-GAME( 1982, strongx,   stratgyx, stratgyx,  stratgyx,  scramble_state,  stratgyx,     ROT0,   "bootleg",                            "Strong X", MACHINE_SUPPORTS_SAVE )
-
-GAME( 1982, darkplnt,  0,        darkplnt,  darkplnt,  scramble_state,  darkplnt,     ROT180, "Stern Electronics",                  "Dark Planet", MACHINE_SUPPORTS_SAVE )
-
-GAME( 1982, tazmani2,  tazmania, type2,     tazmania,  scramble_state,  tazmani2,     ROT90,  "Stern Electronics",                  "Tazz-Mania (set 2, alt hardware)", MACHINE_SUPPORTS_SAVE )
-
-GAME( 1982, rescue,    0,        rescue,    rescue,    scramble_state,  rescue,       ROT90,  "Stern Electronics",                  "Rescue", MACHINE_SUPPORTS_SAVE )
-GAME( 1982, rescueb,   rescue,   rescueb,   rescue,    scramble_state,  rescue,       ROT90,  "bootleg (Videl Games)",              "Tuono Blu (bootleg of Rescue)", MACHINE_SUPPORTS_SAVE )
-GAME( 1982, aponow,    rescue,   rescue,    rescue,    scramble_state,  rescue,       ROT90,  "bootleg",                            "Apocaljpse Now (bootleg of Rescue)", MACHINE_SUPPORTS_SAVE )
-GAME( 1982, rescuefe,  rescue,   rescuefe,  rescue,    driver_device,   0,            ROT90,  "bootleg (Free Enterprise Games)",    "Rescue (Free Enterprise Games, bootleg)", MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE )
-
-GAME( 1983, minefld,   0,        minefld,   minefld,   scramble_state,  minefld,      ROT90,  "Stern Electronics",                  "Minefield", MACHINE_SUPPORTS_SAVE )
-GAME( 1983, minefldfe, minefld,  minefldfe, minefldfe, driver_device,   0,            ROT90,  "bootleg (The Logicshop)",            "Minefield (The Logicshop, bootleg)", MACHINE_SUPPORTS_SAVE ) // The Logicshop ('licensed' from Free Enterprise Games?
-
-GAME( 1981, hustler,   0,        hustler,   hustler,   scramble_state,  hustler,      ROT90,  "Konami",                             "Video Hustler", MACHINE_SUPPORTS_SAVE )
-GAME( 1981, hustlerd,  hustler,  hustler,   hustler,   scramble_state,  hustlerd,     ROT90,  "Konami (Dynamo Games license)",      "Video Hustler (Dynamo Games)", MACHINE_SUPPORTS_SAVE )
-GAME( 1981, billiard,  hustler,  hustler,   hustler,   scramble_state,  billiard,     ROT90,  "bootleg",                            "The Billiards (Video Hustler bootleg)", MACHINE_SUPPORTS_SAVE )
-GAME( 1981, hustlerb,  hustler,  hustlerb,  hustler,   driver_device,   0,            ROT90,  "bootleg (Digimatic)",                "Video Hustler (bootleg, set 1)", MACHINE_SUPPORTS_SAVE )
-GAME( 1981, hustlerb2, hustler,  hustler,   hustler,   scramble_state,  hustlerd,     ROT90,  "bootleg",                            "Fatsy Gambler (Video Hustler bootleg)", MACHINE_SUPPORTS_SAVE )
-GAME( 1981, hustlerb4, hustler,  hustlerb4, hustler,   driver_device,   0,            ROT90,  "bootleg",                            "Video Hustler (bootleg, set 2)", MACHINE_SUPPORTS_SAVE )
-
-GAME( 1982, mimonkey,  0,        mimonkey,  mimonkey,  scramble_state,  mimonkey,     ROT90,  "Universal Video Games",              "Mighty Monkey", MACHINE_SUPPORTS_SAVE )
-GAME( 1982, mimonsco,  mimonkey, mimonkey,  mimonsco,  scramble_state,  mimonsco,     ROT90,  "bootleg",                            "Mighty Monkey (bootleg on Super Cobra hardware)", MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1981, stratgyx,  0,        stratgyx,  stratgyx,  scobra_state,  stratgyx,     ROT0,   "Konami",                             "Strategy X", MACHINE_SUPPORTS_SAVE )
 GAME( 1981, stratgys,  stratgyx, stratgyx,  stratgyx,  scobra_state,  stratgyx,     ROT0,   "Konami (Stern Electronics license)", "Strategy X (Stern Electronics)", MACHINE_SUPPORTS_SAVE )
 GAME( 1982, strongx,   stratgyx, stratgyx,  stratgyx,  scobra_state,  stratgyx,     ROT0,   "bootleg",                            "Strong X", MACHINE_SUPPORTS_SAVE )
@@ -1763,4 +1645,3 @@ GAME( 1981, hustlerb5, hustler,  hustlerb,  hustler,   scobra_state,  0,        
 
 GAME( 1982, mimonkey,  0,        mimonkey,  mimonkey,  scobra_state,  mimonkey,     ROT90,  "Universal Video Games",              "Mighty Monkey", MACHINE_SUPPORTS_SAVE )
 GAME( 1982, mimonsco,  mimonkey, mimonkey,  mimonsco,  scobra_state,  mimonsco,     ROT90,  "bootleg",                            "Mighty Monkey (bootleg on Super Cobra hardware)", MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

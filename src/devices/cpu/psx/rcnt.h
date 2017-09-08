@@ -7,16 +7,6 @@
  *
  */
 
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __PSXRCNT_H__
-#define __PSXRCNT_H__
-
-#include "emu.h"
-
-extern const device_type PSX_RCNT;
-=======
 #ifndef MAME_CPU_PSX_RCNT_H
 #define MAME_CPU_PSX_RCNT_H
 
@@ -24,7 +14,6 @@ extern const device_type PSX_RCNT;
 
 
 DECLARE_DEVICE_TYPE(PSX_RCNT, psxrcnt_device)
->>>>>>> upstream/master
 
 #define MCFG_PSX_RCNT_IRQ0_HANDLER(_devcb) \
 	devcb = &psxrcnt_device::set_irq0_handler(*device, DEVCB_##_devcb);
@@ -41,26 +30,6 @@ DECLARE_DEVICE_TYPE(PSX_RCNT, psxrcnt_device)
 #define PSX_RC_CLC ( 0x100 )
 #define PSX_RC_DIV ( 0x200 )
 
-<<<<<<< HEAD
-struct psx_root
-{
-	emu_timer *timer;
-	UINT16 n_count;
-	UINT16 n_mode;
-	UINT16 n_target;
-	UINT64 n_start;
-};
-
-class psxrcnt_device : public device_t
-{
-public:
-	psxrcnt_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// static configuration helpers
-	template<class _Object> static devcb_base &set_irq0_handler(device_t &device, _Object object) { return downcast<psxrcnt_device &>(device).m_irq0_handler.set_callback(object); }
-	template<class _Object> static devcb_base &set_irq1_handler(device_t &device, _Object object) { return downcast<psxrcnt_device &>(device).m_irq1_handler.set_callback(object); }
-	template<class _Object> static devcb_base &set_irq2_handler(device_t &device, _Object object) { return downcast<psxrcnt_device &>(device).m_irq2_handler.set_callback(object); }
-=======
 class psxrcnt_device : public device_t
 {
 public:
@@ -70,25 +39,11 @@ public:
 	template <class Object> static devcb_base &set_irq0_handler(device_t &device, Object &&cb) { return downcast<psxrcnt_device &>(device).m_irq0_handler.set_callback(std::forward<Object>(cb)); }
 	template <class Object> static devcb_base &set_irq1_handler(device_t &device, Object &&cb) { return downcast<psxrcnt_device &>(device).m_irq1_handler.set_callback(std::forward<Object>(cb)); }
 	template <class Object> static devcb_base &set_irq2_handler(device_t &device, Object &&cb) { return downcast<psxrcnt_device &>(device).m_irq2_handler.set_callback(std::forward<Object>(cb)); }
->>>>>>> upstream/master
 
 	DECLARE_WRITE32_MEMBER( write );
 	DECLARE_READ32_MEMBER( read );
 
 protected:
-<<<<<<< HEAD
-	virtual void device_start();
-	virtual void device_reset();
-	virtual void device_post_load();
-	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
-
-private:
-	psx_root root_counter[ 3 ];
-
-	UINT64 gettotalcycles( void );
-	int root_divider( int n_counter );
-	UINT16 root_current( int n_counter );
-=======
 	virtual void device_start() override;
 	virtual void device_reset() override;
 	virtual void device_post_load() override;
@@ -109,7 +64,6 @@ private:
 	uint64_t gettotalcycles( void );
 	int root_divider( int n_counter );
 	uint16_t root_current( int n_counter );
->>>>>>> upstream/master
 	int root_target( int n_counter );
 	void root_timer_adjust( int n_counter );
 
@@ -118,8 +72,4 @@ private:
 	devcb_write_line m_irq2_handler;
 };
 
-<<<<<<< HEAD
-#endif
-=======
 #endif // MAME_CPU_PSX_RCNT_H
->>>>>>> upstream/master

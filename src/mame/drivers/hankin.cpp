@@ -15,12 +15,6 @@ ToDo:
 
 ***********************************************************************************/
 
-<<<<<<< HEAD
-#include "machine/genpin.h"
-#include "cpu/m6800/m6800.h"
-#include "machine/6821pia.h"
-#include "sound/dac.h"
-=======
 #include "emu.h"
 #include "machine/genpin.h"
 
@@ -30,7 +24,6 @@ ToDo:
 #include "sound/volt_reg.h"
 #include "speaker.h"
 
->>>>>>> upstream/master
 #include "hankin.lh"
 
 class hankin_state : public genpin_class
@@ -74,15 +67,6 @@ public:
 private:
 	bool m_timer_x;
 	bool m_timer_sb;
-<<<<<<< HEAD
-	UINT8 m_timer_s[3];
-	UINT8 m_vol;
-	UINT8 m_ic2a;
-	UINT8 m_ic2b;
-	UINT8 m_ic10a;
-	UINT8 m_ic10b;
-	UINT8 m_ic11a;
-=======
 	uint8_t m_timer_s[3];
 	uint8_t m_vol;
 	uint8_t m_ic2a;
@@ -90,34 +74,21 @@ private:
 	uint8_t m_ic10a;
 	uint8_t m_ic10b;
 	uint8_t m_ic11a;
->>>>>>> upstream/master
 	bool m_ic11_ca2;
 	bool m_ic10_cb2;
 	bool m_ic2_ca2;
 	bool m_ic2_cb2;
-<<<<<<< HEAD
-	UINT8 m_counter;
-	UINT8 m_digit;
-	UINT8 m_segment[5];
-	UINT8 *m_p_prom;
-	virtual void machine_reset();
-=======
 	uint8_t m_counter;
 	uint8_t m_digit;
 	uint8_t m_segment[5];
 	uint8_t *m_p_prom;
 	virtual void machine_reset() override;
->>>>>>> upstream/master
 	required_device<m6802_cpu_device> m_maincpu;
 	required_device<m6802_cpu_device> m_audiocpu;
 	required_device<pia6821_device> m_ic10;
 	required_device<pia6821_device> m_ic11;
 	required_device<pia6821_device> m_ic2;
-<<<<<<< HEAD
-	required_device<dac_device> m_dac;
-=======
 	required_device<dac_4bit_r2r_device> m_dac;
->>>>>>> upstream/master
 	required_ioport m_io_test;
 	required_ioport m_io_dsw0;
 	required_ioport m_io_dsw1;
@@ -289,24 +260,6 @@ WRITE8_MEMBER( hankin_state::ic10_a_w )
 
 	if (!m_ic11_ca2)
 	{
-<<<<<<< HEAD
-		if BIT(data, 2)
-			m_digit = 5;
-		else
-		if BIT(data, 3)
-			m_digit = 4;
-		else
-		if BIT(data, 4)
-			m_digit = 3;
-		else
-		if BIT(data, 5)
-			m_digit = 2;
-		else
-		if BIT(data, 6)
-			m_digit = 1;
-		else
-		if BIT(data, 7)
-=======
 		if (BIT(data, 2))
 			m_digit = 5;
 		else if (BIT(data, 3))
@@ -318,29 +271,19 @@ WRITE8_MEMBER( hankin_state::ic10_a_w )
 		else if (BIT(data, 6))
 			m_digit = 1;
 		else if (BIT(data, 7))
->>>>>>> upstream/master
 			m_digit = 0;
 
 		// This machine has a 10-segment display, however the only
 		// use is to place the '1' digit in the centre segments.
 		if (BIT(data, 0) && (m_counter > 8))
 		{
-<<<<<<< HEAD
-			static const UINT8 patterns[16] = { 0x3f,0x80,0x5b,0x4f,0x66,0x6d,0x7d,0x07,0x7f,0x6f,0,0,0,0,0,0 }; // MC14543 with '1' adjusted
-			UINT16 i, seg1, seg2;
-=======
 			static const uint8_t patterns[16] = { 0x3f,0x80,0x5b,0x4f,0x66,0x6d,0x7d,0x07,0x7f,0x6f,0,0,0,0,0,0 }; // MC14543 with '1' adjusted
 			uint16_t i, seg1, seg2;
->>>>>>> upstream/master
 			for (i = 0; i < 5; i++)
 			{
 				seg1 = patterns[m_segment[i]];
 				seg2 = BITSWAP16(seg1, 8, 8, 8, 8, 8, 8, 7, 7, 6, 6, 5, 4, 3, 2, 1, 0);
-<<<<<<< HEAD
-				output_set_digit_value(i*10+m_digit, seg2);
-=======
 				output().set_digit_value(i*10+m_digit, seg2);
->>>>>>> upstream/master
 			}
 		}
 	}
@@ -376,11 +319,7 @@ WRITE8_MEMBER( hankin_state::ic10_b_w )
 
 WRITE_LINE_MEMBER( hankin_state::ic10_ca2_w )
 {
-<<<<<<< HEAD
-	output_set_value("led0", !state);
-=======
 	output().set_value("led0", !state);
->>>>>>> upstream/master
 	// also sound strobe
 	m_ic2->ca1_w(state);
 }
@@ -418,11 +357,7 @@ WRITE8_MEMBER( hankin_state::ic11_a_w )
 
 READ8_MEMBER( hankin_state::ic11_b_r )
 {
-<<<<<<< HEAD
-	UINT8 data = 0;
-=======
 	uint8_t data = 0;
->>>>>>> upstream/master
 
 	if (BIT(m_ic11a, 0))
 		data |= m_io_x0->read();
@@ -498,11 +433,7 @@ TIMER_DEVICE_CALLBACK_MEMBER( hankin_state::timer_s )
 			{
 				m_timer_s[2]++;
 				offs_t offs = (m_timer_s[2] & 31) | (m_ic2a << 5);
-<<<<<<< HEAD
-				m_dac->write_unsigned8(m_p_prom[offs]<< 4);
-=======
 				m_dac->write(m_p_prom[offs]);
->>>>>>> upstream/master
 			}
 			else
 				m_timer_s[2] = 0;
@@ -514,10 +445,7 @@ void hankin_state::machine_reset()
 {
 	m_p_prom = memregion("roms")->base() + 0x1800;
 	m_vol = 0;
-<<<<<<< HEAD
-=======
 	m_dac->set_output_gain(0, 0);
->>>>>>> upstream/master
 }
 
 // PA0-3 = sound data from main cpu
@@ -531,11 +459,7 @@ WRITE8_MEMBER( hankin_state::ic2_a_w )
 {
 	m_ic2a = data >> 4;
 	offs_t offs = (m_timer_s[2] & 31) | (m_ic2a << 5);
-<<<<<<< HEAD
-	m_dac->write_unsigned8(m_p_prom[offs]<< 4);
-=======
 	m_dac->write(m_p_prom[offs]);
->>>>>>> upstream/master
 }
 
 // PB0-3 = preset on 74LS161
@@ -566,11 +490,7 @@ WRITE_LINE_MEMBER( hankin_state::ic2_cb2_w )
 	m_ic2_cb2 = state;
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( hankin, hankin_state )
-=======
 static MACHINE_CONFIG_START( hankin )
->>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6802, 3276800)
 	MCFG_CPU_PROGRAM_MAP(hankin_map)
@@ -586,16 +506,10 @@ static MACHINE_CONFIG_START( hankin )
 	/* Sound */
 	MCFG_FRAGMENT_ADD( genpin_audio )
 
-<<<<<<< HEAD
-	MCFG_SPEAKER_STANDARD_MONO("mono")
-	MCFG_SOUND_ADD("dac", DAC, 0)
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.00)
-=======
 	MCFG_SPEAKER_STANDARD_MONO("speaker")
 	MCFG_SOUND_ADD("dac", DAC_4BIT_R2R, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.5) // unknown DAC
 	MCFG_DEVICE_ADD("vref", VOLTAGE_REGULATOR, 0) MCFG_VOLTAGE_REGULATOR_OUTPUT(5.0)
 	MCFG_SOUND_ROUTE_EX(0, "dac", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "dac", -1.0, DAC_VREF_NEG_INPUT)
->>>>>>> upstream/master
 
 	/* Devices */
 	MCFG_DEVICE_ADD("ic10", PIA6821, 0)
@@ -605,13 +519,8 @@ static MACHINE_CONFIG_START( hankin )
 	MCFG_PIA_WRITEPB_HANDLER(WRITE8(hankin_state, ic10_b_w))
 	MCFG_PIA_CA2_HANDLER(WRITELINE(hankin_state, ic10_ca2_w))
 	MCFG_PIA_CB2_HANDLER(WRITELINE(hankin_state, ic10_cb2_w))
-<<<<<<< HEAD
-	MCFG_PIA_IRQA_HANDLER(DEVWRITELINE("maincpu", m6802_cpu_device, irq_line))
-	MCFG_PIA_IRQB_HANDLER(DEVWRITELINE("maincpu", m6802_cpu_device, irq_line))
-=======
 	MCFG_PIA_IRQA_HANDLER(INPUTLINE("maincpu", M6802_IRQ_LINE))
 	MCFG_PIA_IRQB_HANDLER(INPUTLINE("maincpu", M6802_IRQ_LINE))
->>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("ic11", PIA6821, 0)
 	//MCFG_PIA_READPA_HANDLER(READ8(hankin_state, ic11_a_r))
@@ -620,13 +529,8 @@ static MACHINE_CONFIG_START( hankin )
 	//MCFG_PIA_WRITEPB_HANDLER(WRITE8(hankin_state, ic11_b_w))
 	MCFG_PIA_CA2_HANDLER(WRITELINE(hankin_state, ic11_ca2_w))
 	MCFG_PIA_CB2_HANDLER(WRITELINE(hankin_state, ic11_cb2_w))
-<<<<<<< HEAD
-	MCFG_PIA_IRQA_HANDLER(DEVWRITELINE("maincpu", m6802_cpu_device, irq_line))
-	MCFG_PIA_IRQB_HANDLER(DEVWRITELINE("maincpu", m6802_cpu_device, irq_line))
-=======
 	MCFG_PIA_IRQA_HANDLER(INPUTLINE("maincpu", M6802_IRQ_LINE))
 	MCFG_PIA_IRQB_HANDLER(INPUTLINE("maincpu", M6802_IRQ_LINE))
->>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("ic2", PIA6821, 0)
 	MCFG_PIA_READPA_HANDLER(READ8(hankin_state, ic2_a_r))
@@ -635,13 +539,8 @@ static MACHINE_CONFIG_START( hankin )
 	MCFG_PIA_WRITEPB_HANDLER(WRITE8(hankin_state, ic2_b_w))
 	MCFG_PIA_CA2_HANDLER(WRITELINE(hankin_state, ic2_ca2_w))
 	MCFG_PIA_CB2_HANDLER(WRITELINE(hankin_state, ic2_cb2_w))
-<<<<<<< HEAD
-	MCFG_PIA_IRQA_HANDLER(DEVWRITELINE("audiocpu", m6802_cpu_device, irq_line))
-	MCFG_PIA_IRQB_HANDLER(DEVWRITELINE("audiocpu", m6802_cpu_device, irq_line))
-=======
 	MCFG_PIA_IRQA_HANDLER(INPUTLINE("audiocpu", M6802_IRQ_LINE))
 	MCFG_PIA_IRQB_HANDLER(INPUTLINE("audiocpu", M6802_IRQ_LINE))
->>>>>>> upstream/master
 
 	MCFG_TIMER_DRIVER_ADD_PERIODIC("timer_x", hankin_state, timer_x, attotime::from_hz(120)) // mains freq*2
 	MCFG_TIMER_DRIVER_ADD_PERIODIC("timer_s", hankin_state, timer_s, attotime::from_hz(94000)) // 555 on sound board*2
@@ -703,16 +602,8 @@ ROM_START(empsback)
 ROM_END
 
 
-<<<<<<< HEAD
-GAME(1978,  fjholden,  0,  hankin,  hankin, driver_device, 0,  ROT0,  "Hankin", "FJ Holden", MACHINE_MECHANICAL )
-GAME(1978,  orbit1,    0,  hankin,  hankin, driver_device, 0,  ROT0,  "Hankin", "Orbit 1", MACHINE_MECHANICAL )
-GAME(1980,  shark,     0,  hankin,  hankin, driver_device, 0,  ROT0,  "Hankin", "Shark", MACHINE_MECHANICAL )
-GAME(1980,  howzat,    0,  hankin,  hankin, driver_device, 0,  ROT0,  "Hankin", "Howzat!", MACHINE_MECHANICAL )
-GAME(1981,  empsback,  0,  hankin,  hankin, driver_device, 0,  ROT0,  "Hankin", "The Empire Strike Back", MACHINE_MECHANICAL )
-=======
 GAME(1978,  fjholden,  0,  hankin,  hankin, hankin_state, 0,  ROT0,  "Hankin", "FJ Holden",              MACHINE_MECHANICAL | MACHINE_NOT_WORKING )
 GAME(1978,  orbit1,    0,  hankin,  hankin, hankin_state, 0,  ROT0,  "Hankin", "Orbit 1",                MACHINE_MECHANICAL | MACHINE_NOT_WORKING )
 GAME(1980,  shark,     0,  hankin,  hankin, hankin_state, 0,  ROT0,  "Hankin", "Shark",                  MACHINE_MECHANICAL | MACHINE_NOT_WORKING )
 GAME(1980,  howzat,    0,  hankin,  hankin, hankin_state, 0,  ROT0,  "Hankin", "Howzat!",                MACHINE_MECHANICAL | MACHINE_NOT_WORKING )
 GAME(1981,  empsback,  0,  hankin,  hankin, hankin_state, 0,  ROT0,  "Hankin", "The Empire Strike Back", MACHINE_MECHANICAL | MACHINE_NOT_WORKING )
->>>>>>> upstream/master

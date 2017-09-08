@@ -9,15 +9,6 @@
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/z80/z80.h"
-#include "cpu/m6809/konami.h" /* for the callback and the firq irq definition */
-
-#include "sound/2151intf.h"
-#include "sound/k053260.h"
-#include "includes/konamipt.h"
-#include "includes/parodius.h"
-=======
 #include "includes/parodius.h"
 #include "includes/konamipt.h"
 
@@ -28,7 +19,6 @@
 #include "sound/k053260.h"
 #include "speaker.h"
 
->>>>>>> upstream/master
 
 INTERRUPT_GEN_MEMBER(parodius_state::parodius_interrupt)
 {
@@ -59,13 +49,8 @@ WRITE8_MEMBER(parodius_state::parodius_3fc0_w)
 		logerror("%04x: 3fc0 = %02x\n",space.device().safe_pc(),data);
 
 	/* bit 0/1 = coin counters */
-<<<<<<< HEAD
-	coin_counter_w(machine(), 0, data & 0x01);
-	coin_counter_w(machine(), 1, data & 0x02);
-=======
 	machine().bookkeeping().coin_counter_w(0, data & 0x01);
 	machine().bookkeeping().coin_counter_w(1, data & 0x02);
->>>>>>> upstream/master
 
 	/* bit 3 = enable char ROM reading through the video RAM */
 	m_k052109->set_rmrd_line((data & 0x08) ? ASSERT_LINE : CLEAR_LINE);
@@ -95,11 +80,7 @@ void parodius_state::device_timer(emu_timer &timer, device_timer_id id, int para
 		m_audiocpu->set_input_line(INPUT_LINE_NMI, ASSERT_LINE);
 		break;
 	default:
-<<<<<<< HEAD
-		assert_always(FALSE, "Unknown id in parodius_state::device_timer");
-=======
 		assert_always(false, "Unknown id in parodius_state::device_timer");
->>>>>>> upstream/master
 	}
 }
 
@@ -121,11 +102,7 @@ static ADDRESS_MAP_START( parodius_map, AS_PROGRAM, 8, parodius_state )
 	AM_RANGE(0x3f90, 0x3f90) AM_READ_PORT("DSW2")
 	AM_RANGE(0x3fa0, 0x3faf) AM_DEVREADWRITE("k053245", k05324x_device, k053244_r, k053244_w)
 	AM_RANGE(0x3fb0, 0x3fbf) AM_DEVWRITE("k053251", k053251_device, write)
-<<<<<<< HEAD
-	AM_RANGE(0x3fc0, 0x3fc0) AM_READ(watchdog_reset_r) AM_WRITE(parodius_3fc0_w)
-=======
 	AM_RANGE(0x3fc0, 0x3fc0) AM_DEVREAD("watchdog", watchdog_timer_device, reset_r) AM_WRITE(parodius_3fc0_w)
->>>>>>> upstream/master
 	AM_RANGE(0x3fc4, 0x3fc4) AM_WRITE(parodius_videobank_w)
 	AM_RANGE(0x3fc8, 0x3fc8) AM_WRITE(parodius_sh_irqtrigger_w)
 	AM_RANGE(0x3fcc, 0x3fcd) AM_DEVREADWRITE("k053260", k053260_device, main_read, main_write)
@@ -153,10 +130,6 @@ static ADDRESS_MAP_START( parodius_sound_map, AS_PROGRAM, 8, parodius_state )
 	AM_RANGE(0xfc00, 0xfc2f) AM_DEVREADWRITE("k053260", k053260_device, read, write)
 ADDRESS_MAP_END
 
-<<<<<<< HEAD
-
-=======
->>>>>>> upstream/master
 /***************************************************************************
 
     Input Ports
@@ -183,11 +156,7 @@ static INPUT_PORTS_START( parodius )
 	PORT_DIPNAME( 0x04, 0x00, DEF_STR( Cabinet ) )      PORT_DIPLOCATION("SW2:3")
 	PORT_DIPSETTING(    0x00, DEF_STR( Upright ) )
 	PORT_DIPSETTING(    0x04, DEF_STR( Cocktail ) )
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x18, 0x18, DEF_STR( Bonus_Life ) )   PORT_DIPLOCATION("SW2:4,5")
-=======
 	PORT_DIPNAME( 0x18, 0x10, DEF_STR( Bonus_Life ) )   PORT_DIPLOCATION("SW2:4,5")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x18, "20000 80000" )
 	PORT_DIPSETTING(    0x10, "30000 100000" )
 	PORT_DIPSETTING(    0x08, "20000" )
@@ -255,11 +224,7 @@ WRITE8_MEMBER( parodius_state::banking_callback )
 	membank("bank1")->set_entry((data & 0x0f) ^ 0x0f);
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( parodius, parodius_state )
-=======
 static MACHINE_CONFIG_START( parodius )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", KONAMI, 3000000)        /* 053248 */
@@ -284,11 +249,8 @@ static MACHINE_CONFIG_START( parodius )
 	MCFG_ADDRESS_MAP_BANK_ADDRBUS_WIDTH(12)
 	MCFG_ADDRESS_MAP_BANK_STRIDE(0x0800)
 
-<<<<<<< HEAD
-=======
 	MCFG_WATCHDOG_ADD("watchdog")
 
->>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE(60)
@@ -417,14 +379,7 @@ ROM_END
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-GAME( 1990, parodius,  0,        parodius, parodius, driver_device, 0, ROT0, "Konami", "Parodius DA! (World, set 1)", MACHINE_SUPPORTS_SAVE )
-GAME( 1990, parodiuse, parodius, parodius, parodius, driver_device, 0, ROT0, "Konami", "Parodius DA! (World, set 2)", MACHINE_SUPPORTS_SAVE )
-GAME( 1990, parodiusj, parodius, parodius, parodius, driver_device, 0, ROT0, "Konami", "Parodius DA! (Japan)", MACHINE_SUPPORTS_SAVE )
-GAME( 1990, parodiusa, parodius, parodius, parodius, driver_device, 0, ROT0, "Konami", "Parodius DA! (Asia)", MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1990, parodius,  0,        parodius, parodius, parodius_state, 0, ROT0, "Konami", "Parodius DA! (World, set 1)", MACHINE_SUPPORTS_SAVE )
 GAME( 1990, parodiuse, parodius, parodius, parodius, parodius_state, 0, ROT0, "Konami", "Parodius DA! (World, set 2)", MACHINE_SUPPORTS_SAVE )
 GAME( 1990, parodiusj, parodius, parodius, parodius, parodius_state, 0, ROT0, "Konami", "Parodius DA! (Japan)",        MACHINE_SUPPORTS_SAVE )
 GAME( 1990, parodiusa, parodius, parodius, parodius, parodius_state, 0, ROT0, "Konami", "Parodius DA! (Asia)",         MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

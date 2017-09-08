@@ -1,9 +1,5 @@
 /*
-<<<<<<< HEAD
- * Copyright 2011-2015 Branimir Karadzic. All rights reserved.
-=======
  * Copyright 2011-2016 Branimir Karadzic. All rights reserved.
->>>>>>> upstream/master
  * License: http://www.opensource.org/licenses/BSD-2-Clause
  */
 
@@ -47,11 +43,7 @@ int _main_(int _argc, char** _argv)
 	while (!entry_process_events(&width, &height, &debug, &reset) )
 	{
 		// Set view 0 default viewport.
-<<<<<<< HEAD
-		bgfx_set_view_rect(0, 0, 0, width, height);
-=======
 		bgfx_set_view_rect(0, 0, 0, (uint16_t)width, (uint16_t)height);
->>>>>>> upstream/master
 
 		// This dummy draw call is here to make sure that view 0 is cleared
 		// if no other draw calls are submitted to view 0.
@@ -59,15 +51,6 @@ int _main_(int _argc, char** _argv)
 
 		// Use debug font to print information about this example.
 		bgfx_dbg_text_clear(0, false);
-<<<<<<< HEAD
-		bgfx_dbg_text_image(uint16_max(width/2/8, 20)-20
-						 , uint16_max(height/2/16, 6)-6
-						 , 40
-						 , 12
-						 , s_logo
-						 , 160
-						 );
-=======
 		bgfx_dbg_text_image(
 			  uint16_max( (uint16_t)width /2/8, 20)-20
 			, uint16_max( (uint16_t)height/2/16, 6)-6
@@ -76,17 +59,12 @@ int _main_(int _argc, char** _argv)
 			, s_logo
 			, 160
 			);
->>>>>>> upstream/master
 		bgfx_dbg_text_printf(0, 1, 0x4f, "bgfx/examples/25-c99");
 		bgfx_dbg_text_printf(0, 2, 0x6f, "Description: Initialization and debug text with C99 API.");
 
 		// Advance to next frame. Rendering thread will be kicked to
 		// process submitted rendering primitives.
-<<<<<<< HEAD
-		bgfx_frame();
-=======
 		bgfx_frame(false);
->>>>>>> upstream/master
 	}
 
 	// Shutdown bgfx.

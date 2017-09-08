@@ -68,10 +68,7 @@ XR22-050-3B Pinout
 
 */
 
-<<<<<<< HEAD
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #include "abc800kb.h"
 
 
@@ -88,11 +85,7 @@ XR22-050-3B Pinout
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type ABC800_KEYBOARD = &device_creator<abc800_keyboard_device>;
-=======
 DEFINE_DEVICE_TYPE(ABC800_KEYBOARD, abc800_keyboard_device, "abc800kb", "ABC-800 Keyboard")
->>>>>>> upstream/master
 
 
 //-------------------------------------------------
@@ -109,36 +102,13 @@ ROM_END
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const rom_entry *abc800_keyboard_device::device_rom_region() const
-=======
 const tiny_rom_entry *abc800_keyboard_device::device_rom_region() const
->>>>>>> upstream/master
 {
 	return ROM_NAME( abc800_keyboard );
 }
 
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  ADDRESS_MAP( abc800_keyboard_io )
-//-------------------------------------------------
-
-static ADDRESS_MAP_START( abc800_keyboard_io, AS_IO, 8, abc800_keyboard_device )
-	AM_RANGE(MCS48_PORT_P1, MCS48_PORT_P1) AM_READWRITE(kb_p1_r, kb_p1_w)
-	AM_RANGE(MCS48_PORT_P2, MCS48_PORT_P2) AM_WRITE(kb_p2_w)
-	AM_RANGE(MCS48_PORT_T1, MCS48_PORT_T1) AM_READ(kb_t1_r)
-ADDRESS_MAP_END
-
-
-//-------------------------------------------------
-//  MACHINE_DRIVER( abc800_keyboard )
-//-------------------------------------------------
-
-static MACHINE_CONFIG_FRAGMENT( abc800_keyboard )
-	MCFG_CPU_ADD(I8048_TAG, I8048, XTAL_5_9904MHz)
-	MCFG_CPU_IO_MAP(abc800_keyboard_io)
-=======
 //  device_add_mconfig - add device configuration
 //-------------------------------------------------
 
@@ -148,25 +118,10 @@ MACHINE_CONFIG_MEMBER( abc800_keyboard_device::device_add_mconfig )
 	MCFG_MCS48_PORT_P1_OUT_CB(WRITE8(abc800_keyboard_device, kb_p1_w))
 	MCFG_MCS48_PORT_P2_OUT_CB(WRITE8(abc800_keyboard_device, kb_p2_w))
 	MCFG_MCS48_PORT_T1_IN_CB(READLINE(abc800_keyboard_device, kb_t1_r))
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  machine_config_additions - device-specific
-//  machine configurations
-//-------------------------------------------------
-
-machine_config_constructor abc800_keyboard_device::device_mconfig_additions() const
-{
-	return MACHINE_CONFIG_NAME( abc800_keyboard );
-}
-
-
-//-------------------------------------------------
-=======
->>>>>>> upstream/master
 //  INPUT_PORTS( abc800_keyboard )
 //-------------------------------------------------
 
@@ -359,29 +314,6 @@ inline void abc800_keyboard_device::key_down(int state)
 //  abc800_keyboard_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-abc800_keyboard_device::abc800_keyboard_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, ABC800_KEYBOARD, "ABC-800 Keyboard", tag, owner, clock, "abc800kb", __FILE__),
-		abc_keyboard_interface(mconfig, *this),
-		m_maincpu(*this, I8048_TAG),
-		m_x0(*this, "X0"),
-		m_x1(*this, "X1"),
-		m_x2(*this, "X2"),
-		m_x3(*this, "X3"),
-		m_x4(*this, "X4"),
-		m_x5(*this, "X5"),
-		m_x6(*this, "X6"),
-		m_x7(*this, "X7"),
-		m_x8(*this, "X8"),
-		m_x9(*this, "X9"),
-		m_x10(*this, "X10"),
-		m_x11(*this, "X11"),
-		m_row(0),
-		m_txd(1),
-		m_clk(0),
-		m_stb(1),
-		m_keydown(1), m_serial_timer(nullptr)
-=======
 abc800_keyboard_device::abc800_keyboard_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	device_t(mconfig, ABC800_KEYBOARD, tag, owner, clock),
 	abc_keyboard_interface(mconfig, *this),
@@ -393,7 +325,6 @@ abc800_keyboard_device::abc800_keyboard_device(const machine_config &mconfig, co
 	m_stb(1),
 	m_keydown(1),
 	m_serial_timer(nullptr)
->>>>>>> upstream/master
 {
 }
 
@@ -452,26 +383,6 @@ void abc800_keyboard_device::txd_w(int state)
 
 READ8_MEMBER( abc800_keyboard_device::kb_p1_r )
 {
-<<<<<<< HEAD
-	UINT8 data = 0xff;
-
-	if (m_stb)
-	{
-		switch (m_row)
-		{
-		case 0: data = m_x0->read(); break;
-		case 1: data = m_x1->read(); break;
-		case 2: data = m_x2->read(); break;
-		case 3: data = m_x3->read(); break;
-		case 4: data = m_x4->read(); break;
-		case 5: data = m_x5->read(); break;
-		case 6: data = m_x6->read(); break;
-		case 7: data = m_x7->read(); break;
-		case 8: data = m_x8->read(); break;
-		case 9: data = m_x9->read(); break;
-		case 10: data = m_x10->read(); break;
-		case 11: data = m_x11->read(); break;
-=======
 	uint8_t data = 0xff;
 
 	if (m_stb)
@@ -479,7 +390,6 @@ READ8_MEMBER( abc800_keyboard_device::kb_p1_r )
 		if (m_row < 12)
 		{
 			data = m_x[m_row]->read();
->>>>>>> upstream/master
 		}
 	}
 
@@ -552,11 +462,7 @@ WRITE8_MEMBER( abc800_keyboard_device::kb_p2_w )
 //  kb_t1_r - keyboard T1 timer read
 //-------------------------------------------------
 
-<<<<<<< HEAD
-READ8_MEMBER( abc800_keyboard_device::kb_t1_r )
-=======
 READ_LINE_MEMBER( abc800_keyboard_device::kb_t1_r )
->>>>>>> upstream/master
 {
 	return m_clk;
 }

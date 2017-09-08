@@ -1,9 +1,5 @@
 /* LzFindMt.h -- multithreaded Match finder for LZ algorithms
-<<<<<<< HEAD
-2009-02-07 : Igor Pavlov : Public domain */
-=======
 2015-05-03 : Igor Pavlov : Public domain */
->>>>>>> upstream/master
 
 #ifndef __LZ_FIND_MT_H
 #define __LZ_FIND_MT_H
@@ -11,13 +7,7 @@
 #include "LzFind.h"
 #include "Threads.h"
 
-<<<<<<< HEAD
-#ifdef __cplusplus
-extern "C" {
-#endif
-=======
 EXTERN_C_BEGIN
->>>>>>> upstream/master
 
 #define kMtHashBlockSize (1 << 13)
 #define kMtHashNumBlocks (1 << 3)
@@ -85,11 +75,7 @@ typedef struct _CMatchFinderMt
   UInt32 matchMaxLen;
   UInt32 numHashBytes;
   UInt32 pos;
-<<<<<<< HEAD
-  Byte *buffer;
-=======
   const Byte *buffer;
->>>>>>> upstream/master
   UInt32 cyclicBufferPos;
   UInt32 cyclicBufferSize; /* it must be historySize + 1 */
   UInt32 cutValue;
@@ -110,12 +96,6 @@ SRes MatchFinderMt_Create(CMatchFinderMt *p, UInt32 historySize, UInt32 keepAddB
 void MatchFinderMt_CreateVTable(CMatchFinderMt *p, IMatchFinder *vTable);
 void MatchFinderMt_ReleaseStream(CMatchFinderMt *p);
 
-<<<<<<< HEAD
-#ifdef __cplusplus
-}
-#endif
-=======
 EXTERN_C_END
->>>>>>> upstream/master
 
 #endif

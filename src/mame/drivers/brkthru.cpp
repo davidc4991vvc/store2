@@ -52,12 +52,6 @@
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/m6809/m6809.h"
-#include "sound/2203intf.h"
-#include "sound/3526intf.h"
-#include "includes/brkthru.h"
-=======
 #include "includes/brkthru.h"
 
 #include "cpu/m6809/m6809.h"
@@ -65,7 +59,6 @@
 #include "sound/3526intf.h"
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 #define MASTER_CLOCK        XTAL_12MHz
@@ -101,15 +94,6 @@ WRITE8_MEMBER(brkthru_state::darwin_0803_w)
 	/* bit 1 = ? maybe IRQ acknowledge */
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER(brkthru_state::brkthru_soundlatch_w)
-{
-	soundlatch_byte_w(space, offset, data);
-	m_audiocpu->set_input_line(INPUT_LINE_NMI, PULSE_LINE);
-}
-
-=======
->>>>>>> upstream/master
 INPUT_CHANGED_MEMBER(brkthru_state::coin_inserted)
 {
 	/* coin insertion causes an IRQ */
@@ -135,11 +119,7 @@ static ADDRESS_MAP_START( brkthru_map, AS_PROGRAM, 8, brkthru_state )
 	AM_RANGE(0x1802, 0x1802) AM_READ_PORT("DSW1")
 	AM_RANGE(0x1803, 0x1803) AM_READ_PORT("DSW2/COIN")
 	AM_RANGE(0x1800, 0x1801) AM_WRITE(brkthru_1800_w)   /* bg scroll and color, ROM bank selection, flip screen */
-<<<<<<< HEAD
-	AM_RANGE(0x1802, 0x1802) AM_WRITE(brkthru_soundlatch_w)
-=======
 	AM_RANGE(0x1802, 0x1802) AM_DEVWRITE("soundlatch", generic_latch_8_device, write)
->>>>>>> upstream/master
 	AM_RANGE(0x1803, 0x1803) AM_WRITE(brkthru_1803_w)   /* NMI enable, + ? */
 	AM_RANGE(0x2000, 0x3fff) AM_ROMBANK("bank1")
 	AM_RANGE(0x4000, 0xffff) AM_ROM
@@ -157,11 +137,7 @@ static ADDRESS_MAP_START( darwin_map, AS_PROGRAM, 8, brkthru_state )
 	AM_RANGE(0x0802, 0x0802) AM_READ_PORT("DSW1")
 	AM_RANGE(0x0803, 0x0803) AM_READ_PORT("DSW2/COIN")
 	AM_RANGE(0x0800, 0x0801) AM_WRITE(brkthru_1800_w)     /* bg scroll and color, ROM bank selection, flip screen */
-<<<<<<< HEAD
-	AM_RANGE(0x0802, 0x0802) AM_WRITE(brkthru_soundlatch_w)
-=======
 	AM_RANGE(0x0802, 0x0802) AM_DEVWRITE("soundlatch", generic_latch_8_device, write)
->>>>>>> upstream/master
 	AM_RANGE(0x0803, 0x0803) AM_WRITE(darwin_0803_w)     /* NMI enable, + ? */
 	AM_RANGE(0x2000, 0x3fff) AM_ROMBANK("bank1")
 	AM_RANGE(0x4000, 0xffff) AM_ROM
@@ -171,11 +147,7 @@ ADDRESS_MAP_END
 static ADDRESS_MAP_START( sound_map, AS_PROGRAM, 8, brkthru_state )
 	AM_RANGE(0x0000, 0x1fff) AM_RAM
 	AM_RANGE(0x2000, 0x2001) AM_DEVWRITE("ym2", ym3526_device, write)
-<<<<<<< HEAD
-	AM_RANGE(0x4000, 0x4000) AM_READ(soundlatch_byte_r)
-=======
 	AM_RANGE(0x4000, 0x4000) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
->>>>>>> upstream/master
 	AM_RANGE(0x6000, 0x6001) AM_DEVREADWRITE("ym1", ym2203_device, read, write)
 	AM_RANGE(0x8000, 0xffff) AM_ROM
 ADDRESS_MAP_END
@@ -398,11 +370,7 @@ INTERRUPT_GEN_MEMBER(brkthru_state::vblank_irq)
 		device.execute().set_input_line(INPUT_LINE_NMI, PULSE_LINE);
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( brkthru, brkthru_state )
-=======
 static MACHINE_CONFIG_START( brkthru )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6809, MASTER_CLOCK/8)        /* 1.5 MHz ? */
@@ -428,12 +396,9 @@ static MACHINE_CONFIG_START( brkthru )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 	MCFG_GENERIC_LATCH_DATA_PENDING_CB(INPUTLINE("audiocpu", INPUT_LINE_NMI))
 
->>>>>>> upstream/master
 	MCFG_SOUND_ADD("ym1", YM2203, MASTER_CLOCK/8)
 	MCFG_SOUND_ROUTE(0, "mono", 0.10)
 	MCFG_SOUND_ROUTE(1, "mono", 0.10)
@@ -441,20 +406,12 @@ static MACHINE_CONFIG_START( brkthru )
 	MCFG_SOUND_ROUTE(3, "mono", 0.50)
 
 	MCFG_SOUND_ADD("ym2", YM3526, MASTER_CLOCK/4)
-<<<<<<< HEAD
-	MCFG_YM3526_IRQ_HANDLER(DEVWRITELINE("audiocpu", m6809_device, irq_line))
-=======
 	MCFG_YM3526_IRQ_HANDLER(INPUTLINE("audiocpu", M6809_IRQ_LINE))
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( darwin, brkthru_state )
-=======
 static MACHINE_CONFIG_START( darwin )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6809, MASTER_CLOCK/8)        /* 1.5 MHz ? */
@@ -491,12 +448,9 @@ static MACHINE_CONFIG_START( darwin )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 	MCFG_GENERIC_LATCH_DATA_PENDING_CB(INPUTLINE("audiocpu", INPUT_LINE_NMI))
 
->>>>>>> upstream/master
 	MCFG_SOUND_ADD("ym1", YM2203, MASTER_CLOCK/8)
 	MCFG_SOUND_ROUTE(0, "mono", 0.10)
 	MCFG_SOUND_ROUTE(1, "mono", 0.10)
@@ -504,11 +458,7 @@ static MACHINE_CONFIG_START( darwin )
 	MCFG_SOUND_ROUTE(3, "mono", 0.50)
 
 	MCFG_SOUND_ADD("ym2", YM3526, MASTER_CLOCK/4)
-<<<<<<< HEAD
-	MCFG_YM3526_IRQ_HANDLER(DEVWRITELINE("audiocpu", m6809_device, irq_line))
-=======
 	MCFG_YM3526_IRQ_HANDLER(INPUTLINE("audiocpu", M6809_IRQ_LINE))
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
 
@@ -690,11 +640,7 @@ ROM_END
 
 DRIVER_INIT_MEMBER(brkthru_state,brkthru)
 {
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("maincpu")->base();
-=======
 	uint8_t *ROM = memregion("maincpu")->base();
->>>>>>> upstream/master
 	membank("bank1")->configure_entries(0, 8, &ROM[0x10000], 0x2000);
 }
 
@@ -704,14 +650,7 @@ DRIVER_INIT_MEMBER(brkthru_state,brkthru)
  *
  *************************************/
 
-<<<<<<< HEAD
-GAME( 1986, brkthru,  0,       brkthru, brkthru, brkthru_state,  brkthru, ROT0,   "Data East USA",         "Break Thru (US)", MACHINE_SUPPORTS_SAVE )
-GAME( 1986, brkthruj, brkthru, brkthru, brkthruj, brkthru_state, brkthru, ROT0,   "Data East Corporation", "Kyohkoh-Toppa (Japan)", MACHINE_SUPPORTS_SAVE )
-GAME( 1986, forcebrk, brkthru, brkthru, brkthruj, brkthru_state, brkthru, ROT0,   "bootleg",               "Force Break (bootleg)", MACHINE_SUPPORTS_SAVE )
-GAME( 1986, darwin,   0,       darwin,  darwin, brkthru_state,   brkthru, ROT270, "Data East Corporation", "Darwin 4078 (Japan)", MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1986, brkthru,  0,       brkthru, brkthru,  brkthru_state, brkthru, ROT0,   "Data East USA",         "Break Thru (US)",       MACHINE_SUPPORTS_SAVE )
 GAME( 1986, brkthruj, brkthru, brkthru, brkthruj, brkthru_state, brkthru, ROT0,   "Data East Corporation", "Kyohkoh-Toppa (Japan)", MACHINE_SUPPORTS_SAVE )
 GAME( 1986, forcebrk, brkthru, brkthru, brkthruj, brkthru_state, brkthru, ROT0,   "bootleg",               "Force Break (bootleg)", MACHINE_SUPPORTS_SAVE )
 GAME( 1986, darwin,   0,       darwin,  darwin,   brkthru_state, brkthru, ROT270, "Data East Corporation", "Darwin 4078 (Japan)",   MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

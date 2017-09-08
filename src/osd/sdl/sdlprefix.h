@@ -14,11 +14,7 @@
 
 /* Only problems ... */
 #if defined(_WIN32)
-<<<<<<< HEAD
-#define SDLMAME_WIN32
-=======
 #define SDLMAME_WIN32 1
->>>>>>> upstream/master
 #define _SDL_main_h
 #endif
 
@@ -63,13 +59,6 @@
 #define SDLMAME_BSD 1
 #endif
 
-<<<<<<< HEAD
-#if defined(__OS2__)
-#define SDLMAME_OS2 1
-#endif
-
-=======
->>>>>>> upstream/master
 #if defined(__HAIKU__)
 #define SDLMAME_HAIKU 1
 #define SDLMAME_NO64BITIO 1
@@ -81,24 +70,18 @@
 struct _IO_FILE {};  //_IO_FILE is an opaque type in the emscripten libc which makes clang cranky
 #endif
 
-<<<<<<< HEAD
-=======
 #if defined(__ANDROID__)
 #define SDLMAME_ANDROID 1
 #endif
 
->>>>>>> upstream/master
 // fix for Ubuntu 8.10
 #ifdef _FORTIFY_SOURCE
 #undef _FORTIFY_SOURCE
 #endif
 
-<<<<<<< HEAD
-=======
 // nasty hack to stop altivec #define vector/bool/pixel screwing us over
 #if defined(__ALTIVEC__) && !defined(__APPLE_ALTIVEC__)
 #define __APPLE_ALTIVEC__ 1
 #endif
 
->>>>>>> upstream/master
 #endif /* SDLMAME_UNIX */

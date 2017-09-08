@@ -11,12 +11,6 @@
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/z80/z80.h"
-#include "audio/timeplt.h"
-#include "includes/pooyan.h"
-#include "includes/konamipt.h"
-=======
 #include "includes/pooyan.h"
 #include "includes/konamipt.h"
 #include "audio/timeplt.h"
@@ -26,7 +20,6 @@
 #include "machine/gen_latch.h"
 #include "machine/watchdog.h"
 #include "screen.h"
->>>>>>> upstream/master
 
 
 #define MASTER_CLOCK        XTAL_18_432MHz
@@ -45,22 +38,14 @@ INTERRUPT_GEN_MEMBER(pooyan_state::interrupt)
 }
 
 
-<<<<<<< HEAD
-WRITE8_MEMBER(pooyan_state::irq_enable_w)
-{
-	m_irq_enable = data & 1;
-=======
 WRITE_LINE_MEMBER(pooyan_state::irq_enable_w)
 {
 	m_irq_enable = state;
->>>>>>> upstream/master
 	if (!m_irq_enable)
 		m_maincpu->set_input_line(INPUT_LINE_NMI, CLEAR_LINE);
 }
 
 
-<<<<<<< HEAD
-=======
 WRITE_LINE_MEMBER(pooyan_state::coin_counter_1_w)
 {
 	machine().bookkeeping().coin_counter_w(0, state);
@@ -73,7 +58,6 @@ WRITE_LINE_MEMBER(pooyan_state::coin_counter_2_w)
 }
 
 
->>>>>>> upstream/master
 /*************************************
  *
  *  Memory maps
@@ -92,18 +76,9 @@ static ADDRESS_MAP_START( main_map, AS_PROGRAM, 8, pooyan_state )
 	AM_RANGE(0xa0a0, 0xa0a0) AM_MIRROR(0x5e1f) AM_READ_PORT("IN1")
 	AM_RANGE(0xa0c0, 0xa0c0) AM_MIRROR(0x5e1f) AM_READ_PORT("IN2")
 	AM_RANGE(0xa0e0, 0xa0e0) AM_MIRROR(0x5e1f) AM_READ_PORT("DSW0")
-<<<<<<< HEAD
-	AM_RANGE(0xa000, 0xa000) AM_MIRROR(0x5e7f) AM_WRITE(watchdog_reset_w)
-	AM_RANGE(0xa100, 0xa100) AM_MIRROR(0x5e7f) AM_WRITE(soundlatch_byte_w)
-	AM_RANGE(0xa180, 0xa180) AM_MIRROR(0x5e78) AM_WRITE(irq_enable_w)
-	AM_RANGE(0xa181, 0xa181) AM_MIRROR(0x5e78) AM_DEVWRITE("timeplt_audio", timeplt_audio_device, sh_irqtrigger_w)
-	AM_RANGE(0xa183, 0xa183) AM_MIRROR(0x5e78) AM_WRITENOP // ???
-	AM_RANGE(0xa187, 0xa187) AM_MIRROR(0x5e78) AM_WRITE(flipscreen_w)
-=======
 	AM_RANGE(0xa000, 0xa000) AM_MIRROR(0x5e7f) AM_DEVWRITE("watchdog", watchdog_timer_device, reset_w)
 	AM_RANGE(0xa100, 0xa100) AM_MIRROR(0x5e7f) AM_DEVWRITE("soundlatch", generic_latch_8_device, write)
 	AM_RANGE(0xa180, 0xa187) AM_MIRROR(0x5e78) AM_DEVWRITE("mainlatch", ls259_device, write_d0)
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -217,25 +192,13 @@ void pooyan_state::machine_start()
 }
 
 
-<<<<<<< HEAD
-void pooyan_state::machine_reset()
-{
-	m_irq_enable = 0;
-}
-
-
-static MACHINE_CONFIG_START( pooyan, pooyan_state )
-=======
 static MACHINE_CONFIG_START( pooyan )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, MASTER_CLOCK/3/2)
 	MCFG_CPU_PROGRAM_MAP(main_map)
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", pooyan_state,  interrupt)
 
-<<<<<<< HEAD
-=======
 	MCFG_DEVICE_ADD("mainlatch", LS259, 0) // B2
 	MCFG_ADDRESSABLE_LATCH_Q0_OUT_CB(WRITELINE(pooyan_state, irq_enable_w))
 	MCFG_ADDRESSABLE_LATCH_Q1_OUT_CB(DEVWRITELINE("timeplt_audio", timeplt_audio_device, sh_irqtrigger_w))
@@ -246,7 +209,6 @@ static MACHINE_CONFIG_START( pooyan )
 	MCFG_ADDRESSABLE_LATCH_Q7_OUT_CB(WRITELINE(pooyan_state, flipscreen_w))
 
 	MCFG_WATCHDOG_ADD("watchdog")
->>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
@@ -262,12 +224,9 @@ static MACHINE_CONFIG_START( pooyan )
 	MCFG_PALETTE_INIT_OWNER(pooyan_state, pooyan)
 
 	/* sound hardware */
-<<<<<<< HEAD
-=======
 
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 
->>>>>>> upstream/master
 	MCFG_FRAGMENT_ADD(timeplt_sound)
 MACHINE_CONFIG_END
 
@@ -362,12 +321,6 @@ ROM_END
  *************************************/
 
 //    YEAR, NAME,    PARENT, MACHINE,INPUT,  INIT,MONITOR,COMPANY,FULLNAME,FLAGS
-<<<<<<< HEAD
-GAME( 1982, pooyan,  0,      pooyan, pooyan, driver_device, 0,   ROT90,  "Konami", "Pooyan", MACHINE_SUPPORTS_SAVE )
-GAME( 1982, pooyans, pooyan, pooyan, pooyan, driver_device, 0,   ROT90,  "Konami (Stern Electronics license)", "Pooyan (Stern Electronics)", MACHINE_SUPPORTS_SAVE )
-GAME( 1982, pootan,  pooyan, pooyan, pooyan, driver_device, 0,   ROT90,  "bootleg", "Pootan", MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1982, pooyan,  0,      pooyan, pooyan, pooyan_state, 0,   ROT90,  "Konami", "Pooyan", MACHINE_SUPPORTS_SAVE )
 GAME( 1982, pooyans, pooyan, pooyan, pooyan, pooyan_state, 0,   ROT90,  "Konami (Stern Electronics license)", "Pooyan (Stern Electronics)", MACHINE_SUPPORTS_SAVE )
 GAME( 1982, pootan,  pooyan, pooyan, pooyan, pooyan_state, 0,   ROT90,  "bootleg", "Pootan", MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

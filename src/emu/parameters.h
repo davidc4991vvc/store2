@@ -14,13 +14,8 @@
 #error Dont include this file directly; include emu.h instead.
 #endif
 
-<<<<<<< HEAD
-#ifndef __PARAMETERS_H__
-#define __PARAMETERS_H__
-=======
 #ifndef MAME_EMU_PARAMETERS_H
 #define MAME_EMU_PARAMETERS_H
->>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -47,14 +42,7 @@ public:
 private:
 	// internal state
 	running_machine &       m_machine;              // reference to owning machine
-<<<<<<< HEAD
-	tagmap_t<std::string>       m_parameters;
-};
-
-#endif  // __INPTPORT_H__ */
-=======
 	std::unordered_map<std::string,std::string>       m_parameters;
 };
 
 #endif  // MAME_EMU_PARAMETERS_H
->>>>>>> upstream/master

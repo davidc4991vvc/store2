@@ -1,9 +1,5 @@
 /*
-<<<<<<< HEAD
-* $Id: pa_win_wdmks.c 1945 2015-01-21 06:24:32Z rbencina $
-=======
 * $Id$
->>>>>>> upstream/master
 * PortAudio Windows WDM-KS interface
 *
 * Author: Andrew Baldwin, Robert Bielik (WaveRT)
@@ -54,11 +50,6 @@ format conversion. That means that it will lock out all other users
 of a device for the duration of active stream using those devices
 */
 
-<<<<<<< HEAD
-#include <stdio.h>
-
-=======
->>>>>>> upstream/master
 #if (defined(_WIN32) && (defined(_MSC_VER) && (_MSC_VER >= 1200))) /* MSC version 6 and above */
 #pragma comment( lib, "setupapi.lib" )
 #endif
@@ -68,8 +59,6 @@ of a device for the duration of active stream using those devices
 #define PA_LOGE_
 #define PA_LOGL_
 
-<<<<<<< HEAD
-=======
 #ifdef __GNUC__
 #define _WIN32_WINNT 0x0501
 #define WINVER 0x0501
@@ -78,7 +67,6 @@ of a device for the duration of active stream using those devices
 
 #include <stdio.h>
 
->>>>>>> upstream/master
 #include <string.h> /* strlen() */
 #include <assert.h>
 #include <wchar.h>  /* iswspace() */
@@ -106,13 +94,9 @@ of a device for the duration of active stream using those devices
 #endif
 
 #include <windows.h>
-<<<<<<< HEAD
-#include <winioctl.h>
-=======
 #ifndef __GNUC__ /* Fix for ticket #257: MinGW-w64: Inclusion of <winioctl.h> triggers multiple redefinition errors. */
 #include <winioctl.h>
 #endif
->>>>>>> upstream/master
 #include <process.h>
 
 #include <math.h>

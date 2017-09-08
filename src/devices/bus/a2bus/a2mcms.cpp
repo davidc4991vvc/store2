@@ -10,14 +10,9 @@
 
 *********************************************************************/
 
-<<<<<<< HEAD
-#include "a2mcms.h"
-#include "includes/apple2.h"
-=======
 #include "emu.h"
 #include "a2mcms.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 // the actual sound device (a slot device can't currently also be a sound device so we keep this private here)
 enum
@@ -28,11 +23,7 @@ enum
 };
 
 
-<<<<<<< HEAD
-const device_type MCMS = &device_creator<mcms_device>;
-=======
 DEFINE_DEVICE_TYPE(MCMS, mcms_device, "mcmseng", "Mountain Computer Music System engine")
->>>>>>> upstream/master
 
 /***************************************************************************
     PARAMETERS
@@ -42,22 +33,14 @@ DEFINE_DEVICE_TYPE(MCMS, mcms_device, "mcmseng", "Mountain Computer Music System
 //  GLOBAL VARIABLES
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type A2BUS_MCMS1 = &device_creator<a2bus_mcms1_device>;
-const device_type A2BUS_MCMS2 = &device_creator<a2bus_mcms2_device>;
-=======
 DEFINE_DEVICE_TYPE(A2BUS_MCMS1, a2bus_mcms1_device, "a2mcms1", "Mountain Computer Music System (card 1)")
 DEFINE_DEVICE_TYPE(A2BUS_MCMS2, a2bus_mcms2_device, "a2mcms2", "Mountain Computer Music System (card 2)")
->>>>>>> upstream/master
 
 #define ENGINE_TAG  "engine"
 
 #define MCFG_MCMS_IRQ_CALLBACK(_cb) \
 	devcb = &mcms_device::set_irq_cb(*device, DEVCB_##_cb);
 
-<<<<<<< HEAD
-MACHINE_CONFIG_FRAGMENT( a2mcms )
-=======
 /***************************************************************************
     FUNCTION PROTOTYPES
 ***************************************************************************/
@@ -67,7 +50,6 @@ MACHINE_CONFIG_FRAGMENT( a2mcms )
 //-------------------------------------------------
 
 MACHINE_CONFIG_MEMBER( a2bus_mcms1_device::device_add_mconfig )
->>>>>>> upstream/master
 	MCFG_SPEAKER_STANDARD_STEREO("mcms_l", "mcms_r")
 
 	MCFG_DEVICE_ADD(ENGINE_TAG, MCMS, 1000000)
@@ -77,48 +59,19 @@ MACHINE_CONFIG_MEMBER( a2bus_mcms1_device::device_add_mconfig )
 	MCFG_SOUND_ROUTE(1, "mcms_r", 1.0)
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-/***************************************************************************
-    FUNCTION PROTOTYPES
-***************************************************************************/
-
-//-------------------------------------------------
-//  machine_config_additions - device-specific
-//  machine configurations
-//-------------------------------------------------
-
-machine_config_constructor a2bus_mcms1_device::device_mconfig_additions() const
-{
-	return MACHINE_CONFIG_NAME( a2mcms );
-}
-
-=======
->>>>>>> upstream/master
 //**************************************************************************
 //  LIVE DEVICE - Card 1
 //**************************************************************************
 
-<<<<<<< HEAD
-a2bus_mcms1_device::a2bus_mcms1_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source) :
-	device_t(mconfig, type, name, tag, owner, clock, shortname, source),
-=======
 a2bus_mcms1_device::a2bus_mcms1_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock) :
 	device_t(mconfig, type, tag, owner, clock),
->>>>>>> upstream/master
 	device_a2bus_card_interface(mconfig, *this),
 	m_mcms(*this, ENGINE_TAG)
 {
 }
 
-<<<<<<< HEAD
-a2bus_mcms1_device::a2bus_mcms1_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-	device_t(mconfig, A2BUS_MCMS1, "Mountain Computer Music System (card 1)", tag, owner, clock, "a2mcms1", __FILE__),
-	device_a2bus_card_interface(mconfig, *this),
-	m_mcms(*this, ENGINE_TAG)
-=======
 a2bus_mcms1_device::a2bus_mcms1_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	a2bus_mcms1_device(mconfig, A2BUS_MCMS1, tag, owner, clock)
->>>>>>> upstream/master
 {
 }
 
@@ -139,11 +92,7 @@ void a2bus_mcms1_device::device_reset()
 
 // read once at c0n0 to disable 125 Hz IRQs
 // read once at c0n1 to enable 125 Hz IRQs
-<<<<<<< HEAD
-UINT8 a2bus_mcms1_device::read_c0nx(address_space &space, UINT8 offset)
-=======
 uint8_t a2bus_mcms1_device::read_c0nx(address_space &space, uint8_t offset)
->>>>>>> upstream/master
 {
 	if (offset == 0)
 	{
@@ -158,21 +107,13 @@ uint8_t a2bus_mcms1_device::read_c0nx(address_space &space, uint8_t offset)
 }
 
 // read at Cn00: light gun in bit 7, bits 0-5 = 'random' number
-<<<<<<< HEAD
-UINT8 a2bus_mcms1_device::read_cnxx(address_space &space, UINT8 offset)
-=======
 uint8_t a2bus_mcms1_device::read_cnxx(address_space &space, uint8_t offset)
->>>>>>> upstream/master
 {
 	return m_mcms->get_pen_rand();
 }
 
 // write 0-255 to Cn00 to set the master volume
-<<<<<<< HEAD
-void a2bus_mcms1_device::write_cnxx(address_space &space, UINT8 offset, UINT8 data)
-=======
 void a2bus_mcms1_device::write_cnxx(address_space &space, uint8_t offset, uint8_t data)
->>>>>>> upstream/master
 {
 	if (offset == 0)
 	{
@@ -201,25 +142,14 @@ WRITE_LINE_MEMBER(a2bus_mcms1_device::irq_w)
 //  LIVE DEVICE - Card 2
 //**************************************************************************
 
-<<<<<<< HEAD
-a2bus_mcms2_device::a2bus_mcms2_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source) :
-	device_t(mconfig, type, name, tag, owner, clock, shortname, source),
-=======
 a2bus_mcms2_device::a2bus_mcms2_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock) :
 	device_t(mconfig, type, tag, owner, clock),
->>>>>>> upstream/master
 	device_a2bus_card_interface(mconfig, *this), m_card1(nullptr), m_engine(nullptr)
 {
 }
 
-<<<<<<< HEAD
-a2bus_mcms2_device::a2bus_mcms2_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-	device_t(mconfig, A2BUS_MCMS2, "Mountain Computer Music System (card 2)", tag, owner, clock, "a2mcms2", __FILE__),
-	device_a2bus_card_interface(mconfig, *this), m_card1(nullptr), m_engine(nullptr)
-=======
 a2bus_mcms2_device::a2bus_mcms2_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	a2bus_mcms2_device(mconfig, A2BUS_MCMS2, tag, owner, clock)
->>>>>>> upstream/master
 {
 }
 
@@ -245,22 +175,14 @@ void a2bus_mcms2_device::device_reset()
 }
 
 // here to soak up false reads from indexed accesses
-<<<<<<< HEAD
-UINT8 a2bus_mcms2_device::read_c0nx(address_space &space, UINT8 offset)
-=======
 uint8_t a2bus_mcms2_device::read_c0nx(address_space &space, uint8_t offset)
->>>>>>> upstream/master
 {
 	return 0xff;
 }
 
 // write once to c0n0 to disable the card (reset also disables)
 // write twice to c0n1 to enable the card (value doesn't matter)
-<<<<<<< HEAD
-void a2bus_mcms2_device::write_c0nx(address_space &space, UINT8 offset, UINT8 data)
-=======
 void a2bus_mcms2_device::write_c0nx(address_space &space, uint8_t offset, uint8_t data)
->>>>>>> upstream/master
 {
 	if (offset == 0)
 	{
@@ -272,11 +194,7 @@ void a2bus_mcms2_device::write_c0nx(address_space &space, uint8_t offset, uint8_
 	}
 }
 
-<<<<<<< HEAD
-void a2bus_mcms2_device::write_cnxx(address_space &space, UINT8 offset, UINT8 data)
-=======
 void a2bus_mcms2_device::write_cnxx(address_space &space, uint8_t offset, uint8_t data)
->>>>>>> upstream/master
 {
 	m_engine->voiceregs_w(space, offset, data);
 }
@@ -286,13 +204,8 @@ void a2bus_mcms2_device::write_cnxx(address_space &space, uint8_t offset, uint8_
     Sound device implementation
 */
 
-<<<<<<< HEAD
-mcms_device::mcms_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, MCMS, "Mountain Computer Music System engine", tag, owner, clock, "msmseng", __FILE__),
-=======
 mcms_device::mcms_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, MCMS, tag, owner, clock),
->>>>>>> upstream/master
 	device_sound_interface(mconfig, *this),
 	m_write_irq(*this), m_stream(nullptr), m_timer(nullptr), m_clrtimer(nullptr), m_pBusDevice(nullptr), m_enabled(false), m_mastervol(0), m_rand(0)
 {
@@ -302,13 +215,8 @@ void mcms_device::device_start()
 {
 	m_write_irq.resolve();
 	m_stream = machine().sound().stream_alloc(*this, 0, 2, 31250);
-<<<<<<< HEAD
-	m_timer = timer_alloc(0, NULL);
-	m_clrtimer = timer_alloc(1, NULL);
-=======
 	m_timer = timer_alloc(0, nullptr);
 	m_clrtimer = timer_alloc(1, nullptr);
->>>>>>> upstream/master
 	m_enabled = false;
 	memset(m_vols, 0, sizeof(m_vols));
 	memset(m_table, 0, sizeof(m_table));
@@ -316,15 +224,9 @@ void mcms_device::device_start()
 	memset(m_acc, 0, sizeof(m_acc));
 
 	// the card detect programs volumes and wavetable page but not freq and expects the accumulator to increment
-<<<<<<< HEAD
-	for (int i = 0; i < 16; i++)
-	{
-		m_freq[i] = 0x0040;
-=======
 	for (auto & elem : m_freq)
 	{
 		elem = 0x0040;
->>>>>>> upstream/master
 	}
 
 	save_item(NAME(m_enabled));
@@ -362,15 +264,9 @@ void mcms_device::sound_stream_update(sound_stream &stream, stream_sample_t **in
 {
 	stream_sample_t *outL, *outR;
 	int i, v;
-<<<<<<< HEAD
-	UINT16 wptr;
-	INT8 sample;
-	INT32 mixL, mixR;
-=======
 	uint16_t wptr;
 	int8_t sample;
 	int32_t mixL, mixR;
->>>>>>> upstream/master
 
 	outL = outputs[1];
 	outR = outputs[0];

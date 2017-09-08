@@ -1,9 +1,5 @@
 /* minigzip.c -- simulate gzip using the zlib compression library
-<<<<<<< HEAD
- * Copyright (C) 1995-2006, 2010, 2011 Jean-loup Gailly.
-=======
  * Copyright (C) 1995-2006, 2010, 2011, 2016 Jean-loup Gailly
->>>>>>> upstream/master
  * For conditions of distribution and use, see copyright notice in zlib.h
  */
 
@@ -44,11 +40,7 @@
 #  define SET_BINARY_MODE(file)
 #endif
 
-<<<<<<< HEAD
-#ifdef _MSC_VER
-=======
 #if defined(_MSC_VER) && _MSC_VER < 1900
->>>>>>> upstream/master
 #  define snprintf _snprintf
 #endif
 
@@ -164,22 +156,14 @@ void *myalloc(q, n, m)
     void *q;
     unsigned n, m;
 {
-<<<<<<< HEAD
-    q = Z_NULL;
-=======
     (void)q;
->>>>>>> upstream/master
     return calloc(n, m);
 }
 
 void myfree(q, p)
     void *q, *p;
 {
-<<<<<<< HEAD
-    q = Z_NULL;
-=======
     (void)q;
->>>>>>> upstream/master
     free(p);
 }
 
@@ -349,11 +333,7 @@ const char *gzerror(gz, err)
 
 #endif
 
-<<<<<<< HEAD
-char *prog;
-=======
 static char *prog;
->>>>>>> upstream/master
 
 void error            OF((const char *msg));
 void gz_compress      OF((FILE   *in, gzFile out));
@@ -520,11 +500,7 @@ void file_uncompress(file)
     char *infile, *outfile;
     FILE  *out;
     gzFile in;
-<<<<<<< HEAD
-    size_t len = strlen(file);
-=======
     unsigned len = strlen(file);
->>>>>>> upstream/master
 
     if (len + strlen(GZ_SUFFIX) >= sizeof(buf)) {
         fprintf(stderr, "%s: filename too long\n", prog);

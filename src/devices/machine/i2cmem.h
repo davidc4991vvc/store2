@@ -8,17 +8,10 @@
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __I2CMEM_H__
-#define __I2CMEM_H__
-=======
 #ifndef MAME_MACHINE_I2CMEM_H
 #define MAME_MACHINE_I2CMEM_H
 
 #pragma once
->>>>>>> upstream/master
 
 
 /***************************************************************************
@@ -92,19 +85,11 @@
 
 class i2cmem_device :
 	public device_t,
-<<<<<<< HEAD
-	public device_memory_interface,
-=======
->>>>>>> upstream/master
 	public device_nvram_interface
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	i2cmem_device( const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock );
-=======
 	i2cmem_device( const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock );
->>>>>>> upstream/master
 
 	static void set_address(device_t &device, int address) { downcast<i2cmem_device &>(device).m_slave_address = address; }
 	static void set_page_size(device_t &device, int page_size) { downcast<i2cmem_device &>(device).m_page_size = page_size; }
@@ -125,19 +110,6 @@ public:
 
 protected:
 	// device-level overrides
-<<<<<<< HEAD
-	virtual void device_config_complete();
-	virtual void device_start();
-	virtual void device_reset();
-
-	// device_memory_interface overrides
-	virtual const address_space_config *memory_space_config( address_spacenum spacenum = AS_0 ) const;
-
-	// device_nvram_interface overrides
-	virtual void nvram_default();
-	virtual void nvram_read( emu_file &file );
-	virtual void nvram_write( emu_file &file );
-=======
 	virtual void device_start() override;
 	virtual void device_reset() override;
 
@@ -145,24 +117,16 @@ protected:
 	virtual void nvram_default() override;
 	virtual void nvram_read( emu_file &file ) override;
 	virtual void nvram_write( emu_file &file ) override;
->>>>>>> upstream/master
 
 	// internal helpers
 	int address_mask();
 	int select_device();
 	int data_offset();
 
-<<<<<<< HEAD
-	// device-specific configuration
-	address_space_config m_space_config;
-
-	// internal state
-=======
 	optional_memory_region m_region;
 
 	// internal state
 	std::unique_ptr<uint8_t[]> m_data;
->>>>>>> upstream/master
 	int m_slave_address;
 	int m_page_size;
 	int m_data_size;
@@ -178,22 +142,12 @@ protected:
 	int m_shift;
 	int m_devsel;
 	int m_byteaddr;
-<<<<<<< HEAD
-	dynamic_buffer m_page;
-=======
 	std::vector<uint8_t> m_page;
->>>>>>> upstream/master
 	int m_page_offset;
 };
 
 
 // device type definition
-<<<<<<< HEAD
-extern const device_type I2CMEM;
-
-#endif  /* __I2CMEM_H__ */
-=======
 DECLARE_DEVICE_TYPE(I2CMEM, i2cmem_device)
 
 #endif // MAME_MACHINE_I2CMEM_H
->>>>>>> upstream/master

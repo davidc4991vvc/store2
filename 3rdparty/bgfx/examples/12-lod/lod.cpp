@@ -1,10 +1,6 @@
 /*
  * Copyright 2013 Milos Tosic. All rights reserved.
-<<<<<<< HEAD
- * License: http://www.opensource.org/licenses/BSD-2-Clause
-=======
  * License: https://github.com/bkaradzic/bgfx#license-bsd-2-clause
->>>>>>> upstream/master
  */
 
 #include "common.h"
@@ -27,11 +23,7 @@ static const KnightPos knightTour[8*4] =
 	{7,1}, {6,3}, {5,1}, {7,0}, {6,2}, {4,3}, {3,1}, {2,3},
 };
 
-<<<<<<< HEAD
-class Lod : public entry::AppI
-=======
 class ExampleLod : public entry::AppI
->>>>>>> upstream/master
 {
 	void init(int _argc, char** _argv) BX_OVERRIDE
 	{
@@ -62,15 +54,6 @@ class ExampleLod : public entry::AppI
 
 		m_program = loadProgram("vs_tree", "fs_tree");
 
-<<<<<<< HEAD
-		m_textureLeafs = loadTexture("leafs1.dds");
-		m_textureBark  = loadTexture("bark1.dds");
-
-		const bgfx::Memory* stippleTex = bgfx::alloc(8*4);
-		memset(stippleTex->data, 0, stippleTex->size);
-
-		for (uint32_t ii = 0; ii < 32; ++ii)
-=======
 		m_textureLeafs = loadTexture("textures/leafs1.dds");
 		m_textureBark  = loadTexture("textures/bark1.dds");
 
@@ -78,16 +61,11 @@ class ExampleLod : public entry::AppI
 		bx::memSet(stippleTex->data, 0, stippleTex->size);
 
 		for (uint8_t ii = 0; ii < 32; ++ii)
->>>>>>> upstream/master
 		{
 			stippleTex->data[knightTour[ii].m_y * 8 + knightTour[ii].m_x] = ii*4;
 		}
 
-<<<<<<< HEAD
-		m_textureStipple = bgfx::createTexture2D(8, 4, 1
-=======
 		m_textureStipple = bgfx::createTexture2D(8, 4, false, 1
->>>>>>> upstream/master
 			, bgfx::TextureFormat::R8
 			, BGFX_TEXTURE_MAG_POINT|BGFX_TEXTURE_MIN_POINT
 			, stippleTex
@@ -149,15 +127,9 @@ class ExampleLod : public entry::AppI
 				| (m_mouseState.m_buttons[entry::MouseButton::Right ] ? IMGUI_MBUT_RIGHT  : 0)
 				| (m_mouseState.m_buttons[entry::MouseButton::Middle] ? IMGUI_MBUT_MIDDLE : 0)
 				,  m_mouseState.m_mz
-<<<<<<< HEAD
-				, m_width
-				, m_height
-				);
-=======
 				, uint16_t(m_width)
 				, uint16_t(m_height)
 			);
->>>>>>> upstream/master
 
 			imguiBeginScrollArea("Toggle transitions", m_width - m_width / 5 - 10, 10, m_width / 5, m_height / 6, &m_scrollArea);
 			imguiSeparatorLine();
@@ -174,11 +146,7 @@ class ExampleLod : public entry::AppI
 			imguiEndFrame();
 
 			// Set view 0 default viewport.
-<<<<<<< HEAD
-			bgfx::setViewRect(0, 0, 0, m_width, m_height);
-=======
 			bgfx::setViewRect(0, 0, 0, uint16_t(m_width), uint16_t(m_height) );
->>>>>>> upstream/master
 
 			// This dummy draw call is here to make sure that view 0 is cleared
 			// if no other draw calls are submitted to view 0.
@@ -206,15 +174,7 @@ class ExampleLod : public entry::AppI
 			{
 				float view[16];
 				bx::mtxQuatTranslationHMD(view, hmd->eye[0].rotation, eye);
-<<<<<<< HEAD
-
-				float proj[16];
-				bx::mtxProj(proj, hmd->eye[0].fov, 0.1f, 100.0f);
-
-				bgfx::setViewTransform(0, view, proj);
-=======
 				bgfx::setViewTransform(0, view, hmd->eye[0].projection, BGFX_VIEW_STEREO, hmd->eye[1].projection);
->>>>>>> upstream/master
 
 				// Set view 0 default viewport.
 				//
@@ -228,19 +188,11 @@ class ExampleLod : public entry::AppI
 				bx::mtxLookAt(view, eye, at);
 
 				float proj[16];
-<<<<<<< HEAD
-				bx::mtxProj(proj, 60.0f, float(m_width)/float(m_height), 0.1f, 100.0f);
-				bgfx::setViewTransform(0, view, proj);
-
-				// Set view 0 default viewport.
-				bgfx::setViewRect(0, 0, 0, m_width, m_height);
-=======
 				bx::mtxProj(proj, 60.0f, float(m_width)/float(m_height), 0.1f, 100.0f, bgfx::getCaps()->homogeneousDepth);
 				bgfx::setViewTransform(0, view, proj);
 
 				// Set view 0 default viewport.
 				bgfx::setViewRect(0, 0, 0, uint16_t(m_width), uint16_t(m_height) );
->>>>>>> upstream/master
 			}
 
 			float mtx[16];
@@ -360,8 +312,4 @@ class ExampleLod : public entry::AppI
 	bool    m_transitions;
 };
 
-<<<<<<< HEAD
-ENTRY_IMPLEMENT_MAIN(Lod);
-=======
 ENTRY_IMPLEMENT_MAIN(ExampleLod);
->>>>>>> upstream/master

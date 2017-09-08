@@ -61,11 +61,8 @@
         [0x00000320] 2000000-TCOUNT in XINT3 handler
         [0x01010668] copied from (word)0xb0000004 in XINT3 handler
 
-<<<<<<< HEAD
-=======
         ROM [0xc0050000] 0x10000 floats copied to [0x40180000]
 
->>>>>>> upstream/master
 
     Texture ROM decode:
 
@@ -76,8 +73,6 @@
 
 #include "emu.h"
 #include "cpu/tms32082/tms32082.h"
-<<<<<<< HEAD
-=======
 #include "video/poly.h"
 
 struct rollext_polydata
@@ -280,7 +275,6 @@ void rollext_renderer::display(bitmap_rgb32 *bitmap, const rectangle &cliprect)
 
 
 
->>>>>>> upstream/master
 
 class rollext_state : public driver_device
 {
@@ -290,16 +284,6 @@ public:
 		m_maincpu(*this, "maincpu"),
 		m_palette_ram(*this, "palette_ram"),
 		m_texture_mask(*this, "texture_mask"),
-<<<<<<< HEAD
-		m_disp_ram(*this, "disp_ram")
-	{
-	}
-
-	required_device<cpu_device> m_maincpu;
-	required_shared_ptr<UINT32> m_palette_ram;
-	required_shared_ptr<UINT32> m_texture_mask;
-	required_shared_ptr<UINT32> m_disp_ram;
-=======
 		m_disp_ram(*this, "disp_ram"),
 		m_screen(*this, "screen")
 	{
@@ -310,32 +294,11 @@ public:
 	required_shared_ptr<uint32_t> m_texture_mask;
 	required_shared_ptr<uint32_t> m_disp_ram;
 	required_device<screen_device> m_screen;
->>>>>>> upstream/master
 
 	DECLARE_READ32_MEMBER(a0000000_r);
 	DECLARE_WRITE32_MEMBER(a0000000_w);
 	DECLARE_READ32_MEMBER(b0000000_r);
 
-<<<<<<< HEAD
-	UINT8 *m_texture;
-
-	void draw_line(bitmap_rgb32 &bitmap, const rectangle &visarea, int v1x, int v1y, int v2x, int v2y);
-
-	INTERRUPT_GEN_MEMBER(vblank_interrupt);
-	DECLARE_DRIVER_INIT(rollext);
-	virtual void machine_start();
-	virtual void machine_reset();
-	virtual void video_start();
-	void preprocess_texture_data();
-	UINT32 screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
-};
-
-
-
-void rollext_state::preprocess_texture_data()
-{
-	UINT8 *rom = (UINT8*)memregion("texture")->base();
-=======
 	DECLARE_WRITE32_MEMBER(cmd_callback);
 
 	std::unique_ptr<uint8_t[]> m_texture;
@@ -353,7 +316,6 @@ void rollext_state::preprocess_texture_data()
 void rollext_state::preprocess_texture_data()
 {
 	uint8_t *rom = (uint8_t*)memregion("texture")->base();
->>>>>>> upstream/master
 
 	for (int j=0; j < 16384; j+=2)
 	{
@@ -371,69 +333,6 @@ void rollext_state::preprocess_texture_data()
 	}
 }
 
-<<<<<<< HEAD
-void rollext_state::draw_line(bitmap_rgb32 &bitmap, const rectangle &visarea, int v1x, int v1y, int v2x, int v2y)
-{
-	int dx = (v2x - v1x);
-	int dy = (v2y - v1y);
-
-	int x1 = v1x;
-	int y1 = v1y;
-
-	if (v1x < visarea.min_x || v1x > visarea.max_x ||
-		v1y < visarea.min_y || v1y > visarea.max_y ||
-		v2x < visarea.min_x || v2x > visarea.max_x ||
-		v2y < visarea.min_y || v2y > visarea.max_x)
-		return;
-
-	if (dx > dy)
-	{
-		int x = x1;
-		for (int i=0; i < abs(dx); i++)
-		{
-			int y = y1 + (dy * (float)(x - x1) / (float)(dx));
-
-			if (x >= 0 && x < 512 && y >= 0 && y < 384)
-			{
-				UINT32 *fb = &bitmap.pix32(y);
-				fb[x] = 0xffffffff;
-			}
-
-			x++;
-		}
-	}
-	else
-	{
-		int y = y1;
-		for (int i=0; i < abs(dy); i++)
-		{
-			int x = x1 + (dx * (float)(y - y1) / (float)(dy));
-
-			if (x >= 0 && x < 512 && y >= 0 && y < 384)
-			{
-				UINT32 *fb = &bitmap.pix32(y);
-				fb[x] = 0xffffffff;
-			}
-
-			y++;
-		}
-	}
-}
-
-void rollext_state::video_start()
-{
-	m_texture = auto_alloc_array(machine(), UINT8, 0x2000000);
-
-	preprocess_texture_data();
-}
-
-UINT32 rollext_state::screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
-{
-	bitmap.fill(0xff000000, cliprect);
-
-#if 0
-	UINT16 *pal = (UINT16*)&m_palette_ram[0];
-=======
 void rollext_state::video_start()
 {
 	m_texture = std::make_unique<uint8_t[]>(0x2000000);
@@ -449,7 +348,6 @@ uint32_t rollext_state::screen_update(screen_device &screen, bitmap_rgb32 &bitma
 {
 #if 0
 	uint16_t *pal = (uint16_t*)&m_palette_ram[0];
->>>>>>> upstream/master
 
 	int palnum = 31;
 	// 24,25,31 for basic font
@@ -458,21 +356,12 @@ uint32_t rollext_state::screen_update(screen_device &screen, bitmap_rgb32 &bitma
 	int ii=0;
 	for (int j=0; j < 384; j++)
 	{
-<<<<<<< HEAD
-		UINT32 *fb = &bitmap.pix32(j);
-		for (int i=0; i < 512; i++)
-		{
-			UINT8 p = m_texture[ii++];
-
-			UINT16 rgb = pal[(palnum * 256) + BYTE_XOR_BE(p)];
-=======
 		uint32_t *fb = &bitmap.pix32(j);
 		for (int i=0; i < 512; i++)
 		{
 			uint8_t p = m_texture[ii++];
 
 			uint16_t rgb = pal[(palnum * 256) + BYTE_XOR_BE(p)];
->>>>>>> upstream/master
 			int r = ((rgb >> 10) & 0x1f) << 3;
 			int g = ((rgb >> 5) & 0x1f) << 3;
 			int b = (rgb & 0x1f) << 3;
@@ -483,41 +372,11 @@ uint32_t rollext_state::screen_update(screen_device &screen, bitmap_rgb32 &bitma
 	}
 #endif
 
-<<<<<<< HEAD
-	int num = m_disp_ram[0xffffc/4];
-
-	for (int i=0; i < num; i++)
-	{
-		int ii = i * 0x60;
-
-		int x[4];
-		int y[4];
-
-		for (int j=0; j < 4; j++)
-		{
-			UINT32 ix = m_disp_ram[(ii + (j*0x10) + 0x4) / 4];
-			UINT32 iy = m_disp_ram[(ii + (j*0x10) + 0xc) / 4];
-
-			x[j] = (int)((u2f(ix) / 2.0f) + 256.0f);
-			y[j] = (int)((u2f(iy) / 2.0f) + 192.0f);
-		}
-
-
-		draw_line(bitmap, cliprect, x[0], y[0], x[1], y[1]);
-		draw_line(bitmap, cliprect, x[1], y[1], x[2], y[2]);
-		draw_line(bitmap, cliprect, x[3], y[3], x[2], y[2]);
-		draw_line(bitmap, cliprect, x[0], y[0], x[3], y[3]);
-
-	}
-
-	m_disp_ram[0xffffc/4] = 0;
-=======
 	m_renderer->display(&bitmap, cliprect);
 
 	//m_renderer->clear_fb();
 
 	//m_disp_ram[0xffffc/4] = 0;
->>>>>>> upstream/master
 
 
 	return 0;
@@ -530,11 +389,7 @@ READ32_MEMBER(rollext_state::a0000000_r)
 	{
 		case 0:         // ??
 		{
-<<<<<<< HEAD
-			UINT32 data = 0x20200;
-=======
 			uint32_t data = 0x20200;
->>>>>>> upstream/master
 
 			//data |= ioport("INPUTS1")->read();
 			//data |= 0xfff7fff7;
@@ -559,11 +414,7 @@ READ32_MEMBER(rollext_state::b0000000_r)
 	switch (offset)
 	{
 		case 0:     // ??
-<<<<<<< HEAD
-			return 0xffff;
-=======
 			return 0x0000ffff;
->>>>>>> upstream/master
 		case 1:     // ??
 			return 0;
 	}
@@ -571,8 +422,6 @@ READ32_MEMBER(rollext_state::b0000000_r)
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
 WRITE32_MEMBER(rollext_state::cmd_callback)
 {
 	uint32_t command = data;
@@ -656,7 +505,6 @@ WRITE32_MEMBER(rollext_state::cmd_callback)
 	}
 }
 
->>>>>>> upstream/master
 
 // Master Processor memory map
 static ADDRESS_MAP_START(memmap, AS_PROGRAM, 32, rollext_state)
@@ -689,20 +537,12 @@ void rollext_state::machine_start()
 }
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START(rollext, rollext_state)
-	MCFG_CPU_ADD("maincpu", TMS32082_MP, 60000000)
-	MCFG_CPU_PROGRAM_MAP(memmap)
-	MCFG_CPU_VBLANK_INT_DRIVER("screen", rollext_state, vblank_interrupt)
-	MCFG_CPU_PERIODIC_INT_DRIVER(rollext_state, irq3_line_assert,  60)
-=======
 static MACHINE_CONFIG_START(rollext)
 	MCFG_CPU_ADD("maincpu", TMS32082_MP, 60000000)
 	MCFG_CPU_PROGRAM_MAP(memmap)
 	//MCFG_CPU_VBLANK_INT_DRIVER("screen", rollext_state, vblank_interrupt)
 	MCFG_CPU_PERIODIC_INT_DRIVER(rollext_state, irq1_line_assert, 60)
 	//MCFG_CPU_PERIODIC_INT_DRIVER(rollext_state, irq3_line_assert, 500)
->>>>>>> upstream/master
 
 	MCFG_CPU_ADD("pp0", TMS32082_PP, 60000000)
 	MCFG_CPU_PROGRAM_MAP(memmap);
@@ -725,10 +565,7 @@ INTERRUPT_GEN_MEMBER(rollext_state::vblank_interrupt)
 
 DRIVER_INIT_MEMBER(rollext_state, rollext)
 {
-<<<<<<< HEAD
-=======
 	m_maincpu->set_command_callback(write32_delegate(FUNC(rollext_state::cmd_callback),this));
->>>>>>> upstream/master
 }
 
 

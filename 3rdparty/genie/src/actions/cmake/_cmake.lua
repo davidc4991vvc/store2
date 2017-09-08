@@ -10,11 +10,7 @@ newaction {
 	trigger         = "cmake",
 	shortname       = "CMake",
 	description     = "Generate CMake project files",
-<<<<<<< HEAD
-	valid_kinds     = { "ConsoleApp", "WindowedApp", "StaticLib", "SharedLib" },
-=======
 	valid_kinds     = { "ConsoleApp", "WindowedApp", "StaticLib", "SharedLib", "Bundle" },
->>>>>>> upstream/master
 	valid_languages = { "C", "C++" },
 	valid_tools     = {
 	cc   = { "gcc" },

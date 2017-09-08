@@ -74,11 +74,7 @@ void vectrex_state::device_timer(emu_timer &timer, device_timer_id id, int param
 		update_signal(ptr, param);
 		break;
 	default:
-<<<<<<< HEAD
-		assert_always(FALSE, "Unknown id in vectrex_state::device_timer");
-=======
 		assert_always(false, "Unknown id in vectrex_state::device_timer");
->>>>>>> upstream/master
 	}
 }
 
@@ -107,11 +103,7 @@ void vectrex_state::vectrex_configuration()
 		switch ((cport >> 2) & 0x07)
 		{
 		case 0x00:
-<<<<<<< HEAD
-			m_imager_colors[0] = m_imager_colors[1] = m_imager_colors[2] = rgb_t::black;
-=======
 			m_imager_colors[0] = m_imager_colors[1] = m_imager_colors[2] = rgb_t::black();
->>>>>>> upstream/master
 			break;
 		case 0x01:
 			m_imager_colors[0] = m_imager_colors[1] = m_imager_colors[2] = VC_DARKRED;
@@ -141,11 +133,7 @@ void vectrex_state::vectrex_configuration()
 		switch ((cport >> 5) & 0x07)
 		{
 		case 0x00:
-<<<<<<< HEAD
-			m_imager_colors[3] = m_imager_colors[4] = m_imager_colors[5] = rgb_t::black;
-=======
 			m_imager_colors[3] = m_imager_colors[4] = m_imager_colors[5] = rgb_t::black();
->>>>>>> upstream/master
 			break;
 		case 0x01:
 			m_imager_colors[3] = m_imager_colors[4] = m_imager_colors[5] = VC_DARKRED;
@@ -174,13 +162,8 @@ void vectrex_state::vectrex_configuration()
 	else
 	{
 		vector_add_point_function = &vectrex_state::vectrex_add_point;
-<<<<<<< HEAD
-		m_beam_color = rgb_t::white;
-		m_imager_colors[0] = m_imager_colors[1] = m_imager_colors[2] = m_imager_colors[3] = m_imager_colors[4] = m_imager_colors[5] = rgb_t::white;
-=======
 		m_beam_color = rgb_t::white();
 		m_imager_colors[0] = m_imager_colors[1] = m_imager_colors[2] = m_imager_colors[3] = m_imager_colors[4] = m_imager_colors[5] = rgb_t::white();
->>>>>>> upstream/master
 	}
 	m_lightpen_port = m_io_lpenconf->read() & 0x03;
 }
@@ -200,14 +183,7 @@ WRITE_LINE_MEMBER(vectrex_state::vectrex_via_irq)
 
 READ8_MEMBER(vectrex_state::vectrex_via_pb_r)
 {
-<<<<<<< HEAD
-	int pot;
-	ioport_port *io_port[4] = { m_io_contr1x, m_io_contr1y, m_io_contr2x, m_io_contr2y };
-
-	pot = io_port[(m_via_out[PORTB] & 0x6) >> 1]->read() - 0x80;
-=======
 	int pot = m_io_contr[(m_via_out[PORTB] & 0x6) >> 1]->read() - 0x80;
->>>>>>> upstream/master
 
 	if (pot > (signed char)m_via_out[PORTA])
 		m_via_out[PORTB] |= 0x20;
@@ -251,11 +227,7 @@ TIMER_CALLBACK_MEMBER(vectrex_state::vectrex_imager_change_color)
 TIMER_CALLBACK_MEMBER(vectrex_state::update_level)
 {
 	if (ptr)
-<<<<<<< HEAD
-		* (UINT8 *) ptr = param;
-=======
 		* (uint8_t *) ptr = param;
->>>>>>> upstream/master
 }
 
 
@@ -314,11 +286,7 @@ WRITE8_MEMBER(vectrex_state::vectrex_psg_port_w)
 			if (m_imager_freq > 1)
 			{
 				m_imager_timer->adjust(
-<<<<<<< HEAD
-										attotime::from_double(MIN(1.0 / m_imager_freq, m_imager_timer->remaining().as_double())),
-=======
 										attotime::from_double(std::min(1.0 / m_imager_freq, m_imager_timer->remaining().as_double())),
->>>>>>> upstream/master
 										2,
 										attotime::from_double(1.0 / m_imager_freq));
 			}
@@ -334,15 +302,9 @@ WRITE8_MEMBER(vectrex_state::vectrex_psg_port_w)
 DRIVER_INIT_MEMBER(vectrex_state,vectrex)
 {
 	m_imager_angles = unknown_game_angles;
-<<<<<<< HEAD
-	m_beam_color = rgb_t::white;
-	for (int i = 0; i < ARRAY_LENGTH(m_imager_colors); i++)
-		m_imager_colors[i] = rgb_t::white;
-=======
 	m_beam_color = rgb_t::white();
 	for (auto & elem : m_imager_colors)
 		elem = rgb_t::white();
->>>>>>> upstream/master
 
 	/*
 	 * Minestorm's PRNG doesn't work with a 0 seed (mines in the first

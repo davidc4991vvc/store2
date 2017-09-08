@@ -8,18 +8,11 @@
 
 *********************************************************************/
 
-<<<<<<< HEAD
-#ifndef __A2BUS_VULCAN__
-#define __A2BUS_VULCAN__
-
-#include "emu.h"
-=======
 #ifndef MAME_BUS_A2BUS_VULCAN_H
 #define MAME_BUS_A2BUS_VULCAN_H
 
 #pragma once
 
->>>>>>> upstream/master
 #include "a2bus.h"
 #include "machine/ataintf.h"
 
@@ -31,33 +24,6 @@ class a2bus_vulcanbase_device:
 	public device_t,
 	public device_a2bus_card_interface
 {
-<<<<<<< HEAD
-public:
-	// construction/destruction
-	a2bus_vulcanbase_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source);
-
-	// optional information overrides
-	virtual machine_config_constructor device_mconfig_additions() const;
-
-protected:
-	virtual void device_start();
-	virtual void device_reset();
-
-	// overrides of standard a2bus slot functions
-	virtual UINT8 read_c0nx(address_space &space, UINT8 offset);
-	virtual void write_c0nx(address_space &space, UINT8 offset, UINT8 data);
-	virtual UINT8 read_cnxx(address_space &space, UINT8 offset);
-	virtual UINT8 read_c800(address_space &space, UINT16 offset);
-	virtual void write_c800(address_space &space, UINT16 offset, UINT8 data);
-
-	required_device<ata_interface_device> m_ata;
-
-	UINT8 *m_rom;
-	UINT8 m_ram[8*1024];
-
-private:
-	UINT16 m_lastdata;
-=======
 protected:
 	// construction/destruction
 	a2bus_vulcanbase_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock);
@@ -80,7 +46,6 @@ protected:
 
 private:
 	uint16_t m_lastdata;
->>>>>>> upstream/master
 	int m_rombank, m_rambank;
 	bool m_last_read_was_0;
 };
@@ -88,19 +53,11 @@ private:
 class a2bus_vulcan_device : public a2bus_vulcanbase_device
 {
 public:
-<<<<<<< HEAD
-	a2bus_vulcan_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-	virtual const rom_entry *device_rom_region() const;
-
-protected:
-	virtual void device_start();
-=======
 	a2bus_vulcan_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 	virtual const tiny_rom_entry *device_rom_region() const override;
 
 protected:
 	virtual void device_start() override;
->>>>>>> upstream/master
 
 protected:
 };
@@ -108,19 +65,6 @@ protected:
 class a2bus_vulcangold_device : public a2bus_vulcanbase_device
 {
 public:
-<<<<<<< HEAD
-	a2bus_vulcangold_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-	virtual const rom_entry *device_rom_region() const;
-
-protected:
-};
-
-// device type definition
-extern const device_type A2BUS_VULCAN;
-extern const device_type A2BUS_VULCANGOLD;
-
-#endif /* __A2BUS_VULCAN__ */
-=======
 	a2bus_vulcangold_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 	virtual const tiny_rom_entry *device_rom_region() const override;
 };
@@ -130,4 +74,3 @@ DECLARE_DEVICE_TYPE(A2BUS_VULCAN,     a2bus_vulcan_device)
 DECLARE_DEVICE_TYPE(A2BUS_VULCANGOLD, a2bus_vulcangold_device)
 
 #endif // MAME_BUS_A2BUS_VULCAN_H
->>>>>>> upstream/master

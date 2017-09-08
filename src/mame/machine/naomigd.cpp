@@ -6,9 +6,6 @@
 #include "imagedev/chd_cd.h"
 
 /*
-<<<<<<< HEAD
-    Dimm board registers (add more information if you find it):
-=======
 
   GPIO pins(main board: EEPROM, DIMM SPDs, option board: PIC16, JPs)
    |
@@ -84,7 +81,6 @@ SH4 IO port A bits
 
 
     Dimm board communication registers software level usage:
->>>>>>> upstream/master
 
     Name:                   Naomi   Dimm Bd.
     NAOMI_DIMM_COMMAND    = 5f703c  14000014 (16 bit):
@@ -102,33 +98,19 @@ SH4 IO port A bits
 
 */
 
-<<<<<<< HEAD
-const device_type NAOMI_GDROM_BOARD = &device_creator<naomi_gdrom_board>;
-
-const UINT32 naomi_gdrom_board::DES_LEFTSWAP[] = {
-=======
 DEFINE_DEVICE_TYPE(NAOMI_GDROM_BOARD, naomi_gdrom_board, "segadimm", "Sega DIMM Board")
 
 const uint32_t naomi_gdrom_board::DES_LEFTSWAP[] = {
->>>>>>> upstream/master
 	0x00000000, 0x00000001, 0x00000100, 0x00000101, 0x00010000, 0x00010001, 0x00010100, 0x00010101,
 	0x01000000, 0x01000001, 0x01000100, 0x01000101, 0x01010000, 0x01010001, 0x01010100, 0x01010101
 };
 
-<<<<<<< HEAD
-const UINT32 naomi_gdrom_board::DES_RIGHTSWAP[] = {
-=======
 const uint32_t naomi_gdrom_board::DES_RIGHTSWAP[] = {
->>>>>>> upstream/master
 	0x00000000, 0x01000000, 0x00010000, 0x01010000, 0x00000100, 0x01000100, 0x00010100, 0x01010100,
 	0x00000001, 0x01000001, 0x00010001, 0x01010001, 0x00000101, 0x01000101, 0x00010101, 0x01010101,
 };
 
-<<<<<<< HEAD
-const UINT32 naomi_gdrom_board::DES_SBOX1[] = {
-=======
 const uint32_t naomi_gdrom_board::DES_SBOX1[] = {
->>>>>>> upstream/master
 	0x00808200, 0x00000000, 0x00008000, 0x00808202, 0x00808002, 0x00008202, 0x00000002, 0x00008000,
 	0x00000200, 0x00808200, 0x00808202, 0x00000200, 0x00800202, 0x00808002, 0x00800000, 0x00000002,
 	0x00000202, 0x00800200, 0x00800200, 0x00008200, 0x00008200, 0x00808000, 0x00808000, 0x00800202,
@@ -139,11 +121,7 @@ const uint32_t naomi_gdrom_board::DES_SBOX1[] = {
 	0x00000202, 0x00800200, 0x00800200, 0x00000000, 0x00008002, 0x00008200, 0x00000000, 0x00808002
 };
 
-<<<<<<< HEAD
-const UINT32 naomi_gdrom_board::DES_SBOX2[] = {
-=======
 const uint32_t naomi_gdrom_board::DES_SBOX2[] = {
->>>>>>> upstream/master
 	0x40084010, 0x40004000, 0x00004000, 0x00084010, 0x00080000, 0x00000010, 0x40080010, 0x40004010,
 	0x40000010, 0x40084010, 0x40084000, 0x40000000, 0x40004000, 0x00080000, 0x00000010, 0x40080010,
 	0x00084000, 0x00080010, 0x40004010, 0x00000000, 0x40000000, 0x00004000, 0x00084010, 0x40080000,
@@ -154,11 +132,7 @@ const uint32_t naomi_gdrom_board::DES_SBOX2[] = {
 	0x00084000, 0x00000000, 0x40004000, 0x00004010, 0x40000000, 0x40080010, 0x40084010, 0x00084000
 };
 
-<<<<<<< HEAD
-const UINT32 naomi_gdrom_board::DES_SBOX3[] = {
-=======
 const uint32_t naomi_gdrom_board::DES_SBOX3[] = {
->>>>>>> upstream/master
 	0x00000104, 0x04010100, 0x00000000, 0x04010004, 0x04000100, 0x00000000, 0x00010104, 0x04000100,
 	0x00010004, 0x04000004, 0x04000004, 0x00010000, 0x04010104, 0x00010004, 0x04010000, 0x00000104,
 	0x04000000, 0x00000004, 0x04010100, 0x00000100, 0x00010100, 0x04010000, 0x04010004, 0x00010104,
@@ -169,11 +143,7 @@ const uint32_t naomi_gdrom_board::DES_SBOX3[] = {
 	0x04010000, 0x04000104, 0x00000104, 0x04010000, 0x00010104, 0x00000004, 0x04010004, 0x00010100
 };
 
-<<<<<<< HEAD
-const UINT32 naomi_gdrom_board::DES_SBOX4[] = {
-=======
 const uint32_t naomi_gdrom_board::DES_SBOX4[] = {
->>>>>>> upstream/master
 	0x80401000, 0x80001040, 0x80001040, 0x00000040, 0x00401040, 0x80400040, 0x80400000, 0x80001000,
 	0x00000000, 0x00401000, 0x00401000, 0x80401040, 0x80000040, 0x00000000, 0x00400040, 0x80400000,
 	0x80000000, 0x00001000, 0x00400000, 0x80401000, 0x00000040, 0x00400000, 0x80001000, 0x00001040,
@@ -184,11 +154,7 @@ const uint32_t naomi_gdrom_board::DES_SBOX4[] = {
 	0x80001000, 0x00001040, 0x00400000, 0x80401000, 0x00000040, 0x00400000, 0x00001000, 0x00401040
 };
 
-<<<<<<< HEAD
-const UINT32 naomi_gdrom_board::DES_SBOX5[] = {
-=======
 const uint32_t naomi_gdrom_board::DES_SBOX5[] = {
->>>>>>> upstream/master
 	0x00000080, 0x01040080, 0x01040000, 0x21000080, 0x00040000, 0x00000080, 0x20000000, 0x01040000,
 	0x20040080, 0x00040000, 0x01000080, 0x20040080, 0x21000080, 0x21040000, 0x00040080, 0x20000000,
 	0x01000000, 0x20040000, 0x20040000, 0x00000000, 0x20000080, 0x21040080, 0x21040080, 0x01000080,
@@ -199,11 +165,7 @@ const uint32_t naomi_gdrom_board::DES_SBOX5[] = {
 	0x00040080, 0x01000080, 0x20000080, 0x00040000, 0x00000000, 0x20040000, 0x01040080, 0x20000080
 };
 
-<<<<<<< HEAD
-const UINT32 naomi_gdrom_board::DES_SBOX6[] = {
-=======
 const uint32_t naomi_gdrom_board::DES_SBOX6[] = {
->>>>>>> upstream/master
 	0x10000008, 0x10200000, 0x00002000, 0x10202008, 0x10200000, 0x00000008, 0x10202008, 0x00200000,
 	0x10002000, 0x00202008, 0x00200000, 0x10000008, 0x00200008, 0x10002000, 0x10000000, 0x00002008,
 	0x00000000, 0x00200008, 0x10002008, 0x00002000, 0x00202000, 0x10002008, 0x00000008, 0x10200008,
@@ -214,11 +176,7 @@ const uint32_t naomi_gdrom_board::DES_SBOX6[] = {
 	0x00002000, 0x00200008, 0x10002008, 0x00000000, 0x10202000, 0x10000000, 0x00200008, 0x10002008
 };
 
-<<<<<<< HEAD
-const UINT32 naomi_gdrom_board::DES_SBOX7[] = {
-=======
 const uint32_t naomi_gdrom_board::DES_SBOX7[] = {
->>>>>>> upstream/master
 	0x00100000, 0x02100001, 0x02000401, 0x00000000, 0x00000400, 0x02000401, 0x00100401, 0x02100400,
 	0x02100401, 0x00100000, 0x00000000, 0x02000001, 0x00000001, 0x02000000, 0x02100001, 0x00000401,
 	0x02000400, 0x00100401, 0x00100001, 0x02000400, 0x02000001, 0x02100000, 0x02100400, 0x00100001,
@@ -229,11 +187,7 @@ const uint32_t naomi_gdrom_board::DES_SBOX7[] = {
 	0x00000000, 0x00100401, 0x02100000, 0x00000400, 0x02000001, 0x02000400, 0x00000400, 0x00100001
 };
 
-<<<<<<< HEAD
-const UINT32 naomi_gdrom_board::DES_SBOX8[] = {
-=======
 const uint32_t naomi_gdrom_board::DES_SBOX8[] = {
->>>>>>> upstream/master
 	0x08000820, 0x00000800, 0x00020000, 0x08020820, 0x08000000, 0x08000820, 0x00000020, 0x08000000,
 	0x00020020, 0x08020000, 0x08020820, 0x00020800, 0x08020800, 0x00020820, 0x00000800, 0x00000020,
 	0x08020000, 0x08000020, 0x08000800, 0x00000820, 0x00020800, 0x00020020, 0x08020020, 0x08020800,
@@ -244,11 +198,7 @@ const uint32_t naomi_gdrom_board::DES_SBOX8[] = {
 	0x08020820, 0x00020800, 0x00020800, 0x00000820, 0x00000820, 0x00020020, 0x08000000, 0x08020800
 };
 
-<<<<<<< HEAD
-const UINT32 naomi_gdrom_board::DES_MASK_TABLE[] = {
-=======
 const uint32_t naomi_gdrom_board::DES_MASK_TABLE[] = {
->>>>>>> upstream/master
 	0x24000000, 0x10000000, 0x08000000, 0x02080000, 0x01000000,
 	0x00200000, 0x00100000, 0x00040000, 0x00020000, 0x00010000,
 	0x00002000, 0x00001000, 0x00000800, 0x00000400, 0x00000200,
@@ -260,15 +210,6 @@ const uint32_t naomi_gdrom_board::DES_MASK_TABLE[] = {
 	0x00000020, 0x00000011, 0x00000004, 0x00000002
 };
 
-<<<<<<< HEAD
-const UINT8 naomi_gdrom_board::DES_ROTATE_TABLE[16] = {
-	1, 1, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 1
-};
-
-void naomi_gdrom_board::permutate(UINT32 &a, UINT32 &b, UINT32 m, int shift)
-{
-	UINT32 temp;
-=======
 const uint8_t naomi_gdrom_board::DES_ROTATE_TABLE[16] = {
 	1, 1, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 1
 };
@@ -276,23 +217,15 @@ const uint8_t naomi_gdrom_board::DES_ROTATE_TABLE[16] = {
 void naomi_gdrom_board::permutate(uint32_t &a, uint32_t &b, uint32_t m, int shift)
 {
 	uint32_t temp;
->>>>>>> upstream/master
 	temp = ((a>>shift) ^ b) & m;
 	a ^= temp<<shift;
 	b ^= temp;
 }
 
-<<<<<<< HEAD
-void naomi_gdrom_board::des_generate_subkeys(const UINT64 key, UINT32 *subkeys)
-{
-	UINT32 l = key >> 32;
-	UINT32 r = key;
-=======
 void naomi_gdrom_board::des_generate_subkeys(const uint64_t key, uint32_t *subkeys)
 {
 	uint32_t l = key >> 32;
 	uint32_t r = key;
->>>>>>> upstream/master
 
 	permutate(r, l, 0x0f0f0f0f, 4);
 	permutate(r, l, 0x10101010, 0);
@@ -373,17 +306,10 @@ void naomi_gdrom_board::des_generate_subkeys(const uint64_t key, uint32_t *subke
 	}
 }
 
-<<<<<<< HEAD
-UINT64 naomi_gdrom_board::des_encrypt_decrypt(bool decrypt, UINT64 src, const UINT32 *des_subkeys)
-{
-	UINT32 r = (src & 0x00000000ffffffffULL) >> 0;
-	UINT32 l = (src & 0xffffffff00000000ULL) >> 32;
-=======
 uint64_t naomi_gdrom_board::des_encrypt_decrypt(bool decrypt, uint64_t src, const uint32_t *des_subkeys)
 {
 	uint32_t r = (src & 0x00000000ffffffffULL) >> 0;
 	uint32_t l = (src & 0xffffffff00000000ULL) >> 32;
->>>>>>> upstream/master
 
 	permutate(l, r, 0x0f0f0f0f, 4);
 	permutate(l, r, 0x0000ffff, 16);
@@ -398,11 +324,7 @@ uint64_t naomi_gdrom_board::des_encrypt_decrypt(bool decrypt, uint64_t src, cons
 		subkey = 0;
 
 	for(int i = 0; i < 32 ; i+=4) {
-<<<<<<< HEAD
-		UINT32 temp;
-=======
 		uint32_t temp;
->>>>>>> upstream/master
 
 		temp = ((r<<1) | (r>>31)) ^ des_subkeys[subkey];
 		l ^= DES_SBOX8[ (temp>>0)  & 0x3f ];
@@ -443,21 +365,12 @@ uint64_t naomi_gdrom_board::des_encrypt_decrypt(bool decrypt, uint64_t src, cons
 	permutate(r, l, 0x0000ffff, 16);
 	permutate(r, l, 0x0f0f0f0f, 4);
 
-<<<<<<< HEAD
-	return (UINT64(r) << 32) | UINT64(l);
-}
-
-UINT64 naomi_gdrom_board::rev64(UINT64 src)
-{
-	UINT64 ret;
-=======
 	return (uint64_t(r) << 32) | uint64_t(l);
 }
 
 uint64_t naomi_gdrom_board::rev64(uint64_t src)
 {
 	uint64_t ret;
->>>>>>> upstream/master
 
 	ret = ((src & 0x00000000000000ffULL) << 56)
 		| ((src & 0x000000000000ff00ULL) << 40)
@@ -471,48 +384,27 @@ uint64_t naomi_gdrom_board::rev64(uint64_t src)
 	return ret;
 }
 
-<<<<<<< HEAD
-UINT64 naomi_gdrom_board::read_to_qword(const UINT8 *region)
-{
-	UINT64 ret = 0;
-
-	for(int i=0;i<8;i++)
-		ret |= UINT64(region[i]) << (56-(8*i));
-=======
 uint64_t naomi_gdrom_board::read_to_qword(const uint8_t *region)
 {
 	uint64_t ret = 0;
 
 	for(int i=0;i<8;i++)
 		ret |= uint64_t(region[i]) << (56-(8*i));
->>>>>>> upstream/master
 
 	return ret;
 }
 
-<<<<<<< HEAD
-void naomi_gdrom_board::write_from_qword(UINT8 *region, UINT64 qword)
-=======
 void naomi_gdrom_board::write_from_qword(uint8_t *region, uint64_t qword)
->>>>>>> upstream/master
 {
 	for(int i=0;i<8;i++)
 		region[i] = qword >> (56-(i*8));
 }
 
-<<<<<<< HEAD
-naomi_gdrom_board::naomi_gdrom_board(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: naomi_board(mconfig, NAOMI_GDROM_BOARD, "Sega NAOMI GDROM Board", tag, owner, clock, "naomi_gdrom_board", __FILE__)
-{
-	image_tag = 0;
-	pic_tag = 0;
-=======
 naomi_gdrom_board::naomi_gdrom_board(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: naomi_board(mconfig, NAOMI_GDROM_BOARD, tag, owner, clock)
 {
 	image_tag = nullptr;
 	pic_tag = nullptr;
->>>>>>> upstream/master
 }
 
 void naomi_gdrom_board::static_set_tags(device_t &device, const char *_image_tag, const char *_pic_tag)
@@ -522,20 +414,12 @@ void naomi_gdrom_board::static_set_tags(device_t &device, const char *_image_tag
 	dev.pic_tag = _pic_tag;
 }
 
-<<<<<<< HEAD
-void naomi_gdrom_board::find_file(const char *name, const UINT8 *dir_sector, UINT32 &file_start, UINT32 &file_size)
-=======
 void naomi_gdrom_board::find_file(const char *name, const uint8_t *dir_sector, uint32_t &file_start, uint32_t &file_size)
->>>>>>> upstream/master
 {
 	file_start = 0;
 	file_size = 0;
 	logerror("Looking for file [%s]\n", name);
-<<<<<<< HEAD
-	for(UINT32 pos = 0; pos < 2048; pos += dir_sector[pos]) {
-=======
 	for(uint32_t pos = 0; pos < 2048; pos += dir_sector[pos]) {
->>>>>>> upstream/master
 		int fnlen = 0;
 		if(!(dir_sector[pos+25] & 2)) {
 			int len = dir_sector[pos+32];
@@ -578,27 +462,17 @@ void naomi_gdrom_board::device_start()
 {
 	naomi_board::device_start();
 
-<<<<<<< HEAD
-	dimm_data = 0;
-=======
 	dimm_data = nullptr;
->>>>>>> upstream/master
 	dimm_data_size = 0;
 
 	char name[128];
 	memset(name,'\0',128);
 
-<<<<<<< HEAD
-	UINT64 key;
-
-	const UINT8 *picdata = memregion(pic_tag)->base();
-=======
 	uint64_t key;
 	uint8_t netpic = 0;
 
 	memory_region *mr = memregion(pic_tag);
 	const uint8_t *picdata = mr->base();
->>>>>>> upstream/master
 
 	if(picdata) {
 		if(memregion(pic_tag)->bytes() >= 0x4000) {
@@ -610,45 +484,17 @@ void naomi_gdrom_board::device_start()
 
 			key = 0;
 			for(int i=0;i<7;i++)
-<<<<<<< HEAD
-				key |= UINT64(picdata[0x780+i*2]) << (56 - i*8);
-
-			key |= picdata[0x7a0];
-
-=======
 				key |= uint64_t(picdata[0x780+i*2]) << (56 - i*8);
 
 			key |= picdata[0x7a0];
 
 			netpic = picdata[0x6ee];
->>>>>>> upstream/master
 		} else {
 			// use extracted pic data
 	//      printf("This PIC key hasn't been converted to a proper PIC binary yet!\n");
 			memcpy(name, picdata+33, 7);
 			memcpy(name+7, picdata+25, 7);
 
-<<<<<<< HEAD
-			key =((UINT64(picdata[0x31]) << 56) |
-					(UINT64(picdata[0x32]) << 48) |
-					(UINT64(picdata[0x33]) << 40) |
-					(UINT64(picdata[0x34]) << 32) |
-					(UINT64(picdata[0x35]) << 24) |
-					(UINT64(picdata[0x36]) << 16) |
-					(UINT64(picdata[0x37]) << 8)  |
-					(UINT64(picdata[0x29]) << 0));
-		}
-
-		logerror("key is %08x%08x\n", (UINT32)((key & 0xffffffff00000000ULL)>>32), (UINT32)(key & 0x00000000ffffffffULL));
-
-		UINT8 buffer[2048];
-		cdrom_file *gdromfile = cdrom_open(get_disk_handle(machine(), image_tag));
-		// primary volume descriptor
-		// read frame 0xb06e (frame=sector+150)
-		// dimm board firmware starts straight from this frame
-		cdrom_read_data(gdromfile, 0xb06e - 150, buffer, CD_TRACK_MODE1);
-		UINT32 path_table = ((buffer[0x8c+0] << 0) |
-=======
 			key =((uint64_t(picdata[0x31]) << 56) |
 					(uint64_t(picdata[0x32]) << 48) |
 					(uint64_t(picdata[0x33]) << 40) |
@@ -668,53 +514,11 @@ void naomi_gdrom_board::device_start()
 		// dimm board firmware starts straight from this frame
 		cdrom_read_data(gdromfile, (netpic ? 0 : 45000) + 16, buffer, CD_TRACK_MODE1);
 		uint32_t path_table = ((buffer[0x8c+0] << 0) |
->>>>>>> upstream/master
 								(buffer[0x8c+1] << 8) |
 								(buffer[0x8c+2] << 16) |
 								(buffer[0x8c+3] << 24));
 		// path table
 		cdrom_read_data(gdromfile, path_table, buffer, CD_TRACK_MODE1);
-<<<<<<< HEAD
-		UINT32 dir = ((buffer[0x2+0] << 0) |
-						(buffer[0x2+1] << 8) |
-						(buffer[0x2+2] << 16) |
-						(buffer[0x2+3] << 24));
-
-		// directory
-		UINT8 dir_sector[2048];
-		cdrom_read_data(gdromfile, dir, dir_sector, CD_TRACK_MODE1);
-		// find data of file
-		UINT32 file_start, file_size;
-		find_file(name, dir_sector, file_start, file_size);
-
-		if(file_start && (file_size == 0x100)) {
-			// read file
-			cdrom_read_data(gdromfile, file_start, buffer, CD_TRACK_MODE1);
-			// get "rom" file name
-			memset(name,'\0', 128);
-			memcpy(name, buffer+0xc0, FILENAME_LENGTH-1);
-
-			find_file(name, dir_sector, file_start, file_size);
-
-			if(file_start) {
-				UINT32 file_rounded_size = (file_size+2047) & -2048;
-				for(dimm_data_size = 4096; dimm_data_size < file_rounded_size; dimm_data_size <<= 1);
-				dimm_data = auto_alloc_array(machine(), UINT8, dimm_data_size);
-				if(dimm_data_size != file_rounded_size)
-					memset(dimm_data + file_rounded_size, 0, dimm_data_size - file_rounded_size);
-
-				// read encrypted data into dimm_data
-				UINT32 sectors = file_rounded_size / 2048;
-				for(UINT32 sec = 0; sec != sectors; sec++)
-					cdrom_read_data(gdromfile, file_start+sec, dimm_data + 2048*sec, CD_TRACK_MODE1);
-
-				UINT32 des_subkeys[32];
-				des_generate_subkeys(rev64(key), des_subkeys);
-
-				for(int i=0; i<file_rounded_size;i+=8)
-					write_from_qword(dimm_data+i, rev64(des_encrypt_decrypt(true, rev64(read_to_qword(dimm_data+i)), des_subkeys)));
-			}
-=======
 
 		// directory
 		uint8_t dir_sector[2048];
@@ -774,7 +578,6 @@ void naomi_gdrom_board::device_start()
 
 			for (int i = 0; i < file_rounded_size; i += 8)
 				write_from_qword(dimm_data + i, rev64(des_encrypt_decrypt(true, rev64(read_to_qword(dimm_data + i)), des_subkeys)));
->>>>>>> upstream/master
 		}
 
 		// decrypt loaded data
@@ -794,37 +597,23 @@ void naomi_gdrom_board::device_reset()
 	dimm_cur_address = 0;
 }
 
-<<<<<<< HEAD
-void naomi_gdrom_board::board_setup_address(UINT32 address, bool is_dma)
-=======
 void naomi_gdrom_board::board_setup_address(uint32_t address, bool is_dma)
->>>>>>> upstream/master
 {
 	dimm_cur_address = address & (dimm_data_size-1);
 }
 
-<<<<<<< HEAD
-void naomi_gdrom_board::board_get_buffer(UINT8 *&base, UINT32 &limit)
-=======
 void naomi_gdrom_board::board_get_buffer(uint8_t *&base, uint32_t &limit)
->>>>>>> upstream/master
 {
 	base = dimm_data + dimm_cur_address;
 	limit = dimm_data_size - dimm_cur_address;
 }
 
-<<<<<<< HEAD
-void naomi_gdrom_board::board_advance(UINT32 size)
-=======
 void naomi_gdrom_board::board_advance(uint32_t size)
->>>>>>> upstream/master
 {
 	dimm_cur_address += size;
 	if(dimm_cur_address >= dimm_data_size)
 		dimm_cur_address %= dimm_data_size;
 }
-<<<<<<< HEAD
-=======
 
 // DIMM firmwares:
 //  FPR-23489C - 1.02 not VxWorks based, no network, can not be software updated to 2.xx+
@@ -870,4 +659,3 @@ const tiny_rom_entry *naomi_gdrom_board::device_rom_region() const
 {
 	return ROM_NAME(dimm);
 }
->>>>>>> upstream/master

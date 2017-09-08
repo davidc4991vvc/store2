@@ -53,13 +53,6 @@ Notes:
 */
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/m68000/m68000.h"
-#include "cpu/z80/z80.h"
-#include "sound/2151intf.h"
-#include "sound/okim6295.h"
-#include "includes/dbz.h"
-=======
 #include "includes/dbz.h"
 
 #include "cpu/m68000/m68000.h"
@@ -67,7 +60,6 @@ Notes:
 #include "sound/ym2151.h"
 #include "sound/okim6295.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 TIMER_DEVICE_CALLBACK_MEMBER(dbz_state::dbz_scanline)
@@ -99,22 +91,13 @@ WRITE16_MEMBER(dbz_state::dbzcontrol_w)
 	else
 		m_k053246->k053246_set_objcha_line( CLEAR_LINE);
 
-<<<<<<< HEAD
-	coin_counter_w(machine(), 0, data & 1);
-	coin_counter_w(machine(), 1, data & 2);
-=======
 	machine().bookkeeping().coin_counter_w(0, data & 1);
 	machine().bookkeeping().coin_counter_w(1, data & 2);
->>>>>>> upstream/master
 }
 
 WRITE16_MEMBER(dbz_state::dbz_sound_command_w)
 {
-<<<<<<< HEAD
-	soundlatch_byte_w(space, 0, data >> 8);
-=======
 	m_soundlatch->write(space, 0, data >> 8);
->>>>>>> upstream/master
 }
 
 WRITE16_MEMBER(dbz_state::dbz_sound_cause_nmi)
@@ -165,11 +148,7 @@ static ADDRESS_MAP_START( dbz_sound_map, AS_PROGRAM, 8, dbz_state )
 	AM_RANGE(0x8000, 0xbfff) AM_RAM
 	AM_RANGE(0xc000, 0xc001) AM_DEVREADWRITE("ymsnd", ym2151_device, read, write)
 	AM_RANGE(0xd000, 0xd002) AM_DEVREADWRITE("oki", okim6295_device, read, write)
-<<<<<<< HEAD
-	AM_RANGE(0xe000, 0xe001) AM_READ(soundlatch_byte_r)
-=======
 	AM_RANGE(0xe000, 0xe001) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( dbz_sound_io_map, AS_IO, 8, dbz_state )
@@ -215,17 +194,6 @@ static INPUT_PORTS_START( dbz )
 	PORT_DIPSETTING(      0x0300, DEF_STR( Normal ) )
 	PORT_DIPSETTING(      0x0200, DEF_STR( Hard ) )
 	PORT_DIPSETTING(      0x0000, DEF_STR( Hardest ) )
-<<<<<<< HEAD
-	PORT_DIPUNKNOWN_DIPLOC( 0x0400, 0x0400, "SW1:3" )                       // seems unused
-	PORT_DIPNAME( 0x0800, 0x0800, DEF_STR( Flip_Screen ) )  PORT_DIPLOCATION("SW1:4")   // Definitely correct
-	PORT_DIPSETTING(      0x0800, DEF_STR( Off ) )
-	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
-	PORT_DIPUNKNOWN_DIPLOC( 0x1000, 0x1000, "SW1:5" )
-	PORT_SERVICE_DIPLOC(  0x2000, IP_ACTIVE_LOW, "SW1:6" )
-	PORT_DIPNAME( 0x4000, 0x0000, DEF_STR( Language ) ) PORT_DIPLOCATION("SW1:7")
-	PORT_DIPSETTING(      0x0000, DEF_STR( English ) )
-	PORT_DIPSETTING(      0x4000, DEF_STR( Japanese ) )
-=======
 	PORT_DIPNAME( 0x0400, 0x0000, DEF_STR( Language ) ) PORT_DIPLOCATION("SW1:3")
 	PORT_DIPSETTING(      0x0000, DEF_STR( English ) )
 	PORT_DIPSETTING(      0x0400, DEF_STR( Japanese ) )
@@ -237,7 +205,6 @@ static INPUT_PORTS_START( dbz )
 	PORT_DIPSETTING(      0x1000, DEF_STR( On ) )
 	PORT_SERVICE_DIPLOC(  0x2000, IP_ACTIVE_LOW, "SW1:6" )
 	PORT_DIPUNKNOWN_DIPLOC( 0x4000, 0x4000, "SW1:7" )                       // seems unused
->>>>>>> upstream/master
 	PORT_DIPNAME( 0x8000, 0x0000, "Mask ROM Test" )     PORT_DIPLOCATION("SW1:8")           //NOP'd
 	PORT_DIPSETTING(      0x0000, DEF_STR( Off ) )
 	PORT_DIPSETTING(      0x8000, DEF_STR( On ) )
@@ -304,12 +271,9 @@ static INPUT_PORTS_START( dbz2 )
 	PORT_DIPNAME( 0x1000, 0x1000, DEF_STR( Level_Select ) ) PORT_DIPLOCATION("SW1:5")
 	PORT_DIPSETTING(      0x1000, DEF_STR( Off ) )
 	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
-<<<<<<< HEAD
-=======
 	PORT_DIPNAME( 0x4000, 0x0000, DEF_STR( Language ) ) PORT_DIPLOCATION("SW1:7")
 	PORT_DIPSETTING(      0x0000, DEF_STR( English ) )
 	PORT_DIPSETTING(      0x4000, DEF_STR( Japanese ) )
->>>>>>> upstream/master
 INPUT_PORTS_END
 
 /**********************************************************************************/
@@ -361,11 +325,7 @@ void dbz_state::machine_reset()
 	m_control = 0;
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( dbz, dbz_state )
-=======
 static MACHINE_CONFIG_START( dbz )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, 16000000)
@@ -393,22 +353,12 @@ static MACHINE_CONFIG_START( dbz )
 
 	MCFG_DEVICE_ADD("k056832", K056832, 0)
 	MCFG_K056832_CB(dbz_state, tile_callback)
-<<<<<<< HEAD
-	MCFG_K056832_CONFIG("gfx1", 2, K056832_BPP_4, 1, 1, "none")
-	MCFG_K056832_GFXDECODE("gfxdecode")
-=======
 	MCFG_K056832_CONFIG("gfx1", K056832_BPP_4, 1, 1, "none")
->>>>>>> upstream/master
 	MCFG_K056832_PALETTE("palette")
 
 	MCFG_DEVICE_ADD("k053246", K053246, 0)
 	MCFG_K053246_CB(dbz_state, sprite_callback)
-<<<<<<< HEAD
-	MCFG_K053246_CONFIG("gfx2", 3, NORMAL_PLANE_ORDER, -87, 32) // or -52, 16?
-	MCFG_K053246_GFXDECODE("gfxdecode")
-=======
 	MCFG_K053246_CONFIG("gfx2", NORMAL_PLANE_ORDER, -87, 32) // or -52, 16?
->>>>>>> upstream/master
 	MCFG_K053246_PALETTE("palette")
 
 	MCFG_K053251_ADD("k053251")
@@ -427,21 +377,14 @@ static MACHINE_CONFIG_START( dbz )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
-<<<<<<< HEAD
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 
->>>>>>> upstream/master
 	MCFG_YM2151_ADD("ymsnd", 4000000)
 	MCFG_YM2151_IRQ_HANDLER(INPUTLINE("audiocpu", 0))
 	MCFG_SOUND_ROUTE(0, "lspeaker", 1.0)
 	MCFG_SOUND_ROUTE(1, "rspeaker", 1.0)
 
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki", 1056000, OKIM6295_PIN7_HIGH)
-=======
 	MCFG_OKIM6295_ADD("oki", 1056000, PIN7_HIGH)
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 1.0)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 1.0)
 MACHINE_CONFIG_END
@@ -557,15 +500,9 @@ ROM_END
 
 DRIVER_INIT_MEMBER(dbz_state,dbz)
 {
-<<<<<<< HEAD
-	UINT16 *ROM;
-
-	ROM = (UINT16 *)memregion("maincpu")->base();
-=======
 	uint16_t *ROM;
 
 	ROM = (uint16_t *)memregion("maincpu")->base();
->>>>>>> upstream/master
 
 	// to avoid crash during loop at 0x00076e after D4 > 0x80 (reading tiles region out of bounds)
 	ROM[0x76c/2] = 0x007f;    /* 0x00ff */
@@ -596,15 +533,9 @@ DRIVER_INIT_MEMBER(dbz_state,dbz)
 
 DRIVER_INIT_MEMBER(dbz_state,dbza)
 {
-<<<<<<< HEAD
-	UINT16 *ROM;
-
-	ROM = (UINT16 *)memregion("maincpu")->base();
-=======
 	uint16_t *ROM;
 
 	ROM = (uint16_t *)memregion("maincpu")->base();
->>>>>>> upstream/master
 
 	// nop out dbz1's mask rom test
 	// tile ROM test
@@ -625,15 +556,9 @@ DRIVER_INIT_MEMBER(dbz_state,dbza)
 
 DRIVER_INIT_MEMBER(dbz_state,dbz2)
 {
-<<<<<<< HEAD
-	UINT16 *ROM;
-
-	ROM = (UINT16 *)memregion("maincpu")->base();
-=======
 	uint16_t *ROM;
 
 	ROM = (uint16_t *)memregion("maincpu")->base();
->>>>>>> upstream/master
 
 	// to avoid crash during loop at 0x000a4a after D4 > 0x80 (reading tiles region out of bounds)
 	ROM[0xa48/2] = 0x007f;    /* 0x00ff */
@@ -666,11 +591,6 @@ DRIVER_INIT_MEMBER(dbz_state,dbz2)
 	ROM[0xae8/2] = 0x4e71;    /* 0x005e */
 }
 
-<<<<<<< HEAD
-GAME( 1993, dbz,  0,   dbz, dbz, dbz_state,  dbz,  ROT0, "Banpresto", "Dragonball Z (rev B)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE ) // crashes MAME in tile/PSAC2 ROM test
-GAME( 1993, dbza, dbz, dbz, dbza, dbz_state, dbza, ROT0, "Banpresto", "Dragonball Z (rev A)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1993, dbz,  0,   dbz, dbz,  dbz_state, dbz,  ROT0, "Banpresto", "Dragonball Z (rev B)",          MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE ) // crashes MAME in tile/PSAC2 ROM test
 GAME( 1993, dbza, dbz, dbz, dbza, dbz_state, dbza, ROT0, "Banpresto", "Dragonball Z (rev A)",          MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master
 GAME( 1994, dbz2, 0,   dbz, dbz2, dbz_state, dbz2, ROT0, "Banpresto", "Dragonball Z 2 - Super Battle", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE ) // crashes MAME in tile/PSAC2 ROM test

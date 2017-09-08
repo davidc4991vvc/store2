@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-// license:???
-=======
 // license:GPL-2.0+
->>>>>>> upstream/master
 // copyright-holders:Jarek Burczynski
 /****************************************************************************
 
@@ -45,10 +41,7 @@ A1                   2101            2101
 
 #include "emu.h"
 #include "cpu/i8085/i8085.h"
-<<<<<<< HEAD
-=======
 #include "screen.h"
->>>>>>> upstream/master
 
 #include "ace.lh"
 
@@ -71,15 +64,9 @@ public:
 	required_device<cpu_device> m_maincpu;
 
 	/* video-related */
-<<<<<<< HEAD
-	required_shared_ptr<UINT8> m_scoreram;
-	required_shared_ptr<UINT8> m_ram2;
-	required_shared_ptr<UINT8> m_characterram;
-=======
 	required_shared_ptr<uint8_t> m_scoreram;
 	required_shared_ptr<uint8_t> m_ram2;
 	required_shared_ptr<uint8_t> m_characterram;
->>>>>>> upstream/master
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
 
@@ -90,17 +77,10 @@ public:
 	DECLARE_WRITE8_MEMBER(ace_characterram_w);
 	DECLARE_WRITE8_MEMBER(ace_scoreram_w);
 	DECLARE_READ8_MEMBER(unk_r);
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void machine_reset();
-	virtual void video_start();
-	UINT32 screen_update_ace(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
 	virtual void video_start() override;
 	uint32_t screen_update_ace(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	void ace_postload();
 };
 
@@ -118,11 +98,7 @@ void aceal_state::video_start()
 	m_gfxdecode->gfx(4)->set_source(m_scoreram);
 }
 
-<<<<<<< HEAD
-UINT32 aceal_state::screen_update_ace(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t aceal_state::screen_update_ace(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	bitmap.fill(0, cliprect);
 
@@ -314,17 +290,10 @@ static const gfx_layout scorelayout =
 
 static GFXDECODE_START( ace )
 	GFXDECODE_ENTRY( "gfx1", 0, charlayout,  0, 2 )
-<<<<<<< HEAD
-	GFXDECODE_ENTRY( NULL, 0x8000, charlayout0, 0, 2 ) /* the game dynamically modifies this */
-	GFXDECODE_ENTRY( NULL, 0x8000, charlayout1, 0, 2 ) /* the game dynamically modifies this */
-	GFXDECODE_ENTRY( NULL, 0x8000, charlayout2, 0, 2 ) /* the game dynamically modifies this */
-	GFXDECODE_ENTRY( NULL, 0x8000, scorelayout, 0, 2 ) /* the game dynamically modifies this */
-=======
 	GFXDECODE_ENTRY( nullptr, 0x8000, charlayout0, 0, 2 ) /* the game dynamically modifies this */
 	GFXDECODE_ENTRY( nullptr, 0x8000, charlayout1, 0, 2 ) /* the game dynamically modifies this */
 	GFXDECODE_ENTRY( nullptr, 0x8000, charlayout2, 0, 2 ) /* the game dynamically modifies this */
 	GFXDECODE_ENTRY( nullptr, 0x8000, scorelayout, 0, 2 ) /* the game dynamically modifies this */
->>>>>>> upstream/master
 GFXDECODE_END
 
 void aceal_state::ace_postload()
@@ -343,19 +312,11 @@ void aceal_state::machine_start()
 
 void aceal_state::machine_reset()
 {
-<<<<<<< HEAD
-	for (int i = 0; i < 8; i++)
-		m_objpos[i] = 0;
-}
-
-static MACHINE_CONFIG_START( ace, aceal_state )
-=======
 	for (auto & elem : m_objpos)
 		elem = 0;
 }
 
 static MACHINE_CONFIG_START( ace )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", I8080, MASTER_CLOCK/9) /* 2 MHz ? */
@@ -371,11 +332,7 @@ static MACHINE_CONFIG_START( ace )
 	MCFG_SCREEN_PALETTE("palette")
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", ace)
-<<<<<<< HEAD
-	MCFG_PALETTE_ADD_BLACK_AND_WHITE("palette")
-=======
 	MCFG_PALETTE_ADD_MONOCHROME("palette")
->>>>>>> upstream/master
 
 	/* sound hardware */
 	/* ???? */
@@ -401,8 +358,4 @@ ROM_START( ace )
 ROM_END
 
 
-<<<<<<< HEAD
-GAMEL(1976, ace, 0, ace, ace, driver_device, 0, ROT0, "Allied Leisure", "Ace", MACHINE_SUPPORTS_SAVE | MACHINE_NO_SOUND, layout_ace )
-=======
 GAMEL(1976, ace, 0, ace, ace, aceal_state, 0, ROT0, "Allied Leisure", "Ace", MACHINE_SUPPORTS_SAVE | MACHINE_NO_SOUND, layout_ace )
->>>>>>> upstream/master

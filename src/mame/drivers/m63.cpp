@@ -96,11 +96,7 @@ Notes:
   The NMI handler just handles the "Stop Mode" dip switch.
 
 TS 2008.06.14:
-<<<<<<< HEAD
-- Addedd sound emulation - atomboy and fghtbskt req different interrupt (T1)
-=======
 - Added sound emulation - atomboy and fghtbskt req different interrupt (T1)
->>>>>>> upstream/master
   timing than wilytowr, otherwise music/fx tempo is too fast.
   Music tempo and pitch verified on real pcb.
 - Extra space in atomboy 2764 eproms is filled with garbage z80 code
@@ -124,17 +120,12 @@ Dip locations verified for:
 #include "emu.h"
 #include "cpu/z80/z80.h"
 #include "cpu/mcs48/mcs48.h"
-<<<<<<< HEAD
-#include "sound/ay8910.h"
-#include "sound/samples.h"
-=======
 #include "machine/74259.h"
 #include "machine/gen_latch.h"
 #include "sound/ay8910.h"
 #include "sound/samples.h"
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 class m63_state : public driver_device
 {
@@ -146,28 +137,10 @@ public:
 		m_videoram2(*this, "videoram2"),
 		m_videoram(*this, "videoram"),
 		m_colorram(*this, "colorram"),
-<<<<<<< HEAD
-		m_soundcpu(*this, "soundcpu"),
-		m_samples(*this, "samples"),
-=======
->>>>>>> upstream/master
 		m_maincpu(*this, "maincpu"),
 		m_ay1(*this, "ay1"),
 		m_ay2(*this, "ay2"),
 		m_gfxdecode(*this, "gfxdecode"),
-<<<<<<< HEAD
-		m_palette(*this, "palette")
-	{
-	}
-
-	required_shared_ptr<UINT8> m_spriteram;
-	required_shared_ptr<UINT8> m_scrollram;
-	required_shared_ptr<UINT8> m_videoram2;
-	required_shared_ptr<UINT8> m_videoram;
-	required_shared_ptr<UINT8> m_colorram;
-
-	UINT8    m_nmi_mask;
-=======
 		m_palette(*this, "palette"),
 		m_soundcpu(*this, "soundcpu"),
 		m_samples(*this, "samples"),
@@ -182,7 +155,6 @@ public:
 	required_shared_ptr<uint8_t> m_colorram;
 
 	uint8_t    m_nmi_mask;
->>>>>>> upstream/master
 
 	/* video-related */
 	tilemap_t  *m_bg_tilemap;
@@ -192,24 +164,6 @@ public:
 	int      m_sy_offset;
 
 	/* sound-related */
-<<<<<<< HEAD
-	UINT8    m_sound_irq;
-	int      m_sound_status;
-	int      m_p1;
-	int      m_p2;
-	INT16    *m_samplebuf;
-
-	/* sound devices */
-	required_device<cpu_device> m_soundcpu;
-	optional_device<samples_device> m_samples;
-	DECLARE_WRITE8_MEMBER(m63_videoram_w);
-	DECLARE_WRITE8_MEMBER(m63_colorram_w);
-	DECLARE_WRITE8_MEMBER(m63_videoram2_w);
-	DECLARE_WRITE8_MEMBER(m63_palbank_w);
-	DECLARE_WRITE8_MEMBER(m63_flipscreen_w);
-	DECLARE_WRITE8_MEMBER(fghtbskt_flipscreen_w);
-	DECLARE_WRITE8_MEMBER(coin_w);
-=======
 	uint8_t    m_sound_irq;
 	int      m_sound_status;
 	int      m_p1;
@@ -234,25 +188,16 @@ public:
 	DECLARE_WRITE_LINE_MEMBER(fghtbskt_flipscreen_w);
 	DECLARE_WRITE_LINE_MEMBER(coin1_w);
 	DECLARE_WRITE_LINE_MEMBER(coin2_w);
->>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(snd_irq_w);
 	DECLARE_WRITE8_MEMBER(snddata_w);
 	DECLARE_WRITE8_MEMBER(p1_w);
 	DECLARE_WRITE8_MEMBER(p2_w);
 	DECLARE_READ8_MEMBER(snd_status_r);
-<<<<<<< HEAD
-	DECLARE_READ8_MEMBER(irq_r);
-	DECLARE_READ8_MEMBER(snddata_r);
-	DECLARE_WRITE8_MEMBER(fghtbskt_samples_w);
-	SAMPLES_START_CB_MEMBER(fghtbskt_sh_start);
-	DECLARE_WRITE8_MEMBER(nmi_mask_w);
-=======
 	DECLARE_READ_LINE_MEMBER(irq_r);
 	DECLARE_READ8_MEMBER(snddata_r);
 	DECLARE_WRITE8_MEMBER(fghtbskt_samples_w);
 	SAMPLES_START_CB_MEMBER(fghtbskt_sh_start);
 	DECLARE_WRITE_LINE_MEMBER(nmi_mask_w);
->>>>>>> upstream/master
 	DECLARE_DRIVER_INIT(wilytowr);
 	DECLARE_DRIVER_INIT(fghtbskt);
 	TILE_GET_INFO_MEMBER(get_bg_tile_info);
@@ -261,32 +206,16 @@ public:
 	DECLARE_MACHINE_RESET(m63);
 	DECLARE_VIDEO_START(m63);
 	DECLARE_PALETTE_INIT(m63);
-<<<<<<< HEAD
-	UINT32 screen_update_m63(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	INTERRUPT_GEN_MEMBER(snd_irq);
-	INTERRUPT_GEN_MEMBER(vblank_irq);
-	void draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect );
-	required_device<cpu_device> m_maincpu;
-	required_device<ay8910_device> m_ay1;
-	optional_device<ay8910_device> m_ay2;
-	required_device<gfxdecode_device> m_gfxdecode;
-	required_device<palette_device> m_palette;
-=======
 	uint32_t screen_update_m63(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	INTERRUPT_GEN_MEMBER(snd_irq);
 	INTERRUPT_GEN_MEMBER(vblank_irq);
 	void draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect );
->>>>>>> upstream/master
 };
 
 
 PALETTE_INIT_MEMBER(m63_state,m63)
 {
-<<<<<<< HEAD
-	const UINT8 *color_prom = memregion("proms")->base();
-=======
 	const uint8_t *color_prom = memregion("proms")->base();
->>>>>>> upstream/master
 	int i;
 
 	for (i = 0; i < 256; i++)
@@ -358,29 +287,6 @@ WRITE8_MEMBER(m63_state::m63_videoram2_w)
 	m_fg_tilemap->mark_tile_dirty(offset);
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER(m63_state::m63_palbank_w)
-{
-	if (m_pal_bank != (data & 0x01))
-	{
-		m_pal_bank = data & 0x01;
-		m_bg_tilemap->mark_all_dirty();
-	}
-}
-
-WRITE8_MEMBER(m63_state::m63_flipscreen_w)
-{
-	if (flip_screen() != (~data & 0x01))
-	{
-		flip_screen_set(~data & 0x01);
-		machine().tilemap().mark_all_dirty();
-	}
-}
-
-WRITE8_MEMBER(m63_state::fghtbskt_flipscreen_w)
-{
-	flip_screen_set(data);
-=======
 WRITE_LINE_MEMBER(m63_state::pal_bank_w)
 {
 	m_pal_bank = state;
@@ -396,7 +302,6 @@ WRITE_LINE_MEMBER(m63_state::m63_flipscreen_w)
 WRITE_LINE_MEMBER(m63_state::fghtbskt_flipscreen_w)
 {
 	flip_screen_set(state);
->>>>>>> upstream/master
 	m_fg_flag = flip_screen() ? TILE_FLIPX : 0;
 }
 
@@ -419,13 +324,8 @@ TILE_GET_INFO_MEMBER(m63_state::get_fg_tile_info)
 
 VIDEO_START_MEMBER(m63_state,m63)
 {
-<<<<<<< HEAD
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(m63_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
-	m_fg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(m63_state::get_fg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
-=======
 	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(m63_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
 	m_fg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(m63_state::get_fg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
->>>>>>> upstream/master
 
 	m_bg_tilemap->set_scroll_cols(32);
 	m_fg_tilemap->set_transparent_pen(0);
@@ -470,11 +370,7 @@ void m63_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect )
 	}
 }
 
-<<<<<<< HEAD
-UINT32 m63_state::screen_update_m63(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t m63_state::screen_update_m63(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int col;
 
@@ -488,11 +384,6 @@ uint32_t m63_state::screen_update_m63(screen_device &screen, bitmap_ind16 &bitma
 }
 
 
-<<<<<<< HEAD
-WRITE8_MEMBER(m63_state::coin_w)
-{
-	coin_counter_w(machine(), offset, data & 0x01);
-=======
 WRITE_LINE_MEMBER(m63_state::coin1_w)
 {
 	machine().bookkeeping().coin_counter_w(0, state);
@@ -501,7 +392,6 @@ WRITE_LINE_MEMBER(m63_state::coin1_w)
 WRITE_LINE_MEMBER(m63_state::coin2_w)
 {
 	machine().bookkeeping().coin_counter_w(1, state);
->>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(m63_state::snd_irq_w)
@@ -516,15 +406,9 @@ WRITE8_MEMBER(m63_state::snddata_w)
 		m_ay1->address_w(space, 0, offset);
 	else if ((m_p2 & 0xf0) == 0xa0)
 		m_ay1->data_w(space, 0, offset);
-<<<<<<< HEAD
-	else if (m_ay2 != NULL && (m_p1 & 0xe0) == 0x60)
-		m_ay2->address_w(space, 0, offset);
-	else if (m_ay2 != NULL && (m_p1 & 0xe0) == 0x40)
-=======
 	else if (m_ay2 != nullptr && (m_p1 & 0xe0) == 0x60)
 		m_ay2->address_w(space, 0, offset);
 	else if (m_ay2 != nullptr && (m_p1 & 0xe0) == 0x40)
->>>>>>> upstream/master
 			m_ay2->data_w(space, 0, offset);
 	else if ((m_p2 & 0xf0) == 0x70 )
 		m_sound_status = offset;
@@ -549,11 +433,7 @@ READ8_MEMBER(m63_state::snd_status_r)
 	return m_sound_status;
 }
 
-<<<<<<< HEAD
-READ8_MEMBER(m63_state::irq_r)
-=======
 READ_LINE_MEMBER(m63_state::irq_r)
->>>>>>> upstream/master
 {
 	if (m_sound_irq)
 	{
@@ -567,11 +447,7 @@ READ8_MEMBER(m63_state::snddata_r)
 {
 	switch (m_p2 & 0xf0)
 	{
-<<<<<<< HEAD
-		case 0x60:  return soundlatch_byte_r(space, 0); ;
-=======
 		case 0x60:  return m_soundlatch->read(space, 0); ;
->>>>>>> upstream/master
 		case 0x70:  return memregion("user1")->base()[((m_p1 & 0x1f) << 8) | offset];
 	}
 	return 0xff;
@@ -580,21 +456,12 @@ READ8_MEMBER(m63_state::snddata_r)
 WRITE8_MEMBER(m63_state::fghtbskt_samples_w)
 {
 	if (data & 1)
-<<<<<<< HEAD
-		m_samples->start_raw(0, m_samplebuf + ((data & 0xf0) << 8), 0x2000, 8000);
-}
-
-WRITE8_MEMBER(m63_state::nmi_mask_w)
-{
-	m_nmi_mask = data & 1;
-=======
 		m_samples->start_raw(0, m_samplebuf.get() + ((data & 0xf0) << 8), 0x2000, 8000);
 }
 
 WRITE_LINE_MEMBER(m63_state::nmi_mask_w)
 {
 	m_nmi_mask = state;
->>>>>>> upstream/master
 }
 
 
@@ -607,16 +474,8 @@ static ADDRESS_MAP_START( m63_map, AS_PROGRAM, 8, m63_state )
 	AM_RANGE(0xe400, 0xe7ff) AM_RAM_WRITE(m63_videoram2_w) AM_SHARE("videoram2")
 	AM_RANGE(0xe800, 0xebff) AM_RAM_WRITE(m63_videoram_w) AM_SHARE("videoram")
 	AM_RANGE(0xec00, 0xefff) AM_RAM_WRITE(m63_colorram_w) AM_SHARE("colorram")
-<<<<<<< HEAD
-	AM_RANGE(0xf000, 0xf000) AM_WRITE(nmi_mask_w)
-	AM_RANGE(0xf002, 0xf002) AM_WRITE(m63_flipscreen_w)
-	AM_RANGE(0xf003, 0xf003) AM_WRITE(m63_palbank_w)
-	AM_RANGE(0xf006, 0xf007) AM_WRITE(coin_w)
-	AM_RANGE(0xf800, 0xf800) AM_READ_PORT("P1") AM_WRITE(soundlatch_byte_w)
-=======
 	AM_RANGE(0xf000, 0xf007) AM_DEVWRITE("outlatch", ls259_device, write_d0)
 	AM_RANGE(0xf800, 0xf800) AM_READ_PORT("P1") AM_DEVWRITE("soundlatch", generic_latch_8_device, write)
->>>>>>> upstream/master
 	AM_RANGE(0xf801, 0xf801) AM_READ_PORT("P2") AM_WRITENOP /* continues game when in stop mode (cleared by NMI handler) */
 	AM_RANGE(0xf802, 0xf802) AM_READ_PORT("DSW1")
 	AM_RANGE(0xf803, 0xf803) AM_WRITE(snd_irq_w)
@@ -639,21 +498,9 @@ static ADDRESS_MAP_START( fghtbskt_map, AS_PROGRAM, 8, m63_state )
 	AM_RANGE(0xf003, 0xf003) AM_READ_PORT("DSW")
 	AM_RANGE(0xf000, 0xf000) AM_WRITE(snd_irq_w)
 	AM_RANGE(0xf001, 0xf001) AM_WRITENOP
-<<<<<<< HEAD
-	AM_RANGE(0xf002, 0xf002) AM_WRITE(soundlatch_byte_w)
-	AM_RANGE(0xf800, 0xf800) AM_WRITENOP
-	AM_RANGE(0xf801, 0xf801) AM_WRITE(nmi_mask_w)
-	AM_RANGE(0xf802, 0xf802) AM_WRITE(fghtbskt_flipscreen_w)
-	AM_RANGE(0xf803, 0xf803) AM_WRITENOP
-	AM_RANGE(0xf804, 0xf804) AM_WRITENOP
-	AM_RANGE(0xf805, 0xf805) AM_WRITENOP
-	AM_RANGE(0xf806, 0xf806) AM_WRITENOP
-	AM_RANGE(0xf807, 0xf807) AM_WRITE(fghtbskt_samples_w)
-=======
 	AM_RANGE(0xf002, 0xf002) AM_DEVWRITE("soundlatch", generic_latch_8_device, write)
 	AM_RANGE(0xf807, 0xf807) AM_WRITE(fghtbskt_samples_w) // FIXME
 	AM_RANGE(0xf800, 0xf807) AM_DEVWRITE("outlatch", ls259_device, write_d0)
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( i8039_map, AS_PROGRAM, 8, m63_state )
@@ -663,12 +510,6 @@ ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( i8039_port_map, AS_IO, 8, m63_state )
 	AM_RANGE(0x00, 0xff) AM_READWRITE(snddata_r, snddata_w)
-<<<<<<< HEAD
-	AM_RANGE(MCS48_PORT_P1, MCS48_PORT_P1) AM_WRITE(p1_w)
-	AM_RANGE(MCS48_PORT_P2, MCS48_PORT_P2) AM_WRITE(p2_w)
-	AM_RANGE(MCS48_PORT_T1, MCS48_PORT_T1) AM_READ(irq_r)
-=======
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -856,15 +697,6 @@ GFXDECODE_END
 SAMPLES_START_CB_MEMBER(m63_state::fghtbskt_sh_start)
 {
 	int i, len = memregion("samples")->bytes();
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("samples")->base();
-
-	m_samplebuf = auto_alloc_array(machine(), INT16, len);
-	save_pointer(NAME(m_samplebuf), len);
-
-	for(i = 0; i < len; i++)
-		m_samplebuf[i] = ((INT8)(ROM[i] ^ 0x80)) * 256;
-=======
 	uint8_t *ROM = memregion("samples")->base();
 
 	m_samplebuf = std::make_unique<int16_t[]>(len);
@@ -872,7 +704,6 @@ SAMPLES_START_CB_MEMBER(m63_state::fghtbskt_sh_start)
 
 	for(i = 0; i < len; i++)
 		m_samplebuf[i] = ((int8_t)(ROM[i] ^ 0x80)) * 256;
->>>>>>> upstream/master
 }
 
 INTERRUPT_GEN_MEMBER(m63_state::snd_irq)
@@ -910,22 +741,13 @@ INTERRUPT_GEN_MEMBER(m63_state::vblank_irq)
 		device.execute().set_input_line(INPUT_LINE_NMI, PULSE_LINE);
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( m63, m63_state )
-=======
 static MACHINE_CONFIG_START( m63 )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu",Z80,XTAL_12MHz/4)     /* 3 MHz */
 	MCFG_CPU_PROGRAM_MAP(m63_map)
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", m63_state,  vblank_irq)
 
-<<<<<<< HEAD
-	MCFG_CPU_ADD("soundcpu",I8039,XTAL_12MHz/4) /* ????? */
-	MCFG_CPU_PROGRAM_MAP(i8039_map)
-	MCFG_CPU_IO_MAP(i8039_port_map)
-=======
 	MCFG_DEVICE_ADD("outlatch", LS259, 0) // probably chip at E7 obscured by pulldown resistor
 	MCFG_ADDRESSABLE_LATCH_Q0_OUT_CB(WRITELINE(m63_state, nmi_mask_w))
 	MCFG_ADDRESSABLE_LATCH_Q2_OUT_CB(WRITELINE(m63_state, m63_flipscreen_w))
@@ -939,7 +761,6 @@ static MACHINE_CONFIG_START( m63 )
 	MCFG_MCS48_PORT_P1_OUT_CB(WRITE8(m63_state, p1_w))
 	MCFG_MCS48_PORT_P2_OUT_CB(WRITE8(m63_state, p2_w))
 	MCFG_MCS48_PORT_T1_IN_CB(READLINE(m63_state, irq_r))
->>>>>>> upstream/master
 	MCFG_CPU_PERIODIC_INT_DRIVER(m63_state, snd_irq,  60)
 
 	MCFG_MACHINE_START_OVERRIDE(m63_state,m63)
@@ -963,11 +784,8 @@ static MACHINE_CONFIG_START( m63 )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono") /* ????? */
 
-<<<<<<< HEAD
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 
->>>>>>> upstream/master
 	MCFG_SOUND_ADD("ay1", AY8910, XTAL_12MHz/8)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.25)
 
@@ -980,25 +798,18 @@ static MACHINE_CONFIG_DERIVED( atomboy, m63 )
 	MCFG_CPU_PERIODIC_INT_DRIVER(m63_state, snd_irq,  60/2)
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( fghtbskt, m63_state )
-=======
 static MACHINE_CONFIG_START( fghtbskt )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, XTAL_12MHz/4)     /* 3 MHz */
 	MCFG_CPU_PROGRAM_MAP(fghtbskt_map)
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", m63_state,  vblank_irq)
 
-<<<<<<< HEAD
-=======
 	MCFG_DEVICE_ADD("outlatch", LS259, 0)
 	MCFG_ADDRESSABLE_LATCH_Q1_OUT_CB(WRITELINE(m63_state, nmi_mask_w))
 	MCFG_ADDRESSABLE_LATCH_Q2_OUT_CB(WRITELINE(m63_state, fghtbskt_flipscreen_w))
 	//MCFG_ADDRESSABLE_LATCH_Q7_OUT_CB(WRITELINE(m63_state, fghtbskt_samples_w))
 
->>>>>>> upstream/master
 	MCFG_CPU_ADD("soundcpu", I8039,XTAL_12MHz/4)    /* ????? */
 	MCFG_CPU_PROGRAM_MAP(i8039_map)
 	MCFG_CPU_IO_MAP(i8039_port_map)
@@ -1017,21 +828,14 @@ static MACHINE_CONFIG_START( fghtbskt )
 	MCFG_SCREEN_PALETTE("palette")
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", fghtbskt)
-<<<<<<< HEAD
-	MCFG_PALETTE_ADD_RRRRGGGGBBBB_PROMS("palette", 256)
-=======
 	MCFG_PALETTE_ADD_RRRRGGGGBBBB_PROMS("palette", "proms", 256)
->>>>>>> upstream/master
 	MCFG_VIDEO_START_OVERRIDE(m63_state,m63)
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 
->>>>>>> upstream/master
 	MCFG_SOUND_ADD("ay1", AY8910, XTAL_12MHz/8)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 
@@ -1184,11 +988,7 @@ ROM_START( fghtbskt )
 
 	ROM_REGION( 0x2000, "gfx1", 0 )
 	ROM_LOAD( "fb08.12f",     0x0000, 0x1000, CRC(271cd7b8) SHA1(00cfeb6ba429cf6cc59d6542dea8de2ca79155ed) )
-<<<<<<< HEAD
-	ROM_FILL(                 0x1000, 0x1000, 0 )
-=======
 	ROM_FILL(                 0x1000, 0x1000, 0x00 )
->>>>>>> upstream/master
 
 	ROM_REGION( 0x6000, "gfx2", 0 )
 	ROM_LOAD( "fb21.25e",     0x0000, 0x2000, CRC(02843591) SHA1(e38ccc97dcbd642d0ac768837f7baf1573fdb91f) )

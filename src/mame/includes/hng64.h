@@ -5,11 +5,8 @@
 #include "cpu/nec/v53.h"
 #include "sound/l7a1045_l6028_dsp_a.h"
 #include "video/poly.h"
-<<<<<<< HEAD
-=======
 #include "cpu/tlcs870/tlcs870.h"
 #include "screen.h"
->>>>>>> upstream/master
 
 enum
 {
@@ -31,17 +28,10 @@ struct blit_parameters
 {
 	bitmap_rgb32 *      bitmap;
 	rectangle           cliprect;
-<<<<<<< HEAD
-	UINT32              tilemap_priority_code;
-	UINT8               mask;
-	UINT8               value;
-	UINT8               alpha;
-=======
 	uint32_t              tilemap_priority_code;
 	uint8_t               mask;
 	uint8_t               value;
 	uint8_t               alpha;
->>>>>>> upstream/master
 	hng64trans_t        drawformat;
 };
 
@@ -72,18 +62,6 @@ struct polygon
 	float faceNormal[4];        // Normal of the face overall - for calculating visibility and flat-shading...
 	int visible;                // Polygon visibility in scene
 
-<<<<<<< HEAD
-	UINT8 texIndex;             // Which texture to draw from (0x00-0x0f)
-	UINT8 texType;              // How to index into the texture
-	UINT8 texPageSmall;         // Does this polygon use 'small' texture pages?
-	UINT8 texPageHorizOffset;   // If it does use small texture pages, how far is this page horizontally offset?
-	UINT8 texPageVertOffset;    // If it does use small texture pages, how far is this page vertically offset?
-
-	UINT32 palOffset;           // The base offset where this object's palette starts.
-	UINT32 palPageSize;         // The size of the palette page that is being pointed to.
-
-	UINT32 debugColor;          // Will go away someday.  Used to explicitly color polygons for debugging.
-=======
 	uint8_t texIndex;             // Which texture to draw from (0x00-0x0f)
 	uint8_t texType;              // How to index into the texture
 	uint8_t texPageSmall;         // Does this polygon use 'small' texture pages?
@@ -94,7 +72,6 @@ struct polygon
 	uint32_t palPageSize;         // The size of the palette page that is being pointed to.
 
 	uint32_t debugColor;          // Will go away someday.  Used to explicitly color polygons for debugging.
->>>>>>> upstream/master
 };
 
 
@@ -121,19 +98,11 @@ typedef frustum_clip_vertex<float, 5> hng64_clip_vertex;
 
 struct hng64_poly_data
 {
-<<<<<<< HEAD
-	UINT8 texType;
-	UINT8 texIndex;
-	UINT8 texPageSmall;
-	UINT8 texPageHorizOffset;
-	UINT8 texPageVertOffset;
-=======
 	uint8_t texType;
 	uint8_t texIndex;
 	uint8_t texPageSmall;
 	uint8_t texPageHorizOffset;
 	uint8_t texPageVertOffset;
->>>>>>> upstream/master
 	int palOffset;
 	int palPageSize;
 	int debugColor;
@@ -147,30 +116,18 @@ public:
 	hng64_poly_renderer(hng64_state& state);
 
 	void drawShaded(polygon *p);
-<<<<<<< HEAD
-	void render_scanline(INT32 scanline, const extent_t& extent, const hng64_poly_data& renderData, int threadid);
-
-	hng64_state& state() { return m_state; }
-	bitmap_rgb32& colorBuffer3d() { return m_colorBuffer3d; }
-	float* depthBuffer3d() { return m_depthBuffer3d; }
-=======
 	void render_scanline(int32_t scanline, const extent_t& extent, const hng64_poly_data& renderData, int threadid);
 
 	hng64_state& state() { return m_state; }
 	bitmap_rgb32& colorBuffer3d() { return m_colorBuffer3d; }
 	float* depthBuffer3d() { return m_depthBuffer3d.get(); }
->>>>>>> upstream/master
 
 private:
 	hng64_state& m_state;
 
 	// (Temporarily class members - someday they will live in the memory map)
 	bitmap_rgb32 m_colorBuffer3d;
-<<<<<<< HEAD
-	float* m_depthBuffer3d;
-=======
 	std::unique_ptr<float[]> m_depthBuffer3d;
->>>>>>> upstream/master
 };
 
 
@@ -208,26 +165,6 @@ public:
 	required_device<cpu_device> m_comm;
 	required_device<msm6242_device> m_rtc;
 
-<<<<<<< HEAD
-	required_shared_ptr<UINT32> m_mainram;
-	required_shared_ptr<UINT32> m_cart;
-	required_shared_ptr<UINT32> m_sysregs;
-	required_shared_ptr<UINT32> m_dualport;
-	required_shared_ptr<UINT32> m_rombase;
-	required_shared_ptr<UINT32> m_spriteram;
-	required_shared_ptr<UINT32> m_spriteregs;
-	required_shared_ptr<UINT32> m_videoram;
-	required_shared_ptr<UINT32> m_videoregs;
-	required_shared_ptr<UINT32> m_tcram;
-
-	UINT16* m_dl;
-	required_shared_ptr<UINT32> m_3dregs;
-	required_shared_ptr<UINT32> m_3d_1;
-	required_shared_ptr<UINT32> m_3d_2;
-
-	required_shared_ptr<UINT32> m_com_ram;
-	//required_shared_ptr<UINT8> m_com_mmu_mem;
-=======
 	required_shared_ptr<uint32_t> m_mainram;
 	required_shared_ptr<uint32_t> m_cart;
 	required_shared_ptr<uint32_t> m_sysregs;
@@ -246,7 +183,6 @@ public:
 
 	required_shared_ptr<uint32_t> m_com_ram;
 	//required_shared_ptr<uint8_t> m_com_mmu_mem;
->>>>>>> upstream/master
 
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<screen_device> m_screen;
@@ -254,32 +190,6 @@ public:
 
 	int m_mcu_type;
 
-<<<<<<< HEAD
-	UINT16 *m_soundram;
-	UINT16 *m_soundram2;
-
-	/* Communications stuff */
-	UINT8 *m_com_op_base;
-	UINT8 *m_com_virtual_mem;
-	UINT8 m_com_shared[8];
-
-	INT32 m_dma_start;
-	INT32 m_dma_dst;
-	INT32 m_dma_len;
-
-	UINT32 m_mcu_fake_time;
-	UINT16 m_mcu_en;
-
-	UINT32 m_activeDisplayList;
-	UINT32 m_no_machine_error_code;
-
-	UINT32 m_unk_vreg_toggle;
-	UINT32 m_p1_trig;
-
-	//UINT32 *q2;
-
-	UINT8 m_screen_dis;
-=======
 	std::unique_ptr<uint16_t[]> m_soundram;
 	std::unique_ptr<uint16_t[]> m_soundram2;
 
@@ -304,7 +214,6 @@ public:
 	//uint32_t *q2;
 
 	uint8_t m_screen_dis;
->>>>>>> upstream/master
 
 	struct hng64_tilemap {
 		tilemap_t *m_tilemap_8x8;
@@ -314,19 +223,11 @@ public:
 
 	hng64_tilemap m_tilemap[4];
 
-<<<<<<< HEAD
-	UINT8 m_additive_tilemap_debug;
-
-	UINT32 m_old_animmask;
-	UINT32 m_old_animbits;
-	UINT16 m_old_tileflags[4];
-=======
 	uint8_t m_additive_tilemap_debug;
 
 	uint32_t m_old_animmask;
 	uint32_t m_old_animbits;
 	uint16_t m_old_tileflags[4];
->>>>>>> upstream/master
 
 	// 3d State
 	int m_paletteState3d;
@@ -337,10 +238,6 @@ public:
 	float m_lightStrength;
 	float m_lightVector[3];
 
-<<<<<<< HEAD
-	DECLARE_READ32_MEMBER(hng64_random_read);
-=======
->>>>>>> upstream/master
 	DECLARE_READ32_MEMBER(hng64_com_r);
 	DECLARE_WRITE32_MEMBER(hng64_com_w);
 	DECLARE_WRITE8_MEMBER(hng64_com_share_w);
@@ -378,13 +275,6 @@ public:
 
 	DECLARE_WRITE32_MEMBER(hng64_sprite_clear_even_w);
 	DECLARE_WRITE32_MEMBER(hng64_sprite_clear_odd_w);
-<<<<<<< HEAD
-	DECLARE_WRITE32_MEMBER(trap_write);
-	DECLARE_WRITE32_MEMBER(activate_3d_buffer);
-	DECLARE_READ8_MEMBER(hng64_comm_shared_r);
-	DECLARE_WRITE8_MEMBER(hng64_comm_shared_w);
-=======
->>>>>>> upstream/master
 	DECLARE_WRITE32_MEMBER(hng64_videoram_w);
 	DECLARE_READ8_MEMBER(hng64_comm_space_r);
 	DECLARE_WRITE8_MEMBER(hng64_comm_space_w);
@@ -399,17 +289,6 @@ public:
 	DECLARE_DRIVER_INIT(hng64_fght);
 	DECLARE_DRIVER_INIT(hng64_reorder_gfx);
 
-<<<<<<< HEAD
-	void set_irq(UINT32 irq_vector);
-	UINT32 m_irq_pending;
-	UINT8 *m_comm_rom;
-	UINT8 *m_comm_ram;
-	UINT8 m_mmu_regs[8];
-	UINT32 m_mmua[6];
-	UINT16 m_mmub[6];
-	UINT8 read_comm_data(UINT32 offset);
-	void write_comm_data(UINT32 offset,UINT8 data);
-=======
 	void set_irq(uint32_t irq_vector);
 	uint32_t m_irq_pending;
 	uint8_t *m_comm_rom;
@@ -419,7 +298,6 @@ public:
 	uint16_t m_mmub[6];
 	uint8_t read_comm_data(uint32_t offset);
 	void write_comm_data(uint32_t offset,uint8_t data);
->>>>>>> upstream/master
 	int m_irq_level;
 	TILE_GET_INFO_MEMBER(get_hng64_tile0_8x8_info);
 	TILE_GET_INFO_MEMBER(get_hng64_tile0_16x16_info);
@@ -429,19 +307,11 @@ public:
 	TILE_GET_INFO_MEMBER(get_hng64_tile2_16x16_info);
 	TILE_GET_INFO_MEMBER(get_hng64_tile3_8x8_info);
 	TILE_GET_INFO_MEMBER(get_hng64_tile3_16x16_info);
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void machine_reset();
-	virtual void video_start();
-	UINT32 screen_update_hng64(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
-	void screen_eof_hng64(screen_device &screen, bool state);
-=======
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
 	virtual void video_start() override;
 	uint32_t screen_update_hng64(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
 	DECLARE_WRITE_LINE_MEMBER(screen_vblank_hng64);
->>>>>>> upstream/master
 	TIMER_DEVICE_CALLBACK_MEMBER(hng64_irq);
 	void do_dma(address_space &space);
 
@@ -450,17 +320,6 @@ public:
 	void hng64_drawtilemap(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect, int tm);
 
 	void hng64_tilemap_draw_roz_core(screen_device &screen, tilemap_t *tmap, const blit_parameters *blit,
-<<<<<<< HEAD
-		UINT32 startx, UINT32 starty, int incxx, int incxy, int incyx, int incyy, int wraparound);
-
-	void hng64_tilemap_draw_roz(screen_device &screen, bitmap_rgb32 &dest, const rectangle &cliprect, tilemap_t *tmap,
-		UINT32 startx, UINT32 starty, int incxx, int incxy, int incyx, int incyy,
-		int wraparound, UINT32 flags, UINT8 priority, hng64trans_t drawformat);
-
-	void hng64_tilemap_draw_roz_primask(screen_device &screen, bitmap_rgb32 &dest, const rectangle &cliprect, tilemap_t *tmap,
-		UINT32 startx, UINT32 starty, int incxx, int incxy, int incyx, int incyy,
-		int wraparound, UINT32 flags, UINT8 priority, UINT8 priority_mask, hng64trans_t drawformat);
-=======
 		uint32_t startx, uint32_t starty, int incxx, int incxy, int incyx, int incyy, int wraparound);
 
 	void hng64_tilemap_draw_roz(screen_device &screen, bitmap_rgb32 &dest, const rectangle &cliprect, tilemap_t *tmap,
@@ -470,7 +329,6 @@ public:
 	void hng64_tilemap_draw_roz_primask(screen_device &screen, bitmap_rgb32 &dest, const rectangle &cliprect, tilemap_t *tmap,
 		uint32_t startx, uint32_t starty, int incxx, int incxy, int incyx, int incyy,
 		int wraparound, uint32_t flags, uint8_t priority, uint8_t priority_mask, hng64trans_t drawformat);
->>>>>>> upstream/master
 
 
 
@@ -479,14 +337,6 @@ public:
 	DECLARE_CUSTOM_INPUT_MEMBER(acc_down_r);
 	DECLARE_CUSTOM_INPUT_MEMBER(brake_down_r);
 
-<<<<<<< HEAD
-	hng64_poly_renderer* m_poly_renderer;
-
-	TIMER_CALLBACK_MEMBER(hng64_3dfifo_processed);
-
-	UINT8 *m_texturerom;
-	UINT16* m_vertsrom;
-=======
 	std::unique_ptr<hng64_poly_renderer> m_poly_renderer;
 
 	TIMER_CALLBACK_MEMBER(hng64_3dfifo_processed);
@@ -494,23 +344,10 @@ public:
 
 	uint8_t *m_texturerom;
 	uint16_t* m_vertsrom;
->>>>>>> upstream/master
 	int m_vertsrom_size;
 	std::vector<polygon> m_polys;  // HNG64_MAX_POLYGONS
 
 	void clear3d();
-<<<<<<< HEAD
-	void hng64_command3d(const UINT16* packet);
-	void draw_sprites(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
-	void transition_control(bitmap_rgb32 &bitmap, const rectangle &cliprect);
-	void setCameraTransformation(const UINT16* packet);
-	void setLighting(const UINT16* packet);
-	void set3dFlags(const UINT16* packet);
-	void setCameraProjectionMatrix(const UINT16* packet);
-	void recoverPolygonBlock(const UINT16* packet, int& numPolys);
-	void printPacket(const UINT16* packet, int hex);
-	float uToF(UINT16 input);
-=======
 	void hng64_command3d(const uint16_t* packet);
 	void draw_sprites(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
 	void transition_control(bitmap_rgb32 &bitmap, const rectangle &cliprect);
@@ -521,7 +358,6 @@ public:
 	void recoverPolygonBlock(const uint16_t* packet, int& numPolys);
 	void printPacket(const uint16_t* packet, int hex);
 	float uToF(uint16_t input);
->>>>>>> upstream/master
 	void matmul4(float *product, const float *a, const float *b);
 	void vecmatmul4(float *product, const float *a, const float *b);
 	float vecDotProduct(const float *a, const float *b);
@@ -548,26 +384,11 @@ public:
 
 	DECLARE_WRITE16_MEMBER(hng64_sound_port_0080_w);
 
-<<<<<<< HEAD
-	DECLARE_WRITE16_MEMBER(hng64_sound_port_0100_w);
-	DECLARE_WRITE16_MEMBER(hng64_sound_port_0102_w);
-	DECLARE_READ16_MEMBER(hng64_sound_port_0104_r);
-	DECLARE_READ16_MEMBER(hng64_sound_port_0106_r);
-	DECLARE_WRITE16_MEMBER(hng64_sound_port_0108_w);
-	DECLARE_WRITE16_MEMBER(hng64_sound_port_010a_w);
-
-=======
->>>>>>> upstream/master
 	DECLARE_WRITE16_MEMBER(hng64_sound_bank_w);
 	DECLARE_READ16_MEMBER(main_sound_comms_r);
 	DECLARE_WRITE16_MEMBER(main_sound_comms_w);
 	DECLARE_READ16_MEMBER(sound_comms_r);
 	DECLARE_WRITE16_MEMBER(sound_comms_w);
-<<<<<<< HEAD
-	UINT16 main_latch[2];
-	UINT16 sound_latch[2];
-=======
 	uint16_t main_latch[2];
 	uint16_t sound_latch[2];
->>>>>>> upstream/master
 };

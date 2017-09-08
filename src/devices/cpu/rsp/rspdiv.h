@@ -1,10 +1,6 @@
 // license:BSD-3-Clause
 // copyright-holders:Ryan Holtz
-<<<<<<< HEAD
-static const UINT16 rsp_divtable[1024] =
-=======
 static const uint16_t rsp_divtable[1024] =
->>>>>>> upstream/master
 {
 	0xffff,
 	0xff00,

@@ -1,11 +1,6 @@
-<<<<<<< HEAD
-// license:???
-// copyright-holders:Michael Strutts, Nicola Salmoria, Tormod Tjaberg, Mirko Buffoni,Lee Taylor, Valerio Verrando, Marco Cassili, Zsolt Vasvari
-=======
 // license:BSD-3-Clause
 // copyright-holders:Nicola Salmoria, Tormod Tjaberg, Mirko Buffoni,Lee Taylor, Valerio Verrando, Zsolt Vasvari
 // thanks-to:Michael Strutts, Marco Cassili
->>>>>>> upstream/master
 /***************************************************************************
 
     Midway 8080-based black and white hardware
@@ -13,17 +8,11 @@
 ****************************************************************************/
 
 #include "machine/mb14241.h"
-<<<<<<< HEAD
-#include "sound/discrete.h"
-#include "sound/sn76477.h"
-#include "sound/samples.h"
-=======
 #include "machine/watchdog.h"
 #include "sound/discrete.h"
 #include "sound/sn76477.h"
 #include "sound/samples.h"
 #include "screen.h"
->>>>>>> upstream/master
 
 
 #define MW8080BW_MASTER_CLOCK             (19968000.0)
@@ -55,10 +44,7 @@ public:
 		: driver_device(mconfig, type, tag),
 		m_maincpu(*this,"maincpu"),
 		m_mb14241(*this,"mb14241"),
-<<<<<<< HEAD
-=======
 		m_watchdog(*this, "watchdog"),
->>>>>>> upstream/master
 		m_main_ram(*this, "main_ram"),
 		m_colorram(*this, "colorram"),
 		m_colorram2(*this, "colorram2"),
@@ -75,35 +61,6 @@ public:
 	/* device/memory pointers */
 	required_device<cpu_device> m_maincpu;
 	optional_device<mb14241_device> m_mb14241;
-<<<<<<< HEAD
-	required_shared_ptr<UINT8> m_main_ram;
-	optional_shared_ptr<UINT8> m_colorram;
-	optional_shared_ptr<UINT8> m_colorram2;
-	optional_device<discrete_device> m_discrete;
-
-	/* sound-related */
-	UINT8       m_port_1_last;
-	UINT8       m_port_2_last;
-	UINT8       m_port_1_last_extra;
-	UINT8       m_port_2_last_extra;
-	UINT8       m_port_3_last_extra;
-
-	/* misc game specific */
-	UINT16      m_phantom2_cloud_counter;
-	UINT8       m_flip_screen;
-	UINT8       m_rev_shift_res;
-	UINT8       m_maze_tone_timing_state;   /* output of IC C1, pin 5 */
-	UINT8       m_desertgun_controller_select;
-	UINT8       m_clowns_controller_select;
-
-	UINT8       m_spcenctr_strobe_state;
-	UINT8       m_spcenctr_trench_width;
-	UINT8       m_spcenctr_trench_center;
-	UINT8       m_spcenctr_trench_slope[16];  /* 16x4 bit RAM */
-
-	/* timer */
-	emu_timer   *m_interrupt_timer;
-=======
 	optional_device<watchdog_timer_device> m_watchdog;
 	required_shared_ptr<uint8_t> m_main_ram;
 	optional_shared_ptr<uint8_t> m_colorram;
@@ -138,7 +95,6 @@ public:
 	/* timers */
 	emu_timer   *m_interrupt_timer;
 	emu_timer   *m_maze_tone_timer;
->>>>>>> upstream/master
 
 	/* other devices */
 	optional_device<samples_device> m_samples;
@@ -210,19 +166,11 @@ public:
 	DECLARE_MACHINE_START(phantom2);
 	DECLARE_MACHINE_START(invaders);
 	DECLARE_SOUND_START(samples);
-<<<<<<< HEAD
-	UINT32 screen_update_mw8080bw(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
-	UINT32 screen_update_spcenctr(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
-	UINT32 screen_update_phantom2(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
-	UINT32 screen_update_invaders(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
-	void screen_eof_phantom2(screen_device &screen, bool state);
-=======
 	uint32_t screen_update_mw8080bw(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
 	uint32_t screen_update_spcenctr(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
 	uint32_t screen_update_phantom2(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
 	uint32_t screen_update_invaders(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
 	DECLARE_WRITE_LINE_MEMBER(screen_vblank_phantom2);
->>>>>>> upstream/master
 	TIMER_CALLBACK_MEMBER(maze_tone_timing_timer_callback);
 	TIMER_CALLBACK_MEMBER(mw8080bw_interrupt_callback);
 	TIMER_DEVICE_CALLBACK_MEMBER(spcenctr_strobe_timer_callback);
@@ -252,19 +200,6 @@ public:
 	DECLARE_WRITE8_MEMBER(invad2ct_audio_3_w);
 	DECLARE_WRITE8_MEMBER(invad2ct_audio_4_w);
 	void maze_update_discrete();
-<<<<<<< HEAD
-	void maze_write_discrete(UINT8 maze_tone_timing_state);
-	UINT8 vpos_to_vysnc_chain_counter( int vpos );
-	int vysnc_chain_counter_to_vpos( UINT8 counter, int vblank );
-	void mw8080bw_create_interrupt_timer(  );
-	void mw8080bw_start_interrupt_timer(  );
-	UINT8 tornbase_get_cabinet_type();
-	UINT8 spcenctr_get_trench_width();
-	UINT8 spcenctr_get_trench_center();
-	UINT8 spcenctr_get_trench_slope(UINT8 addr );
-	int invaders_is_cabinet_cocktail();
-	UINT32 invad2ct_coin_input_r(void *param);
-=======
 	void maze_write_discrete(uint8_t maze_tone_timing_state);
 	uint8_t vpos_to_vysnc_chain_counter( int vpos );
 	int vysnc_chain_counter_to_vpos( uint8_t counter, int vblank );
@@ -272,7 +207,6 @@ public:
 	void mw8080bw_start_interrupt_timer(  );
 	uint8_t tornbase_get_cabinet_type();
 	int invaders_is_cabinet_cocktail();
->>>>>>> upstream/master
 };
 
 
@@ -318,11 +252,7 @@ public:
 
 MACHINE_CONFIG_EXTERN( mw8080bw_root );
 MACHINE_CONFIG_EXTERN( invaders );
-<<<<<<< HEAD
-extern const char layout_invaders[];
-=======
 extern const internal_layout layout_invaders;
->>>>>>> upstream/master
 
 /*----------- defined in audio/mw8080bw.c -----------*/
 

@@ -3,13 +3,8 @@
 #ifndef __ISTREAM_H
 #define __ISTREAM_H
 
-<<<<<<< HEAD
-#include "../Common/MyUnknown.h"
-#include "../Common/Types.h"
-=======
 #include "../Common/MyTypes.h"
 #include "../Common/MyWindows.h"
->>>>>>> upstream/master
 
 #include "IDecl.h"
 
@@ -19,15 +14,6 @@
 STREAM_INTERFACE(ISequentialInStream, 0x01)
 {
   STDMETHOD(Read)(void *data, UInt32 size, UInt32 *processedSize) PURE;
-<<<<<<< HEAD
-  /*
-  Out: if size != 0, return_value = S_OK and (*processedSize == 0),
-    then there are no more bytes in stream.
-  if (size > 0) && there are bytes in stream,
-  this function must read at least 1 byte.
-  This function is allowed to read less than number of remaining bytes in stream.
-  You must call Read function in loop, if you need exact amount of data
-=======
   
   /*
   The requirement for caller: (processedSize != NULL).
@@ -52,22 +38,12 @@ STREAM_INTERFACE(ISequentialInStream, 0x01)
     The recommended way for callee to work with reading errors:
       1) write part of data before error to (data) buffer and return S_OK.
       2) return error code for further calls of Read().
->>>>>>> upstream/master
   */
 };
 
 STREAM_INTERFACE(ISequentialOutStream, 0x02)
 {
   STDMETHOD(Write)(const void *data, UInt32 size, UInt32 *processedSize) PURE;
-<<<<<<< HEAD
-  /*
-  if (size > 0) this function must write at least 1 byte.
-  This function is allowed to write less than "size".
-  You must call Write function in loop, if you need to write exact amount of data
-  */
-};
-
-=======
   
   /*
   The requirement for caller: (processedSize != NULL).
@@ -103,7 +79,6 @@ STREAM_INTERFACE(ISequentialOutStream, 0x02)
   if Seek() returns error, then the value of *newPosition is undefined.
 */
 
->>>>>>> upstream/master
 STREAM_INTERFACE_SUB(IInStream, ISequentialInStream, 0x03)
 {
   STDMETHOD(Seek)(Int64 offset, UInt32 seekOrigin, UInt64 *newPosition) PURE;
@@ -120,11 +95,6 @@ STREAM_INTERFACE(IStreamGetSize, 0x06)
   STDMETHOD(GetSize)(UInt64 *size) PURE;
 };
 
-<<<<<<< HEAD
-STREAM_INTERFACE(IOutStreamFlush, 0x07)
-{
-  STDMETHOD(Flush)() PURE;
-=======
 STREAM_INTERFACE(IOutStreamFinish, 0x07)
 {
   STDMETHOD(OutStreamFinish)() PURE;
@@ -152,7 +122,6 @@ struct CStreamFileProps
 STREAM_INTERFACE(IStreamGetProps2, 0x09)
 {
   STDMETHOD(GetProps2)(CStreamFileProps *props) PURE;
->>>>>>> upstream/master
 };
 
 #endif

@@ -13,13 +13,9 @@
 #include "video/k053246_k053247_k055673.h"
 #include "video/k054000.h"
 #include "video/k054338.h"
-<<<<<<< HEAD
-#include "video/konami_helper.h"
-=======
 #include "machine/k054321.h"
 #include "video/konami_helper.h"
 #include "screen.h"
->>>>>>> upstream/master
 
 class moo_state : public driver_device
 {
@@ -38,39 +34,23 @@ public:
 		m_k056832(*this, "k056832"),
 		m_k054338(*this, "k054338"),
 		m_palette(*this, "palette"),
-<<<<<<< HEAD
-		m_screen(*this, "screen") { }
-
-	/* memory pointers */
-	optional_shared_ptr<UINT16> m_workram;
-	required_shared_ptr<UINT16> m_spriteram;
-=======
 		m_screen(*this, "screen"),
 		m_k054321(*this, "k054321") { }
 
 	/* memory pointers */
 	optional_shared_ptr<uint16_t> m_workram;
 	required_shared_ptr<uint16_t> m_spriteram;
->>>>>>> upstream/master
 
 	/* video-related */
 	int         m_sprite_colorbase;
 	int         m_layer_colorbase[4];
 	int         m_layerpri[3];
 	int         m_alpha_enabled;
-<<<<<<< HEAD
-	UINT16      m_zmask;
-
-	/* misc */
-	UINT16      m_protram[16];
-	UINT16      m_cur_control2;
-=======
 	uint16_t      m_zmask;
 
 	/* misc */
 	uint16_t      m_protram[16];
 	uint16_t      m_cur_control2;
->>>>>>> upstream/master
 
 	/* devices */
 	required_device<cpu_device> m_maincpu;
@@ -84,37 +64,20 @@ public:
 	required_device<k054338_device> m_k054338;
 	required_device<palette_device> m_palette;
 	required_device<screen_device> m_screen;
-<<<<<<< HEAD
-=======
 	optional_device<k054321_device> m_k054321;
->>>>>>> upstream/master
 
 	emu_timer *m_dmaend_timer;
 	DECLARE_READ16_MEMBER(control2_r);
 	DECLARE_WRITE16_MEMBER(control2_w);
-<<<<<<< HEAD
-	DECLARE_WRITE16_MEMBER(sound_cmd1_w);
-	DECLARE_WRITE16_MEMBER(sound_cmd2_w);
-	DECLARE_WRITE16_MEMBER(sound_irq_w);
-	DECLARE_READ16_MEMBER(sound_status_r);
-	DECLARE_WRITE8_MEMBER(sound_bankswitch_w);
-	DECLARE_READ16_MEMBER(K053247_scattered_word_r);
-	DECLARE_WRITE16_MEMBER(K053247_scattered_word_w);
-=======
 	DECLARE_WRITE16_MEMBER(sound_irq_w);
 	DECLARE_WRITE8_MEMBER(sound_bankswitch_w);
->>>>>>> upstream/master
 	DECLARE_WRITE16_MEMBER(moo_prot_w);
 	DECLARE_WRITE16_MEMBER(moobl_oki_bank_w);
 	DECLARE_MACHINE_START(moo);
 	DECLARE_MACHINE_RESET(moo);
 	DECLARE_VIDEO_START(moo);
 	DECLARE_VIDEO_START(bucky);
-<<<<<<< HEAD
-	UINT32 screen_update_moo(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
-=======
 	uint32_t screen_update_moo(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	INTERRUPT_GEN_MEMBER(moo_interrupt);
 	INTERRUPT_GEN_MEMBER(moobl_interrupt);
 	TIMER_CALLBACK_MEMBER(dmaend_callback);

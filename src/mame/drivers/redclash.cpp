@@ -23,13 +23,6 @@ TODO:
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/z80/z80.h"
-#include "includes/ladybug.h"
-
-
-WRITE8_MEMBER( ladybug_state::irqack_w )
-=======
 #include "includes/redclash.h"
 
 #include "cpu/z80/z80.h"
@@ -137,16 +130,11 @@ ADDRESS_MAP_END
 
 
 WRITE8_MEMBER( redclash_state::irqack_w )
->>>>>>> upstream/master
 {
 	m_maincpu->set_input_line(0, CLEAR_LINE);
 }
 
-<<<<<<< HEAD
-static ADDRESS_MAP_START( zerohour_map, AS_PROGRAM, 8, ladybug_state )
-=======
 static ADDRESS_MAP_START( zerohour_map, AS_PROGRAM, 8, redclash_state )
->>>>>>> upstream/master
 	AM_RANGE(0x0000, 0x2fff) AM_ROM
 	AM_RANGE(0x3000, 0x37ff) AM_RAM
 	AM_RANGE(0x3800, 0x3bff) AM_RAM AM_SHARE("spriteram")
@@ -165,11 +153,7 @@ static ADDRESS_MAP_START( zerohour_map, AS_PROGRAM, 8, redclash_state )
 	AM_RANGE(0x7800, 0x7800) AM_WRITE(irqack_w)
 ADDRESS_MAP_END
 
-<<<<<<< HEAD
-static ADDRESS_MAP_START( redclash_map, AS_PROGRAM, 8, ladybug_state )
-=======
 static ADDRESS_MAP_START( redclash_map, AS_PROGRAM, 8, redclash_state )
->>>>>>> upstream/master
 	AM_RANGE(0x0000, 0x2fff) AM_ROM
 //  AM_RANGE(0x3000, 0x3000) AM_WRITENOP
 //  AM_RANGE(0x3800, 0x3800) AM_WRITENOP
@@ -195,21 +179,13 @@ ADDRESS_MAP_END
   Interrupts are still used, but they are related to coin
   slots. Left slot generates an IRQ, Right slot a NMI.
 */
-<<<<<<< HEAD
-INPUT_CHANGED_MEMBER( ladybug_state::left_coin_inserted )
-=======
 INPUT_CHANGED_MEMBER( redclash_state::left_coin_inserted )
->>>>>>> upstream/master
 {
 	if(newval)
 		m_maincpu->set_input_line(0, ASSERT_LINE);
 }
 
-<<<<<<< HEAD
-INPUT_CHANGED_MEMBER( ladybug_state::right_coin_inserted )
-=======
 INPUT_CHANGED_MEMBER( redclash_state::right_coin_inserted )
->>>>>>> upstream/master
 {
 	if(newval)
 		m_maincpu->set_input_line(INPUT_LINE_NMI, PULSE_LINE);
@@ -305,13 +281,8 @@ static INPUT_PORTS_START( redclash )
 	/* handler to be notified of coin insertions. We use IMPULSE to */
 	/* trigger exactly one interrupt, without having to check when the */
 	/* user releases the key. */
-<<<<<<< HEAD
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_COIN1 ) PORT_IMPULSE(1) PORT_CHANGED_MEMBER(DEVICE_SELF, ladybug_state, left_coin_inserted, 0)
-	PORT_BIT( 0x02, IP_ACTIVE_HIGH, IPT_COIN2 ) PORT_IMPULSE(1) PORT_CHANGED_MEMBER(DEVICE_SELF, ladybug_state, right_coin_inserted, 0)
-=======
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_COIN1 ) PORT_IMPULSE(1) PORT_CHANGED_MEMBER(DEVICE_SELF, redclash_state, left_coin_inserted, 0)
 	PORT_BIT( 0x02, IP_ACTIVE_HIGH, IPT_COIN2 ) PORT_IMPULSE(1) PORT_CHANGED_MEMBER(DEVICE_SELF, redclash_state, right_coin_inserted, 0)
->>>>>>> upstream/master
 INPUT_PORTS_END
 
 static INPUT_PORTS_START( zerohour )
@@ -386,10 +357,6 @@ static INPUT_PORTS_START( zerohour )
 	/* handler to be notified of coin insertions. We use IMPULSE to */
 	/* trigger exactly one interrupt, without having to check when the */
 	/* user releases the key. */
-<<<<<<< HEAD
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_COIN1 ) PORT_IMPULSE(1) PORT_CHANGED_MEMBER(DEVICE_SELF, ladybug_state, left_coin_inserted, 0)
-	PORT_BIT( 0x02, IP_ACTIVE_HIGH, IPT_COIN2 ) PORT_IMPULSE(1) PORT_CHANGED_MEMBER(DEVICE_SELF, ladybug_state, right_coin_inserted, 0)
-=======
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_COIN1 ) PORT_IMPULSE(1) PORT_CHANGED_MEMBER(DEVICE_SELF, redclash_state, left_coin_inserted, 0)
 	PORT_BIT( 0x02, IP_ACTIVE_HIGH, IPT_COIN2 ) PORT_IMPULSE(1) PORT_CHANGED_MEMBER(DEVICE_SELF, redclash_state, right_coin_inserted, 0)
 INPUT_PORTS_END
@@ -467,7 +434,6 @@ static INPUT_PORTS_START( sraider )
 	PORT_DIPSETTING(    0xc0, DEF_STR( 1C_4C ) )
 	PORT_DIPSETTING(    0xb0, DEF_STR( 1C_5C ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( Free_Play ) )
->>>>>>> upstream/master
 INPUT_PORTS_END
 
 static const gfx_layout charlayout =
@@ -534,11 +500,6 @@ static GFXDECODE_START( redclash )
 	GFXDECODE_ENTRY( "gfx2", 0x0004, spritelayout16x16bis, 4*8, 16 )
 GFXDECODE_END
 
-<<<<<<< HEAD
-
-
-MACHINE_START_MEMBER(ladybug_state,redclash)
-=======
 static const gfx_layout charlayout2 =
 {
 	8,8,    /* 8*8 characters */
@@ -644,7 +605,6 @@ MACHINE_RESET_MEMBER(redclash_state,sraider)
 
 
 MACHINE_START_MEMBER(redclash_state,redclash)
->>>>>>> upstream/master
 {
 	save_item(NAME(m_star_speed));
 	save_item(NAME(m_gfxbank));
@@ -655,11 +615,7 @@ MACHINE_START_MEMBER(redclash_state,redclash)
 	save_item(NAME(m_stars_count));
 }
 
-<<<<<<< HEAD
-MACHINE_RESET_MEMBER(ladybug_state,redclash)
-=======
 MACHINE_RESET_MEMBER(redclash_state,redclash)
->>>>>>> upstream/master
 {
 	m_star_speed = 0;
 	m_gfxbank = 0;
@@ -670,23 +626,14 @@ MACHINE_RESET_MEMBER(redclash_state,redclash)
 	m_stars_count = 0;
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( zerohour, ladybug_state )
-=======
 static MACHINE_CONFIG_START( zerohour )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, 4000000)  /* 4 MHz */
 	MCFG_CPU_PROGRAM_MAP(zerohour_map)
 
-<<<<<<< HEAD
-	MCFG_MACHINE_START_OVERRIDE(ladybug_state,redclash)
-	MCFG_MACHINE_RESET_OVERRIDE(ladybug_state,redclash)
-=======
 	MCFG_MACHINE_START_OVERRIDE(redclash_state,redclash)
 	MCFG_MACHINE_RESET_OVERRIDE(redclash_state,redclash)
->>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
@@ -694,47 +641,28 @@ static MACHINE_CONFIG_START( zerohour )
 	MCFG_SCREEN_VBLANK_TIME(ATTOSECONDS_IN_USEC(2500) /* not accurate */)
 	MCFG_SCREEN_SIZE(32*8, 32*8)
 	MCFG_SCREEN_VISIBLE_AREA(1*8, 31*8-1, 4*8, 28*8-1)
-<<<<<<< HEAD
-	MCFG_SCREEN_UPDATE_DRIVER(ladybug_state, screen_update_redclash)
-	MCFG_SCREEN_VBLANK_DRIVER(ladybug_state, screen_eof_redclash)
-=======
 	MCFG_SCREEN_UPDATE_DRIVER(redclash_state, screen_update_redclash)
 	MCFG_SCREEN_VBLANK_CALLBACK(WRITELINE(redclash_state, screen_vblank_redclash))
->>>>>>> upstream/master
 	MCFG_SCREEN_PALETTE("palette")
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", redclash)
 	MCFG_PALETTE_ADD("palette", 4*8+4*16+32)
 	MCFG_PALETTE_INDIRECT_ENTRIES(32+32)
-<<<<<<< HEAD
-	MCFG_PALETTE_INIT_OWNER(ladybug_state,redclash)
-	MCFG_VIDEO_START_OVERRIDE(ladybug_state,redclash)
-=======
 	MCFG_PALETTE_INIT_OWNER(redclash_state,redclash)
 	MCFG_VIDEO_START_OVERRIDE(redclash_state,redclash)
->>>>>>> upstream/master
 
 	/* sound hardware */
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( redclash, ladybug_state )
-=======
 static MACHINE_CONFIG_START( redclash )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, 4000000)  /* 4 MHz */
 	MCFG_CPU_PROGRAM_MAP(redclash_map)
 
-<<<<<<< HEAD
-	MCFG_MACHINE_START_OVERRIDE(ladybug_state,redclash)
-	MCFG_MACHINE_RESET_OVERRIDE(ladybug_state,redclash)
-=======
 	MCFG_MACHINE_START_OVERRIDE(redclash_state,redclash)
 	MCFG_MACHINE_RESET_OVERRIDE(redclash_state,redclash)
->>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
@@ -742,31 +670,19 @@ static MACHINE_CONFIG_START( redclash )
 	MCFG_SCREEN_VBLANK_TIME(ATTOSECONDS_IN_USEC(2500) /* not accurate */)
 	MCFG_SCREEN_SIZE(32*8, 32*8)
 	MCFG_SCREEN_VISIBLE_AREA(1*8, 31*8-1, 4*8, 28*8-1)
-<<<<<<< HEAD
-	MCFG_SCREEN_UPDATE_DRIVER(ladybug_state, screen_update_redclash)
-	MCFG_SCREEN_VBLANK_DRIVER(ladybug_state, screen_eof_redclash)
-=======
 	MCFG_SCREEN_UPDATE_DRIVER(redclash_state, screen_update_redclash)
 	MCFG_SCREEN_VBLANK_CALLBACK(WRITELINE(redclash_state, screen_vblank_redclash))
->>>>>>> upstream/master
 	MCFG_SCREEN_PALETTE("palette")
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", redclash)
 	MCFG_PALETTE_ADD("palette", 4*8+4*16+32)
 	MCFG_PALETTE_INDIRECT_ENTRIES(32+32)
-<<<<<<< HEAD
-	MCFG_PALETTE_INIT_OWNER(ladybug_state,redclash)
-	MCFG_VIDEO_START_OVERRIDE(ladybug_state,redclash)
-=======
 	MCFG_PALETTE_INIT_OWNER(redclash_state,redclash)
 	MCFG_VIDEO_START_OVERRIDE(redclash_state,redclash)
->>>>>>> upstream/master
 
 	/* sound hardware */
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-=======
 static MACHINE_CONFIG_START( sraider )
 
 	/* basic machine hardware */
@@ -820,7 +736,6 @@ MACHINE_CONFIG_END
 
 
 
->>>>>>> upstream/master
 /***************************************************************************
 
   Game driver(s)
@@ -985,13 +900,6 @@ ROM_START( redclashk )
 	ROM_LOAD( "3.11e",        0x0040, 0x0020, CRC(27fa3a50) SHA1(7cf59b7a37c156640d6ea91554d1c4276c1780e0) ) /* 6331.6w */
 ROM_END
 
-<<<<<<< HEAD
-DRIVER_INIT_MEMBER(ladybug_state,redclash)
-{
-	int i,j;
-	const UINT8 *src = memregion("gfx2")->base();
-	UINT8 *dst = memregion("gfx3")->base();
-=======
 ROM_START( sraider )
 	ROM_REGION( 0x10000, "maincpu", 0 )
 	ROM_LOAD( "sraid3.r4",    0x0000, 0x2000, CRC(0f389774) SHA1(c67596e6bf00175ff0a241506cd2f88114d05933) )
@@ -1026,7 +934,6 @@ DRIVER_INIT_MEMBER(redclash_state,redclash)
 	int i,j;
 	const uint8_t *src = memregion("gfx2")->base();
 	uint8_t *dst = memregion("gfx3")->base();
->>>>>>> upstream/master
 	int len = memregion("gfx3")->bytes();
 
 	/* rearrange the sprite graphics */
@@ -1038,14 +945,6 @@ DRIVER_INIT_MEMBER(redclash_state,redclash)
 }
 
 
-<<<<<<< HEAD
-GAME( 1980, zerohour,  0,        zerohour, zerohour, ladybug_state, redclash, ROT270, "Universal", "Zero Hour (set 1)",  MACHINE_NO_SOUND | MACHINE_WRONG_COLORS | MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
-GAME( 1980, zerohoura, zerohour, zerohour, zerohour, ladybug_state, redclash, ROT270, "Universal", "Zero Hour (set 2)",  MACHINE_NO_SOUND | MACHINE_WRONG_COLORS | MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
-GAME( 1980, zerohouri, zerohour, zerohour, zerohour, ladybug_state, redclash, ROT270, "bootleg (Inder SA)", "Zero Hour (Inder)",  MACHINE_NO_SOUND | MACHINE_WRONG_COLORS | MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
-GAME( 1981, redclash,  0,        redclash, redclash, ladybug_state, redclash, ROT270, "Tehkan",    "Red Clash (set 1)",  MACHINE_NO_SOUND | MACHINE_WRONG_COLORS | MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
-GAME( 1981, redclasha, redclash, redclash, redclash, ladybug_state, redclash, ROT270, "Tehkan",    "Red Clash (set 2)",  MACHINE_NO_SOUND | MACHINE_WRONG_COLORS | MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
-GAME( 1981, redclashk, redclash, redclash, redclash, ladybug_state, redclash, ROT270, "Tehkan (Kaneko license)", "Red Clash (Kaneko)", MACHINE_NO_SOUND | MACHINE_WRONG_COLORS | MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1980, zerohour,  0,        zerohour, zerohour, redclash_state, redclash, ROT270, "Universal",               "Zero Hour (set 1)",  MACHINE_NO_SOUND | MACHINE_WRONG_COLORS | MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
 GAME( 1980, zerohoura, zerohour, zerohour, zerohour, redclash_state, redclash, ROT270, "Universal",               "Zero Hour (set 2)",  MACHINE_NO_SOUND | MACHINE_WRONG_COLORS | MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
 GAME( 1980, zerohouri, zerohour, zerohour, zerohour, redclash_state, redclash, ROT270, "bootleg (Inder SA)",      "Zero Hour (Inder)",  MACHINE_NO_SOUND | MACHINE_WRONG_COLORS | MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
@@ -1053,4 +952,3 @@ GAME( 1981, redclash,  0,        redclash, redclash, redclash_state, redclash, R
 GAME( 1981, redclasha, redclash, redclash, redclash, redclash_state, redclash, ROT270, "Tehkan",                  "Red Clash (set 2)",  MACHINE_NO_SOUND | MACHINE_WRONG_COLORS | MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
 GAME( 1981, redclashk, redclash, redclash, redclash, redclash_state, redclash, ROT270, "Tehkan (Kaneko license)", "Red Clash (Kaneko)", MACHINE_NO_SOUND | MACHINE_WRONG_COLORS | MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
 GAME( 1982, sraider,  0,         sraider,  sraider,  redclash_state, 0,        ROT270, "Universal",               "Space Raider",       MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

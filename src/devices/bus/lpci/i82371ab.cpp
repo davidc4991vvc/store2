@@ -19,20 +19,6 @@
 #include "emu.h"
 #include "i82371ab.h"
 
-<<<<<<< HEAD
-const device_type I82371AB = &device_creator<i82371ab_device>;
-
-
-i82371ab_device::i82371ab_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-		: southbridge_device(mconfig, I82371AB, "Intel 82371AB", tag, owner, clock, "i82371ab", __FILE__),
-		pci_device_interface( mconfig, *this )
-{
-}
-
-UINT32 i82371ab_device::pci_isa_r(device_t *busdevice, int offset, UINT32 mem_mask)
-{
-	UINT32 result = m_regs[0][offset] |
-=======
 DEFINE_DEVICE_TYPE(I82371AB, i82371ab_device, "i82371ab", "Intel 82371AB")
 
 
@@ -45,7 +31,6 @@ i82371ab_device::i82371ab_device(const machine_config &mconfig, const char *tag,
 uint32_t i82371ab_device::pci_isa_r(device_t *busdevice, int offset, uint32_t mem_mask)
 {
 	uint32_t result = m_regs[0][offset] |
->>>>>>> upstream/master
 			m_regs[0][offset+1] << 8 |
 			m_regs[0][offset+2] << 16|
 			m_regs[0][offset+3] << 24;
@@ -55,15 +40,9 @@ uint32_t i82371ab_device::pci_isa_r(device_t *busdevice, int offset, uint32_t me
 	return result;
 }
 
-<<<<<<< HEAD
-void i82371ab_device::pci_isa_w(device_t *busdevice, int offset, UINT32 data, UINT32 mem_mask)
-{
-	UINT32 cdata = 0;
-=======
 void i82371ab_device::pci_isa_w(device_t *busdevice, int offset, uint32_t data, uint32_t mem_mask)
 {
 	uint32_t cdata = 0;
->>>>>>> upstream/master
 	int i;
 	COMBINE_DATA(&cdata);
 
@@ -88,15 +67,9 @@ void i82371ab_device::pci_isa_w(device_t *busdevice, int offset, uint32_t data, 
 	}
 }
 
-<<<<<<< HEAD
-UINT32 i82371ab_device::pci_ide_r(device_t *busdevice, int offset, UINT32 mem_mask)
-{
-	UINT32 result = m_regs[1][offset] |
-=======
 uint32_t i82371ab_device::pci_ide_r(device_t *busdevice, int offset, uint32_t mem_mask)
 {
 	uint32_t result = m_regs[1][offset] |
->>>>>>> upstream/master
 			m_regs[1][offset+1] << 8 |
 			m_regs[1][offset+2] << 16|
 			m_regs[1][offset+3] << 24;
@@ -106,15 +79,9 @@ uint32_t i82371ab_device::pci_ide_r(device_t *busdevice, int offset, uint32_t me
 	return result;
 }
 
-<<<<<<< HEAD
-void i82371ab_device::pci_ide_w(device_t *busdevice, int offset, UINT32 data, UINT32 mem_mask)
-{
-	UINT32 cdata = 0;
-=======
 void i82371ab_device::pci_ide_w(device_t *busdevice, int offset, uint32_t data, uint32_t mem_mask)
 {
 	uint32_t cdata = 0;
->>>>>>> upstream/master
 	int i;
 	COMBINE_DATA(&cdata);
 
@@ -139,15 +106,9 @@ void i82371ab_device::pci_ide_w(device_t *busdevice, int offset, uint32_t data, 
 	}
 }
 
-<<<<<<< HEAD
-UINT32 i82371ab_device::pci_usb_r(device_t *busdevice, int offset, UINT32 mem_mask)
-{
-	UINT32 result = m_regs[2][offset] |
-=======
 uint32_t i82371ab_device::pci_usb_r(device_t *busdevice, int offset, uint32_t mem_mask)
 {
 	uint32_t result = m_regs[2][offset] |
->>>>>>> upstream/master
 			m_regs[2][offset+1] << 8 |
 			m_regs[2][offset+2] << 16|
 			m_regs[2][offset+3] << 24;
@@ -157,15 +118,9 @@ uint32_t i82371ab_device::pci_usb_r(device_t *busdevice, int offset, uint32_t me
 	return result;
 }
 
-<<<<<<< HEAD
-void i82371ab_device::pci_usb_w(device_t *busdevice, int offset, UINT32 data, UINT32 mem_mask)
-{
-	UINT32 cdata = 0;
-=======
 void i82371ab_device::pci_usb_w(device_t *busdevice, int offset, uint32_t data, uint32_t mem_mask)
 {
 	uint32_t cdata = 0;
->>>>>>> upstream/master
 	int i;
 	COMBINE_DATA(&cdata);
 
@@ -190,15 +145,9 @@ void i82371ab_device::pci_usb_w(device_t *busdevice, int offset, uint32_t data, 
 	}
 }
 
-<<<<<<< HEAD
-UINT32 i82371ab_device::pci_acpi_r(device_t *busdevice, int offset, UINT32 mem_mask)
-{
-	UINT32 result = m_regs[3][offset] |
-=======
 uint32_t i82371ab_device::pci_acpi_r(device_t *busdevice, int offset, uint32_t mem_mask)
 {
 	uint32_t result = m_regs[3][offset] |
->>>>>>> upstream/master
 			m_regs[3][offset+1] << 8 |
 			m_regs[3][offset+2] << 16|
 			m_regs[3][offset+3] << 24;
@@ -208,15 +157,9 @@ uint32_t i82371ab_device::pci_acpi_r(device_t *busdevice, int offset, uint32_t m
 	return result;
 }
 
-<<<<<<< HEAD
-void i82371ab_device::pci_acpi_w(device_t *busdevice, int offset, UINT32 data, UINT32 mem_mask)
-{
-	UINT32 cdata = 0;
-=======
 void i82371ab_device::pci_acpi_w(device_t *busdevice, int offset, uint32_t data, uint32_t mem_mask)
 {
 	uint32_t cdata = 0;
->>>>>>> upstream/master
 	int i;
 	COMBINE_DATA(&cdata);
 
@@ -241,11 +184,7 @@ void i82371ab_device::pci_acpi_w(device_t *busdevice, int offset, uint32_t data,
 	}
 }
 
-<<<<<<< HEAD
-UINT32 i82371ab_device::pci_read(pci_bus_device *pcibus, int function, int offset, UINT32 mem_mask)
-=======
 uint32_t i82371ab_device::pci_read(pci_bus_device *pcibus, int function, int offset, uint32_t mem_mask)
->>>>>>> upstream/master
 {
 	switch (function)
 	{
@@ -260,11 +199,7 @@ uint32_t i82371ab_device::pci_read(pci_bus_device *pcibus, int function, int off
 	return 0;
 }
 
-<<<<<<< HEAD
-void i82371ab_device::pci_write(pci_bus_device *pcibus, int function, int offset, UINT32 data, UINT32 mem_mask)
-=======
 void i82371ab_device::pci_write(pci_bus_device *pcibus, int function, int offset, uint32_t data, uint32_t mem_mask)
->>>>>>> upstream/master
 {
 	switch (function)
 	{
@@ -294,11 +229,7 @@ void i82371ab_device::device_reset()
 {
 	southbridge_device::device_reset();
 	memset(m_regs, 0, sizeof(m_regs));
-<<<<<<< HEAD
-	UINT32 (*regs32)[64] = (UINT32 (*)[64])(m_regs);
-=======
 	uint32_t (*regs32)[64] = (uint32_t (*)[64])(m_regs);
->>>>>>> upstream/master
 
 	/* isa */
 	regs32[0][0x00] = 0x71108086;

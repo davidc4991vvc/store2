@@ -21,11 +21,7 @@ WRITE8_MEMBER(djboy_state::djboy_scrolly_w)
 
 TILE_GET_INFO_MEMBER(djboy_state::get_bg_tile_info)
 {
-<<<<<<< HEAD
-	UINT8 attr = m_videoram[tile_index + 0x800];
-=======
 	uint8_t attr = m_videoram[tile_index + 0x800];
->>>>>>> upstream/master
 	int code = m_videoram[tile_index] + (attr & 0xf) * 256;
 	int color = attr >> 4;
 
@@ -43,11 +39,7 @@ WRITE8_MEMBER(djboy_state::djboy_videoram_w)
 
 void djboy_state::video_start()
 {
-<<<<<<< HEAD
-	m_background = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(djboy_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 16, 16, 64, 32);
-=======
 	m_background = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(djboy_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 16, 16, 64, 32);
->>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(djboy_state::djboy_paletteram_w)
@@ -61,11 +53,7 @@ WRITE8_MEMBER(djboy_state::djboy_paletteram_w)
 	m_palette->set_pen_color(offset / 2, pal4bit(val >> 8), pal4bit(val >> 4), pal4bit(val >> 0));
 }
 
-<<<<<<< HEAD
-UINT32 djboy_state::screen_update_djboy(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t djboy_state::screen_update_djboy(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	/**
 	 * xx------ msb x
@@ -87,11 +75,7 @@ uint32_t djboy_state::screen_update_djboy(screen_device &screen, bitmap_ind16 &b
 	return 0;
 }
 
-<<<<<<< HEAD
-void djboy_state::screen_eof_djboy(screen_device &screen, bool state)
-=======
 WRITE_LINE_MEMBER(djboy_state::screen_vblank_djboy)
->>>>>>> upstream/master
 {
 	// rising edge
 	if (state)

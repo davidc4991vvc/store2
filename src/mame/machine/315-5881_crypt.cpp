@@ -17,19 +17,11 @@
 #include "emu.h"
 #include "machine/315-5881_crypt.h"
 
-<<<<<<< HEAD
-extern const device_type SEGA315_5881_CRYPT = &device_creator<sega_315_5881_crypt_device>;
-
-
-sega_315_5881_crypt_device::sega_315_5881_crypt_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, SEGA315_5881_CRYPT, "Sega 315-5881 Encryption", tag, owner, clock, "sega315_5881", __FILE__)
-=======
 DEFINE_DEVICE_TYPE(SEGA315_5881_CRYPT, sega_315_5881_crypt_device, "sega315_5881", "Sega 315-5881 Encryption")
 
 
 sega_315_5881_crypt_device::sega_315_5881_crypt_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, SEGA315_5881_CRYPT, tag, owner, clock)
->>>>>>> upstream/master
 {
 }
 
@@ -37,17 +29,6 @@ sega_315_5881_crypt_device::sega_315_5881_crypt_device(const machine_config &mco
 
 void sega_315_5881_crypt_device::device_start()
 {
-<<<<<<< HEAD
-	buffer = auto_alloc_array(machine(), UINT8, BUFFER_SIZE);
-	line_buffer = auto_alloc_array(machine(), UINT8, LINE_SIZE);
-	line_buffer_prev = auto_alloc_array(machine(), UINT8, LINE_SIZE);
-
-	m_read.bind_relative_to(*owner());
-
-	save_pointer(NAME(buffer), BUFFER_SIZE);
-	save_pointer(NAME(line_buffer), LINE_SIZE);
-	save_pointer(NAME(line_buffer_prev), LINE_SIZE);
-=======
 	buffer = std::make_unique<uint8_t[]>(BUFFER_SIZE);
 	line_buffer = std::make_unique<uint8_t[]>(LINE_SIZE);
 	line_buffer_prev = std::make_unique<uint8_t[]>(LINE_SIZE);
@@ -57,7 +38,6 @@ void sega_315_5881_crypt_device::device_start()
 	save_pointer(NAME(buffer.get()), BUFFER_SIZE);
 	save_pointer(NAME(line_buffer.get()), LINE_SIZE);
 	save_pointer(NAME(line_buffer_prev.get()), LINE_SIZE);
->>>>>>> upstream/master
 	save_item(NAME(prot_cur_address));
 	save_item(NAME(subkey));
 	save_item(NAME(enc_ready));
@@ -69,11 +49,7 @@ void sega_315_5881_crypt_device::device_start()
 
 	std::string skey = parameter("key");
 	if(!skey.empty())
-<<<<<<< HEAD
-		key = strtoll(skey.c_str(), 0, 16);
-=======
 		key = strtoll(skey.c_str(), nullptr, 16);
->>>>>>> upstream/master
 	else
 	{
 		logerror("%s: Warning: key not provided\n", tag());
@@ -83,15 +59,9 @@ void sega_315_5881_crypt_device::device_start()
 
 void sega_315_5881_crypt_device::device_reset()
 {
-<<<<<<< HEAD
-	memset(buffer, 0, BUFFER_SIZE);
-	memset(line_buffer, 0, LINE_SIZE);
-	memset(line_buffer_prev, 0, LINE_SIZE);
-=======
 	memset(buffer.get(), 0, BUFFER_SIZE);
 	memset(line_buffer.get(), 0, LINE_SIZE);
 	memset(line_buffer_prev.get(), 0, LINE_SIZE);
->>>>>>> upstream/master
 
 	prot_cur_address = 0;
 	subkey = 0;
@@ -105,11 +75,7 @@ void sega_315_5881_crypt_device::device_reset()
 	buffer_bit = 0;
 }
 
-<<<<<<< HEAD
-UINT16 sega_315_5881_crypt_device::do_decrypt(UINT8 *&base)
-=======
 uint16_t sega_315_5881_crypt_device::do_decrypt(uint8_t *&base)
->>>>>>> upstream/master
 {
 	if(!enc_ready)
 		enc_start();
@@ -123,41 +89,25 @@ uint16_t sega_315_5881_crypt_device::do_decrypt(uint8_t *&base)
 
 			line_fill();
 		}
-<<<<<<< HEAD
-		base = line_buffer + line_buffer_pos;
-=======
 		base = line_buffer.get() + line_buffer_pos;
->>>>>>> upstream/master
 		line_buffer_pos += 2;
 	} else {
 		if(buffer_pos == BUFFER_SIZE)
 			enc_fill();
-<<<<<<< HEAD
-		base = buffer + buffer_pos;
-=======
 		base = buffer.get() + buffer_pos;
->>>>>>> upstream/master
 		buffer_pos += 2;
 	}
 
 	return (base[0] << 8) | base[1];
 }
 
-<<<<<<< HEAD
-void sega_315_5881_crypt_device::set_addr_low(UINT16 data)
-=======
 void sega_315_5881_crypt_device::set_addr_low(uint16_t data)
->>>>>>> upstream/master
 {
 	prot_cur_address = (prot_cur_address & 0xffff0000) | data;
 	enc_ready = false;
 }
 
-<<<<<<< HEAD
-void sega_315_5881_crypt_device::set_addr_high(UINT16 data)
-=======
 void sega_315_5881_crypt_device::set_addr_high(uint16_t data)
->>>>>>> upstream/master
 {
 	prot_cur_address = (prot_cur_address & 0x0000ffff) | (data << 16);
 	enc_ready = false;
@@ -166,11 +116,7 @@ void sega_315_5881_crypt_device::set_addr_high(uint16_t data)
 	buffer_bit2 = 15;
 }
 
-<<<<<<< HEAD
-void sega_315_5881_crypt_device::set_subkey(UINT16 data)
-=======
 void sega_315_5881_crypt_device::set_subkey(uint16_t data)
->>>>>>> upstream/master
 {
 	subkey = data;
 	enc_ready = false;
@@ -590,11 +536,7 @@ const int sega_315_5881_crypt_device::fn2_sequence_key_scheduling[16] = {77,34,8
 
 const int sega_315_5881_crypt_device::fn2_middle_result_scheduling[16] = {1,10,44,68,74,78,81,95,2,4,30,40,41,51,53,58};
 
-<<<<<<< HEAD
-int sega_315_5881_crypt_device::feistel_function(int input, const struct sbox *sboxes, UINT32 subkeys)
-=======
 int sega_315_5881_crypt_device::feistel_function(int input, const struct sbox *sboxes, uint32_t subkeys)
->>>>>>> upstream/master
 {
 	int k,m;
 	int aux;
@@ -624,31 +566,18 @@ noticing that the weak key-scheduling would allow to create some pregenerated lo
 of the function. Even so, it would still be pretty slow, so caching techniques could be a wiser option here.
 **************************/
 
-<<<<<<< HEAD
-UINT16 sega_315_5881_crypt_device::block_decrypt(UINT32 game_key, UINT16 sequence_key, UINT16 counter, UINT16 data)
-=======
 uint16_t sega_315_5881_crypt_device::block_decrypt(uint32_t game_key, uint16_t sequence_key, uint16_t counter, uint16_t data)
->>>>>>> upstream/master
 {
 	int j;
 	int aux, aux2;
 	int A, B;
 	int middle_result;
-<<<<<<< HEAD
-	UINT32 fn1_subkeys[4];
-	UINT32 fn2_subkeys[4];
-
-	/* Game-key scheduling; this could be done just once per game at initialization time */
-	memset(fn1_subkeys, 0, sizeof(UINT32) * 4);
-	memset(fn2_subkeys, 0, sizeof(UINT32) * 4);
-=======
 	uint32_t fn1_subkeys[4];
 	uint32_t fn2_subkeys[4];
 
 	/* Game-key scheduling; this could be done just once per game at initialization time */
 	memset(fn1_subkeys, 0, sizeof(uint32_t) * 4);
 	memset(fn2_subkeys, 0, sizeof(uint32_t) * 4);
->>>>>>> upstream/master
 
 	for (j = 0; j < FN1GK; ++j) {
 		if (BIT(game_key, fn1_game_key_scheduling[j][0]) != 0) {
@@ -741,16 +670,6 @@ uint16_t sega_315_5881_crypt_device::block_decrypt(uint32_t game_key, uint16_t s
 }
 
 
-<<<<<<< HEAD
-UINT16 sega_315_5881_crypt_device::get_decrypted_16()
-{
-	UINT16 enc;
-
-	enc = m_read(prot_cur_address);
-
-	UINT16 dec = block_decrypt(key, subkey, prot_cur_address, enc);
-	UINT16 res = (dec & 3) | (dec_hist & 0xfffc);
-=======
 uint16_t sega_315_5881_crypt_device::get_decrypted_16()
 {
 	uint16_t enc;
@@ -759,7 +678,6 @@ uint16_t sega_315_5881_crypt_device::get_decrypted_16()
 
 	uint16_t dec = block_decrypt(key, subkey, prot_cur_address, enc);
 	uint16_t res = (dec & 3) | (dec_hist & 0xfffc);
->>>>>>> upstream/master
 	dec_hist = dec;
 
 	prot_cur_address ++;
@@ -776,11 +694,7 @@ void sega_315_5881_crypt_device::enc_start()
 	done_compression = 0;
 	buffer_pos = BUFFER_SIZE;
 
-<<<<<<< HEAD
-	if (buffer_bit2 != 15) // if we have remaining bits in the decompression buffer we shouldn't read the next word yet but should instead use the bits we have?? (twcup98) (might just be because we should be pulling bytes not words?)
-=======
 	if (buffer_bit2 < 14) // if we have remaining bits in the decompression buffer we shouldn't read the next word yet but should instead use the bits we have?? (twcup98 needs this, twsoc98 value is 14 on title screen and expects normal logic)
->>>>>>> upstream/master
 	{
 //      printf("buffer_bit2 is %d\n", buffer_bit2);
 		dec_header = (buffer2a & 0x0003) << 16;
@@ -819,11 +733,7 @@ void sega_315_5881_crypt_device::enc_fill()
 {
 	assert(buffer_pos == BUFFER_SIZE);
 	for(int i = 0; i != BUFFER_SIZE; i+=2) {
-<<<<<<< HEAD
-		UINT16 val = get_decrypted_16();
-=======
 		uint16_t val = get_decrypted_16();
->>>>>>> upstream/master
 		buffer[i] = val;
 		buffer[i+1] = val >> 8;
 		block_pos+=2;
@@ -857,11 +767,7 @@ void sega_315_5881_crypt_device::enc_fill()
                count = ccc + 1
 11111111 - empty node
 */
-<<<<<<< HEAD
-const UINT8 sega_315_5881_crypt_device::trees[9][2][32] = {
-=======
 const uint8_t sega_315_5881_crypt_device::trees[9][2][32] = {
->>>>>>> upstream/master
 	{
 		{0x01,0x10,0x0f,0x05,0xc4,0x13,0x87,0x0a,0xcc,0x81,0xce,0x0c,0x86,0x0e,0x84,0xc2,
 			0x11,0xc1,0xc3,0xcf,0x15,0xc8,0xcd,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,},
@@ -951,18 +857,11 @@ int sega_315_5881_crypt_device::get_compressed_bit()
 void sega_315_5881_crypt_device::line_fill()
 {
 	assert(line_buffer_pos == line_buffer_size);
-<<<<<<< HEAD
-	UINT8 *lp = line_buffer;
-	UINT8 *lc = line_buffer_prev;
-	line_buffer = lc;
-	line_buffer_prev = lp;
-=======
 	uint8_t *lp = line_buffer.get();
 	uint8_t *lc = line_buffer_prev.get();
 
 	line_buffer.swap(line_buffer_prev);
 
->>>>>>> upstream/master
 	line_buffer_pos = 0;
 
 	for(int i=0; i != line_buffer_size;) {
@@ -972,11 +871,7 @@ void sega_315_5881_crypt_device::line_fill()
 
 		int slot = i ? i < line_buffer_size - 7 ? 1 : (i & 7) + 1 : 0;
 
-<<<<<<< HEAD
-		UINT32 tmp = 0;
-=======
 		uint32_t tmp = 0;
->>>>>>> upstream/master
 		while (!(tmp&0x80))
 			if(get_compressed_bit())
 				tmp = trees[slot][1][tmp];
@@ -997,11 +892,7 @@ void sega_315_5881_crypt_device::line_fill()
 
 			} else {
 				// Get a byte in the stream and write n times
-<<<<<<< HEAD
-				UINT8 byte;
-=======
 				uint8_t byte;
->>>>>>> upstream/master
 				byte =         get_compressed_bit()  << 1;
 				byte = (byte | get_compressed_bit()) << 1;
 				byte = (byte | get_compressed_bit()) << 1;

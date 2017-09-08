@@ -6,10 +6,7 @@
 
 **********************************************************************/
 
-<<<<<<< HEAD
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #include "p1_rom.h"
 
 
@@ -17,11 +14,7 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type P1_ROM = &device_creator<p1_rom_device>;
-=======
 DEFINE_DEVICE_TYPE(P1_ROM, p1_rom_device, "p1_rom", "Poisk-1 ROM cart")
->>>>>>> upstream/master
 
 
 //-------------------------------------------------
@@ -43,15 +36,9 @@ ROM_END
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const rom_entry *p1_rom_device::device_rom_region() const
-{
-	return ROM_NAME( p1_rom );
-=======
 const tiny_rom_entry *p1_rom_device::device_rom_region() const
 {
 	return ROM_NAME(p1_rom);
->>>>>>> upstream/master
 }
 
 
@@ -63,15 +50,9 @@ const tiny_rom_entry *p1_rom_device::device_rom_region() const
 //  p1_rom_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-p1_rom_device::p1_rom_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-	device_t(mconfig, P1_ROM, "Poisk-1 ROM cart", tag, owner, clock, "p1_rom", __FILE__),
-	device_isa8_card_interface( mconfig, *this )
-=======
 p1_rom_device::p1_rom_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, P1_ROM, tag, owner, clock)
 	, device_isa8_card_interface(mconfig, *this)
->>>>>>> upstream/master
 {
 }
 
@@ -83,11 +64,7 @@ p1_rom_device::p1_rom_device(const machine_config &mconfig, const char *tag, dev
 void p1_rom_device::device_start()
 {
 	set_isa_device();
-<<<<<<< HEAD
-	m_isa->install_rom(this, 0xc0000, 0xc1fff, 0, 0, "XXX", "p1_rom");
-=======
 	m_isa->install_rom(this, 0xc0000, 0xc1fff, "XXX", "p1_rom");
->>>>>>> upstream/master
 }
 
 

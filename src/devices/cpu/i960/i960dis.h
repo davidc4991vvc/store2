@@ -5,13 +5,6 @@
 
 struct disassemble_t
 {
-<<<<<<< HEAD
-	char        *buffer;    // output buffer
-	unsigned long   IP;
-	unsigned long   IPinc;
-	const UINT8 *oprom;
-	UINT32 disflags;
-=======
 	disassemble_t(std::ostream &s, unsigned long ip, const uint8_t *opr)
 		: stream(s), IP(ip), oprom(opr) { }
 
@@ -20,7 +13,6 @@ struct disassemble_t
 	unsigned long   IPinc;
 	const uint8_t *oprom;
 	uint32_t disflags;
->>>>>>> upstream/master
 };
 
 #endif /* __I960DIS_H__ */

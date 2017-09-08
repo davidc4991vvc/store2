@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-// license:???
-=======
 // license:BSD-3-Clause
->>>>>>> upstream/master
 // copyright-holders:Paul Leaman
 /***************************************************************************
 
@@ -53,11 +49,7 @@ other 2 bits (output & 0x0c) unknown
 
 PALETTE_INIT_MEMBER(_1943_state,1943)
 {
-<<<<<<< HEAD
-	const UINT8 *color_prom = memregion("proms")->base();
-=======
 	const uint8_t *color_prom = memregion("proms")->base();
->>>>>>> upstream/master
 	int i;
 
 	for (i = 0; i < 0x100; i++)
@@ -95,22 +87,14 @@ PALETTE_INIT_MEMBER(_1943_state,1943)
 	/* characters use colors 0x40-0x4f */
 	for (i = 0x00; i < 0x80; i++)
 	{
-<<<<<<< HEAD
-		UINT8 ctabentry = (color_prom[i] & 0x0f) | 0x40;
-=======
 		uint8_t ctabentry = (color_prom[i] & 0x0f) | 0x40;
->>>>>>> upstream/master
 		palette.set_pen_indirect(i, ctabentry);
 	}
 
 	/* foreground tiles use colors 0x00-0x3f */
 	for (i = 0x80; i < 0x180; i++)
 	{
-<<<<<<< HEAD
-		UINT8 ctabentry = ((color_prom[0x200 + (i - 0x080)] & 0x03) << 4) |
-=======
 		uint8_t ctabentry = ((color_prom[0x200 + (i - 0x080)] & 0x03) << 4) |
->>>>>>> upstream/master
 							((color_prom[0x100 + (i - 0x080)] & 0x0f) << 0);
 		palette.set_pen_indirect(i, ctabentry);
 	}
@@ -118,11 +102,7 @@ PALETTE_INIT_MEMBER(_1943_state,1943)
 	/* background tiles also use colors 0x00-0x3f */
 	for (i = 0x180; i < 0x280; i++)
 	{
-<<<<<<< HEAD
-		UINT8 ctabentry = ((color_prom[0x400 + (i - 0x180)] & 0x03) << 4) |
-=======
 		uint8_t ctabentry = ((color_prom[0x400 + (i - 0x180)] & 0x03) << 4) |
->>>>>>> upstream/master
 							((color_prom[0x300 + (i - 0x180)] & 0x0f) << 0);
 		palette.set_pen_indirect(i, ctabentry);
 	}
@@ -132,11 +112,7 @@ PALETTE_INIT_MEMBER(_1943_state,1943)
 	   but we handle it differently for speed reasons */
 	for (i = 0x280; i < 0x380; i++)
 	{
-<<<<<<< HEAD
-		UINT8 ctabentry = ((color_prom[0x600 + (i - 0x280)] & 0x07) << 4) |
-=======
 		uint8_t ctabentry = ((color_prom[0x600 + (i - 0x280)] & 0x07) << 4) |
->>>>>>> upstream/master
 							((color_prom[0x500 + (i - 0x280)] & 0x0f) << 0) | 0x80;
 		palette.set_pen_indirect(i, ctabentry);
 	}
@@ -157,13 +133,8 @@ WRITE8_MEMBER(_1943_state::c1943_colorram_w)
 WRITE8_MEMBER(_1943_state::c1943_c804_w)
 {
 	/* bits 0 and 1 are coin counters */
-<<<<<<< HEAD
-	coin_counter_w(machine(), 0, data & 0x01);
-	coin_counter_w(machine(), 1, data & 0x02);
-=======
 	machine().bookkeeping().coin_counter_w(0, data & 0x01);
 	machine().bookkeeping().coin_counter_w(1, data & 0x02);
->>>>>>> upstream/master
 
 	/* bits 2, 3 and 4 select the ROM bank */
 	membank("bank1")->set_entry((data & 0x1c) >> 2);
@@ -191,11 +162,7 @@ WRITE8_MEMBER(_1943_state::c1943_d806_w)
 
 TILE_GET_INFO_MEMBER(_1943_state::c1943_get_bg2_tile_info)
 {
-<<<<<<< HEAD
-	UINT8 *tilerom = memregion("gfx5")->base() + 0x8000;
-=======
 	uint8_t *tilerom = memregion("gfx5")->base() + 0x8000;
->>>>>>> upstream/master
 
 	int offs = tile_index * 2;
 	int attr = tilerom[offs + 1];
@@ -208,11 +175,7 @@ TILE_GET_INFO_MEMBER(_1943_state::c1943_get_bg2_tile_info)
 
 TILE_GET_INFO_MEMBER(_1943_state::c1943_get_bg_tile_info)
 {
-<<<<<<< HEAD
-	UINT8 *tilerom = memregion("gfx5")->base();
-=======
 	uint8_t *tilerom = memregion("gfx5")->base();
->>>>>>> upstream/master
 
 	int offs = tile_index * 2;
 	int attr = tilerom[offs + 1];
@@ -235,15 +198,9 @@ TILE_GET_INFO_MEMBER(_1943_state::c1943_get_fg_tile_info)
 
 void _1943_state::video_start()
 {
-<<<<<<< HEAD
-	m_bg2_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(_1943_state::c1943_get_bg2_tile_info),this), TILEMAP_SCAN_COLS, 32, 32, 2048, 8);
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(_1943_state::c1943_get_bg_tile_info),this), TILEMAP_SCAN_COLS, 32, 32, 2048, 8);
-	m_fg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(_1943_state::c1943_get_fg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
-=======
 	m_bg2_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(_1943_state::c1943_get_bg2_tile_info),this), TILEMAP_SCAN_COLS, 32, 32, 2048, 8);
 	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(_1943_state::c1943_get_bg_tile_info),this), TILEMAP_SCAN_COLS, 32, 32, 2048, 8);
 	m_fg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(_1943_state::c1943_get_fg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
->>>>>>> upstream/master
 
 	m_bg_tilemap->configure_groups(*m_gfxdecode->gfx(1), 0x0f);
 	m_fg_tilemap->set_transparent_pen(0);
@@ -286,11 +243,7 @@ void _1943_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect,
 	}
 }
 
-<<<<<<< HEAD
-UINT32 _1943_state::screen_update_1943(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t _1943_state::screen_update_1943(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	m_bg2_tilemap->set_scrollx(0, m_bgscrollx[0] + 256 * m_bgscrollx[1]);
 	m_bg_tilemap->set_scrollx(0, m_scrollx[0] + 256 * m_scrollx[1]);

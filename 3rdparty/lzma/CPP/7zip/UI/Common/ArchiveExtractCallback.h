@@ -3,13 +3,8 @@
 #ifndef __ARCHIVE_EXTRACT_CALLBACK_H
 #define __ARCHIVE_EXTRACT_CALLBACK_H
 
-<<<<<<< HEAD
-#include "Common/MyCom.h"
-#include "Common/Wildcard.h"
-=======
 #include "../../../Common/MyCom.h"
 #include "../../../Common/Wildcard.h"
->>>>>>> upstream/master
 
 #include "../../IPassword.h"
 
@@ -18,20 +13,10 @@
 
 #include "../../Archive/IArchive.h"
 
-<<<<<<< HEAD
-#include "../../Archive/Common/OutStreamWithCRC.h"
-
-=======
->>>>>>> upstream/master
 #include "ExtractMode.h"
 #include "IFileExtractCallback.h"
 #include "OpenArchive.h"
 
-<<<<<<< HEAD
-class CArchiveExtractCallback:
-  public IArchiveExtractCallback,
-  // public IArchiveVolumeExtractCallback,
-=======
 #include "HashCalc.h"
 
 #ifndef _SFX
@@ -160,24 +145,11 @@ struct CIndexToPathPair
 class CArchiveExtractCallback:
   public IArchiveExtractCallback,
   public IArchiveExtractCallbackMessage,
->>>>>>> upstream/master
   public ICryptoGetTextPassword,
   public ICompressProgressInfo,
   public CMyUnknownImp
 {
   const CArc *_arc;
-<<<<<<< HEAD
-  const NWildcard::CCensorNode *_wildcardCensor;
-  CMyComPtr<IFolderArchiveExtractCallback> _extractCallback2;
-  CMyComPtr<ICompressProgressInfo> _compressProgress;
-  CMyComPtr<ICryptoGetTextPassword> _cryptoGetTextPassword;
-  FString _directoryPath;
-  NExtract::NPathMode::EEnum _pathMode;
-  NExtract::NOverwriteMode::EEnum _overwriteMode;
-
-  FString _diskFilePath;
-  UString _filePath;
-=======
   CExtractNtOptions _ntOptions;
 
   const NWildcard::CCensorNode *_wildcardCensor; // we need wildcard for single pass mode (stdin)
@@ -202,7 +174,6 @@ class CArchiveExtractCallback:
 
   CReadArcItem _item;
   FString _diskFilePath;
->>>>>>> upstream/master
   UInt64 _position;
   bool _isSplit;
 
@@ -225,11 +196,6 @@ class CArchiveExtractCallback:
     bool ATimeDefined;
     bool MTimeDefined;
     bool AttribDefined;
-<<<<<<< HEAD
-
-    bool IsDir;
-=======
->>>>>>> upstream/master
   } _fi;
 
   UInt32 _index;
@@ -238,16 +204,6 @@ class CArchiveExtractCallback:
   COutFileStream *_outFileStreamSpec;
   CMyComPtr<ISequentialOutStream> _outFileStream;
 
-<<<<<<< HEAD
-  COutStreamWithCRC *_crcStreamSpec;
-  CMyComPtr<ISequentialOutStream> _crcStream;
-
-  UStringVector _removePathParts;
-
-  bool _stdOutMode;
-  bool _testMode;
-  bool _crcMode;
-=======
   #ifndef _SFX
   
   COutStreamWithHash *_hashStreamSpec;
@@ -266,14 +222,10 @@ class CArchiveExtractCallback:
 
   bool _stdOutMode;
   bool _testMode;
->>>>>>> upstream/master
   bool _multiArchives;
 
   CMyComPtr<ICompressProgressInfo> _localProgress;
   UInt64 _packTotal;
-<<<<<<< HEAD
-  UInt64 _unpTotal;
-=======
   
   UInt64 _progressTotal;
   bool _progressTotal_Defined;
@@ -284,18 +236,14 @@ class CArchiveExtractCallback:
   #if defined(_WIN32) && !defined(UNDER_CE) && !defined(_SFX)
   bool _saclEnabled;
   #endif
->>>>>>> upstream/master
 
   void CreateComplexDirectory(const UStringVector &dirPathParts, FString &fullPath);
   HRESULT GetTime(int index, PROPID propID, FILETIME &filetime, bool &filetimeIsDefined);
   HRESULT GetUnpackSize();
 
   HRESULT SendMessageError(const char *message, const FString &path);
-<<<<<<< HEAD
-=======
   HRESULT SendMessageError_with_LastError(const char *message, const FString &path);
   HRESULT SendMessageError2(const char *message, const FString &path1, const FString &path2);
->>>>>>> upstream/master
 
 public:
 
@@ -303,32 +251,6 @@ public:
 
   UInt64 NumFolders;
   UInt64 NumFiles;
-<<<<<<< HEAD
-  UInt64 UnpackSize;
-  UInt32 CrcSum;
-  
-  MY_UNKNOWN_IMP2(ICryptoGetTextPassword, ICompressProgressInfo)
-  // COM_INTERFACE_ENTRY(IArchiveVolumeExtractCallback)
-
-  INTERFACE_IArchiveExtractCallback(;)
-
-  STDMETHOD(SetRatioInfo)(const UInt64 *inSize, const UInt64 *outSize);
-
-  // IArchiveVolumeExtractCallback
-  // STDMETHOD(GetInStream)(const wchar_t *name, ISequentialInStream **inStream);
-
-  STDMETHOD(CryptoGetTextPassword)(BSTR *password);
-
-  CArchiveExtractCallback():
-      WriteCTime(true),
-      WriteATime(true),
-      WriteMTime(true),
-      _multiArchives(false)
-  {
-    LocalProgressSpec = new CLocalProgress();
-    _localProgress = LocalProgressSpec;
-  }
-=======
   UInt64 NumAltStreams;
   UInt64 UnpackSize;
   UInt64 AltStreams_UnpackSize;
@@ -343,7 +265,6 @@ public:
   STDMETHOD(CryptoGetTextPassword)(BSTR *password);
 
   CArchiveExtractCallback();
->>>>>>> upstream/master
 
   void InitForMulti(bool multiArchives,
       NExtract::NPathMode::EEnum pathMode,
@@ -352,23 +273,6 @@ public:
     _multiArchives = multiArchives;
     _pathMode = pathMode;
     _overwriteMode = overwriteMode;
-<<<<<<< HEAD
-    NumFolders = NumFiles = UnpackSize = 0;
-    CrcSum = 0;
-  }
-
-  void Init(
-      const NWildcard::CCensorNode *wildcardCensor,
-      const CArc *arc,
-      IFolderArchiveExtractCallback *extractCallback2,
-      bool stdOutMode, bool testMode, bool crcMode,
-      const FString &directoryPath,
-      const UStringVector &removePathParts,
-      UInt64 packSize);
-
-};
-
-=======
     NumFolders = NumFiles = NumAltStreams = UnpackSize = AltStreams_UnpackSize = 0;
   }
 
@@ -431,5 +335,4 @@ public:
 
 bool CensorNode_CheckPath(const NWildcard::CCensorNode &node, const CReadArcItem &item);
 
->>>>>>> upstream/master
 #endif

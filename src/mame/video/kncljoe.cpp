@@ -18,11 +18,7 @@ Knuckle Joe - (c) 1985 Taito Corporation
 
 PALETTE_INIT_MEMBER(kncljoe_state, kncljoe)
 {
-<<<<<<< HEAD
-	const UINT8 *color_prom = memregion("proms")->base();
-=======
 	const uint8_t *color_prom = memregion("proms")->base();
->>>>>>> upstream/master
 	int i;
 
 	/* create a lookup table for the palette */
@@ -71,11 +67,7 @@ PALETTE_INIT_MEMBER(kncljoe_state, kncljoe)
 	/* sprite lookup table */
 	for (i = 0x80; i < 0x100; i++)
 	{
-<<<<<<< HEAD
-		UINT8 ctabentry = (color_prom[i - 0x80] & 0x0f) | 0x80;
-=======
 		uint8_t ctabentry = (color_prom[i - 0x80] & 0x0f) | 0x80;
->>>>>>> upstream/master
 		palette.set_pen_indirect(i, ctabentry);
 	}
 }
@@ -109,11 +101,7 @@ TILE_GET_INFO_MEMBER(kncljoe_state::get_bg_tile_info)
 
 void kncljoe_state::video_start()
 {
-<<<<<<< HEAD
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(kncljoe_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 64, 32);
-=======
 	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(kncljoe_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 64, 32);
->>>>>>> upstream/master
 
 	m_bg_tilemap->set_scroll_rows(4);
 }
@@ -148,13 +136,8 @@ WRITE8_MEMBER(kncljoe_state::kncljoe_control_w)
 	m_flipscreen = data & 0x01;
 	machine().tilemap().set_flip_all(m_flipscreen ? TILEMAP_FLIPX : TILEMAP_FLIPY);
 
-<<<<<<< HEAD
-	coin_counter_w(machine(), 0, data & 0x02);
-	coin_counter_w(machine(), 1, data & 0x20);
-=======
 	machine().bookkeeping().coin_counter_w(0, data & 0x02);
 	machine().bookkeeping().coin_counter_w(1, data & 0x20);
->>>>>>> upstream/master
 
 	i = (data & 0x10) >> 4;
 	if (m_tile_bank != i)
@@ -193,11 +176,7 @@ WRITE8_MEMBER(kncljoe_state::kncljoe_scroll_w)
 
 void kncljoe_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect )
 {
-<<<<<<< HEAD
-	UINT8 *spriteram = m_spriteram;
-=======
 	uint8_t *spriteram = m_spriteram;
->>>>>>> upstream/master
 	rectangle clip = cliprect;
 	gfx_element *gfx = m_gfxdecode->gfx(1 + m_sprite_bank);
 	int i, j;
@@ -252,11 +231,7 @@ void kncljoe_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprec
 		}
 }
 
-<<<<<<< HEAD
-UINT32 kncljoe_state::screen_update_kncljoe(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t kncljoe_state::screen_update_kncljoe(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	m_bg_tilemap->draw(screen, bitmap, cliprect, 0, 0);
 	draw_sprites(bitmap, cliprect);

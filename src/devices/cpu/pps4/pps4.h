@@ -1,14 +1,9 @@
 // license:BSD-3-Clause
 // copyright-holders:Juergen Buchmueller
-<<<<<<< HEAD
-#ifndef __PPS4_H__
-#define __PPS4_H__
-=======
 #ifndef MAME_CPU_PPS4_PPS4_H
 #define MAME_CPU_PPS4_PPS4_H
 
 #pragma once
->>>>>>> upstream/master
 
 
 /***************************************************************************
@@ -26,19 +21,6 @@ enum
 	PPS4_SAG,
 	PPS4_I1,
 	PPS4_I2,
-<<<<<<< HEAD
-	PPS4_Ip,
-	PPS4_GENPC = STATE_GENPC,
-	PPS4_GENSP = STATE_GENSP,
-	PPS4_GENPCBASE = STATE_GENPCBASE,
-	PPS4_PORT_A = 256,
-	PPS4_PORT_B = 257
-};
-
-/***************************************************************************
-    TYPE DEFINITIONS
-***************************************************************************/
-=======
 	PPS4_Ip
 };
 
@@ -61,52 +43,15 @@ enum
 
 DECLARE_DEVICE_TYPE(PPS4,   pps4_device)
 DECLARE_DEVICE_TYPE(PPS4_2, pps4_2_device)
->>>>>>> upstream/master
 
 /***************************************************************************
     FUNCTION PROTOTYPES
 ***************************************************************************/
 
-<<<<<<< HEAD
-extern const device_type PPS4;
-
-=======
->>>>>>> upstream/master
 class pps4_device : public cpu_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	pps4_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-protected:
-	// device-level overrides
-	virtual void device_start();
-	virtual void device_reset();
-
-	// device_execute_interface overrides
-	virtual UINT32 execute_min_cycles() const { return 1; }
-	virtual UINT32 execute_max_cycles() const { return 3; }
-	virtual UINT32 execute_input_lines() const { return 0; }
-	virtual UINT32 execute_default_irq_vector() const { return 0; }
-	virtual void execute_run();
-
-	// device_memory_interface overrides
-	virtual const address_space_config *memory_space_config(address_spacenum spacenum = AS_0) const
-	{
-		return (spacenum == AS_PROGRAM) ? &m_program_config : ( (spacenum == AS_IO) ? &m_io_config : ( (spacenum == AS_DATA) ? &m_data_config : NULL ) );
-	}
-
-	// device_state_interface overrides
-	void state_string_export(const device_state_entry &entry, std::string &str);
-
-	// device_disasm_interface overrides
-	virtual UINT32 disasm_min_opcode_bytes() const { return 1; }
-	virtual UINT32 disasm_max_opcode_bytes() const { return 2; }
-	virtual offs_t disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options);
-
-private:
-=======
 	pps4_device(const machine_config &mconfig, const char *tag, device_t *owner, u32 clock);
 
 	// static configuration helpers
@@ -141,55 +86,20 @@ protected:
 	virtual u32 disasm_max_opcode_bytes() const override { return 2; }
 	virtual offs_t disasm_disassemble(std::ostream &stream, offs_t pc, const u8 *oprom, const u8 *opram, u32 options) override;
 
->>>>>>> upstream/master
 	address_space_config m_program_config;
 	address_space_config m_data_config;
 	address_space_config m_io_config;
 
-<<<<<<< HEAD
-=======
 	devcb_read8 m_dia_cb;
 	devcb_read8 m_dib_cb;
 	devcb_write8 m_do_cb;
 
->>>>>>> upstream/master
 	address_space *m_program;
 	direct_read_data *m_direct;
 	address_space *m_data;
 	address_space *m_io;
 	int     m_icount;
 
-<<<<<<< HEAD
-	UINT8   m_A;        //!< Accumulator A(4:1)
-	UINT8   m_X;        //!< X register X(4:1)
-	UINT16  m_P;        //!< program counter P(12:1)
-	UINT16  m_SA;       //!< Shift register SA(12:1)
-	UINT16  m_SB;       //!< Shift register SB(12:1)
-	UINT8   m_Skip;     //!< Skip next instruction
-	UINT16  m_SAG;      //!< Special address generation mask
-	UINT16  m_B;        //!< B register B(12:1) (BL, BM and BH)
-	UINT8   m_C;        //!< Carry flip-flop
-	UINT8   m_FF1;      //!< Flip-flop 1
-	UINT8   m_FF2;      //!< Flip-flop 2
-	UINT8   m_I1;        //!< Most recent instruction I(8:1)
-	UINT8   m_I2;       //!< Most recent parameter I2(8:1)
-	UINT8   m_Ip;       //!< Previous instruction I(8:1)
-
-	//! return the contents of B register (made of BU, BM and BL)
-	inline UINT16 B() const;
-
-	//! return memory at address B(12:1)
-	inline UINT8 M();
-
-	//! write to memory at address B(12:1)
-	inline void W(UINT8 data);
-
-	//! return the next opcode (also in m_I)
-	inline UINT8 ROP();
-
-	//! return the next argument (also in m_I2)
-	inline UINT8 ARG();
-=======
 	u8        m_A;        //!< Accumulator A(4:1)
 	u8        m_X;        //!< X register X(4:1)
 	u16       m_P;        //!< program counter P(12:1)
@@ -216,7 +126,6 @@ protected:
 
 	//! return the next argument (also in m_I2)
 	inline u8 ARG();
->>>>>>> upstream/master
 
 	void iAD();          //!< Add
 	void iADC();         //!< Add with carry-in
@@ -247,11 +156,7 @@ protected:
 	void iXBMX();        //!< Exchange BM and X registers
 	void iXAX();         //!< Exchange accumulator and X
 	void iXS();          //!< Eychange SA and SB registers
-<<<<<<< HEAD
-	void iCYS();         //!< Cycle SA register and accumulaor
-=======
 	void iCYS();         //!< Cycle SA register and accumulator
->>>>>>> upstream/master
 	void iLB();          //!< Load B indirect
 	void iLBL();         //!< Load B long
 	void iINCB();        //!< Increment BL
@@ -269,21 +174,13 @@ protected:
 	void iRTNSK();       //!< Return and skip
 	void iIOL();         //!< Input/Output long
 	void iDIA();         //!< Discrete input group A
-<<<<<<< HEAD
-	void iDIB();         //!< Discrete input group B
-	void iDOA();         //!< Discrete output group A
-=======
 	virtual void iDIB(); //!< Discrete input group B
 	virtual void iDOA(); //!< Discrete output group A
->>>>>>> upstream/master
 	void iSAG();         //!< Special address generation
 
 	void execute_one(); //!< execute one instruction
 };
 
-<<<<<<< HEAD
-#endif  // __PPS4_H__
-=======
 class pps4_2_device : public pps4_device
 {
 public:
@@ -307,4 +204,3 @@ private:
 };
 
 #endif // MAME_CPU_PPS4_PPS4_H
->>>>>>> upstream/master

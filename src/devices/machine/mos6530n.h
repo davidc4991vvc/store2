@@ -52,19 +52,10 @@
 
 **********************************************************************/
 
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __MOS6530n__
-#define __MOS6530n__
-
-#include "emu.h"
-=======
 #ifndef MAME_MACHINE_MOS6530N_H
 #define MAME_MACHINE_MOS6530N_H
 
 #pragma once
->>>>>>> upstream/master
 
 
 
@@ -73,117 +64,6 @@
 //**************************************************************************
 
 #define MCFG_MOS6530n_IRQ_CB(_write) \
-<<<<<<< HEAD
-	devcb = &mos6530_base_t::set_irq_wr_callback(*device, DEVCB_##_write);
-
-#define MCFG_MOS6530n_IN_PA_CB(_read) \
-	devcb = &mos6530_base_t::set_pa_rd_callback(*device, DEVCB_##_read);
-
-#define MCFG_MOS6530n_OUT_PA_CB(_write) \
-	devcb = &mos6530_base_t::set_pa_wr_callback(*device, DEVCB_##_write);
-
-#define MCFG_MOS6530n_IN_PB_CB(_read) \
-	devcb = &mos6530_base_t::set_pb_rd_callback(*device, DEVCB_##_read);
-
-#define MCFG_MOS6530n_OUT_PB_CB(_write) \
-	devcb = &mos6530_base_t::set_pb_wr_callback(*device, DEVCB_##_write);
-
-#define MCFG_MOS6530n_IN_PA0_CB(_read) \
-	devcb = &mos6530_base_t::set_pa0_rd_callback(*device, DEVCB_##_read);
-
-#define MCFG_MOS6530n_IN_PA1_CB(_read) \
-	devcb = &mos6530_base_t::set_pa1_rd_callback(*device, DEVCB_##_read);
-
-#define MCFG_MOS6530n_IN_PA2_CB(_read) \
-	devcb = &mos6530_base_t::set_pa2_rd_callback(*device, DEVCB_##_read);
-
-#define MCFG_MOS6530n_IN_PA3_CB(_read) \
-	devcb = &mos6530_base_t::set_pa3_rd_callback(*device, DEVCB_##_read);
-
-#define MCFG_MOS6530n_IN_PA4_CB(_read) \
-	devcb = &mos6530_base_t::set_pa4_rd_callback(*device, DEVCB_##_read);
-
-#define MCFG_MOS6530n_IN_PA5_CB(_read) \
-	devcb = &mos6530_base_t::set_pa5_rd_callback(*device, DEVCB_##_read);
-
-#define MCFG_MOS6530n_IN_PA6_CB(_read) \
-	devcb = &mos6530_base_t::set_pa6_rd_callback(*device, DEVCB_##_read);
-
-#define MCFG_MOS6530n_IN_PA7_CB(_read) \
-	devcb = &mos6530_base_t::set_pa7_rd_callback(*device, DEVCB_##_read);
-
-#define MCFG_MOS6530n_OUT_PA0_CB(_write) \
-	devcb = &mos6530_base_t::set_pa0_wr_callback(*device, DEVCB_##_write);
-
-#define MCFG_MOS6530n_OUT_PA1_CB(_write) \
-	devcb = &mos6530_base_t::set_pa1_wr_callback(*device, DEVCB_##_write);
-
-#define MCFG_MOS6530n_OUT_PA2_CB(_write) \
-	devcb = &mos6530_base_t::set_pa2_wr_callback(*device, DEVCB_##_write);
-
-#define MCFG_MOS6530n_OUT_PA3_CB(_write) \
-	devcb = &mos6530_base_t::set_pa3_wr_callback(*device, DEVCB_##_write);
-
-#define MCFG_MOS6530n_OUT_PA4_CB(_write) \
-	devcb = &mos6530_base_t::set_pa4_wr_callback(*device, DEVCB_##_write);
-
-#define MCFG_MOS6530n_OUT_PA5_CB(_write) \
-	devcb = &mos6530_base_t::set_pa5_wr_callback(*device, DEVCB_##_write);
-
-#define MCFG_MOS6530n_OUT_PA6_CB(_write) \
-	devcb = &mos6530_base_t::set_pa6_wr_callback(*device, DEVCB_##_write);
-
-#define MCFG_MOS6530n_OUT_PA7_CB(_write) \
-	devcb = &mos6530_base_t::set_pa7_wr_callback(*device, DEVCB_##_write);
-
-#define MCFG_MOS6530n_IN_PB0_CB(_read) \
-	devcb = &mos6530_base_t::set_pb0_rd_callback(*device, DEVCB_##_read);
-
-#define MCFG_MOS6530n_IN_PB1_CB(_read) \
-	devcb = &mos6530_base_t::set_pb1_rd_callback(*device, DEVCB_##_read);
-
-#define MCFG_MOS6530n_IN_PB2_CB(_read) \
-	devcb = &mos6530_base_t::set_pb2_rd_callback(*device, DEVCB_##_read);
-
-#define MCFG_MOS6530n_IN_PB3_CB(_read) \
-	devcb = &mos6530_base_t::set_pb3_rd_callback(*device, DEVCB_##_read);
-
-#define MCFG_MOS6530n_IN_PB4_CB(_read) \
-	devcb = &mos6530_base_t::set_pb4_rd_callback(*device, DEVCB_##_read);
-
-#define MCFG_MOS6530n_IN_PB5_CB(_read) \
-	devcb = &mos6530_base_t::set_pb5_rd_callback(*device, DEVCB_##_read);
-
-#define MCFG_MOS6530n_IN_PB6_CB(_read) \
-	devcb = &mos6530_base_t::set_pb6_rd_callback(*device, DEVCB_##_read);
-
-#define MCFG_MOS6530n_IN_PB7_CB(_read) \
-	devcb = &mos6530_base_t::set_pb7_rd_callback(*device, DEVCB_##_read);
-
-#define MCFG_MOS6530n_OUT_PB0_CB(_write) \
-	devcb = &mos6530_base_t::set_pb0_wr_callback(*device, DEVCB_##_write);
-
-#define MCFG_MOS6530n_OUT_PB1_CB(_write) \
-	devcb = &mos6530_base_t::set_pb1_wr_callback(*device, DEVCB_##_write);
-
-#define MCFG_MOS6530n_OUT_PB2_CB(_write) \
-	devcb = &mos6530_base_t::set_pb2_wr_callback(*device, DEVCB_##_write);
-
-#define MCFG_MOS6530n_OUT_PB3_CB(_write) \
-	devcb = &mos6530_base_t::set_pb3_wr_callback(*device, DEVCB_##_write);
-
-#define MCFG_MOS6530n_OUT_PB4_CB(_write) \
-	devcb = &mos6530_base_t::set_pb4_wr_callback(*device, DEVCB_##_write);
-
-#define MCFG_MOS6530n_OUT_PB5_CB(_write) \
-	devcb = &mos6530_base_t::set_pb5_wr_callback(*device, DEVCB_##_write);
-
-#define MCFG_MOS6530n_OUT_PB6_CB(_write) \
-	devcb = &mos6530_base_t::set_pb6_wr_callback(*device, DEVCB_##_write);
-
-#define MCFG_MOS6530n_OUT_PB7_CB(_write) \
-	devcb = &mos6530_base_t::set_pb7_wr_callback(*device, DEVCB_##_write);
-=======
 	devcb = &mos6530_device_base::set_irq_wr_callback(*device, DEVCB_##_write);
 
 #define MCFG_MOS6530n_IN_PA_CB(_read) \
@@ -293,7 +173,6 @@
 
 #define MCFG_MOS6530n_OUT_PB7_CB(_write) \
 	devcb = &mos6530_device_base::set_pb_wr_callback<7>(*device, DEVCB_##_write);
->>>>>>> upstream/master
 
 
 
@@ -301,53 +180,6 @@
 //  TYPE DEFINITIONS
 //**************************************************************************
 
-<<<<<<< HEAD
-// ======================> mos6530_base_t
-
-class mos6530_base_t :  public device_t
-{
-public:
-	// construction/destruction
-	mos6530_base_t(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source);
-
-	template<class _Object> static devcb_base &set_irq_wr_callback(device_t &device, _Object object) { return downcast<mos6530_base_t &>(device).m_irq_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_pa_rd_callback(device_t &device, _Object object) { return downcast<mos6530_base_t &>(device).m_in_pa_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_pa_wr_callback(device_t &device, _Object object) { return downcast<mos6530_base_t &>(device).m_out_pa_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_pb_rd_callback(device_t &device, _Object object) { return downcast<mos6530_base_t &>(device).m_in_pb_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_pb_wr_callback(device_t &device, _Object object) { return downcast<mos6530_base_t &>(device).m_out_pb_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_pa0_rd_callback(device_t &device, _Object object) { return downcast<mos6530_base_t &>(device).m_in_pa0_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_pa1_rd_callback(device_t &device, _Object object) { return downcast<mos6530_base_t &>(device).m_in_pa1_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_pa2_rd_callback(device_t &device, _Object object) { return downcast<mos6530_base_t &>(device).m_in_pa2_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_pa3_rd_callback(device_t &device, _Object object) { return downcast<mos6530_base_t &>(device).m_in_pa3_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_pa4_rd_callback(device_t &device, _Object object) { return downcast<mos6530_base_t &>(device).m_in_pa4_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_pa5_rd_callback(device_t &device, _Object object) { return downcast<mos6530_base_t &>(device).m_in_pa5_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_pa6_rd_callback(device_t &device, _Object object) { return downcast<mos6530_base_t &>(device).m_in_pa6_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_pa7_rd_callback(device_t &device, _Object object) { return downcast<mos6530_base_t &>(device).m_in_pa7_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_pa0_wr_callback(device_t &device, _Object object) { return downcast<mos6530_base_t &>(device).m_out_pa0_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_pa1_wr_callback(device_t &device, _Object object) { return downcast<mos6530_base_t &>(device).m_out_pa1_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_pa2_wr_callback(device_t &device, _Object object) { return downcast<mos6530_base_t &>(device).m_out_pa2_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_pa3_wr_callback(device_t &device, _Object object) { return downcast<mos6530_base_t &>(device).m_out_pa3_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_pa4_wr_callback(device_t &device, _Object object) { return downcast<mos6530_base_t &>(device).m_out_pa4_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_pa5_wr_callback(device_t &device, _Object object) { return downcast<mos6530_base_t &>(device).m_out_pa5_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_pa6_wr_callback(device_t &device, _Object object) { return downcast<mos6530_base_t &>(device).m_out_pa6_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_pa7_wr_callback(device_t &device, _Object object) { return downcast<mos6530_base_t &>(device).m_out_pa7_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_pb0_rd_callback(device_t &device, _Object object) { return downcast<mos6530_base_t &>(device).m_in_pb0_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_pb1_rd_callback(device_t &device, _Object object) { return downcast<mos6530_base_t &>(device).m_in_pb1_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_pb2_rd_callback(device_t &device, _Object object) { return downcast<mos6530_base_t &>(device).m_in_pb2_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_pb3_rd_callback(device_t &device, _Object object) { return downcast<mos6530_base_t &>(device).m_in_pb3_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_pb4_rd_callback(device_t &device, _Object object) { return downcast<mos6530_base_t &>(device).m_in_pb4_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_pb5_rd_callback(device_t &device, _Object object) { return downcast<mos6530_base_t &>(device).m_in_pb5_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_pb6_rd_callback(device_t &device, _Object object) { return downcast<mos6530_base_t &>(device).m_in_pb6_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_pb7_rd_callback(device_t &device, _Object object) { return downcast<mos6530_base_t &>(device).m_in_pb7_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_pb0_wr_callback(device_t &device, _Object object) { return downcast<mos6530_base_t &>(device).m_out_pb0_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_pb1_wr_callback(device_t &device, _Object object) { return downcast<mos6530_base_t &>(device).m_out_pb1_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_pb2_wr_callback(device_t &device, _Object object) { return downcast<mos6530_base_t &>(device).m_out_pb2_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_pb3_wr_callback(device_t &device, _Object object) { return downcast<mos6530_base_t &>(device).m_out_pb3_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_pb4_wr_callback(device_t &device, _Object object) { return downcast<mos6530_base_t &>(device).m_out_pb4_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_pb5_wr_callback(device_t &device, _Object object) { return downcast<mos6530_base_t &>(device).m_out_pb5_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_pb6_wr_callback(device_t &device, _Object object) { return downcast<mos6530_base_t &>(device).m_out_pb6_cb.set_callback(object); }
-	template<class _Object> static devcb_base &set_pb7_wr_callback(device_t &device, _Object object) { return downcast<mos6530_base_t &>(device).m_out_pb7_cb.set_callback(object); }
-=======
 // ======================> mos6530_device_base
 
 class mos6530_device_base :  public device_t
@@ -362,7 +194,6 @@ public:
 	template <unsigned N, class Object> static devcb_base &set_pa_wr_callback(device_t &device, Object &&cb) { return downcast<mos6530_device_base &>(device).m_out_pa_cb[N].set_callback(std::forward<Object>(cb)); }
 	template <unsigned N, class Object> static devcb_base &set_pb_rd_callback(device_t &device, Object &&cb) { return downcast<mos6530_device_base &>(device).m_in_pb_cb[N].set_callback(std::forward<Object>(cb)); }
 	template <unsigned N, class Object> static devcb_base &set_pb_wr_callback(device_t &device, Object &&cb) { return downcast<mos6530_device_base &>(device).m_out_pb_cb[N].set_callback(std::forward<Object>(cb)); }
->>>>>>> upstream/master
 
 	DECLARE_WRITE_LINE_MEMBER( pa0_w ) { pa_w(0, state); }
 	DECLARE_WRITE_LINE_MEMBER( pa1_w ) { pa_w(1, state); }
@@ -383,12 +214,6 @@ public:
 	DECLARE_WRITE_LINE_MEMBER( pb7_w ) { pb_w(7, state); }
 
 protected:
-<<<<<<< HEAD
-	// device-level overrides
-	virtual void device_start();
-	virtual void device_reset();
-	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
-=======
 	// construction/destruction
 	mos6530_device_base(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock);
 
@@ -396,7 +221,6 @@ protected:
 	virtual void device_start() override;
 	virtual void device_reset() override;
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
->>>>>>> upstream/master
 
 	enum
 	{
@@ -407,16 +231,6 @@ protected:
 	void update_pa();
 	virtual void update_pb();
 	virtual void update_irq();
-<<<<<<< HEAD
-	virtual UINT8 get_irq_flags();
-	void edge_detect();
-	void pa_w(int bit, int state);
-	void pb_w(int bit, int state);
-	void timer_w(offs_t offset, UINT8 data, bool ie);
-	UINT8 timer_r(bool ie);
-
-	DECLARE_READ8_MEMBER( rom_r ) { return m_region->base()[offset]; }
-=======
 	virtual uint8_t get_irq_flags();
 	void edge_detect();
 	void pa_w(int bit, int state);
@@ -425,7 +239,6 @@ protected:
 	uint8_t timer_r(bool ie);
 
 	DECLARE_READ8_MEMBER( rom_r ) { return m_rom[offset]; }
->>>>>>> upstream/master
 	DECLARE_READ8_MEMBER( ram_r ) { return m_ram[offset]; }
 	DECLARE_WRITE8_MEMBER( ram_w ) { m_ram[offset] = data; }
 	DECLARE_READ8_MEMBER( pa_data_r );
@@ -443,57 +256,6 @@ protected:
 	DECLARE_WRITE8_MEMBER( timer_on_w );
 	DECLARE_WRITE8_MEMBER( edge_w );
 
-<<<<<<< HEAD
-	optional_shared_ptr<UINT8> m_ram;
-
-	devcb_write_line m_irq_cb;
-	devcb_read8    m_in_pa_cb;
-	devcb_write8   m_out_pa_cb;
-	devcb_read8    m_in_pb_cb;
-	devcb_write8   m_out_pb_cb;
-	devcb_read_line m_in_pa0_cb;
-	devcb_read_line m_in_pa1_cb;
-	devcb_read_line m_in_pa2_cb;
-	devcb_read_line m_in_pa3_cb;
-	devcb_read_line m_in_pa4_cb;
-	devcb_read_line m_in_pa5_cb;
-	devcb_read_line m_in_pa6_cb;
-	devcb_read_line m_in_pa7_cb;
-	devcb_write_line m_out_pa0_cb;
-	devcb_write_line m_out_pa1_cb;
-	devcb_write_line m_out_pa2_cb;
-	devcb_write_line m_out_pa3_cb;
-	devcb_write_line m_out_pa4_cb;
-	devcb_write_line m_out_pa5_cb;
-	devcb_write_line m_out_pa6_cb;
-	devcb_write_line m_out_pa7_cb;
-	devcb_read_line m_in_pb0_cb;
-	devcb_read_line m_in_pb1_cb;
-	devcb_read_line m_in_pb2_cb;
-	devcb_read_line m_in_pb3_cb;
-	devcb_read_line m_in_pb4_cb;
-	devcb_read_line m_in_pb5_cb;
-	devcb_read_line m_in_pb6_cb;
-	devcb_read_line m_in_pb7_cb;
-	devcb_write_line m_out_pb0_cb;
-	devcb_write_line m_out_pb1_cb;
-	devcb_write_line m_out_pb2_cb;
-	devcb_write_line m_out_pb3_cb;
-	devcb_write_line m_out_pb4_cb;
-	devcb_write_line m_out_pb5_cb;
-	devcb_write_line m_out_pb6_cb;
-	devcb_write_line m_out_pb7_cb;
-
-	UINT8 m_pa_in;
-	UINT8 m_pa_out;
-	UINT8 m_pa_ddr;
-	int m_pa7;
-	int m_pa7_dir;
-
-	UINT8 m_pb_in;
-	UINT8 m_pb_out;
-	UINT8 m_pb_ddr;
-=======
 	optional_shared_ptr<uint8_t> m_ram;
 	optional_region_ptr<uint8_t> m_rom;
 
@@ -516,7 +278,6 @@ protected:
 	uint8_t m_pb_in;
 	uint8_t m_pb_out;
 	uint8_t m_pb_ddr;
->>>>>>> upstream/master
 
 	bool m_ie_timer;
 	bool m_irq_timer;
@@ -524,11 +285,7 @@ protected:
 	bool m_irq_edge;
 
 	int m_prescale;
-<<<<<<< HEAD
-	UINT8 m_timer;
-=======
 	uint8_t m_timer;
->>>>>>> upstream/master
 
 	enum {
 		IDLE,
@@ -541,11 +298,7 @@ protected:
 		attotime tm, tm_irq;
 		attotime period;
 		int state, next_state;
-<<<<<<< HEAD
-		UINT8 value;
-=======
 		uint8_t value;
->>>>>>> upstream/master
 	};
 
 	live_info cur_live, checkpoint_live;
@@ -561,19 +314,11 @@ protected:
 };
 
 
-<<<<<<< HEAD
-class mos6530_t :  public mos6530_base_t
-{
-public:
-	// construction/destruction
-	mos6530_t(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-=======
 class mos6530_new_device :  public mos6530_device_base
 {
 public:
 	// construction/destruction
 	mos6530_new_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
->>>>>>> upstream/master
 
 	virtual DECLARE_ADDRESS_MAP(rom_map, 8);
 	virtual DECLARE_ADDRESS_MAP(ram_map, 8);
@@ -581,21 +326,6 @@ public:
 
 protected:
 	// device-level overrides
-<<<<<<< HEAD
-	virtual void device_start();
-
-	void update_pb();
-	void update_irq();
-	UINT8 get_irq_flags();
-};
-
-
-class mos6532_t :  public mos6530_base_t
-{
-public:
-	// construction/destruction
-	mos6532_t(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-=======
 	virtual void device_start() override;
 
 	void update_pb() override;
@@ -609,7 +339,6 @@ class mos6532_new_device :  public mos6530_device_base
 public:
 	// construction/destruction
 	mos6532_new_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
->>>>>>> upstream/master
 
 	virtual DECLARE_ADDRESS_MAP(ram_map, 8);
 	virtual DECLARE_ADDRESS_MAP(io_map, 8);
@@ -620,25 +349,12 @@ public:
 
 protected:
 	// device-level overrides
-<<<<<<< HEAD
-	virtual void device_start();
-=======
 	virtual void device_start() override;
->>>>>>> upstream/master
 };
 
 
 // device type definition
-<<<<<<< HEAD
-extern const device_type MOS6530n;
-extern const device_type MOS6532n;
-
-
-
-#endif
-=======
 DECLARE_DEVICE_TYPE(MOS6530_NEW, mos6530_new_device)
 DECLARE_DEVICE_TYPE(MOS6532_NEW, mos6532_new_device)
 
 #endif // MAME_MACHINE_MOS6530N_H
->>>>>>> upstream/master

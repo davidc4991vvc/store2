@@ -10,18 +10,6 @@
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-#include <ctype.h>
-
-#include "emu.h"
-#include "cpu/m6502/m6502.h"
-#include "includes/atari.h"
-#include "atarifdc.h"
-#include "sound/pokey.h"
-#include "machine/6821pia.h"
-#include "formats/atari_dsk.h"
-
-=======
 #include "emu.h"
 #include "atarifdc.h"
 
@@ -33,7 +21,6 @@
 #include <ctype.h>
 
 
->>>>>>> upstream/master
 #define VERBOSE_SERIAL  0
 #define VERBOSE_CHKSUM  0
 
@@ -59,23 +46,6 @@
 
 struct atari_dsk_format
 {
-<<<<<<< HEAD
-	UINT8 density;
-	UINT8 tracks;
-	UINT8 door;
-	UINT8 sta1;
-	UINT8 spt;
-	UINT8 doublesided;
-	UINT8 highdensity;
-	UINT8 seclen_hi;
-	UINT8 seclen_lo;
-	UINT8 status;
-	UINT8 sta2;
-	UINT8 sta3;
-	UINT8 sta4;
-	UINT8 cr;
-	UINT8 info[65+1];
-=======
 	uint8_t density;
 	uint8_t tracks;
 	uint8_t door;
@@ -91,7 +61,6 @@ struct atari_dsk_format
 	uint8_t sta4;
 	uint8_t cr;
 	uint8_t info[65+1];
->>>>>>> upstream/master
 };
 
 /* combined with the size the image should have */
@@ -134,21 +103,6 @@ static const xfd_format xfd_formats[] =
  *****************************************************************************/
 
 #define MAXSIZE 5760 * 256 + 80
-<<<<<<< HEAD
-static void _atari_load_proc(device_image_interface &image)
-{
-	atari_fdc_device *atarifdc = static_cast<atari_fdc_device *>(image.device().owner());
-	atarifdc->atari_load_proc(image);
-}
-
-void atari_fdc_device::atari_load_proc(device_image_interface &image)
-{
-	int id = floppy_get_drive(image);
-	int size, i;
-	const char *ext;
-
-	m_drv[id].image = auto_alloc_array(image.device().machine(),UINT8,MAXSIZE);
-=======
 static void _atari_load_proc(device_image_interface &image, bool is_created)
 {
 	atari_fdc_device *atarifdc = static_cast<atari_fdc_device *>(image.device().owner());
@@ -161,18 +115,13 @@ void atari_fdc_device::atari_load_proc(device_image_interface &image, bool is_cr
 	int size, i;
 
 	m_drv[id].image = std::make_unique<uint8_t[]>(MAXSIZE);
->>>>>>> upstream/master
 	if (!m_drv[id].image)
 		return;
 
 	/* tell whether the image is writable */
 	m_drv[id].mode = !image.is_readonly();
 	/* set up image if it has been created */
-<<<<<<< HEAD
-	if (image.has_been_created())
-=======
 	if (is_created)
->>>>>>> upstream/master
 	{
 		int sector;
 		char buff[256];
@@ -183,35 +132,16 @@ void atari_fdc_device::atari_load_proc(device_image_interface &image, bool is_cr
 		image.fseek(0, SEEK_SET);
 	}
 
-<<<<<<< HEAD
-	size = image.fread(m_drv[id].image, MAXSIZE);
-
-	if( size <= 0 )
-	{
-		m_drv[id].image = NULL;
-=======
 	size = image.fread(m_drv[id].image.get(), MAXSIZE);
 
 	if( size <= 0 )
 	{
 		m_drv[id].image = nullptr;
->>>>>>> upstream/master
 		return;
 	}
 
 
 	/* re allocate the buffer; we don't want to be too lazy ;) */
-<<<<<<< HEAD
-	//m_drv[id].image = (UINT8*)image.image_realloc(m_drv[id].image, size);
-
-	ext = image.filetype();
-
-	// hack alert, this means we can only load ATR via the softlist at the moment, image.filetype reutrns NULL :/
-	if (image.software_entry() != NULL) ext="ATR";
-
-	/* no extension: assume XFD format (no header) */
-	if (!ext)
-=======
 	//m_drv[id].image = (uint8_t*)image.image_realloc(m_drv[id].image, size);
 
 	// hack alert, this means we can only load ATR via the softlist at the moment, image.filetype returns "" :/
@@ -219,40 +149,27 @@ void atari_fdc_device::atari_load_proc(device_image_interface &image, bool is_cr
 
 	/* no extension: assume XFD format (no header) */
 	if (image.is_filetype("") && !is_softlist_entry)
->>>>>>> upstream/master
 	{
 		m_drv[id].type = FORMAT_XFD;
 		m_drv[id].header_skip = 0;
 	}
 	else
 	/* XFD extension */
-<<<<<<< HEAD
-	if( toupper(ext[0])=='X' && toupper(ext[1])=='F' && toupper(ext[2])=='D' )
-=======
 	if( image.is_filetype("xfd") )
->>>>>>> upstream/master
 	{
 		m_drv[id].type = FORMAT_XFD;
 		m_drv[id].header_skip = 0;
 	}
 	else
 	/* ATR extension */
-<<<<<<< HEAD
-	if( toupper(ext[0])=='A' && toupper(ext[1])=='T' && toupper(ext[2])=='R' )
-=======
 	if( image.is_filetype("atr") || is_softlist_entry)
->>>>>>> upstream/master
 	{
 		m_drv[id].type = FORMAT_ATR;
 		m_drv[id].header_skip = 16;
 	}
 	else
 	/* DSK extension */
-<<<<<<< HEAD
-	if( toupper(ext[0])=='D' && toupper(ext[1])=='S' && toupper(ext[2])=='K' )
-=======
 	if( image.is_filetype("dsk") )
->>>>>>> upstream/master
 	{
 		m_drv[id].type = FORMAT_DSK;
 		m_drv[id].header_skip = sizeof(atari_dsk_format);
@@ -357,11 +274,7 @@ void atari_fdc_device::atari_load_proc(device_image_interface &image, bool is_cr
 	/* DSK format: it's all in the header */
 	case FORMAT_DSK:
 		{
-<<<<<<< HEAD
-			atari_dsk_format *dsk = (atari_dsk_format *) m_drv[id].image;
-=======
 			atari_dsk_format *dsk = (atari_dsk_format *) m_drv[id].image.get();
->>>>>>> upstream/master
 
 			m_drv[id].tracks = dsk->tracks;
 			m_drv[id].spt = dsk->spt;
@@ -439,15 +352,9 @@ void atari_fdc_device::atari_load_proc(device_image_interface &image, bool is_cr
  * F->A                    128/256 byte CKS   bad sector table
  *
  *****************************************************************************/
-<<<<<<< HEAD
-static void make_chksum(device_t *device,UINT8 * chksum, UINT8 data)
-{
-	UINT8 newone;
-=======
 static void make_chksum(device_t *device,uint8_t * chksum, uint8_t data)
 {
 	uint8_t newone;
->>>>>>> upstream/master
 	newone= *chksum + data;
 	if (newone < *chksum)
 		newone++;
@@ -480,11 +387,7 @@ void atari_fdc_device::clr_serin(int ser_delay)
 	pokey->serin_ready(ser_delay * 40);
 }
 
-<<<<<<< HEAD
-void atari_fdc_device::add_serin(UINT8 data, int with_checksum)
-=======
 void atari_fdc_device::add_serin(uint8_t data, int with_checksum)
->>>>>>> upstream/master
 {
 	m_serin_buff[m_serin_count++] = data;
 	if (with_checksum)
@@ -832,13 +735,6 @@ static const floppy_interface atari_floppy_interface =
 	"floppy_5_25"
 };
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_FRAGMENT( atari_fdc )
-	MCFG_LEGACY_FLOPPY_4_DRIVES_ADD(atari_floppy_interface)
-MACHINE_CONFIG_END
-
-=======
->>>>>>> upstream/master
 legacy_floppy_image_device *atari_fdc_device::atari_floppy_get_device_child(int drive)
 {
 	switch(drive) {
@@ -847,15 +743,6 @@ legacy_floppy_image_device *atari_fdc_device::atari_floppy_get_device_child(int 
 		case 2 : return subdevice<legacy_floppy_image_device>(FLOPPY_2);
 		case 3 : return subdevice<legacy_floppy_image_device>(FLOPPY_3);
 	}
-<<<<<<< HEAD
-	return NULL;
-}
-
-const device_type ATARI_FDC = &device_creator<atari_fdc_device>;
-
-atari_fdc_device::atari_fdc_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, ATARI_FDC, "Atari FDC", tag, owner, clock, "atari_fdc", __FILE__),
-=======
 	return nullptr;
 }
 
@@ -863,7 +750,6 @@ DEFINE_DEVICE_TYPE(ATARI_FDC, atari_fdc_device, "atari_fdc", "Atari FDC")
 
 atari_fdc_device::atari_fdc_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, ATARI_FDC, tag, owner, clock),
->>>>>>> upstream/master
 	m_serout_count(0),
 	m_serout_offs(0),
 	m_serout_chksum(0),
@@ -894,20 +780,9 @@ void atari_fdc_device::device_start()
 }
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  device_mconfig_additions - return a pointer to
-//  the device's machine fragment
-//-------------------------------------------------
-
-machine_config_constructor atari_fdc_device::device_mconfig_additions() const
-{
-	return MACHINE_CONFIG_NAME( atari_fdc  );
-}
-=======
 //  device_add_mconfig - add device configuration
 //-------------------------------------------------
 
 MACHINE_CONFIG_MEMBER( atari_fdc_device::device_add_mconfig )
 	MCFG_LEGACY_FLOPPY_4_DRIVES_ADD(atari_floppy_interface)
 MACHINE_CONFIG_END
->>>>>>> upstream/master

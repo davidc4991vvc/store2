@@ -404,14 +404,6 @@
 
 ************************************************************************************************/
 
-<<<<<<< HEAD
-
-#define MASTER_CLOCK    XTAL_10MHz          /* unknown */
-#define CPU_CLOCK       MASTER_CLOCK/4      /* guess... seems accurate */
-#define CRTC_CLOCK      MASTER_CLOCK/16     /* it gives 59.410646 fps with current settings */
-
-=======
->>>>>>> upstream/master
 #include "emu.h"
 #include "cpu/z80/z80.h"
 #include "machine/nvram.h"
@@ -419,8 +411,6 @@
 #include "video/mc6845.h"
 //#include "machine/z80ctc.h"
 //#include "machine/z80pio.h"
-<<<<<<< HEAD
-=======
 #include "screen.h"
 #include "speaker.h"
 
@@ -428,7 +418,6 @@
 #define MASTER_CLOCK    XTAL_16MHz          /* unknown */
 #define CPU_CLOCK       MASTER_CLOCK/4      /* guess... seems accurate */
 #define CRTC_CLOCK      MASTER_CLOCK/24     /* it gives 63.371293 Hz. with current settings */
->>>>>>> upstream/master
 
 
 class avt_state : public driver_device
@@ -445,13 +434,8 @@ public:
 
 	required_device<cpu_device> m_maincpu;
 	required_device<mc6845_device> m_crtc;
-<<<<<<< HEAD
-	required_shared_ptr<UINT8> m_videoram;
-	required_shared_ptr<UINT8> m_colorram;
-=======
 	required_shared_ptr<uint8_t> m_videoram;
 	required_shared_ptr<uint8_t> m_colorram;
->>>>>>> upstream/master
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
 
@@ -462,22 +446,12 @@ public:
 	DECLARE_WRITE8_MEMBER(avt_colorram_w);
 
 	tilemap_t *m_bg_tilemap;
-<<<<<<< HEAD
-	UINT8 m_crtc_vreg[0x100],m_crtc_index;
-
-	DECLARE_WRITE8_MEMBER(debug_w);
-	TILE_GET_INFO_MEMBER(get_bg_tile_info);
-	virtual void video_start();
-	DECLARE_PALETTE_INIT(avt);
-	UINT32 screen_update_avt(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	uint8_t m_crtc_vreg[0x100],m_crtc_index;
 
 	TILE_GET_INFO_MEMBER(get_bg_tile_info);
 	virtual void video_start() override;
 	DECLARE_PALETTE_INIT(avt);
 	uint32_t screen_update_avt(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	INTERRUPT_GEN_MEMBER(avt_vblank_irq);
 };
 
@@ -535,19 +509,11 @@ TILE_GET_INFO_MEMBER(avt_state::get_bg_tile_info)
 
 void avt_state::video_start()
 {
-<<<<<<< HEAD
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(avt_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 28, 32);
-}
-
-
-UINT32 avt_state::screen_update_avt(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(avt_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 28, 32);
 }
 
 
 uint32_t avt_state::screen_update_avt(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int x,y;
 	int count;
@@ -555,16 +521,6 @@ uint32_t avt_state::screen_update_avt(screen_device &screen, bitmap_ind16 &bitma
 
 	count = 0;
 
-<<<<<<< HEAD
-	for(y=0;y<mc6845_v_display;y++)
-	{
-		for(x=0;x<mc6845_h_display;x++)
-		{
-			UINT16 tile = m_videoram[count] | ((m_colorram[count] & 1) << 8);
-			UINT8 color = (m_colorram[count] & 0xf0) >> 4;
-
-			gfx->opaque(bitmap,cliprect,tile,color,0,0,x*8,(y*8));
-=======
 	for(y = 0; y < mc6845_v_display; y++)
 	{
 		for(x = 0; x < mc6845_h_display; x++)
@@ -573,7 +529,6 @@ uint32_t avt_state::screen_update_avt(screen_device &screen, bitmap_ind16 &bitma
 			uint8_t color = (m_colorram[count] & 0xf0) >> 4;
 
 			gfx->opaque(bitmap, cliprect, tile,color, 0, 0, x * 8, y * 8);
->>>>>>> upstream/master
 
 			count++;
 		}
@@ -585,11 +540,7 @@ uint32_t avt_state::screen_update_avt(screen_device &screen, bitmap_ind16 &bitma
 
 PALETTE_INIT_MEMBER(avt_state, avt)
 {
-<<<<<<< HEAD
-	const UINT8 *color_prom = memregion("proms")->base();
-=======
 	const uint8_t *color_prom = memregion("proms")->base();
->>>>>>> upstream/master
 /*  prom bits
     7654 3210
     ---- ---x   Intensity?.
@@ -601,11 +552,7 @@ PALETTE_INIT_MEMBER(avt_state, avt)
 	int j;
 
 	/* 0000BGRI */
-<<<<<<< HEAD
-	if (color_prom == 0) return;
-=======
 	if (color_prom == nullptr) return;
->>>>>>> upstream/master
 
 	for (j = 0; j < palette.entries(); j++)
 	{
@@ -652,11 +599,8 @@ PALETTE_INIT_MEMBER(avt_state, avt)
 //  popmessage("written : %02X", data);
 //}
 
-<<<<<<< HEAD
-=======
 // [:crtc] M6845: Mode Control 10 is not supported!!!
 
->>>>>>> upstream/master
 WRITE8_MEMBER( avt_state::avt_6845_address_w )
 {
 	m_crtc_index = data;
@@ -691,15 +635,9 @@ ADDRESS_MAP_END
 static ADDRESS_MAP_START( avt_portmap, AS_IO, 8, avt_state )
 	ADDRESS_MAP_GLOBAL_MASK(0xff)
 //  AM_RANGE(0x00, 0x03) unk, maybe IO
-<<<<<<< HEAD
-//  AM_RANGE(0x00, 0x00)  AM_READ_PORT("IN0")
-//  AM_RANGE(0x01, 0x01)  AM_READ_PORT("IN1")
-	AM_RANGE(0x02, 0x02) AM_READ_PORT("DSW1")
-=======
 //  AM_RANGE(0x00, 0x00)  AM_READ_PORT("DSW1")
 //  AM_RANGE(0x01, 0x01)  AM_READ_PORT("IN1")
 	AM_RANGE(0x02, 0x02)  AM_READ_PORT("IN0")
->>>>>>> upstream/master
 //  AM_RANGE(0x08, 0x0b) unk, maybe IO
 //  AM_RANGE(0x08, 0x08)  AM_READ_PORT("IN2")
 //  AM_RANGE(0x09, 0x09)  AM_READ_PORT("IN3")
@@ -710,15 +648,6 @@ static ADDRESS_MAP_START( avt_portmap, AS_IO, 8, avt_state )
 ADDRESS_MAP_END
 
 /* I/O byte R/W
-<<<<<<< HEAD
-
-
-   -----------------
-
-   unknown writes:
-
-
-=======
   (from avtbingo)
 
   inputs are throusg port 02h, masked with 0x3F & 0x40.
@@ -780,7 +709,6 @@ ADDRESS_MAP_END
   [:maincpu] ':maincpu' (030E): unmapped io memory write to 000A = C0 & FF   > Same as above...
   [:maincpu] ':maincpu' (02CD): unmapped io memory write to 000A = EE & FF  /
   [:maincpu] ':maincpu' (030E): unmapped io memory write to 000A = C0 & FF /
->>>>>>> upstream/master
 
 
   avtnfl and avtbingo have similarities.
@@ -789,10 +717,6 @@ ADDRESS_MAP_END
   all access a000/c000 with an offset of 0x800 for video.
   avtnfl and avtbingo use 28/29 for CRTC.
 
-<<<<<<< HEAD
-
-=======
->>>>>>> upstream/master
 */
 
 /*********************************************
@@ -956,8 +880,6 @@ static INPUT_PORTS_START( symbols )
 INPUT_PORTS_END
 
 
-<<<<<<< HEAD
-=======
 static INPUT_PORTS_START( avtbingo )
 	PORT_START("IN0")
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_POKER_HOLD3 ) PORT_NAME("Column 3 UP")
@@ -972,7 +894,6 @@ INPUT_PORTS_END
 
 
 
->>>>>>> upstream/master
 /*********************************************
 *              Graphics Layouts              *
 *********************************************/
@@ -1007,11 +928,7 @@ INTERRUPT_GEN_MEMBER(avt_state::avt_vblank_irq)
 	m_maincpu->set_input_line_and_vector(0, HOLD_LINE, 0x06);
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( avt, avt_state )
-=======
 static MACHINE_CONFIG_START( avt )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, CPU_CLOCK) /* guess */
@@ -1114,16 +1031,8 @@ ROM_END
 *                Game Drivers                *
 *********************************************/
 
-<<<<<<< HEAD
-/*    YEAR  NAME      PARENT    MACHINE   INPUT     INIT  ROT    COMPANY                      FULLNAME            FLAGS */
-GAME( 1985, avtsym14, 0,        avt,      symbols, driver_device,  0,    ROT0, "Advanced Video Technology", "Symbols (ver 1.4)", MACHINE_NOT_WORKING )
-GAME( 1985, avtsym25, avtsym14, avt,      symbols, driver_device,  0,    ROT0, "Advanced Video Technology", "Symbols (ver 2.5)", MACHINE_NOT_WORKING )
-GAME( 1985, avtbingo, 0,        avt,      symbols, driver_device,  0,    ROT0, "Advanced Video Technology", "Arrow Bingo",       MACHINE_NOT_WORKING )
-GAME( 1989, avtnfl,   0,        avt,      symbols, driver_device,  0,    ROT0, "Advanced Video Technology", "NFL (ver 109)",     MACHINE_NOT_WORKING )
-=======
 /*    YEAR  NAME      PARENT    MACHINE   INPUT     STATE       INIT  ROT   COMPANY                      FULLNAME             FLAGS */
 GAME( 1985, avtsym14, 0,        avt,      symbols,  avt_state,  0,    ROT0, "Advanced Video Technology", "Symbols (ver 1.4)", MACHINE_NOT_WORKING )
 GAME( 1985, avtsym25, avtsym14, avt,      symbols,  avt_state,  0,    ROT0, "Advanced Video Technology", "Symbols (ver 2.5)", MACHINE_NOT_WORKING )
 GAME( 1985, avtbingo, 0,        avt,      avtbingo, avt_state,  0,    ROT0, "Advanced Video Technology", "Arrow Bingo",       MACHINE_NOT_WORKING )
 GAME( 1989, avtnfl,   0,        avt,      symbols,  avt_state,  0,    ROT0, "Advanced Video Technology", "NFL (ver 109)",     MACHINE_NOT_WORKING )
->>>>>>> upstream/master

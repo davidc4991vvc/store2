@@ -6,20 +6,6 @@
 #include "epic12.h"
 
 
-<<<<<<< HEAD
-
-const device_type EPIC12 = &device_creator<epic12_device>;
-
-epic12_device::epic12_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, EPIC12, "EP1C12 Blitter", tag, owner, clock, "epic12", __FILE__),
-		device_video_interface(mconfig, *this), m_ram16(nullptr), m_gfx_size(0), m_bitmaps(nullptr), m_use_ram(nullptr),
-	m_main_ramsize(0), m_main_rammask(0), m_maincpu(nullptr), m_ram16_copy(nullptr), m_work_queue(nullptr)
-{
-	m_is_unsafe = 0;
-	m_delay_scale = 0;
-	m_blitter_request = 0;
-	m_blitter_delay_timer = 0;
-=======
 DEFINE_DEVICE_TYPE(EPIC12, epic12_device, "epic12", "EPIC12 Blitter")
 
 epic12_device::epic12_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
@@ -32,7 +18,6 @@ epic12_device::epic12_device(const machine_config &mconfig, const char *tag, dev
 	m_delay_scale = 0;
 	m_blitter_request = nullptr;
 	m_blitter_delay_timer = nullptr;
->>>>>>> upstream/master
 	m_blitter_busy = 0;
 	m_gfx_addr = 0;
 	m_gfx_scroll_0_x = 0;
@@ -44,11 +29,7 @@ epic12_device::epic12_device(const machine_config &mconfig, const char *tag, dev
 	m_gfx_scroll_0_y_shadowcopy = 0;
 	m_gfx_scroll_1_x_shadowcopy = 0;
 	m_gfx_scroll_1_y_shadowcopy = 0;
-<<<<<<< HEAD
-	epic12_device_blit_delay = 0;
-=======
 	blit_delay = 0;
->>>>>>> upstream/master
 }
 
 TIMER_CALLBACK_MEMBER( epic12_device::blitter_delay_callback )
@@ -60,16 +41,6 @@ TIMER_CALLBACK_MEMBER( epic12_device::blitter_delay_callback )
 void epic12_device::device_start()
 {
 	m_gfx_size = 0x2000 * 0x1000;
-<<<<<<< HEAD
-	m_bitmaps = auto_bitmap_rgb32_alloc(machine(), 0x2000, 0x1000);
-	m_clip = m_bitmaps->cliprect();
-	m_clip.set(0, 0x2000-1, 0, 0x1000-1);
-
-	m_ram16_copy = auto_alloc_array(machine(), UINT16, m_main_ramsize/2);
-
-	m_blitter_delay_timer = machine().scheduler().timer_alloc(timer_expired_delegate(FUNC(epic12_device::blitter_delay_callback),this));
-	m_blitter_delay_timer->adjust(attotime::never);
-=======
 	m_bitmaps = std::make_unique<bitmap_rgb32>( 0x2000, 0x1000);
 	m_clip = m_bitmaps->cliprect();
 	m_clip.set(0, 0x2000-1, 0, 0x1000-1);
@@ -92,7 +63,6 @@ void epic12_device::device_start()
 	save_item(NAME(m_gfx_scroll_1_y_shadowcopy));
 	save_pointer(NAME(m_ram16_copy.get()), m_main_ramsize/2);
 	save_item(NAME(*m_bitmaps));
->>>>>>> upstream/master
 }
 
 void epic12_device::device_reset()
@@ -104,11 +74,7 @@ void epic12_device::device_reset()
 	}
 	else
 	{
-<<<<<<< HEAD
-		m_use_ram = m_ram16_copy; // slow mode
-=======
 		m_use_ram = m_ram16_copy.get(); // slow mode
->>>>>>> upstream/master
 		m_work_queue = osd_work_queue_alloc(WORK_QUEUE_FLAG_HIGH_FREQ);
 	}
 
@@ -118,19 +84,11 @@ void epic12_device::device_reset()
 	{
 		for (x=0;x<0x20;x++)
 		{
-<<<<<<< HEAD
-			epic12_device_colrtable[x][y] = (x*y) / 0x1f;
-			if (epic12_device_colrtable[x][y]>0x1f) epic12_device_colrtable[x][y] = 0x1f;
-
-			epic12_device_colrtable_rev[x^0x1f][y] = (x*y) / 0x1f;
-			if (epic12_device_colrtable_rev[x^0x1f][y]>0x1f) epic12_device_colrtable_rev[x^0x1f][y] = 0x1f;
-=======
 			colrtable[x][y] = (x*y) / 0x1f;
 			if (colrtable[x][y]>0x1f) colrtable[x][y] = 0x1f;
 
 			colrtable_rev[x^0x1f][y] = (x*y) / 0x1f;
 			if (colrtable_rev[x^0x1f][y]>0x1f) colrtable_rev[x^0x1f][y] = 0x1f;
->>>>>>> upstream/master
 		}
 	}
 
@@ -139,13 +97,8 @@ void epic12_device::device_reset()
 	{
 		for (x=0;x<0x20;x++)
 		{
-<<<<<<< HEAD
-			epic12_device_colrtable_add[x][y] = (x+y);
-			if (epic12_device_colrtable_add[x][y]>0x1f) epic12_device_colrtable_add[x][y] = 0x1f;
-=======
 			colrtable_add[x][y] = (x+y);
 			if (colrtable_add[x][y]>0x1f) colrtable_add[x][y] = 0x1f;
->>>>>>> upstream/master
 		}
 	}
 
@@ -153,17 +106,6 @@ void epic12_device::device_reset()
 }
 
 // todo, get these into the device class without ruining performance
-<<<<<<< HEAD
-UINT8 epic12_device_colrtable[0x20][0x40];
-UINT8 epic12_device_colrtable_rev[0x20][0x40];
-UINT8 epic12_device_colrtable_add[0x20][0x20];
-UINT64 epic12_device_blit_delay;
-
-inline UINT16 epic12_device::READ_NEXT_WORD(offs_t *addr)
-{
-//  UINT16 data = space.read_word(*addr); // going through the memory system is 'more correct' but noticeably slower
-	UINT16 data = m_use_ram[((*addr & m_main_rammask) >> 1) ^ NATIVE_ENDIAN_VALUE_LE_BE(3, 0)];
-=======
 uint8_t epic12_device::colrtable[0x20][0x40];
 uint8_t epic12_device::colrtable_rev[0x20][0x40];
 uint8_t epic12_device::colrtable_add[0x20][0x20];
@@ -173,7 +115,6 @@ inline uint16_t epic12_device::READ_NEXT_WORD(offs_t *addr)
 {
 //  uint16_t data = space.read_word(*addr); // going through the memory system is 'more correct' but noticeably slower
 	uint16_t data = m_use_ram[((*addr & m_main_rammask) >> 1) ^ NATIVE_ENDIAN_VALUE_LE_BE(3, 0)];
->>>>>>> upstream/master
 
 	*addr += 2;
 
@@ -181,17 +122,10 @@ inline uint16_t epic12_device::READ_NEXT_WORD(offs_t *addr)
 	return data;
 }
 
-<<<<<<< HEAD
-inline UINT16 epic12_device::COPY_NEXT_WORD(address_space &space, offs_t *addr)
-{
-//  UINT16 data = space.read_word(*addr); // going through the memory system is 'more correct' but noticeably slower
-	UINT16 data = m_ram16[((*addr & m_main_rammask) >> 1) ^ NATIVE_ENDIAN_VALUE_LE_BE(3, 0)];
-=======
 inline uint16_t epic12_device::COPY_NEXT_WORD(address_space &space, offs_t *addr)
 {
 //  uint16_t data = space.read_word(*addr); // going through the memory system is 'more correct' but noticeably slower
 	uint16_t data = m_ram16[((*addr & m_main_rammask) >> 1) ^ NATIVE_ENDIAN_VALUE_LE_BE(3, 0)];
->>>>>>> upstream/master
 	m_ram16_copy[((*addr & m_main_rammask) >> 1) ^ NATIVE_ENDIAN_VALUE_LE_BE(3, 0)] = data;
 
 	*addr += 2;
@@ -203,11 +137,7 @@ inline uint16_t epic12_device::COPY_NEXT_WORD(address_space &space, offs_t *addr
 
 inline void epic12_device::gfx_upload_shadow_copy(address_space &space, offs_t *addr)
 {
-<<<<<<< HEAD
-	UINT32 x,y, dimx,dimy;
-=======
 	uint32_t x,y, dimx,dimy;
->>>>>>> upstream/master
 	COPY_NEXT_WORD(space, addr);
 	COPY_NEXT_WORD(space, addr);
 	COPY_NEXT_WORD(space, addr);
@@ -229,13 +159,8 @@ inline void epic12_device::gfx_upload_shadow_copy(address_space &space, offs_t *
 
 inline void epic12_device::gfx_upload(offs_t *addr)
 {
-<<<<<<< HEAD
-	UINT32 x,y, dst_p,dst_x_start,dst_y_start, dimx,dimy;
-	UINT32 *dst;
-=======
 	uint32_t x,y, dst_p,dst_x_start,dst_y_start, dimx,dimy;
 	uint32_t *dst;
->>>>>>> upstream/master
 
 	// 0x20000000
 	READ_NEXT_WORD(addr);
@@ -264,11 +189,7 @@ inline void epic12_device::gfx_upload(offs_t *addr)
 
 		for (x = 0; x < dimx; x++)
 		{
-<<<<<<< HEAD
-			UINT16 pendat = READ_NEXT_WORD(addr);
-=======
 			uint16_t pendat = READ_NEXT_WORD(addr);
->>>>>>> upstream/master
 			// real hw would upload the gfxword directly, but our VRAM is 32-bit, so convert it.
 			//dst[dst_x_start + x] = pendat;
 			*dst++ = ((pendat&0x8000)<<14) | ((pendat&0x7c00)<<9) | ((pendat&0x03e0)<<6) | ((pendat&0x001f)<<3);  // --t- ---- rrrr r--- gggg g--- bbbb b---  format
@@ -279,19 +200,11 @@ inline void epic12_device::gfx_upload(offs_t *addr)
 	}
 }
 
-<<<<<<< HEAD
-#define draw_params m_bitmaps, &m_clip, &m_bitmaps->pix(0,0),src_x,src_y, x,y, dimx,dimy, flipy, s_alpha, d_alpha, &tint_clr
-
-
-
-epic12_device_blitfunction epic12_device_f0_ti1_tr1_blit_funcs[] =
-=======
 #define draw_params m_bitmaps.get(), &m_clip, &m_bitmaps->pix(0,0),src_x,src_y, x,y, dimx,dimy, flipy, s_alpha, d_alpha, &tint_clr
 
 
 
 const epic12_device::blitfunction epic12_device::f0_ti1_tr1_blit_funcs[64] =
->>>>>>> upstream/master
 {
 	epic12_device::draw_sprite_f0_ti1_tr1_s0_d0, epic12_device::draw_sprite_f0_ti1_tr1_s1_d0, epic12_device::draw_sprite_f0_ti1_tr1_s2_d0, epic12_device::draw_sprite_f0_ti1_tr1_s3_d0, epic12_device::draw_sprite_f0_ti1_tr1_s4_d0, epic12_device::draw_sprite_f0_ti1_tr1_s5_d0, epic12_device::draw_sprite_f0_ti1_tr1_s6_d0, epic12_device::draw_sprite_f0_ti1_tr1_s7_d0,
 	epic12_device::draw_sprite_f0_ti1_tr1_s0_d1, epic12_device::draw_sprite_f0_ti1_tr1_s1_d1, epic12_device::draw_sprite_f0_ti1_tr1_s2_d1, epic12_device::draw_sprite_f0_ti1_tr1_s3_d1, epic12_device::draw_sprite_f0_ti1_tr1_s4_d1, epic12_device::draw_sprite_f0_ti1_tr1_s5_d1, epic12_device::draw_sprite_f0_ti1_tr1_s6_d1, epic12_device::draw_sprite_f0_ti1_tr1_s7_d1,
@@ -303,11 +216,7 @@ const epic12_device::blitfunction epic12_device::f0_ti1_tr1_blit_funcs[64] =
 	epic12_device::draw_sprite_f0_ti1_tr1_s0_d7, epic12_device::draw_sprite_f0_ti1_tr1_s1_d7, epic12_device::draw_sprite_f0_ti1_tr1_s2_d7, epic12_device::draw_sprite_f0_ti1_tr1_s3_d7, epic12_device::draw_sprite_f0_ti1_tr1_s4_d7, epic12_device::draw_sprite_f0_ti1_tr1_s5_d7, epic12_device::draw_sprite_f0_ti1_tr1_s6_d7, epic12_device::draw_sprite_f0_ti1_tr1_s7_d7,
 };
 
-<<<<<<< HEAD
-epic12_device_blitfunction epic12_device_f0_ti1_tr0_blit_funcs[] =
-=======
 const epic12_device::blitfunction epic12_device::f0_ti1_tr0_blit_funcs[64] =
->>>>>>> upstream/master
 {
 	epic12_device::draw_sprite_f0_ti1_tr0_s0_d0, epic12_device::draw_sprite_f0_ti1_tr0_s1_d0, epic12_device::draw_sprite_f0_ti1_tr0_s2_d0, epic12_device::draw_sprite_f0_ti1_tr0_s3_d0, epic12_device::draw_sprite_f0_ti1_tr0_s4_d0, epic12_device::draw_sprite_f0_ti1_tr0_s5_d0, epic12_device::draw_sprite_f0_ti1_tr0_s6_d0, epic12_device::draw_sprite_f0_ti1_tr0_s7_d0,
 	epic12_device::draw_sprite_f0_ti1_tr0_s0_d1, epic12_device::draw_sprite_f0_ti1_tr0_s1_d1, epic12_device::draw_sprite_f0_ti1_tr0_s2_d1, epic12_device::draw_sprite_f0_ti1_tr0_s3_d1, epic12_device::draw_sprite_f0_ti1_tr0_s4_d1, epic12_device::draw_sprite_f0_ti1_tr0_s5_d1, epic12_device::draw_sprite_f0_ti1_tr0_s6_d1, epic12_device::draw_sprite_f0_ti1_tr0_s7_d1,
@@ -319,11 +228,7 @@ const epic12_device::blitfunction epic12_device::f0_ti1_tr0_blit_funcs[64] =
 	epic12_device::draw_sprite_f0_ti1_tr0_s0_d7, epic12_device::draw_sprite_f0_ti1_tr0_s1_d7, epic12_device::draw_sprite_f0_ti1_tr0_s2_d7, epic12_device::draw_sprite_f0_ti1_tr0_s3_d7, epic12_device::draw_sprite_f0_ti1_tr0_s4_d7, epic12_device::draw_sprite_f0_ti1_tr0_s5_d7, epic12_device::draw_sprite_f0_ti1_tr0_s6_d7, epic12_device::draw_sprite_f0_ti1_tr0_s7_d7,
 };
 
-<<<<<<< HEAD
-epic12_device_blitfunction epic12_device_f1_ti1_tr1_blit_funcs[] =
-=======
 const epic12_device::blitfunction epic12_device::f1_ti1_tr1_blit_funcs[64] =
->>>>>>> upstream/master
 {
 	epic12_device::draw_sprite_f1_ti1_tr1_s0_d0, epic12_device::draw_sprite_f1_ti1_tr1_s1_d0, epic12_device::draw_sprite_f1_ti1_tr1_s2_d0, epic12_device::draw_sprite_f1_ti1_tr1_s3_d0, epic12_device::draw_sprite_f1_ti1_tr1_s4_d0, epic12_device::draw_sprite_f1_ti1_tr1_s5_d0, epic12_device::draw_sprite_f1_ti1_tr1_s6_d0, epic12_device::draw_sprite_f1_ti1_tr1_s7_d0,
 	epic12_device::draw_sprite_f1_ti1_tr1_s0_d1, epic12_device::draw_sprite_f1_ti1_tr1_s1_d1, epic12_device::draw_sprite_f1_ti1_tr1_s2_d1, epic12_device::draw_sprite_f1_ti1_tr1_s3_d1, epic12_device::draw_sprite_f1_ti1_tr1_s4_d1, epic12_device::draw_sprite_f1_ti1_tr1_s5_d1, epic12_device::draw_sprite_f1_ti1_tr1_s6_d1, epic12_device::draw_sprite_f1_ti1_tr1_s7_d1,
@@ -335,11 +240,7 @@ const epic12_device::blitfunction epic12_device::f1_ti1_tr1_blit_funcs[64] =
 	epic12_device::draw_sprite_f1_ti1_tr1_s0_d7, epic12_device::draw_sprite_f1_ti1_tr1_s1_d7, epic12_device::draw_sprite_f1_ti1_tr1_s2_d7, epic12_device::draw_sprite_f1_ti1_tr1_s3_d7, epic12_device::draw_sprite_f1_ti1_tr1_s4_d7, epic12_device::draw_sprite_f1_ti1_tr1_s5_d7, epic12_device::draw_sprite_f1_ti1_tr1_s6_d7, epic12_device::draw_sprite_f1_ti1_tr1_s7_d7,
 };
 
-<<<<<<< HEAD
-epic12_device_blitfunction epic12_device_f1_ti1_tr0_blit_funcs[] =
-=======
 const epic12_device::blitfunction epic12_device::f1_ti1_tr0_blit_funcs[64] =
->>>>>>> upstream/master
 {
 	epic12_device::draw_sprite_f1_ti1_tr0_s0_d0, epic12_device::draw_sprite_f1_ti1_tr0_s1_d0, epic12_device::draw_sprite_f1_ti1_tr0_s2_d0, epic12_device::draw_sprite_f1_ti1_tr0_s3_d0, epic12_device::draw_sprite_f1_ti1_tr0_s4_d0, epic12_device::draw_sprite_f1_ti1_tr0_s5_d0, epic12_device::draw_sprite_f1_ti1_tr0_s6_d0, epic12_device::draw_sprite_f1_ti1_tr0_s7_d0,
 	epic12_device::draw_sprite_f1_ti1_tr0_s0_d1, epic12_device::draw_sprite_f1_ti1_tr0_s1_d1, epic12_device::draw_sprite_f1_ti1_tr0_s2_d1, epic12_device::draw_sprite_f1_ti1_tr0_s3_d1, epic12_device::draw_sprite_f1_ti1_tr0_s4_d1, epic12_device::draw_sprite_f1_ti1_tr0_s5_d1, epic12_device::draw_sprite_f1_ti1_tr0_s6_d1, epic12_device::draw_sprite_f1_ti1_tr0_s7_d1,
@@ -353,11 +254,7 @@ const epic12_device::blitfunction epic12_device::f1_ti1_tr0_blit_funcs[64] =
 
 
 
-<<<<<<< HEAD
-epic12_device_blitfunction epic12_device_f0_ti0_tr1_blit_funcs[] =
-=======
 const epic12_device::blitfunction epic12_device::f0_ti0_tr1_blit_funcs[64] =
->>>>>>> upstream/master
 {
 	epic12_device::draw_sprite_f0_ti0_tr1_s0_d0, epic12_device::draw_sprite_f0_ti0_tr1_s1_d0, epic12_device::draw_sprite_f0_ti0_tr1_s2_d0, epic12_device::draw_sprite_f0_ti0_tr1_s3_d0, epic12_device::draw_sprite_f0_ti0_tr1_s4_d0, epic12_device::draw_sprite_f0_ti0_tr1_s5_d0, epic12_device::draw_sprite_f0_ti0_tr1_s6_d0, epic12_device::draw_sprite_f0_ti0_tr1_s7_d0,
 	epic12_device::draw_sprite_f0_ti0_tr1_s0_d1, epic12_device::draw_sprite_f0_ti0_tr1_s1_d1, epic12_device::draw_sprite_f0_ti0_tr1_s2_d1, epic12_device::draw_sprite_f0_ti0_tr1_s3_d1, epic12_device::draw_sprite_f0_ti0_tr1_s4_d1, epic12_device::draw_sprite_f0_ti0_tr1_s5_d1, epic12_device::draw_sprite_f0_ti0_tr1_s6_d1, epic12_device::draw_sprite_f0_ti0_tr1_s7_d1,
@@ -369,11 +266,7 @@ const epic12_device::blitfunction epic12_device::f0_ti0_tr1_blit_funcs[64] =
 	epic12_device::draw_sprite_f0_ti0_tr1_s0_d7, epic12_device::draw_sprite_f0_ti0_tr1_s1_d7, epic12_device::draw_sprite_f0_ti0_tr1_s2_d7, epic12_device::draw_sprite_f0_ti0_tr1_s3_d7, epic12_device::draw_sprite_f0_ti0_tr1_s4_d7, epic12_device::draw_sprite_f0_ti0_tr1_s5_d7, epic12_device::draw_sprite_f0_ti0_tr1_s6_d7, epic12_device::draw_sprite_f0_ti0_tr1_s7_d7,
 };
 
-<<<<<<< HEAD
-epic12_device_blitfunction epic12_device_f0_ti0_tr0_blit_funcs[] =
-=======
 const epic12_device::blitfunction epic12_device::f0_ti0_tr0_blit_funcs[64] =
->>>>>>> upstream/master
 {
 	epic12_device::draw_sprite_f0_ti0_tr0_s0_d0, epic12_device::draw_sprite_f0_ti0_tr0_s1_d0, epic12_device::draw_sprite_f0_ti0_tr0_s2_d0, epic12_device::draw_sprite_f0_ti0_tr0_s3_d0, epic12_device::draw_sprite_f0_ti0_tr0_s4_d0, epic12_device::draw_sprite_f0_ti0_tr0_s5_d0, epic12_device::draw_sprite_f0_ti0_tr0_s6_d0, epic12_device::draw_sprite_f0_ti0_tr0_s7_d0,
 	epic12_device::draw_sprite_f0_ti0_tr0_s0_d1, epic12_device::draw_sprite_f0_ti0_tr0_s1_d1, epic12_device::draw_sprite_f0_ti0_tr0_s2_d1, epic12_device::draw_sprite_f0_ti0_tr0_s3_d1, epic12_device::draw_sprite_f0_ti0_tr0_s4_d1, epic12_device::draw_sprite_f0_ti0_tr0_s5_d1, epic12_device::draw_sprite_f0_ti0_tr0_s6_d1, epic12_device::draw_sprite_f0_ti0_tr0_s7_d1,
@@ -385,11 +278,7 @@ const epic12_device::blitfunction epic12_device::f0_ti0_tr0_blit_funcs[64] =
 	epic12_device::draw_sprite_f0_ti0_tr0_s0_d7, epic12_device::draw_sprite_f0_ti0_tr0_s1_d7, epic12_device::draw_sprite_f0_ti0_tr0_s2_d7, epic12_device::draw_sprite_f0_ti0_tr0_s3_d7, epic12_device::draw_sprite_f0_ti0_tr0_s4_d7, epic12_device::draw_sprite_f0_ti0_tr0_s5_d7, epic12_device::draw_sprite_f0_ti0_tr0_s6_d7, epic12_device::draw_sprite_f0_ti0_tr0_s7_d7,
 };
 
-<<<<<<< HEAD
-epic12_device_blitfunction epic12_device_f1_ti0_tr1_blit_funcs[] =
-=======
 const epic12_device::blitfunction epic12_device::f1_ti0_tr1_blit_funcs[64] =
->>>>>>> upstream/master
 {
 	epic12_device::draw_sprite_f1_ti0_tr1_s0_d0, epic12_device::draw_sprite_f1_ti0_tr1_s1_d0, epic12_device::draw_sprite_f1_ti0_tr1_s2_d0, epic12_device::draw_sprite_f1_ti0_tr1_s3_d0, epic12_device::draw_sprite_f1_ti0_tr1_s4_d0, epic12_device::draw_sprite_f1_ti0_tr1_s5_d0, epic12_device::draw_sprite_f1_ti0_tr1_s6_d0, epic12_device::draw_sprite_f1_ti0_tr1_s7_d0,
 	epic12_device::draw_sprite_f1_ti0_tr1_s0_d1, epic12_device::draw_sprite_f1_ti0_tr1_s1_d1, epic12_device::draw_sprite_f1_ti0_tr1_s2_d1, epic12_device::draw_sprite_f1_ti0_tr1_s3_d1, epic12_device::draw_sprite_f1_ti0_tr1_s4_d1, epic12_device::draw_sprite_f1_ti0_tr1_s5_d1, epic12_device::draw_sprite_f1_ti0_tr1_s6_d1, epic12_device::draw_sprite_f1_ti0_tr1_s7_d1,
@@ -401,11 +290,7 @@ const epic12_device::blitfunction epic12_device::f1_ti0_tr1_blit_funcs[64] =
 	epic12_device::draw_sprite_f1_ti0_tr1_s0_d7, epic12_device::draw_sprite_f1_ti0_tr1_s1_d7, epic12_device::draw_sprite_f1_ti0_tr1_s2_d7, epic12_device::draw_sprite_f1_ti0_tr1_s3_d7, epic12_device::draw_sprite_f1_ti0_tr1_s4_d7, epic12_device::draw_sprite_f1_ti0_tr1_s5_d7, epic12_device::draw_sprite_f1_ti0_tr1_s6_d7, epic12_device::draw_sprite_f1_ti0_tr1_s7_d7,
 };
 
-<<<<<<< HEAD
-epic12_device_blitfunction epic12_device_f1_ti0_tr0_blit_funcs[] =
-=======
 const epic12_device::blitfunction epic12_device::f1_ti0_tr0_blit_funcs[64] =
->>>>>>> upstream/master
 {
 	epic12_device::draw_sprite_f1_ti0_tr0_s0_d0, epic12_device::draw_sprite_f1_ti0_tr0_s1_d0, epic12_device::draw_sprite_f1_ti0_tr0_s2_d0, epic12_device::draw_sprite_f1_ti0_tr0_s3_d0, epic12_device::draw_sprite_f1_ti0_tr0_s4_d0, epic12_device::draw_sprite_f1_ti0_tr0_s5_d0, epic12_device::draw_sprite_f1_ti0_tr0_s6_d0, epic12_device::draw_sprite_f1_ti0_tr0_s7_d0,
 	epic12_device::draw_sprite_f1_ti0_tr0_s0_d1, epic12_device::draw_sprite_f1_ti0_tr0_s1_d1, epic12_device::draw_sprite_f1_ti0_tr0_s2_d1, epic12_device::draw_sprite_f1_ti0_tr0_s3_d1, epic12_device::draw_sprite_f1_ti0_tr0_s4_d1, epic12_device::draw_sprite_f1_ti0_tr0_s5_d1, epic12_device::draw_sprite_f1_ti0_tr0_s6_d1, epic12_device::draw_sprite_f1_ti0_tr0_s7_d1,
@@ -425,28 +310,17 @@ inline void epic12_device::gfx_draw_shadow_copy(address_space &space, offs_t *ad
 	COPY_NEXT_WORD(space, addr);
 	COPY_NEXT_WORD(space, addr);
 	COPY_NEXT_WORD(space, addr);
-<<<<<<< HEAD
-	COPY_NEXT_WORD(space, addr); // UINT16 dst_x_start  =   COPY_NEXT_WORD(space, addr);
-	COPY_NEXT_WORD(space, addr); // UINT16 dst_y_start  =   COPY_NEXT_WORD(space, addr);
-	UINT16 w        =   COPY_NEXT_WORD(space, addr);
-	UINT16 h        =   COPY_NEXT_WORD(space, addr);
-=======
 	COPY_NEXT_WORD(space, addr); // uint16_t dst_x_start  =   COPY_NEXT_WORD(space, addr);
 	COPY_NEXT_WORD(space, addr); // uint16_t dst_y_start  =   COPY_NEXT_WORD(space, addr);
 	uint16_t w        =   COPY_NEXT_WORD(space, addr);
 	uint16_t h        =   COPY_NEXT_WORD(space, addr);
->>>>>>> upstream/master
 	COPY_NEXT_WORD(space, addr);
 	COPY_NEXT_WORD(space, addr);
 
 
 
 	// todo, calcualte clipping.
-<<<<<<< HEAD
-	epic12_device_blit_delay += w*h;
-=======
 	blit_delay += w*h;
->>>>>>> upstream/master
 
 }
 
@@ -459,18 +333,6 @@ inline void epic12_device::gfx_draw(offs_t *addr)
 	clr_t tint_clr;
 	int tinted = 0;
 
-<<<<<<< HEAD
-	UINT16 attr     =   READ_NEXT_WORD(addr);
-	UINT16 alpha    =   READ_NEXT_WORD(addr);
-	UINT16 src_x    =   READ_NEXT_WORD(addr);
-	UINT16 src_y    =   READ_NEXT_WORD(addr);
-	UINT16 dst_x_start  =   READ_NEXT_WORD(addr);
-	UINT16 dst_y_start  =   READ_NEXT_WORD(addr);
-	UINT16 w        =   READ_NEXT_WORD(addr);
-	UINT16 h        =   READ_NEXT_WORD(addr);
-	UINT16 tint_r   =   READ_NEXT_WORD(addr);
-	UINT16 tint_gb  =   READ_NEXT_WORD(addr);
-=======
 	uint16_t attr     =   READ_NEXT_WORD(addr);
 	uint16_t alpha    =   READ_NEXT_WORD(addr);
 	uint16_t src_x    =   READ_NEXT_WORD(addr);
@@ -481,7 +343,6 @@ inline void epic12_device::gfx_draw(offs_t *addr)
 	uint16_t h        =   READ_NEXT_WORD(addr);
 	uint16_t tint_r   =   READ_NEXT_WORD(addr);
 	uint16_t tint_gb  =   READ_NEXT_WORD(addr);
->>>>>>> upstream/master
 
 	// 0: +alpha
 	// 1: +source
@@ -501,13 +362,8 @@ inline void epic12_device::gfx_draw(offs_t *addr)
 	flipy   =    attr & 0x0400;
 	flipx   =    attr & 0x0800;
 
-<<<<<<< HEAD
-	const UINT8 d_alpha =   ((alpha & 0x00ff)       )>>3;
-	const UINT8 s_alpha =   ((alpha & 0xff00) >> 8  )>>3;
-=======
 	const uint8_t d_alpha =   ((alpha & 0x00ff)       )>>3;
 	const uint8_t s_alpha =   ((alpha & 0xff00) >> 8  )>>3;
->>>>>>> upstream/master
 
 //  src_p   =   0;
 	src_x   =   src_x & 0x1fff;
@@ -553,11 +409,7 @@ inline void epic12_device::gfx_draw(offs_t *addr)
 				}
 				else
 				{
-<<<<<<< HEAD
-					epic12_device_f0_ti1_tr1_blit_funcs[s_mode | (d_mode<<3)](draw_params);
-=======
 					f0_ti1_tr1_blit_funcs[s_mode | (d_mode<<3)](draw_params);
->>>>>>> upstream/master
 				}
 			}
 			else
@@ -568,11 +420,7 @@ inline void epic12_device::gfx_draw(offs_t *addr)
 				}
 				else
 				{
-<<<<<<< HEAD
-					epic12_device_f0_ti1_tr0_blit_funcs[s_mode | (d_mode<<3)](draw_params);
-=======
 					f0_ti1_tr0_blit_funcs[s_mode | (d_mode<<3)](draw_params);
->>>>>>> upstream/master
 				}
 			}
 		}
@@ -586,11 +434,7 @@ inline void epic12_device::gfx_draw(offs_t *addr)
 				}
 				else
 				{
-<<<<<<< HEAD
-					epic12_device_f1_ti1_tr1_blit_funcs[s_mode | (d_mode<<3)](draw_params);
-=======
 					f1_ti1_tr1_blit_funcs[s_mode | (d_mode<<3)](draw_params);
->>>>>>> upstream/master
 				}
 			}
 			else
@@ -601,11 +445,7 @@ inline void epic12_device::gfx_draw(offs_t *addr)
 				}
 				else
 				{
-<<<<<<< HEAD
-					epic12_device_f1_ti1_tr0_blit_funcs[s_mode | (d_mode<<3)](draw_params);
-=======
 					f1_ti1_tr0_blit_funcs[s_mode | (d_mode<<3)](draw_params);
->>>>>>> upstream/master
 				}
 			}
 		}
@@ -655,11 +495,7 @@ inline void epic12_device::gfx_draw(offs_t *addr)
 				}
 				else
 				{
-<<<<<<< HEAD
-					epic12_device_f0_ti0_tr1_blit_funcs[s_mode | (d_mode<<3)](draw_params);
-=======
 					f0_ti0_tr1_blit_funcs[s_mode | (d_mode<<3)](draw_params);
->>>>>>> upstream/master
 				}
 			}
 			else
@@ -670,11 +506,7 @@ inline void epic12_device::gfx_draw(offs_t *addr)
 				}
 				else
 				{
-<<<<<<< HEAD
-					epic12_device_f0_ti0_tr0_blit_funcs[s_mode | (d_mode<<3)](draw_params);
-=======
 					f0_ti0_tr0_blit_funcs[s_mode | (d_mode<<3)](draw_params);
->>>>>>> upstream/master
 				}
 			}
 		}
@@ -688,11 +520,7 @@ inline void epic12_device::gfx_draw(offs_t *addr)
 				}
 				else
 				{
-<<<<<<< HEAD
-					epic12_device_f1_ti0_tr1_blit_funcs[s_mode | (d_mode<<3)](draw_params);
-=======
 					f1_ti0_tr1_blit_funcs[s_mode | (d_mode<<3)](draw_params);
->>>>>>> upstream/master
 				}
 			}
 			else
@@ -703,11 +531,7 @@ inline void epic12_device::gfx_draw(offs_t *addr)
 				}
 				else
 				{
-<<<<<<< HEAD
-					epic12_device_f1_ti0_tr0_blit_funcs[s_mode | (d_mode<<3)](draw_params);
-=======
 					f1_ti0_tr0_blit_funcs[s_mode | (d_mode<<3)](draw_params);
->>>>>>> upstream/master
 				}
 			}
 		}
@@ -725,11 +549,7 @@ void epic12_device::gfx_create_shadow_copy(address_space &space)
 
 	while (1)
 	{
-<<<<<<< HEAD
-		UINT16 data = COPY_NEXT_WORD(space, &addr);
-=======
 		uint16_t data = COPY_NEXT_WORD(space, &addr);
->>>>>>> upstream/master
 
 		switch( data & 0xf000 )
 		{
@@ -771,11 +591,7 @@ void epic12_device::gfx_exec(void)
 
 	while (1)
 	{
-<<<<<<< HEAD
-		UINT16 data = READ_NEXT_WORD(&addr);
-=======
 		uint16_t data = READ_NEXT_WORD(&addr);
->>>>>>> upstream/master
 
 		switch( data & 0xf000 )
 		{
@@ -817,11 +633,7 @@ void epic12_device::gfx_exec_unsafe(void)
 
 	while (1)
 	{
-<<<<<<< HEAD
-		UINT16 data = READ_NEXT_WORD(&addr);
-=======
 		uint16_t data = READ_NEXT_WORD(&addr);
->>>>>>> upstream/master
 
 		switch( data & 0xf000 )
 		{
@@ -860,11 +672,7 @@ void *epic12_device::blit_request_callback(void *param, int threadid)
 	epic12_device *object = reinterpret_cast<epic12_device *>(param);
 
 	object->gfx_exec();
-<<<<<<< HEAD
-	return NULL;
-=======
 	return nullptr;
->>>>>>> upstream/master
 }
 
 
@@ -873,15 +681,9 @@ void *epic12_device::blit_request_callback_unsafe(void *param, int threadid)
 {
 	epic12_device *object = reinterpret_cast<epic12_device *>(param);
 
-<<<<<<< HEAD
-	epic12_device_blit_delay = 0;
-	object->gfx_exec_unsafe();
-	return NULL;
-=======
 	blit_delay = 0;
 	object->gfx_exec_unsafe();
 	return nullptr;
->>>>>>> upstream/master
 }
 
 
@@ -919,15 +721,6 @@ WRITE32_MEMBER( epic12_device::gfx_exec_w )
 				osd_work_item_release(m_blitter_request);
 			}
 
-<<<<<<< HEAD
-			epic12_device_blit_delay = 0;
-			gfx_create_shadow_copy(space); // create a copy of the blit list so we can safely thread it.
-
-			if (epic12_device_blit_delay)
-			{
-				m_blitter_busy = 1;
-				m_blitter_delay_timer->adjust(attotime::from_nsec(epic12_device_blit_delay*8)); // NOT accurate timing (currently ignored anyway)
-=======
 			blit_delay = 0;
 			gfx_create_shadow_copy(space); // create a copy of the blit list so we can safely thread it.
 
@@ -935,7 +728,6 @@ WRITE32_MEMBER( epic12_device::gfx_exec_w )
 			{
 				m_blitter_busy = 1;
 				m_blitter_delay_timer->adjust(attotime::from_nsec(blit_delay*8)); // NOT accurate timing (currently ignored anyway)
->>>>>>> upstream/master
 			}
 
 			m_gfx_addr_shadowcopy = m_gfx_addr;
@@ -968,17 +760,10 @@ WRITE32_MEMBER( epic12_device::gfx_exec_w_unsafe )
 				osd_work_item_release(m_blitter_request);
 			}
 
-<<<<<<< HEAD
-			if (epic12_device_blit_delay)
-			{
-				m_blitter_busy = 1;
-				int delay = epic12_device_blit_delay*(15 * m_delay_scale / 50);
-=======
 			if (blit_delay)
 			{
 				m_blitter_busy = 1;
 				int delay = blit_delay*(15 * m_delay_scale / 50);
->>>>>>> upstream/master
 				//printf("delay %d\n", delay);
 				m_blitter_delay_timer->adjust(attotime::from_nsec(delay));
 			}
@@ -1159,11 +944,7 @@ void epic12_device::install_handlers(int addr1, int addr2)
 		write = write32_delegate(FUNC(epic12_device::blitter_w), this);
 	}
 
-<<<<<<< HEAD
-	space.install_readwrite_handler(addr1, addr2, read , write, U64(0xffffffffffffffff));
-=======
 	space.install_readwrite_handler(addr1, addr2, read , write, 0xffffffffffffffffU);
->>>>>>> upstream/master
 }
 
 READ64_MEMBER( epic12_device::fpga_r )

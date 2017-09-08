@@ -7,10 +7,7 @@
  *
  */
 
-<<<<<<< HEAD
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #include "psx.h"
 #include "irq.h"
 
@@ -18,11 +15,7 @@
 
 #define PSX_IRQ_MASK ( 0x7fd )
 
-<<<<<<< HEAD
-INLINE void ATTR_PRINTF(3,4) verboselog( device_t& device, int n_level, const char *s_fmt, ... )
-=======
 static inline void ATTR_PRINTF(3,4) verboselog( device_t& device, int n_level, const char *s_fmt, ... )
->>>>>>> upstream/master
 {
 	if( VERBOSE_LEVEL >= n_level )
 	{
@@ -35,17 +28,10 @@ static inline void ATTR_PRINTF(3,4) verboselog( device_t& device, int n_level, c
 	}
 }
 
-<<<<<<< HEAD
-const device_type PSX_IRQ = &device_creator<psxirq_device>;
-
-psxirq_device::psxirq_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-	device_t(mconfig, PSX_IRQ, "Sony PSX IRQ", tag, owner, clock, "psxirq", __FILE__), n_irqdata(0), n_irqmask(0),
-=======
 DEFINE_DEVICE_TYPE(PSX_IRQ, psxirq_device, "psxirq", "Sony PSX IRQ")
 
 psxirq_device::psxirq_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	device_t(mconfig, PSX_IRQ, tag, owner, clock), n_irqdata(0), n_irqmask(0),
->>>>>>> upstream/master
 	m_irq_handler(*this)
 {
 }
@@ -71,11 +57,7 @@ void psxirq_device::device_start()
 	save_item( NAME( n_irqmask ) );
 }
 
-<<<<<<< HEAD
-void psxirq_device::set( UINT32 bitmask )
-=======
 void psxirq_device::set( uint32_t bitmask )
->>>>>>> upstream/master
 {
 	verboselog( *this, 2, "psx_irq_set %08x\n", bitmask );
 	n_irqdata |= bitmask;

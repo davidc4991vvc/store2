@@ -24,17 +24,11 @@ class pc_format : public upd765_format
 public:
 	pc_format();
 
-<<<<<<< HEAD
-	virtual const char *name() const;
-	virtual const char *description() const;
-	virtual const char *extensions() const;
-=======
 	virtual int identify(io_generic *io, uint32_t form_factor) override;
 
 	virtual const char *name() const override;
 	virtual const char *description() const override;
 	virtual const char *extensions() const override;
->>>>>>> upstream/master
 
 private:
 	static const format formats[];

@@ -5,12 +5,6 @@
 
 #include "../Common/MyUnknown.h"
 
-<<<<<<< HEAD
-#define DECL_INTERFACE_SUB(i, base, groupId, subId) \
-DEFINE_GUID(IID_ ## i, \
-0x23170F69, 0x40C1, 0x278A, 0, 0, 0, (groupId), 0, (subId), 0, 0); \
-struct i: public base
-=======
 #define k_7zip_GUID_Data1 0x23170F69
 #define k_7zip_GUID_Data2 0x40C1
 
@@ -28,7 +22,6 @@ struct i: public base
     k_7zip_GUID_Data3_Common, \
     0, 0, 0, (groupId), 0, (subId), 0, 0); \
   struct i: public base
->>>>>>> upstream/master
 
 #define DECL_INTERFACE(i, groupId, subId) DECL_INTERFACE_SUB(i, IUnknown, groupId, subId)
 

@@ -7,10 +7,7 @@
 
 **********************************************************************/
 
-<<<<<<< HEAD
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #include "ggext.h"
 // slot devices
 #include "smsctrladp.h"
@@ -21,11 +18,7 @@
 //  GLOBAL VARIABLES
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type GG_EXT_PORT = &device_creator<gg_ext_port_device>;
-=======
 DEFINE_DEVICE_TYPE(GG_EXT_PORT, gg_ext_port_device, "gg_ext_port", "Game Gear EXT Port")
->>>>>>> upstream/master
 
 
 
@@ -62,20 +55,12 @@ device_gg_ext_port_interface::~device_gg_ext_port_interface()
 //  gg_ext_port_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-gg_ext_port_device::gg_ext_port_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-						device_t(mconfig, GG_EXT_PORT, "EXT Port", tag, owner, clock, "gg_ext_port", __FILE__),
-						device_slot_interface(mconfig, *this), m_device(nullptr),
-						m_th_pin_handler(*this),
-						m_pixel_handler(*this)
-=======
 gg_ext_port_device::gg_ext_port_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	device_t(mconfig, GG_EXT_PORT, tag, owner, clock),
 	device_slot_interface(mconfig, *this),
 	m_device(nullptr),
 	m_th_pin_handler(*this),
 	m_pixel_handler(*this)
->>>>>>> upstream/master
 {
 }
 
@@ -102,25 +87,15 @@ void gg_ext_port_device::device_start()
 }
 
 
-<<<<<<< HEAD
-UINT8 gg_ext_port_device::port_r()
-{
-	UINT8 data = 0xff;
-=======
 uint8_t gg_ext_port_device::port_r()
 {
 	uint8_t data = 0xff;
->>>>>>> upstream/master
 	if (m_device)
 		data = m_device->peripheral_r();
 	return data;
 }
 
-<<<<<<< HEAD
-void gg_ext_port_device::port_w( UINT8 data )
-=======
 void gg_ext_port_device::port_w( uint8_t data )
->>>>>>> upstream/master
 {
 	if (m_device)
 		m_device->peripheral_w(data);
@@ -132,11 +107,7 @@ void gg_ext_port_device::th_pin_w(int state)
 	m_th_pin_handler(state);
 }
 
-<<<<<<< HEAD
-UINT32 gg_ext_port_device::pixel_r()
-=======
 uint32_t gg_ext_port_device::pixel_r()
->>>>>>> upstream/master
 {
 	return m_pixel_handler();
 }

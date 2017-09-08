@@ -6,11 +6,7 @@ extern "C" {
 #endif
 
 /*
-<<<<<<< HEAD
-** Copyright (c) 2013 The Khronos Group Inc.
-=======
 ** Copyright (c) 2013-2016 The Khronos Group Inc.
->>>>>>> upstream/master
 **
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and/or associated documentation files (the
@@ -37,11 +33,7 @@ extern "C" {
 ** used to make the header, and the header can be found at
 **   http://www.opengl.org/registry/
 **
-<<<<<<< HEAD
-** Khronos $Revision: 23728 $ on $Date: 2013-10-28 14:53:57 -0700 (Mon, 28 Oct 2013) $
-=======
 ** Khronos $Revision: 32433 $ on $Date: 2016-02-09 23:02:08 -0800 (Tue, 09 Feb 2016) $
->>>>>>> upstream/master
 */
 
 #if defined(_WIN32) && !defined(APIENTRY) && !defined(__CYGWIN__) && !defined(__SCITECH_SNAP__)
@@ -110,11 +102,7 @@ typedef void (APIENTRYP PFNGLTEXPARAMETERIPROC) (GLenum target, GLenum pname, GL
 typedef void (APIENTRYP PFNGLTEXPARAMETERIVPROC) (GLenum target, GLenum pname, const GLint *params);
 typedef void (APIENTRYP PFNGLTEXIMAGE1DPROC) (GLenum target, GLint level, GLint internalformat, GLsizei width, GLint border, GLenum format, GLenum type, const void *pixels);
 typedef void (APIENTRYP PFNGLTEXIMAGE2DPROC) (GLenum target, GLint level, GLint internalformat, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, const void *pixels);
-<<<<<<< HEAD
-typedef void (APIENTRYP PFNGLDRAWBUFFERPROC) (GLenum mode);
-=======
 typedef void (APIENTRYP PFNGLDRAWBUFFERPROC) (GLenum buf);
->>>>>>> upstream/master
 typedef void (APIENTRYP PFNGLCLEARPROC) (GLbitfield mask);
 typedef void (APIENTRYP PFNGLCLEARCOLORPROC) (GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha);
 typedef void (APIENTRYP PFNGLCLEARSTENCILPROC) (GLint s);
@@ -133,11 +121,7 @@ typedef void (APIENTRYP PFNGLSTENCILOPPROC) (GLenum fail, GLenum zfail, GLenum z
 typedef void (APIENTRYP PFNGLDEPTHFUNCPROC) (GLenum func);
 typedef void (APIENTRYP PFNGLPIXELSTOREFPROC) (GLenum pname, GLfloat param);
 typedef void (APIENTRYP PFNGLPIXELSTOREIPROC) (GLenum pname, GLint param);
-<<<<<<< HEAD
-typedef void (APIENTRYP PFNGLREADBUFFERPROC) (GLenum mode);
-=======
 typedef void (APIENTRYP PFNGLREADBUFFERPROC) (GLenum src);
->>>>>>> upstream/master
 typedef void (APIENTRYP PFNGLREADPIXELSPROC) (GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, void *pixels);
 typedef void (APIENTRYP PFNGLGETBOOLEANVPROC) (GLenum pname, GLboolean *data);
 typedef void (APIENTRYP PFNGLGETDOUBLEVPROC) (GLenum pname, GLdouble *data);
@@ -167,11 +151,7 @@ GLAPI void APIENTRY glTexParameteri (GLenum target, GLenum pname, GLint param);
 GLAPI void APIENTRY glTexParameteriv (GLenum target, GLenum pname, const GLint *params);
 GLAPI void APIENTRY glTexImage1D (GLenum target, GLint level, GLint internalformat, GLsizei width, GLint border, GLenum format, GLenum type, const void *pixels);
 GLAPI void APIENTRY glTexImage2D (GLenum target, GLint level, GLint internalformat, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, const void *pixels);
-<<<<<<< HEAD
-GLAPI void APIENTRY glDrawBuffer (GLenum mode);
-=======
 GLAPI void APIENTRY glDrawBuffer (GLenum buf);
->>>>>>> upstream/master
 GLAPI void APIENTRY glClear (GLbitfield mask);
 GLAPI void APIENTRY glClearColor (GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha);
 GLAPI void APIENTRY glClearStencil (GLint s);
@@ -190,11 +170,7 @@ GLAPI void APIENTRY glStencilOp (GLenum fail, GLenum zfail, GLenum zpass);
 GLAPI void APIENTRY glDepthFunc (GLenum func);
 GLAPI void APIENTRY glPixelStoref (GLenum pname, GLfloat param);
 GLAPI void APIENTRY glPixelStorei (GLenum pname, GLint param);
-<<<<<<< HEAD
-GLAPI void APIENTRY glReadBuffer (GLenum mode);
-=======
 GLAPI void APIENTRY glReadBuffer (GLenum src);
->>>>>>> upstream/master
 GLAPI void APIENTRY glReadPixels (GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, void *pixels);
 GLAPI void APIENTRY glGetBooleanv (GLenum pname, GLboolean *data);
 GLAPI void APIENTRY glGetDoublev (GLenum pname, GLdouble *data);
@@ -1184,8 +1160,6 @@ typedef unsigned short GLhalf;
 #define GL_COLOR_ATTACHMENT13             0x8CED
 #define GL_COLOR_ATTACHMENT14             0x8CEE
 #define GL_COLOR_ATTACHMENT15             0x8CEF
-<<<<<<< HEAD
-=======
 #define GL_COLOR_ATTACHMENT16             0x8CF0
 #define GL_COLOR_ATTACHMENT17             0x8CF1
 #define GL_COLOR_ATTACHMENT18             0x8CF2
@@ -1202,7 +1176,6 @@ typedef unsigned short GLhalf;
 #define GL_COLOR_ATTACHMENT29             0x8CFD
 #define GL_COLOR_ATTACHMENT30             0x8CFE
 #define GL_COLOR_ATTACHMENT31             0x8CFF
->>>>>>> upstream/master
 #define GL_DEPTH_ATTACHMENT               0x8D00
 #define GL_STENCIL_ATTACHMENT             0x8D20
 #define GL_FRAMEBUFFER                    0x8D40
@@ -1464,19 +1437,13 @@ GLAPI GLboolean APIENTRY glIsVertexArray (GLuint array);
 #define GL_UNIFORM_BUFFER_START           0x8A29
 #define GL_UNIFORM_BUFFER_SIZE            0x8A2A
 #define GL_MAX_VERTEX_UNIFORM_BLOCKS      0x8A2B
-<<<<<<< HEAD
-=======
 #define GL_MAX_GEOMETRY_UNIFORM_BLOCKS    0x8A2C
->>>>>>> upstream/master
 #define GL_MAX_FRAGMENT_UNIFORM_BLOCKS    0x8A2D
 #define GL_MAX_COMBINED_UNIFORM_BLOCKS    0x8A2E
 #define GL_MAX_UNIFORM_BUFFER_BINDINGS    0x8A2F
 #define GL_MAX_UNIFORM_BLOCK_SIZE         0x8A30
 #define GL_MAX_COMBINED_VERTEX_UNIFORM_COMPONENTS 0x8A31
-<<<<<<< HEAD
-=======
 #define GL_MAX_COMBINED_GEOMETRY_UNIFORM_COMPONENTS 0x8A32
->>>>>>> upstream/master
 #define GL_MAX_COMBINED_FRAGMENT_UNIFORM_COMPONENTS 0x8A33
 #define GL_UNIFORM_BUFFER_OFFSET_ALIGNMENT 0x8A34
 #define GL_ACTIVE_UNIFORM_BLOCK_MAX_NAME_LENGTH 0x8A35
@@ -1495,10 +1462,7 @@ GLAPI GLboolean APIENTRY glIsVertexArray (GLuint array);
 #define GL_UNIFORM_BLOCK_ACTIVE_UNIFORMS  0x8A42
 #define GL_UNIFORM_BLOCK_ACTIVE_UNIFORM_INDICES 0x8A43
 #define GL_UNIFORM_BLOCK_REFERENCED_BY_VERTEX_SHADER 0x8A44
-<<<<<<< HEAD
-=======
 #define GL_UNIFORM_BLOCK_REFERENCED_BY_GEOMETRY_SHADER 0x8A45
->>>>>>> upstream/master
 #define GL_UNIFORM_BLOCK_REFERENCED_BY_FRAGMENT_SHADER 0x8A46
 #define GL_INVALID_INDEX                  0xFFFFFFFFu
 typedef void (APIENTRYP PFNGLDRAWARRAYSINSTANCEDPROC) (GLenum mode, GLint first, GLsizei count, GLsizei instancecount);
@@ -1653,11 +1617,7 @@ typedef void (APIENTRYP PFNGLFRAMEBUFFERTEXTUREPROC) (GLenum target, GLenum atta
 typedef void (APIENTRYP PFNGLTEXIMAGE2DMULTISAMPLEPROC) (GLenum target, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height, GLboolean fixedsamplelocations);
 typedef void (APIENTRYP PFNGLTEXIMAGE3DMULTISAMPLEPROC) (GLenum target, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height, GLsizei depth, GLboolean fixedsamplelocations);
 typedef void (APIENTRYP PFNGLGETMULTISAMPLEFVPROC) (GLenum pname, GLuint index, GLfloat *val);
-<<<<<<< HEAD
-typedef void (APIENTRYP PFNGLSAMPLEMASKIPROC) (GLuint index, GLbitfield mask);
-=======
 typedef void (APIENTRYP PFNGLSAMPLEMASKIPROC) (GLuint maskNumber, GLbitfield mask);
->>>>>>> upstream/master
 #ifdef GL_GLEXT_PROTOTYPES
 GLAPI void APIENTRY glDrawElementsBaseVertex (GLenum mode, GLsizei count, GLenum type, const void *indices, GLint basevertex);
 GLAPI void APIENTRY glDrawRangeElementsBaseVertex (GLenum mode, GLuint start, GLuint end, GLsizei count, GLenum type, const void *indices, GLint basevertex);
@@ -1677,11 +1637,7 @@ GLAPI void APIENTRY glFramebufferTexture (GLenum target, GLenum attachment, GLui
 GLAPI void APIENTRY glTexImage2DMultisample (GLenum target, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height, GLboolean fixedsamplelocations);
 GLAPI void APIENTRY glTexImage3DMultisample (GLenum target, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height, GLsizei depth, GLboolean fixedsamplelocations);
 GLAPI void APIENTRY glGetMultisamplefv (GLenum pname, GLuint index, GLfloat *val);
-<<<<<<< HEAD
-GLAPI void APIENTRY glSampleMaski (GLuint index, GLbitfield mask);
-=======
 GLAPI void APIENTRY glSampleMaski (GLuint maskNumber, GLbitfield mask);
->>>>>>> upstream/master
 #endif
 #endif /* GL_VERSION_3_2 */
 
@@ -2157,13 +2113,10 @@ GLAPI void APIENTRY glGetDoublei_v (GLenum target, GLuint index, GLdouble *data)
 
 #ifndef GL_VERSION_4_2
 #define GL_VERSION_4_2 1
-<<<<<<< HEAD
-=======
 #define GL_COPY_READ_BUFFER_BINDING       0x8F36
 #define GL_COPY_WRITE_BUFFER_BINDING      0x8F37
 #define GL_TRANSFORM_FEEDBACK_ACTIVE      0x8E24
 #define GL_TRANSFORM_FEEDBACK_PAUSED      0x8E23
->>>>>>> upstream/master
 #define GL_UNPACK_COMPRESSED_BLOCK_WIDTH  0x9127
 #define GL_UNPACK_COMPRESSED_BLOCK_HEIGHT 0x9128
 #define GL_UNPACK_COMPRESSED_BLOCK_DEPTH  0x9129
@@ -2267,13 +2220,10 @@ GLAPI void APIENTRY glGetDoublei_v (GLenum target, GLuint index, GLdouble *data)
 #define GL_MAX_GEOMETRY_IMAGE_UNIFORMS    0x90CD
 #define GL_MAX_FRAGMENT_IMAGE_UNIFORMS    0x90CE
 #define GL_MAX_COMBINED_IMAGE_UNIFORMS    0x90CF
-<<<<<<< HEAD
-=======
 #define GL_COMPRESSED_RGBA_BPTC_UNORM     0x8E8C
 #define GL_COMPRESSED_SRGB_ALPHA_BPTC_UNORM 0x8E8D
 #define GL_COMPRESSED_RGB_BPTC_SIGNED_FLOAT 0x8E8E
 #define GL_COMPRESSED_RGB_BPTC_UNSIGNED_FLOAT 0x8E8F
->>>>>>> upstream/master
 #define GL_TEXTURE_IMMUTABLE_FORMAT       0x912F
 typedef void (APIENTRYP PFNGLDRAWARRAYSINSTANCEDBASEINSTANCEPROC) (GLenum mode, GLint first, GLsizei count, GLsizei instancecount, GLuint baseinstance);
 typedef void (APIENTRYP PFNGLDRAWELEMENTSINSTANCEDBASEINSTANCEPROC) (GLenum mode, GLsizei count, GLenum type, const void *indices, GLsizei instancecount, GLuint baseinstance);
@@ -2338,10 +2288,7 @@ typedef void (APIENTRY  *GLDEBUGPROC)(GLenum source,GLenum type,GLuint id,GLenum
 #define GL_ATOMIC_COUNTER_BUFFER_REFERENCED_BY_COMPUTE_SHADER 0x90ED
 #define GL_DISPATCH_INDIRECT_BUFFER       0x90EE
 #define GL_DISPATCH_INDIRECT_BUFFER_BINDING 0x90EF
-<<<<<<< HEAD
-=======
 #define GL_COMPUTE_SHADER_BIT             0x00000020
->>>>>>> upstream/master
 #define GL_DEBUG_OUTPUT_SYNCHRONOUS       0x8242
 #define GL_DEBUG_NEXT_LOGGED_MESSAGE_LENGTH 0x8243
 #define GL_DEBUG_CALLBACK_FUNCTION        0x8244
@@ -2566,10 +2513,7 @@ typedef void (APIENTRY  *GLDEBUGPROC)(GLenum source,GLenum type,GLuint id,GLenum
 #define GL_VERTEX_BINDING_STRIDE          0x82D8
 #define GL_MAX_VERTEX_ATTRIB_RELATIVE_OFFSET 0x82D9
 #define GL_MAX_VERTEX_ATTRIB_BINDINGS     0x82DA
-<<<<<<< HEAD
-=======
 #define GL_VERTEX_BINDING_BUFFER          0x8F4F
->>>>>>> upstream/master
 typedef void (APIENTRYP PFNGLCLEARBUFFERDATAPROC) (GLenum target, GLenum internalformat, GLenum format, GLenum type, const void *data);
 typedef void (APIENTRYP PFNGLCLEARBUFFERSUBDATAPROC) (GLenum target, GLenum internalformat, GLintptr offset, GLsizeiptr size, GLenum format, GLenum type, const void *data);
 typedef void (APIENTRYP PFNGLDISPATCHCOMPUTEPROC) (GLuint num_groups_x, GLuint num_groups_y, GLuint num_groups_z);
@@ -2703,8 +2647,6 @@ GLAPI void APIENTRY glBindVertexBuffers (GLuint first, GLsizei count, const GLui
 #endif
 #endif /* GL_VERSION_4_4 */
 
-<<<<<<< HEAD
-=======
 #ifndef GL_VERSION_4_5
 #define GL_VERSION_4_5 1
 #define GL_CONTEXT_LOST                   0x0507
@@ -2953,18 +2895,14 @@ GLAPI void APIENTRY glTextureBarrier (void);
 #endif
 #endif /* GL_VERSION_4_5 */
 
->>>>>>> upstream/master
 #ifndef GL_ARB_ES2_compatibility
 #define GL_ARB_ES2_compatibility 1
 #endif /* GL_ARB_ES2_compatibility */
 
-<<<<<<< HEAD
-=======
 #ifndef GL_ARB_ES3_1_compatibility
 #define GL_ARB_ES3_1_compatibility 1
 #endif /* GL_ARB_ES3_1_compatibility */
 
->>>>>>> upstream/master
 #ifndef GL_ARB_ES3_compatibility
 #define GL_ARB_ES3_compatibility 1
 #endif /* GL_ARB_ES3_compatibility */
@@ -3045,23 +2983,16 @@ GLAPI GLsync APIENTRY glCreateSyncFromCLeventARB (struct _cl_context *context, s
 #define GL_ARB_clear_texture 1
 #endif /* GL_ARB_clear_texture */
 
-<<<<<<< HEAD
-=======
 #ifndef GL_ARB_clip_control
 #define GL_ARB_clip_control 1
 #endif /* GL_ARB_clip_control */
 
->>>>>>> upstream/master
 #ifndef GL_ARB_compressed_texture_pixel_storage
 #define GL_ARB_compressed_texture_pixel_storage 1
 #endif /* GL_ARB_compressed_texture_pixel_storage */
 
 #ifndef GL_ARB_compute_shader
 #define GL_ARB_compute_shader 1
-<<<<<<< HEAD
-#define GL_COMPUTE_SHADER_BIT             0x00000020
-=======
->>>>>>> upstream/master
 #endif /* GL_ARB_compute_shader */
 
 #ifndef GL_ARB_compute_variable_group_size
@@ -3076,37 +3007,26 @@ GLAPI void APIENTRY glDispatchComputeGroupSizeARB (GLuint num_groups_x, GLuint n
 #endif
 #endif /* GL_ARB_compute_variable_group_size */
 
-<<<<<<< HEAD
-=======
 #ifndef GL_ARB_conditional_render_inverted
 #define GL_ARB_conditional_render_inverted 1
 #endif /* GL_ARB_conditional_render_inverted */
 
->>>>>>> upstream/master
 #ifndef GL_ARB_conservative_depth
 #define GL_ARB_conservative_depth 1
 #endif /* GL_ARB_conservative_depth */
 
 #ifndef GL_ARB_copy_buffer
 #define GL_ARB_copy_buffer 1
-<<<<<<< HEAD
-#define GL_COPY_READ_BUFFER_BINDING       0x8F36
-#define GL_COPY_WRITE_BUFFER_BINDING      0x8F37
-=======
->>>>>>> upstream/master
 #endif /* GL_ARB_copy_buffer */
 
 #ifndef GL_ARB_copy_image
 #define GL_ARB_copy_image 1
 #endif /* GL_ARB_copy_image */
 
-<<<<<<< HEAD
-=======
 #ifndef GL_ARB_cull_distance
 #define GL_ARB_cull_distance 1
 #endif /* GL_ARB_cull_distance */
 
->>>>>>> upstream/master
 #ifndef GL_ARB_debug_output
 #define GL_ARB_debug_output 1
 typedef void (APIENTRY  *GLDEBUGPROCARB)(GLenum source,GLenum type,GLuint id,GLenum severity,GLsizei length,const GLchar *message,const void *userParam);
@@ -3152,8 +3072,6 @@ GLAPI GLuint APIENTRY glGetDebugMessageLogARB (GLuint count, GLsizei bufSize, GL
 #define GL_ARB_depth_clamp 1
 #endif /* GL_ARB_depth_clamp */
 
-<<<<<<< HEAD
-=======
 #ifndef GL_ARB_derivative_control
 #define GL_ARB_derivative_control 1
 #endif /* GL_ARB_derivative_control */
@@ -3162,7 +3080,6 @@ GLAPI GLuint APIENTRY glGetDebugMessageLogARB (GLuint count, GLsizei bufSize, GL
 #define GL_ARB_direct_state_access 1
 #endif /* GL_ARB_direct_state_access */
 
->>>>>>> upstream/master
 #ifndef GL_ARB_draw_buffers_blend
 #define GL_ARB_draw_buffers_blend 1
 typedef void (APIENTRYP PFNGLBLENDEQUATIONIARBPROC) (GLuint buf, GLenum mode);
@@ -3221,13 +3138,10 @@ GLAPI void APIENTRY glBlendFuncSeparateiARB (GLuint buf, GLenum srcRGB, GLenum d
 #define GL_ARB_get_program_binary 1
 #endif /* GL_ARB_get_program_binary */
 
-<<<<<<< HEAD
-=======
 #ifndef GL_ARB_get_texture_sub_image
 #define GL_ARB_get_texture_sub_image 1
 #endif /* GL_ARB_get_texture_sub_image */
 
->>>>>>> upstream/master
 #ifndef GL_ARB_gpu_shader5
 #define GL_ARB_gpu_shader5 1
 #endif /* GL_ARB_gpu_shader5 */
@@ -3291,8 +3205,6 @@ GLAPI void APIENTRY glMultiDrawElementsIndirectCountARB (GLenum mode, GLenum typ
 #define GL_ARB_occlusion_query2 1
 #endif /* GL_ARB_occlusion_query2 */
 
-<<<<<<< HEAD
-=======
 #ifndef GL_ARB_pipeline_statistics_query
 #define GL_ARB_pipeline_statistics_query 1
 #define GL_VERTICES_SUBMITTED_ARB         0x82EE
@@ -3307,7 +3219,6 @@ GLAPI void APIENTRY glMultiDrawElementsIndirectCountARB (GLenum mode, GLenum typ
 #define GL_CLIPPING_OUTPUT_PRIMITIVES_ARB 0x82F7
 #endif /* GL_ARB_pipeline_statistics_query */
 
->>>>>>> upstream/master
 #ifndef GL_ARB_program_interface_query
 #define GL_ARB_program_interface_query 1
 #endif /* GL_ARB_program_interface_query */
@@ -3423,13 +3334,10 @@ GLAPI void APIENTRY glMinSampleShadingARB (GLfloat value);
 #define GL_ARB_shader_subroutine 1
 #endif /* GL_ARB_shader_subroutine */
 
-<<<<<<< HEAD
-=======
 #ifndef GL_ARB_shader_texture_image_samples
 #define GL_ARB_shader_texture_image_samples 1
 #endif /* GL_ARB_shader_texture_image_samples */
 
->>>>>>> upstream/master
 #ifndef GL_ARB_shading_language_420pack
 #define GL_ARB_shading_language_420pack 1
 #endif /* GL_ARB_shading_language_420pack */
@@ -3459,8 +3367,6 @@ GLAPI void APIENTRY glGetNamedStringivARB (GLint namelen, const GLchar *name, GL
 #define GL_ARB_shading_language_packing 1
 #endif /* GL_ARB_shading_language_packing */
 
-<<<<<<< HEAD
-=======
 #ifndef GL_ARB_sparse_buffer
 #define GL_ARB_sparse_buffer 1
 #define GL_SPARSE_STORAGE_BIT_ARB         0x0400
@@ -3475,16 +3381,11 @@ GLAPI void APIENTRY glNamedBufferPageCommitmentARB (GLuint buffer, GLintptr offs
 #endif
 #endif /* GL_ARB_sparse_buffer */
 
->>>>>>> upstream/master
 #ifndef GL_ARB_sparse_texture
 #define GL_ARB_sparse_texture 1
 #define GL_TEXTURE_SPARSE_ARB             0x91A6
 #define GL_VIRTUAL_PAGE_SIZE_INDEX_ARB    0x91A7
-<<<<<<< HEAD
-#define GL_MIN_SPARSE_LEVEL_ARB           0x919B
-=======
 #define GL_NUM_SPARSE_LEVELS_ARB          0x91AA
->>>>>>> upstream/master
 #define GL_NUM_VIRTUAL_PAGE_SIZES_ARB     0x91A8
 #define GL_VIRTUAL_PAGE_SIZE_X_ARB        0x9195
 #define GL_VIRTUAL_PAGE_SIZE_Y_ARB        0x9196
@@ -3493,15 +3394,9 @@ GLAPI void APIENTRY glNamedBufferPageCommitmentARB (GLuint buffer, GLintptr offs
 #define GL_MAX_SPARSE_3D_TEXTURE_SIZE_ARB 0x9199
 #define GL_MAX_SPARSE_ARRAY_TEXTURE_LAYERS_ARB 0x919A
 #define GL_SPARSE_TEXTURE_FULL_ARRAY_CUBE_MIPMAPS_ARB 0x91A9
-<<<<<<< HEAD
-typedef void (APIENTRYP PFNGLTEXPAGECOMMITMENTARBPROC) (GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLboolean resident);
-#ifdef GL_GLEXT_PROTOTYPES
-GLAPI void APIENTRY glTexPageCommitmentARB (GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLboolean resident);
-=======
 typedef void (APIENTRYP PFNGLTEXPAGECOMMITMENTARBPROC) (GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLboolean commit);
 #ifdef GL_GLEXT_PROTOTYPES
 GLAPI void APIENTRY glTexPageCommitmentARB (GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLboolean commit);
->>>>>>> upstream/master
 #endif
 #endif /* GL_ARB_sparse_texture */
 
@@ -3517,13 +3412,10 @@ GLAPI void APIENTRY glTexPageCommitmentARB (GLenum target, GLint level, GLint xo
 #define GL_ARB_tessellation_shader 1
 #endif /* GL_ARB_tessellation_shader */
 
-<<<<<<< HEAD
-=======
 #ifndef GL_ARB_texture_barrier
 #define GL_ARB_texture_barrier 1
 #endif /* GL_ARB_texture_barrier */
 
->>>>>>> upstream/master
 #ifndef GL_ARB_texture_buffer_object_rgb32
 #define GL_ARB_texture_buffer_object_rgb32 1
 #endif /* GL_ARB_texture_buffer_object_rgb32 */
@@ -3612,11 +3504,6 @@ GLAPI void APIENTRY glTexPageCommitmentARB (GLenum target, GLint level, GLint xo
 
 #ifndef GL_ARB_transform_feedback2
 #define GL_ARB_transform_feedback2 1
-<<<<<<< HEAD
-#define GL_TRANSFORM_FEEDBACK_PAUSED      0x8E23
-#define GL_TRANSFORM_FEEDBACK_ACTIVE      0x8E24
-=======
->>>>>>> upstream/master
 #endif /* GL_ARB_transform_feedback2 */
 
 #ifndef GL_ARB_transform_feedback3
@@ -3627,13 +3514,6 @@ GLAPI void APIENTRY glTexPageCommitmentARB (GLenum target, GLint level, GLint xo
 #define GL_ARB_transform_feedback_instanced 1
 #endif /* GL_ARB_transform_feedback_instanced */
 
-<<<<<<< HEAD
-#ifndef GL_ARB_uniform_buffer_object
-#define GL_ARB_uniform_buffer_object 1
-#define GL_MAX_GEOMETRY_UNIFORM_BLOCKS    0x8A2C
-#define GL_MAX_COMBINED_GEOMETRY_UNIFORM_COMPONENTS 0x8A32
-#define GL_UNIFORM_BLOCK_REFERENCED_BY_GEOMETRY_SHADER 0x8A45
-=======
 #ifndef GL_ARB_transform_feedback_overflow_query
 #define GL_ARB_transform_feedback_overflow_query 1
 #define GL_TRANSFORM_FEEDBACK_OVERFLOW_ARB 0x82EC
@@ -3642,7 +3522,6 @@ GLAPI void APIENTRY glTexPageCommitmentARB (GLenum target, GLint level, GLint xo
 
 #ifndef GL_ARB_uniform_buffer_object
 #define GL_ARB_uniform_buffer_object 1
->>>>>>> upstream/master
 #endif /* GL_ARB_uniform_buffer_object */
 
 #ifndef GL_ARB_vertex_array_bgra
@@ -3673,19 +3552,14 @@ GLAPI void APIENTRY glTexPageCommitmentARB (GLenum target, GLint level, GLint xo
 #define GL_ARB_viewport_array 1
 #endif /* GL_ARB_viewport_array */
 
-<<<<<<< HEAD
-=======
 #ifndef GL_KHR_context_flush_control
 #define GL_KHR_context_flush_control 1
 #endif /* GL_KHR_context_flush_control */
 
->>>>>>> upstream/master
 #ifndef GL_KHR_debug
 #define GL_KHR_debug 1
 #endif /* GL_KHR_debug */
 
-<<<<<<< HEAD
-=======
 #ifndef GL_KHR_no_error
 #define GL_KHR_no_error 1
 #define GL_CONTEXT_FLAG_NO_ERROR_BIT_KHR  0x00000008
@@ -3700,7 +3574,6 @@ GLAPI void APIENTRY glTexPageCommitmentARB (GLenum target, GLint level, GLint xo
 #define GL_CONTEXT_ROBUST_ACCESS          0x90F3
 #endif /* GL_KHR_robustness */
 
->>>>>>> upstream/master
 #ifndef GL_KHR_texture_compression_astc_hdr
 #define GL_KHR_texture_compression_astc_hdr 1
 #define GL_COMPRESSED_RGBA_ASTC_4x4_KHR   0x93B0
@@ -3737,13 +3610,10 @@ GLAPI void APIENTRY glTexPageCommitmentARB (GLenum target, GLint level, GLint xo
 #define GL_KHR_texture_compression_astc_ldr 1
 #endif /* GL_KHR_texture_compression_astc_ldr */
 
-<<<<<<< HEAD
-=======
 #ifndef GL_KHR_texture_compression_astc_sliced_3d
 #define GL_KHR_texture_compression_astc_sliced_3d 1
 #endif /* GL_KHR_texture_compression_astc_sliced_3d */
 
->>>>>>> upstream/master
 #ifdef __cplusplus
 }
 #endif

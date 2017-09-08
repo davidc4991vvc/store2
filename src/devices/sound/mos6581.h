@@ -23,20 +23,11 @@
 
 **********************************************************************/
 
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __MOS6581__
-#define __MOS6581__
-
-#include "emu.h"
-=======
 #ifndef MAME_SOUND_MOS6581_H
 #define MAME_SOUND_MOS6581_H
 
 #pragma once
 
->>>>>>> upstream/master
 
 
 
@@ -60,42 +51,16 @@
 
 struct SID6581_t;
 
-<<<<<<< HEAD
-class mos6581_device : public device_t,
-						public device_sound_interface
-{
-public:
-	mos6581_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, UINT32 variant, const char *shortname, const char *source);
-	mos6581_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-	~mos6581_device();
-
-	template<class _Object> static devcb_base &set_potx_rd_callback(device_t &device, _Object object) { return downcast<mos6581_device &>(device).m_read_potx.set_callback(object); }
-	template<class _Object> static devcb_base &set_poty_rd_callback(device_t &device, _Object object) { return downcast<mos6581_device &>(device).m_read_poty.set_callback(object); }
-
-	DECLARE_READ8_MEMBER( read );
-	DECLARE_WRITE8_MEMBER( write );
-
-=======
 class mos6581_device : public device_t, public device_sound_interface
 {
 public:
 	// used by the actual SID emulator
->>>>>>> upstream/master
 	enum
 	{
 		TYPE_6581,
 		TYPE_8580
 	};
 
-<<<<<<< HEAD
-protected:
-	// device-level overrides
-	virtual void device_start();
-	virtual void device_reset();
-
-	// device_sound_interface overrides
-	virtual void sound_stream_update(sound_stream &stream, stream_sample_t **inputs, stream_sample_t **outputs, int samples);
-=======
 	mos6581_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 	~mos6581_device();
 
@@ -114,7 +79,6 @@ protected:
 
 	// device_sound_interface overrides
 	virtual void sound_stream_update(sound_stream &stream, stream_sample_t **inputs, stream_sample_t **outputs, int samples) override;
->>>>>>> upstream/master
 
 private:
 	devcb_read8  m_read_potx;
@@ -122,15 +86,9 @@ private:
 
 	sound_stream *m_stream;
 
-<<<<<<< HEAD
-	int m_variant;
-
-	SID6581_t *m_token;
-=======
 	int const m_variant;
 
 	std::unique_ptr<SID6581_t> m_token;
->>>>>>> upstream/master
 };
 
 
@@ -139,24 +97,12 @@ private:
 class mos8580_device : public mos6581_device
 {
 public:
-<<<<<<< HEAD
-	mos8580_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-=======
 	mos8580_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
->>>>>>> upstream/master
 };
 
 
 // device type definition
-<<<<<<< HEAD
-extern const device_type MOS6581;
-extern const device_type MOS8580;
-
-
-#endif
-=======
 DECLARE_DEVICE_TYPE(MOS6581, mos6581_device)
 DECLARE_DEVICE_TYPE(MOS8580, mos8580_device)
 
 #endif // MAME_SOUND_MOS6581_H
->>>>>>> upstream/master

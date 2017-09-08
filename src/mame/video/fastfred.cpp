@@ -27,11 +27,7 @@
 
 PALETTE_INIT_MEMBER(fastfred_state,fastfred)
 {
-<<<<<<< HEAD
-	const UINT8 *color_prom = memregion("proms")->base();
-=======
 	const uint8_t *color_prom = memregion("proms")->base();
->>>>>>> upstream/master
 	static const int resistances[4] = { 1000, 470, 220, 100 };
 	double rweights[4], gweights[4], bweights[4];
 	int i;
@@ -85,17 +81,10 @@ PALETTE_INIT_MEMBER(fastfred_state,fastfred)
 
 TILE_GET_INFO_MEMBER(fastfred_state::get_tile_info)
 {
-<<<<<<< HEAD
-	UINT8 x = tile_index & 0x1f;
-
-	UINT16 code = m_charbank | m_videoram[tile_index];
-	UINT8 color = m_colorbank | (m_attributesram[2 * x + 1] & 0x07);
-=======
 	uint8_t x = tile_index & 0x1f;
 
 	uint16_t code = m_charbank | m_videoram[tile_index];
 	uint8_t color = m_colorbank | (m_attributesram[2 * x + 1] & 0x07);
->>>>>>> upstream/master
 
 	SET_TILE_INFO_MEMBER(0, code, color, 0);
 }
@@ -110,11 +99,7 @@ TILE_GET_INFO_MEMBER(fastfred_state::get_tile_info)
 
 VIDEO_START_MEMBER(fastfred_state,fastfred)
 {
-<<<<<<< HEAD
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(fastfred_state::get_tile_info),this),TILEMAP_SCAN_ROWS,8,8,32,32);
-=======
 	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(fastfred_state::get_tile_info),this),TILEMAP_SCAN_ROWS,8,8,32,32);
->>>>>>> upstream/master
 
 	m_bg_tilemap->set_transparent_pen(0);
 	m_bg_tilemap->set_scroll_cols(32);
@@ -157,15 +142,9 @@ WRITE8_MEMBER(fastfred_state::fastfred_attributes_w )
 }
 
 
-<<<<<<< HEAD
-WRITE8_MEMBER(fastfred_state::fastfred_charbank1_w )
-{
-	UINT16 new_data = (m_charbank & 0x0200) | ((data & 0x01) << 8);
-=======
 WRITE_LINE_MEMBER(fastfred_state::charbank1_w)
 {
 	uint16_t new_data = (m_charbank & 0x0200) | (state << 8);
->>>>>>> upstream/master
 
 	if (new_data != m_charbank)
 	{
@@ -175,15 +154,9 @@ WRITE_LINE_MEMBER(fastfred_state::charbank1_w)
 	}
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER(fastfred_state::fastfred_charbank2_w )
-{
-	UINT16 new_data = (m_charbank & 0x0100) | ((data & 0x01) << 9);
-=======
 WRITE_LINE_MEMBER(fastfred_state::charbank2_w)
 {
 	uint16_t new_data = (m_charbank & 0x0100) | (state << 9);
->>>>>>> upstream/master
 
 	if (new_data != m_charbank)
 	{
@@ -194,15 +167,9 @@ WRITE_LINE_MEMBER(fastfred_state::charbank2_w)
 }
 
 
-<<<<<<< HEAD
-WRITE8_MEMBER(fastfred_state::fastfred_colorbank1_w )
-{
-	UINT8 new_data = (m_colorbank & 0x10) | ((data & 0x01) << 3);
-=======
 WRITE_LINE_MEMBER(fastfred_state::colorbank1_w)
 {
 	uint8_t new_data = (m_colorbank & 0x10) | (state << 3);
->>>>>>> upstream/master
 
 	if (new_data != m_colorbank)
 	{
@@ -212,15 +179,9 @@ WRITE_LINE_MEMBER(fastfred_state::colorbank1_w)
 	}
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER(fastfred_state::fastfred_colorbank2_w )
-{
-	UINT8 new_data = (m_colorbank & 0x08) | ((data & 0x01) << 4);
-=======
 WRITE_LINE_MEMBER(fastfred_state::colorbank2_w)
 {
 	uint8_t new_data = (m_colorbank & 0x08) | (state << 4);
->>>>>>> upstream/master
 
 	if (new_data != m_colorbank)
 	{
@@ -232,26 +193,6 @@ WRITE_LINE_MEMBER(fastfred_state::colorbank2_w)
 
 
 
-<<<<<<< HEAD
-WRITE8_MEMBER(fastfred_state::fastfred_flip_screen_x_w )
-{
-	if (flip_screen_x() != (data & 0x01))
-	{
-		flip_screen_x_set(data & 0x01);
-
-		m_bg_tilemap->set_flip((flip_screen_x() ? TILEMAP_FLIPX : 0) | (flip_screen_y() ? TILEMAP_FLIPY : 0));
-	}
-}
-
-WRITE8_MEMBER(fastfred_state::fastfred_flip_screen_y_w )
-{
-	if (flip_screen_y() != (data & 0x01))
-	{
-		flip_screen_y_set(data & 0x01);
-
-		m_bg_tilemap->set_flip((flip_screen_x() ? TILEMAP_FLIPX : 0) | (flip_screen_y() ? TILEMAP_FLIPY : 0));
-	}
-=======
 WRITE_LINE_MEMBER(fastfred_state::flip_screen_x_w)
 {
 	flip_screen_x_set(state);
@@ -264,7 +205,6 @@ WRITE_LINE_MEMBER(fastfred_state::flip_screen_y_w)
 	flip_screen_y_set(state);
 
 	m_bg_tilemap->set_flip((flip_screen_x() ? TILEMAP_FLIPX : 0) | (flip_screen_y() ? TILEMAP_FLIPY : 0));
->>>>>>> upstream/master
 }
 
 
@@ -283,11 +223,7 @@ void fastfred_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprec
 
 	for (offs = m_spriteram.bytes() - 4; offs >= 0; offs -= 4)
 	{
-<<<<<<< HEAD
-		UINT8 code,sx,sy;
-=======
 		uint8_t code,sx,sy;
->>>>>>> upstream/master
 		int flipx,flipy;
 
 		sx = m_spriteram[offs + 3];
@@ -343,11 +279,7 @@ void fastfred_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprec
 }
 
 
-<<<<<<< HEAD
-UINT32 fastfred_state::screen_update_fastfred(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t fastfred_state::screen_update_fastfred(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	bitmap.fill(*m_background_color, cliprect);
 	m_bg_tilemap->draw(screen, bitmap, cliprect, 0,0);
@@ -359,17 +291,10 @@ uint32_t fastfred_state::screen_update_fastfred(screen_device &screen, bitmap_in
 
 TILE_GET_INFO_MEMBER(fastfred_state::imago_get_tile_info_bg)
 {
-<<<<<<< HEAD
-	UINT8 x = tile_index & 0x1f;
-
-	UINT16 code = m_charbank * 0x100 + m_videoram[tile_index];
-	UINT8 color = m_colorbank | (m_attributesram[2 * x + 1] & 0x07);
-=======
 	uint8_t x = tile_index & 0x1f;
 
 	uint16_t code = m_charbank * 0x100 + m_videoram[tile_index];
 	uint8_t color = m_colorbank | (m_attributesram[2 * x + 1] & 0x07);
->>>>>>> upstream/master
 
 	SET_TILE_INFO_MEMBER(0, code, color, 0);
 }
@@ -391,34 +316,20 @@ WRITE8_MEMBER(fastfred_state::imago_fg_videoram_w )
 	m_fg_tilemap->mark_tile_dirty(offset);
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER(fastfred_state::imago_charbank_w )
-{
-	if( m_charbank != data )
-	{
-		m_charbank = data;
-=======
 WRITE_LINE_MEMBER(fastfred_state::imago_charbank_w)
 {
 	if (m_charbank != state)
 	{
 		m_charbank = state;
->>>>>>> upstream/master
 		m_bg_tilemap->mark_all_dirty();
 	}
 }
 
 VIDEO_START_MEMBER(fastfred_state,imago)
 {
-<<<<<<< HEAD
-	m_web_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(fastfred_state::imago_get_tile_info_web),this),TILEMAP_SCAN_ROWS,     8,8,32,32);
-	m_bg_tilemap   = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(fastfred_state::imago_get_tile_info_bg),this), TILEMAP_SCAN_ROWS,8,8,32,32);
-	m_fg_tilemap   = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(fastfred_state::imago_get_tile_info_fg),this), TILEMAP_SCAN_ROWS,8,8,32,32);
-=======
 	m_web_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(fastfred_state::imago_get_tile_info_web),this),TILEMAP_SCAN_ROWS,8,8,32,32);
 	m_bg_tilemap  = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(fastfred_state::imago_get_tile_info_bg),this), TILEMAP_SCAN_ROWS,8,8,32,32);
 	m_fg_tilemap  = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(fastfred_state::imago_get_tile_info_fg),this), TILEMAP_SCAN_ROWS,8,8,32,32);
->>>>>>> upstream/master
 
 	m_bg_tilemap->set_transparent_pen(0);
 	m_fg_tilemap->set_transparent_pen(0);
@@ -450,11 +361,7 @@ VIDEO_START_MEMBER(fastfred_state,imago)
 	}
 }
 
-<<<<<<< HEAD
-UINT32 fastfred_state::screen_update_imago(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t fastfred_state::screen_update_imago(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	m_web_tilemap->draw(screen, bitmap, cliprect, 0,0);
 	galaxold_draw_stars(bitmap, cliprect);

@@ -93,8 +93,6 @@
 		
 	
 --
-<<<<<<< HEAD
-=======
 -- Returns a list of project-relative paths to external library files.
 -- This function should examine the linker flags and return any that seem to be
 -- a real path to a library file (e.g. "path/to/a/library.a", but not "GL").
@@ -108,7 +106,6 @@
 	end
 
 --
->>>>>>> upstream/master
 -- Returns a list of linker flags for library search directories and 
 -- library names.
 --

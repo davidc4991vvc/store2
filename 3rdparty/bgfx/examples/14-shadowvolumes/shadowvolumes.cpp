@@ -1,17 +1,8 @@
 /*
  * Copyright 2013-2014 Dario Manesku. All rights reserved.
-<<<<<<< HEAD
- * License: http://www.opensource.org/licenses/BSD-2-Clause
- */
-
-#include <stdio.h>
-#include <string.h>
-
-=======
  * License: https://github.com/bkaradzic/bgfx#license-bsd-2-clause
  */
 
->>>>>>> upstream/master
 #include <string>
 #include <vector>
 #include <map>
@@ -19,30 +10,16 @@
 #include <tinystl/unordered_map.h>
 namespace stl = tinystl;
 
-<<<<<<< HEAD
-namespace std { namespace tr1 {} }
-using namespace std::tr1;
-
-=======
->>>>>>> upstream/master
 #include "common.h"
 #include "bgfx_utils.h"
 
 #include <bgfx/bgfx.h>
 #include <bx/timer.h>
-<<<<<<< HEAD
-#include <bx/readerwriter.h>
-#include <bx/allocator.h>
-#include <bx/hash.h>
-#include <bx/float4_t.h>
-#include <bx/fpumath.h>
-=======
 #include <bx/allocator.h>
 #include <bx/hash.h>
 #include <bx/simd_t.h>
 #include <bx/fpumath.h>
 #include <bx/crtimpl.h>
->>>>>>> upstream/master
 #include "entry/entry.h"
 #include "camera.h"
 #include "imgui/imgui.h"
@@ -222,11 +199,7 @@ struct Uniforms
 	void init()
 	{
 		m_params.m_ambientPass   = 1.0f;
-<<<<<<< HEAD
-		m_params.m_lightningPass = 1.0f;
-=======
 		m_params.m_lightingPass  = 1.0f;
->>>>>>> upstream/master
 		m_params.m_texelHalf     = 0.0f;
 
 		m_ambient[0] = 0.05f;
@@ -320,11 +293,7 @@ struct Uniforms
 	struct Params
 	{
 		float m_ambientPass;
-<<<<<<< HEAD
-		float m_lightningPass;
-=======
 		float m_lightingPass;
->>>>>>> upstream/master
 		float m_texelHalf;
 		float m_unused00;
 	};
@@ -351,11 +320,7 @@ struct Uniforms
 
 	/**
 	 * u_params.x - u_ambientPass
-<<<<<<< HEAD
-	 * u_params.y - u_lightningPass
-=======
 	 * u_params.y - u_lightingPass
->>>>>>> upstream/master
 	 * u_params.z - u_texelHalf
 	 * u_params.w - unused
 
@@ -696,11 +661,7 @@ struct HalfEdges
 		m_offsets = (uint32_t*)malloc(numRows * sizeof(uint32_t) );
 
 		HalfEdge* he = m_data;
-<<<<<<< HEAD
-		for (uint32_t ii = 0; ii < numRows; ++ii)
-=======
 		for (uint16_t ii = 0; ii < numRows; ++ii)
->>>>>>> upstream/master
 		{
 			m_offsets[ii] = uint32_t(he - m_data);
 
@@ -792,17 +753,6 @@ uint16_t weldVertices(WeldedVertex* _output, const bgfx::VertexDecl& _decl, cons
 	const uint32_t hashMask = hashSize-1;
 	const float epsilonSq = _epsilon*_epsilon;
 
-<<<<<<< HEAD
-	uint32_t numVertices = 0;
-
-	const uint32_t size = sizeof(uint16_t)*(hashSize + _num);
-	uint16_t* hashTable = (uint16_t*)alloca(size);
-	memset(hashTable, 0xff, size);
-
-	uint16_t* next = hashTable + hashSize;
-
-	for (uint32_t ii = 0; ii < _num; ++ii)
-=======
 	uint16_t numVertices = 0;
 
 	const uint32_t size = sizeof(uint16_t)*(hashSize + _num);
@@ -812,7 +762,6 @@ uint16_t weldVertices(WeldedVertex* _output, const bgfx::VertexDecl& _decl, cons
 	uint16_t* next = hashTable + hashSize;
 
 	for (uint16_t ii = 0; ii < _num; ++ii)
->>>>>>> upstream/master
 	{
 		float pos[4];
 		vertexUnpack(pos, bgfx::Attrib::Position, _decl, _data, ii);
@@ -936,11 +885,7 @@ struct Group
 			face.m_i[0] = i0;
 			face.m_i[1] = i1;
 			face.m_i[2] = i2;
-<<<<<<< HEAD
-			memcpy(face.m_plane, plane, 4*sizeof(float) );
-=======
 			bx::memCopy(face.m_plane, plane, 4*sizeof(float) );
->>>>>>> upstream/master
 			m_faces.push_back(face);
 
 			//Use unique indices for EdgeMap.
@@ -968,22 +913,14 @@ struct Group
 				if (iter != edgeMap.end() )
 				{
 					EdgeAndPlane& ep = iter->second;
-<<<<<<< HEAD
-					memcpy(ep.m_plane[ep.m_faceIndex].m_plane, plane, 4*sizeof(float) );
-=======
 					bx::memCopy(ep.m_plane[ep.m_faceIndex].m_plane, plane, 4*sizeof(float) );
->>>>>>> upstream/master
 					ep.m_faceReverseOrder[ep.m_faceIndex] = true;
 				}
 				else
 				{
 					std::pair<EdgeMap::iterator, bool> result = edgeMap.insert(std::make_pair(key, EdgeAndPlane(ui0, ui1) ) );
 					EdgeAndPlane& ep = result.first->second;
-<<<<<<< HEAD
-					memcpy(ep.m_plane[ep.m_faceIndex].m_plane, plane, 4*sizeof(float) );
-=======
 					bx::memCopy(ep.m_plane[ep.m_faceIndex].m_plane, plane, 4*sizeof(float) );
->>>>>>> upstream/master
 					ep.m_faceReverseOrder[ep.m_faceIndex] = false;
 					ep.m_faceIndex++;
 				}
@@ -998,13 +935,8 @@ struct Group
 			Edge* edge = &m_edges[m_numEdges];
 			Plane* plane = &m_edgePlanes[index];
 
-<<<<<<< HEAD
-			memcpy(edge, iter->second.m_faceReverseOrder, sizeof(Edge) );
-			memcpy(plane, iter->second.m_plane, 2 * sizeof(Plane) );
-=======
 			bx::memCopy(edge, iter->second.m_faceReverseOrder, sizeof(Edge) );
 			bx::memCopy(plane, iter->second.m_plane, 2 * sizeof(Plane) );
->>>>>>> upstream/master
 
 			m_numEdges++;
 			index += 2;
@@ -1051,20 +983,12 @@ typedef std::vector<Group> GroupArray;
 
 namespace bgfx
 {
-<<<<<<< HEAD
-	int32_t read(bx::ReaderI* _reader, bgfx::VertexDecl& _decl);
-=======
 	int32_t read(bx::ReaderI* _reader, bgfx::VertexDecl& _decl, bx::Error* _err = NULL);
->>>>>>> upstream/master
 }
 
 struct Mesh
 {
-<<<<<<< HEAD
-	void load(const void* _vertices, uint32_t _numVertices, const bgfx::VertexDecl _decl, const uint16_t* _indices, uint32_t _numIndices)
-=======
 	void load(const void* _vertices, uint16_t _numVertices, const bgfx::VertexDecl _decl, const uint16_t* _indices, uint32_t _numIndices)
->>>>>>> upstream/master
 	{
 		Group group;
 		const bgfx::Memory* mem;
@@ -1075,11 +999,7 @@ struct Mesh
 		size = _numVertices*_decl.getStride();
 
 		group.m_vertices = (uint8_t*)malloc(size);
-<<<<<<< HEAD
-		memcpy(group.m_vertices, _vertices, size);
-=======
 		bx::memCopy(group.m_vertices, _vertices, size);
->>>>>>> upstream/master
 
 		mem = bgfx::makeRef(group.m_vertices, size);
 		group.m_vbh = bgfx::createVertexBuffer(mem, _decl);
@@ -1089,11 +1009,7 @@ struct Mesh
 		size = _numIndices*2;
 
 		group.m_indices = (uint16_t*)malloc(size);
-<<<<<<< HEAD
-		memcpy(group.m_indices, _indices, size);
-=======
 		bx::memCopy(group.m_indices, _indices, size);
->>>>>>> upstream/master
 
 		mem = bgfx::makeRef(group.m_indices, size);
 		group.m_ibh = bgfx::createIndexBuffer(mem);
@@ -1107,40 +1023,18 @@ struct Mesh
 #define BGFX_CHUNK_MAGIC_IB  BX_MAKEFOURCC('I', 'B', ' ', 0x0)
 #define BGFX_CHUNK_MAGIC_PRI BX_MAKEFOURCC('P', 'R', 'I', 0x0)
 
-<<<<<<< HEAD
-		bx::CrtFileReader reader;
-		reader.open(_filePath);
-=======
 		bx::FileReaderI* reader = entry::getFileReader();
 		bx::open(reader, _filePath);
->>>>>>> upstream/master
 
 		Group group;
 
 		uint32_t chunk;
-<<<<<<< HEAD
-		while (4 == bx::read(&reader, chunk) )
-=======
 		while (4 == bx::read(reader, chunk) )
->>>>>>> upstream/master
 		{
 			switch (chunk)
 			{
 			case BGFX_CHUNK_MAGIC_VB:
 				{
-<<<<<<< HEAD
-					bx::read(&reader, group.m_sphere);
-					bx::read(&reader, group.m_aabb);
-					bx::read(&reader, group.m_obb);
-
-					bgfx::read(&reader, m_decl);
-					uint16_t stride = m_decl.getStride();
-
-					bx::read(&reader, group.m_numVertices);
-					const uint32_t size = group.m_numVertices*stride;
-					group.m_vertices = (uint8_t*)malloc(size);
-					bx::read(&reader, group.m_vertices, size);
-=======
 					bx::read(reader, group.m_sphere);
 					bx::read(reader, group.m_aabb);
 					bx::read(reader, group.m_obb);
@@ -1152,7 +1046,6 @@ struct Mesh
 					const uint32_t size = group.m_numVertices*stride;
 					group.m_vertices = (uint8_t*)malloc(size);
 					bx::read(reader, group.m_vertices, size);
->>>>>>> upstream/master
 
 					const bgfx::Memory* mem = bgfx::makeRef(group.m_vertices, size);
 					group.m_vbh = bgfx::createVertexBuffer(mem, m_decl);
@@ -1161,17 +1054,10 @@ struct Mesh
 
 			case BGFX_CHUNK_MAGIC_IB:
 				{
-<<<<<<< HEAD
-					bx::read(&reader, group.m_numIndices);
-					const uint32_t size = group.m_numIndices*2;
-					group.m_indices = (uint16_t*)malloc(size);
-					bx::read(&reader, group.m_indices, size);
-=======
 					bx::read(reader, group.m_numIndices);
 					const uint32_t size = group.m_numIndices*2;
 					group.m_indices = (uint16_t*)malloc(size);
 					bx::read(reader, group.m_indices, size);
->>>>>>> upstream/master
 
 					const bgfx::Memory* mem = bgfx::makeRef(group.m_indices, size);
 					group.m_ibh = bgfx::createIndexBuffer(mem);
@@ -1181,33 +1067,6 @@ struct Mesh
 			case BGFX_CHUNK_MAGIC_PRI:
 				{
 					uint16_t len;
-<<<<<<< HEAD
-					bx::read(&reader, len);
-
-					std::string material;
-					material.resize(len);
-					bx::read(&reader, const_cast<char*>(material.c_str() ), len);
-
-					uint16_t num;
-					bx::read(&reader, num);
-
-					for (uint32_t ii = 0; ii < num; ++ii)
-					{
-						bx::read(&reader, len);
-
-						std::string name;
-						name.resize(len);
-						bx::read(&reader, const_cast<char*>(name.c_str() ), len);
-
-						Primitive prim;
-						bx::read(&reader, prim.m_startIndex);
-						bx::read(&reader, prim.m_numIndices);
-						bx::read(&reader, prim.m_startVertex);
-						bx::read(&reader, prim.m_numVertices);
-						bx::read(&reader, prim.m_sphere);
-						bx::read(&reader, prim.m_aabb);
-						bx::read(&reader, prim.m_obb);
-=======
 					bx::read(reader, len);
 
 					std::string material;
@@ -1233,7 +1092,6 @@ struct Mesh
 						bx::read(reader, prim.m_sphere);
 						bx::read(reader, prim.m_aabb);
 						bx::read(reader, prim.m_obb);
->>>>>>> upstream/master
 
 						group.m_prims.push_back(prim);
 					}
@@ -1244,21 +1102,13 @@ struct Mesh
 				break;
 
 			default:
-<<<<<<< HEAD
-				DBG("%08x at %d", chunk, reader.seek() );
-=======
 				DBG("%08x at %d", chunk, bx::seek(reader) );
->>>>>>> upstream/master
 				abort();
 				break;
 			}
 		}
 
-<<<<<<< HEAD
-		reader.close();
-=======
 		bx::close(reader);
->>>>>>> upstream/master
 
 		for (GroupArray::iterator it = m_groups.begin(), itEnd = m_groups.end(); it != itEnd; ++it)
 		{
@@ -1287,11 +1137,7 @@ struct Model
 		m_texture.idx = bgfx::invalidHandle;
 	}
 
-<<<<<<< HEAD
-	void load(const void* _vertices, uint32_t _numVertices, const bgfx::VertexDecl _decl, const uint16_t* _indices, uint32_t _numIndices)
-=======
 	void load(const void* _vertices, uint16_t _numVertices, const bgfx::VertexDecl _decl, const uint16_t* _indices, uint32_t _numIndices)
->>>>>>> upstream/master
 	{
 		m_mesh.load(_vertices, _numVertices, _decl, _indices, _numIndices);
 	}
@@ -1327,11 +1173,7 @@ struct Model
 			{
 				bgfx::setTexture(0, s_texColor, m_texture);
 			}
-<<<<<<< HEAD
-			bgfx::setTexture(1, s_texStencil, s_stencilFb);
-=======
 			bgfx::setTexture(1, s_texStencil, bgfx::getTexture(s_stencilFb) );
->>>>>>> upstream/master
 
 			// Apply render state
 			::setRenderState(_renderState);
@@ -1359,11 +1201,7 @@ struct Instance
 
 	void submit(uint8_t _viewId, const RenderState& _renderState)
 	{
-<<<<<<< HEAD
-		memcpy(s_uniforms.m_color, m_color, 3*sizeof(float) );
-=======
 		bx::memCopy(s_uniforms.m_color, m_color, 3*sizeof(float) );
->>>>>>> upstream/master
 
 		float mtx[16];
 		bx::mtxSRT(mtx
@@ -1533,11 +1371,7 @@ void shadowVolumeCreate(ShadowVolume& _shadowVolume
 
 		VertexData(const float* _v3, float _extrude = 0.0f, float _k = 1.0f)
 		{
-<<<<<<< HEAD
-			memcpy(m_v, _v3, 3*sizeof(float) );
-=======
 			bx::memCopy(m_v, _v3, 3*sizeof(float) );
->>>>>>> upstream/master
 			m_extrude = _extrude;
 			m_k = _k;
 		}
@@ -1673,15 +1507,9 @@ void shadowVolumeCreate(ShadowVolume& _shadowVolume
 
 			using namespace bx;
 
-<<<<<<< HEAD
-			const float4_t lx = float4_splat(_light[0]);
-			const float4_t ly = float4_splat(_light[1]);
-			const float4_t lz = float4_splat(_light[2]);
-=======
 			const simd128_t lx = simd_splat(_light[0]);
 			const simd128_t ly = simd_splat(_light[1]);
 			const simd128_t lz = simd_splat(_light[2]);
->>>>>>> upstream/master
 
 			for (; ii < numEdgesRounded; ii+=2)
 			{
@@ -1690,58 +1518,13 @@ void shadowVolumeCreate(ShadowVolume& _shadowVolume
 				const Plane* edgePlane0 = &edgePlanes[ii*2];
 				const Plane* edgePlane1 = &edgePlanes[ii*2 + 2];
 
-<<<<<<< HEAD
-				const float4_t reverse =
-					float4_ild(edge0.m_faceReverseOrder[0]
-=======
 				const simd128_t reverse =
 					simd_ild(edge0.m_faceReverseOrder[0]
->>>>>>> upstream/master
 							, edge1.m_faceReverseOrder[0]
 							, edge0.m_faceReverseOrder[1]
 							, edge1.m_faceReverseOrder[1]
 							);
 
-<<<<<<< HEAD
-				const float4_t p00 = float4_ld(edgePlane0[0].m_plane);
-				const float4_t p10 = float4_ld(edgePlane1[0].m_plane);
-				const float4_t p01 = float4_ld(edgePlane0[1].m_plane);
-				const float4_t p11 = float4_ld(edgePlane1[1].m_plane);
-
-				const float4_t xxyy0 = float4_shuf_xAyB(p00, p01);
-				const float4_t zzww0 = float4_shuf_zCwD(p00, p01);
-				const float4_t xxyy1 = float4_shuf_xAyB(p10, p11);
-				const float4_t zzww1 = float4_shuf_zCwD(p10, p11);
-
-				const float4_t vX = float4_shuf_xAyB(xxyy0, xxyy1);
-				const float4_t vY = float4_shuf_zCwD(xxyy0, xxyy1);
-				const float4_t vZ = float4_shuf_xAyB(zzww0, zzww1);
-				const float4_t vW = float4_shuf_zCwD(zzww0, zzww1);
-
-				const float4_t r0 = float4_mul(vX, lx);
-				const float4_t r1 = float4_mul(vY, ly);
-				const float4_t r2 = float4_mul(vZ, lz);
-
-				const float4_t dot = float4_add(r0, float4_add(r1, r2) );
-				const float4_t f = float4_add(dot, vW);
-
-				const float4_t zero = float4_zero();
-				const float4_t mask = float4_cmpgt(f, zero);
-				const float4_t onef = float4_splat(1.0f);
-				const float4_t tmp0 = float4_and(mask, onef);
-				const float4_t tmp1 = float4_ftoi(tmp0);
-				const float4_t tmp2 = float4_xor(tmp1, reverse);
-				const float4_t tmp3 = float4_sll(tmp2, 1);
-				const float4_t onei = float4_isplat(1);
-				const float4_t tmp4 = float4_isub(tmp3, onei);
-
-				BX_ALIGN_DECL_16(int32_t res[4]);
-				float4_st(&res, tmp4);
-
-				for (uint16_t jj = 0; jj < 2; ++jj)
-				{
-					int16_t kk = res[jj] + res[jj+2];
-=======
 				const simd128_t p00 = simd_ld(edgePlane0[0].m_plane);
 				const simd128_t p10 = simd_ld(edgePlane1[0].m_plane);
 				const simd128_t p01 = simd_ld(edgePlane0[1].m_plane);
@@ -1780,7 +1563,6 @@ void shadowVolumeCreate(ShadowVolume& _shadowVolume
 				for (uint16_t jj = 0; jj < 2; ++jj)
 				{
 					int32_t kk = res[jj] + res[jj+2];
->>>>>>> upstream/master
 					if (kk != 0)
 					{
 						float* v0 = (float*)&vertices[edges[ii+jj].m_i0*_stride];
@@ -1792,11 +1574,7 @@ void shadowVolumeCreate(ShadowVolume& _shadowVolume
 
 						kk = _textureAsStencil ? 1 : kk;
 						uint16_t winding = uint16_t(kk > 0);
-<<<<<<< HEAD
-						for (uint8_t ll = 0, end = abs(kk); ll < end; ++ll)
-=======
 						for (int32_t ll = 0, end = abs(kk); ll < end; ++ll)
->>>>>>> upstream/master
 						{
 							indicesSide[sideI++] = indexSide;
 							indicesSide[sideI++] = indexSide + 2 - winding;
@@ -1833,11 +1611,7 @@ void shadowVolumeCreate(ShadowVolume& _shadowVolume
 
 					kk = _textureAsStencil ? 1 : kk;
 					uint16_t winding = uint16_t(kk > 0);
-<<<<<<< HEAD
-					for (uint8_t jj = 0, end = abs(kk); jj < end; ++jj)
-=======
 					for (int32_t jj = 0, end = abs(kk); jj < end; ++jj)
->>>>>>> upstream/master
 					{
 						indicesSide[sideI++] = indexSide;
 						indicesSide[sideI++] = indexSide + 2 - winding;
@@ -1961,11 +1735,7 @@ void createNearClipVolume(float* __restrict _outPlanes24f
 	// -1.0f - behind near plane
 	float lightSide = float( (d > delta) - (d < -delta) );
 
-<<<<<<< HEAD
-	float t = tanf(bx::toRad(_fovy)*0.5f) * _near;
-=======
 	float t = bx::ftan(bx::toRad(_fovy)*0.5f) * _near;
->>>>>>> upstream/master
 	float b = -t;
 	float r = t * _aspect;
 	float l = -r;
@@ -2004,11 +1774,7 @@ void createNearClipVolume(float* __restrict _outPlanes24f
 		normal[1] *= lightSide;
 		normal[2] *= lightSide;
 
-<<<<<<< HEAD
-		float lenInv = 1.0f / sqrtf(bx::vec3Dot(normal, normal) );
-=======
 		float lenInv = 1.0f / bx::fsqrt(bx::vec3Dot(normal, normal) );
->>>>>>> upstream/master
 
 		plane[0] = normal[0] * lenInv;
 		plane[1] = normal[1] * lenInv;
@@ -2031,11 +1797,7 @@ void createNearClipVolume(float* __restrict _outPlanes24f
 	bx::vec3MulMtx(tmp, lightPlaneNormal, mtxViewInv);
 	bx::vec3Sub(lightPlaneNormal, tmp, _lightPos);
 
-<<<<<<< HEAD
-	float lenInv = 1.0f / sqrtf(bx::vec3Dot(lightPlaneNormal, lightPlaneNormal) );
-=======
 	float lenInv = 1.0f / bx::fsqrt(bx::vec3Dot(lightPlaneNormal, lightPlaneNormal) );
->>>>>>> upstream/master
 
 	lightPlane[0] = lightPlaneNormal[0] * lenInv;
 	lightPlane[1] = lightPlaneNormal[1] * lenInv;
@@ -2098,28 +1860,9 @@ int _main_(int _argc, char** _argv)
 	// Enable debug text.
 	bgfx::setDebug(debug);
 
-<<<<<<< HEAD
-	// Setup root path for binary shaders. Shader binaries are different
-	// for each renderer.
-	switch (bgfx::getRendererType() )
-	{
-	case bgfx::RendererType::Direct3D9:
-		s_texelHalf = 0.5f;
-		break;
-
-	case bgfx::RendererType::OpenGL:
-	case bgfx::RendererType::OpenGLES:
-		s_oglNdc = true;
-		break;
-
-	default:
-		break;
-	}
-=======
 	const bgfx::Caps* caps = bgfx::getCaps();
 	s_oglNdc    = caps->homogeneousDepth;
 	s_texelHalf = bgfx::RendererType::Direct3D9 == caps->rendererType ? 0.5f : 0.0f;
->>>>>>> upstream/master
 
 	// Imgui
 	imguiCreate();
@@ -2129,16 +1872,6 @@ int _main_(int _argc, char** _argv)
 	s_uniforms.init();
 	s_uniforms.submitConstUniforms();
 
-<<<<<<< HEAD
-	bgfx::TextureHandle figureTex     = loadTexture("figure-rgba.dds");
-	bgfx::TextureHandle flareTex      = loadTexture("flare.dds");
-	bgfx::TextureHandle fieldstoneTex = loadTexture("fieldstone-rgba.dds");
-
-	bgfx::TextureHandle fbtextures[] =
-	{
-		bgfx::createTexture2D(viewState.m_width, viewState.m_height, 1, bgfx::TextureFormat::BGRA8, BGFX_TEXTURE_U_CLAMP|BGFX_TEXTURE_V_CLAMP|BGFX_TEXTURE_RT),
-		bgfx::createTexture2D(viewState.m_width, viewState.m_height, 1, bgfx::TextureFormat::D16, BGFX_TEXTURE_RT_BUFFER_ONLY),
-=======
 	bgfx::TextureHandle figureTex     = loadTexture("textures/figure-rgba.dds");
 	bgfx::TextureHandle flareTex      = loadTexture("textures/flare.dds");
 	bgfx::TextureHandle fieldstoneTex = loadTexture("textures/fieldstone-rgba.dds");
@@ -2147,24 +1880,16 @@ int _main_(int _argc, char** _argv)
 	{
 		bgfx::createTexture2D(uint16_t(viewState.m_width), uint16_t(viewState.m_height), false, 1, bgfx::TextureFormat::BGRA8, BGFX_TEXTURE_U_CLAMP | BGFX_TEXTURE_V_CLAMP | BGFX_TEXTURE_RT),
 		bgfx::createTexture2D(uint16_t(viewState.m_width), uint16_t(viewState.m_height), false, 1, bgfx::TextureFormat::D16, BGFX_TEXTURE_RT_WRITE_ONLY),
->>>>>>> upstream/master
 	};
 	s_stencilFb  = bgfx::createFrameBuffer(BX_COUNTOF(fbtextures), fbtextures, true);
 
 	s_texColor   = bgfx::createUniform("s_texColor",   bgfx::UniformType::Int1);
 	s_texStencil = bgfx::createUniform("s_texStencil", bgfx::UniformType::Int1);
 
-<<<<<<< HEAD
-	bgfx::ProgramHandle programTextureLightning = loadProgram("vs_shadowvolume_texture_lightning", "fs_shadowvolume_texture_lightning");
-	bgfx::ProgramHandle programColorLightning   = loadProgram("vs_shadowvolume_color_lightning",   "fs_shadowvolume_color_lightning"  );
-	bgfx::ProgramHandle programColorTexture     = loadProgram("vs_shadowvolume_color_texture",     "fs_shadowvolume_color_texture"    );
-	bgfx::ProgramHandle programTexture          = loadProgram("vs_shadowvolume_texture",           "fs_shadowvolume_texture"          );
-=======
 	bgfx::ProgramHandle programTextureLighting  = loadProgram("vs_shadowvolume_texture_lighting", "fs_shadowvolume_texture_lighting");
 	bgfx::ProgramHandle programColorLighting    = loadProgram("vs_shadowvolume_color_lighting",   "fs_shadowvolume_color_lighting"  );
 	bgfx::ProgramHandle programColorTexture     = loadProgram("vs_shadowvolume_color_texture",    "fs_shadowvolume_color_texture"   );
 	bgfx::ProgramHandle programTexture          = loadProgram("vs_shadowvolume_texture",          "fs_shadowvolume_texture"         );
->>>>>>> upstream/master
 
 	bgfx::ProgramHandle programBackBlank        = loadProgram("vs_shadowvolume_svback",  "fs_shadowvolume_svbackblank" );
 	bgfx::ProgramHandle programSideBlank        = loadProgram("vs_shadowvolume_svside",  "fs_shadowvolume_svsideblank" );
@@ -2223,30 +1948,6 @@ int _main_(int _argc, char** _argv)
 	Model vplaneModel;
 
 	bunnyHighPolyModel.load("meshes/bunny_patched.bin");
-<<<<<<< HEAD
-	bunnyHighPolyModel.m_program = programColorLightning;
-
-	bunnyLowPolyModel.load("meshes/bunny_decimated.bin");
-	bunnyLowPolyModel.m_program = programColorLightning;
-
-	columnModel.load("meshes/column.bin");
-	columnModel.m_program = programColorLightning;
-
-	platformModel.load("meshes/platform.bin");
-	platformModel.m_program = programTextureLightning;
-	platformModel.m_texture = figureTex;
-
-	cubeModel.load("meshes/cube.bin");
-	cubeModel.m_program = programTextureLightning;
-	cubeModel.m_texture = figureTex;
-
-	hplaneFieldModel.load(s_hplaneVertices, BX_COUNTOF(s_hplaneVertices), PosNormalTexcoordVertex::ms_decl, s_planeIndices, BX_COUNTOF(s_planeIndices) );
-	hplaneFieldModel.m_program = programTextureLightning;
-	hplaneFieldModel.m_texture = fieldstoneTex;
-
-	hplaneFigureModel.load(s_hplaneVertices, BX_COUNTOF(s_hplaneVertices), PosNormalTexcoordVertex::ms_decl, s_planeIndices, BX_COUNTOF(s_planeIndices) );
-	hplaneFigureModel.m_program = programTextureLightning;
-=======
 	bunnyHighPolyModel.m_program = programColorLighting;
 
 	bunnyLowPolyModel.load("meshes/bunny_decimated.bin");
@@ -2269,7 +1970,6 @@ int _main_(int _argc, char** _argv)
 
 	hplaneFigureModel.load(s_hplaneVertices, BX_COUNTOF(s_hplaneVertices), PosNormalTexcoordVertex::ms_decl, s_planeIndices, BX_COUNTOF(s_planeIndices) );
 	hplaneFigureModel.m_program = programTextureLighting;
->>>>>>> upstream/master
 	hplaneFigureModel.m_texture = figureTex;
 
 	vplaneModel.load(s_vplaneVertices, BX_COUNTOF(s_vplaneVertices), PosNormalTexcoordVertex::ms_decl, s_planeIndices, BX_COUNTOF(s_planeIndices) );
@@ -2372,13 +2072,8 @@ int _main_(int _argc, char** _argv)
 
 			bgfx::destroyFrameBuffer(s_stencilFb);
 
-<<<<<<< HEAD
-			fbtextures[0] = bgfx::createTexture2D(viewState.m_width, viewState.m_height, 1, bgfx::TextureFormat::BGRA8, BGFX_TEXTURE_U_CLAMP|BGFX_TEXTURE_V_CLAMP|BGFX_TEXTURE_RT);
-			fbtextures[1] = bgfx::createTexture2D(viewState.m_width, viewState.m_height, 1, bgfx::TextureFormat::D16, BGFX_TEXTURE_RT_BUFFER_ONLY);
-=======
 			fbtextures[0] = bgfx::createTexture2D(uint16_t(viewState.m_width), uint16_t(viewState.m_height), false, 1, bgfx::TextureFormat::BGRA8, BGFX_TEXTURE_U_CLAMP|BGFX_TEXTURE_V_CLAMP|BGFX_TEXTURE_RT);
 			fbtextures[1] = bgfx::createTexture2D(uint16_t(viewState.m_width), uint16_t(viewState.m_height), false, 1, bgfx::TextureFormat::D16, BGFX_TEXTURE_RT_WRITE_ONLY);
->>>>>>> upstream/master
 			s_stencilFb = bgfx::createFrameBuffer(BX_COUNTOF(fbtextures), fbtextures, true);
 		}
 
@@ -2421,13 +2116,8 @@ int _main_(int _argc, char** _argv)
 			| (mouseState.m_buttons[entry::MouseButton::Right ] ? IMGUI_MBUT_RIGHT  : 0)
 			| (mouseState.m_buttons[entry::MouseButton::Middle] ? IMGUI_MBUT_MIDDLE : 0)
 			, mouseState.m_mz
-<<<<<<< HEAD
-			, viewState.m_width
-			, viewState.m_height
-=======
 			, uint16_t(viewState.m_width)
 			, uint16_t(viewState.m_height)
->>>>>>> upstream/master
 			);
 
 		imguiBeginScrollArea("Settings", viewState.m_width - 256 - 10, 10, 256, 700, &scrollAreaRight);
@@ -2540,11 +2230,7 @@ int _main_(int _argc, char** _argv)
 
 		//update settings
 		s_uniforms.m_params.m_ambientPass     = 1.0f;
-<<<<<<< HEAD
-		s_uniforms.m_params.m_lightningPass   = 1.0f;
-=======
 		s_uniforms.m_params.m_lightingPass    = 1.0f;
->>>>>>> upstream/master
 		s_uniforms.m_params.m_texelHalf       = s_texelHalf;
 		s_uniforms.m_svparams.m_useStencilTex = float(settings_useStencilTexture);
 
@@ -2570,15 +2256,9 @@ int _main_(int _argc, char** _argv)
 		{
 			for (uint8_t ii = 0; ii < settings_numLights; ++ii)
 			{
-<<<<<<< HEAD
-				lightPosRadius[ii][0] = cosf(2.0f*bx::pi/settings_numLights * float(ii) + lightTimeAccumulator * 1.1f + 3.0f) * 20.0f;
-				lightPosRadius[ii][1] = 20.0f;
-				lightPosRadius[ii][2] = sinf(2.0f*bx::pi/settings_numLights * float(ii) + lightTimeAccumulator * 1.1f + 3.0f) * 20.0f;
-=======
 				lightPosRadius[ii][0] = bx::fcos(2.0f*bx::pi/settings_numLights * float(ii) + lightTimeAccumulator * 1.1f + 3.0f) * 20.0f;
 				lightPosRadius[ii][1] = 20.0f;
 				lightPosRadius[ii][2] = bx::fsin(2.0f*bx::pi/settings_numLights * float(ii) + lightTimeAccumulator * 1.1f + 3.0f) * 20.0f;
->>>>>>> upstream/master
 				lightPosRadius[ii][3] = 20.0f;
 			}
 		}
@@ -2586,15 +2266,9 @@ int _main_(int _argc, char** _argv)
 		{
 			for (uint8_t ii = 0; ii < settings_numLights; ++ii)
 			{
-<<<<<<< HEAD
-				lightPosRadius[ii][0] = cosf(float(ii) * 2.0f/settings_numLights + lightTimeAccumulator * 1.3f + bx::pi) * 40.0f;
-				lightPosRadius[ii][1] = 20.0f;
-				lightPosRadius[ii][2] = sinf(float(ii) * 2.0f/settings_numLights + lightTimeAccumulator * 1.3f + bx::pi) * 40.0f;
-=======
 				lightPosRadius[ii][0] = bx::fcos(float(ii) * 2.0f/settings_numLights + lightTimeAccumulator * 1.3f + bx::pi) * 40.0f;
 				lightPosRadius[ii][1] = 20.0f;
 				lightPosRadius[ii][2] = bx::fsin(float(ii) * 2.0f/settings_numLights + lightTimeAccumulator * 1.3f + bx::pi) * 40.0f;
->>>>>>> upstream/master
 				lightPosRadius[ii][3] = 20.0f;
 			}
 		}
@@ -2668,15 +2342,9 @@ int _main_(int _argc, char** _argv)
 			inst.m_rotation[0] = 0.0f;
 			inst.m_rotation[1] = 0.0f;
 			inst.m_rotation[2] = 0.0f;
-<<<<<<< HEAD
-			inst.m_pos[0]      = sinf(ii * 2.0f + 13.0f + sceneTimeAccumulator * 1.1f) * 13.0f;
-			inst.m_pos[1]      = 6.0f;
-			inst.m_pos[2]      = cosf(ii * 2.0f + 13.0f + sceneTimeAccumulator * 1.1f) * 13.0f;
-=======
 			inst.m_pos[0]      = bx::fsin(ii * 2.0f + 13.0f + sceneTimeAccumulator * 1.1f) * 13.0f;
 			inst.m_pos[1]      = 6.0f;
 			inst.m_pos[2]      = bx::fcos(ii * 2.0f + 13.0f + sceneTimeAccumulator * 1.1f) * 13.0f;
->>>>>>> upstream/master
 			inst.m_model       = &cubeModel;
 		}
 
@@ -2691,15 +2359,9 @@ int _main_(int _argc, char** _argv)
 			inst.m_rotation[0] = 0.0f;
 			inst.m_rotation[1] = 0.0f;
 			inst.m_rotation[2] = 0.0f;
-<<<<<<< HEAD
-			inst.m_pos[0]      = sinf(ii * 2.0f + 13.0f + sceneTimeAccumulator * 1.1f) * 13.0f;
-			inst.m_pos[1]      = 22.0f;
-			inst.m_pos[2]      = cosf(ii * 2.0f + 13.0f + sceneTimeAccumulator * 1.1f) * 13.0f;
-=======
 			inst.m_pos[0]      = bx::fsin(ii * 2.0f + 13.0f + sceneTimeAccumulator * 1.1f) * 13.0f;
 			inst.m_pos[1]      = 22.0f;
 			inst.m_pos[2]      = bx::fcos(ii * 2.0f + 13.0f + sceneTimeAccumulator * 1.1f) * 13.0f;
->>>>>>> upstream/master
 			inst.m_model       = &cubeModel;
 		}
 
@@ -2858,11 +2520,7 @@ int _main_(int _argc, char** _argv)
 
 		// Draw ambient only.
 		s_uniforms.m_params.m_ambientPass = 1.0f;
-<<<<<<< HEAD
-		s_uniforms.m_params.m_lightningPass = 0.0f;
-=======
 		s_uniforms.m_params.m_lightingPass = 0.0f;
->>>>>>> upstream/master
 
 		s_uniforms.m_color[0] = 1.0f;
 		s_uniforms.m_color[1] = 1.0f;
@@ -2914,15 +2572,9 @@ int _main_(int _argc, char** _argv)
 		{
 			const float* lightPos = lightPosRadius[ii];
 
-<<<<<<< HEAD
-			memcpy(s_uniforms.m_lightPosRadius, lightPosRadius[ii], 4*sizeof(float) );
-			memcpy(s_uniforms.m_lightRgbInnerR, lightRgbInnerR[ii], 3*sizeof(float) );
-			memcpy(s_uniforms.m_color,          lightRgbInnerR[ii], 3*sizeof(float) );
-=======
 			bx::memCopy(s_uniforms.m_lightPosRadius, lightPosRadius[ii], 4*sizeof(float) );
 			bx::memCopy(s_uniforms.m_lightRgbInnerR, lightRgbInnerR[ii], 3*sizeof(float) );
 			bx::memCopy(s_uniforms.m_color,          lightRgbInnerR[ii], 3*sizeof(float) );
->>>>>>> upstream/master
 
 			if (settings_useStencilTexture)
 			{
@@ -2984,11 +2636,7 @@ int _main_(int _argc, char** _argv)
 					);
 
 				// Set virtual light pos.
-<<<<<<< HEAD
-				memcpy(s_uniforms.m_virtualLightPos_extrusionDist, transformedLightPos, 3*sizeof(float) );
-=======
 				bx::memCopy(s_uniforms.m_virtualLightPos_extrusionDist, transformedLightPos, 3*sizeof(float) );
->>>>>>> upstream/master
 				s_uniforms.m_virtualLightPos_extrusionDist[3] = instance.m_svExtrusionDistance;
 
 				// Compute transform for shadow volume.
@@ -3106,11 +2754,7 @@ int _main_(int _argc, char** _argv)
 
 			// Draw diffuse only.
 			s_uniforms.m_params.m_ambientPass = 0.0f;
-<<<<<<< HEAD
-			s_uniforms.m_params.m_lightningPass = 1.0f;
-=======
 			s_uniforms.m_params.m_lightingPass = 1.0f;
->>>>>>> upstream/master
 
 			RenderState& drawDiffuse = settings_useStencilTexture
 				? s_renderStates[RenderState::ShadowVolume_UsingStencilTexture_DrawDiffuse]
@@ -3139,11 +2783,7 @@ int _main_(int _argc, char** _argv)
 		const float lightScale[3] = { 1.5f, 1.5f, 1.5f };
 		for (uint8_t ii = 0; ii < settings_numLights; ++ii)
 		{
-<<<<<<< HEAD
-			memcpy(s_uniforms.m_color, lightRgbInnerR[ii], 3*sizeof(float) );
-=======
 			bx::memCopy(s_uniforms.m_color, lightRgbInnerR[ii], 3*sizeof(float) );
->>>>>>> upstream/master
 
 			float lightMtx[16];
 			mtxBillboard(lightMtx, viewState.m_view, lightPosRadius[ii], lightScale);
@@ -3152,11 +2792,7 @@ int _main_(int _argc, char** _argv)
 		}
 
 		// Setup view rect and transform for all used views.
-<<<<<<< HEAD
-		setViewRectMask(s_viewMask, 0, 0, viewState.m_width, viewState.m_height);
-=======
 		setViewRectMask(s_viewMask, 0, 0, uint16_t(viewState.m_width), uint16_t(viewState.m_height) );
->>>>>>> upstream/master
 		setViewTransformMask(s_viewMask, viewState.m_view, viewState.m_proj);
 		s_viewMask = 0;
 
@@ -3196,13 +2832,8 @@ int _main_(int _argc, char** _argv)
 	bgfx::destroyTexture(fieldstoneTex);
 	bgfx::destroyTexture(flareTex);
 
-<<<<<<< HEAD
-	bgfx::destroyProgram(programTextureLightning);
-	bgfx::destroyProgram(programColorLightning);
-=======
 	bgfx::destroyProgram(programTextureLighting);
 	bgfx::destroyProgram(programColorLighting);
->>>>>>> upstream/master
 	bgfx::destroyProgram(programColorTexture);
 	bgfx::destroyProgram(programTexture);
 

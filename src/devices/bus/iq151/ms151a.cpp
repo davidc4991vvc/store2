@@ -36,11 +36,7 @@ ROM_END
 //  GLOBAL VARIABLES
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type IQ151_MS151A = &device_creator<iq151_ms151a_device>;
-=======
 DEFINE_DEVICE_TYPE(IQ151_MS151A, iq151_ms151a_device, "iq151_ms15a", "IQ151 MS151A XY plotter")
->>>>>>> upstream/master
 
 //**************************************************************************
 //  LIVE DEVICE
@@ -50,18 +46,11 @@ DEFINE_DEVICE_TYPE(IQ151_MS151A, iq151_ms151a_device, "iq151_ms15a", "IQ151 MS15
 //  iq151_ms151a_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-iq151_ms151a_device::iq151_ms151a_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-		: device_t(mconfig, IQ151_MS151A, "IQ151 MS151A", tag, owner, clock, "iq151_ms151a", __FILE__),
-		device_iq151cart_interface( mconfig, *this ), m_rom(nullptr), m_posx(0), m_posy(0), m_pen(0), m_paper(nullptr)
-	{
-=======
 iq151_ms151a_device::iq151_ms151a_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, IQ151_MS151A, tag, owner, clock)
 	, device_iq151cart_interface(mconfig, *this)
 	, m_rom(nullptr), m_posx(0), m_posy(0), m_pen(0), m_paper(nullptr)
 {
->>>>>>> upstream/master
 }
 
 //-------------------------------------------------
@@ -70,17 +59,10 @@ iq151_ms151a_device::iq151_ms151a_device(const machine_config &mconfig, const ch
 
 void iq151_ms151a_device::device_start()
 {
-<<<<<<< HEAD
-	m_rom = (UINT8*)memregion("ms151a")->base();
-
-	// allocate a bitmap for represent the paper
-	m_paper = auto_bitmap_ind16_alloc(machine(), PAPER_WIDTH, PAPER_HEIGHT);
-=======
 	m_rom = (uint8_t*)memregion("ms151a")->base();
 
 	// allocate a bitmap for represent the paper
 	m_paper = std::make_unique<bitmap_ind16>(PAPER_WIDTH, PAPER_HEIGHT);
->>>>>>> upstream/master
 	m_paper->fill(0);
 
 	m_pen = 0;
@@ -96,16 +78,6 @@ void iq151_ms151a_device::device_stop()
 {
 #if DUMP_PAPER_INTO_PNG
 	emu_file file(machine().options().snapshot_directory(), OPEN_FLAG_WRITE | OPEN_FLAG_CREATE | OPEN_FLAG_CREATE_PATHS);
-<<<<<<< HEAD
-	file_error filerr = file.open("iq151_ms151a.png");
-
-	if (filerr == FILERR_NONE)
-	{
-		static const rgb_t png_palette[] = { rgb_t::white, rgb_t::black };
-
-		// save the paper into a png
-		png_write_bitmap(file, NULL, *m_paper, 2, png_palette);
-=======
 	osd_file::error filerr = file.open("iq151_ms151a.png");
 
 	if (filerr == osd_file::error::NONE)
@@ -114,7 +86,6 @@ void iq151_ms151a_device::device_stop()
 
 		// save the paper into a png
 		png_write_bitmap(file, nullptr, *m_paper, 2, png_palette);
->>>>>>> upstream/master
 	}
 #endif
 }
@@ -123,11 +94,7 @@ void iq151_ms151a_device::device_stop()
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const rom_entry *iq151_ms151a_device::device_rom_region() const
-=======
 const tiny_rom_entry *iq151_ms151a_device::device_rom_region() const
->>>>>>> upstream/master
 {
 	return ROM_NAME( iq151_ms151a );
 }
@@ -136,11 +103,7 @@ const tiny_rom_entry *iq151_ms151a_device::device_rom_region() const
 //  read
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void iq151_ms151a_device::read(offs_t offset, UINT8 &data)
-=======
 void iq151_ms151a_device::read(offs_t offset, uint8_t &data)
->>>>>>> upstream/master
 {
 	// interal ROM is mapped at 0xc000-0xc7ff
 	if (offset >= 0xc000 && offset < 0xc800)
@@ -151,11 +114,7 @@ void iq151_ms151a_device::read(offs_t offset, uint8_t &data)
 //  IO read
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void iq151_ms151a_device::io_read(offs_t offset, UINT8 &data)
-=======
 void iq151_ms151a_device::io_read(offs_t offset, uint8_t &data)
->>>>>>> upstream/master
 {
 	if (offset == 0xc4)
 		data = plotter_status();
@@ -165,11 +124,7 @@ void iq151_ms151a_device::io_read(offs_t offset, uint8_t &data)
 //  IO write
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void iq151_ms151a_device::io_write(offs_t offset, UINT8 data)
-=======
 void iq151_ms151a_device::io_write(offs_t offset, uint8_t data)
->>>>>>> upstream/master
 {
 	if (offset >= 0xc0 && offset <= 0xc4)
 		plotter_update(offset - 0xc0, data);
@@ -180,11 +135,7 @@ void iq151_ms151a_device::io_write(offs_t offset, uint8_t data)
 //  XY 4130/4131
 //**************************************************************************
 
-<<<<<<< HEAD
-UINT8 iq151_ms151a_device::plotter_status()
-=======
 uint8_t iq151_ms151a_device::plotter_status()
->>>>>>> upstream/master
 {
 	/*
 	    bit 7 - plotter READY line
@@ -193,11 +144,7 @@ uint8_t iq151_ms151a_device::plotter_status()
 	return 0x80;
 }
 
-<<<<<<< HEAD
-void iq151_ms151a_device::plotter_update(UINT8 offset, UINT8 data)
-=======
 void iq151_ms151a_device::plotter_update(uint8_t offset, uint8_t data)
->>>>>>> upstream/master
 {
 	// update pen and paper positions
 	switch (offset)
@@ -210,17 +157,10 @@ void iq151_ms151a_device::plotter_update(uint8_t offset, uint8_t data)
 	}
 
 	// clamp within range
-<<<<<<< HEAD
-	m_posx = MAX(m_posx, 0);
-	m_posx = MIN(m_posx, PAPER_MAX_X);
-	m_posy = MAX(m_posy, 0);
-	m_posy = MIN(m_posy, PAPER_MAX_Y);
-=======
 	m_posx = std::max(m_posx, 0);
 	m_posx = std::min(m_posx, PAPER_MAX_X);
 	m_posy = std::max(m_posy, 0);
 	m_posy = std::min(m_posy, PAPER_MAX_Y);
->>>>>>> upstream/master
 
 	// if pen is down draws a point
 	if (m_pen)

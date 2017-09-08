@@ -39,17 +39,11 @@
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/m6502/m6502.h"
-#include "includes/canyon.h"
-#include "sound/discrete.h"
-=======
 #include "includes/canyon.h"
 #include "cpu/m6502/m6502.h"
 #include "sound/discrete.h"
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 /*************************************
@@ -75,11 +69,7 @@ PALETTE_INIT_MEMBER(canyon_state, canyon)
 
 READ8_MEMBER(canyon_state::canyon_switches_r)
 {
-<<<<<<< HEAD
-	UINT8 val = 0;
-=======
 	uint8_t val = 0;
->>>>>>> upstream/master
 
 	if ((ioport("IN2")->read() >> (offset & 7)) & 1)
 		val |= 0x80;
@@ -105,11 +95,6 @@ READ8_MEMBER(canyon_state::canyon_options_r)
  *
  *************************************/
 
-<<<<<<< HEAD
-WRITE8_MEMBER(canyon_state::canyon_led_w)
-{
-	set_led_status(machine(), offset & 0x01, offset & 0x02);
-=======
 WRITE8_MEMBER(canyon_state::output_latch_w)
 {
 	// ADR1 = D, ADR8 = A2, ADR7 = A1, ADR0 = A0
@@ -124,7 +109,6 @@ WRITE_LINE_MEMBER(canyon_state::led1_w)
 WRITE_LINE_MEMBER(canyon_state::led2_w)
 {
 	output().set_led_value(1, state);
->>>>>>> upstream/master
 }
 
 
@@ -141,15 +125,8 @@ static ADDRESS_MAP_START( main_map, AS_PROGRAM, 8, canyon_state )
 	AM_RANGE(0x0000, 0x00ff) AM_MIRROR(0x100) AM_RAM
 	AM_RANGE(0x0400, 0x0401) AM_WRITE(canyon_motor_w)
 	AM_RANGE(0x0500, 0x0500) AM_WRITE(canyon_explode_w)
-<<<<<<< HEAD
-	AM_RANGE(0x0501, 0x0501) AM_WRITE(watchdog_reset_w) /* watchdog, disabled in service mode */
-	AM_RANGE(0x0600, 0x0603) AM_WRITE(canyon_whistle_w)
-	AM_RANGE(0x0680, 0x0683) AM_WRITE(canyon_led_w)
-	AM_RANGE(0x0700, 0x0703) AM_WRITE(canyon_attract_w)
-=======
 	AM_RANGE(0x0501, 0x0501) AM_DEVWRITE("watchdog", watchdog_timer_device, reset_w) /* watchdog, disabled in service mode */
 	AM_RANGE(0x0600, 0x0603) AM_SELECT(0x0180) AM_WRITE(output_latch_w)
->>>>>>> upstream/master
 	AM_RANGE(0x0800, 0x0bff) AM_RAM_WRITE(canyon_videoram_w) AM_SHARE("videoram")
 	AM_RANGE(0x1000, 0x17ff) AM_READ(canyon_switches_r) AM_WRITENOP  /* sloppy code writes here */
 	AM_RANGE(0x1800, 0x1fff) AM_READ(canyon_options_r)
@@ -270,19 +247,12 @@ GFXDECODE_END
  *
  *************************************/
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( canyon, canyon_state )
-=======
 static MACHINE_CONFIG_START( canyon )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6502, XTAL_12_096MHz / 16)
 	MCFG_CPU_PROGRAM_MAP(main_map)
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", canyon_state,  nmi_line_pulse)
-<<<<<<< HEAD
-	MCFG_WATCHDOG_VBLANK_INIT(8)
-=======
 
 	MCFG_DEVICE_ADD("outlatch", F9334, 0) // C7
 	MCFG_ADDRESSABLE_LATCH_Q0_OUT_CB(DEVWRITELINE("discrete", discrete_device, write_line<CANYON_WHISTLE1_EN>))
@@ -294,7 +264,6 @@ static MACHINE_CONFIG_START( canyon )
 
 	MCFG_WATCHDOG_ADD("watchdog")
 	MCFG_WATCHDOG_VBLANK_INIT("screen", 8)
->>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
@@ -370,10 +339,5 @@ ROM_END
  *
  *************************************/
 
-<<<<<<< HEAD
-GAME( 1977, canyon,  0,      canyon, canyon, driver_device, 0, ROT0, "Atari", "Canyon Bomber", MACHINE_SUPPORTS_SAVE )
-GAME( 1977, canyonp, canyon, canyon, canyon, driver_device, 0, ROT0, "Atari", "Canyon Bomber (prototype)", MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1977, canyon,  0,      canyon, canyon, canyon_state, 0, ROT0, "Atari", "Canyon Bomber", MACHINE_SUPPORTS_SAVE )
 GAME( 1977, canyonp, canyon, canyon, canyon, canyon_state, 0, ROT0, "Atari", "Canyon Bomber (prototype)", MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

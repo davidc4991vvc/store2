@@ -12,21 +12,14 @@
 #include "emu.h"
 #include "video/sed1520.h"
 
-<<<<<<< HEAD
-=======
 #include "screen.h"
 
->>>>>>> upstream/master
 
 //**************************************************************************
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type SED1520 = &device_creator<sed1520_device>;
-=======
 DEFINE_DEVICE_TYPE(SED1520, sed1520_device, "sed1520", "Epson SED1520")
->>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -37,13 +30,8 @@ DEFINE_DEVICE_TYPE(SED1520, sed1520_device, "sed1520", "Epson SED1520")
 //  sed1520_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-sed1520_device::sed1520_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-	device_t(mconfig, SED1520, "SED1520", tag, owner, clock, "sed1520", __FILE__), m_lcd_on(0), m_busy(0), m_page(0), m_column(0), m_old_column(0), m_start_line(0),
-=======
 sed1520_device::sed1520_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	device_t(mconfig, SED1520, tag, owner, clock), m_lcd_on(0), m_busy(0), m_page(0), m_column(0), m_old_column(0), m_start_line(0),
->>>>>>> upstream/master
 	m_adc(0), m_static_drive(0), m_modify_write(false),
 	m_screen_update_func(nullptr)
 {
@@ -92,11 +80,7 @@ void sed1520_device::device_reset()
 //  device interface
 //**************************************************************************
 
-<<<<<<< HEAD
-UINT32 sed1520_device::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t sed1520_device::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	if (m_lcd_on)
 	{
@@ -164,11 +148,7 @@ WRITE8_MEMBER(sed1520_device::control_write)
 
 READ8_MEMBER(sed1520_device::status_read)
 {
-<<<<<<< HEAD
-	UINT8 data = (m_busy << 7) | (m_adc << 6) | (m_lcd_on << 5);
-=======
 	uint8_t data = (m_busy << 7) | (m_adc << 6) | (m_lcd_on << 5);
->>>>>>> upstream/master
 	return data;
 }
 
@@ -180,11 +160,7 @@ WRITE8_MEMBER(sed1520_device::data_write)
 
 READ8_MEMBER(sed1520_device::data_read)
 {
-<<<<<<< HEAD
-	UINT8 data = m_vram[(m_page * 80 + m_column) % sizeof(m_vram)];
-=======
 	uint8_t data = m_vram[(m_page * 80 + m_column) % sizeof(m_vram)];
->>>>>>> upstream/master
 	if (!m_modify_write)
 		m_column = (m_column + 1) % 80;
 	return data;

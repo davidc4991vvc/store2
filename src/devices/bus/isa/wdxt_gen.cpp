@@ -43,10 +43,7 @@ Notes:
 
 */
 
-<<<<<<< HEAD
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #include "wdxt_gen.h"
 
 
@@ -65,11 +62,7 @@ Notes:
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type ISA8_WDXT_GEN = &device_creator<wdxt_gen_device>;
-=======
 DEFINE_DEVICE_TYPE(ISA8_WDXT_GEN, wdxt_gen_device, "wdxt_gen", "Western Digital WDXT-GEN (Amstrad PC1512/1640)")
->>>>>>> upstream/master
 
 
 //-------------------------------------------------
@@ -89,11 +82,7 @@ ROM_END
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const rom_entry *wdxt_gen_device::device_rom_region() const
-=======
 const tiny_rom_entry *wdxt_gen_device::device_rom_region() const
->>>>>>> upstream/master
 {
 	return ROM_NAME( wdxt_gen );
 }
@@ -105,13 +94,6 @@ const tiny_rom_entry *wdxt_gen_device::device_rom_region() const
 
 static ADDRESS_MAP_START( wd1015_io, AS_IO, 8, wdxt_gen_device )
 	AM_RANGE(0x00, 0xff) AM_DEVREADWRITE(WD11C00_17_TAG, wd11c00_17_device, read, write)
-<<<<<<< HEAD
-	AM_RANGE(MCS48_PORT_T0, MCS48_PORT_T0) AM_READ(wd1015_t0_r)
-	AM_RANGE(MCS48_PORT_T1, MCS48_PORT_T1) AM_READ(wd1015_t1_r)
-	AM_RANGE(MCS48_PORT_P1, MCS48_PORT_P1) AM_READWRITE(wd1015_p1_r, wd1015_p1_w)
-	AM_RANGE(MCS48_PORT_P2, MCS48_PORT_P2) AM_READWRITE(wd1015_p2_r, wd1015_p2_w)
-=======
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -153,14 +135,6 @@ WRITE8_MEMBER( wdxt_gen_device::ram_w )
 }
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  MACHINE_DRIVER( wdxt_gen )
-//-------------------------------------------------
-
-static MACHINE_CONFIG_FRAGMENT( wdxt_gen )
-	MCFG_CPU_ADD(WD1015_TAG, I8049, 5000000)
-	MCFG_CPU_IO_MAP(wd1015_io)
-=======
 //  device_add_mconfig - add device configuration
 //-------------------------------------------------
 
@@ -173,7 +147,6 @@ MACHINE_CONFIG_MEMBER( wdxt_gen_device::device_add_mconfig )
 	MCFG_MCS48_PORT_P1_OUT_CB(WRITE8(wdxt_gen_device, wd1015_p1_w))
 	MCFG_MCS48_PORT_P2_IN_CB(READ8(wdxt_gen_device, wd1015_p2_r))
 	MCFG_MCS48_PORT_P2_OUT_CB(WRITE8(wdxt_gen_device, wd1015_p2_w))
->>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD(WD11C00_17_TAG, WD11C00_17, 5000000)
 	MCFG_WD11C00_17_OUT_IRQ5_CB(WRITELINE(wdxt_gen_device, irq5_w))
@@ -200,20 +173,6 @@ MACHINE_CONFIG_MEMBER( wdxt_gen_device::device_add_mconfig )
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-//-------------------------------------------------
-//  machine_config_additions - device-specific
-//  machine configurations
-//-------------------------------------------------
-
-machine_config_constructor wdxt_gen_device::device_mconfig_additions() const
-{
-	return MACHINE_CONFIG_NAME( wdxt_gen );
-}
-
-
-=======
->>>>>>> upstream/master
 //**************************************************************************
 //  LIVE DEVICE
 //**************************************************************************
@@ -222,21 +181,12 @@ machine_config_constructor wdxt_gen_device::device_mconfig_additions() const
 //  wdxt_gen_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-wdxt_gen_device::wdxt_gen_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, ISA8_WDXT_GEN, "Western Digital WDXT-GEN (Amstrad PC1512/1640)", tag, owner, clock, "wdxt_gen", __FILE__),
-		device_isa8_card_interface(mconfig, *this),
-		m_maincpu(*this, WD1015_TAG),
-		m_host(*this, WD11C00_17_TAG),
-		m_hdc(*this, WD2010A_TAG)
-=======
 wdxt_gen_device::wdxt_gen_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, ISA8_WDXT_GEN, tag, owner, clock)
 	, device_isa8_card_interface(mconfig, *this)
 	, m_maincpu(*this, WD1015_TAG)
 	, m_host(*this, WD11C00_17_TAG)
 	, m_hdc(*this, WD2010A_TAG)
->>>>>>> upstream/master
 {
 }
 
@@ -248,15 +198,9 @@ wdxt_gen_device::wdxt_gen_device(const machine_config &mconfig, const char *tag,
 void wdxt_gen_device::device_start()
 {
 	set_isa_device();
-<<<<<<< HEAD
-	m_isa->install_rom(this, 0xc8000, 0xc9fff, 0, 0, "hdc", "hdc");
-	m_isa->install_device(0x0320, 0x0323, 0, 0, READ8_DEVICE_DELEGATE(m_host, wd11c00_17_device, io_r), WRITE8_DEVICE_DELEGATE(m_host, wd11c00_17_device, io_w));
-	m_isa->set_dma_channel(3, this, FALSE);
-=======
 	m_isa->install_rom(this, 0xc8000, 0xc9fff, "hdc", "hdc");
 	m_isa->install_device(0x0320, 0x0323, READ8_DEVICE_DELEGATE(m_host, wd11c00_17_device, io_r), WRITE8_DEVICE_DELEGATE(m_host, wd11c00_17_device, io_w));
 	m_isa->set_dma_channel(3, this, false);
->>>>>>> upstream/master
 }
 
 
@@ -275,11 +219,7 @@ void wdxt_gen_device::device_reset()
 //  dack_r -
 //-------------------------------------------------
 
-<<<<<<< HEAD
-UINT8 wdxt_gen_device::dack_r(int line)
-=======
 uint8_t wdxt_gen_device::dack_r(int line)
->>>>>>> upstream/master
 {
 	return m_host->dack_r();
 }
@@ -289,37 +229,17 @@ uint8_t wdxt_gen_device::dack_r(int line)
 //  dack_w -
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void wdxt_gen_device::dack_w(int line, UINT8 data)
-=======
 void wdxt_gen_device::dack_w(int line, uint8_t data)
->>>>>>> upstream/master
 {
 	m_host->dack_w(data);
 }
 
-<<<<<<< HEAD
-//-------------------------------------------------
-//  wd1015_t0_r -
-//-------------------------------------------------
-
-READ8_MEMBER( wdxt_gen_device::wd1015_t0_r )
-{
-	return m_host->busy_r();
-}
-
-=======
->>>>>>> upstream/master
 
 //-------------------------------------------------
 //  wd1015_t1_r -
 //-------------------------------------------------
 
-<<<<<<< HEAD
-READ8_MEMBER( wdxt_gen_device::wd1015_t1_r )
-=======
 READ_LINE_MEMBER( wdxt_gen_device::wd1015_t1_r )
->>>>>>> upstream/master
 {
 	return 0; // TODO
 }
@@ -346,11 +266,7 @@ READ8_MEMBER( wdxt_gen_device::wd1015_p1_r )
 
 	*/
 
-<<<<<<< HEAD
-	UINT8 data = 0;
-=======
 	uint8_t data = 0;
->>>>>>> upstream/master
 
 	logerror("%s P1 read %02x\n", machine().describe_context(), data);
 
@@ -406,11 +322,7 @@ READ8_MEMBER( wdxt_gen_device::wd1015_p2_r )
 
 	*/
 
-<<<<<<< HEAD
-	UINT8 data = 0x40;
-=======
 	uint8_t data = 0x40;
->>>>>>> upstream/master
 
 	data |= m_host->ecc_not_0_r() << 7;
 

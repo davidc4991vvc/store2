@@ -1,28 +1,16 @@
 // license:BSD-3-Clause
 // copyright-holders:Olivier Galibert
-<<<<<<< HEAD
-#include "i6300esb.h"
-
-const device_type I6300ESB_WATCHDOG = &device_creator<i6300esb_watchdog_device>;
-const device_type I6300ESB_LPC      = &device_creator<i6300esb_lpc_device>;
-=======
 #include "emu.h"
 #include "i6300esb.h"
 
 DEFINE_DEVICE_TYPE(I6300ESB_WATCHDOG, i6300esb_watchdog_device, "i6300esb_watchdog", "i6300ESB southbridge watchdog")
 DEFINE_DEVICE_TYPE(I6300ESB_LPC,      i6300esb_lpc_device,      "i6300esb_lpc",      "i6300ESB southbridge ISA/LPC bridge")
->>>>>>> upstream/master
 
 DEVICE_ADDRESS_MAP_START(map, 32, i6300esb_watchdog_device)
 ADDRESS_MAP_END
 
-<<<<<<< HEAD
-i6300esb_watchdog_device::i6300esb_watchdog_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: pci_device(mconfig, I6300ESB_WATCHDOG, "i6300ESB southbridge watchdog", tag, owner, clock, "i6300esb_watchdog", __FILE__)
-=======
 i6300esb_watchdog_device::i6300esb_watchdog_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: pci_device(mconfig, I6300ESB_WATCHDOG, tag, owner, clock)
->>>>>>> upstream/master
 {
 }
 
@@ -87,17 +75,11 @@ DEVICE_ADDRESS_MAP_START(config_map, 32, i6300esb_lpc_device)
 ADDRESS_MAP_END
 
 DEVICE_ADDRESS_MAP_START(internal_io_map, 32, i6300esb_lpc_device)
-<<<<<<< HEAD
-	if(lpc_en & 0x2000) {
-		AM_RANGE(0x004c, 0x004f) AM_READWRITE8(siu_config_port_r, siu_config_port_w, 0x00ff0000)
-		AM_RANGE(0x004c, 0x004f) AM_READWRITE8(siu_data_port_r,   siu_data_port_w,   0xff000000)
-=======
 	;
 	if(lpc_en & 0x2000) {
 		AM_RANGE(0x004c, 0x004f) AM_READWRITE8(siu_config_port_r, siu_config_port_w, 0x00ff0000)
 		AM_RANGE(0x004c, 0x004f) AM_READWRITE8(siu_data_port_r,   siu_data_port_w,   0xff000000)
 		;
->>>>>>> upstream/master
 	}
 
 	AM_RANGE(0x0060, 0x0063) AM_READWRITE8(    nmi_sc_r,          nmi_sc_w,          0x0000ff00)
@@ -107,20 +89,12 @@ DEVICE_ADDRESS_MAP_START(internal_io_map, 32, i6300esb_lpc_device)
 ADDRESS_MAP_END
 
 
-<<<<<<< HEAD
-i6300esb_lpc_device::i6300esb_lpc_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: pci_device(mconfig, I6300ESB_LPC, "i6300ESB southbridge ISA/LPC bridge", tag, owner, clock, "i6300esb_lpc", __FILE__),
-		acpi(*this, "acpi"),
-		rtc (*this, "rtc"),
-		pit (*this, "pit")
-=======
 i6300esb_lpc_device::i6300esb_lpc_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: pci_device(mconfig, I6300ESB_LPC, tag, owner, clock),
 		acpi(*this, "acpi"),
 		rtc (*this, "rtc"),
 		pit (*this, "pit"),
 		m_region(*this, DEVICE_SELF)
->>>>>>> upstream/master
 {
 }
 
@@ -691,17 +665,6 @@ WRITE8_MEMBER (i6300esb_lpc_device::nop_w)
 {
 }
 
-<<<<<<< HEAD
-void i6300esb_lpc_device::map_bios(address_space *memory_space, UINT32 start, UINT32 end, int idsel)
-{
-	// Ignore idsel, a16 inversion for now
-	UINT32 mask = m_region->bytes() - 1;
-	memory_space->install_rom(start, end, m_region->base() + (start & mask));
-}
-
-void i6300esb_lpc_device::map_extra(UINT64 memory_window_start, UINT64 memory_window_end, UINT64 memory_offset, address_space *memory_space,
-									UINT64 io_window_start, UINT64 io_window_end, UINT64 io_offset, address_space *io_space)
-=======
 void i6300esb_lpc_device::map_bios(address_space *memory_space, uint32_t start, uint32_t end, int idsel)
 {
 	// Ignore idsel, a16 inversion for now
@@ -711,7 +674,6 @@ void i6300esb_lpc_device::map_bios(address_space *memory_space, uint32_t start, 
 
 void i6300esb_lpc_device::map_extra(uint64_t memory_window_start, uint64_t memory_window_end, uint64_t memory_offset, address_space *memory_space,
 									uint64_t io_window_start, uint64_t io_window_end, uint64_t io_offset, address_space *io_space)
->>>>>>> upstream/master
 {
 	if(fwh_dec_en1 & 0x80) {
 		map_bios(memory_space, 0xfff80000, 0xffffffff, 7);
@@ -754,11 +716,7 @@ void i6300esb_lpc_device::map_extra(uint64_t memory_window_start, uint64_t memor
 	if(gpio_cntl & 0x10)
 		logerror("%s: Warning: gpio range enabled at %04x-%04x\n", tag(), gpio_base, gpio_base+63);
 
-<<<<<<< HEAD
-	UINT32 hpet = 0xfed00000 + ((gen_cntl & 0x00018000) >> 3);
-=======
 	uint32_t hpet = 0xfed00000 + ((gen_cntl & 0x00018000) >> 3);
->>>>>>> upstream/master
 	logerror("%s: Warning: hpet at %08x-%08x\n", tag(), hpet, hpet+0x3ff);
 
 	if(lpc_en & 0x1000)
@@ -773,46 +731,26 @@ void i6300esb_lpc_device::map_extra(uint64_t memory_window_start, uint64_t memor
 		logerror("%s: Warning: gameport at 200-207\n", tag());
 
 	if(lpc_en & 0x0008) {
-<<<<<<< HEAD
-		UINT16 fdc = lpc_if_fdd_lpt_range & 0x10 ? 0x370 : 0x3f0;
-=======
 		uint16_t fdc = lpc_if_fdd_lpt_range & 0x10 ? 0x370 : 0x3f0;
->>>>>>> upstream/master
 		logerror("%s: Warning: floppy at %04x-%04x\n", tag(), fdc, fdc+7);
 	}
 
 	if(lpc_en & 0x0004) {
-<<<<<<< HEAD
-		static const UINT16 lpt_pos[4] = { 0x378, 0x278, 0x3bc, 0x000 };
-		UINT16 lpt = lpt_pos[lpc_if_fdd_lpt_range & 3];
-=======
 		static const uint16_t lpt_pos[4] = { 0x378, 0x278, 0x3bc, 0x000 };
 		uint16_t lpt = lpt_pos[lpc_if_fdd_lpt_range & 3];
->>>>>>> upstream/master
 		if(lpt)
 			logerror("%s: Warning: lpt at %04x-%04x %04x-%04x\n", tag(), lpt, lpt+7, lpt+0x400, lpt+0x407);
 	}
 
-<<<<<<< HEAD
-	static const UINT16 com_pos[8] = { 0x3f8, 0x2f8, 0x220, 0x228, 0x238, 0x2e8, 0x338, 0x3e8 };
-
-	if(lpc_en & 0x0002) {
-		UINT16 comb = com_pos[(lpc_if_com_range >> 4) & 7];
-=======
 	static const uint16_t com_pos[8] = { 0x3f8, 0x2f8, 0x220, 0x228, 0x238, 0x2e8, 0x338, 0x3e8 };
 
 	if(lpc_en & 0x0002) {
 		uint16_t comb = com_pos[(lpc_if_com_range >> 4) & 7];
->>>>>>> upstream/master
 		logerror("%s: Warning: comb at %04x-%04x\n", tag(), comb, comb+7);
 	}
 
 	if(lpc_en & 0x0001) {
-<<<<<<< HEAD
-		UINT16 coma = com_pos[lpc_if_com_range & 7];
-=======
 		uint16_t coma = com_pos[lpc_if_com_range & 7];
->>>>>>> upstream/master
 		logerror("%s: Warning: coma at %04x-%04x\n", tag(), coma, coma+7);
 	}
 

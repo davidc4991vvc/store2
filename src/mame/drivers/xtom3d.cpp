@@ -56,17 +56,6 @@ public:
 		: pcat_base_state(mconfig, type, tag)
 			{ }
 
-<<<<<<< HEAD
-	UINT32 *m_bios_ram;
-	UINT32 *m_bios_ext1_ram;
-	UINT32 *m_bios_ext2_ram;
-	UINT32 *m_bios_ext3_ram;
-	UINT32 *m_bios_ext4_ram;
-	UINT32 *m_isa_ram1;
-	UINT32 *m_isa_ram2;
-	UINT8 m_mtxc_config_reg[256];
-	UINT8 m_piix4_config_reg[4][256];
-=======
 	std::unique_ptr<uint32_t[]> m_bios_ram;
 	std::unique_ptr<uint32_t[]> m_bios_ext1_ram;
 	std::unique_ptr<uint32_t[]> m_bios_ext2_ram;
@@ -76,7 +65,6 @@ public:
 	std::unique_ptr<uint32_t[]> m_isa_ram2;
 	uint8_t m_mtxc_config_reg[256];
 	uint8_t m_piix4_config_reg[4][256];
->>>>>>> upstream/master
 
 	DECLARE_WRITE32_MEMBER( isa_ram1_w );
 	DECLARE_WRITE32_MEMBER( isa_ram2_w );
@@ -87,23 +75,14 @@ public:
 	DECLARE_WRITE32_MEMBER( bios_ext4_ram_w );
 
 	DECLARE_WRITE32_MEMBER( bios_ram_w );
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void machine_reset();
-=======
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
->>>>>>> upstream/master
 	void intel82439tx_init();
 };
 
 // Intel 82439TX System Controller (MTXC)
 
-<<<<<<< HEAD
-static UINT8 mtxc_config_r(device_t *busdevice, device_t *device, int function, int reg)
-=======
 static uint8_t mtxc_config_r(device_t *busdevice, device_t *device, int function, int reg)
->>>>>>> upstream/master
 {
 	xtom3d_state *state = busdevice->machine().driver_data<xtom3d_state>();
 //  osd_printf_debug("MTXC: read %d, %02X\n", function, reg);
@@ -111,11 +90,7 @@ static uint8_t mtxc_config_r(device_t *busdevice, device_t *device, int function
 	return state->m_mtxc_config_reg[reg];
 }
 
-<<<<<<< HEAD
-static void mtxc_config_w(device_t *busdevice, device_t *device, int function, int reg, UINT8 data)
-=======
 static void mtxc_config_w(device_t *busdevice, device_t *device, int function, int reg, uint8_t data)
->>>>>>> upstream/master
 {
 	xtom3d_state *state = busdevice->machine().driver_data<xtom3d_state>();
 	printf("MTXC: write %d, %02X, %02X\n",  function, reg, data);
@@ -145,11 +120,7 @@ static void mtxc_config_w(device_t *busdevice, device_t *device, int function, i
 		case 0x59: // PAM0
 		{
 			if (data & 0x10)        // enable RAM access to region 0xf0000 - 0xfffff
-<<<<<<< HEAD
-				state->membank("bios_bank")->set_base(state->m_bios_ram);
-=======
 				state->membank("bios_bank")->set_base(state->m_bios_ram.get());
->>>>>>> upstream/master
 			else                    // disable RAM access (reads go to BIOS ROM)
 				state->membank("bios_bank")->set_base(state->memregion("bios")->base() + 0x10000);
 			break;
@@ -157,20 +128,12 @@ static void mtxc_config_w(device_t *busdevice, device_t *device, int function, i
 		case 0x5a: // PAM1
 		{
 			if (data & 0x1)
-<<<<<<< HEAD
-				state->membank("video_bank1")->set_base(state->m_isa_ram1);
-=======
 				state->membank("video_bank1")->set_base(state->m_isa_ram1.get());
->>>>>>> upstream/master
 			else
 				state->membank("video_bank1")->set_base(state->memregion("video_bios")->base() + 0);
 
 			if (data & 0x10)
-<<<<<<< HEAD
-				state->membank("video_bank2")->set_base(state->m_isa_ram2);
-=======
 				state->membank("video_bank2")->set_base(state->m_isa_ram2.get());
->>>>>>> upstream/master
 			else
 				state->membank("video_bank2")->set_base(state->memregion("video_bios")->base() + 0x4000);
 
@@ -179,20 +142,12 @@ static void mtxc_config_w(device_t *busdevice, device_t *device, int function, i
 		case 0x5e: // PAM5
 		{
 			if (data & 0x1)
-<<<<<<< HEAD
-				state->membank("bios_ext1")->set_base(state->m_bios_ext1_ram);
-=======
 				state->membank("bios_ext1")->set_base(state->m_bios_ext1_ram.get());
->>>>>>> upstream/master
 			else
 				state->membank("bios_ext1")->set_base(state->memregion("bios")->base() + 0);
 
 			if (data & 0x10)
-<<<<<<< HEAD
-				state->membank("bios_ext2")->set_base(state->m_bios_ext2_ram);
-=======
 				state->membank("bios_ext2")->set_base(state->m_bios_ext2_ram.get());
->>>>>>> upstream/master
 			else
 				state->membank("bios_ext2")->set_base(state->memregion("bios")->base() + 0x4000);
 
@@ -201,20 +156,12 @@ static void mtxc_config_w(device_t *busdevice, device_t *device, int function, i
 		case 0x5f: // PAM6
 		{
 			if (data & 0x1)
-<<<<<<< HEAD
-				state->membank("bios_ext3")->set_base(state->m_bios_ext3_ram);
-=======
 				state->membank("bios_ext3")->set_base(state->m_bios_ext3_ram.get());
->>>>>>> upstream/master
 			else
 				state->membank("bios_ext3")->set_base(state->memregion("bios")->base() + 0x8000);
 
 			if (data & 0x10)
-<<<<<<< HEAD
-				state->membank("bios_ext4")->set_base(state->m_bios_ext4_ram);
-=======
 				state->membank("bios_ext4")->set_base(state->m_bios_ext4_ram.get());
->>>>>>> upstream/master
 			else
 				state->membank("bios_ext4")->set_base(state->memregion("bios")->base() + 0xc000);
 
@@ -235,15 +182,9 @@ void xtom3d_state::intel82439tx_init()
 	m_mtxc_config_reg[0x65] = 0x02;
 }
 
-<<<<<<< HEAD
-static UINT32 intel82439tx_pci_r(device_t *busdevice, device_t *device, int function, int reg, UINT32 mem_mask)
-{
-	UINT32 r = 0;
-=======
 static uint32_t intel82439tx_pci_r(device_t *busdevice, device_t *device, int function, int reg, uint32_t mem_mask)
 {
 	uint32_t r = 0;
->>>>>>> upstream/master
 	if (ACCESSING_BITS_24_31)
 	{
 		r |= mtxc_config_r(busdevice, device, function, reg + 3) << 24;
@@ -263,11 +204,7 @@ static uint32_t intel82439tx_pci_r(device_t *busdevice, device_t *device, int fu
 	return r;
 }
 
-<<<<<<< HEAD
-static void intel82439tx_pci_w(device_t *busdevice, device_t *device, int function, int reg, UINT32 data, UINT32 mem_mask)
-=======
 static void intel82439tx_pci_w(device_t *busdevice, device_t *device, int function, int reg, uint32_t data, uint32_t mem_mask)
->>>>>>> upstream/master
 {
 	if (ACCESSING_BITS_24_31)
 	{
@@ -289,37 +226,23 @@ static void intel82439tx_pci_w(device_t *busdevice, device_t *device, int functi
 
 // Intel 82371AB PCI-to-ISA / IDE bridge (PIIX4)
 
-<<<<<<< HEAD
-static UINT8 piix4_config_r(device_t *busdevice, device_t *device, int function, int reg)
-=======
 static uint8_t piix4_config_r(device_t *busdevice, device_t *device, int function, int reg)
->>>>>>> upstream/master
 {
 	xtom3d_state *state = busdevice->machine().driver_data<xtom3d_state>();
 //  osd_printf_debug("PIIX4: read %d, %02X\n", function, reg);
 	return state->m_piix4_config_reg[function][reg];
 }
 
-<<<<<<< HEAD
-static void piix4_config_w(device_t *busdevice, device_t *device, int function, int reg, UINT8 data)
-=======
 static void piix4_config_w(device_t *busdevice, device_t *device, int function, int reg, uint8_t data)
->>>>>>> upstream/master
 {
 	xtom3d_state *state = busdevice->machine().driver_data<xtom3d_state>();
 //  osd_printf_debug("%s:PIIX4: write %d, %02X, %02X\n", machine.describe_context(), function, reg, data);
 	state->m_piix4_config_reg[function][reg] = data;
 }
 
-<<<<<<< HEAD
-static UINT32 intel82371ab_pci_r(device_t *busdevice, device_t *device, int function, int reg, UINT32 mem_mask)
-{
-	UINT32 r = 0;
-=======
 static uint32_t intel82371ab_pci_r(device_t *busdevice, device_t *device, int function, int reg, uint32_t mem_mask)
 {
 	uint32_t r = 0;
->>>>>>> upstream/master
 	if (ACCESSING_BITS_24_31)
 	{
 		r |= piix4_config_r(busdevice, device, function, reg + 3) << 24;
@@ -339,11 +262,7 @@ static uint32_t intel82371ab_pci_r(device_t *busdevice, device_t *device, int fu
 	return r;
 }
 
-<<<<<<< HEAD
-static void intel82371ab_pci_w(device_t *busdevice, device_t *device, int function, int reg, UINT32 data, UINT32 mem_mask)
-=======
 static void intel82371ab_pci_w(device_t *busdevice, device_t *device, int function, int reg, uint32_t data, uint32_t mem_mask)
->>>>>>> upstream/master
 {
 	if (ACCESSING_BITS_24_31)
 	{
@@ -368,11 +287,7 @@ WRITE32_MEMBER(xtom3d_state::isa_ram1_w)
 {
 	if (m_mtxc_config_reg[0x5a] & 0x2)      // write to RAM if this region is write-enabled
 	{
-<<<<<<< HEAD
-		COMBINE_DATA(m_isa_ram1 + offset);
-=======
 		COMBINE_DATA(m_isa_ram1.get() + offset);
->>>>>>> upstream/master
 	}
 }
 
@@ -380,11 +295,7 @@ WRITE32_MEMBER(xtom3d_state::isa_ram2_w)
 {
 	if (m_mtxc_config_reg[0x5a] & 0x2)      // write to RAM if this region is write-enabled
 	{
-<<<<<<< HEAD
-		COMBINE_DATA(m_isa_ram2 + offset);
-=======
 		COMBINE_DATA(m_isa_ram2.get() + offset);
->>>>>>> upstream/master
 	}
 }
 
@@ -392,11 +303,7 @@ WRITE32_MEMBER(xtom3d_state::bios_ext1_ram_w)
 {
 	if (m_mtxc_config_reg[0x5e] & 0x2)      // write to RAM if this region is write-enabled
 	{
-<<<<<<< HEAD
-		COMBINE_DATA(m_bios_ext1_ram + offset);
-=======
 		COMBINE_DATA(m_bios_ext1_ram.get() + offset);
->>>>>>> upstream/master
 	}
 }
 
@@ -405,11 +312,7 @@ WRITE32_MEMBER(xtom3d_state::bios_ext2_ram_w)
 {
 	if (m_mtxc_config_reg[0x5e] & 0x20)     // write to RAM if this region is write-enabled
 	{
-<<<<<<< HEAD
-		COMBINE_DATA(m_bios_ext2_ram + offset);
-=======
 		COMBINE_DATA(m_bios_ext2_ram.get() + offset);
->>>>>>> upstream/master
 	}
 }
 
@@ -418,11 +321,7 @@ WRITE32_MEMBER(xtom3d_state::bios_ext3_ram_w)
 {
 	if (m_mtxc_config_reg[0x5f] & 0x2)      // write to RAM if this region is write-enabled
 	{
-<<<<<<< HEAD
-		COMBINE_DATA(m_bios_ext3_ram + offset);
-=======
 		COMBINE_DATA(m_bios_ext3_ram.get() + offset);
->>>>>>> upstream/master
 	}
 }
 
@@ -431,11 +330,7 @@ WRITE32_MEMBER(xtom3d_state::bios_ext4_ram_w)
 {
 	if (m_mtxc_config_reg[0x5f] & 0x20)     // write to RAM if this region is write-enabled
 	{
-<<<<<<< HEAD
-		COMBINE_DATA(m_bios_ext4_ram + offset);
-=======
 		COMBINE_DATA(m_bios_ext4_ram.get() + offset);
->>>>>>> upstream/master
 	}
 }
 
@@ -444,11 +339,7 @@ WRITE32_MEMBER(xtom3d_state::bios_ram_w)
 {
 	if (m_mtxc_config_reg[0x59] & 0x20)     // write to RAM if this region is write-enabled
 	{
-<<<<<<< HEAD
-		COMBINE_DATA(m_bios_ram + offset);
-=======
 		COMBINE_DATA(m_bios_ram.get() + offset);
->>>>>>> upstream/master
 	}
 }
 
@@ -481,15 +372,6 @@ ADDRESS_MAP_END
 
 void xtom3d_state::machine_start()
 {
-<<<<<<< HEAD
-	m_bios_ram = auto_alloc_array(machine(), UINT32, 0x10000/4);
-	m_bios_ext1_ram = auto_alloc_array(machine(), UINT32, 0x4000/4);
-	m_bios_ext2_ram = auto_alloc_array(machine(), UINT32, 0x4000/4);
-	m_bios_ext3_ram = auto_alloc_array(machine(), UINT32, 0x4000/4);
-	m_bios_ext4_ram = auto_alloc_array(machine(), UINT32, 0x4000/4);
-	m_isa_ram1 = auto_alloc_array(machine(), UINT32, 0x4000/4);
-	m_isa_ram2 = auto_alloc_array(machine(), UINT32, 0x4000/4);
-=======
 	m_bios_ram = std::make_unique<uint32_t[]>(0x10000/4);
 	m_bios_ext1_ram = std::make_unique<uint32_t[]>(0x4000/4);
 	m_bios_ext2_ram = std::make_unique<uint32_t[]>(0x4000/4);
@@ -497,7 +379,6 @@ void xtom3d_state::machine_start()
 	m_bios_ext4_ram = std::make_unique<uint32_t[]>(0x4000/4);
 	m_isa_ram1 = std::make_unique<uint32_t[]>(0x4000/4);
 	m_isa_ram2 = std::make_unique<uint32_t[]>(0x4000/4);
->>>>>>> upstream/master
 
 	intel82439tx_init();
 }
@@ -513,11 +394,7 @@ void xtom3d_state::machine_reset()
 	membank("video_bank2")->set_base(memregion("video_bios")->base() + 0x4000);
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( xtom3d, xtom3d_state )
-=======
 static MACHINE_CONFIG_START( xtom3d )
->>>>>>> upstream/master
 	MCFG_CPU_ADD("maincpu", PENTIUM2, 450000000/16)  // actually Pentium II 450
 	MCFG_CPU_PROGRAM_MAP(xtom3d_map)
 	MCFG_CPU_IO_MAP(xtom3d_io)
@@ -527,13 +404,8 @@ static MACHINE_CONFIG_START( xtom3d )
 	MCFG_FRAGMENT_ADD( pcat_common )
 
 	MCFG_PCI_BUS_LEGACY_ADD("pcibus", 0)
-<<<<<<< HEAD
-	MCFG_PCI_BUS_LEGACY_DEVICE(0, NULL, intel82439tx_pci_r, intel82439tx_pci_w)
-	MCFG_PCI_BUS_LEGACY_DEVICE(7, NULL, intel82371ab_pci_r, intel82371ab_pci_w)
-=======
 	MCFG_PCI_BUS_LEGACY_DEVICE(0, nullptr, intel82439tx_pci_r, intel82439tx_pci_w)
 	MCFG_PCI_BUS_LEGACY_DEVICE(7, nullptr, intel82371ab_pci_r, intel82371ab_pci_w)
->>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_FRAGMENT_ADD( pcvideo_vga )
@@ -559,8 +431,4 @@ ROM_START( xtom3d )
 ROM_END
 
 
-<<<<<<< HEAD
-GAME(1999, xtom3d, 0, xtom3d, at_keyboard, driver_device, 0, ROT0, "Jamie System Development", "X Tom 3D", MACHINE_IS_SKELETON)
-=======
 GAME(1999, xtom3d, 0, xtom3d, at_keyboard, xtom3d_state, 0, ROT0, "Jamie System Development", "X Tom 3D", MACHINE_IS_SKELETON)
->>>>>>> upstream/master

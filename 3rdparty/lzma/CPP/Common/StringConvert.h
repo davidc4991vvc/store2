@@ -3,17 +3,6 @@
 #ifndef __COMMON_STRING_CONVERT_H
 #define __COMMON_STRING_CONVERT_H
 
-<<<<<<< HEAD
-#include "MyWindows.h"
-#include "MyString.h"
-#include "Types.h"
-
-UString MultiByteToUnicodeString(const AString &srcString, UINT codePage = CP_ACP);
-AString UnicodeStringToMultiByte(const UString &srcString, UINT codePage, char defaultChar, bool &defaultCharWasUsed);
-AString UnicodeStringToMultiByte(const UString &srcString, UINT codePage = CP_ACP);
-
-
-=======
 #include "MyString.h"
 #include "MyWindows.h"
 
@@ -27,7 +16,6 @@ void UnicodeStringToMultiByte2(AString &dest, const UString &srcString, UINT cod
 AString UnicodeStringToMultiByte(const UString &srcString, UINT codePage, char defaultChar, bool &defaultCharWasUsed);
 AString UnicodeStringToMultiByte(const UString &srcString, UINT codePage = CP_ACP);
 
->>>>>>> upstream/master
 inline const wchar_t* GetUnicodeString(const wchar_t* unicodeString)
   { return unicodeString; }
 inline const UString& GetUnicodeString(const UString &unicodeString)

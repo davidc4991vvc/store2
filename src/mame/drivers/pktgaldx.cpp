@@ -55,12 +55,6 @@ bootleg todo:
 */
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/m68000/m68000.h"
-#include "includes/decocrpt.h"
-#include "sound/okim6295.h"
-#include "includes/pktgaldx.h"
-=======
 #include "includes/pktgaldx.h"
 
 #include "cpu/m68000/m68000.h"
@@ -70,17 +64,12 @@ bootleg todo:
 #include "screen.h"
 #include "speaker.h"
 
->>>>>>> upstream/master
 
 /**********************************************************************************/
 
 WRITE16_MEMBER(pktgaldx_state::pktgaldx_oki_bank_w)
 {
-<<<<<<< HEAD
-	m_oki2->set_bank_base((data & 3) * 0x40000);
-=======
 	m_oki2->set_rom_bank(data & 3);
->>>>>>> upstream/master
 }
 
 /**********************************************************************************/
@@ -88,24 +77,15 @@ WRITE16_MEMBER(pktgaldx_state::pktgaldx_oki_bank_w)
 READ16_MEMBER( pktgaldx_state::pktgaldx_protection_region_f_104_r )
 {
 	int real_address = 0 + (offset *2);
-<<<<<<< HEAD
-	UINT8 cs = 0;
-	UINT16 data = m_deco104->read_data( real_address&0x7fff, mem_mask, cs );
-=======
 	uint8_t cs = 0;
 	uint16_t data = m_deco104->read_data( real_address&0x7fff, mem_mask, cs );
->>>>>>> upstream/master
 	return data;
 }
 
 WRITE16_MEMBER( pktgaldx_state::pktgaldx_protection_region_f_104_w )
 {
 	int real_address = 0 + (offset *2);
-<<<<<<< HEAD
-	UINT8 cs = 0;
-=======
 	uint8_t cs = 0;
->>>>>>> upstream/master
 	m_deco104->write_data( space, real_address&0x7fff, data, mem_mask, cs );
 }
 
@@ -134,11 +114,7 @@ static ADDRESS_MAP_START( pktgaldx_map, AS_PROGRAM, 16, pktgaldx_state )
 	AM_RANGE(0x170000, 0x17ffff) AM_RAM
 ADDRESS_MAP_END
 
-<<<<<<< HEAD
-static ADDRESS_MAP_START( decrypted_opcodes_map, AS_DECRYPTED_OPCODES, 16, pktgaldx_state )
-=======
 static ADDRESS_MAP_START( decrypted_opcodes_map, AS_OPCODES, 16, pktgaldx_state )
->>>>>>> upstream/master
 	AM_RANGE(0x000000, 0x07ffff) AM_ROM AM_SHARE("decrypted_opcodes")
 ADDRESS_MAP_END
 
@@ -348,11 +324,7 @@ void pktgaldx_state::machine_start()
 {
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( pktgaldx, pktgaldx_state )
-=======
 static MACHINE_CONFIG_START( pktgaldx )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, 14000000)
@@ -392,53 +364,31 @@ static MACHINE_CONFIG_START( pktgaldx )
 	MCFG_DECO16IC_PF12_8X8_BANK(0)
 	MCFG_DECO16IC_PF12_16X16_BANK(1)
 	MCFG_DECO16IC_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_DECO16IC_PALETTE("palette")
-=======
->>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("spritegen", DECO_SPRITE, 0)
 	MCFG_DECO_SPRITE_GFX_REGION(2)
 	MCFG_DECO_SPRITE_GFXDECODE("gfxdecode")
-<<<<<<< HEAD
-	MCFG_DECO_SPRITE_PALETTE("palette")
-
-	MCFG_DECO104_ADD("ioprot104")
-=======
 
 	MCFG_DECO104_ADD("ioprot104")
 	MCFG_DECO146_IN_PORTA_CB(IOPORT("INPUTS"))
 	MCFG_DECO146_IN_PORTB_CB(IOPORT("SYSTEM"))
 	MCFG_DECO146_IN_PORTC_CB(IOPORT("DSW"))
->>>>>>> upstream/master
 	MCFG_DECO146_SET_INTERFACE_SCRAMBLE(8,9,  4,5,6,7    ,1,0,3,2) // hopefully this is correct, nothing else uses this arrangement!
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki1", 32220000/32, OKIM6295_PIN7_HIGH)
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 0.75)
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 0.75)
-
-	MCFG_OKIM6295_ADD("oki2", 32220000/16, OKIM6295_PIN7_HIGH)
-=======
 	MCFG_OKIM6295_ADD("oki1", 32220000/32, PIN7_HIGH)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 0.75)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 0.75)
 
 	MCFG_OKIM6295_ADD("oki2", 32220000/16, PIN7_HIGH)
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 0.60)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 0.60)
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( pktgaldb, pktgaldx_state )
-=======
 static MACHINE_CONFIG_START( pktgaldb )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, 16000000)
@@ -463,19 +413,11 @@ static MACHINE_CONFIG_START( pktgaldb )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki1", 32220000/32, OKIM6295_PIN7_HIGH)
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 0.75)
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 0.75)
-
-	MCFG_OKIM6295_ADD("oki2", 32220000/16, OKIM6295_PIN7_HIGH)
-=======
 	MCFG_OKIM6295_ADD("oki1", 32220000/32, PIN7_HIGH)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 0.75)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 0.75)
 
 	MCFG_OKIM6295_ADD("oki2", 32220000/16, PIN7_HIGH)
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 0.60)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 0.60)
 MACHINE_CONFIG_END
@@ -543,17 +485,9 @@ ROM_END
 DRIVER_INIT_MEMBER(pktgaldx_state,pktgaldx)
 {
 	deco56_decrypt_gfx(machine(), "gfx1");
-<<<<<<< HEAD
-	deco102_decrypt_cpu((UINT16 *)memregion("maincpu")->base(), m_decrypted_opcodes, 0x80000, 0x42ba, 0x00, 0x00);
-=======
 	deco102_decrypt_cpu((uint16_t *)memregion("maincpu")->base(), m_decrypted_opcodes, 0x80000, 0x42ba, 0x00, 0x00);
->>>>>>> upstream/master
 }
 
 GAME( 1992, pktgaldx,  0,        pktgaldx, pktgaldx, pktgaldx_state, pktgaldx,  ROT0, "Data East Corporation", "Pocket Gal Deluxe (Euro v3.00)", MACHINE_SUPPORTS_SAVE )
 GAME( 1993, pktgaldxj, pktgaldx, pktgaldx, pktgaldx, pktgaldx_state, pktgaldx,  ROT0, "Data East Corporation (Nihon System license)", "Pocket Gal Deluxe (Japan v3.00)", MACHINE_SUPPORTS_SAVE )
-<<<<<<< HEAD
-GAME( 1992, pktgaldxb, pktgaldx, pktgaldb, pktgaldx, driver_device, 0,         ROT0, "bootleg",               "Pocket Gal Deluxe (Euro v3.00, bootleg)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1992, pktgaldxb, pktgaldx, pktgaldb, pktgaldx, pktgaldx_state, 0,         ROT0, "bootleg",               "Pocket Gal Deluxe (Euro v3.00, bootleg)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

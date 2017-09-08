@@ -1,9 +1,5 @@
 /*
-<<<<<<< HEAD
-** $Id: ldo.h,v 2.21 2014/10/25 11:50:46 roberto Exp $
-=======
 ** $Id: ldo.h,v 2.29 2015/12/21 13:02:14 roberto Exp $
->>>>>>> upstream/master
 ** Stack and Call structure of Lua
 ** See Copyright Notice in lua.h
 */
@@ -17,13 +13,6 @@
 #include "lzio.h"
 
 
-<<<<<<< HEAD
-#define luaD_checkstack(L,n)	if (L->stack_last - L->top <= (n)) \
-				    luaD_growstack(L, n); else condmovestack(L);
-
-
-#define incr_top(L) {L->top++; luaD_checkstack(L,0);}
-=======
 /*
 ** Macro to check stack size and grow stack if needed.  Parameters
 ** 'pre'/'pos' allow the macro to preserve a pointer into the
@@ -39,7 +28,6 @@
 #define luaD_checkstack(L,n)	luaD_checkstackaux(L,n,(void)0,(void)0)
 
 
->>>>>>> upstream/master
 
 #define savestack(L,p)		((char *)(p) - (char *)L->stack)
 #define restorestack(L,n)	((TValue *)((char *)L->stack + (n)))
@@ -52,16 +40,6 @@ LUAI_FUNC int luaD_protectedparser (lua_State *L, ZIO *z, const char *name,
                                                   const char *mode);
 LUAI_FUNC void luaD_hook (lua_State *L, int event, int line);
 LUAI_FUNC int luaD_precall (lua_State *L, StkId func, int nresults);
-<<<<<<< HEAD
-LUAI_FUNC void luaD_call (lua_State *L, StkId func, int nResults,
-                                        int allowyield);
-LUAI_FUNC int luaD_pcall (lua_State *L, Pfunc func, void *u,
-                                        ptrdiff_t oldtop, ptrdiff_t ef);
-LUAI_FUNC int luaD_poscall (lua_State *L, StkId firstResult);
-LUAI_FUNC void luaD_reallocstack (lua_State *L, int newsize);
-LUAI_FUNC void luaD_growstack (lua_State *L, int n);
-LUAI_FUNC void luaD_shrinkstack (lua_State *L);
-=======
 LUAI_FUNC void luaD_call (lua_State *L, StkId func, int nResults);
 LUAI_FUNC void luaD_callnoyield (lua_State *L, StkId func, int nResults);
 LUAI_FUNC int luaD_pcall (lua_State *L, Pfunc func, void *u,
@@ -72,7 +50,6 @@ LUAI_FUNC void luaD_reallocstack (lua_State *L, int newsize);
 LUAI_FUNC void luaD_growstack (lua_State *L, int n);
 LUAI_FUNC void luaD_shrinkstack (lua_State *L);
 LUAI_FUNC void luaD_inctop (lua_State *L);
->>>>>>> upstream/master
 
 LUAI_FUNC l_noret luaD_throw (lua_State *L, int errcode);
 LUAI_FUNC int luaD_rawrunprotected (lua_State *L, Pfunc f, void *ud);

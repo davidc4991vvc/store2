@@ -10,22 +10,13 @@
 ---------------------------------------------------------------------------
 
 function string.starts(String,Start)
-<<<<<<< HEAD
-   return string.sub(String,1,string.len(Start))==Start
-=======
 	return string.sub(String,1,string.len(Start))==Start
->>>>>>> upstream/master
 end
 
 function addlibfromstring(str)
 	if (str==nil) then return  end
-<<<<<<< HEAD
-	for w in str:gmatch("%S+") do 
-		if string.starts(w,"-l")==true then 
-=======
 	for w in str:gmatch("%S+") do
 		if string.starts(w,"-l")==true then
->>>>>>> upstream/master
 			links {
 				string.sub(w,3)
 			}
@@ -35,13 +26,8 @@ end
 
 function addoptionsfromstring(str)
 	if (str==nil) then return  end
-<<<<<<< HEAD
-	for w in str:gmatch("%S+") do 
-		if string.starts(w,"-l")==false then 
-=======
 	for w in str:gmatch("%S+") do
 		if string.starts(w,"-l")==false then
->>>>>>> upstream/master
 			linkoptions {
 				w
 			}
@@ -49,8 +35,6 @@ function addoptionsfromstring(str)
 	end
 end
 
-<<<<<<< HEAD
-=======
 function pkgconfigcmd()
 	local pkgconfig = os.getenv("PKG_CONFIG")
 	if pkgconfig == nil then
@@ -59,7 +43,6 @@ function pkgconfigcmd()
 	return pkgconfig
 end
 
->>>>>>> upstream/master
 function osdmodulesbuild()
 
 	removeflags {
@@ -69,26 +52,13 @@ function osdmodulesbuild()
 	files {
 		MAME_DIR .. "src/osd/osdnet.cpp",
 		MAME_DIR .. "src/osd/osdnet.h",
-<<<<<<< HEAD
-=======
 		MAME_DIR .. "src/osd/watchdog.cpp",
 		MAME_DIR .. "src/osd/watchdog.h",
->>>>>>> upstream/master
 		MAME_DIR .. "src/osd/modules/debugger/debug_module.h",
 		MAME_DIR .. "src/osd/modules/font/font_module.h",
 		MAME_DIR .. "src/osd/modules/midi/midi_module.h",
 		MAME_DIR .. "src/osd/modules/netdev/netdev_module.h",
 		MAME_DIR .. "src/osd/modules/sound/sound_module.h",
-<<<<<<< HEAD
-		MAME_DIR .. "src/osd/modules/lib/osdobj_common.cpp",
-		MAME_DIR .. "src/osd/modules/lib/osdobj_common.h",
-		MAME_DIR .. "src/osd/modules/debugger/none.cpp",
-		MAME_DIR .. "src/osd/modules/debugger/debugint.cpp",
-		MAME_DIR .. "src/osd/modules/debugger/debugwin.cpp",
-		MAME_DIR .. "src/osd/modules/debugger/debugqt.cpp",
-		MAME_DIR .. "src/osd/modules/font/font_sdl.cpp",
-		MAME_DIR .. "src/osd/modules/font/font_windows.cpp",
-=======
 		MAME_DIR .. "src/osd/modules/diagnostics/diagnostics_module.h",
 		MAME_DIR .. "src/osd/modules/monitor/monitor_module.h",
 		MAME_DIR .. "src/osd/modules/lib/osdobj_common.cpp",
@@ -101,7 +71,6 @@ function osdmodulesbuild()
 		MAME_DIR .. "src/osd/modules/font/font_sdl.cpp",
 		MAME_DIR .. "src/osd/modules/font/font_windows.cpp",
 		MAME_DIR .. "src/osd/modules/font/font_dwrite.cpp",
->>>>>>> upstream/master
 		MAME_DIR .. "src/osd/modules/font/font_osx.cpp",
 		MAME_DIR .. "src/osd/modules/font/font_none.cpp",
 		MAME_DIR .. "src/osd/modules/netdev/taptun.cpp",
@@ -111,11 +80,6 @@ function osdmodulesbuild()
 		MAME_DIR .. "src/osd/modules/midi/none.cpp",
 		MAME_DIR .. "src/osd/modules/sound/js_sound.cpp",
 		MAME_DIR .. "src/osd/modules/sound/direct_sound.cpp",
-<<<<<<< HEAD
-		MAME_DIR .. "src/osd/modules/sound/coreaudio_sound.cpp",
-		MAME_DIR .. "src/osd/modules/sound/sdl_sound.cpp",
-		MAME_DIR .. "src/osd/modules/sound/none.cpp",
-=======
 		MAME_DIR .. "src/osd/modules/sound/pa_sound.cpp",
 		MAME_DIR .. "src/osd/modules/sound/coreaudio_sound.cpp",
 		MAME_DIR .. "src/osd/modules/sound/sdl_sound.cpp",
@@ -153,21 +117,17 @@ function osdmodulesbuild()
 	}
 	includedirs {
 		MAME_DIR .. "3rdparty/asio/include",
->>>>>>> upstream/master
 	}
 
 	if _OPTIONS["targetos"]=="windows" then
 		includedirs {
 			MAME_DIR .. "3rdparty/winpcap/Include",
-<<<<<<< HEAD
-=======
 			MAME_DIR .. "3rdparty/compat/mingw",
 			MAME_DIR .. "3rdparty/portaudio/include",
 		}
 
 		includedirs {
 			MAME_DIR .. "3rdparty/compat/winsdk-override",
->>>>>>> upstream/master
 		}
 	end
 
@@ -183,10 +143,6 @@ function osdmodulesbuild()
 			MAME_DIR .. "src/osd/modules/opengl/gl_shader_mgr.h",
 			MAME_DIR .. "src/osd/modules/opengl/gl_shader_tool.h",
 			MAME_DIR .. "src/osd/modules/opengl/osd_opengl.h",
-<<<<<<< HEAD
-			MAME_DIR .. "src/osd/modules/opengl/SDL1211_opengl.h",
-=======
->>>>>>> upstream/master
 		}
 		defines {
 			"USE_OPENGL=1",
@@ -198,18 +154,6 @@ function osdmodulesbuild()
 		end
 	end
 
-<<<<<<< HEAD
-	if USE_BGFX == 1 then
-		files {
-			MAME_DIR .. "src/osd/modules/render/drawbgfx.cpp",
-		}
-		defines {
-			"USE_BGFX"
-		}
-		includedirs {
-			MAME_DIR .. "3rdparty/bgfx/include",
-			MAME_DIR .. "3rdparty/bx/include",
-=======
 	defines {
 		"__STDC_LIMIT_MACROS",
 		"__STDC_FORMAT_MACROS",
@@ -280,7 +224,6 @@ function osdmodulesbuild()
 	else
 		includedirs {
 			ext_includedir("portaudio"),
->>>>>>> upstream/master
 		}
 	end
 
@@ -288,10 +231,6 @@ function osdmodulesbuild()
 		defines {
 			"NO_USE_MIDI",
 		}
-<<<<<<< HEAD
-	end
-
-=======
 	else
 		includedirs {
 			ext_includedir("portmidi"),
@@ -331,7 +270,6 @@ function qtdebuggerbuild()
 		MAME_DIR .. "src/osd/modules/debugger/debugqt.cpp",
 	}
 
->>>>>>> upstream/master
 	if _OPTIONS["USE_QTDEBUG"]=="1" then
 		files {
 			MAME_DIR .. "src/osd/modules/debugger/qt/debuggerview.cpp",
@@ -365,11 +303,7 @@ function qtdebuggerbuild()
 		defines {
 			"USE_QTDEBUG=1",
 		}
-<<<<<<< HEAD
-		
-=======
 
->>>>>>> upstream/master
 		local MOC = ""
 		if (os.is("windows")) then
 			MOC = "moc"
@@ -379,44 +313,16 @@ function qtdebuggerbuild()
 				if (QMAKETST=='') then
 					print("Qt's Meta Object Compiler (moc) wasn't found!")
 					os.exit(1)
-<<<<<<< HEAD
-				end	
-				MOC = _OPTIONS["QT_HOME"] .. "/bin/moc"
-			else 
-				MOCTST = backtick("which moc-qt4 2>/dev/null")
-=======
 				end
 				MOC = _OPTIONS["QT_HOME"] .. "/bin/moc"
 			else
 				MOCTST = backtick("which moc-qt5 2>/dev/null")
->>>>>>> upstream/master
 				if (MOCTST=='') then
 					MOCTST = backtick("which moc 2>/dev/null")
 				end
 				if (MOCTST=='') then
 					print("Qt's Meta Object Compiler (moc) wasn't found!")
 					os.exit(1)
-<<<<<<< HEAD
-				end	
-				MOC = MOCTST
-			end
-		end
-		
-		
-		custombuildtask {
-			{ MAME_DIR .. "src/osd/modules/debugger/qt/debuggerview.h", 			GEN_DIR .. "osd/modules/debugger/qt/debuggerview.moc.cpp", { },			{ MOC .. "$(MOCINCPATH) $(<) -o $(@)" }},
-			{ MAME_DIR .. "src/osd/modules/debugger/qt/windowqt.h", 				GEN_DIR .. "osd/modules/debugger/qt/windowqt.moc.cpp", { }, 				{ MOC .. "$(MOCINCPATH) $(<) -o $(@)" }},
-			{ MAME_DIR .. "src/osd/modules/debugger/qt/logwindow.h", 				GEN_DIR .. "osd/modules/debugger/qt/logwindow.moc.cpp", { }, 				{ MOC .. "$(MOCINCPATH) $(<) -o $(@)" }},
-			{ MAME_DIR .. "src/osd/modules/debugger/qt/dasmwindow.h", 				GEN_DIR .. "osd/modules/debugger/qt/dasmwindow.moc.cpp", { }, 			{ MOC .. "$(MOCINCPATH) $(<) -o $(@)" }},
-			{ MAME_DIR .. "src/osd/modules/debugger/qt/mainwindow.h", 				GEN_DIR .. "osd/modules/debugger/qt/mainwindow.moc.cpp", { }, 			{ MOC .. "$(MOCINCPATH) $(<) -o $(@)" }},
-			{ MAME_DIR .. "src/osd/modules/debugger/qt/memorywindow.h",				GEN_DIR .. "osd/modules/debugger/qt/memorywindow.moc.cpp", { }, 			{ MOC .. "$(MOCINCPATH) $(<) -o $(@)" }},
-			{ MAME_DIR .. "src/osd/modules/debugger/qt/breakpointswindow.h",		GEN_DIR .. "osd/modules/debugger/qt/breakpointswindow.moc.cpp", { }, 		{ MOC .. "$(MOCINCPATH) $(<) -o $(@)" }},
-			{ MAME_DIR .. "src/osd/modules/debugger/qt/deviceswindow.h", 			GEN_DIR .. "osd/modules/debugger/qt/deviceswindow.moc.cpp", { }, 			{ MOC .. "$(MOCINCPATH) $(<) -o $(@)" }},
-			{ MAME_DIR .. "src/osd/modules/debugger/qt/deviceinformationwindow.h",  GEN_DIR .. "osd/modules/debugger/qt/deviceinformationwindow.moc.cpp", { },{ MOC .. "$(MOCINCPATH) $(<) -o $(@)" }},
-			
-		}
-		
-=======
 				end
 				MOC = MOCTST
 			end
@@ -436,7 +342,6 @@ function qtdebuggerbuild()
 
 		}
 
->>>>>>> upstream/master
 		if _OPTIONS["targetos"]=="windows" then
 			configuration { "mingw*" }
 				buildoptions {
@@ -454,11 +359,7 @@ function qtdebuggerbuild()
 				}
 			else
 				buildoptions {
-<<<<<<< HEAD
-					backtick("pkg-config --cflags QtGui"),
-=======
 					backtick(pkgconfigcmd() .. " --cflags Qt5Widgets"),
->>>>>>> upstream/master
 				}
 			end
 		end
@@ -493,11 +394,7 @@ function osdmodulestargetconf()
 
 	if _OPTIONS["NO_USE_MIDI"]~="1" then
 		if _OPTIONS["targetos"]=="linux" then
-<<<<<<< HEAD
-			local str = backtick("pkg-config --libs alsa")
-=======
 			local str = backtick(pkgconfigcmd() .. " --libs alsa")
->>>>>>> upstream/master
 			addlibfromstring(str)
 			addoptionsfromstring(str)
 		elseif _OPTIONS["targetos"]=="macosx" then
@@ -514,28 +411,18 @@ function osdmodulestargetconf()
 			}
 			links {
 				"qtmain",
-<<<<<<< HEAD
-				"QtGui4",
-				"QtCore4",
-=======
 				"Qt5Core.dll",
 				"Qt5Gui.dll",
 				"Qt5Widgets.dll",
->>>>>>> upstream/master
 			}
 		elseif _OPTIONS["targetos"]=="macosx" then
 			linkoptions {
 				"-F" .. backtick("qmake -query QT_INSTALL_LIBS"),
 			}
 			links {
-<<<<<<< HEAD
-				"QtCore.framework",
-				"QtGui.framework",
-=======
 				"Qt5Core.framework",
 				"Qt5Gui.framework",
 				"Qt5Widgets.framework",
->>>>>>> upstream/master
 			}
 		else
 			if _OPTIONS["QT_HOME"]~=nil then
@@ -543,20 +430,12 @@ function osdmodulestargetconf()
 					"-L" .. backtick(_OPTIONS["QT_HOME"] .. "/bin/qmake -query QT_INSTALL_LIBS"),
 				}
 				links {
-<<<<<<< HEAD
-					"QtGui",
-					"QtCore",
-				}
-			else
-				local str = backtick("pkg-config --libs QtGui")
-=======
 					"Qt5Core",
 					"Qt5Gui",
 					"Qt5Widgets",
 				}
 			else
 				local str = backtick(pkgconfigcmd() .. " --libs Qt5Widgets")
->>>>>>> upstream/master
 				addlibfromstring(str)
 				addoptionsfromstring(str)
 			end
@@ -568,10 +447,7 @@ function osdmodulestargetconf()
 			"gdi32",
 			"dsound",
 			"dxguid",
-<<<<<<< HEAD
-=======
 			"oleaut32",
->>>>>>> upstream/master
 		}
 	elseif _OPTIONS["targetos"]=="macosx" then
 		links {
@@ -599,17 +475,6 @@ newoption {
 	},
 }
 
-<<<<<<< HEAD
-if not _OPTIONS["NO_OPENGL"] then
-	if _OPTIONS["targetos"]=="os2" then
-		_OPTIONS["NO_OPENGL"] = "1"
-	else
-		_OPTIONS["NO_OPENGL"] = "0"
-	end
-end
-
-=======
->>>>>>> upstream/master
 newoption {
 	trigger = "USE_DISPATCH_GL",
 	description = "Use GL-dispatching",
@@ -620,15 +485,7 @@ newoption {
 }
 
 if not _OPTIONS["USE_DISPATCH_GL"] then
-<<<<<<< HEAD
-	if USE_BGFX == 1 then
-		_OPTIONS["USE_DISPATCH_GL"] = "0"
-	else
-		_OPTIONS["USE_DISPATCH_GL"] = "1"
-	end
-=======
 	_OPTIONS["USE_DISPATCH_GL"] = "0"
->>>>>>> upstream/master
 end
 
 newoption {
@@ -641,11 +498,7 @@ newoption {
 }
 
 if not _OPTIONS["NO_USE_MIDI"] then
-<<<<<<< HEAD
-	if _OPTIONS["targetos"]=="freebsd" or _OPTIONS["targetos"]=="openbsd" or _OPTIONS["targetos"]=="netbsd" or _OPTIONS["targetos"]=="solaris" or _OPTIONS["targetos"]=="haiku" or _OPTIONS["targetos"] == "asmjs" or _OPTIONS["targetos"] == "os2" then
-=======
 	if _OPTIONS["targetos"]=="freebsd" or _OPTIONS["targetos"]=="openbsd" or _OPTIONS["targetos"]=="netbsd" or _OPTIONS["targetos"]=="solaris" or _OPTIONS["targetos"]=="haiku" or _OPTIONS["targetos"] == "asmjs" then
->>>>>>> upstream/master
 		_OPTIONS["NO_USE_MIDI"] = "1"
 	else
 		_OPTIONS["NO_USE_MIDI"] = "0"
@@ -653,8 +506,6 @@ if not _OPTIONS["NO_USE_MIDI"] then
 end
 
 newoption {
-<<<<<<< HEAD
-=======
 	trigger = "NO_USE_PORTAUDIO",
 	description = "Disable PortAudio interface",
 	allowed = {
@@ -681,7 +532,6 @@ newoption {
 }
 
 newoption {
->>>>>>> upstream/master
 	trigger = "USE_QTDEBUG",
 	description = "Use QT debugger",
 	allowed = {
@@ -697,11 +547,7 @@ newoption {
 
 
 if not _OPTIONS["USE_QTDEBUG"] then
-<<<<<<< HEAD
-	if _OPTIONS["targetos"]=="windows" or _OPTIONS["targetos"]=="macosx" or _OPTIONS["targetos"]=="solaris" or _OPTIONS["targetos"]=="haiku" or _OPTIONS["targetos"] == "asmjs" or _OPTIONS["targetos"] == "os2" then
-=======
 	if _OPTIONS["targetos"]=="windows" or _OPTIONS["targetos"]=="macosx" or _OPTIONS["targetos"]=="solaris" or _OPTIONS["targetos"]=="haiku" or _OPTIONS["targetos"] == "asmjs" then
->>>>>>> upstream/master
 		_OPTIONS["USE_QTDEBUG"] = "0"
 	else
 		_OPTIONS["USE_QTDEBUG"] = "1"

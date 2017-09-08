@@ -1,24 +1,12 @@
 /* LzmaDec.h -- LZMA Decoder
-<<<<<<< HEAD
-2009-02-07 : Igor Pavlov : Public domain */
-=======
 2013-01-18 : Igor Pavlov : Public domain */
->>>>>>> upstream/master
 
 #ifndef __LZMA_DEC_H
 #define __LZMA_DEC_H
 
-<<<<<<< HEAD
-#include "Types.h"
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-=======
 #include "7zTypes.h"
 
 EXTERN_C_BEGIN
->>>>>>> upstream/master
 
 /* #define _LZMA_PROB32 */
 /* _LZMA_PROB32 can increase the speed on some CPUs,
@@ -234,17 +222,6 @@ SRes LzmaDecode(Byte *dest, SizeT *destLen, const Byte *src, SizeT *srcLen,
     const Byte *propData, unsigned propSize, ELzmaFinishMode finishMode,
     ELzmaStatus *status, ISzAlloc *alloc);
 
-<<<<<<< HEAD
-/*
- * Why isn't there an interface to pass in the properties directly????
- */
-SRes LzmaDec_Allocate_MAME(CLzmaDec *p, const CLzmaProps *propNew, ISzAlloc *alloc);
-
-#ifdef __cplusplus
-}
-#endif
-=======
 EXTERN_C_END
->>>>>>> upstream/master
 
 #endif

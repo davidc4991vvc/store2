@@ -1,17 +1,10 @@
-<<<<<<< HEAD
-// license:???
-=======
 // license:GPL-2.0+
->>>>>>> upstream/master
 // copyright-holders:Jarek Burczynski
 #include "machine/mb87078.h"
 #include "machine/taitoio.h"
 #include "video/hd63484.h"
 #include "video/tc0180vcu.h"
-<<<<<<< HEAD
-=======
 #include "screen.h"
->>>>>>> upstream/master
 
 class taitob_state : public driver_device
 {
@@ -48,18 +41,6 @@ public:
 		m_palette(*this, "palette") { }
 
 	/* memory pointers */
-<<<<<<< HEAD
-	required_shared_ptr<UINT16> m_spriteram;
-	optional_shared_ptr<UINT16> m_pixelram;
-
-	/* video-related */
-	/* framebuffer is a raw bitmap, remapped as a last step */
-	bitmap_ind16      *m_framebuffer[2];
-	bitmap_ind16      *m_pixel_bitmap;
-	bitmap_ind16      *m_realpunc_bitmap;
-
-	UINT16        m_pixel_scroll[2];
-=======
 	required_shared_ptr<uint16_t> m_spriteram;
 	optional_shared_ptr<uint16_t> m_pixelram;
 
@@ -70,23 +51,15 @@ public:
 	std::unique_ptr<bitmap_ind16> m_realpunc_bitmap;
 
 	uint16_t        m_pixel_scroll[2];
->>>>>>> upstream/master
 
 	int           m_b_fg_color_base;
 	int           m_b_sp_color_base;
 
 	/* misc */
-<<<<<<< HEAD
-	UINT16        m_eep_latch;
-	UINT16        m_coin_word;
-
-	UINT16        m_realpunc_video_ctrl;
-=======
 	uint16_t        m_eep_latch;
 	uint16_t        m_coin_word;
 
 	uint16_t        m_realpunc_video_ctrl;
->>>>>>> upstream/master
 
 	/* devices */
 	required_device<cpu_device> m_maincpu;
@@ -114,15 +87,9 @@ public:
 	DECLARE_WRITE16_MEMBER(gain_control_w);
 	DECLARE_READ16_MEMBER(eep_latch_r);
 	DECLARE_WRITE16_MEMBER(eeprom_w);
-<<<<<<< HEAD
-	DECLARE_READ16_MEMBER(player_34_coin_ctrl_r);
-	DECLARE_WRITE16_MEMBER(player_34_coin_ctrl_w);
-	DECLARE_READ16_MEMBER(pbobble_input_bypass_r);
-=======
 	DECLARE_WRITE8_MEMBER(player_12_coin_ctrl_w);
 	DECLARE_READ16_MEMBER(player_34_coin_ctrl_r);
 	DECLARE_WRITE16_MEMBER(player_34_coin_ctrl_w);
->>>>>>> upstream/master
 	DECLARE_WRITE16_MEMBER(spacedxo_tc0220ioc_w);
 	DECLARE_WRITE16_MEMBER(realpunc_output_w);
 	DECLARE_WRITE16_MEMBER(hitice_pixelram_w);
@@ -133,13 +100,8 @@ public:
 	DECLARE_WRITE8_MEMBER(mb87078_gain_changed);
 	DECLARE_INPUT_CHANGED_MEMBER(realpunc_sensor);
 	DECLARE_DRIVER_INIT(taito_b);
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void machine_reset();
-=======
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
->>>>>>> upstream/master
 	DECLARE_VIDEO_START(taitob_color_order0);
 	DECLARE_VIDEO_START(taitob_color_order1);
 	DECLARE_VIDEO_START(taitob_color_order2);
@@ -147,15 +109,9 @@ public:
 	DECLARE_VIDEO_RESET(hitice);
 	DECLARE_VIDEO_START(realpunc);
 	DECLARE_VIDEO_START(taitob_core);
-<<<<<<< HEAD
-	UINT32 screen_update_taitob(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	UINT32 screen_update_realpunc(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
-	void screen_eof_taitob(screen_device &screen, bool state);
-=======
 	uint32_t screen_update_taitob(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	uint32_t screen_update_realpunc(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
 	DECLARE_WRITE_LINE_MEMBER(screen_vblank_taitob);
->>>>>>> upstream/master
 	INTERRUPT_GEN_MEMBER(rastansaga2_interrupt);
 	INTERRUPT_GEN_MEMBER(crimec_interrupt);
 	INTERRUPT_GEN_MEMBER(hitice_interrupt);
@@ -170,16 +126,7 @@ public:
 	void hitice_clear_pixel_bitmap(  );
 	void draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect );
 	void draw_framebuffer( bitmap_ind16 &bitmap, const rectangle &cliprect, int priority );
-<<<<<<< HEAD
-	void ryujin_patch(void);
-	void sbm_patch(void);
-	DECLARE_WRITE_LINE_MEMBER(irqhandler);
-
-protected:
-	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
-=======
 
 protected:
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
->>>>>>> upstream/master
 };

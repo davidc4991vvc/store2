@@ -19,11 +19,7 @@
 
 PALETTE_INIT_MEMBER(dribling_state, dribling)
 {
-<<<<<<< HEAD
-	const UINT8 *prom = memregion("proms")->base() + 0x400;
-=======
 	const uint8_t *prom = memregion("proms")->base() + 0x400;
->>>>>>> upstream/master
 	int i;
 
 	for (i = 0; i < 256; i++)
@@ -62,27 +58,16 @@ WRITE8_MEMBER(dribling_state::dribling_colorram_w)
  *
  *************************************/
 
-<<<<<<< HEAD
-UINT32 dribling_state::screen_update_dribling(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-{
-	UINT8 *prombase = memregion("proms")->base();
-	UINT8 *gfxbase = memregion("gfx1")->base();
-=======
 uint32_t dribling_state::screen_update_dribling(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
 	uint8_t *prombase = memregion("proms")->base();
 	uint8_t *gfxbase = memregion("gfx1")->base();
->>>>>>> upstream/master
 	int x, y;
 
 	/* loop over rows */
 	for (y = cliprect.min_y; y <= cliprect.max_y; y++)
 	{
-<<<<<<< HEAD
-		UINT16 *dst = &bitmap.pix16(y);
-=======
 		uint16_t *dst = &bitmap.pix16(y);
->>>>>>> upstream/master
 
 		/* loop over columns */
 		for (x = cliprect.min_x; x <= cliprect.max_x; x++)

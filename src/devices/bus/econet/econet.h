@@ -6,20 +6,11 @@
 
 **********************************************************************/
 
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __ECONET__
-#define __ECONET__
-
-#include "emu.h"
-=======
 #ifndef MAME_BUS_ECONET_ECONET_H
 #define MAME_BUS_ECONET_ECONET_H
 
 #pragma once
 
->>>>>>> upstream/master
 
 
 
@@ -64,17 +55,10 @@ class econet_device : public device_t
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	econet_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	template<class _Object> static devcb_base &set_clk_wr_callback(device_t &device, _Object object) { return downcast<econet_device &>(device).m_write_clk.set_callback(object); }
-	template<class _Object> static devcb_base &set_data_wr_callback(device_t &device, _Object object) { return downcast<econet_device &>(device).m_write_data.set_callback(object); }
-=======
 	econet_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	template <class Object> static devcb_base &set_clk_wr_callback(device_t &device, Object &&cb) { return downcast<econet_device &>(device).m_write_clk.set_callback(std::forward<Object>(cb)); }
 	template <class Object> static devcb_base &set_data_wr_callback(device_t &device, Object &&cb) { return downcast<econet_device &>(device).m_write_data.set_callback(std::forward<Object>(cb)); }
->>>>>>> upstream/master
 
 	void add_device(device_t *target, int address);
 
@@ -95,13 +79,8 @@ protected:
 	};
 
 	// device-level overrides
-<<<<<<< HEAD
-	virtual void device_start();
-	virtual void device_stop();
-=======
 	virtual void device_start() override;
 	virtual void device_stop() override;
->>>>>>> upstream/master
 
 	class daisy_entry
 	{
@@ -136,28 +115,17 @@ class econet_slot_device : public device_t,
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	econet_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// device-level overrides
-	virtual void device_start();
-=======
 	econet_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	// device-level overrides
 	virtual void device_start() override;
->>>>>>> upstream/master
 
 	// inline configuration
 	static void static_set_slot(device_t &device, int address);
 
 private:
 	// configuration
-<<<<<<< HEAD
-	UINT8 m_address;
-=======
 	uint8_t m_address;
->>>>>>> upstream/master
 	econet_device  *m_econet;
 };
 
@@ -167,29 +135,14 @@ private:
 class device_econet_interface : public device_slot_card_interface
 {
 	friend class econet_device;
-<<<<<<< HEAD
-
-public:
-	// construction/destruction
-	device_econet_interface(const machine_config &mconfig, device_t &device);
-	virtual ~device_econet_interface() { }
-
-	device_econet_interface *next() const { return m_next; }
-	device_econet_interface *m_next;
-=======
 	template <class ElementType> friend class simple_list;
 
 public:
 	device_econet_interface *next() const { return m_next; }
->>>>>>> upstream/master
 
 	virtual void econet_clk(int state) = 0;
 	virtual void econet_data(int state) = 0;
 
-<<<<<<< HEAD
-	econet_device  *m_econet;
-	UINT8 m_address;
-=======
 protected:
 	// construction/destruction
 	device_econet_interface(const machine_config &mconfig, device_t &device);
@@ -199,26 +152,18 @@ protected:
 
 private:
 	device_econet_interface *m_next;
->>>>>>> upstream/master
 };
 
 
 // device type definition
 extern const device_type ECONET;
 extern const device_type ECONET_SLOT;
-<<<<<<< HEAD
-=======
 DECLARE_DEVICE_TYPE(ECONET,      econet_device)
 DECLARE_DEVICE_TYPE(ECONET_SLOT, econet_slot_device)
->>>>>>> upstream/master
 
 
 SLOT_INTERFACE_EXTERN( econet_devices );
 
 
 
-<<<<<<< HEAD
-#endif
-=======
 #endif // MAME_BUS_ECONET_ECONET_H
->>>>>>> upstream/master

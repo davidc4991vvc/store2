@@ -9,12 +9,6 @@
 #include "cpu/m68000/m68000.h"
 #include "cpu/mcs51/mcs51.h"
 #include "cpu/z80/z80.h"
-<<<<<<< HEAD
-#include "machine/nvram.h"
-#include "machine/segaic16.h"
-#include "sound/2151intf.h"
-#include "sound/2413intf.h"
-=======
 #include "machine/cxd1095.h"
 #include "machine/gen_latch.h"
 #include "machine/nvram.h"
@@ -22,7 +16,6 @@
 #include "machine/upd4701.h"
 #include "sound/ym2151.h"
 #include "sound/ym2413.h"
->>>>>>> upstream/master
 #include "sound/upd7759.h"
 #include "video/segaic16.h"
 #include "video/sega16sp.h"
@@ -49,27 +42,6 @@ public:
 			m_nvram(*this, "nvram"),
 			m_sprites(*this, "sprites"),
 			m_segaic16vid(*this, "segaic16vid"),
-<<<<<<< HEAD
-			m_workram(*this, "workram"),
-			m_romboard(ROM_BOARD_INVALID),
-			m_tilemap_type(SEGAIC16_TILEMAP_16B),
-			m_disable_screen_blanking(false),
-			m_i8751_initial_config(NULL),
-			m_atomicp_sound_divisor(0),
-			m_atomicp_sound_count(0),
-			m_hwc_input_value(0),
-			m_mj_input_num(0),
-			m_mj_last_val(0),
-			m_gfxdecode(*this, "gfxdecode"),
-			m_sound_decrypted_opcodes(*this, "sound_decrypted_opcodes"),
-			m_decrypted_opcodes(*this, "decrypted_opcodes")
-	{ }
-
-	// memory mapping
-	void memory_mapper(sega_315_5195_mapper_device &mapper, UINT8 index);
-	UINT8 mapper_sound_r();
-	void mapper_sound_w(UINT8 data);
-=======
 			m_soundlatch(*this, "soundlatch"),
 			m_cxdio(*this, "cxdio"),
 			m_upd4701a(*this, {"upd4701a1", "upd4701a2"}),
@@ -99,7 +71,6 @@ public:
 	void memory_mapper(sega_315_5195_mapper_device &mapper, uint8_t index);
 	uint8_t mapper_sound_r();
 	void mapper_sound_w(uint8_t data);
->>>>>>> upstream/master
 
 	// main CPU read/write handlers
 	DECLARE_WRITE16_MEMBER( rom_5704_bank_w );
@@ -122,10 +93,7 @@ public:
 	// other callbacks
 	DECLARE_WRITE_LINE_MEMBER(upd7759_generate_nmi);
 	INTERRUPT_GEN_MEMBER( i8751_main_cpu_vblank );
-<<<<<<< HEAD
-=======
 	DECLARE_WRITE8_MEMBER(spin_68k_w);
->>>>>>> upstream/master
 
 	// ROM board-specific driver init
 	DECLARE_DRIVER_INIT(generic_5521);
@@ -134,12 +102,8 @@ public:
 	DECLARE_DRIVER_INIT(generic_5358_small);
 	DECLARE_DRIVER_INIT(generic_5797);
 	DECLARE_DRIVER_INIT(generic_korean);
-<<<<<<< HEAD
-
-=======
 	DECLARE_DRIVER_INIT(generic_bootleg);
 	DECLARE_DRIVER_INIT(lockonph);
->>>>>>> upstream/master
 	// game-specific driver init
 	DECLARE_DRIVER_INIT(isgsm);
 	DECLARE_DRIVER_INIT(tturf_5704);
@@ -151,15 +115,8 @@ public:
 	DECLARE_DRIVER_INIT(ddux_5704);
 	DECLARE_DRIVER_INIT(snapper);
 	DECLARE_DRIVER_INIT(shinobi4_5521);
-<<<<<<< HEAD
-	DECLARE_DRIVER_INIT(goldnaxe_5704);
 	DECLARE_DRIVER_INIT(defense_5358_small);
 	DECLARE_DRIVER_INIT(sjryuko_5358_small);
-	DECLARE_DRIVER_INIT(altbeast_5521);
-=======
-	DECLARE_DRIVER_INIT(defense_5358_small);
-	DECLARE_DRIVER_INIT(sjryuko_5358_small);
->>>>>>> upstream/master
 	DECLARE_DRIVER_INIT(exctleag_5358);
 	DECLARE_DRIVER_INIT(tetrbx);
 	DECLARE_DRIVER_INIT(aceattac_5358);
@@ -169,29 +126,18 @@ public:
 	DECLARE_DRIVER_INIT(dunkshot_5358_small);
 	DECLARE_DRIVER_INIT(timescan_5358_small);
 	DECLARE_DRIVER_INIT(shinobi3_5358);
-<<<<<<< HEAD
-	DECLARE_DRIVER_INIT(goldnaxe_5797);
-=======
->>>>>>> upstream/master
 	DECLARE_DRIVER_INIT(altbeas4_5521);
 	DECLARE_DRIVER_INIT(aliensyn7_5358_small);
 
 	// video updates
-<<<<<<< HEAD
-	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 
 	DECLARE_WRITE16_MEMBER( tileram_w ) { m_segaic16vid->tileram_w(space,offset,data,mem_mask); };
 	DECLARE_WRITE16_MEMBER( textram_w ) { m_segaic16vid->textram_w(space,offset,data,mem_mask); };
 
-<<<<<<< HEAD
-=======
 	// bootleg stuff
 	void tilemap_16b_fpointbl_fill_latch(int i, uint16_t* latched_pageselect, uint16_t* latched_yscroll, uint16_t* latched_xscroll, uint16_t* textram);
 
->>>>>>> upstream/master
 protected:
 	// internal types
 	typedef delegate<void ()> i8751_sim_delegate;
@@ -216,42 +162,24 @@ protected:
 	};
 
 	// device overrides
-<<<<<<< HEAD
-	virtual void video_start();
-	virtual void machine_reset();
-	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
-=======
 	virtual void video_start() override;
 	virtual void machine_reset() override;
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
->>>>>>> upstream/master
 
 	// internal helpers
 	void init_generic(segas16b_rom_board rom_board);
 
 	// i8751 simulations
-<<<<<<< HEAD
-	void altbeast_common_i8751_sim(offs_t soundoffs, offs_t inputoffs);
-	void altbeasj_i8751_sim();
-	void altbeas5_i8751_sim();
-	void altbeast_i8751_sim();
-	void ddux_i8751_sim();
-	void goldnaxe_i8751_sim();
-=======
 	void altbeast_common_i8751_sim(offs_t soundoffs, offs_t inputoffs, int alt_bank);
 	void altbeasj_i8751_sim();
 	void altbeas5_i8751_sim();
 	void ddux_i8751_sim();
->>>>>>> upstream/master
 	void tturf_i8751_sim();
 	void wb3_i8751_sim();
 
 	// custom I/O handlers
 	DECLARE_READ16_MEMBER( aceattac_custom_io_r );
-<<<<<<< HEAD
-=======
 	DECLARE_WRITE16_MEMBER( aceattac_custom_io_w );
->>>>>>> upstream/master
 	DECLARE_READ16_MEMBER( dunkshot_custom_io_r );
 	DECLARE_READ16_MEMBER( hwchamp_custom_io_r );
 	DECLARE_WRITE16_MEMBER( hwchamp_custom_io_w );
@@ -273,13 +201,6 @@ protected:
 	optional_device<sega_315_5250_compare_timer_device> m_cmptimer_1;
 	optional_device<sega_315_5250_compare_timer_device> m_cmptimer_2;
 	required_device<nvram_device> m_nvram;
-<<<<<<< HEAD
-	required_device<sega_sys16b_sprite_device> m_sprites;
-	required_device<segaic16_video_device> m_segaic16vid;
-
-	// memory pointers
-	required_shared_ptr<UINT16> m_workram;
-=======
 	optional_device<sega_sys16b_sprite_device> m_sprites;
 	required_device<segaic16_video_device> m_segaic16vid;
 	optional_device<generic_latch_8_device> m_soundlatch; // not for atomicp
@@ -288,7 +209,6 @@ protected:
 
 	// memory pointers
 	required_shared_ptr<uint16_t> m_workram;
->>>>>>> upstream/master
 
 	// configuration
 	segas16b_rom_board  m_romboard;
@@ -296,21 +216,6 @@ protected:
 	read16_delegate     m_custom_io_r;
 	write16_delegate    m_custom_io_w;
 	bool                m_disable_screen_blanking;
-<<<<<<< HEAD
-	const UINT8 *       m_i8751_initial_config;
-	i8751_sim_delegate  m_i8751_vblank_hook;
-	UINT8               m_atomicp_sound_divisor;
-
-	// game-specific state
-	UINT8               m_atomicp_sound_count;
-	UINT8               m_hwc_input_value;
-	UINT8               m_mj_input_num;
-	UINT8               m_mj_last_val;
-
-	required_device<gfxdecode_device> m_gfxdecode;
-	optional_shared_ptr<UINT8> m_sound_decrypted_opcodes;
-	optional_shared_ptr<UINT16> m_decrypted_opcodes;
-=======
 	const uint8_t *       m_i8751_initial_config;
 	i8751_sim_delegate  m_i8751_vblank_hook;
 	uint8_t               m_atomicp_sound_divisor;
@@ -333,7 +238,6 @@ protected:
 	optional_shared_ptr<uint16_t> m_bootleg_page;
 
 
->>>>>>> upstream/master
 };
 
 
@@ -381,33 +285,6 @@ public:
 	DECLARE_WRITE16_MEMBER( main_bank_change_w );
 
 	// security callbacks
-<<<<<<< HEAD
-	UINT32 shinfz_security(UINT32 input);
-	UINT32 tetrbx_security(UINT32 input);
-
-//protected:
-	// driver overrides
-	virtual void machine_reset();
-
-	// configuration
-	UINT8           m_read_xor;
-	typedef delegate<UINT32 (UINT32)> security_callback_delegate;
-	security_callback_delegate m_security_callback;
-
-	// internal state
-	UINT16          m_cart_addrlatch;
-	UINT32          m_cart_addr;
-	UINT8           m_data_type;
-	UINT32          m_data_addr;
-	UINT8           m_data_mode;
-	UINT16          m_addr_latch;
-	UINT32          m_security_value;
-	UINT16          m_security_latch;
-	UINT8           m_rle_control_position;
-	UINT8           m_rle_control_byte;
-	bool            m_rle_latched;
-	UINT8           m_rle_byte;
-=======
 	uint32_t shinfz_security(uint32_t input);
 	uint32_t tetrbx_security(uint32_t input);
 
@@ -433,5 +310,4 @@ public:
 	uint8_t           m_rle_control_byte;
 	bool            m_rle_latched;
 	uint8_t           m_rle_byte;
->>>>>>> upstream/master
 };

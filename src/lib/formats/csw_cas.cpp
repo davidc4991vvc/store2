@@ -32,15 +32,6 @@ Offset  Value   Type    Description
 
 #define CSW_WAV_FREQUENCY   44100
 
-<<<<<<< HEAD
-static const UINT8 CSW_HEADER[] = { "Compressed Square Wave" };
-
-static UINT32 get_leuint32(const void *ptr)
-{
-	UINT32 value;
-	memcpy(&value, ptr, sizeof(value));
-	return LITTLE_ENDIANIZE_INT32(value);
-=======
 static const uint8_t CSW_HEADER[] = { "Compressed Square Wave" };
 
 static uint32_t get_leuint32(const void *ptr)
@@ -48,39 +39,21 @@ static uint32_t get_leuint32(const void *ptr)
 	uint32_t value;
 	memcpy(&value, ptr, sizeof(value));
 	return little_endianize_int32(value);
->>>>>>> upstream/master
 }
 
 static int mycaslen;
 
-<<<<<<< HEAD
-static int csw_cas_to_wav_size( const UINT8 *casdata, int caslen )
-{
-	UINT32 SampleRate;
-	UINT32 NumberOfPulses;
-	UINT8  MajorRevision;
-	UINT8  MinorRevision;
-	UINT8  CompressionType;
-	UINT8  Flags;
-	UINT8  HeaderExtensionLength;
-	dynamic_buffer gz_ptr;
-=======
 static int csw_cas_to_wav_size( const uint8_t *casdata, int caslen )
 {
 	uint8_t  MajorRevision;
 	uint8_t  MinorRevision;
 	uint8_t  HeaderExtensionLength;
 	std::vector<uint8_t> gz_ptr;
->>>>>>> upstream/master
 
 	int         total_size;
 	z_stream    d_stream;
 	int         err;
-<<<<<<< HEAD
-	UINT8       *in_ptr;
-=======
 	uint8_t       *in_ptr;
->>>>>>> upstream/master
 	int         bsize=0;
 
 	if ( memcmp( casdata, CSW_HEADER, sizeof(CSW_HEADER)-1 ) )
@@ -106,30 +79,11 @@ static int csw_cas_to_wav_size( const uint8_t *casdata, int caslen )
 		goto cleanup;
 	}
 
-<<<<<<< HEAD
-	SampleRate=get_leuint32(casdata+0x19);
-	LOG_FORMATS("Sample rate %u\n",SampleRate);
-
-	NumberOfPulses=get_leuint32(casdata+0x1d);
-	LOG_FORMATS("Number Of Pulses %u\n",NumberOfPulses);
-
-
-	CompressionType=casdata[0x21];
-	Flags=casdata[0x22];
-	HeaderExtensionLength=casdata[0x23];
-
-	LOG_FORMATS("CompressionType %u   Flast %u   HeaderExtensionLength %u\n",CompressionType,Flags,HeaderExtensionLength);
-
-	mycaslen=caslen;
-	//from here on down for now I am assuming it is compressed csw file.
-	in_ptr = (UINT8*) casdata+0x34+HeaderExtensionLength;
-=======
 	HeaderExtensionLength=casdata[0x23];
 
 	mycaslen=caslen;
 	//from here on down for now I am assuming it is compressed csw file.
 	in_ptr = (uint8_t*) casdata+0x34+HeaderExtensionLength;
->>>>>>> upstream/master
 
 	gz_ptr.resize( 8 );
 
@@ -141,15 +95,9 @@ static int csw_cas_to_wav_size( const uint8_t *casdata, int caslen )
 	d_stream.avail_out = 1;
 	d_stream.total_out=0;
 
-<<<<<<< HEAD
-	d_stream.zalloc = 0;
-	d_stream.zfree = 0;
-	d_stream.opaque = 0;
-=======
 	d_stream.zalloc = nullptr;
 	d_stream.zfree = nullptr;
 	d_stream.opaque = nullptr;
->>>>>>> upstream/master
 	d_stream.data_type=0;
 
 	err = inflateInit( &d_stream );
@@ -200,26 +148,6 @@ cleanup:
 	return -1;
 }
 
-<<<<<<< HEAD
-static int csw_cas_fill_wave( INT16 *buffer, int length, UINT8 *bytes )
-{
-	UINT32 SampleRate;
-	UINT32 NumberOfPulses;
-	UINT8  CompressionType;
-	UINT8  Flags;
-	UINT8  HeaderExtensionLength;
-	INT8   Bit;
-
-	dynamic_buffer gz_ptr;
-	int         total_size;
-	z_stream    d_stream;
-	int         err;
-	UINT8       *in_ptr;
-	int         bsize=0;
-	int     i;
-
-
-=======
 static int csw_cas_fill_wave( int16_t *buffer, int length, uint8_t *bytes )
 {
 	uint32_t SampleRate;
@@ -237,7 +165,6 @@ static int csw_cas_fill_wave( int16_t *buffer, int length, uint8_t *bytes )
 	int         bsize=0;
 	int     i;
 
->>>>>>> upstream/master
 	LOG_FORMATS("Length %d\n",length);
 
 	SampleRate=get_leuint32(bytes+0x19);
@@ -250,22 +177,6 @@ static int csw_cas_fill_wave( int16_t *buffer, int length, uint8_t *bytes )
 	Flags=bytes[0x22];
 	HeaderExtensionLength=bytes[0x23];
 
-<<<<<<< HEAD
-	if ((Flags&0)==0)
-	{
-		Bit=-100;
-	}
-	else
-	{
-		Bit=100;
-	}
-
-	LOG_FORMATS("CompressionType %u   Flast %u   HeaderExtensionLength %u\n",CompressionType,Flags,HeaderExtensionLength);
-
-
-	//from here on down for now I am assuming it is compressed csw file.
-	in_ptr = (UINT8*) bytes+0x34+HeaderExtensionLength;
-=======
 	Bit = (Flags & 1) ? 100 : -100;
 
 	LOG_FORMATS("CompressionType %u   Flags %u   HeaderExtensionLength %u\n",CompressionType,Flags,HeaderExtensionLength);
@@ -282,7 +193,6 @@ static int csw_cas_fill_wave( int16_t *buffer, int length, uint8_t *bytes )
 
 	//from here on down for now I am assuming it is compressed csw file.
 	in_ptr = (uint8_t*) bytes+0x34+HeaderExtensionLength;
->>>>>>> upstream/master
 
 	gz_ptr.resize( 8 );
 
@@ -294,15 +204,9 @@ static int csw_cas_fill_wave( int16_t *buffer, int length, uint8_t *bytes )
 	d_stream.avail_out = 1;
 	d_stream.total_out=0;
 
-<<<<<<< HEAD
-	d_stream.zalloc = 0;
-	d_stream.zfree = 0;
-	d_stream.opaque = 0;
-=======
 	d_stream.zalloc = nullptr;
 	d_stream.zfree = nullptr;
 	d_stream.opaque = nullptr;
->>>>>>> upstream/master
 	d_stream.data_type=0;
 
 	err = inflateInit( &d_stream );
@@ -368,14 +272,6 @@ static const struct CassetteLegacyWaveFiller csw_legacy_fill_wave = {
 	0                       /* trailer_samples */
 };
 
-<<<<<<< HEAD
-static casserr_t csw_cassette_identify( cassette_image *cassette, struct CassetteOptions *opts )
-{
-	return cassette_legacy_identify( cassette, opts, &csw_legacy_fill_wave );
-}
-
-static casserr_t csw_cassette_load( cassette_image *cassette )
-=======
 static cassette_image::error csw_cassette_identify( cassette_image *cassette, struct CassetteOptions *opts )
 {
 	uint8_t header[22];
@@ -388,24 +284,15 @@ static cassette_image::error csw_cassette_identify( cassette_image *cassette, st
 }
 
 static cassette_image::error csw_cassette_load( cassette_image *cassette )
->>>>>>> upstream/master
 {
 	return cassette_legacy_construct( cassette, &csw_legacy_fill_wave );
 }
 
-<<<<<<< HEAD
-static const struct CassetteFormat csw_cassette_format = {
-	"csw",
-	csw_cassette_identify,
-	csw_cassette_load,
-	NULL
-=======
 const struct CassetteFormat csw_cassette_format = {
 	"csw",
 	csw_cassette_identify,
 	csw_cassette_load,
 	nullptr
->>>>>>> upstream/master
 };
 
 CASSETTE_FORMATLIST_START(csw_cassette_formats)

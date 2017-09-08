@@ -9,18 +9,11 @@
 
 *********************************************************************/
 
-<<<<<<< HEAD
-#ifndef __A2BUS_CORVUS__
-#define __A2BUS_CORVUS__
-
-#include "emu.h"
-=======
 #ifndef MAME_A2BUS_A2CORVUS_H
 #define MAME_A2BUS_A2CORVUS_H
 
 #pragma once
 
->>>>>>> upstream/master
 #include "a2bus.h"
 #include "machine/corvushd.h"
 
@@ -34,35 +27,6 @@ class a2bus_corvus_device:
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	a2bus_corvus_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source);
-	a2bus_corvus_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// optional information overrides
-	virtual machine_config_constructor device_mconfig_additions() const;
-	virtual const rom_entry *device_rom_region() const;
-
-	required_device<corvus_hdc_t> m_corvushd;
-
-protected:
-	virtual void device_start();
-	virtual void device_reset();
-
-	// overrides of standard a2bus slot functions
-	virtual UINT8 read_c0nx(address_space &space, UINT8 offset);
-	virtual void write_c0nx(address_space &space, UINT8 offset, UINT8 data);
-	virtual UINT8 read_cnxx(address_space &space, UINT8 offset);
-	virtual UINT8 read_c800(address_space &space, UINT16 offset);
-
-private:
-	UINT8 *m_rom;
-};
-
-// device type definition
-extern const device_type A2BUS_CORVUS;
-
-#endif /* __A2BUS_CORVUS__ */
-=======
 	a2bus_corvus_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 protected:
@@ -89,4 +53,3 @@ private:
 DECLARE_DEVICE_TYPE(A2BUS_CORVUS, a2bus_corvus_device)
 
 #endif // MAME_A2BUS_A2CORVUS_H
->>>>>>> upstream/master

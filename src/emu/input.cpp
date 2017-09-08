@@ -18,11 +18,7 @@
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "emuopts.h"
-=======
 #include "inputdev.h"
->>>>>>> upstream/master
 
 
 
@@ -31,11 +27,7 @@
 //**************************************************************************
 
 // invalid memory value for axis polling
-<<<<<<< HEAD
-const INT32 INVALID_AXIS_VALUE      = 0x7fffffff;
-=======
 const s32 INVALID_AXIS_VALUE      = 0x7fffffff;
->>>>>>> upstream/master
 
 // additional expanded input codes for sequences
 const input_code input_seq::end_code(DEVICE_CLASS_INTERNAL, 0, ITEM_CLASS_INVALID, ITEM_MODIFIER_NONE, ITEM_ID_SEQ_END);
@@ -52,76 +44,12 @@ const input_seq input_seq::empty_seq;
 //  TYPE DEFINITIONS
 //**************************************************************************
 
-<<<<<<< HEAD
-// ======================> input_device_switch_item
-
-// derived input item representing a switch input
-class input_device_switch_item : public input_device_item
-{
-public:
-	// construction/destruction
-	input_device_switch_item(input_device &device, const char *name, void *internal, input_item_id itemid, item_get_state_func getstate);
-
-	// readers
-	virtual INT32 read_as_switch(input_item_modifier modifier);
-	virtual INT32 read_as_relative(input_item_modifier modifier);
-	virtual INT32 read_as_absolute(input_item_modifier modifier);
-
-	// steadykey helper
-	bool steadykey_changed();
-	void steadykey_update_to_current() { m_steadykey = m_current; }
-
-private:
-	// internal state
-	INT32                   m_steadykey;            // the live steadykey state
-	INT32                   m_oldkey;               // old live state
-};
-
-
-// ======================> input_device_switch_item
-
-// derived input item representing a relative axis input
-class input_device_relative_item : public input_device_item
-{
-public:
-	// construction/destruction
-	input_device_relative_item(input_device &device, const char *name, void *internal, input_item_id itemid, item_get_state_func getstate);
-
-	// readers
-	virtual INT32 read_as_switch(input_item_modifier modifier);
-	virtual INT32 read_as_relative(input_item_modifier modifier);
-	virtual INT32 read_as_absolute(input_item_modifier modifier);
-};
-
-
-// ======================> input_device_switch_item
-
-// derived input item representing an absolute axis input
-class input_device_absolute_item : public input_device_item
-{
-public:
-	// construction/destruction
-	input_device_absolute_item(input_device &device, const char *name, void *internal, input_item_id itemid, item_get_state_func getstate);
-
-	// readers
-	virtual INT32 read_as_switch(input_item_modifier modifier);
-	virtual INT32 read_as_relative(input_item_modifier modifier);
-	virtual INT32 read_as_absolute(input_item_modifier modifier);
-};
-
-
-=======
->>>>>>> upstream/master
 // ======================> code_string_table
 
 // simple class to match codes to strings
 struct code_string_table
 {
-<<<<<<< HEAD
-	UINT32 operator[](const char *string) const
-=======
 	u32 operator[](const char *string) const
->>>>>>> upstream/master
 	{
 		for (const code_string_table *current = this; current->m_code != ~0; current++)
 			if (strcmp(current->m_string, string) == 0)
@@ -129,26 +57,15 @@ struct code_string_table
 		return ~0;
 	}
 
-<<<<<<< HEAD
-	const char *operator[](UINT32 code) const
-=======
 	const char *operator[](u32 code) const
->>>>>>> upstream/master
 	{
 		for (const code_string_table *current = this; current->m_code != ~0; current++)
 			if (current->m_code == code)
 				return current->m_string;
-<<<<<<< HEAD
-		return NULL;
-	}
-
-	UINT32                  m_code;
-=======
 		return nullptr;
 	}
 
 	u32                     m_code;
->>>>>>> upstream/master
 	const char *            m_string;
 };
 
@@ -266,14 +183,11 @@ static const code_string_table itemid_token_table[] =
 	{ ITEM_ID_F13,           "F13" },
 	{ ITEM_ID_F14,           "F14" },
 	{ ITEM_ID_F15,           "F15" },
-<<<<<<< HEAD
-=======
 	{ ITEM_ID_F16,           "F16" },
 	{ ITEM_ID_F17,           "F17" },
 	{ ITEM_ID_F18,           "F18" },
 	{ ITEM_ID_F19,           "F19" },
 	{ ITEM_ID_F20,           "F20" },
->>>>>>> upstream/master
 	{ ITEM_ID_ESC,           "ESC" },
 	{ ITEM_ID_TILDE,         "TILDE" },
 	{ ITEM_ID_MINUS,         "MINUS" },
@@ -317,13 +231,10 @@ static const code_string_table itemid_token_table[] =
 	{ ITEM_ID_PLUS_PAD,      "PLUSPAD" },
 	{ ITEM_ID_DEL_PAD,       "DELPAD" },
 	{ ITEM_ID_ENTER_PAD,     "ENTERPAD" },
-<<<<<<< HEAD
-=======
 	{ ITEM_ID_BS_PAD,        "BSPAD" },
 	{ ITEM_ID_TAB_PAD,       "TABPAD" },
 	{ ITEM_ID_00_PAD,        "00PAD" },
 	{ ITEM_ID_000_PAD,       "000PAD" },
->>>>>>> upstream/master
 	{ ITEM_ID_PRTSCR,        "PRTSCR" },
 	{ ITEM_ID_PAUSE,         "PAUSE" },
 	{ ITEM_ID_LSHIFT,        "LSHIFT" },
@@ -339,12 +250,6 @@ static const code_string_table itemid_token_table[] =
 	{ ITEM_ID_RWIN,          "RWIN" },
 	{ ITEM_ID_MENU,          "MENU" },
 	{ ITEM_ID_CANCEL,        "CANCEL" },
-<<<<<<< HEAD
-	{ ITEM_ID_KANA,          "KANA" },
-	{ ITEM_ID_CONVERT,       "CONVERT" },
-	{ ITEM_ID_NONCONVERT,    "NONCONVERT" },
-=======
->>>>>>> upstream/master
 
 	// standard mouse/joystick/gun codes
 	{ ITEM_ID_XAXIS,         "XAXIS" },
@@ -458,203 +363,12 @@ static const code_string_table itemid_token_table[] =
 	{ ITEM_ID_ADD_RELATIVE15,"ADDREL15" },
 	{ ITEM_ID_ADD_RELATIVE16,"ADDREL16" },
 
-<<<<<<< HEAD
-	{ ~0U,                   NULL }
-=======
 	{ ~0U,                   nullptr }
->>>>>>> upstream/master
 };
 
 
 
 //**************************************************************************
-<<<<<<< HEAD
-//  GLOBAL VARIABLES
-//**************************************************************************
-
-// standard joystick mappings
-const char          joystick_map_8way[] = "7778...4445";
-const char          joystick_map_4way_diagonal[] = "4444s8888..444458888.444555888.ss5.222555666.222256666.2222s6666.2222s6666";
-// const char          joystick_map_4way_sticky[] = "s8.4s8.44s8.4445";
-
-
-//**************************************************************************
-//  JOYSTICK MAP
-//**************************************************************************
-
-//-------------------------------------------------
-//  joystick_map - constructor
-//-------------------------------------------------
-
-joystick_map::joystick_map()
-	: m_lastmap(JOYSTICK_MAP_NEUTRAL)
-{
-	// parse the standard 8-way map as default
-	parse(joystick_map_8way);
-}
-
-
-//-------------------------------------------------
-//  parse - parse a string into a joystick map
-//-------------------------------------------------
-
-bool joystick_map::parse(const char *mapstring)
-{
-	// save a copy of the original string
-	m_origstring = mapstring;
-
-	// iterate over rows
-	for (int rownum = 0; rownum < 9; rownum++)
-	{
-		// if we're done, copy from another row
-		if (*mapstring == 0 || *mapstring == '.')
-		{
-			bool symmetric = (rownum >= 5 && *mapstring == 0);
-			const UINT8 *srcrow = &m_map[symmetric ? (8 - rownum) : (rownum - 1)][0];
-
-			// if this is row 0, we don't have a source row -- invalid
-			if (rownum == 0)
-				return false;
-
-			// copy from the srcrow, applying up/down symmetry if in the bottom half
-			for (int colnum = 0; colnum < 9; colnum++)
-			{
-				UINT8 val = srcrow[colnum];
-				if (symmetric)
-					val = (val & (JOYSTICK_MAP_LEFT | JOYSTICK_MAP_RIGHT)) | ((val & JOYSTICK_MAP_UP) << 1) | ((val & JOYSTICK_MAP_DOWN) >> 1);
-				m_map[rownum][colnum] = val;
-			}
-		}
-
-		// otherwise, parse this column
-		else
-		{
-			for (int colnum = 0; colnum < 9; colnum++)
-			{
-				// if we're at the end of row, copy previous to the middle, then apply left/right symmetry
-				if (colnum > 0 && (*mapstring == 0 || *mapstring == '.'))
-				{
-					bool symmetric = (colnum >= 5);
-					UINT8 val = m_map[rownum][symmetric ? (8 - colnum) : (colnum - 1)];
-					if (symmetric)
-						val = (val & (JOYSTICK_MAP_UP | JOYSTICK_MAP_DOWN)) | ((val & JOYSTICK_MAP_LEFT) << 1) | ((val & JOYSTICK_MAP_RIGHT) >> 1);
-					m_map[rownum][colnum] = val;
-				}
-
-				// otherwise, convert the character to its value
-				else
-				{
-					static const UINT8 charmap[] =
-					{
-						JOYSTICK_MAP_UP | JOYSTICK_MAP_LEFT,
-						JOYSTICK_MAP_UP,
-						JOYSTICK_MAP_UP | JOYSTICK_MAP_RIGHT,
-						JOYSTICK_MAP_LEFT,
-						JOYSTICK_MAP_NEUTRAL,
-						JOYSTICK_MAP_RIGHT,
-						JOYSTICK_MAP_DOWN | JOYSTICK_MAP_LEFT,
-						JOYSTICK_MAP_DOWN,
-						JOYSTICK_MAP_DOWN | JOYSTICK_MAP_RIGHT,
-						JOYSTICK_MAP_STICKY
-					};
-					static const char validchars[] = "789456123s";
-					const char *ptr = strchr(validchars, *mapstring++);
-
-					// invalid characters exit immediately
-					if (ptr == NULL)
-						return false;
-					m_map[rownum][colnum] = charmap[ptr - validchars];
-				}
-			}
-		}
-
-		// if we ended with a period, advance to the next row
-		if (*mapstring == '.')
-			mapstring++;
-	}
-	return true;
-}
-
-
-//-------------------------------------------------
-//  to_string - output the map as a string for
-//  friendly display
-//-------------------------------------------------
-
-const char *joystick_map::to_string(std::string &str) const
-{
-	strprintf(str, "%s\n", m_origstring.c_str());
-	for (int rownum = 0; rownum < 9; rownum++)
-	{
-		str.append("  ");
-		for (int colnum = 0; colnum < 9; colnum++)
-			switch (m_map[rownum][colnum])
-			{
-				case JOYSTICK_MAP_UP | JOYSTICK_MAP_LEFT:   str.append("7");  break;
-				case JOYSTICK_MAP_UP:                       str.append("8");  break;
-				case JOYSTICK_MAP_UP | JOYSTICK_MAP_RIGHT:  str.append("9");  break;
-				case JOYSTICK_MAP_LEFT:                     str.append("4");  break;
-				case JOYSTICK_MAP_NEUTRAL:                  str.append("5");  break;
-				case JOYSTICK_MAP_RIGHT:                    str.append("6");  break;
-				case JOYSTICK_MAP_DOWN | JOYSTICK_MAP_LEFT: str.append("1");  break;
-				case JOYSTICK_MAP_DOWN:                     str.append("2");  break;
-				case JOYSTICK_MAP_DOWN | JOYSTICK_MAP_RIGHT:str.append("3");  break;
-				case JOYSTICK_MAP_STICKY:                   str.append("s");  break;
-				default:                                    str.append("?");  break;
-			}
-
-		str.append("\n");
-	}
-	return str.c_str();
-}
-
-
-//-------------------------------------------------
-//  update - update the state of the joystick
-//  map based on the given X/Y axis values
-//-------------------------------------------------
-
-UINT8 joystick_map::update(INT32 xaxisval, INT32 yaxisval)
-{
-	// now map the X and Y axes to a 9x9 grid using the raw values
-	xaxisval = ((xaxisval - INPUT_ABSOLUTE_MIN) * 9) / (INPUT_ABSOLUTE_MAX - INPUT_ABSOLUTE_MIN + 1);
-	yaxisval = ((yaxisval - INPUT_ABSOLUTE_MIN) * 9) / (INPUT_ABSOLUTE_MAX - INPUT_ABSOLUTE_MIN + 1);
-	UINT8 mapval = m_map[yaxisval][xaxisval];
-
-	// handle stickiness
-	if (mapval == JOYSTICK_MAP_STICKY)
-		mapval = m_lastmap;
-	else
-		m_lastmap = mapval;
-
-	// return based on whether the appropriate bit is set
-	return mapval;
-}
-
-
-
-//**************************************************************************
-//  INPUT CODE
-//**************************************************************************
-
-//-------------------------------------------------
-//  input_code - construct an input code from a
-//  device/item pair
-//-------------------------------------------------
-
-input_code::input_code(input_device &device, input_item_id itemid)
-{
-	assert(itemid < ITEM_ID_ABSOLUTE_MAXIMUM);
-	input_device_item *item = device.item(itemid);
-	assert(item != NULL);
-	m_internal = ((device.devclass() & 0xf) << 28) | ((device.devindex() & 0xff) << 20) | ((item->itemclass() & 0xf) << 16) | (ITEM_MODIFIER_NONE << 12) | (item->itemid() & 0xfff);
-}
-
-
-
-//**************************************************************************
-=======
->>>>>>> upstream/master
 //  INPUT SEQ
 //**************************************************************************
 
@@ -665,11 +379,7 @@ input_code::input_code(input_device &device, input_item_id itemid)
 
 input_seq &input_seq::operator+=(input_code code)
 {
-<<<<<<< HEAD
-	// if not enough room, return FALSE
-=======
 	// if not enough room, return false
->>>>>>> upstream/master
 	int curlength = length();
 	if (curlength < ARRAY_LENGTH(m_code) - 1)
 	{
@@ -731,17 +441,10 @@ bool input_seq::is_valid() const
 	input_item_class lastclass = ITEM_CLASS_INVALID;
 	input_code lastcode = INPUT_CODE_INVALID;
 	int positive_code_count = 0;
-<<<<<<< HEAD
-	for (int seqnum = 0; seqnum < ARRAY_LENGTH(m_code); seqnum++)
-	{
-		// invalid codes are never permitted
-		input_code code = m_code[seqnum];
-=======
 	for (auto code : m_code)
 	{
 		// invalid codes are never permitted
 
->>>>>>> upstream/master
 		if (code == INPUT_CODE_INVALID)
 			return false;
 
@@ -782,11 +485,7 @@ bool input_seq::is_valid() const
 			// non-switch items can't have a NOT
 			input_item_class itemclass = code.item_class();
 			if (itemclass != ITEM_CLASS_SWITCH && lastcode == not_code)
-<<<<<<< HEAD
-				return FALSE;
-=======
 				return false;
->>>>>>> upstream/master
 
 			// absolute/relative items must all be the same class
 			if ((lastclass == ITEM_CLASS_ABSOLUTE && itemclass != ITEM_CLASS_ABSOLUTE) ||
@@ -842,298 +541,14 @@ void input_seq::backspace()
 
 void input_seq::replace(input_code oldcode, input_code newcode)
 {
-<<<<<<< HEAD
-	for (int codenum = 0; codenum < ARRAY_LENGTH(m_code); codenum++)
-		if (m_code[codenum] == oldcode)
-			m_code[codenum] = newcode;
-=======
 	for (auto & elem : m_code)
 		if (elem == oldcode)
 			elem = newcode;
->>>>>>> upstream/master
 }
 
 
 
 //**************************************************************************
-<<<<<<< HEAD
-//  INPUT DEVICE
-//**************************************************************************
-
-//-------------------------------------------------
-//  input_device - constructor
-//-------------------------------------------------
-
-input_device::input_device(input_class &_class, int devindex, const char *name, void *internal)
-	: m_class(_class),
-		m_name(name),
-		m_devindex(devindex),
-		m_maxitem(input_item_id(0)),
-		m_internal(internal),
-		m_joystick_deadzone((INT32)(_class.manager().machine().options().joystick_deadzone() * INPUT_ABSOLUTE_MAX)),
-		m_joystick_saturation((INT32)(_class.manager().machine().options().joystick_saturation() * INPUT_ABSOLUTE_MAX)),
-		m_steadykey_enabled(_class.manager().machine().options().steadykey()),
-		m_lightgun_reload_button(_class.manager().machine().options().offscreen_reload())
-{
-	// additional work for joysticks
-	if (devclass() == DEVICE_CLASS_JOYSTICK)
-	{
-		// get the default joystick map
-		const char *mapstring = machine().options().joystick_map();
-		if (mapstring[0] == 0 || strcmp(mapstring, "auto") == 0)
-			mapstring = joystick_map_8way;
-
-		// parse it
-		std::string tempstr;
-		if (!m_joymap.parse(mapstring))
-		{
-			osd_printf_error("Invalid joystick map: %s\n", mapstring);
-			m_joymap.parse(joystick_map_8way);
-		}
-		else if (mapstring != joystick_map_8way)
-			osd_printf_verbose("Input: Default joystick map = %s\n", m_joymap.to_string(tempstr));
-	}
-}
-
-
-//-------------------------------------------------
-//  add_item - add a new item to an input device
-//-------------------------------------------------
-
-input_item_id input_device::add_item(const char *name, input_item_id itemid, item_get_state_func getstate, void *internal)
-{
-	assert_always(machine().phase() == MACHINE_PHASE_INIT, "Can only call input_device::add_item at init time!");
-	assert(name != NULL);
-	assert(itemid > ITEM_ID_INVALID && itemid < ITEM_ID_MAXIMUM);
-	assert(getstate != NULL);
-
-	// if we have a generic ID, pick a new internal one
-	input_item_id originalid = itemid;
-	if (itemid >= ITEM_ID_OTHER_SWITCH && itemid <= ITEM_ID_OTHER_AXIS_RELATIVE)
-		for (itemid = (input_item_id)(ITEM_ID_MAXIMUM + 1); itemid <= ITEM_ID_ABSOLUTE_MAXIMUM; ++itemid)
-			if (m_item[itemid] == NULL)
-				break;
-	assert(itemid <= ITEM_ID_ABSOLUTE_MAXIMUM);
-
-	// make sure we don't have any overlap
-	assert(m_item[itemid] == NULL);
-
-	// determine the class and create the appropriate item class
-	input_device_item *item;
-	switch (m_class.standard_item_class(originalid))
-	{
-		case ITEM_CLASS_SWITCH:
-			item = global_alloc(input_device_switch_item(*this, name, internal, itemid, getstate));
-			break;
-
-		case ITEM_CLASS_RELATIVE:
-			item = global_alloc(input_device_relative_item(*this, name, internal, itemid, getstate));
-			break;
-
-		case ITEM_CLASS_ABSOLUTE:
-			item = global_alloc(input_device_absolute_item(*this, name, internal, itemid, getstate));
-			break;
-
-		default:
-			item = NULL;
-			assert(false);
-	}
-
-	// assign the new slot and update the maximum
-	m_item[itemid].reset(item);
-	m_maxitem = MAX(m_maxitem, itemid);
-	return itemid;
-}
-
-
-//-------------------------------------------------
-//  apply_deadzone_and_saturation - apply global
-//  deadzone and saturation parameters to an
-//  absolute value
-//-------------------------------------------------
-
-INT32 input_device::apply_deadzone_and_saturation(INT32 result) const
-{
-	// ignore for non-joysticks
-	if (devclass() != DEVICE_CLASS_JOYSTICK)
-		return result;
-
-	// properties are symmetric
-	bool negative = false;
-	if (result < 0)
-	{
-		negative = true;
-		result = -result;
-	}
-
-	// if in the deadzone, return 0
-	if (result < m_joystick_deadzone)
-		result = 0;
-
-	// if saturated, return the max
-	else if (result > m_joystick_saturation)
-		result = INPUT_ABSOLUTE_MAX;
-
-	// otherwise, scale
-	else
-		result = (INT64)(result - m_joystick_deadzone) * (INT64)INPUT_ABSOLUTE_MAX / (INT64)(m_joystick_saturation - m_joystick_deadzone);
-
-	// re-apply sign and return
-	return negative ? -result : result;
-}
-
-
-//-------------------------------------------------
-//  apply_steadykey - apply steadykey option if
-//  enabled
-//-------------------------------------------------
-
-void input_device::apply_steadykey() const
-{
-	// ignore if not enabled
-	if (!m_steadykey_enabled)
-		return;
-
-	// update the state of all the keys and see if any changed state
-	bool anything_changed = false;
-	for (input_item_id itemid = ITEM_ID_FIRST_VALID; itemid <= m_maxitem; ++itemid)
-	{
-		input_device_item *item = m_item[itemid];
-		if (item != NULL && item->itemclass() == ITEM_CLASS_SWITCH)
-			if (downcast<input_device_switch_item *>(item)->steadykey_changed())
-				anything_changed = true;
-	}
-
-	// if the keyboard state is stable, flush the current state
-	if (!anything_changed)
-		for (input_item_id itemid = ITEM_ID_FIRST_VALID; itemid <= m_maxitem; ++itemid)
-		{
-			input_device_item *item = m_item[itemid];
-			if (item != NULL && item->itemclass() == ITEM_CLASS_SWITCH)
-				downcast<input_device_switch_item *>(item)->steadykey_update_to_current();
-		}
-}
-
-
-
-//**************************************************************************
-//  INPUT CLASS
-//**************************************************************************
-
-//-------------------------------------------------
-//  input_class - constructor
-//-------------------------------------------------
-
-input_class::input_class(input_manager &manager, input_device_class devclass, bool enabled, bool multi)
-	: m_manager(manager),
-		m_devclass(devclass),
-		m_maxindex(0),
-		m_enabled(enabled),
-		m_multi(multi)
-{
-	// request a per-frame callback for the keyboard class
-	if (devclass == DEVICE_CLASS_KEYBOARD)
-		machine().add_notifier(MACHINE_NOTIFY_FRAME, machine_notify_delegate(FUNC(input_class::frame_callback), this));
-}
-
-
-//-------------------------------------------------
-//  add_device - add a new input device
-//-------------------------------------------------
-
-input_device *input_class::add_device(const char *name, void *internal)
-{
-	// find the next empty index
-	int devindex;
-	for (devindex = 0; devindex < DEVICE_INDEX_MAXIMUM; devindex++)
-		if (m_device[devindex] == NULL)
-			break;
-
-	// call through
-	return add_device(devindex, name, internal);
-}
-
-input_device *input_class::add_device(int devindex, const char *name, void *internal)
-{
-	assert_always(machine().phase() == MACHINE_PHASE_INIT, "Can only call input_class::add_device at init time!");
-	assert(name != NULL);
-	assert(devindex >= 0 && devindex < DEVICE_INDEX_MAXIMUM);
-	assert(m_device[devindex] == NULL);
-
-	// allocate a new device
-	m_device[devindex].reset(global_alloc(input_device(*this, devindex, name, internal)));
-
-	// update the maximum index found
-	m_maxindex = MAX(m_maxindex, devindex);
-
-	osd_printf_verbose("Input: Adding %s #%d: %s\n", (*devclass_string_table)[m_devclass], devindex, name);
-	return m_device[devindex];
-}
-
-
-//-------------------------------------------------
-//  standard_item_class - return the class of a
-//  standard item
-//-------------------------------------------------
-
-input_item_class input_class::standard_item_class(input_item_id itemid)
-{
-	// most everything standard is a switch, apart from the axes
-	if (itemid == ITEM_ID_OTHER_SWITCH || itemid < ITEM_ID_XAXIS || (itemid > ITEM_ID_SLIDER2 && itemid < ITEM_ID_ADD_ABSOLUTE1))
-		return ITEM_CLASS_SWITCH;
-
-	// standard mouse axes are relative
-	else if (m_devclass == DEVICE_CLASS_MOUSE || itemid == ITEM_ID_OTHER_AXIS_RELATIVE || (itemid >= ITEM_ID_ADD_RELATIVE1 && itemid <= ITEM_ID_ADD_RELATIVE16))
-		return ITEM_CLASS_RELATIVE;
-
-	// all other standard axes are absolute
-	else
-		return ITEM_CLASS_ABSOLUTE;
-}
-
-
-//-------------------------------------------------
-//  frame_callback - per-frame callback for various
-//  bookkeeping
-//-------------------------------------------------
-
-void input_class::frame_callback()
-{
-	// iterate over all devices in our class
-	for (int devnum = 0; devnum <= m_maxindex; devnum++)
-		if (m_device[devnum] != NULL)
-			m_device[devnum]->apply_steadykey();
-}
-
-
-
-//**************************************************************************
-//  INPUT MANAGER
-//**************************************************************************
-
-//-------------------------------------------------
-//  input_manager - constructor
-//-------------------------------------------------
-
-input_manager::input_manager(running_machine &machine)
-	: m_machine(machine),
-		m_keyboard_class(*this, DEVICE_CLASS_KEYBOARD, true, machine.options().multi_keyboard()),
-		m_mouse_class(*this, DEVICE_CLASS_MOUSE, machine.options().mouse(), machine.options().multi_mouse()),
-		m_joystick_class(*this, DEVICE_CLASS_JOYSTICK, machine.options().joystick(), true),
-		m_lightgun_class(*this, DEVICE_CLASS_LIGHTGUN, machine.options().lightgun(), true),
-		m_poll_seq_last_ticks(0),
-		m_poll_seq_class(ITEM_CLASS_SWITCH)
-{
-	// reset code memory
-	reset_memory();
-
-	// create pointers for the classes
-	memset(m_class, 0, sizeof(m_class));
-	m_class[DEVICE_CLASS_KEYBOARD] = &m_keyboard_class;
-	m_class[DEVICE_CLASS_MOUSE] = &m_mouse_class;
-	m_class[DEVICE_CLASS_JOYSTICK] = &m_joystick_class;
-	m_class[DEVICE_CLASS_LIGHTGUN] = &m_lightgun_class;
-=======
 //  INPUT MANAGER
 //**************************************************************************
 
@@ -1171,7 +586,6 @@ input_manager::input_manager(running_machine &machine)
 
 input_manager::~input_manager()
 {
->>>>>>> upstream/master
 }
 
 
@@ -1180,28 +594,17 @@ input_manager::~input_manager()
 //  input code
 //-------------------------------------------------
 
-<<<<<<< HEAD
-INT32 input_manager::code_value(input_code code)
-{
-	g_profiler.start(PROFILER_INPUT);
-	INT32 result = 0;
-=======
 s32 input_manager::code_value(input_code code)
 {
 	g_profiler.start(PROFILER_INPUT);
 	s32 result = 0;
->>>>>>> upstream/master
 
 	// dummy loop to allow clean early exits
 	do
 	{
 		// return 0 for any invalid devices
 		input_device *device = device_from_code(code);
-<<<<<<< HEAD
-		if (device == NULL)
-=======
 		if (device == nullptr)
->>>>>>> upstream/master
 			break;
 
 		// also return 0 if the device class is disabled
@@ -1226,11 +629,7 @@ s32 input_manager::code_value(input_code code)
 			// lookup the item for the appropriate index
 			code.set_device_index(curindex);
 			input_device_item *item = item_from_code(code);
-<<<<<<< HEAD
-			if (item == NULL)
-=======
 			if (item == nullptr)
->>>>>>> upstream/master
 				continue;
 
 			// process items according to their native type
@@ -1316,15 +715,9 @@ void input_manager::reset_polling()
 	for (input_device_class devclass = DEVICE_CLASS_FIRST_VALID; devclass <= DEVICE_CLASS_LAST_VALID; ++devclass)
 		for (int devnum = 0; devnum <= m_class[devclass]->maxindex(); devnum++)
 		{
-<<<<<<< HEAD
-			// fetch the device; ignore if NULL
-			input_device *device = m_class[devclass]->device(devnum);
-			if (device == NULL)
-=======
 			// fetch the device; ignore if nullptr
 			input_device *device = m_class[devclass]->device(devnum);
 			if (device == nullptr)
->>>>>>> upstream/master
 				continue;
 
 			// iterate over items within each device
@@ -1332,13 +725,8 @@ void input_manager::reset_polling()
 			{
 				// for any non-switch items, set memory equal to the current value
 				input_device_item *item = device->item(itemid);
-<<<<<<< HEAD
-				if (item != NULL && item->itemclass() != ITEM_CLASS_SWITCH)
-					item->set_memory(code_value(input_code(*device, itemid)));
-=======
 				if (item != nullptr && item->itemclass() != ITEM_CLASS_SWITCH)
 					item->set_memory(code_value(item->code()));
->>>>>>> upstream/master
 			}
 		}
 }
@@ -1354,30 +742,18 @@ input_code input_manager::poll_switches()
 	for (input_device_class devclass = DEVICE_CLASS_FIRST_VALID; devclass <= DEVICE_CLASS_LAST_VALID; ++devclass)
 		for (int devnum = 0; devnum <= m_class[devclass]->maxindex(); devnum++)
 		{
-<<<<<<< HEAD
-			// fetch the device; ignore if NULL
-			input_device *device = m_class[devclass]->device(devnum);
-			if (device == NULL)
-=======
 			// fetch the device; ignore if nullptr
 			input_device *device = m_class[devclass]->device(devnum);
 			if (device == nullptr)
->>>>>>> upstream/master
 				continue;
 
 			// iterate over items within each device
 			for (input_item_id itemid = ITEM_ID_FIRST_VALID; itemid <= device->maxitem(); ++itemid)
 			{
 				input_device_item *item = device->item(itemid);
-<<<<<<< HEAD
-				if (item != NULL)
-				{
-					input_code code(*device, itemid);
-=======
 				if (item != nullptr)
 				{
 					input_code code = item->code();
->>>>>>> upstream/master
 
 					// if the item is natively a switch, poll it
 					if (item->itemclass() == ITEM_CLASS_SWITCH)
@@ -1444,35 +820,21 @@ input_code input_manager::poll_switches()
 input_code input_manager::poll_keyboard_switches()
 {
 	// iterate over devices within each class
-<<<<<<< HEAD
-	for (int devnum = 0; devnum < m_keyboard_class.maxindex(); devnum++)
-	{
-		// fetch the device; ignore if NULL
-		input_device *device = m_keyboard_class.device(devnum);
-		if (device == NULL)
-=======
 	input_class &keyboard_class = device_class(DEVICE_CLASS_KEYBOARD);
 	for (int devnum = 0; devnum < keyboard_class.maxindex(); devnum++)
 	{
 		// fetch the device; ignore if nullptr
 		input_device *device = keyboard_class.device(devnum);
 		if (device == nullptr)
->>>>>>> upstream/master
 			continue;
 
 		// iterate over items within each device
 		for (input_item_id itemid = ITEM_ID_FIRST_VALID; itemid <= device->maxitem(); ++itemid)
 		{
 			input_device_item *item = device->item(itemid);
-<<<<<<< HEAD
-			if (item != NULL && item->itemclass() == ITEM_CLASS_SWITCH)
-			{
-				input_code code(*device, itemid);
-=======
 			if (item != nullptr && item->itemclass() == ITEM_CLASS_SWITCH)
 			{
 				input_code code = item->code();
->>>>>>> upstream/master
 				if (code_pressed_once(code))
 					return code;
 			}
@@ -1497,22 +859,14 @@ bool input_manager::code_check_axis(input_device_item &item, input_code code)
 
 	// ignore min/max for lightguns
 	// so the selection will not be affected by a gun going out of range
-<<<<<<< HEAD
-	INT32 curval = code_value(code);
-=======
 	s32 curval = code_value(code);
->>>>>>> upstream/master
 	if (code.device_class() == DEVICE_CLASS_LIGHTGUN &&
 		(code.item_id() == ITEM_ID_XAXIS || code.item_id() == ITEM_ID_YAXIS) &&
 		(curval == INPUT_ABSOLUTE_MAX || curval == INPUT_ABSOLUTE_MIN))
 		return false;
 
 	// compute the diff against memory
-<<<<<<< HEAD
-	INT32 diff = curval - item.memory();
-=======
 	s32 diff = curval - item.memory();
->>>>>>> upstream/master
 	if (diff < 0)
 		diff = -diff;
 
@@ -1543,30 +897,18 @@ input_code input_manager::poll_axes()
 	for (input_device_class devclass = DEVICE_CLASS_FIRST_VALID; devclass <= DEVICE_CLASS_LAST_VALID; ++devclass)
 		for (int devnum = 0; devnum <= m_class[devclass]->maxindex(); devnum++)
 		{
-<<<<<<< HEAD
-			// fetch the device; ignore if NULL
-			input_device *device = m_class[devclass]->device(devnum);
-			if (device == NULL)
-=======
 			// fetch the device; ignore if nullptr
 			input_device *device = m_class[devclass]->device(devnum);
 			if (device == nullptr)
->>>>>>> upstream/master
 				continue;
 
 			// iterate over items within each device
 			for (input_item_id itemid = ITEM_ID_FIRST_VALID; itemid <= device->maxitem(); ++itemid)
 			{
 				input_device_item *item = device->item(itemid);
-<<<<<<< HEAD
-				if (item != NULL && item->itemclass() != ITEM_CLASS_SWITCH)
-				{
-					input_code code(*device, itemid);
-=======
 				if (item != nullptr && item->itemclass() != ITEM_CLASS_SWITCH)
 				{
 					input_code code = item->code();
->>>>>>> upstream/master
 					if (code_check_axis(*item, code))
 						return code;
 				}
@@ -1590,13 +932,8 @@ input_device *input_manager::device_from_code(input_code code) const
 	if (devclass >= DEVICE_CLASS_FIRST_VALID && devclass <= DEVICE_CLASS_LAST_VALID)
 		return m_class[devclass]->device(code.device_index());
 
-<<<<<<< HEAD
-	// otherwise, return NULL
-	return NULL;
-=======
 	// otherwise, return nullptr
 	return nullptr;
->>>>>>> upstream/master
 }
 
 
@@ -1609,13 +946,8 @@ input_device_item *input_manager::item_from_code(input_code code) const
 {
 	// first get the device; if none, then we don't have an item
 	input_device *device = device_from_code(code);
-<<<<<<< HEAD
-	if (device == NULL)
-		return NULL;
-=======
 	if (device == nullptr)
 		return nullptr;
->>>>>>> upstream/master
 
 	// then return the device's item
 	return device->item(code.item_id());
@@ -1630,13 +962,8 @@ input_device_item *input_manager::item_from_code(input_code code) const
 void input_manager::reset_memory()
 {
 	// reset all entries in switch memory to invalid
-<<<<<<< HEAD
-	for (int memnum = 0; memnum < ARRAY_LENGTH(m_switch_memory); memnum++)
-		m_switch_memory[memnum] = INPUT_CODE_INVALID;
-=======
 	for (auto & elem : m_switch_memory)
 		elem = INPUT_CODE_INVALID;
->>>>>>> upstream/master
 }
 
 
@@ -1652,17 +979,12 @@ input_code input_manager::code_from_itemid(input_item_id itemid) const
 		for (int devnum = 0; devnum <= m_class[devclass]->maxindex(); devnum++)
 		{
 			input_device *device = m_class[devclass]->device(devnum);
-<<<<<<< HEAD
-			if (device != NULL && device->item(itemid) != NULL)
-				return input_code(*device, itemid);
-=======
 			if (device != nullptr)
 			{
 				input_device_item *item = device->item(itemid);
 				if (item != nullptr)
 					return item->code();
 			}
->>>>>>> upstream/master
 		}
 
 	return INPUT_CODE_INVALID;
@@ -1674,34 +996,18 @@ input_code input_manager::code_from_itemid(input_item_id itemid) const
 //  friendly name
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const char *input_manager::code_name(std::string &str, input_code code) const
-{
-	str.clear();
-
-	// if nothing there, return an empty string
-	input_device_item *item = item_from_code(code);
-	if (item == NULL)
-		return str.c_str();
-=======
 std::string input_manager::code_name(input_code code) const
 {
 	// if nothing there, return an empty string
 	input_device_item *item = item_from_code(code);
 	if (item == nullptr)
 		return std::string();
->>>>>>> upstream/master
 
 	// determine the devclass part
 	const char *devclass = (*devclass_string_table)[code.device_class()];
 
 	// determine the devindex part
-<<<<<<< HEAD
-	std::string devindex;
-	strprintf(devindex, "%d", code.device_index() + 1);
-=======
 	std::string devindex = string_format("%d", code.device_index() + 1);
->>>>>>> upstream/master
 
 	// if we're unifying all devices, don't display a number
 	if (!m_class[code.device_class()]->multi())
@@ -1709,11 +1015,7 @@ std::string input_manager::code_name(input_code code) const
 
 	// keyboard 0 doesn't show a class or index if it is the only one
 	input_device_class device_class = item->device().devclass();
-<<<<<<< HEAD
-	if (device_class == DEVICE_CLASS_KEYBOARD && m_keyboard_class.maxindex() == 0)
-=======
 	if (device_class == DEVICE_CLASS_KEYBOARD && m_class[device_class]->maxindex() == 0)
->>>>>>> upstream/master
 	{
 		devclass = "";
 		devindex.clear();
@@ -1731,29 +1033,17 @@ std::string input_manager::code_name(input_code code) const
 			devcode = "";
 
 	// concatenate the strings
-<<<<<<< HEAD
-	str.assign(devclass);
-=======
 	std::string str(devclass);
->>>>>>> upstream/master
 	if (!devindex.empty())
 		str.append(" ").append(devindex);
 	if (devcode[0] != 0)
 		str.append(" ").append(devcode);
-<<<<<<< HEAD
-	if (modifier != NULL)
-=======
 	if (modifier != nullptr)
->>>>>>> upstream/master
 		str.append(" ").append(modifier);
 
 	// delete any leading spaces
 	strtrimspace(str);
-<<<<<<< HEAD
-	return str.c_str();
-=======
 	return str;
->>>>>>> upstream/master
 }
 
 
@@ -1761,68 +1051,39 @@ std::string input_manager::code_name(input_code code) const
 //  code_to_token - create a token for a given code
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const char *input_manager::code_to_token(std::string &str, input_code code) const
-=======
 std::string input_manager::code_to_token(input_code code) const
->>>>>>> upstream/master
 {
 	// determine the devclass part
 	const char *devclass = (*devclass_token_table)[code.device_class()];
 
 	// determine the devindex part; keyboard 0 doesn't show an index
-<<<<<<< HEAD
-	std::string devindex;
-	strprintf(devindex, "%d", code.device_index() + 1);
-=======
 	std::string devindex = string_format("%d", code.device_index() + 1);
->>>>>>> upstream/master
 	if (code.device_class() == DEVICE_CLASS_KEYBOARD && code.device_index() == 0)
 		devindex.clear();
 
 	// determine the itemid part; look up in the table if we don't have a token
 	input_device_item *item = item_from_code(code);
-<<<<<<< HEAD
-	const char *devcode = (item != NULL) ? item->token() : "UNKNOWN";
-=======
 	const char *devcode = (item != nullptr) ? item->token() : "UNKNOWN";
->>>>>>> upstream/master
 
 	// determine the modifier part
 	const char *modifier = (*modifier_token_table)[code.item_modifier()];
 
 	// determine the itemclass part; if we match the native class, we don't include this
 	const char *itemclass = "";
-<<<<<<< HEAD
-	if (item == NULL || item->itemclass() != code.item_class())
-		itemclass = (*itemclass_token_table)[code.item_class()];
-
-	// concatenate the strings
-	str.assign(devclass);
-=======
 	if (item == nullptr || item->itemclass() != code.item_class())
 		itemclass = (*itemclass_token_table)[code.item_class()];
 
 	// concatenate the strings
 	std::string str(devclass);
->>>>>>> upstream/master
 	if (!devindex.empty())
 		str.append("_").append(devindex);
 	if (devcode[0] != 0)
 		str.append("_").append(devcode);
-<<<<<<< HEAD
-	if (modifier != NULL)
-		str.append("_").append(modifier);
-	if (itemclass[0] != 0)
-		str.append("_").append(itemclass);
-	return str.c_str();
-=======
 	if (modifier != nullptr)
 		str.append("_").append(modifier);
 	if (itemclass[0] != 0)
 		str.append("_").append(itemclass);
 	return str;
->>>>>>> upstream/master
 }
 
 
@@ -1840,17 +1101,10 @@ input_code input_manager::code_from_token(const char *_token)
 	{
 		// make a token up to the next underscore
 		char *score = (char *)strchr(_token, '_');
-<<<<<<< HEAD
-		token[numtokens++].assign(_token, (score == NULL) ? strlen(_token) : (score - _token));
-
-		// if we hit the end, we're done, else advance our pointer
-		if (score == NULL)
-=======
 		token[numtokens++].assign(_token, (score == nullptr) ? strlen(_token) : (score - _token));
 
 		// if we hit the end, we're done, else advance our pointer
 		if (score == nullptr)
->>>>>>> upstream/master
 			break;
 		_token = score + 1;
 	}
@@ -1885,22 +1139,14 @@ input_code input_manager::code_from_token(const char *_token)
 	{
 		// if this is an invalid device, we have nothing to look up
 		input_device *device = m_class[devclass]->device(devindex);
-<<<<<<< HEAD
-		if (device == NULL)
-=======
 		if (device == nullptr)
->>>>>>> upstream/master
 			return INPUT_CODE_INVALID;
 
 		// if not a standard code, look it up in the device specific codes
 		for (itemid = ITEM_ID_FIRST_VALID; itemid <= device->maxitem(); ++itemid)
 		{
 			input_device_item *item = device->item(itemid);
-<<<<<<< HEAD
-			if (item != NULL && token[curtok].compare(item->token()) == 0)
-=======
 			if (item != nullptr && token[curtok].compare(item->token()) == 0)
->>>>>>> upstream/master
 			{
 				// take the itemclass from the item
 				itemclass = item->itemclass();
@@ -1928,11 +1174,7 @@ input_code input_manager::code_from_token(const char *_token)
 	// if we have another token, it is the item class
 	if (curtok < numtokens)
 	{
-<<<<<<< HEAD
-		UINT32 temp = (*itemclass_token_table)[token[curtok].c_str()];
-=======
 		u32 temp = (*itemclass_token_table)[token[curtok].c_str()];
->>>>>>> upstream/master
 		if (temp != ~0)
 		{
 			curtok++;
@@ -1950,8 +1192,6 @@ input_code input_manager::code_from_token(const char *_token)
 
 
 //-------------------------------------------------
-<<<<<<< HEAD
-=======
 //  standard_token - return the standard token for
 //  the given input item ID
 //-------------------------------------------------
@@ -1963,7 +1203,6 @@ const char *input_manager::standard_token(input_item_id itemid) const
 
 
 //-------------------------------------------------
->>>>>>> upstream/master
 //  seq_pressed - return true if the given sequence
 //  of switch inputs is "pressed"
 //-------------------------------------------------
@@ -2020,22 +1259,14 @@ bool input_manager::seq_pressed(const input_seq &seq)
 //  defined in an input sequence
 //-------------------------------------------------
 
-<<<<<<< HEAD
-INT32 input_manager::seq_axis_value(const input_seq &seq, input_item_class &itemclass)
-=======
 s32 input_manager::seq_axis_value(const input_seq &seq, input_item_class &itemclass)
->>>>>>> upstream/master
 {
 	// start with no valid classes
 	input_item_class itemclasszero = ITEM_CLASS_INVALID;
 	itemclass = ITEM_CLASS_INVALID;
 
 	// iterate over all of the codes
-<<<<<<< HEAD
-	INT32 result = 0;
-=======
 	s32 result = 0;
->>>>>>> upstream/master
 	bool invert = false;
 	bool enable = true;
 	for (int codenum = 0; ; codenum++)
@@ -2072,11 +1303,7 @@ s32 input_manager::seq_axis_value(const input_seq &seq, input_item_class &itemcl
 			// non-switch codes are analog values
 			else
 			{
-<<<<<<< HEAD
-				INT32 value = code_value(code);
-=======
 				s32 value = code_value(code);
->>>>>>> upstream/master
 
 				// if we got a 0 value, don't do anything except remember the first type
 				if (value == 0)
@@ -2127,11 +1354,7 @@ void input_manager::seq_poll_start(input_item_class itemclass, const input_seq *
 	m_poll_seq.reset();
 
 	// grab the starting sequence to append to, and append an OR
-<<<<<<< HEAD
-	if (startseq != NULL)
-=======
 	if (startseq != nullptr)
->>>>>>> upstream/master
 	{
 		m_poll_seq = *startseq;
 		if (m_poll_seq.length() > 0)
@@ -2245,28 +1468,16 @@ bool input_manager::seq_poll()
 //  sequence
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const char *input_manager::seq_name(std::string &str, const input_seq &seq) const
-=======
 std::string input_manager::seq_name(const input_seq &seq) const
->>>>>>> upstream/master
 {
 	// make a copy of our sequence, removing any invalid bits
 	input_code clean_codes[sizeof(seq) / sizeof(input_code)];
 	int clean_index = 0;
-<<<<<<< HEAD
-	std::string codestr;
-=======
->>>>>>> upstream/master
 	for (int codenum = 0; seq[codenum] != input_seq::end_code; codenum++)
 	{
 		// if this is a code item which is not valid, don't copy it and remove any preceding ORs/NOTs
 		input_code code = seq[codenum];
-<<<<<<< HEAD
-		if (!code.internal() && *(code_name(codestr, code)) == 0)
-=======
 		if (!code.internal() && code_name(code).empty())
->>>>>>> upstream/master
 		{
 			while (clean_index > 0 && clean_codes[clean_index - 1].internal())
 				clean_index--;
@@ -2277,17 +1488,10 @@ std::string input_manager::seq_name(const input_seq &seq) const
 
 	// special case: empty
 	if (clean_index == 0)
-<<<<<<< HEAD
-		return str.assign((seq.length() == 0) ? "None" : "n/a").c_str();
-
-	// start with an empty buffer
-	str.clear();
-=======
 		return std::string((seq.length() == 0) ? "None" : "n/a");
 
 	// start with an empty buffer
 	std::string str;
->>>>>>> upstream/master
 
 	// loop until we hit the end
 	for (int codenum = 0; codenum < clean_index; codenum++)
@@ -2305,15 +1509,9 @@ std::string input_manager::seq_name(const input_seq &seq) const
 
 		// otherwise, assume it is an input code and ask the input system to generate it
 		else
-<<<<<<< HEAD
-			str.append(code_name(codestr, code));
-	}
-	return str.c_str();
-=======
 			str.append(code_name(code));
 	}
 	return str;
->>>>>>> upstream/master
 }
 
 
@@ -2322,22 +1520,12 @@ std::string input_manager::seq_name(const input_seq &seq) const
 //  a sequence
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const char *input_manager::seq_to_tokens(std::string &str, const input_seq &seq) const
-{
-	// start with an empty buffer
-	str.clear();
-
-	// loop until we hit the end
-	std::string codestr;
-=======
 std::string input_manager::seq_to_tokens(const input_seq &seq) const
 {
 	// start with an empty buffer
 	std::string str;
 
 	// loop until we hit the end
->>>>>>> upstream/master
 	for (int codenum = 0; seq[codenum] != input_seq::end_code; codenum++)
 	{
 		// append a space if not the first code
@@ -2355,15 +1543,9 @@ std::string input_manager::seq_to_tokens(const input_seq &seq) const
 
 		// otherwise, assume it is an input code and ask the input system to generate it
 		else
-<<<<<<< HEAD
-			str.append(code_to_token(codestr, code));
-	}
-	return str.c_str();
-=======
 			str.append(code_to_token(code));
 	}
 	return str;
->>>>>>> upstream/master
 }
 
 
@@ -2378,14 +1560,6 @@ void input_manager::seq_from_tokens(input_seq &seq, const char *string)
 	seq.reset();
 
 	// loop until we're done
-<<<<<<< HEAD
-	std::string strcopy = string;
-	char *str = const_cast<char *>(strcopy.c_str());
-	while (1)
-	{
-		// trim any leading spaces
-		while (*str != 0 && isspace((UINT8)*str))
-=======
 	std::vector<char> strcopy(string, string + std::strlen(string) + 1);
 	char *str = &strcopy[0];
 	unsigned operators = 0;
@@ -2393,7 +1567,6 @@ void input_manager::seq_from_tokens(input_seq &seq, const char *string)
 	{
 		// trim any leading spaces
 		while (*str != 0 && isspace(u8(*str)))
->>>>>>> upstream/master
 			str++;
 
 		// bail if we're done
@@ -2402,31 +1575,13 @@ void input_manager::seq_from_tokens(input_seq &seq, const char *string)
 
 		// find the end of the token and make it upper-case along the way
 		char *strtemp;
-<<<<<<< HEAD
-		for (strtemp = str; *strtemp != 0 && !isspace((UINT8)*strtemp); strtemp++)
-			*strtemp = toupper((UINT8)*strtemp);
-=======
 		for (strtemp = str; *strtemp != 0 && !isspace(u8(*strtemp)); strtemp++)
 			*strtemp = toupper(u8(*strtemp));
->>>>>>> upstream/master
 		char origspace = *strtemp;
 		*strtemp = 0;
 
 		// look for common stuff
 		input_code code;
-<<<<<<< HEAD
-		if (strcmp(str, "OR") == 0)
-			code = input_seq::or_code;
-		else if (strcmp(str, "NOT") == 0)
-			code = input_seq::not_code;
-		else if (strcmp(str, "DEFAULT") == 0)
-			code = input_seq::default_code;
-		else
-			code = code_from_token(str);
-
-		// translate and add to the sequence
-		seq += code;
-=======
 		bool is_operator;
 		if (strcmp(str, "OR") == 0)
 		{
@@ -2472,7 +1627,6 @@ void input_manager::seq_from_tokens(input_seq &seq, const char *string)
 				seq += code;
 			}
 		}
->>>>>>> upstream/master
 
 		// advance
 		if (origspace == 0)
@@ -2481,323 +1635,6 @@ void input_manager::seq_from_tokens(input_seq &seq, const char *string)
 	}
 }
 
-<<<<<<< HEAD
-
-//-------------------------------------------------
-//  set_global_joystick_map - set the joystick map
-//  for all devices
-//-------------------------------------------------
-
-bool input_manager::set_global_joystick_map(const char *mapstring)
-{
-	// parse the map
-	joystick_map map;
-	if (!map.parse(mapstring))
-		return false;
-
-	std::string tempstr;
-	osd_printf_verbose("Input: Changing default joystick map = %s\n", map.to_string(tempstr));
-
-	// iterate over joysticks and set the map
-	for (int joynum = 0; joynum <= m_joystick_class.maxindex(); joynum++)
-	{
-		input_device *device = m_joystick_class.device(joynum);
-		if (device != NULL)
-			device->set_joystick_map(map);
-	}
-	return true;
-}
-
-
-
-//**************************************************************************
-//  INPUT DEVICE ITEM
-//**************************************************************************
-
-//-------------------------------------------------
-//  input_device_item - constructor
-//-------------------------------------------------
-
-input_device_item::input_device_item(input_device &device, const char *name, void *internal, input_item_id itemid, item_get_state_func getstate, input_item_class itemclass)
-	: m_device(device),
-		m_name(name),
-		m_internal(internal),
-		m_itemid(itemid),
-		m_itemclass(itemclass),
-		m_getstate(getstate),
-		m_current(0),
-		m_memory(0)
-{
-	// use a standard token name for know item IDs
-	if (itemid <= ITEM_ID_MAXIMUM && (*itemid_token_table)[itemid] != NULL)
-		m_token.assign((*itemid_token_table)[itemid]);
-
-	// otherwise, create a tokenized name
-	else {
-		m_token.assign(name);
-		strmakeupper(m_token);
-		strdelchr(m_token, ' ');
-		strdelchr(m_token, '_');
-	}
-}
-
-
-//-------------------------------------------------
-//  input_device_item - destructor
-//-------------------------------------------------
-
-input_device_item::~input_device_item()
-{
-}
-
-
-
-//**************************************************************************
-//  INPUT DEVICE SWITCH ITEM
-//**************************************************************************
-
-//-------------------------------------------------
-//  input_device_switch_item - constructor
-//-------------------------------------------------
-
-input_device_switch_item::input_device_switch_item(input_device &device, const char *name, void *internal, input_item_id itemid, item_get_state_func getstate)
-	: input_device_item(device, name, internal, itemid, getstate, ITEM_CLASS_SWITCH),
-		m_steadykey(0),
-		m_oldkey(0)
-{
-}
-
-
-//-------------------------------------------------
-//  read_as_switch - return the raw switch value,
-//  modified as necessary
-//-------------------------------------------------
-
-INT32 input_device_switch_item::read_as_switch(input_item_modifier modifier)
-{
-	// if we're doing a lightgun reload hack, button 1 and 2 operate differently
-	input_device_class devclass = m_device.devclass();
-	if (devclass == DEVICE_CLASS_LIGHTGUN && m_device.lightgun_reload_button())
-	{
-		// button 1 is pressed if either button 1 or 2 are active
-		if (m_itemid == ITEM_ID_BUTTON1)
-		{
-			input_device_item *button2_item = m_device.item(ITEM_ID_BUTTON2);
-			if (button2_item != NULL)
-				return button2_item->update_value() | update_value();
-		}
-
-		// button 2 is never officially pressed
-		if (m_itemid == ITEM_ID_BUTTON2)
-			return 0;
-	}
-
-	// steadykey for keyboards
-	if (devclass == DEVICE_CLASS_KEYBOARD && m_device.steadykey_enabled())
-		return m_steadykey;
-
-	// everything else is just the current value as-is
-	return update_value();
-}
-
-
-//-------------------------------------------------
-//  read_as_relative - return the switch input as
-//  a relative axis value
-//-------------------------------------------------
-
-INT32 input_device_switch_item::read_as_relative(input_item_modifier modifier)
-{
-	// no translation to relative
-	return 0;
-}
-
-
-//-------------------------------------------------
-//  read_as_absolute - return the switch input as
-//  an absolute axis value
-//-------------------------------------------------
-
-INT32 input_device_switch_item::read_as_absolute(input_item_modifier modifier)
-{
-	// no translation to absolute
-	return 0;
-}
-
-
-//-------------------------------------------------
-//  steadykey_changed - update for steadykey
-//  behavior, returning true if the current state
-//  has changed since the last call
-//-------------------------------------------------
-
-bool input_device_switch_item::steadykey_changed()
-{
-	INT32 old = m_oldkey;
-	m_oldkey = update_value();
-	if (((m_current ^ old) & 1) == 0)
-		return false;
-
-	// if the keypress was missed, turn it on for one frame
-	if (((m_current | m_steadykey) & 1) == 0)
-		m_steadykey = 1;
-	return true;
-}
-
-
-
-//**************************************************************************
-//  INPUT DEVICE RELATIVE ITEM
-//**************************************************************************
-
-//-------------------------------------------------
-//  input_device_relative_item - constructor
-//-------------------------------------------------
-
-input_device_relative_item::input_device_relative_item(input_device &device, const char *name, void *internal, input_item_id itemid, item_get_state_func getstate)
-	: input_device_item(device, name, internal, itemid, getstate, ITEM_CLASS_RELATIVE)
-{
-}
-
-
-//-------------------------------------------------
-//  read_as_switch - return the relative value as
-//  a switch result based on the modifier
-//-------------------------------------------------
-
-INT32 input_device_relative_item::read_as_switch(input_item_modifier modifier)
-{
-	// process according to modifiers
-	if (modifier == ITEM_MODIFIER_POS || modifier == ITEM_MODIFIER_RIGHT || modifier == ITEM_MODIFIER_DOWN)
-		return (update_value() > 0);
-	else if (modifier == ITEM_MODIFIER_NEG || modifier == ITEM_MODIFIER_LEFT || modifier == ITEM_MODIFIER_UP)
-		return (update_value() < 0);
-
-	// all other cases just return 0
-	return 0;
-}
-
-
-//-------------------------------------------------
-//  read_as_relative - return the relative input
-//  as a relative axis value
-//-------------------------------------------------
-
-INT32 input_device_relative_item::read_as_relative(input_item_modifier modifier)
-{
-	// just return directly
-	return update_value();
-}
-
-
-//-------------------------------------------------
-//  read_as_absolute - return the relative input
-//  as an absolute axis value
-//-------------------------------------------------
-
-INT32 input_device_relative_item::read_as_absolute(input_item_modifier modifier)
-{
-	// no translation to absolute
-	return 0;
-}
-
-
-
-//**************************************************************************
-//  INPUT DEVICE ABSOLUTE ITEM
-//**************************************************************************
-
-//-------------------------------------------------
-//  input_device_absolute_item - constructor
-//-------------------------------------------------
-
-input_device_absolute_item::input_device_absolute_item(input_device &device, const char *name, void *internal, input_item_id itemid, item_get_state_func getstate)
-	: input_device_item(device, name, internal, itemid, getstate, ITEM_CLASS_ABSOLUTE)
-{
-}
-
-
-//-------------------------------------------------
-//  read_as_switch - return the absolute value as
-//  a switch result based on the modifier
-//-------------------------------------------------
-
-INT32 input_device_absolute_item::read_as_switch(input_item_modifier modifier)
-{
-	// start with the current value
-	INT32 result = m_device.apply_deadzone_and_saturation(update_value());
-	assert(result >= INPUT_ABSOLUTE_MIN && result <= INPUT_ABSOLUTE_MAX);
-
-	// left/right/up/down: if this is a joystick, fetch the paired X/Y axis values and convert
-	if (m_device.devclass() == DEVICE_CLASS_JOYSTICK && modifier >= ITEM_MODIFIER_LEFT && modifier <= ITEM_MODIFIER_DOWN)
-	{
-		input_device_item *xaxis_item = m_device.item(ITEM_ID_XAXIS);
-		input_device_item *yaxis_item = m_device.item(ITEM_ID_YAXIS);
-		if (xaxis_item != NULL && yaxis_item != NULL)
-		{
-			// determine which item we didn't update, and update it
-			assert(this == xaxis_item || this == yaxis_item);
-			if (this == xaxis_item)
-				yaxis_item->update_value();
-			else
-				xaxis_item->update_value();
-
-			// now map the X and Y axes to a 9x9 grid using the raw values
-			return (m_device.joymap().update(xaxis_item->current(), yaxis_item->current()) >> (modifier - ITEM_MODIFIER_LEFT)) & 1;
-		}
-	}
-
-	// positive/negative: TRUE if past the deadzone in either direction
-	if (modifier == ITEM_MODIFIER_POS || modifier == ITEM_MODIFIER_RIGHT || modifier == ITEM_MODIFIER_DOWN)
-		return (result > 0);
-	else if (modifier == ITEM_MODIFIER_NEG || modifier == ITEM_MODIFIER_LEFT || modifier == ITEM_MODIFIER_UP)
-		return (result < 0);
-
-	// all other cases just return 0
-	return 0;
-}
-
-
-//-------------------------------------------------
-//  read_as_relative - return the absolute input
-//  as a relative axis value
-//-------------------------------------------------
-
-INT32 input_device_absolute_item::read_as_relative(input_item_modifier modifier)
-{
-	// no translation to relative
-	return 0;
-}
-
-
-//-------------------------------------------------
-//  read_as_absolute - return the absolute input
-//  as an absolute axis value, with appropriate
-//  tweaks
-//-------------------------------------------------
-
-INT32 input_device_absolute_item::read_as_absolute(input_item_modifier modifier)
-{
-	// start with the current value
-	INT32 result = m_device.apply_deadzone_and_saturation(update_value());
-	assert(result >= INPUT_ABSOLUTE_MIN && result <= INPUT_ABSOLUTE_MAX);
-
-	// if we're doing a lightgun reload hack, override the value
-	if (m_device.devclass() == DEVICE_CLASS_LIGHTGUN && m_device.lightgun_reload_button())
-	{
-		// if it is pressed, return (min,max)
-		input_device_item *button2_item = m_device.item(ITEM_ID_BUTTON2);
-		if (button2_item != NULL && button2_item->update_value())
-			result = (m_itemid == ITEM_ID_XAXIS) ? INPUT_ABSOLUTE_MIN : INPUT_ABSOLUTE_MAX;
-	}
-
-	// positive/negative: scale to full axis
-	if (modifier == ITEM_MODIFIER_POS)
-		result = MAX(result, 0) * 2 + INPUT_ABSOLUTE_MIN;
-	if (modifier == ITEM_MODIFIER_NEG)
-		result = MAX(-result, 0) * 2 + INPUT_ABSOLUTE_MIN;
-	return result;
-=======
 //-------------------------------------------------
 //  map_device_to_controller - map device to
 //  controller based on device map table
@@ -2862,5 +1699,4 @@ bool input_manager::map_device_to_controller(const devicemap_table_type *devicem
 	}
 
 	return true;
->>>>>>> upstream/master
 }

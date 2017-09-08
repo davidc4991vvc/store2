@@ -53,19 +53,11 @@
 
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "machine/atarigen.h"
-#include "video/atarirle.h"
-#include "cpu/m68000/m68000.h"
-#include "includes/atarigt.h"
-
-=======
 #include "includes/atarigt.h"
 
 #include "cpu/m68000/m68000.h"
 #include "machine/eeprompar.h"
 
->>>>>>> upstream/master
 
 #define LOG_PROTECTION      (0)
 #define HACK_TMEK_CONTROLS  (0)
@@ -102,11 +94,7 @@ MACHINE_RESET_MEMBER(atarigt_state,atarigt)
 WRITE8_MEMBER(atarigt_state::cage_irq_callback)
 {
 	if (data)
-<<<<<<< HEAD
-		sound_int_gen(m_maincpu);
-=======
 		sound_int_gen(*m_maincpu);
->>>>>>> upstream/master
 	else
 		sound_int_ack_w(space,0,0);
 }
@@ -222,13 +210,8 @@ WRITE32_MEMBER(atarigt_state::latch_w)
 	if (ACCESSING_BITS_16_23)
 	{
 		//cage_reset_w(space, data & 0x00100000);
-<<<<<<< HEAD
-		coin_counter_w(machine(), 0, data & 0x00080000);
-		coin_counter_w(machine(), 1, data & 0x00010000);
-=======
 		machine().bookkeeping().coin_counter_w(0, data & 0x00080000);
 		machine().bookkeeping().coin_counter_w(1, data & 0x00010000);
->>>>>>> upstream/master
 	}
 }
 
@@ -256,11 +239,7 @@ WRITE32_MEMBER(atarigt_state::led_w)
 
 READ32_MEMBER(atarigt_state::sound_data_r)
 {
-<<<<<<< HEAD
-	UINT32 result = 0;
-=======
 	uint32_t result = 0;
->>>>>>> upstream/master
 
 	if (ACCESSING_BITS_0_15)
 		result |= m_cage->control_r();
@@ -297,11 +276,7 @@ void atarigt_state::tmek_update_mode(offs_t offset)
 }
 
 
-<<<<<<< HEAD
-void atarigt_state::tmek_protection_w(address_space &space, offs_t offset, UINT16 data)
-=======
 void atarigt_state::tmek_protection_w(address_space &space, offs_t offset, uint16_t data)
->>>>>>> upstream/master
 {
 /*
     T-Mek init:
@@ -324,11 +299,7 @@ void atarigt_state::tmek_protection_w(address_space &space, offs_t offset, uint1
 	}
 }
 
-<<<<<<< HEAD
-void atarigt_state::tmek_protection_r(address_space &space, offs_t offset, UINT16 *data)
-=======
 void atarigt_state::tmek_protection_r(address_space &space, offs_t offset, uint16_t *data)
->>>>>>> upstream/master
 {
 	if (LOG_PROTECTION) logerror("%06X:Protection R@%06X\n", space.device().safe_pcbase(), offset);
 
@@ -392,19 +363,11 @@ void atarigt_state::primrage_update_mode(offs_t offset)
 
 
 
-<<<<<<< HEAD
-void atarigt_state::primrage_protection_w(address_space &space, offs_t offset, UINT16 data)
-{
-	if (LOG_PROTECTION)
-	{
-	UINT32 pc = space.device().safe_pcbase();
-=======
 void atarigt_state::primrage_protection_w(address_space &space, offs_t offset, uint16_t data)
 {
 	if (LOG_PROTECTION)
 	{
 	uint32_t pc = space.device().safe_pcbase();
->>>>>>> upstream/master
 	switch (pc)
 	{
 		/* protection code from 20f90 - 21000 */
@@ -470,24 +433,15 @@ void atarigt_state::primrage_protection_w(address_space &space, offs_t offset, u
 
 
 
-<<<<<<< HEAD
-void atarigt_state::primrage_protection_r(address_space &space, offs_t offset, UINT16 *data)
-=======
 void atarigt_state::primrage_protection_r(address_space &space, offs_t offset, uint16_t *data)
->>>>>>> upstream/master
 {
 	/* track accesses */
 	primrage_update_mode(offset);
 
 if (LOG_PROTECTION)
 {
-<<<<<<< HEAD
-	UINT32 pc = space.device().safe_pcbase();
-	UINT32 p1, p2, a6;
-=======
 	uint32_t pc = space.device().safe_pcbase();
 	uint32_t p1, p2, a6;
->>>>>>> upstream/master
 	switch (pc)
 	{
 		/* protection code from 20f90 - 21000 */
@@ -596,13 +550,8 @@ if (LOG_PROTECTION)
 READ32_MEMBER(atarigt_state::colorram_protection_r)
 {
 	offs_t address = 0xd80000 + offset * 4;
-<<<<<<< HEAD
-	UINT32 result32 = 0;
-	UINT16 result;
-=======
 	uint32_t result32 = 0;
 	uint16_t result;
->>>>>>> upstream/master
 
 	if (ACCESSING_BITS_16_31)
 	{
@@ -652,13 +601,8 @@ static ADDRESS_MAP_START( main_map, AS_PROGRAM, 32, atarigt_state )
 	AM_RANGE(0xc00000, 0xc00003) AM_READWRITE(sound_data_r, sound_data_w)
 	AM_RANGE(0xd00014, 0xd00017) AM_READ(analog_port0_r)
 	AM_RANGE(0xd0001c, 0xd0001f) AM_READ(analog_port1_r)
-<<<<<<< HEAD
-	AM_RANGE(0xd20000, 0xd20fff) AM_DEVREADWRITE8("eeprom", atari_eeprom_device, read, write, 0xff00ff00)
-	AM_RANGE(0xd40000, 0xd4ffff) AM_DEVWRITE("eeprom", atari_eeprom_device, unlock_write)
-=======
 	AM_RANGE(0xd20000, 0xd20fff) AM_DEVREADWRITE8("eeprom", eeprom_parallel_28xx_device, read, write, 0xff00ff00)
 	AM_RANGE(0xd40000, 0xd4ffff) AM_DEVWRITE("eeprom", eeprom_parallel_28xx_device, unlock_write)
->>>>>>> upstream/master
 	AM_RANGE(0xd72000, 0xd75fff) AM_DEVWRITE("playfield", tilemap_device, write) AM_SHARE("playfield")
 	AM_RANGE(0xd76000, 0xd76fff) AM_DEVWRITE("alpha", tilemap_device, write) AM_SHARE("alpha")
 	AM_RANGE(0xd78000, 0xd78fff) AM_RAM AM_SHARE("rle")
@@ -856,11 +800,7 @@ static const atari_rle_objects_config modesc =
  *
  *************************************/
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( atarigt, atarigt_state )
-=======
 static MACHINE_CONFIG_START( atarigt )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68EC020, ATARI_CLOCK_50MHz/2)
@@ -870,12 +810,8 @@ static MACHINE_CONFIG_START( atarigt )
 
 	MCFG_MACHINE_RESET_OVERRIDE(atarigt_state,atarigt)
 
-<<<<<<< HEAD
-	MCFG_ATARI_EEPROM_2816_ADD("eeprom")
-=======
 	MCFG_EEPROM_2816_ADD("eeprom")
 	MCFG_EEPROM_28XX_LOCK_AFTER_WRITE(true)
->>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", atarigt)
@@ -1356,22 +1292,14 @@ WRITE32_MEMBER(atarigt_state::tmek_pf_w)
 	/* protected version */
 	if (pc == 0x2EB3C || pc == 0x2EB48)
 	{
-<<<<<<< HEAD
-		logerror("%06X:PFW@%06X = %08X & %08X (src=%06X)\n", space.device().safe_pc(), 0xd72000 + offset*4, data, mem_mask, (UINT32)space.device().state().state_int(M68K_A4) - 2);
-=======
 		logerror("%06X:PFW@%06X = %08X & %08X (src=%06X)\n", space.device().safe_pc(), 0xd72000 + offset*4, data, mem_mask, (uint32_t)space.device().state().state_int(M68K_A4) - 2);
->>>>>>> upstream/master
 		/* skip these writes to make more stuff visible */
 		return;
 	}
 
 	/* unprotected version */
 	if (pc == 0x25834 || pc == 0x25860)
-<<<<<<< HEAD
-		logerror("%06X:PFW@%06X = %08X & %08X (src=%06X)\n", space.device().safe_pc(), 0xd72000 + offset*4, data, mem_mask, (UINT32)space.device().state().state_int(M68K_A3) - 2);
-=======
 		logerror("%06X:PFW@%06X = %08X & %08X (src=%06X)\n", space.device().safe_pc(), 0xd72000 + offset*4, data, mem_mask, (uint32_t)space.device().state().state_int(M68K_A3) - 2);
->>>>>>> upstream/master
 
 	m_playfield_tilemap->write(space, offset, data, mem_mask);
 }
@@ -1404,19 +1332,10 @@ DRIVER_INIT_MEMBER(atarigt_state,primrage)
  *
  *************************************/
 
-<<<<<<< HEAD
-GAME( 1994, tmek,       0,        tmek,      tmek, atarigt_state,     tmek,       ROT0, "Atari Games", "T-MEK (v5.1, The Warlords)", MACHINE_UNEMULATED_PROTECTION )
-GAME( 1994, tmek51p,    tmek,     tmek,      tmek, atarigt_state,     tmek,       ROT0, "Atari Games", "T-MEK (v5.1, prototype)", MACHINE_UNEMULATED_PROTECTION )
-GAME( 1994, tmek45,     tmek,     tmek,      tmek, atarigt_state,     tmek,       ROT0, "Atari Games", "T-MEK (v4.5)", MACHINE_UNEMULATED_PROTECTION )
-GAME( 1994, tmek44,     tmek,     tmek,      tmek, atarigt_state,     tmek,       ROT0, "Atari Games", "T-MEK (v4.4)", MACHINE_UNEMULATED_PROTECTION )
-GAME( 1994, tmek20,     tmek,     tmek,      tmek, atarigt_state,     tmek,       ROT0, "Atari Games", "T-MEK (v2.0, prototype)", 0 )
-GAME( 1994, primrage,   0,        primrage,  primrage, atarigt_state, primrage,   ROT0, "Atari Games", "Primal Rage (version 2.3)", MACHINE_UNEMULATED_PROTECTION )
-=======
 GAME( 1994, tmek,       0,        tmek,      tmek,     atarigt_state, tmek,     ROT0, "Atari Games", "T-MEK (v5.1, The Warlords)", MACHINE_UNEMULATED_PROTECTION )
 GAME( 1994, tmek51p,    tmek,     tmek,      tmek,     atarigt_state, tmek,     ROT0, "Atari Games", "T-MEK (v5.1, prototype)", MACHINE_UNEMULATED_PROTECTION )
 GAME( 1994, tmek45,     tmek,     tmek,      tmek,     atarigt_state, tmek,     ROT0, "Atari Games", "T-MEK (v4.5)", MACHINE_UNEMULATED_PROTECTION )
 GAME( 1994, tmek44,     tmek,     tmek,      tmek,     atarigt_state, tmek,     ROT0, "Atari Games", "T-MEK (v4.4)", MACHINE_UNEMULATED_PROTECTION )
 GAME( 1994, tmek20,     tmek,     tmek,      tmek,     atarigt_state, tmek,     ROT0, "Atari Games", "T-MEK (v2.0, prototype)", 0 )
 GAME( 1994, primrage,   0,        primrage,  primrage, atarigt_state, primrage, ROT0, "Atari Games", "Primal Rage (version 2.3)", MACHINE_UNEMULATED_PROTECTION )
->>>>>>> upstream/master
 GAME( 1994, primrage20, primrage, primrage20,primrage, atarigt_state, primrage, ROT0, "Atari Games", "Primal Rage (version 2.0)", MACHINE_UNEMULATED_PROTECTION )

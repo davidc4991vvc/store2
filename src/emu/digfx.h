@@ -14,13 +14,8 @@
 #error Dont include this file directly; include emu.h instead.
 #endif
 
-<<<<<<< HEAD
-#ifndef __DIGFX_H__
-#define __DIGFX_H__
-=======
 #ifndef MAME_EMU_DIGFX_H
 #define MAME_EMU_DIGFX_H
->>>>>>> upstream/master
 
 
 
@@ -28,15 +23,9 @@
 //  CONSTANTS
 //**************************************************************************
 
-<<<<<<< HEAD
-const int MAX_GFX_ELEMENTS = 32;
-const int MAX_GFX_PLANES = 8;
-const int MAX_GFX_SIZE = 32;
-=======
 constexpr u8 MAX_GFX_ELEMENTS = 32;
 constexpr u16 MAX_GFX_PLANES = 8;
 constexpr u16 MAX_GFX_SIZE = 32;
->>>>>>> upstream/master
 
 
 
@@ -82,12 +71,8 @@ const gfx_layout name = { width, height, RGN_FRAC(1,1), 8, { GFX_RAW }, { 0 }, {
 #define STEP1024(START,STEP)    STEP512(START,STEP),STEP512((START)+512*(STEP),STEP)
 #define STEP2048(START,STEP)    STEP1024(START,STEP),STEP1024((START)+1024*(STEP),STEP)
 
-<<<<<<< HEAD
-
-=======
 #define STEP2_INV(START,STEP)   (START)+(STEP),(START)
 #define STEP4_INV(START,STEP)    STEP2_INV(START+2*STEP,STEP),STEP2_INV(START,STEP)
->>>>>>> upstream/master
 
 //**************************************************************************
 //  GRAPHICS INFO MACROS
@@ -169,27 +154,6 @@ const gfx_layout name = { width, height, RGN_FRAC(1,1), 8, { GFX_RAW }, { 0 }, {
 //  TYPE DEFINITIONS
 //**************************************************************************
 
-<<<<<<< HEAD
-// forward declarations
-class gfx_element;
-class palette_device;
-
-struct gfx_layout
-{
-	UINT32 xoffs(int x) const { return (extxoffs != NULL) ? extxoffs[x] : xoffset[x]; }
-	UINT32 yoffs(int y) const { return (extyoffs != NULL) ? extyoffs[y] : yoffset[y]; }
-
-	UINT16          width;              // pixel width of each element
-	UINT16          height;             // pixel height of each element
-	UINT32          total;              // total number of elements, or RGN_FRAC()
-	UINT16          planes;             // number of bitplanes
-	UINT32          planeoffset[MAX_GFX_PLANES]; // bit offset of each bitplane
-	UINT32          xoffset[MAX_GFX_SIZE]; // bit offset of each horizontal pixel
-	UINT32          yoffset[MAX_GFX_SIZE]; // bit offset of each vertical pixel
-	UINT32          charincrement;      // distance between two consecutive elements (in bits)
-	const UINT32 *  extxoffs;           // extended X offset array for really big layouts
-	const UINT32 *  extyoffs;           // extended Y offset array for really big layouts
-=======
 struct gfx_layout
 {
 	u32 xoffs(int x) const { return (extxoffs != nullptr) ? extxoffs[x] : xoffset[x]; }
@@ -205,25 +169,16 @@ struct gfx_layout
 	u32             charincrement;      // distance between two consecutive elements (in bits)
 	const u32 *     extxoffs;           // extended X offset array for really big layouts
 	const u32 *     extyoffs;           // extended Y offset array for really big layouts
->>>>>>> upstream/master
 };
 
 struct gfx_decode_entry
 {
 	const char *    memory_region;      // memory region where the data resides
-<<<<<<< HEAD
-	UINT32          start;              // offset of beginning of data to decode
-	const gfx_layout *gfxlayout;        // pointer to gfx_layout describing the layout; NULL marks the end of the array
-	UINT16          color_codes_start;  // offset in the color lookup table where color codes start
-	UINT16          total_color_codes;  // total number of color codes
-	UINT32          flags;              // flags and optional scaling factors
-=======
 	u32             start;              // offset of beginning of data to decode
 	const gfx_layout *gfxlayout;        // pointer to gfx_layout describing the layout; nullptr marks the end of the array
 	u16             color_codes_start;  // offset in the color lookup table where color codes start
 	u16             total_color_codes;  // total number of color codes
 	u32             flags;              // flags and optional scaling factors
->>>>>>> upstream/master
 };
 
 // ======================> device_gfx_interface
@@ -233,47 +188,23 @@ class device_gfx_interface : public device_interface
 public:
 	// construction/destruction
 	device_gfx_interface(const machine_config &mconfig, device_t &device,
-<<<<<<< HEAD
-						const gfx_decode_entry *gfxinfo = NULL, const char *palette_tag = NULL);
-=======
 						const gfx_decode_entry *gfxinfo = nullptr, const char *palette_tag = nullptr);
->>>>>>> upstream/master
 	virtual ~device_gfx_interface();
 
 	// static configuration
 	static void static_set_info(device_t &device, const gfx_decode_entry *gfxinfo);
 	static void static_set_palette(device_t &device, const char *tag);
 
-<<<<<<< HEAD
-	// getters
-	palette_device *palette() const { return m_palette; }
-	gfx_element *gfx(int index) const { assert(index < MAX_GFX_ELEMENTS); return m_gfx[index]; }
-=======
 	void set_palette_disable(bool disable);
 
 	// getters
 	device_palette_interface &palette() const { assert(m_palette != nullptr); return *m_palette; }
 	gfx_element *gfx(u8 index) const { assert(index < MAX_GFX_ELEMENTS); return m_gfx[index].get(); }
->>>>>>> upstream/master
 
 	// decoding
 	void decode_gfx(const gfx_decode_entry *gfxdecodeinfo);
 	void decode_gfx() { decode_gfx(m_gfxdecodeinfo); }
 
-<<<<<<< HEAD
-	void set_gfx(int index, gfx_element *element) { assert(index < MAX_GFX_ELEMENTS); m_gfx[index].reset(element); }
-
-protected:
-	// interface-level overrides
-	virtual void interface_validity_check(validity_checker &valid) const;
-	virtual void interface_pre_start();
-	virtual void interface_post_start();
-
-	palette_device *            m_palette;                  // pointer to the palette device
-	auto_pointer<gfx_element>   m_gfx[MAX_GFX_ELEMENTS];    // array of pointers to graphic sets
-
-private:
-=======
 	void set_gfx(u8 index, std::unique_ptr<gfx_element> &&element) { assert(index < MAX_GFX_ELEMENTS); m_gfx[index] = std::move(element); }
 
 protected:
@@ -286,15 +217,11 @@ private:
 	device_palette_interface *  m_palette;                  // pointer to the palette device interface
 	std::unique_ptr<gfx_element>  m_gfx[MAX_GFX_ELEMENTS];    // array of pointers to graphic sets
 
->>>>>>> upstream/master
 	// configuration
 	const gfx_decode_entry *    m_gfxdecodeinfo;        // pointer to array of gfx decode information
 	const char *                m_palette_tag;          // configured tag for palette device
 	bool                        m_palette_is_sibling;   // is palette a sibling or a subdevice?
-<<<<<<< HEAD
-=======
 	bool                        m_palette_is_disabled;  // no palette associated with this gfx decode
->>>>>>> upstream/master
 
 	// internal state
 	bool                        m_decoded;                  // have we processed our decode info yet?
@@ -304,8 +231,4 @@ private:
 typedef device_interface_iterator<device_gfx_interface> gfx_interface_iterator;
 
 
-<<<<<<< HEAD
-#endif  /* __DIGFX_H__ */
-=======
 #endif  /* MAME_EMU_DIGFX_H */
->>>>>>> upstream/master

@@ -2,21 +2,14 @@
 // copyright-holders:Aaron Giles
 /***************************************************************************
 
-<<<<<<< HEAD
-    timer.c
-=======
     timer.cpp
->>>>>>> upstream/master
 
     Timer devices.
 
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-=======
 #include "screen.h"
->>>>>>> upstream/master
 
 
 /***************************************************************************
@@ -34,31 +27,12 @@
 //  LIVE TIMER DEVICE
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type TIMER = &device_creator<timer_device>;
-=======
 DEFINE_DEVICE_TYPE(TIMER, timer_device, "timer", "Timer")
->>>>>>> upstream/master
 
 //-------------------------------------------------
 //  timer_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-timer_device::timer_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, TIMER, "Timer", tag, owner, clock, "timer", __FILE__),
-		m_type(TIMER_TYPE_GENERIC),
-		m_callback(timer_device_expired_delegate()),
-		m_ptr(NULL),
-		m_start_delay(attotime::zero),
-		m_period(attotime::zero),
-		m_param(0),
-		m_screen_tag(NULL),
-		m_screen(NULL),
-		m_first_vpos(0),
-		m_increment(0),
-		m_timer(NULL),
-=======
 timer_device::timer_device(const machine_config &mconfig, const char *tag, device_t *owner, u32 clock)
 	: device_t(mconfig, TIMER, tag, owner, clock),
 		m_type(TIMER_TYPE_GENERIC),
@@ -72,7 +46,6 @@ timer_device::timer_device(const machine_config &mconfig, const char *tag, devic
 		m_first_vpos(0),
 		m_increment(0),
 		m_timer(nullptr),
->>>>>>> upstream/master
 		m_first_time(true)
 {
 }
@@ -83,11 +56,7 @@ timer_device::timer_device(const machine_config &mconfig, const char *tag, devic
 //  helper to set up a generic timer
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void timer_device::static_configure_generic(device_t &device, timer_device_expired_delegate callback)
-=======
 void timer_device::static_configure_generic(device_t &device, expired_delegate callback)
->>>>>>> upstream/master
 {
 	timer_device &timer = downcast<timer_device &>(device);
 	timer.m_type = TIMER_TYPE_GENERIC;
@@ -100,11 +69,7 @@ void timer_device::static_configure_generic(device_t &device, expired_delegate c
 //  helper to set up a periodic timer
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void timer_device::static_configure_periodic(device_t &device, timer_device_expired_delegate callback, const attotime &period)
-=======
 void timer_device::static_configure_periodic(device_t &device, expired_delegate callback, const attotime &period)
->>>>>>> upstream/master
 {
 	timer_device &timer = downcast<timer_device &>(device);
 	timer.m_type = TIMER_TYPE_PERIODIC;
@@ -118,11 +83,7 @@ void timer_device::static_configure_periodic(device_t &device, expired_delegate 
 //  helper to set up a scanline timer
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void timer_device::static_configure_scanline(device_t &device, timer_device_expired_delegate callback, const char *screen, int first_vpos, int increment)
-=======
 void timer_device::static_configure_scanline(device_t &device, expired_delegate callback, const char *screen, int first_vpos, int increment)
->>>>>>> upstream/master
 {
 	timer_device &timer = downcast<timer_device &>(device);
 	timer.m_type = TIMER_TYPE_SCANLINE;
@@ -138,11 +99,7 @@ void timer_device::static_configure_scanline(device_t &device, expired_delegate 
 //  to set the callback
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void timer_device::static_set_callback(device_t &device, timer_device_expired_delegate callback)
-=======
 void timer_device::static_set_callback(device_t &device, expired_delegate callback)
->>>>>>> upstream/master
 {
 	timer_device &timer = downcast<timer_device &>(device);
 	timer.m_callback = callback;
@@ -196,22 +153,14 @@ void timer_device::device_validity_check(validity_checker &valid) const
 	switch (m_type)
 	{
 		case TIMER_TYPE_GENERIC:
-<<<<<<< HEAD
-			if (m_screen_tag != NULL || m_first_vpos != 0 || m_start_delay != attotime::zero)
-=======
 			if (m_screen_tag != nullptr || m_first_vpos != 0 || m_start_delay != attotime::zero)
->>>>>>> upstream/master
 				osd_printf_warning("Generic timer specified parameters for a scanline timer\n");
 			if (m_period != attotime::zero || m_start_delay != attotime::zero)
 				osd_printf_warning("Generic timer specified parameters for a periodic timer\n");
 			break;
 
 		case TIMER_TYPE_PERIODIC:
-<<<<<<< HEAD
-			if (m_screen_tag != NULL || m_first_vpos != 0)
-=======
 			if (m_screen_tag != nullptr || m_first_vpos != 0)
->>>>>>> upstream/master
 				osd_printf_warning("Periodic timer specified parameters for a scanline timer\n");
 			if (m_period <= attotime::zero)
 				osd_printf_error("Periodic timer specified invalid period\n");
@@ -243,11 +192,7 @@ void timer_device::device_validity_check(validity_checker &valid) const
 void timer_device::device_start()
 {
 	// fetch the screen
-<<<<<<< HEAD
-	if (m_screen_tag != NULL)
-=======
 	if (m_screen_tag != nullptr)
->>>>>>> upstream/master
 		m_screen = machine().device<screen_device>(m_screen_tag);
 
 	// allocate the timer
@@ -290,11 +235,7 @@ void timer_device::device_reset()
 		}
 
 		case TIMER_TYPE_SCANLINE:
-<<<<<<< HEAD
-			if (m_screen == NULL)
-=======
 			if (m_screen == nullptr)
->>>>>>> upstream/master
 				fatalerror("timer '%s': unable to find screen '%s'\n", tag(), m_screen_tag);
 
 			// set the timer to fire immediately

@@ -6,10 +6,7 @@
 
 **********************************************************************/
 
-<<<<<<< HEAD
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #include "cumana_fdi.h"
 
 
@@ -18,11 +15,7 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type CUMANA_FLOPPY_DISK_INTERFACE = &device_creator<cumana_floppy_disk_interface_t>;
-=======
 DEFINE_DEVICE_TYPE(CUMANA_FLOPPY_DISK_INTERFACE, cumana_floppy_disk_interface_device, "ql_cumanafdi", "Cumana Floppy Disk Interface")
->>>>>>> upstream/master
 
 
 //-------------------------------------------------
@@ -43,11 +36,7 @@ ROM_END
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const rom_entry *cumana_floppy_disk_interface_t::device_rom_region() const
-=======
 const tiny_rom_entry *cumana_floppy_disk_interface_device::device_rom_region() const
->>>>>>> upstream/master
 {
 	return ROM_NAME( cumana_floppy_disk_interface );
 }
@@ -59,19 +48,11 @@ const tiny_rom_entry *cumana_floppy_disk_interface_device::device_rom_region() c
 //**************************************************************************
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  cumana_floppy_disk_interface_t - constructor
-//-------------------------------------------------
-
-cumana_floppy_disk_interface_t::cumana_floppy_disk_interface_t(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-	device_t(mconfig, CUMANA_FLOPPY_DISK_INTERFACE, "Cumana Floppy Disk Interface", tag, owner, clock, "ql_cumanafdi", __FILE__),
-=======
 //  cumana_floppy_disk_interface_device - constructor
 //-------------------------------------------------
 
 cumana_floppy_disk_interface_device::cumana_floppy_disk_interface_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	device_t(mconfig, CUMANA_FLOPPY_DISK_INTERFACE, tag, owner, clock),
->>>>>>> upstream/master
 	device_ql_expansion_card_interface(mconfig, *this)
 {
 }
@@ -81,11 +62,7 @@ cumana_floppy_disk_interface_device::cumana_floppy_disk_interface_device(const m
 //  device_start - device-specific startup
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void cumana_floppy_disk_interface_t::device_start()
-=======
 void cumana_floppy_disk_interface_device::device_start()
->>>>>>> upstream/master
 {
 }
 
@@ -94,11 +71,7 @@ void cumana_floppy_disk_interface_device::device_start()
 //  read -
 //-------------------------------------------------
 
-<<<<<<< HEAD
-UINT8 cumana_floppy_disk_interface_t::read(address_space &space, offs_t offset, UINT8 data)
-=======
 uint8_t cumana_floppy_disk_interface_device::read(address_space &space, offs_t offset, uint8_t data)
->>>>>>> upstream/master
 {
 	return data;
 }
@@ -108,10 +81,6 @@ uint8_t cumana_floppy_disk_interface_device::read(address_space &space, offs_t o
 //  write -
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void cumana_floppy_disk_interface_t::write(address_space &space, offs_t offset, UINT8 data)
-=======
 void cumana_floppy_disk_interface_device::write(address_space &space, offs_t offset, uint8_t data)
->>>>>>> upstream/master
 {
 }

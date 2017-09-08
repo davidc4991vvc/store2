@@ -18,11 +18,7 @@ Functions to emulate the video hardware of the machine.
   Screen refresh
 ***************************************************************************/
 
-<<<<<<< HEAD
-UINT32 exzisus_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t exzisus_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int offs;
 	int sx, sy, xc, yc;
@@ -38,11 +34,7 @@ uint32_t exzisus_state::screen_update(screen_device &screen, bitmap_ind16 &bitma
 		int height;
 
 		/* Skip empty sprites. */
-<<<<<<< HEAD
-		if ( !(*(UINT32 *)(&m_objectram0[offs])) )
-=======
 		if ( !(*(uint32_t *)(&m_objectram0[offs])) )
->>>>>>> upstream/master
 		{
 			continue;
 		}
@@ -112,11 +104,7 @@ uint32_t exzisus_state::screen_update(screen_device &screen, bitmap_ind16 &bitma
 		int height;
 
 		/* Skip empty sprites. */
-<<<<<<< HEAD
-		if ( !(*(UINT32 *)(&m_objectram1[offs])) )
-=======
 		if ( !(*(uint32_t *)(&m_objectram1[offs])) )
->>>>>>> upstream/master
 		{
 			continue;
 		}

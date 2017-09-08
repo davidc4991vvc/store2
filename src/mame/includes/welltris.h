@@ -1,10 +1,7 @@
 // license:BSD-3-Clause
 // copyright-holders:David Haywood
-<<<<<<< HEAD
-=======
 
 #include "machine/gen_latch.h"
->>>>>>> upstream/master
 #include "video/vsystem_spr2.h"
 
 class welltris_state : public driver_device
@@ -16,10 +13,7 @@ public:
 		m_audiocpu(*this, "audiocpu"),
 		m_spr_old(*this, "vsystem_spr_old"),
 		m_gfxdecode(*this, "gfxdecode"),
-<<<<<<< HEAD
-=======
 		m_soundlatch(*this, "soundlatch"),
->>>>>>> upstream/master
 		m_spriteram(*this, "spriteram"),
 		m_pixelram(*this, "pixelram"),
 		m_charvideoram(*this, "charvideoram") { }
@@ -29,19 +23,6 @@ public:
 	required_device<cpu_device> m_audiocpu;
 	required_device<vsystem_spr2_device> m_spr_old;
 	required_device<gfxdecode_device> m_gfxdecode;
-<<<<<<< HEAD
-
-	required_shared_ptr<UINT16> m_spriteram;
-	required_shared_ptr<UINT16> m_pixelram;
-	required_shared_ptr<UINT16> m_charvideoram;
-
-	tilemap_t *m_char_tilemap;
-	int m_pending_command;
-	UINT8 m_gfxbank[2];
-	UINT16 m_charpalettebank;
-	UINT16 m_spritepalettebank;
-	UINT16 m_pixelpalettebank;
-=======
 	required_device<generic_latch_8_device> m_soundlatch;
 
 	required_shared_ptr<uint16_t> m_spriteram;
@@ -53,33 +34,14 @@ public:
 	uint16_t m_charpalettebank;
 	uint16_t m_spritepalettebank;
 	uint16_t m_pixelpalettebank;
->>>>>>> upstream/master
 	int m_scrollx;
 	int m_scrolly;
 
 	DECLARE_WRITE8_MEMBER(sound_bankswitch_w);
-<<<<<<< HEAD
-	DECLARE_WRITE16_MEMBER(sound_command_w);
-	DECLARE_WRITE8_MEMBER(pending_command_clear_w);
-=======
->>>>>>> upstream/master
 	DECLARE_WRITE16_MEMBER(palette_bank_w);
 	DECLARE_WRITE16_MEMBER(gfxbank_w);
 	DECLARE_WRITE16_MEMBER(scrollreg_w);
 	DECLARE_WRITE16_MEMBER(charvideoram_w);
-<<<<<<< HEAD
-	DECLARE_WRITE_LINE_MEMBER(irqhandler);
-
-	DECLARE_CUSTOM_INPUT_MEMBER(pending_sound_r);
-
-	DECLARE_DRIVER_INIT(quiz18k);
-	DECLARE_DRIVER_INIT(welltris);
-	virtual void machine_start();
-	virtual void video_start();
-
-	TILE_GET_INFO_MEMBER(get_tile_info);
-	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 
 	DECLARE_DRIVER_INIT(quiz18k);
 	DECLARE_DRIVER_INIT(welltris);
@@ -88,7 +50,6 @@ public:
 
 	TILE_GET_INFO_MEMBER(get_tile_info);
 	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	void draw_background(bitmap_ind16 &bitmap, const rectangle &cliprect);
 	void setbank(int num, int bank);
 };

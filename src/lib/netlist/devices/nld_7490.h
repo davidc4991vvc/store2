@@ -55,44 +55,6 @@
 #ifndef NLD_7490_H_
 #define NLD_7490_H_
 
-<<<<<<< HEAD
-#include "nl_base.h"
-
-#define TTL_7490(_name, _A, _B, _R1, _R2, _R91, _R92)                               \
-		NET_REGISTER_DEV(TTL_7490, _name)                                               \
-		NET_CONNECT(_name, A, _A)                                                   \
-		NET_CONNECT(_name, B, _B)                                                   \
-		NET_CONNECT(_name, R1,  _R1)                                                \
-		NET_CONNECT(_name, R2,  _R2)                                                \
-		NET_CONNECT(_name, R91, _R91)                                               \
-		NET_CONNECT(_name, R92, _R92)
-
-#define TTL_7490_DIP(_name)                                                         \
-		NET_REGISTER_DEV(TTL_7490_DIP, _name)
-
-NETLIB_NAMESPACE_DEVICES_START()
-
-NETLIB_DEVICE(7490,
-	ATTR_HOT void update_outputs();
-
-	logic_input_t m_R1;
-	logic_input_t m_R2;
-	logic_input_t m_R91;
-	logic_input_t m_R92;
-	logic_input_t m_A;
-	logic_input_t m_B;
-
-	UINT8 m_cnt;
-	UINT8 m_last_A;
-	UINT8 m_last_B;
-
-	logic_output_t m_Q[4];
-);
-
-NETLIB_DEVICE_DERIVED_PURE(7490_dip, 7490);
-
-NETLIB_NAMESPACE_DEVICES_END()
-=======
 #include "../nl_setup.h"
 
 #define TTL_7490(name, cA, cB, cR1, cR2, cR91, cR92)                               \
@@ -106,6 +68,5 @@ NETLIB_NAMESPACE_DEVICES_END()
 
 #define TTL_7490_DIP(name)                                                         \
 		NET_REGISTER_DEV(TTL_7490_DIP, name)
->>>>>>> upstream/master
 
 #endif /* NLD_7490_H_ */

@@ -6,10 +6,7 @@
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #include "autoconfig.h"
 
 
@@ -84,21 +81,13 @@ void amiga_autoconfig::autoconfig_can_shutup(bool state)
 	m_cfg[0x04] |= (state ? 0x04 : 0x00) << 12;
 }
 
-<<<<<<< HEAD
-void amiga_autoconfig::autoconfig_product(UINT8 data)
-=======
 void amiga_autoconfig::autoconfig_product(uint8_t data)
->>>>>>> upstream/master
 {
 	m_cfg[0x02] = ~((data & 0xf0) >> 4) << 12;
 	m_cfg[0x03] = ~((data & 0x0f) >> 0) << 12;
 }
 
-<<<<<<< HEAD
-void amiga_autoconfig::autoconfig_manufacturer(UINT16 data)
-=======
 void amiga_autoconfig::autoconfig_manufacturer(uint16_t data)
->>>>>>> upstream/master
 {
 	m_cfg[0x08] = ~((data & 0xf000) >> 12) << 12;
 	m_cfg[0x09] = ~((data & 0x0f00) >> 8) << 12;
@@ -106,11 +95,7 @@ void amiga_autoconfig::autoconfig_manufacturer(uint16_t data)
 	m_cfg[0x0b] = ~((data & 0x000f) >> 0) << 12;
 }
 
-<<<<<<< HEAD
-void amiga_autoconfig::autoconfig_serial(UINT32 data)
-=======
 void amiga_autoconfig::autoconfig_serial(uint32_t data)
->>>>>>> upstream/master
 {
 	m_cfg[0x0c] = ~((data & 0xf0000000) >> 28) << 12;
 	m_cfg[0x0d] = ~((data & 0x0f000000) >> 24) << 12;
@@ -122,11 +107,7 @@ void amiga_autoconfig::autoconfig_serial(uint32_t data)
 	m_cfg[0x13] = ~((data & 0x0000000f) >> 0) << 12;
 }
 
-<<<<<<< HEAD
-void amiga_autoconfig::autoconfig_rom_vector(UINT16 data)
-=======
 void amiga_autoconfig::autoconfig_rom_vector(uint16_t data)
->>>>>>> upstream/master
 {
 	m_cfg[0x14] = ~((data & 0xf000) >> 12) << 12;
 	m_cfg[0x15] = ~((data & 0x0f00) >> 8) << 12;
@@ -141,15 +122,9 @@ void amiga_autoconfig::autoconfig_rom_vector(uint16_t data)
 
 READ16_MEMBER( amiga_autoconfig::autoconfig_read )
 {
-<<<<<<< HEAD
-	UINT16 data = m_cfg[offset] | 0x0fff;
-
-	if (VERBOSE && !space.debugger_access())
-=======
 	uint16_t data = m_cfg[offset] | 0x0fff;
 
 	if (VERBOSE && !space.machine().side_effect_disabled())
->>>>>>> upstream/master
 		space.device().logerror("autoconfig_read %04x @ %02x [mask = %04x]\n", data, offset, mem_mask);
 
 	return data;
@@ -157,11 +132,7 @@ READ16_MEMBER( amiga_autoconfig::autoconfig_read )
 
 WRITE16_MEMBER( amiga_autoconfig::autoconfig_write )
 {
-<<<<<<< HEAD
-	if (VERBOSE && !space.debugger_access())
-=======
 	if (VERBOSE && !space.machine().side_effect_disabled())
->>>>>>> upstream/master
 		space.device().logerror("autoconfig_write %04x @ %02x [mask = %04x]\n", data, offset, mem_mask);
 
 	switch (offset)

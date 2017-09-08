@@ -49,10 +49,7 @@ enum
 	SS_MSB_FIRST = 0x02
 };
 
-<<<<<<< HEAD
-=======
 #define STATE_MAGIC_NUM         "MAMESAVE"
->>>>>>> upstream/master
 
 //**************************************************************************
 //  INITIALIZATION
@@ -89,21 +86,12 @@ void save_manager::allow_registration(bool allowed)
 //  index
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const char *save_manager::indexed_item(int index, void *&base, UINT32 &valsize, UINT32 &valcount) const
-{
-	state_entry *entry = m_entry_list.find(index);
-	if (entry == NULL)
-		return NULL;
-
-=======
 const char *save_manager::indexed_item(int index, void *&base, u32 &valsize, u32 &valcount) const
 {
 	if (index >= m_entry_list.size() || index < 0)
 		return nullptr;
 
 	state_entry *entry = m_entry_list.at(index).get();
->>>>>>> upstream/master
 	base = entry->m_data;
 	valsize = entry->m_typesize;
 	valcount = entry->m_typecount;
@@ -121,17 +109,6 @@ void save_manager::register_presave(save_prepost_delegate func)
 {
 	// check for invalid timing
 	if (!m_reg_allowed)
-<<<<<<< HEAD
-		fatalerror(_("Attempt to register callback function after state registration is closed!\n"));
-
-	// scan for duplicates and push through to the end
-	for (state_callback *cb = m_presave_list.first(); cb != NULL; cb = cb->next())
-		if (cb->m_func == func)
-			fatalerror(_("Duplicate save state function (%s/%s)\n"), cb->m_func.name(), func.name());
-
-	// allocate a new entry
-	m_presave_list.append(*global_alloc(state_callback(func)));
-=======
 		fatalerror("Attempt to register callback function after state registration is closed!\n");
 
 	// scan for duplicates and push through to the end
@@ -141,7 +118,6 @@ void save_manager::register_presave(save_prepost_delegate func)
 
 	// allocate a new entry
 	m_presave_list.push_back(std::make_unique<state_callback>(func));
->>>>>>> upstream/master
 }
 
 
@@ -154,17 +130,6 @@ void save_manager::register_postload(save_prepost_delegate func)
 {
 	// check for invalid timing
 	if (!m_reg_allowed)
-<<<<<<< HEAD
-		fatalerror(_("Attempt to register callback function after state registration is closed!\n"));
-
-	// scan for duplicates and push through to the end
-	for (state_callback *cb = m_postload_list.first(); cb != NULL; cb = cb->next())
-		if (cb->m_func == func)
-			fatalerror(_("Duplicate save state function (%s/%s)\n"), cb->m_func.name(), func.name());
-
-	// allocate a new entry
-	m_postload_list.append(*global_alloc(state_callback(func)));
-=======
 		fatalerror("Attempt to register callback function after state registration is closed!\n");
 
 	// scan for duplicates and push through to the end
@@ -174,7 +139,6 @@ void save_manager::register_postload(save_prepost_delegate func)
 
 	// allocate a new entry
 	m_postload_list.push_back(std::make_unique<state_callback>(func));
->>>>>>> upstream/master
 }
 
 
@@ -183,55 +147,22 @@ void save_manager::register_postload(save_prepost_delegate func)
 //  memory
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void save_manager::save_memory(device_t *device, const char *module, const char *tag, UINT32 index, const char *name, void *val, UINT32 valsize, UINT32 valcount)
-=======
 void save_manager::save_memory(device_t *device, const char *module, const char *tag, u32 index, const char *name, void *val, u32 valsize, u32 valcount)
->>>>>>> upstream/master
 {
 	assert(valsize == 1 || valsize == 2 || valsize == 4 || valsize == 8);
 
 	// check for invalid timing
 	if (!m_reg_allowed)
 	{
-<<<<<<< HEAD
-		machine().logerror(_("Attempt to register save state entry after state registration is closed!\nModule %s tag %s name %s\n"), module, tag, name);
-		if (machine().system().flags & MACHINE_SUPPORTS_SAVE)
-			fatalerror(_("Attempt to register save state entry after state registration is closed!\nModule %s tag %s name %s\n"), module, tag, name);
-=======
 		machine().logerror("Attempt to register save state entry after state registration is closed!\nModule %s tag %s name %s\n", module, tag, name);
 		if (machine().system().flags & machine_flags::SUPPORTS_SAVE)
 			fatalerror("Attempt to register save state entry after state registration is closed!\nModule %s tag %s name %s\n", module, tag, name);
->>>>>>> upstream/master
 		m_illegal_regs++;
 		return;
 	}
 
 	// create the full name
 	std::string totalname;
-<<<<<<< HEAD
-	if (tag != NULL)
-		strprintf(totalname, "%s/%s/%X/%s", module, tag, index, name);
-	else
-		strprintf(totalname, "%s/%X/%s", module, index, name);
-
-	// look for duplicates and an entry to insert in front of
-	state_entry *insert_after = NULL;
-	for (state_entry *entry = m_entry_list.first(); entry != NULL; entry = entry->next())
-	{
-		// stop when we find an entry whose name is after ours
-		if (entry->m_name.compare(totalname)>0)
-			break;
-		insert_after = entry;
-
-		// error if we are equal
-		if (entry->m_name.compare(totalname)==0)
-			fatalerror(_("Duplicate save state registration entry (%s)\n"), totalname.c_str());
-	}
-
-	// insert us into the list
-	m_entry_list.insert_after(*global_alloc(state_entry(val, totalname.c_str(), device, module, tag ? tag : "", index, valsize, valcount)), insert_after);
-=======
 	if (tag != nullptr)
 		totalname = string_format("%s/%s/%X/%s", module, tag, index, name);
 	else
@@ -253,7 +184,6 @@ void save_manager::save_memory(device_t *device, const char *module, const char 
 
 	// insert us into the list
 	m_entry_list.insert(insert_after,std::make_unique<state_entry>(val, totalname.c_str(), device, module, tag ? tag : "", index, valsize, valcount));
->>>>>>> upstream/master
 }
 
 
@@ -265,29 +195,17 @@ void save_manager::save_memory(device_t *device, const char *module, const char 
 save_error save_manager::check_file(running_machine &machine, emu_file &file, const char *gamename, void (CLIB_DECL *errormsg)(const char *fmt, ...))
 {
 	// if we want to validate the signature, compute it
-<<<<<<< HEAD
-	UINT32 sig;
-=======
 	u32 sig;
->>>>>>> upstream/master
 	sig = machine.save().signature();
 
 	// seek to the beginning and read the header
 	file.compress(FCOMPRESS_NONE);
 	file.seek(0, SEEK_SET);
-<<<<<<< HEAD
-	UINT8 header[HEADER_SIZE];
-	if (file.read(header, sizeof(header)) != sizeof(header))
-	{
-		if (errormsg != NULL)
-			(*errormsg)(_("Could not read %s save file header"),emulator_info::get_appname());
-=======
 	u8 header[HEADER_SIZE];
 	if (file.read(header, sizeof(header)) != sizeof(header))
 	{
 		if (errormsg != nullptr)
 			(*errormsg)("Could not read %s save file header",emulator_info::get_appname());
->>>>>>> upstream/master
 		return STATERR_READ_ERROR;
 	}
 
@@ -303,11 +221,7 @@ save_error save_manager::check_file(running_machine &machine, emu_file &file, co
 
 void save_manager::dispatch_postload()
 {
-<<<<<<< HEAD
-	for (state_callback *func = m_postload_list.first(); func != NULL; func = func->next())
-=======
 	for (auto &func : m_postload_list)
->>>>>>> upstream/master
 		func->m_func();
 }
 
@@ -324,38 +238,23 @@ save_error save_manager::read_file(emu_file &file)
 	// read the header and turn on compression for the rest of the file
 	file.compress(FCOMPRESS_NONE);
 	file.seek(0, SEEK_SET);
-<<<<<<< HEAD
-	UINT8 header[HEADER_SIZE];
-=======
 	u8 header[HEADER_SIZE];
->>>>>>> upstream/master
 	if (file.read(header, sizeof(header)) != sizeof(header))
 		return STATERR_READ_ERROR;
 	file.compress(FCOMPRESS_MEDIUM);
 
 	// verify the header and report an error if it doesn't match
-<<<<<<< HEAD
-	UINT32 sig = signature();
-	if (validate_header(header, machine().system().name, sig, NULL, "Error: ")  != STATERR_NONE)
-=======
 	u32 sig = signature();
 	if (validate_header(header, machine().system().name, sig, nullptr, "Error: ")  != STATERR_NONE)
->>>>>>> upstream/master
 		return STATERR_INVALID_HEADER;
 
 	// determine whether or not to flip the data when done
 	bool flip = NATIVE_ENDIAN_VALUE_LE_BE((header[9] & SS_MSB_FIRST) != 0, (header[9] & SS_MSB_FIRST) == 0);
 
 	// read all the data, flipping if necessary
-<<<<<<< HEAD
-	for (state_entry *entry = m_entry_list.first(); entry != NULL; entry = entry->next())
-	{
-		UINT32 totalsize = entry->m_typesize * entry->m_typecount;
-=======
 	for (auto &entry : m_entry_list)
 	{
 		u32 totalsize = entry->m_typesize * entry->m_typecount;
->>>>>>> upstream/master
 		if (file.read(entry->m_data, totalsize) != totalsize)
 			return STATERR_READ_ERROR;
 
@@ -378,11 +277,7 @@ save_error save_manager::read_file(emu_file &file)
 
 void save_manager::dispatch_presave()
 {
-<<<<<<< HEAD
-	for (state_callback *func = m_presave_list.first(); func != NULL; func = func->next())
-=======
 	for (auto &func : m_presave_list)
->>>>>>> upstream/master
 		func->m_func();
 }
 
@@ -397,15 +292,6 @@ save_error save_manager::write_file(emu_file &file)
 		return STATERR_ILLEGAL_REGISTRATIONS;
 
 	// generate the header
-<<<<<<< HEAD
-	UINT8 header[HEADER_SIZE];
-	memcpy(&header[0], emulator_info::get_state_magic_num(), 8);
-	header[8] = SAVE_VERSION;
-	header[9] = NATIVE_ENDIAN_VALUE_LE_BE(0, SS_MSB_FIRST);
-	strncpy((char *)&header[0x0a], machine().system().name, 0x1c - 0x0a);
-	UINT32 sig = signature();
-	*(UINT32 *)&header[0x1c] = LITTLE_ENDIANIZE_INT32(sig);
-=======
 	u8 header[HEADER_SIZE];
 	memcpy(&header[0], STATE_MAGIC_NUM, 8);
 	header[8] = SAVE_VERSION;
@@ -413,7 +299,6 @@ save_error save_manager::write_file(emu_file &file)
 	strncpy((char *)&header[0x0a], machine().system().name, 0x1c - 0x0a);
 	u32 sig = signature();
 	*(u32 *)&header[0x1c] = little_endianize_int32(sig);
->>>>>>> upstream/master
 
 	// write the header and turn on compression for the rest of the file
 	file.compress(FCOMPRESS_NONE);
@@ -426,15 +311,9 @@ save_error save_manager::write_file(emu_file &file)
 	dispatch_presave();
 
 	// then write all the data
-<<<<<<< HEAD
-	for (state_entry *entry = m_entry_list.first(); entry != NULL; entry = entry->next())
-	{
-		UINT32 totalsize = entry->m_typesize * entry->m_typecount;
-=======
 	for (auto &entry : m_entry_list)
 	{
 		u32 totalsize = entry->m_typesize * entry->m_typecount;
->>>>>>> upstream/master
 		if (file.write(entry->m_data, totalsize) != totalsize)
 			return STATERR_WRITE_ERROR;
 	}
@@ -447,22 +326,6 @@ save_error save_manager::write_file(emu_file &file)
 //  is a CRC over the structure of the data
 //-------------------------------------------------
 
-<<<<<<< HEAD
-UINT32 save_manager::signature() const
-{
-	// iterate over entries
-	UINT32 crc = 0;
-	for (state_entry *entry = m_entry_list.first(); entry != NULL; entry = entry->next())
-	{
-		// add the entry name to the CRC
-		crc = core_crc32(crc, (UINT8 *)entry->m_name.c_str(), entry->m_name.length());
-
-		// add the type and size to the CRC
-		UINT32 temp[2];
-		temp[0] = LITTLE_ENDIANIZE_INT32(entry->m_typecount);
-		temp[1] = LITTLE_ENDIANIZE_INT32(entry->m_typesize);
-		crc = core_crc32(crc, (UINT8 *)&temp[0], sizeof(temp));
-=======
 u32 save_manager::signature() const
 {
 	// iterate over entries
@@ -477,7 +340,6 @@ u32 save_manager::signature() const
 		temp[0] = little_endianize_int32(entry->m_typecount);
 		temp[1] = little_endianize_int32(entry->m_typesize);
 		crc = core_crc32(crc, (u8 *)&temp[0], sizeof(temp));
->>>>>>> upstream/master
 	}
 	return crc;
 }
@@ -490,11 +352,7 @@ u32 save_manager::signature() const
 
 void save_manager::dump_registry() const
 {
-<<<<<<< HEAD
-	for (state_entry *entry = m_entry_list.first(); entry != NULL; entry = entry->next())
-=======
 	for (auto &entry : m_entry_list)
->>>>>>> upstream/master
 		LOG(("%s: %d x %d\n", entry->m_name.c_str(), entry->m_typesize, entry->m_typecount));
 }
 
@@ -504,16 +362,6 @@ void save_manager::dump_registry() const
 //  header
 //-------------------------------------------------
 
-<<<<<<< HEAD
-save_error save_manager::validate_header(const UINT8 *header, const char *gamename, UINT32 signature,
-	void (CLIB_DECL *errormsg)(const char *fmt, ...), const char *error_prefix)
-{
-	// check magic number
-	if (memcmp(header, emulator_info::get_state_magic_num(), 8))
-	{
-		if (errormsg != NULL)
-			(*errormsg)(_("%sThis is not a %s save file"), error_prefix,emulator_info::get_appname());
-=======
 save_error save_manager::validate_header(const u8 *header, const char *gamename, u32 signature,
 	void (CLIB_DECL *errormsg)(const char *fmt, ...), const char *error_prefix)
 {
@@ -522,54 +370,33 @@ save_error save_manager::validate_header(const u8 *header, const char *gamename,
 	{
 		if (errormsg != nullptr)
 			(*errormsg)("%sThis is not a %s save file", error_prefix,emulator_info::get_appname());
->>>>>>> upstream/master
 		return STATERR_INVALID_HEADER;
 	}
 
 	// check save state version
 	if (header[8] != SAVE_VERSION)
 	{
-<<<<<<< HEAD
-		if (errormsg != NULL)
-			(*errormsg)(_("%sWrong version in save file (version %d, expected %d)"), error_prefix, header[8], SAVE_VERSION);
-=======
 		if (errormsg != nullptr)
 			(*errormsg)("%sWrong version in save file (version %d, expected %d)", error_prefix, header[8], SAVE_VERSION);
->>>>>>> upstream/master
 		return STATERR_INVALID_HEADER;
 	}
 
 	// check gamename, if we were asked to
-<<<<<<< HEAD
-	if (gamename != NULL && strncmp(gamename, (const char *)&header[0x0a], 0x1c - 0x0a))
-	{
-		if (errormsg != NULL)
-			(*errormsg)(_("%s'File is not a valid savestate file for game '%s'."), error_prefix, gamename);
-=======
 	if (gamename != nullptr && strncmp(gamename, (const char *)&header[0x0a], 0x1c - 0x0a))
 	{
 		if (errormsg != nullptr)
 			(*errormsg)("%s'File is not a valid savestate file for game '%s'.", error_prefix, gamename);
->>>>>>> upstream/master
 		return STATERR_INVALID_HEADER;
 	}
 
 	// check signature, if we were asked to
 	if (signature != 0)
 	{
-<<<<<<< HEAD
-		UINT32 rawsig = *(UINT32 *)&header[0x1c];
-		if (signature != LITTLE_ENDIANIZE_INT32(rawsig))
-		{
-			if (errormsg != NULL)
-				(*errormsg)(_("%sIncompatible save file (signature %08x, expected %08x)"), error_prefix, LITTLE_ENDIANIZE_INT32(rawsig), signature);
-=======
 		u32 rawsig = *(u32 *)&header[0x1c];
 		if (signature != little_endianize_int32(rawsig))
 		{
 			if (errormsg != nullptr)
 				(*errormsg)("%sIncompatible save file (signature %08x, expected %08x)", error_prefix, little_endianize_int32(rawsig), signature);
->>>>>>> upstream/master
 			return STATERR_INVALID_HEADER;
 		}
 	}
@@ -582,12 +409,7 @@ save_error save_manager::validate_header(const u8 *header, const char *gamename,
 //-------------------------------------------------
 
 save_manager::state_callback::state_callback(save_prepost_delegate callback)
-<<<<<<< HEAD
-	: m_next(NULL),
-		m_func(callback)
-=======
 	: m_func(std::move(callback))
->>>>>>> upstream/master
 {
 }
 
@@ -596,14 +418,8 @@ save_manager::state_callback::state_callback(save_prepost_delegate callback)
 //  state_entry - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-state_entry::state_entry(void *data, const char *name, device_t *device, const char *module, const char *tag, int index, UINT8 size, UINT32 count)
-	: m_next(NULL),
-		m_data(data),
-=======
 state_entry::state_entry(void *data, const char *name, device_t *device, const char *module, const char *tag, int index, u8 size, u32 count)
 	: m_data(data),
->>>>>>> upstream/master
 		m_name(name),
 		m_device(device),
 		m_module(module),
@@ -623,37 +439,14 @@ state_entry::state_entry(void *data, const char *name, device_t *device, const c
 
 void state_entry::flip_data()
 {
-<<<<<<< HEAD
-	UINT16 *data16;
-	UINT32 *data32;
-	UINT64 *data64;
-=======
 	u16 *data16;
 	u32 *data32;
 	u64 *data64;
->>>>>>> upstream/master
 	int count;
 
 	switch (m_typesize)
 	{
 		case 2:
-<<<<<<< HEAD
-			data16 = (UINT16 *)m_data;
-			for (count = 0; count < m_typecount; count++)
-				data16[count] = FLIPENDIAN_INT16(data16[count]);
-			break;
-
-		case 4:
-			data32 = (UINT32 *)m_data;
-			for (count = 0; count < m_typecount; count++)
-				data32[count] = FLIPENDIAN_INT32(data32[count]);
-			break;
-
-		case 8:
-			data64 = (UINT64 *)m_data;
-			for (count = 0; count < m_typecount; count++)
-				data64[count] = FLIPENDIAN_INT64(data64[count]);
-=======
 			data16 = (u16 *)m_data;
 			for (count = 0; count < m_typecount; count++)
 				data16[count] = flipendian_int16(data16[count]);
@@ -669,7 +462,6 @@ void state_entry::flip_data()
 			data64 = (u64 *)m_data;
 			for (count = 0; count < m_typecount; count++)
 				data64[count] = flipendian_int64(data64[count]);
->>>>>>> upstream/master
 			break;
 	}
 }

@@ -6,11 +6,7 @@
 
 #define VERBOSE_LEVEL ( 0 )
 
-<<<<<<< HEAD
-INLINE void ATTR_PRINTF(3,4) verboselog( device_t& device, int n_level, const char *s_fmt, ... )
-=======
 static inline void ATTR_PRINTF(3,4) verboselog( device_t& device, int n_level, const char *s_fmt, ... )
->>>>>>> upstream/master
 {
 	if( VERBOSE_LEVEL >= n_level )
 	{
@@ -68,11 +64,7 @@ enum status_f
 
 struct subheader
 {
-<<<<<<< HEAD
-	UINT8 file, channel, submode, coding;
-=======
 	uint8_t file, channel, submode, coding;
->>>>>>> upstream/master
 };
 
 enum submode_flags
@@ -91,17 +83,10 @@ enum submode_flags
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type PSXCD = &device_creator<psxcd_device>;
-
-psxcd_device::psxcd_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-	cdrom_image_device(mconfig, PSXCD, "PSX Cdrom", tag, owner, clock, "psx_cd", __FILE__),
-=======
 DEFINE_DEVICE_TYPE(PSXCD, psxcd_device, "psx_cd", "PSX CD-ROM")
 
 psxcd_device::psxcd_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	cdrom_image_device(mconfig, PSXCD, tag, owner, clock),
->>>>>>> upstream/master
 	m_irq_handler(*this)
 {
 	static_set_interface(*this, "psx_cdrom");
@@ -123,11 +108,7 @@ void psxcd_device::device_start()
 
 	m_sysclock = sysclk;
 
-<<<<<<< HEAD
-	res_queue = NULL;
-=======
 	res_queue = nullptr;
->>>>>>> upstream/master
 	rdp = 0;
 	status=status_shellopen;
 	mode=0;
@@ -190,11 +171,7 @@ void psxcd_device::device_reset()
 	}
 	open = true;
 	if(m_cdrom_handle)
-<<<<<<< HEAD
-		add_system_event(event_change_disk, m_sysclock, NULL);
-=======
 		add_system_event(event_change_disk, m_sysclock, nullptr);
->>>>>>> upstream/master
 
 	while(res_queue)
 	{
@@ -211,18 +188,6 @@ void psxcd_device::device_reset()
 	m_cursec = 0;
 	m_mute = false;
 	m_dmaload = false;
-<<<<<<< HEAD
-	m_int1 = NULL;
-	curpos.w = 0;
-}
-
-bool psxcd_device::call_load()
-{
-	bool ret = cdrom_image_device::call_load();
-	open = true;
-	if(ret == IMAGE_INIT_PASS)
-		add_system_event(event_change_disk, m_sysclock, NULL); // 1 sec to spin up the disk
-=======
 	m_int1 = nullptr;
 	curpos.w = 0;
 }
@@ -233,7 +198,6 @@ image_init_result psxcd_device::call_load()
 	open = true;
 	if(ret == image_init_result::PASS)
 		add_system_event(event_change_disk, m_sysclock, nullptr); // 1 sec to spin up the disk
->>>>>>> upstream/master
 	return ret;
 }
 
@@ -248,11 +212,7 @@ void psxcd_device::call_unload()
 
 READ8_MEMBER( psxcd_device::read )
 {
-<<<<<<< HEAD
-	UINT8 ret = 0;
-=======
 	uint8_t ret = 0;
->>>>>>> upstream/master
 	switch (offset & 3)
 	{
 		/*
@@ -401,11 +361,7 @@ WRITE8_MEMBER( psxcd_device::write )
 				{
 					command_result *res = res_queue;
 					if(res == m_int1)
-<<<<<<< HEAD
-						m_int1 = NULL;
-=======
 						m_int1 = nullptr;
->>>>>>> upstream/master
 
 					res_queue = res->next;
 					global_free(res);
@@ -467,11 +423,7 @@ const psxcd_device::cdcmd psxcd_device::cmd_table[]=
 	&psxcd_device::cdcmd_readtoc
 };
 
-<<<<<<< HEAD
-void psxcd_device::write_command(UINT8 byte)
-=======
 void psxcd_device::write_command(uint8_t byte)
->>>>>>> upstream/master
 {
 	if(byte > 31)
 		illegalcmd(byte);
@@ -556,11 +508,7 @@ void psxcd_device::cdcmd_readn()
 		start_read();
 	} else
 	{
-<<<<<<< HEAD
-		send_result(intr_diskerror, NULL, 0, 0x80);
-=======
 		send_result(intr_diskerror, nullptr, 0, 0x80);
->>>>>>> upstream/master
 	}
 }
 
@@ -652,11 +600,7 @@ void psxcd_device::cdcmd_getparam()
 	send_result(intr_complete,data,6);
 }
 
-<<<<<<< HEAD
-UINT32 psxcd_device::sub_loc(CDPOS src1, CDPOS src2)
-=======
 uint32_t psxcd_device::sub_loc(CDPOS src1, CDPOS src2)
->>>>>>> upstream/master
 {
 	CDPOS dst;
 	int f=src1.b[F]-src2.b[F],
@@ -687,11 +631,7 @@ void psxcd_device::cdcmd_getlocl()
 void psxcd_device::cdcmd_getlocp()
 {
 	CDPOS tloc, start;
-<<<<<<< HEAD
-	UINT8 track = cdrom_get_track(m_cdrom_handle, msf_to_lba_ps(loc.w)) + 1;
-=======
 	uint8_t track = cdrom_get_track(m_cdrom_handle, msf_to_lba_ps(loc.w)) + 1;
->>>>>>> upstream/master
 	start.w = (track == 1) ? 0x000200 : lba_to_msf_ps(cdrom_get_track_start(m_cdrom_handle, track - 1));
 	tloc.w = sub_loc(loc, start);
 
@@ -731,23 +671,14 @@ void psxcd_device::cdcmd_gettn()
 	}
 	else
 	{
-<<<<<<< HEAD
-		send_result(intr_diskerror, NULL, 0, 0x80);
-=======
 		send_result(intr_diskerror, nullptr, 0, 0x80);
->>>>>>> upstream/master
 	}
 }
 
 void psxcd_device::cdcmd_gettd()
 {
-<<<<<<< HEAD
-	UINT8 track = bcd_to_decimal(cmdbuf[0]);
-	UINT8 last = cdrom_get_last_track(m_cdrom_handle);
-=======
 	uint8_t track = bcd_to_decimal(cmdbuf[0]);
 	uint8_t last = cdrom_get_last_track(m_cdrom_handle);
->>>>>>> upstream/master
 	if(track <= last)
 	{
 		CDPOS trkstart;
@@ -769,11 +700,7 @@ void psxcd_device::cdcmd_gettd()
 	}
 	else
 	{
-<<<<<<< HEAD
-		send_result(intr_diskerror, NULL, 0, 0x80);
-=======
 		send_result(intr_diskerror, nullptr, 0, 0x80);
->>>>>>> upstream/master
 	}
 }
 
@@ -803,11 +730,7 @@ void psxcd_device::cdcmd_test()
 	{
 		case 0x20:
 		{
-<<<<<<< HEAD
-			static UINT8 data[4]=
-=======
 			static uint8_t data[4]=
->>>>>>> upstream/master
 			{
 				0x95,
 				0x07,
@@ -821,11 +744,7 @@ void psxcd_device::cdcmd_test()
 
 		default:
 			verboselog(*this, 0, "psxcd: unimplemented test cmd %02x\n", cmdbuf[0]);
-<<<<<<< HEAD
-			cmd_complete(prepare_result(intr_diskerror, NULL, 0, 0x10));
-=======
 			cmd_complete(prepare_result(intr_diskerror, nullptr, 0, 0x10));
->>>>>>> upstream/master
 			break;
 	}
 }
@@ -836,11 +755,7 @@ void psxcd_device::cdcmd_id()
 
 	if (!open)
 	{
-<<<<<<< HEAD
-		UINT8 cdid[8];
-=======
 		uint8_t cdid[8];
->>>>>>> upstream/master
 		int irq;
 		memset(cdid, '\0', 8);
 
@@ -864,11 +779,7 @@ void psxcd_device::cdcmd_id()
 	}
 	else
 	{
-<<<<<<< HEAD
-		send_result(intr_diskerror, NULL, 0, 0x80);
-=======
 		send_result(intr_diskerror, nullptr, 0, 0x80);
->>>>>>> upstream/master
 	}
 }
 
@@ -884,11 +795,7 @@ void psxcd_device::cdcmd_reads()
 		start_read();
 	} else
 	{
-<<<<<<< HEAD
-		send_result(intr_diskerror, NULL, 0, 0x80);
-=======
 		send_result(intr_diskerror, nullptr, 0, 0x80);
->>>>>>> upstream/master
 	}
 }
 
@@ -902,11 +809,7 @@ void psxcd_device::cdcmd_readtoc()
 	verboselog(*this, 1, "psxcd: readtoc\n");
 
 	send_result(intr_complete);
-<<<<<<< HEAD
-	send_result(intr_acknowledge, NULL, 0, default_irq_delay*3); // ?
-=======
 	send_result(intr_acknowledge, nullptr, 0, default_irq_delay*3); // ?
->>>>>>> upstream/master
 }
 
 void psxcd_device::cdcmd_unknown12()
@@ -916,11 +819,7 @@ void psxcd_device::cdcmd_unknown12()
 	if(cmdbuf[0] == 1)
 		send_result(intr_complete);
 	else
-<<<<<<< HEAD
-		send_result(intr_diskerror, NULL, 0, 0x40);
-=======
 		send_result(intr_diskerror, nullptr, 0, 0x40);
->>>>>>> upstream/master
 }
 
 void psxcd_device::cdcmd_illegal17()
@@ -938,19 +837,11 @@ void psxcd_device::cdcmd_illegal1d()
 	illegalcmd(0x1d); // read q subchannel
 }
 
-<<<<<<< HEAD
-void psxcd_device::illegalcmd(UINT8 cmd)
-{
-	verboselog(*this, 0, "psxcd: unimplemented cd command %02x\n", cmd);
-
-	send_result(intr_diskerror, NULL, 0, 0x40);
-=======
 void psxcd_device::illegalcmd(uint8_t cmd)
 {
 	verboselog(*this, 0, "psxcd: unimplemented cd command %02x\n", cmd);
 
 	send_result(intr_diskerror, nullptr, 0, 0x40);
->>>>>>> upstream/master
 }
 
 void psxcd_device::cmd_complete(command_result *res)
@@ -972,21 +863,12 @@ void psxcd_device::cmd_complete(command_result *res)
 			m_irq_handler(1);
 		m_regs.sr |= 0x20;
 	}
-<<<<<<< HEAD
-	res->next = NULL;
-}
-
-psxcd_device::command_result *psxcd_device::prepare_result(UINT8 res, UINT8 *data, int sz, UINT8 errcode)
-{
-	command_result *cr=global_alloc(command_result);
-=======
 	res->next = nullptr;
 }
 
 psxcd_device::command_result *psxcd_device::prepare_result(uint8_t res, uint8_t *data, int sz, uint8_t errcode)
 {
 	auto cr=global_alloc(command_result);
->>>>>>> upstream/master
 
 	cr->res=res;
 	if (sz)
@@ -1013,41 +895,24 @@ psxcd_device::command_result *psxcd_device::prepare_result(uint8_t res, uint8_t 
 	return cr;
 }
 
-<<<<<<< HEAD
-void psxcd_device::send_result(UINT8 res, UINT8 *data, int sz, int delay, UINT8 errcode)
-=======
 void psxcd_device::send_result(uint8_t res, uint8_t *data, int sz, int delay, uint8_t errcode)
->>>>>>> upstream/master
 {
 	// Avoid returning results after sector read results -
 	// delay the sector read slightly if necessary
 
-<<<<<<< HEAD
-	UINT64 systime = m_maincpu->total_cycles();
-	if ((next_read_event != -1) && ((systime+delay)>(next_sector_t)))
-	{
-		UINT32 hz = m_sysclock / (delay + 2000);
-=======
 	uint64_t systime = m_maincpu->total_cycles();
 	if ((next_read_event != -1) && ((systime+delay)>(next_sector_t)))
 	{
 		uint32_t hz = m_sysclock / (delay + 2000);
->>>>>>> upstream/master
 		m_timers[next_read_event]->adjust(attotime::from_hz(hz), 0, attotime::never);
 	}
 
 	add_system_event(event_cmd_complete, delay, prepare_result(res, data, sz, errcode));
 }
 
-<<<<<<< HEAD
-void psxcd_device::start_dma(UINT8 *mainram, UINT32 size)
-{
-	UINT32 sector_size;
-=======
 void psxcd_device::start_dma(uint8_t *mainram, uint32_t size)
 {
 	uint32_t sector_size;
->>>>>>> upstream/master
 	verboselog(*this, 1, "psxcd: start dma %d bytes at %d\n", size, m_transcurr);
 
 	if(!m_dmaload)
@@ -1087,13 +952,8 @@ void psxcd_device::read_sector()
 	if (status & status_reading)
 	{
 		bool isend = false;
-<<<<<<< HEAD
-		UINT32 sector = msf_to_lba_ps(curpos.w);
-		UINT8 *buf = secbuf[sectail];
-=======
 		uint32_t sector = msf_to_lba_ps(curpos.w);
 		uint8_t *buf = secbuf[sectail];
->>>>>>> upstream/master
 		if (cdrom_read_data(m_cdrom_handle, sector, buf, CD_TRACK_RAW_DONTCARE))
 		{
 			subheader *sub=(subheader *)(buf+16);
@@ -1148,11 +1008,7 @@ void psxcd_device::read_sector()
 
 			next_sector_t+=cyc;
 
-<<<<<<< HEAD
-			next_read_event = add_system_event(event_read_sector, cyc, NULL);
-=======
 			next_read_event = add_system_event(event_read_sector, cyc, nullptr);
->>>>>>> upstream/master
 		} else
 		{
 			verboselog(*this, 1, "psxcd: autopause xa\n");
@@ -1169,11 +1025,7 @@ void psxcd_device::play_sector()
 
 	if (status&status_playing)
 	{
-<<<<<<< HEAD
-		UINT32 sector = msf_to_lba_ps(curpos.w);
-=======
 		uint32_t sector = msf_to_lba_ps(curpos.w);
->>>>>>> upstream/master
 
 		if(cdrom_read_data(m_cdrom_handle, sector, secbuf[sectail], CD_TRACK_AUDIO))
 		{
@@ -1221,13 +1073,8 @@ void psxcd_device::play_sector()
 
 		if ((mode&mode_report) && !(sector & 15)) // slow the int rate
 		{
-<<<<<<< HEAD
-			command_result *res=global_alloc(command_result);
-			UINT8 track = cdrom_get_track(m_cdrom_handle, sector) + 1;
-=======
 			auto res=global_alloc(command_result);
 			uint8_t track = cdrom_get_track(m_cdrom_handle, sector) + 1;
->>>>>>> upstream/master
 			res->res=intr_dataready;
 
 			res->data[0]=status;
@@ -1258,32 +1105,20 @@ void psxcd_device::play_sector()
 
 		next_sector_t+=cyc>>1;
 
-<<<<<<< HEAD
-		next_read_event = add_system_event(event_play_sector, next_sector_t - m_maincpu->total_cycles(), NULL);
-=======
 		next_read_event = add_system_event(event_play_sector, next_sector_t - m_maincpu->total_cycles(), nullptr);
->>>>>>> upstream/master
 	}
 }
 
 void psxcd_device::start_read()
 {
-<<<<<<< HEAD
-	UINT32 sector = msf_to_lba_ps(curpos.w);
-=======
 	uint32_t sector = msf_to_lba_ps(curpos.w);
->>>>>>> upstream/master
 
 	assert((status&(status_reading|status_playing))==0);
 
 	if(!(mode & mode_cdda) && (cdrom_get_track_type(m_cdrom_handle, cdrom_get_track(m_cdrom_handle, sector + 150)) == CD_TRACK_AUDIO))
 	{
 		stop_read();
-<<<<<<< HEAD
-		cmd_complete(prepare_result(intr_diskerror, NULL, 0, 0x40));
-=======
 		cmd_complete(prepare_result(intr_diskerror, nullptr, 0, 0x40));
->>>>>>> upstream/master
 		return;
 	}
 	send_result(intr_complete);
@@ -1294,29 +1129,17 @@ void psxcd_device::start_read()
 	unsigned int cyc=read_sector_cycles;
 	if (mode&mode_double_speed) cyc>>=1;
 
-<<<<<<< HEAD
-	INT64 systime=m_maincpu->total_cycles();
-=======
 	int64_t systime=m_maincpu->total_cycles();
->>>>>>> upstream/master
 
 	systime+=start_read_delay;
 
 	next_sector_t=systime+cyc;
-<<<<<<< HEAD
-	next_read_event = add_system_event(event_read_sector, start_read_delay+preread_delay, NULL);
-=======
 	next_read_event = add_system_event(event_read_sector, start_read_delay+preread_delay, nullptr);
->>>>>>> upstream/master
 }
 
 void psxcd_device::start_play()
 {
-<<<<<<< HEAD
-	UINT8 track = cdrom_get_track(m_cdrom_handle, msf_to_lba_ps(curpos.w) + 150);
-=======
 	uint8_t track = cdrom_get_track(m_cdrom_handle, msf_to_lba_ps(curpos.w) + 150);
->>>>>>> upstream/master
 
 	if(cdrom_get_track_type(m_cdrom_handle, track) != CD_TRACK_AUDIO)
 		verboselog(*this, 0, "psxcd: playing data track\n");
@@ -1337,11 +1160,7 @@ void psxcd_device::start_play()
 
 	next_sector_t+=cyc>>1;
 
-<<<<<<< HEAD
-	next_read_event = add_system_event(event_play_sector, next_sector_t - m_maincpu->total_cycles(), NULL);
-=======
 	next_read_event = add_system_event(event_play_sector, next_sector_t - m_maincpu->total_cycles(), nullptr);
->>>>>>> upstream/master
 }
 
 void psxcd_device::stop_read()
@@ -1358,11 +1177,7 @@ void psxcd_device::stop_read()
 		next_read_event = -1;
 	}
 
-<<<<<<< HEAD
-	UINT32 sector=msf_to_lba_ps(curpos.w);
-=======
 	uint32_t sector=msf_to_lba_ps(curpos.w);
->>>>>>> upstream/master
 	m_spu->flush_xa(sector);
 	m_spu->flush_cdda(sector);
 }
@@ -1401,17 +1216,10 @@ void psxcd_device::device_timer(emu_timer &timer, device_timer_id tid, int param
 	}
 }
 
-<<<<<<< HEAD
-int psxcd_device::add_system_event(int type, UINT64 t, command_result *ptr)
-{
-	// t is in maincpu clock cycles
-	UINT32 hz = m_sysclock / t;
-=======
 int psxcd_device::add_system_event(int type, uint64_t t, command_result *ptr)
 {
 	// t is in maincpu clock cycles
 	uint32_t hz = m_sysclock / t;
->>>>>>> upstream/master
 	for(int i = 0; i < MAX_PSXCD_TIMERS; i++)
 	{
 		if(!m_timerinuse[i])
@@ -1444,19 +1252,6 @@ ROM_START( psxcd )
 	 * SCPH-1001, 3000, 3500, 5003, 5502, 5503, 7000W, 7001, 7002, 7003, 7503, 9003, 100, 101, 102 and 103.
 	 */
 
-<<<<<<< HEAD
-	ROM_SYSTEM_BIOS( 0, "SCPH-1000-later", "SCPH-1000 NTSC:J (Later Ver.) [424660]" )
-	ROMX_LOAD( "424660.bin", 0x0000, 0x4200, CRC(f82a2a46) SHA1(095434948d4c71cdfaa069e91053443887a6d139), ROM_BIOS(1) )
-
-	ROM_SYSTEM_BIOS( 1, "SCPH-1000-early", "SCPH-1000 NTSC:J (Early Ver.) [424666]" )
-	ROMX_LOAD( "424666.bin", 0x0000, 0x4200, CRC(60bc954e) SHA1(80674353daf95ffb4bd15cc4bb8cfa713370dd45), ROM_BIOS(2) )
-
-	ROM_SYSTEM_BIOS( 2, "SCPH-1002-early", "SCPH-1002 PAL (Early PU-8) [424684]" )
-	ROMX_LOAD( "424684.bin", 0x0000, 0x4200, CRC(84d46b2a) SHA1(9b06b1d407b784095ddbd45aeabafd689d2ee347), ROM_BIOS(3) )
-
-	/* Chip markings: C 1021 / SC430916PB / G63C 185 / JSAB9624F */
-	ROM_SYSTEM_BIOS( 3, "SCPH-5000", "SCPH-5000 NTSC:J [SC430916]" )
-=======
 	ROM_SYSTEM_BIOS( 0, "scph-1000-later", "SCPH-1000 NTSC:J (Later Ver.) [424660]" )
 	ROMX_LOAD( "424660.bin", 0x0000, 0x4200, CRC(f82a2a46) SHA1(095434948d4c71cdfaa069e91053443887a6d139), ROM_BIOS(1) )
 
@@ -1468,55 +1263,15 @@ ROM_START( psxcd )
 
 	/* Chip markings: C 1021 / SC430916PB / G63C 185 / JSAB9624F */
 	ROM_SYSTEM_BIOS( 3, "scph-5000", "SCPH-5000 NTSC:J [SC430916]" )
->>>>>>> upstream/master
 	ROMX_LOAD( "sc430916.s19", 0x0000, 0xb195, CRC(487c8a40) SHA1(0ae8348fb43ab80845b0166494edc3e1565a3ef7), ROM_BIOS(4) )
 
 	/* Chip markings: C 1030 / SC430925PB / G63C 185 / JSBK9708C
 	   Board Type: PU-18 / 1-664-537-11 */
-<<<<<<< HEAD
-	ROM_SYSTEM_BIOS( 4, "SCPH-5500", "SCPH-5500 NTSC:J [SC430925]" )
-=======
 	ROM_SYSTEM_BIOS( 4, "scph-5500", "SCPH-5500 NTSC:J [SC430925]" )
->>>>>>> upstream/master
 	ROMX_LOAD( "sc430925.s19", 0x0000, 0xb195, CRC(c09aa0c2) SHA1(b9ad66cc8ea4d6e2eb2709ffb77c9647f679097a), ROM_BIOS(5) )
 
 	/* Chip markings: C 2030 / SC430930PB / G63C 185 / SSJZ9748A
 	   Board Type: PU-18 / 1-664-537-62 */
-<<<<<<< HEAD
-	ROM_SYSTEM_BIOS( 5, "SCPH-5501", "SCPH-5501 NTSC:U/C [SC430930]" )
-	ROMX_LOAD( "sc430930.s19", 0x0000, 0xb195, CRC(587b84c2) SHA1(556c3adc37e4eb64fd463c54f7a310c483e0e835), ROM_BIOS(6) )
-
-	/* ROM dump is the same as SCPH-5552 */
-	ROM_SYSTEM_BIOS( 6, "SCPH-5502", "SCPH-5502 PAL [SC430929]" )
-	ROMX_LOAD( "sc430929.bin", 0x0000, 0x4200, CRC(ba87a3e0) SHA1(f23458d13a518616a8592b8ddd668c052bc9be5a), ROM_BIOS(7) )
-
-	ROM_SYSTEM_BIOS( 7, "SCPH-5903", "SCPH-5903 NTSC:J [SC430924PB]" )
-	ROMX_LOAD( "sc430924.s19", 0x0000, 0xb195, CRC(dbe694b2) SHA1(ac72cb616b1449fe29e52faf6aad389118852d73), ROM_BIOS(8) )
-
-	/* Chip markings: C 1040 / SC430934PB / G63C 185 / SSDG9745D */
-	ROM_SYSTEM_BIOS( 8, "SCPH-7000", "SCPH-7000 NTSC:J [SC430934]" )
-	ROMX_LOAD( "sc430934.s19", 0x0000, 0xb195, CRC(6443740c) SHA1(d9734c7135c75dbe7733079a2d4244a28c9e966e), ROM_BIOS(9) )
-
-	/* Chip markings: C 1050 / SC430938PB / G63C 185 / SSAM9850C */
-	ROM_SYSTEM_BIOS( 9, "SCPH-7500", "SCPH-7500 NTSC:J [SC430938]" )
-	ROMX_LOAD( "sc430938.s19", 0x0000, 0xb195, CRC(9744977a) SHA1(f017d34a98a8a023f6752ba9ed749bb9e2b836d5), ROM_BIOS(10) )
-
-	/* Chip markings: C 2050 / SC430940PB / G63C 185 / SSDL9838A */
-	ROM_SYSTEM_BIOS( 10, "SCPH-7501", "SCPH-7501 NTSC:U/C [SC430940]" )
-	ROMX_LOAD( "sc430940.s19", 0x0000, 0xb195, CRC(fd1c6ee7) SHA1(e72b5093a3e25de1548be7668179ff3e001e3ec5), ROM_BIOS(11) )
-
-	ROM_SYSTEM_BIOS( 11, "SCPH-7502", "SCPH-7502 PAL [SC430939]" )
-	ROMX_LOAD( "sc430939.bin", 0x0000, 0x4200, CRC(9eafb045) SHA1(25d98454e567e064c06f840d57f763fb7c8b7219), ROM_BIOS(12) )
-
-	ROM_SYSTEM_BIOS( 12, "SCPH-9000", "SCPH-9000 NTSC:J [SC430942]" )
-	ROMX_LOAD( "sc430942.bin", 0x0000, 0x4200, NO_DUMP, ROM_BIOS(13) )
-
-	/* Chip markings: C 2060 / SC430944PB / G63C 185 / SSBR9924C */
-	ROM_SYSTEM_BIOS( 13, "SCPH-9001", "SCPH-9001 NTSC:U/C [SC430944]" )
-	ROMX_LOAD( "sc430944.s19", 0x0000, 0xb195, CRC(24011dfd) SHA1(db72ba02466942d1a1a07c4d855edd18f84de92e), ROM_BIOS(14) )
-
-	ROM_SYSTEM_BIOS( 14, "SCPH-9002", "SCPH-9002 PAL [SC430943]" )
-=======
 	ROM_SYSTEM_BIOS( 5, "scph-5501", "SCPH-5501 NTSC:U/C [SC430930]" )
 	ROMX_LOAD( "sc430930.s19", 0x0000, 0xb195, CRC(587b84c2) SHA1(556c3adc37e4eb64fd463c54f7a310c483e0e835), ROM_BIOS(6) )
 
@@ -1550,7 +1305,6 @@ ROM_START( psxcd )
 	ROMX_LOAD( "sc430944.s19", 0x0000, 0xb195, CRC(24011dfd) SHA1(db72ba02466942d1a1a07c4d855edd18f84de92e), ROM_BIOS(14) )
 
 	ROM_SYSTEM_BIOS( 14, "scph-9002", "SCPH-9002 PAL [SC430943]" )
->>>>>>> upstream/master
 	ROMX_LOAD( "sc430943.bin", 0x0000, 0x4200, CRC(2669a1a7) SHA1(62999e7f8429f381e19d44d2399b6017959f4f13), ROM_BIOS(15) )
 
 	/* Development PlayStation CD-ROM Firmware:
@@ -1564,19 +1318,11 @@ ROM_START( psxcd )
 	 * code is "for US/AEP", so it may be the same for all the
 	 * debug consoles.
 	 */
-<<<<<<< HEAD
-	ROM_SYSTEM_BIOS( 15, "DTL-H1202", "DTL-H1202 PAL [SC430920]" )
-	ROMX_LOAD( "sc430920.s19", 0x0000, 0xb195, CRC(8380a5a2) SHA1(6fe45fd6fb96b12a25a45f39b5efd0be5e3f3e86), ROM_BIOS(16) )
-ROM_END
-
-const rom_entry *psxcd_device::device_rom_region() const
-=======
 	ROM_SYSTEM_BIOS( 15, "dtl-h1202", "DTL-H1202 PAL [SC430920]" )
 	ROMX_LOAD( "sc430920.s19", 0x0000, 0xb195, CRC(8380a5a2) SHA1(6fe45fd6fb96b12a25a45f39b5efd0be5e3f3e86), ROM_BIOS(16) )
 ROM_END
 
 const tiny_rom_entry *psxcd_device::device_rom_region() const
->>>>>>> upstream/master
 {
 	return ROM_NAME( psxcd );
 }

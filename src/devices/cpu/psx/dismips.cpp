@@ -11,31 +11,6 @@
 #include "psx.h"
 
 extern CPU_DISASSEMBLE( r3000le );
-<<<<<<< HEAD
-extern unsigned dasmmips3(char *,unsigned, UINT32);
-
-static struct
-{
-	UINT8 id[ 8 ];
-	UINT32 text;    /* SCE only */
-	UINT32 data;    /* SCE only */
-	UINT32 pc0;
-	UINT32 gp0;     /* SCE only */
-	UINT32 t_addr;
-	UINT32 t_size;
-	UINT32 d_addr;  /* SCE only */
-	UINT32 d_size;  /* SCE only */
-	UINT32 b_addr;  /* SCE only */
-	UINT32 b_size;  /* SCE only */
-	UINT32 s_addr;
-	UINT32 s_size;
-	UINT32 SavedSP;
-	UINT32 SavedFP;
-	UINT32 SavedGP;
-	UINT32 SavedRA;
-	UINT32 SavedS0;
-	UINT8 dummy[ 0x800 - 76 ];
-=======
 
 static struct
 {
@@ -58,7 +33,6 @@ static struct
 	uint32_t SavedRA;
 	uint32_t SavedS0;
 	uint8_t dummy[ 0x800 - 76 ];
->>>>>>> upstream/master
 } m_psxexe_header;
 
 #define FORMAT_BIN ( 0 )
@@ -68,15 +42,9 @@ static struct
 #define CPU_R3000 ( 1 )
 #define CPU_R4000 ( 2 )
 
-<<<<<<< HEAD
-static UINT8 *filebuf;
-static UINT32 offset;
-static UINT8 order[] = { 0, 1, 2, 3 };
-=======
 static uint8_t *filebuf;
 static uint32_t offset;
 static uint8_t order[] = { 0, 1, 2, 3 };
->>>>>>> upstream/master
 
 static const char *const Options[]=
 {
@@ -101,23 +69,6 @@ static void usage (void)
 int main( int argc, char *argv[] )
 {
 	FILE *f;
-<<<<<<< HEAD
-	UINT8 i;
-	UINT8 j;
-	UINT8 n;
-	UINT8 p;
-	UINT32 begin;
-	UINT32 end;
-	UINT32 filelen;
-	UINT32 len;
-	UINT32 pc;
-	char buffer[ 80 ];
-	char *filename;
-	UINT32 format;
-	UINT32 cpu;
-
-	filename = NULL;
-=======
 	uint8_t i;
 	uint8_t j;
 	uint8_t n;
@@ -133,7 +84,6 @@ int main( int argc, char *argv[] )
 	uint32_t cpu;
 
 	filename = nullptr;
->>>>>>> upstream/master
 	begin = 0;
 	end = 0xffffffff;
 	format = FORMAT_BIN;
@@ -304,11 +254,7 @@ int main( int argc, char *argv[] )
 
 	fseek (f,begin,SEEK_SET);
 	len=(filelen>end)? (end-begin+1):(filelen-begin);
-<<<<<<< HEAD
-	filebuf=(UINT8 *)malloc(len+16);
-=======
 	filebuf=(uint8_t *)malloc(len+16);
->>>>>>> upstream/master
 	if (!filebuf)
 	{
 		printf ("Memory allocation error\n");
@@ -328,17 +274,10 @@ int main( int argc, char *argv[] )
 	pc = 0;
 	while( pc < len )
 	{
-<<<<<<< HEAD
-		UINT8 op0 = filebuf[ pc + order[ 0 ] ];
-		UINT8 op1 = filebuf[ pc + order[ 1 ] ];
-		UINT8 op2 = filebuf[ pc + order[ 2 ] ];
-		UINT8 op3 = filebuf[ pc + order[ 3 ] ];
-=======
 		uint8_t op0 = filebuf[ pc + order[ 0 ] ];
 		uint8_t op1 = filebuf[ pc + order[ 1 ] ];
 		uint8_t op2 = filebuf[ pc + order[ 2 ] ];
 		uint8_t op3 = filebuf[ pc + order[ 3 ] ];
->>>>>>> upstream/master
 		filebuf[ pc + 0 ] = op0;
 		filebuf[ pc + 1 ] = op1;
 		filebuf[ pc + 2 ] = op2;
@@ -353,16 +292,6 @@ int main( int argc, char *argv[] )
 		switch( cpu )
 		{
 		case CPU_PSX:
-<<<<<<< HEAD
-			i = DasmPSXCPU( NULL, buffer, pc + offset, filebuf + pc );
-			break;
-		case CPU_R3000:
-			{
-				legacy_cpu_device *device = NULL;
-				int options = 0;
-				UINT8 *opram = filebuf + pc;
-				UINT8 *oprom = opram;
-=======
 			i = DasmPSXCPU( nullptr, buffer, pc + offset, filebuf + pc );
 			break;
 		case CPU_R3000:
@@ -371,19 +300,13 @@ int main( int argc, char *argv[] )
 				int options = 0;
 				uint8_t *opram = filebuf + pc;
 				uint8_t *oprom = opram;
->>>>>>> upstream/master
 				i = CPU_DISASSEMBLE_CALL( r3000le );
 			}
 			break;
 		case CPU_R4000:
 			{
-<<<<<<< HEAD
-				UINT8 *opram = filebuf + pc;
-				UINT32 op = ( opram[ 3 ] << 24 ) | ( opram[ 2 ] << 16 ) | ( opram[ 1 ] << 8 ) | ( opram[ 0 ] << 0 );
-=======
 				uint8_t *opram = filebuf + pc;
 				uint32_t op = ( opram[ 3 ] << 24 ) | ( opram[ 2 ] << 16 ) | ( opram[ 1 ] << 8 ) | ( opram[ 0 ] << 0 );
->>>>>>> upstream/master
 				i = dasmmips3( buffer, pc + offset, op );
 			}
 			break;
@@ -407,34 +330,3 @@ int main( int argc, char *argv[] )
 	free (filebuf);
 	return 0;
 }
-<<<<<<< HEAD
-
-void *osd_malloc_array(size_t size)
-{
-	return osd_malloc(size);
-}
-
-void *malloc_array_file_line(size_t size, const char *file, int line)
-{
-	// allocate the memory and fail if we can't
-	return osd_malloc_array(size);
-}
-
-void free_file_line( void *memory, const char *file, int line )
-{
-	osd_free( memory );
-}
-
-void osd_free( void *memory )
-{
-#undef free
-	free( memory );
-}
-
-void *osd_malloc( size_t size )
-{
-#undef malloc
-	return malloc( size );
-}
-=======
->>>>>>> upstream/master

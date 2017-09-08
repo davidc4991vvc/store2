@@ -1,31 +1,17 @@
 // license:BSD-3-Clause
 // copyright-holders:Nicola Salmoria
-<<<<<<< HEAD
-#ifndef __TC0080VCO_H__
-#define __TC0080VCO_H__
-=======
 #ifndef MAME_VIDEO_TC0080VCO_H
 #define MAME_VIDEO_TC0080VCO_H
 
 #pragma once
->>>>>>> upstream/master
 
 class tc0080vco_device : public device_t
 {
 public:
-<<<<<<< HEAD
-	tc0080vco_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-	~tc0080vco_device() {}
-
-	// static configuration
-	static void static_set_gfxdecode_tag(device_t &device, const char *tag);
-	static void static_set_palette_tag(device_t &device, const char *tag);
-=======
 	tc0080vco_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	// static configuration
 	static void static_set_gfxdecode_tag(device_t &device, const char *tag);
->>>>>>> upstream/master
 	static void set_gfx_region(device_t &device, int gfxnum) { downcast<tc0080vco_device &>(device).m_gfxnum = gfxnum; }
 	static void set_tx_region(device_t &device, int txnum) { downcast<tc0080vco_device &>(device).m_txnum = txnum; }
 	static void set_offsets(device_t &device, int x_offset, int y_offset)
@@ -40,11 +26,7 @@ public:
 	DECLARE_WRITE16_MEMBER( word_w );
 
 	void tilemap_update();
-<<<<<<< HEAD
-	void tilemap_draw(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int layer, int flags, UINT32 priority);
-=======
 	void tilemap_draw(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int layer, int flags, uint32_t priority);
->>>>>>> upstream/master
 	void set_fg0_debug(bool debug) { m_has_fg0 = debug ? 0 : 1; }
 
 	DECLARE_READ16_MEMBER( cram_0_r );
@@ -57,36 +39,6 @@ public:
 
 protected:
 	// device-level overrides
-<<<<<<< HEAD
-	virtual void device_start();
-
-private:
-	// internal state
-	UINT16 *       m_ram;
-	UINT16 *       m_bg0_ram_0;
-	UINT16 *       m_bg0_ram_1;
-	UINT16 *       m_bg1_ram_0;
-	UINT16 *       m_bg1_ram_1;
-	UINT16 *       m_tx_ram_0;
-	UINT16 *       m_tx_ram_1;
-	UINT16 *       m_char_ram;
-	UINT16 *       m_bgscroll_ram;
-
-/* FIXME: This sprite related stuff still needs to be accessed in video/taito_h */
-	UINT16 *       m_chain_ram_0;
-	UINT16 *       m_chain_ram_1;
-	UINT16 *       m_spriteram;
-	UINT16 *       m_scroll_ram;
-
-	UINT16         m_bg0_scrollx;
-	UINT16         m_bg0_scrolly;
-	UINT16         m_bg1_scrollx;
-	UINT16         m_bg1_scrolly;
-
-	tilemap_t      *m_tilemap[3];
-
-	INT32          m_flipscreen;
-=======
 	virtual void device_start() override;
 
 private:
@@ -115,7 +67,6 @@ private:
 	tilemap_t      *m_tilemap[3];
 
 	int32_t          m_flipscreen;
->>>>>>> upstream/master
 
 	int            m_gfxnum;
 	int            m_txnum;
@@ -124,27 +75,15 @@ private:
 	int            m_has_fg0; // for debug, it can be enabled with set_fg0_debug(true)
 
 	required_device<gfxdecode_device> m_gfxdecode;
-<<<<<<< HEAD
-	required_device<palette_device> m_palette;
-=======
->>>>>>> upstream/master
 
 	TILE_GET_INFO_MEMBER(get_bg0_tile_info);
 	TILE_GET_INFO_MEMBER(get_bg1_tile_info);
 	TILE_GET_INFO_MEMBER(get_tx_tile_info);
-<<<<<<< HEAD
-	void bg0_tilemap_draw( screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int flags, UINT32 priority );
-	void bg1_tilemap_draw( screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int flags, UINT32 priority );
-};
-
-extern const device_type TC0080VCO;
-=======
 	void bg0_tilemap_draw( screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int flags, uint32_t priority );
 	void bg1_tilemap_draw( screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int flags, uint32_t priority );
 };
 
 DECLARE_DEVICE_TYPE(TC0080VCO, tc0080vco_device)
->>>>>>> upstream/master
 
 #define MCFG_TC0080VCO_GFX_REGION(_region) \
 	tc0080vco_device::set_gfx_region(*device, _region);
@@ -161,11 +100,4 @@ DECLARE_DEVICE_TYPE(TC0080VCO, tc0080vco_device)
 #define MCFG_TC0080VCO_GFXDECODE(_gfxtag) \
 	tc0080vco_device::static_set_gfxdecode_tag(*device, "^" _gfxtag);
 
-<<<<<<< HEAD
-#define MCFG_TC0080VCO_PALETTE(_palette_tag) \
-	tc0080vco_device::static_set_palette_tag(*device, "^" _palette_tag);
-
-#endif
-=======
 #endif // MAME_VIDEO_TC0080VCO_H
->>>>>>> upstream/master

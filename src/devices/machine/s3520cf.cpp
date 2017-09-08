@@ -24,11 +24,7 @@ TODO:
 //**************************************************************************
 
 // device type definition
-<<<<<<< HEAD
-const device_type S3520CF = &device_creator<s3520cf_device>;
-=======
 DEFINE_DEVICE_TYPE(S3520CF, s3520cf_device, "s3520cf", "Seiko Epson S-3520CF RTC")
->>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -39,16 +35,6 @@ DEFINE_DEVICE_TYPE(S3520CF, s3520cf_device, "s3520cf", "Seiko Epson S-3520CF RTC
 //  s3520cf_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-s3520cf_device::s3520cf_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, S3520CF, "S-3520CF RTC", tag, owner, clock, "s3520cf", __FILE__), m_dir(0), m_latch(0), m_reset_line(0), m_read_latch(0), m_current_cmd(0), m_cmd_stream_pos(0), m_rtc_addr(0), m_mode(0), m_sysr(0), m_rtc_state()
-{
-}
-
-void s3520cf_device::timer_callback()
-{
-	static const UINT8 dpm[12] = { 0x31, 0x28, 0x31, 0x30, 0x31, 0x30, 0x31, 0x31, 0x30, 0x31, 0x30, 0x31 };
-=======
 s3520cf_device::s3520cf_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, S3520CF, tag, owner, clock)
 	, m_dir(0), m_latch(0), m_reset_line(0), m_read_latch(0), m_current_cmd(0), m_cmd_stream_pos(0), m_rtc_addr(0), m_mode(0), m_sysr(0), m_rtc_state()
@@ -58,7 +44,6 @@ s3520cf_device::s3520cf_device(const machine_config &mconfig, const char *tag, d
 TIMER_CALLBACK_MEMBER(s3520cf_device::timer_callback)
 {
 	static constexpr uint8_t dpm[12] = { 0x31, 0x28, 0x31, 0x30, 0x31, 0x30, 0x31, 0x31, 0x30, 0x31, 0x30, 0x31 };
->>>>>>> upstream/master
 	int dpm_count;
 
 	m_rtc.sec++;
@@ -87,13 +72,6 @@ TIMER_CALLBACK_MEMBER(s3520cf_device::timer_callback)
 	if((m_rtc.year & 0xf0) >= 0xa0)             { m_rtc.year = 0; } //1901-2000 possible timeframe
 }
 
-<<<<<<< HEAD
-TIMER_CALLBACK( s3520cf_device::rtc_inc_callback )
-{
-	reinterpret_cast<s3520cf_device *>(ptr)->timer_callback();
-}
-=======
->>>>>>> upstream/master
 
 //-------------------------------------------------
 //  device_validity_check - perform validity checks
@@ -112,12 +90,8 @@ void s3520cf_device::device_validity_check(validity_checker &valid) const
 void s3520cf_device::device_start()
 {
 	/* let's call the timer callback every second for now */
-<<<<<<< HEAD
-	machine().scheduler().timer_pulse(attotime::from_hz(clock() / XTAL_32_768kHz), FUNC(rtc_inc_callback), 0, (void *)this);
-=======
 	m_timer = machine().scheduler().timer_alloc(timer_expired_delegate(FUNC(s3520cf_device::timer_callback), this));
 	m_timer->adjust(attotime::from_hz(clock() / XTAL_32_768kHz), 0, attotime::from_hz(clock() / XTAL_32_768kHz));
->>>>>>> upstream/master
 
 	system_time systime;
 	machine().base_datetime(systime);
@@ -145,15 +119,9 @@ void s3520cf_device::device_reset()
 //  rtc_read - used to route RTC reading registers
 //-------------------------------------------------
 
-<<<<<<< HEAD
-inline UINT8 s3520cf_device::rtc_read(UINT8 offset)
-{
-	UINT8 res;
-=======
 inline uint8_t s3520cf_device::rtc_read(uint8_t offset)
 {
 	uint8_t res;
->>>>>>> upstream/master
 
 	res = 0;
 
@@ -190,11 +158,7 @@ inline uint8_t s3520cf_device::rtc_read(uint8_t offset)
 	return res;
 }
 
-<<<<<<< HEAD
-inline void s3520cf_device::rtc_write(UINT8 offset,UINT8 data)
-=======
 inline void s3520cf_device::rtc_write(uint8_t offset,uint8_t data)
->>>>>>> upstream/master
 {
 	if(offset == 0xf)
 	{

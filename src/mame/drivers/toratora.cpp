@@ -4,13 +4,6 @@
 
 Tora Tora (c) 1980 Game Plan
 
-<<<<<<< HEAD
-driver by Nicola Salmoria
-
-TODO:
-- The game doesn't seem to work right. It also reads some unmapped memory
-  addresses, are the two things related? Missing ROMs? There's an empty
-=======
 driver by Nicola Salmoria, qwijibo
 
 deviations from schematics verified on set 2 pcb:
@@ -36,7 +29,6 @@ deviations from schematics verified on set 2 pcb:
 
 TODO:
 - The game reads some unmapped memory addresses, missing ROMs? There's an empty
->>>>>>> upstream/master
   socket for U3 on the board, which should map at 5000-57ff, however the
   game reads mostly from 4800-4fff, which would be U6 according to the
   schematics.
@@ -44,12 +36,9 @@ TODO:
 - The manual mentions dip switch settings and the schematics show the switches,
   the game reads them but ignores them, forcing 1C/1C and 3 lives.
   Maybe the dump is from a proto?
-<<<<<<< HEAD
-=======
   Set 2 dump does read dip switches, so likely not a proto.
 
 - Bullet and explosion audio frequencies seem incorrect
->>>>>>> upstream/master
 
 ***************************************************************************/
 
@@ -57,11 +46,8 @@ TODO:
 #include "cpu/m6800/m6800.h"
 #include "machine/6821pia.h"
 #include "sound/sn76477.h"
-<<<<<<< HEAD
-=======
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 class toratora_state : public driver_device
@@ -78,20 +64,11 @@ public:
 		m_pia_u3(*this, "pia_u3") { }
 
 	/* memory pointers */
-<<<<<<< HEAD
-	required_shared_ptr<UINT8> m_videoram;
-
-	/* video-related */
-	int        m_timer;
-	UINT8      m_last;
-	UINT8      m_clear_tv;
-=======
 	required_shared_ptr<uint8_t> m_videoram;
 
 	/* video-related */
 	int        m_timer;
 	uint8_t      m_clear_tv;
->>>>>>> upstream/master
 
 	/* devices */
 	required_device<cpu_device> m_maincpu;
@@ -103,20 +80,6 @@ public:
 	DECLARE_WRITE8_MEMBER(clear_tv_w);
 	DECLARE_READ8_MEMBER(timer_r);
 	DECLARE_WRITE8_MEMBER(clear_timer_w);
-<<<<<<< HEAD
-	DECLARE_WRITE_LINE_MEMBER(cb2_u3_w);
-	DECLARE_WRITE8_MEMBER(port_b_u1_w);
-	DECLARE_WRITE_LINE_MEMBER(main_cpu_irq);
-	DECLARE_WRITE8_MEMBER(sn1_port_a_u2_u3_w);
-	DECLARE_WRITE8_MEMBER(sn1_port_b_u2_u3_w);
-	DECLARE_WRITE_LINE_MEMBER(sn1_ca2_u2_u3_w);
-	DECLARE_WRITE8_MEMBER(sn2_port_a_u2_u3_w);
-	DECLARE_WRITE8_MEMBER(sn2_port_b_u2_u3_w);
-	DECLARE_WRITE_LINE_MEMBER(sn2_ca2_u2_u3_w);
-	virtual void machine_start();
-	virtual void machine_reset();
-	UINT32 screen_update_toratora(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
-=======
 	DECLARE_WRITE_LINE_MEMBER(cb2_u2_w);
 	DECLARE_WRITE8_MEMBER(port_b_u1_w);
 	DECLARE_WRITE_LINE_MEMBER(main_cpu_irq);
@@ -129,7 +92,6 @@ public:
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
 	uint32_t screen_update_toratora(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	INTERRUPT_GEN_MEMBER(toratora_timer);
 };
 
@@ -141,11 +103,7 @@ public:
  *
  *************************************/
 
-<<<<<<< HEAD
-WRITE_LINE_MEMBER(toratora_state::cb2_u3_w)
-=======
 WRITE_LINE_MEMBER(toratora_state::cb2_u2_w)
->>>>>>> upstream/master
 {
 	logerror("DIP tristate %sactive\n",(state & 1) ? "in" : "");
 }
@@ -157,11 +115,7 @@ WRITE_LINE_MEMBER(toratora_state::cb2_u2_w)
  *
  *************************************/
 
-<<<<<<< HEAD
-UINT32 toratora_state::screen_update_toratora(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
-=======
 uint32_t toratora_state::screen_update_toratora(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	offs_t offs;
 
@@ -169,15 +123,6 @@ uint32_t toratora_state::screen_update_toratora(screen_device &screen, bitmap_rg
 	{
 		int i;
 
-<<<<<<< HEAD
-		UINT8 y = offs >> 5;
-		UINT8 x = offs << 3;
-		UINT8 data = m_videoram[offs];
-
-		for (i = 0; i < 8; i++)
-		{
-			pen_t pen = (data & 0x80) ? rgb_t::white : rgb_t::black;
-=======
 		uint8_t y = offs >> 5;
 		uint8_t x = offs << 3;
 		uint8_t data = m_videoram[offs];
@@ -185,7 +130,6 @@ uint32_t toratora_state::screen_update_toratora(screen_device &screen, bitmap_rg
 		for (i = 0; i < 8; i++)
 		{
 			pen_t pen = (data & 0x80) ? rgb_t::white() : rgb_t::black();
->>>>>>> upstream/master
 			bitmap.pix32(y, x) = pen;
 
 			data = data << 1;
@@ -218,15 +162,9 @@ WRITE8_MEMBER(toratora_state::clear_tv_w)
 WRITE8_MEMBER(toratora_state::port_b_u1_w)
 {
 	if (m_pia_u1->port_b_z_mask() & 0x20)
-<<<<<<< HEAD
-		coin_counter_w(machine(), 0, 1);
-	else
-		coin_counter_w(machine(), 0, data & 0x20);
-=======
 		machine().bookkeeping().coin_counter_w(0, 1);
 	else
 		machine().bookkeeping().coin_counter_w(0, data & 0x20);
->>>>>>> upstream/master
 }
 
 
@@ -247,9 +185,6 @@ WRITE_LINE_MEMBER(toratora_state::main_cpu_irq)
 
 INTERRUPT_GEN_MEMBER(toratora_state::toratora_timer)
 {
-<<<<<<< HEAD
-	m_timer++;  /* timer counting at 16 Hz */
-=======
 	/* timer counting at 250 Hz. (500 Hz / 2 via U52.9).
 	 * U43 removed from circuit, U52.9 wired to U32.5) */
 	m_timer++;
@@ -257,20 +192,11 @@ INTERRUPT_GEN_MEMBER(toratora_state::toratora_timer)
 	/* U33 bit 0 routed to /IRQ line after inverting through U67.9 */
 	if(m_timer & 0x10)
 		m_maincpu->set_input_line(0, ASSERT_LINE);
->>>>>>> upstream/master
 
 	/* also, when the timer overflows (16 seconds) watchdog would kick in */
 	if (m_timer & 0x100)
 		popmessage("watchdog!");
 
-<<<<<<< HEAD
-	if (m_last != (ioport("INPUT")->read() & 0x0f))
-	{
-		m_last = ioport("INPUT")->read() & 0x0f;
-		generic_pulse_irq_line(device.execute(), 0, 1);
-	}
-=======
->>>>>>> upstream/master
 	m_pia_u1->porta_w(ioport("INPUT")->read() & 0x0f);
 	m_pia_u1->ca1_w(ioport("INPUT")->read() & 0x10);
 	m_pia_u1->ca2_w(ioport("INPUT")->read() & 0x20);
@@ -284,10 +210,7 @@ READ8_MEMBER(toratora_state::timer_r)
 WRITE8_MEMBER(toratora_state::clear_timer_w)
 {
 	m_timer = 0;
-<<<<<<< HEAD
-=======
 	m_maincpu->set_input_line(0, CLEAR_LINE);
->>>>>>> upstream/master
 }
 
 
@@ -298,31 +221,13 @@ WRITE8_MEMBER(toratora_state::clear_timer_w)
  *************************************/
 
 
-<<<<<<< HEAD
-WRITE8_MEMBER(toratora_state::sn1_port_a_u2_u3_w)
-=======
 WRITE8_MEMBER(toratora_state::sn1_port_a_u3_w)
->>>>>>> upstream/master
 {
 	m_sn1->vco_voltage_w(2.35 * (data & 0x7f) / 128.0);
 	m_sn1->enable_w((data >> 7) & 0x01);
 }
 
 
-<<<<<<< HEAD
-WRITE8_MEMBER(toratora_state::sn1_port_b_u2_u3_w)
-{
-	static const double resistances[] =
-	{
-		0,  /* N/C */
-		RES_K(47) + RES_K(47) + RES_K(91) + RES_K(200) + RES_K(360) + RES_K(750) + RES_M(1.5),
-		RES_K(47) + RES_K(47) + RES_K(91) + RES_K(200) + RES_K(360) + RES_K(750),
-		RES_K(47) + RES_K(47) + RES_K(91) + RES_K(200) + RES_K(360),
-		RES_K(47) + RES_K(47) + RES_K(91) + RES_K(200),
-		RES_K(47) + RES_K(47) + RES_K(91),
-		RES_K(47) + RES_K(47) + RES_K(91),
-		RES_K(47)
-=======
 WRITE8_MEMBER(toratora_state::sn1_port_b_u3_w)
 {
 	static const double resistances[] =
@@ -335,7 +240,6 @@ WRITE8_MEMBER(toratora_state::sn1_port_b_u3_w)
 		RES_K(10) + RES_K(10) + RES_K(24),
 		RES_K(10) + RES_K(10),
 		RES_INF
->>>>>>> upstream/master
 	};
 
 	m_sn1->mixer_a_w      ((data >> 0) & 0x01);
@@ -343,13 +247,6 @@ WRITE8_MEMBER(toratora_state::sn1_port_b_u3_w)
 	m_sn1->mixer_c_w      ((data >> 2) & 0x01);
 	m_sn1->envelope_1_w   ((data >> 3) & 0x01);
 	m_sn1->envelope_2_w   ((data >> 4) & 0x01);
-<<<<<<< HEAD
-	m_sn1->amplitude_res_w(resistances[(data >> 5)] * 2);  /* the *2 shouldn't be neccassary, but... */
-}
-
-
-WRITE_LINE_MEMBER(toratora_state::sn1_ca2_u2_u3_w)
-=======
 	m_sn1->slf_res_w(resistances[(data >> 5)]);
 
 	/*
@@ -364,36 +261,17 @@ WRITE_LINE_MEMBER(toratora_state::sn1_ca2_u2_u3_w)
 
 
 WRITE_LINE_MEMBER(toratora_state::sn1_ca2_u3_w)
->>>>>>> upstream/master
 {
 	m_sn1->vco_w(state);
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER(toratora_state::sn2_port_a_u2_u3_w)
-=======
 WRITE8_MEMBER(toratora_state::sn2_port_a_u2_w)
->>>>>>> upstream/master
 {
 	m_sn2->vco_voltage_w(2.35 * (data & 0x7f) / 128.0);
 	m_sn2->enable_w((data >> 7) & 0x01);
 }
 
 
-<<<<<<< HEAD
-WRITE8_MEMBER(toratora_state::sn2_port_b_u2_u3_w)
-{
-	static const double resistances[] =
-	{
-		0,  /* N/C */
-		RES_K(47) + RES_K(47) + RES_K(91) + RES_K(200) + RES_K(360) + RES_K(750) + RES_M(1.5),
-		RES_K(47) + RES_K(47) + RES_K(91) + RES_K(200) + RES_K(360) + RES_K(750),
-		RES_K(47) + RES_K(47) + RES_K(91) + RES_K(200) + RES_K(360),
-		RES_K(47) + RES_K(47) + RES_K(91) + RES_K(200),
-		RES_K(47) + RES_K(47) + RES_K(91),
-		RES_K(47) + RES_K(47) + RES_K(91),
-		RES_K(47)
-=======
 WRITE8_MEMBER(toratora_state::sn2_port_b_u2_w)
 {
 	static const double resistances[] =
@@ -406,7 +284,6 @@ WRITE8_MEMBER(toratora_state::sn2_port_b_u2_w)
 		RES_K(10) + RES_K(10) + RES_K(24),
 		RES_K(10) + RES_K(10),
 		RES_INF
->>>>>>> upstream/master
 	};
 
 	m_sn2->mixer_a_w      ((data >> 0) & 0x01);
@@ -414,13 +291,6 @@ WRITE8_MEMBER(toratora_state::sn2_port_b_u2_w)
 	m_sn2->mixer_c_w      ((data >> 2) & 0x01);
 	m_sn2->envelope_1_w   ((data >> 3) & 0x01);
 	m_sn2->envelope_2_w   ((data >> 4) & 0x01);
-<<<<<<< HEAD
-	m_sn2->amplitude_res_w(resistances[(data >> 5)] * 2);  /* the *2 shouldn't be neccassary, but... */
-}
-
-
-WRITE_LINE_MEMBER(toratora_state::sn2_ca2_u2_u3_w)
-=======
 	m_sn2->slf_res_w(resistances[(data >> 5)]);
 	m_sn2->slf_cap_voltage_w((data >> 5) == 0x7 ? 2.5 : sn76477_device::EXTERNAL_VOLTAGE_DISCONNECT);
 
@@ -430,7 +300,6 @@ WRITE_LINE_MEMBER(toratora_state::sn2_ca2_u2_u3_w)
 
 
 WRITE_LINE_MEMBER(toratora_state::sn2_ca2_u2_w)
->>>>>>> upstream/master
 {
 	m_sn2->vco_w(state);
 }
@@ -455,13 +324,8 @@ static ADDRESS_MAP_START( main_map, AS_PROGRAM, 8, toratora_state )
 	AM_RANGE(0xf04b, 0xf04b) AM_READWRITE(timer_r, clear_timer_w)
 	AM_RANGE(0xa04c, 0xf09f) AM_NOP
 	AM_RANGE(0xf0a0, 0xf0a3) AM_DEVREADWRITE("pia_u1", pia6821_device, read, write)
-<<<<<<< HEAD
-	AM_RANGE(0xf0a4, 0xf0a7) AM_DEVREADWRITE("pia_u3", pia6821_device, read, write)
-	AM_RANGE(0xf0a8, 0xf0ab) AM_DEVREADWRITE("pia_u2", pia6821_device, read, write)
-=======
 	AM_RANGE(0xf0a4, 0xf0a7) AM_DEVREADWRITE("pia_u2", pia6821_device, read, write)
 	AM_RANGE(0xf0a8, 0xf0ab) AM_DEVREADWRITE("pia_u3", pia6821_device, read, write)
->>>>>>> upstream/master
 	AM_RANGE(0xf0ac, 0xf7ff) AM_NOP
 	AM_RANGE(0xf800, 0xffff) AM_ROM
 ADDRESS_MAP_END
@@ -517,28 +381,12 @@ INPUT_PORTS_END
 void toratora_state::machine_start()
 {
 	save_item(NAME(m_timer));
-<<<<<<< HEAD
-	save_item(NAME(m_last));
-=======
->>>>>>> upstream/master
 	save_item(NAME(m_clear_tv));
 }
 
 void toratora_state::machine_reset()
 {
 	m_timer = 0xff;
-<<<<<<< HEAD
-	m_last = 0;
-	m_clear_tv = 0;
-}
-
-static MACHINE_CONFIG_START( toratora, toratora_state )
-
-	/* basic machine hardware */
-	MCFG_CPU_ADD("maincpu", M6800,500000)   /* ?????? game speed is entirely controlled by this */
-	MCFG_CPU_PROGRAM_MAP(main_map)
-	MCFG_CPU_PERIODIC_INT_DRIVER(toratora_state, toratora_timer, 16)    /* timer counting at 16 Hz */
-=======
 	m_clear_tv = 0;
 }
 
@@ -548,26 +396,12 @@ static MACHINE_CONFIG_START( toratora )
 	MCFG_CPU_ADD("maincpu", M6800, 5185000 / 8) /* 5.185 MHz XTAL divided by 8 (@ U94.12) */
 	MCFG_CPU_PROGRAM_MAP(main_map)
 	MCFG_CPU_PERIODIC_INT_DRIVER(toratora_state, toratora_timer, 250) /* timer counting at 250 Hz */
->>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("pia_u1", PIA6821, 0)
 	MCFG_PIA_WRITEPB_HANDLER(WRITE8(toratora_state,port_b_u1_w))
 	MCFG_PIA_IRQA_HANDLER(WRITELINE(toratora_state,main_cpu_irq))
 	MCFG_PIA_IRQB_HANDLER(WRITELINE(toratora_state,main_cpu_irq))
 
-<<<<<<< HEAD
-	MCFG_DEVICE_ADD("pia_u2", PIA6821, 0)
-	MCFG_PIA_WRITEPA_HANDLER(WRITE8(toratora_state, sn1_port_a_u2_u3_w))
-	MCFG_PIA_WRITEPB_HANDLER(WRITE8(toratora_state, sn1_port_b_u2_u3_w))
-	MCFG_PIA_CA2_HANDLER(WRITELINE(toratora_state, sn1_ca2_u2_u3_w))
-
-	MCFG_DEVICE_ADD("pia_u3", PIA6821, 0)
-	MCFG_PIA_READPB_HANDLER(IOPORT("DSW"))
-	MCFG_PIA_WRITEPA_HANDLER(WRITE8(toratora_state,sn2_port_a_u2_u3_w))
-	MCFG_PIA_WRITEPB_HANDLER(WRITE8(toratora_state,sn2_port_b_u2_u3_w))
-	MCFG_PIA_CA2_HANDLER(WRITELINE(toratora_state,sn2_ca2_u2_u3_w))
-	MCFG_PIA_CB2_HANDLER(WRITELINE(toratora_state,cb2_u3_w))
-=======
 	MCFG_DEVICE_ADD("pia_u3", PIA6821, 0)
 	MCFG_PIA_WRITEPA_HANDLER(WRITE8(toratora_state, sn1_port_a_u3_w))
 	MCFG_PIA_WRITEPB_HANDLER(WRITE8(toratora_state, sn1_port_b_u3_w))
@@ -579,7 +413,6 @@ static MACHINE_CONFIG_START( toratora )
 	MCFG_PIA_WRITEPB_HANDLER(WRITE8(toratora_state,sn2_port_b_u2_w))
 	MCFG_PIA_CA2_HANDLER(WRITELINE(toratora_state,sn2_ca2_u2_w))
 	MCFG_PIA_CB2_HANDLER(WRITELINE(toratora_state,cb2_u2_w))
->>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
@@ -593,17 +426,6 @@ static MACHINE_CONFIG_START( toratora )
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
 	MCFG_SOUND_ADD("sn1", SN76477, 0)
-<<<<<<< HEAD
-	MCFG_SN76477_NOISE_PARAMS(RES_K(47), RES_M(1.2) /* RES_K(120) */, CAP_P(470)) // noise + filter
-	MCFG_SN76477_DECAY_RES(RES_K(680))                   // decay_res
-	MCFG_SN76477_ATTACK_PARAMS(CAP_U(0.2),  RES_K(3.3))  // attack_decay_cap + attack_res
-	MCFG_SN76477_AMP_RES(0)                              // amplitude_res
-	MCFG_SN76477_FEEDBACK_RES(RES_K(50))                 // feedback_res
-	MCFG_SN76477_VCO_PARAMS(0, CAP_U(0.1), RES_K(51))    // VCO volt + cap + res
-	MCFG_SN76477_PITCH_VOLTAGE(5.0)                      // pitch_voltage
-	MCFG_SN76477_SLF_PARAMS(CAP_U(0.1), RES_K(470))      // slf caps + res
-	MCFG_SN76477_ONESHOT_PARAMS(CAP_U(0.1), RES_M(1))    // oneshot caps + res
-=======
 	MCFG_SN76477_NOISE_PARAMS(RES_K(47), RES_K(470), CAP_P(470)) // noise + filter
 	MCFG_SN76477_DECAY_RES(RES_M(2))                     // decay_res
 	MCFG_SN76477_ATTACK_PARAMS(CAP_U(0.2),  RES_K(3.3))  // attack_decay_cap + attack_res
@@ -613,7 +435,6 @@ static MACHINE_CONFIG_START( toratora )
 	MCFG_SN76477_PITCH_VOLTAGE(5.0)                      // pitch_voltage
 	MCFG_SN76477_SLF_PARAMS(CAP_U(1.0), RES_K(10))       // slf caps + res
 	MCFG_SN76477_ONESHOT_PARAMS(CAP_U(0.1), RES_K(100))  // oneshot caps + res
->>>>>>> upstream/master
 	MCFG_SN76477_VCO_MODE(0)                             // VCO mode
 	MCFG_SN76477_MIXER_PARAMS(0, 0, 0)                   // mixer A, B, C
 	MCFG_SN76477_ENVELOPE_PARAMS(0, 0)                   // envelope 1, 2
@@ -621,17 +442,6 @@ static MACHINE_CONFIG_START( toratora )
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
 
 	MCFG_SOUND_ADD("sn2", SN76477, 0)
-<<<<<<< HEAD
-	MCFG_SN76477_NOISE_PARAMS(RES_K(47), RES_M(1.2) /* RES_K(120) */, CAP_P(470)) // noise + filter
-	MCFG_SN76477_DECAY_RES(RES_K(680))                   // decay_res
-	MCFG_SN76477_ATTACK_PARAMS(CAP_U(0.2),  RES_K(3.3))  // attack_decay_cap + attack_res
-	MCFG_SN76477_AMP_RES(0)                              // amplitude_res
-	MCFG_SN76477_FEEDBACK_RES(RES_K(50))                 // feedback_res
-	MCFG_SN76477_VCO_PARAMS(0, CAP_U(0.1), RES_K(51))    // VCO volt + cap + res
-	MCFG_SN76477_PITCH_VOLTAGE(5.0)                      // pitch_voltage
-	MCFG_SN76477_SLF_PARAMS(CAP_U(0.1), RES_K(470))      // slf caps + res
-	MCFG_SN76477_ONESHOT_PARAMS(CAP_U(0.1), RES_M(1))    // oneshot caps + res
-=======
 	MCFG_SN76477_NOISE_PARAMS(RES_K(47), RES_K(470), CAP_P(470)) // noise + filter
 	MCFG_SN76477_DECAY_RES(RES_M(2))                     // decay_res
 	MCFG_SN76477_ATTACK_PARAMS(CAP_U(0.2),  RES_K(3.3))  // attack_decay_cap + attack_res
@@ -641,7 +451,6 @@ static MACHINE_CONFIG_START( toratora )
 	MCFG_SN76477_PITCH_VOLTAGE(5.0)                      // pitch_voltage
 	MCFG_SN76477_SLF_PARAMS(CAP_U(1.0), RES_K(10))       // slf caps + res
 	MCFG_SN76477_ONESHOT_PARAMS(CAP_U(0.1), RES_K(100))  // oneshot caps + res
->>>>>>> upstream/master
 	MCFG_SN76477_VCO_MODE(0)                             // VCO mode
 	MCFG_SN76477_MIXER_PARAMS(0, 0, 0)                   // mixer A, B, C
 	MCFG_SN76477_ENVELOPE_PARAMS(0, 0)                   // envelope 1, 2
@@ -713,10 +522,5 @@ ROM_END
  *
  *************************************/
 
-<<<<<<< HEAD
-GAME( 1980, toratora, 0,        toratora, toratora, driver_device, 0, ROT90, "Game Plan", "Tora Tora (prototype?)", MACHINE_NOT_WORKING | MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-GAME( 1980, toratorab,toratora, toratora, toratora, driver_device, 0, ROT90, "Game Plan", "Tora Tora (prototype?, set 2)", MACHINE_NOT_WORKING | MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1980, toratora, 0,        toratora, toratora, toratora_state, 0, ROT90, "Game Plan", "Tora Tora (prototype?)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
 GAME( 1980, toratorab,toratora, toratora, toratora, toratora_state, 0, ROT90, "Game Plan", "Tora Tora (set 2)",      MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

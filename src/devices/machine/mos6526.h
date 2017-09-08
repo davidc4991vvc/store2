@@ -55,20 +55,11 @@
 
 **********************************************************************/
 
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __MOS6526__
-#define __MOS6526__
-
-#include "emu.h"
-=======
 #ifndef MAME_MACHINE_MOS6526_H
 #define MAME_MACHINE_MOS6526_H
 
 #pragma once
 
->>>>>>> upstream/master
 
 
 
@@ -116,21 +107,6 @@ class mos6526_device :  public device_t,
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	mos6526_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, UINT32 variant, const char *shortname, const char *source);
-	mos6526_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	static void static_set_tod_clock(device_t &device, int clock) { downcast<mos6526_device &>(device).m_tod_clock = clock; }
-
-	template<class _Object> static devcb_base &set_irq_wr_callback(device_t &device, _Object object) { return downcast<mos6526_device &>(device).m_write_irq.set_callback(object); }
-	template<class _Object> static devcb_base &set_cnt_wr_callback(device_t &device, _Object object) { return downcast<mos6526_device &>(device).m_write_cnt.set_callback(object); }
-	template<class _Object> static devcb_base &set_sp_wr_callback(device_t &device, _Object object) { return downcast<mos6526_device &>(device).m_write_sp.set_callback(object); }
-	template<class _Object> static devcb_base &set_pa_rd_callback(device_t &device, _Object object) { return downcast<mos6526_device &>(device).m_read_pa.set_callback(object); }
-	template<class _Object> static devcb_base &set_pa_wr_callback(device_t &device, _Object object) { return downcast<mos6526_device &>(device).m_write_pa.set_callback(object); }
-	template<class _Object> static devcb_base &set_pb_rd_callback(device_t &device, _Object object) { return downcast<mos6526_device &>(device).m_read_pb.set_callback(object); }
-	template<class _Object> static devcb_base &set_pb_wr_callback(device_t &device, _Object object) { return downcast<mos6526_device &>(device).m_write_pb.set_callback(object); }
-	template<class _Object> static devcb_base &set_pc_wr_callback(device_t &device, _Object object) { return downcast<mos6526_device &>(device).m_write_pc.set_callback(object); }
-=======
 	mos6526_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	static void static_set_tod_clock(device_t &device, int clock) { downcast<mos6526_device &>(device).m_tod_clock = clock; }
@@ -143,20 +119,13 @@ public:
 	template <class Object> static devcb_base &set_pb_rd_callback(device_t &device, Object &&cb) { return downcast<mos6526_device &>(device).m_read_pb.set_callback(std::forward<Object>(cb)); }
 	template <class Object> static devcb_base &set_pb_wr_callback(device_t &device, Object &&cb) { return downcast<mos6526_device &>(device).m_write_pb.set_callback(std::forward<Object>(cb)); }
 	template <class Object> static devcb_base &set_pc_wr_callback(device_t &device, Object &&cb) { return downcast<mos6526_device &>(device).m_write_pc.set_callback(std::forward<Object>(cb)); }
->>>>>>> upstream/master
 
 	DECLARE_READ8_MEMBER( read );
 	DECLARE_WRITE8_MEMBER( write );
 
-<<<<<<< HEAD
-	UINT8 pa_r() { return m_pa; }
-	DECLARE_READ8_MEMBER( pa_r ) { return pa_r(); }
-	UINT8 pb_r() { return m_pb; }
-=======
 	uint8_t pa_r() { return m_pa; }
 	DECLARE_READ8_MEMBER( pa_r ) { return pa_r(); }
 	uint8_t pb_r() { return m_pb; }
->>>>>>> upstream/master
 	DECLARE_READ8_MEMBER( pb_r ) { return pb_r(); }
 
 	DECLARE_READ_LINE_MEMBER( sp_r ) { return m_sp; }
@@ -176,16 +145,6 @@ protected:
 		TYPE_5710
 	};
 
-<<<<<<< HEAD
-	// device-level overrides
-	virtual void device_start();
-	virtual void device_reset();
-	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
-	virtual void execute_run();
-
-	int m_icount;
-	int m_variant;
-=======
 	mos6526_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock, uint32_t variant);
 
 	// device-level overrides
@@ -196,35 +155,22 @@ protected:
 
 	int m_icount;
 	const int m_variant;
->>>>>>> upstream/master
 	int m_tod_clock;
 
 	inline void update_interrupt();
 	inline void update_pa();
 	inline void update_pb();
-<<<<<<< HEAD
-	inline void set_cra(UINT8 data);
-	inline void set_crb(UINT8 data);
-=======
 	inline void set_cra(uint8_t data);
 	inline void set_crb(uint8_t data);
->>>>>>> upstream/master
 	inline void serial_input();
 	inline void serial_output();
 	inline void clock_ta();
 	inline void clock_tb();
 	inline void clock_pipeline();
-<<<<<<< HEAD
-	inline UINT8 bcd_increment(UINT8 value);
-	virtual inline void clock_tod();
-	inline UINT8 read_tod(int offset);
-	inline void write_tod(int offset, UINT8 data);
-=======
 	inline uint8_t bcd_increment(uint8_t value);
 	virtual inline void clock_tod();
 	inline uint8_t read_tod(int offset);
 	inline void write_tod(int offset, uint8_t data);
->>>>>>> upstream/master
 	inline void synchronize();
 
 	devcb_write_line   m_write_irq;
@@ -240,28 +186,13 @@ protected:
 	bool m_irq;
 	int m_ir0;
 	int m_ir1;
-<<<<<<< HEAD
-	UINT8 m_icr;
-	UINT8 m_imr;
-=======
 	uint8_t m_icr;
 	uint8_t m_imr;
->>>>>>> upstream/master
 	bool m_icr_read;
 
 	// peripheral ports
 	int m_pc;
 	int m_flag;
-<<<<<<< HEAD
-	UINT8 m_pra;
-	UINT8 m_prb;
-	UINT8 m_ddra;
-	UINT8 m_ddrb;
-	UINT8 m_pa;
-	UINT8 m_pb;
-	UINT8 m_pa_in;
-	UINT8 m_pb_in;
-=======
 	uint8_t m_pra;
 	uint8_t m_prb;
 	uint8_t m_ddra;
@@ -270,18 +201,12 @@ protected:
 	uint8_t m_pb;
 	uint8_t m_pa_in;
 	uint8_t m_pb_in;
->>>>>>> upstream/master
 
 	// serial
 	int m_sp;
 	int m_cnt;
-<<<<<<< HEAD
-	UINT8 m_sdr;
-	UINT8 m_shift;
-=======
 	uint8_t m_sdr;
 	uint8_t m_shift;
->>>>>>> upstream/master
 	bool m_sdr_empty;
 	int m_bits;
 
@@ -306,20 +231,6 @@ protected:
 	int m_load_b1;
 	int m_load_b2;
 	int m_oneshot_b0;
-<<<<<<< HEAD
-	UINT16 m_ta;
-	UINT16 m_tb;
-	UINT16 m_ta_latch;
-	UINT16 m_tb_latch;
-	UINT8 m_cra;
-	UINT8 m_crb;
-
-	// time-of-day
-	int m_tod_count;
-	UINT32 m_tod;
-	UINT32 m_tod_latch;
-	UINT32 m_alarm;
-=======
 	uint16_t m_ta;
 	uint16_t m_tb;
 	uint16_t m_ta_latch;
@@ -332,7 +243,6 @@ protected:
 	uint32_t m_tod;
 	uint32_t m_tod_latch;
 	uint32_t m_alarm;
->>>>>>> upstream/master
 	bool m_tod_stopped;
 	bool m_tod_latched;
 	emu_timer *m_tod_timer;
@@ -344,11 +254,7 @@ protected:
 class mos6526a_device : public mos6526_device
 {
 public:
-<<<<<<< HEAD
-	mos6526a_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-=======
 	mos6526a_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
->>>>>>> upstream/master
 };
 
 
@@ -357,21 +263,13 @@ public:
 class mos8520_device : public mos6526_device
 {
 public:
-<<<<<<< HEAD
-	mos8520_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-=======
 	mos8520_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
->>>>>>> upstream/master
 
 	DECLARE_READ8_MEMBER( read );
 	DECLARE_WRITE8_MEMBER( write );
 
 protected:
-<<<<<<< HEAD
-	virtual inline void clock_tod();
-=======
 	virtual inline void clock_tod() override;
->>>>>>> upstream/master
 };
 
 
@@ -380,11 +278,7 @@ protected:
 class mos5710_device : public mos6526_device
 {
 public:
-<<<<<<< HEAD
-	mos5710_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-=======
 	mos5710_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
->>>>>>> upstream/master
 
 	//DECLARE_READ8_MEMBER( read );
 	//DECLARE_WRITE8_MEMBER( write );
@@ -392,20 +286,9 @@ public:
 
 
 // device type definition
-<<<<<<< HEAD
-extern const device_type MOS6526;
-extern const device_type MOS6526A;
-extern const device_type MOS8520;
-extern const device_type MOS5710;
-
-
-
-#endif
-=======
 DECLARE_DEVICE_TYPE(MOS6526,  mos6526_device)
 DECLARE_DEVICE_TYPE(MOS6526A, mos6526a_device)
 DECLARE_DEVICE_TYPE(MOS8520,  mos8520_device)
 DECLARE_DEVICE_TYPE(MOS5710,  mos5710_device)
 
 #endif // MAME_MACHINE_MOS6526_H
->>>>>>> upstream/master

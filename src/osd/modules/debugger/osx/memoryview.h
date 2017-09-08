@@ -10,10 +10,6 @@
 
 #import "debugview.h"
 
-<<<<<<< HEAD
-#include "emu.h"
-=======
->>>>>>> upstream/master
 #include "debug/dvmemory.h"
 
 #import <Cocoa/Cocoa.h>
@@ -44,12 +40,9 @@
 - (IBAction)showReverseViewToggle:(id)sender;
 - (IBAction)changeBytesPerLine:(id)sender;
 
-<<<<<<< HEAD
-=======
 - (void)saveConfigurationToNode:(util::xml::data_node *)node;
 - (void)restoreConfigurationFromNode:(util::xml::data_node const *)node;
 
->>>>>>> upstream/master
 - (void)insertActionItemsInMenu:(NSMenu *)menu atIndex:(NSInteger)index;
 - (void)insertSubviewItemsInMenu:(NSMenu *)menu atIndex:(NSInteger)index;
 

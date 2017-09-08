@@ -11,10 +11,6 @@
 
 #include "debugwin.h"
 
-<<<<<<< HEAD
-#include "emu.h"
-=======
->>>>>>> upstream/master
 
 #include "modules/lib/osdobj_common.h"
 
@@ -27,23 +23,6 @@ public:
 	~ui_metrics();
 
 	HFONT debug_font() const { return m_debug_font; }
-<<<<<<< HEAD
-	UINT32 debug_font_height() const { return m_debug_font_height; }
-	UINT32 debug_font_width() const { return m_debug_font_width; }
-	UINT32 debug_font_ascent() const { return m_debug_font_ascent; }
-
-	UINT32 hscroll_height() const { return m_hscroll_height; }
-	UINT32 vscroll_width() const { return m_vscroll_width; }
-
-private:
-	HFONT m_debug_font;
-	UINT32 m_debug_font_height;
-	UINT32 m_debug_font_width;
-	UINT32 m_debug_font_ascent;
-
-	UINT32 const m_hscroll_height;
-	UINT32 const m_vscroll_width;
-=======
 	uint32_t debug_font_height() const { return m_debug_font_height; }
 	uint32_t debug_font_width() const { return m_debug_font_width; }
 	uint32_t debug_font_ascent() const { return m_debug_font_ascent; }
@@ -59,7 +38,6 @@ private:
 
 	uint32_t const m_hscroll_height;
 	uint32_t const m_vscroll_width;
->>>>>>> upstream/master
 };
 
 #endif

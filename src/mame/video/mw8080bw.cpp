@@ -1,11 +1,6 @@
-<<<<<<< HEAD
-// license:???
-// copyright-holders:Michael Strutts, Nicola Salmoria, Tormod Tjaberg, Mirko Buffoni,Lee Taylor, Valerio Verrando, Marco Cassili, Zsolt Vasvari
-=======
 // license:BSD-3-Clause
 // copyright-holders:Nicola Salmoria, Tormod Tjaberg, Mirko Buffoni,Lee Taylor, Valerio Verrando, Zsolt Vasvari
 // thanks-to:Michael Strutts, Marco Cassili
->>>>>>> upstream/master
 /***************************************************************************
 
     Midway 8080-based black and white hardware
@@ -16,28 +11,16 @@
 #include "includes/mw8080bw.h"
 
 
-<<<<<<< HEAD
-UINT32 mw8080bw_state::screen_update_mw8080bw(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
-{
-	UINT8 x = 0;
-	UINT8 y = MW8080BW_VCOUNTER_START_NO_VBLANK;
-	UINT8 video_data = 0;
-=======
 uint32_t mw8080bw_state::screen_update_mw8080bw(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
 {
 	uint8_t x = 0;
 	uint8_t y = MW8080BW_VCOUNTER_START_NO_VBLANK;
 	uint8_t video_data = 0;
->>>>>>> upstream/master
 
 	while (1)
 	{
 		/* plot the current pixel */
-<<<<<<< HEAD
-		pen_t pen = (video_data & 0x01) ? rgb_t::white : rgb_t::black;
-=======
 		pen_t pen = (video_data & 0x01) ? rgb_t::white() : rgb_t::black();
->>>>>>> upstream/master
 		bitmap.pix32(y - MW8080BW_VCOUNTER_START_NO_VBLANK, x) = pen;
 
 		/* next pixel */
@@ -52,11 +35,7 @@ uint32_t mw8080bw_state::screen_update_mw8080bw(screen_device &screen, bitmap_rg
 
 			for (i = 0; i < 4; i++)
 			{
-<<<<<<< HEAD
-				pen = (video_data & 0x01) ? rgb_t::white : rgb_t::black;
-=======
 				pen = (video_data & 0x01) ? rgb_t::white() : rgb_t::black();
->>>>>>> upstream/master
 				bitmap.pix32(y - MW8080BW_VCOUNTER_START_NO_VBLANK, 256 + i) = pen;
 
 				video_data = video_data >> 1;
@@ -89,38 +68,6 @@ uint32_t mw8080bw_state::screen_update_mw8080bw(screen_device &screen, bitmap_rg
  *
  *************************************/
 
-<<<<<<< HEAD
-
-#define PHANTOM2_BOTTOM_TRENCH_DARK_RGB32_PEN    rgb_t::black
-#define PHANTOM2_BOTTOM_TRENCH_LIGHT_RGB32_PEN   rgb_t(0x5a, 0x5a, 0x5a)
-#define PHANTOM2_TOP_TRENCH_DARK_RGB32_PEN       rgb_t::black
-#define PHANTOM2_TOP_TRENCH_LIGHT_RGB32_PEN      rgb_t::white
-#define PHANTOM2_SIDE_TRENCH_DARK_RGB32_PEN      rgb_t::black
-#define PHANTOM2_SIDE_TRENCH_LIGHT_RGB32_PEN     rgb_t(0x72, 0x72, 0x72)
-
-
-UINT32 mw8080bw_state::screen_update_spcenctr(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
-{
-	UINT8 line_buf[256]; /* 256x1 bit RAM */
-
-	UINT8 x = 0;
-	UINT8 y = MW8080BW_VCOUNTER_START_NO_VBLANK;
-	UINT8 video_data = 0;
-	UINT8 draw_line = 0;
-	UINT8 draw_trench = 0;
-	UINT8 draw_floor = 0;
-	UINT8 width = m_spcenctr_trench_width;
-	UINT8 floor_width = width;
-	UINT8 center = m_spcenctr_trench_center;
-
-	memset(line_buf, 0, 256);
-
-	while (1)
-	{
-		/* plot the current pixel */
-		UINT8 bit = video_data & 0x01;
-		pen_t pen = bit ? rgb_t::white : rgb_t::black;
-=======
 /* video signals mixed via R2 open collector nand gates and 'brite' RC circuit
 
     * when /BRITE lo, cap C23 discharge rapidly, disabling Q2, overpowering all other video signals
@@ -176,7 +123,6 @@ uint32_t mw8080bw_state::screen_update_spcenctr(screen_device &screen, bitmap_rg
 		/* plot the current pixel */
 		uint8_t bit = video_data & 0x01;
 		pen_t pen = bit ? rgb_t::white() : rgb_t::black();
->>>>>>> upstream/master
 
 		/* possibly draw trench in the background, top of trench first */
 		if (!(width & 0x80) && draw_trench)
@@ -184,21 +130,13 @@ uint32_t mw8080bw_state::screen_update_spcenctr(screen_device &screen, bitmap_rg
 			line_buf[x] = draw_line;
 
 			if (!bit)
-<<<<<<< HEAD
-				pen = draw_line ? PHANTOM2_TOP_TRENCH_LIGHT_RGB32_PEN : PHANTOM2_TOP_TRENCH_DARK_RGB32_PEN;
-=======
 				pen = draw_line ? SPCENCTR_TOP_TRENCH_LIGHT_RGB32_PEN : SPCENCTR_TOP_TRENCH_DARK_RGB32_PEN;
->>>>>>> upstream/master
 		}
 		/* sides of trench? */
 		else if (!(floor_width & 0x80) && (draw_trench || draw_floor))
 		{
 			if (!bit)
-<<<<<<< HEAD
-				pen = line_buf[x] ? PHANTOM2_SIDE_TRENCH_LIGHT_RGB32_PEN : PHANTOM2_SIDE_TRENCH_DARK_RGB32_PEN;
-=======
 				pen = line_buf[x] ? SPCENCTR_SIDE_TRENCH_LIGHT_RGB32_PEN : SPCENCTR_SIDE_TRENCH_DARK_RGB32_PEN;
->>>>>>> upstream/master
 		}
 		/* bottom of trench? */
 		else if (draw_floor)
@@ -206,18 +144,12 @@ uint32_t mw8080bw_state::screen_update_spcenctr(screen_device &screen, bitmap_rg
 			line_buf[x] = line_buf[x - 1];
 
 			if (!bit)
-<<<<<<< HEAD
-				pen = line_buf[x] ? PHANTOM2_BOTTOM_TRENCH_LIGHT_RGB32_PEN : PHANTOM2_BOTTOM_TRENCH_DARK_RGB32_PEN;
-		}
-
-=======
 				pen = line_buf[x] ? SPCENCTR_BOTTOM_TRENCH_LIGHT_RGB32_PEN : SPCENCTR_BOTTOM_TRENCH_DARK_RGB32_PEN;
 		}
 
 		if(m_spcenctr_brightness > (pen & 0xff))
 			pen = rgb_t(m_spcenctr_brightness, m_spcenctr_brightness, m_spcenctr_brightness);
 
->>>>>>> upstream/master
 		bitmap.pix32(y - MW8080BW_VCOUNTER_START_NO_VBLANK, x) = pen;
 
 		center = center + 1;
@@ -232,20 +164,13 @@ uint32_t mw8080bw_state::screen_update_spcenctr(screen_device &screen, bitmap_rg
 		if (x == 0)
 		{
 			offs_t offs;
-<<<<<<< HEAD
-			UINT8 trench_control;
-=======
 			uint8_t trench_control;
->>>>>>> upstream/master
 
 			/* yes, flush out the shift register */
 			int i;
 
 			for (i = 0; i < 4; i++)
 			{
-<<<<<<< HEAD
-				pen = (video_data & 0x01) ? rgb_t::white : rgb_t::black;
-=======
 				if(video_data & 0x01)
 					pen = rgb_t::white();
 				else if(m_spcenctr_brightness)
@@ -253,7 +178,6 @@ uint32_t mw8080bw_state::screen_update_spcenctr(screen_device &screen, bitmap_rg
 				else
 					pen = rgb_t::black();
 
->>>>>>> upstream/master
 				bitmap.pix32(y - MW8080BW_VCOUNTER_START_NO_VBLANK, 256 + i) = pen;
 
 				video_data = video_data >> 1;
@@ -330,18 +254,6 @@ uint32_t mw8080bw_state::screen_update_spcenctr(screen_device &screen, bitmap_rg
 #define PHANTOM2_RGB32_CLOUD_PEN          rgb_t(0xc0, 0xc0, 0xc0)
 
 
-<<<<<<< HEAD
-UINT32 mw8080bw_state::screen_update_phantom2(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
-{
-	UINT8 x = 0;
-	UINT8 y = MW8080BW_VCOUNTER_START_NO_VBLANK;
-	UINT8 video_data = 0;
-	UINT8 cloud_data = 0;
-
-	UINT16 cloud_counter = m_phantom2_cloud_counter;
-
-	UINT8 *cloud_region = memregion("proms")->base();
-=======
 uint32_t mw8080bw_state::screen_update_phantom2(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
 {
 	uint8_t x = 0;
@@ -352,34 +264,21 @@ uint32_t mw8080bw_state::screen_update_phantom2(screen_device &screen, bitmap_rg
 	uint16_t cloud_counter = m_phantom2_cloud_counter;
 
 	uint8_t *cloud_region = memregion("proms")->base();
->>>>>>> upstream/master
 
 	while (1)
 	{
 		int load_shift_reg;
-<<<<<<< HEAD
-		UINT8 cloud_data_to_load = 0;
-		pen_t pen;
-
-		/* plot the current pixel */
-		UINT8 bit = video_data & 0x01;
-=======
 		uint8_t cloud_data_to_load = 0;
 		pen_t pen;
 
 		/* plot the current pixel */
 		uint8_t bit = video_data & 0x01;
->>>>>>> upstream/master
 
 		/* if background color, cloud gfx in the background */
 		if ((bit == 0) && (cloud_data & 0x01))
 			pen = PHANTOM2_RGB32_CLOUD_PEN;
 		else
-<<<<<<< HEAD
-			pen = bit ? rgb_t::white : rgb_t::black;
-=======
 			pen = bit ? rgb_t::white() : rgb_t::black();
->>>>>>> upstream/master
 
 		bitmap.pix32(y - MW8080BW_VCOUNTER_START_NO_VBLANK, x) = pen;
 
@@ -414,11 +313,7 @@ uint32_t mw8080bw_state::screen_update_phantom2(screen_device &screen, bitmap_rg
 
 			for (i = 0; i < 4; i++)
 			{
-<<<<<<< HEAD
-				pen = (video_data & 0x01) ? rgb_t::white : rgb_t::black;
-=======
 				pen = (video_data & 0x01) ? rgb_t::white() : rgb_t::black();
->>>>>>> upstream/master
 				bitmap.pix32(y - MW8080BW_VCOUNTER_START_NO_VBLANK, 256 + i) = pen;
 
 				video_data = video_data >> 1;
@@ -450,11 +345,7 @@ uint32_t mw8080bw_state::screen_update_phantom2(screen_device &screen, bitmap_rg
 }
 
 
-<<<<<<< HEAD
-void mw8080bw_state::screen_eof_phantom2(screen_device &screen, bool state)
-=======
 WRITE_LINE_MEMBER(mw8080bw_state::screen_vblank_phantom2)
->>>>>>> upstream/master
 {
 	// falling edge
 	if (!state)
@@ -476,30 +367,17 @@ WRITE_LINE_MEMBER(mw8080bw_state::screen_vblank_phantom2)
 
 /* the flip screen circuit is just a couple of relays on the monitor PCB */
 
-<<<<<<< HEAD
-UINT32 mw8080bw_state::screen_update_invaders(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
-{
-	UINT8 x = 0;
-	UINT8 y = MW8080BW_VCOUNTER_START_NO_VBLANK;
-	UINT8 video_data = 0;
-	UINT8 flip = m_flip_screen;
-=======
 uint32_t mw8080bw_state::screen_update_invaders(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
 {
 	uint8_t x = 0;
 	uint8_t y = MW8080BW_VCOUNTER_START_NO_VBLANK;
 	uint8_t video_data = 0;
 	uint8_t flip = m_flip_screen;
->>>>>>> upstream/master
 
 	while (1)
 	{
 		/* plot the current pixel */
-<<<<<<< HEAD
-		pen_t pen = (video_data & 0x01) ? rgb_t::white : rgb_t::black;
-=======
 		pen_t pen = (video_data & 0x01) ? rgb_t::white() : rgb_t::black();
->>>>>>> upstream/master
 
 		if (flip)
 			bitmap.pix32(MW8080BW_VBSTART - 1 - (y - MW8080BW_VCOUNTER_START_NO_VBLANK), MW8080BW_HPIXCOUNT - 1 - x) = pen;
@@ -518,11 +396,7 @@ uint32_t mw8080bw_state::screen_update_invaders(screen_device &screen, bitmap_rg
 
 			for (i = 0; i < 4; i++)
 			{
-<<<<<<< HEAD
-				pen = (video_data & 0x01) ? rgb_t::white : rgb_t::black;
-=======
 				pen = (video_data & 0x01) ? rgb_t::white() : rgb_t::black();
->>>>>>> upstream/master
 
 				if (flip)
 					bitmap.pix32(MW8080BW_VBSTART - 1 - (y - MW8080BW_VCOUNTER_START_NO_VBLANK), MW8080BW_HPIXCOUNT - 1 - (256 + i)) = pen;

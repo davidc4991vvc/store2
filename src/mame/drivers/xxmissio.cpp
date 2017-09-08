@@ -11,18 +11,12 @@ XX Mission (c) 1986 UPL
 *****************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/z80/z80.h"
-#include "sound/2203intf.h"
-#include "includes/xxmissio.h"
-=======
 #include "includes/xxmissio.h"
 
 #include "cpu/z80/z80.h"
 #include "sound/2203intf.h"
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 WRITE8_MEMBER(xxmissio_state::bank_sel_w)
@@ -32,11 +26,7 @@ WRITE8_MEMBER(xxmissio_state::bank_sel_w)
 
 CUSTOM_INPUT_MEMBER(xxmissio_state::status_r)
 {
-<<<<<<< HEAD
-	int bit_mask = (FPTR)param;
-=======
 	int bit_mask = (uintptr_t)param;
->>>>>>> upstream/master
 	return (m_status & bit_mask) ? 1 : 0;
 }
 
@@ -270,11 +260,7 @@ GFXDECODE_END
 
 /****************************************************************************/
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( xxmissio, xxmissio_state )
-=======
 static MACHINE_CONFIG_START( xxmissio )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80,12000000/4) /* 3.0MHz */
@@ -345,8 +331,4 @@ ROM_START( xxmissio )
 	ROM_LOAD16_BYTE( "xx11.4b", 0x0001,  0x8000, CRC(d9dd827c) SHA1(aea3a5abd871adf7f75ad4d6cc57eff0833135c7) )
 ROM_END
 
-<<<<<<< HEAD
-GAME( 1986, xxmissio, 0, xxmissio, xxmissio, driver_device, 0, ROT90, "UPL", "XX Mission", MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1986, xxmissio, 0, xxmissio, xxmissio, xxmissio_state, 0, ROT90, "UPL", "XX Mission", MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

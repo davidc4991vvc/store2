@@ -18,10 +18,7 @@
 #include "dvbpoints.h"
 #include "dvwpoints.h"
 #include "debugcpu.h"
-<<<<<<< HEAD
-=======
 #include "debugger.h"
->>>>>>> upstream/master
 #include <ctype.h>
 
 
@@ -35,22 +32,10 @@
 //-------------------------------------------------
 
 debug_view_source::debug_view_source(const char *name, device_t *device)
-<<<<<<< HEAD
-	: m_next(NULL),
-		m_name(name),
-		m_device(device),
-		m_is_octal(false)
-{
-	device_execute_interface *intf;
-	if (device && device->interface(intf))
-		m_is_octal = intf->is_octal();
-
-=======
 	: m_next(nullptr),
 		m_name(name),
 		m_device(device)
 {
->>>>>>> upstream/master
 }
 
 
@@ -78,15 +63,9 @@ debug_view_source::~debug_view_source()
 //-------------------------------------------------
 
 debug_view::debug_view(running_machine &machine, debug_view_type type, debug_view_osd_update_func osdupdate, void *osdprivate)
-<<<<<<< HEAD
-	: m_next(NULL),
-		m_type(type),
-		m_source(NULL),
-=======
 	: m_next(nullptr),
 		m_type(type),
 		m_source(nullptr),
->>>>>>> upstream/master
 		m_osdupdate(osdupdate),
 		m_osdprivate(osdprivate),
 		m_visible(80,10),
@@ -150,11 +129,7 @@ void debug_view::end_update()
 
 void debug_view::flush_osd_updates()
 {
-<<<<<<< HEAD
-	if (m_osd_update_pending && m_osdupdate != NULL)
-=======
 	if (m_osd_update_pending && m_osdupdate != nullptr)
->>>>>>> upstream/master
 		(*m_osdupdate)(*this, m_osdprivate);
 	m_osd_update_pending = false;
 }
@@ -257,15 +232,9 @@ void debug_view::set_source(const debug_view_source &source)
 
 const debug_view_source *debug_view::source_for_device(device_t *device) const
 {
-<<<<<<< HEAD
-	for (debug_view_source *source = m_source_list.first(); source != NULL; source = source->next())
-		if (device == source->device())
-			return source;
-=======
 	for (debug_view_source &source : m_source_list)
 		if (device == source.device())
 			return &source;
->>>>>>> upstream/master
 	return m_source_list.first();
 }
 
@@ -343,11 +312,7 @@ void debug_view::view_click(const int button, const debug_view_xy& pos)
 
 debug_view_manager::debug_view_manager(running_machine &machine)
 	: m_machine(machine),
-<<<<<<< HEAD
-		m_viewlist(NULL)
-=======
 		m_viewlist(nullptr)
->>>>>>> upstream/master
 {
 }
 
@@ -358,19 +323,11 @@ debug_view_manager::debug_view_manager(running_machine &machine)
 
 debug_view_manager::~debug_view_manager()
 {
-<<<<<<< HEAD
-	while (m_viewlist != NULL)
-	{
-		debug_view *oldhead = m_viewlist;
-		m_viewlist = oldhead->m_next;
-		auto_free(machine(), oldhead);
-=======
 	while (m_viewlist != nullptr)
 	{
 		debug_view *oldhead = m_viewlist;
 		m_viewlist = oldhead->m_next;
 		global_free(oldhead);
->>>>>>> upstream/master
 	}
 }
 
@@ -384,33 +341,6 @@ debug_view *debug_view_manager::alloc_view(debug_view_type type, debug_view_osd_
 	switch (type)
 	{
 		case DVT_CONSOLE:
-<<<<<<< HEAD
-			return append(auto_alloc(machine(), debug_view_console(machine(), osdupdate, osdprivate)));
-
-		case DVT_STATE:
-			return append(auto_alloc(machine(), debug_view_state(machine(), osdupdate, osdprivate)));
-
-		case DVT_DISASSEMBLY:
-			return append(auto_alloc(machine(), debug_view_disasm(machine(), osdupdate, osdprivate)));
-
-		case DVT_MEMORY:
-			return append(auto_alloc(machine(), debug_view_memory(machine(), osdupdate, osdprivate)));
-
-		case DVT_LOG:
-			return append(auto_alloc(machine(), debug_view_log(machine(), osdupdate, osdprivate)));
-
-		case DVT_TIMERS:
-//          return append(auto_alloc(machine(), debug_view_timers(machine(), osdupdate, osdprivate)));
-
-		case DVT_ALLOCS:
-//          return append(auto_alloc(machine(), debug_view_allocs(machine(), osdupdate, osdprivate)));
-
-		case DVT_BREAK_POINTS:
-			return append(auto_alloc(machine(), debug_view_breakpoints(machine(), osdupdate, osdprivate)));
-
-		case DVT_WATCH_POINTS:
-			return append(auto_alloc(machine(), debug_view_watchpoints(machine(), osdupdate, osdprivate)));
-=======
 			return append(global_alloc(debug_view_console(machine(), osdupdate, osdprivate)));
 
 		case DVT_STATE:
@@ -430,16 +360,11 @@ debug_view *debug_view_manager::alloc_view(debug_view_type type, debug_view_osd_
 
 		case DVT_WATCH_POINTS:
 			return append(global_alloc(debug_view_watchpoints(machine(), osdupdate, osdprivate)));
->>>>>>> upstream/master
 
 		default:
 			fatalerror("Attempt to create invalid debug view type %d\n", type);
 	}
-<<<<<<< HEAD
-	return NULL;
-=======
 	return nullptr;
->>>>>>> upstream/master
 }
 
 
@@ -450,19 +375,11 @@ debug_view *debug_view_manager::alloc_view(debug_view_type type, debug_view_osd_
 void debug_view_manager::free_view(debug_view &view)
 {
 	// free us but only if we're in the list
-<<<<<<< HEAD
-	for (debug_view **viewptr = &m_viewlist; *viewptr != NULL; viewptr = &(*viewptr)->m_next)
-		if (*viewptr == &view)
-		{
-			*viewptr = view.m_next;
-			auto_free(machine(), &view);
-=======
 	for (debug_view **viewptr = &m_viewlist; *viewptr != nullptr; viewptr = &(*viewptr)->m_next)
 		if (*viewptr == &view)
 		{
 			*viewptr = view.m_next;
 			global_free(&view);
->>>>>>> upstream/master
 			break;
 		}
 }
@@ -476,11 +393,7 @@ void debug_view_manager::free_view(debug_view &view)
 void debug_view_manager::update_all_except(debug_view_type type)
 {
 	// loop over each view and force an update
-<<<<<<< HEAD
-	for (debug_view *view = m_viewlist; view != NULL; view = view->next())
-=======
 	for (debug_view *view = m_viewlist; view != nullptr; view = view->next())
->>>>>>> upstream/master
 		if (type == DVT_NONE || type != view->type())
 			view->force_update();
 }
@@ -493,11 +406,7 @@ void debug_view_manager::update_all_except(debug_view_type type)
 void debug_view_manager::update_all(debug_view_type type)
 {
 	// loop over each view and force an update
-<<<<<<< HEAD
-	for (debug_view *view = m_viewlist; view != NULL; view = view->next())
-=======
 	for (debug_view *view = m_viewlist; view != nullptr; view = view->next())
->>>>>>> upstream/master
 		if (type == DVT_NONE || type == view->type())
 			view->force_update();
 }
@@ -510,11 +419,7 @@ void debug_view_manager::update_all(debug_view_type type)
 
 void debug_view_manager::flush_osd_updates()
 {
-<<<<<<< HEAD
-	for (debug_view *view = m_viewlist; view != NULL; view = view->m_next)
-=======
 	for (debug_view *view = m_viewlist; view != nullptr; view = view->m_next)
->>>>>>> upstream/master
 		view->flush_osd_updates();
 }
 
@@ -526,11 +431,7 @@ void debug_view_manager::flush_osd_updates()
 debug_view *debug_view_manager::append(debug_view *view)
 {
 	debug_view **viewptr;
-<<<<<<< HEAD
-	for (viewptr = &m_viewlist; *viewptr != NULL; viewptr = &(*viewptr)->m_next) { }
-=======
 	for (viewptr = &m_viewlist; *viewptr != nullptr; viewptr = &(*viewptr)->m_next) { }
->>>>>>> upstream/master
 	*viewptr = view;
 	return view;
 }
@@ -546,19 +447,11 @@ debug_view *debug_view_manager::append(debug_view *view)
 //-------------------------------------------------
 
 debug_view_expression::debug_view_expression(running_machine &machine)
-<<<<<<< HEAD
-	: m_machine(machine),
-		m_dirty(true),
-		m_result(0),
-		m_parsed(debug_cpu_get_global_symtable(machine)),
-		m_string("0")
-=======
 	: m_machine(machine)
 	, m_dirty(true)
 	, m_result(0)
 	, m_parsed(machine.debugger().cpu().get_global_symtable())
 	, m_string("0")
->>>>>>> upstream/master
 {
 }
 
@@ -579,11 +472,7 @@ debug_view_expression::~debug_view_expression()
 
 void debug_view_expression::set_context(symbol_table *context)
 {
-<<<<<<< HEAD
-	m_parsed.set_symbols((context != NULL) ? context : debug_cpu_get_global_symtable(machine()));
-=======
 	m_parsed.set_symbols((context != nullptr) ? context : m_machine.debugger().cpu().get_global_symtable());
->>>>>>> upstream/master
 	m_dirty = true;
 }
 
@@ -617,11 +506,7 @@ bool debug_view_expression::recompute()
 		// recompute the value of the expression
 		try
 		{
-<<<<<<< HEAD
-			UINT64 newresult = m_parsed.execute();
-=======
 			u64 newresult = m_parsed.execute();
->>>>>>> upstream/master
 			if (newresult != m_result)
 			{
 				m_result = newresult;

@@ -8,10 +8,7 @@
 
 *********************************************************************/
 
-<<<<<<< HEAD
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #include "a2pic.h"
 
 /***************************************************************************
@@ -22,27 +19,11 @@
 //  GLOBAL VARIABLES
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type A2BUS_PIC = &device_creator<a2bus_pic_device>;
-=======
 DEFINE_DEVICE_TYPE(A2BUS_PIC, a2bus_pic_device, "a2pic", "Apple Parallel Interface Card")
->>>>>>> upstream/master
 
 #define PIC_ROM_REGION  "pic_rom"
 #define PIC_CENTRONICS_TAG "pic_ctx"
 
-<<<<<<< HEAD
-MACHINE_CONFIG_FRAGMENT( pic )
-	MCFG_CENTRONICS_ADD(PIC_CENTRONICS_TAG, centronics_devices, "printer")
-	MCFG_CENTRONICS_DATA_INPUT_BUFFER("ctx_data_in")
-	MCFG_CENTRONICS_ACK_HANDLER(WRITELINE(a2bus_pic_device, ack_w))
-
-	MCFG_DEVICE_ADD("ctx_data_in", INPUT_BUFFER, 0)
-	MCFG_CENTRONICS_OUTPUT_LATCH_ADD("ctx_data_out", PIC_CENTRONICS_TAG)
-MACHINE_CONFIG_END
-
-=======
->>>>>>> upstream/master
 ROM_START( pic )
 	ROM_REGION(0x000200, PIC_ROM_REGION, 0)
 	ROM_LOAD( "341-0057.bin", 0x000000, 0x000200, CRC(0d2d84ee) SHA1(bfc5b863d37e59875a6159528eb0f2b6082063b5) )
@@ -60,19 +41,11 @@ static INPUT_PORTS_START( pic )
 	PORT_DIPSETTING(    0x06, "13 microseconds" )
 	PORT_DIPSETTING(    0x07, "15 microseconds" )
 
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x08, 0x00, "Strobe polarity (SW4)" )
-	PORT_DIPSETTING(    0x00, "Positive" )
-	PORT_DIPSETTING(    0x08, "Negative" )
-
-	PORT_DIPNAME( 0x10, 0x00, "Acknowledge polarity (SW5)" )
-=======
 	PORT_DIPNAME( 0x08, 0x08, "Strobe polarity (SW4)" )
 	PORT_DIPSETTING(    0x00, "Positive" )
 	PORT_DIPSETTING(    0x08, "Negative" )
 
 	PORT_DIPNAME( 0x10, 0x10, "Acknowledge polarity (SW5)" )
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x00, "Positive" )
 	PORT_DIPSETTING(    0x10, "Negative" )
 
@@ -95,16 +68,6 @@ ioport_constructor a2bus_pic_device::device_input_ports() const
 }
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  machine_config_additions - device-specific
-//  machine configurations
-//-------------------------------------------------
-
-machine_config_constructor a2bus_pic_device::device_mconfig_additions() const
-{
-	return MACHINE_CONFIG_NAME( pic );
-}
-=======
 //  device_add_mconfig - add device configuration
 //-------------------------------------------------
 
@@ -116,17 +79,12 @@ MACHINE_CONFIG_MEMBER( a2bus_pic_device::device_add_mconfig )
 	MCFG_DEVICE_ADD("ctx_data_in", INPUT_BUFFER, 0)
 	MCFG_CENTRONICS_OUTPUT_LATCH_ADD("ctx_data_out", PIC_CENTRONICS_TAG)
 MACHINE_CONFIG_END
->>>>>>> upstream/master
 
 //-------------------------------------------------
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const rom_entry *a2bus_pic_device::device_rom_region() const
-=======
 const tiny_rom_entry *a2bus_pic_device::device_rom_region() const
->>>>>>> upstream/master
 {
 	return ROM_NAME( pic );
 }
@@ -135,21 +93,6 @@ const tiny_rom_entry *a2bus_pic_device::device_rom_region() const
 //  LIVE DEVICE
 //**************************************************************************
 
-<<<<<<< HEAD
-a2bus_pic_device::a2bus_pic_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-		device_t(mconfig, A2BUS_PIC, "Apple Parallel Interface Card", tag, owner, clock, "a2pic", __FILE__),
-		device_a2bus_card_interface(mconfig, *this),
-		m_dsw1(*this, "DSW1"),
-		m_ctx(*this, PIC_CENTRONICS_TAG),
-		m_ctx_data_in(*this, "ctx_data_in"),
-		m_ctx_data_out(*this, "ctx_data_out"), m_rom(nullptr),
-		m_started(false), m_ack(0), m_irqenable(false), m_autostrobe(false), m_timer(nullptr)
-{
-}
-
-a2bus_pic_device::a2bus_pic_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source) :
-		device_t(mconfig, type, name, tag, owner, clock, shortname, source),
-=======
 a2bus_pic_device::a2bus_pic_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 		a2bus_pic_device(mconfig, A2BUS_PIC, tag, owner, clock)
 {
@@ -157,7 +100,6 @@ a2bus_pic_device::a2bus_pic_device(const machine_config &mconfig, const char *ta
 
 a2bus_pic_device::a2bus_pic_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock) :
 		device_t(mconfig, type, tag, owner, clock),
->>>>>>> upstream/master
 		device_a2bus_card_interface(mconfig, *this),
 		m_dsw1(*this, "DSW1"),
 		m_ctx(*this, PIC_CENTRONICS_TAG),
@@ -178,11 +120,7 @@ void a2bus_pic_device::device_start()
 
 	m_rom = device().machine().root_device().memregion(this->subtag(PIC_ROM_REGION).c_str())->base();
 
-<<<<<<< HEAD
-	m_timer = timer_alloc(0, NULL);
-=======
 	m_timer = timer_alloc(0, nullptr);
->>>>>>> upstream/master
 	m_timer->adjust(attotime::never);
 
 	save_item(NAME(m_ack));
@@ -214,11 +152,7 @@ void a2bus_pic_device::device_timer(emu_timer &timer, device_timer_id tid, int p
     read_cnxx - called for reads from this card's cnxx space
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-UINT8 a2bus_pic_device::read_cnxx(address_space &space, UINT8 offset)
-=======
 uint8_t a2bus_pic_device::read_cnxx(address_space &space, uint8_t offset)
->>>>>>> upstream/master
 {
 	m_autostrobe = true;
 
@@ -234,24 +168,16 @@ uint8_t a2bus_pic_device::read_cnxx(address_space &space, uint8_t offset)
     read_c0nx - called for reads from this card's c0nx space
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-UINT8 a2bus_pic_device::read_c0nx(address_space &space, UINT8 offset)
-{
-=======
 uint8_t a2bus_pic_device::read_c0nx(address_space &space, uint8_t offset)
 {
 	uint8_t rv = 0;
 
->>>>>>> upstream/master
 	switch (offset)
 	{
 		case 3:
 			return m_ctx_data_in->read();
 
 		case 4:
-<<<<<<< HEAD
-			return m_ack;
-=======
 			rv = m_ack;
 
 			// clear flip-flop
@@ -265,7 +191,6 @@ uint8_t a2bus_pic_device::read_c0nx(address_space &space, uint8_t offset)
 			}
 
 			return rv;
->>>>>>> upstream/master
 
 		case 6: // does reading this really work?
 			m_irqenable = true;
@@ -286,11 +211,7 @@ uint8_t a2bus_pic_device::read_c0nx(address_space &space, uint8_t offset)
     write_c0nx - called for writes to this card's c0nx space
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-void a2bus_pic_device::write_c0nx(address_space &space, UINT8 offset, UINT8 data)
-=======
 void a2bus_pic_device::write_c0nx(address_space &space, uint8_t offset, uint8_t data)
->>>>>>> upstream/master
 {
 	switch (offset)
 	{
@@ -323,11 +244,7 @@ WRITE_LINE_MEMBER( a2bus_pic_device::ack_w )
 {
 	if (m_started)
 	{
-<<<<<<< HEAD
-		UINT8 dsw1 = m_dsw1->read();
-=======
 		uint8_t dsw1 = m_dsw1->read();
->>>>>>> upstream/master
 
 		if (dsw1 & 0x10)    // negative polarity
 		{

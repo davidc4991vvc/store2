@@ -23,18 +23,11 @@
 device_gfx_interface::device_gfx_interface(const machine_config &mconfig, device_t &device,
 										const gfx_decode_entry *gfxinfo, const char *palette_tag)
 	: device_interface(device, "gfx"),
-<<<<<<< HEAD
-	m_palette(NULL),
-	m_gfxdecodeinfo(gfxinfo),
-	m_palette_tag(palette_tag),
-	m_palette_is_sibling(palette_tag == NULL),
-=======
 	m_palette(nullptr),
 	m_gfxdecodeinfo(gfxinfo),
 	m_palette_tag(palette_tag),
 	m_palette_is_sibling(palette_tag == nullptr),
 	m_palette_is_disabled(false),
->>>>>>> upstream/master
 	m_decoded(false)
 {
 }
@@ -80,8 +73,6 @@ void device_gfx_interface::static_set_palette(device_t &device, const char *tag)
 
 
 //-------------------------------------------------
-<<<<<<< HEAD
-=======
 //  set_palette_disable: configuration helper to
 //  disable the use of a palette by the device
 //-------------------------------------------------
@@ -93,32 +84,12 @@ void device_gfx_interface::set_palette_disable(bool disable)
 
 
 //-------------------------------------------------
->>>>>>> upstream/master
 //  interface_pre_start - make sure all our input
 //  devices are started
 //-------------------------------------------------
 
 void device_gfx_interface::interface_pre_start()
 {
-<<<<<<< HEAD
-	if (m_palette_tag == NULL)
-		fatalerror("No palette specified for device '%s'\n", device().tag());
-
-	// find our palette device, either as a sibling device or subdevice
-	if (m_palette_is_sibling)
-		m_palette = device().owner()->subdevice<palette_device>(m_palette_tag);
-	else
-		m_palette = device().subdevice<palette_device>(m_palette_tag);
-
-	if (m_palette == NULL)
-		fatalerror("Device '%s' specifies nonexistent %sdevice '%s' as palette\n",
-								device().tag(),
-								(m_palette_is_sibling ? "sibling " : "sub"),
-								m_palette_tag);
-
-	// if palette device isn't started, wait for it
-	// if (!m_palette->started())
-=======
 	if (!m_palette_is_disabled)
 	{
 		if (m_palette_tag == nullptr)
@@ -145,7 +116,6 @@ void device_gfx_interface::interface_pre_start()
 
 	// if palette device isn't started, wait for it
 	// if (!m_palette->device().started())
->>>>>>> upstream/master
 	//  throw device_missing_dependencies();
 }
 
@@ -170,45 +140,20 @@ void device_gfx_interface::interface_post_start()
 void device_gfx_interface::decode_gfx(const gfx_decode_entry *gfxdecodeinfo)
 {
 	// skip if nothing to do
-<<<<<<< HEAD
-	if (gfxdecodeinfo == NULL)
-=======
 	if (gfxdecodeinfo == nullptr)
->>>>>>> upstream/master
 		return;
 
 	// local variables to hold mutable copies of gfx layout data
 	gfx_layout glcopy;
-<<<<<<< HEAD
-	std::vector<UINT32> extxoffs(0);
-	std::vector<UINT32> extyoffs(0);
-
-	// loop over all elements
-	for (int curgfx = 0; curgfx < MAX_GFX_ELEMENTS && gfxdecodeinfo[curgfx].gfxlayout != NULL; curgfx++)
-=======
 	std::vector<u32> extxoffs(0);
 	std::vector<u32> extyoffs(0);
 
 	// loop over all elements
 	for (u8 curgfx = 0; curgfx < MAX_GFX_ELEMENTS && gfxdecodeinfo[curgfx].gfxlayout != nullptr; curgfx++)
->>>>>>> upstream/master
 	{
 		const gfx_decode_entry &gfx = gfxdecodeinfo[curgfx];
 
 		// extract the scale factors and xormask
-<<<<<<< HEAD
-		UINT32 xscale = GFXENTRY_GETXSCALE(gfx.flags);
-		UINT32 yscale = GFXENTRY_GETYSCALE(gfx.flags);
-		UINT32 xormask = GFXENTRY_ISREVERSE(gfx.flags) ? 7 : 0;
-
-		// resolve the region
-		UINT32       region_length;
-		const UINT8 *region_base;
-		UINT8        region_width;
-		endianness_t region_endianness;
-
-		if (gfx.memory_region != NULL)
-=======
 		u32 xscale = GFXENTRY_GETXSCALE(gfx.flags);
 		u32 yscale = GFXENTRY_GETYSCALE(gfx.flags);
 		u32 xormask = GFXENTRY_ISREVERSE(gfx.flags) ? 7 : 0;
@@ -220,32 +165,21 @@ void device_gfx_interface::decode_gfx(const gfx_decode_entry *gfxdecodeinfo)
 		endianness_t region_endianness;
 
 		if (gfx.memory_region != nullptr)
->>>>>>> upstream/master
 		{
 			device_t &basedevice = (GFXENTRY_ISDEVICE(gfx.flags)) ? device() : *device().owner();
 			if (GFXENTRY_ISRAM(gfx.flags))
 			{
 				memory_share *share = basedevice.memshare(gfx.memory_region);
-<<<<<<< HEAD
-				assert(share != NULL);
-				region_length = 8 * share->bytes();
-				region_base = reinterpret_cast<UINT8 *>(share->ptr());
-=======
 				assert(share != nullptr);
 				region_length = 8 * share->bytes();
 				region_base = reinterpret_cast<u8 *>(share->ptr());
->>>>>>> upstream/master
 				region_width = share->bytewidth();
 				region_endianness = share->endianness();
 			}
 			else
 			{
 				memory_region *region = basedevice.memregion(gfx.memory_region);
-<<<<<<< HEAD
-				assert(region != NULL);
-=======
 				assert(region != nullptr);
->>>>>>> upstream/master
 				region_length = 8 * region->bytes();
 				region_base = region->base();
 				region_width = region->bytewidth();
@@ -255,11 +189,7 @@ void device_gfx_interface::decode_gfx(const gfx_decode_entry *gfxdecodeinfo)
 		else
 		{
 			region_length = 0;
-<<<<<<< HEAD
-			region_base = NULL;
-=======
 			region_base = nullptr;
->>>>>>> upstream/master
 			region_width = 1;
 			region_endianness = ENDIANNESS_NATIVE;
 		}
@@ -296,13 +226,8 @@ void device_gfx_interface::decode_gfx(const gfx_decode_entry *gfxdecodeinfo)
 			// copy the X and Y offsets into our temporary arrays
 			extxoffs.resize(glcopy.width * xscale);
 			extyoffs.resize(glcopy.height * yscale);
-<<<<<<< HEAD
-			memcpy(&extxoffs[0], (glcopy.extxoffs != NULL) ? glcopy.extxoffs : glcopy.xoffset, glcopy.width * sizeof(UINT32));
-			memcpy(&extyoffs[0], (glcopy.extyoffs != NULL) ? glcopy.extyoffs : glcopy.yoffset, glcopy.height * sizeof(UINT32));
-=======
 			memcpy(&extxoffs[0], (glcopy.extxoffs != nullptr) ? glcopy.extxoffs : glcopy.xoffset, glcopy.width * sizeof(u32));
 			memcpy(&extyoffs[0], (glcopy.extyoffs != nullptr) ? glcopy.extyoffs : glcopy.yoffset, glcopy.height * sizeof(u32));
->>>>>>> upstream/master
 
 			// always use the extended offsets here
 			glcopy.extxoffs = &extxoffs[0];
@@ -325,11 +250,7 @@ void device_gfx_interface::decode_gfx(const gfx_decode_entry *gfxdecodeinfo)
 			// loop over all the planes, converting fractions
 			for (int j = 0; j < glcopy.planes; j++)
 			{
-<<<<<<< HEAD
-				UINT32 value1 = glcopy.planeoffset[j];
-=======
 				u32 value1 = glcopy.planeoffset[j];
->>>>>>> upstream/master
 				if (IS_FRAC(value1))
 				{
 					assert(region_length != 0);
@@ -340,11 +261,7 @@ void device_gfx_interface::decode_gfx(const gfx_decode_entry *gfxdecodeinfo)
 			// loop over all the X/Y offsets, converting fractions
 			for (int j = 0; j < glcopy.width; j++)
 			{
-<<<<<<< HEAD
-				UINT32 value2 = extxoffs[j];
-=======
 				u32 value2 = extxoffs[j];
->>>>>>> upstream/master
 				if (IS_FRAC(value2))
 				{
 					assert(region_length != 0);
@@ -354,11 +271,7 @@ void device_gfx_interface::decode_gfx(const gfx_decode_entry *gfxdecodeinfo)
 
 			for (int j = 0; j < glcopy.height; j++)
 			{
-<<<<<<< HEAD
-				UINT32 value3 = extyoffs[j];
-=======
 				u32 value3 = extyoffs[j];
->>>>>>> upstream/master
 				if (IS_FRAC(value3))
 				{
 					assert(region_length != 0);
@@ -384,11 +297,7 @@ void device_gfx_interface::decode_gfx(const gfx_decode_entry *gfxdecodeinfo)
 		}
 
 		// allocate the graphics
-<<<<<<< HEAD
-		m_gfx[curgfx].reset(global_alloc(gfx_element(m_palette, glcopy, (region_base != NULL) ? region_base + gfx.start : NULL, xormask, gfx.total_color_codes, gfx.color_codes_start)));
-=======
 		m_gfx[curgfx] = std::make_unique<gfx_element>(m_palette, glcopy, (region_base != nullptr) ? region_base + gfx.start : nullptr, xormask, gfx.total_color_codes, gfx.color_codes_start);
->>>>>>> upstream/master
 	}
 
 	m_decoded = true;
@@ -402,24 +311,6 @@ void device_gfx_interface::decode_gfx(const gfx_decode_entry *gfxdecodeinfo)
 
 void device_gfx_interface::interface_validity_check(validity_checker &valid) const
 {
-<<<<<<< HEAD
-	// validate palette tag
-	if (m_palette_tag == NULL)
-		osd_printf_error("No palette specified for device '%s'\n", device().tag());
-	else
-	{
-		palette_device *palette;
-		if (m_palette_is_sibling)
-			palette = device().owner()->subdevice<palette_device>(m_palette_tag);
-		else
-			palette = device().subdevice<palette_device>(m_palette_tag);
-
-		if (palette == NULL)
-			osd_printf_error("Device '%s' specifies nonexistent %sdevice '%s' as palette\n",
-								device().tag(),
-								(m_palette_is_sibling ? "sibling " : "sub"),
-								m_palette_tag);
-=======
 	if (!m_palette_is_disabled)
 	{
 		// validate palette tag
@@ -445,29 +336,20 @@ void device_gfx_interface::interface_validity_check(validity_checker &valid) con
 										 m_palette_tag);
 				}
 		}
->>>>>>> upstream/master
 	}
 
 	if (!m_gfxdecodeinfo)
 		return;
 
 	// validate graphics decoding entries
-<<<<<<< HEAD
-	for (int gfxnum = 0; gfxnum < MAX_GFX_ELEMENTS && m_gfxdecodeinfo[gfxnum].gfxlayout != NULL; gfxnum++)
-=======
 	for (int gfxnum = 0; gfxnum < MAX_GFX_ELEMENTS && m_gfxdecodeinfo[gfxnum].gfxlayout != nullptr; gfxnum++)
->>>>>>> upstream/master
 	{
 		const gfx_decode_entry &gfx = m_gfxdecodeinfo[gfxnum];
 		const gfx_layout &layout = *gfx.gfxlayout;
 
 		// currently we are unable to validate RAM-based entries
 		const char *region = gfx.memory_region;
-<<<<<<< HEAD
-		if (region != NULL && GFXENTRY_ISROM(gfx.flags))
-=======
 		if (region != nullptr && GFXENTRY_ISROM(gfx.flags))
->>>>>>> upstream/master
 		{
 			// resolve the region
 			std::string gfxregion;
@@ -476,11 +358,7 @@ void device_gfx_interface::interface_validity_check(validity_checker &valid) con
 			else
 				gfxregion = device().owner()->subtag(region);
 
-<<<<<<< HEAD
-			UINT32 region_length = valid.region_length(gfxregion.c_str());
-=======
 			u32 region_length = valid.region_length(gfxregion.c_str());
->>>>>>> upstream/master
 			if (region_length == 0)
 				osd_printf_error("gfx[%d] references nonexistent region '%s'\n", gfxnum, gfxregion.c_str());
 
@@ -524,15 +402,9 @@ void device_gfx_interface::interface_validity_check(validity_checker &valid) con
 		{
 			if (layout.planes > MAX_GFX_PLANES)
 				osd_printf_error("gfx[%d] planes > %d\n", gfxnum, MAX_GFX_PLANES);
-<<<<<<< HEAD
-			if (layout.width > MAX_GFX_SIZE && layout.extxoffs == NULL)
-				osd_printf_error("gfx[%d] width > %d but missing extended xoffset info\n", gfxnum, MAX_GFX_SIZE);
-			if (layout.height > MAX_GFX_SIZE && layout.extyoffs == NULL)
-=======
 			if (layout.width > MAX_GFX_SIZE && layout.extxoffs == nullptr)
 				osd_printf_error("gfx[%d] width > %d but missing extended xoffset info\n", gfxnum, MAX_GFX_SIZE);
 			if (layout.height > MAX_GFX_SIZE && layout.extyoffs == nullptr)
->>>>>>> upstream/master
 				osd_printf_error("gfx[%d] height > %d but missing extended yoffset info\n", gfxnum, MAX_GFX_SIZE);
 		}
 	}

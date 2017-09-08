@@ -30,11 +30,7 @@
 //**************************************************************************
 
 // generic code pointer
-<<<<<<< HEAD
-typedef UINT8 *drccodeptr;
-=======
 typedef uint8_t *drccodeptr;
->>>>>>> upstream/master
 
 
 // helper template for oob codegen
@@ -57,11 +53,7 @@ public:
 	// pointer checking
 	bool contains_pointer(const void *ptr) const { return ((const drccodeptr)ptr >= m_near && (const drccodeptr)ptr < m_near + m_size); }
 	bool contains_near_pointer(const void *ptr) const { return ((const drccodeptr)ptr >= m_near && (const drccodeptr)ptr < m_neartop); }
-<<<<<<< HEAD
-	bool generating_code() const { return (m_codegen != NULL); }
-=======
 	bool generating_code() const { return (m_codegen != nullptr); }
->>>>>>> upstream/master
 
 	// memory management
 	void flush();
@@ -71,26 +63,16 @@ public:
 	void dealloc(void *memory, size_t bytes);
 
 	// codegen helpers
-<<<<<<< HEAD
-	drccodeptr *begin_codegen(UINT32 reserve_bytes);
-	drccodeptr end_codegen();
-	void request_oob_codegen(drc_oob_delegate callback, void *param1 = NULL, void *param2 = NULL);
-=======
 	drccodeptr *begin_codegen(uint32_t reserve_bytes);
 	drccodeptr end_codegen();
 	void request_oob_codegen(drc_oob_delegate callback, void *param1 = nullptr, void *param2 = nullptr);
->>>>>>> upstream/master
 
 private:
 	// largest block of code that can be generated at once
 	static const size_t CODEGEN_MAX_BYTES = 65536;
 
 	// minimum alignment, in bytes (must be power of 2)
-<<<<<<< HEAD
-	static const size_t CACHE_ALIGNMENT = 8;
-=======
 	static const size_t CACHE_ALIGNMENT = alignof(std::max_align_t);
->>>>>>> upstream/master
 
 	// largest permanent allocation we allow
 	static const size_t MAX_PERMANENT_ALLOC = 1024;

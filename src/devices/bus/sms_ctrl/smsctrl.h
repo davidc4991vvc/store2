@@ -9,20 +9,10 @@
 
 **********************************************************************/
 
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __SMS_CONTROL_PORT__
-#define __SMS_CONTROL_PORT__
-
-#include "emu.h"
-
-=======
 #ifndef MAME_BUS_SMS_CTRL_SMSCTRL_H
 #define MAME_BUS_SMS_CTRL_SMSCTRL_H
 
 #pragma once
->>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -58,15 +48,6 @@ class sms_control_port_device : public device_t,
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	sms_control_port_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-	virtual ~sms_control_port_device();
-
-	// static configuration helpers
-	template<class _Object> static devcb_base &set_th_input_handler(device_t &device, _Object object) { return downcast<sms_control_port_device &>(device).m_th_pin_handler.set_callback(object); }
-
-	template<class _Object> static devcb_base &set_pixel_handler(device_t &device, _Object object) { return downcast<sms_control_port_device &>(device).m_pixel_handler.set_callback(object); }
-=======
 	sms_control_port_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 	virtual ~sms_control_port_device();
 
@@ -74,7 +55,6 @@ public:
 	template <class Object> static devcb_base &set_th_input_handler(device_t &device, Object &&cb) { return downcast<sms_control_port_device &>(device).m_th_pin_handler.set_callback(std::forward<Object>(cb)); }
 
 	template <class Object> static devcb_base &set_pixel_handler(device_t &device, Object &&cb) { return downcast<sms_control_port_device &>(device).m_pixel_handler.set_callback(std::forward<Object>(cb)); }
->>>>>>> upstream/master
 
 	// Physical DE-9 connector interface
 
@@ -89,17 +69,6 @@ public:
 	//         pin 8 - GND
 	// bit 7 - pin 9 - TR (Button 2)
 	//
-<<<<<<< HEAD
-	UINT8 port_r();
-	void port_w( UINT8 data );
-
-	void th_pin_w(int state);
-	UINT32 pixel_r();
-
-//protected:
-	// device-level overrides
-	virtual void device_start();
-=======
 	uint8_t port_r();
 	void port_w( uint8_t data );
 
@@ -109,7 +78,6 @@ public:
 protected:
 	// device-level overrides
 	virtual void device_start() override;
->>>>>>> upstream/master
 
 	device_sms_control_port_interface *m_device;
 
@@ -126,15 +94,6 @@ class device_sms_control_port_interface : public device_slot_card_interface
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	device_sms_control_port_interface(const machine_config &mconfig, device_t &device);
-	virtual ~device_sms_control_port_interface();
-
-	virtual UINT8 peripheral_r() { return 0xff; };
-	virtual void peripheral_w(UINT8 data) { };
-
-protected:
-=======
 	virtual ~device_sms_control_port_interface();
 
 	virtual uint8_t peripheral_r() { return 0xff; }
@@ -143,24 +102,15 @@ protected:
 protected:
 	device_sms_control_port_interface(const machine_config &mconfig, device_t &device);
 
->>>>>>> upstream/master
 	sms_control_port_device *m_port;
 };
 
 
 // device type definition
-<<<<<<< HEAD
-extern const device_type SMS_CONTROL_PORT;
-=======
 DECLARE_DEVICE_TYPE(SMS_CONTROL_PORT, sms_control_port_device)
->>>>>>> upstream/master
 
 
 SLOT_INTERFACE_EXTERN( sms_control_port_devices );
 
 
-<<<<<<< HEAD
-#endif
-=======
 #endif // MAME_BUS_SMS_CTRL_SMSCTRL_H
->>>>>>> upstream/master

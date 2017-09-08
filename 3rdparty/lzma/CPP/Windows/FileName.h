@@ -9,11 +9,6 @@ namespace NWindows {
 namespace NFile {
 namespace NName {
 
-<<<<<<< HEAD
-void NormalizeDirPathPrefix(FString &dirPath); // ensures that it ended with '\\', if dirPath is not epmty
-void NormalizeDirPathPrefix(UString &dirPath);
-
-=======
 int FindSepar(const wchar_t *s) throw();
 #ifndef USE_UNICODE_FSTRING
 int FindSepar(const FChar *s) throw();
@@ -115,7 +110,6 @@ bool GetSuperPaths(CFSTR s1, CFSTR s2, UString &d1, UString &d2, bool onlyIfNew)
 bool GetFullPath(CFSTR dirPrefix, CFSTR path, FString &fullPath);
 bool GetFullPath(CFSTR path, FString &fullPath);
 
->>>>>>> upstream/master
 }}}
 
 #endif

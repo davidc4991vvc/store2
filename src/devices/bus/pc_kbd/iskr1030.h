@@ -6,16 +6,6 @@
 
 *********************************************************************/
 
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __PC_KBD_ISKR_1030__
-#define __PC_KBD_ISKR_1030__
-
-#include "emu.h"
-#include "cpu/mcs48/mcs48.h"
-#include "pc_kbdc.h"
-=======
 #ifndef MAME_BUS_PC_KBD_ISKR1030_H
 #define MAME_BUS_PC_KBD_ISKR1030_H
 
@@ -23,7 +13,6 @@
 
 #include "pc_kbdc.h"
 #include "cpu/mcs48/mcs48.h"
->>>>>>> upstream/master
 #include "machine/rescap.h"
 
 
@@ -34,37 +23,6 @@
 
 // ======================> iskr_1030_keyboard_device
 
-<<<<<<< HEAD
-class iskr_1030_keyboard_device :  public device_t,
-										public device_pc_kbd_interface
-{
-public:
-	// construction/destruction
-	iskr_1030_keyboard_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// optional information overrides
-	virtual const rom_entry *device_rom_region() const;
-	virtual machine_config_constructor device_mconfig_additions() const;
-	virtual ioport_constructor device_input_ports() const;
-
-	DECLARE_READ8_MEMBER( ram_r );
-	DECLARE_WRITE8_MEMBER( ram_w );
-	DECLARE_READ8_MEMBER( p1_r );
-	DECLARE_WRITE8_MEMBER( p1_w );
-	DECLARE_WRITE8_MEMBER( p2_w );
-	DECLARE_READ8_MEMBER( t1_r );
-
-protected:
-	// device-level overrides
-	virtual void device_start();
-	virtual void device_reset();
-
-	// device_pc_kbd_interface overrides
-	virtual DECLARE_WRITE_LINE_MEMBER( clock_write );
-	virtual DECLARE_WRITE_LINE_MEMBER( data_write );
-
-private:
-=======
 class iskr_1030_keyboard_device : public device_t, public device_pc_kbd_interface
 {
 public:
@@ -94,7 +52,6 @@ private:
 	DECLARE_WRITE8_MEMBER( p2_w );
 	DECLARE_READ_LINE_MEMBER( t1_r );
 
->>>>>>> upstream/master
 	required_device<cpu_device> m_maincpu;
 	required_ioport m_md00;
 	required_ioport m_md01;
@@ -121,28 +78,15 @@ private:
 	required_ioport m_md22;
 	required_ioport m_md23;
 
-<<<<<<< HEAD
-	dynamic_buffer m_ram;
-	UINT8 m_bus;
-	UINT8 m_p1;
-	UINT8 m_p2;
-=======
 	std::vector<uint8_t> m_ram;
 	uint8_t m_bus;
 	uint8_t m_p1;
 	uint8_t m_p2;
->>>>>>> upstream/master
 	int m_q;
 };
 
 
 // device type definition
-<<<<<<< HEAD
-extern const device_type PC_KBD_ISKR_1030;
-
-#endif
-=======
 DECLARE_DEVICE_TYPE(PC_KBD_ISKR_1030, iskr_1030_keyboard_device)
 
 #endif // MAME_BUS_PC_KBD_ISKR1030_H
->>>>>>> upstream/master

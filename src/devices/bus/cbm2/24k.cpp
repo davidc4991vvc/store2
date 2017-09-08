@@ -6,10 +6,7 @@
 
 **********************************************************************/
 
-<<<<<<< HEAD
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #include "24k.h"
 
 
@@ -18,11 +15,7 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type CBM2_24K = &device_creator<cbm2_24k_cartridge_device>;
-=======
 DEFINE_DEVICE_TYPE(CBM2_24K, cbm2_24k_cartridge_device, "cbm2_24k", "CBM-II 24K RAM/ROM cartridge")
->>>>>>> upstream/master
 
 
 
@@ -34,13 +27,8 @@ DEFINE_DEVICE_TYPE(CBM2_24K, cbm2_24k_cartridge_device, "cbm2_24k", "CBM-II 24K 
 //  cbm2_24k_cartridge_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-cbm2_24k_cartridge_device::cbm2_24k_cartridge_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-	device_t(mconfig, CBM2_24K, "24K RAM/ROM cartridge", tag, owner, clock, "cbm2_24k", __FILE__),
-=======
 cbm2_24k_cartridge_device::cbm2_24k_cartridge_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	device_t(mconfig, CBM2_24K, tag, owner, clock),
->>>>>>> upstream/master
 	device_cbm2_expansion_card_interface(mconfig, *this),
 	m_ram(*this, "ram")
 {
@@ -61,11 +49,7 @@ void cbm2_24k_cartridge_device::device_start()
 //  cbm2_bd_r - cartridge data read
 //-------------------------------------------------
 
-<<<<<<< HEAD
-UINT8 cbm2_24k_cartridge_device::cbm2_bd_r(address_space &space, offs_t offset, UINT8 data, int csbank1, int csbank2, int csbank3)
-=======
 uint8_t cbm2_24k_cartridge_device::cbm2_bd_r(address_space &space, offs_t offset, uint8_t data, int csbank1, int csbank2, int csbank3)
->>>>>>> upstream/master
 {
 	if (!csbank1)
 	{
@@ -88,11 +72,7 @@ uint8_t cbm2_24k_cartridge_device::cbm2_bd_r(address_space &space, offs_t offset
 //  cbm2_bd_w - cartridge data write
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void cbm2_24k_cartridge_device::cbm2_bd_w(address_space &space, offs_t offset, UINT8 data, int csbank1, int csbank2, int csbank3)
-=======
 void cbm2_24k_cartridge_device::cbm2_bd_w(address_space &space, offs_t offset, uint8_t data, int csbank1, int csbank2, int csbank3)
->>>>>>> upstream/master
 {
 	if (!csbank1)
 	{

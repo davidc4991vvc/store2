@@ -1,9 +1,5 @@
 /*
-<<<<<<< HEAD
-** $Id: ldblib.c,v 1.148 2015/01/02 12:52:22 roberto Exp $
-=======
 ** $Id: ldblib.c,v 1.151 2015/11/23 11:29:43 roberto Exp $
->>>>>>> upstream/master
 ** Interface from Lua to its debug API
 ** See Copyright Notice in lua.h
 */
@@ -31,8 +27,6 @@
 static const int HOOKKEY = 0;
 
 
-<<<<<<< HEAD
-=======
 /*
 ** If L1 != L, L1 can be in any state, and therefore there are no
 ** guarantees about its stack space; any push in L1 must be
@@ -44,7 +38,6 @@ static void checkstack (lua_State *L, lua_State *L1, int n) {
 }
 
 
->>>>>>> upstream/master
 static int db_getregistry (lua_State *L) {
   lua_pushvalue(L, LUA_REGISTRYINDEX);
   return 1;
@@ -145,22 +138,16 @@ static void treatstackoption (lua_State *L, lua_State *L1, const char *fname) {
 
 /*
 ** Calls 'lua_getinfo' and collects all results in a new table.
-<<<<<<< HEAD
-=======
 ** L1 needs stack space for an optional input (function) plus
 ** two optional outputs (function and line table) from function
 ** 'lua_getinfo'.
->>>>>>> upstream/master
 */
 static int db_getinfo (lua_State *L) {
   lua_Debug ar;
   int arg;
   lua_State *L1 = getthread(L, &arg);
   const char *options = luaL_optstring(L, arg+2, "flnStu");
-<<<<<<< HEAD
-=======
   checkstack(L, L1, 3);
->>>>>>> upstream/master
   if (lua_isfunction(L, arg + 1)) {  /* info about a function? */
     options = lua_pushfstring(L, ">%s", options);  /* add '>' to 'options' */
     lua_pushvalue(L, arg + 1);  /* move function to 'L1' stack */
@@ -218,10 +205,7 @@ static int db_getlocal (lua_State *L) {
     int level = (int)luaL_checkinteger(L, arg + 1);
     if (!lua_getstack(L1, level, &ar))  /* out of range? */
       return luaL_argerror(L, arg+1, "level out of range");
-<<<<<<< HEAD
-=======
     checkstack(L, L1, 1);
->>>>>>> upstream/master
     name = lua_getlocal(L1, &ar, nvar);
     if (name) {
       lua_xmove(L1, L, 1);  /* move local value */
@@ -248,10 +232,7 @@ static int db_setlocal (lua_State *L) {
     return luaL_argerror(L, arg+1, "level out of range");
   luaL_checkany(L, arg+3);
   lua_settop(L, arg+3);
-<<<<<<< HEAD
-=======
   checkstack(L, L1, 1);
->>>>>>> upstream/master
   lua_xmove(L, L1, 1);
   name = lua_setlocal(L1, &ar, nvar);
   if (name == NULL)
@@ -386,10 +367,7 @@ static int db_sethook (lua_State *L) {
     lua_pushvalue(L, -1);
     lua_setmetatable(L, -2);  /* setmetatable(hooktable) = hooktable */
   }
-<<<<<<< HEAD
-=======
   checkstack(L, L1, 1);
->>>>>>> upstream/master
   lua_pushthread(L1); lua_xmove(L1, L, 1);  /* key (thread) */
   lua_pushvalue(L, arg + 1);  /* value (hook function) */
   lua_rawset(L, -3);  /* hooktable[L1] = new Lua hook */
@@ -410,10 +388,7 @@ static int db_gethook (lua_State *L) {
     lua_pushliteral(L, "external hook");
   else {  /* hook table must exist */
     lua_rawgetp(L, LUA_REGISTRYINDEX, &HOOKKEY);
-<<<<<<< HEAD
-=======
     checkstack(L, L1, 1);
->>>>>>> upstream/master
     lua_pushthread(L1); lua_xmove(L1, L, 1);
     lua_rawget(L, -2);   /* 1st result = hooktable[L1] */
     lua_remove(L, -2);  /* remove hook table */

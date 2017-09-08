@@ -40,13 +40,8 @@
 
 *********************************************************************/
 
-<<<<<<< HEAD
-#include "a2corvus.h"
-#include "includes/apple2.h"
-=======
 #include "emu.h"
 #include "a2corvus.h"
->>>>>>> upstream/master
 #include "imagedev/harddriv.h"
 
 /***************************************************************************
@@ -57,29 +52,11 @@
 //  GLOBAL VARIABLES
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type A2BUS_CORVUS = &device_creator<a2bus_corvus_device>;
-=======
 DEFINE_DEVICE_TYPE(A2BUS_CORVUS, a2bus_corvus_device, "a2corvus", "Corvus Flat Cable interface")
->>>>>>> upstream/master
 
 #define CORVUS_ROM_REGION  "corvus_rom"
 #define CORVUS_HD_TAG      "corvushd"
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_FRAGMENT(corvus)
-	MCFG_DEVICE_ADD(CORVUS_HD_TAG, CORVUS_HDC, 0)
-	MCFG_HARDDISK_ADD("harddisk1")
-	MCFG_HARDDISK_INTERFACE("corvus_hdd")
-	MCFG_HARDDISK_ADD("harddisk2")
-	MCFG_HARDDISK_INTERFACE("corvus_hdd")
-	MCFG_HARDDISK_ADD("harddisk3")
-	MCFG_HARDDISK_INTERFACE("corvus_hdd")
-	MCFG_HARDDISK_ADD("harddisk4")
-	MCFG_HARDDISK_INTERFACE("corvus_hdd")
-MACHINE_CONFIG_END
-=======
->>>>>>> upstream/master
 
 ROM_START( corvus )
 	ROM_REGION(0x800, CORVUS_ROM_REGION, 0)
@@ -91,16 +68,6 @@ ROM_END
 ***************************************************************************/
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  machine_config_additions - device-specific
-//  machine configurations
-//-------------------------------------------------
-
-machine_config_constructor a2bus_corvus_device::device_mconfig_additions() const
-{
-	return MACHINE_CONFIG_NAME( corvus );
-}
-=======
 //  device_add_mconfig - add device configuration
 //-------------------------------------------------
 
@@ -115,17 +82,12 @@ MACHINE_CONFIG_MEMBER(a2bus_corvus_device::device_add_mconfig)
 	MCFG_HARDDISK_ADD("harddisk4")
 	MCFG_HARDDISK_INTERFACE("corvus_hdd")
 MACHINE_CONFIG_END
->>>>>>> upstream/master
 
 //-------------------------------------------------
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const rom_entry *a2bus_corvus_device::device_rom_region() const
-=======
 const tiny_rom_entry *a2bus_corvus_device::device_rom_region() const
->>>>>>> upstream/master
 {
 	return ROM_NAME( corvus );
 }
@@ -134,27 +96,15 @@ const tiny_rom_entry *a2bus_corvus_device::device_rom_region() const
 //  LIVE DEVICE
 //**************************************************************************
 
-<<<<<<< HEAD
-a2bus_corvus_device::a2bus_corvus_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source) :
-	device_t(mconfig, type, name, tag, owner, clock, shortname, source),
-=======
 a2bus_corvus_device::a2bus_corvus_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock) :
 	device_t(mconfig, type, tag, owner, clock),
->>>>>>> upstream/master
 	device_a2bus_card_interface(mconfig, *this),
 	m_corvushd(*this, CORVUS_HD_TAG), m_rom(nullptr)
 {
 }
 
-<<<<<<< HEAD
-a2bus_corvus_device::a2bus_corvus_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-	device_t(mconfig, A2BUS_CORVUS, "Corvus Flat Cable interface", tag, owner, clock, "a2corvus", __FILE__),
-	device_a2bus_card_interface(mconfig, *this),
-	m_corvushd(*this, CORVUS_HD_TAG), m_rom(nullptr)
-=======
 a2bus_corvus_device::a2bus_corvus_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	a2bus_corvus_device(mconfig, A2BUS_CORVUS, tag, owner, clock)
->>>>>>> upstream/master
 {
 }
 
@@ -179,11 +129,7 @@ void a2bus_corvus_device::device_reset()
     read_c0nx - called for reads from this card's c0nx space
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-UINT8 a2bus_corvus_device::read_c0nx(address_space &space, UINT8 offset)
-=======
 uint8_t a2bus_corvus_device::read_c0nx(address_space &space, uint8_t offset)
->>>>>>> upstream/master
 {
 	switch (offset)
 	{
@@ -206,11 +152,7 @@ uint8_t a2bus_corvus_device::read_c0nx(address_space &space, uint8_t offset)
     write_c0nx - called for writes to this card's c0nx space
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-void a2bus_corvus_device::write_c0nx(address_space &space, UINT8 offset, UINT8 data)
-=======
 void a2bus_corvus_device::write_c0nx(address_space &space, uint8_t offset, uint8_t data)
->>>>>>> upstream/master
 {
 	if (offset == 0)
 	{
@@ -222,11 +164,7 @@ void a2bus_corvus_device::write_c0nx(address_space &space, uint8_t offset, uint8
     read_cnxx - called for reads from this card's cnxx space
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-UINT8 a2bus_corvus_device::read_cnxx(address_space &space, UINT8 offset)
-=======
 uint8_t a2bus_corvus_device::read_cnxx(address_space &space, uint8_t offset)
->>>>>>> upstream/master
 {
 	// one slot image at the end of the ROM, it appears
 	return m_rom[offset+0x700];
@@ -236,11 +174,7 @@ uint8_t a2bus_corvus_device::read_cnxx(address_space &space, uint8_t offset)
     read_c800 - called for reads from this card's c800 space
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-UINT8 a2bus_corvus_device::read_c800(address_space &space, UINT16 offset)
-=======
 uint8_t a2bus_corvus_device::read_c800(address_space &space, uint16_t offset)
->>>>>>> upstream/master
 {
 	return m_rom[offset & 0x7ff];
 }

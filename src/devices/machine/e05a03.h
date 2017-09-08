@@ -6,15 +6,10 @@
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-#ifndef __E05A03_H__
-#define __E05A03_H__
-=======
 #ifndef MAME_MACHINE_E05A03_H
 #define MAME_MACHINE_E05A03_H
 
 #pragma once
->>>>>>> upstream/master
 
 /***************************************************************************
     DEVICE CONFIGURATION MACROS
@@ -43,16 +38,6 @@
 class e05a03_device : public device_t
 {
 public:
-<<<<<<< HEAD
-	e05a03_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-	~e05a03_device() {}
-
-	template<class _Object> static devcb_base &set_nlq_lp_wr_callback(device_t &device, _Object object) { return downcast<e05a03_device &>(device).m_write_nlq_lp.set_callback(object); }
-	template<class _Object> static devcb_base &set_pe_lp_wr_callback(device_t &device, _Object object) { return downcast<e05a03_device &>(device).m_write_pe_lp.set_callback(object); }
-	template<class _Object> static devcb_base &set_reso_wr_callback(device_t &device, _Object object) { return downcast<e05a03_device &>(device).m_write_reso.set_callback(object); }
-	template<class _Object> static devcb_base &set_pe_wr_callback(device_t &device, _Object object) { return downcast<e05a03_device &>(device).m_write_pe.set_callback(object); }
-	template<class _Object> static devcb_base &set_data_rd_callback(device_t &device, _Object object) { return downcast<e05a03_device &>(device).m_read_data.set_callback(object); }
-=======
 	e05a03_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	template <class Object> static devcb_base &set_nlq_lp_wr_callback(device_t &device, Object &&cb) { return downcast<e05a03_device &>(device).m_write_nlq_lp.set_callback(std::forward<Object>(cb)); }
@@ -60,7 +45,6 @@ public:
 	template <class Object> static devcb_base &set_reso_wr_callback(device_t &device, Object &&cb) { return downcast<e05a03_device &>(device).m_write_reso.set_callback(std::forward<Object>(cb)); }
 	template <class Object> static devcb_base &set_pe_wr_callback(device_t &device, Object &&cb) { return downcast<e05a03_device &>(device).m_write_pe.set_callback(std::forward<Object>(cb)); }
 	template <class Object> static devcb_base &set_data_rd_callback(device_t &device, Object &&cb) { return downcast<e05a03_device &>(device).m_read_data.set_callback(std::forward<Object>(cb)); }
->>>>>>> upstream/master
 
 	DECLARE_WRITE8_MEMBER( write );
 	DECLARE_READ8_MEMBER( read );
@@ -74,13 +58,8 @@ public:
 
 protected:
 	// device-level overrides
-<<<<<<< HEAD
-	virtual void device_start();
-	virtual void device_reset();
-=======
 	virtual void device_start() override;
 	virtual void device_reset() override;
->>>>>>> upstream/master
 
 private:
 	// internal state
@@ -92,11 +71,7 @@ private:
 	devcb_read8 m_read_data;         /* pin 47-54, centronics data input */
 
 	/* 24-bit shift register, port 0x00, 0x01 and 0x02 */
-<<<<<<< HEAD
-	UINT32 m_shift;
-=======
 	uint32_t m_shift;
->>>>>>> upstream/master
 
 	/* port 0x03 */
 	int m_busy_leading;
@@ -110,21 +85,6 @@ private:
 #endif
 
 	/* port 0x04 and 0x05 (9-bit) */
-<<<<<<< HEAD
-	UINT16 m_printhead;
-
-	/* port 0x06 (4-bit) */
-	UINT8 m_pf_motor;
-
-	/* port 0x07 (4-bit) */
-	UINT8 m_cr_motor;
-};
-
-extern const device_type E05A03;
-
-
-#endif /* __E05A03_H__ */
-=======
 	uint16_t m_printhead;
 
 	/* port 0x06 (4-bit) */
@@ -137,4 +97,3 @@ extern const device_type E05A03;
 DECLARE_DEVICE_TYPE(E05A03, e05a03_device)
 
 #endif // MAME_MACHINE_E05A03_H
->>>>>>> upstream/master

@@ -10,11 +10,7 @@ driver by Carlos A. Lozano (calb@gsyc.inf.uc3m.es)
 TODO:
 
   - I'm playing samples with a DAC, but they could be ADPCM
-<<<<<<< HEAD
-  - find correct high-scores table for 'amazon'
-=======
   - find correct high-scores table for 'amazon' (update: uses same protection data as amatelas hence same data)
->>>>>>> upstream/master
 
 
 Stephh's notes (based on the games M68000 code and some tests) :
@@ -85,17 +81,6 @@ AT-2
 */
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/m68000/m68000.h"
-#include "cpu/z80/z80.h"
-#include "sound/dac.h"
-#include "sound/2203intf.h"
-#include "sound/3526intf.h"
-#include "includes/terracre.h"
-
-
-static const UINT16 mAmazonProtData[] =
-=======
 #include "includes/terracre.h"
 
 #include "cpu/m68000/m68000.h"
@@ -121,7 +106,6 @@ static const UINT16 mAmazonProtData[] =
 
 // protection data left for reference
 static const uint16_t mAmazonProtData[] =
->>>>>>> upstream/master
 {
 	/* default high scores (0x40db4) - wrong data ? */
 	0x0000,0x5000,0x5341,0x4b45,0x5349,0x4755,0x5245,
@@ -135,9 +119,6 @@ static const uint16_t mAmazonProtData[] =
 	0xc800 /* checksum */
 };
 
-<<<<<<< HEAD
-static const UINT16 mAmatelasProtData[] =
-=======
 /*
 0000 5000 5341 4b45 5349 4755 5245
 0000 4000 0e4b 4154 5544 4f4e 0e0e
@@ -149,7 +130,6 @@ static const UINT16 mAmatelasProtData[] =
  */
 
 static const uint16_t mAmatelasProtData[] =
->>>>>>> upstream/master
 {
 	/* default high scores (0x40db4) */
 	0x0000,0x5000,0x5341,0x4b45,0x5349,0x4755,0x5245,
@@ -163,9 +143,6 @@ static const uint16_t mAmatelasProtData[] =
 	0x6100 /* checksum */
 };
 
-<<<<<<< HEAD
-static const UINT16 mHoreKidProtData[] =
-=======
 /*
 2079 0001 0004 4ed0 2079 0001 0008
 4ed0 7c
@@ -174,7 +151,6 @@ It actually never jumps to 0x40dba?
 */
 
 static const uint16_t mHoreKidProtData[] =
->>>>>>> upstream/master
 {
 	/* N/A */
 	0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,
@@ -187,38 +163,15 @@ static const uint16_t mHoreKidProtData[] =
 	0x4e75,0x4e75,0x4e75,0x4e75,0x4e75,0x4e75,0x4e75,0x4e75,
 	0x1800 /* checksum */
 };
-<<<<<<< HEAD
-
-WRITE16_MEMBER(terracre_state::amazon_sound_w)
-{
-	soundlatch_byte_w(space,0,((data & 0x7f) << 1) | 1);
-=======
 #endif
 
 WRITE16_MEMBER(terracre_state::amazon_sound_w)
 {
 	m_soundlatch->write(space,0,((data & 0x7f) << 1) | 1);
->>>>>>> upstream/master
 }
 
 READ8_MEMBER(terracre_state::soundlatch_clear_r)
 {
-<<<<<<< HEAD
-	soundlatch_clear_byte_w(space,0,0);
-	return 0;
-}
-
-READ16_MEMBER(terracre_state::amazon_protection_r)
-{
-	offset = m_mAmazonProtReg[2];
-	if( offset<=0x56 )
-	{
-		UINT16 data;
-		data = m_mpProtData[offset/2];
-		if( offset&1 ) return data&0xff;
-		return data>>8;
-	}
-=======
 	m_soundlatch->clear_w(space,0,0);
 	return 0;
 }
@@ -240,7 +193,6 @@ READ16_MEMBER(terracre_state::amazon_protection_r)
 
 	popmessage("unknown prot cmd R %02x",m_mAmazonProtCmd);
 
->>>>>>> upstream/master
 	return 0;
 }
 
@@ -254,11 +206,6 @@ WRITE16_MEMBER(terracre_state::amazon_protection_w)
 		}
 		else
 		{
-<<<<<<< HEAD
-			if( m_mAmazonProtCmd>=32 && m_mAmazonProtCmd<=0x37 )
-			{
-				m_mAmazonProtReg[m_mAmazonProtCmd-0x32] = data;
-=======
 			if( m_mAmazonProtCmd>=0x32 && m_mAmazonProtCmd<=0x37 )
 			{
 				m_mAmazonProtReg[m_mAmazonProtCmd-0x32] = data;
@@ -272,7 +219,6 @@ WRITE16_MEMBER(terracre_state::amazon_protection_w)
 					printf("\n");
 				}
 				#endif
->>>>>>> upstream/master
 			}
 		}
 	}
@@ -297,14 +243,6 @@ static ADDRESS_MAP_START( terracre_map, AS_PROGRAM, 16, terracre_state )
 	AM_RANGE(0x024006, 0x024007) AM_READ_PORT("DSW")
 	AM_RANGE(0x026000, 0x026001) AM_WRITE(amazon_flipscreen_w)  /* flip screen & coin counters */
 	AM_RANGE(0x026002, 0x026003) AM_WRITE(amazon_scrollx_w)
-<<<<<<< HEAD
-	AM_RANGE(0x026004, 0x026005) AM_WRITE(amazon_scrolly_w)
-	AM_RANGE(0x02600c, 0x02600d) AM_WRITE(amazon_sound_w)
-	AM_RANGE(0x028000, 0x0287ff) AM_WRITE(amazon_foreground_w) AM_SHARE("fg_videoram")
-ADDRESS_MAP_END
-
-static ADDRESS_MAP_START( amazon_map, AS_PROGRAM, 16, terracre_state )
-=======
 	AM_RANGE(0x026004, 0x026005) AM_READNOP AM_WRITE(amazon_scrolly_w)
 	AM_RANGE(0x02600a, 0x02600b) AM_NOP // video related
 	AM_RANGE(0x02600c, 0x02600d) AM_WRITE(amazon_sound_w)
@@ -313,7 +251,6 @@ static ADDRESS_MAP_START( amazon_map, AS_PROGRAM, 16, terracre_state )
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( amazon_base_map, AS_PROGRAM, 16, terracre_state )
->>>>>>> upstream/master
 	AM_RANGE(0x000000, 0x01ffff) AM_ROM
 	AM_RANGE(0x040000, 0x0401ff) AM_RAM AM_SHARE("spriteram")
 	AM_RANGE(0x040200, 0x040fff) AM_RAM
@@ -324,12 +261,6 @@ static ADDRESS_MAP_START( amazon_base_map, AS_PROGRAM, 16, terracre_state )
 	AM_RANGE(0x044006, 0x044007) AM_READ_PORT("IN3")
 	AM_RANGE(0x046000, 0x046001) AM_WRITE(amazon_flipscreen_w)  /* flip screen & coin counters */
 	AM_RANGE(0x046002, 0x046003) AM_WRITE(amazon_scrollx_w)
-<<<<<<< HEAD
-	AM_RANGE(0x046004, 0x046005) AM_WRITE(amazon_scrolly_w)
-	AM_RANGE(0x04600c, 0x04600d) AM_WRITE(amazon_sound_w)
-	AM_RANGE(0x050000, 0x050fff) AM_WRITE(amazon_foreground_w) AM_SHARE("fg_videoram")
-	AM_RANGE(0x070000, 0x070003) AM_READWRITE(amazon_protection_r, amazon_protection_w)
-=======
 	AM_RANGE(0x046004, 0x046005) AM_READNOP AM_WRITE(amazon_scrolly_w)
 	AM_RANGE(0x04600a, 0x04600b) AM_NOP // video related
 	AM_RANGE(0x04600c, 0x04600d) AM_WRITE(amazon_sound_w)
@@ -341,7 +272,6 @@ ADDRESS_MAP_END
 static ADDRESS_MAP_START( amazon_1412m2_map, AS_PROGRAM, 16, terracre_state)
 	AM_RANGE(0x070000, 0x070003) AM_READWRITE(amazon_protection_r, amazon_protection_w)
 	AM_IMPORT_FROM( amazon_base_map )
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( sound_map, AS_PROGRAM, 8, terracre_state )
@@ -352,33 +282,19 @@ ADDRESS_MAP_END
 static ADDRESS_MAP_START( sound_3526_io_map, AS_IO, 8, terracre_state )
 	ADDRESS_MAP_GLOBAL_MASK(0xff)
 	AM_RANGE(0x00, 0x01) AM_DEVWRITE("ymsnd", ym3526_device, write)
-<<<<<<< HEAD
-	AM_RANGE(0x02, 0x02) AM_DEVWRITE("dac1", dac_device, write_signed8)
-	AM_RANGE(0x03, 0x03) AM_DEVWRITE("dac2", dac_device, write_signed8)
-	AM_RANGE(0x04, 0x04) AM_READ(soundlatch_clear_r)
-	AM_RANGE(0x06, 0x06) AM_READ(soundlatch_byte_r)
-=======
 	AM_RANGE(0x02, 0x02) AM_DEVWRITE("dac1", dac_byte_interface, write)
 	AM_RANGE(0x03, 0x03) AM_DEVWRITE("dac2", dac_byte_interface, write)
 	AM_RANGE(0x04, 0x04) AM_READ(soundlatch_clear_r)
 	AM_RANGE(0x06, 0x06) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( sound_2203_io_map, AS_IO, 8, terracre_state )
 	ADDRESS_MAP_GLOBAL_MASK(0xff)
 	AM_RANGE(0x00, 0x01) AM_DEVWRITE("ym1", ym2203_device, write)
-<<<<<<< HEAD
-	AM_RANGE(0x02, 0x02) AM_DEVWRITE("dac1", dac_device, write_signed8)
-	AM_RANGE(0x03, 0x03) AM_DEVWRITE("dac2", dac_device, write_signed8)
-	AM_RANGE(0x04, 0x04) AM_READ(soundlatch_clear_r)
-	AM_RANGE(0x06, 0x06) AM_READ(soundlatch_byte_r)
-=======
 	AM_RANGE(0x02, 0x02) AM_DEVWRITE("dac1", dac_byte_interface, write)
 	AM_RANGE(0x03, 0x03) AM_DEVWRITE("dac2", dac_byte_interface, write)
 	AM_RANGE(0x04, 0x04) AM_READ(soundlatch_clear_r)
 	AM_RANGE(0x06, 0x06) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 static INPUT_PORTS_START( terracre )
@@ -583,34 +499,20 @@ static INPUT_PORTS_START( horekid )
 	PORT_BIT( 0x8000, IP_ACTIVE_LOW, IPT_UNKNOWN )
 
 	PORT_START("IN2")
-<<<<<<< HEAD
-	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_JOYSTICK_UP ) PORT_8WAY PORT_PLAYER(2)
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_JOYSTICK_DOWN ) PORT_8WAY PORT_PLAYER(2)
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT ) PORT_8WAY PORT_PLAYER(2)
-	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT ) PORT_8WAY PORT_PLAYER(2)
-=======
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_JOYSTICK_UP ) PORT_4WAY PORT_PLAYER(2)
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_JOYSTICK_DOWN ) PORT_4WAY PORT_PLAYER(2)
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT ) PORT_4WAY PORT_PLAYER(2)
 	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT ) PORT_4WAY PORT_PLAYER(2)
->>>>>>> upstream/master
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_BUTTON1 ) PORT_PLAYER(2)
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_BUTTON2 ) PORT_PLAYER(2)
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_UNKNOWN )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNKNOWN )
 
 	PORT_START("IN3")
-<<<<<<< HEAD
-	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_JOYSTICK_UP ) PORT_8WAY PORT_PLAYER(1)
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_JOYSTICK_DOWN ) PORT_8WAY PORT_PLAYER(1)
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT ) PORT_8WAY PORT_PLAYER(1)
-	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT ) PORT_8WAY PORT_PLAYER(1)
-=======
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_JOYSTICK_UP ) PORT_4WAY PORT_PLAYER(1)
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_JOYSTICK_DOWN ) PORT_4WAY PORT_PLAYER(1)
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT ) PORT_4WAY PORT_PLAYER(1)
 	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT ) PORT_4WAY PORT_PLAYER(1)
->>>>>>> upstream/master
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_BUTTON1 ) PORT_PLAYER(1)
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_BUTTON2 ) PORT_PLAYER(1)
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_UNKNOWN )
@@ -671,11 +573,7 @@ static GFXDECODE_START( terracre )
 GFXDECODE_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( ym3526, terracre_state )
-=======
 static MACHINE_CONFIG_START( ym3526 )
->>>>>>> upstream/master
 	MCFG_CPU_ADD("maincpu", M68000, XTAL_16MHz/2)   // 8mhz
 	MCFG_CPU_PROGRAM_MAP(terracre_map)
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", terracre_state,  irq1_line_hold)
@@ -693,11 +591,7 @@ static MACHINE_CONFIG_START( ym3526 )
 	MCFG_SCREEN_SIZE(32*8, 32*8)
 	MCFG_SCREEN_VISIBLE_AREA(0*8, 32*8-1, 2*8, 30*8-1)
 	MCFG_SCREEN_UPDATE_DRIVER(terracre_state, screen_update_amazon)
-<<<<<<< HEAD
-	MCFG_SCREEN_VBLANK_DEVICE("spriteram", buffered_spriteram16_device, vblank_copy_rising)
-=======
 	MCFG_SCREEN_VBLANK_CALLBACK(DEVWRITELINE("spriteram", buffered_spriteram16_device, vblank_copy_rising))
->>>>>>> upstream/master
 	MCFG_SCREEN_PALETTE("palette")
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", terracre)
@@ -705,18 +599,6 @@ static MACHINE_CONFIG_START( ym3526 )
 	MCFG_PALETTE_INDIRECT_ENTRIES(256)
 	MCFG_PALETTE_INIT_OWNER(terracre_state, terracre)
 
-<<<<<<< HEAD
-	MCFG_SPEAKER_STANDARD_MONO("mono")
-
-	MCFG_SOUND_ADD("ymsnd", YM3526, XTAL_16MHz/4)
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
-
-	MCFG_DAC_ADD("dac1")
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
-
-	MCFG_DAC_ADD("dac2")
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
-=======
 	MCFG_SPEAKER_STANDARD_MONO("speaker")
 
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
@@ -729,7 +611,6 @@ static MACHINE_CONFIG_START( ym3526 )
 	MCFG_DEVICE_ADD("vref", VOLTAGE_REGULATOR, 0) MCFG_VOLTAGE_REGULATOR_OUTPUT(5.0)
 	MCFG_SOUND_ROUTE_EX(0, "dac1", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "dac1", -1.0, DAC_VREF_NEG_INPUT)
 	MCFG_SOUND_ROUTE_EX(0, "dac2", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "dac2", -1.0, DAC_VREF_NEG_INPUT)
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_DERIVED( ym2203, ym3526 )
@@ -739,17 +620,6 @@ static MACHINE_CONFIG_DERIVED( ym2203, ym3526 )
 	MCFG_DEVICE_REMOVE("ymsnd")
 
 	MCFG_SOUND_ADD("ym1", YM2203, XTAL_16MHz/4)
-<<<<<<< HEAD
-	MCFG_SOUND_ROUTE(0, "mono", 0.20)
-	MCFG_SOUND_ROUTE(1, "mono", 0.20)
-	MCFG_SOUND_ROUTE(2, "mono", 0.20)
-	MCFG_SOUND_ROUTE(3, "mono", 0.40)
-MACHINE_CONFIG_END
-
-static MACHINE_CONFIG_DERIVED( amazon, ym3526 )
-	MCFG_CPU_MODIFY("maincpu")
-	MCFG_CPU_PROGRAM_MAP(amazon_map)
-=======
 	MCFG_SOUND_ROUTE(0, "speaker", 0.2)
 	MCFG_SOUND_ROUTE(1, "speaker", 0.2)
 	MCFG_SOUND_ROUTE(2, "speaker", 0.2)
@@ -759,13 +629,10 @@ MACHINE_CONFIG_END
 static MACHINE_CONFIG_DERIVED( amazon_base, ym3526 )
 	MCFG_CPU_MODIFY("maincpu")
 	MCFG_CPU_PROGRAM_MAP(amazon_base_map)
->>>>>>> upstream/master
 
 	MCFG_MACHINE_START_OVERRIDE(terracre_state,amazon)
 MACHINE_CONFIG_END
 
-<<<<<<< HEAD
-=======
 static MACHINE_CONFIG_DERIVED( amazon_1412m2, amazon_base )
 	MCFG_CPU_MODIFY("maincpu")
 	MCFG_CPU_PROGRAM_MAP(amazon_1412m2_map)
@@ -773,7 +640,6 @@ static MACHINE_CONFIG_DERIVED( amazon_1412m2, amazon_base )
 	// TODO: install 1412m2 here
 MACHINE_CONFIG_END
 
->>>>>>> upstream/master
 
 /**************************************
 
@@ -974,11 +840,7 @@ ROM_START( amazon )
 	ROM_REGION( 0x0100, "user1", 0 )
 	ROM_LOAD( "4e",      0x000, 0x100, CRC(035f2c7b) SHA1(36e32a50146631e763711b586936b2815600f52d) ) /* ctable */
 
-<<<<<<< HEAD
-	ROM_REGION( 0x2000, "user2", 0 ) /* unknown, mostly text */
-=======
 	ROM_REGION( 0x2000, "prot_data", 0 ) /* unknown, mostly text */
->>>>>>> upstream/master
 	ROM_LOAD( "16.18g", 0x0000, 0x2000, CRC(1d8d592b) SHA1(be8d6df8b5926069ae2cbc1dc26e1fa92d63f297) )
 ROM_END
 
@@ -1017,11 +879,7 @@ ROM_START( amatelas )
 	ROM_REGION( 0x0100, "user1", 0 )
 	ROM_LOAD( "4e",      0x000, 0x100, CRC(035f2c7b) SHA1(36e32a50146631e763711b586936b2815600f52d) ) /* ctable */
 
-<<<<<<< HEAD
-	ROM_REGION( 0x2000, "user2", 0 ) /* unknown, mostly text */
-=======
 	ROM_REGION( 0x2000, "prot_data", 0 ) /* unknown, mostly text */
->>>>>>> upstream/master
 	ROM_LOAD( "16.18g", 0x0000, 0x2000, CRC(1d8d592b) SHA1(be8d6df8b5926069ae2cbc1dc26e1fa92d63f297) )
 ROM_END
 
@@ -1061,11 +919,7 @@ ROM_START( horekid )
 	ROM_REGION( 0x0100, "user1", 0 )
 	ROM_LOAD( "kid_prom.4e",  0x000, 0x100, CRC(e4fb54ee) SHA1(aba89d347b24dc6680e6f25b4a6c0d6657bb6a83) ) /* ctable */
 
-<<<<<<< HEAD
-	ROM_REGION( 0x2000, "user2", 0 ) /* unknown, mostly text */
-=======
 	ROM_REGION( 0x2000, "prot_data", 0 ) /* unknown, mostly text */
->>>>>>> upstream/master
 	ROM_LOAD( "horekid.17", 0x0000, 0x2000, CRC(1d8d592b) SHA1(be8d6df8b5926069ae2cbc1dc26e1fa92d63f297) )
 ROM_END
 
@@ -1105,11 +959,7 @@ ROM_START( horekidb )
 	ROM_REGION( 0x0100, "user1", 0 )
 	ROM_LOAD( "kid_prom.4e",  0x000, 0x100, CRC(e4fb54ee) SHA1(aba89d347b24dc6680e6f25b4a6c0d6657bb6a83) ) /* ctable */
 
-<<<<<<< HEAD
-	ROM_REGION( 0x2000, "user2", 0 ) /* unknown, mostly text */
-=======
 	ROM_REGION( 0x2000, "prot_data", 0 ) /* unknown, mostly text */
->>>>>>> upstream/master
 	ROM_LOAD( "horekid.17", 0x0000, 0x2000, CRC(1d8d592b) SHA1(be8d6df8b5926069ae2cbc1dc26e1fa92d63f297) )
 ROM_END
 
@@ -1156,33 +1006,6 @@ ROM_START( boobhack )
 	ROM_LOAD( "kid_prom.4e",  0x000, 0x100, BAD_DUMP CRC(e4fb54ee) SHA1(aba89d347b24dc6680e6f25b4a6c0d6657bb6a83) ) /* ctable */
 ROM_END
 
-<<<<<<< HEAD
-DRIVER_INIT_MEMBER(terracre_state,amazon)
-{
-	m_mpProtData = mAmazonProtData;
-}
-
-DRIVER_INIT_MEMBER(terracre_state,amatelas)
-{
-	m_mpProtData = mAmatelasProtData;
-}
-
-DRIVER_INIT_MEMBER(terracre_state,horekid)
-{
-	m_mpProtData = mHoreKidProtData;
-}
-
-/*    YEAR, NAME,   PARENT,     MACHINE, INPUT,    INIT,     MONITOR,  COMPANY,      FULLNAME, FLAGS */
-GAME( 1985, terracre, 0,        ym3526,  terracre, driver_device, 0,        ROT270,  "Nichibutsu", "Terra Cresta (YM3526 set 1)", MACHINE_SUPPORTS_SAVE )
-GAME( 1985, terracreo,terracre, ym3526,  terracre, driver_device, 0,        ROT270,  "Nichibutsu", "Terra Cresta (YM3526 set 2)", MACHINE_SUPPORTS_SAVE )
-GAME( 1985, terracrea,terracre, ym3526,  terracre, driver_device, 0,        ROT270,  "Nichibutsu", "Terra Cresta (YM3526 set 3)", MACHINE_SUPPORTS_SAVE )
-GAME( 1985, terracren,terracre, ym2203,  terracre, driver_device, 0,        ROT270,  "Nichibutsu", "Terra Cresta (YM2203)", MACHINE_SUPPORTS_SAVE )
-GAME( 1986, amazon,   0,        amazon,  amazon, terracre_state,   amazon,   ROT270,  "Nichibutsu", "Soldier Girl Amazon", MACHINE_SUPPORTS_SAVE )
-GAME( 1986, amatelas, amazon,   amazon,  amazon, terracre_state,   amatelas, ROT270,  "Nichibutsu", "Sei Senshi Amatelass", MACHINE_SUPPORTS_SAVE )
-GAME( 1987, horekid,  0,        amazon,  horekid, terracre_state,  horekid,  ROT270,  "Nichibutsu", "Kid no Hore Hore Daisakusen", MACHINE_SUPPORTS_SAVE )
-GAME( 1987, horekidb, horekid,  amazon,  horekid, terracre_state,  horekid,  ROT270,  "bootleg", "Kid no Hore Hore Daisakusen (bootleg)", MACHINE_SUPPORTS_SAVE )
-GAME( 1987, boobhack, horekid,  amazon,  horekid, terracre_state,  horekid,  ROT270,  "bootleg", "Booby Kids (Italian manufactured graphic hack / bootleg of Kid no Hore Hore Daisakusen (bootleg))", MACHINE_SUPPORTS_SAVE )
-=======
 
 
 //    YEAR, NAME,     PARENT,   MACHINE, INPUT,    STATE,          INIT,     MONITOR, COMPANY,      FULLNAME, FLAGS
@@ -1199,4 +1022,3 @@ GAME( 1987, horekid,  0,        amazon_1412m2,  horekid,  terracre_state, 0,  RO
 // bootlegs
 GAME( 1987, horekidb, horekid,  amazon_base,  horekid,  terracre_state, 0,  ROT270,  "bootleg",    "Kid no Hore Hore Daisakusen (bootleg)", MACHINE_SUPPORTS_SAVE )
 GAME( 1987, boobhack, horekid,  amazon_base,    horekid,  terracre_state, 0,  ROT270,  "bootleg",    "Booby Kids (Italian manufactured graphic hack / bootleg of Kid no Hore Hore Daisakusen (bootleg))", MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

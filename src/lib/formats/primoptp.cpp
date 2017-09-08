@@ -26,15 +26,9 @@
 #define PRIMO_FILE_PILOT_LENGTH     ((4*PRIMO_BIT_1_LENGTH + 4*PRIMO_BIT_0_LENGTH)*512)
 #define PRIMO_BLOCK_PILOT_LENGTH    ((8*PRIMO_BIT_1_LENGTH)*96 + (5*PRIMO_BIT_1_LENGTH + 3*PRIMO_BIT_0_LENGTH)*3)
 
-<<<<<<< HEAD
-static UINT32 primo_tape_image_length;
-
-static INT16 *primo_emit_level(INT16 *p, int count, int level)
-=======
 static uint32_t primo_tape_image_length;
 
 static int16_t *primo_emit_level(int16_t *p, int count, int level)
->>>>>>> upstream/master
 {
 	int i;
 
@@ -43,11 +37,7 @@ static int16_t *primo_emit_level(int16_t *p, int count, int level)
 	return p;
 }
 
-<<<<<<< HEAD
-static INT16* primo_output_bit(INT16 *p, UINT8 bit)
-=======
 static int16_t* primo_output_bit(int16_t *p, uint8_t bit)
->>>>>>> upstream/master
 {
 	if (bit)
 	{
@@ -62,11 +52,7 @@ static int16_t* primo_output_bit(int16_t *p, uint8_t bit)
 		return p;
 }
 
-<<<<<<< HEAD
-static INT16* primo_output_byte(INT16 *p, UINT8 byte)
-=======
 static int16_t* primo_output_byte(int16_t *p, uint8_t byte)
->>>>>>> upstream/master
 {
 	int i;
 
@@ -76,19 +62,11 @@ static int16_t* primo_output_byte(int16_t *p, uint8_t byte)
 	return p;
 }
 
-<<<<<<< HEAD
-static UINT32 primo_cassette_calculate_number_of_1(const UINT8 *bytes, UINT16 length)
-{
-	int i,j;
-
-	UINT32 number_of_1 = 0;
-=======
 static uint32_t primo_cassette_calculate_number_of_1(const uint8_t *bytes, uint16_t length)
 {
 	int i,j;
 
 	uint32_t number_of_1 = 0;
->>>>>>> upstream/master
 
 	for (i=0; i<length; i++)
 		for (j=0; j<8; j++)
@@ -98,20 +76,6 @@ static uint32_t primo_cassette_calculate_number_of_1(const uint8_t *bytes, uint1
 	return number_of_1;
 }
 
-<<<<<<< HEAD
-static int primo_cassette_calculate_size_in_samples(const UINT8 *bytes, int length)
-{
-	int i = 0, j = 0;
-
-	UINT8 *b = (UINT8*) bytes;
-
-	UINT32 file_size = 0;
-	UINT16 block_size = 0;
-
-	UINT32 number_of_1 = 0;
-	UINT32 number_of_0 = 0;
-	UINT32 size_in_samples = 0;
-=======
 static int primo_cassette_calculate_size_in_samples(const uint8_t *bytes, int length)
 {
 	int i = 0, j = 0;
@@ -124,7 +88,6 @@ static int primo_cassette_calculate_size_in_samples(const uint8_t *bytes, int le
 	uint32_t number_of_1 = 0;
 	uint32_t number_of_0 = 0;
 	uint32_t size_in_samples = 0;
->>>>>>> upstream/master
 
 	primo_tape_image_length = length;
 
@@ -179,17 +142,6 @@ static int primo_cassette_calculate_size_in_samples(const uint8_t *bytes, int le
 	return size_in_samples;
 }
 
-<<<<<<< HEAD
-static int primo_cassette_fill_wave(INT16 *buffer, int length, UINT8 *bytes)
-{
-	int i = 0, j = 0, k;
-
-	INT16 *p = buffer;
-	UINT8 *b = bytes;
-
-	UINT32 file_size = 0;
-	UINT16 block_size = 0;
-=======
 static int primo_cassette_fill_wave(int16_t *buffer, int length, uint8_t *bytes)
 {
 	int i = 0, j = 0, k;
@@ -199,7 +151,6 @@ static int primo_cassette_fill_wave(int16_t *buffer, int length, uint8_t *bytes)
 
 	uint32_t file_size = 0;
 	uint16_t block_size = 0;
->>>>>>> upstream/master
 
 	LOG_FORMATS ("Image size: %d\n", length);
 
@@ -275,20 +226,12 @@ static const struct CassetteLegacyWaveFiller primo_legacy_fill_wave =
 	0                                           /* trailer_samples */
 };
 
-<<<<<<< HEAD
-static casserr_t primo_ptp_identify(cassette_image *cassette, struct CassetteOptions *opts)
-=======
 static cassette_image::error primo_ptp_identify(cassette_image *cassette, struct CassetteOptions *opts)
->>>>>>> upstream/master
 {
 	return cassette_legacy_identify(cassette, opts, &primo_legacy_fill_wave);
 }
 
-<<<<<<< HEAD
-static casserr_t primo_ptp_load(cassette_image *cassette)
-=======
 static cassette_image::error primo_ptp_load(cassette_image *cassette)
->>>>>>> upstream/master
 {
 	return cassette_legacy_construct(cassette, &primo_legacy_fill_wave);
 }
@@ -298,11 +241,7 @@ static const struct CassetteFormat primo_ptp_image_format =
 	"ptp",
 	primo_ptp_identify,
 	primo_ptp_load,
-<<<<<<< HEAD
-	NULL
-=======
 	nullptr
->>>>>>> upstream/master
 };
 
 CASSETTE_FORMATLIST_START(primo_ptp_format)

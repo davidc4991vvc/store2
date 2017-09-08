@@ -17,18 +17,12 @@
 #include "emu.h"
 
 #include "cpu/mcs51/mcs51.h"
-<<<<<<< HEAD
-#include "sound/ay8910.h"
-#include "fireball.lh"
-#include "machine/eepromser.h"
-=======
 #include "machine/eepromser.h"
 #include "sound/ay8910.h"
 #include "speaker.h"
 
 #include "fireball.lh"
 
->>>>>>> upstream/master
 
 /****************************
 *    LOG defines            *
@@ -59,15 +53,6 @@ public:
 		m_eeprom(*this, "eeprom")
 	{ }
 
-<<<<<<< HEAD
-	UINT8 m_p1_data;
-	UINT8 m_p3_data;
-	UINT8 int_timing;
-	UINT8 int_data;
-	UINT8 ay_data;
-	UINT8 to_ay_data;
-	UINT8 m_display_data;
-=======
 	uint8_t m_p1_data;
 	uint8_t m_p3_data;
 	uint8_t int_timing;
@@ -75,7 +60,6 @@ public:
 	uint8_t ay_data;
 	uint8_t to_ay_data;
 	uint8_t m_display_data;
->>>>>>> upstream/master
 
 	DECLARE_WRITE8_MEMBER(io_00_w);
 	DECLARE_READ8_MEMBER(io_00_r);
@@ -99,11 +83,7 @@ protected:
 	required_device<eeprom_serial_x24c44_device> m_eeprom;
 
 	// driver_device overrides
-<<<<<<< HEAD
-	virtual void machine_reset();
-=======
 	virtual void machine_reset() override;
->>>>>>> upstream/master
 
 private:
 };
@@ -115,11 +95,7 @@ private:
 
 READ8_MEMBER(fireball_state::io_00_r)
 {
-<<<<<<< HEAD
-	UINT8 tmp=0;
-=======
 	uint8_t tmp=0;
->>>>>>> upstream/master
 
 	tmp=ioport("X2-4")->read();
 
@@ -136,15 +112,6 @@ WRITE8_MEMBER(fireball_state::io_00_w)
 
 	switch (data&0x0f)
 	{
-<<<<<<< HEAD
-		case 1: output_set_digit_value(2, m_display_data);
-				break;
-		case 2: output_set_digit_value(1, m_display_data);
-				break;
-		case 4: output_set_digit_value(4, m_display_data);
-				break;
-		case 8: output_set_digit_value(3, m_display_data);
-=======
 		case 1: output().set_digit_value(2, m_display_data);
 				break;
 		case 2: output().set_digit_value(1, m_display_data);
@@ -152,7 +119,6 @@ WRITE8_MEMBER(fireball_state::io_00_w)
 		case 4: output().set_digit_value(4, m_display_data);
 				break;
 		case 8: output().set_digit_value(3, m_display_data);
->>>>>>> upstream/master
 				break;
 	}
 
@@ -160,24 +126,14 @@ WRITE8_MEMBER(fireball_state::io_00_w)
 	if (LOG_OUTPUT)
 		logerror("write to 0x00 IO (X11-X11A) %02X\n",data&0xf0);
 
-<<<<<<< HEAD
-	output_set_value("Hopper1", BIT(data, 4));
-	output_set_value("Hopper2", BIT(data, 5));
-	output_set_value("Hopper3", BIT(data, 6));
-=======
 	output().set_value("Hopper1", BIT(data, 4));
 	output().set_value("Hopper2", BIT(data, 5));
 	output().set_value("Hopper3", BIT(data, 6));
->>>>>>> upstream/master
 }
 
 READ8_MEMBER(fireball_state::io_02_r)
 {
-<<<<<<< HEAD
-	UINT8 tmp=0;
-=======
 	uint8_t tmp=0;
->>>>>>> upstream/master
 
 	tmp=ioport("X6-8")->read();
 
@@ -191,16 +147,6 @@ WRITE8_MEMBER(fireball_state::io_02_w)
 	if (LOG_OUTPUT)
 		logerror("write to 0x00 IO (X7-X9) %02X\n",data);
 
-<<<<<<< HEAD
-	output_set_value("GameOver", BIT(data, 0));
-	output_set_value("Title", BIT(data, 1));
-	output_set_value("Credit", BIT(data, 2));
-	output_set_value("SS", BIT(data, 3));
-	output_set_value("C_LOCK", BIT(~data, 4));
-	output_set_value("SV", BIT(data, 5));
-	output_set_value("FBV", BIT(data, 6));
-	output_set_value("RV", BIT(data, 7));
-=======
 	output().set_value("GameOver", BIT(data, 0));
 	output().set_value("Title", BIT(data, 1));
 	output().set_value("Credit", BIT(data, 2));
@@ -209,16 +155,11 @@ WRITE8_MEMBER(fireball_state::io_02_w)
 	output().set_value("SV", BIT(data, 5));
 	output().set_value("FBV", BIT(data, 6));
 	output().set_value("RV", BIT(data, 7));
->>>>>>> upstream/master
 }
 
 READ8_MEMBER(fireball_state::io_04_r)
 {   //contraves per mod prog
-<<<<<<< HEAD
-	UINT8 tmp=0;
-=======
 	uint8_t tmp=0;
->>>>>>> upstream/master
 
 	tmp=ioport("X10-12")->read();
 
@@ -254,25 +195,15 @@ WRITE8_MEMBER(fireball_state::io_06_w)
 	to_ay_data= data;
 
 	if (LOG_DISPLAY2)
-<<<<<<< HEAD
-		logerror("On board display write %02X\n",UINT8(~(data&0xff)));
-
-	output_set_digit_value(7, UINT8(~(data&0xff)));
-=======
 		logerror("On board display write %02X\n",uint8_t(~(data&0xff)));
 
 	output().set_digit_value(7, uint8_t(~(data&0xff)));
->>>>>>> upstream/master
 }
 
 
 	READ8_MEMBER(fireball_state::p1_r)
 	{
-<<<<<<< HEAD
-	UINT8 tmp=0;
-=======
 	uint8_t tmp=0;
->>>>>>> upstream/master
 	tmp=(m_p1_data&0xfe)|(m_eeprom->do_read());
 	if (LOG_P1)
 		logerror("readP1 port data %02X\n",tmp&0x01);
@@ -293,11 +224,7 @@ WRITE8_MEMBER(fireball_state::io_06_w)
 
 	if (LOG_AY8912){
 		if(( data&0x30) !=  (m_p1_data&0x30)){
-<<<<<<< HEAD
-			logerror("write ay8910 controll bc1= %02X bdir= %02X\n",data&0x10, data&0x20);
-=======
 			logerror("write ay8910 control bc1= %02X bdir= %02X\n",data&0x10, data&0x20);
->>>>>>> upstream/master
 		}
 	}
 
@@ -307,11 +234,7 @@ WRITE8_MEMBER(fireball_state::io_06_w)
 
 	if (LOG_P1){
 		if(( data&0xc8) !=  (m_p1_data&0xc8)){
-<<<<<<< HEAD
-			logerror("Unkonow P1 data changed, old data %02X, new data %02X\n",m_p1_data,data);
-=======
 			logerror("Unknown P1 data changed, old data %02X, new data %02X\n",m_p1_data,data);
->>>>>>> upstream/master
 		}
 	}
 
@@ -348,11 +271,7 @@ WRITE8_MEMBER(fireball_state::io_06_w)
 
 	READ8_MEMBER(fireball_state::p3_r)
 	{
-<<<<<<< HEAD
-	UINT8 ret = 0xfb | ((int_data&1)<<2);
-=======
 	uint8_t ret = 0xfb | ((int_data&1)<<2);
->>>>>>> upstream/master
 	if (LOG_P3)
 		logerror("read P3 port data = %02X\n",ret);
 	return ret;
@@ -527,23 +446,6 @@ INPUT_PORTS_END
 void fireball_state::machine_reset()
 {
 	int_timing=1;
-<<<<<<< HEAD
-	output_set_digit_value(5, 0x3f);
-	output_set_digit_value(6, 0x3f);
-
-	output_set_value("Hopper1", 0);
-	output_set_value("Hopper2", 0);
-	output_set_value("Hopper3", 0);
-
-	output_set_value("GameOver", 0);
-	output_set_value("Title", 0);
-	output_set_value("Credit", 0);
-	output_set_value("SS", 0);
-	output_set_value("C_LOCK", 0);
-	output_set_value("SV", 0);
-	output_set_value("FBV", 0);
-	output_set_value("RV", 0);
-=======
 	output().set_digit_value(5, 0x3f);
 	output().set_digit_value(6, 0x3f);
 
@@ -559,7 +461,6 @@ void fireball_state::machine_reset()
 	output().set_value("SV", 0);
 	output().set_value("FBV", 0);
 	output().set_value("RV", 0);
->>>>>>> upstream/master
 }
 
 /*************************
@@ -591,11 +492,7 @@ TIMER_DEVICE_CALLBACK_MEMBER( fireball_state::int_0 )
 *************************/
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( fireball, fireball_state )
-=======
 static MACHINE_CONFIG_START( fireball )
->>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", I8031, CPU_CLK) //
 	MCFG_CPU_PROGRAM_MAP(fireball_map)
@@ -622,21 +519,12 @@ ROM_START(fireball)
 	ROM_REGION(0x10000, "maincpu", 0)
 	ROM_LOAD("euroball-89-07-13-c026.bin", 0x0000, 0x2000, CRC(cab3fc1c) SHA1(bcf0d17e26f2d9f5e20bda258728c989ea138702))
 
-<<<<<<< HEAD
-	ROM_REGION( 0x20, "eeprom", 0 ) // default eeprom must have some specific value at 0x03 at least
-=======
 	ROM_REGION16_BE( 0x20, "eeprom", 0 ) // default eeprom must have some specific value at 0x03 at least
->>>>>>> upstream/master
 	ROM_LOAD( "fireball.nv", 0x0000, 0x020, CRC(1d0f5f0f) SHA1(8e68fcd8782f39ed3b1df6162db9be83cb3335e4) )  //default setting
 ROM_END
 
 /*************************
 *      Game Drivers      *
 *************************/
-<<<<<<< HEAD
-/*    YEAR  NAME      PARENT     MACHINE   INPUT     STATE          INIT    ROT     COMPANY     FULLNAME    FLAGS*/
-GAME( 1989, fireball, 0,         fireball, fireball, driver_device, 0,      ROT0,   "Valco",    "Fireball", MACHINE_MECHANICAL ) //1989 by rom name
-=======
 //    YEAR  NAME      PARENT  MACHINE   INPUT     STATE           INIT  ROT   COMPANY  FULLNAME    FLAGS
 GAME( 1989, fireball, 0,      fireball, fireball, fireball_state, 0,    ROT0, "Valco", "Fireball", MACHINE_MECHANICAL ) //1989 by rom name
->>>>>>> upstream/master

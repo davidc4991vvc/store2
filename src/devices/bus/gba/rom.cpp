@@ -21,52 +21,6 @@
 //  gba_rom_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const device_type GBA_ROM_STD = &device_creator<gba_rom_device>;
-const device_type GBA_ROM_SRAM = &device_creator<gba_rom_sram_device>;
-const device_type GBA_ROM_EEPROM = &device_creator<gba_rom_eeprom_device>;
-const device_type GBA_ROM_EEPROM64 = &device_creator<gba_rom_eeprom64_device>;
-const device_type GBA_ROM_FLASH = &device_creator<gba_rom_flash_device>;
-const device_type GBA_ROM_FLASH1M = &device_creator<gba_rom_flash1m_device>;
-
-
-gba_rom_device::gba_rom_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source)
-					: device_t(mconfig, type, name, tag, owner, clock, shortname, source),
-						device_gba_cart_interface( mconfig, *this )
-{
-}
-
-gba_rom_device::gba_rom_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: device_t(mconfig, GBA_ROM_STD, "GBA Carts", tag, owner, clock, "gba_rom", __FILE__),
-						device_gba_cart_interface( mconfig, *this )
-{
-}
-
-gba_rom_sram_device::gba_rom_sram_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: gba_rom_device(mconfig, GBA_ROM_SRAM, "GBA Carts + SRAM", tag, owner, clock, "gba_sram", __FILE__)
-{
-}
-
-gba_rom_eeprom_device::gba_rom_eeprom_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: gba_rom_device(mconfig, GBA_ROM_EEPROM, "GBA Carts + EEPROM", tag, owner, clock, "gba_eeprom", __FILE__)
-{
-}
-
-gba_rom_eeprom64_device::gba_rom_eeprom64_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: gba_rom_device(mconfig, GBA_ROM_EEPROM64, "GBA Carts + EEPROM 64K", tag, owner, clock, "gba_eeprom64", __FILE__)
-{
-}
-
-gba_rom_flash_device::gba_rom_flash_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: gba_rom_device(mconfig, GBA_ROM_FLASH, "GBA Carts + Panasonic Flash", tag, owner, clock, "gba_flash", __FILE__), m_flash_mask(0),
-						m_flash(*this, "flash")
-{
-}
-
-gba_rom_flash1m_device::gba_rom_flash1m_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-					: gba_rom_device(mconfig, GBA_ROM_FLASH1M, "GBA Carts + Sanyo Flash", tag, owner, clock, "gba_flash1m", __FILE__), m_flash_mask(0),
-						m_flash(*this, "flash")
-=======
 DEFINE_DEVICE_TYPE(GBA_ROM_STD,         gba_rom_device,             "gba_rom",             "GBA Carts")
 DEFINE_DEVICE_TYPE(GBA_ROM_SRAM,        gba_rom_sram_device,        "gba_rom_sram",        "GBA Carts + SRAM")
 DEFINE_DEVICE_TYPE(GBA_ROM_DRILLDOZ,    gba_rom_drilldoz_device,    "gba_rom_drilldoz",    "GBA Carts + SRAM + Rumble")
@@ -183,7 +137,6 @@ gba_rom_flash1m_rtc_device::gba_rom_flash1m_rtc_device(const machine_config &mco
 
 gba_rom_3dmatrix_device::gba_rom_3dmatrix_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: gba_rom_device(mconfig, GBA_ROM_3DMATRIX, tag, owner, clock)
->>>>>>> upstream/master
 {
 }
 
@@ -194,18 +147,13 @@ gba_rom_3dmatrix_device::gba_rom_3dmatrix_device(const machine_config &mconfig, 
 
 void gba_rom_device::device_start()
 {
-<<<<<<< HEAD
-=======
 	save_item(NAME(m_gpio_regs));
 	save_item(NAME(m_gpio_write_only));
 	save_item(NAME(m_gpio_dirs));
->>>>>>> upstream/master
 }
 
 void gba_rom_device::device_reset()
 {
-<<<<<<< HEAD
-=======
 	m_gpio_regs[0] = 0;
 	m_gpio_regs[1] = 0;
 	m_gpio_regs[2] = 0;
@@ -224,7 +172,6 @@ void gba_rom_wariotws_device::device_reset()
 {
 	m_last_val = 0;
 	m_counter = 0;
->>>>>>> upstream/master
 }
 
 void gba_rom_flash_device::device_reset()
@@ -242,11 +189,6 @@ void gba_rom_eeprom_device::device_start()
 {
 	// for the moment we use a custom eeprom implementation, so we alloc/save it as nvram
 	nvram_alloc(0x200);
-<<<<<<< HEAD
-	m_eeprom.reset(global_alloc(gba_eeprom_device(machine(), (UINT8*)get_nvram_base(), get_nvram_size(), 6)));
-}
-
-=======
 	m_eeprom = std::make_unique<gba_eeprom_device>(machine(), (uint8_t*)get_nvram_base(), get_nvram_size(), 6);
 }
 
@@ -266,14 +208,10 @@ void gba_rom_yoshiug_device::device_reset()
 }
 
 
->>>>>>> upstream/master
 void gba_rom_eeprom64_device::device_start()
 {
 	// for the moment we use a custom eeprom implementation, so we alloc/save it as nvram
 	nvram_alloc(0x2000);
-<<<<<<< HEAD
-	m_eeprom.reset(global_alloc(gba_eeprom_device(machine(), (UINT8*)get_nvram_base(), get_nvram_size(), 14)));
-=======
 	m_eeprom = std::make_unique<gba_eeprom_device>(machine(), (uint8_t*)get_nvram_base(), get_nvram_size(), 14);
 }
 
@@ -314,7 +252,6 @@ void gba_rom_3dmatrix_device::device_reset()
 	m_src = 0;
 	m_dst = 0;
 	m_nblock = 0;
->>>>>>> upstream/master
 }
 
 
@@ -322,8 +259,6 @@ void gba_rom_3dmatrix_device::device_reset()
  mapper specific handlers
  -------------------------------------------------*/
 
-<<<<<<< HEAD
-=======
 /*-------------------------------------------------
  This is a preliminary implementation of the
  General Purpose I/O Port embedded in the GBA PCBs
@@ -393,7 +328,6 @@ WRITE32_MEMBER(gba_rom_device::write_gpio)
 	}
 }
 
->>>>>>> upstream/master
 
 /*-------------------------------------------------
  Carts with SRAM
@@ -414,8 +348,6 @@ WRITE32_MEMBER(gba_rom_sram_device::write_ram)
 }
 
 
-<<<<<<< HEAD
-=======
 // SRAM cart variant with additional Rumble motor (used by Drill Dozer)
 
 void gba_rom_drilldoz_device::gpio_dev_write(uint16_t data, int gpio_dirs)
@@ -470,26 +402,10 @@ void gba_rom_wariotws_device::gpio_dev_write(uint16_t data, int gpio_dirs)
 
 
 
->>>>>>> upstream/master
 /*-------------------------------------------------
  Carts with Flash RAM
  -------------------------------------------------*/
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_FRAGMENT( panasonic_flash )
-	MCFG_PANASONIC_MN63F805MNP_ADD("flash")
-MACHINE_CONFIG_END
-
-machine_config_constructor gba_rom_flash_device::device_mconfig_additions() const
-{
-	return MACHINE_CONFIG_NAME( panasonic_flash );
-}
-
-
-READ32_MEMBER(gba_rom_flash_device::read_ram)
-{
-	UINT32 rv = 0;
-=======
 MACHINE_CONFIG_MEMBER( gba_rom_flash_device::device_add_mconfig )
 	MCFG_PANASONIC_MN63F805MNP_ADD("flash")
 MACHINE_CONFIG_END
@@ -498,7 +414,6 @@ MACHINE_CONFIG_END
 READ32_MEMBER(gba_rom_flash_device::read_ram)
 {
 	uint32_t rv = 0;
->>>>>>> upstream/master
 
 	offset &= m_flash_mask;
 
@@ -537,21 +452,6 @@ WRITE32_MEMBER(gba_rom_flash_device::write_ram)
 	}
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_FRAGMENT( sanyo_flash )
-	MCFG_SANYO_LE26FV10N1TS_ADD("flash")
-MACHINE_CONFIG_END
-
-machine_config_constructor gba_rom_flash1m_device::device_mconfig_additions() const
-{
-	return MACHINE_CONFIG_NAME( sanyo_flash );
-}
-
-
-READ32_MEMBER(gba_rom_flash1m_device::read_ram)
-{
-	UINT32 rv = 0;
-=======
 MACHINE_CONFIG_MEMBER( gba_rom_flash1m_device::device_add_mconfig )
 	MCFG_SANYO_LE26FV10N1TS_ADD("flash")
 MACHINE_CONFIG_END
@@ -560,7 +460,6 @@ MACHINE_CONFIG_END
 READ32_MEMBER(gba_rom_flash1m_device::read_ram)
 {
 	uint32_t rv = 0;
->>>>>>> upstream/master
 
 	offset &= m_flash_mask;
 
@@ -599,22 +498,6 @@ WRITE32_MEMBER(gba_rom_flash1m_device::write_ram)
 	}
 }
 
-<<<<<<< HEAD
-
-/*-------------------------------------------------
- Carts with EEPROM
-
- TODO: can this sketchy EEPROM device be merged
- with the core implementation?
- -------------------------------------------------*/
-
-// GBA EEPROM Device
-
-gba_eeprom_device::gba_eeprom_device(running_machine &machine, UINT8 *eeprom, UINT32 size, int addr_bits) :
-			m_state(EEP_IDLE),
-			m_machine(machine)
-{
-=======
 // cart variants with additional S3511 RTC
 
 uint16_t gba_rom_flash_rtc_device::gpio_dev_read(int gpio_dirs)
@@ -1053,7 +936,6 @@ gba_eeprom_device::gba_eeprom_device(running_machine &machine, uint8_t *eeprom, 
 					m_state(EEP_IDLE),
 					m_machine(machine)
 {
->>>>>>> upstream/master
 	m_data = eeprom;
 	m_data_size = size;
 	m_addr_bits = addr_bits;
@@ -1066,15 +948,9 @@ gba_eeprom_device::gba_eeprom_device(running_machine &machine, uint8_t *eeprom, 
 	m_machine.save().save_item(m_eep_data, "GBA_EEPROM/m_eep_data");
 }
 
-<<<<<<< HEAD
-UINT32 gba_eeprom_device::read()
-{
-	UINT32 out;
-=======
 uint32_t gba_eeprom_device::read()
 {
 	uint32_t out;
->>>>>>> upstream/master
 
 	switch (m_state)
 	{
@@ -1126,11 +1002,7 @@ uint32_t gba_eeprom_device::read()
 	return 0;
 }
 
-<<<<<<< HEAD
-void gba_eeprom_device::write(UINT32 data)
-=======
 void gba_eeprom_device::write(uint32_t data)
->>>>>>> upstream/master
 {
 //  printf("eeprom_w: %x @ %x (state %d) (PC=%x)\n", data, offset, m_state, space.device().safe_pc());
 	switch (m_state)
@@ -1205,50 +1077,3 @@ void gba_eeprom_device::write(uint32_t data)
 			break;
 	}
 }
-<<<<<<< HEAD
-
-
-
-READ32_MEMBER(gba_rom_eeprom_device::read_ram)
-{
-	// Larger games have smaller access to EERPOM content
-	if (m_rom_size > (16 * 1024 * 1024) && offset < 0xffff00/4)
-		return 0xffffffff;
-
-	return m_eeprom->read();
-}
-
-WRITE32_MEMBER(gba_rom_eeprom_device::write_ram)
-{
-	// Larger games have smaller access to EEPROM content
-	if (m_rom_size > (16 * 1024 * 1024) && offset < 0xffff00/4)
-		return;
-
-	if (~mem_mask == 0x0000ffff)
-		data >>= 16;
-
-	m_eeprom->write(data);
-}
-
-READ32_MEMBER(gba_rom_eeprom64_device::read_ram)
-{
-	// Larger games have smaller access to EERPOM content
-	if (m_rom_size > (16 * 1024 * 1024) && offset < 0xffff00/4)
-		return 0xffffffff;
-
-	return m_eeprom->read();
-}
-
-WRITE32_MEMBER(gba_rom_eeprom64_device::write_ram)
-{
-	// Larger games have smaller access to EEPROM content
-	if (m_rom_size > (16 * 1024 * 1024) && offset < 0xffff00/4)
-		return;
-
-	if (~mem_mask == 0x0000ffff)
-		data >>= 16;
-
-	m_eeprom->write(data);
-}
-=======
->>>>>>> upstream/master

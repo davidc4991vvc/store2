@@ -21,11 +21,7 @@ static int cas_size;
 /*******************************************************************
    Generate one high-low cycle of sample data
 ********************************************************************/
-<<<<<<< HEAD
-INLINE int trs80l2_cas_cycle(INT16 *buffer, int sample_pos, int silence, int high, int low)
-=======
 static inline int trs80l2_cas_cycle(int16_t *buffer, int sample_pos, int silence, int high, int low)
->>>>>>> upstream/master
 {
 	int i = 0;
 
@@ -52,11 +48,7 @@ static inline int trs80l2_cas_cycle(int16_t *buffer, int sample_pos, int silence
 }
 
 
-<<<<<<< HEAD
-static int trs80l2_handle_cas(INT16 *buffer, const UINT8 *casdata)
-=======
 static int trs80l2_handle_cas(int16_t *buffer, const uint8_t *casdata)
->>>>>>> upstream/master
 {
 	int data_pos, sample_count;
 
@@ -65,11 +57,7 @@ static int trs80l2_handle_cas(int16_t *buffer, const uint8_t *casdata)
 
 	while( data_pos < cas_size )
 	{
-<<<<<<< HEAD
-		UINT8   data = casdata[data_pos];
-=======
 		uint8_t   data = casdata[data_pos];
->>>>>>> upstream/master
 		int     i;
 
 		for ( i = 0; i < 8; i++ )
@@ -95,11 +83,7 @@ static int trs80l2_handle_cas(int16_t *buffer, const uint8_t *casdata)
 /*******************************************************************
    Generate samples for the tape image
 ********************************************************************/
-<<<<<<< HEAD
-static int trs80l2_cas_fill_wave(INT16 *buffer, int sample_count, UINT8 *bytes)
-=======
 static int trs80l2_cas_fill_wave(int16_t *buffer, int sample_count, uint8_t *bytes)
->>>>>>> upstream/master
 {
 	return trs80l2_handle_cas( buffer, bytes );
 }
@@ -108,19 +92,11 @@ static int trs80l2_cas_fill_wave(int16_t *buffer, int sample_count, uint8_t *byt
 /*******************************************************************
    Calculate the number of samples needed for this tape image
 ********************************************************************/
-<<<<<<< HEAD
-static int trs80l2_cas_to_wav_size(const UINT8 *casdata, int caslen)
-{
-	cas_size = caslen;
-
-	return trs80l2_handle_cas( NULL, casdata );
-=======
 static int trs80l2_cas_to_wav_size(const uint8_t *casdata, int caslen)
 {
 	cas_size = caslen;
 
 	return trs80l2_handle_cas( nullptr, casdata );
->>>>>>> upstream/master
 }
 
 static const struct CassetteLegacyWaveFiller trs80l2_cas_legacy_fill_wave =
@@ -135,21 +111,13 @@ static const struct CassetteLegacyWaveFiller trs80l2_cas_legacy_fill_wave =
 };
 
 
-<<<<<<< HEAD
-static casserr_t trs80l2_cas_identify(cassette_image *cassette, struct CassetteOptions *opts)
-=======
 static cassette_image::error trs80l2_cas_identify(cassette_image *cassette, struct CassetteOptions *opts)
->>>>>>> upstream/master
 {
 	return cassette_legacy_identify(cassette, opts, &trs80l2_cas_legacy_fill_wave);
 }
 
 
-<<<<<<< HEAD
-static casserr_t trs80l2_cas_load(cassette_image *cassette)
-=======
 static cassette_image::error trs80l2_cas_load(cassette_image *cassette)
->>>>>>> upstream/master
 {
 	return cassette_legacy_construct(cassette, &trs80l2_cas_legacy_fill_wave);
 }
@@ -160,11 +128,7 @@ static const struct CassetteFormat trs80l2_cas_format =
 	"cas",
 	trs80l2_cas_identify,
 	trs80l2_cas_load,
-<<<<<<< HEAD
-	NULL
-=======
 	nullptr
->>>>>>> upstream/master
 };
 
 

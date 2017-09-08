@@ -30,11 +30,7 @@
 /* x B01234 G01234 R01234 */
 PALETTE_INIT_MEMBER(dynax_state,sprtmtch)
 {
-<<<<<<< HEAD
-	const UINT8 *color_prom = memregion("proms")->base();
-=======
 	const uint8_t *color_prom = memregion("proms")->base();
->>>>>>> upstream/master
 	if (!color_prom)
 		return;
 
@@ -52,11 +48,7 @@ PALETTE_INIT_MEMBER(dynax_state,sprtmtch)
 /* x xB0123 xG0123 xR0123 */
 PALETTE_INIT_MEMBER(dynax_state,janyuki)
 {
-<<<<<<< HEAD
-	const UINT8 *color_prom = memregion("proms")->base();
-=======
 	const uint8_t *color_prom = memregion("proms")->base();
->>>>>>> upstream/master
 	if (!color_prom)
 		return;
 
@@ -211,18 +203,6 @@ WRITE8_MEMBER(dynax_state::dynax_blit_palette67_w)
 
 
 /* Layers Palettes (High Bits) */
-<<<<<<< HEAD
-WRITE8_MEMBER(dynax_state::dynax_blit_palbank_w)
-{
-	m_blit_palbank = data;
-	LOG(("PB=%02X ", data));
-}
-
-WRITE8_MEMBER(dynax_state::dynax_blit2_palbank_w)
-{
-	m_blit2_palbank = data;
-	LOG(("PB'=%02X ", data));
-=======
 WRITE_LINE_MEMBER(dynax_state::blit_palbank_w)
 {
 	m_blit_palbank = state;
@@ -239,42 +219,18 @@ WRITE8_MEMBER(dynax_state::hnoridur_palbank_w)
 {
 	m_palbank = data & 0x0f;
 	m_blit_palbank = data; // ???
->>>>>>> upstream/master
 }
 
 
 /* Which half of the layers to write to (interleaved games only) */
-<<<<<<< HEAD
-WRITE8_MEMBER(dynax_state::hanamai_layer_half_w)
-{
-	m_hanamai_layer_half = (~data) & 1;
-	LOG(("H=%02X ", data));
-=======
 WRITE_LINE_MEMBER(dynax_state::layer_half_w)
 {
 	m_hanamai_layer_half = !state;
 	LOG(("H=%d ", state));
->>>>>>> upstream/master
 }
 
 
 /* Write to both halves of the layers (interleaved games only) */
-<<<<<<< HEAD
-WRITE8_MEMBER(dynax_state::hnoridur_layer_half2_w)
-{
-	m_hnoridur_layer_half2 = (~data) & 1;
-	LOG(("H2=%02X ", data));
-}
-
-WRITE8_MEMBER(dynax_state::mjdialq2_blit_dest_w)
-{
-	int mask = (2 >> offset);   /* 1 or 2 */
-
-	m_blit_dest &= ~mask;
-
-	if (~data & 1)
-		m_blit_dest |= mask;
-=======
 WRITE_LINE_MEMBER(dynax_state::layer_half2_w)
 {
 	m_hnoridur_layer_half2 = !state;
@@ -293,7 +249,6 @@ WRITE_LINE_MEMBER(dynax_state::mjdialq2_blit_dest1_w)
 	m_blit_dest &= ~2;
 	if (!state)
 		m_blit_dest |= 2;
->>>>>>> upstream/master
 }
 
 
@@ -311,32 +266,6 @@ WRITE8_MEMBER(dynax_state::jantouki_layer_enable_w)
 	m_layer_enable |= 1;
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER(dynax_state::mjdialq2_layer_enable_w)
-{
-	int mask = (2 >> offset);   /* 1 or 2 */
-
-	m_layer_enable &= ~mask;
-	if (~data & 1)
-		m_layer_enable |= mask;
-}
-
-
-WRITE8_MEMBER(dynax_state::dynax_flipscreen_w)
-{
-	m_flipscreen = data & 1;
-	if (data & ~1)
-		logerror("CPU#0 PC %06X: Warning, flip screen <- %02X\n", space.device().safe_pc(), data);
-	LOG(("F=%02X ", data));
-}
-
-
-static const char *const gfxregions[] = { "gfx1", "gfx2", "gfx3", "gfx4", "gfx5", "gfx6", "gfx7", "gfx8" };
-
-WRITE8_MEMBER(dynax_state::dynax_blit_romregion_w)
-{
-	if (data < ARRAY_LENGTH(gfxregions))
-=======
 WRITE_LINE_MEMBER(dynax_state::mjdialq2_layer0_enable_w)
 {
 	m_layer_enable &= ~1;
@@ -364,18 +293,13 @@ WRITE_LINE_MEMBER(dynax_state::flipscreen_w)
 WRITE8_MEMBER(dynax_state::dynax_blit_romregion_w)
 {
 	if (data < 8)
->>>>>>> upstream/master
 		m_blit_romregion = data;
 	LOG(("GFX%X ", data + 1));
 }
 
 WRITE8_MEMBER(dynax_state::dynax_blit2_romregion_w)
 {
-<<<<<<< HEAD
-	if (data + 1 < ARRAY_LENGTH(gfxregions))
-=======
 	if (data + 1 < 8)
->>>>>>> upstream/master
 		m_blit2_romregion = data + 1;
 	LOG(("GFX%X' ", data + 2));
 }
@@ -480,15 +404,6 @@ void dynax_state::blitter_plot_pixel( int layer, int mask, int x, int y, int pen
     ---- --1-   0 = Ignore the pens specified in ROM, draw everything with the pen supplied as parameter
     ---- ---0   Clear
 */
-<<<<<<< HEAD
-int dynax_state::blitter_drawgfx( int layer, int mask, const char *gfx, int src, int pen, int x, int y, int wrap, int flags )
-{
-	UINT8 cmd;
-	UINT8 *ROM = memregion(gfx)->base();
-	size_t ROM_size = memregion(gfx)->bytes();
-
-	int sx;
-=======
 int dynax_state::blitter_drawgfx( int layer, int mask, memory_region *gfx, int src, int pen, int x, int y, int wrap, int flags )
 {
 	if (!gfx)
@@ -496,7 +411,6 @@ int dynax_state::blitter_drawgfx( int layer, int mask, memory_region *gfx, int s
 
 	size_t rom_size = gfx->bytes();
 	uint8_t* rom_data = gfx->base();
->>>>>>> upstream/master
 
 	if (m_layer_layout == LAYOUT_HNORIDUR)   // e.g. yarunara
 		pen = ((pen >> 4) & 0xf) | ((mask & 0x10) ? ((pen & 0x08) << 1) : 0);
@@ -508,20 +422,6 @@ int dynax_state::blitter_drawgfx( int layer, int mask, memory_region *gfx, int s
 
 	if (flags & 1)
 	{
-<<<<<<< HEAD
-		int start, len;
-
-		/* Clear the buffer(s) starting from the given scanline and exit */
-
-		int addr = x + (y << 8);
-
-		if (m_flipscreen)
-			start = 0;
-		else
-			start = addr;
-
-		len = 0x10000 - addr;
-=======
 		/* Clear the buffer(s) starting from the given scanline and exit */
 		int addr = x + (y << 8);
 
@@ -530,7 +430,6 @@ int dynax_state::blitter_drawgfx( int layer, int mask, memory_region *gfx, int s
 			start = 0;
 
 		int len = 0x10000 - addr;
->>>>>>> upstream/master
 
 		switch (m_layer_layout)
 		{
@@ -579,32 +478,20 @@ int dynax_state::blitter_drawgfx( int layer, int mask, memory_region *gfx, int s
 		return src;
 	}
 
-<<<<<<< HEAD
-	sx = x;
-=======
 	int sx = x;
->>>>>>> upstream/master
 
 	src &= 0xfffff;
 
 	for ( ;; )
 	{
-<<<<<<< HEAD
-		if (src >= ROM_size)
-=======
 		if (src >= rom_size)
->>>>>>> upstream/master
 		{
 			popmessage("GFXROM %s OVER %08x",gfx,src);
 			LOG(("\nGFXROM %s OVER %08x",gfx,src));
 			return src;
 		}
 
-<<<<<<< HEAD
-		cmd = ROM[src++];
-=======
 		uint8_t cmd = rom_data[src++];
->>>>>>> upstream/master
 		src &= 0xfffff;
 		if (!(flags & 0x02))    // Ignore the pens specified in ROM, draw everything with the pen supplied as parameter
 			pen = (pen & 0xf0) | ((cmd & 0xf0) >> 4);
@@ -625,40 +512,24 @@ int dynax_state::blitter_drawgfx( int layer, int mask, memory_region *gfx, int s
 			popmessage("Blitter unknown command %06X: %02X\n", src - 1, cmd);
 
 		case 0xd:   // Skip X pixels
-<<<<<<< HEAD
-			if (src >= ROM_size)
-=======
 			if (src >= rom_size)
->>>>>>> upstream/master
 			{
 				popmessage("GFXROM %s OVER %08x",gfx,src);
 				LOG(("\nGFXROM %s OVER %08x",gfx,src));
 				return src;
 			}
-<<<<<<< HEAD
-			x = sx + ROM[src++];
-=======
 			x = sx + rom_data[src++];
->>>>>>> upstream/master
 			src &= 0xfffff;
 			/* fall through into next case */
 
 		case 0xc:   // Draw N pixels
-<<<<<<< HEAD
-			if (src >= ROM_size)
-=======
 			if (src >= rom_size)
->>>>>>> upstream/master
 			{
 				popmessage("GFXROM %s OVER %08x",gfx,src);
 				LOG(("\nGFXROM %s OVER %08x",gfx,src));
 				return src;
 			}
-<<<<<<< HEAD
-			cmd = ROM[src++];
-=======
 			cmd = rom_data[src++];
->>>>>>> upstream/master
 			src &= 0xfffff;
 			/* fall through into next case */
 
@@ -694,11 +565,7 @@ void dynax_state::dynax_blitter_start(int flags )
 	blit_newsrc = blitter_drawgfx(
 			0,                      // layer
 			m_blit_dest,     // layer mask
-<<<<<<< HEAD
-			gfxregions[m_blit_romregion],    // rom region
-=======
 			m_gfxregions[m_blit_romregion],    // rom region
->>>>>>> upstream/master
 			m_blit_src,              // rom address
 			m_blit_pen,          // pen
 			m_blit_x, m_blit_y,           // x,y
@@ -725,11 +592,7 @@ void dynax_state::jantouki_blitter_start( int flags )
 	blit_newsrc = blitter_drawgfx(
 			0,                      // layer
 			m_blit_dest,     // layer mask
-<<<<<<< HEAD
-			gfxregions[m_blit_romregion],    // rom region
-=======
 			m_gfxregions[m_blit_romregion],    // rom region
->>>>>>> upstream/master
 			m_blit_src,              // rom address
 			m_blit_pen,          // pen
 			m_blit_x, m_blit_y,           // x,y
@@ -756,11 +619,7 @@ void dynax_state::jantouki_blitter2_start( int flags )
 	blit2_newsrc = blitter_drawgfx(
 			4,                          // layer
 			m_blit2_dest,            // layer mask
-<<<<<<< HEAD
-			gfxregions[m_blit2_romregion],       // rom region
-=======
 			m_gfxregions[m_blit2_romregion],       // rom region
->>>>>>> upstream/master
 			m_blit2_src,                 // rom address
 			m_blit2_pen,         // pen
 			m_blit2_x, m_blit2_y,         // x,y
@@ -901,20 +760,12 @@ WRITE8_MEMBER(dynax_state::cdracula_blitter_rev2_w)
 
 			if (data & 0xf0)
 			{
-<<<<<<< HEAD
-				hanamai_layer_half_w(space, offset, 0, mem_mask);
-=======
 				layer_half_w(0);
->>>>>>> upstream/master
 				dynax_blit_dest_w(space, offset, data >> 4, mem_mask);
 			}
 			if (data & 0x0f)
 			{
-<<<<<<< HEAD
-				hanamai_layer_half_w(space, offset, 1, mem_mask);
-=======
 				layer_half_w(1);
->>>>>>> upstream/master
 				dynax_blit_dest_w(space, offset, data & 0x0f, mem_mask);
 			}
 			break;
@@ -955,8 +806,6 @@ static const int priority_mjembase[8] = { 0x0231, 0x2031, 0x0321, 0x3021, 0x2301
 
 void dynax_state::dynax_common_reset()
 {
-<<<<<<< HEAD
-=======
 	m_gfxregions[0] = memregion("gfx1");
 	m_gfxregions[1] = memregion("gfx2");
 	m_gfxregions[2] = memregion("gfx3");
@@ -967,7 +816,6 @@ void dynax_state::dynax_common_reset()
 	m_gfxregions[7] = memregion("gfx8");
 
 
->>>>>>> upstream/master
 	m_blit_romregion = 0;
 	m_blit2_romregion = 0;
 	m_blit_dest = -1;
@@ -1039,16 +887,6 @@ void dynax_state::dynax_common_reset()
 
 VIDEO_START_MEMBER(dynax_state,hanamai)
 {
-<<<<<<< HEAD
-	m_pixmap[0][0] = auto_alloc_array(machine(), UINT8, 256 * 256);
-	m_pixmap[0][1] = auto_alloc_array(machine(), UINT8, 256 * 256);
-	m_pixmap[1][0] = auto_alloc_array(machine(), UINT8, 256 * 256);
-	m_pixmap[1][1] = auto_alloc_array(machine(), UINT8, 256 * 256);
-	m_pixmap[2][0] = auto_alloc_array(machine(), UINT8, 256 * 256);
-	m_pixmap[2][1] = auto_alloc_array(machine(), UINT8, 256 * 256);
-	m_pixmap[3][0] = auto_alloc_array(machine(), UINT8, 256 * 256);
-	m_pixmap[3][1] = auto_alloc_array(machine(), UINT8, 256 * 256);
-=======
 	m_pixmap[0][0] = std::make_unique<uint8_t[]>(256 * 256);
 	m_pixmap[0][1] = std::make_unique<uint8_t[]>(256 * 256);
 	m_pixmap[1][0] = std::make_unique<uint8_t[]>(256 * 256);
@@ -1057,21 +895,10 @@ VIDEO_START_MEMBER(dynax_state,hanamai)
 	m_pixmap[2][1] = std::make_unique<uint8_t[]>(256 * 256);
 	m_pixmap[3][0] = std::make_unique<uint8_t[]>(256 * 256);
 	m_pixmap[3][1] = std::make_unique<uint8_t[]>(256 * 256);
->>>>>>> upstream/master
 
 	dynax_common_reset();
 	m_layer_layout = LAYOUT_HANAMAI;
 
-<<<<<<< HEAD
-	save_pointer(NAME(m_pixmap[0][0]), 256 * 256);
-	save_pointer(NAME(m_pixmap[0][1]), 256 * 256);
-	save_pointer(NAME(m_pixmap[1][0]), 256 * 256);
-	save_pointer(NAME(m_pixmap[1][1]), 256 * 256);
-	save_pointer(NAME(m_pixmap[2][0]), 256 * 256);
-	save_pointer(NAME(m_pixmap[2][1]), 256 * 256);
-	save_pointer(NAME(m_pixmap[3][0]), 256 * 256);
-	save_pointer(NAME(m_pixmap[3][1]), 256 * 256);
-=======
 	save_pointer(NAME(m_pixmap[0][0].get()), 256 * 256);
 	save_pointer(NAME(m_pixmap[0][1].get()), 256 * 256);
 	save_pointer(NAME(m_pixmap[1][0].get()), 256 * 256);
@@ -1080,21 +907,10 @@ VIDEO_START_MEMBER(dynax_state,hanamai)
 	save_pointer(NAME(m_pixmap[2][1].get()), 256 * 256);
 	save_pointer(NAME(m_pixmap[3][0].get()), 256 * 256);
 	save_pointer(NAME(m_pixmap[3][1].get()), 256 * 256);
->>>>>>> upstream/master
 }
 
 VIDEO_START_MEMBER(dynax_state,hnoridur)
 {
-<<<<<<< HEAD
-	m_pixmap[0][0] = auto_alloc_array(machine(), UINT8, 256 * 256);
-	m_pixmap[0][1] = auto_alloc_array(machine(), UINT8, 256 * 256);
-	m_pixmap[1][0] = auto_alloc_array(machine(), UINT8, 256 * 256);
-	m_pixmap[1][1] = auto_alloc_array(machine(), UINT8, 256 * 256);
-	m_pixmap[2][0] = auto_alloc_array(machine(), UINT8, 256 * 256);
-	m_pixmap[2][1] = auto_alloc_array(machine(), UINT8, 256 * 256);
-	m_pixmap[3][0] = auto_alloc_array(machine(), UINT8, 256 * 256);
-	m_pixmap[3][1] = auto_alloc_array(machine(), UINT8, 256 * 256);
-=======
 	m_pixmap[0][0] = std::make_unique<uint8_t[]>(256 * 256);
 	m_pixmap[0][1] = std::make_unique<uint8_t[]>(256 * 256);
 	m_pixmap[1][0] = std::make_unique<uint8_t[]>(256 * 256);
@@ -1103,23 +919,12 @@ VIDEO_START_MEMBER(dynax_state,hnoridur)
 	m_pixmap[2][1] = std::make_unique<uint8_t[]>(256 * 256);
 	m_pixmap[3][0] = std::make_unique<uint8_t[]>(256 * 256);
 	m_pixmap[3][1] = std::make_unique<uint8_t[]>(256 * 256);
->>>>>>> upstream/master
 
 	dynax_common_reset();
 	m_layer_layout = LAYOUT_HNORIDUR;
 
 	m_priority_table = priority_hnoridur;
 
-<<<<<<< HEAD
-	save_pointer(NAME(m_pixmap[0][0]), 256 * 256);
-	save_pointer(NAME(m_pixmap[0][1]), 256 * 256);
-	save_pointer(NAME(m_pixmap[1][0]), 256 * 256);
-	save_pointer(NAME(m_pixmap[1][1]), 256 * 256);
-	save_pointer(NAME(m_pixmap[2][0]), 256 * 256);
-	save_pointer(NAME(m_pixmap[2][1]), 256 * 256);
-	save_pointer(NAME(m_pixmap[3][0]), 256 * 256);
-	save_pointer(NAME(m_pixmap[3][1]), 256 * 256);
-=======
 	save_pointer(NAME(m_pixmap[0][0].get()), 256 * 256);
 	save_pointer(NAME(m_pixmap[0][1].get()), 256 * 256);
 	save_pointer(NAME(m_pixmap[1][0].get()), 256 * 256);
@@ -1128,7 +933,6 @@ VIDEO_START_MEMBER(dynax_state,hnoridur)
 	save_pointer(NAME(m_pixmap[2][1].get()), 256 * 256);
 	save_pointer(NAME(m_pixmap[3][0].get()), 256 * 256);
 	save_pointer(NAME(m_pixmap[3][1].get()), 256 * 256);
->>>>>>> upstream/master
 }
 
 VIDEO_START_MEMBER(dynax_state,mcnpshnt)
@@ -1139,62 +943,26 @@ VIDEO_START_MEMBER(dynax_state,mcnpshnt)
 
 VIDEO_START_MEMBER(dynax_state,sprtmtch)
 {
-<<<<<<< HEAD
-	m_pixmap[0][0] = auto_alloc_array(machine(), UINT8, 256 * 256);
-	m_pixmap[0][1] = auto_alloc_array(machine(), UINT8, 256 * 256);
-	m_pixmap[1][0] = auto_alloc_array(machine(), UINT8, 256 * 256);
-	m_pixmap[1][1] = auto_alloc_array(machine(), UINT8, 256 * 256);
-	m_pixmap[2][0] = auto_alloc_array(machine(), UINT8, 256 * 256);
-	m_pixmap[2][1] = auto_alloc_array(machine(), UINT8, 256 * 256);
-=======
 	m_pixmap[0][0] = std::make_unique<uint8_t[]>(256 * 256);
 	m_pixmap[0][1] = std::make_unique<uint8_t[]>(256 * 256);
 	m_pixmap[1][0] = std::make_unique<uint8_t[]>(256 * 256);
 	m_pixmap[1][1] = std::make_unique<uint8_t[]>(256 * 256);
 	m_pixmap[2][0] = std::make_unique<uint8_t[]>(256 * 256);
 	m_pixmap[2][1] = std::make_unique<uint8_t[]>(256 * 256);
->>>>>>> upstream/master
 
 	dynax_common_reset();
 	m_layer_layout = LAYOUT_DRGPUNCH;
 
-<<<<<<< HEAD
-	save_pointer(NAME(m_pixmap[0][0]), 256 * 256);
-	save_pointer(NAME(m_pixmap[0][1]), 256 * 256);
-	save_pointer(NAME(m_pixmap[1][0]), 256 * 256);
-	save_pointer(NAME(m_pixmap[1][1]), 256 * 256);
-	save_pointer(NAME(m_pixmap[2][0]), 256 * 256);
-	save_pointer(NAME(m_pixmap[2][1]), 256 * 256);
-=======
 	save_pointer(NAME(m_pixmap[0][0].get()), 256 * 256);
 	save_pointer(NAME(m_pixmap[0][1].get()), 256 * 256);
 	save_pointer(NAME(m_pixmap[1][0].get()), 256 * 256);
 	save_pointer(NAME(m_pixmap[1][1].get()), 256 * 256);
 	save_pointer(NAME(m_pixmap[2][0].get()), 256 * 256);
 	save_pointer(NAME(m_pixmap[2][1].get()), 256 * 256);
->>>>>>> upstream/master
 }
 
 VIDEO_START_MEMBER(dynax_state,jantouki)
 {
-<<<<<<< HEAD
-	m_pixmap[0][0] = auto_alloc_array(machine(), UINT8, 256 * 256);
-	m_pixmap[0][1] = auto_alloc_array(machine(), UINT8, 256 * 256);
-	m_pixmap[1][0] = auto_alloc_array(machine(), UINT8, 256 * 256);
-	m_pixmap[1][1] = auto_alloc_array(machine(), UINT8, 256 * 256);
-	m_pixmap[2][0] = auto_alloc_array(machine(), UINT8, 256 * 256);
-	m_pixmap[2][1] = auto_alloc_array(machine(), UINT8, 256 * 256);
-	m_pixmap[3][0] = auto_alloc_array(machine(), UINT8, 256 * 256);
-	m_pixmap[3][1] = auto_alloc_array(machine(), UINT8, 256 * 256);
-	m_pixmap[4][0] = auto_alloc_array(machine(), UINT8, 256 * 256);
-	m_pixmap[4][1] = auto_alloc_array(machine(), UINT8, 256 * 256);
-	m_pixmap[5][0] = auto_alloc_array(machine(), UINT8, 256 * 256);
-	m_pixmap[5][1] = auto_alloc_array(machine(), UINT8, 256 * 256);
-	m_pixmap[6][0] = auto_alloc_array(machine(), UINT8, 256 * 256);
-	m_pixmap[6][1] = auto_alloc_array(machine(), UINT8, 256 * 256);
-	m_pixmap[7][0] = auto_alloc_array(machine(), UINT8, 256 * 256);
-	m_pixmap[7][1] = auto_alloc_array(machine(), UINT8, 256 * 256);
-=======
 	m_pixmap[0][0] = std::make_unique<uint8_t[]>(256 * 256);
 	m_pixmap[0][1] = std::make_unique<uint8_t[]>(256 * 256);
 	m_pixmap[1][0] = std::make_unique<uint8_t[]>(256 * 256);
@@ -1211,30 +979,11 @@ VIDEO_START_MEMBER(dynax_state,jantouki)
 	m_pixmap[6][1] = std::make_unique<uint8_t[]>(256 * 256);
 	m_pixmap[7][0] = std::make_unique<uint8_t[]>(256 * 256);
 	m_pixmap[7][1] = std::make_unique<uint8_t[]>(256 * 256);
->>>>>>> upstream/master
 
 	dynax_common_reset();
 	m_layer_layout = LAYOUT_JANTOUKI;
 	m_update_irq_func = &dynax_state::jantouki_update_irq;
 
-<<<<<<< HEAD
-	save_pointer(NAME(m_pixmap[0][0]), 256 * 256);
-	save_pointer(NAME(m_pixmap[0][1]), 256 * 256);
-	save_pointer(NAME(m_pixmap[1][0]), 256 * 256);
-	save_pointer(NAME(m_pixmap[1][1]), 256 * 256);
-	save_pointer(NAME(m_pixmap[2][0]), 256 * 256);
-	save_pointer(NAME(m_pixmap[2][1]), 256 * 256);
-	save_pointer(NAME(m_pixmap[3][0]), 256 * 256);
-	save_pointer(NAME(m_pixmap[3][1]), 256 * 256);
-	save_pointer(NAME(m_pixmap[4][0]), 256 * 256);
-	save_pointer(NAME(m_pixmap[4][1]), 256 * 256);
-	save_pointer(NAME(m_pixmap[5][0]), 256 * 256);
-	save_pointer(NAME(m_pixmap[5][1]), 256 * 256);
-	save_pointer(NAME(m_pixmap[6][0]), 256 * 256);
-	save_pointer(NAME(m_pixmap[6][1]), 256 * 256);
-	save_pointer(NAME(m_pixmap[7][0]), 256 * 256);
-	save_pointer(NAME(m_pixmap[7][1]), 256 * 256);
-=======
 	save_pointer(NAME(m_pixmap[0][0].get()), 256 * 256);
 	save_pointer(NAME(m_pixmap[0][1].get()), 256 * 256);
 	save_pointer(NAME(m_pixmap[1][0].get()), 256 * 256);
@@ -1251,22 +1000,10 @@ VIDEO_START_MEMBER(dynax_state,jantouki)
 	save_pointer(NAME(m_pixmap[6][1].get()), 256 * 256);
 	save_pointer(NAME(m_pixmap[7][0].get()), 256 * 256);
 	save_pointer(NAME(m_pixmap[7][1].get()), 256 * 256);
->>>>>>> upstream/master
 }
 
 VIDEO_START_MEMBER(dynax_state,mjdialq2)
 {
-<<<<<<< HEAD
-	m_pixmap[0][0] = auto_alloc_array(machine(), UINT8, 256 * 256);
-	m_pixmap[1][0] = auto_alloc_array(machine(), UINT8, 256 * 256);
-
-	dynax_common_reset();
-	m_layer_layout = LAYOUT_MJDIALQ2;
-	m_update_irq_func = 0;
-
-	save_pointer(NAME(m_pixmap[0][0]), 256 * 256);
-	save_pointer(NAME(m_pixmap[1][0]), 256 * 256);
-=======
 	m_pixmap[0][0] = std::make_unique<uint8_t[]>(256 * 256);
 	m_pixmap[1][0] = std::make_unique<uint8_t[]>(256 * 256);
 
@@ -1276,7 +1013,6 @@ VIDEO_START_MEMBER(dynax_state,mjdialq2)
 
 	save_pointer(NAME(m_pixmap[0][0].get()), 256 * 256);
 	save_pointer(NAME(m_pixmap[1][0].get()), 256 * 256);
->>>>>>> upstream/master
 }
 
 VIDEO_START_MEMBER(dynax_state,mjelctrn)
@@ -1300,9 +1036,6 @@ VIDEO_START_MEMBER(dynax_state,neruton)
 	VIDEO_START_CALL_MEMBER(hnoridur);
 
 //  m_priority_table = priority_mjelctrn;
-<<<<<<< HEAD
-	m_update_irq_func = &dynax_state::neruton_update_irq;
-=======
 	m_update_irq_func = &dynax_state::mjelctrn_update_irq;
 }
 
@@ -1312,7 +1045,6 @@ VIDEO_START_MEMBER(dynax_state,tenkai)
 
 	m_priority_table = priority_mjelctrn;
 	m_update_irq_func = &dynax_state::tenkai_update_irq;
->>>>>>> upstream/master
 }
 
 /***************************************************************************
@@ -1350,25 +1082,15 @@ void dynax_state::hanamai_copylayer(bitmap_ind16 &bitmap, const rectangle &clipr
 
 	{
 		int dy, length, pen;
-<<<<<<< HEAD
-		UINT8 *src1 = m_pixmap[i][1];
-		UINT8 *src2 = m_pixmap[i][0];
-=======
 		uint8_t *src1 = m_pixmap[i][1].get();
 		uint8_t *src2 = m_pixmap[i][0].get();
->>>>>>> upstream/master
 
 		int palbase = 16 * color;
 
 		for (dy = 0; dy < 256; dy++)
 		{
-<<<<<<< HEAD
-			UINT16 *dst;
-			UINT16 *dstbase = &bitmap.pix16((dy - scrolly) & 0xff);
-=======
 			uint16_t *dst;
 			uint16_t *dstbase = &bitmap.pix16((dy - scrolly) & 0xff);
->>>>>>> upstream/master
 
 			length = scrollx;
 			dst = dstbase + 2 * (256 - length);
@@ -1426,26 +1148,16 @@ void dynax_state::jantouki_copylayer( bitmap_ind16 &bitmap, const rectangle &cli
 
 	{
 		int dy, length, pen;
-<<<<<<< HEAD
-		UINT8 *src1 = m_pixmap[i][1];
-		UINT8 *src2 = m_pixmap[i][0];
-=======
 		uint8_t *src1 = m_pixmap[i][1].get();
 		uint8_t *src2 = m_pixmap[i][0].get();
->>>>>>> upstream/master
 
 		int palbase = 16 * color;
 
 		for (dy = 0; dy < 256; dy++)
 		{
 			int sy = ((dy - scrolly) & 0xff) + y;
-<<<<<<< HEAD
-			UINT16 *dst;
-			UINT16 *dstbase = &bitmap.pix16(sy);
-=======
 			uint16_t *dst;
 			uint16_t *dstbase = &bitmap.pix16(sy);
->>>>>>> upstream/master
 
 			if ((sy < cliprect.min_y) || (sy > cliprect.max_y))
 			{
@@ -1499,23 +1211,14 @@ void dynax_state::mjdialq2_copylayer( bitmap_ind16 &bitmap, const rectangle &cli
 
 	{
 		int dy, length, pen;
-<<<<<<< HEAD
-		UINT8 *src = m_pixmap[i][0];
-=======
 		uint8_t *src = m_pixmap[i][0].get();
->>>>>>> upstream/master
 
 		int palbase = 16 * color;
 
 		for (dy = 0; dy < 256; dy++)
 		{
-<<<<<<< HEAD
-			UINT16 *dst;
-			UINT16 *dstbase = &bitmap.pix16((dy - scrolly) & 0xff);
-=======
 			uint16_t *dst;
 			uint16_t *dstbase = &bitmap.pix16((dy - scrolly) & 0xff);
->>>>>>> upstream/master
 
 			length = scrollx;
 			dst = dstbase + 256 - length;
@@ -1590,17 +1293,10 @@ int dynax_state::debug_viewer(bitmap_ind16 &bitmap, const rectangle &cliprect )
 #ifdef MAME_DEBUG
 	static int toggle;
 	if (machine().input().code_pressed_once(KEYCODE_T))   toggle = 1 - toggle;
-<<<<<<< HEAD
-	if (toggle)
-	{
-		UINT8 *RAM = memregion( "gfx1" )->base();
-		size_t size = memregion( "gfx1" )->bytes();
-=======
 	if (m_gfxregions[0] && toggle)
 	{
 		uint8_t *RAM = m_gfxregions[0]->base();
 		size_t size = m_gfxregions[0]->bytes();
->>>>>>> upstream/master
 		static int i = 0, c = 0, r = 0;
 
 		if (machine().input().code_pressed_once(KEYCODE_I))   c = (c - 1) & 0x1f;
@@ -1608,13 +1304,6 @@ int dynax_state::debug_viewer(bitmap_ind16 &bitmap, const rectangle &cliprect )
 		if (machine().input().code_pressed_once(KEYCODE_R))   { r = (r + 1) & 0x7;    i = size / 8 * r; }
 		if (machine().input().code_pressed(KEYCODE_M) | machine().input().code_pressed_once(KEYCODE_K))
 		{
-<<<<<<< HEAD
-			while (i < size && RAM[i]) i++;     while (i < size && !RAM[i]) i++;
-		}
-		if (machine().input().code_pressed(KEYCODE_N) | machine().input().code_pressed_once(KEYCODE_J))
-		{
-			if (i >= 2) i -= 2; while (i > 0 && RAM[i]) i--;    i++;
-=======
 			while (i < size && RAM[i]) i++;
 			while (i < size && !RAM[i]) i++;
 		}
@@ -1623,28 +1312,18 @@ int dynax_state::debug_viewer(bitmap_ind16 &bitmap, const rectangle &cliprect )
 			if (i >= 2) i -= 2;
 			while (i > 0 && RAM[i]) i--;
 			i++;
->>>>>>> upstream/master
 		}
 
 		m_blit_palettes = (c & 0xf) * 0x111;
 		m_blit_palbank  = (c >>  4) & 1;
 
 		bitmap.fill(0, cliprect);
-<<<<<<< HEAD
-		memset(m_pixmap[0][0], 0, sizeof(UINT8) * 0x100 * 0x100);
-
-		if (m_layer_layout != LAYOUT_MJDIALQ2)
-			memset(m_pixmap[0][1], 0, sizeof(UINT8) * 0x100 * 0x100);
-		for (m_hanamai_layer_half = 0; m_hanamai_layer_half < 2; m_hanamai_layer_half++)
-			blitter_drawgfx(0, 1, "gfx1", i, 0, cliprect.min_x, cliprect.min_y, 3, 0);
-=======
 		memset(m_pixmap[0][0].get(), 0, sizeof(uint8_t) * 0x100 * 0x100);
 
 		if (m_layer_layout != LAYOUT_MJDIALQ2)
 			memset(m_pixmap[0][1].get(), 0, sizeof(uint8_t) * 0x100 * 0x100);
 		for (m_hanamai_layer_half = 0; m_hanamai_layer_half < 2; m_hanamai_layer_half++)
 			blitter_drawgfx(0, 1, m_gfxregions[0], i, 0, cliprect.min_x, cliprect.min_y, 3, 0);
->>>>>>> upstream/master
 
 		if (m_layer_layout != LAYOUT_MJDIALQ2)
 			hanamai_copylayer(bitmap, cliprect, 0);
@@ -1661,11 +1340,7 @@ int dynax_state::debug_viewer(bitmap_ind16 &bitmap, const rectangle &cliprect )
 
 
 
-<<<<<<< HEAD
-UINT32 dynax_state::screen_update_hanamai(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t dynax_state::screen_update_hanamai(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int layers_ctrl = ~m_layer_enable;
 	int lay[4];
@@ -1700,11 +1375,7 @@ uint32_t dynax_state::screen_update_hanamai(screen_device &screen, bitmap_ind16 
 }
 
 
-<<<<<<< HEAD
-UINT32 dynax_state::screen_update_hnoridur(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t dynax_state::screen_update_hnoridur(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int layers_ctrl = ~BITSWAP8(m_hanamai_priority, 7, 6, 5, 4, 0, 1, 2, 3);
 	int lay[4];
@@ -1740,11 +1411,7 @@ uint32_t dynax_state::screen_update_hnoridur(screen_device &screen, bitmap_ind16
 }
 
 
-<<<<<<< HEAD
-UINT32 dynax_state::screen_update_sprtmtch(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t dynax_state::screen_update_sprtmtch(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int layers_ctrl = ~m_layer_enable;
 
@@ -1761,11 +1428,7 @@ uint32_t dynax_state::screen_update_sprtmtch(screen_device &screen, bitmap_ind16
 	return 0;
 }
 
-<<<<<<< HEAD
-UINT32 dynax_state::screen_update_jantouki_top(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t dynax_state::screen_update_jantouki_top(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int layers_ctrl = m_layer_enable;
 
@@ -1783,11 +1446,7 @@ uint32_t dynax_state::screen_update_jantouki_top(screen_device &screen, bitmap_i
 	return 0;
 }
 
-<<<<<<< HEAD
-UINT32 dynax_state::screen_update_jantouki_bottom(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t dynax_state::screen_update_jantouki_bottom(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int layers_ctrl = m_layer_enable;
 
@@ -1807,11 +1466,7 @@ uint32_t dynax_state::screen_update_jantouki_bottom(screen_device &screen, bitma
 }
 
 
-<<<<<<< HEAD
-UINT32 dynax_state::screen_update_mjdialq2(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t dynax_state::screen_update_mjdialq2(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int layers_ctrl = ~m_layer_enable;
 
@@ -1828,11 +1483,7 @@ uint32_t dynax_state::screen_update_mjdialq2(screen_device &screen, bitmap_ind16
 }
 
 
-<<<<<<< HEAD
-UINT32 dynax_state::screen_update_cdracula(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t dynax_state::screen_update_cdracula(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int layers_ctrl = ~m_layer_enable;
 

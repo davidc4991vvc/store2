@@ -3,10 +3,7 @@
 #include "video/bufsprite.h"
 #include "machine/eepromser.h"
 #include "cpu/sh2/sh2.h"
-<<<<<<< HEAD
-=======
 #include "screen.h"
->>>>>>> upstream/master
 
 
 #define MASTER_CLOCK 57272700   // main oscillator frequency
@@ -31,11 +28,7 @@ class psikyosh_state : public driver_device
 public:
 	psikyosh_state(const machine_config &mconfig, device_type type, const char *tag)
 		: driver_device(mconfig, type, tag),
-<<<<<<< HEAD
-			m_spriteram(*this, "spriteram") ,
-=======
 		m_spriteram(*this, "spriteram") ,
->>>>>>> upstream/master
 		m_bgram(*this, "bgram"),
 		m_zoomram(*this, "zoomram"),
 		m_vidregs(*this, "vidregs"),
@@ -48,29 +41,17 @@ public:
 
 	/* memory pointers */
 	required_device<buffered_spriteram32_device> m_spriteram;
-<<<<<<< HEAD
-	required_shared_ptr<UINT32> m_bgram;
-	required_shared_ptr<UINT32> m_zoomram;
-	required_shared_ptr<UINT32> m_vidregs;
-	required_shared_ptr<UINT32> m_ram;
-=======
 	required_shared_ptr<uint32_t> m_bgram;
 	required_shared_ptr<uint32_t> m_zoomram;
 	required_shared_ptr<uint32_t> m_vidregs;
 	required_shared_ptr<uint32_t> m_ram;
->>>>>>> upstream/master
 
 	/* video-related */
 	bitmap_ind8 m_zoom_bitmap;
 	bitmap_ind16 m_z_bitmap;
 	bitmap_rgb32   m_bg_bitmap;
-<<<<<<< HEAD
-	UINT16         *m_bg_zoom;
-	UINT8          m_alphatable[256];
-=======
 	std::unique_ptr<uint16_t[]>   m_bg_zoom;
 	uint8_t          m_alphatable[256];
->>>>>>> upstream/master
 
 	/* devices */
 	required_device<sh2_device> m_maincpu;
@@ -87,27 +68,6 @@ public:
 	DECLARE_DRIVER_INIT(ps3);
 	DECLARE_DRIVER_INIT(ps5);
 	DECLARE_DRIVER_INIT(mjgtaste);
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void video_start();
-	void ps3_init();
-	void ps5_init();
-	UINT32 screen_update_psikyosh(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
-	INTERRUPT_GEN_MEMBER(psikyosh_interrupt);
-	void draw_scanline32_alpha(bitmap_rgb32 &bitmap, INT32 destx, INT32 desty, INT32 length, const UINT32 *srcptr, int alpha);
-	void draw_scanline32_argb(bitmap_rgb32 &bitmap, INT32 destx, INT32 desty, INT32 length, const UINT32 *srcptr);
-	void draw_scanline32_transpen(bitmap_rgb32 &bitmap, INT32 destx, INT32 desty, INT32 length, const UINT32 *srcptr);
-	void draw_bglayer( int layer, bitmap_rgb32 &bitmap, const rectangle &cliprect, UINT8 req_pri );
-	void cache_bitmap(int scanline, gfx_element *gfx, int size, int tilebank, int alpha, int *last_bank);
-	void draw_bglayerscroll( int layer, bitmap_rgb32 &bitmap, const rectangle &cliprect, UINT8 req_pri );
-	void draw_background( bitmap_rgb32 &bitmap, const rectangle &cliprect, UINT8 req_pri );
-	void draw_sprites(bitmap_rgb32 &bitmap, const rectangle &cliprect, UINT8 req_pri);
-	void psikyosh_prelineblend( bitmap_rgb32 &bitmap, const rectangle &cliprect );
-	void psikyosh_postlineblend( bitmap_rgb32 &bitmap, const rectangle &cliprect, UINT8 req_pri );
-	void psikyosh_drawgfxzoom( bitmap_rgb32 &dest_bmp,const rectangle &clip,gfx_element *gfx,
-			UINT32 code,UINT32 color,int flipx,int flipy,int offsx,int offsy,
-			int alpha, int zoomx, int zoomy, int wide, int high, UINT32 z);
-=======
 	virtual void machine_start() override;
 	virtual void video_start() override;
 	uint32_t screen_update_psikyosh(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
@@ -125,5 +85,4 @@ public:
 	void psikyosh_drawgfxzoom( bitmap_rgb32 &dest_bmp,const rectangle &clip,gfx_element *gfx,
 			uint32_t code,uint32_t color,int flipx,int flipy,int offsx,int offsy,
 			int alpha, int zoomx, int zoomy, int wide, int high, uint32_t z);
->>>>>>> upstream/master
 };

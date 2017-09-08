@@ -122,8 +122,6 @@
 	end
 	
 
-<<<<<<< HEAD
-=======
 --
 -- Returns a list of project-relative paths to external library files.
 -- This function should examine the linker flags and return any that seem to be
@@ -136,7 +134,6 @@
 		local result = {}
 		return result
 	end
->>>>>>> upstream/master
 
 	--
 	-- This is poorly named: returns a list of linker flags for external 

@@ -17,11 +17,7 @@
 #include "video/ramdac.h"
 
 // default address map
-<<<<<<< HEAD
-static ADDRESS_MAP_START( ramdac_palram, AS_0, 8, ramdac_device )
-=======
 static ADDRESS_MAP_START( ramdac_palram, 0, 8, ramdac_device )
->>>>>>> upstream/master
 	AM_RANGE(0x000, 0x0ff) AM_RAM // R bank
 	AM_RANGE(0x100, 0x1ff) AM_RAM // G bank
 	AM_RANGE(0x200, 0x2ff) AM_RAM // B bank
@@ -33,11 +29,7 @@ ADDRESS_MAP_END
 //**************************************************************************
 
 // device type definition
-<<<<<<< HEAD
-const device_type RAMDAC = &device_creator<ramdac_device>;
-=======
 DEFINE_DEVICE_TYPE(RAMDAC, ramdac_device, "ramdac", "RAMDAC")
->>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -48,20 +40,12 @@ DEFINE_DEVICE_TYPE(RAMDAC, ramdac_device, "ramdac", "RAMDAC")
 //  ramdac_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-ramdac_device::ramdac_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, RAMDAC, "RAMDAC", tag, owner, clock, "ramdac", __FILE__),
-		device_memory_interface(mconfig, *this),
-		m_space_config("videoram", ENDIANNESS_LITTLE, 8, 10, 0, NULL, *ADDRESS_MAP_NAME(ramdac_palram)),
-		m_palette(*this),
-=======
 ramdac_device::ramdac_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, RAMDAC, tag, owner, clock),
 		device_memory_interface(mconfig, *this),
 		m_space_config("videoram", ENDIANNESS_LITTLE, 8, 10, 0, nullptr, *ADDRESS_MAP_NAME(ramdac_palram)),
 		m_palette(*this, finder_base::DUMMY_TAG),
 		m_color_base(0),
->>>>>>> upstream/master
 		m_split_read_reg(0)
 {
 }
@@ -81,28 +65,18 @@ void ramdac_device::static_set_palette_tag(device_t &device, const char *tag)
 //  any address spaces owned by this device
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const address_space_config *ramdac_device::memory_space_config(address_spacenum spacenum) const
-{
-	return (spacenum == AS_0) ? &m_space_config : NULL;
-=======
 device_memory_interface::space_config_vector ramdac_device::memory_space_config() const
 {
 	return space_config_vector {
 		std::make_pair(0, &m_space_config)
 	};
->>>>>>> upstream/master
 }
 
 //-------------------------------------------------
 //  readbyte - read a byte at the given address
 //-------------------------------------------------
 
-<<<<<<< HEAD
-inline UINT8 ramdac_device::readbyte(offs_t address)
-=======
 inline uint8_t ramdac_device::readbyte(offs_t address)
->>>>>>> upstream/master
 {
 	return space().read_byte(address);
 }
@@ -112,11 +86,7 @@ inline uint8_t ramdac_device::readbyte(offs_t address)
 //  writebyte - write a byte at the given address
 //-------------------------------------------------
 
-<<<<<<< HEAD
-inline void ramdac_device::writebyte(offs_t address, UINT8 data)
-=======
 inline void ramdac_device::writebyte(offs_t address, uint8_t data)
->>>>>>> upstream/master
 {
 	space().write_byte(address, data);
 }
@@ -136,11 +106,7 @@ void ramdac_device::device_validity_check(validity_checker &valid) const
 
 void ramdac_device::device_start()
 {
-<<<<<<< HEAD
-	m_palram = auto_alloc_array_clear(machine(), UINT8, 1 << 10);
-=======
 	m_palram = make_unique_clear<uint8_t[]>(1 << 10);
->>>>>>> upstream/master
 
 }
 
@@ -164,11 +130,7 @@ void ramdac_device::device_reset()
 //  [0] = W register, [1] = R register
 //**************************************************************************
 
-<<<<<<< HEAD
-inline void ramdac_device::reg_increment(UINT8 inc_type)
-=======
 inline void ramdac_device::reg_increment(uint8_t inc_type)
->>>>>>> upstream/master
 {
 	m_int_index[inc_type]++;
 	if(m_int_index[inc_type] == 3)
@@ -197,11 +159,7 @@ WRITE8_MEMBER( ramdac_device::index_r_w )
 
 READ8_MEMBER( ramdac_device::pal_r )
 {
-<<<<<<< HEAD
-	UINT8 res;
-=======
 	uint8_t res;
->>>>>>> upstream/master
 	res = readbyte(m_pal_index[m_split_read_reg] | (m_int_index[m_split_read_reg] << 8));
 	reg_increment(m_split_read_reg);
 	return res;
@@ -213,14 +171,11 @@ WRITE8_MEMBER( ramdac_device::pal_w )
 	reg_increment(0);
 }
 
-<<<<<<< HEAD
-=======
 READ8_MEMBER( ramdac_device::mask_r )
 {
 	return m_pal_mask;
 }
 
->>>>>>> upstream/master
 WRITE8_MEMBER( ramdac_device::mask_w )
 {
 	m_pal_mask = data;
@@ -238,38 +193,22 @@ READ8_MEMBER( ramdac_device::ramdac_pal_r )
 
 WRITE8_MEMBER( ramdac_device::ramdac_rgb666_w )
 {
-<<<<<<< HEAD
-	UINT16 pal_offs;
-=======
 	uint16_t pal_offs;
->>>>>>> upstream/master
 
 	m_palram[offset] = data & 0x3f;
 	pal_offs = (offset & 0xff);
 
-<<<<<<< HEAD
-	m_palette->set_pen_color(offset&0xff,pal6bit(m_palram[pal_offs|0x000]),pal6bit(m_palram[pal_offs|0x100]),pal6bit(m_palram[pal_offs|0x200]));
-=======
 	pen_t pen = m_color_base + (offset & 0xff);
 	m_palette->set_pen_color(pen, pal6bit(m_palram[pal_offs|0x000]), pal6bit(m_palram[pal_offs|0x100]), pal6bit(m_palram[pal_offs|0x200]));
->>>>>>> upstream/master
 }
 
 WRITE8_MEMBER( ramdac_device::ramdac_rgb888_w )
 {
-<<<<<<< HEAD
-	UINT16 pal_offs;
-=======
 	uint16_t pal_offs;
->>>>>>> upstream/master
 
 	m_palram[offset] = data;
 	pal_offs = (offset & 0xff);
 
-<<<<<<< HEAD
-	m_palette->set_pen_color(offset&0xff,m_palram[pal_offs|0x000],m_palram[pal_offs|0x100],m_palram[pal_offs|0x200]);
-=======
 	pen_t pen = m_color_base + (offset & 0xff);
 	m_palette->set_pen_color(pen, m_palram[pal_offs|0x000], m_palram[pal_offs|0x100], m_palram[pal_offs|0x200]);
->>>>>>> upstream/master
 }

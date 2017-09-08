@@ -4,30 +4,6 @@
 
     Game Driver for Video System Mahjong series.
 
-<<<<<<< HEAD
-    Idol-Mahjong Final Romance (Japan)
-    (c)1991 Video System Co.,Ltd.
-
-    Nekketsu Mahjong Sengen! AFTER 5 (Japan)
-    (c)1991 Video System Co.,Ltd.
-
-    Mahjong Daiyogen (Japan)
-    (c)1990 Video System Co.,Ltd.
-
-    Mahjong Fun Club - Idol Saizensen (Japan)
-    (c)1989 Video System Co.,Ltd.
-
-    Mahjong Natsu Monogatari (Mahjong Summer Story) (Japan)
-    (c)1989 Video System Co.,Ltd.
-
-    Natsuiro Mahjong (Mahjong Summer Story) (Japan)
-    (c)1989 Video System Co.,Ltd.
-
-    Idol-Mahjong Housoukyoku (Japan)
-    (c)1988 System Service Co.,Ltd.
-
-    Rettou Juudan Nekkyoku Janshi - Higashi Nippon Hen (Japan)
-=======
     Idol-Mahjong Final Romance (アイドル麻雀ファイナルロマンス)
     (c)1991 Video System Co.,Ltd.
 
@@ -50,7 +26,6 @@
     (c)1988 System Service Co.,Ltd.
 
     Rettou Juudan Nekkyoku Janshi - Higashi Nippon Hen (列島縦断熱局雀士 東日本編)
->>>>>>> upstream/master
     (c)1988 Video System Co.,Ltd.
 
     Driver by Takahiro Nogi <nogi@kt.rim.or.jp> 2001/02/04 -
@@ -62,8 +37,6 @@ Memo:
 
 - 2player's input is not supported.
 
-<<<<<<< HEAD
-=======
 - Identify CRT Controller and fix layer misalignment in nekkyoku due of dynamic
   changes. Actually same custom component as other V-System games of the era,
   @seealso aerofgt.cpp
@@ -73,7 +46,6 @@ Memo:
 - nekkyoku writes to a VRAM mirror for showing the OL gal, I guess ROM mirroring
   is the same for all empty slots for this HW.
 
->>>>>>> upstream/master
 - Communication between MAIN CPU and SUB CPU can be wrong.
 
 Notes:
@@ -108,13 +80,6 @@ with the following code:
 ******************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/z80/z80.h"
-#include "sound/ay8910.h"
-#include "sound/2413intf.h"
-#include "sound/msm5205.h"
-#include "includes/fromance.h"
-=======
 #include "includes/fromance.h"
 
 #include "cpu/z80/z80.h"
@@ -123,7 +88,6 @@ with the following code:
 #include "sound/ym2413.h"
 #include "video/vsystem_gga.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 /*************************************
@@ -132,39 +96,12 @@ with the following code:
  *
  *************************************/
 
-<<<<<<< HEAD
-READ8_MEMBER(fromance_state::fromance_commanddata_r)
-{
-	return m_commanddata;
-}
-
-
-TIMER_CALLBACK_MEMBER(fromance_state::deferred_commanddata_w)
-{
-	m_commanddata = param;
-	m_directionflag = 1;
-}
-
-
-WRITE8_MEMBER(fromance_state::fromance_commanddata_w)
-{
-	/* do this on a timer to let the slave CPU synchronize */
-	machine().scheduler().synchronize(timer_expired_delegate(FUNC(fromance_state::deferred_commanddata_w),this), data);
-}
-
-
-=======
->>>>>>> upstream/master
 READ8_MEMBER(fromance_state::fromance_busycheck_main_r)
 {
 	/* set a timer to force synchronization after the read */
 	machine().scheduler().synchronize();
 
-<<<<<<< HEAD
-	if (!m_directionflag)
-=======
 	if (!m_sublatch->pending_r())
->>>>>>> upstream/master
 		return 0x00;        // standby
 	else
 		return 0xff;        // busy
@@ -173,26 +110,13 @@ READ8_MEMBER(fromance_state::fromance_busycheck_main_r)
 
 READ8_MEMBER(fromance_state::fromance_busycheck_sub_r)
 {
-<<<<<<< HEAD
-	if (m_directionflag)
-=======
 	if (m_sublatch->pending_r())
->>>>>>> upstream/master
 		return 0xff;        // standby
 	else
 		return 0x00;        // busy
 }
 
 
-<<<<<<< HEAD
-WRITE8_MEMBER(fromance_state::fromance_busycheck_sub_w)
-{
-	m_directionflag = 0;
-}
-
-
-=======
->>>>>>> upstream/master
 
 /*************************************
  *
@@ -307,11 +231,7 @@ static ADDRESS_MAP_START( nekkyoku_main_map, AS_PROGRAM, 8, fromance_state )
 	AM_RANGE(0xf000, 0xf000) AM_READ_PORT("SERVICE") AM_WRITE(fromance_portselect_w)
 	AM_RANGE(0xf001, 0xf001) AM_READ(fromance_keymatrix_r) AM_WRITENOP
 	AM_RANGE(0xf002, 0xf002) AM_READ_PORT("COIN") AM_WRITE(fromance_coinctr_w)
-<<<<<<< HEAD
-	AM_RANGE(0xf003, 0xf003) AM_READWRITE(fromance_busycheck_main_r, fromance_commanddata_w)
-=======
 	AM_RANGE(0xf003, 0xf003) AM_READ(fromance_busycheck_main_r) AM_DEVWRITE("sublatch", generic_latch_8_device, write)
->>>>>>> upstream/master
 	AM_RANGE(0xf004, 0xf004) AM_READ_PORT("DSW2")
 	AM_RANGE(0xf005, 0xf005) AM_READ_PORT("DSW1")
 ADDRESS_MAP_END
@@ -323,11 +243,7 @@ static ADDRESS_MAP_START( fromance_main_map, AS_PROGRAM, 8, fromance_state )
 	AM_RANGE(0xe000, 0xe000) AM_READ_PORT("SERVICE") AM_WRITE(fromance_portselect_w)
 	AM_RANGE(0xe001, 0xe001) AM_READ(fromance_keymatrix_r)
 	AM_RANGE(0xe002, 0xe002) AM_READ_PORT("COIN") AM_WRITE(fromance_coinctr_w)
-<<<<<<< HEAD
-	AM_RANGE(0xe003, 0xe003) AM_READWRITE(fromance_busycheck_main_r, fromance_commanddata_w)
-=======
 	AM_RANGE(0xe003, 0xe003) AM_READ(fromance_busycheck_main_r) AM_DEVWRITE("sublatch", generic_latch_8_device, write)
->>>>>>> upstream/master
 	AM_RANGE(0xe004, 0xe004) AM_READ_PORT("DSW2")
 	AM_RANGE(0xe005, 0xe005) AM_READ_PORT("DSW1")
 ADDRESS_MAP_END
@@ -366,21 +282,12 @@ ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( nekkyoku_sub_io_map, AS_IO, 8, fromance_state )
 	ADDRESS_MAP_GLOBAL_MASK(0xff)
-<<<<<<< HEAD
-	AM_RANGE(0x10, 0x10) AM_WRITE(fromance_crtc_data_w)
-	AM_RANGE(0x11, 0x11) AM_WRITE(fromance_crtc_register_w)
-=======
 	AM_RANGE(0x10, 0x11) AM_DEVWRITE("gga", vsystem_gga_device, write)
->>>>>>> upstream/master
 	AM_RANGE(0x12, 0x12) AM_READNOP             // unknown
 	AM_RANGE(0xe0, 0xe0) AM_WRITE(fromance_rombank_w)
 	AM_RANGE(0xe1, 0xe1) AM_READ(fromance_busycheck_sub_r) AM_WRITE(fromance_gfxreg_w)
 	AM_RANGE(0xe2, 0xe5) AM_WRITE(fromance_scroll_w)
-<<<<<<< HEAD
-	AM_RANGE(0xe6, 0xe6) AM_READWRITE(fromance_commanddata_r, fromance_busycheck_sub_w)
-=======
 	AM_RANGE(0xe6, 0xe6) AM_DEVREADWRITE("sublatch", generic_latch_8_device, read, acknowledge_w)
->>>>>>> upstream/master
 	AM_RANGE(0xe7, 0xe7) AM_WRITE(fromance_adpcm_reset_w)
 	AM_RANGE(0xe8, 0xe8) AM_WRITE(fromance_adpcm_w)
 	AM_RANGE(0xe9, 0xea) AM_DEVWRITE("aysnd", ay8910_device, data_address_w)
@@ -388,46 +295,25 @@ ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( idolmj_sub_io_map, AS_IO, 8, fromance_state )
 	ADDRESS_MAP_GLOBAL_MASK(0xff)
-<<<<<<< HEAD
-	AM_RANGE(0x10, 0x10) AM_WRITE(fromance_crtc_data_w)
-	AM_RANGE(0x11, 0x11) AM_WRITE(fromance_crtc_register_w)
-=======
 	AM_RANGE(0x10, 0x11) AM_DEVWRITE("gga", vsystem_gga_device, write)
->>>>>>> upstream/master
 	AM_RANGE(0x12, 0x12) AM_READNOP             // unknown
 	AM_RANGE(0x20, 0x20) AM_WRITE(fromance_rombank_w)
 	AM_RANGE(0x21, 0x21) AM_READ(fromance_busycheck_sub_r) AM_WRITE(fromance_gfxreg_w)
 	AM_RANGE(0x22, 0x25) AM_WRITE(fromance_scroll_w)
-<<<<<<< HEAD
-	AM_RANGE(0x26, 0x26) AM_READWRITE(fromance_commanddata_r, fromance_busycheck_sub_w)
-	AM_RANGE(0x27, 0x27) AM_WRITE(fromance_adpcm_reset_w)
-	AM_RANGE(0x28, 0x28) AM_WRITE(fromance_adpcm_w)
-	AM_RANGE(0x29, 0x2a) AM_DEVWRITE("aysnd", ay8910_device, data_address_w)
-=======
 	AM_RANGE(0x26, 0x26) AM_DEVREADWRITE("sublatch", generic_latch_8_device, read, acknowledge_w)
 	AM_RANGE(0x27, 0x27) AM_WRITE(fromance_adpcm_reset_w)
 	AM_RANGE(0x28, 0x28) AM_WRITE(fromance_adpcm_w)
 	AM_RANGE(0x29, 0x2a) AM_DEVWRITE("aysnd", ym2149_device, data_address_w)
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( fromance_sub_io_map, AS_IO, 8, fromance_state )
 	ADDRESS_MAP_GLOBAL_MASK(0xff)
-<<<<<<< HEAD
-	AM_RANGE(0x10, 0x10) AM_WRITE(fromance_crtc_data_w)
-	AM_RANGE(0x11, 0x11) AM_WRITE(fromance_crtc_register_w)
-=======
 	AM_RANGE(0x10, 0x11) AM_DEVWRITE("gga", vsystem_gga_device, write)
->>>>>>> upstream/master
 	AM_RANGE(0x12, 0x12) AM_READNOP             // unknown
 	AM_RANGE(0x20, 0x20) AM_WRITE(fromance_rombank_w)
 	AM_RANGE(0x21, 0x21) AM_READ(fromance_busycheck_sub_r) AM_WRITE(fromance_gfxreg_w)
 	AM_RANGE(0x22, 0x25) AM_WRITE(fromance_scroll_w)
-<<<<<<< HEAD
-	AM_RANGE(0x26, 0x26) AM_READWRITE(fromance_commanddata_r, fromance_busycheck_sub_w)
-=======
 	AM_RANGE(0x26, 0x26) AM_DEVREADWRITE("sublatch", generic_latch_8_device, read, acknowledge_w)
->>>>>>> upstream/master
 	AM_RANGE(0x27, 0x27) AM_WRITE(fromance_adpcm_reset_w)
 	AM_RANGE(0x28, 0x28) AM_WRITE(fromance_adpcm_w)
 	AM_RANGE(0x2a, 0x2b) AM_DEVWRITE("ymsnd", ym2413_device, write)
@@ -573,11 +459,7 @@ INPUT_PORTS_END
 static INPUT_PORTS_START( idolmj )
 	PORT_START("SERVICE")
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_UNUSED )
-<<<<<<< HEAD
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_SERVICE3 )   // MEMORY RESET
-=======
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_MEMORY_RESET ) // MEMORY RESET
->>>>>>> upstream/master
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_UNUSED )
 	PORT_SERVICE_NO_TOGGLE( 0x08, IP_ACTIVE_LOW)    // TEST
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_UNUSED )
@@ -654,11 +536,7 @@ INPUT_PORTS_END
 static INPUT_PORTS_START( fromance )
 	PORT_START("SERVICE")
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_UNUSED )
-<<<<<<< HEAD
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_SERVICE3 )   // MEMORY RESET
-=======
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_MEMORY_RESET ) // MEMORY RESET
->>>>>>> upstream/master
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_UNUSED )
 	PORT_SERVICE_NO_TOGGLE( 0x08, IP_ACTIVE_LOW)    // TEST
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_UNUSED )
@@ -733,11 +611,7 @@ INPUT_PORTS_END
 static INPUT_PORTS_START( nmsengen )
 	PORT_START("SERVICE")
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_UNUSED )
-<<<<<<< HEAD
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_SERVICE3 )   // MEMORY RESET
-=======
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_MEMORY_RESET ) // MEMORY RESET
->>>>>>> upstream/master
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_UNUSED )
 	PORT_SERVICE_NO_TOGGLE( 0x08, IP_ACTIVE_LOW)    // TEST
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_UNUSED )
@@ -812,11 +686,7 @@ INPUT_PORTS_END
 static INPUT_PORTS_START( daiyogen )
 	PORT_START("SERVICE")
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_UNUSED )
-<<<<<<< HEAD
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_SERVICE3 )   // MEMORY RESET
-=======
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_MEMORY_RESET ) // MEMORY RESET
->>>>>>> upstream/master
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_UNUSED )
 	PORT_SERVICE_NO_TOGGLE( 0x08, IP_ACTIVE_LOW)    // TEST
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_UNUSED )
@@ -835,107 +705,6 @@ static INPUT_PORTS_START( daiyogen )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNUSED )
 
 	PORT_START("DSW1")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x01, 0x00, "DIPSW 1-1" )
-	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x01, DEF_STR( On ) )
-	PORT_DIPNAME( 0x02, 0x00, "DIPSW 1-2" )
-	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x02, DEF_STR( On ) )
-	PORT_DIPNAME( 0x04, 0x00, "DIPSW 1-3" )
-	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x04, DEF_STR( On ) )
-	PORT_DIPNAME( 0x08, 0x00, "DIPSW 1-4" )
-	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x08, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x00, "DIPSW 1-5" )
-	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x10, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x00, DEF_STR( Demo_Sounds ) )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x00, "DIPSW 1-7" )
-	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x40, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x00, "DIPSW 1-8" )
-	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x80, DEF_STR( On ) )
-
-	PORT_START("DSW2")
-	PORT_DIPNAME( 0x01, 0x00, "DIPSW 2-1" )
-	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x01, DEF_STR( On ) )
-	PORT_DIPNAME( 0x02, 0x00, "DIPSW 2-2" )
-	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x02, DEF_STR( On ) )
-	PORT_DIPNAME( 0x04, 0x00, "DIPSW 2-3" )
-	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x04, DEF_STR( On ) )
-	PORT_DIPNAME( 0x08, 0x00, "DIPSW 2-4" )
-	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x08, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x00, "DIPSW 2-5" )
-	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x10, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x00, "DIPSW 2-6" )
-	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x20, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x00, "DIPSW 2-7" )
-	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x40, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x00, DEF_STR( Flip_Screen ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x80, DEF_STR( On ) )
-
-	PORT_INCLUDE( mahjong_panel )
-INPUT_PORTS_END
-
-
-static INPUT_PORTS_START( mfunclub )
-	PORT_START("SERVICE")
-	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_UNUSED )
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_SERVICE3 )   // MEMORY RESET
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_UNUSED )
-	PORT_SERVICE_NO_TOGGLE( 0x08, IP_ACTIVE_LOW)    // TEST
-	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_UNUSED )
-	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_UNUSED )
-	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_UNUSED )
-	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNUSED )
-
-	PORT_START("COIN")
-	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_UNUSED )
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_UNUSED )
-	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_UNUSED )
-	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_UNUSED )
-	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_UNUSED )
-	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_COIN1 )      // COIN1
-	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNUSED )
-
-	PORT_START("DSW1")
-	PORT_DIPNAME( 0x01, 0x00, "DIPSW 1-1" )
-	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x01, DEF_STR( On ) )
-	PORT_DIPNAME( 0x02, 0x00, "DIPSW 1-2" )
-	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x02, DEF_STR( On ) )
-	PORT_DIPNAME( 0x04, 0x00, "DIPSW 1-3" )
-	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x04, DEF_STR( On ) )
-	PORT_DIPNAME( 0x08, 0x00, "DIPSW 1-4" )
-	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x08, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x00, "Voices" )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x00, "DIPSW 1-6" )
-	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x20, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x00, "DIPSW 1-7" )
-	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x40, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x00, "DIPSW 1-8" )
-=======
 	PORT_DIPNAME( 0x01, 0x00, DEF_STR( Allow_Continue ) )   PORT_DIPLOCATION("SW1:!1")
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
@@ -954,35 +723,10 @@ static INPUT_PORTS_START( mfunclub )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_DIPUNUSED_DIPLOC( 0x40, 0x40, "SW1:!7" )
 	PORT_DIPNAME( 0x80, 0x00, "YAKUMAN STOP" )      PORT_DIPLOCATION("SW1:!8") // not sure what this is supposed to mean
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x80, DEF_STR( On ) )
 
 	PORT_START("DSW2")
-<<<<<<< HEAD
-	PORT_DIPNAME( 0x01, 0x00, "DIPSW 2-1" )
-	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x01, DEF_STR( On ) )
-	PORT_DIPNAME( 0x02, 0x00, "DIPSW 2-2" )
-	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x02, DEF_STR( On ) )
-	PORT_DIPNAME( 0x04, 0x00, "DIPSW 2-3" )
-	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x04, DEF_STR( On ) )
-	PORT_DIPNAME( 0x08, 0x00, "DIPSW 2-4" )
-	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x08, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x00, "DIPSW 2-5" )
-	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x10, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x00, "DIPSW 2-6" )
-	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x20, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x00, "DIPSW 2-7" )
-	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x40, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x00, DEF_STR( Flip_Screen ) )
-=======
 	PORT_DIPNAME( 0x07, 0x00, DEF_STR( Difficulty ) )   PORT_DIPLOCATION("SW2:!1,!2,!3")
 	PORT_DIPSETTING(    0x00, "1" )
 		PORT_DIPSETTING(    0x04, "2" )
@@ -1004,7 +748,6 @@ static INPUT_PORTS_START( mfunclub )
 	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x40, DEF_STR( On ) )
 	PORT_DIPNAME( 0x80, 0x00, DEF_STR( Flip_Screen ) )  PORT_DIPLOCATION("SW2:!8")
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x80, DEF_STR( On ) )
 
@@ -1015,11 +758,7 @@ INPUT_PORTS_END
 static INPUT_PORTS_START( mjnatsu )
 	PORT_START("SERVICE")
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_UNUSED )
-<<<<<<< HEAD
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_SERVICE3 )   // MEMORY RESET
-=======
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_MEMORY_RESET ) // MEMORY RESET
->>>>>>> upstream/master
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_UNUSED )
 	PORT_SERVICE_NO_TOGGLE( 0x08, IP_ACTIVE_LOW)    // TEST
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_UNUSED )
@@ -1037,59 +776,6 @@ static INPUT_PORTS_START( mjnatsu )
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_COIN1 )      // COIN1
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNUSED )
 
-<<<<<<< HEAD
-	PORT_START("DSW1")
-	PORT_DIPNAME( 0x01, 0x00, "DIPSW 1-1" )
-	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x01, DEF_STR( On ) )
-	PORT_DIPNAME( 0x02, 0x00, "DIPSW 1-2" )
-	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x02, DEF_STR( On ) )
-	PORT_DIPNAME( 0x04, 0x00, "DIPSW 1-3" )
-	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x04, DEF_STR( On ) )
-	PORT_DIPNAME( 0x08, 0x00, "DIPSW 1-4" )
-	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x08, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x00, "Voices" )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x00, "DIPSW 1-6" )
-	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x20, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x00, "DIPSW 1-7" )
-	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x40, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x00, "DIPSW 1-8" )
-	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x80, DEF_STR( On ) )
-
-	PORT_START("DSW2")
-	PORT_DIPNAME( 0x01, 0x00, "DIPSW 2-1" )
-	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x01, DEF_STR( On ) )
-	PORT_DIPNAME( 0x02, 0x00, "DIPSW 2-2" )
-	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x02, DEF_STR( On ) )
-	PORT_DIPNAME( 0x04, 0x00, "DIPSW 2-3" )
-	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x04, DEF_STR( On ) )
-	PORT_DIPNAME( 0x08, 0x00, "DIPSW 2-4" )
-	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x08, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x00, "DIPSW 2-5" )
-	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x10, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x00, "DIPSW 2-6" )
-	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x20, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x00, "DIPSW 2-7" )
-	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x40, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x00, DEF_STR( Flip_Screen ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x80, DEF_STR( On ) )
-=======
 		PORT_START("DSW2")
 		PORT_DIPNAME( 0x07, 0x00, DEF_STR( Difficulty ) )   PORT_DIPLOCATION("SW1:!1,!2,!3")
 		PORT_DIPSETTING(    0x00, "1" )
@@ -1135,7 +821,6 @@ static INPUT_PORTS_START( mjnatsu )
 		PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 		PORT_DIPUNUSED_DIPLOC( 0x40, 0x00, "SW2:!7" )
 	PORT_DIPUNUSED_DIPLOC( 0x80, 0x00, "SW2:!8" )
->>>>>>> upstream/master
 
 	PORT_INCLUDE( mahjong_panel )
 INPUT_PORTS_END
@@ -1174,20 +859,10 @@ GFXDECODE_END
 
 MACHINE_START_MEMBER(fromance_state,fromance)
 {
-<<<<<<< HEAD
-	UINT8 *ROM = memregion("sub")->base();
-
-	membank("bank1")->configure_entries(0, 0x100, &ROM[0x10000], 0x4000);
-
-
-	save_item(NAME(m_directionflag));
-	save_item(NAME(m_commanddata));
-=======
 	uint8_t *ROM = memregion("sub")->base();
 
 	membank("bank1")->configure_entries(0, 0x100, &ROM[0x10000], 0x4000);
 
->>>>>>> upstream/master
 	save_item(NAME(m_portselect));
 
 	save_item(NAME(m_adpcm_reset));
@@ -1199,13 +874,6 @@ MACHINE_START_MEMBER(fromance_state,fromance)
 
 MACHINE_RESET_MEMBER(fromance_state,fromance)
 {
-<<<<<<< HEAD
-	int i;
-
-	m_directionflag = 0;
-	m_commanddata = 0;
-=======
->>>>>>> upstream/master
 	m_portselect = 0;
 
 	m_adpcm_reset = 0;
@@ -1223,19 +891,9 @@ MACHINE_RESET_MEMBER(fromance_state,fromance)
 	m_scrolly[1] = 0;
 	m_gfxreg = 0;
 	m_flipscreen = 0;
-<<<<<<< HEAD
-	m_crtc_register = 0;
-
-	for (i = 0; i < 0x10; i++)
-		m_crtc_data[i] = 0;
-}
-
-static MACHINE_CONFIG_START( nekkyoku, fromance_state )
-=======
 }
 
 static MACHINE_CONFIG_START( nekkyoku )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80,12000000/2)     /* 6.00 Mhz ? */
@@ -1246,12 +904,9 @@ static MACHINE_CONFIG_START( nekkyoku )
 	MCFG_CPU_PROGRAM_MAP(nekkyoku_sub_map)
 	MCFG_CPU_IO_MAP(nekkyoku_sub_io_map)
 
-<<<<<<< HEAD
-=======
 	MCFG_GENERIC_LATCH_8_ADD("sublatch")
 	MCFG_GENERIC_LATCH_SEPARATE_ACKNOWLEDGE(true)
 
->>>>>>> upstream/master
 	MCFG_MACHINE_START_OVERRIDE(fromance_state,fromance)
 	MCFG_MACHINE_RESET_OVERRIDE(fromance_state,fromance)
 
@@ -1266,48 +921,24 @@ static MACHINE_CONFIG_START( nekkyoku )
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", fromance)
 	MCFG_PALETTE_ADD("palette", 1024)
 
-<<<<<<< HEAD
-=======
 	MCFG_DEVICE_ADD("gga", VSYSTEM_GGA, 14318180 / 2) // clock not verified
 	MCFG_VSYSTEM_GGA_REGISTER_WRITE_CB(WRITE8(fromance_state, fromance_gga_data_w))
 
->>>>>>> upstream/master
 	MCFG_VIDEO_START_OVERRIDE(fromance_state,nekkyoku)
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-	MCFG_SOUND_ADD("aysnd", AY8910, 12000000/6)
-=======
 	MCFG_SOUND_ADD("aysnd", AY8910, 12000000/6) // type not verified
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.15)
 
 	MCFG_SOUND_ADD("msm", MSM5205, 384000)
 	MCFG_MSM5205_VCLK_CB(WRITELINE(fromance_state, fromance_adpcm_int)) /* IRQ handler */
-<<<<<<< HEAD
-	MCFG_MSM5205_PRESCALER_SELECTOR(MSM5205_S48_4B)      /* 8 KHz */
-=======
 	MCFG_MSM5205_PRESCALER_SELECTOR(S48_4B)      /* 8 KHz */
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.80)
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( idolmj, fromance_state )
-
-	/* basic machine hardware */
-	MCFG_CPU_ADD("maincpu", Z80,12000000/2)     /* 6.00 Mhz ? */
-	MCFG_CPU_PROGRAM_MAP(fromance_main_map)
-	MCFG_CPU_VBLANK_INT_DRIVER("screen", fromance_state,  irq0_line_hold)
-
-	MCFG_CPU_ADD("sub", Z80,12000000/2)     /* 6.00 Mhz ? */
-	MCFG_CPU_PROGRAM_MAP(fromance_sub_map)
-	MCFG_CPU_IO_MAP(idolmj_sub_io_map)
-
-=======
 static MACHINE_CONFIG_START( idolmj )
 
 	/* basic machine hardware */
@@ -1322,7 +953,6 @@ static MACHINE_CONFIG_START( idolmj )
 	MCFG_GENERIC_LATCH_8_ADD("sublatch")
 	MCFG_GENERIC_LATCH_SEPARATE_ACKNOWLEDGE(true)
 
->>>>>>> upstream/master
 	MCFG_MACHINE_START_OVERRIDE(fromance_state,fromance)
 	MCFG_MACHINE_RESET_OVERRIDE(fromance_state,fromance)
 
@@ -1337,48 +967,24 @@ static MACHINE_CONFIG_START( idolmj )
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", fromance)
 	MCFG_PALETTE_ADD("palette", 2048)
 
-<<<<<<< HEAD
-=======
 	MCFG_DEVICE_ADD("gga", VSYSTEM_GGA, XTAL_14_31818MHz / 2) // divider not verified
 	MCFG_VSYSTEM_GGA_REGISTER_WRITE_CB(WRITE8(fromance_state, fromance_gga_data_w))
 
->>>>>>> upstream/master
 	MCFG_VIDEO_START_OVERRIDE(fromance_state,fromance)
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-	MCFG_SOUND_ADD("aysnd", AY8910, 12000000/6)
-=======
 	MCFG_SOUND_ADD("aysnd", YM2149, XTAL_12MHz / 6)
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.15)
 
 	MCFG_SOUND_ADD("msm", MSM5205, 384000)
 	MCFG_MSM5205_VCLK_CB(WRITELINE(fromance_state, fromance_adpcm_int)) /* IRQ handler */
-<<<<<<< HEAD
-	MCFG_MSM5205_PRESCALER_SELECTOR(MSM5205_S48_4B)      /* 8 KHz */
-=======
 	MCFG_MSM5205_PRESCALER_SELECTOR(S48_4B)      /* 8 KHz */
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.80)
 MACHINE_CONFIG_END
 
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( fromance, fromance_state )
-
-	/* basic machine hardware */
-	MCFG_CPU_ADD("maincpu", Z80,12000000/2)     /* 6.00 Mhz ? */
-	MCFG_CPU_PROGRAM_MAP(fromance_main_map)
-	MCFG_CPU_VBLANK_INT_DRIVER("screen", fromance_state,  irq0_line_hold)
-
-	MCFG_CPU_ADD("sub", Z80,12000000/2)     /* 6.00 Mhz ? */
-	MCFG_CPU_PROGRAM_MAP(fromance_sub_map)
-	MCFG_CPU_IO_MAP(fromance_sub_io_map)
-
-=======
 static MACHINE_CONFIG_START( fromance )
 
 	/* basic machine hardware */
@@ -1393,7 +999,6 @@ static MACHINE_CONFIG_START( fromance )
 	MCFG_GENERIC_LATCH_8_ADD("sublatch")
 	MCFG_GENERIC_LATCH_SEPARATE_ACKNOWLEDGE(true)
 
->>>>>>> upstream/master
 	MCFG_MACHINE_START_OVERRIDE(fromance_state,fromance)
 	MCFG_MACHINE_RESET_OVERRIDE(fromance_state,fromance)
 
@@ -1408,12 +1013,9 @@ static MACHINE_CONFIG_START( fromance )
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", fromance)
 	MCFG_PALETTE_ADD("palette", 2048)
 
-<<<<<<< HEAD
-=======
 	MCFG_DEVICE_ADD("gga", VSYSTEM_GGA, XTAL_14_31818MHz / 2) // divider not verified
 	MCFG_VSYSTEM_GGA_REGISTER_WRITE_CB(WRITE8(fromance_state, fromance_gga_data_w))
 
->>>>>>> upstream/master
 	MCFG_VIDEO_START_OVERRIDE(fromance_state,fromance)
 
 	/* sound hardware */
@@ -1424,11 +1026,7 @@ static MACHINE_CONFIG_START( fromance )
 
 	MCFG_SOUND_ADD("msm", MSM5205, 384000)
 	MCFG_MSM5205_VCLK_CB(WRITELINE(fromance_state, fromance_adpcm_int)) /* IRQ handler */
-<<<<<<< HEAD
-	MCFG_MSM5205_PRESCALER_SELECTOR(MSM5205_S48_4B)      /* 8 KHz */
-=======
 	MCFG_MSM5205_PRESCALER_SELECTOR(S48_4B)      /* 8 KHz */
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.10)
 MACHINE_CONFIG_END
 
@@ -1463,9 +1061,6 @@ ROM_START( nekkyoku )
 	ROM_LOAD( "ic8a.bin",    0x000000, 0x080000, CRC(599790d8) SHA1(4e4ade1a89d6cb93b0808867883d70c4c7ed78dd) )
 	ROM_LOAD( "ic9a.bin",    0x080000, 0x040000, CRC(78c1906f) SHA1(54459e0120ec58a962d3f4a1287e68d2fbb28be9) )
 	ROM_LOAD( "5-ic10a.bin", 0x0c0000, 0x008000, CRC(2e78515f) SHA1(397985c082ffc0df07cd44d54e4fef909c30a4f1) )
-<<<<<<< HEAD
-	ROM_FILL(                0x0c8000, 0x038000, 0xff )
-=======
 	// 'D' OL girl is displayed via one of these mirrors
 	ROM_RELOAD(              0x0c8000, 0x008000 )
 	ROM_RELOAD(              0x0d0000, 0x008000 )
@@ -1474,7 +1069,6 @@ ROM_START( nekkyoku )
 	ROM_RELOAD(              0x0e8000, 0x008000 )
 	ROM_RELOAD(              0x0f0000, 0x008000 )
 	ROM_RELOAD(              0x0f8000, 0x008000 )
->>>>>>> upstream/master
 	ROM_FILL(                0x100000, 0x100000, 0xff )
 ROM_END
 
@@ -1656,16 +1250,6 @@ ROM_END
  *
  *************************************/
 
-<<<<<<< HEAD
-GAME( 1988, nekkyoku,  0,       nekkyoku, nekkyoku, driver_device, 0, ROT0, "Video System Co.", "Rettou Juudan Nekkyoku Janshi - Higashi Nippon Hen (Japan)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
-GAME( 1988, idolmj,    0,       idolmj,   idolmj, driver_device,   0, ROT0, "System Service", "Idol-Mahjong Housoukyoku (Japan)", MACHINE_SUPPORTS_SAVE )
-GAME( 1989, mjnatsu,   0,       fromance, mjnatsu, driver_device,  0, ROT0, "Video System Co.", "Mahjong Natsu Monogatari (Japan)", MACHINE_SUPPORTS_SAVE )
-GAME( 1989, natsuiro,  mjnatsu, fromance, mjnatsu, driver_device,  0, ROT0, "Video System Co.", "Natsuiro Mahjong (Japan)", MACHINE_SUPPORTS_SAVE )
-GAME( 1989, mfunclub,  0,       fromance, mfunclub, driver_device, 0, ROT0, "Video System Co.", "Mahjong Fun Club - Idol Saizensen (Japan)", MACHINE_SUPPORTS_SAVE )
-GAME( 1990, daiyogen,  0,       fromance, daiyogen, driver_device, 0, ROT0, "Video System Co.", "Mahjong Daiyogen (Japan)", MACHINE_SUPPORTS_SAVE )
-GAME( 1991, nmsengen,  0,       fromance, nmsengen, driver_device, 0, ROT0, "Video System Co.", "Nekketsu Mahjong Sengen! AFTER 5 (Japan)", MACHINE_SUPPORTS_SAVE )
-GAME( 1991, fromance,  0,       fromance, fromance, driver_device, 0, ROT0, "Video System Co.", "Idol-Mahjong Final Romance (Japan)", MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1988, nekkyoku,  0,       nekkyoku, nekkyoku, fromance_state, 0, ROT0, "Video System Co.", "Rettou Juudan Nekkyoku Janshi - Higashi Nippon Hen (Japan)", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_GRAPHICS )
 GAME( 1988, idolmj,    0,       idolmj,   idolmj,   fromance_state, 0, ROT0, "System Service",   "Idol-Mahjong Housoukyoku (Japan)", MACHINE_SUPPORTS_SAVE )
 GAME( 1989, mjnatsu,   0,       fromance, mjnatsu,  fromance_state, 0, ROT0, "Video System Co.", "Mahjong Natsu Monogatari (Japan)", MACHINE_SUPPORTS_SAVE )
@@ -1674,4 +1258,3 @@ GAME( 1989, mfunclub,  0,       fromance, mjnatsu,  fromance_state, 0, ROT0, "Vi
 GAME( 1990, daiyogen,  0,       fromance, daiyogen, fromance_state, 0, ROT0, "Video System Co.", "Mahjong Daiyogen (Japan)", MACHINE_SUPPORTS_SAVE )
 GAME( 1991, nmsengen,  0,       fromance, nmsengen, fromance_state, 0, ROT0, "Video System Co.", "Nekketsu Mahjong Sengen! AFTER 5 (Japan)", MACHINE_SUPPORTS_SAVE )
 GAME( 1991, fromance,  0,       fromance, fromance, fromance_state, 0, ROT0, "Video System Co.", "Idol-Mahjong Final Romance (Japan)", MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

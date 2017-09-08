@@ -78,11 +78,7 @@ static const res_net_info skyfox_net_info =
 
 PALETTE_INIT_MEMBER(skyfox_state, skyfox)
 {
-<<<<<<< HEAD
-	const UINT8 *color_prom = memregion("proms")->base();
-=======
 	const uint8_t *color_prom = memregion("proms")->base();
->>>>>>> upstream/master
 	std::vector<rgb_t> rgb;
 
 	compute_res_net_all(rgb, color_prom, skyfox_decode_info, skyfox_net_info);
@@ -200,11 +196,7 @@ void skyfox_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect
 
 void skyfox_state::draw_background(bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
-<<<<<<< HEAD
-	UINT8 *rom = memregion("gfx2")->base();
-=======
 	uint8_t *rom = memregion("gfx2")->base();
->>>>>>> upstream/master
 
 	/* The foreground stars (sprites) move at twice this speed when
 	   the bg scroll rate [e.g. (m_bg_ctrl >> 1) & 7] is 4 */
@@ -236,11 +228,7 @@ void skyfox_state::draw_background(bitmap_ind16 &bitmap, const rectangle &clipre
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-UINT32 skyfox_state::screen_update_skyfox(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t skyfox_state::screen_update_skyfox(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	bitmap.fill(0xff, cliprect); // the bg is black
 	draw_background(bitmap, cliprect);

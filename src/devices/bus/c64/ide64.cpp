@@ -19,10 +19,7 @@
 
 */
 
-<<<<<<< HEAD
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #include "ide64.h"
 
 
@@ -42,19 +39,6 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type C64_IDE64 = &device_creator<c64_ide64_cartridge_device>;
-
-
-//-------------------------------------------------
-//  MACHINE_CONFIG_FRAGMENT( c64_ide64 )
-//-------------------------------------------------
-static MACHINE_CONFIG_FRAGMENT( c64_ide64 )
-	MCFG_ATMEL_29C010_ADD(AT29C010A_TAG)
-	MCFG_DS1302_ADD(DS1302_TAG, XTAL_32_768kHz)
-
-	MCFG_ATA_INTERFACE_ADD(ATA_TAG, ata_devices, "hdd", NULL, false)
-=======
 DEFINE_DEVICE_TYPE(C64_IDE64, c64_ide64_cartridge_device, "c64_ide64", "C64 IDE64 cartridge")
 
 
@@ -67,25 +51,10 @@ MACHINE_CONFIG_MEMBER( c64_ide64_cartridge_device::device_add_mconfig )
 	MCFG_DS1302_ADD(DS1302_TAG, XTAL_32_768kHz)
 
 	MCFG_ATA_INTERFACE_ADD(ATA_TAG, ata_devices, "hdd", nullptr, false)
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  machine_config_additions - device-specific
-//  machine configurations
-//-------------------------------------------------
-
-machine_config_constructor c64_ide64_cartridge_device::device_mconfig_additions() const
-{
-	return MACHINE_CONFIG_NAME( c64_ide64 );
-}
-
-
-//-------------------------------------------------
-=======
->>>>>>> upstream/master
 //  INPUT_PORTS( c64_ide64 )
 //-------------------------------------------------
 
@@ -116,13 +85,8 @@ ioport_constructor c64_ide64_cartridge_device::device_input_ports() const
 //  c64_ide64_cartridge_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-c64_ide64_cartridge_device::c64_ide64_cartridge_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-	device_t(mconfig, C64_IDE64, "C64 IDE64 cartridge", tag, owner, clock, "c64_ide64", __FILE__),
-=======
 c64_ide64_cartridge_device::c64_ide64_cartridge_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	device_t(mconfig, C64_IDE64, tag, owner, clock),
->>>>>>> upstream/master
 	device_c64_expansion_card_interface(mconfig, *this),
 	m_flash_rom(*this, AT29C010A_TAG),
 	m_rtc(*this, DS1302_TAG),
@@ -169,11 +133,7 @@ void c64_ide64_cartridge_device::device_reset()
 //  c64_cd_r - cartridge data read
 //-------------------------------------------------
 
-<<<<<<< HEAD
-UINT8 c64_ide64_cartridge_device::c64_cd_r(address_space &space, offs_t offset, UINT8 data, int sphi2, int ba, int roml, int romh, int io1, int io2)
-=======
 uint8_t c64_ide64_cartridge_device::c64_cd_r(address_space &space, offs_t offset, uint8_t data, int sphi2, int ba, int roml, int romh, int io1, int io2)
->>>>>>> upstream/master
 {
 	if (!m_enable) return data;
 
@@ -208,11 +168,7 @@ uint8_t c64_ide64_cartridge_device::c64_cd_r(address_space &space, offs_t offset
 		// 0x5f-0x5f    DS1302
 		// 0x60-0xff    ROM
 
-<<<<<<< HEAD
-		UINT8 io1_offset = offset & 0xff;
-=======
 		uint8_t io1_offset = offset & 0xff;
->>>>>>> upstream/master
 
 		if (io1_offset >= 0x20 && io1_offset < 0x28)
 		{
@@ -283,11 +239,7 @@ uint8_t c64_ide64_cartridge_device::c64_cd_r(address_space &space, offs_t offset
 //  c64_cd_w - cartridge data write
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void c64_ide64_cartridge_device::c64_cd_w(address_space &space, offs_t offset, UINT8 data, int sphi2, int ba, int roml, int romh, int io1, int io2)
-=======
 void c64_ide64_cartridge_device::c64_cd_w(address_space &space, offs_t offset, uint8_t data, int sphi2, int ba, int roml, int romh, int io1, int io2)
->>>>>>> upstream/master
 {
 	if (!m_enable) return;
 
@@ -317,11 +269,7 @@ void c64_ide64_cartridge_device::c64_cd_w(address_space &space, offs_t offset, u
 		// 0x5f-0x5f    DS1302
 		// 0x60-0xff    ROM
 
-<<<<<<< HEAD
-		UINT8 io1_offset = offset & 0xff;
-=======
 		uint8_t io1_offset = offset & 0xff;
->>>>>>> upstream/master
 
 		if (io1_offset >= 0x20 && io1_offset < 0x28)
 		{

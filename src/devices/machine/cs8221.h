@@ -15,20 +15,11 @@
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __CS8221_H__
-#define __CS8221_H__
-
-#include "emu.h"
-=======
 #ifndef MAME_MACHINE_CS8221_H
 #define MAME_MACHINE_CS8221_H
 
 #pragma once
 
->>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -52,19 +43,12 @@ class cs8221_device : public device_t
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	cs8221_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-=======
 	cs8221_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
->>>>>>> upstream/master
 
 	DECLARE_WRITE8_MEMBER( address_w );
 	DECLARE_READ8_MEMBER( data_r );
 	DECLARE_WRITE8_MEMBER( data_w );
-<<<<<<< HEAD
-=======
 	DECLARE_ADDRESS_MAP(map, 16);
->>>>>>> upstream/master
 
 	// inline configuration
 	static void static_set_cputag(device_t &device, const char *tag);
@@ -73,33 +57,19 @@ public:
 
 protected:
 	// device-level overrides
-<<<<<<< HEAD
-	virtual void device_start();
-	virtual void device_reset();
-=======
 	virtual void device_start() override;
 	virtual void device_reset() override;
->>>>>>> upstream/master
 
 private:
 
 	// internal state
 	//address_space *m_space;
-<<<<<<< HEAD
-	//UINT8 *m_isa;
-	//UINT8 *m_bios;
-	//UINT8 *m_ram;
-
-	// address selection
-	UINT8 m_address;
-=======
 	//uint8_t *m_isa;
 	//uint8_t *m_bios;
 	//uint8_t *m_ram;
 
 	// address selection
 	uint8_t m_address;
->>>>>>> upstream/master
 	bool m_address_valid;
 
 	const char *m_cputag;
@@ -107,22 +77,11 @@ private:
 	const char *m_biostag;
 
 
-<<<<<<< HEAD
-	UINT8 m_registers[0x10];
-=======
 	uint8_t m_registers[0x10];
->>>>>>> upstream/master
 };
 
 
 // device type definition
-<<<<<<< HEAD
-extern const device_type CS8221;
-
-
-#endif  /* __CS8221_H__ */
-=======
 DECLARE_DEVICE_TYPE(CS8221, cs8221_device)
 
 #endif // MAME_MACHINE_CS8221_H
->>>>>>> upstream/master

@@ -1,11 +1,6 @@
 /*
-<<<<<<< HEAD
- * Copyright 2014 Dario Manesku. All rights reserved.
- * License: http://www.opensource.org/licenses/BSD-2-Clause
-=======
  * Copyright 2014-2016 Dario Manesku. All rights reserved.
  * License: https://github.com/bkaradzic/bgfx#license-bsd-2-clause
->>>>>>> upstream/master
  */
 
 #include <vector>
@@ -23,35 +18,6 @@ static float s_texelHalf = 0.0f;
 
 struct Uniforms
 {
-<<<<<<< HEAD
-	void init()
-	{
-		m_time = 0.0f;
-		bx::mtxIdentity(m_mtx);
-
-		u_mtx     = bgfx::createUniform("u_mtx",     bgfx::UniformType::Mat4);
-		u_params  = bgfx::createUniform("u_params",  bgfx::UniformType::Vec4);
-		u_flags   = bgfx::createUniform("u_flags",   bgfx::UniformType::Vec4);
-		u_camPos  = bgfx::createUniform("u_camPos",  bgfx::UniformType::Vec4);
-		u_rgbDiff = bgfx::createUniform("u_rgbDiff", bgfx::UniformType::Vec4);
-		u_rgbSpec = bgfx::createUniform("u_rgbSpec", bgfx::UniformType::Vec4);
-	}
-
-	// Call this once per frame.
-	void submitPerFrameUniforms()
-	{
-		bgfx::setUniform(u_mtx,     m_mtx);
-		bgfx::setUniform(u_flags,   m_flags);
-		bgfx::setUniform(u_camPos,  m_camPosTime);
-		bgfx::setUniform(u_rgbDiff, m_rgbDiff);
-		bgfx::setUniform(u_rgbSpec, m_rgbSpec);
-	}
-
-	// Call this before each draw call.
-	void submitPerDrawUniforms()
-	{
-		bgfx::setUniform(u_params, m_params);
-=======
 	enum { NumVec4 = 12 };
 
 	void init()
@@ -62,66 +28,17 @@ struct Uniforms
 	void submit()
 	{
 		bgfx::setUniform(u_params, m_params, NumVec4);
->>>>>>> upstream/master
 	}
 
 	void destroy()
 	{
-<<<<<<< HEAD
-		bgfx::destroyUniform(u_rgbSpec);
-		bgfx::destroyUniform(u_rgbDiff);
-		bgfx::destroyUniform(u_camPos);
-		bgfx::destroyUniform(u_flags);
 		bgfx::destroyUniform(u_params);
-		bgfx::destroyUniform(u_mtx);
-=======
-		bgfx::destroyUniform(u_params);
->>>>>>> upstream/master
 	}
 
 	union
 	{
 		struct
 		{
-<<<<<<< HEAD
-			float m_glossiness;
-			float m_exposure;
-			float m_diffspec;
-			float m_time;
-		};
-
-		float m_params[4];
-	};
-
-	union
-	{
-		struct
-		{
-			float m_diffuse;
-			float m_specular;
-			float m_diffuseIbl;
-			float m_specularIbl;
-		};
-
-		float m_flags[4];
-	};
-
-	float m_mtx[16];
-	float m_camPosTime[4];
-	float m_rgbDiff[4];
-	float m_rgbSpec[4];
-
-	bgfx::UniformHandle u_mtx;
-	bgfx::UniformHandle u_params;
-	bgfx::UniformHandle u_flags;
-	bgfx::UniformHandle u_camPos;
-	bgfx::UniformHandle u_rgbDiff;
-	bgfx::UniformHandle u_rgbSpec;
-};
-
-static Uniforms s_uniforms;
-
-=======
 			union
 			{
 				  float m_mtx[16];
@@ -146,7 +63,6 @@ static Uniforms s_uniforms;
 	bgfx::UniformHandle u_params;
 };
 
->>>>>>> upstream/master
 struct PosColorTexCoord0Vertex
 {
 	float m_x;
@@ -173,11 +89,7 @@ bgfx::VertexDecl PosColorTexCoord0Vertex::ms_decl;
 
 void screenSpaceQuad(float _textureWidth, float _textureHeight, bool _originBottomLeft = false, float _width = 1.0f, float _height = 1.0f)
 {
-<<<<<<< HEAD
-	if (bgfx::checkAvailTransientVertexBuffer(3, PosColorTexCoord0Vertex::ms_decl) )
-=======
 	if (3 == bgfx::getAvailTransientVertexBuffer(3, PosColorTexCoord0Vertex::ms_decl) )
->>>>>>> upstream/master
 	{
 		bgfx::TransientVertexBuffer vb;
 		bgfx::allocTransientVertexBuffer(&vb, 3, PosColorTexCoord0Vertex::ms_decl);
@@ -234,16 +146,8 @@ struct LightProbe
 {
 	enum Enum
 	{
-<<<<<<< HEAD
-		Wells,
-		Uffizi,
-		Pisa,
-		Ennis,
-		Grace,
-=======
 		Bolonga,
 		Kyoto,
->>>>>>> upstream/master
 
 		Count
 	};
@@ -252,19 +156,10 @@ struct LightProbe
 	{
 		char filePath[512];
 
-<<<<<<< HEAD
-		strcpy(filePath, _name);
-		strcat(filePath, "_lod.dds");
-		m_tex = loadTexture(filePath, BGFX_TEXTURE_U_CLAMP|BGFX_TEXTURE_V_CLAMP|BGFX_TEXTURE_W_CLAMP);
-
-		strcpy(filePath, _name);
-		strcat(filePath, "_irr.dds");
-=======
 		bx::snprintf(filePath, BX_COUNTOF(filePath), "textures/%s_lod.dds", _name);
 		m_tex = loadTexture(filePath, BGFX_TEXTURE_U_CLAMP|BGFX_TEXTURE_V_CLAMP|BGFX_TEXTURE_W_CLAMP);
 
 		bx::snprintf(filePath, BX_COUNTOF(filePath), "textures/%s_irr.dds", _name);
->>>>>>> upstream/master
 		m_texIrr = loadTexture(filePath, BGFX_TEXTURE_U_CLAMP|BGFX_TEXTURE_V_CLAMP|BGFX_TEXTURE_W_CLAMP);
 	}
 
@@ -278,8 +173,6 @@ struct LightProbe
 	bgfx::TextureHandle m_texIrr;
 };
 
-<<<<<<< HEAD
-=======
 struct Camera
 {
 	Camera()
@@ -527,7 +420,6 @@ struct Mouse
 	int32_t m_scrollPrev;
 };
 
->>>>>>> upstream/master
 int _main_(int _argc, char** _argv)
 {
 	Args args(_argc, _argv);
@@ -535,14 +427,10 @@ int _main_(int _argc, char** _argv)
 	uint32_t width = 1280;
 	uint32_t height = 720;
 	uint32_t debug = BGFX_DEBUG_TEXT;
-<<<<<<< HEAD
-	uint32_t reset = BGFX_RESET_VSYNC;
-=======
 	uint32_t reset  = 0
 		| BGFX_RESET_VSYNC
 		| BGFX_RESET_MSAA_X16
 		;
->>>>>>> upstream/master
 
 	bgfx::init(args.m_type, args.m_pciId);
 	bgfx::reset(width, height, reset);
@@ -562,29 +450,16 @@ int _main_(int _argc, char** _argv)
 	imguiCreate();
 
 	// Uniforms.
-<<<<<<< HEAD
-	s_uniforms.init();
-=======
 	Uniforms uniforms;
 	uniforms.init();
->>>>>>> upstream/master
 
 	// Vertex declarations.
 	PosColorTexCoord0Vertex::init();
 
 	LightProbe lightProbes[LightProbe::Count];
-<<<<<<< HEAD
-	lightProbes[LightProbe::Wells ].load("wells");
-	lightProbes[LightProbe::Uffizi].load("uffizi");
-	lightProbes[LightProbe::Pisa  ].load("pisa");
-	lightProbes[LightProbe::Ennis ].load("ennis");
-	lightProbes[LightProbe::Grace ].load("grace");
-	LightProbe::Enum currentLightProbe = LightProbe::Wells;
-=======
 	lightProbes[LightProbe::Bolonga].load("bolonga");
 	lightProbes[LightProbe::Kyoto  ].load("kyoto");
 	LightProbe::Enum currentLightProbe = LightProbe::Bolonga;
->>>>>>> upstream/master
 
 	bgfx::UniformHandle u_mtx        = bgfx::createUniform("u_mtx",        bgfx::UniformType::Mat4);
 	bgfx::UniformHandle u_params     = bgfx::createUniform("u_params",     bgfx::UniformType::Vec4);
@@ -599,22 +474,6 @@ int _main_(int _argc, char** _argv)
 	Mesh* meshBunny;
 	meshBunny = meshLoad("meshes/bunny.bin");
 
-<<<<<<< HEAD
-	struct Settings
-	{
-		float m_speed;
-		float m_glossiness;
-		float m_exposure;
-		float m_diffspec;
-		float m_rgbDiff[3];
-		float m_rgbSpec[3];
-		bool m_diffuse;
-		bool m_specular;
-		bool m_diffuseIbl;
-		bool m_specularIbl;
-		bool m_showDiffColorWheel;
-		bool m_showSpecColorWheel;
-=======
 	Mesh* meshOrb;
 	meshOrb = meshLoad("meshes/orb.bin");
 
@@ -678,33 +537,10 @@ int _main_(int _argc, char** _argv)
 		bool m_showSpecColorWheel;
 		uint8_t m_metalOrSpec;
 		uint8_t m_meshSelection;
->>>>>>> upstream/master
 		ImguiCubemap::Enum m_crossCubemapPreview;
 	};
 
 	Settings settings;
-<<<<<<< HEAD
-	settings.m_speed = 0.37f;
-	settings.m_glossiness = 1.0f;
-	settings.m_exposure = 0.0f;
-	settings.m_diffspec = 0.65f;
-	settings.m_rgbDiff[0] = 0.2f;
-	settings.m_rgbDiff[1] = 0.2f;
-	settings.m_rgbDiff[2] = 0.2f;
-	settings.m_rgbSpec[0] = 1.0f;
-	settings.m_rgbSpec[1] = 1.0f;
-	settings.m_rgbSpec[2] = 1.0f;
-	settings.m_diffuse = true;
-	settings.m_specular = true;
-	settings.m_diffuseIbl = true;
-	settings.m_specularIbl = true;
-	settings.m_showDiffColorWheel = true;
-	settings.m_showSpecColorWheel = false;
-	settings.m_crossCubemapPreview = ImguiCubemap::Cross;
-
-	float time = 0.0f;
-=======
->>>>>>> upstream/master
 
 	int32_t leftScrollArea = 0;
 
@@ -717,119 +553,6 @@ int _main_(int _argc, char** _argv)
 			| (mouseState.m_buttons[entry::MouseButton::Right ] ? IMGUI_MBUT_RIGHT  : 0)
 			| (mouseState.m_buttons[entry::MouseButton::Middle] ? IMGUI_MBUT_MIDDLE : 0)
 			, mouseState.m_mz
-<<<<<<< HEAD
-			, width
-			, height
-			);
-
-		static int32_t rightScrollArea = 0;
-		imguiBeginScrollArea("Settings", width - 256 - 10, 10, 256, 540, &rightScrollArea);
-
-		imguiLabel("Shade:");
-		imguiSeparator();
-		imguiBool("Diffuse",      settings.m_diffuse);
-		imguiBool("Specular",     settings.m_specular);
-		imguiBool("IBL Diffuse",  settings.m_diffuseIbl);
-		imguiBool("IBL Specular", settings.m_specularIbl);
-
-		imguiSeparatorLine();
-		imguiSlider("Speed", settings.m_speed, 0.0f, 1.0f, 0.01f);
-		imguiSeparatorLine();
-
-		imguiSeparator();
-		imguiSlider("Exposure", settings.m_exposure, -8.0f, 8.0f, 0.01f);
-		imguiSeparator();
-
-		imguiLabel("Environment:");
-		currentLightProbe = LightProbe::Enum(imguiChoose(currentLightProbe
-													   , "Wells"
-													   , "Uffizi"
-													   , "Pisa"
-													   , "Ennis"
-													   , "Grace"
-													   ) );
-		static float lod = 0.0f;
-		if (imguiCube(lightProbes[currentLightProbe].m_tex, lod, settings.m_crossCubemapPreview, true) )
-		{
-			settings.m_crossCubemapPreview = ImguiCubemap::Enum( (settings.m_crossCubemapPreview+1) % ImguiCubemap::Count);
-		}
-		imguiSlider("Texture LOD", lod, 0.0f, 10.1f, 0.1f);
-
-		imguiEndScrollArea();
-
-		imguiBeginScrollArea("Settings", 10, 70, 256, 576, &leftScrollArea);
-
-		imguiLabel("Material properties:");
-		imguiSeparator();
-		imguiSlider("Diffuse - Specular", settings.m_diffspec,   0.0f, 1.0f, 0.01f);
-		imguiSlider("Glossiness"        , settings.m_glossiness, 0.0f, 1.0f, 0.01f);
-		imguiSeparator();
-
-		imguiColorWheel("Diffuse color:", &settings.m_rgbDiff[0], settings.m_showDiffColorWheel);
-		imguiSeparator();
-		imguiColorWheel("Specular color:", &settings.m_rgbSpec[0], settings.m_showSpecColorWheel);
-
-		imguiSeparator();
-		imguiLabel("Predefined materials:");
-		imguiSeparator();
-
-		if (imguiButton("Gold") )
-		{
-			settings.m_glossiness = 0.8f;
-			settings.m_diffspec   = 1.0f;
-
-			settings.m_rgbDiff[0] = 0.0f;
-			settings.m_rgbDiff[1] = 0.0f;
-			settings.m_rgbDiff[2] = 0.0f;
-
-			settings.m_rgbSpec[0] = 1.0f;
-			settings.m_rgbSpec[1] = 0.86f;
-			settings.m_rgbSpec[2] = 0.58f;
-		}
-
-		if (imguiButton("Copper") )
-		{
-			settings.m_glossiness = 0.67f;
-			settings.m_diffspec   = 1.0f;
-
-			settings.m_rgbDiff[0] = 0.0f;
-			settings.m_rgbDiff[1] = 0.0f;
-			settings.m_rgbDiff[2] = 0.0f;
-
-			settings.m_rgbSpec[0] = 0.98f;
-			settings.m_rgbSpec[1] = 0.82f;
-			settings.m_rgbSpec[2] = 0.76f;
-		}
-
-		if (imguiButton("Titanium") )
-		{
-			settings.m_glossiness = 0.57f;
-			settings.m_diffspec   = 1.0f;
-
-			settings.m_rgbDiff[0] = 0.0f;
-			settings.m_rgbDiff[1] = 0.0f;
-			settings.m_rgbDiff[2] = 0.0f;
-
-			settings.m_rgbSpec[0] = 0.76f;
-			settings.m_rgbSpec[1] = 0.73f;
-			settings.m_rgbSpec[2] = 0.71f;
-		}
-
-		if (imguiButton("Steel") )
-		{
-			settings.m_glossiness = 0.82f;
-			settings.m_diffspec   = 1.0f;
-
-			settings.m_rgbDiff[0] = 0.0f;
-			settings.m_rgbDiff[1] = 0.0f;
-			settings.m_rgbDiff[2] = 0.0f;
-
-			settings.m_rgbSpec[0] = 0.77f;
-			settings.m_rgbSpec[1] = 0.78f;
-			settings.m_rgbSpec[2] = 0.77f;
-		}
-
-=======
 			, uint16_t(width)
 			, uint16_t(height)
 			);
@@ -939,24 +662,10 @@ int _main_(int _argc, char** _argv)
 		imguiSeparator();
 		imguiColorWheel("Specular:", &settings.m_rgbSpec[0], settings.m_showSpecColorWheel, 0.7f, (1 == settings.m_metalOrSpec) && isBunny);
 
->>>>>>> upstream/master
 		imguiEndScrollArea();
 
 		imguiEndFrame();
 
-<<<<<<< HEAD
-		s_uniforms.m_glossiness = settings.m_glossiness;
-		s_uniforms.m_exposure = settings.m_exposure;
-		s_uniforms.m_diffspec = settings.m_diffspec;
-		s_uniforms.m_flags[0] = float(settings.m_diffuse);
-		s_uniforms.m_flags[1] = float(settings.m_specular);
-		s_uniforms.m_flags[2] = float(settings.m_diffuseIbl);
-		s_uniforms.m_flags[3] = float(settings.m_specularIbl);
-		memcpy(s_uniforms.m_rgbDiff, settings.m_rgbDiff, 3*sizeof(float) );
-		memcpy(s_uniforms.m_rgbSpec, settings.m_rgbSpec, 3*sizeof(float) );
-
-		s_uniforms.submitPerFrameUniforms();
-=======
 		uniforms.m_glossiness   = settings.m_glossiness;
 		uniforms.m_reflectivity = settings.m_reflectivity;
 		uniforms.m_exposure     = settings.m_exposure;
@@ -970,7 +679,6 @@ int _main_(int _argc, char** _argv)
 		bx::memCopy(uniforms.m_rgbSpec,  settings.m_rgbSpec,  3*sizeof(float) );
 		bx::memCopy(uniforms.m_lightDir, settings.m_lightDir, 3*sizeof(float) );
 		bx::memCopy(uniforms.m_lightCol, settings.m_lightCol, 3*sizeof(float) );
->>>>>>> upstream/master
 
 		int64_t now = bx::getHPCounter();
 		static int64_t last = now;
@@ -978,33 +686,11 @@ int _main_(int _argc, char** _argv)
 		last = now;
 		const double freq = double(bx::getHPFrequency() );
 		const double toMs = 1000.0/freq;
-<<<<<<< HEAD
-
-		time += (float)(frameTime*settings.m_speed/freq);
-		s_uniforms.m_camPosTime[3] = time;
-=======
 		const float deltaTimeSec = float(double(frameTime)/freq);
->>>>>>> upstream/master
 
 		// Use debug font to print information about this example.
 		bgfx::dbgTextClear();
 		bgfx::dbgTextPrintf(0, 1, 0x4f, "bgfx/examples/18-ibl");
-<<<<<<< HEAD
-		bgfx::dbgTextPrintf(0, 2, 0x6f, "Description: Image based lightning.");
-		bgfx::dbgTextPrintf(0, 3, 0x0f, "Frame: % 7.3f[ms]", double(frameTime)*toMs);
-
-		float at[3] = { 0.0f, 0.0f, 0.0f };
-		float eye[3] = { 0.0f, 0.0f, -3.0f };
-
-		bx::mtxRotateXY(s_uniforms.m_mtx
-			, 0.0f
-			, time
-			);
-
-		float view[16];
-		float proj[16];
-
-=======
 		bgfx::dbgTextPrintf(0, 2, 0x6f, "Description: Image-based lighting.");
 		bgfx::dbgTextPrintf(0, 3, 0x0f, "Frame: % 7.3f[ms]", double(frameTime)*toMs);
 
@@ -1036,45 +722,10 @@ int _main_(int _argc, char** _argv)
 		// View Transform 0.
 		float view[16];
 		float proj[16];
->>>>>>> upstream/master
 		bx::mtxIdentity(view);
 		bx::mtxOrtho(proj, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 100.0f);
 		bgfx::setViewTransform(0, view, proj);
 
-<<<<<<< HEAD
-		bx::mtxLookAt(view, eye, at);
-		memcpy(s_uniforms.m_camPosTime, eye, 3*sizeof(float) );
-		bx::mtxProj(proj, 60.0f, float(width)/float(height), 0.1f, 100.0f);
-		bgfx::setViewTransform(1, view, proj);
-
-		bgfx::setViewRect(0, 0, 0, width, height);
-		bgfx::setViewRect(1, 0, 0, width, height);
-
-		// View 0.
-		bgfx::setTexture(0, s_texCube, lightProbes[currentLightProbe].m_tex);
-		bgfx::setState(BGFX_STATE_RGB_WRITE|BGFX_STATE_ALPHA_WRITE);
-		screenSpaceQuad( (float)width, (float)height, true);
-		s_uniforms.submitPerDrawUniforms();
-		bgfx::submit(0, programSky);
-
-		// View 1.
-		float mtx[16];
-		bx::mtxSRT(mtx
-				, 1.0f
-				, 1.0f
-				, 1.0f
-				, 0.0f
-				, bx::pi+time
-				, 0.0f
-				, 0.0f
-				, -1.0f
-				, 0.0f
-				);
-
-		bgfx::setTexture(0, s_texCube,    lightProbes[currentLightProbe].m_tex);
-		bgfx::setTexture(1, s_texCubeIrr, lightProbes[currentLightProbe].m_texIrr);
-		meshSubmit(meshBunny, 1, programMesh, mtx);
-=======
 		// View Transform 1.
 		camera.mtxLookAt(view);
 		bx::mtxProj(proj, 45.0f, float(width)/float(height), 0.1f, 100.0f, bgfx::getCaps()->homogeneousDepth);
@@ -1150,7 +801,6 @@ int _main_(int _argc, char** _argv)
 				}
 			}
 		}
->>>>>>> upstream/master
 
 		// Advance to next frame. Rendering thread will be kicked to
 		// process submitted rendering primitives.
@@ -1158,10 +808,7 @@ int _main_(int _argc, char** _argv)
 	}
 
 	meshUnload(meshBunny);
-<<<<<<< HEAD
-=======
 	meshUnload(meshOrb);
->>>>>>> upstream/master
 
 	// Cleanup.
 	bgfx::destroyProgram(programMesh);
@@ -1180,11 +827,7 @@ int _main_(int _argc, char** _argv)
 		lightProbes[ii].destroy();
 	}
 
-<<<<<<< HEAD
-	s_uniforms.destroy();
-=======
 	uniforms.destroy();
->>>>>>> upstream/master
 
 	imguiDestroy();
 

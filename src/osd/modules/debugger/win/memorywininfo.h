@@ -20,18 +20,6 @@ public:
 	memorywin_info(debugger_windows_interface &debugger);
 	virtual ~memorywin_info();
 
-<<<<<<< HEAD
-	virtual bool handle_key(WPARAM wparam, LPARAM lparam);
-
-protected:
-	virtual void recompute_children();
-	virtual void update_menu();
-	virtual bool handle_command(WPARAM wparam, LPARAM lparam);
-	virtual void draw_contents(HDC dc);
-
-private:
-	virtual void process_string(char const *string);
-=======
 	virtual bool handle_key(WPARAM wparam, LPARAM lparam) override;
 
 protected:
@@ -42,7 +30,6 @@ protected:
 
 private:
 	virtual void process_string(const std::string &string) override;
->>>>>>> upstream/master
 
 	void update_caption();
 

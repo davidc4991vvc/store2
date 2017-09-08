@@ -1,16 +1,5 @@
 // license:BSD-3-Clause
 // copyright-holders:Ville Linde, Barry Rodewald, Carl, Philip Bennett
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __I386INTF_H__
-#define __I386INTF_H__
-
-#include "softfloat/milieu.h"
-#include "softfloat/softfloat.h"
-#include "debug/debugcpu.h"
-#include "cpu/vtlb.h"
-=======
 #ifndef MAME_CPU_I386_I386_H
 #define MAME_CPU_I386_I386_H
 
@@ -25,7 +14,6 @@
 
 #include "debug/debugcpu.h"
 #include "divtlb.h"
->>>>>>> upstream/master
 
 
 #define INPUT_LINE_A20      1
@@ -37,52 +25,6 @@
 
 
 #define MCFG_I386_SMIACT(_devcb) \
-<<<<<<< HEAD
-	i386_device::set_smiact(*device, DEVCB_##_devcb);
-
-
-class i386_device : public cpu_device
-{
-public:
-	// construction/destruction
-	i386_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-	i386_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source, int program_data_width=32, int program_addr_width=32, int io_data_width=32);
-
-	// static configuration helpers
-	template<class _Object> static devcb_base &set_smiact(device_t &device, _Object object) { return downcast<i386_device &>(device).m_smiact.set_callback(object); }
-
-	UINT64 debug_segbase(symbol_table &table, int params, const UINT64 *param);
-	UINT64 debug_seglimit(symbol_table &table, int params, const UINT64 *param);
-	UINT64 debug_segofftovirt(symbol_table &table, int params, const UINT64 *param);
-	UINT64 debug_virttophys(symbol_table &table, int params, const UINT64 *param);
-
-protected:
-	// device-level overrides
-	virtual void device_start();
-	virtual void device_reset();
-	virtual void device_debug_setup();
-
-	// device_execute_interface overrides
-	virtual UINT32 execute_min_cycles() const { return 1; }
-	virtual UINT32 execute_max_cycles() const { return 40; }
-	virtual UINT32 execute_input_lines() const { return 32; }
-	virtual void execute_run();
-	virtual void execute_set_input(int inputnum, int state);
-
-	// device_memory_interface overrides
-	virtual const address_space_config *memory_space_config(address_spacenum spacenum = AS_0) const { return (spacenum == AS_PROGRAM) ? &m_program_config : ( (spacenum == AS_IO) ? &m_io_config : NULL ); }
-	virtual bool memory_translate(address_spacenum spacenum, int intention, offs_t &address);
-
-	// device_state_interface overrides
-	virtual void state_import(const device_state_entry &entry);
-	virtual void state_export(const device_state_entry &entry);
-	virtual void state_string_export(const device_state_entry &entry, std::string &str);
-
-	// device_disasm_interface overrides
-	virtual UINT32 disasm_min_opcode_bytes() const { return 1; }
-	virtual UINT32 disasm_max_opcode_bytes() const { return 15; }
-	virtual offs_t disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options);
-=======
 	devcb = &i386_device::set_smiact(*device, DEVCB_##_devcb);
 
 #define X86_NUM_CPUS        4
@@ -129,81 +71,10 @@ protected:
 	virtual uint32_t disasm_min_opcode_bytes() const override { return 1; }
 	virtual uint32_t disasm_max_opcode_bytes() const override { return 15; }
 	virtual offs_t disasm_disassemble(std::ostream &stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, uint32_t options) override;
->>>>>>> upstream/master
 
 	address_space_config m_program_config;
 	address_space_config m_io_config;
 
-<<<<<<< HEAD
-union I386_GPR {
-	UINT32 d[8];
-	UINT16 w[16];
-	UINT8 b[32];
-};
-
-struct I386_SREG {
-	UINT16 selector;
-	UINT16 flags;
-	UINT32 base;
-	UINT32 limit;
-	int d;      // Operand size
-	bool valid;
-};
-
-struct I386_SYS_TABLE {
-	UINT32 base;
-	UINT16 limit;
-};
-
-struct I386_SEG_DESC {
-	UINT16 segment;
-	UINT16 flags;
-	UINT32 base;
-	UINT32 limit;
-};
-
-union XMM_REG {
-	UINT8  b[16];
-	UINT16 w[8];
-	UINT32 d[4];
-	UINT64 q[2];
-	INT8   c[16];
-	INT16  s[8];
-	INT32  i[4];
-	INT64  l[2];
-	float  f[4];
-	double  f64[2];
-};
-
-union MMX_REG {
-	UINT32 d[2];
-	INT32  i[2];
-	UINT16 w[4];
-	INT16  s[4];
-	UINT8  b[8];
-	INT8   c[8];
-	float  f[2];
-	UINT64 q;
-	INT64  l;
-};
-
-struct I386_CALL_GATE
-{
-	UINT16 segment;
-	UINT16 selector;
-	UINT32 offset;
-	UINT8 ar;  // access rights
-	UINT8 dpl;
-	UINT8 dword_count;
-	UINT8 present;
-};
-
-	typedef void (i386_device::*i386_modrm_func)(UINT8 modrm);
-	typedef void (i386_device::*i386_op_func)();
-	struct X86_OPCODE {
-		UINT8 opcode;
-		UINT32 flags;
-=======
 	std::unique_ptr<uint8_t[]> cycle_table_rm[X86_NUM_CPUS];
 	std::unique_ptr<uint8_t[]> cycle_table_pm[X86_NUM_CPUS];
 
@@ -276,7 +147,6 @@ struct I386_CALL_GATE
 	struct X86_OPCODE {
 		uint8_t opcode;
 		uint32_t flags;
->>>>>>> upstream/master
 		i386_op_func handler16;
 		i386_op_func handler32;
 		bool lockable;
@@ -285,40 +155,6 @@ struct I386_CALL_GATE
 
 	I386_GPR m_reg;
 	I386_SREG m_sreg[6];
-<<<<<<< HEAD
-	UINT32 m_eip;
-	UINT32 m_pc;
-	UINT32 m_prev_eip;
-	UINT32 m_eflags;
-	UINT32 m_eflags_mask;
-	UINT8 m_CF;
-	UINT8 m_DF;
-	UINT8 m_SF;
-	UINT8 m_OF;
-	UINT8 m_ZF;
-	UINT8 m_PF;
-	UINT8 m_AF;
-	UINT8 m_IF;
-	UINT8 m_TF;
-	UINT8 m_IOP1;
-	UINT8 m_IOP2;
-	UINT8 m_NT;
-	UINT8 m_RF;
-	UINT8 m_VM;
-	UINT8 m_AC;
-	UINT8 m_VIF;
-	UINT8 m_VIP;
-	UINT8 m_ID;
-
-	UINT8 m_CPL;  // current privilege level
-
-	UINT8 m_performed_intersegment_jump;
-	UINT8 m_delayed_interrupt_enable;
-
-	UINT32 m_cr[5];       // Control registers
-	UINT32 m_dr[8];       // Debug registers
-	UINT32 m_tr[8];       // Test registers
-=======
 	uint32_t m_eip;
 	uint32_t m_pc;
 	uint32_t m_prev_eip;
@@ -351,18 +187,13 @@ struct I386_CALL_GATE
 	uint32_t m_cr[5];       // Control registers
 	uint32_t m_dr[8];       // Debug registers
 	uint32_t m_tr[8];       // Test registers
->>>>>>> upstream/master
 
 	I386_SYS_TABLE m_gdtr;    // Global Descriptor Table Register
 	I386_SYS_TABLE m_idtr;    // Interrupt Descriptor Table Register
 	I386_SEG_DESC m_task;     // Task register
 	I386_SEG_DESC m_ldtr;     // Local Descriptor Table Register
 
-<<<<<<< HEAD
-	UINT8 m_ext;  // external interrupt
-=======
 	uint8_t m_ext;  // external interrupt
->>>>>>> upstream/master
 
 	int m_halted;
 
@@ -377,22 +208,6 @@ struct I386_CALL_GATE
 
 	int m_cycles;
 	int m_base_cycles;
-<<<<<<< HEAD
-	UINT8 m_opcode;
-
-	UINT8 m_irq_state;
-	address_space *m_program;
-	direct_read_data *m_direct;
-	address_space *m_io;
-	UINT32 m_a20_mask;
-
-	int m_cpuid_max_input_value_eax;
-	UINT32 m_cpuid_id0, m_cpuid_id1, m_cpuid_id2;
-	UINT32 m_cpu_version;
-	UINT32 m_feature_flags;
-	UINT64 m_tsc;
-	UINT64 m_perfctr[2];
-=======
 	uint8_t m_opcode;
 
 	uint8_t m_irq_state;
@@ -407,26 +222,16 @@ struct I386_CALL_GATE
 	uint32_t m_feature_flags;
 	uint64_t m_tsc;
 	uint64_t m_perfctr[2];
->>>>>>> upstream/master
 
 	// FPU
 	floatx80 m_x87_reg[8];
 
-<<<<<<< HEAD
-	UINT16 m_x87_cw;
-	UINT16 m_x87_sw;
-	UINT16 m_x87_tw;
-	UINT64 m_x87_data_ptr;
-	UINT64 m_x87_inst_ptr;
-	UINT16 m_x87_opcode;
-=======
 	uint16_t m_x87_cw;
 	uint16_t m_x87_sw;
 	uint16_t m_x87_tw;
 	uint64_t m_x87_data_ptr;
 	uint64_t m_x87_inst_ptr;
 	uint16_t m_x87_opcode;
->>>>>>> upstream/master
 
 	i386_modrm_func m_opcode_table_x87_d8[256];
 	i386_modrm_func m_opcode_table_x87_d9[256];
@@ -439,11 +244,7 @@ struct I386_CALL_GATE
 
 	// SSE
 	XMM_REG m_sse_reg[8];
-<<<<<<< HEAD
-	UINT32 m_mxcsr;
-=======
 	uint32_t m_mxcsr;
->>>>>>> upstream/master
 
 	i386_op_func m_opcode_table1_16[256];
 	i386_op_func m_opcode_table1_32[256];
@@ -472,141 +273,28 @@ struct I386_CALL_GATE
 
 	bool m_lock_table[2][256];
 
-<<<<<<< HEAD
-	UINT8 *m_cycle_table_pm;
-	UINT8 *m_cycle_table_rm;
-
-	vtlb_state *m_vtlb;
-=======
 	uint8_t *m_cycle_table_pm;
 	uint8_t *m_cycle_table_rm;
->>>>>>> upstream/master
 
 	bool m_smm;
 	bool m_smi;
 	bool m_smi_latched;
 	bool m_nmi_masked;
 	bool m_nmi_latched;
-<<<<<<< HEAD
-	UINT32 m_smbase;
-=======
 	uint32_t m_smbase;
->>>>>>> upstream/master
 	devcb_write_line m_smiact;
 	bool m_lock;
 
 	// bytes in current opcode, debug only
-<<<<<<< HEAD
-	UINT8 m_opcode_bytes[16];
-	UINT32 m_opcode_pc;
-	int m_opcode_bytes_length;
-
-	UINT64 m_debugger_temp;
-=======
 	uint8_t m_opcode_bytes[16];
 	uint32_t m_opcode_pc;
 	int m_opcode_bytes_length;
 
 	uint64_t m_debugger_temp;
->>>>>>> upstream/master
 
 	void register_state_i386();
 	void register_state_i386_x87();
 	void register_state_i386_x87_xmm();
-<<<<<<< HEAD
-	inline UINT32 i386_translate(int segment, UINT32 ip, int rwn);
-	inline vtlb_entry get_permissions(UINT32 pte, int wp);
-	bool i386_translate_address(int intention, offs_t *address, vtlb_entry *entry);
-	inline int translate_address(int pl, int type, UINT32 *address, UINT32 *error);
-	inline void CHANGE_PC(UINT32 pc);
-	inline void NEAR_BRANCH(INT32 offs);
-	inline UINT8 FETCH();
-	inline UINT16 FETCH16();
-	inline UINT32 FETCH32();
-	inline UINT8 READ8(UINT32 ea);
-	inline UINT16 READ16(UINT32 ea);
-	inline UINT32 READ32(UINT32 ea);
-	inline UINT64 READ64(UINT32 ea);
-	inline UINT8 READ8PL0(UINT32 ea);
-	inline UINT16 READ16PL0(UINT32 ea);
-	inline UINT32 READ32PL0(UINT32 ea);
-	inline void WRITE_TEST(UINT32 ea);
-	inline void WRITE8(UINT32 ea, UINT8 value);
-	inline void WRITE16(UINT32 ea, UINT16 value);
-	inline void WRITE32(UINT32 ea, UINT32 value);
-	inline void WRITE64(UINT32 ea, UINT64 value);
-	inline UINT8 OR8(UINT8 dst, UINT8 src);
-	inline UINT16 OR16(UINT16 dst, UINT16 src);
-	inline UINT32 OR32(UINT32 dst, UINT32 src);
-	inline UINT8 AND8(UINT8 dst, UINT8 src);
-	inline UINT16 AND16(UINT16 dst, UINT16 src);
-	inline UINT32 AND32(UINT32 dst, UINT32 src);
-	inline UINT8 XOR8(UINT8 dst, UINT8 src);
-	inline UINT16 XOR16(UINT16 dst, UINT16 src);
-	inline UINT32 XOR32(UINT32 dst, UINT32 src);
-	inline UINT8 SBB8(UINT8 dst, UINT8 src, UINT8 b);
-	inline UINT16 SBB16(UINT16 dst, UINT16 src, UINT16 b);
-	inline UINT32 SBB32(UINT32 dst, UINT32 src, UINT32 b);
-	inline UINT8 ADC8(UINT8 dst, UINT8 src, UINT8 c);
-	inline UINT16 ADC16(UINT16 dst, UINT16 src, UINT8 c);
-	inline UINT32 ADC32(UINT32 dst, UINT32 src, UINT32 c);
-	inline UINT8 INC8(UINT8 dst);
-	inline UINT16 INC16(UINT16 dst);
-	inline UINT32 INC32(UINT32 dst);
-	inline UINT8 DEC8(UINT8 dst);
-	inline UINT16 DEC16(UINT16 dst);
-	inline UINT32 DEC32(UINT32 dst);
-	inline void PUSH16(UINT16 value);
-	inline void PUSH32(UINT32 value);
-	inline void PUSH8(UINT8 value);
-	inline UINT8 POP8();
-	inline UINT16 POP16();
-	inline UINT32 POP32();
-	inline void BUMP_SI(int adjustment);
-	inline void BUMP_DI(int adjustment);
-	inline void check_ioperm(offs_t port, UINT8 mask);
-	inline UINT8 READPORT8(offs_t port);
-	inline void WRITEPORT8(offs_t port, UINT8 value);
-	inline UINT16 READPORT16(offs_t port);
-	inline void WRITEPORT16(offs_t port, UINT16 value);
-	inline UINT32 READPORT32(offs_t port);
-	inline void WRITEPORT32(offs_t port, UINT32 value);
-	UINT64 pentium_msr_read(UINT32 offset,UINT8 *valid_msr);
-	void pentium_msr_write(UINT32 offset, UINT64 data, UINT8 *valid_msr);
-	UINT64 p6_msr_read(UINT32 offset,UINT8 *valid_msr);
-	void p6_msr_write(UINT32 offset, UINT64 data, UINT8 *valid_msr);
-	UINT64 piv_msr_read(UINT32 offset,UINT8 *valid_msr);
-	void piv_msr_write(UINT32 offset, UINT64 data, UINT8 *valid_msr);
-	inline UINT64 MSR_READ(UINT32 offset,UINT8 *valid_msr);
-	inline void MSR_WRITE(UINT32 offset, UINT64 data, UINT8 *valid_msr);
-	UINT32 i386_load_protected_mode_segment(I386_SREG *seg, UINT64 *desc );
-	void i386_load_call_gate(I386_CALL_GATE *gate);
-	void i386_set_descriptor_accessed(UINT16 selector);
-	void i386_load_segment_descriptor(int segment );
-	UINT32 i386_get_stack_segment(UINT8 privilege);
-	UINT32 i386_get_stack_ptr(UINT8 privilege);
-	UINT32 get_flags();
-	void set_flags(UINT32 f );
-	void sib_byte(UINT8 mod, UINT32* out_ea, UINT8* out_segment);
-	void modrm_to_EA(UINT8 mod_rm, UINT32* out_ea, UINT8* out_segment);
-	UINT32 GetNonTranslatedEA(UINT8 modrm,UINT8 *seg);
-	UINT32 GetEA(UINT8 modrm, int rwn);
-	void i386_check_sreg_validity(int reg);
-	int i386_limit_check(int seg, UINT32 offset);
-	void i386_sreg_load(UINT16 selector, UINT8 reg, bool *fault);
-	void i386_trap(int irq, int irq_gate, int trap_level);
-	void i386_trap_with_error(int irq, int irq_gate, int trap_level, UINT32 error);
-	void i286_task_switch(UINT16 selector, UINT8 nested);
-	void i386_task_switch(UINT16 selector, UINT8 nested);
-	void i386_check_irq_line();
-	void i386_protected_mode_jump(UINT16 seg, UINT32 off, int indirect, int operand32);
-	void i386_protected_mode_call(UINT16 seg, UINT32 off, int indirect, int operand32);
-	void i386_protected_mode_retf(UINT8 count, UINT8 operand32);
-	void i386_protected_mode_iret(int operand32);
-	void build_cycle_table();
-	void report_invalid_opcode();
-	void report_invalid_modrm(const char* opcode, UINT8 modrm);
-=======
 	inline uint32_t i386_translate(int segment, uint32_t ip, int rwn);
 	inline vtlb_entry get_permissions(uint32_t pte, int wp);
 	bool i386_translate_address(int intention, offs_t *address, vtlb_entry *entry);
@@ -700,7 +388,6 @@ struct I386_CALL_GATE
 	void build_cycle_table();
 	void report_invalid_opcode();
 	void report_invalid_modrm(const char* opcode, uint8_t modrm);
->>>>>>> upstream/master
 	void i386_decode_opcode();
 	void i386_decode_two_byte();
 	void i386_decode_three_byte38();
@@ -713,19 +400,11 @@ struct I386_CALL_GATE
 	void i386_decode_four_byte38f2();
 	void i386_decode_four_byte3af2();
 	void i386_decode_four_byte38f3();
-<<<<<<< HEAD
-	UINT8 read8_debug(UINT32 ea, UINT8 *data);
-	UINT32 i386_get_debug_desc(I386_SREG *seg);
-	inline void CYCLES(int x);
-	inline void CYCLES_RM(int modrm, int r, int m);
-	UINT8 i386_shift_rotate8(UINT8 modrm, UINT32 value, UINT8 shift);
-=======
 	uint8_t read8_debug(uint32_t ea, uint8_t *data);
 	uint32_t i386_get_debug_desc(I386_SREG *seg);
 	inline void CYCLES(int x);
 	inline void CYCLES_RM(int modrm, int r, int m);
 	uint8_t i386_shift_rotate8(uint8_t modrm, uint32_t value, uint8_t shift);
->>>>>>> upstream/master
 	void i386_adc_rm8_r8();
 	void i386_adc_r8_rm8();
 	void i386_adc_al_i8();
@@ -872,11 +551,7 @@ struct I386_CALL_GATE
 	void i386_loadall();
 	void i386_invalid();
 	void i386_xlat();
-<<<<<<< HEAD
-	UINT16 i386_shift_rotate16(UINT8 modrm, UINT32 value, UINT8 shift);
-=======
 	uint16_t i386_shift_rotate16(uint8_t modrm, uint32_t value, uint8_t shift);
->>>>>>> upstream/master
 	void i386_adc_rm16_r16();
 	void i386_adc_r16_rm16();
 	void i386_adc_ax_i16();
@@ -1051,11 +726,7 @@ struct I386_CALL_GATE
 	void i386_les16();
 	void i386_lfs16();
 	void i386_lgs16();
-<<<<<<< HEAD
-	UINT32 i386_shift_rotate32(UINT8 modrm, UINT32 value, UINT8 shift);
-=======
 	uint32_t i386_shift_rotate32(uint8_t modrm, uint32_t value, uint8_t shift);
->>>>>>> upstream/master
 	void i386_adc_rm32_r32();
 	void i386_adc_r32_rm32();
 	void i386_adc_eax_i32();
@@ -1253,16 +924,6 @@ struct I386_CALL_GATE
 	void i486_bswap_edi();
 	void i486_mov_cr_r32();
 	inline void MMXPROLOG();
-<<<<<<< HEAD
-	inline void READMMX(UINT32 ea,MMX_REG &r);
-	inline void WRITEMMX(UINT32 ea,MMX_REG &r);
-	inline void READXMM(UINT32 ea,XMM_REG &r);
-	inline void WRITEXMM(UINT32 ea,XMM_REG &r);
-	inline void READXMM_LO64(UINT32 ea,XMM_REG &r);
-	inline void WRITEXMM_LO64(UINT32 ea,XMM_REG &r);
-	inline void READXMM_HI64(UINT32 ea,XMM_REG &r);
-	inline void WRITEXMM_HI64(UINT32 ea,XMM_REG &r);
-=======
 	inline void READMMX(uint32_t ea,MMX_REG &r);
 	inline void WRITEMMX(uint32_t ea,MMX_REG &r);
 	inline void READXMM(uint32_t ea,XMM_REG &r);
@@ -1271,7 +932,6 @@ struct I386_CALL_GATE
 	inline void WRITEXMM_LO64(uint32_t ea,XMM_REG &r);
 	inline void READXMM_HI64(uint32_t ea,XMM_REG &r);
 	inline void WRITEXMM_HI64(uint32_t ea,XMM_REG &r);
->>>>>>> upstream/master
 	void pentium_rdmsr();
 	void pentium_wrmsr();
 	void pentium_rdtsc();
@@ -1587,17 +1247,6 @@ struct I386_CALL_GATE
 	void sse_movdq2q_r64_r128();
 	void sse_cvtpd2dq_r128_rm128();
 	void sse_lddqu_r128_m128();
-<<<<<<< HEAD
-	inline void sse_predicate_compare_single(UINT8 imm8, XMM_REG d, XMM_REG s);
-	inline void sse_predicate_compare_double(UINT8 imm8, XMM_REG d, XMM_REG s);
-	inline void sse_predicate_compare_single_scalar(UINT8 imm8, XMM_REG d, XMM_REG s);
-	inline void sse_predicate_compare_double_scalar(UINT8 imm8, XMM_REG d, XMM_REG s);
-	inline floatx80 READ80(UINT32 ea);
-	inline void WRITE80(UINT32 ea, floatx80 t);
-	inline void x87_set_stack_top(int top);
-	inline void x87_set_tag(int reg, int tag);
-	void x87_write_stack(int i, floatx80 value, int update_tag);
-=======
 	inline void sse_predicate_compare_single(uint8_t imm8, XMM_REG d, XMM_REG s);
 	inline void sse_predicate_compare_double(uint8_t imm8, XMM_REG d, XMM_REG s);
 	inline void sse_predicate_compare_single_scalar(uint8_t imm8, XMM_REG d, XMM_REG s);
@@ -1607,155 +1256,17 @@ struct I386_CALL_GATE
 	inline void x87_set_stack_top(int top);
 	inline void x87_set_tag(int reg, int tag);
 	void x87_write_stack(int i, floatx80 value, bool update_tag);
->>>>>>> upstream/master
 	inline void x87_set_stack_underflow();
 	inline void x87_set_stack_overflow();
 	int x87_inc_stack();
 	int x87_dec_stack();
 	int x87_check_exceptions();
-<<<<<<< HEAD
-	inline void x87_write_cw(UINT16 cw);
-=======
 	inline void x87_write_cw(uint16_t cw);
->>>>>>> upstream/master
 	void x87_reset();
 	floatx80 x87_add(floatx80 a, floatx80 b);
 	floatx80 x87_sub(floatx80 a, floatx80 b);
 	floatx80 x87_mul(floatx80 a, floatx80 b);
 	floatx80 x87_div(floatx80 a, floatx80 b);
-<<<<<<< HEAD
-	void x87_fadd_m32real(UINT8 modrm);
-	void x87_fadd_m64real(UINT8 modrm);
-	void x87_fadd_st_sti(UINT8 modrm);
-	void x87_fadd_sti_st(UINT8 modrm);
-	void x87_faddp(UINT8 modrm);
-	void x87_fiadd_m32int(UINT8 modrm);
-	void x87_fiadd_m16int(UINT8 modrm);
-	void x87_fsub_m32real(UINT8 modrm);
-	void x87_fsub_m64real(UINT8 modrm);
-	void x87_fsub_st_sti(UINT8 modrm);
-	void x87_fsub_sti_st(UINT8 modrm);
-	void x87_fsubp(UINT8 modrm);
-	void x87_fisub_m32int(UINT8 modrm);
-	void x87_fisub_m16int(UINT8 modrm);
-	void x87_fsubr_m32real(UINT8 modrm);
-	void x87_fsubr_m64real(UINT8 modrm);
-	void x87_fsubr_st_sti(UINT8 modrm);
-	void x87_fsubr_sti_st(UINT8 modrm);
-	void x87_fsubrp(UINT8 modrm);
-	void x87_fisubr_m32int(UINT8 modrm);
-	void x87_fisubr_m16int(UINT8 modrm);
-	void x87_fdiv_m32real(UINT8 modrm);
-	void x87_fdiv_m64real(UINT8 modrm);
-	void x87_fdiv_st_sti(UINT8 modrm);
-	void x87_fdiv_sti_st(UINT8 modrm);
-	void x87_fdivp(UINT8 modrm);
-	void x87_fidiv_m32int(UINT8 modrm);
-	void x87_fidiv_m16int(UINT8 modrm);
-	void x87_fdivr_m32real(UINT8 modrm);
-	void x87_fdivr_m64real(UINT8 modrm);
-	void x87_fdivr_st_sti(UINT8 modrm);
-	void x87_fdivr_sti_st(UINT8 modrm);
-	void x87_fdivrp(UINT8 modrm);
-	void x87_fidivr_m32int(UINT8 modrm);
-	void x87_fidivr_m16int(UINT8 modrm);
-	void x87_fmul_m32real(UINT8 modrm);
-	void x87_fmul_m64real(UINT8 modrm);
-	void x87_fmul_st_sti(UINT8 modrm);
-	void x87_fmul_sti_st(UINT8 modrm);
-	void x87_fmulp(UINT8 modrm);
-	void x87_fimul_m32int(UINT8 modrm);
-	void x87_fimul_m16int(UINT8 modrm);
-	void x87_fprem(UINT8 modrm);
-	void x87_fprem1(UINT8 modrm);
-	void x87_fsqrt(UINT8 modrm);
-	void x87_f2xm1(UINT8 modrm);
-	void x87_fyl2x(UINT8 modrm);
-	void x87_fyl2xp1(UINT8 modrm);
-	void x87_fptan(UINT8 modrm);
-	void x87_fpatan(UINT8 modrm);
-	void x87_fsin(UINT8 modrm);
-	void x87_fcos(UINT8 modrm);
-	void x87_fsincos(UINT8 modrm);
-	void x87_fld_m32real(UINT8 modrm);
-	void x87_fld_m64real(UINT8 modrm);
-	void x87_fld_m80real(UINT8 modrm);
-	void x87_fld_sti(UINT8 modrm);
-	void x87_fild_m16int(UINT8 modrm);
-	void x87_fild_m32int(UINT8 modrm);
-	void x87_fild_m64int(UINT8 modrm);
-	void x87_fbld(UINT8 modrm);
-	void x87_fst_m32real(UINT8 modrm);
-	void x87_fst_m64real(UINT8 modrm);
-	void x87_fst_sti(UINT8 modrm);
-	void x87_fstp_m32real(UINT8 modrm);
-	void x87_fstp_m64real(UINT8 modrm);
-	void x87_fstp_m80real(UINT8 modrm);
-	void x87_fstp_sti(UINT8 modrm);
-	void x87_fist_m16int(UINT8 modrm);
-	void x87_fist_m32int(UINT8 modrm);
-	void x87_fistp_m16int(UINT8 modrm);
-	void x87_fistp_m32int(UINT8 modrm);
-	void x87_fistp_m64int(UINT8 modrm);
-	void x87_fbstp(UINT8 modrm);
-	void x87_fld1(UINT8 modrm);
-	void x87_fldl2t(UINT8 modrm);
-	void x87_fldl2e(UINT8 modrm);
-	void x87_fldpi(UINT8 modrm);
-	void x87_fldlg2(UINT8 modrm);
-	void x87_fldln2(UINT8 modrm);
-	void x87_fldz(UINT8 modrm);
-	void x87_fnop(UINT8 modrm);
-	void x87_fchs(UINT8 modrm);
-	void x87_fabs(UINT8 modrm);
-	void x87_fscale(UINT8 modrm);
-	void x87_frndint(UINT8 modrm);
-	void x87_fxtract(UINT8 modrm);
-	void x87_ftst(UINT8 modrm);
-	void x87_fxam(UINT8 modrm);
-	void x87_fcmovb_sti(UINT8 modrm);
-	void x87_fcmove_sti(UINT8 modrm);
-	void x87_fcmovbe_sti(UINT8 modrm);
-	void x87_fcmovu_sti(UINT8 modrm);
-	void x87_fcmovnb_sti(UINT8 modrm);
-	void x87_fcmovne_sti(UINT8 modrm);
-	void x87_fcmovnbe_sti(UINT8 modrm);
-	void x87_fcmovnu_sti(UINT8 modrm);
-	void x87_ficom_m16int(UINT8 modrm);
-	void x87_ficom_m32int(UINT8 modrm);
-	void x87_ficomp_m16int(UINT8 modrm);
-	void x87_ficomp_m32int(UINT8 modrm);
-	void x87_fcom_m32real(UINT8 modrm);
-	void x87_fcom_m64real(UINT8 modrm);
-	void x87_fcom_sti(UINT8 modrm);
-	void x87_fcomp_m32real(UINT8 modrm);
-	void x87_fcomp_m64real(UINT8 modrm);
-	void x87_fcomp_sti(UINT8 modrm);
-	void x87_fcomi_sti(UINT8 modrm);
-	void x87_fcomip_sti(UINT8 modrm);
-	void x87_fucomi_sti(UINT8 modrm);
-	void x87_fucomip_sti(UINT8 modrm);
-	void x87_fcompp(UINT8 modrm);
-	void x87_fucom_sti(UINT8 modrm);
-	void x87_fucomp_sti(UINT8 modrm);
-	void x87_fucompp(UINT8 modrm);
-	void x87_fdecstp(UINT8 modrm);
-	void x87_fincstp(UINT8 modrm);
-	void x87_fclex(UINT8 modrm);
-	void x87_ffree(UINT8 modrm);
-	void x87_finit(UINT8 modrm);
-	void x87_fldcw(UINT8 modrm);
-	void x87_fstcw(UINT8 modrm);
-	void x87_fldenv(UINT8 modrm);
-	void x87_fstenv(UINT8 modrm);
-	void x87_fsave(UINT8 modrm);
-	void x87_frstor(UINT8 modrm);
-	void x87_fxch(UINT8 modrm);
-	void x87_fxch_sti(UINT8 modrm);
-	void x87_fstsw_ax(UINT8 modrm);
-	void x87_fstsw_m2byte(UINT8 modrm);
-	void x87_invalid(UINT8 modrm);
-=======
 	void x87_fadd_m32real(uint8_t modrm);
 	void x87_fadd_m64real(uint8_t modrm);
 	void x87_fadd_st_sti(uint8_t modrm);
@@ -1887,7 +1398,6 @@ struct I386_CALL_GATE
 	void x87_fstsw_ax(uint8_t modrm);
 	void x87_fstsw_m2byte(uint8_t modrm);
 	void x87_invalid(uint8_t modrm);
->>>>>>> upstream/master
 	void i386_x87_group_d8();
 	void i386_x87_group_d9();
 	void i386_x87_group_da();
@@ -1906,13 +1416,8 @@ struct I386_CALL_GATE
 	void build_x87_opcode_table_df();
 	void build_x87_opcode_table();
 	void i386_postload();
-<<<<<<< HEAD
-	void i386_common_init(int tlbsize);
-	void build_opcode_table(UINT32 features);
-=======
 	void i386_common_init();
 	void build_opcode_table(uint32_t features);
->>>>>>> upstream/master
 	void pentium_smi();
 	void zero_state();
 	void i386_set_a20_line(int state);
@@ -1920,19 +1425,11 @@ struct I386_CALL_GATE
 };
 
 
-<<<<<<< HEAD
-class i386SX_device : public i386_device
-{
-public:
-	// construction/destruction
-	i386SX_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-=======
 class i386sx_device : public i386_device
 {
 public:
 	// construction/destruction
 	i386sx_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
->>>>>>> upstream/master
 };
 
 
@@ -1940,13 +1437,6 @@ class i486_device : public i386_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	i486_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-protected:
-	virtual void device_start();
-	virtual void device_reset();
-=======
 	i486_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 protected:
@@ -1964,7 +1454,6 @@ public:
 
 protected:
 	virtual void device_reset() override;
->>>>>>> upstream/master
 };
 
 
@@ -1972,15 +1461,6 @@ class pentium_device : public i386_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	pentium_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-	pentium_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source);
-
-protected:
-	virtual void execute_set_input(int inputnum, int state);
-	virtual void device_start();
-	virtual void device_reset();
-=======
 	pentium_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 protected:
@@ -1989,7 +1469,6 @@ protected:
 	virtual void execute_set_input(int inputnum, int state) override;
 	virtual void device_start() override;
 	virtual void device_reset() override;
->>>>>>> upstream/master
 };
 
 
@@ -1997,19 +1476,11 @@ class mediagx_device : public i386_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	mediagx_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-protected:
-	virtual void device_start();
-	virtual void device_reset();
-=======
 	mediagx_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 protected:
 	virtual void device_start() override;
 	virtual void device_reset() override;
->>>>>>> upstream/master
 };
 
 
@@ -2017,19 +1488,11 @@ class pentium_pro_device : public pentium_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	pentium_pro_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-protected:
-	virtual void device_start();
-	virtual void device_reset();
-=======
 	pentium_pro_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 protected:
 	virtual void device_start() override;
 	virtual void device_reset() override;
->>>>>>> upstream/master
 };
 
 
@@ -2037,19 +1500,11 @@ class pentium_mmx_device : public pentium_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	pentium_mmx_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-protected:
-	virtual void device_start();
-	virtual void device_reset();
-=======
 	pentium_mmx_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 protected:
 	virtual void device_start() override;
 	virtual void device_reset() override;
->>>>>>> upstream/master
 };
 
 
@@ -2057,19 +1512,11 @@ class pentium2_device : public pentium_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	pentium2_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-protected:
-	virtual void device_start();
-	virtual void device_reset();
-=======
 	pentium2_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 protected:
 	virtual void device_start() override;
 	virtual void device_reset() override;
->>>>>>> upstream/master
 };
 
 
@@ -2077,19 +1524,11 @@ class pentium3_device : public pentium_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	pentium3_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-protected:
-	virtual void device_start();
-	virtual void device_reset();
-=======
 	pentium3_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 protected:
 	virtual void device_start() override;
 	virtual void device_reset() override;
->>>>>>> upstream/master
 };
 
 
@@ -2097,29 +1536,6 @@ class pentium4_device : public pentium_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	pentium4_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-protected:
-	virtual void device_start();
-	virtual void device_reset();
-};
-
-
-extern const device_type I386;
-extern const device_type I386SX;
-extern const device_type I486;
-extern const device_type PENTIUM;
-extern const device_type MEDIAGX;
-extern const device_type PENTIUM_PRO;
-extern const device_type PENTIUM_MMX;
-extern const device_type PENTIUM2;
-extern const device_type PENTIUM3;
-extern const device_type PENTIUM4;
-
-
-#endif /* __I386INTF_H__ */
-=======
 	pentium4_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 protected:
@@ -2141,4 +1557,3 @@ DECLARE_DEVICE_TYPE(PENTIUM3,    pentium3_device)
 DECLARE_DEVICE_TYPE(PENTIUM4,    pentium4_device)
 
 #endif // MAME_CPU_I386_I386_H
->>>>>>> upstream/master

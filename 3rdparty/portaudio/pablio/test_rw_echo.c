@@ -1,9 +1,5 @@
 /*
-<<<<<<< HEAD
- * $Id: test_rw_echo.c 1083 2006-08-23 07:30:49Z rossb $
-=======
  * $Id$
->>>>>>> upstream/master
  * test_rw_echo.c
  * Echo delayed input to output.
  *

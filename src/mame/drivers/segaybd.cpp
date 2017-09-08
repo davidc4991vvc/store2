@@ -57,17 +57,6 @@ MB89372 - Uses 3 serial data transfer protocols: ASYNC, COP & BOP. Has a built
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/z80/z80.h"
-#include "includes/segaybd.h"
-#include "cpu/m68000/m68000.h"
-#include "machine/mb8421.h"
-#include "machine/segaic16.h"
-#include "machine/nvram.h"
-#include "sound/2151intf.h"
-#include "sound/segapcm.h"
-#include "includes/segaipt.h"
-=======
 #include "includes/segaybd.h"
 #include "includes/segaipt.h"
 
@@ -78,7 +67,6 @@ MB89372 - Uses 3 serial data transfer protocols: ASYNC, COP & BOP. Has a built
 #include "sound/segapcm.h"
 #include "sound/ym2151.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 #include "pdrift.lh"
 
@@ -87,13 +75,8 @@ MB89372 - Uses 3 serial data transfer protocols: ASYNC, COP & BOP. Has a built
 //  CONSTANTS
 //**************************************************************************
 
-<<<<<<< HEAD
-const UINT32 MASTER_CLOCK = 50000000;
-const UINT32 SOUND_CLOCK = 32215900;
-=======
 const uint32_t MASTER_CLOCK = 50000000;
 const uint32_t SOUND_CLOCK = 32215900;
->>>>>>> upstream/master
 
 // use this to fiddle with the IRQ2 timing
 #define TWEAK_IRQ2_SCANLINE     (0)
@@ -105,20 +88,6 @@ const uint32_t SOUND_CLOCK = 32215900;
 //**************************************************************************
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  analog_r - handle analog input reads
-//-------------------------------------------------
-
-READ16_MEMBER( segaybd_state::analog_r )
-{
-	int result = 0xff;
-	if (ACCESSING_BITS_0_7)
-	{
-		result = m_analog_data[offset & 3] & 0x80;
-		m_analog_data[offset & 3] <<= 1;
-	}
-	return result;
-=======
 //  analog_mux - handle multiplexed analog input
 //  (HC4052 at IC121)
 //-------------------------------------------------
@@ -126,20 +95,10 @@ READ16_MEMBER( segaybd_state::analog_r )
 ioport_value segaybd_state::analog_mux()
 {
 	return m_adc_ports[3 + (m_misc_io_data & 3)].read_safe(0x80);
->>>>>>> upstream/master
 }
 
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  analog_w - handle analog input control writes
-//-------------------------------------------------
-
-WRITE16_MEMBER( segaybd_state::analog_w )
-{
-	int selected = ((offset & 3) == 3) ? (3 + (m_misc_io_data[0x08/2] & 3)) : (offset & 3);
-	m_analog_data[offset & 3] = read_safe(m_adc_ports[selected], 0xff);
-=======
 //  output1_w - handle writes to I/O port D
 //-------------------------------------------------
 
@@ -147,62 +106,10 @@ WRITE8_MEMBER(segaybd_state::output1_w)
 {
 	if (!m_output_cb1.isnull())
 		m_output_cb1(data);
->>>>>>> upstream/master
 }
 
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  io_chip_r - handle reads from the I/O chip
-//-------------------------------------------------
-
-IOPORT_ARRAY_MEMBER( segaybd_state::digital_ports )
-{ "P1", "GENERAL", "LIMITSW", "PORTD", "PORTE", "DSW", "COINAGE", "PORTH" };
-
-READ16_MEMBER( segaybd_state::io_chip_r )
-{
-	offset &= 0x1f/2;
-
-	switch (offset)
-	{
-		// I/O ports
-		case 0x00/2:
-		case 0x02/2:
-		case 0x04/2:
-		case 0x06/2:
-		case 0x08/2:
-		case 0x0a/2:
-		case 0x0c/2:
-		case 0x0e/2:
-			// if the port is configured as an output, return the last thing written
-			if (m_misc_io_data[0x1e/2] & (1 << offset))
-				return m_misc_io_data[offset];
-
-			// otherwise, return an input port
-			return m_digital_ports[offset]->read();
-
-		// 'SEGA' protection
-		case 0x10/2:
-			return 'S';
-		case 0x12/2:
-			return 'E';
-		case 0x14/2:
-			return 'G';
-		case 0x16/2:
-			return 'A';
-
-		// CNT register & mirror
-		case 0x18/2:
-		case 0x1c/2:
-			return m_misc_io_data[0x1c/2];
-
-		// port direction register & mirror
-		case 0x1a/2:
-		case 0x1e/2:
-			return m_misc_io_data[0x1e/2];
-	}
-	return 0xffff;
-=======
 //  misc_output_w - handle writes to I/O port E
 //-------------------------------------------------
 
@@ -224,76 +131,10 @@ WRITE8_MEMBER(segaybd_state::misc_output_w)
 	m_suby->set_input_line(INPUT_LINE_RESET, (data & 0x04) ? ASSERT_LINE : CLEAR_LINE);
 
 	m_misc_io_data = data;
->>>>>>> upstream/master
 }
 
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  io_chip_w - handle writes to the I/O chip
-//-------------------------------------------------
-
-WRITE16_MEMBER( segaybd_state::io_chip_w )
-{
-	UINT8 old;
-
-	// generic implementation
-	offset &= 0x1f/2;
-	old = m_misc_io_data[offset];
-	m_misc_io_data[offset] = data;
-
-	switch (offset)
-	{
-		// I/O ports
-		case 0x00/2:
-			break;
-		case 0x02/2:
-			break;
-		case 0x04/2:
-			break;
-		case 0x06/2:
-			if (!m_output_cb1.isnull())
-				m_output_cb1(data);
-			break;
-		case 0x0a/2:
-		case 0x0c/2:
-			break;
-
-		// miscellaneous output
-		case 0x08/2:
-			//
-			//  D7 = /KILL
-			//  D6 = CONT
-			//  D5 = /WDCL
-			//  D4 = /SRES
-			//  D3 = XRES
-			//  D2 = YRES
-			//  D1-D0 = ADC0-1
-			//
-			m_segaic16vid->set_display_enable(data & 0x80);
-			if (((old ^ data) & 0x20) && !(data & 0x20))
-				machine().watchdog_reset();
-			m_soundcpu->set_input_line(INPUT_LINE_RESET, (data & 0x10) ? CLEAR_LINE : ASSERT_LINE);
-			m_subx->set_input_line(INPUT_LINE_RESET, (data & 0x08) ? ASSERT_LINE : CLEAR_LINE);
-			m_suby->set_input_line(INPUT_LINE_RESET, (data & 0x04) ? ASSERT_LINE : CLEAR_LINE);
-			break;
-
-		// mute
-
-		case 0x0e/2:
-			if (!m_output_cb2.isnull())
-				m_output_cb2(data);
-
-			// D7 = /MUTE
-			// D6-D0 = FLT31-25
-			machine().sound().system_enable(data & 0x80);
-			break;
-
-		// CNT register
-		case 0x1c/2:
-			break;
-	}
-=======
 //  output2_w - handle writes to I/O port H
 //-------------------------------------------------
 
@@ -305,7 +146,6 @@ WRITE8_MEMBER(segaybd_state::output2_w)
 	// D7 = /MUTE
 	// D6-D0 = FLT31-25
 	machine().sound().system_enable(data & 0x80);
->>>>>>> upstream/master
 }
 
 
@@ -314,11 +154,7 @@ WRITE8_MEMBER(segaybd_state::output2_w)
 //  port
 //-------------------------------------------------
 
-<<<<<<< HEAD
-WRITE16_MEMBER( segaybd_state::sound_data_w )
-=======
 WRITE16_MEMBER(segaybd_state::sound_data_w)
->>>>>>> upstream/master
 {
 	if (ACCESSING_BITS_0_7)
 		synchronize(TID_SOUND_WRITE, data & 0xff);
@@ -334,17 +170,10 @@ WRITE16_MEMBER(segaybd_state::sound_data_w)
 //  sound_data_r - read latched sound data
 //-------------------------------------------------
 
-<<<<<<< HEAD
-READ8_MEMBER( segaybd_state::sound_data_r )
-{
-	m_soundcpu->set_input_line(INPUT_LINE_NMI, CLEAR_LINE);
-	return soundlatch_read();
-=======
 READ8_MEMBER(segaybd_state::sound_data_r)
 {
 	m_soundcpu->set_input_line(INPUT_LINE_NMI, CLEAR_LINE);
 	return m_soundlatch->read(space, 0);
->>>>>>> upstream/master
 }
 
 
@@ -460,11 +289,7 @@ void segaybd_state::device_timer(emu_timer &timer, device_timer_id id, int param
 			break;
 
 		case TID_SOUND_WRITE:
-<<<<<<< HEAD
-			soundlatch_write(param);
-=======
 			m_soundlatch->write(m_soundcpu->space(AS_PROGRAM), 0, param);
->>>>>>> upstream/master
 			m_soundcpu->set_input_line(INPUT_LINE_NMI, ASSERT_LINE);
 			break;
 
@@ -491,11 +316,7 @@ void segaybd_state::device_timer(emu_timer &timer, device_timer_id id, int param
 //  Galaxy Force
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void segaybd_state::gforce2_output_cb1(UINT16 data)
-=======
 void segaybd_state::gforce2_output_cb1(uint16_t data)
->>>>>>> upstream/master
 {
 	logerror("gforce2_output_cb1: '%02X'\n", data & 0xFF);
 	//bits 4, 5, and 7 seem to be used to multiplex the "LIMITSW" port signals
@@ -509,15 +330,9 @@ void segaybd_state::gforce2_output_cb1(uint16_t data)
 //  Galaxy Force
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void segaybd_state::gforce2_output_cb2(UINT16 data)
-{
-	output_set_value("start_lamp", BIT(data, 2));
-=======
 void segaybd_state::gforce2_output_cb2(uint16_t data)
 {
 	output().set_value("start_lamp", BIT(data, 2));
->>>>>>> upstream/master
 }
 
 
@@ -526,42 +341,16 @@ void segaybd_state::gforce2_output_cb2(uint16_t data)
 //  G-Loc
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void segaybd_state::gloc_output_cb1(UINT16 data)
-{
-	if (data < 32)
-	{
-		output_set_value("right_motor_position", data);
-=======
 void segaybd_state::gloc_output_cb1(uint16_t data)
 {
 	if (data < 32)
 	{
 		output().set_value("right_motor_position", data);
->>>>>>> upstream/master
 
 		// normalization here prevents strange data from being transferred
 		// we do this because for some odd reason
 		// gloc starts with one piston all up and one all down.... at least data-wise it does
 		if (data > 1 && data < 29)
-<<<<<<< HEAD
-			output_set_value("right_motor_position_nor", data);
-	}
-
-	if (data < 40 && data > 31)
-		output_set_value("right_motor_speed", data - 32);
-
-	if (data < 96 && data > 63)
-	{
-		output_set_value("left_motor_position", data);
-		// normalized version... you know... for the kids
-		if ((data - 64) > 1 && (data - 64) < 29)
-			output_set_value("left_motor_position_nor", data - 64);
-	}
-
-	if (data < 104 && data > 95)
-		output_set_value("left_motor_speed", data - 96);
-=======
 			output().set_value("right_motor_position_nor", data);
 	}
 
@@ -578,7 +367,6 @@ void segaybd_state::gloc_output_cb1(uint16_t data)
 
 	if (data < 104 && data > 95)
 		output().set_value("left_motor_speed", data - 96);
->>>>>>> upstream/master
 }
 
 
@@ -587,19 +375,11 @@ void segaybd_state::gloc_output_cb1(uint16_t data)
 //  G-Loc
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void segaybd_state::gloc_output_cb2(UINT16 data)
-{
-	output_set_value("start_lamp", BIT(data, 2));
-	output_set_value("danger_lamp", BIT(data, 5));
-	output_set_value("crash_lamp", BIT(data, 6));
-=======
 void segaybd_state::gloc_output_cb2(uint16_t data)
 {
 	output().set_value("start_lamp", BIT(data, 2));
 	output().set_value("danger_lamp", BIT(data, 5));
 	output().set_value("crash_lamp", BIT(data, 6));
->>>>>>> upstream/master
 }
 
 
@@ -608,21 +388,12 @@ void segaybd_state::gloc_output_cb2(uint16_t data)
 //  G-Loc R360
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void segaybd_state::r360_output_cb2(UINT16 data)
-{
-	// r360 cabinet
-	output_set_value("start_lamp", BIT(data, 2));
-	// even though the same output is used, I've split them to avoid confusion.
-	output_set_value("emergency_stop_lamp", BIT(data, 2));
-=======
 void segaybd_state::r360_output_cb2(uint16_t data)
 {
 	// r360 cabinet
 	output().set_value("start_lamp", BIT(data, 2));
 	// even though the same output is used, I've split them to avoid confusion.
 	output().set_value("emergency_stop_lamp", BIT(data, 2));
->>>>>>> upstream/master
 }
 
 
@@ -631,11 +402,7 @@ void segaybd_state::r360_output_cb2(uint16_t data)
 //  Power Drift
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void segaybd_state::pdrift_output_cb1(UINT16 data)
-=======
 void segaybd_state::pdrift_output_cb1(uint16_t data)
->>>>>>> upstream/master
 {
 	// Note:  this is an approximation to get a relatively accurate bank value.  It is obviously not 100%
 
@@ -650,29 +417,13 @@ void segaybd_state::pdrift_output_cb1(uint16_t data)
 			// moving left
 			{
 				// in this rare instance, the bottom bits are used for positional data
-<<<<<<< HEAD
-				output_set_value("bank_data_raw", data);
-				output_set_value("vibration_motor", 0);
-=======
 				output().set_value("bank_data_raw", data);
 				output().set_value("vibration_motor", 0);
->>>>>>> upstream/master
 				switch (m_pdrift_bank)
 				// we want to go left one step at a time
 				{
 					case 1:
 						// all left
-<<<<<<< HEAD
-						output_set_value("bank_motor_position", 1);
-						m_pdrift_bank = 1;
-						break;
-					case 2:
-						output_set_value("bank_motor_position", 1);
-						m_pdrift_bank = 1;
-						break;
-					case 3:
-						output_set_value("bank_motor_position", 2);
-=======
 						output().set_value("bank_motor_position", 1);
 						m_pdrift_bank = 1;
 						break;
@@ -682,22 +433,10 @@ void segaybd_state::pdrift_output_cb1(uint16_t data)
 						break;
 					case 3:
 						output().set_value("bank_motor_position", 2);
->>>>>>> upstream/master
 						m_pdrift_bank = 2;
 						break;
 					case 4:
 						// centered
-<<<<<<< HEAD
-						output_set_value("bank_motor_position", 3);
-						m_pdrift_bank = 3;
-						break;
-					case 5:
-						output_set_value("bank_motor_position", 4);
-						m_pdrift_bank = 4;
-						break;
-					case 6:
-						output_set_value("bank_motor_position", 5);
-=======
 						output().set_value("bank_motor_position", 3);
 						m_pdrift_bank = 3;
 						break;
@@ -707,24 +446,15 @@ void segaybd_state::pdrift_output_cb1(uint16_t data)
 						break;
 					case 6:
 						output().set_value("bank_motor_position", 5);
->>>>>>> upstream/master
 						m_pdrift_bank = 5;
 						break;
 					case 7:
 						// all right
-<<<<<<< HEAD
-						output_set_value("bank_motor_position", 6);
-						m_pdrift_bank = 6;
-						break;
-					default:
-						output_set_value("bank_motor_position", 4);
-=======
 						output().set_value("bank_motor_position", 6);
 						m_pdrift_bank = 6;
 						break;
 					default:
 						output().set_value("bank_motor_position", 4);
->>>>>>> upstream/master
 						m_pdrift_bank = 4;
 						break;
 				}
@@ -734,29 +464,13 @@ void segaybd_state::pdrift_output_cb1(uint16_t data)
 			// moving right
 			{
 				// in this rare instance, the bottom bits are used for positional data
-<<<<<<< HEAD
-				output_set_value("bank_data_raw", data);
-				output_set_value("vibration_motor", 0);
-=======
 				output().set_value("bank_data_raw", data);
 				output().set_value("vibration_motor", 0);
->>>>>>> upstream/master
 				switch (m_pdrift_bank)
 				// we want to go right one step at a time
 				{
 					case 1:
 						// all left
-<<<<<<< HEAD
-						output_set_value("bank_motor_position", 2);
-						m_pdrift_bank = 2;
-						break;
-					case 2:
-						output_set_value("bank_motor_position", 3);
-						m_pdrift_bank = 3;
-						break;
-					case 3:
-						output_set_value("bank_motor_position", 4);
-=======
 						output().set_value("bank_motor_position", 2);
 						m_pdrift_bank = 2;
 						break;
@@ -766,22 +480,10 @@ void segaybd_state::pdrift_output_cb1(uint16_t data)
 						break;
 					case 3:
 						output().set_value("bank_motor_position", 4);
->>>>>>> upstream/master
 						m_pdrift_bank = 4;
 						break;
 					case 4:
 						// centered
-<<<<<<< HEAD
-						output_set_value("bank_motor_position", 5);
-						m_pdrift_bank = 5;
-						break;
-					case 5:
-						output_set_value("bank_motor_position", 6);
-						m_pdrift_bank = 6;
-						break;
-					case 6:
-						output_set_value("bank_motor_position", 7);
-=======
 						output().set_value("bank_motor_position", 5);
 						m_pdrift_bank = 5;
 						break;
@@ -791,24 +493,15 @@ void segaybd_state::pdrift_output_cb1(uint16_t data)
 						break;
 					case 6:
 						output().set_value("bank_motor_position", 7);
->>>>>>> upstream/master
 						m_pdrift_bank = 7;
 						break;
 					case 7:
 						// all right
-<<<<<<< HEAD
-						output_set_value("bank_motor_position", 7);
-						m_pdrift_bank = 7;
-						break;
-					default:
-						output_set_value("bank_motor_position", 4);
-=======
 						output().set_value("bank_motor_position", 7);
 						m_pdrift_bank = 7;
 						break;
 					default:
 						output().set_value("bank_motor_position", 4);
->>>>>>> upstream/master
 						m_pdrift_bank = 4;
 						break;
 
@@ -818,19 +511,11 @@ void segaybd_state::pdrift_output_cb1(uint16_t data)
 		else
 		{
 			// the vibration value uses the first few bits to give a number between 0 and 7
-<<<<<<< HEAD
-			output_set_value("vibration_motor", data & 7);
-			// normalize the data and subtract the vibration value from it*/
-
-			m_pdrift_bank = data - (data & 7);
-			output_set_value("bank_data_raw", m_pdrift_bank & 0xFF);
-=======
 			output().set_value("vibration_motor", data & 7);
 			// normalize the data and subtract the vibration value from it*/
 
 			m_pdrift_bank = data - (data & 7);
 			output().set_value("bank_data_raw", m_pdrift_bank & 0xFF);
->>>>>>> upstream/master
 
 			// position values from left to right
 			// 56 48 40 120 72 80 88
@@ -842,29 +527,6 @@ void segaybd_state::pdrift_output_cb1(uint16_t data)
 			{
 				case 56:
 					// all left
-<<<<<<< HEAD
-					output_set_value("bank_motor_position", 1);
-					break;
-				case 48:
-					output_set_value("bank_motor_position", 2);
-					break;
-				case 40:
-					output_set_value("bank_motor_position", 3);
-					break;
-				case 120:
-					// centered
-					output_set_value("bank_motor_position", 4);
-					break;
-				case 72:
-					output_set_value("bank_motor_position", 5);
-					break;
-				case 80:
-					output_set_value("bank_motor_position", 6);
-					break;
-				case 88:
-					// all right
-					output_set_value("bank_motor_position", 7);
-=======
 					output().set_value("bank_motor_position", 1);
 					break;
 				case 48:
@@ -886,7 +548,6 @@ void segaybd_state::pdrift_output_cb1(uint16_t data)
 				case 88:
 					// all right
 					output().set_value("bank_motor_position", 7);
->>>>>>> upstream/master
 					break;
 					// these are the only valid values but 24 pops up sometimes when we crash
 			}
@@ -900,17 +561,10 @@ void segaybd_state::pdrift_output_cb1(uint16_t data)
 //  Power Drift
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void segaybd_state::pdrift_output_cb2(UINT16 data)
-{
-	output_set_value("start_lamp", BIT(data, 2));
-	output_set_value("upright_wheel_motor", BIT(data, 1));
-=======
 void segaybd_state::pdrift_output_cb2(uint16_t data)
 {
 	output().set_value("start_lamp", BIT(data, 2));
 	output().set_value("upright_wheel_motor", BIT(data, 1));
->>>>>>> upstream/master
 }
 
 
@@ -919,15 +573,6 @@ void segaybd_state::pdrift_output_cb2(uint16_t data)
 //  Rail Chase
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void segaybd_state::rchase_output_cb2(UINT16 data)
-{
-	output_set_value("left_start_lamp", BIT(data, 2));
-	output_set_value("right_start_lamp", BIT(data, 1));
-
-	output_set_value("P1_Gun_Recoil", BIT(data, 6));
-	output_set_value("P2_Gun_Recoil", BIT(data, 5));
-=======
 void segaybd_state::rchase_output_cb2(uint16_t data)
 {
 	output().set_value("left_start_lamp", BIT(data, 2));
@@ -935,7 +580,6 @@ void segaybd_state::rchase_output_cb2(uint16_t data)
 
 	output().set_value("P1_Gun_Recoil", BIT(data, 6));
 	output().set_value("P2_Gun_Recoil", BIT(data, 5));
->>>>>>> upstream/master
 }
 
 
@@ -981,13 +625,8 @@ static ADDRESS_MAP_START( main_map, AS_PROGRAM, 16, segaybd_state )
 	AM_RANGE(0x084000, 0x08401f) AM_MIRROR(0x001fe0) AM_DEVREADWRITE("divider_main", sega_315_5249_divider_device, read, write)
 //  AM_RANGE(0x086000, 0x087fff) /DEA0
 	AM_RANGE(0x0c0000, 0x0cffff) AM_RAM AM_SHARE("shareram")
-<<<<<<< HEAD
-	AM_RANGE(0x100000, 0x10001f) AM_READWRITE(io_chip_r, io_chip_w)
-	AM_RANGE(0x100040, 0x100047) AM_READWRITE(analog_r, analog_w)
-=======
 	AM_RANGE(0x100000, 0x10001f) AM_DEVREADWRITE8("io", sega_315_5296_device, read, write, 0x00ff)
 	AM_RANGE(0x100040, 0x100047) AM_DEVREADWRITE8("adc", msm6253_device, d7_r, address_w, 0x00ff)
->>>>>>> upstream/master
 	AM_RANGE(0x1f0000, 0x1fffff) AM_RAM
 ADDRESS_MAP_END
 
@@ -1061,11 +700,7 @@ WRITE_LINE_MEMBER(segaybd_state::mb8421_intr)
 
 READ16_MEMBER(segaybd_state::link_r)
 {
-<<<<<<< HEAD
-	return rand();
-=======
 	return machine().rand();
->>>>>>> upstream/master
 }
 
 READ16_MEMBER(segaybd_state::link2_r)
@@ -1091,38 +726,23 @@ ADDRESS_MAP_END
 static ADDRESS_MAP_START( link_map, AS_PROGRAM, 8, segaybd_state )
 	ADDRESS_MAP_UNMAP_HIGH
 	AM_RANGE(0x0000, 0x0fff) AM_ROM
-<<<<<<< HEAD
-	AM_RANGE(0x2000, 0x3fff) AM_RAM
-	AM_RANGE(0x4000, 0x47ff) AM_DEVREADWRITE("mb8421", mb8421_device, right_r, right_w)
-ADDRESS_MAP_END
-
-=======
 	AM_RANGE(0x2000, 0x3fff) AM_RAM // 0x2000-0x2*** maybe shared with other boards?
 	AM_RANGE(0x4000, 0x47ff) AM_DEVREADWRITE("mb8421", mb8421_device, right_r, right_w)
 ADDRESS_MAP_END
 
 #if 0
->>>>>>> upstream/master
 READ8_MEMBER(segaybd_state::link_portc0_r)
 {
 	return 0xf8;
 }
-<<<<<<< HEAD
-=======
 #endif
->>>>>>> upstream/master
 
 static ADDRESS_MAP_START( link_portmap, AS_IO, 8, segaybd_state )
 	ADDRESS_MAP_UNMAP_HIGH
 	ADDRESS_MAP_GLOBAL_MASK(0xff)
 
-<<<<<<< HEAD
-//  AM_RANGE(0x40, 0x40) AM_READ_PORT("LinkDSW")
-	AM_RANGE(0xc0, 0xc0) AM_READ(link_portc0_r)
-=======
 	AM_RANGE(0x40, 0x40) AM_READ_PORT("LinkID_DSW1")
 	AM_RANGE(0xc0, 0xc0) AM_READ_PORT("LinkID_DSW2")
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -1160,15 +780,6 @@ static INPUT_PORTS_START( yboard_generic )
 	PORT_START("LIMITSW")
 	PORT_BIT( 0xff, IP_ACTIVE_LOW, IPT_UNUSED )
 
-<<<<<<< HEAD
-	PORT_START("PORTD")
-	PORT_BIT( 0xff, IP_ACTIVE_LOW, IPT_UNUSED )
-
-	PORT_START("PORTE")
-	PORT_BIT( 0xff, IP_ACTIVE_LOW, IPT_UNUSED )
-
-=======
->>>>>>> upstream/master
 	PORT_START("DSW")
 	PORT_DIPUNUSED_DIPLOC( 0x01, IP_ACTIVE_LOW, "SWB:1" )
 	PORT_DIPUNUSED_DIPLOC( 0x02, IP_ACTIVE_LOW, "SWB:2" )
@@ -1181,12 +792,6 @@ static INPUT_PORTS_START( yboard_generic )
 
 	PORT_START("COINAGE")
 	SEGA_COINAGE_LOC(SWA)
-<<<<<<< HEAD
-
-	PORT_START("PORTH")
-	PORT_BIT( 0xff, IP_ACTIVE_LOW, IPT_UNUSED )
-=======
->>>>>>> upstream/master
 INPUT_PORTS_END
 
 
@@ -1533,19 +1138,11 @@ static INPUT_PORTS_START( pdriftl )
 	PORT_DIPSETTING(    0xb0, DEF_STR( 6C_1C ) )
 	PORT_DIPSETTING(    0x00, "Free Play (if Coin A too) or 1/1" )
 
-<<<<<<< HEAD
-	PORT_START("LinkDSW")
-	PORT_DIPNAME( 0x01, 0x01, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x02, 0x02, DEF_STR( Unknown ) )
-=======
 	PORT_START("LinkID_DSW1")
 	PORT_DIPNAME( 0x01, 0x01, DEF_STR( Unknown ) )
 	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_DIPNAME( 0x02, 0x02, DEF_STR( Unknown ) )  // Affects how the z80 access memory at 0x2000-0x2***
->>>>>>> upstream/master
 	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_DIPNAME( 0x04, 0x04, DEF_STR( Unknown ) )
@@ -1566,8 +1163,6 @@ static INPUT_PORTS_START( pdriftl )
 	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-<<<<<<< HEAD
-=======
 
 	PORT_START("LinkID_DSW2")
 	PORT_DIPNAME( 0x0f, 0x01, "Cabinet ID" )
@@ -1601,7 +1196,6 @@ static INPUT_PORTS_START( pdriftl )
 	PORT_DIPNAME( 0x80, 0x00, "Communication Mode" )
 	PORT_DIPSETTING(    0x80, "Master/Slave" )
 	PORT_DIPSETTING(    0x00, "Stand-Alone" )
->>>>>>> upstream/master
 INPUT_PORTS_END
 
 
@@ -1709,11 +1303,7 @@ INPUT_PORTS_END
 //  GENERIC MACHINE DRIVERS
 //**************************************************************************
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( yboard, segaybd_state )
-=======
 static MACHINE_CONFIG_START( yboard )
->>>>>>> upstream/master
 
 	// basic machine hardware
 	MCFG_CPU_ADD("maincpu", M68000, MASTER_CLOCK/4)
@@ -1732,8 +1322,6 @@ static MACHINE_CONFIG_START( yboard )
 	MCFG_NVRAM_ADD_0FILL("backupram")
 	MCFG_QUANTUM_TIME(attotime::from_hz(6000))
 
-<<<<<<< HEAD
-=======
 	MCFG_MB3773_ADD("watchdog") // IC95
 
 	MCFG_DEVICE_ADD("io", SEGA_315_5296, MASTER_CLOCK/8)
@@ -1753,7 +1341,6 @@ static MACHINE_CONFIG_START( yboard )
 	MCFG_MSM6253_IN2_ANALOG_PORT("ADC.2")
 	MCFG_MSM6253_IN3_ANALOG_READ(segaybd_state, analog_mux)
 
->>>>>>> upstream/master
 	MCFG_SEGA_315_5248_MULTIPLIER_ADD("multiplier_main")
 	MCFG_SEGA_315_5248_MULTIPLIER_ADD("multiplier_subx")
 	MCFG_SEGA_315_5248_MULTIPLIER_ADD("multiplier_suby")
@@ -1781,22 +1368,15 @@ static MACHINE_CONFIG_START( yboard )
 	// sound hardware
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
-<<<<<<< HEAD
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 
->>>>>>> upstream/master
 	MCFG_YM2151_ADD("ymsnd", SOUND_CLOCK/8)
 	MCFG_YM2151_IRQ_HANDLER(INPUTLINE("soundcpu", 0))
 	MCFG_SOUND_ROUTE(0, "lspeaker", 0.43)
 	MCFG_SOUND_ROUTE(1, "rspeaker", 0.43)
 
 	MCFG_SEGAPCM_ADD("pcm", SOUND_CLOCK/8)
-<<<<<<< HEAD
-	MCFG_SEGAPCM_BANK(BANK_12M | BANK_MASKF8)
-=======
 	MCFG_SEGAPCM_BANK_MASK(BANK_12M, BANK_MASKF8)
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(0, "lspeaker", 1.0)
 	MCFG_SOUND_ROUTE(1, "rspeaker", 1.0)
 MACHINE_CONFIG_END
@@ -3088,10 +2668,6 @@ DRIVER_INIT_MEMBER(segaybd_state,generic)
 
 	// save state
 	save_item(NAME(m_pdrift_bank));
-<<<<<<< HEAD
-	save_item(NAME(m_analog_data));
-=======
->>>>>>> upstream/master
 	save_item(NAME(m_irq2_scanline));
 	save_item(NAME(m_timer_irq_state));
 	save_item(NAME(m_vblank_irq_state));
@@ -3107,65 +2683,39 @@ DRIVER_INIT_MEMBER(segaybd_state,generic)
 DRIVER_INIT_MEMBER(segaybd_state,gforce2)
 {
 	DRIVER_INIT_CALL(generic);
-<<<<<<< HEAD
-	m_output_cb1 = output_delegate(FUNC(segaybd_state::gforce2_output_cb1), this);
-	m_output_cb2 = output_delegate(FUNC(segaybd_state::gforce2_output_cb2), this);
-=======
 	m_output_cb1 = output_delegate(&segaybd_state::gforce2_output_cb1, this);
 	m_output_cb2 = output_delegate(&segaybd_state::gforce2_output_cb2, this);
->>>>>>> upstream/master
 }
 
 DRIVER_INIT_MEMBER(segaybd_state,gloc)
 {
 	// because some of the output data isn't fully understood we need to "center" the rams
 	DRIVER_INIT_CALL(generic);
-<<<<<<< HEAD
-	m_output_cb1 = output_delegate(FUNC(segaybd_state::gloc_output_cb1), this);
-	m_output_cb2 = output_delegate(FUNC(segaybd_state::gloc_output_cb2), this);
-
-	output_set_value("left_motor_position_nor", 16);
-	output_set_value("right_motor_position_nor", 16);
-=======
 	m_output_cb1 = output_delegate(&segaybd_state::gloc_output_cb1, this);
 	m_output_cb2 = output_delegate(&segaybd_state::gloc_output_cb2, this);
 
 	output().set_value("left_motor_position_nor", 16);
 	output().set_value("right_motor_position_nor", 16);
->>>>>>> upstream/master
 }
 
 DRIVER_INIT_MEMBER(segaybd_state,r360)
 {
 	DRIVER_INIT_CALL(generic);
-<<<<<<< HEAD
-	m_output_cb2 = output_delegate(FUNC(segaybd_state::r360_output_cb2), this);
-=======
 	m_output_cb2 = output_delegate(&segaybd_state::r360_output_cb2, this);
->>>>>>> upstream/master
 }
 
 DRIVER_INIT_MEMBER(segaybd_state,pdrift)
 {
 	// because some of the output data isn't fully understood we need to "center" the motor
 	DRIVER_INIT_CALL(generic);
-<<<<<<< HEAD
-	m_output_cb1 = output_delegate(FUNC(segaybd_state::pdrift_output_cb1), this);
-	m_output_cb2 = output_delegate(FUNC(segaybd_state::pdrift_output_cb2), this);
-=======
 	m_output_cb1 = output_delegate(&segaybd_state::pdrift_output_cb1, this);
 	m_output_cb2 = output_delegate(&segaybd_state::pdrift_output_cb2, this);
->>>>>>> upstream/master
 }
 
 DRIVER_INIT_MEMBER(segaybd_state,rchase)
 {
 	DRIVER_INIT_CALL(generic);
-<<<<<<< HEAD
-	m_output_cb2 = output_delegate(FUNC(segaybd_state::rchase_output_cb2), this);
-=======
 	m_output_cb2 = output_delegate(&segaybd_state::rchase_output_cb2, this);
->>>>>>> upstream/master
 }
 
 
@@ -3174,29 +2724,6 @@ DRIVER_INIT_MEMBER(segaybd_state,rchase)
 //  GAME DRIVERS
 //**************************************************************************
 
-<<<<<<< HEAD
-//    YEAR, NAME,      PARENT,  MACHINE, INPUT,    INIT,                   MONITOR,COMPANY,FULLNAME,FLAGS,                                     LAYOUT
-GAME( 1988, gforce2,   0,        yboard,      gforce2,  segaybd_state, gforce2, ROT0,   "Sega", "Galaxy Force 2", MACHINE_SUPPORTS_SAVE )
-GAME( 1988, gforce2sd, gforce2, yboard_deluxe,      gforce2,  segaybd_state, gforce2, ROT0,   "Sega", "Galaxy Force 2 (Super Deluxe unit)", MACHINE_SUPPORTS_SAVE )
-GAME( 1988, gforce2ja, gforce2,  yboard,      gforce2,  segaybd_state, gforce2, ROT0,   "Sega", "Galaxy Force 2 (Japan, Rev A)", MACHINE_SUPPORTS_SAVE )
-GAME( 1988, gforce2j,  gforce2,  yboard,      gforce2,  segaybd_state, gforce2, ROT0,   "Sega", "Galaxy Force 2 (Japan)", MACHINE_SUPPORTS_SAVE )
-
-GAME( 1990, gloc,      0,        yboard,      gloc,     segaybd_state, gloc,    ROT0,   "Sega", "G-LOC Air Battle (World)", MACHINE_SUPPORTS_SAVE )
-GAME( 1990, glocu,     gloc,     yboard,      gloc,     segaybd_state, gloc,    ROT0,   "Sega", "G-LOC Air Battle (US)", MACHINE_SUPPORTS_SAVE )
-GAME( 1990, glocr360,  gloc,     yboard,      glocr360, segaybd_state, r360,    ROT0,   "Sega", "G-LOC R360", MACHINE_SUPPORTS_SAVE )
-
-GAMEL(1988, pdrift,    0,        yboard,      pdrift,   segaybd_state, pdrift,  ROT0,   "Sega", "Power Drift (World, Rev A)", MACHINE_SUPPORTS_SAVE,   layout_pdrift )
-GAMEL(1988, pdrifta,   pdrift,   yboard,      pdrift,   segaybd_state, pdrift,  ROT0,   "Sega", "Power Drift (World)", MACHINE_SUPPORTS_SAVE,          layout_pdrift )
-GAMEL(1988, pdrifte,   pdrift,   yboard,      pdrifte,  segaybd_state, pdrift,  ROT0,   "Sega", "Power Drift (World, Earlier)", MACHINE_SUPPORTS_SAVE, layout_pdrift )
-GAMEL(1988, pdriftj,   pdrift,   yboard,      pdriftj,  segaybd_state, pdrift,  ROT0,   "Sega", "Power Drift (Japan)", MACHINE_SUPPORTS_SAVE,          layout_pdrift )
-GAMEL(1988, pdriftl,   pdrift,   yboard_link, pdriftl,  segaybd_state, pdrift,  ROT0,   "Sega", "Power Drift (Japan, Link Version)", MACHINE_SUPPORTS_SAVE|MACHINE_NOT_WORKING, layout_pdrift)
-
-GAME( 1991, rchase,    0,        yboard,      rchase,   segaybd_state, rchase,  ROT0,   "Sega", "Rail Chase (World)", MACHINE_SUPPORTS_SAVE )
-GAME( 1991, rchasej,   rchase,   yboard,      rchase,   segaybd_state, rchase,  ROT0,   "Sega", "Rail Chase (Japan)", MACHINE_SUPPORTS_SAVE )
-
-GAME( 1991, strkfgtr,  0,        yboard,      strkfgtr, segaybd_state, gloc,    ROT0,   "Sega", "Strike Fighter (World)", MACHINE_SUPPORTS_SAVE )
-GAME( 1991, strkfgtrj, strkfgtr, yboard,      strkfgtr, segaybd_state, gloc,    ROT0,   "Sega", "Strike Fighter (Japan)", MACHINE_SUPPORTS_SAVE )
-=======
 //    YEAR, NAME,      PARENT,   MACHINE,       INPUT,    STATE,         INIT,    MONITOR,COMPANY,FULLNAME,FLAGS,                                     LAYOUT
 GAME( 1988, gforce2,   0,        yboard,        gforce2,  segaybd_state, gforce2, ROT0,   "Sega", "Galaxy Force 2", MACHINE_SUPPORTS_SAVE )
 GAME( 1988, gforce2sd, gforce2,  yboard_deluxe, gforce2,  segaybd_state, gforce2, ROT0,   "Sega", "Galaxy Force 2 (Super Deluxe unit)", MACHINE_SUPPORTS_SAVE )
@@ -3219,4 +2746,3 @@ GAME( 1991, rchasej,   rchase,   yboard,        rchase,   segaybd_state, rchase,
 
 GAME( 1991, strkfgtr,  0,        yboard,        strkfgtr, segaybd_state, gloc,    ROT0,   "Sega", "Strike Fighter (World)", MACHINE_SUPPORTS_SAVE )
 GAME( 1991, strkfgtrj, strkfgtr, yboard,        strkfgtr, segaybd_state, gloc,    ROT0,   "Sega", "Strike Fighter (Japan)", MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

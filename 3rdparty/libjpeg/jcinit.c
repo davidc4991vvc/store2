@@ -2,10 +2,7 @@
  * jcinit.c
  *
  * Copyright (C) 1991-1997, Thomas G. Lane.
-<<<<<<< HEAD
-=======
  * Modified 2003-2013 by Guido Vollbeding.
->>>>>>> upstream/master
  * This file is part of the Independent JPEG Group's software.
  * For conditions of distribution and use, see the accompanying README file.
  *
@@ -33,8 +30,6 @@
 GLOBAL(void)
 jinit_compress_master (j_compress_ptr cinfo)
 {
-<<<<<<< HEAD
-=======
   long samplesperrow;
   JDIMENSION jd_samplesperrow;
 
@@ -53,7 +48,6 @@ jinit_compress_master (j_compress_ptr cinfo)
   if ((long) jd_samplesperrow != samplesperrow)
     ERREXIT(cinfo, JERR_WIDTH_OVERFLOW);
 
->>>>>>> upstream/master
   /* Initialize master control (includes parameter checking/processing) */
   jinit_c_master_control(cinfo, FALSE /* full compression */);
 

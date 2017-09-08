@@ -11,11 +11,7 @@
     IMPORTANT:
     "physical" block addresses are the actual addresses on the emulated CD.
     "chd" block addresses are the block addresses in the CHD file.
-<<<<<<< HEAD
-    Because we pad each track to a 4-frame boundry, these addressing
-=======
     Because we pad each track to a 4-frame boundary, these addressing
->>>>>>> upstream/master
     schemes will differ after track 1!
 
 ***************************************************************************/
@@ -32,13 +28,6 @@
     DEBUGGING
 ***************************************************************************/
 
-<<<<<<< HEAD
-#define VERBOSE (0)
-#if VERBOSE
-#define LOG(x) do { if (VERBOSE) logerror x; } while (0)
-void CLIB_DECL logerror(const char *text, ...) ATTR_PRINTF(1,2);
-#else
-=======
 /** @brief  The verbose. */
 #define VERBOSE (0)
 #if VERBOSE
@@ -74,7 +63,6 @@ void CLIB_DECL logerror(const char *text, ...) ATTR_PRINTF(1,2);
  * @param   x   The void to process.
  */
 
->>>>>>> upstream/master
 #define LOG(x)
 #endif
 
@@ -84,20 +72,6 @@ void CLIB_DECL logerror(const char *text, ...) ATTR_PRINTF(1,2);
     CONSTANTS
 ***************************************************************************/
 
-<<<<<<< HEAD
-const int SYNC_OFFSET = 0x000;      // offset within sector
-const int SYNC_NUM_BYTES = 12;      // 12 bytes
-
-const int MODE_OFFSET = 0x00f;      // offset within sector
-
-const int ECC_P_OFFSET = 0x81c;     // offset within sector
-const int ECC_P_NUM_BYTES = 86;     // 2 lots of 86
-const int ECC_P_COMP = 24;          // 24 bytes each
-
-const int ECC_Q_OFFSET = ECC_P_OFFSET + 2 * ECC_P_NUM_BYTES;
-const int ECC_Q_NUM_BYTES = 52;     // 2 lots of 52
-const int ECC_Q_COMP = 43;          // 43 bytes each
-=======
 /** @brief  offset within sector. */
 const int SYNC_OFFSET = 0x000;
 /** @brief  12 bytes. */
@@ -119,7 +93,6 @@ const int ECC_Q_OFFSET = ECC_P_OFFSET + 2 * ECC_P_NUM_BYTES;
 const int ECC_Q_NUM_BYTES = 52;
 /** @brief  43 bytes each. */
 const int ECC_Q_COMP = 43;
->>>>>>> upstream/master
 
 
 
@@ -127,14 +100,6 @@ const int ECC_Q_COMP = 43;
     TYPE DEFINITIONS
 ***************************************************************************/
 
-<<<<<<< HEAD
-struct cdrom_file
-{
-	chd_file *          chd;                /* CHD file */
-	cdrom_toc           cdtoc;              /* TOC for the CD */
-	chdcd_track_input_info track_info;      /* track info */
-	core_file *         fhandle[CD_MAX_TRACKS];/* file handle */
-=======
 /**
  * @struct  cdrom_file
  *
@@ -151,7 +116,6 @@ struct cdrom_file
 	chdcd_track_input_info track_info;      /* track info */
 	/** @brief  The fhandle[ CD maximum tracks]. */
 	util::core_file::ptr fhandle[CD_MAX_TRACKS];/* file handle */
->>>>>>> upstream/master
 };
 
 
@@ -165,11 +129,6 @@ struct cdrom_file
     and the track number
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-INLINE UINT32 physical_to_chd_lba(cdrom_file *file, UINT32 physlba, UINT32 &tracknum)
-{
-	UINT32 chdlba;
-=======
 /**
  * @fn  static inline uint32_t physical_to_chd_lba(cdrom_file *file, uint32_t physlba, uint32_t &tracknum)
  *
@@ -185,7 +144,6 @@ INLINE UINT32 physical_to_chd_lba(cdrom_file *file, UINT32 physlba, UINT32 &trac
 static inline uint32_t physical_to_chd_lba(cdrom_file *file, uint32_t physlba, uint32_t &tracknum)
 {
 	uint32_t chdlba;
->>>>>>> upstream/master
 	int track;
 
 	/* loop until our current LBA is less than the start LBA of the next track */
@@ -205,11 +163,6 @@ static inline uint32_t physical_to_chd_lba(cdrom_file *file, uint32_t physlba, u
     and the track number
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-INLINE UINT32 logical_to_chd_lba(cdrom_file *file, UINT32 loglba, UINT32 &tracknum)
-{
-	UINT32 chdlba, physlba;
-=======
 /**
  * @fn  static inline uint32_t logical_to_chd_lba(cdrom_file *file, uint32_t loglba, uint32_t &tracknum)
  *
@@ -225,7 +178,6 @@ INLINE UINT32 logical_to_chd_lba(cdrom_file *file, UINT32 loglba, UINT32 &trackn
 static inline uint32_t logical_to_chd_lba(cdrom_file *file, uint32_t loglba, uint32_t &tracknum)
 {
 	uint32_t chdlba, physlba;
->>>>>>> upstream/master
 	int track;
 
 	/* loop until our current LBA is less than the start LBA of the next track */
@@ -255,8 +207,6 @@ static inline uint32_t logical_to_chd_lba(cdrom_file *file, uint32_t loglba, uin
     BASE FUNCTIONALITY
 ***************************************************************************/
 
-<<<<<<< HEAD
-=======
 /**
  * @fn  cdrom_file *cdrom_open(const char *inputfile)
  *
@@ -267,26 +217,16 @@ static inline uint32_t logical_to_chd_lba(cdrom_file *file, uint32_t loglba, uin
  * @return  null if it fails, else a cdrom_file*.
  */
 
->>>>>>> upstream/master
 cdrom_file *cdrom_open(const char *inputfile)
 {
 	int i;
 	cdrom_file *file;
-<<<<<<< HEAD
-	UINT32 physofs, logofs;
-
-	/* allocate memory for the CD-ROM file */
-	file = new cdrom_file();
-	if (file == NULL)
-		return NULL;
-=======
 	uint32_t physofs, logofs;
 
 	/* allocate memory for the CD-ROM file */
 	file = new (std::nothrow) cdrom_file();
 	if (file == nullptr)
 		return nullptr;
->>>>>>> upstream/master
 
 	/* setup the CDROM module and get the disc info */
 	chd_error err = chdcd_parse_toc(inputfile, file->cdtoc, file->track_info);
@@ -294,39 +234,22 @@ cdrom_file *cdrom_open(const char *inputfile)
 	{
 		fprintf(stderr, "Error reading input file: %s\n", chd_file::error_string(err));
 		delete file;
-<<<<<<< HEAD
-		return NULL;
-	}
-
-	/* fill in the data */
-	file->chd = NULL;
-=======
 		return nullptr;
 	}
 
 	/* fill in the data */
 	file->chd = nullptr;
->>>>>>> upstream/master
 
 	LOG(("CD has %d tracks\n", file->cdtoc.numtrks));
 
 	for (i = 0; i < file->cdtoc.numtrks; i++)
 	{
-<<<<<<< HEAD
-		file_error filerr = core_fopen(file->track_info.track[i].fname.c_str(), OPEN_FLAG_READ, &file->fhandle[i]);
-		if (filerr != FILERR_NONE)
-		{
-			fprintf(stderr, "Unable to open file: %s\n", file->track_info.track[i].fname.c_str());
-			cdrom_close(file);
-			return NULL;
-=======
 		osd_file::error filerr = util::core_file::open(file->track_info.track[i].fname, OPEN_FLAG_READ, file->fhandle[i]);
 		if (filerr != osd_file::error::NONE)
 		{
 			fprintf(stderr, "Unable to open file: %s\n", file->track_info.track[i].fname.c_str());
 			cdrom_close(file);
 			return nullptr;
->>>>>>> upstream/master
 		}
 	}
 	/* calculate the starting frame for each track, keeping in mind that CHDMAN
@@ -380,8 +303,6 @@ cdrom_file *cdrom_open(const char *inputfile)
     already-opened CHD file
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-=======
 /**
  * @fn  cdrom_file *cdrom_open(chd_file *chd)
  *
@@ -392,34 +313,15 @@ cdrom_file *cdrom_open(const char *inputfile)
  * @return  null if it fails, else a cdrom_file*.
  */
 
->>>>>>> upstream/master
 cdrom_file *cdrom_open(chd_file *chd)
 {
 	int i;
 	cdrom_file *file;
-<<<<<<< HEAD
-	UINT32 physofs, chdofs, logofs;
-=======
 	uint32_t physofs, chdofs, logofs;
->>>>>>> upstream/master
 	chd_error err;
 
 	/* punt if no CHD */
 	if (!chd)
-<<<<<<< HEAD
-		return NULL;
-
-	/* validate the CHD information */
-	if (chd->hunk_bytes() % CD_FRAME_SIZE != 0)
-		return NULL;
-	if (chd->unit_bytes() != CD_FRAME_SIZE)
-		return NULL;
-
-	/* allocate memory for the CD-ROM file */
-	file = new cdrom_file();
-	if (file == NULL)
-		return NULL;
-=======
 		return nullptr;
 
 	/* validate the CHD information */
@@ -432,7 +334,6 @@ cdrom_file *cdrom_open(chd_file *chd)
 	file = new (std::nothrow) cdrom_file();
 	if (file == nullptr)
 		return nullptr;
->>>>>>> upstream/master
 
 	/* fill in the data */
 	file->chd = chd;
@@ -442,11 +343,7 @@ cdrom_file *cdrom_open(chd_file *chd)
 	if (err != CHDERR_NONE)
 	{
 		delete file;
-<<<<<<< HEAD
-		return NULL;
-=======
 		return nullptr;
->>>>>>> upstream/master
 	}
 
 	LOG(("CD has %d tracks\n", file->cdtoc.numtrks));
@@ -474,13 +371,8 @@ cdrom_file *cdrom_open(chd_file *chd)
 		chdofs  += file->cdtoc.tracks[i].frames;
 		chdofs  += file->cdtoc.tracks[i].extraframes;
 		logofs  += file->cdtoc.tracks[i].frames;
-<<<<<<< HEAD
-
-/*      printf("Track %02d is format %d subtype %d datasize %d subsize %d frames %d extraframes %d pregap %d pgmode %d presize %d postgap %d logofs %d physofs %d chdofs %d\n", i+1,
-=======
 /*
       printf("Track %02d is format %d subtype %d datasize %d subsize %d frames %d extraframes %d pregap %d pgmode %d presize %d postgap %d logofs %d physofs %d chdofs %d\n", i+1,
->>>>>>> upstream/master
             file->cdtoc.tracks[i].trktype,
             file->cdtoc.tracks[i].subtype,
             file->cdtoc.tracks[i].datasize,
@@ -509,18 +401,6 @@ cdrom_file *cdrom_open(chd_file *chd)
     cdrom_close - "close" a CD-ROM file
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-void cdrom_close(cdrom_file *file)
-{
-	if (file == NULL)
-		return;
-
-	if (file->chd == NULL)
-	{
-		for (int i = 0; i < file->cdtoc.numtrks; i++)
-		{
-			core_fclose(file->fhandle[i]);
-=======
 /**
  * @fn  void cdrom_close(cdrom_file *file)
  *
@@ -539,7 +419,6 @@ void cdrom_close(cdrom_file *file)
 		for (int i = 0; i < file->cdtoc.numtrks; i++)
 		{
 			file->fhandle[i].reset();
->>>>>>> upstream/master
 		}
 	}
 
@@ -552,9 +431,6 @@ void cdrom_close(cdrom_file *file)
     CORE READ ACCESS
 ***************************************************************************/
 
-<<<<<<< HEAD
-chd_error read_partial_sector(cdrom_file *file, void *dest, UINT32 lbasector, UINT32 chdsector, UINT32 tracknum, UINT32 startoffs, UINT32 length)
-=======
 /**
  * @fn  chd_error read_partial_sector(cdrom_file *file, void *dest, uint32_t lbasector, uint32_t chdsector, uint32_t tracknum, uint32_t startoffs, uint32_t length)
  *
@@ -572,25 +448,11 @@ chd_error read_partial_sector(cdrom_file *file, void *dest, UINT32 lbasector, UI
  */
 
 chd_error read_partial_sector(cdrom_file *file, void *dest, uint32_t lbasector, uint32_t chdsector, uint32_t tracknum, uint32_t startoffs, uint32_t length, bool phys=false)
->>>>>>> upstream/master
 {
 	chd_error result = CHDERR_NONE;
 	bool needswap = false;
 
 	// if this is pregap info that isn't actually in the file, just return blank data
-<<<<<<< HEAD
-	if ((file->cdtoc.tracks[tracknum].pgdatasize == 0) && (lbasector < (file->cdtoc.tracks[tracknum].logframeofs + file->cdtoc.tracks[tracknum].pregap)))
-	{
-//      printf("PG missing sector: LBA %d, trklog %d\n", lbasector, file->cdtoc.tracks[tracknum].logframeofs);
-		memset(dest, 0, length);
-		return result;
-	}
-
-	// if a CHD, just read
-	if (file->chd != NULL)
-	{
-		result = file->chd->read_bytes(UINT64(chdsector) * UINT64(CD_FRAME_SIZE) + startoffs, dest, length);
-=======
 	if (!phys)
 	{
 		if ((file->cdtoc.tracks[tracknum].pgdatasize == 0) && (lbasector < (file->cdtoc.tracks[tracknum].logframeofs + file->cdtoc.tracks[tracknum].pregap)))
@@ -605,7 +467,6 @@ chd_error read_partial_sector(cdrom_file *file, void *dest, uint32_t lbasector, 
 	if (file->chd != nullptr)
 	{
 		result = file->chd->read_bytes(uint64_t(chdsector) * uint64_t(CD_FRAME_SIZE) + startoffs, dest, length);
->>>>>>> upstream/master
 		/* swap CDDA in the case of LE GDROMs */
 		if ((file->cdtoc.flags & CD_FLAG_GDROMLE) && (file->cdtoc.tracks[tracknum].trktype == CD_TRACK_AUDIO))
 			needswap = true;
@@ -613,39 +474,24 @@ chd_error read_partial_sector(cdrom_file *file, void *dest, uint32_t lbasector, 
 	else
 	{
 		// else read from the appropriate file
-<<<<<<< HEAD
-		core_file *srcfile = file->fhandle[tracknum];
-
-		UINT64 sourcefileoffset = file->track_info.track[tracknum].offset;
-=======
 		util::core_file &srcfile = *file->fhandle[tracknum];
 
 		uint64_t sourcefileoffset = file->track_info.track[tracknum].offset;
->>>>>>> upstream/master
 		int bytespersector = file->cdtoc.tracks[tracknum].datasize + file->cdtoc.tracks[tracknum].subsize;
 
 		sourcefileoffset += chdsector * bytespersector + startoffs;
 
 		//  printf("Reading sector %d from track %d at offset %lld\n", chdsector, tracknum, sourcefileoffset);
 
-<<<<<<< HEAD
-		core_fseek(srcfile, sourcefileoffset, SEEK_SET);
-		core_fread(srcfile, dest, length);
-=======
 		srcfile.seek(sourcefileoffset, SEEK_SET);
 		srcfile.read(dest, length);
->>>>>>> upstream/master
 
 		needswap = file->track_info.track[tracknum].swap;
 	}
 
 	if (needswap)
 	{
-<<<<<<< HEAD
-		UINT8 *buffer = (UINT8 *)dest - startoffs;
-=======
 		uint8_t *buffer = (uint8_t *)dest - startoffs;
->>>>>>> upstream/master
 		for (int swapindex = startoffs; swapindex < 2352; swapindex += 2 )
 		{
 			int swaptemp = buffer[ swapindex ];
@@ -662,16 +508,6 @@ chd_error read_partial_sector(cdrom_file *file, void *dest, uint32_t lbasector, 
     from a CD-ROM
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-UINT32 cdrom_read_data(cdrom_file *file, UINT32 lbasector, void *buffer, UINT32 datatype, bool phys)
-{
-	if (file == NULL)
-		return 0;
-
-	// compute CHD sector and tracknumber
-	UINT32 tracknum = 0;
-	UINT32 chdsector;
-=======
 /**
  * @fn  uint32_t cdrom_read_data(cdrom_file *file, uint32_t lbasector, void *buffer, uint32_t datatype, bool phys)
  *
@@ -694,7 +530,6 @@ uint32_t cdrom_read_data(cdrom_file *file, uint32_t lbasector, void *buffer, uin
 	// compute CHD sector and tracknumber
 	uint32_t tracknum = 0;
 	uint32_t chdsector;
->>>>>>> upstream/master
 
 	if (phys)
 	{
@@ -706,65 +541,39 @@ uint32_t cdrom_read_data(cdrom_file *file, uint32_t lbasector, void *buffer, uin
 	}
 
 	/* copy out the requested sector */
-<<<<<<< HEAD
-	UINT32 tracktype = file->cdtoc.tracks[tracknum].trktype;
-
-	if ((datatype == tracktype) || (datatype == CD_TRACK_RAW_DONTCARE))
-	{
-		return (read_partial_sector(file, buffer, lbasector, chdsector, tracknum, 0, file->cdtoc.tracks[tracknum].datasize) == CHDERR_NONE);
-=======
 	uint32_t tracktype = file->cdtoc.tracks[tracknum].trktype;
 
 	if ((datatype == tracktype) || (datatype == CD_TRACK_RAW_DONTCARE))
 	{
 		return (read_partial_sector(file, buffer, lbasector, chdsector, tracknum, 0, file->cdtoc.tracks[tracknum].datasize, phys) == CHDERR_NONE);
->>>>>>> upstream/master
 	}
 	else
 	{
 		/* return 2048 bytes of mode 1 data from a 2352 byte mode 1 raw sector */
 		if ((datatype == CD_TRACK_MODE1) && (tracktype == CD_TRACK_MODE1_RAW))
 		{
-<<<<<<< HEAD
-			return (read_partial_sector(file, buffer, lbasector, chdsector, tracknum, 16, 2048) == CHDERR_NONE);
-=======
 			return (read_partial_sector(file, buffer, lbasector, chdsector, tracknum, 16, 2048, phys) == CHDERR_NONE);
->>>>>>> upstream/master
 		}
 
 		/* return 2352 byte mode 1 raw sector from 2048 bytes of mode 1 data */
 		if ((datatype == CD_TRACK_MODE1_RAW) && (tracktype == CD_TRACK_MODE1))
 		{
-<<<<<<< HEAD
-			UINT8 *bufptr = (UINT8 *)buffer;
-			UINT32 msf = lba_to_msf(lbasector);
-
-			static const UINT8 syncbytes[12] = {0x00, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x00};
-=======
 			uint8_t *bufptr = (uint8_t *)buffer;
 			uint32_t msf = lba_to_msf(lbasector);
 
 			static const uint8_t syncbytes[12] = {0x00, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x00};
->>>>>>> upstream/master
 			memcpy(bufptr, syncbytes, 12);
 			bufptr[12] = msf>>16;
 			bufptr[13] = msf>>8;
 			bufptr[14] = msf&0xff;
 			bufptr[15] = 1; // mode 1
 			LOG(("CDROM: promotion of mode1/form1 sector to mode1 raw is not complete!\n"));
-<<<<<<< HEAD
-			return (read_partial_sector(file, bufptr+16, lbasector, chdsector, tracknum, 0, 2048) == CHDERR_NONE);
-=======
 			return (read_partial_sector(file, bufptr+16, lbasector, chdsector, tracknum, 0, 2048, phys) == CHDERR_NONE);
->>>>>>> upstream/master
 		}
 
 		/* return 2048 bytes of mode 1 data from a mode2 form1 or raw sector */
 		if ((datatype == CD_TRACK_MODE1) && ((tracktype == CD_TRACK_MODE2_FORM1)||(tracktype == CD_TRACK_MODE2_RAW)))
 		{
-<<<<<<< HEAD
-			return (read_partial_sector(file, buffer, lbasector, chdsector, tracknum, 24, 2048) == CHDERR_NONE);
-=======
 			return (read_partial_sector(file, buffer, lbasector, chdsector, tracknum, 24, 2048, phys) == CHDERR_NONE);
 		}
 
@@ -772,17 +581,12 @@ uint32_t cdrom_read_data(cdrom_file *file, uint32_t lbasector, void *buffer, uin
 		if ((datatype == CD_TRACK_MODE1) && (tracktype == CD_TRACK_MODE2_FORM_MIX))
 		{
 			return (read_partial_sector(file, buffer, lbasector, chdsector, tracknum, 8, 2048, phys) == CHDERR_NONE);
->>>>>>> upstream/master
 		}
 
 		/* return mode 2 2336 byte data from a 2352 byte mode 1 or 2 raw sector (skip the header) */
 		if ((datatype == CD_TRACK_MODE2) && ((tracktype == CD_TRACK_MODE1_RAW) || (tracktype == CD_TRACK_MODE2_RAW)))
 		{
-<<<<<<< HEAD
-			return (read_partial_sector(file, buffer, lbasector, chdsector, tracknum, 16, 2336) == CHDERR_NONE);
-=======
 			return (read_partial_sector(file, buffer, lbasector, chdsector, tracknum, 16, 2336, phys) == CHDERR_NONE);
->>>>>>> upstream/master
 		}
 
 		LOG(("CDROM: Conversion from type %d to type %d not supported!\n", tracktype, datatype));
@@ -796,16 +600,6 @@ uint32_t cdrom_read_data(cdrom_file *file, uint32_t lbasector, void *buffer, uin
     a sector
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-UINT32 cdrom_read_subcode(cdrom_file *file, UINT32 lbasector, void *buffer, bool phys)
-{
-	if (file == NULL)
-		return ~0;
-
-	// compute CHD sector and tracknumber
-	UINT32 tracknum = 0;
-	UINT32 chdsector;
-=======
 /**
  * @fn  uint32_t cdrom_read_subcode(cdrom_file *file, uint32_t lbasector, void *buffer, bool phys)
  *
@@ -827,7 +621,6 @@ uint32_t cdrom_read_subcode(cdrom_file *file, uint32_t lbasector, void *buffer, 
 	// compute CHD sector and tracknumber
 	uint32_t tracknum = 0;
 	uint32_t chdsector;
->>>>>>> upstream/master
 
 	if (phys)
 	{
@@ -857,13 +650,6 @@ uint32_t cdrom_read_subcode(cdrom_file *file, uint32_t lbasector, void *buffer, 
     for a physical frame number
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-UINT32 cdrom_get_track(cdrom_file *file, UINT32 frame)
-{
-	UINT32 track = 0;
-
-	if (file == NULL)
-=======
 /**
  * @fn  uint32_t cdrom_get_track(cdrom_file *file, uint32_t frame)
  *
@@ -880,7 +666,6 @@ uint32_t cdrom_get_track(cdrom_file *file, uint32_t frame)
 	uint32_t track = 0;
 
 	if (file == nullptr)
->>>>>>> upstream/master
 		return ~0;
 
 	/* convert to a CHD sector offset and get track information */
@@ -895,11 +680,6 @@ uint32_t cdrom_get_track(cdrom_file *file, uint32_t frame)
     that a track starts at
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-UINT32 cdrom_get_track_start(cdrom_file *file, UINT32 track)
-{
-	if (file == NULL)
-=======
 /**
  * @fn  uint32_t cdrom_get_track_start(cdrom_file *file, uint32_t track)
  *
@@ -914,7 +694,6 @@ UINT32 cdrom_get_track_start(cdrom_file *file, UINT32 track)
 uint32_t cdrom_get_track_start(cdrom_file *file, uint32_t track)
 {
 	if (file == nullptr)
->>>>>>> upstream/master
 		return ~0;
 
 	/* handle lead-out specially */
@@ -929,11 +708,6 @@ uint32_t cdrom_get_track_start(cdrom_file *file, uint32_t track)
     physical frame number that a track starts at
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-UINT32 cdrom_get_track_start_phys(cdrom_file *file, UINT32 track)
-{
-	if (file == NULL)
-=======
 /**
  * @fn  uint32_t cdrom_get_track_start_phys(cdrom_file *file, uint32_t track)
  *
@@ -948,7 +722,6 @@ UINT32 cdrom_get_track_start_phys(cdrom_file *file, UINT32 track)
 uint32_t cdrom_get_track_start_phys(cdrom_file *file, uint32_t track)
 {
 	if (file == nullptr)
->>>>>>> upstream/master
 		return ~0;
 
 	/* handle lead-out specially */
@@ -958,8 +731,6 @@ uint32_t cdrom_get_track_start_phys(cdrom_file *file, uint32_t track)
 	return file->cdtoc.tracks[track].physframeofs;
 }
 
-<<<<<<< HEAD
-=======
 /*-------------------------------------------------
     cdrom_get_chd - get a handle to a CHD
     from a cdrom
@@ -970,7 +741,6 @@ chd_file *cdrom_get_chd(cdrom_file *file)
 	return file->chd;
 }
 
->>>>>>> upstream/master
 /***************************************************************************
     TOC UTILITIES
 ***************************************************************************/
@@ -980,11 +750,6 @@ chd_file *cdrom_get_chd(cdrom_file *file)
     number
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-int cdrom_get_last_track(cdrom_file *file)
-{
-	if (file == NULL)
-=======
 /**
  * @fn  int cdrom_get_last_track(cdrom_file *file)
  *
@@ -998,7 +763,6 @@ int cdrom_get_last_track(cdrom_file *file)
 int cdrom_get_last_track(cdrom_file *file)
 {
 	if (file == nullptr)
->>>>>>> upstream/master
 		return -1;
 
 	return file->cdtoc.numtrks;
@@ -1010,11 +774,6 @@ int cdrom_get_last_track(cdrom_file *file)
     for a track
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-int cdrom_get_adr_control(cdrom_file *file, int track)
-{
-	if (file == NULL)
-=======
 /**
  * @fn  int cdrom_get_adr_control(cdrom_file *file, int track)
  *
@@ -1029,7 +788,6 @@ int cdrom_get_adr_control(cdrom_file *file, int track)
 int cdrom_get_adr_control(cdrom_file *file, int track)
 {
 	if (file == nullptr)
->>>>>>> upstream/master
 		return -1;
 
 	if (track == 0xaa || file->cdtoc.tracks[track].trktype == CD_TRACK_AUDIO)
@@ -1045,11 +803,6 @@ int cdrom_get_adr_control(cdrom_file *file, int track)
     cdrom_get_track_type - return the track type
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-int cdrom_get_track_type(cdrom_file *file, int track)
-{
-	if (file == NULL)
-=======
 /**
  * @fn  int cdrom_get_track_type(cdrom_file *file, int track)
  *
@@ -1064,7 +817,6 @@ int cdrom_get_track_type(cdrom_file *file, int track)
 int cdrom_get_track_type(cdrom_file *file, int track)
 {
 	if (file == nullptr)
->>>>>>> upstream/master
 		return -1;
 
 	return file->cdtoc.tracks[track].trktype;
@@ -1076,12 +828,6 @@ int cdrom_get_track_type(cdrom_file *file, int track)
     CD-ROM
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-const cdrom_toc *cdrom_get_toc(cdrom_file *file)
-{
-	if (file == NULL)
-		return NULL;
-=======
 /**
  * @fn  const cdrom_toc *cdrom_get_toc(cdrom_file *file)
  *
@@ -1096,7 +842,6 @@ const cdrom_toc *cdrom_get_toc(cdrom_file *file)
 {
 	if (file == nullptr)
 		return nullptr;
->>>>>>> upstream/master
 
 	return &file->cdtoc;
 }
@@ -1113,9 +858,6 @@ const cdrom_toc *cdrom_get_toc(cdrom_file *file)
     and track data size
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-static void cdrom_get_info_from_type_string(const char *typestring, UINT32 *trktype, UINT32 *datasize)
-=======
 /**
  * @fn  static void cdrom_get_info_from_type_string(const char *typestring, uint32_t *trktype, uint32_t *datasize)
  *
@@ -1127,7 +869,6 @@ static void cdrom_get_info_from_type_string(const char *typestring, UINT32 *trkt
  */
 
 static void cdrom_get_info_from_type_string(const char *typestring, uint32_t *trktype, uint32_t *datasize)
->>>>>>> upstream/master
 {
 	if (!strcmp(typestring, "MODE1"))
 	{
@@ -1212,8 +953,6 @@ static void cdrom_get_info_from_type_string(const char *typestring, uint32_t *tr
     and track data size
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-=======
 /**
  * @fn  void cdrom_convert_type_string_to_track_info(const char *typestring, cdrom_track_info *info)
  *
@@ -1223,7 +962,6 @@ static void cdrom_get_info_from_type_string(const char *typestring, uint32_t *tr
  * @param [in,out]  info    If non-null, the information.
  */
 
->>>>>>> upstream/master
 void cdrom_convert_type_string_to_track_info(const char *typestring, cdrom_track_info *info)
 {
 	cdrom_get_info_from_type_string(typestring, &info->trktype, &info->datasize);
@@ -1235,8 +973,6 @@ void cdrom_convert_type_string_to_track_info(const char *typestring, cdrom_track
     and pregap data size
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-=======
 /**
  * @fn  void cdrom_convert_type_string_to_pregap_info(const char *typestring, cdrom_track_info *info)
  *
@@ -1246,7 +982,6 @@ void cdrom_convert_type_string_to_track_info(const char *typestring, cdrom_track
  * @param [in,out]  info    If non-null, the information.
  */
 
->>>>>>> upstream/master
 void cdrom_convert_type_string_to_pregap_info(const char *typestring, cdrom_track_info *info)
 {
 	cdrom_get_info_from_type_string(typestring, &info->pgtype, &info->pgdatasize);
@@ -1258,8 +993,6 @@ void cdrom_convert_type_string_to_pregap_info(const char *typestring, cdrom_trac
     and track subcode data size
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-=======
 /**
  * @fn  void cdrom_convert_subtype_string_to_track_info(const char *typestring, cdrom_track_info *info)
  *
@@ -1269,7 +1002,6 @@ void cdrom_convert_type_string_to_pregap_info(const char *typestring, cdrom_trac
  * @param [in,out]  info    If non-null, the information.
  */
 
->>>>>>> upstream/master
 void cdrom_convert_subtype_string_to_track_info(const char *typestring, cdrom_track_info *info)
 {
 	if (!strcmp(typestring, "RW"))
@@ -1290,8 +1022,6 @@ void cdrom_convert_subtype_string_to_track_info(const char *typestring, cdrom_tr
     and track subcode data size
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-=======
 /**
  * @fn  void cdrom_convert_subtype_string_to_pregap_info(const char *typestring, cdrom_track_info *info)
  *
@@ -1301,7 +1031,6 @@ void cdrom_convert_subtype_string_to_track_info(const char *typestring, cdrom_tr
  * @param [in,out]  info    If non-null, the information.
  */
 
->>>>>>> upstream/master
 void cdrom_convert_subtype_string_to_pregap_info(const char *typestring, cdrom_track_info *info)
 {
 	if (!strcmp(typestring, "RW"))
@@ -1321,9 +1050,6 @@ void cdrom_convert_subtype_string_to_pregap_info(const char *typestring, cdrom_t
     associated with the given type
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-const char *cdrom_get_type_string(UINT32 trktype)
-=======
 /**
  * @fn  const char *cdrom_get_type_string(uint32_t trktype)
  *
@@ -1335,7 +1061,6 @@ const char *cdrom_get_type_string(UINT32 trktype)
  */
 
 const char *cdrom_get_type_string(uint32_t trktype)
->>>>>>> upstream/master
 {
 	switch (trktype)
 	{
@@ -1357,9 +1082,6 @@ const char *cdrom_get_type_string(uint32_t trktype)
     associated with the given subcode type
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-const char *cdrom_get_subtype_string(UINT32 subtype)
-=======
 /**
  * @fn  const char *cdrom_get_subtype_string(uint32_t subtype)
  *
@@ -1371,7 +1093,6 @@ const char *cdrom_get_subtype_string(UINT32 subtype)
  */
 
 const char *cdrom_get_subtype_string(uint32_t subtype)
->>>>>>> upstream/master
 {
 	switch (subtype)
 	{
@@ -1392,8 +1113,6 @@ const char *cdrom_get_subtype_string(uint32_t subtype)
     TOC structure
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-=======
 /**
  * @fn  chd_error cdrom_parse_metadata(chd_file *chd, cdrom_toc *toc)
  *
@@ -1405,7 +1124,6 @@ const char *cdrom_get_subtype_string(uint32_t subtype)
  * @return  A chd_error.
  */
 
->>>>>>> upstream/master
 chd_error cdrom_parse_metadata(chd_file *chd, cdrom_toc *toc)
 {
 	std::string metadata;
@@ -1520,27 +1238,16 @@ chd_error cdrom_parse_metadata(chd_file *chd, cdrom_toc *toc)
 	if (toc->numtrks > 0)
 		return CHDERR_NONE;
 
-<<<<<<< HEAD
-	printf("toc->numtrks = %d?!\n", toc->numtrks);
-
-	/* look for old-style metadata */
-	dynamic_buffer oldmetadata;
-=======
 	printf("toc->numtrks = %u?!\n", toc->numtrks);
 
 	/* look for old-style metadata */
 	std::vector<uint8_t> oldmetadata;
->>>>>>> upstream/master
 	err = chd->read_metadata(CDROM_OLD_METADATA_TAG, 0, oldmetadata);
 	if (err != CHDERR_NONE)
 		return err;
 
 	/* reconstruct the TOC from it */
-<<<<<<< HEAD
-	UINT32 *mrp = reinterpret_cast<UINT32 *>(&oldmetadata[0]);
-=======
 	uint32_t *mrp = reinterpret_cast<uint32_t *>(&oldmetadata[0]);
->>>>>>> upstream/master
 	toc->numtrks = *mrp++;
 
 	for (i = 0; i < CD_MAX_TRACKS; i++)
@@ -1562,18 +1269,6 @@ chd_error cdrom_parse_metadata(chd_file *chd, cdrom_toc *toc)
 	/* TODO: I don't know why sometimes the data is one endian and sometimes another */
 	if (toc->numtrks > CD_MAX_TRACKS)
 	{
-<<<<<<< HEAD
-		toc->numtrks = FLIPENDIAN_INT32(toc->numtrks);
-		for (i = 0; i < CD_MAX_TRACKS; i++)
-		{
-			toc->tracks[i].trktype = FLIPENDIAN_INT32(toc->tracks[i].trktype);
-			toc->tracks[i].subtype = FLIPENDIAN_INT32(toc->tracks[i].subtype);
-			toc->tracks[i].datasize = FLIPENDIAN_INT32(toc->tracks[i].datasize);
-			toc->tracks[i].subsize = FLIPENDIAN_INT32(toc->tracks[i].subsize);
-			toc->tracks[i].frames = FLIPENDIAN_INT32(toc->tracks[i].frames);
-			toc->tracks[i].padframes = FLIPENDIAN_INT32(toc->tracks[i].padframes);
-			toc->tracks[i].extraframes = FLIPENDIAN_INT32(toc->tracks[i].extraframes);
-=======
 		toc->numtrks = flipendian_int32(toc->numtrks);
 		for (i = 0; i < CD_MAX_TRACKS; i++)
 		{
@@ -1584,7 +1279,6 @@ chd_error cdrom_parse_metadata(chd_file *chd, cdrom_toc *toc)
 			toc->tracks[i].frames = flipendian_int32(toc->tracks[i].frames);
 			toc->tracks[i].padframes = flipendian_int32(toc->tracks[i].padframes);
 			toc->tracks[i].extraframes = flipendian_int32(toc->tracks[i].extraframes);
->>>>>>> upstream/master
 		}
 	}
 
@@ -1596,15 +1290,6 @@ chd_error cdrom_parse_metadata(chd_file *chd, cdrom_toc *toc)
     cdrom_write_metadata - write metadata
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-chd_error cdrom_write_metadata(chd_file *chd, const cdrom_toc *toc)
-{
-	chd_error err;
-	int i;
-
-	/* write the metadata */
-	for (i = 0; i < toc->numtrks; i++)
-=======
 /**
  * @fn  chd_error cdrom_write_metadata(chd_file *chd, const cdrom_toc *toc)
  *
@@ -1622,7 +1307,6 @@ chd_error cdrom_write_metadata(chd_file *chd, const cdrom_toc *toc)
 
 	/* write the metadata */
 	for (int i = 0; i < toc->numtrks; i++)
->>>>>>> upstream/master
 	{
 		std::string metadata;
 		if (!(toc->flags & CD_FLAG_GDROM))
@@ -1639,11 +1323,7 @@ chd_error cdrom_write_metadata(chd_file *chd, const cdrom_toc *toc)
 				strcpy(submode, cdrom_get_type_string(toc->tracks[i].pgtype));
 			}
 
-<<<<<<< HEAD
-			strprintf(metadata, CDROM_TRACK_METADATA2_FORMAT, i + 1, cdrom_get_type_string(toc->tracks[i].trktype),
-=======
 			metadata = string_format(CDROM_TRACK_METADATA2_FORMAT, i + 1, cdrom_get_type_string(toc->tracks[i].trktype),
->>>>>>> upstream/master
 					cdrom_get_subtype_string(toc->tracks[i].subtype), toc->tracks[i].frames, toc->tracks[i].pregap,
 					submode, cdrom_get_subtype_string(toc->tracks[i].pgsub),
 					toc->tracks[i].postgap);
@@ -1651,11 +1331,7 @@ chd_error cdrom_write_metadata(chd_file *chd, const cdrom_toc *toc)
 		}
 		else
 		{
-<<<<<<< HEAD
-			strprintf(metadata, GDROM_TRACK_METADATA_FORMAT, i + 1, cdrom_get_type_string(toc->tracks[i].trktype),
-=======
 			metadata = string_format(GDROM_TRACK_METADATA_FORMAT, i + 1, cdrom_get_type_string(toc->tracks[i].trktype),
->>>>>>> upstream/master
 					cdrom_get_subtype_string(toc->tracks[i].subtype), toc->tracks[i].frames, toc->tracks[i].padframes,
 					toc->tracks[i].pregap, cdrom_get_type_string(toc->tracks[i].pgtype),
 					cdrom_get_subtype_string(toc->tracks[i].pgsub), toc->tracks[i].postgap);
@@ -1668,15 +1344,6 @@ chd_error cdrom_write_metadata(chd_file *chd, const cdrom_toc *toc)
 	return CHDERR_NONE;
 }
 
-<<<<<<< HEAD
-
-//-------------------------------------------------
-//  ECC lookup tables
-//  pre-calculated tables for ECC data calcs
-//-------------------------------------------------
-
-static const UINT8 ecclow[256] =
-=======
 /**
  * @brief   -------------------------------------------------
  *            ECC lookup tables pre-calculated tables for ECC data calcs
@@ -1684,7 +1351,6 @@ static const UINT8 ecclow[256] =
  */
 
 static const uint8_t ecclow[256] =
->>>>>>> upstream/master
 {
 	0x00, 0x02, 0x04, 0x06, 0x08, 0x0a, 0x0c, 0x0e, 0x10, 0x12, 0x14, 0x16, 0x18, 0x1a, 0x1c, 0x1e,
 	0x20, 0x22, 0x24, 0x26, 0x28, 0x2a, 0x2c, 0x2e, 0x30, 0x32, 0x34, 0x36, 0x38, 0x3a, 0x3c, 0x3e,
@@ -1704,12 +1370,8 @@ static const uint8_t ecclow[256] =
 	0xfd, 0xff, 0xf9, 0xfb, 0xf5, 0xf7, 0xf1, 0xf3, 0xed, 0xef, 0xe9, 0xeb, 0xe5, 0xe7, 0xe1, 0xe3
 };
 
-<<<<<<< HEAD
-static const UINT8 ecchigh[256] =
-=======
 /** @brief  The ecchigh[ 256]. */
 static const uint8_t ecchigh[256] =
->>>>>>> upstream/master
 {
 	0x00, 0xf4, 0xf5, 0x01, 0xf7, 0x03, 0x02, 0xf6, 0xf3, 0x07, 0x06, 0xf2, 0x04, 0xf0, 0xf1, 0x05,
 	0xfb, 0x0f, 0x0e, 0xfa, 0x0c, 0xf8, 0xf9, 0x0d, 0x08, 0xfc, 0xfd, 0x09, 0xff, 0x0b, 0x0a, 0xfe,
@@ -1729,17 +1391,6 @@ static const uint8_t ecchigh[256] =
 	0x50, 0xa4, 0xa5, 0x51, 0xa7, 0x53, 0x52, 0xa6, 0xa3, 0x57, 0x56, 0xa2, 0x54, 0xa0, 0xa1, 0x55
 };
 
-<<<<<<< HEAD
-
-//-------------------------------------------------
-//  poffsets - each row represents the addresses
-//  used to calculate a byte of the ECC P data
-//  86 (*2) ECC P bytes, 24 values represented by
-//  each
-//-------------------------------------------------
-
-static const UINT16 poffsets[ECC_P_NUM_BYTES][ECC_P_COMP] =
-=======
 /**
  * @brief   -------------------------------------------------
  *            poffsets - each row represents the addresses used to calculate a byte of the ECC P
@@ -1748,7 +1399,6 @@ static const UINT16 poffsets[ECC_P_NUM_BYTES][ECC_P_COMP] =
  */
 
 static const uint16_t poffsets[ECC_P_NUM_BYTES][ECC_P_COMP] =
->>>>>>> upstream/master
 {
 	{ 0x000,0x056,0x0ac,0x102,0x158,0x1ae,0x204,0x25a,0x2b0,0x306,0x35c,0x3b2,0x408,0x45e,0x4b4,0x50a,0x560,0x5b6,0x60c,0x662,0x6b8,0x70e,0x764,0x7ba },
 	{ 0x001,0x057,0x0ad,0x103,0x159,0x1af,0x205,0x25b,0x2b1,0x307,0x35d,0x3b3,0x409,0x45f,0x4b5,0x50b,0x561,0x5b7,0x60d,0x663,0x6b9,0x70f,0x765,0x7bb },
@@ -1838,17 +1488,6 @@ static const uint16_t poffsets[ECC_P_NUM_BYTES][ECC_P_COMP] =
 	{ 0x055,0x0ab,0x101,0x157,0x1ad,0x203,0x259,0x2af,0x305,0x35b,0x3b1,0x407,0x45d,0x4b3,0x509,0x55f,0x5b5,0x60b,0x661,0x6b7,0x70d,0x763,0x7b9,0x80f }
 };
 
-<<<<<<< HEAD
-
-//-------------------------------------------------
-//  qoffsets - each row represents the addresses
-//  used to calculate a byte of the ECC Q data
-//  52 (*2) ECC Q bytes, 43 values represented by
-//  each
-//-------------------------------------------------
-
-static const UINT16 qoffsets[ECC_Q_NUM_BYTES][ECC_Q_COMP] =
-=======
 /**
  * @brief   -------------------------------------------------
  *            qoffsets - each row represents the addresses used to calculate a byte of the ECC Q
@@ -1857,7 +1496,6 @@ static const UINT16 qoffsets[ECC_Q_NUM_BYTES][ECC_Q_COMP] =
  */
 
 static const uint16_t qoffsets[ECC_Q_NUM_BYTES][ECC_Q_COMP] =
->>>>>>> upstream/master
 {
 	{ 0x000,0x058,0x0b0,0x108,0x160,0x1b8,0x210,0x268,0x2c0,0x318,0x370,0x3c8,0x420,0x478,0x4d0,0x528,0x580,0x5d8,0x630,0x688,0x6e0,0x738,0x790,0x7e8,0x840,0x898,0x034,0x08c,0x0e4,0x13c,0x194,0x1ec,0x244,0x29c,0x2f4,0x34c,0x3a4,0x3fc,0x454,0x4ac,0x504,0x55c,0x5b4 },
 	{ 0x001,0x059,0x0b1,0x109,0x161,0x1b9,0x211,0x269,0x2c1,0x319,0x371,0x3c9,0x421,0x479,0x4d1,0x529,0x581,0x5d9,0x631,0x689,0x6e1,0x739,0x791,0x7e9,0x841,0x899,0x035,0x08d,0x0e5,0x13d,0x195,0x1ed,0x245,0x29d,0x2f5,0x34d,0x3a5,0x3fd,0x455,0x4ad,0x505,0x55d,0x5b5 },
@@ -1920,25 +1558,12 @@ static const uint16_t qoffsets[ECC_Q_NUM_BYTES][ECC_Q_COMP] =
 //  particular to a mode
 //-------------------------------------------------
 
-<<<<<<< HEAD
-inline UINT8 ecc_source_byte(const UINT8 *sector, UINT32 offset)
-=======
 inline uint8_t ecc_source_byte(const uint8_t *sector, uint32_t offset)
->>>>>>> upstream/master
 {
 	// in mode 2 always treat these as 0 bytes
 	return (sector[MODE_OFFSET] == 2 && offset < 4) ? 0x00 : sector[SYNC_OFFSET + SYNC_NUM_BYTES + offset];
 }
 
-<<<<<<< HEAD
-
-//-------------------------------------------------
-//  ecc_compute_bytes - calculate an ECC value
-//  (P or Q)
-//-------------------------------------------------
-
-void ecc_compute_bytes(const UINT8 *sector, const UINT16 *row, int rowlen, UINT8 &val1, UINT8 &val2)
-=======
 /**
  * @fn  void ecc_compute_bytes(const uint8_t *sector, const uint16_t *row, int rowlen, uint8_t &val1, uint8_t &val2)
  *
@@ -1954,7 +1579,6 @@ void ecc_compute_bytes(const UINT8 *sector, const UINT16 *row, int rowlen, UINT8
  */
 
 void ecc_compute_bytes(const uint8_t *sector, const uint16_t *row, int rowlen, uint8_t &val1, uint8_t &val2)
->>>>>>> upstream/master
 {
 	val1 = val2 = 0;
 	for (int component = 0; component < rowlen; component++)
@@ -1967,15 +1591,6 @@ void ecc_compute_bytes(const uint8_t *sector, const uint16_t *row, int rowlen, u
 	val2 ^= val1;
 }
 
-<<<<<<< HEAD
-
-//-------------------------------------------------
-//  ecc_verify - verify the P and Q ECC codes in
-//  a sector
-//-------------------------------------------------
-
-bool ecc_verify(const UINT8 *sector)
-=======
 /**
  * @fn  bool ecc_verify(const uint8_t *sector)
  *
@@ -1989,16 +1604,11 @@ bool ecc_verify(const UINT8 *sector)
  */
 
 bool ecc_verify(const uint8_t *sector)
->>>>>>> upstream/master
 {
 	// first verify P bytes
 	for (int byte = 0; byte < ECC_P_NUM_BYTES; byte++)
 	{
-<<<<<<< HEAD
-		UINT8 val1, val2;
-=======
 		uint8_t val1, val2;
->>>>>>> upstream/master
 		ecc_compute_bytes(sector, poffsets[byte], ECC_P_COMP, val1, val2);
 		if (sector[ECC_P_OFFSET + byte] != val1 || sector[ECC_P_OFFSET + ECC_P_NUM_BYTES + byte] != val2)
 			return false;
@@ -2007,11 +1617,7 @@ bool ecc_verify(const uint8_t *sector)
 	// then verify Q bytes
 	for (int byte = 0; byte < ECC_Q_NUM_BYTES; byte++)
 	{
-<<<<<<< HEAD
-		UINT8 val1, val2;
-=======
 		uint8_t val1, val2;
->>>>>>> upstream/master
 		ecc_compute_bytes(sector, qoffsets[byte], ECC_Q_COMP, val1, val2);
 		if (sector[ECC_Q_OFFSET + byte] != val1 || sector[ECC_Q_OFFSET + ECC_Q_NUM_BYTES + byte] != val2)
 			return false;
@@ -2019,15 +1625,6 @@ bool ecc_verify(const uint8_t *sector)
 	return true;
 }
 
-<<<<<<< HEAD
-
-//-------------------------------------------------
-//  ecc_generate - generate the P and Q ECC codes
-//  for a sector, overwriting any existing codes
-//-------------------------------------------------
-
-void ecc_generate(UINT8 *sector)
-=======
 /**
  * @fn  void ecc_generate(uint8_t *sector)
  *
@@ -2040,7 +1637,6 @@ void ecc_generate(UINT8 *sector)
  */
 
 void ecc_generate(uint8_t *sector)
->>>>>>> upstream/master
 {
 	// first verify P bytes
 	for (int byte = 0; byte < ECC_P_NUM_BYTES; byte++)
@@ -2051,15 +1647,6 @@ void ecc_generate(uint8_t *sector)
 		ecc_compute_bytes(sector, qoffsets[byte], ECC_Q_COMP, sector[ECC_Q_OFFSET + byte], sector[ECC_Q_OFFSET + ECC_Q_NUM_BYTES + byte]);
 }
 
-<<<<<<< HEAD
-
-//-------------------------------------------------
-//  ecc_clear - erase the ECC P and Q cods to 0
-//  within a sector
-//-------------------------------------------------
-
-void ecc_clear(UINT8 *sector)
-=======
 /**
  * @fn  void ecc_clear(uint8_t *sector)
  *
@@ -2071,7 +1658,6 @@ void ecc_clear(UINT8 *sector)
  */
 
 void ecc_clear(uint8_t *sector)
->>>>>>> upstream/master
 {
 	memset(&sector[ECC_P_OFFSET], 0, 2 * ECC_P_NUM_BYTES);
 	memset(&sector[ECC_Q_OFFSET], 0, 2 * ECC_Q_NUM_BYTES);

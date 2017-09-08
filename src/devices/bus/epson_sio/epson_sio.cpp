@@ -6,10 +6,7 @@
 
 **********************************************************************/
 
-<<<<<<< HEAD
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #include "epson_sio.h"
 
 // supported devices
@@ -21,11 +18,7 @@
 //  GLOBAL VARIABLES
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type EPSON_SIO = &device_creator<epson_sio_device>;
-=======
 DEFINE_DEVICE_TYPE(EPSON_SIO, epson_sio_device, "epson_sio", "EPSON SIO port")
->>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -60,20 +53,12 @@ device_epson_sio_interface::~device_epson_sio_interface()
 //  epson_sio_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-epson_sio_device::epson_sio_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-		device_t(mconfig, EPSON_SIO, "EPSON SIO port", tag, owner, clock, "epson_sio", __FILE__),
-		device_slot_interface(mconfig, *this), m_cart(nullptr),
-		m_write_rx(*this),
-		m_write_pin(*this)
-=======
 epson_sio_device::epson_sio_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	device_t(mconfig, EPSON_SIO, tag, owner, clock),
 	device_slot_interface(mconfig, *this),
 	m_cart(nullptr),
 	m_write_rx(*this),
 	m_write_pin(*this)
->>>>>>> upstream/master
 {
 }
 
@@ -111,21 +96,13 @@ void epson_sio_device::device_reset()
 
 WRITE_LINE_MEMBER( epson_sio_device::tx_w )
 {
-<<<<<<< HEAD
-	if (m_cart != NULL)
-=======
 	if (m_cart != nullptr)
->>>>>>> upstream/master
 		m_cart->tx_w(state);
 }
 
 WRITE_LINE_MEMBER( epson_sio_device::pout_w )
 {
-<<<<<<< HEAD
-	if (m_cart != NULL)
-=======
 	if (m_cart != nullptr)
->>>>>>> upstream/master
 		m_cart->pout_w(state);
 }
 

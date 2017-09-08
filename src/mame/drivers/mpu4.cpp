@@ -25,11 +25,8 @@ INPUT_PORTS_EXTERN( mpu4jackpot8tkn );
 INPUT_PORTS_EXTERN( mpu4jackpot8per );
 INPUT_PORTS_EXTERN( grtecp );
 
-<<<<<<< HEAD
-=======
 #include "m4aao.lh"
 
->>>>>>> upstream/master
 ROM_START( m4tst2 )
 	ROM_REGION( 0x10000, "maincpu", ROMREGION_ERASE00  )
 	ROM_LOAD( "ut2.p1",  0xE000, 0x2000,  CRC(f7fb6575) SHA1(f7961cbd0801b9561d8cd2d23081043d733e1902))
@@ -1523,8 +1520,6 @@ ROM_END
 
 
 
-<<<<<<< HEAD
-=======
 DRIVER_INIT_MEMBER(mpu4_state,m4aao)
 {
 	//Derived from Against_All_Odds_(Eurotek)_[C01_800_15jp].gam
@@ -1557,7 +1552,6 @@ DRIVER_INIT_MEMBER(mpu4_state,m4aao)
 	//Sample rate 16000
 	//Front door code 255 Cash door code 255
 }
->>>>>>> upstream/master
 
 ROM_START( m4aao )
 	ROM_REGION( 0x010000, "maincpu", 0 )
@@ -2414,23 +2408,14 @@ ROM_START( m4funh )
 ROM_END
 
 
-<<<<<<< HEAD
-=======
 #define GAME_FLAGS (MACHINE_NOT_WORKING|MACHINE_REQUIRES_ARTWORK|MACHINE_MECHANICAL)
 
 
->>>>>>> upstream/master
 /* Barcrest */
 GAME( 198?, m4tst2,       0, mod2    ,   mpu4, mpu4_state,       m4default,  ROT0, "Barcrest","MPU4 Unit Test (Program 2)",MACHINE_MECHANICAL )
 GAME( 198?, m4clr,        0, mod2    ,   mpu4, mpu4_state,       m4default,  ROT0, "Barcrest","MPU4 Meter Clear ROM",MACHINE_MECHANICAL )
 GAME( 198?, m4rltst,      0, mod2    ,   mpu4, mpu4_state,       m4default,  ROT0, "Barcrest","MPU4 Reel Test (3.0)",MACHINE_MECHANICAL )
 
-<<<<<<< HEAD
-#define GAME_FLAGS (MACHINE_NOT_WORKING|MACHINE_REQUIRES_ARTWORK)
-
-
-=======
->>>>>>> upstream/master
 
 
 // other issues
@@ -2658,11 +2643,7 @@ GAME(199?, m4sctagt ,0          ,mod4oki    ,mpu4               , mpu4_state,m4d
 /* Others */
 
 
-<<<<<<< HEAD
-GAME(199?, m4aao,     0,        mod4oki, mpu4, mpu4_state, m4default, ROT0,   "Eurotek","Against All Odds (Eurotek) (MPU4)",GAME_FLAGS )
-=======
 GAMEL(199?, m4aao,     0,        mod4oki, mpu4, mpu4_state, m4aao   , ROT0,   "Eurotek","Against All Odds (Eurotek) (MPU4)",GAME_FLAGS, layout_m4aao )
->>>>>>> upstream/master
 GAME(199?, m4bandgd,  0,        mod4oki, mpu4, mpu4_state, m4default, ROT0,   "Eurogames","Bands Of Gold (Eurogames) (MPU4)",GAME_FLAGS )
 
 GAME(199?, m4bigben,  0,        mod4oki, mpu4, mpu4_state, m4default, ROT0,   "Coinworld","Big Ben (Coinworld) (MPU4, set 1)",GAME_FLAGS )

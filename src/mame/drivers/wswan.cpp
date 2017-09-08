@@ -33,10 +33,6 @@
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-#include "includes/wswan.h"
-#include "softlist.h"
-=======
 #include "emu.h"
 #include "includes/wswan.h"
 
@@ -44,7 +40,6 @@
 #include "softlist.h"
 #include "speaker.h"
 
->>>>>>> upstream/master
 #include "wswan.lh"
 
 static ADDRESS_MAP_START (wswan_mem, AS_PROGRAM, 8, wswan_state)
@@ -91,11 +86,7 @@ PALETTE_INIT_MEMBER(wswan_state, wswan)
 {
 	for (int i = 0; i < 16; i++)
 	{
-<<<<<<< HEAD
-		UINT8 shade = i * (256 / 16);
-=======
 		uint8_t shade = i * (256 / 16);
->>>>>>> upstream/master
 		palette.set_pen_color(15 - i, shade, shade, shade);
 	}
 }
@@ -117,11 +108,7 @@ static SLOT_INTERFACE_START(wswan_cart)
 	SLOT_INTERFACE_INTERNAL("ws_eeprom",  WS_ROM_EEPROM)
 SLOT_INTERFACE_END
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( wswan, wswan_state )
-=======
 static MACHINE_CONFIG_START( wswan )
->>>>>>> upstream/master
 	/* Basic machine hardware */
 	MCFG_CPU_ADD("maincpu", V30MZ, 3072000)
 	MCFG_CPU_PROGRAM_MAP(wswan_mem)
@@ -157,21 +144,14 @@ static MACHINE_CONFIG_START( wswan )
 	MCFG_SOUND_ROUTE(1, "rspeaker", 0.50)
 
 	/* cartridge */
-<<<<<<< HEAD
-	MCFG_WSWAN_CARTRIDGE_ADD("cartslot", wswan_cart, NULL)
-=======
 	MCFG_WSWAN_CARTRIDGE_ADD("cartslot", wswan_cart, nullptr)
->>>>>>> upstream/master
 
 	/* software lists */
 	MCFG_SOFTWARE_LIST_ADD("cart_list","wswan")
 	MCFG_SOFTWARE_LIST_COMPATIBLE_ADD("wsc_list","wscolor")
-<<<<<<< HEAD
-=======
 
 	MCFG_SOFTWARE_LIST_COMPATIBLE_ADD("pc2_list","pockchalv2")
 
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_DERIVED( wscolor, wswan )
@@ -191,11 +171,8 @@ static MACHINE_CONFIG_DERIVED( wscolor, wswan )
 	MCFG_DEVICE_REMOVE("wsc_list")
 	MCFG_SOFTWARE_LIST_ADD("cart_list","wscolor")
 	MCFG_SOFTWARE_LIST_COMPATIBLE_ADD("ws_list","wswan")
-<<<<<<< HEAD
-=======
 
 
->>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 /***************************************************************************
@@ -214,12 +191,6 @@ ROM_START( wscolor )
 //  ROM_LOAD_OPTIONAL( "wsc_bios.bin", 0x0000, 0x0001, NO_DUMP )
 ROM_END
 
-<<<<<<< HEAD
-/*     YEAR  NAME     PARENT  COMPAT  MACHINE  INPUT  INIT COMPANY   FULLNAME*/
-CONS( 1999, wswan,   0,      0,      wswan,   wswan, driver_device, 0,    "Bandai", "WonderSwan",       MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-CONS( 2000, wscolor, wswan,  0,      wscolor, wswan, driver_device, 0,    "Bandai", "WonderSwan Color", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
-=======
 /*    YEAR  NAME     PARENT  COMPAT  MACHINE  INPUT  STATE        INIT   COMPANY   FULLNAME*/
 CONS( 1999, wswan,   0,      0,      wswan,   wswan, wswan_state, 0,    "Bandai",  "WonderSwan",       MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
 CONS( 2000, wscolor, wswan,  0,      wscolor, wswan, wswan_state, 0,    "Bandai",  "WonderSwan Color", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

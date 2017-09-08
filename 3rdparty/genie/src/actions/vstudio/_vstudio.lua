@@ -14,12 +14,8 @@
 		vs2010 = "v100",
 		vs2012 = "v110",
 		vs2013 = "v120",
-<<<<<<< HEAD
-		vs2015 = "v140"
-=======
 		vs2015 = "v140",
 		vs2017 = "v141",
->>>>>>> upstream/master
 	}
 	premake.vstudio.toolset = toolsets[_ACTION] or "unknown?"
 	premake.vstudio.splashpath = ''
@@ -42,12 +38,8 @@
 		PS3     = "PS3",
 		Xbox360 = "Xbox 360",
 		ARM     = "ARM",
-<<<<<<< HEAD
-		Orbis	= "Orbis"
-=======
 		Orbis   = "ORBIS",
 		Durango = "Durango",
->>>>>>> upstream/master
 	}
 
 
@@ -151,9 +143,6 @@
 		return cfgs
 	end
 
-<<<<<<< HEAD
-
-=======
 --
 -- Process imported projects and set properties that are needed
 -- for generating the solution.
@@ -202,7 +191,6 @@
 
 		error("Could not find reference import project " .. prjpath, 1)
 	end
->>>>>>> upstream/master
 
 --
 -- Clean Visual Studio files
@@ -243,10 +231,6 @@
 	end
 
 
-<<<<<<< HEAD
-
-=======
->>>>>>> upstream/master
 --
 -- Assemble the project file name.
 --
@@ -276,99 +260,3 @@
 			return "8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942"
 		end
 	end
-<<<<<<< HEAD
-
-
---
--- Register Visual Studio 2008
---
-
-	newaction {
-		trigger         = "vs2008",
-		shortname       = "Visual Studio 2008",
-		description     = "Generate Microsoft Visual Studio 2008 project files",
-		os              = "windows",
-
-		valid_kinds     = { "ConsoleApp", "WindowedApp", "StaticLib", "SharedLib" },
-
-		valid_languages = { "C", "C++", "C#" },
-
-		valid_tools     = {
-			cc     = { "msc"   },
-			dotnet = { "msnet" },
-		},
-
-		onsolution = function(sln)
-			premake.generate(sln, "%%.sln", vstudio.sln2005.generate)
-		end,
-
-		onproject = function(prj)
-			if premake.isdotnetproject(prj) then
-				premake.generate(prj, "%%.csproj", vstudio.cs2005.generate)
-				premake.generate(prj, "%%.csproj.user", vstudio.cs2005.generate_user)
-			else
-				premake.generate(prj, "%%.vcproj", vstudio.vc200x.generate)
-				premake.generate(prj, "%%.vcproj.user", vstudio.vc200x.generate_user)
-			end
-		end,
-
-		oncleansolution = vstudio.cleansolution,
-		oncleanproject  = vstudio.cleanproject,
-		oncleantarget   = vstudio.cleantarget,
-
-		vstudio = {
-			productVersion  = "9.0.21022",
-			solutionVersion = "10",
-			toolsVersion    = "3.5",
-		}
-	}
-
-
---
--- Register Visual Studio 2010
---
-
-	newaction
-	{
-		trigger         = "vs2010",
-		shortname       = "Visual Studio 2010",
-		description     = "Generate Microsoft Visual Studio 2010 project files",
-		os              = "windows",
-
-		valid_kinds     = { "ConsoleApp", "WindowedApp", "StaticLib", "SharedLib" },
-
-		valid_languages = { "C", "C++", "C#"},
-
-		valid_tools     = {
-			cc     = { "msc"   },
-			dotnet = { "msnet" },
-		},
-
-		onsolution = function(sln)
-			premake.generate(sln, "%%.sln", vstudio.sln2005.generate)
-		end,
-
-		onproject = function(prj)
-			if premake.isdotnetproject(prj) then
-				premake.generate(prj, "%%.csproj", vstudio.cs2005.generate)
-				premake.generate(prj, "%%.csproj.user", vstudio.cs2005.generate_user)
-			else
-			premake.generate(prj, "%%.vcxproj", premake.vs2010_vcxproj)
-			premake.generate(prj, "%%.vcxproj.user", premake.vs2010_vcxproj_user)
-			premake.generate(prj, "%%.vcxproj.filters", vstudio.vc2010.generate_filters)
-			end
-		end,
-
-		oncleansolution = premake.vstudio.cleansolution,
-		oncleanproject  = premake.vstudio.cleanproject,
-		oncleantarget   = premake.vstudio.cleantarget,
-
-		vstudio = {
-			productVersion  = "8.0.30703",
-			solutionVersion = "11",
-			targetFramework = "4.0",
-			toolsVersion    = "4.0",
-		}
-	}
-=======
->>>>>>> upstream/master

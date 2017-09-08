@@ -446,12 +446,9 @@ located at I/O port 0x3CE, and a data register located at I/O port 0x3CF.
 #include "emu.h"
 #include "ega.h"
 
-<<<<<<< HEAD
-=======
 #include "screen.h"
 
 
->>>>>>> upstream/master
 #define VERBOSE_EGA     1
 
 #define EGA_SCREEN_NAME "ega_screen"
@@ -466,26 +463,6 @@ located at I/O port 0x3CE, and a data register located at I/O port 0x3CF.
     Prototypes
 */
 
-<<<<<<< HEAD
-MACHINE_CONFIG_FRAGMENT( pcvideo_ega )
-	MCFG_SCREEN_ADD(EGA_SCREEN_NAME, RASTER)
-	MCFG_SCREEN_RAW_PARAMS(16257000,912,0,640,262,0,200)
-	MCFG_SCREEN_UPDATE_DEVICE(EGA_CRTC_NAME, crtc_ega_device, screen_update)
-	MCFG_SCREEN_PALETTE("palette")
-
-	MCFG_PALETTE_ADD( "palette", 64 )
-
-	MCFG_DEVICE_ADD(EGA_CRTC_NAME, CRTC_EGA, 16257000/8)
-	MCFG_CRTC_EGA_SET_SCREEN(EGA_SCREEN_NAME)
-	MCFG_CRTC_EGA_HPIXELS_PER_COLUMN(8)
-	MCFG_CRTC_EGA_ROW_UPDATE_CB(isa8_ega_device, ega_update_row)
-	MCFG_CRTC_EGA_RES_OUT_DE_CB(WRITELINE(isa8_ega_device, de_changed))
-	MCFG_CRTC_EGA_RES_OUT_HSYNC_CB(WRITELINE(isa8_ega_device, hsync_changed))
-	MCFG_CRTC_EGA_RES_OUT_VSYNC_CB(WRITELINE(isa8_ega_device, vsync_changed))
-	MCFG_CRTC_EGA_RES_OUT_VBLANK_CB(WRITELINE(isa8_ega_device, vblank_changed))
-MACHINE_CONFIG_END
-=======
->>>>>>> upstream/master
 
 ROM_START( ega )
 	ROM_REGION(0x4000, "user1", 0)
@@ -544,20 +521,6 @@ INPUT_PORTS_END
 //  GLOBAL VARIABLES
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type ISA8_EGA = &device_creator<isa8_ega_device>;
-
-
-//-------------------------------------------------
-//  machine_config_additions - device-specific
-//  machine configurations
-//-------------------------------------------------
-
-machine_config_constructor isa8_ega_device::device_mconfig_additions() const
-{
-	return MACHINE_CONFIG_NAME( pcvideo_ega );
-}
-=======
 DEFINE_DEVICE_TYPE(ISA8_EGA, isa8_ega_device, "ega", "IBM Enhanced Graphics Adapter")
 
 
@@ -582,17 +545,12 @@ MACHINE_CONFIG_MEMBER( isa8_ega_device::device_add_mconfig )
 	MCFG_CRTC_EGA_RES_OUT_VSYNC_CB(WRITELINE(isa8_ega_device, vsync_changed))
 	MCFG_CRTC_EGA_RES_OUT_VBLANK_CB(WRITELINE(isa8_ega_device, vblank_changed))
 MACHINE_CONFIG_END
->>>>>>> upstream/master
 
 //-------------------------------------------------
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const rom_entry *isa8_ega_device::device_rom_region() const
-=======
 const tiny_rom_entry *isa8_ega_device::device_rom_region() const
->>>>>>> upstream/master
 {
 	return ROM_NAME( ega );
 }
@@ -610,21 +568,6 @@ ioport_constructor isa8_ega_device::device_input_ports() const
 //  isa8_ega_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-isa8_ega_device::isa8_ega_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-		device_t(mconfig, ISA8_EGA, "IBM Enhanced Graphics Adapter", tag, owner, clock, "ega", __FILE__),
-		device_isa8_card_interface(mconfig, *this), m_crtc_ega(nullptr), m_vram(nullptr), m_videoram(nullptr), m_charA(nullptr), m_charB(nullptr),
-		m_misc_output(0), m_feature_control(0), m_frame_cnt(0), m_hsync(0), m_vsync(0), m_vblank(0), m_display_enable(0), m_video_mode(0),
-		m_palette(*this, "palette")
-{
-}
-
-isa8_ega_device::isa8_ega_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source) :
-		device_t(mconfig, type, name, tag, owner, clock, shortname, source),
-		device_isa8_card_interface(mconfig, *this), m_crtc_ega(nullptr), m_vram(nullptr), m_videoram(nullptr), m_charA(nullptr), m_charB(nullptr),
-		m_misc_output(0), m_feature_control(0), m_frame_cnt(0), m_hsync(0), m_vsync(0), m_vblank(0), m_display_enable(0), m_video_mode(0),
-		m_palette(*this, "palette")
-=======
 isa8_ega_device::isa8_ega_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	isa8_ega_device(mconfig, ISA8_EGA, tag, owner, clock)
 {
@@ -636,7 +579,6 @@ isa8_ega_device::isa8_ega_device(const machine_config &mconfig, device_type type
 	m_crtc_ega(nullptr), m_vram(nullptr), m_videoram(nullptr), m_charA(nullptr), m_charB(nullptr),
 	m_misc_output(0), m_feature_control(0), m_frame_cnt(0), m_hsync(0), m_vsync(0), m_vblank(0), m_display_enable(0), m_video_mode(0),
 	m_palette(*this, "palette")
->>>>>>> upstream/master
 {
 }
 
@@ -646,39 +588,24 @@ isa8_ega_device::isa8_ega_device(const machine_config &mconfig, device_type type
 
 void isa8_ega_device::device_start()
 {
-<<<<<<< HEAD
-	if (m_palette != NULL && !m_palette->started())
-=======
 	if (m_palette != nullptr && !m_palette->started())
->>>>>>> upstream/master
 		throw device_missing_dependencies();
 
 	set_isa_device();
 
 	for (int i = 0; i < 64; i++ )
 	{
-<<<<<<< HEAD
-		UINT8 r = ( ( i & 0x04 ) ? 0xAA : 0x00 ) + ( ( i & 0x20 ) ? 0x55 : 0x00 );
-		UINT8 g = ( ( i & 0x02 ) ? 0xAA : 0x00 ) + ( ( i & 0x10 ) ? 0x55 : 0x00 );
-		UINT8 b = ( ( i & 0x01 ) ? 0xAA : 0x00 ) + ( ( i & 0x08 ) ? 0x55 : 0x00 );
-=======
 		uint8_t r = ( ( i & 0x04 ) ? 0xAA : 0x00 ) + ( ( i & 0x20 ) ? 0x55 : 0x00 );
 		uint8_t g = ( ( i & 0x02 ) ? 0xAA : 0x00 ) + ( ( i & 0x10 ) ? 0x55 : 0x00 );
 		uint8_t b = ( ( i & 0x01 ) ? 0xAA : 0x00 ) + ( ( i & 0x08 ) ? 0x55 : 0x00 );
->>>>>>> upstream/master
 
 		m_palette->set_pen_color( i, r, g, b );
 	}
 
 	if(m_default_bios_tag != "iskr3104")
 	{
-<<<<<<< HEAD
-		UINT8   *dst = memregion(subtag("user2").c_str())->base() + 0x0000;
-		UINT8   *src = memregion(subtag("user1").c_str())->base() + 0x3fff;
-=======
 		uint8_t   *dst = memregion(subtag("user2").c_str())->base() + 0x0000;
 		uint8_t   *src = memregion(subtag("user1").c_str())->base() + 0x3fff;
->>>>>>> upstream/master
 		int     i;
 
 		/* Perform the EGA bios address line swaps */
@@ -695,22 +622,6 @@ void isa8_ega_device::device_start()
 
 	m_videoram = m_vram->base();
 	m_plane[0] = m_videoram + 0x00000;
-<<<<<<< HEAD
-	memset(m_plane[0], 0, sizeof(UINT8) * 0x10000);
-	m_plane[1] = m_videoram + 0x10000;
-	memset(m_plane[1], 0, sizeof(UINT8) * 0x10000);
-	m_plane[2] = m_videoram + 0x20000;
-	memset(m_plane[2], 0, sizeof(UINT8) * 0x10000);
-	m_plane[3] = m_videoram + 0x30000;
-	memset(m_plane[3], 0, sizeof(UINT8) * 0x10000);
-
-	m_crtc_ega = subdevice<crtc_ega_device>(EGA_CRTC_NAME);
-
-	m_isa->install_rom(this, 0xc0000, 0xc3fff, 0, 0, "ega", "user2");
-	m_isa->install_device(0x3b0, 0x3bf, 0, 0, read8_delegate(FUNC(isa8_ega_device::pc_ega8_3b0_r), this), write8_delegate(FUNC(isa8_ega_device::pc_ega8_3b0_w), this));
-	m_isa->install_device(0x3c0, 0x3cf, 0, 0, read8_delegate(FUNC(isa8_ega_device::pc_ega8_3c0_r), this), write8_delegate(FUNC(isa8_ega_device::pc_ega8_3c0_w), this));
-	m_isa->install_device(0x3d0, 0x3df, 0, 0, read8_delegate(FUNC(isa8_ega_device::pc_ega8_3d0_r), this), write8_delegate(FUNC(isa8_ega_device::pc_ega8_3d0_w), this));
-=======
 	memset(m_plane[0], 0, sizeof(uint8_t) * 0x10000);
 	m_plane[1] = m_videoram + 0x10000;
 	memset(m_plane[1], 0, sizeof(uint8_t) * 0x10000);
@@ -725,7 +636,6 @@ void isa8_ega_device::device_start()
 	m_isa->install_device(0x3b0, 0x3bf, read8_delegate(FUNC(isa8_ega_device::pc_ega8_3b0_r), this), write8_delegate(FUNC(isa8_ega_device::pc_ega8_3b0_w), this));
 	m_isa->install_device(0x3c0, 0x3cf, read8_delegate(FUNC(isa8_ega_device::pc_ega8_3c0_r), this), write8_delegate(FUNC(isa8_ega_device::pc_ega8_3c0_w), this));
 	m_isa->install_device(0x3d0, 0x3df, read8_delegate(FUNC(isa8_ega_device::pc_ega8_3d0_r), this), write8_delegate(FUNC(isa8_ega_device::pc_ega8_3d0_w), this));
->>>>>>> upstream/master
 }
 
 //-------------------------------------------------
@@ -779,15 +689,6 @@ void isa8_ega_device::install_banks()
 	case 0x00:      /* 0xA0000, 128KB */
 		if ( m_misc_output & 0x02 )
 		{
-<<<<<<< HEAD
-			m_isa->install_memory(0xa0000, 0xbffff, 0, 0, read8_delegate(FUNC(isa8_ega_device::read), this), write8_delegate(FUNC(isa8_ega_device::write), this));
-		}
-		else
-		{
-			m_isa->unmap_bank(0xa0000, 0xaffff,0,0);
-			m_isa->unmap_bank(0xb0000, 0xb7fff,0,0);
-			m_isa->unmap_bank(0xb8000, 0xbffff,0,0);
-=======
 			m_isa->install_memory(0xa0000, 0xbffff, read8_delegate(FUNC(isa8_ega_device::read), this), write8_delegate(FUNC(isa8_ega_device::write), this));
 		}
 		else
@@ -795,23 +696,11 @@ void isa8_ega_device::install_banks()
 			m_isa->unmap_bank(0xa0000, 0xaffff);
 			m_isa->unmap_bank(0xb0000, 0xb7fff);
 			m_isa->unmap_bank(0xb8000, 0xbffff);
->>>>>>> upstream/master
 		}
 		break;
 	case 0x04:      /* 0xA0000, 64KB */
 		if ( m_misc_output & 0x02 )
 		{
-<<<<<<< HEAD
-			m_isa->install_memory(0xa0000, 0xaffff, 0, 0, read8_delegate(FUNC(isa8_ega_device::read), this), write8_delegate(FUNC(isa8_ega_device::write), this));
-		}
-		else
-		{
-			m_isa->unmap_bank(0xa0000, 0xaffff,0,0);
-		}
-		/* These unmaps may break multi graphics card support */
-		m_isa->unmap_bank(0xb0000, 0xb7fff,0,0);
-		m_isa->unmap_bank(0xb8000, 0xbffff,0,0);
-=======
 			m_isa->install_memory(0xa0000, 0xaffff, read8_delegate(FUNC(isa8_ega_device::read), this), write8_delegate(FUNC(isa8_ega_device::write), this));
 		}
 		else
@@ -821,22 +710,10 @@ void isa8_ega_device::install_banks()
 		/* These unmaps may break multi graphics card support */
 		m_isa->unmap_bank(0xb0000, 0xb7fff);
 		m_isa->unmap_bank(0xb8000, 0xbffff);
->>>>>>> upstream/master
 		break;
 	case 0x08:      /* 0xB0000, 32KB */
 		if ( m_misc_output & 0x02 )
 		{
-<<<<<<< HEAD
-			m_isa->install_memory(0xb0000, 0xb7fff, 0, 0, read8_delegate(FUNC(isa8_ega_device::read), this), write8_delegate(FUNC(isa8_ega_device::write), this));
-		}
-		else
-		{
-			m_isa->unmap_bank(0xb0000, 0xb7fff,0,0);
-		}
-		/* These unmaps may break multi graphics card support */
-		m_isa->unmap_bank(0xa0000, 0xaffff,0,0);
-		m_isa->unmap_bank(0xb8000, 0xbffff,0,0);
-=======
 			m_isa->install_memory(0xb0000, 0xb7fff, read8_delegate(FUNC(isa8_ega_device::read), this), write8_delegate(FUNC(isa8_ega_device::write), this));
 		}
 		else
@@ -846,22 +723,10 @@ void isa8_ega_device::install_banks()
 		/* These unmaps may break multi graphics card support */
 		m_isa->unmap_bank(0xa0000, 0xaffff);
 		m_isa->unmap_bank(0xb8000, 0xbffff);
->>>>>>> upstream/master
 		break;
 	case 0x0c:      /* 0xB8000, 32KB */
 		if ( m_misc_output & 0x02 )
 		{
-<<<<<<< HEAD
-			m_isa->install_memory(0xb8000, 0xbffff, 0, 0, read8_delegate(FUNC(isa8_ega_device::read), this), write8_delegate(FUNC(isa8_ega_device::write), this));
-		}
-		else
-		{
-			m_isa->unmap_bank(0xb8000, 0xbffff,0,0);
-		}
-		/* These unmaps may break multi graphics card support */
-		m_isa->unmap_bank(0xa0000, 0xaffff,0,0);
-		m_isa->unmap_bank(0xb0000, 0xb7fff,0,0);
-=======
 			m_isa->install_memory(0xb8000, 0xbffff, read8_delegate(FUNC(isa8_ega_device::read), this), write8_delegate(FUNC(isa8_ega_device::write), this));
 		}
 		else
@@ -871,7 +736,6 @@ void isa8_ega_device::install_banks()
 		/* These unmaps may break multi graphics card support */
 		m_isa->unmap_bank(0xa0000, 0xaffff);
 		m_isa->unmap_bank(0xb0000, 0xb7fff);
->>>>>>> upstream/master
 		break;
 	}
 }
@@ -915,11 +779,7 @@ WRITE_LINE_MEMBER( isa8_ega_device::vblank_changed )
 
 CRTC_EGA_ROW_UPDATE( isa8_ega_device::pc_ega_graphics )
 {
-<<<<<<< HEAD
-	UINT16  *p = &bitmap.pix16(y);
-=======
 	uint16_t  *p = &bitmap.pix16(y);
->>>>>>> upstream/master
 
 //  logerror( "pc_ega_graphics: y = %d, x_count = %d, ma = %d, ra = %d\n", y, x_count, ma, ra );
 
@@ -929,13 +789,8 @@ CRTC_EGA_ROW_UPDATE( isa8_ega_device::pc_ega_graphics )
 
 		for ( int i = 0; i < x_count; i++ )
 		{
-<<<<<<< HEAD
-			UINT16 offset = ( ( ma + i ) & 0x1fff ) | ( ( y & 1 ) << 12 );
-			UINT8 data = m_plane[0][offset];
-=======
 			uint16_t offset = ( ( ma + i ) & 0x1fff ) | ( ( y & 1 ) << 12 );
 			uint8_t data = m_plane[0][offset];
->>>>>>> upstream/master
 
 			*p = m_attribute.data[ ( data >> 6 )        ]; p++;
 			*p = m_attribute.data[ ( data >> 4 ) & 0x03 ]; p++;
@@ -954,21 +809,6 @@ CRTC_EGA_ROW_UPDATE( isa8_ega_device::pc_ega_graphics )
 	{
 		// EGA mode
 
-<<<<<<< HEAD
-		UINT8 mask = m_attribute.data[0x12] & 0x0f;
-
-		for ( int i = 0; i < x_count; i++ )
-		{
-			UINT16 offset = ma + i;
-			UINT16 data0 = m_plane[0][offset];
-			UINT16 data1 = m_plane[1][offset] << 1;
-			UINT16 data2 = m_plane[2][offset] << 2;
-			UINT16 data3 = m_plane[3][offset] << 3;
-
-			for ( int j = 7; j >= 0; j-- )
-			{
-				UINT16 col = ( data0 & 0x01 ) | ( data1 & 0x02 ) | ( data2 & 0x04 ) | ( data3 & 0x08 );
-=======
 		uint8_t mask = m_attribute.data[0x12] & 0x0f;
 
 		for ( int i = 0; i < x_count; i++ )
@@ -982,7 +822,6 @@ CRTC_EGA_ROW_UPDATE( isa8_ega_device::pc_ega_graphics )
 			for ( int j = 7; j >= 0; j-- )
 			{
 				uint16_t col = ( data0 & 0x01 ) | ( data1 & 0x02 ) | ( data2 & 0x04 ) | ( data3 & 0x08 );
->>>>>>> upstream/master
 
 				col &= mask;
 
@@ -1001,32 +840,19 @@ CRTC_EGA_ROW_UPDATE( isa8_ega_device::pc_ega_graphics )
 
 CRTC_EGA_ROW_UPDATE( isa8_ega_device::pc_ega_text )
 {
-<<<<<<< HEAD
-	UINT16  *p = &bitmap.pix16(y);
-=======
 	uint16_t  *p = &bitmap.pix16(y);
->>>>>>> upstream/master
 	int i;
 
 //  logerror( "pc_ega_text: y = %d, x_count = %d, ma = %d, ra = %d\n", y, x_count, ma, ra );
 
 	for ( i = 0; i < x_count; i++ )
 	{
-<<<<<<< HEAD
-		UINT16  offset = ma + i;
-		UINT8   chr = m_plane[0][ offset ];
-		UINT8   attr = m_plane[1][ offset ];
-		UINT8   data = 0;
-		UINT16  fg = m_attribute.data[ attr & 0x07 ];
-		UINT16  bg = m_attribute.data[ ( attr >> 4 ) & 0x07 ];
-=======
 		uint16_t  offset = ma + i;
 		uint8_t   chr = m_plane[0][ offset ];
 		uint8_t   attr = m_plane[1][ offset ];
 		uint8_t   data;
 		uint16_t  fg = m_attribute.data[ attr & 0x07 ];
 		uint16_t  bg = m_attribute.data[ ( attr >> 4 ) & 0x07 ];
->>>>>>> upstream/master
 
 		/* If character set A and B are equal attribute bit 3 is used as intensity */
 		if ( m_charA == m_charB )
@@ -1131,15 +957,9 @@ void isa8_ega_device::change_mode()
 
 READ8_MEMBER( isa8_ega_device::read )
 {
-<<<<<<< HEAD
-	UINT8 data = 0xFF;
-
-	if ( !space.debugger_access() && ! ( m_sequencer.data[4] & 0x04 ) )
-=======
 	uint8_t data = 0xFF;
 
 	if ( !machine().side_effect_disabled() && ! ( m_sequencer.data[4] & 0x04 ) )
->>>>>>> upstream/master
 	{
 		/* Fill read latches */
 		m_read_latch[0] = m_plane[0][offset & 0xffff];
@@ -1173,15 +993,9 @@ READ8_MEMBER( isa8_ega_device::read )
 }
 
 
-<<<<<<< HEAD
-UINT8 isa8_ega_device::alu_op( UINT8 data, UINT8 latch_data )
-{
-	UINT8 mask = m_graphics_controller.data[8];
-=======
 uint8_t isa8_ega_device::alu_op( uint8_t data, uint8_t latch_data )
 {
 	uint8_t mask = m_graphics_controller.data[8];
->>>>>>> upstream/master
 
 	switch( m_graphics_controller.data[3] & 0x18 )
 	{
@@ -1203,15 +1017,9 @@ uint8_t isa8_ega_device::alu_op( uint8_t data, uint8_t latch_data )
 
 WRITE8_MEMBER( isa8_ega_device::write )
 {
-<<<<<<< HEAD
-	UINT8 d[4];
-	UINT8 alu[4];
-	UINT8 target_mask = m_graphics_controller.data[8];
-=======
 	uint8_t d[4];
 	uint8_t alu[4];
 	uint8_t target_mask = m_graphics_controller.data[8];
->>>>>>> upstream/master
 
 	alu[0] =alu[1] = alu[2] = alu[3] = 0;
 
@@ -1474,11 +1282,7 @@ READ8_MEMBER(isa8_ega_device::pc_ega8_3c0_r )
 	/* Feature Read */
 	case 2:
 		{
-<<<<<<< HEAD
-			UINT8 dips = ioport("config")->read();
-=======
 			uint8_t dips = ioport("config")->read();
->>>>>>> upstream/master
 
 			data = ( data & 0x0f );
 			data |= ( ( m_feature_control & 0x03 ) << 5 );
@@ -1505,39 +1309,23 @@ READ8_MEMBER(isa8_ega_device::pc_ega8_3c0_r )
 
 WRITE8_MEMBER(isa8_ega_device::pc_ega8_3c0_w )
 {
-<<<<<<< HEAD
-	static const UINT8 ar_reg_mask[0x20] =
-=======
 	static const uint8_t ar_reg_mask[0x20] =
->>>>>>> upstream/master
 		{
 			0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F,
 			0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F,
 			0x7F, 0x3F, 0x3F, 0x0F, 0x00, 0x00, 0x00, 0x00,
 			0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 		};
-<<<<<<< HEAD
-	static const UINT8 sr_reg_mask[0x08] =
-		{
-			0x03, 0x0F, 0x0F, 0x0F, 0x07, 0x00, 0x00, 0x00
-		};
-	static const UINT8 gr_reg_mask[0x10] =
-=======
 	static const uint8_t sr_reg_mask[0x08] =
 		{
 			0x03, 0x0F, 0x0F, 0x0F, 0x07, 0x00, 0x00, 0x00
 		};
 	static const uint8_t gr_reg_mask[0x10] =
->>>>>>> upstream/master
 		{
 			0x0F, 0x0F, 0x0F, 0x1F, 0x07, 0x3F, 0x0F, 0x0F,
 			0xFF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 		};
-<<<<<<< HEAD
-	int index = 0;
-=======
 	int index;
->>>>>>> upstream/master
 
 	if ( VERBOSE_EGA )
 	{

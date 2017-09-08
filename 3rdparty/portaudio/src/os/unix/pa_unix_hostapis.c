@@ -1,9 +1,5 @@
 /*
-<<<<<<< HEAD
- * $Id: pa_unix_hostapis.c 1740 2011-08-25 07:17:48Z philburk $
-=======
  * $Id$
->>>>>>> upstream/master
  * Portable Audio I/O Library UNIX initialization table
  *
  * Based on the Open Source API proposed by Ross Bencina

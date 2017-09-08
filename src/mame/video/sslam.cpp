@@ -9,13 +9,8 @@
 void sslam_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
 	gfx_element *gfx = m_gfxdecode->gfx(0);
-<<<<<<< HEAD
-	UINT16 *source = m_spriteram;
-	UINT16 *finish = source + 0x1000/2;
-=======
 	uint16_t *source = m_spriteram;
 	uint16_t *finish = source + 0x1000/2;
->>>>>>> upstream/master
 
 	source += 3; // strange
 
@@ -144,15 +139,9 @@ WRITE16_MEMBER(sslam_state::powerbls_bg_tileram_w)
 
 VIDEO_START_MEMBER(sslam_state,sslam)
 {
-<<<<<<< HEAD
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(sslam_state::get_sslam_bg_tile_info),this), TILEMAP_SCAN_ROWS, 16, 16, 32, 32);
-	m_md_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(sslam_state::get_sslam_md_tile_info),this), TILEMAP_SCAN_ROWS, 16, 16, 32, 32);
-	m_tx_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(sslam_state::get_sslam_tx_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 64, 64);
-=======
 	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(sslam_state::get_sslam_bg_tile_info),this), TILEMAP_SCAN_ROWS, 16, 16, 32, 32);
 	m_md_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(sslam_state::get_sslam_md_tile_info),this), TILEMAP_SCAN_ROWS, 16, 16, 32, 32);
 	m_tx_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(sslam_state::get_sslam_tx_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 64, 64);
->>>>>>> upstream/master
 
 	m_md_tilemap->set_transparent_pen(0);
 	m_tx_tilemap->set_transparent_pen(0);
@@ -163,21 +152,13 @@ VIDEO_START_MEMBER(sslam_state,sslam)
 
 VIDEO_START_MEMBER(sslam_state,powerbls)
 {
-<<<<<<< HEAD
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(sslam_state::get_powerbls_bg_tile_info),this),TILEMAP_SCAN_ROWS,8,8,64,64);
-=======
 	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(sslam_state::get_powerbls_bg_tile_info),this),TILEMAP_SCAN_ROWS,8,8,64,64);
->>>>>>> upstream/master
 
 	m_sprites_x_offset = -21;
 	save_item(NAME(m_sprites_x_offset));
 }
 
-<<<<<<< HEAD
-UINT32 sslam_state::screen_update_sslam(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t sslam_state::screen_update_sslam(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	if (!(m_regs[6] & 1))
 	{
@@ -215,11 +196,7 @@ uint32_t sslam_state::screen_update_sslam(screen_device &screen, bitmap_ind16 &b
 	return 0;
 }
 
-<<<<<<< HEAD
-UINT32 sslam_state::screen_update_powerbls(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t sslam_state::screen_update_powerbls(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	if (!(m_regs[6] & 1))
 	{

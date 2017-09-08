@@ -1,9 +1,6 @@
 // license:BSD-3-Clause
 // copyright-holders:Andrew Gardner
-<<<<<<< HEAD
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #include "dsp56pcu.h"
 #include "dsp56mem.h"
 
@@ -18,36 +15,6 @@ namespace DSP56K
 /* |-------------------------------------| |-------------------------------| */
 /*                                                                           */
 /* ************************************************************************* */
-<<<<<<< HEAD
-UINT8 LF_bit(dsp56k_core* cpustate) { return (SR & 0x8000) >> 15; }
-UINT8 FV_bit(dsp56k_core* cpustate) { return (SR & 0x4000) >> 14; }
-// UINT8 S_bits(dsp56k_core* cpustate) { return (SR & 0x0c00) >> 10; }
-UINT8 I_bits(dsp56k_core* cpustate) { return (SR & 0x0300) >> 8;  }
-UINT8 S_bit (dsp56k_core* cpustate) { return (SR & 0x0080) >> 7;  }
-UINT8 L_bit (dsp56k_core* cpustate) { return (SR & 0x0040) >> 6;  }
-UINT8 E_bit (dsp56k_core* cpustate) { return (SR & 0x0020) >> 5;  }
-UINT8 U_bit (dsp56k_core* cpustate) { return (SR & 0x0010) >> 4;  }
-UINT8 N_bit (dsp56k_core* cpustate) { return (SR & 0x0008) >> 3;  }
-UINT8 Z_bit (dsp56k_core* cpustate) { return (SR & 0x0004) >> 2;  }
-UINT8 V_bit (dsp56k_core* cpustate) { return (SR & 0x0002) >> 1;  }
-UINT8 C_bit (dsp56k_core* cpustate) { return (SR & 0x0001) >> 0;  }
-
-/* MR setters */
-void LF_bit_set(dsp56k_core* cpustate, UINT8 value) { if (value) (SR |= 0x8000); else (SR &= (~0x8000)); }
-void FV_bit_set(dsp56k_core* cpustate, UINT8 value) { if (value) (SR |= 0x4000); else (SR &= (~0x4000)); }
-void S_bits_set(dsp56k_core* cpustate, UINT8 value) { value = value & 0x03;  SR &= ~(0x0c00);  SR |= (value << 10); }
-void I_bits_set(dsp56k_core* cpustate, UINT8 value) { value = value & 0x03;  SR &= ~(0x0300);  SR |= (value <<  8); }
-
-/* CCR setters */
-void S_bit_set(dsp56k_core* cpustate, UINT8 value) { if (value) (SR |= 0x0080); else (SR &= (~0x0080)); }
-void L_bit_set(dsp56k_core* cpustate, UINT8 value) { if (value) (SR |= 0x0040); else (SR &= (~0x0040)); }
-void E_bit_set(dsp56k_core* cpustate, UINT8 value) { if (value) (SR |= 0x0020); else (SR &= (~0x0020)); }
-void U_bit_set(dsp56k_core* cpustate, UINT8 value) { if (value) (SR |= 0x0010); else (SR &= (~0x0010)); }
-void N_bit_set(dsp56k_core* cpustate, UINT8 value) { if (value) (SR |= 0x0008); else (SR &= (~0x0008)); }
-void Z_bit_set(dsp56k_core* cpustate, UINT8 value) { if (value) (SR |= 0x0004); else (SR &= (~0x0004)); }
-void V_bit_set(dsp56k_core* cpustate, UINT8 value) { if (value) (SR |= 0x0002); else (SR &= (~0x0002)); }
-void C_bit_set(dsp56k_core* cpustate, UINT8 value) { if (value) (SR |= 0x0001); else (SR &= (~0x0001)); }
-=======
 uint8_t LF_bit(const dsp56k_core* cpustate) { return (SR & 0x8000) >> 15; }
 uint8_t FV_bit(const dsp56k_core* cpustate) { return (SR & 0x4000) >> 14; }
 // uint8_t S_bits(const dsp56k_core* cpustate) { return (SR & 0x0c00) >> 10; }
@@ -76,7 +43,6 @@ void N_bit_set(dsp56k_core* cpustate, uint8_t value) { if (value) (SR |= 0x0008)
 void Z_bit_set(dsp56k_core* cpustate, uint8_t value) { if (value) (SR |= 0x0004); else (SR &= (~0x0004)); }
 void V_bit_set(dsp56k_core* cpustate, uint8_t value) { if (value) (SR |= 0x0002); else (SR &= (~0x0002)); }
 void C_bit_set(dsp56k_core* cpustate, uint8_t value) { if (value) (SR |= 0x0001); else (SR &= (~0x0001)); }
->>>>>>> upstream/master
 
 
 
@@ -89,25 +55,6 @@ void C_bit_set(dsp56k_core* cpustate, uint8_t value) { if (value) (SR |= 0x0001)
 /*  |---------------------------------------------------------------------|  */
 /*                                                                           */
 /* ************************************************************************* */
-<<<<<<< HEAD
-// UINT8 CD_bit(dsp56k_core* cpustate) { return ((OMR & 0x0080) != 0); }
-// UINT8 SD_bit(dsp56k_core* cpustate) { return ((OMR & 0x0040) != 0); }
-// UINT8  R_bit(dsp56k_core* cpustate) { return ((OMR & 0x0020) != 0); }
-// UINT8 SA_bit(dsp56k_core* cpustate) { return ((OMR & 0x0010) != 0); }
-// UINT8 MC_bit(dsp56k_core* cpustate) { return ((OMR & 0x0004) != 0); }
-UINT8 MB_bit(dsp56k_core* cpustate) { return ((OMR & 0x0002) != 0); }
-UINT8 MA_bit(dsp56k_core* cpustate) { return ((OMR & 0x0001) != 0); }
-
-void CD_bit_set(dsp56k_core* cpustate, UINT8 value) { if (value) (OMR |= 0x0080); else (OMR &= (~0x0080)); }
-void SD_bit_set(dsp56k_core* cpustate, UINT8 value) { if (value) (OMR |= 0x0040); else (OMR &= (~0x0040)); }
-void  R_bit_set(dsp56k_core* cpustate, UINT8 value) { if (value) (OMR |= 0x0020); else (OMR &= (~0x0020)); }
-void SA_bit_set(dsp56k_core* cpustate, UINT8 value) { if (value) (OMR |= 0x0010); else (OMR &= (~0x0010)); }
-void MC_bit_set(dsp56k_core* cpustate, UINT8 value) { if (value) (OMR |= 0x0004); else (OMR &= (~0x0004)); }
-void MB_bit_set(dsp56k_core* cpustate, UINT8 value) { if (value) (OMR |= 0x0002); else (OMR &= (~0x0002)); }
-void MA_bit_set(dsp56k_core* cpustate, UINT8 value) { if (value) (OMR |= 0x0001); else (OMR &= (~0x0001)); }
-
-UINT8 dsp56k_operating_mode(dsp56k_core* cpustate)
-=======
 // uint8_t CD_bit(const dsp56k_core* cpustate) { return ((OMR & 0x0080) != 0); }
 // uint8_t SD_bit(const dsp56k_core* cpustate) { return ((OMR & 0x0040) != 0); }
 // uint8_t  R_bit(const dsp56k_core* cpustate) { return ((OMR & 0x0020) != 0); }
@@ -125,7 +72,6 @@ void MB_bit_set(dsp56k_core* cpustate, uint8_t value) { if (value) (OMR |= 0x000
 void MA_bit_set(dsp56k_core* cpustate, uint8_t value) { if (value) (OMR |= 0x0001); else (OMR &= (~0x0001)); }
 
 uint8_t dsp56k_operating_mode(const dsp56k_core* cpustate)
->>>>>>> upstream/master
 {
 	return ((MB_bit(cpustate) << 1) | MA_bit(cpustate));
 }
@@ -141,19 +87,11 @@ uint8_t dsp56k_operating_mode(const dsp56k_core* cpustate)
 /*  |---------------------------------------------------------------------|  */
 /*                                                                           */
 /* ************************************************************************* */
-<<<<<<< HEAD
-UINT8 UF_bit(dsp56k_core* cpustate) { return ((SP & 0x0020) != 0); }
-UINT8 SE_bit(dsp56k_core* cpustate) { return ((SP & 0x0010) != 0); }
-
-//void UF_bit_set(dsp56k_core* cpustate, UINT8 value) {};
-//void SE_bit_set(dsp56k_core* cpustate, UINT8 value) {};
-=======
 uint8_t UF_bit(const dsp56k_core* cpustate) { return ((SP & 0x0020) != 0); }
 uint8_t SE_bit(const dsp56k_core* cpustate) { return ((SP & 0x0010) != 0); }
 
 //void UF_bit_set(dsp56k_core* cpustate, uint8_t value) {};
 //void SE_bit_set(dsp56k_core* cpustate, uint8_t value) {};
->>>>>>> upstream/master
 
 
 
@@ -200,11 +138,7 @@ void pcu_reset(dsp56k_core* cpustate)
 			/*        This, in actuality, is handled with the internal boot ROM. */
 			for (i = 0; i < 0x800; i++)
 			{
-<<<<<<< HEAD
-				UINT32 mem_offset = (0xc000<<1) + (i<<1);   /* TODO: TEST */
-=======
 				uint32_t mem_offset = (0xc000<<1) + (i<<1);   /* TODO: TEST */
->>>>>>> upstream/master
 
 				/* TODO - DO I HAVE TO FLIP THIS WORD? */
 				/* P:$c000 -> Internal P:$0000 low byte */
@@ -212,15 +146,9 @@ void pcu_reset(dsp56k_core* cpustate)
 				/* ... */
 				/* P:$cffe -> Internal P:$07ff low byte */
 				/* P:$cfff -> Internal P:$07ff high byte */
-<<<<<<< HEAD
-				UINT8 mem_value_low  = cpustate->program->read_byte(mem_offset);        /* TODO: IS THIS READING RIGHT? */
-				UINT8 mem_value_high = cpustate->program->read_byte(mem_offset);
-				cpustate->program_ram[i] = (mem_value_high << 8) || mem_value_low;
-=======
 				uint8_t mem_value_low  = cpustate->program->read_byte(mem_offset);        /* TODO: IS THIS READING RIGHT? */
 				uint8_t mem_value_high = cpustate->program->read_byte(mem_offset);
 				cpustate->program_ram[i] = (mem_value_high << 8) | mem_value_low;
->>>>>>> upstream/master
 			}
 
 			/* HACK - Set the PC to 0x0000 as per the boot ROM. */
@@ -312,11 +240,7 @@ void pcu_reset(dsp56k_core* cpustate)
 ***************************************************************************/
 struct dsp56k_irq_data
 {
-<<<<<<< HEAD
-	UINT16 irq_vector;
-=======
 	uint16_t irq_vector;
->>>>>>> upstream/master
 	char   irq_source[128];
 };
 
@@ -343,21 +267,13 @@ void pcu_service_interrupts(dsp56k_core* cpustate)
 		const int interrupt_index = cpustate->PCU.pending_interrupts[i];
 
 		/* Get the priority of the interrupt - a return value of -1 means disabled! */
-<<<<<<< HEAD
-		INT8 priority = dsp56k_get_irq_priority(cpustate, interrupt_index);
-=======
 		int8_t priority = dsp56k_get_irq_priority(cpustate, interrupt_index);
->>>>>>> upstream/master
 
 		/* 1-12 Make sure you're not masked out against the Interrupt Mask Bits (disabled is handled for free here) */
 		if (priority >= I_bits(cpustate))
 		{
 			/* TODO: Implement long interrupts & fast interrupts correctly! */
 			/*       Right now they are handled in the JSR & BSR ops.  SupahLame. */
-<<<<<<< HEAD
-			cpustate->ppc = PC;
-=======
->>>>>>> upstream/master
 
 			/* Are you anything but the Host Command interrupt? */
 			if (interrupt_index != 22)
@@ -368,11 +284,7 @@ void pcu_service_interrupts(dsp56k_core* cpustate)
 			else
 			{
 				/* The host command input has a floating vector. */
-<<<<<<< HEAD
-				const UINT16 irq_vector = HV_bits(cpustate) << 1;
-=======
 				const uint16_t irq_vector = HV_bits(cpustate) << 1;
->>>>>>> upstream/master
 
 				PC = irq_vector;
 
@@ -403,11 +315,7 @@ void dsp56k_add_pending_interrupt(dsp56k_core* cpustate, const char* name)
 }
 
 /* Utility function to construct IRQ table */
-<<<<<<< HEAD
-void dsp56k_set_irq_source(UINT8 irq_num, UINT16 iv, const char* source)
-=======
 void dsp56k_set_irq_source(uint8_t irq_num, uint16_t iv, const char* source)
->>>>>>> upstream/master
 {
 	dsp56k_interrupt_sources[irq_num].irq_vector = iv;
 	strcpy(dsp56k_interrupt_sources[irq_num].irq_source, source);
@@ -513,11 +421,7 @@ void dsp56k_sort_pending_interrupts(dsp56k_core* cpustate, int num)
 }
 
 /* Given an index into the irq table, return the interrupt's current priority */
-<<<<<<< HEAD
-INT8 dsp56k_get_irq_priority(dsp56k_core* cpustate, int index)
-=======
 int8_t dsp56k_get_irq_priority(dsp56k_core* cpustate, int index)
->>>>>>> upstream/master
 {
 	/* 1-12 */
 	switch (index)

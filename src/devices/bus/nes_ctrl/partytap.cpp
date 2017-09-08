@@ -6,21 +6,14 @@
 
 **********************************************************************/
 
-<<<<<<< HEAD
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #include "partytap.h"
 
 //**************************************************************************
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type NES_PARTYTAP = &device_creator<nes_partytap_device>;
-=======
 DEFINE_DEVICE_TYPE(NES_PARTYTAP, nes_partytap_device, "nes_partytap", "Yonezawa Party Tap Controller")
->>>>>>> upstream/master
 
 
 static INPUT_PORTS_START( nes_partytap )
@@ -51,19 +44,12 @@ ioport_constructor nes_partytap_device::device_input_ports() const
 //  nes_partytap_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-nes_partytap_device::nes_partytap_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-					device_t(mconfig, NES_PARTYTAP, "Yonezawa Party Tap Controller", tag, owner, clock, "nes_partytap", __FILE__),
-					device_nes_control_port_interface(mconfig, *this),
-					m_inputs(*this, "INPUTS"), m_mode(0), m_latch(0)
-=======
 nes_partytap_device::nes_partytap_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	device_t(mconfig, NES_PARTYTAP, tag, owner, clock),
 	device_nes_control_port_interface(mconfig, *this),
 	m_inputs(*this, "INPUTS"),
 	m_mode(0),
 	m_latch(0)
->>>>>>> upstream/master
 {
 }
 
@@ -94,15 +80,9 @@ void nes_partytap_device::device_reset()
 //  read
 //-------------------------------------------------
 
-<<<<<<< HEAD
-UINT8 nes_partytap_device::read_exp(offs_t offset)
-{
-	UINT8 ret = 0;
-=======
 uint8_t nes_partytap_device::read_exp(offs_t offset)
 {
 	uint8_t ret = 0;
->>>>>>> upstream/master
 	if (offset == 1)    //$4017
 	{
 		ret |= m_latch & 0x1c;
@@ -117,11 +97,7 @@ uint8_t nes_partytap_device::read_exp(offs_t offset)
 //  write
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void nes_partytap_device::write(UINT8 data)
-=======
 void nes_partytap_device::write(uint8_t data)
->>>>>>> upstream/master
 {
 	// inputs are read in two chunks of 3 bits, before the second one is read bit2 is written here
 	// probably a mechanism for the game to detect which group of inputs is being read

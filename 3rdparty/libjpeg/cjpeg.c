@@ -2,11 +2,7 @@
  * cjpeg.c
  *
  * Copyright (C) 1991-1998, Thomas G. Lane.
-<<<<<<< HEAD
- * Modified 2003-2010 by Guido Vollbeding.
-=======
  * Modified 2003-2013 by Guido Vollbeding.
->>>>>>> upstream/master
  * This file is part of the Independent JPEG Group's software.
  * For conditions of distribution and use, see the accompanying README file.
  *
@@ -156,10 +152,7 @@ usage (void)
   fprintf(stderr, "Switches (names may be abbreviated):\n");
   fprintf(stderr, "  -quality N[,...]   Compression quality (0..100; 5-95 is useful range)\n");
   fprintf(stderr, "  -grayscale     Create monochrome JPEG file\n");
-<<<<<<< HEAD
-=======
   fprintf(stderr, "  -rgb           Create RGB JPEG file\n");
->>>>>>> upstream/master
 #ifdef ENTROPY_OPT_SUPPORTED
   fprintf(stderr, "  -optimize      Optimize Huffman table (smaller file, but slow compression)\n");
 #endif
@@ -173,11 +166,6 @@ usage (void)
   fprintf(stderr, "  -targa         Input file is Targa format (usually not needed)\n");
 #endif
   fprintf(stderr, "Switches for advanced users:\n");
-<<<<<<< HEAD
-#ifdef DCT_SCALING_SUPPORTED
-  fprintf(stderr, "  -block N       DCT block size (1..16; default is 8)\n");
-#endif
-=======
 #ifdef C_ARITH_CODING_SUPPORTED
   fprintf(stderr, "  -arithmetic    Use arithmetic coding\n");
 #endif
@@ -188,7 +176,6 @@ usage (void)
   fprintf(stderr, "  -rgb1          Create RGB JPEG file with reversible color transform\n");
   fprintf(stderr, "  -bgycc         Create big gamut YCC JPEG file\n");
 #endif
->>>>>>> upstream/master
 #ifdef DCT_ISLOW_SUPPORTED
   fprintf(stderr, "  -dct int       Use integer DCT method%s\n",
 	  (JDCT_DEFAULT == JDCT_ISLOW ? " (default)" : ""));
@@ -210,12 +197,6 @@ usage (void)
   fprintf(stderr, "  -outfile name  Specify name for output file\n");
   fprintf(stderr, "  -verbose  or  -debug   Emit debug output\n");
   fprintf(stderr, "Switches for wizards:\n");
-<<<<<<< HEAD
-#ifdef C_ARITH_CODING_SUPPORTED
-  fprintf(stderr, "  -arithmetic    Use arithmetic coding\n");
-#endif
-=======
->>>>>>> upstream/master
   fprintf(stderr, "  -baseline      Force baseline quantization tables\n");
   fprintf(stderr, "  -qtables file  Use quantization tables given in file\n");
   fprintf(stderr, "  -qslots N[,...]    Set component quantization tables\n");
@@ -287,14 +268,8 @@ parse_switches (j_compress_ptr cinfo, int argc, char **argv,
 
     } else if (keymatch(arg, "block", 2)) {
       /* Set DCT block size. */
-<<<<<<< HEAD
-#if defined(DCT_SCALING_SUPPORTED) && defined(JPEG_LIB_VERSION_MAJOR) && \
-    (JPEG_LIB_VERSION_MAJOR > 8 || (JPEG_LIB_VERSION_MAJOR == 8 && \
-     defined(JPEG_LIB_VERSION_MINOR) && JPEG_LIB_VERSION_MINOR >= 3))
-=======
 #if defined DCT_SCALING_SUPPORTED && JPEG_LIB_VERSION_MAJOR >= 8 && \
       (JPEG_LIB_VERSION_MAJOR > 8 || JPEG_LIB_VERSION_MINOR >= 3)
->>>>>>> upstream/master
       int val;
 
       if (++argn >= argc)	/* advance to next argument */
@@ -339,8 +314,6 @@ parse_switches (j_compress_ptr cinfo, int argc, char **argv,
       /* Force a monochrome JPEG file to be generated. */
       jpeg_set_colorspace(cinfo, JCS_GRAYSCALE);
 
-<<<<<<< HEAD
-=======
     } else if (keymatch(arg, "rgb", 3) || keymatch(arg, "rgb1", 4)) {
       /* Force an RGB JPEG file to be generated. */
 #if JPEG_LIB_VERSION_MAJOR >= 9
@@ -362,7 +335,6 @@ parse_switches (j_compress_ptr cinfo, int argc, char **argv,
       exit(EXIT_FAILURE);
 #endif
 
->>>>>>> upstream/master
     } else if (keymatch(arg, "maxmemory", 3)) {
       /* Maximum memory in Kb (or Mb with 'm'). */
       long lval;
@@ -377,11 +349,7 @@ parse_switches (j_compress_ptr cinfo, int argc, char **argv,
       cinfo->mem->max_memory_to_use = lval * 1000L;
 
     } else if (keymatch(arg, "nosmooth", 3)) {
-<<<<<<< HEAD
-      /* Suppress fancy downsampling */
-=======
       /* Suppress fancy downsampling. */
->>>>>>> upstream/master
       cinfo->do_fancy_downsampling = FALSE;
 
     } else if (keymatch(arg, "optimize", 1) || keymatch(arg, "optimise", 1)) {
@@ -467,11 +435,7 @@ parse_switches (j_compress_ptr cinfo, int argc, char **argv,
       /* Scale the image by a fraction M/N. */
       if (++argn >= argc)	/* advance to next argument */
 	usage();
-<<<<<<< HEAD
-      if (sscanf(argv[argn], "%d/%d",
-=======
       if (sscanf(argv[argn], "%u/%u",
->>>>>>> upstream/master
 		 &cinfo->scale_num, &cinfo->scale_denom) != 2)
 	usage();
 

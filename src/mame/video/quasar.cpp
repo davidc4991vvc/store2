@@ -22,11 +22,7 @@
 
 PALETTE_INIT_MEMBER(quasar_state,quasar)
 {
-<<<<<<< HEAD
-	const UINT8 *color_prom = memregion("proms")->base();
-=======
 	const uint8_t *color_prom = memregion("proms")->base();
->>>>>>> upstream/master
 	int i;
 
 	/* standard 1 bit per color palette (background and sprites) */
@@ -61,11 +57,7 @@ PALETTE_INIT_MEMBER(quasar_state,quasar)
 		b = 0x4f * bit0 + 0xa8 * bit1;
 
 		/* intensity 0 */
-<<<<<<< HEAD
-		palette.set_indirect_color(0x100 + i, rgb_t::black);
-=======
 		palette.set_indirect_color(0x100 + i, rgb_t::black());
->>>>>>> upstream/master
 
 		/* intensity 1 */
 		color = rgb_t(r >> 2, g >> 2, b >> 2);
@@ -99,28 +91,17 @@ PALETTE_INIT_MEMBER(quasar_state,quasar)
 
 VIDEO_START_MEMBER(quasar_state,quasar)
 {
-<<<<<<< HEAD
-	m_effectram = auto_alloc_array(machine(), UINT8, 0x400);
-=======
 	m_effectram = std::make_unique<uint8_t[]>(0x400);
->>>>>>> upstream/master
 
 	/* create helper bitmap */
 	m_screen->register_screen_bitmap(m_collision_background);
 
 	/* register save */
 	save_item(NAME(m_collision_background));
-<<<<<<< HEAD
-	save_pointer(NAME(m_effectram), 0x400);
-}
-
-UINT32 quasar_state::screen_update_quasar(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 	save_pointer(NAME(m_effectram.get()), 0x400);
 }
 
 uint32_t quasar_state::screen_update_quasar(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	int offs;
 
@@ -128,15 +109,9 @@ uint32_t quasar_state::screen_update_quasar(screen_device &screen, bitmap_ind16 
 	for (offs = 0; offs < 0x0400; offs++)
 	{
 		int ox, oy;
-<<<<<<< HEAD
-		UINT8 code = m_video_ram[offs];
-		UINT8 x = (offs & 0x1f) << 3;
-		UINT8 y = (offs >> 5) << 3;
-=======
 		uint8_t code = m_video_ram[offs];
 		uint8_t x = (offs & 0x1f) << 3;
 		uint8_t y = (offs >> 5) << 3;
->>>>>>> upstream/master
 
 		// While we have the current character code, draw the effects layer
 		// intensity / on and off controlled by latch
@@ -167,15 +142,9 @@ uint32_t quasar_state::screen_update_quasar(screen_device &screen, bitmap_ind16 
 	}
 
 	/* update the S2636 chips */
-<<<<<<< HEAD
-	bitmap_ind16 &s2636_0_bitmap = m_s2636_0->update(cliprect);
-	bitmap_ind16 &s2636_1_bitmap = m_s2636_1->update(cliprect);
-	bitmap_ind16 &s2636_2_bitmap = m_s2636_2->update(cliprect);
-=======
 	bitmap_ind16 const &s2636_0_bitmap = m_s2636_0->update(cliprect);
 	bitmap_ind16 const &s2636_1_bitmap = m_s2636_1->update(cliprect);
 	bitmap_ind16 const &s2636_2_bitmap = m_s2636_2->update(cliprect);
->>>>>>> upstream/master
 
 	/* Bullet Hardware */
 	for (offs = 8; offs < 256; offs++ )

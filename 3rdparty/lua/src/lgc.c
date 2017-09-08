@@ -1,9 +1,5 @@
 /*
-<<<<<<< HEAD
-** $Id: lgc.c,v 2.201 2014/12/20 13:58:15 roberto Exp $
-=======
 ** $Id: lgc.c,v 2.215 2016/12/22 13:08:50 roberto Exp $
->>>>>>> upstream/master
 ** Garbage Collector
 ** See Copyright Notice in lua.h
 */
@@ -87,10 +83,6 @@
 #define markvalue(g,o) { checkconsistency(o); \
   if (valiswhite(o)) reallymarkobject(g,gcvalue(o)); }
 
-<<<<<<< HEAD
-#define markobject(g,t) \
-  { if ((t) && iswhite(t)) reallymarkobject(g, obj2gco(t)); }
-=======
 #define markobject(g,t)	{ if (iswhite(t)) reallymarkobject(g, obj2gco(t)); }
 
 /*
@@ -98,7 +90,6 @@
 ** or it was stripped as debug info, or inside an uncompleted structure)
 */
 #define markobjectN(g,t)	{ if (t) markobject(g,t); }
->>>>>>> upstream/master
 
 static void reallymarkobject (global_State *g, GCObject *o);
 
@@ -123,10 +114,6 @@ static void reallymarkobject (global_State *g, GCObject *o);
 
 
 /*
-<<<<<<< HEAD
-** if key is not marked, mark its entry as dead (therefore removing it
-** from the table)
-=======
 ** If key is not marked, mark its entry as dead. This allows key to be
 ** collected, but keeps its entry in the table.  A dead node is needed
 ** when Lua looks up for a key (it may be part of a chain) and when
@@ -134,7 +121,6 @@ static void reallymarkobject (global_State *g, GCObject *o);
 ** traversal). Other places never manipulate dead keys, because its
 ** associated nil value is enough to signal that the entry is logically
 ** empty.
->>>>>>> upstream/master
 */
 static void removeentry (Node *n) {
   lua_assert(ttisnil(gval(n)));
@@ -250,12 +236,6 @@ static void reallymarkobject (global_State *g, GCObject *o) {
  reentry:
   white2gray(o);
   switch (o->tt) {
-<<<<<<< HEAD
-    case LUA_TSHRSTR:
-    case LUA_TLNGSTR: {
-      gray2black(o);
-      g->GCmemtrav += sizestring(gco2ts(o));
-=======
     case LUA_TSHRSTR: {
       gray2black(o);
       g->GCmemtrav += sizelstring(gco2ts(o)->shrlen);
@@ -264,16 +244,11 @@ static void reallymarkobject (global_State *g, GCObject *o) {
     case LUA_TLNGSTR: {
       gray2black(o);
       g->GCmemtrav += sizelstring(gco2ts(o)->u.lnglen);
->>>>>>> upstream/master
       break;
     }
     case LUA_TUSERDATA: {
       TValue uvalue;
-<<<<<<< HEAD
-      markobject(g, gco2u(o)->metatable);  /* mark its metatable */
-=======
       markobjectN(g, gco2u(o)->metatable);  /* mark its metatable */
->>>>>>> upstream/master
       gray2black(o);
       g->GCmemtrav += sizeudata(gco2u(o));
       getuservalue(g->mainthread, gco2u(o), &uvalue);
@@ -314,11 +289,7 @@ static void reallymarkobject (global_State *g, GCObject *o) {
 static void markmt (global_State *g) {
   int i;
   for (i=0; i < LUA_NUMTAGS; i++)
-<<<<<<< HEAD
-    markobject(g, g->mt[i]);
-=======
     markobjectN(g, g->mt[i]);
->>>>>>> upstream/master
 }
 
 
@@ -480,11 +451,7 @@ static void traversestrongtable (global_State *g, Table *h) {
 static lu_mem traversetable (global_State *g, Table *h) {
   const char *weakkey, *weakvalue;
   const TValue *mode = gfasttm(g, h->metatable, TM_MODE);
-<<<<<<< HEAD
-  markobject(g, h->metatable);
-=======
   markobjectN(g, h->metatable);
->>>>>>> upstream/master
   if (mode && ttisstring(mode) &&  /* is there a weak mode? */
       ((weakkey = strchr(svalue(mode), 'k')),
        (weakvalue = strchr(svalue(mode), 'v')),
@@ -500,12 +467,6 @@ static lu_mem traversetable (global_State *g, Table *h) {
   else  /* not weak */
     traversestrongtable(g, h);
   return sizeof(Table) + sizeof(TValue) * h->sizearray +
-<<<<<<< HEAD
-                         sizeof(Node) * cast(size_t, sizenode(h));
-}
-
-
-=======
                          sizeof(Node) * cast(size_t, allocsizenode(h));
 }
 
@@ -515,22 +476,10 @@ static lu_mem traversetable (global_State *g, Table *h) {
 ** arrays can be larger than needed; the extra slots are filled with
 ** NULL, so the use of 'markobjectN')
 */
->>>>>>> upstream/master
 static int traverseproto (global_State *g, Proto *f) {
   int i;
   if (f->cache && iswhite(f->cache))
     f->cache = NULL;  /* allow cache to be collected */
-<<<<<<< HEAD
-  markobject(g, f->source);
-  for (i = 0; i < f->sizek; i++)  /* mark literals */
-    markvalue(g, &f->k[i]);
-  for (i = 0; i < f->sizeupvalues; i++)  /* mark upvalue names */
-    markobject(g, f->upvalues[i].name);
-  for (i = 0; i < f->sizep; i++)  /* mark nested protos */
-    markobject(g, f->p[i]);
-  for (i = 0; i < f->sizelocvars; i++)  /* mark local-variable names */
-    markobject(g, f->locvars[i].varname);
-=======
   markobjectN(g, f->source);
   for (i = 0; i < f->sizek; i++)  /* mark literals */
     markvalue(g, &f->k[i]);
@@ -540,7 +489,6 @@ static int traverseproto (global_State *g, Proto *f) {
     markobjectN(g, f->p[i]);
   for (i = 0; i < f->sizelocvars; i++)  /* mark local-variable names */
     markobjectN(g, f->locvars[i].varname);
->>>>>>> upstream/master
   return sizeof(Proto) + sizeof(Instruction) * f->sizecode +
                          sizeof(Proto *) * f->sizep +
                          sizeof(TValue) * f->sizek +
@@ -565,11 +513,7 @@ static lu_mem traverseCclosure (global_State *g, CClosure *cl) {
 */
 static lu_mem traverseLclosure (global_State *g, LClosure *cl) {
   int i;
-<<<<<<< HEAD
-  markobject(g, cl->p);  /* mark its prototype */
-=======
   markobjectN(g, cl->p);  /* mark its prototype */
->>>>>>> upstream/master
   for (i = 0; i < cl->nupvalues; i++) {  /* mark its upvalues */
     UpVal *uv = cl->upvals[i];
     if (uv != NULL) {
@@ -595,11 +539,7 @@ static lu_mem traversethread (global_State *g, lua_State *th) {
     StkId lim = th->stack + th->stacksize;  /* real end of stack */
     for (; o < lim; o++)  /* clear not-marked stack slice */
       setnilvalue(o);
-<<<<<<< HEAD
-    /* 'remarkupvals' may have removed thread from 'twups' list */ 
-=======
     /* 'remarkupvals' may have removed thread from 'twups' list */
->>>>>>> upstream/master
     if (!isintwups(th) && th->openupval != NULL) {
       th->twups = g->twups;  /* link it back to the list */
       g->twups = th;
@@ -607,12 +547,8 @@ static lu_mem traversethread (global_State *g, lua_State *th) {
   }
   else if (g->gckind != KGC_EMERGENCY)
     luaD_shrinkstack(th); /* do not change stack in emergency cycle */
-<<<<<<< HEAD
-  return (sizeof(lua_State) + sizeof(TValue) * th->stacksize);
-=======
   return (sizeof(lua_State) + sizeof(TValue) * th->stacksize +
           sizeof(CallInfo) * th->nci);
->>>>>>> upstream/master
 }
 
 
@@ -773,16 +709,10 @@ static void freeobj (lua_State *L, GCObject *o) {
     case LUA_TUSERDATA: luaM_freemem(L, o, sizeudata(gco2u(o))); break;
     case LUA_TSHRSTR:
       luaS_remove(L, gco2ts(o));  /* remove it from hash table */
-<<<<<<< HEAD
-      /* go through */
-    case LUA_TLNGSTR: {
-      luaM_freemem(L, o, sizestring(gco2ts(o)));
-=======
       luaM_freemem(L, o, sizelstring(gco2ts(o)->shrlen));
       break;
     case LUA_TLNGSTR: {
       luaM_freemem(L, o, sizelstring(gco2ts(o)->u.lnglen));
->>>>>>> upstream/master
       break;
     }
     default: lua_assert(0);
@@ -824,22 +754,11 @@ static GCObject **sweeplist (lua_State *L, GCObject **p, lu_mem count) {
 /*
 ** sweep a list until a live object (or end of list)
 */
-<<<<<<< HEAD
-static GCObject **sweeptolive (lua_State *L, GCObject **p, int *n) {
-  GCObject **old = p;
-  int i = 0;
-  do {
-    i++;
-    p = sweeplist(L, p, 1);
-  } while (p == old);
-  if (n) *n += i;
-=======
 static GCObject **sweeptolive (lua_State *L, GCObject **p) {
   GCObject **old = p;
   do {
     p = sweeplist(L, p, 1);
   } while (p == old);
->>>>>>> upstream/master
   return p;
 }
 
@@ -853,19 +772,11 @@ static GCObject **sweeptolive (lua_State *L, GCObject **p) {
 */
 
 /*
-<<<<<<< HEAD
-** If possible, free concatenation buffer and shrink string table
-=======
 ** If possible, shrink string table
->>>>>>> upstream/master
 */
 static void checkSizes (lua_State *L, global_State *g) {
   if (g->gckind != KGC_EMERGENCY) {
     l_mem olddebt = g->GCdebt;
-<<<<<<< HEAD
-    luaZ_freebuffer(L, &g->buff);  /* free concatenation buffer */
-=======
->>>>>>> upstream/master
     if (g->strt.nuse < g->strt.size / 4)  /* string table too big? */
       luaS_resize(L, g->strt.size / 2);  /* shrink it a little */
     g->GCestimate += g->GCdebt - olddebt;  /* update estimate */
@@ -888,11 +799,7 @@ static GCObject *udata2finalize (global_State *g) {
 
 static void dothecall (lua_State *L, void *ud) {
   UNUSED(ud);
-<<<<<<< HEAD
-  luaD_call(L, L->top - 2, 0, 0);
-=======
   luaD_callnoyield(L, L->top - 2, 0);
->>>>>>> upstream/master
 }
 
 
@@ -911,13 +818,9 @@ static void GCTM (lua_State *L, int propagateerrors) {
     setobj2s(L, L->top, tm);  /* push finalizer... */
     setobj2s(L, L->top + 1, &v);  /* ... and its argument */
     L->top += 2;  /* and (next line) call the finalizer */
-<<<<<<< HEAD
-    status = luaD_pcall(L, dothecall, NULL, savestack(L, L->top - 2), 0);
-=======
     L->ci->callstatus |= CIST_FIN;  /* will run a finalizer */
     status = luaD_pcall(L, dothecall, NULL, savestack(L, L->top - 2), 0);
     L->ci->callstatus &= ~CIST_FIN;  /* not running a finalizer anymore */
->>>>>>> upstream/master
     L->allowhook = oldah;  /* restore hooks */
     g->gcrunning = running;  /* restore state */
     if (status != LUA_OK && propagateerrors) {  /* error while running __gc? */
@@ -952,17 +855,10 @@ static int runafewfinalizers (lua_State *L) {
 /*
 ** call all pending finalizers
 */
-<<<<<<< HEAD
-static void callallpendingfinalizers (lua_State *L, int propagateerrors) {
-  global_State *g = G(L);
-  while (g->tobefnz)
-    GCTM(L, propagateerrors);
-=======
 static void callallpendingfinalizers (lua_State *L) {
   global_State *g = G(L);
   while (g->tobefnz)
     GCTM(L, 0);
->>>>>>> upstream/master
 }
 
 
@@ -1012,11 +908,7 @@ void luaC_checkfinalizer (lua_State *L, GCObject *o, Table *mt) {
     if (issweepphase(g)) {
       makewhite(g, o);  /* "sweep" object 'o' */
       if (g->sweepgc == &o->next)  /* should not remove 'sweepgc' object */
-<<<<<<< HEAD
-        g->sweepgc = sweeptolive(L, g->sweepgc, NULL);  /* change 'sweepgc' */
-=======
         g->sweepgc = sweeptolive(L, g->sweepgc);  /* change 'sweepgc' */
->>>>>>> upstream/master
     }
     /* search for pointer pointing to 'o' */
     for (p = &g->allgc; *p != o; p = &(*p)->next) { /* empty */ }
@@ -1058,21 +950,6 @@ static void setpause (global_State *g) {
 
 /*
 ** Enter first sweep phase.
-<<<<<<< HEAD
-** The call to 'sweeptolive' makes pointer point to an object inside
-** the list (instead of to the header), so that the real sweep do not
-** need to skip objects created between "now" and the start of the real
-** sweep.
-** Returns how many objects it swept.
-*/
-static int entersweep (lua_State *L) {
-  global_State *g = G(L);
-  int n = 0;
-  g->gcstate = GCSswpallgc;
-  lua_assert(g->sweepgc == NULL);
-  g->sweepgc = sweeptolive(L, &g->allgc, &n);
-  return n;
-=======
 ** The call to 'sweeplist' tries to make pointer point to an object
 ** inside the list (instead of to the header), so that the real sweep do
 ** not need to skip objects created between "now" and the start of the
@@ -1083,7 +960,6 @@ static void entersweep (lua_State *L) {
   g->gcstate = GCSswpallgc;
   lua_assert(g->sweepgc == NULL);
   g->sweepgc = sweeplist(L, &g->allgc, 1);
->>>>>>> upstream/master
 }
 
 
@@ -1091,11 +967,7 @@ void luaC_freeallobjects (lua_State *L) {
   global_State *g = G(L);
   separatetobefnz(g, 1);  /* separate all objects with finalizers */
   lua_assert(g->finobj == NULL);
-<<<<<<< HEAD
-  callallpendingfinalizers(L, 0);
-=======
   callallpendingfinalizers(L);
->>>>>>> upstream/master
   lua_assert(g->tobefnz == NULL);
   g->currentwhite = WHITEBITS; /* this "white" makes all objects look dead */
   g->gckind = KGC_NORMAL;
@@ -1146,10 +1018,7 @@ static l_mem atomic (lua_State *L) {
   /* clear values from resurrected weak tables */
   clearvalues(g, g->weak, origweak);
   clearvalues(g, g->allweak, origall);
-<<<<<<< HEAD
-=======
   luaS_clearcache(g);
->>>>>>> upstream/master
   g->currentwhite = cast_byte(otherwhite(g));  /* flip current white */
   work += g->GCmemtrav;  /* complete counting */
   return work;  /* estimate of memory marked by 'atomic' */
@@ -1191,20 +1060,11 @@ static lu_mem singlestep (lua_State *L) {
     }
     case GCSatomic: {
       lu_mem work;
-<<<<<<< HEAD
-      int sw;
-      propagateall(g);  /* make sure gray list is empty */
-      work = atomic(L);  /* work is what was traversed by 'atomic' */
-      sw = entersweep(L);
-      g->GCestimate = gettotalbytes(g);  /* first estimate */;
-      return work + sw * GCSWEEPCOST;
-=======
       propagateall(g);  /* make sure gray list is empty */
       work = atomic(L);  /* work is what was traversed by 'atomic' */
       entersweep(L);
       g->GCestimate = gettotalbytes(g);  /* first estimate */;
       return work;
->>>>>>> upstream/master
     }
     case GCSswpallgc: {  /* sweep "regular" objects */
       return sweepstep(L, g, GCSswpfinobj, &g->finobj);
@@ -1254,18 +1114,12 @@ void luaC_runtilstate (lua_State *L, int statesmask) {
 static l_mem getdebt (global_State *g) {
   l_mem debt = g->GCdebt;
   int stepmul = g->gcstepmul;
-<<<<<<< HEAD
-  debt = (debt / STEPMULADJ) + 1;
-  debt = (debt < MAX_LMEM / stepmul) ? debt * stepmul : MAX_LMEM;
-  return debt;
-=======
   if (debt <= 0) return 0;  /* minimal debt */
   else {
     debt = (debt / STEPMULADJ) + 1;
     debt = (debt < MAX_LMEM / stepmul) ? debt * stepmul : MAX_LMEM;
     return debt;
   }
->>>>>>> upstream/master
 }
 
 /*

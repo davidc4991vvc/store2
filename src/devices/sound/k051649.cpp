@@ -32,11 +32,7 @@
 
 
 // device type definition
-<<<<<<< HEAD
-const device_type K051649 = &device_creator<k051649_device>;
-=======
 DEFINE_DEVICE_TYPE(K051649, k051649_device, "k051649", "K051649 SCC1")
->>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -47,17 +43,6 @@ DEFINE_DEVICE_TYPE(K051649, k051649_device, "k051649", "K051649 SCC1")
 //  k051649_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-k051649_device::k051649_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, K051649, "K051649 SCC1", tag, owner, clock, "k051649", __FILE__),
-		device_sound_interface(mconfig, *this),
-		m_stream(NULL),
-		m_mclock(0),
-		m_rate(0),
-		m_mixer_table(NULL),
-		m_mixer_lookup(NULL),
-		m_mixer_buffer(NULL),
-=======
 k051649_device::k051649_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, K051649, tag, owner, clock),
 		device_sound_interface(mconfig, *this),
@@ -67,7 +52,6 @@ k051649_device::k051649_device(const machine_config &mconfig, const char *tag, d
 		m_mixer_table(nullptr),
 		m_mixer_lookup(nullptr),
 		m_mixer_buffer(nullptr),
->>>>>>> upstream/master
 		m_test(0)
 {
 }
@@ -85,11 +69,7 @@ void k051649_device::device_start()
 	m_mclock = clock();
 
 	// allocate a buffer to mix into - 1 second's worth should be more than enough
-<<<<<<< HEAD
-	m_mixer_buffer = auto_alloc_array(machine(), short, 2 * m_rate);
-=======
 	m_mixer_buffer = std::make_unique<short[]>(2 * m_rate);
->>>>>>> upstream/master
 
 	// build the mixer table
 	make_mixer_table(5);
@@ -102,18 +82,6 @@ void k051649_device::device_start()
 
 void k051649_device::device_reset()
 {
-<<<<<<< HEAD
-	k051649_sound_channel *voice = m_channel_list;
-	int i;
-
-	// reset all the voices
-	for (i = 0; i < 5; i++)
-	{
-		voice[i].frequency = 0;
-		voice[i].volume = 0xf;
-		voice[i].counter = 0;
-		voice[i].key = 0;
-=======
 	// reset all the voices
 	for (sound_channel &voice : m_channel_list)
 	{
@@ -121,7 +89,6 @@ void k051649_device::device_reset()
 		voice.volume = 0xf;
 		voice.counter = 0;
 		voice.key = 0;
->>>>>>> upstream/master
 	}
 
 	// other parameters
@@ -135,30 +102,6 @@ void k051649_device::device_reset()
 
 void k051649_device::sound_stream_update(sound_stream &stream, stream_sample_t **inputs, stream_sample_t **outputs, int samples)
 {
-<<<<<<< HEAD
-	k051649_sound_channel *voice=m_channel_list;
-	stream_sample_t *buffer = outputs[0];
-	short *mix;
-	int i,j;
-
-	// zap the contents of the mixer buffer
-	memset(m_mixer_buffer, 0, samples * sizeof(short));
-
-	for (j = 0; j < 5; j++)
-	{
-		// channel is halted for freq < 9
-		if (voice[j].frequency > 8)
-		{
-			const signed char *w = voice[j].waveram;
-			int v=voice[j].volume * voice[j].key;
-			int c=voice[j].counter;
-			int step = ((INT64)m_mclock * (1 << FREQ_BITS)) / (float)((voice[j].frequency + 1) * 16 * (m_rate / 32)) + 0.5f;
-
-			mix = m_mixer_buffer;
-
-			// add our contribution
-			for (i = 0; i < samples; i++)
-=======
 	// zap the contents of the mixer buffer
 	memset(m_mixer_buffer.get(), 0, samples * sizeof(short));
 
@@ -176,7 +119,6 @@ void k051649_device::sound_stream_update(sound_stream &stream, stream_sample_t *
 
 			// add our contribution
 			for (int i = 0; i < samples; i++)
->>>>>>> upstream/master
 			{
 				int offs;
 
@@ -186,23 +128,14 @@ void k051649_device::sound_stream_update(sound_stream &stream, stream_sample_t *
 			}
 
 			// update the counter for this voice
-<<<<<<< HEAD
-			voice[j].counter = c;
-=======
 			voice.counter = c;
->>>>>>> upstream/master
 		}
 	}
 
 	// mix it down
-<<<<<<< HEAD
-	mix = m_mixer_buffer;
-	for (i = 0; i < samples; i++)
-=======
 	stream_sample_t *buffer = outputs[0];
 	short *mix = m_mixer_buffer.get();
 	for (int i = 0; i < samples; i++)
->>>>>>> upstream/master
 		*buffer++ = m_mixer_lookup[*mix++];
 }
 
@@ -332,17 +265,10 @@ void k051649_device::make_mixer_table(int voices)
 	int i;
 
 	// allocate memory
-<<<<<<< HEAD
-	m_mixer_table = auto_alloc_array(machine(), INT16, 512 * voices);
-
-	// find the middle of the table
-	m_mixer_lookup = m_mixer_table + (256 * voices);
-=======
 	m_mixer_table = std::make_unique<int16_t[]>(512 * voices);
 
 	// find the middle of the table
 	m_mixer_lookup = m_mixer_table.get() + (256 * voices);
->>>>>>> upstream/master
 
 	// fill in the table - 16 bit case
 	for (i = 0; i < (voices * 256); i++)

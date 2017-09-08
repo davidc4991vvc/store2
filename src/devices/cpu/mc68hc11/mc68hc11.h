@@ -1,16 +1,9 @@
 // license:BSD-3-Clause
 // copyright-holders:Ville Linde, Angelo Salese, hap
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __MC68HC11_H__
-#define __MC68HC11_H__
-=======
 #ifndef MAME_CPU_MC68HC11_MC68HC11_H
 #define MAME_CPU_MC68HC11_MC68HC11_H
 
 #pragma once
->>>>>>> upstream/master
 
 
 #define MC68HC11_IO_PORTA           0x00
@@ -36,11 +29,7 @@
 #define MC68HC11_TOC1_LINE          1
 
 
-<<<<<<< HEAD
-extern const device_type MC68HC11;
-=======
 DECLARE_DEVICE_TYPE(MC68HC11, mc68hc11_cpu_device)
->>>>>>> upstream/master
 
 
 #define MCFG_MC68HC11_CONFIG(_has_extended_io, _internal_ram_size, _init_value) \
@@ -53,11 +42,7 @@ class mc68hc11_cpu_device : public cpu_device
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	mc68hc11_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-=======
 	mc68hc11_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
->>>>>>> upstream/master
 
 	// I/O enable flag
 	static void set_has_extended_io(device_t &device, int has_extended_io) { downcast<mc68hc11_cpu_device &>(device).m_has_extended_io = has_extended_io; }
@@ -67,32 +52,6 @@ public:
 
 protected:
 	// device-level overrides
-<<<<<<< HEAD
-	virtual void device_start();
-	virtual void device_reset();
-
-	// device_execute_interface overrides
-	virtual UINT32 execute_min_cycles() const { return 1; }
-	virtual UINT32 execute_max_cycles() const { return 41; }
-	virtual UINT32 execute_input_lines() const { return 2; }
-	virtual UINT32 execute_default_irq_vector() const { return 0; }
-	virtual void execute_run();
-	virtual void execute_set_input(int inputnum, int state);
-
-	// device_memory_interface overrides
-	virtual const address_space_config *memory_space_config(address_spacenum spacenum = AS_0) const
-	{
-		return (spacenum == AS_PROGRAM) ? &m_program_config : ( (spacenum == AS_IO) ? &m_io_config : NULL );
-	}
-
-	// device_state_interface overrides
-	void state_string_export(const device_state_entry &entry, std::string &str);
-
-	// device_disasm_interface overrides
-	virtual UINT32 disasm_min_opcode_bytes() const { return 1; }
-	virtual UINT32 disasm_max_opcode_bytes() const { return 5; }
-	virtual offs_t disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options);
-=======
 	virtual void device_start() override;
 	virtual void device_reset() override;
 
@@ -114,7 +73,6 @@ protected:
 	virtual uint32_t disasm_min_opcode_bytes() const override { return 1; }
 	virtual uint32_t disasm_max_opcode_bytes() const override { return 5; }
 	virtual offs_t disasm_disassemble(std::ostream &stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, uint32_t options) override;
->>>>>>> upstream/master
 
 private:
 	address_space_config m_program_config;
@@ -123,29 +81,6 @@ private:
 	union {
 		struct {
 #ifdef LSB_FIRST
-<<<<<<< HEAD
-			UINT8 b;
-			UINT8 a;
-#else
-			UINT8 a;
-			UINT8 b;
-#endif
-		} d8;
-		UINT16 d16;
-	} m_d;
-
-	UINT16 m_ix;
-	UINT16 m_iy;
-	UINT16 m_sp;
-	UINT16 m_pc;
-	UINT16 m_ppc;
-	UINT8 m_ccr;
-
-	UINT8 m_adctl;
-	int m_ad_channel;
-
-	UINT8 m_irq_state[2];
-=======
 			uint8_t b;
 			uint8_t a;
 #else
@@ -167,7 +102,6 @@ private:
 	int m_ad_channel;
 
 	uint8_t m_irq_state[2];
->>>>>>> upstream/master
 	direct_read_data *m_direct;
 	address_space *m_program;
 	address_space *m_io;
@@ -175,29 +109,12 @@ private:
 
 	int m_ram_position;
 	int m_reg_position;
-<<<<<<< HEAD
-	dynamic_buffer m_internal_ram;
-=======
 	std::vector<uint8_t> m_internal_ram;
->>>>>>> upstream/master
 
 	int m_has_extended_io; // extended I/O enable flag
 	int m_internal_ram_size;
 	int m_init_value;
 
-<<<<<<< HEAD
-	UINT8 m_wait_state;
-	UINT8 m_stop_state;
-
-	UINT8 m_tflg1;
-	UINT8 m_tmsk1;
-	UINT16 m_toc1;
-	UINT16 m_tcnt;
-//  UINT8 m_por;
-	UINT8 m_pr;
-
-	UINT64 m_frc_base;
-=======
 	uint8_t m_wait_state;
 	uint8_t m_stop_state;
 
@@ -209,7 +126,6 @@ private:
 	uint8_t m_pr;
 
 	uint64_t m_frc_base;
->>>>>>> upstream/master
 
 	typedef void (mc68hc11_cpu_device::*ophandler)();
 	struct hc11_opcode_list_struct
@@ -225,22 +141,6 @@ private:
 	ophandler hc11_optable_page3[256];
 	ophandler hc11_optable_page4[256];
 
-<<<<<<< HEAD
-	UINT8 hc11_regs_r(UINT32 address);
-	void hc11_regs_w(UINT32 address, UINT8 value);
-	UINT8 FETCH();
-	UINT16 FETCH16();
-	UINT8 READ8(UINT32 address);
-	void WRITE8(UINT32 address, UINT8 value);
-	UINT16 READ16(UINT32 address);
-	void WRITE16(UINT32 address, UINT16 value);
-	void CYCLES(int cycles);
-	void SET_PC(int pc);
-	void PUSH8(UINT8 value);
-	void PUSH16(UINT16 value);
-	UINT8 POP8();
-	UINT16 POP16();
-=======
 	uint8_t hc11_regs_r(uint32_t address);
 	void hc11_regs_w(uint32_t address, uint8_t value);
 	uint8_t FETCH();
@@ -255,7 +155,6 @@ private:
 	void PUSH16(uint16_t value);
 	uint8_t POP8();
 	uint16_t POP16();
->>>>>>> upstream/master
 	void hc11_aba();
 	void hc11_abx();
 	void hc11_aby();
@@ -537,9 +436,4 @@ private:
 	void check_irq_lines();
 };
 
-<<<<<<< HEAD
-
-#endif /* __MC68HC11_H__ */
-=======
 #endif // MAME_CPU_MC68HC11_MC68HC11_H
->>>>>>> upstream/master

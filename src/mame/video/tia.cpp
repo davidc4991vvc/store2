@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-// license:???
-=======
 // license:BSD-3-Clause
->>>>>>> upstream/master
 // copyright-holders:Wilbert Pol,Stefan Jokisch
 /***************************************************************************
 
@@ -13,10 +9,7 @@
 #include "emu.h"
 #include "tia.h"
 #include "sound/tiaintf.h"
-<<<<<<< HEAD
-=======
 #include "screen.h"
->>>>>>> upstream/master
 
 static const int nusiz[8][3] =
 {
@@ -36,28 +29,16 @@ static void extend_palette(palette_device &palette) {
 	for( i = 0; i < 128; i ++ )
 	{
 		rgb_t   new_rgb = palette.pen_color( i );
-<<<<<<< HEAD
-		UINT8   new_r =  new_rgb .r();
-		UINT8   new_g =  new_rgb .g();
-		UINT8   new_b =  new_rgb .b();
-=======
 		uint8_t   new_r =  new_rgb .r();
 		uint8_t   new_g =  new_rgb .g();
 		uint8_t   new_b =  new_rgb .b();
->>>>>>> upstream/master
 
 		for ( j = 0; j < 128; j++ )
 		{
 			rgb_t   old_rgb = palette.pen_color( j );
-<<<<<<< HEAD
-			UINT8   old_r =  old_rgb .r();
-			UINT8   old_g =  old_rgb .g();
-			UINT8   old_b =  old_rgb .b();
-=======
 			uint8_t   old_r =  old_rgb .r();
 			uint8_t   old_g =  old_rgb .g();
 			uint8_t   old_b =  old_rgb .b();
->>>>>>> upstream/master
 
 			palette.set_pen_color(( ( i + 1 ) << 7 ) | j,
 				( new_r + old_r ) / 2,
@@ -304,15 +285,9 @@ Phase Shift 26.2
 			if (B > 1) B = 1;
 
 			palette.set_pen_color(8 * i + j,
-<<<<<<< HEAD
-				(UINT8) (255 * R + 0.5),
-				(UINT8) (255 * G + 0.5),
-				(UINT8) (255 * B + 0.5));
-=======
 				(uint8_t) (255 * R + 0.5),
 				(uint8_t) (255 * G + 0.5),
 				(uint8_t) (255 * B + 0.5));
->>>>>>> upstream/master
 		}
 	}
 	extend_palette( palette );
@@ -369,73 +344,30 @@ PALETTE_INIT_MEMBER(tia_pal_video_device, tia_pal)
 			if (B > 1) B = 1;
 
 			palette.set_pen_color(8 * i + j,
-<<<<<<< HEAD
-				(UINT8) (255 * R + 0.5),
-				(UINT8) (255 * G + 0.5),
-				(UINT8) (255 * B + 0.5));
-=======
 				(uint8_t) (255 * R + 0.5),
 				(uint8_t) (255 * G + 0.5),
 				(uint8_t) (255 * B + 0.5));
->>>>>>> upstream/master
 		}
 	}
 	extend_palette( palette );
 }
 
-<<<<<<< HEAD
-tia_video_device::tia_video_device(const machine_config &mconfig, device_type type, const char *name, const char *shortname, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, type, name, tag, owner, clock, shortname, __FILE__),
-		device_video_interface(mconfig, *this),
-		m_read_input_port_cb(*this),
-		m_databus_contents_cb(*this),
-		m_vsync_cb(*this)
-=======
 tia_video_device::tia_video_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, type, tag, owner, clock)
 	, device_video_interface(mconfig, *this)
 	, m_read_input_port_cb(*this)
 	, m_databus_contents_cb(*this)
 	, m_vsync_cb(*this)
->>>>>>> upstream/master
 {
 }
 
 // device type definition
-<<<<<<< HEAD
-const device_type TIA_PAL_VIDEO = &device_creator<tia_pal_video_device>;
-=======
 DEFINE_DEVICE_TYPE(TIA_PAL_VIDEO, tia_pal_video_device, "tia_pal_video", "TIA Video (PAL)")
->>>>>>> upstream/master
 
 //-------------------------------------------------
 //  tia_pal_video_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-tia_pal_video_device::tia_pal_video_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: tia_video_device(mconfig, TIA_PAL_VIDEO, "TIA Video (PAL)", "tia_pal_video", tag, owner, clock)
-{
-}
-
-static MACHINE_CONFIG_FRAGMENT( tia_pal )
-	MCFG_PALETTE_ADD("palette", TIA_PALETTE_LENGTH)
-	MCFG_PALETTE_INIT_OWNER(tia_pal_video_device, tia_pal)
-MACHINE_CONFIG_END
-
-//-------------------------------------------------
-//  machine_config_additions - return a pointer to
-//  the device's machine fragment
-//-------------------------------------------------
-
-machine_config_constructor tia_pal_video_device::device_mconfig_additions() const
-{
-	return MACHINE_CONFIG_NAME( tia_pal );
-}
-
-// device type definition
-const device_type TIA_NTSC_VIDEO = &device_creator<tia_ntsc_video_device>;
-=======
 tia_pal_video_device::tia_pal_video_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: tia_video_device(mconfig, TIA_PAL_VIDEO, tag, owner, clock)
 {
@@ -452,33 +384,11 @@ MACHINE_CONFIG_END
 
 // device type definition
 DEFINE_DEVICE_TYPE(TIA_NTSC_VIDEO, tia_ntsc_video_device, "tia_ntsc_video", "TIA Video (NTSC)")
->>>>>>> upstream/master
 
 //-------------------------------------------------
 //  tia_ntsc_video_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-tia_ntsc_video_device::tia_ntsc_video_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: tia_video_device(mconfig, TIA_NTSC_VIDEO, "TIA Video (NTSC)", "tia_ntsc_video", tag, owner, clock)
-{
-}
-
-static MACHINE_CONFIG_FRAGMENT( tia_ntsc )
-	MCFG_PALETTE_ADD("palette", TIA_PALETTE_LENGTH)
-	MCFG_PALETTE_INIT_OWNER(tia_ntsc_video_device, tia_ntsc)
-MACHINE_CONFIG_END
-
-//-------------------------------------------------
-//  machine_config_additions - return a pointer to
-//  the device's machine fragment
-//-------------------------------------------------
-
-machine_config_constructor tia_ntsc_video_device::device_mconfig_additions() const
-{
-	return MACHINE_CONFIG_NAME( tia_ntsc );
-}
-=======
 tia_ntsc_video_device::tia_ntsc_video_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: tia_video_device(mconfig, TIA_NTSC_VIDEO, tag, owner, clock)
 {
@@ -492,7 +402,6 @@ MACHINE_CONFIG_MEMBER( tia_ntsc_video_device::device_add_mconfig )
 	MCFG_PALETTE_ADD("palette", TIA_PALETTE_LENGTH)
 	MCFG_PALETTE_INIT_OWNER(tia_ntsc_video_device, tia_ntsc)
 MACHINE_CONFIG_END
->>>>>>> upstream/master
 
 //-------------------------------------------------
 //  device_start - device-specific startup
@@ -509,15 +418,9 @@ void tia_video_device::device_start()
 	int cx = m_screen->width();
 
 	screen_height = m_screen->height();
-<<<<<<< HEAD
-	helper[0] = auto_bitmap_ind16_alloc(machine(), cx, TIA_MAX_SCREEN_HEIGHT);
-	helper[1] = auto_bitmap_ind16_alloc(machine(), cx, TIA_MAX_SCREEN_HEIGHT);
-	helper[2] = auto_bitmap_ind16_alloc(machine(), cx, TIA_MAX_SCREEN_HEIGHT);
-=======
 	helper[0] = std::make_unique<bitmap_ind16>(cx, TIA_MAX_SCREEN_HEIGHT);
 	helper[1] = std::make_unique<bitmap_ind16>(cx, TIA_MAX_SCREEN_HEIGHT);
 	helper[2] = std::make_unique<bitmap_ind16>(cx, TIA_MAX_SCREEN_HEIGHT);
->>>>>>> upstream/master
 
 	register_save_state();
 }
@@ -527,11 +430,7 @@ void tia_video_device::device_start()
 //  screen_update -
 //-------------------------------------------------
 
-<<<<<<< HEAD
-UINT32 tia_video_device::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t tia_video_device::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	screen_height = screen.height();
 	copybitmap(bitmap, *helper[2], 0, 0, 0, 0, cliprect);
@@ -539,13 +438,8 @@ uint32_t tia_video_device::screen_update(screen_device &screen, bitmap_ind16 &bi
 }
 
 
-<<<<<<< HEAD
-void tia_video_device::draw_sprite_helper(UINT8* p, UINT8 *col, struct player_gfx *gfx,
-	UINT8 GRP, UINT8 COLUP, UINT8 REFP)
-=======
 void tia_video_device::draw_sprite_helper(uint8_t* p, uint8_t *col, struct player_gfx *gfx,
 	uint8_t GRP, uint8_t COLUP, uint8_t REFP)
->>>>>>> upstream/master
 {
 	int i;
 	int j;
@@ -577,13 +471,8 @@ void tia_video_device::draw_sprite_helper(uint8_t* p, uint8_t *col, struct playe
 }
 
 
-<<<<<<< HEAD
-void tia_video_device::draw_missile_helper(UINT8* p, UINT8* col, int horz, int skipdelay, int latch, int start,
-	UINT8 RESMP, UINT8 ENAM, UINT8 NUSIZ, UINT8 COLUM)
-=======
 void tia_video_device::draw_missile_helper(uint8_t* p, uint8_t* col, int horz, int skipdelay, int latch, int start,
 	uint8_t RESMP, uint8_t ENAM, uint8_t NUSIZ, uint8_t COLUM)
->>>>>>> upstream/master
 {
 	int num = nusiz[NUSIZ & 7][0];
 	int skp = nusiz[NUSIZ & 7][2];
@@ -646,17 +535,10 @@ void tia_video_device::draw_missile_helper(uint8_t* p, uint8_t* col, int horz, i
 }
 
 
-<<<<<<< HEAD
-void tia_video_device::draw_playfield_helper(UINT8* p, UINT8* col, int horz,
-	UINT8 COLU, UINT8 REFPF)
-{
-	UINT32 PF =
-=======
 void tia_video_device::draw_playfield_helper(uint8_t* p, uint8_t* col, int horz,
 	uint8_t COLU, uint8_t REFPF)
 {
 	uint32_t PF =
->>>>>>> upstream/master
 		(BITSWAP8(PF0, 0, 1, 2, 3, 4, 5, 6, 7) << 0x10) |
 		(BITSWAP8(PF1, 7, 6, 5, 4, 3, 2, 1, 0) << 0x08) |
 		(BITSWAP8(PF2, 0, 1, 2, 3, 4, 5, 6, 7) << 0x00);
@@ -666,11 +548,7 @@ void tia_video_device::draw_playfield_helper(uint8_t* p, uint8_t* col, int horz,
 
 	if (REFPF)
 	{
-<<<<<<< HEAD
-		UINT32 swap = 0;
-=======
 		uint32_t swap = 0;
->>>>>>> upstream/master
 
 		for (i = 0; i < 20; i++)
 		{
@@ -703,11 +581,7 @@ void tia_video_device::draw_playfield_helper(uint8_t* p, uint8_t* col, int horz,
 }
 
 
-<<<<<<< HEAD
-void tia_video_device::draw_ball_helper(UINT8* p, UINT8* col, int horz, UINT8 ENAB)
-=======
 void tia_video_device::draw_ball_helper(uint8_t* p, uint8_t* col, int horz, uint8_t ENAB)
->>>>>>> upstream/master
 {
 	int width = 1 << ((CTRLPF >> 4) & 3);
 
@@ -726,61 +600,37 @@ void tia_video_device::draw_ball_helper(uint8_t* p, uint8_t* col, int horz, uint
 }
 
 
-<<<<<<< HEAD
-void tia_video_device::drawS0(UINT8* p, UINT8* col)
-=======
 void tia_video_device::drawS0(uint8_t* p, uint8_t* col)
->>>>>>> upstream/master
 {
 	draw_sprite_helper(p, col, &p0gfx, (VDELP0 & 1) ? prevGRP0 : GRP0, COLUP0, REFP0);
 }
 
 
-<<<<<<< HEAD
-void tia_video_device::drawS1(UINT8* p, UINT8* col)
-=======
 void tia_video_device::drawS1(uint8_t* p, uint8_t* col)
->>>>>>> upstream/master
 {
 	draw_sprite_helper(p, col, &p1gfx, (VDELP1 & 1) ? prevGRP1 : GRP1, COLUP1, REFP1);
 }
 
 
-<<<<<<< HEAD
-void tia_video_device::drawM0(UINT8* p, UINT8* col)
-=======
 void tia_video_device::drawM0(uint8_t* p, uint8_t* col)
->>>>>>> upstream/master
 {
 	draw_missile_helper(p, col, horzM0, skipM0delay, HMM0_latch, startM0, RESMP0, ENAM0, NUSIZ0, COLUP0);
 }
 
 
-<<<<<<< HEAD
-void tia_video_device::drawM1(UINT8* p, UINT8* col)
-=======
 void tia_video_device::drawM1(uint8_t* p, uint8_t* col)
->>>>>>> upstream/master
 {
 	draw_missile_helper(p, col, horzM1, skipM1delay, HMM1_latch, startM1, RESMP1, ENAM1, NUSIZ1, COLUP1);
 }
 
 
-<<<<<<< HEAD
-void tia_video_device::drawBL(UINT8* p, UINT8* col)
-=======
 void tia_video_device::drawBL(uint8_t* p, uint8_t* col)
->>>>>>> upstream/master
 {
 	draw_ball_helper(p, col, horzBL, (VDELBL & 1) ? prevENABL : ENABL);
 }
 
 
-<<<<<<< HEAD
-void tia_video_device::drawPF(UINT8* p, UINT8 *col)
-=======
 void tia_video_device::drawPF(uint8_t* p, uint8_t *col)
->>>>>>> upstream/master
 {
 	draw_playfield_helper(p, col, 0,
 		((CTRLPF & 6) == 2) ? COLUP0 : COLUPF, 0);
@@ -790,11 +640,7 @@ void tia_video_device::drawPF(uint8_t* p, uint8_t *col)
 }
 
 
-<<<<<<< HEAD
-int tia_video_device::collision_check(UINT8* p1, UINT8* p2, int x1, int x2)
-=======
 int tia_video_device::collision_check(uint8_t* p1, uint8_t* p2, int x1, int x2)
->>>>>>> upstream/master
 {
 	int i;
 
@@ -875,16 +721,6 @@ void tia_video_device::update_bitmap(int next_x, int next_y)
 	int x;
 	int y;
 
-<<<<<<< HEAD
-	UINT8 linePF[160];
-	UINT8 lineP0[160];
-	UINT8 lineP1[160];
-	UINT8 lineM0[160];
-	UINT8 lineM1[160];
-	UINT8 lineBL[160];
-
-	UINT8 temp[160];
-=======
 	uint8_t linePF[160];
 	uint8_t lineP0[160];
 	uint8_t lineP1[160];
@@ -893,7 +729,6 @@ void tia_video_device::update_bitmap(int next_x, int next_y)
 	uint8_t lineBL[160];
 
 	uint8_t temp[160];
->>>>>>> upstream/master
 
 	if (prev_y >= next_y && prev_x >= next_x)
 	{
@@ -937,11 +772,7 @@ void tia_video_device::update_bitmap(int next_x, int next_y)
 
 	for (y = prev_y; y <= next_y; y++)
 	{
-<<<<<<< HEAD
-		UINT16* p;
-=======
 		uint16_t* p;
->>>>>>> upstream/master
 
 		int x1 = prev_x;
 		int x2 = next_x;
@@ -1148,15 +979,9 @@ void tia_video_device::update_bitmap(int next_x, int next_y)
 		if ( x2 == 160 && y % screen_height == (screen_height - 1) ) {
 			int t_y;
 			for ( t_y = 0; t_y < helper[2]->height(); t_y++ ) {
-<<<<<<< HEAD
-				UINT16* l0 = &helper[current_bitmap]->pix16(t_y);
-				UINT16* l1 = &helper[1 - current_bitmap]->pix16(t_y);
-				UINT16* l2 = &helper[2]->pix16(t_y);
-=======
 				uint16_t* l0 = &helper[current_bitmap]->pix16(t_y);
 				uint16_t* l1 = &helper[1 - current_bitmap]->pix16(t_y);
 				uint16_t* l2 = &helper[2]->pix16(t_y);
->>>>>>> upstream/master
 				int t_x;
 				for( t_x = 0; t_x < helper[2]->width(); t_x++ ) {
 					if ( l0[t_x] != l1[t_x] ) {
@@ -1249,19 +1074,11 @@ WRITE8_MEMBER( tia_video_device::HMP0_w )
 		return;
 
 	/* Check if HMOVE cycles are still being applied */
-<<<<<<< HEAD
-	if ( HMOVE_started != HMOVE_INACTIVE && curr_x < MIN( HMOVE_started + 6 + motclkP0 * 4, 7 ) ) {
-		int new_motclkP0 = ( data ^ 0x80 ) >> 4;
-
-		/* Check if new horizontal move can still be applied normally */
-		if ( new_motclkP0 > motclkP0 || curr_x <= MIN( HMOVE_started + 6 + new_motclkP0 * 4, 7 ) ) {
-=======
 	if ( HMOVE_started != HMOVE_INACTIVE && curr_x < std::min( HMOVE_started + 6 + motclkP0 * 4, 7 ) ) {
 		int new_motclkP0 = ( data ^ 0x80 ) >> 4;
 
 		/* Check if new horizontal move can still be applied normally */
 		if ( new_motclkP0 > motclkP0 || curr_x <= std::min( HMOVE_started + 6 + new_motclkP0 * 4, 7 ) ) {
->>>>>>> upstream/master
 			horzP0 -= ( new_motclkP0 - motclkP0 );
 			motclkP0 = new_motclkP0;
 		} else {
@@ -1289,19 +1106,11 @@ WRITE8_MEMBER( tia_video_device::HMP1_w )
 		return;
 
 	/* Check if HMOVE cycles are still being applied */
-<<<<<<< HEAD
-	if ( HMOVE_started != HMOVE_INACTIVE && curr_x < MIN( HMOVE_started + 6 + motclkP1 * 4, 7 ) ) {
-		int new_motclkP1 = ( data ^ 0x80 ) >> 4;
-
-		/* Check if new horizontal move can still be applied normally */
-		if ( new_motclkP1 > motclkP1 || curr_x <= MIN( HMOVE_started + 6 + new_motclkP1 * 4, 7 ) ) {
-=======
 	if ( HMOVE_started != HMOVE_INACTIVE && curr_x < std::min( HMOVE_started + 6 + motclkP1 * 4, 7 ) ) {
 		int new_motclkP1 = ( data ^ 0x80 ) >> 4;
 
 		/* Check if new horizontal move can still be applied normally */
 		if ( new_motclkP1 > motclkP1 || curr_x <= std::min( HMOVE_started + 6 + new_motclkP1 * 4, 7 ) ) {
->>>>>>> upstream/master
 			horzP1 -= ( new_motclkP1 - motclkP1 );
 			motclkP1 = new_motclkP1;
 		} else {
@@ -1329,19 +1138,11 @@ WRITE8_MEMBER( tia_video_device::HMM0_w )
 		return;
 
 	/* Check if HMOVE cycles are still being applied */
-<<<<<<< HEAD
-	if ( HMOVE_started != HMOVE_INACTIVE && curr_x < MIN( HMOVE_started + 6 + motclkM0 * 4, 7 ) ) {
-		int new_motclkM0 = ( data ^ 0x80 ) >> 4;
-
-		/* Check if new horizontal move can still be applied normally */
-		if ( new_motclkM0 > motclkM0 || curr_x <= MIN( HMOVE_started + 6 + new_motclkM0 * 4, 7 ) ) {
-=======
 	if ( HMOVE_started != HMOVE_INACTIVE && curr_x < std::min( HMOVE_started + 6 + motclkM0 * 4, 7 ) ) {
 		int new_motclkM0 = ( data ^ 0x80 ) >> 4;
 
 		/* Check if new horizontal move can still be applied normally */
 		if ( new_motclkM0 > motclkM0 || curr_x <= std::min( HMOVE_started + 6 + new_motclkM0 * 4, 7 ) ) {
->>>>>>> upstream/master
 			horzM0 -= ( new_motclkM0 - motclkM0 );
 			motclkM0 = new_motclkM0;
 		} else {
@@ -1368,19 +1169,11 @@ WRITE8_MEMBER( tia_video_device::HMM1_w )
 		return;
 
 	/* Check if HMOVE cycles are still being applied */
-<<<<<<< HEAD
-	if ( HMOVE_started != HMOVE_INACTIVE && curr_x < MIN( HMOVE_started + 6 + motclkM1 * 4, 7 ) ) {
-		int new_motclkM1 = ( data ^ 0x80 ) >> 4;
-
-		/* Check if new horizontal move can still be applied normally */
-		if ( new_motclkM1 > motclkM1 || curr_x <= MIN( HMOVE_started + 6 + new_motclkM1 * 4, 7 ) ) {
-=======
 	if ( HMOVE_started != HMOVE_INACTIVE && curr_x < std::min( HMOVE_started + 6 + motclkM1 * 4, 7 ) ) {
 		int new_motclkM1 = ( data ^ 0x80 ) >> 4;
 
 		/* Check if new horizontal move can still be applied normally */
 		if ( new_motclkM1 > motclkM1 || curr_x <= std::min( HMOVE_started + 6 + new_motclkM1 * 4, 7 ) ) {
->>>>>>> upstream/master
 			horzM1 -= ( new_motclkM1 - motclkM1 );
 			motclkM1 = new_motclkM1;
 		} else {
@@ -1407,19 +1200,11 @@ WRITE8_MEMBER( tia_video_device::HMBL_w )
 		return;
 
 	/* Check if HMOVE cycles are still being applied */
-<<<<<<< HEAD
-	if ( HMOVE_started != HMOVE_INACTIVE && curr_x < MIN( HMOVE_started + 6 + motclkBL * 4, 7 ) ) {
-		int new_motclkBL = ( data ^ 0x80 ) >> 4;
-
-		/* Check if new horizontal move can still be applied normally */
-		if ( new_motclkBL > motclkBL || curr_x <= MIN( HMOVE_started + 6 + new_motclkBL * 4, 7 ) ) {
-=======
 	if ( HMOVE_started != HMOVE_INACTIVE && curr_x < std::min( HMOVE_started + 6 + motclkBL * 4, 7 ) ) {
 		int new_motclkBL = ( data ^ 0x80 ) >> 4;
 
 		/* Check if new horizontal move can still be applied normally */
 		if ( new_motclkBL > motclkBL || curr_x <= std::min( HMOVE_started + 6 + new_motclkBL * 4, 7 ) ) {
->>>>>>> upstream/master
 			horzBL -= ( new_motclkBL - motclkBL );
 			motclkBL = new_motclkBL;
 		} else {
@@ -1747,11 +1532,7 @@ WRITE8_MEMBER( tia_video_device::CXCLR_w )
 
 
 #define RESXX_APPLY_ACTIVE_HMOVE(HORZ,MOTION,MOTCLK)                                    \
-<<<<<<< HEAD
-	if ( curr_x < MIN( HMOVE_started + 6 + 16 * 4, 7 ) ) {                              \
-=======
 	if ( curr_x < std::min( HMOVE_started + 6 + 16 * 4, 7 ) ) {                              \
->>>>>>> upstream/master
 		int decrements_passed = ( curr_x - ( HMOVE_started + 4 ) ) / 4;                 \
 		HORZ += 8;                                                                      \
 		if ( ( MOTCLK - decrements_passed ) > 0 ) {                                     \
@@ -1764,17 +1545,10 @@ WRITE8_MEMBER( tia_video_device::CXCLR_w )
 #define RESXX_APPLY_PREVIOUS_HMOVE(HORZ,MOTION)                                             \
 	if ( HMOVE_started_previous != HMOVE_INACTIVE )                                         \
 	{                                                                                       \
-<<<<<<< HEAD
-		UINT8   motclk = ( MOTION ^ 0x80 ) >> 4;                                            \
-		if ( curr_x <= HMOVE_started_previous - 228 + 5 + motclk * 4 )                      \
-		{                                                                                   \
-			UINT8   motclk_passed = ( curr_x - ( HMOVE_started_previous - 228 + 6 ) ) / 4;  \
-=======
 		uint8_t   motclk = ( MOTION ^ 0x80 ) >> 4;                                            \
 		if ( curr_x <= HMOVE_started_previous - 228 + 5 + motclk * 4 )                      \
 		{                                                                                   \
 			uint8_t   motclk_passed = ( curr_x - ( HMOVE_started_previous - 228 + 6 ) ) / 4;  \
->>>>>>> upstream/master
 			HORZ -= ( motclk - motclk_passed );                                             \
 		}                                                                                   \
 	}
@@ -2023,13 +1797,8 @@ WRITE8_MEMBER( tia_video_device::GRP1_w )
 
 READ8_MEMBER( tia_video_device::INPT_r )
 {
-<<<<<<< HEAD
-	UINT64 elapsed = machine().device<cpu_device>("maincpu")->total_cycles() - paddle_start;
-	UINT16 input = TIA_INPUT_PORT_ALWAYS_ON;
-=======
 	uint64_t elapsed = machine().device<cpu_device>("maincpu")->total_cycles() - paddle_start;
 	uint16_t input = TIA_INPUT_PORT_ALWAYS_ON;
->>>>>>> upstream/master
 	if ( !m_read_input_port_cb.isnull() )
 	{
 		input = m_read_input_port_cb(offset & 3, 0xFFFF);
@@ -2040,11 +1809,7 @@ READ8_MEMBER( tia_video_device::INPT_r )
 	if ( input == TIA_INPUT_PORT_ALWAYS_OFF )
 		return 0x00;
 
-<<<<<<< HEAD
-	UINT16 paddle_cycles = input * 76;
-=======
 	uint16_t paddle_cycles = input * 76;
->>>>>>> upstream/master
 	return elapsed > paddle_cycles ? 0x80 : 0x00;
 }
 
@@ -2056,11 +1821,7 @@ READ8_MEMBER( tia_video_device::read )
 		 that we will call that, otherwise we will use the lower
 		 bit of the offset.
 	*/
-<<<<<<< HEAD
-	UINT8 data = offset & 0x3f;
-=======
 	uint8_t data = offset & 0x3f;
->>>>>>> upstream/master
 
 	if ( !m_databus_contents_cb.isnull() )
 	{

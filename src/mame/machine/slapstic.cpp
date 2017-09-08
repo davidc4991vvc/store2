@@ -181,15 +181,6 @@
 *************************************************************************/
 
 
-<<<<<<< HEAD
-#include "includes/slapstic.h"
-
-
-extern const device_type SLAPSTIC = &device_creator<atari_slapstic_device>;
-
-atari_slapstic_device::atari_slapstic_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, SLAPSTIC, "Atari Slapstic", tag, owner, clock, "slapstic", __FILE__),
-=======
 #include "emu.h"
 #include "includes/slapstic.h"
 
@@ -211,7 +202,6 @@ DEFINE_DEVICE_TYPE(SLAPSTIC, atari_slapstic_device, "slapstic", "Atari Slapstic"
 
 atari_slapstic_device::atari_slapstic_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, SLAPSTIC, tag, owner, clock),
->>>>>>> upstream/master
 	state(0),
 	current_bank(0),
 	access_68k(-1),
@@ -740,11 +730,7 @@ static const struct slapstic_data slapstic118 =
 static const struct slapstic_data *const slapstic_table[] =
 {
 	&slapstic101,   /* NOT confirmed! */
-<<<<<<< HEAD
-	NULL,           /* never seen */
-=======
 	nullptr,           /* never seen */
->>>>>>> upstream/master
 	&slapstic103,
 	&slapstic104,
 	&slapstic105,
@@ -764,15 +750,12 @@ static const struct slapstic_data *const slapstic_table[] =
 };
 
 
-<<<<<<< HEAD
-=======
 void atari_slapstic_device::device_validity_check(validity_checker &valid) const
 {
 	// only a small number of chips are known to exist
 	if (m_chipnum < 101 || m_chipnum > 118 || !slapstic_table[m_chipnum - 101])
 		osd_printf_error("Unknown slapstic number: %d\n", m_chipnum);
 }
->>>>>>> upstream/master
 
 
 /*************************************
@@ -781,36 +764,17 @@ void atari_slapstic_device::device_validity_check(validity_checker &valid) const
  *
  *************************************/
 
-<<<<<<< HEAD
-void atari_slapstic_device::slapstic_init(running_machine &machine, int chip)
-=======
 void atari_slapstic_device::slapstic_init()
->>>>>>> upstream/master
 {
 	if (access_68k == -1)
 	{
 		/* see if we're 68k or 6502/6809 based */
-<<<<<<< HEAD
-		device_type cputype = machine.device(":maincpu")->type();
-		access_68k = (cputype == M68000 || cputype == M68010);
-	}
-
-	/* only a small number of chips are known to exist */
-	if (chip < 101 || chip > 118)
-		return;
-
-	/* set up the parameters */
-	if (!slapstic_table[chip - 101])
-		return;
-	slapstic = *slapstic_table[chip - 101];
-=======
 		device_type cputype = machine().device(":maincpu")->type();
 		access_68k = (cputype == M68000 || cputype == M68010);
 	}
 
 	/* set up the parameters */
 	slapstic = *slapstic_table[m_chipnum - 101];
->>>>>>> upstream/master
 
 	/* reset the chip */
 	slapstic_reset();
@@ -871,20 +835,12 @@ int atari_slapstic_device::alt2_kludge(address_space &space, offs_t offset)
 		if (MATCHES_MASK_VALUE(space.device().safe_pc() >> 1, slapstic.alt1))
 		{
 			/* now look for a move.w (An),(An) or cmpm.w (An)+,(An)+ */
-<<<<<<< HEAD
-			UINT16 opcode = space.direct().read_word(space.device().safe_pcbase() & 0xffffff);
-=======
 			uint16_t opcode = space.direct().read_word(space.device().safe_pcbase() & 0xffffff);
->>>>>>> upstream/master
 			if ((opcode & 0xf1f8) == 0x3090 || (opcode & 0xf1f8) == 0xb148)
 			{
 				/* fetch the value of the register for the second operand, and see */
 				/* if it matches the third alternate */
-<<<<<<< HEAD
-				UINT32 regval = space.device().state().state_int(M68K_A0 + ((opcode >> 9) & 7)) >> 1;
-=======
 				uint32_t regval = space.device().state().state_int(M68K_A0 + ((opcode >> 9) & 7)) >> 1;
->>>>>>> upstream/master
 				if (MATCHES_MASK_VALUE(regval, slapstic.alt3))
 				{
 					alt_bank = (regval >> slapstic.altshift) & 3;
@@ -1149,11 +1105,7 @@ void atari_slapstic_device::slapstic_log(running_machine &machine, offs_t offset
 			fprintf(slapsticlog, "------------------------------------\n");
 		last_time = time;
 
-<<<<<<< HEAD
-		fprintf(slapsticlog, "%s: %04X B=%d ", machine.describe_context(), offset, current_bank);
-=======
 		fprintf(slapsticlog, "%s: %04X B=%d ", machine.describe_context().c_str(), offset, current_bank);
->>>>>>> upstream/master
 		switch (state)
 		{
 			case DISABLED:

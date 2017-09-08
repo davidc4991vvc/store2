@@ -16,10 +16,6 @@
 
 #include "emu.h"
 #include "z80pio.h"
-<<<<<<< HEAD
-#include "cpu/z80/z80daisy.h"
-=======
->>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -35,23 +31,14 @@
 //**************************************************************************
 
 // device type definition
-<<<<<<< HEAD
-const device_type Z80PIO = &device_creator<z80pio_device>;
-=======
 DEFINE_DEVICE_TYPE(Z80PIO, z80pio_device, "z80pio", "Z80 PIO")
->>>>>>> upstream/master
 
 //-------------------------------------------------
 //  z80pio_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-z80pio_device::z80pio_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-	device_t(mconfig, Z80PIO, "Z80 PIO", tag, owner, clock, "z80pio", __FILE__),
-=======
 z80pio_device::z80pio_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	device_t(mconfig, Z80PIO, tag, owner, clock),
->>>>>>> upstream/master
 	device_z80daisy_interface(mconfig, *this),
 	m_out_int_cb(*this),
 	m_in_pa_cb(*this),
@@ -143,11 +130,7 @@ int z80pio_device::z80daisy_irq_ack()
 
 		if (port.m_ip)
 		{
-<<<<<<< HEAD
-			if (LOG) logerror("Z80PIO '%s' Port %c Interrupt Acknowledge\n", tag(), 'A' + index);
-=======
 			if (LOG) logerror("Z80PIO Port %c Interrupt Acknowledge\n", 'A' + index);
->>>>>>> upstream/master
 
 			// clear interrupt pending flag
 			port.m_ip = false;
@@ -180,11 +163,7 @@ void z80pio_device::z80daisy_irq_reti()
 
 		if (port.m_ius)
 		{
-<<<<<<< HEAD
-			if (LOG) logerror("Z80PIO '%s' Port %c Return from Interrupt\n", tag(), 'A' + index);
-=======
 			if (LOG) logerror("Z80PIO Port %c Return from Interrupt\n", 'A' + index);
->>>>>>> upstream/master
 
 			// clear interrupt under service flag
 			port.m_ius = false;
@@ -253,11 +232,7 @@ WRITE8_MEMBER( z80pio_device::write_alt )
 //  control_read - control register read
 //-------------------------------------------------
 
-<<<<<<< HEAD
-UINT8 z80pio_device::control_read()
-=======
 uint8_t z80pio_device::control_read()
->>>>>>> upstream/master
 {
 	return (m_port[PORT_A].m_icw & 0xc0) | (m_port[PORT_B].m_icw >> 4);
 }
@@ -275,11 +250,7 @@ void z80pio_device::check_interrupts()
 
 	for (int index = PORT_A; index < PORT_COUNT; index++)
 	{
-<<<<<<< HEAD
-		if (LOG) logerror("Z80PIO '%s' Port %c IE %s IP %s IUS %s\n", tag(), 'A' + index, m_port[index].m_ie ? "1":"0", m_port[index].m_ip ? "1":"0", m_port[index].m_ius ? "1":"0");
-=======
 		if (LOG) logerror("Z80PIO Port %c IE %s IP %s IUS %s\n", 'A' + index, m_port[index].m_ie ? "1":"0", m_port[index].m_ip ? "1":"0", m_port[index].m_ius ? "1":"0");
->>>>>>> upstream/master
 
 		if (!ius && m_port[index].m_ie && m_port[index].m_ip)
 		{
@@ -287,11 +258,7 @@ void z80pio_device::check_interrupts()
 		}
 	}
 
-<<<<<<< HEAD
-	if (LOG) logerror("Z80PIO '%s' INT %u\n", tag(), state);
-=======
 	if (LOG) logerror("Z80PIO INT %u\n", state);
->>>>>>> upstream/master
 
 	m_out_int_cb(state);
 }
@@ -307,11 +274,7 @@ void z80pio_device::check_interrupts()
 //-------------------------------------------------
 
 z80pio_device::pio_port::pio_port() :
-<<<<<<< HEAD
-	m_device(NULL),
-=======
 	m_device(nullptr),
->>>>>>> upstream/master
 	m_index(0),
 	m_mode(0),
 	m_next_control_word(0),
@@ -396,11 +359,7 @@ void z80pio_device::pio_port::reset()
 void z80pio_device::pio_port::trigger_interrupt()
 {
 	m_ip = true;
-<<<<<<< HEAD
-	if (LOG) m_device->logerror("Z80PIO '%s' Port %c Transfer Mode Interrupt Pending\n", m_device->tag(), 'A' + m_index);
-=======
 	if (LOG) m_device->logerror("Z80PIO Port %c Transfer Mode Interrupt Pending\n", 'A' + m_index);
->>>>>>> upstream/master
 
 	check_interrupts();
 }
@@ -414,11 +373,7 @@ void z80pio_device::pio_port::set_rdy(bool state)
 {
 	if (m_rdy == state) return;
 
-<<<<<<< HEAD
-	if (LOG) m_device->logerror("Z80PIO '%s' Port %c Ready: %u\n", m_device->tag(), 'A' + m_index, state);
-=======
 	if (LOG) m_device->logerror("Z80PIO Port %c Ready: %u\n", 'A' + m_index, state);
->>>>>>> upstream/master
 
 	m_rdy = state;
 	if (m_index == PORT_A)
@@ -434,19 +389,11 @@ void z80pio_device::pio_port::set_rdy(bool state)
 
 void z80pio_device::pio_port::set_mode(int mode)
 {
-<<<<<<< HEAD
-	if (LOG) m_device->logerror("Z80PIO '%s' Port %c Mode: %u\n", m_device->tag(), 'A' + m_index, mode);
-
-	switch (mode)
-	{
-	case MODE_OUTPUT:
-=======
 	switch (mode)
 	{
 	case MODE_OUTPUT:
 		if (LOG) m_device->logerror("Z80PIO Port %c Mode: Output\n", 'A' + m_index);
 
->>>>>>> upstream/master
 		// enable data output
 		if (m_index == PORT_A)
 			m_device->m_out_pa_cb((offs_t)0, m_output);
@@ -461,11 +408,8 @@ void z80pio_device::pio_port::set_mode(int mode)
 		break;
 
 	case MODE_INPUT:
-<<<<<<< HEAD
-=======
 		if (LOG) m_device->logerror("Z80PIO Port %c Mode: Input\n", 'A' + m_index);
 
->>>>>>> upstream/master
 		// set mode register
 		m_mode = mode;
 		break;
@@ -473,29 +417,19 @@ void z80pio_device::pio_port::set_mode(int mode)
 	case MODE_BIDIRECTIONAL:
 		if (m_index == PORT_B)
 		{
-<<<<<<< HEAD
-			m_device->logerror("Z80PIO '%s' Port %c Invalid Mode: %u!\n", m_device->tag(), 'A' + m_index, mode);
-		}
-		else
-		{
-=======
 			m_device->logerror("Z80PIO Port %c Invalid Mode: %u!\n", 'A' + m_index, mode);
 		}
 		else
 		{
 			if (LOG) m_device->logerror("Z80PIO Port %c Mode: Bidirectional\n", 'A' + m_index);
->>>>>>> upstream/master
 			// set mode register
 			m_mode = mode;
 		}
 		break;
 
 	case MODE_BIT_CONTROL:
-<<<<<<< HEAD
-=======
 		if (LOG) m_device->logerror("Z80PIO Port %c Mode: Bit Control\n", 'A' + m_index);
 
->>>>>>> upstream/master
 		if ((m_index == PORT_A) || (m_device->m_port[PORT_A].m_mode != MODE_BIDIRECTIONAL))
 		{
 			// clear ready line
@@ -525,11 +459,7 @@ void z80pio_device::pio_port::set_mode(int mode)
 
 void z80pio_device::pio_port::strobe(bool state)
 {
-<<<<<<< HEAD
-	if (LOG) m_device->logerror("Z80PIO '%s' Port %c Strobe: %u\n", m_device->tag(), 'A' + m_index, state);
-=======
 	if (LOG) m_device->logerror("Z80PIO Port %c Strobe: %u\n", 'A' + m_index, state);
->>>>>>> upstream/master
 
 	if (m_device->m_port[PORT_A].m_mode == MODE_BIDIRECTIONAL)
 	{
@@ -596,15 +526,9 @@ void z80pio_device::pio_port::strobe(bool state)
 //  read - port I/O read
 //-------------------------------------------------
 
-<<<<<<< HEAD
-UINT8 z80pio_device::pio_port::read()
-{
-	UINT8 data = 0xff;
-=======
 uint8_t z80pio_device::pio_port::read()
 {
 	uint8_t data = 0xff;
->>>>>>> upstream/master
 
 	switch (m_mode)
 	{
@@ -630,11 +554,7 @@ uint8_t z80pio_device::pio_port::read()
 //  write - port I/O write
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void z80pio_device::pio_port::write(UINT8 data)
-=======
 void z80pio_device::pio_port::write(uint8_t data)
->>>>>>> upstream/master
 {
 	if (m_mode == MODE_BIT_CONTROL)
 	{
@@ -642,13 +562,8 @@ void z80pio_device::pio_port::write(uint8_t data)
 		m_input = data;
 
 		// fetch input data (ignore output lines)
-<<<<<<< HEAD
-		UINT8 data = (m_input & m_ior) | (m_output & ~m_ior);
-		UINT8 mask = ~m_mask;
-=======
 		uint8_t data = (m_input & m_ior) | (m_output & ~m_ior);
 		uint8_t mask = ~m_mask;
->>>>>>> upstream/master
 		bool match = false;
 
 		data &= mask;
@@ -662,11 +577,7 @@ void z80pio_device::pio_port::write(uint8_t data)
 		{
 			// trigger interrupt
 			m_ip = true;
-<<<<<<< HEAD
-			if (LOG) m_device->logerror("Z80PIO '%s' Port %c Bit Control Mode Interrupt Pending\n", m_device->tag(), 'A' + m_index);
-=======
 			if (LOG) m_device->logerror("Z80PIO Port %c Bit Control Mode Interrupt Pending\n", 'A' + m_index);
->>>>>>> upstream/master
 		}
 
 		m_match = match;
@@ -680,11 +591,7 @@ void z80pio_device::pio_port::write(uint8_t data)
 //  control_write - control register write
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void z80pio_device::pio_port::control_write(UINT8 data)
-=======
 void z80pio_device::pio_port::control_write(uint8_t data)
->>>>>>> upstream/master
 {
 	switch (m_next_control_word)
 	{
@@ -693,11 +600,7 @@ void z80pio_device::pio_port::control_write(uint8_t data)
 		{
 			// load interrupt vector
 			m_vector = data;
-<<<<<<< HEAD
-			if (LOG) m_device->logerror("Z80PIO '%s' Port %c Interrupt Vector: %02x\n", m_device->tag(), 'A' + m_index, data);
-=======
 			if (LOG) m_device->logerror("Z80PIO Port %c Interrupt Vector: %02x\n", 'A' + m_index, data);
->>>>>>> upstream/master
 
 			// set interrupt enable
 			m_icw |= ICW_ENABLE_INT;
@@ -717,17 +620,10 @@ void z80pio_device::pio_port::control_write(uint8_t data)
 
 				if (LOG)
 				{
-<<<<<<< HEAD
-					m_device->logerror("Z80PIO '%s' Port %c Interrupt Enable: %u\n", m_device->tag(), 'A' + m_index, BIT(data, 7));
-					m_device->logerror("Z80PIO '%s' Port %c Logic: %s\n", m_device->tag(), 'A' + m_index, BIT(data, 6) ? "AND" : "OR");
-					m_device->logerror("Z80PIO '%s' Port %c Active %s\n", m_device->tag(), 'A' + m_index, BIT(data, 5) ? "High" : "Low");
-					m_device->logerror("Z80PIO '%s' Port %c Mask Follows: %u\n", m_device->tag(), 'A' + m_index, BIT(data, 4));
-=======
 					m_device->logerror("Z80PIO Port %c Interrupt Enable: %u\n", 'A' + m_index, BIT(data, 7));
 					m_device->logerror("Z80PIO Port %c Logic: %s\n", 'A' + m_index, BIT(data, 6) ? "AND" : "OR");
 					m_device->logerror("Z80PIO Port %c Active %s\n", 'A' + m_index, BIT(data, 5) ? "High" : "Low");
 					m_device->logerror("Z80PIO Port %c Mask Follows: %u\n", 'A' + m_index, BIT(data, 4));
->>>>>>> upstream/master
 				}
 
 				if (m_icw & ICW_MASK_FOLLOWS)
@@ -755,11 +651,7 @@ void z80pio_device::pio_port::control_write(uint8_t data)
 
 			case 0x03: // set interrupt enable flip-flop
 				m_icw = (data & 0x80) | (m_icw & 0x7f);
-<<<<<<< HEAD
-				if (LOG) m_device->logerror("Z80PIO '%s' Port %c Interrupt Enable: %u\n", m_device->tag(), 'A' + m_index, BIT(data, 7));
-=======
 				if (LOG) m_device->logerror("Z80PIO Port %c Interrupt Enable: %u\n", 'A' + m_index, BIT(data, 7));
->>>>>>> upstream/master
 
 				// set interrupt enable
 				m_ie = BIT(m_icw, 7) ? true : false;
@@ -767,22 +659,14 @@ void z80pio_device::pio_port::control_write(uint8_t data)
 				break;
 
 			default:
-<<<<<<< HEAD
-				m_device->logerror("Z80PIO '%s' Port %c Invalid Control Word: %02x!\n", m_device->tag(), 'A' + m_index, data);
-=======
 				m_device->logerror("Z80PIO Port %c Invalid Control Word: %02x!\n", 'A' + m_index, data);
->>>>>>> upstream/master
 			}
 		}
 		break;
 
 	case IOR: // data direction register
 		m_ior = data;
-<<<<<<< HEAD
-		if (LOG) m_device->logerror("Z80PIO '%s' Port %c IOR: %02x\n", m_device->tag(), 'A' + m_index, data);
-=======
 		if (LOG) m_device->logerror("Z80PIO Port %c IOR: %02x\n", 'A' + m_index, data);
->>>>>>> upstream/master
 
 		// set interrupt enable
 		m_ie = BIT(m_icw, 7) ? true : false;
@@ -794,11 +678,7 @@ void z80pio_device::pio_port::control_write(uint8_t data)
 
 	case MASK: // interrupt mask
 		m_mask = data;
-<<<<<<< HEAD
-		if (LOG) m_device->logerror("Z80PIO '%s' Port %c Mask: %02x\n", m_device->tag(), 'A' + m_index, data);
-=======
 		if (LOG) m_device->logerror("Z80PIO Port %c Mask: %02x\n", 'A' + m_index, data);
->>>>>>> upstream/master
 
 		// set interrupt enable
 		m_ie = BIT(m_icw, 7) ? true : false;
@@ -815,15 +695,9 @@ void z80pio_device::pio_port::control_write(uint8_t data)
 //  data_read - data register read
 //-------------------------------------------------
 
-<<<<<<< HEAD
-UINT8 z80pio_device::pio_port::data_read()
-{
-	UINT8 data = 0;
-=======
 uint8_t z80pio_device::pio_port::data_read()
 {
 	uint8_t data = 0;
->>>>>>> upstream/master
 
 	switch (m_mode)
 	{
@@ -839,10 +713,7 @@ uint8_t z80pio_device::pio_port::data_read()
 				m_input = m_device->m_in_pa_cb(0);
 			else
 				m_input = m_device->m_in_pb_cb(0);
-<<<<<<< HEAD
-=======
 			if (LOG) m_device->logerror("Z80PIO Port %c In: %02x\n", 'A' + m_index, m_input);
->>>>>>> upstream/master
 		}
 
 		data = m_input;
@@ -870,10 +741,7 @@ uint8_t z80pio_device::pio_port::data_read()
 			m_input = m_device->m_in_pa_cb(0);
 		else
 			m_input = m_device->m_in_pb_cb(0);
-<<<<<<< HEAD
-=======
 		if (LOG) m_device->logerror("Z80PIO Port %c In: %02x & %02x\n", 'A' + m_index, m_input, m_ior);
->>>>>>> upstream/master
 
 		data = (m_input & m_ior) | (m_output & (m_ior ^ 0xff));
 		break;
@@ -887,11 +755,7 @@ uint8_t z80pio_device::pio_port::data_read()
 //  data_write - data register write
 //-------------------------------------------------
 
-<<<<<<< HEAD
-void z80pio_device::pio_port::data_write(UINT8 data)
-=======
 void z80pio_device::pio_port::data_write(uint8_t data)
->>>>>>> upstream/master
 {
 	switch (m_mode)
 	{
@@ -901,10 +765,7 @@ void z80pio_device::pio_port::data_write(uint8_t data)
 
 		// latch output data
 		m_output = data;
-<<<<<<< HEAD
-=======
 		if (LOG) m_device->logerror("Z80PIO Port %c Out: %02x\n", 'A' + m_index, m_output);
->>>>>>> upstream/master
 
 		// output data to port
 		if (m_index == PORT_A)
@@ -930,11 +791,8 @@ void z80pio_device::pio_port::data_write(uint8_t data)
 
 		if (!m_stb)
 		{
-<<<<<<< HEAD
-=======
 			if (LOG) m_device->logerror("Z80PIO Port %c Out: %02x\n", 'A' + m_index, m_output);
 
->>>>>>> upstream/master
 			// output data to port
 			if (m_index == PORT_A)
 				m_device->m_out_pa_cb((offs_t)0, data);
@@ -949,10 +807,7 @@ void z80pio_device::pio_port::data_write(uint8_t data)
 	case MODE_BIT_CONTROL:
 		// latch output data
 		m_output = data;
-<<<<<<< HEAD
-=======
 		if (LOG) m_device->logerror("Z80PIO Port %c Out: %02x | %02x\n", 'A' + m_index, m_output, m_ior);
->>>>>>> upstream/master
 
 		// output data to port
 		if (m_index == PORT_A)

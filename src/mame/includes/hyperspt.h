@@ -13,26 +13,13 @@ public:
 		m_scroll(*this, "scroll"),
 		m_videoram(*this, "videoram"),
 		m_colorram(*this, "colorram"),
-<<<<<<< HEAD
-		m_sn(*this, "snsnd"),
-		m_maincpu(*this, "maincpu"),
-=======
 		m_maincpu(*this, "maincpu"),
 		m_sn(*this, "snsnd"),
->>>>>>> upstream/master
 		m_vlm(*this, "vlm"),
 		m_gfxdecode(*this, "gfxdecode"),
 		m_palette(*this, "palette") { }
 
 	/* memory pointers */
-<<<<<<< HEAD
-	required_shared_ptr<UINT8> m_spriteram;
-	required_shared_ptr<UINT8> m_scroll;
-	required_shared_ptr<UINT8> m_videoram;
-	required_shared_ptr<UINT8> m_colorram;
-	optional_device<sn76496_device> m_sn;
-	required_device<cpu_device> m_maincpu;
-=======
 	required_shared_ptr<uint8_t> m_spriteram;
 	required_shared_ptr<uint8_t> m_scroll;
 	required_shared_ptr<uint8_t> m_videoram;
@@ -41,39 +28,10 @@ public:
 	/* devices */
 	required_device<cpu_device> m_maincpu;
 	optional_device<sn76496_device> m_sn;
->>>>>>> upstream/master
 	optional_device<vlm5030_device> m_vlm;
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
 
-<<<<<<< HEAD
-	UINT8 *  m_scroll2;
-	UINT8 *  m_spriteram2;
-
-	/* video-related */
-	tilemap_t  *m_bg_tilemap;
-	int      m_sprites_gfx_banked;
-
-	UINT8    m_irq_mask;
-	DECLARE_WRITE8_MEMBER(hyperspt_coin_counter_w);
-	DECLARE_WRITE8_MEMBER(irq_mask_w);
-	DECLARE_WRITE8_MEMBER(hyperspt_videoram_w);
-	DECLARE_WRITE8_MEMBER(hyperspt_colorram_w);
-	DECLARE_WRITE8_MEMBER(hyperspt_flipscreen_w);
-	DECLARE_DRIVER_INIT(hyperspt);
-
-	UINT8 m_SN76496_latch;
-	DECLARE_WRITE8_MEMBER( konami_SN76496_latch_w ) { m_SN76496_latch = data; };
-	DECLARE_WRITE8_MEMBER( konami_SN76496_w ) { m_sn->write(space, offset, m_SN76496_latch); };
-	TILE_GET_INFO_MEMBER(get_bg_tile_info);
-	TILE_GET_INFO_MEMBER(roadf_get_bg_tile_info);
-	virtual void video_start();
-	DECLARE_PALETTE_INIT(hyperspt);
-	DECLARE_VIDEO_START(roadf);
-	UINT32 screen_update_hyperspt(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	INTERRUPT_GEN_MEMBER(vblank_irq);
-	void draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect );
-=======
 	/* video-related */
 	tilemap_t *m_bg_tilemap;
 
@@ -99,5 +57,4 @@ public:
 	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	INTERRUPT_GEN_MEMBER(vblank_irq);
 	void draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 };

@@ -15,29 +15,6 @@
 */
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "sidvoice.h"
-#include "sidenvel.h"
-#include "sid.h"
-
-static float *filterTable;
-static float *bandPassParam;
-#define lowPassParam filterTable
-static float filterResTable[16];
-
-#define maxLogicalVoices 4
-
-static const int mix16monoMiddleIndex = 256*maxLogicalVoices/2;
-static UINT16 mix16mono[256*maxLogicalVoices];
-
-static UINT16 zero16bit=0;  /* either signed or unsigned */
-//UINT32 splitBufferLen;
-
-static void MixerInit(int threeVoiceAmplify)
-{
-	long si;
-	UINT16 ui;
-=======
 #include "sid.h"
 
 #include "sidenvel.h"
@@ -62,7 +39,6 @@ void MixerInit(int threeVoiceAmplify)
 {
 	long si;
 	uint16_t ui;
->>>>>>> upstream/master
 	long ampDiv = maxLogicalVoices;
 
 	if (threeVoiceAmplify)
@@ -73,61 +49,14 @@ void MixerInit(int threeVoiceAmplify)
 	/* Mixing formulas are optimized by sample input value. */
 
 	si = (-128*maxLogicalVoices) * 256;
-<<<<<<< HEAD
-	for (ui = 0; ui < sizeof(mix16mono)/sizeof(UINT16); ui++ )
-	{
-		mix16mono[ui] = (UINT16)(si/ampDiv) + zero16bit;
-=======
 	for (ui = 0; ui < sizeof(mix16mono)/sizeof(uint16_t); ui++ )
 	{
 		mix16mono[ui] = (uint16_t)(si/ampDiv) + zero16bit;
->>>>>>> upstream/master
 		si+=256;
 	}
 
 }
 
-<<<<<<< HEAD
-
-INLINE void syncEm(SID6581_t *This)
-{
-	int sync1 = (This->optr1.modulator->cycleLenCount <= 0);
-	int sync2 = (This->optr2.modulator->cycleLenCount <= 0);
-	int sync3 = (This->optr3.modulator->cycleLenCount <= 0);
-
-	This->optr1.cycleLenCount--;
-	This->optr2.cycleLenCount--;
-	This->optr3.cycleLenCount--;
-
-	if (This->optr1.sync && sync1)
-	{
-		This->optr1.cycleLenCount = 0;
-		This->optr1.outProc = &sidWaveCalcNormal;
-#if defined(DIRECT_FIXPOINT)
-		optr1.waveStep.l = 0;
-#else
-		This->optr1.waveStep = (This->optr1.waveStepPnt = 0);
-#endif
-	}
-	if (This->optr2.sync && sync2)
-	{
-		This->optr2.cycleLenCount = 0;
-		This->optr2.outProc = &sidWaveCalcNormal;
-#if defined(DIRECT_FIXPOINT)
-		This->optr2.waveStep.l = 0;
-#else
-		This->optr2.waveStep = (This->optr2.waveStepPnt = 0);
-#endif
-	}
-	if (This->optr3.sync && sync3)
-	{
-		This->optr3.cycleLenCount = 0;
-		This->optr3.outProc = &sidWaveCalcNormal;
-#if defined(DIRECT_FIXPOINT)
-		optr3.waveStep.l = 0;
-#else
-		This->optr3.waveStep = (This->optr3.waveStepPnt = 0);
-=======
 } // anonymous namespace
 
 
@@ -169,31 +98,11 @@ inline void SID6581_t::syncEm()
 		optr3.waveStep.l = 0;
 #else
 		optr3.waveStep = optr3.waveStepPnt = 0;
->>>>>>> upstream/master
 #endif
 	}
 }
 
 
-<<<<<<< HEAD
-void sidEmuFillBuffer(SID6581_t *This, stream_sample_t *buffer, UINT32 bufferLen )
-{
-//void* fill16bitMono( SID6581_t *This, void* buffer, UINT32 numberOfSamples )
-
-	for ( ; bufferLen > 0; bufferLen-- )
-	{
-		*buffer++ = (INT16) mix16mono[(unsigned)(mix16monoMiddleIndex
-								+(*This->optr1.outProc)(&This->optr1)
-								+(*This->optr2.outProc)(&This->optr2)
-								+(This->optr3.outProc(&This->optr3)&This->optr3_outputmask)
-/* hack for digi sounds
-   does n't seam to come from a tone operator
-   ghostbusters and goldrunner everything except volume zeroed */
-							+(This->masterVolume<<2)
-//                        +(*sampleEmuRout)()
-		)];
-		syncEm(This);
-=======
 void SID6581_t::fill_buffer(stream_sample_t *buffer, uint32_t bufferLen)
 {
 //void* SID6581_t::fill16bitMono(void* buffer, uint32_t numberOfSamples)
@@ -211,7 +120,6 @@ void SID6581_t::fill_buffer(stream_sample_t *buffer, uint32_t bufferLen)
 //                        +(*sampleEmuRout)()
 		)];
 		syncEm();
->>>>>>> upstream/master
 	}
 }
 
@@ -220,33 +128,6 @@ void SID6581_t::fill_buffer(stream_sample_t *buffer, uint32_t bufferLen)
 
 /* Reset. */
 
-<<<<<<< HEAD
-int sidEmuReset(SID6581_t *This)
-{
-	sidClearOperator( &This->optr1 );
-	enveEmuResetOperator( &This->optr1 );
-	sidClearOperator( &This->optr2 );
-	enveEmuResetOperator( &This->optr2 );
-	sidClearOperator( &This->optr3 );
-	enveEmuResetOperator( &This->optr3 );
-	This->optr3_outputmask = ~0;  /* on */
-
-//  sampleEmuReset();
-
-	This->filter.Type = (This->filter.CurType = 0);
-	This->filter.Value = 0;
-	This->filter.Dy = (This->filter.ResDy = 0);
-
-	sidEmuSet( &This->optr1 );
-	sidEmuSet( &This->optr2 );
-	sidEmuSet( &This->optr3 );
-
-	sidEmuSet2( &This->optr1 );
-	sidEmuSet2( &This->optr2 );
-	sidEmuSet2( &This->optr3 );
-
-	return TRUE;
-=======
 bool SID6581_t::reset()
 {
 	optr1.clear();
@@ -272,18 +153,13 @@ bool SID6581_t::reset()
 	optr3.set2();
 
 	return true;
->>>>>>> upstream/master
 }
 
 
 static void filterTableInit(running_machine &machine)
 {
 	int sample_rate = machine.sample_rate();
-<<<<<<< HEAD
-	UINT16 uk;
-=======
 	uint16_t uk;
->>>>>>> upstream/master
 	/* Parameter calculation has not been moved to a separate function */
 	/* by purpose. */
 	const float filterRefFreq = 44100.0f;
@@ -297,13 +173,8 @@ static void filterTableInit(running_machine &machine)
 	float resDyMin;
 	float resDy;
 
-<<<<<<< HEAD
-	filterTable = auto_alloc_array(machine, float, 0x800);
-	bandPassParam = auto_alloc_array(machine, float, 0x800);
-=======
 	filterTable = std::make_unique<float[]>(0x800);
 	bandPassParam = std::make_unique<float[]>(0x800);
->>>>>>> upstream/master
 
 	uk = 0;
 	for ( rk = 0; rk < 0x800; rk++ )
@@ -344,127 +215,6 @@ static void filterTableInit(running_machine &machine)
 	filterResTable[15] = resDyMax;
 }
 
-<<<<<<< HEAD
-void sid6581_init (SID6581_t *This)
-{
-	This->optr1.sid=This;
-	This->optr2.sid=This;
-	This->optr3.sid=This;
-
-	This->optr1.modulator = &This->optr3;
-	This->optr3.carrier = &This->optr1;
-	This->optr1.filtVoiceMask = 1;
-
-	This->optr2.modulator = &This->optr1;
-	This->optr1.carrier = &This->optr2;
-	This->optr2.filtVoiceMask = 2;
-
-	This->optr3.modulator = &This->optr2;
-	This->optr2.carrier = &This->optr3;
-	This->optr3.filtVoiceMask = 4;
-
-
-
-	This->PCMsid = (UINT32)(This->PCMfreq * (16777216.0 / This->clock));
-	This->PCMsidNoise = (UINT32)((This->clock*256.0)/This->PCMfreq);
-
-	This->filter.Enabled = TRUE;
-
-	sidInitMixerEngine(This->device->machine());
-	filterTableInit(This->device->machine());
-
-	sidInitWaveformTables(This->type);
-
-	enveEmuInit(This->PCMfreq, TRUE);
-
-	MixerInit(0);
-
-	sidEmuReset(This);
-}
-
-void sid6581_port_w (SID6581_t *This, int offset, int data)
-{
-	offset &= 0x1f;
-
-	switch (offset)
-	{
-		case 0x19: case 0x1a: case 0x1b: case 0x1c:
-		case 0x1d:
-		case 0x1e:
-		case 0x1f:
-			break;
-		case 0x15: case 0x16: case 0x17:
-		case 0x18:
-			This->mixer_channel->update();
-			This->reg[offset] = data;
-			This->masterVolume = ( This->reg[0x18] & 15 );
-			This->masterVolumeAmplIndex = This->masterVolume << 8;
-
-			if ((This->reg[0x18]&0x80) &&
-				((This->reg[0x17]&This->optr3.filtVoiceMask)==0))
-				This->optr3_outputmask = 0;     /* off */
-			else
-				This->optr3_outputmask = ~0;  /* on */
-
-			This->filter.Type = This->reg[0x18] & 0x70;
-			if (This->filter.Type != This->filter.CurType)
-			{
-				This->filter.CurType = This->filter.Type;
-				This->optr1.filtLow = (This->optr1.filtRef = 0);
-				This->optr2.filtLow = (This->optr2.filtRef = 0);
-				This->optr3.filtLow = (This->optr3.filtRef = 0);
-			}
-			if ( This->filter.Enabled )
-			{
-				This->filter.Value = 0x7ff & ( (This->reg[0x15]&7) | ( (UINT16)This->reg[0x16] << 3 ));
-				if (This->filter.Type == 0x20)
-					This->filter.Dy = bandPassParam ? bandPassParam[This->filter.Value] : 0.0f;
-				else
-					This->filter.Dy = lowPassParam ? lowPassParam[This->filter.Value] : 0.0f;
-				This->filter.ResDy = filterResTable[This->reg[0x17] >> 4] - This->filter.Dy;
-				if ( This->filter.ResDy < 1.0f )
-					This->filter.ResDy = 1.0f;
-			}
-
-			sidEmuSet( &This->optr1 );
-			sidEmuSet( &This->optr3 );
-			sidEmuSet( &This->optr2 );
-
-			// relies on sidEmuSet also for other channels!
-			sidEmuSet2( &This->optr1 );
-			sidEmuSet2( &This->optr2 );
-			sidEmuSet2( &This->optr3 );
-			break;
-
-		default:
-			This->mixer_channel->update();
-			This->reg[offset] = data;
-
-			if (offset<7) {
-				This->optr1.reg[offset] = data;
-			} else if (offset<14) {
-				This->optr2.reg[offset-7] = data;
-			} else if (offset<21) {
-				This->optr3.reg[offset-14] = data;
-			}
-
-			sidEmuSet( &This->optr1 );
-			sidEmuSet( &This->optr3 );
-			sidEmuSet( &This->optr2 );
-
-			// relies on sidEmuSet also for other channels!
-			sidEmuSet2( &This->optr1 );
-			sidEmuSet2( &This->optr2 );
-			sidEmuSet2( &This->optr3 );
-			break;
-	}
-}
-
-int sid6581_port_r (running_machine &machine, SID6581_t *This, int offset)
-{
-	int data;
-/* SIDPLAY reads last written at a sid address value */
-=======
 void SID6581_t::init()
 {
 	optr1.sid = this;
@@ -588,27 +338,12 @@ int SID6581_t::port_r(running_machine &machine, int offset)
 {
 	/* SIDPLAY reads last written at a sid address value */
 	int data;
->>>>>>> upstream/master
 	offset &= 0x1f;
 	switch (offset)
 	{
 	case 0x1d:
 	case 0x1e:
 	case 0x1f:
-<<<<<<< HEAD
-	data=0xff;
-	break;
-	case 0x1b:
-	This->mixer_channel->update();
-	data = This->optr3.output;
-	break;
-	case 0x1c:
-	This->mixer_channel->update();
-	data = This->optr3.enveVol;
-	break;
-	default:
-	data=This->reg[offset];
-=======
 		data = 0xff;
 		break;
 	case 0x1b:
@@ -621,7 +356,6 @@ int SID6581_t::port_r(running_machine &machine, int offset)
 		break;
 	default:
 		data = reg[offset];
->>>>>>> upstream/master
 	}
 	return data;
 }

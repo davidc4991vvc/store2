@@ -1,13 +1,5 @@
 // license:BSD-3-Clause
 // copyright-holders:Brad Oliver
-<<<<<<< HEAD
-/***************************************************************************
-
- Espial hardware games (drivers: espial.c)
-
-***************************************************************************/
-
-=======
 
 /***************************************************************************
 
@@ -17,7 +9,6 @@
 
 #include "machine/gen_latch.h"
 
->>>>>>> upstream/master
 class espial_state : public driver_device
 {
 public:
@@ -33,17 +24,6 @@ public:
 		m_maincpu(*this, "maincpu"),
 		m_audiocpu(*this, "audiocpu"),
 		m_gfxdecode(*this, "gfxdecode"),
-<<<<<<< HEAD
-		m_palette(*this, "palette") { }
-
-	required_shared_ptr<UINT8> m_videoram;
-	required_shared_ptr<UINT8> m_attributeram;
-	required_shared_ptr<UINT8> m_scrollram;
-	required_shared_ptr<UINT8> m_spriteram_1;
-	required_shared_ptr<UINT8> m_spriteram_2;
-	required_shared_ptr<UINT8> m_spriteram_3;
-	required_shared_ptr<UINT8> m_colorram;
-=======
 		m_palette(*this, "palette"),
 		m_soundlatch(*this, "soundlatch") { }
 
@@ -54,7 +34,6 @@ public:
 	required_shared_ptr<uint8_t> m_spriteram_2;
 	required_shared_ptr<uint8_t> m_spriteram_3;
 	required_shared_ptr<uint8_t> m_colorram;
->>>>>>> upstream/master
 
 	/* video-related */
 	tilemap_t   *m_bg_tilemap;
@@ -62,23 +41,15 @@ public:
 	int       m_flipscreen;
 
 	/* sound-related */
-<<<<<<< HEAD
-	UINT8     m_main_nmi_enabled;
-	UINT8     m_sound_nmi_enabled;
-=======
 	uint8_t     m_main_nmi_enabled;
 	uint8_t     m_sound_nmi_enabled;
->>>>>>> upstream/master
 
 	/* devices */
 	required_device<cpu_device> m_maincpu;
 	required_device<cpu_device> m_audiocpu;
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
-<<<<<<< HEAD
-=======
 	required_device<generic_latch_8_device> m_soundlatch;
->>>>>>> upstream/master
 
 	DECLARE_WRITE8_MEMBER(espial_master_interrupt_mask_w);
 	DECLARE_WRITE8_MEMBER(espial_master_soundlatch_w);
@@ -89,21 +60,12 @@ public:
 	DECLARE_WRITE8_MEMBER(espial_scrollram_w);
 	DECLARE_WRITE8_MEMBER(espial_flipscreen_w);
 	TILE_GET_INFO_MEMBER(get_tile_info);
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void machine_reset();
-	virtual void video_start();
-	DECLARE_PALETTE_INIT(espial);
-	DECLARE_VIDEO_START(netwars);
-	UINT32 screen_update_espial(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
 	virtual void video_start() override;
 	DECLARE_PALETTE_INIT(espial);
 	DECLARE_VIDEO_START(netwars);
 	uint32_t screen_update_espial(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	INTERRUPT_GEN_MEMBER(espial_sound_nmi_gen);
 	TIMER_DEVICE_CALLBACK_MEMBER(espial_scanline);
 	void draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect );

@@ -217,17 +217,11 @@ U145        1Brown          PAL14H4CN
 #include "emu.h"
 #include "cpu/i86/i86.h"
 #include "cpu/z80/z80.h"
-<<<<<<< HEAD
-#include "sound/ay8910.h"
-#include "machine/i8255.h"
-#include "machine/nvram.h"
-=======
 #include "machine/i8255.h"
 #include "machine/nvram.h"
 #include "sound/ay8910.h"
 #include "screen.h"
 #include "speaker.h"
->>>>>>> upstream/master
 
 
 class smsmfg_state : public driver_device
@@ -238,17 +232,10 @@ public:
 		m_maincpu(*this, "maincpu"),
 		m_screen(*this, "screen") { }
 
-<<<<<<< HEAD
-	UINT8 m_communication_port[4];
-	UINT8 m_communication_port_status;
-	bitmap_ind16 m_bitmap;
-	UINT8 m_vid_regs[7];
-=======
 	uint8_t m_communication_port[4];
 	uint8_t m_communication_port_status;
 	bitmap_ind16 m_bitmap;
 	uint8_t m_vid_regs[7];
->>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(bankswitch_w);
 	DECLARE_READ8_MEMBER(link_r);
 	DECLARE_WRITE8_MEMBER(link_w);
@@ -259,19 +246,11 @@ public:
 	DECLARE_READ8_MEMBER(ppi0_c_r);
 	DECLARE_WRITE8_MEMBER(ppi0_a_w);
 	DECLARE_WRITE8_MEMBER(ppi0_b_w);
-<<<<<<< HEAD
-	virtual void machine_start();
-	virtual void machine_reset();
-	virtual void video_start();
-	DECLARE_MACHINE_START(sureshot);
-	UINT32 screen_update_sms(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
 	virtual void video_start() override;
 	DECLARE_MACHINE_START(sureshot);
 	uint32_t screen_update_sms(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	required_device<cpu_device> m_maincpu;
 	required_device<screen_device> m_screen;
 };
@@ -425,16 +404,6 @@ READ8_MEMBER(smsmfg_state::ppi0_c_r)
 WRITE8_MEMBER(smsmfg_state::ppi0_a_w)
 {
 	//popmessage("Lamps: %d %d %d %d %d %d %d", BIT(data,7), BIT(data,6), BIT(data,5), BIT(data,4), BIT(data,3), BIT(data,2), BIT(data,1) );
-<<<<<<< HEAD
-	output_set_lamp_value(0, !BIT(data,7)); /* Display Light 1 */
-	output_set_lamp_value(1, !BIT(data,6)); /* Display Light 2 */
-	output_set_lamp_value(2, !BIT(data,5)); /* Display Light 3 */
-	output_set_lamp_value(3, !BIT(data,4)); /* Display Light 4 */
-	output_set_lamp_value(4, !BIT(data,3)); /* Display Light 5 */
-	output_set_lamp_value(5, !BIT(data,2)); /* Bet Light */
-	output_set_lamp_value(6, !BIT(data,1)); /* Deal Light */
-	output_set_lamp_value(7, !BIT(data,0)); /* Draw Light */
-=======
 	output().set_lamp_value(0, !BIT(data,7)); /* Display Light 1 */
 	output().set_lamp_value(1, !BIT(data,6)); /* Display Light 2 */
 	output().set_lamp_value(2, !BIT(data,5)); /* Display Light 3 */
@@ -443,26 +412,16 @@ WRITE8_MEMBER(smsmfg_state::ppi0_a_w)
 	output().set_lamp_value(5, !BIT(data,2)); /* Bet Light */
 	output().set_lamp_value(6, !BIT(data,1)); /* Deal Light */
 	output().set_lamp_value(7, !BIT(data,0)); /* Draw Light */
->>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(smsmfg_state::ppi0_b_w)
 {
-<<<<<<< HEAD
-	output_set_lamp_value(8, !BIT(data,7)); /* Stand Light */
-	output_set_lamp_value(9, !BIT(data,6)); /* Cancel Light */
-
-	coin_counter_w(machine(), 0, BIT(data,1));
-	coin_lockout_w(machine(), 0, BIT(data,5));
-	coin_lockout_w(machine(), 1, BIT(data,4));
-=======
 	output().set_lamp_value(8, !BIT(data,7)); /* Stand Light */
 	output().set_lamp_value(9, !BIT(data,6)); /* Cancel Light */
 
 	machine().bookkeeping().coin_counter_w(0, BIT(data,1));
 	machine().bookkeeping().coin_lockout_w(0, BIT(data,5));
 	machine().bookkeeping().coin_lockout_w(1, BIT(data,4));
->>>>>>> upstream/master
 }
 
 /*************************************
@@ -508,11 +467,7 @@ void smsmfg_state::video_start()
 	save_item(NAME(m_bitmap));
 }
 
-<<<<<<< HEAD
-UINT32 smsmfg_state::screen_update_sms(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t smsmfg_state::screen_update_sms(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	copybitmap(bitmap, m_bitmap, 0, 0, 0, 0, cliprect);
 	return 0;
@@ -578,11 +533,7 @@ void smsmfg_state::machine_reset()
 	m_communication_port_status = 0;
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( sms, smsmfg_state )
-=======
 static MACHINE_CONFIG_START( sms )
->>>>>>> upstream/master
 	MCFG_CPU_ADD("maincpu", I8088, XTAL_24MHz/8)
 	MCFG_CPU_PROGRAM_MAP(sms_map)
 
@@ -958,14 +909,7 @@ ROM_START( secondch )
 	ROM_RELOAD(           0x1000, 0x1000 )
 ROM_END
 
-<<<<<<< HEAD
-GAME( 1984, trvhang,  0, sms,      sms, driver_device, 0, ROT0, "SMS Manufacturing Corp.", "Trivia Hangup (question set 1)", MACHINE_SUPPORTS_SAVE ) /* Version Trivia-1-050185 */
-GAME( 1984, trvhanga, 0, sms,      sms, driver_device, 0, ROT0, "SMS Manufacturing Corp.", "Trivia Hangup (question set 2)", MACHINE_NOT_WORKING ) /* Version Trivia-2-011586 */
-GAME( 1985, sureshot, 0, sureshot, sms, driver_device, 0, ROT0, "SMS Manufacturing Corp.", "Sure Shot", MACHINE_SUPPORTS_SAVE )
-GAME( 1985, secondch, 0, sureshot, sms, driver_device, 0, ROT0, "SMS Manufacturing Corp.", "Second Chance", MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1984, trvhang,  0, sms,      sms, smsmfg_state, 0, ROT0, "SMS Manufacturing Corp.", "Trivia Hangup (question set 1)", MACHINE_SUPPORTS_SAVE ) /* Version Trivia-1-050185 */
 GAME( 1984, trvhanga, 0, sms,      sms, smsmfg_state, 0, ROT0, "SMS Manufacturing Corp.", "Trivia Hangup (question set 2)", MACHINE_NOT_WORKING ) /* Version Trivia-2-011586 */
 GAME( 1985, sureshot, 0, sureshot, sms, smsmfg_state, 0, ROT0, "SMS Manufacturing Corp.", "Sure Shot",                      MACHINE_SUPPORTS_SAVE )
 GAME( 1985, secondch, 0, sureshot, sms, smsmfg_state, 0, ROT0, "SMS Manufacturing Corp.", "Second Chance",                  MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

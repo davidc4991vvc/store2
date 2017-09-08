@@ -86,18 +86,12 @@ Notes:
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/m68000/m68000.h"
-#include "sound/ymz280b.h"
-#include "includes/bishi.h"
-=======
 #include "includes/bishi.h"
 
 #include "cpu/m68000/m68000.h"
 #include "sound/ymz280b.h"
 #include "speaker.h"
 
->>>>>>> upstream/master
 
 READ16_MEMBER(bishi_state::control_r)
 {
@@ -138,11 +132,7 @@ READ16_MEMBER(bishi_state::bishi_mirror_r)
 
 READ16_MEMBER(bishi_state::bishi_K056832_rom_r)
 {
-<<<<<<< HEAD
-	UINT16 ouroffs;
-=======
 	uint16_t ouroffs;
->>>>>>> upstream/master
 
 	ouroffs = (offset >> 1) * 8;
 	if (offset & 1)
@@ -384,11 +374,7 @@ void bishi_state::machine_reset()
 	m_cur_control2 = 0;
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( bishi, bishi_state )
-=======
 static MACHINE_CONFIG_START( bishi )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, CPU_CLOCK) /* 12MHz (24MHz OSC / 2 ) */
@@ -409,18 +395,9 @@ static MACHINE_CONFIG_START( bishi )
 	MCFG_PALETTE_ENABLE_SHADOWS()
 	MCFG_PALETTE_ENABLE_HILIGHTS()
 
-<<<<<<< HEAD
-	MCFG_GFXDECODE_ADD("gfxdecode", "palette", empty)
-
-	MCFG_DEVICE_ADD("k056832", K056832, 0)
-	MCFG_K056832_CB(bishi_state, tile_callback)
-	MCFG_K056832_CONFIG("gfx1", 0, K056832_BPP_8, 1, 0, "none")
-	MCFG_K056832_GFXDECODE("gfxdecode")
-=======
 	MCFG_DEVICE_ADD("k056832", K056832, 0)
 	MCFG_K056832_CB(bishi_state, tile_callback)
 	MCFG_K056832_CONFIG("gfx1", K056832_BPP_8, 1, 0, "none")
->>>>>>> upstream/master
 	MCFG_K056832_PALETTE("palette")
 
 	MCFG_DEVICE_ADD("k054338", K054338, 0)
@@ -484,8 +461,6 @@ ROM_END
 
 ROM_START( sbishik )
 	ROM_REGION( 0x100000, "maincpu", 0 )
-<<<<<<< HEAD
-=======
 	ROM_LOAD16_WORD_SWAP( "kab05.12e", 0x000000, 0x80000, CRC(749063ca) SHA1(ef551132410248ef0b858fb8bcf6f8dd1115ad71) )
 	ROM_LOAD16_WORD_SWAP( "kab06.15e", 0x080000, 0x80000, CRC(089e0f37) SHA1(9cd64ebfab716bbaf0ba420ad8168a33601699a9) )
 
@@ -508,7 +483,6 @@ ROM_END
 
 ROM_START( sbishika )
 	ROM_REGION( 0x100000, "maincpu", 0 )
->>>>>>> upstream/master
 	ROM_LOAD16_WORD_SWAP( "675kaa05.12e", 0x000000, 0x80000, CRC(23600e1d) SHA1(b3224c84e41e3077425a60232bb91775107f37a8) )
 	ROM_LOAD16_WORD_SWAP( "675kaa06.15e", 0x080000, 0x80000, CRC(bd1091f5) SHA1(29872abc49fe8209d0f414ca40a34fc494ff9b96) )
 
@@ -528,14 +502,7 @@ ROM_START( sbishika )
 	ROM_LOAD( "675kaa04.8f", 0x180000, 0x080000, CRC(ebcbd813) SHA1(d67540d0ea303f09866f4a766e2d5162f05cd4ac) )
 ROM_END
 
-<<<<<<< HEAD
-
-GAME( 1996, bishi,    0,      bishi, bishi, driver_device,   0, ROT0, "Konami", "Bishi Bashi Championship Mini Game Senshuken (ver JAA, 3 Players)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
-GAME( 1998, sbishi,   0,      bishi, bishi2p, driver_device, 0, ROT0, "Konami", "Super Bishi Bashi Championship (ver JAA, 2 Players)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
-GAME( 1998, sbishik,  sbishi, bishi, bishi, driver_device,   0, ROT0, "Konami", "Super Bishi Bashi Championship (ver KAA, 3 Players)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1996, bishi,    0,      bishi, bishi,   bishi_state,   0, ROT0, "Konami", "Bishi Bashi Championship Mini Game Senshuken (ver JAA, 3 Players)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
 GAME( 1998, sbishi,   0,      bishi, bishi2p, bishi_state,   0, ROT0, "Konami", "Super Bishi Bashi Championship (ver JAA, 2 Players)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
 GAME( 1998, sbishik,  sbishi, bishi, bishi,   bishi_state,   0, ROT0, "Konami", "Super Bishi Bashi Championship (ver KAB, 3 Players)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
 GAME( 1998, sbishika, sbishi, bishi, bishi,   bishi_state,   0, ROT0, "Konami", "Super Bishi Bashi Championship (ver KAA, 3 Players)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

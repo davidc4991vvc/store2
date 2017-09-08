@@ -20,11 +20,7 @@
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-TILE_GET_INFO_MEMBER(superqix_state::pb_get_bg_tile_info)
-=======
 TILE_GET_INFO_MEMBER(hotsmash_state::pb_get_bg_tile_info)
->>>>>>> upstream/master
 {
 	int attr = m_videoram[tile_index + 0x400];
 	int code = m_videoram[tile_index] + 256 * (attr & 0x7);
@@ -32,11 +28,7 @@ TILE_GET_INFO_MEMBER(hotsmash_state::pb_get_bg_tile_info)
 	SET_TILE_INFO_MEMBER(0, code, color, 0);
 }
 
-<<<<<<< HEAD
-TILE_GET_INFO_MEMBER(superqix_state::sqix_get_bg_tile_info)
-=======
 TILE_GET_INFO_MEMBER(superqix_state_base::sqix_get_bg_tile_info)
->>>>>>> upstream/master
 {
 	int attr = m_videoram[tile_index + 0x400];
 	int bank = (attr & 0x04) ? 0 : 1;
@@ -57,18 +49,6 @@ TILE_GET_INFO_MEMBER(superqix_state_base::sqix_get_bg_tile_info)
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-VIDEO_START_MEMBER(superqix_state,pbillian)
-{
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(superqix_state::pb_get_bg_tile_info),this), TILEMAP_SCAN_ROWS,  8, 8,32,32);
-}
-
-VIDEO_START_MEMBER(superqix_state,superqix)
-{
-	m_fg_bitmap[0] = auto_bitmap_ind16_alloc(machine(), 256, 256);
-	m_fg_bitmap[1] = auto_bitmap_ind16_alloc(machine(), 256, 256);
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(superqix_state::sqix_get_bg_tile_info),this), TILEMAP_SCAN_ROWS,  8, 8, 32, 32);
-=======
 VIDEO_START_MEMBER(hotsmash_state, pbillian)
 {
 	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(hotsmash_state::pb_get_bg_tile_info),this), TILEMAP_SCAN_ROWS,  8, 8,32,32);
@@ -79,35 +59,20 @@ VIDEO_START_MEMBER(superqix_state_base, superqix)
 	m_fg_bitmap[0] = std::make_unique<bitmap_ind16>(256, 256);
 	m_fg_bitmap[1] = std::make_unique<bitmap_ind16>(256, 256);
 	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(superqix_state_base::sqix_get_bg_tile_info),this), TILEMAP_SCAN_ROWS,  8, 8, 32, 32);
->>>>>>> upstream/master
 
 	m_bg_tilemap->set_transmask(0,0xffff,0x0000); /* split type 0 is totally transparent in front half */
 	m_bg_tilemap->set_transmask(1,0x0001,0xfffe); /* split type 1 has pen 0 transparent in front half */
 
-<<<<<<< HEAD
-	save_item(NAME(m_gfxbank));
-	save_item(NAME(m_show_bitmap));
-=======
->>>>>>> upstream/master
 	save_item(NAME(*m_fg_bitmap[0]));
 	save_item(NAME(*m_fg_bitmap[1]));
 }
 
-<<<<<<< HEAD
-PALETTE_DECODER_MEMBER( superqix_state, BBGGRRII )
-{
-	UINT8 i = raw & 3;
-	UINT8 r = (raw >> 0) & 0x0c;
-	UINT8 g = (raw >> 2) & 0x0c;
-	UINT8 b = (raw >> 4) & 0x0c;
-=======
 PALETTE_DECODER_MEMBER( superqix_state_base, BBGGRRII )
 {
 	uint8_t i = raw & 3;
 	uint8_t r = (raw >> 0) & 0x0c;
 	uint8_t g = (raw >> 2) & 0x0c;
 	uint8_t b = (raw >> 4) & 0x0c;
->>>>>>> upstream/master
 
 	return rgb_t(pal4bit(r | i), pal4bit(g | i), pal4bit(b | i));
 }
@@ -119,21 +84,13 @@ PALETTE_DECODER_MEMBER( superqix_state_base, BBGGRRII )
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-WRITE8_MEMBER(superqix_state::superqix_videoram_w)
-=======
 WRITE8_MEMBER(superqix_state_base::superqix_videoram_w)
->>>>>>> upstream/master
 {
 	m_videoram[offset] = data;
 	m_bg_tilemap->mark_tile_dirty(offset & 0x3ff);
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER(superqix_state::superqix_bitmapram_w)
-=======
 WRITE8_MEMBER(superqix_state_base::superqix_bitmapram_w)
->>>>>>> upstream/master
 {
 	if (m_bitmapram[offset] != data)
 	{
@@ -147,11 +104,7 @@ WRITE8_MEMBER(superqix_state_base::superqix_bitmapram_w)
 	}
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER(superqix_state::superqix_bitmapram2_w)
-=======
 WRITE8_MEMBER(superqix_state_base::superqix_bitmapram2_w)
->>>>>>> upstream/master
 {
 	if (data != m_bitmapram2[offset])
 	{
@@ -165,11 +118,7 @@ WRITE8_MEMBER(superqix_state_base::superqix_bitmapram2_w)
 	}
 }
 
-<<<<<<< HEAD
-WRITE8_MEMBER(superqix_state::pbillian_0410_w)
-=======
 WRITE8_MEMBER(hotsmash_state::pbillian_0410_w)
->>>>>>> upstream/master
 {
 	/*
 	 -------0  ? [not used]
@@ -180,19 +129,6 @@ WRITE8_MEMBER(hotsmash_state::pbillian_0410_w)
 	 --5-----  flip screen
 	*/
 
-<<<<<<< HEAD
-	coin_counter_w(machine(), 0,data & 0x02);
-	coin_counter_w(machine(), 1,data & 0x04);
-
-	membank("bank1")->set_entry((data & 0x08) >> 3);
-
-	m_nmi_mask = data & 0x10;
-	flip_screen_set(data & 0x20);
-}
-
-WRITE8_MEMBER(superqix_state::superqix_0410_w)
-{
-=======
 	if (data&0xc1) logerror("%04x: pbillian_0410_w with invalid bits: %02x\n",space.device().safe_pc(),data);
 	machine().bookkeeping().coin_counter_w(0,BIT(data,1));
 	machine().bookkeeping().coin_counter_w(1,BIT(data,2));
@@ -213,7 +149,6 @@ WRITE8_MEMBER(superqix_state_base::superqix_0410_w)
 	 --54----  rom bank
 	*/
 	if (data&0xc0) logerror("%04x: superqix_0410_w with invalid high bits: %02x\n",space.device().safe_pc(),data);
->>>>>>> upstream/master
 	/* bits 0-1 select the tile bank */
 	if (m_gfxbank != (data & 0x03))
 	{
@@ -222,18 +157,11 @@ WRITE8_MEMBER(superqix_state_base::superqix_0410_w)
 	}
 
 	/* bit 2 selects which of the two bitmaps to display (for 2 players game) */
-<<<<<<< HEAD
-	m_show_bitmap = (data & 0x04) >> 2;
-
-	/* bit 3 enables NMI */
-	m_nmi_mask = data & 0x08;
-=======
 	m_show_bitmap = BIT(data,2);
 
 	/* bit 3 enables NMI */
 	m_nmi_mask = BIT(data,3);
 	//if (!(m_nmi_mask)) m_maincpu->set_input_line(INPUT_LINE_NMI, CLEAR_LINE); // test for later, could this explain the need for 4 NMIs per frame instead of one? Is the game manually retriggering NMI using the mask register, several times during the vblank period?
->>>>>>> upstream/master
 
 	/* bits 4-5 control ROM bank */
 	membank("bank1")->set_entry((data & 0x30) >> 4);
@@ -247,15 +175,9 @@ WRITE8_MEMBER(superqix_state_base::superqix_0410_w)
 
 ***************************************************************************/
 
-<<<<<<< HEAD
-void superqix_state::pbillian_draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect )
-{
-	UINT8 *spriteram = m_spriteram;
-=======
 void hotsmash_state::pbillian_draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect )
 {
 	uint8_t *spriteram = m_spriteram;
->>>>>>> upstream/master
 	int offs;
 
 	for (offs = 0; offs < m_spriteram.bytes(); offs += 4)
@@ -280,15 +202,9 @@ void hotsmash_state::pbillian_draw_sprites(bitmap_ind16 &bitmap, const rectangle
 	}
 }
 
-<<<<<<< HEAD
-void superqix_state::superqix_draw_sprites(bitmap_ind16 &bitmap,const rectangle &cliprect)
-{
-	UINT8 *spriteram = m_spriteram;
-=======
 void superqix_state_base::superqix_draw_sprites(bitmap_ind16 &bitmap,const rectangle &cliprect)
 {
 	uint8_t *spriteram = m_spriteram;
->>>>>>> upstream/master
 	int offs;
 
 	for (offs = 0; offs < m_spriteram.bytes(); offs += 4)
@@ -317,11 +233,7 @@ void superqix_state_base::superqix_draw_sprites(bitmap_ind16 &bitmap,const recta
 	}
 }
 
-<<<<<<< HEAD
-UINT32 superqix_state::screen_update_pbillian(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t hotsmash_state::screen_update_pbillian(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	m_bg_tilemap->draw(screen, bitmap, cliprect, 0, 0);
 	pbillian_draw_sprites(bitmap,cliprect);
@@ -329,11 +241,7 @@ uint32_t hotsmash_state::screen_update_pbillian(screen_device &screen, bitmap_in
 	return 0;
 }
 
-<<<<<<< HEAD
-UINT32 superqix_state::screen_update_superqix(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t superqix_state_base::screen_update_superqix(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	m_bg_tilemap->draw(screen, bitmap, cliprect, TILEMAP_DRAW_LAYER1, 0);
 	copybitmap_trans(bitmap,*m_fg_bitmap[m_show_bitmap],flip_screen(),flip_screen(),0,0,cliprect,0);

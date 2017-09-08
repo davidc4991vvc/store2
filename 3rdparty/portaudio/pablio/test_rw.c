@@ -1,9 +1,5 @@
 /*
-<<<<<<< HEAD
- * $Id: test_rw.c 1083 2006-08-23 07:30:49Z rossb $
-=======
  * $Id$
->>>>>>> upstream/master
  * test_rw.c
  * Read input from one stream and write it to another.
  *

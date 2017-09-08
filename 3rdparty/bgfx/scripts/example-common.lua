@@ -1,11 +1,6 @@
 --
-<<<<<<< HEAD
--- Copyright 2010-2015 Branimir Karadzic. All rights reserved.
--- License: http://www.opensource.org/licenses/BSD-2-Clause
-=======
 -- Copyright 2010-2017 Branimir Karadzic. All rights reserved.
 -- License: https://github.com/bkaradzic/bgfx#license-bsd-2-clause
->>>>>>> upstream/master
 --
 
 project ("example-common")
@@ -24,10 +19,7 @@ project ("example-common")
 		path.join(BGFX_DIR, "3rdparty/ocornut-imgui/**.cpp"),
 		path.join(BGFX_DIR, "3rdparty/ocornut-imgui/**.h"),
 		path.join(BGFX_DIR, "examples/common/**.cpp"),
-<<<<<<< HEAD
-=======
 		path.join(BGFX_DIR, "examples/common/**.cpp"),
->>>>>>> upstream/master
 		path.join(BGFX_DIR, "examples/common/**.h"),
 	}
 
@@ -70,27 +62,20 @@ project ("example-common")
 		}
 	end
 
-<<<<<<< HEAD
-=======
 	configuration { "linux-steamlink" }
 		defines {
 			"EGL_API_FB",
 		}
 
->>>>>>> upstream/master
 	configuration { "osx or ios* or tvos*" }
 		files {
 			path.join(BGFX_DIR, "examples/common/**.mm"),
 		}
 
-<<<<<<< HEAD
-	configuration { "winphone8* or winstore8*"}
-=======
 	configuration { "winphone8* or winstore8* or durango"}
 		files {
 			path.join(BGFX_DIR, "examples/common/**.cx"),
 		}
->>>>>>> upstream/master
 		linkoptions {
 			"/ignore:4264" -- LNK4264: archiving object file compiled with /ZW into a static library; note that when authoring Windows Runtime types it is not recommended to link with a static library that contains Windows Runtime metadata
 		}

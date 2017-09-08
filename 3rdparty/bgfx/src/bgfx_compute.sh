@@ -1,11 +1,6 @@
 /*
-<<<<<<< HEAD
- * Copyright 2011-2015 Branimir Karadzic. All rights reserved.
- * License: http://www.opensource.org/licenses/BSD-2-Clause
-=======
  * Copyright 2011-2017 Branimir Karadzic. All rights reserved.
  * License: https://github.com/bkaradzic/bgfx#license-bsd-2-clause
->>>>>>> upstream/master
  */
 
 #ifndef BGFX_COMPUTE_H_HEADER_GUARD
@@ -17,39 +12,6 @@
 
 #if BGFX_SHADER_LANGUAGE_HLSL
 
-<<<<<<< HEAD
-float uintBitsToFloat(uint  _x) { return asfloat(_x); }
-vec2  uintBitsToFloat(uint2 _x) { return asfloat(_x); }
-vec3  uintBitsToFloat(uint3 _x) { return asfloat(_x); }
-vec4  uintBitsToFloat(uint4 _x) { return asfloat(_x); }
-
-uint  floatBitsToUint(float _x) { return asuint(_x); }
-uvec2 floatBitsToUint(vec2  _x) { return asuint(_x); }
-uvec3 floatBitsToUint(vec3  _x) { return asuint(_x); }
-uvec4 floatBitsToUint(vec4  _x) { return asuint(_x); }
-
-int   floatBitsToInt(float _x) { return asint(_x); }
-ivec2 floatBitsToInt(vec2  _x) { return asint(_x); }
-ivec3 floatBitsToInt(vec3  _x) { return asint(_x); }
-ivec4 floatBitsToInt(vec4  _x) { return asint(_x); }
-
-uint  bitfieldReverse(uint  _x) { return reversebits(_x); }
-uint2 bitfieldReverse(uint2 _x) { return reversebits(_x); }
-uint3 bitfieldReverse(uint3 _x) { return reversebits(_x); }
-uint4 bitfieldReverse(uint4 _x) { return reversebits(_x); }
-
-uint packHalf2x16(vec2 _x)
-{
-	return (f32tof16(_x.x)<<16) | f32tof16(_x.y);
-}
-
-vec2 unpackHalf2x16(uint _x)
-{
-	return vec2(f16tof32(_x >> 16), f16tof32(_x) );
-}
-
-=======
->>>>>>> upstream/master
 #define SHARED groupshared
 
 #define r32ui   uint
@@ -57,10 +19,7 @@ vec2 unpackHalf2x16(uint _x)
 #define rg16f   float2
 #define rgba16f float4
 #define rgba8   float4
-<<<<<<< HEAD
-=======
 #define rgba32f float4
->>>>>>> upstream/master
 
 #define IMAGE2D_RO( _name, _format, _reg) Texture2D<_format>   _name : register(t[_reg])
 #define UIMAGE2D_RO(_name, _format, _reg) Texture2D<_format>   _name : register(t[_reg])
@@ -69,8 +28,6 @@ vec2 unpackHalf2x16(uint _x)
 #define IMAGE2D_RW( _name, _reg) RWTexture2D<float> _name : register(u[_reg])
 #define UIMAGE2D_RW(_name, _reg) RWTexture2D<uint>  _name : register(u[_reg])
 
-<<<<<<< HEAD
-=======
 #define IMAGE2D_ARRAY_RO( _name, _format, _reg) Texture2DArray<_format>   _name : register(t[_reg])
 #define UIMAGE2D_ARRAY_RO(_name, _format, _reg) Texture2DArray<_format>   _name : register(t[_reg])
 #define IMAGE2D_ARRAY_WR( _name, _format, _reg) RWTexture2DArray<_format> _name : register(u[_reg])
@@ -78,7 +35,6 @@ vec2 unpackHalf2x16(uint _x)
 #define IMAGE2D_ARRAY_RW( _name, _reg) RWTexture2DArray<float> _name : register(u[_reg])
 #define UIMAGE2D_ARRAY_RW(_name, _reg) RWTexture2DArray<uint>  _name : register(u[_reg])
 
->>>>>>> upstream/master
 #define IMAGE3D_RO( _name, _format, _reg) Texture3D<_format>   _name : register(t[_reg])
 #define UIMAGE3D_RO(_name, _format, _reg) Texture3D<_format>   _name : register(t[_reg])
 #define IMAGE3D_WR( _name, _format, _reg) RWTexture3D<_format> _name : register(u[_reg])
@@ -93,14 +49,6 @@ vec2 unpackHalf2x16(uint _x)
 #define NUM_THREADS(_x, _y, _z) [numthreads(_x, _y, _z)]
 
 #define __IMAGE_IMPL(_textureType, _storeComponents, _type, _loadComponents) \
-<<<<<<< HEAD
-	_type imageLoad(  Texture2D<_textureType> _image, ivec2 _uv)                { return _image[_uv ]._loadComponents;    } \
-	_type imageLoad(  Texture3D<_textureType> _image, ivec3 _uvw)               { return _image[_uvw]._loadComponents;    } \
-	_type imageLoad(RWTexture2D<_textureType> _image, ivec2 _uv)                { return _image[_uv ]._loadComponents;    } \
-	_type imageLoad(RWTexture3D<_textureType> _image, ivec3 _uvw, _type _value) { return _image[_uvw]._loadComponents;    } \
-	void imageStore(RWTexture2D<_textureType> _image, ivec2 _uv,  _type _value) { _image[_uv ] = _value._storeComponents; } \
-	void imageStore(RWTexture3D<_textureType> _image, ivec3 _uvw, _type _value) { _image[_uvw] = _value._storeComponents; }
-=======
 	_type imageLoad(       Texture2D<_textureType> _image, ivec2 _uv)                { return _image[_uv ]._loadComponents;    } \
 	_type imageLoad(RWTexture2DArray<_textureType> _image, ivec3 _uvw)                { return _image[_uvw ]._loadComponents;  } \
 	_type imageLoad(       Texture3D<_textureType> _image, ivec3 _uvw)               { return _image[_uvw]._loadComponents;    } \
@@ -110,7 +58,6 @@ vec2 unpackHalf2x16(uint _x)
 	void imageStore(     RWTexture2D<_textureType> _image, ivec2 _uv,  _type _value) { _image[_uv ] = _value._storeComponents; } \
 	void imageStore(RWTexture2DArray<_textureType> _image, ivec3 _uvw, _type _value) { _image[_uvw] = _value._storeComponents; } \
 	void imageStore(     RWTexture3D<_textureType> _image, ivec3 _uvw, _type _value) { _image[_uvw] = _value._storeComponents; }
->>>>>>> upstream/master
 
 __IMAGE_IMPL(float, x,    vec4,  xxxx)
 __IMAGE_IMPL(vec2,  xy,   vec4,  xyyy)
@@ -212,8 +159,6 @@ uint atomicCompSwap(uint _mem, uint _compare, uint _data)
 #define IMAGE2D_RW( _name, _reg) __IMAGE_XX(_name, r32f,  _reg, image2D,  readwrite)
 #define UIMAGE2D_RW(_name, _reg) __IMAGE_XX(_name, r32ui, _reg, uimage2D, readwrite)
 
-<<<<<<< HEAD
-=======
 #define IMAGE2D_ARRAY_RO( _name, _format, _reg) __IMAGE_XX(_name, _format, _reg, image2DArray,  readonly)
 #define UIMAGE2D_ARRAY_RO(_name, _format, _reg) __IMAGE_XX(_name, _format, _reg, uimage2DArray, readonly)
 #define IMAGE2D_ARRAY_WR( _name, _format, _reg) __IMAGE_XX(_name, _format, _reg, image2DArray,  writeonly)
@@ -221,7 +166,6 @@ uint atomicCompSwap(uint _mem, uint _compare, uint _data)
 #define IMAGE2D_ARRAY_RW( _name, _reg) __IMAGE_XX(_name, r32f,  _reg, image2DArray,  readwrite)
 #define UIMAGE2D_ARRAY_RW(_name, _reg) __IMAGE_XX(_name, r32ui, _reg, uimage2DArray, readwrite)
 
->>>>>>> upstream/master
 #define IMAGE3D_RO( _name, _format, _reg) __IMAGE_XX(_name, _format, _reg, image3D,  readonly)
 #define UIMAGE3D_RO(_name, _format, _reg) __IMAGE_XX(_name, _format, _reg, uimage3D, readonly)
 #define IMAGE3D_WR( _name, _format, _reg) __IMAGE_XX(_name, _format, _reg, image3D,  writeonly)
@@ -244,33 +188,6 @@ uint atomicCompSwap(uint _mem, uint _compare, uint _data)
 #endif // BGFX_SHADER_LANGUAGE_HLSL
 
 #define dispatchIndirect(_buffer \
-<<<<<<< HEAD
-			, _offset \
-			, _numX \
-			, _numY \
-			, _numZ \
-			) \
-			_buffer[_offset*2+0] = uvec4(_numX, _numY, _numZ, 0u)
-
-#define drawIndirect(_buffer \
-			, _offset \
-			, _numVertices \
-			, _numInstances \
-			, _startVertex \
-			, _startInstance \
-			) \
-			_buffer[_offset*2+0] = uvec4(_numVertices, _numInstances, _startVertex, _startInstance)
-
-#define drawIndexedIndirect(_buffer \
-			, _offset \
-			, _numIndices \
-			, _numInstances \
-			, _startIndex \
-			, _startVertex \
-			, _startInstance \
-			) \
-			_buffer[_offset*2+0] = uvec4(_numIndices, _numInstances, _startIndex, _startInstance); \
-=======
 			, _offset            \
 			, _numX              \
 			, _numY              \
@@ -296,7 +213,6 @@ uint atomicCompSwap(uint _mem, uint _compare, uint _data)
 			, _startInstance        \
 			)                       \
 			_buffer[_offset*2+0] = uvec4(_numIndices, _numInstances, _startIndex, _startVertex); \
->>>>>>> upstream/master
 			_buffer[_offset*2+1] = uvec4(_startInstance, 0u, 0u, 0u)
 
 #endif // __cplusplus

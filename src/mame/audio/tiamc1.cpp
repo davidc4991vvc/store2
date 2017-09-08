@@ -34,11 +34,7 @@
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "includes/tiamc1.h"
-=======
 #include "audio/tiamc1.h"
->>>>>>> upstream/master
 
 #define CLOCK_DIVIDER 16
 #define BUF_LEN 100000
@@ -50,11 +46,7 @@
 
 
 // device type definition
-<<<<<<< HEAD
-const device_type TIAMC1 = &device_creator<tiamc1_sound_device>;
-=======
 DEFINE_DEVICE_TYPE(TIAMC1, tiamc1_sound_device, "tiamc1_sound", "TIA-MC1 Audio Custom")
->>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -65,17 +57,10 @@ DEFINE_DEVICE_TYPE(TIAMC1, tiamc1_sound_device, "tiamc1_sound", "TIA-MC1 Audio C
 //  tiamc1_sound_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-tiamc1_sound_device::tiamc1_sound_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, TIAMC1, "TIA-MC1 Audio Custom", tag, owner, clock, "tiamc1_sound", __FILE__),
-		device_sound_interface(mconfig, *this),
-		m_channel(NULL),
-=======
 tiamc1_sound_device::tiamc1_sound_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, TIAMC1, tag, owner, clock),
 		device_sound_interface(mconfig, *this),
 		m_channel(nullptr),
->>>>>>> upstream/master
 		m_timer1_divider(0)
 {
 }
@@ -209,11 +194,7 @@ void tiamc1_sound_device::timer8253_tick(struct timer8253struct *t, int chn)
 
 
 
-<<<<<<< HEAD
-void tiamc1_sound_device::timer8253_wr(struct timer8253struct *t, int reg, UINT8 val)
-=======
 void tiamc1_sound_device::timer8253_wr(struct timer8253struct *t, int reg, uint8_t val)
->>>>>>> upstream/master
 {
 	int chn;
 
@@ -326,11 +307,7 @@ void tiamc1_sound_device::timer8253_wr(struct timer8253struct *t, int reg, uint8
 	}
 }
 
-<<<<<<< HEAD
-void tiamc1_sound_device::timer8253_set_gate(struct timer8253struct *t, int chn, UINT8 gate)
-=======
 void tiamc1_sound_device::timer8253_set_gate(struct timer8253struct *t, int chn, uint8_t gate)
->>>>>>> upstream/master
 {
 	t->channel[chn].gate = gate;
 }

@@ -20,11 +20,7 @@ static int k7_size;
 /*******************************************************************
    Generate one high-low cycle of sample data
 ********************************************************************/
-<<<<<<< HEAD
-INLINE int vg5k_cas_cycle(INT16 *buffer, int sample_pos, int len)
-=======
 static inline int vg5k_cas_cycle(int16_t *buffer, int sample_pos, int len)
->>>>>>> upstream/master
 {
 	int i = 0;
 
@@ -49,11 +45,7 @@ static inline int vg5k_cas_cycle(int16_t *buffer, int sample_pos, int len)
 /*******************************************************************
    Generate n samples of silence
 ********************************************************************/
-<<<<<<< HEAD
-INLINE int vg5k_cas_silence(INT16 *buffer, int sample_pos, int len)
-=======
 static inline int vg5k_cas_silence(int16_t *buffer, int sample_pos, int len)
->>>>>>> upstream/master
 {
 	int i = 0;
 
@@ -68,11 +60,7 @@ static inline int vg5k_cas_silence(int16_t *buffer, int sample_pos, int len)
 /*******************************************************************
    Generate the end-byte samples
 ********************************************************************/
-<<<<<<< HEAD
-INLINE int vg5k_cas_eob(INT16 *buffer, int sample_pos)
-=======
 static inline int vg5k_cas_eob(int16_t *buffer, int sample_pos)
->>>>>>> upstream/master
 {
 	int i, samples = 0;
 
@@ -85,11 +73,7 @@ static inline int vg5k_cas_eob(int16_t *buffer, int sample_pos)
 }
 
 
-<<<<<<< HEAD
-INLINE int vg5k_cas_byte(INT16 *buffer, int sample_pos, UINT8 data)
-=======
 static inline int vg5k_cas_byte(int16_t *buffer, int sample_pos, uint8_t data)
->>>>>>> upstream/master
 {
 /* Writing an entire byte */
 	int i, samples;
@@ -116,11 +100,7 @@ static inline int vg5k_cas_byte(int16_t *buffer, int sample_pos, uint8_t data)
 /*******************************************************************
    Generate n sample of synchro
 ********************************************************************/
-<<<<<<< HEAD
-INLINE int vg5k_k7_synchro(INT16 *buffer, int sample_pos, int len)
-=======
 static inline int vg5k_k7_synchro(int16_t *buffer, int sample_pos, int len)
->>>>>>> upstream/master
 {
 	int i, samples = 0;
 
@@ -133,11 +113,7 @@ static inline int vg5k_k7_synchro(int16_t *buffer, int sample_pos, int len)
 }
 
 
-<<<<<<< HEAD
-static int vg5k_handle_tap(INT16 *buffer, const UINT8 *casdata)
-=======
 static int vg5k_handle_tap(int16_t *buffer, const uint8_t *casdata)
->>>>>>> upstream/master
 {
 	int data_pos, sample_count;
 
@@ -151,11 +127,7 @@ static int vg5k_handle_tap(int16_t *buffer, const uint8_t *casdata)
 	/* on the entire file*/
 	while( data_pos < k7_size )
 	{
-<<<<<<< HEAD
-		UINT16  block_size = 0;
-=======
 		uint16_t  block_size = 0;
->>>>>>> upstream/master
 
 		/* Identify type of block */
 		if (casdata[data_pos] == 0xd3)
@@ -211,11 +183,7 @@ static int vg5k_handle_tap(int16_t *buffer, const uint8_t *casdata)
 /*******************************************************************
    Generate samples for the tape image
 ********************************************************************/
-<<<<<<< HEAD
-static int vg5k_k7_fill_wave(INT16 *buffer, int sample_count, UINT8 *bytes)
-=======
 static int vg5k_k7_fill_wave(int16_t *buffer, int sample_count, uint8_t *bytes)
->>>>>>> upstream/master
 {
 	return vg5k_handle_tap(buffer, bytes);
 }
@@ -224,19 +192,11 @@ static int vg5k_k7_fill_wave(int16_t *buffer, int sample_count, uint8_t *bytes)
 /*******************************************************************
    Calculate the number of samples needed for this tape image classical
 ********************************************************************/
-<<<<<<< HEAD
-static int vg5k_k7_to_wav_size(const UINT8 *casdata, int caslen)
-{
-	k7_size = caslen ;
-
-	return vg5k_handle_tap( NULL, casdata );
-=======
 static int vg5k_k7_to_wav_size(const uint8_t *casdata, int caslen)
 {
 	k7_size = caslen ;
 
 	return vg5k_handle_tap( nullptr, casdata );
->>>>>>> upstream/master
 }
 
 
@@ -251,21 +211,13 @@ static const struct CassetteLegacyWaveFiller vg5k_legacy_fill_wave =
 	0                                       /* trailer_samples */
 };
 
-<<<<<<< HEAD
-static casserr_t vg5k_k7_identify(cassette_image *cassette, struct CassetteOptions *opts)
-=======
 static cassette_image::error vg5k_k7_identify(cassette_image *cassette, struct CassetteOptions *opts)
->>>>>>> upstream/master
 {
 	return cassette_legacy_identify(cassette, opts, &vg5k_legacy_fill_wave);
 }
 
 
-<<<<<<< HEAD
-static casserr_t vg5k_k7_load(cassette_image *cassette)
-=======
 static cassette_image::error vg5k_k7_load(cassette_image *cassette)
->>>>>>> upstream/master
 {
 	return cassette_legacy_construct(cassette, &vg5k_legacy_fill_wave);
 }
@@ -276,11 +228,7 @@ static const struct CassetteFormat vg5k_k7_format =
 	"k7",
 	vg5k_k7_identify,
 	vg5k_k7_load,
-<<<<<<< HEAD
-	NULL
-=======
 	nullptr
->>>>>>> upstream/master
 };
 
 

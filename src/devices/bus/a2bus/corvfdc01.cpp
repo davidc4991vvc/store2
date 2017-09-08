@@ -11,10 +11,7 @@
 
 *********************************************************************/
 
-<<<<<<< HEAD
-=======
 #include "emu.h"
->>>>>>> upstream/master
 #include "corvfdc01.h"
 
 /***************************************************************************
@@ -25,11 +22,7 @@
 //  GLOBAL VARIABLES
 //**************************************************************************
 
-<<<<<<< HEAD
-const device_type A2BUS_CORVFDC01 = &device_creator<a2bus_corvfdc01_device>;
-=======
 DEFINE_DEVICE_TYPE(A2BUS_CORVFDC01, a2bus_corvfdc01_device, "crvfdc01", "Corvus Systems Floppy Controller")
->>>>>>> upstream/master
 
 #define FDC01_ROM_REGION    "fdc01_rom"
 #define FDC01_FDC_TAG       "fdc01_fdc"
@@ -42,19 +35,6 @@ static SLOT_INTERFACE_START( corv_floppies )
 	SLOT_INTERFACE( "8sssd", FLOPPY_8_SSSD )
 SLOT_INTERFACE_END
 
-<<<<<<< HEAD
-MACHINE_CONFIG_FRAGMENT( fdc01 )
-	MCFG_FD1793_ADD(FDC01_FDC_TAG, XTAL_16MHz / 8)
-	MCFG_WD_FDC_INTRQ_CALLBACK(WRITELINE(a2bus_corvfdc01_device, intrq_w))
-	MCFG_WD_FDC_DRQ_CALLBACK(WRITELINE(a2bus_corvfdc01_device, drq_w))
-	MCFG_FLOPPY_DRIVE_ADD(FDC01_FDC_TAG":0", corv_floppies, "8sssd", a2bus_corvfdc01_device::corv_floppy_formats)
-	MCFG_FLOPPY_DRIVE_ADD(FDC01_FDC_TAG":1", corv_floppies, "8sssd", a2bus_corvfdc01_device::corv_floppy_formats)
-	MCFG_FLOPPY_DRIVE_ADD(FDC01_FDC_TAG":2", corv_floppies, "8sssd", a2bus_corvfdc01_device::corv_floppy_formats)
-	MCFG_FLOPPY_DRIVE_ADD(FDC01_FDC_TAG":3", corv_floppies, "8sssd", a2bus_corvfdc01_device::corv_floppy_formats)
-MACHINE_CONFIG_END
-
-=======
->>>>>>> upstream/master
 ROM_START( fdc01 )
 	ROM_REGION(0x20, FDC01_ROM_REGION, 0)
 	ROM_LOAD( "ff01.bin",     0x000000, 0x000020, CRC(ad3c1136) SHA1(b1e1e8a10618588b1b44b3be5d88857497f30b33) )
@@ -99,16 +79,6 @@ enum
 ***************************************************************************/
 
 //-------------------------------------------------
-<<<<<<< HEAD
-//  machine_config_additions - device-specific
-//  machine configurations
-//-------------------------------------------------
-
-machine_config_constructor a2bus_corvfdc01_device::device_mconfig_additions() const
-{
-	return MACHINE_CONFIG_NAME( fdc01 );
-}
-=======
 //  device_add_mconfig - add device configuration
 //-------------------------------------------------
 
@@ -121,17 +91,12 @@ MACHINE_CONFIG_MEMBER( a2bus_corvfdc01_device::device_add_mconfig )
 	MCFG_FLOPPY_DRIVE_ADD(FDC01_FDC_TAG":2", corv_floppies, "8sssd", a2bus_corvfdc01_device::corv_floppy_formats)
 	MCFG_FLOPPY_DRIVE_ADD(FDC01_FDC_TAG":3", corv_floppies, "8sssd", a2bus_corvfdc01_device::corv_floppy_formats)
 MACHINE_CONFIG_END
->>>>>>> upstream/master
 
 //-------------------------------------------------
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
-<<<<<<< HEAD
-const rom_entry *a2bus_corvfdc01_device::device_rom_region() const
-=======
 const tiny_rom_entry *a2bus_corvfdc01_device::device_rom_region() const
->>>>>>> upstream/master
 {
 	return ROM_NAME( fdc01 );
 }
@@ -140,32 +105,13 @@ const tiny_rom_entry *a2bus_corvfdc01_device::device_rom_region() const
 //  LIVE DEVICE
 //**************************************************************************
 
-<<<<<<< HEAD
-a2bus_corvfdc01_device::a2bus_corvfdc01_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source) :
-	device_t(mconfig, type, name, tag, owner, clock, shortname, source),
-=======
 a2bus_corvfdc01_device::a2bus_corvfdc01_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock) :
 	device_t(mconfig, type, tag, owner, clock),
->>>>>>> upstream/master
 	device_a2bus_card_interface(mconfig, *this),
 	m_wdfdc(*this, FDC01_FDC_TAG),
 	m_con1(*this, FDC01_FDC_TAG":0"),
 	m_con2(*this, FDC01_FDC_TAG":1"),
 	m_con3(*this, FDC01_FDC_TAG":2"),
-<<<<<<< HEAD
-	m_con4(*this, FDC01_FDC_TAG":3"), m_rom(nullptr), m_fdc_local_status(0), m_fdc_local_command(0), m_curfloppy(nullptr)
-{
-}
-
-a2bus_corvfdc01_device::a2bus_corvfdc01_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
-	device_t(mconfig, A2BUS_CORVFDC01, "Corvus Systems Floppy Controller", tag, owner, clock, "crvfdc01", __FILE__),
-	device_a2bus_card_interface(mconfig, *this),
-	m_wdfdc(*this, FDC01_FDC_TAG),
-	m_con1(*this, FDC01_FDC_TAG":0"),
-	m_con2(*this, FDC01_FDC_TAG":1"),
-	m_con3(*this, FDC01_FDC_TAG":2"),
-	m_con4(*this, FDC01_FDC_TAG":3"), m_rom(nullptr), m_fdc_local_status(0), m_fdc_local_command(0), m_curfloppy(nullptr)
-=======
 	m_con4(*this, FDC01_FDC_TAG":3"),
 	m_rom(nullptr), m_fdc_local_status(0), m_fdc_local_command(0), m_curfloppy(nullptr)
 {
@@ -173,7 +119,6 @@ a2bus_corvfdc01_device::a2bus_corvfdc01_device(const machine_config &mconfig, co
 
 a2bus_corvfdc01_device::a2bus_corvfdc01_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	a2bus_corvfdc01_device(mconfig, A2BUS_CORVFDC01, tag, owner, clock)
->>>>>>> upstream/master
 {
 }
 
@@ -196,22 +141,14 @@ void a2bus_corvfdc01_device::device_reset()
 {
 	m_fdc_local_status = 0;
 	m_fdc_local_command = 0;
-<<<<<<< HEAD
-	m_curfloppy = NULL;
-=======
 	m_curfloppy = nullptr;
->>>>>>> upstream/master
 }
 
 /*-------------------------------------------------
     read_c0nx - called for reads from this card's c0nx space
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-UINT8 a2bus_corvfdc01_device::read_c0nx(address_space &space, UINT8 offset)
-=======
 uint8_t a2bus_corvfdc01_device::read_c0nx(address_space &space, uint8_t offset)
->>>>>>> upstream/master
 {
 	switch (offset)
 	{
@@ -244,17 +181,10 @@ uint8_t a2bus_corvfdc01_device::read_c0nx(address_space &space, uint8_t offset)
     write_c0nx - called for writes to this card's c0nx space
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-void a2bus_corvfdc01_device::write_c0nx(address_space &space, UINT8 offset, UINT8 data)
-{
-	int current_drive;
-	floppy_image_device *floppy = 0;
-=======
 void a2bus_corvfdc01_device::write_c0nx(address_space &space, uint8_t offset, uint8_t data)
 {
 	int current_drive;
 	floppy_image_device *floppy = nullptr;
->>>>>>> upstream/master
 
 	switch (offset)
 	{
@@ -265,18 +195,6 @@ void a2bus_corvfdc01_device::write_c0nx(address_space &space, uint8_t offset, ui
 			switch (current_drive)
 			{
 				case 0:
-<<<<<<< HEAD
-					floppy = m_con1 ? m_con1->get_device() : 0;
-					break;
-				case 1:
-					floppy = m_con2 ? m_con2->get_device() : 0;
-					break;
-				case 2:
-					floppy = m_con3 ? m_con3->get_device() : 0;
-					break;
-				case 3:
-					floppy = m_con4 ? m_con4->get_device() : 0;
-=======
 					floppy = m_con1 ? m_con1->get_device() : nullptr;
 					break;
 				case 1:
@@ -287,7 +205,6 @@ void a2bus_corvfdc01_device::write_c0nx(address_space &space, uint8_t offset, ui
 					break;
 				case 3:
 					floppy = m_con4 ? m_con4->get_device() : nullptr;
->>>>>>> upstream/master
 					break;
 			}
 
@@ -296,11 +213,7 @@ void a2bus_corvfdc01_device::write_c0nx(address_space &space, uint8_t offset, ui
 				m_wdfdc->set_floppy(floppy);
 			}
 
-<<<<<<< HEAD
-			if (m_curfloppy != NULL)
-=======
 			if (m_curfloppy != nullptr)
->>>>>>> upstream/master
 			{
 				// side select
 				m_curfloppy->ss_w((data & LC_FLPSD1_mask) != 0);
@@ -336,11 +249,7 @@ void a2bus_corvfdc01_device::write_c0nx(address_space &space, uint8_t offset, ui
     read_cnxx - called for reads from this card's cnxx space
 -------------------------------------------------*/
 
-<<<<<<< HEAD
-UINT8 a2bus_corvfdc01_device::read_cnxx(address_space &space, UINT8 offset)
-=======
 uint8_t a2bus_corvfdc01_device::read_cnxx(address_space &space, uint8_t offset)
->>>>>>> upstream/master
 {
 	return m_rom[offset & 0x1f];
 }

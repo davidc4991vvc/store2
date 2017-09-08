@@ -12,30 +12,17 @@
       * Konek-Gorbunok (Little Humpbacked Horse)
       * Snezhnaja Koroleva (Snow Queen)
       * S.O.S.
-<<<<<<< HEAD
-=======
       * Gorodki
       * Kot-Rybolov
->>>>>>> upstream/master
 
   Other games known to exist on this hardware (interchangeable by the ROM swap):
       * Avtogonki
       * Istrebitel'
-<<<<<<< HEAD
-      * Gorodki
-      * Kot-Rybolov
-      * Kotigoroshko
-      * Ostrov Drakona
-      * Ostrov Sokrovisch
-      * Perehvatchik
-      * Zvezdnyj Rycar'
-=======
       * Kotigoroshko
       * Ostrov Drakona
       * Ostrov Sokrovisch
       * Perekhvatchik
       * Zvezdnyi Rytsar'
->>>>>>> upstream/master
 
  ***************************************************************
 
@@ -126,19 +113,11 @@
      - Use machine/pit8253.c in sound
      - Check sprites priorities on the real hardware
      - Check vertical background scrolling on the real hardware
-<<<<<<< HEAD
-     - What charset control is used for?
-=======
      - Kot Rybolov viewable area size likely controlled by pit8253 timers 0 and 1, used in test mode only
->>>>>>> upstream/master
 
 */
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/i8085/i8085.h"
-#include "includes/tiamc1.h"
-=======
 #include "includes/tiamc1.h"
 #include "audio/tiamc1.h"
 
@@ -153,7 +132,6 @@
 #define SND_CLOCK       (MASTER_CLOCK / 9)
 #define PIXEL_CLOCK     (MASTER_CLOCK / 3)
 
->>>>>>> upstream/master
 
 void tiamc1_state::machine_reset()
 {
@@ -163,10 +141,6 @@ void tiamc1_state::machine_reset()
 
 WRITE8_MEMBER(tiamc1_state::tiamc1_control_w)
 {
-<<<<<<< HEAD
-	coin_lockout_w(machine(), 0, ~data & 0x02);
-	coin_counter_w(machine(), 0, data & 0x04);
-=======
 	machine().bookkeeping().coin_lockout_w(0, ~data & 0x02);
 	machine().bookkeeping().coin_counter_w(0, data & 0x04);
 }
@@ -174,7 +148,6 @@ WRITE8_MEMBER(tiamc1_state::tiamc1_control_w)
 WRITE_LINE_MEMBER(tiamc1_state::pit8253_2_w)
 {
 	m_speaker->level_w(state);
->>>>>>> upstream/master
 }
 
 
@@ -184,15 +157,12 @@ static ADDRESS_MAP_START( tiamc1_map, AS_PROGRAM, 8, tiamc1_state )
 	AM_RANGE(0xe000, 0xffff) AM_RAM
 ADDRESS_MAP_END
 
-<<<<<<< HEAD
-=======
 static ADDRESS_MAP_START( kotrybolov_map, AS_PROGRAM, 8, tiamc1_state )
 	AM_RANGE(0x0000, 0xbfff) AM_ROM
 	AM_RANGE(0xc000, 0xcfff) AM_RAM
 	AM_RANGE(0xf000, 0xf3ff) AM_WRITE(kot_videoram_w)
 ADDRESS_MAP_END
 
->>>>>>> upstream/master
 static ADDRESS_MAP_START( tiamc1_io_map, AS_IO, 8, tiamc1_state )
 	ADDRESS_MAP_GLOBAL_MASK(0xff)
 	AM_RANGE(0x40, 0x4f) AM_WRITE(tiamc1_sprite_y_w) /* sprites Y */
@@ -203,25 +173,13 @@ static ADDRESS_MAP_START( tiamc1_io_map, AS_IO, 8, tiamc1_state )
 	AM_RANGE(0xbc, 0xbc) AM_WRITE(tiamc1_bg_vshift_w)/* background V scroll */
 	AM_RANGE(0xbd, 0xbd) AM_WRITE(tiamc1_bg_hshift_w)/* background H scroll */
 	AM_RANGE(0xbe, 0xbe) AM_WRITE(tiamc1_bankswitch_w) /* VRAM selector */
-<<<<<<< HEAD
-	AM_RANGE(0xbf, 0xbf) AM_WRITENOP                 /* charset control */
-	AM_RANGE(0xc0, 0xc3) AM_DEVWRITE("2x8253", tiamc1_sound_device, tiamc1_timer0_w)   /* timer 0 */
-	AM_RANGE(0xd0, 0xd0) AM_READ_PORT("IN0")
-	AM_RANGE(0xd1, 0xd1) AM_READ_PORT("IN1")
-	AM_RANGE(0xd2, 0xd2) AM_READ_PORT("IN2")
-	AM_RANGE(0xd2, 0xd2) AM_WRITE(tiamc1_control_w)  /* coin counter and lockout */
-	AM_RANGE(0xd3, 0xd3) AM_WRITENOP                 /* 8255 ctrl. Used for i/o ports */
-=======
 	AM_RANGE(0xbf, 0xbf) AM_WRITE(tiamc1_bg_bplctrl_w) /* charset control */
 	AM_RANGE(0xc0, 0xc3) AM_DEVWRITE("2x8253", tiamc1_sound_device, tiamc1_timer0_w)   /* timer 0 */
 	AM_RANGE(0xd0, 0xd3) AM_DEVREADWRITE("kr580vv55a", i8255_device, read, write)    /* input ports + coin counters & lockout */
->>>>>>> upstream/master
 	AM_RANGE(0xd4, 0xd7) AM_DEVWRITE("2x8253", tiamc1_sound_device, tiamc1_timer1_w)   /* timer 1 */
 	AM_RANGE(0xda, 0xda) AM_DEVWRITE("2x8253", tiamc1_sound_device, tiamc1_timer1_gate_w) /* timer 1 gate control */
 ADDRESS_MAP_END
 
-<<<<<<< HEAD
-=======
 static ADDRESS_MAP_START( kotrybolov_io_map, AS_IO, 8, tiamc1_state )
 	ADDRESS_MAP_GLOBAL_MASK(0xff)
 	AM_RANGE(0x00, 0x0f) AM_WRITE(tiamc1_sprite_y_w)    // sprites Y
@@ -237,7 +195,6 @@ static ADDRESS_MAP_START( kotrybolov_io_map, AS_IO, 8, tiamc1_state )
 ADDRESS_MAP_END
 
 
->>>>>>> upstream/master
 static INPUT_PORTS_START( tiamc1 )
 	PORT_START("IN0")
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_UNUSED )    /* Player 0 JOYSTICK_RIGHT */
@@ -270,8 +227,6 @@ static INPUT_PORTS_START( tiamc1 )
 	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_CUSTOM ) PORT_VBLANK("screen")
 INPUT_PORTS_END
 
-<<<<<<< HEAD
-=======
 static INPUT_PORTS_START( gorodki )
 	PORT_START("IN0")
 	PORT_BIT( 0xff, 152, IPT_AD_STICK_X) PORT_MINMAX(96, 208) PORT_SENSITIVITY(20) PORT_KEYDELTA(10) PORT_REVERSE PORT_PLAYER(1)
@@ -324,7 +279,6 @@ static INPUT_PORTS_START( kot )
 INPUT_PORTS_END
 
 
->>>>>>> upstream/master
 static const gfx_layout sprites16x16_layout =
 {
 	16,16,
@@ -347,29 +301,6 @@ static const gfx_layout char_layout =
 	8*8
 };
 
-<<<<<<< HEAD
-static GFXDECODE_START( tiamc1 )
-	GFXDECODE_ENTRY( NULL, 0x0000, char_layout, 0, 16 )
-	GFXDECODE_ENTRY( "gfx1", 0x0000, sprites16x16_layout, 0, 16 )
-GFXDECODE_END
-
-
-static MACHINE_CONFIG_START( tiamc1, tiamc1_state )
-	/* basic machine hardware */
-	MCFG_CPU_ADD("maincpu", I8080,16000000/9)        /* 16 MHz */
-	MCFG_CPU_PROGRAM_MAP(tiamc1_map)
-	MCFG_CPU_IO_MAP(tiamc1_io_map)
-
-	MCFG_CPU_VBLANK_INT_DRIVER("screen", tiamc1_state,  irq1_line_hold)
-
-
-	/* video hardware */
-	MCFG_SCREEN_ADD("screen", RASTER)
-	MCFG_SCREEN_REFRESH_RATE(50)
-	MCFG_SCREEN_VBLANK_TIME(ATTOSECONDS_IN_USEC(1600))
-	MCFG_SCREEN_SIZE(256, 256)
-	MCFG_SCREEN_VISIBLE_AREA(0, 256-1, 0, 256-1)
-=======
 static const gfx_layout char_rom_layout =
 {
 	8,8,
@@ -407,27 +338,16 @@ static MACHINE_CONFIG_START( tiamc1 )
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_RAW_PARAMS(PIXEL_CLOCK, 336, 0, 256, 312, 0, 256)       // pixel clock and htotal comes from docs/schematics, the rest is guess (determined by undumped PROM)
->>>>>>> upstream/master
 	MCFG_SCREEN_UPDATE_DRIVER(tiamc1_state, screen_update_tiamc1)
 	MCFG_SCREEN_PALETTE("palette")
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", tiamc1)
-<<<<<<< HEAD
-	MCFG_PALETTE_ADD("palette", 16)
-=======
 	MCFG_PALETTE_ADD("palette", 32)
->>>>>>> upstream/master
 	MCFG_PALETTE_INIT_OWNER(tiamc1_state, tiamc1)
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
-<<<<<<< HEAD
-	MCFG_SOUND_ADD("2x8253", TIAMC1, 16000000/9)
-	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
-MACHINE_CONFIG_END
-
-=======
 	MCFG_SOUND_ADD("2x8253", TIAMC1, SND_CLOCK)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
@@ -453,7 +373,6 @@ static MACHINE_CONFIG_DERIVED(kot, tiamc1)
 	MCFG_PIT8253_OUT2_HANDLER(WRITELINE(tiamc1_state, pit8253_2_w))
 MACHINE_CONFIG_END
 
->>>>>>> upstream/master
 
 ROM_START( konek )
 	ROM_REGION( 0x10000, "maincpu", 0 )
@@ -496,15 +415,12 @@ ROM_START( sosterm )
 	ROM_LOAD( "02.5a", 0x04000, 0x2000, CRC(9506cf9b) SHA1(3e54593d4452b956509877d9b6b26aa3e3a90beb) )
 	ROM_LOAD( "03.6a", 0x06000, 0x2000, CRC(5a0c14e1) SHA1(3eebe2c3ce114b87723fa6571623ee065a0b5646) )
 
-<<<<<<< HEAD
-=======
 	ROM_REGION( 0x0400, "proms", 0 )
 	ROM_LOAD( "prom100.e10", 0x0000, 0x100, NO_DUMP ) /* i/o ports map 256x8 */
 	ROM_LOAD( "prom101.a01", 0x0100, 0x100, NO_DUMP ) /* video sync 256x8 */
 	ROM_LOAD( "prom102.b03", 0x0200, 0x080, NO_DUMP ) /* sprites rom index 256x4 */
 	ROM_LOAD( "prom102.b06", 0x0280, 0x080, NO_DUMP ) /* buffer optimization logic 256x4 */
 	ROM_LOAD( "prom102.b05", 0x0300, 0x100, NO_DUMP ) /* sprites rom index 256x8 */
->>>>>>> upstream/master
 ROM_END
 
 ROM_START( koroleva )
@@ -523,10 +439,6 @@ ROM_START( koroleva )
 	ROM_LOAD( "02.5a", 0x04000, 0x2000, CRC(97770b0f) SHA1(cf4605e31f8c57a76bfda6a7ea329058da8b8c9c) )
 	ROM_LOAD( "03.6a", 0x06000, 0x2000, CRC(9b0a686a) SHA1(f02910db9f862ec017bb3834c58e96e780fb6322) )
 
-<<<<<<< HEAD
-ROM_END
-
-=======
 	ROM_REGION( 0x0400, "proms", 0 )
 	ROM_LOAD( "prom100.e10", 0x0000, 0x100, NO_DUMP ) /* i/o ports map 256x8 */
 	ROM_LOAD( "prom101.a01", 0x0100, 0x100, NO_DUMP ) /* video sync 256x8 */
@@ -536,7 +448,6 @@ ROM_END
 ROM_END
 
 // this game ROM board have only one 2KB main CPU RAM IC populated
->>>>>>> upstream/master
 ROM_START( bilyard )
 	ROM_REGION( 0x10000, "maincpu", 0 )
 	ROM_LOAD( "04.1g", 0x00000, 0x2000, CRC(a44f913d) SHA1(f01a0e931fb0f719bc7b3f1ca7802dd747c8a56f) )
@@ -552,14 +463,6 @@ ROM_START( bilyard )
 	ROM_LOAD( "01.3a", 0x02000, 0x2000, CRC(daddbbb5) SHA1(1460aebcbb57180e05930845703ff6325d85702a) )
 	ROM_LOAD( "02.5a", 0x04000, 0x2000, CRC(3d744d33) SHA1(f1375098e81986715d0497b09df0c6622bd75b9a) )
 	ROM_LOAD( "03.6a", 0x06000, 0x2000, CRC(8bfc0b15) SHA1(221efdce516274d3b1d9009d11dc9ed6cd67ef12) )
-<<<<<<< HEAD
-ROM_END
-
-GAME( 1988, konek, 0, tiamc1, tiamc1, driver_device, 0, ROT0, "Terminal", "Konek-Gorbunok", MACHINE_SUPPORTS_SAVE )
-GAME( 1988, sosterm, 0, tiamc1, tiamc1, driver_device, 0, ROT0, "Terminal", "S.O.S.", MACHINE_SUPPORTS_SAVE )
-GAME( 1988, koroleva, 0, tiamc1, tiamc1, driver_device, 0, ROT0, "Terminal", "Snezhnaja Koroleva", MACHINE_SUPPORTS_SAVE )
-GAME( 1988, bilyard, 0, tiamc1, tiamc1, driver_device, 0, ROT0, "Terminal", "Billiard", MACHINE_SUPPORTS_SAVE )
-=======
 
 	ROM_REGION( 0x0400, "proms", 0 )
 	ROM_LOAD( "prom100.e10", 0x0000, 0x100, NO_DUMP ) /* i/o ports map 256x8 */
@@ -647,4 +550,3 @@ GAME( 1988, koroleva, 0, tiamc1, tiamc1,  tiamc1_state, 0, ROT0, "Terminal", "Sn
 GAME( 1988, bilyard,  0, tiamc1, tiamc1,  tiamc1_state, 0, ROT0, "Terminal", "Billiard",           MACHINE_SUPPORTS_SAVE )
 GAME( 1988, gorodki,  0, tiamc1, gorodki, tiamc1_state, 0, ROT0, "Terminal", "Gorodki",            MACHINE_SUPPORTS_SAVE )
 GAME( 1988, kot,      0, kot,    kot,     tiamc1_state, 0, ROT0, "Terminal", "Kot-Rybolov",        MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE)
->>>>>>> upstream/master

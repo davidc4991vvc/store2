@@ -30,17 +30,6 @@ t=tile, p=palette
 #include "vs920a.h"
 
 
-<<<<<<< HEAD
-const device_type VS920A = &device_creator<vs920a_text_tilemap_device>;
-
-vs920a_text_tilemap_device::vs920a_text_tilemap_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, VS920A, "VS920A Text Tilemap", tag, owner, clock, "vs920a", __FILE__),
-	m_vram(NULL),
-	m_pal_base(0),
-	m_gfx_region(0),
-	m_gfxdecode(*this)
-
-=======
 DEFINE_DEVICE_TYPE(VS920A, vs920a_text_tilemap_device, "vs920a", "VS920A Text Tilemap")
 
 vs920a_text_tilemap_device::vs920a_text_tilemap_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
@@ -50,24 +39,12 @@ vs920a_text_tilemap_device::vs920a_text_tilemap_device(const machine_config &mco
 	, m_pal_base(0)
 	, m_gfx_region(0)
 	, m_gfxdecode(*this, finder_base::DUMMY_TAG)
->>>>>>> upstream/master
 {
 }
 
 
 void vs920a_text_tilemap_device::device_start()
 {
-<<<<<<< HEAD
-	if(!m_gfxdecode->started())
-		throw device_missing_dependencies();
-
-	m_vram = (UINT16*)auto_alloc_array_clear(this->machine(), UINT16, 0x1000/2);
-	save_pointer(NAME(m_vram), 0x1000/2);
-	save_item(NAME(m_pal_base));
-
-
-	m_tmap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(vs920a_text_tilemap_device::get_tile_info),this),TILEMAP_SCAN_ROWS,8,8,64,32);
-=======
 	if (!m_gfxdecode->started())
 		throw device_missing_dependencies();
 
@@ -77,7 +54,6 @@ void vs920a_text_tilemap_device::device_start()
 
 
 	m_tmap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(vs920a_text_tilemap_device::get_tile_info),this),TILEMAP_SCAN_ROWS,8,8,64,32);
->>>>>>> upstream/master
 	m_tmap->set_transparent_pen(0);
 }
 
@@ -125,19 +101,6 @@ READ16_MEMBER(vs920a_text_tilemap_device::vram_r)
 }
 
 
-<<<<<<< HEAD
-tilemap_t* vs920a_text_tilemap_device::get_tilemap()
-{
-	return m_tmap;
-}
-
-void vs920a_text_tilemap_device::set_pal_base(int pal_base)
-{
-	m_pal_base = pal_base;
-}
-
-=======
->>>>>>> upstream/master
 void vs920a_text_tilemap_device::draw(screen_device &screen, bitmap_ind16& bitmap, const rectangle &cliprect, int priority)
 {
 	m_tmap->draw(screen, bitmap, cliprect, 0, priority);

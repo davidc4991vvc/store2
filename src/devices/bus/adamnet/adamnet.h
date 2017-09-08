@@ -6,20 +6,11 @@
 
 **********************************************************************/
 
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __ADAMNET__
-#define __ADAMNET__
-
-#include "emu.h"
-=======
 #ifndef MAME_BUS_ADAMNET_ADAMNET_H
 #define MAME_BUS_ADAMNET_ADAMNET_H
 
 #pragma once
 
->>>>>>> upstream/master
 
 
 
@@ -56,11 +47,7 @@ class adamnet_device : public device_t
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	adamnet_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-=======
 	adamnet_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
->>>>>>> upstream/master
 
 	void add_device(device_t *target);
 
@@ -74,13 +61,8 @@ public:
 
 protected:
 	// device-level overrides
-<<<<<<< HEAD
-	virtual void device_start();
-	virtual void device_stop();
-=======
 	virtual void device_start() override;
 	virtual void device_stop() override;
->>>>>>> upstream/master
 
 private:
 	class daisy_entry
@@ -110,17 +92,10 @@ class adamnet_slot_device : public device_t,
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	adamnet_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	// device-level overrides
-	virtual void device_start();
-=======
 	adamnet_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
 	// device-level overrides
 	virtual void device_start() override;
->>>>>>> upstream/master
 
 protected:
 	// configuration
@@ -132,46 +107,28 @@ protected:
 
 class device_adamnet_card_interface : public device_slot_card_interface
 {
-<<<<<<< HEAD
-public:
-	// construction/destruction
-	device_adamnet_card_interface(const machine_config &mconfig, device_t &device);
-=======
 	friend class adamnet_device;
 
 public:
 	// construction/destruction
->>>>>>> upstream/master
 	virtual ~device_adamnet_card_interface();
 
 	virtual void adamnet_reset_w(int state) = 0;
 
-<<<<<<< HEAD
-=======
 protected:
 	device_adamnet_card_interface(const machine_config &mconfig, device_t &device);
 
->>>>>>> upstream/master
 	adamnet_device  *m_bus;
 };
 
 
 // device type definitions
-<<<<<<< HEAD
-extern const device_type ADAMNET;
-extern const device_type ADAMNET_SLOT;
-=======
 DECLARE_DEVICE_TYPE(ADAMNET,      adamnet_device)
 DECLARE_DEVICE_TYPE(ADAMNET_SLOT, adamnet_slot_device)
->>>>>>> upstream/master
 
 
 SLOT_INTERFACE_EXTERN( adamnet_devices );
 
 
 
-<<<<<<< HEAD
-#endif
-=======
 #endif // MAME_BUS_ADAMNET_ADAMNET_H
->>>>>>> upstream/master

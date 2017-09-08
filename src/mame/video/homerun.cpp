@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-// license:LGPL-2.1+
-=======
 // license:BSD-3-Clause
->>>>>>> upstream/master
 // copyright-holders:Tomasz Slanina
 /*************************************************************************
 
@@ -110,21 +106,13 @@ TILE_GET_INFO_MEMBER(homerun_state::get_homerun_tile_info)
 
 void homerun_state::video_start()
 {
-<<<<<<< HEAD
-	m_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(homerun_state::get_homerun_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 64, 64);
-=======
 	m_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(homerun_state::get_homerun_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 64, 64);
->>>>>>> upstream/master
 }
 
 
 void homerun_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect )
 {
-<<<<<<< HEAD
-	UINT8 *spriteram = m_spriteram;
-=======
 	uint8_t *spriteram = m_spriteram;
->>>>>>> upstream/master
 	int offs;
 
 	for (offs = m_spriteram.bytes() - 4; offs >= 0; offs -= 4)
@@ -149,11 +137,7 @@ void homerun_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprec
 	}
 }
 
-<<<<<<< HEAD
-UINT32 homerun_state::screen_update_homerun(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t homerun_state::screen_update_homerun(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	m_tilemap->set_scrolly(0, m_scrolly);
 	m_tilemap->set_scrollx(0, m_scrollx);

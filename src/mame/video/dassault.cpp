@@ -17,10 +17,7 @@
 
 #include "emu.h"
 #include "includes/dassault.h"
-<<<<<<< HEAD
-=======
 #include "screen.h"
->>>>>>> upstream/master
 
 /******************************************************************************/
 
@@ -30,22 +27,13 @@ void dassault_state::video_start()
 	m_sprgen2->alloc_sprite_bitmap();
 }
 
-<<<<<<< HEAD
-void dassault_state::mixdassaultlayer(bitmap_rgb32 &bitmap, bitmap_ind16* sprite_bitmap, const rectangle &cliprect, UINT16 pri, UINT16 primask, UINT16 penbase, UINT8 alpha)
-=======
 void dassault_state::mixdassaultlayer(bitmap_rgb32 &bitmap, bitmap_ind16* sprite_bitmap, const rectangle &cliprect, uint16_t pri, uint16_t primask, uint16_t penbase, uint8_t alpha)
->>>>>>> upstream/master
 {
 	int y, x;
 	const pen_t *paldata = &m_palette->pen(0);
 
-<<<<<<< HEAD
-	UINT16* srcline;
-	UINT32* dstline;
-=======
 	uint16_t* srcline;
 	uint32_t* dstline;
->>>>>>> upstream/master
 
 	for (y=cliprect.min_y;y<=cliprect.max_y;y++)
 	{
@@ -54,33 +42,21 @@ void dassault_state::mixdassaultlayer(bitmap_rgb32 &bitmap, bitmap_ind16* sprite
 
 		for (x=cliprect.min_x;x<=cliprect.max_x;x++)
 		{
-<<<<<<< HEAD
-			UINT16 pix = srcline[x];
-=======
 			uint16_t pix = srcline[x];
->>>>>>> upstream/master
 
 			if ((pix & primask) != pri)
 				continue;
 
 			if (pix&0xf)
 			{
-<<<<<<< HEAD
-				UINT16 pen = pix&0x1ff;
-=======
 				uint16_t pen = pix&0x1ff;
->>>>>>> upstream/master
 				if (pix & 0x800) pen += 0x200;
 
 				if (alpha!=0xff)
 				{
 					if (pix&0x600)
 					{
-<<<<<<< HEAD
-						UINT32 base = dstline[x];
-=======
 						uint32_t base = dstline[x];
->>>>>>> upstream/master
 						dstline[x] = alpha_blend_r32(base, paldata[pen+penbase], alpha);
 					}
 					else
@@ -98,19 +74,11 @@ void dassault_state::mixdassaultlayer(bitmap_rgb32 &bitmap, bitmap_ind16* sprite
 }
 
 /* are the priorities 100% correct? they're the same as they were before conversion to DECO52 sprite device, but if (for example) you walk to the side of the crates in the first part of the game you appear over them... */
-<<<<<<< HEAD
-UINT32 dassault_state::screen_update_dassault(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
-{
-	address_space &space = machine().driver_data()->generic_space();
-	UINT16 flip = m_deco_tilegen1->pf_control_r(space, 0, 0xffff);
-	UINT16 priority = m_decocomn->priority_r(space, 0, 0xffff);
-=======
 uint32_t dassault_state::screen_update_dassault(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
 {
 	address_space &space = machine().dummy_space();
 	uint16_t flip = m_deco_tilegen1->pf_control_r(space, 0, 0xffff);
 	uint16_t priority = m_decocomn->priority_r(space, 0, 0xffff);
->>>>>>> upstream/master
 
 	m_sprgen2->draw_sprites(bitmap, cliprect, m_spriteram2->buffer(), 0x400, false);
 	m_sprgen1->draw_sprites(bitmap, cliprect, m_spriteram->buffer(), 0x400, false);
@@ -119,13 +87,8 @@ uint32_t dassault_state::screen_update_dassault(screen_device &screen, bitmap_rg
 
 	/* Update tilemaps */
 	flip_screen_set(BIT(flip, 7));
-<<<<<<< HEAD
-	m_deco_tilegen1->pf_update(0, m_pf2_rowscroll);
-	m_deco_tilegen2->pf_update(0, m_pf4_rowscroll);
-=======
 	m_deco_tilegen1->pf_update(nullptr, m_pf2_rowscroll);
 	m_deco_tilegen2->pf_update(nullptr, m_pf4_rowscroll);
->>>>>>> upstream/master
 
 	/* Draw playfields/update priority bitmap */
 	screen.priority().fill(0, cliprect);

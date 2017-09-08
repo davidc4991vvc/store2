@@ -7,11 +7,7 @@
 /* Similar as Iron Horse */
 PALETTE_INIT_MEMBER(scotrsht_state, scotrsht)
 {
-<<<<<<< HEAD
-	const UINT8 *color_prom = memregion("proms")->base();
-=======
 	const uint8_t *color_prom = memregion("proms")->base();
->>>>>>> upstream/master
 	int i;
 
 	/* create a lookup table for the palette */
@@ -34,11 +30,7 @@ PALETTE_INIT_MEMBER(scotrsht_state, scotrsht)
 
 		for (j = 0; j < 8; j++)
 		{
-<<<<<<< HEAD
-			UINT8 ctabentry = ((~i & 0x100) >> 1) | (j << 4) | (color_prom[i] & 0x0f);
-=======
 			uint8_t ctabentry = ((~i & 0x100) >> 1) | (j << 4) | (color_prom[i] & 0x0f);
->>>>>>> upstream/master
 			palette.set_pen_indirect(((i & 0x100) << 3) | (j << 8) | (i & 0xff), ctabentry);
 		}
 	}
@@ -75,13 +67,8 @@ WRITE8_MEMBER(scotrsht_state::palettebank_w)
 		m_bg_tilemap->mark_all_dirty();
 	}
 
-<<<<<<< HEAD
-	coin_counter_w(machine(), 0, data & 1);
-	coin_counter_w(machine(), 1, data & 2);
-=======
 	machine().bookkeeping().coin_counter_w(0, data & 1);
 	machine().bookkeeping().coin_counter_w(1, data & 2);
->>>>>>> upstream/master
 
 	// data & 4 unknown
 }
@@ -131,11 +118,7 @@ void scotrsht_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprec
 
 void scotrsht_state::video_start()
 {
-<<<<<<< HEAD
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(scotrsht_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS,  8, 8, 64, 32);
-=======
 	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(scotrsht_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS,  8, 8, 64, 32);
->>>>>>> upstream/master
 
 	m_bg_tilemap->set_scroll_cols(64);
 
@@ -144,11 +127,7 @@ void scotrsht_state::video_start()
 	save_item(NAME(m_palette_bank));
 }
 
-<<<<<<< HEAD
-UINT32 scotrsht_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t scotrsht_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	for (int col = 0; col < 32; col++)
 		m_bg_tilemap->set_scrolly(col, m_scroll[col]);

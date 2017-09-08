@@ -98,10 +98,7 @@ Arcade Version (Coin-Op) by InfoCube (Pisa, Italy)
 #include "cpu/i386/i386.h"
 #include "machine/pcshare.h"
 #include "video/pc_vga.h"
-<<<<<<< HEAD
-=======
 #include "screen.h"
->>>>>>> upstream/master
 
 
 class pangofun_state : public pcat_base_state
@@ -111,11 +108,7 @@ public:
 		: pcat_base_state(mconfig, type, tag) { }
 
 	DECLARE_DRIVER_INIT(pangofun);
-<<<<<<< HEAD
-	virtual void machine_start();
-=======
 	virtual void machine_start() override;
->>>>>>> upstream/master
 };
 
 
@@ -178,11 +171,7 @@ void pangofun_state::machine_start()
 {
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( pangofun, pangofun_state )
-=======
 static MACHINE_CONFIG_START( pangofun )
->>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", I486, 25000000 )    /* I486 ?? Mhz (25 according to POST) */
 	MCFG_CPU_PROGRAM_MAP(pcat_map)

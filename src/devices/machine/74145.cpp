@@ -50,11 +50,7 @@
 #include "coreutil.h"
 
 
-<<<<<<< HEAD
-const device_type TTL74145 = &device_creator<ttl74145_device>;
-=======
 DEFINE_DEVICE_TYPE(TTL74145, ttl74145_device, "ttl74145", "TTL74145")
->>>>>>> upstream/master
 
 /***************************************************************************
     DEVICE INTERFACE
@@ -63,13 +59,8 @@ DEFINE_DEVICE_TYPE(TTL74145, ttl74145_device, "ttl74145", "TTL74145")
 //  ttl74145_device - constructor
 //-------------------------------------------------
 
-<<<<<<< HEAD
-ttl74145_device::ttl74145_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
-	: device_t(mconfig, TTL74145, "TTL74145", tag, owner, clock, "ttl74145", __FILE__)
-=======
 ttl74145_device::ttl74145_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
 	: device_t(mconfig, TTL74145, tag, owner, clock)
->>>>>>> upstream/master
 	, m_output_line_0_cb(*this)
 	, m_output_line_1_cb(*this)
 	, m_output_line_2_cb(*this)
@@ -120,17 +111,10 @@ void ttl74145_device::device_reset()
     IMPLEMENTATION
 ***************************************************************************/
 
-<<<<<<< HEAD
-void ttl74145_device::write(UINT8 data)
-{
-	/* decode number */
-	UINT16 new_number = bcd_2_dec(data & 0x0f);
-=======
 void ttl74145_device::write(uint8_t data)
 {
 	/* decode number */
 	uint16_t new_number = bcd_2_dec(data & 0x0f);
->>>>>>> upstream/master
 
 	/* call output callbacks if the number changed */
 	if (new_number != m_number)
@@ -152,11 +136,7 @@ void ttl74145_device::write(uint8_t data)
 }
 
 
-<<<<<<< HEAD
-UINT16 ttl74145_device::read()
-=======
 uint16_t ttl74145_device::read()
->>>>>>> upstream/master
 {
 	return (1 << m_number) & 0x3ff;
 }

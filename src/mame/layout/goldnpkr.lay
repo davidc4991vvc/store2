@@ -108,42 +108,6 @@
 		<screen index="0">
 			<bounds left="0" top="0" right="4" bottom="3" />
 		</screen>
-<<<<<<< HEAD
-		<bezel name="lamp0" element="BET">
-			<bounds x="3.0" y="3.45" width="0.40" height="0.24" />
-		</bezel>
-		<bezel name="lamp1" element="DEAL">
-			<bounds x="2.5" y="3.45" width="0.40" height="0.24" />
-		</bezel>
-		<bezel name="lamp2" element="HOLD">
-			<bounds x="0.0" y="3.13" width="0.40" height="0.24" />
-		</bezel>
-		<bezel name="lamp3" element="D-UP">
-			<bounds x="1.5" y="3.45" width="0.40" height="0.24" />
-		</bezel>
-		<bezel name="lamp4" element="BIG">
-			<bounds x="0.5" y="3.45" width="0.40" height="0.24" />
-		</bezel>
-		<bezel name="lamp2" element="HOLD">
-			<bounds x="0.5" y="3.13" width="0.40" height="0.24" />
-		</bezel>
-		<bezel name="lamp2" element="HOLD">
-			<bounds x="1.0" y="3.13" width="0.40" height="0.24" />
-		</bezel>
-		<bezel name="lamp2" element="HOLD">
-			<bounds x="1.5" y="3.13" width="0.40" height="0.24" />
-		</bezel>
-		<bezel name="lamp2" element="HOLD">
-			<bounds x="2.0" y="3.13" width="0.40" height="0.24" />
-		</bezel>
-		<bezel name="lamp3" element="TAKE">
-			<bounds x="2.0" y="3.45" width="0.40" height="0.24" />
-		</bezel>
-		<bezel name="lamp4" element="SMALL">
-			<bounds x="1.0" y="3.45" width="0.40" height="0.24" />
-		</bezel>
-		<bezel name="lamp2" element="CANCEL">
-=======
 		<bezel name="lamp0" element="BET" inputtag="IN0-0" inputmask="0x01">
 			<bounds x="3.0" y="3.45" width="0.40" height="0.24" />
 		</bezel>
@@ -178,7 +142,6 @@
 			<bounds x="1.0" y="3.45" width="0.40" height="0.24" />
 		</bezel>
 		<bezel name="lamp2" element="CANCEL" inputtag="IN0-0" inputmask="0x10">
->>>>>>> upstream/master
 			<bounds x="0.0" y="3.45" width="0.40" height="0.24" />
 		</bezel>
 	</view>

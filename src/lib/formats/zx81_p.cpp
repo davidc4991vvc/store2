@@ -34,10 +34,7 @@ medium transfer rate is approx. 307 bps (38 bytes/sec) for files that contain
 #include <assert.h>
 
 #include "zx81_p.h"
-<<<<<<< HEAD
-=======
 #include "tzx_cas.h"
->>>>>>> upstream/master
 
 
 #define WAVEENTRY_LOW   -32768
@@ -59,15 +56,6 @@ medium transfer rate is approx. 307 bps (38 bytes/sec) for files that contain
 #define ZX81_DATA_LENGTH_OFFSET 0x0b
 #define ZX80_DATA_LENGTH_OFFSET 0x04
 
-<<<<<<< HEAD
-static UINT8 zx_file_name[128];
-static UINT16 real_data_length = 0;
-static UINT8 zx_file_name_length = 0;
-
-/* common functions */
-
-static INT16 *zx81_emit_level(INT16 *p, int count, int level)
-=======
 static uint8_t zx_file_name[128];
 static uint16_t real_data_length = 0;
 static uint8_t zx_file_name_length = 0;
@@ -75,7 +63,6 @@ static uint8_t zx_file_name_length = 0;
 /* common functions */
 
 static int16_t *zx81_emit_level(int16_t *p, int count, int level)
->>>>>>> upstream/master
 {
 	int i;
 
@@ -84,11 +71,7 @@ static int16_t *zx81_emit_level(int16_t *p, int count, int level)
 	return p;
 }
 
-<<<<<<< HEAD
-static INT16* zx81_emit_pulse(INT16 *p)
-=======
 static int16_t* zx81_emit_pulse(int16_t *p)
->>>>>>> upstream/master
 {
 	p = zx81_emit_level (p, ZX81_PULSE_LENGTH/8, WAVEENTRY_LOW);
 	p = zx81_emit_level (p, ZX81_PULSE_LENGTH/8, WAVEENTRY_LOW);
@@ -102,22 +85,14 @@ static int16_t* zx81_emit_pulse(int16_t *p)
 	return p;
 }
 
-<<<<<<< HEAD
-static INT16* zx81_emit_pause(INT16 *p)
-=======
 static int16_t* zx81_emit_pause(int16_t *p)
->>>>>>> upstream/master
 {
 	p = zx81_emit_level (p, ZX81_PAUSE_LENGTH, WAVEENTRY_ZERO);
 
 	return p;
 }
 
-<<<<<<< HEAD
-static INT16* zx81_output_bit(INT16 *p, UINT8 bit)
-=======
 static int16_t* zx81_output_bit(int16_t *p, uint8_t bit)
->>>>>>> upstream/master
 {
 	int i;
 
@@ -133,11 +108,7 @@ static int16_t* zx81_output_bit(int16_t *p, uint8_t bit)
 		return p;
 }
 
-<<<<<<< HEAD
-static INT16* zx81_output_byte(INT16 *p, UINT8 byte)
-=======
 static int16_t* zx81_output_byte(int16_t *p, uint8_t byte)
->>>>>>> upstream/master
 {
 	int i;
 
@@ -147,15 +118,9 @@ static int16_t* zx81_output_byte(int16_t *p, uint8_t byte)
 	return p;
 }
 
-<<<<<<< HEAD
-static UINT16 zx81_cassette_calculate_number_of_1(const UINT8 *bytes, UINT16 length)
-{
-	UINT16 number_of_1 = 0;
-=======
 static uint16_t zx81_cassette_calculate_number_of_1(const uint8_t *bytes, uint16_t length)
 {
 	uint16_t number_of_1 = 0;
->>>>>>> upstream/master
 	int i,j;
 
 	for (i=0; i<length; i++)
@@ -168,11 +133,7 @@ static uint16_t zx81_cassette_calculate_number_of_1(const uint8_t *bytes, uint16
 
 /* ZX-81 functions */
 
-<<<<<<< HEAD
-static const UINT8 zx81_chars[]={
-=======
 static const uint8_t zx81_chars[]={
->>>>>>> upstream/master
 				0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /*00h-07h*/
 				0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /*08h-0fh*/
 				0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /*10h-17h*/
@@ -194,19 +155,11 @@ static const uint8_t zx81_chars[]={
 static void zx81_fill_file_name(const char* name)
 {
 	for (zx_file_name_length=0; (zx_file_name_length<128) && name[zx_file_name_length]; zx_file_name_length++)
-<<<<<<< HEAD
-		zx_file_name[zx_file_name_length] = ((UINT8) name[zx_file_name_length]<0x80) ? zx81_chars[(UINT8) name[zx_file_name_length]] : 0x00;
-	zx_file_name[zx_file_name_length-1] |= 0x80;
-}
-
-static int zx81_cassette_calculate_size_in_samples(const UINT8 *bytes, int length)
-=======
 		zx_file_name[zx_file_name_length] = ((uint8_t) name[zx_file_name_length]<0x80) ? zx81_chars[(uint8_t) name[zx_file_name_length]] : 0x00;
 	zx_file_name[zx_file_name_length-1] |= 0x80;
 }
 
 static int zx81_cassette_calculate_size_in_samples(const uint8_t *bytes, int length)
->>>>>>> upstream/master
 {
 	unsigned int number_of_0_data = 0;
 	unsigned int number_of_1_data = 0;
@@ -224,15 +177,9 @@ static int zx81_cassette_calculate_size_in_samples(const uint8_t *bytes, int len
 	return (number_of_0_data+number_of_0_name)*ZX81_LOW_BIT_LENGTH + (number_of_1_data+number_of_1_name)*ZX81_HIGH_BIT_LENGTH + ZX81_PILOT_LENGTH;
 }
 
-<<<<<<< HEAD
-static int zx81_cassette_fill_wave(INT16 *buffer, int length, UINT8 *bytes)
-{
-	INT16 * p = buffer;
-=======
 static int zx81_cassette_fill_wave(int16_t *buffer, int length, uint8_t *bytes)
 {
 	int16_t * p = buffer;
->>>>>>> upstream/master
 	int i;
 
 	/* pilot */
@@ -251,18 +198,6 @@ static int zx81_cassette_fill_wave(int16_t *buffer, int length, uint8_t *bytes)
 
 static const struct CassetteLegacyWaveFiller zx81_legacy_fill_wave =
 {
-<<<<<<< HEAD
-	zx81_cassette_fill_wave,            /* fill_wave */
-	-1,                     /* chunk_size */
-	0,                      /* chunk_samples */
-	zx81_cassette_calculate_size_in_samples,    /* chunk_sample_calc */
-	ZX81_WAV_FREQUENCY,             /* sample_frequency */
-	0,                      /* header_samples */
-	0                       /* trailer_samples */
-};
-
-static casserr_t zx81_p_identify(cassette_image *cassette, struct CassetteOptions *opts)
-=======
 	zx81_cassette_fill_wave,                    /* fill_wave */
 	-1,                                         /* chunk_size */
 	0,                                          /* chunk_samples */
@@ -273,16 +208,11 @@ static casserr_t zx81_p_identify(cassette_image *cassette, struct CassetteOption
 };
 
 static cassette_image::error zx81_p_identify(cassette_image *cassette, struct CassetteOptions *opts)
->>>>>>> upstream/master
 {
 	return cassette_legacy_identify(cassette, opts, &zx81_legacy_fill_wave);
 }
 
-<<<<<<< HEAD
-static casserr_t zx81_p_load(cassette_image *cassette)
-=======
 static cassette_image::error zx81_p_load(cassette_image *cassette)
->>>>>>> upstream/master
 {
 	/* The filename of the file is used to create the wave stream for the emulated machine. Why is this information not
 	   part of the image file itself?
@@ -297,22 +227,13 @@ static const struct CassetteFormat zx81_p_image_format =
 	"p,81",
 	zx81_p_identify,
 	zx81_p_load,
-<<<<<<< HEAD
-	NULL
-=======
 	nullptr
->>>>>>> upstream/master
 };
 
 CASSETTE_FORMATLIST_START(zx81_p_format)
 	CASSETTE_FORMAT(zx81_p_image_format)
 CASSETTE_FORMATLIST_END
 
-<<<<<<< HEAD
-/* ZX-80 functions */
-
-static int zx80_cassette_calculate_size_in_samples(const UINT8 *bytes, int length)
-=======
 CASSETTE_FORMATLIST_START(zx81_cassette_formats)
 	CASSETTE_FORMAT(zx81_p_image_format)
 	CASSETTE_FORMAT(tzx_cassette_format)
@@ -321,7 +242,6 @@ CASSETTE_FORMATLIST_END
 /* ZX-80 functions */
 
 static int zx80_cassette_calculate_size_in_samples(const uint8_t *bytes, int length)
->>>>>>> upstream/master
 {
 	unsigned int number_of_0_data = 0;
 	unsigned int number_of_1_data = 0;
@@ -334,15 +254,9 @@ static int zx80_cassette_calculate_size_in_samples(const uint8_t *bytes, int len
 	return number_of_0_data*ZX81_LOW_BIT_LENGTH + number_of_1_data*ZX81_HIGH_BIT_LENGTH + ZX81_PILOT_LENGTH;
 }
 
-<<<<<<< HEAD
-static int zx80_cassette_fill_wave(INT16 *buffer, int length, UINT8 *bytes)
-{
-	INT16 * p = buffer;
-=======
 static int zx80_cassette_fill_wave(int16_t *buffer, int length, uint8_t *bytes)
 {
 	int16_t * p = buffer;
->>>>>>> upstream/master
 	int i;
 
 	/* pilot */
@@ -357,37 +271,21 @@ static int zx80_cassette_fill_wave(int16_t *buffer, int length, uint8_t *bytes)
 
 static const struct CassetteLegacyWaveFiller zx80_legacy_fill_wave =
 {
-<<<<<<< HEAD
-	zx80_cassette_fill_wave,            /* fill_wave */
-	-1,                                         /* chunk_size */
-	0,                                          /* chunk_samples */
-	zx80_cassette_calculate_size_in_samples,    /* chunk_sample_calc */
-	ZX81_WAV_FREQUENCY,                                     /* sample_frequency */
-=======
 	zx80_cassette_fill_wave,                    /* fill_wave */
 	-1,                                         /* chunk_size */
 	0,                                          /* chunk_samples */
 	zx80_cassette_calculate_size_in_samples,    /* chunk_sample_calc */
 	ZX81_WAV_FREQUENCY,                         /* sample_frequency */
->>>>>>> upstream/master
 	0,                                          /* header_samples */
 	0                                           /* trailer_samples */
 };
 
-<<<<<<< HEAD
-static casserr_t zx80_o_identify(cassette_image *cassette, struct CassetteOptions *opts)
-=======
 static cassette_image::error zx80_o_identify(cassette_image *cassette, struct CassetteOptions *opts)
->>>>>>> upstream/master
 {
 	return cassette_legacy_identify(cassette, opts, &zx80_legacy_fill_wave);
 }
 
-<<<<<<< HEAD
-static casserr_t zx80_o_load(cassette_image *cassette)
-=======
 static cassette_image::error zx80_o_load(cassette_image *cassette)
->>>>>>> upstream/master
 {
 	return cassette_legacy_construct(cassette, &zx80_legacy_fill_wave);
 }
@@ -397,11 +295,7 @@ static const struct CassetteFormat zx80_o_image_format =
 	"o,80",
 	zx80_o_identify,
 	zx80_o_load,
-<<<<<<< HEAD
-	NULL
-=======
 	nullptr
->>>>>>> upstream/master
 };
 
 CASSETTE_FORMATLIST_START(zx80_o_format)

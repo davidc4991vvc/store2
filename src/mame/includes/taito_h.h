@@ -18,38 +18,17 @@ public:
 		m_maincpu(*this, "maincpu"),
 		m_audiocpu(*this, "audiocpu"),
 		m_tc0080vco(*this, "tc0080vco"),
-<<<<<<< HEAD
-		m_tc0220ioc(*this, "tc0220ioc"),
-=======
 		m_tc0040ioc(*this, "tc0040ioc"),
->>>>>>> upstream/master
 		m_gfxdecode(*this, "gfxdecode"),
 		m_palette(*this, "palette") { }
 
 	/* memory pointers */
-<<<<<<< HEAD
-	required_shared_ptr<UINT16> m_m68000_mainram;
-=======
 	required_shared_ptr<uint16_t> m_m68000_mainram;
->>>>>>> upstream/master
 
 	/* devices */
 	required_device<cpu_device> m_maincpu;
 	required_device<cpu_device> m_audiocpu;
 	required_device<tc0080vco_device> m_tc0080vco;
-<<<<<<< HEAD
-	required_device<tc0220ioc_device> m_tc0220ioc;
-	required_device<gfxdecode_device> m_gfxdecode;
-	required_device<palette_device> m_palette;
-
-	DECLARE_READ8_MEMBER(syvalion_input_bypass_r);
-	DECLARE_WRITE8_MEMBER(sound_bankswitch_w);
-	virtual void machine_start();
-	virtual void machine_reset();
-	UINT32 screen_update_syvalion(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	UINT32 screen_update_recordbr(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-	UINT32 screen_update_dleague(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
-=======
 	optional_device<tc0040ioc_device> m_tc0040ioc;
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
@@ -62,13 +41,8 @@ public:
 	uint32_t screen_update_syvalion(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	uint32_t screen_update_recordbr(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	uint32_t screen_update_dleague(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
->>>>>>> upstream/master
 	void syvalion_draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect );
 	void recordbr_draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect, int priority );
 	void dleague_draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect, int priority );
 	void taitoh_log_vram();
-<<<<<<< HEAD
-	DECLARE_WRITE_LINE_MEMBER(irqhandler);
-=======
->>>>>>> upstream/master
 };

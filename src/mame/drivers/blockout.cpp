@@ -67,13 +67,6 @@
 ***************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/m68000/m68000.h"
-#include "cpu/z80/z80.h"
-#include "sound/2151intf.h"
-#include "sound/okim6295.h"
-#include "includes/blockout.h"
-=======
 #include "includes/blockout.h"
 
 #include "cpu/m68000/m68000.h"
@@ -82,23 +75,10 @@
 #include "sound/okim6295.h"
 #include "speaker.h"
 
->>>>>>> upstream/master
 
 #define MAIN_CLOCK XTAL_10MHz
 #define AUDIO_CLOCK XTAL_3_579545MHz
 
-<<<<<<< HEAD
-WRITE16_MEMBER(blockout_state::blockout_sound_command_w)
-{
-	if (ACCESSING_BITS_0_7)
-	{
-		soundlatch_byte_w(space, offset, data & 0xff);
-		m_audiocpu->set_input_line(INPUT_LINE_NMI, PULSE_LINE);
-	}
-}
-
-=======
->>>>>>> upstream/master
 WRITE16_MEMBER(blockout_state::blockout_irq6_ack_w)
 {
 	m_maincpu->set_input_line(6, CLEAR_LINE);
@@ -124,11 +104,7 @@ static ADDRESS_MAP_START( main_map, AS_PROGRAM, 16, blockout_state )
 	AM_RANGE(0x100008, 0x100009) AM_READ_PORT("DSW2")
 	AM_RANGE(0x100010, 0x100011) AM_WRITE(blockout_irq6_ack_w)
 	AM_RANGE(0x100012, 0x100013) AM_WRITE(blockout_irq5_ack_w)
-<<<<<<< HEAD
-	AM_RANGE(0x100014, 0x100015) AM_WRITE(blockout_sound_command_w)
-=======
 	AM_RANGE(0x100014, 0x100015) AM_DEVWRITE8("soundlatch", generic_latch_8_device, write, 0x00ff)
->>>>>>> upstream/master
 	AM_RANGE(0x100016, 0x100017) AM_WRITENOP    /* don't know, maybe reset sound CPU */
 	AM_RANGE(0x180000, 0x1bffff) AM_RAM_WRITE(blockout_videoram_w) AM_SHARE("videoram")
 	AM_RANGE(0x1d4000, 0x1dffff) AM_RAM /* work RAM */
@@ -148,11 +124,7 @@ static ADDRESS_MAP_START( agress_map, AS_PROGRAM, 16, blockout_state )
 	AM_RANGE(0x100008, 0x100009) AM_READ_PORT("DSW2")
 	AM_RANGE(0x100010, 0x100011) AM_WRITE(blockout_irq6_ack_w)
 	AM_RANGE(0x100012, 0x100013) AM_WRITE(blockout_irq5_ack_w)
-<<<<<<< HEAD
-	AM_RANGE(0x100014, 0x100015) AM_WRITE(blockout_sound_command_w)
-=======
 	AM_RANGE(0x100014, 0x100015) AM_DEVWRITE8("soundlatch", generic_latch_8_device, write, 0x00ff)
->>>>>>> upstream/master
 	AM_RANGE(0x100016, 0x100017) AM_WRITENOP    /* don't know, maybe reset sound CPU */
 	AM_RANGE(0x180000, 0x1bffff) AM_RAM_WRITE(blockout_videoram_w) AM_SHARE("videoram")
 	AM_RANGE(0x1d4000, 0x1dffff) AM_RAM /* work RAM */
@@ -168,11 +140,7 @@ static ADDRESS_MAP_START( audio_map, AS_PROGRAM, 8, blockout_state )
 	AM_RANGE(0x8000, 0x87ff) AM_RAM
 	AM_RANGE(0x8800, 0x8801) AM_DEVREADWRITE("ymsnd", ym2151_device, read, write)
 	AM_RANGE(0x9800, 0x9800) AM_DEVREADWRITE("oki", okim6295_device, read, write)
-<<<<<<< HEAD
-	AM_RANGE(0xa000, 0xa000) AM_READ(soundlatch_byte_r)
-=======
 	AM_RANGE(0xa000, 0xa000) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
->>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -318,11 +286,7 @@ TIMER_DEVICE_CALLBACK_MEMBER(blockout_state::blockout_scanline)
 		m_maincpu->set_input_line(5, ASSERT_LINE);
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( blockout, blockout_state )
-=======
 static MACHINE_CONFIG_START( blockout )
->>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, MAIN_CLOCK)       /* MRH - 8.76 makes gfx/adpcm samples sync better -- but 10 is correct speed*/
@@ -348,22 +312,15 @@ static MACHINE_CONFIG_START( blockout )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
-<<<<<<< HEAD
-=======
 	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
 	MCFG_GENERIC_LATCH_DATA_PENDING_CB(INPUTLINE("audiocpu", INPUT_LINE_NMI))
 
->>>>>>> upstream/master
 	MCFG_YM2151_ADD("ymsnd", AUDIO_CLOCK)
 	MCFG_YM2151_IRQ_HANDLER(WRITELINE(blockout_state,irq_handler))
 	MCFG_SOUND_ROUTE(0, "lspeaker", 0.60)
 	MCFG_SOUND_ROUTE(1, "rspeaker", 0.60)
 
-<<<<<<< HEAD
-	MCFG_OKIM6295_ADD("oki", 1056000, OKIM6295_PIN7_HIGH)
-=======
 	MCFG_OKIM6295_ADD("oki", 1056000, PIN7_HIGH)
->>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 0.50)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 0.50)
 MACHINE_CONFIG_END
@@ -462,16 +419,8 @@ ROM_END
  *
  *************************************/
 
-<<<<<<< HEAD
-GAME( 1989, blockout, 0,        blockout, blockout, driver_device, 0, ROT0, "Technos Japan / California Dreams", "Block Out (set 1)", MACHINE_SUPPORTS_SAVE )
-GAME( 1989, blockout2,blockout, blockout, blockout, driver_device, 0, ROT0, "Technos Japan / California Dreams", "Block Out (set 2)", MACHINE_SUPPORTS_SAVE )
-GAME( 1989, blockoutj,blockout, blockout, blockoutj, driver_device,0, ROT0, "Technos Japan / California Dreams", "Block Out (Japan)", MACHINE_SUPPORTS_SAVE )
-GAME( 1991, agress,   0,        agress,   agress, driver_device,   0, ROT0, "Palco", "Agress - Missile Daisenryaku (Japan)", MACHINE_SUPPORTS_SAVE )
-GAME( 2003, agressb,  agress,   agress,   agress, driver_device,   0, ROT0, "bootleg", "Agress - Missile Daisenryaku (English bootleg)", MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1989, blockout, 0,        blockout, blockout,  blockout_state, 0, ROT0, "Technos Japan / California Dreams", "Block Out (set 1)", MACHINE_SUPPORTS_SAVE )
 GAME( 1989, blockout2,blockout, blockout, blockout,  blockout_state, 0, ROT0, "Technos Japan / California Dreams", "Block Out (set 2)", MACHINE_SUPPORTS_SAVE )
 GAME( 1989, blockoutj,blockout, blockout, blockoutj, blockout_state, 0, ROT0, "Technos Japan / California Dreams", "Block Out (Japan)", MACHINE_SUPPORTS_SAVE )
 GAME( 1991, agress,   0,        agress,   agress,    blockout_state, 0, ROT0, "Palco",   "Agress - Missile Daisenryaku (Japan)",           MACHINE_SUPPORTS_SAVE )
 GAME( 2003, agressb,  agress,   agress,   agress,    blockout_state, 0, ROT0, "bootleg", "Agress - Missile Daisenryaku (English bootleg)", MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

@@ -32,17 +32,6 @@
 
 **********************************************************************/
 
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __CDP1864__
-#define __CDP1864__
-
-#include "emu.h"
-#include "machine/rescap.h"
-#include "video/resnet.h"
-
-=======
 #ifndef MAME_SOUND_CDP1864_H
 #define MAME_SOUND_CDP1864_H
 
@@ -53,7 +42,6 @@
 
 #include "screen.h"
 
->>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -62,35 +50,6 @@
 
 #define CDP1864_CLOCK   XTAL_1_75MHz
 
-<<<<<<< HEAD
-#define CDP1864_VISIBLE_COLUMNS 64
-#define CDP1864_VISIBLE_LINES   192
-
-#define CDP1864_HBLANK_END       1 * 8
-#define CDP1864_HBLANK_START    13 * 8
-#define CDP1864_HSYNC_START      0 * 8
-#define CDP1864_HSYNC_END        1 * 8
-#define CDP1864_SCREEN_START     4 * 8
-#define CDP1864_SCREEN_END      12 * 8
-#define CDP1864_SCREEN_WIDTH    14 * 8
-
-#define CDP1864_TOTAL_SCANLINES             312
-
-#define CDP1864_SCANLINE_VBLANK_START       CDP1864_TOTAL_SCANLINES - 4
-#define CDP1864_SCANLINE_VBLANK_END         20
-#define CDP1864_SCANLINE_VSYNC_START        0
-#define CDP1864_SCANLINE_VSYNC_END          4
-#define CDP1864_SCANLINE_DISPLAY_START      60 // ???
-#define CDP1864_SCANLINE_DISPLAY_END        CDP1864_SCANLINE_DISPLAY_START + CDP1864_VISIBLE_LINES
-#define CDP1864_SCANLINE_INT_START          CDP1864_SCANLINE_DISPLAY_START - 2
-#define CDP1864_SCANLINE_INT_END            CDP1864_SCANLINE_DISPLAY_START
-#define CDP1864_SCANLINE_EFX_TOP_START      CDP1864_SCANLINE_DISPLAY_START - 4
-#define CDP1864_SCANLINE_EFX_TOP_END        CDP1864_SCANLINE_DISPLAY_START
-#define CDP1864_SCANLINE_EFX_BOTTOM_START   CDP1864_SCANLINE_DISPLAY_END - 4
-#define CDP1864_SCANLINE_EFX_BOTTOM_END     CDP1864_SCANLINE_DISPLAY_END
-
-=======
->>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -98,25 +57,6 @@
 //**************************************************************************
 
 #define MCFG_CDP1864_ADD(_tag, _screen_tag, _clock, _inlace, _irq, _dma_out, _efx, _hsync, _rdata, _bdata, _gdata) \
-<<<<<<< HEAD
-	MCFG_SOUND_ADD(_tag, CDP1864, _clock) \
-	MCFG_VIDEO_SET_SCREEN(_screen_tag) \
-	downcast<cdp1864_device *>(device)->set_inlace_callback(DEVCB_##_inlace); \
-	downcast<cdp1864_device *>(device)->set_irq_callback(DEVCB_##_irq); \
-	downcast<cdp1864_device *>(device)->set_dma_out_callback(DEVCB_##_dma_out); \
-	downcast<cdp1864_device *>(device)->set_efx_callback(DEVCB_##_efx); \
-	downcast<cdp1864_device *>(device)->set_hsync_callback(DEVCB_##_hsync); \
-	downcast<cdp1864_device *>(device)->set_rdata_callback(DEVCB_##_rdata); \
-	downcast<cdp1864_device *>(device)->set_bdata_callback(DEVCB_##_bdata); \
-	downcast<cdp1864_device *>(device)->set_gdata_callback(DEVCB_##_gdata);
-
-#define MCFG_CDP1864_CHROMINANCE(_r, _b, _g, _bkg) \
-	downcast<cdp1864_device *>(device)->set_chrominance_resistors(_r, _b, _g, _bkg);
-
-#define MCFG_CDP1864_SCREEN_ADD(_tag, _clock) \
-	MCFG_SCREEN_ADD(_tag, RASTER) \
-	MCFG_SCREEN_RAW_PARAMS(_clock, CDP1864_SCREEN_WIDTH, CDP1864_HBLANK_END, CDP1864_HBLANK_START, CDP1864_TOTAL_SCANLINES, CDP1864_SCANLINE_VBLANK_END, CDP1864_SCANLINE_VBLANK_START)
-=======
 		MCFG_SOUND_ADD(_tag, CDP1864, _clock) \
 		MCFG_VIDEO_SET_SCREEN(_screen_tag) \
 		downcast<cdp1864_device *>(device)->set_inlace_callback(DEVCB_##_inlace); \
@@ -134,7 +74,6 @@
 #define MCFG_CDP1864_SCREEN_ADD(_tag, _clock) \
 		MCFG_SCREEN_ADD(_tag, RASTER) \
 		MCFG_SCREEN_RAW_PARAMS(_clock, cdp1864_device::SCREEN_WIDTH, cdp1864_device::HBLANK_END, cdp1864_device::HBLANK_START, cdp1864_device::TOTAL_SCANLINES, cdp1864_device::SCANLINE_VBLANK_END, cdp1864_device::SCANLINE_VBLANK_START)
->>>>>>> upstream/master
 
 
 
@@ -149,19 +88,6 @@ class cdp1864_device :  public device_t,
 						public device_video_interface
 {
 public:
-<<<<<<< HEAD
-	// construction/destruction
-	cdp1864_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-
-	template<class _inlace> void set_inlace_callback(_inlace inlace) { m_read_inlace.set_callback(inlace); }
-	template<class _irq> void set_irq_callback(_irq irq) { m_write_irq.set_callback(irq); }
-	template<class _dma_out> void set_dma_out_callback(_dma_out dma_out) { m_write_dma_out.set_callback(dma_out); }
-	template<class _efx> void set_efx_callback(_efx efx) { m_write_efx.set_callback(efx); }
-	template<class _hsync> void set_hsync_callback(_hsync hsync) { m_write_hsync.set_callback(hsync); }
-	template<class _rdata> void set_rdata_callback(_rdata rdata) { m_read_rdata.set_callback(rdata); }
-	template<class _bdata> void set_bdata_callback(_bdata bdata) { m_read_bdata.set_callback(bdata); }
-	template<class _gdata> void set_gdata_callback(_gdata gdata) { m_read_gdata.set_callback(gdata); }
-=======
 	static constexpr unsigned VISIBLE_COLUMNS = 64;
 	static constexpr unsigned VISIBLE_LINES   = 192;
 
@@ -199,7 +125,6 @@ public:
 	template <class Object> void set_rdata_callback(Object &&rdata) { m_read_rdata.set_callback(std::forward<Object>(rdata)); }
 	template <class Object> void set_bdata_callback(Object &&bdata) { m_read_bdata.set_callback(std::forward<Object>(bdata)); }
 	template <class Object> void set_gdata_callback(Object &&gdata) { m_read_gdata.set_callback(std::forward<Object>(gdata)); }
->>>>>>> upstream/master
 	void set_chrominance_resistors(double r, double b, double g, double bkg) { m_chr_r = r; m_chr_b = b; m_chr_g = g; m_chr_bkg = bkg; }
 
 	DECLARE_READ8_MEMBER( dispon_r );
@@ -214,18 +139,6 @@ public:
 	DECLARE_WRITE_LINE_MEMBER( aoe_w );
 	DECLARE_WRITE_LINE_MEMBER( evs_w );
 
-<<<<<<< HEAD
-	UINT32 screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
-
-protected:
-	// device-level overrides
-	virtual void device_start();
-	virtual void device_reset();
-	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
-
-	// internal callbacks
-	virtual void sound_stream_update(sound_stream &stream, stream_sample_t **inputs, stream_sample_t **outputs, int samples);
-=======
 	uint32_t screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
 
 protected:
@@ -236,7 +149,6 @@ protected:
 
 	// internal callbacks
 	virtual void sound_stream_update(sound_stream &stream, stream_sample_t **inputs, stream_sample_t **outputs, int samples) override;
->>>>>>> upstream/master
 
 private:
 	enum
@@ -249,11 +161,7 @@ private:
 
 	void initialize_palette();
 
-<<<<<<< HEAD
-	static const int bckgnd[];
-=======
 	static constexpr int bckgnd[4] = { 2, 0, 4, 1 };
->>>>>>> upstream/master
 
 	devcb_read_line        m_read_inlace;
 	devcb_read_line        m_read_rdata;
@@ -282,11 +190,7 @@ private:
 	// sound state
 	int m_aoe;                      // audio on
 	int m_latch;                    // sound latch
-<<<<<<< HEAD
-	INT16 m_signal;                 // current signal
-=======
 	int16_t m_signal;                 // current signal
->>>>>>> upstream/master
 	int m_incr;                     // initial wave state
 
 	// timers
@@ -298,14 +202,6 @@ private:
 
 
 // device type definition
-<<<<<<< HEAD
-extern const device_type CDP1864;
-
-
-
-#endif
-=======
 DECLARE_DEVICE_TYPE(CDP1864, cdp1864_device)
 
 #endif // MAME_DEVICES_SOUND_CDP1864_H
->>>>>>> upstream/master

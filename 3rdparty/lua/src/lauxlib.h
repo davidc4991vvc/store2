@@ -1,9 +1,5 @@
 /*
-<<<<<<< HEAD
-** $Id: lauxlib.h,v 1.128 2014/10/29 16:11:17 roberto Exp $
-=======
 ** $Id: lauxlib.h,v 1.131 2016/12/06 14:54:31 roberto Exp $
->>>>>>> upstream/master
 ** Auxiliary functions for building Lua libraries
 ** See Copyright Notice in lua.h
 */
@@ -20,12 +16,6 @@
 
 
 
-<<<<<<< HEAD
-/* extra error code for 'luaL_load' */
-#define LUA_ERRFILE     (LUA_ERRERR+1)
-
-
-=======
 /* extra error code for 'luaL_loadfilex' */
 #define LUA_ERRFILE     (LUA_ERRERR+1)
 
@@ -38,7 +28,6 @@
 #define LUA_PRELOAD_TABLE	"_PRELOAD"
 
 
->>>>>>> upstream/master
 typedef struct luaL_Reg {
   const char *name;
   lua_CFunction func;
@@ -84,11 +73,7 @@ LUALIB_API int (luaL_checkoption) (lua_State *L, int arg, const char *def,
 LUALIB_API int (luaL_fileresult) (lua_State *L, int stat, const char *fname);
 LUALIB_API int (luaL_execresult) (lua_State *L, int stat);
 
-<<<<<<< HEAD
-/* pre-defined references */
-=======
 /* predefined references */
->>>>>>> upstream/master
 #define LUA_NOREF       (-2)
 #define LUA_REFNIL      (-1)
 

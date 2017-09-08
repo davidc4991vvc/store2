@@ -22,11 +22,7 @@ protected:
 	required_device<cpu_device> m_maincpu;
 
 	// driver_device overrides
-<<<<<<< HEAD
-	virtual void machine_reset();
-=======
 	virtual void machine_reset() override;
->>>>>>> upstream/master
 public:
 	DECLARE_DRIVER_INIT(capcom);
 };
@@ -47,11 +43,7 @@ DRIVER_INIT_MEMBER(capcom_state,capcom)
 {
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( capcom, capcom_state )
-=======
 static MACHINE_CONFIG_START( capcom )
->>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, 16670000) // M68306
 	MCFG_CPU_PROGRAM_MAP(capcom_map)
@@ -144,8 +136,6 @@ ROM_START(bsv103)
 	ROM_FILL( 0x300000, 0x100000,0xff)
 ROM_END
 
-<<<<<<< HEAD
-=======
 ROM_START(bsv102)
 	ROM_REGION16_BE(0x00100000, "user1",0)
 	ROM_LOAD16_BYTE("u1l_v12.bin", 0x000001, 0x80000, CRC(3e61a32b) SHA1(7708f2c65eea44a872432581ad6ced16e3bbf9f9))
@@ -160,7 +150,6 @@ ROM_START(bsv102)
 	ROM_FILL( 0x300000, 0x100000,0xff)
 ROM_END
 
->>>>>>> upstream/master
 ROM_START(bsv100r)
 	ROM_REGION16_BE(0x00100000, "user1",0)
 	ROM_LOAD16_BYTE("u1l_v10i.bin", 0x000001, 0x80000, CRC(304b4da8) SHA1(2643f304adce3543b792bd2d0ec8abe8d9a5478c))
@@ -327,12 +316,8 @@ GAME(1996,  abv106,     0,      capcom, capcom, capcom_state,   capcom, ROT0,   
 GAME(1996,  abv106r,    abv106, capcom, capcom, capcom_state,   capcom, ROT0,   "Capcom",       "Airborne (Redemption)",        MACHINE_IS_SKELETON_MECHANICAL)
 GAME(1996,  bbb109,     0,      capcom, capcom, capcom_state,   capcom, ROT0,   "Capcom",       "Big Bang Bar (Beta 1.9 US)",   MACHINE_IS_SKELETON_MECHANICAL)
 GAME(1996,  bbb108,     bbb109, capcom, capcom, capcom_state,   capcom, ROT0,   "Capcom",       "Big Bang Bar (Beta 1.8 US)",   MACHINE_IS_SKELETON_MECHANICAL)
-<<<<<<< HEAD
-GAME(1996,  bsv103,     0,      capcom, capcom, capcom_state,   capcom, ROT0,   "Capcom",       "Breakshot",                    MACHINE_IS_SKELETON_MECHANICAL)
-=======
 GAME(1996,  bsv103,     0,      capcom, capcom, capcom_state,   capcom, ROT0,   "Capcom",       "Breakshot (1.3)",              MACHINE_IS_SKELETON_MECHANICAL)
 GAME(1996,  bsv102,     bsv103, capcom, capcom, capcom_state,   capcom, ROT0,   "Capcom",       "Breakshot (1.2)",              MACHINE_IS_SKELETON_MECHANICAL)
->>>>>>> upstream/master
 GAME(1996,  bsv100r,    bsv103, capcom, capcom, capcom_state,   capcom, ROT0,   "Capcom",       "Breakshot (Redemption 1.0)",   MACHINE_IS_SKELETON_MECHANICAL)
 GAME(1996,  bsv102r,    bsv103, capcom, capcom, capcom_state,   capcom, ROT0,   "Capcom",       "Breakshot (Redemption 1.2)",   MACHINE_IS_SKELETON_MECHANICAL)
 GAME(1996,  bsb105,     bsv103, capcom, capcom, capcom_state,   capcom, ROT0,   "Capcom",       "Breakshot (Beta)",             MACHINE_IS_SKELETON_MECHANICAL)

@@ -13,25 +13,10 @@
 
 **********************************************************************/
 
-<<<<<<< HEAD
-#pragma once
-
-#ifndef __NMC9306__
-#define __NMC9306__
-
-#include "emu.h"
-
-
-
-//**************************************************************************
-//  MACROS / CONSTANTS
-//**************************************************************************
-=======
 #ifndef MAME_MACHINE_NMC9306_H
 #define MAME_MACHINE_NMC9306_H
 
 #pragma once
->>>>>>> upstream/master
 
 
 
@@ -40,13 +25,8 @@
 //  INTERFACE CONFIGURATION MACROS
 //**************************************************************************
 
-<<<<<<< HEAD
-#define MCFG_NMC9306_ADD(_tag) \
-	MCFG_DEVICE_ADD(_tag, NMC9306, 0)
-=======
 #define MCFG_NMC9306_ADD(tag) \
 		MCFG_DEVICE_ADD((tag), NMC9306, 0)
->>>>>>> upstream/master
 
 
 
@@ -62,11 +42,7 @@ class nmc9306_device :  public device_t,
 {
 public:
 	// construction/destruction
-<<<<<<< HEAD
-	nmc9306_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
-=======
 	nmc9306_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
->>>>>>> upstream/master
 
 	DECLARE_WRITE_LINE_MEMBER( cs_w );
 	DECLARE_WRITE_LINE_MEMBER( sk_w );
@@ -75,27 +51,6 @@ public:
 
 protected:
 	// device-level overrides
-<<<<<<< HEAD
-	virtual void device_start();
-
-	// device_nvram_interface overrides
-	virtual void nvram_default();
-	virtual void nvram_read(emu_file &file);
-	virtual void nvram_write(emu_file &file);
-
-private:
-	inline UINT16 read(offs_t offset);
-	inline void write(offs_t offset, UINT16 data);
-	inline void erase(offs_t offset);
-
-	UINT16 m_register[16];
-
-	int m_bits;
-	int m_state;
-	UINT8 m_command;
-	UINT8 m_address;
-	UINT16 m_data;
-=======
 	virtual void device_start() override;
 
 	// device_nvram_interface overrides
@@ -115,7 +70,6 @@ private:
 	uint8_t m_command;
 	uint8_t m_address;
 	uint16_t m_data;
->>>>>>> upstream/master
 	bool m_ewen;
 	int m_cs;
 	int m_sk;
@@ -125,13 +79,6 @@ private:
 
 
 // device type definition
-<<<<<<< HEAD
-extern const device_type NMC9306;
-
-
-#endif
-=======
 DECLARE_DEVICE_TYPE(NMC9306, nmc9306_device)
 
 #endif // MAME_MACHINE_NMC9306_H
->>>>>>> upstream/master

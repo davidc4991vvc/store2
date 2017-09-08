@@ -76,11 +76,6 @@ PS / PD :  key matrix
 *****************************************************************************************/
 
 #include "emu.h"
-<<<<<<< HEAD
-#include "cpu/z80/z80.h"
-#include "sound/ay8910.h"
-#include "includes/speedatk.h"
-=======
 #include "includes/speedatk.h"
 
 #include "cpu/z80/z80.h"
@@ -89,7 +84,6 @@ PS / PD :  key matrix
 #include "screen.h"
 #include "speaker.h"
 
->>>>>>> upstream/master
 
 #define MASTER_CLOCK XTAL_12MHz
 
@@ -101,11 +95,7 @@ void speedatk_state::machine_start()
 	save_item(NAME(m_coin_impulse));
 }
 
-<<<<<<< HEAD
-UINT8 speedatk_state::iox_key_matrix_calc(UINT8 p_side)
-=======
 uint8_t speedatk_state::iox_key_matrix_calc(uint8_t p_side)
->>>>>>> upstream/master
 {
 	static const char *const keynames[] = { "P1_ROW0", "P1_ROW1", "P2_ROW0", "P2_ROW1" };
 
@@ -148,13 +138,8 @@ READ8_MEMBER(speedatk_state::key_matrix_r)
 	/* both side checks */
 	if(m_mux_data == 1)
 	{
-<<<<<<< HEAD
-		UINT8 p1_side = iox_key_matrix_calc(0);
-		UINT8 p2_side = iox_key_matrix_calc(2);
-=======
 		uint8_t p1_side = iox_key_matrix_calc(0);
 		uint8_t p2_side = iox_key_matrix_calc(2);
->>>>>>> upstream/master
 
 		if(p1_side != 0)
 			return p1_side;
@@ -209,11 +194,7 @@ ADDRESS_MAP_END
 static ADDRESS_MAP_START( speedatk_io, AS_IO, 8, speedatk_state )
 	ADDRESS_MAP_GLOBAL_MASK(0xff)
 	AM_RANGE(0x00, 0x01) AM_WRITE(m6845_w) //h46505 address / data routing
-<<<<<<< HEAD
-	AM_RANGE(0x24, 0x24) AM_WRITE(watchdog_reset_w)
-=======
 	AM_RANGE(0x24, 0x24) AM_DEVWRITE("watchdog", watchdog_timer_device, reset_w)
->>>>>>> upstream/master
 	AM_RANGE(0x40, 0x40) AM_DEVREAD("aysnd", ay8910_device, data_r)
 	AM_RANGE(0x40, 0x41) AM_DEVWRITE("aysnd", ay8910_device, address_data_w)
 	//what's 60-6f for? Seems used only in attract mode and read back when a 2p play ends ...
@@ -323,23 +304,15 @@ WRITE8_MEMBER(speedatk_state::output_w)
 		logerror("%02x\n",data);
 }
 
-<<<<<<< HEAD
-static MACHINE_CONFIG_START( speedatk, speedatk_state )
-=======
 static MACHINE_CONFIG_START( speedatk )
->>>>>>> upstream/master
 
 	MCFG_CPU_ADD("maincpu", Z80,MASTER_CLOCK/2) //divider is unknown
 	MCFG_CPU_PROGRAM_MAP(speedatk_mem)
 	MCFG_CPU_IO_MAP(speedatk_io)
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", speedatk_state,  irq0_line_hold)
 
-<<<<<<< HEAD
-	MCFG_WATCHDOG_VBLANK_INIT(8) // timing is unknown
-=======
 	MCFG_WATCHDOG_ADD("watchdog")
 	MCFG_WATCHDOG_VBLANK_INIT("screen", 8) // timing is unknown
->>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
@@ -389,8 +362,4 @@ ROM_START( speedatk )
 	ROM_LOAD( "cb2.bpr",      0x0020, 0x0100, CRC(a604cf96) SHA1(a4ef6e77dcd3abe4c27e8e636222a5ee711a51f5) ) /* lookup table */
 ROM_END
 
-<<<<<<< HEAD
-GAME( 1984, speedatk, 0, speedatk, speedatk, driver_device, 0, ROT0, "Seta Kikaku Corp.", "Speed Attack! (Japan)", MACHINE_SUPPORTS_SAVE )
-=======
 GAME( 1984, speedatk, 0, speedatk, speedatk, speedatk_state, 0, ROT0, "Seta Kikaku Corp.", "Speed Attack! (Japan)", MACHINE_SUPPORTS_SAVE )
->>>>>>> upstream/master

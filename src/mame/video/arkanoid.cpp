@@ -30,13 +30,8 @@ WRITE8_MEMBER(arkanoid_state::arkanoid_d008_w)
 	m_paddle_select = data & 0x04;
 
 	/* bit 3 is coin lockout (but not the service coin) */
-<<<<<<< HEAD
-	coin_lockout_w(machine(), 0, !(data & 0x08));
-	coin_lockout_w(machine(), 1, !(data & 0x08));
-=======
 	machine().bookkeeping().coin_lockout_w(0, !(data & 0x08));
 	machine().bookkeeping().coin_lockout_w(1, !(data & 0x08));
->>>>>>> upstream/master
 
 	/* bit 4 is unknown */
 
@@ -58,21 +53,10 @@ WRITE8_MEMBER(arkanoid_state::arkanoid_d008_w)
 		m_bg_tilemap->mark_all_dirty();
 	}
 
-<<<<<<< HEAD
-	/* BM:  bit 7 is suspected to be MCU reset, the evidence for this is that
-	 the games tilt mode reset sequence shows the main CPU must be able to
-	 directly control the reset line of the MCU, else the game will crash
-	 leaving the tilt screen (as the MCU is now out of sync with main CPU
-	 which resets itself).  This bit is the likely candidate as it is flipped
-	 early in bootup just prior to accessing the MCU for the first time. */
-	if (m_mcu != NULL)  // Bootlegs don't have the MCU but still set this bit
-		m_mcu->set_input_line(INPUT_LINE_RESET, (data & 0x80) ? CLEAR_LINE : ASSERT_LINE);
-=======
 	// bit 7 resets the MCU and semaphore flipflops
 	// This bit is flipped early in bootup just prior to accessing the MCU for the first time.
 	if (m_mcuintf.found()) // Bootlegs don't have the MCU but still set this bit
 		m_mcuintf->reset_w(BIT(data, 7) ? CLEAR_LINE : ASSERT_LINE);
->>>>>>> upstream/master
 }
 
 
@@ -148,13 +132,8 @@ WRITE8_MEMBER(arkanoid_state::tetrsark_d008_w)
 	}
 
 	/* bit 7 is coin lockout (but not the service coin) */
-<<<<<<< HEAD
-	coin_lockout_w(machine(), 0, !(data & 0x80));
-	coin_lockout_w(machine(), 1, !(data & 0x80));
-=======
 	machine().bookkeeping().coin_lockout_w(0, !(data & 0x80));
 	machine().bookkeeping().coin_lockout_w(1, !(data & 0x80));
->>>>>>> upstream/master
 }
 
 
@@ -190,11 +169,7 @@ TILE_GET_INFO_MEMBER(arkanoid_state::get_bg_tile_info)
 
 void arkanoid_state::video_start()
 {
-<<<<<<< HEAD
-	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(arkanoid_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
-=======
 	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(arkanoid_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
->>>>>>> upstream/master
 }
 
 void arkanoid_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect )
@@ -228,22 +203,14 @@ void arkanoid_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &clipre
 }
 
 
-<<<<<<< HEAD
-UINT32 arkanoid_state::screen_update_arkanoid(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t arkanoid_state::screen_update_arkanoid(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	m_bg_tilemap->draw(screen, bitmap, cliprect, 0, 0);
 	draw_sprites(bitmap, cliprect);
 	return 0;
 }
 
-<<<<<<< HEAD
-UINT32 arkanoid_state::screen_update_hexa(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
-=======
 uint32_t arkanoid_state::screen_update_hexa(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
->>>>>>> upstream/master
 {
 	m_bg_tilemap->draw(screen, bitmap, cliprect, 0, 0);
 	return 0;
